@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-
+import { useI18n } from 'vue-i18n';
 import { ReportContent } from '../../../PropsType';
 
 type Props = {
@@ -9,6 +9,8 @@ type Props = {
   appInfo: { [key: string]: any };
   dataSource: ReportContent;
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   projectInfo: undefined,
@@ -38,20 +40,20 @@ const len = computed(() => {
   <div class="mb-4">
     <h3 class="flex items-center space-x-2.5 mb-1.5">
       <span id="a10" class="flex items-center space-x-1.5"><em
-        class="inline-block w-1.25 h-1.25 rounded bg-gray-500"></em><span>用例统计</span></span>
+        class="inline-block w-1.25 h-1.25 rounded bg-gray-500"></em><span>{{ t('reportPreview.task.info.testing.function.caseStats.title') }}</span></span>
     </h3>
     <div class="border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          总用例数
+          {{ t('reportPreview.task.info.testing.function.caseStats.fields.totalCases') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ caseSummary?.totalNum }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          通过用例数
+          {{ t('reportPreview.task.info.testing.function.caseStats.fields.passedCases') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ caseSummary?.successNum }}
@@ -61,14 +63,14 @@ const len = computed(() => {
       <div class="flex">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          未通过用例数
+          {{ t('reportPreview.task.info.testing.function.caseStats.fields.failedCases') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ caseSummary?.failNum }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          未启用用例数
+          {{ t('reportPreview.task.info.testing.function.caseStats.fields.disabledCases') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ caseSummary?.disabledNum }}
@@ -80,21 +82,21 @@ const len = computed(() => {
   <div>
     <h3 class="flex items-center space-x-2.5 mb-1.5">
       <span id="a10" class="flex items-center space-x-1.5"><em
-        class="inline-block w-1.25 h-1.25 rounded bg-gray-500"></em><span>已测试用例</span></span>
+        class="inline-block w-1.25 h-1.25 rounded bg-gray-500"></em><span>{{ t('reportPreview.task.info.testing.function.testedCases.title') }}</span></span>
     </h3>
     <div v-if="len>0" class="border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-37 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          用例ID
+          {{ t('reportPreview.task.info.testing.function.testedCases.fields.caseId') }}
         </div>
         <div
           class="flex-1 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          用例名称
+          {{ t('reportPreview.task.info.testing.function.testedCases.fields.caseName') }}
         </div>
         <div
           class="w-27 flex items-center bg-blue-table px-1.5 py-1.5">
-          状态
+          {{ t('reportPreview.task.info.testing.function.testedCases.fields.status') }}
         </div>
       </div>
 
@@ -110,12 +112,12 @@ const len = computed(() => {
           {{ item.caseName }}
         </div>
         <div class="w-27 px-1.5 py-1.5 break-all whitespace-pre-wrap">
-          {{ item.passed?'通过':'不通过' }}
+          {{ item.passed ? t('reportPreview.task.info.testing.function.testedCases.options.passed') : t('reportPreview.task.info.testing.function.testedCases.options.failed') }}
         </div>
       </div>
     </div>
 
-    <div v-else class="content-text-container">无</div>
+    <div v-else class="content-text-container">{{ t('reportPreview.task.info.testing.function.testedCases.noData') }}</div>
   </div>
 </template>
 

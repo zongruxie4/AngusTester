@@ -30,28 +30,28 @@ const onePassText = computed(() => {
     return '--';
   }
 
-  return +failNum === 0 ? '是' : '否';
+  return +failNum === 0 ? t('reportPreview.task.info.basicInfo.options.yes') : t('reportPreview.task.info.basicInfo.options.no');
 });
 </script>
 
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a1" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25"></em>基本信息</span>
+      <span id="a1" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.task.info.basicInfo.title') }}</span>
     </h1>
 
     <div class="border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          名称
+          {{ t('reportPreview.task.info.basicInfo.fields.name') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ task?.name }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          优先级
+          {{ t('reportPreview.task.info.basicInfo.fields.priority') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ task?.priority?.message }}
@@ -61,7 +61,7 @@ const onePassText = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          任务类型
+          {{ t('reportPreview.task.info.basicInfo.fields.taskType') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ task?.taskType?.message }}
@@ -76,13 +76,13 @@ const onePassText = computed(() => {
               v-if="task?.missingBugFlag"
               color="error"
               class="ml-2 text-3 leading-4">
-              漏测缺陷
+              {{ t('reportPreview.task.info.basicInfo.fields.missedDefect') }}
             </Tag>
           </template>
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          任务状态
+          {{ t('reportPreview.task.info.basicInfo.fields.taskStatus') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ task?.status?.message }}
@@ -99,7 +99,7 @@ const onePassText = computed(() => {
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          所属项目
+          {{ t('reportPreview.task.info.basicInfo.fields.project') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ task?.projectName }}
@@ -109,14 +109,14 @@ const onePassText = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          编号
+          {{ t('reportPreview.task.info.basicInfo.fields.code') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ task?.code }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          是否逾期
+          {{ t('reportPreview.task.info.basicInfo.fields.overdue') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ task?.overdue ? '是' : '否' }}
@@ -126,14 +126,14 @@ const onePassText = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          所属模块
+          {{ t('reportPreview.task.info.basicInfo.fields.module') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ task?.moduleName }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          标签
+          {{ t('reportPreview.task.info.basicInfo.fields.tag') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ task?.tags?.join(',') }}
@@ -143,14 +143,14 @@ const onePassText = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          工作量评估方式
+          {{ t('reportPreview.task.info.basicInfo.fields.workloadEstimationMethod') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ task?.evalWorkloadMethod?.message }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ task?.evalWorkloadMethod?.value === 'STORY_POINT' ? '评估故事点' : '评估工时' }}
+          {{ task?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('reportPreview.task.info.basicInfo.fields.estimatedStoryPoint') : t('reportPreview.task.info.basicInfo.fields.estimatedWorkTime') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ task?.evalWorkload }}
@@ -160,14 +160,14 @@ const onePassText = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ task?.evalWorkloadMethod?.value === 'STORY_POINT' ? '实际故事点' : '实际工时' }}
+          {{ task?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('reportPreview.task.info.basicInfo.fields.actualStoryPoint') : t('reportPreview.task.info.basicInfo.fields.actualWorkTime') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ task?.actualWorkload }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          处理次数
+          {{ t('reportPreview.task.info.basicInfo.fields.processCount') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ task?.totalNum }}
@@ -177,14 +177,14 @@ const onePassText = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          处理失败次数
+          {{ t('reportPreview.task.info.basicInfo.fields.failedProcessCount') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ task?.failNum }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          一次性通过
+          {{ t('reportPreview.task.info.basicInfo.fields.oneTimePass') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ onePassText }}
@@ -194,10 +194,10 @@ const onePassText = computed(() => {
       <div class="flex">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          计划外任务
+          {{ t('reportPreview.task.info.basicInfo.fields.unplannedTask') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
-          {{ task?.unplannedFlag ? '是' : '否' }}
+          {{ task?.unplannedFlag ? t('reportPreview.task.info.basicInfo.options.yes') : t('reportPreview.task.info.basicInfo.options.no') }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-
+import { useI18n } from 'vue-i18n';
 import { ReportContent } from '../PropsType';
 
 type Props = {
@@ -9,6 +9,8 @@ type Props = {
   appInfo: { [key: string]: any };
   dataSource: ReportContent;
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   projectInfo: undefined,
@@ -33,34 +35,34 @@ const len = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a6" class="text-4 text-theme-title font-medium">六、<em class="inline-block w-0.25"></em>关联任务</span>
+      <span id="a6" class="text-4 text-theme-title font-medium">六、<em class="inline-block w-0.25"></em>{{ t('reportPreview.task.assocTask.title') }}</span>
     </h1>
 
     <div v-if="len>0" class="border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-37 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          ID
+          {{ t('reportPreview.task.assocTask.fields.id') }}
         </div>
         <div
           class="w-27 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          编码
+          {{ t('reportPreview.task.assocTask.fields.code') }}
         </div>
         <div
           class="w-19 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          类型
+          {{ t('reportPreview.task.assocTask.fields.type') }}
         </div>
         <div
           class="flex-1 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          名称
+          {{ t('reportPreview.task.assocTask.fields.name') }}
         </div>
         <div
           class="w-20 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          状态
+          {{ t('reportPreview.task.assocTask.fields.status') }}
         </div>
         <div
           class="w-20 flex items-center bg-blue-table px-1.5 py-1.5">
-          经办人
+          {{ t('reportPreview.task.assocTask.fields.assignee') }}
         </div>
       </div>
 
@@ -90,7 +92,7 @@ const len = computed(() => {
       </div>
     </div>
 
-    <div v-else class="content-text-container">无</div>
+    <div v-else class="content-text-container">{{ t('reportPreview.task.assocTask.noData') }}</div>
   </div>
 </template>
 

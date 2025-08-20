@@ -1689,6 +1689,272 @@
            "title": "Group Statistics"
          }
        }
+     },
+     "task": {
+       "content": "Content",
+       "catalog": {
+         "title": "Catalog",
+         "sections": {
+           "basicInfo": "Basic Information",
+           "personnelInfo": "Personnel Information",
+           "dateInfo": "Date Information",
+           "description": "Description",
+           "subTask": "Sub Tasks",
+           "assocTask": "Associated Tasks",
+           "assocCase": "Associated Cases",
+           "testingInfo": "Testing Information",
+           "testResource": "Test Resources",
+           "execInfo": "Execution Information",
+           "testResult": "Test Results",
+           "remark": "Remarks",
+           "activity": "Activities",
+           "comment": "Comments"
+         }
+       },
+       "summary": {
+         "title": "Summary",
+         "fields": {
+           "status": "Status",
+           "description": "Description",
+           "contact": "Contact",
+           "copyright": "Copyright",
+           "other": "Other"
+         }
+       },
+       "info": {
+         "basicInfo": {
+           "title": "Basic Information",
+           "fields": {
+             "name": "Name",
+             "priority": "Priority",
+             "taskType": "Task Type",
+             "missedDefect": "Missed Defect",
+             "taskStatus": "Task Status",
+             "project": "Project",
+             "code": "Code",
+             "overdue": "Overdue",
+             "module": "Module",
+             "tag": "Tag",
+             "workloadEstimationMethod": "Workload Estimation Method",
+             "estimatedStoryPoint": "Estimated Story Points",
+             "estimatedWorkTime": "Estimated Work Time",
+             "actualStoryPoint": "Actual Story Points",
+             "actualWorkTime": "Actual Work Time",
+             "processCount": "Process Count",
+             "failedProcessCount": "Failed Process Count",
+             "oneTimePass": "One-time Pass",
+             "unplannedTask": "Unplanned Task"
+           },
+           "options": {
+             "yes": "Yes",
+             "no": "No"
+           }
+         },
+         "personnelInfo": {
+           "title": "Personnel Information",
+           "fields": {
+             "assignee": "Assignee",
+             "confirmer": "Confirmer",
+             "creator": "Creator",
+             "executor": "Executor",
+             "lastModifier": "Last Modifier",
+             "tester": "Tester"
+           }
+         },
+         "dateInfo": {
+           "title": "Date Information",
+           "fields": {
+             "deadline": "Deadline",
+             "startTime": "Start Time",
+             "processTime": "Process Time",
+             "confirmTime": "Confirm Time",
+             "completionTime": "Completion Time",
+             "cancelTime": "Cancel Time",
+             "execTime": "Execution Time",
+             "createTime": "Create Time",
+             "lastModifyTime": "Last Modify Time"
+           }
+         },
+         "description": {
+           "title": "Description",
+           "noData": "None"
+         },
+         "remark": {
+           "title": "Remarks",
+           "noData": "None"
+         },
+         "testingInfo": {
+           "title": "Testing Information",
+           "testResource": {
+             "title": "Test Resources",
+             "fields": {
+               "apiId": "API ID",
+               "apiName": "API Name",
+               "scenarioId": "Scenario ID",
+               "scenarioName": "Scenario Name"
+             }
+           },
+           "execInfo": {
+             "title": "Execution Information",
+             "fields": {
+               "execResult": "Execution Result",
+               "execId": "Execution ID",
+               "execName": "Execution Name",
+               "executor": "Executor",
+               "scriptId": "Script ID",
+               "scriptName": "Script Name",
+               "lastExecTime": "Last Execution Time"
+             }
+           },
+           "testResult": {
+             "title": "Test Results",
+             "basicInfo": {
+               "title": "Basic Information",
+               "fields": {
+                 "testResult": "Test Result",
+                 "oneTimePass": "One-time Pass",
+                 "testCount": "Test Count",
+                 "failCount": "Failure Count",
+                 "failReason": "Failure Reason"
+               },
+               "options": {
+                 "passed": "Passed",
+                 "failed": "Failed"
+               }
+             }
+           }
+         }
+       },
+       "subTask": {
+         "title": "Sub Tasks",
+         "progress": "Progress",
+         "fields": {
+           "code": "Code",
+           "type": "Type",
+           "name": "Name",
+           "status": "Status",
+           "assignee": "Assignee"
+         },
+         "noData": "None"
+       },
+       "assocTask": {
+         "title": "Associated Tasks",
+         "fields": {
+           "code": "Code",
+           "type": "Type",
+           "name": "Name",
+           "status": "Status",
+           "assignee": "Assignee"
+         },
+         "noData": "None"
+       },
+       "assocCase": {
+         "title": "Associated Cases",
+         "fields": {
+           "code": "Code",
+           "name": "Name",
+           "testStatus": "Test Status",
+           "reviewStatus": "Review Status",
+           "tester": "Tester"
+         },
+         "noData": "None"
+       },
+       "activity": {
+         "title": "Activities",
+         "fields": {
+           "activityTime": "Activity Time",
+           "activityUser": "Activity User",
+           "activityDesc": "Activity Description"
+         },
+         "noData": "None"
+       },
+       "comment": {
+         "title": "Comments",
+         "fields": {
+           "commentTime": "Comment Time",
+           "commentUser": "Comment User",
+           "commentContent": "Comment Content",
+           "reply": "Reply"
+         },
+         "noData": "None"
+       },
+       "testing": {
+         "function": {
+           "title": "Functional Testing",
+           "caseStats": {
+             "title": "Case Statistics",
+             "fields": {
+               "totalCases": "Total Cases",
+               "passedCases": "Passed Cases",
+               "failedCases": "Failed Cases",
+               "disabledCases": "Disabled Cases"
+             }
+           },
+           "testedCases": {
+             "title": "Tested Cases",
+             "fields": {
+               "caseId": "Case ID",
+               "caseName": "Case Name",
+               "status": "Status"
+             },
+             "options": {
+               "passed": "Passed",
+               "failed": "Failed"
+             },
+             "noData": "None"
+           }
+         },
+         "perf": {
+           "title": "Performance Testing",
+           "resultInfo": {
+             "title": "Result Information",
+             "testParams": "Test Parameters",
+             "testMetrics": "Test Metrics",
+             "status": "Status",
+             "fields": {
+               "concurrency": "Concurrency",
+               "testDuration": "Test Duration",
+               "rampUpConcurrency": "Ramp-up Concurrency",
+               "rampUpDuration": "Ramp-up Duration",
+               "responseTime": "Response Time (RT)",
+               "tps": "Transactions Per Second (TPS)",
+               "errorRate": "Error Rate"
+             }
+           },
+           "systemLoad": {
+             "title": "Application System Average Load",
+             "cpuUsage": "CPU Usage",
+             "memoryUsage": "Memory Usage",
+             "diskUsage": "Disk Usage",
+             "networkUsage": "Network Usage",
+             "maximum": "Maximum"
+           }
+         },
+         "stability": {
+           "title": "Stability Testing",
+           "resultInfo": {
+             "title": "Result Information",
+             "testParams": "Test Parameters",
+             "testMetrics": "Test Metrics",
+             "status": "Status",
+             "fields": {
+               "concurrency": "Concurrency",
+               "testDuration": "Test Duration",
+               "responseTime": "Response Time (art)",
+               "tps": "Transactions Per Second (TPS)",
+               "errorRate": "Error Rate"
+             }
+           },
+           "systemLoad": {
+             "title": "Application System Average Load",
+             "cpuUsage": "CPU Usage",
+             "memoryUsage": "Memory Usage",
+             "diskUsage": "Disk Usage",
+             "networkUsage": "Network Usage",
+             "maximum": "Maximum"
+           }
+         }
+       }
      }
    }
 } 

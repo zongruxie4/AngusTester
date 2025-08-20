@@ -40,11 +40,11 @@ const len = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a5" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.5') }}<em class="inline-block w-0.25"></em>子任务</span>
+      <span id="a5" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.5') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.task.subTask.title') }}</span>
     </h1>
 
     <div v-if="len>0" class="flex space-x-2 text-3.5 font-semibold">
-      <span>进度 {{ (subTaskProgress?.completedRate || 0) + '%' }}</span>
+      <span>{{ t('reportPreview.task.subTask.progress') }} {{ (subTaskProgress?.completedRate || 0) + '%' }}</span>
       <Progress
         :percent="subTaskProgress?.completedRate"
         size="small"
@@ -56,27 +56,27 @@ const len = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-37 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          ID
+          {{ t('reportPreview.task.subTask.fields.id') }}
         </div>
         <div
           class="w-27 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          编码
+          {{ t('reportPreview.task.subTask.fields.code') }}
         </div>
         <div
           class="w-19 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          类型
+          {{ t('reportPreview.task.subTask.fields.type') }}
         </div>
         <div
           class="flex-1 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          名称
+          {{ t('reportPreview.task.subTask.fields.name') }}
         </div>
         <div
           class="w-20 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          状态
+          {{ t('reportPreview.task.subTask.fields.status') }}
         </div>
         <div
           class="w-20 flex items-center bg-blue-table px-1.5 py-1.5">
-          经办人
+          {{ t('reportPreview.task.subTask.fields.assignee') }}
         </div>
       </div>
 
@@ -106,7 +106,7 @@ const len = computed(() => {
       </div>
     </div>
 
-    <div v-else class="content-text-container">无</div>
+    <div v-else class="content-text-container">{{ t('reportPreview.task.subTask.noData') }}</div>
   </div>
 </template>
 

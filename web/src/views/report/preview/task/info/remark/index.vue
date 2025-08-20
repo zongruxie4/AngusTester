@@ -57,7 +57,7 @@ const len = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span :id="`a${index}`" class="text-4 text-theme-title font-medium">{{ indexText }}、<em class="inline-block w-0.25"></em>备注</span>
+      <span :id="`a${index}`" class="text-4 text-theme-title font-medium">{{ indexText }}、<em class="inline-block w-0.25"></em>{{ t('reportPreview.task.info.remark.title') }}</span>
     </h1>
 
     <template v-if="len>0">
@@ -76,7 +76,7 @@ const len = computed(() => {
       </div>
     </template>
 
-    <div v-else class="content-text-container">无</div>
+    <div v-else class="content-text-container">{{ t('reportPreview.task.info.remark.noData') }}</div>
   </div>
 </template>
 
