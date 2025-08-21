@@ -1098,6 +1098,111 @@
         "tasks": "个任务",
         "ungrouped": "未分组"
       }
+    },
+    "assocCase": {
+      "title": "关联用例",
+      "description": "跟踪任务功能测试用例完成情况，了解任务的哪些功能已经被实现和测试，方便更准确地评估任务进度。",
+      "actions": {
+        "associateCase": "关联用例",
+        "cancel": "取消"
+      },
+      "messages": {
+        "confirmCancelCase": "确认取消关联用例【{name}】吗？"
+      },
+      "columns": {
+        "code": "编号",
+        "name": "名称",
+        "priority": "优先级",
+        "evalWorkload": "评估故事点",
+        "status": "状态",
+        "testerName": "测试人",
+        "deadlineDate": "截止时间",
+        "action": "操作"
+      }
+    },
+    "assocTask": {
+      "title": "关联任务",
+      "actions": {
+        "associateTask": "关联{title}",
+        "cancel": "取消"
+      },
+      "messages": {
+        "confirmCancelTask": "确认取消关联任务【{name}】吗？"
+      },
+      "columns": {
+        "code": "编号",
+        "name": "名称",
+        "progress": "进度",
+        "taskType": "类型",
+        "priority": "优先级",
+        "evalWorkload": "评估故事点",
+        "status": "状态",
+        "assigneeName": "经办人",
+        "deadlineDate": "截止时间",
+        "action": "操作"
+      },
+      "modal": {
+        "selectTask": "选择{title}"
+      }
+    },
+    "remark": {
+      "placeholder": " 添加补充说明，如注意事项，确认不通过原因等，最大支持6000个字符",
+      "validation": {
+        "maxLength": "备注最大支持6000个字符"
+      },
+      "actions": {
+        "addRemark": "添加了备注"
+      }
+    },
+    "subTask": {
+      "title": "子任务",
+      "description": "用于将大型复杂任务分解成更小、更易管理的子任务，便于团队成员分工协作。",
+      "progress": "进度",
+      "actions": {
+        "addSubTask": "添加子任务",
+        "associateSubTask": "关联子任务",
+        "cancel": "取消",
+        "edit": "编辑",
+        "add": "添加"
+      },
+      "messages": {
+        "confirmCancelSubTask": "确定取消子任务【{name}】吗？",
+        "associateSubTaskSuccess": "关联子任务成功",
+        "cancelSubTaskSuccess": "取消子任务成功",
+        "favouriteSuccess": "任务收藏成功",
+        "cancelFavouriteSuccess": "任务取消收藏成功",
+        "followSuccess": "任务关注成功",
+        "cancelFollowSuccess": "任务取消关注成功"
+      },
+      "columns": {
+        "code": "编号",
+        "name": "名称",
+        "progress": "进度",
+        "taskType": "类型",
+        "priority": "优先级",
+        "evalWorkload": "评估故事点",
+        "evalWorkloadHours": "评估工时",
+        "status": "状态",
+        "assigneeName": "经办人",
+        "deadlineDate": "截止时间",
+        "action": "操作"
+      },
+      "form": {
+        "taskType": "任务类型",
+        "priority": "优先级",
+        "taskName": "输入任务名称，最大支持200字符，按回车键可自动保存"
+      },
+      "dropdown": {
+        "favourite": "收藏",
+        "cancelFavourite": "取消收藏",
+        "follow": "关注",
+        "cancelFollow": "取消关注"
+      },
+      "modal": {
+        "title": "关联子任务",
+        "label": "关联子任务",
+        "placeholder": "请选择子任务"
+      }
     }
   },
   "taskSprint": {

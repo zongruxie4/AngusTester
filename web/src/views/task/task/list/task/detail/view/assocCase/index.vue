@@ -5,6 +5,7 @@ import { TESTER } from '@xcan-angus/infra';
 import { Button } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 import { task } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   projectId: string;
@@ -25,6 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined
 });
 const router = useRouter();
+const { t } = useI18n();
 const SelectCaseByModuleModal = defineAsyncComponent(() => import('@/components/function/case/selectByModuleModal/index.vue'));
 
 // eslint-disable-next-line func-call-spacing
@@ -79,7 +81,7 @@ const handlePut = async (refCaseIds) => {
 
 const handleDelCase = (record) => {
   modal.confirm({
-    content: `确认取消关联用例【${record.name}】吗？`,
+    content: t('task.assocCase.messages.confirmCancelCase', { name: record.name }),
     onOk () {
       return task.cancelAssociationCase(props.taskId, [record.id], {
         paramsType: true
@@ -108,36 +110,44 @@ const openCaseTab = (record) => {
 // 编号、名称、优先级、评估故事点、状态、测试人、截止时间、操作
 const columns = [
   {
+    key: 'code',
     dataIndex: 'code',
-    title: '编号'
+    title: t('task.assocCase.columns.code')
   },
   {
+    key: 'name',
     dataIndex: 'name',
-    title: '名称'
+    title: t('task.assocCase.columns.name')
   },
   {
+    key: 'priority',
     dataIndex: 'priority',
-    title: '优先级'
+    title: t('task.assocCase.columns.priority')
   },
   {
+    key: 'evalWorkload',
     dataIndex: 'evalWorkload',
-    title: '评估故事点'
+    title: t('task.assocCase.columns.evalWorkload')
   },
   {
+    key: 'status',
     dataIndex: 'status',
-    title: '状态'
+    title: t('task.assocCase.columns.status')
   },
   {
+    key: 'testerName',
     dataIndex: 'testerName',
-    title: '测试人'
+    title: t('task.assocCase.columns.testerName')
   },
   {
+    key: 'deadlineDate',
     dataIndex: 'deadlineDate',
-    title: '截止时间'
+    title: t('task.assocCase.columns.deadlineDate')
   },
   {
+    key: 'action',
     dataIndex: 'action',
-    title: '操作'
+    title: t('task.assocCase.columns.action')
   }
 ];
 
@@ -159,7 +169,7 @@ const columns = [
         <span class="font-semibold text-3.5">{{ caseProgress?.completedRate || 0 }}%</span>
       </div> -->
       <div class="flex-1 min-w-0 truncate px-1">
-        <Hints text="跟踪任务功能测试用例完成情况，了解任务的哪些功能已经被实现和测试，方便更准确地评估任务进度。" />
+        <Hints :text="t('task.assocCase.description')" />
       </div>
       <Button
         :disabled="props.dataSource?.length > 19"
@@ -167,7 +177,7 @@ const columns = [
         size="small"
         @click="startEdit">
         <Icon icon="icon-jia" class="mr-1" />
-        关联用例
+        {{ t('task.assocCase.actions.associateCase') }}
       </Button>
     </div>
     <Table
@@ -175,7 +185,8 @@ const columns = [
       :dataSource="props.dataSource || []"
       :pagination="false"
       size="small"
-      noDataSize="small">
+      noDataSize="small"
+      noDataText="">
       <template #bodyCell="{column, record}">
         <template v-if="column.dataIndex === 'name'">
           <Button
@@ -191,7 +202,7 @@ const columns = [
             type="text"
             @click="handleDelCase(record)">
             <Icon icon="icon-qingchu" class="mr-1" />
-            取消
+            {{ t('task.assocCase.actions.cancel') }}
           </Button>
         </template>
         <template v-if="column.dataIndex === 'priority'">

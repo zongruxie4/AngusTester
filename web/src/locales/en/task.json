@@ -1095,6 +1095,111 @@
         "tasks": "tasks",
         "ungrouped": "Ungrouped"
       }
+    },
+    "assocCase": {
+      "title": "Associated Cases",
+      "description": "Track the completion status of functional test cases for tasks, understand which functions have been implemented and tested, facilitating more accurate task progress assessment.",
+      "actions": {
+        "associateCase": "Associate Case",
+        "cancel": "Cancel"
+      },
+      "messages": {
+        "confirmCancelCase": "Confirm to cancel association with case 【{name}】?"
+      },
+      "columns": {
+        "code": "Code",
+        "name": "Name",
+        "priority": "Priority",
+        "evalWorkload": "Estimated Story Points",
+        "status": "Status",
+        "testerName": "Tester",
+        "deadlineDate": "Deadline",
+        "action": "Action"
+      }
+    },
+    "assocTask": {
+      "title": "Associated Tasks",
+      "actions": {
+        "associateTask": "Associate {title}",
+        "cancel": "Cancel"
+      },
+      "messages": {
+        "confirmCancelTask": "Confirm to cancel association with task 【{name}】?"
+      },
+      "columns": {
+        "code": "Code",
+        "name": "Name",
+        "progress": "Progress",
+        "taskType": "Type",
+        "priority": "Priority",
+        "evalWorkload": "Estimated Story Points",
+        "status": "Status",
+        "assigneeName": "Assignee",
+        "deadlineDate": "Deadline",
+        "action": "Action"
+      },
+      "modal": {
+        "selectTask": "Select {title}"
+      }
+    },
+    "remark": {
+      "placeholder": " Add supplementary instructions, such as precautions, reasons for rejection, etc. Maximum 6000 characters supported",
+      "validation": {
+        "maxLength": "Remarks support a maximum of 6000 characters"
+      },
+      "actions": {
+        "addRemark": "added a remark"
+      }
+    },
+    "subTask": {
+      "title": "Sub Tasks",
+      "description": "Used to break down large complex tasks into smaller, more manageable sub-tasks, facilitating team collaboration and division of work.",
+      "progress": "Progress",
+      "actions": {
+        "addSubTask": "Add Sub Task",
+        "associateSubTask": "Associate Sub Task",
+        "cancel": "Cancel",
+        "edit": "Edit",
+        "add": "Add"
+      },
+      "messages": {
+        "confirmCancelSubTask": "Confirm to cancel sub task 【{name}】?",
+        "associateSubTaskSuccess": "Sub task association successful",
+        "cancelSubTaskSuccess": "Sub task cancellation successful",
+        "favouriteSuccess": "Task favorited successfully",
+        "cancelFavouriteSuccess": "Task unfavorited successfully",
+        "followSuccess": "Task followed successfully",
+        "cancelFollowSuccess": "Task unfollowed successfully"
+      },
+      "columns": {
+        "code": "Code",
+        "name": "Name",
+        "progress": "Progress",
+        "taskType": "Type",
+        "priority": "Priority",
+        "evalWorkload": "Estimated Story Points",
+        "evalWorkloadHours": "Estimated Hours",
+        "status": "Status",
+        "assigneeName": "Assignee",
+        "deadlineDate": "Deadline",
+        "action": "Action"
+      },
+      "form": {
+        "taskType": "Task Type",
+        "priority": "Priority",
+        "taskName": "Enter task name, maximum 200 characters, press Enter to save automatically"
+      },
+      "dropdown": {
+        "favourite": "Favorite",
+        "cancelFavourite": "Unfavorite",
+        "follow": "Follow",
+        "cancelFollow": "Unfollow"
+      },
+      "modal": {
+        "title": "Associate Sub Task",
+        "label": "Associate Sub Task",
+        "placeholder": "Please select sub task"
+      }
     }
   },
   "taskSprint": {

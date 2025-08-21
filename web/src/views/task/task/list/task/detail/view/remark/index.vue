@@ -4,6 +4,7 @@ import { Button } from 'ant-design-vue';
 import { Icon, Scroll } from '@xcan-angus/vue-ui';
 import { utils, TESTER } from '@xcan-angus/infra';
 import { task } from 'src/api/tester';
+import { useI18n } from 'vue-i18n';
 
 type Remark = {
   content: string;
@@ -23,6 +24,8 @@ const props = withDefaults(defineProps<Props>(), {
   id: '',
   notify: undefined
 });
+
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -113,9 +116,9 @@ const params = computed(() => {
           ref="richEditorRef"
           :value="content"
           :height="150"
-          :options="{placeholder: ' 添加补充说明，如注意事项，确认不通过原因等，最大支持6000个字符'}"
+          :options="{placeholder: t('task.remark.placeholder')}"
           @change="editorChange" />
-        <div v-show="validateErr" class="text-status-error">备注最大支持6000个字符</div>
+        <div v-show="validateErr" class="text-status-error">{{ t('task.remark.validation.maxLength') }}</div>
       </div>
 
       <div class="space-x-2.5 w-full flex items-center justify-end">
@@ -123,7 +126,7 @@ const params = computed(() => {
           size="small"
           type="primary"
           @click="ok">
-          确定
+          {{ t('task.editModal.actions.confirm') }}
         </Button>
       </div>
     </div>
@@ -146,7 +149,7 @@ const params = computed(() => {
 
           <div class="ml-3 font-normal text-3 flex items-center space-x-2 leading-4">
             <div class="text-theme-content font-medium">{{ item.createdByName }}</div>
-            <div class="text-theme-content font-medium">添加了备注</div>
+            <div class="text-theme-content font-medium">{{ t('task.remark.actions.addRemark') }}</div>
             <div class="text-theme-sub-content">{{ item.createdDate }}</div>
             <Icon
               icon="icon-qingchu"
