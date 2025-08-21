@@ -1203,6 +1203,24 @@
         "label": "关联子任务",
         "placeholder": "请选择子任务"
       }
+    },
+    "testing": {
+      "title": "测试",
+      "execResult": {
+        "title": "执行信息",
+        "fields": {
+          "execResult": "执行结果",
+          "execId": "执行ID",
+          "execName": "执行名称",
+          "execByName": "执行人",
+          "scriptId": "脚本ID",
+          "scriptName": "脚本名称",
+          "lastExecTime": "最后执行时间"
+        }
+      },
+      "testResult": {
+        "title": "测试结果"
+      }
     }
   },
   "taskSprint": {

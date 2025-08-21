@@ -1200,6 +1200,24 @@
         "label": "Associate Sub Task",
         "placeholder": "Please select sub task"
       }
+    },
+    "testing": {
+      "title": "Testing",
+      "execResult": {
+        "title": "Execution Information",
+        "fields": {
+          "execResult": "Execution Result",
+          "execId": "Execution ID",
+          "execName": "Execution Name",
+          "execByName": "Executor",
+          "scriptId": "Script ID",
+          "scriptName": "Script Name",
+          "lastExecTime": "Last Execution Time"
+        }
+      },
+      "testResult": {
+        "title": "Test Result"
+      }
     }
   },
   "taskSprint": {

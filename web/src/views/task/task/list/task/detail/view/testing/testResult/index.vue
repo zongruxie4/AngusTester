@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { NoData, Toggle } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 import { TaskInfo } from '../../../../../../../PropsType';
 import { TestInfo } from '../PropsType';
@@ -20,6 +21,8 @@ const props = withDefaults(defineProps<Props>(), {
   largePageLayout: undefined
 });
 
+const { t } = useI18n();
+
 const content = ref<string>('');
 
 onMounted(() => {
@@ -33,7 +36,7 @@ onMounted(() => {
 <template>
   <Toggle>
     <template #title>
-      <div class="flex items-center text-3">测试结果</div>
+      <div class="flex items-center text-3">{{ t('task.testing.testResult.title') }}</div>
     </template>
 
     <template #default>
