@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, Ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import {
   ActivityTimeline, AsyncComponent, Drawer, Icon, Input, Modal, modal, notification, Select, Spin, Toolbar
 } from '@xcan-angus/vue-ui';
@@ -11,6 +12,8 @@ import { script } from 'src/api/tester';
 import { exec } from 'src/api/ctrl';
 import { ai } from 'src/api/gm';
 import { LANG_OPTIONS, TOOLBAR_EXTRA_MENUITEMS, TOOLBAR_MENUITEMS } from './data';
+
+const { t } = useI18n();
 import { PermissionKey, ScriptInfo } from '../PropsType';
 
 const ScriptDetail = defineAsyncComponent(() => import('./scriptInfo.vue'));
@@ -213,7 +216,7 @@ const addScript = async (formData) => {
   }
 
   scriptId.value = res?.data?.id;
-  notification.success('添加脚本成功');
+  notification.success(t('scriptDetail.messages.addScriptSuccess'));
   router.push('/script');
 };
 
@@ -227,7 +230,7 @@ const updateScript = async (formData) => {
     return;
   }
 
-  notification.success('保存成功');
+  notification.success(t('scriptDetail.messages.saveSuccess'));
   if (viewMode.value === 'view') {
     isEditFlag.value = false;
 
@@ -303,7 +306,7 @@ const loadScriptListAuth = async (id: string) => {
 const handleDelete = async () => {
   modal.confirm({
     centered: true,
-    content: '确定删除吗？',
+    content: t('scriptDetail.messages.deleteConfirm'),
     async onOk () {
       loading.value = true;
       const [error] = await script.deleteScript([scriptId.value]);
@@ -312,7 +315,7 @@ const handleDelete = async () => {
         return;
       }
 
-      notification.success('删除成功');
+      notification.success(t('scriptDetail.messages.deleteSuccess'));
       router.push('/script');
     }
   });
@@ -325,7 +328,7 @@ const handleClone = async () => {
   if (error) {
     return;
   }
-  notification.success('克隆成功');
+  notification.success(t('scriptDetail.messages.cloneSuccess'));
 };
 
 const handleExport = () => {
@@ -344,7 +347,7 @@ const handleExec = async () => {
     return;
   }
 
-  notification.success('添加执行成功，请在“执行”中查看详情。');
+  notification.success(t('scriptDetail.messages.addExecutionSuccess'));
 };
 
 const loadDebugInfo = async () => {
@@ -389,7 +392,7 @@ const drawerMenuItems = computed(() => {
     return [
       {
         key: 'basicInfo',
-        name: '基本信息',
+        name: t('scriptDetail.tabs.basicInfo'),
         icon: 'icon-fuwuxinxi',
         noAuth: true
       }];
@@ -398,20 +401,20 @@ const drawerMenuItems = computed(() => {
   return [
     {
       key: 'basicInfo',
-      name: '基本信息',
+      name: t('scriptDetail.tabs.basicInfo'),
       icon: 'icon-fuwuxinxi',
       noAuth: true
     },
     {
       key: 'execRecord',
-      name: '执行记录',
+      name: t('scriptDetail.tabs.executionRecord'),
       icon: 'icon-zhihangceshi',
       noAuth: true
     },
     {
       key: 'activity',
       icon: 'icon-lishijilu',
-      name: '活动',
+      name: t('scriptDetail.tabs.activity'),
       noAuth: true
     }
   ];
@@ -434,7 +437,7 @@ const drawerMenuItems = computed(() => {
         <template v-if="isEditFlag">
           <div class="flex items-center space-x-2.5">
             <Button size="small" @click="handleCancel">
-              取消
+              {{ t('scriptDetail.actions.cancel') }}
             </Button>
 
             <Button
@@ -450,7 +453,7 @@ const drawerMenuItems = computed(() => {
               size="small"
               type="primary"
               @click="handleSave">
-              保存脚本
+              {{ t('scriptDetail.actions.saveScript') }}
             </Button>
           </div>
         </template>
@@ -462,47 +465,47 @@ const drawerMenuItems = computed(() => {
               :disabled="!permissionList.includes('MODIFY')"
               @click="handleEdit">
               <Icon icon="icon-shuxie" class="mr-1" />
-              <span>编辑</span>
+              <span>{{ t('scriptDetail.actions.edit') }}</span>
             </Button>
             <Button
               size="small"
               :disabled="!permissionList.includes('EXPORT')"
               @click="handleExport">
               <Icon icon="icon-daochu" class="mr-1" />
-              <span>导出</span>
+              <span>{{ t('scriptDetail.actions.export') }}</span>
             </Button>
             <Button
               size="small"
               :disabled="!permissionList.includes('VIEW')"
               @click="handleClone">
               <Icon icon="icon-fuzhi" class="mr-1" />
-              <span>克隆</span>
+              <span>{{ t('scriptDetail.actions.clone') }}</span>
             </Button>
             <Button
               size="small"
               :disabled="!permissionList.includes('DELETE')"
               @click="handleDelete">
               <Icon icon="icon-qingchu" class="mr-1" />
-              <span>删除</span>
+              <span>{{ t('scriptDetail.actions.delete') }}</span>
             </Button>
             <Button
               size="small"
               :disabled="!permissionList.includes('TEST')"
               @click="toDebug">
               <Icon icon="icon-tiaoshi" class="mr-1" />
-              <span>调试</span>
+              <span>{{ t('scriptDetail.actions.debug') }}</span>
             </Button>
             <Button
               size="small"
               :disabled="!permissionList.includes('TEST')"
               @click="handleExec">
               <Icon icon="icon-zhihangjiaoben" class="mr-1" />
-              <span>添加执行</span>
+              <span>{{ t('scriptDetail.actions.addExecution') }}</span>
             </Button>
             <RouterLink :to="`/script?pageNo=${pageNo}&pageSize=${pageSize}`">
               <Button size="small">
                 <Icon icon="icon-fanhui" class="mr-1" />
-                <span>返回</span>
+                <span>{{ t('scriptDetail.actions.back') }}</span>
               </Button>
             </RouterLink>
           </div>
@@ -610,7 +613,7 @@ const drawerMenuItems = computed(() => {
       :visible="antDrawerVisible"
       :okButtonProps="{disabled:generating}"
       :width="1000"
-      title="自动创建脚本"
+      :title="t('scriptDetail.ai.title')"
       @cancel="generateCancel"
       @ok="generateOk">
       <div style="height: 400px;" class="w-full">
@@ -618,7 +621,7 @@ const drawerMenuItems = computed(() => {
           <Input
             v-model:value="aiKeywords"
             :readonly="generating"
-            :placeholder="`给AI智能体描述您的需求，如：生成查询用户信息性能测试脚本。`"
+            :placeholder="t('scriptDetail.ai.placeholder')"
             trim
             allowClear
             class="flex-1"
@@ -629,7 +632,7 @@ const drawerMenuItems = computed(() => {
             type="primary"
             size="small"
             @click="toGenerate">
-            生成
+            {{ t('scriptDetail.actions.generate') }}
           </Button>
         </div>
         <MonacoEditor

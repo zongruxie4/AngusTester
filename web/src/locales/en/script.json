@@ -129,5 +129,73 @@
         "mockScript": "Add Mock scripts to generate Mock data and store data to: data space, data source, local execution node, third-party systems."
       }
     }
+  },
+  "scriptDetail": {
+    "tabs": {
+      "basicInfo": "Basic Info",
+      "executionRecord": "Execution Record",
+      "activity": "Activity"
+    },
+    "actions": {
+      "cancel": "Cancel",
+      "smartGenerate": "Smart Generate",
+      "saveScript": "Save Script",
+      "edit": "Edit",
+      "export": "Export",
+      "clone": "Clone",
+      "delete": "Delete",
+      "debug": "Debug",
+      "addExecution": "Add Execution",
+      "back": "Back",
+      "generate": "Generate"
+    },
+    "messages": {
+      "addScriptSuccess": "Script added successfully",
+      "saveSuccess": "Saved successfully",
+      "deleteConfirm": "Are you sure to delete?",
+      "deleteSuccess": "Deleted successfully",
+      "cloneSuccess": "Cloned successfully",
+      "addExecutionSuccess": "Execution added successfully, please check details in \"Execute\"."
+    },
+    "form": {
+      "scriptType": "Script Type",
+      "selectScriptType": "Please select script type",
+      "scriptName": "Script Name",
+      "enterScriptName": "Please enter script name",
+      "namePlaceholder": "Please enter script name, maximum 200 characters",
+      "description": "Description",
+      "descriptionPlaceholder": "Please enter script description, maximum 800 characters"
+    },
+    "info": {
+      "scriptName": "Script Name",
+      "scriptType": "Script Type",
+      "plugin": "Plugin",
+      "source": "Source",
+      "resourceId": "Resource ID",
+      "resourceName": "Resource Name",
+      "tags": "Tags",
+      "creator": "Creator",
+      "lastUpdater": "Last Updater",
+      "lastModifyTime": "Last Modify Time",
+      "description": "Description"
+    },
+    "record": {
+      "executionId": "Execution ID",
+      "executionName": "Execution Name",
+      "status": "Status",
+      "startTime": "Start Time",
+      "endTime": "End Time"
+    },
+    "log": {
+      "node": "Node",
+      "scheduleResult": "Schedule Result",
+      "success": "Success",
+      "fail": "Fail",
+      "processExitCode": "Process Exit Code"
+    },
+    "ai": {
+      "title": "Auto Create Script",
+      "placeholder": "Describe your requirements to the AI agent, such as: Generate a performance test script for querying user information."
+    }
   }
 }

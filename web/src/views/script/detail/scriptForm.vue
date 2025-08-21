@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { onMounted, reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Input } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
 
 import SelectEnum from '@/components/SelectEnum/index.vue';
+
+const { t } = useI18n();
 import { ScriptInfo } from '../PropsType';
 import { FormState } from './PropsType';
 
@@ -69,34 +72,34 @@ defineExpose({ getFormData, validate });
       layout="vertical"
       size="small">
       <FormItem
-        label="脚本类型"
+        :label="t('scriptDetail.form.scriptType')"
         name="type"
-        :rules="[{ required: true, message: '请选择脚本类型' }]">
+        :rules="[{ required: true, message: t('scriptDetail.form.selectScriptType') }]">
         <SelectEnum
           v-model:value="formData.type"
           :excludes="excludes"
           enumKey="ScriptType"
-          placeholder="请选择脚本类型"
+          :placeholder="t('scriptDetail.form.selectScriptType')"
           @change="change" />
       </FormItem>
 
       <FormItem
-        label="脚本名称"
+        :label="t('scriptDetail.form.scriptName')"
         name="name"
         size="small"
-        :rules="[{ required: true, message: '请填写脚本名称' }]">
+        :rules="[{ required: true, message: t('scriptDetail.form.enterScriptName') }]">
         <Input
           v-model:value="formData.name"
           :maxlength="200"
-          placeholder="请输入脚本名称,最多200字符" />
+          :placeholder="t('scriptDetail.form.namePlaceholder')" />
       </FormItem>
     </Form>
 
     <div class="leading-5 mt-5">
-      <div class="mb-0.5">描述</div>
+      <div class="mb-0.5">{{ t('scriptDetail.form.description') }}</div>
       <Input
         v-model:value="formData.description"
-        placeholder="请输入脚本描述，最多800字符"
+        :placeholder="t('scriptDetail.form.descriptionPlaceholder')"
         type="textarea"
         :autosize="{ minRows: 4, maxRows: 6 }"
         :maxlength="800" />

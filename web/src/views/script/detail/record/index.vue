@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Colon, Scroll } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 
 import { ExecInfo } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -49,7 +52,7 @@ const BG_COLOR = {
         class="item-container relative text-3 leading-5 space-y-3.5">
         <div class="relative flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>执行ID</span>
+            <span>{{ t('scriptDetail.record.executionId') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -58,7 +61,7 @@ const BG_COLOR = {
 
         <div class="relative flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>执行名称</span>
+            <span>{{ t('scriptDetail.record.executionName') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -72,7 +75,7 @@ const BG_COLOR = {
 
         <div class="relative flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>状态</span>
+            <span>{{ t('scriptDetail.record.status') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -84,7 +87,7 @@ const BG_COLOR = {
 
         <div class="relative flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>开始时间</span>
+            <span>{{ t('scriptDetail.record.startTime') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -93,7 +96,7 @@ const BG_COLOR = {
 
         <div class="relative flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>结束时间</span>
+            <span>{{ t('scriptDetail.record.endTime') }}</span>
             <Colon class="w-1" />
           </div>
 
