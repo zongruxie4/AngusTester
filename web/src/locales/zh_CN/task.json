@@ -925,6 +925,19 @@
       "defaultOptions": {
         "productBacklog": "产品Backlog"
       }
+    },
+    "ganttView": {
+      "drawer": {
+        "basicInfo": "基本信息",
+        "personnel": "人员",
+        "date": "日期",
+        "assocTasks": "关联任务",
+        "assocCases": "关联用例",
+        "attachments": "附件",
+        "remarks": "备注",
+        "comments": "评论",
+        "activity": "活动"
+      }
     }
   },
   "taskSprint": {

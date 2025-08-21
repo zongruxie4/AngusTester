@@ -922,6 +922,19 @@
       "defaultOptions": {
         "productBacklog": "Product Backlog"
       }
+    },
+    "ganttView": {
+      "drawer": {
+        "basicInfo": "Basic Info",
+        "personnel": "Personnel",
+        "date": "Date",
+        "assocTasks": "Associated Tasks",
+        "assocCases": "Associated Cases",
+        "attachments": "Attachments",
+        "remarks": "Remarks",
+        "comments": "Comments",
+        "activity": "Activity"
+      }
     }
   },
   "taskSprint": {

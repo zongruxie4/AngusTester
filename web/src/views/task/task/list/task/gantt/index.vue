@@ -1,10 +1,13 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch, Ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import Gantt from '@xcan-angus/frappe-gantt';
 import dayjs from 'dayjs';
 import { AsyncComponent, Icon } from '@xcan-angus/vue-ui';
 import { task } from 'src/api/tester';
+
+const { t } = useI18n();
 
 import { TaskInfo } from '../../../../PropsType';
 
@@ -216,7 +219,7 @@ onMounted(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'basic' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          title="基本信息"
+          :title="t('task.ganttView.drawer.basicInfo')"
           @click="drawerActiveKeyChange('basic')">
           <Icon icon="icon-wendangxinxi" class="text-4" />
         </div>
@@ -224,7 +227,7 @@ onMounted(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'person' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          title="人员"
+          :title="t('task.ganttView.drawer.personnel')"
           @click="drawerActiveKeyChange('person')">
           <Icon icon="icon-quanburenyuan" class="text-4" />
         </div>
@@ -232,7 +235,7 @@ onMounted(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'date' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          title="日期"
+          :title="t('task.ganttView.drawer.date')"
           @click="drawerActiveKeyChange('date')">
           <Icon icon="icon-riqi" class="text-4" />
         </div>
@@ -240,7 +243,7 @@ onMounted(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'tasks' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          title="关联任务"
+          :title="t('task.ganttView.drawer.assocTasks')"
           @click="drawerActiveKeyChange('tasks')">
           <Icon icon="icon-ceshirenwu" class="text-4" />
         </div>
@@ -248,7 +251,7 @@ onMounted(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'cases' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          title="关联用例"
+          :title="t('task.ganttView.drawer.assocCases')"
           @click="drawerActiveKeyChange('cases')">
           <Icon icon="icon-ceshiyongli1" class="text-4" />
         </div>
@@ -256,7 +259,7 @@ onMounted(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'attachments' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          title="附件"
+          :title="t('task.ganttView.drawer.attachments')"
           @click="drawerActiveKeyChange('attachments')">
           <Icon icon="icon-lianjie1" class="text-4" />
         </div>
@@ -264,7 +267,7 @@ onMounted(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'remarks' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          title="备注"
+          :title="t('task.ganttView.drawer.remarks')"
           @click="drawerActiveKeyChange('remarks')">
           <Icon icon="icon-shuxie" class="text-4" />
         </div>
@@ -272,7 +275,7 @@ onMounted(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'comment' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          title="评论"
+          :title="t('task.ganttView.drawer.comments')"
           @click="drawerActiveKeyChange('comment')">
           <Icon icon="icon-pinglun" class="text-4" />
         </div>
@@ -280,7 +283,7 @@ onMounted(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'activity' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          title="活动"
+          :title="t('task.ganttView.drawer.activity')"
           @click="drawerActiveKeyChange('activity')">
           <Icon icon="icon-chakanhuodong" class="text-4" />
         </div>
