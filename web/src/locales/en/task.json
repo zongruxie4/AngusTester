@@ -1115,7 +1115,9 @@
         "testerName": "Tester",
         "deadlineDate": "Deadline",
         "action": "Action"
-      }
+      },
+      "selectCasePlaceholder": "Maximum 20 associated cases",
+      "overdue": "Overdue"
     },
     "assocTask": {
       "title": "Associated Tasks",
@@ -1140,7 +1142,9 @@
       },
       "modal": {
         "selectTask": "Select {title}"
-      }
+      },
+      "selectTaskPlaceholder": "Maximum 20 associated tasks",
+      "overdue": "Overdue"
     },
     "remark": {
       "placeholder": " Add supplementary instructions, such as precautions, reasons for rejection, etc. Maximum 6000 characters supported",
@@ -1149,7 +1153,8 @@
       },
       "actions": {
         "addRemark": "added a remark"
-      }
+      },
+      "title": "Remark"
     },
     "subTask": {
       "title": "Sub Tasks",
@@ -1233,8 +1238,12 @@
           "type": "Type",
           "sprint": "Sprint",
           "module": "Module",
+          "selectModule": "Select or search module",
+          "selectSprint": "Select or search sprint",
           "service": "Service",
           "parentTask": "Parent Task",
+          "evalWorkload": "Estimated Story Points",
+          "evalWorkloadHours": "Estimated Hours",
           "evalWorkloadMethod": "Workload Evaluation Method",
           "api": "API",
           "priority": "Priority",
@@ -1242,6 +1251,7 @@
           "actualWorkload": "Actual Workload",
           "actualStoryPoint": "Actual Story Point",
           "actualWorkloadPlaceholder": "Minimum 0.1, maximum 1000, up to 2 decimal places",
+          "evalWorkloadPlaceholder": "Minimum 0.1, maximum 1000, up to 2 decimal places",
           "failNum": "Processing Failure Count",
           "softwareVersion": "Software Version",
           "softwareVersionPlaceholder": "Please select version",
@@ -1266,15 +1276,20 @@
           "type": "Type",
           "sprint": "Sprint",
           "module": "Module",
+          "selectModule": "Select or search module",
+          "selectSprint": "Select or search sprint",
           "service": "Service",
           "parentTask": "Parent Task",
           "evalWorkloadMethod": "Workload Evaluation Method",
+          "evalWorkload": "Estimated Story Points",
+          "evalWorkloadHours": "Estimated Hours",
           "api": "API",
           "priority": "Priority",
           "onePass": "One-Time Pass",
           "actualWorkload": "Actual Workload",
           "actualStoryPoint": "Actual Story Point",
           "actualWorkloadPlaceholder": "Minimum 0.1, maximum 1000, up to 2 decimal places",
+          "evalWorkloadPlaceholder": "Minimum 0.1, maximum 1000, up to 2 decimal places",
           "failNum": "Processing Failure Count",
           "softwareVersion": "Software Version",
           "softwareVersionPlaceholder": "Please select version",
@@ -1357,6 +1372,7 @@
           "overdue": "Overdue",
           "type": "Type",
           "sprint": "Sprint",
+          "selectSprint": "Select or search sprint",
           "module": "Module",
           "service": "Service",
           "evalWorkloadMethod": "Workload Evaluation Method",
@@ -1382,7 +1398,13 @@
           "yes": "Yes",
           "no": "No"
         }
+      },
+      "activity": {
+        "title": "Activity"
       }
+    },
+    "comment": {
+      "title": "Comment"
     }
   },
   "taskSprint": {

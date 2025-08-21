@@ -1100,7 +1100,7 @@
       }
     },
     "assocCase": {
-      "title": "关联用例",
+      "title": "关联功能用例",
       "description": "跟踪任务功能测试用例完成情况，了解任务的哪些功能已经被实现和测试，方便更准确地评估任务进度。",
       "actions": {
         "associateCase": "关联用例",
@@ -1118,7 +1118,9 @@
         "testerName": "测试人",
         "deadlineDate": "截止时间",
         "action": "操作"
-      }
+      },
+      "selectCasePlaceholder": "最多可关联20个用例",
+      "overdue": "已逾期"
     },
     "assocTask": {
       "title": "关联任务",
@@ -1143,7 +1145,9 @@
       },
       "modal": {
         "selectTask": "选择{title}"
-      }
+      },
+      "selectTaskPlaceholder": "最多可关联20个任务",
+      "overdue": "已逾期"
     },
     "remark": {
       "placeholder": " 添加补充说明，如注意事项，确认不通过原因等，最大支持6000个字符",
@@ -1152,7 +1156,8 @@
       },
       "actions": {
         "addRemark": "添加了备注"
-      }
+      },
+      "title": "备注"
     },
     "subTask": {
       "title": "子任务",
@@ -1236,6 +1241,8 @@
           "type": "类型",
           "sprint": "所属迭代",
           "module": "所属模块",
+          "selectModule": "选择或查询模块",
+          "selectSprint": "选择或查询迭代",
           "service": "所属服务",
           "parentTask": "父任务",
           "evalWorkloadMethod": "工作量评估方式",
@@ -1245,6 +1252,7 @@
           "actualWorkload": "实际工时",
           "actualStoryPoint": "实际故事点",
           "actualWorkloadPlaceholder": "最小0.1，最大1000，最多支持2位小数",
+          "evalWorkloadPlaceholder": "最小0.1，最大1000，最多支持2位小数",
           "failNum": "处理失败次数",
           "softwareVersion": "软件版本",
           "softwareVersionPlaceholder": "请选择所属版本",
@@ -1327,7 +1335,9 @@
           "overdue": "已逾期",
           "type": "类型",
           "sprint": "所属迭代",
+          "selectSprint": "选择或查询迭代",
           "module": "所属模块",
+          "selectModule": "选择或查询模块",
           "service": "所属服务",
           "parentTask": "父任务",
           "evalWorkloadMethod": "工作量评估方式",
@@ -1337,6 +1347,7 @@
           "actualWorkload": "实际工时",
           "actualStoryPoint": "实际故事点",
           "actualWorkloadPlaceholder": "最小0.1，最大1000，最多支持2位小数",
+          "evalWorkloadPlaceholder": "最小0.1，最大1000，最多支持2位小数",
           "missingBugFlag": "漏测",
           "selectTaskType": "请选择任务类型",
           "selectPriority": "请选择优先级",
@@ -1363,7 +1374,9 @@
           "overdue": "已逾期",
           "type": "类型",
           "sprint": "所属迭代",
+          "selectSprint": "选择或查询迭代",
           "module": "所属模块",
+          "selectModule": "选择或查询模块",
           "service": "所属服务",
           "evalWorkloadMethod": "工作量评估方式",
           "parentTask": "父任务",
@@ -1388,7 +1401,13 @@
           "yes": "是",
           "no": "否"
         }
+      },
+      "activity": {
+        "title": "活动"
       }
+    },
+    "comment": {
+      "title": "评论"
     }
   },
   "taskSprint": {

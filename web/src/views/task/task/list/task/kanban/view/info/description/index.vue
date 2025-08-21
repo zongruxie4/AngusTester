@@ -3,8 +3,9 @@ import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Icon, NoData } from '@xcan-angus/vue-ui';
 import { task } from 'src/api/tester';
+import { useI18n } from 'vue-i18n';
 
-import { TaskInfo } from '../../../../../PropsType';
+import { TaskInfo } from '@/views/task/PropsType';
 
 type Props = {
   projectId: string;
@@ -19,6 +20,8 @@ const props = withDefaults(defineProps<Props>(), {
   appInfo: undefined,
   dataSource: undefined
 });
+
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -95,7 +98,7 @@ const LINK_TYPES = ['@', '#', '>'];
 <template>
   <div class="mt-4">
     <div class="flex items-center text-theme-title mb-1.75">
-      <span class="font-semibold">描述</span>
+      <span class="font-semibold">{{ t('task.detailInfo.description.title') }}</span>
       <Button
         v-show="!editFlag"
         type="link"
@@ -112,16 +115,16 @@ const LINK_TYPES = ['@', '#', '>'];
             :value="content"
             :height="300"
             @change="editorChange" />
-          <div v-show="error" class="text-status-error">描述最大支持8000个字符</div>
+          <div v-show="error" class="text-status-error">{{ t('task.detailInfo.description.validation.maxLength') }}</div>
         </div>
 
         <div class="mt-2.5 space-x-2.5 w-full flex items-center justify-end">
-          <Button size="small" @click="cancel">取消</Button>
+          <Button size="small" @click="cancel">{{ t('actions.cancel') }}</Button>
           <Button
             size="small"
             type="primary"
             @click="ok">
-            确定
+            {{ t('actions.confirm') }}
           </Button>
         </div>
       </div>

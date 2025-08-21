@@ -5,6 +5,7 @@ import { AsyncComponent, Colon, Icon, IconTask, Input, Select, TaskPriority, Tas
 import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { task, modules } from 'src/api/tester';
+import { useI18n } from 'vue-i18n';
 
 import SelectEnum from '@/components/SelectEnum/index.vue';
 import { TaskInfo } from '@/views/task/PropsType';
@@ -22,6 +23,8 @@ const props = withDefaults(defineProps<Props>(), {
   appInfo: undefined,
   dataSource: undefined
 });
+
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -496,12 +499,12 @@ const onePassText = computed(() => {
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
     <div>
-      <div class="text-theme-title mb-2.5 font-semibold">基本信息</div>
+      <div class="text-theme-title mb-2.5 font-semibold">{{ t('task.detailInfo.basic.title') }}</div>
 
       <div class="space-y-2.5">
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>编号</span>
+            <span>{{ t('task.detailInfo.basic.columns.code') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -510,7 +513,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>名称</span>
+            <span>{{ t('task.detailInfo.basic.columns.name') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -532,7 +535,7 @@ const onePassText = computed(() => {
               :maxlength="200"
               trim
               class="edit-container"
-              placeholder="任务名称，最大支持200字符"
+              :placeholder="t('task.detailInfo.basic.columns.namePlaceholder')"
               @blur="nameBlur"
               @pressEnter="namePressEnter" />
           </AsyncComponent>
@@ -540,7 +543,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>任务状态</span>
+            <span>{{ t('task.detailInfo.basic.columns.status') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -550,14 +553,14 @@ const onePassText = computed(() => {
               v-if="overdue"
               class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
               style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-              <span class="inline-block transform-gpu scale-90">已逾期</span>
+              <span class="inline-block transform-gpu scale-90">{{ t('task.detailInfo.basic.columns.overdue') }}</span>
             </span>
           </div>
         </div>
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>所属迭代</span>
+            <span>{{ t('task.detailInfo.basic.columns.sprint') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -579,7 +582,7 @@ const onePassText = computed(() => {
               :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
               :fieldNames="{ value: 'id', label: 'name' }"
               showSearch
-              placeholder="选择或查询迭代"
+              :placeholder="t('task.detailInfo.basic.columns.selectSprint')"
               class="edit-container"
               @change="sprintChange"
               @blur="sprintBlur" />
@@ -588,7 +591,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>所属模块</span>
+            <span>{{ t('task.detailInfo.basic.columns.module') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -614,7 +617,7 @@ const onePassText = computed(() => {
                 showSearch
                 allowClear
                 class="flex-1"
-                placeholder="选择或查模块">
+                :placeholder="t('task.detailInfo.basic.columns.selectModule')">
                 <template #title="item">
                   <div class="flex items-center" :title="item.name">
                     <Icon icon="icon-mokuai" class="mr-1 text-3.5" />
@@ -636,7 +639,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>父任务</span>
+            <span>{{ t('task.detailInfo.basic.columns.parentTask') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -656,7 +659,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>类型</span>
+            <span>{{ t('task.detailInfo.basic.columns.type') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -680,7 +683,7 @@ const onePassText = computed(() => {
                 v-if="props.dataSource?.missingBugFlag"
                 color="error"
                 class="ml-2 text-3 leading-4">
-                漏测
+                {{ t('task.detailInfo.basic.columns.missingBugFlag') }}
               </Tag>
             </template>
           </div>
@@ -692,7 +695,7 @@ const onePassText = computed(() => {
               v-model:value="taskTypeValue"
               :excludes="taskTypeExcludes"
               enumKey="TaskType"
-              placeholder="请选择任务类型"
+              :placeholder="t('task.detailInfo.basic.columns.selectTaskType')"
               class="edit-container"
               @change="taskTypeChange"
               @blur="taskTypeBlur">
@@ -708,7 +711,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>优先级</span>
+            <span>{{ t('task.detailInfo.basic.columns.priority') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -728,7 +731,7 @@ const onePassText = computed(() => {
               ref="priorityRef"
               v-model:value="priorityValue"
               enumKey="Priority"
-              placeholder="请选择优先级"
+              :placeholder="t('task.detailInfo.basic.columns.selectPriority')"
               class="edit-container"
               @change="priorityChange"
               @blur="priorityBlur">
@@ -741,7 +744,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>工作量评估方式</span>
+            <span>{{ t('task.detailInfo.basic.columns.evalWorkloadMethod') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -752,7 +755,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ evalWorkloadMethod === 'STORY_POINT' ? '评估故事点' : '评估工时' }}</span>
+            <span>{{ evalWorkloadMethod === 'STORY_POINT' ? t('task.detailInfo.basic.columns.evalWorkload') : t('task.detailInfo.basic.columns.evalWorkloadHours') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -776,7 +779,7 @@ const onePassText = computed(() => {
               trimAll
               :min="0.1"
               :max="1000"
-              placeholder="最小0.1，最大1000，最多支持2位小数"
+              :placeholder="t('task.detailInfo.basic.columns.evalWorkloadPlaceholder')"
               @blur="evalWorkloadBlur"
               @pressEnter="evalWorkloadPressEnter" />
           </AsyncComponent>
@@ -784,7 +787,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ evalWorkloadMethod === 'STORY_POINT' ? '实际故事点' : '实际工时' }}</span>
+            <span>{{ evalWorkloadMethod === 'STORY_POINT' ? t('task.detailInfo.basic.columns.actualStoryPoint') : t('task.detailInfo.basic.columns.actualWorkload') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -808,7 +811,7 @@ const onePassText = computed(() => {
               trimAll
               :min="0.1"
               :max="1000"
-              placeholder="最小0.1，最大1000，最多支持2位小数"
+              :placeholder="t('task.detailInfo.basic.columns.actualWorkloadPlaceholder')"
               @blur="actualWorkloadBlur"
               @pressEnter="actualWorkloadPressEnter" />
           </AsyncComponent>
@@ -816,7 +819,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>处理次数</span>
+            <span>{{ t('task.detailInfo.basic.columns.totalNum') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -825,7 +828,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>处理失败次数</span>
+            <span>{{ t('task.detailInfo.basic.columns.failNum') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -834,7 +837,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>标签</span>
+            <span>{{ t('task.detailInfo.basic.columns.tags') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -867,10 +870,10 @@ const onePassText = computed(() => {
               :maxTags="5"
               :action="`${TESTER}/tag?projectId=${props.projectId}&fullTextSearch=true`"
               showSearch
-              placeholder="最多可添加5个标签"
+              :placeholder="t('task.detailInfo.basic.columns.tagsPlaceholder')"
               mode="multiple"
               class="edit-container"
-              notFoundContent="请联系管理员，前往”应用管理“-”任务管理“-”任务标签“配置任务标签。"
+              :notFoundContent="t('task.detailInfo.basic.columns.tagsNotFound')"
               @change="tagChange"
               @blur="tagBlur" />
           </AsyncComponent>
@@ -878,7 +881,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>一次性通过</span>
+            <span>{{ t('task.detailInfo.basic.columns.onePass') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -887,7 +890,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>软件版本</span>
+            <span>{{ t('task.detailInfo.basic.columns.softwareVersion') }}</span>
             <Colon class="w-1" />
           </div>
           <div class="flex-1 min-w-0">
@@ -896,7 +899,7 @@ const onePassText = computed(() => {
                 ref="versionRef"
                 v-model:value="versionValue"
                 allowClear
-                placeholder="请选择所属版本"
+                :placeholder="t('task.detailInfo.basic.columns.softwareVersionPlaceholder')"
                 class="w-full"
                 lazy
                 :action="`${TESTER}/software/version?projectId=${props.projectId}`"
@@ -930,11 +933,11 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>计划外任务</span>
+            <span>{{ t('task.detailInfo.basic.columns.unplannedFlag') }}</span>
             <Colon class="w-1" />
           </div>
           <div>
-            {{ props.dataSource?.unplannedFlag ? '是' : '否' }}
+            {{ props.dataSource?.unplannedFlag ? t('task.detailInfo.basic.columns.yes') : t('task.detailInfo.basic.columns.no') }}
           </div>
         </div>
       </div>
