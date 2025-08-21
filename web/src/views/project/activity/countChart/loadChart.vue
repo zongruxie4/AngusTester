@@ -6,9 +6,9 @@ import { http } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
 interface Props {
-  geteway:string,
+  apiRouter:string,
   resource:string,
-  pieParmas:PieSetting[];
+  pieParams:PieSetting[];
   barTitle:string;
   dateType:DateType;
   hasPieChart:boolean;
@@ -22,7 +22,7 @@ interface Props {
 }
 const props = withDefaults(defineProps<Props>(), {
   resource: '',
-  pieParmas: () => [],
+  pieParams: () => [],
   barTitle: '',
   dateType: 'MONTH',
   hasPieChart: false,
@@ -126,7 +126,7 @@ const pieChartData = ref<PieData []>([]);
 const loadCount = async () => {
   const params = {
     ...publicParams,
-    groupByColumns: props.pieParmas.map(item => item.key),
+    groupByColumns: props.pieParams.map(item => item.key),
     filters: [...dateFilters.value, ...targetTypeFilter.value, ...userFilter.value],
     dateRangeType: dateRangeType.value[0]
   };
@@ -137,27 +137,27 @@ const loadCount = async () => {
     }
   });
 
-  const [error, { data }] = await http.get(`${props.geteway}/analysis/customization/summary`, params);
+  const [error, { data }] = await http.get(`${props.apiRouter}/analysis/customization/summary`, params);
   pieLoading.value = false;
   if (error) {
     return;
   }
-  pieChartData.value = getCountData(props.pieParmas, data);
+  pieChartData.value = getCountData(props.pieParams, data);
 };
 
 const getCountData = (group, data) => {
   const dataSource:PieData[] = [];
   for (let i = 0; i < group.length; i++) {
-    const cloum = group[i];
-    const res = data[cloum.key];
+    const column = group[i];
+    const res = data[column.key];
     if (!res) {
       const _dataSource = {
-        key: cloum.key,
-        title: cloum.value,
+        key: column.key,
+        title: column.value,
         total: 0,
-        color: cloum.color,
-        legend: cloum.type,
-        data: cloum.type.map(m => ({ name: m.message, value: 0 }))
+        color: column.color,
+        legend: column.type,
+        data: column.type.map(m => ({ name: m.message, value: 0 }))
       };
       dataSource.push(_dataSource);
       continue;
@@ -165,12 +165,12 @@ const getCountData = (group, data) => {
     const arr = Object.entries(res);
     if (!arr.length) {
       const _dataSource = {
-        key: cloum.key,
-        title: cloum.value,
+        key: column.key,
+        title: column.value,
         total: 0,
-        color: cloum.color,
-        legend: cloum.type,
-        data: cloum.type.map(m => ({ name: m.message, value: 0 }))
+        color: column.color,
+        legend: column.type,
+        data: column.type.map(m => ({ name: m.message, value: 0 }))
       };
       dataSource.push(_dataSource);
       continue;
@@ -183,13 +183,13 @@ const getCountData = (group, data) => {
     }
 
     // 所有来源只有枚举类型数据
-    if (['target_type'].includes(cloum.key)) {
-      setEnumDatasource(cloum, res, dataSource);
+    if (['target_type'].includes(column.key)) {
+      setEnumDatasource(column, res, dataSource);
     }
 
     // 所有来源只有boolean 类型数据
-    if (['sys_admin_flag'].includes(cloum.key)) {
-      setBooleanDatasource(cloum, res, dataSource);
+    if (['sys_admin_flag'].includes(column.key)) {
+      setBooleanDatasource(column, res, dataSource);
     }
   }
   return dataSource;
@@ -282,7 +282,7 @@ const loadDateCount = async () => {
       item.key = 'opt_date';
     }
   });
-  const [error, { data }] = await http.get(`${props.geteway}/analysis/customization/summary`, params);
+  const [error, { data }] = await http.get(`${props.apiRouter}/analysis/customization/summary`, params);
   barLoading.value = false;
   if (error) {
     return;

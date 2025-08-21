@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n';
 import { DateType, PieSetting } from './PropsType';
 
 interface Props {
-  geteway:string;
+  apiRouter:string;
   resource:string;
   barTitle:string;
   dateType:DateType;
@@ -113,7 +113,7 @@ const getScriptTypeColor = (value:string) => {
   }
 };
 
-const pieParmas = computed(() => {
+const pieParams = computed(() => {
   switch (props.resource) {
     case 'Activity':
       return activityGroup.value;
@@ -130,10 +130,10 @@ onMounted(() => {
   <LoadChart
     :searchParams="props.searchParams"
     :visible="props.visible"
-    :geteway="props.geteway"
+    :apiRouter="props.apiRouter"
     :resource="props.resource"
     :barTitle="props.barTitle"
-    :pieParmas="pieParmas"
+    :pieParmas="pieParams"
     :hasPieChart="hasPieChart"
     :userId="props.userId"
     :dateType="props.dateType">

@@ -173,7 +173,7 @@ const columns = [
       :visible="showCount"
       :barTitle="t('projectActivity.chart.activity')"
       resource="Activity"
-      :geteway="TESTER" />
+      :apiRouter="TESTER" />
     <Hints class="mb-2" :text="t('projectActivity.hints.maxResourceActivities', { maxResource })" />
     <SearchPanel
       :loading="loading"
