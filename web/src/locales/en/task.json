@@ -1218,6 +1218,171 @@
       "testResult": {
         "title": "Test Result"
       }
+    },
+    "detailInfo": {
+      "title": "Detail Information",
+      "apis": {
+        "basicInfo": "Basic Information",
+        "columns": {
+          "code": "Code",
+          "testType": "Test Type",
+          "name": "Name",
+          "namePlaceholder": "Task name, maximum 200 characters",
+          "status": "Task Status",
+          "overdue": "Overdue",
+          "type": "Type",
+          "sprint": "Sprint",
+          "module": "Module",
+          "service": "Service",
+          "parentTask": "Parent Task",
+          "evalWorkloadMethod": "Workload Evaluation Method",
+          "api": "API",
+          "priority": "Priority",
+          "onePass": "One-Time Pass",
+          "actualWorkload": "Actual Workload",
+          "actualStoryPoint": "Actual Story Point",
+          "actualWorkloadPlaceholder": "Minimum 0.1, maximum 1000, up to 2 decimal places",
+          "failNum": "Processing Failure Count",
+          "softwareVersion": "Software Version",
+          "softwareVersionPlaceholder": "Please select version",
+          "unplannedFlag": "Unplanned Task",
+          "tags": "Tags",
+          "tagsPlaceholder": "Maximum 5 tags",
+          "tagsNotFound": "Please contact administrator to configure task tags in \"Application Management\"-\"Task Management\"-\"Task Tags\".",
+          "totalNum": "Processing Times",
+          "yes": "Yes",
+          "no": "No"
+        }
+      },
+      "basic": {
+        "title": "Basic Information",
+        "columns": {
+          "code": "Code",
+          "testType": "Test Type",
+          "name": "Name",
+          "namePlaceholder": "Task name, maximum 200 characters",
+          "status": "Task Status",
+          "overdue": "Overdue",
+          "type": "Type",
+          "sprint": "Sprint",
+          "module": "Module",
+          "service": "Service",
+          "parentTask": "Parent Task",
+          "evalWorkloadMethod": "Workload Evaluation Method",
+          "api": "API",
+          "priority": "Priority",
+          "onePass": "One-Time Pass",
+          "actualWorkload": "Actual Workload",
+          "actualStoryPoint": "Actual Story Point",
+          "actualWorkloadPlaceholder": "Minimum 0.1, maximum 1000, up to 2 decimal places",
+          "failNum": "Processing Failure Count",
+          "softwareVersion": "Software Version",
+          "softwareVersionPlaceholder": "Please select version",
+          "unplannedFlag": "Unplanned Task",
+          "tags": "Tags",
+          "tagsPlaceholder": "Maximum 5 tags",
+          "tagsNotFound": "Please contact administrator to configure task tags in \"Application Management\"-\"Task Management\"-\"Task Tags\".",
+          "totalNum": "Processing Times",
+          "yes": "Yes",
+          "no": "No"
+        }
+      },
+      "description": {
+        "title": "Description",
+        "placeholder": "Add detailed description, maximum 6000 characters",
+        "validation": {
+          "maxLength": "Description supports maximum 6000 characters"
+        },
+        "actions": {
+          "cancel": "Cancel",
+          "confirm": "Confirm"
+        }
+      },
+      "personnel": {
+        "title": "Personnel",
+        "fields": {
+          "assignee": "Assignee",
+          "executor": "Executor",
+          "confirmor": "Confirmor",
+          "tester": "Tester",
+          "creator": "Creator",
+          "lastModifier": "Last Modifier"
+        },
+        "actions": {
+          "assignToMe": "Assign to Me"
+        },
+        "placeholders": {
+          "selectAssignee": "Select Assignee",
+          "selectConfirmor": "Select Confirmor",
+          "selectTester": "Select Tester"
+        }
+      },
+      "date": {
+        "title": "Date",
+        "fields": {
+          "deadline": "Deadline",
+          "startTime": "Start Time",
+          "processTime": "Process Time",
+          "confirmTime": "Confirm Time",
+          "completeTime": "Complete Time",
+          "cancelTime": "Cancel Time",
+          "execTime": "Execution Time",
+          "createTime": "Create Time",
+          "lastModifyTime": "Last Modify Time"
+        },
+        "validation": {
+          "selectDeadline": "Please select deadline",
+          "futureTimeRequired": "Deadline must be a future time"
+        }
+      },
+      "attachment": {
+        "title": "Attachments",
+        "actions": {
+          "continueUpload": "Continue Upload",
+          "selectFile": "Select File"
+        },
+        "messages": {
+          "fileSizeLimit": "File size cannot exceed {size} M",
+          "uploadLimit": "Single file size cannot exceed {size}M, maximum 5 files"
+        }
+      },
+      "scenario": {
+        "title": "Basic Information",
+        "columns": {
+          "code": "Code",
+          "testType": "Test Type",
+          "name": "Name",
+          "namePlaceholder": "Task name, maximum 200 characters",
+          "status": "Task Status",
+          "overdue": "Overdue",
+          "type": "Type",
+          "sprint": "Sprint",
+          "module": "Module",
+          "service": "Service",
+          "evalWorkloadMethod": "Workload Evaluation Method",
+          "parentTask": "Parent Task",
+          "evalWorkload": "Estimated Story Points",
+          "evalWorkloadHours": "Estimated Hours",
+          "evalWorkloadPlaceholder": "Minimum 0.1, maximum 1000, up to 2 decimal places",
+          "scenario": "Scenario",
+          "actualStoryPoint": "Actual Story Point",
+          "actualWorkload": "Actual Workload",
+          "actualWorkloadPlaceholder": "Minimum 0.1, maximum 1000, up to 2 decimal places",
+          "priority": "Priority",
+          "selectPriority": "Please select priority",
+          "failNum": "Processing Failure Count",
+          "totalNum": "Processing Times",
+          "onePass": "One-Time Pass",
+          "softwareVersion": "Software Version",
+          "softwareVersionPlaceholder": "Please select version",
+          "unplannedFlag": "Unplanned Task",
+          "tags": "Tags",
+          "tagsPlaceholder": "Maximum 5 tags",
+          "tagsNotFound": "Please contact administrator to configure task tags in \"Application Management\"-\"Task Management\"-\"Task Tags\".",
+          "yes": "Yes",
+          "no": "No"
+        }
+      }
     }
   },
   "taskSprint": {

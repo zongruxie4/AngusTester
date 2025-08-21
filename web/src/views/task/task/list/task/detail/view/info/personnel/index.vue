@@ -2,6 +2,7 @@
 import { computed, nextTick, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Colon, Icon, SelectUser, Toggle } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 import { TESTER } from '@xcan-angus/infra';
 import { task } from 'src/api/tester';
 
@@ -22,6 +23,8 @@ const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined,
   loading: false
 });
+
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -245,14 +248,14 @@ const confirmorDefaultOptions = computed(() => {
 <template>
   <Toggle>
     <template #title>
-      <div class="text-3">人员</div>
+      <div class="text-3">{{ t('task.detailInfo.personnel.title') }}</div>
     </template>
 
     <template #default>
       <div class="text-3 leading-5 space-y-2.5 pt-2 pl-5.5">
         <div class="relative flex items-start">
           <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>经办人</span>
+            <span>{{ t('task.detailInfo.personnel.fields.assignee') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -270,7 +273,7 @@ const confirmorDefaultOptions = computed(() => {
               type="link"
               class="p-0 h-5 leading-5 ml-1"
               @click="assignToMe('assigneeId')">
-              指派给我
+              {{ t('task.detailInfo.personnel.actions.assignToMe') }}
             </Button>
           </div>
 
@@ -279,7 +282,7 @@ const confirmorDefaultOptions = computed(() => {
               v-show="assigneeEditFlag"
               ref="assigneeRef"
               v-model:value="assigneeIdValue"
-              placeholder="选择经办人"
+              :placeholder="t('task.detailInfo.personnel.placeholders.selectAssignee')"
               internal
               :defaultOptions="assigneeDefaultOptions"
               :action="`${TESTER}/project/${props.projectId}/member/user`"
@@ -292,7 +295,7 @@ const confirmorDefaultOptions = computed(() => {
 
         <div class="relative flex items-start">
           <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>执行人</span>
+            <span>{{ t('task.detailInfo.personnel.fields.executor') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -301,7 +304,7 @@ const confirmorDefaultOptions = computed(() => {
 
         <div class="relative flex items-start">
           <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>确认人</span>
+            <span>{{ t('task.detailInfo.personnel.fields.confirmor') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -319,7 +322,7 @@ const confirmorDefaultOptions = computed(() => {
               type="link"
               class="p-0 h-5 leading-5 ml-1"
               @click="assignToMe('confirmorId')">
-              指派给我
+              {{ t('task.detailInfo.personnel.actions.assignToMe') }}
             </Button>
           </div>
 
@@ -328,7 +331,7 @@ const confirmorDefaultOptions = computed(() => {
               v-show="confirmorEditFlag"
               ref="confirmorRef"
               v-model:value="confirmorIdValue"
-              placeholder="选择确认人"
+              :placeholder="t('task.detailInfo.personnel.placeholders.selectConfirmor')"
               allowClear
               internal
               :defaultOptions="confirmorDefaultOptions"
@@ -342,7 +345,7 @@ const confirmorDefaultOptions = computed(() => {
 
         <div class="relative flex items-start">
           <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>测试人</span>
+            <span>{{ t('task.detailInfo.personnel.fields.tester') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -360,7 +363,7 @@ const confirmorDefaultOptions = computed(() => {
               type="link"
               class="p-0 h-5 leading-5 ml-1"
               @click="assignToMe('testerId')">
-              指派给我
+              {{ t('task.detailInfo.personnel.actions.assignToMe') }}
             </Button>
           </div>
 
@@ -369,7 +372,7 @@ const confirmorDefaultOptions = computed(() => {
               v-show="testerEditFlag"
               ref="testerRef"
               v-model:value="testerIdValue"
-              placeholder="选择测试人"
+              :placeholder="t('task.detailInfo.personnel.placeholders.selectTester')"
               allowClear
               internal
               :defaultOptions="testerDefaultOptions"
@@ -383,7 +386,7 @@ const confirmorDefaultOptions = computed(() => {
 
         <div class="relative flex items-start">
           <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>添加人</span>
+            <span>{{ t('task.detailInfo.personnel.fields.creator') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -392,7 +395,7 @@ const confirmorDefaultOptions = computed(() => {
 
         <div class="relative flex items-start">
           <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>最后修改人</span>
+            <span>{{ t('task.detailInfo.personnel.fields.lastModifier') }}</span>
             <Colon class="w-1" />
           </div>
 
