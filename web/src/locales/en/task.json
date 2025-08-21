@@ -908,6 +908,20 @@
       "actions": {
         "edit": "Edit"
       }
+    },
+    "moveModal": {
+      "title": "Move Task",
+      "form": {
+        "selectIteration": "Select Iteration",
+        "selectIterationPlaceholder": "Select or search iteration"
+      },
+      "messages": {
+        "moveSuccess": "Task moved successfully",
+        "batchMoveSuccess": "All {num} selected tasks moved successfully"
+      },
+      "defaultOptions": {
+        "productBacklog": "Product Backlog"
+      }
     }
   },
   "taskSprint": {

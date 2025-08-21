@@ -911,6 +911,20 @@
       "actions": {
         "edit": "编辑"
       }
+    },
+    "moveModal": {
+      "title": "移动任务",
+      "form": {
+        "selectIteration": "选择迭代",
+        "selectIterationPlaceholder": "选择或查询迭代"
+      },
+      "messages": {
+        "moveSuccess": "任务移动成功",
+        "batchMoveSuccess": "选中的 {num} 条任务全部移动成功"
+      },
+      "defaultOptions": {
+        "productBacklog": "产品Backlog"
+      }
     }
   },
   "taskSprint": {
