@@ -20,6 +20,7 @@ import dayjs from 'dayjs';
 import { reverse, sortBy } from 'lodash-es';
 import Draggable from 'vuedraggable';
 import { task } from 'src/api/tester';
+import { useI18n } from 'vue-i18n';
 
 import { TaskInfo } from '../../../../PropsType';
 import { ActionMenuItem, SprintPermissionKey } from './PropsType';
@@ -36,6 +37,8 @@ type Props = {
   orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName';
   orderSort: 'DESC' | 'ASC';
 };
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   filters: undefined,
@@ -175,7 +178,7 @@ const loadData = async () => {
     if (!assigneeNameSet.has(item.assigneeName)) {
       if (!item.assigneeName) {
         assigneeNameList.value.unshift({
-          name: '未分组',
+          name: t('task.kanbanView.group.ungrouped'),
           value: '-1'
         });
       } else {
@@ -578,7 +581,7 @@ const toDelete = (data: TaskInfo) => {
       }
 
       emit('refreshChange');
-      notification.success('任务删除成功，您可以在回收站查看删除后的任务');
+      notification.success(t('task.table.messages.deleteTaskSuccess'));
       await loadData();
       emit('update:loading', false);
     }
@@ -593,7 +596,7 @@ const toFavourite = async (data: TaskInfo, index: number, status: TaskInfo['stat
     return;
   }
 
-  notification.success('任务收藏成功');
+  notification.success(t('task.table.messages.favouriteSuccess'));
   taskDataMap.value[status][index].favouriteFlag = true;
 };
 
@@ -605,7 +608,7 @@ const toDeleteFavourite = async (data: TaskInfo, index: number, status: TaskInfo
     return;
   }
 
-  notification.success('任务取消收藏成功');
+  notification.success(t('task.table.messages.cancelFavouriteSuccess'));
   taskDataMap.value[status][index].favouriteFlag = false;
 };
 
@@ -617,7 +620,7 @@ const toFollow = async (data: TaskInfo, index: number, status: TaskInfo['status'
     return;
   }
 
-  notification.success('任务关注成功');
+  notification.success(t('task.table.messages.followSuccess'));
   taskDataMap.value[status][index].followFlag = true;
 };
 
@@ -629,7 +632,7 @@ const toDeleteFollow = async (data: TaskInfo, index: number, status: TaskInfo['s
     return;
   }
 
-  notification.success('任务取消关注成功');
+  notification.success(t('task.table.messages.cancelFollowSuccess'));
   taskDataMap.value[status][index].followFlag = false;
 };
 
@@ -647,7 +650,7 @@ const toStart = async (data: TaskInfo, notificationFlag = true, errorCallback?: 
 
   emit('refreshChange');
   if (notificationFlag) {
-    notification.success('任务开始处理成功');
+    notification.success(t('task.table.messages.startSuccess'));
   }
   loadData();
 };
@@ -666,7 +669,7 @@ const toProcessed = async (data: TaskInfo, notificationFlag = true, errorCallbac
 
   emit('refreshChange');
   if (notificationFlag) {
-    notification.success('任务已处理成功');
+    notification.success(t('task.table.messages.processedSuccess'));
   }
   loadData();
 };
@@ -717,7 +720,7 @@ const toReopen = async (data: TaskInfo, notificationFlag = true, errorCallback?:
 
   emit('refreshChange');
   if (notificationFlag) {
-    notification.success('任务重新打开成功');
+    notification.success(t('task.table.messages.reopenSuccess'));
   }
   loadData();
 };
@@ -736,7 +739,7 @@ const toRestart = async (data: TaskInfo, notificationFlag = true, errorCallback?
 
   emit('refreshChange');
   if (notificationFlag) {
-    notification.success('任务重新开始成功');
+    notification.success(t('task.table.messages.restartSuccess'));
   }
   loadData();
 };
@@ -768,7 +771,7 @@ const toCancel = async (data: TaskInfo, notificationFlag = true, errorCallback?:
 
   emit('refreshChange');
   if (notificationFlag) {
-    notification.success('任务取消成功');
+    notification.success(t('task.table.messages.cancelSuccess'));
   }
   loadData();
 };
@@ -802,7 +805,7 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
         } else {
           resetDrag(id, index, status, toStatus);
         }
-        notification.warning('没有开始处理权限');
+        notification.warning(t('task.kanbanView.messages.noStartPermission'));
         return;
       }
     } else if (toStatus === 'CANCELED') {
@@ -822,7 +825,7 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
       } else {
         resetDrag(id, index, status, toStatus);
       }
-      notification.warning('只能移动到进行中、已取消');
+      notification.warning(t('task.kanbanView.messages.onlyMoveToInProgressOrCanceled'));
       return;
     }
 
@@ -859,7 +862,7 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
         } else {
           resetDrag(id, index, status, toStatus);
         }
-        notification.warning('该任务没有确认人，无需确认，只能移动到已完成、已取消');
+        notification.warning(t('task.kanbanView.messages.noConfirmor'));
         return;
       }
 
@@ -870,7 +873,7 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
         } else {
           resetDrag(id, index, status, toStatus);
         }
-        notification.warning('没有已处理权限');
+        notification.warning(t('task.kanbanView.messages.noProcessedPermission'));
         return;
       }
     } else if (toStatus === 'CANCELED') {
@@ -881,7 +884,7 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
         } else {
           resetDrag(id, index, status, toStatus);
         }
-        notification.warning('没有取消任务权限');
+        notification.warning(t('task.kanbanView.messages.noCancelPermission'));
         return;
       }
     } else if (toStatus === 'COMPLETED') {
@@ -892,7 +895,7 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
         } else {
           resetDrag(id, index, status, toStatus);
         }
-        notification.warning('只能移动到待确认、已取消');
+        notification.warning(t('task.kanbanView.messages.onlyMoveToConfirmingOrCanceled'));
         return;
       }
 
@@ -902,7 +905,7 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
         } else {
           resetDrag(id, index, status, toStatus);
         }
-        notification.warning('没有确认完成权限');
+        notification.warning(t('task.kanbanView.messages.noCompletedPermission'));
         return;
       }
     } else {
@@ -913,9 +916,9 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
       }
 
       if (confirmorId) {
-        notification.warning('只能移动到待确认、已取消');
+        notification.warning(t('task.kanbanView.messages.onlyMoveToConfirmingOrCanceled'));
       } else {
-        notification.warning('只能移动到已完成、已取消');
+        notification.warning(t('task.kanbanView.messages.onlyMoveToCompletedOrCanceled'));
       }
 
       return;
@@ -966,7 +969,7 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
         } else {
           resetDrag(id, index, status, toStatus);
         }
-        notification.warning('没有确认完成权限');
+        notification.warning(t('task.kanbanView.messages.noCompletedPermission'));
         return;
       }
     } else if (toStatus === 'CANCELED') {
@@ -977,7 +980,7 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
         } else {
           resetDrag(id, index, status, toStatus);
         }
-        notification.warning('没有取消任务权限');
+        notification.warning(t('task.kanbanView.messages.noCancelPermission'));
         return;
       }
     } else {
@@ -986,7 +989,7 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
       } else {
         resetDrag(id, index, status, toStatus);
       }
-      notification.warning('只能移动到已完成、已取消');
+      notification.warning(t('task.kanbanView.messages.onlyMoveToCompletedOrCanceledFromConfirming'));
       return;
     }
 
@@ -1024,7 +1027,7 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
         } else {
           resetDrag(id, index, status, toStatus);
         }
-        notification.warning('没有重新打开权限');
+        notification.warning(t('task.kanbanView.messages.noReopenPermission'));
         return;
       }
     } else {
@@ -1033,7 +1036,7 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
       } else {
         resetDrag(id, index, status, toStatus);
       }
-      notification.warning('只能移动到待处理');
+      notification.warning(t('task.kanbanView.messages.onlyMoveToPending'));
       return;
     }
 
@@ -1249,21 +1252,21 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
       const menuItems: ActionMenuItem[] = [
         {
-          name: '编辑',
+          name: t('actions.edit'),
           key: 'edit',
           icon: 'icon-shuxie',
           disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
           hide: false
         },
         {
-          name: '删除',
+          name: t('actions.delete'),
           key: 'delete',
           icon: 'icon-qingchu',
           disabled: !isAdministrator && !permissions.includes('DELETE_TASK') && sprintAuth,
           hide: false
         },
         {
-          name: '拆分',
+          name: t('task.kanbanView.actions.split'),
           key: 'split',
           icon: 'icon-guanlianziyuan',
           disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
@@ -1273,7 +1276,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
       if (status === 'PENDING') {
         menuItems.push({
-          name: '开始处理',
+          name: t('task.kanbanView.actions.start'),
           key: 'start',
           icon: 'icon-kaishi',
           disabled: !isAdministrator && !isAssignee,
@@ -1283,7 +1286,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
       if (status === 'IN_PROGRESS') {
         menuItems.push({
-          name: '已处理',
+          name: t('task.kanbanView.actions.processed'),
           key: 'processed',
           icon: 'icon-yichuli',
           disabled: !isAdministrator && !isAssignee,
@@ -1294,7 +1297,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
       if (confirmorId) {
         if (status === 'CONFIRMING') {
           menuItems.push({
-            name: '确认完成',
+            name: t('task.kanbanView.actions.completed'),
             key: 'completed',
             icon: 'icon-yiwancheng',
             disabled: !isAdministrator && !isConfirmor,
@@ -1302,7 +1305,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           });
 
           menuItems.push({
-            name: '确认未完成',
+            name: t('task.kanbanView.actions.uncompleted'),
             key: 'uncompleted',
             icon: 'icon-shibaiyuanyin',
             disabled: !isAdministrator && !isConfirmor,
@@ -1313,27 +1316,27 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
       if (status === 'CANCELED' || status === 'COMPLETED') {
         menuItems.push({
-          name: '重新打开',
+          name: t('task.kanbanView.actions.reopen'),
           key: 'reopen',
           icon: 'icon-zhongxindakaiceshirenwu',
           disabled: !isAdministrator && !permissions.includes('REOPEN_TASK') && !isAssignee,
           hide: false,
-          tip: '将任务状态更新为`待处理`、 不清理统计计数和状态。'
+          tip: t('task.detail.tips.reopenTip')
         });
 
         menuItems.push({
-          name: '重新开始',
+          name: t('task.kanbanView.actions.restart'),
           key: 'restart',
           icon: 'icon-zhongxinkaishiceshi',
           disabled: !isAdministrator && !permissions.includes('RESTART_TASK'),
           hide: false,
-          tip: '将任务更新为`待处理`，相关统计计数和状态会被清除。'
+          tip: t('task.detail.tips.restartTip')
         });
       }
 
       if (status !== 'CANCELED' && status !== 'COMPLETED') {
         menuItems.push({
-          name: '取消',
+          name: t('actions.cancel'),
           key: 'cancel',
           icon: 'icon-zhongzhi2',
           disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
@@ -1344,7 +1347,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
       const { favouriteFlag, followFlag } = item;
       if (favouriteFlag) {
         menuItems.push({
-          name: '取消收藏',
+          name: t('actions.unFavourite'),
           key: 'cancelFavourite',
           icon: 'icon-quxiaoshoucang',
           disabled: false,
@@ -1352,7 +1355,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         });
       } else {
         menuItems.push({
-          name: '收藏',
+          name: t('actions.favourite'),
           key: 'favourite',
           icon: 'icon-yishoucang',
           disabled: false,
@@ -1362,7 +1365,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
       if (followFlag) {
         menuItems.push({
-          name: '取消关注',
+          name: t('actions.unFollow'),
           key: 'cancelFollow',
           icon: 'icon-quxiaoguanzhu',
           disabled: false,
@@ -1370,7 +1373,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         });
       } else {
         menuItems.push({
-          name: '关注',
+          name: t('actions.follow'),
           key: 'follow',
           icon: 'icon-yiguanzhu',
           disabled: false,
@@ -1379,7 +1382,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
       }
 
       menuItems.push({
-        name: '移动',
+        name: t('actions.move'),
         key: 'move',
         icon: 'icon-yidong',
         disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
@@ -1437,7 +1440,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
                     v-if="element.overdue"
                     class="flex-shrink-0 border border-status-error rounded px-0.5"
                     style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                    <span class="inline-block transform-gpu scale-90">已逾期</span>
+                    <span class="inline-block transform-gpu scale-90">{{ t('task.table.status.overdue') }}</span>
                   </span>
                   <Dropdown
                     :menuItems="menuItemsMap.get(element.id)"
@@ -1454,7 +1457,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
                   <Tooltip trigger="hover">
                     <template #title>
                       <div class="flex items-center overflow-hidden">
-                        <span class="flex-shrink-0">经办人</span>
+                        <span class="flex-shrink-0">{{ t('task.detail.columns.assignee') }}</span>
                         <Colon class="mr-1.5" />
                         <span :title="element.assigneeName" class="truncate">{{ element.assigneeName }}</span>
                       </div>
@@ -1470,7 +1473,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
                   <TaskPriority class="flex-shrink-0" :value="element.priority" />
                 </div>
                 <div class="flex items-center overflow-hidden">
-                  <span class="flex-shrink-0">截止</span>
+                  <span class="flex-shrink-0">{{ t('task.detail.columns.deadline') }}</span>
                   <Colon class="mr-1.5" />
                   <span :title="element.deadlineDate" class="truncate">{{ element.deadlineDate }}</span>
                 </div>
@@ -1486,8 +1489,8 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
             class="w-50 flex-shrink-0 col-item border-r border-solid border-theme-text-box flex items-center px-2.5 py-1.5 space-x-1.5 head-container">
             <Tooltip trigger="hover">
               <template #title>
-                <span v-if="!openFlag">全部展开</span>
-                <span v-else>全部收起</span>
+                <span v-if="!openFlag">{{ t('task.kanbanView.group.expandAll') }}</span>
+                <span v-else>{{ t('task.kanbanView.group.collapseAll') }}</span>
               </template>
               <Icon
                 v-if="!openFlag"
@@ -1500,7 +1503,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
                 class="text-3.5 cursor-pointer"
                 @click="toggleOpen" />
             </Tooltip>
-            <span class="font-semibold">泳道</span>
+            <span class="font-semibold">{{ t('task.kanbanView.group.swimLane') }}</span>
           </div>
           <div
             v-for="_status in statusList"
@@ -1537,7 +1540,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
                 <span>{{ Object.values(groupDataMap[_createdByName.value] || {}).reduce((prev, cur) => prev +
                   cur.length, 0)
                 }}</span>
-                <span>个任务</span>
+                <span>{{ t('task.kanbanView.group.tasks') }}</span>
               </div>
             </div>
             <div class="relative h-full flex items-start" style="width: calc(100% - 193px);">
@@ -1583,7 +1586,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
                           v-if="element.overdue"
                           class="flex-shrink-0 border border-status-error rounded px-0.5"
                           style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                          <span class="inline-block transform-gpu scale-90">已逾期</span>
+                          <span class="inline-block transform-gpu scale-90">{{ t('task.table.status.overdue') }}</span>
                         </span>
                         <Dropdown
                           :menuItems="menuItemsMap.get(element.id)"
@@ -1599,11 +1602,11 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
                       <div class="flex items-center space-x-3.5">
                         <Tooltip trigger="hover">
                           <template #title>
-                            <div class="flex items-center overflow-hidden">
-                              <span class="flex-shrink-0">经办人</span>
-                              <Colon class="mr-1.5" />
-                              <span :title="element.assigneeName" class="truncate">{{ element.assigneeName }}</span>
-                            </div>
+                                                      <div class="flex items-center overflow-hidden">
+                            <span class="flex-shrink-0">{{ t('task.detail.columns.assignee') }}</span>
+                            <Colon class="mr-1.5" />
+                            <span :title="element.assigneeName" class="truncate">{{ element.assigneeName }}</span>
+                          </div>
                           </template>
                           <div style="width:20px;" class="flex-shrink-0">
                             <Image
@@ -1616,7 +1619,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
                         <TaskPriority class="flex-shrink-0" :value="element.priority" />
                       </div>
                       <div class="flex items-center overflow-hidden">
-                        <span class="flex-shrink-0">截止</span>
+                        <span class="flex-shrink-0">{{ t('task.detail.columns.deadline') }}</span>
                         <Colon class="mr-1.5" />
                         <span :title="element.deadlineDate" class="truncate">{{ element.deadlineDate }}</span>
                       </div>
@@ -1634,7 +1637,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           <div
             :class="{ 'drawer-active-item': drawerActiveKey === 'basic' }"
             class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-            title="基本信息"
+            :title="t('task.kanbanView.drawer.basicInfo')"
             @click="drawerActiveKeyChange('basic')">
             <Icon icon="icon-wendangxinxi" class="text-4" />
           </div>
@@ -1642,7 +1645,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           <div
             :class="{ 'drawer-active-item': drawerActiveKey === 'person' }"
             class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-            title="人员"
+            :title="t('task.kanbanView.drawer.personnel')"
             @click="drawerActiveKeyChange('person')">
             <Icon icon="icon-quanburenyuan" class="text-4" />
           </div>
@@ -1650,7 +1653,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           <div
             :class="{ 'drawer-active-item': drawerActiveKey === 'date' }"
             class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-            title="日期"
+            :title="t('task.kanbanView.drawer.date')"
             @click="drawerActiveKeyChange('date')">
             <Icon icon="icon-riqi" class="text-4" />
           </div>
@@ -1658,7 +1661,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           <div
             :class="{ 'drawer-active-item': drawerActiveKey === 'tasks' }"
             class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-            title="关联任务"
+            :title="t('task.kanbanView.drawer.assocTasks')"
             @click="drawerActiveKeyChange('tasks')">
             <Icon icon="icon-ceshirenwu" class="text-4" />
           </div>
@@ -1666,7 +1669,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           <div
             :class="{ 'drawer-active-item': drawerActiveKey === 'cases' }"
             class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-            title="关联用例"
+            :title="t('task.kanbanView.drawer.assocCases')"
             @click="drawerActiveKeyChange('cases')">
             <Icon icon="icon-ceshiyongli1" class="text-4" />
           </div>
@@ -1674,7 +1677,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           <div
             :class="{ 'drawer-active-item': drawerActiveKey === 'attachments' }"
             class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-            title="附件"
+            :title="t('task.kanbanView.drawer.attachments')"
             @click="drawerActiveKeyChange('attachments')">
             <Icon icon="icon-lianjie1" class="text-4" />
           </div>
@@ -1682,7 +1685,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           <div
             :class="{ 'drawer-active-item': drawerActiveKey === 'remarks' }"
             class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-            title="备注"
+            :title="t('task.kanbanView.drawer.remarks')"
             @click="drawerActiveKeyChange('remarks')">
             <Icon icon="icon-shuxie" class="text-4" />
           </div>
@@ -1690,7 +1693,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           <div
             :class="{ 'drawer-active-item': drawerActiveKey === 'comment' }"
             class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-            title="评论"
+            :title="t('task.kanbanView.drawer.comments')"
             @click="drawerActiveKeyChange('comment')">
             <Icon icon="icon-pinglun" class="text-4" />
           </div>
@@ -1698,7 +1701,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           <div
             :class="{ 'drawer-active-item': drawerActiveKey === 'activity' }"
             class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-            title="活动"
+            :title="t('task.kanbanView.drawer.activity')"
             @click="drawerActiveKeyChange('activity')">
             <Icon icon="icon-chakanhuodong" class="text-4" />
           </div>

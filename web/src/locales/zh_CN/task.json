@@ -1056,6 +1056,48 @@
       "status": {
         "overdue": "已逾期"
       }
+    },
+    "kanbanView": {
+      "drawer": {
+        "basicInfo": "基本信息",
+        "personnel": "人员",
+        "date": "日期",
+        "assocTasks": "关联任务",
+        "assocCases": "关联用例",
+        "attachments": "附件",
+        "remarks": "备注",
+        "comments": "评论",
+        "activity": "活动"
+      },
+      "actions": {
+        "split": "拆分",
+        "start": "开始处理",
+        "processed": "已处理",
+        "completed": "确认完成",
+        "uncompleted": "确认未完成",
+        "reopen": "重新打开",
+        "restart": "重新开始"
+      },
+      "messages": {
+        "noStartPermission": "没有开始处理权限",
+        "noCancelPermission": "没有取消任务权限",
+        "onlyMoveToInProgressOrCanceled": "只能移动到进行中、已取消",
+        "noProcessedPermission": "没有已处理权限",
+        "onlyMoveToConfirmingOrCanceled": "只能移动到待确认、已取消",
+        "onlyMoveToCompletedOrCanceled": "只能移动到已完成、已取消",
+        "noCompletedPermission": "没有确认完成权限",
+        "onlyMoveToCompletedOrCanceledFromConfirming": "只能移动到已完成、已取消",
+        "onlyMoveToPending": "只能移动到待处理",
+        "noReopenPermission": "没有重新打开权限",
+        "noConfirmor": "该任务没有确认人，无需确认，只能移动到已完成、已取消"
+      },
+      "group": {
+        "swimLane": "泳道",
+        "expandAll": "全部展开",
+        "collapseAll": "全部收起",
+        "tasks": "个任务",
+        "ungrouped": "未分组"
+      }
     }
   },
   "taskSprint": {

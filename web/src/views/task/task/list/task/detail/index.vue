@@ -6,6 +6,7 @@ import { AsyncComponent, modal, notification } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { task } from 'src/api/tester';
 
+
 import { TaskInfo } from '../../../../PropsType';
 import { ActionMenuItem } from '../../PropsType';
 
@@ -269,7 +270,7 @@ const batchFavourite = async () => {
 const batchCancelFavourite = async () => {
   const num = props.selectedIds.length;
   modal.confirm({
-    content: `确定取消收藏选中的 ${num} 条任务吗？`,
+    content: t('task.detail.batchActions.confirmCancelFavourite', { num }),
     async onOk () {
       // 过滤出要取消收藏的任务
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
@@ -288,7 +289,7 @@ const batchCancelFavourite = async () => {
 
         const errorNum = errorIds.length;
         if (errorNum === 0) {
-          notification.success(`选中的 ${num} 条任务全部取消收藏成功`);
+          notification.success(t('task.detail.batchActions.cancelFavouriteSuccess', { num }));
           emit('batchAction', 'favourite', ids);
           emit('update:selectedIds', []);
           selectedDataMap.value = {};
@@ -296,12 +297,12 @@ const batchCancelFavourite = async () => {
         }
 
         if (errorNum === num) {
-          notification.error(`选中的 ${num} 条任务全部取消收藏失败`);
+          notification.error(t('task.detail.batchActions.cancelFavouriteFailed', { num }));
           return;
         }
 
         const successIds = ids.filter(item => !errorIds.includes(item));
-        notification.warning(`选中的 ${num - errorNum} 条任务取消收藏成功，${errorNum} 条任务取消收藏失败`);
+        notification.warning(t('task.detail.batchActions.cancelFavouritePartialSuccess', { num: num - errorNum, errorNum }));
 
         emit('batchAction', 'favourite', successIds);
 
@@ -319,7 +320,7 @@ const batchCancelFavourite = async () => {
 const batchFollow = async () => {
   const num = props.selectedIds.length;
   modal.confirm({
-    content: `确定关注选中的 ${num} 条任务吗？`,
+    content: t('task.detail.batchActions.confirmFollow', { num }),
     async onOk () {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const promises: Promise<any>[] = [];
@@ -337,7 +338,7 @@ const batchFollow = async () => {
 
         const errorNum = errorIds.length;
         if (errorNum === 0) {
-          notification.success(`选中的 ${num} 条任务全部关注成功`);
+          notification.success(t('task.detail.batchActions.cancelFollowSuccess', { num }));
           emit('batchAction', 'favourite', ids);
           emit('update:selectedIds', []);
           selectedDataMap.value = {};
@@ -345,12 +346,12 @@ const batchFollow = async () => {
         }
 
         if (errorNum === num) {
-          notification.error(`选中的 ${num} 条任务全部关注失败`);
+          notification.error(t('task.detail.batchActions.cancelFollowFailed', { num }));
           return;
         }
 
         const successIds = ids.filter(item => !errorIds.includes(item));
-        notification.warning(`选中的 ${num - errorNum} 条任务关注成功，${errorNum} 条任务关注失败`);
+        notification.warning(t('task.detail.batchActions.cancelFollowPartialSuccess', { num: num - errorNum, errorNum }));
 
         emit('batchAction', 'favourite', successIds);
 
@@ -368,7 +369,7 @@ const batchFollow = async () => {
 const batchCancelFollow = async () => {
   const num = props.selectedIds.length;
   modal.confirm({
-    content: `确定取消关注选中的 ${num} 条任务吗？`,
+    content: t('task.detail.batchActions.cancelFollowConfirm', { num }),
     async onOk () {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const promises: Promise<any>[] = [];
@@ -386,7 +387,7 @@ const batchCancelFollow = async () => {
 
         const errorNum = errorIds.length;
         if (errorNum === 0) {
-          notification.success(`选中的 ${num} 条任务全部取消关注成功`);
+          notification.success(t('task.detail.batchActions.cancelFollowNumSuccess', { num }));
           emit('batchAction', 'favourite', ids);
           emit('update:selectedIds', []);
           selectedDataMap.value = {};
@@ -394,12 +395,12 @@ const batchCancelFollow = async () => {
         }
 
         if (errorNum === num) {
-          notification.error(`选中的 ${num} 条任务全部取消关注失败`);
+          notification.error(t('task.detail.batchActions.cancelFollowFail', { num }));
           return;
         }
 
         const successIds = ids.filter(item => !errorIds.includes(item));
-        notification.warning(`选中的 ${num - errorNum} 条任务取消关注成功，${errorNum} 条任务取消关注失败`);
+        notification.warning(t('task.detail.batchActions.cancelFollowPartialSuccess', { num: num - errorNum, errorNum }));
 
         emit('batchAction', 'favourite', successIds);
 

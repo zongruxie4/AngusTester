@@ -1053,6 +1053,48 @@
       "status": {
         "overdue": "Overdue"
       }
+    },
+    "kanbanView": {
+      "drawer": {
+        "basicInfo": "Basic Information",
+        "personnel": "Personnel",
+        "date": "Date",
+        "assocTasks": "Associated Tasks",
+        "assocCases": "Associated Cases",
+        "attachments": "Attachments",
+        "remarks": "Remarks",
+        "comments": "Comments",
+        "activity": "Activity"
+      },
+      "actions": {
+        "split": "Split",
+        "start": "Start Processing",
+        "processed": "Processed",
+        "completed": "Confirm Complete",
+        "uncompleted": "Confirm Incomplete",
+        "reopen": "Reopen",
+        "restart": "Restart"
+      },
+      "messages": {
+        "noStartPermission": "No permission to start processing",
+        "noCancelPermission": "No permission to cancel task",
+        "onlyMoveToInProgressOrCanceled": "Can only move to In Progress or Canceled",
+        "noProcessedPermission": "No permission to mark as processed",
+        "onlyMoveToConfirmingOrCanceled": "Can only move to Confirming or Canceled",
+        "onlyMoveToCompletedOrCanceled": "Can only move to Completed or Canceled",
+        "noCompletedPermission": "No permission to confirm completion",
+        "onlyMoveToCompletedOrCanceledFromConfirming": "Can only move to Completed or Canceled",
+        "onlyMoveToPending": "Can only move to Pending",
+        "noReopenPermission": "No permission to reopen",
+        "noConfirmor": "This task has no confirmer, no confirmation needed, can only move to Completed or Canceled"
+      },
+      "group": {
+        "swimLane": "Swim Lane",
+        "expandAll": "Expand All",
+        "collapseAll": "Collapse All",
+        "tasks": "tasks",
+        "ungrouped": "Ungrouped"
+      }
     }
   },
   "taskSprint": {
