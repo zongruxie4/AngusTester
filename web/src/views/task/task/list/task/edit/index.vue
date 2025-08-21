@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, reactive, ref, watch, inject, Ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Form, FormItem, Popover, TreeSelect, Upload } from 'ant-design-vue';
 import type { Rule } from 'ant-design-vue/es/form';
 import {
@@ -68,6 +69,8 @@ const emit = defineEmits<{
   (e: 'update:taskId', value: string | undefined): void;
   (e: 'ok', value: Partial<TaskInfo>, addFlag?: boolean): void;
 }>();
+
+const { t } = useI18n();
 
 const formRef = ref();
 
@@ -199,7 +202,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
 
   if (formState.actualWorkload) {
     if (!value) {
-      return Promise.reject(new Error('请输入评估工作量'));
+      return Promise.reject(new Error(t('task.editModal.form.workload.rule')));
     }
 
     return Promise.resolve();
@@ -223,17 +226,17 @@ const evalWorkloadChange = (value: string) => {
 
 const validateDate = async (_rule: Rule, value: string) => {
   if (!value) {
-    return Promise.reject(new Error('请选择截止时间'));
+    return Promise.reject(new Error(t('task.editModal.form.deadlineRule')));
   }
 
   if (dayjs(value).isBefore(dayjs(), 'minute')) {
-    return Promise.reject(new Error('截止时间必须是一个未来时间'));
+    return Promise.reject(new Error(t('task.editModal.form.deadlineFutureRule')));
   }
 
   // 编辑时不校验截止时间是否超过迭代的截止时间
   if (sprintDeadlineDate.value) {
     if (dayjs(value).isAfter(dayjs(sprintDeadlineDate.value), 'seconds')) {
-      return Promise.reject(new Error(`超过了迭代截止时间(${sprintDeadlineDate.value})`));
+      return Promise.reject(new Error(t('task.editModal.form.deadlineSprintRule', { deadline: sprintDeadlineDate.value })));
     }
   }
 
@@ -279,7 +282,7 @@ const delFile = (index: number) => {
 const descRichRef = ref();
 const validateDesc = async () => {
   if (descRichRef.value && descRichRef.value.getLength() > 6000) {
-    Promise.reject(new Error('描述最大支持6000个字符'));
+    Promise.reject(new Error(t('task.editModal.form.descriptionRule')));
   }
   return Promise.resolve();
 };
@@ -418,7 +421,7 @@ const createHandler = async (continueFlag = false) => {
     return;
   }
 
-  notification.success('任务添加成功');
+  notification.success(t('task.editModal.messages.addSuccess'));
   emit('ok', res?.data, true);
 
   if (!continueFlag) {
@@ -435,7 +438,7 @@ const editHandler = async () => {
     return;
   }
 
-  notification.success('任务编辑成功');
+  notification.success(t('task.editModal.messages.editSuccess'));
   const data = await loadData();
   emit('ok', data);
   cancel();
@@ -605,10 +608,10 @@ const userId = computed(() => {
 
 const title = computed(() => {
   if (props.taskId) {
-    return '编辑任务';
+    return t('task.editModal.title.edit');
   }
 
-  return '添加任务';
+  return t('task.editModal.title.add');
 });
 
 const taskTypeReadonly = computed(() => {
@@ -674,7 +677,7 @@ const zoomInFlagCacheKey = computed(() => {
     :visible="props.visible"
     class="relative max-w-full"
     @cancel="cancel">
-    <Tooltip :title="zoomInFlag ? '缩小' : '全屏'">
+    <Tooltip :title="zoomInFlag ? t('task.editModal.tooltip.zoomOut') : t('task.editModal.tooltip.zoomIn')">
       <Icon
         :icon="zoomInFlag ? 'icon-tuichuzuida' : 'icon-zuidahua'"
         class="absolute right-10 top-3.5 text-3.5 cursor-pointer"
@@ -693,13 +696,13 @@ const zoomInFlagCacheKey = computed(() => {
         <div class="flex-1 pr-8">
           <FormItem
             name="name"
-            label="名称"
-            :rules="{ required: true, message: '任务名称，最大支持200字符' }">
+            :label="t('task.editModal.form.name')"
+            :rules="{ required: true, message: t('task.editModal.form.nameRule') }">
             <Input
               v-model:value="formState.name"
               trim
               :maxlength="200"
-              placeholder="任务名称，最大支持200字符" />
+              :placeholder="t('task.editModal.form.namePlaceholder')" />
           </FormItem>
 
           <div class="flex space-x-4">
@@ -709,43 +712,43 @@ const zoomInFlagCacheKey = computed(() => {
               class="flex-1/2"
               required>
               <template #label>
-                类型
+                {{ t('task.editModal.form.type') }}
                 <Popover>
                   <template #content>
                     <div class="flex items-center leading-5">
                       <div class="space-y-2 flex-shrink-0">
                         <div class="flex items-center">
                           <IconTask value="REQUIREMENT" class="mr-1 text-4" />
-                          <span>需求</span>
+                          <span>{{ t('task.editModal.taskTypes.requirement') }}</span>
                         </div>
                         <div class="flex items-center">
                           <IconTask value="STORY" class="mr-1 text-4" />
-                          <span>故事</span>
+                          <span>{{ t('task.editModal.taskTypes.story') }}</span>
                         </div>
                         <div class="flex items-center">
                           <IconTask value="TASK" class="mr-1 text-4" />
-                          <span>任务</span>
+                          <span>{{ t('task.editModal.taskTypes.task') }}</span>
                         </div>
                         <div class="flex items-center">
                           <IconTask value="BUG" class="mr-1 text-4" />
-                          <span>缺陷</span>
+                          <span>{{ t('task.editModal.taskTypes.bug') }}</span>
                         </div>
                         <div class="flex items-center">
                           <IconTask value="API_TEST" class="mr-1 text-4" />
-                          <span>接口测试</span>
+                          <span>{{ t('task.editModal.taskTypes.apiTest') }}</span>
                         </div>
                         <div class="flex items-center">
                           <IconTask value="SCENARIO_TEST" class="mr-1 text-4" />
-                          <span>场景测试</span>
+                          <span>{{ t('task.editModal.taskTypes.scenarioTest') }}</span>
                         </div>
                       </div>
                       <div class="ml-3.5 space-y-2">
-                        <div>用户对业务、功能等的期望或要求，描述有广泛性。</div>
-                        <div>用户想要实现的具体目标或期望，通常以简洁、可理解的语言进行描述，如：作为 &lt;角色&gt;，我希望 &lt;目标&gt;，以便 &lt;收益&gt;。</div>
-                        <div>一般工作事项或活动</div>
-                        <div>程序错误或漏洞</div>
-                        <div>接口的功能、性能、稳定性测试任务</div>
-                        <div>场景的功能、性能、稳定性测试任务</div>
+                        <div>{{ t('task.editModal.taskTypeDescriptions.requirement') }}</div>
+                        <div>{{ t('task.editModal.taskTypeDescriptions.story') }}</div>
+                        <div>{{ t('task.editModal.taskTypeDescriptions.task') }}</div>
+                        <div>{{ t('task.editModal.taskTypeDescriptions.bug') }}</div>
+                        <div>{{ t('task.editModal.taskTypeDescriptions.apiTest') }}</div>
+                        <div>{{ t('task.editModal.taskTypeDescriptions.scenarioTest') }}</div>
                       </div>
                     </div>
                   </template>
@@ -759,19 +762,19 @@ const zoomInFlagCacheKey = computed(() => {
                 :readonly="taskTypeReadonly"
                 internal
                 enumKey="TaskType"
-                placeholder="请选择任务类型"
+                :placeholder="t('task.editModal.form.typePlaceholder')"
                 @change="taskTypeChange">
                 <template #option="record">
                   <div class="flex items-center">
                     <IconTask :value="record.value" class="text-4 flex-shrink-0" />
-                    <span class="ml-1">{{ record.message }}</span>
+                    <span class="ml-1">{{ record.label }}</span>
                   </div>
                 </template>
               </SelectEnum>
             </FormItem>
             <FormItem
               name="priority"
-              label="优先级"
+              :label="t('task.editModal.form.priority')"
               class="flex-1/2"
               required>
               <SelectEnum
@@ -779,9 +782,9 @@ const zoomInFlagCacheKey = computed(() => {
                 :allowClear="false"
                 internal
                 enumKey="Priority"
-                placeholder="请选择优先级">
+                :placeholder="t('task.editModal.form.priorityPlaceholder')">
                 <template #option="record">
-                  <TaskPriority :value="record" />
+                  <TaskPriority :value="record.value" />
                 </template>
               </SelectEnum>
             </FormItem>
@@ -791,7 +794,7 @@ const zoomInFlagCacheKey = computed(() => {
             <div class="flex space-x-4">
               <FormItem
                 name="bugLevel"
-                label="缺陷等级"
+                :label="t('task.editModal.form.bugLevel')"
                 class="flex-1/2">
                 <SelectEnum
                   v-model:value="formState.bugLevel"
@@ -801,11 +804,11 @@ const zoomInFlagCacheKey = computed(() => {
               </FormItem>
               <FormItem
                 name="missingBugFlag"
-                label="是否漏测缺陷"
+                :label="t('task.editModal.form.missingBugFlag')"
                 class="flex-1/2">
                 <Select
                   v-model:value="formState.missingBugFlag"
-                  :options="[{value: true, label: '是'}, {value: false, label: '否'}]">
+                  :options="[{value: true, label: t('task.editModal.form.missingBugOptions.yes')}, {value: false, label: t('task.editModal.form.missingBugOptions.no')}]">
                 </Select>
               </FormItem>
             </div>
@@ -814,14 +817,14 @@ const zoomInFlagCacheKey = computed(() => {
           <div v-if="formState.taskType === 'SCENARIO_TEST'" class="flex space-x-4">
             <FormItem
               name="targetId"
-              label="场景"
+              :label="t('task.editModal.form.scenario')"
               class="flex-1 min-w-0"
-              :rules="{ required: true, message: '请选择场景' }">
+                              :rules="{ required: true, message: t('task.editModal.form.scenarioRule') }">
               <Select
                 v-model:value="formState.targetId"
                 showSearch
                 internal
-                placeholder="请选择场景"
+                                  :placeholder="t('task.editModal.form.scenarioPlaceholder')"
                 :fieldNames="{ label: 'name', value: 'id' }"
                 :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
                 :readonly="!!props.taskId" />
@@ -829,7 +832,7 @@ const zoomInFlagCacheKey = computed(() => {
             <FormItem
               v-if="showTestType"
               name="testType"
-              label="测试类型"
+              :label="t('task.editModal.form.testType')"
               class="flex-1"
               required>
               <SelectEnum
@@ -837,15 +840,15 @@ const zoomInFlagCacheKey = computed(() => {
                 :allowClear="false"
                 internal
                 enumKey="TestType"
-                placeholder="请选择测试类型" />
+                :placeholder="t('task.editModal.form.testTypePlaceholder')" />
             </FormItem>
           </div>
 
           <template v-if="formState.taskType === 'API_TEST'">
             <FormItem
               name="targetParentId"
-              label="所属服务"
-              :rules="{ required: true, message: '请选择服务' }">
+              :label="t('task.editModal.form.service')"
+                              :rules="{ required: true, message: t('task.editModal.form.serviceRule') }">
               <Select
                 v-model:value="formState.targetParentId"
                 :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
@@ -855,7 +858,7 @@ const zoomInFlagCacheKey = computed(() => {
                 internal
                 defaultActiveFirstOption
                 showSearch
-                placeholder="选择或查询服务">
+                                  :placeholder="t('task.editModal.form.servicePlaceholder')">
                 <template #option="record">
                   <div class="text-3 leading-3 flex items-center h-6.5">
                     <IconText
@@ -871,15 +874,15 @@ const zoomInFlagCacheKey = computed(() => {
 
             <div class="flex space-x-4">
               <FormItem
-                label="接口"
+                :label="t('task.editModal.form.api')"
                 name="targetId"
                 class="flex-1 min-w-0"
-                :rules="{ required: true, message: '请选择接口' }">
+                                  :rules="{ required: true, message: t('task.editModal.form.apiRule') }">
                 <Select
                   v-model:value="formState.targetId"
                   showSearch
                   internal
-                  placeholder="请选择接口"
+                                      :placeholder="t('task.editModal.form.apiPlaceholder')"
                   :fieldNames="{ label: 'summary', value: 'id' }"
                   :action="`${TESTER}/apis?projectId=${props.projectId}&serviceId=${formState.targetParentId}&fullTextSearch=true`"
                   :readonly="!!props.taskId || !formState.targetParentId" />
@@ -888,14 +891,14 @@ const zoomInFlagCacheKey = computed(() => {
                 v-if="showTestType"
                 class="flex-1"
                 name="testType"
-                label="测试类型"
+                :label="t('task.editModal.form.testType')"
                 required>
                 <SelectEnum
                   v-model:value="formState.testType"
                   :allowClear="false"
                   internal
                   enumKey="TestType"
-                  placeholder="请选择测试类型" />
+                  :placeholder="t('task.editModal.form.testTypePlaceholder')" />
               </FormItem>
             </div>
           </template>
@@ -904,12 +907,12 @@ const zoomInFlagCacheKey = computed(() => {
             <FormItem
               name="assigneeId"
               class="flex-1/2"
-              :rules="{ required: true, message: '选择经办人' }">
+              :rules="{ required: true, message: t('task.editModal.form.assigneeRule') }">
               <template #label>
-                经办人<Popover placement="rightTop">
+                {{ t('task.editModal.form.assignee') }}<Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      负责实际执行分配的工作任务。
+                      {{ t('task.editModal.form.assigneeTip') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -918,7 +921,7 @@ const zoomInFlagCacheKey = computed(() => {
               <div class="flex items-center ">
                 <SelectUser
                   v-model:value="formState.assigneeId"
-                  placeholder="选择经办人"
+                  :placeholder="t('task.editModal.form.assigneePlaceholder')"
                   internal
                   class="flex-1 min-w-0"
                   :defaultOptions="assigneeDefaultOptions"
@@ -929,17 +932,17 @@ const zoomInFlagCacheKey = computed(() => {
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
                   @click="assignToMe('assigneeId')">
-                  指派给我
+                  {{ t('task.editModal.form.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
 
             <FormItem name="confirmorId" class="flex-1/2">
               <template #label>
-                确认人<Popover placement="rightTop">
+                {{ t('task.editModal.form.confirmer') }}<Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      负责核实和验证工作结果的人员，指定后会自动进入确认流程。
+                      {{ t('task.editModal.form.confirmerTip') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -948,7 +951,7 @@ const zoomInFlagCacheKey = computed(() => {
               <div class="flex items-center">
                 <SelectUser
                   v-model:value="formState.confirmorId"
-                  placeholder="选择确认人"
+                  :placeholder="t('task.editModal.form.confirmerPlaceholder')"
                   internal
                   allowClear
                   class="flex-1 min-w-0"
@@ -960,7 +963,7 @@ const zoomInFlagCacheKey = computed(() => {
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
                   @click="assignToMe('confirmorId')">
-                  指派给我
+                  {{ t('task.editModal.form.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
@@ -968,7 +971,7 @@ const zoomInFlagCacheKey = computed(() => {
 
           <div class="flex space-x-4">
             <FormItem
-              label="截止时间"
+              :label="t('task.editModal.form.deadline')"
               name="deadlineDate"
               class="flex-1/2"
               :rules="{ required: true, validator: validateDate }">
@@ -986,10 +989,10 @@ const zoomInFlagCacheKey = computed(() => {
 
             <FormItem name="confirmorId" class="flex-1/2">
               <template #label>
-                测试人<Popover placement="rightTop">
+                {{ t('task.editModal.form.tester') }}<Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      负责测试和验证产品功能或服务质量的人员。
+                      {{ t('task.editModal.form.testerTip') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -998,7 +1001,7 @@ const zoomInFlagCacheKey = computed(() => {
               <div class="flex items-center">
                 <SelectUser
                   v-model:value="formState.testerId"
-                  placeholder="选择测试人"
+                  :placeholder="t('task.editModal.form.testerPlaceholder')"
                   internal
                   allowClear
                   class="flex-1 min-w-0"
@@ -1010,7 +1013,7 @@ const zoomInFlagCacheKey = computed(() => {
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
                   @click="assignToMe('testerId')">
-                  指派给我
+                  {{ t('task.editModal.form.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
@@ -1018,13 +1021,13 @@ const zoomInFlagCacheKey = computed(() => {
 
           <FormItem
             name="description"
-            label="描述"
+            :label="t('task.editModal.form.description')"
             :rules="{validator: validateDesc}">
             <AsyncComponent :visible="showEditor">
               <RichEditor
                 ref="descRichRef"
                 v-model:value="formState.description"
-                :options="{placeholder: '任务描述，最大支持6000个字符'}"
+                :options="{placeholder: t('task.editModal.form.descriptionPlaceholder')}"
                 :height="300"
                 @change="editorChange"
                 @loadingChange="editorLoading" />
@@ -1034,9 +1037,9 @@ const zoomInFlagCacheKey = computed(() => {
         <div class="w-80  pl-2 border-l">
           <FormItem
             v-if="proTypeShowMap.showSprint"
-            label="所属迭代"
+                          :label="t('task.editModal.form.sprint')"
             name="sprintId"
-            :rules="{ required: true, message: '请选择所属迭代' }">
+                          :rules="{ required: true, message: t('task.editModal.form.sprintRule') }">
             <Select
               v-model:value="formState.sprintId"
               :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
@@ -1044,7 +1047,7 @@ const zoomInFlagCacheKey = computed(() => {
               :readonly="!!props.taskId"
               showSearch
               internal
-              placeholder="选择或查询迭代"
+                              :placeholder="t('task.editModal.form.sprintPlaceholder')"
               @change="sprintChange">
               <template #option="record">
                 <div class="flex items-center" :title="record.name">
@@ -1055,7 +1058,7 @@ const zoomInFlagCacheKey = computed(() => {
             </Select>
           </FormItem>
 
-          <FormItem label="所属模块" name="moduleId">
+          <FormItem :label="t('task.editModal.form.module')" name="moduleId">
             <TreeSelect
               v-model:value="formState.moduleId"
               :treeData="moduleTreeData"
@@ -1065,7 +1068,7 @@ const zoomInFlagCacheKey = computed(() => {
               size="small"
               showSearch
               allowClear
-              placeholder="选择或查模块">
+                              :placeholder="t('task.editModal.form.modulePlaceholder')">
               <template #title="item">
                 <div class="flex items-center" :title="item.name">
                   <Icon icon="icon-mokuai" class="mr-1 text-3.5" />
@@ -1075,7 +1078,7 @@ const zoomInFlagCacheKey = computed(() => {
             </TreeSelect>
           </FormItem>
 
-          <FormItem label="父任务" name="parentTaskId">
+          <FormItem :label="t('task.editModal.form.parentTask')" name="parentTaskId">
             <Select
               v-if="!!props.parentTaskId"
               :readonly="true"
@@ -1095,7 +1098,7 @@ const zoomInFlagCacheKey = computed(() => {
               v-model:value="formState.parentTaskId"
               showSearch
               internal
-              placeholder="请选择父任务"
+                                :placeholder="t('task.editModal.form.parentTaskPlaceholder')"
               :excludes="taskIdExcludes"
               :fieldNames="{ label: 'name', value: 'id' }"
               :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`">
@@ -1112,11 +1115,11 @@ const zoomInFlagCacheKey = computed(() => {
             name="evalWorkload"
             :rules="{ required: formState.actualWorkload, validator: evalWorkloadValidateDate, trigger: 'change' }">
             <template #label>
-              {{ evalWorkloadMethod === 'STORY_POINT' ? '评估故事点' : '评估工时' }}
+              {{ evalWorkloadMethod === 'STORY_POINT' ? t('task.editModal.form.workload.evalStoryPoint') : t('task.editModal.form.workload.evalWorkload') }}
               <Popover placement="rightTop">
                 <template #content>
                   <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                    {{ evalWorkloadMethod === 'STORY_POINT' ? '工作任务量、综合难度、复杂度等的评估值。' : '工作评估所花费的时间，以小时为单位计算。' }}
+                    {{ evalWorkloadMethod === 'STORY_POINT' ? t('task.editModal.form.workload.storyPointTip') : t('task.editModal.form.workload.workloadTip') }}
                   </div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
@@ -1129,18 +1132,18 @@ const zoomInFlagCacheKey = computed(() => {
               trimAll
               :min="0.1"
               :max="1000"
-              placeholder="最小0.1，最大1000，最多支持2位小数"
+              :placeholder="t('task.editModal.form.workload.placeholder')"
               @blur="evalWorkloadChange($event.target.value)" />
           </FormItem>
 
           <template v-if="!!props.taskId">
             <FormItem name="actualWorkload">
               <template #label>
-                {{ evalWorkloadMethod === 'STORY_POINT' ? '实际故事点' : '实际工时' }}
+                {{ evalWorkloadMethod === 'STORY_POINT' ? t('task.editModal.form.workload.actualStoryPoint') : t('task.editModal.form.workload.actualWorkload') }}
                 <Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      {{ evalWorkloadMethod === 'STORY_POINT' ? '工作任务量、综合难度、复杂度等的实际值。' : '工作实际所花费的时间，以小时为单位计算。' }}
+                      {{ evalWorkloadMethod === 'STORY_POINT' ? t('task.editModal.form.workload.actualStoryPointTip') : t('task.editModal.form.workload.actualWorkloadTip') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
@@ -1152,7 +1155,7 @@ const zoomInFlagCacheKey = computed(() => {
                 size="small"
                 dataType="float"
                 trimAll
-                placeholder="最小0.1，最大1000，最多支持2位小数"
+                :placeholder="t('task.editModal.form.workload.placeholder')"
                 :min="0.1"
                 :max="1000"
                 @change="actualWorkloadChange($event.target.value)" />
@@ -1161,11 +1164,11 @@ const zoomInFlagCacheKey = computed(() => {
 
           <FormItem
             name="softwareVersion"
-            label="软件版本">
+            :label="t('task.editModal.form.softwareVersion')">
             <Select
               v-model:value="formState.softwareVersion"
               allowClear
-              placeholder="请选择所属版本"
+                              :placeholder="t('task.editModal.form.softwareVersionPlaceholder')"
               :action="`${TESTER}/software/version?projectId=${props.projectId}`"
               :params="{filters: [{value: ['NOT_RELEASED', 'RELEASED'], key: 'status', op: 'IN'}]}"
               :fieldNames="{value:'name', label: 'name'}">
@@ -1176,10 +1179,10 @@ const zoomInFlagCacheKey = computed(() => {
             name="tagIds"
             class="relative">
             <template #label>
-              标签<Popover placement="rightTop">
+              {{ t('task.editModal.form.tags') }}<Popover placement="rightTop">
                 <template #content>
                   <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                    “任务标签”可以帮助您组织有共同点的任务，例如“项目名称、迭代版本、业务标识”等。
+                    {{ t('task.editModal.form.tagsTip') }}
                   </div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -1195,14 +1198,14 @@ const zoomInFlagCacheKey = computed(() => {
               :maxTags="5"
               :allowClear="false"
               :action="`${TESTER}/tag?projectId=${props.projectId}&fullTextSearch=true`"
-              placeholder="最多可添加5个标签"
+              :placeholder="t('task.editModal.form.tagsPlaceholder')"
               mode="multiple"
-              notFoundContent="请联系管理员，前往”应用管理“-”任务管理“-”任务标签“配置任务标签。" />
+              :notFoundContent="t('task.editModal.form.tagsNotFound')" />
           </FormItem>
 
           <FormItem
             name="refTaskIds"
-            label="关联任务"
+            :label="t('task.editModal.form.assocTasks')"
             class="relative">
             <Select
               v-model:value="formState.refTaskIds"
@@ -1214,7 +1217,7 @@ const zoomInFlagCacheKey = computed(() => {
               :maxTagTextLength="15"
               :maxTags="20"
               :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`"
-              placeholder="最多可关联20个任务"
+              :placeholder="t('task.editModal.form.assocTasksPlaceholder')"
               mode="multiple">
               <template #option="record">
                 <div class="flex items-center leading-4.5 overflow-hidden">
@@ -1226,7 +1229,7 @@ const zoomInFlagCacheKey = computed(() => {
                     v-if="record.overdue"
                     class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2"
                     style="transform: scale(0.9);color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                    <span class="inline-block transform-gpu">已逾期</span>
+                    <span class="inline-block transform-gpu">{{ t('task.editModal.status.overdue') }}</span>
                   </div>
                 </div>
               </template>
@@ -1235,7 +1238,7 @@ const zoomInFlagCacheKey = computed(() => {
 
           <FormItem
             name="refCaseIds"
-            label="关联用例"
+            :label="t('task.editModal.form.assocCases')"
             class="relative">
             <Select
               v-model:value="formState.refCaseIds"
@@ -1247,7 +1250,7 @@ const zoomInFlagCacheKey = computed(() => {
               :maxTagTextLength="15"
               :maxTags="20"
               :action="`${TESTER}/func/case?projectId=${props.projectId}&fullTextSearch=true`"
-              placeholder="最多可关联20个用例"
+              :placeholder="t('task.editModal.form.assocCasesPlaceholder')"
               mode="multiple">
               <template #option="record">
                 <div class="flex items-center leading-4.5 overflow-hidden">
@@ -1259,14 +1262,14 @@ const zoomInFlagCacheKey = computed(() => {
                     v-if="record.overdue"
                     class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2"
                     style="transform: scale(0.9);color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                    <span class="inline-block transform-gpu">已逾期</span>
+                    <span class="inline-block transform-gpu">{{ t('task.editModal.status.overdue') }}</span>
                   </div>
                 </div>
               </template>
             </Select>
           </FormItem>
 
-          <FormItem label="附件">
+          <FormItem :label="t('task.editModal.form.attachments')">
             <!-- <div style="height: 90px; border-color: rgba(0, 119, 255);background-color: rgba(0, 119, 255, 4%);"
               class="border border-dashed rounded px-2 py-1">
               <Upload
@@ -1315,7 +1318,7 @@ const zoomInFlagCacheKey = computed(() => {
                     :customRequest="() => {}"
                     @change="upLoad">
                     <Icon icon="icon-shangchuan" class="text-theme-special mr-1" />
-                    <span class="text-3 leading-3 text-theme-text-hover">继续上传</span>
+                    <span class="text-3 leading-3 text-theme-text-hover">{{ t('task.editModal.form.attachmentsContinue') }}</span>
                   </Upload>
                 </div>
               </template>
@@ -1327,7 +1330,7 @@ const zoomInFlagCacheKey = computed(() => {
                     :customRequest="() => {}"
                     @change="upLoad">
                     <Icon icon="icon-shangchuan" class="mr-1 text-theme-special" />
-                    <span class="text-3 text-theme-text-hover">上传附件，最多上传5个</span>
+                    <span class="text-3 text-theme-text-hover">{{ t('task.editModal.form.attachmentsUpload') }}</span>
                   </Upload>
                 </div>
               </template>
@@ -1362,7 +1365,7 @@ const zoomInFlagCacheKey = computed(() => {
         class="text-3 leading-3"
         size="small"
         @click="cancel">
-        取消
+        {{ t('actions.cancel') }}
       </Button>
       <Button
         v-if="showContinue"
@@ -1371,7 +1374,7 @@ const zoomInFlagCacheKey = computed(() => {
         size="small"
         :disabled="loading"
         @click="submit(true)">
-        保存并继续添加
+        {{ t('task.editModal.actions.saveAndContinue') }}
       </Button>
       <Button
         type="primary"
@@ -1379,7 +1382,7 @@ const zoomInFlagCacheKey = computed(() => {
         size="small"
         :disabled="loading"
         @click="submit(false)">
-        确定
+        {{ t('actions.confirm') }}
       </Button>
     </template>
   </Modal>

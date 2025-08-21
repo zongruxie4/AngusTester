@@ -935,6 +935,124 @@
         "comments": "Comments",
         "activity": "Activity"
       }
+    },
+    "flowChart": {
+      "title": "Task Processing Flow Chart"
+    },
+    "editModal": {
+      "title": {
+        "edit": "Edit Task",
+        "add": "Add Task"
+      },
+      "tooltip": {
+        "zoomIn": "Full Screen",
+        "zoomOut": "Minimize"
+      },
+      "form": {
+        "name": "Name",
+        "namePlaceholder": "Task name, maximum 200 characters",
+        "nameRule": "Task name, maximum 200 characters",
+        "type": "Type",
+        "typePlaceholder": "Please select task type",
+        "priority": "Priority",
+        "priorityPlaceholder": "Please select priority",
+        "bugLevel": "Bug Level",
+        "missingBugFlag": "Is Missing Test Bug",
+        "missingBugOptions": {
+          "yes": "Yes",
+          "no": "No"
+        },
+        "scenario": "Scenario",
+        "scenarioPlaceholder": "Please select scenario",
+        "scenarioRule": "Please select scenario",
+        "testType": "Test Type",
+        "testTypePlaceholder": "Please select test type",
+        "service": "Service",
+        "servicePlaceholder": "Select or search service",
+        "serviceRule": "Please select service",
+        "api": "API",
+        "apiPlaceholder": "Please select API",
+        "apiRule": "Please select API",
+        "assignee": "Assignee",
+        "assigneePlaceholder": "Select assignee",
+        "assigneeRule": "Select assignee",
+        "assigneeTip": "Responsible for actually executing assigned work tasks.",
+        "assignToMe": "Assign to Me",
+        "confirmer": "Confirmer",
+        "confirmerPlaceholder": "Select confirmer",
+        "confirmerTip": "Person responsible for verifying and validating work results, will automatically enter confirmation process when specified.",
+        "deadline": "Deadline",
+        "deadlineRule": "Please select deadline",
+        "deadlineFutureRule": "Deadline must be a future time",
+        "deadlineSprintRule": "Exceeds sprint deadline ({deadline})",
+        "tester": "Tester",
+        "testerPlaceholder": "Select tester",
+        "testerTip": "Person responsible for testing and validating product functionality or service quality.",
+        "description": "Description",
+        "descriptionPlaceholder": "Task description, maximum 6000 characters",
+        "descriptionRule": "Description maximum 6000 characters",
+        "sprint": "Sprint",
+        "sprintPlaceholder": "Select or search sprint",
+        "sprintRule": "Please select sprint",
+        "module": "Module",
+        "modulePlaceholder": "Select or search module",
+        "parentTask": "Parent Task",
+        "parentTaskPlaceholder": "Please select parent task",
+        "workload": {
+          "evalStoryPoint": "Estimated Story Points",
+          "evalWorkload": "Estimated Workload",
+          "actualStoryPoint": "Actual Story Points",
+          "actualWorkload": "Actual Workload",
+          "placeholder": "Minimum 0.1, maximum 1000, up to 2 decimal places",
+          "storyPointTip": "Assessment value of work volume, comprehensive difficulty, complexity, etc.",
+          "workloadTip": "Time spent on work assessment, calculated in hours.",
+          "actualStoryPointTip": "Actual value of work volume, comprehensive difficulty, complexity, etc.",
+          "actualWorkloadTip": "Actual time spent on work, calculated in hours.",
+          "rule": "Please enter estimated workload"
+        },
+        "softwareVersion": "Software Version",
+        "softwareVersionPlaceholder": "Please select version",
+        "tags": "Tags",
+        "tagsPlaceholder": "Maximum 5 tags",
+        "tagsTip": "\"Task tags\" can help you organize tasks with common points, such as \"project name, iteration version, business identifier\", etc.",
+        "tagsNotFound": "Please contact administrator to configure task tags in \"Application Management\"-\"Task Management\"-\"Task Tags\".",
+        "assocTasks": "Associated Tasks",
+        "assocTasksPlaceholder": "Maximum 20 associated tasks",
+        "assocCases": "Associated Cases",
+        "assocCasesPlaceholder": "Maximum 20 associated cases",
+        "attachments": "Attachments",
+        "attachmentsAdd": "Add attachments, maximum 5 attachments",
+        "attachmentsContinue": "Continue Upload",
+        "attachmentsUpload": "Upload attachments, maximum 5"
+      },
+      "taskTypes": {
+        "requirement": "Requirement",
+        "story": "Story",
+        "task": "Task",
+        "bug": "Bug",
+        "apiTest": "API Test",
+        "scenarioTest": "Scenario Test"
+      },
+      "taskTypeDescriptions": {
+        "requirement": "User expectations or requirements for business, functionality, etc., with broad descriptions.",
+        "story": "Specific goals or expectations that users want to achieve, usually described in simple, understandable language, such as: As a <role>, I want <goal> so that <benefit>.",
+        "task": "General work items or activities",
+        "bug": "Program errors or vulnerabilities",
+        "apiTest": "API functionality, performance, stability testing tasks",
+        "scenarioTest": "Scenario functionality, performance, stability testing tasks"
+      },
+      "messages": {
+        "addSuccess": "Task added successfully",
+        "editSuccess": "Task edited successfully"
+      },
+      "actions": {
+        "cancel": "Cancel",
+        "saveAndContinue": "Save and Continue Adding",
+        "confirm": "Confirm"
+      },
+      "status": {
+        "overdue": "Overdue"
+      }
     }
   },
   "taskSprint": {

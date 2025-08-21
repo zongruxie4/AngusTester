@@ -938,6 +938,124 @@
         "comments": "评论",
         "activity": "活动"
       }
+    },
+    "flowChart": {
+      "title": "任务处理流程图"
+    },
+    "editModal": {
+      "title": {
+        "edit": "编辑任务",
+        "add": "添加任务"
+      },
+      "tooltip": {
+        "zoomIn": "全屏",
+        "zoomOut": "缩小"
+      },
+      "form": {
+        "name": "名称",
+        "namePlaceholder": "任务名称，最大支持200字符",
+        "nameRule": "任务名称，最大支持200字符",
+        "type": "类型",
+        "typePlaceholder": "请选择任务类型",
+        "priority": "优先级",
+        "priorityPlaceholder": "请选择优先级",
+        "bugLevel": "缺陷等级",
+        "missingBugFlag": "是否漏测缺陷",
+        "missingBugOptions": {
+          "yes": "是",
+          "no": "否"
+        },
+        "scenario": "场景",
+        "scenarioPlaceholder": "请选择场景",
+        "scenarioRule": "请选择场景",
+        "testType": "测试类型",
+        "testTypePlaceholder": "请选择测试类型",
+        "service": "所属服务",
+        "servicePlaceholder": "选择或查询服务",
+        "serviceRule": "请选择服务",
+        "api": "接口",
+        "apiPlaceholder": "请选择接口",
+        "apiRule": "请选择接口",
+        "assignee": "经办人",
+        "assigneePlaceholder": "选择经办人",
+        "assigneeRule": "选择经办人",
+        "assigneeTip": "负责实际执行分配的工作任务。",
+        "assignToMe": "指派给我",
+        "confirmer": "确认人",
+        "confirmerPlaceholder": "选择确认人",
+        "confirmerTip": "负责核实和验证工作结果的人员，指定后会自动进入确认流程。",
+        "deadline": "截止时间",
+        "deadlineRule": "请选择截止时间",
+        "deadlineFutureRule": "截止时间必须是一个未来时间",
+        "deadlineSprintRule": "超过了迭代截止时间({deadline})",
+        "tester": "测试人",
+        "testerPlaceholder": "选择测试人",
+        "testerTip": "负责测试和验证产品功能或服务质量的人员。",
+        "description": "描述",
+        "descriptionPlaceholder": "任务描述，最大支持6000个字符",
+        "descriptionRule": "描述最大支持6000个字符",
+        "sprint": "所属迭代",
+        "sprintPlaceholder": "选择或查询迭代",
+        "sprintRule": "请选择所属迭代",
+        "module": "所属模块",
+        "modulePlaceholder": "选择或查模块",
+        "parentTask": "父任务",
+        "parentTaskPlaceholder": "请选择父任务",
+        "workload": {
+          "evalStoryPoint": "评估故事点",
+          "evalWorkload": "评估工时",
+          "actualStoryPoint": "实际故事点",
+          "actualWorkload": "实际工时",
+          "placeholder": "最小0.1，最大1000，最多支持2位小数",
+          "storyPointTip": "工作任务量、综合难度、复杂度等的评估值。",
+          "workloadTip": "工作评估所花费的时间，以小时为单位计算。",
+          "actualStoryPointTip": "工作任务量、综合难度、复杂度等的实际值。",
+          "actualWorkloadTip": "工作实际所花费的时间，以小时为单位计算。",
+          "rule": "请输入评估工作量"
+        },
+        "softwareVersion": "软件版本",
+        "softwareVersionPlaceholder": "请选择所属版本",
+        "tags": "标签",
+        "tagsPlaceholder": "最多可添加5个标签",
+        "tagsTip": "\"任务标签\"可以帮助您组织有共同点的任务，例如\"项目名称、迭代版本、业务标识\"等。",
+        "tagsNotFound": "请联系管理员，前往\"应用管理\"-\"任务管理\"-\"任务标签\"配置任务标签。",
+        "assocTasks": "关联任务",
+        "assocTasksPlaceholder": "最多可关联20个任务",
+        "assocCases": "关联用例",
+        "assocCasesPlaceholder": "最多可关联20个用例",
+        "attachments": "附件",
+        "attachmentsAdd": "添加附件,最多上传5个附件",
+        "attachmentsContinue": "继续上传",
+        "attachmentsUpload": "上传附件，最多上传5个"
+      },
+      "taskTypes": {
+        "requirement": "需求",
+        "story": "故事",
+        "task": "任务",
+        "bug": "缺陷",
+        "apiTest": "接口测试",
+        "scenarioTest": "场景测试"
+      },
+      "taskTypeDescriptions": {
+        "requirement": "用户对业务、功能等的期望或要求，描述有广泛性。",
+        "story": "用户想要实现的具体目标或期望，通常以简洁、可理解的语言进行描述，如：作为 <角色>，我希望 <目标>，以便 <收益>。",
+        "task": "一般工作事项或活动",
+        "bug": "程序错误或漏洞",
+        "apiTest": "接口的功能、性能、稳定性测试任务",
+        "scenarioTest": "场景的功能、性能、稳定性测试任务"
+      },
+      "messages": {
+        "addSuccess": "任务添加成功",
+        "editSuccess": "任务编辑成功"
+      },
+      "actions": {
+        "cancel": "取消",
+        "saveAndContinue": "保存并继续添加",
+        "confirm": "确定"
+      },
+      "status": {
+        "overdue": "已逾期"
+      }
     }
   },
   "taskSprint": {
