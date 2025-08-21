@@ -812,6 +812,102 @@
       "noMore": "No More",
       "previousTask": "Previous Task",
       "nextTask": "Next Task"
+    },
+    "upload": {
+      "title": "Import Task",
+      "form": {
+        "iteration": "Iteration",
+        "selectIteration": "Select Iteration",
+        "uploadFile": "Please upload file",
+        "selectFile": "Select File",
+        "uploadTip": "You can directly drag files into this area for direct upload. File size should not exceed 20M, supporting .xls .xlsx file types.",
+        "taskImportTemplate": "Task Import Template",
+        "duplicateStrategy": "Processing Strategy When Encountering Duplicates"
+      }
+    },
+    "table": {
+      "columns": {
+        "code": "Code",
+        "name": "Name",
+        "priority": "Priority",
+        "status": "Status",
+        "execResult": "Execution Result",
+        "assignee": "Assignee",
+        "creator": "Creator",
+        "confirmer": "Confirmer",
+        "lastModifier": "Last Modifier",
+        "executor": "Executor",
+        "workload": "Workload",
+        "sprint": "Sprint",
+        "apiScenario": "API/Scenario",
+        "service": "Service",
+        "failCount": "Fail Count",
+        "processCount": "Process Count",
+        "addTime": "Add Time",
+        "deadline": "Deadline",
+        "startTime": "Start Time",
+        "processTime": "Process Time",
+        "confirmTime": "Confirm Time",
+        "completeTime": "Complete Time",
+        "cancelTime": "Cancel Time",
+        "execTime": "Execution Time",
+        "lastModifyTime": "Last Modify Time",
+        "operation": "Operation"
+      },
+      "batchActions": {
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "favourite": "Favourite",
+        "cancelFavourite": "Cancel Favourite",
+        "follow": "Follow",
+        "cancelFollow": "Cancel Follow",
+        "move": "Move",
+        "cancelBatch": "Cancel Batch Operation"
+      },
+      "messages": {
+        "maxBatchLimit": "Maximum support for batch operations of {maxNum} tasks, currently selected {selectedNum} tasks.",
+        "cancelConfirm": "Are you sure to cancel the selected {num} tasks?",
+        "cancelNumSuccess": "All {num} selected tasks cancelled successfully",
+        "cancelFail": "All {num} selected tasks failed to cancel",
+        "cancelPartial": "{successNum} selected tasks cancelled successfully, {errorNum} tasks failed to cancel",
+        "deleteConfirm": "Are you sure to delete the selected {num} tasks?",
+        "deleteSuccess": "Selected {num} tasks deleted successfully",
+        "favouriteConfirm": "Are you sure to favourite the selected {num} tasks?",
+        "favouriteNumSuccess": "All {num} selected tasks favourited successfully",
+        "favouriteFail": "All {num} selected tasks failed to favourite",
+        "favouritePartial": "{successNum} selected tasks favourited successfully, {errorNum} tasks failed to favourite",
+        "cancelFavouriteConfirm": "Are you sure to cancel favourite for the selected {num} tasks?",
+        "cancelFavouriteNumSuccess": "All {num} selected tasks cancelled favourite successfully",
+        "cancelFavouriteFail": "All {num} selected tasks failed to cancel favourite",
+        "cancelFavouritePartial": "{successNum} selected tasks cancelled favourite successfully, {errorNum} tasks failed to cancel favourite",
+        "followConfirm": "Are you sure to follow the selected {num} tasks?",
+        "followNumSuccess": "All {num} selected tasks followed successfully",
+        "followFail": "All {num} selected tasks failed to follow",
+        "followPartial": "{successNum} selected tasks followed successfully, {errorNum} tasks failed to follow",
+        "cancelFollowConfirm": "Are you sure to cancel follow for the selected {num} tasks?",
+        "cancelFollowNumSuccess": "All {num} selected tasks cancelled follow successfully",
+        "cancelFollowFail": "All {num} selected tasks failed to cancel follow",
+        "cancelFollowPartial": "{successNum} selected tasks cancelled follow successfully, {errorNum} tasks failed to cancel follow",
+        "deleteTaskConfirm": "Are you sure to delete task 【{name}】?",
+        "deleteTaskSuccess": "Task deleted successfully, you can view the deleted task in the recycle bin",
+        "favouriteSuccess": "Task favourited successfully",
+        "cancelFavouriteSuccess": "Task cancelled favourite successfully",
+        "followSuccess": "Task followed successfully",
+        "cancelFollowSuccess": "Task cancelled follow successfully",
+        "startSuccess": "Task started processing successfully",
+        "processedSuccess": "Task processed successfully",
+        "reopenSuccess": "Task reopened successfully",
+        "restartSuccess": "Task restarted successfully",
+        "cancelSuccess": "Task cancelled successfully",
+        "copySuccess": "Copy successful",
+        "copyFail": "Copy failed"
+      },
+      "status": {
+        "overdue": "Overdue"
+      },
+      "actions": {
+        "edit": "Edit"
+      }
     }
   },
   "taskSprint": {

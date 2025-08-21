@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, TableColumnProps } from 'ant-design-vue';
 import {
   AsyncComponent,
@@ -14,6 +15,8 @@ import {
 } from '@xcan-angus/vue-ui';
 import { toClipboard } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
+
+const { t } = useI18n();
 
 import { TaskInfo } from '../../../../PropsType';
 import { ActionMenuItem } from '../../PropsType';
@@ -105,7 +108,7 @@ const tableSelect = (keys: string[]) => {
 
   const selectedNum = selectedRowKeys.length;
   if (selectedNum > MAX_NUM) {
-    notification.info(`最大支持批量操作 ${MAX_NUM} 个任务，当前已选中 ${selectedNum} 个任务。`);
+    notification.info(t('task.table.messages.maxBatchLimit', { maxNum: MAX_NUM, selectedNum }));
   }
 
   rowSelection.value.selectedRowKeys = selectedRowKeys;
@@ -140,7 +143,7 @@ const cancelBatchOperation = () => {
 const batchCancel = async () => {
   const num = rowSelection.value.selectedRowKeys.length;
   modal.confirm({
-    content: `确定取消选中的 ${num} 条任务吗？`,
+    content: t('task.table.messages.cancelConfirm', { num }),
     async onOk () {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const promises: Promise<any>[] = [];
@@ -159,7 +162,7 @@ const batchCancel = async () => {
         const errorNum = errorIds.length;
         if (errorNum === 0) {
           emit('refreshChange');
-          notification.success(`选中的 ${num} 条任务全部取消成功`);
+          notification.success(t('task.table.messages.cancelNumSuccess', { num }));
           emit('batchAction', 'cancel', ids);
           rowSelection.value.selectedRowKeys = [];
           selectedDataMap.value = {};
@@ -167,12 +170,12 @@ const batchCancel = async () => {
         }
 
         if (errorNum === num) {
-          notification.error(`选中的 ${num} 条任务全部取消失败`);
+          notification.error(t('task.table.messages.cancelFail', { num }));
           return;
         }
 
         const successIds = ids.filter(item => !errorIds.includes(item));
-        notification.warning(`选中的 ${num - errorNum} 条任务取消成功，${errorNum} 条任务取消失败`);
+        notification.warning(t('task.table.messages.cancelPartial', { successNum: num - errorNum, errorNum }));
 
         emit('refreshChange');
         emit('batchAction', 'cancel', successIds);
@@ -189,7 +192,7 @@ const batchCancel = async () => {
 const batchDelete = async () => {
   const num = rowSelection.value.selectedRowKeys.length;
   modal.confirm({
-    content: `确定删除选中的 ${num} 条任务吗？`,
+    content: t('task.table.messages.deleteConfirm', { num }),
     async onOk () {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const [error] = await task.deleteTask(ids);
@@ -198,7 +201,7 @@ const batchDelete = async () => {
       }
 
       emit('refreshChange');
-      notification.success(`选中的 ${num} 条任务删除成功`);
+      notification.success(t('task.table.messages.deleteSuccess', { num }));
       emit('batchAction', 'delete', ids);
       rowSelection.value.selectedRowKeys = [];
       selectedDataMap.value = {};
@@ -209,7 +212,7 @@ const batchDelete = async () => {
 const batchFavourite = async () => {
   const num = rowSelection.value.selectedRowKeys.length;
   modal.confirm({
-    content: `确定收藏选中的 ${num} 条任务吗？`,
+    content: t('task.table.messages.favouriteConfirm', { num }),
     async onOk () {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const promises: Promise<any>[] = [];
@@ -227,7 +230,7 @@ const batchFavourite = async () => {
 
         const errorNum = errorIds.length;
         if (errorNum === 0) {
-          notification.success(`选中的 ${num} 条任务全部收藏成功`);
+          notification.success(t('task.table.messages.favouriteNumSuccess', { num }));
           emit('batchAction', 'favourite', ids);
           rowSelection.value.selectedRowKeys = [];
           selectedDataMap.value = {};
@@ -235,12 +238,12 @@ const batchFavourite = async () => {
         }
 
         if (errorNum === num) {
-          notification.error(`选中的 ${num} 条任务全部收藏失败`);
+          notification.error(t('task.table.messages.favouriteFail', { num }));
           return;
         }
 
         const successIds = ids.filter(item => !errorIds.includes(item));
-        notification.warning(`选中的 ${num - errorNum} 条任务收藏成功，${errorNum} 条任务收藏失败`);
+        notification.warning(t('task.table.messages.favouritePartial', { successNum: num - errorNum, errorNum }));
 
         emit('batchAction', 'favourite', successIds);
 
@@ -256,7 +259,7 @@ const batchFavourite = async () => {
 const batchCancelFavourite = async () => {
   const num = rowSelection.value.selectedRowKeys.length;
   modal.confirm({
-    content: `确定取消收藏选中的 ${num} 条任务吗？`,
+    content: t('task.table.messages.cancelFavouriteConfirm', { num }),
     async onOk () {
       // 过滤出要取消收藏的任务
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
@@ -275,7 +278,7 @@ const batchCancelFavourite = async () => {
 
         const errorNum = errorIds.length;
         if (errorNum === 0) {
-          notification.success(`选中的 ${num} 条任务全部取消收藏成功`);
+          notification.success(t('task.table.messages.cancelFavouriteNumSuccess', { num }));
           emit('batchAction', 'favourite', ids);
           rowSelection.value.selectedRowKeys = [];
           selectedDataMap.value = {};
@@ -283,12 +286,12 @@ const batchCancelFavourite = async () => {
         }
 
         if (errorNum === num) {
-          notification.error(`选中的 ${num} 条任务全部取消收藏失败`);
+          notification.error(t('task.table.messages.cancelFavouriteFail', { num }));
           return;
         }
 
         const successIds = ids.filter(item => !errorIds.includes(item));
-        notification.warning(`选中的 ${num - errorNum} 条任务取消收藏成功，${errorNum} 条任务取消收藏失败`);
+        notification.warning(t('task.table.messages.cancelFavouritePartial', { successNum: num - errorNum, errorNum }));
 
         emit('batchAction', 'favourite', successIds);
 
@@ -304,7 +307,7 @@ const batchCancelFavourite = async () => {
 const batchFollow = async () => {
   const num = rowSelection.value.selectedRowKeys.length;
   modal.confirm({
-    content: `确定关注选中的 ${num} 条任务吗？`,
+    content: t('task.table.messages.followConfirm', { num }),
     async onOk () {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const promises: Promise<any>[] = [];
@@ -322,7 +325,7 @@ const batchFollow = async () => {
 
         const errorNum = errorIds.length;
         if (errorNum === 0) {
-          notification.success(`选中的 ${num} 条任务全部关注成功`);
+          notification.success(t('task.table.messages.followNumSuccess', { num }));
           emit('batchAction', 'favourite', ids);
           rowSelection.value.selectedRowKeys = [];
           selectedDataMap.value = {};
@@ -330,12 +333,12 @@ const batchFollow = async () => {
         }
 
         if (errorNum === num) {
-          notification.error(`选中的 ${num} 条任务全部关注失败`);
+          notification.error(t('task.table.messages.followFail', { num }));
           return;
         }
 
         const successIds = ids.filter(item => !errorIds.includes(item));
-        notification.warning(`选中的 ${num - errorNum} 条任务关注成功，${errorNum} 条任务关注失败`);
+        notification.warning(t('task.table.messages.followPartial', { successNum: num - errorNum, errorNum }));
 
         emit('batchAction', 'favourite', successIds);
 
@@ -351,7 +354,7 @@ const batchFollow = async () => {
 const batchCancelFollow = async () => {
   const num = rowSelection.value.selectedRowKeys.length;
   modal.confirm({
-    content: `确定取消关注选中的 ${num} 条任务吗？`,
+    content: t('task.table.messages.cancelFollowConfirm', { num }),
     async onOk () {
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const promises: Promise<any>[] = [];
@@ -369,7 +372,7 @@ const batchCancelFollow = async () => {
 
         const errorNum = errorIds.length;
         if (errorNum === 0) {
-          notification.success(`选中的 ${num} 条任务全部取消关注成功`);
+          notification.success(t('task.table.messages.cancelFollowNumSuccess', { num }));
           emit('batchAction', 'favourite', ids);
           rowSelection.value.selectedRowKeys = [];
           selectedDataMap.value = {};
@@ -377,12 +380,12 @@ const batchCancelFollow = async () => {
         }
 
         if (errorNum === num) {
-          notification.error(`选中的 ${num} 条任务全部取消关注失败`);
+          notification.error(t('task.table.messages.cancelFollowFail', { num }));
           return;
         }
 
         const successIds = ids.filter(item => !errorIds.includes(item));
-        notification.warning(`选中的 ${num - errorNum} 条任务取消关注成功，${errorNum} 条任务取消关注失败`);
+        notification.warning(t('task.table.messages.cancelFollowPartial', { successNum: num - errorNum, errorNum }));
 
         emit('batchAction', 'favourite', successIds);
 
@@ -411,7 +414,7 @@ const toEdit = (id: string) => {
 
 const toDelete = (data: TaskInfo) => {
   modal.confirm({
-    content: `确定删除任务【${data.name}】吗？`,
+    content: t('task.table.messages.deleteTaskConfirm', { name: data.name }),
     async onOk () {
       const [error] = await task.deleteTask([data.id]);
       if (error) {
@@ -420,7 +423,7 @@ const toDelete = (data: TaskInfo) => {
 
       emit('refreshChange');
       emit('delete', data.id);
-      notification.success('任务删除成功，您可以在回收站查看删除后的任务');
+      notification.success(t('task.table.messages.deleteTaskSuccess'));
     }
   });
 };
@@ -498,7 +501,7 @@ const toFavourite = async (data: TaskInfo) => {
     return;
   }
 
-  notification.success('任务收藏成功');
+  notification.success(t('task.table.messages.favouriteSuccess'));
   emit('dataChange', { id: data.id, favouriteFlag: true });
 };
 
@@ -508,7 +511,7 @@ const toDeleteFavourite = async (data: TaskInfo) => {
     return;
   }
 
-  notification.success('任务取消收藏成功');
+  notification.success(t('task.table.messages.cancelFavouriteSuccess'));
   emit('dataChange', { id: data.id, favouriteFlag: false });
 };
 
@@ -518,7 +521,7 @@ const toFollow = async (data: TaskInfo) => {
     return;
   }
 
-  notification.success('任务关注成功');
+  notification.success(t('task.table.messages.followSuccess'));
   emit('dataChange', { id: data.id, followFlag: true });
 };
 
@@ -528,7 +531,7 @@ const toDeleteFollow = async (data: TaskInfo) => {
     return;
   }
 
-  notification.success('任务取消关注成功');
+  notification.success(t('task.table.messages.cancelFollowSuccess'));
   emit('dataChange', { id: data.id, followFlag: false });
 };
 
@@ -540,7 +543,7 @@ const toStart = async (data: TaskInfo) => {
   }
 
   emit('refreshChange');
-  notification.success('任务开始处理成功');
+  notification.success(t('task.table.messages.startSuccess'));
   const detailData = await loadData(id);
   emit('dataChange', detailData);
 };
@@ -553,7 +556,7 @@ const toProcessed = async (data: TaskInfo) => {
   }
 
   emit('refreshChange');
-  notification.success('任务已处理成功');
+  notification.success(t('task.table.messages.processedSuccess'));
   const detailData = await loadData(id);
   emit('dataChange', detailData);
 };
@@ -590,7 +593,7 @@ const toReopen = async (data: TaskInfo) => {
   }
 
   emit('refreshChange');
-  notification.success('任务重新打开成功');
+  notification.success(t('task.table.messages.reopenSuccess'));
   const detailData = await loadData(id);
   emit('dataChange', detailData);
 };
@@ -603,7 +606,7 @@ const toRestart = async (data: TaskInfo) => {
   }
 
   emit('refreshChange');
-  notification.success('任务重新开始成功');
+  notification.success(t('task.table.messages.restartSuccess'));
   const detailData = await loadData(id);
   emit('dataChange', detailData);
 };
@@ -620,7 +623,7 @@ const toCancel = async (data: TaskInfo) => {
   }
 
   emit('refreshChange');
-  notification.success('任务取消成功');
+  notification.success(t('task.table.messages.cancelSuccess'));
   const detailData = await loadData(id);
   emit('dataChange', detailData);
 };
@@ -628,9 +631,9 @@ const toCancel = async (data: TaskInfo) => {
 const toCopyHref = (data: TaskInfo) => {
   const message = window.location.origin + (data.linkUrl || '');
   toClipboard(message).then(() => {
-    notification.success('复制成功');
+    notification.success(t('task.table.messages.copySuccess'));
   }).catch(() => {
-    notification.error('复制失败');
+    notification.error(t('task.table.messages.copyFail'));
   });
 };
 
@@ -708,49 +711,49 @@ const columns: ({
   groupName?: string
 } & TableColumnProps)[] = [
   {
-    title: '编号',
+    title: t('task.table.columns.code'),
     dataIndex: 'code',
     width: 120,
     sorter: true,
     ellipsis: true
   },
   {
-    title: '名称',
+    title: t('task.table.columns.name'),
     dataIndex: 'name',
     width: '60%',
     sorter: true,
     ellipsis: true
   },
   {
-    title: '优先级',
+    title: t('task.table.columns.priority'),
     dataIndex: 'priority',
     width: 80,
     sorter: true,
     ellipsis: true
   },
   {
-    title: '状态',
+    title: t('task.table.columns.status'),
     dataIndex: 'status',
     width: 80,
     sorter: true,
     ellipsis: true
   },
   {
-    title: '执行结果',
+    title: t('task.table.columns.execResult'),
     dataIndex: 'execResult',
     width: 80,
     sorter: true,
     ellipsis: true
   },
   {
-    title: '经办人',
+    title: t('task.table.columns.assignee'),
     dataIndex: 'assigneeName',
     width: 100,
     groupName: 'personType',
     ellipsis: true
   },
   {
-    title: '添加人',
+    title: t('task.table.columns.creator'),
     dataIndex: 'createdByName',
     width: 100,
     hide: true,
@@ -758,7 +761,7 @@ const columns: ({
     ellipsis: true
   },
   {
-    title: '确认人',
+    title: t('task.table.columns.confirmer'),
     dataIndex: 'confirmorName',
     width: 100,
     hide: true,
@@ -766,7 +769,7 @@ const columns: ({
     ellipsis: true
   },
   {
-    title: '最后修改人',
+    title: t('task.table.columns.lastModifier'),
     dataIndex: 'lastModifiedByName',
     width: 100,
     hide: true,
@@ -774,7 +777,7 @@ const columns: ({
     ellipsis: true
   },
   {
-    title: '执行人',
+    title: t('task.table.columns.executor'),
     dataIndex: 'execUserName',
     width: 100,
     hide: true,
@@ -782,21 +785,21 @@ const columns: ({
     ellipsis: true
   },
   {
-    title: '工作量',
+    title: t('task.table.columns.workload'),
     dataIndex: 'evalWorkload',
     width: 80,
     sorter: true,
     ellipsis: true
   },
   {
-    title: '所属迭代',
+    title: t('task.table.columns.sprint'),
     dataIndex: 'sprintName',
     groupName: 'target',
     width: '40%',
     ellipsis: true
   },
   {
-    title: '接口/场景',
+    title: t('task.table.columns.apiScenario'),
     hide: true,
     dataIndex: 'targetName',
     groupName: 'target',
@@ -804,7 +807,7 @@ const columns: ({
     ellipsis: true
   },
   {
-    title: '服务',
+    title: t('task.table.columns.service'),
     hide: true,
     dataIndex: 'targetParentName',
     groupName: 'target',
@@ -812,7 +815,7 @@ const columns: ({
     ellipsis: true
   },
   {
-    title: '失败次数',
+    title: t('task.table.columns.failCount'),
     dataIndex: 'failNum',
     width: 105,
     hide: true,
@@ -821,7 +824,7 @@ const columns: ({
     ellipsis: true
   },
   {
-    title: '处理次数',
+    title: t('task.table.columns.processCount'),
     dataIndex: 'totalNum',
     width: 105,
     sorter: true,
@@ -829,7 +832,7 @@ const columns: ({
     ellipsis: true
   },
   {
-    title: '添加时间',
+    title: t('task.table.columns.addTime'),
     dataIndex: 'createdDate',
     width: 140,
     groupName: 'date',
@@ -837,7 +840,7 @@ const columns: ({
     ellipsis: true
   },
   {
-    title: '截止时间',
+    title: t('task.table.columns.deadline'),
     dataIndex: 'deadlineDate',
     width: 140,
     hide: true,
@@ -846,7 +849,7 @@ const columns: ({
     ellipsis: true
   },
   {
-    title: '开始时间',
+    title: t('task.table.columns.startTime'),
     dataIndex: 'startDate',
     width: 140,
     hide: true,
@@ -855,7 +858,7 @@ const columns: ({
     ellipsis: true
   },
   {
-    title: '处理时间',
+    title: t('task.table.columns.processTime'),
     dataIndex: 'processedDate',
     width: 140,
     hide: true,
@@ -864,7 +867,7 @@ const columns: ({
     ellipsis: true
   },
   {
-    title: '确认时间',
+    title: t('task.table.columns.confirmTime'),
     dataIndex: 'confirmedDate',
     width: 140,
     hide: true,
@@ -873,7 +876,7 @@ const columns: ({
     ellipsis: true
   },
   {
-    title: '完成时间',
+    title: t('task.table.columns.completeTime'),
     dataIndex: 'completedDate',
     width: 140,
     hide: true,
@@ -882,7 +885,7 @@ const columns: ({
     ellipsis: true
   },
   {
-    title: '取消时间',
+    title: t('task.table.columns.cancelTime'),
     dataIndex: 'canceledDate',
     width: 140,
     hide: true,
@@ -891,7 +894,7 @@ const columns: ({
     ellipsis: true
   },
   {
-    title: '执行时间',
+    title: t('task.table.columns.execTime'),
     dataIndex: 'execCompletedDate',
     width: 140,
     hide: true,
@@ -900,7 +903,7 @@ const columns: ({
     ellipsis: true
   },
   {
-    title: '最后修改时间',
+    title: t('task.table.columns.lastModifyTime'),
     dataIndex: 'lastModifiedDate',
     width: 140,
     hide: true,
@@ -909,7 +912,7 @@ const columns: ({
     ellipsis: true
   },
   {
-    title: '操作',
+    title: t('task.table.columns.operation'),
     dataIndex: 'action',
     align: 'center',
     width: 140
@@ -932,7 +935,7 @@ const EXEC_RESULT_COLOR = {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="batchCancel">
-        取消
+                 {{ t('actions.cancel') }}
       </Button>
 
       <Button
@@ -941,7 +944,7 @@ const EXEC_RESULT_COLOR = {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="batchDelete">
-        删除
+        {{ t('actions.delete') }}
       </Button>
 
       <Button
@@ -950,7 +953,7 @@ const EXEC_RESULT_COLOR = {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="batchFavourite">
-        收藏
+        {{ t('actions.favourite') }}
       </Button>
 
       <Button
@@ -959,7 +962,7 @@ const EXEC_RESULT_COLOR = {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="batchCancelFavourite">
-        取消收藏
+        {{ t('actions.unFavourite') }}
       </Button>
 
       <Button
@@ -968,7 +971,7 @@ const EXEC_RESULT_COLOR = {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="batchFollow">
-        关注
+        {{ t('actions.follow') }}
       </Button>
 
       <Button
@@ -977,7 +980,7 @@ const EXEC_RESULT_COLOR = {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="batchCancelFollow">
-        取消关注
+        {{ t('actions.unfollow') }}
       </Button>
 
       <Button
@@ -986,7 +989,7 @@ const EXEC_RESULT_COLOR = {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="batchMove">
-        移动
+        {{ t('actions.move') }}
       </Button>
 
       <Button
@@ -995,7 +998,7 @@ const EXEC_RESULT_COLOR = {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="cancelBatchOperation">
-        <span>取消批量操作</span>
+        <span>{{ t('task.table.batchActions.cancelBatch') }}</span>
         <span class="ml-1">({{ props.selectedIds.length }})</span>
       </Button>
     </div>
@@ -1019,7 +1022,7 @@ const EXEC_RESULT_COLOR = {
             v-if="record.overdue"
             class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
             style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-            <span class="inline-block transform-gpu scale-90">已逾期</span>
+            <span class="inline-block transform-gpu scale-90">{{ t('task.table.status.overdue') }}</span>
           </span>
         </div>
 
@@ -1043,7 +1046,7 @@ const EXEC_RESULT_COLOR = {
             class="flex items-center px-0 mr-2.5"
             @click="toEdit(record.id)">
             <Icon icon="icon-shuxie" class="mr-1 text-3.5" />
-            <span>编辑</span>
+            <span>{{ t('actions.edit') }}</span>
           </Button>
 
           <Button
@@ -1053,7 +1056,7 @@ const EXEC_RESULT_COLOR = {
             class="flex items-center px-0 mr-2.5"
             @click="toDelete(record)">
             <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
-            <span>删除</span>
+            <span>{{ t('actions.delete') }}</span>
           </Button>
 
           <Dropdown :menuItems="props.menuItemsMap.get(record.id)" @click="dropdownClick($event, record)">

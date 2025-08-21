@@ -1,11 +1,14 @@
 <script lang="ts" setup>
 import { computed, inject, ref, watch, Ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon, Modal, Select, Spin } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, RadioGroup, UploadDragger } from 'ant-design-vue';
 import { TESTER, enumUtils } from '@xcan-angus/infra';
 import { StrategyWhenDuplicated } from '@/enums/enums';
 import { formatBytes } from '@/utils/common';
 import { task } from '@/api/tester';
+
+const { t } = useI18n();
 
 export interface Props{
   visible: boolean;
@@ -103,7 +106,7 @@ watch(() => props.visible, newValue => {
 </script>
 <template>
   <Modal
-    title="导入任务"
+    :title="t('task.upload.title')"
     :visible="props.visible"
     @cancel="cancel"
     @ok="ok">
@@ -113,7 +116,7 @@ watch(() => props.visible, newValue => {
       size="small">
       <FormItem
         v-if="proTypeShowMap.showSprint && props.visible"
-        label="迭代"
+        :label="t('task.upload.form.iteration')"
         name="sprintId">
         <Select
           v-model:value="formData.sprintId"
@@ -122,10 +125,10 @@ watch(() => props.visible, newValue => {
           :action="`${TESTER}/task/sprint?projectId=${projectId}&fullTextSearch=true`"
           :defaultActiveFirstOption="true"
           :lazy="false"
-          placeholder="选择迭代"
+          :placeholder="t('task.upload.form.selectIteration')"
           :fieldNames="{value: 'id', label: 'name'}" />
       </FormItem>
-      <FormItem :rules="{message: '请上传文件', validator: validateFile}" name="file">
+      <FormItem :rules="{message: t('task.upload.form.uploadFile'), validator: validateFile}" name="file">
         <Spin :spinning="loading">
           <UploadDragger
             v-show="!formData.file"
@@ -136,8 +139,8 @@ watch(() => props.visible, newValue => {
             class="text-3 leading-5">
             <div class="flex flex-col items-center justify-center text-3 leading-5">
               <Icon icon="icon-shangchuan" class="text-5 text-text-link" />
-              <div class="mt-1 mb-1.5 text-text-link">选择文件</div>
-              <div class="text-theme-sub-content">可直接将文件拖入此区域直接上传，文件大小不超过20M，支持.xls .xlsx类型文件。</div>
+              <div class="mt-1 mb-1.5 text-text-link">{{ t('task.upload.form.selectFile') }}</div>
+              <div class="text-theme-sub-content">{{ t('task.upload.form.uploadTip') }}</div>
             </div>
           </UploadDragger>
         </Spin>
@@ -161,12 +164,12 @@ watch(() => props.visible, newValue => {
             size="small"
             @click="handleDownloadTemplate">
             <Icon icon="icon-daochu1" class="text-4 cursor-pointer mr-1" />
-            任务导入模板
+            {{ t('task.upload.form.taskImportTemplate') }}
           </Button>
         </div>
       </FormItem>
       <FormItem
-        label="遇到重复时的处理策略"
+        :label="t('task.upload.form.duplicateStrategy')"
         name="strategyWhenDuplicated"
         required>
         <RadioGroup

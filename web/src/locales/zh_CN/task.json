@@ -277,7 +277,6 @@
       "bySubject": "主题"
     }
   },
- 
   "task": {
     "title": "任务",
     "addTask": "添加任务",
@@ -802,8 +801,6 @@
         "uiTest": "UI测试",
         "performanceTest": "性能测试"
       },
-
-
       "tabs": {
         "basicInfo": "基本信息",
         "remark": "备注",
@@ -818,8 +815,104 @@
       "noMore": "没有了",
       "previousTask": "上一条任务",
       "nextTask": "下一条任务"
+    },
+    "upload": {
+      "title": "导入任务",
+      "form": {
+        "iteration": "迭代",
+        "selectIteration": "选择迭代",
+        "uploadFile": "请上传文件",
+        "selectFile": "选择文件",
+        "uploadTip": "可直接将文件拖入此区域直接上传，文件大小不超过20M，支持.xls .xlsx类型文件。",
+        "taskImportTemplate": "任务导入模板",
+        "duplicateStrategy": "遇到重复时的处理策略"
       }
     },
+    "table": {
+      "columns": {
+        "code": "编号",
+        "name": "名称",
+        "priority": "优先级",
+        "status": "状态",
+        "execResult": "执行结果",
+        "assignee": "经办人",
+        "creator": "添加人",
+        "confirmer": "确认人",
+        "lastModifier": "最后修改人",
+        "executor": "执行人",
+        "workload": "工作量",
+        "sprint": "所属迭代",
+        "apiScenario": "接口/场景",
+        "service": "服务",
+        "failCount": "失败次数",
+        "processCount": "处理次数",
+        "addTime": "添加时间",
+        "deadline": "截止时间",
+        "startTime": "开始时间",
+        "processTime": "处理时间",
+        "confirmTime": "确认时间",
+        "completeTime": "完成时间",
+        "cancelTime": "取消时间",
+        "execTime": "执行时间",
+        "lastModifyTime": "最后修改时间",
+        "operation": "操作"
+      },
+      "batchActions": {
+        "cancel": "取消",
+        "delete": "删除",
+        "favourite": "收藏",
+        "cancelFavourite": "取消收藏",
+        "follow": "关注",
+        "cancelFollow": "取消关注",
+        "move": "移动",
+        "cancelBatch": "取消批量操作"
+      },
+      "messages": {
+        "maxBatchLimit": "最大支持批量操作 {maxNum} 个任务，当前已选中 {selectedNum} 个任务。",
+        "cancelConfirm": "确定取消选中的 {num} 条任务吗？",
+        "cancelNumSuccess": "选中的 {num} 条任务全部取消成功",
+        "cancelFail": "选中的 {num} 条任务全部取消失败",
+        "cancelPartial": "选中的 {successNum} 条任务取消成功，{errorNum} 条任务取消失败",
+        "deleteConfirm": "确定删除选中的 {num} 条任务吗？",
+        "deleteSuccess": "选中的 {num} 条任务删除成功",
+        "favouriteConfirm": "确定收藏选中的 {num} 条任务吗？",
+        "favouriteNumSuccess": "选中的 {num} 条任务全部收藏成功",
+        "favouriteFail": "选中的 {num} 条任务全部收藏失败",
+        "favouritePartial": "选中的 {successNum} 条任务收藏成功，{errorNum} 条任务收藏失败",
+        "cancelFavouriteConfirm": "确定取消收藏选中的 {num} 条任务吗？",
+        "cancelFavouriteNumSuccess": "选中的 {num} 条任务全部取消收藏成功",
+        "cancelFavouriteFail": "选中的 {num} 条任务全部取消收藏失败",
+        "cancelFavouritePartial": "选中的 {successNum} 条任务取消收藏成功，{errorNum} 条任务取消收藏失败",
+        "followConfirm": "确定关注选中的 {num} 条任务吗？",
+        "followNumSuccess": "选中的 {num} 条任务全部关注成功",
+        "followFail": "选中的 {num} 条任务全部关注失败",
+        "followPartial": "选中的 {successNum} 条任务关注成功，{errorNum} 条任务关注失败",
+        "cancelFollowConfirm": "确定取消关注选中的 {num} 条任务吗？",
+        "cancelFollowNumSuccess": "选中的 {num} 条任务全部取消关注成功",
+        "cancelFollowFail": "选中的 {num} 条任务全部取消关注失败",
+        "cancelFollowPartial": "选中的 {successNum} 条任务取消关注成功，{errorNum} 条任务取消关注失败",
+        "deleteTaskConfirm": "确定删除任务【{name}】吗？",
+        "deleteTaskSuccess": "任务删除成功，您可以在回收站查看删除后的任务",
+        "favouriteSuccess": "任务收藏成功",
+        "cancelFavouriteSuccess": "任务取消收藏成功",
+        "followSuccess": "任务关注成功",
+        "cancelFollowSuccess": "任务取消关注成功",
+        "startSuccess": "任务开始处理成功",
+        "processedSuccess": "任务已处理成功",
+        "reopenSuccess": "任务重新打开成功",
+        "restartSuccess": "任务重新开始成功",
+        "cancelSuccess": "任务取消成功",
+        "copySuccess": "复制成功",
+        "copyFail": "复制失败"
+      },
+      "status": {
+        "overdue": "已逾期"
+      },
+      "actions": {
+        "edit": "编辑"
+      }
+    }
+  },
   "taskSprint": {
     "title": "迭代",
     "addSprint": "添加迭代",
