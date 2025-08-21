@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Colon, Icon, IconText, SearchPanel, Select } from '@xcan-angus/vue-ui';
 import { ScriptType, TESTER, XCanDexie, enumUtils, ScriptSource } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
+
+const { t } = useI18n();
 
 import { MenuItem } from './PropsType';
 
@@ -543,28 +546,28 @@ const menuItems = computed(():MenuItem[] => {
   return [
     {
       key: 'none',
-      name: '所有'
+      name: t('scriptHome.searchPanel.quickSearchOptions.all')
     },
     {
       key: 'createdBy',
-      name: '我添加的'
+      name: t('scriptHome.searchPanel.quickSearchOptions.myAdded')
     },
     {
       key: 'lastModifiedBy',
-      name: '我修改的'
+      name: t('scriptHome.searchPanel.quickSearchOptions.myModified')
     },
     ...scriptTypeOpt.value,
     {
       key: 'lastDay',
-      name: '近1天'
+      name: t('scriptHome.searchPanel.quickSearchOptions.last1Day')
     },
     {
       key: 'lastThreeDays',
-      name: '近3天'
+      name: t('scriptHome.searchPanel.quickSearchOptions.last3Days')
     },
     {
       key: 'lastWeek',
-      name: '近7天'
+      name: t('scriptHome.searchPanel.quickSearchOptions.last7Days')
     }
   ];
 });
@@ -572,7 +575,7 @@ const menuItems = computed(():MenuItem[] => {
 const searchOptions = [
   {
     valueKey: 'name',
-    placeholder: '查询ID、名称、描述、插件',
+    placeholder: t('scriptHome.searchPanel.searchPlaceholder'),
     type: 'input',
     maxlength: 100
   },
@@ -585,14 +588,14 @@ const searchOptions = [
   // },
   {
     valueKey: 'source',
-    placeholder: '选择来源',
+    placeholder: t('scriptHome.searchPanel.sourcePlaceholder'),
     type: 'select-enum',
     enumKey: ScriptSource,
     excludes: sourceExcludes
   },
   {
     valueKey: 'tag',
-    placeholder: '查询标签',
+    placeholder: t('scriptHome.searchPanel.tagPlaceholder'),
     type: 'input',
     op: 'EQUAL',
     maxlength: 100
@@ -600,7 +603,7 @@ const searchOptions = [
   {
     type: 'select',
     valueKey: 'serviceId',
-    placeholder: '选择服务',
+    placeholder: t('scriptHome.searchPanel.servicePlaceholder'),
     noDefaultSlot: true
   },
   {
@@ -611,23 +614,23 @@ const searchOptions = [
   {
     type: 'select-user',
     valueKey: 'createdBy',
-    placeholder: '添加人'
+    placeholder: t('scriptHome.searchPanel.creatorPlaceholder'),
   },
   {
     type: 'select-user',
     valueKey: 'lastModifiedBy',
-    placeholder: '最后修改人'
+    placeholder: t('scriptHome.searchPanel.modifierPlaceholder'),
   },
   {
     type: 'date-range',
     valueKey: 'createdDate',
-    placeholder: ['添加时间从', '添加时间到'],
+    placeholder: [t('scriptHome.searchPanel.addTimePlaceholder.0'), t('scriptHome.searchPanel.addTimePlaceholder.1')],
     showTime: true
   },
   {
     type: 'date-range',
     valueKey: 'lastModifiedDate',
-    placeholder: ['修改时间从', '修改时间到'],
+    placeholder: [t('scriptHome.searchPanel.modifyTimePlaceholder.0'), t('scriptHome.searchPanel.modifyTimePlaceholder.1')],
     showTime: true
   }
 ];
@@ -637,7 +640,7 @@ const searchOptions = [
     <div class="flex items-start justify-between mb-1.5">
       <div class="flex items-start transform-gpu translate-y-0.5">
         <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-          <span>快速查询</span>
+          <span>{{ t('scriptHome.searchPanel.quickSearch') }}</span>
           <Colon />
         </div>
         <div class="flex flex-wrap ml-2">
@@ -666,7 +669,7 @@ const searchOptions = [
             :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            placeholder="选择服务"
+            :placeholder="t('scriptHome.searchPanel.servicePlaceholder')"
             class="w-72 ml-2"
             showSearch
             @change="serviceIdChange">
@@ -690,7 +693,7 @@ const searchOptions = [
             :params="apiParams"
             :fieldNames="{ label: 'summary', value: 'id' }"
             :allowClear="true"
-            placeholder="选择接口"
+            :placeholder="t('scriptHome.searchPanel.apiPlaceholder')"
             class="w-72 ml-2"
             showSearch
             @change="sourceIdChange">
@@ -711,7 +714,7 @@ const searchOptions = [
             :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
             :fieldNames="{ label: 'name', value: 'id' }"
             :allowClear="true"
-            placeholder="选择场景"
+            :placeholder="t('scriptHome.searchPanel.scenarioPlaceholder')"
             class="w-72 ml-2"
             showSearch
             @change="sourceIdChange">
@@ -733,7 +736,7 @@ const searchOptions = [
             class="h-6.5 leading-6.5 flex items-center space-x-1"
             to="/script/edit?type=edit">
             <Icon icon="icon-jia" />
-            <span>添加脚本</span>
+            <span>{{ t('scriptHome.searchPanel.addScript') }}</span>
           </RouterLink>
         </Button>
 
@@ -743,17 +746,17 @@ const searchOptions = [
           class="flex space-x-1"
           @click="toImport">
           <Icon icon="icon-shangchuan" class="text-3.5" />
-          <span>导入脚本</span>
+          <span>{{ t('scriptHome.searchPanel.importScript') }}</span>
         </Button>
 
         <Button size="small" @click="toAuth">
           <Icon icon="icon-quanxian1" class="mr-1 text-3.5" />
-          <span>脚本权限</span>
+          <span>{{ t('scriptHome.searchPanel.scriptAuth') }}</span>
         </Button>
 
         <Button size="small" @click="toRefresh">
           <Icon icon="icon-shuaxin" class="mr-1 text-3.5" />
-          <span>刷新</span>
+          <span>{{ t('actions.refresh') }}</span>
         </Button>
       </div>
     </div>

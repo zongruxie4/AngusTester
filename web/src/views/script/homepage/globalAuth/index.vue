@@ -4,6 +4,9 @@ import { enumUtils } from '@xcan-angus/infra';
 import { ScriptPermission } from '@/enums/enums';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { Hints, Modal } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const GroupSet = defineAsyncComponent(() => import('./GroupSet/index.vue'));
 const AuthSet = defineAsyncComponent(() => import('./AuthSet/index.vue'));
@@ -60,7 +63,7 @@ onMounted(() => {
   }, { immediate: true });
 });
 
-const text = '授权给指定的"功能"操作权限给用户、部门、组，授予权限时“查看”权限是必须的。用户只能授权自己有授权权限的功能。';
+const text = t('scriptHome.globalAuth.description');
 
 const bodyStyle = {
   padding: '0 20px',
@@ -70,7 +73,7 @@ const bodyStyle = {
 
 <template>
   <Modal
-    title="脚本权限"
+    :title="t('scriptHome.globalAuth.title')"
     :footer="false"
     :visible="props.visible"
     :bodyStyle="bodyStyle"
@@ -83,7 +86,7 @@ const bodyStyle = {
         v-model:activeKey="activeKey"
         size="small"
         style="height: calc(100% - 18px);">
-        <TabPane key="user" tab="用户">
+        <TabPane key="user" :tab="t('scriptHome.globalAuth.tabs.user')">
           <GroupSet
             key="user"
             v-model:checkedId="checkedUserId"
@@ -101,7 +104,7 @@ const bodyStyle = {
             :authObjectId="checkedUserId"
             :permissions="permissions" />
         </TabPane>
-        <TabPane key="dept" tab="部门">
+        <TabPane key="dept" :tab="t('scriptHome.globalAuth.tabs.dept')">
           <GroupSet
             key="dept"
             v-model:checkedId="checkedDeptId"
@@ -119,7 +122,7 @@ const bodyStyle = {
             :authObjectId="checkedDeptId"
             :permissions="permissions" />
         </TabPane>
-        <TabPane key="group" tab="组">
+        <TabPane key="group" :tab="t('scriptHome.globalAuth.tabs.group')">
           <GroupSet
             key="group"
             v-model:checkedId="checkedGroupId"

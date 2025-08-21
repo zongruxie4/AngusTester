@@ -1,0 +1,133 @@
+{
+  "scriptHome": {
+    "searchPanel": {
+      "quickSearch": "Quick Search",
+      "addScript": "Add Script",
+      "importScript": "Import Script",
+      "scriptAuth": "Script Auth",
+      "refresh": "Refresh",
+      "searchPlaceholder": "Search ID, name, description, plugin",
+      "scriptTypePlaceholder": "Select script type",
+      "sourcePlaceholder": "Select source",
+      "tagPlaceholder": "Search tags",
+      "servicePlaceholder": "Select service",
+      "apiPlaceholder": "Select API",
+      "scenarioPlaceholder": "Select scenario",
+      "creatorPlaceholder": "Creator",
+      "modifierPlaceholder": "Last modifier",
+      "addTimePlaceholder": ["Add time from", "Add time to"],
+      "modifyTimePlaceholder": ["Modify time from", "Modify time to"],
+      "quickSearchOptions": {
+        "all": "All",
+        "myAdded": "My Added",
+        "myModified": "My Modified",
+        "last1Day": "Last 1 Day",
+        "last3Days": "Last 3 Days",
+        "last7Days": "Last 7 Days"
+      }
+    },
+    "globalAuth": {
+      "description": "Grant specified \"function\" operation permissions to users, departments, and groups. \"View\" permission is required when granting permissions. Users can only authorize functions for which they have authorization permissions.",
+      "title": "Script Permission",
+      "tabs": {
+        "user": "User",
+        "dept": "Department",
+        "group": "Group"
+      },
+      "authSet": {
+        "searchPlaceholder": "Search Name",
+        "authPlaceholder": "Auth Control",
+        "auth": "Auth",
+        "all": "All",
+        "loading": "Loading..."
+      },
+      "groupSet": {
+        "deptPlaceholder": "Search Department",
+        "groupPlaceholder": "Search Group",
+        "userPlaceholder": "Search User"
+      }
+    },
+    "pieChart": {
+      "title": "Script Type",
+      "chartData": {
+        "functionalTest": "Functional Test",
+        "performanceTest": "Performance Test",
+        "stabilityTest": "Stability Test",
+        "customTest": "Custom Test",
+        "mockData": "Mock Data"
+      }
+    },
+    "table": {
+      "columns": {
+        "name": "Name",
+        "plugin": "Plugin",
+        "type": "Type",
+        "source": "Source",
+        "resourceId": "Resource ID",
+        "resourceName": "Resource Name",
+        "tags": "Tags",
+        "creator": "Creator",
+        "modifier": "Last Modifier",
+        "addTime": "Add Time",
+        "modifyTime": "Last Modify Time",
+        "operation": "Operation"
+      },
+      "actions": {
+        "auth": "Auth",
+        "clone": "Clone",
+        "delete": "Delete",
+        "export": "Export",
+        "execute": "Execute",
+        "edit": "Edit",
+        "cancelBatch": "Cancel Batch Operation"
+      },
+      "messages": {
+        "maxBatchLimit": "Maximum support for batch operations of {maxNum} scripts, currently selected {selectedNum} scripts.",
+        "executeConfirm": "Are you sure to execute the selected {num} scripts?",
+        "executeSuccess": "All {num} selected scripts executed successfully",
+        "executeFail": "All {num} selected scripts failed to execute",
+        "executePartial": "{successNum} selected scripts executed successfully, {errorNum} scripts failed to execute",
+        "maxDeleteLimit": "Maximum support for batch deletion of {maxNum} scripts, currently selected {num} scripts.",
+        "deleteConfirm": "Are you sure to delete the selected {num} scripts?",
+        "deleteSuccess": "Selected {num} scripts deleted successfully",
+        "importExampleSuccess": "Import example successfully",
+        "addExecuteSuccess": "Script added and executed successfully, please check details in \"Execute\"",
+        "cloneSuccess": "Script cloned successfully",
+        "deleteScriptConfirm": "Deleting script 【{name}】 will also delete associated scenarios, are you sure to delete?",
+        "deleteScriptConfirmSimple": "Are you sure to delete script 【{name}】?",
+        "deleteScriptSuccess": "Script deleted successfully"
+      },
+      "tips": {
+        "authOn": "After enabling permission control, manual authorization is required to have corresponding operation permissions.",
+        "authOff": "No permission restrictions, all users in the account can view and operate, permission control is not enabled by default.",
+        "authTitle": "Script Permission"
+      }
+    },
+    "import": {
+      "title": "Import Script",
+      "form": {
+        "name": "Name",
+        "namePlaceholder": "Please enter script name, maximum 200 characters",
+        "description": "Description",
+        "descriptionPlaceholder": "Please enter script description, maximum 800 characters",
+        "file": "File",
+        "uploadFile": "Upload File",
+        "uploadTip": "Paste content directly or drag files or click to upload files, file size should not exceed 20M",
+        "clear": "Clear"
+      },
+      "messages": {
+        "importSuccess": "Import successful",
+        "uploadFirst": "Please upload file first",
+        "fileTooLarge": "Uploaded file or text size exceeds 20M, please upload again"
+      }
+    },
+    "introduce": {
+      "description": "Scripts are a series of automated testing steps and instructions used to verify software systems and applications. Through scripts, you can customize test scenarios and cases, ultimately achieving automated testing and repeatable continuous testing requirements, or customize Mock data rules through scripts to generate data that meets business or testing requirements.",
+      "workDescription": "Here you and your team can complete the following work:",
+      "workItems": {
+        "testScript": "Add test scripts and initiate functional testing, performance testing, stability testing, and custom testing based on scripts;",
+        "mockScript": "Add Mock scripts to generate Mock data and store data to: data space, data source, local execution node, third-party systems."
+      }
+    }
+  }
+}
