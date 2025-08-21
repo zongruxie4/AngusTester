@@ -1,5 +1,6 @@
 {
   "scenarioHome": {
+    "name": "Home",
     "activityTimeline": {
       "myActivity": "My Activities",
       "allActivity": "All Activities"
@@ -58,6 +59,7 @@
     }
   },
   "scenarioMonitor": {
+    "name": "Monitor",
     "monitor": "Monitor",
     "addMonitor": "Add Monitor",
     "edit": {
@@ -186,6 +188,7 @@
     }
   },
   "scenarioTrash": {
+    "name": "Trash",
     "title": "Trash",
     "description": "Only administrators and deleters can restore or permanently delete data from the trash.",
     "actions": {
@@ -213,6 +216,7 @@
     }
   },
   "scenario": {
+    "name": "Scenario",
     "title": "Scenario",
     "list": {
       "searchPlaceholder": "Search scenario ID, name, description",
@@ -320,115 +324,116 @@
             "activity": "Activity"
           }
         }
-      }
-    },
-    "auth": {
-      "description": "Configure data operation permissions for scenarios for specified users. By configuring permissions, you can more efficiently complete debugging, management, testing and other interface work in team collaboration.",
-      "tabs": {
-        "user": "User",
-        "dept": "Department",
-        "group": "Group"
       },
-      "authSet": {
-        "searchPlaceholder": "Search name",
-        "table": {
-          "columns": {
-            "name": "Name",
-            "permissionControl": "Permission Control",
-            "permission": "Permission"
-          }
+      "auth": {
+        "description": "Configure data operation permissions for scenarios for specified users. By configuring permissions, you can more efficiently complete debugging, management, testing and other interface work in team collaboration.",
+        "tabs": {
+          "user": "User",
+          "dept": "Department",
+          "group": "Group"
         },
-        "loading": "Loading...",
-        "selectAll": "All"
+        "authSet": {
+          "searchPlaceholder": "Search name",
+          "table": {
+            "columns": {
+              "name": "Name",
+              "permissionControl": "Permission Control",
+              "permission": "Permission"
+            }
+          },
+          "loading": "Loading...",
+          "selectAll": "All"
+        },
+        "groupSet": {
+          "searchPlaceholders": {
+            "dept": "Search department",
+            "group": "Search group",
+            "user": "Search user"
+          }
+        }
       },
-      "groupSet": {
-        "searchPlaceholders": {
-          "dept": "Search department",
-          "group": "Search group",
-          "user": "Search user"
+      "detail": {
+        "messages": {
+          "deleteConfirm": "Deleting the scenario will synchronously delete associated follows, favourites, metrics, variables and other information. Please confirm whether to delete 【{name}】?",
+          "deleteSuccess": "Delete successfully, you can view the deleted scenario in the trash.",
+          "cancelFollowSuccess": "Cancel follow",
+          "followSuccess": "Follow successfully",
+          "cancelFavouriteSuccess": "Cancel favourite",
+          "favouriteSuccess": "Favourite successfully"
+        },
+        "actions": {
+          "edit": "Edit",
+          "delete": "Delete",
+          "export": "Export Script",
+          "auth": "Auth",
+          "follow": "Follow",
+          "cancelFollow": "Cancel Follow",
+          "favourite": "Favourite",
+          "cancelFavourite": "Cancel Favourite"
+        },
+        "tabs": {
+          "func": "Functional Test",
+          "perf": "Performance Test",
+          "stability": "Stability Test",
+          "custom": "Custom Test",
+          "task": "Test Task",
+          "activity": "Activity Record",
+          "comment": "Comment"
+        },
+        "tips": {
+          "authOn": "After enabling \"Permission Control\", you need to manually authorize service permissions to have corresponding operation permissions for scenarios. \"Permission Control\" is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically authorized.",
+          "authOff": "After enabling \"No Permission Control\", all users will be allowed to publicly view and operate the current scenario. Users viewing need to have current scenario parent directory permissions.",
+          "authTitle": "Scenario Permission"
+        },
+        "task": {
+          "table": {
+            "columns": {
+              "code": "Code",
+              "name": "Name",
+              "iteration": "Iteration",
+              "priority": "Priority",
+              "assignee": "Assignee",
+              "confirmer": "Confirmer",
+              "deadline": "Deadline"
+            }
+          },
+          "noData": "No Data",
+          "overdue": "Overdue"
+        },
+        "testSummary": {
+          "successRate": "Success Rate",
+          "successCount": "Success Count",
+          "failCount": "Fail Count",
+          "table": {
+            "labels": {
+              "total": "Total",
+              "success": "Success",
+              "fail": "Fail",
+              "disabled": "Disabled"
+            }
+          },
+          "sections": {
+            "allTests": "All Tests",
+            "functionality": "Functionality",
+            "testInterfaces": "Test Interfaces",
+            "performance": "Performance",
+            "stability": "Stability",
+            "custom": "Custom",
+            "nonStandard": "Non-Standard",
+            "resultMetrics": "Result Metrics"
+          },
+          "status": {
+            "notTested": "Not Tested",
+            "passed": "Passed",
+            "notPassed": "Not Passed"
+          },
+          "metrics": {
+            "tps": "Transactions Per Second (TPS)",
+            "responseTime": "Response Time (P90)",
+            "errorRate": "Error Rate"
+          }
         }
       }
-    },
-    "detail": {
-      "messages": {
-        "deleteConfirm": "Deleting the scenario will synchronously delete associated follows, favourites, metrics, variables and other information. Please confirm whether to delete 【{name}】?",
-        "deleteSuccess": "Delete successfully, you can view the deleted scenario in the trash.",
-        "cancelFollowSuccess": "Cancel follow",
-        "followSuccess": "Follow successfully",
-        "cancelFavouriteSuccess": "Cancel favourite",
-        "favouriteSuccess": "Favourite successfully"
-      },
-      "actions": {
-        "edit": "Edit",
-        "delete": "Delete",
-        "export": "Export Script",
-        "auth": "Auth",
-        "follow": "Follow",
-        "cancelFollow": "Cancel Follow",
-        "favourite": "Favourite",
-        "cancelFavourite": "Cancel Favourite"
-      },
-      "tabs": {
-        "func": "Functional Test",
-        "perf": "Performance Test",
-        "stability": "Stability Test",
-        "custom": "Custom Test",
-        "task": "Test Task",
-        "activity": "Activity Record",
-        "comment": "Comment"
-      },
-      "tips": {
-        "authOn": "After enabling \"Permission Control\", you need to manually authorize service permissions to have corresponding operation permissions for scenarios. \"Permission Control\" is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically authorized.",
-        "authOff": "After enabling \"No Permission Control\", all users will be allowed to publicly view and operate the current scenario. Users viewing need to have current scenario parent directory permissions.",
-        "authTitle": "Scenario Permission"
-      },
-      "task": {
-        "table": {
-          "columns": {
-            "code": "Code",
-            "name": "Name",
-            "iteration": "Iteration",
-            "priority": "Priority",
-            "assignee": "Assignee",
-            "confirmer": "Confirmer",
-            "deadline": "Deadline"
-          }
-        },
-        "noData": "No Data",
-        "overdue": "Overdue"
-      },
-      "testSummary": {
-        "successRate": "Success Rate",
-        "successCount": "Success Count",
-        "failCount": "Fail Count",
-        "table": {
-          "labels": {
-            "total": "Total",
-            "success": "Success",
-            "fail": "Fail",
-            "disabled": "Disabled"
-          }
-        },
-        "sections": {
-          "allTests": "All Tests",
-          "functionality": "Functionality",
-          "testInterfaces": "Test Interfaces",
-          "performance": "Performance",
-          "stability": "Stability",
-          "custom": "Custom",
-          "nonStandard": "Non-Standard",
-          "resultMetrics": "Result Metrics"
-        },
-        "status": {
-          "notTested": "Not Tested",
-          "passed": "Passed",
-          "notPassed": "Not Passed"
-        },
-        "metrics": {
-          "tps": "Transactions Per Second (TPS)",
-          "responseTime": "Response Time (P90)",
-          "errorRate": "Error Rate"
-        }
-      }
-    }
-  }  
+  }
+} 
+ 
