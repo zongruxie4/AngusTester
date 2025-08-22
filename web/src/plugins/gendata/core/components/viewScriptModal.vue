@@ -6,6 +6,7 @@
  */
 
 import { Modal } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 export interface Props {
   visible: boolean;
@@ -19,6 +20,8 @@ const props = withDefaults(defineProps<Props>(), {
   data: ''
 });
 
+const { t } = useI18n();
+
 const cancel = () => {
   emits('update:visible', false);
 };
@@ -26,7 +29,7 @@ const cancel = () => {
 </script>
 <template>
   <Modal
-    title="查看脚本"
+    :title="t('gendata.viewScriptModal.title')"
     :visible="props.visible"
     :footer="null"
     width="100%"

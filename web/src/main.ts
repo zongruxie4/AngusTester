@@ -113,6 +113,7 @@ const getLocaleMessage = async (locale: SupportedLanguage) => {
   const project = (await import(`./locales/${locale}/project.json`)).default;
   const report = (await import(`./locales/${locale}/report.json`)).default;
   const script = (await import(`./locales/${locale}/script.json`)).default;
+  const plugin = (await import(`./locales/${locale}/plugin.json`)).default;
 
   return {
     ...apis,
@@ -126,6 +127,7 @@ const getLocaleMessage = async (locale: SupportedLanguage) => {
     ...project,
     ...report,
     ...script,
+    ...plugin,
     ...common,
   };
 };

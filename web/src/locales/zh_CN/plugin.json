@@ -295,15 +295,216 @@
          "errorCount": "错误数",
          "errorRate": "错误率"
        },
-       "aggregate": {
-         "radioButtons": {
-           "byThroughput": "按吞吐量",
-           "byResponseTime": "按响应时间",
-           "byErrorCount": "按错误数",
-           "byErrorRate": "按错误率",
-           "byUploadDownload": "按上传下载"
+        "aggregate": {
+           "radioButtons": {
+             "byThroughput": "按吞吐量",
+             "byResponseTime": "按响应时间",
+             "byErrorCount": "按错误数",
+             "byErrorRate": "按错误率",
+             "byUploadDownload": "按上传下载"
+           }
          }
        }
-    }
+      },
+  "gendata": {
+    "tabs": {
+      "csv": "CSV",
+      "json": "JSON",
+      "sql": "SQL",
+      "xml": "XML",
+      "excel": "Excel",
+      "custom": "自定义",
+      "tab": "Tab"
+    },
+    "actions": {
+      "save": "保存",
+      "cancel": "取消",
+      "confirm": "确定",
+      "refresh": "刷新",
+      "export": "导出",
+      "import": "导入",
+      "add": "添加",
+      "edit": "编辑",
+      "delete": "删除",
+      "view": "查看",
+      "download": "下载",
+      "upload": "上传"
+    },
+    "messages": {
+      "saveSuccess": "保存成功",
+      "deleteSuccess": "删除成功",
+      "importSuccess": "导入成功",
+      "exportSuccess": "导出成功",
+      "operationSuccess": "操作成功",
+      "operationFailed": "操作失败",
+      "generateDataSuccess": "创建生成数据成功，请在"执行"中查看进度和结果。",
+      "confirmDelete": "确认删除",
+      "noData": "暂无数据",
+      "loading": "加载中...",
+      "pleaseSelect": "请选择",
+      "pleaseInput": "请输入"
+    },
+    "form": {
+      "name": "名称",
+      "description": "描述",
+      "type": "类型",
+      "format": "格式",
+      "size": "大小",
+      "count": "数量",
+      "status": "状态",
+      "createTime": "创建时间",
+      "updateTime": "更新时间",
+      "creator": "创建人",
+      "updater": "更新人"
+    },
+    "dataConfig": {
+      "title": "数据配置",
+      "fieldName": "字段名称",
+      "fieldType": "字段类型",
+      "fieldValue": "字段值",
+      "fieldLength": "字段长度",
+      "fieldFormat": "字段格式",
+      "fieldRequired": "是否必填",
+      "fieldDefault": "默认值",
+      "fieldRule": "字段规则"
+    },
+    "execConfig": {
+      "title": "执行配置",
+      "execMode": "执行模式",
+      "execCount": "执行次数",
+      "execInterval": "执行间隔",
+      "execTimeout": "执行超时",
+      "execRetry": "重试次数",
+      "execParallel": "并行执行"
+    },
+           "storeConfig": {
+         "title": "存储配置",
+         "storeType": "存储类型",
+         "storePath": "存储路径",
+         "storeFormat": "存储格式",
+         "storeCompress": "是否压缩",
+         "storeEncrypt": "是否加密"
+       },
+       "dataSet": {
+         "format": "格式",
+         "lineEnding": "行尾",
+         "includeHeader": "包含头",
+         "escapeChar": "转义符",
+         "quoteChar": "引用符",
+         "separatorChar": "分隔符",
+         "includeNull": "包含空值字段",
+         "rowsToArray": "转成数组",
+         "tableName": "存储数据表名",
+         "batchInsert": "是否生成批量 INSERT",
+         "rootElement": "根元素名称",
+         "recordElement": "记录元素名称",
+         "validation": {
+           "singleChar": "请输入单字符",
+           "tableNameRequired": "请输入存储数据表名"
+         }
+       },
+       "DatasourceStoreConfig": {
+         "batchRows": "批量行数",
+         "batchInsert": "是否批量插入",
+         "selectDatasource": "选择数据源",
+         "databaseType": "数据库类型",
+         "driverClassName": "驱动完整类名",
+         "hints": {
+           "batchRows": "每次批量生成、存储或发送行数，默认 1，最大10000。",
+           "batchInsert": "设置成 true 时会将{batchRows}条数据合并成一条 INSERT 数据",
+           "driverClassName": "不指定时将使用默认驱动类名"
+         },
+         "validation": {
+           "selectDatasource": "请选择数据源",
+           "selectDatabaseType": "请选择数据库类型"
+         }
+       },
+       "excuteConfig": {
+         "scriptName": "脚本名称",
+         "execThreads": "执行线程数",
+         "selectMockNode": "选择Mock节点",
+         "execPriority": "执行优先级",
+         "onError": "遇到错误",
+         "storageMethod": "存储方式",
+         "rows": "行数",
+         "hints": {
+           "execThreads": "默认1个线程，最大1000。",
+           "execPriority": "优先级高的最先被执行，值范围：0~2147483647,值越大优先级越高。",
+           "rows": "生成数据总行数，最大 100000000000。"
+         },
+         "errorActions": {
+           "continue": "继续",
+           "stop": "停止",
+           "stopNow": "立即终止"
+         },
+         "storageTips": {
+           "datasource": "数据源存储，将生成数据写入到数据库。",
+           "dataspace": "数据空间存储，将数据存储到 AngusTester 应用"数据"->"空间"。",
+           "local": "本地存储，生成数据会以文件形式存储在执行节点，您可以进入执行详情页面点击下载数据文件。默认存储路径：${AGENT_HOME}/data/exec/[执行ID]/data.[数据格式]。",
+           "pushThird": "推送三方接口，支持将生成数据以文本或文件形式发送到一个 Http 接口。"
+         },
+         "validation": {
+           "scriptNameRequired": "请输入数据脚本名称",
+           "selectNode": "请选择节点"
+         },
+         "placeholders": {
+           "scriptName": "输入数据脚本的名称，限制200字符内"
+         }
+       },
+       "FuncModal": {
+         "title": "选择Mock函数"
+       },
+       "localStoreConfig": {
+         "batchRows": "批量行数",
+         "defaultStoragePath": "默认储存路径",
+         "hints": {
+           "batchRows": "每次批量生成、存储或发送行数，默认 1，最大10000。",
+           "defaultStoragePath": "生成数据文件在执行节点存储路径。"
+         }
+       },
+       "pushThirdStoreConfig": {
+         "batchRows": "批量行数",
+         "requestParams": "请求参数",
+         "requestBody": "请求体",
+         "authentication": "认证",
+         "contentType": "Content-Type",
+         "username": "用户名",
+         "password": "密码",
+         "token": "令牌",
+         "basicAuth": "Basic Auth",
+         "bearerToken": "Bearer Token",
+         "hints": {
+           "batchRows": "每次批量生成、存储或发送行数，默认 1，最大10000。"
+         },
+         "form": {
+           "paramName": "参数名",
+           "paramValue": "参数值",
+           "position": "位置",
+           "paramNamePlaceholder": "参数名称",
+           "filePosition": "文件位置"
+         },
+         "validation": {
+           "enterParamName": "请输入参数名",
+           "paramNameDuplicate": "keyName存在重复",
+           "enterParamValue": "请输入参数值",
+           "enterApiAddress": "请输入接口地址"
+         },
+         "placeholders": {
+           "apiAddress": "接口地址"
+         }
+       },
+       "spaceStoreConfig": {
+         "selectSpace": "选择空间",
+         "batchRows": "批量行数",
+         "hints": {
+           "batchRows": "每次批量生成、存储或发送行数，默认 1，最大10000。"
+         },
+         "validation": {
+           "selectSpace": "请选择空间"
+         }
+       },
+       "viewScriptModal": {
+         "title": "查看脚本"
+       }
   }
 }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Modal } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 export interface Props {
   visible: boolean;
@@ -10,6 +11,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void}>();
 
+const { t } = useI18n();
+
 const close = () => {
   emits('update:visible', false);
 };
@@ -17,7 +20,7 @@ const close = () => {
 </script>
 <template>
   <Modal
-    title="选择Mock函数"
+    :title="t('gendata.FuncModal.title')"
     width="1200px"
     :visible="props.visible"
     @cancel="close">

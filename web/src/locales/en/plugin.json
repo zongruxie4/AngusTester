@@ -295,16 +295,217 @@
          "errorCount": "Error Count",
          "errorRate": "Error Rate"
        },
-       "aggregate": {
-         "radioButtons": {
-           "byThroughput": "By Throughput",
-           "byResponseTime": "By Response Time",
-           "byErrorCount": "By Error Count",
-           "byErrorRate": "By Error Rate",
-           "byUploadDownload": "By Upload/Download"
-         }
-       }
+      "aggregate": {
+          "radioButtons": {
+            "byThroughput": "By Throughput",
+            "byResponseTime": "By Response Time",
+            "byErrorCount": "By Error Count",
+            "byErrorRate": "By Error Rate",
+            "byUploadDownload": "By Upload/Download"
+          }
       }
     }
+  },
+  "gendata": {
+    "tabs": {
+      "csv": "CSV",
+      "json": "JSON",
+      "sql": "SQL",
+      "xml": "XML",
+      "excel": "Excel",
+      "custom": "Custom",
+      "tab": "Tab"
+    },
+    "actions": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "refresh": "Refresh",
+      "export": "Export",
+      "import": "Import",
+      "add": "Add",
+      "edit": "Edit",
+      "delete": "Delete",
+      "view": "View",
+      "download": "Download",
+      "upload": "Upload"
+    },
+    "messages": {
+      "saveSuccess": "Saved Successfully",
+      "deleteSuccess": "Deleted Successfully",
+      "importSuccess": "Imported Successfully",
+      "exportSuccess": "Exported Successfully",
+      "operationSuccess": "Operation Successful",
+      "operationFailed": "Operation Failed",
+      "generateDataSuccess": "Data generation created successfully, please check progress and results in 'Execution'.",
+      "confirmDelete": "Confirm Delete",
+      "noData": "No Data",
+      "loading": "Loading...",
+      "pleaseSelect": "Please Select",
+      "pleaseInput": "Please Input"
+    },
+    "form": {
+      "name": "Name",
+      "description": "Description",
+      "type": "Type",
+      "format": "Format",
+      "size": "Size",
+      "count": "Count",
+      "status": "Status",
+      "createTime": "Create Time",
+      "updateTime": "Update Time",
+      "creator": "Creator",
+      "updater": "Updater"
+    },
+    "dataConfig": {
+      "title": "Data Configuration",
+      "fieldName": "Field Name",
+      "fieldType": "Field Type",
+      "fieldValue": "Field Value",
+      "fieldLength": "Field Length",
+      "fieldFormat": "Field Format",
+      "fieldRequired": "Required",
+      "fieldDefault": "Default Value",
+      "fieldRule": "Field Rule"
+    },
+    "execConfig": {
+      "title": "Execution Configuration",
+      "execMode": "Execution Mode",
+      "execCount": "Execution Count",
+      "execInterval": "Execution Interval",
+      "execTimeout": "Execution Timeout",
+      "execRetry": "Retry Count",
+      "execParallel": "Parallel Execution"
+    },
+            "storeConfig": {
+        "title": "Storage Configuration",
+        "storeType": "Storage Type",
+        "storePath": "Storage Path",
+        "storeFormat": "Storage Format",
+        "storeCompress": "Compress",
+        "storeEncrypt": "Encrypt"
+      },
+      "dataSet": {
+        "format": "Format",
+        "lineEnding": "Line Ending",
+        "includeHeader": "Include Header",
+        "escapeChar": "Escape Character",
+        "quoteChar": "Quote Character",
+        "separatorChar": "Separator Character",
+        "includeNull": "Include Null Fields",
+        "rowsToArray": "Convert to Array",
+        "tableName": "Storage Table Name",
+        "batchInsert": "Generate Batch INSERT",
+        "rootElement": "Root Element Name",
+        "recordElement": "Record Element Name",
+                 "validation": {
+           "singleChar": "Please enter a single character",
+           "tableNameRequired": "Please enter storage table name"
+         }
+       },
+       "DatasourceStoreConfig": {
+         "batchRows": "Batch Rows",
+         "batchInsert": "Batch Insert",
+         "selectDatasource": "Select Datasource",
+         "databaseType": "Database Type",
+         "driverClassName": "Driver Class Name",
+         "hints": {
+           "batchRows": "Number of rows to generate, store or send in each batch, default 1, maximum 10000.",
+           "batchInsert": "When set to true, {batchRows} rows will be merged into one INSERT statement",
+           "driverClassName": "Default driver class name will be used if not specified"
+         },
+         "validation": {
+           "selectDatasource": "Please select datasource",
+           "selectDatabaseType": "Please select database type"
+         }
+       },
+       "excuteConfig": {
+         "scriptName": "Script Name",
+         "execThreads": "Execution Threads",
+         "selectMockNode": "Select Mock Node",
+         "execPriority": "Execution Priority",
+         "onError": "On Error",
+         "storageMethod": "Storage Method",
+         "rows": "Rows",
+         "hints": {
+           "execThreads": "Default 1 thread, maximum 1000.",
+           "execPriority": "Higher priority executes first, range: 0~2147483647, higher value means higher priority.",
+           "rows": "Total number of data rows to generate, maximum 100000000000."
+         },
+         "errorActions": {
+           "continue": "Continue",
+           "stop": "Stop",
+           "stopNow": "Stop Now"
+         },
+         "storageTips": {
+           "datasource": "Datasource storage, writes generated data to database.",
+           "dataspace": "Data space storage, stores data in AngusTester application 'Data' -> 'Space'.",
+           "local": "Local storage, generated data will be stored as files on execution nodes, you can enter execution details page to download data files. Default storage path: ${AGENT_HOME}/data/exec/[ExecutionID]/data.[DataFormat].",
+           "pushThird": "Push to third-party interface, supports sending generated data as text or file to an Http interface."
+         },
+         "validation": {
+           "scriptNameRequired": "Please enter data script name",
+           "selectNode": "Please select node"
+         },
+         "placeholders": {
+           "scriptName": "Enter data script name, limited to 200 characters"
+         }
+       },
+       "FuncModal": {
+         "title": "Select Mock Function"
+       },
+       "localStoreConfig": {
+         "batchRows": "Batch Rows",
+         "defaultStoragePath": "Default Storage Path",
+         "hints": {
+           "batchRows": "Number of rows to generate, store or send in each batch, default 1, maximum 10000.",
+           "defaultStoragePath": "Storage path for generated data files on execution nodes."
+         }
+       },
+       "pushThirdStoreConfig": {
+         "batchRows": "Batch Rows",
+         "requestParams": "Request Parameters",
+         "requestBody": "Request Body",
+         "authentication": "Authentication",
+         "contentType": "Content-Type",
+         "username": "Username",
+         "password": "Password",
+         "token": "Token",
+         "basicAuth": "Basic Auth",
+         "bearerToken": "Bearer Token",
+         "hints": {
+           "batchRows": "Number of rows to generate, store or send in each batch, default 1, maximum 10000."
+         },
+         "form": {
+           "paramName": "Parameter Name",
+           "paramValue": "Parameter Value",
+           "position": "Position",
+           "paramNamePlaceholder": "Parameter Name",
+           "filePosition": "File Position"
+         },
+         "validation": {
+           "enterParamName": "Please enter parameter name",
+           "paramNameDuplicate": "Parameter name already exists",
+           "enterParamValue": "Please enter parameter value",
+           "enterApiAddress": "Please enter API address"
+         },
+         "placeholders": {
+           "apiAddress": "API Address"
+         }
+       },
+       "spaceStoreConfig": {
+         "selectSpace": "Select Space",
+         "batchRows": "Batch Rows",
+         "hints": {
+           "batchRows": "Number of rows to generate, store or send in each batch, default 1, maximum 10000."
+         },
+         "validation": {
+           "selectSpace": "Please select space"
+         }
+       },
+       "viewScriptModal": {
+         "title": "View Script"
+       }
   }
 }
+

@@ -3,6 +3,7 @@ import { ref, onMounted, inject } from 'vue';
 import { STORAGE, routerUtils } from '@xcan-angus/infra';
 import { Select, Input, Hints } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
 
 const formState = ref({
   spaceId: undefined,
@@ -13,6 +14,8 @@ const formState = ref({
   },
   batchRows: '1'
 });
+
+const { t } = useI18n();
 
 const formRef = ref();
 const projectInfo = inject('projectInfo', ref({ id: '' }));
@@ -84,8 +87,8 @@ defineExpose({
     layout="vertical">
     <FormItem
       name="spaceId"
-      label="选择空间"
-      :rules="{required: true, message: '请选择空间'}">
+      :label="t('gendata.spaceStoreConfig.selectSpace')"
+      :rules="{required: true, message: t('gendata.spaceStoreConfig.validation.selectSpace')}">
       <Select
         v-if="projectInfo?.id"
         :value="formState.spaceId"
@@ -98,8 +101,8 @@ defineExpose({
         :fieldNames="{label: 'name', value: 'id'}"
         @change="onSpaceChaneg" />
     </FormItem>
-    <FormItem label="批量行数">
-      <Hints text="每次批量生成、存储或发送行数，默认 1，最大10000。" class="mb-2" />
+    <FormItem :label="t('gendata.spaceStoreConfig.batchRows')">
+      <Hints :text="t('gendata.spaceStoreConfig.hints.batchRows')" class="mb-2" />
       <div class="flex items-center">
         <Input
           v-model:value="formState.batchRows"

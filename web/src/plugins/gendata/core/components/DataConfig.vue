@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { Form, FormItem, Checkbox } from 'ant-design-vue';
 import { Input, Select, SelectEnum } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 export interface Props {
   format: string;
@@ -11,6 +12,8 @@ const props = withDefaults(defineProps<Props>(), {
   format: 'CSV',
   plugin: 'MockCsv'
 });
+
+const { t } = useI18n();
 
 const emits = defineEmits<{(e: 'update:format', value: string):void; (e: 'update:plugin', value: string): void; (e: 'formatChange', value: string):void}>();
 
@@ -60,7 +63,7 @@ const validateChar = (_key, value) => {
     return Promise.resolve();
   }
   // eslint-disable-next-line prefer-promise-reject-errors
-  return Promise.reject('请输入单字符');
+  return Promise.reject(t('gendata.dataSet.validation.singleChar'));
 };
 
 const onFormatChange = (value) => {
@@ -106,7 +109,7 @@ defineExpose({
     layout="inline"
     class="form-item-wrapper mb-1.5"
     size="small">
-    <FormItem label="格式">
+    <FormItem :label="t('gendata.dataSet.format')">
       <Select
         :value="formState.format"
         class="!w-30"
@@ -114,19 +117,19 @@ defineExpose({
         @change="onFormatChange" />
     </FormItem>
     <template v-if="['CSV', 'TAB'].includes(formState.format)">
-      <FormItem label="行尾">
+      <FormItem :label="t('gendata.dataSet.lineEnding')">
         <SelectEnum
           v-model:value="formState.lineEnding"
           class="!w-30"
           enumKey="LineEndingType" />
       </FormItem>
       <FormItem>
-        <Checkbox v-model:checked="formState.includeHeader">包含头</Checkbox>
+        <Checkbox v-model:checked="formState.includeHeader">{{ t('gendata.dataSet.includeHeader') }}</Checkbox>
       </FormItem>
     </template>
     <template v-if="formState.format=== 'CUSTOM'">
       <FormItem
-        label="行尾"
+        :label="t('gendata.dataSet.lineEnding')"
         name="lineEnding">
         <SelectEnum
           v-model:value="formState.lineEnding"
@@ -135,7 +138,7 @@ defineExpose({
       </FormItem>
       <FormItem
         name="escapeChar"
-        label="转义符"
+        :label="t('gendata.dataSet.escapeChar')"
         :rules="{validator: validateChar}">
         <Input
           v-model:value="formState.escapeChar"
@@ -144,7 +147,7 @@ defineExpose({
       </FormItem>
       <FormItem
         name="quoteChar"
-        label="引用符"
+        :label="t('gendata.dataSet.quoteChar')"
         :rules="{validator: validateChar}">
         <Input
           v-model:value="formState.quoteChar"
@@ -153,7 +156,7 @@ defineExpose({
       </FormItem>
       <FormItem
         name="separatorChar"
-        label="分隔符"
+        :label="t('gendata.dataSet.separatorChar')"
         :rules="{validator: validateChar}">
         <Input
           v-model:value="formState.separatorChar"
@@ -162,12 +165,12 @@ defineExpose({
       </FormItem>
       <FormItem
         name="includeHeader">
-        <Checkbox v-model:checked="formState.includeHeader">包含头</Checkbox>
+        <Checkbox v-model:checked="formState.includeHeader">{{ t('gendata.dataSet.includeHeader') }}</Checkbox>
       </FormItem>
     </template>
     <template v-if="formState.format=== 'JSON'">
       <FormItem
-        label="行尾"
+        :label="t('gendata.dataSet.lineEnding')"
         name="lineEnding">
         <SelectEnum
           v-model:value="formState.lineEnding"
@@ -175,20 +178,20 @@ defineExpose({
           enumKey="LineEndingType" />
       </FormItem>
       <FormItem name="includeNull">
-        <Checkbox v-model:checked="formState.includeNull">包含空值字段</Checkbox>
+        <Checkbox v-model:checked="formState.includeNull">{{ t('gendata.dataSet.includeNull') }}</Checkbox>
       </FormItem>
       <FormItem name="rowsToArray">
-        <Checkbox v-model:checked="formState.rowsToArray">转成数组</Checkbox>
+        <Checkbox v-model:checked="formState.rowsToArray">{{ t('gendata.dataSet.rowsToArray') }}</Checkbox>
       </FormItem>
     </template>
     <template v-if="formState.format === 'EXCEL'">
       <FormItem name="includeHeader">
-        <Checkbox v-model:checked="formState.includeHeader">包含头</Checkbox>
+        <Checkbox v-model:checked="formState.includeHeader">{{ t('gendata.dataSet.includeHeader') }}</Checkbox>
       </FormItem>
     </template>
     <template v-if="formState.format === 'SQL'">
       <FormItem
-        label="行尾"
+        :label="t('gendata.dataSet.lineEnding')"
         name="lineEnding">
         <SelectEnum
           v-model:value="formState.lineEnding"
@@ -197,17 +200,17 @@ defineExpose({
       </FormItem>
       <FormItem
         name="tableName"
-        label="存储数据表名"
-        :rules="{ required: true, message: '请输入存储数据表名' }">
+        :label="t('gendata.dataSet.tableName')"
+        :rules="{ required: true, message: t('gendata.dataSet.validation.tableNameRequired') }">
         <Input v-model:value="formState.tableName" class="!w-30" />
       </FormItem>
       <FormItem name="batchInsert">
-        <Checkbox v-model:checked="formState.batchInsert">是否生成批量 INSERT</Checkbox>
+        <Checkbox v-model:checked="formState.batchInsert">{{ t('gendata.dataSet.batchInsert') }}</Checkbox>
       </FormItem>
     </template>
     <template v-if="formState.format === 'XML'">
       <FormItem
-        label="行尾"
+        :label="t('gendata.dataSet.lineEnding')"
         name="lineEnding">
         <SelectEnum
           v-model:value="formState.lineEnding"
@@ -215,7 +218,7 @@ defineExpose({
           enumKey="LineEndingType" />
       </FormItem>
       <FormItem
-        label="根元素名称"
+        :label="t('gendata.dataSet.rootElement')"
         name="rootElement">
         <Input
           v-model:value="formState.rootElement"
@@ -223,7 +226,7 @@ defineExpose({
           :maxlength="200" />
       </FormItem>
       <FormItem
-        label="记录元素名称"
+        :label="t('gendata.dataSet.recordElement')"
         name="recordElement">
         <Input
           v-model:value="formState.recordElement"

@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { Form, FormItem, Button } from 'ant-design-vue';
 import { Select, Input, Icon, Popover, AsyncComponent, ParamInput, FunctionsModal } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 import type { Rule } from 'ant-design-vue/es/form';
 
 export interface FieldItem {
@@ -17,6 +18,8 @@ const props = withDefaults(defineProps<Props>(), {
   format: 'CVS'
 });
 
+const { t } = useI18n();
+
 const formRef = ref();
 
 const formState = ref<{list:FieldItem[]}>({
@@ -29,7 +32,7 @@ const formState = ref<{list:FieldItem[]}>({
 
 const keNameValidator = async (_rule: Rule, value: string) => {
   if (!value) {
-    return Promise.reject(new Error('请输入参数名'));
+    return Promise.reject(new Error(t('gendata.messages.pleaseInput')));
   } else {
     const keyNames = new Set();
     const hasDuplicates = formState.value.list.some(obj => {
@@ -40,7 +43,7 @@ const keNameValidator = async (_rule: Rule, value: string) => {
       return false;
     });
     if (hasDuplicates) {
-      return Promise.reject(new Error('keyName存在重复'));
+      return Promise.reject(new Error(t('gendata.messages.operationFailed')));
     } else {
       formRef.value.clearValidate();
       return Promise.resolve();
@@ -134,7 +137,7 @@ defineExpose({
         :rules="{required: true, validator: keNameValidator}">
         <Input
           v-model:value="item.name"
-          placeholder="列名，最多200字符以内"
+          :placeholder="t('gendata.dataConfig.fieldName')"
           :maxLength="200" />
       </FormItem>
       <FormItem class="w-20">
@@ -143,15 +146,15 @@ defineExpose({
           :options="inOptions"
           showSearch
           size="small"
-          placeholder="类型" />
+          :placeholder="t('gendata.form.type')" />
       </FormItem>
       <FormItem
         class="flex-1"
         :name="['list', index, 'value']"
-        :rules="{required: true, message: '请输入value'}">
+        :rules="{required: true, message: t('gendata.messages.pleaseInput')}">
         <ParamInput
           :value="item.value"
-          placeholder="请选择或输入函数表达式，最多8192字符以内"
+          :placeholder="t('gendata.dataConfig.fieldValue')"
           :maxLength="8192"
           :error="!item.value && valid"
           @blur="handleValueChange($event, index)" />
@@ -161,7 +164,7 @@ defineExpose({
           :maxlength="8192">
         </Input> -->
       </FormItem>
-      <Popover content="Mock函数助手">
+      <Popover :content="t('gendata.dataConfig.title')">
         <Button
           size="small"
           class="h-6.75 w-6.75 px-0"
