@@ -20,8 +20,8 @@ export default class API {
     });
   }
 
-  deleteSoftwareVersion (params = {}): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/version`, params);
+  deleteSoftwareVersion (ids: string[]): Promise<[Error | null, any]> {
+    return http.del(`${baseUrl}/version`, {ids});
   }
 
   mergeSoftwareVersion (params = {}): Promise<[Error | null, any]> {
