@@ -161,7 +161,7 @@ const toMerge = () => {
 
 const changeStatus = async (status, record) => {
   modal.confirm({
-    content: `确认修改版本状态为 “${status.name}” 吗？`,
+    content: t('taskVersion.messages.changeStatusConfirm', { status: status.name }),
     async onOk () {
       const [error] = await software.updateSoftwareVersionStatus(record.id, {
         status: status.key
@@ -331,14 +331,14 @@ const getMenus = (record) => {
                     size="small"
                     @click="editVersion(record)">
                     <Icon icon="icon-bianji" class="mr-1" />
-                    {{ t('taskVersion.actions.edit') }}
+                    {{ t('actions.edit') }}
                   </Button>
                   <Button
                     type="text"
                     size="small"
                     @click="toDelete(record)">
                     <Icon icon="icon-qingchu" class="mr-1" />
-                    {{ t('taskVersion.actions.delete') }}
+                    {{ t('actions.delete') }}
                   </Button>
                   <Dropdown
                     noAuth

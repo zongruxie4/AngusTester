@@ -1584,7 +1584,8 @@
       "deleteConfirm": "Confirm deletion of version 【{name}】?",
       "deleteSuccess": "Successfully deleted",
       "editSuccess": "Successfully modified",
-      "mergeWarning": "Warning: Once versions are merged, they cannot be restored!"
+      "mergeWarning": "Warning: Once versions are merged, they cannot be restored!",
+      "changeStatusConfirm": "Confirm to change version status to “{status}”?"
     },
     "status": {
       "notReleased": "Not Released",
