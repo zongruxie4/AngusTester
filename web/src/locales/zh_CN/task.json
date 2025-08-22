@@ -1,5 +1,6 @@
 {
   "taskAnalysis": {
+    "name": "分析",
     "title": "分析",
     "addAnalysis": "添加分析",
     "editAnalysis": "编辑分析",
@@ -85,6 +86,7 @@
     }
   },
   "backlog": {
+    "name": "Backlog",
     "title": "Backlog",
     "aboutBacklog": "关于Backlog",
     "aboutBacklogDesc": "Backlog是一个待办工作事项列表，分为产品Backlog和迭代Backlog两部分。主要用于管理和规划团队的工作任务，它包含了所有需要完成的工作事项，无论是在当前迭代（Sprint）中还是未来的迭代中。",
@@ -151,6 +153,7 @@
     "overdue": "已逾期"
   },
   "taskHome": {
+    "name": "主页",
     "welcomeToAngusTask": "欢迎进入Angus任务！",
     "taskDescription": "任务用于帮助团队管理和跟踪项目任务、问题和工作进展，提高团队协作和项目交付效率，确保项目按时完成并达到预期目标。",
     "teamWorkDescription": "在这里您和您的团队可以完成以下工作：",
@@ -185,6 +188,7 @@
     "commented": "评论的"
   },
   "taskMeeting": {
+    "name": "会议",
     "title": "会议",
     "addMeeting": "添加会议",
     "editMeeting": "编辑会议",
@@ -278,6 +282,7 @@
     }
   },
   "task": {
+    "name": "任务",
     "title": "任务",
     "addTask": "添加任务",
     "editTask": "编辑任务",
@@ -1411,6 +1416,7 @@
     }
   },
   "taskSprint": {
+    "name": "迭代",
     "title": "迭代",
     "addSprint": "添加迭代",
     "aboutSprint": "关于迭代",
@@ -1573,6 +1579,7 @@
     }
   },
   "taskVersion": {
+    "name": "版本",
     "title": "版本管理",
     "placeholder": {
       "searchKeyword": "请输入关键字搜索"
@@ -1706,6 +1713,7 @@
     }
   },
   "taskTrash": {
+    "name": "回收站",
     "title": "回收站",
     "placeholder": {
       "searchKeyword": "请输入查询关键字"

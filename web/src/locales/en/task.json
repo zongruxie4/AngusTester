@@ -1,5 +1,6 @@
 {
   "taskAnalysis": {
+    "name": "Analysis",
     "title": "Analysis",
     "addAnalysis": "Add Analysis",
     "editAnalysis": "Edit Analysis",
@@ -84,7 +85,8 @@
       "testerOrg": "Specified Organization"
     }
   },
-  "backlog": {
+  "backlog": {  
+    "name": "Backlog",
     "title": "Backlog",
     "aboutBacklog": "About Backlog",
     "aboutBacklogDesc": "Backlog is a list of pending work items, divided into Product Backlog and Sprint Backlog. It is mainly used to manage and plan team work tasks, containing all work items that need to be completed, whether in the current sprint or future sprints.",
@@ -151,6 +153,7 @@
     "overdue": "Overdue"
   },
   "taskHome": {
+    "name": "Home",
     "welcomeToAngusTask": "Welcome to Angus Task!",
     "taskDescription": "Tasks help teams manage and track project tasks, issues, and work progress, improve team collaboration and project delivery efficiency, and ensure projects are completed on time and achieve expected goals.",
     "teamWorkDescription": "Here you and your team can complete the following work:",
@@ -185,6 +188,7 @@
     "commented": "Commented"
   },
   "taskMeeting": {
+    "name": "Meeting",
     "title": "Meetings",
     "addMeeting": "Add Meeting",
     "editMeeting": "Edit Meeting",
@@ -278,6 +282,7 @@
     }
   },
   "task": {
+    "name": "Task",
     "title": "Tasks",
     "addTask": "Add Task",
     "editTask": "Edit Task",
@@ -1408,6 +1413,7 @@
     }
   },
   "taskSprint": {
+    "name": "Sprint",
     "title": "Sprint",
     "addSprint": "Add Sprint",
     "aboutSprint": "About Sprint",
@@ -1569,6 +1575,7 @@
     }
   },
   "taskVersion": {
+    "name": "Version",
     "title": "Version Management",
     "placeholder": {
       "searchKeyword": "Please enter search keyword"
@@ -1702,6 +1709,7 @@
     }
   },
   "taskTrash": {
+    "name": "Recycle Bin",
     "title": "Recycle Bin",
     "placeholder": {
       "searchKeyword": "Please enter search keyword"

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, onMounted, ref, Ref, watch } from 'vue';
-
+import { useI18n } from 'vue-i18n';
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
 import { utils, appContext } from '@xcan-angus/infra';
 
@@ -10,6 +10,8 @@ const Homepage = defineAsyncComponent(() => import('@/views/scenario/homepage/in
 const Trash = defineAsyncComponent(() => import('@/views/scenario/trash/index.vue'));
 const Scenario = defineAsyncComponent(() => import('@/views/scenario/scenario/index.vue'));
 const Monitor = defineAsyncComponent(() => import('@/views/scenario/monitor/index.vue'));
+
+const { t } = useI18n();
 
 const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
@@ -22,10 +24,10 @@ const menuItems: {
   name: string;
   key: MenuKey;
 }[] = [
-  { icon: 'icon-zhuye', name: '主页', key: 'homepage' },
-  { icon: 'icon-changjingguanli', name: '场景', key: 'scenario' },
-  { icon: 'icon-jiankong2', name: '监控', key: 'monitor' },
-  { icon: 'icon-qingchu', name: '回收站', key: 'trash' }
+  { icon: 'icon-zhuye', name: t('scenarioHome.name'), key: 'homepage' },
+  { icon: 'icon-changjingguanli', name: t('scenario.name'), key: 'scenario' },
+  { icon: 'icon-jiankong2', name: t('scenarioMonitor.name'), key: 'monitor' },
+  { icon: 'icon-qingchu', name: t('scenarioTrash.name'), key: 'trash' }
 ];
 
 const homepageRefreshNotify = ref<string>('');
