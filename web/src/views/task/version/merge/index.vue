@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { Icon, Modal, Select } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
 import { TESTER } from '@xcan-angus/infra';
 import { software } from 'src/api/tester';
 
@@ -14,6 +15,8 @@ const props = withDefaults(defineProps<Props>(), {
   visible: false,
   projectId: ''
 });
+
+const { t } = useI18n();
 
 const emits = defineEmits<{(e: 'cancel'):void; (e: 'ok', formId: string):void; (e: 'update:visible', value: boolean):void}>();
 
@@ -53,7 +56,7 @@ const fieldNames = {
 </script>
 <template>
   <Modal
-    title="版本合并"
+    :title="t('taskVersion.merge.title')"
     :visible="props.visible"
     :okButtonProps="{
       loading: loading,
@@ -63,7 +66,7 @@ const fieldNames = {
     @ok="ok">
     <div class="border rounded border-status-warn py-5 px-2">
       <Icon icon="icon-jinggao" class="text-status-warn" />
-      警告：版本一旦合成后，将无法还原！
+      {{ t('taskVersion.messages.mergeWarning') }}
     </div>
     <Form
       ref="formRef"
@@ -75,7 +78,7 @@ const fieldNames = {
       <FormItem
         required
         name="formId"
-        label="合并版本">
+        :label="t('taskVersion.merge.mergeVersion')">
         <Select
           v-model:value="formState.formId"
           :fieldNames="fieldNames"
@@ -85,7 +88,7 @@ const fieldNames = {
       </FormItem>
       <FormItem
         required
-        label="合并版本至"
+        :label="t('taskVersion.merge.mergeTo')"
         class="flex-1 !mb-5"
         name="toId">
         <Select

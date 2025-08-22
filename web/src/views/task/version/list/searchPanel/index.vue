@@ -4,6 +4,7 @@ import { Colon, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
 import { appContext } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   loading: boolean;
@@ -12,6 +13,8 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   loading: false
 });
+
+const { t } = useI18n();
 
 const emits = defineEmits<{(e: 'change', value: {
   orderBy?: string;
@@ -28,21 +31,21 @@ const selectedMenuMap = ref<{[key: string]: boolean}>({});
 const searchPanelOptions = [
   {
     valueKey: 'name',
-    type: 'input',
-    placeholder: '查询名称、描述',
+    type: 'input' as const,
+    placeholder: t('taskVersion.searchPanel.searchOptions.namePlaceholder'),
     allowClear: true,
     maxlength: 100
   },
   {
     valueKey: 'createdBy',
-    type: 'select-user',
+    type: 'select-user' as const,
     allowClear: true,
-    placeholder: '选择添加人'
+    placeholder: t('taskVersion.searchPanel.searchOptions.creatorPlaceholder')
   },
   {
-    type: 'date-range',
+    type: 'date-range' as const,
     valueKey: 'createdDate',
-    placeholder: ['添加时间从', '添加时间到'],
+    placeholder: t('taskVersion.searchPanel.searchOptions.dateRangePlaceholder'),
     showTime: true
   }
 ];
@@ -50,19 +53,19 @@ const searchPanelOptions = [
 const menuItems = computed(() => [
   {
     key: '',
-    name: '全部'
+    name: t('taskVersion.searchPanel.menuItems.all')
   },
   {
     key: 'NOT_RELEASED',
-    name: '未发布'
+    name: t('taskVersion.searchPanel.menuItems.notReleased')
   },
   {
     key: 'RELEASED',
-    name: '已发布'
+    name: t('taskVersion.searchPanel.menuItems.released')
   },
   {
     key: 'ARCHIVED',
-    name: '已归档'
+    name: t('taskVersion.searchPanel.menuItems.archived')
   }
 ]);
 
@@ -224,7 +227,7 @@ onMounted(() => {
   <div class="mt-2.5 mb-3.5">
     <div class="flex">
       <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-        <span>快速查询</span>
+        <span>{{ t('taskVersion.searchPanel.quickSearch') }}</span>
         <Colon />
       </div>
       <div class="flex  flex-wrap ml-2">
@@ -251,14 +254,14 @@ onMounted(() => {
           size="small"
           @click="add">
           <Icon icon="icon-jia" class="text-3.5 mr-1" />
-          <span>添加版本</span>
+          <span>{{ t('taskVersion.searchPanel.actions.addVersion') }}</span>
         </Button>
 
         <Button
           size="small"
           @click="toMerge">
           <Icon icon="icon-hebingbanben1" class="text-3.5 mr-1" />
-          <span>合并版本</span>
+          <span>{{ t('taskVersion.searchPanel.actions.mergeVersion') }}</span>
         </Button>
 
         <IconRefresh
@@ -268,7 +271,7 @@ onMounted(() => {
           <template #default>
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-shuaxin" class="text-3.5" />
-              <span class="ml-1">刷新</span>
+              <span class="ml-1">{{ t('taskVersion.searchPanel.actions.refresh') }}</span>
             </div>
           </template>
         </IconRefresh>

@@ -2,6 +2,7 @@
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Progress, Tag } from 'ant-design-vue';
 import { AsyncComponent, Dropdown, Icon, modal, NoData, notification, Spin, Table } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 import { software } from 'src/api/tester';
 
 import { VersionInfo } from '../PropsType';
@@ -22,6 +23,8 @@ const props = withDefaults(defineProps<Props>(), {
   notify: undefined,
   showDetail: true
 });
+
+const { t } = useI18n();
 
 type OrderByKey = 'createdDate' | 'createdByName';
 type OrderSortKey = 'ASC' | 'DESC';
@@ -69,14 +72,14 @@ const searchChange = (data) => {
 
 const toDelete = async (data: VersionInfo) => {
   modal.confirm({
-    content: `确定删除版本【${data.name}】吗？`,
+    content: t('taskVersion.messages.deleteConfirm', { name: data.name }),
     async onOk () {
       const id = data.id;
       const [error] = await software.deleteSoftwareVersion([id]);
       if (error) {
         return;
       }
-      notification.success('删除成功');
+      notification.success(t('taskVersion.messages.deleteSuccess'));
       if (pagination.value.current > 1 && dataList.value.length === 1) {
         pagination.value.current -= 1;
       }
@@ -166,7 +169,7 @@ const changeStatus = async (status, record) => {
       if (error) {
         return;
       }
-      notification.success('修改成功');
+      notification.success(t('taskVersion.messages.editSuccess'));
       loadData();
     }
   });
@@ -182,64 +185,64 @@ const handleMergeOk = (formId: string) => {
 
 const columns = [
   {
-    title: '版本',
+    title: t('taskVersion.columns.version'),
     dataIndex: 'name',
     width: 80
   },
   {
-    title: '状态',
+    title: t('taskVersion.columns.status'),
     dataIndex: 'status',
     width: 100
   },
   {
-    title: '进度',
+    title: t('taskVersion.columns.progress'),
     dataIndex: 'progress',
     width: 180
   },
   {
-    title: '开始日期',
+    title: t('taskVersion.columns.startDate'),
     dataIndex: 'startDate',
     customRender: ({ text }) => text || '--'
 
   },
   {
-    title: '发布日期',
+    title: t('taskVersion.columns.releaseDate'),
     dataIndex: 'releaseDate',
     customRender: ({ text }) => text || '--'
 
   },
   {
-    title: '描述',
+    title: t('taskVersion.columns.description'),
     dataIndex: 'description',
     width: '14%'
   },
   {
-    title: '最后修改人',
+    title: t('taskVersion.columns.lastModifier'),
     dataIndex: 'lastModifiedByName',
     groupName: 'person'
 
   },
   {
-    title: '添加人',
+    title: t('taskVersion.columns.creator'),
     dataIndex: 'createdByName',
     groupName: 'person',
     hide: true
   },
   {
-    title: '最后修改时间',
+    title: t('taskVersion.columns.lastModifyTime'),
     dataIndex: 'lastModifiedDate',
     groupName: 'date'
 
   },
   {
-    title: '添加时间',
+    title: t('taskVersion.columns.createTime'),
     dataIndex: 'createdDate',
     groupName: 'date',
     hide: true
 
   },
   {
-    title: '操作',
+    title: t('taskVersion.columns.actions'),
     dataIndex: 'actions',
     width: 180
   }
@@ -255,17 +258,17 @@ const getMenus = (record) => {
   return [
     record.status?.value !== 'NOT_RELEASED' && {
       key: 'NOT_RELEASED',
-      name: '未发布',
+      name: t('taskVersion.status.notReleased'),
       icon: 'icon-baocundaoweiguidang'
     },
     record.status?.value !== 'RELEASED' && {
       key: 'RELEASED',
-      name: '发布',
+      name: t('taskVersion.status.released'),
       icon: 'icon-fabu'
     },
     record.status?.value !== 'ARCHIVED' && {
       key: 'ARCHIVED',
-      name: '归档',
+      name: t('taskVersion.status.archived'),
       icon: 'icon-weiguidang'
     }
   ].filter(Boolean);
@@ -279,14 +282,14 @@ const getMenus = (record) => {
       <Introduce class="mb-7 flex-1" :showFunc="props.showDetail" />
     </div>
 
-    <div class="text-3.5 font-semibold mb-1">已添加的版本</div>
+    <div class="text-3.5 font-semibold mb-1">{{ t('taskVersion.list.addedVersions') }}</div>
     <Spin :spinning="loading" class="flex-1 flex flex-col">
       <template v-if="loaded">
         <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
-            <span>您尚未添加任何版本，立即</span>
-            <Button type="link" @click="editVersion">添加版本</Button>
+            <span>{{ t('taskVersion.list.noVersions') }}</span>
+            <Button type="link" @click="editVersion">{{ t('taskVersion.actions.addVersion') }}</Button>
           </div>
         </div>
 
@@ -320,7 +323,7 @@ const getMenus = (record) => {
                 </template>
                 <template v-if="column.dataIndex === 'description'">
                   <template v-if="record.description">{{ record.description }}</template>
-                  <span v-else class="text-text-sub-content">无描述~</span>
+                  <span v-else class="text-text-sub-content">{{ t('taskVersion.list.noDescription') }}</span>
                 </template>
                 <template v-if="column.dataIndex === 'actions'">
                   <Button
@@ -328,14 +331,14 @@ const getMenus = (record) => {
                     size="small"
                     @click="editVersion(record)">
                     <Icon icon="icon-bianji" class="mr-1" />
-                    编辑
+                    {{ t('taskVersion.actions.edit') }}
                   </Button>
                   <Button
                     type="text"
                     size="small"
                     @click="toDelete(record)">
                     <Icon icon="icon-qingchu" class="mr-1" />
-                    删除
+                    {{ t('taskVersion.actions.delete') }}
                   </Button>
                   <Dropdown
                     noAuth
