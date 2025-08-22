@@ -1588,7 +1588,8 @@
       "deleteConfirm": "确定删除版本【{name}】吗？",
       "deleteSuccess": "删除成功",
       "editSuccess": "修改成功",
-      "mergeWarning": "警告：版本一旦合成后，将无法还原！"
+      "mergeWarning": "警告：版本一旦合成后，将无法还原！",
+      "changeStatusConfirm": "确认修改版本状态为 “{status}” 吗？"
     },
     "status": {
       "notReleased": "未发布",
