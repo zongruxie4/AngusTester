@@ -3,6 +3,7 @@ import { computed, ref } from 'vue';
 import { Alert, Collapse, CollapsePanel, Tabs, TabPane, Tag } from 'ant-design-vue';
 import { Arrow, Colon, Icon } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 
 import StatusTag from '../StatusTag/index.vue';
 import { FtpInfo } from './PropsType';
@@ -17,6 +18,8 @@ const props = withDefaults(defineProps<Props>(), {
   value: undefined,
   content: undefined
 });
+
+const { t } = useI18n();
 
 const UUID = utils.uuid();
 const collapseActiveKey = ref<string>();
@@ -122,19 +125,19 @@ const isUploadFile = computed(() => {
             class="mr-3"
             style="line-height: 20px;"
             color="#87d068">
-            上传
+            {{ t('ftpPlugin.functionTestDetail.ftp.upload') }}
           </Tag>
           <Tag
             v-else
             class="mr-3"
             style="line-height: 20px;"
             color="#2db7f5">
-            下载
+            {{ t('ftpPlugin.functionTestDetail.ftp.download') }}
           </Tag>
           <div class="flex-1 justify-end flex items-center mr-3">
             <template v-if="showBasicInfo">
               <div class="mr-5 truncate">
-                <span class="mr-0.5">耗时<Colon /></span>
+                <span class="mr-0.5">{{ t('ftpPlugin.functionTestDetail.ftp.duration') }}<Colon /></span>
                 <span class="text-theme-sub-content"> {{ runtime }}</span>
               </div>
             </template>
@@ -160,7 +163,7 @@ const isUploadFile = computed(() => {
         <TabPane key="request">
           <template #tab>
             <div>
-              <span>请求</span>
+              <span>{{ t('ftpPlugin.functionTestDetail.ftp.request') }}</span>
               <span class="ml-0.75">({{ requestDataSize }})</span>
             </div>
           </template>
@@ -169,7 +172,7 @@ const isUploadFile = computed(() => {
         <TabPane key="response">
           <template #tab>
             <div>
-              <span>响应</span>
+              <span>{{ t('ftpPlugin.functionTestDetail.ftp.response') }}</span>
               <span class="ml-0.75">({{ responseSize }})</span>
             </div>
           </template>

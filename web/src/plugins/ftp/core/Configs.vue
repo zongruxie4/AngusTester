@@ -6,6 +6,7 @@ import { utils, TESTER } from '@xcan-angus/infra';
 import { AxiosRequestConfig } from 'axios';
 import { isEqual, cloneDeep } from 'lodash-es';
 import { exec, scenario } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
 
 import ButtonGroup from './ButtonGroup/index.vue';
 import { ButtonGroupMenuItem, ButtonGroupMenuKey } from './ButtonGroup/PropsType';
@@ -38,6 +39,8 @@ const props = withDefaults(defineProps<Props>(), {
   getTabPane: undefined,
   replaceTabPane: undefined
 });
+
+const { t } = useI18n();
 
 const SaveForm = defineAsyncComponent(() => import('./Drawer/SaveForm/index.vue'));
 const ActivityTimeline = defineAsyncComponent(() => import('./Drawer/ActivityTimeline/index.vue'));
@@ -260,7 +263,7 @@ const buttonGroupClick = async (data: ButtonGroupMenuItem) => {
     }
 
     if (!sceneConfigData.value?.id) {
-      notification.info('调试需要先保存当前数据，请保存后再执行调试');
+              notification.info(t('ftpPlugin.messages.debugSaveRequired'));
       drawerRef.value.open('save');
       return;
     }
@@ -1174,19 +1177,75 @@ const scriptId = computed((): string => {
 });
 
 const tabText = computed(() => {
-  return isUIViewMode.value ? { task: '任务配置', execute: '执行配置' } : { task: '', execute: '' };
+  return isUIViewMode.value ? { task: t('ftpPlugin.tabs.taskConfig'), execute: t('ftpPlugin.tabs.executeConfig') } : { task: '', execute: '' };
 });
+
+const toolbarMenuItems = computed(() => [
+  {
+    key: 'debugResult',
+    name: t('ftpPlugin.toolbar.debugResult')
+  },
+  {
+    key: 'logs',
+    name: t('ftpPlugin.toolbar.logs')
+  },
+  {
+    key: 'execLog',
+    name: t('ftpPlugin.toolbar.execLog')
+  }
+]);
+
+const toolbarExtraMenuItems = computed(() => [
+  {
+    key: 'toggle',
+    name: t('ftpPlugin.toolbar.toggle')
+  },
+  {
+    key: 'screen',
+    name: t('ftpPlugin.toolbar.screen')
+  }
+]);
 
 const drawerMenuItems = computed(() => {
+  const baseItems = [
+    {
+      icon: 'icon-fuwuxinxi',
+      name: t('ftpPlugin.drawer.save'),
+      key: 'save'
+    },
+    {
+      icon: 'icon-zhibiao',
+      name: t('ftpPlugin.drawer.indicator'),
+      key: 'indicator'
+    },
+    {
+      icon: 'icon-zhihangceshi',
+      key: 'testInfo',
+      name: t('ftpPlugin.drawer.testInfo')
+    },
+    {
+      icon: 'icon-lishijilu',
+      name: t('ftpPlugin.drawer.activity'),
+      key: 'activity'
+    },
+    {
+      icon: 'icon-pinglun',
+      name: t('ftpPlugin.drawer.comment'),
+      key: 'comment'
+    }
+  ];
+
   if (sceneConfigData.value?.id) {
     if (sceneConfigData.value.plugin === 'Ftp') {
-      return DRAWER_MENUITEMS;
+      return baseItems;
     }
-    return DRAWER_MENUITEMS.filter(item => !['indicator', 'testInfo'].includes(item.key));
+    return baseItems.filter(item => !['indicator', 'testInfo'].includes(item.key));
   }
 
-  return DRAWER_MENUITEMS.filter(item => ['save'].includes(item.key));
+  return baseItems.filter(item => ['save'].includes(item.key));
 });
+
+
 
 const setGlobalTabActiveKey = (key: 'taskConfig' | 'executeConfig') => {
   activeKey.value = key;
@@ -1268,8 +1327,8 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
           v-model:isOpen="isOpen"
           v-model:isMoving="isMoving"
           v-model:activeKey="toolbarActiveKey"
-          :menuItems="TOOLBAR_MENUITEMS"
-          :extraMenuItems="TOOLBAR_EXTRA_MENUITEMS"
+          :menuItems="toolbarMenuItems"
+          :extraMenuItems="toolbarExtraMenuItems"
           :destroyInactiveTabPane="false"
           class="relative z-1 bg-white">
           <template #toggle>
@@ -1349,9 +1408,9 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
         :updateUrl="`${TESTER}/scenario/auth`"
         :enabledUrl="`${TESTER}/scenario/${sceneConfigData?.id}/auth/enabled`"
         :initStatusUrl="`${TESTER}/scenario/${sceneConfigData?.id}/auth/status`"
-        onTips="开启&quot;有权限控制&quot;后，需要手动授权服务权限后才会有场景相应操作权限，默认开启&quot;有权限控制&quot;。注意：如果授权对象没有父级目录权限将自动授权查看权限。"
-        offTips="开启&quot;无权限控制&quot;后，将允许所有用户公开查看和操作当前场景，查看用户同时需要有当前场景父级目录权限。"
-        title="场景权限"
+        :onTips="t('ftpPlugin.auth.onTips')"
+        :offTips="t('ftpPlugin.auth.offTips')"
+        :title="t('ftpPlugin.auth.title')"
         @change="authFlagChange" />
     </AsyncComponent>
 

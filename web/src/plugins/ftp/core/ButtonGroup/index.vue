@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 import { ButtonGroupMenuItem } from './PropsType';
 
@@ -12,6 +13,8 @@ export interface Props {
 const props = withDefaults(defineProps<Props>(), {
   hideKeys: () => new Set<string>()
 });
+
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -28,22 +31,22 @@ const buttonItems = computed(() => {
 });
 
 const MENUITEMS:readonly ButtonGroupMenuItem[] = [
-  { name: '导出脚本', icon: 'icon-daochu', key: 'export' },
-  { name: '选择脚本', icon: 'icon-shengchengceshijiaoben', key: 'select' },
-  { name: '导入脚本', icon: 'icon-daoru', key: 'import' },
-  { name: '代码视图', icon: 'icon-daimashitu', key: 'codeView' },
-  { name: '页面视图', icon: 'icon-yemianshitu', key: 'UIView' },
-  { name: '权限', icon: 'icon-quanxian1', key: 'authority' },
-  { name: '关注', icon: 'icon-yiguanzhu', key: 'followFlag' },
-  { name: '取消关注', icon: 'icon-quxiaoguanzhu', key: 'cancelFollowFlag' },
-  { name: '收藏', icon: 'icon-yishoucang', key: 'favouriteFlag' },
-  { name: '取消收藏', icon: 'icon-quxiaoshoucang', key: 'cancelFavouriteFlag' },
-  { name: '刷新', icon: 'icon-shuaxin', key: 'refresh' },
-  { name: '创建执行', icon: 'icon-tiaoshi', key: 'test' },
-  { name: '调试', icon: 'icon-tiaoshi', key: 'debug' }
+  { name: t('ftpPlugin.buttonGroup.export'), icon: 'icon-daochu', key: 'export' },
+  { name: t('ftpPlugin.buttonGroup.select'), icon: 'icon-shengchengceshijiaoben', key: 'select' },
+  { name: t('ftpPlugin.buttonGroup.import'), icon: 'icon-daoru', key: 'import' },
+  { name: t('ftpPlugin.buttonGroup.codeView'), icon: 'icon-daimashitu', key: 'codeView' },
+  { name: t('ftpPlugin.buttonGroup.uiView'), icon: 'icon-yemianshitu', key: 'UIView' },
+  { name: t('ftpPlugin.buttonGroup.authority'), icon: 'icon-quanxian1', key: 'authority' },
+  { name: t('ftpPlugin.buttonGroup.followFlag'), icon: 'icon-yiguanzhu', key: 'followFlag' },
+  { name: t('ftpPlugin.buttonGroup.cancelFollowFlag'), icon: 'icon-quxiaoguanzhu', key: 'cancelFollowFlag' },
+  { name: t('ftpPlugin.buttonGroup.favouriteFlag'), icon: 'icon-yishoucang', key: 'favouriteFlag' },
+  { name: t('ftpPlugin.buttonGroup.cancelFavouriteFlag'), icon: 'icon-quxiaoshoucang', key: 'cancelFavouriteFlag' },
+  { name: t('ftpPlugin.buttonGroup.refresh'), icon: 'icon-shuaxin', key: 'refresh' },
+  { name: t('ftpPlugin.buttonGroup.test'), icon: 'icon-tiaoshi', key: 'test' },
+  { name: t('ftpPlugin.buttonGroup.debug'), icon: 'icon-tiaoshi', key: 'debug' }
 ];
 
-const SAVE_ITEM = { name: '保存', icon: 'icon-baocun', key: 'save' };
+const SAVE_ITEM = { name: t('ftpPlugin.buttonGroup.save'), icon: 'icon-baocun', key: 'save' };
 </script>
 
 <template>
@@ -66,7 +69,7 @@ const SAVE_ITEM = { name: '保存', icon: 'icon-baocun', key: 'save' };
       @click="click(SAVE_ITEM)">
       <div class="flex items-center space-x-1">
         <Icon icon="icon-baocun" class="text-3.5" />
-        <span>保存</span>
+        <span>{{ t('actions.save') }}</span>
       </div>
     </Button>
   </div>

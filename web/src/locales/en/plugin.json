@@ -1,0 +1,310 @@
+{
+  "ftpPlugin": {
+    "tabs": {
+      "taskConfig": "Task Configuration",
+      "executeConfig": "Execution Configuration"
+    },
+    "toolbar": {
+      "debugResult": "Debug Result",
+      "logs": "Scheduling Log",
+      "execLog": "Execution Log",
+      "toggle": "Expand/Collapse",
+      "screen": "Full Screen"
+    },
+    "drawer": {
+      "save": "Save",
+      "indicator": "Performance Indicators",
+      "testInfo": "Test Results",
+      "activity": "Activity",
+      "comment": "Comments"
+    },
+    "messages": {
+      "debugSaveRequired": "Debug requires saving current data first, please save before executing debug"
+    },
+    "auth": {
+      "title": "Scenario Permissions",
+      "onTips": "After enabling \"Permission Control\", manual authorization of service permissions is required to have corresponding operation permissions for scenarios. \"Permission Control\" is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically granted.",
+      "offTips": "After enabling \"No Permission Control\", all users will be allowed to publicly view and operate the current scenario. Users viewing the scenario must also have parent directory permissions for the current scenario."
+    },
+    "buttonGroup": {
+      "export": "Export Script",
+      "select": "Select Script",
+      "import": "Import Script",
+      "codeView": "Code View",
+      "uiView": "Page View",
+      "authority": "Permissions",
+      "followFlag": "Follow",
+      "cancelFollowFlag": "Unfollow",
+      "favouriteFlag": "Favourite",
+      "cancelFavouriteFlag": "Unfavourite",
+      "refresh": "Refresh",
+      "test": "Create Execution",
+      "debug": "Debug",
+      "save": "Save"
+    },
+    "debugLog": {
+      "schedulingResult": "Scheduling Result",
+      "success": "Success",
+      "fail": "Failed",
+      "processExitCode": "Process Exit Code",
+      "downloadFileName": "scheduling.log"
+    },
+    "debugResult": {
+      "debugResult": "Debug Result",
+      "fail": "Failed",
+      "exitCode": "Exit Code",
+      "failureReason": "Failure Reason",
+      "samplingStatus": "Sampling Status"
+    },
+    "drawerMenu": {
+      "saveForm": {
+        "id": "ID",
+        "name": "Name",
+        "scriptName": "Script Name",
+        "scriptId": "Script ID",
+        "description": "Description",
+        "namePlaceholder": "Maximum 200 characters",
+        "descriptionPlaceholder": "Maximum 800 characters",
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+      }
+    },
+    "execLog": {
+      "node": "Node",
+      "schedulingResult": "Scheduling Result",
+      "success": "Success",
+      "fail": "Failed",
+      "processExitCode": "Process Exit Code",
+      "downloadFileName": "runner.log"
+    },
+    "executeConfig": {
+      "scriptType": "Script Type"
+    },
+    "exportScriptModal": {
+      "title": "Export Script",
+      "format": "Format"
+    },
+    "functionTestDetail": {
+      "basicInfo": {
+        "duration": "Duration",
+        "iteration": "Iterations",
+        "request": "Requests",
+        "responseTime": "Response Time"
+      },
+      "collapse": {
+        "iteration": "Iteration {iteration}"
+      },
+      "ftp": {
+        "upload": "Upload",
+        "download": "Download",
+        "duration": "Duration",
+        "request": "Request",
+        "response": "Response"
+      },
+      "statusTag": {
+        "success": "Passed",
+        "fail": "Failed",
+        "block": "Not Executed",
+        "ignore": "Disabled"
+      }
+    },
+    "scriptConfig": {
+      "messages": {
+        "yamlFormatError": "YAML content format error, please check and correct"
+      }
+    },
+    "performanceTestDetail": {
+      "basicInfo": {
+        "executionDuration": "Execution Duration",
+        "concurrency": "Concurrency",
+        "queriesPerSecond": "Queries/Second (Current | Max)",
+        "transactionsPerSecond": "Transactions/Second (Current | Max)",
+        "errors": "Errors (Error)",
+        "iterations": "Iterations",
+        "responseTime": "Response Time (Min | Avg | Max)",
+        "percentile": "Response Percentile (P50 | P90 | P99)",
+        "download": "Download",
+        "upload": "Upload"
+      },
+      "tabs": {
+        "aggregation": "Aggregation Results",
+        "throughput": "Throughput",
+        "concurrency": "Concurrency",
+        "responseTime": "Response Time",
+        "error": "Errors",
+        "statusCode": "Status Code",
+        "node": "Node Resources",
+        "analyze": "Superimpose Analysis"
+      },
+      "scriptInfo": {
+        "scriptName": "Script Name",
+        "scriptType": "Script Type",
+        "plugin": "Plugin",
+        "source": "Source",
+        "creator": "Creator",
+        "createTime": "Create Time",
+        "lastModifier": "Last Modifier",
+        "lastModifyTime": "Last Modify Time",
+        "description": "Description",
+                 "form": {
+           "scriptTypeRequired": "Please select script type",
+           "scriptTypePlaceholder": "Please select script type",
+           "scriptNameRequired": "Please enter script name, maximum 200 characters",
+           "scriptNamePlaceholder": "Please enter script name, maximum 200 characters",
+           "descriptionRequired": "Please enter script description, maximum 800 characters",
+           "descriptionPlaceholder": "Please enter script description, maximum 800 characters"
+         }
+       },
+       "sampling": {
+         "title": "Error Sampling",
+         "time": "Time",
+         "samplingId": "Sampling ID",
+         "name": "Name"
+       },
+       "countTemplate": {
+         "radioButtons": {
+           "byApi": "By API",
+           "byMetric": "By Metric",
+           "overlayAnalysis": "Overlay Analysis"
+         }
+       },
+       "superimposeAnalysis": {
+         "toggleTitles": {
+           "throughput": "Throughput (TPS/QPS)",
+           "concurrency": "Concurrency (VU)",
+           "responseTime": "Response Time (RT, ms)",
+           "error": "Errors (ERROR)"
+         },
+         "throughputOptions": {
+           "queriesPerSecond": "Queries/Second",
+           "transactionsPerSecond": "Transactions/Second",
+           "downloadPerSecond": "Download/Second",
+           "uploadPerSecond": "Upload/Second"
+         },
+         "threadOptions": {
+           "threadCount": "Thread Count",
+           "maxThreadCount": "Max Thread Count",
+           "activeThreadCount": "Active Thread Count"
+         },
+         "responseTimeOptions": {
+           "average": "Average",
+           "minimum": "Minimum",
+           "maximum": "Maximum",
+           "p50": "P50",
+           "p75": "P75",
+           "p90": "P90",
+           "p95": "P95",
+           "p99": "P99",
+           "p999": "P999"
+         },
+         "errorOptions": {
+           "errorCount": "Error Count",
+           "errorRate": "Error Rate"
+         }
+       },
+       "nodeData": {
+         "tabs": {
+           "cpu": "CPU",
+           "memory": "Memory",
+           "fileSystem": "File System",
+           "network": "Network"
+         },
+         "nodeTypes": {
+           "execNode": "Execution Node",
+           "appNode": "Application Node"
+         },
+         "diskDataOptions": {
+           "iops": "IOPS",
+           "mbPerSecond": "MB/Second"
+         },
+         "cpuMetrics": {
+           "idlePercentage": "CPU Idle Percentage (%)",
+           "systemSpacePercentage": "System Space CPU Usage (%)",
+           "userSpacePercentage": "User Space CPU Usage (%)",
+           "ioWaitPercentage": "IO Wait CPU Percentage (%)",
+           "otherPercentage": "Other CPU Usage (%)",
+           "totalPercentage": "Total CPU Usage (%)"
+         },
+         "memoryMetrics": {
+           "physicalMemoryFree": "Physical Memory Free (GB)",
+           "physicalMemoryUsed": "Physical Memory Used (GB)",
+           "actualFreePercentage": "Actual Free Memory Percentage (%)",
+           "actualUsedPercentage": "Actual Used Memory Percentage (%)",
+           "actualFreeMemory": "Actual Free Memory (GB)",
+           "actualUsedMemory": "Actual Used Memory (GB)",
+           "freeMemoryPercentage": "Free Memory Percentage (%)",
+           "usedMemoryPercentage": "Used Memory Percentage (%)",
+           "swapUsed": "Swap Used (GB)",
+           "swapFree": "Swap Free (GB)"
+         },
+         "diskMetrics": {
+           "totalSize": "Total Disk Size (GB)",
+           "fileSystemFree": "File System Free (GB)",
+           "fileSystemUsed": "File System Used (GB)",
+           "fileSystemAvailable": "File System Available (GB)",
+           "fileSystemUsage": "File System Usage (%)",
+           "diskReadsPerSecond": "Disk Reads/Second (IO/s)",
+           "diskWritesPerSecond": "Disk Writes/Second (IO/s)",
+           "diskReadMBPerSecond": "Disk Read MB/Second (MB/s)",
+           "diskWriteMBPerSecond": "Disk Write MB/Second (MB/s)"
+         },
+         "networkMetrics": {
+           "totalBytesReceived": "Total Bytes Received (GB)",
+           "mbReceivedPerSecond": "MB Received/Second (MB/s)",
+           "errorPacketsReceived": "Error Packets Received (packets)",
+           "totalBytesSent": "Total Bytes Sent (GB)",
+           "mbSentPerSecond": "MB Sent/Second (MB/s)"
+         }
+       },
+       "execSetting": {
+         "messages": {
+           "modifySuccess": "Modified Successfully"
+         },
+         "actions": {
+           "save": "Save",
+           "cancel": "Cancel"
+         }
+       },
+       "execLog": {
+         "selectNode": "Select Node",
+         "schedulingLog": {
+           "title": "Scheduling Log",
+           "lastSchedulingTime": "Last Scheduling Time",
+           "result": "Result",
+           "success": "Success",
+           "fail": "Failed",
+           "exitCode": "Exit Code",
+           "noData": "--"
+         },
+         "execLog": {
+           "title": "Execution Log",
+           "file": "File",
+           "noProxyInfo": "No proxy access information, connection failed at: ",
+           "downloadFileName": "runner.log"
+         },
+         "tooltips": {
+           "export": "Export",
+           "refresh": "Refresh"
+         },
+         "downloadFileName": {
+           "scheduling": "scheduling.log"
+         }
+       },
+       "conterList": {
+         "errorStatistics": "Error Statistics",
+         "errorCount": "Error Count",
+         "errorRate": "Error Rate"
+       },
+       "aggregate": {
+         "radioButtons": {
+           "byThroughput": "By Throughput",
+           "byResponseTime": "By Response Time",
+           "byErrorCount": "By Error Count",
+           "byErrorRate": "By Error Rate",
+           "byUploadDownload": "By Upload/Download"
+         }
+       }
+      }
+    }
+  }
+}
