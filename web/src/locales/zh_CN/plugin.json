@@ -1145,6 +1145,8 @@
       "insertTransEnd": "插入结束事务",
       "insertWaitingTime": "插入等待时间",
       "insertRendezvous": "插入集合点",
+      "waitingTime": "等待时间",
+      "rendezvous": "集合点",
       "jdbcConfig": {
         "nameDuplicate": "名称重复",
         "namePlaceholder": "名称，最大支持400个字符",

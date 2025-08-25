@@ -1144,6 +1144,8 @@
       "insertTransEnd": "Insert Transaction End",
       "insertWaitingTime": "Insert Waiting Time",
       "insertRendezvous": "Insert Rendezvous",
+      "waitingTime": "Waiting Time",
+      "rendezvous": "Rendezvous",
       "jdbcConfig": {
         "nameDuplicate": "Name Duplicate",
         "namePlaceholder": "Name, maximum 400 characters",

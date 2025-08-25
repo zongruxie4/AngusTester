@@ -122,7 +122,7 @@ const insertTime = () => {
     beforeName: '',
     transactionName: '',
     target: 'WAITING_TIME',
-    name: '等待时间-' + waitingTimeNum++,
+    name: t('jdbcPlugin.UIConfigJdbc.waitingTime') + '-' + waitingTimeNum++,
     description: '',
     enabled: true,
     minWaitTimeInMs: '',
@@ -141,7 +141,7 @@ const insertRendezvous = () => {
   const data: RendezvousConfig = {
     id: utils.uuid(),
     target: 'RENDEZVOUS',
-    name: '集合点-' + rendezvousNum++,
+    name: t('jdbcPlugin.UIConfigJdbc.rendezvous') + '-' + rendezvousNum++,
     description: '',
     enabled: true,
     beforeName: '',
@@ -226,7 +226,7 @@ defineExpose({
         @click="insertJDBC">
         <div class="flex items-center">
           <Icon icon="icon-jia" class="mr-1" />
-                        <span>{{ t('jdbcPlugin.UIConfigJdbc.insertJDBC') }}</span>
+          <span>{{ t('jdbcPlugin.UIConfigJdbc.insertJDBC') }}</span>
         </div>
       </Button>
       <Button
@@ -236,7 +236,7 @@ defineExpose({
         @click="insertTransStart">
         <div class="flex items-center">
           <Icon icon="icon-shiwu" class="mr-1" />
-                        <span>{{ t('jdbcPlugin.UIConfigJdbc.insertTransStart') }}</span>
+          <span>{{ t('jdbcPlugin.UIConfigJdbc.insertTransStart') }}</span>
         </div>
       </Button>
       <Button
@@ -246,7 +246,7 @@ defineExpose({
         @click="insertTransEnd">
         <div class="flex items-center">
           <Icon icon="icon-shiwu" class="mr-1" />
-                        <span>{{ t('jdbcPlugin.UIConfigJdbc.insertTransEnd') }}</span>
+          <span>{{ t('jdbcPlugin.UIConfigJdbc.insertTransEnd') }}</span>
         </div>
       </Button>
       <Button
@@ -255,7 +255,7 @@ defineExpose({
         @click="insertTime">
         <div class="flex items-center">
           <Icon icon="icon-dengdaishijian" class="mr-1" />
-                        <span>{{ t('jdbcPlugin.UIConfigJdbc.insertWaitingTime') }}</span>
+           <span>{{ t('jdbcPlugin.UIConfigJdbc.insertWaitingTime') }}</span>
         </div>
       </Button>
       <Button
@@ -264,7 +264,7 @@ defineExpose({
         @click="insertRendezvous">
         <div class="flex items-center">
           <Icon icon="icon-jihedian1" class="mr-1" />
-                        <span>{{ t('jdbcPlugin.UIConfigJdbc.insertRendezvous') }}</span>
+          <span>{{ t('jdbcPlugin.UIConfigJdbc.insertRendezvous') }}</span>
         </div>
       </Button>
     </div>
