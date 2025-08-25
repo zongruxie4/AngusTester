@@ -1012,6 +1012,7 @@
         }
       },
       "functionTestDetail": {
+        "pending": "Executing...",
         "basicInfo": {
           "duration": "Duration",
           "iteration": "Iterations",
@@ -1419,6 +1420,92 @@
           "XPATH_MATCH": "XPath Match",
           "JSON_PATH_MATCH": "JSONPath Match"
         }
+      }
+    }
+  },
+  "ldapPlugin": {
+    "title": "LDAP Plugin",
+    "taskConfig": "Task Configuration",
+    "executeConfig": "Execute Configuration",
+    "notifications": {
+      "debugSaveFirst": "Debug requires saving current data first, please save before debugging",
+      "autoSaveSuccess": "Auto save successful, executing debug...",
+      "createTestSuccess": "Create 'Execute Test' successful, please view details and results in 'Execute'",
+      "taskConfigError": "Task configuration data error, please check and correct before saving.",
+      "executeConfigError": "Execute configuration data error, please check and correct before saving.",
+      "followSuccess": "Follow successful",
+      "cancelFollowSuccess": "Cancel follow successful",
+      "favouriteSuccess": "Favorite successful",
+      "cancelFavouriteSuccess": "Cancel favorite successful",
+      "saveSuccess": "Save successful",
+      "paramError": "Parameter error"
+    },
+    "authorizeModal": {
+      "title": "Scenario Permission",
+      "onTips": "After enabling 'Permission Control', manual authorization of service permissions is required to have corresponding operation permissions for scenarios. 'Permission Control' is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically granted.",
+      "offTips": "After enabling 'No Permission Control', all users will be allowed to publicly view and operate the current scenario. Users viewing need to have parent directory permissions for the current scenario."
+    },
+    "comments": {
+      "selectScriptModal": "Select Script Modal",
+      "importScriptModal": "Import Script Modal",
+      "exportScriptModal": "Export Script Modal",
+      "authorizeModal": "Show Permission Modal",
+      "abortController": "Abort Controller for terminating requests",
+      "defaultViewDescription": "Default page view, new scenarios don't show [Execute Test], [Export Script], [Follow], [Cancel Follow], [Favorite], [Cancel Favorite], [Permission], [Refresh] buttons before saving",
+      "sceneConfigData": "Scene configuration data",
+      "rampUpInterval": "Ramp Up Interval",
+      "rampUpThreads": "Ramp Up Threads"
+    },
+    "uiConfig": {
+      "insertLdapRequest": "Insert Ldap Request",
+      "supportMultipleLdap": "Support multiple Ldap interfaces simultaneously, but only one Ldap can be enabled for testing at a time.",
+      "nameDuplicate": "Name Duplicate",
+      "clone": "Clone",
+      "delete": "Delete",
+      "add": "Add",
+      "serverConfig": "Server Configuration",
+      "hostnameOrIP": "Hostname or IP",
+      "hostnameOrIPPlaceholder": "Hostname or IP, maximum 4096 characters",
+      "port": "Port",
+      "portPlaceholder": "Port (1~65535)",
+      "username": "Username",
+      "usernamePlaceholder": "Username, maximum 400 characters",
+      "password": "Password",
+      "passwordPlaceholder": "Password, maximum 4096 characters",
+      "rootDn": "Base DN",
+      "rootDnPlaceholder": "Base DN, maximum 4096 characters",
+      "testConfig": "Test Configuration",
+      "testType": "Test Type",
+      "uniqueCounter": "Unique Counter Number",
+      "testTypes": {
+        "add": "Add",
+        "delete": "Delete",
+        "search": "Search",
+        "modify": "Modify"
+      },
+      "customTest": "Custom Test",
+      "entryDn": "DN Entry Name",
+      "entryDnAddPlaceholder": "Custom add entry name, maximum 4096 characters",
+      "entryDnModifyPlaceholder": "Custom modify entry name, maximum 4096 characters",
+      "attributeParams": "Attribute Parameters",
+      "paramName": "Parameter Name",
+      "paramNamePlaceholder": "Parameter name, maximum 400 characters",
+      "paramValue": "Parameter Value",
+      "paramValuePlaceholder": "Parameter value, maximum 4096 characters",
+      "deleteEntry": "Delete Entry",
+      "deleteEntryPlaceholder": "Custom delete entry, maximum 4096 characters",
+      "searchBase": "Base Name",
+      "searchBasePlaceholder": "Custom search entry base name, maximum 4096 characters",
+      "searchFilter": "Filter Condition",
+      "searchFilterPlaceholder": "Custom search entry filter condition, maximum 4096 characters",
+      "maxAttributeParams": "Maximum 50 attribute parameters allowed",
+      "defaultPersonEntryInfo": "Default person entry information for non-custom tests",
+      "defaultTestTypeLogic": "Logic description for non-custom test types",
+      "defaultLogic": {
+        "add": "Add: First add default person entry information, then delete after completion.",
+        "modify": "Modify: First add default person entry information, execute modify operation after successful addition, then delete.",
+        "search": "Search: First add default person entry information, execute search operation after successful addition, then delete.",
+        "delete": "Delete: First add default person entry information, then execute delete operation after successful addition."
       }
     }
   }

@@ -1013,6 +1013,7 @@
       }
     },
     "functionTestDetail": {
+      "pending": "执行中...",
       "basicInfo": {
         "duration": "运行时间",
         "iteration": "迭代数",
@@ -1420,6 +1421,92 @@
           "XPATH_MATCH": "XPath匹配",
           "JSON_PATH_MATCH": "JSONPath匹配"
         }
+      }
+    }
+  },
+  "ldapPlugin": {
+    "title": "LDAP插件",
+    "taskConfig": "任务配置",
+    "executeConfig": "执行配置",
+    "notifications": {
+      "debugSaveFirst": "调试需要先保存当前数据，请保存后再执行调试",
+      "autoSaveSuccess": "自动保存成功，正在执行调试...",
+      "createTestSuccess": "创建\"执行测试\"成功，请在\"执行\"中查看详情和结果",
+      "taskConfigError": "任务配置数据错误，请检查更正后再保存。",
+      "executeConfigError": "执行配置数据错误，请检查更正后再保存。",
+      "followSuccess": "关注成功",
+      "cancelFollowSuccess": "取消关注成功",
+      "favouriteSuccess": "收藏成功",
+      "cancelFavouriteSuccess": "取消收藏成功",
+      "saveSuccess": "保存成功",
+      "paramError": "参数错误"
+    },
+    "authorizeModal": {
+      "title": "场景权限",
+      "onTips": "开启\"有权限控制\"后，需要手动授权服务权限后才会有场景相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级目录权限将自动授权查看权限。",
+      "offTips": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前场景，查看用户同时需要有当前场景父级目录权限。"
+    },
+    "comments": {
+      "selectScriptModal": "选择脚本弹窗",
+      "importScriptModal": "导入脚本弹窗",
+      "exportScriptModal": "导出脚本弹窗",
+      "authorizeModal": "显示权限弹窗",
+      "abortController": "用于终止请求的实例",
+      "defaultViewDescription": "默认显示页面视图，新建场景没有保存之前不显示【执行测试】【导出脚本】、【关注】、【取消关注】、【收藏】、【取消收藏】、【权限】、【刷新】按钮",
+      "sceneConfigData": "场景详情信息",
+      "rampUpInterval": "增压间隔",
+      "rampUpThreads": "增压线程数"
+    },
+    "uiConfig": {
+      "insertLdapRequest": "插入Ldap请求",
+      "supportMultipleLdap": "支持同时编排多个Ldap接口，但每次只允许启用一个Ldap进行测试。",
+      "nameDuplicate": "名称重复",
+      "clone": "克隆",
+      "delete": "删除",
+      "add": "添加",
+      "serverConfig": "服务器配置",
+      "hostnameOrIP": "主机名或IP",
+      "hostnameOrIPPlaceholder": "主机名或IP，最大支持4096个字符",
+      "port": "端口",
+      "portPlaceholder": "端口（1~65535）",
+      "username": "用户名",
+      "usernamePlaceholder": "用户名，最大支持400个字符",
+      "password": "密码",
+      "passwordPlaceholder": "密码，最大支持4096个字符",
+      "rootDn": "基础DN",
+      "rootDnPlaceholder": "基础DN，最大支持4096个字符",
+      "testConfig": "测试配置",
+      "testType": "测试类型",
+      "uniqueCounter": "唯一计数器编号",
+      "testTypes": {
+        "add": "添加",
+        "delete": "删除",
+        "search": "搜索",
+        "modify": "修改"
+      },
+      "customTest": "自定义测试",
+      "entryDn": "DN条目名称",
+      "entryDnAddPlaceholder": "自定义添加条目名称，最大支持4096个字符",
+      "entryDnModifyPlaceholder": "自定义修改条目名称，最大支持4096个字符",
+      "attributeParams": "属性参数",
+      "paramName": "参数名",
+      "paramNamePlaceholder": "参数名，最大支持400个字符",
+      "paramValue": "参数值",
+      "paramValuePlaceholder": "参数值，最大支持4096个字符",
+      "deleteEntry": "删除条目",
+      "deleteEntryPlaceholder": "自定义删除条目，最大支持4096个字符",
+      "searchBase": "基名称",
+      "searchBasePlaceholder": "自定义搜索条目的基名称，最大支持4096个字符",
+      "searchFilter": "过滤条件",
+      "searchFilterPlaceholder": "自定义搜索条目过滤条件，最大支持4096个字符",
+      "maxAttributeParams": "最多允许添加50个属性参数",
+      "defaultPersonEntryInfo": "非自定义测试默认人员条目信息",
+      "defaultTestTypeLogic": "非自定义测试类型对用逻辑说明",
+      "defaultLogic": {
+        "add": "添加：先添加默认人员条目信息，完成后再删除。",
+        "modify": "修改：先添加默认人员条目信息，添加成功后执行修改操作，最后再删除。",
+        "search": "搜索：先添加默认人员条目信息，添加成功后执行搜索操作，最后再删除。",
+        "delete": "删除：先添加默认人员条目信息，添加成功后在执行删除操作。"
       }
     }
   }

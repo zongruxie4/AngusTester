@@ -160,10 +160,14 @@ const tranMax = computed(() => {
 });
 
 const pending = computed(() => {
-  return props.execInfo?.status?.value === 'RUNNING' ? '执行中...' : false;
+  return props.execInfo?.status?.value === 'RUNNING' ? t('httPlugin.functionTestDetail.pending') : false;
 });
 
-const timeTexts = ['最小', '平均', '最大'];
+const timeTexts = computed(() => [
+  t('httPlugin.functionTestDetail.timeTexts.minimum'),
+  t('httPlugin.functionTestDetail.timeTexts.average'),
+  t('httPlugin.functionTestDetail.timeTexts.maximum')
+]);
 </script>
 <template>
   <div class="px-5">

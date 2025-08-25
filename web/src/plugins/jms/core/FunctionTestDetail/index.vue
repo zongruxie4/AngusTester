@@ -3,7 +3,7 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { utils } from '@xcan-angus/infra';
 import { GroupText, TestBasicInfo } from '@xcan-angus/vue-ui';
 import { Timeline, TimelineItem } from 'ant-design-vue';
-
+import { useI18n } from 'vue-i18n';
 import { ExecInfo, ExecContent } from './PropsType';
 
 import Collapse from './Collapse/index.vue';
@@ -24,6 +24,8 @@ const props = withDefaults(defineProps<Props>(), {
   execContent: undefined,
   exception: undefined
 });
+
+const { t } = useI18n();
 
 const execContentList = ref<ExecContent[]>([]);
 const totalAssertionNum = ref(0);
@@ -169,11 +171,22 @@ const tranMax = computed(() => {
 });
 
 const pending = computed(() => {
-  return props.execInfo?.status?.value === 'RUNNING' ? '执行中...' : false;
+  return props.execInfo?.status?.value === 'RUNNING' ? t('httPlugin.functionTestDetail.pending') : false;
 });
 
-const texts = ['通过', '忽略', '未启用', '总数'];
-const timeTexts = ['最小', '平均', '最大'];
+
+const texts = computed(() => [
+  t('httPlugin.functionTestDetail.texts.success'),
+  t('httPlugin.functionTestDetail.texts.ignore'),
+  t('httPlugin.functionTestDetail.texts.block'),
+  t('httPlugin.functionTestDetail.texts.total')
+]);
+
+const timeTexts = computed(() => [
+  t('httPlugin.functionTestDetail.timeTexts.minimum'),
+  t('httPlugin.functionTestDetail.timeTexts.average'),
+  t('httPlugin.functionTestDetail.timeTexts.maximum')
+]);
 </script>
 <template>
   <div class="px-5">
