@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import { Popover } from 'ant-design-vue';
 import { Icon, Hints, Grid } from '@xcan-angus/vue-ui';
 import beautify from 'js-beautify';
+
+const { t } = useI18n();
 
 const prettyXml = (data: string) => {
   return beautify.html(data, {
@@ -15,79 +18,79 @@ const prettyXml = (data: string) => {
 const matchItemList = [
   {
     key: 'regexp',
-    name: '正则表达式匹配',
+    name: t('httPlugin.uiConfig.httpConfigs.assertionForm.matchItemPopover.regexpMatch'),
     columns: [[
       {
         dataIndex: 'data',
-        label: '匹配值'
+        label: t('httPlugin.uiConfig.httpConfigs.assertionForm.matchItemPopover.matchValue')
       },
       {
         dataIndex: 'expression',
-        label: '表达式'
+        label: t('httPlugin.uiConfig.httpConfigs.assertionForm.matchItemPopover.expression')
       },
       {
         dataIndex: 'result',
-        label: '匹配结果'
+        label: t('httPlugin.uiConfig.httpConfigs.assertionForm.matchItemPopover.matchResult')
       },
       {
         dataIndex: 'item',
-        label: '匹配项'
+        label: t('httPlugin.uiConfig.httpConfigs.assertionForm.matchItemPopover.matchItem')
       }
     ]],
     data: {
       data: 'hello, RegexExtraction! my phone number is 18888888888 and 13999999999.',
       expression: '(1\\d{10})',
       result: '["1888888888813999999999","18888888888","13999999999"]',
-      item: '不指定位置和指定位置0都取位置0对应合并匹配值："1888888888813999999999"，指定位置1取值："18888888888"，指定位置2取值："13999999999"。'
+      item: t('httPlugin.uiConfig.httpConfigs.assertionForm.matchItemPopover.regexpItemDescription')
     }
   },
   {
     key: 'jsonpath',
-    name: 'JSONPath匹配',
+    name: t('httPlugin.uiConfig.httpConfigs.assertionForm.matchItemPopover.jsonpathMatch'),
     columns: [[
       {
         dataIndex: 'data',
-        label: '匹配值'
+        label: t('httPlugin.uiConfig.httpConfigs.assertionForm.matchItemPopover.matchValue')
       },
       {
         dataIndex: 'expression',
-        label: '表达式'
+        label: t('httPlugin.uiConfig.httpConfigs.assertionForm.matchItemPopover.expression')
       },
       {
         dataIndex: 'result',
-        label: '匹配结果'
+        label: t('httPlugin.uiConfig.httpConfigs.assertionForm.matchItemPopover.matchResult')
       },
       {
         dataIndex: 'item',
-        label: '匹配项'
+        label: t('httPlugin.uiConfig.httpConfigs.assertionForm.matchItemPopover.matchItem')
       }
     ]],
     data: {
       data: { store: { book: [{ title: 'Sayings of the Century', price: 100 }, { title: 'Confucianism', price: 200 }] } },
       expression: '$.store.book[*]',
       result: '[{"title":"Sayings of the Century","price":100},{"title":"confucianism","price":200}]',
-      item: '不指定位置默认取合并结果：[{"title":"Sayings of the Century","price":100},{"title":"confucianism","price":200}]，指定位置0取值：{"title":"Sayings of the Century","price":100}，指定位置1取值：{"title":"confucianism","price":200}。'
+      item: t('httPlugin.uiConfig.httpConfigs.assertionForm.matchItemPopover.jsonpathItemDescription')
     }
   },
   {
     key: 'xpath',
-    name: 'XPath匹配',
+    name: t('httPlugin.uiConfig.httpConfigs.assertionForm.matchItemPopover.xpathMatch'),
     columns: [[
       {
         dataIndex: 'data',
-        label: '匹配值'
+        label: t('httPlugin.uiConfig.httpConfigs.assertionForm.matchItemPopover.matchValue')
       },
       {
         dataIndex: 'expression',
-        label: '表达式'
+        label: t('httPlugin.uiConfig.httpConfigs.assertionForm.matchItemPopover.expression')
       },
       {
         dataIndex: 'result',
-        label: '匹配结果'
+        label: t('httPlugin.uiConfig.httpConfigs.assertionForm.matchItemPopover.matchResult')
       },
       {
         dataIndex: 'item',
-        label: '匹配项'
+        label: t('httPlugin.uiConfig.httpConfigs.assertionForm.matchItemPopover.matchItem')
       }
     ]],
     data: {
@@ -95,7 +98,7 @@ const matchItemList = [
                 '<interests>basketball</interests><name>Angus1</name></person><person><age>32</age><interests>coding</interests><name>Angus2</name></person></persons>'),
       expression: '/persons/person[age >= 30]',
       result: '["30codingbasketballAngus1", "32codingAngus2"]',
-      item: '不指定位置默认取合并结果："30codingbasketballAngus132codingAngus2"，指定位置0取值："30codingbasketballAngus1"，指定位置1取值："32codingAngus2"。'
+      item: t('httPlugin.uiConfig.httpConfigs.assertionForm.matchItemPopover.xpathItemDescription')
     }
   }
 ];
@@ -110,9 +113,9 @@ const matchItemList = [
     </div>
     <template #content>
       <div style="max-height: 60vh; overflow: auto;" class="w-196 space-y-2 text-3 text-theme-content">
-        <Hints text="匹配项" class="!font-semibold !text-theme-content" />
+        <Hints :text="t('httPlugin.uiConfig.httpConfigs.assertionForm.matchItemPopover.title')" class="!font-semibold !text-theme-content" />
         <div>
-          当表达式匹配到多个值或者结果为数组时，指定第几个值作为表达式期望值，支持位置从0开始到最大值2000，指定位置数据不存在时返回null，不指定时合并多个值为一个值。
+          {{ t('httPlugin.uiConfig.httpConfigs.assertionForm.matchItemPopover.description') }}
         </div>
         <ol class="pl-4 space-y-2">
           <li

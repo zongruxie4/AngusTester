@@ -304,8 +304,8 @@
              "byUploadDownload": "按上传下载"
            }
          }
-       }
-      },
+    }
+  },
   "gendata": {
     "tabs": {
       "csv": "CSV",
@@ -439,7 +439,7 @@
          },
          "storageTips": {
            "datasource": "数据源存储，将生成数据写入到数据库。",
-           "dataspace": "数据空间存储，将数据存储到 AngusTester 应用"数据"->"空间"。",
+           "dataspace": "数据空间存储，将数据存储到 AngusTester 应用\"数据\"->\"空间\"。",
            "local": "本地存储，生成数据会以文件形式存储在执行节点，您可以进入执行详情页面点击下载数据文件。默认存储路径：${AGENT_HOME}/data/exec/[执行ID]/data.[数据格式]。",
            "pushThird": "推送三方接口，支持将生成数据以文本或文件形式发送到一个 Http 接口。"
          },
@@ -506,5 +506,621 @@
        "viewScriptModal": {
          "title": "查看脚本"
        }
+      },
+  "httPlugin": {
+    "actions": {
+      "save": "保存",
+      "cancel": "取消",
+      "confirm": "确认",
+      "refresh": "刷新",
+      "export": "导出脚本",
+      "import": "导入脚本",
+      "add": "添加",
+      "edit": "编辑",
+      "delete": "删除",
+      "view": "查看",
+      "download": "下载",
+      "upload": "上传",
+      "select": "选择脚本",
+      "codeView": "代码视图",
+      "pageView": "页面视图",
+      "authority": "权限",
+      "follow": "关注",
+      "cancelFollow": "取消关注",
+      "favourite": "收藏",
+      "cancelFavourite": "取消收藏",
+      "createExecution": "创建执行",
+      "debug": "调试"
+    },
+    "messages": {
+      "saveSuccess": "保存成功",
+      "deleteSuccess": "删除成功",
+      "importSuccess": "导入成功",
+      "exportSuccess": "导出成功",
+      "operationSuccess": "操作成功",
+      "operationFailed": "操作失败",
+      "pleaseSelect": "请选择",
+      "pleaseInput": "请输入",
+      "debugNeedSave": "调试需要先保存当前数据，请保存后再执行调试",
+      "autoSaveAndDebug": "自动保存成功，正在执行调试...",
+      "createExecutionSuccess": "创建"执行测试"成功，请在"执行"中查看详情和结果",
+      "taskConfigError": "任务配置数据错误，请检查更正后再保存。",
+      "executeConfigError": "执行配置数据错误，请检查更正后再保存。",
+      "followSuccess": "关注成功",
+      "cancelFollowSuccess": "取消关注成功",
+      "favouriteSuccess": "收藏成功",
+      "cancelFavouriteSuccess": "取消收藏成功",
+      "paramError": "参数错误"
+    },
+    "form": {
+      "name": "名称",
+      "description": "描述",
+      "type": "类型",
+      "format": "格式",
+      "size": "大小",
+      "count": "数量",
+      "status": "状态",
+      "createTime": "创建时间",
+      "updateTime": "更新时间",
+      "creator": "创建者",
+      "updater": "更新者"
+    },
+    "tabs": {
+      "taskConfig": "任务配置",
+      "executeConfig": "执行配置"
+    },
+    "authority": {
+      "title": "场景权限",
+      "onTips": "开启\"有权限控制\"后，需要手动授权服务权限后才会有场景相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级目录权限将自动授权查看权限。",
+      "offTips": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前场景，查看用户同时需要有当前场景父级目录权限。"
+    },
+    "debugLog": {
+      "schedulingResult": "调度结果",
+      "processExitCode": "进程退出码",
+      "downloadFileName": "scheduling.log"
+    },
+    "debugResult": {
+      "debugResult": "调试结果",
+      "exitCode": "退出码",
+      "failureReason": "失败原因",
+      "samplingStatus": "采样状态"
+    },
+    "drawerItem": {
+      "id": "ID",
+      "name": "名称",
+      "scriptName": "脚本名称",
+      "scriptId": "脚本ID",
+      "description": "描述",
+      "namePlaceholder": "最长200个字符",
+      "descriptionPlaceholder": "最长800个字符",
+      "confirm": "确定",
+      "cancel": "取消"
+    },
+    "execLog": {
+      "node": "节点",
+      "schedulingResult": "调度结果",
+      "processExitCode": "进程退出码",
+      "downloadFileName": "runner.log"
+    },
+    "executeConfig": {
+      "scriptType": "脚本类型"
+    },
+    "exportScriptModal": {
+      "title": "导出脚本",
+      "format": "格式"
+    },
+    "importScript": {
+      "title": "导入脚本"
+    },
+    "scriptConfig": {
+      "yamlFormatError": "yaml内容格式错误，请检查并更正"
+    },
+    "selectScriptModal": {
+      "title": "选择脚本",
+      "searchPlaceholder": "查询脚本名称",
+      "tableHeaders": {
+        "name": "名称",
+        "plugin": "插件",
+        "type": "类型"
+      }
+    },
+    "performanceTestDetail": {
+      "countCards": {
+        "currentDuration": "执行时长",
+        "vu": "并发数",
+        "qps": "每秒查询数(当前 | 最大)",
+        "tps": "每秒事务数(当前 | 最大)",
+        "err": "错误(Error)",
+        "currentIterations": "迭代次数",
+        "rt": "响应时间(最小 | 平均 | 最大)",
+        "p50": "响应百分位(P50 | P90 | P99)",
+        "export": "下载",
+        "upload": "上传"
+      },
+      "tabs": {
+        "aggregation": "汇总结果",
+        "throughput": "吞吐量",
+        "vu": "并发数",
+        "responseTime": "响应时间",
+        "error": "错误",
+        "httpCode": "状态码",
+        "node": "节点资源",
+        "analyze": "叠加分析"
+      },
+      "units": {
+        "perSecond": "/秒",
+        "ms": "ms"
+      }
+    },
+    "uiConfig": {
+      "selectApiModal": {
+        "title": "选择API",
+        "searchPlaceholder": "搜索API名称",
+        "tableHeaders": {
+          "name": "名称",
+          "method": "方法",
+          "path": "路径"
+        },
+        "copy": "复制",
+        "reference": "引用",
+        "alreadyReferenced": "已选中的接口中包含已被引用的接口，不能重复引用。"
+      },
+      "selectUseCaseModal": {
+        "title": "选择用例",
+        "searchPlaceholder": "搜索用例名称",
+        "tableHeaders": {
+          "name": "名称",
+          "description": "描述"
+        },
+        "copy": "复制",
+        "reference": "引用",
+        "alreadyReferenced": "已选中的用例中包含已被引用的用例，不能重复引用。"
+      },
+      "throughput": {
+        "title": "吞吐量",
+        "requestsPerSecond": "每秒请求数",
+        "waitTimeout": "等待超时",
+        "duplicateName": "名称重复",
+        "namePlaceholder": "名称，最长400个字符"
+      },
+      "transStart": {
+        "title": "事务开始",
+        "name": "名称",
+        "duplicateName": "名称重复",
+        "namePlaceholder": "名称，最长400个字符"
+      },
+      "waitingTime": {
+        "title": "等待时间",
+        "waitType": "等待类型",
+        "fixedWait": "固定等待",
+        "randomWait": "随机等待",
+        "to": "至",
+        "duplicateName": "名称重复",
+        "namePlaceholder": "名称，最长400个字符"
+      },
+      "rendezvous": {
+        "title": "集合点",
+        "userCount": "集合用户数",
+        "waitTimeout": "等待超时",
+        "duplicateName": "名称重复",
+        "namePlaceholder": "名称，最长400个字符"
+      },
+      "transEnd": {
+        "title": "事务结束",
+        "name": "名称",
+        "suffix": "结束"
+      },
+      "actionsGroup": {
+        "add": "添加",
+        "delete": "删除",
+        "copy": "复制",
+        "moveUp": "上移",
+        "moveDown": "下移"
+      },
+      "httpConfigs": {
+        "title": "HTTP配置",
+        "basicInfo": "基本信息",
+        "requestBody": "请求体",
+        "assertions": "断言",
+        "parameters": "参数",
+        "serverEndpoint": "服务器端点",
+        "default": "默认",
+        "serverEndpointConfig": {
+          "title": "服务器端点配置",
+          "serverEndpoint": "服务器端点",
+          "serverEndpointPlaceholder": "请输入服务器端点"
+        },
+        "parametric": {
+          "title": "参数化",
+          "variables": {
+            "title": "变量",
+            "addVariable": "添加变量",
+            "variableName": "变量名",
+            "variableValue": "变量值",
+            "extractionMethod": "提取方式",
+            "extractionMethodPlaceholder": "请选择提取方式",
+            "description": "从当前采样请求或响应中提取数据并将其存储在变量中，在后续请求中使用这些变量。",
+            "noVariablesDefined": "您尚未定义任何变量",
+            "duplicateName": "名称重复",
+            "namePlaceholder": "参数名称，最长100个字符",
+            "locationPlaceholder": "提取位置",
+            "parameterNamePlaceholder": "提取参数名称，最长100个字符",
+            "defaultValuePlaceholder": "提取缺省值（可选），最长4096个字符",
+            "expressionPlaceholder": "提取表达式，最长1024个字符",
+            "matchItemPlaceholder": "匹配项（可选），范围0-2000"
+          },
+          "dataset": {
+              "title": "数据集",
+              "addDataset": "添加数据集",
+              "datasetName": "数据集名称",
+              "datasetType": "数据集类型",
+              "previewData": "预览数据",
+              "extractParameters": "提取参数",
+              "staticParameters": "静态参数",
+              "datasetUseList": "数据集使用列表",
+              "description": "数据集用于存储和管理测试数据，支持多种数据格式和参数化配置。",
+              "noDatasetsDefined": "您尚未定义任何数据集",
+              "duplicateName": "名称重复",
+              "namePlaceholder": "数据集名称，最长100个字符",
+              "typePlaceholder": "请选择数据集类型",
+              "actionOnEOF": "数据结束时的操作",
+              "sharingMode": "共享模式",
+              "recycle": "循环使用",
+              "stopThread": "停止线程",
+              "allThread": "所有线程",
+              "currentThread": "当前线程",
+              "previewDataModal": {
+                "title": "预览数据",
+                "description": "查看数据集中的实际数据内容",
+                "previewRows": "预览行数",
+                "previewRowsPlaceholder": "1 ~ 10000",
+                "noData": "暂无数据",
+                "refresh": "刷新"
+              },
+              "datasetModal": {
+                "title": "引用变量",
+                "description": "配置数据集的基本信息和参数",
+                "valueSource": "值来源",
+                "lastModifiedBy": "最后修改人",
+                "lastModifiedDate": "最后修改时间",
+                "searchPlaceholder": "搜索名称或描述",
+                "refresh": "刷新",
+                "name": "名称",
+                "descriptionColumn": "描述"
+              },
+              "extractParametersModal": {
+                "title": "提取参数",
+                "description": "从数据集中提取参数配置"
+              },
+              "extractParametersField": {
+                "readColumn": "读取列",
+                "name": "名称"
+              },
+              "staticParametersModal": {
+                "title": "静态参数",
+                "description": "配置静态参数数据"
+              },
+              "staticParametersDescription": "在采样时根据Mock数据函数动态生成参数值，每个数据集最大允许创建200个参数，最大支持生成1000亿行数据。",
+              "datasetUseListModal": {
+                "title": "数据集使用列表",
+                "description": "查看数据集的使用情况"
+              },
+              "datasetUseListField": {
+                "description": "查看使用变量的资源信息。",
+                "resourceType": "资源类型",
+                "resourceId": "资源ID",
+                "resourceName": "资源名称",
+                "refresh": "刷新"
+              },
+              "hintTextMap": {
+                "file": "从文件中读取数据集，每个数据集最大允许创建200个参数，每个参数文件最大不超过500MB，总行数不超过100万行。",
+                "jdbc": "每次执行测试前从数据库中查询结果中提取一个值作为数据集值。"
+              },
+              "recycleTooltip": "数据集中所有数据行都被使用后，将重新从开头使用数据。",
+              "stopThreadTooltip": "数据集中所有数据行都被使用后，停止当前采样线程执行，所有线程都读完所有行时整个执行退出并结束。",
+              "allThreadTooltip": "所有线程共享同一份数据集数据。",
+              "currentThreadTooltip": "每个线程各自复制一份数据集数据。",
+              "confirmUnlinkDataset": "确定取消引用数据集【{name}】吗？",
+              "unlinkDataset": "取消引用",
+              "viewDefinition": "查看定义",
+              "parameters": "参数",
+              "name": "名称",
+              "value": "值"
+            },
+          "matchItemPopover": {
+            "dataColumn": "匹配值",
+            "expressionColumn": "表达式",
+            "resultColumn": "匹配结果",
+            "itemColumn": "匹配项",
+            "regexp": {
+              "title": "正则表达式匹配",
+              "data": "不指定位置默认取合并结果合并匹配值：\"1888888888813999999999\"，指定位置0取值：\"18888888888\"，指定位置1取值：\"13999999999\"。"
+            },
+            "jsonpath": {
+              "title": "JSONPath匹配",
+              "data": "不指定位置默认取合并结果：[{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}]，指定位置0取值：{\"title\":\"Sayings of the Century\",\"price\":100}，指定位置1取值：{\"title\":\"confucianism\",\"price\":200}。"
+            },
+            "xpath": {
+              "title": "XPath匹配",
+              "data": "不指定位置默认取合并结果：\"30codingbasketballAngus132codingAngus2\"，指定位置0取值：\"30codingbasketballAngus1\"，指定位置1取值：\"32codingAngus2\"。"
+            },
+            "hints": "匹配项",
+            "description":"当表达式匹配到多个值或者结果为数组时，指定第几个值作为表达式期望值，支持位置从0开始到最大值2000，指定位置数据不存在时返回null，不指定时合并多个值为一个值。"
+          }
+        },
+        "assertionForm": {
+          "title": "断言表单",
+          "addAssertion": "添加断言",
+          "assertionName": "断言名称",
+          "assertionType": "断言类型",
+          "expectedValue": "期望值",
+          "actualValue": "实际值",
+          "condition": "条件",
+          "conditionPlaceholder": "请选择条件",
+          "description": "断言用于验证响应是否符合预期，支持多种断言类型和条件。",
+          "noAssertionsDefined": "您尚未定义任何断言",
+          "duplicateName": "名称重复",
+          "namePlaceholder": "断言名称，最长100个字符",
+          "typePlaceholder": "请选择断言类型",
+          "conditionPopover": {
+            "title": "条件选择",
+            "description": "选择断言条件",
+            "formatTitle": "条件表达式格式",
+            "formatExample": "{变量名} + 运算符 + 值，例如：{id}=100001。",
+            "parameterTitle": "格式中参数说明",
+            "variableDescription": "\"变量\"为当前接口或父级项目/服务或全局中定义的变量，其中变量引用符号{}可以省略。",
+            "operatorDescription": "支持\"运算符\"包括：=、!=、>、>=、<、<=。",
+            "valueDescription": "操作符右侧\"值\"只能是常量。"
+          },
+          "expectedPopover": {
+            "title": "期望值",
+            "description": "设置期望值",
+            "matchItemTitle": "匹配项",
+            "matchItemDescription": "当表达式匹配到多个值或者结果为数组时，指定第几个值作为表达式期望值，支持位置从0开始到最大值2000，指定位置数据不存在时返回null，不指定时合并多个值为一个值。",
+            "emptyExpected": "期望值为空",
+            "emptyExpectedDescription": "表达式匹配到值时，断言通过，反之不通过。",
+            "nonEmptyExpected": "期望值不为空",
+            "nonEmptyExpectedDescription": "表达式匹配值与期望值相等时，断言通过，反之不通过。",
+            "regexpMatch": "正则表达式匹配",
+            "jsonpathMatch": "JSONPath匹配",
+            "xpathMatch": "XPath匹配",
+            "matchValue": "匹配值",
+            "expression": "表达式",
+            "matchResult": "匹配结果",
+            "matchItem": "匹配项",
+            "regexpItemDescription": "不指定位置和指定位置0都取位置0对应合并匹配值：\"1888888888813999999999\"，指定位置1取值：\"18888888888\"，指定位置2取值：\"13999999999\"。",
+            "jsonpathItemDescription": "不指定位置默认取合并结果：[{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}]，指定位置0取值：{\"title\":\"Sayings of the Century\",\"price\":100}，指定位置1取值：{\"title\":\"confucianism\",\"price\":200}。",
+            "xpathItemDescription": "不指定位置默认取合并结果：\"30codingbasketballAngus132codingAngus2\"，指定位置0取值：\"30codingbasketballAngus1\"，指定位置1取值：\"32codingAngus2\"。"
+          },
+          "matchItemPopover": {
+            "title": "匹配项",
+            "description": "设置匹配项",
+            "regexpMatch": "正则表达式匹配",
+            "jsonpathMatch": "JSONPath匹配",
+            "xpathMatch": "XPath匹配",
+            "matchValue": "匹配值",
+            "expression": "表达式",
+            "matchResult": "匹配结果",
+            "matchItem": "匹配项",
+            "regexpItemDescription": "不指定位置和指定位置0都取位置0对应合并匹配值：\"1888888888813999999999\"，指定位置1取值：\"18888888888\"，指定位置2取值：\"13999999999\"。",
+            "jsonpathItemDescription": "不指定位置默认取合并结果：[{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}]，指定位置0取值：{\"title\":\"Sayings of the Century\",\"price\":100}，指定位置1取值：{\"title\":\"confucianism\",\"price\":200}。",
+            "xpathItemDescription": "不指定位置默认取合并结果：\"30codingbasketballAngus132codingAngus2\"，指定位置0取值：\"30codingbasketballAngus1\"，指定位置1取值：\"32codingAngus2\"。"
+          },
+          "assertion": {
+            "name": {
+              "duplicate": "名称重复",
+              "placeholder": "断言名称",
+              "title": "断言名称"
+            },
+            "expression": {
+              "error": "表达式格式错误"
+            },
+            "condition": {
+              "placeholder": "断言条件",
+              "title": "断言条件",
+              "expression": {
+                "placeholder": "执行条件表达式（可选）",
+                "title": "执行条件表达式（可选）"
+              }
+            },
+            "type": {
+              "placeholder": "断言类型",
+              "title": "断言类型"
+            },
+            "header": {
+              "name": {
+                "placeholder": "响应头名称",
+                "title": "响应头名称"
+              }
+            },
+            "show": {
+              "expected": {
+                "checked": "提取期望值",
+                "unchecked": "期望值"
+              }
+            },
+            "extraction": {
+              "method": {
+                "placeholder": "提取方式",
+                "title": "提取方式"
+              },
+              "location": {
+                "placeholder": "提取位置",
+                "title": "提取位置"
+              },
+              "parameter": {
+                "name": {
+                  "placeholder": "提取参数名称",
+                  "title": "提取参数名称"
+                }
+              },
+              "default": {
+                "value": {
+                  "placeholder": "提取缺省值（可选）",
+                  "title": "提取缺省值（可选）"
+                }
+              },
+              "expression": {
+                "placeholder": "提取表达式",
+                "title": "提取表达式",
+                "error": "表达式格式错误"
+              },
+              "match": {
+                "item": {
+                  "placeholder": "匹配项，范围0-2000（可选）",
+                  "title": "匹配项"
+                }
+              }
+            },
+            "match": {
+              "item": {
+                "placeholder": "匹配项，范围0-2000（可选）",
+                "title": "匹配项"
+              }
+            },
+            "expected": {
+              "placeholder": "期望值（可选）",
+              "title": "期望值"
+            },
+            "description": {
+              "placeholder": "描述（800字符，可选）",
+              "title": "描述（800字符，可选）"
+            }
+          }
+        },
+        "requestBodyConfig": {
+          "title": "请求体配置",
+          "bodyType": "请求体类型",
+          "bodyContent": "请求体内容",
+          "contentType": "内容类型",
+          "formData": "表单数据",
+          "xWwwFormUrlencoded": "x-www-form-urlencoded",
+          "raw": "原始数据",
+          "binary": "二进制",
+          "maxFileSize": "总上传文件大小不能超过{size}",
+          "formatRawContent": "格式化",
+          "compressRawContent": "压缩",
+          "namePlaceholder": "请输入参数名称",
+          "typePlaceholder": "请选择参数类型",
+          "filePlaceholder": "请选择文件",
+          "valuePlaceholder": "请输入参数值，最多可输入4096个字符"
+        },
+        "parameterInput": {
+          "namePlaceholder": "请输入参数名称",
+          "valuePlaceholder": "请输入参数值，最长4096个字符"
+        }
+      }
+    },
+    "functionTestDetail": {
+      "basicInfo": {
+        "duration": "运行时间",
+        "iteration": "迭代数",
+        "request": "请求数",
+        "responseTime": "响应时间"
+      },
+      "collapse": {
+        "iteration": "第{iteration}次迭代"
+      },
+      "ftp": {
+        "upload": "上传",
+        "download": "下载",
+        "duration": "耗时",
+        "request": "请求",
+        "response": "响应"
+      },
+      "statusTag": {
+        "success": "通过",
+        "fail": "未通过",
+        "block": "未执行",
+        "ignore": "未启用"
+      },
+      "http": {
+        "tabs": {
+          "general": "基本",
+          "requestBody": "请求体",
+          "response": "响应",
+          "timeline": "时间线",
+          "assertions": "断言结果"
+        },
+        "headers": {
+          "general": "常规",
+          "request": "请求头",
+          "response": "响应头"
+        },
+        "timeline": {
+          "dnsLookup": "域名解析(DNS lookup)",
+          "tcpConnection": "TCP连接",
+          "ssl": "SSL",
+          "requestSent": "发送请求(Request sent)",
+          "waiting": "等待处理(Waiting)",
+          "contentDownload": "下载结果(Content download)",
+          "totalTime": "总耗时(Total time consuming)",
+          "timeItem": "耗时项",
+          "time": "时间"
+        },
+        "responseBody": {
+          "prettyFormat": "美化格式",
+          "rawFormat": "原生格式",
+          "preview": "预览"
+        },
+        "assertions": {
+          "executionCondition": "执行条件表达式",
+          "variableValue": "变量值",
+          "executionConditionResult": "执行条件结果",
+          "assertionCondition": "断言条件",
+          "assertionResult": "断言结果",
+          "failureReason": "失败原因",
+          "expectedValue": "期望值",
+          "extractedValue": "提取值",
+          "view": "查看",
+          "variable": "变量",
+          "expressionEmpty": "表达式为空，执行该条断言",
+          "operationResultNotEstablished": "运算结果不成立，忽略该条断言",
+          "operationResultEstablished": "运算结果成立，执行该条断言",
+          "noVariableDefined": "没有定义{variable}变量，直接执行该条件表达式",
+          "executionConfig": "执行配置",
+          "pluginConfig": "插件配置",
+          "ignoreAssertionsTip": "您已开启忽略断言，本次不会执行断言。如果需要启用断言，请在{executionConfig} > {pluginConfig}中关闭忽略断言选项。"
+        },
+        "typeMap": {
+          "status": "响应状态码",
+          "header": "响应头",
+          "body": "响应体",
+          "bodySize": "响应体大小",
+          "size": "响应大小",
+          "duration": "耗时"
+        },
+        "conditionMap": {
+          "contain": "包含",
+          "equal": "等于",
+          "greaterThan": "大于",
+          "greaterThanEqual": "大于等于",
+          "isEmpty": "为空(空字符串或null值)",
+          "isNull": "为null",
+          "lessThan": "小于",
+          "lessThanEqual": "小于等于",
+          "notContain": "不包含",
+          "notEmpty": "不为空(非空字符串或null值)",
+          "notEqual": "不等于",
+          "notNull": "不为null",
+          "regMatch": "正则匹配",
+          "xpathMatch": "XPath匹配",
+          "jsonPathMatch": "JSONPath匹配"
+        },
+        "rendezvous": {
+          "userCount": "集合用户数",
+          "waitTimeout": "等待超时"
+        },
+        "throughput": {
+          "requestsPerSecond": "每秒请求数",
+          "waitTimeout": "等待超时"
+        },
+        "waitingTime": {
+          "fixedWait": "固定等待",
+          "randomWait": "随机等待",
+          "to": "至"
+        }
+      }
+    }
   }
 }

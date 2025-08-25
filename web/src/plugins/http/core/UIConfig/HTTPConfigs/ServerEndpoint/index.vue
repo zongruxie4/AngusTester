@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Tooltip, Popover } from '@xcan-angus/vue-ui';
 import { Radio } from 'ant-design-vue';
 
 import { HTTPConfig } from '../PropsType';
+
+const { t } = useI18n();
 
 type Server = HTTPConfig['request']['server']
 
@@ -78,7 +81,7 @@ const overlayStyle = {
                 <div class="flex-1 truncate">{{ _ele }}</div>
                 <div class="flex items-center flex-shrink-0 space-x-1">
                   <div v-if="props.server?.variables?.[item._name]?.defaultValue === _ele" class="text-theme-sub-content">
-                    <span>默认</span>
+                    <span>{{ t('httPlugin.uiConfig.httpConfigs.default') }}</span>
                   </div>
                   <Radio
                     :checked="props.server?.variables?.[item._name]?.defaultValue === _ele"

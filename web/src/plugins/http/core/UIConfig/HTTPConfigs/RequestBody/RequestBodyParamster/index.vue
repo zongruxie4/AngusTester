@@ -400,7 +400,7 @@ const selectOptions = computed(() => {
         @change="checkboxChange($event, index, item)" />
       <Input
         v-model:value="dataMap[item].name"
-        placeholder="请输入参数名称"
+        :placeholder="t('httPlugin.uiConfig.httpConfigs.requestBodyConfig.namePlaceholder')"
         trim
         class="max-w-100 flex-1"
         :error="nameErrorSet.has(item)"
@@ -408,7 +408,7 @@ const selectOptions = computed(() => {
       <Select
         v-model:value="dataMap[item].type"
         class="w-25"
-        placeholder="请选择参数类型"
+        :placeholder="t('httPlugin.uiConfig.httpConfigs.requestBodyConfig.typePlaceholder')"
         :options="selectOptions"
         @change="typeChange($event, index, item)" />
       <div
@@ -424,7 +424,7 @@ const selectOptions = computed(() => {
             size="small"
             class="mr-3 transform-gpu translate-y-0.25">
             <Icon icon="icon-xuanze" class="mr-1" />
-            <span>选择文件</span>
+            <span>{{ t('httPlugin.uiConfig.httpConfigs.requestBodyConfig.filePlaceholder') }}</span>
           </Button>
         </Upload>
         <template v-if="!!fileMap[item]?.length">
@@ -447,7 +447,7 @@ const selectOptions = computed(() => {
       <Input
         v-else
         v-model:value="dataMap[item].value"
-        placeholder="请输入参数值，最多可输入4096个字符"
+        :placeholder="t('httPlugin.uiConfig.httpConfigs.requestBodyConfig.valuePlaceholder')"
         trim
         class="flex-1"
         :maxlength="4096"

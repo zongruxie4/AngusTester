@@ -6,6 +6,7 @@ import { debounce } from 'throttle-debounce';
 import { duration, utils, codeUtils } from '@xcan-angus/infra';
 import pretty from 'pretty';
 import jsBeautify from 'js-beautify';
+import { useI18n } from 'vue-i18n';
 
 import { RequestBody, ContentType } from './PropsType';
 const { gzip, ungzip } = codeUtils;
@@ -20,6 +21,8 @@ const props = withDefaults(defineProps<Props>(), {
   contentType: null,
   maxFileSize: 10485760
 });
+
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -106,7 +109,7 @@ const errorNumChange = (value: number) => {
 
 const customRequest = async ({ file }) => {
   if (file.size > props.maxFileSize) {
-    notification.error(`总上传文件大小不能超过${utils.formatBytes(props.maxFileSize)}`);
+    notification.error(t('httPlugin.uiConfig.httpConfigs.requestBodyConfig.maxFileSize', { size: utils.formatBytes(props.maxFileSize) }));
     return;
   }
 
@@ -412,13 +415,13 @@ const language = computed(() => {
           size="small"
           class="ml-2"
           @click="formatRawContent">
-          格式化
+          {{ t('httPlugin.uiConfig.httpConfigs.requestBodyConfig.formatRawContent') }}
         </Button>
         <Button
           type="link"
           size="small"
           @click="compressRawContent">
-          压缩
+          {{ t('httPlugin.uiConfig.httpConfigs.requestBodyConfig.compressRawContent') }}
         </Button>
       </template>
     </div>

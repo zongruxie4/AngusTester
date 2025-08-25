@@ -2,6 +2,7 @@
 import { defineAsyncComponent, ref, provide, watch, onMounted, computed } from 'vue';
 import { Badge, Tabs, TabPane } from 'ant-design-vue';
 import { Spin, notification, AsyncComponent, Drawer, Toolbar, Icon, AuthorizeModal, Indicator, HttpTestInfo } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 import { utils, TESTER } from '@xcan-angus/infra';
 import { AxiosRequestConfig } from 'axios';
 import { isEqual } from 'lodash-es';
@@ -40,6 +41,8 @@ const props = withDefaults(defineProps<Props>(), {
   getTabPane: undefined,
   replaceTabPane: undefined
 });
+
+const { t } = useI18n();
 
 const SaveForm = defineAsyncComponent(() => import('./Drawer/SaveForm/index.vue'));
 const ActivityTimeline = defineAsyncComponent(() => import('./Drawer/ActivityTimeline/index.vue'));
@@ -264,7 +267,7 @@ const buttonGroupClick = async (data: ButtonGroupMenuItem) => {
     }
 
     if (!sceneConfigData.value?.id) {
-      notification.info('调试需要先保存当前数据，请保存后再执行调试');
+              notification.info(t('httPlugin.messages.debugNeedSave'));
       drawerRef.value.open('save');
       return;
     }
@@ -280,7 +283,7 @@ const buttonGroupClick = async (data: ButtonGroupMenuItem) => {
 
     notification.success({
       duration: 1.3,
-      description: '自动保存成功，正在执行调试...'
+              description: t('httPlugin.messages.autoSaveAndDebug')
     });
     toDebug();
     return;
@@ -563,7 +566,7 @@ const fullScreen = () => {
 const isValid = async (): Promise<boolean> => {
   if (typeof uiConfigRef.value?.isValid === 'function') {
     if (!uiConfigRef.value.isValid()) {
-      notification.error('任务配置数据错误，请检查更正后再保存。');
+      notification.error(t('httPlugin.messages.taskConfigError'));
       return false;
     }
   }
@@ -571,7 +574,7 @@ const isValid = async (): Promise<boolean> => {
   if (typeof executeConfigRef.value?.isValid === 'function') {
     const validFlag = await executeConfigRef.value.isValid();
     if (!validFlag) {
-      notification.error('执行配置数据错误，请检查更正后再保存。');
+      notification.error(t('httPlugin.messages.executeConfigError'));
       return false;
     }
   }
@@ -641,7 +644,7 @@ const toFollow = async (id: string) => {
   hideButtonSet.value.delete('cancelFollowFlag');
   hideButtonSet.value.add('followFlag');
   sceneConfigData.value.followFlag = true;
-  notification.success('关注成功');
+        notification.success(t('httPlugin.messages.followSuccess'));
 };
 
 const cancelFollow = async (id: string) => {
@@ -659,7 +662,7 @@ const cancelFollow = async (id: string) => {
   hideButtonSet.value.delete('followFlag');
   hideButtonSet.value.add('cancelFollowFlag');
   sceneConfigData.value.followFlag = false;
-  notification.success('取消关注成功');
+      notification.success(t('httPlugin.messages.cancelFollowSuccess'));
 };
 
 const favouriteHandler = (value: boolean) => {
@@ -687,7 +690,7 @@ const toFavourite = async (id: string) => {
   hideButtonSet.value.delete('cancelFavouriteFlag');
   hideButtonSet.value.add('favouriteFlag');
   sceneConfigData.value.favouriteFlag = true;
-  notification.success('收藏成功');
+      notification.success(t('httPlugin.messages.favouriteSuccess'));
 };
 
 const cancelFavourite = async (id: string) => {
@@ -705,7 +708,7 @@ const cancelFavourite = async (id: string) => {
   hideButtonSet.value.delete('favouriteFlag');
   hideButtonSet.value.add('cancelFavouriteFlag');
   sceneConfigData.value.favouriteFlag = false;
-  notification.success('取消收藏成功');
+      notification.success(t('httPlugin.messages.cancelFavouriteSuccess'));
 };
 
 const save = async (data?: {
@@ -715,7 +718,7 @@ const save = async (data?: {
 }, notificationFlag = true) => {
   const validFlag = await isValid();
   if (!validFlag) {
-    return new Error('参数错误');
+    return new Error(t('httPlugin.messages.paramError'));
   }
 
   if (controller) {
@@ -816,7 +819,7 @@ const save = async (data?: {
   }
 
   if (notificationFlag) {
-    notification.success('保存成功');
+    notification.success(t('httPlugin.messages.saveSuccess'));
   }
 
   if (typeof drawerRef.value?.open === 'function') {
@@ -1444,7 +1447,7 @@ const scriptId = computed((): string => {
 });
 
 const tabText = computed(() => {
-  return isUIViewMode.value ? { task: '任务配置', execute: '执行配置' } : { task: '', execute: '' };
+      return isUIViewMode.value ? { task: t('httPlugin.tabs.taskConfig'), execute: t('httPlugin.tabs.executeConfig') } : { task: '', execute: '' };
 });
 
 const drawerMenuItems = computed(() => {
@@ -1621,9 +1624,9 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
         :updateUrl="`${TESTER}/scenario/auth`"
         :enabledUrl="`${TESTER}/scenario/${sceneConfigData?.id}/auth/enabled`"
         :initStatusUrl="`${TESTER}/scenario/${sceneConfigData?.id}/auth/status`"
-        onTips="开启&quot;有权限控制&quot;后，需要手动授权服务权限后才会有场景相应操作权限，默认开启&quot;有权限控制&quot;。注意：如果授权对象没有父级目录权限将自动授权查看权限。"
-        offTips="开启&quot;无权限控制&quot;后，将允许所有用户公开查看和操作当前场景，查看用户同时需要有当前场景父级目录权限。"
-        title="场景权限" />
+        :onTips="t('httPlugin.authority.onTips')"
+        :offTips="t('httPlugin.authority.offTips')"
+        :title="t('httPlugin.authority.title')" />
     </AsyncComponent>
 
     <AsyncComponent :visible="exportModalVisible">

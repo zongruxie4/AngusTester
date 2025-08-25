@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface Props {
   value?: 'success' | 'fail' | 'ignore' | 'block';
@@ -11,18 +14,18 @@ const props = withDefaults(defineProps<Props>(), {
 
 const text = computed(() => {
   if (props.value === 'fail') {
-    return '未通过';
+    return t('httPlugin.functionTestDetail.statusTag.fail');
   }
 
   if (props.value === 'success') {
-    return '通过';
+    return t('httPlugin.functionTestDetail.statusTag.success');
   }
 
   if (props.value === 'block') {
-    return '未执行';
+    return t('httPlugin.functionTestDetail.statusTag.block');
   }
 
-  return '未启用';
+  return t('httPlugin.functionTestDetail.statusTag.ignore');
 });
 
 const style = computed(() => {

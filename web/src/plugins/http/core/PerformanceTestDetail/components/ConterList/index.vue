@@ -2,6 +2,7 @@
 import { defineAsyncComponent } from 'vue';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 const PirChart = defineAsyncComponent(() => import('./PirChart.vue'));
 
@@ -12,14 +13,16 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   list: () => []
 });
+
+const { t } = useI18n();
 </script>
 <template>
   <div class="text-3 text-text-content">
     <div class="h-9.5 leading-9.5 bg-theme-form-head flex font-medium w-full">
       <div class="w-12"></div>
-      <div class="py-0.5 px-2 flex-1">错误统计</div>
-      <div style="width:30%" class="py-0.5 px-2">错误数</div>
-      <div style="width:30%" class="py-0.5 px-2">错误率</div>
+      <div class="py-0.5 px-2 flex-1">{{ t('ftpPlugin.performanceTestDetail.conterList.errorStatistics') }}</div>
+      <div style="width:30%" class="py-0.5 px-2">{{ t('ftpPlugin.performanceTestDetail.conterList.errorCount') }}</div>
+      <div style="width:30%" class="py-0.5 px-2">{{ t('ftpPlugin.performanceTestDetail.conterList.errorRate') }}</div>
     </div>
     <Collapse class="!bg-transparent">
       <template #expandIcon="record">
@@ -41,14 +44,14 @@ const props = withDefaults(defineProps<Props>(), {
           </div>
         </template>
         <div class="flex w-full relative items-center" style="min-height: 140px">
-          <div class="w-full space-y-2.5">
+          <div class="w-full">
             <div
               v-for="(child,childIndex) in item.list"
               :key="childIndex"
-              class="flex items-center w-full leading-5 text-3 text-text-content">
+              class="flex w-full h-7 leading-7 text-3 text-text-content">
               <div class="w-12"></div>
               <div class="py-0.5 px-2 flex-1 break-words leading-4">{{ child.name }}</div>
-              <div style="width:60%" class="py-0.5 px-2 flex-shrink-0 flex-grow-0">{{ child.errorNum }}</div>
+              <div style="width:60%" class="py-0.5 px-2">{{ child.errorNum }}</div>
             </div>
           </div>
           <div class="pie-chart-class">

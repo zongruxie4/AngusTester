@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { ref, computed, inject } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon, Modal, Tooltip, notification, SelectApisByService } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
-import { TESTER, duration } from '@xcan-angus/infra';
-import { debounce } from 'throttle-debounce';
 import { apis, paramTarget } from '@/api/tester';
 
 import { ApiInfo } from './PropsType';
+
+const { t } = useI18n();
 
 export type ApiItem = {
   id: string;
@@ -36,8 +37,6 @@ const emit = defineEmits<{
   (e:'cancel'):void;
 }>();
 
-const projectInfo = inject('projectInfo', ref({ id: '' }));
-
 const linking = ref(false);
 const coping = ref(false);
 const serviceId = ref<string>();
@@ -46,45 +45,12 @@ const checkedApiIds = ref<string[]>([]);
 const inputValue = ref<string>();
 const apiList = ref<ApiItem[]>([]);
 
-const groupedKey = ref('-');
+
 
 const handleChangeApis = (ids: string[]) => {
   checkedApiIds.value = ids;
 };
 
-const grouped = (groupKey: string) => {
-  groupedKey.value = groupKey;
-};
-
-const dirChange = (id: string) => {
-  if (serviceId.value === id) {
-    return;
-  }
-
-  serviceId.value = id;
-  checkedApiIds.value = [];
-};
-
-const checkChange = (event:{target:{checked:boolean}}, id:string) => {
-  const checked = event.target.checked;
-  if (checked) {
-    if (!checkedApiIds.value.includes(id)) {
-      checkedApiIds.value.push(id);
-    }
-
-    return;
-  }
-
-  checkedApiIds.value = checkedApiIds.value.filter(item => item !== id);
-};
-
-const inputChange = debounce(duration.search, (event: { target: { value: string } }) => {
-  inputValue.value = event.target.value;
-});
-
-const scrollChange = (data: ApiItem[]) => {
-  apiList.value = data;
-};
 
 const ok = async (key:'link'|'copy') => {
   if (key === 'copy') {
@@ -92,7 +58,7 @@ const ok = async (key:'link'|'copy') => {
   } else {
     const hasLinkIdFlag = checkedApiIds.value.some(item => props.linkIds.has(item));
     if (hasLinkIdFlag) {
-      notification.info('已选中的接口中包含已被引用的接口，不能重复引用。');
+      notification.info(t('httPlugin.uiConfig.selectApiModal.alreadyReferenced'));
       return;
     }
 
@@ -163,30 +129,7 @@ const reset = () => {
   apiList.value = [];
 };
 
-const apiAction = computed(() => {
-  if (!serviceId.value) {
-    return undefined;
-  }
-  return `${TESTER}/services/${serviceId.value}/apis`;
-});
 
-const apiParams = computed(() => {
-  const filters: {
-    key: string;
-    op: 'MATCH_END'|'IN',
-    value: string|string[];
-  }[] = [{ key: 'protocol', op: 'IN', value: ['http', 'https'] }];
-
-  if (inputValue.value) {
-    filters.push({
-      key: 'summary',
-      op: 'MATCH_END',
-      value: inputValue.value
-    });
-  }
-
-  return { filters };
-});
 
 const cancelButtonDisabled = computed(() => {
   return coping.value || linking.value;
@@ -212,32 +155,11 @@ const hasLinkId = computed(() => {
   return checkedApiIds.value.some(item => props.linkIds.has(item));
 });
 
-const groupList = [
-  {
-    key: '-',
-    name: '不分组'
-  },
-  {
-    key: 'createdBy',
-    name: '按添加人分组'
-  },
-  {
-    key: 'method',
-    name: '按请求方法分组'
-  },
-  {
-    key: 'ownerId',
-    name: '按负责人分组'
-  },
-  {
-    key: 'tag',
-    name: '按标签分组'
-  }
-];
+
 </script>
 <template>
   <Modal
-    title="选择接口"
+    :title="t('httPlugin.uiConfig.selectApiModal.title')"
     :visible="props.visible"
     :centered="true"
     :width="1000"
@@ -255,7 +177,7 @@ const groupList = [
           type="default"
           size="small"
           @click="cancel">
-          <span>取消</span>
+          <span>{{ t('common.cancel') }}</span>
         </Button>
         <Button
           :loading="coping"
@@ -263,7 +185,7 @@ const groupList = [
           size="small"
           type="primary"
           @click="ok('copy')">
-          <span>复制</span>
+          <span>{{ t('httPlugin.uiConfig.selectApiModal.copy') }}</span>
         </Button>
         <Button
           :loading="linking"
@@ -272,11 +194,11 @@ const groupList = [
           type="primary"
           @click="ok('link')">
           <div v-if="hasLinkId" class="flex items-center justify-center w-2.5 h-2.5 rounded-lg bg-white mr-1">
-            <Tooltip title="已选中的接口中包含已被引用的接口，不能重复引用。">
+            <Tooltip :title="t('httPlugin.uiConfig.selectApiModal.alreadyReferenced')">
               <Icon icon="icon-tishi1" class="flex-shrink-0 text-3.5 text-status-warn" />
             </Tooltip>
           </div>
-          <span>引用</span>
+          <span>{{ t('httPlugin.uiConfig.selectApiModal.reference') }}</span>
         </Button>
       </div>
     </template>

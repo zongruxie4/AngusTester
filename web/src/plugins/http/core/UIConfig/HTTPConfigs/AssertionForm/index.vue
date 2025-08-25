@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch, watchEffect } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Checkbox, Switch } from 'ant-design-vue';
 import { Arrow, Icon, Input, SelectEnum, Select, Tooltip } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
@@ -14,6 +15,8 @@ import regexp from './utils/regexp';
 import { Extraction } from './utils/extract/PropsType';
 import { FormItem } from './PropsType';
 import { AssertionCondition, AssertionType, EnumMessage, ExtractionMethod, HttpExtractionLocation, utils, duration, enumUtils } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 interface Props {
   defaultValue: FormItem[];
@@ -794,16 +797,16 @@ const expressionPlaceholder = computed(() => {
     const id = ids[i];
     switch (_dataMap[id].assertionCondition) {
       case 'REG_MATCH':
-        map[id] = '正则匹配表达式';
+        map[id] = t('httPlugin.uiConfig.httpConfigs.assertionForm.expressionPlaceholder.regMatch');
         break;
       case 'XPATH_MATCH':
-        map[id] = 'XPath匹配表达式';
+        map[id] = t('httPlugin.uiConfig.httpConfigs.assertionForm.expressionPlaceholder.xpathMatch');
         break;
       case 'JSON_PATH_MATCH':
-        map[id] = 'JSONPath匹配表达式';
+        map[id] = t('httPlugin.uiConfig.httpConfigs.assertionForm.expressionPlaceholder.jsonpathMatch');
         break;
       default:
-        map[id] = '正则匹配表达式';
+        map[id] = t('httPlugin.uiConfig.httpConfigs.assertionForm.expressionPlaceholder.regMatch');
     }
   }
 
@@ -825,7 +828,7 @@ const enumFieldNames = { label: 'message', value: 'value' };
       <div class="flex-1 mr-3">
         <div class="flex items-start space-x-2">
           <Tooltip
-            title="名称重复"
+            :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.name.duplicate')"
             internal
             placement="right"
             destroyTooltipOnHide
@@ -833,8 +836,8 @@ const enumFieldNames = { label: 'message', value: 'value' };
             <Input
               :ref="el => { nameRefs[index] = el }"
               v-model:value="dataMap[item].name"
-              placeholder="断言名称"
-              title="断言名称"
+              :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.name.placeholder')"
+              :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.name.title')"
               trim
               style="flex: 0 0 calc((100% - 40px)/6*2 + 8px);"
               :maxlength="200"
@@ -842,7 +845,7 @@ const enumFieldNames = { label: 'message', value: 'value' };
               @change="nameChange($event, item, index)" />
           </Tooltip>
           <Tooltip
-            title="表达式格式错误"
+            :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.expression.error')"
             internal
             placement="right"
             destroyTooltipOnHide
@@ -851,8 +854,8 @@ const enumFieldNames = { label: 'message', value: 'value' };
               <Input
                 :ref="el => { conditionRefs[index] = el }"
                 v-model:value="dataMap[item].condition"
-                placeholder="执行条件表达式（可选）"
-                title="执行条件表达式（可选）"
+                :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.condition.expression.placeholder')"
+                :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.condition.expression.title')"
                 class="flex-1"
                 trim
                 :error="conditionErrorSet.has(item)"
@@ -865,8 +868,8 @@ const enumFieldNames = { label: 'message', value: 'value' };
             v-model:value="dataMap[item].type"
             style="flex: 0 0 calc((100% - 40px)/6);"
             enumKey="AssertionType"
-            placeholder="断言类型"
-            title="断言类型"
+            :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.type.placeholder')"
+            :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.type.title')"
             :error="typeErrorSet.has(item)"
             @change="typeChange($event, item)" />
           <Input
@@ -876,14 +879,14 @@ const enumFieldNames = { label: 'message', value: 'value' };
             :maxlength="400"
             trim
             style="flex: 0 0 calc((100% - 40px)/6);"
-            placeholder="响应头名称"
-            title="响应头名称"
+            :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.header.name.placeholder')"
+            :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.header.name.title')"
             @change="headerNameChange(item)" />
           <div class="flex items-center flex-nowrap space-x-2" style="flex: 1;min-width: 100px;">
             <Select
               v-model:value="dataMap[item].assertionCondition"
-              placeholder="断言条件"
-              title="断言条件"
+              :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.condition.placeholder')"
+              :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.condition.title')"
               class="flex-1 min-w-0"
               :disabled="!dataMap[item].type"
               :options="optionsMap[item]"
@@ -893,8 +896,8 @@ const enumFieldNames = { label: 'message', value: 'value' };
             <Switch
               :disabled="extractDisabledSet.has(item)"
               :checked="extractSet.has(item)"
-              checkedChildren="提取期望值"
-              unCheckedChildren="期望值"
+              :checkedChildren="t('httPlugin.uiConfig.httpConfigs.assertionForm.show.expected.checked')"
+              :unCheckedChildren="t('httPlugin.uiConfig.httpConfigs.assertionForm.show.expected.unchecked')"
               @change="switchChange($event, item)" />
           </div>
         </div>
@@ -906,16 +909,16 @@ const enumFieldNames = { label: 'message', value: 'value' };
                   :value="dataMap[item].extraction?.method"
                   style="flex: 0 0 calc((100% - 40px)/6);"
                   enumKey="ExtractionMethod"
-                  placeholder="提取方式"
-                  title="提取方式"
+                  :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.method.placeholder')"
+                  :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.method.title')"
                   trim
                   :error="methodErrorSet.has(item)"
                   @change="methodChange($event,item)" />
                 <Select
                   :value="dataMap[item].extraction?.location"
                   style="flex: 0 0 calc((100% - 40px)/6);"
-                  placeholder="提取位置"
-                  title="提取位置"
+                  :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.location.placeholder')"
+                  :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.location.title')"
                   trim
                   :fieldNames="enumFieldNames"
                   :options="locationOptionsMap[item]"
@@ -924,8 +927,8 @@ const enumFieldNames = { label: 'message', value: 'value' };
                 <Input
                   :value="dataMap[item].extraction?.parameterName"
                   style="flex: 0 0 calc((100% - 40px)/6);"
-                  placeholder="提取参数名称"
-                  title="提取参数名称"
+                  :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.parameter.name.placeholder')"
+                  :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.parameter.name.title')"
                   trim
                   :maxlength="400"
                   :disabled="NOT_PARAMETER_NAME.includes(dataMap[item].extraction?.location)"
@@ -934,12 +937,12 @@ const enumFieldNames = { label: 'message', value: 'value' };
                 <Input
                   :value="dataMap[item].extraction?.defaultValue"
                   style="flex: 0 0 calc((100% - 40px)/6);"
-                  placeholder="提取缺省值（可选）"
-                  title="提取缺省值（可选）"
+                  :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.default.value.placeholder')"
+                  :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.default.value.title')"
                   trim
                   @change="defaultValueChange($event,item)" />
                 <Tooltip
-                  title="表达式格式错误"
+                  :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.expression.error')"
                   internal
                   placement="right"
                   destroyTooltipOnHide
@@ -947,8 +950,8 @@ const enumFieldNames = { label: 'message', value: 'value' };
                   <Input
                     :ref="el => { extractionExpressionRefs[index] = el }"
                     :value="dataMap[item].extraction?.expression"
-                    placeholder="提取表达式"
-                    title="提取表达式"
+                    :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.expression.placeholder')"
+                    :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.expression.title')"
                     trim
                     style="flex: 0 0 calc((100% - 40px)/6);"
                     :disabled="dataMap[item].extraction?.method === 'EXACT_VALUE'"
@@ -959,8 +962,8 @@ const enumFieldNames = { label: 'message', value: 'value' };
                 <div class="flex items-center space-x-2" style="flex: 0 0 calc((100% - 40px)/6);">
                   <Input
                     :value="dataMap[item].extraction?.matchItem"
-                    placeholder="匹配项，范围0-2000（可选）"
-                    title="匹配项"
+                    :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.match.item.placeholder')"
+                    :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.match.item.title')"
                     trim
                     :disabled="dataMap[item].extraction?.method === 'EXACT_VALUE'"
                     :max="2000"
@@ -975,7 +978,7 @@ const enumFieldNames = { label: 'message', value: 'value' };
               <div class="flex items-start space-x-2">
                 <template v-if="expressionShowSet.has(item)">
                   <Tooltip
-                    title="表达式格式错误"
+                    :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.expression.error')"
                     internal
                     placement="right"
                     destroyTooltipOnHide
@@ -992,8 +995,8 @@ const enumFieldNames = { label: 'message', value: 'value' };
                   </Tooltip>
                   <Input
                     v-model:value="dataMap[item].matchItem"
-                    placeholder="匹配项，范围0-2000（可选）"
-                    title="匹配项"
+                    :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.match.item.placeholder')"
+                    :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.match.item.title')"
                     style="flex: 0 0 calc((100% - 40px)/6);"
                     trim
                     :max="2000"
@@ -1003,8 +1006,8 @@ const enumFieldNames = { label: 'message', value: 'value' };
                   <div class="flex items-center space-x-2" style="flex: 1;">
                     <Input
                       v-model:value="dataMap[item].expected"
-                      placeholder="期望值（可选）"
-                      title="期望值"
+                      :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.expected.placeholder')"
+                      :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.expected.title')"
                       trim
                       :error="expectedErrorSet.has(item)"
                       @change="expectedChange($event,item)" />
@@ -1015,8 +1018,8 @@ const enumFieldNames = { label: 'message', value: 'value' };
                   <Input
                     v-model:value="dataMap[item].expected"
                     type="textarea"
-                    placeholder="期望值"
-                    title="期望值"
+                    :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.expected.placeholder')"
+                    :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.expected.title')"
                     trim
                     :autoSize="textAreaAutoSize"
                     :error="expectedErrorSet.has(item)"
@@ -1027,8 +1030,8 @@ const enumFieldNames = { label: 'message', value: 'value' };
           </template>
           <Input
             v-model:value="dataMap[item].description"
-            placeholder="描述（800字符，可选）"
-            title="描述（800字符，可选）"
+            :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.description.placeholder')"
+            :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.description.title')"
             type="textarea"
             trim
             @change="descriptionChange($event,item)" />

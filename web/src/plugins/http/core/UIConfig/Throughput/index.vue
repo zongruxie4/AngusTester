@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, watchEffect } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Input, Icon, Tooltip } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
 import { ThroughputConfig } from './PropsType';
 import ActionsGroup from '../ActionsGroup/index.vue';
+
+const { t } = useI18n();
 
 export interface Props {
   value: ThroughputConfig;
@@ -172,7 +175,7 @@ defineExpose({
     <Icon class="flex-shrink-0 mr-3 text-4" icon="icon-zusai" />
     <div class="flex-1 flex items-center space-x-5 mr-5">
       <Tooltip
-        title="名称重复"
+        :title="t('httPlugin.uiConfig.throughput.duplicateName')"
         internal
         placement="right"
         destroyTooltipOnHide
@@ -184,11 +187,11 @@ defineExpose({
           :error="nameError"
           trim
           class="point-name-input"
-          placeholder="名称，最长400个字符"
+          :placeholder="t('httPlugin.uiConfig.throughput.namePlaceholder')"
           @change="nameChange" />
       </Tooltip>
       <div class="flex items-center space-x-2 text-theme-content">
-        <div>每秒请求数</div>
+        <div>{{ t('httPlugin.uiConfig.throughput.requestsPerSecond') }}</div>
         <Input
           :value="permitsPerSecond"
           :maxlength="7"
@@ -202,7 +205,7 @@ defineExpose({
           @change="permitsPerSecondChange" />
       </div>
       <div class="flex items-center space-x-2">
-        <div>等待超时</div>
+        <div>{{ t('httPlugin.uiConfig.throughput.waitTimeout') }}</div>
         <Input
           :value="timeoutInMs"
           :maxlength="7"

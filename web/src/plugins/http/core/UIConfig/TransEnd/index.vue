@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon } from '@xcan-angus/vue-ui';
 
 import { TransEndConfig } from './PropsType';
+
+const { t } = useI18n();
 
 export interface Props {
   name: string;
@@ -24,7 +27,7 @@ onMounted(() => {
 
 const showName = computed(() => {
   const _name = props.name?.replace(/(.+)_end$/, '$1');
-  return _name ? (_name + '结束') : '';
+  return _name ? (_name + t('httPlugin.uiConfig.transEnd.suffix')) : '';
 });
 
 const getData = ():Omit<TransEndConfig, 'id'> => {

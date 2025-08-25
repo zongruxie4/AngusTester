@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { NoData } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 export interface Props {
   value: {
@@ -36,6 +39,45 @@ const getWidth = (time: number): Record<string, string> => {
   };
 };
 
+const columns = computed(() => [
+  {
+    name: t('httPlugin.functionTestDetail.http.timeline.dnsLookup'),
+    key: 'domainLookupEnd-domainLookupStart',
+    time: 0,
+    delay: 0
+  },
+  {
+    name: t('httPlugin.functionTestDetail.http.timeline.tcpConnection'),
+    key: 'connectEnd-connectStart',
+    time: 0,
+    delay: 0
+  },
+  {
+    name: t('httPlugin.functionTestDetail.http.timeline.ssl'),
+    key: 'secureConnectionEnd-secureConnectionStart',
+    time: 0,
+    delay: 0
+  },
+  {
+    name: t('httPlugin.functionTestDetail.http.timeline.requestSent'),
+    key: 'responseEnd-requestStart',
+    time: 0,
+    delay: 0
+  },
+  {
+    name: t('httPlugin.functionTestDetail.http.timeline.waiting'),
+    key: 'responseStart-requestStart',
+    time: 0,
+    delay: 0
+  },
+  {
+    name: t('httPlugin.functionTestDetail.http.timeline.contentDownload'),
+    key: 'responseEnd-responseStart',
+    time: 0,
+    delay: 0
+  }
+]);
+
 onMounted(() => {
   watch(() => props.value, (newValue) => {
     if (!newValue || !newValue.total) {
@@ -43,7 +85,7 @@ onMounted(() => {
     }
 
     totalDuration.value = +newValue.total;
-    timelineData.value = columns.reduce((prevValue, currentValue) => {
+    timelineData.value = columns.value.reduce((prevValue, currentValue) => {
       const len = prevValue.length;
       let _delay = 0;
       let time = 0;
@@ -77,50 +119,6 @@ onMounted(() => {
     }[]);
   }, { immediate: true });
 });
-
-const columns: readonly {
-  name: string,
-  key: string,
-  time: number,
-  delay: number
-}[] = [
-  {
-    name: '域名解析(DNS lookup)',
-    key: 'domainLookupEnd-domainLookupStart',
-    time: 0,
-    delay: 0
-  },
-  {
-    name: 'TCP连接',
-    key: 'connectEnd-connectStart',
-    time: 0,
-    delay: 0
-  },
-  {
-    name: 'SSL',
-    key: 'secureConnectionEnd-secureConnectionStart',
-    time: 0,
-    delay: 0
-  },
-  {
-    name: '发送请求(Request sent)',
-    key: 'responseEnd-requestStart',
-    time: 0,
-    delay: 0
-  },
-  {
-    name: '等待处理(Waiting)',
-    key: 'responseStart-requestStart',
-    time: 0,
-    delay: 0
-  },
-  {
-    name: '下载结果(Content download)',
-    key: 'responseEnd-responseStart',
-    time: 0,
-    delay: 0
-  }
-];
 </script>
 <template>
   <template v-if="!props.value">
@@ -129,7 +127,7 @@ const columns: readonly {
   <template v-else>
     <div class="h-full overflow-auto relative flex flex-nowrap whitespace-nowrap px-5 py-4">
       <div class="flex flex-col items-start text-3 leading-3 text-theme-content mr-6">
-        <div class="mb-4 text-theme-sub-content">耗时项</div>
+        <div class="mb-4 text-theme-sub-content">{{ t('httPlugin.functionTestDetail.http.timeline.timeItem') }}</div>
         <div
           v-for="(item, index) in timelineData"
           :key="index"
@@ -138,11 +136,11 @@ const columns: readonly {
           {{ item.name }}
         </div>
         <div class="title-item-container">
-          总耗时(Total time consuming)
+          {{ t('httPlugin.functionTestDetail.http.timeline.totalTime') }}
         </div>
       </div>
       <div class="flex flex-col flex-1 items-start text-3 leading-3 text-theme-content pr-6">
-        <div class="mb-4 text-theme-sub-content">时间</div>
+        <div class="mb-4 text-theme-sub-content">{{ t('httPlugin.functionTestDetail.http.timeline.time') }}</div>
         <div
           v-for="(item, index) in timelineData"
           :key="index"
