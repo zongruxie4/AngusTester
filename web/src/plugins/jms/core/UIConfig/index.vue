@@ -48,7 +48,7 @@ const insertData = () => {
   const id = utils.uuid();
   dataMap.value[id] = {
     id,
-    target: 'FTP',
+    target: 'JMS',
     name: '',
     description: '',
     enabled: true,

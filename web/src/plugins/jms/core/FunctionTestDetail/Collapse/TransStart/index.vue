@@ -16,7 +16,7 @@ interface Props {
     beforeName: string;
     transactionName: string;
     children?: {
-      target: 'FTP' | 'TRANS_END' | 'RENDEZVOUS' | 'WAITING_TIME' | 'THROUGHPUT';
+      target: 'JMS' | 'TRANS_END' | 'RENDEZVOUS' | 'WAITING_TIME' | 'THROUGHPUT';
       name: string;
       linkName: string;
       description: string;
@@ -52,7 +52,7 @@ const httpNames = computed(() => {
     return [];
   }
 
-  return props.value?.children?.filter(item => item.target === 'FTP')?.map(item => item.linkName);
+  return props.value?.children?.filter(item => item.target === 'JMS')?.map(item => item.linkName);
 });
 
 const httpContents = computed(() => {
@@ -79,7 +79,7 @@ const status = computed(() => {
   }
 
   // 所有启用的接口
-  const enabledApis = props.value?.children?.filter(item => item.target === 'FTP' && item.enabled) || [];
+  const enabledApis = props.value?.children?.filter(item => item.target === 'JMS' && item.enabled) || [];
   const totalNum = enabledApis.length;
   const successNum = httpContents.value.filter(item => item.content?.success)?.length;
   if (totalNum === successNum) {

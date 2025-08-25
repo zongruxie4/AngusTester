@@ -81,10 +81,10 @@ const execContentMap = computed(() => {
 
 const pipelines = computed(() => {
   const _pipelines = props.execInfo?.task?.pipelines || [];
-  const httpNum = _pipelines.filter(item => item.target === 'FTP').length;
+  const httpNum = _pipelines.filter(item => item.target === 'JMS').length;
   return _pipelines?.reduce((prev, cur) => {
     const _cur = { ...cur, linkName: cur.name, id: utils.uuid() };
-    if (httpNum === 1 && _cur.target === 'FTP') {
+    if (httpNum === 1 && _cur.target === 'JMS') {
       _cur.linkName = 'Total';
     }
     if (_cur.transactionName) {
@@ -133,7 +133,7 @@ const planRequestNum = computed(() => {
   let httpNum = 0;
   const pipelines = props.execInfo?.task?.pipelines;
   if (pipelines?.length) {
-    httpNum = pipelines.filter(item => item.target === 'FTP' && item.enabled).length;
+    httpNum = pipelines.filter(item => item.target === 'JMS' && item.enabled).length;
   }
 
   return _iterationNum * httpNum;

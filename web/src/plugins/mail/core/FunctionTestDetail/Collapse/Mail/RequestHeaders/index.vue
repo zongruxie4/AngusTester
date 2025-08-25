@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { utils } from '@xcan-angus/infra';
 import { Arrow, NoData } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 import { ExecContent } from '../../../PropsType';
 
@@ -17,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
 const panels:{id:string;name:string;key:'headers'|'request'}[] = [
   {
     id: utils.uuid(),
-    name: '请求内容',
+    name: t('mailPlugin.functionTestDetailMail.requestContent'),
     key: 'request'
   }
 ];

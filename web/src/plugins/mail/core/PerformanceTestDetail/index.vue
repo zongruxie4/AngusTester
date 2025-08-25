@@ -1,10 +1,13 @@
 <script lang="ts" setup>
 import { ref, defineAsyncComponent, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Tabs, TabPane } from 'ant-design-vue';
 
 import { NoData, TestBasicInfo } from '@xcan-angus/vue-ui';
 import { allCvsKeys, allColumns, oneThroughputColumns, throughputColumns, throughputOptions, threadCvsKeys, threadOptions, threadColumns, responseTimeCvsKeys, responseTimeOptions, responseTimeColumns, errorOptions, errorCvsKeys, errorColumns, oneApiErrorColumns } from './ChartConfig';
 import { getCurrentDuration, splitTime } from '../utils';
+
+const { t } = useI18n();
 
 interface Props {
   execInfo: Record<string, any>;
@@ -62,61 +65,61 @@ const countCard = computed(() => {
   return [
     {
       key: 'currentDuration',
-      name: '执行时长',
+      name: t('httPlugin.performanceTestDetail.countCards.currentDuration'),
       icon: 'icon-yizhihangshijian',
       color: '129, 154, 218'
     },
     {
       key: 'vu',
-      name: '并发数',
+      name: t('httPlugin.performanceTestDetail.countCards.vu'),
       icon: 'icon-bingfashu',
       color: '255, 177, 59'
     },
     {
       key: 'qps',
-      name: '每秒查询数(当前 | 最大)',
+      name: t('httPlugin.performanceTestDetail.countCards.qps'),
       icon: 'icon-meimiaochaxunshu',
       color: '3, 206, 92'
     },
     {
       key: 'tps',
-      name: '每秒事务数(当前 | 最大)',
+      name: t('httPlugin.performanceTestDetail.countCards.tps'),
       icon: 'icon-meimiaoshiwushu',
       color: '45, 142, 255'
     },
     {
       key: 'err',
-      name: '错误(Error)',
+      name: t('httPlugin.performanceTestDetail.countCards.err'),
       icon: 'icon-cuowushuai',
       color: '245, 34, 45'
     },
     {
       key: 'currentIterations',
-      name: '迭代次数',
+      name: t('httPlugin.performanceTestDetail.countCards.currentIterations'),
       icon: 'icon-yidiedaicishu',
       color: '3, 185, 208'
     },
     {
       key: 'rt',
-      name: '响应时间(最小 | 平均 | 最大)',
+      name: t('httPlugin.performanceTestDetail.countCards.rt'),
       icon: 'icon-pingjunxiangyingshijian',
       color: '255, 129, 0'
     },
     {
       key: 'p50',
-      name: '响应百分位(P50 | P90 | P99)',
+      name: t('httPlugin.performanceTestDetail.countCards.p50'),
       icon: 'icon-baifenwei',
       color: '201, 119, 255'
     },
     {
       key: 'export',
-      name: '下载',
+      name: t('httPlugin.performanceTestDetail.countCards.export'),
       icon: 'icon-xiazaida',
       color: '111, 198, 191'
     },
     {
       key: 'upload',
-      name: '上传',
+      name: t('httPlugin.performanceTestDetail.countCards.upload'),
       icon: 'icon-shangchuanda',
       color: '175, 196, 32'
     }
@@ -158,10 +161,7 @@ defineExpose({
 </script>
 <template>
   <div>
-    <TestBasicInfo
-      :value="props.execInfo"
-      :exception="props.exception"
-      :hasIgnoreAssertions="false" />
+    <TestBasicInfo :value="props.execInfo" :exception="props.exception" />
     <div class="text-3 flex flex-wrap text-text-sun-content mt-5 -mr-2">
       <div
         v-for="item in countCard"
@@ -218,7 +218,7 @@ defineExpose({
             <span> {{ props.execInfo?.sampleSummaryInfo?.tranMean ||"--" }}</span>
             <em class="not-italic inline-block w-0.5 h-3.5 mx-2 rounded" :style="{ 'background-color': 'rgb(' + item.color + ')'}" />
             <span> {{ props.execInfo?.sampleSummaryInfo?.tranMax ||"--" }}</span>
-            <span>&nbsp;ms</span>
+            <span>&nbsp;{{ t('httPlugin.performanceTestDetail.units.ms') }}</span>
           </template>
           <template v-if="item.key === 'err'">
             <span>{{ props.execInfo?.sampleSummaryInfo?.errors ||"--" }}</span>
@@ -251,12 +251,12 @@ defineExpose({
             <span>{{ props.execInfo?.sampleSummaryInfo?.tranP99 || "--" }}</span>
           </template>
           <template v-if="item.key === 'upload'">
-            <span>{{ formatBytes(props.execInfo?.sampleSummaryInfo?.bwps)? `${formatBytes(props.execInfo?.sampleSummaryInfo?.bwps)}/秒`:'--' }}</span>
+            <span>{{ formatBytes(props.execInfo?.sampleSummaryInfo?.bwps)? `${formatBytes(props.execInfo?.sampleSummaryInfo?.bwps)}${t('httPlugin.performanceTestDetail.units.perSecond')}`:'--' }}</span>
             <em class="not-italic inline-block w-0.5 h-3.5 mx-2 rounded" :style="{ 'background-color': 'rgb(' + item.color + ')'}" />
             <span>{{ formatBytes(props.execInfo?.sampleSummaryInfo?.writeBytes) || '--' }}</span>
           </template>
           <template v-if="item.key === 'export'">
-            <span>{{ formatBytes(props.execInfo?.sampleSummaryInfo?.brps)? `${formatBytes(props.execInfo?.sampleSummaryInfo?.brps)}/秒`:'--' }}</span>
+            <span>{{ formatBytes(props.execInfo?.sampleSummaryInfo?.brps)? `${formatBytes(props.execInfo?.sampleSummaryInfo?.brps)}${t('httPlugin.performanceTestDetail.units.perSecond')}`:'--' }}</span>
             <em class="not-italic inline-block w-0.5 h-3.5 mx-2 rounded" :style="{ 'background-color': 'rgb(' + item.color + ')'}" />
             <span>{{ formatBytes(props.execInfo?.sampleSummaryInfo?.readBytes) || '--' }}</span>
           </template>
@@ -286,7 +286,7 @@ defineExpose({
         @change="handleLeftTab">
         <TabPane
           key="aggregation"
-          tab="汇总结果">
+          :tab="t('httPlugin.performanceTestDetail.tabs.aggregation')">
           <template v-if="isLoaded">
             <template v-if="timestampData.length > 0">
               <AggregateVue
@@ -312,7 +312,7 @@ defineExpose({
             </template>
           </template>
         </TabPane>
-        <TabPane key="throughput" tab="吞吐量">
+        <TabPane key="throughput" :tab="t('httPlugin.performanceTestDetail.tabs.throughput')">
           <template v-if="isLoaded">
             <template v-if="timestampData.length > 0">
               <CountTemplate
@@ -336,7 +336,7 @@ defineExpose({
             </template>
           </template>
         </TabPane>
-        <TabPane key="vu" tab="并发数">
+        <TabPane key="vu" :tab="t('httPlugin.performanceTestDetail.tabs.vu')">
           <template v-if="isLoaded">
             <template v-if="timestampData.length > 0">
               <CountTemplate
@@ -356,7 +356,7 @@ defineExpose({
             </template>
           </template>
         </TabPane>
-        <TabPane key="responseTime" tab="响应时间">
+        <TabPane key="responseTime" :tab="t('httPlugin.performanceTestDetail.tabs.responseTime')">
           <template v-if="isLoaded">
             <template v-if="timestampData.length > 0">
               <CountTemplate
@@ -376,7 +376,7 @@ defineExpose({
             </template>
           </template>
         </TabPane>
-        <TabPane key="error" tab="错误">
+        <TabPane key="error" :tab="t('httPlugin.performanceTestDetail.tabs.error')">
           <template v-if="isLoaded">
             <template v-if="timestampData.length > 0">
               <div class="min-h-full">
@@ -405,14 +405,14 @@ defineExpose({
             </template>
           </template>
         </TabPane>
-        <TabPane key="httpCode" tab="状态码">
+        <TabPane key="httpCode" :tab="t('httPlugin.performanceTestDetail.tabs.httpCode')">
           <template v-if="isLoaded">
             <StatusCode
               :isSingleInterface="props.execInfo?.singleTargetPipeline"
               :stutasCodeData="props.stutasCodeData" />
           </template>
         </TabPane>
-        <TabPane key="node" tab="节点资源">
+        <TabPane key="node" :tab="t('httPlugin.performanceTestDetail.tabs.node')">
           <NodeData
             ref="nodeDataRef"
             :activeChart="counTabKey"
@@ -424,7 +424,7 @@ defineExpose({
             :execNodes="props.execInfo?.execNodes"
             :status="props.execInfo?.status.value" />
         </TabPane>
-        <TabPane key="analyze" tab="叠加分析">
+        <TabPane key="analyze" :tab="t('httPlugin.performanceTestDetail.tabs.analyze')">
           <template v-if="isLoaded">
             <template v-if="timestampData.length > 0">
               <SuperimposeAnalysis

@@ -3,6 +3,9 @@ import { computed, defineAsyncComponent, ref } from 'vue';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { Arrow } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import StatusTag from './StatusTag/index.vue';
 import { ExecInfo, ExecContent } from '../PropsType';
@@ -25,7 +28,7 @@ const TransStart = defineAsyncComponent(() => import('./TransStart/index.vue'));
 const WaitingTime = defineAsyncComponent(() => import('./WaitingTime/index.vue'));
 const Throughput = defineAsyncComponent(() => import('./Throughput/index.vue'));
 const Rendezvous = defineAsyncComponent(() => import('./Rendezvous/index.vue'));
-const FTP = defineAsyncComponent(() => import('./FTP/index.vue'));
+const JMS = defineAsyncComponent(() => import('./JMS/index.vue'));
 const TransEnd = defineAsyncComponent(() => import('./TransEnd/index.vue'));
 
 const UUID = utils.uuid();
@@ -64,7 +67,7 @@ const status = computed(() => {
       collapsible="disabled">
       <template #header>
         <div class="w-full flex items-center">
-          <div class="min-w-20 mr-3">第{{ props.iterations }}次迭代</div>
+          <div class="min-w-20 mr-3">{{ t('httpPlugin.functionTestDetail.collapse.iteration', { iteration: props.iterations }) }}</div>
           <StatusTag :value="status" class="mr-3" />
           <Arrow :open="arrowOpen" @change="arrowChange" />
         </div>
@@ -90,8 +93,8 @@ const status = computed(() => {
                   v-else-if="_item.target==='RENDEZVOUS'"
                   :value="_item"
                   class="embed" />
-                <FTP
-                  v-else-if="_item.target==='FTP'"
+                <JMS
+                  v-else-if="_item.target==='JMS'"
                   :value="_item"
                   :content="props.execContent"
                   :ignoreAssertions="props.ignoreAssertions"
@@ -112,8 +115,8 @@ const status = computed(() => {
             <Rendezvous
               v-else-if="item.target==='RENDEZVOUS'"
               :value="item" />
-            <FTP
-              v-else-if="item.target==='FTP'"
+            <JMS
+              v-else-if="item.target==='JMS'"
               :value="item"
               :content="props.execContent"
               :ignoreAssertions="props.ignoreAssertions" />

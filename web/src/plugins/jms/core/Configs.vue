@@ -1114,7 +1114,7 @@ onMounted(() => {
 const generateFTP = (): PipelineConfig => {
   return {
     id: utils.uuid(),
-    target: 'FTP',
+    target: 'JMS',
     name: '',
     description: '',
     enabled: true,

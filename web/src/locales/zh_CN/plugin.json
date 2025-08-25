@@ -1509,5 +1509,53 @@
         "delete": "删除：先添加默认人员条目信息，添加成功后在执行删除操作。"
       }
     }
+  },
+  "mailPlugin": {
+    "title": "Mail插件",
+    "taskConfig": "任务配置",
+    "executeConfig": "执行配置",
+    "notifications": {
+      "debugSaveFirst": "调试需要先保存当前数据，请保存后再执行调试",
+      "autoSaveSuccess": "自动保存成功，正在执行调试...",
+      "createTestSuccess": "创建\"执行测试\"成功，请在\"执行\"中查看详情和结果",
+      "taskConfigError": "任务配置数据错误，请检查更正后再保存。",
+      "executeConfigError": "执行配置数据错误，请检查更正后再保存。",
+      "followSuccess": "关注成功",
+      "cancelFollowSuccess": "取消关注成功",
+      "favouriteSuccess": "收藏成功",
+      "cancelFavouriteSuccess": "取消收藏成功",
+      "saveSuccess": "保存成功",
+      "paramError": "参数错误",
+      "selectMailScript": "请选择MAIL插件脚本"
+    },
+    "authorizeModal": {
+      "title": "场景权限",
+      "onTips": "开启\"有权限控制\"后，需要手动授权服务权限后才会有场景相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级目录权限将自动授权查看权限。",
+      "offTips": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前场景，查看用户同时需要有当前场景父级目录权限。"
+    },
+    "comments": {
+      "selectScriptModal": "选择脚本弹窗",
+      "importScriptModal": "导入脚本弹窗",
+      "exportScriptModal": "导出脚本弹窗",
+      "authorizeModal": "显示权限弹窗",
+      "abortController": "用于终止请求的实例",
+      "defaultViewDescription": "默认显示页面视图，新建场景没有保存之前不显示【执行测试】【导出脚本】、【关注】、【取消关注】、【收藏】、【取消收藏】、【权限】、【刷新】按钮",
+      "sceneConfigData": "场景详情信息",
+      "rampUpInterval": "增压间隔",
+      "rampUpThreads": "增压线程数"
+    },
+    "functionTestDetailMail": {
+      "protocol": "协议",
+      "totalEmails": "总共{count}个邮件",
+      "readEmails": "读取{count}个邮件",
+      "duration": "耗时",
+      "size": "大小",
+      "request": "请求",
+      "response": "响应",
+      "responseHeaders": "响应头",
+      "responseBody": "响应体",
+      "email": "邮件{index}",
+      "requestContent": "请求内容"
+    }
   }
 }

@@ -1508,6 +1508,54 @@
         "delete": "Delete: First add default person entry information, then execute delete operation after successful addition."
       }
     }
+  },
+  "mailPlugin": {
+    "title": "Mail Plugin",
+    "taskConfig": "Task Configuration",
+    "executeConfig": "Execute Configuration",
+    "notifications": {
+      "debugSaveFirst": "Debug requires saving current data first, please save before debugging",
+      "autoSaveSuccess": "Auto save successful, executing debug...",
+      "createTestSuccess": "Create 'Execute Test' successful, please view details and results in 'Execute'",
+      "taskConfigError": "Task configuration data error, please check and correct before saving.",
+      "executeConfigError": "Execute configuration data error, please check and correct before saving.",
+      "followSuccess": "Follow successful",
+      "cancelFollowSuccess": "Cancel follow successful",
+      "favouriteSuccess": "Favorite successful",
+      "cancelFavouriteSuccess": "Cancel favorite successful",
+      "saveSuccess": "Save successful",
+      "paramError": "Parameter error",
+      "selectMailScript": "Please select MAIL plugin script"
+    },
+    "authorizeModal": {
+      "title": "Scenario Permission",
+      "onTips": "After enabling 'Permission Control', manual authorization of service permissions is required to have corresponding operation permissions for scenarios. 'Permission Control' is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically granted.",
+      "offTips": "After enabling 'No Permission Control', all users will be allowed to publicly view and operate the current scenario. Users viewing need to have parent directory permissions for the current scenario."
+    },
+    "comments": {
+      "selectScriptModal": "Select Script Modal",
+      "importScriptModal": "Import Script Modal",
+      "exportScriptModal": "Export Script Modal",
+      "authorizeModal": "Show Permission Modal",
+      "abortController": "Abort Controller for terminating requests",
+      "defaultViewDescription": "Default page view, new scenarios don't show [Execute Test], [Export Script], [Follow], [Cancel Follow], [Favorite], [Cancel Favorite], [Permission], [Refresh] buttons before saving",
+      "sceneConfigData": "Scene configuration data",
+      "rampUpInterval": "Ramp Up Interval",
+      "rampUpThreads": "Ramp Up Threads"
+    },
+    "functionTestDetailMail": {
+      "protocol": "Protocol",
+      "totalEmails": "Total {count} emails",
+      "readEmails": "Read {count} emails",
+      "duration": "Duration",
+      "size": "Size",
+      "request": "Request",
+      "response": "Response",
+      "responseHeaders": "Response Headers",
+      "responseBody": "Response Body",
+      "email": "Email {index}",
+      "requestContent": "Request Content"
+    }
   }
 }
 
