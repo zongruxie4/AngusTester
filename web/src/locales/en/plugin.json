@@ -1556,6 +1556,39 @@
       "email": "Email {index}",
       "requestContent": "Request Content"
     }
+  },
+  "mockPlugin": {
+    "title": "Mock Plugin",
+    "chartLabels": {
+      "rows": "Rows",
+      "concurrency": "Concurrency",
+      "tps": "Rows per Second (TPS)",
+      "errors": "Errors",
+      "writeData": "Write Data",
+      "uploadProgress": "Upload Result File Progress",
+      "perSecond": "/sec"
+    },
+    "chartTypes": {
+      "byThroughput": "By Throughput",
+      "byResponseTime": "By Response Time",
+      "byRows": "By Rows",
+      "byErrors": "By Errors",
+      "byErrorRate": "By Error Rate",
+      "byUpload": "By Upload"
+    },
+    "metrics": {
+      "writeBytes": "Write Data Size",
+      "writeRate": "Write Data Rate",
+      "transactions": "Rows",
+      "errors": "Errors",
+      "errorRate": "Error Rate",
+      "iterations": "Iterations",
+      "tps": "Rows per Second",
+      "tranMean": "Average",
+      "tranMin": "Min",
+      "tranMax": "Max",
+      "name": "Name"
+    }
   }
 }
 

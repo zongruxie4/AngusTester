@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Progress } from 'ant-design-vue';
 import { TestBasicInfo } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 import { formatBytes } from './useExecCount';
 
@@ -25,31 +28,31 @@ const chartInfoRef = ref();
 const countCard = [
   {
     key: 'iterations',
-    name: '行数',
+    name: t('mockPlugin.chartLabels.rows'),
     icon: 'icon-yizhihangshijian',
     color: '129, 154, 218'
   },
   {
     key: 'vu',
-    name: '并发数',
+    name: t('mockPlugin.chartLabels.concurrency'),
     icon: 'icon-bingfashu',
     color: '255, 177, 59'
   },
   {
     key: 'tps',
-    name: '每秒行数 (TPS)',
+    name: t('mockPlugin.chartLabels.tps'),
     icon: 'icon-meimiaochaxunshu',
     color: '3, 206, 92'
   },
   {
     key: 'err',
-    name: '错误(Error)',
+    name: t('mockPlugin.chartLabels.errors'),
     icon: 'icon-cuowushuai',
     color: '245, 34, 45'
   },
   {
     key: 'upload',
-    name: '写数据',
+    name: t('mockPlugin.chartLabels.writeData'),
     icon: 'icon-meimiaoshiwushu',
     color: '45, 142, 255'
   }
@@ -122,7 +125,7 @@ defineExpose({
             <span>{{ props.execInfo?.sampleSummaryInfo?.errorRate?props.execInfo.sampleSummaryInfo?.errorRate+'%':'--' }}</span>
           </template>
           <template v-if="item.key === 'upload'">
-            <span>{{ formatBytes(props.execInfo?.sampleSummaryInfo?.bwps)? `${formatBytes(props.execInfo?.sampleSummaryInfo?.bwps)}/秒`:'--' }}</span>
+            <span>{{ formatBytes(props.execInfo?.sampleSummaryInfo?.bwps)? `${formatBytes(props.execInfo?.sampleSummaryInfo?.bwps)}${t('mockPlugin.chartLabels.perSecond')}`:'--' }}</span>
             <span> &nbsp;|&nbsp;</span>
             <span>{{ formatBytes(props.execInfo?.sampleSummaryInfo?.writeBytes) || '--' }}</span>
           </template>
@@ -131,7 +134,7 @@ defineExpose({
       </div>
     </div>
     <div v-if="props.execInfo.sampleSummaryInfo?.uploadResultProgress > 0" class="text-3 text-center mt-7">
-      <span class="mr-2">上传结果文件进度</span>
+      <span class="mr-2">{{ t('mockPlugin.chartLabels.uploadProgress') }}</span>
       <Progress
         class="w-100"
         :percent="props.execInfo.sampleSummaryInfo?.uploadResultProgress"

@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted, defineAsyncComponent, onBeforeUnmount, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { RadioGroup, RadioButton, Slider } from 'ant-design-vue';
 import { Spin, NoData, ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
 import dayjs from 'dayjs';
 import { exec } from '@/api/tester';
+
+const { t } = useI18n();
 
 import { ListData, useExecCount } from './useExecCount';
 import { allCvsKeys, allResponseTimeColumns, allErrorsColumns, allErrorRateColumns, allRowsColumns } from './ChartConfig';
@@ -26,42 +29,42 @@ const pagination = {
 
 const groupItem = [
   {
-    label: '按吞吐量',
+    label: t('mockPlugin.chartTypes.byThroughput'),
     value: 'tps'
   },
   {
-    label: '按响应时间',
+    label: t('mockPlugin.chartTypes.byResponseTime'),
     value: 'time'
   },
   {
-    label: '按行数',
+    label: t('mockPlugin.chartTypes.byRows'),
     value: 'rows'
   },
   // {
-  //   label: '按错误数',
+  //   label: t('mockPlugin.chartTypes.byErrors'),
   //   value: 'errorNum'
   // },
   // {
-  //   label: '按错误率',
+  //   label: t('mockPlugin.chartTypes.byErrorRate'),
   //   value: 'errorRate'
   // },
   {
-    label: '按上传',
+    label: t('mockPlugin.chartTypes.byUpload'),
     value: 'upload'
   }
 ];
 
 const echartsLegendConfig = {
-  writeBytes: '写数据大小',
-  bwps: '写数据速率',
-  transactions: '行数',
-  errors: '错误数',
-  errorRate: '错误率',
-  iterations: '迭代数',
-  tps: '每秒行数',
-  tranMean: '平均',
-  tranMin: '最小',
-  tranMax: '最大',
+  writeBytes: t('mockPlugin.metrics.writeBytes'),
+  bwps: t('mockPlugin.metrics.writeRate'),
+  transactions: t('mockPlugin.metrics.transactions'),
+  errors: t('mockPlugin.metrics.errors'),
+  errorRate: t('mockPlugin.metrics.errorRate'),
+  iterations: t('mockPlugin.metrics.iterations'),
+  tps: t('mockPlugin.metrics.tps'),
+  tranMean: t('mockPlugin.metrics.tranMean'),
+  tranMin: t('mockPlugin.metrics.tranMin'),
+  tranMax: t('mockPlugin.metrics.tranMax'),
   tranP50: 'P50',
   tranP75: 'P75',
   tranP90: 'P90',
@@ -292,17 +295,17 @@ const columns = computed(() => {
     // return allUploadColumns;
     return [
       {
-        title: '名称',
+        title: t('mockPlugin.metrics.name'),
         dataIndex: 'name',
         ellipsis: true
       },
       {
-        title: '写数据大小',
+        title: t('mockPlugin.metrics.writeBytes'),
         dataIndex: 'writeBytes',
         ellipsis: true
       },
       {
-        title: '写数据速率',
+        title: t('mockPlugin.metrics.writeRate'),
         dataIndex: 'bwps',
         ellipsis: true
       }
@@ -311,17 +314,17 @@ const columns = computed(() => {
   if (activeType.value === 'tps') {
     return [
       {
-        title: '名称',
+        title: t('mockPlugin.metrics.name'),
         dataIndex: 'name',
         ellipsis: true
       },
       {
-        title: '每秒行数',
+        title: t('mockPlugin.metrics.tps'),
         dataIndex: 'tps',
         width: '33%'
       },
       {
-        title: '错误率',
+        title: t('mockPlugin.metrics.errorRate'),
         dataIndex: 'errorRate',
         width: '33%'
       }

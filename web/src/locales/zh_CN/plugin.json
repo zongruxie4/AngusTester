@@ -1557,5 +1557,38 @@
       "email": "邮件{index}",
       "requestContent": "请求内容"
     }
+  },
+  "mockPlugin": {
+    "title": "Mock插件",
+    "chartLabels": {
+      "rows": "行数",
+      "concurrency": "并发数",
+      "tps": "每秒行数 (TPS)",
+      "errors": "错误(Error)",
+      "writeData": "写数据",
+      "uploadProgress": "上传结果文件进度",
+      "perSecond": "/秒"
+    },
+    "chartTypes": {
+      "byThroughput": "按吞吐量",
+      "byResponseTime": "按响应时间",
+      "byRows": "按行数",
+      "byErrors": "按错误数",
+      "byErrorRate": "按错误率",
+      "byUpload": "按上传"
+    },
+    "metrics": {
+      "writeBytes": "写数据大小",
+      "writeRate": "写数据速率",
+      "transactions": "行数",
+      "errors": "错误数",
+      "errorRate": "错误率",
+      "iterations": "迭代数",
+      "tps": "每秒行数",
+      "tranMean": "平均",
+      "tranMin": "最小",
+      "tranMax": "最大",
+      "name": "名称"
+    }
   }
 }
