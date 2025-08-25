@@ -1021,6 +1021,17 @@
         "collapse": {
           "iteration": "Iteration {iteration}"
         },
+        "texts": {
+          "success": "Passed",
+          "ignore": "Disabled",
+          "block": "Not Executed",
+          "total": "Total"
+        },
+        "timeTexts": {
+          "minimum": "Minimum",
+          "average": "Average",
+          "maximum": "Maximum"
+        },
         "ftp": {
           "upload": "Upload",
           "download": "Download",
@@ -1123,130 +1134,291 @@
         }
       }
     },
-         "jdbcPlugin": {
-       "title": "JDBC Plugin",
-       "taskConfig": "Task Configuration",
-       "executeConfig": "Execute Configuration",
-       "UIConfigJdbc": {
-         "insertJDBC": "Insert JDBC",
-         "insertTransStart": "Insert Transaction Start",
-         "insertTransEnd": "Insert Transaction End",
-         "insertWaitingTime": "Insert Waiting Time",
-         "insertRendezvous": "Insert Rendezvous",
-         "jdbcConfig": {
-           "nameDuplicate": "Name Duplicate",
-           "namePlaceholder": "Name, maximum 400 characters",
-           "descriptionPlaceholder": "Description, maximum 800 characters (optional)",
-           "queryTypePlaceholder": "Query Type",
-           "insertSqlTemplate": "Insert SQL Template",
-           "sqlPlaceholder": "SQL, maximum 8192 characters",
-           "processResultRows": "Process Query Result Rows",
-           "processResultRowsTooltip": "Default 1000, maximum 10000 rows. When actual returned result rows exceed the set processing query result rows, they will be ignored.",
-           "processResultRowsPlaceholder": "Value range: 1~10000",
-           "queryTimeout": "Query Timeout",
-           "queryTimeoutPlaceholder": "Value range: 0~2147483647",
-           "queryParameters": "Query Parameters",
-           "parameterTypePlaceholder": "Enter or select parameter type (optional)",
-           "inputOutputPlaceholder": "Input/Output",
-           "inputOutputTooltip": "Parameter value is required when input/output value is 'IN' or 'INOUT'",
-           "parameterValuePlaceholder": "Parameter value (optional. Note: Parameter value is required when input/output value is 'IN' or 'INOUT')",
-           "parametric": "Parametric",
-           "assertions": "Assertions"
-         },
-         "assertionForm": {
-           "nameDuplicate": "Name Duplicate",
-           "assertionName": "Assertion Name",
-           "assertionNamePlaceholder": "Assertion Name",
-           "assertionType": "Assertion Type",
-           "assertionTypePlaceholder": "Assertion Type",
-           "assertionCondition": "Assertion Condition",
-           "assertionConditionPlaceholder": "Assertion Condition",
-           "expressionFormatError": "Expression Format Error",
-           "matchItem": "Match Item",
-           "matchItemPlaceholder": "Match item, range 0~2000 (optional)",
-           "expectedValue": "Expected Value",
-           "expectedValuePlaceholder": "Expected Value",
-           "expectedValueOptional": "Expected Value (optional)",
-           "description": "Description (800 characters, optional)",
-           "descriptionPlaceholder": "Description (800 characters, optional)",
-           "expressionMap": {
-             "REG_MATCH": "Regular Expression Match",
-             "XPATH_MATCH": "XPath Match Expression",
-             "JSON_PATH_MATCH": "JSONPath Match Expression"
-           }
-                  }
-       },
-       "FunctionTestDetailJdbc": {
-         "duration": "Duration",
-         "requestParameters": "Request Parameters",
-         "assertionResults": "Assertion Results",
-         "ignoreAssertionMessage": "You have enabled ignore assertions, assertions will not be executed this time. If you need to enable assertions, please",
-         "executeConfig": "Execute Configuration > Plugin Configuration",
-         "closeIgnoreAssertion": "to close the ignore assertion option.",
-         "assertionStatus": {
-           "failed": "Failed",
-           "passed": "Passed",
-           "ignored": "Ignored",
-           "disabled": "Disabled"
-         },
-         "requestParameter": {
-           "parameter": "Parameter",
-           "result": "Result",
-           "maxRecords": "Maximum 1000 records displayed",
-           "affectedRows": "Affected rows",
-           "rows": "rows"
-         },
-         "assertionResult": {
-           "view": "View",
-           "assertionCondition": "Assertion Condition",
-           "assertionResult": "Assertion Result",
-           "failureReason": "Failure Reason",
-           "extractedValue": "Extracted Value",
-           "expectedValue": "Expected Value",
-           "typeMap": {
-             "STATUS": "Response Status Code",
-             "HEADER": "Response Header",
-             "BODY": "Response Body",
-             "BODY_SIZE": "Response Body Size",
-             "SIZE": "Response Size",
-             "DURATION": "Duration"
-           },
-           "conditionMap": {
-             "CONTAIN": "Contains",
-             "EQUAL": "Equals",
-             "GREATER_THAN": "Greater Than",
-             "GREATER_THAN_EQUAL": "Greater Than or Equal",
-             "IS_EMPTY": "Is Empty (empty string or null value)",
-             "IS_NULL": "Is Null",
-             "LESS_THAN": "Less Than",
-             "LESS_THAN_EQUAL": "Less Than or Equal",
-             "NOT_CONTAIN": "Does Not Contain",
-             "NOT_EMPTY": "Is Not Empty (non-empty string or null value)",
-             "NOT_EQUAL": "Not Equal",
-             "NOT_NULL": "Is Not Null",
-             "REG_MATCH": "Regular Expression Match",
-             "XPATH_MATCH": "XPath Match",
-             "JSON_PATH_MATCH": "JSONPath Match"
-           }
-         }
-       },
-       "notifications": {
-        "debugSaveFirst": "Debug requires saving current data first, please save before debugging",
-        "autoSaveSuccess": "Auto save successful, executing debug...",
-        "createTestSuccess": "Create 'Execute Test' successful, please view details and results in 'Execute'",
-        "taskConfigError": "Task configuration data error, please check and correct before saving.",
-        "executeConfigError": "Execute configuration data error, please check and correct before saving.",
-        "followSuccess": "Follow successful",
-        "cancelFollowSuccess": "Cancel follow successful",
-        "favouriteSuccess": "Favorite successful",
-        "cancelFavouriteSuccess": "Cancel favorite successful",
-        "saveSuccess": "Save successful"
+  "jdbcPlugin": {
+    "title": "JDBC Plugin",
+    "taskConfig": "Task Configuration",
+    "executeConfig": "Execute Configuration",
+    "UIConfigJdbc": {
+      "insertJDBC": "Insert JDBC",
+      "insertTransStart": "Insert Transaction Start",
+      "insertTransEnd": "Insert Transaction End",
+      "insertWaitingTime": "Insert Waiting Time",
+      "insertRendezvous": "Insert Rendezvous",
+      "jdbcConfig": {
+        "nameDuplicate": "Name Duplicate",
+        "namePlaceholder": "Name, maximum 400 characters",
+        "descriptionPlaceholder": "Description, maximum 800 characters (optional)",
+        "queryTypePlaceholder": "Query Type",
+        "insertSqlTemplate": "Insert SQL Template",
+        "sqlPlaceholder": "SQL, maximum 8192 characters",
+        "processResultRows": "Process Query Result Rows",
+        "processResultRowsTooltip": "Default 1000, maximum 10000 rows. When actual returned result rows exceed the set processing query result rows, they will be ignored.",
+        "processResultRowsPlaceholder": "Value range: 1~10000",
+        "queryTimeout": "Query Timeout",
+        "queryTimeoutPlaceholder": "Value range: 0~2147483647",
+        "queryParameters": "Query Parameters",
+        "parameterTypePlaceholder": "Enter or select parameter type (optional)",
+        "inputOutputPlaceholder": "Input/Output",
+        "inputOutputTooltip": "Parameter value is required when input/output value is 'IN' or 'INOUT'",
+        "parameterValuePlaceholder": "Parameter value (optional. Note: Parameter value is required when input/output value is 'IN' or 'INOUT')",
+        "parametric": "Parametric",
+        "assertions": "Assertions"
       },
-      "authorizeModal": {
-        "title": "Scenario Permission",
-        "onTips": "After enabling 'Permission Control', manual authorization of service permissions is required to have corresponding operation permissions for scenarios. 'Permission Control' is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically granted.",
-        "offTips": "After enabling 'No Permission Control', all users will be allowed to publicly view and operate the current scenario. Users viewing need to have parent directory permissions for the current scenario."
+      "assertionForm": {
+        "nameDuplicate": "Name Duplicate",
+        "assertionName": "Assertion Name",
+        "assertionNamePlaceholder": "Assertion Name",
+        "assertionType": "Assertion Type",
+        "assertionTypePlaceholder": "Assertion Type",
+        "assertionCondition": "Assertion Condition",
+        "assertionConditionPlaceholder": "Assertion Condition",
+        "expressionFormatError": "Expression Format Error",
+        "matchItem": "Match Item",
+        "matchItemPlaceholder": "Match item, range 0~2000 (optional)",
+        "expectedValue": "Expected Value",
+        "expectedValuePlaceholder": "Expected Value",
+        "expectedValueOptional": "Expected Value (optional)",
+        "description": "Description (800 characters, optional)",
+        "descriptionPlaceholder": "Description (800 characters, optional)",
+        "expressionMap": {
+          "REG_MATCH": "Regular Expression Match",
+          "XPATH_MATCH": "XPath Match Expression",
+          "JSON_PATH_MATCH": "JSONPath Match Expression"
+        }
+              }
+    },
+    "FunctionTestDetailJdbc": {
+      "duration": "Duration",
+      "requestParameters": "Request Parameters",
+      "assertionResults": "Assertion Results",
+      "ignoreAssertionMessage": "You have enabled ignore assertions, assertions will not be executed this time. If you need to enable assertions, please",
+      "executeConfig": "Execute Configuration > Plugin Configuration",
+      "closeIgnoreAssertion": "to close the ignore assertion option.",
+      "assertionStatus": {
+        "failed": "Failed",
+        "passed": "Passed",
+        "ignored": "Ignored",
+        "disabled": "Disabled"
+      },
+      "requestParameter": {
+        "parameter": "Parameter",
+        "result": "Result",
+        "maxRecords": "Maximum 1000 records displayed",
+        "affectedRows": "Affected rows",
+        "rows": "rows"
+      },
+      "assertionResult": {
+        "view": "View",
+        "assertionCondition": "Assertion Condition",
+        "assertionResult": "Assertion Result",
+        "failureReason": "Failure Reason",
+        "extractedValue": "Extracted Value",
+        "expectedValue": "Expected Value",
+        "typeMap": {
+          "STATUS": "Response Status Code",
+          "HEADER": "Response Header",
+          "BODY": "Response Body",
+          "BODY_SIZE": "Response Body Size",
+          "SIZE": "Response Size",
+          "DURATION": "Duration"
+        },
+        "conditionMap": {
+          "CONTAIN": "Contains",
+          "EQUAL": "Equals",
+          "GREATER_THAN": "Greater Than",
+          "GREATER_THAN_EQUAL": "Greater Than or Equal",
+          "IS_EMPTY": "Is Empty (empty string or null value)",
+          "IS_NULL": "Is Null",
+          "LESS_THAN": "Less Than",
+          "LESS_THAN_EQUAL": "Less Than or Equal",
+          "NOT_CONTAIN": "Does Not Contain",
+          "NOT_EMPTY": "Is Not Empty (non-empty string or null value)",
+          "NOT_EQUAL": "Not Equal",
+          "NOT_NULL": "Is Not Null",
+          "REG_MATCH": "Regular Expression Match",
+          "XPATH_MATCH": "XPath Match",
+          "JSON_PATH_MATCH": "JSONPath Match"
+        }
+      }
+    },
+    "notifications": {
+      "debugSaveFirst": "Debug requires saving current data first, please save before debugging",
+      "autoSaveSuccess": "Auto save successful, executing debug...",
+      "createTestSuccess": "Create 'Execute Test' successful, please view details and results in 'Execute'",
+      "taskConfigError": "Task configuration data error, please check and correct before saving.",
+      "executeConfigError": "Execute configuration data error, please check and correct before saving.",
+      "followSuccess": "Follow successful",
+      "cancelFollowSuccess": "Cancel follow successful",
+      "favouriteSuccess": "Favorite successful",
+      "cancelFavouriteSuccess": "Cancel favorite successful",
+      "saveSuccess": "Save successful",
+      "paramError": "Parameter error"
+    },
+    "authorizeModal": {
+      "title": "Scenario Permission",
+      "onTips": "After enabling 'Permission Control', manual authorization of service permissions is required to have corresponding operation permissions for scenarios. 'Permission Control' is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically granted.",
+      "offTips": "After enabling 'No Permission Control', all users will be allowed to publicly view and operate the current scenario. Users viewing need to have parent directory permissions for the current scenario."
+    }
+  },
+  "jmsPlugin": {
+    "title": "JMS Plugin",
+    "taskConfig": "Task Configuration",
+    "executeConfig": "Execute Configuration",
+    "notifications": {
+      "debugSaveFirst": "Debug requires saving current data first, please save before debugging",
+      "autoSaveSuccess": "Auto save successful, executing debug...",
+      "createTestSuccess": "Create 'Execute Test' successful, please view details and results in 'Execute'",
+      "taskConfigError": "Task configuration data error, please check and correct before saving.",
+      "executeConfigError": "Execute configuration data error, please check and correct before saving.",
+      "followSuccess": "Follow successful",
+      "cancelFollowSuccess": "Cancel follow successful",
+      "favouriteSuccess": "Favorite successful",
+      "cancelFavouriteSuccess": "Cancel favorite successful",
+      "saveSuccess": "Save successful",
+      "paramError": "Parameter error"
+    },
+    "authorizeModal": {
+      "title": "Scenario Permission",
+      "onTips": "After enabling 'Permission Control', manual authorization of service permissions is required to have corresponding operation permissions for scenarios. 'Permission Control' is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically granted.",
+      "offTips": "After enabling 'No Permission Control', all users will be allowed to publicly view and operate the current scenario. Users viewing need to have parent directory permissions for the current scenario."
+    },
+    "parameterize": {
+      "options": {
+        "file": "File",
+        "dataSource": "Data Source"
+      },
+      "hints": "To make parameter values in scripts closer to real business data, the system also provides two dynamic value methods. You can choose the parameter value method according to your business needs.",
+      "upload": "Upload Parameter File",
+      "generated": "Generated Parameter File",
+      "source": "Source",
+      "selectFile": "Select File",
+      "select": "Select",
+      "dataSource": "Data Source"
+    },
+    "uiConfig": {
+      "insertFTPRequest": "Insert FTP Request",
+      "nameDuplicate": "Name Duplicate",
+      "namePlaceholder": "Name, maximum 400 characters",
+      "descriptionPlaceholder": "Description, maximum 800 characters",
+      "clone": "Clone",
+      "delete": "Delete",
+      "mailSettings": "Mail Settings",
+      "protocol": "Protocol",
+      "protocolPlaceholder": "Protocol",
+      "hostnameOrIP": "Hostname or IP",
+      "hostnameOrIPPlaceholder": "Hostname or IP",
+      "port": "Port",
+      "portPlaceholder": "Port",
+      "usernamePassword": "Username/Password",
+      "username": "Username",
+      "usernamePlaceholder": "Username",
+      "password": "Password",
+      "passwordPlaceholder": "Password",
+      "inboxFolder": "Inbox Folder",
+      "inboxFolderPlaceholder": "Inbox Folder",
+      "securitySettings": "Security Settings",
+      "securityFunction": "Security Function",
+      "notUse": "Not Use",
+      "trustAllCertificates": "Trust All Certificates",
+      "useLocalTrustStore": "Use Local Trust Store",
+      "executeStartTLS": "Execute StartTLS",
+      "overrideSystemSSLTLS": "Override System SSL/TLS Protocol",
+      "otherSettings": "Other Settings",
+      "other": "Other",
+      "getHeadersOnly": "Get Headers Only",
+      "deleteMessagesFromServer": "Delete Messages from Server",
+      "useMIMEStorage": "Use MIME (Raw) Storage for Messages",
+      "numberOfMessagesToRetrieve": "Number of Messages to Retrieve",
+      "all": "All",
+      "otherOption": "Other",
+      "messageCount": "Message Count",
+      "messageCountPlaceholder": "Message Count"
+    },
+    "functionTestDetailJms": {
+      "statusCode": "Status Code",
+      "duration": "Duration",
+      "size": "Size",
+      "tabs": {
+        "general": "General",
+        "requestBody": "Request Body",
+        "response": "Response",
+        "timeline": "Timeline",
+        "assertions": "Assertion Results"
+      },
+      "ignoreAssertionMessage": "You have enabled ignore assertions, assertions will not be executed this time. If you need to enable assertions, please",
+      "executeConfig": "Execute Configuration > Plugin Configuration",
+      "closeIgnoreAssertion": "to close the ignore assertion option.",
+      "assertionStatus": {
+        "failed": "Failed",
+        "passed": "Passed",
+        "ignored": "Ignored",
+        "disabled": "Disabled"
+      },
+      "requestHeaders": {
+        "general": "General",
+        "requestHeaders": "Request Headers",
+        "responseHeaders": "Response Headers"
+      },
+      "responseBody": {
+        "beautifyFormat": "Beautify Format",
+        "nativeFormat": "Native Format",
+        "preview": "Preview"
+      },
+      "timeline": {
+        "dnsLookup": "DNS Lookup",
+        "tcpConnection": "TCP Connection",
+        "requestSent": "Request Sent",
+        "waiting": "Waiting",
+        "contentDownload": "Content Download",
+        "timeConsumingItems": "Time Consuming Items",
+        "totalTimeConsuming": "Total Time Consuming",
+        "time": "Time"
+      },
+      "assertionResult": {
+        "view": "View",
+        "assertionCondition": "Assertion Condition",
+        "assertionResult": "Assertion Result",
+        "failureReason": "Failure Reason",
+        "extractedValue": "Extracted Value",
+        "expectedValue": "Expected Value",
+        "noDefineVariable": "No {conditionName} variable defined, execute this condition expression directly",
+        "variable": "Variable",
+        "expressionEmpty": "Expression is empty, execute this assertion",
+        "ignoreExpression": "Operation result not established, ignore this assertion",
+        "expressionSuccess": "Operation result established, execute this assertion",
+        "extraction": "Extraction",
+        "expected": "Expected",
+        "conditionExpression": "Condition Expression",
+        "conditionResult": "Condition Result",
+        "ignore": "Ignore",
+        "pass": "Pass",
+        "typeMap": {
+          "STATUS": "Response Status Code",
+          "HEADER": "Response Header",
+          "BODY": "Response Body",
+          "BODY_SIZE": "Response Body Size",
+          "SIZE": "Response Size",
+          "DURATION": "Duration"
+        },
+        "conditionMap": {
+          "CONTAIN": "Contains",
+          "EQUAL": "Equals",
+          "GREATER_THAN": "Greater Than",
+          "GREATER_THAN_EQUAL": "Greater Than or Equal",
+          "IS_EMPTY": "Is Empty (empty string or null value)",
+          "IS_NULL": "Is Null",
+          "LESS_THAN": "Less Than",
+          "LESS_THAN_EQUAL": "Less Than or Equal",
+          "NOT_CONTAIN": "Does Not Contain",
+          "NOT_EMPTY": "Is Not Empty (non-empty string or null value)",
+          "NOT_EQUAL": "Does Not Equal",
+          "NOT_NULL": "Is Not Null",
+          "REG_MATCH": "Regular Expression Match",
+          "XPATH_MATCH": "XPath Match",
+          "JSON_PATH_MATCH": "JSONPath Match"
+        }
       }
     }
   }
+}
 

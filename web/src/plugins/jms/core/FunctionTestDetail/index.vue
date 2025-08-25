@@ -189,7 +189,7 @@ const timeTexts = ['最小', '平均', '最大'];
         <div class="text-text-title text-4 font-semibold" style="color:rgba(129, 154, 218, 100%);">
           {{ duration?.[1] }}<span class="text-3.25 ml-0.5">{{ duration?.[2] }}</span>
         </div>
-        <div>运行时间</div>
+        <div>{{ t('httPlugin.functionTestDetail.basicInfo.duration') }}</div>
       </div>
 
       <div
@@ -200,7 +200,7 @@ const timeTexts = ['最小', '平均', '最大'];
           <em class="not-italic inline-block w-0.5 h-3.5 mx-1.5 rounded" style="transform: rotate(25deg);background-color: rgba(3, 185, 208, 100%);"></em>
           <span>{{ planIterationNum }}</span>
         </div>
-        <div>迭代数</div>
+        <div>{{ t('httPlugin.functionTestDetail.basicInfo.iteration') }}</div>
       </div>
 
       <div
@@ -211,7 +211,7 @@ const timeTexts = ['最小', '平均', '最大'];
           <em class="not-italic inline-block w-0.5 h-3.5 mx-1.5 rounded" style="transform: rotate(25deg);background-color: rgba(3, 206, 92, 100%);"></em>
           <span>{{ planRequestNum }}</span>
         </div>
-        <div>请求数</div>
+        <div>{{ t('httPlugin.functionTestDetail.basicInfo.request') }}</div>
       </div>
 
       <div
@@ -227,7 +227,7 @@ const timeTexts = ['最小', '平均', '最大'];
           <span>{{ totalAssertionNum }}</span>
         </div>
         <div class="whitespace-nowrap overflow-hidden">
-          断言（<GroupText :texts="texts" class="text-theme-sub-content" />）
+          {{ t('common.assertion') }}（<GroupText :texts="texts" class="text-theme-sub-content" />）
         </div>
       </div>
 
@@ -242,7 +242,7 @@ const timeTexts = ['最小', '平均', '最大'];
           <span>{{ tranMax }}</span>
         </div>
         <div class="whitespace-nowrap overflow-hidden">
-          响应时间（<GroupText :texts="timeTexts" class="text-theme-sub-content" />）
+          {{ t('httPlugin.functionTestDetail.basicInfo.responseTime') }}（<GroupText :texts="timeTexts" class="text-theme-sub-content" />）
         </div>
       </div>
     </div>

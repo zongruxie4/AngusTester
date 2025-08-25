@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, defineAsyncComponent, watch, computed } from 'vue';
 import { RadioGroup, RadioButton, Slider } from 'ant-design-vue';
+import { cloneDeep } from 'lodash-es';
+import { useI18n } from 'vue-i18n';
 
 import { allResponseTimeColumns, allCvsNames, allErrorsColumns, allErrorRateColumns, allUploadColumns, oneUploadColumns, throughputColumns, oneThroughputColumns } from '../../ChartConfig';
 
@@ -40,6 +42,8 @@ const props = withDefaults(defineProps<Props>(), {
   indexOptions: () => [],
   pipelineTargetMappings: undefined
 });
+
+const { t } = useI18n();
 
 const activeKey = ref<'responseTime' | 'throughput' | 'errorNum' | 'errorRate' | 'upload'>('throughput');
 
@@ -232,11 +236,11 @@ defineExpose({
         size="small"
         class="ml-10"
         @change="radioGroupChange">
-        <RadioButton value="throughput">按吞吐量</RadioButton>
-        <RadioButton value="responseTime">按响应时间</RadioButton>
-        <RadioButton value="errorNum">按错误数</RadioButton>
-        <RadioButton value="errorRate">按错误率</RadioButton>
-        <RadioButton value="upload">按上传下载</RadioButton>
+        <RadioButton value="throughput">{{ t('ftpPlugin.performanceTestDetail.aggregate.radioButtons.byThroughput') }}</RadioButton>
+        <RadioButton value="responseTime">{{ t('ftpPlugin.performanceTestDetail.aggregate.radioButtons.byResponseTime') }}</RadioButton>
+        <RadioButton value="errorNum">{{ t('ftpPlugin.performanceTestDetail.aggregate.radioButtons.byErrorCount') }}</RadioButton>
+        <RadioButton value="errorRate">{{ t('ftpPlugin.performanceTestDetail.aggregate.radioButtons.byErrorRate') }}</RadioButton>
+        <RadioButton value="upload">{{ t('ftpPlugin.performanceTestDetail.aggregate.radioButtons.byUploadDownload') }}</RadioButton>
       </RadioGroup>
       <LineChart
         ref="chartRef"

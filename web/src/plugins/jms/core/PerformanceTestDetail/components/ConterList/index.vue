@@ -2,6 +2,7 @@
 import { defineAsyncComponent } from 'vue';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 const PirChart = defineAsyncComponent(() => import('./PirChart.vue'));
 
@@ -12,14 +13,16 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   list: () => []
 });
+
+const { t } = useI18n();
 </script>
 <template>
   <div class="text-3 text-text-content">
     <div class="h-9.5 leading-9.5 bg-theme-form-head flex font-medium w-full">
       <div class="w-12"></div>
-      <div class="py-0.5 px-2 flex-1">错误统计</div>
-      <div style="width:30%" class="py-0.5 px-2">错误数</div>
-      <div style="width:30%" class="py-0.5 px-2">错误率</div>
+      <div class="py-0.5 px-2 flex-1">{{ t('ftpPlugin.performanceTestDetail.conterList.errorStatistics') }}</div>
+      <div style="width:30%" class="py-0.5 px-2">{{ t('ftpPlugin.performanceTestDetail.conterList.errorCount') }}</div>
+      <div style="width:30%" class="py-0.5 px-2">{{ t('ftpPlugin.performanceTestDetail.conterList.errorRate') }}</div>
     </div>
     <Collapse class="!bg-transparent">
       <template #expandIcon="record">

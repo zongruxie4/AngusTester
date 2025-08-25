@@ -44,8 +44,11 @@ const change = (event) => {
 
   // 监听文件读取完成事件
   fileReader.onload = () => {
+    // 重置选择文件内容
+    inputRef.value.value = '';
+
     // 获取文件内容
-    let fileContent = fileReader.result;
+    let fileContent = fileReader.result as string;
     if (isJsonFile) {
       try {
         fileContent = JSON.parse(fileContent);
@@ -58,6 +61,7 @@ const change = (event) => {
     }
 
     try {
+      fileContent = fileContent.replace(/\\\n/g, '');
       fileContent = YAML.parse(fileContent);
       emit('ok', fileContent);
     } catch (error) {

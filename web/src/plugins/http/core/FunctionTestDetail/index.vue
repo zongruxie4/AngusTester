@@ -176,16 +176,16 @@ const pending = computed(() => {
 });
 
 const texts = computed(() => [
-  t('httPlugin.functionTestDetail.statusTag.success'),
-  t('httPlugin.functionTestDetail.statusTag.ignore'),
-  t('httPlugin.functionTestDetail.statusTag.block'),
-  t('common.total')
+  t('httPlugin.functionTestDetail.texts.success'),
+  t('httPlugin.functionTestDetail.texts.ignore'),
+  t('httPlugin.functionTestDetail.texts.block'),
+  t('httPlugin.functionTestDetail.texts.total')
 ]);
 
 const timeTexts = computed(() => [
-  t('common.minimum'),
-  t('common.average'),
-  t('common.maximum')
+  t('httPlugin.functionTestDetail.timeTexts.minimum'),
+  t('httPlugin.functionTestDetail.timeTexts.average'),
+  t('httPlugin.functionTestDetail.timeTexts.maximum')
 ]);
 </script>
 <template>

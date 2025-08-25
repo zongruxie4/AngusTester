@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed, ref, watch, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { IconCopy, IconDownload, NoData, FormatHighlight } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 import { ExecContent } from '../../../PropsType';
 
@@ -135,19 +138,19 @@ onMounted(() => {
             :class="{'res-tab-active':currentTabId==='pretty'}"
             class="res-tab flex justify-center items-center min-w-20 h-7 px-3 cursor-pointer"
             @click="handleSelect('pretty')">
-            美化格式
+            {{ t('jmsPlugin.functionTestDetailJms.responseBody.beautifyFormat') }}
           </div>
           <div
             :class="{'res-tab-active':currentTabId==='raw'}"
             class="res-tab flex justify-center items-center min-w-20 h-7 px-3 cursor-pointer"
             @click="handleSelect('raw')">
-            原生格式
+            {{ t('jmsPlugin.functionTestDetailJms.responseBody.nativeFormat') }}
           </div>
           <div
             :class="{'res-tab-active':currentTabId==='preview'}"
             class="res-tab flex justify-center items-center min-w-20 h-7 px-3 cursor-pointer"
             @click="handleSelect('preview')">
-            预览
+            {{ t('jmsPlugin.functionTestDetailJms.responseBody.preview') }}
           </div>
         </div>
         <div class="res-tab flex flex-freeze-auto items-center h-7 px-3 ml-3 text-3 rounded text-theme-sub-content">

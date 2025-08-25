@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { NoData } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 export interface Props {
   value: {
@@ -85,13 +88,13 @@ const columns: readonly {
   delay: number
 }[] = [
   {
-    name: '域名解析(DNS lookup)',
+    name: t('jmsPlugin.functionTestDetailJms.timeline.dnsLookup'),
     key: 'domainLookupEnd-domainLookupStart',
     time: 0,
     delay: 0
   },
   {
-    name: 'TCP连接',
+    name: t('jmsPlugin.functionTestDetailJms.timeline.tcpConnection'),
     key: 'connectEnd-connectStart',
     time: 0,
     delay: 0
@@ -103,19 +106,19 @@ const columns: readonly {
     delay: 0
   },
   {
-    name: '发送请求(Request sent)',
+    name: t('jmsPlugin.functionTestDetailJms.timeline.requestSent'),
     key: 'responseEnd-requestStart',
     time: 0,
     delay: 0
   },
   {
-    name: '等待处理(Waiting)',
+    name: t('jmsPlugin.functionTestDetailJms.timeline.waiting'),
     key: 'responseStart-requestStart',
     time: 0,
     delay: 0
   },
   {
-    name: '下载结果(Content download)',
+    name: t('jmsPlugin.functionTestDetailJms.timeline.contentDownload'),
     key: 'responseEnd-responseStart',
     time: 0,
     delay: 0
@@ -129,7 +132,7 @@ const columns: readonly {
   <template v-else>
     <div class="h-full overflow-auto relative flex flex-nowrap whitespace-nowrap px-5 py-4">
       <div class="flex flex-col items-start text-3 leading-3 text-theme-content mr-6">
-        <div class="mb-4 text-theme-sub-content">耗时项</div>
+        <div class="mb-4 text-theme-sub-content">{{ t('jmsPlugin.functionTestDetailJms.timeline.timeConsumingItems') }}</div>
         <div
           v-for="(item, index) in timelineData"
           :key="index"
@@ -138,11 +141,11 @@ const columns: readonly {
           {{ item.name }}
         </div>
         <div class="title-item-container">
-          总耗时(Total time consuming)
+          {{ t('jmsPlugin.functionTestDetailJms.timeline.totalTimeConsuming') }}
         </div>
       </div>
       <div class="flex flex-col flex-1 items-start text-3 leading-3 text-theme-content pr-6">
-        <div class="mb-4 text-theme-sub-content">时间</div>
+        <div class="mb-4 text-theme-sub-content">{{ t('jmsPlugin.functionTestDetailJms.timeline.time') }}</div>
         <div
           v-for="(item, index) in timelineData"
           :key="index"

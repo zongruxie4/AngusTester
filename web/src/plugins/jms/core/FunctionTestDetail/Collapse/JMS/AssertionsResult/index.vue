@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, defineAsyncComponent, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { utils } from '@xcan-angus/infra';
 import { Arrow, NoData, Icon, Spin } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 import { ExecContent } from '../../../PropsType';
 
@@ -91,28 +94,28 @@ watch(() => assertions.value, (newValue) => {
               class="flex items-center"
               style="color:rgba(255, 129, 0, 100%);">
               <Icon icon="icon-chahao" class="mr-1.5 text-3.5" />
-              <span>未通过</span>
+              <span>{{ t('jmsPlugin.functionTestDetailJms.assertionStatus.failed') }}</span>
             </div>
             <div
               v-else-if="statusMap[item.id]==='Success'"
               class="flex items-center"
               style="color:#52c41a;">
               <Icon icon="icon-duihao" class="mr-1.5 text-3.5" />
-              <span>通过</span>
+              <span>{{ t('jmsPlugin.functionTestDetailJms.assertionStatus.passed') }}</span>
             </div>
             <div
               v-else-if="statusMap[item.id]==='Ignored'"
               class="flex items-center"
               style="color:rgba(217, 217, 217, 100%);">
               <span class="inline-block w-2 h-2 mr-1.5 rounded-md" style="background-color:rgba(217, 217, 217, 100%);"></span>
-              <span>忽略</span>
+              <span>{{ t('jmsPlugin.functionTestDetailJms.assertionStatus.ignored') }}</span>
             </div>
             <div
               v-else-if="statusMap[item.id]==='Disabled'"
               class="flex items-center"
               style="color:rgba(217, 217, 217, 100%);">
               <span class="inline-block w-2 h-2 mr-1.5 rounded-md" style="background-color:rgba(217, 217, 217, 100%);"></span>
-              <span>未启用</span>
+              <span>{{ t('jmsPlugin.functionTestDetailJms.assertionStatus.disabled') }}</span>
             </div>
           </div>
         </template>

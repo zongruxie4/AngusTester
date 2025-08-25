@@ -342,7 +342,7 @@ const createTest = async () => {
   if (error) {
     return;
   }
-  notification.success('创建“执行测试”成功，请在“执行”中查看详情和结果');
+  notification.success(t('httPlugin.messages.createExecutionSuccess'));
 };
 
 const selectScriptOk = (data: SceneConfig['script']) => {

@@ -337,7 +337,7 @@ const createTest = async () => {
   if (error) {
     return;
   }
-  notification.success('创建“执行测试”成功，请在“执行”中查看详情和结果');
+  notification.success(t('jdbcPlugin.notifications.createTestSuccess'));
 };
 
 const selectScriptOk = (data: SceneConfig['script']) => {
@@ -713,7 +713,7 @@ const save = async (data?: {
 }, notificationFlag = true) => {
   const validFlag = await isValid();
   if (!validFlag) {
-    return new Error('参数错误');
+    return new Error(t('jdbcPlugin.notifications.paramError'));
   }
 
   if (controller) {

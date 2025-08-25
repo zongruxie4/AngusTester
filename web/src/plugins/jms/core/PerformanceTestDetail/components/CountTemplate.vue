@@ -2,6 +2,8 @@
 import { ref, defineAsyncComponent, computed, watch, nextTick } from 'vue';
 import { RadioGroup, RadioButton, Slider, CheckboxGroup, Checkbox, TableColumnType } from 'ant-design-vue';
 import { Select } from '@xcan-angus/vue-ui';
+import { cloneDeep } from 'lodash-es';
+import { useI18n } from 'vue-i18n';
 
 import { allCvsNames } from '../ChartConfig';
 
@@ -36,6 +38,8 @@ const props = withDefaults(defineProps<Props>(), {
   pipelineTargetMappings: undefined,
   tabKey: ''
 });
+
+const { t } = useI18n();
 
 const activeKey = ref<'api' | 'metric' | 'overlay'>('api');
 
@@ -260,9 +264,9 @@ defineExpose({
         size="small"
         class="whitespace-nowrap"
         @change="radioGroupChange">
-        <RadioButton value="api">按接口</RadioButton>
-        <RadioButton value="metric">按指标</RadioButton>
-        <RadioButton value="overlay">叠加分析</RadioButton>
+        <RadioButton value="api">{{ t('ftpPlugin.performanceTestDetail.countTemplate.radioButtons.byApi') }}</RadioButton>
+        <RadioButton value="metric">{{ t('ftpPlugin.performanceTestDetail.countTemplate.radioButtons.byMetric') }}</RadioButton>
+        <RadioButton value="overlay">{{ t('ftpPlugin.performanceTestDetail.countTemplate.radioButtons.overlayAnalysis') }}</RadioButton>
       </RadioGroup>
       <template v-if="!isSingleInterface">
         <Select
