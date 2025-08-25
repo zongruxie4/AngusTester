@@ -146,27 +146,49 @@ const chartsOption = {
       }
     }
   ],
-  yAxis: {
-    type: 'value',
-    splitLine: {
-      show: true,
-      lineStyle: {
-        type: 'dashed'
+  yAxis: [
+    {
+      type: 'value',
+      splitLine: {
+        show: true,
+        lineStyle: {
+          type: 'dashed'
+        }
+      },
+      grid: {
+        left: 'left'
       }
     },
-    grid: {
-      left: 'left'
+    {
+      type: 'value',
+      splitLine: {
+        show: true,
+        lineStyle: {
+          type: 'dashed'
+        }
+      },
+      grid: {
+        left: 'left'
+      }
     }
-  },
-  series: props.series.map(item => ({
+  ],
+  series: props.series.map((item, idx) => ({
     ...item,
     type: 'line',
     lineStyle: {
       width: 1
     },
     barGap: '5%',
-    smooth: true,
-    showSymbol: false
+    smooth: false,
+    showSymbol: props.xData?.length === 1,
+    itemStyle: {
+      color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+        { offset: 1, color: `rgba(${chartSeriesColorConfig[idx]}, 0.1)` },
+        { offset: 0, color: `rgba(${chartSeriesColorConfig[idx]}, 1)` }
+      ])
+    },
+    areaStyle: {},
+    yAxisIndex: ['threadPoolSize', 'threadPoolActiveSize', 'threadMaxPoolSize'].includes(item.key) && props.tabKey === 'analyze' ? 1 : 0
   }))
 };
 
@@ -174,6 +196,8 @@ onBeforeUnmount(() => {
   if (chartsRef.value) {
     erd.removeListener(chartsRef.value, resizeHandler);
   }
+
+  myChart.off('legendselectchanged');
 });
 
 let isInit = true;

@@ -187,7 +187,7 @@ const action = `${TESTER}/script`;
 }
 
 .select-api-modal-wrap .ant-modal-body {
-  height: calc(100% - 84px);
+  height: calc(100% - 92px);
 }
 </style>
 

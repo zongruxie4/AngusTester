@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Input, IconCopy, Hints } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 export interface Option {
     name: string;
@@ -30,14 +33,14 @@ const dataList = computed(() => {
 </script>
 <template>
   <div>
-    <Hints class="mb-1.5" text="在采样时根据Mock数据函数动态生成参数值，每个数据集最大允许创建200个参数，最大支持生成1000亿行数据。" />
+    <Hints class="mb-1.5" :text="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.staticParametersDescription')" />
 
     <div class="flex items-center space-x-2 mb-1">
       <div class="w-90 flex items-center">
-        <span>名称</span>
+        <span>{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.name') }}</span>
       </div>
       <div class="flex-1 flex items-center">
-        <span>值</span>
+        <span>{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.value') }}</span>
       </div>
     </div>
 

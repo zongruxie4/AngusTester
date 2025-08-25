@@ -507,6 +507,7 @@
          "title": "查看脚本"
        }
       },
+     
   "httPlugin": {
     "actions": {
       "save": "保存",
@@ -1121,6 +1122,131 @@
           "to": "至"
         }
       }
+    }
+  },
+  "jdbcPlugin": {
+       "title": "JDBC插件",
+       "taskConfig": "任务配置",
+       "executeConfig": "执行配置",
+       "UIConfigJdbc": {
+         "insertJDBC": "插入JDBC",
+         "insertTransStart": "插入开始事务",
+         "insertTransEnd": "插入结束事务",
+         "insertWaitingTime": "插入等待时间",
+         "insertRendezvous": "插入集合点",
+         "jdbcConfig": {
+           "nameDuplicate": "名称重复",
+           "namePlaceholder": "名称，最大支持400个字符",
+           "descriptionPlaceholder": "描述，最大支持800个字符（可选）",
+           "queryTypePlaceholder": "查询类型",
+           "insertSqlTemplate": "插入SQL模板",
+           "sqlPlaceholder": "SQL，最大支持8192个字符",
+           "processResultRows": "处理查询结果行数",
+           "processResultRowsTooltip": "默认1000，最大支持10000行，实际返回结果行数超过设置的处理查询结果行数时忽略 。",
+           "processResultRowsPlaceholder": "值范围：1~10000",
+           "queryTimeout": "查询超时时间",
+           "queryTimeoutPlaceholder": "值范围：0~2147483647",
+           "queryParameters": "查询参数",
+           "parameterTypePlaceholder": "输入或选择参数类型（可选）",
+           "inputOutputPlaceholder": "输入输出",
+           "inputOutputTooltip": "输入输出值为\"IN\"、\"INOUT\"时，参数值必填",
+           "parameterValuePlaceholder": "参数值（可选。注：输入输出值为\"IN\"、\"INOUT\"时，参数值必填）",
+           "parametric": "参数化",
+           "assertions": "断言"
+         },
+         "assertionForm": {
+           "nameDuplicate": "名称重复",
+           "assertionName": "断言名称",
+           "assertionNamePlaceholder": "断言名称",
+           "assertionType": "断言类型",
+           "assertionTypePlaceholder": "断言类型",
+           "assertionCondition": "断言条件",
+           "assertionConditionPlaceholder": "断言条件",
+           "expressionFormatError": "表达式格式错误",
+           "matchItem": "匹配项",
+           "matchItemPlaceholder": "匹配项，范围0~2000（可选）",
+           "expectedValue": "期望值",
+           "expectedValuePlaceholder": "期望值",
+           "expectedValueOptional": "期望值（可选）",
+           "description": "描述（800字符，可选）",
+           "descriptionPlaceholder": "描述（800字符，可选）",
+           "expressionMap": {
+             "REG_MATCH": "正则匹配表达式",
+             "XPATH_MATCH": "XPath匹配表达式",
+             "JSON_PATH_MATCH": "JSONPath匹配表达式"
+           }
+        }
+       },
+    "FunctionTestDetailJdbc": {
+         "duration": "耗时",
+         "requestParameters": "请求参数",
+         "assertionResults": "断言结果",
+         "ignoreAssertionMessage": "您已开启忽略断言，本次不会执行断言。如果需要启用断言，请在",
+         "executeConfig": "执行配置 > 插件配置",
+         "closeIgnoreAssertion": "中关闭忽略断言选项。",
+         "assertionStatus": {
+           "failed": "未通过",
+           "passed": "通过",
+           "ignored": "忽略",
+           "disabled": "未启用"
+         },
+         "requestParameter": {
+           "parameter": "参数",
+           "result": "结果",
+           "maxRecords": "最多显示1000条记录",
+           "affectedRows": "受影响的行数",
+           "rows": "条"
+         },
+         "assertionResult": {
+           "view": "查看",
+           "assertionCondition": "断言条件",
+           "assertionResult": "断言结果",
+           "failureReason": "失败原因",
+           "extractedValue": "提取值",
+           "expectedValue": "期望值",
+           "typeMap": {
+             "STATUS": "响应状态码",
+             "HEADER": "响应头",
+             "BODY": "响应体",
+             "BODY_SIZE": "响应体大小",
+             "SIZE": "响应大小",
+             "DURATION": "耗时"
+           },
+           "conditionMap": {
+             "CONTAIN": "包含",
+             "EQUAL": "等于",
+             "GREATER_THAN": "大于",
+             "GREATER_THAN_EQUAL": "大于等于",
+             "IS_EMPTY": "为空(空字符串或null值)",
+             "IS_NULL": "为null",
+             "LESS_THAN": "小于",
+             "LESS_THAN_EQUAL": "小于等于",
+             "NOT_CONTAIN": "不包含",
+             "NOT_EMPTY": "不为空(非空字符串或null值)",
+             "NOT_EQUAL": "不等于",
+             "NOT_NULL": "不为null",
+             "REG_MATCH": "正则匹配",
+             "XPATH_MATCH": "XPath匹配",
+             "JSON_PATH_MATCH": "JSONPath匹配"
+           }
+         }
+       },
+      "notifications": {
+      "debugSaveFirst": "调试需要先保存当前数据，请保存后再执行调试",
+      "autoSaveSuccess": "自动保存成功，正在执行调试...",
+      "createTestSuccess": "创建\"执行测试\"成功，请在\"执行\"中查看详情和结果",
+      "taskConfigError": "任务配置数据错误，请检查更正后再保存。",
+      "executeConfigError": "执行配置数据错误，请检查更正后再保存。",
+      "followSuccess": "关注成功",
+      "cancelFollowSuccess": "取消关注成功",
+      "favouriteSuccess": "收藏成功",
+      "cancelFavouriteSuccess": "取消收藏成功",
+      "saveSuccess": "保存成功"
+    },
+    "authorizeModal": {
+      "title": "场景权限",
+      "onTips": "开启\"有权限控制\"后，需要手动授权服务权限后才会有场景相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级目录权限将自动授权查看权限。",
+      "offTips": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前场景，查看用户同时需要有当前场景父级目录权限。"
     }
   }
 }

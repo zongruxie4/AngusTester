@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, watchEffect } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { Input, Icon, Tooltip } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
 import { TransStartConfig } from './PropsType';
 import ActionsGroup from '../ActionsGroup/index.vue';
+
+const { t } = useI18n();
 
 export interface Props {
   value: TransStartConfig;
@@ -155,7 +158,7 @@ defineExpose({
           <Icon class="flex-shrink-0 mr-3 text-4" icon="icon-shiwu" />
           <div class="flex-1 flex items-center">
             <Tooltip
-              title="名称重复"
+              :title="t('httPlugin.uiConfig.transStart.duplicateName')"
               internal
               placement="right"
               destroyTooltipOnHide
@@ -167,7 +170,7 @@ defineExpose({
                 :error="nameError"
                 trim
                 style="width: calc((100% - (144px))*2/5);"
-                placeholder="名称，最大支持400个字符"
+                :placeholder="t('httPlugin.uiConfig.transStart.namePlaceholder')"
                 @change="nameChange" />
             </Tooltip>
           </div>

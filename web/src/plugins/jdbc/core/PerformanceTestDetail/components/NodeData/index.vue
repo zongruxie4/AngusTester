@@ -4,8 +4,12 @@ import { RadioGroup, RadioButton, Select, Slider } from 'ant-design-vue';
 import * as echarts from 'echarts';
 import dayjs from 'dayjs';
 import { NoData } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 import { nodeCtrl } from '@/api/ctrl';
+
+
+const { t } = useI18n();
 
 interface NodeItem {
   agentPort: string; domain: string; id: string; ip: string; name: string
@@ -29,6 +33,18 @@ const props = withDefaults(defineProps<Props>(), {
   endTime: '',
   delayInSeconds: 3000
 });
+
+const chartSeriesColorConfig = {
+  0: '84,112,198',
+  1: '145,204,117',
+  2: '250,200,88',
+  3: '238,102,102',
+  4: '115,192,222',
+  5: '59,162,114',
+  6: '252,132,82',
+  7: '154,96,180',
+  8: '234,124,204'
+};
 
 let myEcahrt;
 // table表格
@@ -91,7 +107,7 @@ const initEcahrts = () => {
   myEcahrt.setOption(echartsOpt);
 };
 
-const getDefaultLineConfig = () => {
+const getDefaultLineConfig = (idx = 0) => {
   return {
     data: [] as number[],
     type: 'line',
@@ -99,25 +115,32 @@ const getDefaultLineConfig = () => {
     showSymbol: false,
     lineStyle: {
       width: 1
-    }
+    },
+    itemStyle: {
+      color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+        { offset: 1, color: `rgba(${chartSeriesColorConfig[idx]}, 0.1)` },
+        { offset: 0, color: `rgba(${chartSeriesColorConfig[idx]}, 1)` }
+      ])
+    },
+    areaStyle: {}
   };
 };
 
 const nodeTabs = [
   {
-    label: 'CPU',
+    label: t('ftpPlugin.performanceTestDetail.nodeData.tabs.cpu'),
     value: 'cpu'
   },
   {
-    label: '内存',
+    label: t('ftpPlugin.performanceTestDetail.nodeData.tabs.memory'),
     value: 'memory'
   },
   {
-    label: '磁盘',
+    label: t('ftpPlugin.performanceTestDetail.nodeData.tabs.fileSystem'),
     value: 'disk'
   },
   {
-    label: '网络',
+    label: t('ftpPlugin.performanceTestDetail.nodeData.tabs.network'),
     value: 'network'
   }
 ];
@@ -326,7 +349,7 @@ const setCpuChartData = () => {
   // chartsData = data;
   // 'CPU 空闲百分比', '系统空间占用 CPU 百分比', '用户空间占 CPU 百分比', '等待 IO 操作的 CPU 百分比', '其他占用 CPU 百分比', '当前占用的总 CPU 百分比'
   // const dataType = ['idle', 'sys', 'sys', 'wait', 'other', 'total'];
-  const dataType = ['CPU 空闲百分比(%)', '系统空间占用 CPU 百分比(%)', '用户空间占 CPU 百分比(%)', '等待 IO 操作的 CPU 百分比(%)', '其他占用 CPU 百分比(%)', '当前占用的总 CPU 百分比(%)'];
+  const dataType = [t('ftpPlugin.performanceTestDetail.nodeData.cpuMetrics.idlePercentage'), t('ftpPlugin.performanceTestDetail.nodeData.cpuMetrics.systemSpacePercentage'), t('ftpPlugin.performanceTestDetail.nodeData.cpuMetrics.userSpacePercentage'), t('ftpPlugin.performanceTestDetail.nodeData.cpuMetrics.ioWaitPercentage'), t('ftpPlugin.performanceTestDetail.nodeData.cpuMetrics.otherPercentage'), t('ftpPlugin.performanceTestDetail.nodeData.cpuMetrics.totalPercentage')];
   const seriesData = dataType.map(type => {
     return {
       ...getDefaultLineConfig(),
@@ -431,8 +454,8 @@ const setNetworkChartData = () => {
   // loadingChartData.value = false;
   // '接收到的总字节数', '每秒接收的 MB 数', '接收到的错误包数', '发送的总字节数', '每秒发送的 MB 数'
   const dataTypeKey = ['rxBytes', 'rxBytesRate', 'rxErrors', 'txBytes', 'txBytesRate'];
-  const dataType = ['接收到的总字节(GB)', '每秒接收的 MB 数(MB/s)', '接收到的错误包数(packets)', '发送的总字节(GB)', '每秒发送的 MB 数(MB/s)'];
-  const seriesData = dataType.map(type => {
+  const dataType = [t('ftpPlugin.performanceTestDetail.nodeData.networkMetrics.totalBytesReceived'), t('ftpPlugin.performanceTestDetail.nodeData.networkMetrics.mbReceivedPerSecond'), t('ftpPlugin.performanceTestDetail.nodeData.networkMetrics.errorPacketsReceived'), t('ftpPlugin.performanceTestDetail.nodeData.networkMetrics.totalBytesSent'), t('ftpPlugin.performanceTestDetail.nodeData.networkMetrics.mbSentPerSecond')];
+  const seriesData = dataType.map((type) => {
     return {
       ...getDefaultLineConfig(),
       name: type
@@ -553,7 +576,7 @@ const setMemoryChartData = () => {
     return idx >= sliderValueMemory.value[0] && idx <= sliderValueMemory.value[1];
   });
   // // '物理内存剩余量', '物理内存使用量', '实际空闲物理内存百分比', '实际使用物理内存的百分比', '实际空闲内存', '实际使用内存', '空闲内存占用的百分比', '使用内存占用的百分比', '交换区使用量', '交换区剩余量'
-  const dataType = ['物理内存剩余量(GB)', '物理内存使用量(GB)', '实际空闲物理内存百分比(%)', '实际使用物理内存的百分比(%)', '实际空闲内存(GB)', '实际使用内存(GB)', '空闲内存占用的百分比(%)', '使用内存占用的百分比(%)', '交换区使用量(GB)', '交换区剩余量(GB)'];
+  const dataType = [t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.physicalMemoryFree'), t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.physicalMemoryUsed'), t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.actualFreePercentage'), t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.actualUsedPercentage'), t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.actualFreeMemory'), t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.actualUsedMemory'), t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.freeMemoryPercentage'), t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.usedMemoryPercentage'), t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.swapUsed'), t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.swapFree')];
   const dataTypeKey = ['free', 'used', 'freePercent', 'usedPercent', 'actualFree', 'actualUsed', 'actualFreePercent', 'actualUsedPercent', 'swapFree', 'swapUsed'];
   // loadingChartData.value = false;
   const seriesData = dataType.map(type => {
@@ -670,7 +693,7 @@ const loadDiskEchartData = async () => {
 let rateChartOption;
 let bytesRateChartOption;
 const diskChartKey = ref('rate'); // 显示文件系统百分比图表
-const diskDataOptions = [{ label: 'IOPS', value: 'rate' }, { label: '每秒MB数', value: 'bytesRate' }];
+const diskDataOptions = [{ label: t('ftpPlugin.performanceTestDetail.nodeData.diskDataOptions.iops'), value: 'rate' }, { label: t('ftpPlugin.performanceTestDetail.nodeData.diskDataOptions.mbPerSecond'), value: 'bytesRate' }];
 const setDiskEchartData = () => {
   // const showChartData = chartsData.filter((_i, idx) => {
   //   return idx >= sliderValue.value[0] && idx <= sliderValue.value[1];
@@ -681,7 +704,7 @@ const setDiskEchartData = () => {
   // loadingChartData.value = false;
   // '磁盘总大小', '本地文件系统剩余大小', '本地文件系统已用大小', '本地文件系统可用大小', '本地文件系统使用率', '每秒磁盘读次数', '每秒磁盘写次数', '每秒磁盘读取 MB 数', '每秒磁盘写入 MB 数'
   const dataTypeKey = ['total', 'free', 'used', 'avail', 'usePercent', 'readsRate', 'writesRate', 'readBytesRate', 'writeBytesRate'];
-  const dataType = ['磁盘总大小(GB)', '本地文件系统剩余大小(GB)', '本地文件系统已用大小(GB)', '本地文件系统可用大小(GB)', '本地文件系统使用率(%)', '每秒磁盘读次数(IO/s)', '每秒磁盘写次数(IO/s)', '每秒磁盘读取 MB 数(MB/s)', '每秒磁盘写入 MB 数(MB/s)'];
+  const dataType = [t('ftpPlugin.performanceTestDetail.nodeData.diskMetrics.totalSize'), t('ftpPlugin.performanceTestDetail.nodeData.diskMetrics.fileSystemFree'), t('ftpPlugin.performanceTestDetail.nodeData.diskMetrics.fileSystemUsed'), t('ftpPlugin.performanceTestDetail.nodeData.diskMetrics.fileSystemAvailable'), t('ftpPlugin.performanceTestDetail.nodeData.diskMetrics.fileSystemUsage'), t('ftpPlugin.performanceTestDetail.nodeData.diskMetrics.diskReadsPerSecond'), t('ftpPlugin.performanceTestDetail.nodeData.diskMetrics.diskWritesPerSecond'), t('ftpPlugin.performanceTestDetail.nodeData.diskMetrics.diskReadMBPerSecond'), t('ftpPlugin.performanceTestDetail.nodeData.diskMetrics.diskWriteMBPerSecond')];
   const seriesData = dataType.map(type => {
     return {
       ...getDefaultLineConfig(),
@@ -1221,7 +1244,7 @@ defineExpose({
           v-model:value="nodeType"
           class="mr-5"
           :disabled="!props.appNodes?.length"
-          :options="[{label: '执行节点', value: 'exec'}, {label: '应用节点', value: 'apply'}]" />
+          :options="[{label: t('ftpPlugin.performanceTestDetail.nodeData.nodeTypes.execNode'), value: 'exec'}, {label: t('ftpPlugin.performanceTestDetail.nodeData.nodeTypes.appNode'), value: 'apply'}]" />
         <Select
           v-model:value="currrentNodeId"
           class="min-w-25"

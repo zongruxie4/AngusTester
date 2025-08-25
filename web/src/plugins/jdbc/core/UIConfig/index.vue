@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { defineAsyncComponent, nextTick, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 import { PipelineConfig, TargetKey } from './PropsType';
 import { JDBCConfig } from './JDBCConfigs/PropsType';
@@ -223,7 +226,7 @@ defineExpose({
         @click="insertJDBC">
         <div class="flex items-center">
           <Icon icon="icon-jia" class="mr-1" />
-          <span>插入JDBC</span>
+                        <span>{{ t('jdbcPlugin.UIConfigJdbc.insertJDBC') }}</span>
         </div>
       </Button>
       <Button
@@ -233,7 +236,7 @@ defineExpose({
         @click="insertTransStart">
         <div class="flex items-center">
           <Icon icon="icon-shiwu" class="mr-1" />
-          <span>插入开始事务</span>
+                        <span>{{ t('jdbcPlugin.UIConfigJdbc.insertTransStart') }}</span>
         </div>
       </Button>
       <Button
@@ -243,7 +246,7 @@ defineExpose({
         @click="insertTransEnd">
         <div class="flex items-center">
           <Icon icon="icon-shiwu" class="mr-1" />
-          <span>插入结束事务</span>
+                        <span>{{ t('jdbcPlugin.UIConfigJdbc.insertTransEnd') }}</span>
         </div>
       </Button>
       <Button
@@ -252,7 +255,7 @@ defineExpose({
         @click="insertTime">
         <div class="flex items-center">
           <Icon icon="icon-dengdaishijian" class="mr-1" />
-          <span>插入等待时间</span>
+                        <span>{{ t('jdbcPlugin.UIConfigJdbc.insertWaitingTime') }}</span>
         </div>
       </Button>
       <Button
@@ -261,7 +264,7 @@ defineExpose({
         @click="insertRendezvous">
         <div class="flex items-center">
           <Icon icon="icon-jihedian1" class="mr-1" />
-          <span>插入集合点</span>
+                        <span>{{ t('jdbcPlugin.UIConfigJdbc.insertRendezvous') }}</span>
         </div>
       </Button>
     </div>

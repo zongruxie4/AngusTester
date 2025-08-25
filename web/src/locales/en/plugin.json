@@ -1122,6 +1122,131 @@
           "to": "to"
         }
       }
+    },
+         "jdbcPlugin": {
+       "title": "JDBC Plugin",
+       "taskConfig": "Task Configuration",
+       "executeConfig": "Execute Configuration",
+       "UIConfigJdbc": {
+         "insertJDBC": "Insert JDBC",
+         "insertTransStart": "Insert Transaction Start",
+         "insertTransEnd": "Insert Transaction End",
+         "insertWaitingTime": "Insert Waiting Time",
+         "insertRendezvous": "Insert Rendezvous",
+         "jdbcConfig": {
+           "nameDuplicate": "Name Duplicate",
+           "namePlaceholder": "Name, maximum 400 characters",
+           "descriptionPlaceholder": "Description, maximum 800 characters (optional)",
+           "queryTypePlaceholder": "Query Type",
+           "insertSqlTemplate": "Insert SQL Template",
+           "sqlPlaceholder": "SQL, maximum 8192 characters",
+           "processResultRows": "Process Query Result Rows",
+           "processResultRowsTooltip": "Default 1000, maximum 10000 rows. When actual returned result rows exceed the set processing query result rows, they will be ignored.",
+           "processResultRowsPlaceholder": "Value range: 1~10000",
+           "queryTimeout": "Query Timeout",
+           "queryTimeoutPlaceholder": "Value range: 0~2147483647",
+           "queryParameters": "Query Parameters",
+           "parameterTypePlaceholder": "Enter or select parameter type (optional)",
+           "inputOutputPlaceholder": "Input/Output",
+           "inputOutputTooltip": "Parameter value is required when input/output value is 'IN' or 'INOUT'",
+           "parameterValuePlaceholder": "Parameter value (optional. Note: Parameter value is required when input/output value is 'IN' or 'INOUT')",
+           "parametric": "Parametric",
+           "assertions": "Assertions"
+         },
+         "assertionForm": {
+           "nameDuplicate": "Name Duplicate",
+           "assertionName": "Assertion Name",
+           "assertionNamePlaceholder": "Assertion Name",
+           "assertionType": "Assertion Type",
+           "assertionTypePlaceholder": "Assertion Type",
+           "assertionCondition": "Assertion Condition",
+           "assertionConditionPlaceholder": "Assertion Condition",
+           "expressionFormatError": "Expression Format Error",
+           "matchItem": "Match Item",
+           "matchItemPlaceholder": "Match item, range 0~2000 (optional)",
+           "expectedValue": "Expected Value",
+           "expectedValuePlaceholder": "Expected Value",
+           "expectedValueOptional": "Expected Value (optional)",
+           "description": "Description (800 characters, optional)",
+           "descriptionPlaceholder": "Description (800 characters, optional)",
+           "expressionMap": {
+             "REG_MATCH": "Regular Expression Match",
+             "XPATH_MATCH": "XPath Match Expression",
+             "JSON_PATH_MATCH": "JSONPath Match Expression"
+           }
+                  }
+       },
+       "FunctionTestDetailJdbc": {
+         "duration": "Duration",
+         "requestParameters": "Request Parameters",
+         "assertionResults": "Assertion Results",
+         "ignoreAssertionMessage": "You have enabled ignore assertions, assertions will not be executed this time. If you need to enable assertions, please",
+         "executeConfig": "Execute Configuration > Plugin Configuration",
+         "closeIgnoreAssertion": "to close the ignore assertion option.",
+         "assertionStatus": {
+           "failed": "Failed",
+           "passed": "Passed",
+           "ignored": "Ignored",
+           "disabled": "Disabled"
+         },
+         "requestParameter": {
+           "parameter": "Parameter",
+           "result": "Result",
+           "maxRecords": "Maximum 1000 records displayed",
+           "affectedRows": "Affected rows",
+           "rows": "rows"
+         },
+         "assertionResult": {
+           "view": "View",
+           "assertionCondition": "Assertion Condition",
+           "assertionResult": "Assertion Result",
+           "failureReason": "Failure Reason",
+           "extractedValue": "Extracted Value",
+           "expectedValue": "Expected Value",
+           "typeMap": {
+             "STATUS": "Response Status Code",
+             "HEADER": "Response Header",
+             "BODY": "Response Body",
+             "BODY_SIZE": "Response Body Size",
+             "SIZE": "Response Size",
+             "DURATION": "Duration"
+           },
+           "conditionMap": {
+             "CONTAIN": "Contains",
+             "EQUAL": "Equals",
+             "GREATER_THAN": "Greater Than",
+             "GREATER_THAN_EQUAL": "Greater Than or Equal",
+             "IS_EMPTY": "Is Empty (empty string or null value)",
+             "IS_NULL": "Is Null",
+             "LESS_THAN": "Less Than",
+             "LESS_THAN_EQUAL": "Less Than or Equal",
+             "NOT_CONTAIN": "Does Not Contain",
+             "NOT_EMPTY": "Is Not Empty (non-empty string or null value)",
+             "NOT_EQUAL": "Not Equal",
+             "NOT_NULL": "Is Not Null",
+             "REG_MATCH": "Regular Expression Match",
+             "XPATH_MATCH": "XPath Match",
+             "JSON_PATH_MATCH": "JSONPath Match"
+           }
+         }
+       },
+       "notifications": {
+        "debugSaveFirst": "Debug requires saving current data first, please save before debugging",
+        "autoSaveSuccess": "Auto save successful, executing debug...",
+        "createTestSuccess": "Create 'Execute Test' successful, please view details and results in 'Execute'",
+        "taskConfigError": "Task configuration data error, please check and correct before saving.",
+        "executeConfigError": "Execute configuration data error, please check and correct before saving.",
+        "followSuccess": "Follow successful",
+        "cancelFollowSuccess": "Cancel follow successful",
+        "favouriteSuccess": "Favorite successful",
+        "cancelFavouriteSuccess": "Cancel favorite successful",
+        "saveSuccess": "Save successful"
+      },
+      "authorizeModal": {
+        "title": "Scenario Permission",
+        "onTips": "After enabling 'Permission Control', manual authorization of service permissions is required to have corresponding operation permissions for scenarios. 'Permission Control' is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically granted.",
+        "offTips": "After enabling 'No Permission Control', all users will be allowed to publicly view and operate the current scenario. Users viewing need to have parent directory permissions for the current scenario."
+      }
     }
   }
 
