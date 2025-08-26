@@ -92,7 +92,7 @@ import cloud.xcan.angus.remote.message.SysException;
 import cloud.xcan.angus.spec.experimental.IdKey;
 import cloud.xcan.angus.spec.principal.PrincipalContext;
 import cloud.xcan.angus.spec.utils.FileUtils;
-import cloud.xcan.jmock.core.support.utils.RandomUtils;
+import cloud.xcan.jmock.api.support.utils.RandomUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import jakarta.annotation.Resource;
 import java.io.File;
