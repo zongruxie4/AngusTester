@@ -13,7 +13,6 @@ type Props = {
   serviceId: string;
   tips: string;
   okAction: string;
-  title: string;
 }
 
 const { t } = useI18n();
@@ -24,10 +23,8 @@ const props = withDefaults(defineProps<Props>(), {
   visible: false,
   serviceId: undefined,
   tips: undefined,
-  okAction: undefined,
-  title: t('service.sidebar.execTest.title')
+  okAction: undefined
 });
-
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -190,7 +187,7 @@ const okButtonProps = computed(() => {
     :width="750"
     :confirmLoading="confirmLoading"
     :okButtonProps="okButtonProps"
-    :title="props.title"
+    :title="t('service.sidebar.execTest.title')"
     @cancel="cancel"
     @ok="ok">
     <div class="leading-5">
