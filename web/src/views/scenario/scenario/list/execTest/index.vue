@@ -18,7 +18,6 @@ type Props = {
   scriptId: string;
   tips: string;
   okAction: string;
-  title: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -29,8 +28,7 @@ const props = withDefaults(defineProps<Props>(), {
   scenarioId: undefined,
   scriptId: undefined,
   tips: undefined,
-  okAction: undefined,
-  title: t('scenario.list.execTest.title')
+  okAction: undefined
 });
 
 // eslint-disable-next-line func-call-spacing
@@ -195,7 +193,7 @@ const okButtonProps = computed(() => {
     :width="750"
     :confirmLoading="confirmLoading"
     :okButtonProps="okButtonProps"
-    :title="props.title"
+    :title="t('scenario.list.execTest.title')"
     @cancel="cancel"
     @ok="ok">
     <div class="leading-5">
