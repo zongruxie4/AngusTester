@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import { Switch } from 'ant-design-vue';
 import { Arrow, Icon } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 export interface Props {
   enabled: boolean;
@@ -45,14 +48,14 @@ const click = (value:'delete'|'clone') => {
       size="small"
       @change="enabledChange" />
 
-    <div class="flex items-center cursor-pointer hover:text-text-link-hover" title="克隆">
+    <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('smtpPlugin.uiConfig.actions.clone')">
       <Icon
         icon="icon-fuzhi"
         class="text-3.5"
         @click="click('clone')" />
     </div>
 
-    <div class="flex items-center cursor-pointer hover:text-text-link-hover" title="删除">
+    <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('smtpPlugin.uiConfig.actions.delete')">
       <Icon
         icon="icon-qingchu"
         class="text-3.5"

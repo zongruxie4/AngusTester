@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { Colon, NoData, IconDownload } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   value:{
@@ -14,6 +15,8 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   value: undefined
 });
+
+const { t } = useI18n();
 
 const showConsole = computed(() => {
   if (!props.value?.console?.length) {
@@ -54,19 +57,19 @@ const downloadLog = () => {
     <template v-if="!!props.value">
       <div class="flex items-center leading-5 mb-2.5">
         <div class="flex items-center mr-15">
-          <span class="text-theme-sub-content">调度结果</span>
+          <span class="text-theme-sub-content">{{ t('ftpPlugin.debugLog.schedulingResult') }}</span>
           <Colon class="mr-2" />
           <template v-if="props.value?.success">
             <span class="inline-block w-1.5 h-1.5 mr-1 rounded bg-status-success"></span>
-            <span>成功</span>
+            <span>{{ t('ftpPlugin.debugLog.success') }}</span>
           </template>
           <template v-else>
             <span class="inline-block w-1.5 h-1.5 mr-1 rounded bg-status-error"></span>
-            <span>失败</span>
+            <span>{{ t('ftpPlugin.debugLog.fail') }}</span>
           </template>
         </div>
         <div class="flex items-center mr-15">
-          <span class="text-theme-sub-content">进程退出码</span>
+          <span class="text-theme-sub-content">{{ t('ftpPlugin.debugLog.processExitCode') }}</span>
           <Colon class="mr-2" />
           <span>{{ props.value?.exitCode }}</span>
         </div>

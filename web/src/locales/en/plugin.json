@@ -1589,6 +1589,187 @@
       "tranMax": "Max",
       "name": "Name"
     }
+  },
+  "smtpPlugin": {
+    "title": "SMTP Plugin",
+    "taskConfig": "Task Configuration",
+    "executeConfig": "Execute Configuration",
+    "notifications": {
+      "debugSaveFirst": "Debug requires saving current data first, please save before debugging",
+      "autoSaveSuccess": "Auto save successful, executing debug...",
+      "createTestSuccess": "Create \"Execute Test\" successful, please check details and results in \"Execute\"",
+      "taskConfigError": "Task configuration data error, please check and correct before saving.",
+      "executeConfigError": "Execute configuration data error, please check and correct before saving.",
+      "followSuccess": "Follow successful",
+      "cancelFollowSuccess": "Cancel follow successful",
+      "favouriteSuccess": "Favorite successful",
+      "cancelFavouriteSuccess": "Cancel favorite successful",
+      "saveSuccess": "Save successful",
+      "paramError": "Parameter error",
+      "selectSmtpScript": "Please select SMTP plugin script"
+    },
+    "authorizeModal": {
+      "title": "Scenario Permission",
+      "onTips": "After enabling \"Permission Control\", manual authorization of service permissions is required to have scenario operation permissions. \"Permission Control\" is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically granted.",
+      "offTips": "After enabling \"No Permission Control\", all users will be allowed to publicly view and operate the current scenario. Users viewing must also have parent directory permissions for the current scenario."
+    },
+    "comments": {
+      "selectScriptModal": "Select script modal",
+      "importScriptModal": "Import script modal",
+      "exportScriptModal": "Export script modal",
+      "authorizeModal": "Show permission modal",
+      "abortController": "Instance for terminating requests",
+      "defaultViewDescription": "Default display page view, new scenarios do not show [Execute Test], [Export Script], [Follow], [Cancel Follow], [Favorite], [Cancel Favorite], [Permission], [Refresh] buttons before saving",
+      "sceneConfigData": "Scenario detail information",
+      "rampUpInterval": "Ramp Up Interval",
+      "rampUpThreads": "Ramp Up Threads"
+    },
+    "functionTestDetailSmtp": {
+      "contentType": {
+        "text": "Text",
+        "emlFile": "EML File",
+        "attachment": "Attachment"
+      },
+      "metrics": {
+        "duration": "Duration",
+        "size": "Size"
+      },
+      "tabs": {
+        "request": "Request",
+        "response": "Response"
+      },
+      "requestHeaders": {
+        "headers": "Request Headers",
+        "content": "Request Content"
+      }
+    },
+    "uiConfig": {
+      "title": "Insert SMTP",
+      "description": "Supports orchestrating multiple SMTP interfaces simultaneously, but only one SMTP is allowed to be enabled for testing at a time.",
+      "serverConfig": {
+        "title": "Server Configuration",
+        "connectionTimeout": "Connection Timeout",
+        "connectionTimeoutPlaceholder": "Connection timeout, maximum 24 hours",
+        "readTimeout": "Read Timeout",
+        "readTimeoutPlaceholder": "Read timeout, maximum 24 hours",
+        "security": {
+          "noSecurity": "No Security",
+          "useSecurity": "Use Security"
+        }
+      },
+      "securityConfig": {
+        "none": "No Security",
+        "useSSL": "Use SSL",
+        "useStartTLS": "Use StartTLS"
+      },
+      "emlMsgOpt": {
+        "n": "Email Content",
+        "y": "EML File (.eml)"
+      },
+      "emlTypeOpt": {
+        "path": "Storage Path",
+        "file": "Upload File"
+      },
+      "attachmentTypeOpt": {
+        "path": "Storage Path",
+        "file": "Upload File"
+      },
+      "certificateTypeOpt": {
+        "path": "Storage Path",
+        "file": "Upload File"
+      },
+      "certificateOpt": {
+        "all": "Trust All Certificates",
+        "local": "Use Local Trust Store"
+      }, 
+      "emailConfig": {
+        "sendAddress": "Send Address",
+        "receiverAddress": "Receiver Address",
+        "sendConfig": "Send Configuration",
+        "receiverPlaceholder": "Address To",
+        "title": "Email Settings",
+        "mailFrom": "Email Sender",
+        "replyTo": "Reply Address",
+        "replyToPlaceholder": "Reply Address (Address Reply-To)",
+        "receiverTo": "Recipients",
+        "receiverCC": "CC Address",
+        "receiverCCPlaceholder": "CC Address (Address To CC)",
+        "receiverBCC": "BCC Address",
+        "receiverBCCPlaceholder": "BCC Address (Address To BCC)"
+      },
+      "mailContent": {
+        "namePlaceholder": "Name, maximum 400 characters",
+        "descriptionPlaceholder": "Description, maximum 800 characters (optional)",
+        "nameTip": "Name Duplicate",
+        "themeConfig": "Theme Configuration",
+        "title": "Email Content Settings",
+        "subject": "Email Subject",
+        "themePlaceholder": "Theme",
+        "disableSubject": "Disable subject",
+        "subjectHints": "If the subject of the email is disabled, the email will not have a subject line.",
+        "addHeader": "Add header",
+        "headerNamePlaceholder": "Header name",
+        "headerValuePlaceholder": "Header value",
+        "contentConfig": "Content Configuration",
+        "mailContent": "Email Content",
+        "attachment": "Attachment",
+        "selectAttachment": "Select attachment file",
+        "attachmentHints": "Attachment file path, multiple file paths can be separated by commas.",
+        "emlFile": "EML File (.eml)",
+        "selectEmlFile": "Select EML File",
+        "message": "Email Content",
+        "includeTimestamp": "Include timestamp in subject",
+        "suppressSubject": "Suppress subject",
+        "sendEmlMessage": "Send EML Message",
+        "plainBody": "Plain text format",
+        "messageSizeStatistics": "Message size statistics",
+        "enableDebugLogging": "Enable debug logging",
+        "localAttachFiles": "Local attachment files",
+        "localEmlMessageFile": "Local EML message file",
+        "localEmlMessageBase64Content": "Local EML message Base64 content",
+        "headerFields": "Header fields",
+        "localAttachBase64Contents": "Local attachment Base64 contents",
+        "comments": {
+          "sendEmlMessage": "Whether to use EML file as message content",
+          "localEmlMessageFile": "EML file path",
+          "localEmlMessageBase64Content": "EML file base64",
+          "defaultEnabled": "If enabled field is not set, default value is true"
+        }
+      },
+      "serviceConfig": {
+        "title": "Server Configuration",
+        "hostnameOrIP": "Hostname or IP",
+        "hostnameOrIPPlaceholder": "Hostname or IP, maximum 4096 characters",
+        "port": "Port",
+        "portPlaceholder": "Port (1~65535)",
+        "security": "Security",
+        "trustCertificate": "Trust Certificate",
+        "enforceStartTLS": "Enforce StartTLS",
+        "localCertificate": "Local Certificate",
+        "localCertificateHints": "Local certificate file must be uploaded to the corresponding execution node path.",
+        "localCertificateBase64Content": "Store local certificate Base64 content in script.",
+        "tlsProtocols": "Overwritten SSL/TLS protocols",
+        "overrideSystemSSLTLS": "Override system SSL/TLS protocols"
+      },
+      "authenticationConfig": {
+        "title": "Authentication Configuration",
+        "enableAuthentication": "Enable Authentication",
+        "username": "Username",
+        "password": "Password"
+      },
+      "otherConfig": {
+        "title": "Other Configuration",
+        "messageSizeStatistics": "Calculate message size",
+        "enableDebugLogging": "Enable debug logging"
+      },
+      "actions": {
+        "clone": "Clone",
+        "delete": "Delete"
+      },
+      "upload": {
+        "selectFile": "Select File"
+      }
+    }
   }
 }
 

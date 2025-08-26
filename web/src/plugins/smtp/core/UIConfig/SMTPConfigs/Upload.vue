@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { ref, watch, computed, onMounted, nextTick } from 'vue';
+import { useI18n } from 'vue-i18n';
 import type { UploadProps } from 'ant-design-vue';
 import { Upload } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
 // import { gzip, ungzip } from '@xcan-angus/infra';
 import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 interface File {
   formContentType: string;
@@ -128,7 +131,7 @@ defineExpose({
         :class="{'opacity-30': props.disabled, 'text-status-error': props.error}">
         <Icon icon="icon-xuanze" class="mr-1 text-text-sub-content" />
         <slot name="text">
-          选择文件
+          {{ t('smtpPlugin.uiConfig.upload.selectFile') }}
         </slot>
       </div>
     </template>

@@ -1590,5 +1590,186 @@
       "tranMax": "最大",
       "name": "名称"
     }
+  },
+  "smtpPlugin": {
+    "title": "SMTP插件",
+    "taskConfig": "任务配置",
+    "executeConfig": "执行配置",
+    "notifications": {
+      "debugSaveFirst": "调试需要先保存当前数据，请保存后再执行调试",
+      "autoSaveSuccess": "自动保存成功，正在执行调试...",
+      "createTestSuccess": "创建\"执行测试\"成功，请在\"执行\"中查看详情和结果",
+      "taskConfigError": "任务配置数据错误，请检查更正后再保存。",
+      "executeConfigError": "执行配置数据错误，请检查更正后再保存。",
+      "followSuccess": "关注成功",
+      "cancelFollowSuccess": "取消关注成功",
+      "favouriteSuccess": "收藏成功",
+      "cancelFavouriteSuccess": "取消收藏成功",
+      "saveSuccess": "保存成功",
+      "paramError": "参数错误",
+      "selectSmtpScript": "请选择SMTP插件脚本"
+    },
+    "authorizeModal": {
+      "title": "场景权限",
+      "onTips": "开启\"有权限控制\"后，需要手动授权服务权限后才会有场景相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级目录权限将自动授权查看权限。",
+      "offTips": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前场景，查看用户同时需要有当前场景父级目录权限。"
+    },
+    "comments": {
+      "selectScriptModal": "选择脚本弹窗",
+      "importScriptModal": "导入脚本弹窗",
+      "exportScriptModal": "导出脚本弹窗",
+      "authorizeModal": "显示权限弹窗",
+      "abortController": "用于终止请求的实例",
+      "defaultViewDescription": "默认显示页面视图，新建场景没有保存之前不显示【执行测试】【导出脚本】、【关注】、【取消关注】、【收藏】、【取消收藏】、【权限】、【刷新】按钮",
+      "sceneConfigData": "场景详情信息",
+      "rampUpInterval": "增压间隔",
+      "rampUpThreads": "增压线程数"
+    },
+    "functionTestDetailSmtp": {
+      "contentType": {
+        "text": "文本",
+        "emlFile": "eml文件",
+        "attachment": "附件"
+      },
+      "metrics": {
+        "duration": "耗时",
+        "size": "大小"
+      },
+      "tabs": {
+        "request": "请求",
+        "response": "响应"
+      },
+      "requestHeaders": {
+        "headers": "请求头",
+        "content": "请求内容"
+      }
+    },
+    "uiConfig": {
+      "title": "插入SMTP",
+      "description": "支持同时编排多个 Smtp 接口，但每次只允许启用一个 Smtp 进行测试。",
+      "serverConfig": {
+        "title": "服务器配置",
+        "connectionTimeout": "连接超时",
+        "connectionTimeoutPlaceholder": "连接超时，最大24小时",
+        "readTimeout": "读取超时",
+        "readTimeoutPlaceholder": "读取超时，最大24小时",
+        "security": {
+          "noSecurity": "不使用安全功能",
+          "useSecurity": "使用安全功能"
+        }
+      },
+      "securityConfig": {
+        "none": "不使用安全功能",
+        "useSSL": "使用SSL",
+        "useStartTLS": "使用StartTLS"
+      },
+      "emlMsgOpt": {
+        "n": "邮件内容",
+        "y": "邮件文件(.eml)"
+      },
+      "emlTypeOpt": {
+        "path": "存储路径",
+        "file": "上传文件"
+      },
+      "attachmentTypeOpt": {
+        "path": "存储路径",
+        "file": "上传文件"
+      },
+      "certificateTypeOpt": {
+        "path": "存储路径",
+        "file": "上传文件"
+      },
+      "certificateOpt": {
+        "all": "信任所有证书",
+        "local": "使用本地信任库"
+      },
+      "emailConfig": {
+        "sendAddress": "发送地址",
+        "receiverAddress": "接收地址",
+        "sendConfig": "发送配置",
+        "receiverPlaceholder": "接收地址（Address To）",
+        "title": "邮件设置",
+        "mailFrom": "邮件发送者",
+        "replyTo": "回复地址",
+        "replyToPlaceholder": "回复地址（Address Reply-To）",
+        "receiverTo": "收件人",
+        "receiverCC": "抄送地址",
+        "receiverCCPlaceholder": "抄送地址（Address To CC）",
+        "receiverBCC": "秘密抄送地址",
+        "receiverBCCPlaceholder": "秘密抄送地址（Address To BCC）"
+      },
+      "mailContent": {
+        "namePlaceholder": "名称，最大支持400个字符",
+        "descriptionPlaceholder": "描述，最大支持800字（可选）",
+        "nameTip": "名称重复",
+        "themeConfig": "主题配置",
+        "themePlaceholder": "主题",
+        "disableSubject": "禁用主题",
+        "subjectHints": "禁止邮件的主题后，邮件将没有主题行。",
+        "addHeader": "添加头",
+        "headerNamePlaceholder": "请求头名称",
+        "headerValuePlaceholder": "请求头值",
+        "contentConfig": "内容配置",
+        "title": "邮件内容设置",
+        "mailContent": "邮件正文内容",
+        "attachment": "附件",
+        "selectAttachment": "选择附件文件",
+        "attachmentHints": "附件文件路径，多个文件路径可以用逗号分隔。",
+        "emlFile": "邮件文件(.eml)",
+        "selectEmlFile": "选择EML文件",
+        "subject": "邮件主题",
+        "message": "邮件内容",
+        "includeTimestamp": "在主题中包含时间戳",
+        "suppressSubject": "抑制主题",
+        "sendEmlMessage": "发送EML消息",
+        "plainBody": "是否纯文本格式",
+        "messageSizeStatistics": "消息大小统计",
+        "enableDebugLogging": "启用调试日志记录",
+        "localAttachFiles": "本地附件文件",
+        "localEmlMessageFile": "本地EML消息文件",
+        "localEmlMessageBase64Content": "本地EML消息Base64内容",
+        "headerFields": "头字段",
+        "localAttachBase64Contents": "本地附件Base64内容",
+        "comments": {
+          "sendEmlMessage": "是否使用 EML 文件作为消息内",
+          "localEmlMessageFile": "eml文件路径",
+          "localEmlMessageBase64Content": "eml文件base64",
+          "defaultEnabled": "没有设置enabled字段，默认值为true"
+        }
+      },
+      "serviceConfig": {
+        "title": "服务器设置",
+        "hostnameOrIP": "主机名或IP",
+        "hostnameOrIPPlaceholder": "主机名或IP，最大支持4096个字符",
+        "port": "端口",
+        "portPlaceholder": "端口（1~65535）",
+        "security": "安全功能",
+        "trustCertificate": "信任证书",
+        "enforceStartTLS": "执行StartTLS",
+        "localCertificate": "本地受信证书",
+        "localCertificateHints": "需要确保证书文件已上传到对应执行节点路径。",
+        "localCertificateBase64Content": "在脚本中存储本地证书 Base64 编码后内容。",
+        "tlsProtocols": "重写的SSL/TLS协议",
+        "overrideSystemSSLTLS": "覆盖系统SSL/TLS协议"
+      },
+      "authenticationConfig": {
+        "title": "身份验证设置",
+        "enableAuthentication": "开启身份验证",
+        "username": "用户名",
+        "password": "密码"
+      },
+      "otherConfig": {
+        "title": "其他设置",
+        "messageSizeStatistics": "计算消息大小",
+        "enableDebugLogging": "启用调试日志记录"
+      },
+      "actions": {
+        "clone": "克隆",
+        "delete": "删除"
+      },
+      "upload": {
+        "selectFile": "选择文件"
+      }
+    }
   }
 }
