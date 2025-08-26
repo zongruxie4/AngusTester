@@ -1912,7 +1912,7 @@
     "uiConfig": {
       "title": "插入WebSocket接口",
       "selectTitle": "选择WebSocket接口",
-      "description": "支持同时编排多个WebSocket接口，但每次只允许启用一个WebSocket进行测试。",
+      "description": "支持同时编排多个WebSocket接口，但每次只允许启用一个WebSocket进行测试。"
     },
     "functionTestDetailWesocket": {
       "runtime": "0毫秒",
