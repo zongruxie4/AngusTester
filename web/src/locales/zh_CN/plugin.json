@@ -1874,5 +1874,227 @@
         "fileEncoding": "文件编码"
       }
     }
-  }
+  },
+  "websocketPlugin": {
+    "notifications": {
+      "debugSaveRequired": "调试需要先保存当前数据，请保存后再执行调试",
+      "autoSaveSuccess": "自动保存成功，正在执行调试...",
+      "createTestSuccess": "创建\"执行测试\"成功，请在\"执行\"中查看详情和结果",
+      "saveSuccess": "保存成功",
+      "followSuccess": "关注成功",
+      "cancelFollowSuccess": "取消关注成功",
+      "favouriteSuccess": "收藏成功",
+      "cancelFavouriteSuccess": "取消收藏成功",
+      "taskConfigError": "任务配置数据错误，请检查更正后再保存。",
+      "executeConfigError": "执行配置数据错误，请检查更正后再保存。",
+      "parameterError": "参数错误"
+    },
+    "comments": {
+      "selectModalVisible": "选择脚本弹窗",
+      "uploadVisible": "导入脚本弹窗",
+      "exportModalVisible": "导出脚本弹窗",
+      "authVisible": "显示权限弹窗",
+      "controller": "用于终止请求的实例",
+      "defaultViewMode": "默认显示页面视图，新建场景没有保存之前不显示【执行测试】【导出脚本】、【关注】、【取消关注】、【收藏】、【取消收藏】、【权限】、【刷新】按钮",
+      "sceneConfigData": "场景详情信息",
+      "rampUpInterval": "增压间隔",
+      "rampUpThreads": "增压线程数"
+    },
+    "permissions": {
+      "title": "场景权限",
+      "onTips": "开启\"有权限控制\"后，需要手动授权服务权限后才会有场景相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级目录权限将自动授权查看权限。",
+      "offTips": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前场景，查看用户同时需要有当前场景父级目录权限。"
+    },
+    "tabs": {
+      "taskConfig": "任务配置",
+      "executeConfig": "执行配置"
+    },
+    "uiConfig": {
+      "title": "插入WebSocket接口",
+      "selectTitle": "选择WebSocket接口",
+      "description": "支持同时编排多个WebSocket接口，但每次只允许启用一个WebSocket进行测试。",
+    },
+    "functionTestDetailWesocket": {
+      "runtime": "0毫秒",
+      "tags": {
+        "basedOnEOL": "基于EOL",
+        "basedOnEOM": "基于EOM",
+        "basedOnLengthPrefix": "基于长度前缀"
+      },
+      "duration": "耗时",
+      "tabs": {
+        "request": "请求",
+        "response": "响应"
+      }
+    },
+      "actions": {
+        "clone": "克隆",
+        "delete": "删除"
+      },
+      "form": {
+        "nameDuplicate": "名称重复",
+        "namePlaceholder": "名称，最大支持400个字符",
+        "descriptionPlaceholder": "描述，最大支持800个字符",
+        "none": "无"
+      },
+      "connectionInfo": {
+        "title": "连接信息",
+        "urlFormatError": "URL格式错误",
+        "urlPlaceholder": "URL，最大支持2000个字符。例如 ws://dev-apis.xcan.cloud/wpush/ws/mcenterReceive"
+      },
+      "parameters": {
+        "requestParameters": "请求参数",
+        "requestHeaders": "请求头",
+        "parameterNamePlaceholder": "参数名称，最大支持400个字符",
+        "parameterValuePlaceholder": "参数值，最大支持4096个字符"
+      },
+      "messageMode": {
+        "title": "消息模式",
+        "placeholder": "消息模式"
+      },
+      "sendData": {
+        "encodingTitle": "发送数据编码",
+        "encodingPlaceholder": "发送数据编码",
+        "title": "发送数据"
+      },
+      "parametric": {
+        "title": "参数化"
+      },
+      "assertion": {
+        "title": "断言",
+        "tooltip": "断言接收消息"
+      },
+      "selectApiModal": {
+        "title": "选择接口",
+        "treeSelect": {
+          "label": "项目/服务",
+          "placeholder": "请选择项目/服务"
+        },
+        "input": {
+          "placeholder": "查询接口名称"
+        },
+        "fields": {
+          "url": "URL",
+          "name": "名称"
+        },
+        "referenced": "（已引用）",
+        "buttons": {
+          "cancel": "取消",
+          "copy": "复制",
+          "link": "引用"
+        }
+      },
+      "serverUri": {
+        "default": "默认"
+      },
+      "websocketConfigs": {
+        "urlFormatError": "url格式错误",
+        "form": {
+          "none": "无",
+          "nameDuplicate": "名称重复",
+          "namePlaceholder": "名称，最大支持400个字符",
+          "descriptionPlaceholder": "描述，最大支持800个字符"
+        },
+        "actions": {
+          "clone": "克隆",
+          "delete": "删除"
+        },
+        "connectionInfo": {
+          "title": "连接信息",
+          "urlPlaceholder": "请输入URL，例如 ws://dev-apis.xcan.cloud/wpush/ws/mcenterReceive",
+          "messageModePlaceholder": "消息模式"
+        },
+        "parameters": {
+          "requestParameters": "请求参数",
+          "requestHeaders": "请求头"
+        },
+        "sendInfo": {
+          "title": "发送信息",
+          "encodingPlaceholder": "发送信息编码"
+        },
+        "assertion": {
+          "title": "断言",
+          "tooltip": "断言接收消息"
+        },
+        "paramsInput": {
+          "parameterNamePlaceholder": "参数名称，最大支持400个字符",
+          "parameterValuePlaceholder": "参数值，最大支持4096个字符"
+        }
+      }
+    },
+    "commonPlugin": {
+      "chartConfig": {
+        "names": {
+          "duration": "时长",
+          "errors": "错误数",
+          "iterations": "迭代数",
+          "n": "采样数",
+          "operations": "请求数",
+          "transactions": "事务数",
+          "readBytes": "读数据大小",
+          "writeBytes": "写数据大小",
+          "ops": "每秒查询数",
+          "tps": "每秒事务数",
+          "brps": "下载/秒",
+          "bwps": "上传/秒",
+          "tranMean": "平均",
+          "tranMin": "最小",
+          "tranMax": "最大",
+          "tranP50": "P50",
+          "tranP75": "P75",
+          "tranP90": "P90",
+          "tranP95": "P95",
+          "tranP99": "P99",
+          "tranP999": "P999",
+          "errorRate": "错误率",
+          "threadPoolSize": "线程数",
+          "threadPoolActiveSize": "活跃线程数",
+          "threadMaxPoolSize": "最大线程数"
+        },
+        "columns": {
+          "name": "名称",
+          "current": "当前",
+          "downloadPerSecond": "下载/秒",
+          "uploadPerSecond": "上传/秒",
+          "downloadPerSecondWithStats": "下载/秒(当前 | 最小 | 最大 | 平均)",
+          "uploadPerSecondWithStats": "上传/秒(当前 | 最小 | 最大 | 平均)",
+          "opsWithStats": "每秒查询数(当前 | 最小 | 最大 | 平均)",
+          "tpsWithStats": "每秒事务数(当前 | 最小 | 最大 | 平均)"
+        }
+      },
+      "menuData": {
+        "toolbar": {
+          "debugResult": "调试结果",
+          "logs": "调度日志",
+          "execLog": "执行日志",
+          "toggle": "展开收起",
+          "screen": "全屏",
+          "duration": "耗时",
+          "size": "大小"
+        },
+        "drawer": {
+          "save": "保存",
+          "indicator": "测试指标",
+          "testInfo": "测试结果",
+          "activity": "活动",
+          "comment": "评论"
+        }
+      },
+      "utils": {
+        "timeUnits": {
+          "ms": "毫秒",
+          "s": "秒",
+          "min": "分钟",
+          "h": "小时",
+          "d": "天"
+        },
+        "formatTime": {
+          "milliseconds": "毫秒",
+          "seconds": "秒",
+          "minutes": "分",
+          "hours": "小时"
+        },
+        "defaultValue": "--"
+      }
+    }
 }

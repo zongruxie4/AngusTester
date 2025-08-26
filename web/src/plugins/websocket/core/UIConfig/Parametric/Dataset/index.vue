@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { ref, onMounted, defineAsyncComponent, watch, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Icon, Colon, Tooltip, Arrow } from '@xcan-angus/vue-ui';
 import { Button, RadioGroup, Radio, Collapse, CollapsePanel, TabPane, Tabs, Popconfirm } from 'ant-design-vue';
-import { ActionOnEOF, SharingMode, enumUtils } from '@xcan-angus/infra';
+import { EnumMessage, ActionOnEOF, SharingMode, enumUtils } from '@xcan-angus/infra';
 
 import { DatasetItem } from './PropsType';
 import { HTTPConfig } from '../../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -105,7 +108,6 @@ onMounted(() => {
     if (!newValue?.length) {
       return;
     }
-
     tableData.value = newValue;
   }, { immediate: true });
 });
@@ -115,8 +117,8 @@ const selectedNames = computed(() => {
 });
 
 const hintTextMap = {
-  FILE: '从文件中读取数据集，每个数据集最大允许创建200个参数，每个参数文件最大不超过500MB，总行数不超过100万行。',
-  JDBC: '每次执行测试前从数据库中查询结果中提取一个值作为数据集值。'
+  FILE: t('httPlugin.uiConfig.httpConfigs.parametric.dataset.hintTextMap.file'),
+  JDBC: t('httPlugin.uiConfig.httpConfigs.parametric.dataset.hintTextMap.jdbc')
 };
 </script>
 
@@ -124,17 +126,17 @@ const hintTextMap = {
   <div class="text-3 leading-5">
     <div class="flex items-center flex-nowrap mb-2.5">
       <div class="flex-shrink-0 w-1 h-3.5 rounded bg-blue-400 mr-1.5"></div>
-      <div class="flex-shrink-0 text-theme-title mr-2.5">数据集</div>
+      <div class="flex-shrink-0 text-theme-title mr-2.5">{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.title') }}</div>
       <Icon icon="icon-tishi1" class="flex-shrink-0 text-tips text-3.5 mr-1" />
       <div class="flex-shrink-0 break-all whitespace-pre-wrap">
-        引入已定义数据集，引入后可以在当前请求中使用数据集参数。注意：只有引用后数据集参数才会生效。当数据集参数名和变量名冲突时，同名数据集参数值比变量值优先级高。
+        {{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.description') }}
       </div>
     </div>
 
-    <div class="flex items-center space-x-15 mb-1">
+    <div class="flex items-center space-x-15 mb-2">
       <div class="flex-shrink-0 flex items-center">
         <div class="flex-shrink-0 flex items-center mr-2.5">
-          <span>读到末尾时</span>
+          <span>{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.actionOnEOF') }}</span>
           <Colon />
         </div>
         <RadioGroup
@@ -147,10 +149,10 @@ const hintTextMap = {
             :value="item.value">
             <div class="flex items-center space-x-1">
               <span>{{ item.message }}</span>
-              <Tooltip v-if="item.value === 'RECYCLE'" title="数据集中所有数据行都被使用后，‌将重新从开头使用数据。">
+              <Tooltip v-if="item.value === 'RECYCLE'" :title="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.recycleTooltip')">
                 <Icon icon="icon-tishi1" class="text-3.5 text-tips cursor-pointer" />
               </Tooltip>
-              <Tooltip v-else-if="item.value === 'STOP_THREAD'" title="数据集中所有数据行都被使用后，停止当前采样线程执行，所有线程都读完所有行时整个执行退出并结束。">
+              <Tooltip v-else-if="item.value === 'STOP_THREAD'" :title="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.stopThreadTooltip')">
                 <Icon icon="icon-tishi1" class="text-3.5 text-tips cursor-pointer" />
               </Tooltip>
             </div>
@@ -160,7 +162,7 @@ const hintTextMap = {
 
       <div class="flex-shrink-0 flex items-center">
         <div class="flex-shrink-0 flex items-center mr-2.5">
-          <span>共享模式</span>
+          <span>{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.sharingMode') }}</span>
           <Colon />
         </div>
         <RadioGroup
@@ -173,10 +175,10 @@ const hintTextMap = {
             :value="item.value">
             <div class="flex items-center space-x-1">
               <span>{{ item.message }}</span>
-              <Tooltip v-if="item.value === 'ALL_THREAD'" title="所有线程共享同一份数据集数据。">
+              <Tooltip v-if="item.value === 'ALL_THREAD'" :title="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.allThreadTooltip')">
                 <Icon icon="icon-tishi1" class="text-3.5 text-tips cursor-pointer" />
               </Tooltip>
-              <Tooltip v-else-if="item.value === 'CURRENT_THREAD'" title="每个线程各自复制一份数据集数据。">
+              <Tooltip v-else-if="item.value === 'CURRENT_THREAD'" :title="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.currentThreadTooltip')">
                 <Icon icon="icon-tishi1" class="text-3.5 text-tips cursor-pointer" />
               </Tooltip>
             </div>
@@ -185,20 +187,21 @@ const hintTextMap = {
       </div>
     </div>
 
-    <Button
-      type="link"
-      size="small"
-      style="padding:0;"
-      class="flex items-center h-5 leading-5 p-0 space-x-1 mb-1"
-      @click="toUse">
-      <Icon icon="icon-jia" class="text-3.5" />
-      <span>引入数据集</span>
-    </Button>
+    <div class="mb-2">
+      <Button
+        type="link"
+        size="small"
+        class="flex items-center h-5 leading-5 p-0 space-x-1"
+        @click="toUse">
+        <Icon icon="icon-jia" class="text-3.5" />
+        <span>{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.addDataset') }}</span>
+      </Button>
+    </div>
 
     <div v-if="tableData.length === 0" class="flex-1 flex flex-col items-center justify-center">
       <img style="width:100px;" src="./images/nodata.png">
       <div class="flex items-center text-theme-sub-content text-3">
-        <span>您尚未引用任何数据集</span>
+        <span>{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.noDatasetsDefined') }}</span>
       </div>
     </div>
 
@@ -207,9 +210,9 @@ const hintTextMap = {
       style="border-bottom: 0;"
       class="border border-solid rounded border-theme-text-box">
       <div class="flex items-center table-thead-tr">
-        <div class="table-thead-th">名称</div>
-        <div class="table-thead-th">创建人</div>
-        <div class="table-thead-th">操作</div>
+        <div class="table-thead-th">{{ t('common.name') }}</div>
+        <div class="table-thead-th">{{ t('common.creator') }}</div>
+        <div class="table-thead-th">{{ t('common.actions') }}</div>
       </div>
 
       <Collapse v-model:activeKey="collapseActiveKeys" collapsible="disabled">
@@ -237,9 +240,9 @@ const hintTextMap = {
                 <div class="flex-1 truncate">{{ item['x-createdByName'] }}</div>
               </div>
               <div class="table-tbody-td flex items-center space-x-2.5">
-                <Popconfirm :title="`确定取消引用数据集【${item.name}】吗？`" @confirm="toDelete(item)">
+                <Popconfirm :title="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.confirmUnlinkDataset', { name: item.name })" @confirm="toDelete(item)">
                   <Button
-                    title="取消引用"
+                    :title="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.unlinkDataset')"
                     type="text"
                     size="small"
                     style="padding:0;"
@@ -249,7 +252,7 @@ const hintTextMap = {
                 </Popconfirm>
 
                 <Button
-                  title="查看定义"
+                  :title="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.viewDefinition')"
                   type="text"
                   size="small"
                   style="padding:0;"
@@ -267,13 +270,13 @@ const hintTextMap = {
 
           <Tabs size="small" class="ant-tabs-nav-mb-2.5 normal-tabs">
             <template v-if="!item.extraction">
-              <TabPane key="value" tab="参数">
+              <TabPane key="value" :tab="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.parameters')">
                 <StaticParameters :dataSource="item.parameters" class="mb-5" />
               </TabPane>
             </template>
 
             <template v-else>
-              <TabPane key="value" tab="提取">
+              <TabPane key="value" :tab="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.extractParameters')">
                 <ExtractParameters
                   :dataSource="item.parameters"
                   :columnIndex="+item.extraction.columnIndex"
@@ -282,11 +285,11 @@ const hintTextMap = {
               </TabPane>
             </template>
 
-            <TabPane key="preview" tab="预览">
+            <TabPane key="preview" :tab="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.previewData')">
               <PreviewData :dataSource="item" />
             </TabPane>
 
-            <TabPane key="use" tab="使用">
+            <TabPane key="use" :tab="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.datasetUseList')">
               <DatasetUseList :id="item['x-id']" />
             </TabPane>
           </Tabs>

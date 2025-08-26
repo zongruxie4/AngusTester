@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Input, IconCopy, Hints } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 export interface Option {
   name: string;
@@ -42,10 +45,10 @@ const _columnIndex = computed(() => {
 
     <div class="flex items-center space-x-2 mb-1">
       <div class="w-90 flex items-center">
-        <span>名称</span>
+        <span>{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.extractParametersField.name') }}</span>
       </div>
       <div class="flex-1 flex items-center">
-        <span>读取列</span>
+        <span>{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.extractParametersField.readColumn') }}</span>
       </div>
     </div>
 

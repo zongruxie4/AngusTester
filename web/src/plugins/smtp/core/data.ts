@@ -1,19 +1,24 @@
+import { i18n } from '@xcan-angus/infra';
+const I18nInstance = i18n.getI18n();
+const t = I18nInstance?.global?.t || ((value: string):string => value);
+
 export const TOOLBAR_MENUITEMS: {
   name:string;
   key:string;
 }[] = [
   {
     key: 'debugResult',
-    name: '调试结果'
+    name: t('commonPlugin.menuData.toolbar.debugResult')
   },
   {
     key: 'logs',
-    name: '调度日志'
+    name: t('commonPlugin.menuData.toolbar.logs')
   },
   {
     key: 'execLog',
-    name: '执行日志'
+    name: t('commonPlugin.menuData.toolbar.execLog')
   }
+ 
 ];
 
 export const TOOLBAR_EXTRA_MENUITEMS: {
@@ -22,19 +27,19 @@ export const TOOLBAR_EXTRA_MENUITEMS: {
 }[] = [
   {
     key: 'duration',
-    name: '耗时'
+    name: t('commonPlugin.menuData.toolbar.duration')
   },
   {
     key: 'size',
-    name: '大小'
+    name: t('commonPlugin.menuData.toolbar.size')
   },
   {
     key: 'toggle',
-    name: '展开收起'
+    name: t('commonPlugin.menuData.toolbar.toggle')
   },
   {
     key: 'screen',
-    name: '全屏'
+    name: t('commonPlugin.menuData.toolbar.screen')
   }
 ];
 
@@ -45,7 +50,7 @@ export const DRAWER_MENUITEMS:{
 }[] = [
   {
     icon: 'icon-fuwuxinxi',
-    name: '保存',
+    name: t('commonPlugin.menuData.drawer.save'),
     key: 'save'
   },
   // {
@@ -70,12 +75,12 @@ export const DRAWER_MENUITEMS:{
   // },
   {
     icon: 'icon-lishijilu',
-    name: '活动',
+    name: t('commonPlugin.menuData.drawer.activity'),
     key: 'activity'
   },
   {
     icon: 'icon-pinglun',
-    name: '评论',
+    name: t('commonPlugin.menuData.drawer.comment'),
     key: 'comment'
   }
 ];

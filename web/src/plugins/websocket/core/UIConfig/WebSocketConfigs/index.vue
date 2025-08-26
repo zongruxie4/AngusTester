@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, ref, onMounted, watch, watchEffect } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Badge, Collapse, CollapsePanel, Tabs, TabPane, Switch } from 'ant-design-vue';
 import { Icon, Input, SelectEnum, Tooltip, Validate, Select, Arrow } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 import { ParameterConfig, WebsocketConfig, WebSocketMode } from './PropsType';
 import { AssertionConfig } from './AssertionForm/PropsType';
@@ -234,7 +237,7 @@ const getInvalidNum = (): number => {
       if (!/^ws:\/\/|wss:\/\//.test(url.value)) {
         errorNum.value++;
         urlError.value = true;
-        urlErrorMessage.value = 'url格式错误';
+        urlErrorMessage.value = t('websocketPlugin.uiConfig.websocketConfigs.urlFormatError');
       }
     }
   }
@@ -334,7 +337,7 @@ const showSendMessage = computed(() => {
 });
 
 const codeOptions = [
-  { label: '无', value: 'none' },
+  { label: t('websocketPlugin.uiConfig.websocketConfigs.form.none'), value: 'none' },
   { label: 'base64', value: 'base64' },
   { label: 'gzip_base64', value: 'gzip_base64' }
 ];
@@ -368,7 +371,7 @@ const autoSize = {
             class="flex-shrink-0 text-4 mr-3" />
           <div class="flex-1 flex items-center space-x-2 mr-3">
             <Tooltip
-              title="名称重复"
+              :title="t('websocketPlugin.uiConfig.websocketConfigs.form.nameDuplicate')"
               internal
               placement="right"
               destroyTooltipOnHide
@@ -380,7 +383,7 @@ const autoSize = {
                 :title="name"
                 trim
                 class="websocket-name-input"
-                placeholder="名称，最大支持400个字符"
+                :placeholder="t('websocketPlugin.uiConfig.websocketConfigs.form.namePlaceholder')"
                 @change="nameChange" />
             </Tooltip>
             <Input
@@ -389,20 +392,20 @@ const autoSize = {
               :title="description"
               trim
               style="flex: 1 1 calc((100% - (8px))*3/5);"
-              placeholder="描述，最大支持800个字符" />
+              :placeholder="t('websocketPlugin.uiConfig.websocketConfigs.form.descriptionPlaceholder')" />
           </div>
           <div class="flex items-center flex-shrink-0 space-x-3">
             <Switch
               :checked="enabled"
               size="small"
               @change="enabledChange" />
-            <div class="flex items-center cursor-pointer hover:text-text-link-hover" title="克隆">
+            <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('websocketPlugin.uiConfig.websocketConfigs.actions.clone')">
               <Icon
                 icon="icon-fuzhi"
                 class="text-3.5"
                 @click="actionClick('clone')" />
             </div>
-            <div class="flex items-center cursor-pointer hover:text-text-link-hover" title="删除">
+            <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('websocketPlugin.uiConfig.websocketConfigs.actions.delete')">
               <Icon
                 icon="icon-qingchu"
                 class="text-3.5"
@@ -414,7 +417,7 @@ const autoSize = {
       </template>
       <div class="flex flex-col items-end leading-5 space-y-8 text-3">
         <div class="w-full flex items-start space-x-2.5">
-          <div class="w-12 transform-gpu translate-y-1 flex-shrink-0 text-theme-title">连接信息</div>
+          <div class="w-12 transform-gpu translate-y-1 flex-shrink-0 text-theme-title">{{ t('websocketPlugin.uiConfig.websocketConfigs.connectionInfo.title') }}</div>
           <div class="flex-1">
             <div class="flex items-start space-x-2 flex-1">
               <Validate class="flex-1" :text="urlErrorMessage">
@@ -427,14 +430,14 @@ const autoSize = {
                   v-else
                   v-model:value="url"
                   trimAll
-                  placeholder="请输入URL，例如 ws://dev-apis.xcan.cloud/wpush/ws/mcenterReceive"
+                  :placeholder="t('websocketPlugin.uiConfig.websocketConfigs.connectionInfo.urlPlaceholder')"
                   :error="urlError"
                   @change="urlChange" />
               </Validate>
               <SelectEnum
                 v-model:value="mode"
                 :error="modeError"
-                placeholder="消息模式"
+                :placeholder="t('websocketPlugin.uiConfig.websocketConfigs.connectionInfo.messageModePlaceholder')"
                 class="w-30 flex-shrink-0"
                 enumKey="WebSocketMessageMode"
                 @change="modeChange" />
@@ -445,7 +448,7 @@ const autoSize = {
               <TabPane key="query">
                 <template #tab>
                   <Badge size="small" :count="queryErrorNum">
-                    <div>请求参数</div>
+                    <div>{{ t('websocketPlugin.uiConfig.websocketConfigs.parameters.requestParameters') }}</div>
                   </Badge>
                 </template>
                 <ParameterInput
@@ -457,7 +460,7 @@ const autoSize = {
               <TabPane key="header">
                 <template #tab>
                   <Badge size="small" :count="headerErrorNum">
-                    <div>请求头</div>
+                    <div>{{ t('websocketPlugin.uiConfig.websocketConfigs.parameters.requestHeaders') }}</div>
                   </Badge>
                 </template>
                 <ParameterInput
@@ -471,7 +474,7 @@ const autoSize = {
         </div>
         <template v-if="showSendMessage">
           <div class="w-full flex items-start space-x-2.5">
-            <div class="w-12 transform-gpu translate-y-1 flex-shrink-0 text-theme-title">发送信息</div>
+            <div class="w-12 transform-gpu translate-y-1 flex-shrink-0 text-theme-title">{{ t('websocketPlugin.uiConfig.websocketConfigs.sendInfo.title') }}</div>
             <Input
               v-model:value="message"
               type="textarea"
@@ -483,7 +486,7 @@ const autoSize = {
             <Select
               v-model:value="messageEncoding"
               :options="codeOptions"
-              placeholder="发送信息编码"
+              :placeholder="t('websocketPlugin.uiConfig.websocketConfigs.sendInfo.encodingPlaceholder')"
               style="width: 120px;"
               class="bg-white flex-shrink-0" />
           </div>
@@ -491,8 +494,8 @@ const autoSize = {
         <div class="w-full flex items-start space-x-2.5">
           <div
             class="w-12 flex items-center justify-start transform-gpu translate-y-1 space-x-1 flex-shrink-0 text-theme-title">
-            <span>断言</span>
-            <Tooltip title="断言接收消息">
+            <span>{{ t('websocketPlugin.uiConfig.websocketConfigs.assertion.title') }}</span>
+                          <Tooltip :title="t('websocketPlugin.uiConfig.websocketConfigs.assertion.tooltip')">
               <Icon icon="icon-tishi1" class="tip-icon text-3.5 cursor-pointer" />
             </Tooltip>
           </div>

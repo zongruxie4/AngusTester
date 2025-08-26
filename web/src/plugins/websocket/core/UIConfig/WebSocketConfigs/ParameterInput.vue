@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { onMounted, watch, watchEffect, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Checkbox } from 'ant-design-vue';
 import { Input, Icon } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 import { ParameterConfig } from './PropsType';
 
@@ -158,14 +161,14 @@ defineExpose({
           :error="nameErrorSet.has(item)"
           trim
           style="flex: 1 1 calc((100% - (8px))*2/5);"
-          placeholder="参数名称，最大支持400个字符"
+          :placeholder="t('websocketPlugin.uiConfig.websocketConfigs.paramsInput.parameterNamePlaceholder')"
           @blur="nameBlur($event,index)"
           @change="nameChange($event,item,index)" />
         <Input
           v-model:value="dataMap[item].value"
           :maxlength="4096"
           trim
-          placeholder="参数值，最大支持4096个字符"
+          :placeholder="t('websocketPlugin.uiConfig.websocketConfigs.paramsInput.parameterValuePlaceholder')"
           style="flex: 1 1 calc((100% - (8px))*3/5);" />
       </div>
       <div class="w-9 h-7 flex items-center justify-start">

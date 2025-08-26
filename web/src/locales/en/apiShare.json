@@ -1,5 +1,5 @@
 {
-  "apiShare": {
-    "agentProxyTitle": "代理"
+  "shareApis": {
+    "agentProxyTitle": "Agent Proxy"
   }
 }

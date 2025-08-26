@@ -10,7 +10,6 @@ import { useI18n } from 'vue-i18n';
 
 import ButtonGroup from './ButtonGroup/index.vue';
 import { ButtonGroupMenuItem, ButtonGroupMenuKey } from './ButtonGroup/PropsType';
-import { TOOLBAR_MENUITEMS, TOOLBAR_EXTRA_MENUITEMS, DRAWER_MENUITEMS } from './data';
 import { SceneInfo, SceneConfig, SaveFormData, ScriptType, PipelineConfig } from './PropsType';
 import { ExecContent } from './FunctionTestDetail/PropsType';
 

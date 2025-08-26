@@ -141,7 +141,7 @@ provide('readyState', readyState);
           <div
             class="bg-orange-bg text-white flex flex-col items-center rounded-l-xl py-2 h-max cursor-pointer">
             <Icon icon="icon-jiekoudaili" class="text-3.5 leading-3.5" />
-            <span style="writing-mode: vertical-lr;" class="mt-1">{{t('apiShare.agentProxyTitle')}}</span>
+            <span style="writing-mode: vertical-lr;" class="mt-1">{{t('shareApis.agentProxyTitle')}}</span>
           </div>
         </div>
         <div

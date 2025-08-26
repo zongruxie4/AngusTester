@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, computed, watchEffect } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Checkbox } from 'ant-design-vue';
 import { Arrow, Icon, Input, SelectEnum, Select, Tooltip } from '@xcan-angus/vue-ui';
 import { AssertionCondition, BasicAssertionType, enumUtils, utils, duration } from '@xcan-angus/infra';
@@ -15,6 +16,8 @@ export interface Props {
 const props = withDefaults(defineProps<Props>(), {
   value: undefined
 });
+
+const { t } = useI18n();
 
 const idList = ref<string[]>([]);
 const dataMap = ref<{ [key: string]: AssertionConfig }>({});
@@ -259,9 +262,9 @@ const styleMap = computed(() => {
 });
 
 const PLACEHOLDER = {
-  REG_MATCH: '正则匹配表达式',
-  XPATH_MATCH: 'XPath匹配表达式',
-  JSON_PATH_MATCH: 'JSONPath匹配表达式'
+  REG_MATCH: t('jdbcPlugin.UIConfigJdbc.assertionForm.expressionMap.REG_MATCH'),
+  XPATH_MATCH: t('jdbcPlugin.UIConfigJdbc.assertionForm.expressionMap.XPATH_MATCH'),
+  JSON_PATH_MATCH: t('jdbcPlugin.UIConfigJdbc.assertionForm.expressionMap.JSON_PATH_MATCH')
 };
 const EXPRESSION_CONDITIONS = ['REG_MATCH', 'XPATH_MATCH', 'JSON_PATH_MATCH'];
 const EXPECTED_DISABLED = ['IS_EMPTY', 'NOT_EMPTY', 'IS_NULL', 'NOT_NULL'];
@@ -357,7 +360,7 @@ defineExpose({
 </script>
 
 <template>
-  <div class="space-y-3">
+  <div class="space-y-4">
     <div
       v-for="(item, index) in idList"
       :key="item"
@@ -369,14 +372,14 @@ defineExpose({
       <div class="flex-1 space-y-2 mr-3">
         <div class="flex items-start space-x-2">
           <Tooltip
-            title="名称重复"
+            :title="t('jdbcPlugin.UIConfigJdbc.assertionForm.nameDuplicate')"
             internal
             placement="right"
             destroyTooltipOnHide
             :visible="repeatNameSet.has(item)">
             <Input
-              placeholder="断言名称"
-              title="断言名称"
+              :placeholder="t('jdbcPlugin.UIConfigJdbc.assertionForm.assertionNamePlaceholder')"
+              :title="t('jdbcPlugin.UIConfigJdbc.assertionForm.assertionName')"
               trim
               style="flex: 1 1 calc((100% - 32px)/7*2);"
               :maxlength="200"
@@ -387,16 +390,16 @@ defineExpose({
           <SelectEnum
             style="flex: 0 0 calc((100% - 32px)/7);"
             enumKey="BasicAssertionType"
-            placeholder="断言类型"
-            title="断言类型"
+            :placeholder="t('jdbcPlugin.UIConfigJdbc.assertionForm.assertionTypePlaceholder')"
+            :title="t('jdbcPlugin.UIConfigJdbc.assertionForm.assertionType')"
             :error="typeErrorSet.has(item)"
             :value="dataMap[item].type"
             :excludes="excludes"
             @change="typeChange($event, item)" />
           <Select
             style="flex: 0 0 calc((100% - 32px)/7);"
-            placeholder="断言条件"
-            title="断言条件"
+            :placeholder="t('jdbcPlugin.UIConfigJdbc.assertionForm.assertionConditionPlaceholder')"
+            :title="t('jdbcPlugin.UIConfigJdbc.assertionForm.assertionCondition')"
             class="flex-1"
             :disabled="!dataMap[item].type"
             :error="conditionErrorSet.has(item)"
@@ -406,7 +409,7 @@ defineExpose({
             @change="conditionChange($event, item)" />
           <template v-if="EXPRESSION_CONDITIONS.includes(dataMap[item].assertionCondition)">
             <Tooltip
-              title="表达式格式错误"
+              :title="t('jdbcPlugin.UIConfigJdbc.assertionForm.expressionFormatError')"
               placement="top"
               destroyTooltipOnHide
               :visible="expressionErrorSet.has(item)">
@@ -420,8 +423,8 @@ defineExpose({
                 @change="expressionChange($event, item)" />
             </Tooltip>
             <Input
-              placeholder="匹配项，范围0~2000（可选）"
-              title="匹配项"
+              :placeholder="t('jdbcPlugin.UIConfigJdbc.assertionForm.matchItemPlaceholder')"
+               :title="t('jdbcPlugin.UIConfigJdbc.assertionForm.matchItem')"
               trim
               dataType="number"
               style="flex: 0 0 calc((100% - 32px)/7);"
@@ -432,8 +435,8 @@ defineExpose({
           </template>
           <template v-else>
             <Input
-              placeholder="期望值"
-              title="期望值"
+              :placeholder="t('jdbcPlugin.UIConfigJdbc.assertionForm.expectedValuePlaceholder')"
+              :title="t('jdbcPlugin.UIConfigJdbc.assertionForm.expectedValue')"
               style="flex: 0 0 calc((100% - 32px)/7*2);"
               trim
               :disabled="EXPECTED_DISABLED.includes(dataMap[item].assertionCondition)"
@@ -449,8 +452,8 @@ defineExpose({
             class="flex items-center space-x-2">
             <Input
               class="flex-1"
-              placeholder="期望值（可选）"
-              title="期望值"
+              :placeholder="t('jdbcPlugin.UIConfigJdbc.assertionForm.expectedValueOptional')"
+              :title="t('jdbcPlugin.UIConfigJdbc.assertionForm.expectedValue')"
               trim
               :value="dataMap[item].expected"
               :error="expectedErrorSet.has(item)"
@@ -458,8 +461,8 @@ defineExpose({
             <ExpectedPopover class="flex-shrink-0" />
           </div>
           <Input
-            placeholder="描述（800字符，可选）"
-            title="描述（800字符，可选）"
+            :placeholder="t('jdbcPlugin.UIConfigJdbc.assertionForm.descriptionPlaceholder')"
+            :title="t('jdbcPlugin.UIConfigJdbc.assertionForm.description')"
             type="textarea"
             trim
             :value="dataMap[item].description"

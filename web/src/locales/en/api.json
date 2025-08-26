@@ -90,6 +90,216 @@
       "priority": "Priority"
     }
   },
+  "design": {
+    "home": {
+      "introduceTitle": "About Design",
+      "introduceContent": "Interface design for OpenAPI specifications, meeting the needs of interface testing and documentation generation. The graphical interface is suitable for users unfamiliar with OpenAPI specifications, while users familiar with OpenAPI specifications are recommended to use Swagger Editor for more efficient design completion.",
+      "tabTitle": "Design",
+      "title": "Added Designs",
+      "noDataTip": "No designs added yet, ",
+      "add_action": "Add Design",
+      "design_action": "Design",
+      "generateService_action": "Generate Service",
+      "import_service_action": "Import Service",
+      "import_design_action": "Import Design",
+      "refresh_action": "Refresh",
+      "designByMe": "Designed by Me",
+      "importSuccess": "Import Successful",
+      "released": "Released",
+      "unreleased": "Draft",
+      "searchPanel": {
+        "name_placeholder": "Search name, description",
+        "created_placeholder": "Select creator",
+        "data_placeholder1": "Created time from",
+        "data_placeholder2": "Created time to"
+      },
+      "columns": {
+        "name": "Name",
+        "openapiSpecVersion": "Specification Version",
+        "status": "Status",
+        "designSource": "Source",
+        "designService": "Associated Service",
+        "createdBy": "Creator",
+        "createdDate": "Created Date",
+        "lastModifiedBy": "Last Modified By",
+        "lastModifiedDate": "Last Modified Date",
+        "actions": "Actions"
+      }
+    },
+    "importServiceModal": {
+      "title": "Import Service",
+      "serviceLabel": "Service",
+      "servicePlaceholder": "Please select associated service"
+    },
+    "importDesignModal": {
+      "title": "Import Design",
+      "nameLabel": "Name",
+      "namePlaceholder": "Enter design name, limited to 100 characters",
+      "fileLabel": "File",
+      "fileRule": "Please upload file",
+      "uploadFile": "Upload File",
+      "uploadTip": "Click to upload Swagger2.0, OpenAPI3.x files, file size not exceeding 20M"
+    },
+    "exportModal": {
+      "title": "Export",
+      "formatLabel": "Format"
+    },
+    "editModal": {
+      "editTitle": "Edit Design",
+      "addTitle": "Add Design",
+      "nameLabel": "Name",
+      "namePlaceholder": "Enter design name, maximum 100 characters",
+      "versionLabel": "Version",
+      "versionPlaceholder": "OpenAPI document specification version number, default 3.0.1."
+    },
+    "detail": {
+      "saveSuccess": "Saved Successfully",
+      "publishSuccess": "Published Successfully",
+      "saveAction": "Save Draft",
+      "publishAction": "Publish Design",
+      "modifyTip": "Last modified at {time}"
+    }
+
+  },
+  "mock": {
+    "starting": "Starting",
+    "startSuccess": "Started Successfully",
+    "startFail": "Start Failed, please try to restart",
+    "batchStartFail": "Batch Start Failed",
+    "startPending": "Starting",
+    "serviceStartSuccess": "Service Started Successfully",
+    "deleteTip": "Confirm deletion?",
+    "deleteSuccess": "Deleted Successfully",
+    "batchDelSuccess": "Batch Deleted Successfully",
+    "start_fail": "Start Failed",
+    "start_success": "Started Successfully",
+    "stop_fail": "Stop Failed",
+    "stop_success": "Stopped Successfully",
+    "in_starting": "Starting",
+    "refreshInstance_tip": "Refreshing the instance will forcibly synchronize service configuration, interface security, CORS settings and Mock interfaces to the running service instance.",
+    "refreshInstance_success": "Instance Refreshed Successfully",
+          "searchPanel": {
+        "namePlaceholder": "Search service ID, name",
+        "nodeIpPlaceholder": "Search service IP",
+        "sourcePlaceholder": "Select source",
+        "nodeIdPlaceholder": "Select or search node",
+        "createdByPlaceholder": "Select creator",
+        "createdDatePlaceholder1": "Created time from",
+        "createdDatePlaceholder2": "Created time to"
+      },
+          "columns": {
+        "id": "Service ID",
+        "name": "Service Name",
+        "node": "Node",
+        "address": "Service Address",
+        "status": "Status",
+        "source": "Source",
+        "createdBy": "Creator",
+        "lastModifiedBy": "Last Updated By",
+        "createdDate": "Created Date",
+        "lastModifiedDate": "Updated Date",
+        "action": "Actions"
+      },
+          "actions": {
+        "delete": "Force Delete",
+        "authority": "Permissions",
+        "refresh": "Refresh Instance",
+        "addMock": "Add Mock Service",
+        "start": "Start",
+        "stop": "Stop"
+      },
+          "auth": {
+        "title": "Service Permissions",
+        "onTips": "After enabling permission control, manual authorization is required to have corresponding operation permissions.",
+        "offTips": "No permission restrictions, all users in the account can view and operate, permission control is not enabled by default."
+      },
+          "introduce": {
+        "description": "Mock can quickly generate and simulate dependent APIs, enabling development and testing to proceed in parallel, achieving faster development, more comprehensive testing, and earlier delivery of stable products or applications. Mock also avoids dirty data issues caused by direct integration with production systems.",
+        "addMockService": "Add Mock Service",
+        "addMockService_desc": "After adding Mock service, Mock interfaces need to be added manually",
+        "importService": "Import Associated Existing Service",
+        "importService_desc": "Add based on existing interface services, users can select interfaces that need Mock, after adding, the system will automatically establish association with interface services.",
+        "importFile": "Import Mock from File",
+              "importFile_desc": "Create Mock service and import interfaces based on Swagger2.0, OpenAPI3.x, Postman2.0, Postman2.1, Angus format data."
+    }
+  },
+  "server": {
+    "home": {
+      "tabTitle": "Servers",
+      "newTab": "Add Server",
+      "searchPanel": {
+        "descriptionPlaceholder": "Search description",
+        "servicePlaceholder": "Select service"
+      },
+      "title": "Added Servers",
+      "addTip": "Added {add}, maximum {max} allowed.",
+      "emptyTip": "No servers added yet, ",
+      "actions": {
+        "addServer": "Add Server",
+        "updateToApi": "Update to Associated APIs"
+      },
+      "hasVariable": "Has Variables",
+      "hasNoVariable": "No Variables",
+      "serviceBelong": "Associated Service",
+      "cloneSuccess": "Cloned Successfully",
+      "updateSuccess": "Updated to Associated APIs Successfully",
+      "noDescTip": "No description~",
+      "deleteTip": "Confirm deletion of this server?"
+    },
+    "detail": {
+      "deleteTip": "Confirm deletion of server?",
+      "copyLinkSuccess": "Link copied successfully",
+      "copyLinkFail": "Link copy failed",
+      "serverExample": "Server Example",
+      "copyLink": "Copy Link",
+      "serverTip": "Server URL already exists, please re-enter",
+      "serverVariableTip": "Variables in Server URL cannot be repeated",
+      "variableNameTip": "Variable name is duplicated",
+      "variableValueTip": "Variable value is duplicated",
+      "serverConfigTip": "Server configuration error, please check and correct before saving.",
+      "urlPlaceholder": "URL prefix pointing to target host, e.g.: https://{env}.xcan.cloud:{prot}/{path}",
+      "serverLabel": "Service",
+      "serverPlaceholder": "Select service",
+      "serverServiceTip": "Server associated interface service",
+      "descLabel": "Description",
+      "descPlaceholder": "Server description, maximum 400 characters",
+      "variableTitle": "Variables",
+      "variableLabel": "Name",
+      "variableNameTip1": "Variable name cannot be duplicated",
+      "variableTip": "Maximum 50 variables can be added",
+      "variablePlaceholder": "Variable name, maximum 100 characters",
+      "addVariable": "Add Variable",
+      "deleteVariable": "Delete Variable",
+      "variableValueLabel": "Value",
+      "variableValueTip1": "Values of the same variable cannot be duplicated",
+      "variableValuePlaceholder": "Variable value, maximum 400 characters",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Variable description, maximum 400 characters",
+      "variableDefault": "Default"
+    },
+
+    "introduce": {
+      "title": "About Servers",
+      "description1": "Define the servers and server-related dynamic parts of the API, including two parts: server and variables. The server field is used to specify the server list of the API, each server has a URL and optional description information, indicating the base path of the API.",
+      "description2": "Variables are used to define dynamic parts in URLs. It allows the use of placeholders in server URLs, which can be replaced with actual values in different environments. The main benefits are as follows:",
+      "integration": {
+        "title": "Easy Integration with CICD",
+        "description": "In continuous integration and continuous deployment workflows, defined servers can help automate testing processes, making API endpoints in different environments flexibly configurable, meeting DevOps requirements."
+      },
+      "env": {
+        "title": "Support Multiple Environments",
+        "description": "Support different environments (such as development, testing, production, etc.) by defining multiple servers or through different variable values. This enables developers to easily switch environments without manually changing URLs in code."
+      },
+      "version": {
+        "title": "Support Version Control",
+        "description": "In different versions of APIs, different servers or variable values can be defined to manage and maintain versions. Different versions of servers can be clearly distinguished in documentation to avoid confusion."
+      },
+      "url": {
+        "description": "Complete URL, server, and endpoint relationship",
+        "title": "Complete URL (path)"
+      }
+    }
+  },
   "service": {
     "serverConfig": {
       "title": "Server Configuration",

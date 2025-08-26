@@ -1,121 +1,126 @@
-export const allCvsKeys = ['duration', 'errors', 'iterations', 'n', 'operations', 'transactions', 'readBytes', 'writeBytes', 'ops', 'tps', 'brps', 'bwps', 'tranMean', 'tranMin', 'tranMax', 'tranP50', 'tranP75', 'tranP90', 'tranP95', 'tranP99', 'tranP999', 'errorRate', 'threadPoolSize', 'threadPoolActiveSize', 'threadMaxPoolSize'];
+import { i18n } from '@xcan-angus/infra';
+const I18nInstance = i18n.getI18n();
+const t = I18nInstance?.global?.t || ((value: string):string => value);
+
+export const allCvsKeys = ['duration', 'errors', 'iterations', 'n', 'operations', 'transactions', 'readBytes', 'writeBytes', 'ops', 'minOps', 'maxOps', 'meanOps', 'tps', 'minTps', 'maxTps', 'meanTps', 'brps', 'minBrps', 'maxBrps', 'meanBrps', 'bwps', 'minBwps', 'maxBwps', 'meanBwps', 'tranMean', 'tranMin', 'tranMax', 'tranP50', 'tranP75', 'tranP90', 'tranP95', 'tranP99', 'tranP999', 'errorRate', 'threadPoolSize', 'threadPoolActiveSize', 'threadMaxPoolSize'];
+
 export const allCvsNames = {
-  duration: '时长',
-  errors: '错误数',
-  iterations: '迭代数',
-  n: '采样数',
-  operations: '请求数',
-  transactions: '事务数',
-  readBytes: '读数据大小',
-  writeBytes: '写数据大小',
-  ops: '每秒查询数',
-  tps: '每秒事务数',
-  brps: '下载/秒',
-  bwps: '上传/秒',
-  tranMean: '平均',
-  tranMin: '最小',
-  tranMax: '最大',
-  tranP50: 'P50',
-  tranP75: 'P75',
-  tranP90: 'P90',
-  tranP95: 'P95',
-  tranP99: 'P99',
-  tranP999: 'P999',
-  errorRate: '错误率',
-  threadPoolSize: '线程数',
-  threadPoolActiveSize: '活跃线程数',
-  threadMaxPoolSize: '最大线程数'
+  duration: t('commonPlugin.chartConfig.names.duration'),
+  errors: t('commonPlugin.chartConfig.names.errors'),
+  iterations: t('commonPlugin.chartConfig.names.iterations'),
+  n: t('commonPlugin.chartConfig.names.n'),
+  operations: t('commonPlugin.chartConfig.names.operations'),
+  transactions: t('commonPlugin.chartConfig.names.transactions'),
+  readBytes: t('commonPlugin.chartConfig.names.readBytes'),
+  writeBytes: t('commonPlugin.chartConfig.names.writeBytes'),
+  ops: t('commonPlugin.chartConfig.names.ops'),
+  tps: t('commonPlugin.chartConfig.names.tps'),
+  brps: t('commonPlugin.chartConfig.names.brps'),
+  bwps: t('commonPlugin.chartConfig.names.bwps'),
+  tranMean: t('commonPlugin.chartConfig.names.tranMean'),
+  tranMin: t('commonPlugin.chartConfig.names.tranMin'),
+  tranMax: t('commonPlugin.chartConfig.names.tranMax'),
+  tranP50: t('commonPlugin.chartConfig.names.tranP50'),
+  tranP75: t('commonPlugin.chartConfig.names.tranP75'),
+  tranP90: t('commonPlugin.chartConfig.names.tranP90'),
+  tranP95: t('commonPlugin.chartConfig.names.tranP95'),
+  tranP99: t('commonPlugin.chartConfig.names.tranP99'),
+  tranP999: t('commonPlugin.chartConfig.names.tranP999'),
+  errorRate: t('commonPlugin.chartConfig.names.errorRate'),
+  threadPoolSize: t('commonPlugin.chartConfig.names.threadPoolSize'),
+  threadPoolActiveSize: t('commonPlugin.chartConfig.names.threadPoolActiveSize'),
+  threadMaxPoolSize: t('commonPlugin.chartConfig.names.threadMaxPoolSize')
 };
 
 export const allColumns = [
   {
-    title: '名称',
+    title: t('commonPlugin.chartConfig.columns.name'),
     dataIndex: 'name',
     width: '8%',
     ellipsis: true
   },
   {
-    title: '采样数',
+    title: t('commonPlugin.chartConfig.names.n'),
     dataIndex: 'n',
     width: '6%'
   },
   {
-    title: '请求数',
+    title: t('commonPlugin.chartConfig.names.operations'),
     dataIndex: 'operations',
     width: '6%'
   },
   {
-    title: '事务数',
+    title: t('commonPlugin.chartConfig.names.transactions'),
     dataIndex: 'transactions',
     width: '6%'
   },
   {
-    title: '平均',
+    title: t('commonPlugin.chartConfig.names.tranMean'),
     dataIndex: 'tranMean',
     width: '5%'
   },
   {
-    title: '最小',
+    title: t('commonPlugin.chartConfig.names.tranMin'),
     dataIndex: 'tranMin',
     width: '5%'
   },
   {
-    title: '最大',
+    title: t('commonPlugin.chartConfig.names.tranMax'),
     dataIndex: 'tranMax',
     width: '5%'
   },
   {
-    title: 'P50',
+    title: t('commonPlugin.chartConfig.names.tranP50'),
     dataIndex: 'tranP50',
     width: '5%'
   },
   {
-    title: 'P75',
+    title: t('commonPlugin.chartConfig.names.tranP75'),
     dataIndex: 'tranP75',
     width: '5%'
   },
   {
-    title: 'P90',
+    title: t('commonPlugin.chartConfig.names.tranP90'),
     dataIndex: 'tranP90',
     width: '5%'
   },
   {
-    title: 'P99',
+    title: t('commonPlugin.chartConfig.names.tranP99'),
     dataIndex: 'tranP99',
     width: '5%'
   },
   {
-    title: 'P999',
+    title: t('commonPlugin.chartConfig.names.tranP999'),
     dataIndex: 'tranP999',
     width: '5%'
   },
   {
-    title: '每秒查询数',
+    title: t('commonPlugin.chartConfig.names.ops'),
     dataIndex: 'ops',
     width: '5%'
   },
   {
-    title: '每秒事务数',
+    title: t('commonPlugin.chartConfig.names.tps'),
     dataIndex: 'tps',
     width: '5%'
   },
   {
-    title: '错误数',
+    title: t('commonPlugin.chartConfig.names.errors'),
     dataIndex: 'errors',
     width: '5%'
   },
   {
-    title: '错误率',
+    title: t('commonPlugin.chartConfig.names.errorRate'),
     dataIndex: 'errorRate',
     width: '5%'
   },
   {
-    title: '下载/秒',
+    title: t('commonPlugin.chartConfig.columns.downloadPerSecond'),
     dataIndex: 'brps',
     width: '7%'
   },
   {
-    title: '上传/秒',
+    title: t('commonPlugin.chartConfig.columns.uploadPerSecond'),
     dataIndex: 'bwps',
     width: '7%'
   }
@@ -123,52 +128,52 @@ export const allColumns = [
 
 export const allResponseTimeColumns = [
   {
-    title: '名称',
+    title: t('commonPlugin.chartConfig.columns.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '平均',
+    title: t('commonPlugin.chartConfig.names.tranMean'),
     dataIndex: 'tranMean',
     width: '9.5%'
   },
   {
-    title: '最小',
+    title: t('commonPlugin.chartConfig.names.tranMin'),
     dataIndex: 'tranMin',
     width: '9.5%'
   },
   {
-    title: '最大',
+    title: t('commonPlugin.chartConfig.names.tranMax'),
     dataIndex: 'tranMax',
     width: '9.5%'
   },
   {
-    title: 'P50',
+    title: t('commonPlugin.chartConfig.names.tranP50'),
     dataIndex: 'tranP50',
     width: '9.5%'
   },
   {
-    title: 'P75',
+    title: t('commonPlugin.chartConfig.names.tranP75'),
     dataIndex: 'tranP75',
     width: '9.5%'
   },
   {
-    title: 'P90',
+    title: t('commonPlugin.chartConfig.names.tranP90'),
     dataIndex: 'tranP90',
     width: '9.5%'
   },
   {
-    title: 'P95',
+    title: t('commonPlugin.chartConfig.names.tranP95'),
     dataIndex: 'tranP95',
     width: '9.5%'
   },
   {
-    title: 'P99',
+    title: t('commonPlugin.chartConfig.names.tranP99'),
     dataIndex: 'tranP99',
     width: '9.5%'
   },
   {
-    title: 'P999',
+    title: t('commonPlugin.chartConfig.names.tranP999'),
     dataIndex: 'tranP999',
     width: '9.5%'
   }
@@ -176,117 +181,143 @@ export const allResponseTimeColumns = [
 
 export const allErrorsColumns = [
   {
-    title: '名称',
+    title: t('commonPlugin.chartConfig.columns.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '错误数',
-    dataIndex: 'errors',
-    width: '66%'
+    title: t('commonPlugin.chartConfig.names.errors'),
+    dataIndex: 'errors'
   }
 ];
 
 export const allErrorRateColumns = [
   {
-    title: '名称',
+    title: t('commonPlugin.chartConfig.columns.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '错误率',
-    dataIndex: 'errorRate',
-    width: '66%'
+    title: t('commonPlugin.chartConfig.names.errorRate'),
+    dataIndex: 'errorRate'
   }
 ];
 
 export const allUploadColumns = [
   {
-    title: '名称',
+    title: t('commonPlugin.chartConfig.columns.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '下载/秒',
+    title: t('commonPlugin.chartConfig.columns.downloadPerSecond'),
     dataIndex: 'brps',
-    width: '33%'
+    width: '40%'
   },
   {
-    title: '上传/秒',
+    title: t('commonPlugin.chartConfig.columns.uploadPerSecond'),
     dataIndex: 'bwps',
-    width: '33%'
+    width: '40%'
+  }
+];
+
+export const oneUploadColumns = [
+  {
+    title: t('commonPlugin.chartConfig.columns.name'),
+    dataIndex: 'name',
+    ellipsis: true
+  },
+  {
+    title: t('commonPlugin.chartConfig.columns.downloadPerSecondWithStats'),
+    dataIndex: 'brps',
+    width: '40%'
+  },
+  {
+    title: t('commonPlugin.chartConfig.columns.uploadPerSecondWithStats'),
+    dataIndex: 'bwps',
+    width: '40%'
   }
 ];
 
 export const allRowsColumns = [
   {
-    title: '名称',
+    title: t('commonPlugin.chartConfig.columns.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '迭代数',
+    title: t('commonPlugin.chartConfig.names.iterations'),
     dataIndex: 'iterations',
     width: '25%'
   },
   {
-    title: '事务数',
+    title: t('commonPlugin.chartConfig.names.transactions'),
     dataIndex: 'transactions',
     width: '25%'
   },
   {
-    title: '错误数',
+    title: t('commonPlugin.chartConfig.names.errors'),
     dataIndex: 'errors',
     width: '25%'
   }
 ];
 
-export const throughputCvsKeys = ['ops', 'tps', 'brps', 'bwps'];
+export const throughputCvsKeys = ['ops', 'minOps', 'maxOps', 'meanOps', 'tps', 'minTps', 'maxTps', 'meanTps'];
 
 export const throughputOptions = [
   {
-    label: '每秒查询数',
+    label: t('commonPlugin.chartConfig.names.ops'),
     value: 'ops'
   },
   {
-    label: '每秒事务数',
+    label: t('commonPlugin.chartConfig.names.tps'),
     value: 'tps'
+  }
+];
+
+export const oneThroughputColumns = [
+  {
+    title: t('commonPlugin.chartConfig.columns.name'),
+    dataIndex: 'name',
+    ellipsis: true
   },
   {
-    label: '下载/秒',
-    value: 'brps'
+    title: t('commonPlugin.chartConfig.columns.current'),
+    dataIndex: 'tps',
+    width: '20%'
   },
   {
-    label: '上传/秒',
-    value: 'bwps'
+    title: t('commonPlugin.chartConfig.names.tranMin'),
+    dataIndex: 'minTps',
+    width: '20%'
+  },
+  {
+    title: t('commonPlugin.chartConfig.names.tranMax'),
+    dataIndex: 'maxTps',
+    width: '20%'
+  },
+  {
+    title: t('commonPlugin.chartConfig.names.tranMean'),
+    dataIndex: 'meanTps',
+    width: '20%'
   }
 ];
 
 export const throughputColumns = [
   {
-    title: '名称',
+    title: t('commonPlugin.chartConfig.columns.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '每秒查询数',
+    title: t('commonPlugin.chartConfig.columns.opsWithStats'),
     dataIndex: 'ops',
-    width: '16.5%'
+    width: '40%'
   },
   {
-    title: '每秒事务数',
+    title: t('commonPlugin.chartConfig.columns.tpsWithStats'),
     dataIndex: 'tps',
-    width: '16.5%'
-  },
-  {
-    title: '下载/秒',
-    dataIndex: 'brps',
-    width: '16.5%'
-  },
-  {
-    title: '上传/秒',
-    dataIndex: 'bwps',
-    width: '16.5%'
+    width: '40%'
   }
 ];
 
@@ -294,37 +325,37 @@ export const threadCvsKeys = ['threadPoolSize', 'threadPoolActiveSize', 'threadM
 
 export const threadOptions = [
   {
-    label: '线程数',
+    label: t('commonPlugin.chartConfig.names.threadPoolSize'),
     value: 'threadPoolSize'
   },
   {
-    label: '活跃线程数',
+    label: t('commonPlugin.chartConfig.names.threadPoolActiveSize'),
     value: 'threadPoolActiveSize'
   },
   {
-    label: '最大线程数',
+    label: t('commonPlugin.chartConfig.names.threadMaxPoolSize'),
     value: 'threadMaxPoolSize'
   }
 ];
 
 export const threadColumns = [
   {
-    title: '名称',
+    title: t('commonPlugin.chartConfig.columns.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '线程数',
+    title: t('commonPlugin.chartConfig.names.threadPoolSize'),
     dataIndex: 'threadPoolSize',
     width: '22%'
   },
   {
-    title: '活跃线程数',
+    title: t('commonPlugin.chartConfig.names.threadPoolActiveSize'),
     dataIndex: 'threadPoolActiveSize',
     width: '22%'
   },
   {
-    title: '最大线程数',
+    title: t('commonPlugin.chartConfig.names.threadMaxPoolSize'),
     dataIndex: 'threadMaxPoolSize',
     width: '22%'
   }
@@ -334,91 +365,91 @@ export const responseTimeCvsKeys = ['tranMean', 'tranMin', 'tranMax', 'tranP50',
 
 export const responseTimeOptions = [
   {
-    label: '平均',
+    label: t('commonPlugin.chartConfig.names.tranMean'),
     value: 'tranMean'
   },
   {
-    label: '最小',
+    label: t('commonPlugin.chartConfig.names.tranMin'),
     value: 'tranMin'
   },
   {
-    label: '最大',
+    label: t('commonPlugin.chartConfig.names.tranMax'),
     value: 'tranMax'
   },
   {
-    label: 'P50',
+    label: t('commonPlugin.chartConfig.names.tranP50'),
     value: 'tranP50'
   },
   {
-    label: 'P75',
+    label: t('commonPlugin.chartConfig.names.tranP75'),
     value: 'tranP75'
   },
   {
-    label: 'P90',
+    label: t('commonPlugin.chartConfig.names.tranP90'),
     value: 'tranP90'
   },
   {
-    label: 'P95',
+    label: t('commonPlugin.chartConfig.names.tranP95'),
     value: 'tranP95'
   },
   {
-    label: 'P99',
+    label: t('commonPlugin.chartConfig.names.tranP99'),
     value: 'tranP99'
   },
   {
-    label: 'P999',
+    label: t('commonPlugin.chartConfig.names.tranP999'),
     value: 'tranP999'
   }
 ];
 
 export const responseTimeColumns = [
   {
-    title: '名称',
+    title: t('commonPlugin.chartConfig.columns.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '平均',
+    title: t('commonPlugin.chartConfig.names.tranMean'),
     dataIndex: 'tranMean',
     width: '8%'
   },
   {
-    title: '最小',
+    title: t('commonPlugin.chartConfig.names.tranMin'),
     dataIndex: 'tranMin',
     width: '8%'
   },
   {
-    title: '最大',
+    title: t('commonPlugin.chartConfig.names.tranMax'),
     dataIndex: 'tranMax',
     width: '8%'
   },
   {
-    title: 'P50',
+    title: t('commonPlugin.chartConfig.names.tranP50'),
     dataIndex: 'tranP50',
     width: '8%'
   },
   {
-    title: 'P75',
+    title: t('commonPlugin.chartConfig.names.tranP75'),
     dataIndex: 'tranP75',
     width: '8%'
   },
   {
-    title: 'P90',
+    title: t('commonPlugin.chartConfig.names.tranP90'),
     dataIndex: 'tranP90',
     width: '8%'
   },
   {
-    title: 'P95',
+    title: t('commonPlugin.chartConfig.names.tranP95'),
     dataIndex: 'tranP95',
     width: '8%'
   },
   {
-    title: 'P99',
+    title: t('commonPlugin.chartConfig.names.tranP99'),
     dataIndex: 'tranP99',
     width: '8%'
   },
   {
-    title: 'P999',
+    title: t('commonPlugin.chartConfig.names.tranP999'),
     dataIndex: 'tranP999',
     width: '8%'
   }
@@ -428,54 +459,54 @@ export const errorCvsKeys = ['errors', 'n', 'operations', 'transactions', 'error
 
 export const errorOptions = [
   {
-    label: '采样数',
+    label: t('commonPlugin.chartConfig.names.n'),
     value: 'n'
   },
   {
-    label: '请求数',
+    label: t('commonPlugin.chartConfig.names.operations'),
     value: 'operations'
   },
   {
-    label: '事务数',
+    label: t('commonPlugin.chartConfig.names.transactions'),
     value: 'transactions'
   },
   {
-    label: '错误数',
+    label: t('commonPlugin.chartConfig.names.errors'),
     value: 'errors'
   },
   {
-    label: '错误率',
+    label: t('commonPlugin.chartConfig.names.errorRate'),
     value: 'errorRate'
   }
 ];
 export const errorColumns = [
   {
-    title: '名称',
+    title: t('commonPlugin.chartConfig.columns.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '采样数',
+    title: t('commonPlugin.chartConfig.names.n'),
     dataIndex: 'n',
     width: '12%'
   },
   {
-    title: '请求数',
+    title: t('commonPlugin.chartConfig.names.operations'),
     dataIndex: 'operations',
     width: '12%'
   },
   {
-    title: '事务数',
+    title: t('commonPlugin.chartConfig.names.transactions'),
     dataIndex: 'transactions',
     width: '12%'
   },
   {
-    title: '错误数',
+    title: t('commonPlugin.chartConfig.names.errors'),
     dataIndex: 'errors',
     width: '12%'
   },
   {
-    title: '错误率',
+    title: t('commonPlugin.chartConfig.names.errorRate'),
     dataIndex: 'errorRate',
     width: '12%'
   }
@@ -483,27 +514,27 @@ export const errorColumns = [
 
 export const oneApiErrorColumns = [
   {
-    title: '名称',
+    title: t('commonPlugin.chartConfig.columns.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '采样数',
+    title: t('commonPlugin.chartConfig.names.n'),
     dataIndex: 'n',
     width: '15%'
   },
   {
-    title: '事务数',
+    title: t('commonPlugin.chartConfig.names.transactions'),
     dataIndex: 'transactions',
     width: '15%'
   },
   {
-    title: '错误数',
+    title: t('commonPlugin.chartConfig.names.errors'),
     dataIndex: 'errors',
     width: '15%'
   },
   {
-    title: '错误率',
+    title: t('commonPlugin.chartConfig.names.errorRate'),
     dataIndex: 'errorRate',
     width: '15%'
   }
