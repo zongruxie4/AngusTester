@@ -1770,6 +1770,109 @@
         "selectFile": "Select File"
       }
     }
+  },
+  "tcpPlugin": {
+    "notifications": {
+      "debugSaveRequired": "Debug requires saving current data first, please save before executing debug",
+      "autoSaveSuccess": "Auto save successful, executing debug...",
+      "createTestSuccess": "Create 'Execute Test' successful, please view details and results in 'Execute'",
+      "saveSuccess": "Save successful",
+      "followSuccess": "Follow successful",
+      "cancelFollowSuccess": "Cancel follow successful",
+      "favouriteSuccess": "Favorite successful",
+      "cancelFavouriteSuccess": "Cancel favorite successful",
+      "taskConfigError": "Task configuration data error, please check and correct before saving.",
+      "executeConfigError": "Execute configuration data error, please check and correct before saving.",
+      "parameterError": "Parameter error"
+    },
+    "comments": {
+      "selectModalVisible": "Select script modal",
+      "uploadVisible": "Import script modal",
+      "exportModalVisible": "Export script modal",
+      "authVisible": "Show permission modal",
+      "controller": "Instance for terminating requests",
+      "defaultViewMode": "Default display page view, new scenarios do not show [Execute Test] [Export Script], [Follow], [Cancel Follow], [Favorite], [Cancel Favorite], [Permission], [Refresh] buttons before saving",
+      "sceneConfigData": "Scenario detail information",
+      "rampUpInterval": "Ramp up interval",
+      "rampUpThreads": "Ramp up threads"
+    },
+    "permissions": {
+      "title": "Scenario Permissions",
+      "onTips": "After enabling 'Permission Control', manual authorization of service permissions is required to have scenario operation permissions. Permission control is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically granted.",
+      "offTips": "After enabling 'No Permission Control', all users will be allowed to publicly view and operate the current scenario. Users viewing must also have parent directory permissions for the current scenario."
+    },
+    "uiConfig": {
+      "title": "Insert FTP Request",
+      "description": "Supports orchestrating multiple FTP interfaces simultaneously, but only one FTP is allowed to be enabled for testing at a time.",
+      "comments": {
+        "onlyOneEnabled": "Only one can be enabled",
+        "cloneLocalFile": "Clone local file",
+        "checkCloneNameExists": "Check if clone name already exists"
+      },
+      "actions": {
+        "clone": "Clone",
+        "delete": "Delete"
+      },
+      "form": {
+        "nameDuplicate": "Name Duplicate",
+        "namePlaceholder": "Name, maximum 400 characters",
+        "descriptionPlaceholder": "Description, maximum 800 characters (optional)",
+        "none": "None"
+      },
+      "serverConfig": {
+        "hostnameOrIP": "Hostname or IP",
+        "hostnameOrIPPlaceholder": "Hostname or IP, maximum 4096 characters",
+        "port": "Port",
+        "portPlaceholder": "Port (1~65535)",
+        "username": "Username",
+        "usernamePlaceholder": "Username, maximum 400 characters",
+        "password": "Password",
+        "passwordPlaceholder": "Password, maximum 4096 characters",
+        "connectionTimeout": "Connection Timeout",
+        "connectionTimeoutPlaceholder": "Connection timeout, maximum 24 hours",
+        "readTimeout": "Read Timeout",
+        "readTimeoutPlaceholder": "Read timeout, maximum 24 hours"
+      },
+      "fileConfig": {
+        "localFilePath": "Local File Path",
+        "localFilePathPlaceholder": "Local file path, maximum 4096 characters",
+        "localFileNameTooltip": "Local file name, which is the name of the uploaded local file, can also be a complete local file path. Make sure the file has been uploaded to the corresponding execution node path.",
+        "remoteFileName": "Remote File Name",
+        "remoteFileNamePlaceholder": "Download remote FTP server file name, maximum 4096 characters",
+        "binaryFile": "Binary File",
+        "binaryFileTooltip": "Whether the uploaded file is a binary file",
+        "binaryMode": {
+          "yes": "Yes",
+          "no": "No"
+        }
+      },
+      "requestConfig": {
+        "title": "FTP Request Configuration",
+        "uploadDownload": "Upload/Download",
+        "upload": "Upload",
+        "download": "Download",
+        "uploadFileSource": "File Source",
+        "localFile": "Local File",
+        "remoteFile": "Remote File",
+        "remoteFileTooltip": "Download the corresponding file from the FTP service for upload",
+        "remoteUrl": "Remote URL",
+        "remoteFileUrlTooltip": "Download the file from the remote URL for upload",
+        "remoteFileUrl": "Remote File URL",
+        "remoteFileUrlPlaceholder": "Download the file from the remote URL for upload, maximum 4096 characters",
+        "remoteFileName": "Remote File Name",
+        "remoteFileNamePlaceholder": "Download remote FTP server file name, maximum 4096 characters",
+        "remoteFileUrlHints": "File name saved when uploading, if not specified, the original file name is used for storage, maximum 4096 characters",
+        "localFileContent": "Local File Content",
+        "localFileContentTooltip": "(File size limited to 1MB)"
+      },
+      "upload": {
+        "selectFile": "Select File",
+        "fileSizeLimit": "File size cannot exceed 1MB",
+        "selectFileTooltip": "Please select local file",
+        "code": "Code",
+        "fileEncoding": "File Encoding"
+      }
+    }
   }
 }
 
