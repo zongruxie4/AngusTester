@@ -2078,6 +2078,22 @@
           "activity": "Activity",
           "comment": "Comments"
         }
+      },
+      "utils": {
+        "timeUnits": {
+          "ms": "ms",
+          "s": "s",
+          "min": "min",
+          "h": "h",
+          "d": "d"
+        },
+        "formatTime": {
+          "milliseconds": "ms",
+          "seconds": "s",
+          "minutes": "min",
+          "hours": "h"
+        },
+        "defaultValue": "--"
       }
     }
   }

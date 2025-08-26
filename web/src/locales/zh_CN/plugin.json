@@ -2080,6 +2080,22 @@
           "activity": "活动",
           "comment": "评论"
         }
+      },
+      "utils": {
+        "timeUnits": {
+          "ms": "毫秒",
+          "s": "秒",
+          "min": "分钟",
+          "h": "小时",
+          "d": "天"
+        },
+        "formatTime": {
+          "milliseconds": "毫秒",
+          "seconds": "秒",
+          "minutes": "分",
+          "hours": "小时"
+        },
+        "defaultValue": "--"
       }
     }
 }
