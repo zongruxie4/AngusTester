@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
   serviceId: undefined,
   tips: undefined,
   okAction: undefined,
-  title: t('service.sidebar.execTest.title')
+  title: undefined
 });
 
 
@@ -182,6 +182,9 @@ const okButtonProps = computed(() => {
     disabled: false
   };
 });
+const modalTitle = computed(() => {
+  return props.title || t('service.sidebar.execTest.title');
+});
 </script>
 
 <template>
@@ -190,7 +193,7 @@ const okButtonProps = computed(() => {
     :width="750"
     :confirmLoading="confirmLoading"
     :okButtonProps="okButtonProps"
-    :title="props.title"
+    :title="modalTitle"
     @cancel="cancel"
     @ok="ok">
     <div class="leading-5">

@@ -5,7 +5,6 @@ import { Radio, RadioGroup, TypographyParagraph } from 'ant-design-vue';
 import { Colon, Icon, Modal, Select } from '@xcan-angus/vue-ui';
 import { TESTER, http, utils } from '@xcan-angus/infra';
 import { cloneDeep } from 'lodash-es';
-import { services } from '@/api/tester';
 
 const { t } = useI18n();
 
@@ -30,7 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
   scriptId: undefined,
   tips: undefined,
   okAction: undefined,
-  title: t('scenario.list.execTest.title')
+  title: undefined
 });
 
 // eslint-disable-next-line func-call-spacing
@@ -187,6 +186,9 @@ const okButtonProps = computed(() => {
     disabled: false
   };
 });
+const modalTitle = computed(() => {
+  return props.title || t('scenario.list.execTest.title');
+});
 </script>
 
 <template>
@@ -195,7 +197,7 @@ const okButtonProps = computed(() => {
     :width="750"
     :confirmLoading="confirmLoading"
     :okButtonProps="okButtonProps"
-    :title="props.title"
+    :title="modalTitle"
     @cancel="cancel"
     @ok="ok">
     <div class="leading-5">
