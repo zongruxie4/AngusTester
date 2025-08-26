@@ -99,6 +99,7 @@
     <xcan-angusapi.api.version>1.0.0</xcan-angusapi.api.version>
     <xcan-angusstorage.api.version>1.0.0</xcan-angusstorage.api.version>
     <xcan-angusess.api.version>1.0.0</xcan-angusess.api.version>
+    <xcan-angusexpense.api.version>1.0.0</xcan-angusexpense.api.version>
 
     <vngx-jsch.version>0.10</vngx-jsch.version>
   </properties>
@@ -183,6 +184,12 @@
         <groupId>cloud.xcan.angus</groupId>
         <artifactId>xcan-angusess.api</artifactId>
         <version>${xcan-angusess.api.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>cloud.xcan.angus</groupId>
+        <artifactId>xcan-angusexpense.api</artifactId>
+        <version>${xcan-angusexpense.api.version}</version>
       </dependency>
 
       <dependency>

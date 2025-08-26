@@ -107,6 +107,11 @@
     </dependency>
 
     <dependency>
+      <groupId>cloud.xcan.angus</groupId>
+      <artifactId>xcan-angusexpense.api</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>jakarta.servlet</groupId>
       <artifactId>jakarta.servlet-api</artifactId>
     </dependency>

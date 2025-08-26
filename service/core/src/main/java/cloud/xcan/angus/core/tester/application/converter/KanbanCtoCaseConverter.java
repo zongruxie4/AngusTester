@@ -175,11 +175,11 @@ public class KanbanCtoCaseConverter {
     return backloggedCaseCount;
   }
 
-  public static double calcDailyProcessedWorkload(List<FuncCaseEfficiencySummary> cases,
-      double default0) {
+  public static double calcDailyProcessedWorkload(
+      List<? extends FuncCaseEfficiencySummary> cases, double default0) {
     double dailyProcessedWorkload = default0;
     // Sort in ascending order by completion time
-    List<FuncCaseEfficiencySummary> completedCases = cases.stream()
+    List<? extends FuncCaseEfficiencySummary> completedCases = cases.stream()
         .filter(x -> x.getTestResult().isPassed() && nonNull(x.getTestResultHandleDate()))
         .sorted(Comparator.comparing(FuncCaseEfficiencySummary::getTestResultHandleDate))
         .toList();
@@ -190,7 +190,8 @@ public class KanbanCtoCaseConverter {
     return dailyProcessedWorkload < 0 ? DEFAULT_DAILY_WORKLOAD : dailyProcessedWorkload;
   }
 
-  public static long calcProcessedDays(List<FuncCaseEfficiencySummary> completedSortCases) {
+  public static long calcProcessedDays(
+      List<? extends FuncCaseEfficiencySummary> completedSortCases) {
     FuncCaseEfficiencySummary minStartCase = null;
     for (FuncCaseEfficiencySummary case0 : completedSortCases) {
       if (nonNull(case0.getCreatedDate()) // Exclude dirty data

@@ -206,7 +206,7 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
         // Initialize result map and determine time formatting strategy
         Map<DataAssetsLabel, List<DataAssetsTimeSeries>> gt = new LinkedHashMap<>();
         boolean createLessThanOneMonth = MONTHS.between(now(), projectDb.getCreatedDate()) < 1;
-        
+
         // Process different categories based on the specified category
         switch (category) {
           case FUNC: {
@@ -410,7 +410,7 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
       gt.put(DataAssetsLabel.PLAN,
           getTimeSeries(createdDateStart, createdDateEnd, planTimeSeries, createLessThanOneMonth));
     }
-    
+
     // Process functional cases time series
     List<IdAndCreatedDate> caseTimeSeries = funcCaseRepo.findProjectionByFilters(
         FuncCase.class, IdAndCreatedDate.class, caseFilters);
@@ -439,7 +439,7 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
     gt.put(DataAssetsLabel.SERVICES,
         getTimeSeries(createdDateStart, createdDateEnd, servicesTimeSeries,
             createLessThanOneMonth));
-            
+
     // Process APIs time series
     List<IdAndCreatedDate> apisTimeSeries = apisRepo.findProjectionByFilters(
         Apis.class, IdAndCreatedDate.class, apisFilters);
@@ -469,7 +469,7 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
         TaskSprint.class, IdAndCreatedDate.class, commonDeletedFilters);
     gt.put(DataAssetsLabel.TASK_SPRINT,
         getTimeSeries(createdDateStart, createdDateEnd, sprintTimeSeries, createLessThanOneMonth));
-        
+
     // Process task time series
     List<IdAndCreatedDate> taskTimeSeries = taskRepo.findProjectionByFilters(
         Task.class, IdAndCreatedDate.class, taskFilters);
@@ -496,12 +496,12 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
     // Retrieve scenario time series with type information
     List<ScenarioTimeSeries> scenarioTimeSeries = scenarioRepo.findProjectionByFilters(
         Scenario.class, ScenarioTimeSeries.class, filters);
-        
+
     // Process total scenarios
     gt.put(DataAssetsLabel.TOTAL, getTimeSeries(createdDateStart, createdDateEnd,
         scenarioTimeSeries.stream().map(x -> (IdAndCreatedDate) x).collect(
             Collectors.toList()), createLessThanOneMonth));
-            
+
     // Process scenarios by testing type
     gt.put(DataAssetsLabel.TEST_FUNCTIONALITY, getTimeSeries(createdDateStart, createdDateEnd,
         scenarioTimeSeries.stream().filter(x -> x.getScriptType().isFunctionalTesting())
@@ -534,12 +534,12 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
     // Retrieve script time series with type information
     List<ScriptTimeSeries> scriptTimeSeries = scriptRepo.findProjectionByFilters(
         Script.class, ScriptTimeSeries.class, filters);
-        
+
     // Process total scripts
     gt.put(DataAssetsLabel.TOTAL, getTimeSeries(createdDateStart, createdDateEnd,
         scriptTimeSeries.stream().map(x -> (IdAndCreatedDate) x)
             .toList(), createLessThanOneMonth));
-            
+
     // Process scripts by testing type
     gt.put(DataAssetsLabel.TEST_FUNCTIONALITY, getTimeSeries(createdDateStart, createdDateEnd,
         scriptTimeSeries.stream().filter(x -> x.getType().isFunctionalTesting())
@@ -571,25 +571,25 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
       boolean createLessThanOneMonth) {
     // Remove projectId filter for mock service queries
     CriteriaUtils.containsAndRemove(filters, "projectId");
-    
+
     // Process mock services time series
     List<IdAndCreatedDate> msTimeSeries = mockServiceRepo.findProjectionByFilters(
         MockService.class, IdAndCreatedDate.class, filters);
     gt.put(DataAssetsLabel.MOCK_SERVICE,
         getTimeSeries(createdDateStart, createdDateEnd, msTimeSeries, createLessThanOneMonth));
-        
+
     // Process mock APIs time series
     List<IdAndCreatedDate> maTimeSeries = mockApisRepo.findProjectionByFilters(
         MockApis.class, IdAndCreatedDate.class, filters);
     gt.put(DataAssetsLabel.MOCK_APIS,
         getTimeSeries(createdDateStart, createdDateEnd, maTimeSeries, createLessThanOneMonth));
-        
+
     // Process mock responses time series
     List<IdAndCreatedDate> masTimeSeries = mockApisResponseRepo.findProjectionByFilters(
         MockApisResponse.class, IdAndCreatedDate.class, filters);
     gt.put(DataAssetsLabel.MOCK_RESPONSE,
         getTimeSeries(createdDateStart, createdDateEnd, masTimeSeries, createLessThanOneMonth));
-        
+
     // Process mock pushback time series
     List<IdAndCreatedDate> mawTimeSeries = mockApisResponseRepo.findProjectionByFilters(
         MockApisResponse.class, IdAndCreatedDate.class, merge(filters, equal("pushback", 1)));
@@ -616,13 +616,13 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
         Variable.class, IdAndCreatedDate.class, filters);
     gt.put(DataAssetsLabel.DATA_VARIABLE,
         getTimeSeries(createdDateStart, createdDateEnd, varTimeSeries, createLessThanOneMonth));
-        
+
     // Process datasets time series
     List<IdAndCreatedDate> dsTimeSeries = datasetRepo.findProjectionByFilters(
         Dataset.class, IdAndCreatedDate.class, filters);
     gt.put(DataAssetsLabel.DATA_DATASET,
         getTimeSeries(createdDateStart, createdDateEnd, dsTimeSeries, createLessThanOneMonth));
-        
+
     // Process datasources time series
     List<IdAndCreatedDate> dssTimeSeries = datasourceRepo.findProjectionByFilters(
         Datasource.class, IdAndCreatedDate.class, filters);
@@ -643,9 +643,9 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
    * @return List of DataAssetsTimeSeries objects with formatted time data
    */
   public static List<DataAssetsTimeSeries> getTimeSeries(LocalDateTime startDate,
-      LocalDateTime endDate, List<IdAndCreatedDate> timeSeries, boolean createLessThanOneMonth) {
+      LocalDateTime endDate, List<? extends IdAndCreatedDate> timeSeries, boolean createLessThanOneMonth) {
     LocalDateTime safeEndDate = nullSafe(endDate, now());
-    
+
     // Determine date format based on project age and time range
     if (createLessThanOneMonth) {
       return getTimeSeriesByFormat(timeSeries, DEFAULT_DAY_FORMAT);
@@ -673,13 +673,13 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
     Map<Object, ? extends List<? extends IdAndCreatedDateBase<?>>> timeGroup = timeSeries.stream()
         .collect(groupingBy(x -> format(asDate(x.getCreatedDate()), format),
             Collectors.mapping(Function.identity(), Collectors.toList())));
-            
+
     // Convert grouped data to sorted map with counts
     Map<String, Integer> sortedTimeGroup = new TreeMap<>();
     for (Entry<Object, ? extends List<? extends IdAndCreatedDateBase<?>>> entry : timeGroup.entrySet()) {
       sortedTimeGroup.put(entry.getKey().toString(), entry.getValue().size());
     }
-    
+
     // Convert to DataAssetsTimeSeries objects
     return sortedTimeGroup.entrySet().stream()
         .map(x -> new DataAssetsTimeSeries(x.getKey(), x.getValue()))
@@ -716,7 +716,7 @@ public class KanbanDataAssetsQueryImpl implements KanbanDataAssetsQuery {
     allUserIds.addAll(mockApiCountMap.keySet());
     allUserIds.addAll(variableCountMap.keySet());
     allUserIds.addAll(datasetCountMap.keySet());
-    
+
     // Retrieve user information with privacy protection
     return userManager.getValidUserInfoMap(allUserIds).entrySet().stream().collect(Collectors.toMap(
         Entry::getKey, x -> x.getValue().toUserInfo().setMobile(null).setEmail(null)));
