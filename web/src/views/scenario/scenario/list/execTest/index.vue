@@ -17,7 +17,6 @@ type Props = {
   scriptId: string;
   tips: string;
   okAction: string;
-  title: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {

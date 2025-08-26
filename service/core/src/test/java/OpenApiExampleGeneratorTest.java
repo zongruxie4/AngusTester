@@ -1,4 +1,4 @@
-import cloud.xcan.angus.core.tester.infra.util.OpenAPIExampleGenerator;
+import cloud.xcan.angus.core.tester.infra.util.OpenApiExampleGenerator;
 import cloud.xcan.angus.spec.utils.JsonUtils;
 import io.swagger.parser.OpenAPIParser;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -28,7 +28,7 @@ public class OpenApiExampleGeneratorTest {
   @Test
   public void testExampleFromSchema() throws Exception {
     final Schema petSchema = openAPI.getComponents().getSchemas().get("Pet");
-    final OpenAPIExampleGenerator exampleGenerator = new OpenAPIExampleGenerator();
+    final OpenApiExampleGenerator exampleGenerator = new OpenApiExampleGenerator();
 
     final Object exampleList = exampleGenerator.getSchemaExample(openAPI, petSchema);
     System.out.println(JsonUtils.toJson(exampleList));
@@ -37,7 +37,7 @@ public class OpenApiExampleGeneratorTest {
   @Test
   public void testExampleWithRecursiveNodes() throws Exception {
     final Schema categorySchema = openAPI.getComponents().getSchemas().get("Category");
-    final OpenAPIExampleGenerator exampleGenerator = new OpenAPIExampleGenerator();
+    final OpenApiExampleGenerator exampleGenerator = new OpenApiExampleGenerator();
 
     final Object exampleList = exampleGenerator.getSchemaExample(openAPI, categorySchema);
     System.out.println(JsonUtils.toJson(exampleList));

@@ -13,7 +13,6 @@ type Props = {
   serviceId: string;
   tips: string;
   okAction: string;
-  title: string;
 }
 
 const { t } = useI18n();
@@ -27,7 +26,6 @@ const props = withDefaults(defineProps<Props>(), {
   okAction: undefined,
   title: undefined
 });
-
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
