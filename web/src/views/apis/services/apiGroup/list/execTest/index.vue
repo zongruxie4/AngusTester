@@ -17,7 +17,6 @@ type Props = {
   apiId:string;
   tips: string;
   okAction: string;
-  title: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -28,8 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
   serviceId: undefined,
   apiId: undefined,
   tips: undefined,
-  okAction: undefined,
-  title: t('service.serviceExecTest.title')
+  okAction: undefined
 });
 
 // eslint-disable-next-line func-call-spacing
@@ -209,7 +207,7 @@ const okButtonProps = computed(() => {
     :width="750"
     :confirmLoading="confirmLoading"
     :okButtonProps="okButtonProps"
-    :title="props.title"
+    :title="t('service.serviceExecTest.title')"
     @cancel="cancel"
     @ok="ok">
     <div class="leading-5">
