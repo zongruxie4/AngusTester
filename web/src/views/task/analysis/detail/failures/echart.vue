@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
 interface Props {
@@ -15,16 +16,18 @@ interface Props {
   }
 
 }
+const { t } = useI18n();
+
 const props = withDefaults(defineProps<Props>(), {
   chart0Value: () => ({
-    chart0Value: [0, 0, 0, 0, 0]
+    yData: [0, 0, 0, 0, 0]
   }),
   chart1Value: () => ({
-    chart0Value: [0, 0, 0, 0]
+    yData: [0, 0, 0, 0]
   }),
   chart2Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   })
 });
 
@@ -39,7 +42,7 @@ let failureLevelEchart;
 // 故障数
 const failureEchartConfig = {
   title: {
-    text: '故障数',
+    text: t('taskAnalysis.detail.failures.chartTitles.failureCount'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -54,7 +57,7 @@ const failureEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: ['总故障', '故障完成数', '故障逾期数', '一次性故障数', '两次故障数'],
+    data: [t('taskAnalysis.detail.failures.chartLabels.totalFailures'), t('taskAnalysis.detail.failures.chartLabels.completedFailures'), t('taskAnalysis.detail.failures.chartLabels.overdueFailures'), t('taskAnalysis.detail.failures.chartLabels.oneTimeFailures'), t('taskAnalysis.detail.failures.chartLabels.twoTimeFailures')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -87,7 +90,7 @@ const failureEchartConfig = {
 const failureTimeEchartConfig = JSON.parse(JSON.stringify({
   ...failureEchartConfig,
   title: {
-    text: '故事件(小时)',
+    text: t('taskAnalysis.detail.failures.chartTitles.failureTime'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -96,7 +99,7 @@ const failureTimeEchartConfig = JSON.parse(JSON.stringify({
   },
   xAxis: {
     ...failureEchartConfig.xAxis,
-    data: ['总故障时间', '平均故障时间', '最小故障时间', '最大故障时间']
+    data: [t('taskAnalysis.detail.failures.chartLabels.totalFailureTime'), t('taskAnalysis.detail.failures.chartLabels.averageFailureTime'), t('taskAnalysis.detail.failures.chartLabels.minFailureTime'), t('taskAnalysis.detail.failures.chartLabels.maxFailureTime')]
   },
   series: [
     {
@@ -118,7 +121,7 @@ const failureLevelEchartConfig = {
     left: '35%',
     top: '45%',
     padding: 2,
-    subtext: '缺陷等级',
+    subtext: t('taskAnalysis.detail.failures.chartTitles.failureLevel'),
     // left: '25%',
     // top: '40%',
     itemGap: 65,
@@ -171,28 +174,28 @@ const failureLevelEchartConfig = {
       },
       data: [
         {
-          name: '致命数',
+          name: t('taskAnalysis.detail.failures.pieChartLabels.criticalCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'
           }
         },
         {
-          name: '严重数',
+          name: t('taskAnalysis.detail.failures.pieChartLabels.majorCount'),
           value: 0,
           itemStyle: {
             color: 'gold'
           }
         },
         {
-          name: '一般数',
+          name: t('taskAnalysis.detail.failures.pieChartLabels.minorCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(255, 165, 43, 1)'
           }
         },
         {
-          name: '轻微数',
+          name: t('taskAnalysis.detail.failures.pieChartLabels.trivialCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(136, 185, 242, 1)'

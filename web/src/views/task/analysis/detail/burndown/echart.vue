@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
 interface Props {
@@ -12,6 +13,8 @@ interface Props {
     yData: [string|number[], string|number[]]
   };
 }
+const { t } = useI18n();
+
 const props = withDefaults(defineProps<Props>(), {
   chart0Data: () => ({
     xData: [],
@@ -62,12 +65,12 @@ const burndownEchartConfig = {
   },
   series: [
     {
-      name: '剩余',
+      name: t('taskAnalysis.detail.burndown.chartLabels.remaining'),
       data: [],
       type: 'line'
     },
     {
-      name: '期望',
+      name: t('taskAnalysis.detail.burndown.chartLabels.expected'),
       data: [],
       type: 'line',
       smooth: true
@@ -113,11 +116,11 @@ defineExpose({
   <div class="flex">
     <div class="flex-1">
       <div ref="burndownRef" class="flex-1 h-50"></div>
-      <div class="text-center font-medium  mt-1">任务燃尽数</div>
+      <div class="text-center font-medium  mt-1">{{ t('taskAnalysis.detail.burndown.chartTitles.taskBurndown') }}</div>
     </div>
     <div class="flex-1">
       <div ref="workloadBurndownRef" class="flex-1 h-50"></div>
-      <div class="text-center font-medium mt-1">工作量燃尽</div>
+      <div class="text-center font-medium mt-1">{{ t('taskAnalysis.detail.burndown.chartTitles.workloadBurndown') }}</div>
     </div>
   </div>
 </template>

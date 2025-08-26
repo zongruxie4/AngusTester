@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
 interface Props {
@@ -8,6 +9,8 @@ interface Props {
   value0: {name: string, value: string|number}[];
   value1: {name: string, value: string|number}[];
 }
+const { t } = useI18n();
+
 const props = withDefaults(defineProps<Props>(), {
   value0: () => ([{ name: '', value: 0 }, { name: '', value: 0 }]),
   value1: () => ([{ name: '', value: 0 }, { name: '', value: 0 }]),
@@ -27,7 +30,7 @@ const progressEchartConfig = {
     left: '35%',
     top: '38%',
     padding: 2,
-    subtext: '完成任务进度',
+    subtext: t('taskAnalysis.detail.progress.chartTitles.taskProgress'),
     // left: '25%',
     // top: '40%',
     itemGap: 45,
@@ -80,14 +83,14 @@ const progressEchartConfig = {
       },
       data: [
         {
-          name: '未完成',
+          name: t('taskAnalysis.detail.progress.chartLabels.uncompleted'),
           value: 0,
           itemStyle: {
             color: 'rgba(217, 217, 217, 1)'
           }
         },
         {
-          name: '已完成',
+          name: t('taskAnalysis.detail.progress.chartLabels.completed'),
           value: 0,
           itemStyle: {
             color: '#52C41A'
@@ -102,7 +105,7 @@ const workloadProgressEchartConfig = JSON.parse(JSON.stringify({
   ...progressEchartConfig,
   title: {
     ...progressEchartConfig.title,
-    subtext: '完成工作量进度'
+    subtext: t('taskAnalysis.detail.progress.chartTitles.workloadProgress')
   }
 }));
 

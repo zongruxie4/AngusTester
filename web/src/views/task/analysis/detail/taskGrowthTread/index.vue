@@ -1,10 +1,13 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { getDateArr } from '@/utils/utils';
 
 interface Props {
   analysisInfo?: Record<string, any>;
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
@@ -13,32 +16,32 @@ const props = withDefaults(defineProps<Props>(), {
 const Echart = defineAsyncComponent(() => import('./echart.vue'));
 
 const targetDataCategery = {
-  TEST_CUSTOMIZATION: '自定义测试',
-  TEST_FUNCTIONALITY: '功能测试',
-  TEST_PERFORMANCE: '性能测试',
-  TEST_STABILITY: '稳定性测试',
-  SERVICES: '服务',
-  APIS: '接口',
-  CASES: '用例',
-  PLAN: '计划',
-  SPRINT: '迭代',
-  TASK_SPRINT: '迭代',
-  TASK: '任务',
-  MOCK_APIS: 'Mock接口',
-  MOCK_PUSHBACK: 'Mock回推',
-  MOCK_RESPONSE: 'Mock响应',
-  MOCK_SERVICE: 'Mock服务',
-  DATA_DATASET: '数据集',
-  DATA_DATASOURCE: '数据源',
-  DATA_VARIABLE: '变量',
-  TOTAL: '合计',
-  REPORT: '报告',
-  REPORT_RECORD: '记录',
-  API_TEST: '接口测试',
-  BUG: '缺陷',
-  REQUIREMENT: '需求',
-  STORY: '故事',
-  SCENARIO_TEST: '场景测试'
+  TEST_CUSTOMIZATION: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.TEST_CUSTOMIZATION'),
+  TEST_FUNCTIONALITY: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.TEST_FUNCTIONALITY'),
+  TEST_PERFORMANCE: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.TEST_PERFORMANCE'),
+  TEST_STABILITY: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.TEST_STABILITY'),
+  SERVICES: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.SERVICES'),
+  APIS: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.APIS'),
+  CASES: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.CASES'),
+  PLAN: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.PLAN'),
+  SPRINT: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.SPRINT'),
+  TASK_SPRINT: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.TASK_SPRINT'),
+  TASK: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.TASK'),
+  MOCK_APIS: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.MOCK_APIS'),
+  MOCK_PUSHBACK: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.MOCK_PUSHBACK'),
+  MOCK_RESPONSE: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.MOCK_RESPONSE'),
+  MOCK_SERVICE: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.MOCK_SERVICE'),
+  DATA_DATASET: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.DATA_DATASET'),
+  DATA_DATASOURCE: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.DATA_DATASOURCE'),
+  DATA_VARIABLE: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.DATA_VARIABLE'),
+  TOTAL: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.TOTAL'),
+  REPORT: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.REPORT'),
+  REPORT_RECORD: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.REPORT_RECORD'),
+  API_TEST: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.API_TEST'),
+  BUG: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.BUG'),
+  REQUIREMENT: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.REQUIREMENT'),
+  STORY: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.STORY'),
+  SCENARIO_TEST: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.SCENARIO_TEST')
 };
 
 const getChartData = (data) => {
@@ -144,7 +147,7 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">总共</div>
+    <div class="font-semibold pl-3">{{ t('taskAnalysis.detail.taskGrowthTread.total') }}</div>
     <Echart
       ref="totalChartRef"
       v-bind="totalValue"

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
 interface Props {
@@ -27,25 +28,27 @@ interface Props {
     value: {name: string, value: string|number}[];
   }
 }
+const { t } = useI18n();
+
 const props = withDefaults(defineProps<Props>(), {
   chart0Value: () => ({
-    chart0Value: [0, 0, 0, 0]
+    yData: [0, 0, 0, 0]
   }),
   chart1Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   }),
   chart2Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   }),
   chart3Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   }),
   chart4Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   })
 });
 
@@ -64,7 +67,7 @@ let bugWorkloadEchart;
 // 缺陷
 const bugsEchartConfig = {
   title: {
-    text: '缺陷数',
+    text: t('taskAnalysis.detail.bugs.chartTitles.bugCount'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -79,7 +82,7 @@ const bugsEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: ['总缺陷', '有效缺陷', '无效缺陷', '漏测缺陷'],
+    data: [t('taskAnalysis.detail.bugs.chartLabels.totalBugs'), t('taskAnalysis.detail.bugs.chartLabels.validBugs'), t('taskAnalysis.detail.bugs.chartLabels.invalidBugs'), t('taskAnalysis.detail.bugs.chartLabels.missingBugs')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -115,7 +118,7 @@ const bugLevelEchartConfig = {
     left: '35%',
     top: '35%',
     padding: 2,
-    subtext: '缺陷等级',
+    subtext: t('taskAnalysis.detail.bugs.chartTitles.bugLevel'),
     // left: '25%',
     // top: '40%',
     itemGap: 60,
@@ -168,28 +171,28 @@ const bugLevelEchartConfig = {
       },
       data: [
         {
-          name: '致命数',
+          name: t('taskAnalysis.detail.bugs.pieChartLabels.criticalCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'
           }
         },
         {
-          name: '严重数',
+          name: t('taskAnalysis.detail.bugs.pieChartLabels.majorCount'),
           value: 0,
           itemStyle: {
             color: 'gold'
           }
         },
         {
-          name: '一般数',
+          name: t('taskAnalysis.detail.bugs.pieChartLabels.minorCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(255, 165, 43, 1)'
           }
         },
         {
-          name: '轻微数',
+          name: t('taskAnalysis.detail.bugs.pieChartLabels.trivialCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(136, 185, 242, 1)'
@@ -205,21 +208,21 @@ const validBugEchartConfig = JSON.parse(JSON.stringify({
   ...bugLevelEchartConfig,
   title: {
     ...bugLevelEchartConfig.title,
-    subtext: '有效缺陷占比',
+    subtext: t('taskAnalysis.detail.bugs.chartTitles.validBugRatio'),
     itemGap: 50
   },
   series: [{
     ...bugLevelEchartConfig.series[0],
     data: [
       {
-        name: '未完成',
+        name: t('taskAnalysis.detail.bugs.chartLabels.uncompleted'),
         value: 0,
         itemStyle: {
           color: 'rgba(136, 185, 242, 1)'
         }
       },
       {
-        name: '已完成',
+        name: t('taskAnalysis.detail.bugs.chartLabels.completed'),
         value: 0,
         itemStyle: {
           color: 'rgba(245, 34, 45, 0.6)'
@@ -234,7 +237,7 @@ const missingBugEchartConfig = JSON.parse(JSON.stringify({
   ...validBugEchartConfig,
   title: {
     ...validBugEchartConfig.title,
-    subtext: '漏测缺陷占比'
+    subtext: t('taskAnalysis.detail.bugs.chartTitles.missingBugRatio')
   }
 }));
 
@@ -243,7 +246,7 @@ const bugWorkloadEchartConfig = JSON.parse(JSON.stringify({
   ...validBugEchartConfig,
   title: {
     ...validBugEchartConfig.title,
-    subtext: '缺陷工作量占比'
+    subtext: t('taskAnalysis.detail.bugs.chartTitles.bugWorkloadRatio')
   }
 }));
 

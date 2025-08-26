@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
 interface Props {
@@ -16,6 +17,8 @@ interface Props {
     yData2: number[]
   },
 }
+const { t } = useI18n();
+
 const props = withDefaults(defineProps<Props>(), {
   chart0Value: () => ({
     yData0: [0, 0, 0],
@@ -40,7 +43,7 @@ let deliverygedWorkloadEchart;
 // 交付数（完成数）
 const deliveryEchartConfig = {
   title: {
-    text: '交付数（完成数）',
+    text: t('taskAnalysis.detail.recentDelivery.chartTitles.deliveryCount'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -55,7 +58,7 @@ const deliveryEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: ['今天', '近一周', '近一月'],
+    data: [t('taskAnalysis.detail.recentDelivery.chartLabels.today'), t('taskAnalysis.detail.recentDelivery.chartLabels.lastWeek'), t('taskAnalysis.detail.recentDelivery.chartLabels.lastMonth')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -69,12 +72,12 @@ const deliveryEchartConfig = {
   },
   legend: {
     show: true,
-    data: ['交付数', '交付逾期数', '总数'],
+    data: [t('taskAnalysis.detail.recentDelivery.chartLabels.deliveryCount'), t('taskAnalysis.detail.recentDelivery.chartLabels.deliveryOverdueCount'), t('taskAnalysis.detail.recentDelivery.chartLabels.totalCount')],
     top: 0
   },
   series: [
     {
-      name: '交付数',
+      name: t('taskAnalysis.detail.recentDelivery.chartLabels.deliveryCount'),
       itemStyle: {
         color: 'blue',
         borderRadius: [5, 5, 0, 0]
@@ -89,7 +92,7 @@ const deliveryEchartConfig = {
       }
     },
     {
-      name: '交付逾期数',
+      name: t('taskAnalysis.detail.recentDelivery.chartLabels.deliveryOverdueCount'),
       itemStyle: {
         color: 'orange',
         borderRadius: [5, 5, 0, 0]
@@ -103,7 +106,7 @@ const deliveryEchartConfig = {
       }
     },
     {
-      name: '总数',
+      name: t('taskAnalysis.detail.recentDelivery.chartLabels.totalCount'),
       itemStyle: {
         color: 'green',
         borderRadius: [5, 5, 0, 0]
@@ -127,7 +130,7 @@ const deliveryWorkloadEchartConfig = JSON.parse(JSON.stringify({
     left: '35%',
     top: '45%',
     padding: 2,
-    subtext: '交付工作量（完成量）',
+    subtext: t('taskAnalysis.detail.recentDelivery.chartTitles.deliveryWorkload'),
     // left: '25%',
     // top: '40%',
     itemGap: 55,
