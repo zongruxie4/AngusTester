@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
+
+const { t } = useI18n();
 
 interface Props {
   // title0: string;
@@ -50,7 +53,7 @@ let backloggedWorkloadEchart;
 // 积压量
 const backlogEchartConfig = {
   title: {
-    text: '积压量',
+    text: t('taskAnalysis.detail.backlogTasks.chartLabels.backlogAmount'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -65,7 +68,7 @@ const backlogEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: ['任务数', '工作量'],
+    data: [t('taskAnalysis.detail.backlogTasks.chartLabels.taskCount'), t('taskAnalysis.detail.backlogTasks.chartLabels.workload')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -79,12 +82,12 @@ const backlogEchartConfig = {
   },
   legend: {
     show: true,
-    data: ['积压量', '总量'],
+    data: [t('taskAnalysis.detail.backlogTasks.chartLabels.backlogAmount'), t('taskAnalysis.detail.backlogTasks.chartLabels.totalAmount')],
     top: 0
   },
   series: [
     {
-      name: '积压量',
+      name: t('taskAnalysis.detail.backlogTasks.chartLabels.backlogAmount'),
       itemStyle: {
         color: 'orange',
         borderRadius: [5, 5, 0, 0]
@@ -99,7 +102,7 @@ const backlogEchartConfig = {
       }
     },
     {
-      name: '总量',
+      name: t('taskAnalysis.detail.backlogTasks.chartLabels.totalAmount'),
       itemStyle: {
         color: 'rgba(136, 185, 242, 0.8)',
         borderRadius: [5, 5, 0, 0]
@@ -121,7 +124,7 @@ const backloggedTaskEchartConfig = {
     left: '35%',
     top: '40%',
     padding: 2,
-    subtext: '积压任务占比',
+    subtext: t('taskAnalysis.detail.backlogTasks.chartLabels.backlogTaskRatio'),
     // left: '25%',
     // top: '40%',
     itemGap: 55,
@@ -173,14 +176,14 @@ const backloggedTaskEchartConfig = {
       },
       data: [
         {
-          name: '未完成',
+          name: t('taskAnalysis.detail.backlogTasks.chartLabels.uncompleted'),
           value: 0,
           itemStyle: {
             color: 'rgba(217, 217, 217, 1)'
           }
         },
         {
-          name: '已完成',
+          name: t('taskAnalysis.detail.backlogTasks.chartLabels.completed'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'
@@ -196,7 +199,7 @@ const backloggedWorkloadEchartConfig = JSON.parse(JSON.stringify({
   ...backloggedTaskEchartConfig,
   title: {
     ...backloggedTaskEchartConfig.title,
-    subtext: '积压工作量占比'
+    subtext: t('taskAnalysis.detail.backlogTasks.chartLabels.backlogWorkloadRatio')
   }
 }));
 
@@ -252,9 +255,9 @@ defineExpose({
     <div class="px-3 w-100">
       <div class="flex justify-around">
         <div class="text-center flex-1">
-          <div class="font-semibold "><span class="text-5 text-status-error">{{ props.overdueAssessmentData.backloggedCompletionTime || 0 }}</span>小时</div>
+          <div class="font-semibold "><span class="text-5 text-status-error">{{ props.overdueAssessmentData.backloggedCompletionTime || 0 }}</span>{{ t('taskAnalysis.detail.backlogTasks.statistics.hours') }}</div>
           <div>
-            积压工作量预计耗时
+            {{ t('taskAnalysis.detail.backlogTasks.statistics.backlogWorkloadEstimatedTime') }}
           </div>
         </div>
       </div>
@@ -262,13 +265,13 @@ defineExpose({
         <div class="text-center">
           <div class="font-semibold text-5">{{ props.overdueAssessmentData.dailyProcessedNum || 0 }}</div>
           <div>
-            每天平均处理任务数
+            {{ t('taskAnalysis.detail.backlogTasks.statistics.averageDailyProcessedTasks') }}
           </div>
         </div>
         <div class="text-center">
           <div class="font-semibold text-5">{{ props.overdueAssessmentData.dailyProcessedWorkload || 0 }}</div>
           <div>
-            每天平均处理工作量
+            {{ t('taskAnalysis.detail.backlogTasks.statistics.averageDailyProcessedWorkload') }}
           </div>
         </div>
       </div>

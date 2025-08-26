@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
 interface Props {
@@ -14,6 +15,8 @@ interface Props {
     xData: string[]
   },
 }
+const { t } = useI18n();
+
 const props = withDefaults(defineProps<Props>(), {
   overdueAssessmentData: () => ({}),
   chart0Value: () => ({
@@ -33,7 +36,7 @@ let unplannedWorkloadRefEchart;
 // 任务数
 const unplannedTaskEchartConfig = {
   title: {
-    text: '任务增长量',
+    text: t('taskAnalysis.detail.taskGrowthTread.chartTitles.taskGrowth'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -48,7 +51,7 @@ const unplannedTaskEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: ['需求', '故事', '任务', '缺陷', '接口测试', '场景测试', '总计'],
+    data: [t('taskAnalysis.detail.taskGrowthTread.chartLabels.requirement'), t('taskAnalysis.detail.taskGrowthTread.chartLabels.story'), t('taskAnalysis.detail.taskGrowthTread.chartLabels.task'), t('taskAnalysis.detail.taskGrowthTread.chartLabels.bug'), t('taskAnalysis.detail.taskGrowthTread.chartLabels.apiTest'), t('taskAnalysis.detail.taskGrowthTread.chartLabels.scenarioTest'), t('taskAnalysis.detail.taskGrowthTread.chartLabels.total')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -85,7 +88,7 @@ const unplannedTaskEchartConfig = {
 
 const unplannedWorkloadEchartConfig = {
   title: {
-    text: '增长趋势',
+    text: t('taskAnalysis.detail.taskGrowthTread.chartTitles.growthTrend'),
     bottom: 0,
     left: 'center',
     textStyle: {

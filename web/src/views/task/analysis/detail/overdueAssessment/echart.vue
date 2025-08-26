@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
 interface Props {
@@ -19,15 +20,17 @@ interface Props {
     value: {name: string, value: string|number}[];
   }
 }
+const { t } = useI18n();
+
 const props = withDefaults(defineProps<Props>(), {
   overdueAssessmentData: () => ({}),
   chart1Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   }),
   chart2Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   })
 });
 
@@ -43,7 +46,7 @@ const completedWorkloadEchartConfig = {
     left: '35%',
     top: '45%',
     padding: 2,
-    subtext: '完成工作量占比',
+    subtext: t('taskAnalysis.detail.overdueAssessment.chartTitles.completedWorkloadRatio'),
     // left: '25%',
     // top: '40%',
     itemGap: 40,
@@ -96,14 +99,14 @@ const completedWorkloadEchartConfig = {
       },
       data: [
         {
-          name: '未完成',
+          name: t('taskAnalysis.detail.overdueAssessment.chartLabels.uncompleted'),
           value: 0,
           itemStyle: {
             color: 'rgba(217, 217, 217, 1)'
           }
         },
         {
-          name: '已完成',
+          name: t('taskAnalysis.detail.overdueAssessment.chartLabels.completed'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'
@@ -118,7 +121,7 @@ const savingWorkloadEchartConfig = JSON.parse(JSON.stringify({
   ...completedWorkloadEchartConfig,
   title: {
     ...completedWorkloadEchartConfig.title,
-    subtext: '节省工作量占比'
+    subtext: t('taskAnalysis.detail.overdueAssessment.chartTitles.savingWorkloadRatio')
   }
 }));
 
@@ -170,33 +173,33 @@ defineExpose({
         <div class="text-center flex-1">
           <div class="font-semibold text-5 text-status-error">{{ props.overdueAssessmentData.overdueNum || 0 }}</div>
           <div>
-            逾期数
+            {{ t('taskAnalysis.detail.overdueAssessment.statistics.overdueCount') }}
           </div>
         </div>
         <div class="text-center flex-1">
           <div :class="`risk-level-${props.overdueAssessmentData?.riskLevel?.value}`" class="font-semibold text-5">{{ overdueAssessmentData?.riskLevel?.message }}</div>
-          <div>逾期风险</div>
+          <div>{{ t('taskAnalysis.detail.overdueAssessment.statistics.overdueRisk') }}</div>
         </div>
       </div>
       <div class="flex justify-around mt-3">
         <div class="text-center">
-          <div class="font-semibold text-5  text-status-error">{{ props.overdueAssessmentData.overdueTime || 0 }}小时</div>
+          <div class="font-semibold text-5  text-status-error">{{ props.overdueAssessmentData.overdueTime || 0 }}{{ t('taskAnalysis.detail.overdueAssessment.statistics.hours') }}</div>
           <div>
-            逾期时长
+            {{ t('taskAnalysis.detail.overdueAssessment.statistics.overdueTime') }}
           </div>
         </div>
 
         <div class="text-center">
           <div class="font-semibold text-5">{{ props.overdueAssessmentData.dailyProcessedWorkload || 0 }}</div>
           <div>
-            每天平均处理工作量
+            {{ t('taskAnalysis.detail.overdueAssessment.statistics.averageDailyProcessedWorkload') }}
           </div>
         </div>
 
         <div class="text-center">
-          <div class="font-semibold text-5">{{ props.overdueAssessmentData.overdueWorkloadProcessingTime || 0 }}小时</div>
+          <div class="font-semibold text-5">{{ props.overdueAssessmentData.overdueWorkloadProcessingTime || 0 }}{{ t('taskAnalysis.detail.overdueAssessment.statistics.hours') }}</div>
           <div>
-            逾期工作量预计处理时长
+            {{ t('taskAnalysis.detail.overdueAssessment.statistics.overdueWorkloadProcessingTime') }}
           </div>
         </div>
       </div>

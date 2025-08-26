@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   analysisInfo?: Record<string, any>;
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
@@ -19,12 +22,12 @@ const getChartData = (data) => {
   };
   res.chart1Value = {
     title: completedWorkloadRate + '%',
-    value: [{ name: '未完成工作量', value: evalWorkload - completedWorkload }, { name: '已完成工作量', value: completedWorkload }]
+    value: [{ name: t('taskAnalysis.detail.workload.pieLabels.incompleteWorkload'), value: evalWorkload - completedWorkload }, { name: t('taskAnalysis.detail.workload.pieLabels.completedWorkload'), value: completedWorkload }]
   };
 
   res.chart2Value = {
     title: savingWorkloadRate + '%',
-    value: [{ name: '未节省工作量', value: evalWorkload - savingWorkload }, { name: '已节省工作量', value: savingWorkload }]
+    value: [{ name: t('taskAnalysis.detail.workload.pieLabels.incompleteSaving'), value: evalWorkload - savingWorkload }, { name: t('taskAnalysis.detail.workload.pieLabels.completedSaving'), value: savingWorkload }]
   };
   return res;
 };
@@ -85,7 +88,7 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">总共</div>
+    <div class="font-semibold pl-3">{{ t('taskAnalysis.detail.workload.total') }}</div>
     <Echart
       ref="totalChartRef"
       v-bind="totalValue"

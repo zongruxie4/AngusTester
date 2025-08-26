@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   analysisInfo?: Record<string, any>;
@@ -8,6 +9,8 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
+
+const { t } = useI18n();
 
 const Echart = defineAsyncComponent(() => import('./echart.vue'));
 
@@ -22,8 +25,8 @@ onMounted(() => {
     if (newValue) {
       const sourceData = newValue.data?.totalOverview || {};
       const { completedNum = 0, completedRate = 0, completedWorkload = 0, completedWorkloadRate = 0, evalWorkload = 0, totalNum = 0 } = sourceData;
-      totalValue.value.value0 = [{ name: '未完成', value: totalNum - completedNum }, { name: '已完成', value: completedNum }];
-      totalValue.value.value1 = [{ name: '未完成', value: evalWorkload - completedWorkload }, { name: '已完成', value: completedWorkload }];
+      totalValue.value.value0 = [{ name: t('taskAnalysis.detail.progress.chartLabels.uncompleted'), value: totalNum - completedNum }, { name: t('taskAnalysis.detail.progress.chartLabels.completed'), value: completedNum }];
+      totalValue.value.value1 = [{ name: t('taskAnalysis.detail.progress.chartLabels.uncompleted'), value: evalWorkload - completedWorkload }, { name: t('taskAnalysis.detail.progress.chartLabels.completed'), value: completedWorkload }];
 
       totalValue.value.title0 = completedRate + '%';
       totalValue.value.title1 = completedWorkloadRate + '%';
@@ -35,8 +38,8 @@ onMounted(() => {
           const viewData = sourceData[userId] || {};
           const { completedNum = 0, completedRate = 0, completedWorkload = 0, completedWorkloadRate = 0, evalWorkload = 0, totalNum = 0 } = viewData;
           const chartData = {
-            value0: [{ name: '未完成', value: totalNum - completedNum }, { name: '已完成', value: completedNum }],
-            value1: [{ name: '未完成', value: evalWorkload - completedWorkload }, { name: '已完成', value: completedWorkload }],
+            value0: [{ name: t('taskAnalysis.detail.progress.chartLabels.uncompleted'), value: totalNum - completedNum }, { name: t('taskAnalysis.detail.progress.chartLabels.completed'), value: completedNum }],
+            value1: [{ name: t('taskAnalysis.detail.progress.chartLabels.uncompleted'), value: evalWorkload - completedWorkload }, { name: t('taskAnalysis.detail.progress.chartLabels.completed'), value: completedWorkload }],
             title0: completedRate + '%',
             title1: completedWorkloadRate + '%'
           };
@@ -72,7 +75,7 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">总共</div>
+    <div class="font-semibold pl-3">{{ t('taskAnalysis.detail.progress.total') }}</div>
     <Echart ref="totalChartRef" v-bind="totalValue" />
   </div>
 

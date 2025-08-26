@@ -83,6 +83,352 @@
       "currentProject": "Current Project",
       "plan": "Specified Iteration",
       "testerOrg": "Specified Organization"
+    },
+    "detail": {
+      "backlogTasks": {
+        "total": "Total",
+        "chartLabels": {
+          "backlogAmount": "Backlog Amount",
+          "totalAmount": "Total Amount",
+          "taskCount": "Task Count",
+          "workload": "Workload",
+          "backlogTaskRatio": "Backlog Task Ratio",
+          "backlogWorkloadRatio": "Backlog Workload Ratio",
+          "unbacklogged": "Unbacklogged",
+          "backlogged": "Backlogged",
+          "unbackloggedWorkload": "Unbacklogged Workload",
+          "backloggedWorkload": "Backlogged Workload",
+          "uncompleted": "Uncompleted",
+          "completed": "Completed"
+        },
+        "statistics": {
+          "backlogWorkloadEstimatedTime": "Backlog Workload Estimated Time",
+          "hours": "hours",
+          "averageDailyProcessedTasks": "Average Daily Processed Tasks",
+          "averageDailyProcessedWorkload": "Average Daily Processed Workload"
+        }
+      },
+      "bugs": {
+        "total": "Total",
+        "chartLabels": {
+          "totalBugs": "Total Bugs",
+          "validBugs": "Valid Bugs",
+          "invalidBugs": "Invalid Bugs",
+          "missingBugs": "Missing Bugs",
+          "criticalBugs": "Critical Bugs",
+          "majorBugs": "Major Bugs",
+          "minorBugs": "Minor Bugs",
+          "trivialBugs": "Trivial Bugs",
+          "nonBugWorkload": "Non-Bug Workload",
+          "bugWorkload": "Bug Workload",
+          "nonMissingBugs": "Non-Missing Bugs",
+          "missingBugsCount": "Missing Bugs",
+          "uncompleted": "Uncompleted",
+          "completed": "Completed"
+        },
+        "chartTitles": {
+          "bugCount": "Bug Count",
+          "bugLevel": "Bug Level",
+          "validBugRatio": "Valid Bug Ratio",
+          "missingBugRatio": "Missing Bug Ratio",
+          "bugWorkloadRatio": "Bug Workload Ratio"
+        },
+        "pieChartLabels": {
+          "criticalCount": "Critical Count",
+          "majorCount": "Major Count",
+          "minorCount": "Minor Count",
+          "trivialCount": "Trivial Count"
+        }
+      },
+      "burndown": {
+        "total": "Total",
+        "chartLabels": {
+          "remaining": "Remaining",
+          "expected": "Expected"
+        },
+        "chartTitles": {
+          "taskBurndown": "Task Burndown",
+          "workloadBurndown": "Workload Burndown"
+        }
+      },
+      "coreKpi": {
+        "total": "Total",
+        "chartLabels": {
+          "taskCount": "Task Count",
+          "workload": "Workload",
+          "overdueCount": "Overdue Count",
+          "bugCount": "Bug Count",
+          "completedCount": "Completed Count",
+          "totalCount": "Total Count",
+          "uncompletedTaskCount": "Uncompleted Task Count",
+          "completedTaskCount": "Completed Task Count",
+          "uncompletedWorkload": "Uncompleted Workload",
+          "completedWorkload": "Completed Workload",
+          "uncompletedOverdueCount": "Uncompleted Overdue Count",
+          "completedOverdueCount": "Completed Overdue Count",
+          "uncompletedBugCount": "Uncompleted Bug Count",
+          "completedBugCount": "Completed Bug Count"
+        },
+        "chartTitles": {
+          "coreKpi": "Core KPI",
+          "completedTaskRatio": "Completed Task Ratio",
+          "completedWorkloadRatio": "Completed Workload Ratio",
+          "completedOverdueRatio": "Completed Overdue Ratio",
+          "completedBugRatio": "Completed Bug Ratio"
+        }
+      },
+      "failures": {
+        "total": "Total",
+        "chartLabels": {
+          "totalFailures": "Total Failures",
+          "completedFailures": "Completed Failures",
+          "overdueFailures": "Overdue Failures",
+          "oneTimeFailures": "One-time Failures",
+          "twoTimeFailures": "Two-time Failures",
+          "totalFailureTime": "Total Failure Time",
+          "averageFailureTime": "Average Failure Time",
+          "minFailureTime": "Min Failure Time",
+          "maxFailureTime": "Max Failure Time",
+          "criticalFailures": "Critical Failures",
+          "majorFailures": "Major Failures",
+          "minorFailures": "Minor Failures",
+          "trivialFailures": "Trivial Failures"
+        },
+        "chartTitles": {
+          "failureCount": "Failure Count",
+          "failureTime": "Failure Time (Hours)",
+          "failureLevel": "Failure Level"
+        },
+        "pieChartLabels": {
+          "criticalCount": "Critical Count",
+          "majorCount": "Major Count",
+          "minorCount": "Minor Count",
+          "trivialCount": "Trivial Count"
+        }
+      },
+      "handlingEfficiency": {
+        "total": "Total",
+        "chartLabels": {
+          "completedTaskCount": "Completed Task Count",
+          "oneTimeCompletedCount": "One-time Completed Count",
+          "twoTimeCompletedCount": "Two-time Completed Count",
+          "uncompletedTaskCount": "Uncompleted Task Count",
+          "completedTaskCount2": "Completed Task Count",
+          "oneTimeUncompletedTaskCount": "One-time Uncompleted Task Count",
+          "oneTimeCompletedTaskCount": "One-time Completed Task Count",
+          "twoTimeUncompletedTaskCount": "Two-time Uncompleted Task Count",
+          "twoTimeCompletedTaskCount": "Two-time Completed Task Count"
+        },
+        "chartTitles": {
+          "completedTasks": "Completed Tasks",
+          "completedTaskRatio": "Completed Task Ratio",
+          "oneTimeCompletedRatio": "One-time Completed Ratio",
+          "twoTimeCompletedRatio": "Two-time Completed Ratio"
+        }
+      },
+      "leadTime": {
+        "total": "Total",
+        "chartLabels": {
+          "average": "Average",
+          "min": "Min",
+          "max": "Max",
+          "p50": "P50",
+          "p75": "P75",
+          "p90": "P90",
+          "p95": "P95",
+          "p99": "P99"
+        },
+        "chartTitles": {
+          "taskDeliveryCycle": "Task Delivery Cycle (Hours)"
+        },
+        "statistics": {
+          "totalProcessingTime": "Total Processing Time",
+          "hours": "hours",
+          "participants": "Participants",
+          "averageDailyProcessingTime": "Average Daily Processing Time",
+          "perHour": "/hour"
+        }
+      },
+      "overdueAssessment": {
+        "total": "Total",
+        "chartLabels": {
+          "unoverdueCount": "Unoverdue Count",
+          "overdueCount": "Overdue Count",
+          "unoverdueWorkload": "Unoverdue Workload",
+          "overdueWorkload": "Overdue Workload",
+          "uncompleted": "Uncompleted",
+          "completed": "Completed"
+        },
+        "chartTitles": {
+          "completedWorkloadRatio": "Completed Workload Ratio",
+          "savingWorkloadRatio": "Saving Workload Ratio"
+        },
+        "statistics": {
+          "overdueCount": "Overdue Count",
+          "overdueRisk": "Overdue Risk",
+          "overdueTime": "Overdue Time",
+          "hours": "hours",
+          "averageDailyProcessedWorkload": "Average Daily Processed Workload",
+          "overdueWorkloadProcessingTime": "Overdue Workload Processing Time"
+        }
+      },
+      "progress": {
+        "total": "Total",
+        "chartLabels": {
+          "uncompleted": "Uncompleted",
+          "completed": "Completed"
+        },
+        "chartTitles": {
+          "taskProgress": "Task Progress",
+          "workloadProgress": "Workload Progress"
+        }
+      },
+      "recentDelivery": {
+        "total": "Total",
+        "chartLabels": {
+          "today": "Today",
+          "lastWeek": "Last Week",
+          "lastMonth": "Last Month",
+          "deliveryCount": "Delivery Count",
+          "deliveryOverdueCount": "Delivery Overdue Count",
+          "totalCount": "Total Count"
+        },
+        "chartTitles": {
+          "deliveryCount": "Delivery Count (Completed)",
+          "deliveryWorkload": "Delivery Workload (Completed)"
+        }
+      },
+      "resourceCreation": {
+        "total": "Total",
+        "chartLabels": {
+          "backlog": "Backlog",
+          "sprint": "Sprint",
+          "task": "Task",
+          "meeting": "Meeting",
+          "analysis": "Analysis",
+          "total": "Total"
+        },
+        "chartTitles": {
+          "resourceTotal": "Total Resource Creation",
+          "resourceGrowth": "Resource Creation Growth Trend"
+        },
+        "resourceTypes": {
+          "TEST_CUSTOMIZATION": "Custom Test",
+          "TEST_FUNCTIONALITY": "Functional Test",
+          "TEST_PERFORMANCE": "Performance Test",
+          "TEST_STABILITY": "Stability Test",
+          "SERVICES": "Services",
+          "APIS": "APIs",
+          "CASES": "Cases",
+          "PLAN": "Plan",
+          "SPRINT": "Sprint",
+          "TASK_SPRINT": "Sprint",
+          "TASK": "Task",
+          "MOCK_APIS": "Mock APIs",
+          "MOCK_PUSHBACK": "Mock Pushback",
+          "MOCK_RESPONSE": "Mock Response",
+          "MOCK_SERVICE": "Mock Service",
+          "DATA_DATASET": "Dataset",
+          "DATA_DATASOURCE": "Data Source",
+          "DATA_VARIABLE": "Variable",
+          "TOTAL": "Total",
+          "REPORT": "Report",
+          "REPORT_RECORD": "Record",
+          "API_TEST": "API Test",
+          "BUG": "Bug",
+          "REQUIREMENT": "Requirement",
+          "STORY": "Story",
+          "SCENARIO_TEST": "Scenario Test",
+          "ANALYSIS": "Analysis",
+          "BACKLOG": "Backlog",
+          "MEETING": "Meeting"
+        }
+      },
+      "taskGrowthTread": {
+        "total": "Total",
+        "chartLabels": {
+          "requirement": "Requirement",
+          "story": "Story",
+          "task": "Task",
+          "bug": "Bug",
+          "apiTest": "API Test",
+          "scenarioTest": "Scenario Test",
+          "total": "Total"
+        },
+        "chartTitles": {
+          "taskGrowth": "Task Growth Volume",
+          "growthTrend": "Growth Trend"
+        },
+        "resourceTypes": {
+          "TEST_CUSTOMIZATION": "Custom Test",
+          "TEST_FUNCTIONALITY": "Functional Test",
+          "TEST_PERFORMANCE": "Performance Test",
+          "TEST_STABILITY": "Stability Test",
+          "SERVICES": "Services",
+          "APIS": "APIs",
+          "CASES": "Cases",
+          "PLAN": "Plan",
+          "SPRINT": "Sprint",
+          "TASK_SPRINT": "Sprint",
+          "TASK": "Task",
+          "MOCK_APIS": "Mock APIs",
+          "MOCK_PUSHBACK": "Mock Pushback",
+          "MOCK_RESPONSE": "Mock Response",
+          "MOCK_SERVICE": "Mock Service",
+          "DATA_DATASET": "Dataset",
+          "DATA_DATASOURCE": "Data Source",
+          "DATA_VARIABLE": "Variable",
+          "TOTAL": "Total",
+          "REPORT": "Report",
+          "REPORT_RECORD": "Record",
+          "API_TEST": "API Test",
+          "BUG": "Bug",
+          "REQUIREMENT": "Requirement",
+          "STORY": "Story",
+          "SCENARIO_TEST": "Scenario Test"
+        }
+      },
+      "unplannedTasks": {
+        "total": "Total",
+        "chartLabels": {
+          "totalCount": "Total Count",
+          "unplannedCount": "Unplanned Count",
+          "unplannedCompletedCount": "Unplanned Completed Count",
+          "totalWorkload": "Total Workload",
+          "unplannedWorkload": "Unplanned Workload",
+          "unplannedCompletedWorkload": "Unplanned Completed Workload"
+        },
+        "chartTitles": {
+          "taskCount": "Task Count",
+          "workload": "Workload"
+        },
+        "metrics": {
+          "estimatedTime": "Estimated Time for Unplanned Tasks",
+          "hours": "Hours"
+        }
+      },
+      "workload": {
+        "total": "Total",
+        "chartLabels": {
+          "estimatedWorkload": "Estimated Workload",
+          "actualWorkload": "Actual Workload",
+          "completedWorkload": "Completed Workload",
+          "savingWorkload": "Saving Workload"
+        },
+        "chartTitles": {
+          "workload": "Workload",
+          "completedWorkloadRatio": "Completed Workload Ratio",
+          "savingWorkloadRatio": "Saving Workload Ratio"
+        },
+        "pieLabels": {
+          "incomplete": "Incomplete",
+          "completed": "Completed",
+          "incompleteWorkload": "Incomplete Workload",
+          "completedWorkload": "Completed Workload",
+          "incompleteSaving": "Incomplete Saving",
+          "completedSaving": "Completed Saving"
+        }
+      }
     }
   },
   "backlog": {

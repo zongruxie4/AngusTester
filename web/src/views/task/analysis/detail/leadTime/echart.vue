@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
 interface Props {
@@ -13,10 +14,12 @@ interface Props {
     yData: number[]
   },
 }
+const { t } = useI18n();
+
 const props = withDefaults(defineProps<Props>(), {
   overdueAssessmentData: () => ({}),
   chart0Value: () => ({
-    yData: [0, 0]
+    yData: [0, 0, 0, 0, 0, 0, 0, 0]
   })
 });
 
@@ -27,7 +30,7 @@ let backlogRefEchart;
 // 任务交付周期(小时
 const backlogEchartConfig = {
   title: {
-    text: '任务交付周期(小时)',
+    text: t('taskAnalysis.detail.leadTime.chartTitles.taskDeliveryCycle'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -42,7 +45,7 @@ const backlogEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: ['平均', '最小', '最大', 'P50', 'P75', 'P90', 'P95', 'P99'],
+    data: [t('taskAnalysis.detail.leadTime.chartLabels.average'), t('taskAnalysis.detail.leadTime.chartLabels.min'), t('taskAnalysis.detail.leadTime.chartLabels.max'), t('taskAnalysis.detail.leadTime.chartLabels.p50'), t('taskAnalysis.detail.leadTime.chartLabels.p75'), t('taskAnalysis.detail.leadTime.chartLabels.p90'), t('taskAnalysis.detail.leadTime.chartLabels.p95'), t('taskAnalysis.detail.leadTime.chartLabels.p99')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -102,9 +105,9 @@ defineExpose({
     <div class="px-3 w-100">
       <div class="flex justify-around">
         <div class="text-center flex-1">
-          <div class="font-semibold "><span class="text-5 text-status-warn">{{ props.overdueAssessmentData.totalProcessingTime || 0 }}</span>小时</div>
+          <div class="font-semibold "><span class="text-5 text-status-warn">{{ props.overdueAssessmentData.totalProcessingTime || 0 }}</span>{{ t('taskAnalysis.detail.leadTime.statistics.hours') }}</div>
           <div>
-            总处理时长
+            {{ t('taskAnalysis.detail.leadTime.statistics.totalProcessingTime') }}
           </div>
         </div>
       </div>
@@ -112,17 +115,17 @@ defineExpose({
         <div class="text-center">
           <div class="font-semibold text-5">{{ props.overdueAssessmentData.userNum || 0 }}</div>
           <div>
-            参与人员
+            {{ t('taskAnalysis.detail.leadTime.statistics.participants') }}
           </div>
         </div>
         <div class="text-center">
           <div class="">
             <span class="font-semibold text-5">
               {{ props.overdueAssessmentData.userAvgProcessingTime || 0 }}
-            </span>/小时
+            </span>{{ t('taskAnalysis.detail.leadTime.statistics.perHour') }}
           </div>
           <div>
-            每天平均处理时长
+            {{ t('taskAnalysis.detail.leadTime.statistics.averageDailyProcessingTime') }}
           </div>
         </div>
       </div>

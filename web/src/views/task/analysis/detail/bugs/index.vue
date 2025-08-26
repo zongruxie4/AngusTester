@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   analysisInfo?: Record<string, any>;
@@ -8,6 +9,8 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
+
+const { t } = useI18n();
 
 const Echart = defineAsyncComponent(() => import('./echart.vue'));
 
@@ -68,22 +71,22 @@ const getChartData = (data) => {
   };
   res.chart1Value = {
     title: '',
-    value: [{ name: '致命缺陷数', value: CRITICAL }, { name: '严重缺陷数', value: MAJOR }, { name: '一般缺陷数', value: MINOR }, { name: '轻微缺陷数', value: TRIVIAL }]
+    value: [{ name: t('taskAnalysis.detail.bugs.chartLabels.criticalBugs'), value: CRITICAL }, { name: t('taskAnalysis.detail.bugs.chartLabels.majorBugs'), value: MAJOR }, { name: t('taskAnalysis.detail.bugs.chartLabels.minorBugs'), value: MINOR }, { name: t('taskAnalysis.detail.bugs.chartLabels.trivialBugs'), value: TRIVIAL }]
   };
 
   res.chart2Value = {
     title: validBugRate + '%',
-    value: [{ name: '无效缺陷', value: invalidBugNum }, { name: '有效缺陷', value: validBugNum }]
+    value: [{ name: t('taskAnalysis.detail.bugs.chartLabels.invalidBugs'), value: invalidBugNum }, { name: t('taskAnalysis.detail.bugs.chartLabels.validBugs'), value: validBugNum }]
   };
 
   res.chart3Value = {
     title: missingBugRate + '%',
-    value: [{ name: '非漏测缺陷数', value: totalNum - missingBugNum }, { name: '漏测缺陷数', value: missingBugNum }]
+    value: [{ name: t('taskAnalysis.detail.bugs.chartLabels.nonMissingBugs'), value: totalNum - missingBugNum }, { name: t('taskAnalysis.detail.bugs.chartLabels.missingBugsCount'), value: missingBugNum }]
   };
 
   res.chart4Value = {
     title: bugWorkloadRate + '%',
-    value: [{ name: '非缺陷工作量', value: totalWorkload - bugWorkload }, { name: '缺陷工作量', value: bugWorkload }]
+    value: [{ name: t('taskAnalysis.detail.bugs.chartLabels.nonBugWorkload'), value: totalWorkload - bugWorkload }, { name: t('taskAnalysis.detail.bugs.chartLabels.bugWorkload'), value: bugWorkload }]
   };
   return res;
 };
@@ -137,7 +140,7 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">总共</div>
+    <div class="font-semibold pl-3">{{ t('taskAnalysis.detail.bugs.total') }}</div>
     <Echart
       ref="totalChartRef"
       v-bind="totalValue"

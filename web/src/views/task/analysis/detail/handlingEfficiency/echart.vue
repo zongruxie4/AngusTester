@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
 interface Props {
@@ -27,25 +28,27 @@ interface Props {
     value: {name: string, value: string|number}[];
   }
 }
+const { t } = useI18n();
+
 const props = withDefaults(defineProps<Props>(), {
   chart0Value: () => ({
-    chart0Value: [0, 0, 0, 0]
+    yData: [0, 0, 0]
   }),
   chart1Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   }),
   chart2Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   }),
   chart3Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   }),
   chart4Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   })
 });
 
@@ -62,7 +65,7 @@ let twoTimePassedEchart;
 // 完成任务
 const bugsEchartConfig = {
   title: {
-    text: '完成任务',
+    text: t('taskAnalysis.detail.handlingEfficiency.chartTitles.completedTasks'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -77,7 +80,7 @@ const bugsEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: ['完成任务数', '一次性完成数', '两次完成数'],
+    data: [t('taskAnalysis.detail.handlingEfficiency.chartLabels.completedTaskCount'), t('taskAnalysis.detail.handlingEfficiency.chartLabels.oneTimeCompletedCount'), t('taskAnalysis.detail.handlingEfficiency.chartLabels.twoTimeCompletedCount')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -113,7 +116,7 @@ const completedEchartConfig = {
     left: '35%',
     top: '45%',
     padding: 2,
-    subtext: '完成任务占比',
+    subtext: t('taskAnalysis.detail.handlingEfficiency.chartTitles.completedTaskRatio'),
     // left: '25%',
     // top: '40%',
     itemGap: 40,
@@ -190,7 +193,7 @@ const oneTimePassedEchartConfig = JSON.parse(JSON.stringify({
   ...completedEchartConfig,
   title: {
     ...completedEchartConfig.title,
-    subtext: '一次完成任务占比',
+    subtext: t('taskAnalysis.detail.handlingEfficiency.chartTitles.oneTimeCompletedRatio'),
     itemGap: 40
   }
 }));
@@ -200,7 +203,7 @@ const twoTimePassedEchartConfig = JSON.parse(JSON.stringify({
   ...oneTimePassedEchartConfig,
   title: {
     ...oneTimePassedEchartConfig.title,
-    subtext: '两次完成任务占比'
+    subtext: t('taskAnalysis.detail.handlingEfficiency.chartTitles.twoTimeCompletedRatio')
   }
 }));
 

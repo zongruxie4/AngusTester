@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
 interface Props {
@@ -12,6 +13,8 @@ interface Props {
     yData: number[]
   },
 }
+const { t } = useI18n();
+
 const props = withDefaults(defineProps<Props>(), {
   overdueAssessmentData: () => ({}),
   chart0Value: () => ({
@@ -31,7 +34,7 @@ let unplannedWorkloadRefEchart;
 // 任务数
 const unplannedTaskEchartConfig = {
   title: {
-    text: '任务数',
+    text: t('taskAnalysis.detail.unplannedTasks.chartTitles.taskCount'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -46,7 +49,7 @@ const unplannedTaskEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: ['总数', '计划外数', '计划外完成数'],
+    data: [t('taskAnalysis.detail.unplannedTasks.chartLabels.totalCount'), t('taskAnalysis.detail.unplannedTasks.chartLabels.unplannedCount'), t('taskAnalysis.detail.unplannedTasks.chartLabels.unplannedCompletedCount')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -85,14 +88,14 @@ const unplannedWorkloadEchartConfig = JSON.parse(JSON.stringify({
   ...unplannedTaskEchartConfig,
   xAxis: {
     type: 'category',
-    data: ['总工作量', '计划外工作量', '计划外完成工作量'],
+    data: [t('taskAnalysis.detail.unplannedTasks.chartLabels.totalWorkload'), t('taskAnalysis.detail.unplannedTasks.chartLabels.unplannedWorkload'), t('taskAnalysis.detail.unplannedTasks.chartLabels.unplannedCompletedWorkload')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
     }
   },
   title: {
-    text: '工作量',
+    text: t('taskAnalysis.detail.unplannedTasks.chartTitles.workload'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -130,9 +133,9 @@ defineExpose({
   <div class="flex">
     <div class="px-3 w-50 flex items-center">
       <div class="text-center flex-1">
-        <div class="font-semibold "><span class="text-5 text-status-pending">{{ props.overdueAssessmentData.unplannedWorkloadProcessingTime || 0 }}</span>小时</div>
+        <div class="font-semibold "><span class="text-5 text-status-pending">{{ props.overdueAssessmentData.unplannedWorkloadProcessingTime || 0 }}</span>{{ t('taskAnalysis.detail.unplannedTasks.metrics.hours') }}</div>
         <div>
-          计划外任务预计耗时
+          {{ t('taskAnalysis.detail.unplannedTasks.metrics.estimatedTime') }}
         </div>
       </div>
     </div>
