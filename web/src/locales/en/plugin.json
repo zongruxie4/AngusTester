@@ -2020,7 +2020,48 @@
           "parameterValuePlaceholder": "Parameter value, maximum 4096 characters"
         }
       }
+    },
+    "commonPlugin": {
+      "chartConfig": {
+        "names": {
+          "duration": "Duration",
+          "errors": "Errors",
+          "iterations": "Iterations",
+          "n": "Samples",
+          "operations": "Operations",
+          "transactions": "Transactions",
+          "readBytes": "Read Bytes",
+          "writeBytes": "Write Bytes",
+          "ops": "Operations Per Second",
+          "tps": "Transactions Per Second",
+          "brps": "Download/Second",
+          "bwps": "Upload/Second",
+          "tranMean": "Average",
+          "tranMin": "Min",
+          "tranMax": "Max",
+          "tranP50": "P50",
+          "tranP75": "P75",
+          "tranP90": "P90",
+          "tranP95": "P95",
+          "tranP99": "P99",
+          "tranP999": "P999",
+          "errorRate": "Error Rate",
+          "threadPoolSize": "Thread Count",
+          "threadPoolActiveSize": "Active Threads",
+          "threadMaxPoolSize": "Max Threads"
+        },
+        "columns": {
+          "name": "Name",
+          "current": "Current",
+          "downloadPerSecond": "Download/Second",
+          "uploadPerSecond": "Upload/Second",
+          "downloadPerSecondWithStats": "Download/Second (Current | Min | Max | Average)",
+          "uploadPerSecondWithStats": "Upload/Second (Current | Min | Max | Average)",
+          "opsWithStats": "Operations Per Second (Current | Min | Max | Average)",
+          "tpsWithStats": "Transactions Per Second (Current | Min | Max | Average)"
+        }
+      }
     }
   }
-}
+
 
