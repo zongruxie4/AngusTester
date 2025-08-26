@@ -70,14 +70,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation of service schema command operations for OpenAPI schema management.
- * 
+ *
  * <p>This class provides comprehensive functionality for managing service schemas,
  * including OpenAPI document parsing, schema updates, component management,
  * and synchronization with external API documentation.</p>
- * 
+ *
  * <p>It handles the complete lifecycle of schema management from initialization
  * to deletion, including security requirements, servers, tags, and extensions.</p>
- * 
+ *
  * <p>Key features include:
  * <ul>
  *   <li>OpenAPI document parsing and validation</li>
@@ -114,13 +114,13 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
 
   /**
    * Replaces or updates individual schema components with caching support.
-   * 
+   *
    * <p>This method allows updating specific schema components (security requirements,
    * servers, or tags) individually. It performs permission validation and
    * automatically manages cache eviction to ensure data consistency.</p>
-   * 
+   *
    * <p>The method logs component update activities for audit tracking.</p>
-   * 
+   *
    * @param serviceId the ID of the service
    * @param sr the security requirement to add or update
    * @param server the server configuration to add or update
@@ -177,12 +177,12 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
 
   /**
    * Updates the current server configuration for all APIs in a service.
-   * 
+   *
    * <p>This method synchronizes the server configuration across all APIs
    * within a service, ensuring consistent server settings for API execution.</p>
-   * 
+   *
    * <p>The method logs the server synchronization activity for audit purposes.</p>
-   * 
+   *
    * @param serviceId the ID of the service
    * @param serverId the ID of the server to set as current
    * @throws IllegalArgumentException if validation fails
@@ -224,13 +224,13 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
 
   /**
    * Replaces all schema components with comprehensive caching support.
-   * 
+   *
    * <p>This method allows updating all schema components at once including info,
    * external documentation, security requirements, servers, tags, and extensions.</p>
-   * 
+   *
    * <p>It performs permission validation and automatically manages cache eviction
    * to ensure data consistency across all components.</p>
-   * 
+   *
    * @param serviceId the ID of the service
    * @param info the OpenAPI info object
    * @param extDoc the external documentation
@@ -299,13 +299,13 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
 
   /**
    * Deletes specific schema components with caching support.
-   * 
+   *
    * <p>This method allows selective deletion of schema components including
    * security requirements, servers, and tags. It performs permission validation
    * and automatically manages cache eviction.</p>
-   * 
+   *
    * <p>The method logs component deletion activities for audit tracking.</p>
-   * 
+   *
    * @param serviceId the ID of the service
    * @param srNames the set of security requirement names to delete
    * @param serverIds the set of server IDs to delete
@@ -380,15 +380,15 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
 
   /**
    * Replaces OpenAPI content with comprehensive validation and processing.
-   * 
+   *
    * <p>This method handles OpenAPI content replacement including decompression,
    * validation, and parsing. It supports various import sources and strategies
    * for handling duplicate components.</p>
-   * 
+   *
    * <p>Note: When an API is deleted, the front-end should prompt the user to prevent
    * accidental deletion. Additionally, if the user has not modified or saved,
    * do not submit the request to the backend interface.</p>
-   * 
+   *
    * @param serviceId the ID of the service
    * @param forced whether to force the operation
    * @param gzipCompression whether the content is gzip compressed
@@ -436,13 +436,13 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
 
   /**
    * Replaces OpenAPI schema with comprehensive processing and synchronization.
-   * 
+   *
    * <p>This method handles complete OpenAPI schema replacement including API
    * synchronization, component management, and cache invalidation. It supports
    * various strategies for handling duplicates and optional cleanup.</p>
-   * 
+   *
    * <p>The method performs extensive validation and logs activities for audit purposes.</p>
-   * 
+   *
    * @param serviceId the ID of the service
    * @param forced whether to force the operation
    * @param openApi the OpenAPI object
@@ -492,7 +492,7 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
           Map<String, Apis> openApisMap = isEmpty(operationsMap) ? emptyMap()
               : operationsMap.keySet().stream().collect(Collectors
                   .toMap(x -> x, x -> ApisConverter.toSchemaApis(operationsMap.get(x))));
-          
+
           // Find APIs to update
           if (StrategyWhenDuplicated.COVER.equals(strategyWhenDuplicated)) {
             Map<String, Apis> updatedApisDbMap = apisDbMap.keySet().stream()
@@ -560,14 +560,14 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
 
   /**
    * Translates OpenAPI documentation between different languages.
-   * 
+   *
    * <p>This method uses external translation services to translate OpenAPI
    * documentation content between supported languages. It requires proper
    * API key configuration for the translation service.</p>
-   * 
+   *
    * <p>The method performs complete translation and updates the schema
    * with the translated content.</p>
-   * 
+   *
    * @param serviceId the ID of the service
    * @param sourceLanguage the source language for translation
    * @param targetLanguage the target language for translation
@@ -610,7 +610,7 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
 
   /**
    * Initializes a new service schema with default configuration.
-   * 
+   *
    * @param services the service to initialize schema for
    */
   @Override
@@ -620,7 +620,7 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
 
   /**
    * Initializes a new service schema with provided OpenAPI configuration.
-   * 
+   *
    * @param services the service to initialize schema for
    * @param openAPI the OpenAPI configuration to use
    */
@@ -631,10 +631,10 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
 
   /**
    * Clones a service schema to a new service.
-   * 
+   *
    * <p>This method creates a complete copy of a service schema including
    * all components, security requirements, servers, and tags.</p>
-   * 
+   *
    * @param clonedServiceId the ID of the source service to clone from
    * @param serviceId the ID of the target service to clone to
    */
@@ -648,28 +648,27 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
 
   /**
    * Deletes schemas for multiple services with cache invalidation.
-   * 
+   *
    * <p>This method performs bulk deletion of service schemas and ensures
    * proper cache invalidation to maintain data consistency.</p>
-   * 
+   *
    * @param serviceIds the collection of service IDs to delete schemas for
    */
   @Override
   public void deleteByServiceIdIn(Collection<Long> serviceIds) {
     servicesSchemaRepo.deleteByServiceIdIn(serviceIds);
     ((RedisCaffeineCacheManager) cacheManager).evict("servicesSchema",
-        serviceIds.stream().map(id -> "serviceId_" + id)
-            .toList());
+        serviceIds.stream().map(id -> (Object)("serviceId_" + id)).toList());
   }
 
   /**
    * Updates a service schema with new OpenAPI content.
-   * 
+   *
    * <p>This method updates the service schema with new OpenAPI content,
    * supporting both merge and cover strategies for handling conflicts.</p>
-   * 
+   *
    * <p>The method logs the schema update activity for audit purposes.</p>
-   * 
+   *
    * @param serviceId the ID of the service
    * @param serviceSchemaDb the current service schema
    * @param openApi the new OpenAPI content
@@ -686,11 +685,11 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
 
   /**
    * Adds or updates a security requirement in the schema.
-   * 
+   *
    * <p>This method handles security requirement management by either updating
    * existing requirements or adding new ones. It only uses one-dimensional
    * security requirements for simplicity.</p>
-   * 
+   *
    * @param schemaDb the schema to update
    * @param sr the security requirement to add or update
    */
@@ -716,11 +715,11 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
 
   /**
    * Adds or updates a server configuration in the schema.
-   * 
+   *
    * <p>This method handles server configuration management by either updating
    * existing servers or adding new ones. It automatically generates unique IDs
    * for new servers if not provided.</p>
-   * 
+   *
    * @param schemaDb the schema to update
    * @param server the server configuration to add or update
    */
@@ -756,10 +755,10 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
 
   /**
    * Adds or updates a tag in the schema.
-   * 
+   *
    * <p>This method handles tag management by either updating existing tags
    * or adding new ones based on tag name matching.</p>
-   * 
+   *
    * @param schemaDb the schema to update
    * @param tag the tag to add or update
    */
@@ -786,7 +785,7 @@ public class ServicesSchemaCmdImpl extends CommCmd<ServicesSchema, Long> impleme
 
   /**
    * Returns the repository instance for this command.
-   * 
+   *
    * @return the services schema repository
    */
   @Override

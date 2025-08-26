@@ -85,7 +85,7 @@ public class FuncBaselineCaseFacadeImpl implements FuncBaselineCaseFacade {
     FuncCaseDetailVo currentBaselineCaseVo = null;
     Map<Integer, FuncCaseDetailVo> allVersionCaseVos = new HashMap<>();
     if (nonNull(baselineCases)) {
-      List<FuncCaseDetailVo> allBaselineCaseVos = baselineCases.stream()
+      List<? extends FuncCaseDetailVo> allBaselineCaseVos = baselineCases.stream()
           .map(FuncBaselineCaseAssembler::toDetailVo).toList();
       allVersionCaseVos.putAll(allBaselineCaseVos.stream()
           .collect(Collectors.toMap(FuncCaseDetailVo::getVersion, x -> x)));

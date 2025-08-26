@@ -181,11 +181,11 @@ public class KanbanCtoTaskConverter {
     return backloggedTaskCount;
   }
 
-  public static double calcDailyProcessedWorkload(List<TaskEfficiencySummary> tasks,
+  public static double calcDailyProcessedWorkload(List<? extends TaskEfficiencySummary> tasks,
       double default0) {
     double dailyProcessedWorkload = default0;
     // Sort in ascending order by completion time
-    List<TaskEfficiencySummary> completedTasks = tasks.stream()
+    List<? extends TaskEfficiencySummary> completedTasks = tasks.stream()
         .filter(x -> x.getStatus().isCompleted()
             && nonNull(x.getStartDate()) && nonNull(x.getCompletedDate()))
         .sorted(Comparator.comparing(TaskEfficiencySummary::getCompletedDate))
@@ -197,7 +197,7 @@ public class KanbanCtoTaskConverter {
     return dailyProcessedWorkload < 0 ? DEFAULT_DAILY_WORKLOAD : dailyProcessedWorkload;
   }
 
-  public static long calcProcessedDays(List<TaskEfficiencySummary> completedSortTasks) {
+  public static long calcProcessedDays(List<? extends TaskEfficiencySummary> completedSortTasks) {
     TaskEfficiencySummary minStartTask = null;
     for (TaskEfficiencySummary task : completedSortTasks) {
       if (nonNull(task.getStartDate()) // Exclude dirty data

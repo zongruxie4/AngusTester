@@ -233,7 +233,7 @@ public class KanbanEfficiencyCaseConverter {
   public static void assembleWorkload(List<? extends FuncCaseEfficiencySummary> cases,
       EfficiencyCaseCountOverview totalOverview) {
     assembleWorkload0(cases, totalOverview);
-    List<FuncCaseEfficiencySummary> completedCases = cases.stream()
+    List<? extends FuncCaseEfficiencySummary> completedCases = cases.stream()
         .filter(x -> x.getTestResult().isPassed() && nonNull(x.getTestResultHandleDate()))
         .sorted(Comparator.comparing(FuncCaseEfficiencySummary::getTestResultHandleDate))
         .toList();

@@ -173,7 +173,7 @@ public class KanbanEfficiencyTaskConverter {
   public static void assembleWorkload(List<? extends TaskEfficiencySummary> tasks,
       EfficiencyTaskCountOverview totalOverview) {
     assembleWorkload0(tasks, totalOverview);
-    List<TaskEfficiencySummary> completedTasks = tasks.stream()
+    List<? extends TaskEfficiencySummary> completedTasks = tasks.stream()
         .filter(x -> x.getStatus().isCompleted()
             && nonNull(x.getStartDate()) && nonNull(x.getCompletedDate()))
         .sorted(Comparator.comparing(TaskEfficiencySummary::getCompletedDate))
@@ -403,7 +403,7 @@ public class KanbanEfficiencyTaskConverter {
               .count());
       totalOverview.setFailureOverdueRate(totalOverview.calcFailureOverdueRate());
       ListStatistics scores = new ListStatistics();
-      List<TaskEfficiencySummary> validCompletedBugs = validBugs.stream()
+      List<? extends TaskEfficiencySummary> validCompletedBugs = validBugs.stream()
           .filter(x -> x.getStatus().isCompleted() && nonNull(x.getStartDate())
               && nonNull(x.getCompletedDate())).toList();
       for (TaskEfficiencySummary bug : validCompletedBugs) {
