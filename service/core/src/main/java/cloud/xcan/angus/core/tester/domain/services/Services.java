@@ -98,10 +98,9 @@ public class Services extends TenantAuditingEntity<Services, Long> implements Ac
     if (this == o) {
       return true;
     }
-    if (!(o instanceof Services)) {
+    if (!(o instanceof Services project)) {
       return false;
     }
-    Services project = (Services) o;
     return Objects.equals(id, project.id) &&
         source == project.source &&
         importSource == project.importSource &&

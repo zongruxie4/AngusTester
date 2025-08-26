@@ -27,7 +27,7 @@ import org.vngx.jsch.exception.JSchException;
  * Supports both password and key-based authentication with configurable timeouts.
  */
 @Slf4j
-public class SSHUtil {
+public class SshUtil {
 
   // SSH connection timeout constants
   private static final int TIMEOUT = 30 * 1000;        // 30 seconds for general operations
@@ -51,7 +51,7 @@ public class SSHUtil {
    * @param userName the username for SSH authentication
    * @param password the password for SSH authentication
    */
-  public SSHUtil(String ip, Integer port, String userName, String password) {
+  public SshUtil(String ip, Integer port, String userName, String password) {
     this.ip = ip;
     this.port = port;
     this.userName = userName;
@@ -91,18 +91,18 @@ public class SSHUtil {
     // Create JSch instance for SSH operations
     JSch jsch = JSch.getInstance();
     Session session;
-    
+
     // Create session with appropriate port configuration
     if (Objects.nonNull(port)) {
       session = jsch.createSession(userName, ip, port);
     } else {
       session = jsch.createSession(userName, ip);
     }
-    
+
     // Configure session timeout and security settings
     session.setTimeout(TIMEOUT);
     session.getConfig().setProperty("StrictHostKeyChecking", "no");
-    
+
     // Connect with password authentication if provided
     if (StringUtils.isNotEmpty(password)) {
       session.connect(CONNECT_TIMEOUT, password.getBytes());
@@ -184,7 +184,7 @@ public class SSHUtil {
           channel.setInputStream(null);
           channel.setErrStream(null);
           channel.connect(CONNECT_TIMEOUT);
-          
+
           // Read command output
           in = channel.getInputStream();
           result = read(in);
@@ -228,7 +228,7 @@ public class SSHUtil {
         channel.setInputStream(null);
         channel.setErrStream(null);
         channel.connect(CONNECT_TIMEOUT);
-        
+
         // Read command output
         in = channel.getInputStream();
         result = read(in);

@@ -10,15 +10,15 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Utility class for OpenAPI specification processing and schema management.
  * <p>
- * Provides methods for handling OpenAPI schema references, property extraction, 
+ * Provides methods for handling OpenAPI schema references, property extraction,
  * and schema resolution from OpenAPI documents.
  * <p>
- * Implements reference resolution, schema navigation, and property lookup 
+ * Implements reference resolution, schema navigation, and property lookup
  * functionality for OpenAPI 3.x specifications.
  * <p>
  * Supports complex schema structures including allOf, refs, and nested properties.
  */
-public class OpenAPIUtil {
+public class OpenApiUtil {
 
   /**
    * Extracts the simple reference name from an OpenAPI reference string.
@@ -35,7 +35,7 @@ public class OpenAPIUtil {
     if (ref == null || ref.trim().isEmpty()) {
       return ref;
     }
-    
+
     // Extract simple name from component references
     if (ref.startsWith("#/components/")) {
       ref = ref.substring(ref.lastIndexOf("/") + 1);
@@ -59,18 +59,18 @@ public class OpenAPIUtil {
     if (openAPI == null) {
       return null;
     }
-    
+
     // Validate components section exists
     if (openAPI.getComponents() == null) {
       return null;
     }
-    
+
     // Get schemas map and validate it exists
     final Map<String, Schema> mapSchema = openAPI.getComponents().getSchemas();
     if (mapSchema == null || mapSchema.isEmpty()) {
       return null;
     }
-    
+
     // Return schema by name
     return mapSchema.get(name);
   }
@@ -91,7 +91,7 @@ public class OpenAPIUtil {
     if (StringUtils.isBlank(refSchema.get$ref())) {
       return null;
     }
-    
+
     // Extract simple reference name and resolve schema
     final String name = getSimpleRef(refSchema.get$ref());
     return getSchemaFromName(name, openAPI);
@@ -100,7 +100,7 @@ public class OpenAPIUtil {
   /**
    * Searches for a property across multiple schemas in an allOf structure.
    * <p>
-   * Iterates through all schemas in the allOf list, resolving references and 
+   * Iterates through all schemas in the allOf list, resolving references and
    * checking for the specified property.
    * <p>
    * Supports nested schema references and complex allOf structures.
@@ -118,13 +118,13 @@ public class OpenAPIUtil {
       if (StringUtils.isNotBlank(schema.get$ref())) {
         schema = getSchemaFromRefSchema(schema, openAPI);
       }
-      
+
       // Skip if schema has no properties
       final Map<String, Schema> schemaProperties = schema.getProperties();
       if (schemaProperties == null) {
         continue;
       }
-      
+
       // Return property if found in current schema
       if (schemaProperties.containsKey(propertyName)) {
         return schemaProperties.get(propertyName);

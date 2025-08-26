@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class OpenAPIExampleGenerator {
+public class OpenApiExampleGenerator {
 
   public static final String REF_PREFIX_SCHEMAS = "#/components/schemas/";
 
