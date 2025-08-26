@@ -15,8 +15,14 @@
       "scenarioPlaceholder": "Select scenario",
       "creatorPlaceholder": "Creator",
       "modifierPlaceholder": "Last modifier",
-      "addTimePlaceholder": ["Add time from", "Add time to"],
-      "modifyTimePlaceholder": ["Modify time from", "Modify time to"],
+      "addTimePlaceholder": [
+        "Add time from",
+        "Add time to"
+      ],
+      "modifyTimePlaceholder": [
+        "Modify time from",
+        "Modify time to"
+      ],
       "quickSearchOptions": {
         "all": "All",
         "myAdded": "My Added",

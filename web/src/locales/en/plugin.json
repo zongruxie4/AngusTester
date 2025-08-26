@@ -146,163 +146,163 @@
         "lastModifier": "Last Modifier",
         "lastModifyTime": "Last Modify Time",
         "description": "Description",
-                 "form": {
-           "scriptTypeRequired": "Please select script type",
-           "scriptTypePlaceholder": "Please select script type",
-           "scriptNameRequired": "Please enter script name, maximum 200 characters",
-           "scriptNamePlaceholder": "Please enter script name, maximum 200 characters",
-           "descriptionRequired": "Please enter script description, maximum 800 characters",
-           "descriptionPlaceholder": "Please enter script description, maximum 800 characters"
-         }
-       },
-       "sampling": {
-         "title": "Error Sampling",
-         "time": "Time",
-         "samplingId": "Sampling ID",
-         "name": "Name"
-       },
-       "countTemplate": {
-         "radioButtons": {
-           "byApi": "By API",
-           "byMetric": "By Metric",
-           "overlayAnalysis": "Overlay Analysis"
-         }
-       },
-       "superimposeAnalysis": {
-         "toggleTitles": {
-           "throughput": "Throughput (TPS/QPS)",
-           "concurrency": "Concurrency (VU)",
-           "responseTime": "Response Time (RT, ms)",
-           "error": "Errors (ERROR)"
-         },
-         "throughputOptions": {
-           "queriesPerSecond": "Queries/Second",
-           "transactionsPerSecond": "Transactions/Second",
-           "downloadPerSecond": "Download/Second",
-           "uploadPerSecond": "Upload/Second"
-         },
-         "threadOptions": {
-           "threadCount": "Thread Count",
-           "maxThreadCount": "Max Thread Count",
-           "activeThreadCount": "Active Thread Count"
-         },
-         "responseTimeOptions": {
-           "average": "Average",
-           "minimum": "Minimum",
-           "maximum": "Maximum",
-           "p50": "P50",
-           "p75": "P75",
-           "p90": "P90",
-           "p95": "P95",
-           "p99": "P99",
-           "p999": "P999"
-         },
-         "errorOptions": {
-           "errorCount": "Error Count",
-           "errorRate": "Error Rate"
-         }
-       },
-       "nodeData": {
-         "tabs": {
-           "cpu": "CPU",
-           "memory": "Memory",
-           "fileSystem": "File System",
-           "network": "Network"
-         },
-         "nodeTypes": {
-           "execNode": "Execution Node",
-           "appNode": "Application Node"
-         },
-         "diskDataOptions": {
-           "iops": "IOPS",
-           "mbPerSecond": "MB/Second"
-         },
-         "cpuMetrics": {
-           "idlePercentage": "CPU Idle Percentage (%)",
-           "systemSpacePercentage": "System Space CPU Usage (%)",
-           "userSpacePercentage": "User Space CPU Usage (%)",
-           "ioWaitPercentage": "IO Wait CPU Percentage (%)",
-           "otherPercentage": "Other CPU Usage (%)",
-           "totalPercentage": "Total CPU Usage (%)"
-         },
-         "memoryMetrics": {
-           "physicalMemoryFree": "Physical Memory Free (GB)",
-           "physicalMemoryUsed": "Physical Memory Used (GB)",
-           "actualFreePercentage": "Actual Free Memory Percentage (%)",
-           "actualUsedPercentage": "Actual Used Memory Percentage (%)",
-           "actualFreeMemory": "Actual Free Memory (GB)",
-           "actualUsedMemory": "Actual Used Memory (GB)",
-           "freeMemoryPercentage": "Free Memory Percentage (%)",
-           "usedMemoryPercentage": "Used Memory Percentage (%)",
-           "swapUsed": "Swap Used (GB)",
-           "swapFree": "Swap Free (GB)"
-         },
-         "diskMetrics": {
-           "totalSize": "Total Disk Size (GB)",
-           "fileSystemFree": "File System Free (GB)",
-           "fileSystemUsed": "File System Used (GB)",
-           "fileSystemAvailable": "File System Available (GB)",
-           "fileSystemUsage": "File System Usage (%)",
-           "diskReadsPerSecond": "Disk Reads/Second (IO/s)",
-           "diskWritesPerSecond": "Disk Writes/Second (IO/s)",
-           "diskReadMBPerSecond": "Disk Read MB/Second (MB/s)",
-           "diskWriteMBPerSecond": "Disk Write MB/Second (MB/s)"
-         },
-         "networkMetrics": {
-           "totalBytesReceived": "Total Bytes Received (GB)",
-           "mbReceivedPerSecond": "MB Received/Second (MB/s)",
-           "errorPacketsReceived": "Error Packets Received (packets)",
-           "totalBytesSent": "Total Bytes Sent (GB)",
-           "mbSentPerSecond": "MB Sent/Second (MB/s)"
-         }
-       },
-       "execSetting": {
-         "messages": {
-           "modifySuccess": "Modified Successfully"
-         },
-         "actions": {
-           "save": "Save",
-           "cancel": "Cancel"
-         }
-       },
-       "execLog": {
-         "selectNode": "Select Node",
-         "schedulingLog": {
-           "title": "Scheduling Log",
-           "lastSchedulingTime": "Last Scheduling Time",
-           "result": "Result",
-           "success": "Success",
-           "fail": "Failed",
-           "exitCode": "Exit Code",
-           "noData": "--"
-         },
-         "execLog": {
-           "title": "Execution Log",
-           "file": "File",
-           "noProxyInfo": "No proxy access information, connection failed at: ",
-           "downloadFileName": "runner.log"
-         },
-         "tooltips": {
-           "export": "Export",
-           "refresh": "Refresh"
-         },
-         "downloadFileName": {
-           "scheduling": "scheduling.log"
-         }
-       },
-       "conterList": {
-         "errorStatistics": "Error Statistics",
-         "errorCount": "Error Count",
-         "errorRate": "Error Rate"
-       },
+        "form": {
+          "scriptTypeRequired": "Please select script type",
+          "scriptTypePlaceholder": "Please select script type",
+          "scriptNameRequired": "Please enter script name, maximum 200 characters",
+          "scriptNamePlaceholder": "Please enter script name, maximum 200 characters",
+          "descriptionRequired": "Please enter script description, maximum 800 characters",
+          "descriptionPlaceholder": "Please enter script description, maximum 800 characters"
+        }
+      },
+      "sampling": {
+        "title": "Error Sampling",
+        "time": "Time",
+        "samplingId": "Sampling ID",
+        "name": "Name"
+      },
+      "countTemplate": {
+        "radioButtons": {
+          "byApi": "By API",
+          "byMetric": "By Metric",
+          "overlayAnalysis": "Overlay Analysis"
+        }
+      },
+      "superimposeAnalysis": {
+        "toggleTitles": {
+          "throughput": "Throughput (TPS/QPS)",
+          "concurrency": "Concurrency (VU)",
+          "responseTime": "Response Time (RT, ms)",
+          "error": "Errors (ERROR)"
+        },
+        "throughputOptions": {
+          "queriesPerSecond": "Queries/Second",
+          "transactionsPerSecond": "Transactions/Second",
+          "downloadPerSecond": "Download/Second",
+          "uploadPerSecond": "Upload/Second"
+        },
+        "threadOptions": {
+          "threadCount": "Thread Count",
+          "maxThreadCount": "Max Thread Count",
+          "activeThreadCount": "Active Thread Count"
+        },
+        "responseTimeOptions": {
+          "average": "Average",
+          "minimum": "Minimum",
+          "maximum": "Maximum",
+          "p50": "P50",
+          "p75": "P75",
+          "p90": "P90",
+          "p95": "P95",
+          "p99": "P99",
+          "p999": "P999"
+        },
+        "errorOptions": {
+          "errorCount": "Error Count",
+          "errorRate": "Error Rate"
+        }
+      },
+      "nodeData": {
+        "tabs": {
+          "cpu": "CPU",
+          "memory": "Memory",
+          "fileSystem": "File System",
+          "network": "Network"
+        },
+        "nodeTypes": {
+          "execNode": "Execution Node",
+          "appNode": "Application Node"
+        },
+        "diskDataOptions": {
+          "iops": "IOPS",
+          "mbPerSecond": "MB/Second"
+        },
+        "cpuMetrics": {
+          "idlePercentage": "CPU Idle Percentage (%)",
+          "systemSpacePercentage": "System Space CPU Usage (%)",
+          "userSpacePercentage": "User Space CPU Usage (%)",
+          "ioWaitPercentage": "IO Wait CPU Percentage (%)",
+          "otherPercentage": "Other CPU Usage (%)",
+          "totalPercentage": "Total CPU Usage (%)"
+        },
+        "memoryMetrics": {
+          "physicalMemoryFree": "Physical Memory Free (GB)",
+          "physicalMemoryUsed": "Physical Memory Used (GB)",
+          "actualFreePercentage": "Actual Free Memory Percentage (%)",
+          "actualUsedPercentage": "Actual Used Memory Percentage (%)",
+          "actualFreeMemory": "Actual Free Memory (GB)",
+          "actualUsedMemory": "Actual Used Memory (GB)",
+          "freeMemoryPercentage": "Free Memory Percentage (%)",
+          "usedMemoryPercentage": "Used Memory Percentage (%)",
+          "swapUsed": "Swap Used (GB)",
+          "swapFree": "Swap Free (GB)"
+        },
+        "diskMetrics": {
+          "totalSize": "Total Disk Size (GB)",
+          "fileSystemFree": "File System Free (GB)",
+          "fileSystemUsed": "File System Used (GB)",
+          "fileSystemAvailable": "File System Available (GB)",
+          "fileSystemUsage": "File System Usage (%)",
+          "diskReadsPerSecond": "Disk Reads/Second (IO/s)",
+          "diskWritesPerSecond": "Disk Writes/Second (IO/s)",
+          "diskReadMBPerSecond": "Disk Read MB/Second (MB/s)",
+          "diskWriteMBPerSecond": "Disk Write MB/Second (MB/s)"
+        },
+        "networkMetrics": {
+          "totalBytesReceived": "Total Bytes Received (GB)",
+          "mbReceivedPerSecond": "MB Received/Second (MB/s)",
+          "errorPacketsReceived": "Error Packets Received (packets)",
+          "totalBytesSent": "Total Bytes Sent (GB)",
+          "mbSentPerSecond": "MB Sent/Second (MB/s)"
+        }
+      },
+      "execSetting": {
+        "messages": {
+          "modifySuccess": "Modified Successfully"
+        },
+        "actions": {
+          "save": "Save",
+          "cancel": "Cancel"
+        }
+      },
+      "execLog": {
+        "selectNode": "Select Node",
+        "schedulingLog": {
+          "title": "Scheduling Log",
+          "lastSchedulingTime": "Last Scheduling Time",
+          "result": "Result",
+          "success": "Success",
+          "fail": "Failed",
+          "exitCode": "Exit Code",
+          "noData": "--"
+        },
+        "execLog": {
+          "title": "Execution Log",
+          "file": "File",
+          "noProxyInfo": "No proxy access information, connection failed at: ",
+          "downloadFileName": "runner.log"
+        },
+        "tooltips": {
+          "export": "Export",
+          "refresh": "Refresh"
+        },
+        "downloadFileName": {
+          "scheduling": "scheduling.log"
+        }
+      },
+      "conterList": {
+        "errorStatistics": "Error Statistics",
+        "errorCount": "Error Count",
+        "errorRate": "Error Rate"
+      },
       "aggregate": {
-          "radioButtons": {
-            "byThroughput": "By Throughput",
-            "byResponseTime": "By Response Time",
-            "byErrorCount": "By Error Count",
-            "byErrorRate": "By Error Rate",
-            "byUploadDownload": "By Upload/Download"
-          }
+        "radioButtons": {
+          "byThroughput": "By Throughput",
+          "byResponseTime": "By Response Time",
+          "byErrorCount": "By Error Count",
+          "byErrorRate": "By Error Rate",
+          "byUploadDownload": "By Upload/Download"
+        }
       }
     }
   },
@@ -355,18 +355,18 @@
       "pleaseInput": "Please Input"
     },
     "form": {
-        "name": "Name",
-        "description": "Description",
-        "type": "Type",
-        "format": "Format",
-        "size": "Size",
-        "count": "Count",
-        "status": "Status",
-        "createTime": "Create Time",
-        "updateTime": "Update Time",
-        "creator": "Creator",
-        "updater": "Updater"
-      },
+      "name": "Name",
+      "description": "Description",
+      "type": "Type",
+      "format": "Format",
+      "size": "Size",
+      "count": "Count",
+      "status": "Status",
+      "createTime": "Create Time",
+      "updateTime": "Update Time",
+      "creator": "Creator",
+      "updater": "Updater"
+    },
     "dataConfig": {
       "title": "Data Configuration",
       "fieldName": "Field Name",
@@ -387,754 +387,754 @@
       "execRetry": "Retry Count",
       "execParallel": "Parallel Execution"
     },
-            "storeConfig": {
-        "title": "Storage Configuration",
-        "storeType": "Storage Type",
-        "storePath": "Storage Path",
-        "storeFormat": "Storage Format",
-        "storeCompress": "Compress",
-        "storeEncrypt": "Encrypt"
+    "storeConfig": {
+      "title": "Storage Configuration",
+      "storeType": "Storage Type",
+      "storePath": "Storage Path",
+      "storeFormat": "Storage Format",
+      "storeCompress": "Compress",
+      "storeEncrypt": "Encrypt"
+    },
+    "dataSet": {
+      "format": "Format",
+      "lineEnding": "Line Ending",
+      "includeHeader": "Include Header",
+      "escapeChar": "Escape Character",
+      "quoteChar": "Quote Character",
+      "separatorChar": "Separator Character",
+      "includeNull": "Include Null Fields",
+      "rowsToArray": "Convert to Array",
+      "tableName": "Storage Table Name",
+      "batchInsert": "Generate Batch INSERT",
+      "rootElement": "Root Element Name",
+      "recordElement": "Record Element Name",
+      "validation": {
+        "singleChar": "Please enter a single character",
+        "tableNameRequired": "Please enter storage table name"
+      }
+    },
+    "DatasourceStoreConfig": {
+      "batchRows": "Batch Rows",
+      "batchInsert": "Batch Insert",
+      "selectDatasource": "Select Datasource",
+      "databaseType": "Database Type",
+      "driverClassName": "Driver Class Name",
+      "hints": {
+        "batchRows": "Number of rows to generate, store or send in each batch, default 1, maximum 10000.",
+        "batchInsert": "When set to true, {batchRows} rows will be merged into one INSERT statement",
+        "driverClassName": "Default driver class name will be used if not specified"
       },
-      "dataSet": {
-        "format": "Format",
-        "lineEnding": "Line Ending",
-        "includeHeader": "Include Header",
-        "escapeChar": "Escape Character",
-        "quoteChar": "Quote Character",
-        "separatorChar": "Separator Character",
-        "includeNull": "Include Null Fields",
-        "rowsToArray": "Convert to Array",
-        "tableName": "Storage Table Name",
-        "batchInsert": "Generate Batch INSERT",
-        "rootElement": "Root Element Name",
-        "recordElement": "Record Element Name",
-                 "validation": {
-           "singleChar": "Please enter a single character",
-           "tableNameRequired": "Please enter storage table name"
-         }
-       },
-       "DatasourceStoreConfig": {
-         "batchRows": "Batch Rows",
-         "batchInsert": "Batch Insert",
-         "selectDatasource": "Select Datasource",
-         "databaseType": "Database Type",
-         "driverClassName": "Driver Class Name",
-         "hints": {
-           "batchRows": "Number of rows to generate, store or send in each batch, default 1, maximum 10000.",
-           "batchInsert": "When set to true, {batchRows} rows will be merged into one INSERT statement",
-           "driverClassName": "Default driver class name will be used if not specified"
-         },
-         "validation": {
-           "selectDatasource": "Please select datasource",
-           "selectDatabaseType": "Please select database type"
-         }
-       },
-       "excuteConfig": {
-         "scriptName": "Script Name",
-         "execThreads": "Execution Threads",
-         "selectMockNode": "Select Mock Node",
-         "execPriority": "Execution Priority",
-         "onError": "On Error",
-         "storageMethod": "Storage Method",
-         "rows": "Rows",
-         "hints": {
-           "execThreads": "Default 1 thread, maximum 1000.",
-           "execPriority": "Higher priority executes first, range: 0~2147483647, higher value means higher priority.",
-           "rows": "Total number of data rows to generate, maximum 100000000000."
-         },
-         "errorActions": {
-           "continue": "Continue",
-           "stop": "Stop",
-           "stopNow": "Stop Now"
-         },
-         "storageTips": {
-           "datasource": "Datasource storage, writes generated data to database.",
-           "dataspace": "Data space storage, stores data in AngusTester application 'Data' -> 'Space'.",
-           "local": "Local storage, generated data will be stored as files on execution nodes, you can enter execution details page to download data files. Default storage path: ${AGENT_HOME}/data/exec/[ExecutionID]/data.[DataFormat].",
-           "pushThird": "Push to third-party interface, supports sending generated data as text or file to an Http interface."
-         },
-         "validation": {
-           "scriptNameRequired": "Please enter data script name",
-           "selectNode": "Please select node"
-         },
-         "placeholders": {
-           "scriptName": "Enter data script name, limited to 200 characters"
-         }
-       },
-       "FuncModal": {
-         "title": "Select Mock Function"
-       },
-       "localStoreConfig": {
-         "batchRows": "Batch Rows",
-         "defaultStoragePath": "Default Storage Path",
-         "hints": {
-           "batchRows": "Number of rows to generate, store or send in each batch, default 1, maximum 10000.",
-           "defaultStoragePath": "Storage path for generated data files on execution nodes."
-         }
-       },
-       "pushThirdStoreConfig": {
-         "batchRows": "Batch Rows",
-         "requestParams": "Request Parameters",
-         "requestBody": "Request Body",
-         "authentication": "Authentication",
-         "contentType": "Content-Type",
-         "username": "Username",
-         "password": "Password",
-         "token": "Token",
-         "basicAuth": "Basic Auth",
-         "bearerToken": "Bearer Token",
-         "hints": {
-           "batchRows": "Number of rows to generate, store or send in each batch, default 1, maximum 10000."
-         },
-         "form": {
-           "paramName": "Parameter Name",
-           "paramValue": "Parameter Value",
-           "position": "Position",
-           "paramNamePlaceholder": "Parameter Name",
-           "filePosition": "File Position"
-         },
-         "validation": {
-           "enterParamName": "Please enter parameter name",
-           "paramNameDuplicate": "Parameter name already exists",
-           "enterParamValue": "Please enter parameter value",
-           "enterApiAddress": "Please enter API address"
-         },
-         "placeholders": {
-           "apiAddress": "API Address"
-         }
-       },
-       "spaceStoreConfig": {
-         "selectSpace": "Select Space",
-         "batchRows": "Batch Rows",
-         "hints": {
-           "batchRows": "Number of rows to generate, store or send in each batch, default 1, maximum 10000."
-         },
-         "validation": {
-           "selectSpace": "Please select space"
-         }
-       },
-       "viewScriptModal": {
-         "title": "View Script"
-       }
+      "validation": {
+        "selectDatasource": "Please select datasource",
+        "selectDatabaseType": "Please select database type"
+      }
+    },
+    "excuteConfig": {
+      "scriptName": "Script Name",
+      "execThreads": "Execution Threads",
+      "selectMockNode": "Select Mock Node",
+      "execPriority": "Execution Priority",
+      "onError": "On Error",
+      "storageMethod": "Storage Method",
+      "rows": "Rows",
+      "hints": {
+        "execThreads": "Default 1 thread, maximum 1000.",
+        "execPriority": "Higher priority executes first, range: 0~2147483647, higher value means higher priority.",
+        "rows": "Total number of data rows to generate, maximum 100000000000."
       },
-    "httPlugin": {
-      "actions": {
-        "save": "Save",
-        "cancel": "Cancel",
-        "confirm": "Confirm",
-        "refresh": "Refresh",
-        "export": "Export",
-        "import": "Import",
-        "add": "Add",
-        "edit": "Edit",
-        "delete": "Delete",
-        "view": "View",
-        "download": "Download",
-        "upload": "Upload"
+      "errorActions": {
+        "continue": "Continue",
+        "stop": "Stop",
+        "stopNow": "Stop Now"
       },
-      "messages": {
-        "saveSuccess": "Save successful",
-        "deleteSuccess": "Delete successful",
-        "importSuccess": "Import successful",
-        "exportSuccess": "Export successful",
-        "operationSuccess": "Operation successful",
-        "operationFailed": "Operation failed",
-        "pleaseSelect": "Please select",
-        "pleaseInput": "Please input",
-        "debugNeedSave": "Debug requires saving current data first, please save before debugging",
-        "autoSaveAndDebug": "Auto save successful, executing debug...",
-        "createExecutionSuccess": "Create execution test successful, please view details and results in 'Execution'",
-        "taskConfigError": "Task configuration data error, please check and correct before saving.",
-        "executeConfigError": "Execute configuration data error, please check and correct before saving.",
-        "followSuccess": "Follow successful",
-        "cancelFollowSuccess": "Cancel follow successful",
-        "favouriteSuccess": "Favourite successful",
-        "cancelFavouriteSuccess": "Cancel favourite successful",
-        "paramError": "Parameter error"
+      "storageTips": {
+        "datasource": "Datasource storage, writes generated data to database.",
+        "dataspace": "Data space storage, stores data in AngusTester application 'Data' -> 'Space'.",
+        "local": "Local storage, generated data will be stored as files on execution nodes, you can enter execution details page to download data files. Default storage path: ${AGENT_HOME}/data/exec/[ExecutionID]/data.[DataFormat].",
+        "pushThird": "Push to third-party interface, supports sending generated data as text or file to an Http interface."
+      },
+      "validation": {
+        "scriptNameRequired": "Please enter data script name",
+        "selectNode": "Please select node"
+      },
+      "placeholders": {
+        "scriptName": "Enter data script name, limited to 200 characters"
+      }
+    },
+    "FuncModal": {
+      "title": "Select Mock Function"
+    },
+    "localStoreConfig": {
+      "batchRows": "Batch Rows",
+      "defaultStoragePath": "Default Storage Path",
+      "hints": {
+        "batchRows": "Number of rows to generate, store or send in each batch, default 1, maximum 10000.",
+        "defaultStoragePath": "Storage path for generated data files on execution nodes."
+      }
+    },
+    "pushThirdStoreConfig": {
+      "batchRows": "Batch Rows",
+      "requestParams": "Request Parameters",
+      "requestBody": "Request Body",
+      "authentication": "Authentication",
+      "contentType": "Content-Type",
+      "username": "Username",
+      "password": "Password",
+      "token": "Token",
+      "basicAuth": "Basic Auth",
+      "bearerToken": "Bearer Token",
+      "hints": {
+        "batchRows": "Number of rows to generate, store or send in each batch, default 1, maximum 10000."
       },
       "form": {
+        "paramName": "Parameter Name",
+        "paramValue": "Parameter Value",
+        "position": "Position",
+        "paramNamePlaceholder": "Parameter Name",
+        "filePosition": "File Position"
+      },
+      "validation": {
+        "enterParamName": "Please enter parameter name",
+        "paramNameDuplicate": "Parameter name already exists",
+        "enterParamValue": "Please enter parameter value",
+        "enterApiAddress": "Please enter API address"
+      },
+      "placeholders": {
+        "apiAddress": "API Address"
+      }
+    },
+    "spaceStoreConfig": {
+      "selectSpace": "Select Space",
+      "batchRows": "Batch Rows",
+      "hints": {
+        "batchRows": "Number of rows to generate, store or send in each batch, default 1, maximum 10000."
+      },
+      "validation": {
+        "selectSpace": "Please select space"
+      }
+    },
+    "viewScriptModal": {
+      "title": "View Script"
+    }
+  },
+  "httPlugin": {
+    "actions": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "refresh": "Refresh",
+      "export": "Export",
+      "import": "Import",
+      "add": "Add",
+      "edit": "Edit",
+      "delete": "Delete",
+      "view": "View",
+      "download": "Download",
+      "upload": "Upload"
+    },
+    "messages": {
+      "saveSuccess": "Save successful",
+      "deleteSuccess": "Delete successful",
+      "importSuccess": "Import successful",
+      "exportSuccess": "Export successful",
+      "operationSuccess": "Operation successful",
+      "operationFailed": "Operation failed",
+      "pleaseSelect": "Please select",
+      "pleaseInput": "Please input",
+      "debugNeedSave": "Debug requires saving current data first, please save before debugging",
+      "autoSaveAndDebug": "Auto save successful, executing debug...",
+      "createExecutionSuccess": "Create execution test successful, please view details and results in 'Execution'",
+      "taskConfigError": "Task configuration data error, please check and correct before saving.",
+      "executeConfigError": "Execute configuration data error, please check and correct before saving.",
+      "followSuccess": "Follow successful",
+      "cancelFollowSuccess": "Cancel follow successful",
+      "favouriteSuccess": "Favourite successful",
+      "cancelFavouriteSuccess": "Cancel favourite successful",
+      "paramError": "Parameter error"
+    },
+    "form": {
+      "name": "Name",
+      "description": "Description",
+      "type": "Type",
+      "format": "Format",
+      "size": "Size",
+      "count": "Count",
+      "status": "Status",
+      "createTime": "Create Time",
+      "updateTime": "Update Time",
+      "creator": "Creator",
+      "updater": "Updater"
+    },
+    "tabs": {
+      "taskConfig": "Task Config",
+      "executeConfig": "Execute Config"
+    },
+    "authority": {
+      "title": "Scene Authority",
+      "onTips": "After enabling 'Permission Control', you need to manually authorize service permissions to have scene operation permissions, 'Permission Control' is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically granted.",
+      "offTips": "After enabling 'No Permission Control', all users will be allowed to publicly view and operate the current scene, and viewing users also need to have parent directory permissions for the current scene."
+    },
+    "debugLog": {
+      "schedulingResult": "Scheduling Result",
+      "processExitCode": "Process Exit Code",
+      "downloadFileName": "scheduling.log"
+    },
+    "debugResult": {
+      "debugResult": "Debug Result",
+      "exitCode": "Exit Code",
+      "failureReason": "Failure Reason",
+      "samplingStatus": "Sampling Status"
+    },
+    "drawerItem": {
+      "id": "ID",
+      "name": "Name",
+      "scriptName": "Script Name",
+      "scriptId": "Script ID",
+      "description": "Description",
+      "namePlaceholder": "Maximum 200 characters",
+      "descriptionPlaceholder": "Maximum 800 characters",
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    },
+    "execLog": {
+      "node": "Node",
+      "schedulingResult": "Scheduling Result",
+      "processExitCode": "Process Exit Code",
+      "downloadFileName": "runner.log"
+    },
+    "executeConfig": {
+      "scriptType": "Script Type"
+    },
+    "exportScriptModal": {
+      "title": "Export Script",
+      "format": "Format"
+    },
+    "importScript": {
+      "title": "Import Script"
+    },
+    "scriptConfig": {
+      "yamlFormatError": "YAML content format error, please check and correct"
+    },
+    "selectScriptModal": {
+      "title": "Select Script",
+      "searchPlaceholder": "Search script name",
+      "tableHeaders": {
         "name": "Name",
-        "description": "Description",
-        "type": "Type",
-        "format": "Format",
-        "size": "Size",
-        "count": "Count",
-        "status": "Status",
-        "createTime": "Create Time",
-        "updateTime": "Update Time",
-        "creator": "Creator",
-        "updater": "Updater"
+        "plugin": "Plugin",
+        "type": "Type"
+      }
+    },
+    "performanceTestDetail": {
+      "countCards": {
+        "currentDuration": "Execution Duration",
+        "vu": "Concurrency",
+        "qps": "Queries Per Second (Current | Max)",
+        "tps": "Transactions Per Second (Current | Max)",
+        "err": "Error",
+        "currentIterations": "Iterations",
+        "rt": "Response Time (Min | Avg | Max)",
+        "p50": "Response Percentile (P50 | P90 | P99)",
+        "export": "Download",
+        "upload": "Upload"
       },
       "tabs": {
-        "taskConfig": "Task Config",
-        "executeConfig": "Execute Config"
+        "aggregation": "Summary Results",
+        "throughput": "Throughput",
+        "vu": "Concurrency",
+        "responseTime": "Response Time",
+        "error": "Error",
+        "httpCode": "Status Code",
+        "node": "Node Resources",
+        "analyze": "Superimpose Analysis"
       },
-      "authority": {
-        "title": "Scene Authority",
-        "onTips": "After enabling 'Permission Control', you need to manually authorize service permissions to have scene operation permissions, 'Permission Control' is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically granted.",
-        "offTips": "After enabling 'No Permission Control', all users will be allowed to publicly view and operate the current scene, and viewing users also need to have parent directory permissions for the current scene."
-      },
-      "debugLog": {
-        "schedulingResult": "Scheduling Result",
-        "processExitCode": "Process Exit Code",
-        "downloadFileName": "scheduling.log"
-      },
-      "debugResult": {
-        "debugResult": "Debug Result",
-        "exitCode": "Exit Code",
-        "failureReason": "Failure Reason",
-        "samplingStatus": "Sampling Status"
-      },
-      "drawerItem": {
-        "id": "ID",
-        "name": "Name",
-        "scriptName": "Script Name",
-        "scriptId": "Script ID",
-        "description": "Description",
-        "namePlaceholder": "Maximum 200 characters",
-        "descriptionPlaceholder": "Maximum 800 characters",
-        "confirm": "Confirm",
-        "cancel": "Cancel"
-      },
-      "execLog": {
-        "node": "Node",
-        "schedulingResult": "Scheduling Result",
-        "processExitCode": "Process Exit Code",
-        "downloadFileName": "runner.log"
-      },
-      "executeConfig": {
-        "scriptType": "Script Type"
-      },
-      "exportScriptModal": {
-        "title": "Export Script",
-        "format": "Format"
-      },
-      "importScript": {
-        "title": "Import Script"
-      },
-      "scriptConfig": {
-        "yamlFormatError": "YAML content format error, please check and correct"
-      },
-      "selectScriptModal": {
-        "title": "Select Script",
-        "searchPlaceholder": "Search script name",
+      "units": {
+        "perSecond": "/s",
+        "ms": "ms"
+      }
+    },
+    "uiConfig": {
+      "selectApiModal": {
+        "title": "Select API",
+        "searchPlaceholder": "Search API name",
         "tableHeaders": {
           "name": "Name",
-          "plugin": "Plugin",
-          "type": "Type"
-        }
+          "method": "Method",
+          "path": "Path"
+        },
+        "copy": "Copy",
+        "reference": "Reference",
+        "alreadyReferenced": "The selected interfaces contain already referenced interfaces and cannot be referenced repeatedly."
       },
-      "performanceTestDetail": {
-        "countCards": {
-          "currentDuration": "Execution Duration",
-          "vu": "Concurrency",
-          "qps": "Queries Per Second (Current | Max)",
-          "tps": "Transactions Per Second (Current | Max)",
-          "err": "Error",
-          "currentIterations": "Iterations",
-          "rt": "Response Time (Min | Avg | Max)",
-          "p50": "Response Percentile (P50 | P90 | P99)",
-          "export": "Download",
-          "upload": "Upload"
+      "selectUseCaseModal": {
+        "title": "Select Use Case",
+        "searchPlaceholder": "Search use case name",
+        "tableHeaders": {
+          "name": "Name",
+          "description": "Description"
         },
-        "tabs": {
-          "aggregation": "Summary Results",
-          "throughput": "Throughput",
-          "vu": "Concurrency",
-          "responseTime": "Response Time",
-          "error": "Error",
-          "httpCode": "Status Code",
-          "node": "Node Resources",
-          "analyze": "Superimpose Analysis"
-        },
-        "units": {
-          "perSecond": "/s",
-          "ms": "ms"
-        }
+        "copy": "Copy",
+        "reference": "Reference",
+        "alreadyReferenced": "The selected use cases contain already referenced use cases and cannot be referenced repeatedly."
       },
-      "uiConfig": {
-        "selectApiModal": {
-          "title": "Select API",
-          "searchPlaceholder": "Search API name",
-          "tableHeaders": {
-            "name": "Name",
-            "method": "Method",
-            "path": "Path"
-          },
-          "copy": "Copy",
-          "reference": "Reference",
-          "alreadyReferenced": "The selected interfaces contain already referenced interfaces and cannot be referenced repeatedly."
-        },
-        "selectUseCaseModal": {
-          "title": "Select Use Case",
-          "searchPlaceholder": "Search use case name",
-          "tableHeaders": {
-            "name": "Name",
-            "description": "Description"
-          },
-          "copy": "Copy",
-          "reference": "Reference",
-          "alreadyReferenced": "The selected use cases contain already referenced use cases and cannot be referenced repeatedly."
-        },
-        "throughput": {
-          "title": "Throughput",
-          "requestsPerSecond": "Requests Per Second",
-          "waitTimeout": "Wait Timeout",
-          "duplicateName": "Duplicate Name",
-          "namePlaceholder": "Name, max 400 characters"
-        },
-        "transStart": {
-          "title": "Transaction Start",
-          "name": "Name",
-          "duplicateName": "Duplicate Name",
-          "namePlaceholder": "Name, max 400 characters"
-        },
-        "waitingTime": {
-          "title": "Waiting Time",
-          "waitType": "Wait Type",
-          "fixedWait": "Fixed Wait",
-          "randomWait": "Random Wait",
-          "to": "to",
-          "duplicateName": "Duplicate Name",
-          "namePlaceholder": "Name, max 400 characters"
-        },
-        "rendezvous": {
-          "title": "Rendezvous",
-          "userCount": "User Count",
-          "waitTimeout": "Wait Timeout",
-          "duplicateName": "Duplicate Name",
-          "namePlaceholder": "Name, max 400 characters"
-        },
-        "transEnd": {
-          "title": "Transaction End",
-          "name": "Name",
-          "suffix": " End"
-        },
-        "actionsGroup": {
-          "add": "Add",
-          "delete": "Delete",
-          "copy": "Copy",
-          "moveUp": "Move Up",
-          "moveDown": "Move Down"
-        },
-        "httpConfigs": {
-          "title": "HTTP Configuration",
-          "basicInfo": "Basic Information",
-          "requestBody": "Request Body",
-          "assertions": "Assertions",
-          "parameters": "Parameters",
+      "throughput": {
+        "title": "Throughput",
+        "requestsPerSecond": "Requests Per Second",
+        "waitTimeout": "Wait Timeout",
+        "duplicateName": "Duplicate Name",
+        "namePlaceholder": "Name, max 400 characters"
+      },
+      "transStart": {
+        "title": "Transaction Start",
+        "name": "Name",
+        "duplicateName": "Duplicate Name",
+        "namePlaceholder": "Name, max 400 characters"
+      },
+      "waitingTime": {
+        "title": "Waiting Time",
+        "waitType": "Wait Type",
+        "fixedWait": "Fixed Wait",
+        "randomWait": "Random Wait",
+        "to": "to",
+        "duplicateName": "Duplicate Name",
+        "namePlaceholder": "Name, max 400 characters"
+      },
+      "rendezvous": {
+        "title": "Rendezvous",
+        "userCount": "User Count",
+        "waitTimeout": "Wait Timeout",
+        "duplicateName": "Duplicate Name",
+        "namePlaceholder": "Name, max 400 characters"
+      },
+      "transEnd": {
+        "title": "Transaction End",
+        "name": "Name",
+        "suffix": " End"
+      },
+      "actionsGroup": {
+        "add": "Add",
+        "delete": "Delete",
+        "copy": "Copy",
+        "moveUp": "Move Up",
+        "moveDown": "Move Down"
+      },
+      "httpConfigs": {
+        "title": "HTTP Configuration",
+        "basicInfo": "Basic Information",
+        "requestBody": "Request Body",
+        "assertions": "Assertions",
+        "parameters": "Parameters",
+        "serverEndpoint": "Server Endpoint",
+        "default": "Default",
+        "serverEndpointConfig": {
+          "title": "Server Endpoint Configuration",
           "serverEndpoint": "Server Endpoint",
-          "default": "Default",
-          "serverEndpointConfig": {
-            "title": "Server Endpoint Configuration",
-            "serverEndpoint": "Server Endpoint",
-            "serverEndpointPlaceholder": "Please enter server endpoint"
-          },
-          "parametric": {
-            "title": "Parametric",
-            "variables": {
-              "title": "Variables",
-              "addVariable": "Add Variable",
-              "variableName": "Variable Name",
-              "variableValue": "Variable Value",
-              "extractionMethod": "Extraction Method",
-              "extractionMethodPlaceholder": "Please select extraction method",
-              "description": "Extract data from the current sampling request or response and store it in variables for use in subsequent requests.",
-              "noVariablesDefined": "You have not defined any variables",
-              "duplicateName": "Duplicate Name",
-              "namePlaceholder": "Parameter name, max 100 characters",
-              "locationPlaceholder": "Extraction Location",
-              "parameterNamePlaceholder": "Extraction parameter name, max 100 characters",
-              "defaultValuePlaceholder": "Extraction default value (optional), max 4096 characters",
-              "expressionPlaceholder": "Extraction expression, max 1024 characters",
-              "matchItemPlaceholder": "Match item (optional), range 0-2000"
-            },
-            "dataset": {
-              "title": "Dataset",
-              "addDataset": "Add Dataset",
-              "datasetName": "Dataset Name",
-              "datasetType": "Dataset Type",
-              "previewData": "Preview Data",
-              "extractParameters": "Extract Parameters",
-              "staticParameters": "Static Parameters",
-              "datasetUseList": "Dataset Use List",
-              "description": "Datasets are used to store and manage test data, supporting multiple data formats and parameterized configurations.",
-              "noDatasetsDefined": "You have not defined any datasets",
-              "duplicateName": "Duplicate Name",
-              "namePlaceholder": "Dataset name, max 100 characters",
-              "typePlaceholder": "Please select dataset type",
-              "actionOnEOF": "Action on End of File",
-              "sharingMode": "Sharing Mode",
-              "recycle": "Recycle",
-              "stopThread": "Stop Thread",
-              "allThread": "All Threads",
-              "currentThread": "Current Thread",
-              "previewDataModal": {
-                "title": "Preview Data",
-                "description": "View actual data content in the dataset",
-                "previewRows": "Preview Rows",
-                "previewRowsPlaceholder": "1 ~ 10000",
-                "noData": "No Data",
-                "refresh": "Refresh"
-              },
-              "datasetModal": {
-                "title": "Reference Variables",
-                "description": "Configure basic information and parameters of the dataset",
-                "valueSource": "Value Source",
-                "lastModifiedBy": "Last Modified By",
-                "lastModifiedDate": "Last Modified Date",
-                "searchPlaceholder": "Search name or description",
-                "refresh": "Refresh",
-                "name": "Name",
-                "descriptionColumn": "Description"
-              },
-              "extractParametersModal": {
-                "title": "Extract Parameters",
-                "description": "Extract parameter configuration from dataset"
-              },
-              "extractParametersField": {
-                "readColumn": "Read Column",
-                "name": "Name"
-              },
-              "staticParametersModal": {
-                "title": "Static Parameters",
-                "description": "Configure static parameter data"
-              },
-              "staticParametersDescription": "Parameter values are dynamically generated based on Mock data functions during sampling. Each dataset allows maximum 200 parameters and supports generating up to 100 billion rows of data.",
-              "datasetUseListModal": {
-                "title": "Dataset Use List",
-                "description": "View dataset usage information"
-              },
-              "datasetUseListField": {
-                "description": "View resource information that uses variables.",
-                "resourceType": "Resource Type",
-                "resourceId": "Resource ID",
-                "resourceName": "Resource Name",
-                "refresh": "Refresh"
-              },
-              "hintTextMap": {
-                "file": "Read dataset from file, each dataset allows maximum 200 parameters, each parameter file maximum 500MB, total rows not exceeding 1 million.",
-                "jdbc": "Extract a value from database query results as dataset value before each test execution."
-              },
-              "recycleTooltip": "After all data rows in the dataset are used, data will be reused from the beginning.",
-              "stopThreadTooltip": "After all data rows in the dataset are used, stop the current sampling thread execution. When all threads finish reading all rows, the entire execution exits and ends.",
-              "allThreadTooltip": "All threads share the same dataset data.",
-              "currentThreadTooltip": "Each thread copies its own dataset data.",
-              "confirmUnlinkDataset": "Are you sure to unlink dataset [{name}]?",
-              "unlinkDataset": "Unlink",
-              "viewDefinition": "View Definition",
-              "parameters": "Parameters",
-              "name": "Name",
-              "value": "Value"
-            },
-            "matchItemPopover": {
-              "dataColumn": "Match Value",
-              "expressionColumn": "Expression",
-              "resultColumn": "Match Result",
-              "itemColumn": "Match Item",
-              "regexp": {
-                "title": "Regular Expression Match",
-                "data": "When position is not specified or position 0 is specified, both take the merged match value at position 0: \"1888888888813999999999\". Specifying position 1 takes value: \"18888888888\". Specifying position 2 takes value: \"13999999999\"."
-              },
-              "jsonpath": {
-                "title": "JSONPath Match",
-                "data": "When position is not specified, the merged result is taken by default: [{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}]. Specifying position 0 takes value: {\"title\":\"Sayings of the Century\",\"price\":100}. Specifying position 1 takes value: {\"title\":\"confucianism\",\"price\":200}."
-              },
-              "xpath": {
-                "title": "XPath Match",
-                "data": "When position is not specified, the merged result is taken by default: \"30codingbasketballAngus132codingAngus2\". Specifying position 0 takes value: \"30codingbasketballAngus1\". Specifying position 1 takes value: \"32codingAngus2\"."
-              },
-              "hints": "Match Item",
-              "description": "When an expression matches multiple values or the result is an array, specify which value to use as the expected value of the expression. Supports positions from 0 to a maximum of 2000. Returns null when the specified position data does not exist. When not specified, merges multiple values into one value."
-            }
-          },
-          "assertionForm": {
-            "title": "Assertion Form",
-            "addAssertion": "Add Assertion",
-            "assertionName": "Assertion Name",
-            "assertionType": "Assertion Type",
-            "expectedValue": "Expected Value",
-            "actualValue": "Actual Value",
-            "condition": "Condition",
-            "conditionPlaceholder": "Please select condition",
-            "description": "Assertions are used to verify that responses meet expectations, supporting multiple assertion types and conditions.",
-            "noAssertionsDefined": "You have not defined any assertions",
+          "serverEndpointPlaceholder": "Please enter server endpoint"
+        },
+        "parametric": {
+          "title": "Parametric",
+          "variables": {
+            "title": "Variables",
+            "addVariable": "Add Variable",
+            "variableName": "Variable Name",
+            "variableValue": "Variable Value",
+            "extractionMethod": "Extraction Method",
+            "extractionMethodPlaceholder": "Please select extraction method",
+            "description": "Extract data from the current sampling request or response and store it in variables for use in subsequent requests.",
+            "noVariablesDefined": "You have not defined any variables",
             "duplicateName": "Duplicate Name",
-            "namePlaceholder": "Assertion name, max 100 characters",
-            "typePlaceholder": "Please select assertion type",
-            "conditionPopover": {
-              "title": "Condition Selection",
-              "description": "Select assertion condition",
-              "formatTitle": "Condition Expression Format",
-              "formatExample": "{variable name} + operator + value, e.g.: {id}=100001.",
-              "parameterTitle": "Parameter Description in Format",
-              "variableDescription": "\"Variable\" refers to variables defined in the current interface, parent project/service, or globally, where variable reference symbols {} can be omitted.",
-              "operatorDescription": "Supported \"operators\" include: =, !=, >, >=, <, <=.",
-              "valueDescription": "The \"value\" on the right side of the operator can only be a constant."
+            "namePlaceholder": "Parameter name, max 100 characters",
+            "locationPlaceholder": "Extraction Location",
+            "parameterNamePlaceholder": "Extraction parameter name, max 100 characters",
+            "defaultValuePlaceholder": "Extraction default value (optional), max 4096 characters",
+            "expressionPlaceholder": "Extraction expression, max 1024 characters",
+            "matchItemPlaceholder": "Match item (optional), range 0-2000"
+          },
+          "dataset": {
+            "title": "Dataset",
+            "addDataset": "Add Dataset",
+            "datasetName": "Dataset Name",
+            "datasetType": "Dataset Type",
+            "previewData": "Preview Data",
+            "extractParameters": "Extract Parameters",
+            "staticParameters": "Static Parameters",
+            "datasetUseList": "Dataset Use List",
+            "description": "Datasets are used to store and manage test data, supporting multiple data formats and parameterized configurations.",
+            "noDatasetsDefined": "You have not defined any datasets",
+            "duplicateName": "Duplicate Name",
+            "namePlaceholder": "Dataset name, max 100 characters",
+            "typePlaceholder": "Please select dataset type",
+            "actionOnEOF": "Action on End of File",
+            "sharingMode": "Sharing Mode",
+            "recycle": "Recycle",
+            "stopThread": "Stop Thread",
+            "allThread": "All Threads",
+            "currentThread": "Current Thread",
+            "previewDataModal": {
+              "title": "Preview Data",
+              "description": "View actual data content in the dataset",
+              "previewRows": "Preview Rows",
+              "previewRowsPlaceholder": "1 ~ 10000",
+              "noData": "No Data",
+              "refresh": "Refresh"
             },
-            "expectedPopover": {
-              "title": "Expected Value",
-              "description": "Set expected value",
-              "matchItemTitle": "Match Item",
-              "matchItemDescription": "When an expression matches multiple values or the result is an array, specify which value to use as the expected value of the expression. Supports positions from 0 to a maximum of 2000. Returns null when the specified position data does not exist. When not specified, merges multiple values into one value.",
-              "emptyExpected": "Empty Expected Value",
-              "emptyExpectedDescription": "When the expression matches a value, the assertion passes; otherwise, it fails.",
-              "nonEmptyExpected": "Non-empty Expected Value",
-              "nonEmptyExpectedDescription": "When the expression match value equals the expected value, the assertion passes; otherwise, it fails.",
-              "regexpMatch": "Regular Expression Match",
-              "jsonpathMatch": "JSONPath Match",
-              "xpathMatch": "XPath Match",
-              "matchValue": "Match Value",
-              "expression": "Expression",
-              "matchResult": "Match Result",
-              "matchItem": "Match Item",
-              "regexpItemDescription": "When position is not specified or position 0 is specified, both take the merged match value at position 0: \"1888888888813999999999\". Specifying position 1 takes value: \"18888888888\". Specifying position 2 takes value: \"13999999999\".",
-              "jsonpathItemDescription": "When position is not specified, the merged result is taken by default: [{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}]. Specifying position 0 takes value: {\"title\":\"Sayings of the Century\",\"price\":100}. Specifying position 1 takes value: {\"title\":\"confucianism\",\"price\":200}.",
-              "xpathItemDescription": "When position is not specified, the merged result is taken by default: \"30codingbasketballAngus132codingAngus2\". Specifying position 0 takes value: \"30codingbasketballAngus1\". Specifying position 1 takes value: \"32codingAngus2\"."
+            "datasetModal": {
+              "title": "Reference Variables",
+              "description": "Configure basic information and parameters of the dataset",
+              "valueSource": "Value Source",
+              "lastModifiedBy": "Last Modified By",
+              "lastModifiedDate": "Last Modified Date",
+              "searchPlaceholder": "Search name or description",
+              "refresh": "Refresh",
+              "name": "Name",
+              "descriptionColumn": "Description"
             },
-            "matchItemPopover": {
-              "title": "Match Item",
-              "description": "Set match item",
-              "regexpMatch": "Regular Expression Match",
-              "jsonpathMatch": "JSONPath Match",
-              "xpathMatch": "XPath Match",
-              "matchValue": "Match Value",
-              "expression": "Expression",
-              "matchResult": "Match Result",
-              "matchItem": "Match Item",
-              "regexpItemDescription": "When position is not specified or position 0 is specified, both take the merged match value at position 0: \"1888888888813999999999\". Specifying position 1 takes value: \"18888888888\". Specifying position 2 takes value: \"13999999999\".",
-              "jsonpathItemDescription": "When position is not specified, the merged result is taken by default: [{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}]. Specifying position 0 takes value: {\"title\":\"Sayings of the Century\",\"price\":100}. Specifying position 1 takes value: {\"title\":\"confucianism\",\"price\":200}.",
-              "xpathItemDescription": "When position is not specified, the merged result is taken by default: \"30codingbasketballAngus132codingAngus2\". Specifying position 0 takes value: \"30codingbasketballAngus1\". Specifying position 1 takes value: \"32codingAngus2\"."
+            "extractParametersModal": {
+              "title": "Extract Parameters",
+              "description": "Extract parameter configuration from dataset"
             },
-            "assertion": {
+            "extractParametersField": {
+              "readColumn": "Read Column",
+              "name": "Name"
+            },
+            "staticParametersModal": {
+              "title": "Static Parameters",
+              "description": "Configure static parameter data"
+            },
+            "staticParametersDescription": "Parameter values are dynamically generated based on Mock data functions during sampling. Each dataset allows maximum 200 parameters and supports generating up to 100 billion rows of data.",
+            "datasetUseListModal": {
+              "title": "Dataset Use List",
+              "description": "View dataset usage information"
+            },
+            "datasetUseListField": {
+              "description": "View resource information that uses variables.",
+              "resourceType": "Resource Type",
+              "resourceId": "Resource ID",
+              "resourceName": "Resource Name",
+              "refresh": "Refresh"
+            },
+            "hintTextMap": {
+              "file": "Read dataset from file, each dataset allows maximum 200 parameters, each parameter file maximum 500MB, total rows not exceeding 1 million.",
+              "jdbc": "Extract a value from database query results as dataset value before each test execution."
+            },
+            "recycleTooltip": "After all data rows in the dataset are used, data will be reused from the beginning.",
+            "stopThreadTooltip": "After all data rows in the dataset are used, stop the current sampling thread execution. When all threads finish reading all rows, the entire execution exits and ends.",
+            "allThreadTooltip": "All threads share the same dataset data.",
+            "currentThreadTooltip": "Each thread copies its own dataset data.",
+            "confirmUnlinkDataset": "Are you sure to unlink dataset [{name}]?",
+            "unlinkDataset": "Unlink",
+            "viewDefinition": "View Definition",
+            "parameters": "Parameters",
+            "name": "Name",
+            "value": "Value"
+          },
+          "matchItemPopover": {
+            "dataColumn": "Match Value",
+            "expressionColumn": "Expression",
+            "resultColumn": "Match Result",
+            "itemColumn": "Match Item",
+            "regexp": {
+              "title": "Regular Expression Match",
+              "data": "When position is not specified or position 0 is specified, both take the merged match value at position 0: \"1888888888813999999999\". Specifying position 1 takes value: \"18888888888\". Specifying position 2 takes value: \"13999999999\"."
+            },
+            "jsonpath": {
+              "title": "JSONPath Match",
+              "data": "When position is not specified, the merged result is taken by default: [{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}]. Specifying position 0 takes value: {\"title\":\"Sayings of the Century\",\"price\":100}. Specifying position 1 takes value: {\"title\":\"confucianism\",\"price\":200}."
+            },
+            "xpath": {
+              "title": "XPath Match",
+              "data": "When position is not specified, the merged result is taken by default: \"30codingbasketballAngus132codingAngus2\". Specifying position 0 takes value: \"30codingbasketballAngus1\". Specifying position 1 takes value: \"32codingAngus2\"."
+            },
+            "hints": "Match Item",
+            "description": "When an expression matches multiple values or the result is an array, specify which value to use as the expected value of the expression. Supports positions from 0 to a maximum of 2000. Returns null when the specified position data does not exist. When not specified, merges multiple values into one value."
+          }
+        },
+        "assertionForm": {
+          "title": "Assertion Form",
+          "addAssertion": "Add Assertion",
+          "assertionName": "Assertion Name",
+          "assertionType": "Assertion Type",
+          "expectedValue": "Expected Value",
+          "actualValue": "Actual Value",
+          "condition": "Condition",
+          "conditionPlaceholder": "Please select condition",
+          "description": "Assertions are used to verify that responses meet expectations, supporting multiple assertion types and conditions.",
+          "noAssertionsDefined": "You have not defined any assertions",
+          "duplicateName": "Duplicate Name",
+          "namePlaceholder": "Assertion name, max 100 characters",
+          "typePlaceholder": "Please select assertion type",
+          "conditionPopover": {
+            "title": "Condition Selection",
+            "description": "Select assertion condition",
+            "formatTitle": "Condition Expression Format",
+            "formatExample": "{variable name} + operator + value, e.g.: {id}=100001.",
+            "parameterTitle": "Parameter Description in Format",
+            "variableDescription": "\"Variable\" refers to variables defined in the current interface, parent project/service, or globally, where variable reference symbols {} can be omitted.",
+            "operatorDescription": "Supported \"operators\" include: =, !=, >, >=, <, <=.",
+            "valueDescription": "The \"value\" on the right side of the operator can only be a constant."
+          },
+          "expectedPopover": {
+            "title": "Expected Value",
+            "description": "Set expected value",
+            "matchItemTitle": "Match Item",
+            "matchItemDescription": "When an expression matches multiple values or the result is an array, specify which value to use as the expected value of the expression. Supports positions from 0 to a maximum of 2000. Returns null when the specified position data does not exist. When not specified, merges multiple values into one value.",
+            "emptyExpected": "Empty Expected Value",
+            "emptyExpectedDescription": "When the expression matches a value, the assertion passes; otherwise, it fails.",
+            "nonEmptyExpected": "Non-empty Expected Value",
+            "nonEmptyExpectedDescription": "When the expression match value equals the expected value, the assertion passes; otherwise, it fails.",
+            "regexpMatch": "Regular Expression Match",
+            "jsonpathMatch": "JSONPath Match",
+            "xpathMatch": "XPath Match",
+            "matchValue": "Match Value",
+            "expression": "Expression",
+            "matchResult": "Match Result",
+            "matchItem": "Match Item",
+            "regexpItemDescription": "When position is not specified or position 0 is specified, both take the merged match value at position 0: \"1888888888813999999999\". Specifying position 1 takes value: \"18888888888\". Specifying position 2 takes value: \"13999999999\".",
+            "jsonpathItemDescription": "When position is not specified, the merged result is taken by default: [{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}]. Specifying position 0 takes value: {\"title\":\"Sayings of the Century\",\"price\":100}. Specifying position 1 takes value: {\"title\":\"confucianism\",\"price\":200}.",
+            "xpathItemDescription": "When position is not specified, the merged result is taken by default: \"30codingbasketballAngus132codingAngus2\". Specifying position 0 takes value: \"30codingbasketballAngus1\". Specifying position 1 takes value: \"32codingAngus2\"."
+          },
+          "matchItemPopover": {
+            "title": "Match Item",
+            "description": "Set match item",
+            "regexpMatch": "Regular Expression Match",
+            "jsonpathMatch": "JSONPath Match",
+            "xpathMatch": "XPath Match",
+            "matchValue": "Match Value",
+            "expression": "Expression",
+            "matchResult": "Match Result",
+            "matchItem": "Match Item",
+            "regexpItemDescription": "When position is not specified or position 0 is specified, both take the merged match value at position 0: \"1888888888813999999999\". Specifying position 1 takes value: \"18888888888\". Specifying position 2 takes value: \"13999999999\".",
+            "jsonpathItemDescription": "When position is not specified, the merged result is taken by default: [{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}]. Specifying position 0 takes value: {\"title\":\"Sayings of the Century\",\"price\":100}. Specifying position 1 takes value: {\"title\":\"confucianism\",\"price\":200}.",
+            "xpathItemDescription": "When position is not specified, the merged result is taken by default: \"30codingbasketballAngus132codingAngus2\". Specifying position 0 takes value: \"30codingbasketballAngus1\". Specifying position 1 takes value: \"32codingAngus2\"."
+          },
+          "assertion": {
+            "name": {
+              "duplicate": "Duplicate Name",
+              "placeholder": "Assertion Name",
+              "title": "Assertion Name"
+            },
+            "expression": {
+              "error": "Expression Format Error"
+            },
+            "condition": {
+              "placeholder": "Assertion Condition",
+              "title": "Assertion Condition",
+              "expression": {
+                "placeholder": "Execution Condition Expression (Optional)",
+                "title": "Execution Condition Expression (Optional)"
+              }
+            },
+            "type": {
+              "placeholder": "Assertion Type",
+              "title": "Assertion Type"
+            },
+            "header": {
               "name": {
-                "duplicate": "Duplicate Name",
-                "placeholder": "Assertion Name",
-                "title": "Assertion Name"
+                "placeholder": "Response Header Name",
+                "title": "Response Header Name"
+              }
+            },
+            "show": {
+              "expected": {
+                "checked": "Extract Expected Value",
+                "unchecked": "Expected Value"
+              }
+            },
+            "extraction": {
+              "method": {
+                "placeholder": "Extraction Method",
+                "title": "Extraction Method"
+              },
+              "location": {
+                "placeholder": "Extraction Location",
+                "title": "Extraction Location"
+              },
+              "parameter": {
+                "name": {
+                  "placeholder": "Extraction Parameter Name",
+                  "title": "Extraction Parameter Name"
+                }
+              },
+              "default": {
+                "value": {
+                  "placeholder": "Extraction Default Value (Optional)",
+                  "title": "Extraction Default Value (Optional)"
+                }
               },
               "expression": {
+                "placeholder": "Extraction Expression",
+                "title": "Extraction Expression",
                 "error": "Expression Format Error"
-              },
-              "condition": {
-                "placeholder": "Assertion Condition",
-                "title": "Assertion Condition",
-                "expression": {
-                  "placeholder": "Execution Condition Expression (Optional)",
-                  "title": "Execution Condition Expression (Optional)"
-                }
-              },
-              "type": {
-                "placeholder": "Assertion Type",
-                "title": "Assertion Type"
-              },
-              "header": {
-                "name": {
-                  "placeholder": "Response Header Name",
-                  "title": "Response Header Name"
-                }
-              },
-              "show": {
-                "expected": {
-                  "checked": "Extract Expected Value",
-                  "unchecked": "Expected Value"
-                }
-              },
-              "extraction": {
-                "method": {
-                  "placeholder": "Extraction Method",
-                  "title": "Extraction Method"
-                },
-                "location": {
-                  "placeholder": "Extraction Location",
-                  "title": "Extraction Location"
-                },
-                "parameter": {
-                  "name": {
-                    "placeholder": "Extraction Parameter Name",
-                    "title": "Extraction Parameter Name"
-                  }
-                },
-                "default": {
-                  "value": {
-                    "placeholder": "Extraction Default Value (Optional)",
-                    "title": "Extraction Default Value (Optional)"
-                  }
-                },
-                "expression": {
-                  "placeholder": "Extraction Expression",
-                  "title": "Extraction Expression",
-                  "error": "Expression Format Error"
-                },
-                "match": {
-                  "item": {
-                    "placeholder": "Match Item, Range 0-2000 (Optional)",
-                    "title": "Match Item"
-                  }
-                }
               },
               "match": {
                 "item": {
                   "placeholder": "Match Item, Range 0-2000 (Optional)",
                   "title": "Match Item"
                 }
-              },
-              "expected": {
-                "placeholder": "Expected Value (Optional)",
-                "title": "Expected Value"
-              },
-              "description": {
-                "placeholder": "Description (800 characters, optional)",
-                "title": "Description (800 characters, optional)"
               }
+            },
+            "match": {
+              "item": {
+                "placeholder": "Match Item, Range 0-2000 (Optional)",
+                "title": "Match Item"
+              }
+            },
+            "expected": {
+              "placeholder": "Expected Value (Optional)",
+              "title": "Expected Value"
+            },
+            "description": {
+              "placeholder": "Description (800 characters, optional)",
+              "title": "Description (800 characters, optional)"
             }
-          },
-          "requestBodyConfig": {
-            "title": "Request Body Configuration",
-            "bodyType": "Request Body Type",
-            "bodyContent": "Request Body Content",
-            "contentType": "Content Type",
-            "formData": "Form Data",
-            "xWwwFormUrlencoded": "x-www-form-urlencoded",
-            "raw": "Raw",
-            "binary": "Binary",
-            "maxFileSize": "The total size of uploaded files cannot exceed {size}",
-            "formatRawContent": "Format",
-            "compressRawContent": "Compress",
-            "namePlaceholder": "Please enter parameter name",
-            "typePlaceholder": "Please select parameter type",
-            "filePlaceholder": "Please select file",
-            "valuePlaceholder": "Please enter parameter value, max 4096 characters"
-          },
-          "parameterInput": {
-            "namePlaceholder": "Please enter parameter name",
-            "valuePlaceholder": "Please enter parameter value, max 4096 characters"
-          }
-        }
-      },
-      "functionTestDetail": {
-        "pending": "Executing...",
-        "basicInfo": {
-          "duration": "Duration",
-          "iteration": "Iterations",
-          "request": "Requests",
-          "responseTime": "Response Time"
-        },
-        "collapse": {
-          "iteration": "Iteration {iteration}"
-        },
-        "texts": {
-          "success": "Passed",
-          "ignore": "Disabled",
-          "block": "Not Executed",
-          "total": "Total"
-        },
-        "timeTexts": {
-          "minimum": "Minimum",
-          "average": "Average",
-          "maximum": "Maximum"
-        },
-        "ftp": {
-          "upload": "Upload",
-          "download": "Download",
-          "duration": "Duration",
-          "request": "Request",
-          "response": "Response"
-        },
-        "statusTag": {
-          "success": "Passed",
-          "fail": "Failed",
-          "block": "Not Executed",
-          "ignore": "Disabled"
-        },
-        "http": {
-          "tabs": {
-            "general": "General",
-            "requestBody": "Request Body",
-            "response": "Response",
-            "timeline": "Timeline",
-            "assertions": "Assertion Results"
-          },
-          "headers": {
-            "general": "General",
-            "request": "Request Headers",
-            "response": "Response Headers"
-          },
-          "timeline": {
-            "dnsLookup": "DNS Lookup",
-            "tcpConnection": "TCP Connection",
-            "ssl": "SSL",
-            "requestSent": "Request Sent",
-            "waiting": "Waiting",
-            "contentDownload": "Content Download",
-            "totalTime": "Total Time",
-            "timeItem": "Time Items",
-            "time": "Time"
-          },
-          "responseBody": {
-            "prettyFormat": "Pretty Format",
-            "rawFormat": "Raw Format",
-            "preview": "Preview"
-          },
-          "assertions": {
-            "executionCondition": "Execution Condition",
-            "variableValue": "Variable Value",
-            "executionConditionResult": "Execution Condition Result",
-            "assertionCondition": "Assertion Condition",
-            "assertionResult": "Assertion Result",
-            "failureReason": "Failure Reason",
-            "expectedValue": "Expected Value",
-            "extractedValue": "Extracted Value",
-            "view": "View",
-            "variable": "Variable",
-            "expressionEmpty": "Expression is empty, execute this assertion",
-            "operationResultNotEstablished": "Operation result not established, ignore this assertion",
-            "operationResultEstablished": "Operation result established, execute this assertion",
-            "noVariableDefined": "No {variable} variable defined, execute this condition expression directly",
-            "executionConfig": "Execution Config",
-            "pluginConfig": "Plugin Config",
-            "ignoreAssertionsTip": "You have enabled ignore assertions, assertions will not be executed this time. If you need to enable assertions, please turn off the ignore assertions option in {executionConfig} > {pluginConfig}."
-          },
-          "typeMap": {
-            "status": "Response Status Code",
-            "header": "Response Header",
-            "body": "Response Body",
-            "bodySize": "Response Body Size",
-            "size": "Response Size",
-            "duration": "Duration"
-          },
-          "conditionMap": {
-            "contain": "Contains",
-            "equal": "Equals",
-            "greaterThan": "Greater Than",
-            "greaterThanEqual": "Greater Than or Equal",
-            "isEmpty": "Is Empty (empty string or null value)",
-            "isNull": "Is Null",
-            "lessThan": "Less Than",
-            "lessThanEqual": "Less Than or Equal",
-            "notContain": "Not Contains",
-            "notEmpty": "Not Empty (non-empty string or null value)",
-            "notEqual": "Not Equals",
-            "notNull": "Not Null",
-            "regMatch": "Regex Match",
-            "xpathMatch": "XPath Match",
-            "jsonPathMatch": "JSONPath Match"
           }
         },
-        "rendezvous": {
-          "userCount": "User Count",
-          "waitTimeout": "Wait Timeout"
+        "requestBodyConfig": {
+          "title": "Request Body Configuration",
+          "bodyType": "Request Body Type",
+          "bodyContent": "Request Body Content",
+          "contentType": "Content Type",
+          "formData": "Form Data",
+          "xWwwFormUrlencoded": "x-www-form-urlencoded",
+          "raw": "Raw",
+          "binary": "Binary",
+          "maxFileSize": "The total size of uploaded files cannot exceed {size}",
+          "formatRawContent": "Format",
+          "compressRawContent": "Compress",
+          "namePlaceholder": "Please enter parameter name",
+          "typePlaceholder": "Please select parameter type",
+          "filePlaceholder": "Please select file",
+          "valuePlaceholder": "Please enter parameter value, max 4096 characters"
         },
-        "throughput": {
-          "requestsPerSecond": "Requests Per Second",
-          "waitTimeout": "Wait Timeout"
-        },
-        "waitingTime": {
-          "fixedWait": "Fixed Wait",
-          "randomWait": "Random Wait",
-          "to": "to"
+        "parameterInput": {
+          "namePlaceholder": "Please enter parameter name",
+          "valuePlaceholder": "Please enter parameter value, max 4096 characters"
         }
       }
     },
+    "functionTestDetail": {
+      "pending": "Executing...",
+      "basicInfo": {
+        "duration": "Duration",
+        "iteration": "Iterations",
+        "request": "Requests",
+        "responseTime": "Response Time"
+      },
+      "collapse": {
+        "iteration": "Iteration {iteration}"
+      },
+      "texts": {
+        "success": "Passed",
+        "ignore": "Disabled",
+        "block": "Not Executed",
+        "total": "Total"
+      },
+      "timeTexts": {
+        "minimum": "Minimum",
+        "average": "Average",
+        "maximum": "Maximum"
+      },
+      "ftp": {
+        "upload": "Upload",
+        "download": "Download",
+        "duration": "Duration",
+        "request": "Request",
+        "response": "Response"
+      },
+      "statusTag": {
+        "success": "Passed",
+        "fail": "Failed",
+        "block": "Not Executed",
+        "ignore": "Disabled"
+      },
+      "http": {
+        "tabs": {
+          "general": "General",
+          "requestBody": "Request Body",
+          "response": "Response",
+          "timeline": "Timeline",
+          "assertions": "Assertion Results"
+        },
+        "headers": {
+          "general": "General",
+          "request": "Request Headers",
+          "response": "Response Headers"
+        },
+        "timeline": {
+          "dnsLookup": "DNS Lookup",
+          "tcpConnection": "TCP Connection",
+          "ssl": "SSL",
+          "requestSent": "Request Sent",
+          "waiting": "Waiting",
+          "contentDownload": "Content Download",
+          "totalTime": "Total Time",
+          "timeItem": "Time Items",
+          "time": "Time"
+        },
+        "responseBody": {
+          "prettyFormat": "Pretty Format",
+          "rawFormat": "Raw Format",
+          "preview": "Preview"
+        },
+        "assertions": {
+          "executionCondition": "Execution Condition",
+          "variableValue": "Variable Value",
+          "executionConditionResult": "Execution Condition Result",
+          "assertionCondition": "Assertion Condition",
+          "assertionResult": "Assertion Result",
+          "failureReason": "Failure Reason",
+          "expectedValue": "Expected Value",
+          "extractedValue": "Extracted Value",
+          "view": "View",
+          "variable": "Variable",
+          "expressionEmpty": "Expression is empty, execute this assertion",
+          "operationResultNotEstablished": "Operation result not established, ignore this assertion",
+          "operationResultEstablished": "Operation result established, execute this assertion",
+          "noVariableDefined": "No {variable} variable defined, execute this condition expression directly",
+          "executionConfig": "Execution Config",
+          "pluginConfig": "Plugin Config",
+          "ignoreAssertionsTip": "You have enabled ignore assertions, assertions will not be executed this time. If you need to enable assertions, please turn off the ignore assertions option in {executionConfig} > {pluginConfig}."
+        },
+        "typeMap": {
+          "status": "Response Status Code",
+          "header": "Response Header",
+          "body": "Response Body",
+          "bodySize": "Response Body Size",
+          "size": "Response Size",
+          "duration": "Duration"
+        },
+        "conditionMap": {
+          "contain": "Contains",
+          "equal": "Equals",
+          "greaterThan": "Greater Than",
+          "greaterThanEqual": "Greater Than or Equal",
+          "isEmpty": "Is Empty (empty string or null value)",
+          "isNull": "Is Null",
+          "lessThan": "Less Than",
+          "lessThanEqual": "Less Than or Equal",
+          "notContain": "Not Contains",
+          "notEmpty": "Not Empty (non-empty string or null value)",
+          "notEqual": "Not Equals",
+          "notNull": "Not Null",
+          "regMatch": "Regex Match",
+          "xpathMatch": "XPath Match",
+          "jsonPathMatch": "JSONPath Match"
+        }
+      },
+      "rendezvous": {
+        "userCount": "User Count",
+        "waitTimeout": "Wait Timeout"
+      },
+      "throughput": {
+        "requestsPerSecond": "Requests Per Second",
+        "waitTimeout": "Wait Timeout"
+      },
+      "waitingTime": {
+        "fixedWait": "Fixed Wait",
+        "randomWait": "Random Wait",
+        "to": "to"
+      }
+    }
+  },
   "jdbcPlugin": {
     "title": "JDBC Plugin",
     "taskConfig": "Task Configuration",
@@ -1188,7 +1188,7 @@
           "XPATH_MATCH": "XPath Match Expression",
           "JSON_PATH_MATCH": "JSONPath Match Expression"
         }
-              }
+      }
     },
     "FunctionTestDetailJdbc": {
       "duration": "Duration",
@@ -1681,7 +1681,7 @@
       "certificateOpt": {
         "all": "Trust All Certificates",
         "local": "Use Local Trust Store"
-      }, 
+      },
       "emailConfig": {
         "sendAddress": "Send Address",
         "receiverAddress": "Receiver Address",

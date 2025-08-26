@@ -1,88 +1,50 @@
 import { createApp, defineAsyncComponent } from 'vue';
-import { SupportedLanguage, i18n as I18n, app, http, cookieUtils, EnumPlugin, enumUtils } from '@xcan-angus/infra';
-
+import { createI18n } from 'vue-i18n';
+import { AppOrServiceRoute, i18n as I18n, app, http, EnumPlugin, enumUtils } from '@xcan-angus/infra';
 import router, { startupGuard } from '@/router';
 import store from '@/store';
-
-import '@xcan-angus/vue-ui/style.css';
+import { enumNamespaceMap } from '@/enums/enums';
+import { localeBundles } from '@/utils/locale';
 
 import 'tailwindcss/base.css';
 import 'tailwindcss/components.css';
 import 'tailwindcss/utilities.css';
 import '@xcan-angus/frappe-gantt/style.css';
+import '@xcan-angus/vue-ui/style.css';
 
-import zhEnumCNLocale from '@/enums/locale/zh_CN.json';
-import enEnumLocale from '@/enums/locale/en.json';
-import { enumNamespaceMap } from '@/enums/enums';
+// Constants
+const SUPPORTED_LOCALES = ['en', 'zh_CN'] as const;
+const DEFAULT_LOCALE = 'en';
 
 const bootstrap = async () => {
   await app.initEnvironment();
   await http.create();
 
-  const path = window.location.pathname;
-  const sharePaths = ['/share/file', '/apis/share'];
-  if (sharePaths.includes(path)) {
-    const locale = cookieUtils.getCurrentLanguage();
-    const messages = (await import(`./locales/${locale}/index.js`)).default;
-    const localMessage = await getLocaleMessage(locale);
-    const i18n = I18n.setupI18n({
-      locale,
-      legacy: false,
-      messages: {
-        en: {
-          ...messages,
-          ...localMessage
-        },
-        zh_CN: {
-          ...messages,
-          ...localMessage
-        }
-      }
-    });
-
-    // Merge locale messages
-    i18n.global.mergeLocaleMessage(SupportedLanguage.zh_CN, zhEnumCNLocale);
-    i18n.global.mergeLocaleMessage(SupportedLanguage.en, enEnumLocale);
-
-    const enumPluginOptions = {
-      i18n: i18n,
-      enumUtils: enumUtils,
-      appEnums: enumNamespaceMap
-    };
-
-    const App = defineAsyncComponent(() => import('./AppShare.vue'));
-    createApp(App)
-      .use(router)
-      .use(store)
-      .use(EnumPlugin, enumPluginOptions)
-      .use(i18n)
-      .mount('#app');
-    return;
-  }
-
-  app.initAfterAuthentication({ code: 'tester' }).then(async () => {
+  app.initAfterAuthentication({ code: AppOrServiceRoute.tester }).then(async () => {
     await app.initializeDefaultThemeStyle();
     startupGuard();
-    const locale = cookieUtils.getCurrentLanguage();
-    const messages = (await import(`./locales/${locale}/index.js`)).default;
-    const localMessage = await getLocaleMessage(locale);
-    const i18n = I18n.setupI18n({
-      locale,
-      legacy: false,
-      messages: {
-        en: {
-          ...messages,
-          ...localMessage
-        },
-        zh_CN: {
-          ...messages,
-          ...localMessage
-        }
+
+    // Get current locale
+    const locale = I18n.getI18nLanguage();
+
+    // Create messages object
+    const messages = {
+      en: {
+        ...localeBundles.en
+      },
+      zh_CN: {
+        ...localeBundles.zh_CN
       }
+    };
+
+    const i18n = createI18n({
+      locale: SUPPORTED_LOCALES.includes(locale as any) ? locale : DEFAULT_LOCALE,
+      legacy: false,
+      messages,
+      fallbackLocale: DEFAULT_LOCALE,
+      missingWarn: false, // Disable missing key warnings in production
+      fallbackWarn: false
     });
-    // Merge locale messages
-    i18n.global.mergeLocaleMessage(SupportedLanguage.zh_CN, zhEnumCNLocale);
-    i18n.global.mergeLocaleMessage(SupportedLanguage.en, enEnumLocale);
 
     const enumPluginOptions = {
       i18n: i18n,
@@ -98,38 +60,6 @@ const bootstrap = async () => {
       .use(i18n)
       .mount('#app');
   });
-};
-
-const getLocaleMessage = async (locale: SupportedLanguage) => {
-  const common = (await import(`./locales/${locale}/common.json`)).default;
-  const apis = (await import(`./locales/${locale}/api.json`)).default;
-  const execution = (await import(`./locales/${locale}/execution.json`)).default;
-  const scenario = (await import(`./locales/${locale}/scenario.json`)).default;
-  const setting = (await import(`./locales/${locale}/settings.json`)).default;
-  const task = (await import(`./locales/${locale}/task.json`)).default;
-  const apiShare = (await import(`./locales/${locale}/apiShare.json`)).default;
-  const data = (await import(`./locales/${locale}/data.json`)).default;
-  const kanban = (await import(`./locales/${locale}/kanban.json`)).default;
-  const project = (await import(`./locales/${locale}/project.json`)).default;
-  const report = (await import(`./locales/${locale}/report.json`)).default;
-  const script = (await import(`./locales/${locale}/script.json`)).default;
-  const plugin = (await import(`./locales/${locale}/plugin.json`)).default;
-
-  return {
-    ...apis,
-    ...execution,
-    ...scenario,
-    ...setting,
-    ...task,
-    ...apiShare,
-    ...data,
-    ...kanban,
-    ...project,
-    ...report,
-    ...script,
-    ...plugin,
-    ...common,
-  };
 };
 
 bootstrap();

@@ -10,6 +10,25 @@ export default class API {
     return http.get(`${baseUrl}/functions`);
   }
 
+  /**
+   * <p>
+   * Gets all functions with proper data transformation, including constructor mapping.
+   * </p>
+   * @returns Promise that resolves to the transformed function data
+   */
+  async getAllFunctions (): Promise<any[]> {
+    const [error, res] = await this.getAllFunction();
+    if (error) {
+      return [];
+    }
+    return res.data.map(i => {
+      return {
+        ...i,
+        constructors: i.constructors ? i.constructors.map(sub => ({ ...sub, name: sub.instance })) : undefined
+      };
+    });
+  }
+
   generateFunctionValue (params): Promise<[Error | null, any]> {
     return http.post(`${baseUrl}/text/data/batch`, params);
   }

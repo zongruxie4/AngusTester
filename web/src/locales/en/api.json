@@ -230,7 +230,6 @@
         "paramName": "Parameter Name",
         "paramPosition": "Parameter Position",
         "paramValue": "Parameter Value",
-
         "positionPlaceholder": "Position",
         "valuePlaceholder": "Value"
       },
@@ -906,7 +905,6 @@
           "placeholder": "Limit input to 200 characters"
         }
       },
-
       "messages": {
         "protocolWarning": "WebSocket protocol must start with ws:// or wss://",
         "addSuccess": "API added successfully",
@@ -1137,7 +1135,6 @@
         "portRequired": "Please enter port (1~65535)",
         "nodeRequired": "Please select node"
       },
-  
       "buttons": {
         "cancel": "Cancel",
         "confirm": "Confirm"
@@ -1150,7 +1147,6 @@
         "generateMockService": "Create new Mock service based on current service APIs. After creation, you can use these Mock APIs for data simulation and state testing, achieving more efficient API debugging.",
         "associateMockService": "Associate current service with existing Mock service. After association, the system will automatically generate corresponding Mock APIs in the associated Mock service. These APIs can be used for data simulation and state testing in API debugging."
       }
-    
     },
     "serviceOpenApi": {
       "columns": {
@@ -1438,7 +1434,10 @@
       "searchOptions": {
         "namePlaceholder": "Search name, remark",
         "sharePersonPlaceholder": "Select share person",
-        "dateRangePlaceholder": ["Add time from", "Add time to"]
+        "dateRangePlaceholder": [
+          "Add time from",
+          "Add time to"
+        ]
       }
     },
     "introduce": {
@@ -1583,4 +1582,4 @@
       }
     }
   }
-} 
+}

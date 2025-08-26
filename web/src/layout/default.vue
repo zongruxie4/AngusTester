@@ -1,12 +1,24 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, onMounted, provide, ref, Ref, watch } from 'vue';
+import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from 'vue';
 import { Dropdown } from 'ant-design-vue';
 import { useRoute, useRouter } from 'vue-router';
 import {
-  Breadcrumb, HeaderLogo, HeaderMessage, HeaderNavigator, HeaderPersonalCenter, HeaderSearch, HeaderLanguagePreference, Icon, IconRefresh,
-  Image, Input, Notice, notification, Spin
+  Breadcrumb,
+  HeaderLanguagePreference,
+  HeaderLogo,
+  HeaderMessage,
+  HeaderNavigator,
+  HeaderPersonalCenter,
+  HeaderSearch,
+  Icon,
+  IconRefresh,
+  Image,
+  Input,
+  Notice,
+  notification,
+  Spin
 } from '@xcan-angus/vue-ui';
-import { duration, localStore, appContext } from '@xcan-angus/infra';
+import { appContext, duration, localStore } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { project } from '@/api/tester';
 

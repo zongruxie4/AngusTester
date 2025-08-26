@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, provide, ref } from 'vue';
 import { ConfigProvider, Denied, Header, NetworkError, NotFound } from '@xcan-angus/vue-ui';
-import { http, utils, duration, GM, appContext } from '@xcan-angus/infra';
+import { utils, duration, appContext } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { mock } from 'src/api/tester';
 import GlobalConstantConfig from '@/globalConstantConfig';
+import { ai } from '@/api/gm';
 
 import store from './store';
 
 const windowResizeNotify = ref<string>();
-// 通知浏览器窗口大小调整
 const resizeHandler = debounce(duration.resize, () => {
   windowResizeNotify.value = utils.uuid();
 });
@@ -27,33 +27,19 @@ const status = computed(() => {
 });
 
 const allFunction = ref([]);
-let functionPromise;
+let functionPromise: any;
 const getAllFunctions = async () => {
   if (!allFunction.value.length && !functionPromise) {
-    functionPromise = mock.getAllFunction();
+    functionPromise = mock.getAllFunctions();
   }
   if (functionPromise) {
-    functionPromise.then(([error, res]) => {
-      if (!error) {
-        allFunction.value = res.data.map(i => {
-          return {
-            ...i,
-            constructors: i.constructors ? i.constructors.map(sub => ({ ...sub, name: sub.instance })) : undefined
-          };
-        });
+    functionPromise.then((res) => {
+      if (res && res.length > 0) {
+        allFunction.value = res;
       }
       functionPromise = undefined;
     });
   }
-};
-
-const loadAIAgent = async () => {
-  const [error, res] = await http.get(`${GM}/setting/AI_AGENT`);
-  if (error) {
-    return null;
-  }
-
-  return res?.data?.aiAgent;
 };
 
 const globalConfigs = ref<{ [key: string]: string|{} }>();
@@ -61,7 +47,7 @@ onMounted(async () => {
   window.addEventListener('resize', resizeHandler);
   const envContent = appContext.getContext().env;
   globalConfigs.value = { ...envContent, ...GlobalConstantConfig };
-  aiAgent.value = await loadAIAgent();
+  aiAgent.value = await ai.getAIAgentSetting();
 });
 
 onBeforeUnmount(() => {

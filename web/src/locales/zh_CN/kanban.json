@@ -179,7 +179,6 @@
         "nonRecentSavingAmount": "非近期节省量",
         "timeChange": "近期时间变更",
         "deliveryTaskOverdueCount": "交付任务逾期数"
-
       },
       "recentDelivery": {
         "recentDeliveryTitle": "近期交付（交付量/总量）",

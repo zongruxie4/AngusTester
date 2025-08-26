@@ -193,7 +193,6 @@
         "backlogTaskCount": "Backlog Task Count",
         "backlogUseCaseCount": "Backlog Use Case Count",
         "estimatedTime": "Estimated Time"
-        
       },
       "overdue": {
         "overdueAssessment": "Overdue Assessment",

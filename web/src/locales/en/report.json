@@ -191,1770 +191,1769 @@
       "exportPDF": "Export PDF",
       "printPDF": "Print PDF"
     },
-           "serial": {
-       "1": "1.",
-       "2": "2.",
-       "3": "3.",
-       "4": "4.",
-       "5": "5.",
-       "6": "6.",
-       "7": "7.",
-       "8": "8.",
-       "9": "9.",
-       "10": "10.",
-       "11": "11.",
-       "12": "12.",
-       "13": "13.",
-       "14": "14.",
-       "15": "15.",
-       "16": "16.",
-       "17": "17.",
-       "18": "18.",
-       "19": "19.",
-       "20": "20.",
-       "21": "21.",
-       "22": "22.",
-       "23": "23.",
-       "24": "24.",
-       "25": "25.",
-       "26": "26.",
-       "27": "27."
-     },
-     "apis": {
-       "content": "Content",
-       "catalog": {
-         "title": "Catalog",
-         "sections": {
-           "apiInfo": "API Information",
-           "apiTestSummary": "API Test Summary Results",
-           "apiTestDetail": "API Test Result Details",
-           "functionalTest": "Functional Test Results",
-           "performanceTest": "Performance Test Results",
-           "stabilityTest": "Stability Test Results"
-         }
-       },
-       "info": {
-         "title": "API Information",
-         "fields": {
-           "apiUrl": "API URL",
-           "requestMethod": "Request Method",
-           "operationId": "Operation ID",
-           "owner": "Owner",
-           "description": "Description",
-           "status": "Status",
-           "creator": "Creator",
-           "createTime": "Create Time",
-           "lastModifier": "Last Modifier",
-           "lastModifyTime": "Last Modify Time"
-         }
-       },
-       "summary": {
-         "title": "Summary",
-         "fields": {
-           "apiStatus": "API Status",
-           "description": "Description",
-           "contact": "Contact",
-           "copyright": "Copyright",
-           "other": "Other"
-         }
-       },
-       "testResult": {
-         "title": "API Test Summary Results",
-         "fields": {
-           "isPassed": "Is Passed",
-           "enableFunctionalTest": "Enable Functional Test",
-           "functionalTestPassed": "Functional Test Passed",
-           "functionalTestFailureReason": "Functional Test Failure Reason",
-           "enablePerformanceTest": "Enable Performance Test",
-           "performanceTestPassed": "Performance Test Passed",
-           "performanceTestFailureReason": "Performance Test Failure Reason",
-           "enableStabilityTest": "Enable Stability Test",
-           "stabilityTestPassed": "Stability Test Passed",
-           "stabilityTestFailureReason": "Stability Test Failure Reason"
-         },
-         "status": {
-           "passed": "Passed",
-           "failed": "Failed",
-           "notTested": "Not Tested",
-           "enabled": "Enabled",
-           "disabled": "Disabled"
-         }
-       },
-       "testResultDetail": {
-         "title": "Scenario Test Result Details",
-         "noData": "None",
-         "functionalTest": {
-           "title": "Functional Test Results",
-           "basicInfo": "Test Basic Information",
-           "testCases": "Test Cases",
-           "testCaseResults": "Test Case Result Details",
-           "noData": "None"
-         },
-         "performanceTest": {
-           "title": "Performance Test",
-           "basicInfo": "Test Basic Information",
-           "indicatorsAndResults": "Test Indicators and Results",
-           "performanceIndicators": "Performance Indicators",
-           "results": "Results",
-           "indicators": {
-             "concurrency": "Concurrency",
-             "testDuration": "Test Duration",
-             "pressureConcurrency": "Pressure Concurrency",
-             "pressureTestDuration": "Pressure Test Duration",
-             "responseTime": "Response Time",
-             "tps": "TPS",
-             "errorRate": "Error Rate"
-           }
-         },
-         "stabilityTest": {
-           "title": "Stability Test",
-           "basicInfo": "Test Basic Information",
-           "indicatorsAndResults": "Test Indicators and Results",
-           "stabilityIndicators": "Stability Indicators",
-           "results": "Results",
-           "systemLoad": "Application System Average Load",
-           "average": "Average",
-           "maximum": "Maximum"
-         },
-         "fields": {
-           "testResult": "Test Result",
-           "testFailureReason": "Test Failure Reason",
-           "testCount": "Test Count",
-           "failureCount": "Failure Count",
-           "testScriptId": "Test Script ID",
-           "testScriptName": "Test Script Name",
-           "executionId": "Execution ID",
-           "executionName": "Execution Name",
-           "lastExecutor": "Last Executor",
-           "lastExecutionTime": "Last Execution Time",
-           "totalCases": "Total Cases",
-           "passedCount": "Passed Count",
-           "failedCount": "Failed Count",
-           "disabledCount": "Disabled Count",
-           "type": "Type",
-           "isEnabled": "Is Enabled",
-           "isTestPassed": "Is Test Passed",
-
-           "testFailureCount": "Test Failure Count",
-           "cpuUsage": "CPU Usage",
-           "memoryUsage": "Memory Usage",
-           "diskUsage": "Disk Usage",
-           "networkUsage": "Network Usage"
-         }
-       }
-     },
-     "execFunction": {
-       "content": "Content",
-       "catalog": {
-         "title": "Catalog",
-         "sections": {
-           "execInfo": "Execution Information",
-           "execBasicInfo": "Execution Basic Information",
-           "execResult": "Execution Result",
-           "iterationResult": "Iteration Result",
-           "logInfo": "Log Information",
-           "schedulingLog": "Execution Scheduling Log",
-           "samplingLog": "Execution Sampling Log"
-         }
-       },
-       "summary": {
-         "title": "Summary",
-         "fields": {
-           "testPassed": "Test Passed",
-           "description": "Description",
-           "contact": "Contact",
-           "copyright": "Copyright",
-           "other": "Other"
-         },
-         "status": {
-           "passed": "Passed",
-           "failed": "Failed"
-         }
-       },
-       "detail": {
-         "title": "Execution Information",
-         "basicInfo": {
-           "title": "Execution Basic Information",
-           "fields": {
-             "name": "Name",
-             "testScriptId": "Test Script ID",
-             "testScriptName": "Test Script Name",
-             "plugin": "Plugin",
-             "status": "Status",
-             "type": "Type",
-             "priority": "Priority",
-             "startTime": "Start Time",
-             "endTime": "End Time",
-             "nodeCount": "Node Count",
-             "reportInterval": "Report Interval",
-             "ignoreAssertions": "Ignore Assertions",
-             "updateTestResult": "Update Test Result",
-             "creator": "Creator",
-             "createTime": "Create Time"
-           },
-           "options": {
-             "ignore": "Ignore",
-             "notIgnore": "Not Ignore",
-             "update": "Update",
-             "notUpdate": "Not Update"
-           }
-         },
-         "execResult": {
-           "title": "Execution Result",
-           "fields": {
-             "testResult": "Test Result",
-             "failureReason": "Failure Reason",
-             "testCases": "Test Cases"
-           },
-           "summary": {
-             "total": "Total",
-             "passed": "Passed",
-             "failed": "Failed",
-             "disabled": "Disabled"
-           }
-         }
-       },
-       "log": {
-         "title": "Log Information",
-         "schedulingLog": {
-           "title": "Execution Scheduling Information",
-           "fields": {
-             "schedulingResult": "Scheduling Result",
-             "processExitCode": "Process Exit Code"
-           },
-           "status": {
-             "success": "Success",
-             "failed": "Failed"
-           }
-         },
-         "samplingLog": {
-           "title": "Execution Sampling Information",
-           "fields": {
-             "file": "File"
-           },
-           "messages": {
-             "noProxyInfo": "No proxy access information, connection failed address: "
-           }
-         }
-       }
-     },
-     "execPerf": {
-       "content": "Content",
-       "catalog": {
-         "title": "Catalog",
-         "sections": {
-           "execInfo": "Execution Information",
-           "execBasicInfo": "Execution Basic Information",
-           "execResult": "Execution Result",
-           "summaryResult": "Summary Result",
-           "samplingIndicators": "Sampling Indicators",
-           "throughput": "Throughput",
-           "concurrency": "Concurrency",
-           "responseTime": "Response Time",
-           "error": "Error",
-           "statusCode": "Status Code",
-           "nodeResources": "Node Resources",
-           "overlayAnalysis": "Overlay Analysis",
-           "logInfo": "Log Information",
-           "schedulingLog": "Execution Scheduling Log",
-           "samplingLog": "Execution Sampling Log"
-         }
-       },
-       "summary": {
-         "title": "Summary",
-         "fields": {
-           "testPassed": "Test Passed",
-           "execStatus": "Execution Status",
-           "description": "Description",
-           "contact": "Contact",
-           "copyright": "Copyright",
-           "other": "Other"
-         },
-         "status": {
-           "passed": "Passed",
-           "failed": "Failed"
-         }
-       },
-       "detail": {
-         "title": "Execution Information",
-         "basicInfo": {
-           "title": "Execution Basic Information",
-           "fields": {
-             "execName": "Execution Name",
-             "scriptName": "Script Name",
-             "testScriptId": "Test Script ID",
-             "plugin": "Plugin",
-             "status": "Status",
-             "type": "Type",
-             "priority": "Priority",
-             "startTime": "Start Time",
-             "endTime": "End Time",
-             "nodeCount": "Node Count",
-             "samplingInterval": "Sampling Interval",
-             "ignoreAssertions": "Ignore Assertions",
-             "updateTestResult": "Update Test Result",
-             "creator": "Creator",
-             "createTime": "Create Time"
-           },
-           "options": {
-             "ignore": "Ignore",
-             "notIgnore": "Not Ignore",
-             "update": "Update",
-             "notUpdate": "Not Update"
-           }
-         },
-         "execResult": {
-           "title": "Execution Result",
-           "fields": {
-             "failureReason": "Failure Reason"
-           }
-         }
-       },
-       "samplingSummary": {
-         "title": "Summary Result",
-         "fields": {
-           "name": "Name",
-           "samplingCount": "Sampling Count",
-           "transactionCount": "Transaction Count",
-           "tps": "TPS",
-           "errorRate": "Error Rate",
-           "responseTimeStats": "Average/Min/Max/P50/P75/P90/P99/P999(ms)",
-           "downloadPerSecond": "Download/Second",
-           "uploadPerSecond": "Upload/Second"
-         }
-       },
-       "sampling": {
-         "title": "Sampling Indicators",
-         "fields": {
-           "exitCode": "Exit Code",
-           "samplingStatus": "Sampling Status",
-           "failureReason": "Failure Reason"
-         }
-       },
-       "log": {
-         "title": "Log Information",
-         "schedulingLog": {
-           "title": "Execution Scheduling Information",
-           "fields": {
-             "schedulingResult": "Scheduling Result",
-             "processExitCode": "Process Exit Code"
-           },
-           "status": {
-             "success": "Success",
-             "failed": "Failed"
-           }
-         },
-         "samplingLog": {
-           "title": "Execution Sampling Information",
-           "fields": {
-             "file": "File"
-           },
-           "messages": {
-             "noProxyInfo": "No proxy access information, connection failed address: "
-           }
-         }
-       }
-     },
-     "functionCase": {
-       "content": "Content",
-       "catalog": {
-         "title": "Catalog",
-         "sections": {
-           "basicInfo": "Basic Information",
-           "personnelInfo": "Personnel Information",
-           "dateInfo": "Date Information",
-           "precondition": "Precondition",
-           "testSteps": "Test Steps",
-           "description": "Description",
-           "reviewInfo": "Review Information",
-           "testInfo": "Test Information",
-           "assocTask": "Associated Tasks",
-           "assocCase": "Associated Cases",
-           "activity": "Activity",
-           "comment": "Comments"
-         }
-       },
-       "summary": {
-         "title": "Summary",
-         "fields": {
-           "testResult": "Test Result",
-           "description": "Description",
-           "contact": "Contact",
-           "copyright": "Copyright",
-           "other": "Other"
-         }
-       },
-       "info": {
-         "basic": {
-           "title": "Basic Information",
-           "fields": {
-             "name": "Name",
-             "priority": "Priority",
-             "testResult": "Test Result",
-             "code": "Code",
-             "reviewStatus": "Review Status",
-             "project": "Project",
-             "module": "Module",
-             "tags": "Tags",
-             "workloadEvalMethod": "Workload Evaluation Method",
-             "evalWorkload": "Estimated Workload",
-             "actualWorkload": "Actual Workload",
-             "processCount": "Process Count",
-             "processFailCount": "Process Failure Count",
-             "overdue": "Overdue",
-             "oneTimePass": "One-time Pass",
-             "unplannedCase": "Unplanned Case"
-           },
-           "options": {
-             "yes": "Yes",
-             "no": "No",
-             "storyPoint": "Story Points",
-             "workTime": "Work Hours",
-             "actualStoryPoint": "Actual Story Points",
-             "actualWorkTime": "Actual Work Hours"
-           }
-         },
-         "personnel": {
-           "title": "Personnel Information",
-           "fields": {
-             "tester": "Tester",
-             "creator": "Creator",
-             "reviewer": "Reviewer",
-             "lastModifier": "Last Modifier"
-           }
-         },
-         "date": {
-           "title": "Date Information",
-           "fields": {
-             "testCompleteTime": "Test Complete Time",
-             "deadline": "Deadline",
-             "reviewTime": "Review Time",
-             "createTime": "Create Time",
-             "lastModifyTime": "Last Modify Time"
-           }
-         },
-         "precondition": {
-           "title": "Precondition",
-           "noData": "None"
-         },
-         "testSteps": {
-           "title": "Test Steps",
-           "fields": {
-             "code": "Code",
-             "testStep": "Test Step",
-             "expectedResult": "Expected Result"
-           },
-           "noData": "None"
-         },
-         "description": {
-           "title": "Description",
-           "noData": "None"
-         },
-         "testInfo": {
-           "title": "Test Information",
-           "fields": {
-             "testCount": "Test Count",
-             "testFailCount": "Test Failure Count",
-             "oneTimeTestPass": "One-time Test Pass",
-             "testRemark": "Test Remark"
-           },
-           "options": {
-             "yes": "Yes",
-             "no": "No"
-           }
-         }
-       },
-       "review": {
-         "title": "Review Information",
-         "fields": {
-           "enableReview": "Enable Review",
-           "reviewCount": "Review Count",
-           "reviewFailCount": "Review Failure Count",
-           "oneTimeReviewPass": "One-time Review Pass",
-           "reviewOpinion": "Review Opinion"
-         },
-         "options": {
-           "yes": "Yes",
-           "no": "No"
-         }
-       },
-       "assocTask": {
-         "title": "Associated Tasks",
-         "fields": {
-           "code": "Code",
-           "type": "Type",
-           "name": "Name",
-           "status": "Status",
-           "assignee": "Assignee"
-         },
-         "noData": "None"
-       },
-       "assocCase": {
-         "title": "Associated Cases",
-         "fields": {
-           "code": "Code",
-           "name": "Name",
-           "testStatus": "Test Status",
-           "reviewStatus": "Review Status",
-           "tester": "Tester"
-         },
-         "noData": "None"
-       },
-       "activity": {
-         "title": "Activity",
-         "fields": {
-           "activityTime": "Activity Time",
-           "activityPerson": "Activity Person",
-           "activityDescription": "Activity Description"
-         },
-         "noData": "None"
-       },
-       "comment": {
-         "title": "Comments",
-         "fields": {
-           "commentTime": "Comment Time",
-           "commenter": "Commenter",
-           "commentContent": "Comment Content",
-           "reply": "Reply"
-         },
-         "noData": "None"
-       }
-     },
-     "functionPlan": {
-       "content": "Content",
-       "catalog": {
-         "title": "Catalog",
-         "sections": {
-           "planInfo": "Test Plan Information",
-           "basicInfo": "Basic Information",
-           "testerAndDuty": "Tester and Duty",
-           "testTarget": "Test Target",
-           "testScope": "Test Scope",
-           "acceptanceCriteria": "Acceptance Criteria",
-           "otherInfo": "Other Information",
-           "caseSummary": "Case Summary Results",
-           "testSummary": "Test Summary Results",
-           "reviewSummary": "Review Summary Results",
-           "burndownChart": "Burndown Chart",
-           "groupStats": "Group Statistics",
-           "testerSummary": "Tester Summary Results"
-         }
-       },
-       "summary": {
-         "title": "Summary",
-         "fields": {
-           "progress": "Progress",
-           "description": "Description",
-           "contact": "Contact",
-           "copyright": "Copyright",
-           "other": "Other"
-         }
-       },
-       "detail": {
-         "title": "Plan Detailed Information",
-         "basicInfo": {
-           "title": "Basic Information",
-           "fields": {
-             "planName": "Plan Name",
-             "casePrefix": "Case Prefix",
-             "status": "Status",
-             "owner": "Owner",
-             "project": "Project",
-             "timePlan": "Time Plan",
-             "creator": "Creator",
-             "createTime": "Create Time",
-             "workloadEvalMethod": "Workload Evaluation Method",
-             "reviewCase": "Review Cases"
-           },
-           "options": {
-             "yes": "Yes",
-             "no": "No"
-           }
-         },
-         "testerAndDuty": {
-           "title": "Tester and Duty",
-           "fields": {
-             "tester": "Tester",
-             "duty": "Duty"
-           }
-         },
-         "testTarget": {
-           "title": "Test Target",
-           "noData": "None"
-         },
-         "testScope": {
-           "title": "Test Scope",
-           "noData": "None"
-         },
-         "acceptanceCriteria": {
-           "title": "Acceptance Criteria",
-           "noData": "None"
-         },
-         "otherInfo": {
-           "title": "Other Information",
-           "noData": "None"
-         }
-       },
-       "caseSummary": {
-         "title": "Case Summary Results",
-         "testSummary": {
-           "title": "Test Summary Results",
-           "fields": {
-             "progress": "Progress",
-             "totalCases": "Total Cases",
-             "validCases": "Valid Cases",
-             "pendingTest": "Pending Test",
-             "passed": "Passed",
-             "failed": "Failed",
-             "blocked": "Blocked",
-             "cancelled": "Cancelled",
-             "overdue": "Overdue",
-             "overdueRate": "Overdue Rate",
-             "oneTimeTestPass": "One-time Test Pass",
-             "oneTimeTestPassRate": "One-time Test Pass Rate",
-             "oneTimeReviewPassRate": "One-time Review Pass Rate",
-             "estimatedWorkload": "Estimated Workload",
-             "actualWorkload": "Actual Workload",
-             "completedWorkload": "Completed Workload",
-             "savedWorkload": "Saved Workload",
-             "workloadSaveRate": "Workload Save Rate"
-           }
-         },
-         "reviewSummary": {
-           "title": "Review Summary Results",
-           "fields": {
-             "totalReviewCases": "Total Review Cases",
-             "pendingReview": "Pending Review",
-             "reviewPassed": "Review Passed",
-             "reviewFailed": "Review Failed",
-             "reviewed": "Reviewed",
-             "notReviewed": "Not Reviewed",
-             "totalReviewCount": "Total Review Count",
-             "oneTimeReviewPass": "One-time Review Pass",
-             "oneTimeReviewPassRate": "One-time Review Pass Rate"
-           }
-         },
-         "burndownChart": {
-           "title": "Burndown Chart",
-           "caseCount": "Case Count",
-           "workload": "Workload",
-           "remaining": "Remaining",
-           "expected": "Expected"
-         },
-         "groupStats": {
-           "title": "Group Statistics",
-           "byStatus": "By Status",
-           "byPriority": "By Priority",
-           "statuses": {
-             "cancelled": "Cancelled",
-             "blocked": "Blocked",
-             "testFailed": "Test Failed",
-             "testPassed": "Test Passed",
-             "pendingTest": "Pending Test"
-           },
-           "priorities": {
-             "highest": "Highest",
-             "high": "High",
-             "medium": "Medium",
-             "low": "Low",
-             "lowest": "Lowest"
-           }
-         }
-       },
-       "caseDetail": {
-         "title": "Tester Summary Results",
-         "testSummary": {
-           "title": "Test Summary Results",
-           "fields": {
-             "progress": "Progress",
-             "totalCases": "Total Cases",
-             "validCases": "Valid Cases",
-             "pendingTest": "Pending Test",
-             "passed": "Passed",
-             "failed": "Failed",
-             "blocked": "Blocked",
-             "cancelled": "Cancelled",
-             "overdue": "Overdue",
-             "overdueRate": "Overdue Rate",
-             "oneTimeTestPass": "One-time Test Pass",
-             "oneTimeTestPassRate": "One-time Test Pass Rate",
-             "oneTimeReviewPassRate": "One-time Review Pass Rate",
-             "estimatedWorkload": "Estimated Workload",
-             "actualWorkload": "Actual Workload",
-             "completedWorkload": "Completed Workload",
-             "savedWorkload": "Saved Workload",
-             "workloadSaveRate": "Workload Save Rate"
-           }
-         },
-         "reviewSummary": {
-           "title": "Review Summary Results",
-           "fields": {
-             "totalReviewCases": "Total Review Cases",
-             "pendingReview": "Pending Review",
-             "reviewPassed": "Review Passed",
-             "reviewFailed": "Review Failed",
-             "reviewed": "Reviewed",
-             "notReviewed": "Not Reviewed",
-             "totalReviewCount": "Total Review Count",
-             "oneTimeReviewPass": "One-time Review Pass",
-             "oneTimeReviewPassRate": "One-time Review Pass Rate"
-           }
-         },
-         "burndownChart": {
-           "title": "Burndown Chart"
-         },
-         "groupStats": {
-           "title": "Group Statistics"
-         },
-         "caseList": {
-           "fields": {
-             "code": "Code",
-             "priority": "Priority",
-             "module": "Module",
-             "overdue": "Overdue",
-             "deadline": "Deadline",
-             "tester": "Tester",
-             "testResult": "Test Result",
-             "testResultRemark": "Test Result Remark",
-             "testCompleteTime": "Test Complete Time",
-             "reviewCase": "Review Case",
-             "reviewStatus": "Review Status",
-             "reviewer": "Reviewer",
-             "reviewOpinion": "Review Opinion",
-             "reviewTime": "Review Time",
-             "workloadEvalMethod": "Workload Evaluation Method",
-             "estimatedWorkload": "Estimated Workload",
-             "actualWorkload": "Actual Workload",
-             "totalTestCount": "Total Test Count",
-             "testFailCount": "Test Failure Count",
-             "creator": "Creator",
-             "createTime": "Create Time",
-             "lastModifier": "Last Modifier",
-             "lastModifyTime": "Last Modify Time"
-           },
-           "options": {
-             "yes": "Yes",
-             "no": "No"
-           }
-         }
-       }
-     },
-     "projectProgress": {
-       "content": "Content",
-       "catalog": {
-         "title": "Catalog",
-         "sections": {
-           "projectInfo": "Project Information",
-           "devTask": "Development Tasks",
-           "taskSummary": "Task Summary Results",
-           "taskBurndownChart": "Task Burndown Chart",
-           "taskGroupStats": "Task Group Statistics",
-           "funcTest": "Functional Testing",
-           "caseTestSummary": "Case Test Summary Results",
-           "caseReviewSummary": "Case Review Summary Results",
-           "caseBurndownChart": "Case Burndown Chart",
-           "caseGroupStats": "Case Group Statistics",
-           "apiTest": "API Testing",
-           "apiTestSummary": "API Test Summary Results",
-           "apiGroupStats": "API Group Statistics",
-           "scenarioTest": "Scenario Testing",
-           "scenarioTestSummary": "Scenario Test Summary Results",
-           "scenarioGroupStats": "Scenario Group Statistics"
-         }
-       },
-       "summary": {
-         "title": "Summary",
-         "fields": {
-           "progress": "Progress",
-           "description": "Description",
-           "contact": "Contact",
-           "copyright": "Copyright",
-           "other": "Other"
-         }
-       },
-       "info": {
-         "title": "Project Information",
-         "fields": {
-           "name": "Name",
-           "planTime": "Plan Time",
-           "owner": "Owner",
-           "members": "Members",
-           "description": "Description"
-         }
-       },
-       "taskSummary": {
-         "title": "Development Tasks",
-         "summary": {
-           "title": "Task Summary Results",
-           "fields": {
-             "progress": "Progress",
-             "totalTasks": "Total Tasks",
-             "validTasks": "Valid Tasks",
-             "totalBugs": "Total Bugs",
-             "validBugs": "Valid Bugs",
-             "pendingCount": "Pending Count",
-             "processingCount": "Processing Count",
-             "pendingConfirmCount": "Pending Confirm Count",
-             "completedCount": "Completed Count",
-             "cancelledCount": "Cancelled Count",
-             "overdueCount": "Overdue Count",
-             "overdueRate": "Overdue Rate",
-             "oneTimePassCount": "One-time Pass Count",
-             "oneTimePassRate": "One-time Pass Rate",
-             "estimatedWorkload": "Estimated Workload",
-             "actualWorkload": "Actual Workload",
-             "completedWorkload": "Completed Workload",
-             "savedWorkload": "Saved Workload",
-             "workloadSaveRate": "Workload Save Rate"
-           }
-         },
-         "burndownChart": {
-           "title": "Task Burndown Chart",
-           "remaining": "Remaining",
-           "expected": "Expected",
-           "caseCount": "Case Count",
-           "workload": "Workload",
-           "taskCount": "Task Count"
-         },
-         "groupStats": {
-           "title": "Task Group Statistics",
-           "byStatus": "By Status",
-           "byPriority": "By Priority",
-           "byTaskType": "By Task Type",
-           "total": "Total",
-           "statuses": {
-             "cancelled": "Cancelled",
-             "completed": "Completed",
-             "pendingConfirm": "Pending Confirm",
-             "processing": "Processing",
-             "pending": "Pending"
-           },
-           "priorities": {
-             "highest": "Highest",
-             "high": "High",
-             "medium": "Medium",
-             "low": "Low",
-             "lowest": "Lowest"
-           },
-           "taskTypes": {
-             "bug": "Bug",
-             "task": "Task",
-             "story": "Story",
-             "requirement": "Requirement",
-             "apiTest": "API Test",
-             "scenarioTest": "Scenario Test"
-           }
-         }
-       },
-       "funcCaseSummary": {
-         "title": "Functional Cases",
-         "testSummary": {
-           "title": "Case Test Summary Results",
-           "fields": {
-             "progress": "Progress",
-             "totalCases": "Total Cases",
-             "validCases": "Valid Cases",
-             "pendingTest": "Pending Test",
-             "passed": "Passed",
-             "failed": "Failed",
-             "blocked": "Blocked",
-             "cancelled": "Cancelled",
-             "overdue": "Overdue",
-             "overdueRate": "Overdue Rate",
-             "oneTimeTestPass": "One-time Test Pass",
-             "oneTimeTestPassRate": "One-time Test Pass Rate",
-             "oneTimeReviewPassRate": "One-time Review Pass Rate",
-             "estimatedWorkload": "Estimated Workload",
-             "actualWorkload": "Actual Workload",
-             "completedWorkload": "Completed Workload",
-             "savedWorkload": "Saved Workload",
-             "workloadSaveRate": "Workload Save Rate"
-           }
-         },
-         "reviewSummary": {
-           "title": "Case Review Summary Results",
-           "fields": {
-             "progress": "Progress",
-             "totalReviewCases": "Total Review Cases",
-             "pendingReview": "Pending Review",
-             "reviewPassed": "Review Passed",
-             "reviewFailed": "Review Failed",
-             "reviewed": "Reviewed",
-             "notReviewed": "Not Reviewed",
-             "totalReviewCount": "Total Review Count",
-             "oneTimeReviewPass": "One-time Review Pass",
-             "oneTimeReviewPassRate": "One-time Review Pass Rate"
-           }
-         },
-         "burndownChart": {
-           "title": "Case Burndown Chart",
-           "remaining": "Remaining",
-           "expected": "Expected"
-         },
-         "groupStats": {
-           "title": "Case Group Statistics",
-           "byStatus": "By Status",
-           "byPriority": "By Priority",
-           "total": "Total",
-           "statuses": {
-             "cancelled": "Cancelled",
-             "blocked": "Blocked",
-             "testFailed": "Test Failed",
-             "testPassed": "Test Passed",
-             "pendingTest": "Pending Test"
-           },
-           "priorities": {
-             "highest": "Highest",
-             "high": "High",
-             "medium": "Medium",
-             "low": "Low",
-             "lowest": "Lowest"
-           }
-         }
-       },
-       "apiSummary": {
-         "title": "API Testing",
-         "testSummary": {
-           "title": "API Test Summary Results",
-           "fields": {
-             "progress": "Progress",
-             "totalApis": "Total APIs",
-             "enabledApiTest": "Enabled API Test",
-             "disabledApiTest": "Disabled API Test",
-             "apiFuncTest": "API Functional Test",
-             "apiPerfTest": "API Performance Test",
-             "apiStabilityTest": "API Stability Test",
-             "testedApis": "Tested APIs",
-             "passedApis": "Passed APIs",
-             "failedApis": "Failed APIs"
-           }
-         },
-         "groupStats": {
-           "title": "API Group Statistics",
-           "byStatus": "By Status",
-           "byRequestMethod": "By Request Method",
-           "total": "Total",
-           "statuses": {
-             "published": "Published",
-             "devCompleted": "Development Completed",
-             "devInProgress": "Development In Progress",
-             "designing": "Designing",
-             "unknown": "Unknown"
-           }
-         }
-       },
-       "scenarioTestSummary": {
-         "title": "Scenario Testing",
-         "testSummary": {
-           "title": "Scenario Test Summary Results",
-           "fields": {
-             "progress": "Progress",
-             "totalScenarios": "Total Scenarios",
-             "enabledScenarioTest": "Enabled Scenario Test",
-             "disabledScenarioTest": "Disabled Scenario Test",
-             "scenarioFuncTest": "Scenario Functional Test",
-             "scenarioPerfTest": "Scenario Performance Test",
-             "scenarioStabilityTest": "Scenario Stability Test",
-             "testedScenarios": "Tested Scenarios",
-             "passedScenarios": "Passed Scenarios",
-             "failedScenarios": "Failed Scenarios"
-           }
-         },
-         "groupStats": {
-           "title": "Scenario Group Statistics",
-           "byProtocol": "By Protocol",
-           "byTestType": "By Test Type",
-           "total": "Total",
-           "quantity": "Quantity",
-           "testTypes": {
-             "perfTest": "Performance Test",
-             "stabilityTest": "Stability Test",
-             "funcTest": "Functional Test",
-             "customTest": "Custom Test"
-           }
-         }
-       }
-     },
-     "scenario": {
-       "content": "Content",
-       "catalog": {
-         "title": "Catalog",
-         "sections": {
-           "scenarioInfo": "Scenario Information",
-           "scenarioTestSummary": "Scenario Test Summary Results",
-           "scenarioTestResultDetail": "Scenario Test Result Detailed Information",
-           "funcTestResult": "Functional Test Results",
-           "perfTestResult": "Performance Test Results",
-           "stabilityTestResult": "Stability Test Results"
-         }
-       },
-       "summary": {
-         "title": "Summary",
-         "fields": {
-           "testPassed": "Test Passed",
-           "description": "Description",
-           "contact": "Contact",
-           "copyright": "Copyright",
-           "other": "Other"
-         },
-         "options": {
-           "passed": "Passed",
-           "failed": "Failed",
-           "notTested": "Not Tested"
-         }
-       },
-       "info": {
-         "title": "Scenario Information",
-         "fields": {
-           "name": "Name",
-           "description": "Description",
-           "project": "Project",
-           "plugin": "Plugin",
-           "scriptType": "Script Type",
-           "scriptId": "Script ID",
-           "scriptName": "Script Name",
-           "creator": "Creator",
-           "createTime": "Create Time",
-           "lastModifier": "Last Modifier",
-           "lastModifyTime": "Last Modify Time"
-         }
-       },
-       "testResult": {
-         "title": "Scenario Test Summary Results",
-         "fields": {
-           "passed": "Passed",
-           "enableFuncTest": "Enable Functional Test",
-           "funcTestPassed": "Functional Test Passed",
-           "funcTestFailReason": "Functional Test Failure Reason",
-           "enablePerfTest": "Enable Performance Test",
-           "perfTestPassed": "Performance Test Passed",
-           "perfTestFailReason": "Performance Test Failure Reason",
-           "enableStabilityTest": "Enable Stability Test",
-           "stabilityTestPassed": "Stability Test Passed",
-           "stabilityTestFailReason": "Stability Test Failure Reason"
-         },
-         "options": {
-           "passed": "Passed",
-           "failed": "Failed",
-           "notTested": "Not Tested",
-           "enabled": "Enabled",
-           "disabled": "Disabled"
-         }
-       },
-       "testResultDetail": {
-         "title": "Scenario Test Result Detailed Information",
-         "funcTestResult": {
-           "title": "Functional Test Results",
-           "basicInfo": {
-             "title": "Test Basic Information",
-             "fields": {
-               "testResult": "Test Result",
-               "testFailReason": "Test Failure Reason",
-               "testCount": "Test Count",
-               "failCount": "Failure Count",
-               "testScriptId": "Test Script ID",
-               "testScriptName": "Test Script Name",
-               "execId": "Execution ID",
-               "execName": "Execution Name",
-               "lastExecutor": "Last Executor",
-               "lastExecTime": "Last Execution Time"
-             },
-             "options": {
-               "passed": "Passed",
-               "failed": "Failed",
-               "notTested": "Not Tested"
-             }
-           },
-           "apiStats": {
-             "title": "Test API Statistics",
-             "fields": {
-               "totalCases": "Total Cases",
-               "passedCount": "Passed Count",
-               "failedCount": "Failed Count",
-               "disabledCount": "Disabled Count"
-             }
-           },
-           "caseResultDetail": {
-             "title": "Test Case Result Details",
-             "fields": {
-               "type": "Type",
-               "enabled": "Enabled",
-               "testPassed": "Test Passed",
-               "testFailReason": "Test Failure Reason",
-               "testCount": "Test Count",
-               "testFailCount": "Test Failure Count"
-             },
-             "options": {
-               "enabled": "Enabled",
-               "disabled": "Disabled",
-               "passed": "Passed",
-               "failed": "Failed",
-               "notTested": "Not Tested"
-             }
-           },
-           "noData": "None"
-         },
-         "perfTestResult": {
-           "title": "Performance Test",
-           "basicInfo": {
-             "title": "Test Basic Information",
-             "fields": {
-               "testResult": "Test Result",
-               "testFailReason": "Test Failure Reason",
-               "testCount": "Test Count",
-               "failCount": "Failure Count",
-               "testScriptId": "Test Script ID",
-               "testScriptName": "Test Script Name",
-               "execId": "Execution ID",
-               "execName": "Execution Name",
-               "lastExecutor": "Last Executor",
-               "lastExecTime": "Last Execution Time"
-             },
-             "options": {
-               "passed": "Passed",
-               "failed": "Failed",
-               "notTested": "Not Tested"
-             }
-           },
-           "metrics": {
-             "title": "Test Metrics and Results",
-             "performanceMetrics": "Performance Metrics",
-             "result": "Result",
-             "fields": {
-               "concurrency": "Concurrency",
-               "testDuration": "Test Duration",
-               "rampUpConcurrency": "Ramp-up Concurrency",
-               "rampUpDuration": "Ramp-up Duration",
-               "responseTime": "Response Time",
-               "tps": "Transactions Per Second",
-               "errorRate": "Error Rate"
-             }
-           },
-           "noData": "None"
-         },
-         "stabilityTestResult": {
-           "title": "Stability Test",
-           "basicInfo": {
-             "title": "Test Basic Information",
-             "fields": {
-               "testResult": "Test Result",
-               "testFailReason": "Test Failure Reason",
-               "testCount": "Test Count",
-               "failCount": "Failure Count",
-               "testScriptId": "Test Script ID",
-               "testScriptName": "Test Script Name",
-               "execId": "Execution ID",
-               "execName": "Execution Name",
-               "lastExecutor": "Last Executor",
-               "lastExecTime": "Last Execution Time"
-             },
-             "options": {
-               "passed": "Passed",
-               "failed": "Failed",
-               "notTested": "Not Tested"
-             }
-           },
-           "metrics": {
-             "title": "Test Metrics and Results",
-             "stabilityMetrics": "Stability Metrics",
-             "result": "Result",
-             "fields": {
-               "concurrency": "Concurrency",
-               "testDuration": "Test Duration",
-               "rampUpConcurrency": "Ramp-up Concurrency",
-               "rampUpDuration": "Ramp-up Duration",
-               "responseTime": "Response Time",
-               "tps": "Transactions Per Second (TPS)",
-               "errorRate": "Error Rate"
-             }
-           },
-           "nodeResources": {
-             "title": "Node Resources",
-             "fields": {
-               "cpuUsage": "CPU Usage",
-               "memoryUsage": "Memory Usage",
-               "diskUsage": "Disk Usage",
-               "networkUsage": "Network Usage"
-             }
-           },
-           "systemLoad": {
-             "title": "Application System Average Load",
-             "average": "Average",
-             "maximum": "Maximum"
-           },
-           "noData": "None"
-         }
-       }
-     },
-     "services": {
-       "content": "Content",
-       "catalog": {
-         "title": "Catalog",
-         "sections": {
-           "serviceInfo": "Service Information",
-           "apiGroupStats": "API Group Statistics",
-           "testResultSummary": "Test Result Summary",
-           "testProgress": "Test Progress",
-           "testApiStats": "Test API Statistics",
-           "testStatusStats": "Test Status Statistics"
-         }
-       },
-       "summary": {
-         "title": "Summary",
-         "fields": {
-           "serviceStatus": "Service Status",
-           "description": "Description",
-           "contact": "Contact",
-           "copyright": "Copyright",
-           "other": "Other"
-         }
-       },
-       "info": {
-         "title": "Service Information",
-         "fields": {
-           "name": "Name",
-           "status": "Status",
-           "project": "Project",
-           "apiCount": "API Count",
-           "apiCaseCount": "API Case Count",
-           "creator": "Creator",
-           "createTime": "Create Time",
-           "lastModifier": "Last Modifier",
-           "lastModifyTime": "Last Modify Time"
-         }
-       },
-       "apisGroup": {
-         "title": "API Group Statistics",
-         "byStatus": {
-           "title": "By Status",
-           "statuses": {
-             "unknown": "Unknown",
-             "designing": "Designing",
-             "devInProgress": "Development In Progress",
-             "devCompleted": "Development Completed",
-             "published": "Published"
-           }
-         },
-         "byRequestMethod": {
-           "title": "By Request Method"
-         },
-         "total": "Total"
-       },
-       "result": {
-         "title": "Test Result Summary",
-         "testProgress": {
-           "title": "Test Progress",
-           "totalApis": "Total APIs",
-           "progress": "Progress"
-         },
-         "testApiStats": {
-           "title": "Test API Statistics",
-           "columns": {
-             "totalTestCount": "Total Test Count",
-             "funcTest": "Functional Test",
-             "perfTest": "Performance Test",
-             "stabilityTest": "Stability Test"
-           }
-         },
-         "testStatusStats": {
-           "title": "Test Status Statistics",
-           "fields": {
-             "tested": "Tested",
-             "notTested": "Not Tested",
-             "passed": "Passed",
-             "failed": "Failed"
-           }
-         }
-       },
-       "apiResultDetail": {
-         "title": "API Test Result Details",
-         "fields": {
-           "apiUrl": "API URL",
-           "requestMethod": "Request Method",
-           "operationId": "Operation ID",
-           "owner": "Owner",
-           "description": "Description",
-           "enableFuncTest": "Enable Functional Test",
-           "funcTestPassed": "Functional Test Passed",
-           "funcTestFailReason": "Functional Test Failure Reason",
-           "enablePerfTest": "Enable Performance Test",
-           "perfTestPassed": "Performance Test Passed",
-           "perfTestFailReason": "Performance Test Failure Reason",
-           "enableStabilityTest": "Enable Stability Test",
-           "stabilityTestPassed": "Stability Test Passed",
-           "stabilityTestFailReason": "Stability Test Failure Reason"
-         },
-         "options": {
-           "yes": "Yes",
-           "no": "No",
-           "notTested": "Not Tested"
-         }
-       }
-     },
-     "sprint": {
-       "content": "Content",
-       "catalog": {
-         "title": "Catalog",
-         "sections": {
-           "sprintDetail": "Sprint Detailed Information",
-           "basicInfo": "Basic Information",
-           "acceptanceCriteria": "Acceptance Criteria",
-           "testScope": "Test Scope",
-           "otherInfo": "Other Information",
-           "devTask": "Development Tasks",
-           "taskSummary": "Task Summary Results",
-           "burndownChart": "Burndown Chart",
-           "groupStats": "Group Statistics",
-           "assigneeSummary": "Assignee Summary Results"
-         }
-       },
-       "summary": {
-         "title": "Summary",
-         "fields": {
-           "progress": "Progress",
-           "description": "Description",
-           "contact": "Contact",
-           "copyright": "Copyright",
-           "other": "Other"
-         }
-       },
-       "sprintDetail": {
-         "title": "Sprint Information",
-         "basicInfo": {
-           "title": "Basic Information",
-           "fields": {
-             "name": "Name",
-             "taskPrefix": "Task Prefix",
-             "status": "Status",
-             "owner": "Owner",
-             "project": "Project",
-             "sprintTime": "Sprint Time",
-             "creator": "Creator",
-             "createTime": "Create Time",
-             "workloadEstimationMethod": "Workload Estimation Method"
-           }
-         },
-         "acceptanceCriteria": {
-           "title": "Acceptance Criteria",
-           "noData": "None"
-         },
-         "meetingRecord": {
-           "title": "Meeting Records",
-           "noData": "None",
-           "meetingTopic": "Meeting Topic",
-           "fields": {
-             "meetingType": "Meeting Type",
-             "meetingDate": "Meeting Date",
-             "meetingTime": "Meeting Time",
-             "to": "to",
-             "meetingLocation": "Meeting Location",
-             "meetingHost": "Meeting Host",
-             "attendees": "Attendees",
-             "meetingContent": "Meeting Content"
-           }
-         },
-         "otherInfo": {
-           "title": "Other Information",
-           "noData": "None"
-         }
-       },
-       "taskDetail": {
-         "title": "Task Details",
-         "fields": {
-           "code": "Code",
-           "priority": "Priority",
-           "module": "Module",
-           "taskType": "Task Type",
-           "testType": "Test Type",
-           "taskStatus": "Task Status",
-           "completionTime": "Completion Time",
-           "overdue": "Overdue",
-           "deadline": "Deadline",
-           "assignee": "Assignee",
-           "startTime": "Start Time",
-           "confirmTask": "Confirm Task",
-           "confirmer": "Confirmer",
-           "workloadEstimationMethod": "Workload Estimation Method",
-           "estimatedWorkload": "Estimated Workload",
-           "actualWorkload": "Actual Workload",
-           "totalProcessCount": "Total Process Count",
-           "failedProcessCount": "Failed Process Count",
-           "creator": "Creator",
-           "createTime": "Create Time",
-           "lastModifier": "Last Modifier",
-           "lastModifyTime": "Last Modify Time"
-         },
-         "options": {
-           "yes": "Yes",
-           "no": "No"
-         }
-       },
-       "taskSummary": {
-         "title": "Development Tasks",
-         "summary": {
-           "title": "Task Summary Results",
-           "fields": {
-             "progress": "Progress",
-             "totalTasks": "Total Tasks",
-             "validTasks": "Valid Tasks",
-             "totalBugs": "Total Bugs",
-             "validBugs": "Valid Bugs",
-             "pendingCount": "Pending Count",
-             "processingCount": "Processing Count",
-             "pendingConfirmCount": "Pending Confirm Count",
-             "completedCount": "Completed Count",
-             "cancelledCount": "Cancelled Count",
-             "overdueCount": "Overdue Count",
-             "overdueRate": "Overdue Rate",
-             "oneTimePassCount": "One-time Pass Count",
-             "oneTimePassRate": "One-time Pass Rate",
-             "estimatedWorkload": "Estimated Workload",
-             "actualWorkload": "Actual Workload",
-             "completedWorkload": "Completed Workload",
-             "savedWorkload": "Saved Workload",
-             "workloadSaveRate": "Workload Save Rate"
-           }
-         },
-         "burndownChart": {
-           "title": "Burndown Chart",
-           "taskCount": "Task Count",
-           "workload": "Workload",
-           "remaining": "Remaining",
-           "expected": "Expected"
-         },
-         "groupStats": {
-           "title": "Group Statistics",
-           "byStatus": "By Status",
-           "byPriority": "By Priority",
-           "byTaskType": "By Task Type",
-           "total": "Total",
-           "statuses": {
-             "cancelled": "Cancelled",
-             "completed": "Completed",
-             "pendingConfirm": "Pending Confirm",
-             "processing": "Processing",
-             "pending": "Pending"
-           },
-           "priorities": {
-             "highest": "Highest",
-             "high": "High",
-             "medium": "Medium",
-             "low": "Low",
-             "lowest": "Lowest"
-           },
-           "taskTypes": {
-             "bug": "Bug",
-             "task": "Task",
-             "story": "Story",
-             "requirement": "Requirement",
-             "apiTest": "API Test",
-             "scenarioTest": "Scenario Test"
-           }
-         }
-       },
-       "assigneeSummary": {
-         "title": "Assignee Summary Results",
-         "summary": {
-           "title": "Task Summary Results",
-           "fields": {
-             "progress": "Progress",
-             "totalTasks": "Total Tasks",
-             "validTasks": "Valid Tasks",
-             "totalBugs": "Total Bugs",
-             "validBugs": "Valid Bugs",
-             "pendingCount": "Pending Count",
-             "processingCount": "Processing Count",
-             "pendingConfirmCount": "Pending Confirm Count",
-             "completedCount": "Completed Count",
-             "cancelledCount": "Cancelled Count",
-             "overdueCount": "Overdue Count",
-             "overdueRate": "Overdue Rate",
-             "oneTimePassCount": "One-time Pass Count",
-             "oneTimePassRate": "One-time Pass Rate",
-             "estimatedWorkload": "Estimated Workload",
-             "actualWorkload": "Actual Workload",
-             "completedWorkload": "Completed Workload",
-             "savedWorkload": "Saved Workload",
-             "workloadSaveRate": "Workload Save Rate"
-           }
-         },
-         "burndownChart": {
-           "title": "Burndown Chart",
-           "taskCount": "Task Count",
-           "workload": "Workload",
-           "remaining": "Remaining",
-           "expected": "Expected"
-         },
-         "groupStats": {
-           "title": "Group Statistics"
-         }
-       }
-     },
-     "task": {
-       "content": "Content",
-       "catalog": {
-         "title": "Catalog",
-         "sections": {
-           "basicInfo": "Basic Information",
-           "personnelInfo": "Personnel Information",
-           "dateInfo": "Date Information",
-           "description": "Description",
-           "subTask": "Sub Tasks",
-           "assocTask": "Associated Tasks",
-           "assocCase": "Associated Cases",
-           "testingInfo": "Testing Information",
-           "testResource": "Test Resources",
-           "execInfo": "Execution Information",
-           "testResult": "Test Results",
-           "remark": "Remarks",
-           "activity": "Activities",
-           "comment": "Comments"
-         }
-       },
-       "summary": {
-         "title": "Summary",
-         "fields": {
-           "status": "Status",
-           "description": "Description",
-           "contact": "Contact",
-           "copyright": "Copyright",
-           "other": "Other"
-         }
-       },
-       "info": {
-         "basicInfo": {
-           "title": "Basic Information",
-           "fields": {
-             "name": "Name",
-             "priority": "Priority",
-             "taskType": "Task Type",
-             "missedDefect": "Missed Defect",
-             "taskStatus": "Task Status",
-             "project": "Project",
-             "code": "Code",
-             "overdue": "Overdue",
-             "module": "Module",
-             "tag": "Tag",
-             "workloadEstimationMethod": "Workload Estimation Method",
-             "estimatedStoryPoint": "Estimated Story Points",
-             "estimatedWorkTime": "Estimated Work Time",
-             "actualStoryPoint": "Actual Story Points",
-             "actualWorkTime": "Actual Work Time",
-             "processCount": "Process Count",
-             "failedProcessCount": "Failed Process Count",
-             "oneTimePass": "One-time Pass",
-             "unplannedTask": "Unplanned Task"
-           },
-           "options": {
-             "yes": "Yes",
-             "no": "No"
-           }
-         },
-         "personnelInfo": {
-           "title": "Personnel Information",
-           "fields": {
-             "assignee": "Assignee",
-             "confirmer": "Confirmer",
-             "creator": "Creator",
-             "executor": "Executor",
-             "lastModifier": "Last Modifier",
-             "tester": "Tester"
-           }
-         },
-         "dateInfo": {
-           "title": "Date Information",
-           "fields": {
-             "deadline": "Deadline",
-             "startTime": "Start Time",
-             "processTime": "Process Time",
-             "confirmTime": "Confirm Time",
-             "completionTime": "Completion Time",
-             "cancelTime": "Cancel Time",
-             "execTime": "Execution Time",
-             "createTime": "Create Time",
-             "lastModifyTime": "Last Modify Time"
-           }
-         },
-         "description": {
-           "title": "Description",
-           "noData": "None"
-         },
-         "remark": {
-           "title": "Remarks",
-           "noData": "None"
-         },
-         "testingInfo": {
-           "title": "Testing Information",
-           "testResource": {
-             "title": "Test Resources",
-             "fields": {
-               "apiId": "API ID",
-               "apiName": "API Name",
-               "scenarioId": "Scenario ID",
-               "scenarioName": "Scenario Name"
-             }
-           },
-           "execInfo": {
-             "title": "Execution Information",
-             "fields": {
-               "execResult": "Execution Result",
-               "execId": "Execution ID",
-               "execName": "Execution Name",
-               "executor": "Executor",
-               "scriptId": "Script ID",
-               "scriptName": "Script Name",
-               "lastExecTime": "Last Execution Time"
-             }
-           },
-           "testResult": {
-             "title": "Test Results",
-             "basicInfo": {
-               "title": "Basic Information",
-               "fields": {
-                 "testResult": "Test Result",
-                 "oneTimePass": "One-time Pass",
-                 "testCount": "Test Count",
-                 "failCount": "Failure Count",
-                 "failReason": "Failure Reason"
-               },
-               "options": {
-                 "passed": "Passed",
-                 "failed": "Failed"
-               }
-             }
-           }
-         }
-       },
-       "subTask": {
-         "title": "Sub Tasks",
-         "progress": "Progress",
-         "fields": {
-           "code": "Code",
-           "type": "Type",
-           "name": "Name",
-           "status": "Status",
-           "assignee": "Assignee"
-         },
-         "noData": "None"
-       },
-       "assocTask": {
-         "title": "Associated Tasks",
-         "fields": {
-           "code": "Code",
-           "type": "Type",
-           "name": "Name",
-           "status": "Status",
-           "assignee": "Assignee"
-         },
-         "noData": "None"
-       },
-       "assocCase": {
-         "title": "Associated Cases",
-         "fields": {
-           "code": "Code",
-           "name": "Name",
-           "testStatus": "Test Status",
-           "reviewStatus": "Review Status",
-           "tester": "Tester"
-         },
-         "noData": "None"
-       },
-       "activity": {
-         "title": "Activities",
-         "fields": {
-           "activityTime": "Activity Time",
-           "activityUser": "Activity User",
-           "activityDesc": "Activity Description"
-         },
-         "noData": "None"
-       },
-       "comment": {
-         "title": "Comments",
-         "fields": {
-           "commentTime": "Comment Time",
-           "commentUser": "Comment User",
-           "commentContent": "Comment Content",
-           "reply": "Reply"
-         },
-         "noData": "None"
-       },
-       "testing": {
-         "function": {
-           "title": "Functional Testing",
-           "caseStats": {
-             "title": "Case Statistics",
-             "fields": {
-               "totalCases": "Total Cases",
-               "passedCases": "Passed Cases",
-               "failedCases": "Failed Cases",
-               "disabledCases": "Disabled Cases"
-             }
-           },
-           "testedCases": {
-             "title": "Tested Cases",
-             "fields": {
-               "caseId": "Case ID",
-               "caseName": "Case Name",
-               "status": "Status"
-             },
-             "options": {
-               "passed": "Passed",
-               "failed": "Failed"
-             },
-             "noData": "None"
-           }
-         },
-         "perf": {
-           "title": "Performance Testing",
-           "resultInfo": {
-             "title": "Result Information",
-             "testParams": "Test Parameters",
-             "testMetrics": "Test Metrics",
-             "status": "Status",
-             "fields": {
-               "concurrency": "Concurrency",
-               "testDuration": "Test Duration",
-               "rampUpConcurrency": "Ramp-up Concurrency",
-               "rampUpDuration": "Ramp-up Duration",
-               "responseTime": "Response Time (RT)",
-               "tps": "Transactions Per Second (TPS)",
-               "errorRate": "Error Rate"
-             }
-           },
-           "systemLoad": {
-             "title": "Application System Average Load",
-             "cpuUsage": "CPU Usage",
-             "memoryUsage": "Memory Usage",
-             "diskUsage": "Disk Usage",
-             "networkUsage": "Network Usage",
-             "maximum": "Maximum"
-           }
-         },
-         "stability": {
-           "title": "Stability Testing",
-           "resultInfo": {
-             "title": "Result Information",
-             "testParams": "Test Parameters",
-             "testMetrics": "Test Metrics",
-             "status": "Status",
-             "fields": {
-               "concurrency": "Concurrency",
-               "testDuration": "Test Duration",
-               "responseTime": "Response Time (art)",
-               "tps": "Transactions Per Second (TPS)",
-               "errorRate": "Error Rate"
-             }
-           },
-           "systemLoad": {
-             "title": "Application System Average Load",
-             "cpuUsage": "CPU Usage",
-             "memoryUsage": "Memory Usage",
-             "diskUsage": "Disk Usage",
-             "networkUsage": "Network Usage",
-             "maximum": "Maximum"
-           }
-         }
-       }
-     }
-   }
-} 
+    "serial": {
+      "1": "1.",
+      "2": "2.",
+      "3": "3.",
+      "4": "4.",
+      "5": "5.",
+      "6": "6.",
+      "7": "7.",
+      "8": "8.",
+      "9": "9.",
+      "10": "10.",
+      "11": "11.",
+      "12": "12.",
+      "13": "13.",
+      "14": "14.",
+      "15": "15.",
+      "16": "16.",
+      "17": "17.",
+      "18": "18.",
+      "19": "19.",
+      "20": "20.",
+      "21": "21.",
+      "22": "22.",
+      "23": "23.",
+      "24": "24.",
+      "25": "25.",
+      "26": "26.",
+      "27": "27."
+    },
+    "apis": {
+      "content": "Content",
+      "catalog": {
+        "title": "Catalog",
+        "sections": {
+          "apiInfo": "API Information",
+          "apiTestSummary": "API Test Summary Results",
+          "apiTestDetail": "API Test Result Details",
+          "functionalTest": "Functional Test Results",
+          "performanceTest": "Performance Test Results",
+          "stabilityTest": "Stability Test Results"
+        }
+      },
+      "info": {
+        "title": "API Information",
+        "fields": {
+          "apiUrl": "API URL",
+          "requestMethod": "Request Method",
+          "operationId": "Operation ID",
+          "owner": "Owner",
+          "description": "Description",
+          "status": "Status",
+          "creator": "Creator",
+          "createTime": "Create Time",
+          "lastModifier": "Last Modifier",
+          "lastModifyTime": "Last Modify Time"
+        }
+      },
+      "summary": {
+        "title": "Summary",
+        "fields": {
+          "apiStatus": "API Status",
+          "description": "Description",
+          "contact": "Contact",
+          "copyright": "Copyright",
+          "other": "Other"
+        }
+      },
+      "testResult": {
+        "title": "API Test Summary Results",
+        "fields": {
+          "isPassed": "Is Passed",
+          "enableFunctionalTest": "Enable Functional Test",
+          "functionalTestPassed": "Functional Test Passed",
+          "functionalTestFailureReason": "Functional Test Failure Reason",
+          "enablePerformanceTest": "Enable Performance Test",
+          "performanceTestPassed": "Performance Test Passed",
+          "performanceTestFailureReason": "Performance Test Failure Reason",
+          "enableStabilityTest": "Enable Stability Test",
+          "stabilityTestPassed": "Stability Test Passed",
+          "stabilityTestFailureReason": "Stability Test Failure Reason"
+        },
+        "status": {
+          "passed": "Passed",
+          "failed": "Failed",
+          "notTested": "Not Tested",
+          "enabled": "Enabled",
+          "disabled": "Disabled"
+        }
+      },
+      "testResultDetail": {
+        "title": "Scenario Test Result Details",
+        "noData": "None",
+        "functionalTest": {
+          "title": "Functional Test Results",
+          "basicInfo": "Test Basic Information",
+          "testCases": "Test Cases",
+          "testCaseResults": "Test Case Result Details",
+          "noData": "None"
+        },
+        "performanceTest": {
+          "title": "Performance Test",
+          "basicInfo": "Test Basic Information",
+          "indicatorsAndResults": "Test Indicators and Results",
+          "performanceIndicators": "Performance Indicators",
+          "results": "Results",
+          "indicators": {
+            "concurrency": "Concurrency",
+            "testDuration": "Test Duration",
+            "pressureConcurrency": "Pressure Concurrency",
+            "pressureTestDuration": "Pressure Test Duration",
+            "responseTime": "Response Time",
+            "tps": "TPS",
+            "errorRate": "Error Rate"
+          }
+        },
+        "stabilityTest": {
+          "title": "Stability Test",
+          "basicInfo": "Test Basic Information",
+          "indicatorsAndResults": "Test Indicators and Results",
+          "stabilityIndicators": "Stability Indicators",
+          "results": "Results",
+          "systemLoad": "Application System Average Load",
+          "average": "Average",
+          "maximum": "Maximum"
+        },
+        "fields": {
+          "testResult": "Test Result",
+          "testFailureReason": "Test Failure Reason",
+          "testCount": "Test Count",
+          "failureCount": "Failure Count",
+          "testScriptId": "Test Script ID",
+          "testScriptName": "Test Script Name",
+          "executionId": "Execution ID",
+          "executionName": "Execution Name",
+          "lastExecutor": "Last Executor",
+          "lastExecutionTime": "Last Execution Time",
+          "totalCases": "Total Cases",
+          "passedCount": "Passed Count",
+          "failedCount": "Failed Count",
+          "disabledCount": "Disabled Count",
+          "type": "Type",
+          "isEnabled": "Is Enabled",
+          "isTestPassed": "Is Test Passed",
+          "testFailureCount": "Test Failure Count",
+          "cpuUsage": "CPU Usage",
+          "memoryUsage": "Memory Usage",
+          "diskUsage": "Disk Usage",
+          "networkUsage": "Network Usage"
+        }
+      }
+    },
+    "execFunction": {
+      "content": "Content",
+      "catalog": {
+        "title": "Catalog",
+        "sections": {
+          "execInfo": "Execution Information",
+          "execBasicInfo": "Execution Basic Information",
+          "execResult": "Execution Result",
+          "iterationResult": "Iteration Result",
+          "logInfo": "Log Information",
+          "schedulingLog": "Execution Scheduling Log",
+          "samplingLog": "Execution Sampling Log"
+        }
+      },
+      "summary": {
+        "title": "Summary",
+        "fields": {
+          "testPassed": "Test Passed",
+          "description": "Description",
+          "contact": "Contact",
+          "copyright": "Copyright",
+          "other": "Other"
+        },
+        "status": {
+          "passed": "Passed",
+          "failed": "Failed"
+        }
+      },
+      "detail": {
+        "title": "Execution Information",
+        "basicInfo": {
+          "title": "Execution Basic Information",
+          "fields": {
+            "name": "Name",
+            "testScriptId": "Test Script ID",
+            "testScriptName": "Test Script Name",
+            "plugin": "Plugin",
+            "status": "Status",
+            "type": "Type",
+            "priority": "Priority",
+            "startTime": "Start Time",
+            "endTime": "End Time",
+            "nodeCount": "Node Count",
+            "reportInterval": "Report Interval",
+            "ignoreAssertions": "Ignore Assertions",
+            "updateTestResult": "Update Test Result",
+            "creator": "Creator",
+            "createTime": "Create Time"
+          },
+          "options": {
+            "ignore": "Ignore",
+            "notIgnore": "Not Ignore",
+            "update": "Update",
+            "notUpdate": "Not Update"
+          }
+        },
+        "execResult": {
+          "title": "Execution Result",
+          "fields": {
+            "testResult": "Test Result",
+            "failureReason": "Failure Reason",
+            "testCases": "Test Cases"
+          },
+          "summary": {
+            "total": "Total",
+            "passed": "Passed",
+            "failed": "Failed",
+            "disabled": "Disabled"
+          }
+        }
+      },
+      "log": {
+        "title": "Log Information",
+        "schedulingLog": {
+          "title": "Execution Scheduling Information",
+          "fields": {
+            "schedulingResult": "Scheduling Result",
+            "processExitCode": "Process Exit Code"
+          },
+          "status": {
+            "success": "Success",
+            "failed": "Failed"
+          }
+        },
+        "samplingLog": {
+          "title": "Execution Sampling Information",
+          "fields": {
+            "file": "File"
+          },
+          "messages": {
+            "noProxyInfo": "No proxy access information, connection failed address: "
+          }
+        }
+      }
+    },
+    "execPerf": {
+      "content": "Content",
+      "catalog": {
+        "title": "Catalog",
+        "sections": {
+          "execInfo": "Execution Information",
+          "execBasicInfo": "Execution Basic Information",
+          "execResult": "Execution Result",
+          "summaryResult": "Summary Result",
+          "samplingIndicators": "Sampling Indicators",
+          "throughput": "Throughput",
+          "concurrency": "Concurrency",
+          "responseTime": "Response Time",
+          "error": "Error",
+          "statusCode": "Status Code",
+          "nodeResources": "Node Resources",
+          "overlayAnalysis": "Overlay Analysis",
+          "logInfo": "Log Information",
+          "schedulingLog": "Execution Scheduling Log",
+          "samplingLog": "Execution Sampling Log"
+        }
+      },
+      "summary": {
+        "title": "Summary",
+        "fields": {
+          "testPassed": "Test Passed",
+          "execStatus": "Execution Status",
+          "description": "Description",
+          "contact": "Contact",
+          "copyright": "Copyright",
+          "other": "Other"
+        },
+        "status": {
+          "passed": "Passed",
+          "failed": "Failed"
+        }
+      },
+      "detail": {
+        "title": "Execution Information",
+        "basicInfo": {
+          "title": "Execution Basic Information",
+          "fields": {
+            "execName": "Execution Name",
+            "scriptName": "Script Name",
+            "testScriptId": "Test Script ID",
+            "plugin": "Plugin",
+            "status": "Status",
+            "type": "Type",
+            "priority": "Priority",
+            "startTime": "Start Time",
+            "endTime": "End Time",
+            "nodeCount": "Node Count",
+            "samplingInterval": "Sampling Interval",
+            "ignoreAssertions": "Ignore Assertions",
+            "updateTestResult": "Update Test Result",
+            "creator": "Creator",
+            "createTime": "Create Time"
+          },
+          "options": {
+            "ignore": "Ignore",
+            "notIgnore": "Not Ignore",
+            "update": "Update",
+            "notUpdate": "Not Update"
+          }
+        },
+        "execResult": {
+          "title": "Execution Result",
+          "fields": {
+            "failureReason": "Failure Reason"
+          }
+        }
+      },
+      "samplingSummary": {
+        "title": "Summary Result",
+        "fields": {
+          "name": "Name",
+          "samplingCount": "Sampling Count",
+          "transactionCount": "Transaction Count",
+          "tps": "TPS",
+          "errorRate": "Error Rate",
+          "responseTimeStats": "Average/Min/Max/P50/P75/P90/P99/P999(ms)",
+          "downloadPerSecond": "Download/Second",
+          "uploadPerSecond": "Upload/Second"
+        }
+      },
+      "sampling": {
+        "title": "Sampling Indicators",
+        "fields": {
+          "exitCode": "Exit Code",
+          "samplingStatus": "Sampling Status",
+          "failureReason": "Failure Reason"
+        }
+      },
+      "log": {
+        "title": "Log Information",
+        "schedulingLog": {
+          "title": "Execution Scheduling Information",
+          "fields": {
+            "schedulingResult": "Scheduling Result",
+            "processExitCode": "Process Exit Code"
+          },
+          "status": {
+            "success": "Success",
+            "failed": "Failed"
+          }
+        },
+        "samplingLog": {
+          "title": "Execution Sampling Information",
+          "fields": {
+            "file": "File"
+          },
+          "messages": {
+            "noProxyInfo": "No proxy access information, connection failed address: "
+          }
+        }
+      }
+    },
+    "functionCase": {
+      "content": "Content",
+      "catalog": {
+        "title": "Catalog",
+        "sections": {
+          "basicInfo": "Basic Information",
+          "personnelInfo": "Personnel Information",
+          "dateInfo": "Date Information",
+          "precondition": "Precondition",
+          "testSteps": "Test Steps",
+          "description": "Description",
+          "reviewInfo": "Review Information",
+          "testInfo": "Test Information",
+          "assocTask": "Associated Tasks",
+          "assocCase": "Associated Cases",
+          "activity": "Activity",
+          "comment": "Comments"
+        }
+      },
+      "summary": {
+        "title": "Summary",
+        "fields": {
+          "testResult": "Test Result",
+          "description": "Description",
+          "contact": "Contact",
+          "copyright": "Copyright",
+          "other": "Other"
+        }
+      },
+      "info": {
+        "basic": {
+          "title": "Basic Information",
+          "fields": {
+            "name": "Name",
+            "priority": "Priority",
+            "testResult": "Test Result",
+            "code": "Code",
+            "reviewStatus": "Review Status",
+            "project": "Project",
+            "module": "Module",
+            "tags": "Tags",
+            "workloadEvalMethod": "Workload Evaluation Method",
+            "evalWorkload": "Estimated Workload",
+            "actualWorkload": "Actual Workload",
+            "processCount": "Process Count",
+            "processFailCount": "Process Failure Count",
+            "overdue": "Overdue",
+            "oneTimePass": "One-time Pass",
+            "unplannedCase": "Unplanned Case"
+          },
+          "options": {
+            "yes": "Yes",
+            "no": "No",
+            "storyPoint": "Story Points",
+            "workTime": "Work Hours",
+            "actualStoryPoint": "Actual Story Points",
+            "actualWorkTime": "Actual Work Hours"
+          }
+        },
+        "personnel": {
+          "title": "Personnel Information",
+          "fields": {
+            "tester": "Tester",
+            "creator": "Creator",
+            "reviewer": "Reviewer",
+            "lastModifier": "Last Modifier"
+          }
+        },
+        "date": {
+          "title": "Date Information",
+          "fields": {
+            "testCompleteTime": "Test Complete Time",
+            "deadline": "Deadline",
+            "reviewTime": "Review Time",
+            "createTime": "Create Time",
+            "lastModifyTime": "Last Modify Time"
+          }
+        },
+        "precondition": {
+          "title": "Precondition",
+          "noData": "None"
+        },
+        "testSteps": {
+          "title": "Test Steps",
+          "fields": {
+            "code": "Code",
+            "testStep": "Test Step",
+            "expectedResult": "Expected Result"
+          },
+          "noData": "None"
+        },
+        "description": {
+          "title": "Description",
+          "noData": "None"
+        },
+        "testInfo": {
+          "title": "Test Information",
+          "fields": {
+            "testCount": "Test Count",
+            "testFailCount": "Test Failure Count",
+            "oneTimeTestPass": "One-time Test Pass",
+            "testRemark": "Test Remark"
+          },
+          "options": {
+            "yes": "Yes",
+            "no": "No"
+          }
+        }
+      },
+      "review": {
+        "title": "Review Information",
+        "fields": {
+          "enableReview": "Enable Review",
+          "reviewCount": "Review Count",
+          "reviewFailCount": "Review Failure Count",
+          "oneTimeReviewPass": "One-time Review Pass",
+          "reviewOpinion": "Review Opinion"
+        },
+        "options": {
+          "yes": "Yes",
+          "no": "No"
+        }
+      },
+      "assocTask": {
+        "title": "Associated Tasks",
+        "fields": {
+          "code": "Code",
+          "type": "Type",
+          "name": "Name",
+          "status": "Status",
+          "assignee": "Assignee"
+        },
+        "noData": "None"
+      },
+      "assocCase": {
+        "title": "Associated Cases",
+        "fields": {
+          "code": "Code",
+          "name": "Name",
+          "testStatus": "Test Status",
+          "reviewStatus": "Review Status",
+          "tester": "Tester"
+        },
+        "noData": "None"
+      },
+      "activity": {
+        "title": "Activity",
+        "fields": {
+          "activityTime": "Activity Time",
+          "activityPerson": "Activity Person",
+          "activityDescription": "Activity Description"
+        },
+        "noData": "None"
+      },
+      "comment": {
+        "title": "Comments",
+        "fields": {
+          "commentTime": "Comment Time",
+          "commenter": "Commenter",
+          "commentContent": "Comment Content",
+          "reply": "Reply"
+        },
+        "noData": "None"
+      }
+    },
+    "functionPlan": {
+      "content": "Content",
+      "catalog": {
+        "title": "Catalog",
+        "sections": {
+          "planInfo": "Test Plan Information",
+          "basicInfo": "Basic Information",
+          "testerAndDuty": "Tester and Duty",
+          "testTarget": "Test Target",
+          "testScope": "Test Scope",
+          "acceptanceCriteria": "Acceptance Criteria",
+          "otherInfo": "Other Information",
+          "caseSummary": "Case Summary Results",
+          "testSummary": "Test Summary Results",
+          "reviewSummary": "Review Summary Results",
+          "burndownChart": "Burndown Chart",
+          "groupStats": "Group Statistics",
+          "testerSummary": "Tester Summary Results"
+        }
+      },
+      "summary": {
+        "title": "Summary",
+        "fields": {
+          "progress": "Progress",
+          "description": "Description",
+          "contact": "Contact",
+          "copyright": "Copyright",
+          "other": "Other"
+        }
+      },
+      "detail": {
+        "title": "Plan Detailed Information",
+        "basicInfo": {
+          "title": "Basic Information",
+          "fields": {
+            "planName": "Plan Name",
+            "casePrefix": "Case Prefix",
+            "status": "Status",
+            "owner": "Owner",
+            "project": "Project",
+            "timePlan": "Time Plan",
+            "creator": "Creator",
+            "createTime": "Create Time",
+            "workloadEvalMethod": "Workload Evaluation Method",
+            "reviewCase": "Review Cases"
+          },
+          "options": {
+            "yes": "Yes",
+            "no": "No"
+          }
+        },
+        "testerAndDuty": {
+          "title": "Tester and Duty",
+          "fields": {
+            "tester": "Tester",
+            "duty": "Duty"
+          }
+        },
+        "testTarget": {
+          "title": "Test Target",
+          "noData": "None"
+        },
+        "testScope": {
+          "title": "Test Scope",
+          "noData": "None"
+        },
+        "acceptanceCriteria": {
+          "title": "Acceptance Criteria",
+          "noData": "None"
+        },
+        "otherInfo": {
+          "title": "Other Information",
+          "noData": "None"
+        }
+      },
+      "caseSummary": {
+        "title": "Case Summary Results",
+        "testSummary": {
+          "title": "Test Summary Results",
+          "fields": {
+            "progress": "Progress",
+            "totalCases": "Total Cases",
+            "validCases": "Valid Cases",
+            "pendingTest": "Pending Test",
+            "passed": "Passed",
+            "failed": "Failed",
+            "blocked": "Blocked",
+            "cancelled": "Cancelled",
+            "overdue": "Overdue",
+            "overdueRate": "Overdue Rate",
+            "oneTimeTestPass": "One-time Test Pass",
+            "oneTimeTestPassRate": "One-time Test Pass Rate",
+            "oneTimeReviewPassRate": "One-time Review Pass Rate",
+            "estimatedWorkload": "Estimated Workload",
+            "actualWorkload": "Actual Workload",
+            "completedWorkload": "Completed Workload",
+            "savedWorkload": "Saved Workload",
+            "workloadSaveRate": "Workload Save Rate"
+          }
+        },
+        "reviewSummary": {
+          "title": "Review Summary Results",
+          "fields": {
+            "totalReviewCases": "Total Review Cases",
+            "pendingReview": "Pending Review",
+            "reviewPassed": "Review Passed",
+            "reviewFailed": "Review Failed",
+            "reviewed": "Reviewed",
+            "notReviewed": "Not Reviewed",
+            "totalReviewCount": "Total Review Count",
+            "oneTimeReviewPass": "One-time Review Pass",
+            "oneTimeReviewPassRate": "One-time Review Pass Rate"
+          }
+        },
+        "burndownChart": {
+          "title": "Burndown Chart",
+          "caseCount": "Case Count",
+          "workload": "Workload",
+          "remaining": "Remaining",
+          "expected": "Expected"
+        },
+        "groupStats": {
+          "title": "Group Statistics",
+          "byStatus": "By Status",
+          "byPriority": "By Priority",
+          "statuses": {
+            "cancelled": "Cancelled",
+            "blocked": "Blocked",
+            "testFailed": "Test Failed",
+            "testPassed": "Test Passed",
+            "pendingTest": "Pending Test"
+          },
+          "priorities": {
+            "highest": "Highest",
+            "high": "High",
+            "medium": "Medium",
+            "low": "Low",
+            "lowest": "Lowest"
+          }
+        }
+      },
+      "caseDetail": {
+        "title": "Tester Summary Results",
+        "testSummary": {
+          "title": "Test Summary Results",
+          "fields": {
+            "progress": "Progress",
+            "totalCases": "Total Cases",
+            "validCases": "Valid Cases",
+            "pendingTest": "Pending Test",
+            "passed": "Passed",
+            "failed": "Failed",
+            "blocked": "Blocked",
+            "cancelled": "Cancelled",
+            "overdue": "Overdue",
+            "overdueRate": "Overdue Rate",
+            "oneTimeTestPass": "One-time Test Pass",
+            "oneTimeTestPassRate": "One-time Test Pass Rate",
+            "oneTimeReviewPassRate": "One-time Review Pass Rate",
+            "estimatedWorkload": "Estimated Workload",
+            "actualWorkload": "Actual Workload",
+            "completedWorkload": "Completed Workload",
+            "savedWorkload": "Saved Workload",
+            "workloadSaveRate": "Workload Save Rate"
+          }
+        },
+        "reviewSummary": {
+          "title": "Review Summary Results",
+          "fields": {
+            "totalReviewCases": "Total Review Cases",
+            "pendingReview": "Pending Review",
+            "reviewPassed": "Review Passed",
+            "reviewFailed": "Review Failed",
+            "reviewed": "Reviewed",
+            "notReviewed": "Not Reviewed",
+            "totalReviewCount": "Total Review Count",
+            "oneTimeReviewPass": "One-time Review Pass",
+            "oneTimeReviewPassRate": "One-time Review Pass Rate"
+          }
+        },
+        "burndownChart": {
+          "title": "Burndown Chart"
+        },
+        "groupStats": {
+          "title": "Group Statistics"
+        },
+        "caseList": {
+          "fields": {
+            "code": "Code",
+            "priority": "Priority",
+            "module": "Module",
+            "overdue": "Overdue",
+            "deadline": "Deadline",
+            "tester": "Tester",
+            "testResult": "Test Result",
+            "testResultRemark": "Test Result Remark",
+            "testCompleteTime": "Test Complete Time",
+            "reviewCase": "Review Case",
+            "reviewStatus": "Review Status",
+            "reviewer": "Reviewer",
+            "reviewOpinion": "Review Opinion",
+            "reviewTime": "Review Time",
+            "workloadEvalMethod": "Workload Evaluation Method",
+            "estimatedWorkload": "Estimated Workload",
+            "actualWorkload": "Actual Workload",
+            "totalTestCount": "Total Test Count",
+            "testFailCount": "Test Failure Count",
+            "creator": "Creator",
+            "createTime": "Create Time",
+            "lastModifier": "Last Modifier",
+            "lastModifyTime": "Last Modify Time"
+          },
+          "options": {
+            "yes": "Yes",
+            "no": "No"
+          }
+        }
+      }
+    },
+    "projectProgress": {
+      "content": "Content",
+      "catalog": {
+        "title": "Catalog",
+        "sections": {
+          "projectInfo": "Project Information",
+          "devTask": "Development Tasks",
+          "taskSummary": "Task Summary Results",
+          "taskBurndownChart": "Task Burndown Chart",
+          "taskGroupStats": "Task Group Statistics",
+          "funcTest": "Functional Testing",
+          "caseTestSummary": "Case Test Summary Results",
+          "caseReviewSummary": "Case Review Summary Results",
+          "caseBurndownChart": "Case Burndown Chart",
+          "caseGroupStats": "Case Group Statistics",
+          "apiTest": "API Testing",
+          "apiTestSummary": "API Test Summary Results",
+          "apiGroupStats": "API Group Statistics",
+          "scenarioTest": "Scenario Testing",
+          "scenarioTestSummary": "Scenario Test Summary Results",
+          "scenarioGroupStats": "Scenario Group Statistics"
+        }
+      },
+      "summary": {
+        "title": "Summary",
+        "fields": {
+          "progress": "Progress",
+          "description": "Description",
+          "contact": "Contact",
+          "copyright": "Copyright",
+          "other": "Other"
+        }
+      },
+      "info": {
+        "title": "Project Information",
+        "fields": {
+          "name": "Name",
+          "planTime": "Plan Time",
+          "owner": "Owner",
+          "members": "Members",
+          "description": "Description"
+        }
+      },
+      "taskSummary": {
+        "title": "Development Tasks",
+        "summary": {
+          "title": "Task Summary Results",
+          "fields": {
+            "progress": "Progress",
+            "totalTasks": "Total Tasks",
+            "validTasks": "Valid Tasks",
+            "totalBugs": "Total Bugs",
+            "validBugs": "Valid Bugs",
+            "pendingCount": "Pending Count",
+            "processingCount": "Processing Count",
+            "pendingConfirmCount": "Pending Confirm Count",
+            "completedCount": "Completed Count",
+            "cancelledCount": "Cancelled Count",
+            "overdueCount": "Overdue Count",
+            "overdueRate": "Overdue Rate",
+            "oneTimePassCount": "One-time Pass Count",
+            "oneTimePassRate": "One-time Pass Rate",
+            "estimatedWorkload": "Estimated Workload",
+            "actualWorkload": "Actual Workload",
+            "completedWorkload": "Completed Workload",
+            "savedWorkload": "Saved Workload",
+            "workloadSaveRate": "Workload Save Rate"
+          }
+        },
+        "burndownChart": {
+          "title": "Task Burndown Chart",
+          "remaining": "Remaining",
+          "expected": "Expected",
+          "caseCount": "Case Count",
+          "workload": "Workload",
+          "taskCount": "Task Count"
+        },
+        "groupStats": {
+          "title": "Task Group Statistics",
+          "byStatus": "By Status",
+          "byPriority": "By Priority",
+          "byTaskType": "By Task Type",
+          "total": "Total",
+          "statuses": {
+            "cancelled": "Cancelled",
+            "completed": "Completed",
+            "pendingConfirm": "Pending Confirm",
+            "processing": "Processing",
+            "pending": "Pending"
+          },
+          "priorities": {
+            "highest": "Highest",
+            "high": "High",
+            "medium": "Medium",
+            "low": "Low",
+            "lowest": "Lowest"
+          },
+          "taskTypes": {
+            "bug": "Bug",
+            "task": "Task",
+            "story": "Story",
+            "requirement": "Requirement",
+            "apiTest": "API Test",
+            "scenarioTest": "Scenario Test"
+          }
+        }
+      },
+      "funcCaseSummary": {
+        "title": "Functional Cases",
+        "testSummary": {
+          "title": "Case Test Summary Results",
+          "fields": {
+            "progress": "Progress",
+            "totalCases": "Total Cases",
+            "validCases": "Valid Cases",
+            "pendingTest": "Pending Test",
+            "passed": "Passed",
+            "failed": "Failed",
+            "blocked": "Blocked",
+            "cancelled": "Cancelled",
+            "overdue": "Overdue",
+            "overdueRate": "Overdue Rate",
+            "oneTimeTestPass": "One-time Test Pass",
+            "oneTimeTestPassRate": "One-time Test Pass Rate",
+            "oneTimeReviewPassRate": "One-time Review Pass Rate",
+            "estimatedWorkload": "Estimated Workload",
+            "actualWorkload": "Actual Workload",
+            "completedWorkload": "Completed Workload",
+            "savedWorkload": "Saved Workload",
+            "workloadSaveRate": "Workload Save Rate"
+          }
+        },
+        "reviewSummary": {
+          "title": "Case Review Summary Results",
+          "fields": {
+            "progress": "Progress",
+            "totalReviewCases": "Total Review Cases",
+            "pendingReview": "Pending Review",
+            "reviewPassed": "Review Passed",
+            "reviewFailed": "Review Failed",
+            "reviewed": "Reviewed",
+            "notReviewed": "Not Reviewed",
+            "totalReviewCount": "Total Review Count",
+            "oneTimeReviewPass": "One-time Review Pass",
+            "oneTimeReviewPassRate": "One-time Review Pass Rate"
+          }
+        },
+        "burndownChart": {
+          "title": "Case Burndown Chart",
+          "remaining": "Remaining",
+          "expected": "Expected"
+        },
+        "groupStats": {
+          "title": "Case Group Statistics",
+          "byStatus": "By Status",
+          "byPriority": "By Priority",
+          "total": "Total",
+          "statuses": {
+            "cancelled": "Cancelled",
+            "blocked": "Blocked",
+            "testFailed": "Test Failed",
+            "testPassed": "Test Passed",
+            "pendingTest": "Pending Test"
+          },
+          "priorities": {
+            "highest": "Highest",
+            "high": "High",
+            "medium": "Medium",
+            "low": "Low",
+            "lowest": "Lowest"
+          }
+        }
+      },
+      "apiSummary": {
+        "title": "API Testing",
+        "testSummary": {
+          "title": "API Test Summary Results",
+          "fields": {
+            "progress": "Progress",
+            "totalApis": "Total APIs",
+            "enabledApiTest": "Enabled API Test",
+            "disabledApiTest": "Disabled API Test",
+            "apiFuncTest": "API Functional Test",
+            "apiPerfTest": "API Performance Test",
+            "apiStabilityTest": "API Stability Test",
+            "testedApis": "Tested APIs",
+            "passedApis": "Passed APIs",
+            "failedApis": "Failed APIs"
+          }
+        },
+        "groupStats": {
+          "title": "API Group Statistics",
+          "byStatus": "By Status",
+          "byRequestMethod": "By Request Method",
+          "total": "Total",
+          "statuses": {
+            "published": "Published",
+            "devCompleted": "Development Completed",
+            "devInProgress": "Development In Progress",
+            "designing": "Designing",
+            "unknown": "Unknown"
+          }
+        }
+      },
+      "scenarioTestSummary": {
+        "title": "Scenario Testing",
+        "testSummary": {
+          "title": "Scenario Test Summary Results",
+          "fields": {
+            "progress": "Progress",
+            "totalScenarios": "Total Scenarios",
+            "enabledScenarioTest": "Enabled Scenario Test",
+            "disabledScenarioTest": "Disabled Scenario Test",
+            "scenarioFuncTest": "Scenario Functional Test",
+            "scenarioPerfTest": "Scenario Performance Test",
+            "scenarioStabilityTest": "Scenario Stability Test",
+            "testedScenarios": "Tested Scenarios",
+            "passedScenarios": "Passed Scenarios",
+            "failedScenarios": "Failed Scenarios"
+          }
+        },
+        "groupStats": {
+          "title": "Scenario Group Statistics",
+          "byProtocol": "By Protocol",
+          "byTestType": "By Test Type",
+          "total": "Total",
+          "quantity": "Quantity",
+          "testTypes": {
+            "perfTest": "Performance Test",
+            "stabilityTest": "Stability Test",
+            "funcTest": "Functional Test",
+            "customTest": "Custom Test"
+          }
+        }
+      }
+    },
+    "scenario": {
+      "content": "Content",
+      "catalog": {
+        "title": "Catalog",
+        "sections": {
+          "scenarioInfo": "Scenario Information",
+          "scenarioTestSummary": "Scenario Test Summary Results",
+          "scenarioTestResultDetail": "Scenario Test Result Detailed Information",
+          "funcTestResult": "Functional Test Results",
+          "perfTestResult": "Performance Test Results",
+          "stabilityTestResult": "Stability Test Results"
+        }
+      },
+      "summary": {
+        "title": "Summary",
+        "fields": {
+          "testPassed": "Test Passed",
+          "description": "Description",
+          "contact": "Contact",
+          "copyright": "Copyright",
+          "other": "Other"
+        },
+        "options": {
+          "passed": "Passed",
+          "failed": "Failed",
+          "notTested": "Not Tested"
+        }
+      },
+      "info": {
+        "title": "Scenario Information",
+        "fields": {
+          "name": "Name",
+          "description": "Description",
+          "project": "Project",
+          "plugin": "Plugin",
+          "scriptType": "Script Type",
+          "scriptId": "Script ID",
+          "scriptName": "Script Name",
+          "creator": "Creator",
+          "createTime": "Create Time",
+          "lastModifier": "Last Modifier",
+          "lastModifyTime": "Last Modify Time"
+        }
+      },
+      "testResult": {
+        "title": "Scenario Test Summary Results",
+        "fields": {
+          "passed": "Passed",
+          "enableFuncTest": "Enable Functional Test",
+          "funcTestPassed": "Functional Test Passed",
+          "funcTestFailReason": "Functional Test Failure Reason",
+          "enablePerfTest": "Enable Performance Test",
+          "perfTestPassed": "Performance Test Passed",
+          "perfTestFailReason": "Performance Test Failure Reason",
+          "enableStabilityTest": "Enable Stability Test",
+          "stabilityTestPassed": "Stability Test Passed",
+          "stabilityTestFailReason": "Stability Test Failure Reason"
+        },
+        "options": {
+          "passed": "Passed",
+          "failed": "Failed",
+          "notTested": "Not Tested",
+          "enabled": "Enabled",
+          "disabled": "Disabled"
+        }
+      },
+      "testResultDetail": {
+        "title": "Scenario Test Result Detailed Information",
+        "funcTestResult": {
+          "title": "Functional Test Results",
+          "basicInfo": {
+            "title": "Test Basic Information",
+            "fields": {
+              "testResult": "Test Result",
+              "testFailReason": "Test Failure Reason",
+              "testCount": "Test Count",
+              "failCount": "Failure Count",
+              "testScriptId": "Test Script ID",
+              "testScriptName": "Test Script Name",
+              "execId": "Execution ID",
+              "execName": "Execution Name",
+              "lastExecutor": "Last Executor",
+              "lastExecTime": "Last Execution Time"
+            },
+            "options": {
+              "passed": "Passed",
+              "failed": "Failed",
+              "notTested": "Not Tested"
+            }
+          },
+          "apiStats": {
+            "title": "Test API Statistics",
+            "fields": {
+              "totalCases": "Total Cases",
+              "passedCount": "Passed Count",
+              "failedCount": "Failed Count",
+              "disabledCount": "Disabled Count"
+            }
+          },
+          "caseResultDetail": {
+            "title": "Test Case Result Details",
+            "fields": {
+              "type": "Type",
+              "enabled": "Enabled",
+              "testPassed": "Test Passed",
+              "testFailReason": "Test Failure Reason",
+              "testCount": "Test Count",
+              "testFailCount": "Test Failure Count"
+            },
+            "options": {
+              "enabled": "Enabled",
+              "disabled": "Disabled",
+              "passed": "Passed",
+              "failed": "Failed",
+              "notTested": "Not Tested"
+            }
+          },
+          "noData": "None"
+        },
+        "perfTestResult": {
+          "title": "Performance Test",
+          "basicInfo": {
+            "title": "Test Basic Information",
+            "fields": {
+              "testResult": "Test Result",
+              "testFailReason": "Test Failure Reason",
+              "testCount": "Test Count",
+              "failCount": "Failure Count",
+              "testScriptId": "Test Script ID",
+              "testScriptName": "Test Script Name",
+              "execId": "Execution ID",
+              "execName": "Execution Name",
+              "lastExecutor": "Last Executor",
+              "lastExecTime": "Last Execution Time"
+            },
+            "options": {
+              "passed": "Passed",
+              "failed": "Failed",
+              "notTested": "Not Tested"
+            }
+          },
+          "metrics": {
+            "title": "Test Metrics and Results",
+            "performanceMetrics": "Performance Metrics",
+            "result": "Result",
+            "fields": {
+              "concurrency": "Concurrency",
+              "testDuration": "Test Duration",
+              "rampUpConcurrency": "Ramp-up Concurrency",
+              "rampUpDuration": "Ramp-up Duration",
+              "responseTime": "Response Time",
+              "tps": "Transactions Per Second",
+              "errorRate": "Error Rate"
+            }
+          },
+          "noData": "None"
+        },
+        "stabilityTestResult": {
+          "title": "Stability Test",
+          "basicInfo": {
+            "title": "Test Basic Information",
+            "fields": {
+              "testResult": "Test Result",
+              "testFailReason": "Test Failure Reason",
+              "testCount": "Test Count",
+              "failCount": "Failure Count",
+              "testScriptId": "Test Script ID",
+              "testScriptName": "Test Script Name",
+              "execId": "Execution ID",
+              "execName": "Execution Name",
+              "lastExecutor": "Last Executor",
+              "lastExecTime": "Last Execution Time"
+            },
+            "options": {
+              "passed": "Passed",
+              "failed": "Failed",
+              "notTested": "Not Tested"
+            }
+          },
+          "metrics": {
+            "title": "Test Metrics and Results",
+            "stabilityMetrics": "Stability Metrics",
+            "result": "Result",
+            "fields": {
+              "concurrency": "Concurrency",
+              "testDuration": "Test Duration",
+              "rampUpConcurrency": "Ramp-up Concurrency",
+              "rampUpDuration": "Ramp-up Duration",
+              "responseTime": "Response Time",
+              "tps": "Transactions Per Second (TPS)",
+              "errorRate": "Error Rate"
+            }
+          },
+          "nodeResources": {
+            "title": "Node Resources",
+            "fields": {
+              "cpuUsage": "CPU Usage",
+              "memoryUsage": "Memory Usage",
+              "diskUsage": "Disk Usage",
+              "networkUsage": "Network Usage"
+            }
+          },
+          "systemLoad": {
+            "title": "Application System Average Load",
+            "average": "Average",
+            "maximum": "Maximum"
+          },
+          "noData": "None"
+        }
+      }
+    },
+    "services": {
+      "content": "Content",
+      "catalog": {
+        "title": "Catalog",
+        "sections": {
+          "serviceInfo": "Service Information",
+          "apiGroupStats": "API Group Statistics",
+          "testResultSummary": "Test Result Summary",
+          "testProgress": "Test Progress",
+          "testApiStats": "Test API Statistics",
+          "testStatusStats": "Test Status Statistics"
+        }
+      },
+      "summary": {
+        "title": "Summary",
+        "fields": {
+          "serviceStatus": "Service Status",
+          "description": "Description",
+          "contact": "Contact",
+          "copyright": "Copyright",
+          "other": "Other"
+        }
+      },
+      "info": {
+        "title": "Service Information",
+        "fields": {
+          "name": "Name",
+          "status": "Status",
+          "project": "Project",
+          "apiCount": "API Count",
+          "apiCaseCount": "API Case Count",
+          "creator": "Creator",
+          "createTime": "Create Time",
+          "lastModifier": "Last Modifier",
+          "lastModifyTime": "Last Modify Time"
+        }
+      },
+      "apisGroup": {
+        "title": "API Group Statistics",
+        "byStatus": {
+          "title": "By Status",
+          "statuses": {
+            "unknown": "Unknown",
+            "designing": "Designing",
+            "devInProgress": "Development In Progress",
+            "devCompleted": "Development Completed",
+            "published": "Published"
+          }
+        },
+        "byRequestMethod": {
+          "title": "By Request Method"
+        },
+        "total": "Total"
+      },
+      "result": {
+        "title": "Test Result Summary",
+        "testProgress": {
+          "title": "Test Progress",
+          "totalApis": "Total APIs",
+          "progress": "Progress"
+        },
+        "testApiStats": {
+          "title": "Test API Statistics",
+          "columns": {
+            "totalTestCount": "Total Test Count",
+            "funcTest": "Functional Test",
+            "perfTest": "Performance Test",
+            "stabilityTest": "Stability Test"
+          }
+        },
+        "testStatusStats": {
+          "title": "Test Status Statistics",
+          "fields": {
+            "tested": "Tested",
+            "notTested": "Not Tested",
+            "passed": "Passed",
+            "failed": "Failed"
+          }
+        }
+      },
+      "apiResultDetail": {
+        "title": "API Test Result Details",
+        "fields": {
+          "apiUrl": "API URL",
+          "requestMethod": "Request Method",
+          "operationId": "Operation ID",
+          "owner": "Owner",
+          "description": "Description",
+          "enableFuncTest": "Enable Functional Test",
+          "funcTestPassed": "Functional Test Passed",
+          "funcTestFailReason": "Functional Test Failure Reason",
+          "enablePerfTest": "Enable Performance Test",
+          "perfTestPassed": "Performance Test Passed",
+          "perfTestFailReason": "Performance Test Failure Reason",
+          "enableStabilityTest": "Enable Stability Test",
+          "stabilityTestPassed": "Stability Test Passed",
+          "stabilityTestFailReason": "Stability Test Failure Reason"
+        },
+        "options": {
+          "yes": "Yes",
+          "no": "No",
+          "notTested": "Not Tested"
+        }
+      }
+    },
+    "sprint": {
+      "content": "Content",
+      "catalog": {
+        "title": "Catalog",
+        "sections": {
+          "sprintDetail": "Sprint Detailed Information",
+          "basicInfo": "Basic Information",
+          "acceptanceCriteria": "Acceptance Criteria",
+          "testScope": "Test Scope",
+          "otherInfo": "Other Information",
+          "devTask": "Development Tasks",
+          "taskSummary": "Task Summary Results",
+          "burndownChart": "Burndown Chart",
+          "groupStats": "Group Statistics",
+          "assigneeSummary": "Assignee Summary Results"
+        }
+      },
+      "summary": {
+        "title": "Summary",
+        "fields": {
+          "progress": "Progress",
+          "description": "Description",
+          "contact": "Contact",
+          "copyright": "Copyright",
+          "other": "Other"
+        }
+      },
+      "sprintDetail": {
+        "title": "Sprint Information",
+        "basicInfo": {
+          "title": "Basic Information",
+          "fields": {
+            "name": "Name",
+            "taskPrefix": "Task Prefix",
+            "status": "Status",
+            "owner": "Owner",
+            "project": "Project",
+            "sprintTime": "Sprint Time",
+            "creator": "Creator",
+            "createTime": "Create Time",
+            "workloadEstimationMethod": "Workload Estimation Method"
+          }
+        },
+        "acceptanceCriteria": {
+          "title": "Acceptance Criteria",
+          "noData": "None"
+        },
+        "meetingRecord": {
+          "title": "Meeting Records",
+          "noData": "None",
+          "meetingTopic": "Meeting Topic",
+          "fields": {
+            "meetingType": "Meeting Type",
+            "meetingDate": "Meeting Date",
+            "meetingTime": "Meeting Time",
+            "to": "to",
+            "meetingLocation": "Meeting Location",
+            "meetingHost": "Meeting Host",
+            "attendees": "Attendees",
+            "meetingContent": "Meeting Content"
+          }
+        },
+        "otherInfo": {
+          "title": "Other Information",
+          "noData": "None"
+        }
+      },
+      "taskDetail": {
+        "title": "Task Details",
+        "fields": {
+          "code": "Code",
+          "priority": "Priority",
+          "module": "Module",
+          "taskType": "Task Type",
+          "testType": "Test Type",
+          "taskStatus": "Task Status",
+          "completionTime": "Completion Time",
+          "overdue": "Overdue",
+          "deadline": "Deadline",
+          "assignee": "Assignee",
+          "startTime": "Start Time",
+          "confirmTask": "Confirm Task",
+          "confirmer": "Confirmer",
+          "workloadEstimationMethod": "Workload Estimation Method",
+          "estimatedWorkload": "Estimated Workload",
+          "actualWorkload": "Actual Workload",
+          "totalProcessCount": "Total Process Count",
+          "failedProcessCount": "Failed Process Count",
+          "creator": "Creator",
+          "createTime": "Create Time",
+          "lastModifier": "Last Modifier",
+          "lastModifyTime": "Last Modify Time"
+        },
+        "options": {
+          "yes": "Yes",
+          "no": "No"
+        }
+      },
+      "taskSummary": {
+        "title": "Development Tasks",
+        "summary": {
+          "title": "Task Summary Results",
+          "fields": {
+            "progress": "Progress",
+            "totalTasks": "Total Tasks",
+            "validTasks": "Valid Tasks",
+            "totalBugs": "Total Bugs",
+            "validBugs": "Valid Bugs",
+            "pendingCount": "Pending Count",
+            "processingCount": "Processing Count",
+            "pendingConfirmCount": "Pending Confirm Count",
+            "completedCount": "Completed Count",
+            "cancelledCount": "Cancelled Count",
+            "overdueCount": "Overdue Count",
+            "overdueRate": "Overdue Rate",
+            "oneTimePassCount": "One-time Pass Count",
+            "oneTimePassRate": "One-time Pass Rate",
+            "estimatedWorkload": "Estimated Workload",
+            "actualWorkload": "Actual Workload",
+            "completedWorkload": "Completed Workload",
+            "savedWorkload": "Saved Workload",
+            "workloadSaveRate": "Workload Save Rate"
+          }
+        },
+        "burndownChart": {
+          "title": "Burndown Chart",
+          "taskCount": "Task Count",
+          "workload": "Workload",
+          "remaining": "Remaining",
+          "expected": "Expected"
+        },
+        "groupStats": {
+          "title": "Group Statistics",
+          "byStatus": "By Status",
+          "byPriority": "By Priority",
+          "byTaskType": "By Task Type",
+          "total": "Total",
+          "statuses": {
+            "cancelled": "Cancelled",
+            "completed": "Completed",
+            "pendingConfirm": "Pending Confirm",
+            "processing": "Processing",
+            "pending": "Pending"
+          },
+          "priorities": {
+            "highest": "Highest",
+            "high": "High",
+            "medium": "Medium",
+            "low": "Low",
+            "lowest": "Lowest"
+          },
+          "taskTypes": {
+            "bug": "Bug",
+            "task": "Task",
+            "story": "Story",
+            "requirement": "Requirement",
+            "apiTest": "API Test",
+            "scenarioTest": "Scenario Test"
+          }
+        }
+      },
+      "assigneeSummary": {
+        "title": "Assignee Summary Results",
+        "summary": {
+          "title": "Task Summary Results",
+          "fields": {
+            "progress": "Progress",
+            "totalTasks": "Total Tasks",
+            "validTasks": "Valid Tasks",
+            "totalBugs": "Total Bugs",
+            "validBugs": "Valid Bugs",
+            "pendingCount": "Pending Count",
+            "processingCount": "Processing Count",
+            "pendingConfirmCount": "Pending Confirm Count",
+            "completedCount": "Completed Count",
+            "cancelledCount": "Cancelled Count",
+            "overdueCount": "Overdue Count",
+            "overdueRate": "Overdue Rate",
+            "oneTimePassCount": "One-time Pass Count",
+            "oneTimePassRate": "One-time Pass Rate",
+            "estimatedWorkload": "Estimated Workload",
+            "actualWorkload": "Actual Workload",
+            "completedWorkload": "Completed Workload",
+            "savedWorkload": "Saved Workload",
+            "workloadSaveRate": "Workload Save Rate"
+          }
+        },
+        "burndownChart": {
+          "title": "Burndown Chart",
+          "taskCount": "Task Count",
+          "workload": "Workload",
+          "remaining": "Remaining",
+          "expected": "Expected"
+        },
+        "groupStats": {
+          "title": "Group Statistics"
+        }
+      }
+    },
+    "task": {
+      "content": "Content",
+      "catalog": {
+        "title": "Catalog",
+        "sections": {
+          "basicInfo": "Basic Information",
+          "personnelInfo": "Personnel Information",
+          "dateInfo": "Date Information",
+          "description": "Description",
+          "subTask": "Sub Tasks",
+          "assocTask": "Associated Tasks",
+          "assocCase": "Associated Cases",
+          "testingInfo": "Testing Information",
+          "testResource": "Test Resources",
+          "execInfo": "Execution Information",
+          "testResult": "Test Results",
+          "remark": "Remarks",
+          "activity": "Activities",
+          "comment": "Comments"
+        }
+      },
+      "summary": {
+        "title": "Summary",
+        "fields": {
+          "status": "Status",
+          "description": "Description",
+          "contact": "Contact",
+          "copyright": "Copyright",
+          "other": "Other"
+        }
+      },
+      "info": {
+        "basicInfo": {
+          "title": "Basic Information",
+          "fields": {
+            "name": "Name",
+            "priority": "Priority",
+            "taskType": "Task Type",
+            "missedDefect": "Missed Defect",
+            "taskStatus": "Task Status",
+            "project": "Project",
+            "code": "Code",
+            "overdue": "Overdue",
+            "module": "Module",
+            "tag": "Tag",
+            "workloadEstimationMethod": "Workload Estimation Method",
+            "estimatedStoryPoint": "Estimated Story Points",
+            "estimatedWorkTime": "Estimated Work Time",
+            "actualStoryPoint": "Actual Story Points",
+            "actualWorkTime": "Actual Work Time",
+            "processCount": "Process Count",
+            "failedProcessCount": "Failed Process Count",
+            "oneTimePass": "One-time Pass",
+            "unplannedTask": "Unplanned Task"
+          },
+          "options": {
+            "yes": "Yes",
+            "no": "No"
+          }
+        },
+        "personnelInfo": {
+          "title": "Personnel Information",
+          "fields": {
+            "assignee": "Assignee",
+            "confirmer": "Confirmer",
+            "creator": "Creator",
+            "executor": "Executor",
+            "lastModifier": "Last Modifier",
+            "tester": "Tester"
+          }
+        },
+        "dateInfo": {
+          "title": "Date Information",
+          "fields": {
+            "deadline": "Deadline",
+            "startTime": "Start Time",
+            "processTime": "Process Time",
+            "confirmTime": "Confirm Time",
+            "completionTime": "Completion Time",
+            "cancelTime": "Cancel Time",
+            "execTime": "Execution Time",
+            "createTime": "Create Time",
+            "lastModifyTime": "Last Modify Time"
+          }
+        },
+        "description": {
+          "title": "Description",
+          "noData": "None"
+        },
+        "remark": {
+          "title": "Remarks",
+          "noData": "None"
+        },
+        "testingInfo": {
+          "title": "Testing Information",
+          "testResource": {
+            "title": "Test Resources",
+            "fields": {
+              "apiId": "API ID",
+              "apiName": "API Name",
+              "scenarioId": "Scenario ID",
+              "scenarioName": "Scenario Name"
+            }
+          },
+          "execInfo": {
+            "title": "Execution Information",
+            "fields": {
+              "execResult": "Execution Result",
+              "execId": "Execution ID",
+              "execName": "Execution Name",
+              "executor": "Executor",
+              "scriptId": "Script ID",
+              "scriptName": "Script Name",
+              "lastExecTime": "Last Execution Time"
+            }
+          },
+          "testResult": {
+            "title": "Test Results",
+            "basicInfo": {
+              "title": "Basic Information",
+              "fields": {
+                "testResult": "Test Result",
+                "oneTimePass": "One-time Pass",
+                "testCount": "Test Count",
+                "failCount": "Failure Count",
+                "failReason": "Failure Reason"
+              },
+              "options": {
+                "passed": "Passed",
+                "failed": "Failed"
+              }
+            }
+          }
+        }
+      },
+      "subTask": {
+        "title": "Sub Tasks",
+        "progress": "Progress",
+        "fields": {
+          "code": "Code",
+          "type": "Type",
+          "name": "Name",
+          "status": "Status",
+          "assignee": "Assignee"
+        },
+        "noData": "None"
+      },
+      "assocTask": {
+        "title": "Associated Tasks",
+        "fields": {
+          "code": "Code",
+          "type": "Type",
+          "name": "Name",
+          "status": "Status",
+          "assignee": "Assignee"
+        },
+        "noData": "None"
+      },
+      "assocCase": {
+        "title": "Associated Cases",
+        "fields": {
+          "code": "Code",
+          "name": "Name",
+          "testStatus": "Test Status",
+          "reviewStatus": "Review Status",
+          "tester": "Tester"
+        },
+        "noData": "None"
+      },
+      "activity": {
+        "title": "Activities",
+        "fields": {
+          "activityTime": "Activity Time",
+          "activityUser": "Activity User",
+          "activityDesc": "Activity Description"
+        },
+        "noData": "None"
+      },
+      "comment": {
+        "title": "Comments",
+        "fields": {
+          "commentTime": "Comment Time",
+          "commentUser": "Comment User",
+          "commentContent": "Comment Content",
+          "reply": "Reply"
+        },
+        "noData": "None"
+      },
+      "testing": {
+        "function": {
+          "title": "Functional Testing",
+          "caseStats": {
+            "title": "Case Statistics",
+            "fields": {
+              "totalCases": "Total Cases",
+              "passedCases": "Passed Cases",
+              "failedCases": "Failed Cases",
+              "disabledCases": "Disabled Cases"
+            }
+          },
+          "testedCases": {
+            "title": "Tested Cases",
+            "fields": {
+              "caseId": "Case ID",
+              "caseName": "Case Name",
+              "status": "Status"
+            },
+            "options": {
+              "passed": "Passed",
+              "failed": "Failed"
+            },
+            "noData": "None"
+          }
+        },
+        "perf": {
+          "title": "Performance Testing",
+          "resultInfo": {
+            "title": "Result Information",
+            "testParams": "Test Parameters",
+            "testMetrics": "Test Metrics",
+            "status": "Status",
+            "fields": {
+              "concurrency": "Concurrency",
+              "testDuration": "Test Duration",
+              "rampUpConcurrency": "Ramp-up Concurrency",
+              "rampUpDuration": "Ramp-up Duration",
+              "responseTime": "Response Time (RT)",
+              "tps": "Transactions Per Second (TPS)",
+              "errorRate": "Error Rate"
+            }
+          },
+          "systemLoad": {
+            "title": "Application System Average Load",
+            "cpuUsage": "CPU Usage",
+            "memoryUsage": "Memory Usage",
+            "diskUsage": "Disk Usage",
+            "networkUsage": "Network Usage",
+            "maximum": "Maximum"
+          }
+        },
+        "stability": {
+          "title": "Stability Testing",
+          "resultInfo": {
+            "title": "Result Information",
+            "testParams": "Test Parameters",
+            "testMetrics": "Test Metrics",
+            "status": "Status",
+            "fields": {
+              "concurrency": "Concurrency",
+              "testDuration": "Test Duration",
+              "responseTime": "Response Time (art)",
+              "tps": "Transactions Per Second (TPS)",
+              "errorRate": "Error Rate"
+            }
+          },
+          "systemLoad": {
+            "title": "Application System Average Load",
+            "cpuUsage": "CPU Usage",
+            "memoryUsage": "Memory Usage",
+            "diskUsage": "Disk Usage",
+            "networkUsage": "Network Usage",
+            "maximum": "Maximum"
+          }
+        }
+      }
+    }
+  }
+}

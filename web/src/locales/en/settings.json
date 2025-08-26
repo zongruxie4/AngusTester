@@ -243,7 +243,6 @@
         "killProcess": "Force Exit (kill)"
       },
       "log": {
-
         "options": {
           "500": "Last 500 lines",
           "1000": "Last 1000 lines",
@@ -514,4 +513,4 @@
       }
     }
   }
-} 
+}

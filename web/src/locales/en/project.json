@@ -67,272 +67,272 @@
       "version": "Configure Management Software Version",
       "tag": "Configure Data Tag"
     },
-          "sortMenu": {
-        "createdDate": "Sort by Add Time",
-        "createdByName": "Sort by Creator"
-      },
-      "projectEdit": {
-        "projectTypeTip": {
-          "agile": {
-            "features": "Core Features: Scrum Framework Support • Incremental Delivery • User-Driven Requirements.",
-            "scenarios": "Applicable Scenarios: Agile development teams for rapid product iteration."
-          },
-          "general": {
-            "features": "Core Features: Work Breakdown Structure • Progress Management • Resource Dependency Visualization.",
-            "scenarios": "Applicable Scenarios: Traditional R&D teams for cross-departmental collaboration projects."
-          },
-          "testing": {
-            "features": "Core Features: Test Plan Customization • Multi-type Testing • Defect Tracking Loop.",
-            "scenarios": "Applicable Scenarios: Quality assurance teams for specialized testing projects."
-          }
-        },
-        "projectTypeName": {
-          "agile": "Agile Project Management",
-          "general": "General Project Management",
-          "testing": "Testing Project Management"
-        },
-        "validation": {
-          "maxCharacters": "Cannot exceed 2000 characters"
-        },
-        "messages": {
-          "updateSuccess": "Project updated successfully",
-          "createSuccess": "Project created successfully"
-        },
-        "form": {
-          "projectName": "Project Name",
-          "projectNamePlaceholder": "Project name, maximum 100 characters",
-          "timePlan": "Time Plan",
-          "timePlanDescription": "Time constraints help ensure projects are completed within agreed timeframes, which is crucial for meeting customer expectations and contractual obligations.",
-          "owner": "Owner",
-          "ownerPlaceholder": "Please select project owner",
-          "ownerDescription": "By setting an owner for the project, responsibilities and rights can be clarified, better promoting project completion and progress control, such as: problem solving, progress advancement, team member collaboration, etc.",
-          "importExample": "Import Example",
-          "importExampleDescription": "Import main business example data for quickly familiarizing with AngusTester business and feature demonstration.",
-          "projectMembers": "Project Members",
-          "user": "User",
-          "department": "Department",
-          "group": "Group",
-          "membersDescription": "Clarify the participants in the project, project members will automatically be assigned data permissions under the project, facilitating team collaboration.",
-          "selectUser": "Select User",
-          "selectDepartment": "Select Department",
-          "selectGroup": "Select Group",
-          "projectDescription": "Project Description",
-          "descriptionPlaceholder": "Description, maximum 2000 characters"
-        },
-        "actions": {
-          "save": "Save",
-          "cancel": "Cancel",
-          "clickToReplaceIcon": "Click to replace icon",
-          "uploadIcon": "Upload Icon"
-        },
-        "tabs": {
-          "basicInfo": "Basic Information",
-          "module": "Software Modules",
-          "version": "Software Version",
-          "tag": "Data Tags"
-        },
-        "module": {
-          "title": "Software Modules",
-          "about": "About Software Modules",
-          "aboutDescription": "Software modules are used to define and organize relatively independent functional sets in software systems. Through modules, tasks and functional use cases can be divided, thereby improving maintainability.",
-          "addedModules": "Added Software Modules",
-          "noModules": "You haven't added any modules yet, immediately",
-          "addModule": "Add Module",
-          "noModulesDescription": "You haven't added any modules yet.",
-          "moduleNamePlaceholder": "Please enter module name",
-          "addModuleHint": "Press Enter or lose focus to save adding module, double-click existing module to enter edit mode",
-          "refresh": "Refresh",
-          "cancel": "Cancel",
-          "newSubModule": "New Sub-module",
-          "moveUp": "Move to Upper Level",
-          "moveUpOne": "Move Up",
-          "moveDown": "Move Down",
-          "move": "Move",
-          "edit": "Edit",
-          "delete": "Delete",
-          "loadMore": "Load More",
-          "moveModule": "Move Module",
-          "addModuleTitle": "Add Module",
-          "addSuccess": "Module added successfully",
-          "updateSuccess": "Updated successfully",
-          "deleteSuccess": "Module deleted successfully",
-          "moveSuccess": "Moved successfully",
-          "confirmDelete": "Are you sure you want to delete module 【{name}】?"
-        },
-        "tag": {
-          "title": "Data Tags",
-          "about": "About Data Tags",
-          "aboutDescription": "Data tags can facilitate categorization of tasks, functional use cases, etc., improve search and management efficiency, and promote efficient team collaboration. Examples: boundary testing, business process testing, error handling, input validation, output validation, exception condition testing, security testing, compatibility testing, etc.",
-          "addedTags": "Added Data Tags",
-          "addTagHint": "Press Enter or lose focus to save adding tag, double-click existing tag to enter edit mode.",
-          "noTags": "You haven't added any tags yet, immediately",
-          "addTag": "Add Tag",
-          "noTagsDescription": "You haven't added any tags yet.",
-          "tagNamePlaceholder": "Please enter tag name",
-          "refresh": "Refresh",
-          "cancel": "Cancel",
-          "loadMore": "Load More",
-          "addTagTitle": "Add Tag",
-          "addSuccess": "Tag added successfully",
-          "updateSuccess": "Updated successfully",
-          "deleteSuccess": "Tag deleted successfully",
-                   "confirmDelete": "Are you sure you want to delete tag 【{name}】?"
-       }
-     },
-     "projectDetail": {
-       "projectTypeTip": {
-         "agile": {
-           "features": "Core Features: Scrum Framework Support • Incremental Delivery • User-Driven Requirements.",
-           "scenarios": "Applicable Scenarios: Agile development teams for rapid product iteration."
-         },
-         "general": {
-           "features": "Core Features: Work Breakdown Structure • Progress Management • Resource Dependency Visualization.",
-           "scenarios": "Applicable Scenarios: Traditional R&D teams for cross-departmental collaboration projects."
-         },
-         "testing": {
-           "features": "Core Features: Test Plan Customization • Multi-type Testing • Defect Tracking Loop.",
-           "scenarios": "Applicable Scenarios: Quality assurance teams for specialized testing projects."
-         }
-       },
-       "projectTypeName": {
-         "agile": "Agile Project Management",
-         "general": "General Project Management",
-         "testing": "Testing Project Management"
-       },
-       "messages": {
-         "updateSuccess": "Project updated successfully",
-         "addSuccess": "Project added successfully"
-       },
-       "tabs": {
-         "basicInfo": "Basic Information",
-         "module": "Software Modules",
-         "version": "Software Version",
-         "tag": "Data Tags"
-       },
-       "form": {
-         "projectName": "Project Name",
-         "timePlan": "Time Plan",
-         "owner": "Owner",
-         "projectMembers": "Project Members",
-         "user": "User",
-         "group": "Group",
-         "department": "Department",
-         "projectDescription": "Project Description",
-         "noDescription": "No description~"
-       }
-     },
-     "projectAddModal": {
-       "projectTypeTip": {
-         "agile": {
-           "features": "Core Features: Scrum Framework Support • Incremental Delivery • User-Driven Requirements.",
-           "scenarios": "Applicable Scenarios: Agile development teams for rapid product iteration."
-         },
-         "general": {
-           "features": "Core Features: Work Breakdown Structure • Progress Management • Resource Dependency Visualization.",
-           "scenarios": "Applicable Scenarios: Traditional R&D teams for cross-departmental collaboration projects."
-         },
-         "testing": {
-           "features": "Core Features: Test Plan Customization • Multi-type Testing • Defect Tracking Loop.",
-           "scenarios": "Applicable Scenarios: Quality assurance teams for specialized testing projects."
-         }
-       },
-       "projectTypeName": {
-         "agile": "Agile Project Management",
-         "general": "General Project Management",
-         "testing": "Testing Project Management"
-       },
-       "validation": {
-         "maxCharacters": "Cannot exceed 2000 characters",
-         "timeRequired": "Please enter time",
-         "ownerRequired": "Please enter owner"
-       },
-       "messages": {
-         "updateSuccess": "Project updated successfully",
-         "addSuccess": "Project added successfully"
-       },
-       "modal": {
-         "editProject": "Edit Project",
-         "addProject": "Add Project"
-       },
-       "form": {
-         "name": "Name",
-         "projectNamePlaceholder": "Project name, maximum 100 characters",
-         "timePlan": "Time Plan",
-         "time": "Time",
-         "timeDescription": "Time constraints help ensure projects are completed within agreed timeframes, which is crucial for meeting customer expectations and contractual obligations.",
-         "owner": "Owner",
-         "ownerDescription": "By setting an owner for the project, responsibilities and rights can be clarified, better promoting project completion and progress control, such as: problem solving, progress promotion, team member collaboration, etc.",
-         "ownerPlaceholder": "Please select project owner",
-         "importExample": "Import Example",
-         "importExampleDescription": "Import main business example data for quickly familiarizing with AngusTester business and feature demonstration.",
-         "yes": "Yes",
-         "no": "No",
-         "members": "Members",
-         "user": "User",
-         "department": "Department",
-         "group": "Group",
-         "membersDescription": "Clearly define project participants, project members will automatically be assigned project data permissions for convenient team collaboration.",
-         "selectUser": "Select User",
-         "selectDepartment": "Select Department",
-         "selectGroup": "Select Group",
-         "description": "Description",
-         "descriptionPlaceholder": "Description, maximum 2000 characters",
-         "clickToReplaceIcon": "Click to replace icon"
-       }
-     }
+    "sortMenu": {
+      "createdDate": "Sort by Add Time",
+      "createdByName": "Sort by Creator"
     },
-    "projectActivity": {
-     "name": "Activity",
-      "table": {
-        "operator": "Operator",
-        "activityTime": "Activity Time",
+    "projectEdit": {
+      "projectTypeTip": {
+        "agile": {
+          "features": "Core Features: Scrum Framework Support • Incremental Delivery • User-Driven Requirements.",
+          "scenarios": "Applicable Scenarios: Agile development teams for rapid product iteration."
+        },
+        "general": {
+          "features": "Core Features: Work Breakdown Structure • Progress Management • Resource Dependency Visualization.",
+          "scenarios": "Applicable Scenarios: Traditional R&D teams for cross-departmental collaboration projects."
+        },
+        "testing": {
+          "features": "Core Features: Test Plan Customization • Multi-type Testing • Defect Tracking Loop.",
+          "scenarios": "Applicable Scenarios: Quality assurance teams for specialized testing projects."
+        }
+      },
+      "projectTypeName": {
+        "agile": "Agile Project Management",
+        "general": "General Project Management",
+        "testing": "Testing Project Management"
+      },
+      "validation": {
+        "maxCharacters": "Cannot exceed 2000 characters"
+      },
+      "messages": {
+        "updateSuccess": "Project updated successfully",
+        "createSuccess": "Project created successfully"
+      },
+      "form": {
         "projectName": "Project Name",
-        "projectId": "Project ID",
-        "resourceType": "Resource Type",
-        "targetId": "Target ID",
-        "targetName": "Target Name",
-        "activityContent": "Activity Content"
+        "projectNamePlaceholder": "Project name, maximum 100 characters",
+        "timePlan": "Time Plan",
+        "timePlanDescription": "Time constraints help ensure projects are completed within agreed timeframes, which is crucial for meeting customer expectations and contractual obligations.",
+        "owner": "Owner",
+        "ownerPlaceholder": "Please select project owner",
+        "ownerDescription": "By setting an owner for the project, responsibilities and rights can be clarified, better promoting project completion and progress control, such as: problem solving, progress advancement, team member collaboration, etc.",
+        "importExample": "Import Example",
+        "importExampleDescription": "Import main business example data for quickly familiarizing with AngusTester business and feature demonstration.",
+        "projectMembers": "Project Members",
+        "user": "User",
+        "department": "Department",
+        "group": "Group",
+        "membersDescription": "Clarify the participants in the project, project members will automatically be assigned data permissions under the project, facilitating team collaboration.",
+        "selectUser": "Select User",
+        "selectDepartment": "Select Department",
+        "selectGroup": "Select Group",
+        "projectDescription": "Project Description",
+        "descriptionPlaceholder": "Description, maximum 2000 characters"
       },
-      "hints": {
-        "maxResourceActivities": "Each resource only saves the latest {maxResource} activities, exceeding {maxResource} will be automatically deleted."
+      "actions": {
+        "save": "Save",
+        "cancel": "Cancel",
+        "clickToReplaceIcon": "Click to replace icon",
+        "uploadIcon": "Upload Icon"
       },
-      "chart": {
-        "activity": "Activity",
-        "resourceType": "Resource Type",
-        "add": "Add",
-        "timeUnit": "Time Unit",
-        "total": "Total",
-        "today": "Today",
-        "last7Days": "Last 7 Days",
-        "last1Month": "Last 1 Month",
-        "last1Year": "Last 1 Year"
+      "tabs": {
+        "basicInfo": "Basic Information",
+        "module": "Software Modules",
+        "version": "Software Version",
+        "tag": "Data Tags"
       },
-      "searchPanel": {
-        "dropdownMenu": {
-          "fileExtractDataset": "File Extract Dataset",
-          "jdbcExtractDataset": "Jdbc Extract Dataset"
+      "module": {
+        "title": "Software Modules",
+        "about": "About Software Modules",
+        "aboutDescription": "Software modules are used to define and organize relatively independent functional sets in software systems. Through modules, tasks and functional use cases can be divided, thereby improving maintainability.",
+        "addedModules": "Added Software Modules",
+        "noModules": "You haven't added any modules yet, immediately",
+        "addModule": "Add Module",
+        "noModulesDescription": "You haven't added any modules yet.",
+        "moduleNamePlaceholder": "Please enter module name",
+        "addModuleHint": "Press Enter or lose focus to save adding module, double-click existing module to enter edit mode",
+        "refresh": "Refresh",
+        "cancel": "Cancel",
+        "newSubModule": "New Sub-module",
+        "moveUp": "Move to Upper Level",
+        "moveUpOne": "Move Up",
+        "moveDown": "Move Down",
+        "move": "Move",
+        "edit": "Edit",
+        "delete": "Delete",
+        "loadMore": "Load More",
+        "moveModule": "Move Module",
+        "addModuleTitle": "Add Module",
+        "addSuccess": "Module added successfully",
+        "updateSuccess": "Updated successfully",
+        "deleteSuccess": "Module deleted successfully",
+        "moveSuccess": "Moved successfully",
+        "confirmDelete": "Are you sure you want to delete module 【{name}】?"
+      },
+      "tag": {
+        "title": "Data Tags",
+        "about": "About Data Tags",
+        "aboutDescription": "Data tags can facilitate categorization of tasks, functional use cases, etc., improve search and management efficiency, and promote efficient team collaboration. Examples: boundary testing, business process testing, error handling, input validation, output validation, exception condition testing, security testing, compatibility testing, etc.",
+        "addedTags": "Added Data Tags",
+        "addTagHint": "Press Enter or lose focus to save adding tag, double-click existing tag to enter edit mode.",
+        "noTags": "You haven't added any tags yet, immediately",
+        "addTag": "Add Tag",
+        "noTagsDescription": "You haven't added any tags yet.",
+        "tagNamePlaceholder": "Please enter tag name",
+        "refresh": "Refresh",
+        "cancel": "Cancel",
+        "loadMore": "Load More",
+        "addTagTitle": "Add Tag",
+        "addSuccess": "Tag added successfully",
+        "updateSuccess": "Updated successfully",
+        "deleteSuccess": "Tag deleted successfully",
+        "confirmDelete": "Are you sure you want to delete tag 【{name}】?"
+      }
+    },
+    "projectDetail": {
+      "projectTypeTip": {
+        "agile": {
+          "features": "Core Features: Scrum Framework Support • Incremental Delivery • User-Driven Requirements.",
+          "scenarios": "Applicable Scenarios: Agile development teams for rapid product iteration."
         },
-        "searchOptions": {
-          "queryActivityDetail": "Query Activity Detail",
-          "selectActivityResource": "Select Activity Resource",
-          "selectProject": "Select Project",
-          "selectOperator": "Select Operator",
-          "activityTimeFrom": "Activity Time From",
-          "activityTimeTo": "Activity Time To"
+        "general": {
+          "features": "Core Features: Work Breakdown Structure • Progress Management • Resource Dependency Visualization.",
+          "scenarios": "Applicable Scenarios: Traditional R&D teams for cross-departmental collaboration projects."
         },
-        "quickQuery": {
-          "all": "All",
-          "myActivity": "My Activity",
-          "last1Day": "Last 1 Day",
-          "last3Days": "Last 3 Days",
-          "last7Days": "Last 7 Days"
+        "testing": {
+          "features": "Core Features: Test Plan Customization • Multi-type Testing • Defect Tracking Loop.",
+          "scenarios": "Applicable Scenarios: Quality assurance teams for specialized testing projects."
+        }
+      },
+      "projectTypeName": {
+        "agile": "Agile Project Management",
+        "general": "General Project Management",
+        "testing": "Testing Project Management"
+      },
+      "messages": {
+        "updateSuccess": "Project updated successfully",
+        "addSuccess": "Project added successfully"
+      },
+      "tabs": {
+        "basicInfo": "Basic Information",
+        "module": "Software Modules",
+        "version": "Software Version",
+        "tag": "Data Tags"
+      },
+      "form": {
+        "projectName": "Project Name",
+        "timePlan": "Time Plan",
+        "owner": "Owner",
+        "projectMembers": "Project Members",
+        "user": "User",
+        "group": "Group",
+        "department": "Department",
+        "projectDescription": "Project Description",
+        "noDescription": "No description~"
+      }
+    },
+    "projectAddModal": {
+      "projectTypeTip": {
+        "agile": {
+          "features": "Core Features: Scrum Framework Support • Incremental Delivery • User-Driven Requirements.",
+          "scenarios": "Applicable Scenarios: Agile development teams for rapid product iteration."
         },
-        "ui": {
-          "quickQuery": "Quick Query",
-          "hideStatistics": "Hide Statistics",
-          "viewStatistics": "View Statistics",
-          "refresh": "Refresh"
-              }
+        "general": {
+          "features": "Core Features: Work Breakdown Structure • Progress Management • Resource Dependency Visualization.",
+          "scenarios": "Applicable Scenarios: Traditional R&D teams for cross-departmental collaboration projects."
+        },
+        "testing": {
+          "features": "Core Features: Test Plan Customization • Multi-type Testing • Defect Tracking Loop.",
+          "scenarios": "Applicable Scenarios: Quality assurance teams for specialized testing projects."
+        }
+      },
+      "projectTypeName": {
+        "agile": "Agile Project Management",
+        "general": "General Project Management",
+        "testing": "Testing Project Management"
+      },
+      "validation": {
+        "maxCharacters": "Cannot exceed 2000 characters",
+        "timeRequired": "Please enter time",
+        "ownerRequired": "Please enter owner"
+      },
+      "messages": {
+        "updateSuccess": "Project updated successfully",
+        "addSuccess": "Project added successfully"
+      },
+      "modal": {
+        "editProject": "Edit Project",
+        "addProject": "Add Project"
+      },
+      "form": {
+        "name": "Name",
+        "projectNamePlaceholder": "Project name, maximum 100 characters",
+        "timePlan": "Time Plan",
+        "time": "Time",
+        "timeDescription": "Time constraints help ensure projects are completed within agreed timeframes, which is crucial for meeting customer expectations and contractual obligations.",
+        "owner": "Owner",
+        "ownerDescription": "By setting an owner for the project, responsibilities and rights can be clarified, better promoting project completion and progress control, such as: problem solving, progress promotion, team member collaboration, etc.",
+        "ownerPlaceholder": "Please select project owner",
+        "importExample": "Import Example",
+        "importExampleDescription": "Import main business example data for quickly familiarizing with AngusTester business and feature demonstration.",
+        "yes": "Yes",
+        "no": "No",
+        "members": "Members",
+        "user": "User",
+        "department": "Department",
+        "group": "Group",
+        "membersDescription": "Clearly define project participants, project members will automatically be assigned project data permissions for convenient team collaboration.",
+        "selectUser": "Select User",
+        "selectDepartment": "Select Department",
+        "selectGroup": "Select Group",
+        "description": "Description",
+        "descriptionPlaceholder": "Description, maximum 2000 characters",
+        "clickToReplaceIcon": "Click to replace icon"
+      }
+    }
+  },
+  "projectActivity": {
+    "name": "Activity",
+    "table": {
+      "operator": "Operator",
+      "activityTime": "Activity Time",
+      "projectName": "Project Name",
+      "projectId": "Project ID",
+      "resourceType": "Resource Type",
+      "targetId": "Target ID",
+      "targetName": "Target Name",
+      "activityContent": "Activity Content"
+    },
+    "hints": {
+      "maxResourceActivities": "Each resource only saves the latest {maxResource} activities, exceeding {maxResource} will be automatically deleted."
+    },
+    "chart": {
+      "activity": "Activity",
+      "resourceType": "Resource Type",
+      "add": "Add",
+      "timeUnit": "Time Unit",
+      "total": "Total",
+      "today": "Today",
+      "last7Days": "Last 7 Days",
+      "last1Month": "Last 1 Month",
+      "last1Year": "Last 1 Year"
+    },
+    "searchPanel": {
+      "dropdownMenu": {
+        "fileExtractDataset": "File Extract Dataset",
+        "jdbcExtractDataset": "Jdbc Extract Dataset"
+      },
+      "searchOptions": {
+        "queryActivityDetail": "Query Activity Detail",
+        "selectActivityResource": "Select Activity Resource",
+        "selectProject": "Select Project",
+        "selectOperator": "Select Operator",
+        "activityTimeFrom": "Activity Time From",
+        "activityTimeTo": "Activity Time To"
+      },
+      "quickQuery": {
+        "all": "All",
+        "myActivity": "My Activity",
+        "last1Day": "Last 1 Day",
+        "last3Days": "Last 3 Days",
+        "last7Days": "Last 7 Days"
+      },
+      "ui": {
+        "quickQuery": "Quick Query",
+        "hideStatistics": "Hide Statistics",
+        "viewStatistics": "View Statistics",
+        "refresh": "Refresh"
+      }
     }
   },
   "projectTrash": {

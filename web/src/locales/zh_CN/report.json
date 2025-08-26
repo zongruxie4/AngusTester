@@ -192,1770 +192,1770 @@
       "printPDF": "打印PDF"
     },
     "serial": {
-       "1": "一、",
-       "2": "二、",
-       "3": "三、",
-       "4": "四、",
-       "5": "五、",
-       "6": "六、",
-       "7": "七、",
-       "8": "八、",
-       "9": "九、",
-       "10": "十、",
-       "11": "十一、",
-       "12": "十二、",
-       "13": "十三、",
-       "14": "十四、",
-       "15": "十五、",
-       "16": "十六、",
-       "17": "十七、",
-       "18": "十八、",
-       "19": "十九、",
-       "20": "二十、",
-       "21": "二十一、",
-       "22": "二十二、",
-       "23": "二十三、",
-       "24": "二十四、",
-       "25": "二十五、",
-       "26": "二十六、",
-       "27": "二十七、"
-     },
-     "apis": {
-       "content": "内容",
-       "catalog": {
-         "title": "目录",
-         "sections": {
-           "apiInfo": "接口信息",
-           "apiTestSummary": "接口测试汇总结果",
-           "apiTestDetail": "接口测试结果详细信息",
-           "functionalTest": "功能测试结果",
-           "performanceTest": "性能测试结果",
-           "stabilityTest": "稳定性测试结果"
-         }
-       },
-       "info": {
-         "title": "接口信息",
-         "fields": {
-           "apiUrl": "接口地址",
-           "requestMethod": "请求方法",
-           "operationId": "操作ID",
-           "owner": "负责人",
-           "description": "描述",
-           "status": "状态",
-           "creator": "添加人",
-           "createTime": "添加时间",
-           "lastModifier": "最后修改人",
-           "lastModifyTime": "最后修改时间"
-         }
-       },
-       "summary": {
-         "title": "摘要",
-         "fields": {
-           "apiStatus": "接口状态",
-           "description": "描述",
-           "contact": "联系人",
-           "copyright": "版权说明",
-           "other": "其他"
-         }
-       },
-       "testResult": {
-         "title": "接口测试汇总结果",
-         "fields": {
-           "isPassed": "是否通过",
-           "enableFunctionalTest": "开启功能测试",
-           "functionalTestPassed": "功能测试通过",
-           "functionalTestFailureReason": "功能测试失败原因",
-           "enablePerformanceTest": "开启性能测试",
-           "performanceTestPassed": "性能测试通过",
-           "performanceTestFailureReason": "性能测试失败原因",
-           "enableStabilityTest": "开启稳定性测试",
-           "stabilityTestPassed": "稳定性测试通过",
-           "stabilityTestFailureReason": "稳定性测试失败原因"
-         },
-         "status": {
-           "passed": "通过",
-           "failed": "未通过",
-           "notTested": "未测试",
-           "enabled": "开启",
-           "disabled": "未开启"
-         }
-       },
-       "testResultDetail": {
-         "title": "场景测试结果详细信息",
+      "1": "一、",
+      "2": "二、",
+      "3": "三、",
+      "4": "四、",
+      "5": "五、",
+      "6": "六、",
+      "7": "七、",
+      "8": "八、",
+      "9": "九、",
+      "10": "十、",
+      "11": "十一、",
+      "12": "十二、",
+      "13": "十三、",
+      "14": "十四、",
+      "15": "十五、",
+      "16": "十六、",
+      "17": "十七、",
+      "18": "十八、",
+      "19": "十九、",
+      "20": "二十、",
+      "21": "二十一、",
+      "22": "二十二、",
+      "23": "二十三、",
+      "24": "二十四、",
+      "25": "二十五、",
+      "26": "二十六、",
+      "27": "二十七、"
+    },
+    "apis": {
+      "content": "内容",
+      "catalog": {
+        "title": "目录",
+        "sections": {
+          "apiInfo": "接口信息",
+          "apiTestSummary": "接口测试汇总结果",
+          "apiTestDetail": "接口测试结果详细信息",
+          "functionalTest": "功能测试结果",
+          "performanceTest": "性能测试结果",
+          "stabilityTest": "稳定性测试结果"
+        }
+      },
+      "info": {
+        "title": "接口信息",
+        "fields": {
+          "apiUrl": "接口地址",
+          "requestMethod": "请求方法",
+          "operationId": "操作ID",
+          "owner": "负责人",
+          "description": "描述",
+          "status": "状态",
+          "creator": "添加人",
+          "createTime": "添加时间",
+          "lastModifier": "最后修改人",
+          "lastModifyTime": "最后修改时间"
+        }
+      },
+      "summary": {
+        "title": "摘要",
+        "fields": {
+          "apiStatus": "接口状态",
+          "description": "描述",
+          "contact": "联系人",
+          "copyright": "版权说明",
+          "other": "其他"
+        }
+      },
+      "testResult": {
+        "title": "接口测试汇总结果",
+        "fields": {
+          "isPassed": "是否通过",
+          "enableFunctionalTest": "开启功能测试",
+          "functionalTestPassed": "功能测试通过",
+          "functionalTestFailureReason": "功能测试失败原因",
+          "enablePerformanceTest": "开启性能测试",
+          "performanceTestPassed": "性能测试通过",
+          "performanceTestFailureReason": "性能测试失败原因",
+          "enableStabilityTest": "开启稳定性测试",
+          "stabilityTestPassed": "稳定性测试通过",
+          "stabilityTestFailureReason": "稳定性测试失败原因"
+        },
+        "status": {
+          "passed": "通过",
+          "failed": "未通过",
+          "notTested": "未测试",
+          "enabled": "开启",
+          "disabled": "未开启"
+        }
+      },
+      "testResultDetail": {
+        "title": "场景测试结果详细信息",
+        "noData": "无",
+        "functionalTest": {
+          "title": "功能测试结果",
+          "basicInfo": "测试基本信息",
+          "testCases": "测试用例",
+          "testCaseResults": "测试用例结果明细",
+          "noData": "无"
+        },
+        "performanceTest": {
+          "title": "性能测试",
+          "basicInfo": "测试基本信息",
+          "indicatorsAndResults": "测试指标和结果",
+          "performanceIndicators": "性能指标",
+          "results": "结果",
+          "indicators": {
+            "concurrency": "并发数",
+            "testDuration": "测试时长",
+            "pressureConcurrency": "增压并发数",
+            "pressureTestDuration": "增压测试时长",
+            "responseTime": "响应时间",
+            "tps": "每秒事务数",
+            "errorRate": "错误率"
+          }
+        },
+        "stabilityTest": {
+          "title": "稳定性测试",
+          "basicInfo": "测试基本信息",
+          "indicatorsAndResults": "测试指标和结果",
+          "stabilityIndicators": "稳定性指标",
+          "results": "结果",
+          "systemLoad": "应用系统平均负载",
+          "average": "平均",
+          "maximum": "最大"
+        },
+        "fields": {
+          "testResult": "测试结果",
+          "testFailureReason": "测试失败原因",
+          "testCount": "测试次数",
+          "failureCount": "失败次数",
+          "testScriptId": "测试脚本ID",
+          "testScriptName": "测试脚本名称",
+          "executionId": "执行ID",
+          "executionName": "执行名称",
+          "lastExecutor": "最后执行人",
+          "lastExecutionTime": "最后执行时间",
+          "totalCases": "用例总数",
+          "passedCount": "通过数",
+          "failedCount": "未通过数",
+          "disabledCount": "未启用数",
+          "type": "类型",
+          "isEnabled": "是否启用",
+          "isTestPassed": "是否测试通过",
+          "testFailureCount": "测试失败次数",
+          "cpuUsage": "cpu使用率",
+          "memoryUsage": "内存使用率",
+          "diskUsage": "磁盘使用率",
+          "networkUsage": "网络使用量"
+        }
+      }
+    },
+    "execFunction": {
+      "content": "内容",
+      "catalog": {
+        "title": "目录",
+        "sections": {
+          "execInfo": "执行信息",
+          "execBasicInfo": "执行基本信息",
+          "execResult": "执行结果",
+          "iterationResult": "迭代结果",
+          "logInfo": "日志信息",
+          "schedulingLog": "执行调度日志",
+          "samplingLog": "执行采样日志"
+        }
+      },
+      "summary": {
+        "title": "摘要",
+        "fields": {
+          "testPassed": "测试是否通过",
+          "description": "描述",
+          "contact": "联系人",
+          "copyright": "版权说明",
+          "other": "其他"
+        },
+        "status": {
+          "passed": "通过",
+          "failed": "未通过"
+        }
+      },
+      "detail": {
+        "title": "执行信息",
+        "basicInfo": {
+          "title": "执行基本信息",
+          "fields": {
+            "name": "名称",
+            "testScriptId": "测试脚本ID",
+            "testScriptName": "测试脚本名称",
+            "plugin": "插件",
+            "status": "状态",
+            "type": "类型",
+            "priority": "优先级",
+            "startTime": "开始时间",
+            "endTime": "结束时间",
+            "nodeCount": "节点数",
+            "reportInterval": "报告间隔",
+            "ignoreAssertions": "忽略断言",
+            "updateTestResult": "更新测试结果",
+            "creator": "添加人",
+            "createTime": "添加时间"
+          },
+          "options": {
+            "ignore": "忽略",
+            "notIgnore": "不忽略",
+            "update": "更新",
+            "notUpdate": "不更新"
+          }
+        },
+        "execResult": {
+          "title": "执行结果",
+          "fields": {
+            "testResult": "测试结果",
+            "failureReason": "失败原因",
+            "testCases": "测试用例"
+          },
+          "summary": {
+            "total": "总共",
+            "passed": "通过",
+            "failed": "未通过",
+            "disabled": "未启用"
+          }
+        }
+      },
+      "log": {
+        "title": "日志信息",
+        "schedulingLog": {
+          "title": "执行调度信息",
+          "fields": {
+            "schedulingResult": "调度结果",
+            "processExitCode": "进程退出码"
+          },
+          "status": {
+            "success": "成功",
+            "failed": "失败"
+          }
+        },
+        "samplingLog": {
+          "title": "执行采样信息",
+          "fields": {
+            "file": "文件"
+          },
+          "messages": {
+            "noProxyInfo": "无访问代理信息，连接失败地址："
+          }
+        }
+      }
+    },
+    "execPerf": {
+      "content": "内容",
+      "catalog": {
+        "title": "目录",
+        "sections": {
+          "execInfo": "执行信息",
+          "execBasicInfo": "执行基本信息",
+          "execResult": "执行结果",
+          "summaryResult": "汇总结果",
+          "samplingIndicators": "采样指标",
+          "throughput": "吞吐量",
+          "concurrency": "并发数",
+          "responseTime": "响应时间",
+          "error": "错误",
+          "statusCode": "状态码",
+          "nodeResources": "节点资源",
+          "overlayAnalysis": "叠加分析",
+          "logInfo": "日志信息",
+          "schedulingLog": "执行调度日志",
+          "samplingLog": "执行采样日志"
+        }
+      },
+      "summary": {
+        "title": "摘要",
+        "fields": {
+          "testPassed": "测试是否通过",
+          "execStatus": "执行状态",
+          "description": "描述",
+          "contact": "联系人",
+          "copyright": "版权说明",
+          "other": "其他"
+        },
+        "status": {
+          "passed": "通过",
+          "failed": "未通过"
+        }
+      },
+      "detail": {
+        "title": "执行信息",
+        "basicInfo": {
+          "title": "执行基本信息",
+          "fields": {
+            "execName": "执行名称",
+            "scriptName": "脚本名称",
+            "testScriptId": "测试脚本ID",
+            "plugin": "插件",
+            "status": "状态",
+            "type": "类型",
+            "priority": "优先级",
+            "startTime": "开始时间",
+            "endTime": "结束时间",
+            "nodeCount": "节点数",
+            "samplingInterval": "采样间隔",
+            "ignoreAssertions": "忽略断言",
+            "updateTestResult": "更新测试结果",
+            "creator": "添加人",
+            "createTime": "添加时间"
+          },
+          "options": {
+            "ignore": "忽略",
+            "notIgnore": "不忽略",
+            "update": "更新",
+            "notUpdate": "不更新"
+          }
+        },
+        "execResult": {
+          "title": "执行结果",
+          "fields": {
+            "failureReason": "失败原因"
+          }
+        }
+      },
+      "samplingSummary": {
+        "title": "汇总结果",
+        "fields": {
+          "name": "名称",
+          "samplingCount": "采样数",
+          "transactionCount": "事务数",
+          "tps": "每秒事务数",
+          "errorRate": "错误率",
+          "responseTimeStats": "平均/最小/最大/P50/P75/P90/P99/P999(ms)",
+          "downloadPerSecond": "下载/秒",
+          "uploadPerSecond": "上传/秒"
+        }
+      },
+      "sampling": {
+        "title": "采样指标",
+        "fields": {
+          "exitCode": "退出码",
+          "samplingStatus": "采样状态",
+          "failureReason": "失败原因"
+        }
+      },
+      "log": {
+        "title": "日志信息",
+        "schedulingLog": {
+          "title": "执行调度信息",
+          "fields": {
+            "schedulingResult": "调度结果",
+            "processExitCode": "进程退出码"
+          },
+          "status": {
+            "success": "成功",
+            "failed": "失败"
+          }
+        },
+        "samplingLog": {
+          "title": "执行采样信息",
+          "fields": {
+            "file": "文件"
+          },
+          "messages": {
+            "noProxyInfo": "无访问代理信息，连接失败地址："
+          }
+        }
+      }
+    },
+    "functionCase": {
+      "content": "内容",
+      "catalog": {
+        "title": "目录",
+        "sections": {
+          "basicInfo": "基本信息",
+          "personnelInfo": "人员信息",
+          "dateInfo": "日期信息",
+          "precondition": "前置条件",
+          "testSteps": "测试步骤",
+          "description": "描述",
+          "reviewInfo": "评审信息",
+          "testInfo": "测试信息",
+          "assocTask": "关联任务",
+          "assocCase": "关联用例",
+          "activity": "活动",
+          "comment": "评论"
+        }
+      },
+      "summary": {
+        "title": "摘要",
+        "fields": {
+          "testResult": "测试结果",
+          "description": "描述",
+          "contact": "联系人",
+          "copyright": "版权说明",
+          "other": "其他"
+        }
+      },
+      "info": {
+        "basic": {
+          "title": "基本信息",
+          "fields": {
+            "name": "名称",
+            "priority": "优先级",
+            "testResult": "测试结果",
+            "code": "编号",
+            "reviewStatus": "评审状态",
+            "project": "所属项目",
+            "module": "所属模块",
+            "tags": "标签",
+            "workloadEvalMethod": "工作量评估方式",
+            "evalWorkload": "评估工作量",
+            "actualWorkload": "实际工作量",
+            "processCount": "处理次数",
+            "processFailCount": "处理失败次数",
+            "overdue": "是否逾期",
+            "oneTimePass": "一次性通过",
+            "unplannedCase": "计划外用例"
+          },
+          "options": {
+            "yes": "是",
+            "no": "否",
+            "storyPoint": "评估故事点",
+            "workTime": "评估工时",
+            "actualStoryPoint": "实际故事点",
+            "actualWorkTime": "实际工时"
+          }
+        },
+        "personnel": {
+          "title": "人员信息",
+          "fields": {
+            "tester": "测试人",
+            "creator": "添加人",
+            "reviewer": "评审人",
+            "lastModifier": "最后修改人"
+          }
+        },
+        "date": {
+          "title": "日期信息",
+          "fields": {
+            "testCompleteTime": "测试完成时间",
+            "deadline": "截止时间",
+            "reviewTime": "评审时间",
+            "createTime": "添加时间",
+            "lastModifyTime": "最后修改时间"
+          }
+        },
+        "precondition": {
+          "title": "前置条件",
+          "noData": "无"
+        },
+        "testSteps": {
+          "title": "测试步骤",
+          "fields": {
+            "code": "编号",
+            "testStep": "测试步骤",
+            "expectedResult": "预期结果"
+          },
+          "noData": "无"
+        },
+        "description": {
+          "title": "描述",
+          "noData": "无"
+        },
+        "testInfo": {
+          "title": "测试信息",
+          "fields": {
+            "testCount": "测试次数",
+            "testFailCount": "测试失败次数",
+            "oneTimeTestPass": "一次性测试通过",
+            "testRemark": "测试备注"
+          },
+          "options": {
+            "yes": "是",
+            "no": "否"
+          }
+        }
+      },
+      "review": {
+        "title": "评审信息",
+        "fields": {
+          "enableReview": "是否开启评审",
+          "reviewCount": "评审次数",
+          "reviewFailCount": "评审失败次数",
+          "oneTimeReviewPass": "一次性评审通过",
+          "reviewOpinion": "评审意见"
+        },
+        "options": {
+          "yes": "是",
+          "no": "否"
+        }
+      },
+      "assocTask": {
+        "title": "关联任务",
+        "fields": {
+          "code": "编码",
+          "type": "类型",
+          "name": "名称",
+          "status": "状态",
+          "assignee": "经办人"
+        },
+        "noData": "无"
+      },
+      "assocCase": {
+        "title": "关联用例",
+        "fields": {
+          "code": "编码",
+          "name": "名称",
+          "testStatus": "测试状态",
+          "reviewStatus": "评审状态",
+          "tester": "测试人"
+        },
+        "noData": "无"
+      },
+      "activity": {
+        "title": "活动",
+        "fields": {
+          "activityTime": "活动时间",
+          "activityPerson": "活动人",
+          "activityDescription": "活动描述"
+        },
+        "noData": "无"
+      },
+      "comment": {
+        "title": "评论",
+        "fields": {
+          "commentTime": "评论时间",
+          "commenter": "评论人",
+          "commentContent": "评论内容",
+          "reply": "回复"
+        },
+        "noData": "无"
+      }
+    },
+    "functionPlan": {
+      "content": "内容",
+      "catalog": {
+        "title": "目录",
+        "sections": {
+          "planInfo": "测试计划信息",
+          "basicInfo": "基本信息",
+          "testerAndDuty": "测试人与职责",
+          "testTarget": "测试目标",
+          "testScope": "测试范围",
+          "acceptanceCriteria": "验收标准",
+          "otherInfo": "其他说明",
+          "caseSummary": "用例汇总结果",
+          "testSummary": "测试汇总结果",
+          "reviewSummary": "评审汇总结果",
+          "burndownChart": "燃尽图",
+          "groupStats": "分组统计",
+          "testerSummary": "测试人汇总结果"
+        }
+      },
+      "summary": {
+        "title": "摘要",
+        "fields": {
+          "progress": "进度",
+          "description": "描述",
+          "contact": "联系人",
+          "copyright": "版权说明",
+          "other": "其他"
+        }
+      },
+      "detail": {
+        "title": "计划详细信息",
+        "basicInfo": {
+          "title": "基本信息",
+          "fields": {
+            "planName": "计划名称",
+            "casePrefix": "用例前缀",
+            "status": "状态",
+            "owner": "负责人",
+            "project": "所属项目",
+            "timePlan": "时间计划",
+            "creator": "添加人",
+            "createTime": "添加时间",
+            "workloadEvalMethod": "工作量评估方式",
+            "reviewCase": "是否评审用例"
+          },
+          "options": {
+            "yes": "是",
+            "no": "否"
+          }
+        },
+        "testerAndDuty": {
+          "title": "测试人与职责",
+          "fields": {
+            "tester": "测试人",
+            "duty": "职责"
+          }
+        },
+        "testTarget": {
+          "title": "测试目标",
+          "noData": "无"
+        },
+        "testScope": {
+          "title": "测试范围",
+          "noData": "无"
+        },
+        "acceptanceCriteria": {
+          "title": "验收标准",
+          "noData": "无"
+        },
+        "otherInfo": {
+          "title": "其他说明",
+          "noData": "无"
+        }
+      },
+      "caseSummary": {
+        "title": "用例汇总结果",
+        "testSummary": {
+          "title": "测试汇总结果",
+          "fields": {
+            "progress": "进度",
+            "totalCases": "用例总数",
+            "validCases": "有效用例数",
+            "pendingTest": "待测试数",
+            "passed": "通过数",
+            "failed": "未通过数",
+            "blocked": "阻塞数",
+            "cancelled": "取消数",
+            "overdue": "逾期数",
+            "overdueRate": "逾期率",
+            "oneTimeTestPass": "一次性测试通过数",
+            "oneTimeTestPassRate": "一次性测试通过率",
+            "oneTimeReviewPassRate": "一次性评审通过率",
+            "estimatedWorkload": "评估工作量",
+            "actualWorkload": "实际工作量",
+            "completedWorkload": "完成工作量",
+            "savedWorkload": "节省工作量",
+            "workloadSaveRate": "工作量节省率"
+          }
+        },
+        "reviewSummary": {
+          "title": "评审汇总结果",
+          "fields": {
+            "totalReviewCases": "总评审用例数",
+            "pendingReview": "待评审数",
+            "reviewPassed": "评审通过数",
+            "reviewFailed": "评审未通过数",
+            "reviewed": "已评审数",
+            "notReviewed": "未评审数",
+            "totalReviewCount": "总评审次数",
+            "oneTimeReviewPass": "一次性通过评审数",
+            "oneTimeReviewPassRate": "一次性评审通过率"
+          }
+        },
+        "burndownChart": {
+          "title": "燃尽图",
+          "caseCount": "用例数",
+          "workload": "工作量",
+          "remaining": "剩余",
+          "expected": "期望"
+        },
+        "groupStats": {
+          "title": "分组统计",
+          "byStatus": "按状态分组",
+          "byPriority": "按优先级分组",
+          "statuses": {
+            "cancelled": "已取消",
+            "blocked": "阻塞",
+            "testFailed": "测试未通过",
+            "testPassed": "测试通过",
+            "pendingTest": "待测试"
+          },
+          "priorities": {
+            "highest": "最高",
+            "high": "高",
+            "medium": "中",
+            "low": "底",
+            "lowest": "最底"
+          }
+        }
+      },
+      "caseDetail": {
+        "title": "测试人汇总结果",
+        "testSummary": {
+          "title": "测试汇总结果",
+          "fields": {
+            "progress": "进度",
+            "totalCases": "用例总数",
+            "validCases": "有效用例数",
+            "pendingTest": "待测试数",
+            "passed": "通过数",
+            "failed": "未通过数",
+            "blocked": "阻塞数",
+            "cancelled": "取消数",
+            "overdue": "逾期数",
+            "overdueRate": "逾期率",
+            "oneTimeTestPass": "一次性测试通过数",
+            "oneTimeTestPassRate": "一次性测试通过率",
+            "oneTimeReviewPassRate": "一次性评审通过率",
+            "estimatedWorkload": "评估工作量",
+            "actualWorkload": "实际工作量",
+            "completedWorkload": "完成工作量",
+            "savedWorkload": "节省工作量",
+            "workloadSaveRate": "工作量节省率"
+          }
+        },
+        "reviewSummary": {
+          "title": "评审汇总结果",
+          "fields": {
+            "totalReviewCases": "总评审用例数",
+            "pendingReview": "待评审数",
+            "reviewPassed": "评审通过数",
+            "reviewFailed": "评审未通过数",
+            "reviewed": "已评审数",
+            "notReviewed": "未评审数",
+            "totalReviewCount": "总评审次数",
+            "oneTimeReviewPass": "一次性通过评审数",
+            "oneTimeReviewPassRate": "一次性评审通过率"
+          }
+        },
+        "burndownChart": {
+          "title": "燃尽图"
+        },
+        "groupStats": {
+          "title": "分组统计"
+        },
+        "caseList": {
+          "fields": {
+            "code": "编码",
+            "priority": "优先级",
+            "module": "所属模块",
+            "overdue": "是否逾期",
+            "deadline": "截止时间",
+            "tester": "测试人",
+            "testResult": "测试结果",
+            "testResultRemark": "测试结果备注",
+            "testCompleteTime": "测试完成时间",
+            "reviewCase": "是否评审用例",
+            "reviewStatus": "评审状态",
+            "reviewer": "评审人",
+            "reviewOpinion": "评审意见",
+            "reviewTime": "评审时间",
+            "workloadEvalMethod": "工作量评估方式",
+            "estimatedWorkload": "评估工作量",
+            "actualWorkload": "实际工作量",
+            "totalTestCount": "总测试次数",
+            "testFailCount": "测试失败次数",
+            "creator": "添加人",
+            "createTime": "添加时间",
+            "lastModifier": "最后修改人",
+            "lastModifyTime": "最后修改时间"
+          },
+          "options": {
+            "yes": "是",
+            "no": "否"
+          }
+        }
+      }
+    },
+    "projectProgress": {
+      "content": "内容",
+      "catalog": {
+        "title": "目录",
+        "sections": {
+          "projectInfo": "项目信息",
+          "devTask": "研发任务",
+          "taskSummary": "任务汇总结果",
+          "taskBurndownChart": "任务燃尽图",
+          "taskGroupStats": "任务分组统计",
+          "funcTest": "功能测试",
+          "caseTestSummary": "用例测试汇总结果",
+          "caseReviewSummary": "用例评审汇总结果",
+          "caseBurndownChart": "用例燃尽图",
+          "caseGroupStats": "用例分组统计",
+          "apiTest": "接口测试",
+          "apiTestSummary": "接口测试汇总结果",
+          "apiGroupStats": "接口分组统计",
+          "scenarioTest": "场景测试",
+          "scenarioTestSummary": "场景测试汇总结果",
+          "scenarioGroupStats": "场景分组统计"
+        }
+      },
+      "summary": {
+        "title": "摘要",
+        "fields": {
+          "progress": "进度",
+          "description": "描述",
+          "contact": "联系人",
+          "copyright": "版权说明",
+          "other": "其他"
+        }
+      },
+      "info": {
+        "title": "项目信息",
+        "fields": {
+          "name": "名称",
+          "planTime": "计划时间",
+          "owner": "负责人",
+          "members": "成员",
+          "description": "描述"
+        }
+      },
+      "taskSummary": {
+        "title": "研发任务",
+        "summary": {
+          "title": "任务汇总结果",
+          "fields": {
+            "progress": "进度",
+            "totalTasks": "任务总数",
+            "validTasks": "有效任务数",
+            "totalBugs": "缺陷总数",
+            "validBugs": "有效缺陷数",
+            "pendingCount": "待处理数",
+            "processingCount": "处理中数",
+            "pendingConfirmCount": "待确认数",
+            "completedCount": "完成数",
+            "cancelledCount": "取消数",
+            "overdueCount": "逾期数",
+            "overdueRate": "逾期率",
+            "oneTimePassCount": "一次性通过数",
+            "oneTimePassRate": "一次性通过率",
+            "estimatedWorkload": "评估工作量",
+            "actualWorkload": "实际工作量",
+            "completedWorkload": "完成工作量",
+            "savedWorkload": "节省工作量",
+            "workloadSaveRate": "工作量节省率"
+          }
+        },
+        "burndownChart": {
+          "title": "任务燃尽图",
+          "remaining": "剩余",
+          "expected": "期望",
+          "caseCount": "用例数",
+          "workload": "工作量",
+          "taskCount": "任务数"
+        },
+        "groupStats": {
+          "title": "任务分组统计",
+          "byStatus": "按状态分组",
+          "byPriority": "按优先级分组",
+          "byTaskType": "按任务类型分组",
+          "total": "总数",
+          "statuses": {
+            "cancelled": "已取消",
+            "completed": "已完成",
+            "pendingConfirm": "待确认",
+            "processing": "进行中",
+            "pending": "待处理"
+          },
+          "priorities": {
+            "highest": "最高",
+            "high": "高",
+            "medium": "中",
+            "low": "低",
+            "lowest": "最低"
+          },
+          "taskTypes": {
+            "bug": "缺陷",
+            "task": "任务",
+            "story": "故事",
+            "requirement": "需求",
+            "apiTest": "接口测试",
+            "scenarioTest": "场景测试"
+          }
+        }
+      },
+      "funcCaseSummary": {
+        "title": "功能用例",
+        "testSummary": {
+          "title": "用例测试汇总结果",
+          "fields": {
+            "progress": "进度",
+            "totalCases": "用例总数",
+            "validCases": "有效用例数",
+            "pendingTest": "待测试数",
+            "passed": "通过数",
+            "failed": "未通过数",
+            "blocked": "阻塞数",
+            "cancelled": "取消数",
+            "overdue": "逾期数",
+            "overdueRate": "逾期率",
+            "oneTimeTestPass": "一次性测试通过数",
+            "oneTimeTestPassRate": "一次性测试通过率",
+            "oneTimeReviewPassRate": "一次性评审通过率",
+            "estimatedWorkload": "评估工作量",
+            "actualWorkload": "实际工作量",
+            "completedWorkload": "完成工作量",
+            "savedWorkload": "节省工作量",
+            "workloadSaveRate": "工作量节省率"
+          }
+        },
+        "reviewSummary": {
+          "title": "用例评审汇总结果",
+          "fields": {
+            "progress": "进度",
+            "totalReviewCases": "总评审用例数",
+            "pendingReview": "待评审数",
+            "reviewPassed": "评审通过数",
+            "reviewFailed": "评审未通过数",
+            "reviewed": "已评审数",
+            "notReviewed": "未评审数",
+            "totalReviewCount": "总评审次数",
+            "oneTimeReviewPass": "一次性通过评审数",
+            "oneTimeReviewPassRate": "一次性评审通过率"
+          }
+        },
+        "burndownChart": {
+          "title": "用例燃尽图",
+          "remaining": "剩余",
+          "expected": "期望",
+          "caseCount": "用例数",
+          "workload": "工作量"
+        },
+        "groupStats": {
+          "title": "用例分组统计",
+          "byStatus": "按状态分组",
+          "byPriority": "按优先级分组",
+          "total": "总数",
+          "statuses": {
+            "cancelled": "已取消",
+            "blocked": "阻塞",
+            "testFailed": "测试未通过",
+            "testPassed": "测试通过",
+            "pendingTest": "待测试"
+          },
+          "priorities": {
+            "highest": "最高",
+            "high": "高",
+            "medium": "中",
+            "low": "低",
+            "lowest": "最低"
+          }
+        }
+      },
+      "apiSummary": {
+        "title": "接口测试",
+        "testSummary": {
+          "title": "接口测试汇总结果",
+          "fields": {
+            "progress": "进度",
+            "totalApis": "接口总数",
+            "enabledApiTest": "启用接口测试",
+            "disabledApiTest": "未启用接口测试",
+            "apiFuncTest": "接口功能测试",
+            "apiPerfTest": "接口性能测试",
+            "apiStabilityTest": "接口稳定性测试",
+            "testedApis": "已测试接口",
+            "passedApis": "已通过接口",
+            "failedApis": "未通过接口"
+          }
+        },
+        "groupStats": {
+          "title": "接口分组统计",
+          "byStatus": "按状态分组",
+          "byRequestMethod": "按请求方法分组",
+          "total": "总数",
+          "statuses": {
+            "published": "已发布",
+            "devCompleted": "开发完成",
+            "devInProgress": "开发中",
+            "designing": "设计中",
+            "unknown": "未知"
+          }
+        }
+      },
+      "scenarioTestSummary": {
+        "title": "场景测试",
+        "testSummary": {
+          "title": "场景测试汇总结果",
+          "fields": {
+            "progress": "进度",
+            "totalScenarios": "场景总数",
+            "enabledScenarioTest": "启用场景测试",
+            "disabledScenarioTest": "未启用场景测试",
+            "scenarioFuncTest": "场景功能测试",
+            "scenarioPerfTest": "场景性能测试",
+            "scenarioStabilityTest": "场景稳定性测试",
+            "testedScenarios": "已测试场景",
+            "passedScenarios": "已通过场景",
+            "failedScenarios": "未通过场景"
+          }
+        },
+        "groupStats": {
+          "title": "场景分组统计",
+          "byProtocol": "按协议分组",
+          "byTestType": "按测试类型分组",
+          "total": "总数",
+          "quantity": "数量",
+          "testTypes": {
+            "perfTest": "性能测试",
+            "stabilityTest": "稳定性测试",
+            "funcTest": "功能测试",
+            "customTest": "自定义测试"
+          }
+        }
+      }
+    },
+    "scenario": {
+      "content": "内容",
+      "catalog": {
+        "title": "目录",
+        "sections": {
+          "scenarioInfo": "场景信息",
+          "scenarioTestSummary": "场景测试汇总结果",
+          "scenarioTestResultDetail": "场景测试结果详细信息",
+          "funcTestResult": "功能测试结果",
+          "perfTestResult": "性能测试结果",
+          "stabilityTestResult": "稳定性测试结果"
+        }
+      },
+      "summary": {
+        "title": "摘要",
+        "fields": {
+          "testPassed": "测试是否通过",
+          "description": "描述",
+          "contact": "联系人",
+          "copyright": "版权说明",
+          "other": "其他"
+        },
+        "options": {
+          "passed": "通过",
+          "failed": "未通过",
+          "notTested": "未测试"
+        }
+      },
+      "info": {
+        "title": "场景信息",
+        "fields": {
+          "name": "名称",
+          "description": "描述",
+          "project": "所属项目",
+          "plugin": "插件",
+          "scriptType": "脚本类型",
+          "scriptId": "脚本ID",
+          "scriptName": "脚本名称",
+          "creator": "添加人",
+          "createTime": "添加时间",
+          "lastModifier": "最后修改人",
+          "lastModifyTime": "最后修改时间"
+        }
+      },
+      "testResult": {
+        "title": "场景测试汇总结果",
+        "fields": {
+          "passed": "是否通过",
+          "enableFuncTest": "开启功能测试",
+          "funcTestPassed": "功能测试通过",
+          "funcTestFailReason": "功能测试失败原因",
+          "enablePerfTest": "开启性能测试",
+          "perfTestPassed": "性能测试通过",
+          "perfTestFailReason": "性能测试失败原因",
+          "enableStabilityTest": "开启稳定性测试",
+          "stabilityTestPassed": "稳定性测试通过",
+          "stabilityTestFailReason": "稳定性测试失败原因"
+        },
+        "options": {
+          "passed": "通过",
+          "failed": "未通过",
+          "notTested": "未测试",
+          "enabled": "开启",
+          "disabled": "未开启"
+        }
+      },
+      "testResultDetail": {
+        "title": "场景测试详细结果信息",
+        "funcTestResult": {
+          "title": "功能测试结果",
+          "basicInfo": {
+            "title": "测试基本信息",
+            "fields": {
+              "testResult": "测试结果",
+              "testFailReason": "测试失败原因",
+              "testCount": "测试次数",
+              "failCount": "失败次数",
+              "testScriptId": "测试脚本ID",
+              "testScriptName": "测试脚本名称",
+              "execId": "执行ID",
+              "execName": "执行名称",
+              "lastExecutor": "最后执行人",
+              "lastExecTime": "最后执行时间"
+            },
+            "options": {
+              "passed": "通过",
+              "failed": "未通过",
+              "notTested": "未测试"
+            }
+          },
+          "apiStats": {
+            "title": "测试接口统计",
+            "fields": {
+              "totalCases": "用例总数",
+              "passedCount": "通过数",
+              "failedCount": "未通过数",
+              "disabledCount": "未启用数"
+            }
+          },
+          "caseResultDetail": {
+            "title": "测试用例结果明细",
+            "fields": {
+              "type": "类型",
+              "enabled": "是否启用",
+              "testPassed": "是否测试通过",
+              "testFailReason": "测试失败原因",
+              "testCount": "测试次数",
+              "testFailCount": "测试失败次数"
+            },
+            "options": {
+              "enabled": "开启",
+              "disabled": "未开启",
+              "passed": "通过",
+              "failed": "未通过",
+              "notTested": "未测试"
+            }
+          },
+          "noData": "无"
+        },
+        "perfTestResult": {
+          "title": "性能测试",
+          "basicInfo": {
+            "title": "测试基本信息",
+            "fields": {
+              "testResult": "测试结果",
+              "testFailReason": "测试失败原因",
+              "testCount": "测试次数",
+              "failCount": "失败次数",
+              "testScriptId": "测试脚本ID",
+              "testScriptName": "测试脚本名称",
+              "execId": "执行ID",
+              "execName": "执行名称",
+              "lastExecutor": "最后执行人",
+              "lastExecTime": "最后执行时间"
+            },
+            "options": {
+              "passed": "通过",
+              "failed": "未通过",
+              "notTested": "未测试"
+            }
+          },
+          "metrics": {
+            "title": "测试指标和结果",
+            "performanceMetrics": "性能指标",
+            "result": "结果",
+            "fields": {
+              "concurrency": "并发数",
+              "testDuration": "测试时长",
+              "rampUpConcurrency": "增压并发数",
+              "rampUpDuration": "增压测试时长",
+              "responseTime": "响应时间",
+              "tps": "每秒事务数",
+              "errorRate": "错误率"
+            }
+          },
+          "noData": "无"
+        },
+        "stabilityTestResult": {
+          "title": "稳定性测试",
+          "basicInfo": {
+            "title": "测试基本信息",
+            "fields": {
+              "testResult": "测试结果",
+              "testFailReason": "测试失败原因",
+              "testCount": "测试次数",
+              "failCount": "失败次数",
+              "testScriptId": "测试脚本ID",
+              "testScriptName": "测试脚本名称",
+              "execId": "执行ID",
+              "execName": "执行名称",
+              "lastExecutor": "最后执行人",
+              "lastExecTime": "最后执行时间"
+            },
+            "options": {
+              "passed": "通过",
+              "failed": "未通过",
+              "notTested": "未测试"
+            }
+          },
+          "metrics": {
+            "title": "测试指标和结果",
+            "stabilityMetrics": "稳定性指标",
+            "result": "结果",
+            "fields": {
+              "concurrency": "并发数",
+              "testDuration": "测试时长",
+              "rampUpConcurrency": "增压并发时数",
+              "rampUpDuration": "增压并发时长",
+              "responseTime": "响应时间",
+              "tps": "每秒事务数(TPS)",
+              "errorRate": "错误率"
+            }
+          },
+          "nodeResources": {
+            "title": "节点资源",
+            "fields": {
+              "cpuUsage": "cpu使用率",
+              "memoryUsage": "内存使用率",
+              "diskUsage": "磁盘使用率",
+              "networkUsage": "网络使用量"
+            }
+          },
+          "systemLoad": {
+            "title": "应用系统平均负载",
+            "average": "平均",
+            "maximum": "最大"
+          },
+          "noData": "无"
+        }
+      }
+    },
+    "services": {
+      "content": "内容",
+      "catalog": {
+        "title": "目录",
+        "sections": {
+          "serviceInfo": "服务信息",
+          "apiGroupStats": "接口分组统计",
+          "testResultSummary": "测试结果汇总",
+          "testProgress": "测试进度",
+          "testApiStats": "测试接口统计",
+          "testStatusStats": "测试状态统计"
+        }
+      },
+      "summary": {
+        "title": "摘要",
+        "fields": {
+          "serviceStatus": "服务状态",
+          "description": "描述",
+          "contact": "联系人",
+          "copyright": "版权说明",
+          "other": "其他"
+        }
+      },
+      "info": {
+        "title": "服务信息",
+        "fields": {
+          "name": "名称",
+          "status": "状态",
+          "project": "所属项目",
+          "apiCount": "接口数",
+          "apiCaseCount": "接口用例数",
+          "creator": "添加人",
+          "createTime": "添加时间",
+          "lastModifier": "最后修改人",
+          "lastModifyTime": "最后修改时间"
+        }
+      },
+      "apisGroup": {
+        "title": "接口分组统计",
+        "byStatus": {
+          "title": "按状态分组",
+          "statuses": {
+            "unknown": "未知",
+            "designing": "设计中",
+            "devInProgress": "开发中",
+            "devCompleted": "开发完成",
+            "published": "已发布"
+          }
+        },
+        "byRequestMethod": {
+          "title": "按请求方法分组"
+        },
+        "total": "总数"
+      },
+      "result": {
+        "title": "测试结果汇总",
+        "testProgress": {
+          "title": "测试进度",
+          "totalApis": "总接口",
+          "progress": "进度"
+        },
+        "testApiStats": {
+          "title": "测试接口统计",
+          "columns": {
+            "totalTestCount": "总测试数",
+            "funcTest": "功能测试",
+            "perfTest": "性能测试",
+            "stabilityTest": "稳定性测试"
+          }
+        },
+        "testStatusStats": {
+          "title": "测试状态统计",
+          "fields": {
+            "tested": "已测试",
+            "notTested": "未测试",
+            "passed": "已通过",
+            "failed": "未通过"
+          }
+        }
+      },
+      "apiResultDetail": {
+        "title": "接口测试结果明细",
+        "fields": {
+          "apiUrl": "接口地址",
+          "requestMethod": "请求方法",
+          "operationId": "操作ID",
+          "owner": "负责人",
+          "description": "描述",
+          "enableFuncTest": "开启功能测试",
+          "funcTestPassed": "功能测试通过",
+          "funcTestFailReason": "功能测试失败原因",
+          "enablePerfTest": "开启性能测试",
+          "perfTestPassed": "性能测试通过",
+          "perfTestFailReason": "性能测试失败原因",
+          "enableStabilityTest": "开启稳定性测试",
+          "stabilityTestPassed": "稳定性测试通过",
+          "stabilityTestFailReason": "稳定性测试失败原因"
+        },
+        "options": {
+          "yes": "是",
+          "no": "否",
+          "notTested": "未测试"
+        }
+      }
+    },
+    "sprint": {
+      "content": "内容",
+      "catalog": {
+        "title": "目录",
+        "sections": {
+          "sprintDetail": "迭代详细信息",
+          "basicInfo": "基本信息",
+          "acceptanceCriteria": "验收标准",
+          "testScope": "测试范围",
+          "otherInfo": "其他说明",
+          "devTask": "研发任务",
+          "taskSummary": "任务汇总结果",
+          "burndownChart": "燃尽图",
+          "groupStats": "分组统计",
+          "assigneeSummary": "经办人汇总结果"
+        }
+      },
+      "summary": {
+        "title": "摘要",
+        "fields": {
+          "progress": "进度",
+          "description": "描述",
+          "contact": "联系人",
+          "copyright": "版权说明",
+          "other": "其他"
+        }
+      },
+      "sprintDetail": {
+        "title": "迭代信息",
+        "basicInfo": {
+          "title": "基本信息",
+          "fields": {
+            "name": "名称",
+            "taskPrefix": "任务前缀",
+            "status": "状态",
+            "owner": "负责人",
+            "project": "所属项目",
+            "sprintTime": "迭代时间",
+            "creator": "添加人",
+            "createTime": "添加时间",
+            "workloadEstimationMethod": "工作量评估方式"
+          }
+        },
+        "acceptanceCriteria": {
+          "title": "验收标准",
+          "noData": "无"
+        },
+        "meetingRecord": {
+          "title": "会议记录",
           "noData": "无",
-         "functionalTest": {
-           "title": "功能测试结果",
-           "basicInfo": "测试基本信息",
-           "testCases": "测试用例",
-           "testCaseResults": "测试用例结果明细",
-           "noData": "无"
-         },
-         "performanceTest": {
-           "title": "性能测试",
-           "basicInfo": "测试基本信息",
-           "indicatorsAndResults": "测试指标和结果",
-           "performanceIndicators": "性能指标",
-           "results": "结果",
-           "indicators": {
-             "concurrency": "并发数",
-             "testDuration": "测试时长",
-             "pressureConcurrency": "增压并发数",
-             "pressureTestDuration": "增压测试时长",
-             "responseTime": "响应时间",
-             "tps": "每秒事务数",
-             "errorRate": "错误率"
-           }
-         },
-         "stabilityTest": {
-           "title": "稳定性测试",
-           "basicInfo": "测试基本信息",
-           "indicatorsAndResults": "测试指标和结果",
-           "stabilityIndicators": "稳定性指标",
-           "results": "结果",
-           "systemLoad": "应用系统平均负载",
-           "average": "平均",
-           "maximum": "最大"
-         },
-         "fields": {
-           "testResult": "测试结果",
-           "testFailureReason": "测试失败原因",
-           "testCount": "测试次数",
-           "failureCount": "失败次数",
-           "testScriptId": "测试脚本ID",
-           "testScriptName": "测试脚本名称",
-           "executionId": "执行ID",
-           "executionName": "执行名称",
-           "lastExecutor": "最后执行人",
-           "lastExecutionTime": "最后执行时间",
-           "totalCases": "用例总数",
-           "passedCount": "通过数",
-           "failedCount": "未通过数",
-           "disabledCount": "未启用数",
-           "type": "类型",
-           "isEnabled": "是否启用",
-           "isTestPassed": "是否测试通过",
-           "testFailureCount": "测试失败次数",
-           "cpuUsage": "cpu使用率",
-           "memoryUsage": "内存使用率",
-           "diskUsage": "磁盘使用率",
-           "networkUsage": "网络使用量"
-         }
-       }
-     },
-     "execFunction": {
-       "content": "内容",
-       "catalog": {
-         "title": "目录",
-         "sections": {
-           "execInfo": "执行信息",
-           "execBasicInfo": "执行基本信息",
-           "execResult": "执行结果",
-           "iterationResult": "迭代结果",
-           "logInfo": "日志信息",
-           "schedulingLog": "执行调度日志",
-           "samplingLog": "执行采样日志"
-         }
-       },
-       "summary": {
-         "title": "摘要",
-         "fields": {
-           "testPassed": "测试是否通过",
-           "description": "描述",
-           "contact": "联系人",
-           "copyright": "版权说明",
-           "other": "其他"
-         },
-         "status": {
-           "passed": "通过",
-           "failed": "未通过"
-         }
-       },
-       "detail": {
-         "title": "执行信息",
-         "basicInfo": {
-           "title": "执行基本信息",
-           "fields": {
-             "name": "名称",
-             "testScriptId": "测试脚本ID",
-             "testScriptName": "测试脚本名称",
-             "plugin": "插件",
-             "status": "状态",
-             "type": "类型",
-             "priority": "优先级",
-             "startTime": "开始时间",
-             "endTime": "结束时间",
-             "nodeCount": "节点数",
-             "reportInterval": "报告间隔",
-             "ignoreAssertions": "忽略断言",
-             "updateTestResult": "更新测试结果",
-             "creator": "添加人",
-             "createTime": "添加时间"
-           },
-           "options": {
-             "ignore": "忽略",
-             "notIgnore": "不忽略",
-             "update": "更新",
-             "notUpdate": "不更新"
-           }
-         },
-         "execResult": {
-           "title": "执行结果",
-           "fields": {
-             "testResult": "测试结果",
-             "failureReason": "失败原因",
-             "testCases": "测试用例"
-           },
-           "summary": {
-             "total": "总共",
-             "passed": "通过",
-             "failed": "未通过",
-             "disabled": "未启用"
-           }
-         }
-       },
-       "log": {
-         "title": "日志信息",
-         "schedulingLog": {
-           "title": "执行调度信息",
-           "fields": {
-             "schedulingResult": "调度结果",
-             "processExitCode": "进程退出码"
-           },
-           "status": {
-             "success": "成功",
-             "failed": "失败"
-           }
-         },
-         "samplingLog": {
-           "title": "执行采样信息",
-           "fields": {
-             "file": "文件"
-           },
-           "messages": {
-             "noProxyInfo": "无访问代理信息，连接失败地址："
-           }
-         }
-       }
-     },
-     "execPerf": {
-       "content": "内容",
-       "catalog": {
-         "title": "目录",
-         "sections": {
-           "execInfo": "执行信息",
-           "execBasicInfo": "执行基本信息",
-           "execResult": "执行结果",
-           "summaryResult": "汇总结果",
-           "samplingIndicators": "采样指标",
-           "throughput": "吞吐量",
-           "concurrency": "并发数",
-           "responseTime": "响应时间",
-           "error": "错误",
-           "statusCode": "状态码",
-           "nodeResources": "节点资源",
-           "overlayAnalysis": "叠加分析",
-           "logInfo": "日志信息",
-           "schedulingLog": "执行调度日志",
-           "samplingLog": "执行采样日志"
-         }
-       },
-       "summary": {
-         "title": "摘要",
-         "fields": {
-           "testPassed": "测试是否通过",
-           "execStatus": "执行状态",
-           "description": "描述",
-           "contact": "联系人",
-           "copyright": "版权说明",
-           "other": "其他"
-         },
-         "status": {
-           "passed": "通过",
-           "failed": "未通过"
-         }
-       },
-       "detail": {
-         "title": "执行信息",
-         "basicInfo": {
-           "title": "执行基本信息",
-           "fields": {
-             "execName": "执行名称",
-             "scriptName": "脚本名称",
-             "testScriptId": "测试脚本ID",
-             "plugin": "插件",
-             "status": "状态",
-             "type": "类型",
-             "priority": "优先级",
-             "startTime": "开始时间",
-             "endTime": "结束时间",
-             "nodeCount": "节点数",
-             "samplingInterval": "采样间隔",
-             "ignoreAssertions": "忽略断言",
-             "updateTestResult": "更新测试结果",
-             "creator": "添加人",
-             "createTime": "添加时间"
-           },
-           "options": {
-             "ignore": "忽略",
-             "notIgnore": "不忽略",
-             "update": "更新",
-             "notUpdate": "不更新"
-           }
-         },
-         "execResult": {
-           "title": "执行结果",
-           "fields": {
-             "failureReason": "失败原因"
-           }
-         }
-       },
-       "samplingSummary": {
-         "title": "汇总结果",
-         "fields": {
-           "name": "名称",
-           "samplingCount": "采样数",
-           "transactionCount": "事务数",
-           "tps": "每秒事务数",
-           "errorRate": "错误率",
-           "responseTimeStats": "平均/最小/最大/P50/P75/P90/P99/P999(ms)",
-           "downloadPerSecond": "下载/秒",
-           "uploadPerSecond": "上传/秒"
-         }
-       },
-       "sampling": {
-         "title": "采样指标",
-         "fields": {
-           "exitCode": "退出码",
-           "samplingStatus": "采样状态",
-           "failureReason": "失败原因"
-         }
-       },
-       "log": {
-         "title": "日志信息",
-         "schedulingLog": {
-           "title": "执行调度信息",
-           "fields": {
-             "schedulingResult": "调度结果",
-             "processExitCode": "进程退出码"
-           },
-           "status": {
-             "success": "成功",
-             "failed": "失败"
-           }
-         },
-         "samplingLog": {
-           "title": "执行采样信息",
-           "fields": {
-             "file": "文件"
-           },
-           "messages": {
-             "noProxyInfo": "无访问代理信息，连接失败地址："
-           }
-         }
-       }
-     },
-     "functionCase": {
-       "content": "内容",
-       "catalog": {
-         "title": "目录",
-         "sections": {
-           "basicInfo": "基本信息",
-           "personnelInfo": "人员信息",
-           "dateInfo": "日期信息",
-           "precondition": "前置条件",
-           "testSteps": "测试步骤",
-           "description": "描述",
-           "reviewInfo": "评审信息",
-           "testInfo": "测试信息",
-           "assocTask": "关联任务",
-           "assocCase": "关联用例",
-           "activity": "活动",
-           "comment": "评论"
-         }
-       },
-       "summary": {
-         "title": "摘要",
-         "fields": {
-           "testResult": "测试结果",
-           "description": "描述",
-           "contact": "联系人",
-           "copyright": "版权说明",
-           "other": "其他"
-         }
-       },
-       "info": {
-         "basic": {
-           "title": "基本信息",
-           "fields": {
-             "name": "名称",
-             "priority": "优先级",
-             "testResult": "测试结果",
-             "code": "编号",
-             "reviewStatus": "评审状态",
-             "project": "所属项目",
-             "module": "所属模块",
-             "tags": "标签",
-             "workloadEvalMethod": "工作量评估方式",
-             "evalWorkload": "评估工作量",
-             "actualWorkload": "实际工作量",
-             "processCount": "处理次数",
-             "processFailCount": "处理失败次数",
-             "overdue": "是否逾期",
-             "oneTimePass": "一次性通过",
-             "unplannedCase": "计划外用例"
-           },
-           "options": {
-             "yes": "是",
-             "no": "否",
-             "storyPoint": "评估故事点",
-             "workTime": "评估工时",
-             "actualStoryPoint": "实际故事点",
-             "actualWorkTime": "实际工时"
-           }
-         },
-         "personnel": {
-           "title": "人员信息",
-           "fields": {
-             "tester": "测试人",
-             "creator": "添加人",
-             "reviewer": "评审人",
-             "lastModifier": "最后修改人"
-           }
-         },
-         "date": {
-           "title": "日期信息",
-           "fields": {
-             "testCompleteTime": "测试完成时间",
-             "deadline": "截止时间",
-             "reviewTime": "评审时间",
-             "createTime": "添加时间",
-             "lastModifyTime": "最后修改时间"
-           }
-         },
-         "precondition": {
-           "title": "前置条件",
-           "noData": "无"
-         },
-         "testSteps": {
-           "title": "测试步骤",
-           "fields": {
-             "code": "编号",
-             "testStep": "测试步骤",
-             "expectedResult": "预期结果"
-           },
-           "noData": "无"
-         },
-         "description": {
-           "title": "描述",
-           "noData": "无"
-         },
-         "testInfo": {
-           "title": "测试信息",
-           "fields": {
-             "testCount": "测试次数",
-             "testFailCount": "测试失败次数",
-             "oneTimeTestPass": "一次性测试通过",
-             "testRemark": "测试备注"
-           },
-           "options": {
-             "yes": "是",
-             "no": "否"
-           }
-         }
-       },
-       "review": {
-         "title": "评审信息",
-         "fields": {
-           "enableReview": "是否开启评审",
-           "reviewCount": "评审次数",
-           "reviewFailCount": "评审失败次数",
-           "oneTimeReviewPass": "一次性评审通过",
-           "reviewOpinion": "评审意见"
-         },
-         "options": {
-           "yes": "是",
-           "no": "否"
-         }
-       },
-       "assocTask": {
-         "title": "关联任务",
-         "fields": {
-           "code": "编码",
-           "type": "类型",
-           "name": "名称",
-           "status": "状态",
-           "assignee": "经办人"
-         },
-         "noData": "无"
-       },
-       "assocCase": {
-         "title": "关联用例",
-         "fields": {
-           "code": "编码",
-           "name": "名称",
-           "testStatus": "测试状态",
-           "reviewStatus": "评审状态",
-           "tester": "测试人"
-         },
-         "noData": "无"
-       },
-       "activity": {
-         "title": "活动",
-         "fields": {
-           "activityTime": "活动时间",
-           "activityPerson": "活动人",
-           "activityDescription": "活动描述"
-         },
-         "noData": "无"
-       },
-       "comment": {
-         "title": "评论",
-         "fields": {
-           "commentTime": "评论时间",
-           "commenter": "评论人",
-           "commentContent": "评论内容",
-           "reply": "回复"
-         },
-         "noData": "无"
-       }
-     },
-     "functionPlan": {
-       "content": "内容",
-       "catalog": {
-         "title": "目录",
-         "sections": {
-           "planInfo": "测试计划信息",
-           "basicInfo": "基本信息",
-           "testerAndDuty": "测试人与职责",
-           "testTarget": "测试目标",
-           "testScope": "测试范围",
-           "acceptanceCriteria": "验收标准",
-           "otherInfo": "其他说明",
-           "caseSummary": "用例汇总结果",
-           "testSummary": "测试汇总结果",
-           "reviewSummary": "评审汇总结果",
-           "burndownChart": "燃尽图",
-           "groupStats": "分组统计",
-           "testerSummary": "测试人汇总结果"
-         }
-       },
-       "summary": {
-         "title": "摘要",
-         "fields": {
-           "progress": "进度",
-           "description": "描述",
-           "contact": "联系人",
-           "copyright": "版权说明",
-           "other": "其他"
-         }
-       },
-       "detail": {
-         "title": "计划详细信息",
-         "basicInfo": {
-           "title": "基本信息",
-           "fields": {
-             "planName": "计划名称",
-             "casePrefix": "用例前缀",
-             "status": "状态",
-             "owner": "负责人",
-             "project": "所属项目",
-             "timePlan": "时间计划",
-             "creator": "添加人",
-             "createTime": "添加时间",
-             "workloadEvalMethod": "工作量评估方式",
-             "reviewCase": "是否评审用例"
-           },
-           "options": {
-             "yes": "是",
-             "no": "否"
-           }
-         },
-         "testerAndDuty": {
-           "title": "测试人与职责",
-           "fields": {
-             "tester": "测试人",
-             "duty": "职责"
-           }
-         },
-         "testTarget": {
-           "title": "测试目标",
-           "noData": "无"
-         },
-         "testScope": {
-           "title": "测试范围",
-           "noData": "无"
-         },
-         "acceptanceCriteria": {
-           "title": "验收标准",
-           "noData": "无"
-         },
-         "otherInfo": {
-           "title": "其他说明",
-           "noData": "无"
-         }
-       },
-       "caseSummary": {
-         "title": "用例汇总结果",
-         "testSummary": {
-           "title": "测试汇总结果",
-           "fields": {
-             "progress": "进度",
-             "totalCases": "用例总数",
-             "validCases": "有效用例数",
-             "pendingTest": "待测试数",
-             "passed": "通过数",
-             "failed": "未通过数",
-             "blocked": "阻塞数",
-             "cancelled": "取消数",
-             "overdue": "逾期数",
-             "overdueRate": "逾期率",
-             "oneTimeTestPass": "一次性测试通过数",
-             "oneTimeTestPassRate": "一次性测试通过率",
-             "oneTimeReviewPassRate": "一次性评审通过率",
-             "estimatedWorkload": "评估工作量",
-             "actualWorkload": "实际工作量",
-             "completedWorkload": "完成工作量",
-             "savedWorkload": "节省工作量",
-             "workloadSaveRate": "工作量节省率"
-           }
-         },
-         "reviewSummary": {
-           "title": "评审汇总结果",
-           "fields": {
-             "totalReviewCases": "总评审用例数",
-             "pendingReview": "待评审数",
-             "reviewPassed": "评审通过数",
-             "reviewFailed": "评审未通过数",
-             "reviewed": "已评审数",
-             "notReviewed": "未评审数",
-             "totalReviewCount": "总评审次数",
-             "oneTimeReviewPass": "一次性通过评审数",
-             "oneTimeReviewPassRate": "一次性评审通过率"
-           }
-         },
-         "burndownChart": {
-           "title": "燃尽图",
-           "caseCount": "用例数",
-           "workload": "工作量",
-           "remaining": "剩余",
-           "expected": "期望"
-         },
-         "groupStats": {
-           "title": "分组统计",
-           "byStatus": "按状态分组",
-           "byPriority": "按优先级分组",
-           "statuses": {
-             "cancelled": "已取消",
-             "blocked": "阻塞",
-             "testFailed": "测试未通过",
-             "testPassed": "测试通过",
-             "pendingTest": "待测试"
-           },
-           "priorities": {
-             "highest": "最高",
-             "high": "高",
-             "medium": "中",
-             "low": "底",
-             "lowest": "最底"
-           }
-         }
-       },
-       "caseDetail": {
-         "title": "测试人汇总结果",
-         "testSummary": {
-           "title": "测试汇总结果",
-           "fields": {
-             "progress": "进度",
-             "totalCases": "用例总数",
-             "validCases": "有效用例数",
-             "pendingTest": "待测试数",
-             "passed": "通过数",
-             "failed": "未通过数",
-             "blocked": "阻塞数",
-             "cancelled": "取消数",
-             "overdue": "逾期数",
-             "overdueRate": "逾期率",
-             "oneTimeTestPass": "一次性测试通过数",
-             "oneTimeTestPassRate": "一次性测试通过率",
-             "oneTimeReviewPassRate": "一次性评审通过率",
-             "estimatedWorkload": "评估工作量",
-             "actualWorkload": "实际工作量",
-             "completedWorkload": "完成工作量",
-             "savedWorkload": "节省工作量",
-             "workloadSaveRate": "工作量节省率"
-           }
-         },
-         "reviewSummary": {
-           "title": "评审汇总结果",
-           "fields": {
-             "totalReviewCases": "总评审用例数",
-             "pendingReview": "待评审数",
-             "reviewPassed": "评审通过数",
-             "reviewFailed": "评审未通过数",
-             "reviewed": "已评审数",
-             "notReviewed": "未评审数",
-             "totalReviewCount": "总评审次数",
-             "oneTimeReviewPass": "一次性通过评审数",
-             "oneTimeReviewPassRate": "一次性评审通过率"
-           }
-         },
-         "burndownChart": {
-           "title": "燃尽图"
-         },
-         "groupStats": {
-           "title": "分组统计"
-         },
-         "caseList": {
-           "fields": {
-             "code": "编码",
-             "priority": "优先级",
-             "module": "所属模块",
-             "overdue": "是否逾期",
-             "deadline": "截止时间",
-             "tester": "测试人",
-             "testResult": "测试结果",
-             "testResultRemark": "测试结果备注",
-             "testCompleteTime": "测试完成时间",
-             "reviewCase": "是否评审用例",
-             "reviewStatus": "评审状态",
-             "reviewer": "评审人",
-             "reviewOpinion": "评审意见",
-             "reviewTime": "评审时间",
-             "workloadEvalMethod": "工作量评估方式",
-             "estimatedWorkload": "评估工作量",
-             "actualWorkload": "实际工作量",
-             "totalTestCount": "总测试次数",
-             "testFailCount": "测试失败次数",
-             "creator": "添加人",
-             "createTime": "添加时间",
-             "lastModifier": "最后修改人",
-             "lastModifyTime": "最后修改时间"
-           },
-           "options": {
-             "yes": "是",
-             "no": "否"
-           }
-         }
-       }
-     },
-     "projectProgress": {
-       "content": "内容",
-       "catalog": {
-         "title": "目录",
-         "sections": {
-           "projectInfo": "项目信息",
-           "devTask": "研发任务",
-           "taskSummary": "任务汇总结果",
-           "taskBurndownChart": "任务燃尽图",
-           "taskGroupStats": "任务分组统计",
-           "funcTest": "功能测试",
-           "caseTestSummary": "用例测试汇总结果",
-           "caseReviewSummary": "用例评审汇总结果",
-           "caseBurndownChart": "用例燃尽图",
-           "caseGroupStats": "用例分组统计",
-           "apiTest": "接口测试",
-           "apiTestSummary": "接口测试汇总结果",
-           "apiGroupStats": "接口分组统计",
-           "scenarioTest": "场景测试",
-           "scenarioTestSummary": "场景测试汇总结果",
-           "scenarioGroupStats": "场景分组统计"
-         }
-       },
-       "summary": {
-         "title": "摘要",
-         "fields": {
-           "progress": "进度",
-           "description": "描述",
-           "contact": "联系人",
-           "copyright": "版权说明",
-           "other": "其他"
-         }
-       },
-       "info": {
-         "title": "项目信息",
-         "fields": {
-           "name": "名称",
-           "planTime": "计划时间",
-           "owner": "负责人",
-           "members": "成员",
-           "description": "描述"
-         }
-       },
-       "taskSummary": {
-         "title": "研发任务",
-         "summary": {
-           "title": "任务汇总结果",
-           "fields": {
-             "progress": "进度",
-             "totalTasks": "任务总数",
-             "validTasks": "有效任务数",
-             "totalBugs": "缺陷总数",
-             "validBugs": "有效缺陷数",
-             "pendingCount": "待处理数",
-             "processingCount": "处理中数",
-             "pendingConfirmCount": "待确认数",
-             "completedCount": "完成数",
-             "cancelledCount": "取消数",
-             "overdueCount": "逾期数",
-             "overdueRate": "逾期率",
-             "oneTimePassCount": "一次性通过数",
-             "oneTimePassRate": "一次性通过率",
-             "estimatedWorkload": "评估工作量",
-             "actualWorkload": "实际工作量",
-             "completedWorkload": "完成工作量",
-             "savedWorkload": "节省工作量",
-             "workloadSaveRate": "工作量节省率"
-           }
-         },
-         "burndownChart": {
-           "title": "任务燃尽图",
-           "remaining": "剩余",
-           "expected": "期望",
-           "caseCount": "用例数",
-           "workload": "工作量",
-           "taskCount": "任务数"
-         },
-         "groupStats": {
-           "title": "任务分组统计",
-           "byStatus": "按状态分组",
-           "byPriority": "按优先级分组",
-           "byTaskType": "按任务类型分组",
-           "total": "总数",
-           "statuses": {
-             "cancelled": "已取消",
-             "completed": "已完成",
-             "pendingConfirm": "待确认",
-             "processing": "进行中",
-             "pending": "待处理"
-           },
-           "priorities": {
-             "highest": "最高",
-             "high": "高",
-             "medium": "中",
-             "low": "低",
-             "lowest": "最低"
-           },
-           "taskTypes": {
-             "bug": "缺陷",
-             "task": "任务",
-             "story": "故事",
-             "requirement": "需求",
-             "apiTest": "接口测试",
-             "scenarioTest": "场景测试"
-           }
-         }
-       },
-       "funcCaseSummary": {
-         "title": "功能用例",
-         "testSummary": {
-           "title": "用例测试汇总结果",
-           "fields": {
-             "progress": "进度",
-             "totalCases": "用例总数",
-             "validCases": "有效用例数",
-             "pendingTest": "待测试数",
-             "passed": "通过数",
-             "failed": "未通过数",
-             "blocked": "阻塞数",
-             "cancelled": "取消数",
-             "overdue": "逾期数",
-             "overdueRate": "逾期率",
-             "oneTimeTestPass": "一次性测试通过数",
-             "oneTimeTestPassRate": "一次性测试通过率",
-             "oneTimeReviewPassRate": "一次性评审通过率",
-             "estimatedWorkload": "评估工作量",
-             "actualWorkload": "实际工作量",
-             "completedWorkload": "完成工作量",
-             "savedWorkload": "节省工作量",
-             "workloadSaveRate": "工作量节省率"
-           }
-         },
-         "reviewSummary": {
-           "title": "用例评审汇总结果",
-           "fields": {
-             "progress": "进度",
-             "totalReviewCases": "总评审用例数",
-             "pendingReview": "待评审数",
-             "reviewPassed": "评审通过数",
-             "reviewFailed": "评审未通过数",
-             "reviewed": "已评审数",
-             "notReviewed": "未评审数",
-             "totalReviewCount": "总评审次数",
-             "oneTimeReviewPass": "一次性通过评审数",
-             "oneTimeReviewPassRate": "一次性评审通过率"
-           }
-         },
-         "burndownChart": {
-           "title": "用例燃尽图",
-           "remaining": "剩余",
-           "expected": "期望",
-           "caseCount": "用例数",
-           "workload": "工作量"
-         },
-         "groupStats": {
-           "title": "用例分组统计",
-           "byStatus": "按状态分组",
-           "byPriority": "按优先级分组",
-           "total": "总数",
-           "statuses": {
-             "cancelled": "已取消",
-             "blocked": "阻塞",
-             "testFailed": "测试未通过",
-             "testPassed": "测试通过",
-             "pendingTest": "待测试"
-           },
-           "priorities": {
-             "highest": "最高",
-             "high": "高",
-             "medium": "中",
-             "low": "低",
-             "lowest": "最低"
-           }
-         }
-       },
-       "apiSummary": {
-         "title": "接口测试",
-         "testSummary": {
-           "title": "接口测试汇总结果",
-           "fields": {
-             "progress": "进度",
-             "totalApis": "接口总数",
-             "enabledApiTest": "启用接口测试",
-             "disabledApiTest": "未启用接口测试",
-             "apiFuncTest": "接口功能测试",
-             "apiPerfTest": "接口性能测试",
-             "apiStabilityTest": "接口稳定性测试",
-             "testedApis": "已测试接口",
-             "passedApis": "已通过接口",
-             "failedApis": "未通过接口"
-           }
-         },
-         "groupStats": {
-           "title": "接口分组统计",
-           "byStatus": "按状态分组",
-           "byRequestMethod": "按请求方法分组",
-           "total": "总数",
-           "statuses": {
-             "published": "已发布",
-             "devCompleted": "开发完成",
-             "devInProgress": "开发中",
-             "designing": "设计中",
-             "unknown": "未知"
-           }
-         }
-       },
-       "scenarioTestSummary": {
-         "title": "场景测试",
-         "testSummary": {
-           "title": "场景测试汇总结果",
-           "fields": {
-             "progress": "进度",
-             "totalScenarios": "场景总数",
-             "enabledScenarioTest": "启用场景测试",
-             "disabledScenarioTest": "未启用场景测试",
-             "scenarioFuncTest": "场景功能测试",
-             "scenarioPerfTest": "场景性能测试",
-             "scenarioStabilityTest": "场景稳定性测试",
-             "testedScenarios": "已测试场景",
-             "passedScenarios": "已通过场景",
-             "failedScenarios": "未通过场景"
-           }
-         },
-         "groupStats": {
-           "title": "场景分组统计",
-           "byProtocol": "按协议分组",
-           "byTestType": "按测试类型分组",
-           "total": "总数",
-           "quantity": "数量",
-           "testTypes": {
-             "perfTest": "性能测试",
-             "stabilityTest": "稳定性测试",
-             "funcTest": "功能测试",
-             "customTest": "自定义测试"
-           }
-         }
-       }
-     },
-     "scenario": {
-       "content": "内容",
-       "catalog": {
-         "title": "目录",
-         "sections": {
-           "scenarioInfo": "场景信息",
-           "scenarioTestSummary": "场景测试汇总结果",
-           "scenarioTestResultDetail": "场景测试结果详细信息",
-           "funcTestResult": "功能测试结果",
-           "perfTestResult": "性能测试结果",
-           "stabilityTestResult": "稳定性测试结果"
-         }
-       },
-       "summary": {
-         "title": "摘要",
-         "fields": {
-           "testPassed": "测试是否通过",
-           "description": "描述",
-           "contact": "联系人",
-           "copyright": "版权说明",
-           "other": "其他"
-         },
-         "options": {
-           "passed": "通过",
-           "failed": "未通过",
-           "notTested": "未测试"
-         }
-       },
-       "info": {
-         "title": "场景信息",
-         "fields": {
-           "name": "名称",
-           "description": "描述",
-           "project": "所属项目",
-           "plugin": "插件",
-           "scriptType": "脚本类型",
-           "scriptId": "脚本ID",
-           "scriptName": "脚本名称",
-           "creator": "添加人",
-           "createTime": "添加时间",
-           "lastModifier": "最后修改人",
-           "lastModifyTime": "最后修改时间"
-         }
-       },
-       "testResult": {
-         "title": "场景测试汇总结果",
-         "fields": {
-           "passed": "是否通过",
-           "enableFuncTest": "开启功能测试",
-           "funcTestPassed": "功能测试通过",
-           "funcTestFailReason": "功能测试失败原因",
-           "enablePerfTest": "开启性能测试",
-           "perfTestPassed": "性能测试通过",
-           "perfTestFailReason": "性能测试失败原因",
-           "enableStabilityTest": "开启稳定性测试",
-           "stabilityTestPassed": "稳定性测试通过",
-           "stabilityTestFailReason": "稳定性测试失败原因"
-         },
-         "options": {
-           "passed": "通过",
-           "failed": "未通过",
-           "notTested": "未测试",
-           "enabled": "开启",
-           "disabled": "未开启"
-         }
-       },
-       "testResultDetail": {
-         "title": "场景测试详细结果信息",
-         "funcTestResult": {
-           "title": "功能测试结果",
-           "basicInfo": {
-             "title": "测试基本信息",
-             "fields": {
-               "testResult": "测试结果",
-               "testFailReason": "测试失败原因",
-               "testCount": "测试次数",
-               "failCount": "失败次数",
-               "testScriptId": "测试脚本ID",
-               "testScriptName": "测试脚本名称",
-               "execId": "执行ID",
-               "execName": "执行名称",
-               "lastExecutor": "最后执行人",
-               "lastExecTime": "最后执行时间"
-             },
-             "options": {
-               "passed": "通过",
-               "failed": "未通过",
-               "notTested": "未测试"
-             }
-           },
-           "apiStats": {
-             "title": "测试接口统计",
-             "fields": {
-               "totalCases": "用例总数",
-               "passedCount": "通过数",
-               "failedCount": "未通过数",
-               "disabledCount": "未启用数"
-             }
-           },
-           "caseResultDetail": {
-             "title": "测试用例结果明细",
-             "fields": {
-               "type": "类型",
-               "enabled": "是否启用",
-               "testPassed": "是否测试通过",
-               "testFailReason": "测试失败原因",
-               "testCount": "测试次数",
-               "testFailCount": "测试失败次数"
-             },
-             "options": {
-               "enabled": "开启",
-               "disabled": "未开启",
-               "passed": "通过",
-               "failed": "未通过",
-               "notTested": "未测试"
-             }
-           },
-           "noData": "无"
-         },
-         "perfTestResult": {
-           "title": "性能测试",
-           "basicInfo": {
-             "title": "测试基本信息",
-             "fields": {
-               "testResult": "测试结果",
-               "testFailReason": "测试失败原因",
-               "testCount": "测试次数",
-               "failCount": "失败次数",
-               "testScriptId": "测试脚本ID",
-               "testScriptName": "测试脚本名称",
-               "execId": "执行ID",
-               "execName": "执行名称",
-               "lastExecutor": "最后执行人",
-               "lastExecTime": "最后执行时间"
-             },
-             "options": {
-               "passed": "通过",
-               "failed": "未通过",
-               "notTested": "未测试"
-             }
-           },
-           "metrics": {
-             "title": "测试指标和结果",
-             "performanceMetrics": "性能指标",
-             "result": "结果",
-             "fields": {
-               "concurrency": "并发数",
-               "testDuration": "测试时长",
-               "rampUpConcurrency": "增压并发数",
-               "rampUpDuration": "增压测试时长",
-               "responseTime": "响应时间",
-               "tps": "每秒事务数",
-               "errorRate": "错误率"
-             }
-           },
-           "noData": "无"
-         },
-         "stabilityTestResult": {
-           "title": "稳定性测试",
-           "basicInfo": {
-             "title": "测试基本信息",
-             "fields": {
-               "testResult": "测试结果",
-               "testFailReason": "测试失败原因",
-               "testCount": "测试次数",
-               "failCount": "失败次数",
-               "testScriptId": "测试脚本ID",
-               "testScriptName": "测试脚本名称",
-               "execId": "执行ID",
-               "execName": "执行名称",
-               "lastExecutor": "最后执行人",
-               "lastExecTime": "最后执行时间"
-             },
-             "options": {
-               "passed": "通过",
-               "failed": "未通过",
-               "notTested": "未测试"
-             }
-           },
-           "metrics": {
-             "title": "测试指标和结果",
-             "stabilityMetrics": "稳定性指标",
-             "result": "结果",
-             "fields": {
-               "concurrency": "并发数",
-               "testDuration": "测试时长",
-               "rampUpConcurrency": "增压并发时数",
-               "rampUpDuration": "增压并发时长",
-               "responseTime": "响应时间",
-               "tps": "每秒事务数(TPS)",
-               "errorRate": "错误率"
-             }
-           },
-           "nodeResources": {
-             "title": "节点资源",
-             "fields": {
-               "cpuUsage": "cpu使用率",
-               "memoryUsage": "内存使用率",
-               "diskUsage": "磁盘使用率",
-               "networkUsage": "网络使用量"
-             }
-           },
-           "systemLoad": {
-             "title": "应用系统平均负载",
-             "average": "平均",
-             "maximum": "最大"
-           },
-           "noData": "无"
-         }
-       }
-     },
-     "services": {
-       "content": "内容",
-       "catalog": {
-         "title": "目录",
-         "sections": {
-           "serviceInfo": "服务信息",
-           "apiGroupStats": "接口分组统计",
-           "testResultSummary": "测试结果汇总",
-           "testProgress": "测试进度",
-           "testApiStats": "测试接口统计",
-           "testStatusStats": "测试状态统计"
-         }
-       },
-       "summary": {
-         "title": "摘要",
-         "fields": {
-           "serviceStatus": "服务状态",
-           "description": "描述",
-           "contact": "联系人",
-           "copyright": "版权说明",
-           "other": "其他"
-         }
-       },
-       "info": {
-         "title": "服务信息",
-         "fields": {
-           "name": "名称",
-           "status": "状态",
-           "project": "所属项目",
-           "apiCount": "接口数",
-           "apiCaseCount": "接口用例数",
-           "creator": "添加人",
-           "createTime": "添加时间",
-           "lastModifier": "最后修改人",
-           "lastModifyTime": "最后修改时间"
-         }
-       },
-       "apisGroup": {
-         "title": "接口分组统计",
-         "byStatus": {
-           "title": "按状态分组",
-           "statuses": {
-             "unknown": "未知",
-             "designing": "设计中",
-             "devInProgress": "开发中",
-             "devCompleted": "开发完成",
-             "published": "已发布"
-           }
-         },
-         "byRequestMethod": {
-           "title": "按请求方法分组"
-         },
-         "total": "总数"
-       },
-       "result": {
-         "title": "测试结果汇总",
-         "testProgress": {
-           "title": "测试进度",
-           "totalApis": "总接口",
-           "progress": "进度"
-         },
-         "testApiStats": {
-           "title": "测试接口统计",
-           "columns": {
-             "totalTestCount": "总测试数",
-             "funcTest": "功能测试",
-             "perfTest": "性能测试",
-             "stabilityTest": "稳定性测试"
-           }
-         },
-         "testStatusStats": {
-           "title": "测试状态统计",
-           "fields": {
-             "tested": "已测试",
-             "notTested": "未测试",
-             "passed": "已通过",
-             "failed": "未通过"
-           }
-         }
-       },
-       "apiResultDetail": {
-         "title": "接口测试结果明细",
-         "fields": {
-           "apiUrl": "接口地址",
-           "requestMethod": "请求方法",
-           "operationId": "操作ID",
-           "owner": "负责人",
-           "description": "描述",
-           "enableFuncTest": "开启功能测试",
-           "funcTestPassed": "功能测试通过",
-           "funcTestFailReason": "功能测试失败原因",
-           "enablePerfTest": "开启性能测试",
-           "perfTestPassed": "性能测试通过",
-           "perfTestFailReason": "性能测试失败原因",
-           "enableStabilityTest": "开启稳定性测试",
-           "stabilityTestPassed": "稳定性测试通过",
-           "stabilityTestFailReason": "稳定性测试失败原因"
-         },
-         "options": {
-           "yes": "是",
-           "no": "否",
-           "notTested": "未测试"
-         }
-       }
-     },
-     "sprint": {
-       "content": "内容",
-       "catalog": {
-         "title": "目录",
-         "sections": {
-           "sprintDetail": "迭代详细信息",
-           "basicInfo": "基本信息",
-           "acceptanceCriteria": "验收标准",
-           "testScope": "测试范围",
-           "otherInfo": "其他说明",
-           "devTask": "研发任务",
-           "taskSummary": "任务汇总结果",
-           "burndownChart": "燃尽图",
-           "groupStats": "分组统计",
-           "assigneeSummary": "经办人汇总结果"
-         }
-       },
-       "summary": {
-         "title": "摘要",
-         "fields": {
-           "progress": "进度",
-           "description": "描述",
-           "contact": "联系人",
-           "copyright": "版权说明",
-           "other": "其他"
-         }
-       },
-       "sprintDetail": {
-         "title": "迭代信息",
-         "basicInfo": {
-           "title": "基本信息",
-           "fields": {
-             "name": "名称",
-             "taskPrefix": "任务前缀",
-             "status": "状态",
-             "owner": "负责人",
-             "project": "所属项目",
-             "sprintTime": "迭代时间",
-             "creator": "添加人",
-             "createTime": "添加时间",
-             "workloadEstimationMethod": "工作量评估方式"
-           }
-         },
-         "acceptanceCriteria": {
-           "title": "验收标准",
-           "noData": "无"
-         },
-         "meetingRecord": {
-           "title": "会议记录",
-           "noData": "无",
-           "meetingTopic": "会议主题",
-           "fields": {
-             "meetingType": "会议类型",
-             "meetingDate": "会议日期",
-             "meetingTime": "会议时间",
-             "to": "至",
-             "meetingLocation": "会议地点",
-             "meetingHost": "会议主持",
-             "attendees": "参会人员",
-             "meetingContent": "会议内容"
-           }
-         },
-         "otherInfo": {
-           "title": "其他说明",
-           "noData": "无"
-         }
-       },
-       "taskDetail": {
-         "title": "任务详情",
-         "fields": {
-           "code": "编码",
-           "priority": "优先级",
-           "module": "所属模块",
-           "taskType": "任务类型",
-           "testType": "测试类型",
-           "taskStatus": "任务状态",
-           "completionTime": "完成时间",
-           "overdue": "是否逾期",
-           "deadline": "截止时间",
-           "assignee": "经办人",
-           "startTime": "开始时间",
-           "confirmTask": "是否确认任务",
-           "confirmer": "确认人",
-           "workloadEstimationMethod": "工作量评估方式",
-           "estimatedWorkload": "评估工作量",
-           "actualWorkload": "实际工作量",
-           "totalProcessCount": "总处理次数",
-           "failedProcessCount": "处理失败次数",
-           "creator": "添加人",
-           "createTime": "添加时间",
-           "lastModifier": "最后修改人",
-           "lastModifyTime": "最后修改时间"
-         },
-         "options": {
-           "yes": "是",
-           "no": "否"
-         }
-       },
-       "taskSummary": {
-         "title": "研发任务",
-         "summary": {
-           "title": "任务汇总结果",
-           "fields": {
-             "progress": "进度",
-             "totalTasks": "任务总数",
-             "validTasks": "有效任务数",
-             "totalBugs": "缺陷总数",
-             "validBugs": "有效缺陷数",
-             "pendingCount": "待处理数",
-             "processingCount": "处理中数",
-             "pendingConfirmCount": "待确认数",
-             "completedCount": "完成数",
-             "cancelledCount": "取消数",
-             "overdueCount": "逾期数",
-             "overdueRate": "逾期率",
-             "oneTimePassCount": "一次性通过数",
-             "oneTimePassRate": "一次性通过率",
-             "estimatedWorkload": "评估工作量",
-             "actualWorkload": "实际工作量",
-             "completedWorkload": "完成工作量",
-             "savedWorkload": "节省工作量",
-             "workloadSaveRate": "工作量节省率"
-           }
-         },
-         "burndownChart": {
-           "title": "燃尽图",
-           "taskCount": "任务数",
-           "workload": "工作量",
-           "remaining": "剩余",
-           "expected": "期望"
-         },
-         "groupStats": {
-           "title": "分组统计",
-           "byStatus": "按状态分组",
-           "byPriority": "按优先级分组",
-           "byTaskType": "按任务类型分组",
-           "total": "总数",
-           "statuses": {
-             "cancelled": "已取消",
-             "completed": "已完成",
-             "pendingConfirm": "待确认",
-             "processing": "进行中",
-             "pending": "待处理"
-           },
-           "priorities": {
-             "highest": "最高",
-             "high": "高",
-             "medium": "中",
-             "low": "低",
-             "lowest": "最低"
-           },
-           "taskTypes": {
-             "bug": "缺陷",
-             "task": "任务",
-             "story": "故事",
-             "requirement": "需求",
-             "apiTest": "接口测试",
-             "scenarioTest": "场景测试"
-           }
-         }
-       },
-       "assigneeSummary": {
-         "title": "经办人汇总结果",
-         "summary": {
-           "title": "任务汇总结果",
-           "fields": {
-             "progress": "进度",
-             "totalTasks": "任务总数",
-             "validTasks": "有效任务数",
-             "totalBugs": "缺陷总数",
-             "validBugs": "有效缺陷数",
-             "pendingCount": "待处理数",
-             "processingCount": "处理中数",
-             "pendingConfirmCount": "待确认数",
-             "completedCount": "完成数",
-             "cancelledCount": "取消数",
-             "overdueCount": "逾期数",
-             "overdueRate": "逾期率",
-             "oneTimePassCount": "一次性通过数",
-             "oneTimePassRate": "一次性通过率",
-             "estimatedWorkload": "评估工作量",
-             "actualWorkload": "实际工作量",
-             "completedWorkload": "完成工作量",
-             "savedWorkload": "节省工作量",
-             "workloadSaveRate": "工作量节省率"
-           }
-         },
-         "burndownChart": {
-           "title": "燃尽图",
-           "taskCount": "任务数",
-           "workload": "工作量",
-           "remaining": "剩余",
-           "expected": "期望"
-         },
-         "groupStats": {
-           "title": "分组统计"
-         }
-       }
-     },
-     "task": {
-       "content": "内容",
-       "catalog": {
-         "title": "目录",
-         "sections": {
-           "basicInfo": "基本信息",
-           "personnelInfo": "人员信息",
-           "dateInfo": "日期信息",
-           "description": "描述",
-           "subTask": "子任务",
-           "assocTask": "关联任务",
-           "assocCase": "关联用例",
-           "testingInfo": "测试信息",
-           "testResource": "测试资源",
-           "execInfo": "执行信息",
-           "testResult": "测试结果",
-           "remark": "备注",
-           "activity": "活动",
-           "comment": "评论"
-         }
-       },
-       "summary": {
-         "title": "摘要",
-         "fields": {
-           "status": "状态",
-           "description": "描述",
-           "contact": "联系人",
-           "copyright": "版权说明",
-           "other": "其他"
-         }
-       },
-       "info": {
-         "basicInfo": {
-           "title": "基本信息",
-           "fields": {
-             "name": "名称",
-             "priority": "优先级",
-             "taskType": "任务类型",
-             "missedDefect": "漏测缺陷",
-             "taskStatus": "任务状态",
-             "project": "所属项目",
-             "code": "编号",
-             "overdue": "是否逾期",
-             "module": "所属模块",
-             "tag": "标签",
-             "workloadEstimationMethod": "工作量评估方式",
-             "estimatedStoryPoint": "评估故事点",
-             "estimatedWorkTime": "评估工时",
-             "actualStoryPoint": "实际故事点",
-             "actualWorkTime": "实际工时",
-             "processCount": "处理次数",
-             "failedProcessCount": "处理失败次数",
-             "oneTimePass": "一次性通过",
-             "unplannedTask": "计划外任务"
-           },
-           "options": {
-             "yes": "是",
-             "no": "否"
-           }
-         },
-         "personnelInfo": {
-           "title": "人员信息",
-           "fields": {
-             "assignee": "经办人",
-             "confirmer": "确认人",
-             "creator": "添加人",
-             "executor": "执行人",
-             "lastModifier": "最后修改人",
-             "tester": "测试人"
-           }
-         },
-         "dateInfo": {
-           "title": "日期信息",
-           "fields": {
-             "deadline": "截止时间",
-             "startTime": "开始时间",
-             "processTime": "处理时间",
-             "confirmTime": "确认时间",
-             "completionTime": "完成时间",
-             "cancelTime": "取消时间",
-             "execTime": "执行时间",
-             "createTime": "添加时间",
-             "lastModifyTime": "最后修改时间"
-           }
-         },
-         "description": {
-           "title": "描述",
-           "noData": "无"
-         },
-         "remark": {
-           "title": "备注",
-           "noData": "无"
-         },
-         "testingInfo": {
-           "title": "测试信息",
-           "testResource": {
-             "title": "测试资源",
-             "fields": {
-               "apiId": "接口ID",
-               "apiName": "接口名称",
-               "scenarioId": "场景ID",
-               "scenarioName": "场景名称"
-             }
-           },
-           "execInfo": {
-             "title": "执行信息",
-             "fields": {
-               "execResult": "执行结果",
-               "execId": "执行ID",
-               "execName": "执行名称",
-               "executor": "执行人",
-               "scriptId": "脚本ID",
-               "scriptName": "脚本名称",
-               "lastExecTime": "最后执行时间"
-             }
-           },
-           "testResult": {
-             "title": "测试结果",
-             "basicInfo": {
-               "title": "基本信息",
-               "fields": {
-                 "testResult": "测试结果",
-                 "oneTimePass": "一次性通过",
-                 "testCount": "测试次数",
-                 "failCount": "失败次数",
-                 "failReason": "失败原因"
-               },
-               "options": {
-                 "passed": "通过",
-                 "failed": "不通过"
-               }
-             }
-           }
-         }
-       },
-       "subTask": {
-         "title": "子任务",
-         "progress": "进度",
-         "fields": {
-           "code": "编码",
-           "type": "类型",
-           "name": "名称",
-           "status": "状态",
-           "assignee": "经办人"
-         },
-         "noData": "无"
-       },
-       "assocTask": {
-         "title": "关联任务",
-         "fields": {
-           "code": "编码",
-           "type": "类型",
-           "name": "名称",
-           "status": "状态",
-           "assignee": "经办人"
-         },
-         "noData": "无"
-       },
-       "assocCase": {
-         "title": "关联用例",
-         "fields": {
-           "code": "编码",
-           "name": "名称",
-           "testStatus": "测试状态",
-           "reviewStatus": "评审状态",
-           "tester": "测试人"
-         },
-         "noData": "无"
-       },
-       "activity": {
-         "title": "活动",
-         "fields": {
-           "activityTime": "活动时间",
-           "activityUser": "活动人",
-           "activityDesc": "活动描述"
-         },
-         "noData": "无"
-       },
-       "comment": {
-         "title": "评论",
-         "fields": {
-           "commentTime": "评论时间",
-           "commentUser": "评论人",
-           "commentContent": "评论内容",
-           "reply": "回复"
-         },
-         "noData": "无"
-       },
-       "testing": {
-         "function": {
-           "title": "功能测试",
-           "caseStats": {
-             "title": "用例统计",
-             "fields": {
-               "totalCases": "总用例数",
-               "passedCases": "通过用例数",
-               "failedCases": "未通过用例数",
-               "disabledCases": "未启用用例数"
-             }
-           },
-           "testedCases": {
-             "title": "已测试用例",
-             "fields": {
-               "caseId": "用例ID",
-               "caseName": "用例名称",
-               "status": "状态"
-             },
-             "options": {
-               "passed": "通过",
-               "failed": "不通过"
-             },
-             "noData": "无"
-           }
-         },
-         "perf": {
-           "title": "性能测试",
-           "resultInfo": {
-             "title": "结果信息",
-             "testParams": "测试参数",
-             "testMetrics": "测试指标",
-             "status": "状态",
-             "fields": {
-               "concurrency": "并发数",
-               "testDuration": "测试时长",
-               "rampUpConcurrency": "增压并发时数",
-               "rampUpDuration": "增压并发时长",
-               "responseTime": "响应时间(RT)",
-               "tps": "每秒事务数(TPS)",
-               "errorRate": "错误率"
-             }
-           },
-           "systemLoad": {
-             "title": "应用系统平均负载",
-             "cpuUsage": "CPU使用率",
-             "memoryUsage": "内存使用率",
-             "diskUsage": "磁盘使用率",
-             "networkUsage": "网络使用量",
-             "maximum": "最大"
-           }
-         },
-         "stability": {
-           "title": "稳定性测试",
-           "resultInfo": {
-             "title": "结果信息",
-             "testParams": "测试参数",
-             "testMetrics": "测试指标",
-             "status": "状态",
-             "fields": {
-               "concurrency": "并发数",
-               "testDuration": "测试时长",
-               "responseTime": "响应时间(art)",
-               "tps": "每秒事务数(TPS)",
-               "errorRate": "错误率"
-             }
-           },
-           "systemLoad": {
-             "title": "应用系统平均负载",
-             "cpuUsage": "CPU使用率",
-             "memoryUsage": "内存使用率",
-             "diskUsage": "磁盘使用率",
-             "networkUsage": "网络使用量",
-             "maximum": "最大"
-           }
-         }
-       }
-     }
-   }
-} 
+          "meetingTopic": "会议主题",
+          "fields": {
+            "meetingType": "会议类型",
+            "meetingDate": "会议日期",
+            "meetingTime": "会议时间",
+            "to": "至",
+            "meetingLocation": "会议地点",
+            "meetingHost": "会议主持",
+            "attendees": "参会人员",
+            "meetingContent": "会议内容"
+          }
+        },
+        "otherInfo": {
+          "title": "其他说明",
+          "noData": "无"
+        }
+      },
+      "taskDetail": {
+        "title": "任务详情",
+        "fields": {
+          "code": "编码",
+          "priority": "优先级",
+          "module": "所属模块",
+          "taskType": "任务类型",
+          "testType": "测试类型",
+          "taskStatus": "任务状态",
+          "completionTime": "完成时间",
+          "overdue": "是否逾期",
+          "deadline": "截止时间",
+          "assignee": "经办人",
+          "startTime": "开始时间",
+          "confirmTask": "是否确认任务",
+          "confirmer": "确认人",
+          "workloadEstimationMethod": "工作量评估方式",
+          "estimatedWorkload": "评估工作量",
+          "actualWorkload": "实际工作量",
+          "totalProcessCount": "总处理次数",
+          "failedProcessCount": "处理失败次数",
+          "creator": "添加人",
+          "createTime": "添加时间",
+          "lastModifier": "最后修改人",
+          "lastModifyTime": "最后修改时间"
+        },
+        "options": {
+          "yes": "是",
+          "no": "否"
+        }
+      },
+      "taskSummary": {
+        "title": "研发任务",
+        "summary": {
+          "title": "任务汇总结果",
+          "fields": {
+            "progress": "进度",
+            "totalTasks": "任务总数",
+            "validTasks": "有效任务数",
+            "totalBugs": "缺陷总数",
+            "validBugs": "有效缺陷数",
+            "pendingCount": "待处理数",
+            "processingCount": "处理中数",
+            "pendingConfirmCount": "待确认数",
+            "completedCount": "完成数",
+            "cancelledCount": "取消数",
+            "overdueCount": "逾期数",
+            "overdueRate": "逾期率",
+            "oneTimePassCount": "一次性通过数",
+            "oneTimePassRate": "一次性通过率",
+            "estimatedWorkload": "评估工作量",
+            "actualWorkload": "实际工作量",
+            "completedWorkload": "完成工作量",
+            "savedWorkload": "节省工作量",
+            "workloadSaveRate": "工作量节省率"
+          }
+        },
+        "burndownChart": {
+          "title": "燃尽图",
+          "taskCount": "任务数",
+          "workload": "工作量",
+          "remaining": "剩余",
+          "expected": "期望"
+        },
+        "groupStats": {
+          "title": "分组统计",
+          "byStatus": "按状态分组",
+          "byPriority": "按优先级分组",
+          "byTaskType": "按任务类型分组",
+          "total": "总数",
+          "statuses": {
+            "cancelled": "已取消",
+            "completed": "已完成",
+            "pendingConfirm": "待确认",
+            "processing": "进行中",
+            "pending": "待处理"
+          },
+          "priorities": {
+            "highest": "最高",
+            "high": "高",
+            "medium": "中",
+            "low": "低",
+            "lowest": "最低"
+          },
+          "taskTypes": {
+            "bug": "缺陷",
+            "task": "任务",
+            "story": "故事",
+            "requirement": "需求",
+            "apiTest": "接口测试",
+            "scenarioTest": "场景测试"
+          }
+        }
+      },
+      "assigneeSummary": {
+        "title": "经办人汇总结果",
+        "summary": {
+          "title": "任务汇总结果",
+          "fields": {
+            "progress": "进度",
+            "totalTasks": "任务总数",
+            "validTasks": "有效任务数",
+            "totalBugs": "缺陷总数",
+            "validBugs": "有效缺陷数",
+            "pendingCount": "待处理数",
+            "processingCount": "处理中数",
+            "pendingConfirmCount": "待确认数",
+            "completedCount": "完成数",
+            "cancelledCount": "取消数",
+            "overdueCount": "逾期数",
+            "overdueRate": "逾期率",
+            "oneTimePassCount": "一次性通过数",
+            "oneTimePassRate": "一次性通过率",
+            "estimatedWorkload": "评估工作量",
+            "actualWorkload": "实际工作量",
+            "completedWorkload": "完成工作量",
+            "savedWorkload": "节省工作量",
+            "workloadSaveRate": "工作量节省率"
+          }
+        },
+        "burndownChart": {
+          "title": "燃尽图",
+          "taskCount": "任务数",
+          "workload": "工作量",
+          "remaining": "剩余",
+          "expected": "期望"
+        },
+        "groupStats": {
+          "title": "分组统计"
+        }
+      }
+    },
+    "task": {
+      "content": "内容",
+      "catalog": {
+        "title": "目录",
+        "sections": {
+          "basicInfo": "基本信息",
+          "personnelInfo": "人员信息",
+          "dateInfo": "日期信息",
+          "description": "描述",
+          "subTask": "子任务",
+          "assocTask": "关联任务",
+          "assocCase": "关联用例",
+          "testingInfo": "测试信息",
+          "testResource": "测试资源",
+          "execInfo": "执行信息",
+          "testResult": "测试结果",
+          "remark": "备注",
+          "activity": "活动",
+          "comment": "评论"
+        }
+      },
+      "summary": {
+        "title": "摘要",
+        "fields": {
+          "status": "状态",
+          "description": "描述",
+          "contact": "联系人",
+          "copyright": "版权说明",
+          "other": "其他"
+        }
+      },
+      "info": {
+        "basicInfo": {
+          "title": "基本信息",
+          "fields": {
+            "name": "名称",
+            "priority": "优先级",
+            "taskType": "任务类型",
+            "missedDefect": "漏测缺陷",
+            "taskStatus": "任务状态",
+            "project": "所属项目",
+            "code": "编号",
+            "overdue": "是否逾期",
+            "module": "所属模块",
+            "tag": "标签",
+            "workloadEstimationMethod": "工作量评估方式",
+            "estimatedStoryPoint": "评估故事点",
+            "estimatedWorkTime": "评估工时",
+            "actualStoryPoint": "实际故事点",
+            "actualWorkTime": "实际工时",
+            "processCount": "处理次数",
+            "failedProcessCount": "处理失败次数",
+            "oneTimePass": "一次性通过",
+            "unplannedTask": "计划外任务"
+          },
+          "options": {
+            "yes": "是",
+            "no": "否"
+          }
+        },
+        "personnelInfo": {
+          "title": "人员信息",
+          "fields": {
+            "assignee": "经办人",
+            "confirmer": "确认人",
+            "creator": "添加人",
+            "executor": "执行人",
+            "lastModifier": "最后修改人",
+            "tester": "测试人"
+          }
+        },
+        "dateInfo": {
+          "title": "日期信息",
+          "fields": {
+            "deadline": "截止时间",
+            "startTime": "开始时间",
+            "processTime": "处理时间",
+            "confirmTime": "确认时间",
+            "completionTime": "完成时间",
+            "cancelTime": "取消时间",
+            "execTime": "执行时间",
+            "createTime": "添加时间",
+            "lastModifyTime": "最后修改时间"
+          }
+        },
+        "description": {
+          "title": "描述",
+          "noData": "无"
+        },
+        "remark": {
+          "title": "备注",
+          "noData": "无"
+        },
+        "testingInfo": {
+          "title": "测试信息",
+          "testResource": {
+            "title": "测试资源",
+            "fields": {
+              "apiId": "接口ID",
+              "apiName": "接口名称",
+              "scenarioId": "场景ID",
+              "scenarioName": "场景名称"
+            }
+          },
+          "execInfo": {
+            "title": "执行信息",
+            "fields": {
+              "execResult": "执行结果",
+              "execId": "执行ID",
+              "execName": "执行名称",
+              "executor": "执行人",
+              "scriptId": "脚本ID",
+              "scriptName": "脚本名称",
+              "lastExecTime": "最后执行时间"
+            }
+          },
+          "testResult": {
+            "title": "测试结果",
+            "basicInfo": {
+              "title": "基本信息",
+              "fields": {
+                "testResult": "测试结果",
+                "oneTimePass": "一次性通过",
+                "testCount": "测试次数",
+                "failCount": "失败次数",
+                "failReason": "失败原因"
+              },
+              "options": {
+                "passed": "通过",
+                "failed": "不通过"
+              }
+            }
+          }
+        }
+      },
+      "subTask": {
+        "title": "子任务",
+        "progress": "进度",
+        "fields": {
+          "code": "编码",
+          "type": "类型",
+          "name": "名称",
+          "status": "状态",
+          "assignee": "经办人"
+        },
+        "noData": "无"
+      },
+      "assocTask": {
+        "title": "关联任务",
+        "fields": {
+          "code": "编码",
+          "type": "类型",
+          "name": "名称",
+          "status": "状态",
+          "assignee": "经办人"
+        },
+        "noData": "无"
+      },
+      "assocCase": {
+        "title": "关联用例",
+        "fields": {
+          "code": "编码",
+          "name": "名称",
+          "testStatus": "测试状态",
+          "reviewStatus": "评审状态",
+          "tester": "测试人"
+        },
+        "noData": "无"
+      },
+      "activity": {
+        "title": "活动",
+        "fields": {
+          "activityTime": "活动时间",
+          "activityUser": "活动人",
+          "activityDesc": "活动描述"
+        },
+        "noData": "无"
+      },
+      "comment": {
+        "title": "评论",
+        "fields": {
+          "commentTime": "评论时间",
+          "commentUser": "评论人",
+          "commentContent": "评论内容",
+          "reply": "回复"
+        },
+        "noData": "无"
+      },
+      "testing": {
+        "function": {
+          "title": "功能测试",
+          "caseStats": {
+            "title": "用例统计",
+            "fields": {
+              "totalCases": "总用例数",
+              "passedCases": "通过用例数",
+              "failedCases": "未通过用例数",
+              "disabledCases": "未启用用例数"
+            }
+          },
+          "testedCases": {
+            "title": "已测试用例",
+            "fields": {
+              "caseId": "用例ID",
+              "caseName": "用例名称",
+              "status": "状态"
+            },
+            "options": {
+              "passed": "通过",
+              "failed": "不通过"
+            },
+            "noData": "无"
+          }
+        },
+        "perf": {
+          "title": "性能测试",
+          "resultInfo": {
+            "title": "结果信息",
+            "testParams": "测试参数",
+            "testMetrics": "测试指标",
+            "status": "状态",
+            "fields": {
+              "concurrency": "并发数",
+              "testDuration": "测试时长",
+              "rampUpConcurrency": "增压并发时数",
+              "rampUpDuration": "增压并发时长",
+              "responseTime": "响应时间(RT)",
+              "tps": "每秒事务数(TPS)",
+              "errorRate": "错误率"
+            }
+          },
+          "systemLoad": {
+            "title": "应用系统平均负载",
+            "cpuUsage": "CPU使用率",
+            "memoryUsage": "内存使用率",
+            "diskUsage": "磁盘使用率",
+            "networkUsage": "网络使用量",
+            "maximum": "最大"
+          }
+        },
+        "stability": {
+          "title": "稳定性测试",
+          "resultInfo": {
+            "title": "结果信息",
+            "testParams": "测试参数",
+            "testMetrics": "测试指标",
+            "status": "状态",
+            "fields": {
+              "concurrency": "并发数",
+              "testDuration": "测试时长",
+              "responseTime": "响应时间(art)",
+              "tps": "每秒事务数(TPS)",
+              "errorRate": "错误率"
+            }
+          },
+          "systemLoad": {
+            "title": "应用系统平均负载",
+            "cpuUsage": "CPU使用率",
+            "memoryUsage": "内存使用率",
+            "diskUsage": "磁盘使用率",
+            "networkUsage": "网络使用量",
+            "maximum": "最大"
+          }
+        }
+      }
+    }
+  }
+}

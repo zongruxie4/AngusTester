@@ -483,7 +483,6 @@
         "editModule": "编辑模块",
         "deleteModule": "删除模块"
       },
-
       "viewModes": {
         "table": "表格视图",
         "detail": "详情视图",
@@ -627,7 +626,6 @@
         "export": "导出"
       }
     },
-   
     "detail": {
       "title": "任务详情",
       "basicInfo": "基本信息",
@@ -816,7 +814,6 @@
         "assocCase": "关联用例",
         "assocTask": "关联任务"
       },
-
       "noMore": "没有了",
       "previousTask": "上一条任务",
       "nextTask": "下一条任务"
@@ -1681,7 +1678,10 @@
       "searchOptions": {
         "namePlaceholder": "查询名称、描述",
         "creatorPlaceholder": "选择添加人",
-        "dateRangePlaceholder": ["添加时间从", "添加时间到"]
+        "dateRangePlaceholder": [
+          "添加时间从",
+          "添加时间到"
+        ]
       },
       "actions": {
         "addVersion": "添加版本",

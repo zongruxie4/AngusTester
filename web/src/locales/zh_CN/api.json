@@ -111,7 +111,7 @@
     },
     "myApis": {
       "title": "我的接口",
-      "createdTab":"添加的",
+      "createdTab": "添加的",
       "followTab": "关注的",
       "favoriteTab": "收藏的",
       "createdEmptyTip": "尚未添加任何接口，立即",
@@ -205,7 +205,6 @@
       "publishAction": "发布设计",
       "modifyTip": "最后修改于{time}"
     }
-
   },
   "mock": {
     "starting": "正在启动中",
@@ -323,7 +322,6 @@
       "descriptionPlaceholder": "变量描述，最大支持400字符",
       "variableDefault": "默认"
     },
-
     "introduce": {
       "title": "关于服务器",
       "description1": "定义 API 的服务器及服务器相关的动态部分，包括服务器(server)和变量(variables)两部分。其中服务器字段用于指定 API 的服务器列表，每个服务器都有一个 URL 和可选的描述信息，指示 API 的基础路径。",
@@ -371,7 +369,7 @@
       "localImportModal": {
         "title": "本地导入"
       },
-      "exportServiceModal":{
+      "exportServiceModal": {
         "title": "导出",
         "exportTypeLabel": "范围",
         "onlyApisComponentsLabel": "组件",
@@ -477,7 +475,6 @@
         "title": "添加服务",
         "namePlaceholder": "请输入服务名称"
       }
-
     },
     "mock": {
       "description": "Mock可快速生成并模拟所依赖的 API，使开发和测试先行，以实现更快的开发、更全面的测试，更早地交付稳定的产品或应用。通过Mock也可避免直接与生产系统联调造成的脏数据问题。",
@@ -613,7 +610,6 @@
         "debugAction": "调试用例",
         "description": "描述",
         "descriptionPlaceholder": "输入用例描述，最多可输入800个字符"
-
       }
     },
     "externalDoc": {
@@ -642,7 +638,6 @@
       "title": "移动接口",
       "hints": "移动接口到服务时，默认不授权接口关联用户查看服务权限，如果需要请通过服务“权限”来授权。",
       "selectServiceTitle": "选择要移动到的服务"
-
     },
     "oas": {
       "comp": "组件",
@@ -875,7 +870,6 @@
         "paramName": "参数名",
         "paramPosition": "参数位置",
         "paramValue": "参数值",
-
         "positionPlaceholder": "位置",
         "valuePlaceholder": "值"
       },
@@ -1551,7 +1545,6 @@
           "placeholder": "限制输入200字符以内"
         }
       },
-  
       "messages": {
         "protocolWarning": "WebSocket协议必须以ws://或wss://开头",
         "addSuccess": "添加接口成功",
@@ -1782,7 +1775,6 @@
         "portRequired": "请输入端口（1~65535）",
         "nodeRequired": "请选择节点"
       },
-     
       "buttons": {
         "cancel": "取消",
         "confirm": "确定"
@@ -1795,7 +1787,6 @@
         "generateMockService": "基于当前服务接口创建新的Mock服务。创建后，您可以使用这些Mock接口进行数据模拟和状态测试，从而实现更高效的接口调试。",
         "associateMockService": "将当前服务与已有的Mock服务关联。关联后，系统会在关联的Mock服务中自动生成对应的Mock接口。这些接口可用于接口调试中的数据模拟和状态测试。"
       }
-
     },
     "serviceOpenApi": {
       "columns": {
@@ -2084,7 +2075,10 @@
       "searchOptions": {
         "namePlaceholder": "查询名称、备注",
         "sharePersonPlaceholder": "选择分享人",
-        "dateRangePlaceholder": ["添加时间从", "添加时间到"]
+        "dateRangePlaceholder": [
+          "添加时间从",
+          "添加时间到"
+        ]
       }
     },
     "introduce": {

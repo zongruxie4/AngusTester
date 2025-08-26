@@ -176,109 +176,109 @@
         "addSuccess": "标签添加成功",
         "updateSuccess": "修改成功",
         "deleteSuccess": "删除标签成功",
-                 "confirmDelete": "确定删除标签【{name}】吗？"
-       }
-     },
+        "confirmDelete": "确定删除标签【{name}】吗？"
+      }
+    },
     "projectDetail": {
-       "projectTypeTip": {
-         "agile": {
-           "features": "核心特点：Scrum框架支持 • 增量交付 • 用户需求驱动。",
-           "scenarios": "适用场景：敏捷开发团队快速迭代产品。"
-         },
-         "general": {
-           "features": "核心特点：工作分解结构 • 进度管理 • 资源依赖可视化。",
-           "scenarios": "适用场景：传统研发团队跨部门协作项目。"
-         },
-         "testing": {
-           "features": "核心特点：测试计划定制 • 多类型测试 • 缺陷跟踪闭环。",
-           "scenarios": "适用场景：质量保障团队专项测试项目。"
-         }
-       },
-       "projectTypeName": {
-         "agile": "敏捷项目管理",
-         "general": "一般项目管理",
-         "testing": "测试项目管理"
-       },
-       "messages": {
-         "updateSuccess": "修改项目成功",
-         "addSuccess": "添加项目成功"
-       },
-       "tabs": {
-         "basicInfo": "基本信息",
-         "module": "软件模块",
-         "version": "软件版本",
-         "tag": "数据标签"
-       },
-       "form": {
-         "projectName": "项目名称",
-         "timePlan": "时间计划",
-         "owner": "负责人",
-         "projectMembers": "项目成员",
-         "user": "用户",
-         "group": "组",
-         "department": "部门",
-         "projectDescription": "项目描述",
-         "noDescription": "无描述~"
-       }
+      "projectTypeTip": {
+        "agile": {
+          "features": "核心特点：Scrum框架支持 • 增量交付 • 用户需求驱动。",
+          "scenarios": "适用场景：敏捷开发团队快速迭代产品。"
+        },
+        "general": {
+          "features": "核心特点：工作分解结构 • 进度管理 • 资源依赖可视化。",
+          "scenarios": "适用场景：传统研发团队跨部门协作项目。"
+        },
+        "testing": {
+          "features": "核心特点：测试计划定制 • 多类型测试 • 缺陷跟踪闭环。",
+          "scenarios": "适用场景：质量保障团队专项测试项目。"
+        }
+      },
+      "projectTypeName": {
+        "agile": "敏捷项目管理",
+        "general": "一般项目管理",
+        "testing": "测试项目管理"
+      },
+      "messages": {
+        "updateSuccess": "修改项目成功",
+        "addSuccess": "添加项目成功"
+      },
+      "tabs": {
+        "basicInfo": "基本信息",
+        "module": "软件模块",
+        "version": "软件版本",
+        "tag": "数据标签"
+      },
+      "form": {
+        "projectName": "项目名称",
+        "timePlan": "时间计划",
+        "owner": "负责人",
+        "projectMembers": "项目成员",
+        "user": "用户",
+        "group": "组",
+        "department": "部门",
+        "projectDescription": "项目描述",
+        "noDescription": "无描述~"
+      }
     },
     "projectAddModal": {
-       "projectTypeTip": {
-         "agile": {
-           "features": "核心特点：Scrum框架支持 • 增量交付 • 用户需求驱动。",
-           "scenarios": "适用场景：敏捷开发团队快速迭代产品。"
-         },
-         "general": {
-           "features": "核心特点：工作分解结构 • 进度管理 • 资源依赖可视化。",
-           "scenarios": "适用场景：传统研发团队跨部门协作项目。"
-         },
-         "testing": {
-           "features": "核心特点：测试计划定制 • 多类型测试 • 缺陷跟踪闭环。",
-           "scenarios": "适用场景：质量保障团队专项测试项目。"
-         }
-       },
-       "projectTypeName": {
-         "agile": "敏捷项目管理",
-         "general": "一般项目管理",
-         "testing": "测试项目管理"
-       },
-       "validation": {
-         "maxCharacters": "不能超过2000字符",
-         "timeRequired": "请输入时间",
-         "ownerRequired": "请输入负责人"
-       },
-       "messages": {
-         "updateSuccess": "修改项目成功",
-         "addSuccess": "添加项目成功"
-       },
-       "modal": {
-         "editProject": "编辑项目",
-         "addProject": "添加项目"
-       },
-       "form": {
-         "name": "名称",
-         "projectNamePlaceholder": "项目名称，最多100个字符",
-         "timePlan": "时间计划",
-         "time": "时间",
-         "timeDescription": "时间限制有助于确保项目在约定的时间内完成，这对于满足客户期望和合同义务至关重要。",
-         "owner": "负责人",
-         "ownerDescription": "通过为项目设置负责人，可以明确责任和权利，更好地促进项目的完成和进度控制，如：解决问题、推进进度、协作团队成员等。",
-         "ownerPlaceholder": "请选择项目负责人",
-         "importExample": "导入示例",
-         "importExampleDescription": "导入主要业务示例数据，用于快速熟悉AngusTester业务与功能演示。",
-         "yes": "是",
-         "no": "否",
-         "members": "成员",
-         "user": "用户",
-         "department": "部门",
-         "group": "组",
-         "membersDescription": "明确项目的参与人员，项目成员会自动分配项目下数据权限，方便团队协作。",
-         "selectUser": "选择用户",
-         "selectDepartment": "选择部门",
-         "selectGroup": "选择组",
-         "description": "描述",
-         "descriptionPlaceholder": "描述，最多2000个字符",
-         "clickToReplaceIcon": "点击替换图标"
-       }
+      "projectTypeTip": {
+        "agile": {
+          "features": "核心特点：Scrum框架支持 • 增量交付 • 用户需求驱动。",
+          "scenarios": "适用场景：敏捷开发团队快速迭代产品。"
+        },
+        "general": {
+          "features": "核心特点：工作分解结构 • 进度管理 • 资源依赖可视化。",
+          "scenarios": "适用场景：传统研发团队跨部门协作项目。"
+        },
+        "testing": {
+          "features": "核心特点：测试计划定制 • 多类型测试 • 缺陷跟踪闭环。",
+          "scenarios": "适用场景：质量保障团队专项测试项目。"
+        }
+      },
+      "projectTypeName": {
+        "agile": "敏捷项目管理",
+        "general": "一般项目管理",
+        "testing": "测试项目管理"
+      },
+      "validation": {
+        "maxCharacters": "不能超过2000字符",
+        "timeRequired": "请输入时间",
+        "ownerRequired": "请输入负责人"
+      },
+      "messages": {
+        "updateSuccess": "修改项目成功",
+        "addSuccess": "添加项目成功"
+      },
+      "modal": {
+        "editProject": "编辑项目",
+        "addProject": "添加项目"
+      },
+      "form": {
+        "name": "名称",
+        "projectNamePlaceholder": "项目名称，最多100个字符",
+        "timePlan": "时间计划",
+        "time": "时间",
+        "timeDescription": "时间限制有助于确保项目在约定的时间内完成，这对于满足客户期望和合同义务至关重要。",
+        "owner": "负责人",
+        "ownerDescription": "通过为项目设置负责人，可以明确责任和权利，更好地促进项目的完成和进度控制，如：解决问题、推进进度、协作团队成员等。",
+        "ownerPlaceholder": "请选择项目负责人",
+        "importExample": "导入示例",
+        "importExampleDescription": "导入主要业务示例数据，用于快速熟悉AngusTester业务与功能演示。",
+        "yes": "是",
+        "no": "否",
+        "members": "成员",
+        "user": "用户",
+        "department": "部门",
+        "group": "组",
+        "membersDescription": "明确项目的参与人员，项目成员会自动分配项目下数据权限，方便团队协作。",
+        "selectUser": "选择用户",
+        "selectDepartment": "选择部门",
+        "selectGroup": "选择组",
+        "description": "描述",
+        "descriptionPlaceholder": "描述，最多2000个字符",
+        "clickToReplaceIcon": "点击替换图标"
+      }
     }
   },
   "projectActivity": {

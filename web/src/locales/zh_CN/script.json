@@ -15,8 +15,14 @@
       "scenarioPlaceholder": "选择场景",
       "creatorPlaceholder": "添加人",
       "modifierPlaceholder": "最后修改人",
-      "addTimePlaceholder": ["添加时间从", "添加时间到"],
-      "modifyTimePlaceholder": ["修改时间从", "修改时间到"],
+      "addTimePlaceholder": [
+        "添加时间从",
+        "添加时间到"
+      ],
+      "modifyTimePlaceholder": [
+        "修改时间从",
+        "修改时间到"
+      ],
       "quickSearchOptions": {
         "all": "所有",
         "myAdded": "我添加的",
@@ -130,73 +136,73 @@
         "mockScript": "添加Mock脚本生成Mock数据，并将数据存储到：数据空间、数据源、本地执行节点、三方系统。"
       }
     }
-    },
-    "scriptDetail": {
+  },
+  "scriptDetail": {
     "tabs": {
-        "basicInfo": "基本信息",
-        "executionRecord": "执行记录",
-        "activity": "活动"
+      "basicInfo": "基本信息",
+      "executionRecord": "执行记录",
+      "activity": "活动"
     },
     "actions": {
-        "cancel": "取消",
-        "smartGenerate": "智能生成",
-        "saveScript": "保存脚本",
-        "edit": "编辑",
-        "export": "导出",
-        "clone": "克隆",
-        "delete": "删除",
-        "debug": "调试",
-        "addExecution": "添加执行",
-        "back": "返回",
-        "generate": "生成"
+      "cancel": "取消",
+      "smartGenerate": "智能生成",
+      "saveScript": "保存脚本",
+      "edit": "编辑",
+      "export": "导出",
+      "clone": "克隆",
+      "delete": "删除",
+      "debug": "调试",
+      "addExecution": "添加执行",
+      "back": "返回",
+      "generate": "生成"
     },
     "messages": {
-        "addScriptSuccess": "添加脚本成功",
-        "saveSuccess": "保存成功",
-        "deleteConfirm": "确定删除吗？",
-        "deleteSuccess": "删除成功",
-        "cloneSuccess": "克隆成功",
-        "addExecutionSuccess": "添加执行成功，请在\"执行\"中查看详情。"
+      "addScriptSuccess": "添加脚本成功",
+      "saveSuccess": "保存成功",
+      "deleteConfirm": "确定删除吗？",
+      "deleteSuccess": "删除成功",
+      "cloneSuccess": "克隆成功",
+      "addExecutionSuccess": "添加执行成功，请在\"执行\"中查看详情。"
     },
     "form": {
-        "scriptType": "脚本类型",
-        "selectScriptType": "请选择脚本类型",
-        "scriptName": "脚本名称",
-        "enterScriptName": "请填写脚本名称",
-        "namePlaceholder": "请输入脚本名称,最多200字符",
-        "description": "描述",
-        "descriptionPlaceholder": "请输入脚本描述，最多800字符"
+      "scriptType": "脚本类型",
+      "selectScriptType": "请选择脚本类型",
+      "scriptName": "脚本名称",
+      "enterScriptName": "请填写脚本名称",
+      "namePlaceholder": "请输入脚本名称,最多200字符",
+      "description": "描述",
+      "descriptionPlaceholder": "请输入脚本描述，最多800字符"
     },
     "info": {
-        "scriptName": "脚本名称",
-        "scriptType": "脚本类型",
-        "plugin": "插件",
-        "source": "来源",
-        "resourceId": "资源ID",
-        "resourceName": "资源名称",
-        "tags": "标签",
-        "creator": "添加人",
-        "lastUpdater": "最后更新人",
-        "lastModifyTime": "最后修改时间",
-        "description": "描述"
+      "scriptName": "脚本名称",
+      "scriptType": "脚本类型",
+      "plugin": "插件",
+      "source": "来源",
+      "resourceId": "资源ID",
+      "resourceName": "资源名称",
+      "tags": "标签",
+      "creator": "添加人",
+      "lastUpdater": "最后更新人",
+      "lastModifyTime": "最后修改时间",
+      "description": "描述"
     },
     "record": {
-        "executionId": "执行ID",
-        "executionName": "执行名称",
-        "status": "状态",
-        "startTime": "开始时间",
-        "endTime": "结束时间"
+      "executionId": "执行ID",
+      "executionName": "执行名称",
+      "status": "状态",
+      "startTime": "开始时间",
+      "endTime": "结束时间"
     },
     "log": {
-        "node": "节点",
-        "scheduleResult": "调度结果",
-        "success": "成功",
-        "fail": "失败",
-        "processExitCode": "进程退出码"
+      "node": "节点",
+      "scheduleResult": "调度结果",
+      "success": "成功",
+      "fail": "失败",
+      "processExitCode": "进程退出码"
     },
     "ai": {
-        "title": "自动创建脚本",
-        "placeholder": "给AI智能体描述您的需求，如：生成查询用户信息性能测试脚本。"
+      "title": "自动创建脚本",
+      "placeholder": "给AI智能体描述您的需求，如：生成查询用户信息性能测试脚本。"
     }
-    }
+  }
 }
