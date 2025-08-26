@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import YAML from 'yaml';
 import { notification, MonacoEditor } from '@xcan-angus/vue-ui';
 
 import { SceneConfig } from '../PropsType';
+
+const { t } = useI18n();
 
 export interface Props {
   value: SceneConfig['script'];
@@ -35,7 +38,7 @@ const isValid = ():boolean => {
     YAML.parse(content.value);
     return true;
   } catch (error) {
-    notification.error('yaml内容格式错误，请检查并更正');
+    notification.error(t('httPlugin.scriptConfig.yamlFormatError'));
     return false;
   }
 };

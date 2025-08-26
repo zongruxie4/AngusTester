@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { utils } from '@xcan-angus/infra';
 import { Arrow, Colon, NoData } from '@xcan-angus/vue-ui';
 
 import { ExecContent } from '../../../PropsType';
+
+const { t } = useI18n();
 
 export interface Props {
   value: ExecContent
@@ -14,25 +17,25 @@ const props = withDefaults(defineProps<Props>(), {
   value: undefined
 });
 
-const panels:{id:string;name:string;key:'general'|'request'|'response'}[] = [
+const panels = computed(() => [
   {
     id: utils.uuid(),
-    name: '常规',
+    name: t('httPlugin.functionTestDetail.http.headers.general'),
     key: 'general'
   },
   {
     id: utils.uuid(),
-    name: '请求头',
+    name: t('httPlugin.functionTestDetail.http.headers.request'),
     key: 'request'
   },
   {
     id: utils.uuid(),
-    name: '响应头',
+    name: t('httPlugin.functionTestDetail.http.headers.response'),
     key: 'response'
   }
-];
+]);
 
-const activeKeys = ref<string[]>([panels[0].id]);
+const activeKeys = ref<string[]>([]);
 
 const arrowChange = (id: string) => {
   if (activeKeys.value.includes(id)) {

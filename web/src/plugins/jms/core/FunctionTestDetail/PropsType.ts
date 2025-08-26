@@ -55,7 +55,7 @@ export type ExecInfo = {
             ignoreAssertions: boolean
         };
         pipelines: {
-            target: 'FTP' | 'TRANS_START' | 'TRANS_END' | 'RENDEZVOUS' | 'WAITING_TIME' | 'THROUGHPUT';
+            target: 'JMS' | 'TRANS_START' | 'TRANS_END' | 'RENDEZVOUS' | 'WAITING_TIME' | 'THROUGHPUT';
             name: string;
             transactionName: string;
             description: string;

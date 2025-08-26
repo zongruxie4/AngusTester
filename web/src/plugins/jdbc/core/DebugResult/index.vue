@@ -3,6 +3,7 @@ import { computed, defineAsyncComponent } from 'vue';
 import { NoData, Colon } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 import { Badge } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
 
 import { PipelineConfig } from '../UIConfig/PropsType';
 import { ExecContent } from '../FunctionTestDetail/PropsType';
@@ -37,6 +38,8 @@ const props = withDefaults(defineProps<Props>(), {
   value: undefined,
   httpError: undefined
 });
+
+const { t } = useI18n();
 
 const TransStartTestDetail = defineAsyncComponent(() => import('../FunctionTestDetail/Collapse/TransStart/index.vue'));
 const WaitingTimeTestDetail = defineAsyncComponent(() => import('../FunctionTestDetail/Collapse/WaitingTime/index.vue'));
@@ -113,41 +116,41 @@ const isError = computed(() => {
 <template>
   <div v-if="!isEmpty" class="h-full leading-5 space-y-3 p-5 text-3 overflow-auto">
     <div v-if="isError" class="space-y-2">
-      <div class="flex items-start">
-        <div class="flex items-center w-16 text-theme-sub-content">调试结果<Colon /></div>
-        <Badge status="error" text="失败" />
+        <div class="flex items-start">
+          <div class="flex items-center w-16 text-theme-sub-content">{{ t('ftpPlugin.debugResult.debugResult') }}<Colon /></div>
+          <Badge status="error" :text="t('ftpPlugin.debugResult.fail')" />
+        </div>
+        <template v-if="props.httpError">
+          <div class="flex items-start">
+            <div class="flex items-center w-16 text-theme-sub-content">{{ t('ftpPlugin.debugResult.exitCode') }}<Colon /></div>
+            <div>{{ props.httpError.exitCode }}</div>
+          </div>
+          <div class="flex items-start">
+            <div class="flex items-center w-16 text-theme-sub-content">{{ t('ftpPlugin.debugResult.failureReason') }}<Colon /></div>
+            <div class="max-w-200 break-all whitespace-pre-wrap">{{ props.httpError.message }}</div>
+          </div>
+        </template>
+        <template v-else-if="schedulingErrorResult">
+          <div class="flex items-start">
+            <div class="flex items-center w-16 text-theme-sub-content">{{ t('ftpPlugin.debugResult.exitCode') }}<Colon /></div>
+            <div>{{ schedulingErrorResult.exitCode }}</div>
+          </div>
+          <div class="flex items-start">
+            <div class="flex items-center w-16 text-theme-sub-content">{{ t('ftpPlugin.debugResult.failureReason') }}<Colon /></div>
+            <div class="max-w-200 break-all whitespace-pre-wrap">{{ schedulingErrorResult.message }}</div>
+          </div>
+        </template>
+        <template v-else-if="meterErrorResult">
+          <div class="flex items-start">
+            <div class="flex items-center w-16 text-theme-sub-content">{{ t('ftpPlugin.debugResult.samplingStatus') }}<Colon /></div>
+            <div>{{ meterErrorResult.exitCode }}</div>
+          </div>
+          <div class="flex items-start">
+            <div class="flex items-center w-16 text-theme-sub-content">{{ t('ftpPlugin.debugResult.failureReason') }}<Colon /></div>
+            <div class="max-w-200 break-all whitespace-pre-wrap">{{ meterErrorResult.message }}</div>
+          </div>
+        </template>
       </div>
-      <template v-if="props.httpError">
-        <div class="flex items-start">
-          <div class="flex items-center w-16 text-theme-sub-content">退出码<Colon /></div>
-          <div>{{ props.httpError.exitCode }}</div>
-        </div>
-        <div class="flex items-start">
-          <div class="flex items-center w-16 text-theme-sub-content">失败原因<Colon /></div>
-          <div class="max-w-200 break-all whitespace-pre-wrap">{{ props.httpError.message }}</div>
-        </div>
-      </template>
-      <template v-else-if="schedulingErrorResult">
-        <div class="flex items-start">
-          <div class="flex items-center w-16 text-theme-sub-content">退出码<Colon /></div>
-          <div>{{ schedulingErrorResult.exitCode }}</div>
-        </div>
-        <div class="flex items-start">
-          <div class="flex items-center w-16 text-theme-sub-content">失败原因<Colon /></div>
-          <div class="max-w-200 break-all whitespace-pre-wrap">{{ schedulingErrorResult.message }}</div>
-        </div>
-      </template>
-      <template v-else-if="meterErrorResult">
-        <div class="flex items-start">
-          <div class="flex items-center w-16 text-theme-sub-content">采样状态<Colon /></div>
-          <div>{{ meterErrorResult.exitCode }}</div>
-        </div>
-        <div class="flex items-start">
-          <div class="flex items-center w-16 text-theme-sub-content">失败原因<Colon /></div>
-          <div class="max-w-200 break-all whitespace-pre-wrap">{{ meterErrorResult.message }}</div>
-        </div>
-      </template>
-    </div>
     <template v-else>
       <template v-for="item in pipelines" :key="item.id">
         <TransStartTestDetail

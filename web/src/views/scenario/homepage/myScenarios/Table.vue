@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon, modal, notification, Table } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 import { scenario } from '@/api/tester';
 
 import { getCurrentPage } from '@/utils/utils';
+
+const { t } = useI18n();
 import { SceneItem } from '../PropsType';
 
 type Props = {
@@ -53,7 +56,7 @@ const pagination = ref<{
       showTotal: (total: number) => {
         if (typeof pagination.value === 'object') {
           const totalPage = Math.ceil(total / pagination.value.pageSize);
-          return `第${pagination.value.current}/${totalPage}页`;
+          return t('scenarioHome.myScenarios.table.messages.pageInfo', { current: pagination.value.current, total: totalPage });
         }
       }
     });
@@ -118,14 +121,14 @@ const loadData = async () => {
 
 const deleteHandler = (data: SceneItem) => {
   modal.confirm({
-    content: `确定删除场景【${data.name}】吗？`,
+    content: t('scenarioHome.myScenarios.table.messages.deleteConfirm', { name: data.name }),
     async onOk () {
       const [error] = await scenario.deleteScenario(data.id);
       if (error) {
         return;
       }
 
-      notification.success('删除场景成功');
+      notification.success(t('scenarioHome.myScenarios.table.messages.deleteSuccess'));
       emit('update:deletedNotify', utils.uuid());
 
       if (typeof updateRefreshNotify === 'function') {
@@ -143,7 +146,7 @@ const cancelFavourite = async (data: SceneItem) => {
     return;
   }
 
-  notification.success('场景取消收藏成功');
+  notification.success(t('scenarioHome.myScenarios.table.messages.unfavoriteSuccess'));
   loadData();
 
   if (typeof updateRefreshNotify === 'function') {
@@ -159,7 +162,7 @@ const cancelFollow = async (data: SceneItem) => {
     return;
   }
 
-  notification.success('场景取消关注成功');
+  notification.success(t('scenarioHome.myScenarios.table.messages.unfollowSuccess'));
   loadData();
 
   if (typeof updateRefreshNotify === 'function') {
@@ -200,24 +203,24 @@ const columns = computed(() => {
     actionKey?: 'createdBy' | 'favouriteBy' | 'followBy';
   }[] = [
     {
-      title: '名称',
+      title: t('scenarioHome.myScenarios.table.columns.name'),
       dataIndex: 'name',
       ellipsis: true,
       sorter: true,
       width: '45%'
     },
     {
-      title: '插件',
+      title: t('scenarioHome.myScenarios.table.columns.plugin'),
       dataIndex: 'plugin',
       ellipsis: true
     },
     {
-      title: '测试类型',
+      title: t('scenarioHome.myScenarios.table.columns.testType'),
       dataIndex: 'scriptType',
       ellipsis: true
     },
     {
-      title: '添加时间',
+      title: t('scenarioHome.myScenarios.table.columns.addTime'),
       dataIndex: 'createdDate',
       ellipsis: true,
       sorter: true
@@ -232,7 +235,7 @@ const columns = computed(() => {
     width?: string | number;
     actionKey?: 'favouriteBy' | 'followBy';
   } = {
-    title: '操作',
+    title: t('scenarioHome.myScenarios.table.columns.operation'),
     dataIndex: 'action',
     width: 50
   };
@@ -265,16 +268,16 @@ const emptyTextStyle = {
           <img class="w-27.5" src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3 leading-5">
             <template v-if="!!props.params?.createdBy">
-              <span>您尚未添加任何场景，立即</span>
-              <RouterLink to="/scenario#scenario" class="ml-1 link">添加场景</RouterLink>
+              <span>{{ t('scenarioHome.myScenarios.table.messages.noAddedScenarios') }}</span>
+              <RouterLink to="/scenario#scenario" class="ml-1 link">{{ t('scenarioHome.myScenarios.table.messages.addScenario')  }}</RouterLink>
             </template>
 
             <template v-else-if="!!props.params?.favouriteBy">
-              <span>您没有收藏的场景</span>
+              <span>{{ t('scenarioHome.myScenarios.table.messages.noFavoritedScenarios') }}</span>
             </template>
 
             <template v-else-if="!!props.params?.followBy">
-              <span>您没有关注的场景</span>
+              <span>{{ t('scenarioHome.myScenarios.table.messages.noFollowedScenarios') }}</span>
             </template>
           </div>
         </div>
@@ -305,7 +308,7 @@ const emptyTextStyle = {
           <div v-else-if="column.dataIndex === 'action'">
             <template v-if="column.actionKey === 'favouriteBy'">
               <Button
-                title="取消收藏"
+                :title="t('scenarioHome.myScenarios.table.actions.unfavorite')"
                 size="small"
                 type="text"
                 class="space-x-1 flex items-center py-0 px-1"
@@ -316,7 +319,7 @@ const emptyTextStyle = {
 
             <template v-else-if="column.actionKey === 'followBy'">
               <Button
-                title="取消关注"
+                :title="t('scenarioHome.myScenarios.table.actions.unfollow')"
                 size="small"
                 type="text"
                 class="space-x-1 flex items-center py-0 px-1"
@@ -327,7 +330,7 @@ const emptyTextStyle = {
 
             <template v-else>
               <Button
-                title="删除"
+                :title="t('actions.delete')"
                 size="small"
                 type="text"
                 class="space-x-1 flex items-center py-0 px-1"

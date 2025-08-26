@@ -6,6 +6,9 @@ import { LegendComponent, LegendComponentOption, TooltipComponent, TooltipCompon
 import { PieChart, PieSeriesOption } from 'echarts/charts';
 import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import { ResourceInfo } from '../../PropsType';
 
@@ -108,11 +111,11 @@ onMounted(() => {
 
     // 重置数据
     echartOption.series![0].data = [];
-    echartOption.series?.[0].data.push({ name: '功能测试', value: +newValue.functionalScriptNum });
-    echartOption.series?.[0].data.push({ name: '性能测试', value: +newValue.perfScriptNum });
-    echartOption.series?.[0].data.push({ name: '稳定性测试', value: +newValue.stabilityScriptNum });
-    echartOption.series?.[0].data.push({ name: '自定义测试', value: +newValue.customizationScriptNum });
-    echartOption.series?.[0].data.push({ name: '模拟数据', value: +newValue.mockDataScriptNum });
+    echartOption.series?.[0].data.push({ name: t('scriptHome.pieChart.chartData.functionalTest'), value: +newValue.functionalScriptNum });
+    echartOption.series?.[0].data.push({ name: t('scriptHome.pieChart.chartData.performanceTest'), value: +newValue.perfScriptNum });
+    echartOption.series?.[0].data.push({ name: t('scriptHome.pieChart.chartData.stabilityTest'), value: +newValue.stabilityScriptNum });
+    echartOption.series?.[0].data.push({ name: t('scriptHome.pieChart.chartData.customTest'), value: +newValue.customizationScriptNum });
+    echartOption.series?.[0].data.push({ name: t('scriptHome.pieChart.chartData.mockData'), value: +newValue.mockDataScriptNum });
 
     renderChart();
   }, { immediate: true });
@@ -134,7 +137,7 @@ onMounted(() => {
       ref="containerRef"
       class="w-70 h-34"></div>
     <div class="mark-container">
-      <div class="text-center">脚本类型</div>
+      <div class="text-center">{{ t('scriptHome.pieChart.title') }}</div>
       <div class="text-3.5 text-center font-semibold">{{ props.dataSource?.totalScriptNum }}</div>
     </div>
   </div>

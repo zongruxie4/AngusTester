@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { http } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 
 import { IconTask, Table, TaskPriority, TaskStatus } from '@xcan-angus/vue-ui';
 
@@ -11,6 +12,8 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   taskList: () => ([])
 });
+
+const { t } = useI18n();
 
 const tableList = computed(() => {
   return (props.taskList || []).map(item => {
@@ -32,6 +35,7 @@ const loading = ref(false);
 
 const columns = computed(() => {
   const _columns: {
+    key: string;
     title: string;
     dataIndex: string;
     ellipsis?: boolean;
@@ -40,41 +44,48 @@ const columns = computed(() => {
     actionKey?: 'createdBy' | 'favouriteBy' | 'followBy';
   }[] = [
     {
-      title: '编码',
+      key: 'code',
+      title: t('taskVersion.taskTable.columns.code'),
       dataIndex: 'code',
       ellipsis: true,
       width: 100
     },
     {
-      title: '名称',
+      key: 'name',
+      title: t('taskVersion.taskTable.columns.name'),
       dataIndex: 'name',
       ellipsis: true,
       width: '25%'
     },
     {
-      title: '所属迭代',
+      key: 'sprintName',
+      title: t('taskVersion.taskTable.columns.sprint'),
       dataIndex: 'sprintName',
       ellipsis: true,
       width: '25%'
     },
     {
-      title: '优先级',
+      key: 'priority',
+      title: t('taskVersion.taskTable.columns.priority'),
       dataIndex: 'priority',
       ellipsis: true,
       width: '9%'
     },
     {
-      title: '经办人',
+      key: 'assigneeName',
+      title: t('taskVersion.taskTable.columns.assignee'),
       dataIndex: 'assigneeName',
       width: 120
     },
     {
-      title: '确认人',
+      key: 'confirmorName',
+      title: t('taskVersion.taskTable.columns.confirmor'),
       dataIndex: 'confirmorName',
       width: 120
     },
     {
-      title: '截止时间',
+      key: 'deadlineDate',
+      title: t('taskVersion.taskTable.columns.deadline'),
       dataIndex: 'deadlineDate',
       ellipsis: true,
       width: '17%'
@@ -96,7 +107,7 @@ const emptyTextStyle = {
       <div class="flex-1 flex flex-col items-center justify-center">
         <img class="w-27.5" src="../../../../../assets/images/nodata.png">
         <div class="flex items-center text-theme-sub-content text-3 leading-5">
-          暂无数据
+          {{ t('taskVersion.taskTable.messages.noData') }}
         </div>
       </div>
     </template>
@@ -123,7 +134,7 @@ const emptyTextStyle = {
             v-if="record.overdue"
             class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
             style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-            <span class="inline-block transform-gpu scale-90">已逾期</span>
+            <span class="inline-block transform-gpu scale-90">{{ t('taskVersion.taskTable.messages.overdue') }}</span>
           </span>
         </div>
 

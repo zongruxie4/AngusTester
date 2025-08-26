@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { utils } from '@xcan-angus/infra';
 import { GroupText, TestBasicInfo } from '@xcan-angus/vue-ui';
 import { Timeline, TimelineItem } from 'ant-design-vue';
@@ -7,6 +8,8 @@ import { Timeline, TimelineItem } from 'ant-design-vue';
 import { ExecInfo, ExecContent } from './PropsType';
 
 import Collapse from './Collapse/index.vue';
+
+const { t } = useI18n();
 
 export interface Props {
   execInfo: ExecInfo;
@@ -79,10 +82,10 @@ const execContentMap = computed(() => {
 
 const pipelines = computed(() => {
   const _pipelines = props.execInfo?.task?.pipelines || [];
-  const httpNum = _pipelines.filter(item => item.target === 'JDBC').length;
+  const httpNum = _pipelines.filter(item => item.target === 'HTTP').length;
   return _pipelines?.reduce((prev, cur) => {
     const _cur = { ...cur, linkName: cur.name, id: utils.uuid() };
-    if (httpNum === 1 && _cur.target === 'JDBC') {
+    if (httpNum === 1 && _cur.target === 'HTTP') {
       _cur.linkName = 'Total';
     }
     if (_cur.transactionName) {
@@ -168,11 +171,21 @@ const tranMax = computed(() => {
 });
 
 const pending = computed(() => {
-  return props.execInfo?.status?.value === 'RUNNING' ? '执行中...' : false;
+  return props.execInfo?.status?.value === 'RUNNING' ? t('common.executing') : false;
 });
 
-const texts = ['通过', '忽略', '未启用', '总数'];
-const timeTexts = ['最小', '平均', '最大'];
+const texts = computed(() => [
+  t('httPlugin.functionTestDetail.texts.success'),
+  t('httPlugin.functionTestDetail.texts.ignore'),
+  t('httPlugin.functionTestDetail.texts.block'),
+  t('httPlugin.functionTestDetail.texts.total')
+]);
+
+const timeTexts = computed(() => [
+  t('httPlugin.functionTestDetail.timeTexts.minimum'),
+  t('httPlugin.functionTestDetail.timeTexts.average'),
+  t('httPlugin.functionTestDetail.timeTexts.maximum')
+]);
 </script>
 <template>
   <div class="px-5">
@@ -188,7 +201,7 @@ const timeTexts = ['最小', '平均', '最大'];
         <div class="text-text-title text-4 font-semibold" style="color:rgba(129, 154, 218, 100%);">
           {{ duration?.[1] }}<span class="text-3.25 ml-0.5">{{ duration?.[2] }}</span>
         </div>
-        <div>运行时间</div>
+        <div>{{ t('httPlugin.functionTestDetail.basicInfo.duration') }}</div>
       </div>
 
       <div
@@ -199,7 +212,7 @@ const timeTexts = ['最小', '平均', '最大'];
           <em class="not-italic inline-block w-0.5 h-3.5 mx-1.5 rounded" style="transform: rotate(25deg);background-color: rgba(3, 185, 208, 100%);"></em>
           <span>{{ planIterationNum }}</span>
         </div>
-        <div>迭代数</div>
+        <div>{{ t('httPlugin.functionTestDetail.basicInfo.iteration') }}</div>
       </div>
 
       <div
@@ -208,7 +221,7 @@ const timeTexts = ['最小', '平均', '最大'];
         <div class="flex items-center text-text-title text-4 font-semibold" style="color:rgba(3, 206, 92, 100%);">
           <span>{{ updateCount }}</span>
         </div>
-        <div>受影响的行数</div>
+        <div>{{ t('httPlugin.functionTestDetail.basicInfo.request') }}</div>
       </div>
 
       <div
@@ -224,7 +237,7 @@ const timeTexts = ['最小', '平均', '最大'];
           <span>{{ totalAssertionNum }}</span>
         </div>
         <div class="whitespace-nowrap overflow-hidden">
-          断言（<GroupText :texts="texts" class="text-theme-sub-content" />）
+          {{ t('common.assertion') }}（<GroupText :texts="texts" class="text-theme-sub-content" />）
         </div>
       </div>
 
@@ -239,7 +252,7 @@ const timeTexts = ['最小', '平均', '最大'];
           <span>{{ tranMax }}</span>
         </div>
         <div class="whitespace-nowrap overflow-hidden">
-          响应时间（<GroupText :texts="timeTexts" class="text-theme-sub-content" />）
+          {{ t('httPlugin.functionTestDetail.basicInfo.responseTime') }}（<GroupText :texts="timeTexts" class="text-theme-sub-content" />）
         </div>
       </div>
     </div>

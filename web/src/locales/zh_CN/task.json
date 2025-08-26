@@ -1,5 +1,6 @@
 {
   "taskAnalysis": {
+    "name": "分析",
     "title": "分析",
     "addAnalysis": "添加分析",
     "editAnalysis": "编辑分析",
@@ -85,6 +86,7 @@
     }
   },
   "backlog": {
+    "name": "Backlog",
     "title": "Backlog",
     "aboutBacklog": "关于Backlog",
     "aboutBacklogDesc": "Backlog是一个待办工作事项列表，分为产品Backlog和迭代Backlog两部分。主要用于管理和规划团队的工作任务，它包含了所有需要完成的工作事项，无论是在当前迭代（Sprint）中还是未来的迭代中。",
@@ -151,6 +153,7 @@
     "overdue": "已逾期"
   },
   "taskHome": {
+    "name": "主页",
     "welcomeToAngusTask": "欢迎进入Angus任务！",
     "taskDescription": "任务用于帮助团队管理和跟踪项目任务、问题和工作进展，提高团队协作和项目交付效率，确保项目按时完成并达到预期目标。",
     "teamWorkDescription": "在这里您和您的团队可以完成以下工作：",
@@ -185,6 +188,7 @@
     "commented": "评论的"
   },
   "taskMeeting": {
+    "name": "会议",
     "title": "会议",
     "addMeeting": "添加会议",
     "editMeeting": "编辑会议",
@@ -277,8 +281,8 @@
       "bySubject": "主题"
     }
   },
- 
   "task": {
+    "name": "任务",
     "title": "任务",
     "addTask": "添加任务",
     "editTask": "编辑任务",
@@ -802,8 +806,6 @@
         "uiTest": "UI测试",
         "performanceTest": "性能测试"
       },
-
-
       "tabs": {
         "basicInfo": "基本信息",
         "remark": "备注",
@@ -818,9 +820,603 @@
       "noMore": "没有了",
       "previousTask": "上一条任务",
       "nextTask": "下一条任务"
+    },
+    "upload": {
+      "title": "导入任务",
+      "form": {
+        "iteration": "迭代",
+        "selectIteration": "选择迭代",
+        "uploadFile": "请上传文件",
+        "selectFile": "选择文件",
+        "uploadTip": "可直接将文件拖入此区域直接上传，文件大小不超过20M，支持.xls .xlsx类型文件。",
+        "taskImportTemplate": "任务导入模板",
+        "duplicateStrategy": "遇到重复时的处理策略"
       }
     },
+    "table": {
+      "columns": {
+        "code": "编号",
+        "name": "名称",
+        "priority": "优先级",
+        "status": "状态",
+        "execResult": "执行结果",
+        "assignee": "经办人",
+        "creator": "添加人",
+        "confirmer": "确认人",
+        "lastModifier": "最后修改人",
+        "executor": "执行人",
+        "workload": "工作量",
+        "sprint": "所属迭代",
+        "apiScenario": "接口/场景",
+        "service": "服务",
+        "failCount": "失败次数",
+        "processCount": "处理次数",
+        "addTime": "添加时间",
+        "deadline": "截止时间",
+        "startTime": "开始时间",
+        "processTime": "处理时间",
+        "confirmTime": "确认时间",
+        "completeTime": "完成时间",
+        "cancelTime": "取消时间",
+        "execTime": "执行时间",
+        "lastModifyTime": "最后修改时间",
+        "operation": "操作"
+      },
+      "batchActions": {
+        "cancel": "取消",
+        "delete": "删除",
+        "favourite": "收藏",
+        "cancelFavourite": "取消收藏",
+        "follow": "关注",
+        "cancelFollow": "取消关注",
+        "move": "移动",
+        "cancelBatch": "取消批量操作"
+      },
+      "messages": {
+        "maxBatchLimit": "最大支持批量操作 {maxNum} 个任务，当前已选中 {selectedNum} 个任务。",
+        "cancelConfirm": "确定取消选中的 {num} 条任务吗？",
+        "cancelNumSuccess": "选中的 {num} 条任务全部取消成功",
+        "cancelFail": "选中的 {num} 条任务全部取消失败",
+        "cancelPartial": "选中的 {successNum} 条任务取消成功，{errorNum} 条任务取消失败",
+        "deleteConfirm": "确定删除选中的 {num} 条任务吗？",
+        "deleteSuccess": "选中的 {num} 条任务删除成功",
+        "favouriteConfirm": "确定收藏选中的 {num} 条任务吗？",
+        "favouriteNumSuccess": "选中的 {num} 条任务全部收藏成功",
+        "favouriteFail": "选中的 {num} 条任务全部收藏失败",
+        "favouritePartial": "选中的 {successNum} 条任务收藏成功，{errorNum} 条任务收藏失败",
+        "cancelFavouriteConfirm": "确定取消收藏选中的 {num} 条任务吗？",
+        "cancelFavouriteNumSuccess": "选中的 {num} 条任务全部取消收藏成功",
+        "cancelFavouriteFail": "选中的 {num} 条任务全部取消收藏失败",
+        "cancelFavouritePartial": "选中的 {successNum} 条任务取消收藏成功，{errorNum} 条任务取消收藏失败",
+        "followConfirm": "确定关注选中的 {num} 条任务吗？",
+        "followNumSuccess": "选中的 {num} 条任务全部关注成功",
+        "followFail": "选中的 {num} 条任务全部关注失败",
+        "followPartial": "选中的 {successNum} 条任务关注成功，{errorNum} 条任务关注失败",
+        "cancelFollowConfirm": "确定取消关注选中的 {num} 条任务吗？",
+        "cancelFollowNumSuccess": "选中的 {num} 条任务全部取消关注成功",
+        "cancelFollowFail": "选中的 {num} 条任务全部取消关注失败",
+        "cancelFollowPartial": "选中的 {successNum} 条任务取消关注成功，{errorNum} 条任务取消关注失败",
+        "deleteTaskConfirm": "确定删除任务【{name}】吗？",
+        "deleteTaskSuccess": "任务删除成功，您可以在回收站查看删除后的任务",
+        "favouriteSuccess": "任务收藏成功",
+        "cancelFavouriteSuccess": "任务取消收藏成功",
+        "followSuccess": "任务关注成功",
+        "cancelFollowSuccess": "任务取消关注成功",
+        "startSuccess": "任务开始处理成功",
+        "processedSuccess": "任务已处理成功",
+        "reopenSuccess": "任务重新打开成功",
+        "restartSuccess": "任务重新开始成功",
+        "cancelSuccess": "任务取消成功",
+        "copySuccess": "复制成功",
+        "copyFail": "复制失败"
+      },
+      "status": {
+        "overdue": "已逾期"
+      },
+      "actions": {
+        "edit": "编辑"
+      }
+    },
+    "moveModal": {
+      "title": "移动任务",
+      "form": {
+        "selectIteration": "选择迭代",
+        "selectIterationPlaceholder": "选择或查询迭代"
+      },
+      "messages": {
+        "moveSuccess": "任务移动成功",
+        "batchMoveSuccess": "选中的 {num} 条任务全部移动成功"
+      },
+      "defaultOptions": {
+        "productBacklog": "产品Backlog"
+      }
+    },
+    "ganttView": {
+      "drawer": {
+        "basicInfo": "基本信息",
+        "personnel": "人员",
+        "date": "日期",
+        "assocTasks": "关联任务",
+        "assocCases": "关联用例",
+        "attachments": "附件",
+        "remarks": "备注",
+        "comments": "评论",
+        "activity": "活动"
+      }
+    },
+    "flowChart": {
+      "title": "任务处理流程图"
+    },
+    "editModal": {
+      "title": {
+        "edit": "编辑任务",
+        "add": "添加任务"
+      },
+      "tooltip": {
+        "zoomIn": "全屏",
+        "zoomOut": "缩小"
+      },
+      "form": {
+        "name": "名称",
+        "namePlaceholder": "任务名称，最大支持200字符",
+        "nameRule": "任务名称，最大支持200字符",
+        "type": "类型",
+        "typePlaceholder": "请选择任务类型",
+        "priority": "优先级",
+        "priorityPlaceholder": "请选择优先级",
+        "bugLevel": "缺陷等级",
+        "missingBugFlag": "是否漏测缺陷",
+        "missingBugOptions": {
+          "yes": "是",
+          "no": "否"
+        },
+        "scenario": "场景",
+        "scenarioPlaceholder": "请选择场景",
+        "scenarioRule": "请选择场景",
+        "testType": "测试类型",
+        "testTypePlaceholder": "请选择测试类型",
+        "service": "所属服务",
+        "servicePlaceholder": "选择或查询服务",
+        "serviceRule": "请选择服务",
+        "api": "接口",
+        "apiPlaceholder": "请选择接口",
+        "apiRule": "请选择接口",
+        "assignee": "经办人",
+        "assigneePlaceholder": "选择经办人",
+        "assigneeRule": "选择经办人",
+        "assigneeTip": "负责实际执行分配的工作任务。",
+        "assignToMe": "指派给我",
+        "confirmer": "确认人",
+        "confirmerPlaceholder": "选择确认人",
+        "confirmerTip": "负责核实和验证工作结果的人员，指定后会自动进入确认流程。",
+        "deadline": "截止时间",
+        "deadlineRule": "请选择截止时间",
+        "deadlineFutureRule": "截止时间必须是一个未来时间",
+        "deadlineSprintRule": "超过了迭代截止时间({deadline})",
+        "tester": "测试人",
+        "testerPlaceholder": "选择测试人",
+        "testerTip": "负责测试和验证产品功能或服务质量的人员。",
+        "description": "描述",
+        "descriptionPlaceholder": "任务描述，最大支持6000个字符",
+        "descriptionRule": "描述最大支持6000个字符",
+        "sprint": "所属迭代",
+        "sprintPlaceholder": "选择或查询迭代",
+        "sprintRule": "请选择所属迭代",
+        "module": "所属模块",
+        "modulePlaceholder": "选择或查模块",
+        "parentTask": "父任务",
+        "parentTaskPlaceholder": "请选择父任务",
+        "workload": {
+          "evalStoryPoint": "评估故事点",
+          "evalWorkload": "评估工时",
+          "actualStoryPoint": "实际故事点",
+          "actualWorkload": "实际工时",
+          "placeholder": "最小0.1，最大1000，最多支持2位小数",
+          "storyPointTip": "工作任务量、综合难度、复杂度等的评估值。",
+          "workloadTip": "工作评估所花费的时间，以小时为单位计算。",
+          "actualStoryPointTip": "工作任务量、综合难度、复杂度等的实际值。",
+          "actualWorkloadTip": "工作实际所花费的时间，以小时为单位计算。",
+          "rule": "请输入评估工作量"
+        },
+        "softwareVersion": "软件版本",
+        "softwareVersionPlaceholder": "请选择所属版本",
+        "tags": "标签",
+        "tagsPlaceholder": "最多可添加5个标签",
+        "tagsTip": "\"任务标签\"可以帮助您组织有共同点的任务，例如\"项目名称、迭代版本、业务标识\"等。",
+        "tagsNotFound": "请联系管理员，前往\"应用管理\"-\"任务管理\"-\"任务标签\"配置任务标签。",
+        "assocTasks": "关联任务",
+        "assocTasksPlaceholder": "最多可关联20个任务",
+        "assocCases": "关联用例",
+        "assocCasesPlaceholder": "最多可关联20个用例",
+        "attachments": "附件",
+        "attachmentsAdd": "添加附件,最多上传5个附件",
+        "attachmentsContinue": "继续上传",
+        "attachmentsUpload": "上传附件，最多上传5个"
+      },
+      "taskTypes": {
+        "requirement": "需求",
+        "story": "故事",
+        "task": "任务",
+        "bug": "缺陷",
+        "apiTest": "接口测试",
+        "scenarioTest": "场景测试"
+      },
+      "taskTypeDescriptions": {
+        "requirement": "用户对业务、功能等的期望或要求，描述有广泛性。",
+        "story": "用户想要实现的具体目标或期望，通常以简洁、可理解的语言进行描述，如：作为 <角色>，我希望 <目标>，以便 <收益>。",
+        "task": "一般工作事项或活动",
+        "bug": "程序错误或漏洞",
+        "apiTest": "接口的功能、性能、稳定性测试任务",
+        "scenarioTest": "场景的功能、性能、稳定性测试任务"
+      },
+      "messages": {
+        "addSuccess": "任务添加成功",
+        "editSuccess": "任务编辑成功"
+      },
+      "actions": {
+        "cancel": "取消",
+        "saveAndContinue": "保存并继续添加",
+        "confirm": "确定"
+      },
+      "status": {
+        "overdue": "已逾期"
+      }
+    },
+    "kanbanView": {
+      "drawer": {
+        "basicInfo": "基本信息",
+        "personnel": "人员",
+        "date": "日期",
+        "assocTasks": "关联任务",
+        "assocCases": "关联用例",
+        "attachments": "附件",
+        "remarks": "备注",
+        "comments": "评论",
+        "activity": "活动"
+      },
+      "actions": {
+        "split": "拆分",
+        "start": "开始处理",
+        "processed": "已处理",
+        "completed": "确认完成",
+        "uncompleted": "确认未完成",
+        "reopen": "重新打开",
+        "restart": "重新开始"
+      },
+      "messages": {
+        "noStartPermission": "没有开始处理权限",
+        "noCancelPermission": "没有取消任务权限",
+        "onlyMoveToInProgressOrCanceled": "只能移动到进行中、已取消",
+        "noProcessedPermission": "没有已处理权限",
+        "onlyMoveToConfirmingOrCanceled": "只能移动到待确认、已取消",
+        "onlyMoveToCompletedOrCanceled": "只能移动到已完成、已取消",
+        "noCompletedPermission": "没有确认完成权限",
+        "onlyMoveToCompletedOrCanceledFromConfirming": "只能移动到已完成、已取消",
+        "onlyMoveToPending": "只能移动到待处理",
+        "noReopenPermission": "没有重新打开权限",
+        "noConfirmor": "该任务没有确认人，无需确认，只能移动到已完成、已取消"
+      },
+      "group": {
+        "swimLane": "泳道",
+        "expandAll": "全部展开",
+        "collapseAll": "全部收起",
+        "tasks": "个任务",
+        "ungrouped": "未分组"
+      }
+    },
+    "assocCase": {
+      "title": "关联功能用例",
+      "description": "跟踪任务功能测试用例完成情况，了解任务的哪些功能已经被实现和测试，方便更准确地评估任务进度。",
+      "actions": {
+        "associateCase": "关联用例",
+        "cancel": "取消"
+      },
+      "messages": {
+        "confirmCancelCase": "确认取消关联用例【{name}】吗？"
+      },
+      "columns": {
+        "code": "编号",
+        "name": "名称",
+        "priority": "优先级",
+        "evalWorkload": "评估故事点",
+        "status": "状态",
+        "testerName": "测试人",
+        "deadlineDate": "截止时间",
+        "action": "操作"
+      },
+      "selectCasePlaceholder": "最多可关联20个用例",
+      "overdue": "已逾期"
+    },
+    "assocTask": {
+      "title": "关联任务",
+      "actions": {
+        "associateTask": "关联{title}",
+        "cancel": "取消"
+      },
+      "messages": {
+        "confirmCancelTask": "确认取消关联任务【{name}】吗？"
+      },
+      "columns": {
+        "code": "编号",
+        "name": "名称",
+        "progress": "进度",
+        "taskType": "类型",
+        "priority": "优先级",
+        "evalWorkload": "评估故事点",
+        "status": "状态",
+        "assigneeName": "经办人",
+        "deadlineDate": "截止时间",
+        "action": "操作"
+      },
+      "modal": {
+        "selectTask": "选择{title}"
+      },
+      "selectTaskPlaceholder": "最多可关联20个任务",
+      "overdue": "已逾期"
+    },
+    "remark": {
+      "placeholder": " 添加补充说明，如注意事项，确认不通过原因等，最大支持6000个字符",
+      "validation": {
+        "maxLength": "备注最大支持6000个字符"
+      },
+      "actions": {
+        "addRemark": "添加了备注"
+      },
+      "title": "备注"
+    },
+    "subTask": {
+      "title": "子任务",
+      "description": "用于将大型复杂任务分解成更小、更易管理的子任务，便于团队成员分工协作。",
+      "progress": "进度",
+      "actions": {
+        "addSubTask": "添加子任务",
+        "associateSubTask": "关联子任务",
+        "cancel": "取消",
+        "edit": "编辑",
+        "add": "添加"
+      },
+      "messages": {
+        "confirmCancelSubTask": "确定取消子任务【{name}】吗？",
+        "associateSubTaskSuccess": "关联子任务成功",
+        "cancelSubTaskSuccess": "取消子任务成功",
+        "favouriteSuccess": "任务收藏成功",
+        "cancelFavouriteSuccess": "任务取消收藏成功",
+        "followSuccess": "任务关注成功",
+        "cancelFollowSuccess": "任务取消关注成功"
+      },
+      "columns": {
+        "code": "编号",
+        "name": "名称",
+        "progress": "进度",
+        "taskType": "类型",
+        "priority": "优先级",
+        "evalWorkload": "评估故事点",
+        "evalWorkloadHours": "评估工时",
+        "status": "状态",
+        "assigneeName": "经办人",
+        "deadlineDate": "截止时间",
+        "action": "操作"
+      },
+      "form": {
+        "taskType": "任务类型",
+        "priority": "优先级",
+        "taskName": "输入任务名称，最大支持200字符，按回车键可自动保存"
+      },
+      "dropdown": {
+        "favourite": "收藏",
+        "cancelFavourite": "取消收藏",
+        "follow": "关注",
+        "cancelFollow": "取消关注"
+      },
+      "modal": {
+        "title": "关联子任务",
+        "label": "关联子任务",
+        "placeholder": "请选择子任务"
+      }
+    },
+    "testing": {
+      "title": "测试",
+      "execResult": {
+        "title": "执行信息",
+        "fields": {
+          "execResult": "执行结果",
+          "execId": "执行ID",
+          "execName": "执行名称",
+          "execByName": "执行人",
+          "scriptId": "脚本ID",
+          "scriptName": "脚本名称",
+          "lastExecTime": "最后执行时间"
+        }
+      },
+      "testResult": {
+        "title": "测试结果"
+      }
+    },
+    "detailInfo": {
+      "title": "详细信息",
+      "apis": {
+        "basicInfo": "基本信息",
+        "columns": {
+          "code": "编号",
+          "testType": "测试类型",
+          "name": "名称",
+          "namePlaceholder": "任务名称，最大支持200字符",
+          "status": "任务状态",
+          "overdue": "已逾期",
+          "type": "类型",
+          "sprint": "所属迭代",
+          "module": "所属模块",
+          "selectModule": "选择或查询模块",
+          "selectSprint": "选择或查询迭代",
+          "service": "所属服务",
+          "parentTask": "父任务",
+          "evalWorkloadMethod": "工作量评估方式",
+          "api": "接口",
+          "priority": "优先级",
+          "onePass": "一次性通过",
+          "actualWorkload": "实际工时",
+          "actualStoryPoint": "实际故事点",
+          "actualWorkloadPlaceholder": "最小0.1，最大1000，最多支持2位小数",
+          "evalWorkloadPlaceholder": "最小0.1，最大1000，最多支持2位小数",
+          "failNum": "处理失败次数",
+          "softwareVersion": "软件版本",
+          "softwareVersionPlaceholder": "请选择所属版本",
+          "unplannedFlag": "计划外任务",
+          "tags": "标签",
+          "tagsPlaceholder": "最多可添加5个标签",
+          "tagsNotFound": "请联系管理员，前往\"应用管理\"-\"任务管理\"-\"任务标签\"配置任务标签。",
+          "totalNum": "处理次数",
+          "yes": "是",
+          "no": "否"
+        }
+      },
+      "description": {
+        "title": "描述",
+        "placeholder": "添加详细说明，最大支持6000个字符",
+        "validation": {
+          "maxLength": "描述最大支持6000个字符"
+        },
+        "actions": {
+          "cancel": "取消",
+          "confirm": "确定"
+        }
+      },
+      "personnel": {
+        "title": "人员",
+        "fields": {
+          "assignee": "经办人",
+          "executor": "执行人",
+          "confirmor": "确认人",
+          "tester": "测试人",
+          "creator": "添加人",
+          "lastModifier": "最后修改人"
+        },
+        "actions": {
+          "assignToMe": "指派给我"
+        },
+        "placeholders": {
+          "selectAssignee": "选择经办人",
+          "selectConfirmor": "选择确认人",
+          "selectTester": "选择测试人"
+        }
+      },
+      "date": {
+        "title": "日期",
+        "fields": {
+          "deadline": "截止时间",
+          "startTime": "开始时间",
+          "processTime": "处理时间",
+          "confirmTime": "确认时间",
+          "completeTime": "完成时间",
+          "cancelTime": "取消时间",
+          "execTime": "执行时间",
+          "createTime": "添加时间",
+          "lastModifyTime": "最后修改时间"
+        },
+        "validation": {
+          "selectDeadline": "请选择截止时间",
+          "futureTimeRequired": "截止时间必须是一个未来时间"
+        }
+      },
+      "attachment": {
+        "title": "附件",
+        "actions": {
+          "continueUpload": "继续上传",
+          "selectFile": "选择文件"
+        },
+        "messages": {
+          "fileSizeLimit": "文件大小不能超过 {size} M",
+          "uploadLimit": "单个文件大小不超过{size}M，最多上传5个"
+        }
+      },
+      "basic": {
+        "title": "基本信息",
+        "columns": {
+          "code": "编号",
+          "testType": "测试类型",
+          "name": "名称",
+          "namePlaceholder": "任务名称，最大支持200字符",
+          "status": "任务状态",
+          "overdue": "已逾期",
+          "type": "类型",
+          "sprint": "所属迭代",
+          "selectSprint": "选择或查询迭代",
+          "module": "所属模块",
+          "selectModule": "选择或查询模块",
+          "service": "所属服务",
+          "parentTask": "父任务",
+          "evalWorkloadMethod": "工作量评估方式",
+          "api": "接口",
+          "priority": "优先级",
+          "onePass": "一次性通过",
+          "actualWorkload": "实际工时",
+          "actualStoryPoint": "实际故事点",
+          "actualWorkloadPlaceholder": "最小0.1，最大1000，最多支持2位小数",
+          "evalWorkloadPlaceholder": "最小0.1，最大1000，最多支持2位小数",
+          "missingBugFlag": "漏测",
+          "selectTaskType": "请选择任务类型",
+          "selectPriority": "请选择优先级",
+          "failNum": "处理失败次数",
+          "softwareVersion": "软件版本",
+          "softwareVersionPlaceholder": "请选择所属版本",
+          "unplannedFlag": "计划外任务",
+          "tags": "标签",
+          "tagsPlaceholder": "最多可添加5个标签",
+          "tagsNotFound": "请联系管理员，前往\"应用管理\"-\"任务管理\"-\"任务标签\"配置任务标签。",
+          "totalNum": "处理次数",
+          "yes": "是",
+          "no": "否"
+        }
+      },
+      "scenario": {
+        "title": "基本信息",
+        "columns": {
+          "code": "编号",
+          "testType": "测试类型",
+          "name": "名称",
+          "namePlaceholder": "任务名称，最大支持200字符",
+          "status": "任务状态",
+          "overdue": "已逾期",
+          "type": "类型",
+          "sprint": "所属迭代",
+          "selectSprint": "选择或查询迭代",
+          "module": "所属模块",
+          "selectModule": "选择或查询模块",
+          "service": "所属服务",
+          "evalWorkloadMethod": "工作量评估方式",
+          "parentTask": "父任务",
+          "evalWorkload": "评估故事点",
+          "evalWorkloadHours": "评估工时",
+          "evalWorkloadPlaceholder": "最小0.1，最大1000，最多支持2位小数",
+          "scenario": "场景",
+          "actualStoryPoint": "实际故事点",
+          "actualWorkload": "实际工时",
+          "actualWorkloadPlaceholder": "最小0.1，最大1000，最多支持2位小数",
+          "priority": "优先级",
+          "selectPriority": "请选择优先级",
+          "failNum": "处理失败次数",
+          "totalNum": "处理次数",
+          "onePass": "一次性通过",
+          "softwareVersion": "软件版本",
+          "softwareVersionPlaceholder": "请选择所属版本",
+          "unplannedFlag": "计划外任务",
+          "tags": "标签",
+          "tagsPlaceholder": "最多可添加5个标签",
+          "tagsNotFound": "请联系管理员，前往\"应用管理\"-\"任务管理\"-\"任务标签\"配置任务标签。",
+          "yes": "是",
+          "no": "否"
+        }
+      },
+      "activity": {
+        "title": "活动"
+      }
+    },
+    "comment": {
+      "title": "评论"
+    }
+  },
   "taskSprint": {
+    "name": "迭代",
     "title": "迭代",
     "addSprint": "添加迭代",
     "aboutSprint": "关于迭代",
@@ -982,7 +1578,142 @@
       "title": "工作日历"
     }
   },
+  "taskVersion": {
+    "name": "版本",
+    "title": "版本管理",
+    "placeholder": {
+      "searchKeyword": "请输入关键字搜索"
+    },
+    "actions": {
+      "addVersion": "添加版本",
+      "edit": "编辑",
+      "delete": "删除",
+      "merge": "版本合并",
+      "refresh": "刷新"
+    },
+    "messages": {
+      "deleteConfirm": "确定删除版本【{name}】吗？",
+      "deleteSuccess": "删除成功",
+      "editSuccess": "修改成功",
+      "mergeWarning": "警告：版本一旦合成后，将无法还原！",
+      "changeStatusConfirm": "确认修改版本状态为 “{status}” 吗？"
+    },
+    "status": {
+      "notReleased": "未发布",
+      "released": "发布",
+      "archived": "归档"
+    },
+    "columns": {
+      "version": "版本",
+      "status": "状态",
+      "progress": "进度",
+      "startDate": "开始日期",
+      "releaseDate": "发布日期",
+      "description": "描述",
+      "lastModifier": "最后修改人",
+      "creator": "添加人",
+      "lastModifyTime": "最后修改时间",
+      "createTime": "添加时间",
+      "actions": "操作"
+    },
+    "form": {
+      "editVersion": "编辑版本",
+      "addVersion": "添加版本",
+      "versionName": "版本名称",
+      "versionNamePlaceholder": "输入版本名称，最多可输入40字符，如：v1.0",
+      "startDate": "开始日期",
+      "releaseDate": "发布日期",
+      "description": "描述",
+      "descriptionPlaceholder": "请输入版本描述，最多支持200字符"
+    },
+    "merge": {
+      "title": "版本合并",
+      "mergeVersion": "合并版本",
+      "mergeTo": "合并版本至"
+    },
+    "detail": {
+      "version": "版本",
+      "startDate": "开始日期：",
+      "releaseDate": "发布日期：",
+      "noStartDate": "没有设置开始日期",
+      "noReleaseDate": "没有设置发布日期"
+    },
+    "list": {
+      "addedVersions": "已添加的版本",
+      "noVersions": "您尚未添加任何版本，立即",
+      "noDescription": "无描述~"
+    },
+    "taskTable": {
+      "tabs": {
+        "current": "当前版本",
+        "completed": "已完成",
+        "processing": "正在处理",
+        "confirming": "待确认",
+        "pending": "待处理",
+        "canceled": "已取消"
+      },
+      "units": {
+        "tasks": "个任务",
+        "task": "任务"
+      },
+      "columns": {
+        "code": "编码",
+        "name": "名称",
+        "sprint": "所属迭代",
+        "priority": "优先级",
+        "assignee": "经办人",
+        "confirmor": "确认人",
+        "deadline": "截止时间"
+      },
+      "messages": {
+        "noData": "暂无数据",
+        "overdue": "已逾期"
+      }
+    },
+    "searchPanel": {
+      "quickSearch": "快速查询",
+      "menuItems": {
+        "all": "全部",
+        "notReleased": "未发布",
+        "released": "已发布",
+        "archived": "已归档"
+      },
+      "searchOptions": {
+        "namePlaceholder": "查询名称、描述",
+        "creatorPlaceholder": "选择添加人",
+        "dateRangePlaceholder": ["添加时间从", "添加时间到"]
+      },
+      "actions": {
+        "addVersion": "添加版本",
+        "mergeVersion": "合并版本",
+        "refresh": "刷新"
+      }
+    },
+    "introduce": {
+      "title": "关于版本",
+      "description": "版本对应软件系统的版本号，它精确标识任务、用例与软件发布版本的对应关系，支持灵活规划，确保团队聚焦于当前版本的关键任务和用例。通过直观的进展视图，项目经理可迅速识别潜在问题。将版本视为交付物，有助于团队更好地组织工作、跟踪进度，确保每个版本都代表有价值且可验证的产品增量。主要作用如下：",
+      "features": {
+        "versionTracking": {
+          "title": "版本标识和跟踪",
+          "description": "准确标识每个任务或用例对应的应用软件版本。帮助团队快速了解特定功能或修复在哪个版本中实现。"
+        },
+        "versionPlanning": {
+          "title": "版本规划和目标导向",
+          "description": "提供支持灵活的版本规划，提高团队焦点，确保所有计划的功能和修复都朝着目标版本稳步推进，并且集中于当前版本的关键任务和测试用例。"
+        },
+        "versionProgress": {
+          "title": "版本进展可视化",
+          "description": "提供清晰的版本进展视图，直观展示每个版本的工作量和完成进度。帮助项目经理和团队成员快速识别潜在的延迟或问题。"
+        },
+        "verifiableDeliverables": {
+          "title": "可验证的交付物",
+          "description": "将发布版本视为交付物，有效管理发布版本，团队可以更好地组织工作、跟踪进度，并确保每个版本都代表了有价值且可验证的产品增量。"
+        }
+      }
+    }
+  },
   "taskTrash": {
+    "name": "回收站",
     "title": "回收站",
     "placeholder": {
       "searchKeyword": "请输入查询关键字"

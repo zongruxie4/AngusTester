@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Colon, NoData, IconDownload } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 interface Props {
   value:{
@@ -34,14 +37,14 @@ const downloadLog = () => {
     return;
   }
 
-  const file = new File([content], 'scheduling.log', {
+  const file = new File([content], t('httPlugin.debugLog.downloadFileName'), {
     type: 'text/plain'
   });
   const url = URL.createObjectURL(file);
   const a = document.createElement('a');
   a.style.display = 'none';
   a.href = url;
-  a.download = 'scheduling.log';
+  a.download = t('httPlugin.debugLog.downloadFileName');
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -54,19 +57,19 @@ const downloadLog = () => {
     <template v-if="!!props.value">
       <div class="flex items-center leading-5 mb-2.5">
         <div class="flex items-center mr-15">
-          <span class="text-theme-sub-content">调度结果</span>
+          <span class="text-theme-sub-content">{{ t('httPlugin.debugLog.schedulingResult') }}</span>
           <Colon class="mr-2" />
           <template v-if="props.value?.success">
             <span class="inline-block w-1.5 h-1.5 mr-1 rounded bg-status-success"></span>
-            <span>成功</span>
+            <span>{{ t('common.success') }}</span>
           </template>
           <template v-else>
             <span class="inline-block w-1.5 h-1.5 mr-1 rounded bg-status-error"></span>
-            <span>失败</span>
+            <span>{{ t('common.failure') }}</span>
           </template>
         </div>
         <div class="flex items-center mr-15">
-          <span class="text-theme-sub-content">进程退出码</span>
+          <span class="text-theme-sub-content">{{ t('httPlugin.debugLog.processExitCode') }}</span>
           <Colon class="mr-2" />
           <span>{{ props.value?.exitCode }}</span>
         </div>

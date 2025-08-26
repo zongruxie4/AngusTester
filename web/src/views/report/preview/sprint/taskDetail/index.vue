@@ -45,7 +45,7 @@ const assignees = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-5">
-      <span id="a10" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25"></em>经办人汇总结果</span>
+      <span id="a10" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.sprint.assigneeSummary.title') }}</span>
     </h1>
 
     <div
@@ -63,14 +63,14 @@ const assignees = computed(() => {
             <div class="flex border-b border-solid border-border-input">
               <div
                 class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                编码
+                {{ t('reportPreview.sprint.taskDetail.fields.code') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ _task?.code }}
               </div>
               <div
                 class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                优先级
+                  {{ t('reportPreview.sprint.taskDetail.fields.priority') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                 {{ _task?.priority?.message }}
@@ -80,14 +80,14 @@ const assignees = computed(() => {
             <div class="flex border-b border-solid border-border-input">
               <div
                 class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                所属模块
+                {{ t('reportPreview.sprint.taskDetail.fields.module') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ _task?.moduleName }}
               </div>
               <div
                 class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                任务类型
+                {{ t('reportPreview.sprint.taskDetail.fields.taskType') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                 {{ _task?.taskType?.message }}
@@ -97,14 +97,14 @@ const assignees = computed(() => {
             <div class="flex border-b border-solid border-border-input">
               <div
                 class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                测试类型
+                {{ t('reportPreview.sprint.taskDetail.fields.testType') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ _task?.testType?.message }}
               </div>
               <div
                 class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                任务状态
+                {{ t('reportPreview.sprint.taskDetail.fields.taskStatus') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                 {{ _task?.status?.message }}
@@ -114,14 +114,14 @@ const assignees = computed(() => {
             <div class="flex border-b border-solid border-border-input">
               <div
                 class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                完成时间
+                {{ t('reportPreview.sprint.taskDetail.fields.completionTime') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ _task?.completedDate }}
               </div>
               <div
                 class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                是否逾期
+                {{ t('reportPreview.sprint.taskDetail.fields.overdue') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                 {{ _task?.overdue?'是':'否' }}
@@ -131,14 +131,14 @@ const assignees = computed(() => {
             <div class="flex border-b border-solid border-border-input">
               <div
                 class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                截止时间
+                {{ t('reportPreview.sprint.taskDetail.fields.deadline') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ _task?.deadlineDate }}
               </div>
               <div
                 class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                经办人
+                {{ t('reportPreview.sprint.taskDetail.fields.assignee') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                 {{ _task?.assigneeName }}
@@ -148,14 +148,14 @@ const assignees = computed(() => {
             <div class="flex border-b border-solid border-border-input">
               <div
                 class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                开始时间
+                {{ t('reportPreview.sprint.taskDetail.fields.startTime') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ _task?.startDate }}
               </div>
               <div
                 class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                是否确认任务
+                {{ t('reportPreview.sprint.taskDetail.fields.confirmTask') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                 {{ _task?.confirmTask?'是':'否' }}
@@ -165,14 +165,14 @@ const assignees = computed(() => {
             <div class="flex border-b border-solid border-border-input">
               <div
                 class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                确认人
+                {{ t('reportPreview.sprint.taskDetail.fields.confirmer') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ _task?.confirmorName }}
               </div>
               <div
                 class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                工作量评估方式
+                {{ t('reportPreview.sprint.taskDetail.fields.workloadEstimationMethod') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                 {{ _task?.evalWorkloadMethod?.message }}
@@ -182,14 +182,14 @@ const assignees = computed(() => {
             <div class="flex border-b border-solid border-border-input">
               <div
                 class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                评估工作量
+                {{ t('reportPreview.sprint.taskDetail.fields.estimatedWorkload') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ _task?.evalWorkload }}
               </div>
               <div
                 class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                实际工作量
+                {{ t('reportPreview.sprint.taskDetail.fields.actualWorkload') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                 {{ _task?.actualWorkload }}
@@ -199,14 +199,14 @@ const assignees = computed(() => {
             <div class="flex border-b border-solid border-border-input">
               <div
                 class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                总处理次数
+                {{ t('reportPreview.sprint.taskDetail.fields.totalProcessCount') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ _task?.totalNum }}
               </div>
               <div
                 class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                处理失败次数
+                {{ t('reportPreview.sprint.taskDetail.fields.failedProcessCount') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                 {{ _task?.failNum }}
@@ -216,14 +216,14 @@ const assignees = computed(() => {
             <div class="flex border-b border-solid border-border-input">
               <div
                 class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                添加人
+                {{ t('reportPreview.sprint.taskDetail.fields.creator') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ _task?.createdByName }}
               </div>
               <div
                 class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                添加时间
+                {{ t('reportPreview.sprint.taskDetail.fields.createTime') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                 {{ _task?.createdDate }}
@@ -233,14 +233,14 @@ const assignees = computed(() => {
             <div class="flex">
               <div
                 class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                最后修改人
+                {{ t('reportPreview.sprint.taskDetail.fields.lastModifier') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ _task?.lastModifiedByName }}
               </div>
               <div
                 class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                最后修改时间
+                {{ t('reportPreview.sprint.taskDetail.fields.lastModifyTime') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
                 {{ _task?.lastModifiedDate }}

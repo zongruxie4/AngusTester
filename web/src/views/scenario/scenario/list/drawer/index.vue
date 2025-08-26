@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ActivityTimeline, Drawer } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -14,12 +17,12 @@ const props = withDefaults(defineProps<Props>(), {
 const menuItems = [
   {
     icon: 'icon-lishijilu',
-    name: '活动',
+    name: t('scenario.list.drawer.menuItems.activity'),
     key: 'activity'
   }
 ];
 
-const types = ['SCENARIO'];
+const types = ['SCENARIO' as const];
 </script>
 
 <template>

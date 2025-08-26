@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { SmartComment } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
-
+import { useI18n } from 'vue-i18n';
 import { TaskInfo } from '../../../../PropsType';
 
 type Props = {
@@ -18,6 +18,8 @@ const props = withDefaults(defineProps<Props>(), {
   appInfo: undefined,
   dataSource: undefined
 });
+
+const { t } = useI18n();
 
 const commentRef = ref();
 
@@ -39,7 +41,7 @@ const taskId = computed(() => {
 </script>
 <template>
   <div class="h-full text-3 leading-5 pl-5">
-    <div class="text-theme-title mb-2.5 font-semibold">评论</div>
+    <div class="text-theme-title mb-2.5 font-semibold"> {{ t('task.comment.title') }}</div>
 
     <SmartComment
       v-if="taskId"

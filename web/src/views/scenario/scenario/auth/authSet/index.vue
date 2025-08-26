@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Checkbox, Switch } from 'ant-design-vue';
 import { debounce, throttle } from 'throttle-debounce';
 import elementResizeDetector from 'element-resize-detector';
@@ -8,6 +9,8 @@ import { Icon, IconText, Input, NoData, Spin } from '@xcan-angus/vue-ui';
 import { scenario } from '@/api/tester';
 
 import CheckboxGroup from './checkboxGroup.vue';
+
+const { t } = useI18n();
 
 import { DataItem } from './PropsType';
 
@@ -344,7 +347,7 @@ const permissionValues = computed(() => {
     <Input
       :value="searchInputValue"
       :allowClear="true"
-      placeholder="查询名称"
+      :placeholder="t('scenario.auth.authSet.searchPlaceholder')"
       class="w-75 mb-3.5"
       @change="searchInputChange">
       <template #suffix>
@@ -352,9 +355,9 @@ const permissionValues = computed(() => {
       </template>
     </Input>
     <div v-if="props.authObjectId" class="flex items-center h-11 pr-1.75 rounded bg-gray-light text-theme-title">
-      <div class="flex-1 px-2 truncate">名称</div>
-      <div style="width:70px;" class="flex-shrink-0 px-2">权限控制</div>
-      <div style="width:52%">权限</div>
+      <div class="flex-1 px-2 truncate">{{ t('scenario.auth.authSet.table.columns.name') }}</div>
+      <div style="width:70px;" class="flex-shrink-0 px-2">{{ t('scenario.auth.authSet.table.columns.permissionControl') }}</div>
+      <div style="width:52%">{{ t('scenario.auth.authSet.table.columns.permission') }}</div>
     </div>
     <NoData
       v-show="!loading && !idList?.length"
@@ -364,7 +367,7 @@ const permissionValues = computed(() => {
       v-show="loading || !!idList?.length"
       :mask="false"
       :spinning="loading"
-      tip="加载中..."
+      :tip="t('scenario.auth.authSet.loading')"
       style="height: calc(100% - 76px);">
       <div
         ref="containerRef"
@@ -393,7 +396,7 @@ const permissionValues = computed(() => {
                 :indeterminate="!!(permissionsMap[item]?.permissions.length && permissionsMap[item]?.permissions.length! < props.permissions.length)"
                 class="whitespace-nowrap"
                 @change="checkAllChange($event, item)">
-                全部
+                {{ t('scenario.auth.authSet.selectAll') }}
               </Checkbox>
               <CheckboxGroup
                 :disabled="permissionsMap[item]?.creatorFlag || dataMap[item]?.auth === false"

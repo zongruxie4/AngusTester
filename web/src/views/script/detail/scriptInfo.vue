@@ -1,10 +1,13 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Colon, ScriptTypeTag, Tooltip } from '@xcan-angus/vue-ui';
 import { Tag } from 'ant-design-vue';
 import { utils } from '@xcan-angus/infra';
 
 import { ScriptInfo } from '../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   dataSource: ScriptInfo;
@@ -56,7 +59,7 @@ const sourceNameLinkUrl = computed(() => {
 
     <div class="relative flex items-start">
       <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-        <span>脚本名称</span>
+        <span>{{ t('scriptDetail.info.scriptName') }}</span>
         <Colon class="w-1" />
       </div>
 
@@ -65,7 +68,7 @@ const sourceNameLinkUrl = computed(() => {
 
     <div class="relative flex items-start">
       <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-        <span>脚本类型</span>
+        <span>{{ t('scriptDetail.info.scriptType') }}</span>
         <Colon class="w-1" />
       </div>
 
@@ -76,7 +79,7 @@ const sourceNameLinkUrl = computed(() => {
 
     <div class="relative flex items-start">
       <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-        <span>插件</span>
+        <span>{{ t('scriptDetail.info.plugin') }}</span>
         <Colon class="w-1" />
       </div>
 
@@ -93,7 +96,7 @@ const sourceNameLinkUrl = computed(() => {
 
     <div class="relative flex items-start">
       <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-        <span>来源</span>
+        <span>{{ t('scriptDetail.info.source') }}</span>
         <Colon class="w-1" />
       </div>
 
@@ -102,7 +105,7 @@ const sourceNameLinkUrl = computed(() => {
 
     <div class="relative flex items-start">
       <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-        <span>资源ID</span>
+        <span>{{ t('scriptDetail.info.resourceId') }}</span>
         <Colon class="w-1" />
       </div>
 
@@ -111,7 +114,7 @@ const sourceNameLinkUrl = computed(() => {
 
     <div class="relative flex items-start">
       <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-        <span>资源名称</span>
+        <span>{{ t('scriptDetail.info.resourceName') }}</span>
         <Colon class="w-1" />
       </div>
 
@@ -129,7 +132,7 @@ const sourceNameLinkUrl = computed(() => {
 
     <div class="relative flex items-start">
       <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-        <span>标签</span>
+        <span>{{ t('scriptDetail.info.tags') }}</span>
         <Colon class="w-1" />
       </div>
 
@@ -155,7 +158,7 @@ const sourceNameLinkUrl = computed(() => {
 
     <div class="relative flex items-start">
       <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-        <span>添加人</span>
+        <span>{{ t('scriptDetail.info.creator') }}</span>
         <Colon class="w-1" />
       </div>
 
@@ -164,7 +167,7 @@ const sourceNameLinkUrl = computed(() => {
 
     <div class="relative flex items-start">
       <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-        <span>最后更新人</span>
+        <span>{{ t('scriptDetail.info.lastUpdater') }}</span>
         <Colon class="w-1" />
       </div>
 
@@ -173,7 +176,7 @@ const sourceNameLinkUrl = computed(() => {
 
     <div class="relative flex items-start">
       <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-        <span>最后修改时间</span>
+        <span>{{ t('scriptDetail.info.lastModifyTime') }}</span>
         <Colon class="w-1" />
       </div>
 
@@ -182,7 +185,7 @@ const sourceNameLinkUrl = computed(() => {
 
     <div class="relative flex items-start">
       <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-        <span>描述</span>
+        <span>{{ t('scriptDetail.info.description') }}</span>
         <Colon class="w-1" />
       </div>
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { inject, computed, defineAsyncComponent, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Alert, Button, Collapse, CollapsePanel, Tabs, TabPane } from 'ant-design-vue';
 import { Arrow, Colon, Icon, HttpMethodText } from '@xcan-angus/vue-ui';
 
@@ -7,6 +8,8 @@ import StatusTag from '../StatusTag/index.vue';
 import { HTTPInfo } from './PropsType';
 import { ExecContent } from '../../PropsType';
 import { utils } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 export interface Props {
   value: HTTPInfo;
@@ -155,15 +158,15 @@ const showBasicInfo = computed(() => {
           <div class="flex-1 justify-end flex items-center mr-3">
             <template v-if="showBasicInfo">
               <div class="mr-5">
-                <span class="mr-0.5">状态码<Colon /></span>
+                <span class="mr-0.5">{{ t('common.statusCode') }}<Colon /></span>
                 <span class="text-theme-sub-content">{{ httpStatus }}</span>
               </div>
               <div class="mr-5">
-                <span class="mr-0.5">耗时<Colon /></span>
+                <span class="mr-0.5">{{ t('common.duration') }}<Colon /></span>
                 <span class="text-theme-sub-content"> {{ runtime }}</span>
               </div>
               <div class="mr-5">
-                <span class="mr-0.5">大小<Colon /></span>
+                <span class="mr-0.5">{{ t('common.size') }}<Colon /></span>
                 <span class="text-theme-sub-content"> {{ bodySize }}</span>
               </div>
             </template>
@@ -186,22 +189,22 @@ const showBasicInfo = computed(() => {
         type="card"
         size="small"
         class="mt-3 card-tabs">
-        <TabPane key="general" tab="基本">
+        <TabPane key="general" :tab="t('httPlugin.functionTestDetail.http.tabs.general')">
           <RequestHeaders :value="httpContent" class="py-3" />
         </TabPane>
-        <TabPane key="requestBody" tab="请求体">
+        <TabPane key="requestBody" :tab="t('httPlugin.functionTestDetail.http.tabs.requestBody')">
           <RequestBody :value="httpContent" class="py-3" />
         </TabPane>
-        <TabPane key="response" tab="响应">
+        <TabPane key="response" :tab="t('httPlugin.functionTestDetail.http.tabs.response')">
           <ResponseBody
             :url="httpContent?.content?.request0?.url"
             :value="httpContent?.content?.response"
             class="py-3" />
         </TabPane>
-        <TabPane key="timeline" tab="时间线">
+        <TabPane key="timeline" :tab="t('httPlugin.functionTestDetail.http.tabs.timeline')">
           <TimeLine :value="httpContent?.content?.response?.timeline" />
         </TabPane>
-        <TabPane key="assertions" tab="断言结果">
+        <TabPane key="assertions" :tab="t('httPlugin.functionTestDetail.http.tabs.assertions')">
           <Alert
             v-if="props.ignoreAssertions===true"
             closable
@@ -210,13 +213,17 @@ const showBasicInfo = computed(() => {
             class="mt-3">
             <template #message>
               <div class="leading-5 text-3 flex items-center whitespace-pre-line flex-wrap">
-                您已开启忽略断言，本次不会执行断言。如果需要启用断言，请在<Button
+                {{ t('httPlugin.functionTestDetail.http.assertions.ignoreAssertionsTip', {
+                  executionConfig: t('httPlugin.functionTestDetail.http.assertions.executionConfig'),
+                  pluginConfig: t('httPlugin.functionTestDetail.http.assertions.pluginConfig')
+                }) }}
+                <Button
                   size="small"
                   class="mx-1 px-0 h-5 leading-5"
                   type="link"
                   @click="setGlobalTabActiveKey('executeConfig')">
-                  执行配置 > 插件配置
-                </Button>中关闭忽略断言选项。
+                  {{ t('httPlugin.functionTestDetail.http.assertions.executionConfig') }} > {{ t('httPlugin.functionTestDetail.http.assertions.pluginConfig') }}
+                </Button>
               </div>
             </template>
           </Alert>

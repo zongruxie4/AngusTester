@@ -10,33 +10,33 @@ const DashedLine = defineAsyncComponent(() => import('./dashedLine.vue'));
 <template>
   <div class="text-theme-title">
     <div class="font-medium text-4.5 mb-4">
-      <span>目录</span>
+      <span>{{ t('reportPreview.scenario.catalog.title') }}</span>
       <div class="mt-1 rounded w-8.5 h-1 bg-gray-500"></div>
     </div>
 
     <div class="space-y-3.5">
       <a href="#a1" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25 font-medium"></em>场景信息</span>
+        <span class="h1">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.scenario.catalog.sections.scenarioInfo') }}</span>
         <DashedLine />
       </a>
       <a href="#a2" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25 font-medium"></em>场景测试汇总结果</span>
+        <span class="h1">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.scenario.catalog.sections.scenarioTestSummary') }}</span>
         <DashedLine />
       </a>
       <a href="#a3" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25 font-medium"></em>场景测试结果详细信息</span>
+        <span class="h1">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.scenario.catalog.sections.scenarioTestResultDetail') }}</span>
         <DashedLine />
       </a>
       <a href="#a3.1" class="flex items-center space-x-2.5">
-        <span>3.1<em class="inline-block w-4.25 font-medium"></em>功能测试结果</span>
+        <span>3.1<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.scenario.catalog.sections.funcTestResult') }}</span>
         <DashedLine />
       </a>
       <a href="#a3.2" class="flex items-center space-x-2.5">
-        <span>3.2<em class="inline-block w-4.25 font-medium"></em>性能测试结果</span>
+        <span>3.2<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.scenario.catalog.sections.perfTestResult') }}</span>
         <DashedLine />
       </a>
       <a href="#a3.3" class="flex items-center space-x-2.5">
-        <span>3.3<em class="inline-block w-4.25 font-medium"></em>稳定性测试结果</span>
+        <span>3.3<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.scenario.catalog.sections.stabilityTestResult') }}</span>
         <DashedLine />
       </a>
     </div>

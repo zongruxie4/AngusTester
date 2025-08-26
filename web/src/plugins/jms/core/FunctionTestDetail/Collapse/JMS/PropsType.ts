@@ -2,7 +2,7 @@ export type HttpMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 
 export type AssertionCondition = 'CONTAIN' | 'EQUAL' | 'GREATER_THAN' | 'GREATER_THAN_EQUAL' | 'IS_EMPTY' | 'IS_NULL' | 'JSON_PATH_MATCH' | 'LESS_THAN' | 'LESS_THAN_EQUAL' | 'NOT_CONTAIN' | 'NOT_EMPTY' | 'NOT_EQUAL' | 'NOT_NULL' | 'REG_MATCH' | 'XPATH_MATCH'
 
 export type HTTPConfig = {
-    target: 'FTP';
+    target: 'JMS';
     name: string;
     description: string;
     enabled: boolean;
@@ -64,7 +64,7 @@ export type HTTPConfig = {
 }
 
 export type HTTPInfo = {
-    target: 'FTP';
+    target: 'JMS';
     name: string;
     linkName?: string;
     description: string;

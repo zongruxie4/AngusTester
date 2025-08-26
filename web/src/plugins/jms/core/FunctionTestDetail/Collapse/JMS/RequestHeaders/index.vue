@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { utils } from '@xcan-angus/infra';
 import { Arrow, Colon, NoData } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 import { ExecContent } from '../../../PropsType';
 
@@ -17,17 +20,17 @@ const props = withDefaults(defineProps<Props>(), {
 const panels:{id:string;name:string;key:'general'|'request'|'response'}[] = [
   {
     id: utils.uuid(),
-    name: '常规',
+    name: t('jmsPlugin.functionTestDetailJms.requestHeaders.general'),
     key: 'general'
   },
   {
     id: utils.uuid(),
-    name: '请求头',
+    name: t('jmsPlugin.functionTestDetailJms.requestHeaders.requestHeaders'),
     key: 'request'
   },
   {
     id: utils.uuid(),
-    name: '响应头',
+    name: t('jmsPlugin.functionTestDetailJms.requestHeaders.responseHeaders'),
     key: 'response'
   }
 ];

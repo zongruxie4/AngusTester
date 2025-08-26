@@ -2,6 +2,7 @@
 import { computed, ref, onMounted, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Input, IconRequired, IconCopy } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 export interface Props {
   value: {
@@ -21,6 +22,8 @@ const props = withDefaults(defineProps<Props>(), {
   value: undefined,
   loading: false
 });
+
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -147,7 +150,7 @@ defineExpose({ isValid, getData });
   <div class="space-y-4 leading-5">
     <div v-if="id" class="space-y-0">
       <div class="flex items-center">
-        <span>ID</span>
+        <span>{{ t('ftpPlugin.drawerMenu.saveForm.id') }}</span>
       </div>
       <div class="flex-1 flex items-center space-x-2">
         <span :title="id" class="truncate">{{ id }}</span>
@@ -157,19 +160,20 @@ defineExpose({ isValid, getData });
     <div class="space-y-0.5">
       <div class="flex items-center">
         <IconRequired />
-        <span>名称</span>
+        <span>{{ t('ftpPlugin.drawerMenu.saveForm.name') }}</span>
       </div>
       <Input
         :maxlength="200"
         :value="name"
         :error="nameError"
-        placeholder="最大支持200个字符"
+        :placeholder="t('ftpPlugin.drawerMenu.saveForm.namePlaceholder')"
         trim
         @change="nameChange" />
     </div>
+
     <div v-if="scriptName" class="space-y-0">
       <div class="flex items-center">
-        <span>脚本名称</span>
+        <span>{{ t('ftpPlugin.drawerMenu.saveForm.scriptName') }}</span>
       </div>
       <div class="flex-1 flex items-center space-x-2">
         <span :title="scriptName" class="truncate">{{ scriptName }}</span>
@@ -179,7 +183,7 @@ defineExpose({ isValid, getData });
 
     <div v-if="scriptId" class="space-y-0">
       <div class="flex items-center">
-        <span>脚本ID</span>
+        <span>{{ t('ftpPlugin.drawerMenu.saveForm.scriptId') }}</span>
       </div>
       <div class="flex-1 flex items-center space-x-2">
         <span :title="scriptId" class="truncate">{{ scriptId }}</span>
@@ -187,14 +191,14 @@ defineExpose({ isValid, getData });
       </div>
     </div>
     <div class="space-y-0.5">
-      <div class="flex items-center">描述</div>
+      <div class="flex items-center">{{ t('ftpPlugin.drawerMenu.saveForm.description') }}</div>
       <Input
         :maxlength="800"
         :value="description"
         :autoSize="{ minRows: 5, maxRows: 5 }"
         showCount
         type="textarea"
-        placeholder="最大支持800个字符"
+        :placeholder="t('ftpPlugin.drawerMenu.saveForm.descriptionPlaceholder')"
         trim
         @change="descriptionChange" />
     </div>
@@ -204,13 +208,13 @@ defineExpose({ isValid, getData });
         size="small"
         :loading="props.loading"
         @click="save">
-        保存
+        {{ t('ftpPlugin.drawerMenu.saveForm.confirm') }}
       </Button>
       <Button
         type="default"
         size="small"
         @click="cancel">
-        取消
+        {{ t('ftpPlugin.drawerMenu.saveForm.cancel') }}
       </Button>
     </div>
   </div>

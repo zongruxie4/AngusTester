@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { utils } from '@xcan-angus/infra';
 import * as echarts from 'echarts/core';
 import { LegendComponent, LegendComponentOption, TooltipComponent, TooltipComponentOption } from 'echarts/components';
@@ -8,6 +9,8 @@ import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 
 import { ResourceInfo } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   dataSource: ResourceInfo;
@@ -116,10 +119,10 @@ const resizeHandler = () => {
 onMounted(() => {
   watch(() => props.dataSource, (newValue) => {
     echartOption.series![0].data = [
-      { name: '性能测试', value: 0 },
-      { name: '稳定性测试', value: 0 },
-      { name: '功能测试', value: 0 },
-      { name: '自定义测试', value: 0 }
+      { name: t('scenarioHome.chart.testTypes.perfTest'), value: 0 },
+      { name: t('scenarioHome.chart.testTypes.stabilityTest'), value: 0 },
+      { name: t('scenarioHome.chart.testTypes.funcTest'), value: 0 },
+      { name: t('scenarioHome.chart.testTypes.customTest'), value: 0 }
     ];
     if (newValue?.sceByScriptType) {
       const _data = newValue.sceByScriptType;
@@ -148,11 +151,11 @@ onMounted(() => {
 
 <template>
   <div ref="containerRef" class="rounded border border-solid border-theme-text-box px-4 py-3.5">
-    <div class="font-semibold">测试类型</div>
+    <div class="font-semibold">{{ t('scenarioHome.chart.testType') }}</div>
     <div class="relative">
       <div :id="domId" class="w-full h-50"></div>
       <div :style="markContainerStyle" class="absolute mark-container">
-        <div class="text-theme-sub-content mb-1 text-center">总数</div>
+        <div class="text-theme-sub-content mb-1 text-center">{{ t('scenarioHome.chart.total') }}</div>
         <div class="text-3.5 text-center">{{ total }}</div>
       </div>
     </div>

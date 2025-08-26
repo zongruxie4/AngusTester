@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Radio, RadioGroup, TypographyParagraph } from 'ant-design-vue';
 import { Colon, Icon, Modal, Select } from '@xcan-angus/vue-ui';
 import { TESTER, http, utils } from '@xcan-angus/infra';
 import { cloneDeep } from 'lodash-es';
 import { services } from '@/api/tester';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -27,7 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
   scriptId: undefined,
   tips: undefined,
   okAction: undefined,
-  title: '执行测试'
+  title: t('scenario.list.execTest.title')
 });
 
 // eslint-disable-next-line func-call-spacing
@@ -52,7 +55,7 @@ const selectedServers = ref<{
   }[];
 }[]>([]);
 
-const radioChange = (event:{target:{value:'none'|'checked'}}) => {
+const radioChange = (event: any) => {
   const value = event.target.value;
   if (value === 'none') {
     selectedIds.value = [];
@@ -60,17 +63,7 @@ const radioChange = (event:{target:{value:'none'|'checked'}}) => {
   }
 };
 
-const selectChange = (value: string[], option: {
-  url: string;
-  description: string;
-  variables: {
-    [key: string]: {
-      description: string;
-      default: string;
-      enum: string[];
-    }
-  };
-}[]) => {
+const selectChange = (value: any, option: any) => {
   selectedIds.value = value;
   selectedServers.value = option.map(item => {
     const variables: {
@@ -186,7 +179,7 @@ const ok = async () => {
 // if (error) {
 //   return;
 // }
-// notification.success('更新到已关联接口成功');
+// notification.success(t('scenario.list.execTest.messages.updateSuccess'));
 // };
 
 const okButtonProps = computed(() => {
@@ -210,15 +203,15 @@ const okButtonProps = computed(() => {
 
       <div class="flex items-start mb-2.5">
         <div class="flex items-center flex-shrink-0 mr-2.5 leading-5.5">
-          <span>服务器配置</span>
+          <span>{{ t('scenario.list.execTest.serverConfig') }}</span>
           <Colon />
         </div>
         <RadioGroup
           v-model:value="checkedType"
           name="radioGroup"
           @change="radioChange">
-          <Radio value="none">使用默认（场景中默认服务器配置）</Radio>
-          <Radio value="checked">修改变量配置（修改后会更新到接口和变量服务器）</Radio>
+          <Radio value="none">{{ t('scenario.list.execTest.radioOptions.useDefault') }}</Radio>
+          <Radio value="checked">{{ t('scenario.list.execTest.radioOptions.modifyConfig') }}</Radio>
         </RadioGroup>
       </div>
 
@@ -230,7 +223,7 @@ const okButtonProps = computed(() => {
           mode="multiple"
           style="width: 585px;margin-left: 75px;"
           class="mb-3"
-          placeholder="请选择服务器"
+          :placeholder="t('scenario.list.execTest.selectServer')"
           @change="selectChange">
           <template #option="record">
             <div class="flex items-center overflow-hidden">
@@ -239,7 +232,7 @@ const okButtonProps = computed(() => {
                 v-if="!record.variables||!Object.keys(record.variables).length"
                 class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 -translate-y-0.25"
                 style="color: rgba(245, 34, 45, 100%);line-height: 15px;">
-                <span class="inline-block transform-gpu scale-90">无变量</span>
+                <span class="inline-block transform-gpu scale-90">{{ t('scenario.list.execTest.noVariables') }}</span>
               </div>
             </div>
           </template>
@@ -265,7 +258,7 @@ const okButtonProps = computed(() => {
               </div>
               <TypographyParagraph
                 class="break-all"
-                :ellipsis="{ rows: 2, expandable: true, symbol: '更多' }"
+                :ellipsis="{ rows: 2, expandable: true, symbol: t('scenario.list.execTest.ellipsis.more') }"
                 :content="item.url" />
             </div>
 
@@ -277,13 +270,13 @@ const okButtonProps = computed(() => {
               <TypographyParagraph
                 v-if="item.description"
                 class="break-all"
-                :ellipsis="{ rows: 2, expandable: true, symbol: '更多' }"
+                :ellipsis="{ rows: 2, expandable: true, symbol: t('scenario.list.execTest.ellipsis.more') }"
                 :content="item.description" />
-              <div v-else>无描述</div>
+              <div v-else>{{ t('scenario.list.execTest.noDescription') }}</div>
             </div>
 
             <div v-if="!!item.variables?.length">
-              <div v-if="false" class="text-theme-sub-content mb-0.5">变量</div>
+              <div v-if="false" class="text-theme-sub-content mb-0.5">{{ t('scenario.list.execTest.variables') }}</div>
               <div class="space-y-5">
                 <div
                   v-for="_variable in item.variables"
@@ -291,7 +284,7 @@ const okButtonProps = computed(() => {
                   class="space-y-2 relative variable-item">
                   <div class="flex items-start leading-4.5">
                     <div v-if="false" class="w-10 flex-shrink-0 text-theme-sub-content">
-                      <span>名称</span>
+                      <span>{{ t('scenario.list.execTest.labels.name') }}</span>
                       <Colon />
                     </div>
                     <div :title="_variable.name" class="text-theme-title font-semibold flex-1 truncate">
@@ -302,7 +295,7 @@ const okButtonProps = computed(() => {
 
                   <div class="flex items-start leading-4.5">
                     <div v-if="false" class="w-10 flex-shrink-0 text-theme-sub-content">
-                      <span>值</span>
+                      <span>{{ t('scenario.list.execTest.labels.value') }}</span>
                       <Colon />
                     </div>
                     <div class="flex-1 space-y-1 pl-2.5">
@@ -312,7 +305,7 @@ const okButtonProps = computed(() => {
                         class="flex items-center justify-between">
                         <div :title="_enum.value" class="truncate flex-1">{{ _enum.value }}</div>
                         <div class="flex items-center leading-5">
-                          <div v-if="_enum.value === _variable.default" class="mr-1 text-text-sub-content text-3">默认</div>
+                          <div v-if="_enum.value === _variable.default" class="mr-1 text-text-sub-content text-3">{{ t('scenario.list.execTest.labels.default') }}</div>
                           <Radio
                             size="small"
                             :checked="_enum.value === _variable.default"
@@ -326,18 +319,18 @@ const okButtonProps = computed(() => {
 
                   <div v-if="false" class="flex items-start leading-4.5">
                     <div class="w-10 flex-shrink-0 text-theme-sub-content">
-                      <span>描述</span>
+                      <span>{{ t('scenario.list.execTest.labels.description') }}</span>
                       <Colon />
                     </div>
                     <TypographyParagraph
                       class="break-all"
-                      :ellipsis="{ rows: 2, expandable: true, symbol: '更多' }"
+                      :ellipsis="{ rows: 2, expandable: true, symbol: t('scenario.list.execTest.ellipsis.more') }"
                       :content="_variable.description" />
                   </div>
                 </div>
               </div>
             </div>
-            <div v-else>无变量</div>
+            <div v-else>{{ t('scenario.list.execTest.noVariables') }}</div>
           </div>
         </div>
       </template>

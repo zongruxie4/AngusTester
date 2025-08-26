@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Dropdown, DropdownGroup, DropdownSort, Icon, NoData, SearchPanel, Spin } from '@xcan-angus/vue-ui';
 import { utils, ScriptType } from '@xcan-angus/infra';
 import { scenario } from '@/api/tester';
 
 import { GroupedKey, SceneInfo } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -95,7 +98,7 @@ const buttonDropdownClick = ({ key }: { key: 'Jdbc' | 'WebSocket' | 'Ftp' | 'Lda
 };
 
 const addSceneAuthorize = () => {
-  addTabPane({ name: '场景权限', _id: utils.uuid(), value: 'authorization' });
+  addTabPane({ name: t('scenario.list.actions.scenarioAuth'), _id: utils.uuid(), value: 'authorization' });
 };
 
 const sortHandler = (value: {
@@ -193,7 +196,7 @@ onMounted(() => {
 const searchOptions = [
   {
     type: 'input',
-    placeholder: '查询场景ID、名称、描述',
+    placeholder: t('scenario.list.searchPlaceholder'),
     valueKey: 'name',
     allowClear: true,
     maxlength: 100,
@@ -201,7 +204,7 @@ const searchOptions = [
   },
   {
     type: 'input',
-    placeholder: '插件类型',
+    placeholder: t('scenario.list.pluginTypePlaceholder'),
     valueKey: 'plugin',
     allowClear: true,
     trim: true,
@@ -211,7 +214,7 @@ const searchOptions = [
   },
   {
     type: 'select-enum',
-    placeholder: '选择脚本类型',
+    placeholder: t('scenario.list.scriptTypePlaceholder'),
     valueKey: 'scriptType',
     allowClear: true,
     enumKey: ScriptType,
@@ -220,7 +223,7 @@ const searchOptions = [
   {
     type: 'date-range',
     showTime: true,
-    placeholder: ['添加时间开始', '添加时间结束'],
+    placeholder: t('scenario.list.dateRangePlaceholder'),
     valueKey: 'createdDate',
     valueType: 'multiple',
     allowClear: true
@@ -229,37 +232,37 @@ const searchOptions = [
 
 const buttonDropdownMenuItems = [
   {
-    name: 'Jdbc场景',
+    name: t('scenario.list.pluginTypes.jdbc'),
     key: 'Jdbc',
     noAuth: true
   },
   {
-    name: 'WebSocket场景',
+    name: t('scenario.list.pluginTypes.webSocket'),
     key: 'WebSocket',
     noAuth: true
   },
   {
-    name: 'Ftp场景',
+    name: t('scenario.list.pluginTypes.ftp'),
     key: 'Ftp',
     noAuth: true
   },
   {
-    name: 'Ldap场景',
+    name: t('scenario.list.pluginTypes.ldap'),
     key: 'Ldap',
     noAuth: true
   },
   {
-    name: 'Mail场景',
+    name: t('scenario.list.pluginTypes.mail'),
     key: 'Mail',
     noAuth: true
   },
   {
-    name: 'Smtp场景',
+    name: t('scenario.list.pluginTypes.smtp'),
     key: 'Smtp',
     noAuth: true
   },
   {
-    name: 'Tcp场景',
+    name: t('scenario.list.pluginTypes.tcp'),
     key: 'Tcp',
     noAuth: true
   }
@@ -271,15 +274,15 @@ const sortMenuItems: {
   orderSort: 'DESC' | 'ASC';
 }[] = [
   {
-    name: '按添加时间',
+    name: t('scenario.list.sortOptions.byAddTime'),
     key: 'createdDate',
     orderSort: 'DESC'
   }, {
-    name: '按名称',
+    name: t('scenario.list.sortOptions.byName'),
     key: 'name',
     orderSort: 'ASC'
   }, {
-    name: '按添加人',
+    name: t('scenario.list.sortOptions.byCreator'),
     key: 'createdByName',
     orderSort: 'ASC'
   }
@@ -291,19 +294,19 @@ const groupingMenuItems: {
 }[] = [
   {
     key: 'none',
-    name: '不分组'
+    name: t('scenario.list.groupOptions.noGroup')
   },
   {
     key: 'createdBy',
-    name: '按添加人分组'
+    name: t('scenario.list.groupOptions.byCreator')
   },
   {
     key: 'plugin',
-    name: '按插件分组'
+    name: t('scenario.list.groupOptions.byPlugin')
   },
   {
     key: 'scriptType',
-    name: '按脚本类型分组'
+    name: t('scenario.list.groupOptions.byScriptType')
   }
 ];
 </script>
@@ -325,7 +328,7 @@ const groupingMenuItems: {
             @click="createHttpScene">
             <div class="flex items-center">
               <Icon icon="icon-jia" class="text-3.5" />
-              <span class="ml-1">添加Http场景</span>
+              <span class="ml-1">{{ t('scenario.list.actions.addHttpScenario') }}</span>
             </div>
             <Dropdown :menuItems="buttonDropdownMenuItems" @click="buttonDropdownClick">
               <div class="w-5 h-5 flex items-center justify-center">
@@ -338,7 +341,7 @@ const groupingMenuItems: {
             class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover"
             @click="addSceneAuthorize">
             <Icon icon="icon-quanxian1" />
-            <span>场景权限</span>
+            <span>{{ t('scenario.list.actions.scenarioAuth') }}</span>
           </div>
 
           <DropdownSort
@@ -348,7 +351,7 @@ const groupingMenuItems: {
             @click="sortHandler">
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-shunxu" />
-              <span>排序</span>
+              <span>{{ t('scenario.list.actions.sort') }}</span>
             </div>
           </DropdownSort>
 
@@ -358,7 +361,7 @@ const groupingMenuItems: {
             @click="groupingHandler">
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-fenzu" />
-              <span>分组</span>
+              <span>{{ t('scenario.list.actions.group') }}</span>
             </div>
           </DropdownGroup>
 
@@ -366,7 +369,7 @@ const groupingMenuItems: {
             class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover"
             @click="refreshHandler">
             <Icon icon="icon-shuaxin" />
-            <span>刷新</span>
+            <span>{{ t('scenario.list.actions.refresh') }}</span>
           </div>
         </div>
       </div>

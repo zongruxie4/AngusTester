@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
 import { IPane } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -56,7 +59,7 @@ const initialize = () => {
         return {
           _id: 'monitorList',
           value: 'monitorList',
-          name: '监控',
+          name: t('scenarioMonitor.monitor'),
           closable: false // 是否允许关闭，true - 允许关闭，false - 禁止关闭
         };
       }
@@ -105,7 +108,7 @@ const hashChange = (hash: string) => {
         const id = utils.uuid();
         return {
           _id: id,
-          name: '添加监控',
+          name: t('scenarioMonitor.addMonitor'),
           value: 'monitorEdit',
           noCache: true,
           data: { _id: id }

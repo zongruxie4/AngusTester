@@ -3,8 +3,11 @@ import { ref, inject } from 'vue';
 import { TESTER } from '@xcan-angus/infra';
 import { Input, Icon, SelectEnum, Select, Hints } from '@xcan-angus/vue-ui';
 import { Checkbox, FormItem, Tooltip, Form } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
 
 const projectInfo = inject('projectInfo', ref({ id: '' }));
+
+const { t } = useI18n();
 
 const formState = ref({
   batchRows: '1',
@@ -108,8 +111,8 @@ defineExpose({
         <Icon icon="icon-tishi1" class="text-blue-tips text-3.5 ml-1" />
       </Tooltip>
     </div> -->
-    <FormItem label="批量行数">
-      <Hints text="每次批量生成、存储或发送行数，默认 1，最大10000。" class="mb-2" />
+    <FormItem :label="t('gendata.DatasourceStoreConfig.batchRows')">
+      <Hints :text="t('gendata.DatasourceStoreConfig.hints.batchRows')" class="mb-2" />
       <div class="flex items-center">
         <Input
           v-model:value="formState.batchRows"
@@ -122,10 +125,10 @@ defineExpose({
         </Tooltip> -->
       </div>
     </FormItem>
-    <FormItem label="是否批量插入">
+    <FormItem :label="t('gendata.DatasourceStoreConfig.batchInsert')">
       <div class=" flex items-center">
         <Checkbox v-model:checked="formState.batchInsert" />
-        <Hints :text="`设置成 true 时会将${formState.batchRows}条数据合并成一条 INSERT 数据`" class="ml-2" />
+        <Hints :text="t('gendata.DatasourceStoreConfig.hints.batchInsert', { batchRows: formState.batchRows })" class="ml-2" />
       </div>
       <!-- <Tooltip title="设置成 true 时会将 [batchrows] 条数据合并成一条 INSERT 数据">
         <Icon icon="icon-tishi1" class="text-blue-tips text-3.5 ml-1" />
@@ -148,8 +151,8 @@ defineExpose({
     </div> -->
     <FormItem
       name="datasourceId"
-      label="选择数据源"
-      :rules="{ required: true, message: '请选择数据源' }">
+      :label="t('gendata.DatasourceStoreConfig.selectDatasource')"
+      :rules="{ required: true, message: t('gendata.DatasourceStoreConfig.validation.selectDatasource') }">
       <Select
         v-model:value="formState.datasourceId"
         defaultActiveFirstOption
@@ -173,8 +176,8 @@ defineExpose({
     </div> -->
     <FormItem
       name="type"
-      label="数据库类型"
-      :rules="{ required: true, message: '请选择数据库类型' }">
+      :label="t('gendata.DatasourceStoreConfig.databaseType')"
+      :rules="{ required: true, message: t('gendata.DatasourceStoreConfig.validation.selectDatabaseType') }">
       <SelectEnum
         v-model:value="formState.type"
         enumKey="DatabaseType"
@@ -193,8 +196,8 @@ defineExpose({
     </div> -->
     <FormItem
       name="driverClassName"
-      label="驱动完整类名">
-      <Hints text="不指定时将使用默认驱动类名" class="mb-2" />
+      :label="t('gendata.DatasourceStoreConfig.driverClassName')">
+      <Hints :text="t('gendata.DatasourceStoreConfig.hints.driverClassName')" class="mb-2" />
       <Input
         v-model:value="formState.driverClassName"
         :disabled="driverClassNameDisabled"

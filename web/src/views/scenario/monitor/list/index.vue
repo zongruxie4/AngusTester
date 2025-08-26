@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Popover } from 'ant-design-vue';
 import { Icon, modal, NoData, Spin } from '@xcan-angus/vue-ui';
 import { debounce, throttle } from 'throttle-debounce';
@@ -7,6 +8,8 @@ import { useRouter } from 'vue-router';
 
 import { scenario } from '@/api/tester';
 import { MonitorInfo } from '../PropsType';
+
+const { t } = useI18n();
 import SearchPanel from '@/views/scenario/monitor/list/searchPanel/index.vue';
 
 const router = useRouter();
@@ -69,7 +72,7 @@ const searchChange = (data) => {
 // 删除
 const toDelete = async (data: MonitorInfo) => {
   modal.confirm({
-    content: `确定删除监控【${data.name}】吗？`,
+    content: t('scenarioMonitor.list.deleteConfirm', { name: data.name }),
     async onOk () {
       const id = data.id;
       const [error] = await scenario.deleteMonitor({
@@ -109,7 +112,7 @@ const handleDetail = (data: MonitorInfo) => {
 
 const run = async (data: MonitorInfo) => {
   modal.confirm({
-    content: `立即执行监控【${data.name}】`,
+    content: t('scenarioMonitor.list.executeConfirm', { name: data.name }),
     async onOk () {
       const id = data.id;
       const [error] = await scenario.runMonitor(id);
@@ -241,15 +244,15 @@ onBeforeUnmount(() => {
       <Introduce class="mb-7 flex-1" />
     </div>
 
-    <div class="text-3.5 font-semibold mb-1">已添加的监控</div>
+    <div class="text-3.5 font-semibold mb-1">{{ t('scenarioMonitor.list.addedMonitors') }}</div>
     <Spin :spinning="loading" class="flex-1 flex flex-col">
       <template v-if="loaded">
         <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
-            <span>您尚未添加任何监控，立即</span>
+            <span>{{ t('scenarioMonitor.list.noMonitors') }}</span>
             <RouterLink class="router-link flex-1 truncate" :to="`/scenario#monitor?type=ADD`">
-              添加监控
+              {{ t('scenarioMonitor.list.addMonitor') }}
             </RouterLink>
           </div>
         </div>
@@ -292,11 +295,11 @@ onBeforeUnmount(() => {
 
                   <div class="text-center">
                     <span class="font-semibold text-3.5">{{ item.count?.successRate ? item.count?.successRate + '%' : '--' }}</span>
-                    <div>成功率</div>
+                    <div>{{ t('scenarioMonitor.list.successRate') }}</div>
                   </div>
                   <div class="text-center">
                     <span class="font-semibold text-3.5">{{ item.count?.avgDelayTime || '--' }}</span>
-                    <div>平均延迟</div>
+                    <div>{{ t('scenarioMonitor.list.averageDelay') }}</div>
                   </div>
                 </div>
                 <div class="mt-2 inline-flex max-w-full">
@@ -319,7 +322,7 @@ onBeforeUnmount(() => {
                   <div>
                     <Popover>
                       <template #content>
-                        立即执行
+                        {{ t('scenarioMonitor.list.executeNow') }}
                       </template>
                       <Button size="small" type="text">
                         <Icon icon="icon-zhihang" @click="run(item)" />

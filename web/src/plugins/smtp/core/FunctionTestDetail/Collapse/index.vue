@@ -3,9 +3,12 @@ import { computed, defineAsyncComponent, ref } from 'vue';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { Arrow } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 
-import { ExecInfo, ExecContent } from '../PropsType';
+const { t } = useI18n();
+
 import StatusTag from './StatusTag/index.vue';
+import { ExecInfo, ExecContent } from '../PropsType';
 
 interface Props {
   iterations:string;
@@ -58,7 +61,7 @@ const status = computed(() => {
       collapsible="disabled">
       <template #header>
         <div class="w-full flex items-center">
-          <div class="min-w-20 mr-3">第{{ props.iterations }}次迭代</div>
+          <div class="min-w-20 mr-3">{{ t('httpPlugin.functionTestDetail.collapse.iteration', { iteration: props.iterations }) }}</div>
           <StatusTag :value="status" class="mr-3" />
           <Arrow :open="arrowOpen" @change="arrowChange" />
         </div>

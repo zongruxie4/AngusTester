@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue';
-
+import { useI18n } from 'vue-i18n';
 import { ReportContent } from '../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectInfo: { [key: string]: any };
@@ -64,36 +66,36 @@ const burnDownCharts = computed(() => {
 
 <template>
   <h1 class="text-theme-title font-medium mb-5">
-    <span id="a6" class="text-4 text-theme-title font-medium">{{ props.sequence.big }}、<em class="inline-block w-0.25"></em>功能用例</span>
+    <span id="a6" class="text-4 text-theme-title font-medium">{{ props.sequence.big }}、<em class="inline-block w-0.25"></em>{{ t('reportPreview.projectProgress.funcCaseSummary.title') }}</span>
   </h1>
 
   <h2 class="flex items-center space-x-2.5 text-3.5 mb-3.5 text-theme-title">
-    <span id="a7">{{ props.sequence.small[0] }}<em class="inline-block w-3.5"></em>用例测试汇总结果</span>
+    <span id="a7">{{ props.sequence.small[0] }}<em class="inline-block w-3.5"></em>{{ t('reportPreview.projectProgress.funcCaseSummary.testSummary.title') }}</span>
   </h2>
   <div class="flex items-center space-x-7 mb-7">
     <Progress
       :percent="progress"
-      text="进度"
+      :text="t('reportPreview.projectProgress.funcCaseSummary.testSummary.fields.progress')"
       class="ml-4" />
     <div class="flex-1 border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          用例总数
+          {{ t('reportPreview.projectProgress.funcCaseSummary.testSummary.fields.totalCases') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ totalOverview?.totalCaseNum || 0 }}
         </div>
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          有效用例数
+          {{ t('reportPreview.projectProgress.funcCaseSummary.testSummary.fields.validCases') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ totalOverview?.validCaseNum || 0 }}
         </div>
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          待测试数
+          {{ t('reportPreview.projectProgress.funcCaseSummary.testSummary.fields.pendingTest') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ totalOverview?.pendingTestNum || 0 }}
@@ -103,21 +105,21 @@ const burnDownCharts = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          通过数
+          {{ t('reportPreview.projectProgress.funcCaseSummary.testSummary.fields.passed') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ totalOverview?.passedTestNum || 0 }}
         </div>
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          未通过数
+          {{ t('reportPreview.projectProgress.funcCaseSummary.testSummary.fields.failed') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ totalOverview?.notPassedTestNum || 0 }}
         </div>
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          阻塞数
+          {{ t('reportPreview.projectProgress.funcCaseSummary.testSummary.fields.blocked') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ totalOverview?.blockedTestNum || 0 }}
@@ -127,21 +129,21 @@ const burnDownCharts = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          取消数
+          {{ t('reportPreview.projectProgress.funcCaseSummary.testSummary.fields.cancelled') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ totalOverview?.canceledTestNum }}
         </div>
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          逾期数
+          {{ t('reportPreview.projectProgress.funcCaseSummary.testSummary.fields.overdue') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ totalOverview?.overdueNum }}
         </div>
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          逾期率
+          {{ t('reportPreview.projectProgress.funcCaseSummary.testSummary.fields.overdueRate') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ overdueRate }}
@@ -151,21 +153,21 @@ const burnDownCharts = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          一次性测试通过数
+          {{ t('reportPreview.projectProgress.funcCaseSummary.testSummary.fields.oneTimeTestPass') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ totalOverview?.oneTimePassedNum }}
         </div>
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          一次性测试通过率
+          {{ t('reportPreview.projectProgress.funcCaseSummary.testSummary.fields.oneTimeTestPassRate') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ oneTimePassedRate }}
         </div>
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          一次性评审通过率
+          {{ t('reportPreview.projectProgress.funcCaseSummary.testSummary.fields.oneTimeReviewPassRate') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ oneTimePassedReviewRate }}
@@ -175,21 +177,21 @@ const burnDownCharts = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          评估工作量
+          {{ t('reportPreview.projectProgress.funcCaseSummary.testSummary.fields.estimatedWorkload') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ totalOverview?.evalWorkload }}
         </div>
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          实际工作量
+          {{ t('reportPreview.projectProgress.funcCaseSummary.testSummary.fields.actualWorkload') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ totalOverview?.actualWorkload }}
         </div>
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          完成工作量
+          {{ t('reportPreview.projectProgress.funcCaseSummary.testSummary.fields.completedWorkload') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ totalOverview?.completedWorkload }}
@@ -199,14 +201,14 @@ const burnDownCharts = computed(() => {
       <div class="flex">
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          节省工作量
+          {{ t('reportPreview.projectProgress.funcCaseSummary.testSummary.fields.savedWorkload') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ totalOverview?.savingWorkload }}
         </div>
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          工作量节省率
+          {{ t('reportPreview.projectProgress.funcCaseSummary.testSummary.fields.workloadSaveRate') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ savingWorkloadRate }}
@@ -221,32 +223,32 @@ const burnDownCharts = computed(() => {
   </div>
 
   <h2 class="flex items-center space-x-2.5 text-3.5 mb-3.5 text-theme-title">
-    <span id="a8">{{ props.sequence.small[1] }}<em class="inline-block w-3.5"></em>用例评审汇总结果</span>
+    <span id="a8">{{ props.sequence.small[1] }}<em class="inline-block w-3.5"></em>{{ t('reportPreview.projectProgress.funcCaseSummary.reviewSummary.title') }}</span>
   </h2>
   <div class="flex items-center space-x-7 mb-7">
     <Progress
       :percent="reviewProgress"
-      text="进度"
+      :text="t('reportPreview.projectProgress.funcCaseSummary.reviewSummary.fields.progress')"
       class="ml-4" />
     <div class="flex-1 border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          总评审用例数
+          {{ t('reportPreview.projectProgress.funcCaseSummary.reviewSummary.fields.totalReviewCases') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ totalOverview?.totalReviewCaseNum || 0 }}
         </div>
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          待评审数
+          {{ t('reportPreview.projectProgress.funcCaseSummary.reviewSummary.fields.pendingReview') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ totalOverview?.pendingReviewNum || 0 }}
         </div>
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          评审通过数
+          {{ t('reportPreview.projectProgress.funcCaseSummary.reviewSummary.fields.reviewPassed') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ totalOverview?.passedReviewNum || 0 }}
@@ -256,21 +258,21 @@ const burnDownCharts = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          评审未通过数
+          {{ t('reportPreview.projectProgress.funcCaseSummary.reviewSummary.fields.reviewFailed') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ totalOverview?.failedReviewNum || 0 }}
         </div>
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          已评审数
+          {{ t('reportPreview.projectProgress.funcCaseSummary.reviewSummary.fields.reviewed') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ totalOverview?.totalReviewedCaseNum || 0 }}
         </div>
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          未评审数
+          {{ t('reportPreview.projectProgress.funcCaseSummary.reviewSummary.fields.notReviewed') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ totalOverview?.totalNotReviewCaseNum || 0 }}
@@ -280,21 +282,21 @@ const burnDownCharts = computed(() => {
       <div class="flex">
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          总评审次数
+          {{ t('reportPreview.projectProgress.funcCaseSummary.reviewSummary.fields.totalReviewCount') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ totalOverview?.totalReviewTimes }}
         </div>
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          一次性通过评审数
+          {{ t('reportPreview.projectProgress.funcCaseSummary.reviewSummary.fields.oneTimeReviewPass') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ totalOverview?.oneTimePassedReviewNum }}
         </div>
         <div
           class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          一次性评审通过率
+          {{ t('reportPreview.projectProgress.funcCaseSummary.reviewSummary.fields.oneTimeReviewPassRate') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ oneTimePassedReviewRate }}
@@ -304,13 +306,13 @@ const burnDownCharts = computed(() => {
   </div>
 
   <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-    <span id="a9">{{ props.sequence.small[2] }}<em class="inline-block w-3.5"></em>用例燃尽图</span>
+    <span id="a9">{{ props.sequence.small[2] }}<em class="inline-block w-3.5"></em>{{ t('reportPreview.projectProgress.funcCaseSummary.burndownChart.title') }}</span>
   </h2>
   <BurnDownChart :dataSource="burnDownCharts" />
   <div class="mb-7"></div>
 
   <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-    <span id="a10">{{ props.sequence.small[3] }}<em class="inline-block w-3.5"></em>用例分组统计</span>
+    <span id="a10">{{ props.sequence.small[3] }}<em class="inline-block w-3.5"></em>{{ t('reportPreview.projectProgress.funcCaseSummary.groupStats.title') }}</span>
   </h2>
   <FuncCaseGrouped
     :projectInfo="props.projectInfo"

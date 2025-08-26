@@ -2,6 +2,7 @@
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Icon, Spin } from '@xcan-angus/vue-ui';
 import { Tag } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
 import { software } from '@/api/tester';
 
 import { VersionInfo } from '../PropsType';
@@ -23,6 +24,8 @@ const props = withDefaults(defineProps<Props>(), {
   appInfo: undefined,
   data: undefined
 });
+
+const { t } = useI18n();
 
 const refreshNotify = ref('');
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
@@ -101,7 +104,7 @@ const statusColorConfig = {
   <Spin :spinning="loading" class="h-full text-3 leading-5 px-5 py-5 overflow-auto">
     <div class="flex itesm-center space-x-3">
       <div class="text-theme-title text-5">
-        版本 {{ dataSource.name }}
+        {{ t('taskVersion.detail.version') }} {{ dataSource.name }}
       </div>
       <Tag v-if="dataSource.status?.value" :color="statusColorConfig[dataSource.status?.value]">{{ dataSource.status?.message }}</Tag>
     </div>
@@ -109,18 +112,18 @@ const statusColorConfig = {
     <div class="flex itesm-center space-x-5 mt-2">
       <div class="inline-flex items-center space-x-1">
         <template v-if="dataSource.startDate">
-          开始日期： {{ dataSource.startDate }}
+          {{ t('taskVersion.detail.startDate') }} {{ dataSource.startDate }}
         </template>
         <template v-else>
-          <Icon icon="icon-riqi" /> <span>没有设置开始日期</span>
+          <Icon icon="icon-riqi" /> <span>{{ t('taskVersion.detail.noStartDate') }}</span>
         </template>
       </div>
       <div class="inline-flex items-center space-x-1">
         <template v-if="dataSource.releaseDate">
-          发布日期： {{ dataSource.releaseDate }}
+          {{ t('taskVersion.detail.releaseDate') }} {{ dataSource.releaseDate }}
         </template>
         <template v-else>
-          <Icon icon="icon-riqi" /> <span>没有设置发布日期</span>
+          <Icon icon="icon-riqi" /> <span>{{ t('taskVersion.detail.noReleaseDate') }}</span>
         </template>
       </div>
     </div>

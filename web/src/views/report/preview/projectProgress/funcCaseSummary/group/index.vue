@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import * as echarts from 'echarts';
-
+import { useI18n } from 'vue-i18n';
 import { ReportContent } from '../../PropsType';
 
 type Props = {
@@ -17,6 +17,8 @@ const props = withDefaults(defineProps<Props>(), {
   appInfo: undefined,
   dataSource: undefined
 });
+
+const { t } = useI18n();
 
 const statusColorSet = {
   4: '#FF8100',
@@ -67,7 +69,7 @@ const taskStatusOption = {
     axisTick: { show: false },
     splitLine: { show: false },
     axisLine: { show: false },
-    data: ['已取消', '阻塞', '测试未通过', '测试通过', '待测试']
+    data: [t('reportPreview.projectProgress.funcCaseSummary.groupStats.statuses.cancelled'), t('reportPreview.projectProgress.funcCaseSummary.groupStats.statuses.blocked'), t('reportPreview.projectProgress.funcCaseSummary.groupStats.statuses.testFailed'), t('reportPreview.projectProgress.funcCaseSummary.groupStats.statuses.testPassed'), t('reportPreview.projectProgress.funcCaseSummary.groupStats.statuses.pendingTest')]
   },
   series: [
     {
@@ -117,7 +119,7 @@ const taskStatusOption = {
 const priorityOptions = {
   title: {
     text: 0,
-    subtext: '总数',
+    subtext: t('reportPreview.projectProgress.funcCaseSummary.groupStats.total'),
     left: '29.5%',
     top: '40%',
     padding: 2,
@@ -168,35 +170,35 @@ const priorityOptions = {
       },
       data: [
         {
-          name: '最高',
+          name: t('reportPreview.projectProgress.funcCaseSummary.groupStats.priorities.highest'),
           value: 0,
           itemStyle: {
             color: priorityColorSet.HIGHEST
           }
         },
         {
-          name: '高',
+          name: t('reportPreview.projectProgress.funcCaseSummary.groupStats.priorities.high'),
           value: 0,
           itemStyle: {
             color: priorityColorSet.HIGH
           }
         },
         {
-          name: '中',
+          name: t('reportPreview.projectProgress.funcCaseSummary.groupStats.priorities.medium'),
           value: 0,
           itemStyle: {
             color: priorityColorSet.MEDIUM
           }
         },
         {
-          name: '低',
+          name: t('reportPreview.projectProgress.funcCaseSummary.groupStats.priorities.low'),
           value: 0,
           itemStyle: {
             color: priorityColorSet.LOW
           }
         },
         {
-          name: '最低',
+          name: t('reportPreview.projectProgress.funcCaseSummary.groupStats.priorities.lowest'),
           value: 0,
           itemStyle: {
             color: priorityColorSet.LOWEST
@@ -271,13 +273,13 @@ onMounted(() => {
 
 <template>
   <h1 class="text-theme-title font-medium mb-3">
-    <span class="text-3 text-theme-title font-medium">按状态分组</span>
+    <span class="text-3 text-theme-title font-medium">{{ t('reportPreview.projectProgress.funcCaseSummary.groupStats.byStatus') }}</span>
   </h1>
   <div ref="taskStatusRef" class="flex-1 h-50 w-120 mb-7">
   </div>
 
   <h1 class="text-theme-title font-medium mb-3">
-    <span class="text-3 text-theme-title font-medium">按优先级分组</span>
+    <span class="text-3 text-theme-title font-medium">{{ t('reportPreview.projectProgress.funcCaseSummary.groupStats.byPriority') }}</span>
   </h1>
   <div ref="priorityRef" class="flex-1 h-50  w-120">
   </div>

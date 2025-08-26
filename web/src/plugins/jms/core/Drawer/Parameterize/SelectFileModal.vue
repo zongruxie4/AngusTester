@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Modal } from '@xcan-angus/vue-ui';
 import { DirectoryTree } from 'ant-design-vue';
 import type { TreeProps } from 'ant-design-vue';
 import { space } from '@/api/storage';
+
+const { t } = useI18n();
 
 interface Props {
   visible: boolean
@@ -75,7 +78,7 @@ onMounted(() => {
 </script>
 <template>
   <Modal
-    title="选择文件"
+    :title="t('jmsPlugin.parameterize.selectFile')"
     :visible="props.visible"
     @cancel="cancel"
     @ok="confirm">

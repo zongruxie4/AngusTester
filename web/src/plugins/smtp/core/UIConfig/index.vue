@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { defineAsyncComponent, nextTick, ref, onMounted, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon, NoData, Hints } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 import Draggable from 'vuedraggable';
+
+const { t } = useI18n();
 
 import { PipelineConfig } from '../PropsType';
 
@@ -82,13 +85,13 @@ const generateEmptSmtpData = ():PipelineConfig => {
         message: '',
         includeTimestamp: false,
         suppressSubject: false,
-        sendEmlMessage: false, // 是否使用 EML 文件作为消息内
+        sendEmlMessage: false, // {{ t('smtpPlugin.uiConfig.mailContent.comments.sendEmlMessage') }}
         plainBody: true,
         messageSizeStatistics: false,
         enableDebugLogging: false,
         localAttachFiles: [],
-        localEmlMessageFile: '', // eml文件路径
-        localEmlMessageBase64Content: '', // eml文件base64,
+        localEmlMessageFile: '', // {{ t('smtpPlugin.uiConfig.mailContent.comments.localEmlMessageFile') }}
+        localEmlMessageBase64Content: '', // {{ t('smtpPlugin.uiConfig.mailContent.comments.localEmlMessageBase64Content') }}
         headerFields: [],
         localAttachBase64Contents: undefined
       }
@@ -365,10 +368,10 @@ defineExpose({
         @click="insertSMTP">
         <div class="flex items-center">
           <Icon icon="icon-chajianpeizhi" class="mr-1" />
-          <span>插入SMTP</span>
+          <span>{{ t('smtpPlugin.uiConfig.title') }}</span>
         </div>
       </Button>
-      <Hints text="支持同时编排多个 Smtp 接口，但每次只允许启用一个 Smtp 进行测试。"></Hints>
+      <Hints :text="t('smtpPlugin.uiConfig.description')"></Hints>
     </div>
     <template v-if="props.loaded && !dataList.length">
       <NoData />

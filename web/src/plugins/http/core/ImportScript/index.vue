@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { notification } from '@xcan-angus/vue-ui';
 import YAML from 'yaml';
+
+const { t } = useI18n();
 
 export interface Props {
   visible:boolean;

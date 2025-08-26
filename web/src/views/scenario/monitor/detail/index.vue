@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { inject, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Hints, Icon, modal, NoData, Spin, DebugLog, ExecLog, ScenarioHttpDebugResult, ScenarioJdbcDebugResult, ScenarioFtpDebugResult, ScenarioWebsocketDebugResult, ScenarioLdapDebugResult, ScenarioMailDebugResult, ScenarioTcpDebugResult, ScearioSmtpDebugResult } from '@xcan-angus/vue-ui';
 import { Button, TabPane, Tabs, Tag } from 'ant-design-vue';
 import { scenario } from '@/api/tester';
 import { MonitorInfo } from '../PropsType';
+
+const { t } = useI18n();
 import Chart from '@/views/scenario/monitor/detail/chart/index.vue';
 // export { default as ScearioSmtpDebugResult } from "./ScearioSmtpDebugResult/index";
 // export { default as ScenarioFtpDebugResult } from "./ScenarioFtpDebugResult/index";
@@ -145,7 +148,7 @@ const editMonitor = (data: MonitorInfo) => {
 // 执行
 const run = async (data: MonitorInfo) => {
   modal.confirm({
-    content: `立即执行监控【${data.name}】`,
+    content: t('scenarioMonitor.list.executeConfirm', { name: data.name }),
     async onOk () {
       const id = data.id;
       const [error] = await scenario.runMonitor(id);
@@ -191,7 +194,7 @@ const statusColorConfig = {
     <div class="bg-gray-light py-2 px-4 flex space-x-4 items-center rounded">
       <div class="text-center">
         <div class="font-semibold text-8 text-text-sub-content mb-2">{{ dataSource?.count?.totalNum }}</div>
-        总执行次数
+        {{ t('scenarioMonitor.detail.totalExecutions') }}
       </div>
 
       <div class="flex-1 min-w-0 space-y-2">
@@ -202,7 +205,7 @@ const statusColorConfig = {
 
         <div>
           <template v-if="dataSource?.description">{{ dataSource?.description }}</template>
-          <span v-else class="text-text-sub-content">无描述~</span>
+          <span v-else class="text-text-sub-content">{{ t('scenarioMonitor.edit.noDescription') }}</span>
         </div>
 
         <div class="flex items-center">
@@ -224,23 +227,23 @@ const statusColorConfig = {
 
     <div class="flex mt-4">
       <div class="flex-1">
-        <div class="title-backend relative pl-2 text-text-title font-semibold text-3.5">成功率</div>
+        <div class="title-backend relative pl-2 text-text-title font-semibold text-3.5">{{ t('scenarioMonitor.detail.successRate') }}</div>
         <div class="flex py-2 space-x-6 items-center">
           <Chart class="w-80" :count="dataSource?.count" />
           <div class="text px-2 space-y-1 flex flex-col text-center">
-            <span class=" font-medium">近24小时</span>
+            <span class=" font-medium">{{ t('scenarioMonitor.detail.timeRanges.last24Hours') }}</span>
             <span class="text-4 font-medium">{{ dataSource?.count?.last24HoursSuccessRate }}%</span>
             <span class="text-text-sub-content">{{ `${dataSource?.count?.last24HoursSuccessNum} / ${dataSource?.count?.last24HoursNum}` }}</span>
           </div>
 
           <div class="text px-2 space-y-1 flex flex-col text-center">
-            <span class=" font-medium">近7天</span>
+            <span class=" font-medium">{{ t('scenarioMonitor.detail.timeRanges.last7Days') }}</span>
             <span class="text-4 font-medium">{{ dataSource?.count?.last7DaySuccessRate }}%</span>
             <span class="text-text-sub-content">{{ `${dataSource?.count?.last7DaySuccessNum} / ${dataSource?.count?.last7DayNum}` }}</span>
           </div>
 
           <div class="text px-2 space-y-1 flex flex-col text-center">
-            <span class=" font-medium">近30天</span>
+            <span class=" font-medium">{{ t('scenarioMonitor.detail.timeRanges.last30Days') }}</span>
             <span class="text-4 font-medium">{{ dataSource?.count?.last30DaySuccessRate }}%</span>
             <span class="text-text-sub-content">{{ `${dataSource?.count?.last30DaySuccessNum} / ${dataSource?.count?.last30DayNum}` }}</span>
           </div>
@@ -248,21 +251,21 @@ const statusColorConfig = {
       </div>
 
       <div class="flex-1">
-        <div class="title-backend relative pl-2 text-text-title font-semibold text-3.5">响应延迟</div>
+        <div class="title-backend relative pl-2 text-text-title font-semibold text-3.5">{{ t('scenarioMonitor.detail.responseDelay') }}</div>
         <div class="flex  py-5 space-x-6 items-center">
           <div class="text px-2 space-y-1 flex flex-col text-center">
             <span class="text-4 font-medium">{{ dataSource?.count?.avgDelayTime }}</span>
-            <span class=" font-medium">平均</span>
+            <span class=" font-medium">{{ t('scenarioMonitor.detail.metrics.average') }}</span>
           </div>
 
           <div class="text px-2 space-y-1 flex flex-col text-center">
             <span class="text-4 font-medium">{{ dataSource?.count?.minDelayTime }}</span>
-            <span class=" font-medium">最小</span>
+            <span class=" font-medium">{{ t('scenarioMonitor.detail.metrics.min') }}</span>
           </div>
 
           <div class="text px-2 space-y-1 flex flex-col text-center">
             <span class="text-4 font-medium">{{ dataSource?.count?.maxDelayTime }}</span>
-            <span class=" font-medium">最大</span>
+            <span class=" font-medium">{{ t('scenarioMonitor.detail.metrics.max') }}</span>
           </div>
 
           <div class="text px-2 space-y-1 flex flex-col text-center">
@@ -285,8 +288,8 @@ const statusColorConfig = {
 
     <div class="mt-4">
       <div class="title-backend relative pl-2 flex items-center">
-        <span class="text-text-title font-semibold text-3.5 mr-2">执行记录</span>
-        <Hints text="注意：只展示近100次监控记录。" />
+        <span class="text-text-title font-semibold text-3.5 mr-2">{{ t('scenarioMonitor.detail.executionRecords') }}</span>
+        <Hints :text="t('scenarioMonitor.detail.executionRecordsHint')" />
       </div>
 
       <div class="flex mt-4 flex-wrap">
@@ -310,15 +313,15 @@ const statusColorConfig = {
 
       <div class="text-text-title font-medium">
         <template v-if="historyExecData?.status?.value === 'SUCCESS'">
-          在 {{ historyExecData?.execStartDate }} 运行成功
+          在 {{ historyExecData?.execStartDate }} {{ t('scenarioMonitor.detail.executionStatus.success') }}
         </template>
         <template v-if="historyExecData?.status?.value === 'FAILURE'">
-          在 {{ historyExecData?.execStartDate }} 运行失败，原因：{{ historyExecData?.failureMessage || '--' }}
+          在 {{ historyExecData?.execStartDate }} {{ t('scenarioMonitor.detail.executionStatus.failure') }}，{{ t('scenarioMonitor.detail.executionStatus.reason') }}：{{ historyExecData?.failureMessage || '--' }}
         </template>
       </div>
 
       <Tabs size="small">
-        <TabPane key="result" tab="调试结果">
+        <TabPane key="result" :tab="t('scenarioMonitor.detail.tabs.debugResult')">
           <template v-if="scenarioPlugin === 'Http'">
             <ScenarioHttpDebugResult v-if="historyExecData?.sampleContents" :content="historyExecData?.sampleContents || []" />
             <NoData
@@ -396,14 +399,14 @@ const statusColorConfig = {
               class="mt-10" />
           </template>
         </TabPane>
-        <TabPane key="debuglog" tab="调度日志">
+        <TabPane key="debuglog" :tab="t('scenarioMonitor.detail.tabs.scheduleLog')">
           <DebugLog v-if="historyExecData?.schedulingResult" :value="historyExecData?.schedulingResult" />
           <NoData
             v-else
             size="small"
             class="mt-10" />
         </TabPane>
-        <TabPane key="execlog" tab="执行日志">
+        <TabPane key="execlog" :tab="t('scenarioMonitor.detail.tabs.execLog')">
           <ExecLog
             v-if="historyExecData?.schedulingResult"
             :execId="historyExecData?.execId"

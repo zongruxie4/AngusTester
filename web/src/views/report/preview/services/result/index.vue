@@ -25,8 +25,8 @@ const testResult = computed(() => {
 });
 
 const configInfo = [
-  [{ label: '总测试数', dataIndex: 'enabledTestNum' }, { label: '功能测试', dataIndex: 'enabledFuncTestNum' }],
-  [{ label: '性能测试', dataIndex: 'enabledPerfTestNum' }, { label: '稳定性测试', dataIndex: 'enabledStabilityTestNum' }]
+  [{ label: t('reportPreview.services.result.testApiStats.columns.totalTestCount'), dataIndex: 'enabledTestNum' }, { label: t('reportPreview.services.result.testApiStats.columns.funcTest'), dataIndex: 'enabledFuncTestNum' }],
+  [{ label: t('reportPreview.services.result.testApiStats.columns.perfTest'), dataIndex: 'enabledPerfTestNum' }, { label: t('reportPreview.services.result.testApiStats.columns.stabilityTest'), dataIndex: 'enabledStabilityTestNum' }]
 ];
 
 const testProgressRef = ref();
@@ -83,14 +83,14 @@ onMounted(() => {
     const testConfig = JSON.parse(JSON.stringify(echartsConfigOption));
     testConfig.series[0].data = [
       {
-        name: '已测试',
+        name: t('reportPreview.services.result.testStatusStats.fields.tested'),
         value: newValue.testedNum || 0,
         itemStyle: {
           color: '#52C41A'
         }
       },
       {
-        name: '未测试',
+        name: t('reportPreview.services.result.testStatusStats.fields.notTested'),
         value: newValue.unTestedNum || 0,
         itemStyle: {
           color: 'rgba(200, 202, 208, 1)'
@@ -103,14 +103,14 @@ onMounted(() => {
 
     passdConfig.series[0].data = [
       {
-        name: '已通过',
+        name: t('reportPreview.services.result.testStatusStats.fields.passed'),
         value: newValue.testPassedNum || 0,
         itemStyle: {
           color: '#52C41A'
         }
       },
       {
-        name: '未通过',
+        name: t('reportPreview.services.result.testStatusStats.fields.failed'),
         value: newValue.testUnPassedNum || 0,
         itemStyle: {
           color: 'rgba(200, 202, 208, 1)'
@@ -132,29 +132,29 @@ onMounted(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-5">
-      <span id="a3" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25"></em>测试结果汇总</span>
+      <span id="a3" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.services.result.title') }}</span>
     </h1>
     <h1 class="text-theme-title font-medium mb-3">
-      <span id="a3.1" class="text-3.5 text-theme-title font-medium">3.1 <em class="inline-block w-0.25"></em>测试进度</span>
+      <span id="a3.1" class="text-3.5 text-theme-title font-medium">3.1 <em class="inline-block w-0.25"></em>{{ t('reportPreview.services.result.testProgress.title') }}</span>
     </h1>
     <div class="flex space-x-4 w-120 mb-7">
       <div class="text-center py-2.5 flex-1 bg-blue-bg3 rounded flex justify-center items-center space-x-4 pr-4">
         <img class="w-10" src="./image/jiekou.png" />
         <div>
           <div class="text-4 font-semibold">{{ testResult?.testApis?.totalApisNum || '--' }}</div>
-          总接口
+          {{ t('reportPreview.services.result.testProgress.totalApis') }}
         </div>
       </div>
       <div class="text-center py-1 flex-1 bg-blue-bg3 rounded flex justify-center items-center space-x-4 pr-4">
         <img class="w-10" src="./image/jindu.png" />
         <div>
           <div class="text-4 font-semibold">{{ testResult.progress.completedRate + '%' }}</div>
-          进度
+          {{ t('reportPreview.services.result.testProgress.progress') }}
         </div>
       </div>
     </div>
     <h1 class="text-theme-title font-medium mb-3">
-      <span id="a3.2" class="text-3.5 text-theme-title font-medium">3.2 <em class="inline-block w-0.25"></em> 测试接口统计</span>
+      <span id="a3.2" class="text-3.5 text-theme-title font-medium">3.2 <em class="inline-block w-0.25"></em> {{ t('reportPreview.services.result.testApiStats.title') }}</span>
     </h1>
     <div class="flex space-x-4 w-120 mb-7">
       <div class="space-y-2 text-3 w-full">
@@ -173,7 +173,7 @@ onMounted(() => {
       </div>
     </div>
     <h1 class="text-theme-title font-medium mb-3">
-      <span id="a3.3" class="text-3.5 text-theme-title font-medium">3.3 <em class="inline-block w-0.25"></em> 测试状态统计</span>
+      <span id="a3.3" class="text-3.5 text-theme-title font-medium">3.3 <em class="inline-block w-0.25"></em> {{ t('reportPreview.services.result.testStatusStats.title') }}</span>
     </h1>
     <div ref="warpRef" class="flex w-100 mb-7">
       <div ref="testProgressRef" class="flex-1 h-30">

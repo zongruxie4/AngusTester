@@ -1,115 +1,438 @@
 {
-  "welcome": {
-    "title": "欢迎进入Angus场景！",
-    "description": "在这里您和您的团队可以完成以下工作：",
-    "features": [
-      "场景可以帮助编排更加复杂的需求或用户故事，相比单个步骤的测试用例，场景可以包含更多步骤和流程。",
-      "在线添加、编辑、调试场景；",
-      "管理我的场景和测试任务；",
-      "开展场景功能测试、稳定性和性能测试，保证交付稳定且满足性能指标要求的系统。"
-    ]
+  "scenarioHome": {
+    "name": "主页",
+    "activityTimeline": {
+      "myActivity": "我的活动",
+      "allActivity": "所有活动"
+    },
+    "chart": {
+      "resourceStats": "资源统计",
+      "testType": "测试类型",
+      "total": "总数",
+      "quantity": "数量",
+      "totalScenarios": "总场景",
+      "testTypes": {
+        "perfTest": "性能测试",
+        "stabilityTest": "稳定性测试",
+        "funcTest": "功能测试",
+        "customTest": "自定义测试"
+      }
+    },
+    "myScenarios": {
+      "title": "我的场景",
+      "added": "添加的",
+      "followed": "关注的",
+      "favorited": "收藏的",
+      "table": {
+        "columns": {
+          "name": "名称",
+          "plugin": "插件",
+          "testType": "测试类型",
+          "addTime": "添加时间",
+          "operation": "操作"
+        },
+        "actions": {
+          "unfavorite": "取消收藏",
+          "unfollow": "取消关注",
+          "delete": "删除"
+        },
+        "messages": {
+          "noAddedScenarios": "您尚未添加任何场景，立即",
+          "addScenario": "添加场景",
+          "noFavoritedScenarios": "您没有收藏的场景",
+          "noFollowedScenarios": "您没有关注的场景",
+          "deleteConfirm": "确定删除场景【{name}】吗？",
+          "deleteSuccess": "删除场景成功",
+          "unfavoriteSuccess": "场景取消收藏成功",
+          "unfollowSuccess": "场景取消关注成功",
+          "pageInfo": "第{current}/{total}页"
+        }
+      }
+    },
+    "introduce": {
+      "welcome": "欢迎进入Augus场景！",
+      "description": "场景可以帮助您编排更加复杂的需求或用户故事，相比单个步骤的测试用例，场景可以包含更多步骤和流程。",
+      "capabilities": "在这里您和您的团队可以完成以下工作：",
+      "capability1": "在线编辑、调试场景；",
+      "capability2": "添加并管理场景资源；",
+      "capability3": "快速生成场景测试脚本和任务。"
+    }
   },
-  "navigation": {
-    "directory": "目录",
-    "scenario": "场景",
-    "execution": "执行"
+  "scenarioMonitor": {
+    "name": "监控",
+    "monitor": "监控",
+    "addMonitor": "添加监控",
+    "edit": {
+      "save": "保存",
+      "cancel": "取消",
+      "monitorScene": "监控场景",
+      "selectScene": "选择场景",
+      "monitorName": "监控名称",
+      "monitorNamePlaceholder": "输入监控名称，最多可输入100字符",
+      "description": "描述",
+      "descriptionPlaceholder": "输入监控描述，最多可输入200字符",
+      "monitorTime": "监控时间",
+      "serverConfig": "服务器配置",
+      "noDescription": "无描述~",
+      "default": "默认",
+      "noVariables": "无变量~",
+      "notificationConfig": "通知配置",
+      "notificationOptions": {
+        "notify": "通知",
+        "noNotify": "不通知"
+      },
+      "notificationHint": "开启通知后，将在监控运行失败后自动发送消息给接收对象。",
+      "recipient": "接收对象",
+      "recipientOptions": {
+        "user": "接收人",
+        "dept": "接收部门",
+        "group": "接收组"
+      },
+      "selectUser": "选择用户",
+      "selectDept": "选择部门",
+      "selectGroup": "选择组"
+    },
+    "detail": {
+      "successRate": "成功率",
+      "responseDelay": "响应延迟",
+      "executionRecords": "执行记录",
+      "executionRecordsHint": "注意：只展示近100次监控记录。",
+      "timeRanges": {
+        "last24Hours": "近24小时",
+        "last7Days": "近7天",
+        "last30Days": "近30天"
+      },
+      "metrics": {
+        "average": "平均",
+        "min": "最小",
+        "max": "最大"
+      },
+      "executionStatus": {
+        "success": "运行成功",
+        "failure": "运行失败",
+        "reason": "原因"
+      },
+      "tabs": {
+        "debugResult": "调试结果",
+        "scheduleLog": "调度日志",
+        "execLog": "执行日志"
+      }
+    },
+    "list": {
+      "addedMonitors": "已添加的监控",
+      "noMonitors": "您尚未添加任何监控，立即",
+      "addMonitor": "添加监控",
+      "successRate": "成功率",
+      "averageDelay": "平均延迟",
+      "willRun": "将运行",
+      "lastRun": "最后运行",
+      "createdBy": "创建于",
+      "executeNow": "立即执行",
+      "deleteConfirm": "确定删除监控【{name}】吗？",
+      "executeConfirm": "立即执行监控【{name}】"
+    },
+    "searchPanel": {
+      "statusOptions": {
+        "pending": "未执行",
+        "success": "成功",
+        "failure": "失败"
+      },
+      "searchNamePlaceholder": "查询名称，描述",
+      "selectScenePlaceholder": "选择场景名称",
+      "selectCreatorPlaceholder": "选择创建人",
+      "dateRangePlaceholder": ["添加时间从", "添加时间到"],
+      "sortOptions": {
+        "byAddTime": "按添加时间",
+        "byCreator": "按添加人"
+      },
+      "filterOptions": {
+        "all": "全部",
+        "myCreated": "我创建的",
+        "myModified": "我修改的"
+      },
+      "timeRanges": {
+        "last1Day": "近1天",
+        "last3Days": "近3天",
+        "last7Days": "近7天"
+      },
+      "quickSearch": "快速查询",
+      "addMonitor": "添加监控",
+      "sort": "排序",
+      "refresh": "刷新"
+    },
+    "introduce": {
+      "aboutMonitor": "关于监控",
+      "description": "场景监控可以帮助我们从接口维度掌握系统或者业务状态，及时发现并解决潜在问题，从而提高系统的可靠性和用户满意度，为业务的稳定运营提供有力支持。主要应用场景如下：",
+      "scenarios": {
+        "apiDelay": {
+          "title": "API延迟监测",
+          "description": "跟踪API的响应时间，确保访问体验。例如：监控支付API的平均响应时间，确保不超过500ms。"
+        },
+        "healthCheck": {
+          "title": "检查系统健康状态",
+          "description": "以快速、简单的方式来确定系统是否正常运行。 例如：验证系统或服务健康检查端点(/health)中组件的运行状态。"
+        },
+        "apiFunctionality": {
+          "title": "API功能正确性检查",
+          "description": "定期测试API的功能正确性，确保预期行为。 例如：自动化测试用户注册API，验证账户创建流程。"
+        },
+        "businessProcess": {
+          "title": "关键业务流程监控",
+          "description": "监控核心业务流程的完整性和正确性。 例如：截止到当前时间支付订单和支付金额在业务上是否一致。"
+        }
+      }
+    },
+    "chart": {
+      "successCount": "成功数",
+      "failureCount": "失败数"
+    }
   },
-  "directory": {
-    "description": "目录用于组织测试场景或对有相同特点的测试场景分组，可以是项目名或模块名等。最大支持3级，每个目录的权限相互独立。",
-    "addDirectory": "添加目录",
-    "addScenario": "添加场景",
-    "httpScenario": "http场景",
-    "websocketScenario": "websocket场景"
+  "scenarioTrash": {
+    "name": "回收站",
+    "title": "回收站",
+    "description": "只允许管理员和删除人还原或彻底删除回收站数据。",
+    "actions": {
+      "restore": "还原",
+      "delete": "删除",
+      "restoreAll": "全部还原",
+      "deleteAll": "全部删除",
+      "refresh": "刷新"
+    },
+    "messages": {
+      "restoreSuccess": "还原成功",
+      "deleteSuccess": "删除成功",
+      "restoreAllSuccess": "全部还原成功",
+      "deleteAllSuccess": "全部删除成功"
+    },
+    "table": {
+      "columns": {
+        "name": "名称",
+        "creator": "添加人",
+        "deleter": "删除人",
+        "deleteTime": "删除时间",
+        "operation": "操作"
+      },
+      "searchPlaceholder": "请输入查询关键字"
+    }
   },
   "scenario": {
-    "description": "在线添加、编辑测试场景；系统默认提供了Http和WebSocket协议场景编排，其他协议或中间件需要进入",
-    "cloudStore": "云商店",
-    "installPlugin": "安装对应插件",
-    "executionDescription": "在场景编排和配置\"执行配置\"完成后，即可执行对场景进行功能、性能测试、稳定性测试",
-    "executeScenario": "执行场景"
-  },
-  "scriptInfo": {
-    "scenarioName": "场景名称",
-    "directory": "所属目录",
-    "creator": "添加人",
-    "createdTime": "添加时间",
-    "updatedTime": "更新时间",
-    "permission": "权限",
-    "description": "描述",
-    "directoryName": "目录名称",
-    "scenarioCount": "场景数量",
-    "addUser": "添加用户",
-    "viewPermission": "查看权限",
-    "link": "链接",
-    "password": "密码",
-    "validityPeriod": "有效期",
-    "selectDirectory": "选择目录",
-    "scenarioPerformanceMetrics": "场景性能指标",
-    "targetConcurrency": "目标并发(用户数)",
-    "averageResponseTime": "平均响应时间(RT)",
-    "tpsQps": "TPS/QPS",
-    "errorRate": "错误率(ERR)",
-    "modifyMetrics": "修改指标",
-    "selectProtocol": "选择协议"
-  },
-  "placeholder": {
-    "select": "请选择",
-    "deleteScenario": "删除场景",
-    "limitInput": "限制输入{n}字符以内",
-    "selectDirectory": "选择目录"
-  },
-  "tips": {
-    "dynamicValues": "为了让场景中的参数值更加接近真实业务数据，系统还提供了两种动态取值方式，可根据自己的业务需求选择参数值的取值方式。",
-    "uploadComplete": "上传完成",
-    "uploadFailed": "上传失败",
-    "copyLinkAndPassword": "复制链接和密码",
-    "copySuccess": "复制成功",
-    "copyFailed": "复制失败",
-    "deleteData": "删除数据",
-    "saveScenarioSuccess": "保存场景成功",
-    "addDirectorySuccess": "添加目录成功",
-    "confirmDeleteWithChildren": "删除【{name}】会删除其子目录和场景，请确认是否删除？",
-    "confirmDeleteWithFiles": "{name}目录下含有子文件，确定一起删除吗",
-    "directoryDeleteSuccess": "目录删除成功",
-    "deleteDirectory": "删除目录",
-    "confirmDeleteScenario": "删除场景会同步删除关联关注、收藏、指标、变量等信息，请确认是否删除？",
-    "deleteScenarioSuccess": "删除{name}场景成功",
-    "performanceMetricsWarning": "执行会根据设定的性能指标来判断测试结果是否通过；请谨慎修改配置。",
-    "metricsModifySuccess": "指标修改成功",
-    "selectDirectory": "请选择目录"
-  },
-  "buttons": {
-    "uploadParamFile": "上传参数文件",
-    "generatedParamFile": "已生成参数文件"
-  },
-  "upload": {
-    "selectFile": "选择文件",
-    "continueUpload": "继续上传",
-    "confirm": "确定",
-    "cancel": "取消"
-  },
-  "form": {
-    "fileName": "文件名称",
-    "method": "调用方式",
-    "source": "来源",
-    "dataSource": "数据源",
-    "dataForm": "数据表",
-    "select": "选择",
-    "save": "保存",
-    "file": "文件",
-    "delete": "删除",
-    "scenario": "场景"
-  },
-  "export": {
-    "exportScenario": "导出场景",
-    "selectExportMethod": "选择导出方式"
-  },
-  "rules": {
-    "scenarioNameRequired": "场景名称不能为空"
-  },
-  "comment": {
-    "comment": "评论",
-    "publish": "发表"
-  },
-  "executeScript": "执行脚本"
-} 
+    "name": "场景",
+    "title": "场景",
+    "list": {
+      "searchPlaceholder": "查询场景ID、名称、描述",
+      "pluginTypePlaceholder": "插件类型",
+      "scriptTypePlaceholder": "选择脚本类型",
+      "dateRangePlaceholder": ["添加时间开始", "添加时间结束"],
+      "pluginTypes": {
+        "jdbc": "Jdbc场景",
+        "webSocket": "WebSocket场景",
+        "ftp": "Ftp场景",
+        "ldap": "Ldap场景",
+        "mail": "Mail场景",
+        "smtp": "Smtp场景",
+        "tcp": "Tcp场景"
+      },
+      "sortOptions": {
+        "byAddTime": "按添加时间",
+        "byName": "按名称",
+        "byCreator": "按添加人"
+      },
+      "groupOptions": {
+        "noGroup": "不分组",
+        "byCreator": "按添加人分组",
+        "byPlugin": "按插件分组",
+        "byScriptType": "按脚本类型分组"
+      },
+      "actions": {
+        "addHttpScenario": "添加Http场景",
+        "scenarioAuth": "场景权限",
+        "sort": "排序",
+        "group": "分组",
+        "refresh": "刷新",
+        "follow": "关注",
+        "cancelFollow": "取消关注",
+        "favourite": "收藏",
+        "cancelFavourite": "取消收藏",
+        "auth": "权限",
+        "export": "导出脚本",
+        "delete": "删除",
+        "createTestTask": "生成测试任务",
+        "restartTestTask": "重新开始测试任务",
+        "reopenTestTask": "重新打开测试任务",
+        "deleteTestTask": "删除测试任务",
+        "executeTest": "执行测试",
+        "edit": "编辑",
+        "clone": "克隆"
+      },
+      "table": {
+        "columns": {
+          "name": "名称",
+          "plugin": "插件",
+          "scriptType": "脚本类型",
+          "creator": "添加人",
+          "addTime": "添加时间",
+          "lastExecStatus": "最后执行状态",
+          "operation": "操作"
+        },
+        "noDescription": "无描述~",
+        "createdBy": "创建于",
+        "noExecute": "未执行"
+      },
+      "messages": {
+        "cancelFavouriteSuccess": "取消收藏成功",
+        "cancelFollowSuccess": "取消关注成功",
+        "cloneSuccess": "克隆成功",
+        "deleteConfirm": "删除场景会同步删除关联关注、收藏、指标、变量等信息，请确认是否删除【{name}】？",
+        "deleteSuccess": "删除成功，您可以在回收站查看删除后的场景。",
+        "favouriteSuccess": "收藏成功",
+        "followSuccess": "关注成功",
+        "reopenConfirm": "将场景下所有已结束的任务状态更新为\"待测试\"， 不清理统计计数和状态，您确认重新打开测试任务【{name}】吗？",
+        "restartConfirm": "将场景下所有已结束的任务状态更新为\"待测试\"， 相关统计计数和状态会被清除，您确认重新开始测试【{name}】吗？"
+      },
+      "tips": {
+        "authOn": "开启\"有权限控制\"后，需要手动授权服务权限后才会有场景相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级目录权限将自动授权查看权限。",
+        "authOff": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前场景，查看用户同时需要有当前场景父级目录权限。",
+        "authTitle": "场景权限",
+        "testTaskInfo": "场景测试任务不存在时生成对应任务，如果任务已存在则覆盖当前测试信息。"
+      },
+      "execTest": {
+        "title": "执行测试",
+        "serverConfig": "服务器配置",
+        "radioOptions": {
+          "useDefault": "使用默认（场景中默认服务器配置）",
+          "modifyConfig": "修改变量配置（修改后会更新到接口和变量服务器）"
+        },
+        "selectServer": "请选择服务器",
+        "noVariables": "无变量",
+        "noDescription": "无描述",
+        "variables": "变量",
+        "labels": {
+          "name": "名称",
+          "value": "值",
+          "description": "描述",
+          "default": "默认"
+        },
+        "ellipsis": {
+          "more": "更多"
+        },
+        "messages": {
+           "updateSuccess": "更新到已关联接口成功"
+         }
+       },
+      "drawer": {
+         "menuItems": {
+           "activity": "活动"
+         }
+      }
+     },
+     "auth": {
+       "description": "对指定的用户配置场景的数据操作权限。通过配置权限可以更加高效的在团队协作间完成调试、管理、测试等接口工作。",
+       "tabs": {
+         "user": "用户",
+         "dept": "部门",
+         "group": "组"
+       },
+       "authSet": {
+         "searchPlaceholder": "查询名称",
+         "table": {
+           "columns": {
+             "name": "名称",
+             "permissionControl": "权限控制",
+             "permission": "权限"
+           }
+         },
+         "loading": "加载中...",
+         "selectAll": "全部"
+       },
+       "groupSet": {
+         "searchPlaceholders": {
+           "dept": "查询部门",
+           "group": "查询组",
+           "user": "查询用户"
+         }
+       }
+     },
+     "detail": {
+       "messages": {
+         "deleteConfirm": "删除场景会同步删除关联关注、收藏、指标、变量等信息，请确认是否删除【{name}】？",
+         "deleteSuccess": "删除成功，您可以在回收站查看删除后的场景。",
+         "cancelFollowSuccess": "取消关注",
+         "followSuccess": "关注成功",
+         "cancelFavouriteSuccess": "取消收藏",
+         "favouriteSuccess": "收藏成功"
+       },
+       "actions": {
+         "edit": "编辑",
+         "delete": "删除",
+         "export": "导出脚本",
+         "auth": "权限",
+         "follow": "关注",
+         "cancelFollow": "取消关注",
+         "favourite": "收藏",
+         "cancelFavourite": "取消收藏"
+       },
+       "tabs": {
+         "func": "功能测试",
+         "perf": "性能测试",
+         "stability": "稳定性测试",
+         "custom": "自定义测试",
+         "task": "测试任务",
+         "activity": "活动记录",
+         "comment": "评论"
+       },
+       "tips": {
+         "authOn": "开启\"有权限控制\"后，需要手动授权服务权限后才会有场景相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级目录权限将自动授权查看权限。",
+         "authOff": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前场景，查看用户同时需要有当前场景父级目录权限。",
+         "authTitle": "场景权限"
+       },
+       "task": {
+         "table": {
+           "columns": {
+             "code": "编码",
+             "name": "名称",
+             "iteration": "所属迭代",
+             "priority": "优先级",
+             "assignee": "经办人",
+             "confirmer": "确认人",
+             "deadline": "截止时间"
+           }
+         },
+         "noData": "暂无数据",
+         "overdue": "已逾期"
+       },
+       "testSummary": {
+         "successRate": "成功率",
+         "successCount": "成功数",
+         "failCount": "失败数",
+         "table": {
+           "labels": {
+             "total": "总共",
+             "success": "成功",
+             "fail": "失败",
+             "disabled": "未启用"
+           }
+         },
+         "sections": {
+           "allTests": "全部测试",
+           "functionality": "功能",
+           "testInterfaces": "测试接口",
+           "performance": "性能",
+           "stability": "稳定性",
+           "custom": "自定义",
+           "nonStandard": "非标准",
+           "resultMetrics": "结果指标"
+         },
+         "status": {
+           "notTested": "未测试",
+           "passed": "通过",
+           "notPassed": "不通过"
+         },
+         "metrics": {
+           "tps": "每秒事务数(TPS)",
+           "responseTime": "响应时间(P90)",
+           "errorRate": "错误率"
+         }
+       }
+     }
+  }
+ } 

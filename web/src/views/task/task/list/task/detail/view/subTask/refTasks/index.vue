@@ -3,6 +3,7 @@ import { onMounted, ref, watch } from 'vue';
 import { Colon, IconTask, Modal, notification, Select } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { task } from 'src/api/tester';
+import { useI18n } from 'vue-i18n';
 
 import { TaskInfo } from '../../../../../../../PropsType';
 
@@ -21,6 +22,8 @@ const props = withDefaults(defineProps<Props>(), {
   visible: false,
   taskInfo: undefined
 });
+
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -47,7 +50,7 @@ const ok = async () => {
     return;
   }
 
-  notification.success('关联子任务成功');
+  notification.success(t('task.subTask.messages.associateSubTaskSuccess'));
   emit('update:visible', false);
   emit('ok');
   reset();
@@ -73,20 +76,20 @@ const taskIdExcludes = (data: { id: string }) => {
 </script>
 <template>
   <Modal
-    title="关联子任务"
+    :title="t('task.subTask.modal.title')"
     :centered="true"
     :visible="props.visible"
     :width="680"
     @cancel="cancel"
     @ok="ok">
     <div class="flex items-start">
-      <div class="flex items-center flex-shrink-0 mr-1.5 leading-7"><span>关联子任务</span><Colon /></div>
+      <div class="flex items-center flex-shrink-0 mr-1.5 leading-7"><span>{{ t('task.subTask.modal.label') }}</span><Colon /></div>
       <Select
         v-model:value="refTaskIds"
         showSearch
         internal
         mode="tags"
-        placeholder="请选择子任务"
+        :placeholder="t('task.subTask.modal.placeholder')"
         class="flex-1"
         :excludes="taskIdExcludes"
         :fieldNames="{ label: 'name', value: 'id' }"

@@ -1,5 +1,6 @@
 {
   "taskAnalysis": {
+    "name": "Analysis",
     "title": "Analysis",
     "addAnalysis": "Add Analysis",
     "editAnalysis": "Edit Analysis",
@@ -84,7 +85,8 @@
       "testerOrg": "Specified Organization"
     }
   },
-  "backlog": {
+  "backlog": {  
+    "name": "Backlog",
     "title": "Backlog",
     "aboutBacklog": "About Backlog",
     "aboutBacklogDesc": "Backlog is a list of pending work items, divided into Product Backlog and Sprint Backlog. It is mainly used to manage and plan team work tasks, containing all work items that need to be completed, whether in the current sprint or future sprints.",
@@ -151,6 +153,7 @@
     "overdue": "Overdue"
   },
   "taskHome": {
+    "name": "Home",
     "welcomeToAngusTask": "Welcome to Angus Task!",
     "taskDescription": "Tasks help teams manage and track project tasks, issues, and work progress, improve team collaboration and project delivery efficiency, and ensure projects are completed on time and achieve expected goals.",
     "teamWorkDescription": "Here you and your team can complete the following work:",
@@ -185,6 +188,7 @@
     "commented": "Commented"
   },
   "taskMeeting": {
+    "name": "Meeting",
     "title": "Meetings",
     "addMeeting": "Add Meeting",
     "editMeeting": "Edit Meeting",
@@ -278,6 +282,7 @@
     }
   },
   "task": {
+    "name": "Task",
     "title": "Tasks",
     "addTask": "Add Task",
     "editTask": "Edit Task",
@@ -812,9 +817,603 @@
       "noMore": "No More",
       "previousTask": "Previous Task",
       "nextTask": "Next Task"
+    },
+    "upload": {
+      "title": "Import Task",
+      "form": {
+        "iteration": "Iteration",
+        "selectIteration": "Select Iteration",
+        "uploadFile": "Please upload file",
+        "selectFile": "Select File",
+        "uploadTip": "You can directly drag files into this area for direct upload. File size should not exceed 20M, supporting .xls .xlsx file types.",
+        "taskImportTemplate": "Task Import Template",
+        "duplicateStrategy": "Processing Strategy When Encountering Duplicates"
+      }
+    },
+    "table": {
+      "columns": {
+        "code": "Code",
+        "name": "Name",
+        "priority": "Priority",
+        "status": "Status",
+        "execResult": "Execution Result",
+        "assignee": "Assignee",
+        "creator": "Creator",
+        "confirmer": "Confirmer",
+        "lastModifier": "Last Modifier",
+        "executor": "Executor",
+        "workload": "Workload",
+        "sprint": "Sprint",
+        "apiScenario": "API/Scenario",
+        "service": "Service",
+        "failCount": "Fail Count",
+        "processCount": "Process Count",
+        "addTime": "Add Time",
+        "deadline": "Deadline",
+        "startTime": "Start Time",
+        "processTime": "Process Time",
+        "confirmTime": "Confirm Time",
+        "completeTime": "Complete Time",
+        "cancelTime": "Cancel Time",
+        "execTime": "Execution Time",
+        "lastModifyTime": "Last Modify Time",
+        "operation": "Operation"
+      },
+      "batchActions": {
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "favourite": "Favourite",
+        "cancelFavourite": "Cancel Favourite",
+        "follow": "Follow",
+        "cancelFollow": "Cancel Follow",
+        "move": "Move",
+        "cancelBatch": "Cancel Batch Operation"
+      },
+      "messages": {
+        "maxBatchLimit": "Maximum support for batch operations of {maxNum} tasks, currently selected {selectedNum} tasks.",
+        "cancelConfirm": "Are you sure to cancel the selected {num} tasks?",
+        "cancelNumSuccess": "All {num} selected tasks cancelled successfully",
+        "cancelFail": "All {num} selected tasks failed to cancel",
+        "cancelPartial": "{successNum} selected tasks cancelled successfully, {errorNum} tasks failed to cancel",
+        "deleteConfirm": "Are you sure to delete the selected {num} tasks?",
+        "deleteSuccess": "Selected {num} tasks deleted successfully",
+        "favouriteConfirm": "Are you sure to favourite the selected {num} tasks?",
+        "favouriteNumSuccess": "All {num} selected tasks favourited successfully",
+        "favouriteFail": "All {num} selected tasks failed to favourite",
+        "favouritePartial": "{successNum} selected tasks favourited successfully, {errorNum} tasks failed to favourite",
+        "cancelFavouriteConfirm": "Are you sure to cancel favourite for the selected {num} tasks?",
+        "cancelFavouriteNumSuccess": "All {num} selected tasks cancelled favourite successfully",
+        "cancelFavouriteFail": "All {num} selected tasks failed to cancel favourite",
+        "cancelFavouritePartial": "{successNum} selected tasks cancelled favourite successfully, {errorNum} tasks failed to cancel favourite",
+        "followConfirm": "Are you sure to follow the selected {num} tasks?",
+        "followNumSuccess": "All {num} selected tasks followed successfully",
+        "followFail": "All {num} selected tasks failed to follow",
+        "followPartial": "{successNum} selected tasks followed successfully, {errorNum} tasks failed to follow",
+        "cancelFollowConfirm": "Are you sure to cancel follow for the selected {num} tasks?",
+        "cancelFollowNumSuccess": "All {num} selected tasks cancelled follow successfully",
+        "cancelFollowFail": "All {num} selected tasks failed to cancel follow",
+        "cancelFollowPartial": "{successNum} selected tasks cancelled follow successfully, {errorNum} tasks failed to cancel follow",
+        "deleteTaskConfirm": "Are you sure to delete task 【{name}】?",
+        "deleteTaskSuccess": "Task deleted successfully, you can view the deleted task in the recycle bin",
+        "favouriteSuccess": "Task favourited successfully",
+        "cancelFavouriteSuccess": "Task cancelled favourite successfully",
+        "followSuccess": "Task followed successfully",
+        "cancelFollowSuccess": "Task cancelled follow successfully",
+        "startSuccess": "Task started processing successfully",
+        "processedSuccess": "Task processed successfully",
+        "reopenSuccess": "Task reopened successfully",
+        "restartSuccess": "Task restarted successfully",
+        "cancelSuccess": "Task cancelled successfully",
+        "copySuccess": "Copy successful",
+        "copyFail": "Copy failed"
+      },
+      "status": {
+        "overdue": "Overdue"
+      },
+      "actions": {
+        "edit": "Edit"
+      }
+    },
+    "moveModal": {
+      "title": "Move Task",
+      "form": {
+        "selectIteration": "Select Iteration",
+        "selectIterationPlaceholder": "Select or search iteration"
+      },
+      "messages": {
+        "moveSuccess": "Task moved successfully",
+        "batchMoveSuccess": "All {num} selected tasks moved successfully"
+      },
+      "defaultOptions": {
+        "productBacklog": "Product Backlog"
+      }
+    },
+    "ganttView": {
+      "drawer": {
+        "basicInfo": "Basic Info",
+        "personnel": "Personnel",
+        "date": "Date",
+        "assocTasks": "Associated Tasks",
+        "assocCases": "Associated Cases",
+        "attachments": "Attachments",
+        "remarks": "Remarks",
+        "comments": "Comments",
+        "activity": "Activity"
+      }
+    },
+    "flowChart": {
+      "title": "Task Processing Flow Chart"
+    },
+    "editModal": {
+      "title": {
+        "edit": "Edit Task",
+        "add": "Add Task"
+      },
+      "tooltip": {
+        "zoomIn": "Full Screen",
+        "zoomOut": "Minimize"
+      },
+      "form": {
+        "name": "Name",
+        "namePlaceholder": "Task name, maximum 200 characters",
+        "nameRule": "Task name, maximum 200 characters",
+        "type": "Type",
+        "typePlaceholder": "Please select task type",
+        "priority": "Priority",
+        "priorityPlaceholder": "Please select priority",
+        "bugLevel": "Bug Level",
+        "missingBugFlag": "Is Missing Test Bug",
+        "missingBugOptions": {
+          "yes": "Yes",
+          "no": "No"
+        },
+        "scenario": "Scenario",
+        "scenarioPlaceholder": "Please select scenario",
+        "scenarioRule": "Please select scenario",
+        "testType": "Test Type",
+        "testTypePlaceholder": "Please select test type",
+        "service": "Service",
+        "servicePlaceholder": "Select or search service",
+        "serviceRule": "Please select service",
+        "api": "API",
+        "apiPlaceholder": "Please select API",
+        "apiRule": "Please select API",
+        "assignee": "Assignee",
+        "assigneePlaceholder": "Select assignee",
+        "assigneeRule": "Select assignee",
+        "assigneeTip": "Responsible for actually executing assigned work tasks.",
+        "assignToMe": "Assign to Me",
+        "confirmer": "Confirmer",
+        "confirmerPlaceholder": "Select confirmer",
+        "confirmerTip": "Person responsible for verifying and validating work results, will automatically enter confirmation process when specified.",
+        "deadline": "Deadline",
+        "deadlineRule": "Please select deadline",
+        "deadlineFutureRule": "Deadline must be a future time",
+        "deadlineSprintRule": "Exceeds sprint deadline ({deadline})",
+        "tester": "Tester",
+        "testerPlaceholder": "Select tester",
+        "testerTip": "Person responsible for testing and validating product functionality or service quality.",
+        "description": "Description",
+        "descriptionPlaceholder": "Task description, maximum 6000 characters",
+        "descriptionRule": "Description maximum 6000 characters",
+        "sprint": "Sprint",
+        "sprintPlaceholder": "Select or search sprint",
+        "sprintRule": "Please select sprint",
+        "module": "Module",
+        "modulePlaceholder": "Select or search module",
+        "parentTask": "Parent Task",
+        "parentTaskPlaceholder": "Please select parent task",
+        "workload": {
+          "evalStoryPoint": "Estimated Story Points",
+          "evalWorkload": "Estimated Workload",
+          "actualStoryPoint": "Actual Story Points",
+          "actualWorkload": "Actual Workload",
+          "placeholder": "Minimum 0.1, maximum 1000, up to 2 decimal places",
+          "storyPointTip": "Assessment value of work volume, comprehensive difficulty, complexity, etc.",
+          "workloadTip": "Time spent on work assessment, calculated in hours.",
+          "actualStoryPointTip": "Actual value of work volume, comprehensive difficulty, complexity, etc.",
+          "actualWorkloadTip": "Actual time spent on work, calculated in hours.",
+          "rule": "Please enter estimated workload"
+        },
+        "softwareVersion": "Software Version",
+        "softwareVersionPlaceholder": "Please select version",
+        "tags": "Tags",
+        "tagsPlaceholder": "Maximum 5 tags",
+        "tagsTip": "\"Task tags\" can help you organize tasks with common points, such as \"project name, iteration version, business identifier\", etc.",
+        "tagsNotFound": "Please contact administrator to configure task tags in \"Application Management\"-\"Task Management\"-\"Task Tags\".",
+        "assocTasks": "Associated Tasks",
+        "assocTasksPlaceholder": "Maximum 20 associated tasks",
+        "assocCases": "Associated Cases",
+        "assocCasesPlaceholder": "Maximum 20 associated cases",
+        "attachments": "Attachments",
+        "attachmentsAdd": "Add attachments, maximum 5 attachments",
+        "attachmentsContinue": "Continue Upload",
+        "attachmentsUpload": "Upload attachments, maximum 5"
+      },
+      "taskTypes": {
+        "requirement": "Requirement",
+        "story": "Story",
+        "task": "Task",
+        "bug": "Bug",
+        "apiTest": "API Test",
+        "scenarioTest": "Scenario Test"
+      },
+      "taskTypeDescriptions": {
+        "requirement": "User expectations or requirements for business, functionality, etc., with broad descriptions.",
+        "story": "Specific goals or expectations that users want to achieve, usually described in simple, understandable language, such as: As a <role>, I want <goal> so that <benefit>.",
+        "task": "General work items or activities",
+        "bug": "Program errors or vulnerabilities",
+        "apiTest": "API functionality, performance, stability testing tasks",
+        "scenarioTest": "Scenario functionality, performance, stability testing tasks"
+      },
+      "messages": {
+        "addSuccess": "Task added successfully",
+        "editSuccess": "Task edited successfully"
+      },
+      "actions": {
+        "cancel": "Cancel",
+        "saveAndContinue": "Save and Continue Adding",
+        "confirm": "Confirm"
+      },
+      "status": {
+        "overdue": "Overdue"
+      }
+    },
+    "kanbanView": {
+      "drawer": {
+        "basicInfo": "Basic Information",
+        "personnel": "Personnel",
+        "date": "Date",
+        "assocTasks": "Associated Tasks",
+        "assocCases": "Associated Cases",
+        "attachments": "Attachments",
+        "remarks": "Remarks",
+        "comments": "Comments",
+        "activity": "Activity"
+      },
+      "actions": {
+        "split": "Split",
+        "start": "Start Processing",
+        "processed": "Processed",
+        "completed": "Confirm Complete",
+        "uncompleted": "Confirm Incomplete",
+        "reopen": "Reopen",
+        "restart": "Restart"
+      },
+      "messages": {
+        "noStartPermission": "No permission to start processing",
+        "noCancelPermission": "No permission to cancel task",
+        "onlyMoveToInProgressOrCanceled": "Can only move to In Progress or Canceled",
+        "noProcessedPermission": "No permission to mark as processed",
+        "onlyMoveToConfirmingOrCanceled": "Can only move to Confirming or Canceled",
+        "onlyMoveToCompletedOrCanceled": "Can only move to Completed or Canceled",
+        "noCompletedPermission": "No permission to confirm completion",
+        "onlyMoveToCompletedOrCanceledFromConfirming": "Can only move to Completed or Canceled",
+        "onlyMoveToPending": "Can only move to Pending",
+        "noReopenPermission": "No permission to reopen",
+        "noConfirmor": "This task has no confirmer, no confirmation needed, can only move to Completed or Canceled"
+      },
+      "group": {
+        "swimLane": "Swim Lane",
+        "expandAll": "Expand All",
+        "collapseAll": "Collapse All",
+        "tasks": "tasks",
+        "ungrouped": "Ungrouped"
+      }
+    },
+    "assocCase": {
+      "title": "Associated Cases",
+      "description": "Track the completion status of functional test cases for tasks, understand which functions have been implemented and tested, facilitating more accurate task progress assessment.",
+      "actions": {
+        "associateCase": "Associate Case",
+        "cancel": "Cancel"
+      },
+      "messages": {
+        "confirmCancelCase": "Confirm to cancel association with case 【{name}】?"
+      },
+      "columns": {
+        "code": "Code",
+        "name": "Name",
+        "priority": "Priority",
+        "evalWorkload": "Estimated Story Points",
+        "status": "Status",
+        "testerName": "Tester",
+        "deadlineDate": "Deadline",
+        "action": "Action"
+      },
+      "selectCasePlaceholder": "Maximum 20 associated cases",
+      "overdue": "Overdue"
+    },
+    "assocTask": {
+      "title": "Associated Tasks",
+      "actions": {
+        "associateTask": "Associate {title}",
+        "cancel": "Cancel"
+      },
+      "messages": {
+        "confirmCancelTask": "Confirm to cancel association with task 【{name}】?"
+      },
+      "columns": {
+        "code": "Code",
+        "name": "Name",
+        "progress": "Progress",
+        "taskType": "Type",
+        "priority": "Priority",
+        "evalWorkload": "Estimated Story Points",
+        "status": "Status",
+        "assigneeName": "Assignee",
+        "deadlineDate": "Deadline",
+        "action": "Action"
+      },
+      "modal": {
+        "selectTask": "Select {title}"
+      },
+      "selectTaskPlaceholder": "Maximum 20 associated tasks",
+      "overdue": "Overdue"
+    },
+    "remark": {
+      "placeholder": " Add supplementary instructions, such as precautions, reasons for rejection, etc. Maximum 6000 characters supported",
+      "validation": {
+        "maxLength": "Remarks support a maximum of 6000 characters"
+      },
+      "actions": {
+        "addRemark": "added a remark"
+      },
+      "title": "Remark"
+    },
+    "subTask": {
+      "title": "Sub Tasks",
+      "description": "Used to break down large complex tasks into smaller, more manageable sub-tasks, facilitating team collaboration and division of work.",
+      "progress": "Progress",
+      "actions": {
+        "addSubTask": "Add Sub Task",
+        "associateSubTask": "Associate Sub Task",
+        "cancel": "Cancel",
+        "edit": "Edit",
+        "add": "Add"
+      },
+      "messages": {
+        "confirmCancelSubTask": "Confirm to cancel sub task 【{name}】?",
+        "associateSubTaskSuccess": "Sub task association successful",
+        "cancelSubTaskSuccess": "Sub task cancellation successful",
+        "favouriteSuccess": "Task favorited successfully",
+        "cancelFavouriteSuccess": "Task unfavorited successfully",
+        "followSuccess": "Task followed successfully",
+        "cancelFollowSuccess": "Task unfollowed successfully"
+      },
+      "columns": {
+        "code": "Code",
+        "name": "Name",
+        "progress": "Progress",
+        "taskType": "Type",
+        "priority": "Priority",
+        "evalWorkload": "Estimated Story Points",
+        "evalWorkloadHours": "Estimated Hours",
+        "status": "Status",
+        "assigneeName": "Assignee",
+        "deadlineDate": "Deadline",
+        "action": "Action"
+      },
+      "form": {
+        "taskType": "Task Type",
+        "priority": "Priority",
+        "taskName": "Enter task name, maximum 200 characters, press Enter to save automatically"
+      },
+      "dropdown": {
+        "favourite": "Favorite",
+        "cancelFavourite": "Unfavorite",
+        "follow": "Follow",
+        "cancelFollow": "Unfollow"
+      },
+      "modal": {
+        "title": "Associate Sub Task",
+        "label": "Associate Sub Task",
+        "placeholder": "Please select sub task"
+      }
+    },
+    "testing": {
+      "title": "Testing",
+      "execResult": {
+        "title": "Execution Information",
+        "fields": {
+          "execResult": "Execution Result",
+          "execId": "Execution ID",
+          "execName": "Execution Name",
+          "execByName": "Executor",
+          "scriptId": "Script ID",
+          "scriptName": "Script Name",
+          "lastExecTime": "Last Execution Time"
+        }
+      },
+      "testResult": {
+        "title": "Test Result"
+      }
+    },
+    "detailInfo": {
+      "title": "Detail Information",
+      "apis": {
+        "basicInfo": "Basic Information",
+        "columns": {
+          "code": "Code",
+          "testType": "Test Type",
+          "name": "Name",
+          "namePlaceholder": "Task name, maximum 200 characters",
+          "status": "Task Status",
+          "overdue": "Overdue",
+          "type": "Type",
+          "sprint": "Sprint",
+          "module": "Module",
+          "selectModule": "Select or search module",
+          "selectSprint": "Select or search sprint",
+          "service": "Service",
+          "parentTask": "Parent Task",
+          "evalWorkload": "Estimated Story Points",
+          "evalWorkloadHours": "Estimated Hours",
+          "evalWorkloadMethod": "Workload Evaluation Method",
+          "api": "API",
+          "priority": "Priority",
+          "onePass": "One-Time Pass",
+          "actualWorkload": "Actual Workload",
+          "actualStoryPoint": "Actual Story Point",
+          "actualWorkloadPlaceholder": "Minimum 0.1, maximum 1000, up to 2 decimal places",
+          "evalWorkloadPlaceholder": "Minimum 0.1, maximum 1000, up to 2 decimal places",
+          "failNum": "Processing Failure Count",
+          "softwareVersion": "Software Version",
+          "softwareVersionPlaceholder": "Please select version",
+          "unplannedFlag": "Unplanned Task",
+          "tags": "Tags",
+          "tagsPlaceholder": "Maximum 5 tags",
+          "tagsNotFound": "Please contact administrator to configure task tags in \"Application Management\"-\"Task Management\"-\"Task Tags\".",
+          "totalNum": "Processing Times",
+          "yes": "Yes",
+          "no": "No"
+        }
+      },
+      "basic": {
+        "title": "Basic Information",
+        "columns": {
+          "code": "Code",
+          "testType": "Test Type",
+          "name": "Name",
+          "namePlaceholder": "Task name, maximum 200 characters",
+          "status": "Task Status",
+          "overdue": "Overdue",
+          "type": "Type",
+          "sprint": "Sprint",
+          "module": "Module",
+          "selectModule": "Select or search module",
+          "selectSprint": "Select or search sprint",
+          "service": "Service",
+          "parentTask": "Parent Task",
+          "evalWorkloadMethod": "Workload Evaluation Method",
+          "evalWorkload": "Estimated Story Points",
+          "evalWorkloadHours": "Estimated Hours",
+          "api": "API",
+          "priority": "Priority",
+          "onePass": "One-Time Pass",
+          "actualWorkload": "Actual Workload",
+          "actualStoryPoint": "Actual Story Point",
+          "actualWorkloadPlaceholder": "Minimum 0.1, maximum 1000, up to 2 decimal places",
+          "evalWorkloadPlaceholder": "Minimum 0.1, maximum 1000, up to 2 decimal places",
+          "failNum": "Processing Failure Count",
+          "softwareVersion": "Software Version",
+          "softwareVersionPlaceholder": "Please select version",
+          "unplannedFlag": "Unplanned Task",
+          "tags": "Tags",
+          "tagsPlaceholder": "Maximum 5 tags",
+          "tagsNotFound": "Please contact administrator to configure task tags in \"Application Management\"-\"Task Management\"-\"Task Tags\".",
+          "totalNum": "Processing Times",
+          "yes": "Yes",
+          "no": "No"
+        }
+      },
+      "description": {
+        "title": "Description",
+        "placeholder": "Add detailed description, maximum 6000 characters",
+        "validation": {
+          "maxLength": "Description supports maximum 6000 characters"
+        },
+        "actions": {
+          "cancel": "Cancel",
+          "confirm": "Confirm"
+        }
+      },
+      "personnel": {
+        "title": "Personnel",
+        "fields": {
+          "assignee": "Assignee",
+          "executor": "Executor",
+          "confirmor": "Confirmor",
+          "tester": "Tester",
+          "creator": "Creator",
+          "lastModifier": "Last Modifier"
+        },
+        "actions": {
+          "assignToMe": "Assign to Me"
+        },
+        "placeholders": {
+          "selectAssignee": "Select Assignee",
+          "selectConfirmor": "Select Confirmor",
+          "selectTester": "Select Tester"
+        }
+      },
+      "date": {
+        "title": "Date",
+        "fields": {
+          "deadline": "Deadline",
+          "startTime": "Start Time",
+          "processTime": "Process Time",
+          "confirmTime": "Confirm Time",
+          "completeTime": "Complete Time",
+          "cancelTime": "Cancel Time",
+          "execTime": "Execution Time",
+          "createTime": "Create Time",
+          "lastModifyTime": "Last Modify Time"
+        },
+        "validation": {
+          "selectDeadline": "Please select deadline",
+          "futureTimeRequired": "Deadline must be a future time"
+        }
+      },
+      "attachment": {
+        "title": "Attachments",
+        "actions": {
+          "continueUpload": "Continue Upload",
+          "selectFile": "Select File"
+        },
+        "messages": {
+          "fileSizeLimit": "File size cannot exceed {size} M",
+          "uploadLimit": "Single file size cannot exceed {size}M, maximum 5 files"
+        }
+      },
+      "scenario": {
+        "title": "Basic Information",
+        "columns": {
+          "code": "Code",
+          "testType": "Test Type",
+          "name": "Name",
+          "namePlaceholder": "Task name, maximum 200 characters",
+          "status": "Task Status",
+          "overdue": "Overdue",
+          "type": "Type",
+          "sprint": "Sprint",
+          "selectSprint": "Select or search sprint",
+          "module": "Module",
+          "service": "Service",
+          "evalWorkloadMethod": "Workload Evaluation Method",
+          "parentTask": "Parent Task",
+          "evalWorkload": "Estimated Story Points",
+          "evalWorkloadHours": "Estimated Hours",
+          "evalWorkloadPlaceholder": "Minimum 0.1, maximum 1000, up to 2 decimal places",
+          "scenario": "Scenario",
+          "actualStoryPoint": "Actual Story Point",
+          "actualWorkload": "Actual Workload",
+          "actualWorkloadPlaceholder": "Minimum 0.1, maximum 1000, up to 2 decimal places",
+          "priority": "Priority",
+          "selectPriority": "Please select priority",
+          "failNum": "Processing Failure Count",
+          "totalNum": "Processing Times",
+          "onePass": "One-Time Pass",
+          "softwareVersion": "Software Version",
+          "softwareVersionPlaceholder": "Please select version",
+          "unplannedFlag": "Unplanned Task",
+          "tags": "Tags",
+          "tagsPlaceholder": "Maximum 5 tags",
+          "tagsNotFound": "Please contact administrator to configure task tags in \"Application Management\"-\"Task Management\"-\"Task Tags\".",
+          "yes": "Yes",
+          "no": "No"
+        }
+      },
+      "activity": {
+        "title": "Activity"
+      }
+    },
+    "comment": {
+      "title": "Comment"
     }
   },
   "taskSprint": {
+    "name": "Sprint",
     "title": "Sprint",
     "addSprint": "Add Sprint",
     "aboutSprint": "About Sprint",
@@ -975,7 +1574,142 @@
       "title": "Work Calendar"
     }
   },
+  "taskVersion": {
+    "name": "Version",
+    "title": "Version Management",
+    "placeholder": {
+      "searchKeyword": "Please enter search keyword"
+    },
+    "actions": {
+      "addVersion": "Add Version",
+      "edit": "Edit",
+      "delete": "Delete",
+      "merge": "Merge Versions",
+      "refresh": "Refresh"
+    },
+    "messages": {
+      "deleteConfirm": "Confirm deletion of version 【{name}】?",
+      "deleteSuccess": "Successfully deleted",
+      "editSuccess": "Successfully modified",
+      "mergeWarning": "Warning: Once versions are merged, they cannot be restored!",
+      "changeStatusConfirm": "Confirm to change version status to “{status}”?"
+    },
+    "status": {
+      "notReleased": "Not Released",
+      "released": "Released",
+      "archived": "Archived"
+    },
+    "columns": {
+      "version": "Version",
+      "status": "Status",
+      "progress": "Progress",
+      "startDate": "Start Date",
+      "releaseDate": "Release Date",
+      "description": "Description",
+      "lastModifier": "Last Modifier",
+      "creator": "Creator",
+      "lastModifyTime": "Last Modify Time",
+      "createTime": "Create Time",
+      "actions": "Actions"
+    },
+    "form": {
+      "editVersion": "Edit Version",
+      "addVersion": "Add Version",
+      "versionName": "Version Name",
+      "versionNamePlaceholder": "Enter version name, maximum 40 characters, e.g.: v1.0",
+      "startDate": "Start Date",
+      "releaseDate": "Release Date",
+      "description": "Description",
+      "descriptionPlaceholder": "Please enter version description, maximum 200 characters"
+    },
+    "merge": {
+      "title": "Version Merge",
+      "mergeVersion": "Merge Version",
+      "mergeTo": "Merge Version To"
+    },
+    "detail": {
+      "version": "Version",
+      "startDate": "Start Date: ",
+      "releaseDate": "Release Date: ",
+      "noStartDate": "No start date set",
+      "noReleaseDate": "No release date set"
+    },
+    "list": {
+      "addedVersions": "Added Versions",
+      "noVersions": "You haven't added any versions yet, ",
+      "noDescription": "No description~"
+    },
+    "taskTable": {
+      "tabs": {
+        "current": "Current Version",
+        "completed": "Completed",
+        "processing": "Processing",
+        "confirming": "Confirming",
+        "pending": "Pending",
+        "canceled": "Canceled"
+      },
+      "units": {
+        "tasks": "tasks",
+        "task": "task"
+      },
+      "columns": {
+        "code": "Code",
+        "name": "Name",
+        "sprint": "Sprint",
+        "priority": "Priority",
+        "assignee": "Assignee",
+        "confirmor": "Confirmor",
+        "deadline": "Deadline"
+      },
+      "messages": {
+        "noData": "No data",
+        "overdue": "Overdue"
+      }
+    },
+    "searchPanel": {
+      "quickSearch": "Quick Search",
+      "menuItems": {
+        "all": "All",
+        "notReleased": "Not Released",
+        "released": "Released",
+        "archived": "Archived"
+      },
+      "searchOptions": {
+        "namePlaceholder": "Search name, description",
+        "creatorPlaceholder": "Select creator",
+        "dateRangePlaceholder": ["Created from", "Created to"]
+      },
+      "actions": {
+        "addVersion": "Add Version",
+        "mergeVersion": "Merge Version",
+        "refresh": "Refresh"
+      }
+    },
+    "introduce": {
+      "title": "About Versions",
+      "description": "Versions correspond to software system version numbers, precisely identifying the relationship between tasks, test cases, and software release versions. They support flexible planning, ensuring teams focus on key tasks and test cases for the current version. Through intuitive progress views, project managers can quickly identify potential issues. Treating versions as deliverables helps teams better organize work, track progress, and ensure each version represents valuable and verifiable product increments. Main functions are as follows:",
+      "features": {
+        "versionTracking": {
+          "title": "Version Identification and Tracking",
+          "description": "Accurately identify the application software version corresponding to each task or test case. Helps teams quickly understand which version implements specific features or fixes."
+        },
+        "versionPlanning": {
+          "title": "Version Planning and Goal Orientation",
+          "description": "Provides support for flexible version planning, improves team focus, ensures all planned features and fixes steadily advance toward target versions, and concentrates on key tasks and test cases for the current version."
+        },
+        "versionProgress": {
+          "title": "Version Progress Visualization",
+          "description": "Provides clear version progress views, intuitively displaying workload and completion progress for each version. Helps project managers and team members quickly identify potential delays or issues."
+        },
+        "verifiableDeliverables": {
+          "title": "Verifiable Deliverables",
+          "description": "Treat release versions as deliverables, effectively manage release versions, teams can better organize work, track progress, and ensure each version represents valuable and verifiable product increments."
+        }
+      }
+    }
+  },
   "taskTrash": {
+    "name": "Recycle Bin",
     "title": "Recycle Bin",
     "placeholder": {
       "searchKeyword": "Please enter search keyword"

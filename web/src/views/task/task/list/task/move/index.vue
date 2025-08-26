@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Modal, notification, Select } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
+
+const { t } = useI18n();
 
 interface Props {
   projectId: string;
@@ -29,7 +32,7 @@ const emit = defineEmits<{
 const confirmLoading = ref(false);
 const selectedId = ref<string>();
 const defaultOptions = {
-  name: '产品Backlog',
+  name: t('task.moveModal.defaultOptions.productBacklog'),
   id: ''
 };
 
@@ -62,9 +65,9 @@ const confirm = async () => {
   cancel();
 
   if (props.taskName) {
-    notification.success('任务移动成功');
+    notification.success(t('task.moveModal.messages.moveSuccess'));
   } else {
-    notification.success(`选中的 ${props.taskIds?.length} 条任务全部移动成功`);
+    notification.success(t('task.moveModal.messages.batchMoveSuccess', { num: props.taskIds?.length }));
   }
 };
 
@@ -86,14 +89,14 @@ const format = (data) => {
 </script>
 <template>
   <Modal
-    title="移动任务"
+    :title="t('task.moveModal.title')"
     :visible="props.visible"
     :width="500"
     :confirmLoading="confirmLoading"
     @cancel="cancel"
     @ok="confirm">
     <div class="flex items-center">
-      <div class="mr-2">选择迭代</div>
+      <div class="mr-2">{{ t('task.moveModal.form.selectIteration') }}</div>
       <Select
         v-model:value="selectedId"
         :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
@@ -101,7 +104,7 @@ const format = (data) => {
         :format="format"
         :additionalOption="defaultOptions"
         showSearch
-        placeholder="选择或查询迭代"
+        :placeholder="t('task.moveModal.form.selectIterationPlaceholder')"
         class="flex-1" />
     </div>
   </Modal>

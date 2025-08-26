@@ -535,7 +535,7 @@ defineExpose({
                           @click="actionClick($event, _cid)"
                           @nameChange="nameChange('WAITING_TIME', _cid)"
                           @enabledChange="enabledChange($event, _cid)"
-                          @change="change($event,_cid)"
+                          @change="change($event, _cid)"
                           @renderChange="renderChange" />
                       </template>
                       <template v-else-if="_target === 'RENDEZVOUS'">

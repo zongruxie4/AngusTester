@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, ref } from 'vue';
 import { Icon, Scroll } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { task } from 'src/api/tester';
-
+import { useI18n } from 'vue-i18n';
 type Remark = {
   content: string;
   createdBy: string;
@@ -22,6 +22,8 @@ const props = withDefaults(defineProps<Props>(), {
   id: '',
   notify: undefined
 });
+
+const { t } = useI18n();
 
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 
@@ -46,7 +48,7 @@ const params = computed(() => {
 </script>
 <template>
   <div class="h-full text-3 leading-5 pl-5">
-    <div class="text-theme-title mb-2.5 font-semibold">备注</div>
+    <div class="text-theme-title mb-2.5 font-semibold">{{ t('task.remark.title') }}</div>
 
     <Scroll
       v-if="!!props.id"
@@ -67,7 +69,7 @@ const params = computed(() => {
 
           <div class="ml-3 font-normal text-3 flex items-center space-x-2 leading-4">
             <div class="text-theme-content font-medium">{{ item.createdByName }}</div>
-            <div class="text-theme-content font-medium">添加了备注</div>
+            <div class="text-theme-content font-medium">{{ t('task.remark.actions.addRemark') }}</div>
             <div class="text-theme-sub-content">{{ item.createdDate }}</div>
             <Icon
               icon="icon-qingchu"

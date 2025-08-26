@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils, appContext } from '@xcan-angus/infra';
 
 import { IPane } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -69,7 +72,7 @@ const initialize = () => {
         return {
           _id: 'sceneList',
           value: 'sceneList',
-          name: '场景',
+          name: t('scenario.title'),
           closable: false // 是否允许关闭，true - 允许关闭，false - 禁止关闭
         };
       }

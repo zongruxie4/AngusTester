@@ -72,7 +72,7 @@ const apisStatusOption = {
     axisTick: { show: false },
     splitLine: { show: false },
     axisLine: { show: false },
-    data: ['未知', '设计中', '开发中', '开发完成', '已发布']
+    data: [t('reportPreview.services.apisGroup.byStatus.statuses.unknown'), t('reportPreview.services.apisGroup.byStatus.statuses.designing'), t('reportPreview.services.apisGroup.byStatus.statuses.devInProgress'), t('reportPreview.services.apisGroup.byStatus.statuses.devCompleted'), t('reportPreview.services.apisGroup.byStatus.statuses.published')]
   },
   series: [
     {
@@ -116,7 +116,7 @@ const apisStatusOption = {
 const methodOptions = {
   title: {
     text: 0,
-    subtext: '总数',
+    subtext: t('reportPreview.services.apisGroup.total'),
     left: '29.5%',
     top: '35%',
     padding: 2,
@@ -271,18 +271,18 @@ onMounted(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-5">
-      <span id="a2" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25"></em>接口分组统计</span>
+      <span id="a2" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.services.apisGroup.title') }}</span>
     </h1>
 
     <h1 class="text-theme-title font-medium mb-3">
-      <span class="text-3 text-theme-title font-medium">按状态分组</span>
+      <span class="text-3 text-theme-title font-medium">{{ t('reportPreview.services.apisGroup.byStatus.title') }}</span>
     </h1>
 
     <div ref="apisStatusRef" class="flex-1 h-30 w-120 mb-7">
     </div>
 
     <h1 class="text-theme-title font-medium mb-3">
-      <span id="a3.2" class="text-3 text-theme-title font-medium">按请求方法分组</span>
+      <span id="a3.2" class="text-3 text-theme-title font-medium">{{ t('reportPreview.services.apisGroup.byRequestMethod.title') }}</span>
     </h1>
 
     <div ref="methodRef" class="flex-1 h-30  w-120">

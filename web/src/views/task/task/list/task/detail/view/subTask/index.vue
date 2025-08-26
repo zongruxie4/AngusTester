@@ -17,6 +17,7 @@ import {
 } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { task } from 'src/api/tester';
+import { useI18n } from 'vue-i18n';
 
 import SelectEnum from '@/components/SelectEnum/index.vue';
 import { TaskInfo } from '@/views/task/PropsType';
@@ -38,6 +39,8 @@ const props = withDefaults(defineProps<Props>(), {
   taskInfo: undefined,
   loading: false
 });
+
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -80,7 +83,7 @@ const refChildTaskOk = async (subTaskIds) => {
     return;
   }
 
-  notification.success('关联子任务成功');
+  notification.success(t('task.subTask.messages.associateSubTaskSuccess'));
   emit('refreshChange');
 };
 
@@ -129,7 +132,7 @@ const toSave = async () => {
 
 const toDelete = (data:TaskInfo['subTaskInfos'][number]) => {
   modal.confirm({
-    content: `确定取消子任务【${data.name}】吗？`,
+    content: t('task.subTask.messages.confirmCancelSubTask', { name: data.name }),
     async onOk () {
       const params = {
         subTaskIds: [data.id]
@@ -141,7 +144,7 @@ const toDelete = (data:TaskInfo['subTaskInfos'][number]) => {
         return;
       }
 
-      notification.success('取消子任务成功');
+      notification.success(t('task.subTask.messages.cancelSubTaskSuccess'));
       emit('refreshChange');
     }
   });
@@ -180,7 +183,7 @@ const toFavourite = async (data: TaskInfo) => {
     return;
   }
 
-  notification.success('任务收藏成功');
+  notification.success(t('task.subTask.messages.favouriteSuccess'));
   emit('refreshChange');
 };
 
@@ -190,7 +193,7 @@ const toDeleteFavourite = async (data: TaskInfo) => {
     return;
   }
 
-  notification.success('任务取消收藏成功');
+  notification.success(t('task.subTask.messages.cancelFavouriteSuccess'));
   emit('refreshChange');
 };
 
@@ -200,7 +203,7 @@ const toFollow = async (data: TaskInfo) => {
     return;
   }
 
-  notification.success('任务关注成功');
+  notification.success(t('task.subTask.messages.followSuccess'));
   emit('refreshChange');
 };
 
@@ -210,7 +213,7 @@ const toDeleteFollow = async (data: TaskInfo) => {
     return;
   }
 
-  notification.success('任务取消关注成功');
+  notification.success(t('task.subTask.messages.cancelFollowSuccess'));
   emit('refreshChange');
 };
 
@@ -254,7 +257,7 @@ const menuItemsMap = computed(() => {
     const items:any[] = [];
     if (favouriteFlag) {
       items.push({
-        name: '取消收藏',
+        name: t('task.subTask.dropdown.cancelFavourite'),
         key: 'cancelFavourite',
         icon: 'icon-quxiaoshoucang',
         disabled: false,
@@ -262,7 +265,7 @@ const menuItemsMap = computed(() => {
       });
     } else {
       items.push({
-        name: '收藏',
+        name: t('task.subTask.dropdown.favourite'),
         key: 'favourite',
         icon: 'icon-yishoucang',
         disabled: false,
@@ -272,7 +275,7 @@ const menuItemsMap = computed(() => {
 
     if (followFlag) {
       items.push({
-        name: '取消关注',
+        name: t('task.subTask.dropdown.cancelFollow'),
         key: 'cancelFollow',
         icon: 'icon-quxiaoguanzhu',
         disabled: false,
@@ -280,7 +283,7 @@ const menuItemsMap = computed(() => {
       });
     } else {
       items.push({
-        name: '关注',
+        name: t('task.subTask.dropdown.follow'),
         key: 'follow',
         icon: 'icon-yiguanzhu',
         disabled: false,
@@ -296,47 +299,57 @@ const menuItemsMap = computed(() => {
 
 const columns = [
   {
+    key: 'code',
     dataIndex: 'code',
-    title: '编号'
+    title: t('task.subTask.columns.code')
   },
   {
+    key: 'name',
     dataIndex: 'name',
-    title: '名称'
+    title: t('task.subTask.columns.name')
   },
   {
+    key: 'progress',
     dataIndex: 'progress',
-    title: '进度'
+    title: t('task.subTask.columns.progress')
   },
   {
+    key: 'taskType',
     dataIndex: 'taskType',
-    title: '类型'
+    title: t('task.subTask.columns.taskType')
   },
   {
+    key: 'priority',
     dataIndex: 'priority',
-    title: '优先级',
+    title: t('task.subTask.columns.priority'),
     groupName: 'task'
   },
   {
+    key: 'evalWorkload',
     dataIndex: 'evalWorkload',
-    title: props.taskInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? '评估故事点' : '评估工时',
+    title: props.taskInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('task.subTask.columns.evalWorkload') : t('task.subTask.columns.evalWorkloadHours'),
     groupName: 'task',
     hide: true
   },
   {
+    key: 'status',
     dataIndex: 'status',
-    title: '状态'
+    title: t('task.subTask.columns.status')
   },
   {
+    key: 'assigneeName',
     dataIndex: 'assigneeName',
-    title: '经办人'
+    title: t('task.subTask.columns.assigneeName')
   },
   {
+    key: 'deadlineDate',
     dataIndex: 'deadlineDate',
-    title: '截止时间'
+    title: t('task.subTask.columns.deadlineDate')
   },
   {
+    key: 'action',
     dataIndex: 'action',
-    title: '操作'
+    title: t('task.subTask.columns.action')
   }
 ];
 
@@ -346,7 +359,7 @@ const columns = [
   <div class="h-full leading-5">
     <div class="flex items-center mb-2.5 pr-5">
       <div class="flex items-center flex-nowrap h-8 px-3.5 rounded" style="background-color:#FAFAFA;">
-        <span class="flex-shrink-0 font-semibold text-theme-title">进度</span>
+        <span class="flex-shrink-0 font-semibold text-theme-title">{{ t('task.subTask.progress') }}</span>
         <Colon class="mr-1.5" />
         <span class="font-semibold text-3.5" style="color: #07F;">{{ subTaskProgress?.completed || 0 }}</span>
         <span class="font-semibold text-3.5 mx-1">/</span>
@@ -358,7 +371,7 @@ const columns = [
           :showInfo="false" />
         <span class="font-semibold text-3.5">{{ subTaskProgress?.completedRate || 0 }}%</span>
       </div>
-      <Hints text="用于将大型复杂任务分解成更小、更易管理的子任务，便于团队成员分工协作。" class="flex-1 min-w-0 truncate ml-1" />
+      <Hints :text="t('task.subTask.description')" class="flex-1 min-w-0 truncate ml-1" />
       <div class="flex items-center space-x-2.5">
         <Button
           type="default"
@@ -366,7 +379,7 @@ const columns = [
           class="space-x-1"
           @click="addChildTask">
           <Icon icon="icon-jia" />
-          <span>添加子任务</span>
+          <span>{{ t('task.subTask.actions.addSubTask') }}</span>
         </Button>
 
         <Button
@@ -375,7 +388,7 @@ const columns = [
           class="space-x-1"
           @click="refChildTask">
           <Icon icon="icon-guanlianziyuan" />
-          <span>关联子任务</span>
+          <span>{{ t('task.subTask.actions.associateSubTask') }}</span>
         </Button>
       </div>
     </div>
@@ -384,7 +397,9 @@ const columns = [
       class="sub_task_table"
       :columns="columns"
       :pagination="false"
-      :dataSource="subTaskInfos">
+      :dataSource="subTaskInfos"
+      noDataSize="small"
+      noDataText="">
       <template #bodyCell="{record, column}">
         <template v-if="column.dataIndex === 'name'">
           <RouterLink
@@ -424,7 +439,7 @@ const columns = [
               class="flex items-center px-0"
               @click="toDelete(record)">
               <Icon icon="icon-qingchu" class="text-3.5 mr-1" />
-              <span>取消</span>
+              <span>{{ t('task.subTask.actions.cancel') }}</span>
             </Button>
 
             <Button
@@ -433,7 +448,7 @@ const columns = [
               class="flex items-center px-0"
               @click="toEdit(record)">
               <Icon icon="icon-shuxie" class="text-3.5 mr-1" />
-              <span>编辑</span>
+              <span>{{ t('task.subTask.actions.edit') }}</span>
             </Button>
 
             <Dropdown :menuItems="menuItemsMap[record.id]" @click="dropdownClick($event,record)">
@@ -454,7 +469,7 @@ const columns = [
         v-model:value="newTaskType"
         :excludes="({value}) => ['API_TEST', 'SCENARIO_TEST'].includes(value)"
         enumKey="TaskType"
-        placeholder="任务类型"
+        :placeholder="t('task.subTask.form.taskType')"
         class="w-28 mr-2">
         <template #option="record">
           <div class="flex items-center">
@@ -468,7 +483,7 @@ const columns = [
         v-model:value="newTaskPriority"
         internal
         enumKey="Priority"
-        placeholder="优先级"
+        :placeholder="t('task.subTask.form.priority')"
         class="w-28 mr-2">
         <template #option="record">
           <TaskPriority :value="record" />
@@ -479,7 +494,7 @@ const columns = [
         ref="taskNameInputRef"
         v-model:value="newTaskName"
         :maxlength="200"
-        placeholder="输入任务名称，最大支持200字符，按回车键可自动保存"
+        :placeholder="t('task.subTask.form.taskName')"
         trim
         class="w-200 mr-5"
         @pressEnter="pressEnter" />
@@ -490,7 +505,7 @@ const columns = [
           type="primary"
           size="small"
           @click="toSave">
-          添加
+          {{ t('task.subTask.actions.add') }}
         </Button>
       </div>
     </div>

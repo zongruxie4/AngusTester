@@ -3,6 +3,7 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { utils } from '@xcan-angus/infra';
 import { GroupText, TestBasicInfo } from '@xcan-angus/vue-ui';
 import { Timeline, TimelineItem } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
 
 import { ExecInfo, ExecContent } from './PropsType';
 
@@ -24,6 +25,8 @@ const props = withDefaults(defineProps<Props>(), {
   execContent: undefined,
   exception: undefined
 });
+
+const { t } = useI18n();
 
 const execContentList = ref<ExecContent[]>([]);
 const totalAssertionNum = ref(0);
@@ -156,10 +159,14 @@ const tranMax = computed(() => {
 });
 
 const pending = computed(() => {
-  return props.execInfo?.status?.value === 'RUNNING' ? '执行中...' : false;
+  return props.execInfo?.status?.value === 'RUNNING' ? t('httPlugin.functionTestDetail.pending') : false;
 });
 
-const timeTexts = ['最小', '平均', '最大'];
+const timeTexts = computed(() => [
+  t('httPlugin.functionTestDetail.timeTexts.minimum'),
+  t('httPlugin.functionTestDetail.timeTexts.average'),
+  t('httPlugin.functionTestDetail.timeTexts.maximum')
+]);
 </script>
 <template>
   <div class="px-5">
@@ -176,7 +183,7 @@ const timeTexts = ['最小', '平均', '最大'];
         <div class="text-text-title text-4 font-semibold" style="color:rgba(129, 154, 218, 100%);">
           {{ duration?.[1] }}<span class="text-3.25 ml-0.5">{{ duration?.[2] }}</span>
         </div>
-        <div>运行时间</div>
+        <div>{{ t('httPlugin.functionTestDetail.basicInfo.duration') }}</div>
       </div>
 
       <div
@@ -187,7 +194,7 @@ const timeTexts = ['最小', '平均', '最大'];
           <em class="not-italic inline-block w-0.5 h-3.5 mx-1.5 rounded" style="transform: rotate(25deg);background-color: rgba(3, 185, 208, 100%);"></em>
           <span>{{ planIterationNum }}</span>
         </div>
-        <div>迭代数</div>
+        <div>{{ t('httPlugin.functionTestDetail.basicInfo.iteration') }}</div>
       </div>
 
       <div
@@ -212,7 +219,7 @@ const timeTexts = ['最小', '平均', '最大'];
           <span>{{ tranMax }}</span>
         </div>
         <div class="whitespace-nowrap overflow-hidden">
-          响应时间（<GroupText :texts="timeTexts" class="text-theme-sub-content" />）
+          {{ t('httPlugin.functionTestDetail.basicInfo.responseTime') }}（<GroupText :texts="timeTexts" class="text-theme-sub-content" />）
         </div>
       </div>
     </div>

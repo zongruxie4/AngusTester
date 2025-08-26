@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { nextTick, ref, onMounted, watch, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Alert, Button, Collapse, CollapsePanel, RadioGroup, Radio, Upload, Switch } from 'ant-design-vue';
 import { UploadRequestOption } from 'ant-design-vue/lib/vc-upload/interface';
 import Draggable from 'vuedraggable';
@@ -7,6 +8,8 @@ import { debounce } from 'throttle-debounce';
 import { Icon, NoData, Input, Tooltip, Colon, Arrow, Select, IconRequired, Spin, ShortDuration } from '@xcan-angus/vue-ui';
 import { utils, duration } from '@xcan-angus/infra';
 import { cloneDeep } from 'lodash-es';
+
+const { t } = useI18n();
 
 import { PipelineConfig } from '../PropsType';
 import { gzipBase64ToArrayBuffer, base64ToArrayBuffer, stringToArrayBuffer, arrayBufferToString, arrayBufferToGzipBase64, fileToArrayBuffer, arrayBufferToBase64 } from './utils';
@@ -59,7 +62,7 @@ const insertData = () => {
     target: 'FTP',
     name: '',
     description: '',
-    enabled: !hasEnabled,
+    enabled: !hasEnabled, // {{ t('tcpPlugin.uiConfig.comments.onlyOneEnabled') }}
     server: {
       server: '',
       port: '',
@@ -534,13 +537,13 @@ const codeOptions = [
 const connectTimeoutInputProps = {
   maxlength: 8,
   dataType: 'integer',
-  placeholder: '连接超时，最大24小时'
+  placeholder: t('tcpPlugin.uiConfig.serverConfig.connectionTimeoutPlaceholder')
 };
 
 const readTimeoutInputProps = {
   maxlength: 8,
   dataType: 'integer',
-  placeholder: '读取超时，最大24小时'
+  placeholder: t('tcpPlugin.uiConfig.serverConfig.readTimeoutPlaceholder')
 };
 
 const selectProps = {
@@ -558,15 +561,15 @@ const selectProps = {
         @click="insertData">
         <div class="flex items-center">
           <Icon icon="icon-chajianpeizhi" class="mr-1" />
-          <span>插入Ftp请求</span>
+          <span>{{ t('tcpPlugin.uiConfig.title') }}</span>
         </div>
       </Button>
-      <div class="flex-1 flex items-center overflow-hidden" title="支持同时编排多个Ftp接口，但每次只允许启用一个Ftp进行测试。">
+      <div class="flex-1 flex items-center overflow-hidden" :title="t('tcpPlugin.uiConfig.description')">
         <Icon
           icon="icon-tishi1"
           class="flex-shrink-0 text-3.5 mr-0.5"
           style="color:#a6ceff;" />
-        <span class="text-theme-sub-content truncate">支持同时编排多个Ftp接口，但每次只允许启用一个Ftp进行测试。</span>
+        <span class="text-theme-sub-content truncate">{{ t('tcpPlugin.uiConfig.description') }}</span>
       </div>
     </div>
     <template v-if="props.loaded">
@@ -604,7 +607,7 @@ const selectProps = {
                     <Icon class="flex-shrink-0 text-4 mr-3" icon="icon-chajianpeizhi" />
                     <div class="flex-1 flex items-center space-x-2 mr-5">
                       <Tooltip
-                        title="名称重复"
+                        :title="t('tcpPlugin.uiConfig.form.nameDuplicate')"
                         internal
                         placement="right"
                         destroyTooltipOnHide
@@ -616,7 +619,7 @@ const selectProps = {
                           :title="dataMap[id].name"
                           style="flex:1 1 40%;"
                           trim
-                          placeholder="名称，最大支持400个字符"
+                          :placeholder="t('tcpPlugin.uiConfig.form.namePlaceholder')"
                           @change="nameChange" />
                       </Tooltip>
                       <Input
@@ -625,20 +628,20 @@ const selectProps = {
                         :title="dataMap[id].description"
                         trim
                         style="flex:1 1 60%;"
-                        placeholder="描述，最大支持800个字符" />
+                        :placeholder="t('tcpPlugin.uiConfig.form.descriptionPlaceholder')" />
                     </div>
                     <div class="flex items-center flex-shrink-0 space-x-3">
                       <Switch
                         :checked="dataMap[id].enabled"
                         size="small"
                         @change="enabledChange(id, $event)" />
-                      <div class="flex items-center cursor-pointer hover:text-text-link-hover" title="克隆">
+                      <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('tcpPlugin.uiConfig.actions.clone')">
                         <Icon
                           icon="icon-fuzhi"
                           class="text-3.5"
                           @click="toClone(id)" />
                       </div>
-                      <div class="flex items-center cursor-pointer hover:text-text-link-hover" title="删除">
+                      <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('tcpPlugin.uiConfig.actions.delete')">
                         <Icon
                           icon="icon-qingchu"
                           class="text-3.5"
@@ -652,13 +655,13 @@ const selectProps = {
                 <div class="space-y-3.5">
                   <div class="flex items-center text-theme-title">
                     <div class="w-1.25 h-3 rounded mr-1.5" style="background-color: #1e88e5;"></div>
-                    <span>服务器配置</span>
+                    <span>{{ t('tcpPlugin.uiConfig.serverConfig.title') }}</span>
                   </div>
                   <div class="space-y-3.5 ml-2.75">
                     <div class="flex items-center">
                       <div class="flex-shrink-0 w-20.5 flex items-center">
                         <IconRequired />
-                        <span>主机名或IP</span>
+                        <span>{{ t('tcpPlugin.uiConfig.serverConfig.hostnameOrIP') }}</span>
                         <Colon />
                       </div>
                       <div class="flex-1 flex items-center space-x-5 max-w-175">
@@ -668,13 +671,13 @@ const selectProps = {
                           :error="!!serverErrorSet.has(id)"
                           trimAll
                           style="flex: 1 1 75%;"
-                          placeholder="主机名或IP，最大支持4096个字符"
+                          :placeholder="t('tcpPlugin.uiConfig.serverConfig.hostnameOrIPPlaceholder')"
                           @change="serverChange(id)" />
 
                         <div style="flex: 1 1 25%;" class="flex items-center">
                           <div class="flex-shrink-0 w-11.5 flex items-center">
                             <IconRequired />
-                            <span>端口</span>
+                            <span>{{ t('tcpPlugin.uiConfig.serverConfig.port') }}</span>
                             <Colon />
                           </div>
                           <Input
@@ -686,7 +689,7 @@ const selectProps = {
                             trimALl
                             dataType="integer"
                             style="min-width: 75px;max-width: 200px;"
-                            placeholder="端口（1~65535）"
+                            :placeholder="t('tcpPlugin.uiConfig.serverConfig.portPlaceholder')"
                             @change="portChange(id)" />
                         </div>
                       </div>
@@ -694,7 +697,7 @@ const selectProps = {
 
                     <div class="flex items-center">
                       <div class="flex-shrink-0 w-20.5 flex items-center">
-                        <span>用户名</span>
+                        <span>{{ t('tcpPlugin.uiConfig.serverConfig.username') }}</span>
                         <Colon />
                       </div>
                       <div class="flex-1 flex items-center space-x-5 max-w-175">
@@ -702,18 +705,18 @@ const selectProps = {
                           v-model:value="dataMap[id].server.username"
                           :maxlength="400"
                           trimAll
-                          placeholder="用户名，最大支持400个字符"
+                          :placeholder="t('tcpPlugin.uiConfig.serverConfig.usernamePlaceholder')"
                           style="width:calc((100% - 82px)/2);" />
                         <div class="flex-1 flex items-center">
                           <div class="flex-shrink-0 w-15.5 flex items-center">
-                            <span>密码</span>
+                            <span>{{ t('tcpPlugin.uiConfig.serverConfig.password') }}</span>
                             <Colon />
                           </div>
                           <Input
                             v-model:value="dataMap[id].server.password"
                             :maxlength="4096"
                             trimAll
-                            placeholder="密码，最大支持4096个字符"
+                            :placeholder="t('tcpPlugin.uiConfig.serverConfig.passwordPlaceholder')"
                             type="password" />
                         </div>
                       </div>
@@ -721,7 +724,7 @@ const selectProps = {
 
                     <div class="flex items-center">
                       <div class="flex-shrink-0 w-20.5 flex items-center">
-                        <span>连接超时</span>
+                        <span>{{ t('tcpPlugin.uiConfig.serverConfig.connectionTimeout') }}</span>
                         <Colon />
                       </div>
                       <div class="flex-1 flex items-center space-x-5 max-w-175">
@@ -733,7 +736,7 @@ const selectProps = {
                           style="flex:none;width:calc((100% - 82px)/2);background-color: #fff;" />
                         <div class="flex-1 flex items-center">
                           <div class="flex-shrink-0 w-15.5 flex items-center">
-                            <span>读取超时</span>
+                            <span>{{ t('tcpPlugin.uiConfig.serverConfig.readTimeout') }}</span>
                             <Colon />
                           </div>
                           <ShortDuration
@@ -751,21 +754,21 @@ const selectProps = {
                 <div class="space-y-3.5 mt-5">
                   <div class="flex items-center text-theme-title">
                     <div class="w-1.25 h-3 rounded mr-1.5" style="background-color: #1e88e5;"></div>
-                    <span>FTP请求配置</span>
+                    <span>{{ t('tcpPlugin.uiConfig.requestConfig.title') }}</span>
                   </div>
                   <div class="space-y-3 ml-2.75">
                     <div class="flex items-center">
                       <div class="flex-shrink-0 w-24 flex items-center">
                         <IconRequired />
-                        <span>上传/下载</span>
+                        <span>{{ t('tcpPlugin.uiConfig.requestConfig.uploadDownload') }}</span>
                         <Colon />
                       </div>
                       <RadioGroup
                         v-model:value="dataMap[id].uploadFile"
                         :name="id + 'uploadFile'"
                         @change="uploadDownloadChange(id)">
-                        <Radio :value="true">上传</Radio>
-                        <Radio :value="false">下载</Radio>
+                        <Radio :value="true">{{ t('tcpPlugin.uiConfig.requestConfig.upload') }}</Radio>
+                        <Radio :value="false">{{ t('tcpPlugin.uiConfig.requestConfig.download') }}</Radio>
                       </RadioGroup>
                     </div>
 
@@ -773,7 +776,7 @@ const selectProps = {
                       <div class="flex items-center">
                         <div class="flex-shrink-0 w-24 flex items-center">
                           <IconRequired />
-                          <span>文件来源</span>
+                          <span>{{ t('tcpPlugin.uiConfig.requestConfig.uploadFileSource') }}</span>
                           <Colon />
                         </div>
                         <RadioGroup
@@ -781,13 +784,13 @@ const selectProps = {
                           :name="id + 'uploadFileSource'"
                           @change="uploadFileSourceChange(id)">
                           <Radio value="LOCAL_FILE">
-                            <span>本地文件</span>
+                            <span>{{ t('tcpPlugin.uiConfig.requestConfig.localFile') }}</span>
                           </Radio>
                           <Radio value="REMOTE_FILE">
                             <div class="flex items-center space-x-1">
-                              <span>远程文件</span>
+                              <span>{{ t('tcpPlugin.uiConfig.requestConfig.remoteFile') }}</span>
                               <Tooltip
-                                title="从FTP服务中下载对应文件用于上传"
+                                :title="t('tcpPlugin.uiConfig.requestConfig.remoteFileTooltip')"
                                 internal
                                 destroyTooltipOnHide>
                                 <Icon icon="icon-tishi1" class="flex-shrink-0 text-3.5 text-text-tip cursor-pointer" />
@@ -796,9 +799,9 @@ const selectProps = {
                           </Radio>
                           <Radio value="REMOTE_URL">
                             <div class="flex items-center space-x-1">
-                              <span>远程URL</span>
+                              <span>{{ t('tcpPlugin.uiConfig.requestConfig.remoteUrl') }}</span>
                               <Tooltip
-                                title="从远程URL下载文件用于上传"
+                                :title="t('tcpPlugin.uiConfig.requestConfig.remoteFileUrlTooltip')"
                                 internal
                                 destroyTooltipOnHide>
                                 <Icon icon="icon-tishi1" class="flex-shrink-0 text-3.5 text-text-tip cursor-pointer" />
@@ -812,7 +815,7 @@ const selectProps = {
                         <div class="flex items-center">
                           <div class="flex-shrink-0 w-24 flex items-center">
                             <IconRequired />
-                            <span>远程文件URL</span>
+                            <span>{{ t('tcpPlugin.uiConfig.requestConfig.remoteFileUrl') }}</span>
                             <Colon />
                           </div>
                           <div class="flex-1 flex items-center space-x-1 max-w-175">
@@ -821,7 +824,7 @@ const selectProps = {
                               :error="!!remoteFileUrlErrorSet.has(id)"
                               :maxlength="4096"
                               trim
-                              placeholder="上传时根据URL下载一个上传文件，最大支持4096个字符"
+                              :placeholder="t('tcpPlugin.uiConfig.requestConfig.remoteFileUrlPlaceholder')"
                               class="flex-1"
                               @change="remoteFileUrlChange(id)" />
                           </div>
@@ -832,7 +835,7 @@ const selectProps = {
                         <div class="flex items-center">
                           <div class="flex-shrink-0 w-24 flex items-center">
                             <IconRequired />
-                            <span>远程文件名</span>
+                            <span>{{ t('tcpPlugin.uiConfig.requestConfig.remoteFileName') }}</span>
                             <Colon />
                           </div>
                           <div class="flex-1 flex items-center space-x-1 max-w-175">
@@ -841,7 +844,7 @@ const selectProps = {
                               :error="!!remoteFileNameErrorSet.has(id)"
                               :maxlength="4096"
                               trim
-                              placeholder="下载远程FTP服务器中的文件名称，最大支持4096个字符"
+                              :placeholder="t('tcpPlugin.uiConfig.requestConfig.remoteFileNamePlaceholder')"
                               class="flex-1"
                               @change="remoteFileNameChange(id)" />
                           </div>
@@ -851,7 +854,7 @@ const selectProps = {
                       <template v-else>
                         <div class="flex items-center">
                           <div class="flex-shrink-0 w-24 flex items-center">
-                            <span>远程文件名</span>
+                            <span>{{ t('tcpPlugin.uiConfig.requestConfig.remoteFileName') }}</span>
                             <Colon />
                           </div>
                           <div class="flex-1 flex items-center space-x-1 max-w-175">
@@ -859,7 +862,7 @@ const selectProps = {
                               v-model:value="dataMap[id].remoteFileName"
                               :maxlength="4096"
                               trim
-                              placeholder="上传时保存的文件名称，不指定时使用原文件名存储，最大支持4096个字符"
+                              :placeholder="t('tcpPlugin.uiConfig.requestConfig.remoteFileUrlHints')"
                               class="flex-1" />
                           </div>
                         </div>
@@ -869,7 +872,7 @@ const selectProps = {
                         <div class="flex items-center">
                           <div class="flex-shrink-0 w-24 flex items-center">
                             <IconRequired />
-                            <span>本地文件</span>
+                            <span>{{ t('tcpPlugin.uiConfig.fileConfig.localFilePath') }}</span>
                             <Colon />
                           </div>
                           <RadioGroup
@@ -877,13 +880,13 @@ const selectProps = {
                             :name="id + 'localFile'"
                             @change="localFileTypeChange(id)">
                             <Radio value="file">
-                              <span>本地文件内容</span><span class="text-theme-sub-content">（限制文件大小1MB）</span>
+                              <span>{{ t('tcpPlugin.uiConfig.requestConfig.localFileContent') }}</span><span class="text-theme-sub-content">（{{ t('tcpPlugin.uiConfig.requestConfig.localFileContentTooltip') }}）</span>
                             </Radio>
                             <Radio value="url">
                               <div class="flex items-center space-x-1">
-                                <span>本地文件路径</span>
+                                <span>{{ t('tcpPlugin.uiConfig.fileConfig.localFilePath') }}</span>
                                 <Tooltip
-                                  title="本地文件名，即上传本地文件的名称，也可以是一个完整本地文件路径，需要确保文件已上传到对应执行节点路径。"
+                                  :title="t('tcpPlugin.uiConfig.fileConfig.localFileNameTooltip')"
                                   internal
                                   destroyTooltipOnHide>
                                   <Icon
@@ -912,20 +915,20 @@ const selectProps = {
                                     class="flex-shrink-0"
                                     size="small">
                                     <Icon icon="icon-xuanze" class="mr-1" />
-                                    <span>选择文件</span>
+                                    <span>{{ t('tcpPlugin.uiConfig.upload.selectFile') }}</span>
                                   </Button>
                                 </Upload>
                                 <Alert
                                   v-if="fileMap[id]?.limitFlag"
                                   size="small"
-                                  message="文件大小不能超过1MB"
+                                  :message="t('tcpPlugin.uiConfig.upload.fileSizeLimit')"
                                   style="margin-left:10px;padding:0;border:none;background-color: transparent;font-size:12px;"
                                   type="error"
                                   closable />
                                 <Alert
                                   v-if="localFileContentErrorSet.has(id)"
                                   size="small"
-                                  message="请选择本地文件"
+                                  :message="t('tcpPlugin.uiConfig.upload.selectFileTooltip')"
                                   style="margin-left:10px;padding:0;border:none;background-color: transparent;font-size:12px;"
                                   type="error" />
                               </div>
@@ -940,13 +943,13 @@ const selectProps = {
 
                               <div class="flex-shrink-0 flex items-center space-x-2 whitespace-nowrap">
                                 <div>
-                                  <span>编码</span>
+                                  <span>{{ t('tcpPlugin.uiConfig.upload.code') }}</span>
                                   <Colon />
                                 </div>
                                 <Select
                                   v-model:value="dataMap[id].localFileContentEncoding"
                                   :options="codeOptions"
-                                  placeholder="文件编码"
+                                  :placeholder="t('tcpPlugin.uiConfig.upload.fileEncoding')"
                                   class="w-27"
                                   @change="encodingChange(id, $event)" />
                               </div>
@@ -976,7 +979,7 @@ const selectProps = {
                                 :error="!!localFileNameErrorSet.has(id)"
                                 :maxlength="4096"
                                 trim
-                                placeholder="本地文件路径，最大支持4096个字符"
+                                :placeholder="t('tcpPlugin.uiConfig.fileConfig.localFilePathPlaceholder')"
                                 class="flex-1"
                                 @change="localFileNameChange(id)" />
                             </div>
@@ -986,9 +989,9 @@ const selectProps = {
 
                       <div class="flex items-center">
                         <div class="flex-shrink-0 w-24 flex items-center">
-                          <span>二进制文件</span>
+                          <span>{{ t('tcpPlugin.uiConfig.fileConfig.binaryFile') }}</span>
                           <Tooltip
-                            title="上传文件是否是二进制文件"
+                            :title="t('tcpPlugin.uiConfig.fileConfig.binaryFileTooltip')"
                             internal
                             destroyTooltipOnHide>
                             <Icon icon="icon-tishi1" class="flex-shrink-0 text-3.5 text-text-tip cursor-pointer" />
@@ -996,8 +999,8 @@ const selectProps = {
                           <Colon />
                         </div>
                         <RadioGroup v-model:value="dataMap[id].binaryMode" :name="id + 'binaryMode'">
-                          <Radio :value="true">是</Radio>
-                          <Radio :value="false">否</Radio>
+                          <Radio :value="true">{{ t('tcpPlugin.uiConfig.fileConfig.binaryMode.yes') }}</Radio>
+                          <Radio :value="false">{{ t('tcpPlugin.uiConfig.fileConfig.binaryMode.no') }}</Radio>
                         </RadioGroup>
                       </div>
                     </template>
@@ -1006,7 +1009,7 @@ const selectProps = {
                       <div class="flex items-center">
                         <div class="flex-shrink-0 w-24 flex items-center">
                           <IconRequired />
-                          <span>远程文件名</span>
+                          <span>{{ t('tcpPlugin.uiConfig.fileConfig.remoteFileName') }}</span>
                           <Colon />
                         </div>
                         <div class="flex-1 flex items-center space-x-1 max-w-175">
@@ -1015,7 +1018,7 @@ const selectProps = {
                             :error="!!remoteFileNameErrorSet.has(id)"
                             :maxlength="4096"
                             trim
-                            placeholder="下载远程FTP服务器中的文件名称，最大支持4096个字符"
+                            :placeholder="t('tcpPlugin.uiConfig.fileConfig.remoteFileNamePlaceholder')"
                             class="flex-1"
                             @change="remoteFileNameChange(id)" />
                         </div>

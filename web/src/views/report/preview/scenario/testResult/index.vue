@@ -27,30 +27,30 @@ const columns = computed(() => [
   [
     {
       dataIndex: 'passed',
-      name: '是否通过',
+      name: t('reportPreview.scenario.testResult.fields.passed'),
       customRender: (text) => {
-        return text === true ? '通过' : text === false ? '未通过' : '未测试';
+        return text === true ? t('reportPreview.scenario.testResult.options.passed') : text === false ? t('reportPreview.scenario.testResult.options.failed') : t('reportPreview.scenario.testResult.options.notTested');
       }
     },
     {
       dataIndex: 'enabledTestTypes',
-      name: '开启功能测试',
+      name: t('reportPreview.scenario.testResult.fields.enableFuncTest'),
       customRender: (text) => {
-        return text.find(i => i.value === 'TEST_FUNCTIONALITY') ? '开启' : '未开启';
+        return text.find(i => i.value === 'TEST_FUNCTIONALITY') ? t('reportPreview.scenario.testResult.options.enabled') : t('reportPreview.scenario.testResult.options.disabled');
       }
     }
   ],
   [
     {
       dataIndex: 'resultDetailVoMap',
-      name: '功能测试通过',
+      name: t('reportPreview.scenario.testResult.fields.funcTestPassed'),
       customRender: (text) => {
-        return text?.TEST_FUNCTIONALITY?.passed === true ? '通过' : text?.TEST_FUNCTIONALITY?.passed === false ? '未通过' : '未测试';
+        return text?.TEST_FUNCTIONALITY?.passed === true ? t('reportPreview.scenario.testResult.options.passed') : text?.TEST_FUNCTIONALITY?.passed === false ? t('reportPreview.scenario.testResult.options.failed') : t('reportPreview.scenario.testResult.options.notTested');
       }
     },
     {
       dataIndex: 'resultDetailVoMap',
-      name: '功能测试失败原因',
+      name: t('reportPreview.scenario.testResult.fields.funcTestFailReason'),
       customRender: (text) => {
         return text?.TEST_FUNCTIONALITY?.failureMessage;
       }
@@ -59,46 +59,46 @@ const columns = computed(() => [
   [
     {
       dataIndex: 'enabledTestTypes',
-      name: '开启性能测试',
+      name: t('reportPreview.scenario.testResult.fields.enablePerfTest'),
       customRender: (text) => {
-        return text.find(i => i.value === 'TEST_PERFORMANCE') ? '开启' : '未开启';
+        return text.find(i => i.value === 'TEST_PERFORMANCE') ? t('reportPreview.scenario.testResult.options.enabled') : t('reportPreview.scenario.testResult.options.disabled');
       }
     },
     {
       dataIndex: 'resultDetailVoMap',
-      name: '性能测试通过',
+      name: t('reportPreview.scenario.testResult.fields.perfTestPassed'),
       customRender: (text) => {
-        return text?.TEST_PERFORMANCE?.passed === true ? '通过' : text?.TEST_PERFORMANCE?.passed === false ? '未通过' : '未测试';
+        return text?.TEST_PERFORMANCE?.passed === true ? t('reportPreview.scenario.testResult.options.passed') : text?.TEST_PERFORMANCE?.passed === false ? t('reportPreview.scenario.testResult.options.failed') : t('reportPreview.scenario.testResult.options.notTested');
       }
     }
   ],
   [
     {
       dataIndex: 'resultDetailVoMap',
-      name: '性能测试失败原因',
+      name: t('reportPreview.scenario.testResult.fields.perfTestFailReason'),
       customRender: (text) => {
         return text?.TEST_PERFORMANCE?.failureMessage;
       }
     },
     {
       dataIndex: 'enabledTestTypes',
-      name: '开启稳定性测试',
+      name: t('reportPreview.scenario.testResult.fields.enableStabilityTest'),
       customRender: (text) => {
-        return text.find(i => i.value === 'TEST_STABILITY') ? '开启' : '未开启';
+        return text.find(i => i.value === 'TEST_STABILITY') ? t('reportPreview.scenario.testResult.options.enabled') : t('reportPreview.scenario.testResult.options.disabled');
       }
     }
   ],
   [
     {
       dataIndex: 'resultDetailVoMap',
-      name: '稳定性测试通过',
+      name: t('reportPreview.scenario.testResult.fields.stabilityTestPassed'),
       customRender: (text) => {
-        return text?.TEST_STABILITY?.passed === true ? '通过' : text?.TEST_STABILITY?.passed === false ? '未通过' : '未测试';
+        return text?.TEST_STABILITY?.passed === true ? t('reportPreview.scenario.testResult.options.passed') : text?.TEST_STABILITY?.passed === false ? t('reportPreview.scenario.testResult.options.failed') : t('reportPreview.scenario.testResult.options.notTested');
       }
     },
     {
       dataIndex: 'resultDetailVoMap',
-      name: '稳定性测试失败原因',
+      name: t('reportPreview.scenario.testResult.fields.stabilityTestFailReason'),
       customRender: (text) => {
         return text?.TEST_STABILITY?.failureMessage;
       }
@@ -111,7 +111,7 @@ const columns = computed(() => [
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a2" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25"></em>场景测试汇总结果</span>
+      <span id="a2" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.scenario.testResult.title') }}</span>
     </h1>
     <div class="border-t border-l border-solid border-border-input">
       <div v-for="column in columns" class="flex border-b border-solid border-border-input">

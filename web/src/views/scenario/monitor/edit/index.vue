@@ -1,11 +1,14 @@
 <script lang="ts" setup>
 import { onMounted, ref, computed, watch, inject, nextTick, defineAsyncComponent } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Input, Select, notification, Icon, Spin, Hints, IconRequired } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Textarea, Tabs, TabPane, RadioGroup, Radio } from 'ant-design-vue';
 import { utils, TESTER, GM } from '@xcan-angus/infra';
 import { scenario } from '@/api/tester';
 
 import { FormState } from './PropsType';
+
+const { t } = useI18n();
 import { MonitorInfo } from '../PropsType';
 
 type Props = {
@@ -78,7 +81,7 @@ const handleSceneChange = (_id: string, option) => {
 const orgs = ref<{name: string; id: string}[]>([{ id: props.userInfo?.id, name: props.userInfo?.fullName }]);
 const validateOrgs = () => {
   if (!orgs.value.length) {
-    return Promise.reject('请选择');
+    return Promise.reject(t('common.pleaseSelect'));
   }
   return Promise.resolve();
 };
@@ -134,7 +137,7 @@ const editOk = async () => {
   if (error) {
     return;
   }
-  notification.success('修改成功');
+        notification.success(t('common.modifySuccess'));
   deleteTabPane([props._id]);
 };
 
@@ -146,7 +149,7 @@ const addOk = async () => {
   if (error) {
     return;
   }
-  notification.success('添加成功');
+        notification.success(t('common.addSuccess'));
   deleteTabPane([props._id]);
 };
 
@@ -301,13 +304,13 @@ const editFlag = computed(() => {
         class="flex items-center space-x-1"
         @click="ok">
         <Icon icon="icon-dangqianxuanzhong" class="text-3.5" />
-        <span>保存</span>
+        <span>{{ t('scenarioMonitor.edit.save') }}</span>
       </Button>
       <Button
         size="small"
         class="flex items-center space-x-1"
         @click="cancel">
-        <span>取消</span>
+        <span>{{ t('scenarioMonitor.edit.cancel') }}</span>
       </Button>
     </div>
     <Form
@@ -320,38 +323,38 @@ const editFlag = computed(() => {
       <FormItem
         required
         name="scenarioId"
-        label="监控场景">
+        :label="t('scenarioMonitor.edit.monitorScene')">
         <Select
           v-model:value="formState.scenarioId"
           :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
           :fieldNames="{label: 'name', value: 'id'}"
           :disabled="!!props?.data?.id"
-          placeholder="选择场景"
+          :placeholder="t('scenarioMonitor.edit.selectScene')"
           @change="handleSceneChange" />
       </FormItem>
       <FormItem
         required
-        label="监控名称"
+        :label="t('scenarioMonitor.edit.monitorName')"
         name="name"
         class="flex-1 min-w-0">
         <Input
           v-model:value="formState.name"
           :maxlength="100"
-          placeholder="输入监控名称，最多可输入100字符" />
+          :placeholder="t('scenarioMonitor.edit.monitorNamePlaceholder')" />
       </FormItem>
       <FormItem
-        label="描述"
+        :label="t('scenarioMonitor.edit.description')"
         name="description"
         class="flex-1 min-w-0">
         <Textarea
           v-model:value="formState.description"
           :maxlength="200"
-          placeholder="输入监控描述，最多可输入200字符" />
+          :placeholder="t('scenarioMonitor.edit.descriptionPlaceholder')" />
       </FormItem>
       <Tabs v-model:activeKey="activeTabKey" size="small">
         <TabPane key="time">
           <template #tab>
-            <div><IconRequired />监控时间</div>
+            <div><IconRequired />{{ t('scenarioMonitor.edit.monitorTime') }}</div>
           </template>
           <CreatedDate
             ref="createdDateRef"
@@ -361,13 +364,13 @@ const editFlag = computed(() => {
         <TabPane
           v-if="isHttpPlugin"
           key="server"
-          tab="服务器配置">
+          :tab="t('scenarioMonitor.edit.serverConfig')">
           <div class="w-100 space-y-3">
             <div v-for="(serverObj, idx) in serverSetting" class="border rounded p-2">
               <div class="font-bold text-text-title flex items-center">
                 <Icon icon="icon-fuwuqi" class="mr-1" />{{ serverObj.url }}
               </div>
-              <div class="my-3 ">{{ serverObj.description || '无描述~' }}</div>
+              <div class="my-3 ">{{ serverObj.description || t('scenarioMonitor.edit.noDescription') }}</div>
               <ul v-if="hasVariable(serverObj.variables)" class="list-disc space-y-1 pl-4">
                 <li v-for="(_value, key) in (serverObj.variables || {})" :key="key">
                   <div
@@ -388,7 +391,7 @@ const editFlag = computed(() => {
                         {{ en }}
                       </div>
                       <div class="inline-flex items-center space-x-1">
-                        <span v-show="_value.default === en">默认</span>
+                        <span v-show="_value.default === en">{{ t('scenarioMonitor.edit.default') }}</span>
                         <Radio
                           size="small"
                           :checked="_value.default === en"
@@ -400,7 +403,7 @@ const editFlag = computed(() => {
                 </li>
               </ul>
               <div v-else>
-                无变量~
+                {{ t('scenarioMonitor.edit.noVariables') }}
               </div>
             </div>
           </div>
@@ -410,20 +413,20 @@ const editFlag = computed(() => {
           key="notice"
           forceRender>
           <template #tab>
-            <div><IconRequired />通知配置</div>
+            <div><IconRequired />{{ t('scenarioMonitor.edit.notificationConfig') }}</div>
           </template>
           <RadioGroup
             v-model:value="noticeSetting.enabled"
-            :options="[{value: false, label: '不通知'}, { value: true, label: '通知' }]">
+            :options="[{value: false, label: t('scenarioMonitor.edit.notificationOptions.noNotify')}, { value: true, label: t('scenarioMonitor.edit.notificationOptions.notify') }]">
           </RadioGroup>
-          <Hints text="开启通知后，将在监控运行失败后自动发送消息给接收对象。" class="mt-3" />
+          <Hints :text="t('scenarioMonitor.edit.notificationHint')" class="mt-3" />
           <template v-if="noticeSetting.enabled">
             <div class="flex space-x-3 mt-3">
-              <span>接收对象</span>
+              <span>{{ t('scenarioMonitor.edit.recipient') }}</span>
 
               <RadioGroup
                 v-model:value="noticeSetting.orgType"
-                :options="[{value: 'USER', label: '接收人'}, {value: 'DEPT', label: '接收部门'}, {value: 'GROUP', label: '接收组'}]"
+                :options="[{value: 'USER', label: t('scenarioMonitor.edit.recipientOptions.user')}, {value: 'DEPT', label: t('scenarioMonitor.edit.recipientOptions.dept')}, {value: 'GROUP', label: t('scenarioMonitor.edit.recipientOptions.group')}]"
                 @change="handleChangeOrgType">
               </RadioGroup>
               <FormItem
@@ -439,7 +442,7 @@ const editFlag = computed(() => {
                   mode="multiple"
                   allowClear
                   class="w-50"
-                  placeholder="选择用户"
+                  :placeholder="t('scenarioMonitor.edit.selectUser')"
                   :action="`${GM}/user?fullTextSearch=true`"
                   :fieldNames="{ label: 'fullName', value: 'id' }"
                   @change="handleChangeOrgs">
@@ -449,7 +452,7 @@ const editFlag = computed(() => {
                   v-if="noticeSetting.orgType === 'DEPT'"
                   v-model:value="noticeSetting.orgs"
                   defaultActiveFirstOption
-                  placeholder="选择部门"
+                  :placeholder="t('scenarioMonitor.edit.selectDept')"
                   class="w-50"
                   mode="multiple"
                   allowClear
@@ -464,7 +467,7 @@ const editFlag = computed(() => {
                   v-if="noticeSetting.orgType === 'GROUP'"
                   v-model:value="noticeSetting.orgs"
                   defaultActiveFirstOption
-                  placeholder="选择组"
+                  :placeholder="t('scenarioMonitor.edit.selectGroup')"
                   class="w-50"
                   mode="multiple"
                   allowClear

@@ -2,6 +2,7 @@
 import { ref, onMounted, watch, defineAsyncComponent, computed } from 'vue';
 import { Form, FormItem, RadioGroup, Radio } from 'ant-design-vue';
 import { Hints, Input, Select } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 import { TESTER, enumUtils, StorageLocation } from '@xcan-angus/infra';
 
 export interface Props {
@@ -11,6 +12,8 @@ export interface Props {
 const props = withDefaults(defineProps<Props>(), {
   format: 'CVS'
 });
+
+const { t } = useI18n();
 
 const DatasourceStoreConfig = defineAsyncComponent(() => import('./DatasourceStoreConfig.vue'));
 const LocalStoreConfig = defineAsyncComponent(() => import('./LocalStoreConfig.vue'));
@@ -51,14 +54,13 @@ const storeForm = computed(() => {
 const storeTip = computed(() => {
   switch (formState.value.location) {
     case StorageLocation.DATASOURCE:
-      return '数据源存储，将生成数据写入到数据库。';
+      return t('gendata.excuteConfig.storageTips.datasource');
     case StorageLocation.DATASPACE:
-      return '数据空间存储，将数据存储到 AngusTester 应用"数据"->"空间"。';
+      return t('gendata.excuteConfig.storageTips.dataspace');
     case StorageLocation.LOCAL:
-      // eslint-disable-next-line no-template-curly-in-string
-      return '本地存储，生成数据会以文件形式存储在执行节点，您可以进入执行详情页面点击下载数据文件。默认存储路径：${AGENT_HOME}/data/exec/[执行ID]/data.[数据格式]。';
+      return t('gendata.excuteConfig.storageTips.local');
     case StorageLocation.PUSH_THIRD:
-      return '推送三方接口，支持将生成数据以文本或文件形式发送到一个 Http 接口。';
+      return t('gendata.excuteConfig.storageTips.pushThird');
   }
   return '';
 });
@@ -140,16 +142,16 @@ defineExpose({
     size="small">
     <FormItem
       name="name"
-      label="脚本名称"
-      :rules="{required: true, message: '请输入数据脚本名称'}">
+      :label="t('gendata.excuteConfig.scriptName')"
+      :rules="{required: true, message: t('gendata.excuteConfig.validation.scriptNameRequired')}">
       <Input
         v-model:value="formState.name"
-        placeholder="输入数据脚本的名称，限制200字符内"
+        :placeholder="t('gendata.excuteConfig.placeholders.scriptName')"
         :maxLength="200"
         class="mr-2" />
     </FormItem>
-    <FormItem label="执行线程数">
-      <Hints text="默认1个线程，最大1000。" class="mb-2" />
+    <FormItem :label="t('gendata.excuteConfig.execThreads')">
+      <Hints :text="t('gendata.excuteConfig.hints.execThreads')" class="mb-2" />
       <Input
         v-model:value="formState.threads"
         dataType="number"
@@ -157,7 +159,7 @@ defineExpose({
         :max="1000"
         @blur="onThreadsBlur" />
     </FormItem>
-    <FormItem label="选择Mock节点" :rules="{ required: true, message:'请选择节点' }">
+    <FormItem :label="t('gendata.excuteConfig.selectMockNode')" :rules="{ required: true, message: t('gendata.excuteConfig.validation.selectNode') }">
       <Select
         v-model:value="formState.nodeId"
         :action="`${TESTER}/node`"
@@ -165,29 +167,29 @@ defineExpose({
         defaultActiveFirstOption
         :fieldNames="{value: 'id', label: 'name'}" />
     </FormItem>
-    <FormItem label="执行优先级">
-      <Hints text="优先级高的最先被执行，值范围：0~2147483647,值越大优先级越高。" class="mb-2" />
+    <FormItem :label="t('gendata.excuteConfig.execPriority')">
+      <Hints :text="t('gendata.excuteConfig.hints.execPriority')" class="mb-2" />
       <Input
         v-model:value="formState.priority"
         dataType="number"
         :max="2147483647"
         :min="0" />
     </FormItem>
-    <FormItem label="遇到错误">
+    <FormItem :label="t('gendata.excuteConfig.onError')">
       <RadioGroup v-model:value="formState.onError">
-        <Radio value="CONTINUE">继续</Radio>
-        <Radio value="STOP">停止</Radio>
-        <Radio value="STOP_NOW">立即终止</Radio>
+        <Radio value="CONTINUE">{{ t('gendata.excuteConfig.errorActions.continue') }}</Radio>
+        <Radio value="STOP">{{ t('gendata.excuteConfig.errorActions.stop') }}</Radio>
+        <Radio value="STOP_NOW">{{ t('gendata.excuteConfig.errorActions.stopNow') }}</Radio>
       </RadioGroup>
     </FormItem>
-    <FormItem label="存储方式">
+    <FormItem :label="t('gendata.excuteConfig.storageMethod')">
       <Hints :text="storeTip" class="mb-1" />
       <RadioGroup
         v-model:value="formState.location"
         :options="storageLocationOpt" />
     </FormItem>
-    <FormItem label="行数" class="mb-2">
-      <Hints text="生成数据总行数，最大 100000000000。" class="mb-2" />
+    <FormItem :label="t('gendata.excuteConfig.rows')" class="mb-2">
+      <Hints :text="t('gendata.excuteConfig.hints.rows')" class="mb-2" />
       <div class="flex items-center mb-4">
         <Input
           v-model:value="formState.rows"

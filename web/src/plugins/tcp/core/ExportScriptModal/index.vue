@@ -2,7 +2,8 @@
 import { ref } from 'vue';
 import { Colon, Modal, notification } from '@xcan-angus/vue-ui';
 import { RadioGroup } from 'ant-design-vue';
-import { ApiType, download, routerUtils, ApiUrlBuilder } from '@xcan-angus/infra';
+import { ApiType, ApiUrlBuilder, download, routerUtils } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   visible: boolean;
@@ -13,6 +14,8 @@ const props = withDefaults(defineProps<Props>(), {
   visible: false,
   id: undefined
 });
+
+const { t } = useI18n();
 
 const emit = defineEmits<{(e: 'update:visible', value: boolean): void }>();
 
@@ -30,9 +33,9 @@ const handleOk = async () => {
 
   exportLoading.value = true;
   // const host = await site.getUrl('apis');
+  // const exportUrl = `${host}${TESTER}/script/${props.id}/export?format=${format.value}`;
   const routeConfig = routerUtils.getTesterApiRouteConfig(ApiType.API);
   const exportUrl = ApiUrlBuilder.buildApiUrl(routeConfig, `/script/${props.id}/export?format=${format.value}`);
-  // const exportUrl = `${host}${TESTER}/script/${props.id}/export?format=${format.value}`;
   const [error] = await download(exportUrl);
   exportLoading.value = false;
   if (error) {
@@ -55,11 +58,11 @@ const formatTypes = [{
   <Modal
     :visible="props.visible"
     :confirmLoading="exportLoading"
-    title="导出脚本"
+    :title="t('ftpPlugin.exportScriptModal.title')"
     @cancel="handleCancel"
     @ok="handleOk">
     <div class="mt-1.5">
-      <span class="mr-3.5">格式<Colon class="ml-1" /></span>
+      <span class="mr-3.5">{{ t('ftpPlugin.exportScriptModal.format') }}<Colon class="ml-1" /></span>
       <RadioGroup v-model:value="format" :options="formatTypes" />
     </div>
   </Modal>

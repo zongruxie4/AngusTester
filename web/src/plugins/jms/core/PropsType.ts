@@ -1,7 +1,7 @@
 export type ScriptType = 'TEST_FUNCTIONALITY' | 'TEST_PERFORMANCE' | 'TEST_STABILITY';
 
 export type PipelineConfig = {
-    target: 'FTP';
+    target: 'JMS';
     name: string;
     description: string;
     enabled: boolean;

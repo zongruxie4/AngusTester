@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as echarts from 'echarts';
+
+const { t } = useI18n();
 
 interface Props {
   count?: {
@@ -77,14 +80,14 @@ const successRateConfig = {
       },
       data: [
         {
-          name: '成功数',
+          name: t('scenarioMonitor.chart.successCount'),
           value: 0,
           itemStyle: {
             color: '#52C41A'
           }
         },
         {
-          name: '失败数',
+          name: t('scenarioMonitor.chart.failureCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'

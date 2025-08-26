@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, onMounted, ref, Ref, watch } from 'vue';
 import { utils, appContext } from '@xcan-angus/infra';
-
+import { useI18n } from 'vue-i18n';
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
 
 type MenuKey = 'homepage' | 'sprint' | 'task' | 'backlog' | 'trash' | 'meeting' | 'analysis' | 'versions';
@@ -15,6 +15,8 @@ const Meeting = defineAsyncComponent(() => import('@/views/task/meeting/index.vu
 const Analysis = defineAsyncComponent(() => import('@/views/task/analysis/index.vue'));
 const Trash = defineAsyncComponent(() => import('@/views/task/trash/index.vue'));
 
+const { t } = useI18n();
+
 const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
 const appInfo = ref(appContext.getAccessApp());
@@ -25,14 +27,14 @@ const editionType = ref();
 
 const menus = computed(() => {
   return [
-    { name: '主页', icon: 'icon-zhuye', key: 'homepage' },
+    { name: t('taskHome.name'), icon: 'icon-zhuye', key: 'homepage' },
     proTypeShowMap.value.showBackLog && { name: 'Backlog', icon: 'icon-backlog', key: 'backlog' },
-    proTypeShowMap.value.showSprint && { name: '迭代', icon: 'icon-diedai', key: 'sprint' },
-    { name: '任务', icon: 'icon-renwu2', key: 'task' },
-    { name: '版本', icon: 'icon-banben1', key: 'version' },
-    proTypeShowMap.value.showMeeting && { name: '会议', icon: 'icon-RT', key: 'meeting' },
-    editionType.value !== 'COMMUNITY' && { name: '分析', icon: 'icon-fenxi', key: 'analysis' },
-    { name: '回收站', icon: 'icon-qingchu', key: 'trash' }
+    proTypeShowMap.value.showSprint && { name: t('taskSprint.name'), icon: 'icon-diedai', key: 'sprint' },
+    { name: t('task.name'), icon: 'icon-renwu2', key: 'task' },
+    { name: t('taskVersion.name'), icon: 'icon-banben1', key: 'version' },
+    proTypeShowMap.value.showMeeting && { name: t('taskMeeting.name'), icon: 'icon-RT', key: 'meeting' },
+    editionType.value !== 'COMMUNITY' && { name: t('taskAnalysis.name'), icon: 'icon-fenxi', key: 'analysis' },
+    { name: t('taskTrash.name'), icon: 'icon-qingchu', key: 'trash' }
   ].filter(Boolean);
 });
 

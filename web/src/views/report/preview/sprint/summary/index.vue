@@ -41,18 +41,18 @@ const percent = computed(() => {
 <template>
   <div>
     <div class="text-theme-title font-medium text-4.5 mb-4">
-      <span>摘要</span>
+      <span>{{ t('reportPreview.sprint.summary.title') }}</span>
       <div class="mt-1 rounded w-8.5 h-1 bg-gray-500"></div>
     </div>
     <div class="border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-40 flex-shrink-0 flex items-center justify-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          进度
+          {{ t('reportPreview.sprint.summary.fields.progress') }}
         </div>
         <div
           class="w-24 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          描述
+          {{ t('reportPreview.sprint.summary.fields.description') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-solid border-border-input">
           {{ report?.description }}
@@ -69,7 +69,7 @@ const percent = computed(() => {
           <div class="flex border-b border-solid border-border-input">
             <div
               class="w-24 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-              联系人
+              {{ t('reportPreview.sprint.summary.fields.contact') }}
             </div>
             <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-solid border-border-input">
               {{ basicInfoSetting?.reportContacts }}
@@ -78,7 +78,7 @@ const percent = computed(() => {
           <div class="flex border-b border-solid border-border-input">
             <div
               class="w-24 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-              版权说明
+              {{ t('reportPreview.sprint.summary.fields.copyright') }}
             </div>
             <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-solid border-border-input">
               {{ basicInfoSetting?.reportCopyright }}
@@ -88,7 +88,7 @@ const percent = computed(() => {
           <div class="flex">
             <div
               class="w-24 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-              其他
+              {{ t('reportPreview.sprint.summary.fields.other') }}
             </div>
             <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
               {{ basicInfoSetting?.otherInformation }}

@@ -2,6 +2,7 @@
 import { ref, onMounted, watch } from 'vue';
 import YAML from 'yaml';
 import { notification, MonacoEditor } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 import { SceneConfig } from '../PropsType';
 
@@ -13,23 +14,10 @@ const props = withDefaults(defineProps<Props>(), {
   value: undefined
 });
 
-// eslint-disable-next-line func-call-spacing
-// const emit = defineEmits<{
-//   (e:'change', value:{[key:string]:any}):void;
-// }>();
+const { t } = useI18n();
 
-const editorRef = ref();
 const content = ref('');
 const loading = ref(true);
-
-// const change = (value:string) => {
-//   try {
-//     const data = YAML.parse(value);
-//     emit('change', data);
-//   } catch (error) {
-//     notification.error('yaml内容格式错误，请检查并更正');
-//   }
-// };
 
 onMounted(() => {
   watch(() => props.value, (newValue) => {
@@ -50,7 +38,7 @@ const isValid = ():boolean => {
     YAML.parse(content.value);
     return true;
   } catch (error) {
-    notification.error('yaml内容格式错误，请检查并更正');
+    notification.error(t('ftpPlugin.scriptConfig.messages.yamlFormatError'));
     return false;
   }
 };

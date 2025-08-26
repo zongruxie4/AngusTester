@@ -53,25 +53,25 @@ const meetings = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-5">
-      <span id="a1" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25"></em>迭代信息</span>
+      <span id="a1" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.sprint.sprintDetail.title') }}</span>
     </h1>
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-3.5 text-theme-title">
-        <span id="a1.1">1.1<em class="inline-block w-3.5"></em>基本信息</span>
+        <span id="a1.1">1.1<em class="inline-block w-3.5"></em>{{ t('reportPreview.sprint.sprintDetail.basicInfo.title') }}</span>
       </h2>
       <div class="border border-solid border-border-input">
         <div class="flex border-b border-solid border-border-input">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            名称
+            {{ t('reportPreview.sprint.sprintDetail.basicInfo.fields.name') }}  
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
             {{ sprint?.name }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            任务前缀
+            {{ t('reportPreview.sprint.sprintDetail.basicInfo.fields.taskPrefix') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
             {{ sprint?.taskPrefix }}
@@ -81,14 +81,14 @@ const meetings = computed(() => {
         <div class="flex border-b border-solid border-border-input">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            状态
+            {{ t('reportPreview.sprint.sprintDetail.basicInfo.fields.status') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
             {{ sprint?.status?.message }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            负责人
+            {{ t('reportPreview.sprint.sprintDetail.basicInfo.fields.owner') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
             {{ sprint?.ownerName }}
@@ -98,14 +98,14 @@ const meetings = computed(() => {
         <div class="flex border-b border-solid border-border-input">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            所属项目
+            {{ t('reportPreview.sprint.sprintDetail.basicInfo.fields.project') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
             {{ sprint?.projectName }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            迭代时间
+            {{ t('reportPreview.sprint.sprintDetail.basicInfo.fields.sprintTime') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
             {{ sprint?.startDate }} 至 {{ sprint?.deadlineDate }}
@@ -115,14 +115,14 @@ const meetings = computed(() => {
         <div class="flex border-b border-solid border-border-input">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            添加人
+            {{ t('reportPreview.sprint.sprintDetail.basicInfo.fields.creator') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
             {{ sprint?.createdByName }}
           </div>
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            添加时间
+            {{ t('reportPreview.sprint.sprintDetail.basicInfo.fields.createTime') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
             {{ sprint?.createdDate }}
@@ -132,7 +132,7 @@ const meetings = computed(() => {
         <div class="flex">
           <div
             class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            工作量评估方式
+            {{ t('reportPreview.sprint.sprintDetail.basicInfo.fields.workloadEstimationMethod') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
             {{ sprint?.evalWorkloadMethod?.message }}
@@ -148,28 +148,28 @@ const meetings = computed(() => {
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-        <span id="a1.2">1.2<em class="inline-block w-3.5"></em>验收标准</span>
+        <span id="a1.2">1.2<em class="inline-block w-3.5"></em>{{ t('reportPreview.sprint.sprintDetail.acceptanceCriteria.title') }}</span>
       </h2>
       <div class="break-all whitespace-pre-wrap content-text-container">
-        {{ sprint?.acceptanceCriteria || '无' }}
+        {{ sprint?.acceptanceCriteria || t('reportPreview.sprint.sprintDetail.acceptanceCriteria.noData') }}
       </div>
     </div>
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-3.5 text-theme-title">
-        <span id="a1.3">1.3<em class="inline-block w-3.5"></em>会议记录</span>
+        <span id="a1.3">1.3<em class="inline-block w-3.5"></em>{{ t('reportPreview.sprint.sprintDetail.meetingRecord.title') }}</span>
       </h2>
-      <div v-if="!meetings.length" class="content-text-container">无</div>
+      <div v-if="!meetings.length" class="content-text-container">{{ t('reportPreview.sprint.sprintDetail.meetingRecord.noData') }}</div>
       <template v-else>
         <div
           v-for="(item, index) in meetings"
           :key="item.id"
           class="text-3 leading-5 space-y-2 mb-5 last:mb-0">
-          <div class="text-theme-title font-medium">会议主题： {{ item.name }}</div>
+          <div class="text-theme-title font-medium">{{ t('reportPreview.sprint.sprintDetail.meetingRecord.meetingTopic') }}： {{ item.name }}</div>
           <div class="flex items-start space-x-5">
             <div class="w-1/2 flex items-start">
               <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-                <span>会议类型</span>
+                <span>{{ t('reportPreview.sprint.sprintDetail.meetingRecord.fields.meetingType') }}</span>
                 <Colon class="w-1" />
               </div>
 
@@ -178,7 +178,7 @@ const meetings = computed(() => {
 
             <div class="w-1/2 flex items-start">
               <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-                <span>会议日期</span>
+                <span>{{ t('reportPreview.sprint.sprintDetail.meetingRecord.fields.meetingDate') }}</span>
                 <Colon class="w-1" />
               </div>
 
@@ -189,20 +189,20 @@ const meetings = computed(() => {
           <div class="flex items-start space-x-5">
             <div class="w-1/2 flex items-start">
               <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-                <span>会议时间</span>
+                <span>{{ t('reportPreview.sprint.sprintDetail.meetingRecord.fields.meetingTime') }}</span>
                 <Colon class="w-1" />
               </div>
 
               <div class="text-3 whitespace-nowrap">
                 <span>{{ item.startTime }}</span>
-                <span class="mx-2">至</span>
+                <span class="mx-2">{{ t('reportPreview.sprint.sprintDetail.meetingRecord.fields.to') }}</span>
                 <span>{{ item.endTime }}</span>
               </div>
             </div>
 
             <div class="w-1/2 flex items-start">
               <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-                <span>会议地点</span>
+                <span>{{ t('reportPreview.sprint.sprintDetail.meetingRecord.fields.meetingLocation') }}</span>
                 <Colon class="w-1" />
               </div>
 
@@ -213,7 +213,7 @@ const meetings = computed(() => {
           <div class="flex items-start space-x-5">
             <div class="w-1/2 flex items-start">
               <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-                <span>会议主持</span>
+                <span>{{ t('reportPreview.sprint.sprintDetail.meetingRecord.fields.meetingHost') }}</span>
                 <Colon class="w-1" />
               </div>
 
@@ -222,7 +222,7 @@ const meetings = computed(() => {
 
             <div class="w-1/2 flex items-start">
               <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-                <span>参会人员</span>
+                <span>{{ t('reportPreview.sprint.sprintDetail.meetingRecord.fields.attendees') }}</span>
                 <Colon class="w-1" />
               </div>
 
@@ -232,7 +232,7 @@ const meetings = computed(() => {
 
           <div class="flex items-start">
             <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>会议内容</span>
+              <span>{{ t('reportPreview.sprint.sprintDetail.meetingRecord.fields.meetingContent') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -246,10 +246,10 @@ const meetings = computed(() => {
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-        <span id="a1.4">1.4<em class="inline-block w-3.5"></em>其他说明</span>
+        <span id="a1.4">1.4<em class="inline-block w-3.5"></em>{{ t('reportPreview.sprint.sprintDetail.otherInfo.title') }}</span>
       </h2>
       <div class="break-all whitespace-pre-wrap content-text-container">
-        {{ sprint?.otherInformation || '无' }}
+        {{ sprint?.otherInformation || t('reportPreview.sprint.sprintDetail.otherInfo.noData') }}
       </div>
     </div>
   </div>

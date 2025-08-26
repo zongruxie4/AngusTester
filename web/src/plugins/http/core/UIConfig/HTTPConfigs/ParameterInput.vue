@@ -1,10 +1,13 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, watchEffect, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Checkbox, Button } from 'ant-design-vue';
 import { Input, Select, Icon, ParamInput } from '@xcan-angus/vue-ui';
 import { utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
+
+const { t } = useI18n();
 
 export interface OptionProps {
   name: string;
@@ -221,7 +224,7 @@ const options = [{ label: 'query', value: 'query' }, { label: 'path', value: 'pa
         :disabled="dataMap[item].disabled"
         :maxLength="400"
         :error="nameErrorSet.has(item)"
-        placeholder="请输入参数名称"
+        :placeholder="t('httPlugin.uiConfig.httpConfigs.parameterInput.namePlaceholder')"
         size="small"
         tirmAll
         style="flex:0 0 calc((100% - 84px)*3.5/10);max-width: 400px;"
@@ -238,7 +241,7 @@ const options = [{ label: 'query', value: 'query' }, { label: 'path', value: 'pa
         :value="dataMap[item].value"
         :maxLength="4096"
         class="flex-1 bg-white"
-        placeholder="请输入参数值，最长4096个字符"
+        :placeholder="t('httPlugin.uiConfig.httpConfigs.parameterInput.valuePlaceholder')"
         @blur="valueChange($event, item)" />
       <!-- <Input
         v-model:value="dataMap[item].value"

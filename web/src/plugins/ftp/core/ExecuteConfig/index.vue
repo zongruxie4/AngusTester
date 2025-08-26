@@ -2,6 +2,7 @@
 import { ref, onMounted, watch } from 'vue';
 import { IconRequired, ExecSettingForm } from '@xcan-angus/vue-ui';
 import SelectEnum from '@/components/SelectEnum/index.vue'
+import { useI18n } from 'vue-i18n';
 
 import { SceneConfig } from '../PropsType';
 
@@ -14,6 +15,8 @@ const props = withDefaults(defineProps<Props>(), {
   value: undefined,
   excludes: undefined
 });
+
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -74,7 +77,7 @@ defineExpose({ isValid, getData });
     <div class="flex items-center pl-12 pr-5 mt-5 space-y-0.5">
       <div class="flex items-center w-35 mr-2.5">
         <IconRequired />
-        <span>脚本类型</span>
+        <span>{{ t('ftpPlugin.executeConfig.scriptType') }}</span>
       </div>
       <SelectEnum
         :value="scriptType"

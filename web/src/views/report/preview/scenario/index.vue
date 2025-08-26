@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import { ReportContent } from '../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectInfo: { [key: string]: any };
@@ -47,7 +50,7 @@ const ScenarioTestResultDetail = defineAsyncComponent(() => import('@/views/repo
     :dataSource="props.dataSource"
     class="mb-8" />
   <div class="text-theme-title font-medium text-4.5 mb-4">
-    <span>内容</span>
+    <span>{{ t('reportPreview.scenario.content') }}</span>
     <div class="mt-1 rounded w-8.5 h-1 bg-gray-500"></div>
   </div>
   <ScenarioInfo

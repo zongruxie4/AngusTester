@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 import { ButtonGroupMenuItem } from './PropsType';
 
@@ -12,6 +13,8 @@ export interface Props {
 const props = withDefaults(defineProps<Props>(), {
   hideKeys: () => new Set<string>()
 });
+
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -28,22 +31,22 @@ const buttonItems = computed(() => {
 });
 
 const MENUITEMS:readonly ButtonGroupMenuItem[] = [
-  { name: '导出脚本', icon: 'icon-daochu', key: 'export' },
-  { name: '选择脚本', icon: 'icon-shengchengceshijiaoben', key: 'select' },
-  { name: '导入脚本', icon: 'icon-daoru', key: 'import' },
-  { name: '代码视图', icon: 'icon-daimashitu', key: 'codeView' },
-  { name: '页面视图', icon: 'icon-yemianshitu', key: 'UIView' },
-  { name: '权限', icon: 'icon-quanxian1', key: 'authority' },
-  { name: '关注', icon: 'icon-yiguanzhu', key: 'followFlag' },
-  { name: '取消关注', icon: 'icon-quxiaoguanzhu', key: 'cancelFollowFlag' },
-  { name: '收藏', icon: 'icon-yishoucang', key: 'favouriteFlag' },
-  { name: '取消收藏', icon: 'icon-quxiaoshoucang', key: 'cancelFavouriteFlag' },
-  { name: '刷新', icon: 'icon-shuaxin', key: 'refresh' },
-  { name: '创建执行', icon: 'icon-tiaoshi', key: 'test' },
-  { name: '调试', icon: 'icon-tiaoshi', key: 'debug' }
+  { name: t('httPlugin.actions.export'), icon: 'icon-daochu', key: 'export' },
+  { name: t('httPlugin.actions.select'), icon: 'icon-shengchengceshijiaoben', key: 'select' },
+  { name: t('httPlugin.actions.import'), icon: 'icon-daoru', key: 'import' },
+  { name: t('httPlugin.actions.codeView'), icon: 'icon-daimashitu', key: 'codeView' },
+  { name: t('httPlugin.actions.pageView'), icon: 'icon-yemianshitu', key: 'UIView' },
+  { name: t('httPlugin.actions.authority'), icon: 'icon-quanxian1', key: 'authority' },
+  { name: t('httPlugin.actions.follow'), icon: 'icon-yiguanzhu', key: 'followFlag' },
+  { name: t('httPlugin.actions.cancelFollow'), icon: 'icon-quxiaoguanzhu', key: 'cancelFollowFlag' },
+  { name: t('httPlugin.actions.favourite'), icon: 'icon-yishoucang', key: 'favouriteFlag' },
+  { name: t('httPlugin.actions.cancelFavourite'), icon: 'icon-quxiaoshoucang', key: 'cancelFavouriteFlag' },
+  { name: t('httPlugin.actions.refresh'), icon: 'icon-shuaxin', key: 'refresh' },
+  { name: t('httPlugin.actions.createExecution'), icon: 'icon-tiaoshi', key: 'test' },
+  { name: t('httPlugin.actions.debug'), icon: 'icon-tiaoshi', key: 'debug' }
 ];
 
-const SAVE_ITEM = { name: '保存', icon: 'icon-baocun', key: 'save' };
+const SAVE_ITEM = { name: t('httPlugin.actions.save'), icon: 'icon-baocun', key: 'save' };
 </script>
 
 <template>
@@ -66,7 +69,7 @@ const SAVE_ITEM = { name: '保存', icon: 'icon-baocun', key: 'save' };
       @click="click(SAVE_ITEM)">
       <div class="flex items-center space-x-1">
         <Icon icon="icon-baocun" class="text-3.5" />
-        <span>保存</span>
+        <span>{{ t('httPlugin.actions.save') }}</span>
       </div>
     </Button>
   </div>

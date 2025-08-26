@@ -3,6 +3,7 @@ import { computed, ref } from 'vue';
 import { Button, Form, FormItem, Upload } from 'ant-design-vue';
 import { Icon, Input, Modal, notification } from '@xcan-angus/vue-ui';
 import { script } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
 
 import { formatBytes } from '@/utils/common';
 
@@ -11,6 +12,7 @@ interface Props {
   visible: boolean;
 }
 
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   visible: true
@@ -136,7 +138,7 @@ const handleOk = async () => {
       return;
     }
 
-    notification.success('导入成功');
+    notification.success(t('tips.importSuccess'));
     cancelHandler();
     emit('ok');
   }, () => {
@@ -158,7 +160,7 @@ const errorFlag = computed(() => {
 
 const rules = {
   name: [
-    { required: true, message: '请输入名称', trigger: 'change' }
+    { required: true, message: t('scriptHome.import.messages.nameRequired'), trigger: 'change' }
   ]
 };
 </script>
@@ -167,7 +169,7 @@ const rules = {
     :visible="props.visible"
     :confirmLoading="loading"
     :width="800"
-    title="导入脚本"
+    :title="t('scriptHome.import.title')"
     @cancel="cancelHandler"
     @ok="handleOk">
     <Form
@@ -176,25 +178,25 @@ const rules = {
       :labelCol="{ style: { width: '60px' } }"
       :model="formState"
       :rules="rules">
-      <FormItem name="name" label="名称">
+      <FormItem name="name" :label="t('scriptHome.import.form.name')">
         <Input
           v-model:value="formState.name"
           :maxlength="200"
           trim
-          placeholder="请输入脚本名称，最多200字符" />
+          :placeholder="t('scriptHome.import.form.namePlaceholder')" />
       </FormItem>
 
-      <FormItem label="描述" name="description">
+      <FormItem :label="t('scriptHome.import.form.description')" name="description">
         <Input
           v-model:value="formState.description"
           :autosize="{ minRows: 4, maxRows: 6 }"
           :maxlength="800"
           trim
-          placeholder="请输入脚本描述，最多800字符"
+          :placeholder="t('scriptHome.import.form.descriptionPlaceholder')"
           type="textarea" />
       </FormItem>
 
-      <FormItem label="文件" required>
+      <FormItem :label="t('scriptHome.import.form.file')" required>
         <div
           class="text-3 leading-5 border rounded border-dashed border-border-divider upload-container"
           :error="errorFlag">
@@ -211,11 +213,11 @@ const rules = {
               accept=".zip,.rar,.7z,.gz,.tar,.bz2,.xz,.lzma,.json,.yaml,.yml">
               <div class="flex flex-col items-center justify-center">
                 <Icon icon="icon-shangchuan" class="text-5 leading-5 text-text-link" />
-                <div class="text-3 text-text-link text-center">上传文件</div>
+                <div class="text-3 text-text-link text-center">{{ t('scriptHome.import.form.uploadFile') }}</div>
               </div>
             </Upload>
 
-            <div class="text-text-sub-content mt-1">直接粘贴内容或拖动文件或点击上传文件，文件大小不超过20M</div>
+              <div class="text-text-sub-content mt-1">{{ t('scriptHome.import.form.uploadTip') }}</div>
           </div>
 
           <div v-if="formState.content" class="relative">
@@ -227,7 +229,7 @@ const rules = {
               type="link"
               size="small"
               @click="clearContent">
-              清空
+              {{ t('scriptHome.import.form.clear') }}
             </Button>
           </div>
 
@@ -244,8 +246,8 @@ const rules = {
         </div>
 
         <div v-if="errorFlag" class="text-3 leading-5 text-rule">
-          <span v-if="emptyFlag">请先上传文件</span>
-          <span v-if="maximumLimitFlag">上传文件或文本大小超过20M，请重新上传</span>
+          <span v-if="emptyFlag">{{ t('scriptHome.import.messages.uploadFirst') }}</span>
+          <span v-if="maximumLimitFlag">{{ t('scriptHome.import.messages.fileTooLarge') }}</span>
         </div>
       </FormItem>
     </Form>

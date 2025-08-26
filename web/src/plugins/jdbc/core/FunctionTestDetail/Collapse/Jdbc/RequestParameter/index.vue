@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { utils } from '@xcan-angus/infra';
 import { Arrow, NoData, Table, Icon } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 import { ExecContent, ExecInfo } from '../../../PropsType';
 
@@ -24,12 +27,12 @@ const panels:{id:string;name:string;key:'SQL'|'parameters'|'result'}[] = [
   },
   {
     id: utils.uuid(),
-    name: '参数',
+    name: t('jdbcPlugin.FunctionTestDetailJdbc.requestParameter.parameter'),
     key: 'parameters'
   },
   {
     id: utils.uuid(),
-    name: '结果',
+    name: t('jdbcPlugin.FunctionTestDetailJdbc.requestParameter.result'),
     key: 'result'
   }
 ];
@@ -140,7 +143,7 @@ const columns = computed(() => {
               icon="icon-tishi1"
               class="text-3.5"
               style="color:#a6ceff;" />
-            <span class="ml-1">最多显示1000条记录</span>
+                            <span class="ml-1">{{ t('jdbcPlugin.FunctionTestDetailJdbc.requestParameter.maxRecords') }}</span>
           </div>
           <Table :dataSource="rows" :columns="columns" />
         </div>
@@ -148,7 +151,7 @@ const columns = computed(() => {
       </template>
       <template v-else-if="['UPDATE','PREPARED_UPDATE'].includes(props.type)&&item.key==='result'">
         <div class="pl-2 pt-1 pb-2 space-y-1">
-          受影响的行数<span class="mx-0.5">{{ updateCount }}</span>条
+                        {{ t('jdbcPlugin.FunctionTestDetailJdbc.requestParameter.affectedRows') }}<span class="mx-0.5">{{ updateCount }}</span>{{ t('jdbcPlugin.FunctionTestDetailJdbc.requestParameter.rows') }}
         </div>
       </template>
     </CollapsePanel>

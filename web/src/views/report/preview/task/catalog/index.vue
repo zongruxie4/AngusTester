@@ -37,82 +37,82 @@ const showTestInfo = computed(() => {
 <template>
   <div class="text-theme-title">
     <div class="font-medium text-4.5 mb-4">
-      <span>目录</span>
+      <span>{{ t('reportPreview.task.catalog.title') }}</span>
       <div class="mt-1 rounded w-8.5 h-1 bg-gray-500"></div>
     </div>
 
     <div class="space-y-3.5">
       <a href="#a1" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25 font-medium"></em>基本信息</span>
+        <span class="h1">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.basicInfo') }}</span>
         <DashedLine />
       </a>
       <a href="#a2" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25 font-medium"></em>人员信息</span>
+        <span class="h1">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.personnelInfo') }}</span>
         <DashedLine />
       </a>
       <a href="#a3" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25 font-medium"></em>日期信息</span>
+        <span class="h1">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.dateInfo') }}</span>
         <DashedLine />
       </a>
       <a href="#a4" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('reportPreview.serial.4') }}<em class="inline-block w-0.25 font-medium"></em>描述</span>
+        <span class="h1">{{ t('reportPreview.serial.4') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.description') }}</span>
         <DashedLine />
       </a>
       <a href="#a5" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('reportPreview.serial.5') }}<em class="inline-block w-0.25 font-medium"></em>子任务</span>
+        <span class="h1">{{ t('reportPreview.serial.5') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.subTask') }}</span>
         <DashedLine />
       </a>
       <a href="#a6" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('reportPreview.serial.6') }}<em class="inline-block w-0.25 font-medium"></em>关联任务</span>
+        <span class="h1">{{ t('reportPreview.serial.6') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.assocTask') }}</span>
         <DashedLine />
       </a>
       <a href="#a7" class="flex items-center space-x-2.5">
-        <span class="h1">{{ t('reportPreview.serial.7') }}<em class="inline-block w-0.25 font-medium"></em>关联用例</span>
+        <span class="h1">{{ t('reportPreview.serial.7') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.assocCase') }}</span>
         <DashedLine />
       </a>
 
       <template v-if="showTestInfo">
         <a href="#a8" class="flex items-center space-x-2.5">
-          <span class="h1">{{ t('reportPreview.serial.8') }}<em class="inline-block w-0.25 font-medium"></em>测试信息</span>
+          <span class="h1">{{ t('reportPreview.serial.8') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.testingInfo') }}</span>
           <DashedLine />
         </a>
         <a href="#a8" class="flex items-center space-x-2.5">
-          <span>8.1<em class="inline-block w-4.25 font-medium"></em>测试资源</span>
+          <span>8.1<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.testResource') }}</span>
           <DashedLine />
         </a>
         <a href="#a8.1" class="flex items-center space-x-2.5">
-          <span>8.2<em class="inline-block w-4.25 font-medium"></em>执行信息</span>
+          <span>8.2<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.execInfo') }}</span>
           <DashedLine />
         </a>
         <a href="#a8.2" class="flex items-center space-x-2.5">
-          <span>8.2<em class="inline-block w-4.25 font-medium"></em>测试结果</span>
+          <span>8.2<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.testResult') }}</span>
           <DashedLine />
         </a>
         <a href="#a9" class="flex items-center space-x-2.5">
-          <span class="h1">{{ t('reportPreview.serial.9') }}<em class="inline-block w-0.25 font-medium"></em>备注</span>
+          <span class="h1">{{ t('reportPreview.serial.9') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.remark') }}</span>
           <DashedLine />
         </a>
         <a href="#a10" class="flex items-center space-x-2.5">
-          <span class="h1">{{ t('reportPreview.serial.10') }}<em class="inline-block w-0.25 font-medium"></em>活动</span>
+          <span class="h1">{{ t('reportPreview.serial.10') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.activity') }}</span>
           <DashedLine />
         </a>
         <a href="#a11" class="flex items-center space-x-2.5">
-          <span class="h1">{{ t('reportPreview.serial.11') }}<em class="inline-block w-0.25 font-medium"></em>评论</span>
+          <span class="h1">{{ t('reportPreview.serial.11') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.comment') }}</span>
           <DashedLine />
         </a>
       </template>
 
       <template v-else>
         <a href="#a8" class="flex items-center space-x-2.5">
-          <span class="h1">{{ t('reportPreview.serial.8') }}<em class="inline-block w-0.25 font-medium"></em>备注</span>
+          <span class="h1">{{ t('reportPreview.serial.8') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.remark') }}</span>
           <DashedLine />
         </a>
         <a href="#a9" class="flex items-center space-x-2.5">
-          <span class="h1">{{ t('reportPreview.serial.9') }}<em class="inline-block w-0.25 font-medium"></em>活动</span>
+          <span class="h1">{{ t('reportPreview.serial.9') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.activity') }}</span>
           <DashedLine />
         </a>
         <a href="#a10" class="flex items-center space-x-2.5">
-          <span class="h1">{{ t('reportPreview.serial.10') }}<em class="inline-block w-0.25 font-medium"></em>评论</span>
+          <span class="h1">{{ t('reportPreview.serial.10') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.task.catalog.sections.comment') }}</span>
           <DashedLine />
         </a>
       </template>

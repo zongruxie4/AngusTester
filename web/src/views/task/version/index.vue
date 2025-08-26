@@ -2,6 +2,7 @@
 import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 import { utils } from '@xcan-angus/infra';
 import { software } from 'src/api/tester';
 
@@ -18,6 +19,8 @@ const props = withDefaults(defineProps<Props>(), {
   userInfo: undefined,
   appInfo: undefined
 });
+
+const { t } = useI18n();
 
 const List = defineAsyncComponent(() => import('@/views/task/version/list/index.vue'));
 const Detail = defineAsyncComponent(() => import('@/views/task/version/detail/index.vue'));
@@ -55,7 +58,7 @@ const initialize = () => {
         return {
           _id: 'versionList',
           value: 'versionList',
-          name: '版本',
+          name: t('taskVersion.title'),
           closable: false // 是否允许关闭，true - 允许关闭，false - 禁止关闭
         };
       }
@@ -120,7 +123,7 @@ const hashChange = async (hash: string) => {
         const id = utils.uuid();
         return {
           _id: id,
-          name: '添加版本',
+          name: t('taskVersion.form.addVersion'),
           value: 'versionEdit',
           noCache: true,
           data: { _id: id }

@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref, defineAsyncComponent, onMounted, watch, computed, watchEffect } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Badge, Collapse, CollapsePanel, Tabs, TabPane, Dropdown, Menu, MenuItem } from 'ant-design-vue';
 import { Input, Tooltip, Icon, SelectEnum, SelectInput, Validate, FunctionsButton } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 import { cloneDeep } from 'lodash-es';
+
+const { t } = useI18n();
 
 import { JDBCConfig, JDBCConfigInfo, QueryType, QueryArguments } from './PropsType';
 import { AssertionConfig } from './AssertionForm/PropsType';
@@ -449,7 +452,7 @@ const inputProps = {
           <Icon icon="icon-jdbc" class="flex-shrink-0 mr-3 text-4" />
           <div class="flex-1 flex items-center space-x-5 mr-5">
             <Tooltip
-              title="名称重复"
+              :title="t('jdbcPlugin.UIConfigJdbc.jdbcConfig.nameDuplicate')"
               internal
               placement="right"
               destroyTooltipOnHide
@@ -461,7 +464,7 @@ const inputProps = {
                 :title="name"
                 trim
                 class="jdbc-name-input"
-                placeholder="名称，最大支持400个字符"
+                :placeholder="t('jdbcPlugin.UIConfigJdbc.jdbcConfig.namePlaceholder')"
                 @change="nameChange" />
             </Tooltip>
             <Input
@@ -470,7 +473,7 @@ const inputProps = {
               :title="description"
               trim
               class="flex-1"
-              placeholder="描述，最大支持800个字符（可选）" />
+              :placeholder="t('jdbcPlugin.UIConfigJdbc.jdbcConfig.descriptionPlaceholder')" />
           </div>
           <ActionsGroup
             v-model:enabled="enabled"
@@ -490,7 +493,7 @@ const inputProps = {
               :error="queryTypeError"
               enumKey="QueryType"
               class="w-70"
-              placeholder="查询类型"
+              :placeholder="t('jdbcPlugin.UIConfigJdbc.jdbcConfig.queryTypePlaceholder')"
               @change="queryTypeChange" />
             <Dropdown destroyPopupOnHide :mouseEnterDelay="0.3">
               <template #overlay>
@@ -505,7 +508,7 @@ const inputProps = {
               </template>
               <template #default>
                 <Button type="link" size="small">
-                  插入SQL模板
+                  {{ t('jdbcPlugin.UIConfigJdbc.jdbcConfig.insertSqlTemplate') }}
                 </Button>
               </template>
             </Dropdown>
@@ -528,15 +531,15 @@ const inputProps = {
                 trim
                 showCount
                 type="textarea"
-                placeholder="SQL，最大支持8192个字符"
+                :placeholder="t('jdbcPlugin.UIConfigJdbc.jdbcConfig.sqlPlaceholder')"
                 @change="sqlChange" />
             </Validate>
             <div class="flex items-center leading-5 mt-5 space-x-5">
               <div class="flex items-center space-x-2">
                 <div class="flex-shrink-0 flex items-center space-x-1">
-                  <span class="flex-shrink-0">处理查询结果行数</span>
+                  <span class="flex-shrink-0">{{ t('jdbcPlugin.UIConfigJdbc.jdbcConfig.processResultRows') }}</span>
                   <Tooltip
-                    title="默认1000，最大支持10000行，实际返回结果行数超过设置的处理查询结果行数时忽略 。"
+                                          :title="t('jdbcPlugin.UIConfigJdbc.jdbcConfig.processResultRowsTooltip')"
                     internal
                     placement="right"
                     destroyTooltipOnHide>
@@ -547,20 +550,20 @@ const inputProps = {
                   v-model:value="maxResultRows"
                   dataType="number"
                   class="flex-1"
-                  placeholder="值范围：1~10000"
+                  :placeholder="t('jdbcPlugin.UIConfigJdbc.jdbcConfig.processResultRowsPlaceholder')"
                   trimAll
                   :min="1"
                   :max="10000" />
               </div>
               <div class="flex items-center space-x-2">
                 <div class="flex-shrink-0 flex items-center space-x-1">
-                  <span class="flex-shrink-0">查询超时时间</span>
+                  <span class="flex-shrink-0">{{ t('jdbcPlugin.UIConfigJdbc.jdbcConfig.queryTimeout') }}</span>
                 </div>
                 <Input
                   v-model:value="timeoutInSecond"
                   dataType="number"
                   class="flex-1"
-                  placeholder="值范围：0~2147483647"
+                  :placeholder="t('jdbcPlugin.UIConfigJdbc.jdbcConfig.queryTimeoutPlaceholder')"
                   trimAll
                   :min="0"
                   :max="2147483647" />
@@ -573,7 +576,7 @@ const inputProps = {
           <template #tab>
             <Badge size="small" :count="queryErrorNum">
               <div class="flex items-center space-x-0.5">
-                <div>查询参数</div>
+                <div>{{ t('jdbcPlugin.UIConfigJdbc.jdbcConfig.queryParameters') }}</div>
                 <div class="flex items-center space-x-0.5">
                   <em>(</em>
                   <span>{{ argumentsNum }}</span>
@@ -592,29 +595,29 @@ const inputProps = {
                 :inputProps="inputProps"
                 class="w-50 mr-2"
                 enumKey="ColumnType"
-                :title="argumentsMap[item].type || '输入或选择参数类型（可选）'"
-                placeholder="输入或选择参数类型（可选）" />
+                :title="argumentsMap[item].type || t('jdbcPlugin.UIConfigJdbc.jdbcConfig.parameterTypePlaceholder')"
+                :placeholder="t('jdbcPlugin.UIConfigJdbc.jdbcConfig.parameterTypePlaceholder')" />
               <SelectEnum
                 v-model:value="argumentsMap[item].inout"
                 :error="inoutErrorMap[item]"
                 allowClear
                 enumKey="InputOutputType"
-                placeholder="输入输出"
+                :placeholder="t('jdbcPlugin.UIConfigJdbc.jdbcConfig.inputOutputPlaceholder')"
                 class="w-30 mr-2"
                 @change="inoutChange(item)" />
               <Validate
                 class="flex-1 mr-3"
                 :error="inoutValueErrorMap[item]"
                 mode="error"
-                text="输入输出值为“IN”、“INOUT”时，参数值必填">
+                :text="t('jdbcPlugin.UIConfigJdbc.jdbcConfig.inputOutputTooltip')">
                 <Input
                   v-model:value="argumentsMap[item].value"
                   :maxlength="8192"
                   :error="inoutValueErrorMap[item]"
                   allowClear
                   trim
-                  :title="argumentsMap[item].value || '参数值（可选。注：输入输出值为“IN”、“INOUT”时，参数值必填）'"
-                  placeholder="参数值（可选。注：输入输出值为“IN”、“INOUT”时，参数值必填）"
+                  :title="argumentsMap[item].value || t('jdbcPlugin.UIConfigJdbc.jdbcConfig.parameterValuePlaceholder')"
+                  :placeholder="t('jdbcPlugin.UIConfigJdbc.jdbcConfig.parameterValuePlaceholder')"
                   @change="valueChange(item)" />
               </Validate>
               <div class="flex-shrink-0 flex items-center h-7 space-x-2">
@@ -641,7 +644,7 @@ const inputProps = {
               size="small"
               :count="parametricErrorNum">
               <div class="flex items-center space-x-0.5">
-                <div>参数化</div>
+                <div>{{ t('jdbcPlugin.UIConfigJdbc.jdbcConfig.parametric') }}</div>
               </div>
             </Badge>
           </template>
@@ -659,7 +662,7 @@ const inputProps = {
           <template #tab>
             <Badge size="small" :count="assertErrorNum">
               <div class="flex items-center space-x-0.5">
-                <div>断言</div>
+                <div>{{ t('jdbcPlugin.UIConfigJdbc.jdbcConfig.assertions') }}</div>
                 <div class="flex items-center space-x-0.5">
                   <em>(</em>
                   <span>{{ assertNum }}</span>

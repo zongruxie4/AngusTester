@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { ref, computed, inject, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
-import { TESTER, duration } from '@xcan-angus/infra';
-import { debounce } from 'throttle-debounce';
+import { TESTER } from '@xcan-angus/infra';
 import { Icon, Modal, Tooltip, notification, SelectApisCase } from '@xcan-angus/vue-ui';
 import { paramTarget, apis } from '@/api/tester';
 
 import { UseCaseInfo } from './PropsType';
+
+const { t } = useI18n();
 
 export type UseCaseItem = {
   id: string;
@@ -44,60 +46,11 @@ const serviceId = ref<string>();
 const checkedApiId = ref<string>();
 const checkedUseCaseIds = ref<string[]>([]);
 const apisId = ref();
-const checkedApisIds = ref<string[]>([]);
 // const variableStrategy = ref<'ALL'|'REF'|'IGNORE'>('REF');
 
 const inputValue = ref<string>();
 const useCaseList = ref<UseCaseItem[]>([]);
 
-const dirChange = (id: string) => {
-  if (serviceId.value === id) {
-    return;
-  }
-
-  serviceId.value = id;
-  checkedApiId.value = undefined;
-  checkedUseCaseIds.value = [];
-  checkedApisIds.value = [];
-};
-
-const planChange = (id:string) => {
-  if (checkedApiId.value === id) {
-    return;
-  }
-
-  checkedApiId.value = id;
-  checkedUseCaseIds.value = [];
-  checkedApisIds.value = [];
-};
-
-const checkChange = (event:{target:{checked:boolean}}, data) => {
-  const checked = event.target.checked;
-  const id = data.id;
-  const apisId = data.apisId;
-  if (checked) {
-    if (!checkedUseCaseIds.value.includes(id)) {
-      checkedUseCaseIds.value.push(id);
-    }
-
-    if (!checkedApisIds.value.includes(apisId)) {
-      checkedApisIds.value.push(apisId);
-    }
-
-    return;
-  }
-
-  checkedUseCaseIds.value = checkedUseCaseIds.value.filter(item => item !== id);
-  checkedApisIds.value = checkedApisIds.value.filter(item => item !== apisId);
-};
-
-const inputChange = debounce(duration.search, (event: { target: { value: string } }) => {
-  inputValue.value = event.target.value;
-});
-
-const scrollChange = (data: UseCaseItem[]) => {
-  useCaseList.value = data;
-};
 
 const changeSelectCase = (caseIds: string[], cases: any[]) => {
   checkedUseCaseIds.value = caseIds;
@@ -110,7 +63,7 @@ const ok = async (key:'link'|'copy') => {
   } else {
     const hasLinkIdFlag = checkedUseCaseIds.value.some(item => props.linkIds.has(item));
     if (hasLinkIdFlag) {
-      notification.info('已选中的用例中包含已被引用的用例，不能重复引用。');
+      notification.info(t('httPlugin.uiConfig.selectUseCaseModal.alreadyReferenced'));
       return;
     }
 
@@ -187,31 +140,7 @@ const reset = () => {
   }
 };
 
-const useCaseAction = computed(() => {
-  if (!serviceId.value || !checkedApiId.value) {
-    return undefined;
-  }
 
-  return `${TESTER}/apis/case?apisId=${checkedApiId.value}`;
-});
-
-const useCaseParams = computed(() => {
-  const filters: {
-    key: 'name';
-    op: 'MATCH_END',
-    value: string
-  }[] = [];
-
-  if (inputValue.value) {
-    filters.push({
-      key: 'name',
-      op: 'MATCH_END',
-      value: inputValue.value
-    });
-  }
-
-  return { filters };
-});
 
 const cancelButtonDisabled = computed(() => {
   return coping.value || linking.value;
@@ -245,7 +174,7 @@ watch(() => props.visible, () => {
 </script>
 <template>
   <Modal
-    title="选择用例"
+    :title="t('httPlugin.uiConfig.selectUseCaseModal.title')"
     :visible="props.visible"
     :centered="true"
     :width="1000"
@@ -265,7 +194,7 @@ watch(() => props.visible, () => {
           type="default"
           size="small"
           @click="cancel">
-          <span>取消</span>
+          <span>{{ t('common.cancel') }}</span>
         </Button>
         <Button
           :loading="coping"
@@ -273,7 +202,7 @@ watch(() => props.visible, () => {
           size="small"
           type="primary"
           @click="ok('copy')">
-          <span>复制</span>
+          <span>{{ t('httPlugin.uiConfig.selectUseCaseModal.copy') }}</span>
         </Button>
         <Button
           :loading="linking"
@@ -282,11 +211,11 @@ watch(() => props.visible, () => {
           type="primary"
           @click="ok('link')">
           <div v-if="hasLinkId" class="flex items-center justify-center w-2.5 h-2.5 rounded-lg bg-white mr-1">
-            <Tooltip title="已选中的用例中包含已被引用的用例，不能重复引用。">
+            <Tooltip :title="t('httPlugin.uiConfig.selectUseCaseModal.alreadyReferenced')">
               <Icon icon="icon-tishi1" class="flex-shrink-0 text-3.5 text-status-warn" />
             </Tooltip>
           </div>
-          <span>引用</span>
+          <span>{{ t('httPlugin.uiConfig.selectUseCaseModal.reference') }}</span>
         </Button>
       </div>
     </template>

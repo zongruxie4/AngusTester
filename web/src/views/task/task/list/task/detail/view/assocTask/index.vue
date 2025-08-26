@@ -5,6 +5,7 @@ import { TESTER } from '@xcan-angus/infra';
 import { Button, Progress } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 import { task } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   projectId: string;
@@ -25,6 +26,7 @@ interface Props {
   tips?: string;
 }
 const router = useRouter();
+const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -94,7 +96,7 @@ const handlePut = async (refTaskIds) => {
 
 const handleDelTask = (record) => {
   modal.confirm({
-    content: `确认取消关联任务【${record.name}】吗？`,
+    content: t('task.assocTask.messages.confirmCancelTask', { name: record.name }),
     onOk () {
       return task.cancelAssociationTask(props.taskId, [record.id], {
         paramsType: true
@@ -116,44 +118,54 @@ const openTask = (record) => {
 // 编号、名称、类型、优先级、评估故事点、状态、经办人、截止时间、操作
 const columns = [
   {
+    key: 'code',
     dataIndex: 'code',
-    title: '编号'
+    title: t('task.assocTask.columns.code')
   },
   {
+    key: 'name',
     dataIndex: 'name',
-    title: '名称'
+    title: t('task.assocTask.columns.name')
   },
   {
+    key: 'progress',
     dataIndex: 'progress',
-    title: '进度'
+    title: t('task.assocTask.columns.progress')
   },
   {
+    key: 'taskType',
     dataIndex: 'taskType',
-    title: '类型'
+    title: t('task.assocTask.columns.taskType')
   },
   {
+    key: 'priority',
     dataIndex: 'priority',
-    title: '优先级'
+    title: t('task.assocTask.columns.priority')
   },
   {
+    key: 'evalWorkload',
     dataIndex: 'evalWorkload',
-    title: '评估故事点'
+    title: t('task.assocTask.columns.evalWorkload')
   },
   {
+    key: 'status',
     dataIndex: 'status',
-    title: '状态'
+    title: t('task.assocTask.columns.status')
   },
   {
+    key: 'assigneeName',
     dataIndex: 'assigneeName',
-    title: '经办人'
+    title: t('task.assocTask.columns.assigneeName')
   },
   {
+    key: 'deadlineDate',
     dataIndex: 'deadlineDate',
-    title: '截止时间'
+    title: t('task.assocTask.columns.deadlineDate')
   },
   {
+    key: 'action',
     dataIndex: 'action',
-    title: '操作'
+    title: t('task.assocTask.columns.action')
   }
 ];
 
@@ -182,7 +194,7 @@ const columns = [
         size="small"
         @click="startEdit">
         <Icon icon="icon-jia" class="mr-1" />
-        关联{{ props.title }}
+        {{ t('task.assocTask.actions.associateTask', { title: props.title }) }}
       </Button>
     </div>
     <Table
@@ -190,7 +202,8 @@ const columns = [
       :dataSource="tableData || []"
       :pagination="false"
       size="small"
-      noDataSize="small">
+      noDataSize="small"
+      noDataText="">
       <template #bodyCell="{column, record}">
         <template v-if="column.dataIndex === 'name'">
           <Button
@@ -212,7 +225,7 @@ const columns = [
             type="text"
             @click="handleDelTask(record)">
             <Icon icon="icon-qingchu" class="mr-1" />
-            取消
+            {{ t('actions.cancel') }}
           </Button>
         </template>
         <template v-if="column.dataIndex === 'taskType'">
@@ -229,7 +242,7 @@ const columns = [
     <AsyncComponent :visible="selectTaskVisible">
       <SelectTaskByModuleModal
         v-model:visible="selectTaskVisible"
-        :title="`选择${props.title}`"
+        :title="t('task.assocTask.modal.selectTask', { title: props.title })"
         :projectId="props.projectId"
         :action="`${TESTER}/task/${props.taskId}/task/notAssociated?taskType=${props.taskType}`"
         @ok="handlePut" />

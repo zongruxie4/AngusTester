@@ -2,9 +2,10 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { ActivityInfo, Scroll } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 
 import { ActivityItem } from './PropsType';
-import { TaskInfo } from '../../../../PropsType';
+import { TaskInfo } from '@/views/task/PropsType';
 
 type Props = {
   projectId: string;
@@ -19,6 +20,8 @@ const props = withDefaults(defineProps<Props>(), {
   appInfo: undefined,
   dataSource: undefined
 });
+
+const { t } = useI18n();
 
 const dataList = ref<ActivityItem[]>([]);
 const params = ref<{
@@ -49,7 +52,7 @@ const taskId = computed(() => {
 </script>
 <template>
   <div class="h-full text-3 leading-5 pl-5">
-    <div class="text-theme-title mb-2.5 font-semibold">活动</div>
+    <div class="text-theme-title mb-2.5 font-semibold">{{ t('task.detailInfo.activity.title') }}</div>
 
     <Scroll
       v-if="!!taskId"

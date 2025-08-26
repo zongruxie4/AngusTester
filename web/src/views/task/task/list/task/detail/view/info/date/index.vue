@@ -2,6 +2,7 @@
 import { computed, nextTick, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Colon, DatePicker, Icon, Toggle, Tooltip } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 import dayjs, { Dayjs } from 'dayjs';
 import { task } from 'src/api/tester';
 
@@ -22,6 +23,8 @@ const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined,
   loading: false
 });
+
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -51,13 +54,13 @@ const toEdit = () => {
 
 const change = (value:string) => {
   if (!value) {
-    dateErrorMessage.value = '请选择截止时间';
+    dateErrorMessage.value = t('task.detailInfo.date.validation.selectDeadline');
     return;
   }
 
   if (dayjs(value).isBefore(dayjs(), 'minute')) {
     dateError.value = true;
-    dateErrorMessage.value = '截止时间必须是一个未来时间';
+    dateErrorMessage.value = t('task.detailInfo.date.validation.futureTimeRequired');
     return;
   }
 
@@ -116,14 +119,14 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
 <template>
   <Toggle>
     <template #title>
-      <div class="text-3">日期</div>
+      <div class="text-3">{{ t('task.detailInfo.date.title') }}</div>
     </template>
 
     <template #default>
       <div class="text-3 leading-5 space-y-2.5 pt-2 pl-5.5">
         <div class="relative flex items-start">
           <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>截止时间</span>
+            <span>{{ t('task.detailInfo.date.fields.deadline') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -164,7 +167,7 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
 
         <div class="relative flex items-start">
           <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>开始时间</span>
+            <span>{{ t('task.detailInfo.date.fields.startTime') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -173,7 +176,7 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
 
         <div class="relative flex items-start">
           <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>处理时间</span>
+            <span>{{ t('task.detailInfo.date.fields.processTime') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -182,7 +185,7 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
 
         <div class="relative flex items-start">
           <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>确认时间</span>
+            <span>{{ t('task.detailInfo.date.fields.confirmTime') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -191,7 +194,7 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
 
         <div class="relative flex items-start">
           <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>完成时间</span>
+            <span>{{ t('task.detailInfo.date.fields.completeTime') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -200,7 +203,7 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
 
         <div class="relative flex items-start">
           <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>取消时间</span>
+            <span>{{ t('task.detailInfo.date.fields.cancelTime') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -209,7 +212,7 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
 
         <div class="relative flex items-start">
           <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>执行时间</span>
+            <span>{{ t('task.detailInfo.date.fields.execTime') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -218,7 +221,7 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
 
         <div class="relative flex items-start">
           <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>添加时间</span>
+            <span>{{ t('task.detailInfo.date.fields.createTime') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -227,7 +230,7 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
 
         <div class="relative flex items-start">
           <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>最后修改时间</span>
+            <span>{{ t('task.detailInfo.date.fields.lastModifyTime') }}</span>
             <Colon class="w-1" />
           </div>
 

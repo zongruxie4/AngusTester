@@ -4,6 +4,7 @@ import { Input, Select, Icon, Composite, Hints } from '@xcan-angus/vue-ui';
 import { Form, FormItem, Switch, RadioGroup } from 'ant-design-vue';
 import type { Rule } from 'ant-design-vue/es/form';
 import { encode } from '../PropsType.ts';
+import { useI18n } from 'vue-i18n';
 
 const formState = ref({
   spaceId: undefined,
@@ -13,6 +14,8 @@ const formState = ref({
   authentication: false,
   batchRows: '1'
 });
+
+const { t } = useI18n();
 const formRef = ref();
 const authType = ref('Basic');
 const basicUserName = ref();
@@ -30,7 +33,7 @@ const formData = ref([{ value: '', format: 'binary', name: 'file', enabled: true
 
 const keNameValidator = async (_rule: Rule, value: string) => {
   if (!value) {
-    return Promise.reject(new Error('请输入参数名'));
+    return Promise.reject(new Error(t('gendata.pushThirdStoreConfig.validation.enterParamName')));
   } else {
     const keyNames = new Set();
     const hasDuplicates = formState.value.apisSecurity.some(obj => {
@@ -41,7 +44,7 @@ const keNameValidator = async (_rule: Rule, value: string) => {
       return false;
     });
     if (hasDuplicates) {
-      return Promise.reject(new Error('keyName存在重复'));
+      return Promise.reject(new Error(t('gendata.pushThirdStoreConfig.validation.paramNameDuplicate')));
     } else {
       formRef.value.clearValidate();
       return Promise.resolve();
@@ -160,8 +163,8 @@ defineExpose({
     class="text-3"
     layout="vertical"
     :model="formState">
-    <FormItem label="批量行数">
-      <Hints text="每次批量生成、存储或发送行数，默认 1，最大10000。" class="mb-2" />
+    <FormItem :label="t('gendata.pushThirdStoreConfig.batchRows')">
+      <Hints :text="t('gendata.pushThirdStoreConfig.hints.batchRows')" class="mb-2" />
       <div class="flex items-center">
         <Input
           v-model:value="formState.batchRows"
@@ -178,7 +181,7 @@ defineExpose({
       <FormItem
         class="flex-1"
         name="url"
-        :rules="{ required: true, message: '请输入接口地址' }">
+        :rules="{ required: true, message: t('gendata.pushThirdStoreConfig.validation.enterApiAddress') }">
         <Composite>
           <Select
             value="POST"
@@ -186,13 +189,13 @@ defineExpose({
             :options="[{value: 'POST', label: 'POST'}]" />
           <Input
             v-model:value="formState.url"
-            placeholder="接口地址" />
+            :placeholder="t('gendata.pushThirdStoreConfig.placeholders.apiAddress')" />
         </Composite>
       </FormItem>
     </div>
     <div class="flex flex-col ">
       <div class="mt-2 flex items-center">
-        请求参数
+        {{ t('gendata.pushThirdStoreConfig.requestParams') }}
         <template v-if="formState.apisSecurity.length <= 9">
           <Icon
             icon="icon-tianjia"
@@ -208,20 +211,20 @@ defineExpose({
           class="flex-1"
           :name="['apisSecurity', index, 'name']"
           :rules="{required: true, validator: keNameValidator}">
-          <Input v-model:value="item.name" placeholder="参数名" />
+          <Input v-model:value="item.name" :placeholder="t('gendata.pushThirdStoreConfig.form.paramName')" />
         </FormItem>
         <FormItem class="w-20">
           <Select
             v-model:value="item.in"
             :options="inOptions"
             size="small"
-            placeholder="位置" />
+            :placeholder="t('gendata.pushThirdStoreConfig.form.position')" />
         </FormItem>
         <FormItem
           class="flex-1"
           :name="['apisSecurity', index, 'value']"
-          :rules="{required: true, message: '请输入参数值'}">
-          <Input v-model:value="item.value" placeholder="参数值" />
+          :rules="{required: true, message: t('gendata.pushThirdStoreConfig.validation.enterParamValue')}">
+          <Input v-model:value="item.value" :placeholder="t('gendata.pushThirdStoreConfig.form.paramValue')" />
         </FormItem>
         <FormItem
           class="flex items-center text-4 h-7 leading-7"
@@ -234,9 +237,9 @@ defineExpose({
       </div>
     </div>
     <div>
-      <div class="mt-2">请求体</div>
+      <div class="mt-2">{{ t('gendata.pushThirdStoreConfig.requestBody') }}</div>
       <div class="flex items-center space-x-2">
-        <span>Content-Type</span>
+        <span>{{ t('gendata.pushThirdStoreConfig.contentType') }}</span>
         <RadioGroup
           v-model:value="formState.contentType"
           size="small"
@@ -256,7 +259,7 @@ defineExpose({
           class="flex items-center space-x-2">
           <Input
             v-model:value="form.name"
-            placeholder="参数名称"
+            :placeholder="t('gendata.pushThirdStoreConfig.form.paramNamePlaceholder')"
             class="flex-1"
             @blur="onFormDataNameBlur(idx)" />
           <Select
@@ -265,7 +268,7 @@ defineExpose({
             class="w-20" />
           <Input
             v-model:value="form.value"
-            :placeholder="idx === 0 ? '文件位置' : '参数值'"
+            :placeholder="idx === 0 ? t('gendata.pushThirdStoreConfig.form.filePosition') : t('gendata.pushThirdStoreConfig.form.paramValue')"
             :disabled="idx === 0"
             class="flex-1" />
           <Icon
@@ -278,7 +281,7 @@ defineExpose({
     </div>
     <div class="mt-3">
       <div class="mt-2 flex items-center">
-        <span class="">认证</span>
+        <span class="">{{ t('gendata.pushThirdStoreConfig.authentication') }}</span>
         <Switch
           v-model:checked="formState.authentication"
           class="ml-2"
@@ -288,17 +291,17 @@ defineExpose({
             v-model:value="authType"
             size="small"
             class="ml-5"
-            :options="[{value: 'Basic', label: 'Basic Auth'}, {value: 'Bearer', label: 'Bearer Token'}]">
+            :options="[{value: 'Basic', label: t('gendata.pushThirdStoreConfig.basicAuth')}, {value: 'Bearer', label: t('gendata.pushThirdStoreConfig.bearerToken')}]">
           </RadioGroup>
         </template>
       </div>
       <template v-if="formState.authentication">
         <template v-if="authType === 'Basic'">
-          <div class="flex mt-1"><span class="w-20">用户名</span> <Input v-model:value="basicUserName" class="w-80" /></div>
-          <div class="flex mt-1"><span class="w-20">密码</span> <Input v-model:value="basicPassd" class="w-80" /></div>
+          <div class="flex mt-1"><span class="w-20">{{ t('gendata.pushThirdStoreConfig.username') }}</span> <Input v-model:value="basicUserName" class="w-80" /></div>
+          <div class="flex mt-1"><span class="w-20">{{ t('gendata.pushThirdStoreConfig.password') }}</span> <Input v-model:value="basicPassd" class="w-80" /></div>
         </template>
         <template v-if="authType === 'Bearer'">
-          <div class="flex mt-1"><span class="w-20">令牌</span> <Input v-model:value="bearerToken" class="w-80" /></div>
+          <div class="flex mt-1"><span class="w-20">{{ t('gendata.pushThirdStoreConfig.token') }}</span> <Input v-model:value="bearerToken" class="w-80" /></div>
         </template>
       </template>
     </div>

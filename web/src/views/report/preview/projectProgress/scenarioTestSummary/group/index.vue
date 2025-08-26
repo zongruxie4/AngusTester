@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import * as echarts from 'echarts';
-
+import { useI18n } from 'vue-i18n';
 import { ReportContent } from '../../PropsType';
 
 type Props = {
@@ -10,6 +10,8 @@ type Props = {
   appInfo: { [key: string]: any };
   dataSource: ReportContent;
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   projectInfo: undefined,
@@ -43,7 +45,7 @@ const taskStatusOption = {
   }],
   yAxis: [{ type: 'value' }],
   series: [{
-    name: '数量',
+    name: t('reportPreview.projectProgress.scenarioTestSummary.groupStats.quantity'),
     type: 'bar',
     barWidth: '20px',
     data: [],
@@ -61,7 +63,7 @@ const taskStatusOption = {
 const priorityOptions = {
   title: {
     text: 0,
-    subtext: '总数',
+    subtext: t('reportPreview.projectProgress.scenarioTestSummary.groupStats.total'),
     left: '29.5%',
     top: '40%',
     padding: 2,
@@ -118,10 +120,10 @@ const priorityOptions = {
         }
       },
       data: [
-        { name: '性能测试', value: 0 },
-        { name: '稳定性测试', value: 0 },
-        { name: '功能测试', value: 0 },
-        { name: '自定义测试', value: 0 }
+        { name: t('reportPreview.projectProgress.scenarioTestSummary.groupStats.testTypes.perfTest'), value: 0 },
+        { name: t('reportPreview.projectProgress.scenarioTestSummary.groupStats.testTypes.stabilityTest'), value: 0 },
+        { name: t('reportPreview.projectProgress.scenarioTestSummary.groupStats.testTypes.funcTest'), value: 0 },
+        { name: t('reportPreview.projectProgress.scenarioTestSummary.groupStats.testTypes.customTest'), value: 0 }
       ]
     }
   ]
@@ -186,13 +188,13 @@ onMounted(() => {
 
 <template>
   <h1 class="text-theme-title font-medium mb-3">
-    <span class="text-3 text-theme-title font-medium">按协议分组</span>
+    <span class="text-3 text-theme-title font-medium">{{ t('reportPreview.projectProgress.scenarioTestSummary.groupStats.byProtocol') }}</span>
   </h1>
   <div ref="taskStatusRef" class="flex-1 h-50 w-120 mb-7">
   </div>
 
   <h1 class="text-theme-title font-medium mb-3">
-    <span class="text-3 text-theme-title font-medium">按测试类型分组</span>
+    <span class="text-3 text-theme-title font-medium">{{ t('reportPreview.projectProgress.scenarioTestSummary.groupStats.byTestType') }}</span>
   </h1>
   <div ref="priorityRef" class="flex-1 h-50  w-120">
   </div>

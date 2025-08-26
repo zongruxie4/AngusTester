@@ -2,6 +2,7 @@
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Icon, NoData, Toggle } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 import { task } from 'src/api/tester';
 
 import { TaskInfo } from '../../../../../../../PropsType';
@@ -23,6 +24,8 @@ const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined,
   loading: false
 });
+
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -93,19 +96,19 @@ const isError = () => {
   <Toggle v-model:open="openFlag">
     <template #title>
       <div class="flex items-center text-3">
-        <span>描述</span>
+        <span>{{ t('task.detailInfo.description.title') }}</span>
         <template v-if="editFlag">
           <Button
             size="small"
             type="link"
             @click="cancel">
-            取消
+            {{ t('task.detailInfo.description.actions.cancel') }}
           </Button>
           <Button
             size="small"
             type="link"
             @click="ok">
-            确定
+            {{ t('task.detailInfo.description.actions.confirm') }}
           </Button>
         </template>
         <Button
@@ -124,10 +127,10 @@ const isError = () => {
           <RichEditor
             ref="richEditorRef"
             :value="content"
-            :options="{placeholder: '添加详细说明，最大支持6000个字符'}"
-            placeholder="描述最大支持6000个字符"
+            :options="{placeholder: t('task.detailInfo.description.placeholder')}"
+            :placeholder="t('task.detailInfo.description.validation.maxLength')"
             @change="editorChange" />
-          <div v-show="validateErr" class="text-status-error text-3">描述最大支持6000个字符</div>
+          <div v-show="validateErr" class="text-status-error text-3">{{ t('task.detailInfo.description.validation.maxLength') }}</div>
         </div>
 
         <!-- <div class="space-x-2.5 w-full flex items-center justify-end">

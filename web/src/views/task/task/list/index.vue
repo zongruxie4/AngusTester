@@ -7,6 +7,7 @@ import { http, utils, TESTER, download } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 
+
 import { getCurrentPage } from '@/utils/utils';
 import { TaskInfo } from '../../PropsType';
 import { ActionMenuItem, travelTreeData } from './PropsType';
@@ -267,7 +268,7 @@ const handdleExportTemplate = async () => {
 
 const toExport = async () => {
   if (exporting.value) {
-    notification.info('您有正在导出的任务，请稍后再试');
+    notification.info(t('task.messages.exportingInProgress'));
     return;
   }
 

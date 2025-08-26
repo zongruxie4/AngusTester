@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, watchEffect } from 'vue';
+import { ref, onMounted, watch, watchEffect, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Input, Select, Icon, Tooltip } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
 import { WaitingTimeConfig } from './PropsType';
 import ActionsGroup from '../ActionsGroup/index.vue';
+
+const { t } = useI18n();
 
 export interface Props {
   value: WaitingTimeConfig;
@@ -232,10 +235,10 @@ defineExpose({
   }
 });
 
-const waitTypeoptions = [
-  { label: '固定等待', value: 'fixed' },
-  { label: '随机等待', value: 'random' }
-];
+const waitTypeoptions = computed(() => [
+  { label: t('httPlugin.uiConfig.waitingTime.fixedWait'), value: 'fixed' },
+  { label: t('httPlugin.uiConfig.waitingTime.randomWait'), value: 'random' }
+]);
 </script>
 
 <template>
@@ -243,7 +246,7 @@ const waitTypeoptions = [
     <Icon class="flex-shrink-0 text-4 mr-3" icon="icon-dengdaishijian" />
     <div class="flex-1 flex items-center space-x-5 mr-5">
       <Tooltip
-        title="名称重复"
+        :title="t('httPlugin.uiConfig.waitingTime.duplicateName')"
         internal
         placement="right"
         destroyTooltipOnHide
@@ -255,7 +258,7 @@ const waitTypeoptions = [
           :error="nameError"
           trim
           class="time-name-input"
-          placeholder="名称，最长400个字符"
+          :placeholder="t('httPlugin.uiConfig.waitingTime.namePlaceholder')"
           @change="nameChange" />
       </Tooltip>
       <Select
@@ -295,7 +298,7 @@ const waitTypeoptions = [
             placeholder="0 ~ 7200000"
             @change="minWaitTimeInMsChange"
             @blur="minWaitTimeInMsBlur" />
-          <div>至</div>
+          <div>{{ t('httPlugin.uiConfig.waitingTime.to') }}</div>
           <Input
             :value="maxWaitTimeInMs"
             :maxlength="7"

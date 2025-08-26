@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, watch, inject } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Checkbox } from 'ant-design-vue';
 import { Modal, Scroll, Input, Icon, notification } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
 import { duration, TESTER } from '@xcan-angus/infra';
 import YAML from 'yaml';
 import { script } from '@/api/tester';
+
+const { t } = useI18n();
 
 type DataItem = {
   id:string;
@@ -98,7 +101,7 @@ onMounted(() => {
 });
 
 const scrollParams = computed(() => {
-  const params = { filters: undefined, plugin: 'Jdbc', projectId: projectInfo.value?.id };
+  const params = { filters: undefined, plugin: 'Http', projectId: projectInfo.value?.id };
   if (inputValue.value) {
     params.filters = [{
       key: 'name',
@@ -114,7 +117,7 @@ const action = `${TESTER}/script`;
 </script>
 <template>
   <Modal
-    title="选择脚本"
+    :title="t('httPlugin.selectScriptModal.title')"
     :visible="props.visible"
     :centered="true"
     :width="700"
@@ -126,7 +129,7 @@ const action = `${TESTER}/script`;
       <Input
         :value="inputValue"
         :allowClear="true"
-        placeholder="查询脚本名称"
+        :placeholder="t('httPlugin.selectScriptModal.searchPlaceholder')"
         trim
         @change="inputChange">
         <template #suffix>
@@ -137,9 +140,9 @@ const action = `${TESTER}/script`;
       <div style="height: calc(100% - 38px);">
         <div class="bg-table-header flex items-center pl-2 h-8 leading-5 rounded">
           <div class="w-4 h-5 flex items-center justify-center flex-shrink-0"></div>
-          <div class="flex-1 px-2">名称</div>
-          <div class="flex-shrink-0 px-2 w-25">插件</div>
-          <div class="flex-shrink-0 px-2 w-28">类型</div>
+          <div class="flex-1 px-2">{{ t('httPlugin.selectScriptModal.tableHeaders.name') }}</div>
+          <div class="flex-shrink-0 px-2 w-25">{{ t('httPlugin.selectScriptModal.tableHeaders.plugin') }}</div>
+          <div class="flex-shrink-0 px-2 w-28">{{ t('httPlugin.selectScriptModal.tableHeaders.type') }}</div>
         </div>
 
         <Scroll
@@ -187,7 +190,7 @@ const action = `${TESTER}/script`;
 }
 
 .select-api-modal-wrap .ant-modal-body {
-  height: calc(100% - 84px);
+  height: calc(100% - 92px);
 }
 </style>
 

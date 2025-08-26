@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Modal, NoData, Table, Icon, Input, Spin } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { duration } from '@xcan-angus/infra';
@@ -7,6 +8,8 @@ import { debounce } from 'throttle-debounce';
 import { dataSet } from '@/api/tester';
 
 import { DatasetItem } from './PropsType';
+
+const { t } = useI18n();
 
 type OrderByKey = 'lastModifiedDate' | 'lastModifiedByName';
 type OrderSortKey = 'ASC' | 'DESC';
@@ -95,7 +98,7 @@ const loadData = async () => {
     tableData.value = [];
 
     const names = props.selectedNames;
-    _list.every((item) => {
+    _list.forEach((item) => {
       const { extracted, extraction, name, id, createdByName } = item;
       if (!extraction || !['FILE', 'HTTP', 'JDBC'].includes(extraction.source)) {
         item.source = '静态值';
@@ -130,8 +133,6 @@ const loadData = async () => {
           rowSelection.value.selectedRowKeys.push(item.id);
         }
       }
-
-      return true;
     });
   }
 };
@@ -235,30 +236,30 @@ const okButtonProps = computed(() => {
 
 const columns = [
   {
-    title: '名称',
+    title: t('httPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '描述',
+    title: t('httPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.descriptionColumn'),
     dataIndex: 'description',
     ellipsis: true
   },
   {
-    title: '值来源',
+    title: t('httPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.valueSource'),
     dataIndex: 'source',
     ellipsis: true,
     width: '10%'
   },
   {
-    title: '最后修改人',
+    title: t('httPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.lastModifiedBy'),
     dataIndex: 'lastModifiedByName',
     ellipsis: true,
     width: '11%',
     sort: true
   },
   {
-    title: '最后修改时间',
+    title: t('httPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.lastModifiedDate'),
     dataIndex: 'lastModifiedDate',
     ellipsis: true,
     width: '15%',
@@ -269,7 +270,7 @@ const columns = [
 
 <template>
   <Modal
-    title="引用变量"
+    :title="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.title')"
     :visible="props.visible"
     :width="1100"
     :okButtonProps="okButtonProps"
@@ -284,7 +285,7 @@ const columns = [
             allowClear
             trim
             class="w-75 flex-grow-0 flex-shrink"
-            placeholder="搜索名称或描述"
+            :placeholder="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.searchPlaceholder')"
             @change="searchInputChange" />
           <Button
             type="default"
@@ -292,7 +293,7 @@ const columns = [
             class="flex items-center"
             @click="toRefresh">
             <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-shuaxin" />
-            <span>刷新</span>
+            <span>{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.refresh') }}</span>
           </Button>
         </div>
 

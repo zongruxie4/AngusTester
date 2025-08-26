@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, watchEffect } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Input, Icon, Tooltip } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
 import { RendezvousConfig } from './PropsType';
 import ActionsGroup from '../ActionsGroup/index.vue';
+
+const { t } = useI18n();
 
 export interface Props {
   value: RendezvousConfig;
@@ -171,7 +174,7 @@ defineExpose({
     <Icon class="flex-shrink-0 mr-3 text-4" icon="icon-jihedian1" />
     <div class="flex-1 flex items-center space-x-5 mr-5">
       <Tooltip
-        title="名称重复"
+        :title="t('httPlugin.uiConfig.rendezvous.duplicateName')"
         internal
         placement="right"
         destroyTooltipOnHide
@@ -183,11 +186,11 @@ defineExpose({
           :error="nameError"
           trim
           class="point-name-input"
-          placeholder="名称，最大支持400个字符"
+          :placeholder="t('httPlugin.uiConfig.rendezvous.namePlaceholder')"
           @change="nameChange" />
       </Tooltip>
       <div class="flex items-center space-x-2 text-theme-content">
-        <div>集合用户数</div>
+        <div>{{ t('httPlugin.uiConfig.rendezvous.userCount') }}</div>
         <Input
           :value="threads"
           :maxlength="7"
@@ -201,7 +204,7 @@ defineExpose({
           @change="threadsChange" />
       </div>
       <div class="flex items-center space-x-2">
-        <div>等待超时</div>
+        <div>{{ t('httPlugin.uiConfig.rendezvous.waitTimeout') }}</div>
         <Input
           :value="timeoutInMs"
           :maxlength="7"

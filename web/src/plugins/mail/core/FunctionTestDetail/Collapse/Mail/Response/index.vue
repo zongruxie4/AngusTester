@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { Arrow, NoData } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 import { ExecContent } from '../../../PropsType';
 
@@ -17,12 +20,12 @@ const props = withDefaults(defineProps<Props>(), {
 const panels:{id:string;name:string;key:'headers'|'body'}[] = [
   {
     id: 'headers',
-    name: '响应头',
+    name: t('mailPlugin.functionTestDetailMail.responseHeaders'),
     key: 'headers'
   },
   {
     id: 'body',
-    name: '响应体',
+    name: t('mailPlugin.functionTestDetailMail.responseBody'),
     key: 'body'
   }
 ];
@@ -65,7 +68,7 @@ const arrowChange = (id: string, idx) => {
         :bordered="false"
         style="background-color: #fff;font-size: 12px;"
         class="tabs-collapse">
-        <div class="pl-5 py-2 font-semibold">邮件{{ idx + 1 }}</div>
+        <div class="pl-5 py-2 font-semibold">{{ t('mailPlugin.functionTestDetailMail.email', { index: idx + 1 }) }}</div>
         <CollapsePanel
           v-for="item in panels"
           :key="item.id"
@@ -75,7 +78,7 @@ const arrowChange = (id: string, idx) => {
             <div class="w-full flex items-center pr-2">
               <Arrow :open="spreadMap[idx].includes(item.id)" @change="arrowChange(item.id, idx)" />
               <div class="ml-1 font-bold">{{ item.name }}</div>
-              <div v-show="item.id==='headers'" class="flex-1 text-right">大小：{{ utils.formatBytes(itemResp.dataSize) }}</div>
+              <div v-show="item.id==='headers'" class="flex-1 text-right">{{ t('mailPlugin.functionTestDetailMail.size') }}：{{ utils.formatBytes(itemResp.dataSize) }}</div>
             </div>
           </template>
           <template v-if="item.key==='headers'">

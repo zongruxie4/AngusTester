@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Hints, Table, Icon, NoData, Spin, Input } from '@xcan-angus/vue-ui';
 import { utils, duration, ExtractionMethod, ExtractionSource, ExtractionFileType, Encoding } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { dataSet } from '@/api/tester';
+
+const { t } = useI18n();
 
 type TableData = {
   [key: string]: string;
@@ -16,7 +19,7 @@ type Props = {
     projectId: string;
     extracted: boolean;
     name: string;
-    extraction: {
+    extraction: { // TODO 可以复用定义
       defaultValue: string;
       expression: string;
       failureMessage: string;
@@ -158,21 +161,21 @@ onMounted(() => {
 });
 
 const noDataText = computed(() => {
-  return errorMessage.value ? errorMessage.value : '无数据';
+  return errorMessage.value ? errorMessage.value : t('httPlugin.uiConfig.httpConfigs.parametric.dataset.previewDataModal.noData');
 });
 </script>
 
 <template>
   <Spin :spinning="loading" class="text-3 leading-5">
     <div class="flex items-center justify-between transform-gpu -translate-y-1">
-      <Hints text="每次最多只允许预览1w条数据，Mock函数实际参数值在执行采样时生成。" />
+      <Hints :text="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.previewDataModal.description')" />
 
       <div class="flex items-center flex-nowrap space-x-2.5">
         <div class="flex items-center">
-          <div class="flex-shrink-0 mr-2">预览行数</div>
+          <div class="flex-shrink-0 mr-2">{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.previewDataModal.previewRows') }}</div>
           <Input
             v-model:value="rowNum"
-            placeholder="1 ~ 10000"
+            :placeholder="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.previewDataModal.previewRowsPlaceholder')"
             :maxlength="5"
             :min="1"
             :max="10000"
@@ -188,7 +191,7 @@ const noDataText = computed(() => {
           class="px-0 h-5 leading-5 border-0 text-theme-content text-theme-text-hover"
           @click="refresh">
           <Icon icon="icon-shuaxin" class="text-3.5" />
-          <span class="ml-1">刷新</span>
+          <span class="ml-1">{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.previewDataModal.refresh') }}</span>
         </Button>
       </div>
     </div>

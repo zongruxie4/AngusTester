@@ -57,11 +57,11 @@ const percent = computed(() => {
 
 <template>
   <h1 class="text-theme-title font-medium mb-5">
-    <span id="a11" class="text-4 text-theme-title font-medium">{{ props.sequence.big }}、<em class="inline-block w-0.25"></em>接口测试</span>
+    <span id="a11" class="text-4 text-theme-title font-medium">{{ props.sequence.big }}、<em class="inline-block w-0.25"></em>{{ t('reportPreview.projectProgress.apiSummary.title') }}</span>
   </h1>
 
   <h2 class="flex items-center space-x-2.5 text-3.5 mb-3.5 text-theme-title">
-    <span id="a12">{{ props.sequence.small[0] }}<em class="inline-block w-3.5"></em>接口测试汇总结果</span>
+    <span id="a12">{{ props.sequence.small[0] }}<em class="inline-block w-3.5"></em>{{ t('reportPreview.projectProgress.apiSummary.testSummary.title') }}</span>
   </h2>
   <div class="flex items-center space-x-7 mb-7">
     <Progress
@@ -72,21 +72,21 @@ const percent = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          接口总数
+          {{ t('reportPreview.projectProgress.apiSummary.testSummary.fields.totalApis') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ totalApisNum }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          启用接口测试
+          {{ t('reportPreview.projectProgress.apiSummary.testSummary.fields.enabledApiTest') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ enabledTestNum }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          未启用接口测试
+          {{ t('reportPreview.projectProgress.apiSummary.testSummary.fields.disabledApiTest') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ unenabledTestNum }}
@@ -96,21 +96,21 @@ const percent = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          接口功能测试
+          {{ t('reportPreview.projectProgress.apiSummary.testSummary.fields.apiFuncTest') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ testApis?.enabledFuncTestNum || 0 }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          接口性能测试
+          {{ t('reportPreview.projectProgress.apiSummary.testSummary.fields.apiPerfTest') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ testApis?.enabledPerfTestNum || 0 }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          接口稳定性测试
+          {{ t('reportPreview.projectProgress.apiSummary.testSummary.fields.apiStabilityTest') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ testApis?.enabledStabilityTestNum || 0 }}
@@ -120,21 +120,21 @@ const percent = computed(() => {
       <div class="flex">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          已测试接口
+          {{ t('reportPreview.projectProgress.apiSummary.testSummary.fields.testedApis') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ testResultCount?.testedNum }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          已通过接口
+          {{ t('reportPreview.projectProgress.apiSummary.testSummary.fields.passedApis') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ testResultCount?.testPassedNum }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          未通过接口
+          {{ t('reportPreview.projectProgress.apiSummary.testSummary.fields.failedApis') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ testResultCount?.testUnPassedNum }}
@@ -144,7 +144,7 @@ const percent = computed(() => {
   </div>
 
   <h2 class="flex items-center space-x-2.5 text-3.5 mb-3.5 text-theme-title">
-    <span id="a13">{{ props.sequence.small[1] }}<em class="inline-block w-3.5"></em>接口分组统计</span>
+    <span id="a13">{{ props.sequence.small[1] }}<em class="inline-block w-3.5"></em>{{ t('reportPreview.projectProgress.apiSummary.groupStats.title') }}</span>
   </h2>
   <ApiGrouped
     :projectInfo="props.projectInfo"

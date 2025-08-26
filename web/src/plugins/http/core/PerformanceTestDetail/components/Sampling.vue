@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { Icon, Colon } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   sampleList:Record<string, any>[]
@@ -11,13 +12,14 @@ const props = withDefaults(defineProps<Props>(), {
   sampleList: () => []
 });
 
+const { t } = useI18n();
 const activeKey = ref([]);
 </script>
 <template>
   <div class="text-3 text-text-content">
     <div class="h-9.5 leading-9.5 bg-theme-form-head flex font-medium">
       <div class="w-12"></div>
-      <div class="py-0.5 px-2 flex-1">错误采样</div>
+      <div class="py-0.5 px-2 flex-1">{{ t('ftpPlugin.performanceTestDetail.sampling.title') }}</div>
     </div>
     <Collapse v-model:activeKey="activeKey" class="!bg-transparent">
       <template #expandIcon="item">
@@ -29,12 +31,12 @@ const activeKey = ref([]);
       <CollapsePanel
         v-for="item,index in props.sampleList"
         :key="index"
-        :collapsible="item.content?'':'disabled'">
+        :collapsible="item.content ? undefined : 'disabled'">
         <template #header>
           <div class="flex w-full text-3 text-text-content leading-5.5 space-x-2 pl-5">
-            <div class="flex-none w-45"><span class="mr-2">时间<Colon /></span>{{ item.timestamp }}</div>
-            <div class="flex-none w-45"><span class="mr-2">采样ID<Colon /></span>{{ item.key }}</div>
-            <div class="flex-1 truncate" :title="item.name"><span class="mr-2">名称<Colon /></span>{{ item.name }}</div>
+            <div class="flex-none w-45"><span class="mr-2">{{ t('ftpPlugin.performanceTestDetail.sampling.time') }}<Colon /></span>{{ item.timestamp }}</div>
+            <div class="flex-none w-45"><span class="mr-2">{{ t('ftpPlugin.performanceTestDetail.sampling.samplingId') }}<Colon /></span>{{ item.key }}</div>
+            <div class="flex-1 truncate" :title="item.name"><span class="mr-2">{{ t('ftpPlugin.performanceTestDetail.sampling.name') }}<Colon /></span>{{ item.name }}</div>
           </div>
         </template>
         <div>

@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { defineAsyncComponent, ref, provide, watch, onMounted, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Badge, Tabs, TabPane } from 'ant-design-vue';
 import { Spin, notification, AsyncComponent, Drawer, Toolbar, Icon, AuthorizeModal, Indicator, HttpTestInfo } from '@xcan-angus/vue-ui';
 import { utils, TESTER } from '@xcan-angus/infra';
 import { AxiosRequestConfig } from 'axios';
 import { isEqual } from 'lodash-es';
 import { exec, scenario } from '@/api/tester';
+
+const { t } = useI18n();
 
 import ButtonGroup from './ButtonGroup/index.vue';
 import { ButtonGroupMenuItem, ButtonGroupMenuKey } from './ButtonGroup/PropsType';
@@ -70,17 +73,17 @@ const isFull = ref(false);
 const isOpen = ref(false);
 const isMoving = ref(false);
 const isUIViewMode = ref(true);
-const selectModalVisible = ref(false);// 选择脚本弹窗
-const uploadVisible = ref(false);// 导入脚本弹窗
-const exportModalVisible = ref(false);// 导出脚本弹窗
-const authVisible = ref(false);// 显示权限弹窗
-let controller: AbortController;// 用于终止请求的实例
+const selectModalVisible = ref(false);// {{ t('smtpPlugin.comments.selectScriptModal') }}
+const uploadVisible = ref(false);// {{ t('smtpPlugin.comments.importScriptModal') }}
+const exportModalVisible = ref(false);// {{ t('smtpPlugin.comments.exportScriptModal') }}
+const authVisible = ref(false);// {{ t('smtpPlugin.comments.authorizeModal') }}
+let controller: AbortController;// {{ t('smtpPlugin.comments.abortController') }}
 const loading = ref(false);
 const loaded = ref(false);
 const rendered = ref(false);
-// 默认显示页面视图，新建场景没有保存之前不显示【执行测试】【导出脚本】、【关注】、【取消关注】、【收藏】、【取消收藏】、【权限】、【刷新】按钮
+// {{ t('smtpPlugin.comments.defaultViewDescription') }}
 const hideButtonSet = ref<Set<ButtonGroupMenuKey>>(new Set<ButtonGroupMenuKey>(['test', 'UIView', 'export', 'followFlag', 'cancelFollowFlag', 'favouriteFlag', 'cancelFavouriteFlag', 'authority', 'refresh']));
-const sceneConfigData = ref<SceneConfig>();// 场景详情信息
+const sceneConfigData = ref<SceneConfig>();// {{ t('smtpPlugin.comments.sceneConfigData') }}
 const saveFormConfigData = ref<{
   id: string;
   name: string;
@@ -262,7 +265,7 @@ const buttonGroupClick = async (data: ButtonGroupMenuItem) => {
     }
 
     if (!sceneConfigData.value?.id) {
-      notification.info('调试需要先保存当前数据，请保存后再执行调试');
+      notification.info(t('smtpPlugin.notifications.debugSaveFirst'));
       drawerRef.value.open('save');
       return;
     }
@@ -278,7 +281,7 @@ const buttonGroupClick = async (data: ButtonGroupMenuItem) => {
 
     notification.success({
       duration: 1.3,
-      description: '自动保存成功，正在执行调试...'
+      description: t('smtpPlugin.notifications.autoSaveSuccess')
     });
     toDebug();
     return;
@@ -342,7 +345,7 @@ const createTest = async () => {
 
 const selectScriptOk = (data: SceneConfig['script']) => {
   if (data.plugin !== 'Smtp') {
-    notification.warning('请选择SMTP插件脚本');
+    notification.warning(t('smtpPlugin.notifications.selectSmtpScript'));
     return;
   }
   const scriptType = data.type;
@@ -550,8 +553,8 @@ const scriptTypeChange = (value: ScriptType) => {
     } else {
       sceneConfigData.value.script.configuration.thread = {
         threads: '5000',
-        rampUpInterval: '1min', // 增压间隔
-        rampUpThreads: '100' // 增压线程数
+        rampUpInterval: '1min', // {{ t('smtpPlugin.comments.rampUpInterval') }}
+        rampUpThreads: '100' // {{ t('smtpPlugin.comments.rampUpThreads') }}
       };
     }
   } else if (value === 'TEST_STABILITY') {
@@ -583,7 +586,7 @@ const fullScreen = () => {
 const isValid = async (): Promise<boolean> => {
   if (typeof uiConfigRef.value?.isValid === 'function') {
     if (!uiConfigRef.value.isValid()) {
-      notification.error('任务配置数据错误，请检查更正后再保存。');
+      notification.error(t('smtpPlugin.notifications.taskConfigError'));
       return false;
     }
   }
@@ -591,7 +594,7 @@ const isValid = async (): Promise<boolean> => {
   if (typeof executeConfigRef.value?.isValid === 'function') {
     const validFlag = await executeConfigRef.value.isValid();
     if (!validFlag) {
-      notification.error('执行配置数据错误，请检查更正后再保存。');
+      notification.error(t('smtpPlugin.notifications.executeConfigError'));
       return false;
     }
   }
@@ -661,7 +664,7 @@ const toFollow = async (id: string) => {
   hideButtonSet.value.delete('cancelFollowFlag');
   hideButtonSet.value.add('followFlag');
   sceneConfigData.value.followFlag = true;
-  notification.success('关注成功');
+  notification.success(t('smtpPlugin.notifications.followSuccess'));
 };
 
 const cancelFollow = async (id: string) => {
@@ -679,7 +682,7 @@ const cancelFollow = async (id: string) => {
   hideButtonSet.value.delete('followFlag');
   hideButtonSet.value.add('cancelFollowFlag');
   sceneConfigData.value.followFlag = false;
-  notification.success('取消关注成功');
+  notification.success(t('smtpPlugin.notifications.cancelFollowSuccess'));
 };
 
 const favouriteHandler = (value: boolean) => {
@@ -707,7 +710,7 @@ const toFavourite = async (id: string) => {
   hideButtonSet.value.delete('cancelFavouriteFlag');
   hideButtonSet.value.add('favouriteFlag');
   sceneConfigData.value.favouriteFlag = true;
-  notification.success('收藏成功');
+  notification.success(t('smtpPlugin.notifications.favouriteSuccess'));
 };
 
 const cancelFavourite = async (id: string) => {
@@ -725,7 +728,7 @@ const cancelFavourite = async (id: string) => {
   hideButtonSet.value.delete('favouriteFlag');
   hideButtonSet.value.add('cancelFavouriteFlag');
   sceneConfigData.value.favouriteFlag = false;
-  notification.success('取消收藏成功');
+  notification.success(t('smtpPlugin.notifications.cancelFavouriteSuccess'));
 };
 
 const save = async (data?: {
@@ -836,7 +839,7 @@ const save = async (data?: {
   }
 
   if (notificationFlag) {
-    notification.success('保存成功');
+    notification.success(t('smtpPlugin.notifications.saveSuccess'));
   }
 
   if (typeof drawerRef.value?.open === 'function') {
@@ -1488,8 +1491,8 @@ const generateDefaultConfig = (type: ScriptType) => {
     data.configuration.duration = '50min';
     data.configuration.thread = {
       threads: '5000',
-      rampUpInterval: '1min', // 增压间隔
-      rampUpThreads: '100' // 增压线程数
+      rampUpInterval: '1min', // {{ t('smtpPlugin.comments.rampUpInterval') }}
+      rampUpThreads: '100' // {{ t('smtpPlugin.comments.rampUpThreads') }}
     };
   } else if (type === 'TEST_STABILITY') {
     data.configuration.duration = '30min';
@@ -1504,7 +1507,7 @@ const scriptId = computed((): string => {
 });
 
 const tabText = computed(() => {
-  return isUIViewMode.value ? { task: '任务配置', execute: '执行配置' } : { task: '', execute: '' };
+  return isUIViewMode.value ? { task: t('smtpPlugin.taskConfig'), execute: t('smtpPlugin.executeConfig') } : { task: '', execute: '' };
 });
 
 const drawerMenuItems = computed(() => {
@@ -1681,9 +1684,9 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
         :updateUrl="`${TESTER}/scenario/auth`"
         :enabledUrl="`${TESTER}/scenario/${sceneConfigData?.id}/auth/enabled`"
         :initStatusUrl="`${TESTER}/scenario/${sceneConfigData?.id}/auth/status`"
-        onTips="开启&quot;有权限控制&quot;后，需要手动授权服务权限后才会有场景相应操作权限，默认开启&quot;有权限控制&quot;。注意：如果授权对象没有父级目录权限将自动授权查看权限。"
-        offTips="开启&quot;无权限控制&quot;后，将允许所有用户公开查看和操作当前场景，查看用户同时需要有当前场景父级目录权限。"
-        title="场景权限" />
+        :onTips="t('smtpPlugin.authorizeModal.onTips')"
+        :offTips="t('smtpPlugin.authorizeModal.offTips')"
+        :title="t('smtpPlugin.authorizeModal.title')" />
     </AsyncComponent>
 
     <AsyncComponent :visible="exportModalVisible">

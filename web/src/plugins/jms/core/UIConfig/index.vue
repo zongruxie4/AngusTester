@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { nextTick, ref, onMounted, watch, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Badge, Button, Collapse, CollapsePanel, Switch, Tabs, TabPane, RadioGroup, Radio, Checkbox } from 'ant-design-vue';
 import Draggable from 'vuedraggable';
 import { debounce } from 'throttle-debounce';
 import { Icon, NoData, Input, Tooltip, Colon, Arrow } from '@xcan-angus/vue-ui';
 import { utils, duration } from '@xcan-angus/infra';
 import SelectEnum from '@/components/SelectEnum/index.vue'
+
+const { t } = useI18n();
 
 import { PipelineConfig } from '../PropsType';
 
@@ -45,7 +48,7 @@ const insertData = () => {
   const id = utils.uuid();
   dataMap.value[id] = {
     id,
-    target: 'FTP',
+    target: 'JMS',
     name: '',
     description: '',
     enabled: true,
@@ -274,7 +277,7 @@ const selectOptions = [
         @click="insertData">
         <div class="flex items-center">
           <Icon icon="icon-httpcanshu" class="mr-1" />
-          <span>插入FTP请求</span>
+          <span>{{ t('jmsPlugin.uiConfig.insertFTPRequest') }}</span>
         </div>
       </Button>
     </div>
@@ -313,7 +316,7 @@ const selectOptions = [
                     <Icon class="flex-shrink-0 text-4 mr-3" icon="icon-httpcanshu" />
                     <div class="flex-1 flex items-center space-x-3 mr-5">
                       <Tooltip
-                        title="名称重复"
+                        :title="t('jmsPlugin.uiConfig.nameDuplicate')"
                         internal
                         placement="right"
                         destroyTooltipOnHide
@@ -325,7 +328,7 @@ const selectOptions = [
                           :title="dataMap[id].name"
                           style="flex:1 1 40%;"
                           trim
-                          placeholder="名称，最大支持400个字符"
+                          :placeholder="t('jmsPlugin.uiConfig.namePlaceholder')"
                           @change="nameChange(id, $event)" />
                       </Tooltip>
                       <Input
@@ -334,20 +337,20 @@ const selectOptions = [
                         :title="dataMap[id].description"
                         trim
                         style="flex:1 1 60%;"
-                        placeholder="描述，最大支持800个字符" />
+                        :placeholder="t('jmsPlugin.uiConfig.descriptionPlaceholder')" />
                     </div>
                     <div class="flex items-center flex-shrink-0 space-x-3">
                       <Switch
                         :checked="dataMap[id].enabled"
                         size="small"
                         @change="enabledChange(id, $event)" />
-                      <div class="flex items-center cursor-pointer hover:text-text-link-hover" title="克隆">
+                      <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('jmsPlugin.uiConfig.clone')">
                         <Icon
                           icon="icon-fuzhi"
                           class="text-3.5"
                           @click="actionClick(id, 'clone')" />
                       </div>
-                      <div class="flex items-center cursor-pointer hover:text-text-link-hover" title="删除">
+                      <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('jmsPlugin.uiConfig.delete')">
                         <Icon
                           icon="icon-qingchu"
                           class="text-3.5"
@@ -365,25 +368,25 @@ const selectOptions = [
                         class="count-Badge-container"
                         size="small"
                         :count="mailSetErrorNumMap.get(id)">
-                        <div>邮件设置</div>
+                        <div>{{ t('jmsPlugin.uiConfig.mailSettings') }}</div>
                       </Badge>
                     </template>
                     <div class="space-y-3">
                       <div class="flex items-center">
                         <div class="flex-shrink-0 w-21.5">
-                          <span>协议</span>
+                          <span>{{ t('jmsPlugin.uiConfig.protocol') }}</span>
                           <Colon />
                         </div>
                         <div class="flex-1 flex items-center space-x-2.5 max-w-175">
                           <SelectEnum
                             style="width: calc((100% - 10px)/2);"
-                            placeholder="协议"
+                            :placeholder="t('jmsPlugin.uiConfig.protocolPlaceholder')"
                             :options="selectOptions" />
                         </div>
                       </div>
                       <div class="flex items-center">
                         <div class="flex-shrink-0 w-21.5">
-                          <span>主机名或IP</span>
+                          <span>{{ t('jmsPlugin.uiConfig.hostnameOrIP') }}</span>
                           <Colon />
                         </div>
                         <div class="flex-1 flex items-center space-x-2.5 max-w-175">
@@ -392,22 +395,22 @@ const selectOptions = [
                             :maxlength="200"
                             trimAll
                             style="flex: 1 1 80%;"
-                            title="主机名或IP"
-                            placeholder="主机名或IP" />
+                            :title="t('jmsPlugin.uiConfig.hostnameOrIP')"
+                            :placeholder="t('jmsPlugin.uiConfig.hostnameOrIPPlaceholder')" />
                           <Input
                             v-model:value="dataMap[id].server.port"
                             :maxlength="8"
                             :min="0"
                             trimALl
                             style="flex: 1 1 20%;min-width: 75px;max-width: 200px;"
-                            title="端口"
+                            :title="t('jmsPlugin.uiConfig.port')"
                             dataType="number"
-                            placeholder="端口" />
+                            :placeholder="t('jmsPlugin.uiConfig.portPlaceholder')" />
                         </div>
                       </div>
                       <div class="flex items-center">
                         <div class="flex-shrink-0 w-21.5">
-                          <span>用户名/密码</span>
+                          <span>{{ t('jmsPlugin.uiConfig.usernamePassword') }}</span>
                           <Colon />
                         </div>
                         <div class="flex-1 flex items-center space-x-2.5 max-w-175">
@@ -415,27 +418,27 @@ const selectOptions = [
                             v-model:value="dataMap[id].username"
                             :maxlength="200"
                             trimAll
-                            title="用户名"
-                            placeholder="用户名" />
+                            :title="t('jmsPlugin.uiConfig.username')"
+                            :placeholder="t('jmsPlugin.uiConfig.usernamePlaceholder')" />
                           <Input
                             v-model:value="dataMap[id].password"
                             :maxlength="200"
                             trimAll
-                            title="密码"
-                            placeholder="密码"
+                            :title="t('jmsPlugin.uiConfig.password')"
+                            :placeholder="t('jmsPlugin.uiConfig.passwordPlaceholder')"
                             type="password" />
                         </div>
                       </div>
                       <div class="flex items-center">
                         <div class="flex-shrink-0 w-21.5">
-                          <span>收件箱文件夹</span>
+                          <span>{{ t('jmsPlugin.uiConfig.inboxFolder') }}</span>
                           <Colon />
                         </div>
                         <Input
                           v-model:value="dataMap[id].remoteUrl"
                           :maxlength="800"
-                          title="收件箱文件夹"
-                          placeholder="收件箱文件夹"
+                          :title="t('jmsPlugin.uiConfig.inboxFolder')"
+                          :placeholder="t('jmsPlugin.uiConfig.inboxFolderPlaceholder')"
                           class="max-w-175" />
                       </div>
                     </div>
@@ -446,43 +449,43 @@ const selectOptions = [
                         class="count-Badge-container"
                         size="small"
                         :count="securitySetErrorNumMap.get(id)">
-                        <div>安全设置</div>
+                        <div>{{ t('jmsPlugin.uiConfig.securitySettings') }}</div>
                       </Badge>
                     </template>
                     <div class="space-y-3">
                       <div class="flex items-center">
                         <div class="flex-shrink-0 w-33.5">
-                          <span>安全功能</span>
+                          <span>{{ t('jmsPlugin.uiConfig.securityFunction') }}</span>
                           <Colon />
                         </div>
                         <RadioGroup v-model:value="dataMap[id].transmissionMode" :name="id">
-                          <Radio class="w-26" value="none">不使用</Radio>
+                          <Radio class="w-26" value="none">{{ t('jmsPlugin.uiConfig.notUse') }}</Radio>
                           <Radio class="w-29" value="SSL">SSL</Radio>
                           <Radio value="StartTLS">StartTLS</Radio>
                         </RadioGroup>
                       </div>
                       <div class="flex items-center">
                         <div class="flex-shrink-0 w-33.5">
-                          <span>信任证书</span>
+                          <span>{{ t('jmsPlugin.uiConfig.trustAllCertificates') }}</span>
                           <Colon />
                         </div>
                         <RadioGroup v-model:value="dataMap[id].transmissionMode" :name="id">
-                          <Radio class="w-26" value="SSL">信任所有证书</Radio>
-                          <Radio class="w-29" value="StartTLS">使用本地信任库</Radio>
-                          <Radio value="StartTLS">执行StartTLS</Radio>
+                          <Radio class="w-26" value="SSL">{{ t('jmsPlugin.uiConfig.trustAllCertificates') }}</Radio>
+                          <Radio class="w-29" value="StartTLS">{{ t('jmsPlugin.uiConfig.useLocalTrustStore') }}</Radio>
+                          <Radio value="StartTLS">{{ t('jmsPlugin.uiConfig.executeStartTLS') }}</Radio>
                         </RadioGroup>
                       </div>
                       <div class="flex items-center">
                         <div class="flex-shrink-0 w-33.5">
-                          <span>覆盖系统SSL/TLS协议</span>
+                          <span>{{ t('jmsPlugin.uiConfig.overrideSystemSSLTLS') }}</span>
                           <Colon />
                         </div>
                         <Input
                           v-model:value="dataMap[id].username"
                           :maxlength="200"
                           trimAll
-                          title="用户名"
-                          placeholder="用户名"
+                          :title="t('jmsPlugin.uiConfig.username')"
+                          :placeholder="t('jmsPlugin.uiConfig.usernamePlaceholder')"
                           class="flex-1 max-w-175" />
                       </div>
                     </div>
@@ -493,25 +496,25 @@ const selectOptions = [
                         class="count-Badge-container"
                         size="small"
                         :count="otherSetErrorNumMap.get(id)">
-                        <div>其它设置</div>
+                        <div>{{ t('jmsPlugin.uiConfig.otherSettings') }}</div>
                       </Badge>
                     </template>
                     <div class="space-y-3">
                       <div class="flex items-center">
                         <div class="flex-shrink-0 w-24.5">
-                          <span>其它</span>
+                          <span>{{ t('jmsPlugin.uiConfig.other') }}</span>
                           <Colon />
                         </div>
                         <div class="flex items-center">
-                          <Checkbox>只获取头文件</Checkbox>
-                          <Checkbox>从服务器删除消息</Checkbox>
-                          <Checkbox>使用MIME（原始）存储消息</Checkbox>
+                          <Checkbox>{{ t('jmsPlugin.uiConfig.getHeadersOnly') }}</Checkbox>
+                          <Checkbox>{{ t('jmsPlugin.uiConfig.deleteMessagesFromServer') }}</Checkbox>
+                          <Checkbox>{{ t('jmsPlugin.uiConfig.useMIMEStorage') }}</Checkbox>
                         </div>
                       </div>
 
                       <div class="flex items-center">
                         <div class="flex-shrink-0 w-24.5">
-                          <span>要检索的消息数</span>
+                          <span>{{ t('jmsPlugin.uiConfig.numberOfMessagesToRetrieve') }}</span>
                           <Colon />
                         </div>
 
@@ -520,8 +523,8 @@ const selectOptions = [
                             v-model:value="dataMap[id].transmissionMode"
                             class="flex-shrink-0"
                             :name="id">
-                            <Radio value="SSL">所有</Radio>
-                            <Radio value="StartTLS">其它</Radio>
+                            <Radio value="SSL">{{ t('jmsPlugin.uiConfig.all') }}</Radio>
+                            <Radio value="StartTLS">{{ t('jmsPlugin.uiConfig.otherOption') }}</Radio>
                           </RadioGroup>
 
                           <Input
@@ -530,8 +533,8 @@ const selectOptions = [
                             :min="1"
                             trimAll
                             dataType="number"
-                            title="消息数"
-                            placeholder="消息数"
+                            :title="t('jmsPlugin.uiConfig.messageCount')"
+                            :placeholder="t('jmsPlugin.uiConfig.messageCountPlaceholder')"
                             class="max-w-35" />
                         </div>
                       </div>

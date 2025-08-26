@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { DatePicker, Input, Modal } from '@xcan-angus/vue-ui';
 import { Form, FormItem, Textarea } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
 import { software } from 'src/api/tester';
 
 interface Props {
@@ -15,6 +16,8 @@ const props = withDefaults(defineProps<Props>(), {
   versionId: undefined,
   projectId: ''
 });
+
+const { t } = useI18n();
 
 const emits = defineEmits<{(e: 'cancel'):void; (e: 'ok'):void; (e: 'update:visible', value: boolean):void}>();
 
@@ -114,7 +117,7 @@ onMounted(async () => {
 </script>
 <template>
   <Modal
-    :title="props.versionId ? '编辑版本' : '添加版本'"
+    :title="props.versionId ? t('taskVersion.form.editVersion') : t('taskVersion.form.addVersion')"
     :visible="props.visible"
     :width="550"
     @cancel="cancel"
@@ -129,15 +132,15 @@ onMounted(async () => {
       <FormItem
         required
         name="name"
-        label="版本名称">
+        :label="t('taskVersion.form.versionName')">
         <Input
           v-model:value="formState.name"
           :maxlength="40"
-          placeholder="输入版本名称，最多可输入40字符，如：v1.0" />
+          :placeholder="t('taskVersion.form.versionNamePlaceholder')" />
       </FormItem>
       <div class="flex space-x-2">
         <FormItem
-          label="开始日期"
+          :label="t('taskVersion.form.startDate')"
           class="flex-1 min-w-0"
           name="date">
           <div class="flex items-center space-x-1">
@@ -149,7 +152,7 @@ onMounted(async () => {
           </div>
         </FormItem>
         <FormItem
-          label="发布日期"
+          :label="t('taskVersion.form.releaseDate')"
           class="flex-1 min-w-0"
           name="time">
           <div class="w-full flex items-center space-x-1">
@@ -161,13 +164,13 @@ onMounted(async () => {
         </FormItem>
       </div>
       <FormItem
-        label="描述"
+        :label="t('taskVersion.form.description')"
         class="flex-1 !mb-5"
         name="content">
         <Textarea
           v-model:value="formState.description"
           :maxlength="200"
-          placeholder="请输入版本描述，最多支持200字符">
+          :placeholder="t('taskVersion.form.descriptionPlaceholder')">
           </Textarea>
       </FormItem>
     </Form>

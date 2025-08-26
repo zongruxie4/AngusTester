@@ -2,6 +2,7 @@
 import { ref, watch, nextTick, inject, computed } from 'vue';
 import { PureCard, notification } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
 import { mock } from '@/api/tester';
 
 import { UserInfo } from './PropsType';
@@ -20,6 +21,8 @@ const props = withDefaults(defineProps<Props>(), {
   userInfo: undefined,
   cancel: () => undefined
 });
+
+const { t } = useI18n();
 
 const emits = defineEmits<{(e: 'formatChange', value: { [key: string]: any })}>();
 
@@ -96,7 +99,7 @@ const generateScript = async () => {
       return;
     }
     scriptId.value = data.id;
-    notification.success('保存脚本成功');
+    notification.success(t('gendata.messages.saveSuccess'));
   });
 };
 
@@ -188,21 +191,21 @@ watch(() => props.params, (newValue) => {
         type="primary"
         size="small"
         @click="viewScript">
-        查看脚本
+        {{ t('gendata.actions.view') }}
       </Button>
       <Button
         type="primary"
         size="small"
         @click="generateScript">
-        保存脚本
+        {{ t('gendata.actions.save') }}
       </Button>
       <Button
         type="primary"
         size="small"
         @click="generatedata">
-        生成数据
+        {{ t('gendata.actions.add') }}
       </Button>
-      <Button size="small" @click="cancel">取消</Button>
+      <Button size="small" @click="cancel">{{ t('gendata.actions.cancel') }}</Button>
     </div>
     <viewScriptModal v-model:visible="viewDataVisible" :data="scriptData" />
   </div>

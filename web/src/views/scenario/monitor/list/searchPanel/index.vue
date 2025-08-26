@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ref, computed, onMounted, inject } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon, SearchPanel, IconRefresh, Colon, DropdownSort } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
@@ -26,7 +27,9 @@ const emits = defineEmits<{(e: 'change', value: {
  (e: 'refresh'):void}>();
 const userInfo = ref(appContext.getUser());
 
-const statusOpt = [{ name: '未执行', key: 'PENDING' }, { name: '成功', key: 'SUCCESS' }, { name: '失败', key: 'FAILURE' }];
+const { t } = useI18n();
+
+const statusOpt = [{ name: t('scenarioMonitor.searchPanel.statusOptions.pending'), key: 'PENDING' }, { name: t('scenarioMonitor.searchPanel.statusOptions.success'), key: 'SUCCESS' }, { name: t('scenarioMonitor.searchPanel.statusOptions.failure'), key: 'FAILURE' }];
 const statusKeys = statusOpt.map(i => i.key);
 
 const searchPanelRef = ref();
@@ -36,7 +39,7 @@ const searchPanelOptions = [
   {
     valueKey: 'subject',
     type: 'input',
-    placeholder: '查询名称，描述',
+    placeholder: t('scenarioMonitor.searchPanel.searchNamePlaceholder'),
     allowClear: true,
     maxlength: 100
   },
@@ -44,7 +47,7 @@ const searchPanelOptions = [
     valueKey: 'scenarioId',
     type: 'select',
     allowClear: true,
-    placeholder: '选择场景名称',
+    placeholder: t('scenarioMonitor.searchPanel.selectScenePlaceholder'),
     action: `${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`,
     fieldNames: { value: 'id', label: 'name' }
   },
@@ -52,12 +55,12 @@ const searchPanelOptions = [
     valueKey: 'createdBy',
     type: 'select-user',
     allowClear: true,
-    placeholder: '选择创建人'
+    placeholder: t('scenarioMonitor.searchPanel.selectCreatorPlaceholder')
   },
   {
     type: 'date-range',
     valueKey: 'createdDate',
-    placeholder: ['添加时间从', '添加时间到'],
+    placeholder: t('scenarioMonitor.searchPanel.dateRangePlaceholder'),
     showTime: true
   }
 ];
@@ -68,12 +71,12 @@ const sortMenuItems: {
   orderSort: OrderSortKey;
 }[] = [
   {
-    name: '按添加时间',
+    name: t('scenarioMonitor.searchPanel.sortOptions.byAddTime'),
     key: 'createdDate',
     orderSort: 'DESC'
   },
   {
-    name: '按添加人',
+    name: t('scenarioMonitor.searchPanel.sortOptions.byCreator'),
     key: 'createdBy',
     orderSort: 'ASC'
   }
@@ -82,28 +85,28 @@ const sortMenuItems: {
 const menuItems = computed(() => [
   {
     key: '',
-    name: '全部'
+    name: t('scenarioMonitor.searchPanel.filterOptions.all')
   },
   {
     key: 'createdBy',
-    name: '我创建的'
+    name: t('scenarioMonitor.searchPanel.filterOptions.myCreated')
   },
   {
     key: 'lastModifiedBy',
-    name: '我修改的'
+    name: t('scenarioMonitor.searchPanel.filterOptions.myModified')
   },
   ...statusOpt,
   {
     key: 'lastDay',
-    name: '近1天'
+    name: t('scenarioMonitor.searchPanel.timeRanges.last1Day')
   },
   {
     key: 'lastThreeDays',
-    name: '近3天'
+    name: t('scenarioMonitor.searchPanel.timeRanges.last3Days')
   },
   {
     key: 'lastWeek',
-    name: '近7天'
+    name: t('scenarioMonitor.searchPanel.timeRanges.last7Days')
   }
 ]);
 
@@ -297,7 +300,7 @@ onMounted(() => {
   <div class="mt-2.5 mb-3.5">
     <div class="flex">
       <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-        <span>快速查询</span>
+        <span>{{ t('scenarioMonitor.searchPanel.quickSearch') }}</span>
         <Colon />
       </div>
       <div class="flex  flex-wrap ml-2">
@@ -325,7 +328,7 @@ onMounted(() => {
           class="p-0">
           <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/scenario#monitor?type=ADD`">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span>添加监控</span>
+            <span>{{ t('scenarioMonitor.searchPanel.addMonitor') }}</span>
           </RouterLink>
         </Button>
 
@@ -336,7 +339,7 @@ onMounted(() => {
           @click="toSort">
           <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
             <Icon icon="icon-shunxu" class="text-3.5" />
-            <span>排序</span>
+            <span>{{ t('scenarioMonitor.searchPanel.sort') }}</span>
           </div>
         </DropdownSort>
 
@@ -347,7 +350,7 @@ onMounted(() => {
           <template #default>
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-shuaxin" class="text-3.5" />
-              <span class="ml-1">刷新</span>
+              <span class="ml-1">{{ t('scenarioMonitor.searchPanel.refresh') }}</span>
             </div>
           </template>
         </IconRefresh>

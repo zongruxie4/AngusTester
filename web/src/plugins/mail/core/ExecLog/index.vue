@@ -2,6 +2,7 @@
 import { ref, watch } from 'vue';
 import { Colon, NoData, IconDownload, Spin } from '@xcan-angus/vue-ui';
 import { getDataByProxy } from '@/api/proxy/index';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   execId:string;
@@ -19,6 +20,8 @@ const props = withDefaults(defineProps<Props>(), {
   schedulingResult: undefined
 });
 
+const { t } = useI18n();
+
 const nodeId = ref<string>();
 const nodeIp = ref<string>();
 const nodePort = ref<string>('6807');
@@ -31,7 +34,7 @@ const errorText = ref();
 const loading = ref(!!props.execNode?.id);
 const loadExecLog = async () => {
   loading.value = true;
-  const [error, res] = await getDataByProxy(`http://${nodeIp.value}:${nodePort.value}/proxy/actuator/runner/log/${props.execId}`, {}, { timeout: 0 });
+  const [error, res] = await getDataByProxy(`http://${nodeIp.value}:${nodePort.value}/actuator/runner/log/${props.execId}`, {}, { timeout: 0 });
   loading.value = false;
   if (error) {
     execLogErr.value = true;
@@ -93,24 +96,24 @@ const downloadLog = () => {
     <div v-if="!!props.execNode?.id" class="h-full text-3">
       <div class="flex items-center leading-5 mb-2.5">
         <div class="flex items-center mr-15">
-          <span class="text-theme-sub-content">节点</span>
+          <span class="text-theme-sub-content">{{ t('ftpPlugin.execLog.node') }}</span>
           <Colon class="mr-2" />
           <span>{{ props.execNode.name }}({{ props.execNode.publicIp || props.execNode.ip }})</span>
         </div>
         <div class="flex items-center mr-15">
-          <span class="text-theme-sub-content">调度结果</span>
+          <span class="text-theme-sub-content">{{ t('ftpPlugin.execLog.schedulingResult') }}</span>
           <Colon class="mr-2" />
           <template v-if="props.schedulingResult?.success">
             <span class="inline-block w-1.5 h-1.5 mr-1 rounded bg-status-success"></span>
-            <span>成功</span>
+            <span>{{ t('ftpPlugin.execLog.success') }}</span>
           </template>
           <template v-else>
             <span class="inline-block w-1.5 h-1.5 mr-1 rounded bg-status-error"></span>
-            <span>失败</span>
+            <span>{{ t('ftpPlugin.execLog.fail') }}</span>
           </template>
         </div>
         <div class="flex items-center mr-15">
-          <span class="text-theme-sub-content">进程退出码</span>
+          <span class="text-theme-sub-content">{{ t('ftpPlugin.execLog.processExitCode') }}</span>
           <Colon class="mr-2" />
           <span>{{ props.schedulingResult?.exitCode }}</span>
         </div>

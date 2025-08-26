@@ -2,6 +2,7 @@
 import { ref, onMounted, watch } from 'vue';
 import YAML from 'yaml';
 import { notification, MonacoEditor } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 import { SceneConfig } from '../PropsType';
 
@@ -12,6 +13,8 @@ export interface Props {
 const props = withDefaults(defineProps<Props>(), {
   value: undefined
 });
+
+const { t } = useI18n();
 
 const content = ref('');
 const loading = ref(true);
@@ -35,7 +38,7 @@ const isValid = ():boolean => {
     YAML.parse(content.value);
     return true;
   } catch (error) {
-    notification.error('yaml内容格式错误，请检查并更正');
+    notification.error(t('ftpPlugin.scriptConfig.messages.yamlFormatError'));
     return false;
   }
 };

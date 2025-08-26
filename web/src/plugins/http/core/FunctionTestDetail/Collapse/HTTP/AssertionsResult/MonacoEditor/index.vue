@@ -1,6 +1,9 @@
-<script script setup lang="ts">
+<script setup lang="ts">
 import { ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { MonacoEditor } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 export interface Props {
   loading: boolean;

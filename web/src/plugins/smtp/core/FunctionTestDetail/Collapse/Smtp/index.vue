@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Alert, Collapse, CollapsePanel, Tabs, TabPane, Tag } from 'ant-design-vue';
 import { Arrow, Colon, Icon, NoData } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 import StatusTag from '../StatusTag/index.vue';
 import { SMTPInfo } from './PropsType';
@@ -89,20 +92,20 @@ const failMessage = computed(() => {
             class="flex-shrink-0 text-4 mr-3"
             icon="icon-chajianpeizhi" />
           <div :title="props.value?.name" class="truncate min-w-55 max-w-100 mr-5 name">{{ props.value?.name }}</div>
-          <Tag v-if="smtpContent?.content?.plainBody" class="!leading-5">文本</Tag>
-          <Tag v-if="smtpContent?.content?.emlMessage" class="!leading-5">eml文件</Tag>
-          <Tag v-if="smtpContent?.content?.attachMessage" class="!leading-5">附件</Tag>
+          <Tag v-if="smtpContent?.content?.plainBody" class="!leading-5">{{ t('smtpPlugin.functionTestDetailSmtp.contentType.text') }}</Tag>
+          <Tag v-if="smtpContent?.content?.emlMessage" class="!leading-5">{{ t('smtpPlugin.functionTestDetailSmtp.contentType.emlFile') }}</Tag>
+          <Tag v-if="smtpContent?.content?.attachMessage" class="!leading-5">{{ t('smtpPlugin.functionTestDetailSmtp.contentType.attachment') }}</Tag>
           <div class="flex-1 justify-end flex items-center mr-3">
             <template v-if="!props.value?.enabled">
               <StatusTag />
             </template>
             <template v-else>
               <div class="mr-5">
-                <span class="mr-0.5">耗时<Colon /></span>
+                <span class="mr-0.5">{{ t('smtpPlugin.functionTestDetailSmtp.metrics.duration') }}<Colon /></span>
                 <span class="text-theme-sub-content"> {{ runtime }}</span>
               </div>
               <div class="mr-5">
-                <span class="mr-0.5">大小<Colon /></span>
+                <span class="mr-0.5">{{ t('smtpPlugin.functionTestDetailSmtp.metrics.size') }}<Colon /></span>
                 <span class="text-theme-sub-content"> {{ bodySize }}</span>
               </div>
               <StatusTag :value="status" />
@@ -120,10 +123,10 @@ const failMessage = computed(() => {
         type="card"
         size="small"
         class="mt-3 card-tabs">
-        <TabPane key="general" tab="请求">
+        <TabPane key="general" :tab="t('smtpPlugin.functionTestDetailSmtp.tabs.request')">
           <RequestHeaders :value="smtpContent" class="py-3" />
         </TabPane>
-        <TabPane key="response" tab="响应">
+        <TabPane key="response" :tab="t('smtpPlugin.functionTestDetailSmtp.tabs.response')">
           <NoData
             v-if="!smtpContent?.content?.response?.data"
             size="small"

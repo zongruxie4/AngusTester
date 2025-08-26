@@ -42,7 +42,7 @@ const TransStartTestDetail = defineAsyncComponent(() => import('../FunctionTestD
 const WaitingTimeTestDetail = defineAsyncComponent(() => import('../FunctionTestDetail/Collapse/WaitingTime/index.vue'));
 const ThroughputTestDetail = defineAsyncComponent(() => import('../FunctionTestDetail/Collapse/Throughput/index.vue'));
 const RendezvousTestDetail = defineAsyncComponent(() => import('../FunctionTestDetail/Collapse/Rendezvous/index.vue'));
-const HTTPTestDetail = defineAsyncComponent(() => import('../FunctionTestDetail/Collapse/FTP/index.vue'));
+const HTTPTestDetail = defineAsyncComponent(() => import('../FunctionTestDetail/Collapse/JMS/index.vue'));
 const TransEndTestDetail = defineAsyncComponent(() => import('../FunctionTestDetail/Collapse/TransEnd/index.vue'));
 
 const pipelines = computed(() => {
@@ -51,10 +51,10 @@ const pipelines = computed(() => {
   }
 
   const list = props.value.task.pipelines;
-  const httpNum = list.filter(item => item.target === 'FTP').length;
+  const httpNum = list.filter(item => item.target === 'JMS').length;
   return list.reduce((prev, cur) => {
     const _cur = { ...cur, linkName: cur.name, id: utils.uuid() };
-    if (httpNum === 1 && _cur.target === 'FTP') {
+    if (httpNum === 1 && _cur.target === 'JMS') {
       _cur.linkName = 'Total';
     }
     if (_cur.transactionName) {
@@ -171,7 +171,7 @@ const isError = computed(() => {
                   :value="_item"
                   class="embed" />
                 <HTTPTestDetail
-                  v-else-if="_item.target==='FTP'"
+                  v-else-if="_item.target==='JMS'"
                   :value="_item"
                   :content="sampleContents"
                   :ignoreAssertions="ignoreAssertions"
@@ -193,7 +193,7 @@ const isError = computed(() => {
               v-else-if="item.target==='RENDEZVOUS'"
               :value="item" />
             <HTTPTestDetail
-              v-else-if="item.target==='FTP'"
+              v-else-if="item.target==='JMS'"
               :value="item"
               :content="sampleContents"
               :ignoreAssertions="ignoreAssertions" />

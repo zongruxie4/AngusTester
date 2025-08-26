@@ -3,6 +3,7 @@ import { ref, defineAsyncComponent, watch } from 'vue';
 import { Slider, CheckboxGroup, Checkbox } from 'ant-design-vue';
 import { Toggle } from '@xcan-angus/vue-ui';
 import { cloneDeep } from 'lodash-es';
+import { useI18n } from 'vue-i18n';
 
 import { allCvsNames } from '../../ChartConfig';
 const LineChart = defineAsyncComponent(() => import('../../components/LineChart.vue'));
@@ -33,6 +34,8 @@ const props = withDefaults(defineProps<Props>(), {
   indexOptions: () => [],
   pipelineTargetMappings: undefined
 });
+
+const { t } = useI18n();
 
 const currIndex = ref(props.cvsKeys[0]);
 
@@ -78,19 +81,19 @@ const sliderFormatter = (value: number) => {
 
 const throughputOptions = [
   {
-    label: '每秒查询数',
+    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.throughputOptions.queriesPerSecond'),
     value: 'ops'
   },
   {
-    label: '每秒事务数',
+    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.throughputOptions.transactionsPerSecond'),
     value: 'tps'
   },
   {
-    label: '下载/秒',
+    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.throughputOptions.downloadPerSecond'),
     value: 'brps'
   },
   {
-    label: '上传/秒',
+    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.throughputOptions.uploadPerSecond'),
     value: 'bwps'
   }
 ];
@@ -125,65 +128,65 @@ const errorExpand = ref(true);
 
 const threadOptions = [
   {
-    label: '线程数',
+    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.threadOptions.threadCount'),
     value: 'threadPoolSize'
   },
   {
-    label: '最大线程数',
+    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.threadOptions.maxThreadCount'),
     value: 'threadMaxPoolSize'
   },
   {
-    label: '活跃线程数',
+    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.threadOptions.activeThreadCount'),
     value: 'threadPoolActiveSize'
   }
 ];
 
 const responseTimeOptions = [
   {
-    label: '平均',
+    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.responseTimeOptions.average'),
     value: 'tranMean'
   },
   {
-    label: '最小',
+    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.responseTimeOptions.minimum'),
     value: 'tranMin'
   },
   {
-    label: '最大',
+    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.responseTimeOptions.maximum'),
     value: 'tranMax'
   },
   {
-    label: 'P50',
+    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.responseTimeOptions.p50'),
     value: 'tranP50'
   },
   {
-    label: 'P75',
+    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.responseTimeOptions.p75'),
     value: 'tranP75'
   },
   {
-    label: 'P90',
+    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.responseTimeOptions.p90'),
     value: 'tranP90'
   },
   {
-    label: 'P95',
+    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.responseTimeOptions.p95'),
     value: 'tranP95'
   },
   {
-    label: 'P99',
+    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.responseTimeOptions.p99'),
     value: 'tranP99'
   },
   {
-    label: 'P999',
+    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.responseTimeOptions.p999'),
     value: 'tranP999'
   }
 ];
 
 const errorOptions = [
   {
-    label: '错误数',
+    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.errorOptions.errorCount'),
     value: 'errors'
   },
   {
-    label: '错误率',
+    label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.errorOptions.errorRate'),
     value: 'errorRate'
   }
 ];
@@ -222,7 +225,7 @@ defineExpose({
       <CheckboxGroup :value="checkboxGroupValue" @change="CheckboxGroupChange">
         <Toggle
           v-model:open="throughputExpand"
-          title="吞吐量（TPS/QPS）">
+          :title="t('ftpPlugin.performanceTestDetail.superimposeAnalysis.toggleTitles.throughput')">
           <div
             v-for="apiName in props.apiNames"
             :key="apiName"
@@ -241,7 +244,7 @@ defineExpose({
         </Toggle>
         <Toggle
           v-model:open="threadExpand"
-          title="并发数（VU）"
+          :title="t('ftpPlugin.performanceTestDetail.superimposeAnalysis.toggleTitles.concurrency')"
           class="mt-2">
           <div
             v-for="apiName in props.apiNames"
@@ -261,7 +264,7 @@ defineExpose({
         </Toggle>
         <Toggle
           v-model:open="responseTimeExpand"
-          title="响应时间（RT、毫秒）"
+          :title="t('ftpPlugin.performanceTestDetail.superimposeAnalysis.toggleTitles.responseTime')"
           class="mt-2">
           <div
             v-for="apiName in props.apiNames"
@@ -281,7 +284,7 @@ defineExpose({
         </Toggle>
         <Toggle
           v-model:open="errorExpand"
-          title="错误（ERROR）"
+          :title="t('ftpPlugin.performanceTestDetail.superimposeAnalysis.toggleTitles.error')"
           class="mt-2">
           <div
             v-for="apiName in props.apiNames"

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { Colon, Toggle, NoData } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 import { TaskInfo } from '@/views/task/PropsType';
 
@@ -13,6 +14,8 @@ const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined,
   largePageLayout: undefined
 });
+
+const { t } = useI18n();
 
 const execResult = computed(() => props.dataSource?.execResult);
 const execId = computed(() => props.dataSource?.execId);
@@ -38,7 +41,7 @@ const RESULT_COLOR: {
 <template>
   <Toggle>
     <template #title>
-      <div class="text-3">执行信息</div>
+      <div class="text-3">{{ t('task.testing.execResult.title') }}</div>
     </template>
 
     <template #default>
@@ -46,7 +49,7 @@ const RESULT_COLOR: {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>执行结果</span>
+              <span>{{ t('task.testing.execResult.fields.execResult') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -60,7 +63,7 @@ const RESULT_COLOR: {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>执行ID</span>
+              <span>{{ t('task.testing.execResult.fields.execId') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -71,7 +74,7 @@ const RESULT_COLOR: {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>执行名称</span>
+              <span>{{ t('task.testing.execResult.fields.execName') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -91,7 +94,7 @@ const RESULT_COLOR: {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>执行人</span>
+              <span>{{ t('task.testing.execResult.fields.execByName') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -102,7 +105,7 @@ const RESULT_COLOR: {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>脚本ID</span>
+              <span>{{ t('task.testing.execResult.fields.scriptId') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -111,7 +114,7 @@ const RESULT_COLOR: {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>脚本名称</span>
+              <span>{{ t('task.testing.execResult.fields.scriptName') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -133,7 +136,7 @@ const RESULT_COLOR: {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>最后执行时间</span>
+              <span>{{ t('task.testing.execResult.fields.lastExecTime') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -146,7 +149,7 @@ const RESULT_COLOR: {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/3 flex items-start">
             <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>执行结果</span>
+              <span>{{ t('task.testing.execResult.fields.execResult') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -160,7 +163,7 @@ const RESULT_COLOR: {
 
           <div class="relative w-1/3 flex items-start">
             <div class="w-12.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>执行ID</span>
+              <span>{{ t('task.testing.execResult.fields.execId') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -169,7 +172,7 @@ const RESULT_COLOR: {
 
           <div class="relative w-1/3 flex items-start">
             <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>执行名称</span>
+              <span>{{ t('task.testing.execResult.fields.execName') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -191,7 +194,7 @@ const RESULT_COLOR: {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/3 flex items-start">
             <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>执行人</span>
+              <span>{{ t('task.testing.execResult.fields.execByName') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -200,7 +203,7 @@ const RESULT_COLOR: {
 
           <div class="relative w-1/3 flex items-start">
             <div class="w-12.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>脚本ID</span>
+              <span>{{ t('task.testing.execResult.fields.scriptId') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -209,7 +212,7 @@ const RESULT_COLOR: {
 
           <div class="relative w-1/3 flex items-start">
             <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>脚本名称</span>
+              <span>{{ t('task.testing.execResult.fields.scriptName') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -231,7 +234,7 @@ const RESULT_COLOR: {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/3 flex items-start">
             <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>最后执行时间</span>
+              <span>{{ t('task.testing.execResult.fields.lastExecTime') }}</span>
               <Colon class="w-1" />
             </div>
 

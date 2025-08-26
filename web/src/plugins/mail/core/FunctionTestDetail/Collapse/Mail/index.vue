@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Alert, Collapse, CollapsePanel, Tabs, TabPane, Tag } from 'ant-design-vue';
 import { Arrow, Colon, Icon } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 import StatusTag from '../StatusTag/index.vue';
 import { HTTPInfo } from './PropsType';
@@ -110,20 +113,20 @@ const failMessage = computed(() => {
               icon="icon-chajianpeizhi" />
           </template>
           <div :title="props.value?.name" class="truncate min-w-55 max-w-100 mr-5 name">{{ props.value?.name }}</div>
-          <Tag v-if="httpContent?.content?.protocol?.value" class="!leading-5">协议：{{ httpContent?.content?.protocol?.value }}</Tag>
-          <Tag v-if="httpContent?.content?.response?.messageTotal" class="!leading-5">总共{{ httpContent?.content?.response?.messageTotal }}个邮件</Tag>
-          <Tag v-if="httpContent?.content?.response?.messageRead" class="!leading-5">读取{{ httpContent?.content?.response?.messageRead }}个邮件</Tag>
+                  <Tag v-if="httpContent?.content?.protocol?.value" class="!leading-5">{{ t('mailPlugin.functionTestDetailMail.protocol') }}：{{ httpContent?.content?.protocol?.value }}</Tag>
+        <Tag v-if="httpContent?.content?.response?.messageTotal" class="!leading-5">{{ t('mailPlugin.functionTestDetailMail.totalEmails', { count: httpContent?.content?.response?.messageTotal }) }}</Tag>
+        <Tag v-if="httpContent?.content?.response?.messageRead" class="!leading-5">{{ t('mailPlugin.functionTestDetailMail.readEmails', { count: httpContent?.content?.response?.messageRead }) }}</Tag>
           <div class="flex-1 justify-end flex items-center mr-3">
             <template v-if="!props.value?.enabled">
               <StatusTag />
             </template>
             <template v-else>
               <div class="mr-5">
-                <span class="mr-0.5">耗时<Colon /></span>
+                <span class="mr-0.5">{{ t('mailPlugin.functionTestDetailMail.duration') }}<Colon /></span>
                 <span class="text-theme-sub-content"> {{ runtime }}</span>
               </div>
               <div class="mr-5">
-                <span class="mr-0.5">大小<Colon /></span>
+                <span class="mr-0.5">{{ t('mailPlugin.functionTestDetailMail.size') }}<Colon /></span>
                 <span class="text-theme-sub-content"> {{ bodySize }}</span>
               </div>
               <StatusTag :value="status" />
@@ -141,10 +144,10 @@ const failMessage = computed(() => {
         type="card"
         size="small"
         class="mt-3 card-tabs">
-        <TabPane key="general" :tab="`请求 (${utils.formatBytes(httpContent?.content?.request0?.size)})`">
+        <TabPane key="general" :tab="`${t('mailPlugin.functionTestDetailMail.request')} (${utils.formatBytes(httpContent?.content?.request0?.size)})`">
           <RequestHeaders :value="httpContent" class="py-3" />
         </TabPane>
-        <TabPane key="responses" :tab="`响应 (${bodySize})`">
+        <TabPane key="responses" :tab="`${t('mailPlugin.functionTestDetailMail.response')} (${bodySize})`">
           <Response :value="httpContent" class="py-3" />
         </TabPane>
       </Tabs>

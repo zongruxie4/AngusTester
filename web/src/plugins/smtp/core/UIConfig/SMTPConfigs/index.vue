@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, defineAsyncComponent } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Collapse, CollapsePanel, Tabs, TabPane, Button, Checkbox, Switch, RadioGroup } from 'ant-design-vue';
 import { Input, Icon, Tooltip, Hints, Select, IconRequired, ShortDuration } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 import { PipelineConfig } from '../../PropsType';
 import Upload from './Upload.vue';
@@ -43,13 +46,13 @@ const ActionsGroup = defineAsyncComponent(() => import('../ActionsGroup/index.vu
 const connectTimeoutInputProps = {
   maxlength: 8,
   dataType: 'integer',
-  placeholder: '连接超时，最大24小时'
+  placeholder: t('smtpPlugin.uiConfig.serverConfig.connectionTimeoutPlaceholder')
 };
 
 const readTimeoutInputProps = {
   maxlength: 8,
   dataType: 'integer',
-  placeholder: '读取超时，最大24小时'
+  placeholder: t('smtpPlugin.uiConfig.serverConfig.readTimeoutPlaceholder')
 };
 
 const shortTimeSelectProps = {
@@ -119,15 +122,15 @@ const onIgnoreTitleChange = () => {
 
 const securityConfigOpt = [
   {
-    label: '不使用安全功能',
+    label: t('smtpPlugin.uiConfig.securityConfig.none'),
     value: 'NONE'
   },
   {
-    label: '使用SSL',
+    label: t('smtpPlugin.uiConfig.securityConfig.useSSL'),
     value: 'USE_SSL'
   },
   {
-    label: '使用StartTLS',
+    label: t('smtpPlugin.uiConfig.securityConfig.useStartTLS'),
     value: 'USE_START_TLS'
   }
 ];
@@ -135,42 +138,42 @@ const securityConfigOpt = [
 const emlMsgOpt = [
   {
     value: false,
-    label: '邮件内容'
+    label: t('smtpPlugin.uiConfig.emlMsgOpt.n')
   },
   {
     value: true,
-    label: '邮件文件(.eml)'
+    label: t('smtpPlugin.uiConfig.emlMsgOpt.y')
   }
 ];
 const attachmentTypeOpt = [
   {
     value: 'path',
-    label: '附件路径'
+    label: t('smtpPlugin.uiConfig.attachmentTypeOpt.path')
   },
   {
     value: 'file',
-    label: '上传附件'
+    label: t('smtpPlugin.uiConfig.attachmentTypeOpt.file')
   }
 ];
 const emlTypeOpt = [
   {
     value: 'path',
-    label: '存储路径'
+    label: t('smtpPlugin.uiConfig.emlTypeOpt.path')
   },
   {
     value: 'file',
-    label: '上传文件'
+    label: t('smtpPlugin.uiConfig.emlTypeOpt.file')
   }
 ];
 
 const certificateTypeOpt = [
   {
     value: 'path',
-    label: '存储路径'
+    label: t('smtpPlugin.uiConfig.certificateTypeOpt.path')
   },
   {
     value: 'file',
-    label: '上传证书'
+    label: t('smtpPlugin.uiConfig.certificateTypeOpt.file')
   }
 ];
 
@@ -182,11 +185,11 @@ const attachmentFiles = ref<{value: string; fileName: string;}[]>([]);
 
 const certificateOpt = [
   {
-    label: '信任所有证书',
+    label: t('smtpPlugin.uiConfig.certificateOpt.all'),
     value: true
   },
   {
-    label: '使用本地信任库',
+    label: t('smtpPlugin.uiConfig.certificateOpt.local'),
     value: false
   }
 ];
@@ -534,7 +537,7 @@ defineExpose({
             icon="icon-chajianpeizhi" />
           <div class="flex-1 flex items-center space-x-5 mr-5">
             <Tooltip
-              title="名称重复"
+              :title="t('smtpPlugin.uiConfig.mailContent.nameTip')"
               internal
               placement="right"
               destroyTooltipOnHide
@@ -546,13 +549,13 @@ defineExpose({
                 :title="name"
                 trim
                 class="smtp-name-input"
-                placeholder="名称，最大支持400个字符"
+                :placeholder="t('smtpPlugin.uiConfig.mailContent.namePlaceholder')"
                 @change="nameChange" />
             </Tooltip>
             <Input
               v-model:value="description"
               :maxlength="800"
-              placeholder="描述，最大支持800字（可选）" />
+              :placeholder="t('smtpPlugin.uiConfig.mailContent.descriptionPlaceholder')" />
           </div>
           <ActionsGroup
             v-model:enabled="enabled"
@@ -565,7 +568,7 @@ defineExpose({
       </template>
       <div class="flex items-center text-theme-title text-3 mb-2">
         <div class="w-1.25 h-3 rounded mr-1.5" style="background-color: #1e88e5;"></div>
-        <span>主题配置</span>
+        <span>{{ t('smtpPlugin.uiConfig.mailContent.themeConfig') }}</span>
       </div>
       <div class="space-y-3 mb-3">
         <Input
@@ -574,18 +577,18 @@ defineExpose({
           size="small"
           :disabled="mailContent.suppressSubject"
           :maxlength="4096"
-          placeholder="主题" />
+          :placeholder="t('smtpPlugin.uiConfig.mailContent.themePlaceholder')" />
         <div class="flex items-center">
-          <Checkbox v-model:checked="mailContent.includeTimestamp" :disabled="mailContent.suppressSubject">在主题中包含时间戳</Checkbox>
-          <Checkbox v-model:checked="mailContent.suppressSubject" @change="onIgnoreTitleChange">禁用主题</Checkbox>
-          <Hints text="禁止邮件的主题后，邮件将没有主题行。"></Hints>
+          <Checkbox v-model:checked="mailContent.includeTimestamp" :disabled="mailContent.suppressSubject">{{ t('smtpPlugin.uiConfig.mailContent.includeTimestamp') }}</Checkbox>
+          <Checkbox v-model:checked="mailContent.suppressSubject" @change="onIgnoreTitleChange">{{ t('smtpPlugin.uiConfig.mailContent.disableSubject') }}</Checkbox>
+          <Hints :text="t('smtpPlugin.uiConfig.mailContent.subjectHints')"></Hints>
         </div>
         <Button
           size="small"
           type="primary"
           @click="addHeader">
           <Icon icon="icon-jia" />
-          添加头
+          {{ t('smtpPlugin.uiConfig.mailContent.addHeader') }}
         </Button>
       </div>
       <div
@@ -595,12 +598,12 @@ defineExpose({
         <Input
           v-model:value="headers[idx].name"
           class="flex-1"
-          placeholder="请求头名称"
+          :placeholder="t('smtpPlugin.uiConfig.mailContent.headerNamePlaceholder')"
           :maxlength="400" />
         <Input
           v-model:value="headers[idx].value"
           class="flex-1"
-          placeholder="请求头值"
+          :placeholder="t('smtpPlugin.uiConfig.mailContent.headerValuePlaceholder')"
           :maxlength="400" />
         <Icon
           icon="icon-jian"
@@ -608,7 +611,7 @@ defineExpose({
       </div>
       <div class="flex items-center text-theme-title text-3 mt-5 mb-2">
         <div class="w-1.25 h-3 rounded mr-1.5" style="background-color: #1e88e5;"></div>
-        <span>内容配置</span>
+        <span>{{ t('smtpPlugin.uiConfig.mailContent.contentConfig') }}</span>
       </div>
       <div class="space-y-2 w-200 text-3">
         <RadioGroup v-model:value="mailContent.sendEmlMessage" :options="emlMsgOpt" />
@@ -618,15 +621,15 @@ defineExpose({
             type="textarea"
             :disabled="mailContent.sendEmlMessage"
             :maxlength="2097152"
-            placeholder="邮件正文内容"
+            :placeholder="t('smtpPlugin.uiConfig.mailContent.mailContent')"
             class="flex-1 mb-2" />
-          <Checkbox v-model:checked="mailContent.plainBody" class="mb-5">是否纯文本格式</Checkbox>
+          <Checkbox v-model:checked="mailContent.plainBody" class="mb-5">{{ t('smtpPlugin.uiConfig.mailContent.plainBody') }}</Checkbox>
           <div class="flex items-center text-theme-title text-3 mb-2">
             <div class="w-1.25 h-3 rounded mr-1.5" style="background-color: #1e88e5;"></div>
-            <span>附件</span>
+            <span>{{ t('smtpPlugin.uiConfig.mailContent.attachment') }}</span>
           </div>
           <div class="flex items-center mb-2">
-            <span>附件：</span>
+            <span>{{ t('smtpPlugin.uiConfig.mailContent.attachment') }}：</span>
             <RadioGroup v-model:value="attachmentType" :options="attachmentTypeOpt" />
           </div>
           <div v-if="attachmentType === 'file'" class="min-h-7 border rounded flex items-center mb-2">
@@ -637,19 +640,19 @@ defineExpose({
               :disabled="mailContent.sendEmlMessage"
               @change="onFileChange">
               <template #text>
-                选择附件文件
+                {{ t('smtpPlugin.uiConfig.mailContent.selectAttachment') }}
               </template>
             </Upload>
           </div>
           <div v-if="attachmentType === 'path'" class="space-y-2">
-            <Hints text="附件文件路径，多个文件路径可以用逗号分隔。" />
+            <Hints :text="t('smtpPlugin.uiConfig.mailContent.attachmentHints')" />
             <Input v-model:value="mailContent.localAttachFiles" class="flex-1" />
           </div>
         </div>
         <div v-else class="text-3 space-y-2">
-          <Checkbox v-model:checked="mailContent.plainBody">是否纯文本格式</Checkbox>
+          <Checkbox v-model:checked="mailContent.plainBody">{{ t('smtpPlugin.uiConfig.mailContent.plainBody') }}</Checkbox>
           <div class="flex items-center">
-            <span>邮件文件(.eml)：</span>
+            <span>{{ t('smtpPlugin.uiConfig.mailContent.emlFile') }}：</span>
             <RadioGroup v-model:value="emlType" :options="emlTypeOpt" />
             <Upload
               v-show="emlType === 'file' && !mailContent.localEmlMessageBase64Content"
@@ -660,7 +663,7 @@ defineExpose({
               :error="validated"
               @change="onEmlChange">
               <template #text>
-                选择EML文件
+                {{ t('smtpPlugin.uiConfig.mailContent.selectEmlFile') }}
               </template>
             </Upload>
           </div>
@@ -688,11 +691,11 @@ defineExpose({
       </div>
       <div class="flex items-center text-theme-title text-3 mt-5 mb-2">
         <div class="w-1.25 h-3 rounded mr-1.5" style="background-color: #1e88e5;"></div>
-        <span>发送配置</span>
+        <span>{{ t('smtpPlugin.uiConfig.emailConfig.sendConfig') }}</span>
       </div>
       <div class="space-y-3.5 w-200 text-3">
         <div class="flex items-center space-x-2">
-          <div class="w-33.5">发送地址: </div>
+          <div class="w-33.5">{{ t('smtpPlugin.uiConfig.emailConfig.sendAddress') }}: </div>
           <Input
             v-model:value="emailConfig.mailFrom"
             class="flex-1"
@@ -700,40 +703,40 @@ defineExpose({
             :maxlength="100" />
         </div>
         <div class="flex items-center space-x-2">
-          <div class="w-33.5"><IconRequired />接收地址: </div>
+          <div class="w-33.5"><IconRequired />{{ t('smtpPlugin.uiConfig.emailConfig.receiverAddress') }}: </div>
           <Select
             v-model:value="emailConfig.receiverTo"
             mode="tags"
             :error="validated && !emailConfig.receiverTo.length"
             class="w-full flex-1"
-            placeholder="接收地址（Address To）"
+            :placeholder="t('smtpPlugin.uiConfig.emailConfig.receiverPlaceholder')"
             :maxlength="100" />
         </div>
         <div class="flex items-center space-x-2">
-          <div class="w-33.5">抄送地址: </div>
+          <div class="w-33.5">{{ t('smtpPlugin.uiConfig.emailConfig.receiverCC') }}: </div>
           <Select
             v-model:value="emailConfig.receiverCC"
             mode="tags"
             class="w-full flex-1"
-            placeholder="抄送地址（Address To CC）"
+                          :placeholder="t('smtpPlugin.uiConfig.emailConfig.receiverCCPlaceholder')"
             :maxlength="100" />
         </div>
         <div class="flex items-center space-x-2">
-          <div class="w-33.5">秘密抄送地址: </div>
+          <div class="w-33.5">{{ t('smtpPlugin.uiConfig.emailConfig.receiverBCC') }}: </div>
           <Select
             v-model:value="emailConfig.receiverBCC"
             mode="tags"
             class="w-full flex-1"
-            placeholder="秘密抄送地址（Address To BCC）"
+                          :placeholder="t('smtpPlugin.uiConfig.emailConfig.receiverBCCPlaceholder')"
             :maxlength="100" />
         </div>
         <div class="flex items-center space-x-2">
-          <div class="w-33.5">回复地址: </div>
+          <div class="w-33.5">{{ t('smtpPlugin.uiConfig.emailConfig.replyTo') }}: </div>
           <Select
             v-model:value="emailConfig.replyTo"
             mode="tags"
             class="w-full flex-1"
-            placeholder="回复地址（Address Reply-To）"
+                          :placeholder="t('smtpPlugin.uiConfig.emailConfig.replyToPlaceholder')"
             :maxlength="100" />
         </div>
       </div>
@@ -742,11 +745,11 @@ defineExpose({
         class="white-bg-container">
         <TabPane
           key="service"
-          tab="服务器设置">
+          :tab="t('smtpPlugin.uiConfig.serviceConfig.title')">
           <div class="flex items-center mb-3.5">
             <div class="flex-shrink-0 w-33.5 flex items-center">
               <IconRequired />
-              <span>主机名或IP</span>
+              <span>{{ t('smtpPlugin.uiConfig.serviceConfig.hostnameOrIP') }}</span>
               <Colon />
             </div>
             <div class="flex-1 flex items-center space-x-5 max-w-175">
@@ -756,11 +759,11 @@ defineExpose({
                 :maxlength="4096"
                 trimAll
                 style="flex: 1 1 75%;"
-                placeholder="主机名或IP，最大支持4096个字符" />
+                :placeholder="t('smtpPlugin.uiConfig.serviceConfig.hostnameOrIPPlaceholder')" />
               <div style="flex: 1 1 25%;" class="flex items-center">
                 <div class="flex-shrink-0 w-10.5 flex items-center">
                   <IconRequired />
-                  <span>端口</span>
+                  <span>{{ t('smtpPlugin.uiConfig.serviceConfig.port') }}</span>
                   <Colon />
                 </div>
                 <Input
@@ -771,7 +774,7 @@ defineExpose({
                   trimALl
                   style="min-width: 75px;max-width: 200px;"
                   dataType="integer"
-                  placeholder="端口（1~65535）" />
+                  :placeholder="t('smtpPlugin.uiConfig.serviceConfig.portPlaceholder')" />
               </div>
             </div>
           </div>
@@ -779,7 +782,7 @@ defineExpose({
           <div class="flex items-center mb-3.5">
             <div class="flex-shrink-0 w-33.5 flex items-center">
               <IconRequired />
-              <span>连接超时</span>
+              <span>{{ t('smtpPlugin.uiConfig.serverConfig.connectionTimeout') }}</span>
               <Colon />
             </div>
             <div class="flex-1 flex items-center space-x-5 max-w-175">
@@ -793,7 +796,7 @@ defineExpose({
               <div style="flex: 1 1 25%;" class="flex items-center">
                 <div class="flex-shrink-0 w-16.5 flex items-center">
                   <IconRequired />
-                  <span>读取超时</span>
+                  <span>{{ t('smtpPlugin.uiConfig.serverConfig.readTimeout') }}</span>
                   <Colon />
                 </div>
                 <ShortDuration
@@ -807,7 +810,7 @@ defineExpose({
           </div>
 
           <div class="flex items-center mb-3.5">
-            <span class="w-33.5">安全功能:</span>
+            <span class="w-33.5">{{ t('smtpPlugin.uiConfig.serviceConfig.security') }}:</span>
             <RadioGroup
               v-model:value="serverSecurity.use"
               :options="securityConfigOpt">
@@ -816,29 +819,29 @@ defineExpose({
 
           <div v-show="serverSecurity.use !== 'NONE'" class="space-y-3.5">
             <div class="flex items-center">
-              <span class="w-33.5">信任证书:</span>
+              <span class="w-33.5">{{ t('smtpPlugin.uiConfig.serviceConfig.trustCertificate') }}:</span>
               <RadioGroup
                 v-model:value="serverSecurity.trustAllCerts"
                 :options="certificateOpt"
                 @change="trustCertChange">
               </RadioGroup>
               <div v-show="serverSecurity.use === 'USE_START_TLS'">
-                <Checkbox v-model:checked="serverSecurity.enforceStartTLS" /> <span>执行StartTLS</span>
+                <Checkbox v-model:checked="serverSecurity.enforceStartTLS" /> <span>{{ t('smtpPlugin.uiConfig.serviceConfig.enforceStartTLS') }}</span>
               </div>
             </div>
             <div v-show="!serverSecurity.trustAllCerts" class="flex">
-              <span class="w-33.5">本地受信证书：</span>
+              <span class="w-33.5">{{ t('smtpPlugin.uiConfig.serviceConfig.localCertificate') }} ：</span>
               <div class="flex-1 space-y-2">
                 <div class="flex items-center">
                   <RadioGroup v-model:value="localCertType" :options="certificateTypeOpt">
                   </RadioGroup>
                   <Hints
                     v-if="localCertType==='path'"
-                    text="需要确保证书文件已上传到对应执行节点路径。"
+                    :text="t('smtpPlugin.uiConfig.serviceConfig.localCertificateHints')"
                     class="inline-flex self-end"></Hints>
                   <Hints
                     v-if="localCertType==='file'"
-                    text="在脚本中存储本地证书 Base64 编码后内容。"
+                    :text="t('smtpPlugin.uiConfig.serviceConfig.localCertificateBase64Content')"
                     class="inline-flex self-end"></Hints>
                 </div>
                 <Upload
@@ -867,7 +870,7 @@ defineExpose({
               </div>
             </div>
             <div v-show="!serverSecurity.trustAllCerts" class="flex items-center">
-              <span class="w-33.5">{{ serverSecurity.use === 'USE_START_TLS' ? '重写的SSL/TLS协议' : '覆盖系统SSL/TLS协议：' }}</span>
+              <span class="w-33.5">{{ serverSecurity.use === 'USE_START_TLS' ? t('smtpPlugin.uiConfig.serviceConfig.tlsProtocols') : t('smtpPlugin.uiConfig.serviceConfig.overrideSystemSSLTLS') }}</span>
               <Input
                 v-model:value="serverSecurity.tlsProtocols"
                 class="flex-1"
@@ -875,32 +878,32 @@ defineExpose({
             </div>
           </div>
         </TabPane>
-        <TabPane key="authentication" tab="身份验证设置">
+        <TabPane key="authentication" :tab="t('smtpPlugin.uiConfig.authenticationConfig.title')">
           <div class="flex items-center space-x-2">
             <Switch
               v-model:checked="server.useAuth"
               size="small"
-              @change="onOpenChange" /><span>开启身份验证</span>
+              @change="onOpenChange" /><span>{{ t('smtpPlugin.uiConfig.authenticationConfig.enableAuthentication') }}</span>
           </div>
           <div class="flex items-center space-x-4 my-2">
             <Input
               v-model:value="server.username"
               :disabled="!server.useAuth"
-              placeholder="用户名"
+              :placeholder="t('smtpPlugin.uiConfig.authenticationConfig.username')"
               :maxlength="80"
               :error="validated && server.useAuth && !server.username" />
             <Input
               v-model:value="server.password"
               :disabled="!server.useAuth"
               type="password"
-              placeholder="密码"
+              :placeholder="t('smtpPlugin.uiConfig.authenticationConfig.password')"
               :maxlength="50"
               :error="validated && server.useAuth && !server.username" />
           </div>
         </TabPane>
-        <TabPane key="other" tab="其他设置">
-          <Checkbox v-model:checked="mailContent.messageSizeStatistics">计算消息大小</Checkbox>
-          <Checkbox v-model:checked="mailContent.enableDebugLogging">启用调试日志记录</Checkbox>
+        <TabPane key="other" :tab="t('smtpPlugin.uiConfig.otherConfig.title')">
+          <Checkbox v-model:checked="mailContent.messageSizeStatistics">{{ t('smtpPlugin.uiConfig.otherConfig.messageSizeStatistics') }}</Checkbox>
+          <Checkbox v-model:checked="mailContent.enableDebugLogging">{{ t('smtpPlugin.uiConfig.otherConfig.enableDebugLogging') }}</Checkbox>
         </TabPane>
       </Tabs>
     </CollapsePanel>

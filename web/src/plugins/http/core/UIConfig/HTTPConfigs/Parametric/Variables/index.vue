@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, defineAsyncComponent, watchEffect } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon, Tooltip, Input, IconCopy, SelectEnum } from '@xcan-angus/vue-ui';
 import { utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
 import { FormState } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   errorNum: number;
@@ -98,11 +101,10 @@ const nameChange = debounce(duration.delay, (id: string) => {
   const data = dataMap.value;
   for (let i = 0, len = ids.length; i < len; i++) {
     const _id = ids[i];
-    if (duplicates.includes(data[_id].name)) {
-      nameErrorSet.value.add(_id);
+    const { name } = data[_id];
+    if (duplicates.includes(name)) {
       repeatNameSet.value.add(_id);
     } else {
-      nameErrorSet.value.delete(_id);
       repeatNameSet.value.delete(_id);
     }
   }
@@ -141,56 +143,41 @@ const matchItemChange = () => {
 const toDelete = (id: string, index: number) => {
   idList.value.splice(index, 1);
   delete dataMap.value[id];
+  nameErrorSet.value.delete(id);
+  methodErrorSet.value.delete(id);
+  locationErrorSet.value.delete(id);
+  parameterNameErrorSet.value.delete(id);
+  expressionErrorSet.value.delete(id);
+  repeatNameSet.value.delete(id);
+
   emitChange();
 };
 
-const reset = () => {
-  idList.value = [];
-  dataMap.value = {};
-  repeatNameSet.value.clear();
-  nameErrorSet.value.clear();
-  methodErrorSet.value.clear();
-  expressionErrorSet.value.clear();
-  parameterNameErrorSet.value.clear();
-  locationErrorSet.value.clear();
-};
-
 onMounted(() => {
-  watch(() => props.variables, (newValue) => {
-    reset();
-    if (!newValue?.length) {
-      return;
+  watch(() => props.variables, () => {
+    idList.value = [];
+    dataMap.value = {};
+    nameErrorSet.value.clear();
+    methodErrorSet.value.clear();
+    locationErrorSet.value.clear();
+    parameterNameErrorSet.value.clear();
+    expressionErrorSet.value.clear();
+    repeatNameSet.value.clear();
+
+    if (props.variables?.length) {
+      const dataList = props.variables;
+      for (let i = 0, len = dataList.length; i < len; i++) {
+        const id = utils.uuid();
+        idList.value.push(id);
+        dataMap.value[id] = { ...dataList[i] };
+      }
     }
 
-    for (let i = 0, len = newValue.length; i < len; i++) {
-      const id = utils.uuid();
-      idList.value.push(id);
-
-      const { name, source, defaultValue, expression, matchItem, method, parameterName, location } = newValue[i];
-      dataMap.value[id] = {
-        name,
-        source,
-        defaultValue,
-        expression,
-        matchItem,
-        method: method?.value || method,
-        parameterName: parameterName,
-        location: location?.value || location
-      };
-    }
-  }, { immediate: true });
+    emitChange();
+  }, { immediate: true, deep: true });
 
   watchEffect(() => {
-    const data = getData();
-    emit('change', data);
-  });
-
-  watchEffect(() => {
-    const size = nameErrorSet.value.size +
-      methodErrorSet.value.size +
-      expressionErrorSet.value.size +
-      parameterNameErrorSet.value.size +
-      locationErrorSet.value.size;
+    const size = nameErrorSet.value.size + methodErrorSet.value.size + locationErrorSet.value.size + parameterNameErrorSet.value.size + expressionErrorSet.value.size;
     emit('errorChange', size);
   });
 });
@@ -246,9 +233,9 @@ defineExpose({
   <div class="text-3 leading-5">
     <div class="flex items-center flex-nowrap mb-1.5">
       <div class="flex-shrink-0 w-1 h-3.5 rounded bg-blue-400 mr-1.5"></div>
-      <div class="flex-shrink-0 text-theme-title mr-2.5">变量</div>
+      <div class="flex-shrink-0 text-theme-title mr-2.5">{{ t('httPlugin.uiConfig.httpConfigs.parametric.variables.title') }}</div>
       <Icon icon="icon-tishi1" class="flex-shrink-0 text-tips text-3.5 mr-1" />
-      <div class="flex-shrink-0 break-all whitespace-pre-wrap">从当前采样请求或响应中提取数据并将其存储在变量中，在后续请求中使用这些变量。</div>
+      <div class="flex-shrink-0 break-all whitespace-pre-wrap">{{ t('httPlugin.uiConfig.httpConfigs.parametric.variables.description') }}</div>
     </div>
     <div class="mb-2">
       <Button
@@ -257,14 +244,14 @@ defineExpose({
         class="flex items-center h-5 leading-5 p-0 space-x-1"
         @click="toAdd">
         <Icon icon="icon-jia" class="text-3.5" />
-        <span class="ml-1">定义变量</span>
+        <span class="ml-1">{{ t('httPlugin.uiConfig.httpConfigs.parametric.variables.addVariable') }}</span>
       </Button>
     </div>
 
     <div v-if="idList.length === 0" class="flex-1 flex flex-col items-center justify-center">
       <img style="width:96px;" src="./images/nodata.png">
       <div class="flex items-center text-theme-sub-content text-3">
-        <span>您尚未定义任何变量</span>
+        <span>{{ t('httPlugin.uiConfig.httpConfigs.parametric.variables.noVariablesDefined') }}</span>
       </div>
     </div>
 
@@ -274,7 +261,7 @@ defineExpose({
         :key="item"
         class="flex items-center space-x-2">
         <Tooltip
-          title="名称重复"
+          :title="t('httPlugin.uiConfig.httpConfigs.parametric.variables.duplicateName')"
           internal
           placement="right"
           destroyTooltipOnHide
@@ -285,7 +272,7 @@ defineExpose({
             :error="nameErrorSet.has(item)"
             style="width:calc((100% - 96px)/10*2);"
             excludes="{}"
-            placeholder="参数名称，最长100个字符"
+            :placeholder="t('httPlugin.uiConfig.httpConfigs.parametric.variables.namePlaceholder')"
             size="small"
             tirmAll
             class="flex-shrink-0 has-suffix"
@@ -307,7 +294,7 @@ defineExpose({
           v-model:value="dataMap[item].method"
           :error="methodErrorSet.has(item)"
           enumKey="ExtractionMethod"
-          placeholder="提取方式"
+          :placeholder="t('httPlugin.uiConfig.httpConfigs.parametric.variables.extractionMethodPlaceholder')"
           class="flex-shrink-0"
           style="width:calc((100% - 96px)/10*1);"
           @change="methodChange(item)" />
@@ -316,7 +303,7 @@ defineExpose({
           v-model:value="dataMap[item].location"
           :error="locationErrorSet.has(item)"
           enumKey="HttpExtractionLocation"
-          placeholder="提取位置"
+          :placeholder="t('httPlugin.uiConfig.httpConfigs.parametric.variables.locationPlaceholder')"
           class="flex-shrink-0"
           style="width:calc((100% - 96px)/10*1);"
           @change="locationChange(item)" />
@@ -328,7 +315,7 @@ defineExpose({
           :disabled="['REQUEST_RAW_BODY', 'RESPONSE_BODY'].includes(dataMap[item].location)"
           class="flex-shrink-0"
           trim
-          placeholder="提取参数名称，最长100个字符"
+          :placeholder="t('httPlugin.uiConfig.httpConfigs.parametric.variables.parameterNamePlaceholder')"
           style="width:calc((100% - 96px)/10*1.5);"
           @change="parameterNameChange(item)" />
 
@@ -336,7 +323,7 @@ defineExpose({
           v-model:value="dataMap[item].defaultValue"
           :maxlength="4096"
           trim
-          placeholder="提取缺省值（可选），最长4096个字符"
+          :placeholder="t('httPlugin.uiConfig.httpConfigs.parametric.variables.defaultValuePlaceholder')"
           class="flex-shrink-0"
           style="width:calc((100% - 96px)/10*2);"
           @change="defaultValueChange" />
@@ -348,14 +335,14 @@ defineExpose({
           :maxlength="1024"
           :disabled="dataMap[item].method === 'EXACT_VALUE'"
           class="flex-shrink-0"
-          placeholder="提取表达式，最长1024个字符"
+          :placeholder="t('httPlugin.uiConfig.httpConfigs.parametric.variables.expressionPlaceholder')"
           style="width:calc((100% - 96px)/10*1.5);"
           @change="expressionChange(item)" />
 
         <div class="flex-shrink-0 flex items-center" style="width:calc((100% - 96px)/10*1);">
           <Input
             v-model:value="dataMap[item].matchItem"
-            placeholder="匹配项（可选），范围0-2000"
+            :placeholder="t('httPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPlaceholder')"
             dataType="number"
             trimAll
             :max="2000"

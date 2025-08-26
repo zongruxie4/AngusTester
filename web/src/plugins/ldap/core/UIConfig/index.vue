@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { nextTick, ref, onMounted, watch, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Collapse, CollapsePanel, RadioGroup, Radio, Switch } from 'ant-design-vue';
 import Draggable from 'vuedraggable';
 import { debounce } from 'throttle-debounce';
 import { Icon, NoData, Input, Colon, Arrow, IconRequired, notification, Tooltip } from '@xcan-angus/vue-ui';
 import { utils, duration } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 import { PipelineConfig } from '../PropsType';
 
@@ -288,7 +291,7 @@ const cloneArgument = (id:string, index:number) => {
 
 const addArgument = (id:string, index:number) => {
   if (argumentsMap.value[id]?.length >= 50) {
-    notification.info('最多允许添加50个属性参数');
+    notification.info(t('ldapPlugin.uiConfig.maxAttributeParams'));
     return;
   }
 
@@ -488,16 +491,16 @@ defineExpose({
         @click="insertData">
         <div class="flex items-center">
           <Icon icon="icon-chajianpeizhi" class="mr-1" />
-          <span>插入Ldap请求</span>
+          <span>{{ t('ldapPlugin.uiConfig.insertLdapRequest') }}</span>
         </div>
       </Button>
 
-      <div class="flex-1 flex items-center overflow-hidden" title="支持同时编排多个Ldap接口，但每次只允许启用一个Ldap进行测试。">
+      <div class="flex-1 flex items-center overflow-hidden" :title="t('ldapPlugin.uiConfig.supportMultipleLdap')">
         <Icon
           icon="icon-tishi1"
           class="flex-shrink-0 text-3.5 mr-0.5"
           style="color:#a6ceff;" />
-        <span class="text-theme-sub-content truncate">支持同时编排多个Ldap接口，但每次只允许启用一个Ldap进行测试。</span>
+        <span class="text-theme-sub-content truncate">{{ t('ldapPlugin.uiConfig.supportMultipleLdap') }}</span>
       </div>
     </div>
     <template v-if="props.loaded">
@@ -535,7 +538,7 @@ defineExpose({
                     <Icon class="flex-shrink-0 text-4 mr-3" icon="icon-chajianpeizhi" />
                     <div class="flex-1 flex items-center space-x-2 mr-5">
                       <Tooltip
-                        title="名称重复"
+                        :title="t('ldapPlugin.uiConfig.nameDuplicate')"
                         internal
                         placement="right"
                         destroyTooltipOnHide
@@ -547,7 +550,7 @@ defineExpose({
                           :title="dataMap[id].name"
                           style="flex:1 1 40%;"
                           trim
-                          placeholder="名称，最大支持400个字符"
+                          :placeholder="t('ldapPlugin.uiConfig.namePlaceholder')"
                           @change="nameChange(id)" />
                       </Tooltip>
                       <Input
@@ -556,7 +559,7 @@ defineExpose({
                         :title="dataMap[id].description"
                         trim
                         style="flex:1 1 60%;"
-                        placeholder="描述，最大支持800个字符" />
+                        :placeholder="t('ldapPlugin.uiConfig.descriptionPlaceholder')" />
                     </div>
                     <div class="flex items-center flex-shrink-0 space-x-3">
                       <Switch
@@ -583,13 +586,13 @@ defineExpose({
                 <div class="space-y-3.5">
                   <div class="flex items-center text-theme-title">
                     <div class="w-1.25 h-3 rounded mr-1.5" style="background-color: #1e88e5;"></div>
-                    <span>服务器配置</span>
+                    <span>{{ t('ldapPlugin.uiConfig.serverConfig') }}</span>
                   </div>
                   <div class="space-y-3.5 ml-2.75">
                     <div class="flex items-center">
                       <div class="flex-shrink-0 w-20.5 flex items-center">
                         <IconRequired />
-                        <span>主机名或IP</span>
+                        <span>{{ t('ldapPlugin.uiConfig.hostnameOrIP') }}</span>
                         <Colon />
                       </div>
                       <div class="flex-1 flex items-center space-x-5 max-w-175">
@@ -599,13 +602,13 @@ defineExpose({
                           :error="!!serverErrorSet.has(id)"
                           trimAll
                           style="flex: 1 1 75%;"
-                          placeholder="主机名或IP，最大支持4096个字符"
+                          :placeholder="t('ldapPlugin.uiConfig.hostnameOrIPPlaceholder')"
                           @change="serverChange(id)" />
 
                         <div style="flex: 1 1 25%;" class="flex items-center">
                           <div class="flex-shrink-0 w-11.5 flex items-center">
                             <IconRequired />
-                            <span>端口</span>
+                            <span>{{ t('ldapPlugin.uiConfig.port') }}</span>
                             <Colon />
                           </div>
                           <Input
@@ -617,7 +620,7 @@ defineExpose({
                             trimALl
                             dataType="integer"
                             style="min-width: 75px;max-width: 200px;"
-                            placeholder="端口（1~65535）"
+                            :placeholder="t('ldapPlugin.uiConfig.portPlaceholder')"
                             @change="portChange(id)" />
                         </div>
                       </div>
@@ -625,7 +628,7 @@ defineExpose({
 
                     <div class="flex items-center">
                       <div class="flex-shrink-0 w-20.5 flex items-center">
-                        <span>用户名</span>
+                        <span>{{ t('ldapPlugin.uiConfig.username') }}</span>
                         <Colon />
                       </div>
                       <div class="flex-1 flex items-center space-x-5 max-w-175">
@@ -633,18 +636,18 @@ defineExpose({
                           v-model:value="dataMap[id].server.username"
                           :maxlength="400"
                           trimAll
-                          placeholder="用户名，最大支持400个字符"
+                          :placeholder="t('ldapPlugin.uiConfig.usernamePlaceholder')"
                           style="width:calc((100% - 58px)/2);" />
                         <div class="flex-1 flex items-center">
                           <div class="flex-shrink-0 w-9.5 flex items-center">
-                            <span>密码</span>
+                            <span>{{ t('ldapPlugin.uiConfig.password') }}</span>
                             <Colon />
                           </div>
                           <Input
                             v-model:value="dataMap[id].server.password"
                             :maxlength="4096"
                             trimAll
-                            placeholder="密码，最大支持4096个字符"
+                            :placeholder="t('ldapPlugin.uiConfig.passwordPlaceholder')"
                             type="password" />
                         </div>
                       </div>
@@ -652,14 +655,14 @@ defineExpose({
 
                     <div class="flex items-center">
                       <div class="flex-shrink-0 w-20.5 flex items-center">
-                        <span>基础DN</span>
+                        <span>{{ t('ldapPlugin.uiConfig.rootDn') }}</span>
                         <Colon />
                       </div>
                       <Input
                         v-model:value="dataMap[id].server.rootDn"
                         :maxlength="4096"
                         trimAll
-                        placeholder="基础DN，最大支持4096个字符"
+                        :placeholder="t('ldapPlugin.uiConfig.rootDnPlaceholder')"
                         class="max-w-175" />
                     </div>
                   </div>
@@ -668,29 +671,29 @@ defineExpose({
                 <div class="space-y-3.5 mt-5">
                   <div class="flex items-center text-theme-title">
                     <div class="w-1.25 h-3 rounded mr-1.5" style="background-color: #1e88e5;"></div>
-                    <span>测试配置</span>
+                    <span>{{ t('ldapPlugin.uiConfig.testConfig') }}</span>
                   </div>
                   <div class="space-y-3 ml-2.75">
                     <div class="flex items-center">
                       <div class="flex-shrink-0 w-20.5">
                         <IconRequired />
-                        <span>测试类型</span>
+                        <span>{{ t('ldapPlugin.uiConfig.testType') }}</span>
                         <Colon />
                       </div>
                       <RadioGroup
                         v-model:value="dataMap[id].testType"
                         :name="id + 'testType'"
                         @change="testTypeChange(id)">
-                        <Radio value="ADD">添加</Radio>
-                        <Radio value="DELETE">删除</Radio>
-                        <Radio value="SEARCH">搜索</Radio>
-                        <Radio value="MODIFY">修改</Radio>
+                        <Radio value="ADD">{{ t('ldapPlugin.uiConfig.testTypes.add') }}</Radio>
+                        <Radio value="DELETE">{{ t('ldapPlugin.uiConfig.testTypes.delete') }}</Radio>
+                        <Radio value="SEARCH">{{ t('ldapPlugin.uiConfig.testTypes.search') }}</Radio>
+                        <Radio value="MODIFY">{{ t('ldapPlugin.uiConfig.testTypes.modify') }}</Radio>
                       </RadioGroup>
                     </div>
 
                     <div class="flex items-center">
                       <div class="flex-shrink-0 w-20.5">
-                        <span>自定义测试</span>
+                        <span>{{ t('ldapPlugin.uiConfig.customTest') }}</span>
                         <Colon />
                       </div>
                       <Switch
@@ -703,20 +706,20 @@ defineExpose({
                       <template v-if="dataMap[id].testType === 'ADD'">
                         <div class="flex items-center">
                           <div class="flex-shrink-0 w-20.5 flex items-center">
-                            <span>DN条目名称</span>
+                            <span>{{ t('ldapPlugin.uiConfig.entryDn') }}</span>
                             <Colon />
                           </div>
                           <Input
                             v-model:value="dataMap[id].entryDn"
                             :maxlength="4096"
                             trim
-                            placeholder="自定义添加条目名称，最大支持4096个字符"
+                            :placeholder="t('ldapPlugin.uiConfig.entryDnAddPlaceholder')"
                             class="max-w-175" />
                         </div>
 
                         <div class="flex items-start">
                           <div class="leading-7 flex-shrink-0 w-20.5">
-                            <span>属性参数</span>
+                            <span>{{ t('ldapPlugin.uiConfig.attributeParams') }}</span>
                             <Colon />
                           </div>
                           <div class="flex-1 space-y-2 max-w-175">
@@ -725,7 +728,7 @@ defineExpose({
                               :key="item.id"
                               class="flex items-center space-x-2.5">
                               <Tooltip
-                                title="名称重复"
+                                :title="t('ldapPlugin.uiConfig.nameDuplicate')"
                                 internal
                                 placement="right"
                                 destroyTooltipOnHide
@@ -736,7 +739,7 @@ defineExpose({
                                   :maxlength="400"
                                   trimAll
                                   style="flex: 1 1 50%;"
-                                  placeholder="参数名，最大支持400个字符"
+                                  :placeholder="t('ldapPlugin.uiConfig.paramNamePlaceholder')"
                                   @change="argumentNameChange(id)" />
                               </Tooltip>
                               <Input
@@ -744,7 +747,7 @@ defineExpose({
                                 :maxlength="4096"
                                 trim
                                 style="flex: 1 1 50%;"
-                                placeholder="参数值，最大支持4096个字符" />
+                                :placeholder="t('ldapPlugin.uiConfig.paramValuePlaceholder')" />
                               <div class="flex-shrink-0 flex items-center space-x-2">
                                 <div class="flex items-center cursor-pointer hover:text-text-link-hover" title="克隆">
                                   <Icon
@@ -773,14 +776,14 @@ defineExpose({
                       <template v-if="dataMap[id].testType === 'DELETE'">
                         <div class="flex items-center">
                           <div class="flex-shrink-0 w-20.5 flex items-center">
-                            <span>删除条目</span>
+                            <span>{{ t('ldapPlugin.uiConfig.deleteEntry') }}</span>
                             <Colon />
                           </div>
                           <Input
                             v-model:value="dataMap[id].deleteEntry"
                             :maxlength="4096"
                             trim
-                            placeholder="自定义删除条目，最大支持4096个字符"
+                                                          :placeholder="t('ldapPlugin.uiConfig.deleteEntryPlaceholder')"
                             class="max-w-175" />
                         </div>
                       </template>
@@ -788,27 +791,27 @@ defineExpose({
                       <template v-if="dataMap[id].testType === 'SEARCH'">
                         <div class="flex items-center">
                           <div class="flex-shrink-0 w-20.5 flex items-center">
-                            <span>基名称</span>
+                            <span>{{ t('ldapPlugin.uiConfig.searchBase') }}</span>
                             <Colon />
                           </div>
                           <Input
                             v-model:value="dataMap[id].searchBase"
                             :maxlength="4096"
                             trim
-                            placeholder="自定义搜索条目的基名称，最大支持4096个字符"
+                                                          :placeholder="t('ldapPlugin.uiConfig.searchBasePlaceholder')"
                             class="max-w-175" />
                         </div>
 
                         <div class="flex items-center">
                           <div class="flex-shrink-0 w-20.5 flex items-center">
-                            <span>过滤条件</span>
+                            <span>{{ t('ldapPlugin.uiConfig.searchFilter') }}</span>
                             <Colon />
                           </div>
                           <Input
                             v-model:value="dataMap[id].searchFilter"
                             :maxlength="4096"
                             trim
-                            placeholder="自定义搜索条目过滤条件，最大支持4096个字符"
+                                                          :placeholder="t('ldapPlugin.uiConfig.searchFilterPlaceholder')"
                             class="max-w-175" />
                         </div>
                       </template>
@@ -816,20 +819,20 @@ defineExpose({
                       <template v-if="dataMap[id].testType === 'MODIFY'">
                         <div class="flex items-center">
                           <div class="flex-shrink-0 w-20.5 flex items-center">
-                            <span>DN条目名称</span>
+                            <span>{{ t('ldapPlugin.uiConfig.entryDn') }}</span>
                             <Colon />
                           </div>
                           <Input
                             v-model:value="dataMap[id].entryDn"
                             :maxlength="4096"
                             trim
-                            placeholder="自定义修改条目名称，最大支持4096个字符"
+                            :placeholder="t('ldapPlugin.uiConfig.entryDnModifyPlaceholder')"
                             class="max-w-175" />
                         </div>
 
                         <div class="flex items-start">
                           <div class="leading-7 flex-shrink-0 w-20.5">
-                            <span>属性参数</span>
+                            <span>{{ t('ldapPlugin.uiConfig.attributeParams') }}</span>
                             <Colon />
                           </div>
                           <div class="flex-1 space-y-2 max-w-175">
@@ -838,7 +841,7 @@ defineExpose({
                               :key="item.id"
                               class="flex items-center space-x-2.5">
                               <Tooltip
-                                title="名称重复"
+                                :title="t('ldapPlugin.uiConfig.nameDuplicate')"
                                 internal
                                 placement="right"
                                 destroyTooltipOnHide
@@ -849,7 +852,7 @@ defineExpose({
                                   :maxlength="400"
                                   trimAll
                                   style="flex: 1 1 50%;"
-                                  placeholder="参数名，最大支持400个字符"
+                                  :placeholder="t('ldapPlugin.uiConfig.paramNamePlaceholder')"
                                   @change="argumentNameChange(id)" />
                               </Tooltip>
                               <Input
@@ -857,7 +860,7 @@ defineExpose({
                                 :maxlength="4096"
                                 trim
                                 style="flex: 1 1 50%;"
-                                placeholder="参数值，最大支持4096个字符" />
+                                :placeholder="t('ldapPlugin.uiConfig.paramValuePlaceholder')" />
                               <div class="flex-shrink-0 flex items-center space-x-2">
                                 <div class="flex items-center cursor-pointer hover:text-text-link-hover" title="克隆">
                                   <Icon
@@ -888,24 +891,24 @@ defineExpose({
                       <div class="flex-shrink-0 w-20.5"></div>
                       <div class="flex-1 flex max-w-175 space-x-5 items-stretch">
                         <div class="flex-1 rounded border border-solid px-3.5 py-2 border-theme-text-box break-all">
-                          <div class="flex items-center mb-2.5"><span>非自定义测试默认人员条目信息</span><Colon /></div>
+                          <div class="flex items-center mb-2.5"><span>{{ t('ldapPlugin.uiConfig.defaultPersonEntryInfo') }}</span><Colon /></div>
                           <div class="space-y-1.5 text-theme-sub-content">
                             <div>objectClass：top,person,organizationalPerson,inetOrgPerson</div>
                             <div>givenname：User</div>
                             <div>sn：Test</div>
-                            <div>cn：TestUser + 唯一计数器编号</div>
+                            <div>cn：TestUser + {{ t('ldapPlugin.uiConfig.uniqueCounter') }}</div>
                             <div>uid：user</div>
                             <div>userpassword：Test</div>
                           </div>
                         </div>
 
                         <div class="flex-1 rounded border border-solid px-3.5 py-2 border-theme-text-box break-all">
-                          <div class="flex items-center mb-2.5"><span>非自定义测试类型对用逻辑说明</span><Colon /></div>
+                          <div class="flex items-center mb-2.5"><span>{{ t('ldapPlugin.uiConfig.defaultTestTypeLogic') }}</span><Colon /></div>
                           <div class="space-y-1.5 text-theme-sub-content">
-                            <div>添加：先添加默认人员条目信息，完成后再删除。</div>
-                            <div>修改：先添加默认人员条目信息，添加成功后执行修改操作，最后再删除。</div>
-                            <div>搜索：先添加默认人员条目信息，添加成功后执行搜索操作，最后再删除。</div>
-                            <div>删除：先添加默认人员条目信息，添加成功后在执行删除操作。</div>
+                            <div>{{ t('ldapPlugin.uiConfig.defaultLogic.add') }}</div>
+                            <div>{{ t('ldapPlugin.uiConfig.defaultLogic.modify') }}</div>
+                            <div>{{ t('ldapPlugin.uiConfig.defaultLogic.search') }}</div>
+                            <div>{{ t('ldapPlugin.uiConfig.defaultLogic.delete') }}</div>
                           </div>
                         </div>
                       </div>

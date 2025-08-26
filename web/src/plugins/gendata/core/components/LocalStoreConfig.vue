@@ -2,10 +2,13 @@
 import { ref } from 'vue';
 import { Input, Hints } from '@xcan-angus/vue-ui';
 import { FormItem, Form } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
 
 const formState = ref({
   batchRows: '1'
 });
+
+const { t } = useI18n();
 
 const onBatchRowsBlur = () => {
   const value = formState.value.batchRows.trim();
@@ -47,11 +50,11 @@ defineExpose({
       </Tooltip>
     </div> -->
     <Form layout="vertical">
-      <FormItem label="批量行数" layout="vertical">
+      <FormItem :label="t('gendata.localStoreConfig.batchRows')" layout="vertical">
         <!-- <Tooltip title="最大支持10000" placement="topLeft">
           <Icon icon="icon-tishi1" class="text-blue-tips text-3.5 ml-1" />
         </Tooltip> -->
-        <Hints text="每次批量生成、存储或发送行数，默认 1，最大10000。" class="mb-2" />
+        <Hints :text="t('gendata.localStoreConfig.hints.batchRows')" class="mb-2" />
         <Input
           v-model:value="formState.batchRows"
           dataType="number"
@@ -59,8 +62,8 @@ defineExpose({
           :min="1"
           @blur="onBatchRowsBlur" />
       </FormItem>
-      <FormItem label="默认储存路径" layout="vertical">
-        <Hints text="生成数据文件在执行节点存储路径。" />
+      <FormItem :label="t('gendata.localStoreConfig.defaultStoragePath')" layout="vertical">
+        <Hints :text="t('gendata.localStoreConfig.hints.defaultStoragePath')" />
         <Input
           value="${AGENT_HOME}/exec/${execId}/data.${format}"
           disabled />

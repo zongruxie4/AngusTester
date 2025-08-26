@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { TabPane, Tabs } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
 import { ActivityTimeline } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -17,14 +20,14 @@ const types = ['SCENARIO', 'SCENARIO_MONITOR'];
 
 <template>
   <Tabs size="small">
-    <TabPane key="my" tab="我的活动">
+    <TabPane key="my" :tab="t('scenarioHome.activityTimeline.myActivity')">
       <ActivityTimeline
         :types="types"
         :userId="props.userInfo?.id"
         :projectId="props.projectId"
         :showUserName="false" />
     </TabPane>
-    <TabPane key="total" tab="所有活动">
+    <TabPane key="total" :tab="t('scenarioHome.activityTimeline.allActivity')">
       <ActivityTimeline :types="types" :projectId="props.projectId" />
     </TabPane>
   </Tabs>

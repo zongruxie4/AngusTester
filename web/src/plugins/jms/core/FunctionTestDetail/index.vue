@@ -3,7 +3,7 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { utils } from '@xcan-angus/infra';
 import { GroupText, TestBasicInfo } from '@xcan-angus/vue-ui';
 import { Timeline, TimelineItem } from 'ant-design-vue';
-
+import { useI18n } from 'vue-i18n';
 import { ExecInfo, ExecContent } from './PropsType';
 
 import Collapse from './Collapse/index.vue';
@@ -24,6 +24,8 @@ const props = withDefaults(defineProps<Props>(), {
   execContent: undefined,
   exception: undefined
 });
+
+const { t } = useI18n();
 
 const execContentList = ref<ExecContent[]>([]);
 const totalAssertionNum = ref(0);
@@ -79,10 +81,10 @@ const execContentMap = computed(() => {
 
 const pipelines = computed(() => {
   const _pipelines = props.execInfo?.task?.pipelines || [];
-  const httpNum = _pipelines.filter(item => item.target === 'FTP').length;
+  const httpNum = _pipelines.filter(item => item.target === 'JMS').length;
   return _pipelines?.reduce((prev, cur) => {
     const _cur = { ...cur, linkName: cur.name, id: utils.uuid() };
-    if (httpNum === 1 && _cur.target === 'FTP') {
+    if (httpNum === 1 && _cur.target === 'JMS') {
       _cur.linkName = 'Total';
     }
     if (_cur.transactionName) {
@@ -131,7 +133,7 @@ const planRequestNum = computed(() => {
   let httpNum = 0;
   const pipelines = props.execInfo?.task?.pipelines;
   if (pipelines?.length) {
-    httpNum = pipelines.filter(item => item.target === 'FTP' && item.enabled).length;
+    httpNum = pipelines.filter(item => item.target === 'JMS' && item.enabled).length;
   }
 
   return _iterationNum * httpNum;
@@ -169,11 +171,22 @@ const tranMax = computed(() => {
 });
 
 const pending = computed(() => {
-  return props.execInfo?.status?.value === 'RUNNING' ? '执行中...' : false;
+  return props.execInfo?.status?.value === 'RUNNING' ? t('httPlugin.functionTestDetail.pending') : false;
 });
 
-const texts = ['通过', '忽略', '未启用', '总数'];
-const timeTexts = ['最小', '平均', '最大'];
+
+const texts = computed(() => [
+  t('httPlugin.functionTestDetail.texts.success'),
+  t('httPlugin.functionTestDetail.texts.ignore'),
+  t('httPlugin.functionTestDetail.texts.block'),
+  t('httPlugin.functionTestDetail.texts.total')
+]);
+
+const timeTexts = computed(() => [
+  t('httPlugin.functionTestDetail.timeTexts.minimum'),
+  t('httPlugin.functionTestDetail.timeTexts.average'),
+  t('httPlugin.functionTestDetail.timeTexts.maximum')
+]);
 </script>
 <template>
   <div class="px-5">
@@ -189,7 +202,7 @@ const timeTexts = ['最小', '平均', '最大'];
         <div class="text-text-title text-4 font-semibold" style="color:rgba(129, 154, 218, 100%);">
           {{ duration?.[1] }}<span class="text-3.25 ml-0.5">{{ duration?.[2] }}</span>
         </div>
-        <div>运行时间</div>
+        <div>{{ t('httPlugin.functionTestDetail.basicInfo.duration') }}</div>
       </div>
 
       <div
@@ -200,7 +213,7 @@ const timeTexts = ['最小', '平均', '最大'];
           <em class="not-italic inline-block w-0.5 h-3.5 mx-1.5 rounded" style="transform: rotate(25deg);background-color: rgba(3, 185, 208, 100%);"></em>
           <span>{{ planIterationNum }}</span>
         </div>
-        <div>迭代数</div>
+        <div>{{ t('httPlugin.functionTestDetail.basicInfo.iteration') }}</div>
       </div>
 
       <div
@@ -211,7 +224,7 @@ const timeTexts = ['最小', '平均', '最大'];
           <em class="not-italic inline-block w-0.5 h-3.5 mx-1.5 rounded" style="transform: rotate(25deg);background-color: rgba(3, 206, 92, 100%);"></em>
           <span>{{ planRequestNum }}</span>
         </div>
-        <div>请求数</div>
+        <div>{{ t('httPlugin.functionTestDetail.basicInfo.request') }}</div>
       </div>
 
       <div
@@ -227,7 +240,7 @@ const timeTexts = ['最小', '平均', '最大'];
           <span>{{ totalAssertionNum }}</span>
         </div>
         <div class="whitespace-nowrap overflow-hidden">
-          断言（<GroupText :texts="texts" class="text-theme-sub-content" />）
+          {{ t('common.assertion') }}（<GroupText :texts="texts" class="text-theme-sub-content" />）
         </div>
       </div>
 
@@ -242,7 +255,7 @@ const timeTexts = ['最小', '平均', '最大'];
           <span>{{ tranMax }}</span>
         </div>
         <div class="whitespace-nowrap overflow-hidden">
-          响应时间（<GroupText :texts="timeTexts" class="text-theme-sub-content" />）
+          {{ t('httPlugin.functionTestDetail.basicInfo.responseTime') }}（<GroupText :texts="timeTexts" class="text-theme-sub-content" />）
         </div>
       </div>
     </div>

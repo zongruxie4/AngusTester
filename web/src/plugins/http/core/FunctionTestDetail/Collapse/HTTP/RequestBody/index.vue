@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { NoData, FormatHighlight } from '@xcan-angus/vue-ui';
 
 import { ExecContent } from '../../../PropsType';
+
+const { t } = useI18n();
 
 export interface Props {
   value: ExecContent

@@ -3,7 +3,8 @@ import { ref, reactive, watch } from 'vue';
 import { FormItem, Form } from 'ant-design-vue';
 import { useRoute } from 'vue-router';
 import { Icon, Input, Grid } from '@xcan-angus/vue-ui';
-import SelectEnum from '@/components/SelectEnum/index.vue'
+import SelectEnum from '@/components/SelectEnum/index.vue';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   scriptInfo: Record<string, any> | undefined;
@@ -12,6 +13,8 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   scriptInfo: undefined
 });
+
+const { t } = useI18n();
 
 const route = useRoute();
 const type = ref<'info' | 'edit' | 'add'>(route.query.type as 'info' | 'edit' | 'add');
@@ -49,39 +52,39 @@ const formData = reactive({
 
 const infoConfig = [[
   {
-    label: '脚本名称',
+    label: t('ftpPlugin.performanceTestDetail.scriptInfo.scriptName'),
     dataIndex: 'name'
   },
   {
-    label: '脚本类型',
+    label: t('ftpPlugin.performanceTestDetail.scriptInfo.scriptType'),
     dataIndex: 'typeName'
   },
   {
-    label: '插件',
+    label: t('ftpPlugin.performanceTestDetail.scriptInfo.plugin'),
     dataIndex: 'plugin'
   },
   {
-    label: '来源',
+    label: t('ftpPlugin.performanceTestDetail.scriptInfo.source'),
     dataIndex: 'sourceName'
   },
   {
-    label: '创建人',
+    label: t('ftpPlugin.performanceTestDetail.scriptInfo.creator'),
     dataIndex: 'createdBy'
   },
   {
-    label: '创建时间',
+    label: t('ftpPlugin.performanceTestDetail.scriptInfo.createTime'),
     dataIndex: 'createdDate'
   },
   {
-    label: '最后更新人',
+    label: t('ftpPlugin.performanceTestDetail.scriptInfo.lastModifier'),
     dataIndex: 'lastModifiedByName'
   },
   {
-    label: '最后更新时间',
+    label: t('ftpPlugin.performanceTestDetail.scriptInfo.lastModifyTime'),
     dataIndex: 'lastModifiedDate'
   },
   {
-    label: '描述',
+    label: t('ftpPlugin.performanceTestDetail.scriptInfo.description'),
     dataIndex: 'description'
   }
 ]];
@@ -131,29 +134,32 @@ defineExpose({ getFormData, validate, isSpread, toggle });
         layout="vertical"
         size="small">
         <FormItem
-          label="脚本类型"
+          :label="t('ftpPlugin.performanceTestDetail.scriptInfo.scriptType')"
           name="type"
-          :rules="[{required: true, message: '请选择脚本类型'}]">
+          :rules="[{required: true, message: t('ftpPlugin.performanceTestDetail.scriptInfo.form.scriptTypeRequired')}]">
           <SelectEnum
-            v-model:value="formData.type"
+            v-model:value="formData.type" 
             enumKey="ScriptType"
-            placeholder="请选择脚本类型" />
+            :placeholder="t('ftpPlugin.performanceTestDetail.scriptInfo.form.scriptTypePlaceholder')" />
         </FormItem>
         <FormItem
-          label="脚本名称"
+          :label="t('ftpPlugin.performanceTestDetail.scriptInfo.scriptName')"
           name="name"
           size="small"
-          :rules="[{required: true, message: '请填写脚本名称'}]">
+          :rules="[{required: true, message: t('ftpPlugin.performanceTestDetail.scriptInfo.form.scriptNameRequired')}]">
           <Input
             v-model:value="formData.name"
             :maxlength="200"
-            placeholder="请输入脚本名称,最多200字符" />
+            :placeholder="t('ftpPlugin.performanceTestDetail.scriptInfo.form.scriptNamePlaceholder  ')" />
         </FormItem>
-        <FormItem label="描述" name="description">
+        <FormItem
+          :label="t('ftpPlugin.performanceTestDetail.scriptInfo.description')"
+          name="description"
+          :rules="[{required: true, message: t('ftpPlugin.performanceTestDetail.scriptInfo.form.descriptionRequired')}]">
           <Input
             v-model:value="formData.description"
-            placeholder="请输入脚本描述，最多800字符"
             type="textarea"
+            :placeholder="t('ftpPlugin.performanceTestDetail.scriptInfo.form.descriptionPlaceholder')"
             :showCount="!!formData.description"
             :autoSize="{ minRows: 4, maxRows: 6 }"
             :maxlength="800" />

@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, nextTick } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Badge, Descriptions, DescriptionsItem, TypographyParagraph } from 'ant-design-vue';
 import { AsyncComponent, Modal, Spin, MonacoEditor } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 import { ExecContent } from '../../../../PropsType';
 
@@ -63,7 +66,7 @@ const assertLabel = computed(() => {
   }
 
   if (['REG_MATCH', 'XPATH_MATCH', 'JSON_PATH_MATCH'].includes(assertionCondition.value)) {
-    return TYPE_MAP[assertionType.value] + CONDITION_MAP[assertionCondition.value] + '值';
+    return TYPE_MAP[assertionType.value] + CONDITION_MAP[assertionCondition.value] + t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.expectedValue');
   }
 
   return TYPE_MAP[assertionType.value];
@@ -117,7 +120,7 @@ const assertionCondition = computed(() => {
 });
 
 const expectedLabel = computed(() => {
-  return props.value?.extraction ? '提取值' : '期望值';
+  return props.value?.extraction ? t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.extractedValue') : t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.expectedValue');
 });
 
 const expectedValue = computed(() => {
@@ -166,31 +169,31 @@ const onEllipsis = () => { };// 删除该方法不会触发省略
 const ellipsis = { rows: 1, expandable: false, onEllipsis };
 
 const TYPE_MAP = {
-  STATUS: '响应状态码',
-  HEADER: '响应头',
-  BODY: '响应体',
-  BODY_SIZE: '响应体大小',
-  SIZE: '响应大小',
-  DURATION: '耗时'
+  STATUS: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.typeMap.STATUS'),
+  HEADER: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.typeMap.HEADER'),
+  BODY: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.typeMap.BODY'),
+  BODY_SIZE: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.typeMap.BODY_SIZE'),
+  SIZE: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.typeMap.SIZE'),
+  DURATION: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.typeMap.DURATION')
 };
 
 // 断言条件
 const CONDITION_MAP = {
-  CONTAIN: '包含',
-  EQUAL: '等于',
-  GREATER_THAN: '大于',
-  GREATER_THAN_EQUAL: '大于等于',
-  IS_EMPTY: '为空(空字符串或null值)',
-  IS_NULL: '为null',
-  LESS_THAN: '小于',
-  LESS_THAN_EQUAL: '小于等于',
-  NOT_CONTAIN: '不包含',
-  NOT_EMPTY: '不为空(非空字符串或null值)',
-  NOT_EQUAL: '不等于',
-  NOT_NULL: '不为null',
-  REG_MATCH: '正则匹配',
-  XPATH_MATCH: 'XPath匹配',
-  JSON_PATH_MATCH: 'JSONPath匹配'
+  CONTAIN: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.conditionMap.CONTAIN'),
+  EQUAL: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.conditionMap.EQUAL'),
+  GREATER_THAN: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.conditionMap.GREATER_THAN'),
+  GREATER_THAN_EQUAL: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.conditionMap.GREATER_THAN_EQUAL'),
+  IS_EMPTY: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.conditionMap.IS_EMPTY'),
+  IS_NULL: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.conditionMap.IS_NULL'),
+  LESS_THAN: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.conditionMap.LESS_THAN'),
+  LESS_THAN_EQUAL: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.conditionMap.LESS_THAN_EQUAL'),
+  NOT_CONTAIN: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.conditionMap.NOT_CONTAIN'),
+  NOT_EMPTY: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.conditionMap.NOT_EMPTY'),
+  NOT_EQUAL: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.conditionMap.NOT_EQUAL'),
+  NOT_NULL: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.conditionMap.NOT_NULL'),
+  REG_MATCH: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.conditionMap.REG_MATCH'),
+  XPATH_MATCH: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.conditionMap.XPATH_MATCH'),
+  JSON_PATH_MATCH: t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.conditionMap.JSON_PATH_MATCH')
 };
 
 const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
@@ -207,7 +210,7 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
             style="word-wrap: unset;word-break: break-all;white-space: break-spaces;"
             :ellipsis="ellipsis"
             :content="showRealValue" />
-          <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal('real')">查看</div>
+          <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal('real')">{{ t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.view') }}</div>
         </div>
       </template>
 
@@ -216,7 +219,7 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
       </template>
     </DescriptionsItem>
 
-    <DescriptionsItem label="断言条件">
+                <DescriptionsItem :label="t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.assertionCondition')">
       {{ CONDITION_MAP[assertionCondition] }}
     </DescriptionsItem>
 
@@ -233,7 +236,7 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
             style="word-wrap: unset;word-break: break-all;white-space: break-spaces;"
             :ellipsis="ellipsis"
             :content="showExpectedValue" />
-          <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal('expected')">查看</div>
+          <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal('expected')">{{ t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.view') }}</div>
         </div>
       </template>
 
@@ -243,14 +246,14 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
     </DescriptionsItem>
 
     <template v-if="assertionIgnored">
-      <DescriptionsItem label="断言结果" :span="3">
-        <Badge status="default" text="忽略" />
+      <DescriptionsItem :label="t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.assertionResult')" :span="3">
+        <Badge status="default" :text="t('jdbcPlugin.FunctionTestDetailJdbc.assertionStatus.ignored')" />
       </DescriptionsItem>
     </template>
 
     <template v-else>
       <template v-if="resultFailure">
-        <DescriptionsItem label="断言结果" :span="!!resultMessage ? 1 : 3">
+        <DescriptionsItem :label="t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.assertionResult')" :span="!!resultMessage ? 1 : 3">
           <Badge
             class="flex-shrink-0"
             status="error"
@@ -259,15 +262,15 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
 
         <DescriptionsItem
           v-if="!!resultMessage"
-          label="失败原因"
+          :label="t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.failureReason')"
           :span="2">
           <div :title="resultMessage">{{ resultMessage }}</div>
         </DescriptionsItem>
       </template>
 
       <template v-else>
-        <DescriptionsItem label="断言结果" :span="3">
-          <Badge status="success" text="通过" />
+        <DescriptionsItem :label="t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.assertionResult')" :span="3">
+          <Badge status="success" :text="t('jdbcPlugin.FunctionTestDetailJdbc.assertionStatus.passed')" />
         </DescriptionsItem>
       </template>
     </template>

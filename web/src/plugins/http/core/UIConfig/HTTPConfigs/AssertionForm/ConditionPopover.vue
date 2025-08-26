@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import { Popover } from 'ant-design-vue';
 import { Icon, Hints } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 </script>
 <template>
   <Popover
@@ -13,20 +16,20 @@ import { Icon, Hints } from '@xcan-angus/vue-ui';
     <template #content>
       <div style="max-height: 60vh; overflow: auto;" class="leading-4.5 text-3 text-theme-content">
         <div class="mb-4">
-          <Hints text="执行条件表达式" class="mb-2 !font-semibold !text-theme-content" />
-          <div class="mb-3">用于控制该条断言是否执行，当满足条件表达式或条件表达式为空时断言会被执行。</div>
+          <Hints :text="t('httPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.title')" class="mb-2 !font-semibold !text-theme-content" />
+          <div class="mb-3">{{ t('httPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.description') }}</div>
         </div>
         <ol class="pl-4 space-y-3">
           <li style="list-style-type: circle;" class="space-y-2 text-theme-sub-content">
-            <div class="text-theme-content font-semibold">条件表达式格式</div>
-            <div>{变量名} + 运算符 + 值，例如：{id}=100001。</div>
+            <div class="text-theme-content font-semibold">{{ t('httPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.formatTitle') }}</div>
+            <div>{{ t('httPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.formatExample') }}</div>
           </li>
           <li style="list-style-type: circle;" class="space-y-2">
-            <div class="font-semibold">格式中参数说明</div>
+            <div class="font-semibold">{{ t('httPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.parameterTitle') }}</div>
             <ul style="padding-left: 16px;list-style-type: disc;" class="space-y-2 text-theme-sub-content">
-              <li>“变量”为当前接口或父级项目/服务或全局中定义的变量，其中变量引用符号{}可以省略。</li>
-              <li>支持“运算符”包括：=、!=、>、>=、&lt;、&lt;=。</li>
-              <li>操作符右侧“值”只能是常量。</li>
+              <li>{{ t('httPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.variableDescription') }}</li>
+              <li>{{ t('httPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.operatorDescription') }}</li>
+              <li>{{ t('httPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.valueDescription') }}</li>
             </ul>
           </li>
         </ol>

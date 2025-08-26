@@ -4,7 +4,7 @@ import { Button } from 'ant-design-vue';
 import { Icon, NoData, Select } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
-
+import { useI18n } from 'vue-i18n';
 import { TaskInfo } from '../../../../../../PropsType';
 
 type Props = {
@@ -20,6 +20,8 @@ const props = withDefaults(defineProps<Props>(), {
   appInfo: undefined,
   dataSource: undefined
 });
+
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -87,7 +89,7 @@ const refCaseIds = computed(() => {
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-y-auto">
     <div class="flex items-center text-theme-title mb-2.5">
-      <span class="font-semibold">关联功能用例</span>
+      <span class="font-semibold">{{ t('task.assocCase.title') }}</span>
       <Button
         v-show="!editFlag"
         type="link"
@@ -128,7 +130,7 @@ const refCaseIds = computed(() => {
         :maxTags="20"
         :action="`${TESTER}/func/case?projectId=${props.projectId}&fullTextSearch=true`"
         class="w-full"
-        placeholder="最多可关联20个用例"
+        :placeholder="t('task.assocCase.selectCasePlaceholder')"
         mode="multiple"
         @change="selectChange">
         <template #option="record">
@@ -141,7 +143,7 @@ const refCaseIds = computed(() => {
               v-if="record.overdue"
               class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2"
               style="transform: scale(0.9);color: rgba(245, 34, 45, 100%);line-height: 16px;">
-              <span class="inline-block transform-gpu">已逾期</span>
+              <span class="inline-block transform-gpu">{{ t('task.assocCase.overdue') }}</span>
             </div>
           </div>
         </template>
@@ -152,13 +154,13 @@ const refCaseIds = computed(() => {
           type="default"
           size="small"
           @click="cancel">
-          取消
+          {{ t('actions.cancel') }}
         </Button>
         <Button
           type="primary"
           size="small"
           @click="ok">
-          确定
+          {{ t('actions.confirm') }}
         </Button>
       </div>
     </template>

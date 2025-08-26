@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Colon, NoData, IconDownload, Spin } from '@xcan-angus/vue-ui';
 import { getDataByProxy } from '@/api/proxy/index';
+
+const { t } = useI18n();
 
 interface Props {
   execId:string;
@@ -75,7 +78,7 @@ const downloadLog = () => {
   const a = document.createElement('a');
   a.style.display = 'none';
   a.href = url;
-  a.download = 'runner.log';
+  a.download = t('httPlugin.execLog.downloadFileName');
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -93,24 +96,24 @@ const downloadLog = () => {
     <div v-if="!!props.execNode?.id" class="h-full text-3">
       <div class="flex items-center leading-5 mb-2.5">
         <div class="flex items-center mr-15">
-          <span class="text-theme-sub-content">节点</span>
+          <span class="text-theme-sub-content">{{ t('httPlugin.execLog.node') }}</span>
           <Colon class="mr-2" />
           <span>{{ props.execNode.name }}({{ props.execNode.publicIp || props.execNode.ip }})</span>
         </div>
         <div class="flex items-center mr-15">
-          <span class="text-theme-sub-content">调度结果</span>
+          <span class="text-theme-sub-content">{{ t('httPlugin.execLog.schedulingResult') }}</span>
           <Colon class="mr-2" />
           <template v-if="props.schedulingResult?.success">
             <span class="inline-block w-1.5 h-1.5 mr-1 rounded bg-status-success"></span>
-            <span>成功</span>
+            <span>{{ t('common.success') }}</span>
           </template>
           <template v-else>
             <span class="inline-block w-1.5 h-1.5 mr-1 rounded bg-status-error"></span>
-            <span>失败</span>
+            <span>{{ t('common.failure') }}</span>
           </template>
         </div>
         <div class="flex items-center mr-15">
-          <span class="text-theme-sub-content">进程退出码</span>
+          <span class="text-theme-sub-content">{{ t('httPlugin.execLog.processExitCode') }}</span>
           <Colon class="mr-2" />
           <span>{{ props.schedulingResult?.exitCode }}</span>
         </div>

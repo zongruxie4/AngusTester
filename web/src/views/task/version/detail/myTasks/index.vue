@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, ref } from 'vue';
 import { TabPane, Tabs } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
 
 type Props = {
   projectId: string;
@@ -9,6 +10,8 @@ type Props = {
   versionId: string;
   versionInfo: any
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
@@ -60,8 +63,8 @@ const cancelTotal = computed(() => {
           <div class="flex items-center space-x-1">
             <span class="text-8 font-semibold text-text-title">{{ currentTotal }}</span>
             <div class="leading-3.5">
-              <span>当前版本</span>
-              <div>个任务</div>
+              <span>{{ t('taskVersion.taskTable.tabs.current') }}</span>
+              <div>{{ t('taskVersion.taskTable.units.tasks') }}</div>
             </div>
           </div>
         </template>
@@ -77,8 +80,8 @@ const cancelTotal = computed(() => {
           <div class="flex items-center space-x-1">
             <span class="text-8 font-semibold text-status-success">{{ completedTotal }}</span>
             <div class="leading-3.5">
-              <span>任务</span>
-              <div>已完成</div>
+              <span>{{ t('taskVersion.taskTable.units.task') }}</span>
+              <div>{{ t('taskVersion.taskTable.tabs.completed') }}</div>
             </div>
           </div>
         </template>
@@ -94,8 +97,8 @@ const cancelTotal = computed(() => {
           <div class="flex items-center space-x-1">
             <span class="text-8 font-semibold text-status-warn">{{ processingTotal }}</span>
             <div class="leading-3.5">
-              <span>任务</span>
-              <div>正在处理</div>
+              <span>{{ t('taskVersion.taskTable.units.task') }}</span>
+              <div>{{ t('taskVersion.taskTable.tabs.processing') }}</div>
             </div>
           </div>
         </template>
@@ -111,8 +114,8 @@ const cancelTotal = computed(() => {
           <div class="flex items-center  space-x-1">
             <span class="text-8 font-semibold text-status-pending">{{ confirmingTotal }}</span>
             <div class="leading-3.5">
-              <span>任务</span>
-              <div>待确认</div>
+              <span>{{ t('taskVersion.taskTable.units.task') }}</span>
+              <div>{{ t('taskVersion.taskTable.tabs.confirming') }}</div>
             </div>
           </div>
         </template>
@@ -128,8 +131,8 @@ const cancelTotal = computed(() => {
           <div class="flex items-center  space-x-1">
             <span class="text-8 font-semibold text-blue-light">{{ pendingTotal }}</span>
             <div class="leading-3.5">
-              <span>任务</span>
-              <div>待处理</div>
+              <span>{{ t('taskVersion.taskTable.units.task') }}</span>
+              <div>{{ t('taskVersion.taskTable.tabs.pending') }}</div>
             </div>
           </div>
         </template>
@@ -145,8 +148,8 @@ const cancelTotal = computed(() => {
           <div class="flex items-center  space-x-1">
             <span class="text-8 font-semibold text-gray-3">{{ cancelTotal }}</span>
             <div class="leading-3.5">
-              <span>任务</span>
-              <div>已取消</div>
+              <span>{{ t('taskVersion.taskTable.units.task') }}</span>
+              <div>{{ t('taskVersion.taskTable.tabs.canceled') }}</div>
             </div>
           </div>
         </template>
