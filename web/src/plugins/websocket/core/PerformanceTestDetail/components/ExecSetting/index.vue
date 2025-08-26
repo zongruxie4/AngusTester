@@ -2,8 +2,8 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { Button } from 'ant-design-vue';
-import { TESTER, http } from '@xcan-angus/infra';
 import { notification } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 import { exec } from '@/api/tester';
 
 import ExecSettingForm from '../../../ExecSettingForm/index.vue';
@@ -22,6 +22,8 @@ const props = withDefaults(defineProps<Props>(), {
   scriptInfo: undefined,
   loading: false
 });
+
+const { t } = useI18n();
 
 const emit = defineEmits<{(e: 'update:loading', value: boolean): void
 }>();
@@ -83,7 +85,7 @@ const saveSetting = async () => {
   if (error) {
     return;
   }
-  notification.success('修改成功');
+  notification.success(t('ftpPlugin.performanceTestDetail.execSetting.messages.modifySuccess'));
   router.push('/execution');
 };
 </script>
@@ -103,10 +105,10 @@ const saveSetting = async () => {
           type="primary"
           class="mr-5"
           @click="saveSetting">
-          保存
+          {{ t('ftpPlugin.performanceTestDetail.execSetting.actions.save') }}
         </Button>
         <RouterLink to="/execution">
-          <Button size="small">取消</Button>
+          <Button size="small">{{ t('ftpPlugin.performanceTestDetail.execSetting.actions.cancel') }}</Button>
         </RouterLink>
       </div>
     </div>

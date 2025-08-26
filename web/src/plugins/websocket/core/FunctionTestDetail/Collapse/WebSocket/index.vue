@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Alert, Collapse, CollapsePanel, Tabs, TabPane, Tag } from 'ant-design-vue';
 import { Arrow, Colon, Icon } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 import StatusTag from '../StatusTag/index.vue';
 import { WebSocketInfo } from './PropsType';
@@ -69,7 +72,7 @@ const responseSize = computed(() => {
 const runtime = computed(() => {
   const timeStamp = httpContent.value?.content?.response?.timeline?.total;
   if (timeStamp === undefined || timeStamp === null) {
-    return '0毫秒';
+    return t('websocketPlugin.functionTestDetailWesocket.runtime');
   }
 
   return utils.formatTime(+timeStamp);
@@ -108,7 +111,7 @@ const showBasicInfo = computed(() => {
             v-if="props.value?.setting?.eolByte"
             class="mr-3"
             style="line-height: 20px;">
-            <span>基于EOL</span>
+            <span>{{ t('websocketPlugin.functionTestDetailWesocket.tags.basedOnEOL') }}</span>
             <Colon />
             <span class="ml-1">{{ props.value?.setting?.eolByte }}</span>
           </Tag>
@@ -116,7 +119,7 @@ const showBasicInfo = computed(() => {
             v-if="props.value?.setting?.eomByte"
             class="mr-3"
             style="line-height: 20px;">
-            <span>基于EOM</span>
+            <span>{{ t('websocketPlugin.functionTestDetailWesocket.tags.basedOnEOM') }}</span>
             <Colon />
             <span class="ml-1">{{ props.value?.setting?.eomByte }}</span>
           </Tag>
@@ -124,14 +127,14 @@ const showBasicInfo = computed(() => {
             v-if="props.value?.setting?.binaryPrefixLength"
             class="mr-3"
             style="line-height: 20px;">
-            <span>基于长度前缀</span>
+            <span>{{ t('websocketPlugin.functionTestDetailWesocket.tags.basedOnLengthPrefix') }}</span>
             <Colon />
             <span class="ml-1">{{ props.value?.setting?.binaryPrefixLength }}</span>
           </Tag>
           <div class="flex-1 justify-end flex items-center mr-3">
             <template v-if="showBasicInfo">
               <div class="mr-5 truncate">
-                <span class="mr-0.5">耗时<Colon /></span>
+                <span class="mr-0.5">{{ t('websocketPlugin.functionTestDetailWesocket.duration') }}<Colon /></span>
                 <span class="text-theme-sub-content"> {{ runtime }}</span>
               </div>
             </template>
@@ -157,7 +160,7 @@ const showBasicInfo = computed(() => {
         <TabPane key="request">
           <template #tab>
             <div>
-              <span>请求</span>
+              <span>{{ t('websocketPlugin.functionTestDetailWesocket.tabs.request') }}</span>
               <span class="ml-0.75">({{ requestDataSize }})</span>
             </div>
           </template>
@@ -166,7 +169,7 @@ const showBasicInfo = computed(() => {
         <TabPane key="response">
           <template #tab>
             <div>
-              <span>响应</span>
+              <span>{{ t('websocketPlugin.functionTestDetailWesocket.tabs.response') }}</span>
               <span class="ml-0.75">({{ responseSize }})</span>
             </div>
           </template>

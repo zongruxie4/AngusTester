@@ -377,32 +377,32 @@
       "execRetry": "重试次数",
       "execParallel": "并行执行"
     },
-           "storeConfig": {
-         "title": "存储配置",
-         "storeType": "存储类型",
-         "storePath": "存储路径",
-         "storeFormat": "存储格式",
-         "storeCompress": "是否压缩",
-         "storeEncrypt": "是否加密"
-       },
-       "dataSet": {
-         "format": "格式",
-         "lineEnding": "行尾",
-         "includeHeader": "包含头",
-         "escapeChar": "转义符",
-         "quoteChar": "引用符",
-         "separatorChar": "分隔符",
-         "includeNull": "包含空值字段",
-         "rowsToArray": "转成数组",
-         "tableName": "存储数据表名",
-         "batchInsert": "是否生成批量 INSERT",
-         "rootElement": "根元素名称",
-         "recordElement": "记录元素名称",
-         "validation": {
-           "singleChar": "请输入单字符",
-           "tableNameRequired": "请输入存储数据表名"
-         }
-       },
+    "storeConfig": {
+      "title": "存储配置",
+      "storeType": "存储类型",
+      "storePath": "存储路径",
+      "storeFormat": "存储格式",
+      "storeCompress": "是否压缩",
+      "storeEncrypt": "是否加密"
+    },
+    "dataSet": {
+      "format": "格式",
+      "lineEnding": "行尾",
+      "includeHeader": "包含头",
+      "escapeChar": "转义符",
+      "quoteChar": "引用符",
+      "separatorChar": "分隔符",
+      "includeNull": "包含空值字段",
+      "rowsToArray": "转成数组",
+      "tableName": "存储数据表名",
+      "batchInsert": "是否生成批量 INSERT",
+      "rootElement": "根元素名称",
+      "recordElement": "记录元素名称",
+      "validation": {
+        "singleChar": "请输入单字符",
+        "tableNameRequired": "请输入存储数据表名"
+      }
+    },
        "DatasourceStoreConfig": {
          "batchRows": "批量行数",
          "batchInsert": "是否批量插入",
@@ -1873,6 +1873,154 @@
         "selectFileTooltip": "请选择本地文件",
         "code": "编码",
         "fileEncoding": "文件编码"
+      }
+    }
+  },
+  "websocketPlugin": {
+    "notifications": {
+      "debugSaveRequired": "调试需要先保存当前数据，请保存后再执行调试",
+      "autoSaveSuccess": "自动保存成功，正在执行调试...",
+      "createTestSuccess": "创建\"执行测试\"成功，请在\"执行\"中查看详情和结果",
+      "saveSuccess": "保存成功",
+      "followSuccess": "关注成功",
+      "cancelFollowSuccess": "取消关注成功",
+      "favouriteSuccess": "收藏成功",
+      "cancelFavouriteSuccess": "取消收藏成功",
+      "taskConfigError": "任务配置数据错误，请检查更正后再保存。",
+      "executeConfigError": "执行配置数据错误，请检查更正后再保存。",
+      "parameterError": "参数错误"
+    },
+    "comments": {
+      "selectModalVisible": "选择脚本弹窗",
+      "uploadVisible": "导入脚本弹窗",
+      "exportModalVisible": "导出脚本弹窗",
+      "authVisible": "显示权限弹窗",
+      "controller": "用于终止请求的实例",
+      "defaultViewMode": "默认显示页面视图，新建场景没有保存之前不显示【执行测试】【导出脚本】、【关注】、【取消关注】、【收藏】、【取消收藏】、【权限】、【刷新】按钮",
+      "sceneConfigData": "场景详情信息",
+      "rampUpInterval": "增压间隔",
+      "rampUpThreads": "增压线程数"
+    },
+    "permissions": {
+      "title": "场景权限",
+      "onTips": "开启\"有权限控制\"后，需要手动授权服务权限后才会有场景相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级目录权限将自动授权查看权限。",
+      "offTips": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前场景，查看用户同时需要有当前场景父级目录权限。"
+    },
+    "tabs": {
+      "taskConfig": "任务配置",
+      "executeConfig": "执行配置"
+    },
+    "uiConfig": {
+      "title": "插入WebSocket接口",
+      "selectTitle": "选择WebSocket接口",
+      "description": "支持同时编排多个WebSocket接口，但每次只允许启用一个WebSocket进行测试。",
+    },
+    "functionTestDetailWesocket": {
+      "runtime": "0毫秒",
+      "tags": {
+        "basedOnEOL": "基于EOL",
+        "basedOnEOM": "基于EOM",
+        "basedOnLengthPrefix": "基于长度前缀"
+      },
+      "duration": "耗时",
+      "tabs": {
+        "request": "请求",
+        "response": "响应"
+      }
+    },
+      "actions": {
+        "clone": "克隆",
+        "delete": "删除"
+      },
+      "form": {
+        "nameDuplicate": "名称重复",
+        "namePlaceholder": "名称，最大支持400个字符",
+        "descriptionPlaceholder": "描述，最大支持800个字符",
+        "none": "无"
+      },
+      "connectionInfo": {
+        "title": "连接信息",
+        "urlFormatError": "URL格式错误",
+        "urlPlaceholder": "URL，最大支持2000个字符。例如 ws://dev-apis.xcan.cloud/wpush/ws/mcenterReceive"
+      },
+      "parameters": {
+        "requestParameters": "请求参数",
+        "requestHeaders": "请求头",
+        "parameterNamePlaceholder": "参数名称，最大支持400个字符",
+        "parameterValuePlaceholder": "参数值，最大支持4096个字符"
+      },
+      "messageMode": {
+        "title": "消息模式",
+        "placeholder": "消息模式"
+      },
+      "sendData": {
+        "encodingTitle": "发送数据编码",
+        "encodingPlaceholder": "发送数据编码",
+        "title": "发送数据"
+      },
+      "parametric": {
+        "title": "参数化"
+      },
+      "assertion": {
+        "title": "断言",
+        "tooltip": "断言接收消息"
+      },
+      "selectApiModal": {
+        "title": "选择接口",
+        "treeSelect": {
+          "label": "项目/服务",
+          "placeholder": "请选择项目/服务"
+        },
+        "input": {
+          "placeholder": "查询接口名称"
+        },
+        "fields": {
+          "url": "URL",
+          "name": "名称"
+        },
+        "referenced": "（已引用）",
+        "buttons": {
+          "cancel": "取消",
+          "copy": "复制",
+          "link": "引用"
+        }
+      },
+      "serverUri": {
+        "default": "默认"
+      },
+      "websocketConfigs": {
+        "urlFormatError": "url格式错误",
+        "form": {
+          "none": "无",
+          "nameDuplicate": "名称重复",
+          "namePlaceholder": "名称，最大支持400个字符",
+          "descriptionPlaceholder": "描述，最大支持800个字符"
+        },
+        "actions": {
+          "clone": "克隆",
+          "delete": "删除"
+        },
+        "connectionInfo": {
+          "title": "连接信息",
+          "urlPlaceholder": "请输入URL，例如 ws://dev-apis.xcan.cloud/wpush/ws/mcenterReceive",
+          "messageModePlaceholder": "消息模式"
+        },
+        "parameters": {
+          "requestParameters": "请求参数",
+          "requestHeaders": "请求头"
+        },
+        "sendInfo": {
+          "title": "发送信息",
+          "encodingPlaceholder": "发送信息编码"
+        },
+        "assertion": {
+          "title": "断言",
+          "tooltip": "断言接收消息"
+        },
+        "paramsInput": {
+          "parameterNamePlaceholder": "参数名称，最大支持400个字符",
+          "parameterValuePlaceholder": "参数值，最大支持4096个字符"
+        }
       }
     }
   }

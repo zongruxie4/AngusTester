@@ -1873,6 +1873,154 @@
         "fileEncoding": "File Encoding"
       }
     }
+  },
+  "websocketPlugin": {
+    "notifications": {
+      "debugSaveRequired": "Debug requires saving current data first, please save before executing debug",
+      "autoSaveSuccess": "Auto save successful, executing debug...",
+      "createTestSuccess": "Create 'Execute Test' successful, please view details and results in 'Execute'",
+      "saveSuccess": "Save successful",
+      "followSuccess": "Follow successful",
+      "cancelFollowSuccess": "Cancel follow successful",
+      "favouriteSuccess": "Favorite successful",
+      "cancelFavouriteSuccess": "Cancel favorite successful",
+      "taskConfigError": "Task configuration data error, please check and correct before saving.",
+      "executeConfigError": "Execute configuration data error, please check and correct before saving.",
+      "parameterError": "Parameter error"
+    },
+    "comments": {
+      "selectModalVisible": "Select script modal",
+      "uploadVisible": "Import script modal",
+      "exportModalVisible": "Export script modal",
+      "authVisible": "Show permission modal",
+      "controller": "Instance for terminating requests",
+      "defaultViewMode": "Default display page view, new scenarios do not show [Execute Test] [Export Script], [Follow], [Cancel Follow], [Favorite], [Cancel Favorite], [Permission], [Refresh] buttons before saving",
+      "sceneConfigData": "Scenario detail information",
+      "rampUpInterval": "Ramp up interval",
+      "rampUpThreads": "Ramp up threads"
+    },
+    "permissions": {
+      "title": "Scenario Permissions",
+      "onTips": "After enabling 'Permission Control', manual authorization of service permissions is required to have scenario operation permissions. Permission control is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically granted.",
+      "offTips": "After enabling 'No Permission Control', all users will be allowed to publicly view and operate the current scenario. Users viewing must also have parent directory permissions for the current scenario."
+    },
+    "tabs": {
+      "taskConfig": "Task Configuration",
+      "executeConfig": "Execute Configuration"
+    },
+    "uiConfig": {
+      "title": "Insert WebSocket Interface",
+      "selectTitle": "Select WebSocket Interface",
+      "description": "Supports orchestrating multiple WebSocket interfaces simultaneously, but only one WebSocket is allowed to be enabled for testing at a time.",
+    },
+    "functionTestDetailWesocket": {
+      "runtime": "0ms",
+      "tags": {
+        "basedOnEOL": "Based on EOL",
+        "basedOnEOM": "Based on EOM",
+        "basedOnLengthPrefix": "Based on Length Prefix"
+      },
+      "duration": "Duration",
+      "tabs": {
+        "request": "Request",
+        "response": "Response"
+      }
+    },
+      "actions": {
+        "clone": "Clone",
+        "delete": "Delete"
+      },
+      "form": {
+        "nameDuplicate": "Name Duplicate",
+        "namePlaceholder": "Name, maximum 400 characters",
+        "descriptionPlaceholder": "Description, maximum 800 characters",
+        "none": "None"
+      },
+      "connectionInfo": {
+        "title": "Connection Information",
+        "urlFormatError": "URL format error",
+        "urlPlaceholder": "URL, maximum 2000 characters. Example: ws://dev-apis.xcan.cloud/wpush/ws/mcenterReceive"
+      },
+      "parameters": {
+        "requestParameters": "Request Parameters",
+        "requestHeaders": "Request Headers",
+        "parameterNamePlaceholder": "Parameter name, maximum 400 characters",
+        "parameterValuePlaceholder": "Parameter value, maximum 4096 characters"
+      },
+      "messageMode": {
+        "title": "Message Mode",
+        "placeholder": "Message Mode"
+      },
+      "sendData": {
+        "encodingTitle": "Send Data Encoding",
+        "encodingPlaceholder": "Send Data Encoding",
+        "title": "Send Data"
+      },
+      "parametric": {
+        "title": "Parameterization"
+      },
+      "assertion": {
+        "title": "Assertion",
+        "tooltip": "Assert received message"
+      },
+      "selectApiModal": {
+        "title": "Select Interface",
+        "treeSelect": {
+          "label": "Project/Service",
+          "placeholder": "Please select project/service"
+        },
+        "input": {
+          "placeholder": "Search interface name"
+        },
+        "fields": {
+          "url": "URL",
+          "name": "Name"
+        },
+        "referenced": "(Referenced)",
+        "buttons": {
+          "cancel": "Cancel",
+          "copy": "Copy",
+          "link": "Reference"
+        }
+      },
+      "serverUri": {
+        "default": "Default"
+      },
+      "websocketConfigs": {
+        "urlFormatError": "URL format error",
+        "form": {
+          "none": "None",
+          "nameDuplicate": "Name Duplicate",
+          "namePlaceholder": "Name, maximum 400 characters",
+          "descriptionPlaceholder": "Description, maximum 800 characters"
+        },
+        "actions": {
+          "clone": "Clone",
+          "delete": "Delete"
+        },
+        "connectionInfo": {
+          "title": "Connection Information",
+          "urlPlaceholder": "Please enter URL, e.g. ws://dev-apis.xcan.cloud/wpush/ws/mcenterReceive",
+          "messageModePlaceholder": "Message Mode"
+        },
+        "parameters": {
+          "requestParameters": "Request Parameters",
+          "requestHeaders": "Request Headers"
+        },
+        "sendInfo": {
+          "title": "Send Information",
+          "encodingPlaceholder": "Send Information Encoding"
+        },
+        "assertion": {
+          "title": "Assertion",
+          "tooltip": "Assert received message"
+        },
+        "paramsInput": {
+          "parameterNamePlaceholder": "Parameter name, maximum 400 characters",
+          "parameterValuePlaceholder": "Parameter value, maximum 4096 characters"
+        }
+      }
+    }
   }
 }
 

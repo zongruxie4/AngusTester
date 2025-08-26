@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { AssociateSelect, Modal, IconText } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
+
+const { t } = useI18n();
 
 import { ApiInfo } from './PropsType';
 
@@ -59,14 +62,14 @@ const cancel = () => {
 const treeSelectProps = {
   action: `${TESTER}/project/tree`,
   fieldNames: { label: 'name', value: 'id', children: 'children' },
-  label: '项目/服务',
-  placeholder: '请选择项目/服务'
+  label: t('websocketPlugin.uiConfig.selectApiModal.treeSelect.label'),
+  placeholder: t('websocketPlugin.uiConfig.selectApiModal.treeSelect.placeholder')
 };
 
 const inputProps = {
   filterKey: 'summary',
   allowClear: true,
-  placeholder: '查询接口名称'
+  placeholder: t('websocketPlugin.uiConfig.selectApiModal.input.placeholder')
 };
 
 const scrollProps = {
@@ -81,7 +84,7 @@ const scrollProps = {
 const fields = [
   {
     key: 'uri',
-    name: 'URL',
+    name: t('websocketPlugin.uiConfig.selectApiModal.fields.url'),
     style: {
       flex: '1 1 45%',
       overflow: 'hidden',
@@ -91,7 +94,7 @@ const fields = [
   },
   {
     key: 'summary',
-    name: '名称',
+    name: t('websocketPlugin.uiConfig.selectApiModal.fields.name'),
     style: {
       flex: '1 1 55%',
       overflow: 'hidden',
@@ -107,7 +110,7 @@ const change = ({ ids }) => {
 </script>
 <template>
   <Modal
-    title="选择接口"
+    :title="t('websocketPlugin.uiConfig.selectApiModal.title')"
     :visible="props.visible"
     :centered="true"
     :width="700"
@@ -128,7 +131,7 @@ const change = ({ ids }) => {
       <template #summary="{summary,id}">
         <div class="flex items-center">
           <div class="flex-1 truncate">{{ summary }}</div>
-          <div v-if="props.linkIds.has(id)" class="flex-shrink-0 text-theme-placeholder">（已引用）</div>
+          <div v-if="props.linkIds.has(id)" class="flex-shrink-0 text-theme-placeholder">{{ t('websocketPlugin.uiConfig.selectApiModal.referenced') }}</div>
         </div>
       </template>
 
@@ -149,7 +152,7 @@ const change = ({ ids }) => {
         type="default"
         size="small"
         @click="cancel">
-        取消
+        {{ t('websocketPlugin.uiConfig.selectApiModal.buttons.cancel') }}
       </Button>
       <Button
         :loading="coping"
@@ -157,7 +160,7 @@ const change = ({ ids }) => {
         size="small"
         type="primary"
         @click="ok('copy')">
-        复制
+        {{ t('websocketPlugin.uiConfig.selectApiModal.buttons.copy') }}
       </Button>
       <Button
         :loading="linking"
@@ -165,7 +168,7 @@ const change = ({ ids }) => {
         size="small"
         type="primary"
         @click="ok('link')">
-        引用
+        {{ t('websocketPlugin.uiConfig.selectApiModal.buttons.link') }}
       </Button>
     </template>
   </Modal>

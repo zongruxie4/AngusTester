@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { Tooltip, Popover, Radio } from 'ant-design-vue';
-
+import { useI18n } from 'vue-i18n';
 import { WebsocketConfig } from '../PropsType';
 
 export interface Props {
@@ -13,6 +13,8 @@ const props = withDefaults(defineProps<Props>(), {
   server: undefined,
   uri: undefined
 });
+
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -75,7 +77,7 @@ const overlayStyle = {
                 class="flex items-center pl-7">
                 <div class="flex-1 truncate">{{ _ele }}</div>
                 <div class="flex items-center flex-shrink-0 space-x-1">
-                  <div v-if="props.server?.variables[item._key].defaultValue === _ele" class="text-theme-sub-content">默认</div>
+                  <div v-if="props.server?.variables[item._key].defaultValue === _ele" class="text-theme-sub-content">{{ t('websocketPlugin.uiConfig.serverUri.default') }}</div>
                   <Radio :checked="props.server?.variables[item._key].defaultValue === _ele" @change="radioChange(item._key, _ele)" />
                 </div>
               </div>

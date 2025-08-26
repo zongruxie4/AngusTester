@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { ref, watch, computed } from 'vue';
-import { http } from '@xcan-angus/infra';
 import { Select, Icon, Arrow, Colon, Tooltip } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
+import { getDataByProxy } from '@/api/proxy/index';
 
 interface Props {
   execId: string;
@@ -17,17 +18,20 @@ const props = withDefaults(defineProps<Props>(), {
   lastSchedulingResult: () => []
 });
 
+const { t } = useI18n();
+
 const emit = defineEmits<{(e: 'update:loading', value: boolean): void}>();
 
 const nodeId = ref<string>();
 const nodeIp = ref<string>();
+const nodePort = ref<string>('6807');
 
 const execLogContent = ref();
 const execLogPath = ref('');
 const execLogErr = ref(false);
 const loadExecLog = async () => {
   emit('update:loading', true);
-  const [error, res] = await http.get(`http://${nodeIp.value}:6807/actuator/runner/log/${props.execId}`);
+  const [error, res] = await getDataByProxy(`http://${nodeIp.value}:${nodePort.value || '6807'}/actuator/runner/log/${props.execId}`);
   emit('update:loading', false);
   if (error) {
     execLogErr.value = true;
@@ -118,7 +122,7 @@ const refreshExecLog = (event) => {
       :options="props.execNodes"
       :fieldNames="{label:'name',value:'id'}"
       class="w-80"
-      placeholder="选择节点"
+      :placeholder="t('ftpPlugin.performanceTestDetail.execLog.selectNode')"
       size="small"
       @change="nodeSelectChange">
       <template #option="item">
@@ -131,30 +135,30 @@ const refreshExecLog = (event) => {
         style="background-color:rgb(252, 253, 255);"
         @click="handleDoubleClick('scheduling')">
         <div class="flex flex-1 items-center space-x-20">
-          <span class="text-text-title font-medium">调度日志</span>
+          <span class="text-text-title font-medium">{{ t('ftpPlugin.performanceTestDetail.execLog.schedulingLog.title') }}</span>
           <div>
-            <span class="mr-2">最后调度时间<Colon /></span>
+            <span class="mr-2">{{ t('ftpPlugin.performanceTestDetail.execLog.schedulingLog.lastSchedulingTime') }}<Colon /></span>
             <span>{{ props.lastSchedulingDate }}</span>
           </div>
           <div class="flex items-center">
-            <span class="mr-2">结果<Colon /></span>
+            <span class="mr-2">{{ t('ftpPlugin.performanceTestDetail.execLog.schedulingLog.result') }}<Colon /></span>
             <div class="flex items-center whitespace-nowrap">
               <template v-if="schedulingLogItem ">
                 <div class="w-1.5 h-1.5 mr-1 rounded -mt-0.5" :class="schedulingLogItem?.success?'bg-status-success':'bg-status-error'"></div>
-                {{ schedulingLogItem?.success?'成功':'失败' }}
+                {{ schedulingLogItem?.success ? t('ftpPlugin.performanceTestDetail.execLog.schedulingLog.success') : t('ftpPlugin.performanceTestDetail.execLog.schedulingLog.fail') }}
               </template>
               <template v-else>
-                --
+                {{ t('ftpPlugin.performanceTestDetail.execLog.schedulingLog.noData') }}
               </template>
             </div>
           </div>
           <div>
-            <span class="mr-2">退出码<Colon /></span>
+            <span class="mr-2">{{ t('ftpPlugin.performanceTestDetail.execLog.schedulingLog.exitCode') }}<Colon /></span>
             <span>{{ schedulingLogItem?.exitCode }}</span>
           </div>
         </div>
         <div>
-          <Tooltip title="导出" placement="top">
+          <Tooltip :title="t('ftpPlugin.performanceTestDetail.execLog.tooltips.export')" placement="top">
             <Icon
               icon="icon-daochu1"
               class="text-4 cursor-pointer hover:text-text-link-hover mr-2"
@@ -177,25 +181,25 @@ const refreshExecLog = (event) => {
         style="background-color:rgb(252, 253, 255);"
         @click="handleDoubleClick('exec')">
         <div class="flex flex-1 items-center space-x-20">
-          <span class="text-text-title font-medium">执行日志</span>
+          <span class="text-text-title font-medium">{{ t('ftpPlugin.performanceTestDetail.execLog.execLog.title') }}</span>
           <template v-if="!execLogErr && execLogPath">
             <div>
-              <span class="mr-2">文件<Colon /></span>
+              <span class="mr-2">{{ t('ftpPlugin.performanceTestDetail.execLog.execLog.file') }}<Colon /></span>
               <span>{{ execLogPath }}</span>
             </div>
           </template>
           <template v-else>
-            <span class="text-rule">无访问代理信息，连接失败地址：{{ `http://${nodeIp}:6807/actuator/runner/log/${props.execId}` }}</span>
+            <span class="text-rule">{{ t('ftpPlugin.performanceTestDetail.execLog.execLog.noProxyInfo') }}{{ `http://${nodeIp}:6807/actuator/runner/log/${props.execId}` }}</span>
           </template>
         </div>
         <div>
-          <Tooltip title="导出" placement="top">
+          <Tooltip :title="t('ftpPlugin.performanceTestDetail.execLog.tooltips.export')" placement="top">
             <Icon
               icon="icon-daochu1"
               class="text-4 cursor-pointer hover:text-text-link-hover mr-2"
               @click="downloadLog('exec')" />
           </Tooltip>
-          <Tooltip title="刷新" placement="top">
+          <Tooltip :title="t('ftpPlugin.performanceTestDetail.execLog.tooltips.refresh')" placement="top">
             <Icon
               icon="icon-shuaxin"
               class="text-4 cursor-pointer hover:text-text-link-hover mr-2"
