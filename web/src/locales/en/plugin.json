@@ -2060,6 +2060,24 @@
           "opsWithStats": "Operations Per Second (Current | Min | Max | Average)",
           "tpsWithStats": "Transactions Per Second (Current | Min | Max | Average)"
         }
+      },
+      "menuData": {
+        "toolbar": {
+          "debugResult": "Debug Result",
+          "logs": "Schedule Logs",
+          "execLog": "Execution Log",
+          "toggle": "Expand/Collapse",
+          "screen": "Full Screen",
+          "duration": "Duration",
+          "size": "Size"
+        },
+        "drawer": {
+          "save": "Save",
+          "indicator": "Test Indicators",
+          "testInfo": "Test Results",
+          "activity": "Activity",
+          "comment": "Comments"
+        }
       }
     }
   }

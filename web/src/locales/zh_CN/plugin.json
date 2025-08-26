@@ -2062,6 +2062,24 @@
           "opsWithStats": "每秒查询数(当前 | 最小 | 最大 | 平均)",
           "tpsWithStats": "每秒事务数(当前 | 最小 | 最大 | 平均)"
         }
+      },
+      "menuData": {
+        "toolbar": {
+          "debugResult": "调试结果",
+          "logs": "调度日志",
+          "execLog": "执行日志",
+          "toggle": "展开收起",
+          "screen": "全屏",
+          "duration": "耗时",
+          "size": "大小"
+        },
+        "drawer": {
+          "save": "保存",
+          "indicator": "测试指标",
+          "testInfo": "测试结果",
+          "activity": "活动",
+          "comment": "评论"
+        }
       }
     }
 }
