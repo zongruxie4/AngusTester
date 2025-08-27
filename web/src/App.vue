@@ -9,6 +9,9 @@ import { ai } from '@/api/gm';
 
 import store from './store';
 
+// Import global styles
+import '@/assets/styles/global.css';
+
 const windowResizeNotify = ref<string>();
 const resizeHandler = debounce(duration.resize, () => {
   windowResizeNotify.value = utils.uuid();
@@ -91,35 +94,7 @@ provide('windowResizeNotify', windowResizeNotify);
   </ConfigProvider>
 </template>
 
-<style>
-body,
-html {
-  min-width: 1280px;
-  height: 100%;
-  overflow: auto;
-  font-size: 16px;
-}
-
-#app {
-  height: 100%;
-  font-family:
-    Inter,
-    "Apple System",
-    "SF Pro SC",
-    "SF Pro Display",
-    "Helvetica Neue",
-    Arial,
-    "PingFang SC",
-    "Hiragino Sans GB",
-    STHeiti,
-    "Microsoft YaHei",
-    "Microsoft JhengHei",
-    "Source Han Sans SC",
-    "Noto Sans CJK SC",
-    "Source Han Sans CN",
-    sans-serif;
-  font-size: 14px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+<style scoped>
+/* Component-specific styles only */
+/* Global styles are now imported from global.css */
 </style>
