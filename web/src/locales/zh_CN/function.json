@@ -41,6 +41,33 @@
         "createdByName": "按添加人排序",
         "createdDate": "按添加时间排序"
       }
+    },
+    "editForm": {
+      "save": "保存",
+      "cancel": "取消",
+      "analysisTemplate": "分析模版",
+      "analysisName": "分析名称",
+      "analysisDescription": "分析描述",
+      "analysisObject": "分析对象",
+      "selectPlan": "选择计划",
+      "selectOrganization": "选择组织",
+      "selectUser": "选择用户",
+      "selectDepartment": "选择部门",
+      "selectGroup": "选择组",
+      "includeAssigneeAnalysis": "包含经办人分析",
+      "includeDataDetail": "包含数据明细",
+      "analysisPeriod": "分析期间",
+      "dataDisplay": "数据展示",
+      "inputAnalysisName": "输入分析名称，最多可输入100字符",
+      "inputAnalysisDescription": "输入分析描述，如分析的目的、背景等，最多支持200字符",
+      "selectOrSearchPlan": "选择或查询计划",
+      "realTimeData": "每次展示实时数据",
+      "snapshotData": "保存数据快照，每次展示快照数据",
+      "department": "部门",
+      "group": "组",
+      "user": "用户",
+      "addAnalysisSuccess": "添加分析成功",
+      "updateAnalysisSuccess": "修改分析成功"
     }
   }
 }

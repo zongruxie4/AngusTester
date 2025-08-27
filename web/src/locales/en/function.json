@@ -41,6 +41,33 @@
         "createdByName": "Sort by creator",
         "createdDate": "Sort by creation time"
       }
+    },
+    "editForm": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "analysisTemplate": "Analysis Template",
+      "analysisName": "Analysis Name",
+      "analysisDescription": "Analysis Description",
+      "analysisObject": "Analysis Object",
+      "selectPlan": "Select Plan",
+      "selectOrganization": "Select Organization",
+      "selectUser": "Select User",
+      "selectDepartment": "Select Department",
+      "selectGroup": "Select Group",
+      "includeAssigneeAnalysis": "Include Assignee Analysis",
+      "includeDataDetail": "Include Data Detail",
+      "analysisPeriod": "Analysis Period",
+      "dataDisplay": "Data Display",
+      "inputAnalysisName": "Enter analysis name, maximum 100 characters",
+      "inputAnalysisDescription": "Enter analysis description, such as analysis purpose, background, etc., maximum 200 characters",
+      "selectOrSearchPlan": "Select or search plan",
+      "realTimeData": "Display real-time data each time",
+      "snapshotData": "Save data snapshot, display snapshot data each time",
+      "department": "Department",
+      "group": "Group",
+      "user": "User",
+      "addAnalysisSuccess": "Analysis added successfully",
+      "updateAnalysisSuccess": "Analysis updated successfully"
     }
   }
 }
