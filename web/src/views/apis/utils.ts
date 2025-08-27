@@ -3,7 +3,7 @@ import { ParamsItem } from '@/views/apis/services/apiHttp/interface';
 import { blobToDataURL } from '@/utils/common';
 import { blobTobase64, dataURLtoBlob, getBlobByUrl } from '@/utils/blob';
 import { decode } from '@/utils/secure';
-import { mock, services } from 'src/api/tester';
+import { mock, services } from '@/api/tester';
 
 const isUrl = (url) => {
   if (!url) {

@@ -9,7 +9,7 @@ import postmanToOpenApi from '@xcan-angus/postman-to-openapi';
 import SelectEnum from '@/components/SelectEnum/index.vue'
 
 import { formatBytes } from '@/utils/common';
-import { mock, node } from 'src/api/tester';
+import { mock, node } from '@/api/tester';
 import store from '@/store';
 
 import ApiList from './apiList.vue';

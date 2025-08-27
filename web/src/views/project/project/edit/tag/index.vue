@@ -1,32 +1,27 @@
 <script setup lang="ts">
+// Vue composition API imports
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { duration } from '@xcan-angus/infra';
-import { AsyncComponent, Hints, Icon, IconRefresh, Input, modal, NoData, notification, Spin } from '@xcan-angus/vue-ui';
-import { Button } from 'ant-design-vue';
-import { debounce } from 'throttle-debounce';
-import { tag } from '@/api/tester';
 
+// Utilities
+import { duration } from '@xcan-angus/infra';
+import { debounce } from 'throttle-debounce';
+
+// Custom UI components
+import { AsyncComponent, Hints, Icon, IconRefresh, Input, modal, NoData, notification, Spin } from '@xcan-angus/vue-ui';
+
+// Ant Design components
+import { Button } from 'ant-design-vue';
+
+// API imports and utils
+import { tag } from '@/api/tester';
+import { TagProps, TagItem } from '@/views/project/project/types';
+
+// Initialize i18n
 const { t } = useI18n();
 
-type TagItem = {
-  id: string;
-  name: string;
-  showName: string;
-  showTitle: string;
-  hasEditPermission: boolean;
-
-}
-
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  notify: string;
-  disabled: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+// Props
+const props = withDefaults(defineProps<TagProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -34,43 +29,44 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false
 });
 
+// Async component definitions
 const CreateModal = defineAsyncComponent(() => import('./add.vue'));
 
+// Constants
 const MAX_LENGTH = 20;
 
+// Reactive data
 const pageNo = ref(1);
 const pageSize = ref(200);
 const inputValue = ref<string>();
-
 const loaded = ref(false);
 const loading = ref(false);
 const searchedFlag = ref(false);
-
 const dataList = ref<TagItem[]>([]);
 const total = ref(0);
-
 const editId = ref<string>();
 const modalVisible = ref(false);
 
-const inputChange = debounce(duration.search, (event: any) => {
-  inputValue.value = event.target.value;
-  pageNo.value = 1;
-  loadData();
+// Computed properties
+const showLoadMore = computed(() => {
+  return dataList.value.length < total.value;
 });
 
-const toCreate = () => {
-  modalVisible.value = true;
-};
+// Utility functions
+const format = (data: { id: string; name: string; hasEditPermission?: boolean }) => {
+  let showTitle = '';
+  let showName = data.name;
+  if (data.name?.length > MAX_LENGTH) {
+    showTitle = data.name;
+    showName = showName.slice(0, MAX_LENGTH) + '...';
+  }
 
-const createOk = (data: { id: string; name: string }) => {
-  const _data = format(data);
-  dataList.value.unshift(_data);
-  total.value += 1;
-};
-
-const refresh = () => {
-  pageNo.value = 1;
-  loadData();
+  return {
+    ...data,
+    showTitle,
+    showName,
+    hasEditPermission: data.hasEditPermission ?? true
+  };
 };
 
 const getParams = () => {
@@ -92,22 +88,7 @@ const getParams = () => {
   return params;
 };
 
-const format = (data: { id: string; name: string; hasEditPermission?: boolean }) => {
-  let showTitle = '';
-  let showName = data.name;
-  if (data.name?.length > MAX_LENGTH) {
-    showTitle = data.name;
-    showName = showName.slice(0, MAX_LENGTH) + '...';
-  }
-
-  return {
-    ...data,
-    showTitle,
-    showName,
-    hasEditPermission: data.hasEditPermission ?? true
-  };
-};
-
+// Data loading function
 const loadData = async (remainder = 0, _params?:{pageNo?:number;pageSize?:number;}) => {
   loading.value = true;
   let params = getParams();
@@ -146,6 +127,22 @@ const loadData = async (remainder = 0, _params?:{pageNo?:number;pageSize?:number
   }
 
   total.value = +data.total;
+};
+
+// Event handlers
+const toCreate = () => {
+  modalVisible.value = true;
+};
+
+const createOk = (data: { id: string; name: string }) => {
+  const _data = format(data);
+  dataList.value.unshift(_data);
+  total.value += 1;
+};
+
+const refresh = () => {
+  pageNo.value = 1;
+  loadData();
 };
 
 const toEdit = (data: TagItem) => {
@@ -190,7 +187,6 @@ const hadleblur = (id: string, index: number, event: { target: { value: string }
   }, 300);
 };
 
-// 删除弹框
 const toDelete = (data: TagItem, index:number) => {
   modal.confirm({
     content: t('project.projectEdit.tag.confirmDelete', { name: data.name }),
@@ -204,11 +200,10 @@ const toDelete = (data: TagItem, index:number) => {
       }
 
       notification.success(t('project.projectEdit.tag.deleteSuccess'));
-      // 删除列表中该条数据
       dataList.value.splice(index, 1);
       total.value -= 1;
 
-      // 如果删除的不是所有数据的最后一条，则需要追加该下标的数据
+      // Load additional data if needed after deletion
       if (index < total.value) {
         const params = {
           pageNo: dataList.value.length + 1,
@@ -221,7 +216,7 @@ const toDelete = (data: TagItem, index:number) => {
 };
 
 const loadMore = () => {
-  // 修复pageNo，因为添加、删除后前端没有刷新列表
+  // Fix pageNo after add/delete operations
   const remainder = dataList.value.length % pageSize.value;
   const current = Math.floor(dataList.value.length / pageSize.value);
   pageNo.value = current + 1;
@@ -231,36 +226,36 @@ const loadMore = () => {
 const reset = () => {
   pageNo.value = 1;
   inputValue.value = undefined;
-
   loaded.value = false;
   loading.value = false;
   searchedFlag.value = false;
-
   dataList.value = [];
   total.value = 0;
-
   editId.value = undefined;
   modalVisible.value = false;
 };
 
+// Debounced search handler
+const inputChange = debounce(duration.search, (event: any) => {
+  inputValue.value = event.target.value;
+  pageNo.value = 1;
+  loadData();
+});
+
+// Lifecycle hooks
 onMounted(() => {
   watch(() => props.projectId, (newValue) => {
     reset();
     if (!newValue) {
       return;
     }
-
     loadData();
   }, { immediate: true });
-});
-
-const showLoadMore = computed(() => {
-  return dataList.value.length < total.value;
 });
 </script>
 <template>
   <div class="w-full h-full leading-5 text-xs overflow-auto">
-    <!-- 标签说明区域 -->
+    <!-- Tag description section -->
     <div class="space-y-4">
       <div class="space-y-2">
         <div class="flex items-center space-x-2">

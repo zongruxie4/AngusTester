@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { Table } from '@xcan-angus/vue-ui';
-import { mock } from 'src/api/tester';
+import { mock } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();

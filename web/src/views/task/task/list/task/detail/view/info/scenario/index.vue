@@ -15,7 +15,7 @@ import {
 } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
-import { task } from 'src/api/tester';
+import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
 import SelectEnum from '@/components/SelectEnum/index.vue';

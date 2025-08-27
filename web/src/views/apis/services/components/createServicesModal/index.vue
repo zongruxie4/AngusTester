@@ -3,7 +3,7 @@ import { computed, inject, ref } from 'vue';
 import { Input, Modal, notification } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
-import { services } from 'src/api/tester';
+import { services } from '@/api/tester';
 
 interface Props {
   visible:boolean,

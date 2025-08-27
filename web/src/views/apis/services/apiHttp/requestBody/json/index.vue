@@ -12,7 +12,7 @@ import addFormats from 'ajv-formats';
 
 import { deepDelAttrFromObj } from '@/views/apis/services/apiHttp/utils';
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
-import { services } from 'src/api/tester';
+import { services } from '@/api/tester';
 import { inOptions, itemTypes, transJsonToList, transListToJson, transListToschema } from './util';
 import { ParamsItem } from '@/views/apis/services/apiHttp/requestParam/interface';
 

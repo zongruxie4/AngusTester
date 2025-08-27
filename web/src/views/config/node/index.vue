@@ -10,7 +10,7 @@ const { t } = useI18n();
 
 import { sortOpt } from './interface';
 import { pubStore } from '@/api/store';
-import { node } from 'src/api/tester';
+import { node } from '@/api/tester';
 import { pureParams } from '@/utils/common';
 import { NodeSource } from '@/enums/enums';
 

@@ -6,7 +6,7 @@ import { utils } from '@xcan-angus/infra';
 import * as echarts from 'echarts';
 import elementResizeDetector from 'element-resize-detector';
 
-import { analysis } from 'src/api/tester';
+import { analysis } from '@/api/tester';
 
 type Props = {
   projectId: string;

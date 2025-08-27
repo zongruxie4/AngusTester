@@ -14,7 +14,7 @@ import {
 } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
-import { apis, services } from 'src/api/tester';
+import { apis, services } from '@/api/tester';
 import dayjs from 'dayjs';
 
 import { randomString } from '@/utils/utils';

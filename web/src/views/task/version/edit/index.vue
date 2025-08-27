@@ -3,7 +3,7 @@ import { onMounted, ref, watch } from 'vue';
 import { DatePicker, Input, Modal } from '@xcan-angus/vue-ui';
 import { Form, FormItem, Textarea } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
-import { software } from 'src/api/tester';
+import { software } from '@/api/tester';
 
 interface Props {
   visible: boolean;

@@ -3,7 +3,7 @@ import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { notification } from '@xcan-angus/vue-ui';
 import { CheckboxGroup, Modal } from 'ant-design-vue';
-import { apis, services } from 'src/api/tester';
+import { apis, services } from '@/api/tester';
 
 const { t } = useI18n();
 

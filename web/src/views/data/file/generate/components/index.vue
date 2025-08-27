@@ -8,7 +8,7 @@ import { useRouter } from 'vue-router';
 import SelectEnum from '@/components/SelectEnum/index.vue'
 import { encode } from '@/utils/secure';
 import { TESTER } from '@xcan-angus/infra';
-import { mock } from 'src/api/tester';
+import { mock } from '@/api/tester';
 // import { API_EXTENSION_KEY } from '@/views/apis/utils';
 // const { valueKey } = API_EXTENSION_KEY;
 

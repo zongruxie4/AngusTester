@@ -2,7 +2,7 @@
 import { computed, inject, ref, watch } from 'vue';
 import { IconRequired, Input, Modal, notification } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
-import { dataSource } from 'src/api/tester';
+import { dataSource } from '@/api/tester';
 import SelectEnum from '@/components/SelectEnum/index.vue'
 import { useI18n } from 'vue-i18n';
 

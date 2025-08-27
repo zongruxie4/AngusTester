@@ -1,19 +1,23 @@
 <script setup lang="ts">
+// Vue composition API imports
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+// Ant Design components
 import { ButtonProps } from 'ant-design-vue';
+
+// Custom UI components
 import { Input, Modal, notification } from '@xcan-angus/vue-ui';
+
+// Utilities and API
+import { AddModuleProps } from '@/views/project/project/types';
 import { modules } from '@/api/tester';
 
+// Initialize i18n
 const { t } = useI18n();
 
-interface Props {
-  projectId: string;
-  visible: boolean;
-  pid?: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+// Props and emits
+const props = withDefaults(defineProps<AddModuleProps>(), {
   projectId: undefined,
   visible: false,
   pid: undefined
@@ -25,12 +29,14 @@ const emit = defineEmits<{
   (e: 'ok', value: { id: string; name: string }): void;
 }>();
 
+// Reactive data
 const inputValue = ref<string>();
 const okButtonProps = ref<ButtonProps>({
   loading: false,
   disabled: true
 });
 
+// Event handlers
 const ok = async () => {
   okButtonProps.value.loading = true;
   const name = inputValue.value as string;
@@ -62,7 +68,7 @@ const inputChange = () => {
   okButtonProps.value.disabled = !inputValue.value || !inputValue.value.trim();
 };
 
-const hanedleEnterPress = () => {
+const handleEnter = () => {
   if (!inputValue.value || !inputValue.value.trim()) {
     return;
   }
@@ -71,6 +77,7 @@ const hanedleEnterPress = () => {
 </script>
 
 <template>
+  <!-- Modal for adding new module -->
   <Modal
     :title="t('project.projectEdit.module.addModuleTitle')"
     width="500px"
@@ -78,13 +85,14 @@ const hanedleEnterPress = () => {
     :okButtonProps="okButtonProps"
     @cancel="cancel"
     @ok="ok">
+    <!-- Input field for module name -->
     <Input
       v-model:value="inputValue"
       :placeholder="t('project.projectEdit.module.moduleNamePlaceholder')"
       trim
       :allowClear="true"
       :maxlength="50"
-      @pressEnter="hanedleEnterPress"
+      @pressEnter="handleEnter"
       @change="inputChange" />
   </Modal>
 </template>

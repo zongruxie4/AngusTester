@@ -5,7 +5,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { Button, Form, FormItem } from 'ant-design-vue';
 import { IconRequired, Input, notification, Select, Spin, ExecSettingForm } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
-import { angusScript } from 'src/api/tester';
+import { angusScript } from '@/api/tester';
 
 import SelectEnum from '@/components/SelectEnum/index.vue'
 import { exec } from 'src/api/ctrl';

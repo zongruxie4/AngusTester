@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue';
 import { Hints, Icon, IconRequired, Input, notification, Select, Spin, Modal } from '@xcan-angus/vue-ui';
 import { Radio, RadioGroup, Switch, Tooltip } from 'ant-design-vue';
-import { services } from 'src/api/tester';
+import { services } from '@/api/tester';
 import { regexpUtils, utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';

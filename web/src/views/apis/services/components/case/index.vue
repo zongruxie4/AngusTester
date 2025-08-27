@@ -18,7 +18,7 @@ import { duration } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
 import { Case } from './type';
-import { apis } from 'src/api/tester';
+import { apis } from '@/api/tester';
 
 interface Props {
   id: string; // apiId

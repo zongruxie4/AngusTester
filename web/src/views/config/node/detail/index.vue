@@ -24,7 +24,7 @@ const { t } = useI18n();
 import { infoItem, internetInfo, nodeEchartsTabs, nodeUseProgresses } from './interface';
 import { getStrokeColor, installConfigColumns } from '../interface';
 import { nodeCtrl, nodeInfo } from 'src/api/ctrl';
-import { node } from 'src/api/tester';
+import { node } from '@/api/tester';
 
 import { formatBytes, formatBytesToUnit } from '@/utils/common';
 

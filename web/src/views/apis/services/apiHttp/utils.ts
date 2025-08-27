@@ -2,7 +2,7 @@ import qs from 'qs';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import { getBodyDefaultItem, getDefaultParams, ParamsItem } from './interface';
-import { mock } from 'src/api/tester';
+import { mock } from '@/api/tester';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
 import { uniq } from 'lodash-es';
 import { paramTarget } from '@/api/tester';

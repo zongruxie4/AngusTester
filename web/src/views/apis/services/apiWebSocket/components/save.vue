@@ -8,7 +8,7 @@ import { Input, notification, Select, SelectUser, TreeSelect, IconText } from '@
 import { TESTER, appContext } from '@xcan-angus/infra';
 import SelectEnum from '@/components/SelectEnum/index.vue'
 
-import { apis, services } from 'src/api/tester';
+import { apis, services } from '@/api/tester';
 
 interface Props {
   getParameter: any;

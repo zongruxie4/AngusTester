@@ -3,7 +3,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 import { RadioGroup } from 'ant-design-vue';
-import { kanban } from 'src/api/tester';
+import { kanban } from '@/api/tester';
 import { throttle } from 'throttle-debounce';
 
 const { t } = useI18n();

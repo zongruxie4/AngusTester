@@ -5,7 +5,7 @@ import { Button } from 'ant-design-vue';
 import Gantt from '@xcan-angus/frappe-gantt';
 import dayjs from 'dayjs';
 import { AsyncComponent, Icon } from '@xcan-angus/vue-ui';
-import { task } from 'src/api/tester';
+import { task } from '@/api/tester';
 
 const { t } = useI18n();
 

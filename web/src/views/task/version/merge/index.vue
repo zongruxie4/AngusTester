@@ -4,7 +4,7 @@ import { Icon, Modal, Select } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { TESTER } from '@xcan-angus/infra';
-import { software } from 'src/api/tester';
+import { software } from '@/api/tester';
 
 interface Props {
   visible: boolean;

@@ -1,11 +1,18 @@
 <script lang="ts" setup>
+// Vue composition API imports
 import { useI18n } from 'vue-i18n';
-import FlowPng from '@/views/project/project/list/introduce/images/step.png';
+
+// Custom UI components
 import { Icon } from '@xcan-angus/vue-ui';
 
+// Static assets
+import StepImage from '@/views/project/project/images/step.png';
+
+// Initialize i18n
 const { t } = useI18n();
 
-const processData = [
+// Process workflow configuration
+const stepData = [
   {
     type: 'step',
     text: t('project.addProjectStep.text'),
@@ -54,7 +61,7 @@ const processData = [
 
     <div class="flex items-center justify-center">
       <div
-        v-for="(item, idx) in processData"
+        v-for="(item, idx) in stepData"
         :key="idx"
         class="flex items-center">
         <div v-if="item.type === 'step'" class="process-step">
@@ -69,7 +76,7 @@ const processData = [
           </div>
         </div>
         <div v-else class="step-connector">
-          <img :src="FlowPng" class="connector-icon" />
+          <img :src="StepImage" class="connector-icon" />
         </div>
       </div>
     </div>

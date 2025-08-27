@@ -3,7 +3,7 @@ import { computed, onBeforeUnmount, onMounted, provide, ref } from 'vue';
 import { ConfigProvider, Denied, Header, NetworkError, NotFound } from '@xcan-angus/vue-ui';
 import { utils, duration, appContext } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
-import { mock } from 'src/api/tester';
+import { mock } from '@/api/tester';
 import GlobalConstantConfig from '@/globalConstantConfig';
 import { ai } from '@/api/gm';
 

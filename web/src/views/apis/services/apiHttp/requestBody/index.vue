@@ -17,7 +17,7 @@ import { getBodyDefaultItem, ParamsItem } from '../interface';
 import { getNewItem } from '../utils';
 // import { fileToBuffer } from '@/utils/blob';
 import { API_EXTENSION_KEY, CONTENT_TYPE, getDataTypeFromFormat, getModelDataByRef } from '@/views/apis/utils';
-import { services } from 'src/api/tester';
+import { services } from '@/api/tester';
 
 const { t } = useI18n();
 const { gzip, ungzip } = codeUtils;

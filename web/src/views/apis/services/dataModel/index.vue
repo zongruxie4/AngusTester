@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue';
 import { Arrow, Icon, Input, NoData, notification } from '@xcan-angus/vue-ui';
 import { Button, Popover } from 'ant-design-vue';
-import { services } from 'src/api/tester';
+import { services } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
 import Main from './main.vue';

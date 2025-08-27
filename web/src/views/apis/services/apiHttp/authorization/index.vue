@@ -6,7 +6,7 @@ import { Button, RadioGroup } from 'ant-design-vue';
 import { encode } from '@/utils/secure';
 import { http, utils } from '@xcan-angus/infra';
 import axios from 'axios';
-import { services } from 'src/api/tester';
+import { services } from '@/api/tester';
 import SelectEnum from '@/components/SelectEnum/index.vue'
 
 import {

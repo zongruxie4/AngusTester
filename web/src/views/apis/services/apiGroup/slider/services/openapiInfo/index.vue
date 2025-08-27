@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { TypographyParagraph } from 'ant-design-vue';
 import { AsyncComponent, Grid, Icon, Input } from '@xcan-angus/vue-ui';
 
-import { services } from 'src/api/tester';
+import { services } from '@/api/tester';
 import { ISchema } from './PropsType';
 
 interface Props {

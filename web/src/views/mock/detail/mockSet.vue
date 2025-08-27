@@ -6,7 +6,7 @@ import { Card, Hints, Icon, IconCopy, Input, notification, Select } from '@xcan-
 import { appContext } from '@xcan-angus/infra';
 import type { Rule } from 'ant-design-vue/es/form';
 
-import { mock } from 'src/api/tester';
+import { mock } from '@/api/tester';
 
 interface Props {
   id:string;

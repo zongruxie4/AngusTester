@@ -6,7 +6,7 @@ import postmanToOpenApi from '@xcan-angus/postman-to-openapi';
 import SelectEnum from '@/components/SelectEnum/index.vue'
 import { useI18n } from 'vue-i18n';
 
-import { services } from 'src/api/tester';
+import { services } from '@/api/tester';
 import { formatBytes } from '@/utils/common';
 import { UploadRequestOption } from 'ant-design-vue/lib/vc-upload/interface';
 

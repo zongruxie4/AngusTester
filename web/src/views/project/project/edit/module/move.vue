@@ -1,38 +1,43 @@
 <script lang="ts" setup>
+// Vue composition API imports
 import { onMounted, ref, watch } from 'vue';
-import { Icon, Modal } from '@xcan-angus/vue-ui';
-import { travelTreeData } from './utils';
-import { Tree } from 'ant-design-vue';
-import { modules } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
+// Ant Design components
+import { Tree } from 'ant-design-vue';
+
+// Custom UI components
+import { Icon, Modal } from '@xcan-angus/vue-ui';
+
+// Utilities and API
+import { travelTreeData } from '@/views/project/project/utils';
+import { MoveModuleProps } from '@/views/project/project/types';
+import { modules } from '@/api/tester';
+
+// Initialize i18n
 const { t } = useI18n();
 
-interface Props {
-  visible: boolean;
-  projectId: string;
-  projectName: string;
-  module: {
-    id: string;
-    childLevels: number;
-    pid: string;
-  }
-}
-
-const props = withDefaults(defineProps<Props>(), {
+// Props and emits
+const props = withDefaults(defineProps<MoveModuleProps>(), {
   visible: false,
   projectId: '',
-  module: {
+  projectName: '',
+  module: () => ({
     id: '',
     childLevels: 0,
     pid: ''
-  }
+  })
 });
 
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'ok'):void}>();
 
+// Reactive data
 const treeData = ref<any[]>([]);
-const loadTreeData = async () => {
+const pid = ref([]);
+const loading = ref(false);
+
+// Data loading function
+const getModuleTree = async () => {
   const [error, { data }] = await modules.getModuleTree({
     projectId: props.projectId
   });
@@ -45,19 +50,19 @@ const loadTreeData = async () => {
     id: '-1',
     children: [
       ...travelTreeData(data || [], (item) => {
-        if (item.ids.includes(props.module.id)) {
+        if (item.ids?.includes(props.module.id)) {
           item.disabled = true;
         }
         if (item.level + props.module.childLevels > 4) {
           item.disabled = true;
         }
+        return item;
       })
     ]
   }];
 };
 
-const pid = ref([]);
-const loading = ref(false);
+// Event handlers
 const cancel = () => {
   emits('update:visible', false);
 };
@@ -80,11 +85,12 @@ const ok = async () => {
   emits('ok');
 };
 
+// Lifecycle hooks
 onMounted(() => {
   watch(() => props.visible, newValue => {
     pid.value = [];
     if (newValue) {
-      loadTreeData();
+      getModuleTree();
     }
   }, {
     immediate: true
@@ -92,6 +98,7 @@ onMounted(() => {
 });
 </script>
 <template>
+  <!-- Modal for moving module to different parent -->
   <Modal
     :title="t('project.projectEdit.module.moveModule')"
     :okButtonProps="{
@@ -101,6 +108,7 @@ onMounted(() => {
     :visible="props.visible"
     @cancel="cancel"
     @ok="ok">
+    <!-- Tree view for selecting target parent module -->
     <Tree
       v-if="treeData.length"
       v-model:selectedKeys="pid"
@@ -113,6 +121,7 @@ onMounted(() => {
         title: 'name',
         key: 'id'
       }">
+      <!-- Custom tree node template -->
       <template #title="{name, id}">
         <div class="flex items-center space-x-2">
           <Icon v-if="id !== '-1'" icon="icon-mokuai" />

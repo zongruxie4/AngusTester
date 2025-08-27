@@ -3,7 +3,7 @@ import { computed, nextTick, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Colon, DatePicker, Icon, Tooltip } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
-import { task } from 'src/api/tester';
+import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
 import { TaskInfo } from '../../../../../PropsType';

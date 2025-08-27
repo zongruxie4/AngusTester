@@ -1,18 +1,23 @@
 <script setup lang="ts">
+// Vue composition API imports
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { ButtonProps } from 'ant-design-vue';
-import { Input, Modal, notification } from '@xcan-angus/vue-ui';
-import { tag } from '@/api/tester';
 
+// Ant Design components
+import { ButtonProps } from 'ant-design-vue';
+
+// Custom UI components
+import { Input, Modal, notification } from '@xcan-angus/vue-ui';
+
+// API imports and utils
+import { tag } from '@/api/tester';
+import { AddTagProps } from '@/views/project/project/types';
+
+// Initialize i18n
 const { t } = useI18n();
 
-interface Props {
-  projectId: string;
-  visible: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+// Props and emits
+const props = withDefaults(defineProps<AddTagProps>(), {
   projectId: undefined,
   visible: false
 });
@@ -23,12 +28,14 @@ const emit = defineEmits<{
   (e: 'ok', value: { id: string; name: string }): void;
 }>();
 
+// Reactive data
 const inputValue = ref<string>();
 const okButtonProps = ref<ButtonProps>({
   loading: false,
   disabled: true
 });
 
+// Event handlers
 const ok = async () => {
   okButtonProps.value.loading = true;
   const name = inputValue.value as string;
@@ -68,6 +75,7 @@ const hanedleEnterPress = () => {
 </script>
 
 <template>
+  <!-- Modal for adding new tag -->
   <Modal
     :title="t('project.projectEdit.tag.addTagTitle')"
     width="500px"
@@ -75,6 +83,7 @@ const hanedleEnterPress = () => {
     :okButtonProps="okButtonProps"
     @cancel="cancel"
     @ok="ok">
+    <!-- Input field for tag name -->
     <Input
       v-model:value="inputValue"
       :placeholder="t('project.projectEdit.tag.tagNamePlaceholder')"

@@ -8,7 +8,7 @@ import { cookieUtils, DomainManager, appContext } from '@xcan-angus/infra';
 const { t } = useI18n();
 
 import store from '@/store';
-import { apis, services } from 'src/api/tester';
+import { apis, services } from '@/api/tester';
 import { navs, serviceNav, socketNavs, StateType } from './PropsType';
 
 const HttpTestInfo = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(resp => resp.HttpTestInfo));

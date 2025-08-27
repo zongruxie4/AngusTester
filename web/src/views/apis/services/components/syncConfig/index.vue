@@ -3,7 +3,7 @@ import { inject, onMounted, ref, watch, defineAsyncComponent, computed } from 'v
 import { useI18n } from 'vue-i18n';
 import { Arrow, Colon, Hints, Icon, IconRequired, Input, notification, Select, Spin, AsyncComponent, VuexHelper } from '@xcan-angus/vue-ui';
 import { Button, Radio, RadioGroup, Switch, Tooltip } from 'ant-design-vue';
-import { services } from 'src/api/tester';
+import { services } from '@/api/tester';
 import { regexpUtils, utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 

@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Button, Form, FormItem } from 'ant-design-vue';
 import { Hints, Input, notification } from '@xcan-angus/vue-ui';
 
-import { apis } from 'src/api/tester';
+import { apis } from '@/api/tester';
 
 interface Props {
   getParameter: any;

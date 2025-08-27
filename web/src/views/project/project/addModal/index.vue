@@ -1,13 +1,22 @@
 <script lang="ts" setup>
+// Vue composition API imports
 import { computed, ref, watch, defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+// Custom UI components
 import { DatePicker, Icon, Image, Input, Modal, notification, Select, SelectUser } from '@xcan-angus/vue-ui';
+
+// Ant Design components
 import { Form, FormItem, RadioButton, RadioGroup, Upload, Popover } from 'ant-design-vue';
+
+// API and utilities
 import { project } from '@/api/tester';
 import { GM, upload, appContext } from '@xcan-angus/infra';
 
+// Initialize i18n
 const { t } = useI18n();
 
+// Type definitions
 export type Project = {
   name: string;
   ownerId: string;
@@ -26,34 +35,37 @@ interface Props {
   closable: boolean;
 }
 
+// Props and emits
 const props = withDefaults(defineProps<Props>(), {
   visible: false,
   dataSource: undefined,
   closable: true
 });
-const userInfo = ref(appContext.getUser());
 
-// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
   (e: 'cancel', value: boolean): void;
   (e: 'ok'): void;
 }>();
 
+// Async component definitions
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 
-const formRef = ref();
-const memberType = ref('user');
-
-const projectType = ref('AGILE');
-
+// Configuration objects
 const projectTypeTipConfig = {
   AGILE: [t('project.projectAddModal.projectTypeTip.agile.features'), t('project.projectAddModal.projectTypeTip.agile.scenarios')],
   GENERAL: [t('project.projectAddModal.projectTypeTip.general.features'), t('project.projectAddModal.projectTypeTip.general.scenarios')],
   TESTING: [t('project.projectAddModal.projectTypeTip.testing.features'), t('project.projectAddModal.projectTypeTip.testing.scenarios')]
 };
 
+// Reactive data
+const userInfo = ref(appContext.getUser());
+const formRef = ref();
+const memberType = ref('user');
+const projectType = ref('AGILE');
 const loading = ref(false);
+const descRichRef = ref();
+
 const formData = ref<{
   id?: string;
   name: string;
@@ -81,6 +93,16 @@ const members = ref<{
   GROUP: []
 });
 
+const defaultOptionsUser = ref<{ [key: string]: any }>({});
+const defaultOptionsDept = ref<{ [key: string]: any }>({});
+const defaultOptionsGroup = ref<{ [key: string]: any }>({});
+
+// Computed properties
+const modalTitle = computed(() => {
+  return props.dataSource?.id ? t('project.projectAddModal.modal.editProject') : t('project.projectAddModal.modal.addProject');
+});
+
+// Event handlers
 const selectProjectType = (value) => {
   projectType.value = value;
 };
@@ -106,10 +128,15 @@ const cancel = () => {
   emit('cancel', false);
 };
 
-const defaultOptionsUser = ref<{ [key: string]: any }>({});
-const defaultOptionsDept = ref<{ [key: string]: any }>({});
-const defaultOptionsGroup = ref<{ [key: string]: any }>({});
+// Form validation
+const validateDesc = () => {
+  if (descRichRef.value && descRichRef.value.getLength() > 2000) {
+    return Promise.reject(t('project.projectAddModal.validation.maxCharacters'));
+  }
+  return Promise.resolve();
+};
 
+// Data initialization
 const setDefaultData = () => {
   const _dataSource = props.dataSource;
   if (!_dataSource) {
@@ -127,6 +154,7 @@ const setDefaultData = () => {
     importExample
   };
 
+  // Process member data for form options
   if (_dataSource.members?.USER) {
     members.value.USER = _dataSource.members?.USER.map(i => {
       defaultOptionsUser.value[i.id] = { ...i, fullName: i.name };
@@ -149,14 +177,7 @@ const setDefaultData = () => {
   }
 };
 
-const descRichRef = ref();
-const validateDesc = () => {
-  if (descRichRef.value && descRichRef.value.getLength() > 2000) {
-    return Promise.reject(t('project.projectAddModal.validation.maxCharacters'));
-  }
-  return Promise.resolve();
-};
-
+// Form submission
 const ok = async () => {
   formRef.value.validate().then(async () => {
     loading.value = true;
@@ -181,6 +202,7 @@ const ok = async () => {
   });
 };
 
+// Watchers
 watch(() => props.visible, newValue => {
   if (!newValue) {
     return;
@@ -188,6 +210,7 @@ watch(() => props.visible, newValue => {
   if (props.dataSource) {
     setDefaultData();
   } else {
+    // Initialize new project form
     formData.value = {
       name: '',
       ownerId: undefined,
@@ -196,6 +219,7 @@ watch(() => props.visible, newValue => {
       dateRange: undefined,
       importExample: true
     };
+    // Set current user as default member
     if (userInfo.value && userInfo.value.id) {
       members.value = {
         USER: [String(userInfo.value.id || '')],
@@ -223,10 +247,6 @@ watch(() => props.visible, newValue => {
 }, {
   immediate: true
 });
-
-const modalTitle = computed(() => {
-  return props.dataSource?.id ? t('project.projectAddModal.modal.editProject') : t('project.projectAddModal.modal.addProject');
-});
 </script>
 <template>
   <Modal
@@ -243,7 +263,7 @@ const modalTitle = computed(() => {
     @ok="ok"
     @cancel="cancel">
     <div class="modal-content">
-      <!-- 项目类型选择区域 -->
+      <!-- Project type selection area -->
       <div class="project-type-section">
         <h3 class="section-title">{{ t('project.projectAddModal.form.selectProjectType') }}</h3>
         <div class="project-type-cards">
@@ -283,7 +303,7 @@ const modalTitle = computed(() => {
         </div>
       </div>
 
-      <!-- 表单填写区域 -->
+      <!-- Form fields area -->
       <div class="form-fields-section">
         <h3 class="section-title">{{ t('project.projectAddModal.form.basicInfo') }}</h3>
         <Form
@@ -291,7 +311,7 @@ const modalTitle = computed(() => {
           class="project-form"
           :model="formData"
           layout="vertical">
-          <!-- 头像上传 -->
+          <!-- Avatar upload -->
           <FormItem class="avatar-upload-item">
             <div class="avatar-upload-container">
               <div v-if="formData.avatar" class="avatar-preview">
@@ -325,7 +345,7 @@ const modalTitle = computed(() => {
             </div>
           </FormItem>
 
-          <!-- 项目名称 -->
+          <!-- Project name -->
           <FormItem
             :label="t('project.projectAddModal.form.name')"
             name="name"
@@ -338,7 +358,7 @@ const modalTitle = computed(() => {
               class="enhanced-input" />
           </FormItem>
 
-          <!-- 时间计划 -->
+          <!-- Time plan -->
           <FormItem
             name="dateRange"
             class="form-field with-tooltip"
@@ -362,7 +382,7 @@ const modalTitle = computed(() => {
           </FormItem>
 
           <div class="form-row">
-            <!-- 项目负责人 -->
+            <!-- Project owner -->
             <FormItem
               name="ownerId"
               class="form-field with-tooltip flex-1"
@@ -386,7 +406,7 @@ const modalTitle = computed(() => {
               </Popover>
             </FormItem>
 
-            <!-- 导入示例 -->
+            <!-- Import example -->
             <FormItem class="form-field with-tooltip flex-1">
               <template #label>
                 <span>{{ t('project.projectAddModal.form.importExample') }}</span>
@@ -406,7 +426,7 @@ const modalTitle = computed(() => {
             </FormItem>
           </div>
 
-          <!-- 项目成员 -->
+          <!-- Project members -->
           <FormItem
             :label="t('project.projectAddModal.form.members')"
             class="form-field members-field"
@@ -474,7 +494,7 @@ const modalTitle = computed(() => {
             </div>
           </FormItem>
 
-          <!-- 项目描述 -->
+          <!-- Project description -->
           <FormItem
             :label="t('project.projectAddModal.form.description')"
             name="description"
@@ -490,7 +510,7 @@ const modalTitle = computed(() => {
         </Form>
       </div>
 
-      <!-- 项目类型预览区域 -->
+      <!-- Project type preview area -->
       <div class="project-preview-section">
         <h3 class="section-title">{{ t('project.projectAddModal.projectTypeName.' + projectType.toLowerCase()) }}</h3>
         <div class="preview-content">
@@ -523,7 +543,7 @@ const modalTitle = computed(() => {
   </Modal>
 </template>
 <style scoped>
-/* 弹窗内容容器 */
+/* Modal content container */
 .modal-content {
   display: grid;
   grid-template-columns: 200px 2.67fr 1fr;
@@ -531,19 +551,19 @@ const modalTitle = computed(() => {
   min-height: 500px;
 }
 
-/* 项目类型选择区域 */
+/* Project type selection area */
 .project-type-section {
   display: flex;
   flex-direction: column;
 }
 
 .section-title {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   color: #1f2937;
   margin-bottom: 20px;
-  padding-bottom: 12px;
-  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .project-type-cards {
@@ -611,7 +631,7 @@ const modalTitle = computed(() => {
   font-weight: 600;
 }
 
-/* 表单字段区域 */
+/* Form fields area */
 .form-fields-section {
   display: flex;
   flex-direction: column;
@@ -635,7 +655,7 @@ const modalTitle = computed(() => {
   gap: 16px;
 }
 
-/* 头像上传样式 */
+/* Avatar upload styles */
 .avatar-upload-item {
   margin-bottom: 24px;
 }
@@ -737,7 +757,7 @@ const modalTitle = computed(() => {
   line-height: 1.2;
 }
 
-/* 增强的表单控件 */
+/* Enhanced form controls */
 .enhanced-input {
   border-radius: 8px;
   border: 1px solid #d1d5db;
@@ -768,7 +788,7 @@ const modalTitle = computed(() => {
   border: 1px solid #d1d5db;
 }
 
-/* 成员选择器样式 */
+/* Member selector styles */
 .members-field {
   margin-bottom: 24px;
 }
@@ -789,12 +809,12 @@ const modalTitle = computed(() => {
   min-height: 32px;
 }
 
-/* 描述字段样式 */
+/* Description field styles */
 .description-field {
   margin-bottom: 24px;
 }
 
-/* 工具提示样式 */
+/* Tooltip styles */
 .tooltip-icon {
   position: absolute;
   right: -20px;
@@ -815,7 +835,7 @@ const modalTitle = computed(() => {
   color: #374151;
 }
 
-/* 项目预览区域 */
+/* Project preview area */
 .project-preview-section {
   display: flex;
   flex-direction: column;
@@ -883,7 +903,7 @@ const modalTitle = computed(() => {
   margin: 0;
 }
 
-/* 响应式设计 */
+/* Responsive design */
 @media (max-width: 1100px) {
   .modal-content {
     grid-template-columns: 180px 1fr 180px;

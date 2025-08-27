@@ -8,7 +8,7 @@ import { useRoute, useRouter } from 'vue-router';
 import YAML from 'yaml';
 import { Button } from 'ant-design-vue';
 
-import { script } from 'src/api/tester';
+import { script } from '@/api/tester';
 import { exec } from 'src/api/ctrl';
 import { ai } from 'src/api/gm';
 import { LANG_OPTIONS, TOOLBAR_EXTRA_MENUITEMS, TOOLBAR_MENUITEMS } from './data';

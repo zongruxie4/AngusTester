@@ -22,7 +22,7 @@ import {
 import { getRequestBodyData } from './utils';
 // import PIcon from './PIcon/index.vue';
 import { API_EXTENSION_KEY } from './PropsType.ts';
-import { services } from 'src/api/tester';
+import { services } from '@/api/tester';
 
 export interface Props {
   disabled: boolean;

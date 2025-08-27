@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { utils } from '@xcan-angus/infra';
-import { software } from 'src/api/tester';
+import { software } from '@/api/tester';
 
 import { IPane } from './PropsType';
 

@@ -6,7 +6,7 @@ import { debounce } from 'throttle-debounce';
 import { duration, TESTER } from '@xcan-angus/infra';
 import DOMPurify from 'dompurify';
 
-import { activity } from 'src/api/tester';
+import { activity } from '@/api/tester';
 import { setting } from '@/api/gm';
 
 import SearchPanel from '@/views/project/activity/searchPanel/index.vue';

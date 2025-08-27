@@ -1,43 +1,30 @@
 <script setup lang="ts">
+// Vue composition API imports
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+// Utilities
 import { duration } from '@xcan-angus/infra';
-import { AsyncComponent, Icon, IconRefresh, Input, modal, NoData, notification, Spin } from '@xcan-angus/vue-ui';
-import { Button, Dropdown, Menu, MenuItem, Tree } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
+
+// Custom UI components
+import { AsyncComponent, Icon, IconRefresh, Input, modal, NoData, notification, Spin } from '@xcan-angus/vue-ui';
+
+// Ant Design components
+import { Button, Dropdown, Menu, MenuItem, Tree } from 'ant-design-vue';
+
+// API imports
 import { modules } from '@/api/tester';
 
-import { travelTreeData } from './utils';
+// Utils
+import { travelTreeData } from '@/views/project/project/utils';
+import { ModuleProps, ModuleItem } from '@/views/project/project/types';
 
+// Initialize i18n
 const { t } = useI18n();
 
-type TagItem = {
-  id: string;
-  name: string;
-  key?: string;
-  showName?: string;
-  showTitle?: string;
-  children?: TagItem[];
-  level?: number;
-  index?: number;
-  ids?: string[];
-  isLast?: boolean;
-  pid?: string;
-  sequence?: string;
-  childLevels?: number;
-  hasEditPermission?: boolean;
-}
-
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  notify: string;
-  disabled: boolean;
-  projectName: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+// Props
+const props = withDefaults(defineProps<ModuleProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -45,84 +32,41 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false
 });
 
+// Async component definitions
 const CreateModal = defineAsyncComponent(() => import('./add.vue'));
 const MoveModuleModal = defineAsyncComponent(() => import('./move.vue'));
 
-// const MAX_LENGTH = 20;
-
+// Reactive data
 const pageNo = ref(1);
-// const pageSize = ref(200);
 const inputValue = ref<string>();
 const nameInputRef = ref();
-
 const loaded = ref(false);
 const loading = ref(false);
 const searchedFlag = ref(false);
-
-const dataList = ref<TagItem[]>([]);
+const dataList = ref<ModuleItem[]>([]);
 const total = ref(0);
-
 const editId = ref<string>();
 const pid = ref<string>();
 const modalVisible = ref(false);
-const moveVsible = ref(false);
+const moveVisible = ref(false);
+const activeModule = ref();
 
-const inputChange = debounce(duration.search, (event: any) => {
-  inputValue.value = event.target.value;
-  pageNo.value = 1;
-  loadData();
-});
-
-const toCreate = () => {
-  modalVisible.value = true;
-};
-
-const createOk = () => {
-  // dataList.value.unshift(data);
-  // total.value += 1;
-  loadData();
-};
-
-const refresh = () => {
-  pageNo.value = 1;
-  loadData();
-};
-
+// Utility functions
 const getParams = () => {
   const params: {
-    // pageNo: number;
-    // pageSize: number;
     projectId: string;
     filters?: { key: 'name'; op: 'MATCH_END'; value: string }[],
   } = {
-    // pageNo: pageNo.value,
-    // pageSize: pageSize.value,
     projectId: props.projectId
   };
-
   if (inputValue.value) {
     params.filters = [{ key: 'name', op: 'MATCH_END', value: inputValue.value }];
   }
-
   return params;
 };
 
-// const format = (data: { id: string; name: string }) => {
-//   let showTitle = '';
-//   let showName = data.name;
-//   if (data.name?.length > MAX_LENGTH) {
-//     showTitle = data.name;
-//     showName = showName.slice(0, MAX_LENGTH) + '...';
-//   }
-
-//   return {
-//     ...data,
-//     showTitle,
-//     showName
-//   };
-// };
-
-const loadData = async (remainder = 0, _params?: Record<string, any>) => {
+// Data loading function
+const getModuleTree = async (remainder = 0, _params?: Record<string, any>) => {
   loading.value = true;
   pid.value = undefined;
   let params = getParams();
@@ -134,44 +78,36 @@ const loadData = async (remainder = 0, _params?: Record<string, any>) => {
   loading.value = false;
   loaded.value = true;
 
-  if (params.filters?.length) {
-    searchedFlag.value = true;
-  } else {
-    searchedFlag.value = false;
-  }
+  searchedFlag.value = !!params.filters?.length;
 
   if (error) {
     return;
   }
 
   const data = res?.data;
-  // if (!data) {
-  //   return;
-  // }
-
   const list = ((data || []) as {id:string;name:string}[]).slice(remainder);
   dataList.value = travelTreeData(list);
-  // const pureList = list.map((item) => {
-  //   return item;
-  // });
-
-  // if (params.pageNo > 1) {
-  //   dataList.value.push(...pureList);
-  // } else {
-  //   dataList.value = pureList;
-  // }
-
-  // total.value = +data.total;
 };
 
-const toEdit = (data: TagItem) => {
+// Event handlers
+const toCreate = () => {
+  modalVisible.value = true;
+};
+
+const createOk = () => {
+  getModuleTree();
+};
+
+const refresh = () => {
+  pageNo.value = 1;
+  getModuleTree();
+};
+
+const toEdit = (data: ModuleItem) => {
   if (props.disabled) {
     return;
   }
   editId.value = data.id;
-  // nextTick(() => {
-  //   nameInputRef.value.focus();
-  // });
 };
 
 const cancelEdit = () => {
@@ -192,10 +128,10 @@ const pressEnter = async (id: string, event: { target: { value: string } }) => {
   }
   notification.success(t('tips.modifySuccess'));
   editId.value = undefined;
-  loadData();
+  await getModuleTree();
 };
 
-const hadleblur = (id: string, event: { target: { value: string } }) => {
+const handleBlur = (id: string, event: { target: { value: string } }) => {
   setTimeout(() => {
     if (editId.value === id) {
       pressEnter(id, event);
@@ -203,8 +139,7 @@ const hadleblur = (id: string, event: { target: { value: string } }) => {
   }, 300);
 };
 
-// 删除弹框
-const toDelete = (data: TagItem) => {
+const toDelete = (data: ModuleItem) => {
   modal.confirm({
     content: t('project.projectEdit.module.confirmDelete', { name: data.name }),
     async onOk () {
@@ -218,38 +153,12 @@ const toDelete = (data: TagItem) => {
       }
 
       notification.success(t('project.projectEdit.module.deleteSuccess'));
-      // 删除列表中该条数据
-      // dataList.value.splice(index, 1);
-      // total.value -= 1;
-
-      // 如果删除的不是所有数据的最后一条，则需要追加该下标的数据
-      // if (index < total.value) {
-      //   const params = {
-      //     // pageNo: dataList.value.length + 1,
-      //     // pageSize: 1
-      //   };
-      //   loadData(0, params);
-      // }
-      loadData();
+      getModuleTree();
     }
   });
 };
 
-const reset = () => {
-  pageNo.value = 1;
-  inputValue.value = undefined;
-
-  loaded.value = false;
-  loading.value = false;
-  searchedFlag.value = false;
-
-  dataList.value = [];
-  total.value = 0;
-
-  editId.value = undefined;
-  modalVisible.value = false;
-};
-
+// Module movement functions
 const moveUp = async (record: any) => {
   const { index, ids, id } = record;
   let params = {};
@@ -294,8 +203,8 @@ const moveUp = async (record: any) => {
   if (error) {
     return;
   }
-  notification.success('移动成功');
-  loadData();
+  notification.success(t('tips.moveSuccess'));
+  getModuleTree();
 };
 
 const moveDown = async (record) => {
@@ -323,13 +232,12 @@ const moveDown = async (record) => {
     return;
   }
   notification.success(t('tips.moveSuccess'));
-  loadData();
+  getModuleTree();
 };
 
-const activeModule = ref();
 const moveLevel = (record) => {
   activeModule.value = record;
-  moveVsible.value = true;
+  moveVisible.value = true;
 };
 
 const onMenuClick = (menu, record) => {
@@ -349,20 +257,35 @@ const onMenuClick = (menu, record) => {
   }
 };
 
+const reset = () => {
+  pageNo.value = 1;
+  inputValue.value = undefined;
+  loaded.value = false;
+  loading.value = false;
+  searchedFlag.value = false;
+  dataList.value = [];
+  total.value = 0;
+  editId.value = undefined;
+  modalVisible.value = false;
+};
+
+// Debounced search handler
+const inputChange = debounce(duration.search, (event: any) => {
+  inputValue.value = event.target.value;
+  pageNo.value = 1;
+  getModuleTree();
+});
+
+// Lifecycle hooks
 onMounted(() => {
   watch(() => props.projectId, (newValue) => {
     reset();
     if (!newValue) {
       return;
     }
-
-    loadData();
+    getModuleTree();
   }, { immediate: true });
 });
-
-// const showLoadMore = computed(() => {
-//   return dataList.value.length < total.value;
-// });
 </script>
 <template>
   <div class="w-full h-full leading-5 text-xs overflow-auto">
@@ -462,7 +385,7 @@ onMounted(() => {
                         :value="name"
                         :allowClear="false"
                         :maxlength="50"
-                        @blur="hadleblur(id, $event)"
+                        @blur="handleBlur(id, $event)"
                         @pressEnter="pressEnter(id, $event)" />
                       <Button
                         type="link"
@@ -529,9 +452,9 @@ onMounted(() => {
         :pid="pid"
         @ok="createOk" />
     </AsyncComponent>
-    <AsyncComponent :visible="moveVsible">
+    <AsyncComponent :visible="moveVisible">
       <MoveModuleModal
-        v-model:visible="moveVsible"
+        v-model:visible="moveVisible"
         :projectId="props.projectId"
         :projectName="props.projectName"
         :module="activeModule"
@@ -600,5 +523,4 @@ onMounted(() => {
 :deep(.ant-tree-node-content-wrapper.ant-tree-node-content-wrapper-normal) {
   @apply !flex-1 min-w-0;
 }
-
 </style>

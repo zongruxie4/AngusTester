@@ -1,22 +1,23 @@
 <script lang="ts" setup>
+// Vue composition API imports
 import { defineAsyncComponent, inject, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import {
-  Button,
-  Form,
-  FormItem,
-  Popover,
-  RadioButton,
-  RadioGroup,
-  TabPane,
-  Tabs
-} from 'ant-design-vue';
-import { DatePicker, Icon, Image, Input, notification, Select, SelectUser, Cropper } from '@xcan-angus/vue-ui';
+
+// Ant Design components
+import { Button, Form, FormItem, Popover, RadioButton, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
+
+// Custom components
+import { Cropper, DatePicker, Icon, Image, Input, notification, Select, SelectUser } from '@xcan-angus/vue-ui';
 import { GM } from '@xcan-angus/infra';
-import { project } from 'src/api/tester';
+import { Project } from '@/views/project/project/types';
+import { ProjectType } from '@/enums/enums';
+import { cropperUploadOption } from '@/utils/constant';
 
-const { t } = useI18n();
+// API imports
+import { project } from '@/api/tester';
+import { getProjectTypeTipConfig, toolbarOptions, uploadParams } from '../utils';
 
+// Type definitions
 interface Props {
   projectId: string;
   data?: {
@@ -24,29 +25,44 @@ interface Props {
   }
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  projectId: undefined,
-  data: undefined
-});
-const emit = defineEmits<{(e: 'ok'): void}>();
+// Initialize i18n
+const { t } = useI18n();
 
-const changeProjectInfo = inject('changeProjectInfo', (projectId: string, force: boolean) => ({ projectId, force }));
-const getNewCurrentProject = inject('getNewCurrentProject', () => (undefined));
-const projectInfo = inject('projectInfo', ref({ id: '' }));
-const delTabPane = inject('delTabPane', (tabKey: string) => { console.log('delTabPane not provided:', tabKey); });
-
-const activeKey = ref('basic');
-const projectTypeTipConfig = {
-  AGILE: [t('project.projectEdit.projectTypeTip.agile.features'), t('project.projectEdit.projectTypeTip.agile.scenarios')],
-  GENERAL: [t('project.projectEdit.projectTypeTip.general.features'), t('project.projectEdit.projectTypeTip.general.scenarios')],
-  TESTING: [t('project.projectEdit.projectTypeTip.testing.features'), t('project.projectEdit.projectTypeTip.testing.scenarios')]
-};
-
+// Configuration objects
+const projectTypeTipConfig = getProjectTypeTipConfig();
 const projectTypeName = {
   AGILE: t('project.projectEdit.projectTypeName.agile'),
   GENERAL: t('project.projectEdit.projectTypeName.general'),
   TESTING: t('project.projectEdit.projectTypeName.testing')
 };
+
+// Props and emits
+const props = withDefaults(defineProps<Props>(), {
+  projectId: undefined,
+  data: undefined
+});
+
+const emit = defineEmits<{(e: 'ok'): void}>();
+
+// Injected dependencies
+const changeProjectInfo = inject('changeProjectInfo', (projectId: string, force: boolean) => ({ projectId, force }));
+const getNewCurrentProject = inject('getNewCurrentProject', () => (undefined));
+const projectInfo = inject('projectInfo', ref({ id: '' }));
+const delTabPane = inject('delTabPane', (tabKey: string) => { console.log('delTabPane not provided:', tabKey); });
+
+// Async component definitions
+const Tags = defineAsyncComponent(() => import('@/views/project/project/edit/tag/index.vue'));
+const Module = defineAsyncComponent(() => import('@/views/project/project/edit/module/index.vue'));
+const Version = defineAsyncComponent(() => import('@/views/task/version/list/index.vue'));
+const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+
+// Reactive data
+const activeKey = ref('basic');
+const memberType = ref('user');
+const descRef = ref();
+const uploadAvatarVisible = ref(false);
+const formRef = ref();
+const loading = ref(false);
 
 const members = ref<{
   USER: string[];
@@ -57,121 +73,77 @@ const members = ref<{
   DEPT: [],
   GROUP: []
 });
-const memberType = ref('user');
-const descRef = ref();
-const uploadAvatarVisible = ref(false);
-const uploadParams = {
-  bizKey: 'angusTesterProjectAvatar'
-};
 
-const uploadOption = {
-  outputSize: 1,
-  outputType: 'png',
-  info: true,
-  canScale: true,
-  autoCrop: true,
-  autoCropWidth: '280',
-  autoCropHeight: '280',
-  fixed: true,
-  fixedNumber: [1, 1],
-  full: false,
-  fixedBox: false,
-  canMove: true,
-  canMoveBox: true,
-  original: false,
-  centerBox: false,
-  high: true,
-  infoTrue: false,
-  maxImgSize: 2000,
-  enlarge: 1,
-  mode: 'contain',
-  preW: 0,
-  limitMinSize: [100, 100]
-};
+const projectDetail = ref<Project>({ type: { value: ProjectType.AGILE, message: '' }, importExample: false });
 
 const defaultOptionsUser = ref<{ [key: string]: any }>({});
 const defaultOptionsDept = ref<{ [key: string]: any }>({});
 const defaultOptionsGroup = ref<{ [key: string]: any }>({});
 
-const Tags = defineAsyncComponent(() => import('@/views/project/project/edit/tag/index.vue'));
-const Module = defineAsyncComponent(() => import('@/views/project/project/edit/module/index.vue'));
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
-const Version = defineAsyncComponent(() => import('@/views/task/version/list/index.vue'));
-
-const toolbarOptions = ['title', 'color', 'weight', 'block', 'link', 'list', 'direction', 'table', 'zoom'];
-const projectData = ref<{
-  id?: string;
-  name?: string;
-  ownerId?: string;
-  description?: string;
-  avatar?: string;
-  members?: {
-    USER?: any[];
-    DEPT?: any[];
-    GROUP?: any[];
-  };
-  type: string;
-  dateRange?: [string, string];
-  importExample: boolean;
-}>({ type: 'AGILE', importExample: false });
-const formRef = ref();
-const loading = ref(false);
-const loadProjectData = async () => {
+// Data loading function
+const getDetail = async () => {
   const [error, { data }] = await project.getProjectDetail(props.projectId);
   if (error) {
     return;
   }
-  // projectData.value = data;
   const { startDate, deadlineDate, type, id, name, ownerId, description, avatar } = data;
-  projectData.value = {
+  projectDetail.value = {
     id,
     name,
     ownerId,
     description,
     avatar,
-    type: type?.value || 'AGILE',
+    type,
     importExample: false
   };
-  projectData.value.members = data.members;
-  projectData.value.dateRange = [startDate, deadlineDate];
-  if (projectData.value.members?.USER) {
-    members.value.USER = projectData.value.members.USER.map((i: any) => {
+  projectDetail.value.members = data.members;
+  projectDetail.value.dateRange = [startDate, deadlineDate];
+
+  // Process member data for form options
+  if (projectDetail.value.members?.USER) {
+    members.value.USER = projectDetail.value.members.USER.map((i: any) => {
       defaultOptionsUser.value[i.id] = { ...i, fullName: i.name };
       return i.id;
     });
   }
 
-  if (projectData.value.members?.DEPT) {
-    members.value.DEPT = projectData.value.members.DEPT.map((i: any) => {
+  if (projectDetail.value.members?.DEPT) {
+    members.value.DEPT = projectDetail.value.members.DEPT.map((i: any) => {
       defaultOptionsDept.value[i.id] = { ...i, fullName: i.name };
       return i.id;
     });
   }
 
-  if (projectData.value.members?.GROUP) {
-    members.value.GROUP = projectData.value.members.GROUP.map((i: any) => {
+  if (projectDetail.value.members?.GROUP) {
+    members.value.GROUP = projectDetail.value.members.GROUP.map((i: any) => {
       defaultOptionsGroup.value[i.id] = { ...i, fullName: i.name };
       return i.id;
     });
   }
 };
 
+// Event handlers
 const openCropper = () => {
   uploadAvatarVisible.value = true;
 };
 
 const uploadImgSuccess = (resp) => {
-  projectData.value.avatar = resp?.data?.[0]?.url;
+  projectDetail.value.avatar = resp?.data?.[0]?.url;
 };
 
 const delImg = () => {
-  projectData.value.avatar = '';
+  projectDetail.value.avatar = '';
 };
 
-const selectProjectType = (value) => {
-  projectData.value.type = value;
+const selectProjectType = (value: ProjectType) => {
+  if (projectDetail.value.type) {
+    projectDetail.value.type.value = value;
+  } else {
+    projectDetail.value.type = { value, message: '' };
+  }
 };
 
+// Form validation
 const validateDesc = () => {
   if (descRef.value && descRef.value.getLength() > 2000) {
     return Promise.reject(t('project.projectEdit.validation.maxCharacters'));
@@ -179,11 +151,12 @@ const validateDesc = () => {
   return Promise.resolve();
 };
 
+// Form submission
 const ok = async () => {
   formRef.value.validate().then(async () => {
     loading.value = true;
     const { USER, DEPT, GROUP } = members.value;
-    const { dateRange, ...otherProject } = projectData.value;
+    const { dateRange, ...otherProject } = projectDetail.value;
     const [error] = props.projectId
       ? await project.updateProject({ ...otherProject, startDate: dateRange?.[0], deadlineDate: dateRange?.[1], memberTypeIds: { USER: USER.length ? USER : undefined, DEPT: DEPT.length ? DEPT : undefined, GROUP: GROUP.length ? GROUP : undefined } })
       : await project.addProject({ ...otherProject, startDate: dateRange?.[0], deadlineDate: dateRange?.[1], memberTypeIds: { USER: USER.length ? USER : undefined, DEPT: DEPT.length ? DEPT : undefined, GROUP: GROUP.length ? GROUP : undefined } });
@@ -210,19 +183,19 @@ const cancel = () => {
   delTabPane('addProject');
 };
 
+// Lifecycle hooks
 onMounted(() => {
   if (props.projectId) {
-    loadProjectData();
+    getDetail();
     if (props.data?.tab) {
       activeKey.value = props.data.tab;
     }
   }
 });
-
 </script>
 <template>
   <div class="project-edit-container">
-    <!-- 添加项目（如果项目ID为空时） -->
+    <!-- Add project section (when project ID is empty) -->
     <div v-if="!props.projectId" class="project-create-layout">
       <div class="form-content-wrapper">
         <Form
@@ -230,19 +203,19 @@ onMounted(() => {
           labelAlign="right"
           :colon="false"
           class="project-form"
-          :model="projectData"
+          :model="projectDetail"
           :labelCol="{ style: {width: '80px'} }">
           <div class="form-main-content">
-            <!-- 项目类型选择区域 -->
+            <!-- Project type selection area -->
             <div class="project-type-section">
               <h3 class="section-title">{{ t('project.projectEdit.tabs.projectType') }}</h3>
               <div class="project-type-cards">
                 <div
                   class="project-type-card"
-                  :class="{ 'selected': projectData.type === 'AGILE' }"
-                  @click="selectProjectType('AGILE')">
+                  :class="{ 'selected': projectDetail.type?.value === ProjectType.AGILE }"
+                  @click="selectProjectType(ProjectType.AGILE)">
                   <Icon
-                    v-show="projectData.type === 'AGILE'"
+                    v-show="projectDetail.type?.value === ProjectType.AGILE"
                     icon="icon-xuanzhongduigou"
                     class="selection-icon" />
                   <Icon icon="icon-minjiexiangmuguanli" class="type-icon" />
@@ -250,10 +223,10 @@ onMounted(() => {
                 </div>
                 <div
                   class="project-type-card"
-                  :class="{ 'selected': projectData.type === 'GENERAL' }"
-                  @click="selectProjectType('GENERAL')">
+                  :class="{ 'selected': projectDetail.type?.value === ProjectType.GENERAL }"
+                  @click="selectProjectType(ProjectType.GENERAL)">
                   <Icon
-                    v-show="projectData.type === 'GENERAL'"
+                    v-show="projectDetail.type?.value === ProjectType.GENERAL"
                     icon="icon-xuanzhongduigou"
                     class="selection-icon" />
                   <Icon icon="icon-jiandanxiangmuguanli" class="type-icon" />
@@ -261,10 +234,10 @@ onMounted(() => {
                 </div>
                 <div
                   class="project-type-card"
-                  :class="{ 'selected': projectData.type === 'TESTING' }"
-                  @click="selectProjectType('TESTING')">
+                  :class="{ 'selected': projectDetail.type?.value === ProjectType.TESTING }"
+                  @click="selectProjectType(ProjectType.TESTING)">
                   <Icon
-                    v-show="projectData.type === 'TESTING'"
+                    v-show="projectDetail.type?.value === ProjectType.TESTING"
                     icon="icon-xuanzhongduigou"
                     class="selection-icon" />
                   <Icon icon="icon-ceshixiangmuguanli" class="type-icon" />
@@ -273,17 +246,17 @@ onMounted(() => {
               </div>
             </div>
 
-            <!-- 表单填写区域 -->
+            <!-- Form fields area -->
             <div class="form-fields-section">
               <h3 class="section-title">{{ t('project.projectEdit.tabs.basicInfo') }}</h3>
               <div class="form-fields-content">
                 <FormItem label=" " class="avatar-upload-item">
                   <div class="avatar-upload-container">
-                    <div v-if="projectData.avatar" class="avatar-preview">
+                    <div v-if="projectDetail.avatar" class="avatar-preview">
                       <div class="avatar-wrapper">
                         <Image
-                            :src="projectData.avatar || ''"
-                            class="avatar-image"
+                          :src="projectDetail.avatar || ''"
+                          class="avatar-image"
                           alt="avatar" />
                         <div class="avatar-overlay">
                           <Icon
@@ -309,7 +282,7 @@ onMounted(() => {
                   class="form-field"
                   required>
                   <Input
-                    v-model:value="projectData.name"
+                    v-model:value="projectDetail.name"
                     :placeholder="t('project.projectEdit.form.projectNamePlaceholder')"
                     :maxlength="100"
                     class="enhanced-input">
@@ -322,7 +295,7 @@ onMounted(() => {
                   class="form-field with-tooltip"
                   required>
                   <DatePicker
-                    v-model:value="projectData.dateRange"
+                    v-model:value="projectDetail.dateRange"
                     class="enhanced-date-picker"
                     :allowClear="false"
                     type="date-range">
@@ -344,7 +317,7 @@ onMounted(() => {
                     required
                     class="form-field with-tooltip flex-1">
                     <SelectUser
-                      v-model:value="projectData.ownerId"
+                      v-model:value="projectDetail.ownerId"
                       size="small"
                       :placeholder="t('project.projectEdit.form.ownerPlaceholder')"
                       :allowClear="false"
@@ -363,7 +336,7 @@ onMounted(() => {
                     :label="t('project.projectEdit.form.importExample')"
                     class="form-field with-tooltip flex-1">
                     <RadioGroup
-                      v-model:value="projectData.importExample"
+                      v-model:value="projectDetail.importExample"
                       :options="[{ value: true, label: t('status.yes')}, { value: false, label: t('status.no') }]"
                       class="enhanced-radio-group">
                     </RadioGroup>
@@ -455,7 +428,7 @@ onMounted(() => {
                   class="form-field description-field">
                   <RichEditor
                     ref="descRef"
-                    v-model:value="projectData.description"
+                    v-model:value="projectDetail.description"
                     :toolbarOptions="toolbarOptions"
                     :options="{placeholder: t('project.projectEdit.form.descriptionPlaceholder')}"
                     class="enhanced-editor" />
@@ -463,27 +436,29 @@ onMounted(() => {
               </div>
             </div>
 
-            <!-- 项目类型预览区域 -->
+            <!-- Project type preview area -->
             <div class="project-preview-section">
-              <h3 class="section-title">{{ projectTypeName[projectData.type] }}</h3>
+              <h3 class="section-title">
+                {{ projectDetail.type?.value ? projectTypeName[projectDetail.type.value as keyof typeof projectTypeName] : '' }}
+              </h3>
               <div class="preview-content">
                 <div class="preview-image">
                   <img
-                    v-show="projectData.type==='AGILE'"
+                    v-show="projectDetail.type?.value === ProjectType.AGILE"
                     src="../images/agile.png"
                     class="preview-img agile" />
                   <img
-                    v-show="projectData.type==='GENERAL'"
+                    v-show="projectDetail.type?.value === ProjectType.GENERAL"
                     src="../images/general.png"
                     class="preview-img general" />
                   <img
-                    v-show="projectData.type==='TESTING'"
+                    v-show="projectDetail.type?.value === ProjectType.TESTING"
                     src="../images/testing.png"
                     class="preview-img testing" />
                 </div>
                 <div class="preview-features">
                   <div
-                    v-for="(item, index) in projectTypeTipConfig[projectData.type]"
+                    v-for="(item, index) in projectTypeTipConfig[projectDetail.type?.value || ProjectType.AGILE]"
                     :key="index"
                     class="feature-item">
                     <Icon icon="icon-duihao-copy" class="feature-icon" />
@@ -518,7 +493,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- 修改项目（如果项目ID不为空时） -->
+    <!-- Edit project section (when project ID is not empty) -->
     <Tabs
       v-if="props.projectId"
       v-model:activeKey="activeKey"
@@ -530,19 +505,18 @@ onMounted(() => {
             labelAlign="right"
             :colon="false"
             class="project-form"
-            :model="projectData"
+            :model="projectDetail"
             :labelCol="{ style: {width: '80px'} }">
             <div class="form-main-content edit-layout">
-              <!-- 表单填写区域 -->
+              <!-- Form fields area -->
               <div class="form-fields-section">
-                <h3 class="section-title">{{ t('project.projectEdit.tabs.basicInfo') }}</h3>
                 <div class="form-fields-content">
                   <FormItem label=" " class="avatar-upload-item">
                     <div class="avatar-upload-container">
-                      <div v-if="projectData.avatar" class="avatar-preview">
+                      <div v-if="projectDetail.avatar" class="avatar-preview">
                         <div class="avatar-wrapper">
                           <Image
-                            :src="projectData.avatar || ''"
+                            :src="projectDetail.avatar || ''"
                             class="avatar-image"
                             alt="avatar" />
                           <div class="avatar-overlay">
@@ -569,8 +543,8 @@ onMounted(() => {
                     class="form-field"
                     required>
                     <Input
-                        v-model:value="projectData.name"
-                        :placeholder="t('project.projectEdit.form.projectNamePlaceholder')"
+                      v-model:value="projectDetail.name"
+                      :placeholder="t('project.projectEdit.form.projectNamePlaceholder')"
                       :maxlength="100"
                       class="enhanced-input">
                     </Input>
@@ -583,7 +557,7 @@ onMounted(() => {
                       class="form-field with-tooltip flex-1"
                       required>
                       <DatePicker
-                        v-model:value="projectData.dateRange"
+                        v-model:value="projectDetail.dateRange"
                         class="enhanced-date-picker"
                         :allowClear="false"
                         type="date-range">
@@ -604,7 +578,7 @@ onMounted(() => {
                       required
                       class="form-field with-tooltip flex-1">
                       <SelectUser
-                        v-model:value="projectData.ownerId"
+                        v-model:value="projectDetail.ownerId"
                         size="small"
                         :placeholder="t('project.projectEdit.form.ownerPlaceholder')"
                         :allowClear="false"
@@ -697,35 +671,37 @@ onMounted(() => {
                     class="form-field description-field">
                     <RichEditor
                       ref="descRef"
-                        v-model:value="projectData.description"
-                        :toolbarOptions="toolbarOptions"
+                      v-model:value="projectDetail.description"
+                      :toolbarOptions="toolbarOptions"
                       :options="{placeholder: t('project.projectEdit.form.descriptionPlaceholder')}"
                       class="enhanced-editor" />
                   </FormItem>
                 </div>
               </div>
 
-              <!-- 项目类型预览区域 -->
+              <!-- Project type preview area -->
               <div class="project-preview-section">
-                <h3 class="section-title">{{ projectTypeName[projectData.type as keyof typeof projectTypeName] }}</h3>
+                <h3 class="section-title">
+                  {{ projectDetail.type?.value ? projectTypeName[projectDetail.type.value as keyof typeof projectTypeName] : '' }}
+                </h3>
                 <div class="preview-content">
                   <div class="preview-image">
                     <img
-                      v-show="projectData.type==='AGILE'"
+                      v-show="projectDetail.type?.value === ProjectType.AGILE"
                       src="../images/agile.png"
                       class="preview-img agile" />
                     <img
-                      v-show="projectData.type==='GENERAL'"
+                      v-show="projectDetail.type?.value === ProjectType.GENERAL"
                       src="../images/general.png"
                       class="preview-img general" />
                     <img
-                      v-show="projectData.type==='TESTING'"
+                      v-show="projectDetail.type?.value === ProjectType.TESTING"
                       src="../images/testing.png"
                       class="preview-img testing" />
                   </div>
                   <div class="preview-features">
                     <div
-                      v-for="(item, index) in projectTypeTipConfig[projectData.type as keyof typeof projectTypeTipConfig]"
+                      v-for="(item, index) in projectTypeTipConfig[projectDetail.type?.value || 'AGILE']"
                       :key="index"
                       class="feature-item">
                       <Icon icon="icon-duihao-copy" class="feature-icon" />
@@ -760,7 +736,7 @@ onMounted(() => {
         </div>
       </TabPane>
       <TabPane key="module" :tab="t('project.projectEdit.tabs.module')">
-        <Module :projectId="props.projectId" :projectName="projectData.name || ''" />
+        <Module :projectId="props.projectId" :projectName="projectDetail.name || ''" />
       </TabPane>
       <TabPane key="version" :tab="t('project.projectEdit.tabs.version')">
         <Version
@@ -776,12 +752,12 @@ onMounted(() => {
       v-model:visible="uploadAvatarVisible"
       :title="t('project.projectEdit.actions.uploadIcon')"
       :params="uploadParams"
-      :options="uploadOption"
+      :options="cropperUploadOption"
       @success="uploadImgSuccess" />
   </div>
 </template>
 <style scoped>
-/* 整体容器样式 */
+/* Main container styles */
 .project-edit-container {
   padding: 24px;
   height: 100%;
@@ -789,7 +765,7 @@ onMounted(() => {
   background: transparent;
 }
 
-/* 项目创建布局 */
+/* Project creation layout */
 .project-create-layout {
   display: flex;
   justify-content: flex-start;
@@ -818,19 +794,19 @@ onMounted(() => {
   min-height: 600px;
 }
 
-/* 项目类型选择区域 */
+/* Project type selection area */
 .project-type-section {
   display: flex;
   flex-direction: column;
 }
 
 .section-title {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   color: #1f2937;
   margin-bottom: 20px;
-  padding-bottom: 12px;
-  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 8px;
+  border-bottom: 1.5px solid #e5e7eb;
 }
 
 .project-type-cards {
@@ -897,10 +873,11 @@ onMounted(() => {
   font-weight: 600;
 }
 
-/* 表单字段区域 */
+/* Form fields area */
 .form-fields-section {
   display: flex;
   flex-direction: column;
+  margin-right: 20px;
 }
 
 .form-fields-content {
@@ -921,7 +898,7 @@ onMounted(() => {
   gap: 20px;
 }
 
-/* 头像上传样式 */
+/* Avatar upload styles */
 .avatar-upload-item {
   margin-bottom: 32px;
 }
@@ -1013,7 +990,7 @@ onMounted(() => {
   line-height: 1.3;
 }
 
-/* 增强的表单控件 */
+/* Enhanced form controls */
 .enhanced-input {
   border-radius: 4px;
   border: 1px solid #e0e3e8;
@@ -1043,7 +1020,7 @@ onMounted(() => {
   overflow: hidden;
 }
 
-/* 成员选择器样式 */
+/* Member selector styles */
 .members-field {
   margin-bottom: 32px;
 }
@@ -1064,12 +1041,12 @@ onMounted(() => {
   min-height: 32px;
 }
 
-/* 描述字段样式 */
+/* Description field styles */
 .description-field {
   margin-bottom: 32px;
 }
 
-/* 工具提示样式 */
+/* Tooltip styles */
 .tooltip-icon {
   position: absolute;
   right: -24px;
@@ -1090,7 +1067,7 @@ onMounted(() => {
   color: #374151;
 }
 
-/* 项目预览区域 */
+/* Project preview area */
 .project-preview-section {
   display: flex;
   flex-direction: column;
@@ -1158,7 +1135,7 @@ onMounted(() => {
   margin: 0;
 }
 
-/* 操作按钮样式 */
+/* Action button styles */
 .form-actions {
   margin-bottom: 0;
 }
@@ -1190,13 +1167,13 @@ onMounted(() => {
   font-size: 14px;
 }
 
-/* 编辑布局样式 */
+/* Edit layout styles */
 .edit-layout {
   grid-template-columns: 2.67fr 1fr;
   gap: 40px;
 }
 
-/* 响应式设计 */
+/* Responsive design */
 @media (max-width: 1200px) {
   .form-main-content {
     grid-template-columns: 150px 1fr 200px;

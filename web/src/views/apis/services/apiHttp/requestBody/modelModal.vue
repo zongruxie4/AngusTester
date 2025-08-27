@@ -3,7 +3,7 @@ import { computed, inject, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Modal, NoData, Spin } from '@xcan-angus/vue-ui';
 import { Checkbox, Input } from 'ant-design-vue';
-import { services } from 'src/api/tester';
+import { services } from '@/api/tester';
 import { deconstruct } from '@/utils/swagger';
 
 interface Props {

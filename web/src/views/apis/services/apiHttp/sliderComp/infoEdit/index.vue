@@ -14,7 +14,7 @@ import {
   IconText
   , VuexHelper
 } from '@xcan-angus/vue-ui';
-import { apis, services } from 'src/api/tester';
+import { apis, services } from '@/api/tester';
 import { TESTER, appContext } from '@xcan-angus/infra';
 import { Button, Form, FormItem } from 'ant-design-vue';
 import SelectEnum from '@/components/SelectEnum/index.vue'

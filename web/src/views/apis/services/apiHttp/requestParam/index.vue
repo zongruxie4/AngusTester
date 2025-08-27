@@ -6,7 +6,7 @@ import { Icon, Input, Select, SelectSchema, ParamInput, notification } from '@xc
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import { deconstruct } from '@/utils/swagger';
 
-import { services } from 'src/api/tester';
+import { services } from '@/api/tester';
 import { ParamsItem, paramsTypeOpt } from './interface';
 import { getDefaultParams } from '../interface';
 import { deepDelAttrFromObj, getParamsByUri, getUriByParams, validateType } from '../utils';

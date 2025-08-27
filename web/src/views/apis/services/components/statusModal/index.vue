@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Hints, Modal, notification } from '@xcan-angus/vue-ui';
-import { apis, services } from 'src/api/tester';
+import { apis, services } from '@/api/tester';
 import SelectEnum from '@/components/SelectEnum/index.vue';
 
 interface Props {

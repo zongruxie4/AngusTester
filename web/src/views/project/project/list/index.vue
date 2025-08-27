@@ -1,39 +1,40 @@
 <script lang="ts" setup>
+// Vue composition API imports
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+// Ant Design components
 import { Button, Pagination, TabPane, Tabs, Tag, Tooltip, Popover } from 'ant-design-vue';
+
+// Custom UI components
 import {
-  ActivityTimeline,
-  AsyncComponent,
-  DropdownSort,
-  Hints,
-  Icon,
-  IconRefresh,
-  Image,
-  Input,
-  modal,
-  NoData,
-  notification,
-  Spin,
-  Dropdown
+  ActivityTimeline, AsyncComponent, DropdownSort, Hints, Icon, IconRefresh,
+  Image, Input, modal, notification, Spin, Dropdown
 } from '@xcan-angus/vue-ui';
-import { project } from 'src/api/tester';
+
+// API and utilities
+import { project } from '@/api/tester';
 import { debounce } from 'throttle-debounce';
-import { duration } from '@xcan-angus/infra';
+import { PageQuery, SearchCriteria, User, duration } from '@xcan-angus/infra';
 import { getCurrentPage } from '@/utils/utils';
 import DefaultProjectImage from '@/views/project/project/images/default.png';
 
+// Types
+import type { Project } from '@/views/project/project/types';
+
+// Initialize i18n
 const { t } = useI18n();
 
+// Type definitions
 type OrderByKey = 'createdDate' | 'createdByName';
-type OrderSortKey = 'ASC' | 'DESC';
 
 type Props = {
   projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
+  userInfo: User;
+  appInfo: { id: number | undefined; };
 }
 
+// Props and emits
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -42,36 +43,38 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits<{(e: 'delOk', value: string[]);}>();
 
-type Project = {
-  name: string;
-  description?: string;
-  avatar?: string;
-  ownerName: string;
-  lastModifiedDate: string;
-  id: string;
-  ownerId: string;
-  members: {
-    USER?: {name: string; avatar?: string}[];
-    DEPT?: {name: string; avatar?: string}[];
-    GROUP?: {name: string; avatar?: string}[];
-  };
-}
-
+// Async component definitions
 const Introduce = defineAsyncComponent(() => import('@/views/project/project/list/introduce/index.vue'));
 const AddModal = defineAsyncComponent(() => import('@/views/project/project/addModal/index.vue'));
 const RichText = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
 
+// Type definition for addTabPane function
+type AddTabPaneOptions = {
+  type: string;
+  _id: string;
+  name: string;
+  id?: string;
+  data?: {
+    tab?: string;
+  };
+};
+
+// Injected dependencies
 const isAdmin = inject('isAdmin', ref(false));
-const addTabPane = inject('addTabPane');
+const addTabPane = inject<(options: AddTabPaneOptions) => void>('addTabPane', () => { /* empty function */ });
 const changeProjectInfo = inject('changeProjectInfo', (projectId: string, force: boolean) => ({ projectId, force }));
 const getNewCurrentProject = inject('getNewCurrentProject', () => (undefined));
 
+// Reactive data
 const loading = ref();
 const keyword = ref();
 const data = ref<Project[]>([]);
-
 const orderBy = ref<OrderByKey>();
-const orderSort = ref<OrderSortKey>();
+const orderSort = ref<PageQuery.OrderSort>();
+const modalVisible = ref(false);
+const editProjectData = ref();
+
+// Pagination configuration
 const pagination = ref({
   pageSize: 5,
   current: 1,
@@ -80,70 +83,62 @@ const pagination = ref({
   hideOnSinglePage: true
 });
 
-const modalVisible = ref(false);
-const editProjectData = ref();
-const addProject = () => {
-  // modalVisible.value = true;
-  // editProjectData.value = undefined;
-  addTabPane({
-    type: 'project',
-    _id: 'addProject',
-    name: t('project.addProject')
-  });
-};
+// Sort menu configuration
+const sortMenuItems: {
+  name: string;
+  key: OrderByKey;
+  orderSort: PageQuery.OrderSort;
+}[] = [
+  {
+    name: t('project.sortMenu.createdDate'),
+    key: 'createdDate',
+    orderSort: PageQuery.OrderSort.Desc
+  },
+  {
+    name: t('project.sortMenu.createdByName'),
+    key: 'createdByName',
+    orderSort: PageQuery.OrderSort.Asc
+  }
+];
 
-const toSort = (value: {
-  orderBy: OrderByKey;
-  orderSort: OrderSortKey;
-}): void => {
-  orderBy.value = value.orderBy;
-  orderSort.value = value.orderSort;
-  pagination.value.current = 1;
-  loadData();
-};
+// More actions menu configuration
+const moreButton = [
+  {
+    key: 'module',
+    name: t('project.moreButton.module')
+  },
+  {
+    key: 'version',
+    name: t('project.moreButton.version')
+  },
+  {
+    key: 'biaoqian',
+    name: t('project.moreButton.tag')
+  }
+];
 
-const closeModal = () => {
-  modalVisible.value = false;
-};
+const activityType = [];
 
-const onCreateProject = () => {
-  changeProjectInfo(editProjectData.value.id, true);
-  closeModal();
-  loadData();
-};
-
-const getParams = () => {
+// Utility functions
+const getListParams = () => {
   const { pageSize, current } = pagination.value;
-  const params:{
-    pageNo:number;
-    pageSize:number;
-    filters?:{
-      key:'name';
-      op:'MATCH_END',
-      value:string;
-    }[];
-    orderBy?: OrderByKey;
-    orderSort?:OrderSortKey;
-  } = {
+  const params: PageQuery = {
     pageNo: current,
     pageSize
   };
-
   if (keyword.value) {
-    params.filters = [{ value: keyword.value, op: 'MATCH_END', key: 'name' }];
+    params.filters = [{ value: keyword.value, op: SearchCriteria.OpEnum.MatchEnd, key: 'name' }];
   }
-
   if (orderSort.value) {
     params.orderBy = orderBy.value;
     params.orderSort = orderSort.value;
   }
-
   return params;
 };
 
-// 拉取项目列表
-const loadData = async () => {
-  const params = getParams();
+// Data loading function
+const getListData = async () => {
+  const params = getListParams();
   loading.value = true;
   const [error, resp] = await project.getProjectList(params);
   loading.value = false;
@@ -152,6 +147,8 @@ const loadData = async () => {
   }
   data.value = resp.data?.list || [];
   pagination.value.total = +resp.data?.total || 0;
+
+  // Process member data for display
   data.value.forEach(item => {
     item.membersNum = (item.members?.USER || []).length + (item.members?.GROUP || []).length + (item.members?.DEPT || []).length;
     item.showMembers = {
@@ -163,29 +160,45 @@ const loadData = async () => {
       item.showMembers.USER = item.showMembers.USER.slice(0, 10);
       return;
     }
-    item.showMembers.GROUP = item.members?.GROUP || [];
 
+    item.showMembers.GROUP = item.members?.GROUP || [];
     if (item.showMembers.USER.length + item.showMembers.GROUP.length > 10) {
       item.showMembers.GROUP = item.showMembers.GROUP.slice(0, 10 - item.showMembers.USER.length);
       return;
     }
 
     item.showMembers.DEPT = item.members?.DEPT || [];
-
     if (item.showMembers.USER.length + item.showMembers.GROUP.length + item.showMembers.DEPT.length > 10) {
       item.showMembers.DEPT = item.showMembers.DEPT.slice(0, 10 - (item.showMembers.USER.length + item.showMembers.GROUP.length));
     }
   });
 };
 
+const toSort = (value: {
+  orderBy: OrderByKey;
+  orderSort: PageQuery.OrderSort;
+}): void => {
+  orderBy.value = value.orderBy;
+  orderSort.value = value.orderSort;
+  pagination.value.current = 1;
+  getListData();
+};
+
 const changePage = (current) => {
   pagination.value.current = current;
-  loadData();
+  getListData();
+};
+
+// Event handlers
+const addProjectTab = () => {
+  addTabPane({
+    type: 'project',
+    _id: 'addProject',
+    name: t('project.addProject')
+  });
 };
 
 const editProject = (record: Project, key?: string) => {
-  // modalVisible.value = true;
-  // editProjectData.value = record;
   addTabPane({
     type: 'project',
     _id: `${record.id}_project`,
@@ -208,7 +221,7 @@ const delProject = (data: Project) => {
 
       notification.success(t('project.deleteSuccess'));
       pagination.value.current = getCurrentPage(pagination.value.current, pagination.value.pageSize, pagination.value.total);
-      loadData();
+      await getListData();
       emits('delOk', [data.id, `${data.id}_detail`, `${data.id}_project`]);
       if (data.id === props.projectId) {
         changeProjectInfo('', false);
@@ -219,7 +232,7 @@ const delProject = (data: Project) => {
   });
 };
 
-const handleDetail = async (data: Project) => {
+const openDetailTab = async (data: Project) => {
   addTabPane({
     _id: `${data.id}_detail`,
     name: data.name,
@@ -228,58 +241,36 @@ const handleDetail = async (data: Project) => {
   });
 };
 
-const moreButton = [
-  {
-    key: 'module',
-    name: t('project.moreButton.module')
-  },
-  {
-    key: 'version',
-    name: t('project.moreButton.version')
-  },
-  {
-    key: 'biaoqian',
-    name: t('project.moreButton.tag')
-  }
-];
+const closeModal = () => {
+  modalVisible.value = false;
+};
 
+const onCreateProject = () => {
+  changeProjectInfo(editProjectData.value.id, true);
+  closeModal();
+  getListData();
+};
+
+// Debounced search handler
 const onKeywordChange = debounce(duration.search, () => {
   pagination.value.current = 1;
-  loadData();
+  getListData();
 });
 
+// Lifecycle hooks
 onMounted(() => {
-  loadData();
+  getListData();
   watch(() => props.projectId, (newValue, oldValue) => {
     if (newValue && !oldValue) {
-      loadData();
+      getListData();
     }
   });
 });
 
-const sortMenuItems: {
-  name: string;
-  key: OrderByKey;
-  orderSort: OrderSortKey;
-}[] = [
-  {
-    name: t('project.sortMenu.createdDate'),
-    key: 'createdDate',
-    orderSort: 'DESC'
-  },
-  {
-    name: t('project.sortMenu.createdByName'),
-    key: 'createdByName',
-    orderSort: 'ASC'
-  }
-];
-
-const activityType = [];
-
+// Expose methods for parent component
 defineExpose({
-  refresh: loadData
+  refresh: getListData
 });
-
 </script>
 <template>
   <div class="p-5 overflow-y-auto text-3 flex flex-col h-full">
@@ -308,7 +299,7 @@ defineExpose({
               <Button
                 type="primary"
                 size="small"
-                @click="addProject">
+                @click="addProjectTab">
                 <Icon icon="icon-jia" />
                 <span class="ml-1">{{ t('project.addProject') }}</span>
               </Button>
@@ -327,7 +318,7 @@ defineExpose({
               <IconRefresh
                 :loading="loading"
                 :disabled="loading"
-                @click="loadData">
+                @click="getListData">
                 <template #default>
                   <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
                     <Icon icon="icon-shuaxin" />
@@ -348,7 +339,7 @@ defineExpose({
                   :src="item.avatar"
                   :defaultImg="DefaultProjectImage"
                   class="project-avatar"
-                  style="width: 52px; height: 52px; object-fit: cover; border-radius: 50%;" />
+                  :style="'width: 52px; height: 52px; object-fit: cover; border-radius: 50%;'" />
               </div>
 
               <div class="project-main-content">
@@ -356,7 +347,7 @@ defineExpose({
                   <div
                     class="project-name"
                     :title="item.name"
-                    @click="handleDetail(item)">
+                    @click="openDetailTab(item)">
                     {{ item.name }}
                   </div>
                   <Tag class="project-type-tag">{{ item.type?.message || 'Agile Project' }}</Tag>
@@ -483,7 +474,7 @@ defineExpose({
                     :title="t('actions.edit')"
                     size="small"
                     type="text"
-                    :disabled="!isAdmin && props.userInfo?.id !== item.ownerId && props.userInfo?.id !== item.createdBy"
+                    :disabled="!isAdmin && String(props.userInfo?.id) !== item.ownerId && String(props.userInfo?.id) !== item.createdBy"
                     class="action-button edit-action"
                     @click="editProject(item)">
                     <Icon icon="icon-bianji" class="text-3.5 cursor-pointer text-theme-text-hover" />
@@ -496,7 +487,7 @@ defineExpose({
                     :title="t('actions.delete')"
                     size="small"
                     type="text"
-                    :disabled="!isAdmin && props.userInfo?.id !== item.ownerId && props.userInfo?.id !== item.createdBy"
+                    :disabled="!isAdmin && String(props.userInfo?.id) !== item.ownerId && String(props.userInfo?.id) !== item.createdBy"
                     class="action-button delete-action"
                     @click="delProject(item)">
                     <Icon icon="icon-qingchu" class="text-3.5 cursor-pointer text-theme-text-hover" />
@@ -534,7 +525,7 @@ defineExpose({
         <TabPane key="my" :tab="t('project.myActivity')">
           <ActivityTimeline
             :types="activityType"
-            :userId="props.userInfo?.id"
+            :userId="String(props.userInfo?.id || '')"
             :showUserName="false" />
         </TabPane>
 
@@ -570,14 +561,12 @@ defineExpose({
   }
 }
 
-/* 项目列表容器 */
 .project-list-container {
   border-top: 1px solid var(--theme-text-box);
   flex: 1;
   margin-bottom: 20px;
 }
 
-/* 项目列表项 */
 .project-item {
   display: flex;
   align-items: flex-start;
@@ -597,7 +586,6 @@ defineExpose({
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-/* 项目头像区域 */
 .project-avatar-section {
   flex-shrink: 0;
   margin-right: 1rem;
@@ -614,7 +602,6 @@ defineExpose({
   overflow: hidden;
 }
 
-/* 项目主要内容区域 */
 .project-main-content {
   flex: 1;
   min-width: 0;
@@ -684,7 +671,6 @@ defineExpose({
   margin: 0;
 }
 
-/* 项目详情区域 */
 .project-details-section {
   flex: 1;
   min-width: 0;
@@ -776,7 +762,6 @@ defineExpose({
   gap: 0.5rem;
 }
 
-/* 项目操作区域 */
 .project-actions-section {
   display: flex;
   flex-direction: column;

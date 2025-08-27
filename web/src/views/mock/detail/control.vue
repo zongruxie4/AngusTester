@@ -5,7 +5,7 @@ import { Tooltip } from 'ant-design-vue';
 import { duration, TESTER } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
-import { analysis, mock as mock0 } from 'src/api/tester';
+import { analysis, mock as mock0 } from '@/api/tester';
 
 type FilterOp = 'EQUAL' | 'NOT_EQUAL' | 'GREATER_THAN' | 'GREATER_THAN_EQUAL' | 'LESS_THAN' | 'LESS_THAN_EQUAL' | 'CONTAIN' | 'NOT_CONTAIN' | 'MATCH_END' | 'MATCH' | 'IN' | 'NOT_IN'
 type Filters = { key: string, value: string | boolean | string[], op: FilterOp };

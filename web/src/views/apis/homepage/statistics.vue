@@ -7,7 +7,7 @@ import * as echarts from 'echarts';
 import elementResizeDetector from 'element-resize-detector';
 
 import { ApiStatus  } from '@/enums/enums';
-import { analysis } from 'src/api/tester';
+import { analysis } from '@/api/tester';
 
 type Props = {
   projectId: string;

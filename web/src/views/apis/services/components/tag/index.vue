@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Arrow, Hints, Icon, IconRequired, Input, notification, Spin } from '@xcan-angus/vue-ui';
 import { Button, Textarea, Tooltip, TypographyParagraph } from 'ant-design-vue';
-import { services } from 'src/api/tester';
+import { services } from '@/api/tester';
 import { regexpUtils, utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 

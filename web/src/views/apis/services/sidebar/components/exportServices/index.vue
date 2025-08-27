@@ -2,7 +2,7 @@
 import { inject, ref, watch, onMounted, computed } from 'vue';
 import { Colon, Icon, IconText, Input, Modal, NoData, notification, Spin, TreeSelect, SelectApisTable } from '@xcan-angus/vue-ui';
 import { Checkbox, RadioGroup, Tree } from 'ant-design-vue';
-import { services } from 'src/api/tester';
+import { services } from '@/api/tester';
 import { TESTER, download, utils, cookieUtils, duration, DomainManager, ApiUrlBuilder, routerUtils, ApiType } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';

@@ -10,7 +10,7 @@ import elementResizeDetector from 'element-resize-detector';
 import useClipboard from 'vue-clipboard3';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 
-import { apis } from 'src/api/tester';
+import { apis } from '@/api/tester';
 import { API_AUTH_CODE } from '@/views/apis/PropsType';
 import { formatBytes } from '@/utils/utils';
 import ApiServer from '@/views/apis/services/apiWebSocket/server/index.vue';

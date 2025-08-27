@@ -2,7 +2,7 @@
 import { computed, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Icon, Modal, notification, Toggle } from '@xcan-angus/vue-ui';
-import { apis, indicator, services } from 'src/api/tester';
+import { apis, indicator, services } from '@/api/tester';
 import { CheckboxGroup } from 'ant-design-vue';
 import TestForm from './testForm.vue';
 

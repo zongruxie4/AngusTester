@@ -6,7 +6,7 @@ import { Divider, Radio, RadioGroup } from 'ant-design-vue';
 import { TESTER, appContext } from '@xcan-angus/infra';
 import { useRouter } from 'vue-router';
 
-import { analysis, mock, services } from 'src/api/tester';
+import { analysis, mock, services } from '@/api/tester';
 
 const CreateMock = defineAsyncComponent(() => import('./addMock.vue'));
 

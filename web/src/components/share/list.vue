@@ -5,7 +5,7 @@ import { Arrow, AsyncComponent, Colon, Hints, Icon, IconCopy, Input, notificatio
 import { Button, Tooltip } from 'ant-design-vue';
 import { toClipboard, TESTER } from '@xcan-angus/infra';
 
-import { apis } from 'src/api/tester';
+import { apis } from '@/api/tester';
 import { ListType, ShareObj, TargetType } from './PropsType';
 
 const { t } = useI18n();

@@ -6,7 +6,7 @@ import { Button } from 'ant-design-vue';
 import { TESTER, appContext, enumUtils } from '@xcan-angus/infra';
 import { ApiStatus } from '@/enums/enums';
 
-import { services } from 'src/api/tester';
+import { services } from '@/api/tester';
 import { IInfomation, Status } from './PropsType';
 
 interface Props {

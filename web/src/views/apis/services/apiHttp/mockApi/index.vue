@@ -5,7 +5,7 @@ import { Grid, Hints, Icon, IconCopy, Input, notification, Select, Spin, Modal }
 import { Button, Divider, Radio, RadioGroup } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
 
-import { apis, mock } from 'src/api/tester';
+import { apis, mock } from '@/api/tester';
 
 interface Props {
   disabled:boolean;

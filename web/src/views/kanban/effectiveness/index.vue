@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Icon } from '@xcan-angus/vue-ui';
 import * as eCharts from 'echarts';
 import { caseOverViewConfig, taskOverViewConfig } from './config';
-import { kanban } from 'src/api/tester';
+import { kanban } from '@/api/tester';
 import noData from './Image/nodata.png';
 import { throttle } from 'throttle-debounce';
 import { RadioGroup } from 'ant-design-vue';

@@ -9,7 +9,7 @@ import YAML from 'yaml';
 import { useI18n } from 'vue-i18n';
 import SelectEnum from '@/components/SelectEnum/index.vue'
 
-import { services } from 'src/api/tester';
+import { services } from '@/api/tester';
 
 interface Props {
   visible: boolean;

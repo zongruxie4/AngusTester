@@ -12,7 +12,7 @@ import { formItems, nodeStatus, nodeUseProgresses, viewItem } from './interface'
 import { getDefaultNode, getStrokeColor, installConfigColumns } from '../../interface';
 
 import { nodeCtrl, nodeInfo } from 'src/api/ctrl';
-import { node } from 'src/api/tester';
+import { node } from '@/api/tester';
 
 type Roles = Array<{value: string, label: string, name: string, disabled?:boolean}>
 

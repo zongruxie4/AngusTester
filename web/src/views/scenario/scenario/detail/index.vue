@@ -3,7 +3,7 @@ import { onMounted, ref, defineAsyncComponent, computed, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { TESTER } from '@xcan-angus/infra';
 import { Tabs, TabPane, Button } from 'ant-design-vue';
-import { scenario, exec } from 'src/api/tester';
+import { scenario, exec } from '@/api/tester';
 import { NoData, ActivityTimeline, SmartComment, Icon, modal, notification, AsyncComponent, AuthorizeModal, FavoriteFollow } from '@xcan-angus/vue-ui';
 
 const { t } = useI18n();

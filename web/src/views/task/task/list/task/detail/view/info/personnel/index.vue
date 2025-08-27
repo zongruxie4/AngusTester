@@ -4,7 +4,7 @@ import { Button } from 'ant-design-vue';
 import { AsyncComponent, Colon, Icon, SelectUser, Toggle } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { TESTER } from '@xcan-angus/infra';
-import { task } from 'src/api/tester';
+import { task } from '@/api/tester';
 
 import { TaskInfo } from '../../../../../../../PropsType';
 

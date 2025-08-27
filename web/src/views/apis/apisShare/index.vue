@@ -6,7 +6,7 @@ import { useRoute } from 'vue-router';
 import { Icon, Spin } from '@xcan-angus/vue-ui';
 import '@xcan-angus/rapidoc';
 import { useI18n } from 'vue-i18n';
-import { shareApis } from 'src/api/tester';
+import { shareApis } from '@/api/tester';
 
 const { t } = useI18n();
 const route = useRoute();

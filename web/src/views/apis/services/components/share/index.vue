@@ -6,7 +6,7 @@ import { toClipboard } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
 import ColumnItem from '@/components/share/columnItem/index.vue';
-import { apis } from 'src/api/tester';
+import { apis } from '@/api/tester';
 import type { ListType, StateType } from './interface';
 
 const Share = defineAsyncComponent(() => import('@/components/share/index.vue'));

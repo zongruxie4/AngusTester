@@ -13,7 +13,7 @@ import SwaggerUI from '@xcan-angus/swagger-ui';
 import JSONToSchema from 'json-to-schema';
 import { useI18n } from 'vue-i18n';
 
-import { apis } from 'src/api/tester';
+import { apis } from '@/api/tester';
 import cIcon from './image/c.png';
 import cSharpIcon from './image/csharp.png';
 import cPlus from './image/c++.png';

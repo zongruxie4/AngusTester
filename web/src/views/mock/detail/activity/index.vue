@@ -4,7 +4,7 @@ import { ActivityInfo, IconRefresh, Input, PureCard, Spin } from '@xcan-angus/vu
 import { Pagination } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
 import { duration } from '@xcan-angus/infra';
-import { activity } from 'src/api/tester';
+import { activity } from '@/api/tester';
 
 interface Activity {
     id: string

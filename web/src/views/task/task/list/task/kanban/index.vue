@@ -19,7 +19,7 @@ import { TaskStatus } from '@/enums/enums';
 import dayjs from 'dayjs';
 import { reverse, sortBy } from 'lodash-es';
 import Draggable from 'vuedraggable';
-import { task } from 'src/api/tester';
+import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
 import { TaskInfo } from '../../../../PropsType';

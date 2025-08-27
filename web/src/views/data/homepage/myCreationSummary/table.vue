@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router';
 import { Button } from 'ant-design-vue';
 import { Icon, IconCopy, modal, notification, Table } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
-import { dataSource, dataSet, variable } from 'src/api/tester';
+import { dataSource, dataSet, variable } from '@/api/tester';
 import { space } from '@/api/storage';
 import { useI18n } from 'vue-i18n';
 

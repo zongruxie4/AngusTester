@@ -6,7 +6,7 @@ import { debounce } from 'throttle-debounce';
 import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
-import { services, apis } from 'src/api/tester';
+import { services, apis } from '@/api/tester';
 import { actions, ModalsConfig, ServiceProject } from './PropsType';
 
 type FoldActionKey = 'creatProejct' | 'creatService' | 'import' | 'export'|'authorization';

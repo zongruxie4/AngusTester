@@ -5,7 +5,7 @@ import { Button, RadioGroup } from 'ant-design-vue';
 import { ApiType, routerUtils, ApiUrlBuilder } from '@xcan-angus/infra';
 import axios from 'axios';
 
-import { mock } from 'src/api/tester';
+import { mock } from '@/api/tester';
 
 export interface Props {
   id: string;

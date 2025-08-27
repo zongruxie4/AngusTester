@@ -5,7 +5,7 @@ import { duration } from '@xcan-angus/infra';
 import { AsyncComponent, Icon, Input, modal, notification } from '@xcan-angus/vue-ui';
 import { Button, Dropdown, Menu, MenuItem, Tree } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
-import { modules } from 'src/api/tester';
+import { modules } from '@/api/tester';
 import { appContext } from "@xcan-angus/infra";
 
 type TagItem = {

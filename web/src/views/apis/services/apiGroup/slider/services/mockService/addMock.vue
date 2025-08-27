@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Input, Modal, notification, Select, Spin, TreeSelect } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem } from 'ant-design-vue';
 import { TESTER, appContext } from '@xcan-angus/infra';
-import { mock, services } from 'src/api/tester';
+import { mock, services } from '@/api/tester';
 import type { Rule } from 'ant-design-vue/es/form';
 
 import ApiList from '@/views/mock/add/apiList.vue';

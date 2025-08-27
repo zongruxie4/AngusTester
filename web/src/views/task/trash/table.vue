@@ -3,7 +3,7 @@ import { inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon, Image, notification, Table } from '@xcan-angus/vue-ui';
-import { task } from 'src/api/tester';
+import { task } from '@/api/tester';
 
 import { getCurrentPage } from '@/utils/utils';
 import { TrashItem } from './PropsType';

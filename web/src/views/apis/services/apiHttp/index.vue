@@ -16,7 +16,7 @@ import { debounce } from 'throttle-debounce';
 import SelectEnum from '@/components/SelectEnum/index.vue'
 
 
-import { apis, services } from 'src/api/tester';
+import { apis, services } from '@/api/tester';
 import { getStatusText } from '@/views/apis/services/components/request/interface';
 import { getDefaultParams } from '@/views/apis/services/apiHttp/requestParam/interface';
 import { API_STATUS_COLOR_CONFIG, API_STATUS_BADGE_COLOR_CONFIG, API_EXTENSION_KEY, getModelDataByRef } from '@/views/apis/utils';

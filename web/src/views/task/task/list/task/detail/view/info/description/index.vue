@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Icon, NoData, Toggle } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-import { task } from 'src/api/tester';
+import { task } from '@/api/tester';
 
 import { TaskInfo } from '../../../../../../../PropsType';
 

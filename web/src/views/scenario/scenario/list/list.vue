@@ -14,7 +14,7 @@ import {
 } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-import { scenario } from 'src/api/tester';
+import { scenario } from '@/api/tester';
 import { MenuItem, MenuItemKey, MenuItemPermission, SceneInfo } from './PropsType';
 
 const { t } = useI18n();

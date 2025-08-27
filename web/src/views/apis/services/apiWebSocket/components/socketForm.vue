@@ -8,7 +8,7 @@ import SwaggerUI from '@xcan-angus/swagger-ui';
 import JsonContent from '@/views/apis/services/apiHttp/requestBody/json/index.vue';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
 import { deconstruct } from '@/utils/swagger';
-import { services } from 'src/api/tester';
+import { services } from '@/api/tester';
 import { FormData, getDefaultForm, itemTypes } from '../PropsType';
 
 const { valueKey, enabledKey } = API_EXTENSION_KEY;

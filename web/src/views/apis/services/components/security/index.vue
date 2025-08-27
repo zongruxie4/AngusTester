@@ -3,7 +3,7 @@ import { inject, ref, watch } from 'vue';
 import { Hints, Icon, Input, notification, Select } from '@xcan-angus/vue-ui';
 import { Button, Dropdown, Menu, MenuItem } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
-import { apis, services } from 'src/api/tester';
+import { apis, services } from '@/api/tester';
 
 interface Props {
   data: Record<string, any>[];

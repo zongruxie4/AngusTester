@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Modal, notification } from '@xcan-angus/vue-ui';
 import { CheckboxGroup, Form, FormItem } from 'ant-design-vue';
 
-import { apis, scenario, services } from 'src/api/tester';
+import { apis, scenario, services } from '@/api/tester';
 
 const { t } = useI18n();
 

@@ -6,7 +6,7 @@ import { Popover } from 'ant-design-vue';
 import elementResizeDetector from 'element-resize-detector';
 import * as eCharts from 'echarts';
 import { throttle } from 'throttle-debounce';
-import { kanban } from 'src/api/tester';
+import { kanban } from '@/api/tester';
 import { getDateArr, getDateArrWithTime } from '@/utils/utils';
 import { EnumMessage, enumUtils } from '@xcan-angus/infra';
 import { ReportCategory } from '@/enums/enums';
