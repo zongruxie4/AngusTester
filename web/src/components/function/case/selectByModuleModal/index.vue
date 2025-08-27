@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Input, Modal, ReviewStatus, Table, TestResult } from '@xcan-angus/vue-ui';
 import { http, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { ReviewCaseInfo } from '@/views/function/review/edit/PropsType';
+
+const { t } = useI18n();
 
 interface Props {
   // planId: string;
@@ -77,24 +80,24 @@ const handleFilter = debounce(duration.search, () => {
 
 const columns = [
   {
-    title: '编号',
+    title: t('commonComp.selectCaseByModule.code'),
     dataIndex: 'code'
   },
   {
-    title: '名称',
+    title: t('commonComp.selectCaseByModule.name'),
     dataIndex: 'name',
     width: '40%'
   },
   {
-    title: '评审状态',
+    title: t('commonComp.selectCaseByModule.reviewStatus'),
     dataIndex: 'reviewStatus'
   },
   {
-    title: '测试结果',
+    title: t('commonComp.selectCaseByModule.testResult'),
     dataIndex: 'testResult'
   },
   {
-    title: '测试人',
+    title: t('commonComp.selectCaseByModule.tester'),
     dataIndex: 'testerName'
   }
 ];
@@ -109,7 +112,7 @@ const rowSelection = ref({
 </script>
 <template>
   <Modal
-    title="选择用例"
+    :title="t('commonComp.selectCaseByModule.title')"
     :visible="props.visible"
     :width="1000"
     :loading="loading"
@@ -124,7 +127,7 @@ const rowSelection = ref({
       <div class="flex-1 ml-2">
         <Input
           v-model:value="keywords"
-          placeholder="查询名称、编码"
+          :placeholder="t('commonComp.selectCaseByModule.searchPlaceholder')"
           class="w-100"
           @change="handleFilter" />
         <Table

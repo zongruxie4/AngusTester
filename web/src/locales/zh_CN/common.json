@@ -205,6 +205,15 @@
               "no": "否"
             }
           }
+        },
+        "selectCaseByModule": {
+          "title": "选择用例",
+          "searchPlaceholder": "查询名称、编码",
+          "code": "编号",
+          "name": "名称",
+          "reviewStatus": "评审状态",
+          "testResult": "测试结果",
+          "tester": "测试人"
         }
       }
     }

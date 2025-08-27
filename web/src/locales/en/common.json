@@ -203,6 +203,15 @@
               "no": "No"
             }
           }
+        },
+        "selectCaseByModule": {
+          "title": "Select Cases",
+          "searchPlaceholder": "Search name, code",
+          "code": "Code",
+          "name": "Name",
+          "reviewStatus": "Review Status",
+          "testResult": "Test Result",
+          "tester": "Tester"
         }
       }
     }
