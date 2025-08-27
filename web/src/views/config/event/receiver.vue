@@ -62,7 +62,7 @@ const handleOk = async () => {
   if (error) {
     return;
   }
-  notification.success('配置成功');
+  notification.success(t('notification.receiver.configSuccess'));
   emit('update:visible', false);
   emit('refresh');
 };
@@ -77,7 +77,7 @@ onMounted(() => {
 <template>
   <Modal
     :visible="props.visible"
-    :title="t('settingNotification.title.t10')"
+    :title="t('notification.receiver.title')"
     :centered="true"
     width="600px"
     @ok="handleOk"
@@ -86,7 +86,7 @@ onMounted(() => {
       ref="formRef"
       size="small"
       layout="vertical">
-      <FormItem :label="t('settingNotification.title.t9')">
+      <FormItem :label="t('notification.receiver.receiveMethod')">
         <CheckboxGroup v-model:value="receivingMethods" class="my-2">
           <Checkbox
             v-for="r in receiversType"
@@ -100,7 +100,7 @@ onMounted(() => {
           <SelectUser
             v-model:value="users"
             :allowClear="false"
-            :placeholder="t('settingNotification.title.t11')"
+            :placeholder="t('notification.receiver.selectReceiver')"
             class="flex-1"
             mode="multiple"
             size="small"
@@ -109,7 +109,7 @@ onMounted(() => {
             showSearch />
         </div>
       </FormItem>
-      <FormItem :label="t('通知方式')">
+      <FormItem :label="t('notification.receiver.notificationMethod')">
         <CheckboxGroup
           v-model:value="noticeType"
           :options="noticeTypeOpt"

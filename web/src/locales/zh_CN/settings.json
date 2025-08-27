@@ -31,6 +31,7 @@
   },
   "notification": {
     "name": "事件",
+    "hints": "AngusTester 事件配置，为用户提供了即时的信息更新和状态反馈，帮助团队快速响应和处理潜在的问题。",
     "status": {
       "pending": "待推送",
       "success": "成功",
@@ -76,6 +77,28 @@
       "selectEmail": "选择邮箱",
       "selectDingTalkBot": "选择钉钉机器人",
       "selectWeChatBot": "选择企业微信机器人"
+    },
+    "searchLogPlaceholder": {
+      "code": "查询事件描述或编码",
+      "pushStatus": "选择推送状态",
+      "startDate": "开始时间",
+      "endDate": "结束时间"
+    },
+    "receiveConfig": {
+      "title": "配置接收通道",
+      "receiveChannel": "接收通道",
+      "selectWebhookAddress": "选择 Webhook 地址",
+      "selectEmail": "选择邮箱",
+      "selectDingTalkBot": "选择钉钉机器人",
+      "selectWeChatBot": "选择企业微信机器人",
+      "configSuccess": "配置成功"
+    },
+    "receiver": {
+      "title": "配置接收人",
+      "receiveMethod": "接收方式",
+      "selectReceiver": "选择接收人",
+      "notificationMethod": "通知方式",
+      "configSuccess": "配置成功"
     }
   },
   "app": {

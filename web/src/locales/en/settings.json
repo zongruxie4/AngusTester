@@ -28,6 +28,7 @@
   },
   "notification": {
     "name": "Event",
+    "hints": "AngusTester event configuration provides real-time information updates and status feedback to help teams quickly respond and address potential issues.",
     "status": {
       "pending": "Pending",
       "success": "Success",
@@ -60,6 +61,28 @@
       "selectEmail": "Select email",
       "selectDingTalkBot": "Select DingTalk bot",
       "selectWeChatBot": "Select WeChat bot"
+    },
+    "searchLogPlaceholder": {
+      "code": "Query event description or code",
+      "pushStatus": "Select push status",
+      "startDate": "Start time",
+      "endDate": "End time"
+    },
+    "receiveConfig": {
+      "title": "Configure Receive Channel",
+      "receiveChannel": "Receive Channel",
+      "selectWebhookAddress": "Select Webhook Address",
+      "selectEmail": "Select Email",
+      "selectDingTalkBot": "Select DingTalk Bot",
+      "selectWeChatBot": "Select WeChat Bot",
+      "configSuccess": "Configuration Successful"
+    },
+    "receiver": {
+      "title": "Configure Receiver",
+      "receiveMethod": "Receive Method",
+      "selectReceiver": "Select Receiver",
+      "notificationMethod": "Notification Method",
+      "configSuccess": "Configuration Successful"
     }
   },
   "app": {
