@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { http, TESTER } from '@xcan-angus/infra';
 import { CheckboxGroup, Form, FormItem } from 'ant-design-vue';
 import { Icon, Modal, notification, Select, Toggle } from '@xcan-angus/vue-ui';
 import { project } from '@/api/tester';
 
 import { FormData } from './PropsType';
+
+const { t } = useI18n();
 
 const TestForm = defineAsyncComponent(() => import('./testForm.vue'));
 
@@ -71,9 +74,9 @@ const toggleOpenConfig = reactive({
 });
 
 const radioList = [
-  { label: '功能测试', value: 'FUNCTIONAL' },
-  { label: '性能测试', value: 'PERFORMANCE' },
-  { label: '稳定性测试', value: 'STABILITY' }];
+  { label: t('commonComp.createTaskTestModal.functionalTest'), value: 'FUNCTIONAL' },
+  { label: t('commonComp.createTaskTestModal.performanceTest'), value: 'PERFORMANCE' },
+  { label: t('commonComp.createTaskTestModal.stabilityTest'), value: 'STABILITY' }];
 const confirmLoading = ref<boolean>(false);
 const formData = computed(() => {
   const result = [];
@@ -103,7 +106,7 @@ const loadMembers = async () => {
 const validateTestType = () => {
   if (!sprintData.activeKey.length) {
     // eslint-disable-next-line prefer-promise-reject-errors
-    return Promise.reject('请选择测试类型');
+    return Promise.reject(t('commonComp.createTaskTestModal.validation.testTypeRequired'));
   }
   return Promise.resolve();
 };
@@ -150,7 +153,7 @@ const ok = async () => {
     return;
   }
 
-  notification.success('生成任务成功');
+  notification.success(t('commonComp.createTaskTestModal.generateSuccess'));
   cancel();
 };
 
@@ -221,7 +224,7 @@ const okUrl = computed(() => {
 <template>
   <Modal
     class="create-task-modal-container"
-    title="生成测试任务"
+    :title="t('commonComp.createTaskTestModal.title')"
     :width="1000"
     :visible="visible"
     :confirmLoading="confirmLoading"
@@ -238,7 +241,7 @@ const okUrl = computed(() => {
       class="my-5">
       <FormItem
         required
-        label="任务迭代"
+        :label="t('commonComp.createTaskTestModal.taskSprint')"
         name="id"
         :labelCol="{ style: { lineHeight: '28px' } }"
         class="flex-1">
@@ -247,7 +250,7 @@ const okUrl = computed(() => {
           :disabled="!projectInfo.id"
           :action="`${TESTER}/task/sprint?projectId=${projectInfo.id}`"
           :fieldNames="{ value: 'id', label: 'name' }"
-          placeholder="请选择迭代">
+          :placeholder="t('commonComp.createTaskTestModal.selectSprint')">
           <template #option="record">
             <div class="flex items-center truncate">
               <Icon icon="icon-jihua" class="text-4" />
@@ -257,9 +260,9 @@ const okUrl = computed(() => {
         </Select>
       </FormItem>
       <FormItem
-        label="测试类型"
+        :label="t('commonComp.createTaskTestModal.testType')"
         name="activeKey"
-        :rules="{ required: true, validator: validateTestType, message: '请选择测试类型' }">
+        :rules="{ required: true, validator: validateTestType, message: t('commonComp.createTaskTestModal.validation.testTypeRequired') }">
         <CheckboxGroup v-model:value="sprintData.activeKey" :options="radioList" />
       </FormItem>
     </Form>
@@ -269,7 +272,7 @@ const okUrl = computed(() => {
         v-if="sprintData.activeKey.includes('FUNCTIONAL')"
         v-model:open="toggleOpenConfig.func"
         class="w-1/3"
-        title="功能测试任务配置">
+        :title="t('commonComp.createTaskTestModal.functionalTestConfig')">
         <TestForm
           ref="fref"
           key="FUNCTIONAL"
@@ -282,7 +285,7 @@ const okUrl = computed(() => {
         v-if="sprintData.activeKey.includes('PERFORMANCE')"
         v-model:open="toggleOpenConfig.perf"
         class="w-1/3"
-        title="性能测试任务配置">
+        :title="t('commonComp.createTaskTestModal.performanceTestConfig')">
         <TestForm
           ref="pref"
           key="PERFORMANCE"
@@ -296,7 +299,7 @@ const okUrl = computed(() => {
         v-if="sprintData.activeKey.includes('STABILITY')"
         v-model:open="toggleOpenConfig.stability"
         class="w-1/3"
-        title="稳定性测试任务配置">
+        :title="t('commonComp.createTaskTestModal.stabilityTestConfig')">
         <TestForm
           ref="sref"
           key="STABILITY"

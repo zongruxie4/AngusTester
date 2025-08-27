@@ -1,0 +1,73 @@
+{
+  "functionAnalysis": {
+    "list": {
+      "title": "Added Analysis",
+      "addAnalysis": "Add Analysis",
+      "deleteConfirm": "Are you sure you want to delete the analysis [{name}]?",
+      "deleteSuccess": "Delete successful",
+      "updateSnapshotConfirm": "Are you sure you want to update the snapshot content of analysis [{name}]?",
+      "updateSuccess": "Update successful",
+      "realTime": "Real-time",
+      "snapshot": "Snapshot",
+      "createdBy": "Created by",
+      "notCreated": "Not created yet, click to create",
+      "create": "Create"
+    },
+    "introduce": {
+      "title": "About Analysis",
+      "description": "Used to provide real-time test data analysis, promote data-driven decision making, ensure information transparency, enhance team collaboration and issue tracking, and improve project development quality assurance levels. AngusTester provides default analysis templates such as burndown charts, backlog tasks, risk assessment, etc., helping users quickly view dashboards and key performance indicators (KPIs), while users can also customize analysis dashboards based on business focus areas."
+    },
+    "templateSelectList": {
+      "allAnalysis": "All Analysis"
+    },
+    "searchPanel": {
+      "quickQuery": "Quick Query",
+      "all": "All",
+      "myAdded": "My Added",
+      "myModified": "My Modified",
+      "lastDay": "Last Day",
+      "lastThreeDays": "Last 3 Days",
+      "lastWeek": "Last Week",
+      "addAnalysis": "Add Analysis",
+      "sort": "Sort",
+      "refresh": "Refresh",
+      "searchOptions": {
+        "namePlaceholder": "Search by name or description",
+        "createdByPlaceholder": "Select creator",
+        "createdDatePlaceholder": ["Created time from", "Created time to"]
+      },
+      "sortOptions": {
+        "name": "Name",
+        "createdByName": "Sort by creator",
+        "createdDate": "Sort by creation time"
+      }
+    },
+    "editForm": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "analysisTemplate": "Analysis Template",
+      "analysisName": "Analysis Name",
+      "analysisDescription": "Analysis Description",
+      "analysisObject": "Analysis Object",
+      "selectPlan": "Select Plan",
+      "selectOrganization": "Select Organization",
+      "selectUser": "Select User",
+      "selectDepartment": "Select Department",
+      "selectGroup": "Select Group",
+      "includeAssigneeAnalysis": "Include Assignee Analysis",
+      "includeDataDetail": "Include Data Detail",
+      "analysisPeriod": "Analysis Period",
+      "dataDisplay": "Data Display",
+      "inputAnalysisName": "Enter analysis name, maximum 100 characters",
+      "inputAnalysisDescription": "Enter analysis description, such as analysis purpose, background, etc., maximum 200 characters",
+      "selectOrSearchPlan": "Select or search plan",
+      "realTimeData": "Display real-time data each time",
+      "snapshotData": "Save data snapshot, display snapshot data each time",
+      "department": "Department",
+      "group": "Group",
+      "user": "User",
+      "addAnalysisSuccess": "Analysis added successfully",
+      "updateAnalysisSuccess": "Analysis updated successfully"
+    }
+  }
+}

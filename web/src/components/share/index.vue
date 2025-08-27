@@ -51,7 +51,7 @@ const { t } = useI18n();
 // 默认展开新家分享数据
 const shareList = ref<ShareObj[]>([{
   id: props.sharedId || 'add',
-  name: '添加分享',
+  name: t('commonComp.shareModal.addShare'),
   targetType: {
     value: props.type,
     message: ''
@@ -223,18 +223,18 @@ const cancelEdit = (share) => {
 };
 
 const publicFlagOptions = [{
-  label: t('公开') + t('(所有人可见)'),
+  label: t('commonComp.shareModal.publicFlagOptions.public'),
   value: true
 }, {
-  label: t('私有') + t('(密码查看)'),
+  label: t('commonComp.shareModal.publicFlagOptions.private'),
   value: false
 }];
 
 const expirationTimeOptions = [{
-  label: t('永久有效'),
+  label: t('commonComp.shareModal.expirationTimeOptions.permanent'),
   value: true
 }, {
-  label: t('设置过期时间'),
+  label: t('commonComp.shareModal.expirationTimeOptions.expired'),
   value: false
 }];
 
@@ -326,7 +326,7 @@ const handleOk = async (share) => {
 
     if (isExpired) {
       dateErr.value = true;
-      notification.warning('过期时间小于24小时，请重新选择日期');
+      notification.warning(t('commonComp.shareModal.expiredTimeTip'));
       return;
     }
 
@@ -337,13 +337,13 @@ const handleOk = async (share) => {
   }
   if (props.type !== 'API') {
     if (!apiList.value.length) {
-      notification.warning('没有可分享的接口');
+      notification.warning(t('commonComp.shareModal.noShareApis'));
       return;
     }
 
     // 如果勾选了分享接口 参数提交接口id
     if (!apiIds.value.length) {
-      notification.warning('请选择接口');
+      notification.warning(t('commonComp.shareModal.noSelectedApis'));
       return;
     }
 
@@ -442,7 +442,7 @@ const dateChange = (value: string) => {
 
   if (isExpired) {
     dateErr.value = true;
-    notification.warning('过期时间小于30分钟，请重新选择日期');
+    notification.warning(t('commonComp.shareModal.expiredTimeTip'));
   } else {
     dateErr.value = false;
   }
@@ -458,7 +458,7 @@ const delShare = async (id: string) => {
   if (error) {
     return;
   }
-  notification.success('删除分享记录成功');
+  notification.success(t('commonComp.shareModal.shareDeleteSuccess'));
   shareList.value = shareList.value.filter(item => item.id !== id);
 };
 
@@ -470,12 +470,12 @@ const clickCopyIcon = (item: ShareObj) => {
 const copy = (item: ShareObj, isCopy?: boolean) => {
   let message;
   if (!item.public0) {
-    message = `名称: ${item.name}\n链接: ${item.url}\n密码: ${item.password || ''}`;
+    message = `${t('commonComp.shareModal.copyLabel.name')}: ${item.name}\n${t('commonComp.shareModal.copyLabel.link')}: ${item.url}\n${t('commonComp.shareModal.copyLabel.password')}: ${item.password || ''}`;
   } else {
-    message = `名称: ${item.name}\n链接: ${item.url}`;
+    message = `${t('commonComp.shareModal.copyLabel.name')}: ${item.name}\n${t('commonComp.shareModal.copyLabel.link')}: ${item.url}`;
   }
   toClipboard(message).then(() => {
-    notification.success(isCopy ? '复制成功' : '分享成功');
+    notification.success(isCopy ? t('tips.copySuccess') : t('tips.shareSuccess'));
   });
 };
 
@@ -503,7 +503,7 @@ const initData = () => {
   // 默认展开新家分享数据
   shareList.value = [{
     id: props.sharedId || 'add',
-    name: '添加分享',
+    name: t('commonComp.shareModal.addShare'),
     targetType: {
       value: props.type,
       message: ''
@@ -619,13 +619,13 @@ function isWithin5Minutes (timeStr: string) {
 </script>
 <template>
   <Modal
-    title="分享"
+    :title="t('commonComp.shareModal.title')"
     :visible="props.visible"
     :reverse="true"
     :width="600"
     :footer="null"
     @cancel="handleCancel">
-    <Hints text="通过分享能够授权其他人在指定时间内查看接口文档和调试接口。" />
+    <Hints :text="t('commonComp.shareModal.tooltip.publicShareDesc')" />
     <div
       ref="shareListRef"
       style="max-height: 72vh;scrollbar-gutter: stable;"
@@ -641,7 +641,7 @@ function isWithin5Minutes (timeStr: string) {
                 v-model:value="formState.name"
                 :maxlength="100"
                 :error="nameErr"
-                placeholder="分享名称"
+                :placeholder="t('commonComp.shareModal.form.namePlaceholder')"
                 @change="nameChange" />
             </template>
             <template v-else>
@@ -663,19 +663,19 @@ function isWithin5Minutes (timeStr: string) {
             </template>
             <div class="text-3.25 flex-none">
               <template v-if="props.source === 'all' && !item.isEdit">
-                <Tooltip title="复制链接" placement="top">
+                <Tooltip :title="t('commonComp.shareModal.tooltip.copyUrl')" placement="top">
                   <IconCopy
                     v-if="item.id !== 'add'"
                     class="ml-3.5"
                     @click="clickCopyIcon(item)" />
                 </Tooltip>
-                <Tooltip title="编辑" placement="top">
+                <Tooltip :title="t('commonComp.shareModal.edit')" placement="top">
                   <Icon
                     icon="icon-shuxie"
                     class="cursor-pointer ml-2"
                     @click="handleEdit(item,index)" />
                 </Tooltip>
-                <Tooltip title="删除" placement="top">
+                <Tooltip :title="t('commonComp.shareModal.delete')" placement="top">
                   <Icon
                     v-if="item.id !== 'add'"
                     icon="icon-qingchu"
@@ -691,7 +691,7 @@ function isWithin5Minutes (timeStr: string) {
           class="transition-height duration-500 overflow-hidden px-1">
           <template v-if="item.isEdit">
             <div class="text-text-sub-content flex-none mr-2 mt-2.5">
-              链接
+              {{ t('commonComp.shareModal.shareUrl') }}
               <Colon />
             </div>
             <div class="break-all cursor-pointer text-text-link hover:text-text-link-hover text-3 px-2">
@@ -700,7 +700,7 @@ function isWithin5Minutes (timeStr: string) {
               }}
             </div>
             <div class="text-text-sub-content flex-none mr-2 mt-2.5">
-              权限
+              {{ t('commonComp.shareModal.actions') }}
               <Colon />
             </div>
             <div class="flex items-center h-7 -mt-0.5 px-2">
@@ -725,19 +725,19 @@ function isWithin5Minutes (timeStr: string) {
                   type="password"
                   dataType="mixin-en"
                   size="small"
-                  placeholder="密码"
+                  :placeholder="t('commonComp.shareModal.form.passwordPlaceholder')"
                   class="flex-1"
                   @change="passdChange">
                   <template #addonAfter>
                     <a class="text-3 text-text-sub-content" @click="resetPassword">
                       <Icon icon="icon-shuaxin" class="mr-1 -mt-0.5" />
-                      重置</a>
+                      {{ t('commonComp.shareModal.refresh') }}</a>
                   </template>
                 </Input>
               </template>
             </div>
             <div class="text-text-sub-content flex-none mr-2 mt-2.5">
-              有效期
+              {{ t('commonComp.shareModal.expiredDate') }}
               <Colon />
             </div>
             <div class="flex items-center h-7 -mt-0.5  px-2">
@@ -770,13 +770,13 @@ function isWithin5Minutes (timeStr: string) {
             </div>
             <template v-if="props.type !== 'API'">
               <div class="text-text-sub-content flex-none mr-2 mt-2.5">
-                分享接口
+                {{ t('commonComp.shareModal.selectApis') }}
                 <Colon />
               </div>
               <div class=" border border-border-divider p-2 rounded" :class="allApiList.length > 0 ? 'h-73' : 'h-40'">
                 <Input
                   v-if="allApiList.length > 0"
-                  placeholder="查询接口名称"
+                  :placeholder="t('commonComp.shareModal.form.apiSearchPlaceholder')"
                   size="small"
                   class="mb-2"
                   allowClear
@@ -818,7 +818,7 @@ function isWithin5Minutes (timeStr: string) {
                       class="checkbox-border-black"
                       :indeterminate="apiIndeterminate"
                       @change="selectALLApi">
-                      全选
+                      {{ t('commonComp.shareModal.selectAll') }}
                     </Checkbox>
                   </div>
                 </template>
@@ -832,14 +832,14 @@ function isWithin5Minutes (timeStr: string) {
                 size="small"
                 :loading="item.isLoading"
                 @click="handleOk(item)">
-                保存并复制链接及密码
+                {{ t('commonComp.shareModal.saveAndCopy') }}
               </Button>
               <Button
                 type="link"
                 size="small"
                 class="-mx-2"
                 @click="cancelEdit(item)">
-                取消
+                {{ t('commonComp.shareModal.cancel') }}
               </Button>
             </div>
           </template>

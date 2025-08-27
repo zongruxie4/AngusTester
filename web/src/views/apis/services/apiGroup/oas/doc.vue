@@ -34,7 +34,7 @@ const loadData = async () => {
     return;
   }
   openapiMetaDataStr.value = data;
-  window.specUrl = openapiMetaDataStr;
+  window['specUrl'] = openapiMetaDataStr.value;
 
   openapiMetaData.value = JSON.parse(data || '{}');
   openapiYamlData.value = YAML.stringify(openapiMetaData.value, null, 2);
@@ -68,23 +68,23 @@ defineExpose({
   <div v-if="props.mode === 'UI'">
     <rapi-doc
       v-if="docOrigin"
-      :specUrl="openapiMetaDataStr"
-      specIsContent="true"
+      :spec-url="openapiMetaDataStr"
+      spec-is-content="true"
       theme="light"
-      renderStyle="focused"
+      render-style="focused"
       headerColor="#fff"
-      updateRoute="false"
-      navBgColor="#fff"
-      showInfo="true"
-      bgColor="#fff"
-      allowAdvancedSearch="false"
-      allowSpecUrlLoad="false"
-      allowSpecFileLoad="false"
-      allowSpecFileDownload="false"
-      allowTry="false"
-      schemaStyle="table"
-      showHeader="false"
-      schemaExpandLevel="20">
+      update-route="false"
+      nav-bg-color="#fff"
+      show-info="true"
+      bg-color="#fff"
+      allow-advanced-search="false"
+      allow-spec-url-load="false"
+      allow-spec-file-load="false"
+      allow-spec-file-download="false"
+      allow-try="false"
+      schema-style="table"
+      show-header="false"
+      schema-expand-level="20">
       <Button
         v-if="docOrigin"
         slot="extra"

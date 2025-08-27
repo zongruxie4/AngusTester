@@ -1,10 +1,13 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Tree } from 'ant-design-vue';
 import { enumUtils } from '@xcan-angus/infra';
 import { AnalysisCaseTemplate, AnalysisCaseTemplateDesc } from '@/enums/enums';
 import { Icon } from '@xcan-angus/vue-ui';
 import { TemplateIconConfig } from '../PropTypes';
+
+const { t } = useI18n();
 
 interface Props {
   template: string;
@@ -18,7 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emits = defineEmits<{(e: 'update:template', value: string):void; (e: 'update:templateData', value: {value: string; message: string}[]):void; (e:'update:templateDesc', value: {value: string; message: string}[]):void}>();
-const moduleTreeData = ref<{name: string; value: string}[]>([{ name: '全部分析', value: '' }]);
+const moduleTreeData = ref<{name: string; value: string}[]>([{ name: t('functionAnalysis.templateSelectList.allAnalysis'), value: '' }]);
 
 const loadOpt = () => {
   const data = enumUtils.enumToMessages(AnalysisCaseTemplate);

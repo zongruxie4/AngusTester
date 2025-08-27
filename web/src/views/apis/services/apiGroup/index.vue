@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, provide, reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Spin, TabPane, Tabs } from 'ant-design-vue';
 import { ActivityTimeline, Drawer, Icon, notification } from '@xcan-angus/vue-ui';
 import { cookieUtils, DomainManager, appContext } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 import store from '@/store';
 import { apis, services } from 'src/api/tester';
@@ -353,7 +356,7 @@ onMounted(async () => {
     const [error] = await services.loadInfo(props.info?.id);
     if (error) {
       showQuckEbtrace.value = true;
-      notification.warning('服务不存在或者您没有查看全选');
+      notification.warning(t('service.apiGroup.messages.serviceNotExist'));
     }
   }
   accessToken.value = cookieUtils.getTokenInfo().access_token;
@@ -398,7 +401,7 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
                 @click="viewModeChange">
                 <div class="flex items-center space-x-1">
                   <Icon icon="icon-daimashitu" class="text-3.5" />
-                  <span>代码视图</span>
+                  <span>{{ t('service.apiGroup.viewMode.codeView') }}</span>
                 </div>
               </Button>
               <Button
@@ -408,7 +411,7 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
                 @click="viewModeChange">
                 <div class="flex items-center space-x-1">
                   <Icon icon="icon-yemianshitu" class="text-3.5" />
-                  <span>页面视图</span>
+                  <span>{{ t('service.apiGroup.viewMode.pageView') }}</span>
                 </div>
               </Button>
               <Button
@@ -417,14 +420,14 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
                 @click="refreshDoc">
                 <div class="flex items-center space-x-1">
                   <Icon icon="icon-shuaxin" class="text-3.5" />
-                  <span>刷新</span>
+                  <span>{{ t('service.apiGroup.viewMode.refresh') }}</span>
                 </div>
               </Button>
             </div>
           </template>
           <TabPane
             key="api"
-            tab="接口"
+            :tab="t('service.apiGroup.tabs.api')"
             class="flex flex-col">
             <InterfaceHeader
               v-model:name="state.name"
@@ -460,11 +463,11 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
               @loadApis="refresh"
               @openMock="openMock" />
           </TabPane>
-          <TabPane key="testResult" tab="测试">
+          <TabPane key="testResult" :tab="t('service.apiGroup.tabs.testResult')">
             <ServiceTestInfo
               :serviceId="state.serviceId" />
           </TabPane>
-          <TabPane key="mock" tab="Mock">
+          <TabPane key="mock" :tab="t('service.apiGroup.tabs.mock')">
             <ServiceMockVue
               :id="state.serviceId"
               class="pt-2 pr-5"
@@ -472,7 +475,7 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
           </TabPane>
           <TabPane
             key="doc"
-            tab="文档"
+            :tab="t('service.apiGroup.tabs.doc')"
             style="width: 100%; height: 100%">
             <OpenApiDocument
               ref="openapiRef"
@@ -530,15 +533,6 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
           :disabled="!useAuth.includes('MODIFY')"
           :name="props.info.name" />
       </template>
-      <!-- <template #variable>
-        <VariableVue
-          v-if="activeDrawerKey === 'variable'"
-          :id="state.id || state.serviceId"
-          class="pt-2 pr-5"
-          :type="type"
-          :disabled="!useAuth.includes('MODIFY')"
-          :name="props.info.name" />
-      </template> -->
       <template #shareList>
         <ShareListVue
           v-if="activeDrawerKey === 'shareList'"
@@ -571,13 +565,6 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
           class="pt-2 pr-5"
           :disabled="!apiAuths.includes('MODIFY')" />
       </template>
-      <!-- <template #serviceMock>
-        <ServiceMockVue
-          v-if="activeDrawerKey === 'serviceMock'"
-          :id="state.serviceId"
-          class="pt-2 pr-5"
-          :disabled="!useAuth.includes('MODIFY')" />
-      </template> -->
       <template #projectInfo>
         <div class="mt-2 pr-5">
           <ProjectInfoVue

@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { DatePicker, Select, SelectEnum, TaskPriority } from '@xcan-angus/vue-ui';
 
 import { FormData, Priority } from './PropsType';
+
+const { t } = useI18n();
 
 interface Props {
   value: FormData;
@@ -98,13 +101,13 @@ defineExpose({ validate, reset });
 <template>
   <div class="space-y-5">
     <div class="text-3 text-theme-content">
-      <div class="mb-1">分配经办人</div>
+      <div class="mb-1">{{ t('commonComp.createTaskTestModal.assignee') }}</div>
       <Select
         showSearch
         :error="userIsEmpty"
         :value="formData.assigneeId"
         class="w-full"
-        placeholder="请选择经办人"
+        :placeholder="t('commonComp.createTaskTestModal.selectAssignee')"
         :allowClear="true"
         :options="props.users"
         :fieldNames="{ label: 'fullName', value: 'id' }"
@@ -113,7 +116,7 @@ defineExpose({ validate, reset });
     </div>
 
     <div class="text-3 text-theme-content">
-      <div class="mb-1">测试截止时间</div>
+      <div class="mb-1">{{ t('commonComp.createTaskTestModal.deadlineDate') }}</div>
       <DatePicker
         :error="dateIsEmpty"
         class="w-full"
@@ -125,7 +128,7 @@ defineExpose({ validate, reset });
     </div>
 
     <div class="text-3 text-theme-content">
-      <div class="mb-1">优先级</div>
+      <div class="mb-1">{{ t('commonComp.createTaskTestModal.priority') }}</div>
       <SelectEnum
         class="w-full"
         enumKey="Priority"

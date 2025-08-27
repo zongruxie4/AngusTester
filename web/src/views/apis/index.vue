@@ -2,6 +2,7 @@
 import { computed, defineAsyncComponent, inject, onMounted, provide, reactive, Ref, ref, watch } from 'vue';
 import { utils, appContext } from '@xcan-angus/infra';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
 import { nextTick } from 'process';
@@ -19,6 +20,7 @@ const Mock = defineAsyncComponent(() => import('@/views/apis/mock/index.vue'));
 const activeKey = ref<MenuKey>();
 const servicesRef = ref();
 const router = useRouter();
+const { t } = useI18n();
 
 const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
@@ -94,13 +96,13 @@ provide('replaceTabPane', (params) => servicesRef.value && servicesRef.value.rep
 provide('updateApiGroup', (params) => servicesRef.value && servicesRef.value.updateApiGroup(params));
 
 const menuItems = [
-  { name: '主页', icon: 'icon-zhuye', key: 'homepage' },
-  { name: '服务', icon: 'icon-fuwuxinxi', key: 'services' },
+  { name: t('apis.name'), icon: 'icon-zhuye', key: 'homepage' },
+  { name: t('service.name'), icon: 'icon-fuwuxinxi', key: 'services' },
   { name: 'Mock', icon: 'icon-fuwuxinxi', key: 'mock' },
-  { name: '设计', icon: 'icon-sheji', key: 'design' },
-  { name: '分享', icon: 'icon-fenxiang', key: 'share' },
-  { name: '服务器', icon: 'icon-host', key: 'server' },
-  { name: '回收站', icon: 'icon-qingchu', key: 'trash' }
+  { name: t('design.name'), icon: 'icon-sheji', key: 'design' },
+  { name: t('apiShare.name'), icon: 'icon-fenxiang', key: 'share' },
+  { name: t('server.name'), icon: 'icon-host', key: 'server' },
+  { name: t('apiTrash.name'), icon: 'icon-qingchu', key: 'trash' }
 ];
 </script>
 

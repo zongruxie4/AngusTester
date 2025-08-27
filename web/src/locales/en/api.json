@@ -1,5 +1,6 @@
 {
   "apis": {
+    "name":"Home",
     "welcome": {
       "title": "Welcome to Angus API!",
       "description": "Here you and your team can complete the following work:",
@@ -91,6 +92,7 @@
     }
   },
   "design": {
+    "name":"Design",
     "home": {
       "introduceTitle": "About Design",
       "introduceContent": "Interface design for OpenAPI specifications, meeting the needs of interface testing and documentation generation. The graphical interface is suitable for users unfamiliar with OpenAPI specifications, while users familiar with OpenAPI specifications are recommended to use Swagger Editor for more efficient design completion.",
@@ -224,6 +226,7 @@
     }
   },
   "server": {
+    "name":"Server",
     "home": {
       "tabTitle": "Servers",
       "newTab": "Add Server",
@@ -301,6 +304,410 @@
     }
   },
   "service": {
+    "name":"Service",
+    "home": {
+      "addApiTabName": "Add API",
+      "authTabName": "Auth",
+      "mockTabName": "Mock Service"
+    },
+    "sidebar": {
+      "deleteService": "Delete Service",
+      "deleteServiceTip": "Deleting a service will delete all APIs under the service, as well as associated favorites, metrics, variables, and other information. Please confirm whether to delete?",
+      "restartServiceTip": "All tasks under the service will be updated to \"Pending Test\", and related statistics and status will be cleared. Are you sure to restart the test task [{name}]?",
+      "reopenServiceTip": "All tasks under the service will be updated to \"Pending Test\", and statistics and status will not be cleared. Are you sure to reopen the test task [{name}]?",
+      "funcTestExecSmokeTip": "Execute the smoke test case for all APIs under the current service. If the smoke test script for the test service does not exist, the test script will be automatically generated based on the API smoke test case. If it exists, the corresponding test script will be started.",
+      "funcTestExecSecurityTip": "Execute the security test case for all APIs under the current service. If the security test script for the test service does not exist, the test script will be automatically generated based on the API security test case. If it exists, the corresponding test script will be started.",
+      "funcTestExecTip": "Execute the functional test for all APIs under the current service that are enabled for functional testing. If the test script does not exist, the test script will be automatically generated based on the API. If it exists, the corresponding test script will be started.",
+      "perfTestExecTip": "Execute the performance test for all APIs under the current service that are enabled for performance testing. If the test script does not exist, the test script will be automatically generated based on the API. If it exists, the corresponding test script will be started.",
+      "stabilityTestExecTip": "Execute the stability test for all APIs under the current service that are enabled for stability testing. If the test script does not exist, the test script will be automatically generated based on the API. If it exists, the corresponding test script will be started.",
+      "deleteServiceSuccess": "Delete successful, you can view the deleted service in the recycle bin",
+      "serviceNamePlaceholder": "Maximum 100 characters",
+      "unarchivedTitle": "Unarchived",
+      "searchServicePlaceholder": "Search service name",
+      "deleteAllSuccess": "All deleted successfully",
+      "deleteAllAction": "Delete All",
+      "localImportModal": {
+        "title": "Local Import"
+      },
+      "exportServiceModal": {
+        "title": "Export",
+        "exportTypeLabel": "Scope",
+        "onlyApisComponentsLabel": "Components",
+        "formatLabel": "Format",
+        "serviceNamePlaceholder": "Search service name",
+        "serviceLabel": "Service",
+        "servicePlaceholder": "Please select service",
+        "serviceNameLabel": "Service Name",
+        "exportType_service": "By Service",
+        "exportType_api": "By API",
+        "compType_all": "All components of the service",
+        "compType_api": "Only interface-related components"
+      },
+      "batchModifyModal": {
+        "title": "Batch Modify",
+        "scopeLabel": "API Scope",
+        "apisLabel": "Select API",
+        "matchMethodLabel": "Request Method",
+        "matchEndpointRegexLabel": "Match Path Expression",
+        "matchEndpointRegexPlaceholder": "Please enter the matching regular expression, such as: .*?/search.*",
+        "tagsLabel": "Select Tag",
+        "tagsPlaceholder": "Select matching tag",
+        "addParams": "Add Parameter",
+        "modifyParams": "Modify Parameter",
+        "deleteParams": "Delete Parameter",
+        "enabledParams": "Enable Parameter",
+        "disabledParams": "Disable Parameter",
+        "modifyAuth": "Modify Auth",
+        "modifyServer": "Modify Server",
+        "linkVariable": "Link Variable",
+        "unlinkVariable": "Unlink Variable",
+        "linkDataset": "Link Dataset",
+        "unlinkDataset": "Unlink Dataset",
+        "delReferenceDatasetTip": "Please select at least one dataset",
+        "delReferenceVariableTip": "Please select at least one variable",
+        "referenceDatasetTip": "Please select at least one dataset",
+        "referenceVariableTip": "Please select at least one variable",
+        "matchMethodTip": "Please select at least one matching method",
+        "selectedApisTip": "Please select at least one API",
+        "modifyScope_all": "All APIs",
+        "modifyScope_select": "Specified APIs",
+        "modifyScope_match": "Matched APIs",
+        "requestParams": "Request Parameters",
+        "requestHeader": "Request Header",
+        "cookie": "Cookie",
+        "paramsNamePlaceholder": "Please enter parameter name"
+      },
+      "smokeResult": {
+        "title": "Smoke Test",
+        "passed": "Passed",
+        "id": "Service ID",
+        "name": "Service Name",
+        "testName": "Test Name",
+        "testDate": "Test Date",
+        "scriptId": "Script ID",
+        "scriptName": "Script Name"
+      },
+      "securityResult": {
+        "title": "Security Test",
+        "passed": "Passed",
+        "testName": "Test Name",
+        "testerDate": "Test Date",
+        "scriptId": "Script ID",
+        "scriptName": "Script Name"
+      },
+      "topAction": {
+        "addService": "Add Service"
+      },
+      "foldAction": {
+        "addService": "Add Service",
+        "localImport": "Local Import"
+      },
+      "apiGroup": {
+        "tabs": {
+          "api": "API",
+          "testResult": "Test",
+          "mock": "Mock",
+          "doc": "Document"
+        },
+        "viewMode": {
+          "codeView": "Code View",
+          "pageView": "Page View",
+          "refresh": "Refresh"
+        },
+        "messages": {
+          "serviceNotExist": "Service does not exist or you do not have permission to view"
+        }
+      },
+      "execModalTitle": {
+        "funcTestExecSmoke": "Execute Smoke Test",
+        "funcTestExecSecurity": "Execute Security Test",
+        "funcTestExec": "Execute Functional Test",
+        "perfTestExec": "Execute Performance Test",
+        "stabilityTestExec": "Execute Stability Test"
+      },
+      "authModel": {
+        "title": "Service Permissions",
+        "onTip": "After enabling \"Permission Control\", manual authorization is required to have corresponding operation permissions for the project. The default is to enable \"Permission Control\". Note: Authorizing a service does not authorize interface permissions under the service. If the authorization object does not have parent project permissions, it will automatically authorize view permissions.",
+        "offTip": "After enabling \"No Permission Control\", all users in the account can view and operate the service and interfaces under the service."
+      },
+      "execTest": {
+        "title": "Execute Test",
+        "execSuccess": "Execution started successfully, please check the status and test results in the \"Execution\" section",
+        "serviceConfigLabel": "Server Configuration",
+        "serviceConfigDefault": "Use Default (Server Configuration When Generating Script)",
+        "serviceConfigModify": "Modify Variable Configuration (Updated to Interface and Dynamic Http Extracted Variables)",
+        "selectServicePlaceholder": "Please select server",
+        "variableEmpty": "No Variables",
+        "descLabel": "Description",
+        "descEmpty": "No Description",
+        "variableLabel": "Variables",
+        "variableNameLabel": "Name",
+        "variableValueLabel": "Value",
+        "variableValueDefault": "Default",
+        "variableDescLabel": "Description",
+        "more": "More"
+      },
+      "addServiceModal": {
+        "title": "Add Service",
+        "namePlaceholder": "Please enter service name"
+      }
+    },
+    "mock": {
+      "description": "Mock can quickly generate and simulate the dependencies of the API, enabling faster development, more comprehensive testing, and earlier delivery of stable products or applications. Mock can also avoid dirty data problems caused by direct production system debugging.",
+      "createTypeLabel": "Mock Method",
+      "nameLabel": "Name",
+      "serviceDomainUrlLabel": "Domain Name",
+      "servicePortLabel": "Port",
+      "nodeIdLabel": "Node",
+      "serviceLabel": "Service",
+      "apiIdsLabel": "API",
+      "namePlaceholder": "Service identifier naming information, up to 100 characters",
+      "mockNew": "Generate Mock Service",
+      "mockUpdate": "Update Mock Service",
+      "serviceDomainUrlPlaceholder": "After setting the domain name for the service, the mock interface can be accessed through the domain name",
+      "servicePortPlaceholder": "The port listened by the service, the service cannot be modified after addition (1~65535)",
+      "nodePlaceholder": "The node where the service runs, the service cannot be modified after addition",
+      "servicePlaceholder": "Select or search service",
+      "nameRule": "Please enter name",
+      "servicePortRule": "Please enter port (1~65535)",
+      "nodeRule": "Please select node"
+    },
+    "dataModel": {
+      "updateSuccess": "Modify document successfully",
+      "loadCompFail": "Component not found",
+      "cloneSuccess": "Clone component successfully",
+      "deleteSuccess": "Delete component successfully",
+      "addComp": "Add component",
+      "cloneComp": "Clone component",
+      "compNameLabel": "New component name",
+      "dataModelOpt": "Data Model",
+      "respModalOpt": "Response",
+      "paramsModelOpt": "Parameters",
+      "requestBodyModelOpt": "Request Body",
+      "nameLabel": "Name",
+      "descriptionPlaceholder": "Description",
+      "modelLabel": "Data Model",
+      "paramsLabel": "Parameters",
+      "responseTitle": "Response Header",
+      "addAttrTip": "Attribute already exists",
+      "addAttrTitle": "Add parameter",
+      "generalTab": "General",
+      "paramsTab": "Parameters",
+      "requestTab": "Request Body",
+      "responseTab": "Response",
+      "selectBodyCompPlaceholder": "Select to use body model",
+      "form": {
+        "name": "Name",
+        "required": "Required",
+        "deprecated": "Deprecated",
+        "type": "Type",
+        "format": "Format",
+        "example": "example",
+        "description": "Description",
+        "paramsNamePlaceholder": "Parameter name",
+        "attrTab": "Attributes",
+        "refsTab": "References",
+        "compPlaceholder": "Select referenced component",
+        "typePlaceholder": "Type",
+        "formatPlaceholder": "Format",
+        "defaultValuePlaceholder": "Default value",
+        "examplePlaceholder": "Example value",
+        "minLengthPlaceholder": "Minimum length",
+        "maxLengthPlaceholder": "Maximum length",
+        "minimumPlaceholder": "Minimum value",
+        "maximumPlaceholder": "Maximum value"
+      }
+    },
+    "agent": {
+      "connectSuccess": "Connected",
+      "unconnect": "Disconnected",
+      "urlLabel": "Proxy Address",
+      "noProxy": {
+        "title": "No Proxy",
+        "tip": "Directly request the interface through the browser, and cancel the cross-domain limit for non-same-origin access to the interface server."
+      },
+      "clientProxy": {
+        "title": "Client Proxy",
+        "tip": "Install \"<a href='https://www.xcan.cloud/help' target=\"_blank\" class=\"text-text-link\">Proxy Program<a>\" on the computer where the browser is accessed, and the client proxy will be used after configuration."
+      },
+      "serverProxy": {
+        "title": "SERVER_PROXY",
+        "tip": "Install \"Proxy Program\" separately on the shared network server host, and use the server proxy without installing the proxy program on each user's computer, and the server proxy will be used after configuration. Recommended."
+      },
+      "cloudProxy": {
+        "tip": "Request the interface through the AngusTester cloud server node, note: cannot access the customer intranet service address."
+      },
+      "connectFailTip": "Proxy connection failed, please check if the proxy service is running.",
+      "configFailTip": "The server proxy is not configured or enabled, please check \"Application Management->Proxy Configuration\""
+    },
+    "case": {
+      "updateNameSuccess": "Modify name successfully",
+      "searchPlaceholder": "Search name",
+      "hints": "Currently added {num} cases, each interface supports a maximum of 100 cases.",
+      "addCaseAction": "Add Case",
+      "execCaseAction": "Execute Test",
+      "nameLabel": "Name",
+      "statusLabel": "Status",
+      "status_unTested": "UnTested",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "columns": {
+        "name": "Name",
+        "status": "Test Status",
+        "type": "Test Type",
+        "enabled": "Enabled Status",
+        "description": "Description",
+        "createdByName": "Created By",
+        "createdDate": "Created Date",
+        "lastModifiedDate": "Last Modified Date",
+        "action": "Action"
+      },
+      "execModalTitle": "Execute Case",
+      "debugModal": {
+        "proxyError": "Request error (please check request parameters or proxy connection status)",
+        "wsProxyErr": "Request error (please check request parameters or whether the browser triggers the \"CORS-Cross-Origin Resource Sharing\" limit, if the cross-domain limit is triggered, please use a proxy or configure the interface service to allow cross-domain access)",
+        "conditionMessageEmpty": "Expression is empty, execute the assertion",
+        "conditionMsgFormat": "Expression format error, only support operators [\"=\", \"!=\", \">=\", \"<=\", \">\", \"<\"]",
+        "conditionMsgFormatFail": "Expression format error, cannot extract variable name",
+        "conditionMsgFormatErr": "Expression format error, ignore the assertion",
+        "conditionMsgDefineFail": "The variable is not defined, the value of the variable is processed by the variable name",
+        "conditionMsgIgnore": "The calculation result is not established, ignore the assertion",
+        "conditionMsgExec": "The calculation result is established, execute the assertion",
+        "urlRule": "Interface address is invalid, please re-select",
+        "assertRule": "Assertion data verification failed",
+        "apisLabel": "Test Interface",
+        "caseLabel": "Test Case",
+        "paramsTab": "Request Parameters",
+        "headerTab": "Request Header",
+        "requestBodyTab": "Request Body",
+        "assertTab": "Assertion",
+        "duration": "Duration",
+        "respSize": "Size",
+        "debugAction": "Debug Case",
+        "description": "Description",
+        "descriptionPlaceholder": "Enter case description, up to 800 characters"
+      }
+    },
+    "externalDoc": {
+      "hints": "Reference external resources as current interface document extensions",
+      "urlPlaceholder": "Link address",
+      "descriptionPlaceholder": "External link description"
+    },
+    "importForm": {
+      "nameLabel": "Service Name",
+      "namePlaceholder": "Up to 100 characters",
+      "sourceLabel": "Select Import Source",
+      "fileLabel": "Select File",
+      "fileTip": "The file can be dragged directly into this area for upload, the file size is not more than 20M, and the supported file types are .zip,.rar,.7z,.gz,.tar,.bz2,.xz,.lzma,.json,.yaml,.yml.",
+      "strategyWhenDuplicated": "Strategy when encountering duplicates",
+      "strategy_cover": "Cover",
+      "strategy_ignore": "Ignore",
+      "deleteWhenNotExisted": "Whether to delete the current interface when it does not exist in the imported data",
+      "delete_y": "Yes",
+      "delete_n": "No",
+      "fileRule": "Please check if the file is a Postman Collection V2/V2.1 version JSON file!",
+      "sourceRule": "Please select import source",
+      "fileRule_required": "Please upload local file",
+      "nameRule": "Please enter name"
+    },
+    "moveModal": {
+      "title": "Move Interface",
+      "hints": "When moving the interface to the service, the default is not to authorize the interface associated user to view the service permission. If needed, please authorize through the service \"permission\".",
+      "selectServiceTitle": "Select the service to move to"
+    },
+    "oas": {
+      "comp": "Component",
+      "hints": "Components can be used to define reusable object collections. The supported component types include: data model, response, parameter, example, request body, request body, header, and security scheme. Note: when a component is not referenced by an API attribute, it has no effect on the API.",
+      "searchPlaceholder": "Search component name, description",
+      "designCompAction": "Design component",
+      "addModal": {
+        "detail": "Detail",
+        "add": "Add",
+        "edit": "Edit",
+        "typeLabel": "Type",
+        "typePlaceholder": "Select type",
+        "nameLabel": "Name",
+        "namePlaceholder": "Enter name, up to 400 characters",
+        "refLabel": "Reference",
+        "cancelRefs": "Cancel reference",
+        "useRefs": "Restore reference",
+        "summaryLabel": "Summary",
+        "summaryPlaceholder": "Enter summary, up to 400 characters",
+        "exampleLabel": "Example",
+        "examplePlaceholder": "Enter example",
+        "schemaTypeLabel": "Attribute type",
+        "schemaTypePlaceholder": "Select type",
+        "formatLabel": "Format",
+        "formatPlaceholder": "Format",
+        "valueLabel": "Value",
+        "valuePlaceholder": "Enter value, up to 4096 characters",
+        "descriptionLabel": "Description",
+        "descriptionPlaceholder": "Enter description, up to 2000 characters, support Markdown syntax"
+      }
+    },
+    "apis": {
+      "response": {
+        "pretty": "Pretty",
+        "raw": "Raw",
+        "preview": "Preview"
+      }
+    },
+    "security": {
+      "hints": "Declare security schemes that can be used by interfaces",
+      "namePlaceholder": "Security scheme name",
+      "valuePlaceholder": "Enter scope, press Enter to confirm",
+      "nameRule": "Define name duplication"
+    },
+    "securityModal": {
+      "title": "Security Scheme Configuration",
+      "rule": "Data not saved, please save data or cancel editing",
+      "hints": "Define security schemes that can be used by all interfaces under the current service (Authorization).",
+      "oauth2Opt": {
+        "authorizationCode": "Authorization Code",
+        "password": "Password Credentials",
+        "implicit": "Implicit",
+        "clientCredentials": "Client Credentials"
+      },
+      "nameLabel": "Name",
+      "nameTip": "The component name can only contain A-Z a-z 0-9 - . _ characters",
+      "namePlaceholder": "Please enter the scheme name",
+      "typeLabel": "Authentication Type",
+      "usernameLabel": "Username",
+      "usernamePlaceholder": "Please enter the username",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Please enter the password",
+      "tokenLabel": "Token",
+      "tokenPlaceholder": "Please enter the access token",
+      "apiKeyNamePlaceholder": "Enter name",
+      "apiKeyValuePlaceholder": "Enter value",
+      "apiKeyInPlaceholder": "Select position",
+      "configToken": "Configure token",
+      "token_had": "Existing token",
+      "token_generate": "Generate token",
+      "authKeyPlaceholder": "Please enter the authorization key",
+      "authFlowLabel": "Authorization Type",
+      "authorizationUrlLabel": "Authorization URL",
+      "authorizationUrlPlaceholder": "Please enter the authorization URL",
+      "authorizationUrlRule": "Please enter the correct URL address",
+      "callbackUrlLabel": "Callback URL",
+      "callbackUrlPlaceholder": "Please enter the callback URL",
+      "callbackUrlRule": "Please enter the correct URL address",
+      "tokenUrlLabel": "Access Token URL",
+      "tokenUrlPlaceholder": "Please enter the access token URL",
+      "tokenUrlRule": "Please enter the correct URL address",
+      "refreshUrlLabel": "Refresh Token URL",
+      "refreshUrlPlaceholder": "Please enter the refresh token URL",
+      "refreshUrlRule": "Please enter the correct URL address",
+      "clientIdLabel": "Client ID",
+      "clientIdPlaceholder": "Please enter the client ID",
+      "clientSecretLabel": "Client Secret",
+      "clientSecretPlaceholder": "Please enter the client secret",
+      "scopesPlaceholder": "Enter scope, multiple scopes separated by commas",
+      "clientAuthTypeLabel": "Client Authentication",
+      "clientAuthTypePlaceholder": "Select client authentication",
+      "description": "Description",
+      "descriptionPlaceholder": "Enter description, support Markdown syntax"
+    },
     "serverConfig": {
       "title": "Server Configuration",
       "hints": "Define servers (Server URL) that can be used by all APIs under current service, maximum 50 servers can be added.",
@@ -348,8 +755,7 @@
         "description": "Description",
         "variables": "Variables",
         "name": "Name",
-        "value": "Value",
-        "description": "Description"
+        "value": "Value"
       }
     },
     "shareModal": {
@@ -1570,6 +1976,7 @@
     }
   },
   "apiShare": {
+    "name":"Share",
     "title": "Share",
     "addShare": "Add Share",
     "shareList": "Share List",
@@ -1653,37 +2060,39 @@
     "introduce": {
       "title": "About Sharing",
       "description": "When you need to integrate interfaces with external partners, customers, or other teams, you can use the \"Share\" feature to pass interface information to them, simplifying the communication process. Sharing includes detailed interface description information, including interface servers, authentication, interface addresses, request formats, and response formats, ensuring everyone has a consistent understanding of the interface."
+    }
+  },
+  "apiTrash": {
+    "name":"Trash",
+    "title": "Trash",
+    "searchPlaceholder": "Please enter search keywords",
+    "tips": "Only administrators and deleters can restore or permanently delete trash data.",
+    "buttons": {
+      "recoverAll": "Restore All"
     },
-    "apiTrash": {
-      "title": "Trash",
-      "searchPlaceholder": "Please enter search keywords",
-      "tips": "Only administrators and deleters can restore or permanently delete trash data.",
-      "buttons": {
-        "recoverAll": "Restore All"
+    "tabs": {
+      "service": "Service",
+      "api": "API"
+    },
+    "table": {
+      "columns": {
+        "name": "Name",
+        "createdBy": "Created By",
+        "deletedBy": "Deleted By",
+        "deletedDate": "Deleted Date",
+        "action": "Action"
       },
-      "tabs": {
-        "service": "Service",
-        "api": "API"
-      },
-      "table": {
-        "columns": {
-          "name": "Name",
-          "createdBy": "Created By",
-          "deletedBy": "Deleted By",
-          "deletedDate": "Deleted Date",
-          "action": "Action"
-        },
-        "actions": {
-          "recover": "Restore"
-        }
-      },
-      "messages": {
-        "recoverAllSuccess": "All restored successfully",
-        "recoverSuccess": "Restored successfully"
+      "actions": {
+        "recover": "Restore"
       }
+    },
+    "messages": {
+      "recoverAllSuccess": "All restored successfully",
+      "recoverSuccess": "Restored successfully"
     }
   },
   "appConfig": {
+    "name":"Application Configuration",
     "title": "Application Configuration",
     "labels": {
       "name": "Name",

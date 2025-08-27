@@ -1,8 +1,11 @@
 <script lang="ts" setup>
-import { defineAsyncComponent, ref, watch } from 'vue';
+import { defineAsyncComponent, ref, watch, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { IconTask, Input, Modal, Table } from '@xcan-angus/vue-ui';
 import { http, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
+
+const { t } = useI18n();
 
 interface Props {
   // planId: string;
@@ -16,7 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
   visible: false,
   baselineId: undefined,
   action: '',
-  title: '选择任务'
+  title: undefined
 });
 const emit = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'ok', value: string[], rowValue: ReviewCaseInfo[]):void}>();
 const ModuleTree = defineAsyncComponent(() => import('@/components/module/treeSelector/index.vue'));
@@ -85,31 +88,35 @@ const handleFilter = debounce(duration.search, () => {
 
 const columns = [
   {
-    title: '编号',
+    title: t('commonComp.selectTaskByModuleModal.code'),
     dataIndex: 'code',
     width: '20%'
   },
   {
-    title: '名称',
+    title: t('commonComp.selectTaskByModuleModal.name'),
     dataIndex: 'name'
 
   },
   {
-    title: '状态',
+    title: t('commonComp.selectTaskByModuleModal.status'),
     dataIndex: 'status',
     width: '10%'
   },
   {
-    title: '类型',
+    title: t('commonComp.selectTaskByModuleModal.type'),
     dataIndex: 'taskType',
     width: '15%'
   }
 ];
 
+const modalTitle = computed(() => {
+  return props.title || t('commonComp.selectTaskByModuleModal.title');
+})
+
 </script>
 <template>
   <Modal
-    :title="props.title"
+    :title="modalTitle"
     :visible="props.visible"
     :width="1000"
     :loading="loading"
@@ -119,13 +126,13 @@ const columns = [
       <div class="w-50 h-144.5 overflow-y-auto">
         <ModuleTree
           v-model:moduleId="moduleId"
-          title="任务"
+          :title="t('commonComp.selectTaskByModuleModal.task')"
           :projectId="props.projectId" />
       </div>
       <div class="flex-1 ml-2">
         <Input
           v-model:value="keywords"
-          placeholder="查询名称、编码"
+          :placeholder="t('commonComp.selectTaskByModuleModal.searchPlaceholder')"
           class="w-100"
           @change="handleFilter" />
         <Table
