@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, inject, ref, watch, defineAsyncComponent } from 'vue';
+import { computed, ref, watch, defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { DatePicker, Icon, Image, Input, Modal, notification, Select, SelectUser } from '@xcan-angus/vue-ui';
 import { Divider, Form, FormItem, RadioButton, RadioGroup, Upload, Popover } from 'ant-design-vue';
@@ -141,9 +141,6 @@ const validateDesc = () => {
   if (descRichRef.value && descRichRef.value.getLength() > 2000) {
     return Promise.reject(t('project.projectAddModal.validation.maxCharacters'));
   }
-  // if (formData.value?.description?.length && formData.value.description.length > 2000) {
-  //   return Promise.reject('不能超过2000字符');
-  // }
   return Promise.resolve();
 };
 
@@ -318,7 +315,7 @@ const modalTitle = computed(() => {
           </div>
         </FormItem>
         <FormItem
-                      :label="t('project.projectAddModal.form.name')"
+          :label="t('project.projectAddModal.form.name')"
           name="name"
           required>
           <Input
@@ -329,12 +326,12 @@ const modalTitle = computed(() => {
         </FormItem>
 
         <FormItem
-                      :label="t('project.projectAddModal.form.timePlan')"
+          :label="t('project.projectAddModal.form.timePlan')"
           name="dateRange"
-                      :rules="[{ required: true, message: t('project.projectAddModal.validation.timeRequired')}]">
+          :rules="[{ required: true, message: t('project.projectAddModal.validation.timeRequired')}]">
           <template #label>
             <div class="flex items-center">
-                              <span>{{ t('project.projectAddModal.form.time') }}</span>
+              <span>{{ t('project.projectAddModal.form.time') }}</span>
               <Popover placement="right">
                 <template #content>
                   <div class="max-w-100">
@@ -355,10 +352,10 @@ const modalTitle = computed(() => {
 
         <FormItem
           name="ownerId"
-                      :rules="[{ required: true, message: t('project.projectAddModal.validation.ownerRequired')}]">
+          :rules="[{ required: true, message: t('project.projectAddModal.validation.ownerRequired')}]">
           <template #label>
             <div class="flex items-center">
-                              <span>{{ t('project.projectAddModal.form.owner') }}</span>
+              <span>{{ t('project.projectAddModal.form.owner') }}</span>
               <Popover placement="right">
                 <template #content>
                   <div class="max-w-100">
@@ -372,7 +369,7 @@ const modalTitle = computed(() => {
           <SelectUser
             v-model:value="formData.ownerId"
             size="small"
-                          :placeholder="t('project.projectAddModal.form.ownerPlaceholder')"
+            :placeholder="t('project.projectAddModal.form.ownerPlaceholder')"
             :allowClear="false" />
         </FormItem>
 
@@ -464,15 +461,6 @@ const modalTitle = computed(() => {
             class="border rounded border-border-input"
             :height="80"
             :options="{placeholder: t('project.projectAddModal.form.descriptionPlaceholder'), theme: 'bubble'}" />
-          <!-- <Textarea
-            v-model:value="formData.description"
-            type="textarea"
-            :autosize="{
-              minRows: 5
-            }"
-            showCount
-            placeholder="描述，最多2000个字符"
-            :maxlength="2000" /> -->
         </FormItem>
       </Form>
     </div>

@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import {  onBeforeMount, onMounted, ref, watch } from 'vue';
+import { onBeforeMount, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import * as echarts from 'echarts/core';
 import { NoData } from '@xcan-angus/vue-ui';
 import { GridComponent, TitleComponent, TooltipComponent } from 'echarts/components';
 
-const { t } = useI18n();
-
 import { LineChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
 import { computed } from '@vue/reactivity';
+
+const { t } = useI18n();
 
 interface Props {
   title:string

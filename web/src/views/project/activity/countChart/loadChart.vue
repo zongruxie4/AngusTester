@@ -318,8 +318,8 @@ const setBarChartDefault = () => {
     }
   }
 
-        barChartData.value.title = `${t('projectActivity.chart.add')}${props.barTitle}`;
-      barChartData.value.unit = `${t('projectActivity.chart.timeUnit')}: ${dateRangeType.value[1]}`;
+  barChartData.value.title = `${t('projectActivity.chart.add')}${props.barTitle}`;
+  barChartData.value.unit = `${t('projectActivity.chart.timeUnit')}: ${dateRangeType.value[1]}`;
 };
 
 const setBarCharCount = (data:Record<string, any>) => {

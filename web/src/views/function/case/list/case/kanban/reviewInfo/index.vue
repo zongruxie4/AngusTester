@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const oneReviewPass = computed(() => {
   if (props.dataSource?.reviewNum && Number(props.dataSource.reviewNum) > 0) {
-    return props.dataSource?.reviewFailNum === '0' && props.dataSource?.reviewStatus?.value === 'PASSED' ? '是' : '否';
+    return props.dataSource?.reviewFailNum === '0' && props.dataSource?.reviewStatus?.value === 'PASSED' ? t('status.yes') : t('status.no');
   }
   return '--';
 });
@@ -32,7 +32,7 @@ const reviewInfoColumns = [
     {
       label: '是否开启评审',
       dataIndex: 'review',
-      customRender: ({ text }) => text ? '是' : '否'
+      customRender: ({ text }) => text ? t('status.yes') : t('status.no')
     },
     {
       label: '评审次数',

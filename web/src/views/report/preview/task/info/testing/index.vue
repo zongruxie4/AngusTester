@@ -35,7 +35,7 @@ const onePassText = computed(() => {
     return '';
   }
 
-  return testFailureNum.value === 0 ? '是' : '否';
+  return testFailureNum.value === 0 ? t('status.yes') : t('status.no');
 });
 
 const task = computed(() => {

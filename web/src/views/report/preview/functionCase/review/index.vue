@@ -27,10 +27,10 @@ const onePassText = computed(() => {
   const reviewFailNum = +caseInfo.value?.reviewFailNum;
   const reviewStatus = caseInfo.value?.reviewStatus?.value;
   if (reviewStatus === 'PASSED' && reviewFailNum === 0) {
-    return '是';
+    return t('status.yes');
   }
 
-  return '否';
+  return t('status.no');
 });
 </script>
 
@@ -47,7 +47,7 @@ const onePassText = computed(() => {
           {{ t('reportPreview.functionCase.review.fields.isReview') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
-          {{ caseInfo?.review?'是':'否' }}
+          {{ caseInfo?.review?t('status.yes'):t('status.no') }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">

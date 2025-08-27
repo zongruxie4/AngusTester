@@ -32,7 +32,7 @@ const testInfoColumns = [
 
 const getOneTestPass = computed(() => {
   if (props.caseInfo?.testNum && Number(props.caseInfo.testNum) > 0) {
-    return props.caseInfo?.testFailNum === '0' && props.caseInfo?.testResult?.value === 'PASSED' ? '是' : '否';
+    return props.caseInfo?.testFailNum === '0' && props.caseInfo?.testResult?.value === 'PASSED' ? t('status.yes') : t('status.no');
   }
   return '--';
 });

@@ -435,7 +435,7 @@ const onePassText = computed(() => {
     return '--';
   }
 
-  return failNum.value === 0 ? '是' : '否';
+  return failNum.value === 0 ? t('status.yes') : t('status.no');
 });
 </script>
 
@@ -850,7 +850,7 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
           <div>
-            {{ props.dataSource?.unplannedFlag ? '是' : '否' }}
+            {{ props.dataSource?.unplannedFlag ? t('status.yes') : t('status.no') }}
           </div>
         </div>
       </div>

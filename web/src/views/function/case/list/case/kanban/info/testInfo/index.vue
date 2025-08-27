@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const oneTestPass = computed(() => {
   if (props.dataSource?.testNum && Number(props.dataSource.testNum) > 0) {
-    return props.dataSource?.testFailNum === '0' && props.dataSource?.testResult?.value === 'PASSED' ? '是' : '否';
+    return props.dataSource?.testFailNum === '0' && props.dataSource?.testResult?.value === 'PASSED' ? t('status.yes') : t('status.no');
   }
   return '--';
 });

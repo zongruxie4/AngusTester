@@ -132,7 +132,7 @@ const testerResponsibilities = computed(() => {
             {{ t('reportPreview.functionPlan.detail.basicInfo.fields.reviewCase') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
-            {{ plan?.review?'是':'否' }}
+            {{ plan?.review?t('status.yes'):t('status.no') }}
           </div>
         </div>
       </div>

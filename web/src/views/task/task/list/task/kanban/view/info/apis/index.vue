@@ -437,7 +437,7 @@ const onePassText = computed(() => {
     return '--';
   }
 
-  return failNum.value === 0 ? '是' : '否';
+  return failNum.value === 0 ? t('status.yes') : t('status.no');
 });
 </script>
 

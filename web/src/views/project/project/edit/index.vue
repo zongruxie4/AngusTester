@@ -171,9 +171,9 @@ const ok = async () => {
     }
     emit('ok');
     if (props.projectId) {
-              notification.success(t('project.projectEdit.messages.updateSuccess'));
+      notification.success(t('project.projectEdit.messages.updateSuccess'));
     } else {
-              notification.success(t('project.projectEdit.messages.createSuccess'));
+      notification.success(t('project.projectEdit.messages.createSuccess'));
       delTabPane('addProject');
     }
     getNewCurrentProject();
@@ -313,7 +313,7 @@ onMounted(() => {
                 <Popover placement="right">
                   <template #content>
                     <div class="max-w-100">
-                     {{ t('project.projectEdit.form.ownerDescription') }}
+                      {{ t('project.projectEdit.form.ownerDescription') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips absolute -right-5 top-2 text-3.5" />
@@ -322,12 +322,12 @@ onMounted(() => {
               <FormItem :label="t('project.projectEdit.form.importExample')" class="import-example-label  flex-1 !mb-5 !ml-10">
                 <RadioGroup
                   v-model:value="projectData.importExample"
-                  :options="[{ value: true, label: '是'}, { value: false, label: '否' }]">
+                  :options="[{ value: true, label: t('status.yes')}, { value: false, label: t('status.no') }]">
                 </RadioGroup>
                 <Popover placement="right">
                   <template #content>
                     <div class="max-w-100">
-                      {{t('project.projectEdit.form.importExampleDescription')}}
+                      {{ t('project.projectEdit.form.importExampleDescription') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips text-3.5" />
@@ -344,7 +344,7 @@ onMounted(() => {
                 buttonStyle="solid"
                 size="small">
                 <RadioButton value="user">
-                  {{t('project.projectEdit.form.user')}}
+                  {{ t('project.projectEdit.form.user') }}
                 </RadioButton>
                 <RadioButton value="dept">
                   {{ t('project.projectEdit.form.department') }}
@@ -449,7 +449,7 @@ onMounted(() => {
               size="small"
               class="ml-2"
               @click="cancel">
-              {{t('actions.cancel')}}
+              {{ t('actions.cancel') }}
             </Button>
           </div>
         </FormItem>
@@ -556,13 +556,13 @@ onMounted(() => {
                   buttonStyle="solid"
                   size="small">
                   <RadioButton value="user">
-                    {{t('project.projectEdit.form.user')}}
+                    {{ t('project.projectEdit.form.user') }}
                   </RadioButton>
                   <RadioButton value="dept">
                     {{ t('project.projectEdit.form.department') }}
                   </RadioButton>
                   <RadioButton value="group">
-                    {{t('project.projectEdit.form.group')}}
+                    {{ t('project.projectEdit.form.group') }}
                   </RadioButton>
                 </RadioGroup>
                 <Popover placement="right">
@@ -656,13 +656,13 @@ onMounted(() => {
                 :loading="loading"
                 @click="ok">
                 <Icon icon="icon-dangqianxuanzhong" class="mr-1" />
-                {{t('actions.save')}}
+                {{ t('actions.save') }}
               </Button>
               <Button
                 size="small"
                 class="ml-2"
                 @click="cancel">
-                {{t('actions.cancel')}}
+                {{ t('actions.cancel') }}
               </Button>
             </div>
           </FormItem>

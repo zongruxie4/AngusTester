@@ -7,10 +7,10 @@ import { debounce } from 'throttle-debounce';
 import { duration } from '@xcan-angus/infra';
 import { project } from '@/api/tester';
 
-const { t } = useI18n();
-
 import { getCurrentPage } from '@/utils/utils';
 import { TrashItem } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;

@@ -416,7 +416,7 @@ const columns = [
             </template>
 
             <div v-if="column.dataIndex === 'passwordValue'" class="flex items-center">
-              {{ record.passwordValue ? t('commonComp.apis.parameterizationVariable.listModal.ynOption.yes') : t('commonComp.apis.parameterizationVariable.listModal.ynOption.no') }}
+              {{ record.passwordValue ? t('status.yes') : t('status.no') }}
             </div>
           </template>
         </Table>

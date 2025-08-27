@@ -124,7 +124,7 @@ const assignees = computed(() => {
                 {{ t('reportPreview.sprint.taskDetail.fields.overdue') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
-                {{ _task?.overdue?'是':'否' }}
+                {{ _task?.overdue?t('status.yes'):t('status.no') }}
               </div>
             </div>
 
@@ -158,7 +158,7 @@ const assignees = computed(() => {
                 {{ t('reportPreview.sprint.taskDetail.fields.confirmTask') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
-                {{ _task?.confirmTask?'是':'否' }}
+                {{ _task?.confirmTask?t('status.yes'):t('status.no') }}
               </div>
             </div>
 

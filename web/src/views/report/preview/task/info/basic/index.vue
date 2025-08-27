@@ -119,7 +119,7 @@ const onePassText = computed(() => {
           {{ t('reportPreview.task.info.basicInfo.fields.overdue') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
-          {{ task?.overdue ? '是' : '否' }}
+          {{ task?.overdue ? t('status.yes') : t('status.no') }}
         </div>
       </div>
 

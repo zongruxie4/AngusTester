@@ -123,9 +123,9 @@ const ok = async () => {
       return;
     }
     if (formData.value.id) {
-              notification.success(t('project.projectDetail.messages.updateSuccess'));
+      notification.success(t('project.projectDetail.messages.updateSuccess'));
     } else {
-              notification.success(t('project.projectDetail.messages.addSuccess'));
+      notification.success(t('project.projectDetail.messages.addSuccess'));
     }
 
     emit('update:visible', false);
@@ -190,7 +190,7 @@ watch(() => props.projectId, newValue => {
 
             <FormItem :label="t('project.projectDetail.form.projectMembers') + ':'" class="member-item">
               <Tabs size="small" class="-mt-1.5">
-                                  <TabPane key="user" :tab="t('project.projectDetail.form.user')">
+                <TabPane key="user" :tab="t('project.projectDetail.form.user')">
                   <div class="flex flex-1 flex-wrap">
                     <div
                       v-for="(avatars, idx) in formData.members?.USER || []"
@@ -205,7 +205,7 @@ watch(() => props.projectId, newValue => {
                     </div>
                   </div>
                 </TabPane>
-                                  <TabPane key="group" :tab="t('project.projectDetail.form.group')">
+                <TabPane key="group" :tab="t('project.projectDetail.form.group')">
                   <div class="flex flex-1 flex-wrap">
                     <div
                       v-for="(avatars, idx) in formData.members?.GROUP || []"
@@ -215,7 +215,7 @@ watch(() => props.projectId, newValue => {
                     </div>
                   </div>
                 </TabPane>
-                                  <TabPane key="dept" :tab="t('project.projectDetail.form.department')">
+                <TabPane key="dept" :tab="t('project.projectDetail.form.department')">
                   <div class="flex flex-1 flex-wrap">
                     <div
                       v-for="(avatars, idx) in formData.members?.DEPT || []"
