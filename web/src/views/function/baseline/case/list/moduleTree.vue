@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Icon, Input, modal, notification } from '@xcan-angus/vue-ui';
 import { Button, Tree } from 'ant-design-vue';
 import { modules } from '@/api/tester';
+
+const { t } = useI18n();
 
 type TagItem = {
   id: string;
@@ -89,7 +92,7 @@ const pressEnter = async (id: string, event: { target: { value: string } }) => {
   if (error) {
     return;
   }
-  notification.success('修改成功');
+  notification.success(t('functionBaseline.case.moduleTree.modifySuccess'));
   editId.value = undefined;
   emits('loadData', keywords.value);
 };
@@ -105,7 +108,7 @@ const hadleblur = (id: string, event: { target: { value: string } }) => {
 // 删除弹框
 const toDelete = (data: TagItem) => {
   modal.confirm({
-    content: `确定删除模块【${data.name}】吗？`,
+    content: t('functionBaseline.case.moduleTree.confirmDeleteModule', { name: data.name }),
     async onOk () {
       const id = data.id;
       const params = { ids: [id] };
@@ -116,7 +119,7 @@ const toDelete = (data: TagItem) => {
         return;
       }
 
-      notification.success('删除模块成功');
+      notification.success(t('functionBaseline.case.moduleTree.deleteModuleSuccess'));
       emits('loadData', keywords.value);
     }
   });
@@ -166,7 +169,7 @@ const moveUp = async (record) => {
   if (error) {
     return;
   }
-  notification.success('移动成功');
+  notification.success(t('functionBaseline.case.moduleTree.moveSuccess'));
   emits('loadData', keywords.value);
 };
 
@@ -194,7 +197,7 @@ const moveDown = async (record) => {
   if (error) {
     return;
   }
-  notification.success('移动成功');
+  notification.success(t('functionBaseline.case.moduleTree.moveSuccess'));
   emits('loadData', keywords.value);
 };
 
@@ -237,7 +240,7 @@ const travelTreeData = (treeData, callback = (item) => item) => {
   return treeData;
 };
 
-const moduleTreeData = ref([{ name: '无模块用例', id: '-1' }]);
+const moduleTreeData = ref([{ name: t('functionBaseline.case.moduleTree.noModuleCases'), id: '-1' }]);
 
 const loadDataList = async () => {
   const [error, { data }] = await modules.getModuleTree({
@@ -246,7 +249,7 @@ const loadDataList = async () => {
   if (error) {
     return;
   }
-  moduleTreeData.value = [{ name: '无模块用例', id: '-1' }, ...travelTreeData(data || [])];
+  moduleTreeData.value = [{ name: t('functionBaseline.case.moduleTree.noModuleCases'), id: '-1' }, ...travelTreeData(data || [])];
 };
 
 onMounted(() => {
@@ -259,26 +262,12 @@ defineExpose({
 </script>
 <template>
   <div class="h-full flex flex-col">
-    <!-- <div class="flex justify-between h-11 space-x-4 p-2">
-      <Input
-        v-model:value="keywords"
-        placeholder="搜索模块"
-        @change="handleSearchModule" />
-      <Button
-        :disabled="!isAdmin && projectInfo?.createdBy !== tenantInfo?.id && projectInfo.ownerId !== tenantInfo?.id"
-        type="primary"
-        size="small"
-        @click="onMenuClick({key: 'add'}, {id: undefined})">
-        <Icon icon="icon-jia" />
-        添加模块
-      </Button>
-    </div> -->
     <div
       :class="{'active': props.moduleId === ''}"
       class="flex items-center space-x-2 tree-title h-9 leading-9 pl-4.5 cursor-pointer all-case"
       @click="handleSelectKeysChange([''])">
       <Icon icon="icon-liebiaoshitu" class="text-3.5" />
-      <span class="flex-1">全部用例</span>
+      <span class="flex-1">{{ t('functionBaseline.case.moduleTree.allCases') }}</span>
     </div>
     <Tree
       :treeData="moduleTreeData"
@@ -296,7 +285,7 @@ defineExpose({
         <div v-if="editId === id" class="flex items-center">
           <Input
             ref="nameInputRef"
-            placeholder="请输入模块名称"
+            :placeholder="t('functionBaseline.case.moduleTree.enterModuleName')"
             class="flex-1 mr-2 bg-white"
             trim
             :value="name"
@@ -309,7 +298,7 @@ defineExpose({
             size="small"
             class="px-0 py-0 mr-1"
             @click="cancelEdit">
-            取消
+            {{ t('functionBaseline.case.moduleTree.cancel') }}
           </Button>
         </div>
         <div v-else class="flex items-center space-x-2 tree-title">
@@ -319,44 +308,7 @@ defineExpose({
             icon="icon-liebiaoshitu"
             class="text-3.5" />
           <span class="flex-1">{{ name }}</span>
-          <!-- <Dropdown :trigger="['click']">
-            <Button
-              v-if="id !== '-1' && hasEditPermission"
-              type="text"
-              size="small"
-              class="hidden gengduo"
-              @click.stop>
-              <Icon icon="icon-more" class="text-3.5" />
-            </Button>
-            <template #overlay>
-              <Menu class="w-50" @click="onMenuClick($event, {name, id, index, ids, pid, childLevels})">
-                <MenuItem v-if="level < 4" key="add">
-                  <Icon icon="icon-jia" />
-                  新建子模块
-                </MenuItem>
-                <MenuItem v-if="index > 0 || +pid > 0" key="up">
-                  <Icon icon="icon-shangyi" />
-                  {{ index < 1 ? '移到上一层' : '上移' }}
-                </MenuItem>
-                <MenuItem v-if="!isLast" key="down">
-                  <Icon icon="icon-xiayi" />
-                  下移
-                </MenuItem>
-                <MenuItem key="move">
-                  <Icon icon="icon-yidong" />
-                  移动
-                </MenuItem>
-                <MenuItem key="edit">
-                  <Icon icon="icon-bianji" />
-                  编辑
-                </MenuItem>
-                <MenuItem key="del">
-                  <Icon icon="icon-qingchu" />
-                  删除
-                </MenuItem>
-              </Menu>
-            </template>
-          </Dropdown> -->
+
         </div>
       </template>
     </Tree>

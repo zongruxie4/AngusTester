@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon, modal, Table, TaskPriority } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { func } from '@/api/tester';
+
+const { t } = useI18n();
 
 const ModuleTree = defineAsyncComponent(() => import('./moduleTree.vue'));
 const SelectCaseModal = defineAsyncComponent(() => import('@/views/function/baseline/edit/selectCaseModal.vue'));
@@ -39,31 +42,31 @@ const props = withDefaults(defineProps<Props>(), {
 
 const columns = [
   {
-    title: '编码',
+    title: t('functionBaseline.case.code'),
     dataIndex: 'code'
   },
   {
-    title: '名称',
+    title: t('functionBaseline.case.name'),
     dataIndex: 'name'
   },
   {
-    title: '优先级',
+    title: t('functionBaseline.case.priority'),
     dataIndex: 'priority'
   },
   {
-    title: '版本',
+    title: t('functionBaseline.case.version'),
     dataIndex: 'version'
   },
   {
-    title: '创建人',
+    title: t('functionBaseline.case.creator'),
     dataIndex: 'createdByName'
   },
   {
-    title: '创建时间',
+    title: t('functionBaseline.case.createTime'),
     dataIndex: 'createdDate'
   },
   {
-    title: '操作',
+    title: t('functionBaseline.case.operation'),
     dataIndex: 'action'
   }
 ];
@@ -119,7 +122,7 @@ const handleAddCase = () => {
 
 const delCase = (record) => {
   modal.confirm({
-    content: `确认取消关联用例【${record.name}】吗？`,
+    content: t('functionBaseline.case.confirmUnlinkCase', { name: record.name }),
     onOk () {
       return func.deleteBaselineCase(props.baselineId, [record.id])
         .then(([error]) => {
@@ -229,7 +232,7 @@ onMounted(() => {
               size="small"
               @click.stop="delCase(record)">
               <Icon icon="icon-qingchu" class="mr-1" />
-              取消
+              {{ t('functionBaseline.case.cancel') }}
             </Button>
           </template>
         </template>
@@ -253,7 +256,7 @@ onMounted(() => {
           :caseInfo="selectCaseInfo" />
 
         <div class="font-semibold text-3.5">
-          测试步骤
+          {{ t('functionBaseline.case.testSteps') }}
         </div>
 
         <CaseStep

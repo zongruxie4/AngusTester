@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Form, FormItem, TabPane, Tabs } from 'ant-design-vue';
 import { AsyncComponent, Icon, Input, modal, notification, Select, Spin, Table } from '@xcan-angus/vue-ui';
 import { EnumMessage, EvalWorkloadMethod, utils, TESTER, enumUtils, duration } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { debounce } from 'throttle-debounce';
 import { func, project } from '@/api/tester';
+
+const { t } = useI18n();
 
 import { BaselineInfo } from '../PropsType';
 import { BaselineCaseInfo, FormState } from './PropsType';
@@ -92,7 +95,7 @@ const editOk = async () => {
     return;
   }
 
-  notification.success('修改成功');
+  notification.success(t('functionBaseline.editForm.modifySuccess'));
 
   const id = params.id;
   const name = params.name;
@@ -112,7 +115,7 @@ const addOk = async () => {
     return;
   }
 
-  notification.success('添加成功');
+  notification.success(t('functionBaseline.editForm.addSuccess'));
 
   const _id = props.data?._id;
   const newId = res?.data?.id;
@@ -138,7 +141,7 @@ const toDelete = async () => {
   }
 
   modal.confirm({
-    content: `确定删除基线【${data.name}】吗？`,
+    content: t('functionBaseline.editForm.confirmDeleteBaseline', { name: data.name }),
     async onOk () {
       const id = data.id;
       loading.value = true;
@@ -148,7 +151,7 @@ const toDelete = async () => {
         return;
       }
 
-      notification.success('基线删除成功， 您可以在回收站查看删除后的基线');
+      notification.success(t('functionBaseline.editForm.baselineDeletedSuccess'));
       deleteTabPane([id, id + '_detail']);
       refreshList();
     }
@@ -302,15 +305,15 @@ const pagination = ref({
 const caseList = ref<BaselineCaseInfo[]>([]);
 const columns = [
   {
-    title: '用例ID',
+    title: t('functionBaseline.editForm.caseId'),
     dataIndex: 'id'
   },
   {
-    title: '名称',
+    title: t('functionBaseline.editForm.caseName'),
     dataIndex: 'name'
   },
   {
-    title: '操作',
+    title: t('functionBaseline.editForm.operation'),
     dataIndex: 'action'
   }
 ];
@@ -318,7 +321,7 @@ const columns = [
 const delCase = async (record: BaselineCaseInfo) => {
   if (baselineId.value) {
     modal.confirm({
-      title: `确认删除【${record.name}】吗？`,
+      title: t('functionBaseline.editForm.confirmDeleteCase', { name: record.name }),
       async onOk () {
         const [error] = await func.deleteBaselineCaseById([record.id]);
         if (error) {
@@ -341,7 +344,7 @@ const validateDesc = () => {
     return Promise.resolve();
   }
   if (richEditorRef.value && richEditorRef.value.getLength() > 2000) {
-    return Promise.reject('字符不能超过2000');
+    return Promise.reject(t('functionBaseline.editForm.charactersCannotExceed2000'));
   }
   // if (formState.value.description.length > 2000) {
   //   return Promise.reject('字符不能超过2000');
@@ -391,7 +394,7 @@ const editFlag = computed(() => {
         class="flex items-center space-x-1"
         @click="ok">
         <Icon icon="icon-dangqianxuanzhong" class="text-3.5" />
-        <span>保存</span>
+        <span>{{ t('functionBaseline.editForm.save') }}</span>
       </Button>
 
       <template v-if="editFlag">
@@ -401,7 +404,7 @@ const editFlag = computed(() => {
           class="flex items-center space-x-1"
           @click="toDelete">
           <Icon icon="icon-qingchu" class="text-3.5" />
-          <span>删除</span>
+          <span>{{ t('functionBaseline.editForm.delete') }}</span>
         </Button>
       </template>
 
@@ -410,7 +413,7 @@ const editFlag = computed(() => {
         size="small"
         class="flex items-center space-x-1"
         @click="cancel">
-        <span>取消</span>
+        <span>{{ t('functionBaseline.editForm.cancel') }}</span>
       </Button>
     </div>
 
@@ -422,37 +425,37 @@ const editFlag = computed(() => {
       size="small"
       layout="horizontal">
       <FormItem
-        label="名称"
+        :label="t('functionBaseline.editForm.name')"
         name="name"
-        :rules="{ required: true, message: '请输入基线名称' }">
+        :rules="{ required: true, message: t('functionBaseline.editForm.pleaseEnterBaselineName') }">
         <Input
           v-model:value="formState.name"
           size="small"
           :maxlength="200"
-          :placeholder="'基线简要概述，最多支持200个字符'" />
+          :placeholder="t('functionBaseline.editForm.baselineBriefOverview')" />
       </FormItem>
       <FormItem
-        label="测试计划"
+        :label="t('functionBaseline.editForm.testPlan')"
         name="planId"
-        :rules="{ required: true, message: '请选择测试计划' }">
+        :rules="{ required: true, message: t('functionBaseline.editForm.pleaseSelectTestPlan') }">
         <Select
           v-model:value="formState.planId"
           size="small"
           :disabled="!!baselineId"
           :action="`${TESTER}/func/plan?projectId=${props.projectId}&fullTextSearch=true`"
           :fieldNames="{value: 'id', label: 'name'}"
-          :placeholder="'选择测试计划'"
+          :placeholder="t('functionBaseline.editForm.selectTestPlan')"
           @change="handleChangePlanId" />
       </FormItem>
 
       <FormItem
-        label="描述"
+        :label="t('functionBaseline.editForm.description')"
         name="description"
         :rules="[{validator: validateDesc}]">
         <RichEditor
           ref="richEditorRef"
           v-model:value="formState.description"
-          placeholder="基线简要概述，最多支持2000个字符"
+          :placeholder="t('functionBaseline.editForm.baselineBriefOverview2000')"
           :height="100" />
         <!-- <Textarea
           v-model:value="formState.description"
@@ -468,12 +471,12 @@ const editFlag = computed(() => {
         <TabPane
           key="funcCase"
           forceRender
-          tab="基线用例">
+          :tab="t('functionBaseline.editForm.baselineCases')">
           <div class="flex justify-between mb-3">
             <Input
               v-model:value="keywords"
               :disabled="!baselineId"
-              placeholder="输入查询名称"
+              :placeholder="t('functionBaseline.editForm.enterQueryName')"
               class="w-50"
               @change="onKeywordChange" />
             <Button
@@ -482,7 +485,7 @@ const editFlag = computed(() => {
               type="primary"
               @click="addBaselineCase">
               <Icon icon="icon-jia" class="mr-1" />
-              添加基线用例
+              {{ t('functionBaseline.editForm.addBaselineCase') }}
             </Button>
           </div>
           <Table
@@ -499,7 +502,7 @@ const editFlag = computed(() => {
                   size="small"
                   @click="delCase(record)">
                   <Icon icon="icon-qingchu" />
-                  删除
+                  {{ t('functionBaseline.editForm.delete') }}
                 </Button>
               </template>
             </template>

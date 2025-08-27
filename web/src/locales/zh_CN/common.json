@@ -60,7 +60,8 @@
     "past30Day": "近30天",
     "createdByMe": "我创建的",
     "modifiedByMe": "我修改的",
-    "addByMe": "我添加的"
+    "addByMe": "我添加的",
+    "tester": "待我测试"
   },
   "tips": {
     "saveSuccess": "保存成功",

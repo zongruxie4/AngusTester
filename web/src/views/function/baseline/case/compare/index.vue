@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Select } from '@xcan-angus/vue-ui';
 import _ from 'lodash-es';
 import { func } from '@/api/tester';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -32,11 +35,6 @@ const compareCase = ref({});
 
 const baseLine = computed(() => {
   const target = caselineList.value.find(line => line.id === props.baselineId);
-  return target;
-});
-
-const compareLine = computed(() => {
-  const target = caselineList.value.find(line => line.id === compareLineId.value);
   return target;
 });
 
@@ -107,12 +105,12 @@ const leftRawConfig = [
     class: 'w-8 border-r text-center'
   },
   {
-    title: '名称',
+    title: t('functionBaseline.case.name'),
     dataIndex: 'name',
     class: 'flex-1 border-r'
   },
   {
-    title: '版本号',
+    title: t('functionBaseline.case.versionNumber'),
     dataIndex: 'version',
     class: 'w-20'
   }
@@ -120,17 +118,17 @@ const leftRawConfig = [
 
 const rightRawConfig = [
   {
-    title: '名称',
+    title: t('functionBaseline.case.name'),
     dataIndex: 'name',
     class: 'flex-1 border-r'
   },
   {
-    title: '版本号',
+    title: t('functionBaseline.case.versionNumber'),
     dataIndex: 'version',
     class: 'w-20 border-r'
   },
   {
-    title: '操作',
+    title: t('functionBaseline.case.operation'),
     dataIndex: 'action',
     class: 'w-20 text-center'
   }
@@ -227,7 +225,7 @@ const openCompareModal = (caseId) => {
               type="link"
               size="small"
               @click="openCompareModal(caseId)">
-              比照
+              {{ t('functionBaseline.case.compare') }}
             </Button>
           </tmplate>
           <template v-else>
