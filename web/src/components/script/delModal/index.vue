@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { notification } from '@xcan-angus/vue-ui';
 import { CheckboxGroup, Modal } from 'ant-design-vue';
 import { apis, services } from 'src/api/tester';
+
+const { t } = useI18n();
 
 interface Props {
   visible: boolean;
@@ -20,15 +23,15 @@ const checked = ref(['PERFORMANCE', 'STABILITY', 'FUNCTIONAL']);
 const validated = ref(false);
 const testTypes = [
   {
-    label: '功能测试',
+    label: t('commonComp.delScriptModal.functionalTest'),
     value: 'FUNCTIONAL'
   },
   {
-    label: '性能测试',
+    label: t('commonComp.delScriptModal.performanceTest'),
     value: 'PERFORMANCE'
   },
   {
-    label: '稳定性测试',
+    label: t('commonComp.delScriptModal.stabilityTest'),
     value: 'STABILITY'
   }
 ];
@@ -45,7 +48,7 @@ const handleDel = async () => {
     return;
   }
   loading.value = false;
-  notification.success('删除测试脚本成功');
+  notification.success(t('commonComp.delScriptModal.deleteSuccess'));
   emits('update:visible', false);
 };
 
@@ -63,18 +66,18 @@ watch(() => props.visible, () => {
 </script>
 <template>
   <Modal
-    title="删除测试脚本"
+    :title="t('commonComp.delScriptModal.title')"
     :confirmLoading="loading"
     :visible="visible"
     @cancel="handleClose"
     @ok="handleDel">
     <div class="flex items-center">
-      <p class="py-2">脚本类型</p>
+      <p class="py-2">{{ t('commonComp.delScriptModal.scriptType') }}</p>
       <CheckboxGroup
         v-model:value="checked"
         :options="testTypes"
         class="ml-2"></CheckboxGroup>
     </div>
-    <div v-show="validated && !checked.length" class="text-rule">请选择要删除的脚本类型</div>
+    <div v-show="validated && !checked.length" class="text-rule">{{ t('commonComp.delScriptModal.selectScriptType') }}</div>
   </Modal>
 </template>

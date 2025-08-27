@@ -205,6 +205,75 @@
               "no": "否"
             }
           }
+        },
+        "selectCaseByModule": {
+          "title": "选择用例",
+          "searchPlaceholder": "查询名称、编码",
+          "code": "编号",
+          "name": "名称",
+          "reviewStatus": "评审状态",
+          "testResult": "测试结果",
+          "tester": "测试人"
+        },
+        "moduleTreeSelector": {
+          "title": "用例",
+          "noModule": "无模块",
+          "allCases": "全部",
+          "searchModule": "搜索模块",
+          "addModule": "添加模块",
+          "editModule": "编辑模块",
+          "deleteModule": "删除模块",
+          "moveModule": "移动模块",
+          "moduleName": "模块名称",
+          "inputModuleName": "请输入模块名称",
+          "cancel": "取消",
+          "confirmDelete": "确定删除模块【{name}】吗？",
+          "updateSuccess": "修改成功",
+          "deleteSuccess": "删除模块成功",
+          "moveSuccess": "移动成功"
+        },
+        "delScriptModal": {
+          "title": "删除测试脚本",
+          "scriptType": "脚本类型",
+          "functionalTest": "功能测试",
+          "performanceTest": "性能测试",
+          "stabilityTest": "稳定性测试",
+          "selectScriptType": "请选择要删除的脚本类型",
+          "deleteSuccess": "删除测试脚本成功"
+        },
+        "exportScriptModal": {
+          "title": "导出脚本",
+          "format": "格式",
+          "json": "JSON",
+          "yaml": "YAML"
+        },
+        "genTestScriptModal": {
+          "title": "生成测试脚本",
+          "functionalTest": "功能测试",
+          "performanceTest": "性能测试",
+          "stabilityTest": "稳定性测试",
+          "functionalTestConfig": "功能测试脚本配置",
+          "performanceTestConfig": "性能测试脚本配置",
+          "stabilityTestConfig": "稳定性测试脚本配置",
+          "note": "注意：如果已存在对应类型测试脚本时会自动忽略，如果需要基于当前接口参数重新生成新的测试脚本，请先删除对应测试类型脚本。",
+          "noteHighlight": "接口每种测试类型脚本只允许存在一个。",
+          "generateSuccess": "生成测试脚本成功，请在\"脚本\"中查看详情",
+          "updateSuccess": "更新测试脚本成功，请在\"脚本\"中查看详情",
+          "testForm": {
+            "concurrentThreads": "并发数（线程）",
+            "iterations": "迭代次数",
+            "executionTime": "执行时间",
+            "rampUpThreads": "增压并发数",
+            "rampUpDuration": "增压测试时长",
+            "rampUpTooltip": "用于在测试过程中增加并发数以增加系统压力，通过逐渐加压方式可以观测系统在不同压力下性能和稳定性表现。",
+            "ignoreAssertions": "是否忽略断言",
+            "ignoreAssertionsTooltip": "如果不忽略，断言失败时按采样错误处理。",
+            "updateTestResult": "更新测试结果",
+            "updateTestResultTooltip": "是否将测试结果更新到关联资源(API、用例或场景)。",
+            "priority": "优先级",
+            "authControl": "是否授权控制",
+            "authControlTooltip": "生成的脚本是否受权限控制。受权限控制时，默认只有自己可见且有全部权限，其他用户需要通过\"脚本\" -> \"授权\"手动授权；不受权限控制所有用户可见且可操作。"
+          }
         }
       }
     }

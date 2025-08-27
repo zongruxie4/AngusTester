@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Form, FormItem, Switch, Tooltip } from 'ant-design-vue';
 import { Icon, Input, SelectEnum, ShortDuration, TaskPriority, ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
 
 import { splitDuration } from '@/utils/utils';
+
+const { t } = useI18n();
 
 interface Props {
   value: {
@@ -117,7 +120,7 @@ defineExpose({
     :labelCol="{span: 8}"
     :colon="false"
     class="w-90">
-    <FormItem label="并发数（线程）" required>
+    <FormItem :label="t('commonComp.genTestScriptModal.testForm.concurrentThreads')" required>
       <Input
         v-model:value="formData.threads"
         :min="1"
@@ -126,7 +129,7 @@ defineExpose({
         @blur="changeThreads" />
     </FormItem>
     <template v-if="props.testType === 'FUNCTIONAL'">
-      <FormItem label="迭代次数" required>
+      <FormItem :label="t('commonComp.genTestScriptModal.testForm.iterations')" required>
         <Input
           v-model:value="formData.iterations"
           :min="1"
@@ -136,7 +139,7 @@ defineExpose({
       </FormItem>
     </template>
     <template v-else>
-      <FormItem label="执行时间" required>
+      <FormItem :label="t('commonComp.genTestScriptModal.testForm.executionTime')" required>
         <ShortDuration
           v-model:value="formData.duration"
           :selectProps="{style: 'width: 60px'}"
@@ -147,13 +150,13 @@ defineExpose({
       </FormItem>
     </template>
     <template v-if="props.testType==='PERFORMANCE'">
-      <FormItem label="增压并发数">
+      <FormItem :label="t('commonComp.genTestScriptModal.testForm.rampUpThreads')">
         <div class="flex items-center relative">
           <Input
             v-model:value="formData.rampUpThreads" />
           <Tooltip placement="rightTop">
             <template #title>
-              用于在测试过程中增加并发数以增加系统压力，通过逐渐加压方式可以观测系统在不同压力下性能和稳定性表现。
+              {{ t('commonComp.genTestScriptModal.testForm.rampUpTooltip') }}
             </template>
             <Icon
               icon="icon-tishi1"
@@ -161,7 +164,7 @@ defineExpose({
           </Tooltip>
         </div>
       </FormItem>
-      <FormItem label="增压测试时长">
+      <FormItem :label="t('commonComp.genTestScriptModal.testForm.rampUpDuration')">
         <ShortDuration
           v-model:value="formData.rampUpInterval"
           :selectProps="{style: 'width: 60px'}"
@@ -171,33 +174,33 @@ defineExpose({
           class="w-full" />
       </FormItem>
     </template>
-    <FormItem label="是否忽略断言">
+    <FormItem :label="t('commonComp.genTestScriptModal.testForm.ignoreAssertions')">
       <Switch
         v-model:checked="formData.ignoreAssertions"
         size="small" />
       <Tooltip placement="rightTop">
         <template #title>
-          如果不忽略，断言失败时按采样错误处理。
+          {{ t('commonComp.genTestScriptModal.testForm.ignoreAssertionsTooltip') }}
         </template>
         <Icon
           icon="icon-tishi1"
           class="text-blue-icon ml-2 text-3.5" />
       </Tooltip>
     </FormItem>
-    <FormItem label="更新测试结果">
+    <FormItem :label="t('commonComp.genTestScriptModal.testForm.updateTestResult')">
       <Switch
         v-model:checked="formData.updateTestResult"
         size="small" />
       <Tooltip placement="rightTop">
         <template #title>
-          是否将测试结果更新到关联资源(API、用例或场景)。
+          {{ t('commonComp.genTestScriptModal.testForm.updateTestResultTooltip') }}
         </template>
         <Icon
           icon="icon-tishi1"
           class="text-blue-icon ml-2 text-3.5" />
       </Tooltip>
     </FormItem>
-    <FormItem label="优先级" required>
+    <FormItem :label="t('commonComp.genTestScriptModal.testForm.priority')" required>
       <SelectEnum
         v-model:value="formData.priority"
         class="w-full"
@@ -209,13 +212,13 @@ defineExpose({
         </template>
       </SelectEnum>
     </FormItem>
-    <FormItem label="是否授权控制" required>
+    <FormItem :label="t('commonComp.genTestScriptModal.testForm.authControl')" required>
       <Switch
         v-model:checked="formData.authFlag"
         size="small" />
       <Tooltip placement="rightTop">
         <template #title>
-          生成的脚本是否受权限控制。受权限控制时，默认只有自己可见且有全部权限，其他用户需要通过"脚本" -> "授权"手动授权；不受权限控制所有用户可见且可操作。
+          {{ t('commonComp.genTestScriptModal.testForm.authControlTooltip') }}
         </template>
         <Icon
           icon="icon-tishi1"
