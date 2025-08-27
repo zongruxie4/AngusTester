@@ -26,7 +26,7 @@
     "delete": "删除",
     "myActivity": "我的活动",
     "allActivity": "全部活动",
-    "agileProjectManagement": "敏捷项目管理",
+    "agileProjectManagement": "敏捷项目",
     "sortByAddTime": "按添加时间",
     "sortByCreator": "按添加人",
     "configSoftwareModule": "配置软件模块",
@@ -75,9 +75,9 @@
         }
       },
       "projectTypeName": {
-        "agile": "敏捷项目管理",
-        "general": "一般项目管理",
-        "testing": "测试项目管理"
+        "agile": "敏捷项目",
+        "general": "一般项目",
+        "testing": "测试项目"
       },
       "validation": {
         "maxCharacters": "不能超过2000字符"
@@ -88,7 +88,7 @@
       },
       "form": {
         "projectName": "项目名称",
-        "projectNamePlaceholder": "项目名称，最多100个字符",
+        "projectNamePlaceholder": "输入一个简短的项目名称，最多100个字符",
         "timePlan": "时间计划",
         "timePlanDescription": "时间限制有助于确保项目在约定的时间内完成，这对于满足客户期望和合同义务至关重要。",
         "owner": "负责人",
@@ -105,7 +105,7 @@
         "selectDepartment": "选择部门",
         "selectGroup": "选择组",
         "description": "项目描述",
-        "descriptionPlaceholder": "描述，最多2000个字符"
+        "descriptionPlaceholder": "请输入项目目标、范围等详细说明，最多2000个字符"
       },
       "actions": {
         "save": "保存",
@@ -184,9 +184,9 @@
         }
       },
       "projectTypeName": {
-        "agile": "敏捷项目管理",
-        "general": "一般项目管理",
-        "testing": "测试项目管理"
+        "agile": "敏捷项目",
+        "general": "一般项目",
+        "testing": "测试项目"
       },
       "messages": {
         "updateSuccess": "修改项目成功",
@@ -226,9 +226,9 @@
         }
       },
       "projectTypeName": {
-        "agile": "敏捷项目管理",
-        "general": "一般项目管理",
-        "testing": "测试项目管理"
+        "agile": "敏捷项目",
+        "general": "一般项目",
+        "testing": "测试项目"
       },
       "validation": {
         "maxCharacters": "不能超过2000字符",
@@ -245,7 +245,7 @@
       },
       "form": {
         "name": "名称",
-        "projectNamePlaceholder": "项目名称，最多100个字符",
+        "projectNamePlaceholder": "输入一个简短的项目名称，最多100个字符",
         "timePlan": "时间计划",
         "time": "时间",
         "timeDescription": "时间限制有助于确保项目在约定的时间内完成，这对于满足客户期望和合同义务至关重要。",
@@ -265,7 +265,7 @@
         "selectDepartment": "选择部门",
         "selectGroup": "选择组",
         "description": "描述",
-        "descriptionPlaceholder": "描述，最多2000个字符",
+        "descriptionPlaceholder": "请输入项目目标、范围等详细说明，最多2000个字符",
         "clickToReplaceIcon": "点击上传图标"
       }
     }

@@ -87,7 +87,7 @@
       },
       "form": {
         "projectName": "Name",
-        "projectNamePlaceholder": "Project name, maximum 100 characters",
+        "projectNamePlaceholder": "A brief project name, maximum 100 characters",
         "timePlan": "Time",
         "timePlanDescription": "Time constraints ensure project completion within agreed deadlines, meeting customer expectations and contractual requirements.",
         "owner": "Owner",
@@ -104,7 +104,7 @@
         "selectDepartment": "Select Department",
         "selectGroup": "Select Group",
         "description": "Description",
-        "descriptionPlaceholder": "Description, maximum 2000 characters"
+        "descriptionPlaceholder": "Describe your project goals, scope, and key details..., maximum 2000 characters"
       },
       "actions": {
         "save": "Save",
@@ -244,7 +244,7 @@
       },
       "form": {
         "name": "Name",
-        "projectNamePlaceholder": "Project name, maximum 100 characters",
+        "projectNamePlaceholder": "A brief project name, maximum 100 characters",
         "timePlan": "Time",
         "time": "Time",
         "timeDescription": "Time constraints ensure project completion within agreed deadlines, meeting customer expectations and contractual requirements.",
@@ -264,7 +264,7 @@
         "selectDepartment": "Select Department",
         "selectGroup": "Select Group",
         "description": "Description",
-        "descriptionPlaceholder": "Description, maximum 2000 characters",
+        "descriptionPlaceholder": "Describe your project goals, scope, and key details..., maximum 2000 characters",
         "clickToReplaceIcon": "Upload Icon"
       }
     }

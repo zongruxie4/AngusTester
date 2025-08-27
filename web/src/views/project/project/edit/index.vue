@@ -886,6 +886,7 @@ onMounted(() => {
 
 .form-field {
   margin-bottom: 24px;
+  font-weight: bold
 }
 
 .form-field.with-tooltip {
