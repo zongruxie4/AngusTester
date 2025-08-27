@@ -495,19 +495,19 @@ onMounted(() => {
                 </div>
               </FormItem>
               <FormItem
-                label="项目名称"
+                :label="t('project.projectEdit.form.projectName')"
                 name="name"
                 class="input_select"
                 required>
                 <Input
                   v-model:value="projectData.name"
-                  placeholder="项目名称，最多100个字符"
+                  :placeholder="t('project.projectEdit.form.projectNamePlaceholder')"
                   :maxlength="100">
                 </Input>
               </FormItem>
 
               <FormItem
-                label="时间计划"
+                :label="t('project.projectEdit.form.timePlan')"
                 name="dateRange"
                 class="input_select"
                 required>
@@ -528,7 +528,7 @@ onMounted(() => {
               </FormItem>
 
               <FormItem
-                label="负责人"
+                :label="t('project.projectEdit.form.owner')"
                 name="ownerId"
                 required
                 class="relative input_select">
@@ -548,7 +548,7 @@ onMounted(() => {
               </FormItem>
 
               <FormItem
-                label="项目成员"
+                :label="t('project.projectEdit.form.projectMembers')"
                 class="input_select"
                 required>
                 <RadioGroup
@@ -610,14 +610,14 @@ onMounted(() => {
               </FormItem>
 
               <FormItem
-                :label="t('project.projectEdit.form.projectDescription')"
+                :label="t('project.projectEdit.form.description')"
                 name="description"
                 :rules="[{validator: validateDesc}]">
                 <RichEditor
                   ref="descRef"
                   v-model:value="projectData.description"
                   :toolbarOptions="toolbarOptions"
-                  :options="{placeholder: t('project.projectEdit.form.projectDescriptionPlaceholder')}" />
+                  :options="{placeholder: t('project.projectEdit.form.descriptionPlaceholder')}" />
               </FormItem>
             </div>
             <div class="w-100 pt-12">
