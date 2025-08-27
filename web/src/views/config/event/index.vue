@@ -266,20 +266,20 @@ const searchLogOpt = [
   {
     valueKey: 'code',
     type: 'input',
-    placeholder: '查询事件描述或编码',
+    placeholder: t('notification.searchLogPlaceholder.code'),
     allowClear: true
   },
   {
     valueKey: 'pushStatus',
     type: 'select-enum',
     enumKey: EventPushStatus,
-    placeholder: '选择推送状态',
+    placeholder: t('notification.searchLogPlaceholder.pushStatus'),
     allowClear: true
   },
   {
     type: 'date-range',
     valueKey: 'createdDate',
-    placeholder: ['开始时间', '结束时间']
+    placeholder: [t('notification.searchLogPlaceholder.startDate'), t('notification.searchLogPlaceholder.endDate')]
   }
 ];
 
@@ -304,7 +304,7 @@ onMounted(() => {
 
 <template>
   <div class="py-3.5 px-5">
-    <Hints text="AngusTester 事件配置，为用户提供了即时的信息更新和状态反馈，帮助团队快速响应和处理潜在的问题。" class="!leading-4.5" />
+    <Hints :text="t('notification.hints')" class="!leading-4.5" />
     <div class="flex space-x-2 w-250 mt-2">
       <InfoCard
         :name="t('notification.status.summary')"

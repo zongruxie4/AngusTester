@@ -23,7 +23,8 @@ const props = withDefaults(defineProps<Props>(), {
   visible: false,
   serviceId: undefined,
   tips: undefined,
-  okAction: undefined
+  okAction: undefined,
+  title: undefined
 });
 
 // eslint-disable-next-line func-call-spacing
@@ -179,6 +180,9 @@ const okButtonProps = computed(() => {
     disabled: false
   };
 });
+const modalTitle = computed(() => {
+  return props.title || t('service.sidebar.execTest.title');
+});
 </script>
 
 <template>
@@ -187,7 +191,7 @@ const okButtonProps = computed(() => {
     :width="750"
     :confirmLoading="confirmLoading"
     :okButtonProps="okButtonProps"
-    :title="t('service.sidebar.execTest.title')"
+    :title="modalTitle"
     @cancel="cancel"
     @ok="ok">
     <div class="leading-5">

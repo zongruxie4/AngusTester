@@ -29,7 +29,12 @@ const emit = defineEmits<{(e: 'update:visible', value: boolean): void }>();
 
 const { t } = useI18n();
 
-const eventTypes = ref<EnumMessage<ReceiveChannelType>[]>([]);
+interface EventTypeOption extends EnumMessage<ReceiveChannelType> {
+  label: string;
+  description: string;
+}
+
+const eventTypes = ref<EventTypeOption[]>([]);
 const selectedType = ref<string[]>([]);
 const init = async () => {
   await loadCurrentChannels();
@@ -42,8 +47,9 @@ const loadEventTypes = async () => {
     (selectedType.value.includes(m.value) || channelValus[m.value].length) && loadConfigOptions(m.value);
     return {
       ...m,
-      label: m.message
-    };
+      label: m.message,
+      description: m.message
+    } as EventTypeOption;
   });
 };
 
@@ -110,16 +116,16 @@ const getOptions = (key: string) => {
 };
 const getPlaceholder = (key: string) => {
   if (key === 'WEBHOOK') {
-    return t('选择 Webhook 地址');
+    return t('notification.receiveConfig.selectWebhookAddress');
   }
   if (key === 'EMAIL') {
-    return t('选择邮箱');
+    return t('notification.receiveConfig.selectEmail');
   }
   if (key === 'DINGTALK') {
-    return t('选择钉钉机器人');
+    return t('notification.receiveConfig.selectDingTalkBot');
   }
   if (key === 'WECHAT') {
-    return t('选择企业微信机器人');
+    return t('notification.receiveConfig.selectWeChatBot');
   }
 };
 
@@ -132,7 +138,7 @@ const handleOk = async () => {
   if (error) {
     return;
   }
-  notification.success('配置成功');
+  notification.success(t('notification.receiveConfig.configSuccess'));
   emit('update:visible', false);
 };
 const handleCancel = () => {
@@ -148,14 +154,14 @@ watch(() => props.visible, newValue => {
 <template>
   <Modal
     :visible="visible"
-    :title="t('配置接收通道')"
+    :title="t('notification.receiveConfig.title')"
     :centered="true"
     width="800px"
     @ok="handleOk"
     @cancel="handleCancel">
     <Form size="small" :labelCol="{span: 6}">
       <FormItem
-        :label="t('接收通道')"
+        :label="t('notification.receiveConfig.receiveChannel')"
         name="receiveSetting">
         <CheckboxGroup
           :options="eventTypes"
