@@ -446,6 +446,22 @@
         "addService": "添加服务",
         "localImport": "本地导入"
       },
+      "apiGroup": {
+        "tabs": {
+          "api": "接口",
+          "testResult": "测试",
+          "mock": "Mock",
+          "doc": "文档"
+        },
+        "viewMode": {
+          "codeView": "代码视图",
+          "pageView": "页面视图",
+          "refresh": "刷新"
+        },
+        "messages": {
+          "serviceNotExist": "服务不存在或者您没有查看全选"
+        }
+      },
       "execModalTitle": {
         "funcTestExecSmoke": "执行冒烟测试",
         "funcTestExecSecurity": "执行安全测试",

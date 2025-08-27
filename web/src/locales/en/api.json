@@ -402,6 +402,22 @@
         "addService": "Add Service",
         "localImport": "Local Import"
       },
+      "apiGroup": {
+        "tabs": {
+          "api": "API",
+          "testResult": "Test",
+          "mock": "Mock",
+          "doc": "Document"
+        },
+        "viewMode": {
+          "codeView": "Code View",
+          "pageView": "Page View",
+          "refresh": "Refresh"
+        },
+        "messages": {
+          "serviceNotExist": "Service does not exist or you do not have permission to view"
+        }
+      },
       "execModalTitle": {
         "funcTestExecSmoke": "Execute Smoke Test",
         "funcTestExecSecurity": "Execute Security Test",
