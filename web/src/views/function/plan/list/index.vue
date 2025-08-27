@@ -437,7 +437,7 @@ const searchPanelOptions = [
     valueKey: 'review',
     type: 'select',
     allowClear: true,
-    options: [{ label: '是', value: true }, { label: '否', value: false }],
+    options: [{ label: t('status.yes'), value: true }, { label: t('status.no'), value: false }],
     placeholder: '是否评审'
   },
   {
@@ -720,7 +720,7 @@ const sortMenuItems: {
                       <span>是否评审</span>
                       <Colon />
                     </div>
-                    <div class="text-theme-content">{{ item.review ? '是' : '否' }}</div>
+                    <div class="text-theme-content">{{ item.review ? t('status.yes') : t('status.no') }}</div>
                   </div>
 
                   <div class="flex ml-8  mt-3">

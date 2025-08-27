@@ -308,7 +308,7 @@ defineExpose({
           <Select
             v-if="checkedCols.includes('deprecated')"
             v-model:value="item.deprecated"
-            :options="[{value: true, label: '是'}, {value: false, label: '否'}]"
+            :options="[{value: true, label: t('status.yes')}, {value: false, label: t('status.no')}]"
             placeholder="是否弃用"
             class="min-w-25" />
           <!-- <Input

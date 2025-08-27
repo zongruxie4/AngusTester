@@ -27,10 +27,10 @@ const onePassText = computed(() => {
   const testFailNum = +caseInfo.value?.testFailNum;
   const testResult = caseInfo.value?.testResult?.value;
   if (testResult === 'PASSED' && testFailNum === 0) {
-    return '是';
+    return t('status.yes');
   }
 
-  return '否';
+  return t('status.no');
 });
 </script>
 

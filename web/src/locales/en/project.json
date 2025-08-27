@@ -116,13 +116,13 @@
         "selectUser": "Select User",
         "selectDepartment": "Select Department",
         "selectGroup": "Select Group",
-        "projectDescription": "Project Description",
+        "description": "Description",
         "descriptionPlaceholder": "Description, maximum 2000 characters"
       },
       "actions": {
         "save": "Save",
         "cancel": "Cancel",
-        "clickToReplaceIcon": "Click to replace icon",
+        "clickToReplaceIcon": "Upload Icon",
         "uploadIcon": "Upload Icon"
       },
       "tabs": {

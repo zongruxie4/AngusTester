@@ -367,7 +367,7 @@ const testers = computed(() => {
                 是否逾期
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
-                {{ _case?.overdue?'是':'否' }}
+                {{ _case?.overdue?t('status.yes'):t('status.no') }}
               </div>
             </div>
 
@@ -418,7 +418,7 @@ const testers = computed(() => {
                 是否评审用例
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
-                {{ _case?.review?'是':'否' }}
+                {{ _case?.review?t('status.yes'):t('status.no') }}
               </div>
             </div>
 

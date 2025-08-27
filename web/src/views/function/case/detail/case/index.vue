@@ -120,7 +120,7 @@ const infoColumns = computed<GridColumns[][]>(() => [
     { label: '版本', dataIndex: 'version' },
     { label: '软件版本', dataIndex: 'softwareVersion' },
     { label: '优先级', dataIndex: 'priority' },
-    { label: '计划外用例', dataIndex: 'unplannedFlag', customRender: ({ text }) => text ? '是' : '否' }
+    { label: '计划外用例', dataIndex: 'unplannedFlag', customRender: ({ text }) => text ? t('status.yes') : t('status.no') }
   ],
   [
     { label: '标签', dataIndex: 'tags' },
@@ -137,14 +137,14 @@ const infoColumns = computed<GridColumns[][]>(() => [
 
 const getOneTestPass = computed(() => {
   if (props.caseDetail?.testNum && Number(props.caseDetail.testNum) > 0) {
-    return props.caseDetail?.testFailNum === '0' && props.caseDetail?.testResult?.value === 'PASSED' ? '是' : '否';
+    return props.caseDetail?.testFailNum === '0' && props.caseDetail?.testResult?.value === 'PASSED' ? t('status.yes') : t('status.no');
   }
   return '--';
 });
 
 const getOneReviewPass = computed(() => {
   if (props.caseDetail?.reviewNum && Number(props.caseDetail.reviewNum) > 0) {
-    return props.caseDetail?.reviewFailNum === '0' && props.caseDetail?.reviewStatus?.value === 'PASSED' ? '是' : '否';
+    return props.caseDetail?.reviewFailNum === '0' && props.caseDetail?.reviewStatus?.value === 'PASSED' ? t('status.yes') : t('status.no');
   }
   return '--';
 });

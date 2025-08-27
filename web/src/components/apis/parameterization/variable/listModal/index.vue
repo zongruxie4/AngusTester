@@ -413,7 +413,7 @@ const columns = [
             </template>
 
             <div v-if="column.dataIndex === 'passwordValue'" class="flex items-center">
-              {{ record.passwordValue ? '是' : '否' }}
+              {{ record.passwordValue ? t('status.yes') : t('status.no') }}
             </div>
           </template>
         </Table>

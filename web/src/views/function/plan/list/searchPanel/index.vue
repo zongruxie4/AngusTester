@@ -46,7 +46,7 @@ const searchPanelOptions = [
     valueKey: 'review',
     type: 'select',
     allowClear: true,
-    options: [{ label: '是', value: true }, { label: '否', value: false }],
+    options: [{ label: t('status.yes'), value: true }, { label: t('status.no'), value: false }],
     placeholder: '是否评审'
   },
   {

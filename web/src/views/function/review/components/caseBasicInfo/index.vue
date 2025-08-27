@@ -38,7 +38,7 @@ const infoColumns = computed<GridColumns[][]>(() => [
     },
     { label: props.caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? '评估故事点' : '评估工时', dataIndex: 'evalWorkload', customRender: ({ text }) => text || '--' },
     { label: props.caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? '实际故事点' : '实际工时', dataIndex: 'actualWorkload', customRender: ({ text }) => text || '--' },
-    { label: '计划外用例', dataIndex: 'unplannedFlag', customRender: ({ text }) => text ? '是' : '否' }
+    { label: '计划外用例', dataIndex: 'unplannedFlag', customRender: ({ text }) => text ? t('status.yes') : t('status.no') }
   ]
 ]);
 

@@ -177,7 +177,7 @@ const pressEnter = async (id: string, index: number, event: { target: { value: s
   }
 
   dataList.value[index] = format({ id: dataList.value[index].id, name: value });
-          notification.success(t('project.projectEdit.tag.updateSuccess'));
+  notification.success(t('project.projectEdit.tag.updateSuccess'));
   editId.value = undefined;
 };
 
@@ -202,7 +202,7 @@ const toDelete = (data: TagItem, index:number) => {
         return;
       }
 
-              notification.success(t('project.projectEdit.tag.deleteSuccess'));
+      notification.success(t('project.projectEdit.tag.deleteSuccess'));
       // 删除列表中该条数据
       dataList.value.splice(index, 1);
       total.value -= 1;
@@ -268,7 +268,7 @@ const showLoadMore = computed(() => {
       <div class="text-3.5 font-medium">{{ t('project.projectEdit.tag.addedTags') }}</div>
       <Hints
         v-if="!props.disabled"
-                  :text="t('project.projectEdit.tag.addTagHint')"
+        :text="t('project.projectEdit.tag.addTagHint')"
         class="flex-1" />
     </div>
 

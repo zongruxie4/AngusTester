@@ -5,7 +5,6 @@ import { useI18n } from 'vue-i18n';
 
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
 
-
 const { t } = useI18n();
 const Projects = defineAsyncComponent(() => import('@/views/project/project/index.vue'));
 const Trash = defineAsyncComponent(() => import('@/views/project/trash/index.vue'));

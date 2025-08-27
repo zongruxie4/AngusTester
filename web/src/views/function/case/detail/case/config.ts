@@ -59,7 +59,7 @@ export const bigReviewInfoColumns = [
     {
       label: '是否开启评审',
       dataIndex: 'review',
-      customRender: ({ text }) => text ? '是' : '否'
+      customRender: ({ text }) => text ? t('status.yes') : t('status.no')
     },
     {
       label: '评审次数',

@@ -14,7 +14,9 @@
     "pending": "Pending",
     "processing": "Processing",
     "completed": "Completed",
-    "cancelled": "Cancelled"
+    "cancelled": "Cancelled",
+    "yes": "Yes",
+    "no": "No"
   },
   "actions": {
     "add": "Add",

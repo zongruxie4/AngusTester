@@ -773,7 +773,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                 class="flex-1/2">
                 <Select
                   v-model:value="formState.missingBugFlag"
-                  :options="[{value: true, label: '是'}, {value: false, label: '否'}]">
+                  :options="[{value: true, label: t('status.yes')}, {value: false, label: t('status.no')}]">
                 </Select>
               </FormItem>
             </div>
