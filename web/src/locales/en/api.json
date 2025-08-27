@@ -1,5 +1,6 @@
 {
   "apis": {
+    "name":"Home",
     "welcome": {
       "title": "Welcome to Angus API!",
       "description": "Here you and your team can complete the following work:",
@@ -91,6 +92,7 @@
     }
   },
   "design": {
+    "name":"Design",
     "home": {
       "introduceTitle": "About Design",
       "introduceContent": "Interface design for OpenAPI specifications, meeting the needs of interface testing and documentation generation. The graphical interface is suitable for users unfamiliar with OpenAPI specifications, while users familiar with OpenAPI specifications are recommended to use Swagger Editor for more efficient design completion.",
@@ -224,6 +226,7 @@
     }
   },
   "server": {
+    "name":"Server",
     "home": {
       "tabTitle": "Servers",
       "newTab": "Add Server",
@@ -301,6 +304,7 @@
     }
   },
   "service": {
+    "name":"Service",
     "home": {
       "addApiTabName": "Add API",
       "authTabName": "Auth",
@@ -1956,6 +1960,7 @@
     }
   },
   "apiShare": {
+    "name":"Share",
     "title": "Share",
     "addShare": "Add Share",
     "shareList": "Share List",
@@ -2039,37 +2044,39 @@
     "introduce": {
       "title": "About Sharing",
       "description": "When you need to integrate interfaces with external partners, customers, or other teams, you can use the \"Share\" feature to pass interface information to them, simplifying the communication process. Sharing includes detailed interface description information, including interface servers, authentication, interface addresses, request formats, and response formats, ensuring everyone has a consistent understanding of the interface."
+    }
+  },
+  "apiTrash": {
+    "name":"Trash",
+    "title": "Trash",
+    "searchPlaceholder": "Please enter search keywords",
+    "tips": "Only administrators and deleters can restore or permanently delete trash data.",
+    "buttons": {
+      "recoverAll": "Restore All"
     },
-    "apiTrash": {
-      "title": "Trash",
-      "searchPlaceholder": "Please enter search keywords",
-      "tips": "Only administrators and deleters can restore or permanently delete trash data.",
-      "buttons": {
-        "recoverAll": "Restore All"
+    "tabs": {
+      "service": "Service",
+      "api": "API"
+    },
+    "table": {
+      "columns": {
+        "name": "Name",
+        "createdBy": "Created By",
+        "deletedBy": "Deleted By",
+        "deletedDate": "Deleted Date",
+        "action": "Action"
       },
-      "tabs": {
-        "service": "Service",
-        "api": "API"
-      },
-      "table": {
-        "columns": {
-          "name": "Name",
-          "createdBy": "Created By",
-          "deletedBy": "Deleted By",
-          "deletedDate": "Deleted Date",
-          "action": "Action"
-        },
-        "actions": {
-          "recover": "Restore"
-        }
-      },
-      "messages": {
-        "recoverAllSuccess": "All restored successfully",
-        "recoverSuccess": "Restored successfully"
+      "actions": {
+        "recover": "Restore"
       }
+    },
+    "messages": {
+      "recoverAllSuccess": "All restored successfully",
+      "recoverSuccess": "Restored successfully"
     }
   },
   "appConfig": {
+    "name":"Application Configuration",
     "title": "Application Configuration",
     "labels": {
       "name": "Name",
