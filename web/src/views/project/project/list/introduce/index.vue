@@ -1,7 +1,48 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
+import FlowPng from '@/views/project/project/list/introduce/images/step.png';
+import { Icon } from '@xcan-angus/vue-ui';
 
 const { t } = useI18n();
+
+const processData = [
+  {
+    type: 'step',
+    text: t('project.addProjectStep.text'),
+    title: t('project.addProjectStep.title'),
+    icon: 'icon-chuangjianxiangmu'
+  },
+  {
+    type: 'icon',
+    icon: 'icon-zhankaijiantou1'
+  },
+  {
+    type: 'step',
+    text: t('project.planIterationAndTest.text'),
+    title: t('project.planIterationAndTest.title'),
+    icon: 'icon-jihua1'
+  },
+  {
+    type: 'icon',
+    icon: 'icon-zhankaijiantou1'
+  },
+  {
+    type: 'step',
+    text: t('project.developAndTest.text'),
+    title: t('project.developAndTest.title'),
+    icon: 'icon-ceshirenwu'
+  },
+  {
+    type: 'icon',
+    icon: 'icon-zhankaijiantou1'
+  },
+  {
+    type: 'step',
+    text: t('project.reportResults.text'),
+    title: t('project.reportResults.title'),
+    icon: 'icon-dingdanmokuai'
+  }
+];
 </script>
 
 <template>
@@ -11,56 +52,15 @@ const { t } = useI18n();
       <div>{{ t('project.projectDescription') }}</div>
     </div>
 
-    <div class="space-y-6">
-      <div class="flex items-start justify-between">
-        <div class="flex items-start space-x-3 w-1/3">
-          <img src="./images/1.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
-          <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('project.manageAndOrganizeWork') }}</div>
-            <div>{{ t('project.manageAndOrganizeWorkDesc') }}</div>
-          </div>
+    <div class="flex items-center">
+      <div v-for="(item, idx) in processData" :key="idx">
+        <div v-if="item.type === 'step'" class="p-4 border rounded border-blue-border bg-blue-bg4">
+          <div class="font-semibold mb-2 flex items-center space-x-2"><Icon :icon="item.icon" class="text-4" /><span>{{ item.title }}</span></div>
+          <div>{{ item.text }}</div>
         </div>
-
-        <div class="flex items-start space-x-3 w-1/3">
-          <img src="./images/2.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
-          <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('project.promoteTeamCollaboration') }}</div>
-            <div>{{ t('project.promoteTeamCollaborationDesc') }}</div>
-          </div>
-        </div>
-
-        <div class="flex items-start space-x-3 w-1/3">
-          <img src="./images/3.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
-          <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('project.trackAndReportProgress') }}</div>
-            <div>{{ t('project.trackAndReportProgressDesc') }}</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="flex items-start justify-between">
-        <div class="flex items-start space-x-3 w-1/3">
-          <img src="./images/4.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
-          <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('project.improveWorkTransparency') }}</div>
-            <div>{{ t('project.improveWorkTransparencyDesc') }}</div>
-          </div>
-        </div>
-
-        <div class="flex items-start space-x-3 w-1/3">
-          <img src="./images/5.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
-          <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('project.projectTeamInfoSharing') }}</div>
-            <div>{{ t('project.projectTeamInfoSharingDesc') }}</div>
-          </div>
-        </div>
-
-        <div class="flex items-start space-x-3 w-1/3">
-          <img src="./images/6.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
-          <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('project.riskAndIssueManagement') }}</div>
-            <div>{{ t('project.riskAndIssueManagementDesc') }}</div>
-          </div>
+        <div v-else class="w-20 text-center flex justify-center">
+          <!-- <Icon :icon="item.icon" class="text-10 text-blue-tips" /> -->
+          <img :src="FlowPng" class="w-12" />
         </div>
       </div>
     </div>

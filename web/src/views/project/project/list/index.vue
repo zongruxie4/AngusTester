@@ -57,9 +57,8 @@ type Project = {
   };
 }
 
-const Summary = defineAsyncComponent(() => import('@/views/project/project/list/introduce/index.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/project/project/list/introduce/index.vue'));
 const AddModal = defineAsyncComponent(() => import('@/views/project/add/index.vue'));
-const Process = defineAsyncComponent(() => import('@/views/project/project/list/process/index.vue'));
 const RichText = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
 
 const isAdmin = inject('isAdmin', ref(false));
@@ -284,8 +283,7 @@ defineExpose({
 </script>
 <template>
   <div class="p-5 overflow-y-auto text-3 flex flex-col h-full">
-    <Summary class="mb-7" />
-    <Process class="mb-7 mt-1" />
+    <Introduce class="mb-7" />
     <div class="flex space-x-6 min-h-0 flex-1">
       <div class="flex-1 space-y-2 mr-8 min-w-0">
         <div class="text-3.5 font-semibold mb-1">{{ t('project.addedProjects') }}</div>
