@@ -7,11 +7,11 @@
     "deleteProject": "Delete Project",
     "projectList": "Project List",
     "addedProjects": "Added Projects",
-    "projectDescription": "Projects are the basic units for managing and organizing R&D activities, workflows, and various resources. They provide teams with a centralized way to plan, track, report, and accept work progress. The main benefits are as follows:",
+    "projectDescription": "Projects are fundamental units for organizing R&D activities, workflows, and resources. They provide teams with centralized planning, tracking, reporting, and acceptance capabilities. Key benefits include:",
     "confirmDelete": "Are you sure you want to delete project 【{name}】?",
     "deleteSuccess": "Project deleted successfully",
     "searchPlaceholder": "Enter search keywords",
-    "adminHint": "Only administrators, creators, and responsible persons can modify and delete projects.",
+    "adminHint": "Only administrators, creators, and owners can modify or delete projects.",
     "sort": "Sort",
     "refresh": "Refresh",
     "noDescription": "No description~",
@@ -21,51 +21,51 @@
     "user": "User",
     "department": "Department",
     "group": "Group",
-    "modifyTime": "Modify Time",
+    "modifyTime": "Modified Time",
     "edit": "Edit",
     "delete": "Delete",
     "myActivity": "My Activity",
     "allActivity": "All Activity",
-    "agileProjectManagement": "Agile Project Management",
+    "agileProjectManagement": "Agile Project",
     "sortByAddTime": "Sort by Add Time",
     "sortByCreator": "Sort by Creator",
-    "configSoftwareModule": "Configure Software Module",
-    "configManagementSoftwareVersion": "Configure Management Software Version",
-    "configDataTag": "Configure Data Tag",
+    "configSoftwareModule": "Configure Module",
+    "configManagementSoftwareVersion": "Configure Version",
+    "configDataTag": "Configure Tags",
     "aboutProject": "About Project",
-    "manageAndOrganizeWork": "Manage and Organize Work",
-    "manageAndOrganizeWorkDesc": "By adding projects, teams can choose different project templates and divide work into multiple phases and subtasks to meet structured management requirements.",
-    "promoteTeamCollaboration": "Promote Team Collaboration",
-    "promoteTeamCollaborationDesc": "Projects provide team members with a centralized management platform where all related resources, tasks, documents, and communications can be conducted, facilitating collaboration and communication.",
-    "trackAndReportProgress": "Track and Report Progress",
-    "trackAndReportProgressDesc": "Through projects, teams can track the progress of each task in real-time, understand current work status and remaining workload, and generate various reports based on projects, such as resource statistics and efficiency analysis.",
-    "improveWorkTransparency": "Improve Work Transparency",
-    "improveWorkTransparencyDesc": "Provides rich visualization tools such as kanban boards and reports to help teams and management clearly understand project team members' progress and bottlenecks.",
-    "projectTeamInfoSharing": "Project Team Information Sharing",
-    "projectTeamInfoSharingDesc": "All project-related information is centralized in one place, where team members and stakeholders can access it anytime, ensuring information visibility.",
-    "riskAndIssueManagement": "Risk and Issue Management",
-    "riskAndIssueManagementDesc": "Helps teams identify and track potential risks and issues, develop corresponding response strategies, track and resolve encountered problems, ensuring smooth project progress.",
+    "manageAndOrganizeWork": "Work Management & Organization",
+    "manageAndOrganizeWorkDesc": "Teams can choose project templates to structure work into phases and subtasks, enabling systematic management approaches.",
+    "promoteTeamCollaboration": "Enhanced Team Collaboration",
+    "promoteTeamCollaborationDesc": "Projects serve as centralized platforms where teams can manage resources, tasks, documents, and communications, streamlining collaboration.",
+    "trackAndReportProgress": "Progress Tracking & Reporting",
+    "trackAndReportProgressDesc": "Real-time task progress monitoring helps teams understand current status and workload. Generate comprehensive reports for resource analysis and efficiency insights.",
+    "improveWorkTransparency": "Improved Work Visibility",
+    "improveWorkTransparencyDesc": "Visual tools like kanban boards and reports provide clear insights into team progress and identify bottlenecks for management.",
+    "projectTeamInfoSharing": "Centralized Information Access",
+    "projectTeamInfoSharingDesc": "All project information is consolidated in one location, ensuring stakeholders have immediate access and maintaining information transparency.",
+    "riskAndIssueManagement": "Risk & Issue Management",
+    "riskAndIssueManagementDesc": "Identify and track potential risks, develop response strategies, and resolve issues to ensure smooth project execution.",
     "projectProcess": "Project Process",
     "addProjectStep": {
       "title": "Add Project",
-      "text": "Establish a basic unit for managing and organizing development and testing activities. Provides teams with a centralized way to plan, track, report, and accept work progress."
+      "text": "Create the foundation for managing development and testing activities. Establish centralized planning, tracking, reporting, and acceptance workflows."
     },
     "planIterationAndTest": {
-      "title": "Plan Iteration and Test",
-      "text": "Clarify the responsible person, time, goals, acceptance criteria, etc. for development and testing activities. Help teams carry out activities in an organized manner, ensuring software product quality and reliability."
+      "title": "Plan Sprint & Testing",
+      "text": "Define responsibilities, timelines, goals, and acceptance criteria. Enable organized execution while ensuring software quality and reliability."
     },
     "developAndTest": {
-      "title": "Develop and Test Activities",
-      "text": "Carry out development and testing activities according to the plan. Continuously track and manage work tasks, defects, requirements, user stories, tests, and other work items in the project."
+      "title": "Execute Development & Testing",
+      "text": "Follow plans to conduct development and testing activities. Continuously track tasks, defects, requirements, user stories, and test items."
     },
     "reportResults": {
       "title": "Report Results",
-      "text": "Summarize all aspects of R&D activities, including project progress, efficiency analysis, data assets, test results, etc. Provide strong support for successful project delivery."
+      "text": "Summarize R&D outcomes including progress, efficiency metrics, data assets, and test results to support successful project delivery."
     },
     "moreButton": {
-      "module": "Configure Software Module",
-      "version": "Configure Management Software Version",
-      "tag": "Configure Data Tag"
+      "module": "Configure Module",
+      "version": "Configure Version",
+      "tag": "Configure Tags"
     },
     "sortMenu": {
       "createdDate": "Sort by Add Time",
@@ -74,22 +74,22 @@
     "projectEdit": {
       "projectTypeTip": {
         "agile": {
-          "features": "Core Features: Scrum Framework Support • Incremental Delivery • User-Driven Requirements.",
-          "scenarios": "Applicable Scenarios: Agile development teams for rapid product iteration."
+          "features": "Core Features: Scrum Framework • Incremental Delivery • User-Driven Requirements",
+          "scenarios": "Ideal for: Agile development teams requiring rapid sprint"
         },
         "general": {
-          "features": "Core Features: Work Breakdown Structure • Progress Management • Resource Dependency Visualization.",
-          "scenarios": "Applicable Scenarios: Traditional R&D teams for cross-departmental collaboration projects."
+          "features": "Core Features: Work Breakdown • Progress Management • Dependency Visualization",
+          "scenarios": "Ideal for: Traditional R&D teams with cross-departmental projects"
         },
         "testing": {
-          "features": "Core Features: Test Plan Customization • Multi-type Testing • Defect Tracking Loop.",
-          "scenarios": "Applicable Scenarios: Quality assurance teams for specialized testing projects."
+          "features": "Core Features: Custom Test Plans • Multi-type Testing • Defect Tracking",
+          "scenarios": "Ideal for: QA teams managing specialized testing projects"
         }
       },
       "projectTypeName": {
-        "agile": "Agile Project Management",
-        "general": "General Project Management",
-        "testing": "Testing Project Management"
+        "agile": "Agile Project",
+        "general": "General Project",
+        "testing": "Testing Project"
       },
       "validation": {
         "maxCharacters": "Cannot exceed 2000 characters"
@@ -99,20 +99,20 @@
         "createSuccess": "Project created successfully"
       },
       "form": {
-        "projectName": "Project Name",
+        "projectName": "Name",
         "projectNamePlaceholder": "Project name, maximum 100 characters",
-        "timePlan": "Time Plan",
-        "timePlanDescription": "Time constraints help ensure projects are completed within agreed timeframes, which is crucial for meeting customer expectations and contractual obligations.",
+        "timePlan": "Time",
+        "timePlanDescription": "Time constraints ensure project completion within agreed deadlines, meeting customer expectations and contractual requirements.",
         "owner": "Owner",
         "ownerPlaceholder": "Please select project owner",
-        "ownerDescription": "By setting an owner for the project, responsibilities and rights can be clarified, better promoting project completion and progress control, such as: problem solving, progress advancement, team member collaboration, etc.",
+        "ownerDescription": "Project owners clarify responsibilities and rights, enabling better progress control, problem resolution, and team collaboration.",
         "importExample": "Import Example",
-        "importExampleDescription": "Import main business example data for quickly familiarizing with AngusTester business and feature demonstration.",
-        "projectMembers": "Project Members",
+        "importExampleDescription": "Import sample business data to quickly familiarize with AngusTester features and functionality.",
+        "projectMembers": "Members",
         "user": "User",
         "department": "Department",
         "group": "Group",
-        "membersDescription": "Clarify the participants in the project, project members will automatically be assigned data permissions under the project, facilitating team collaboration.",
+        "membersDescription": "Define project participants who will automatically receive project data permissions for seamless team collaboration.",
         "selectUser": "Select User",
         "selectDepartment": "Select Department",
         "selectGroup": "Select Group",
@@ -134,13 +134,13 @@
       "module": {
         "title": "Software Modules",
         "about": "About Software Modules",
-        "aboutDescription": "Software modules are used to define and organize relatively independent functional sets in software systems. Through modules, tasks and functional use cases can be divided, thereby improving maintainability.",
+        "aboutDescription": "Software modules organize independent functional sets within systems, enabling task division and improved maintainability.",
         "addedModules": "Added Software Modules",
-        "noModules": "You haven't added any modules yet, immediately",
+        "noModules": "No modules added yet. ",
         "addModule": "Add Module",
         "noModulesDescription": "You haven't added any modules yet.",
         "moduleNamePlaceholder": "Please enter module name",
-        "addModuleHint": "Press Enter or lose focus to save adding module, double-click existing module to enter edit mode",
+        "addModuleHint": "Press Enter or lose focus to save. Double-click existing modules to edit.",
         "refresh": "Refresh",
         "cancel": "Cancel",
         "newSubModule": "New Sub-module",
@@ -162,10 +162,10 @@
       "tag": {
         "title": "Data Tags",
         "about": "About Data Tags",
-        "aboutDescription": "Data tags can facilitate categorization of tasks, functional use cases, etc., improve search and management efficiency, and promote efficient team collaboration. Examples: boundary testing, business process testing, error handling, input validation, output validation, exception condition testing, security testing, compatibility testing, etc.",
+        "aboutDescription": "Data tags categorize tasks and use cases, improving search efficiency and team collaboration. Examples: boundary testing, business process testing, error handling, input validation, security testing, compatibility testing.",
         "addedTags": "Added Data Tags",
-        "addTagHint": "Press Enter or lose focus to save adding tag, double-click existing tag to enter edit mode.",
-        "noTags": "You haven't added any tags yet, immediately",
+        "addTagHint": "Press Enter or lose focus to save. Double-click existing tags to edit.",
+        "noTags": "No tags added yet. ",
         "addTag": "Add Tag",
         "noTagsDescription": "You haven't added any tags yet.",
         "tagNamePlaceholder": "Please enter tag name",
@@ -182,22 +182,22 @@
     "projectDetail": {
       "projectTypeTip": {
         "agile": {
-          "features": "Core Features: Scrum Framework Support • Incremental Delivery • User-Driven Requirements.",
-          "scenarios": "Applicable Scenarios: Agile development teams for rapid product iteration."
+          "features": "Core Features: Scrum Framework • Incremental Delivery • User-Driven Requirements",
+          "scenarios": "Ideal for: Agile development teams requiring rapid sprint"
         },
         "general": {
-          "features": "Core Features: Work Breakdown Structure • Progress Management • Resource Dependency Visualization.",
-          "scenarios": "Applicable Scenarios: Traditional R&D teams for cross-departmental collaboration projects."
+          "features": "Core Features: Work Breakdown • Progress Management • Dependency Visualization",
+          "scenarios": "Ideal for: Traditional R&D teams with cross-departmental projects"
         },
         "testing": {
-          "features": "Core Features: Test Plan Customization • Multi-type Testing • Defect Tracking Loop.",
-          "scenarios": "Applicable Scenarios: Quality assurance teams for specialized testing projects."
+          "features": "Core Features: Custom Test Plans • Multi-type Testing • Defect Tracking",
+          "scenarios": "Ideal for: QA teams managing specialized testing projects"
         }
       },
       "projectTypeName": {
-        "agile": "Agile Project Management",
-        "general": "General Project Management",
-        "testing": "Testing Project Management"
+        "agile": "Agile Project",
+        "general": "General Project",
+        "testing": "Testing Project"
       },
       "messages": {
         "updateSuccess": "Project updated successfully",
@@ -224,22 +224,22 @@
     "projectAddModal": {
       "projectTypeTip": {
         "agile": {
-          "features": "Core Features: Scrum Framework Support • Incremental Delivery • User-Driven Requirements.",
-          "scenarios": "Applicable Scenarios: Agile development teams for rapid product iteration."
+          "features": "Core Features: Scrum Framework • Incremental Delivery • User-Driven Requirements",
+          "scenarios": "Ideal for: Agile development teams requiring rapid sprint"
         },
         "general": {
-          "features": "Core Features: Work Breakdown Structure • Progress Management • Resource Dependency Visualization.",
-          "scenarios": "Applicable Scenarios: Traditional R&D teams for cross-departmental collaboration projects."
+          "features": "Core Features: Work Breakdown • Progress Management • Dependency Visualization",
+          "scenarios": "Ideal for: Traditional R&D teams with cross-departmental projects"
         },
         "testing": {
-          "features": "Core Features: Test Plan Customization • Multi-type Testing • Defect Tracking Loop.",
-          "scenarios": "Applicable Scenarios: Quality assurance teams for specialized testing projects."
+          "features": "Core Features: Custom Test Plans • Multi-type Testing • Defect Tracking",
+          "scenarios": "Ideal for: QA teams managing specialized testing projects"
         }
       },
       "projectTypeName": {
-        "agile": "Agile Project Management",
-        "general": "General Project Management",
-        "testing": "Testing Project Management"
+        "agile": "Agile Project",
+        "general": "General Project",
+        "testing": "Testing Project"
       },
       "validation": {
         "maxCharacters": "Cannot exceed 2000 characters",
@@ -259,19 +259,19 @@
         "projectNamePlaceholder": "Project name, maximum 100 characters",
         "timePlan": "Time Plan",
         "time": "Time",
-        "timeDescription": "Time constraints help ensure projects are completed within agreed timeframes, which is crucial for meeting customer expectations and contractual obligations.",
+        "timeDescription": "Time constraints ensure project completion within agreed deadlines, meeting customer expectations and contractual requirements.",
         "owner": "Owner",
-        "ownerDescription": "By setting an owner for the project, responsibilities and rights can be clarified, better promoting project completion and progress control, such as: problem solving, progress promotion, team member collaboration, etc.",
+        "ownerDescription": "Project owners clarify responsibilities and rights, enabling better progress control, problem resolution, and team collaboration.",
         "ownerPlaceholder": "Please select project owner",
         "importExample": "Import Example",
-        "importExampleDescription": "Import main business example data for quickly familiarizing with AngusTester business and feature demonstration.",
+        "importExampleDescription": "Import sample business data to quickly familiarize with AngusTester features and functionality.",
         "yes": "Yes",
         "no": "No",
         "members": "Members",
         "user": "User",
         "department": "Department",
         "group": "Group",
-        "membersDescription": "Clearly define project participants, project members will automatically be assigned project data permissions for convenient team collaboration.",
+        "membersDescription": "Define project participants who will automatically receive project data permissions for seamless team collaboration.",
         "selectUser": "Select User",
         "selectDepartment": "Select Department",
         "selectGroup": "Select Group",
@@ -294,7 +294,7 @@
       "activityContent": "Activity Content"
     },
     "hints": {
-      "maxResourceActivities": "Each resource only saves the latest {maxResource} activities, exceeding {maxResource} will be automatically deleted."
+      "maxResourceActivities": "Each resource only saves the latest {maxResource} activities. Older entries are automatically removed."
     },
     "chart": {
       "activity": "Activity",
@@ -304,16 +304,16 @@
       "total": "Total",
       "today": "Today",
       "last7Days": "Last 7 Days",
-      "last1Month": "Last 1 Month",
-      "last1Year": "Last 1 Year"
+      "last1Month": "Last Month",
+      "last1Year": "Last Year"
     },
     "searchPanel": {
       "dropdownMenu": {
         "fileExtractDataset": "File Extract Dataset",
-        "jdbcExtractDataset": "Jdbc Extract Dataset"
+        "jdbcExtractDataset": "JDBC Extract Dataset"
       },
       "searchOptions": {
-        "queryActivityDetail": "Query Activity Detail",
+        "queryActivityDetail": "Query Activity Details",
         "selectActivityResource": "Select Activity Resource",
         "selectProject": "Select Project",
         "selectOperator": "Select Operator",
@@ -323,9 +323,9 @@
       "quickQuery": {
         "all": "All",
         "myActivity": "My Activity",
-        "last1Day": "Last 1 Day",
+        "last1Day": "Last Day",
         "last3Days": "Last 3 Days",
-        "last7Days": "Last 7 Days"
+        "last7Days": "Last Week"
       },
       "ui": {
         "quickQuery": "Quick Query",
