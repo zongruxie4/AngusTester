@@ -1,0 +1,46 @@
+{
+  "functionAnalysis": {
+    "list": {
+      "title": "已添加的分析",
+      "addAnalysis": "添加分析",
+      "deleteConfirm": "确认删除分析【{name}】吗？",
+      "deleteSuccess": "删除成功",
+      "updateSnapshotConfirm": "确认更新分析【{name}】的快照内容吗？",
+      "updateSuccess": "更新成功",
+      "realTime": "实时",
+      "snapshot": "快照",
+      "createdBy": "创建于",
+      "notCreated": "还未创建，点击创建",
+      "create": "创建"
+    },
+    "introduce": {
+      "title": "关于分析",
+      "description": "用于提供测试实时数据分析、促进数据驱动的决策，确保信息透明，增强团队协作和问题追踪，提升项目研发质量保证水平。AngusTester提供默认分析模版，如燃尽图、积压任务、风险评估等，帮助用户快速查看仪表板和关键性能指标（KPI），同时用户也可以根据业务关注点自定义分析仪表板。"
+    },
+    "templateSelectList": {
+      "allAnalysis": "全部分析"
+    },
+    "searchPanel": {
+      "quickQuery": "快速查询",
+      "all": "所有",
+      "myAdded": "我添加的",
+      "myModified": "我修改的",
+      "lastDay": "近1天",
+      "lastThreeDays": "近3天",
+      "lastWeek": "近7天",
+      "addAnalysis": "添加分析",
+      "sort": "排序",
+      "refresh": "刷新",
+      "searchOptions": {
+        "namePlaceholder": "查询名称、描述",
+        "createdByPlaceholder": "选择添加人",
+        "createdDatePlaceholder": ["添加时间从", "添加时间到"]
+      },
+      "sortOptions": {
+        "name": "名称",
+        "createdByName": "按添加人排序",
+        "createdDate": "按添加时间排序"
+      }
+    }
+  }
+}
