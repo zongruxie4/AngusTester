@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { computed, reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon, Modal, notification, Toggle } from '@xcan-angus/vue-ui';
 import { apis, indicator, services } from 'src/api/tester';
 import { CheckboxGroup } from 'ant-design-vue';
 import TestForm from './testForm.vue';
+
+const { t } = useI18n();
 
 interface Props {
   id: string;
@@ -24,9 +27,9 @@ const stabilityRef = ref();
 const funcRef = ref();
 const checked = ref<string[]>(['perf', 'stability', 'func']);
 const testTypeOpt = [
-  { value: 'func', label: '功能测试' },
-  { value: 'perf', label: '性能测试' },
-  { value: 'stability', label: '稳定性测试' }
+  { value: 'func', label: t('commonComp.genTestScriptModal.functionalTest') },
+  { value: 'perf', label: t('commonComp.genTestScriptModal.performanceTest') },
+  { value: 'stability', label: t('commonComp.genTestScriptModal.stabilityTest') }
 ];
 
 const perfTestData = reactive({
@@ -80,7 +83,7 @@ const loadTestIndicator = async () => {
 };
 
 const getTitle = computed(() => {
-  return '生成测试脚本';
+  return t('commonComp.genTestScriptModal.title');
 });
 
 const submitting = ref(false);
@@ -139,7 +142,7 @@ watch(() => props.visible, newValue => {
     @cancel="cancel">
     <div class="flex space-x-2">
       <Icon icon="icon-tishi1" class="text-blue-icon text-3.5" />
-      <span class="flex-1 text-theme-sub-content">注意：如果已存在对应类型测试脚本时会自动忽略，如果需要基于当前接口参数重新生成新的测试脚本，请先删除对应测试类型脚本。<span class="text-rule">接口每种测试类型脚本只允许存在一个。</span></span>
+      <span class="flex-1 text-theme-sub-content">{{ t('commonComp.genTestScriptModal.note') }}<span class="text-rule">{{ t('commonComp.genTestScriptModal.noteHighlight') }}</span></span>
     </div>
     <CheckboxGroup
       v-model:value="checked"
@@ -151,7 +154,7 @@ watch(() => props.visible, newValue => {
         key="func"
         v-model:open="funcOpen"
         class="text-3"
-        title="功能测试脚本配置">
+        :title="t('commonComp.genTestScriptModal.functionalTestConfig')">
         <TestForm
           key="func"
           ref="funcRef"
@@ -166,7 +169,7 @@ watch(() => props.visible, newValue => {
         key="perf"
         v-model:open="perfOpen"
         class="!text-3"
-        title="性能测试脚本配置">
+        :title="t('commonComp.genTestScriptModal.performanceTestConfig')">
         <TestForm
           key="perf"
           ref="perfRef"
@@ -181,7 +184,7 @@ watch(() => props.visible, newValue => {
         key="stability"
         v-model:open="stabilityOpen"
         class="text-3"
-        title="稳定性测试脚本配置">
+        :title="t('commonComp.genTestScriptModal.stabilityTestConfig')">
         <TestForm
           key="stability"
           ref="stabilityRef"

@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Colon, Modal, notification } from '@xcan-angus/vue-ui';
 import { RadioGroup } from 'ant-design-vue';
 import { download, routerUtils, ApiType, ApiUrlBuilder } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 interface Props {
   visible: boolean;
@@ -58,10 +61,10 @@ const handleOk = async () => {
 };
 
 const formatTypes = [{
-  label: 'JSON',
+  label: t('commonComp.exportScriptModal.json'),
   value: 'JSON'
 }, {
-  label: 'YAML',
+  label: t('commonComp.exportScriptModal.yaml'),
   value: 'YAML'
 }];
 </script>
@@ -69,11 +72,11 @@ const formatTypes = [{
   <Modal
     :visible="props.visible"
     :confirmLoading="exportLoading"
-    title="导出脚本"
+    :title="t('commonComp.exportScriptModal.title')"
     @cancel="handleCancel"
     @ok="handleOk">
     <div class="mt-1.5">
-      <span class="mr-3.5">格式
+      <span class="mr-3.5">{{ t('commonComp.exportScriptModal.format') }}
         <Colon class="ml-1" />
       </span>
       <RadioGroup v-model:value="format" :options="formatTypes" />

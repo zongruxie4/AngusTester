@@ -212,6 +212,66 @@
           "reviewStatus": "Review Status",
           "testResult": "Test Result",
           "tester": "Tester"
+        },
+        "moduleTreeSelector": {
+          "title": "Cases",
+          "noModule": "No Module",
+          "allCases": "All",
+          "searchModule": "Search Module",
+          "addModule": "Add Module",
+          "editModule": "Edit Module",
+          "deleteModule": "Delete Module",
+          "moveModule": "Move Module",
+          "moduleName": "Module Name",
+          "inputModuleName": "Please enter module name",
+          "cancel": "Cancel",
+          "confirmDelete": "Are you sure you want to delete module 【{name}】?",
+          "updateSuccess": "Update successful",
+          "deleteSuccess": "Module deleted successfully",
+          "moveSuccess": "Move successful"
+        },
+        "delScriptModal": {
+          "title": "Delete Test Script",
+          "scriptType": "Script Type",
+          "functionalTest": "Functional Test",
+          "performanceTest": "Performance Test",
+          "stabilityTest": "Stability Test",
+          "selectScriptType": "Please select the script type to delete",
+          "deleteSuccess": "Test script deleted successfully"
+        },
+        "exportScriptModal": {
+          "title": "Export Script",
+          "format": "Format",
+          "json": "JSON",
+          "yaml": "YAML"
+        },
+        "genTestScriptModal": {
+          "title": "Generate Test Script",
+          "functionalTest": "Functional Test",
+          "performanceTest": "Performance Test",
+          "stabilityTest": "Stability Test",
+          "functionalTestConfig": "Functional Test Script Configuration",
+          "performanceTestConfig": "Performance Test Script Configuration",
+          "stabilityTestConfig": "Stability Test Script Configuration",
+          "note": "Note: If a test script of the corresponding type already exists, it will be automatically ignored. If you need to regenerate a new test script based on current interface parameters, please delete the corresponding test type script first.",
+          "noteHighlight": "Only one script of each test type is allowed per interface.",
+          "generateSuccess": "Test script generated successfully, please check details in 'Scripts'",
+          "updateSuccess": "Test script updated successfully, please check details in 'Scripts'",
+          "testForm": {
+            "concurrentThreads": "Concurrent Threads",
+            "iterations": "Iterations",
+            "executionTime": "Execution Time",
+            "rampUpThreads": "Ramp-up Threads",
+            "rampUpDuration": "Ramp-up Duration",
+            "rampUpTooltip": "Used to increase concurrent threads during testing to increase system pressure. Through gradual pressure increase, you can observe system performance and stability under different pressures.",
+            "ignoreAssertions": "Ignore Assertions",
+            "ignoreAssertionsTooltip": "If not ignored, assertion failures will be treated as sampling errors.",
+            "updateTestResult": "Update Test Result",
+            "updateTestResultTooltip": "Whether to update test results to associated resources (API, test cases, or scenarios).",
+            "priority": "Priority",
+            "authControl": "Authorization Control",
+            "authControlTooltip": "Whether the generated script is subject to permission control. When under permission control, only the creator is visible by default and has full permissions. Other users need to manually authorize through 'Scripts' -> 'Authorization'. When not under permission control, all users are visible and can operate."
+          }
         }
       }
     }
