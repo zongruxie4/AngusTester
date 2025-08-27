@@ -1,10 +1,13 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { DropdownGroup, HttpMethodText, Icon, IconText, Input, Select, Table } from '@xcan-angus/vue-ui';
 import { Button, Tree } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { services, apis } from '@/api/tester';
+
+const { t } = useI18n();
 
 interface Props {
   visible: boolean;
@@ -115,43 +118,43 @@ const groupedKey = ref('');
 const groups = [
   {
     key: '',
-    name: '不分组'
+    name: t('commonComp.apis.selectCaseModal.noGroup')
   },
   {
     key: 'createdBy',
-    name: '按添加人分组'
+    name: t('commonComp.apis.selectCaseModal.groupByCreator')
   },
   {
     key: 'method',
-    name: '按请求方法分组'
+    name: t('commonComp.apis.selectCaseModal.groupByMethod')
   },
   {
     key: 'ownerId',
-    name: '按负责人分组'
+    name: t('commonComp.apis.selectCaseModal.groupByOwner')
   },
   {
     key: 'tag',
-    name: '按标签分组'
+    name: t('commonComp.apis.selectCaseModal.groupByTag')
   }
 ];
 
 const cloumns = [
   {
-    title: '用例名称',
+    title: t('commonComp.apis.selectCaseModal.caseName'),
     dataIndex: 'name'
   },
   {
-    title: '方法',
+    title: t('commonComp.apis.selectCaseModal.method'),
     dataIndex: 'method',
     width: 100,
     customRender: ({ text }) => text?.message
   },
   {
-    title: '路径',
+    title: t('commonComp.apis.selectCaseModal.path'),
     dataIndex: 'endpoint'
   },
   {
-    title: '用例类型',
+    title: t('commonComp.apis.selectCaseModal.caseType'),
     dataIndex: 'type',
     width: 100,
     customRender: ({ text }) => text?.message
@@ -279,7 +282,7 @@ defineExpose({
           :fieldNames="{ label: 'name', value: 'id'}"
           :defaultActiveFirstOption="true"
           :lazy="false"
-          placeholder="请选择服务"
+          :placeholder="t('commonComp.apis.selectCaseModal.selectService')"
           showSearch
           class="flex-1"
           @change="selectService">
@@ -297,7 +300,7 @@ defineExpose({
           v-model:value="apisKeywords"
           class="flex-1/3"
           allowClear
-          placeholder="查询接口"
+          :placeholder="t('commonComp.apis.selectCaseModal.searchApi')"
           @change="handleApisKeywordsChange" />
         <DropdownGroup
           v-model:activeKey="groupedKey"
@@ -307,7 +310,7 @@ defineExpose({
             size="small">
             <div class="flex items-center space-x-1 text-text-content hover:text-text-link-hover">
               <Icon icon="icon-fenzu" />
-              <span>分组</span>
+              <span>{{ t('commonComp.apis.selectCaseModal.group') }}</span>
             </div>
           </Button>
         </DropdownGroup>
@@ -344,7 +347,7 @@ defineExpose({
       <div class="flex mb-1 justify-between">
         <Input
           v-model:value="caseKeywords"
-          placeholder="搜索"
+          :placeholder="t('commonComp.apis.selectCaseModal.search')"
           allowClear
           class="w-50"
           @change="handleChangeCaseKeywordChange" />

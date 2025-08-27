@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon, Input } from '@xcan-angus/vue-ui';
 import { Dropdown, Menu, MenuItem } from 'ant-design-vue';
+
+const { t } = useI18n();
 
 interface Props {
   options: string[];
@@ -43,7 +46,7 @@ watch(() => props.value, newValue => {
   <Dropdown overlayClassName="border rounded" :overlayStyle="{maxHeight: '300px', overflow: 'auto'}">
     <Input
       v-model:value="inputValue"
-      placeholder="请输入调试值"
+      :placeholder="t('commonComp.apis.editableSelector.placeholder')"
       v-bind="inputProps"
       size="small">
       <template #suffix>

@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Arrow, AsyncComponent, Colon, Icon, Spin, Tooltip } from '@xcan-angus/vue-ui';
 import { Button, Collapse, CollapsePanel, Popconfirm, Radio, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
 import { EnumMessage, ActionOnEOF, SharingMode, enumUtils, TESTER, http } from '@xcan-angus/infra';
 import { paramTarget } from '@/api/tester';
 
 import { DataSetItem } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -195,8 +198,8 @@ const selectedNames = computed(() => {
 });
 
 const hintTextMap = {
-  FILE: '从文件中读取数据集，每个数据集最大允许创建200个参数，每个参数文件最大不超过500MB，总行数不超过100万行。',
-  JDBC: '每次执行测试前从数据库中查询结果中提取一个值作为数据集值。'
+  FILE: t('commonComp.apis.parameterizationDataset.fileHint'),
+  JDBC: t('commonComp.apis.parameterizationDataset.jdbcHint')
 };
 </script>
 
@@ -204,17 +207,17 @@ const hintTextMap = {
   <Spin :spinning="loading" class="text-3 leading-5">
     <div class="flex items-center flex-nowrap mb-2.5">
       <div class="flex-shrink-0 w-1 h-3.5 rounded bg-blue-400 mr-1.5"></div>
-      <div class="flex-shrink-0 text-theme-title mr-2.5">数据集</div>
+      <div class="flex-shrink-0 text-theme-title mr-2.5">{{ t('commonComp.apis.parameterizationDataset.title') }}</div>
       <Icon icon="icon-tishi1" class="flex-shrink-0 text-tips text-3.5 mr-1" />
       <div class="flex-shrink-0 break-all whitespace-pre-wrap">
-        引入已定义数据集，引入后可以在当前请求中使用数据集参数。注意：只有引用后数据集参数才会生效。当数据集参数名和变量名冲突时，同名数据集参数值比变量值优先级高。
+        {{ t('commonComp.apis.parameterizationDataset.description') }}
       </div>
     </div>
 
     <div class="flex items-center space-x-15 mb-2">
       <div class="flex-shrink-0 flex items-center">
         <div class="flex-shrink-0 flex items-center mr-2.5">
-          <span>读到末尾时</span>
+          <span>{{ t('commonComp.apis.parameterizationDataset.readToEnd') }}</span>
           <Colon />
         </div>
         <RadioGroup
@@ -240,7 +243,7 @@ const hintTextMap = {
 
       <div class="flex-shrink-0 flex items-center">
         <div class="flex-shrink-0 flex items-center mr-2.5">
-          <span>共享模式</span>
+          <span>{{ t('commonComp.apis.parameterizationDataset.sharingMode') }}</span>
           <Colon />
         </div>
         <RadioGroup
@@ -272,7 +275,7 @@ const hintTextMap = {
         class="flex items-center h-5 leading-5 p-0 space-x-1"
         @click="toUse">
         <Icon icon="icon-jia" class="text-3.5" />
-        <span>引入数据集</span>
+        <span>{{ t('commonComp.apis.parameterizationDataset.addDataset') }}</span>
       </Button>
     </div>
 
@@ -280,15 +283,15 @@ const hintTextMap = {
       <div v-if=" tableData.length === 0" class="flex-1 flex flex-col items-center justify-center">
         <img style="width:100px;" src="../../../../assets/images/nodata.png">
         <div class="flex items-center text-theme-sub-content text-3">
-          <span>您尚未引用任何数据集</span>
+          <span>{{ t('commonComp.apis.parameterizationDataset.noDataMessage') }}</span>
         </div>
       </div>
 
       <div v-else>
         <div class="flex items-center table-thead-tr">
-          <div class="table-thead-th">名称</div>
-          <div class="table-thead-th">添加人</div>
-          <div class="table-thead-th">操作</div>
+          <div class="table-thead-th">{{ t('commonComp.apis.parameterizationDataset.name') }}</div>
+          <div class="table-thead-th">{{ t('commonComp.apis.parameterizationDataset.creator') }}</div>
+          <div class="table-thead-th">{{ t('commonComp.apis.parameterizationDataset.actions') }}</div>
         </div>
 
         <Collapse v-model:activeKey="collapseActiveKeys" collapsible="disabled">
@@ -316,14 +319,14 @@ const hintTextMap = {
                   <div class="flex-1 truncate">{{ item.createdByName }}</div>
                 </div>
                 <div class="table-tbody-td flex items-center space-x-2.5">
-                  <Popconfirm :title="`确定取消引用数据集【${item.name}】吗？`" @confirm="toDelete(item)">
+                  <Popconfirm :title="t('commonComp.apis.parameterizationDataset.cancelReferenceConfirm', { name: item.name })" @confirm="toDelete(item)">
                     <Button
-                      title="取消引用"
+                      :title="t('commonComp.apis.parameterizationDataset.cancelReference')"
                       type="text"
                       size="small"
                       class="flex items-center p-0 h-5 leading-5 space-x-1">
                       <Icon icon="icon-qingchu" class="text-3.5" />
-                      <span>取消引用</span>
+                      <span>{{ t('commonComp.apis.parameterizationDataset.cancelReference') }}</span>
                     </Button>
                   </Popconfirm>
 
@@ -337,7 +340,7 @@ const hintTextMap = {
                       :to="`/data#dataSet?id=${item.id}`"
                       target="_blank">
                       <Icon icon="icon-zhengyan" class="text-3.5" />
-                      <span>查看定义</span>
+                      <span>{{ t('commonComp.apis.parameterizationDataset.viewDefinition') }}</span>
                     </RouterLink>
                   </Button>
                 </div>
@@ -346,13 +349,13 @@ const hintTextMap = {
 
             <Tabs size="small" class="ant-tabs-nav-mb-2.5 normal-tabs">
               <template v-if="!item.extraction">
-                <TabPane key="value" tab="参数">
+                <TabPane key="value" :tab="t('commonComp.apis.parameterizationDataset.parameters')">
                   <StaticParameters :dataSource="item.parameters" class="mb-5" />
                 </TabPane>
               </template>
 
               <template v-else>
-                <TabPane key="value" tab="提取">
+                <TabPane key="value" :tab="t('commonComp.apis.parameterizationDataset.extract')">
                   <ExtractParameters
                     :dataSource="item.parameters"
                     :columnIndex="+item.extraction.columnIndex"
@@ -361,11 +364,11 @@ const hintTextMap = {
                 </TabPane>
               </template>
 
-              <TabPane key="preview" tab="预览">
+              <TabPane key="preview" :tab="t('commonComp.apis.parameterizationDataset.preview')">
                 <PreviewData :dataSource="item" />
               </TabPane>
 
-              <TabPane key="use" tab="使用">
+              <TabPane key="use" :tab="t('commonComp.apis.parameterizationDataset.use')">
                 <DataSetUseList :id="item.id" />
               </TabPane>
             </Tabs>

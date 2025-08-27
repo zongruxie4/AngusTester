@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Popconfirm } from 'ant-design-vue';
 import { AsyncComponent, Icon, IconCopy, Spin, Table } from '@xcan-angus/vue-ui';
 import { paramTarget, variable } from '@/api/tester';
 
 import { VariableItem } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -173,33 +176,33 @@ const selectedNames = computed(() => {
 
 const columns = [
   {
-    title: '名称',
+    title: t('commonComp.apis.parameterizationVariable.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '值',
+    title: t('commonComp.apis.parameterizationVariable.value'),
     dataIndex: 'value',
     ellipsis: true
   },
   {
-    title: '描述',
+    title: t('commonComp.apis.parameterizationVariable.description'),
     dataIndex: 'description',
     ellipsis: true
   },
   {
-    title: '引用',
+    title: t('commonComp.apis.parameterizationVariable.reference'),
     dataIndex: 'linkName',
     ellipsis: true
   },
   {
-    title: '添加人',
+    title: t('commonComp.apis.parameterizationVariable.creator'),
     dataIndex: 'createdByName',
     ellipsis: true,
     width: '8%'
   },
   {
-    title: '操作',
+    title: t('commonComp.apis.parameterizationVariable.actions'),
     dataIndex: 'action',
     width: 170
   }
@@ -210,9 +213,9 @@ const columns = [
   <Spin :spinning="loading" class="text-3 leading-5">
     <div class="flex items-center flex-nowrap mb-1.5">
       <div class="flex-shrink-0 w-1 h-3.5 rounded bg-blue-400 mr-1.5"></div>
-      <div class="flex-shrink-0 text-theme-title mr-2.5">变量</div>
+      <div class="flex-shrink-0 text-theme-title mr-2.5">{{ t('commonComp.apis.parameterizationVariable.title') }}</div>
       <Icon icon="icon-tishi1" class="flex-shrink-0 text-tips text-3.5 mr-1" />
-      <div class="flex-shrink-0 break-all whitespace-pre-wrap">引入已定义变量，引入后可以在当前请求中使用变量参数。注意：只有引用后变量才会生效。</div>
+      <div class="flex-shrink-0 break-all whitespace-pre-wrap">{{ t('commonComp.apis.parameterizationVariable.hints') }}</div>
     </div>
     <div class="mb-2">
       <Button
@@ -221,7 +224,7 @@ const columns = [
         class="flex items-center h-5 leading-5 p-0 space-x-1"
         @click="toUse">
         <Icon icon="icon-jia" class="text-3.5" />
-        <span class="ml-1">引用变量</span>
+        <span class="ml-1">{{ t('commonComp.apis.parameterizationVariable.addVariable') }}</span>
       </Button>
     </div>
 
@@ -229,7 +232,7 @@ const columns = [
       <div v-if=" tableData.length === 0" class="flex-1 flex flex-col items-center justify-center">
         <img style="width:100px;" src="../../../../assets/images/nodata.png">
         <div class="flex items-center text-theme-sub-content text-3">
-          <span>您尚未引用任何变量</span>
+          <span>{{ t('commonComp.apis.parameterizationVariable.noDataMessage') }}</span>
         </div>
       </div>
 
@@ -287,9 +290,9 @@ const columns = [
           </div>
 
           <div v-else-if="column.dataIndex === 'action'" class="flex items-center space-x-2.5">
-            <Popconfirm :title="`确定取消引用变量【${record.name}】吗？`" @confirm="toDelete(record)">
+            <Popconfirm :title="t('commonComp.apis.parameterizationVariable.cancelReferenceConfirm', { name: record.name })" @confirm="toDelete(record)">
               <Button
-                title="取消引用"
+                :title="t('commonComp.apis.parameterizationVariable.cancelReference')"
                 type="text"
                 size="small"
                 class="flex items-center p-0 h-5 leading-5 space-x-1">
@@ -298,7 +301,7 @@ const columns = [
             </Popconfirm>
 
             <Button
-              title="查看定义"
+              :title="t('commonComp.apis.parameterizationVariable.viewDefinition')"
               type="text"
               size="small"
               class="p-0 h-5 leading-5">

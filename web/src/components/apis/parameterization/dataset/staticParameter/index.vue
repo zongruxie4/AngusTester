@@ -2,6 +2,9 @@
 import { computed } from 'vue';
 import { Hints, IconCopy, Input } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 export interface Option {
     name: string;
@@ -30,14 +33,14 @@ const dataList = computed(() => {
 </script>
 <template>
   <div>
-    <Hints class="mb-1.5" text="在采样时根据Mock数据函数动态生成参数值，每个数据集最大允许创建200个参数，最大支持生成1000亿行数据。" />
+    <Hints class="mb-1.5" :text="t('commonComp.apis.parameterizationDataset.staticParameter.hintText')" />
 
     <div class="flex items-center space-x-2 mb-1">
       <div class="w-90 flex items-center">
-        <span>名称</span>
+        <span>{{ t('commonComp.apis.parameterizationDataset.staticParameter.name') }}</span>
       </div>
       <div class="flex-1 flex items-center">
-        <span>值</span>
+        <span>{{ t('commonComp.apis.parameterizationDataset.staticParameter.value') }}</span>
       </div>
     </div>
 

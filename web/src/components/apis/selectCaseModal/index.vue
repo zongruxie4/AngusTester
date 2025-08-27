@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Modal } from '@xcan-angus/vue-ui';
 
 import SelectApisCase from '@/components/apis/selectCaseModal/selectCase/index.vue';
+
+const { t } = useI18n();
 
 interface Props {
   visible: boolean;
@@ -42,7 +45,7 @@ onMounted(() => {
 </script>
 <template>
   <Modal
-    title="选择接口"
+    :title="t('commonComp.apis.selectCaseModal.title')"
     :visible="props.visible"
     :width="1000"
     @cancel="cancel"
