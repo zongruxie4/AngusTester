@@ -72,7 +72,9 @@
     "execSuccess": "执行成功",
     "importSuccess": "导入成功",
     "moveSuccess": "移动成功",
-    "modifySuccess": "修改成功"
+    "modifySuccess": "修改成功",
+    "copySuccess": "复制成功",
+    "shareSuccess": "分享成功"
   },
   "sort": "排序",
   "quickSearch": "快速查询",
@@ -272,8 +274,88 @@
             "updateTestResultTooltip": "是否将测试结果更新到关联资源(API、用例或场景)。",
             "priority": "优先级",
             "authControl": "是否授权控制",
-            "authControlTooltip": "生成的脚本是否受权限控制。受权限控制时，默认只有自己可见且有全部权限，其他用户需要通过\"脚本\" -> \"授权\"手动授权；不受权限控制所有用户可见且可操作。"
+                        "authControlTooltip": "生成的脚本是否受权限控制。受权限控制时，默认只有自己可见且有全部权限，其他用户需要通过\"脚本\" -> \"授权\"手动授权；不受权限控制所有用户可见且可操作。"
           }
+        },
+        "shareModal": {
+          "title": "分享管理",
+          "addShare": "添加分享",
+          "shareName": "分享名称",
+          "shareUrl": "分享链接",
+          "sharePassword": "分享密码",
+          "expirationDate": "过期时间",
+          "publicShare": "公开分享",
+          "privateShare": "私有分享",
+          "allApis": "全部接口",
+          "selectApis": "选择接口",
+          "copySuccess": "复制成功",
+          "copyFailed": "复制失败",
+          "deleteSuccess": "删除分享记录成功",
+          "passwordRequired": "输入的密码不能为空",
+          "passwordUpdateSuccess": "修改密码成功",
+          "shareCreateSuccess": "分享创建成功",
+          "shareUpdateSuccess": "分享更新成功",
+          "shareDeleteSuccess": "分享删除成功",
+          "expired": "已过期",
+          "notExpired": "未过期",
+          "expiredDate": "过期日期",
+          "createdBy": "创建人",
+          "createdDate": "创建时间",
+          "actions": "操作",
+          "edit": "编辑",
+          "delete": "删除",
+          "copy": "复制",
+          "cancel": "取消",
+          "confirm": "确认",
+          "save": "保存",
+          "close": "关闭",
+          "search": "搜索",
+          "refresh": "刷新",
+          "noData": "暂无数据",
+          "loading": "加载中...",
+          "form": {
+            "namePlaceholder": "请输入分享名称",
+            "urlPlaceholder": "请输入分享链接",
+            "passwordPlaceholder": "请输入分享密码",
+            "expiredDatePlaceholder": "请选择过期时间",
+            "apiSearchPlaceholder": "搜索接口名称或描述",
+            "selectAllApis": "选择全部接口",
+            "clearSelection": "清空选择"
+          },
+          "validation": {
+            "nameRequired": "分享名称不能为空",
+            "urlRequired": "分享链接不能为空",
+            "passwordRequired": "分享密码不能为空",
+            "expiredDateRequired": "过期时间不能为空"
+          },
+          "tooltip": {
+            "copyUrl": "复制分享链接",
+            "copyPassword": "复制分享密码",
+            "editPassword": "编辑密码",
+            "deleteShare": "删除分享",
+            "publicShareDesc": "公开分享，任何人都可以访问",
+            "privateShareDesc": "私有分享，需要密码才能访问"
+          },
+          "publicFlagOptions": {
+            "public": "公开(所有人可见)",
+            "private": "私有(密码查看)"
+          },
+          "expirationTimeOptions": {
+            "permanent": "永久有效",
+            "expired": "设置过期时间"
+          },
+          "expiredTimeTip": "过期时间小于24小时，请重新选择日期",
+          "noShareApis": "没有可分享的接口",
+          "noSelectedApis": "请选择接口",
+          "shareApis": "分享接口",
+          "copyLabel": {
+            "name": "名称",
+            "link": "链接",
+            "password": "密码"
+          },
+          "selectAll": "全选",
+          "saveAndCopy": "保存并复制链接及密码",
+          "modifyPassword": "修改密码"
         }
       }
     }

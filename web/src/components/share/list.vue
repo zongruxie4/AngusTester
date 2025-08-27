@@ -1,11 +1,14 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Arrow, AsyncComponent, Colon, Hints, Icon, IconCopy, Input, notification, Scroll, Spin } from '@xcan-angus/vue-ui';
 import { Button, Tooltip } from 'ant-design-vue';
 import { toClipboard, TESTER } from '@xcan-angus/infra';
 
 import { apis } from 'src/api/tester';
 import { ListType, ShareObj, TargetType } from './PropsType';
+
+const { t } = useI18n();
 
 const Share = defineAsyncComponent(() => import('@/components/share/index.vue'));
 
@@ -43,7 +46,7 @@ const delShare = async (id:string) => {
   if (error) {
     return;
   }
-  notification.success('删除分享记录成功');
+  notification.success(t('commonComp.shareModal.deleteSuccess'));
   notify.value++;
 };
 
@@ -73,7 +76,7 @@ const openEditPassd = (item: ListType) => {
 // 修改密码
 const patchPassd = async (item:ListType, index:number) => {
   if (!item.tempPass) {
-    notification.error('输入的密码不能为空');
+    notification.error(t('commonComp.shareModal.passwordRequired'));
     return;
   }
 
@@ -93,7 +96,7 @@ const patchPassd = async (item:ListType, index:number) => {
     return;
   }
   item.editPassd = false;
-  notification.success('修改密码成功');
+  notification.success(t('commonComp.shareModal.passwordUpdateSuccess'));
 };
 
 // 取消修改密码
@@ -105,12 +108,12 @@ const cancelPassd = (item: ListType) => {
 const copy = (item:ListType) => {
   let message;
   if (!item.public0) {
-    message = `名称: ${item.name}\n链接: ${item.url}\n密码: ${item.password || ''}`;
+    message = `${t('commonComp.shareModal.copyLabel.name')}: ${item.name}\n${t('commonComp.shareModal.copyLabel.link')}: ${item.url}\n${t('commonComp.shareModal.copyLabel.password')}: ${item.password || ''}`;
   } else {
-    message = `名称: ${item.name}\n链接: ${item.url}`;
+    message = `${t('commonComp.shareModal.copyLabel.name')}: ${item.name}\n${t('commonComp.shareModal.copyLabel.link')}: ${item.url}`;
   }
   toClipboard(message).then(() => {
-    notification.success('复制成功');
+    notification.success(t('commonComp.shareModal.copySuccess'));
   });
 };
 
@@ -138,7 +141,7 @@ const params = computed(() => {
 </script>
 <template>
   <Spin class="h-full flex flex-col w-full" :spinning="loading">
-    <Hints text="通过分享能够授权其他人在指定时间内查看接口文档和调试接口。" class="mb-2" />
+    <Hints :text="t('commonComp.shareModal.tooltip.publicShareDesc')" class="mb-2" />
     <div class="flex justify-end mb-2">
       <Button
         size="small"
@@ -147,7 +150,7 @@ const params = computed(() => {
         :disabled="props.disabled"
         @click="openShareDialog">
         <Icon class="mr-1" icon="icon-jia" />
-        添加
+        {{ t('commonComp.shareModal.addShare') }}
       </Button>
     </div>
     <Scroll
@@ -175,14 +178,14 @@ const params = computed(() => {
           :class="item.seeUrl ? 'open-info' : 'stop-info'"
           class="transition-height duration-500 overflow-hidden">
           <div class="flex mt-1">
-            <span class="text-text-sub-content flex-none">链接<Colon /></span>
+            <span class="text-text-sub-content flex-none">{{ t('commonComp.shareModal.shareUrl') }}<Colon /></span>
             <div class="break-all whitespace-normal ml-2 text-text-link hover:text-text-link-hover cursor-pointer">{{ item.url }}</div>
           </div>
           <div
             v-if="!item.public0"
             style="width: 264px;"
             class="flex items-center h-7 mt-1">
-            <span class="text-text-sub-content">密码<Colon /></span>
+            <span class="text-text-sub-content">{{ t('commonComp.shareModal.sharePassword') }}<Colon /></span>
             <div class="flex items-center">
               <template v-if="!item.editPassd">
                 <span class="ml-2">{{ item.seePassword ? item.password :'*'.repeat(item.password?.length) }}</span>
@@ -191,7 +194,7 @@ const params = computed(() => {
                   class="ml-1 cursor-pointer -mt-0.5 hover:text-text-link-hover"
                   @click="handleSeePassword(item)" />
                 <Tooltip
-                  title="修改密码"
+                  :title="t('commonComp.shareModal.modifyPassword')"
                   placement="top">
                   <template v-if="props.disabled">
                     <Icon
@@ -219,9 +222,9 @@ const params = computed(() => {
                     type="primary"
                     size="small"
                     @click="patchPassd(item,index)">
-                    确认
+                    {{ t('commonComp.shareModal.confirm') }}
                   </Button>
-                  <Button size="small" @click="cancelPassd(item)">取消</Button>
+                  <Button size="small" @click="cancelPassd(item)">{{ t('commonComp.shareModal.cancel') }}</Button>
                 </div>
               </template>
             </div>
@@ -229,19 +232,19 @@ const params = computed(() => {
         </div>
         <div class="flex justify-between mt-2">
           <div class="-mt-0.5 h-4 leading-4">
-            <span class="text-text-sub-content">有效期<Colon /></span>
+            <span class="text-text-sub-content">{{ t('commonComp.shareModal.expiredDate') }}<Colon /></span>
             <span class="ml-2 text-text-content">
-              {{ item.expiredFlag ? item.expiredDate : '永久有效' }}
+              {{ item.expiredFlag ? item.expiredDate : t('commonComp.shareModal.expirationTimeOptions.permanent') }}
             </span>
           </div>
           <div class="flex justify-between items-center ml-2 -mr-1 -mt-1">
             <Tooltip
-              title="复制链接"
+              :title="t('commonComp.shareModal.tooltip.copyUrl')"
               placement="top">
               <IconCopy class="mr-2" @click="copy(item)" />
             </Tooltip>
             <Tooltip
-              title="编辑"
+              :title="t('commonComp.shareModal.edit')"
               placement="top">
               <template v-if="props.disabled">
                 <Icon
@@ -256,7 +259,7 @@ const params = computed(() => {
               </template>
             </Tooltip>
             <Tooltip
-              title="删除"
+              :title="t('commonComp.shareModal.delete')"
               placement="top">
               <template v-if="props.disabled">
                 <Icon

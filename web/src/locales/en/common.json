@@ -70,7 +70,9 @@
     "enabledSuccess": "Enable successful",
     "execSuccess": "Execute successful",
     "importSuccess": "Import successful",
-    "moveSuccess": "Move successful"
+    "moveSuccess": "Move successful",
+    "copySuccess": "Copy successful",
+    "shareSuccess": "Share successful"
   },
   "sort": "Sort",
   "quickSearch": "Quick Search",
@@ -272,6 +274,85 @@
             "authControl": "Authorization Control",
             "authControlTooltip": "Whether the generated script is subject to permission control. When under permission control, only the creator is visible by default and has full permissions. Other users need to manually authorize through 'Scripts' -> 'Authorization'. When not under permission control, all users are visible and can operate."
           }
+        },
+        "shareModal": {
+          "title": "Share Management",
+          "addShare": "Add Share",
+          "shareName": "Share Name",
+          "shareUrl": "Share URL",
+          "sharePassword": "Share Password",
+          "expirationDate": "Expiration Date",
+          "publicShare": "Public Share",
+          "privateShare": "Private Share",
+          "allApis": "All APIs",
+          "selectApis": "Select APIs",
+          "copySuccess": "Copy successful",
+          "copyFailed": "Copy failed",
+          "deleteSuccess": "Share record deleted successfully",
+          "passwordRequired": "Password cannot be empty",
+          "passwordUpdateSuccess": "Password updated successfully",
+          "shareCreateSuccess": "Share created successfully",
+          "shareUpdateSuccess": "Share updated successfully",
+          "shareDeleteSuccess": "Share deleted successfully",
+          "expired": "Expired",
+          "notExpired": "Not Expired",
+          "expiredDate": "Expiration Date",
+          "createdBy": "Created By",
+          "createdDate": "Created Date",
+          "actions": "Actions",
+          "edit": "Edit",
+          "delete": "Delete",
+          "copy": "Copy",
+          "cancel": "Cancel",
+          "confirm": "Confirm",
+          "save": "Save",
+          "close": "Close",
+          "search": "Search",
+          "refresh": "Refresh",
+          "noData": "No Data",
+          "loading": "Loading...",
+          "form": {
+            "namePlaceholder": "Please enter share name",
+            "urlPlaceholder": "Please enter share URL",
+            "passwordPlaceholder": "Please enter share password",
+            "expiredDatePlaceholder": "Please select expiration date",
+            "apiSearchPlaceholder": "Search API name or description",
+            "selectAllApis": "Select All APIs",
+            "clearSelection": "Clear Selection"
+          },
+          "validation": {
+            "nameRequired": "Share name cannot be empty",
+            "urlRequired": "Share URL cannot be empty",
+            "passwordRequired": "Share password cannot be empty",
+            "expiredDateRequired": "Expiration date cannot be empty"
+          },
+          "tooltip": {
+            "copyUrl": "Copy share URL",
+            "copyPassword": "Copy share password",
+            "editPassword": "Edit password",
+            "deleteShare": "Delete share",
+            "publicShareDesc": "Public share, accessible to anyone",
+            "privateShareDesc": "Private share, requires password to access"
+          },
+          "publicFlagOptions": {
+            "public": "Public (accessible to all)",
+            "private": "Private (requires password)"
+          },
+          "expirationTimeOptions": {
+            "permanent": "Permanent",
+            "expired": "Set expiration time"
+          },
+          "expiredTimeTip": "Expiration time is less than 24 hours, please select a new date",
+          "noShareApis": "No shareable APIs",
+          "noSelectedApis": "Please select APIs",
+          "shareApis": "Share APIs",
+          "copyLabel": {
+            "name": "Name",
+            "link": "Link",
+            "password": "Password"
+          },
+          "selectAll": "Select All",
+          "saveAndCopy": "Save and Copy"
         }
       }
     }
