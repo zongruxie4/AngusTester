@@ -546,7 +546,7 @@
       "debugModal": {
         "proxyError": "Request error (please check request parameters or proxy connection status)",
         "wsProxyErr": "Request error (please check request parameters or whether the browser triggers the \"CORS-Cross-Origin Resource Sharing\" limit, if the cross-domain limit is triggered, please use a proxy or configure the interface service to allow cross-domain access)",
-        s"conditionMessageEmpty": "Expression is empty, execute the assertion",
+        "conditionMessageEmpty": "Expression is empty, execute the assertion",
         "conditionMsgFormat": "Expression format error, only support operators [\"=\", \"!=\", \">=\", \"<=\", \">\", \"<\"]",
         "conditionMsgFormatFail": "Expression format error, cannot extract variable name",
         "conditionMsgFormatErr": "Expression format error, ignore the assertion",
