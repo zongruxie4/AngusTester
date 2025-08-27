@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
+
+const { t } = useI18n();
 
 interface Props {
 
@@ -31,7 +34,7 @@ let unplannedWorkloadRefEchart;
 // 用例数
 const unplannedTaskEchartConfig = {
   title: {
-    text: '用例数',
+    text: t('functionAnalysis.detail.unplannedTasks.caseCount'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -46,7 +49,7 @@ const unplannedTaskEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: ['总数', '计划外数', '计划外完成数'],
+    data: [t('functionAnalysis.detail.unplannedTasks.totalCount'), t('functionAnalysis.detail.unplannedTasks.unplannedCount'), t('functionAnalysis.detail.unplannedTasks.unplannedCompletedCount')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -85,14 +88,14 @@ const unplannedWorkloadEchartConfig = JSON.parse(JSON.stringify({
   ...unplannedTaskEchartConfig,
   xAxis: {
     type: 'category',
-    data: ['总工作量', '计划外工作量', '计划外完成工作量'],
+    data: [t('functionAnalysis.detail.unplannedTasks.totalWorkload'), t('functionAnalysis.detail.unplannedTasks.unplannedWorkload'), t('functionAnalysis.detail.unplannedTasks.unplannedCompletedWorkload')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
     }
   },
   title: {
-    text: '工作量',
+    text: t('functionAnalysis.detail.unplannedTasks.workload'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -130,9 +133,9 @@ defineExpose({
   <div class="flex">
     <div class="px-3 w-50 flex items-center">
       <div class="text-center flex-1">
-        <div class="font-semibold "><span class="text-5 text-status-pending">{{ props.overdueAssessmentData.unplannedWorkloadProcessingTime || 0 }}</span>小时</div>
+        <div class="font-semibold "><span class="text-5 text-status-pending">{{ props.overdueAssessmentData.unplannedWorkloadProcessingTime || 0 }}</span>{{ t('functionAnalysis.detail.unplannedTasks.hours') }}</div>
         <div>
-          计划外用例预计耗时
+          {{ t('functionAnalysis.detail.unplannedTasks.unplannedCaseEstimatedTime') }}
         </div>
       </div>
     </div>

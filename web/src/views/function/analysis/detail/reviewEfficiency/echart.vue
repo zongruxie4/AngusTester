@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
+
+const { t } = useI18n();
 
 interface Props {
   // title0: string;
@@ -62,7 +65,7 @@ let twoTimePassedEchart;
 // 通过评审用例
 const bugsEchartConfig = {
   title: {
-    text: '通过评审用例',
+    text: t('functionAnalysis.detail.reviewEfficiency.passedReviewCases'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -77,7 +80,7 @@ const bugsEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: ['通过用例', '一次性通过数', '两次通过数'],
+    data: [t('functionAnalysis.detail.reviewEfficiency.passedCase'), t('functionAnalysis.detail.reviewEfficiency.oneTimePassedCount'), t('functionAnalysis.detail.reviewEfficiency.twoTimePassedCount')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -113,7 +116,7 @@ const completedEchartConfig = {
     left: '35%',
     top: '45%',
     padding: 2,
-    subtext: '评审通过用例占比',
+    subtext: t('functionAnalysis.detail.reviewEfficiency.reviewPassedCasePercentage'),
     // left: '25%',
     // top: '40%',
     itemGap: 40,
@@ -190,7 +193,7 @@ const oneTimePassedEchartConfig = JSON.parse(JSON.stringify({
   ...completedEchartConfig,
   title: {
     ...completedEchartConfig.title,
-    subtext: '一次性通过评审用例占比',
+    subtext: t('functionAnalysis.detail.reviewEfficiency.oneTimePassedReviewCasePercentage'),
     itemGap: 40
   }
 }));
@@ -200,7 +203,7 @@ const twoTimePassedEchartConfig = JSON.parse(JSON.stringify({
   ...oneTimePassedEchartConfig,
   title: {
     ...oneTimePassedEchartConfig.title,
-    subtext: '两次通过评审用例占比'
+    subtext: t('functionAnalysis.detail.reviewEfficiency.twoTimePassedReviewCasePercentage')
   }
 }));
 

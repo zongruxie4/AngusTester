@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
+
+const { t } = useI18n();
 
 interface Props {
 
@@ -40,7 +43,7 @@ let deliverygedWorkloadEchart;
 // 交付数（完成数）
 const deliveryEchartConfig = {
   title: {
-    text: '交付数（完成数）',
+    text: t('functionAnalysis.detail.recentDelivery.deliveryCount'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -55,7 +58,7 @@ const deliveryEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: ['今天', '近一周', '近一月'],
+    data: [t('functionAnalysis.detail.recentDelivery.today'), t('functionAnalysis.detail.recentDelivery.lastWeek'), t('functionAnalysis.detail.recentDelivery.lastMonth')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -69,12 +72,12 @@ const deliveryEchartConfig = {
   },
   legend: {
     show: true,
-    data: ['交付数', '交付逾期数', '总数'],
+    data: [t('functionAnalysis.detail.recentDelivery.deliveryCount2'), t('functionAnalysis.detail.recentDelivery.deliveryOverdueCount'), t('functionAnalysis.detail.recentDelivery.totalCount')],
     top: 0
   },
   series: [
     {
-      name: '交付数',
+      name: t('functionAnalysis.detail.recentDelivery.deliveryCount2'),
       itemStyle: {
         color: 'blue',
         borderRadius: [5, 5, 0, 0]
@@ -89,7 +92,7 @@ const deliveryEchartConfig = {
       }
     },
     {
-      name: '交付逾期数',
+      name: t('functionAnalysis.detail.recentDelivery.deliveryOverdueCount'),
       itemStyle: {
         color: 'orange',
         borderRadius: [5, 5, 0, 0]
@@ -103,7 +106,7 @@ const deliveryEchartConfig = {
       }
     },
     {
-      name: '总数',
+      name: t('functionAnalysis.detail.recentDelivery.totalCount'),
       itemStyle: {
         color: 'green',
         borderRadius: [5, 5, 0, 0]
@@ -127,7 +130,7 @@ const deliveryWorkloadEchartConfig = JSON.parse(JSON.stringify({
     left: '35%',
     top: '45%',
     padding: 2,
-    subtext: '交付工作量（完成量）',
+    subtext: t('functionAnalysis.detail.recentDelivery.deliveryWorkload'),
     // left: '25%',
     // top: '40%',
     itemGap: 55,

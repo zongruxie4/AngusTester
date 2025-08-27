@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
+
+const { t } = useI18n();
 
 interface Props {
   // title0: string;
@@ -62,7 +65,7 @@ let twoTimePassedEchart;
 // 完成用例
 const bugsEchartConfig = {
   title: {
-    text: '完成用例',
+    text: t('functionAnalysis.detail.handlingEfficiency.completedCases'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -77,7 +80,7 @@ const bugsEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: ['完成用例数', '一次性完成数', '两次完成数'],
+    data: [t('functionAnalysis.detail.handlingEfficiency.completedCaseCount'), t('functionAnalysis.detail.handlingEfficiency.oneTimeCompletedCount'), t('functionAnalysis.detail.handlingEfficiency.twoTimeCompletedCount')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -113,7 +116,7 @@ const completedEchartConfig = {
     left: '35%',
     top: '45%',
     padding: 2,
-    subtext: '完成用例占比',
+    subtext: t('functionAnalysis.detail.handlingEfficiency.completedCasePercentage'),
     // left: '25%',
     // top: '40%',
     itemGap: 40,
@@ -190,7 +193,7 @@ const oneTimePassedEchartConfig = JSON.parse(JSON.stringify({
   ...completedEchartConfig,
   title: {
     ...completedEchartConfig.title,
-    subtext: '一次完成用例占比',
+    subtext: t('functionAnalysis.detail.handlingEfficiency.oneTimeCompletedPercentage'),
     itemGap: 40
   }
 }));
@@ -200,7 +203,7 @@ const twoTimePassedEchartConfig = JSON.parse(JSON.stringify({
   ...oneTimePassedEchartConfig,
   title: {
     ...oneTimePassedEchartConfig.title,
-    subtext: '两次完成用例占比'
+    subtext: t('functionAnalysis.detail.handlingEfficiency.twoTimeCompletedPercentage')
   }
 }));
 

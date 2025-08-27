@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
+
+const { t } = useI18n();
 
 interface Props {
   chart0Value: {
@@ -39,7 +42,7 @@ let failureLevelEchart;
 // 故障数
 const failureEchartConfig = {
   title: {
-    text: '故障数',
+    text: t('functionAnalysis.detail.failures.failureCount'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -54,7 +57,7 @@ const failureEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: ['总故障', '故障完成数', '故障逾期数', '一次性故障数', '两次故障数'],
+    data: [t('functionAnalysis.detail.failures.totalFailure'), t('functionAnalysis.detail.failures.failureCompletedCount'), t('functionAnalysis.detail.failures.failureOverdueCount'), t('functionAnalysis.detail.failures.oneTimeFailureCount'), t('functionAnalysis.detail.failures.twoTimeFailureCount')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -87,7 +90,7 @@ const failureEchartConfig = {
 const failureTimeEchartConfig = JSON.parse(JSON.stringify({
   ...failureEchartConfig,
   title: {
-    text: '故事件(小时)',
+    text: t('functionAnalysis.detail.failures.failureTime'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -96,7 +99,7 @@ const failureTimeEchartConfig = JSON.parse(JSON.stringify({
   },
   xAxis: {
     ...failureEchartConfig.xAxis,
-    data: ['总故障时间', '平均故障时间', '最小故障时间', '最大故障时间']
+    data: [t('functionAnalysis.detail.failures.totalFailureTime'), t('functionAnalysis.detail.failures.averageFailureTime'), t('functionAnalysis.detail.failures.minFailureTime'), t('functionAnalysis.detail.failures.maxFailureTime')]
   },
   series: [
     {
@@ -118,7 +121,7 @@ const failureLevelEchartConfig = {
     left: '35%',
     top: '45%',
     padding: 2,
-    subtext: '缺陷等级',
+    subtext: t('functionAnalysis.detail.failures.defectLevel'),
     // left: '25%',
     // top: '40%',
     itemGap: 65,
@@ -171,28 +174,28 @@ const failureLevelEchartConfig = {
       },
       data: [
         {
-          name: '致命数',
+          name: t('functionAnalysis.detail.failures.criticalCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'
           }
         },
         {
-          name: '严重数',
+          name: t('functionAnalysis.detail.failures.majorCount'),
           value: 0,
           itemStyle: {
             color: 'gold'
           }
         },
         {
-          name: '一般数',
+          name: t('functionAnalysis.detail.failures.minorCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(255, 165, 43, 1)'
           }
         },
         {
-          name: '轻微数',
+          name: t('functionAnalysis.detail.failures.trivialCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(136, 185, 242, 1)'

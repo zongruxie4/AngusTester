@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
+
+const { t } = useI18n();
 
 interface Props {
   // title0: string;
@@ -66,7 +69,7 @@ let completedBugEchart;
 // 核心指标
 const coreEchartConfig = {
   title: {
-    text: '核心指标',
+    text: t('functionAnalysis.detail.coreKpi.coreIndicators'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -81,7 +84,7 @@ const coreEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: ['用例数', '工作量', '逾期数', '缺陷数'],
+    data: [t('functionAnalysis.detail.coreKpi.caseCount'), t('functionAnalysis.detail.coreKpi.workload'), t('functionAnalysis.detail.coreKpi.overdueCount'), t('functionAnalysis.detail.coreKpi.bugCount')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -95,12 +98,12 @@ const coreEchartConfig = {
   },
   legend: {
     show: true,
-    data: ['完成量', '总量'],
+    data: [t('functionAnalysis.detail.coreKpi.completedAmount'), t('functionAnalysis.detail.coreKpi.totalAmount')],
     top: 0
   },
   series: [
     {
-      name: '完成量',
+      name: t('functionAnalysis.detail.coreKpi.completedAmount'),
       itemStyle: {
         color: 'rgba(45, 142, 255, 1)',
         borderRadius: [5, 5, 0, 0]
@@ -115,7 +118,7 @@ const coreEchartConfig = {
       }
     },
     {
-      name: '总量',
+      name: t('functionAnalysis.detail.coreKpi.totalAmount'),
       itemStyle: {
         color: 'rgba(136, 185, 242, 0.8)',
         borderRadius: [5, 5, 0, 0]
@@ -137,7 +140,7 @@ const completedEchartConfig = {
     left: '35%',
     top: '45%',
     padding: 2,
-    subtext: '完成用例占比',
+    subtext: t('functionAnalysis.detail.coreKpi.completedCasePercentage'),
     // left: '25%',
     // top: '40%',
     itemGap: 40,
@@ -214,7 +217,7 @@ const completedWorkloadEchartConfig = JSON.parse(JSON.stringify({
   ...completedEchartConfig,
   title: {
     ...completedEchartConfig.title,
-    subtext: '完成工作量占比',
+    subtext: t('functionAnalysis.detail.coreKpi.completedWorkloadPercentage'),
     itemGap: 40
   }
 }));
@@ -224,7 +227,7 @@ const completedOverduedEchartConfig = JSON.parse(JSON.stringify({
   ...completedWorkloadEchartConfig,
   title: {
     ...completedWorkloadEchartConfig.title,
-    subtext: '逾期逾期数占比'
+    subtext: t('functionAnalysis.detail.coreKpi.completedOverduePercentage')
   }
 }));
 
@@ -233,7 +236,7 @@ const completedBugEchartConfig = JSON.parse(JSON.stringify({
   ...completedWorkloadEchartConfig,
   title: {
     ...completedWorkloadEchartConfig.title,
-    subtext: '完成缺陷占比'
+    subtext: t('functionAnalysis.detail.coreKpi.completedBugPercentage')
   }
 }));
 

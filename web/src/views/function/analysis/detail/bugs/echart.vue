@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
+
+const { t } = useI18n();
 
 interface Props {
   // title0: string;
@@ -66,7 +69,7 @@ let bugWorkloadEchart;
 // 缺陷
 const bugsEchartConfig = {
   title: {
-    text: '缺陷数',
+    text: t('functionAnalysis.detail.bugs.bugCount'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -81,7 +84,7 @@ const bugsEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: ['总缺陷', '有效缺陷', '无效缺陷', '漏测缺陷'],
+    data: [t('functionAnalysis.detail.bugs.totalBugs'), t('functionAnalysis.detail.bugs.validBugs'), t('functionAnalysis.detail.bugs.invalidBugs'), t('functionAnalysis.detail.bugs.missingBugs')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -117,7 +120,7 @@ const bugLevelEchartConfig = {
     left: '30%',
     top: '35%',
     padding: 2,
-    subtext: '缺陷等级',
+    subtext: t('functionAnalysis.detail.bugs.bugLevel'),
     // left: '25%',
     // top: '40%',
     itemGap: 70,
@@ -170,28 +173,28 @@ const bugLevelEchartConfig = {
       },
       data: [
         {
-          name: '致命数',
+          name: t('functionAnalysis.detail.bugs.criticalCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'
           }
         },
         {
-          name: '严重数',
+          name: t('functionAnalysis.detail.bugs.majorCount'),
           value: 0,
           itemStyle: {
             color: 'gold'
           }
         },
         {
-          name: '一般数',
+          name: t('functionAnalysis.detail.bugs.minorCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(255, 165, 43, 1)'
           }
         },
         {
-          name: '轻微数',
+          name: t('functionAnalysis.detail.bugs.trivialCount'),
           value: 0,
           itemStyle: {
             color: 'rgba(136, 185, 242, 1)'
@@ -207,21 +210,21 @@ const validBugEchartConfig = JSON.parse(JSON.stringify({
   ...bugLevelEchartConfig,
   title: {
     ...bugLevelEchartConfig.title,
-    subtext: '有效缺陷占比',
+    subtext: t('functionAnalysis.detail.bugs.validBugPercentage'),
     itemGap: 60
   },
   series: [{
     ...bugLevelEchartConfig.series[0],
     data: [
       {
-        name: '未完成',
+        name: t('functionAnalysis.detail.bugs.notCompleted'),
         value: 0,
         itemStyle: {
           color: 'rgba(136, 185, 242, 1)'
         }
       },
       {
-        name: '已完成',
+        name: t('functionAnalysis.detail.bugs.completed'),
         value: 0,
         itemStyle: {
           color: 'rgba(245, 34, 45, 0.6)'
@@ -236,7 +239,7 @@ const missingBugEchartConfig = JSON.parse(JSON.stringify({
   ...validBugEchartConfig,
   title: {
     ...validBugEchartConfig.title,
-    subtext: '漏测缺陷占比'
+    subtext: t('functionAnalysis.detail.bugs.missingBugPercentage')
 
   }
 }));
@@ -246,7 +249,7 @@ const bugWorkloadEchartConfig = JSON.parse(JSON.stringify({
   ...validBugEchartConfig,
   title: {
     ...validBugEchartConfig.title,
-    subtext: '缺陷工作量占比'
+    subtext: t('functionAnalysis.detail.bugs.bugWorkloadPercentage')
   }
 }));
 
@@ -337,14 +340,14 @@ defineExpose({
 <template>
   <div class="flex space-x-2">
     <div class="w-30 space-y-2 text-center">
-      <div>
-        <div><span class="text-8 font-semibold">{{ props.value.testCaseHitRate || 0 }}</span>%</div>
-        <div>用例命中率</div>
-      </div>
-      <div>
-        <div><span class="text-8 font-semibold">{{ props.value.testCaseHitNum || 0 }}</span></div>
-        <div>用例命中数</div>
-      </div>
+              <div>
+          <div><span class="text-8 font-semibold">{{ props.value.testCaseHitRate || 0 }}</span>%</div>
+          <div>{{ t('functionAnalysis.detail.bugs.testCaseHitRate') }}</div>
+        </div>
+        <div>
+          <div><span class="text-8 font-semibold">{{ props.value.testCaseHitNum || 0 }}</span></div>
+          <div>{{ t('functionAnalysis.detail.bugs.testCaseHitCount') }}</div>
+        </div>
     </div>
     <div ref="bugsRef" class="flex-1 min-w-80 h-40"></div>
     <div ref="bugLevelRef" class="flex-1 h-40"></div>

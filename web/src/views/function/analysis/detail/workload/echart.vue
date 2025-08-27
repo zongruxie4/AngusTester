@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
+
+const { t } = useI18n();
 
 interface Props {
   // title0: string;
@@ -43,7 +46,7 @@ let savingWorkloadEchart;
 
 const workloadEchartConfig = {
   title: {
-    text: '工作量',
+    text: t('functionAnalysis.detail.workload.workload'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -58,7 +61,7 @@ const workloadEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: ['估计工作量', '实际工作量', '完成工作量', '节省工作量'],
+    data: [t('functionAnalysis.detail.workload.estimatedWorkload'), t('functionAnalysis.detail.workload.actualWorkload'), t('functionAnalysis.detail.workload.completedWorkload'), t('functionAnalysis.detail.workload.savingWorkload')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -94,7 +97,7 @@ const completedWorkloadEchartConfig = {
     left: '35%',
     top: '38%',
     padding: 2,
-    subtext: '完成工作量占比',
+    subtext: t('functionAnalysis.detail.workload.completedWorkloadPercentage'),
     // left: '25%',
     // top: '40%',
     itemGap: 47,
@@ -147,14 +150,14 @@ const completedWorkloadEchartConfig = {
       },
       data: [
         {
-          name: '未完成',
+          name: t('functionAnalysis.detail.workload.incomplete'),
           value: 0,
           itemStyle: {
             color: 'rgba(217, 217, 217, 1)'
           }
         },
         {
-          name: '已完成',
+          name: t('functionAnalysis.detail.workload.completed'),
           value: 0,
           itemStyle: {
             color: '#52C41A'
@@ -169,7 +172,7 @@ const savingWorkloadEchartConfig = JSON.parse(JSON.stringify({
   ...completedWorkloadEchartConfig,
   title: {
     ...completedWorkloadEchartConfig.title,
-    subtext: '节省工作量占比'
+    subtext: t('functionAnalysis.detail.workload.savingWorkloadPercentage')
   }
 }));
 

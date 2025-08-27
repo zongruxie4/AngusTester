@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { getDateArr } from '@/utils/utils';
+
+const { t } = useI18n();
 
 interface Props {
   analysisInfo?: Record<string, any>;
@@ -13,38 +16,38 @@ const props = withDefaults(defineProps<Props>(), {
 const Echart = defineAsyncComponent(() => import('./echart.vue'));
 
 const targetDataCategery = {
-  TEST_CUSTOMIZATION: '自定义测试',
-  TEST_FUNCTIONALITY: '功能测试',
-  TEST_PERFORMANCE: '性能测试',
-  TEST_STABILITY: '稳定性测试',
-  SERVICES: '服务',
-  APIS: '接口',
-  CASES: '用例',
-  PLAN: '计划',
-  SPRINT: '迭代',
-  TASK_SPRINT: '迭代',
-  TASK: '用例',
-  MOCK_APIS: 'Mock接口',
-  MOCK_PUSHBACK: 'Mock回推',
-  MOCK_RESPONSE: 'Mock响应',
-  MOCK_SERVICE: 'Mock服务',
-  DATA_DATASET: '数据集',
-  DATA_DATASOURCE: '数据源',
-  DATA_VARIABLE: '变量',
-  TOTAL: '合计',
-  REPORT: '报告',
-  REPORT_RECORD: '记录',
-  API_TEST: '接口测试',
-  BUG: '缺陷',
-  REQUIREMENT: '需求',
-  STORY: '故事',
-  SCENARIO_TEST: '场景测试',
-  ANALYSIS: '分析',
-  BACKLOG: 'backlog',
-  MEETING: '会议',
-  BASELINE: '基线',
-  CASE: '用例',
-  REVIEW: '评审'
+  TEST_CUSTOMIZATION: t('functionAnalysis.detail.resourceCreation.customTest'),
+  TEST_FUNCTIONALITY: t('functionAnalysis.detail.resourceCreation.functionalTest'),
+  TEST_PERFORMANCE: t('functionAnalysis.detail.resourceCreation.performanceTest'),
+  TEST_STABILITY: t('functionAnalysis.detail.resourceCreation.stabilityTest'),
+  SERVICES: t('functionAnalysis.detail.resourceCreation.services'),
+  APIS: t('functionAnalysis.detail.resourceCreation.apis'),
+  CASES: t('functionAnalysis.detail.resourceCreation.cases'),
+  PLAN: t('functionAnalysis.detail.resourceCreation.plan'),
+  SPRINT: t('functionAnalysis.detail.resourceCreation.sprint'),
+  TASK_SPRINT: t('functionAnalysis.detail.resourceCreation.taskSprint'),
+  TASK: t('functionAnalysis.detail.resourceCreation.task'),
+  MOCK_APIS: t('functionAnalysis.detail.resourceCreation.mockApis'),
+  MOCK_PUSHBACK: t('functionAnalysis.detail.resourceCreation.mockPushback'),
+  MOCK_RESPONSE: t('functionAnalysis.detail.resourceCreation.mockResponse'),
+  MOCK_SERVICE: t('functionAnalysis.detail.resourceCreation.mockService'),
+  DATA_DATASET: t('functionAnalysis.detail.resourceCreation.dataDataset'),
+  DATA_DATASOURCE: t('functionAnalysis.detail.resourceCreation.dataDatasource'),
+  DATA_VARIABLE: t('functionAnalysis.detail.resourceCreation.dataVariable'),
+  TOTAL: t('functionAnalysis.detail.resourceCreation.total2'),
+  REPORT: t('functionAnalysis.detail.resourceCreation.report'),
+  REPORT_RECORD: t('functionAnalysis.detail.resourceCreation.reportRecord'),
+  API_TEST: t('functionAnalysis.detail.resourceCreation.apiTest'),
+  BUG: t('functionAnalysis.detail.resourceCreation.bug'),
+  REQUIREMENT: t('functionAnalysis.detail.resourceCreation.requirement'),
+  STORY: t('functionAnalysis.detail.resourceCreation.story'),
+  SCENARIO_TEST: t('functionAnalysis.detail.resourceCreation.scenarioTest'),
+  ANALYSIS: t('functionAnalysis.detail.resourceCreation.analysis'),
+  BACKLOG: t('functionAnalysis.detail.resourceCreation.backlog'),
+  MEETING: t('functionAnalysis.detail.resourceCreation.meeting'),
+  BASELINE: t('functionAnalysis.detail.resourceCreation.baseline'),
+  CASE: t('functionAnalysis.detail.resourceCreation.case'),
+  REVIEW: t('functionAnalysis.detail.resourceCreation.review')
 
 };
 
@@ -151,7 +154,7 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">总共</div>
+    <div class="font-semibold pl-3">{{ t('functionAnalysis.detail.resourceCreation.total') }}</div>
     <Echart
       ref="totalChartRef"
       v-bind="totalValue"
