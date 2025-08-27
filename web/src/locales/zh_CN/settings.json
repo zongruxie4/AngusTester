@@ -404,153 +404,153 @@
           "txBytes": "发送的总字节(GB)",
           "txBytesRate": "每秒发送的 MB 数(MB/s)"
         }
+      }
+    },
+    "nodeItem": {
+      "buttons": {
+        "save": "保存",
+        "cancel": "取消",
+        "testConnection": "测试链接",
+        "edit": "编辑",
+        "enable": "启用",
+        "disable": "禁用",
+        "delete": "删除",
+        "onlineInstall": "在线安装",
+        "manualInstall": "手动安装",
+        "restartProxy": "重启代理"
       },
-      "nodeItem": {
-        "buttons": {
-          "save": "保存",
-          "cancel": "取消",
-          "testConnection": "测试链接",
-          "edit": "编辑",
-          "enable": "启用",
-          "disable": "禁用",
-          "delete": "删除",
-          "onlineInstall": "在线安装",
-          "manualInstall": "手动安装",
-          "restartProxy": "重启代理"
-        },
-        "labels": {
-          "role": "角色",
-          "required": "必填项",
-          "portRangeTip": "请填写端口号范围在1 ~ 65535之间",
-          "selectRole": "请选择角色",
-          "connectionSuccess": "连接成功",
-          "connectionFailed": "连接失败，请检查并重新填写节点信息后再次测试连接",
-          "estimatedTime": "预计需要一分钟",
-          "installSuccess": "安装成功",
-          "updateNodeSuccess": "更新节点成功",
-          "addNodeSuccess": "添加节点成功",
-          "modifyNodeNameSuccess": "修改节点名称成功",
-          "addNode": "添加节点",
+      "labels": {
+        "role": "角色",
+        "required": "必填项",
+        "portRangeTip": "请填写端口号范围在1 ~ 65535之间",
+        "selectRole": "请选择角色",
+        "connectionSuccess": "连接成功",
+        "connectionFailed": "连接失败，请检查并重新填写节点信息后再次测试连接",
+        "estimatedTime": "预计需要一分钟",
+        "installSuccess": "安装成功",
+        "updateNodeSuccess": "更新节点成功",
+        "addNodeSuccess": "添加节点成功",
+        "modifyNodeNameSuccess": "修改节点名称成功",
+        "addNode": "添加节点",
+        "inputLimit200": "输入限制200字符以内",
+        "installAgentTip": "检测到该节点还未安装代理，请先安装代理后在进行使用",
+        "freeNode": "免费节点",
+        "nodeTip": "提示：节点必须是 Linux（推荐）、Mac、Windows 系统；执行任务前您需要添加节点到节点列表中并安装代理，如果因为网络或服务器root账户问题无法自动“安装代理”，您需要按照“手动安装”方式安装代理，确保执行任务前代理处于连接状态（未启动时需要先启动代理）；一个节点可以同时承担多个角色，为了保证测试结果更加准确请为压测节点使用单一“执行节点”角色；压测中您想尽量还原用户真实访问环境及体验请使用公网节点，如果想排除网络等外界因素的干扰来测试应用服务的极限，需要添加您的自有内网机器到节点中。",
+        "nodeTip2": "提示：节点必须是 Linux（推荐）、Mac、Windows 系统；执行任务前您需要添加节点到节点列表中并安装代理，如果因为网络或服务器root账户问题无法自动“安装代理”，您需要按照“手动安装”方式安装代理，确保执行任务前代理处于连接状态（未启动时需要先启动代理）；一个节点可以同时承担多个角色，为了保证测试结果更加准确请为压测节点使用单一“执行节点”角色；压测中您想尽量还原用户真实访问环境及体验请使用公网节点，如果想排除网络等外界因素的干扰来测试应用服务的极限，需要添加您的自有内网机器到节点中。",
+        "managerNode": "管理节点：",
+        "controllerNode": "控制器节点：",
+        "execNode": "执行节点：",
+        "mockNode": "Mock节点：",
+        "appNode": "应用节点：",
+        "managerNodeDesc": "部署和运行Web UI应用",
+        "controllerNodeDesc": "用于调度、管理、监控执行和代理服务。",
+        "execNodeDesc": "用于执行功能测试、性能测试、生成数据等。",
+        "mockNodeDesc": "运行Mock服务和Mock接口。",
+        "appNodeDesc": "测试应用所在节点，用于压测时观察被压测应用节点系统负载，有助于定位分析性能问题。",
+        "copySuccess": "已复制到剪贴板"
+      },
+      "tips": {
+        "editOwnNode": "只允许删除自有节点",
+        "editPermission": "编辑节点需要系统管理员或应用管理员权限",
+        "disableDelete": "节点禁用后才能删除",
+        "deletePermission": "删除节点需要系统管理员或应用管理员权限",
+        "deleteOwnNode": "只能删除自有节点",
+        "alreadyInstalled": "已安装",
+        "installPermission": "在线安装代理需要系统管理员或应用管理员权限",
+        "manualInstallPermission": "手动安装代理需要系统管理员或应用管理员权限",
+        "roleDescription": "可根据您的实际需求，勾选节点对应的角色",
+        "roleHint": "提示：节点必须是 Linux（推荐）、Mac、Windows 系统；执行任务前您需要添加节点到节点列表中并安装代理，如果因为网络或服务器root账户问题无法自动\"安装代理\"，您需要按照\"手动安装\"方式安装代理，确保执行任务前代理处于连接状态（未启动时需要先启动代理）；一个节点可以同时承担多个角色，为了保证测试结果更加准确请为压测节点使用单一\"执行节点\"角色；压测中您想尽量还原用户真实访问环境及体验请使用公网节点，如果想排除网络等外界因素的干扰来测试应用服务的极限，需要添加您的自有内网机器到节点中。",
+        "managementNode": "管理节点: 部署和运行Web UI应用",
+        "controllerNode": "控制器节点: 用于调度、管理、监控执行和代理服务。",
+        "executionNode": "执行节点: 用于执行功能测试、性能测试、生成数据等。",
+        "mockNode": "Mock节点: 运行Mock服务和Mock接口。",
+        "applicationNode": "应用节点: 测试应用所在节点，用于压测时观察被压测应用节点系统负载，有助于定位分析性能问题。"
+      },
+      "confirm": {
+        "deleteNode": "确定删除节点【{name}】吗?"
+      },
+      "installSteps": {
+        "linuxTitle": "Linux或者Mac系统自动安装步骤",
+        "configTitle": "安装配置信息",
+        "description": "必须以root用户执行脚本, 安装目录为脚本所在目录",
+        "method1": "安装方式1：",
+        "method2": "安装方式2：",
+        "downloadScript": "1).下载自动安装脚本：",
+        "copyScript": "2).将{scriptName}复制到自定义的安装目录，运行脚本安装："
+      },
+      "interface": {
+        "formItems": {
+          "nodeName": "节点名称",
+          "intranetIP": "内网IP",
+          "publicIP": "公网IP",
+          "domain": "域名",
+          "username": "用户名",
+          "password": "密码",
+          "sshPort": "SSH端口",
           "inputLimit200": "输入限制200字符以内",
-          "installAgentTip": "检测到该节点还未安装代理，请先安装代理后在进行使用",
-          "freeNode": "免费节点",
-          "nodeTip": "提示：节点必须是 Linux（推荐）、Mac、Windows 系统；执行任务前您需要添加节点到节点列表中并安装代理，如果因为网络或服务器root账户问题无法自动“安装代理”，您需要按照“手动安装”方式安装代理，确保执行任务前代理处于连接状态（未启动时需要先启动代理）；一个节点可以同时承担多个角色，为了保证测试结果更加准确请为压测节点使用单一“执行节点”角色；压测中您想尽量还原用户真实访问环境及体验请使用公网节点，如果想排除网络等外界因素的干扰来测试应用服务的极限，需要添加您的自有内网机器到节点中。",
-          "nodeTip2": "提示：节点必须是 Linux（推荐）、Mac、Windows 系统；执行任务前您需要添加节点到节点列表中并安装代理，如果因为网络或服务器root账户问题无法自动“安装代理”，您需要按照“手动安装”方式安装代理，确保执行任务前代理处于连接状态（未启动时需要先启动代理）；一个节点可以同时承担多个角色，为了保证测试结果更加准确请为压测节点使用单一“执行节点”角色；压测中您想尽量还原用户真实访问环境及体验请使用公网节点，如果想排除网络等外界因素的干扰来测试应用服务的极限，需要添加您的自有内网机器到节点中。",
-          "managerNode": "管理节点：",
-          "controllerNode": "控制器节点：",
-          "execNode": "执行节点：",
-          "mockNode": "Mock节点：",
-          "appNode": "应用节点：",
-          "managerNodeDesc": "部署和运行Web UI应用",
-          "controllerNodeDesc": "用于调度、管理、监控执行和代理服务。",
-          "execNodeDesc": "用于执行功能测试、性能测试、生成数据等。",
-          "mockNodeDesc": "运行Mock服务和Mock接口。",
-          "appNodeDesc": "测试应用所在节点，用于压测时观察被压测应用节点系统负载，有助于定位分析性能问题。",
-          "copySuccess": "已复制到剪贴板"
+          "inputNodeIP": "输入节点IP地址",
+          "inputNodeDomain": "输入节点域名",
+          "inputUsername": "输入用户名",
+          "inputPassword": "输入密码",
+          "inputSSHPort": "输入SSH端口"
         },
-        "tips": {
-          "editOwnNode": "只允许删除自有节点",
-          "editPermission": "编辑节点需要系统管理员或应用管理员权限",
-          "disableDelete": "节点禁用后才能删除",
-          "deletePermission": "删除节点需要系统管理员或应用管理员权限",
-          "deleteOwnNode": "只能删除自有节点",
-          "alreadyInstalled": "已安装",
-          "installPermission": "在线安装代理需要系统管理员或应用管理员权限",
-          "manualInstallPermission": "手动安装代理需要系统管理员或应用管理员权限",
-          "roleDescription": "可根据您的实际需求，勾选节点对应的角色",
-          "roleHint": "提示：节点必须是 Linux（推荐）、Mac、Windows 系统；执行任务前您需要添加节点到节点列表中并安装代理，如果因为网络或服务器root账户问题无法自动\"安装代理\"，您需要按照\"手动安装\"方式安装代理，确保执行任务前代理处于连接状态（未启动时需要先启动代理）；一个节点可以同时承担多个角色，为了保证测试结果更加准确请为压测节点使用单一\"执行节点\"角色；压测中您想尽量还原用户真实访问环境及体验请使用公网节点，如果想排除网络等外界因素的干扰来测试应用服务的极限，需要添加您的自有内网机器到节点中。",
-          "managementNode": "管理节点: 部署和运行Web UI应用",
-          "controllerNode": "控制器节点: 用于调度、管理、监控执行和代理服务。",
-          "executionNode": "执行节点: 用于执行功能测试、性能测试、生成数据等。",
-          "mockNode": "Mock节点: 运行Mock服务和Mock接口。",
-          "applicationNode": "应用节点: 测试应用所在节点，用于压测时观察被压测应用节点系统负载，有助于定位分析性能问题。"
+        "roleOptions": {
+          "managementNode": "管理节点",
+          "pressureTestNode": "压测节点",
+          "mockNode": "Mock节点",
+          "applicationNode": "应用节点"
         },
-        "confirm": {
-          "deleteNode": "确定删除节点【{name}】吗?"
+        "nodeStatus": {
+          "enabledStatus": "启用状态：",
+          "agentInstallStatus": "代理安装状态：",
+          "connectionStatus": "连接状态：",
+          "enabled": "已启用",
+          "notEnabled": "未启用",
+          "installed": "已安装",
+          "notInstalled": "未安装",
+          "connected": "已连接",
+          "notConnected": "未连接"
         },
-        "installSteps": {
-          "linuxTitle": "Linux或者Mac系统自动安装步骤",
-          "configTitle": "安装配置信息",
-          "description": "必须以root用户执行脚本, 安装目录为脚本所在目录",
-          "method1": "安装方式1：",
-          "method2": "安装方式2：",
-          "downloadScript": "1).下载自动安装脚本：",
-          "copyScript": "2).将{scriptName}复制到自定义的安装目录，运行脚本安装："
+        "viewItem": {
+          "id": "ID: ",
+          "intranetIP": "内网IP: ",
+          "publicIP": "公网IP: ",
+          "source": "来源: ",
+          "role": "角色: ",
+          "specification": "规格: ",
+          "system": "系统: "
         },
-        "interface": {
-          "formItems": {
-            "nodeName": "节点名称",
-            "intranetIP": "内网IP",
-            "publicIP": "公网IP",
-            "domain": "域名",
-            "username": "用户名",
-            "password": "密码",
-            "sshPort": "SSH端口",
-            "inputLimit200": "输入限制200字符以内",
-            "inputNodeIP": "输入节点IP地址",
-            "inputNodeDomain": "输入节点域名",
-            "inputUsername": "输入用户名",
-            "inputPassword": "输入密码",
-            "inputSSHPort": "输入SSH端口"
+        "nodeUseProgresses": {
+          "cpu": "CPU",
+          "memory": "内存",
+          "fileSystem": "文件系统",
+          "swapArea": "交换区",
+          "upload": "上传",
+          "download": "下载"
+        }
+      },
+      "nodeTip": {
+        "title": "提示：1. 节点系统：支持Linux、Mac、Windows 操作系统，推荐使用Linux。2. 添加和安装代理：在执行任务之前，您需要先添加节点并为节点安装代理，如果因为网络或服务器账户等问题无法自动安装代理，请按照手动安装的提示进行操作，请确保在执行任务之前，代理处于连接状态（如果代理未启动，则需要先启动代理）。3.节点角色配置：一个节点可以承担多个角色，但为了提高性能测试结果的准确性，请为压测节点配置单一的\"执行\"节点角色。4. 网络环境选择：在压力测试时，如果您想尽可能还原用户真实的访问环境（如网络延迟），请使用公网节点进行测试。如果您想排除网络延迟对测试结果的干扰，以测试应用的极限性能，请添加和测试应用在相同内网环境的节点进行测试。5. 默认只允许系统管理员和应用管理员对节点进行管理操作。",
+        "steps": {
+          "managementNode": {
+            "title": "管理节点",
+            "content": "用于部署和运行Web UI应用"
           },
-          "roleOptions": {
-            "managementNode": "管理节点",
-            "pressureTestNode": "压测节点",
-            "mockNode": "Mock节点",
-            "applicationNode": "应用节点"
+          "controllerNode": {
+            "title": "控制器节点",
+            "content": "用于调度、管理、监控执行和代理服务"
           },
-          "nodeStatus": {
-            "enabledStatus": "启用状态：",
-            "agentInstallStatus": "代理安装状态：",
-            "connectionStatus": "连接状态：",
-            "enabled": "已启用",
-            "notEnabled": "未启用",
-            "installed": "已安装",
-            "notInstalled": "未安装",
-            "connected": "已连接",
-            "notConnected": "未连接"
+          "executionNode": {
+            "title": "执行节点",
+            "content": "用于执行功能测试、性能测试、生成数据等"
           },
-          "viewItem": {
-            "id": "ID: ",
-            "intranetIP": "内网IP: ",
-            "publicIP": "公网IP: ",
-            "source": "来源: ",
-            "role": "角色: ",
-            "specification": "规格: ",
-            "system": "系统: "
+          "mockNode": {
+            "title": "Mock节点",
+            "content": "运行Mock服务和Mock接口"
           },
-          "nodeUseProgresses": {
-            "cpu": "CPU",
-            "memory": "内存",
-            "fileSystem": "文件系统",
-            "swapArea": "交换区",
-            "upload": "上传",
-            "download": "下载"
-          }
-        },
-        "nodeTip": {
-          "title": "提示：1. 节点系统：支持Linux、Mac、Windows 操作系统，推荐使用Linux。2. 添加和安装代理：在执行任务之前，您需要先添加节点并为节点安装代理，如果因为网络或服务器账户等问题无法自动安装代理，请按照手动安装的提示进行操作，请确保在执行任务之前，代理处于连接状态（如果代理未启动，则需要先启动代理）。3.节点角色配置：一个节点可以承担多个角色，但为了提高性能测试结果的准确性，请为压测节点配置单一的\"执行\"节点角色。4. 网络环境选择：在压力测试时，如果您想尽可能还原用户真实的访问环境（如网络延迟），请使用公网节点进行测试。如果您想排除网络延迟对测试结果的干扰，以测试应用的极限性能，请添加和测试应用在相同内网环境的节点进行测试。5. 默认只允许系统管理员和应用管理员对节点进行管理操作。",
-          "steps": {
-            "managementNode": {
-              "title": "管理节点",
-              "content": "用于部署和运行Web UI应用"
-            },
-            "controllerNode": {
-              "title": "控制器节点",
-              "content": "用于调度、管理、监控执行和代理服务"
-            },
-            "executionNode": {
-              "title": "执行节点",
-              "content": "用于执行功能测试、性能测试、生成数据等"
-            },
-            "mockNode": {
-              "title": "Mock节点",
-              "content": "运行Mock服务和Mock接口"
-            },
-            "applicationNode": {
-              "title": "应用节点",
-              "content": "测试应用所在节点，用于压测时观察被压测应用节点系统负载，有助于定位分析性能问题"
-            }
+          "applicationNode": {
+            "title": "应用节点",
+            "content": "测试应用所在节点，用于压测时观察被压测应用节点系统负载，有助于定位分析性能问题"
           }
         }
       }

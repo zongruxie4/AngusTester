@@ -1,5 +1,4 @@
 import { createApp, defineAsyncComponent } from 'vue';
-import { createI18n } from 'vue-i18n';
 import { AppOrServiceRoute, i18n as I18n, app, http, EnumPlugin, enumUtils } from '@xcan-angus/infra';
 import router, { startupGuard } from '@/router';
 import store from '@/store';
@@ -37,7 +36,7 @@ const bootstrap = async () => {
       }
     };
 
-    const i18n = createI18n({
+    const i18n = I18n.setupI18n({
       locale: SUPPORTED_LOCALES.includes(locale as any) ? locale : DEFAULT_LOCALE,
       legacy: false,
       messages,

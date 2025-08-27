@@ -536,7 +536,7 @@ defineExpose({ add, startInterval });
     :class="{'border-blue-text-active': state.editable}">
     <div class="py-2 px-4 font-semibold bg-gray-2 flex justify-between border-b text-3">
       <div class="flex items-center">
-        <span v-if="!state.id">{{ t('node.nodeItem.buttons.addNode') }}</span>
+        <span v-if="!state.id">{{ t('node.buttons.addNode') }}</span>
         <template v-else>
           <template v-if="editNameId !== state.id">
             <RouterLink :to="`/node/detail/${state.id}`"><span class="text-3.5">{{ state.name }}</span></RouterLink>
