@@ -109,10 +109,10 @@
         "importExample": "Import Example",
         "importExampleDescription": "Import sample business data to quickly familiarize with AngusTester features and functionality.",
         "projectMembers": "Members",
+        "membersDescription": "Define project participants who will automatically receive project data permissions for seamless team collaboration.",
         "user": "User",
         "department": "Department",
         "group": "Group",
-        "membersDescription": "Define project participants who will automatically receive project data permissions for seamless team collaboration.",
         "selectUser": "Select User",
         "selectDepartment": "Select Department",
         "selectGroup": "Select Group",
@@ -210,14 +210,14 @@
         "tag": "Data Tags"
       },
       "form": {
-        "projectName": "Project Name",
-        "timePlan": "Time Plan",
+        "projectName": "Name",
+        "timePlan": "Time",
         "owner": "Owner",
-        "projectMembers": "Project Members",
+        "projectMembers": "Members",
         "user": "User",
         "group": "Group",
         "department": "Department",
-        "projectDescription": "Project Description",
+        "projectDescription": "Description",
         "noDescription": "No description~"
       }
     },
@@ -257,7 +257,7 @@
       "form": {
         "name": "Name",
         "projectNamePlaceholder": "Project name, maximum 100 characters",
-        "timePlan": "Time Plan",
+        "timePlan": "Time",
         "time": "Time",
         "timeDescription": "Time constraints ensure project completion within agreed deadlines, meeting customer expectations and contractual requirements.",
         "owner": "Owner",
@@ -277,7 +277,7 @@
         "selectGroup": "Select Group",
         "description": "Description",
         "descriptionPlaceholder": "Description, maximum 2000 characters",
-        "clickToReplaceIcon": "Click to replace icon"
+        "clickToReplaceIcon": "Upload Icon"
       }
     }
   },
