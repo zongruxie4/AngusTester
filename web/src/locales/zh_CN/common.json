@@ -44,7 +44,8 @@
     "saveAndAdd": "保存并添加下一条",
     "stop": "终止",
     "deleteAll": "全部删除",
-    "move": "移动"
+    "move": "移动",
+    "more": "更多"
   },
   "orgNames": {
     "user": "用户",

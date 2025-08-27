@@ -1,0 +1,905 @@
+<script lang="ts" setup>
+import { computed, ref, watch, defineAsyncComponent } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { DatePicker, Icon, Image, Input, Modal, notification, Select, SelectUser } from '@xcan-angus/vue-ui';
+import { Form, FormItem, RadioButton, RadioGroup, Upload, Popover } from 'ant-design-vue';
+import { project } from '@/api/tester';
+import { GM, upload, appContext } from '@xcan-angus/infra';
+
+const { t } = useI18n();
+
+export type Project = {
+  name: string;
+  ownerId: string;
+  id?: string;
+  avatar?: string;
+  description?: string;
+  members?: { [key: string]: any },
+  startDate: string;
+  deadlineDate: string;
+  importExample?: boolean;
+}
+
+interface Props {
+  visible: boolean;
+  dataSource?: Project,
+  closable: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  visible: false,
+  dataSource: undefined,
+  closable: true
+});
+const userInfo = ref(appContext.getUser());
+
+// eslint-disable-next-line func-call-spacing
+const emit = defineEmits<{
+  (e: 'update:visible', value: boolean): void;
+  (e: 'cancel', value: boolean): void;
+  (e: 'ok'): void;
+}>();
+
+const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+
+const formRef = ref();
+const memberType = ref('user');
+
+const projectType = ref('AGILE');
+
+const projectTypeTipConfig = {
+  AGILE: [t('project.projectAddModal.projectTypeTip.agile.features'), t('project.projectAddModal.projectTypeTip.agile.scenarios')],
+  GENERAL: [t('project.projectAddModal.projectTypeTip.general.features'), t('project.projectAddModal.projectTypeTip.general.scenarios')],
+  TESTING: [t('project.projectAddModal.projectTypeTip.testing.features'), t('project.projectAddModal.projectTypeTip.testing.scenarios')]
+};
+
+const loading = ref(false);
+const formData = ref<{
+  id?: string;
+  name: string;
+  ownerId: string | undefined;
+  description: string;
+  avatar: string;
+  dateRange: string | [string, string] | undefined;
+  importExample: boolean;
+}>({
+  name: '',
+  ownerId: undefined,
+  description: '',
+  avatar: '',
+  dateRange: undefined,
+  importExample: true
+});
+
+const members = ref<{
+  USER: string[];
+  DEPT: string[];
+  GROUP: string[];
+}>({
+  USER: [],
+  DEPT: [],
+  GROUP: []
+});
+
+const selectProjectType = (value) => {
+  projectType.value = value;
+};
+
+const uploadImg = async ({ file }) => {
+  const [error, { data = [] }] = await upload(file, {
+    bizKey: 'angusTesterProjectAvatar'
+  });
+  if (error) {
+    return;
+  }
+  if (data.length > 0) {
+    formData.value.avatar = data[0].url;
+  }
+};
+
+const delImg = () => {
+  formData.value.avatar = '';
+};
+
+const cancel = () => {
+  emit('update:visible', false);
+  emit('cancel', false);
+};
+
+const defaultOptionsUser = ref<{ [key: string]: any }>({});
+const defaultOptionsDept = ref<{ [key: string]: any }>({});
+const defaultOptionsGroup = ref<{ [key: string]: any }>({});
+
+const setDefaultData = () => {
+  const _dataSource = props.dataSource;
+  if (!_dataSource) {
+    return;
+  }
+
+  const { id, name, ownerId, description = '', avatar = '', startDate, deadlineDate, importExample = false } = _dataSource;
+  formData.value = {
+    id,
+    name,
+    ownerId,
+    description,
+    avatar,
+    dateRange: [startDate, deadlineDate],
+    importExample
+  };
+
+  if (_dataSource.members?.USER) {
+    members.value.USER = _dataSource.members?.USER.map(i => {
+      defaultOptionsUser.value[i.id] = { ...i, fullName: i.name };
+      return i.id;
+    });
+  }
+
+  if (_dataSource.members?.DEPT) {
+    members.value.DEPT = _dataSource.members?.DEPT.map(i => {
+      defaultOptionsDept.value[i.id] = { ...i, fullName: i.name };
+      return i.id;
+    });
+  }
+
+  if (_dataSource.members?.GROUP) {
+    members.value.GROUP = _dataSource.members?.GROUP.map(i => {
+      defaultOptionsGroup.value[i.id] = { ...i, fullName: i.name };
+      return i.id;
+    });
+  }
+};
+
+const descRichRef = ref();
+const validateDesc = () => {
+  if (descRichRef.value && descRichRef.value.getLength() > 2000) {
+    return Promise.reject(t('project.projectAddModal.validation.maxCharacters'));
+  }
+  return Promise.resolve();
+};
+
+const ok = async () => {
+  formRef.value.validate().then(async () => {
+    loading.value = true;
+    const { USER, DEPT, GROUP } = members.value;
+    const { dateRange, ...otherProject } = formData.value;
+    const dateRangeArray = Array.isArray(dateRange) ? dateRange : [];
+    const [error] = !formData.value.id
+      ? await project.addProject({ ...otherProject, type: projectType.value, startDate: dateRangeArray[0], deadlineDate: dateRangeArray[1], memberTypeIds: { USER: USER.length ? USER : undefined, DEPT: DEPT.length ? DEPT : undefined, GROUP: GROUP.length ? GROUP : undefined } })
+      : await project.putProject({ ...otherProject, type: projectType.value, startDate: dateRangeArray[0], deadlineDate: dateRangeArray[1], memberTypeIds: { USER: USER.length ? USER : undefined, DEPT: DEPT.length ? DEPT : undefined, GROUP: GROUP.length ? GROUP : undefined } });
+    loading.value = false;
+    if (error) {
+      return;
+    }
+    if (formData.value.id) {
+      notification.success(t('project.projectAddModal.messages.updateSuccess'));
+    } else {
+      notification.success(t('project.projectAddModal.messages.addSuccess'));
+    }
+
+    emit('update:visible', false);
+    emit('ok');
+  });
+};
+
+watch(() => props.visible, newValue => {
+  if (!newValue) {
+    return;
+  }
+  if (props.dataSource) {
+    setDefaultData();
+  } else {
+    formData.value = {
+      name: '',
+      ownerId: undefined,
+      description: '',
+      avatar: '',
+      dateRange: undefined,
+      importExample: true
+    };
+    if (userInfo.value && userInfo.value.id) {
+      members.value = {
+        USER: [String(userInfo.value.id || '')],
+        DEPT: [],
+        GROUP: []
+      };
+      defaultOptionsUser.value = {
+        [String(userInfo.value.id)]: {
+          fullName: userInfo.value.fullName,
+          id: userInfo.value.id,
+          name: userInfo.value.fullName,
+          disabled: true
+        }
+      };
+    } else {
+      members.value = {
+        USER: [],
+        DEPT: [],
+        GROUP: []
+      };
+    }
+    defaultOptionsDept.value = {};
+    defaultOptionsGroup.value = {};
+  }
+}, {
+  immediate: true
+});
+
+const modalTitle = computed(() => {
+  return props.dataSource?.id ? t('project.projectAddModal.modal.editProject') : t('project.projectAddModal.modal.addProject');
+});
+</script>
+<template>
+  <Modal
+    :visible="props.visible"
+    :title="modalTitle"
+    :closable="props.closable"
+    :cancelButtonProps="{
+      class: {'hidden': !props.closable}
+    }"
+    :okButtonProps="{
+      loading: loading
+    }"
+    :width="1200"
+    @ok="ok"
+    @cancel="cancel">
+    <div class="modal-content">
+      <!-- 项目类型选择区域 -->
+      <div class="project-type-section">
+        <h3 class="section-title">{{ t('project.projectAddModal.form.selectProjectType') }}</h3>
+        <div class="project-type-cards">
+          <div
+            class="project-type-card"
+            :class="{ 'selected': projectType === 'AGILE' }"
+            @click="selectProjectType('AGILE')">
+            <Icon
+              v-show="projectType === 'AGILE'"
+              icon="icon-xuanzhongduigou"
+              class="selection-icon" />
+            <Icon icon="icon-minjiexiangmuguanli" class="type-icon" />
+            <div class="type-name">{{ t('project.projectAddModal.projectTypeName.agile') }}</div>
+          </div>
+          <div
+            class="project-type-card"
+            :class="{ 'selected': projectType === 'GENERAL' }"
+            @click="selectProjectType('GENERAL')">
+            <Icon
+              v-show="projectType === 'GENERAL'"
+              icon="icon-xuanzhongduigou"
+              class="selection-icon" />
+            <Icon icon="icon-jiandanxiangmuguanli" class="type-icon" />
+            <div class="type-name">{{ t('project.projectAddModal.projectTypeName.general') }}</div>
+          </div>
+          <div
+            class="project-type-card"
+            :class="{ 'selected': projectType === 'TESTING' }"
+            @click="selectProjectType('TESTING')">
+            <Icon
+              v-show="projectType === 'TESTING'"
+              icon="icon-xuanzhongduigou"
+              class="selection-icon" />
+            <Icon icon="icon-ceshixiangmuguanli" class="type-icon" />
+            <div class="type-name">{{ t('project.projectAddModal.projectTypeName.testing') }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 表单填写区域 -->
+      <div class="form-fields-section">
+        <h3 class="section-title">{{ t('project.projectAddModal.form.basicInfo') }}</h3>
+        <Form
+          ref="formRef"
+          class="project-form"
+          :model="formData"
+          layout="vertical">
+          <!-- 头像上传 -->
+          <FormItem class="avatar-upload-item">
+            <div class="avatar-upload-container">
+              <div v-if="formData.avatar" class="avatar-preview">
+                <div class="avatar-wrapper">
+                  <Image
+                    :src="formData.avatar"
+                    class="avatar-image"
+                    alt="avatar" />
+                  <div class="avatar-overlay">
+                    <Icon
+                      icon="icon-qingchu"
+                      class="delete-icon"
+                      @click="delImg" />
+                  </div>
+                </div>
+              </div>
+              <div v-else class="avatar-upload">
+                <Upload
+                  name="avatar"
+                  accept=".png,.jpeg,.jpg"
+                  listType="picture-card"
+                  :showUploadList="false"
+                  :customRequest="uploadImg"
+                  class="upload-component">
+                  <div class="upload-area">
+                    <img src="../images/default.png" class="upload-icon" />
+                    <div class="upload-text">{{ t('project.projectAddModal.form.clickToReplaceIcon') }}</div>
+                  </div>
+                </Upload>
+              </div>
+            </div>
+          </FormItem>
+
+          <!-- 项目名称 -->
+          <FormItem
+            :label="t('project.projectAddModal.form.name')"
+            name="name"
+            class="form-field"
+            required>
+            <Input
+              v-model:value="formData.name"
+              :placeholder="t('project.projectAddModal.form.projectNamePlaceholder')"
+              :maxlength="100"
+              class="enhanced-input" />
+          </FormItem>
+
+          <!-- 时间计划 -->
+          <FormItem
+            name="dateRange"
+            class="form-field with-tooltip"
+            :rules="[{ required: true, message: t('project.projectAddModal.validation.timeRequired')}]">
+            <template #label>
+              <span>{{ t('project.projectAddModal.form.time') }}</span>
+            </template>
+            <DatePicker
+              v-model:value="formData.dateRange"
+              :allowClear="false"
+              class="enhanced-date-picker"
+              type="date-range" />
+            <Popover placement="right" overlayClassName="form-tooltip">
+              <template #content>
+                <div class="tooltip-content">
+                  {{ t('project.projectAddModal.form.timeDescription') }}
+                </div>
+              </template>
+              <Icon icon="icon-tishi1" class="tooltip-icon" />
+            </Popover>
+          </FormItem>
+
+          <div class="form-row">
+            <!-- 项目负责人 -->
+            <FormItem
+              name="ownerId"
+              class="form-field with-tooltip flex-1"
+              :rules="[{ required: true, message: t('project.projectAddModal.validation.ownerRequired')}]">
+              <template #label>
+                <span>{{ t('project.projectAddModal.form.owner') }}</span>
+              </template>
+              <SelectUser
+                v-model:value="formData.ownerId"
+                size="small"
+                :placeholder="t('project.projectAddModal.form.ownerPlaceholder')"
+                :allowClear="false"
+                class="enhanced-select" />
+              <Popover placement="right" overlayClassName="form-tooltip">
+                <template #content>
+                  <div class="tooltip-content">
+                    {{ t('project.projectAddModal.form.ownerDescription') }}
+                  </div>
+                </template>
+                <Icon icon="icon-tishi1" class="tooltip-icon" />
+              </Popover>
+            </FormItem>
+
+            <!-- 导入示例 -->
+            <FormItem class="form-field with-tooltip flex-1">
+              <template #label>
+                <span>{{ t('project.projectAddModal.form.importExample') }}</span>
+              </template>
+              <RadioGroup
+                v-model:value="formData.importExample"
+                :options="[{ value: true, label: t('project.projectAddModal.form.yes')}, { value: false, label: t('project.projectAddModal.form.no') }]"
+                class="enhanced-radio-group" />
+              <Popover placement="right" overlayClassName="form-tooltip">
+                <template #content>
+                  <div class="tooltip-content">
+                    {{ t('project.projectAddModal.form.importExampleDescription') }}
+                  </div>
+                </template>
+                <Icon icon="icon-tishi1" class="tooltip-icon" />
+              </Popover>
+            </FormItem>
+          </div>
+
+          <!-- 项目成员 -->
+          <FormItem
+            :label="t('project.projectAddModal.form.members')"
+            class="form-field members-field"
+            required>
+            <div class="members-selector">
+              <div class="member-type-tabs">
+                <RadioGroup
+                  v-model:value="memberType"
+                  buttonStyle="solid"
+                  size="small"
+                  class="enhanced-radio-group">
+                  <RadioButton value="user">
+                    {{ t('project.projectAddModal.form.user') }}
+                  </RadioButton>
+                  <RadioButton value="dept">
+                    {{ t('project.projectAddModal.form.department') }}
+                  </RadioButton>
+                  <RadioButton value="group">
+                    {{ t('project.projectAddModal.form.group') }}
+                  </RadioButton>
+                </RadioGroup>
+                <Popover placement="right" overlayClassName="form-tooltip">
+                  <template #content>
+                    <div class="tooltip-content">
+                      {{ t('project.projectAddModal.form.membersDescription') }}
+                    </div>
+                  </template>
+                  <Icon icon="icon-tishi1" class="tooltip-icon" />
+                </Popover>
+              </div>
+              <div class="member-select-container">
+                <Select
+                  v-show="memberType === 'user'"
+                  v-model:value="members.USER"
+                  :showSearch="true"
+                  :placeholder="t('project.projectAddModal.form.selectUser')"
+                  :action="`${GM}/user?fullTextSearch=true`"
+                  :defaultOptions="defaultOptionsUser"
+                  mode="multiple"
+                  :fieldNames="{ label: 'fullName', value: 'id' }"
+                  class="enhanced-select" />
+
+                <Select
+                  v-show="memberType === 'dept'"
+                  v-model:value="members.DEPT"
+                  :placeholder="t('project.projectAddModal.form.selectDepartment')"
+                  :showSearch="true"
+                  :action="`${GM}/dept?fullTextSearch=true`"
+                  :defaultOptions="defaultOptionsDept"
+                  mode="multiple"
+                  :fieldNames="{ label: 'name', value: 'id' }"
+                  class="enhanced-select" />
+
+                <Select
+                  v-show="memberType === 'group'"
+                  v-model:value="members.GROUP"
+                  :placeholder="t('project.projectAddModal.form.selectGroup')"
+                  :showSearch="true"
+                  :action="`${GM}/group?fullTextSearch=true`"
+                  :defaultOptions="defaultOptionsGroup"
+                  mode="multiple"
+                  :fieldNames="{ label: 'name', value: 'id' }"
+                  class="enhanced-select" />
+              </div>
+            </div>
+          </FormItem>
+
+          <!-- 项目描述 -->
+          <FormItem
+            :label="t('project.projectAddModal.form.description')"
+            name="description"
+            class="form-field description-field"
+            :rules="[{validator: validateDesc}]">
+            <RichEditor
+              ref="descRichRef"
+              v-model:value="formData.description"
+              class="enhanced-editor"
+              :height="80"
+              :options="{placeholder: t('project.projectAddModal.form.descriptionPlaceholder'), theme: 'bubble'}" />
+          </FormItem>
+        </Form>
+      </div>
+
+      <!-- 项目类型预览区域 -->
+      <div class="project-preview-section">
+        <h3 class="section-title">{{ t('project.projectAddModal.projectTypeName.' + projectType.toLowerCase()) }}</h3>
+        <div class="preview-content">
+          <div class="preview-image">
+            <img
+              v-show="projectType==='AGILE'"
+              src="../images/agile.png"
+              class="preview-img agile" />
+            <img
+              v-show="projectType==='GENERAL'"
+              src="../images/general.png"
+              class="preview-img general" />
+            <img
+              v-show="projectType==='TESTING'"
+              src="../images/testing.png"
+              class="preview-img testing" />
+          </div>
+          <div class="preview-features">
+            <div
+              v-for="(item, index) in projectTypeTipConfig[projectType]"
+              :key="index"
+              class="feature-item">
+              <Icon icon="icon-duihao-copy" class="feature-icon" />
+              <p class="feature-text">{{ item }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Modal>
+</template>
+<style scoped>
+/* 弹窗内容容器 */
+.modal-content {
+  display: grid;
+  grid-template-columns: 200px 2.67fr 1fr;
+  gap: 32px;
+  min-height: 500px;
+}
+
+/* 项目类型选择区域 */
+.project-type-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.project-type-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.project-type-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 12px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: white;
+  min-height: 100px;
+}
+
+.project-type-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+  transform: translateY(-2px);
+}
+
+.project-type-card.selected {
+  border-color: #3b82f6;
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.selection-icon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 16px;
+  color: #3b82f6;
+}
+
+.type-icon {
+  font-size: 32px;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.project-type-card.selected .type-icon {
+  color: #3b82f6;
+}
+
+.type-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.project-type-card.selected .type-name {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+/* 表单字段区域 */
+.form-fields-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-form {
+  flex: 1;
+}
+
+.form-field {
+  margin-bottom: 20px;
+}
+
+.form-field.with-tooltip {
+  position: relative;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* 头像上传样式 */
+.avatar-upload-item {
+  margin-bottom: 24px;
+}
+
+.avatar-upload-container {
+  display: flex;
+  justify-content: center;
+}
+
+.avatar-preview {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.avatar-wrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid #e5e7eb;
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.avatar-wrapper:hover .avatar-overlay {
+  opacity: 1;
+}
+
+.delete-icon {
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.avatar-upload {
+  display: flex;
+  align-items: center;
+}
+
+.upload-component {
+  width: 100px;
+  height: 100px;
+}
+
+:global(.upload-component .ant-upload) {
+  width: 100px !important;
+  height: 100px !important;
+}
+
+.upload-area {
+  width: 100px;
+  height: 100px;
+  border: 2px dashed #d1d5db;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #f9fafb;
+}
+
+.upload-area:hover {
+  border-color: #3b82f6;
+  background: #eff6ff;
+}
+
+.upload-icon {
+  width: 32px;
+  height: 32px;
+  margin-bottom: 6px;
+}
+
+.upload-text {
+  font-size: 11px;
+  color: #6b7280;
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* 增强的表单控件 */
+.enhanced-input {
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  transition: all 0.3s ease;
+}
+
+.enhanced-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.enhanced-date-picker {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.enhanced-select {
+  border-radius: 8px;
+}
+
+.enhanced-radio-group {
+  border-radius: 8px;
+}
+
+.enhanced-editor {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #d1d5db;
+}
+
+/* 成员选择器样式 */
+.members-field {
+  margin-bottom: 24px;
+}
+
+.members-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.member-type-tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.member-select-container {
+  min-height: 32px;
+}
+
+/* 描述字段样式 */
+.description-field {
+  margin-bottom: 24px;
+}
+
+/* 工具提示样式 */
+.tooltip-icon {
+  position: absolute;
+  right: -20px;
+  top: 8px;
+  font-size: 14px;
+  color: #9ca3af;
+  cursor: help;
+}
+
+:global(.form-tooltip .ant-popover-inner-content) {
+  padding: 12px 16px;
+}
+
+.tooltip-content {
+  max-width: 240px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #374151;
+}
+
+/* 项目预览区域 */
+.project-preview-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
+.preview-image {
+  padding: 20px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+}
+
+.preview-img {
+  max-width: 100%;
+  height: auto;
+  transition: all 0.3s ease;
+}
+
+.preview-img.agile {
+  width: 70%;
+}
+
+.preview-img.general {
+  width: 85%;
+}
+
+.preview-img.testing {
+  width: 72%;
+}
+
+.preview-features {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.feature-icon {
+  font-size: 12px;
+  color: #059669;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.feature-text {
+  font-size: 12px;
+  line-height: 1.4;
+  color: #374151;
+  margin: 0;
+}
+
+/* 响应式设计 */
+@media (max-width: 1100px) {
+  .modal-content {
+    grid-template-columns: 180px 1fr 180px;
+    gap: 24px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 900px) {
+  .modal-content {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+</style>

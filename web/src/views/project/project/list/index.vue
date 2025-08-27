@@ -58,7 +58,7 @@ type Project = {
 }
 
 const Introduce = defineAsyncComponent(() => import('@/views/project/project/list/introduce/index.vue'));
-const AddModal = defineAsyncComponent(() => import('@/views/project/add/index.vue'));
+const AddModal = defineAsyncComponent(() => import('@/views/project/project/addModal/index.vue'));
 const RichText = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
 
 const isAdmin = inject('isAdmin', ref(false));
@@ -338,153 +338,183 @@ defineExpose({
             </div>
           </div>
 
-          <div class="border-t flex-1 border-theme-text-box">
+          <div class="project-list-container">
             <div
               v-for="item in data"
               :key="item.id"
-              class="border-b border-theme-text-box px-3.5 py-3 rounded flex text-3 hover:bg-gray-1">
-              <Image
-                :src="item.avatar"
-                :defaultImg="DefaultProjectImage"
-                class="w-12 h-12 rounded-full" />
-              <div class="flex-1 space-y-2.5 min-w-0 px-2">
-                <div class="flex space-x-2 items-center">
+              class="project-item">
+              <div class="project-avatar-section">
+                <Image
+                  :src="item.avatar"
+                  :defaultImg="DefaultProjectImage"
+                  class="project-avatar"
+                  style="width: 52px; height: 52px; object-fit: cover; border-radius: 50%;" />
+              </div>
+
+              <div class="project-main-content">
+                <div class="project-header-row">
                   <div
-                    class="flex-1/2 truncate cursor-pointer "
-                    style="color:#1890ff;"
+                    class="project-name"
                     :title="item.name"
                     @click="handleDetail(item)">
                     {{ item.name }}
                   </div>
-                  <Tag>{{ item.type?.message || 'Agile Project' }}</Tag>
-                  <div class="flex-1/2 truncate" :title="item.id">ID: <span>{{ item.id }}</span></div>
+                  <Tag class="project-type-tag">{{ item.type?.message || 'Agile Project' }}</Tag>
+                  <div class="project-id-text" :title="item.id">ID: <span>{{ item.id }}</span></div>
                 </div>
-                <p
-                  v-if="item.description"
-                  class="truncate">
-                  <RichText :value="item.description" />
-                </p>
-                <p v-else class="text-gray-3">{{ t('project.noDescription') }}</p>
+
+                <div class="project-description-row">
+                  <p
+                    v-if="item.description"
+                    class="project-description-text">
+                    <RichText :value="item.description" />
+                  </p>
+                  <p v-else class="project-no-description-text">{{ t('project.noDescription') }}</p>
+                </div>
               </div>
-              <div class="flex-1 space-y-2.5">
-                <div class="flex">
-                  <span>{{ t('project.owner') }}: <span>{{ item.ownerName }}</span></span>
-                  <div class="ml-6">{{ t('project.members') }}: </div>
-                  <div class="inline-flex space-x-1 flex-1 flex-wrap ml-2">
-                    <Tooltip
-                      v-for="(avatars, idx) in item.showMembers.USER || []"
-                      :key="idx"
-                      :title="avatars.name">
-                      <template #title>
-                        <span>{{ avatars.name }}</span>
-                      </template>
-                      <div class="w-5 h-5 rounded-full overflow-hidden">
-                        <Image
-                          class="w-full"
-                          type="avatar"
-                          :src="avatars.avatar" />
-                      </div>
-                    </Tooltip>
-                    <Tooltip
-                      v-for="(avatars, idx) in item.showMembers.GROUP || []"
-                      :key="idx"
-                      :title="t('project.group')">
-                      <template #title>
-                        <span>{{ t('project.group') }}</span>
-                      </template>
-                      <Tag class="h-5 leading-5">{{ avatars.name }}</Tag>
-                    </Tooltip>
-                    <Tooltip
-                      v-for="(avatars, idx) in item.showMembers.DEPT || []"
-                      :key="idx"
-                      :title="t('project.department')">
-                      <template #title>
-                        <span>{{ t('project.department') }}</span>
-                      </template>
-                      <div>
-                        <Tag class="h-5 leading-5">{{ avatars.name }}</Tag>
-                      </div>
-                    </Tooltip>
 
-                    <Popover v-if="item.membersNum > 10">
-                      <template #title>{{ t('project.allMembers') }}</template>
-                      <template #content>
-                        <div class="space-y-2 max-w-100">
-                          <div v-if="item.members?.USER?.length" class="flex">
-                            <span class="w-15 text-right">{{ t('project.user') }}:  </span>
-                            <div class="flex flex-1 flex-wrap">
-                              <div
-                                v-for="(avatars, idx) in item.members.USER || []"
-                                :key="idx"
-                                class="mb-1 inline-flex space-x-1 pr-2">
-                                <Image
-                                  class="w-5 h-5 rounded-full "
-                                  type="avatar"
-                                  :src="avatars.avatar" />
-                                <span>{{ avatars.name }}</span>
-                              </div>
-                            </div>
-                          </div>
+              <div class="project-details-section">
+                <div class="project-members-info">
+                  <div class="owner-info">
+                    <span class="info-label">{{ t('project.owner') }}: </span>
+                    <span class="info-value">{{ item.ownerName }}</span>
+                  </div>
 
-                          <div v-if="item.members?.GROUP?.length" class="flex">
-                            <span class="w-15 text-right">{{ t('project.group') }}:  </span>
-                            <div class="flex flex-1 flex-wrap">
-                              <div
-                                v-for="(avatars, idx) in item.members?.GROUP || []"
-                                :key="idx"
-                                class="mb-1 pr-1">
-                                <Tag class="h-5 leading-5">{{ avatars.name }}</Tag>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div v-if="item.members?.DEPT?.length" class="flex">
-                            <span class="w-15 text-right">{{ t('project.department') }}:  </span>
-                            <div class="flex flex-1 flex-wrap">
-                              <div
-                                v-for="(avatars, idx) in item.members?.DEPT || []"
-                                :key="idx"
-                                class="mb-1 pr-1">
-                                <Tag class="h-5 leading-5">{{ avatars.name }}</Tag>
-                              </div>
-                            </div>
-                          </div>
+                  <div class="members-info">
+                    <span class="info-label">{{ t('project.members') }}: </span>
+                    <div class="members-avatars-container">
+                      <Tooltip
+                        v-for="(avatars, idx) in item.showMembers.USER || []"
+                        :key="idx"
+                        :title="avatars.name">
+                        <template #title>
+                          <span>{{ avatars.name }}</span>
+                        </template>
+                        <div class="member-avatar">
+                          <Image
+                            class="w-full"
+                            type="avatar"
+                            :src="avatars.avatar" />
                         </div>
-                      </template>
-                      <div>...</div>
-                    </Popover>
+                      </Tooltip>
+
+                      <Tooltip
+                        v-for="(avatars, idx) in item.showMembers.GROUP || []"
+                        :key="idx"
+                        :title="t('project.group')">
+                        <template #title>
+                          <span>{{ t('project.group') }}</span>
+                        </template>
+                        <Tag class="group-tag">{{ avatars.name }}</Tag>
+                      </Tooltip>
+
+                      <Tooltip
+                        v-for="(avatars, idx) in item.showMembers.DEPT || []"
+                        :key="idx"
+                        :title="t('project.department')">
+                        <template #title>
+                          <span>{{ t('project.department') }}</span>
+                        </template>
+                        <div>
+                          <Tag class="dept-tag">{{ avatars.name }}</Tag>
+                        </div>
+                      </Tooltip>
+
+                      <Popover v-if="item.membersNum > 10">
+                        <template #title>{{ t('project.allMembers') }}</template>
+                        <template #content>
+                          <div class="space-y-4 max-w-100">
+                            <div v-if="item.members?.USER?.length" class="flex">
+                              <span class="w-15 text-right">{{ t('project.user') }}：</span>
+                              <div class="flex flex-1 flex-wrap">
+                                <div
+                                  v-for="(avatars, idx) in item.members.USER || []"
+                                  :key="idx"
+                                  class="mb-2 inline-flex space-x-2 pr-4">
+                                  <Image
+                                    class="w-5 h-5 rounded-full "
+                                    type="avatar"
+                                    :src="avatars.avatar" />
+                                  <span>{{ avatars.name }}</span>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div v-if="item.members?.GROUP?.length" class="flex">
+                              <span class="w-15 text-right">{{ t('project.group') }}：</span>
+                              <div class="flex flex-1 flex-wrap">
+                                <div
+                                  v-for="(avatars, idx) in item.members?.GROUP || []"
+                                  :key="idx"
+                                  class="mb-2 pr-3">
+                                  <Tag class="h-5 leading-5">{{ avatars.name }}</Tag>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div v-if="item.members?.DEPT?.length" class="flex">
+                              <span class="w-15 text-right">{{ t('project.department') }}：</span>
+                              <div class="flex flex-1 flex-wrap">
+                                <div
+                                  v-for="(avatars, idx) in item.members?.DEPT || []"
+                                  :key="idx"
+                                  class="mb-2 pr-3">
+                                  <Tag class="h-5 leading-5">{{ avatars.name }}</Tag>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </template>
+                        <div class="more-members-indicator">...</div>
+                      </Popover>
+                    </div>
                   </div>
                 </div>
-                <div class="flex justify-between items-center">
-                  <span>{{ t('project.modifyTime') }}: {{ item.lastModifiedDate }}</span>
+
+                <div class="project-time-info">
+                  <span class="info-label">{{ t('project.modifyTime') }}: </span>
+                  <span class="info-value">{{ item.lastModifiedDate }}</span>
                 </div>
               </div>
-              <div class="flex items-center flex-wrap">
-                <Button
-                  :title="t('actions.edit')"
-                  size="small"
-                  type="text"
-                  :disabled="!isAdmin && props.userInfo?.id !== item.ownerId && props.userInfo?.id !== item.createdBy"
-                  class="space-x-1 flex items-center py-0 px-1"
-                  @click="editProject(item)">
-                  <Icon icon="icon-bianji" class="text-3.5 cursor-pointer text-theme-text-hover" />
-                  {{ t('actions.edit') }}
-                </Button>
 
-                <Button
-                  :title="t('actions.delete')"
-                  size="small"
-                  type="text"
-                  :disabled="!isAdmin && props.userInfo?.id !== item.ownerId && props.userInfo?.id !== item.createdBy"
-                  class="space-x-1 flex items-center py-0 px-1"
-                  @click="delProject(item)">
-                  <Icon icon="icon-qingchu" class="text-3.5 cursor-pointer text-theme-text-hover" />
-                  {{ t('actions.delete') }}
-                </Button>
+              <div class="project-actions-section">
+                <div class="edit-action-row">
+                  <Button
+                    :title="t('actions.edit')"
+                    size="small"
+                    type="text"
+                    :disabled="!isAdmin && props.userInfo?.id !== item.ownerId && props.userInfo?.id !== item.createdBy"
+                    class="action-button edit-action"
+                    @click="editProject(item)">
+                    <Icon icon="icon-bianji" class="text-3.5 cursor-pointer text-theme-text-hover" />
+                    {{ t('actions.edit') }}
+                  </Button>
+                </div>
 
-                <Dropdown :menuItems="moreButton" @click="editProject(item, $event.key)">
-                  <Icon icon="icon-gengduo" class="ml-1" />
-                </Dropdown>
+                <div class="delete-action-row">
+                  <Button
+                    :title="t('actions.delete')"
+                    size="small"
+                    type="text"
+                    :disabled="!isAdmin && props.userInfo?.id !== item.ownerId && props.userInfo?.id !== item.createdBy"
+                    class="action-button delete-action"
+                    @click="delProject(item)">
+                    <Icon icon="icon-qingchu" class="text-3.5 cursor-pointer text-theme-text-hover" />
+                    {{ t('actions.delete') }}
+                  </Button>
+                </div>
+
+                <div class="dropdown-row">
+                  <Dropdown :menuItems="moreButton" @click="editProject(item, $event.key)">
+                    <Button
+                      size="small"
+                      type="text"
+                      class="action-button more-action">
+                      <Icon icon="icon-gengduo" class="more-options-icon" />
+                      {{ t('actions.more') }}
+                    </Button>
+                  </Dropdown>
+                </div>
               </div>
             </div>
             <NoData
@@ -495,7 +525,7 @@ defineExpose({
 
           <Pagination
             v-bind="pagination"
-            class="my-3"
+            class="my-3 mt-6"
             @change="changePage" />
         </Spin>
       </div>
@@ -538,5 +568,255 @@ defineExpose({
   .w-right {
     width: 350px;
   }
+}
+
+/* 项目列表容器 */
+.project-list-container {
+  border-top: 1px solid var(--theme-text-box);
+  flex: 1;
+  margin-bottom: 20px;
+}
+
+/* 项目列表项 */
+.project-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 1rem 1.25rem 0.5rem 1.25rem;
+  border-bottom: 1px solid #f1f5f9;
+  border-top: 1px solid #f1f5f9;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.project-item:first-child {
+  border-top: 1px solid #f1f5f9;
+}
+
+.project-item:hover {
+  background: #f8fafc;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* 项目头像区域 */
+.project-avatar-section {
+  flex-shrink: 0;
+  margin-right: 1rem;
+}
+
+.project-avatar {
+  width: 62px !important;
+  height: 62px !important;
+  border-radius: 50% !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f1f5f9;
+  object-fit: cover;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+/* 项目主要内容区域 */
+.project-main-content {
+  flex: 1;
+  min-width: 0;
+  margin-right: 1.5rem;
+}
+
+.project-header-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.project-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  color: #1890ff;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.project-name:hover {
+  color: #096dd9;
+}
+
+.project-type-tag {
+  background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+  border-radius: 6px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.project-id-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.project-description-row {
+  margin-bottom: 0.5rem;
+}
+
+.project-description-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #475569;
+  margin: 0;
+  line-height: 1.4;
+  max-height: 2.8em;
+}
+
+.project-no-description-text {
+  color: #94a3b8;
+  font-style: italic;
+  margin: 0;
+}
+
+/* 项目详情区域 */
+.project-details-section {
+  flex: 1;
+  min-width: 0;
+  margin-right: 1.5rem;
+}
+
+.project-members-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5875rem;
+  margin-bottom: 0.5875rem;
+}
+
+.owner-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.members-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.info-label {
+  color: #64748b;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.info-value {
+  color: #334155;
+  font-weight: 500;
+}
+
+.members-avatars-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.member-avatar {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.group-tag {
+  height: 1.25rem;
+  line-height: 1.25rem;
+  background: linear-gradient(135deg, #dcfce7, #f0fdf4);
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  padding: 0 0.375rem;
+}
+
+.dept-tag {
+  height: 1.25rem;
+  line-height: 1.25rem;
+  background: linear-gradient(135deg, #f3e8ff, #faf5ff);
+  color: #7c3aed;
+  border: 1px solid #ddd6fe;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  padding: 0 0.375rem;
+}
+
+.more-members-indicator {
+  color: #94a3b8;
+  cursor: pointer;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.more-members-indicator:hover {
+  color: #64748b;
+}
+
+.project-time-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* 项目操作区域 */
+.project-actions-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.0625rem;
+  flex-shrink: 0;
+}
+
+.edit-action-row,
+.delete-action-row,
+.dropdown-row {
+  display: flex;
+  align-items: center;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: all 0.2s ease;
+  border: none;
+  background: transparent;
+}
+
+.edit-action:hover {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.delete-action:hover {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.more-action:hover {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.more-options-icon {
+  color: #64748b;
+  transition: color 0.2s ease;
 }
 </style>

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Image, notification, Icon } from '@xcan-angus/vue-ui';
-import { Form, FormItem, TabPane, Tabs, Tag } from 'ant-design-vue';
+import { Image, Icon } from '@xcan-angus/vue-ui';
+import { TabPane, Tabs, Tag } from 'ant-design-vue';
 import { project } from 'src/api/tester';
 import DefaultProjectPng from '@/views/project/project/images/default.png';
 import dayjs from 'dayjs';
@@ -41,13 +41,6 @@ const Module = defineAsyncComponent(() => import('@/views/project/project/edit/m
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 const Version = defineAsyncComponent(() => import('@/views/task/version/list/index.vue'));
 
-// eslint-disable-next-line func-call-spacing
-const emit = defineEmits<{
-  (e: 'update:visible', value: boolean): void;
-  (e: 'cancel', value: boolean): void;
-  (e: 'ok'): void;
-}>();
-
 const projectTypeTipConfig = {
   AGILE: [t('project.projectDetail.projectTypeTip.agile.features'), t('project.projectDetail.projectTypeTip.agile.scenarios')],
   GENERAL: [t('project.projectDetail.projectTypeTip.general.features'), t('project.projectDetail.projectTypeTip.general.scenarios')],
@@ -60,22 +53,22 @@ const projectTypeName = {
   TESTING: t('project.projectDetail.projectTypeName.testing')
 };
 const activeKey = ref('basic');
-const formRef = ref();
-// const memberType = ref('user');
 
-const loading = ref(false);
 const formData = ref({
   name: '',
   ownerId: undefined,
   description: '',
   avatar: '',
-  type: 'AGILE'
-});
-
-const members = ref({
-  USER: [],
-  DEPT: [],
-  GROUP: []
+  type: 'AGILE',
+  id: undefined,
+  startDate: undefined,
+  deadlineDate: undefined,
+  ownerName: undefined,
+  members: {
+    USER: [] as any[],
+    DEPT: [] as any[],
+    GROUP: [] as any[]
+  }
 });
 
 const loadformData = async () => {
@@ -83,54 +76,11 @@ const loadformData = async () => {
   if (error) {
     return;
   }
-  formData.value = data;
-  formData.value.type = data.type?.value || 'AGILE';
-  if (formData.value.members?.USER) {
-    members.value.USER = formData.value.members?.USER.map(i => {
-      defaultOptionsUser.value[i.id] = { ...i, fullName: i.name };
-      return i.id;
-    });
-  }
-
-  if (formData.value.members?.DEPT) {
-    members.value.DEPT = formData.value.members?.DEPT.map(i => {
-      defaultOptionsDept.value[i.id] = { ...i, fullName: i.name };
-      return i.id;
-    });
-  }
-
-  if (formData.value.members?.GROUP) {
-    members.value.GROUP = formData.value.members?.GROUP.map(i => {
-      defaultOptionsGroup.value[i.id] = { ...i, fullName: i.name };
-      return i.id;
-    });
-  }
-};
-
-const defaultOptionsUser = ref<{ [key: string]: any }>({});
-const defaultOptionsDept = ref<{ [key: string]: any }>({});
-const defaultOptionsGroup = ref<{ [key: string]: any }>({});
-
-const ok = async () => {
-  formRef.value.validate().then(async () => {
-    loading.value = true;
-    const { USER, DEPT, GROUP } = members.value;
-    const [error] = !formData.value.id
-      ? await project.addProject({ ...formData.value, memberTypeIds: { USER: USER.length ? USER : undefined, DEPT: DEPT.length ? DEPT : undefined, GROUP: GROUP.length ? GROUP : undefined } })
-      : await project.putProject({ ...formData.value, memberTypeIds: { USER: USER.length ? USER : undefined, DEPT: DEPT.length ? DEPT : undefined, GROUP: GROUP.length ? GROUP : undefined } });
-    loading.value = false;
-    if (error) {
-      return;
-    }
-    if (formData.value.id) {
-      notification.success(t('project.projectDetail.messages.updateSuccess'));
-    } else {
-      notification.success(t('project.projectDetail.messages.addSuccess'));
-    }
-
-    emit('update:visible', false);
-    emit('ok');
-  });
+  formData.value = {
+    ...data,
+    type: data.type?.value || 'AGILE',
+    members: data.members || { USER: [], DEPT: [], GROUP: [] }
+  };
 };
 
 watch(() => props.projectId, newValue => {
@@ -150,114 +100,144 @@ watch(() => props.projectId, newValue => {
   <div class="p-5 h-full overflow-auto">
     <Tabs v-model:activeKey="activeKey" size="small">
       <TabPane key="basic" :tab="t('project.projectDetail.tabs.basicInfo')">
-        <div class="flex space-x-5">
-          <Form
-            ref="formRef"
-            :colon="false"
-            :model="formData"
-            :labelCol="{ span: 3 }"
-            class="w-120 text-3">
-            <FormItem label=" ">
-              <div class="flex space-x-2">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-28">
+          <!-- 左侧项目基本信息 -->
+          <div class="lg:col-span-2 space-y-6">
+            <!-- 项目头像和名称 -->
+            <div class="flex items-center space-x-4">
+              <div class="flex-shrink-0">
                 <Image
                   v-if="formData.avatar"
                   :src="formData.avatar"
-                  class="w-25 h-25"
+                  class="w-8 h-8 rounded-lg object-cover border border-gray-200"
                   alt="avatar" />
                 <img
                   v-else
-                  class="w-20 h-20 m-2"
+                  class="w-8 h-8 rounded-lg object-cover border border-gray-200"
                   :src="DefaultProjectPng" />
               </div>
-            </FormItem>
-            <FormItem :label="t('project.projectDetail.form.projectName') + ':'" name="name">
-              <div class="text-3">
-                {{ formData.name }}
+              <div class="flex items-center min-w-0 pt-2">
+                <h1 class="text-lg font-bold text-blue-600 truncate">{{ formData.name }}</h1>
               </div>
-            </FormItem>
+            </div>
 
-            <FormItem :label="t('project.projectDetail.form.timePlan') + ':'">
-              <div v-if="formData.startDate" class="text-3">
-                {{ dayjs(formData.startDate).format('YYYY-MM-DD') }} - {{ dayjs(formData.deadlineDate).format('YYYY-MM-DD') || '' }}
+            <!-- 项目信息网格 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- 时间计划 -->
+              <div v-if="formData.startDate" class="space-y-2">
+                <div class="flex items-center space-x-2">
+                  <div class="w-1 h-4 bg-gradient-to-b from-green-500 to-green-600 rounded-full"></div>
+                  <span class="text-xs font-semibold text-gray-600">{{ t('project.projectDetail.form.timePlan') }}</span>
+                </div>
+                <div class="flex items-center space-x-1 text-green-600 ">
+                  <Icon icon="icon-time" class="text-xs" />
+                  <span class="text-xs font-medium">
+                    {{ dayjs(formData.startDate).format('YYYY-MM-DD') }} - {{ dayjs(formData.deadlineDate).format('YYYY-MM-DD') || '' }}
+                  </span>
+                </div>
               </div>
-            </FormItem>
 
-            <FormItem :label="t('project.projectDetail.form.owner') + ':'" name="ownerId">
-              <div class="text-3">
-                {{ formData.ownerName }}
+              <!-- 项目负责人 -->
+              <div class="space-y-2">
+                <div class="flex items-center space-x-2">
+                  <div class="w-1 h-4 bg-gradient-to-b from-purple-500 to-purple-600 rounded-full"></div>
+                  <span class="text-xs font-semibold text-gray-600">{{ t('project.projectDetail.form.owner') }}</span>
+                </div>
+                <div class="flex items-center space-x-1 text-purple-600 ">
+                  <Icon icon="icon-user" class="text-xs" />
+                  <span class="text-xs font-medium">{{ formData.ownerName }}</span>
+                </div>
               </div>
-            </FormItem>
+            </div>
 
-            <FormItem :label="t('project.projectDetail.form.projectMembers') + ':'" class="member-item">
-              <Tabs size="small" class="-mt-1.5">
+            <!-- 项目成员 -->
+            <div class="space-y-4">
+              <div class="flex items-center space-x-2">
+                <div class="w-1 h-4 bg-gradient-to-b from-indigo-500 to-indigo-600 rounded-full"></div>
+                <span class="text-xs font-semibold text-gray-600">{{ t('project.projectDetail.form.projectMembers') }}</span>
+              </div>
+              <Tabs size="small" class="member-tabs">
                 <TabPane key="user" :tab="t('project.projectDetail.form.user')">
-                  <div class="flex flex-1 flex-wrap">
+                  <div class="flex flex-wrap gap-2">
                     <div
-                      v-for="(avatars, idx) in formData.members?.USER || []"
-                      :key="idx">
-                      <div class=" pr-2 inline-flex space-x-1">
-                        <Image
-                          class="w-5 h-5 rounded-full"
-                          type="avatar"
-                          :src="avatars.avatar" />
-                        <span>{{ avatars.name }}</span>
-                      </div>
+                      v-for="(member, idx) in formData.members?.USER || []"
+                      :key="idx"
+                      class="flex items-center space-x-2 px-3 py-1.5 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+                      <Image
+                        class="w-6 h-6 rounded-full object-cover border border-gray-200 flex-shrink-0"
+                        type="avatar"
+                        :src="member.avatar" />
+                      <span class="text-xs text-gray-700">{{ member.name }}</span>
                     </div>
                   </div>
                 </TabPane>
                 <TabPane key="group" :tab="t('project.projectDetail.form.group')">
-                  <div class="flex flex-1 flex-wrap">
-                    <div
-                      v-for="(avatars, idx) in formData.members?.GROUP || []"
+                  <div class="flex flex-wrap gap-2">
+                    <Tag
+                      v-for="(group, idx) in formData.members?.GROUP || []"
                       :key="idx"
-                      class="pr-1">
-                      <Tag class="h-5 leading-5">{{ avatars.name }}</Tag>
-                    </div>
+                      class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-300 transition-colors text-xs">
+                      {{ group.name }}
+                    </Tag>
                   </div>
                 </TabPane>
                 <TabPane key="dept" :tab="t('project.projectDetail.form.department')">
-                  <div class="flex flex-1 flex-wrap">
-                    <div
-                      v-for="(avatars, idx) in formData.members?.DEPT || []"
+                  <div class="flex flex-wrap gap-2">
+                    <Tag
+                      v-for="(dept, idx) in formData.members?.DEPT || []"
                       :key="idx"
-                      class="pr-1">
-                      <Tag class="h-5 leading-5">{{ avatars.name }}</Tag>
-                    </div>
+                      class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-300 transition-colors text-xs">
+                      {{ dept.name }}
+                    </Tag>
                   </div>
                 </TabPane>
               </Tabs>
-            </FormItem>
-
-            <FormItem :label="t('project.projectDetail.form.projectDescription') + ':'" class="desc-item">
-              <RichEditor
-                :value="formData.description"
-                :emptyText="t('project.projectDetail.form.noDescription')"
-                mode="view" />
-            </FormItem>
-          </Form>
-          <div class="w-100">
-            <div class="text-5 font-semibold mb-2">{{ projectTypeName[formData.type] }}</div>
-            <div class="py-3 border rounded min-h-40 flex flex-col justify-center items-center">
-              <img
-                v-show="formData.type==='AGILE'"
-                src="../../add/agile.png"
-                class=" inline-block"
-                style="width: 74%" />
-              <img
-                v-show="formData.type==='GENERAL'"
-                src="../../add/general.png"
-                class=" inline-block"
-                style="width: 92%" />
-              <img
-                v-show="formData.type==='TESTING'"
-                src="../../add/testing.png"
-                class=" inline-block"
-                style="width: 70%" />
             </div>
-            <div class="space-y-2 mt-7">
-              <div v-for="item in projectTypeTipConfig[formData.type]" class="flex space-x-1">
-                <Icon icon="icon-duihao-copy" class="text-3.5 mt-1" />
-                <p class="text-3.5">{{ item }}</p>
+
+            <!-- 项目描述 -->
+            <div class="space-y-3">
+              <div class="flex items-center space-x-2">
+                <div class="w-1 h-4 bg-gradient-to-b from-gray-500 to-gray-600 rounded-full"></div>
+                <span class="text-xs font-semibold text-gray-600">{{ t('project.projectDetail.form.projectDescription') }}</span>
+              </div>
+              <div class="text-gray-700 text-xs ">
+                <RichEditor
+                  :value="formData.description"
+                  :emptyText="t('project.projectDetail.form.noDescription')"
+                  mode="view" />
+              </div>
+            </div>
+          </div>
+
+          <!-- 右侧项目类型信息 -->
+          <div class="space-y-6">
+            <div class="space-y-4">
+              <h3 class="text-sm font-bold text-gray-800">{{ projectTypeName[formData.type] }}</h3>
+              <div class="flex justify-center items-center py-8">
+                <img
+                  v-show="formData.type==='AGILE'"
+                  src="../images/agile.png"
+                  class="max-w-full h-auto"
+                  style="width: 74%" />
+                <img
+                  v-show="formData.type==='GENERAL'"
+                  src="../images/general.png"
+                  class="max-w-full h-auto"
+                  style="width: 92%" />
+                <img
+                  v-show="formData.type==='TESTING'"
+                  src="../images/testing.png"
+                  class="max-w-full h-auto"
+                  style="width: 70%" />
+              </div>
+              <div class="space-y-3">
+                <div
+                  v-for="item in projectTypeTipConfig[formData.type]"
+                  :key="item"
+                  class="flex items-start space-x-2">
+                  <Icon icon="icon-duihao-copy" class="text-green-500 text-xs mt-0.5 flex-shrink-0" />
+                  <p class="text-xs text-gray-700 leading-relaxed">{{ item }}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -281,6 +261,7 @@ watch(() => props.projectId, newValue => {
     </Tabs>
   </div>
 </template>
+
 <style scoped>
 
 :deep(.ant-form) .desc-item .ant-form-item-label > label {

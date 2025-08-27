@@ -282,7 +282,10 @@ const getMenus = (record) => {
       <Introduce class="mb-7 flex-1" :showFunc="props.showDetail" />
     </div>
 
-    <div class="text-3.5 font-semibold mb-1">{{ t('taskVersion.list.addedVersions') }}</div>
+    <div class="flex items-center space-x-2">
+      <div class="w-1 h-4 bg-gradient-to-b from-purple-500 to-purple-600 rounded-full"></div>
+      <span class="text-xs font-semibold text-gray-600">{{ t('taskVersion.list.addedVersions') }}</span>
+    </div>
     <Spin :spinning="loading" class="flex-1 flex flex-col">
       <template v-if="loaded">
         <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
