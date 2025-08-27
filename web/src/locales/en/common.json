@@ -59,7 +59,8 @@
     "past30Day": "Past 30 Days",
     "createdByMe": "Created by Me",
     "modifiedByMe": "Modified by Me",
-    "addByMe": "Added by Me"
+    "addByMe": "Added by Me",
+    "tester": "Test for me"
   },
   "tips": {
     "saveSuccess": "Save successful",

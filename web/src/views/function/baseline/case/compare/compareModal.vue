@@ -1,11 +1,14 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Modal, Select } from '@xcan-angus/vue-ui';
 import { func } from '@/api/tester';
 
 import RichEditor from '@/components/richEditor/index.vue';
 import { Switch } from 'ant-design-vue';
 import _ from 'lodash-es';
+
+const { t } = useI18n();
 
 interface Props {
   visible: boolean;
@@ -222,7 +225,7 @@ onMounted(() => {
 </script>
 <template>
   <Modal
-    title="版本对比"
+    :title="t('functionBaseline.case.compareModalTitle')"
     :visible="props.visible"
     :width="1000"
     :footer="false"
@@ -230,7 +233,7 @@ onMounted(() => {
     <div style="height: 80svh; overflow-y: auto;">
       <div class="flex  items-center space-x-3">
         <div class="inline-flex items-center">
-          隐藏相同项
+          {{ t('functionBaseline.case.hideSameItems') }}
           <Switch
             v-model:checked="hideSameItem"
             size="small"
@@ -238,23 +241,23 @@ onMounted(() => {
         </div>
         <div class="flex-1"></div>
         <div class="inline-flex items-center space-x-1">
-          <span>新增</span>
+          <span>{{ t('functionBaseline.case.compareTag.new') }}</span>
           <span class="w-4 h-4 inline-block bg-status-add"></span>
         </div>
 
         <div class="inline-flex items-center space-x-1">
-          <span>删除</span>
+          <span>{{ t('functionBaseline.case.compareTag.deleted') }}</span>
           <span class="w-4 h-4 inline-block bg-status-del"></span>
         </div>
 
         <div class="inline-flex items-center space-x-1">
-          <span>修改</span>
+          <span>{{ t('functionBaseline.case.compareTag.modified') }}</span>
           <span class="w-4 h-4 inline-block bg-blue-active"></span>
         </div>
       </div>
       <div class="flex leading-10 border-b border-t mt-2">
         <div class="w-40 px-2 border-r border-l bg-gray-bg">
-          版本号
+          {{ t('functionBaseline.case.versionNumber') }}
         </div>
         <div class="flex-1 border-r px-2 flex justify-between">
           <Select
@@ -286,7 +289,7 @@ onMounted(() => {
 
       <div v-show="!hideSameItem || !!nameClass" class="flex leading-10 border-b">
         <div class="w-40 px-2 border-r border-l bg-gray-bg">
-          名称
+          {{ t('functionBaseline.case.name') }}
         </div>
         <div class="flex-1 border-r px-2 flex justify-between">
           <div v-if="baseCase?.name">
@@ -302,7 +305,7 @@ onMounted(() => {
 
       <div v-show="!hideSameItem || !!descriptionClass" class="flex leading-10 border-b">
         <div class="w-40 px-2 border-r border-l bg-gray-bg">
-          描述
+          {{ t('functionBaseline.case.description') }}
         </div>
         <div class="flex-1 border-r px-2 flex justify-between">
           <div v-if="baseCase?.description">
@@ -322,7 +325,7 @@ onMounted(() => {
 
       <div v-show="!hideSameItem || !!preconditionClass" class="flex leading-10 border-b">
         <div class="w-40 px-2 border-r border-l bg-gray-bg">
-          前置条件
+          {{ t('functionBaseline.case.precondition') }}
         </div>
         <div class="flex-1 border-r px-2 flex justify-between">
           <div v-if="baseCase?.precondition">
@@ -350,14 +353,14 @@ onMounted(() => {
 
       <div v-show="!hideSameItem || !!stepsClass" class="flex leading-10 border-b">
         <div class="w-40 px-2 border-r border-l flex flex-col justify-center  bg-gray-bg">
-          步骤
+          {{ t('functionBaseline.case.testSteps') }}
         </div>
         <div class="flex-1 border-r">
           <div v-if="baseCase?.steps?.length" class="-mb-0.25">
             <div class="flex border-b">
               <span class="w-8 border-r"></span>
-              <span class="flex-1 px-2 border-r">步骤描述</span>
-              <span class="flex-1 px-2">逾期结果</span>
+              <span class="flex-1 px-2 border-r">{{ t('functionBaseline.case.stepDescription') }}</span>
+              <span class="flex-1 px-2">{{ t('functionBaseline.case.expectedResult') }}</span>
             </div>
             <div v-for="(step, idx) in baseCase.steps" class="flex border-b leading-5">
               <div class="w-8 text-center border-r py-2">{{ idx + 1 }}</div>
@@ -386,8 +389,8 @@ onMounted(() => {
           <div v-if="compareCase?.steps?.length" class="-mb-0.25">
             <div class="flex border-b">
               <span class="w-8 border-r"></span>
-              <span class="flex-1 px-2 border-r">步骤描述</span>
-              <span class="flex-1 px-2">逾期结果</span>
+              <span class="flex-1 px-2 border-r">{{ t('functionBaseline.case.stepDescription') }}</span>
+              <span class="flex-1 px-2">{{ t('functionBaseline.case.expectedResult') }}</span>
             </div>
             <div v-for="(step, idx) in compareCase.steps" class="flex border-b leading-5">
               <div class="w-8 text-center border-r py-2">{{ idx + 1 }}</div>
@@ -416,7 +419,7 @@ onMounted(() => {
 
       <div v-show="!hideSameItem || !!taskClass" class="flex leading-10 border-b">
         <div class="w-40 px-2 border-r border-l  bg-gray-bg">
-          关联任务
+          {{ t('functionBaseline.case.associatedTasks') }}
         </div>
         <div class="flex-1 border-r px-2 min-w-0">
           <div v-if="baseCase?.refTaskInfos" class="py-1">
@@ -440,7 +443,7 @@ onMounted(() => {
 
       <div v-show="!hideSameItem || !!caseClass" class="flex leading-10 border-b">
         <div class="w-40 px-2 border-r border-l  bg-gray-bg">
-          关联用例
+          {{ t('functionBaseline.case.associatedCases') }}
         </div>
         <div class="flex-1 border-r px-2 min-w-0">
           <div v-if="baseCase?.refCaseInfos" class="py-1">
@@ -464,7 +467,7 @@ onMounted(() => {
 
       <div v-show="!hideSameItem || !!attachmentClass" class="flex leading-10 border-b">
         <div class="w-40 px-2 border-r border-l  bg-gray-bg">
-          附件
+          {{ t('functionBaseline.case.attachments') }}
         </div>
         <div class="flex-1 border-r px-2">
           <div v-if="baseCase?.attachment?.length" class="py-1">

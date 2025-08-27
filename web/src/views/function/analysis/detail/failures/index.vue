@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface Props {
   analysisInfo?: Record<string, any>;
@@ -30,7 +33,7 @@ const getChartData = (data) => {
 
   res.chart2Value = {
     title: '',
-    value: [{ name: '致命故障数', value: CRITICAL }, { name: '严重故障数', value: MAJOR }, { name: '一般故障数', value: MINOR }, { name: '轻微故障数', value: TRIVIAL }]
+    value: [{ name: t('functionAnalysis.detail.failures.criticalFailureCount'), value: CRITICAL }, { name: t('functionAnalysis.detail.failures.majorFailureCount'), value: MAJOR }, { name: t('functionAnalysis.detail.failures.minorFailureCount'), value: MINOR }, { name: t('functionAnalysis.detail.failures.trivialFailureCount'), value: TRIVIAL }]
   };
 
   return res;
@@ -86,7 +89,7 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">总共</div>
+    <div class="font-semibold pl-3">{{ t('functionAnalysis.detail.failures.total') }}</div>
     <Echart
       ref="totalChartRef"
       v-bind="totalValue"

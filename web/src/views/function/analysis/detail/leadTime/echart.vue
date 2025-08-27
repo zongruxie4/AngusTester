@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
+
+const { t } = useI18n();
 
 interface Props {
   // title0: string;
@@ -27,7 +30,7 @@ let backlogRefEchart;
 // 用例交付周期(小时
 const backlogEchartConfig = {
   title: {
-    text: '用例交付周期(小时)',
+    text: t('functionAnalysis.detail.leadTime.caseDeliveryCycle'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -42,7 +45,7 @@ const backlogEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: ['平均', '最小', '最大', 'P50', 'P75', 'P90', 'P95', 'P99'],
+    data: [t('functionAnalysis.detail.leadTime.average'), t('functionAnalysis.detail.leadTime.minimum'), t('functionAnalysis.detail.leadTime.maximum'), t('functionAnalysis.detail.leadTime.p50'), t('functionAnalysis.detail.leadTime.p75'), t('functionAnalysis.detail.leadTime.p90'), t('functionAnalysis.detail.leadTime.p95'), t('functionAnalysis.detail.leadTime.p99')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -102,9 +105,9 @@ defineExpose({
     <div class="px-3 w-100">
       <div class="flex justify-around">
         <div class="text-center flex-1">
-          <div class="font-semibold "><span class="text-5 text-status-warn">{{ props.overdueAssessmentData.totalProcessingTime || 0 }}</span>小时</div>
+          <div class="font-semibold "><span class="text-5 text-status-warn">{{ props.overdueAssessmentData.totalProcessingTime || 0 }}</span>{{ t('functionAnalysis.detail.leadTime.hours') }}</div>
           <div>
-            总处理时长
+            {{ t('functionAnalysis.detail.leadTime.totalProcessingTime') }}
           </div>
         </div>
       </div>
@@ -112,17 +115,17 @@ defineExpose({
         <div class="text-center">
           <div class="font-semibold text-5">{{ props.overdueAssessmentData.userNum || 0 }}</div>
           <div>
-            参与人员
+            {{ t('functionAnalysis.detail.leadTime.participants') }}
           </div>
         </div>
         <div class="text-center">
           <div class="">
             <span class="font-semibold text-5">
               {{ props.overdueAssessmentData.userAvgProcessingTime || 0 }}
-            </span>/小时
+            </span>{{ t('functionAnalysis.detail.leadTime.perHour') }}
           </div>
           <div>
-            每天平均处理时长
+            {{ t('functionAnalysis.detail.leadTime.dailyAverageProcessingTime') }}
           </div>
         </div>
       </div>

@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
+
+const { t } = useI18n();
 
 interface Props {
   // title0: string;
@@ -43,7 +46,7 @@ const completedWorkloadEchartConfig = {
     left: '35%',
     top: '40%',
     padding: 2,
-    subtext: '完成工作量占比',
+    subtext: t('functionAnalysis.detail.overdueAssessment.completedWorkloadPercentage'),
     // left: '25%',
     // top: '40%',
     itemGap: 50,
@@ -96,14 +99,14 @@ const completedWorkloadEchartConfig = {
       },
       data: [
         {
-          name: '未完成',
+          name: t('functionAnalysis.detail.overdueAssessment.notCompleted'),
           value: 0,
           itemStyle: {
             color: 'rgba(217, 217, 217, 1)'
           }
         },
         {
-          name: '已完成',
+          name: t('functionAnalysis.detail.overdueAssessment.completed'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'
@@ -118,7 +121,7 @@ const savingWorkloadEchartConfig = JSON.parse(JSON.stringify({
   ...completedWorkloadEchartConfig,
   title: {
     ...completedWorkloadEchartConfig.title,
-    subtext: '节省工作量占比'
+    subtext: t('functionAnalysis.detail.overdueAssessment.savedWorkloadPercentage')
   }
 }));
 
@@ -170,33 +173,33 @@ defineExpose({
         <div class="text-center flex-1">
           <div class="font-semibold text-5 text-status-error">{{ props.overdueAssessmentData.overdueNum || 0 }}</div>
           <div>
-            逾期数
+            {{ t('functionAnalysis.detail.overdueAssessment.overdueCount') }}
           </div>
         </div>
         <div class="text-center flex-1">
           <div :class="`risk-level-${props.overdueAssessmentData?.riskLevel?.value}`" class="font-semibold text-5">{{ overdueAssessmentData?.riskLevel?.message }}</div>
-          <div>逾期风险</div>
+          <div>{{ t('functionAnalysis.detail.overdueAssessment.overdueRisk') }}</div>
         </div>
       </div>
       <div class="flex justify-around mt-3">
         <div class="text-center">
-          <div class="font-semibold text-5  text-status-error">{{ props.overdueAssessmentData.overdueTime || 0 }}小时</div>
+          <div class="font-semibold text-5  text-status-error">{{ props.overdueAssessmentData.overdueTime || 0 }}{{ t('functionAnalysis.detail.overdueAssessment.hours') }}</div>
           <div>
-            逾期时长
+            {{ t('functionAnalysis.detail.overdueAssessment.overdueTime') }}
           </div>
         </div>
 
         <div class="text-center">
           <div class="font-semibold text-5">{{ props.overdueAssessmentData.dailyProcessedWorkload || 0 }}</div>
           <div>
-            每天平均处理工作量
+            {{ t('functionAnalysis.detail.overdueAssessment.dailyAverageProcessedWorkload') }}
           </div>
         </div>
 
         <div class="text-center">
-          <div class="font-semibold text-5">{{ props.overdueAssessmentData.overdueWorkloadProcessingTime || 0 }}小时</div>
+          <div class="font-semibold text-5">{{ props.overdueAssessmentData.overdueWorkloadProcessingTime || 0 }}{{ t('functionAnalysis.detail.overdueAssessment.hours') }}</div>
           <div>
-            逾期工作量预计处理时长
+            {{ t('functionAnalysis.detail.overdueAssessment.overdueWorkloadEstimatedProcessingTime') }}
           </div>
         </div>
       </div>

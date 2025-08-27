@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Pagination } from 'ant-design-vue';
 import { Colon, Icon, modal, NoData, notification, Spin } from '@xcan-angus/vue-ui';
 import dayjs from 'dayjs';
 import { func } from '@/api/tester';
+
+const { t } = useI18n();
 
 import { BaselineInfo } from '../PropsType';
 
@@ -69,13 +72,13 @@ const toCompleted = async (data: BaselineInfo) => {
   if (error) {
     return;
   }
-  notification.success('基线已建立');
+  notification.success(t('functionBaseline.list.baselineEstablished'));
   loadData();
 };
 
 const toDelete = async (data: BaselineInfo) => {
   modal.confirm({
-    content: `确定删除基线【${data.name}】吗？`,
+    content: t('functionBaseline.list.confirmDeleteBaseline', { name: data.name }),
     async onOk () {
       const id = data.id;
       const [error] = await func.deleteBaseline([id]);
@@ -83,7 +86,7 @@ const toDelete = async (data: BaselineInfo) => {
         return;
       }
 
-      notification.success('基线删除成功');
+      notification.success(t('functionBaseline.list.baselineDeletedSuccess'));
       loadData();
 
       deleteTabPane([id]);
@@ -161,7 +164,7 @@ const searchPanelOptions = [
   {
     valueKey: 'name',
     type: 'input',
-    placeholder: '查询基线名称、描述',
+    placeholder: t('functionBaseline.list.searchBaselineNameDescription'),
     allowClear: true,
     maxlength: 100
   },
@@ -176,7 +179,7 @@ const searchPanelOptions = [
     valueKey: 'ownerId',
     type: 'select-user',
     allowClear: true,
-    placeholder: '选择负责人',
+    placeholder: t('functionBaseline.list.selectOwner'),
     maxlength: 100
   },
   {
@@ -184,7 +187,7 @@ const searchPanelOptions = [
     type: 'date',
     valueType: 'start',
     op: 'GREATER_THAN_EQUAL',
-    placeholder: '基线开始时间大于等于',
+    placeholder: t('functionBaseline.list.baselineStartTimeGreaterEqual'),
     showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', 'HH:mm:ss') },
     allowClear: true
   },
@@ -193,7 +196,7 @@ const searchPanelOptions = [
     type: 'date',
     valueType: 'start',
     op: 'LESS_THAN_EQUAL',
-    placeholder: '基线截止时间小于等于',
+    placeholder: t('functionBaseline.list.baselineDeadlineTimeLessEqual'),
     showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', 'HH:mm:ss') },
     allowClear: true
   }
@@ -203,13 +206,13 @@ const dropdownMenuItems = [
   {
     key: 'delete',
     icon: 'icon-qingchu',
-    name: '删除',
+    name: t('functionBaseline.list.delete'),
     permission: 'delete'
   },
   {
     key: 'clone',
     icon: 'icon-fuzhi',
-    name: '克隆',
+    name: t('functionBaseline.list.clone'),
     noAuth: true,
     permission: 'clone'
   }
@@ -223,12 +226,12 @@ const sortMenuItems: {
   orderSort: OrderSortKey;
 }[] = [
   {
-    name: '按添加时间',
+    name: t('functionBaseline.list.sortByAddTime'),
     key: 'createdDate',
     orderSort: 'DESC'
   },
   {
-    name: '按添加人',
+    name: t('functionBaseline.list.sortByAddPerson'),
     key: 'createdByName',
     orderSort: 'ASC'
   }
@@ -238,15 +241,15 @@ const sortMenuItems: {
 <template>
   <div class="flex flex-col h-full overflow-auto px-5 py-5 leading-5 text-3">
     <Introduce class="mb-7" />
-    <div class="text-3.5 font-semibold mb-1">已创建的基线</div>
+    <div class="text-3.5 font-semibold mb-1">{{ t('functionBaseline.list.createdBaselines') }}</div>
     <Spin :spinning="loading" class="flex-1 flex flex-col">
       <template v-if="loaded">
         <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
-            <span>您尚未添加任何基线，立即</span>
+            <span>{{ t('functionBaseline.list.noBaselinesAdded') }}</span>
             <RouterLink class="router-link flex-1 truncate" :to="`/function#baseline?type=ADD`">
-              添加基线
+              {{ t('functionBaseline.list.addBaseline') }}
             </RouterLink>
           </div>
         </div>
@@ -281,15 +284,15 @@ const sortMenuItems: {
                 </div> -->
 
                 <div class="flex">
-                  <div
-                    class="text-theme-sub-content text-3 leading-4 flex items-center flex-none whitespace-nowrap mr-3.5">
-                    <Icon
-                      v-if="item.established"
-                      icon="icon-duihao-copy"
-                      class="mr-1" />
-                    <div>{{ item.established ? '已建立' : '未建立' }}</div>
+                    <div
+                      class="text-theme-sub-content text-3 leading-4 flex items-center flex-none whitespace-nowrap mr-3.5">
+                      <Icon
+                        v-if="item.established"
+                        icon="icon-duihao-copy"
+                        class="mr-1" />
+                      <div>{{ item.established ? t('functionBaseline.list.established') : t('functionBaseline.list.notEstablished') }}</div>
+                    </div>
                   </div>
-                </div>
               </div>
               <!-- <div class="px-3.5 flex mt-3 justify-end text-3 text-theme-sub-content">
                 <div class="ml-8 text-theme-content">共{{ item.caseNum || 0 }}条用例</div>
@@ -307,7 +310,7 @@ const sortMenuItems: {
 
                   <div class="flex mt-3">
                     <div class="mr-2 whitespace-nowrap">
-                      <span>测试计划</span>
+                      <span>{{ t('functionBaseline.list.testPlan') }}</span>
                       <Colon />
                     </div>
                     <div class="text-theme-content">{{ item.planName || "--" }}</div>
@@ -315,33 +318,33 @@ const sortMenuItems: {
                 </div>
 
                 <div class="flex ml-8 mt-3">
-                  <div
-                    class="truncate text-theme-content"
-                    style="max-width: 100px;"
-                    :title="item.lastModifiedByName">
-                    {{ item.lastModifiedByName }}
+                    <div
+                      class="truncate text-theme-content"
+                      style="max-width: 100px;"
+                      :title="item.lastModifiedByName">
+                      {{ item.lastModifiedByName }}
+                    </div>
+                    <div class="mx-2 whitespace-nowrap">{{ t('functionBaseline.list.modifiedBy') }}</div>
+                    <div class="whitespace-nowrap text-theme-content">
+                      {{ item.lastModifiedDate }}
+                    </div>
                   </div>
-                  <div class="mx-2 whitespace-nowrap">修改于</div>
-                  <div class="whitespace-nowrap text-theme-content">
-                    {{ item.lastModifiedDate }}
-                  </div>
-                </div>
               </div>
 
               <div class="px-3.5 flex justify-between items-end text-3 my-2.5 relative">
                 <div class="truncate mr-8" :title="item.description || ''">
                   <template v-if="item.description">
                     <!-- {{ item.description }} -->
-                    <RichText :value="item.description" emptyText="无描述~" />
+                    <RichText :value="item.description" :emptyText="t('functionBaseline.list.noDescription')" />
                   </template>
                   <span v-else class="text-text-sub-content">
-                    无描述~
+                    {{ t('functionBaseline.list.noDescription') }}
                   </span>
                 </div>
                 <div class="flex space-x-3 items-center justify-between h-4 leading-5">
                   <RouterLink class="flex items-center space-x-1" :to="`/function#baseline?id=${item.id}&type=edit`">
                     <Icon icon="icon-shuxie" class="text-3.5" />
-                    <span>编辑</span>
+                    <span>{{ t('functionBaseline.list.edit') }}</span>
                   </RouterLink>
 
                   <Button
@@ -351,7 +354,7 @@ const sortMenuItems: {
                     class="px-0 flex items-center space-x-1"
                     @click="toCompleted(item)">
                     <Icon icon="icon-yiwancheng" class="text-3.5" />
-                    <span>建立基线</span>
+                    <span>{{ t('functionBaseline.list.establishBaseline') }}</span>
                   </Button>
 
                   <Button
@@ -360,7 +363,7 @@ const sortMenuItems: {
                     class="px-0 flex items-center space-x-1"
                     @click="toDelete(item)">
                     <Icon icon="icon-yiwancheng" class="text-3.5" />
-                    <span>删除</span>
+                    <span>{{ t('functionBaseline.list.delete') }}</span>
                   </Button>
                 </div>
               </div>

@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { getDateArr } from '@/utils/utils';
+
+const { t } = useI18n();
 
 interface Props {
   analysisInfo?: Record<string, any>;
@@ -13,32 +16,32 @@ const props = withDefaults(defineProps<Props>(), {
 const Echart = defineAsyncComponent(() => import('./echart.vue'));
 
 const targetDataCategery = {
-  TEST_CUSTOMIZATION: '自定义测试',
-  TEST_FUNCTIONALITY: '功能测试',
-  TEST_PERFORMANCE: '性能测试',
-  TEST_STABILITY: '稳定性测试',
-  SERVICES: '服务',
-  APIS: '接口',
-  CASES: '用例',
-  PLAN: '计划',
-  SPRINT: '迭代',
-  TASK_SPRINT: '迭代',
-  TASK: '用例',
-  MOCK_APIS: 'Mock接口',
-  MOCK_PUSHBACK: 'Mock回推',
-  MOCK_RESPONSE: 'Mock响应',
-  MOCK_SERVICE: 'Mock服务',
-  DATA_DATASET: '数据集',
-  DATA_DATASOURCE: '数据源',
-  DATA_VARIABLE: '变量',
-  TOTAL: '合计',
-  REPORT: '报告',
-  REPORT_RECORD: '记录',
-  API_TEST: '接口测试',
-  BUG: '缺陷',
-  REQUIREMENT: '需求',
-  STORY: '故事',
-  SCENARIO_TEST: '场景测试'
+  TEST_CUSTOMIZATION: t('functionAnalysis.detail.taskGrowthTread.customTest'),
+  TEST_FUNCTIONALITY: t('functionAnalysis.detail.taskGrowthTread.functionalTest'),
+  TEST_PERFORMANCE: t('functionAnalysis.detail.taskGrowthTread.performanceTest'),
+  TEST_STABILITY: t('functionAnalysis.detail.taskGrowthTread.stabilityTest'),
+  SERVICES: t('functionAnalysis.detail.taskGrowthTread.services'),
+  APIS: t('functionAnalysis.detail.taskGrowthTread.apis'),
+  CASES: t('functionAnalysis.detail.taskGrowthTread.cases'),
+  PLAN: t('functionAnalysis.detail.taskGrowthTread.plan'),
+  SPRINT: t('functionAnalysis.detail.taskGrowthTread.sprint'),
+  TASK_SPRINT: t('functionAnalysis.detail.taskGrowthTread.taskSprint'),
+  TASK: t('functionAnalysis.detail.taskGrowthTread.task'),
+  MOCK_APIS: t('functionAnalysis.detail.taskGrowthTread.mockApis'),
+  MOCK_PUSHBACK: t('functionAnalysis.detail.taskGrowthTread.mockPushback'),
+  MOCK_RESPONSE: t('functionAnalysis.detail.taskGrowthTread.mockResponse'),
+  MOCK_SERVICE: t('functionAnalysis.detail.taskGrowthTread.mockService'),
+  DATA_DATASET: t('functionAnalysis.detail.taskGrowthTread.dataDataset'),
+  DATA_DATASOURCE: t('functionAnalysis.detail.taskGrowthTread.dataDatasource'),
+  DATA_VARIABLE: t('functionAnalysis.detail.taskGrowthTread.dataVariable'),
+  TOTAL: t('functionAnalysis.detail.taskGrowthTread.total2'),
+  REPORT: t('functionAnalysis.detail.taskGrowthTread.report'),
+  REPORT_RECORD: t('functionAnalysis.detail.taskGrowthTread.reportRecord'),
+  API_TEST: t('functionAnalysis.detail.taskGrowthTread.apiTest'),
+  BUG: t('functionAnalysis.detail.taskGrowthTread.bug'),
+  REQUIREMENT: t('functionAnalysis.detail.taskGrowthTread.requirement'),
+  STORY: t('functionAnalysis.detail.taskGrowthTread.story'),
+  SCENARIO_TEST: t('functionAnalysis.detail.taskGrowthTread.scenarioTest')
 };
 
 const getChartData = (data) => {
@@ -70,7 +73,7 @@ const getChartData = (data) => {
       return a > b ? 1 : a < b ? -1 : 0;
     });
     series = [{
-      name: '用例',
+      name: t('functionAnalysis.detail.taskGrowthTread.cases'),
       data: xData.map(i => {
         const target = data.timeSeries.find(item => item.timeSeries === i);
         if (target) {
@@ -150,7 +153,7 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">总共</div>
+    <div class="font-semibold pl-3">{{ t('functionAnalysis.detail.taskGrowthTread.total') }}</div>
     <Echart
       ref="totalChartRef"
       v-bind="totalValue"

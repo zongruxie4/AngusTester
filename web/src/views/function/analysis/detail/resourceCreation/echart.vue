@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
+
+const { t } = useI18n();
 
 interface Props {
 
@@ -34,7 +37,7 @@ let unplannedWorkloadRefEchart;
 // 用例数
 const unplannedTaskEchartConfig = {
   title: {
-    text: '创建资源总量',
+    text: t('functionAnalysis.detail.resourceCreation.createdResourceTotal'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -49,7 +52,7 @@ const unplannedTaskEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: ['计划', '用例', '评审', '基线', '分析', '总计'],
+    data: [t('functionAnalysis.detail.resourceCreation.plan2'), t('functionAnalysis.detail.resourceCreation.case'), t('functionAnalysis.detail.resourceCreation.review2'), t('functionAnalysis.detail.resourceCreation.baseline2'), t('functionAnalysis.detail.resourceCreation.analysis2'), t('functionAnalysis.detail.resourceCreation.total3')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -86,7 +89,7 @@ const unplannedTaskEchartConfig = {
 
 const unplannedWorkloadEchartConfig = {
   title: {
-    text: '创建资源增长趋势',
+    text: t('functionAnalysis.detail.resourceCreation.createdResourceGrowthTrend'),
     bottom: 0,
     left: 'center',
     textStyle: {

@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface Props {
   analysisInfo?: Record<string, any>;
@@ -20,17 +23,17 @@ const getChartData = (data) => {
   };
   res.chart1Value = {
     title: passedTestRate + '%',
-    value: [{ name: '未完成用例数', value: totalNum - passedTestNum }, { name: '完成用例数', value: passedTestNum }]
+    value: [{ name: t('functionAnalysis.detail.handlingEfficiency.incompleteCaseCount'), value: totalNum - passedTestNum }, { name: t('functionAnalysis.detail.handlingEfficiency.completedCaseCount2'), value: passedTestNum }]
   };
 
   res.chart2Value = {
     title: oneTimePassedRate + '%',
-    value: [{ name: '一次性未完成用例数', value: oneTimeNotPassedNum }, { name: '一次性完成用例数', value: oneTimePassedNum }]
+    value: [{ name: t('functionAnalysis.detail.handlingEfficiency.oneTimeIncompleteCaseCount'), value: oneTimeNotPassedNum }, { name: t('functionAnalysis.detail.handlingEfficiency.oneTimeCompletedCaseCount'), value: oneTimePassedNum }]
   };
 
   res.chart3Value = {
     title: twoTimePassedRate + '%',
-    value: [{ name: '两次未完成用例数', value: passedTestNum - twoTimePassedNum }, { name: '两次完成用例数', value: twoTimePassedNum }]
+    value: [{ name: t('functionAnalysis.detail.handlingEfficiency.twoTimeIncompleteCaseCount'), value: passedTestNum - twoTimePassedNum }, { name: t('functionAnalysis.detail.handlingEfficiency.twoTimeCompletedCaseCount'), value: twoTimePassedNum }]
   };
   return res;
 };
@@ -85,7 +88,7 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">总共</div>
+    <div class="font-semibold pl-3">{{ t('functionAnalysis.detail.handlingEfficiency.total') }}</div>
     <Echart
       ref="totalChartRef"
       v-bind="totalValue"

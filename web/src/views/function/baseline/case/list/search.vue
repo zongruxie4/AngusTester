@@ -1,11 +1,14 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon, Input, QuickSelect, ReviewStatus, SearchPanel, Select, TaskPriority, TestResult } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
 import { Button, Switch } from 'ant-design-vue';
 import { duration, appContext, Priority, ReviewStatus as ReviewStatusEnum } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { CaseTestResult } from '@/enums/enums';
+
+const { t } = useI18n();
 
 interface Props {
   established: boolean;
@@ -46,56 +49,56 @@ const defaultUser = computed(() => {
   return {};
 });
 
-const NumberMatchCondition = ref<{ value: string, message: string }[]>([{ value: 'EQUAL', message: '等于' }]);
+const NumberMatchCondition = ref<{ value: string, message: string }[]>([{ value: 'EQUAL', message: t('functionBaseline.case.equal') }]);
 const searchPanelRef = ref();
 
 const searchOptions = computed(() => [
   {
-    placeholder: '查询用例编号、名称',
+    placeholder: t('functionBaseline.case.queryCaseCodeName'),
     valueKey: 'name',
     type: 'input',
     allowClear: true
   },
   {
-    placeholder: '选择添加人',
+    placeholder: t('functionBaseline.case.selectCreator'),
     valueKey: 'createdBy',
     type: 'select-user',
     allowClear: true
   },
   {
-    placeholder: '选择测试人',
+    placeholder: t('functionBaseline.case.selectTester'),
     valueKey: 'testerId',
     type: 'select-user',
     allowClear: true
   },
   {
-    placeholder: '选择开发人',
+    placeholder: t('functionBaseline.case.selectDeveloper'),
     valueKey: 'developerId',
     type: 'select-user',
     allowClear: true
   },
   {
-    placeholder: '选择优先级',
+    placeholder: t('functionBaseline.case.selectPriority'),
     valueKey: 'priority',
     type: 'select-enum',
     enumKey: Priority,
     allowClear: true
   },
   {
-    placeholder: '选择测试结果',
+    placeholder: t('functionBaseline.case.selectTestResult'),
     valueKey: 'testResult',
     type: 'select-enum',
     enumKey: CaseTestResult,
     allowClear: true
   },
   {
-    placeholder: '选择评审人',
+    placeholder: t('functionBaseline.case.selectReviewer'),
     valueKey: 'reviewerId',
     type: 'select-user',
     allowClear: true
   },
   {
-    placeholder: '选择评审状态',
+    placeholder: t('functionBaseline.case.selectReviewStatus'),
     valueKey: 'reviewStatus',
     type: 'select-enum',
     enumKey: ReviewStatusEnum,
@@ -109,28 +112,28 @@ const searchOptions = computed(() => [
     showTime: true
   },
   {
-    placeholder: ['更新时间从', '更新时间到'],
+    placeholder: [t('functionBaseline.case.searchPanel.updateDateFrom'), t('functionBaseline.case.searchPanel.updateDateTo')],
     valueKey: 'lastModifiedDate',
     type: 'date-range',
     allowClear: true,
     showTime: true
   },
   {
-    placeholder: ['完成时间从', '完成时间到'],
+    placeholder: [t('functionBaseline.case.searchPanel.deadlineDateFrom'), t('functionBaseline.case.searchPanel.deadlineDateTo')],
     valueKey: 'deadlineDate',
     type: 'date-range',
     allowClear: true,
     showTime: true
   },
   {
-    placeholder: ['添加时间从', '添加时间到'],
+    placeholder: [t('functionBaseline.case.searchPanel.createdDateFrom'), t('functionBaseline.case.searchPanel.createdDateTo')],
     valueKey: 'createdDate',
     type: 'date-range',
     allowClear: true,
     showTime: true
   },
   {
-    placeholder: ['测试时间从', '测试时间到'],
+    placeholder: [t('functionBaseline.case.searchPanel.testResultHandleDateFrom'), t('functionBaseline.case.searchPanel.testResultHandleDateTo')],
     valueKey: 'testResultHandleDate',
     type: 'date-range',
     allowClear: true,
@@ -149,37 +152,37 @@ const searchOptions = computed(() => [
 const qulickList = [
   {
     type: 'all',
-    name: '所有',
+    name: t('quickSearchTags.all'),
     selected: false,
     group: 'all'
   },
   {
     type: 'createdBy',
-    name: '我添加的',
+    name: t('quickSearchTags.addByMe'),
     selected: false,
     group: 'createdBy'
   },
   {
     type: 'testerId',
-    name: '待我测试',
+    name: t('quickSearchTags.tester'),
     selected: false,
     group: 'testerId'
   },
   {
     type: 'lastDay',
-    name: '近1天',
+    name: t('quickSearchTags.past1Day'),
     selected: false,
     group: 'time'
   },
   {
     type: 'lastThreeDays',
-    name: '近3天',
+    name: t('quickSearchTags.past3Day'),
     selected: false,
     group: 'time'
   },
   {
     type: 'lastWeek',
-    name: '近7天',
+    name: t('quickSearchTags.past7Day'),
     selected: false,
     group: 'time'
   }
@@ -527,7 +530,7 @@ const handleAddCase = () => {
           :selectedTypes="selectedTypes"
           @change="quickSearchChange" />
         <div class="px-4 h-7 leading-7 mb-3">
-          <span>已逾期</span>
+          <span>{{ t('functionBaseline.case.searchPanel.overdue') }}</span>
           <Colon class="mr-2" />
           <Switch
             :checked="overdue"
@@ -548,7 +551,7 @@ const handleAddCase = () => {
           type="primary"
           @click="handleAddCase">
           <Icon icon="icon-jia" class="mr-1" />
-          添加基线用例
+          {{ t('functionBaseline.case.searchPanel.addCase') }}
         </Button>
       </div>
     </div>
@@ -585,7 +588,7 @@ const handleAddCase = () => {
           data-type="float"
           size="small"
           allowClear
-          placeholder="测试次数"
+          :placeholder="t('functionBaseline.case.searchPanel.testNumPlaceholder')"
           style="width: 296px;"
           :min="0"
           :debounce="500"
@@ -609,7 +612,7 @@ const handleAddCase = () => {
           data-type="float"
           size="small"
           allowClear
-          placeholder="失败次数"
+          :placeholder="t('functionBaseline.case.searchPanel.testFailNumPlaceholder')"
           style="width: 296px;"
           :min="0"
           :debounce="500"
@@ -633,7 +636,7 @@ const handleAddCase = () => {
           data-type="float"
           size="small"
           allowClear
-          placeholder="评审次数"
+          :placeholder="t('functionBaseline.case.searchPanel.reviewNumPlaceholder')"
           style="width: 296px;"
           :min="0"
           :debounce="500"

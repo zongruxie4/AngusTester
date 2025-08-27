@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
+
+const { t } = useI18n();
 
 interface Props {
 
@@ -33,7 +36,7 @@ let unplannedWorkloadRefEchart;
 // 用例数
 const unplannedTaskEchartConfig = {
   title: {
-    text: '用例增长量',
+    text: t('functionAnalysis.detail.taskGrowthTread.caseGrowthAmount'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -48,7 +51,7 @@ const unplannedTaskEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: ['需求', '故事', '用例', '缺陷', '接口测试', '场景测试', '总计'],
+    data: [t('functionAnalysis.detail.taskGrowthTread.requirement2'), t('functionAnalysis.detail.taskGrowthTread.story2'), t('functionAnalysis.detail.taskGrowthTread.case2'), t('functionAnalysis.detail.taskGrowthTread.bug2'), t('functionAnalysis.detail.taskGrowthTread.apiTest2'), t('functionAnalysis.detail.taskGrowthTread.scenarioTest2'), t('functionAnalysis.detail.taskGrowthTread.total3')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -85,7 +88,7 @@ const unplannedTaskEchartConfig = {
 
 const unplannedWorkloadEchartConfig = {
   title: {
-    text: '增长趋势',
+    text: t('functionAnalysis.detail.taskGrowthTread.growthTrend'),
     bottom: 0,
     left: 'center',
     textStyle: {

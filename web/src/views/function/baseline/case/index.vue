@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, inject, onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { func } from '@/api/tester';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -57,13 +60,13 @@ onMounted(() => {
       size="small"
       class="h-full"
       destroyInactiveTabPane>
-      <TabPane key="baselinecase" tab="基线用例">
+      <TabPane key="baselinecase" :tab="t('functionBaseline.case.baselineCases')">
         <BaseLineCaseList
           v-bind="props"
           :baselineId="props.data.id"
           :planId="planId" />
       </TabPane>
-      <TabPane key="baselinecompare" tab="基线对比">
+      <TabPane key="baselinecompare" :tab="t('functionBaseline.case.baselineCompare')">
         <BaselineCompare
           v-bind="props"
           :baselineId="props.data.id"

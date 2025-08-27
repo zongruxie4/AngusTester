@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { computed, inject, onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import { appContext } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
+
+const { t } = useI18n();
 
 interface Props {
   loading: boolean;
@@ -38,7 +41,7 @@ const searchPanelOptions = [
   {
     valueKey: 'name',
     type: 'input',
-    placeholder: '查询基线名称、描述',
+    placeholder: t('functionBaseline.list.searchBaselineNameDescription'),
     allowClear: true,
     maxlength: 100
   },
@@ -53,7 +56,7 @@ const searchPanelOptions = [
     valueKey: 'ownerId',
     type: 'select-user',
     allowClear: true,
-    placeholder: '选择负责人',
+    placeholder: t('functionBaseline.list.selectOwner'),
     maxlength: 100
   },
   {
@@ -61,7 +64,7 @@ const searchPanelOptions = [
     type: 'date',
     valueType: 'start',
     op: 'GREATER_THAN_EQUAL',
-    placeholder: '基线开始时间大于等于',
+    placeholder: t('functionBaseline.list.baselineStartTimeGreaterEqual'),
     showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', 'HH:mm:ss') },
     allowClear: true
   },
@@ -70,7 +73,7 @@ const searchPanelOptions = [
     type: 'date',
     valueType: 'start',
     op: 'LESS_THAN_EQUAL',
-    placeholder: '基线截止时间小于等于',
+    placeholder: t('functionBaseline.list.baselineDeadlineTimeLessEqual'),
     showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', 'HH:mm:ss') },
     allowClear: true
   }
@@ -82,17 +85,17 @@ const sortMenuItems: {
   orderSort: OrderSortKey;
 }[] = [
   {
-    name: '按名称',
+    name: t('functionBaseline.list.sortByName'),
     key: 'name',
     orderSort: 'DESC'
   },
   {
-    name: '按添加人',
+    name: t('functionBaseline.list.sortByAddPerson'),
     key: 'createdBy',
     orderSort: 'ASC'
   },
   {
-    name: '按添加时间',
+    name: t('functionBaseline.list.sortByAddTime'),
     key: 'createdDate',
     orderSort: 'ASC'
   }
@@ -101,35 +104,35 @@ const sortMenuItems: {
 const menuItems = computed(() => [
   {
     key: '',
-    name: '全部'
+    name: t('functionBaseline.list.all')
   },
   {
     key: 'createdBy',
-    name: '我创建的'
+    name: t('functionBaseline.list.myCreated')
   },
   {
     key: 'lastModifiedBy',
-    name: '我修改的'
+    name: t('functionBaseline.list.myModified')
   },
   {
     key: 'established=1',
-    name: '已建立'
+    name: t('functionBaseline.list.established')
   },
   {
     key: 'established=0',
-    name: '未建立'
+    name: t('functionBaseline.list.notEstablished')
   },
   {
     key: 'lastDay',
-    name: '近1天'
+    name: t('functionBaseline.list.lastDay')
   },
   {
     key: 'lastThreeDays',
-    name: '近3天'
+    name: t('functionBaseline.list.lastThreeDays')
   },
   {
     key: 'lastWeek',
-    name: '近7天'
+    name: t('functionBaseline.list.lastWeek')
   }
 ]);
 
@@ -307,7 +310,7 @@ onMounted(() => {
   <div class="mt-2.5 mb-3.5">
     <div class="flex">
       <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-        <span>快速查询</span>
+        <span>{{ t('functionBaseline.list.quickSearch') }}</span>
         <Colon />
       </div>
       <div class="flex  flex-wrap ml-2">
@@ -335,7 +338,7 @@ onMounted(() => {
           class="p-0">
           <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/function#baseline?type=ADD`">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span>添加基线</span>
+            <span>{{ t('functionBaseline.list.addBaseline') }}</span>
           </RouterLink>
         </Button>
 
@@ -346,7 +349,7 @@ onMounted(() => {
           @click="toSort">
           <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
             <Icon icon="icon-shunxu" class="text-3.5" />
-            <span>排序</span>
+            <span>{{ t('functionBaseline.list.sort') }}</span>
           </div>
         </DropdownSort>
 
@@ -357,7 +360,7 @@ onMounted(() => {
           <template #default>
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-shuaxin" class="text-3.5" />
-              <span class="ml-1">刷新</span>
+              <span class="ml-1">{{ t('functionBaseline.list.refresh') }}</span>
             </div>
           </template>
         </IconRefresh>
