@@ -110,10 +110,11 @@
       "actions": {
         "save": "保存",
         "cancel": "取消",
-        "clickToReplaceIcon": "点击替换图标",
+        "clickToReplaceIcon": "点击上传图标",
         "uploadIcon": "上传图标"
       },
       "tabs": {
+        "projectType": "项目类型",
         "basicInfo": "基本信息",
         "module": "软件模块",
         "version": "软件版本",
@@ -265,7 +266,7 @@
         "selectGroup": "选择组",
         "description": "描述",
         "descriptionPlaceholder": "描述，最多2000个字符",
-        "clickToReplaceIcon": "点击替换图标"
+        "clickToReplaceIcon": "点击上传图标"
       }
     }
   },

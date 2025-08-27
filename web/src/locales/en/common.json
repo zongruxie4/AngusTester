@@ -43,7 +43,8 @@
     "disabled": "Disabled",
     "saveAndAdd": "Save and Add Next",
     "stop": "Stop",
-    "deleteAll": "Delete All"
+    "deleteAll": "Delete All",
+    "more": "More"
   },
   "orgNames": {
     "user": "User",

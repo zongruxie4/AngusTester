@@ -52,7 +52,7 @@ const total = ref(0);
 const editId = ref<string>();
 const modalVisible = ref(false);
 
-const inputChange = debounce(duration.search, (event: { target: { value: string } }) => {
+const inputChange = debounce(duration.search, (event: any) => {
   inputValue.value = event.target.value;
   pageNo.value = 1;
   loadData();
@@ -92,7 +92,7 @@ const getParams = () => {
   return params;
 };
 
-const format = (data: { id: string; name: string }) => {
+const format = (data: { id: string; name: string; hasEditPermission?: boolean }) => {
   let showTitle = '';
   let showName = data.name;
   if (data.name?.length > MAX_LENGTH) {
@@ -103,7 +103,8 @@ const format = (data: { id: string; name: string }) => {
   return {
     ...data,
     showTitle,
-    showName
+    showName,
+    hasEditPermission: data.hasEditPermission ?? true
   };
 };
 
@@ -133,7 +134,7 @@ const loadData = async (remainder = 0, _params?:{pageNo?:number;pageSize?:number
     return;
   }
 
-  const list = ((data.list || []) as {id:string;name:string}[]).slice(remainder);
+  const list = ((data.list || []) as {id:string;name:string;hasEditPermission?:boolean}[]).slice(remainder);
   const pureList = list.map((item) => {
     return format(item);
   });
@@ -176,7 +177,7 @@ const pressEnter = async (id: string, index: number, event: { target: { value: s
     return;
   }
 
-  dataList.value[index] = format({ id: dataList.value[index].id, name: value });
+  dataList.value[index] = format({ id: dataList.value[index].id, name: value, hasEditPermission: dataList.value[index].hasEditPermission });
   notification.success(t('project.projectEdit.tag.updateSuccess'));
   editId.value = undefined;
 };
@@ -258,139 +259,142 @@ const showLoadMore = computed(() => {
 });
 </script>
 <template>
-  <div class="w-full h-full leading-5 text-3 overflow-auto">
-    <div class="mb-6">
-      <div class="text-3.5 font-medium mb-2.5">{{ t('project.projectEdit.tag.about') }}</div>
-      <div>{{ t('project.projectEdit.tag.aboutDescription') }}</div>
-    </div>
-
-    <div class="flex space-x-2 items-center">
-      <div class="text-3.5 font-medium">{{ t('project.projectEdit.tag.addedTags') }}</div>
-      <Hints
-        v-if="!props.disabled"
-        :text="t('project.projectEdit.tag.addTagHint')"
-        class="flex-1" />
-    </div>
-
-    <Spin
-      :spinning="loading"
-      style="min-height: calc(100% - 108px);"
-      class="flex flex-col">
-      <template v-if="loaded">
-        <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
-          <img src="../../../../../assets/images/nodata.png">
-          <div v-if="!props.disabled" class="flex items-center text-theme-sub-content text-3 leading-7">
-            <span>{{ t('project.projectEdit.tag.noTags') }}</span>
-            <Button
-              type="link"
-              size="small"
-              class="text-3 py-0 px-1"
-              @click="toCreate">
-              {{ t('project.projectEdit.tag.addTag') }}
-            </Button>
-          </div>
-          <div v-else="props.disabled">
-            {{ t('project.projectEdit.tag.noTagsDescription') }}
-          </div>
+  <div class="w-full h-full leading-5 text-xs overflow-auto">
+    <!-- 标签说明区域 -->
+    <div class="space-y-4">
+      <div class="space-y-2">
+        <div class="flex items-center space-x-2">
+          <div class="w-1 h-4 bg-gradient-to-b from-green-500 to-green-600 rounded-full"></div>
+          <span class="text-xs font-semibold text-gray-600">{{ t('project.projectEdit.tag.about') }}</span>
         </div>
-        <template v-else>
-          <div class="flex items-center mt-3.5">
-            <div class="flex items-center">
-              <Input
-                v-model:value="inputValue"
-                :placeholder="t('project.projectEdit.tag.tagNamePlaceholder')"
-                class="w-75 mr-2"
-                trimAll
-                :allowClear="true"
-                :maxlength="50"
-                @change="inputChange">
-                <template #suffix>
-                  <Icon class="text-3.5 cursor-pointer text-theme-content" icon="icon-sousuo" />
-                </template>
-              </Input>
-            </div>
+        <div class="text-xs text-gray-700 ml-3">{{ t('project.projectEdit.tag.aboutDescription') }}</div>
+      </div>
 
-            <div class="flex items-center space-x-3">
-              <!-- <ButtonAuth
-                code="CasesTagAdd"
-                type="primary"
-                icon="icon-jia"
-                @click="toCreate" /> -->
-              <Button
-                v-if="!props.disabled"
-                type="primary"
-                size="small"
-                class="flex space-x-1"
-                @click="toCreate">
-                <Icon icon="icon-jia" />
-                {{ t('project.projectEdit.tag.addTag') }}
-              </Button>
-
-              <IconRefresh @click="refresh">
-                <template #default>
-                  <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
-                    <Icon icon="icon-shuaxin" />
-                    <span class="ml-1">{{ t('project.projectEdit.tag.refresh') }}</span>
-                  </div>
-                </template>
-              </IconRefresh>
-            </div>
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <div class="w-1 h-4 bg-gradient-to-b from-purple-500 to-purple-600 rounded-full"></div>
+            <span class="text-xs font-semibold text-gray-600">{{ t('project.projectEdit.tag.addedTags') }}</span>
           </div>
+          <Hints
+            v-if="!props.disabled"
+            :text="t('project.projectEdit.tag.addTagHint')"
+            class="text-xs text-gray-500" />
+        </div>
 
-          <div class="w-full border-b border-solid border-theme-text-box my-3.5"></div>
-
-          <NoData v-if="dataList.length === 0" class="flex-1" />
-
-          <div v-else class="flex items-center flex-wrap">
-            <div
-              v-for="(item, index) in dataList"
-              :key="item.id"
-              class="mr-3.5 mb-3.5">
-              <div v-if="editId === item.id" class="flex items-center">
-                <Input
-                  :placeholder="t('project.projectEdit.tag.tagNamePlaceholder')"
-                  class="w-50 mr-2"
-                  trim
-                  :value="item.name"
-                  :allowClear="false"
-                  :maxlength="50"
-                  @blur="hadleblur(item.id, index, $event)"
-                  @pressEnter="pressEnter(item.id, index, $event)" />
+        <Spin
+          :spinning="loading"
+          class="flex flex-col min-h-96">
+          <template v-if="loaded">
+            <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center py-12">
+              <img src="../../../../../assets/images/nodata.png" class="w-32 h-32 mb-4">
+              <div v-if="!props.disabled" class="flex items-center text-gray-500 text-xs">
+                <span>{{ t('project.projectEdit.tag.noTags') }}</span>
                 <Button
                   type="link"
                   size="small"
-                  class="px-0 py-0"
-                  @click="cancelEdit">
-                  {{ t('actions.cancel') }}
+                  class="text-xs py-0 px-1 text-blue-600"
+                  @click="toCreate">
+                  {{ t('project.projectEdit.tag.addTag') }}
                 </Button>
               </div>
-
-              <div
-                v-else
-                class="flex items-center border border-solid border-theme-text-box rounded px-2 py-0.75 cursor-pointer"
-                @dblclick="toEdit(item)">
-                <Icon icon="icon-biaoqian1" class="mr-1 text-3.5" />
-                <span :title="item.showTitle" class="truncate mr-2">{{ item.showName }}</span>
-                <Icon
-                  v-if="!props.disabled && item.hasEditPermission"
-                  class="text-theme-placeholder text-theme-text-hover"
-                  icon="icon-shanchuguanbi"
-                  @click="toDelete(item,index)" />
+              <div v-else class="text-gray-500 text-xs">
+                {{ t('project.projectEdit.tag.noTagsDescription') }}
               </div>
             </div>
+            <template v-else>
+              <div class="flex items-center justify-between mt-4 mb-4">
+                <div class="flex items-center">
+                  <Input
+                    v-model:value="inputValue"
+                    :placeholder="t('project.projectEdit.tag.tagNamePlaceholder')"
+                    class="w-64 mr-3"
+                    trimAll
+                    :allowClear="true"
+                    :maxlength="50"
+                    @change="inputChange">
+                    <template #suffix>
+                      <Icon class="text-xs cursor-pointer text-gray-400" icon="icon-sousuo" />
+                    </template>
+                  </Input>
+                </div>
 
-            <Button
-              v-if="showLoadMore"
-              size="small"
-              type="link"
-              class="px-0 py-0 h-5 leading-5 mb-3"
-              @click="loadMore">
-              加载更多
-            </Button>
-          </div>
-        </template>
-      </template>
-    </Spin>
+                <div class="flex items-center space-x-3">
+                  <Button
+                    v-if="!props.disabled"
+                    type="primary"
+                    size="small"
+                    class="flex items-center space-x-1 text-xs"
+                    @click="toCreate">
+                    <Icon icon="icon-jia" class="text-xs" />
+                    <span>{{ t('project.projectEdit.tag.addTag') }}</span>
+                  </Button>
+
+                  <IconRefresh @click="refresh">
+                    <template #default>
+                      <div class="flex items-center cursor-pointer text-gray-600 space-x-1 hover:text-gray-800 text-xs">
+                        <Icon icon="icon-shuaxin" class="text-xs" />
+                        <span>{{ t('project.projectEdit.tag.refresh') }}</span>
+                      </div>
+                    </template>
+                  </IconRefresh>
+                </div>
+              </div>
+
+              <NoData v-if="dataList.length === 0" class="flex-1 py-12" />
+
+              <div v-else class="flex items-center flex-wrap gap-2 mt-2">
+                <div
+                  v-for="(item, index) in dataList"
+                  :key="item.id"
+                  class="">
+                  <div v-if="editId === item.id" class="flex items-center">
+                    <Input
+                      :placeholder="t('project.projectEdit.tag.tagNamePlaceholder')"
+                      class="w-40 mr-2 text-xs"
+                      trim
+                      :value="item.name"
+                      :allowClear="false"
+                      :maxlength="50"
+                      @blur="hadleblur(item.id, index, $event)"
+                      @pressEnter="pressEnter(item.id, index, $event)" />
+                    <Button
+                      type="link"
+                      size="small"
+                      class="px-0 py-0 text-xs"
+                      @click="cancelEdit">
+                      {{ t('actions.cancel') }}
+                    </Button>
+                  </div>
+
+                  <div
+                    v-else
+                    class="flex items-center bg-gray-50 hover:bg-gray-100 rounded-lg px-3 py-1.5 cursor-pointer transition-colors group"
+                    @dblclick="toEdit(item)">
+                    <Icon icon="icon-biaoqian1" class="mr-2 text-xs text-gray-500" />
+                    <span :title="item.showTitle" class="truncate mr-2 text-xs text-gray-700">{{ item.showName }}</span>
+                    <Icon
+                      v-if="!props.disabled && item.hasEditPermission"
+                      class="text-gray-400 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100 text-xs"
+                      icon="icon-shanchuguanbi"
+                      @click="toDelete(item,index)" />
+                  </div>
+                </div>
+
+                <Button
+                  v-if="showLoadMore"
+                  size="small"
+                  type="link"
+                  class="px-0 py-0 h-6 leading-6 text-xs text-blue-600"
+                  @click="loadMore">
+                  加载更多
+                </Button>
+              </div>
+            </template>
+          </template>
+        </Spin>
+      </div>
+    </div>
 
     <AsyncComponent :visible="modalVisible">
       <CreateModal

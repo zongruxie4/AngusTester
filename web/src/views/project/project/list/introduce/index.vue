@@ -53,7 +53,10 @@ const processData = [
     </div>
 
     <div class="flex items-center justify-center">
-      <div v-for="(item, idx) in processData" :key="idx" class="flex items-center">
+      <div
+        v-for="(item, idx) in processData"
+        :key="idx"
+        class="flex items-center">
         <div v-if="item.type === 'step'" class="process-step">
           <div class="step-header">
             <div class="step-icon-wrapper">
@@ -126,11 +129,11 @@ const processData = [
   .process-step {
     @apply min-w-0 w-full max-w-xs;
   }
-  
+
   .step-connector {
     @apply mx-2;
   }
-  
+
   .connector-icon {
     @apply w-8 h-8;
   }

@@ -58,7 +58,7 @@ type Project = {
 }
 
 const Introduce = defineAsyncComponent(() => import('@/views/project/project/list/introduce/index.vue'));
-const AddModal = defineAsyncComponent(() => import('@/views/project/add/index.vue'));
+const AddModal = defineAsyncComponent(() => import('@/views/project/project/addModal/index.vue'));
 const RichText = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
 
 const isAdmin = inject('isAdmin', ref(false));
