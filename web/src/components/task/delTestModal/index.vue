@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Modal, notification } from '@xcan-angus/vue-ui';
 import { CheckboxGroup, Form, FormItem } from 'ant-design-vue';
 
 import { apis, scenario, services } from 'src/api/tester';
+
+const { t } = useI18n();
 
 interface Props {
   visible: boolean;
@@ -28,15 +31,15 @@ const OK_API_MAP = {
 const validated = ref(false);
 const testTypes = [
   {
-    label: '功能测试',
+    label: t('commonComp.delTaskTestModal.functionalTest'),
     value: 'FUNCTIONAL'
   },
   {
-    label: '性能测试',
+    label: t('commonComp.delTaskTestModal.performanceTest'),
     value: 'PERFORMANCE'
   },
   {
-    label: '稳定性测试',
+    label: t('commonComp.delTaskTestModal.stabilityTest'),
     value: 'STABILITY'
   }
 ];
@@ -73,7 +76,7 @@ const handleDel = async () => {
         return;
       }
 
-      notification.success('删除测试任务成功');
+      notification.success(t('commonComp.delTaskTestModal.deleteSuccess'));
       emits('update:visible', false);
     });
 };
@@ -92,19 +95,19 @@ watch(() => props.visible, () => {
 </script>
 <template>
   <Modal
-    title="删除测试任务"
+    :title="t('commonComp.delTaskTestModal.title')"
     :width="580"
     :confirmLoading="loading"
     :visible="props.visible"
     @cancel="handleClose"
     @ok="handleDel">
     <div class="mb-2">
-      该操作会彻底删除任务，确认是否继续？
+      {{ t('commonComp.delTaskTestModal.confirmMessage') }}
     </div>
     <Form ref="sprintFormRef" :model="sprintData">
       <FormItem
-        :rules="{ validator: validateTestType, message: '请选择测试类型', required: true }"
-        label="选择删除测试类型"
+        :rules="{ validator: validateTestType, message: t('commonComp.delTaskTestModal.selectTestType'), required: true }"
+        :label="t('commonComp.delTaskTestModal.selectDeleteTestType')"
         class="w-full"
         name="testTypes">
         <CheckboxGroup v-model:value="sprintData.testTypes" :options="testTypes"></CheckboxGroup>

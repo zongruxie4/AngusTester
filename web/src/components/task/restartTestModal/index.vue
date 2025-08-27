@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Modal, notification } from '@xcan-angus/vue-ui';
 import { apis, scenario, services } from 'src/api/tester';
+
+const { t } = useI18n();
 
 interface Props {
   visible: boolean;
@@ -58,7 +61,7 @@ const confirm = async () => {
 
   emits('ok');
   emits('update:visible', false);
-  notification.success('重新开始测试设置成功');
+  notification.success(t('commonComp.restartTaskTestModal.restartSuccess'));
 };
 
 // watch(() => props.visible, () => {
@@ -67,7 +70,7 @@ const confirm = async () => {
 </script>
 <template>
   <Modal
-    title="重新开始测试"
+    :title="t('commonComp.restartTaskTestModal.title')"
     :width="580"
     :visible="props.visible"
     :confirmLoading="loading"
