@@ -11,10 +11,10 @@
     "confirmDelete": "Are you sure you want to delete project 【{name}】?",
     "deleteSuccess": "Project deleted successfully",
     "searchPlaceholder": "Enter search keywords",
-    "adminHint": "Only administrators, creators, and owners can modify or delete projects.",
+    "adminHint": "Only admin, creator, and owner can modify or delete projects.",
     "sort": "Sort",
     "refresh": "Refresh",
-    "noDescription": "No description~",
+    "noDescription": "No description ~",
     "owner": "Owner",
     "members": "Members",
     "allMembers": "All Members",
@@ -218,7 +218,7 @@
         "group": "Group",
         "department": "Department",
         "projectDescription": "Description",
-        "noDescription": "No description~"
+        "noDescription": "No description ~"
       }
     },
     "projectAddModal": {
@@ -352,7 +352,7 @@
     },
     "ui": {
       "searchPlaceholder": "Please enter search keywords",
-      "adminHint": "Only administrators and deleters can recover or permanently delete trash data.",
+      "adminHint": "Only administrators and deleter can recover or permanently delete trash data.",
       "recoverAll": "Recover All",
       "deleteAll": "Delete All",
       "refresh": "Refresh",

@@ -299,7 +299,7 @@ defineExpose({
                 v-model:value="keyword"
                 class="w-75"
                 trim
-                :maxlength="200"
+                :maxlength="100"
                 :allowClear="true"
                 :placeholder="t('project.searchPlaceholder')"
                 @change="onKeywordChange" />
@@ -358,7 +358,7 @@ defineExpose({
                     @click="handleDetail(item)">
                     {{ item.name }}
                   </div>
-                  <Tag>{{ item.type?.message || '敏捷项目管理' }}</Tag>
+                  <Tag>{{ item.type?.message || 'Agile Project' }}</Tag>
                   <div class="flex-1/2 truncate" :title="item.id">ID: <span>{{ item.id }}</span></div>
                 </div>
                 <p
@@ -370,9 +370,9 @@ defineExpose({
               </div>
               <div class="flex-1 space-y-2.5">
                 <div class="flex">
-                  <span>{{ t('project.owner') }}:<span>{{ item.ownerName }}</span></span>
-                  <div class="ml-6">{{ t('project.members') }}：</div>
-                  <div class="inline-flex space-x-1 flex-1 flex-wrap">
+                  <span>{{ t('project.owner') }}: <span>{{ item.ownerName }}</span></span>
+                  <div class="ml-6">{{ t('project.members') }}: </div>
+                  <div class="inline-flex space-x-1 flex-1 flex-wrap ml-2">
                     <Tooltip
                       v-for="(avatars, idx) in item.showMembers.USER || []"
                       :key="idx"
@@ -413,7 +413,7 @@ defineExpose({
                       <template #content>
                         <div class="space-y-2 max-w-100">
                           <div v-if="item.members?.USER?.length" class="flex">
-                            <span class="w-15 text-right">{{ t('project.user') }}： </span>
+                            <span class="w-15 text-right">{{ t('project.user') }}:  </span>
                             <div class="flex flex-1 flex-wrap">
                               <div
                                 v-for="(avatars, idx) in item.members.USER || []"
@@ -429,7 +429,7 @@ defineExpose({
                           </div>
 
                           <div v-if="item.members?.GROUP?.length" class="flex">
-                            <span class="w-15 text-right">{{ t('project.group') }}： </span>
+                            <span class="w-15 text-right">{{ t('project.group') }}:  </span>
                             <div class="flex flex-1 flex-wrap">
                               <div
                                 v-for="(avatars, idx) in item.members?.GROUP || []"
@@ -441,7 +441,7 @@ defineExpose({
                           </div>
 
                           <div v-if="item.members?.DEPT?.length" class="flex">
-                            <span class="w-15 text-right">{{ t('project.department') }}： </span>
+                            <span class="w-15 text-right">{{ t('project.department') }}:  </span>
                             <div class="flex flex-1 flex-wrap">
                               <div
                                 v-for="(avatars, idx) in item.members?.DEPT || []"
@@ -458,7 +458,7 @@ defineExpose({
                   </div>
                 </div>
                 <div class="flex justify-between items-center">
-                  <span>{{ t('project.modifyTime') }}：{{ item.lastModifiedDate }}</span>
+                  <span>{{ t('project.modifyTime') }}: {{ item.lastModifiedDate }}</span>
                 </div>
               </div>
               <div class="flex items-center flex-wrap">
