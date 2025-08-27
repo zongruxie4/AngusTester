@@ -2,6 +2,9 @@
 import { computed } from 'vue';
 import { Hints, IconCopy, Input } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 export interface Option {
   name: string;
@@ -42,10 +45,10 @@ const _columnIndex = computed(() => {
 
     <div class="flex items-center space-x-2 mb-1">
       <div class="w-90 flex items-center">
-        <span>名称</span>
+        <span>{{ t('commonComp.apis.parameterizationDataset.extractParameter.name') }}</span>
       </div>
       <div class="flex-1 flex items-center">
-        <span>读取列</span>
+        <span>{{ t('commonComp.apis.parameterizationDataset.extractParameter.readColumn') }}</span>
       </div>
     </div>
 

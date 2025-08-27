@@ -75,5 +75,137 @@
     "modifySuccess": "修改成功"
   },
   "sort": "排序",
-  "quickSearch": "快速查询"
-} 
+  "quickSearch": "快速查询",
+  "commonComp": {
+    "apis": {
+      "editableSelector": {
+        "placeholder": "请输入调试值"
+      },
+      "enabledTestModal": {
+        "title": "启用或禁用接口测试",
+        "hint": "启用或禁用服务下所有接口对应下面类型测试。",
+        "functionalTest": "功能测试",
+        "performanceTest": "性能测试",
+        "stabilityTest": "稳定性测试",
+        "enabled": "启用",
+        "disabled": "禁用",
+        "successMessage": "成功启用或禁用测试"
+      },
+      "selectCaseModal": {
+        "title": "选择接口",
+        "selectService": "请选择服务",
+        "searchApi": "查询接口",
+        "search": "搜索",
+        "group": "分组",
+        "noGroup": "不分组",
+        "groupByCreator": "按添加人分组",
+        "groupByMethod": "按请求方法分组",
+        "groupByOwner": "按负责人分组",
+        "groupByTag": "按标签分组",
+        "caseName": "用例名称",
+        "method": "方法",
+        "path": "路径",
+        "caseType": "用例类型"
+      },
+      "parameterizationDataset": {
+        "title": "数据集",
+        "description": "引入已定义数据集，引入后可以在当前请求中使用数据集参数。注意：只有引用后数据集参数才会生效。当数据集参数名和变量名冲突时，同名数据集参数值比变量值优先级高。",
+        "readToEnd": "读到末尾时",
+        "sharingMode": "共享模式",
+        "recycleTooltip": "数据集中所有数据行都被使用后， 将重新从开头使用数据。",
+        "stopThreadTooltip": "数据集中所有数据行都被使用后，停止当前采样线程执行，所有线程都读完所有行时整个执行退出并结束。",
+        "allThreadTooltip": "所有线程共享同一份数据集数据。",
+        "currentThreadTooltip": "每个线程各自复制一份数据集数据。",
+        "addDataset": "引入数据集",
+        "noDataMessage": "您尚未引用任何数据集",
+        "name": "名称",
+        "creator": "添加人",
+        "actions": "操作",
+        "cancelReference": "取消引用",
+        "cancelReferenceConfirm": "确定取消引用数据集【{name}】吗？",
+        "viewDefinition": "查看定义",
+        "parameters": "参数",
+        "extract": "提取",
+        "preview": "预览",
+        "use": "使用",
+        "fileHint": "从文件中读取数据集，每个数据集最大允许创建200个参数，每个参数文件最大不超过500MB，总行数不超过100万行。",
+        "jdbcHint": "每次执行测试前从数据库中查询结果中提取一个值作为数据集值。",
+        "listModal": {
+          "title": "引用变量",
+          "searchPlaceholder": "查询名称、描述",
+          "refresh": "刷新",
+          "name": "名称",
+          "description": "描述",
+          "valueSource": "值来源",
+          "lastModifiedBy": "最后修改人",
+          "lastModifiedTime": "最后修改时间",
+          "staticValue": "静态值",
+          "exactValue": "精确值",
+          "extractedValue": "提取值",
+          "file": "(文件)",
+          "http": "(Http)",
+          "jdbc": "(Jdbc)"
+        },
+        "extractParameter": {
+          "name": "名称",
+          "readColumn": "读取列"
+        },
+        "previewData": {
+          "hintText": "每次最多只允许预览1w条数据，Mock函数实际参数值在执行采样时生成。",
+          "rowNum": "预览行数",
+          "refresh": "刷新",
+          "noData": "无数据"
+        },
+        "useList": {
+          "targetType": "资源类型",
+          "targetId": "资源ID",
+          "targetName": "资源名称",
+          "hintText": "查看使用变量的资源信息。",
+          "refresh": "刷新"
+        },
+        "staticParameter": {
+            "hintText": "在采样时根据Mock数据函数动态生成参数值，每个数据集最大允许创建200个参数，最大支持生成1000亿行数据。",
+            "name": "名称",
+            "value": "值"
+          }
+        },
+      "parameterizationVariable": {
+          "title": "变量",
+          "hints": "引入已定义变量，引入后可以在当前请求中使用变量参数。注意：只有引用后变量才会生效。",
+          "addVariable": "引用变量",
+          "noDataMessage": "您尚未引用任何变量",
+          "name": "名称",
+          "value": "值",
+          "description": "描述",
+          "reference": "引用",
+          "creator": "添加人",
+          "actions": "操作",
+          "cancelReference": "取消引用",
+          "cancelReferenceConfirm": "确定取消引用变量【{name}】吗？",
+          "viewDefinition": "查看定义",
+          "listModal": {
+            "title": "引用变量",
+            "searchPlaceholder": "查询名称、描述",
+            "refresh": "刷新",
+            "name": "名称",
+            "description": "描述",
+            "value": "值",
+            "reference": "引用",
+            "lastModifiedBy": "最后修改人",
+            "lastModifiedTime": "最后修改时间",
+            "password": "密码",
+            "staticValue": "静态值",
+            "exactValue": "精确值",
+            "extractedValue": "提取值",
+            "file": "(文件)",
+            "http": "(Http)",
+            "jdbc": "(Jdbc)",
+            "ynOption": {
+              "yes": "是",
+              "no": "否"
+            }
+          }
+        }
+      }
+    }
+  }

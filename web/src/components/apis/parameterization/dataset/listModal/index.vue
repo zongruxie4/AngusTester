@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon, Input, Modal, NoData, Spin, Table } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { duration } from '@xcan-angus/infra';
@@ -7,6 +8,8 @@ import { debounce } from 'throttle-debounce';
 import { dataSet } from '@/api/tester';
 
 import { DataSetItem } from './PropsType';
+
+const { t } = useI18n();
 
 type OrderByKey = 'lastModifiedDate' | 'lastModifiedByName';
 type OrderSortKey = 'ASC' | 'DESC';
@@ -98,24 +101,24 @@ const loadData = async () => {
     _list.every((item) => {
       const { extracted, extraction, name } = item;
       if (!extraction || !['FILE', 'http', 'JDBC'].includes(extraction.source)) {
-        item.source = '静态值';
+        item.source = t('commonComp.apis.parameterizationDataset.listModal.staticValue');
       } else {
         const { source } = extraction;
         if (!extracted) {
-          item.source = '精确值';
+          item.source = t('commonComp.apis.parameterizationDataset.listModal.exactValue');
           if (source === 'FILE') {
-            item.source += ' (文件)';
-          } else if (source === 'http') {
-            item.source += ' (Http)';
+            item.source += ` ${t('commonComp.apis.parameterizationDataset.listModal.file')}`;
+          } else if (source === 'HTTP') {
+            item.source += ` ${t('commonComp.apis.parameterizationDataset.listModal.http')}`;
           } else if (source === 'JDBC') {
-            item.source += ' (Jdbc)';
+            item.source += ` ${t('commonComp.apis.parameterizationDataset.listModal.jdbc')}`;
           }
         } else {
-          item.source = '提取值';
+          item.source = t('commonComp.apis.parameterizationDataset.listModal.extractedValue');
           if (source === 'FILE') {
-            item.source += ' (文件)';
+            item.source += ` ${t('commonComp.apis.parameterizationDataset.listModal.file')}`;
           } else if (source === 'JDBC') {
-            item.source += ' (Jdbc)';
+            item.source += ` ${t('commonComp.apis.parameterizationDataset.listModal.jdbc')}`;
           }
         }
       }
@@ -232,30 +235,30 @@ const okButtonProps = computed(() => {
 
 const columns = [
   {
-    title: '名称',
+    title: t('commonComp.apis.parameterizationDataset.listModal.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '描述',
+    title: t('commonComp.apis.parameterizationDataset.listModal.description'),
     dataIndex: 'description',
     ellipsis: true
   },
   {
-    title: '值来源',
+    title: t('commonComp.apis.parameterizationDataset.listModal.valueSource'),
     dataIndex: 'source',
     ellipsis: true,
     width: '10%'
   },
   {
-    title: '最后修改人',
+    title: t('commonComp.apis.parameterizationDataset.listModal.lastModifiedBy'),
     dataIndex: 'lastModifiedByName',
     ellipsis: true,
     width: '11%',
     sort: true
   },
   {
-    title: '最后修改时间',
+    title: t('commonComp.apis.parameterizationDataset.listModal.lastModifiedTime'),
     dataIndex: 'lastModifiedDate',
     ellipsis: true,
     width: '15%',
@@ -266,7 +269,7 @@ const columns = [
 
 <template>
   <Modal
-    title="引用变量"
+    :title="t('commonComp.apis.parameterizationDataset.listModal.title')"
     :visible="props.visible"
     :width="1100"
     :okButtonProps="okButtonProps"
@@ -281,7 +284,7 @@ const columns = [
             allowClear
             trim
             class="w-75 flex-grow-0 flex-shrink"
-            placeholder="查询名称、描述"
+            :placeholder="t('commonComp.apis.parameterizationDataset.listModal.searchPlaceholder')"
             @change="searchInputChange" />
           <Button
             type="default"
@@ -289,7 +292,7 @@ const columns = [
             class="flex items-center"
             @click="toRefresh">
             <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-shuaxin" />
-            <span>刷新</span>
+            <span>{{ t('commonComp.apis.parameterizationDataset.listModal.refresh') }}</span>
           </Button>
         </div>
 

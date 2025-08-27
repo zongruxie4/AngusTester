@@ -5,6 +5,9 @@ import { Hints, Icon, Input, NoData, Spin, Table } from '@xcan-angus/vue-ui';
 import { utils, duration, ExtractionSource, ExtractionMethod, ExtractionFileType, Encoding } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { dataSet } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 type TableData = {
   [key: string]: string;
@@ -158,18 +161,18 @@ onMounted(() => {
 });
 
 const noDataText = computed(() => {
-  return errorMessage.value ? errorMessage.value : '无数据';
+  return errorMessage.value ? errorMessage.value : t('commonComp.apis.parameterizationDataset.previewData.noData');
 });
 </script>
 
 <template>
   <Spin :spinning="loading" class="text-3 leading-5">
     <div class="flex items-center justify-between transform-gpu -translate-y-1">
-      <Hints text="每次最多只允许预览1w条数据，Mock函数实际参数值在执行采样时生成。" />
+      <Hints :text="t('commonComp.apis.parameterizationDataset.previewData.hintText')" />
 
       <div class="flex items-center flex-nowrap space-x-2.5">
         <div class="flex items-center">
-          <div class="flex-shrink-0 mr-2">预览行数</div>
+          <div class="flex-shrink-0 mr-2">{{ t('commonComp.apis.parameterizationDataset.previewData.rowNum') }}</div>
           <Input
             v-model:value="rowNum"
             placeholder="1 ~ 10000"
@@ -188,7 +191,7 @@ const noDataText = computed(() => {
           class="px-0 h-5 leading-5 border-0 text-theme-content text-theme-text-hover"
           @click="refresh">
           <Icon icon="icon-shuaxin" class="text-3.5" />
-          <span class="ml-1">刷新</span>
+          <span class="ml-1">{{ t('commonComp.apis.parameterizationDataset.previewData.refresh') }}</span>
         </Button>
       </div>
     </div>

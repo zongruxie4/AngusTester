@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Hints, notification } from '@xcan-angus/vue-ui';
 import { Checkbox, Modal, Switch } from 'ant-design-vue';
 import { services } from '@/api/tester';
+
+const { t } = useI18n();
 
 interface Props {
   visible: boolean;
@@ -20,15 +23,15 @@ const showOpt = ref(['PERFORMANCE', 'STABILITY', 'FUNCTIONAL']);
 const validated = ref(false);
 const testTypes = [
   {
-    label: '功能测试',
+    label: t('commonComp.apis.enabledTestModal.functionalTest'),
     value: 'FUNCTIONAL'
   },
   {
-    label: '性能测试',
+    label: t('commonComp.apis.enabledTestModal.performanceTest'),
     value: 'PERFORMANCE'
   },
   {
-    label: '稳定性测试',
+    label: t('commonComp.apis.enabledTestModal.stabilityTest'),
     value: 'STABILITY'
   }
 ];
@@ -88,7 +91,7 @@ const handleOk = async () => {
   // }
 
   loading.value = false;
-  notification.success('成功启用或禁用测试');
+  notification.success(t('commonComp.apis.enabledTestModal.successMessage'));
   emits('update:visible', false);
 };
 
@@ -107,7 +110,7 @@ watch(() => props.visible, () => {
 </script>
 <template>
   <Modal
-    title="启用或禁用接口测试"
+    :title="t('commonComp.apis.enabledTestModal.title')"
     :confirmLoading="loading"
     :visible="props.visible"
     :width="350"
@@ -118,7 +121,7 @@ watch(() => props.visible, () => {
       :options="testTypes"
       class="ml-2">
     </CheckboxGroup> -->
-    <Hints text="启用或禁用服务下所有接口对应下面类型测试。" />
+    <Hints :text="t('commonComp.apis.enabledTestModal.hint')" />
     <div class="mt-2">
       <div
         v-for="opt in testTypes"
@@ -130,8 +133,8 @@ watch(() => props.visible, () => {
           <Switch
             v-show="showOpt.includes(opt.value)"
             :checked="checked.includes(opt.value)"
-            checkedChildren="启用"
-            unCheckedChildren="禁用"
+            :checkedChildren="t('commonComp.apis.enabledTestModal.enabled')"
+            :unCheckedChildren="t('commonComp.apis.enabledTestModal.disabled')"
             size="small"
             @click="changeChecked($event, opt.value)" />
         </div>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon, IconCopy, Input, Modal, NoData, Spin, Table } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { duration } from '@xcan-angus/infra';
@@ -7,6 +8,8 @@ import { debounce } from 'throttle-debounce';
 import { variable } from '@/api/tester';
 
 import { VariableItem } from '../PropsType';
+
+const { t } = useI18n();
 
 type OrderByKey = 'lastModifiedDate' | 'lastModifiedByName';
 type OrderSortKey = 'ASC' | 'DESC';
@@ -103,7 +106,7 @@ const loadData = async () => {
     _list.every((item) => {
       const { extracted, extraction, name } = item;
       if (!extraction || !['FILE', 'http', 'JDBC'].includes(extraction.source)) {
-        item.source = '静态值';
+        item.source = t('commonComp.apis.parameterizationVariable.listModal.staticValue');
         if (/@\w+\w*\([^)]*\)/.test(item.value)) {
           item.previewFlag = true;
           item.source += ' (mock)';
@@ -112,22 +115,22 @@ const loadData = async () => {
         item.previewFlag = true;
         const { source } = extraction;
         if (!extracted) {
-          item.source = '精确值';
+          item.source = t('commonComp.apis.parameterizationVariable.listModal.exactValue');
           if (source === 'FILE') {
-            item.source += ' (文件)';
-          } else if (source === 'http') {
-            item.source += ' (Http)';
+            item.source += t('commonComp.apis.parameterizationVariable.listModal.file');
+          } else if (source === 'HTTP') {
+            item.source += t('commonComp.apis.parameterizationVariable.listModal.http');
           } else if (source === 'JDBC') {
-            item.source += ' (Jdbc)';
+            item.source += t('commonComp.apis.parameterizationVariable.listModal.jdbc');
           }
         } else {
-          item.source = '提取值';
+          item.source = t('commonComp.apis.parameterizationVariable.listModal.extractedValue');
           if (source === 'FILE') {
-            item.source += ' (文件)';
-          } else if (source === 'http') {
-            item.source += ' (Http)';
+            item.source += t('commonComp.apis.parameterizationVariable.listModal.file');
+          } else if (source === 'HTTP') {
+            item.source += t('commonComp.apis.parameterizationVariable.listModal.http');
           } else if (source === 'JDBC') {
-            item.source += ' (Jdbc)';
+            item.source += t('commonComp.apis.parameterizationVariable.listModal.jdbc');
           }
         }
       }
@@ -282,41 +285,41 @@ const okButtonProps = computed(() => {
 
 const columns = [
   {
-    title: '名称',
+    title: t('commonComp.apis.parameterizationVariable.listModal.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '值',
+    title: t('commonComp.apis.parameterizationVariable.listModal.value'),
     dataIndex: 'value',
     ellipsis: true
   },
   {
-    title: '描述',
+    title: t('commonComp.apis.parameterizationVariable.listModal.description'),
     dataIndex: 'description',
     ellipsis: true
   },
   {
-    title: '密码',
+    title: t('commonComp.apis.parameterizationVariable.listModal.password'),
     dataIndex: 'passwordValue',
     ellipsis: true,
     width: '5%'
   },
   {
-    title: '值来源',
+    title: t('commonComp.apis.parameterizationVariable.listModal.reference'),
     dataIndex: 'source',
     ellipsis: true,
     width: '10%'
   },
   {
-    title: '最后修改人',
+    title: t('commonComp.apis.parameterizationVariable.listModal.lastModifiedBy'),
     dataIndex: 'lastModifiedByName',
     ellipsis: true,
     width: '10%',
     sort: true
   },
   {
-    title: '最后修改时间',
+    title: t('commonComp.apis.parameterizationVariable.listModal.lastModifiedTime'),
     dataIndex: 'lastModifiedDate',
     ellipsis: true,
     width: '14%',
@@ -327,7 +330,7 @@ const columns = [
 
 <template>
   <Modal
-    title="引用变量"
+    :title="t('commonComp.apis.parameterizationVariable.listModal.title')"
     :visible="props.visible"
     :width="1100"
     :okButtonProps="okButtonProps"
@@ -342,7 +345,7 @@ const columns = [
             allowClear
             trim
             class="w-75 flex-grow-0 flex-shrink"
-            placeholder="查询名称、描述"
+            :placeholder="t('commonComp.apis.parameterizationVariable.listModal.searchPlaceholder')"
             @change="searchInputChange" />
           <Button
             type="default"
@@ -350,7 +353,7 @@ const columns = [
             class="flex items-center"
             @click="toRefresh">
             <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-shuaxin" />
-            <span>刷新</span>
+            <span>{{ t('commonComp.apis.parameterizationVariable.listModal.refresh') }}</span>
           </Button>
         </div>
 

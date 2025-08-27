@@ -73,5 +73,137 @@
     "moveSuccess": "Move successful"
   },
   "sort": "Sort",
-  "quickSearch": "Quick Search"
-} 
+  "quickSearch": "Quick Search",
+  "commonComp": {
+    "apis": {
+      "editableSelector": {
+        "placeholder": "Please enter debug value"
+      },
+      "enabledTestModal": {
+        "title": "Enable or Disable API Testing",
+        "hint": "Enable or disable the corresponding test types for all APIs under the service.",
+        "functionalTest": "Functional Test",
+        "performanceTest": "Performance Test",
+        "stabilityTest": "Stability Test",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "successMessage": "Successfully enabled or disabled testing"
+      },
+      "selectCaseModal": {
+        "title": "Select API",
+        "selectService": "Please select service",
+        "searchApi": "Search API",
+        "search": "Search",
+        "group": "Group",
+        "noGroup": "No Group",
+        "groupByCreator": "Group by Creator",
+        "groupByMethod": "Group by Method",
+        "groupByOwner": "Group by Owner",
+        "groupByTag": "Group by Tag",
+        "caseName": "Case Name",
+        "method": "Method",
+        "path": "Path",
+        "caseType": "Case Type"
+      },
+      "parameterizationDataset": {
+        "title": "Dataset",
+        "description": "Import predefined datasets that can be used as parameters in the current request. Note: Dataset parameters only take effect after being referenced. When dataset parameter names conflict with variable names, dataset parameter values have higher priority than variable values.",
+        "readToEnd": "When reading to end",
+        "sharingMode": "Sharing Mode",
+        "recycleTooltip": "After all data rows in the dataset have been used, data will be reused from the beginning.",
+        "stopThreadTooltip": "After all data rows in the dataset have been used, stop the current sampling thread execution. When all threads have read all rows, the entire execution exits and ends.",
+        "allThreadTooltip": "All threads share the same dataset data.",
+        "currentThreadTooltip": "Each thread copies its own dataset data.",
+        "addDataset": "Import Dataset",
+        "noDataMessage": "You have not referenced any datasets yet",
+        "name": "Name",
+        "creator": "Creator",
+        "actions": "Actions",
+        "cancelReference": "Cancel Reference",
+        "cancelReferenceConfirm": "Are you sure you want to cancel referencing dataset 【{name}】?",
+        "viewDefinition": "View Definition",
+        "parameters": "Parameters",
+        "extract": "Extract",
+        "preview": "Preview",
+        "use": "Use",
+        "fileHint": "Read datasets from files. Each dataset can create up to 200 parameters, each parameter file cannot exceed 500MB, and the total number of rows cannot exceed 1 million.",
+        "jdbcHint": "Extract a value from the database query results as the dataset value before each test execution.",
+        "listModal": {
+          "title": "Reference Variables",
+          "searchPlaceholder": "Search name, description",
+          "refresh": "Refresh",
+          "name": "Name",
+          "description": "Description",
+          "valueSource": "Value Source",
+          "lastModifiedBy": "Last Modified By",
+          "lastModifiedTime": "Last Modified Time",
+          "staticValue": "Static Value",
+          "exactValue": "Exact Value",
+          "extractedValue": "Extracted Value",
+          "file": "(File)",
+          "http": "(Http)",
+          "jdbc": "(Jdbc)"
+        },
+        "extractParameter": {
+          "name": "Name",
+          "readColumn": "Read Column"
+        },
+        "previewData": {
+          "hintText": "Each time, at most 10,000 data can be previewed, and the actual parameter values of the Mock function are generated during sampling.",
+          "rowNum": "Preview Row Number",
+          "refresh": "Refresh",
+          "noData": "No Data"
+        },
+        "useList": {
+          "targetType": "Resource Type",
+          "targetId": "Resource ID",
+          "targetName": "Resource Name",
+          "hintText": "View the resource information used by the variable.",
+          "refresh": "Refresh"
+        },
+                  "staticParameter": {
+            "hintText": "Generate parameter values dynamically during sampling, each dataset can create up to 200 parameters, and the maximum number of rows supported is 100 billion.",
+            "name": "Name",
+            "value": "Value"
+          }
+        },
+      "parameterizationVariable": {
+          "title": "Variables",
+          "hints": "Import predefined variables that can be used as parameters in the current request. Note: Variables only take effect after being referenced.",
+          "addVariable": "Reference Variables",
+          "noDataMessage": "You have not referenced any variables yet",
+          "name": "Name",
+          "value": "Value",
+          "description": "Description",
+          "reference": "Reference",
+          "creator": "Creator",
+          "actions": "Actions",
+          "cancelReference": "Cancel Reference",
+          "cancelReferenceConfirm": "Are you sure you want to cancel referencing variable 【{name}】?",
+          "viewDefinition": "View Definition",
+          "listModal": {
+            "title": "Reference Variables",
+            "searchPlaceholder": "Search name, description",
+            "refresh": "Refresh",
+            "name": "Name",
+            "description": "Description",
+            "value": "Value",
+            "reference": "Reference",
+            "lastModifiedBy": "Last Modified By",
+            "lastModifiedTime": "Last Modified Time",
+            "password": "Password",
+            "staticValue": "Static Value",
+            "exactValue": "Exact Value",
+            "extractedValue": "Extracted Value",
+            "file": "(File)",
+            "http": "(Http)",
+            "jdbc": "(Jdbc)",
+            "ynOption": {
+              "yes": "Yes",
+              "no": "No"
+            }
+          }
+        }
+      }
+    }
+  }
