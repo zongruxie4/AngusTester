@@ -26,7 +26,7 @@ import { debounce } from 'throttle-debounce';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 
-import SelectEnum from '@/components/SelectEnum/index.vue';
+import SelectEnum from '@/components/selectEnum/index.vue';
 import { MenuItem, SelectOption } from './PropsType';
 
 type Props = {

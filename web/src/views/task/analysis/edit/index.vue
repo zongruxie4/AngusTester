@@ -7,7 +7,7 @@ import { TESTER, GM, enumUtils, EnumMessage } from '@xcan-angus/infra';
 import { AnalysisTaskTemplateDesc, AnalysisCaseObject, AnalysisTimeRange } from '@/enums/enums';
 import { Analysis } from '../PropType';
 import { analysis } from '@/api/tester';
-import SelectEnum from '@/components/SelectEnum/index.vue';
+import SelectEnum from '@/components/selectEnum/index.vue';
 
 interface Props {
   projectId: string;

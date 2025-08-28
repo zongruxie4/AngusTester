@@ -5,7 +5,7 @@ import { Button, Checkbox, Form, FormItem, Radio, RadioGroup, Switch, Tooltip } 
 import type { Rule } from 'ant-design-vue/es/form';
 import { useRouter } from 'vue-router';
 
-import SelectEnum from '@/components/SelectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue'
 import { encode } from '@/utils/secure';
 import { TESTER } from '@xcan-angus/infra';
 import { mock } from '@/api/tester';

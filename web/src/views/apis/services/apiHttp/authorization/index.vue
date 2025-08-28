@@ -7,7 +7,7 @@ import { encode } from '@/utils/secure';
 import { http, utils } from '@xcan-angus/infra';
 import axios from 'axios';
 import { services } from '@/api/tester';
-import SelectEnum from '@/components/SelectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue'
 
 import {
   AuthItem,

@@ -7,7 +7,7 @@ import { EnumMessage, EvalWorkloadMethod, utils, TESTER, enumUtils } from '@xcan
 import dayjs from 'dayjs';
 import { task, project } from '@/api/tester';
 
-import SelectEnum from '@/components/SelectEnum/index.vue';
+import SelectEnum from '@/components/selectEnum/index.vue';
 import RichEditor from '@/components/richEditor/index.vue';
 
 import { FormState } from './PropsType';

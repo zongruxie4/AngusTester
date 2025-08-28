@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router';
 import type { Rule } from 'ant-design-vue/es/form';
 import { TESTER, appContext } from '@xcan-angus/infra';
 import postmanToOpenApi from '@xcan-angus/postman-to-openapi';
-import SelectEnum from '@/components/SelectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue'
 
 import { formatBytes } from '@/utils/common';
 import { mock, node } from '@/api/tester';

@@ -17,7 +17,7 @@ import {
 import { apis, services } from '@/api/tester';
 import { TESTER, appContext } from '@xcan-angus/infra';
 import { Button, Form, FormItem } from 'ant-design-vue';
-import SelectEnum from '@/components/SelectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue'
 
 interface Props {
   disabled:boolean

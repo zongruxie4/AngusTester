@@ -13,7 +13,7 @@ import SwaggerUI from '@xcan-angus/swagger-ui';
 import XML from 'xml';
 import useClipboard from 'vue-clipboard3';
 import { debounce } from 'throttle-debounce';
-import SelectEnum from '@/components/SelectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue'
 
 
 import { apis, services } from '@/api/tester';

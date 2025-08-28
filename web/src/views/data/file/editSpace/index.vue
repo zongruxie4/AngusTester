@@ -3,7 +3,7 @@ import { reactive, ref, watch } from 'vue';
 import { Input, Modal } from '@xcan-angus/vue-ui';
 import { space } from '@/api/storage';
 import { Form, FormItem } from 'ant-design-vue';
-import SelectEnum from '@/components/SelectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue'
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();

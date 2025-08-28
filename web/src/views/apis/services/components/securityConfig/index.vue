@@ -7,7 +7,7 @@ import { regexpUtils, utils } from '@xcan-angus/infra';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
 import { useI18n } from 'vue-i18n';
 
-import SelectEnum from '@/components/SelectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue'
 import { ApiKeyExtensionFields, AuthConfigObj, FlowKey, ModelObj } from './PropsType';
 
 interface Props {

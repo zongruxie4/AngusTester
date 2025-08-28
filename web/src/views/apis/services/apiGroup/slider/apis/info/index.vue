@@ -13,7 +13,7 @@ import {
 } from '@xcan-angus/vue-ui';
 import { Button, Tag, TypographyParagraph } from 'ant-design-vue';
 import { TESTER, appContext } from '@xcan-angus/infra';
-import SelectEnum from '@/components/SelectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue'
 
 import { apis } from '@/api/tester';
 import DescriptionModal from '@/views/apis/services/components/markdownDescModal/index.vue';

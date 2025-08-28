@@ -6,7 +6,7 @@ import { DatePicker, Input, notification, Select } from '@xcan-angus/vue-ui';
 import {TESTER, GM, enumUtils, EnumMessage} from '@xcan-angus/infra';
 import { AnalysisCaseTemplateDesc, AnalysisCaseObject, AnalysisTimeRange } from '@/enums/enums';
 import { analysis } from '@/api/tester';
-import SelectEnum from '@/components/SelectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue'
 
 const { t } = useI18n();
 interface Props {

@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { Composite, HttpMethodText, IconCopy, IconRequired, Input, Select } from '@xcan-angus/vue-ui';
 
-import SelectEnum from '@/components/SelectEnum/index.vue';
+import SelectEnum from '@/components/selectEnum/index.vue';
 
 interface Props {
   method:string;

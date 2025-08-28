@@ -22,7 +22,7 @@ import dayjs from 'dayjs';
 import RichEditor from '@/components/richEditor/index.vue';
 import { funcCase, project, modules } from '@/api/tester';
 import { ai } from 'src/api/gm';
-import SelectEnum from '@/components/SelectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue'
 
 import { useI18n } from 'vue-i18n';
 import { FormState } from './PropsType';

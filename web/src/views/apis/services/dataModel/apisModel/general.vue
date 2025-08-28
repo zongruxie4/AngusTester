@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { Composite, HttpMethodTag, Icon, Input } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
-import SelectEnum from '@/components/SelectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue'
 
 const statusKey = 'x-xc-status';
 interface Props {

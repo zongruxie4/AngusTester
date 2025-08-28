@@ -21,7 +21,7 @@ import dayjs from 'dayjs';
 import elementResizeDetector, { Erd } from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
 import { CaseInfoObj, Priority } from '../PropsType';
-import SelectEnum from '@/components/SelectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue'
 import {
   bigApisInfoColumns,
   bigDateInfoColumns,
@@ -1141,7 +1141,7 @@ onBeforeUnmount(() => {
         </template>
       </Toggle>
       <template v-if="!bigLayout">
-        
+
         <Toggle
           :title="t('functionCase.detail.caseDetail.attachments')"
           class="mt-3.5">

@@ -3,7 +3,7 @@ import { ref, reactive, watch } from 'vue';
 import { FormItem, Form } from 'ant-design-vue';
 import { useRoute } from 'vue-router';
 import { Icon, Input, Grid } from '@xcan-angus/vue-ui';
-import SelectEnum from '@/components/SelectEnum/index.vue';
+import SelectEnum from '@/components/selectEnum/index.vue';
 import { useI18n } from 'vue-i18n';
 
 interface Props {
@@ -138,7 +138,7 @@ defineExpose({ getFormData, validate, isSpread, toggle });
           name="type"
           :rules="[{required: true, message: t('ftpPlugin.performanceTestDetail.scriptInfo.form.scriptTypeRequired')}]">
           <SelectEnum
-            v-model:value="formData.type" 
+            v-model:value="formData.type"
             enumKey="ScriptType"
             :placeholder="t('ftpPlugin.performanceTestDetail.scriptInfo.form.scriptTypePlaceholder')" />
         </FormItem>
