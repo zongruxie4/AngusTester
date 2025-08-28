@@ -1,3 +1,5 @@
+import { i18n } from '@xcan-angus/infra';
+const t = i18n.getI18n().global.t;
 export const bigPeopleInfoColumns = [
   [
     {

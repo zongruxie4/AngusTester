@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import { CountObj } from './type';
+import { CountObj } from './PropsType';
 import Charts from './charts.vue';
 import { ReviewStatus, enumUtils } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 interface Props {
   dataSource:CountObj;
@@ -27,9 +30,9 @@ const reviewStatusEnum = ref({});
 
 const testData = computed(() => {
   const result = [
-    { name: '待评审', value: +props.dataSource.pendingReviewNum, enumKey: 'PENDING' },
-    { name: '评审通过', value: +props.dataSource.passedReviewNum, enumKey: 'PASSED' },
-    { name: '评审未通过', value: +props.dataSource.failedReviewNum, enumKey: 'FAILED' }
+    { name: t('functionCase.statisticsPanel.pendingReview'), value: +props.dataSource.pendingReviewNum, enumKey: 'PENDING' },
+    { name: t('functionCase.statisticsPanel.reviewPassed'), value: +props.dataSource.passedReviewNum, enumKey: 'PASSED' },
+    { name: t('functionCase.statisticsPanel.reviewNotPassed'), value: +props.dataSource.failedReviewNum, enumKey: 'FAILED' }
   ];
   result.forEach((i) => {
     i.name = reviewStatusEnum.value?.[i.enumKey]?.message || i.name;
@@ -52,7 +55,7 @@ onMounted(() => {
       key="1"
       style="width: 220px;"
       class="chart-item"
-      title="评审状态"
+      :title="t('functionCase.statisticsPanel.reviewStatus')"
       :color="['rgb(154, 154, 154)', 'rgb(92, 200, 0)', 'rgb(255, 95, 27)']"
       :total="+props.dataSource.totalReviewCaseNum"
       :data-source="testData" />

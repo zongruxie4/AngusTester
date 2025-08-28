@@ -55,7 +55,7 @@ onMounted(() => {
       if (!tabData.includes('funcHome')) {
         addTabPane({
           _id: 'usecase_home',
-          name: '用例',
+          name: t('functionCase.case'),
           type: 'funcHome',
           closable: false,
           icon: 'icon-zhuye',
@@ -64,7 +64,7 @@ onMounted(() => {
       } else {
         updateTabPane({
           _id: 'usecase_home',
-          name: '用例',
+          name: t('functionCase.case'),
           type: 'funcHome',
           closable: false,
           icon: 'icon-zhuye',
@@ -239,7 +239,7 @@ const handleFavourite = async (rowData: CaseListObj) => {
   if (error) {
     return;
   }
-  notification.success(rowData.favouriteFlag ? '取消收藏成功' : '收藏成功');
+  notification.success(rowData.favouriteFlag ? t('functionCase.cancelFavouriteSuccess') : t('functionCase.favouriteSuccess'));
   rowData.favouriteFlag = !rowData.favouriteFlag;
   updateFollowFavourite('favourit');
 };
@@ -257,7 +257,7 @@ const handleFollow = async (rowData: CaseListObj) => {
   if (error) {
     return;
   }
-  notification.success(rowData.followFlag ? '取消关注成功' : '关注成功');
+  notification.success(rowData.followFlag ? t('functionCase.cancelFollowSuccess') : t('functionCase.followSuccess'));
   rowData.followFlag = !rowData.followFlag;
   updateFollowFavourite('follow');
 };
@@ -293,7 +293,7 @@ const handleClone = async (rowData?: CaseListObj) => {
   if (error) {
     return;
   }
-  notification.success('克隆成功');
+  notification.success(t('functionCase.cloneSuccess'));
 };
 
 const caseReviewVisible = ref(false);
@@ -335,7 +335,7 @@ const handleSetREsultBlocked = async (value) => {
   if (error) {
     return;
   }
-  notification.success('用例设为阻塞中');
+  notification.success(t('functionCase.caseSetBlocked'));
   getCaseInfo();
 };
 
@@ -351,7 +351,7 @@ const handleSetREsultCanceled = async (value) => {
   if (error) {
     return;
   }
-  notification.success('取消成功');
+  notification.success(t('functionCase.cancelSuccess'));
   getCaseInfo();
 };
 
@@ -367,7 +367,7 @@ const hanldeResetTestResults = async (rowData: CaseListObj) => {
     return;
   }
 
-  notification.success('重置测试结果成功');
+  notification.success(t('functionCase.resetTestResultSuccess'));
   getCaseInfo();
 };
 
@@ -382,7 +382,7 @@ const handleResetReviewResult = async (rowData: CaseListObj) => {
   if (error) {
     return;
   }
-  notification.success('重置评审成功');
+  notification.success(t('functionCase.resetReviewSuccess'));
   getCaseInfo();
 };
 
@@ -395,7 +395,7 @@ const handleReTest = async (rowData: CaseListObj) => {
   if (error) {
     return;
   }
-  notification.success('重置测试状态成功');
+  notification.success(t('functionCase.resetTestStatusSuccess'));
   getCaseInfo();
 };
 
@@ -406,8 +406,8 @@ const handleDeleteCase = async (rowData?: CaseListObj) => {
   }
   modal.confirm({
     centered: true,
-    title: t('删除用例'),
-    content: rowData ? `确定删除用例【${rowData.name}】吗？` : '确定删除选中的用例吗？',
+    title: t('functionCase.deleteCase'),
+    content: rowData ? t('functionCase.confirmDeleteCase', { name: rowData.name }) : t('functionCase.confirmDeleteSelectedCases'),
     async onOk () {
       await delCase(rowData);
     }
@@ -423,7 +423,7 @@ const delCase = async (rowData?: CaseListObj) => {
   }
 
   deleteTabPane([currTabInfo.value._id]);
-  notification.success('删除成功，可以在回收站查看删除后的用例');
+  notification.success(t('functionCase.deleteSuccess'));
 };
 
 const updateTabPane = (data) => {
@@ -544,7 +544,7 @@ defineExpose({
                 @updateFollowFavourite="updateFollowFavourite"
                 @onClick="(type, value) => handleDetailAction(type, value, record)" />
             </Spin>
-            <Tooltip placement="topLeft" title="回到顶部">
+            <Tooltip placement="topLeft" :title="t('functionCase.backToTop')">
               <div
                 v-if="showAnchor"
                 class="absolute right-2 bottom-2 z-999 h-6 w-6  cursor-pointer border border-border-divider rounded-full text-center leading-5"

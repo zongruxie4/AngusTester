@@ -4,7 +4,7 @@ import { Spin } from '@xcan-angus/vue-ui';
 import elementResizeDetectorMaker from 'element-resize-detector';
 import { localStore } from '@xcan-angus/infra';
 
-import { CountObj } from './PropsType';
+import { CountObj } from '../detail/PropsType';
 
 const Statistics = defineAsyncComponent(() => import('@/views/function/case/list/statisticsPanel/index.vue'));
 const PieChart = defineAsyncComponent(() => import('@/views/function/case/list/statisticsPanel/chart/index.vue'));
