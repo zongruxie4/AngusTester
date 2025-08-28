@@ -55,7 +55,7 @@ const pagination = computed(() => {
     current: props.params.pageNo,
     pageSize: props.params.pageSize,
     total: +props.total,
-    showTotal: (_total: number) => { return props.enabledGroup ? '共' + _total + '组' : '共' + _total + '条'; }
+    showTotal: (_total: number) => { return props.enabledGroup ? t('functionCase.tableView.totalGroups', { total: _total }) : t('functionCase.tableView.totalItems', { total: _total }); }
   };
 });
 
@@ -70,7 +70,7 @@ const tableColumns = computed(() => [
     dataIndex: 'expend'
   },
   {
-    title: t('编号'),
+    title: t('functionCase.tableView.code'),
     dataIndex: 'code',
     width: '11%',
     customCell: () => {
@@ -78,7 +78,7 @@ const tableColumns = computed(() => [
     }
   },
   {
-    title: t('用例名称'),
+    title: t('functionCase.tableView.caseName'),
     dataIndex: 'name',
     width: '23%',
     ellipsis: true,
@@ -87,7 +87,7 @@ const tableColumns = computed(() => [
     }
   },
   {
-    title: t('优先级'),
+    title: t('functionCase.tableView.priority'),
     dataIndex: 'priority',
     customRender: ({ text }):string => text?.message,
     width: '10%',
@@ -96,7 +96,7 @@ const tableColumns = computed(() => [
     }
   },
   {
-    title: t('评审状态'),
+    title: t('functionCase.tableView.reviewStatus'),
     dataIndex: 'reviewStatus',
     customRender: ({ text }):string => text?.message,
     width: '10%',
@@ -105,7 +105,7 @@ const tableColumns = computed(() => [
     }
   },
   {
-    title: t('测试结果'),
+    title: t('functionCase.tableView.testResult'),
     dataIndex: 'testResult',
     customRender: ({ text }):string => text?.message,
     width: '10%',
@@ -114,7 +114,7 @@ const tableColumns = computed(() => [
     }
   },
   {
-    title: t('添加人'),
+    title: t('functionCase.tableView.creator'),
     dataIndex: 'createdByName',
     width: '10%',
     customCell: () => {
@@ -122,7 +122,7 @@ const tableColumns = computed(() => [
     }
   },
   {
-    title: t('测试人'),
+    title: t('functionCase.tableView.tester'),
     dataIndex: 'testerName',
     width: '10%',
     customCell: () => {
@@ -130,7 +130,7 @@ const tableColumns = computed(() => [
     }
   },
   {
-    title: t('最后更新时间'),
+    title: t('functionCase.tableView.lastUpdateTime'),
     dataIndex: 'lastModifiedDate',
     sorter: true,
     width: '10%',
@@ -139,7 +139,7 @@ const tableColumns = computed(() => [
     }
   },
   {
-    title: t('操作'),
+    title: t('functionCase.tableView.actions'),
     dataIndex: 'action',
     width: 140
   }
@@ -255,7 +255,7 @@ defineExpose({
           class="flex items-center px-0 mr-2.5"
           @click="handleClick('edit',record)">
           <Icon icon="icon-shuxie" class="mr-1 text-3.5" />
-          <span>编辑</span>
+          <span>{{ t('actions.edit') }}</span>
         </Button>
 
         <Button
@@ -265,7 +265,7 @@ defineExpose({
           class="flex items-center px-0 mr-2.5"
           @click="handleClick('delete',record)">
           <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
-          <span>删除</span>
+          <span>{{ t('actions.delete') }}</span>
         </Button>
 
         <Dropdown

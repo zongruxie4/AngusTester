@@ -19,6 +19,7 @@ import { CaseTestResult } from '@/enums/enums';
 import Draggable from 'vuedraggable';
 import dayjs from 'dayjs';
 import { reverse, sortBy } from 'lodash-es';
+import { useI18n } from 'vue-i18n';
 import { funcCase, funcPlan } from '@/api/tester';
 
 import { ActionMenuItem, CaseInfo, PlanPermissionKey } from './PropsType';
@@ -69,6 +70,8 @@ const AttachmentInfo = defineAsyncComponent(() => import('@/views/function/case/
 const ReviewRecord = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/reviewRecord/index.vue'));
 const Comment = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/comment/index.vue'));
 const Activity = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/activity/index.vue'));
+
+const { t } = useI18n();
 
 const isAdmin = inject('isAdmin', ref(false));
 
@@ -177,7 +180,7 @@ const loadData = async () => {
     if (!testerNameSet.has(item.testerName)) {
       if (!item.testerName) {
         testerNameList.value.unshift({
-          name: '未分组',
+          name: t('functionCase.kanbanView.ungrouped'),
           value: '-1'
         });
       } else {
@@ -379,7 +382,7 @@ const dragHandler = (data:CaseInfo, testResult:CaseTestResult, toTestResult:Case
         } else {
           resetDrag(id, index, testResult, toTestResult);
         }
-        notification.warning('用例未评审，不能修改测试结果');
+        notification.warning(t('functionCase.kanbanView.caseNotReviewed'));
         return;
       }
 
@@ -389,12 +392,12 @@ const dragHandler = (data:CaseInfo, testResult:CaseTestResult, toTestResult:Case
         } else {
           resetDrag(id, index, testResult, toTestResult);
         }
-        notification.warning('用例评审未通过，不能修改测试结果');
+        notification.warning(t('functionCase.kanbanView.caseReviewFailed'));
         return;
       }
 
       if (!isAdmin && !permissions.includes('TEST')) {
-        notification.warning('没有测试权限');
+        notification.warning(t('functionCase.kanbanView.noTestPermission'));
         return;
       }
     }
@@ -451,7 +454,7 @@ const dragHandler = (data:CaseInfo, testResult:CaseTestResult, toTestResult:Case
       } else {
         resetDrag(id, index, testResult, toTestResult);
       }
-      notification.warning('只能移动到待测试');
+      notification.warning(t('functionCase.kanbanView.canOnlyMoveToPending'));
       return;
     } else {
       if (!isAdmin && !permissions.includes('TEST')) {
@@ -482,7 +485,7 @@ const dragHandler = (data:CaseInfo, testResult:CaseTestResult, toTestResult:Case
       } else {
         resetDrag(id, index, testResult, toTestResult);
       }
-      notification.warning('只能移动到测试通过、测试未通过、已取消');
+      notification.warning(t('functionCase.kanbanView.canOnlyMoveToTestResults'));
       return;
     } else {
       if (!isAdmin && !permissions.includes('TEST')) {
@@ -796,7 +799,7 @@ const editOk = async (id:string) => {
 
 const toDelete = (data: CaseInfo) => {
   modal.confirm({
-    content: `确定删除用例【${data.name}】吗？`,
+    content: t('functionCase.kanbanView.confirmDeleteCase', { name: data.name }),
     async onOk () {
       emit('loadingChange', true);
       const [error] = await funcCase.deleteCase([data.id]);
@@ -806,7 +809,7 @@ const toDelete = (data: CaseInfo) => {
       }
 
       emit('refreshChange');
-      notification.success('用例删除成功，您可以在回收站查看删除后的用例');
+      notification.success(t('functionCase.kanbanView.caseDeleteSuccess'));
       await loadData();
       emit('loadingChange', false);
     }
@@ -821,7 +824,7 @@ const toFavourite = async (data: CaseInfo, index: number, testResult: CaseTestRe
     return;
   }
 
-  notification.success('用例收藏成功');
+  notification.success(t('functionCase.kanbanView.caseFavouriteSuccess'));
   caseDataMap.value[testResult][index].favouriteFlag = true;
 };
 
@@ -833,7 +836,7 @@ const toDeleteFavourite = async (data: CaseInfo, index: number, testResult: Case
     return;
   }
 
-  notification.success('用例取消收藏成功');
+  notification.success(t('functionCase.kanbanView.caseUnfavouriteSuccess'));
   caseDataMap.value[testResult][index].favouriteFlag = false;
 };
 
@@ -845,7 +848,7 @@ const toFollow = async (data: CaseInfo, index: number, testResult: CaseTestResul
     return;
   }
 
-  notification.success('用例关注成功');
+  notification.success(t('functionCase.kanbanView.caseFollowSuccess'));
   caseDataMap.value[testResult][index].followFlag = true;
 };
 
@@ -857,7 +860,7 @@ const toDeleteFollow = async (data: CaseInfo, index: number, testResult: CaseTes
     return;
   }
 
-  notification.success('用例取消关注成功');
+  notification.success(t('functionCase.kanbanView.caseUnfollowSuccess'));
   caseDataMap.value[testResult][index].followFlag = false;
 };
 
@@ -871,7 +874,7 @@ const toClone = async (data: CaseInfo) => {
   }
 
   emit('refreshChange');
-  notification.success('用例克隆成功');
+  notification.success(t('functionCase.kanbanView.caseCloneSuccess'));
   loadData();
 };
 
@@ -902,7 +905,7 @@ const testOk = async () => {
   selectedCaseInfo.value = undefined;
   resultPassed.value = false;
   emit('refreshChange');
-  notification.success('测试结果修改成功');
+  notification.success(t('functionCase.kanbanView.testResultUpdateSuccess'));
   loadData();
 };
 
@@ -954,7 +957,7 @@ const addTaskOk = async (data) => {
     return;
   }
 
-  notification.success('已关联该Bug任务');
+  notification.success(t('functionCase.kanbanView.bugTaskAssociated'));
   // 更新该条数据
   const [_error, _res] = await funcCase.getCaseDetail(selectedCaseInfo.value?.id);
   if (_error) {
@@ -984,7 +987,7 @@ const toRetest = async (data: CaseInfo, notificationFlag = true, errorCallback?:
 
   emit('refreshChange');
   if (notificationFlag) {
-    notification.success('用例重新测试成功');
+    notification.success(t('functionCase.kanbanView.caseRetestSuccess'));
   }
   loadData();
 };
@@ -999,7 +1002,7 @@ const toResetTestResult = async (data: CaseInfo) => {
   }
 
   emit('refreshChange');
-  notification.success('用例重置测试结果成功');
+  notification.success(t('functionCase.kanbanView.caseResetTestResultSuccess'));
   loadData();
 };
 
@@ -1017,7 +1020,7 @@ const toBlock = async (data: CaseInfo, notificationFlag = true, errorCallback?:(
 
   emit('refreshChange');
   if (notificationFlag) {
-    notification.success('用例设为阻塞中成功');
+    notification.success(t('functionCase.kanbanView.caseBlockedSuccess'));
   }
   loadData();
 };
@@ -1036,7 +1039,7 @@ const toCancel = async (data: CaseInfo, notificationFlag = true, errorCallback?:
 
   emit('refreshChange');
   if (notificationFlag) {
-    notification.success('用例取消成功');
+    notification.success(t('functionCase.kanbanView.caseCancelSuccess'));
   }
   loadData();
 };
@@ -1180,14 +1183,14 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
       const menuItems: ActionMenuItem[] = [
         {
-          name: '编辑',
+          name: t('functionCase.kanbanView.edit'),
           key: 'edit',
           icon: 'icon-shuxie',
           disabled: !isAdmin && !permissions.includes('MODIFY_CASE'),
           hide: false
         },
         {
-          name: '删除',
+          name: t('functionCase.kanbanView.delete'),
           key: 'delete',
           icon: 'icon-qingchu',
           disabled: !isAdmin && !permissions.includes('DELETE_CASE'),
@@ -1198,7 +1201,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
       if (!review || (review && reviewStatus === 'PASSED')) {
         if (testResult === 'PENDING' || testResult === 'BLOCKED') {
           menuItems.push({
-            name: '测试通过',
+            name: t('functionCase.kanbanView.testPassed'),
             key: 'testPassed',
             icon: 'icon-xiugaiceshijieguo',
             disabled: !isAdmin && !permissions.includes('TEST'),
@@ -1206,7 +1209,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           });
 
           menuItems.push({
-            name: '测试未通过',
+            name: t('functionCase.kanbanView.testNotPassed'),
             key: 'testNotPassed',
             icon: 'icon-xiugaiceshijieguo',
             disabled: !isAdmin && !permissions.includes('TEST'),
@@ -1215,7 +1218,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
           if (testResult === 'PENDING') {
             menuItems.push({
-              name: '设为阻塞中',
+              name: t('functionCase.kanbanView.setBlocked'),
               key: 'block',
               icon: 'icon-xiugaiceshijieguo',
               disabled: !isAdmin && !permissions.includes('TEST'),
@@ -1224,7 +1227,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           }
         } else if (testResult === 'PASSED' || testResult === 'NOT_PASSED' || testResult === 'CANCELED') {
           menuItems.push({
-            name: '重新测试',
+            name: t('functionCase.kanbanView.retest'),
             key: 'retest',
             icon: 'icon-xiugaiceshijieguo',
             disabled: !isAdmin && (!permissions.includes('RESET_TEST_RESULT') || planAuthMap.value[item.planId]) && item.testerId !== userInfo?.id,
@@ -1233,7 +1236,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
           if (testResult === 'NOT_PASSED') {
             menuItems.push({
-              name: '提BUG',
+              name: t('functionCase.kanbanView.addBug'),
               key: 'addBug',
               icon: 'icon-bianji',
               disabled: !isAdmin && !permissions.includes('MODIFY_CASE'),
@@ -1245,18 +1248,18 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         // 测试次数大于0才允许重置测试结果
         if (+testNum > 0) {
           menuItems.push({
-            name: '重置测试结果',
+            name: t('functionCase.kanbanView.resetTestResult'),
             key: 'resetTestResult',
             icon: 'icon-zhongzhiceshijieguo',
             disabled: !isAdmin && (!permissions.includes('RESET_TEST_RESULT') || planAuthMap.value[item.planId]),
             hide: false,
-            tip: '将用例更新为`待测试`，相关统计计数和状态会被清除。'
+            tip: t('functionCase.kanbanView.resetTestResultTip')
           });
         }
 
         if (testResult === 'PENDING' || testResult === 'BLOCKED') {
           menuItems.push({
-            name: '取消',
+            name: t('functionCase.kanbanView.cancel'),
             key: 'cancel',
             icon: 'icon-qingchu',
             disabled: !isAdmin && !permissions.includes('TEST'),
@@ -1266,7 +1269,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
       }
 
       menuItems.push({
-        name: '克隆',
+        name: t('functionCase.kanbanView.clone'),
         key: 'clone',
         icon: 'icon-fuzhi',
         disabled: !isAdmin && !permissions.includes('ADD_CASE'),
@@ -1274,7 +1277,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
       });
 
       menuItems.push({
-        name: '移动',
+        name: t('functionCase.kanbanView.move'),
         key: 'move',
         icon: 'icon-yidong',
         disabled: !isAdmin && !permissions.includes('MODIFY_CASE'),
@@ -1283,7 +1286,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
       if (favouriteFlag) {
         menuItems.push({
-          name: '取消收藏',
+          name: t('functionCase.kanbanView.unfavourite'),
           key: 'cancelFavourite',
           icon: 'icon-quxiaoshoucang',
           disabled: false,
@@ -1291,7 +1294,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         });
       } else {
         menuItems.push({
-          name: '收藏',
+          name: t('functionCase.kanbanView.favourite'),
           key: 'favourite',
           icon: 'icon-yishoucang',
           disabled: false,
@@ -1301,7 +1304,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
 
       if (followFlag) {
         menuItems.push({
-          name: '取消关注',
+          name: t('functionCase.kanbanView.unfollow'),
           key: 'cancelFollow',
           icon: 'icon-quxiaoguanzhu',
           disabled: false,
@@ -1309,7 +1312,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         });
       } else {
         menuItems.push({
-          name: '关注',
+          name: t('functionCase.kanbanView.follow'),
           key: 'follow',
           icon: 'icon-yiguanzhu',
           disabled: false,
@@ -1380,7 +1383,7 @@ const checkedCaseId = computed(() => {
                   v-if="element.overdue"
                   class="flex-shrink-0 border border-testResult-error rounded px-0.5"
                   style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                  <span class="inline-block transform-gpu scale-90">已逾期</span>
+                  <span class="inline-block transform-gpu scale-90">{{ t('functionCase.kanbanView.overdue') }}</span>
                 </span>
                 <Dropdown
                   :menuItems="menuItemsMap.get(element.id)"
@@ -1398,7 +1401,7 @@ const checkedCaseId = computed(() => {
                 <Tooltip trigger="hover">
                   <template #title>
                     <div class="flex items-center overflow-hidden">
-                      <span class="flex-shrink-0">测试人</span>
+                      <span class="flex-shrink-0">{{ t('functionCase.kanbanView.tester') }}</span>
                       <Colon class="mr-1.5" />
                       <span :title="element.testerName" class="truncate">{{ element.testerName }}</span>
                     </div>
@@ -1414,7 +1417,7 @@ const checkedCaseId = computed(() => {
                 <TaskPriority class="flex-shrink-0" :value="element.priority" />
               </div>
               <div class="flex items-center overflow-hidden">
-                <span class="flex-shrink-0">截止</span>
+                <span class="flex-shrink-0">{{ t('functionCase.kanbanView.deadline') }}</span>
                 <Colon class="mr-1.5" />
                 <span :title="element.deadlineDate" class="truncate">{{ element.deadlineDate }}</span>
               </div>
@@ -1430,8 +1433,8 @@ const checkedCaseId = computed(() => {
           class="w-50 flex-shrink-0 col-item border-r border-solid border-theme-text-box flex items-center px-2.5 py-1.5 space-x-1.5 head-container">
           <Tooltip trigger="hover">
             <template #title>
-              <span v-if="!openFlag">全部展开</span>
-              <span v-else>全部收起</span>
+              <span v-if="!openFlag">{{ t('functionCase.kanbanView.expandAll') }}</span>
+              <span v-else>{{ t('functionCase.kanbanView.collapseAll') }}</span>
             </template>
             <Icon
               v-if="!openFlag"
@@ -1444,7 +1447,7 @@ const checkedCaseId = computed(() => {
               class="text-3.5 cursor-pointer"
               @click="toggleOpen" />
           </Tooltip>
-          <span class="font-semibold">泳道</span>
+          <span class="font-semibold">{{ t('functionCase.kanbanView.swimLane') }}</span>
         </div>
         <div
           v-for="_testResult in testResultList"
@@ -1475,7 +1478,7 @@ const checkedCaseId = computed(() => {
             </div>
             <div class="flex items-center">
               <span>{{ Object.values(groupDataMap[_createdByName.value] || {}).reduce((prev, cur) => prev + cur.length,0) }}</span>
-              <span>个用例</span>
+              <span>{{ t('functionCase.kanbanView.cases') }}</span>
             </div>
           </div>
           <div class="relative h-full flex items-start" style="width: calc(100% - 193px);">
@@ -1521,7 +1524,7 @@ const checkedCaseId = computed(() => {
                         v-if="element.overdue"
                         class="flex-shrink-0 border border-testResult-error rounded px-0.5"
                         style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                        <span class="inline-block transform-gpu scale-90">已逾期</span>
+                        <span class="inline-block transform-gpu scale-90">{{ t('functionCase.kanbanView.overdue') }}</span>
                       </span>
                       <Dropdown
                         :menuItems="menuItemsMap.get(element.id)"
@@ -1539,7 +1542,7 @@ const checkedCaseId = computed(() => {
                       <Tooltip trigger="hover">
                         <template #title>
                           <div class="flex items-center overflow-hidden">
-                            <span class="flex-shrink-0">测试人</span>
+                            <span class="flex-shrink-0">{{ t('functionCase.kanbanView.tester') }}</span>
                             <Colon class="mr-1.5" />
                             <span :title="element.testerName" class="truncate">{{ element.testerName }}</span>
                           </div>
@@ -1555,7 +1558,7 @@ const checkedCaseId = computed(() => {
                       <TaskPriority class="flex-shrink-0" :value="element.priority" />
                     </div>
                     <div class="flex items-center overflow-hidden">
-                      <span class="flex-shrink-0">截止</span>
+                      <span class="flex-shrink-0">{{ t('functionCase.kanbanView.deadline') }}</span>
                       <Colon class="mr-1.5" />
                       <span :title="element.deadlineDate" class="truncate">{{ element.deadlineDate }}</span>
                     </div>
@@ -1573,7 +1576,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'basic' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          title="基本信息"
+          :title="t('functionCase.kanbanView.basicInfo')"
           @click="drawerActiveKeyChange('basic')">
           <Icon icon="icon-wendangxinxi" class="text-4" />
         </div>
@@ -1582,7 +1585,7 @@ const checkedCaseId = computed(() => {
           v-if="false"
           :class="{ 'drawer-active-item': drawerActiveKey === 'testStep' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          title="测试步骤"
+          :title="t('functionCase.kanbanView.testSteps')"
           @click="drawerActiveKeyChange('testStep')">
           <Icon icon="icon-renwu2" class="text-4" />
         </div>
@@ -1590,7 +1593,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'person' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          title="人员"
+          :title="t('functionCase.kanbanView.personnel')"
           @click="drawerActiveKeyChange('person')">
           <Icon icon="icon-quanburenyuan" class="text-4" />
         </div>
@@ -1598,7 +1601,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'date' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          title="日期"
+          :title="t('functionCase.kanbanView.date')"
           @click="drawerActiveKeyChange('date')">
           <Icon icon="icon-riqi" class="text-4" />
         </div>
@@ -1606,7 +1609,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'reviewInfo' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          title="评审信息"
+          :title="t('functionCase.kanbanView.reviewInfo')"
           @click="drawerActiveKeyChange('reviewInfo')">
           <Icon icon="icon-pingtaimorenzhibiao1" class="text-4" />
         </div>
@@ -1614,7 +1617,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'testInfo' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          title="测试信息"
+          :title="t('functionCase.kanbanView.testInfo')"
           @click="drawerActiveKeyChange('testInfo')">
           <Icon icon="icon-renwuceshibaogao" class="text-4" />
         </div>
@@ -1622,7 +1625,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'refTasks' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          title="关联任务"
+          :title="t('functionCase.kanbanView.associatedTasks')"
           @click="drawerActiveKeyChange('refTasks')">
           <Icon icon="icon-ceshirenwu" class="text-4" />
         </div>
@@ -1630,7 +1633,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'refCases' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          title="关联用例"
+          :title="t('functionCase.kanbanView.associatedCases')"
           @click="drawerActiveKeyChange('refCases')">
           <Icon icon="icon-ceshiyongli1" class="text-4" />
         </div>
@@ -1638,7 +1641,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'attachments' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          title="附件"
+          :title="t('functionCase.kanbanView.attachments')"
           @click="drawerActiveKeyChange('attachments')">
           <Icon icon="icon-lianjie1" class="text-4" />
         </div>
@@ -1646,7 +1649,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'reviewRecord' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          title="评审记录"
+          :title="t('functionCase.kanbanView.reviewRecord')"
           @click="drawerActiveKeyChange('reviewRecord')">
           <Icon icon="icon-pingshen" class="text-4" />
         </div>
@@ -1654,7 +1657,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'comment' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          title="评论"
+          :title="t('functionCase.kanbanView.comments')"
           @click="drawerActiveKeyChange('comment')">
           <Icon icon="icon-pinglun" class="text-4" />
         </div>
@@ -1662,7 +1665,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'activity' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          title="活动"
+          :title="t('functionCase.kanbanView.activities')"
           @click="drawerActiveKeyChange('activity')">
           <Icon icon="icon-chakanhuodong" class="text-4" />
         </div>

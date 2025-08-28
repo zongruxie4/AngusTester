@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import { Button, Checkbox, Pagination } from 'ant-design-vue';
 import { Colon, Icon, ReviewStatus, TestResult } from '@xcan-angus/vue-ui';
 
 import { CaseListObj, EnabledGroup, GroupCaseListObj } from './PropsType';
+
+const { t } = useI18n();
 
 type FilterOp = 'EQUAL' | 'NOT_EQUAL' | 'GREATER_THAN' | 'GREATER_THAN_EQUAL' | 'LESS_THAN' | 'LESS_THAN_EQUAL' | 'CONTAIN' | 'NOT_CONTAIN' | 'MATCH_END' | 'MATCH' | 'IN' | 'NOT_IN';
 type Filters = { key: string, value: string | boolean | string[], op: FilterOp }
@@ -44,7 +47,7 @@ const emits = defineEmits<{
 }>();
 
 const showTotal = (_total: number) => {
-  return props.enabledGroup ? '共' + _total + '组' : '共' + _total + '条';
+  return props.enabledGroup ? t('functionCase.infoView.totalGroups', { total: _total }) : t('functionCase.infoView.totalItems', { total: _total });
 };
 
 const hanldeListExpand = (item) => {
@@ -203,7 +206,7 @@ defineExpose({
                   <div class="flex justify-between mt-2 text-3">
                     <div>{{ item.code }}</div>
                     <div>
-                      优先级
+                      {{ t('functionCase.infoView.priority') }}
                       <Colon class="mr-1" />{{ item.priority.message }}
                     </div>
                   </div>
