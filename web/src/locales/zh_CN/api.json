@@ -1,6 +1,6 @@
 {
   "apis": {
-    "name":"主页",
+    "name": "主页",
     "welcome": {
       "title": "欢迎进入Angus接口！",
       "description": "接口可以帮助开发人员和测试人员轻松地添加、测试、调试和文档化API，最终帮助企业达成API资产化目的。",
@@ -138,7 +138,7 @@
     }
   },
   "design": {
-    "name":"设计",
+    "name": "设计",
     "home": {
       "introduceTitle": "关于设计",
       "introduceContent": "用于 OpenAPI 规范的接口设计，满足接口测试和文档生成的需求。图形化界面适合不熟悉 OpenAPI规范 的用户，而熟悉 OpenAPI 规范的用户则推荐使用 Swagger Editor，能更高效地完成设计。",
@@ -271,7 +271,7 @@
     }
   },
   "server": {
-    "name":"服务器",
+    "name": "服务器",
     "home": {
       "tabTitle": "服务器",
       "newTab": "添加服务器",
@@ -348,7 +348,7 @@
     }
   },
   "service": {
-    "name":"服务",
+    "name": "服务",
     "home": {
       "addApiTabName": "添加API",
       "authTabName": "权限",
@@ -2021,7 +2021,7 @@
     }
   },
   "apiShare": {
-    "name":"分享",
+    "name": "分享",
     "title": "分享",
     "addShare": "添加分享",
     "shareList": "分享列表",
@@ -2108,7 +2108,7 @@
     }
   },
   "appConfig": {
-    "name":"应用配置",
+    "name": "应用配置",
     "title": "应用配置",
     "labels": {
       "name": "名称",
@@ -2217,13 +2217,44 @@
       }
     }
   },
-    "apiTrash": {
-    "name":"回收站",
+  "apiTrash": {
+    "name": "回收站",
     "title": "回收站",
-    "searchPlaceholder": "请输入查询关键字",
-    "tips": "只允许管理员和删除人还原或彻底删除回收站数据。",
+    "searchPlaceholder": "请输入搜索关键词",
+    "tips": {
+      "adminOnly": "仅管理员和删除者可以恢复或永久删除回收站数据。"
+    },
     "buttons": {
-      "recoverAll": "全部还原"
+      "recoverAll": "全部恢复",
+      "deleteAll": "全部删除",
+      "refresh": "刷新"
+    },
+    "stats": {
+      "items": "项目"
+    },
+    "filters": {
+      "title": "筛选",
+      "all": "全部"
+    },
+    "actions": {
+      "recoverAll": "全部恢复",
+      "deleteAll": "全部删除",
+      "recover": "恢复",
+      "delete": "删除"
+    },
+    "confirm": {
+      "deleteAll": "确定要永久删除所有吗？",
+      "delete": "确定要永久删除此吗？"
+    },
+    "messages": {
+      "recoverSuccess": "恢复成功",
+      "deleteSuccess": "删除成功",
+      "recoverAllSuccess": "全部恢复成功",
+      "deleteAllSuccess": "全部删除成功"
+    },
+    "empty": {
+      "description": "回收站为空",
+      "hint": "已删除的数据将在此显示"
     },
     "tabs": {
       "service": "服务",
@@ -2232,18 +2263,15 @@
     "table": {
       "columns": {
         "name": "名称",
-        "createdBy": "添加人",
+        "createdBy": "创建人",
         "deletedBy": "删除人",
         "deletedDate": "删除时间",
         "action": "操作"
       },
       "actions": {
-        "recover": "还原"
+        "recover": "恢复",
+        "delete": "删除"
       }
-    },
-    "messages": {
-      "recoverAllSuccess": "全部还原成功",
-      "recoverSuccess": "还原成功"
     }
   }
 }

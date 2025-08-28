@@ -1,15 +1,15 @@
-import { computed, ref, inject } from 'vue';
+import { computed, ref, inject, unref, type Ref } from 'vue';
 import { apis } from '@/api/tester';
 import type { TrashItem, TrashParams, TrashPagination } from '../types';
 
 /**
  * Composable for managing trash data and pagination
- * @param projectId - Current project ID
+ * @param projectId - Current project ID (can be reactive)
  * @param userInfo - Current user information
  * @returns Object containing data, pagination, loading states and methods
  */
 export function useTrashData (
-  projectId: string,
+  projectId: string | Ref<string>,
   userInfo: { id: string }
 ) {
   // Reactive state
@@ -34,8 +34,18 @@ export function useTrashData (
   const loadData = async (params: TrashParams) => {
     loading.value = true;
 
+    // Get current projectId value (handles both ref and string)
+    const currentProjectId = unref(projectId);
+
+    // Don't proceed if projectId is empty
+    if (!currentProjectId) {
+      console.warn('ProjectId is empty, skipping API request');
+      loading.value = false;
+      return;
+    }
+
     const requestParams: any = {
-      projectId,
+      projectId: currentProjectId,
       pageNo: pagination.value.current,
       pageSize: pagination.value.pageSize,
       ...params,

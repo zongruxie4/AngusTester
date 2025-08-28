@@ -67,8 +67,8 @@ onMounted(() => {
           <!-- Page title and description -->
           <div class="flex items-center justify-between mb-4">
             <div class="flex items-center space-x-3">
-              <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                <Icon icon="icon-qingchu" class="text-2xl text-red-500" />
+              <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                <Icon icon="icon-qingchu" class="text-2xl text-blue-500" />
               </div>
               <div class="mt-3">
                 <h1 class="text-base font-bold text-gray-900">
@@ -120,7 +120,7 @@ onMounted(() => {
               <div class="flex items-center space-x-2">
                 <span class="text-xs text-gray-500">{{ $t('projectTrash.filters.title') }}:</span>
                 <div class="flex items-center space-x-1">
-                  <span 
+                  <span
                     class="px-2 py-0.5 text-xs bg-blue-100 text-blue-700 rounded-full cursor-pointer hover:bg-blue-200 transition-colors"
                     @click="clearSearchAndRefresh">
                     {{ $t('projectTrash.filters.all') }}

@@ -190,34 +190,6 @@
       "failureCount": "失败数"
     }
   },
-  "scenarioTrash": {
-    "name": "回收站",
-    "title": "回收站",
-    "description": "只允许管理员和删除人还原或彻底删除回收站数据。",
-    "actions": {
-      "restore": "还原",
-      "delete": "删除",
-      "restoreAll": "全部还原",
-      "deleteAll": "全部删除",
-      "refresh": "刷新"
-    },
-    "messages": {
-      "restoreSuccess": "还原成功",
-      "deleteSuccess": "删除成功",
-      "restoreAllSuccess": "全部还原成功",
-      "deleteAllSuccess": "全部删除成功"
-    },
-    "table": {
-      "columns": {
-        "name": "名称",
-        "creator": "添加人",
-        "deleter": "删除人",
-        "deleteTime": "删除时间",
-        "operation": "操作"
-      },
-      "searchPlaceholder": "请输入查询关键字"
-    }
-  },
   "scenario": {
     "name": "场景",
     "title": "场景",
@@ -439,6 +411,34 @@
           "errorRate": "错误率"
         }
       }
+    }
+  },
+  "scenarioTrash": {
+    "name": "回收站",
+    "title": "回收站",
+    "description": "只允许管理员和删除人还原或彻底删除回收站数据。",
+    "actions": {
+      "restore": "还原",
+      "delete": "删除",
+      "restoreAll": "全部还原",
+      "deleteAll": "全部删除",
+      "refresh": "刷新"
+    },
+    "messages": {
+      "restoreSuccess": "还原成功",
+      "deleteSuccess": "删除成功",
+      "restoreAllSuccess": "全部还原成功",
+      "deleteAllSuccess": "全部删除成功"
+    },
+    "table": {
+      "columns": {
+        "name": "名称",
+        "creator": "添加人",
+        "deleter": "删除人",
+        "deleteTime": "删除时间",
+        "operation": "操作"
+      },
+      "searchPlaceholder": "请输入查询关键字"
     }
   }
 }

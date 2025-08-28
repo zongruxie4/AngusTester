@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { inject, onMounted, ref, watch } from 'vue';
-import { Button } from 'ant-design-vue';
+import { Button, Tooltip, Popconfirm } from 'ant-design-vue';
 import { Icon, Image, Table } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { useTrashData } from './composables/useTrashData';
@@ -40,6 +40,7 @@ const isAdmin = props.isAdmin || injectedIsAdmin.value;
 const {
   tableData,
   loaded,
+  loading,
   pagination,
   loadData,
   handleTableChange: handleTableDataChange,
@@ -47,7 +48,7 @@ const {
   updateCurrentPage
 } = useTrashData(props.projectId, props.userInfo);
 
-const { columns, emptyTextStyle, defaultTableProps } = useTableColumns();
+const { columns, emptyTextStyle } = useTableColumns();
 
 const { recoverItem, deleteItem } = useTrashActions(props.projectId);
 
@@ -146,147 +147,204 @@ onMounted(() => {
 </script>
 
 <template>
-  <!-- Enhanced table with improved accessibility and UX -->
-  <Table
-    v-if="loaded"
-    :dataSource="tableData"
-    :columns="columns"
-    :pagination="pagination"
-    :emptyTextStyle="emptyTextStyle"
-    :noDataSize="'small'"
-    :noDataText="t('common.noData')"
-    v-bind="defaultTableProps"
-    rowKey="id"
-    class="enhanced-trash-table"
-    @change="tableChange">
-    <!-- Custom cell rendering for enhanced UX -->
-    <template #bodyCell="{ record, column }">
-      <!-- Deleter column with enhanced avatar display -->
-      <div
-        v-if="column.dataIndex === 'deletedByName'"
-        :title="record.deletedByName"
-        class="flex items-center overflow-hidden group">
-        <div class="relative flex-shrink-0 mr-2">
-          <div class="w-6 h-6 rounded-full overflow-hidden border-2 border-gray-200 group-hover:border-blue-300 transition-colors">
+  <!-- Enhanced data table -->
+  <div v-if="loaded" class="enhanced-table-container">
+    <Table
+      :dataSource="tableData"
+      :columns="columns"
+      :pagination="pagination"
+      :emptyTextStyle="emptyTextStyle"
+      rowKey="id"
+      noDataSize="small"
+      :noDataText="t('common.noData')"
+      size="small"
+      class="enhanced-table"
+      @change="tableChange">
+      <!-- Custom cell rendering for enhanced visual appeal -->
+      <template #bodyCell="{ record, column }">
+        <!-- Enhanced deleter avatar and name cell -->
+        <div
+          v-if="column.dataIndex === 'deletedByName'"
+          :title="record.deletedByName"
+          class="flex items-center space-x-2 p-1 rounded-md hover:bg-gray-50 transition-colors">
+          <div class="relative">
             <Image
               :src="record.deletedByAvatar"
               type="avatar"
-              class="w-full h-full object-cover" />
+              class="w-6 h-6 rounded-full border border-gray-200" />
+            <div class="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-red-500 rounded-full border border-white"></div>
           </div>
-          <!-- Status indicator for deleter -->
-          <div class="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-red-500 rounded-full border border-white"></div>
-        </div>
-        <div class="flex-1 truncate">
-          <div class="text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
-            {{ record.deletedByName }}
+          <div class="flex-1 min-w-0">
+            <div class="font-medium text-gray-900 truncate text-xs">{{ record.deletedByName }}</div>
           </div>
         </div>
-      </div>
 
-      <!-- Creator column with enhanced avatar display -->
-      <div
-        v-else-if="column.dataIndex === 'createdByName'"
-        :title="record.createdByName"
-        class="flex items-center overflow-hidden group">
-        <div class="relative flex-shrink-0 mr-2">
-          <div class="w-6 h-6 rounded-full overflow-hidden border-2 border-gray-200 group-hover:border-green-300 transition-colors">
+        <!-- Enhanced creator avatar and name cell -->
+        <div
+          v-else-if="column.dataIndex === 'createdByName'"
+          :title="record.createdByName"
+          class="flex items-center space-x-2 p-1 rounded-md hover:bg-gray-50 transition-colors">
+          <div class="relative">
             <Image
               :src="record.createdByAvatar"
               type="avatar"
-              class="w-full h-full object-cover" />
+              class="w-6 h-6 rounded-full border border-gray-200" />
+            <div class="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-green-500 rounded-full border border-white"></div>
           </div>
-          <!-- Status indicator for creator -->
-          <div class="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-green-500 rounded-full border border-white"></div>
-        </div>
-        <div class="flex-1 truncate">
-          <div class="text-sm font-medium text-gray-900 group-hover:text-green-600 transition-colors">
-            {{ record.createdByName }}
+          <div class="flex-1 min-w-0">
+            <div class="font-medium text-gray-900 truncate text-xs">{{ record.createdByName }}</div>
           </div>
         </div>
-      </div>
 
-      <!-- Action column with enhanced buttons -->
-      <div
-        v-else-if="column.dataIndex === 'action'"
-        class="flex items-center justify-center space-x-2">
-        <!-- Recover button -->
-        <Button
-          :disabled="!canPerformActions(record)"
-          :title="t('functionTrash.actions.recover')"
-          size="small"
-          type="text"
-          class="flex items-center p-1 hover:bg-green-50 rounded transition-colors"
-          @click="recoverHandler(record)">
-          <Icon
-            icon="icon-zhongzhi"
-            :class="[
-              'text-3.5',
-              canPerformActions(record)
-                ? 'text-green-600 hover:text-green-700'
-                : 'text-gray-400'
-            ]" />
-        </Button>
+        <!-- Enhanced action buttons cell -->
+        <div v-else-if="column.dataIndex === 'action'" class="flex items-center space-x-1">
+          <Tooltip :title="t('functionTrash.actions.recover')">
+            <Button
+              :disabled="!canPerformActions(record)"
+              type="text"
+              size="small"
+              class="action-icon-button recover-button"
+              @click="recoverHandler(record)">
+              <Icon icon="icon-zhongzhi" class="text-sm" />
+            </Button>
+          </Tooltip>
 
-        <!-- Delete button -->
-        <Button
-          :disabled="!canPerformActions(record)"
-          :title="t('functionTrash.actions.delete')"
-          size="small"
-          type="text"
-          class="flex items-center p-1 hover:bg-red-50 rounded transition-colors"
-          @click="deleteHandler(record)">
-          <Icon
-            icon="icon-qingchu"
-            :class="[
-              'text-3.5',
-              canPerformActions(record)
-                ? 'text-red-600 hover:text-red-700'
-                : 'text-gray-400'
-            ]" />
-        </Button>
-      </div>
-    </template>
-  </Table>
+          <Popconfirm
+            :title="t('functionTrash.confirm.delete')"
+            :okText="t('common.confirm')"
+            :cancelText="t('common.cancel')"
+            @confirm="deleteHandler(record)">
+            <Tooltip :title="t('functionTrash.actions.delete')">
+              <Button
+                :disabled="!canPerformActions(record)"
+                type="text"
+                size="small"
+                class="action-icon-button delete-button">
+                <Icon icon="icon-qingchu" class="text-sm" />
+              </Button>
+            </Tooltip>
+          </Popconfirm>
+        </div>
+
+        <!-- Enhanced target name cell -->
+        <div
+          v-else-if="column.dataIndex === 'targetName'"
+          class="flex items-center space-x-2 p-1">
+          <div class="w-5 h-5 bg-purple-100 rounded-md flex items-center justify-center">
+            <Icon icon="icon-gongneng" class="text-purple-500 text-xs" />
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="font-medium text-gray-900 truncate text-xs">{{ record.targetName }}</div>
+          </div>
+        </div>
+
+        <!-- Enhanced date cells -->
+        <div
+          v-else-if="column.dataIndex === 'deletedDate'"
+          class="text-xs text-gray-600">
+          <div class="font-medium">{{ record.deletedDate }}</div>
+        </div>
+      </template>
+
+      <!-- Enhanced empty state -->
+      <template #emptyText>
+        <div class="py-8 text-center">
+          <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+            <Icon icon="icon-qingchu" class="text-2xl text-purple-400" />
+          </div>
+          <h3 class="text-sm font-medium text-gray-900 mb-1">
+            {{ $t('functionTrash.empty.description') }}
+          </h3>
+          <p class="text-xs text-gray-500 max-w-sm mx-auto">
+            {{ $t('functionTrash.empty.hint') }}
+          </p>
+        </div>
+      </template>
+    </Table>
+  </div>
+
+  <!-- Loading state -->
+  <div v-else-if="!loaded && loading" class="flex items-center justify-center py-16">
+    <div class="text-center">
+      <div class="w-12 h-12 border-4 border-purple-200 border-t-purple-500 rounded-full animate-spin mx-auto mb-3"></div>
+      <p class="text-xs text-gray-500">{{ $t('common.loading') }}</p>
+    </div>
+  </div>
 </template>
 
 <style scoped>
-/**
- * Enhanced styling for trash table
- */
-.enhanced-trash-table {
-  @apply bg-white rounded-lg shadow-sm;
+/* Enhanced table container */
+.enhanced-table-container {
+  border-radius: 8px;
+  overflow: hidden;
 }
 
-.enhanced-trash-table :deep(.ant-table-thead > tr > th) {
-  @apply bg-gray-50 font-semibold text-gray-700;
+/* Enhanced table styling */
+.enhanced-table {
+  border-radius: 8px;
+  overflow: hidden;
 }
 
-.enhanced-trash-table :deep(.ant-table-tbody > tr:hover > td) {
-  @apply bg-blue-50;
+.enhanced-table :deep(.ant-table-thead > tr > th) {
+  background-color: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+  font-weight: 600;
+  color: #374151;
+  padding: 8px 12px;
+  font-size: 12px;
 }
 
-.enhanced-trash-table :deep(.ant-table-tbody > tr > td) {
-  @apply border-b border-gray-100;
+.enhanced-table :deep(.ant-table-tbody > tr > td) {
+  padding: 8px 12px;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 12px;
 }
 
-/* Action button hover effects */
-.group:hover .transition-colors {
-  @apply transform scale-105;
+.enhanced-table :deep(.ant-table-tbody > tr:hover > td) {
+  background-color: #f8fafc;
+}
+
+.enhanced-table :deep(.ant-table-tbody > tr.disabled-row > td) {
+  background-color: #f9fafb;
+  opacity: 0.6;
+}
+
+.enhanced-table :deep(.ant-table-tbody > tr.disabled-row:hover > td) {
+  background-color: #f3f4f6;
+}
+
+/* Enhanced action icon buttons */
+.action-icon-button {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-size: 12px;
+}
+
+.action-icon-button:hover {
+  transform: scale(1.05);
+}
+
+.recover-button:hover {
+  background-color: #dcfce7;
+  color: #059669;
+}
+
+.delete-button:hover {
+  background-color: #fee2e2;
+  color: #dc2626;
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
-  .enhanced-trash-table :deep(.ant-table) {
-    @apply text-xs;
+  .enhanced-table :deep(.ant-table) {
+    font-size: 11px;
   }
 
   .w-6 {
-    @apply w-5 h-5;
+    width: 1.25rem;
+    height: 1.25rem;
   }
-}
-
-/* Empty state styling */
-.enhanced-trash-table :deep(.ant-empty) {
-  @apply py-16;
 }
 </style>

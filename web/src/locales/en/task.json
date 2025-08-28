@@ -2058,8 +2058,8 @@
     }
   },
   "taskTrash": {
-    "name": "Recycle Bin",
-    "title": "Recycle Bin",
+    "name": "Trash",
+    "title": "Trash",
     "placeholder": {
       "searchKeyword": "Please enter search keyword"
     },
@@ -2089,6 +2089,21 @@
       "deleter": "Deleter",
       "deleteTime": "Delete Time",
       "actions": "Actions"
+    },
+    "stats": {
+      "items": "Items"
+    },
+    "filters": {
+      "title": "Filter",
+      "all": "All"
+    },
+    "confirm": {
+      "delete": "Are you sure you want to delete this item?",
+      "deleteAll": "Are you sure you want to delete all items?"
+    },
+    "empty": {
+      "description": "No items in trash",
+      "hint": "Deleted items will appear here, you can restore or permanently delete them"
     }
   }
 }

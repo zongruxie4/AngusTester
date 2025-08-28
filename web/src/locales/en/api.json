@@ -1,6 +1,6 @@
 {
   "apis": {
-    "name":"Home",
+    "name": "Home",
     "welcome": {
       "title": "Welcome to Angus API!",
       "description": "Here you and your team can complete the following work:",
@@ -92,7 +92,7 @@
     }
   },
   "design": {
-    "name":"Design",
+    "name": "Design",
     "home": {
       "introduceTitle": "About Design",
       "introduceContent": "Interface design for OpenAPI specifications, meeting the needs of interface testing and documentation generation. The graphical interface is suitable for users unfamiliar with OpenAPI specifications, while users familiar with OpenAPI specifications are recommended to use Swagger Editor for more efficient design completion.",
@@ -161,7 +161,6 @@
       "publishAction": "Publish Design",
       "modifyTip": "Last modified at {time}"
     }
-
   },
   "mock": {
     "starting": "Starting",
@@ -180,53 +179,53 @@
     "in_starting": "Starting",
     "refreshInstance_tip": "Refreshing the instance will forcibly synchronize service configuration, interface security, CORS settings and Mock interfaces to the running service instance.",
     "refreshInstance_success": "Instance Refreshed Successfully",
-          "searchPanel": {
-        "namePlaceholder": "Search service ID, name",
-        "nodeIpPlaceholder": "Search service IP",
-        "sourcePlaceholder": "Select source",
-        "nodeIdPlaceholder": "Select or search node",
-        "createdByPlaceholder": "Select creator",
-        "createdDatePlaceholder1": "Created time from",
-        "createdDatePlaceholder2": "Created time to"
-      },
-          "columns": {
-        "id": "Service ID",
-        "name": "Service Name",
-        "node": "Node",
-        "address": "Service Address",
-        "status": "Status",
-        "source": "Source",
-        "createdBy": "Creator",
-        "lastModifiedBy": "Last Updated By",
-        "createdDate": "Created Date",
-        "lastModifiedDate": "Updated Date",
-        "action": "Actions"
-      },
-          "actions": {
-        "delete": "Force Delete",
-        "authority": "Permissions",
-        "refresh": "Refresh Instance",
-        "addMock": "Add Mock Service",
-        "start": "Start",
-        "stop": "Stop"
-      },
-          "auth": {
-        "title": "Service Permissions",
-        "onTips": "After enabling permission control, manual authorization is required to have corresponding operation permissions.",
-        "offTips": "No permission restrictions, all users in the account can view and operate, permission control is not enabled by default."
-      },
-          "introduce": {
-        "description": "Mock can quickly generate and simulate dependent APIs, enabling development and testing to proceed in parallel, achieving faster development, more comprehensive testing, and earlier delivery of stable products or applications. Mock also avoids dirty data issues caused by direct integration with production systems.",
-        "addMockService": "Add Mock Service",
-        "addMockService_desc": "After adding Mock service, Mock interfaces need to be added manually",
-        "importService": "Import Associated Existing Service",
-        "importService_desc": "Add based on existing interface services, users can select interfaces that need Mock, after adding, the system will automatically establish association with interface services.",
-        "importFile": "Import Mock from File",
-              "importFile_desc": "Create Mock service and import interfaces based on Swagger2.0, OpenAPI3.x, Postman2.0, Postman2.1, Angus format data."
+    "searchPanel": {
+      "namePlaceholder": "Search service ID, name",
+      "nodeIpPlaceholder": "Search service IP",
+      "sourcePlaceholder": "Select source",
+      "nodeIdPlaceholder": "Select or search node",
+      "createdByPlaceholder": "Select creator",
+      "createdDatePlaceholder1": "Created time from",
+      "createdDatePlaceholder2": "Created time to"
+    },
+    "columns": {
+      "id": "Service ID",
+      "name": "Service Name",
+      "node": "Node",
+      "address": "Service Address",
+      "status": "Status",
+      "source": "Source",
+      "createdBy": "Creator",
+      "lastModifiedBy": "Last Updated By",
+      "createdDate": "Created Date",
+      "lastModifiedDate": "Updated Date",
+      "action": "Actions"
+    },
+    "actions": {
+      "delete": "Force Delete",
+      "authority": "Permissions",
+      "refresh": "Refresh Instance",
+      "addMock": "Add Mock Service",
+      "start": "Start",
+      "stop": "Stop"
+    },
+    "auth": {
+      "title": "Service Permissions",
+      "onTips": "After enabling permission control, manual authorization is required to have corresponding operation permissions.",
+      "offTips": "No permission restrictions, all users in the account can view and operate, permission control is not enabled by default."
+    },
+    "introduce": {
+      "description": "Mock can quickly generate and simulate dependent APIs, enabling development and testing to proceed in parallel, achieving faster development, more comprehensive testing, and earlier delivery of stable products or applications. Mock also avoids dirty data issues caused by direct integration with production systems.",
+      "addMockService": "Add Mock Service",
+      "addMockService_desc": "After adding Mock service, Mock interfaces need to be added manually",
+      "importService": "Import Associated Existing Service",
+      "importService_desc": "Add based on existing interface services, users can select interfaces that need Mock, after adding, the system will automatically establish association with interface services.",
+      "importFile": "Import Mock from File",
+      "importFile_desc": "Create Mock service and import interfaces based on Swagger2.0, OpenAPI3.x, Postman2.0, Postman2.1, Angus format data."
     }
   },
   "server": {
-    "name":"Server",
+    "name": "Server",
     "home": {
       "tabTitle": "Servers",
       "newTab": "Add Server",
@@ -280,7 +279,6 @@
       "descriptionPlaceholder": "Variable description, maximum 400 characters",
       "variableDefault": "Default"
     },
-
     "introduce": {
       "title": "About Servers",
       "description1": "Define the servers and server-related dynamic parts of the API, including two parts: server and variables. The server field is used to specify the server list of the API, each server has a URL and optional description information, indicating the base path of the API.",
@@ -304,7 +302,7 @@
     }
   },
   "service": {
-    "name":"Service",
+    "name": "Service",
     "home": {
       "addApiTabName": "Add API",
       "authTabName": "Auth",
@@ -1976,7 +1974,7 @@
     }
   },
   "apiShare": {
-    "name":"Share",
+    "name": "Share",
     "title": "Share",
     "addShare": "Add Share",
     "shareList": "Share List",
@@ -2063,7 +2061,7 @@
     }
   },
   "appConfig": {
-    "name":"Application Configuration",
+    "name": "Application Configuration",
     "title": "Application Configuration",
     "labels": {
       "name": "Name",
@@ -2172,13 +2170,38 @@
       }
     }
   },
-    "apiTrash": {
-    "name":"Trash",
+  "apiTrash": {
+    "name": "Trash",
     "title": "Trash",
     "searchPlaceholder": "Please enter search keywords",
-    "tips": "Only administrators and deleters can restore or permanently delete trash data.",
+    "tips": {
+      "adminOnly": "Only administrators and deleters can restore or permanently delete trash data."
+    },
     "buttons": {
-      "recoverAll": "Restore All"
+      "recoverAll": "Restore All",
+      "deleteAll": "Delete All",
+      "refresh": "Refresh"
+    },
+    "stats": {
+      "items": "Items"
+    },
+    "filters": {
+      "title": "Filter",
+      "all": "All"
+    },
+    "confirm": {
+      "delete": "Are you sure you want to delete this item?",
+      "deleteAll": "Are you sure you want to delete all items?"
+    },
+    "messages": {
+      "recoverSuccess": "Restored successfully",
+      "deleteSuccess": "Deleted successfully",
+      "recoverAllSuccess": "All items restored successfully",
+      "deleteAllSuccess": "All items deleted successfully"
+    },
+    "empty": {
+      "description": "No items in trash",
+      "hint": "Deleted items will appear here, you can restore or permanently delete them"
     },
     "tabs": {
       "service": "Service",
@@ -2187,18 +2210,15 @@
     "table": {
       "columns": {
         "name": "Name",
-        "createdBy": "Created By",
-        "deletedBy": "Deleted By",
-        "deletedDate": "Deleted Date",
-        "action": "Action"
+        "createdBy": "Creator",
+        "deletedBy": "Deleter",
+        "deletedDate": "Delete Time",
+        "action": "Actions"
       },
       "actions": {
-        "recover": "Restore"
+        "recover": "Restore",
+        "delete": "Delete"
       }
-    },
-    "messages": {
-      "recoverAllSuccess": "All restored successfully",
-      "recoverSuccess": "Restored successfully"
     }
   }
 }

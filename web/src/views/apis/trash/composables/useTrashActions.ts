@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, unref, type Ref } from 'vue';
 import { notification } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
@@ -7,10 +7,10 @@ import type { TrashItem } from '../types';
 
 /**
  * Composable for managing trash actions (recover, delete, batch operations)
- * @param projectId - Current project ID
+ * @param projectId - Current project ID (can be reactive)
  * @returns Object containing action methods and loading state
  */
-export function useTrashActions (projectId: string) {
+export function useTrashActions (projectId: string | Ref<string>) {
   const { t } = useI18n();
   const loading = ref(false);
   const refreshNotify = ref<string>();
@@ -75,7 +75,15 @@ export function useTrashActions (projectId: string) {
     loading.value = true;
 
     try {
-      const params = { projectId };
+      // Get current projectId value (handles both ref and string)
+      const currentProjectId = unref(projectId);
+
+      if (!currentProjectId) {
+        console.warn('ProjectId is empty, cannot recover all items');
+        return false;
+      }
+
+      const params = { projectId: currentProjectId };
       const [error] = await apis.backAllTrash(params, { paramsType: true });
 
       if (error) {
@@ -101,7 +109,15 @@ export function useTrashActions (projectId: string) {
     loading.value = true;
 
     try {
-      const params = { projectId };
+      // Get current projectId value (handles both ref and string)
+      const currentProjectId = unref(projectId);
+
+      if (!currentProjectId) {
+        console.warn('ProjectId is empty, cannot delete all items');
+        return false;
+      }
+
+      const params = { projectId: currentProjectId };
       const [error] = await apis.deleteAllTrash(params);
 
       if (error) {

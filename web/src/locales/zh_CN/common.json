@@ -1,4 +1,8 @@
 {
+  "common": {
+    "noData": "无数据",
+    "loading": "加载中..."
+  },
   "time": {
     "year": "年",
     "month": "月",
