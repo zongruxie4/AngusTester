@@ -2,6 +2,7 @@
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Icon, NoData } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 import { funcCase } from '@/api/tester';
 
 import { CaseInfo } from '../../PropsType';
@@ -13,6 +14,8 @@ type Props = {
   dataSource: CaseInfo;
   canEdit: boolean;
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
@@ -39,7 +42,7 @@ const content = ref<string>('');
 const toEdit = () => {
   openFlag.value = true;
   editFlag.value = true;
-  content.value = newValue?.description || '';
+  content.value = props.dataSource?.description || '';
 };
 
 const editorChange = (value: string) => {
@@ -102,7 +105,7 @@ const caseId = computed(() => {
 <template>
   <div class="mt-4">
     <div class="flex items-center text-theme-title mb-1.75">
-      <span class="font-semibold">描述</span>
+      <span class="font-semibold">{{ t('functionCase.kanbanView.infoDescription.title') }}</span>
       <Button
         v-if="props.canEdit"
         v-show="!editFlag"
@@ -120,15 +123,15 @@ const caseId = computed(() => {
             ref="richRef"
             :value="content"
             @change="editorChange" />
-          <div v-show="descrError" class="text-status-error">最多支持2000字符，包括文件上传后URL地址长度</div>
+          <div v-show="descrError" class="text-status-error">{{ t('functionCase.kanbanView.infoDescription.maxCharError') }}</div>
         </div>
         <div class="mt-2.5 space-x-2.5 w-full flex items-center justify-end">
-          <Button size="small" @click="cancel">取消</Button>
+          <Button size="small" @click="cancel">{{ t('functionCase.kanbanView.infoDescription.cancel') }}</Button>
           <Button
             size="small"
             type="primary"
             @click="ok">
-            确定
+            {{ t('functionCase.kanbanView.infoDescription.confirm') }}
           </Button>
         </div>
       </div>

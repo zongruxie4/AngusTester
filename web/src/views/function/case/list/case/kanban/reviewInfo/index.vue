@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { Grid } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 import { CaseInfo } from '../PropsType';
 
@@ -11,6 +12,8 @@ type Props = {
   dataSource: CaseInfo;
   canEdit: boolean;
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
@@ -30,24 +33,24 @@ const oneReviewPass = computed(() => {
 const reviewInfoColumns = [
   [
     {
-      label: '是否开启评审',
+      label: t('functionCase.kanbanView.reviewInfoGrid.enableReview'),
       dataIndex: 'review',
       customRender: ({ text }) => text ? t('status.yes') : t('status.no')
     },
     {
-      label: '评审次数',
+      label: t('functionCase.kanbanView.reviewInfoGrid.reviewCount'),
       dataIndex: 'reviewNum'
     },
     {
-      label: '评审失败次数',
+      label: t('functionCase.kanbanView.reviewInfoGrid.reviewFailCount'),
       dataIndex: 'reviewFailNum'
     },
     {
-      label: '是否一次性通过',
+      label: t('functionCase.kanbanView.reviewInfoGrid.oneTimePass'),
       dataIndex: 'oneReviewPass'
     },
     {
-      label: '评审意见',
+      label: t('functionCase.kanbanView.reviewInfoGrid.reviewOpinion'),
       dataIndex: 'reviewRemark'
     }
   ]
@@ -56,7 +59,7 @@ const reviewInfoColumns = [
 
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
-    <div class="text-theme-title mb-2.5 font-semibold">评审信息</div>
+    <div class="text-theme-title mb-2.5 font-semibold">{{ t('functionCase.kanbanView.reviewInfoGrid.title') }}</div>
     <Grid
       :columns="reviewInfoColumns"
       :dataSource="props.dataSource"

@@ -4,6 +4,7 @@ import { Tag } from 'ant-design-vue';
 import { Grid, Icon, Input, Popover, ReviewStatus, Select, TaskPriority, TestResult } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
+import { useI18n } from 'vue-i18n';
 import { funcCase } from '@/api/tester';
 
 import SelectEnum from '@/components/SelectEnum/index.vue'
@@ -16,6 +17,8 @@ type Props = {
   dataSource: CaseInfo;
   canEdit: boolean;
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
@@ -216,32 +219,32 @@ const change = async () => {
 
 const infoColumns = [
   [
-    { label: '名称', dataIndex: 'name' },
-    { label: 'ID', dataIndex: 'id' },
-    { label: '编号', dataIndex: 'code' },
+    { label: t('functionCase.kanbanView.infoBasic.name'), dataIndex: 'name' },
+    { label: t('functionCase.kanbanView.infoBasic.id'), dataIndex: 'id' },
+    { label: t('functionCase.kanbanView.infoBasic.code'), dataIndex: 'code' },
     {
-      label: '评审状态',
+      label: t('functionCase.kanbanView.infoBasic.reviewStatus'),
       dataIndex: 'reviewStatus'
     },
     {
-      label: '版本',
+      label: t('functionCase.kanbanView.infoBasic.version'),
       dataIndex: 'version'
     },
     {
-      label: '软件版本',
+      label: t('functionCase.kanbanView.infoBasic.softwareVersion'),
       dataIndex: 'softwareVersion'
     },
-    { label: '优先级', dataIndex: 'priority' },
-    { label: '标签', dataIndex: 'tags' },
-    { label: '所属计划', dataIndex: 'planName' },
-    { label: '所属模块', dataIndex: 'moduleName' },
+    { label: t('functionCase.kanbanView.infoBasic.priority'), dataIndex: 'priority' },
+    { label: t('functionCase.kanbanView.infoBasic.tags'), dataIndex: 'tags' },
+    { label: t('functionCase.kanbanView.infoBasic.planName'), dataIndex: 'planName' },
+    { label: t('functionCase.kanbanView.infoBasic.moduleName'), dataIndex: 'moduleName' },
     {
-      label: '测试结果',
+      label: t('functionCase.kanbanView.infoBasic.testResult'),
       dataIndex: 'testResult'
     },
-    { label: props.dataSource?.evalWorkloadMethod?.value === 'STORY_POINT' ? '评估故事点' : '评估工时', dataIndex: 'evalWorkload', customRender: ({ text }) => text || '--' },
-    { label: props.dataSource?.evalWorkloadMethod?.value === 'STORY_POINT' ? '实际故事点' : '实际工时', dataIndex: 'actualWorkload', customRender: ({ text }) => text || '--' },
-    { label: '计划外用例', dataIndex: 'unplannedFlag', customRender: ({ text }) => text ? t('status.yes') : t('status.no') }
+    { label: props.dataSource?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.kanbanView.infoBasic.evalStoryPoint') : t('functionCase.kanbanView.infoBasic.evalWorkload'), dataIndex: 'evalWorkload', customRender: ({ text }) => text || '--' },
+    { label: props.dataSource?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.kanbanView.infoBasic.actualStoryPoint') : t('functionCase.kanbanView.infoBasic.actualWorkload'), dataIndex: 'actualWorkload', customRender: ({ text }) => text || '--' },
+    { label: t('functionCase.kanbanView.infoBasic.unplannedCase'), dataIndex: 'unplannedFlag', customRender: ({ text }) => text ? t('status.yes') : t('status.no') }
   ]
 ];
 
@@ -250,7 +253,7 @@ const infoColumns = [
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
     <div>
-      <div class="text-theme-title mb-2.5 font-semibold">基本信息</div>
+      <div class="text-theme-title mb-2.5 font-semibold">{{ t('functionCase.kanbanView.infoBasic.title') }}</div>
       <Grid
         :columns="infoColumns"
         :dataSource="props.dataSource"
@@ -267,7 +270,7 @@ const infoColumns = [
                 :maxlength="200"
                 size="small"
                 class="absolute -top-1.25"
-                placeholder="用例名称"
+                :placeholder="t('functionCase.kanbanView.infoBasic.caseName')"
                 @blur="editName" />
             </template>
             <template v-else>
@@ -293,7 +296,7 @@ const infoColumns = [
                 enumKey="Priority"
                 size="small"
                 class="w-52 absolute -top-1.25"
-                placeholder="优先级"
+                :placeholder="t('functionCase.kanbanView.infoBasic.priorityPlaceholder')"
                 @blur="editPriority($event.target.value)">
                 <template #option="item">
                   <TaskPriority :value="item" />
@@ -320,7 +323,7 @@ const infoColumns = [
                 :defaultOptions="defaultTags"
                 :fieldNames="{ label: 'name', value: 'id' }"
                 :maxTags="5"
-                placeholder="添加标签数量1~5个"
+                :placeholder="t('functionCase.kanbanView.infoBasic.addTagsPlaceholder')"
                 :class="{'border-error':tagsIds && tagsIds.length > 5 }"
                 :action="`${TESTER}/tag?projectId=${projectId}&fullTextSearch=true`"
                 mode="multiple"
@@ -359,7 +362,7 @@ const infoColumns = [
                 :autofocus="isEditEvalWorkload"
                 :min="0.1"
                 :max="1000"
-                placeholder="最小0.1，最大1000，最多支持2位小数"
+                :placeholder="t('functionCase.kanbanView.infoBasic.evalWorkloadPlaceholder')"
                 dataType="float"
                 size="small"
                 class="w-65 absolute -top-1.25"
@@ -376,7 +379,7 @@ const infoColumns = [
                 placement="rightTop"
                 arrowPointAtCenter>
                 <template #content>
-                  <div class="text-3 text-theme-sub-content max-w-75 leading-4">{{ props.dataSource?.evalWorkloadMethod?.value === 'STORY_POINT'?'工作任务量、综合难度、复杂度等的评估值。':'工作评估所花费的时间，以小时为单位计算。' }}</div>
+                  <div class="text-3 text-theme-sub-content max-w-75 leading-4">{{ props.dataSource?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.kanbanView.infoBasic.evalWorkloadTip') : t('functionCase.kanbanView.infoBasic.evalWorkloadTipTime') }}</div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />
               </Popover>
@@ -393,7 +396,7 @@ const infoColumns = [
                 :autofocus="isEditActualWorkload"
                 :min="0.1"
                 :max="1000"
-                placeholder="最小0.1，最大1000，最多支持2位小数"
+                :placeholder="t('functionCase.kanbanView.infoBasic.actualWorkloadPlaceholder')"
                 dataType="float"
                 size="small"
                 class="w-65 absolute -top-1.25"
@@ -410,7 +413,7 @@ const infoColumns = [
                 placement="rightTop"
                 arrowPointAtCenter>
                 <template #content>
-                  <div class="text-3 text-theme-sub-content max-w-75 leading-4">{{ props.dataSource?.evalWorkloadMethod?.value === 'STORY_POINT'?'工作任务量、综合难度、复杂度等的实际值。':'工作实际所花费的时间，以小时为单位计算。' }}</div>
+                  <div class="text-3 text-theme-sub-content max-w-75 leading-4">{{ props.dataSource?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.kanbanView.infoBasic.actualWorkloadTip') : t('functionCase.kanbanView.infoBasic.actualWorkloadTipTime') }}</div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />
               </Popover>
@@ -449,7 +452,7 @@ const infoColumns = [
               v-if="props.dataSource?.overdue"
               class="border border-status-error rounded px-0.5 ml-5"
               style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-              <span>已逾期</span>
+              <span>{{ t('functionCase.kanbanView.infoBasic.overdue') }}</span>
             </div>
           </div>
         </template>

@@ -3,6 +3,7 @@ import { computed, nextTick, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Colon, Icon, SelectUser } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 import { funcCase } from '@/api/tester';
 
 import { CaseInfo } from '../../PropsType';
@@ -14,6 +15,8 @@ type Props = {
   dataSource: CaseInfo;
   canEdit: boolean;
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
@@ -137,12 +140,12 @@ const userName = computed(() => {
 
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
-    <div class="text-theme-title mb-2.5 font-semibold">人员</div>
+    <div class="text-theme-title mb-2.5 font-semibold">{{ t('functionCase.kanbanView.infoPersonnel.title') }}</div>
 
     <div class="space-y-2.5">
       <div class="flex items-start">
         <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>测试人</span>
+          <span>{{ t('functionCase.kanbanView.infoPersonnel.tester') }}</span>
           <Colon class="w-1" />
         </div>
 
@@ -163,7 +166,7 @@ const userName = computed(() => {
             type="link"
             class="p-0 h-5 leading-5 ml-1"
             @click="assignToMe">
-            指派给我
+            {{ t('functionCase.kanbanView.infoPersonnel.assignToMe') }}
           </Button>
         </div>
 
@@ -172,7 +175,7 @@ const userName = computed(() => {
             v-show="testerEditFlag"
             ref="testerRef"
             v-model:value="testerIdValue"
-            placeholder="选择测试人"
+            :placeholder="t('functionCase.kanbanView.infoPersonnel.selectTester')"
             allowClear
             :defaultOptions="testerDefaultOptions"
             :action="`${TESTER}/project/${props.projectId}/member/user`"
@@ -185,7 +188,7 @@ const userName = computed(() => {
 
       <div class="flex items-start">
         <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>开发人</span>
+          <span>{{ t('functionCase.kanbanView.infoPersonnel.developer') }}</span>
           <Colon class="w-1" />
         </div>
 
@@ -194,7 +197,7 @@ const userName = computed(() => {
 
       <div class="flex items-start">
         <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>评审人</span>
+          <span>{{ t('functionCase.kanbanView.infoPersonnel.reviewer') }}</span>
           <Colon class="w-1" />
         </div>
 
@@ -203,7 +206,7 @@ const userName = computed(() => {
 
       <div class="flex items-start">
         <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>添加人</span>
+          <span>{{ t('functionCase.kanbanView.infoPersonnel.creator') }}</span>
           <Colon class="w-1" />
         </div>
 
@@ -212,7 +215,7 @@ const userName = computed(() => {
 
       <div class="flex items-start">
         <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>最后修改人</span>
+          <span>{{ t('functionCase.kanbanView.infoPersonnel.lastModifier') }}</span>
           <Colon class="w-1" />
         </div>
 

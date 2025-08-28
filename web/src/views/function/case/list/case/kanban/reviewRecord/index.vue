@@ -1,11 +1,14 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Image, NoData } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 import { funcCase } from '@/api/tester';
 
 interface Props {
   dataSource: {id: string; reviewNum: number; reviewFailNum: number;};
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   dataSource: () => ({ id: '' })
@@ -112,29 +115,29 @@ defineExpose({
 </script>
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
-    <div class="text-theme-title mb-2.5 font-semibold">评审次数</div>
+    <div class="text-theme-title mb-2.5 font-semibold">{{ t('functionCase.kanbanView.reviewRecord.title') }}</div>
     <div class="flex flex-col space-y-2">
       <div class="flex items-center rounded overflow-hidden">
-        <div class="w-20 px-2 py-1 bg-blue-1 text-white rounded">总共</div>
+        <div class="w-20 px-2 py-1 bg-blue-1 text-white rounded">{{ t('functionCase.kanbanView.reviewRecord.total') }}</div>
         <div class="w-20 px-2 py-1 font-medium bg-gray-light">
           {{ reviewNum.total }}
         </div>
       </div>
       <div class="flex items-center rounded overflow-hidden">
-        <div class="w-20 px-2 py-1 bg-status-success text-white rounded">评审通过</div>
+        <div class="w-20 px-2 py-1 bg-status-success text-white rounded">{{ t('functionCase.kanbanView.reviewRecord.reviewPassed') }}</div>
         <div class="w-20 px-2 py-1 font-medium bg-gray-light">
           {{ reviewNum.successNum }}
         </div>
       </div>
       <div class="flex items-center rounded overflow-hidden">
-        <div class="w-20 px-2 py-1 bg-status-error text-white rounded">评审未通过</div>
+        <div class="w-20 px-2 py-1 bg-status-error text-white rounded">{{ t('functionCase.kanbanView.reviewRecord.reviewFailed') }}</div>
         <div class="w-20 px-2 py-1 font-medium bg-gray-light">
           {{ reviewNum.failNum }}
         </div>
       </div>
     </div>
 
-    <div class="text-title text-3 font-medium mt-6">评审记录</div>
+    <div class="text-title text-3 font-medium mt-6">{{ t('functionCase.kanbanView.reviewRecord.reviewRecords') }}</div>
     <div class="mt-2 space-y-2">
       <div
         v-for="record in reviewRecords"
@@ -147,7 +150,7 @@ defineExpose({
             type="avatar"
             :src="record.avatar"
             class="w-5 mr-2" />
-          <span class="font-semibold flex-1/3">{{ record.reviewerName }} {{ record.reviewStatus?.value === 'PASSED' ? '评审通过了用例' : '评审用例未通过' }}</span>
+          <span class="font-semibold flex-1/3">{{ record.reviewerName }} {{ record.reviewStatus?.value === 'PASSED' ? t('functionCase.kanbanView.reviewRecord.reviewPassedCase') : t('functionCase.kanbanView.reviewRecord.reviewFailedCase') }}</span>
 
           <div class=" flex-1/2">{{ record.reviewDate }}</div>
         </div>
@@ -158,7 +161,7 @@ defineExpose({
           :title="record.reviewRemark">
           {{ record.reviewRemark }}
         </div>
-        <div v-else class="text-sub-content mt-3 truncate">无说明~ </div>
+        <div v-else class="text-sub-content mt-3 truncate">{{ t('functionCase.kanbanView.reviewRecord.noRemark') }}</div>
       </div>
     </div>
 
@@ -168,22 +171,22 @@ defineExpose({
 
     <div v-if="!!selectRecordInfo" class="flex max-w-200 ">
       <div class="flex-1 p-2 border-r  space-y-3">
-        <div class="mb-3">评审版本</div>
+        <div class="mb-3">{{ t('functionCase.kanbanView.reviewRecord.reviewVersion') }}</div>
         <BasicInfo :caseInfo="selectRecordInfo" />
         <Precondition :caseInfo="selectRecordInfo" />
         <div class="font-semibold text-3.5">
-          测试步骤
+          {{ t('functionCase.kanbanView.reviewRecord.testSteps') }}
         </div>
         <CaseStep :defaultValue="selectRecordInfo?.steps || {}" readonly />
 
         <Description :caseInfo="selectRecordInfo" />
       </div>
       <div class="flex-1 p-2 space-y-3">
-        <div class="mb-3">最新版本</div>
+        <div class="mb-3">{{ t('functionCase.kanbanView.reviewRecord.latestVersion') }}</div>
         <BasicInfo :caseInfo="props.dataSource" />
         <Precondition :caseInfo="props.dataSource" :contentClass="preconditionClass" />
         <div class="font-semibold text-3.5">
-          测试步骤
+          {{ t('functionCase.kanbanView.reviewRecord.testSteps') }}
         </div>
         <div :class="stepsClass">
           <CaseStep :defaultValue="props?.dataSource?.steps || []" readonly />

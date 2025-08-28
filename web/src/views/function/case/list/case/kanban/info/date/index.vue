@@ -3,6 +3,7 @@ import { computed, nextTick, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Colon, DatePicker, Icon, Tooltip } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
+import { useI18n } from 'vue-i18n';
 import { funcCase } from '@/api/tester';
 
 import { CaseInfo } from '../../PropsType';
@@ -14,6 +15,8 @@ type Props = {
   dataSource: CaseInfo;
   canEdit: boolean;
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
@@ -52,13 +55,13 @@ const toEdit = () => {
 
 const dateChange = (value:string) => {
   if (!value) {
-    dateErrorMessage.value = '请选择截止时间';
+    dateErrorMessage.value = t('functionCase.kanbanView.infoDate.selectDeadlineTime');
     return;
   }
 
   if (dayjs(value).isBefore(dayjs(), 'minute')) {
     dateError.value = true;
-    dateErrorMessage.value = '截止时间必须是一个未来时间';
+    dateErrorMessage.value = t('functionCase.kanbanView.infoDate.deadlineMustBeFuture');
     return;
   }
 
@@ -134,12 +137,12 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
 
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
-    <div class="text-theme-title mb-2.5 font-semibold">日期</div>
+    <div class="text-theme-title mb-2.5 font-semibold">{{ t('functionCase.kanbanView.infoDate.title') }}</div>
 
     <div class="space-y-2.5">
       <div class="flex items-start">
         <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>评审时间</span>
+          <span>{{ t('functionCase.kanbanView.infoDate.reviewTime') }}</span>
           <Colon class="w-1" />
         </div>
 
@@ -148,7 +151,7 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
 
       <div class="flex items-start">
         <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>评审完成时间</span>
+          <span>{{ t('functionCase.kanbanView.infoDate.reviewCompleteTime') }}</span>
           <Colon class="w-1" />
         </div>
 
@@ -157,7 +160,7 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
 
       <div class="flex items-start">
         <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>添加时间</span>
+          <span>{{ t('functionCase.kanbanView.infoDate.addTime') }}</span>
           <Colon class="w-1" />
         </div>
 
@@ -166,7 +169,7 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
 
       <div class="flex items-start">
         <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>截止时间</span>
+          <span>{{ t('functionCase.kanbanView.infoDate.deadline') }}</span>
           <Colon class="w-1" />
         </div>
 
@@ -207,7 +210,7 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
 
       <div class="flex items-start">
         <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>最后修改时间</span>
+          <span>{{ t('functionCase.kanbanView.infoDate.lastModifiedTime') }}</span>
           <Colon class="w-1" />
         </div>
 

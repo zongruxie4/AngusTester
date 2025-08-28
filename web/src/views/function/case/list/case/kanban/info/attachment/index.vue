@@ -3,6 +3,7 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { Button, Upload, UploadFile } from 'ant-design-vue';
 import { Icon, notification, Spin } from '@xcan-angus/vue-ui';
 import { utils, upload } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 import { funcCase } from '@/api/tester';
 
 import { CaseInfo } from '../../PropsType';
@@ -20,6 +21,8 @@ type Props = {
   dataSource: CaseInfo;
   canEdit: boolean;
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
@@ -43,7 +46,7 @@ const attachments = ref<AttachmentItem[]>([]);
 
 const uploadChange = async ({ file }: { file: UploadFile }) => {
   if (file.size! > maxFileSize.value) {
-    notification.warning(`文件大小不能超过 ${MAX_SIZE} M`);
+    notification.warning(t('functionCase.kanbanView.infoAttachment.fileSizeLimit', { size: MAX_SIZE }));
     return;
   }
 
@@ -152,7 +155,7 @@ const maxFileSize = computed(() => {
 
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
-    <div class="text-theme-title mb-2.5 font-semibold">附件</div>
+    <div class="text-theme-title mb-2.5 font-semibold">{{ t('functionCase.kanbanView.infoAttachment.title') }}</div>
     <Spin
       :spinning="loading"
       :class="{ empty: isEmpty }"
@@ -185,7 +188,7 @@ const maxFileSize = computed(() => {
               type="link"
               class="flex items-center h-auto leading-4.5 p-0">
               <Icon icon="icon-shangchuan" class="text-3.5 flex-shrink-0 text-text-link" />
-              <div class="flex-shrink-0 text-text-link ml-1">继续上传</div>
+              <div class="flex-shrink-0 text-text-link ml-1">{{ t('functionCase.kanbanView.infoAttachment.continueUpload') }}</div>
             </Button>
           </Upload>
         </div>
@@ -202,10 +205,10 @@ const maxFileSize = computed(() => {
             type="link"
             class="flex flex-col items-center justify-center h-auto leading-5 p-0">
             <Icon icon="icon-shangchuan" class="text-5 flex-shrink-0 text-text-link" />
-            <div class="flex-shrink-0 text-text-link">选择文件</div>
+            <div class="flex-shrink-0 text-text-link">{{ t('functionCase.kanbanView.infoAttachment.selectFile') }}</div>
           </Button>
         </Upload>
-        <div class="text-theme-sub-content mt-1">单个文件大小不超过{{ MAX_SIZE }}M，最多上传5个</div>
+        <div class="text-theme-sub-content mt-1">{{ t('functionCase.kanbanView.infoAttachment.fileSizeTip', { size: MAX_SIZE }) }}</div>
       </template>
     </Spin>
   </div>

@@ -1,35 +1,38 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { Grid, ReviewStatus, TaskPriority } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 import { Tag } from 'ant-design-vue';
 
 interface Props {
   caseInfo?: {[key: string]: any}
 }
+const { t } = useI18n();
+
 const props = withDefaults(defineProps<Props>(), {
   caseInfo: undefined
 });
 
-const infoColumns = computed<GridColumns[][]>(() => [
+const infoColumns = computed(() => [
   [
-    { label: '名称', dataIndex: 'name' },
+    { label: t('functionCase.detail.review.name'), dataIndex: 'name' },
     // { label: 'ID', dataIndex: 'id' },
-    { label: '编号', dataIndex: 'code' },
+    { label: t('functionCase.detail.review.code'), dataIndex: 'code' },
     {
-      label: '评审状态',
+      label: t('functionCase.detail.review.reviewStatus'),
       dataIndex: 'reviewStatus'
     },
-    { label: '优先级', dataIndex: 'priority' },
-    { label: '标签', dataIndex: 'tags' },
+    { label: t('functionCase.detail.review.priority'), dataIndex: 'priority' },
+    { label: t('functionCase.detail.review.tags'), dataIndex: 'tags' },
 
     // { label: '所属计划', dataIndex: 'planName' },
     // { label: '所属模块', dataIndex: 'moduleName' },
     {
-      label: '测试结果',
+      label: t('functionCase.detail.review.testResult'),
       dataIndex: 'testResult'
     },
-    { label: props.caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? '评估故事点' : '评估工时', dataIndex: 'evalWorkload', customRender: ({ text }) => text || '--' },
-    { label: props.caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? '实际故事点' : '实际工时', dataIndex: 'actualWorkload', customRender: ({ text }) => text || '--' }
+    { label: props.caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.detail.review.evalStoryPoint') : t('functionCase.detail.review.evalWorkload'), dataIndex: 'evalWorkload', customRender: ({ text }) => text || '--' },
+    { label: props.caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.detail.review.actualStoryPoint') : t('functionCase.detail.review.actualWorkload'), dataIndex: 'actualWorkload', customRender: ({ text }) => text || '--' }
   ]
 ]);
 
@@ -37,7 +40,7 @@ const infoColumns = computed<GridColumns[][]>(() => [
 <template>
   <div class="space-y-3">
     <div class="font-semibold text-3.5">
-      基本信息
+      {{ t('functionCase.detail.review.basicInfo') }}
     </div>
     <Grid
       :columns="infoColumns"
@@ -99,7 +102,7 @@ const infoColumns = computed<GridColumns[][]>(() => [
             v-if="caseInfo?.overdue"
             class="border border-status-error rounded px-0.5 ml-5"
             style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-            已逾期
+            {{ t('functionCase.detail.review.overdue') }}
           </div>
         </div>
       </template>

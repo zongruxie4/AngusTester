@@ -1649,7 +1649,7 @@ const checkedCaseId = computed(() => {
         <div
           :class="{ 'drawer-active-item': drawerActiveKey === 'reviewRecord' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-          :title="t('functionCase.kanbanView.reviewRecord')"
+          :title="t('functionCase.kanbanView.reviewRecordTitle')"
           @click="drawerActiveKeyChange('reviewRecord')">
           <Icon icon="icon-pingshen" class="text-4" />
         </div>

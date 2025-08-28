@@ -5,6 +5,7 @@ import { Button, Popover, TabPane, Tabs } from 'ant-design-vue';
 import { XCanDexie, TESTER, duration, toClipboard, appContext } from '@xcan-angus/infra';
 import elementResizeDetector, { Erd } from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
+import { useI18n } from 'vue-i18n';
 
 import { CASE_PROJECT_PERMISSIONS, CaseActionAuth, useCaseActionAuth } from './PropsType';
 import type { CaseInfoObj, CaseListObj } from '../PropsType';
@@ -36,6 +37,8 @@ export interface Props {
   scrollNotify?: number;
   notify?: number;
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   source: undefined,
@@ -110,7 +113,7 @@ const getData = async (value: 'before' | 'after') => {
 
   if (value === 'before') {
     if (pageNo.value <= 1) {
-      notification.success('已经是第一条数据啦！');
+      notification.success(t('functionCase.detail.firstDataTip'));
       hasBeforeData.value = true;
       return;
     } else {
@@ -120,7 +123,7 @@ const getData = async (value: 'before' | 'after') => {
 
   if (value === 'after') {
     if (pageNo.value >= total.value) {
-      notification.success('已经是最后一条数据啦！');
+      notification.success(t('functionCase.detail.lastDataTip'));
       hasLastData.value = true;
       return;
     } else {
@@ -241,9 +244,9 @@ const handleClick = (type: CaseActionAuth) => {
 const handleCopy = async () => {
   const message = `${window.location.origin}/function#cases?&id=${caseDetail.value.id}&projectId=${projectInfo.value.id}&name=${caseDetail.value.name}&currIndex=${props.currIndex}&total=${props.queryParams.total}&pageNo=${props.queryParams.pageNo}&pageSize=${props.queryParams.pageSize}`;
   toClipboard(message).then(() => {
-    notification.success('复制成功');
+    notification.success(t('functionCase.detail.copySuccess'));
   }).catch(() => {
-    notification.error('复制失败');
+    notification.error(t('functionCase.detail.copyFailed'));
   });
 };
 
@@ -356,7 +359,7 @@ defineExpose({
               size="small"
               @click="handleClick('updateTestResult_passed')">
               <Icon class="mr-1" icon="icon-xiugaiceshijieguo" />
-              <span>测试通过</span>
+              <span>{{ t('functionCase.detail.testPassed') }}</span>
             </Button>
             <Button
               :disabled="!actionAuth.includes('updateTestResult')"
@@ -365,7 +368,7 @@ defineExpose({
               size="small"
               @click="handleClick('updateTestResult_notpassed')">
               <Icon class="mr-1" icon="icon-xiugaiceshijieguo" />
-              <span>测试未通过</span>
+              <span>{{ t('functionCase.detail.testNotPassed') }}</span>
             </Button>
           </template>
           <template v-else>
@@ -376,7 +379,7 @@ defineExpose({
               size="small"
               @click="handleClick('retestResult')">
               <Icon class="mr-1" icon="icon-xiugaiceshijieguo" />
-              <span>重新测试</span>
+              <span>{{ t('functionCase.detail.retest') }}</span>
             </Button>
           </template>
           <Button
@@ -386,11 +389,11 @@ defineExpose({
             size="small"
             @click="handleClick('resetTestResult')">
             <Icon class="mr-1" icon="icon-zhongzhiceshijieguo" />
-            <span>重置测试结果</span>
+            <span>{{ t('functionCase.detail.resetTestResult') }}</span>
             <Popover placement="bottom">
               <template #content>
                 <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                  将用例更新为`待测试`，相关统计计数和状态会被清除。
+                  {{ t('functionCase.detail.resetTestResultTip') }}
                 </div>
               </template>
               <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -404,7 +407,7 @@ defineExpose({
           size="small"
           @click="handleClick('updateTestResult_blocked')">
           <Icon class="mr-1" icon="icon-xiugaiceshijieguo" />
-          设为阻塞中
+          {{ t('functionCase.detail.setBlocked') }}
         </Button>
         <Button
           v-if="!caseDetail?.review || (caseDetail?.review && caseDetail?.reviewStatus.value === 'PASSED') && !['PASSED', 'NOT_PASSED','CANCELED'].includes(caseDetail?.testResult?.value)"
@@ -413,7 +416,7 @@ defineExpose({
           size="small"
           @click="handleClick('updateTestResult_canceled')">
           <Icon class="mr-1" icon="icon-xiugaiceshijieguo" />
-          取消
+          {{ t('functionCase.detail.cancel') }}
         </Button>
         <Button
           v-if="caseDetail?.testResult?.value === 'NOT_PASSED'"
@@ -422,7 +425,7 @@ defineExpose({
           :disabled="!actionAuth.includes('edit')"
           @click="addBug">
           <Icon class="mr-1" icon="icon-bianji" />
-          <span>提BUG</span>
+          <span>{{ t('functionCase.detail.submitBug') }}</span>
         </Button>
         <Button
           size="small"
@@ -430,7 +433,7 @@ defineExpose({
           :disabled="!actionAuth.includes('edit')"
           @click="handleClick('edit')">
           <Icon class="mr-1" icon="icon-bianji" />
-          <span>编辑</span>
+          <span>{{ t('functionCase.detail.edit') }}</span>
         </Button>
         <Button
           :disabled="!actionAuth.includes('clone')"
@@ -438,7 +441,7 @@ defineExpose({
           size="small"
           @click="handleClick('clone')">
           <Icon class="mr-1" icon="icon-fuzhi" />
-          <span>克隆</span>
+          <span>{{ t('functionCase.detail.clone') }}</span>
         </Button>
         <Button
           :disabled="!actionAuth.includes('move')"
@@ -446,21 +449,21 @@ defineExpose({
           size="small"
           @click="handleClick('move')">
           <Icon class="mr-1 text-3" icon="icon-yidong" />
-          <span>移动</span>
+          <span>{{ t('functionCase.detail.move') }}</span>
         </Button>
         <Button
           class="mt-2 mr-2"
           size="small"
           @click="handleClick('favourite')">
           <Icon class="mr-1 text-3" :icon="caseDetail?.favouriteFlag?'icon-quxiaoshoucang':'icon-yishoucang'" />
-          <span>{{ caseDetail?.favouriteFlag?'取消收藏':'收藏' }}</span>
+          <span>{{ caseDetail?.favouriteFlag ? t('functionCase.detail.unfavourite') : t('functionCase.detail.favourite') }}</span>
         </Button>
         <Button
           class="mt-2 mr-2"
           size="small"
           @click="handleClick('follow')">
           <Icon class="mr-1 text-3" :icon="caseDetail?.followFlag?'icon-quxiaoguanzhu':'icon-yiguanzhu'" />
-          <span>{{ caseDetail?.followFlag?'取消关注':'关注' }}</span>
+          <span>{{ caseDetail?.followFlag ? t('functionCase.detail.unfollow') : t('functionCase.detail.follow') }}</span>
         </Button>
         <Button
           :disabled="!actionAuth.includes('delete')"
@@ -468,7 +471,7 @@ defineExpose({
           size="small"
           @click="handleClick('delete')">
           <Icon class="mr-1" icon="icon-qingchu" />
-          <span>删除</span>
+          <span>{{ t('functionCase.detail.delete') }}</span>
         </Button>
         <template v-if="!['share'].includes(props.source)">
           <Button
@@ -476,7 +479,7 @@ defineExpose({
             size="small"
             @click="handleCopy">
             <Icon class="mr-1" icon="icon-fuzhi" />
-            <span>复制链接</span>
+            <span>{{ t('functionCase.detail.copyLink') }}</span>
           </Button>
         </template>
       </div>
@@ -486,14 +489,14 @@ defineExpose({
           class="mt-2 mr-2"
           :disabled="hasBeforeData"
           @click="getData('before')">
-          <Icon class="mr-1" icon="icon-chakanshangyitiao" />查看上一条
+          <Icon class="mr-1" icon="icon-chakanshangyitiao" />{{ t('functionCase.detail.viewPrevious') }}
         </Button>
         <Button
           size="small"
           class="mt-2 mr-2"
           :disabled="hasLastData"
           @click="getData('after')">
-          <Icon class="mr-1" icon="icon-chakanxiayitiao" />查看下一条
+          <Icon class="mr-1" icon="icon-chakanxiayitiao" />{{ t('functionCase.detail.viewNext') }}
         </Button>
       </div>
     </div>
@@ -511,13 +514,13 @@ defineExpose({
           <Icon
             icon="icon-shuaxin"
             class="mr-1" />
-          刷新
+          {{ t('functionCase.detail.refresh') }}
         </Button>
       </template>
       <TabPane
         key="info"
         class="h-full"
-        tab="详情">
+        :tab="t('functionCase.detail.detail')">
         <CaseDetailTab
           :caseDetail="caseDetail"
           :actionAuth="actionAuth"
@@ -526,7 +529,7 @@ defineExpose({
       <TabPane
         v-if="!!caseDetail?.review"
         key="reviewRecord"
-        tab="评审记录">
+        :tab="t('functionCase.detail.reviewRecord')">
         <ReviewTab
           ref="reviewRecordRef"
           :caseDetail="caseDetail" />
@@ -535,7 +538,7 @@ defineExpose({
       <TabPane key="asscoCase">
         <template #tab>
           <div class="inline-flex">
-            <span>用例</span>
+            <span>{{ t('functionCase.detail.case') }}</span>
             <span>({{ caseDetail?.refCaseInfos?.length || 0 }})</span>
           </div>
         </template>
@@ -548,7 +551,7 @@ defineExpose({
       <TabPane key="asscoTask">
         <template #tab>
           <div class="inline-flex">
-            <span>任务</span>
+            <span>{{ t('functionCase.detail.task') }}</span>
             <span>({{ getRefTaskNum('TASK') }})</span>
           </div>
         </template>
@@ -557,16 +560,16 @@ defineExpose({
           :dataSource="caseDetail?.refTaskInfos"
           :projectId="projectId"
           :caseId="caseDetail?.id"
-          title="任务"
+          :title="t('functionCase.detail.task')"
           taskType="TASK"
-          tips="记录与当前用例相关联的开发或测试任务，帮助团队追踪测试任务。"
+          :tips="t('functionCase.detail.taskTip')"
           @editSuccess="editSuccess" />
       </TabPane>
 
       <TabPane key="asscoRequirements">
         <template #tab>
           <div class="inline-flex">
-            <span>需求</span>
+            <span>{{ t('functionCase.detail.requirement') }}</span>
             <span>({{ getRefTaskNum('REQUIREMENT') }})</span>
           </div>
         </template>
@@ -577,15 +580,15 @@ defineExpose({
           :appInfo="appInfo"
           :dataSource="caseDetail?.refTaskInfos || []"
           :caseId="caseDetail?.id"
-          title="需求"
+          :title="t('functionCase.detail.requirement')"
           taskType="REQUIREMENT"
-          tips="追溯问题到原始需求，方便理解问题产生的背景和影响范围。"
+          :tips="t('functionCase.detail.requirementTip')"
           @editSuccess="editSuccess" />
       </TabPane>
       <TabPane key="asscoStory">
         <template #tab>
           <div class="inline-flex">
-            <span>故事</span>
+            <span>{{ t('functionCase.detail.story') }}</span>
             <span>({{ getRefTaskNum('STORY') }})</span>
           </div>
         </template>
@@ -596,15 +599,15 @@ defineExpose({
           :appInfo="appInfo"
           :dataSource="caseDetail?.refTaskInfos || []"
           :caseId="caseDetail?.id"
-          title="故事"
+          :title="t('functionCase.detail.story')"
           taskType="STORY"
-          tips="追溯用户角度描述功能需求，方便理解问题产生的背景和影响范围。"
+          :tips="t('functionCase.detail.storyTip')"
           @editSuccess="editSuccess" />
       </TabPane>
       <TabPane key="asscoBug">
         <template #tab>
           <div class="inline-flex">
-            <span>缺陷</span>
+            <span>{{ t('functionCase.detail.bug') }}</span>
             <span>({{ getRefTaskNum('BUG') }})</span>
           </div>
         </template>
@@ -615,15 +618,15 @@ defineExpose({
           :appInfo="appInfo"
           :dataSource="caseDetail?.refTaskInfos || []"
           :caseId="caseDetail?.id"
-          title="缺陷"
+          :title="t('functionCase.detail.bug')"
           taskType="BUG"
-          tips="追踪软件功能中的错误，确保及时修复，帮助识别和解决系统性问题。"
+          :tips="t('functionCase.detail.bugTip')"
           @editSuccess="editSuccess" />
       </TabPane>
       <TabPane key="asscoApiTest">
         <template #tab>
           <div class="inline-flex">
-            <span>接口测试</span>
+            <span>{{ t('functionCase.detail.apiTest') }}</span>
             <span>({{ getRefTaskNum('API_TEST') }})</span>
           </div>
         </template>
@@ -634,15 +637,15 @@ defineExpose({
           :appInfo="appInfo"
           :dataSource="caseDetail?.refTaskInfos || []"
           :caseId="caseDetail?.id"
-          title="接口测试"
+          :title="t('functionCase.detail.apiTest')"
           taskType="API_TEST"
-          tips="建立与对应接口测试任务关联关系，方便追溯接口测试进展，确保接口正常工作。"
+          :tips="t('functionCase.detail.apiTestTip')"
           @editSuccess="editSuccess" />
       </TabPane>
       <TabPane key="asscoScenTest">
         <template #tab>
           <div class="inline-flex">
-            <span>场景测试</span>
+            <span>{{ t('functionCase.detail.scenarioTest') }}</span>
             <span>({{ getRefTaskNum('SCENARIO_TEST') }})</span>
           </div>
         </template>
@@ -653,16 +656,16 @@ defineExpose({
           :appInfo="appInfo"
           :dataSource="caseDetail?.refTaskInfos || []"
           :caseId="caseDetail?.id"
-          title="场景测试"
+          :title="t('functionCase.detail.scenarioTest')"
           taskType="SCENARIO_TEST"
-          tips="建立与对应场景测试任务关联关系，方便了解真实场景中功能的有效性，确保解决方案的完整性。"
+          :tips="t('functionCase.detail.scenarioTestTip')"
           @editSuccess="editSuccess" />
       </TabPane>
       <TabPane
         key="comments"
         class="h-full">
         <template #tab>
-          <span>评论 ({{ caseDetail?.commentNum || 0 }})</span>
+          <span>{{ t('functionCase.detail.comments') }} ({{ caseDetail?.commentNum || 0 }})</span>
         </template>
         <SmartComment
           ref="smartCommentRef"
@@ -681,7 +684,7 @@ defineExpose({
         key="activty"
         class="h-full">
         <template #tab>
-          <span>活动({{ caseDetail?.activityNum || 0 }})</span>
+          <span>{{ t('functionCase.detail.activity') }}({{ caseDetail?.activityNum || 0 }})</span>
         </template>
         <Scroll
           v-model:spinning="activityLoading"
@@ -705,7 +708,7 @@ defineExpose({
         :assigneeId="caseDetail.developerId"
         :userInfo="userInfo"
         :refCaseIds="[caseDetail.id]"
-        :name="`“${caseDetail.name}”测试不通过`"
+        :name="t('functionCase.mainView.testNotPassedName', {name: caseDetail.name})"
         :description="caseDetail.testRemark"
         taskType="BUG"
         :confirmorId="caseDetail?.testerId"
