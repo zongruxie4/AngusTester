@@ -10,8 +10,8 @@ import { ButtonProps } from 'ant-design-vue';
 import { Input, Modal, notification } from '@xcan-angus/vue-ui';
 
 // Utilities and API
-import { AddModuleProps } from '@/views/project/project/types';
 import { modules } from '@/api/tester';
+import {AddModuleProps} from "@/views/project/module/types";
 
 // Initialize i18n
 const { t } = useI18n();

@@ -18,7 +18,7 @@ import { modules } from '@/api/tester';
 
 // Utils
 import { travelTreeData } from '@/views/project/project/utils';
-import { ModuleProps, ModuleItem } from '@/views/project/project/types';
+import {ModuleItem, ModuleProps} from "@/views/project/module/types";
 
 // Initialize i18n
 const { t } = useI18n();
@@ -310,7 +310,7 @@ onMounted(() => {
           class="flex flex-col min-h-96">
           <template v-if="loaded">
             <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center py-12">
-              <img src="../../../../../assets/images/nodata.png" class="w-32 h-32 mb-4">
+              <img src="../../../assets/images/nodata.png" class="w-32 h-32 mb-4">
               <div v-if="!props.disabled" class="flex items-center text-gray-500 text-xs">
                 <span>{{ t('project.projectEdit.module.noModules') }}</span>
                 <Button

@@ -44,7 +44,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits<{(e: 'delOk', value: string[]);}>();
 
 // Async component definitions
-const Introduce = defineAsyncComponent(() => import('@/views/project/project/list/introduce/index.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/project/project/list/introduce.vue'));
 const AddModal = defineAsyncComponent(() => import('@/views/project/project/addModal/index.vue'));
 const RichText = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
 

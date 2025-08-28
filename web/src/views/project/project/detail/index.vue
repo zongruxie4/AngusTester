@@ -1,24 +1,24 @@
 <script lang="ts" setup>
 // Vue composition API imports
-import {defineAsyncComponent, ref, watch} from 'vue';
-import {useI18n} from 'vue-i18n';
+import { defineAsyncComponent, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 // External libraries
 import dayjs from 'dayjs';
 
 // Custom UI components
-import {Icon, Image} from '@xcan-angus/vue-ui';
+import { Icon, Image } from '@xcan-angus/vue-ui';
 
 // Ant Design components
-import {TabPane, Tabs, Tag} from 'ant-design-vue';
+import { TabPane, Tabs, Tag } from 'ant-design-vue';
 
 // API imports
-import {project} from '@/api/tester';
-import {Project} from '@/views/project/project/types';
+import { project } from '@/api/tester';
+import { Project } from '@/views/project/project/types';
 
 // Static assets
 import DefaultProjectImage from '@/views/project/project/images/default.png';
-import {ProjectType} from "@/enums/enums";
+import { ProjectType } from '@/enums/enums';
 // Initialize i18n
 const { t } = useI18n();
 
@@ -41,8 +41,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // Async component definitions
-const Tags = defineAsyncComponent(() => import('@/views/project/project/edit/tag/index.vue'));
-const Module = defineAsyncComponent(() => import('@/views/project/project/edit/module/index.vue'));
+const Tags = defineAsyncComponent(() => import('@/views/project/tag/index.vue'));
+const Module = defineAsyncComponent(() => import('@/views/project/module/index.vue'));
 const Version = defineAsyncComponent(() => import('@/views/task/version/list/index.vue'));
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 

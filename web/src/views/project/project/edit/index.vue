@@ -51,8 +51,8 @@ const projectInfo = inject('projectInfo', ref({ id: '' }));
 const delTabPane = inject('delTabPane', (tabKey: string) => { console.log('delTabPane not provided:', tabKey); });
 
 // Async component definitions
-const Tags = defineAsyncComponent(() => import('@/views/project/project/edit/tag/index.vue'));
-const Module = defineAsyncComponent(() => import('@/views/project/project/edit/module/index.vue'));
+const Tags = defineAsyncComponent(() => import('@/views/project/tag/index.vue'));
+const Module = defineAsyncComponent(() => import('@/views/project/module/index.vue'));
 const Version = defineAsyncComponent(() => import('@/views/task/version/list/index.vue'));
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 

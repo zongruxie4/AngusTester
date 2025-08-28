@@ -11,7 +11,8 @@ import { Input, Modal, notification } from '@xcan-angus/vue-ui';
 
 // API imports and utils
 import { tag } from '@/api/tester';
-import { AddTagProps } from '@/views/project/project/types';
+
+import {AddTagProps} from "@/views/project/tag/types";
 
 // Initialize i18n
 const { t } = useI18n();

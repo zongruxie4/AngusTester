@@ -11,8 +11,8 @@ import { Icon, Modal } from '@xcan-angus/vue-ui';
 
 // Utilities and API
 import { travelTreeData } from '@/views/project/project/utils';
-import { MoveModuleProps } from '@/views/project/project/types';
 import { modules } from '@/api/tester';
+import {MoveModuleProps} from "@/views/project/module/types";
 
 // Initialize i18n
 const { t } = useI18n();

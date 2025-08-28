@@ -36,8 +36,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits<{(e: 'loadData', value?: string); (e: 'update:moduleId', value: string):void}>();
 
-const CreateModal = defineAsyncComponent(() => import('@/views/project/project/edit/module/add.vue'));
-const MoveModuleModal = defineAsyncComponent(() => import('@/views/project/project/edit/module/move.vue'));
+const CreateModal = defineAsyncComponent(() => import('@/views/project/module/add.vue'));
+const MoveModuleModal = defineAsyncComponent(() => import('@/views/project/module/move.vue'));
 
 const { t } = useI18n();
 const projectInfo = inject('projectInfo', ref({}));
