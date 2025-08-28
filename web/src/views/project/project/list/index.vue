@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 // Vue composition API imports
-import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
+import { defineAsyncComponent, onMounted, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 // Ant Design components
@@ -8,19 +8,17 @@ import { Button, Pagination, TabPane, Tabs, Tag, Tooltip, Popover } from 'ant-de
 
 // Custom UI components
 import {
-  ActivityTimeline, AsyncComponent, DropdownSort, Hints, Icon, IconRefresh,
-  Image, Input, modal, notification, Spin, Dropdown
+  ActivityTimeline, DropdownSort, Hints, Icon, IconRefresh,
+  Image, Input, Spin, Dropdown, NoData
 } from '@xcan-angus/vue-ui';
 
 // API and utilities
-import { project } from '@/api/tester';
-import { debounce } from 'throttle-debounce';
-import { PageQuery, SearchCriteria, User, duration } from '@xcan-angus/infra';
-import { getCurrentPage } from '@/utils/utils';
+import { PageQuery, User, appContext } from '@xcan-angus/infra';
 import DefaultProjectImage from '@/views/project/project/images/default.png';
 
-// Types
-import type { Project } from '@/views/project/project/types';
+// Composables
+import { useData, useActions } from '../composables';
+import type { Project } from '../types';
 
 // Initialize i18n
 const { t } = useI18n();
@@ -45,64 +43,50 @@ const emits = defineEmits<{(e: 'delOk', value: string[]);}>();
 
 // Async component definitions
 const Introduce = defineAsyncComponent(() => import('@/views/project/project/list/introduce.vue'));
-const AddModal = defineAsyncComponent(() => import('@/views/project/project/addModal/index.vue'));
 const RichText = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
 
-// Type definition for addTabPane function
-type AddTabPaneOptions = {
-  type: string;
-  _id: string;
-  name: string;
-  id?: string;
-  data?: {
-    tab?: string;
-  };
-};
+// Initialize composables
+const {
+  loading,
+  keyword,
+  data,
+  orderBy,
+  orderSort,
+  pagination,
+  fetchProjectList,
+  handleSearch,
+  updateSort,
+  handlePageChange,
+  refreshData
+} = useData();
 
-// Injected dependencies
-const isAdmin = inject('isAdmin', ref(false));
-const addTabPane = inject<(options: AddTabPaneOptions) => void>('addTabPane', () => { /* empty function */ });
-const changeProjectInfo = inject('changeProjectInfo', (projectId: string, force: boolean) => ({ projectId, force }));
-const getNewCurrentProject = inject('getNewCurrentProject', () => (undefined));
-
-// Reactive data
-const loading = ref();
-const keyword = ref();
-const data = ref<Project[]>([]);
-const orderBy = ref<OrderByKey>();
-const orderSort = ref<PageQuery.OrderSort>();
-const modalVisible = ref(false);
-const editProjectData = ref();
-
-// Pagination configuration
-const pagination = ref({
-  pageSize: 5,
-  current: 1,
-  total: 0,
-  pageSizeOptions: [5],
-  hideOnSinglePage: true
+const {
+  addProjectTab,
+  editProjectTab,
+  openDetailTab,
+  deleteProject,
+  canEditProject,
+  canDeleteProject
+} = useActions({
+  onDataChange: refreshData
 });
 
 // Sort menu configuration
-const sortMenuItems: {
-  name: string;
-  key: OrderByKey;
-  orderSort: PageQuery.OrderSort;
-}[] = [
+const sortMenuItems = computed(() => [
   {
     name: t('project.sortMenu.createdDate'),
-    key: 'createdDate',
+    key: 'createdDate' as OrderByKey,
     orderSort: PageQuery.OrderSort.Desc
   },
   {
     name: t('project.sortMenu.createdByName'),
-    key: 'createdByName',
+    key: 'createdByName' as OrderByKey,
     orderSort: PageQuery.OrderSort.Asc
   }
-];
+]);
 
 // More actions menu configuration
-const moreButton = [
+const moreButton = computed(() => [
   {
     key: 'module',
     name: t('project.moreButton.module')
@@ -115,161 +99,58 @@ const moreButton = [
     key: 'biaoqian',
     name: t('project.moreButton.tag')
   }
-];
+]);
 
 const activityType = [];
 
-// Utility functions
-const getListParams = () => {
-  const { pageSize, current } = pagination.value;
-  const params: PageQuery = {
-    pageNo: current,
-    pageSize
-  };
-  if (keyword.value) {
-    params.filters = [{ value: keyword.value, op: SearchCriteria.OpEnum.MatchEnd, key: 'name' }];
-  }
-  if (orderSort.value) {
-    params.orderBy = orderBy.value;
-    params.orderSort = orderSort.value;
-  }
-  return params;
+// Event handlers using composables
+const handleKeywordChange = (e: any): void => {
+  const value = e.target ? e.target.value : e;
+  handleSearch(value);
 };
 
-// Data loading function
-const getListData = async () => {
-  const params = getListParams();
-  loading.value = true;
-  const [error, resp] = await project.getProjectList(params);
-  loading.value = false;
-  if (error) {
-    return;
-  }
-  data.value = resp.data?.list || [];
-  pagination.value.total = +resp.data?.total || 0;
-
-  // Process member data for display
-  data.value.forEach(item => {
-    item.membersNum = (item.members?.USER || []).length + (item.members?.GROUP || []).length + (item.members?.DEPT || []).length;
-    item.showMembers = {
-      USER: item.members?.USER || [],
-      GROUP: [],
-      DEPT: []
-    };
-    if (item.showMembers.USER.length > 10) {
-      item.showMembers.USER = item.showMembers.USER.slice(0, 10);
-      return;
-    }
-
-    item.showMembers.GROUP = item.members?.GROUP || [];
-    if (item.showMembers.USER.length + item.showMembers.GROUP.length > 10) {
-      item.showMembers.GROUP = item.showMembers.GROUP.slice(0, 10 - item.showMembers.USER.length);
-      return;
-    }
-
-    item.showMembers.DEPT = item.members?.DEPT || [];
-    if (item.showMembers.USER.length + item.showMembers.GROUP.length + item.showMembers.DEPT.length > 10) {
-      item.showMembers.DEPT = item.showMembers.DEPT.slice(0, 10 - (item.showMembers.USER.length + item.showMembers.GROUP.length));
-    }
-  });
-};
-
-const toSort = (value: {
+const handleSortChange = (value: {
   orderBy: OrderByKey;
   orderSort: PageQuery.OrderSort;
 }): void => {
-  orderBy.value = value.orderBy;
-  orderSort.value = value.orderSort;
-  pagination.value.current = 1;
-  getListData();
-};
-
-const changePage = (current) => {
-  pagination.value.current = current;
-  getListData();
-};
-
-// Event handlers
-const addProjectTab = () => {
-  addTabPane({
-    type: 'project',
-    _id: 'addProject',
-    name: t('project.addProject')
+  updateSort({
+    orderBy: value.orderBy,
+    orderSort: value.orderSort
   });
 };
 
-const editProject = (record: Project, key?: string) => {
-  addTabPane({
-    type: 'project',
-    _id: `${record.id}_project`,
-    name: record.name,
-    id: record.id,
-    data: {
-      tab: key || ''
-    }
-  });
+const handleDeleteProject = async (projectData: Project): Promise<void> => {
+  const success = await deleteProject(projectData, pagination, props.projectId);
+  if (success) {
+    emits('delOk', [projectData.id!, `${projectData.id}_detail`, `${projectData.id}_project`]);
+  }
 };
 
-const delProject = (data: Project) => {
-  modal.confirm({
-    content: t('project.confirmDelete', { name: data.name }),
-    async onOk () {
-      const [error] = await project.deleteProject(data.id);
-      if (error) {
-        return;
-      }
-
-      notification.success(t('project.deleteSuccess'));
-      pagination.value.current = getCurrentPage(pagination.value.current, pagination.value.pageSize, pagination.value.total);
-      await getListData();
-      emits('delOk', [data.id, `${data.id}_detail`, `${data.id}_project`]);
-      if (data.id === props.projectId) {
-        changeProjectInfo('', false);
-      } else {
-        getNewCurrentProject();
-      }
-    }
-  });
+const handleEditProject = (projectData: Project, key?: string): void => {
+  editProjectTab(projectData, key || 'basic');
 };
 
-const openDetailTab = async (data: Project) => {
-  addTabPane({
-    _id: `${data.id}_detail`,
-    name: data.name,
-    type: 'projectDetail',
-    id: data.id
-  });
+const handleOpenDetailTab = (projectData: Project): void => {
+  openDetailTab(projectData);
 };
 
-const closeModal = () => {
-  modalVisible.value = false;
+// Check user permissions
+const canUserEditProject = (projectData: Project): boolean => {
+  return canEditProject(projectData, String(props.userInfo?.id || ''), appContext.isAdmin());
 };
 
-const onCreateProject = () => {
-  changeProjectInfo(editProjectData.value.id, true);
-  closeModal();
-  getListData();
+const canUserDeleteProject = (projectData: Project): boolean => {
+  return canDeleteProject(projectData, String(props.userInfo?.id || ''), appContext.isAdmin());
 };
-
-// Debounced search handler
-const onKeywordChange = debounce(duration.search, () => {
-  pagination.value.current = 1;
-  getListData();
-});
 
 // Lifecycle hooks
 onMounted(() => {
-  getListData();
-  watch(() => props.projectId, (newValue, oldValue) => {
-    if (newValue && !oldValue) {
-      getListData();
-    }
-  });
+  fetchProjectList();
 });
 
 // Expose methods for parent component
 defineExpose({
-  refresh: getListData
+  refresh: refreshData
 });
 </script>
 <template>
@@ -291,7 +172,7 @@ defineExpose({
                 :maxlength="100"
                 :allowClear="true"
                 :placeholder="t('project.searchPlaceholder')"
-                @change="onKeywordChange" />
+                @change="handleKeywordChange" />
               <Hints :text="t('project.adminHint')" class="ml-2" />
             </div>
 
@@ -308,7 +189,7 @@ defineExpose({
                 v-model:orderBy="orderBy"
                 v-model:orderSort="orderSort"
                 :menuItems="sortMenuItems"
-                @click="toSort">
+                @click="handleSortChange">
                 <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
                   <Icon icon="icon-shunxu" />
                   <span>{{ t('project.sort') }}</span>
@@ -318,7 +199,7 @@ defineExpose({
               <IconRefresh
                 :loading="loading"
                 :disabled="loading"
-                @click="getListData">
+                @click="refreshData">
                 <template #default>
                   <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
                     <Icon icon="icon-shuaxin" />
@@ -347,7 +228,7 @@ defineExpose({
                   <div
                     class="project-name"
                     :title="item.name"
-                    @click="openDetailTab(item)">
+                    @click="handleOpenDetailTab(item)">
                     {{ item.name }}
                   </div>
                   <Tag class="project-type-tag">{{ item.type?.message || 'Agile Project' }}</Tag>
@@ -375,7 +256,7 @@ defineExpose({
                     <span class="info-label">{{ t('project.members') }}: </span>
                     <div class="members-avatars-container">
                       <Tooltip
-                        v-for="(avatars, idx) in item.showMembers.USER || []"
+                        v-for="(avatars, idx) in item.showMembers?.USER || []"
                         :key="idx"
                         :title="avatars.name">
                         <template #title>
@@ -390,7 +271,7 @@ defineExpose({
                       </Tooltip>
 
                       <Tooltip
-                        v-for="(avatars, idx) in item.showMembers.GROUP || []"
+                        v-for="(avatars, idx) in item.showMembers?.GROUP || []"
                         :key="idx"
                         :title="t('project.group')">
                         <template #title>
@@ -400,7 +281,7 @@ defineExpose({
                       </Tooltip>
 
                       <Tooltip
-                        v-for="(avatars, idx) in item.showMembers.DEPT || []"
+                        v-for="(avatars, idx) in item.showMembers?.DEPT || []"
                         :key="idx"
                         :title="t('project.department')">
                         <template #title>
@@ -411,7 +292,7 @@ defineExpose({
                         </div>
                       </Tooltip>
 
-                      <Popover v-if="item.membersNum > 10">
+                      <Popover v-if="(item.membersNum || 0) > 10">
                         <template #title>{{ t('project.allMembers') }}</template>
                         <template #content>
                           <div class="space-y-4 max-w-100">
@@ -474,9 +355,9 @@ defineExpose({
                     :title="t('actions.edit')"
                     size="small"
                     type="text"
-                    :disabled="!isAdmin && String(props.userInfo?.id) !== item.ownerId && String(props.userInfo?.id) !== item.createdBy"
+                    :disabled="!canUserEditProject(item)"
                     class="action-button edit-action"
-                    @click="editProject(item)">
+                    @click="handleEditProject(item)">
                     <Icon icon="icon-bianji" class="text-3.5 cursor-pointer text-theme-text-hover" />
                     {{ t('actions.edit') }}
                   </Button>
@@ -487,16 +368,16 @@ defineExpose({
                     :title="t('actions.delete')"
                     size="small"
                     type="text"
-                    :disabled="!isAdmin && String(props.userInfo?.id) !== item.ownerId && String(props.userInfo?.id) !== item.createdBy"
+                    :disabled="!canUserDeleteProject(item)"
                     class="action-button delete-action"
-                    @click="delProject(item)">
+                    @click="handleDeleteProject(item)">
                     <Icon icon="icon-qingchu" class="text-3.5 cursor-pointer text-theme-text-hover" />
                     {{ t('actions.delete') }}
                   </Button>
                 </div>
 
                 <div class="dropdown-row">
-                  <Dropdown :menuItems="moreButton" @click="editProject(item, $event.key)">
+                  <Dropdown :menuItems="moreButton" @click="handleEditProject(item, $event.key)">
                     <Button
                       size="small"
                       type="text"
@@ -517,7 +398,7 @@ defineExpose({
           <Pagination
             v-bind="pagination"
             class="my-3 mt-6"
-            @change="changePage" />
+            @change="handlePageChange" />
         </Spin>
       </div>
 
@@ -535,14 +416,6 @@ defineExpose({
       </Tabs>
     </div>
   </div>
-
-  <AsyncComponent :visible="modalVisible">
-    <AddModal
-      v-model:visible="modalVisible"
-      :dataSource="editProjectData"
-      @cancel="closeModal"
-      @ok="onCreateProject" />
-  </AsyncComponent>
 </template>
 <style scoped>
 .w-right {

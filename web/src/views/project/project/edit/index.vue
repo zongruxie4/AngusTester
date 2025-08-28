@@ -1,192 +1,135 @@
 <script lang="ts" setup>
 // Vue composition API imports
-import { defineAsyncComponent, inject, onMounted, ref } from 'vue';
+import { defineAsyncComponent, computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 // Ant Design components
 import { Button, Form, FormItem, Popover, RadioButton, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
 
 // Custom components
-import { Cropper, DatePicker, Icon, Image, Input, notification, Select, SelectUser } from '@xcan-angus/vue-ui';
+import { Cropper, DatePicker, Icon, Image, Input, Select, SelectUser } from '@xcan-angus/vue-ui';
 import { GM } from '@xcan-angus/infra';
-import { Project } from '@/views/project/project/types';
+
+// Local imports
 import { ProjectType } from '@/enums/enums';
 import { cropperUploadOption } from '@/utils/constant';
-
-// API imports
-import { project } from '@/api/tester';
 import { getProjectTypeTipConfig, toolbarOptions, uploadParams } from '../utils';
 
-// Type definitions
-interface Props {
-  projectId: string;
-  data?: {
-    tab: string
-  }
-}
+// Composables
+import { useForm, useMembers, useAvatar } from './composables';
+import { ProjectEditEmits, ProjectEditProps } from '@/views/project/project/edit/types';
 
-// Initialize i18n
-const { t } = useI18n();
-
-// Configuration objects
-const projectTypeTipConfig = getProjectTypeTipConfig();
-const projectTypeName = {
-  AGILE: t('project.projectEdit.projectTypeName.agile'),
-  GENERAL: t('project.projectEdit.projectTypeName.general'),
-  TESTING: t('project.projectEdit.projectTypeName.testing')
-};
-
-// Props and emits
-const props = withDefaults(defineProps<Props>(), {
+/** Component props definition */
+const props = withDefaults(defineProps<ProjectEditProps>(), {
   projectId: undefined,
   data: undefined
 });
 
-const emit = defineEmits<{(e: 'ok'): void}>();
+/** Component emits definition */
+const emit = defineEmits<ProjectEditEmits>();
 
-// Injected dependencies
-const changeProjectInfo = inject('changeProjectInfo', (projectId: string, force: boolean) => ({ projectId, force }));
-const getNewCurrentProject = inject('getNewCurrentProject', () => (undefined));
-const projectInfo = inject('projectInfo', ref({ id: '' }));
-const delTabPane = inject('delTabPane', (tabKey: string) => { console.log('delTabPane not provided:', tabKey); });
+/** Internationalization composable */
+const { t } = useI18n();
 
-// Async component definitions
+/** Project members management composable */
+const {
+  memberType,
+  members,
+  defaultOptionsUser,
+  defaultOptionsDept,
+  defaultOptionsGroup,
+  initializeMembers
+} = useMembers();
+
+/** Project form management composable */
+const {
+  loading,
+  formRef,
+  projectDetail,
+  descRef,
+  loadProjectDetail,
+  validateDescription,
+  selectProjectType,
+  submitForm,
+  cancelForm
+} = useForm(props.projectId, members);
+
+/** Project avatar management composable */
+const {
+  uploadAvatarVisible,
+  openCropper,
+  uploadImgSuccess,
+  deleteImage
+} = useAvatar(projectDetail);
+
+/** Current active tab for edit mode */
+const activeKey = ref('basic');
+
 const Tags = defineAsyncComponent(() => import('@/views/project/tag/index.vue'));
 const Module = defineAsyncComponent(() => import('@/views/project/module/index.vue'));
 const Version = defineAsyncComponent(() => import('@/views/task/version/list/index.vue'));
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 
-// Reactive data
-const activeKey = ref('basic');
-const memberType = ref('user');
-const descRef = ref();
-const uploadAvatarVisible = ref(false);
-const formRef = ref();
-const loading = ref(false);
+/** Project type configuration for tips display */
+const projectTypeTipConfig = getProjectTypeTipConfig();
 
-const members = ref<{
-  USER: string[];
-  DEPT: string[];
-  GROUP: string[];
-}>({
-  USER: [],
-  DEPT: [],
-  GROUP: []
+/** Project type name mapping for UI display */
+const projectTypeName = computed(() => ({
+  [ProjectType.AGILE]: t('project.projectEdit.projectTypeName.agile'),
+  [ProjectType.GENERAL]: t('project.projectEdit.projectTypeName.general'),
+  [ProjectType.TESTING]: t('project.projectEdit.projectTypeName.testing')
+}));
+
+
+/** Get current project type name for display */
+const currentProjectTypeName = computed(() => {
+  const typeValue = projectDetail.value.type?.value;
+  return typeValue ? projectTypeName.value[typeValue as keyof typeof projectTypeName.value] : '';
 });
 
-const projectDetail = ref<Project>({ type: { value: ProjectType.AGILE, message: '' }, importExample: false });
+/**
+ * Handle form submission
+ * Integrates form validation and member data submission
+ */
+const handleFormSubmit = async (): Promise<void> => {
+  try {
+    // Submit form using form composable
+    await submitForm();
 
-const defaultOptionsUser = ref<{ [key: string]: any }>({});
-const defaultOptionsDept = ref<{ [key: string]: any }>({});
-const defaultOptionsGroup = ref<{ [key: string]: any }>({});
-
-// Data loading function
-const getDetail = async () => {
-  const [error, { data }] = await project.getProjectDetail(props.projectId);
-  if (error) {
-    return;
-  }
-  const { startDate, deadlineDate, type, id, name, ownerId, description, avatar } = data;
-  projectDetail.value = {
-    id,
-    name,
-    ownerId,
-    description,
-    avatar,
-    type,
-    importExample: false
-  };
-  projectDetail.value.members = data.members;
-  projectDetail.value.dateRange = [startDate, deadlineDate];
-
-  // Process member data for form options
-  if (projectDetail.value.members?.USER) {
-    members.value.USER = projectDetail.value.members.USER.map((i: any) => {
-      defaultOptionsUser.value[i.id] = { ...i, fullName: i.name };
-      return i.id;
-    });
-  }
-
-  if (projectDetail.value.members?.DEPT) {
-    members.value.DEPT = projectDetail.value.members.DEPT.map((i: any) => {
-      defaultOptionsDept.value[i.id] = { ...i, fullName: i.name };
-      return i.id;
-    });
-  }
-
-  if (projectDetail.value.members?.GROUP) {
-    members.value.GROUP = projectDetail.value.members.GROUP.map((i: any) => {
-      defaultOptionsGroup.value[i.id] = { ...i, fullName: i.name };
-      return i.id;
-    });
-  }
-};
-
-// Event handlers
-const openCropper = () => {
-  uploadAvatarVisible.value = true;
-};
-
-const uploadImgSuccess = (resp) => {
-  projectDetail.value.avatar = resp?.data?.[0]?.url;
-};
-
-const delImg = () => {
-  projectDetail.value.avatar = '';
-};
-
-const selectProjectType = (value: ProjectType) => {
-  if (projectDetail.value.type) {
-    projectDetail.value.type.value = value;
-  } else {
-    projectDetail.value.type = { value, message: '' };
-  }
-};
-
-// Form validation
-const validateDesc = () => {
-  if (descRef.value && descRef.value.getLength() > 2000) {
-    return Promise.reject(t('project.projectEdit.validation.maxCharacters'));
-  }
-  return Promise.resolve();
-};
-
-// Form submission
-const ok = async () => {
-  formRef.value.validate().then(async () => {
-    loading.value = true;
-    const { USER, DEPT, GROUP } = members.value;
-    const { dateRange, ...otherProject } = projectDetail.value;
-    const [error] = props.projectId
-      ? await project.updateProject({ ...otherProject, startDate: dateRange?.[0], deadlineDate: dateRange?.[1], memberTypeIds: { USER: USER.length ? USER : undefined, DEPT: DEPT.length ? DEPT : undefined, GROUP: GROUP.length ? GROUP : undefined } })
-      : await project.addProject({ ...otherProject, startDate: dateRange?.[0], deadlineDate: dateRange?.[1], memberTypeIds: { USER: USER.length ? USER : undefined, DEPT: DEPT.length ? DEPT : undefined, GROUP: GROUP.length ? GROUP : undefined } });
-    loading.value = false;
-    if (error) {
-      return;
-    }
-    if (props.projectId === projectInfo.value.id) {
-      changeProjectInfo(props.projectId, true);
-    }
+    // Emit success event
     emit('ok');
-    if (props.projectId) {
-      notification.success(t('project.projectEdit.messages.updateSuccess'));
-    } else {
-      notification.success(t('project.projectEdit.messages.createSuccess'));
-      delTabPane('addProject');
-    }
-    getNewCurrentProject();
-  });
+  } catch (error) {
+    console.error('Form submission failed:', error);
+  }
 };
 
-const cancel = () => {
-  delTabPane(`${props.projectId}_project`);
-  delTabPane('addProject');
+/**
+ * Handle form cancellation
+ */
+const handleFormCancel = (): void => {
+  cancelForm();
+  emit('cancel');
 };
 
-// Lifecycle hooks
-onMounted(() => {
+/**
+ * Handle successful image upload from cropper
+ * @param response - Upload response from server
+ */
+const handleImageUpload = (response: any): void => {
+  uploadImgSuccess(response);
+};
+
+onMounted(async () => {
+  // Load project data for editing mode
   if (props.projectId) {
-    getDetail();
+    await loadProjectDetail(props.projectId);
+
+    // Initialize members after loading project detail
+    if (projectDetail.value.members) {
+      initializeMembers(projectDetail.value.members);
+    }
+
+    // Set active tab if specified
     if (props.data?.tab) {
       activeKey.value = props.data.tab;
     }
@@ -262,7 +205,7 @@ onMounted(() => {
                           <Icon
                             icon="icon-qingchu"
                             class="delete-icon"
-                            @click="delImg" />
+                            @click="deleteImage" />
                         </div>
                       </div>
                     </div>
@@ -424,7 +367,7 @@ onMounted(() => {
                 <FormItem
                   :label="t('project.projectEdit.form.description')"
                   name="description"
-                  :rules="[{validator: validateDesc}]"
+                  :rules="[{validator: validateDescription}]"
                   class="form-field description-field">
                   <RichEditor
                     ref="descRef"
@@ -439,7 +382,7 @@ onMounted(() => {
             <!-- Project type preview area -->
             <div class="project-preview-section">
               <h3 class="section-title">
-                {{ projectDetail.type?.value ? projectTypeName[projectDetail.type.value as keyof typeof projectTypeName] : '' }}
+                {{ currentProjectTypeName }}
               </h3>
               <div class="preview-content">
                 <div class="preview-image">
@@ -477,14 +420,14 @@ onMounted(() => {
                 htmlType="submit"
                 :loading="loading"
                 class="primary-button"
-                @click="ok">
+                @click="handleFormSubmit">
                 <Icon icon="icon-dangqianxuanzhong" class="button-icon" />
                 {{ t('actions.save') }}
               </Button>
               <Button
                 size="small"
                 class="secondary-button"
-                @click="cancel">
+                @click="handleFormCancel">
                 {{ t('actions.cancel') }}
               </Button>
             </div>
@@ -523,7 +466,7 @@ onMounted(() => {
                             <Icon
                               icon="icon-qingchu"
                               class="delete-icon"
-                              @click="delImg" />
+                              @click="deleteImage" />
                           </div>
                         </div>
                       </div>
@@ -667,7 +610,7 @@ onMounted(() => {
                   <FormItem
                     :label="t('project.projectEdit.form.description')"
                     name="description"
-                    :rules="[{validator: validateDesc}]"
+                    :rules="[{validator: validateDescription}]"
                     class="form-field description-field">
                     <RichEditor
                       ref="descRef"
@@ -701,7 +644,7 @@ onMounted(() => {
                   </div>
                   <div class="preview-features">
                     <div
-                      v-for="(item, index) in projectTypeTipConfig[projectDetail.type?.value || 'AGILE']"
+                      v-for="(item, index) in projectTypeTipConfig[projectDetail.type?.value || ProjectType.AGILE]"
                       :key="index"
                       class="feature-item">
                       <Icon icon="icon-duihao-copy" class="feature-icon" />
@@ -720,14 +663,14 @@ onMounted(() => {
                   htmlType="submit"
                   :loading="loading"
                   class="primary-button"
-                  @click="ok">
+                  @click="handleFormSubmit">
                   <Icon icon="icon-dangqianxuanzhong" class="button-icon" />
                   {{ t('actions.save') }}
                 </Button>
                 <Button
                   size="small"
                   class="secondary-button"
-                  @click="cancel">
+                  @click="handleFormCancel">
                   {{ t('actions.cancel') }}
                 </Button>
               </div>
@@ -753,7 +696,7 @@ onMounted(() => {
       :title="t('project.projectEdit.actions.uploadIcon')"
       :params="uploadParams"
       :options="cropperUploadOption"
-      @success="uploadImgSuccess" />
+      @success="handleImageUpload" />
   </div>
 </template>
 <style scoped>

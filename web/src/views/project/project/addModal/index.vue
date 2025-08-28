@@ -4,34 +4,24 @@ import { computed, ref, watch, defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 // Custom UI components
-import { DatePicker, Icon, Image, Input, Modal, notification, Select, SelectUser } from '@xcan-angus/vue-ui';
+import { DatePicker, Icon, Image, Input, Modal, Select, SelectUser } from '@xcan-angus/vue-ui';
 
 // Ant Design components
 import { Form, FormItem, RadioButton, RadioGroup, Upload, Popover } from 'ant-design-vue';
 
 // API and utilities
-import { project } from '@/api/tester';
-import { GM, upload, appContext } from '@xcan-angus/infra';
+import { GM, upload } from '@xcan-angus/infra';
+
+// Composables
+import { useManagement, useActions } from '../composables';
+import type { Project } from '../types';
 
 // Initialize i18n
 const { t } = useI18n();
 
-// Type definitions
-export type Project = {
-  name: string;
-  ownerId: string;
-  id?: string;
-  avatar?: string;
-  description?: string;
-  members?: { [key: string]: any },
-  startDate: string;
-  deadlineDate: string;
-  importExample?: boolean;
-}
-
 interface Props {
   visible: boolean;
-  dataSource?: Project,
+  dataSource?: Project;
   closable: boolean;
 }
 
@@ -51,51 +41,35 @@ const emit = defineEmits<{
 // Async component definitions
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 
-// Configuration objects
-const projectTypeTipConfig = {
-  AGILE: [t('project.projectAddModal.projectTypeTip.agile.features'), t('project.projectAddModal.projectTypeTip.agile.scenarios')],
-  GENERAL: [t('project.projectAddModal.projectTypeTip.general.features'), t('project.projectAddModal.projectTypeTip.general.scenarios')],
-  TESTING: [t('project.projectAddModal.projectTypeTip.testing.features'), t('project.projectAddModal.projectTypeTip.testing.scenarios')]
-};
+// Initialize composables
+const {
+  memberType,
+  projectType,
+  members,
+  defaultOptionsUser,
+  defaultOptionsDept,
+  defaultOptionsGroup,
+  formData,
+  projectTypeTipConfig,
+  selectProjectType,
+  initializeForm,
+  loadProjectIntoForm,
+  buildCreateParams,
+  buildUpdateParams,
+  validateForm
+} = useManagement();
 
-// Reactive data
-const userInfo = ref(appContext.getUser());
+const {
+  operationLoading,
+  createProject,
+  updateProject
+} = useActions({
+  onDataChange: () => emit('ok')
+});
+
+// Local refs
 const formRef = ref();
-const memberType = ref('user');
-const projectType = ref('AGILE');
-const loading = ref(false);
 const descRichRef = ref();
-
-const formData = ref<{
-  id?: string;
-  name: string;
-  ownerId: string | undefined;
-  description: string;
-  avatar: string;
-  dateRange: string | [string, string] | undefined;
-  importExample: boolean;
-}>({
-  name: '',
-  ownerId: undefined,
-  description: '',
-  avatar: '',
-  dateRange: undefined,
-  importExample: true
-});
-
-const members = ref<{
-  USER: string[];
-  DEPT: string[];
-  GROUP: string[];
-}>({
-  USER: [],
-  DEPT: [],
-  GROUP: []
-});
-
-const defaultOptionsUser = ref<{ [key: string]: any }>({});
-const defaultOptionsDept = ref<{ [key: string]: any }>({});
-const defaultOptionsGroup = ref<{ [key: string]: any }>({});
 
 // Computed properties
 const modalTitle = computed(() => {
@@ -103,10 +77,6 @@ const modalTitle = computed(() => {
 });
 
 // Event handlers
-const selectProjectType = (value) => {
-  projectType.value = value;
-};
-
 const uploadImg = async ({ file }) => {
   const [error, { data = [] }] = await upload(file, {
     bizKey: 'angusTesterProjectAvatar'
@@ -115,12 +85,12 @@ const uploadImg = async ({ file }) => {
     return;
   }
   if (data.length > 0) {
-    formData.value.avatar = data[0].url;
+    formData.avatar = data[0].url;
   }
 };
 
 const delImg = () => {
-  formData.value.avatar = '';
+  formData.avatar = '';
 };
 
 const cancel = () => {
@@ -136,113 +106,46 @@ const validateDesc = () => {
   return Promise.resolve();
 };
 
-// Data initialization
-const setDefaultData = () => {
-  const _dataSource = props.dataSource;
-  if (!_dataSource) {
-    return;
-  }
-
-  const { id, name, ownerId, description = '', avatar = '', startDate, deadlineDate, importExample = false } = _dataSource;
-  formData.value = {
-    id,
-    name,
-    ownerId,
-    description,
-    avatar,
-    dateRange: [startDate, deadlineDate],
-    importExample
-  };
-
-  // Process member data for form options
-  if (_dataSource.members?.USER) {
-    members.value.USER = _dataSource.members?.USER.map(i => {
-      defaultOptionsUser.value[i.id] = { ...i, fullName: i.name };
-      return i.id;
-    });
-  }
-
-  if (_dataSource.members?.DEPT) {
-    members.value.DEPT = _dataSource.members?.DEPT.map(i => {
-      defaultOptionsDept.value[i.id] = { ...i, fullName: i.name };
-      return i.id;
-    });
-  }
-
-  if (_dataSource.members?.GROUP) {
-    members.value.GROUP = _dataSource.members?.GROUP.map(i => {
-      defaultOptionsGroup.value[i.id] = { ...i, fullName: i.name };
-      return i.id;
-    });
-  }
-};
-
 // Form submission
 const ok = async () => {
-  formRef.value.validate().then(async () => {
-    loading.value = true;
-    const { USER, DEPT, GROUP } = members.value;
-    const { dateRange, ...otherProject } = formData.value;
-    const dateRangeArray = Array.isArray(dateRange) ? dateRange : [];
-    const [error] = !formData.value.id
-      ? await project.addProject({ ...otherProject, type: projectType.value, startDate: dateRangeArray[0], deadlineDate: dateRangeArray[1], memberTypeIds: { USER: USER.length ? USER : undefined, DEPT: DEPT.length ? DEPT : undefined, GROUP: GROUP.length ? GROUP : undefined } })
-      : await project.putProject({ ...otherProject, type: projectType.value, startDate: dateRangeArray[0], deadlineDate: dateRangeArray[1], memberTypeIds: { USER: USER.length ? USER : undefined, DEPT: DEPT.length ? DEPT : undefined, GROUP: GROUP.length ? GROUP : undefined } });
-    loading.value = false;
-    if (error) {
+  try {
+    await formRef.value.validate();
+    const isValid = await validateForm();
+
+    if (!isValid) {
       return;
     }
-    if (formData.value.id) {
-      notification.success(t('project.projectAddModal.messages.updateSuccess'));
+
+    let success = false;
+
+    if (formData.id) {
+      // Update existing project
+      const params = buildUpdateParams();
+      success = await updateProject(params);
     } else {
-      notification.success(t('project.projectAddModal.messages.addSuccess'));
+      // Create new project
+      const params = buildCreateParams();
+      success = await createProject(params);
     }
 
-    emit('update:visible', false);
-    emit('ok');
-  });
+    if (success) {
+      emit('update:visible', false);
+    }
+  } catch (error) {
+    console.error('Form validation failed:', error);
+  }
 };
 
 // Watchers
-watch(() => props.visible, newValue => {
+watch(() => props.visible, (newValue) => {
   if (!newValue) {
     return;
   }
+
   if (props.dataSource) {
-    setDefaultData();
+    loadProjectIntoForm(props.dataSource);
   } else {
-    // Initialize new project form
-    formData.value = {
-      name: '',
-      ownerId: undefined,
-      description: '',
-      avatar: '',
-      dateRange: undefined,
-      importExample: true
-    };
-    // Set current user as default member
-    if (userInfo.value && userInfo.value.id) {
-      members.value = {
-        USER: [String(userInfo.value.id || '')],
-        DEPT: [],
-        GROUP: []
-      };
-      defaultOptionsUser.value = {
-        [String(userInfo.value.id)]: {
-          fullName: userInfo.value.fullName,
-          id: userInfo.value.id,
-          name: userInfo.value.fullName,
-          disabled: true
-        }
-      };
-    } else {
-      members.value = {
-        USER: [],
-        DEPT: [],
-        GROUP: []
-      };
-    }
-    defaultOptionsDept.value = {};
-    defaultOptionsGroup.value = {};
+    initializeForm();
   }
 }, {
   immediate: true
@@ -257,7 +160,7 @@ watch(() => props.visible, newValue => {
       class: {'hidden': !props.closable}
     }"
     :okButtonProps="{
-      loading: loading
+      loading: operationLoading
     }"
     :width="1200"
     @ok="ok"

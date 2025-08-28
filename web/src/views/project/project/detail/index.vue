@@ -1,37 +1,29 @@
 <script lang="ts" setup>
 // Vue composition API imports
-import { defineAsyncComponent, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
+import {defineAsyncComponent, ref, watch} from 'vue';
+import {useI18n} from 'vue-i18n';
 
 // External libraries
 import dayjs from 'dayjs';
 
 // Custom UI components
-import { Icon, Image } from '@xcan-angus/vue-ui';
+import {Icon, Image} from '@xcan-angus/vue-ui';
 
 // Ant Design components
-import { TabPane, Tabs, Tag } from 'ant-design-vue';
+import {TabPane, Tabs, Tag} from 'ant-design-vue';
 
 // API imports
-import { project } from '@/api/tester';
-import { Project } from '@/views/project/project/types';
+import {useData} from '../composables/useData';
 
 // Static assets
 import DefaultProjectImage from '@/views/project/project/images/default.png';
-import { ProjectType } from '@/enums/enums';
+import {ProjectType} from '@/enums/enums';
+import {DetailProps} from "@/views/project/project/types";
 // Initialize i18n
 const { t } = useI18n();
 
-interface Props {
-  closable: boolean;
-  projectId: string;
-  data?: {
-    tab: string
-  }
-}
-
 // Props
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<DetailProps>(), {
   visible: false,
   dataSource: undefined,
   closable: true,
@@ -62,27 +54,15 @@ const projectTypeName = {
 // Reactive data
 const activeKey = ref('basic');
 
-const detailData = ref({} as Project);
-
-// Data loading function
-const getDetailData = async () => {
-  const [error, { data }] = await project.getProjectDetail(props.projectId);
-  if (error) {
-    return;
-  }
-  detailData.value = {
-    ...data,
-    type: data.type || { value: ProjectType.AGILE, message: 'Agile' },
-    members: data.members || { USER: [], DEPT: [], GROUP: [] }
-  };
-};
+// Use project data composable
+const { detailData, fetchProjectDetail } = useData();
 
 // Watchers
 watch(() => props.projectId, newValue => {
   if (!newValue) {
     return;
   }
-  getDetailData();
+  fetchProjectDetail(newValue);
   if (props.data?.tab) {
     activeKey.value = props.data.tab;
   }

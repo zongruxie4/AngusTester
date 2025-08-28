@@ -12,83 +12,160 @@ import store from './store';
 // Import global styles
 import '@/assets/styles/global.css';
 
+// ============================================================================
+// Type Definitions
+// ============================================================================
+
+/** AI Agent configuration interface */
+interface AIAgentConfig {
+  agentId: string;
+  chatIframe: string;
+  enabled: boolean;
+  extensions: Record<string, unknown>;
+  provider: string;
+}
+
+/** Function item interface */
+interface FunctionItem {
+  id: string;
+  name: string;
+  [key: string]: unknown;
+}
+
+/** Global configuration type */
+type GlobalConfig = Record<string, string | number | boolean | object>;
+
+// ============================================================================
+// State Management
+// ============================================================================
+
+/** Window resize notification UUID for triggering reactive updates */
 const windowResizeNotify = ref<string>();
+
+/** AI agent configuration */
+const aiAgent = ref<AIAgentConfig>();
+
+/** All available functions list */
+const allFunction = ref<FunctionItem[]>([]);
+
+/** Global application configurations */
+const globalConfigs = ref<GlobalConfig>();
+
+/** Function loading promise to prevent duplicate requests */
+let functionPromise: Promise<FunctionItem[]> | null = null;
+
+// ============================================================================
+// Computed Properties
+// ============================================================================
+
+/** Current application status code */
+const status = computed(() => store.state.statusCode);
+
+/** Whether AI features are enabled */
+const aiEnabled = computed(() => Boolean(aiAgent.value?.enabled));
+
+// ============================================================================
+// Event Handlers
+// ============================================================================
+
+/** Debounced window resize handler */
 const resizeHandler = debounce(duration.resize, () => {
   windowResizeNotify.value = utils.uuid();
 });
 
-const aiAgent = ref<{
-  agentId: string;
-  chatIframe: string;
-  enabled: true;
-  extensions: { [key: string]: any };
-  provider: string;
-}>();
+// ============================================================================
+// API Functions
+// ============================================================================
 
-const status = computed(() => {
-  return store.state.statusCode;
-});
-
-const allFunction = ref([]);
-let functionPromise: any;
-const getAllFunctions = async () => {
-  if (!allFunction.value.length && !functionPromise) {
-    functionPromise = mock.getAllFunctions();
+/**
+ * Get all available functions with caching
+ * Prevents duplicate API calls by using a promise cache
+ */
+const getAllFunctions = async (): Promise<void> => {
+  // Return early if functions already loaded or request in progress
+  if (allFunction.value.length > 0 || functionPromise) {
+    return;
   }
-  if (functionPromise) {
-    functionPromise.then((res) => {
-      if (res && res.length > 0) {
-        allFunction.value = res;
-      }
-      functionPromise = undefined;
-    });
+
+  try {
+    functionPromise = mock.getAllFunctions();
+    const result = await functionPromise;
+    if (result && result.length > 0) {
+      allFunction.value = result;
+    }
+  } catch (error) {
+    console.error('Failed to fetch functions:', error);
+  } finally {
+    functionPromise = null;
   }
 };
 
-const globalConfigs = ref<{ [key: string]: string|{} }>();
-onMounted(async () => {
-  window.addEventListener('resize', resizeHandler);
-  const envContent = appContext.getContext().env;
-  globalConfigs.value = { ...envContent, ...GlobalConstantConfig };
-  aiAgent.value = await ai.getAIAgentSetting();
+/**
+ * Initialize application configurations and settings
+ */
+const initializeApp = async (): Promise<void> => {
+  try {
+    // Setup window resize listener
+    window.addEventListener('resize', resizeHandler);
+
+    // Load global configurations
+    const envContent = appContext.getContext().env;
+    globalConfigs.value = { ...envContent, ...GlobalConstantConfig };
+
+    // Load AI agent settings
+    aiAgent.value = await ai.getAIAgentSetting();
+  } catch (error) {
+    console.error('Failed to initialize app:', error);
+  }
+};
+
+// ============================================================================
+// Lifecycle Hooks
+// ============================================================================
+
+onMounted(() => {
+  initializeApp();
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', resizeHandler);
 });
 
-const aiEnabled = computed(() => {
-  return !!aiAgent.value?.enabled;
-});
+// ============================================================================
+// Dependency Injection
+// ============================================================================
 
-provide('aiEnabled', aiEnabled);
-provide('aiAgent', aiAgent);
+// Provide reactive dependencies to child components
+provide('windowResizeNotify', windowResizeNotify);
 provide('globalConfigs', globalConfigs);
 provide('allFunction', allFunction);
 provide('getAllFunctions', getAllFunctions);
-provide('windowResizeNotify', windowResizeNotify);
+provide('aiEnabled', aiEnabled);
+provide('aiAgent', aiAgent);
 </script>
 
 <template>
   <ConfigProvider>
+    <!-- Main application content when status is OK -->
     <template v-if="status === 200">
       <RouterView />
     </template>
+
+    <!-- Error states with header and centered content -->
     <template v-else>
-      <Header :menus="appContext.getAccessAppFuncTree() || []" :codeMap="appContext.getAccessAppFuncCodeMap()" />
-      <div style="height: calc(100% - 54px);" class="overflow-auto flex justify-center items-center">
-        <template v-if="status === 403">
-          <Denied />
-        </template>
-        <template v-else-if="status === 404">
-          <NotFound />
-        </template>
-        <template v-if="status === 405">
-          <Denied />
-        </template>
-        <template v-else-if="status === 500">
-          <NetworkError />
-        </template>
+      <Header
+        :menus="appContext.getAccessAppFuncTree() || []"
+        :codeMap="appContext.getAccessAppFuncCodeMap()" />
+
+      <div class="h-[calc(100%-54px)] overflow-auto flex justify-center items-center">
+        <!-- Access denied -->
+        <Denied v-if="status === 403 || status === 405" />
+
+        <!-- Page not found -->
+        <NotFound v-else-if="status === 404" />
+
+        <!-- Server error -->
+        <NetworkError v-else-if="status === 500" />
       </div>
     </template>
   </ConfigProvider>
@@ -96,5 +173,5 @@ provide('windowResizeNotify', windowResizeNotify);
 
 <style scoped>
 /* Component-specific styles only */
-/* Global styles are now imported from global.css */
+/* Global styles are imported from global.css */
 </style>
