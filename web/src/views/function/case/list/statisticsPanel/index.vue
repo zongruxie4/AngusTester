@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import { Icon } from '@xcan-angus/vue-ui';
-import { CountObj } from '../PropsType';
+import { CountObj } from './chart/PropsType';
+
+const { t } = useI18n();
 
 interface Props {
   dataSource: CountObj
@@ -11,60 +14,60 @@ const props = withDefaults(defineProps<Props>(), {
 
 const topCarObj = {
   progress: {
-    name: '进度',
+    name: t('functionCase.statisticsPanel.progress'),
     icon: 'icon-zonglan'
   },
   totalCaseNum: {
-    name: '总用例',
+    name: t('functionCase.statisticsPanel.totalCaseNum'),
     icon: 'icon-zongyongli'
   },
   pendingTestNum: {
-    name: '待测试',
+    name: t('functionCase.statisticsPanel.pendingTestNum'),
     icon: 'icon-daiceshi'
   },
   passedTestNum: {
-    name: '测试通过',
+    name: t('functionCase.statisticsPanel.passedTestNum'),
     icon: 'icon-ceshitongguo'
   },
   notPassedTestNum: {
-    name: '测试未通过',
+    name: t('functionCase.statisticsPanel.notPassedTestNum'),
     icon: 'icon-ceshiweitongguo'
   },
   oneTimePassedTestNum: {
-    name: '一次性测试通过数',
+    name: t('functionCase.statisticsPanel.oneTimePassedTestNum'),
     icon: 'icon-a-yicixingceshitongguoshu'
   },
   oneTimePassedTestRate: {
-    name: '一次性测试通过率',
+    name: t('functionCase.statisticsPanel.oneTimePassedTestRate'),
     icon: 'icon-a-yicixingceshitongguoshuai'
   },
   overdueNum: {
-    name: '已逾期',
+    name: t('functionCase.statisticsPanel.overdueNum'),
     icon: 'icon-yiyuqi1'
   },
   blockedTestNum: {
-    name: '阻塞中',
+    name: t('functionCase.statisticsPanel.blockedTestNum'),
     icon: 'icon-zusaizhong'
   },
   canceledTestNum: {
-    name: '已取消',
+    name: t('functionCase.statisticsPanel.canceledTestNum'),
     icon: 'icon-yiquxiao'
   },
 
   evalWorkload: {
-    name: '评估工作量',
+    name: t('functionCase.statisticsPanel.evalWorkload'),
     icon: 'icon-pinggugongzuoliang'
   },
   completedWorkload: {
-    name: '已完成工作量',
+    name: t('functionCase.statisticsPanel.completedWorkload'),
     icon: 'icon-wanchenggongzuoliang'
   },
   oneTimePassReviewNum: {
-    name: '一次性通过评审数',
+    name: t('functionCase.statisticsPanel.oneTimePassReviewNum'),
     icon: 'icon-a-yicixingpingshentongguoshu'
   },
   oneTimePassReviewRate: {
-    name: '一次性评审通过率',
+    name: t('functionCase.statisticsPanel.oneTimePassReviewRate'),
     icon: 'icon-a-yicixingpingshentongguoshuai'
   }
 };

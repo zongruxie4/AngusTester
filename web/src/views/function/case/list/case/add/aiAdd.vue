@@ -151,17 +151,17 @@ const validateList = () => {
     }
 
     if (dayjs(item.deadlineDate).isBefore(dayjs(), 'minute')) {
-      notification.warning('截止时间必须是一个未来时间');
+      notification.warning(t('functionCase.addCaseModal.deadlineMustBeFuture'));
       valid = false;
       errorIndex = index;
     }
     if (item.description?.length > 2000) {
-      notification.warning('描述内容过长(最多2000字符),请减少内容');
+      notification.warning(t('functionCase.addCaseModal.descriptionTooLong'));
       valid = false;
       errorIndex = index;
     }
     if (item.actualWorkload && !item.evalWorkload) {
-      notification.warning('请输入评估工作量');
+      notification.warning(t('functionCase.addCaseModal.pleaseEnterEvalWorkload'));
       valid = false;
       errorIndex = index;
     }
@@ -251,7 +251,7 @@ const addSave = async () => {
   if (error) {
     return;
   }
-  notification.success('添加成功');
+  notification.success(t('functionCase.addCaseModal.addSuccess'));
   if (stepVisible.value && stepKey.value === 'createCaseTwo') {
     updateGuideStep({ visible: true, key: 'viewCase' });
   }
@@ -262,7 +262,7 @@ const addSave = async () => {
 
 const upLoadFile = async ({ file }: { file }) => {
   if (file.size > 100 * 1024 * 1024) {
-    notification.error('上传文件或文本大小超过100MB，请重新上传');
+    notification.error(t('functionCase.addCaseModal.fileTooLarge'));
     return;
   }
 
@@ -298,9 +298,9 @@ const disabledDate = (current) => {
 const validateDate = async (_rule: Rule, value: string) => {
   if (formState.value.planId) {
     if (!value) {
-      return Promise.reject(new Error('请选择截止时间'));
+      return Promise.reject(new Error(t('functionCase.addCaseModal.pleaseSelectDeadlineTime')));
     } else if (dayjs(value).isBefore(dayjs(), 'minute')) {
-      return Promise.reject(new Error('截止时间必须是一个未来时间'));
+      return Promise.reject(new Error(t('functionCase.addCaseModal.deadlineMustBeFuture')));
     }
   }
   return Promise.resolve();
@@ -398,7 +398,7 @@ const validateCondition = () => {
     return Promise.resolve();
   }
   if (preRichRef.value && preRichRef.value.getLength() > 2000) {
-    return Promise.reject('富文本字符不能超过2000');
+    return Promise.reject(t('functionCase.addCaseModal.richTextTooLong'));
   }
   return Promise.resolve();
 };
@@ -415,7 +415,7 @@ const evalWorkloadChange = (value) => {
 const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
   if (formState.value.actualWorkload) {
     if (!value) {
-      return Promise.reject(new Error('请输入评估工作量'));
+      return Promise.reject(new Error(t('functionCase.addCaseModal.pleaseEnterEvalWorkload')));
     } else {
       return Promise.resolve();
     }
@@ -458,7 +458,7 @@ const delCase = (caseItem, idx) => {
 </script>
 <template>
   <Modal
-    title="自动创建用例"
+    :title="t('functionCase.addCaseModal.aiGenerate')"
     :visible="props.visible"
     :footer="null"
     :style="style"
@@ -467,7 +467,7 @@ const delCase = (caseItem, idx) => {
     <div class="mb-4 flex space-x-2 items-center">
       <Input
         v-model:value="question"
-        placeholder="给AI智能体描述您的需求，如：生成短信验证码功能测试用例。" />
+        :placeholder="t('functionCase.addCaseModal.enterQuestion')" />
       <Button
         type="primary"
         size="small"
@@ -475,7 +475,7 @@ const delCase = (caseItem, idx) => {
         :loading="generateLoading"
         :disabled="!question"
         @click="generateCaseList">
-        智能生成
+        {{ t('functionCase.addCaseModal.generateCases') }}
       </Button>
     </div>
     <Spin :spinning="loading || generateLoading" class="h-full">
@@ -509,29 +509,29 @@ const delCase = (caseItem, idx) => {
           <div class="flex overflow-y-auto -mr-4.5 pr-4.5 pb-5" :style="{height: '75vh'}">
             <div class="flex-1">
               <FormItem
-                label="名称"
+                :label="t('functionCase.addCaseModal.name')"
                 name="name"
-                :rules="[{ required: true, message:t('请输入用例名称') }]">
+                :rules="[{ required: true, message: t('functionCase.addCaseModal.pleaseEnterCaseName') }]">
                 <Input
                   v-model:value="formState.name"
                   size="small"
                   :maxlength="400"
-                  :placeholder="t('输入用例名称，最多可输入400字符')" />
+                  :placeholder="t('functionCase.addCaseModal.enterCaseName')" />
               </FormItem>
               <FormItem
                 name="precondition"
                 :rules="[{validator: validateCondition}]">
                 <template #label>
                   <div class="text-3 flex space-x-2 items-center">
-                    <span>前置条件</span>
-                    <Hints text="测试执行前需要满足的所有条件或环境配置。" />
+                    <span>{{ t('functionCase.addCaseModal.precondition') }}</span>
+                    <Hints :text="t('functionCase.addCaseModal.preconditionHint')" />
                   </div>
                 </template>
                 <RichEditor
                   ref="preRichRef"
                   v-model:value="formState.precondition"
                   :height="100"
-                  placeholder="输入前置条件，最多支持2000字符。" />
+                  :placeholder="t('functionCase.addCaseModal.enterPrecondition')" />
                 <!-- <Input
                   v-model:value="formState.precondition"
                   size="small"
@@ -543,14 +543,14 @@ const delCase = (caseItem, idx) => {
               <FormItem>
                 <template #label>
                   <div class="text-3 flex space-x-2 items-center">
-                    <span>测试步骤</span>
+                    <span>{{ t('functionCase.addCaseModal.testSteps') }}</span>
                     <Dropdown
                       :value="[formState.stepView]"
                       :menuItems="stepViewOpt"
                       @click="changeStepView">
-                      <span class="text-theme-special">切换类型 <Icon icon="icon-xiajiantou" /></span>
+                      <span class="text-theme-special">{{ t('functionCase.addCaseModal.switchType') }} <Icon icon="icon-xiajiantou" /></span>
                     </Dropdown>
-                    <Hints text="指执行测试用例时需要采取的具体操作步骤与预期结果，作为通过与否的判断标准。" />
+                    <Hints :text="t('functionCase.addCaseModal.testStepsHint')" />
                   </div>
                 </template>
                 <CaseSteps
@@ -564,7 +564,7 @@ const delCase = (caseItem, idx) => {
                 name="description">
                 <template #label>
                   <div class="text-3 flex space-x-2 items-center">
-                    <span>描述</span> <Hints text="对测试用例进行总体的补充说明和背景介绍，帮助理解测试的目的、范围和预期结果。" />
+                    <span>{{ t('functionCase.addCaseModal.description') }}</span> <Hints :text="t('functionCase.addCaseModal.descriptionHint')" />
                   </div>
                 </template>
                 <RichEditor
@@ -575,9 +575,9 @@ const delCase = (caseItem, idx) => {
             <div style="width: 320px;" class="ml-5 h-full">
               <FormItem
                 Key=""
-                label="所属计划"
+                :label="t('functionCase.addCaseModal.plan')"
                 name="planId"
-                :rules="{required:true,message:'请选择所属计划'}">
+                :rules="{required:true,message:t('functionCase.addCaseModal.pleaseSelectPlan')}">
                 <Select
                   v-model:value="formState.planId"
                   :action="`${TESTER}/func/plan?projectId=${projectInfo.id}&fullTextSearch=true`"
@@ -585,7 +585,7 @@ const delCase = (caseItem, idx) => {
                   :lazy="false"
                   defaultActiveFirstOption
                   showSearch
-                  placeholder="选择或查询计划"
+                  :placeholder="t('functionCase.addCaseModal.selectOrQueryPlan')"
                   loadMode="infinity"
                   @change="planChange">
                   <template #option="item">
@@ -597,7 +597,7 @@ const delCase = (caseItem, idx) => {
                 </Select>
               </FormItem>
               <FormItem
-                label="所属模块"
+                :label="t('functionCase.addCaseModal.module')"
                 name="moduleId">
                 <TreeSelect
                   v-model:value="formState.moduleId"
@@ -606,7 +606,7 @@ const delCase = (caseItem, idx) => {
                   :fieldNames="{ value: 'id', label: 'name', children: 'children' }"
                   showSearch
                   allowClear
-                  placeholder="选择或查模块">
+                  :placeholder="t('functionCase.addCaseModal.selectOrQueryModule')">
                   <template #title="item">
                     <div class="flex items-center" :title="item.name">
                       <Icon icon="icon-mokuai" class="mr-1 text-3.5" />
@@ -616,9 +616,9 @@ const delCase = (caseItem, idx) => {
                 </TreeSelect>
               </FormItem>
               <FormItem
-                label="测试人"
+                :label="t('functionCase.addCaseModal.tester')"
                 name="testerId"
-                :rules="{required:true,message:'请选择测试人'}">
+                :rules="{required:true,message:t('functionCase.addCaseModal.pleaseSelectTester')}">
                 <div class="flex items-center">
                   <Select
                     v-model:value="formState.testerId"
@@ -630,14 +630,14 @@ const delCase = (caseItem, idx) => {
                     size="small"
                     class="p-0 h-5 leading-5 ml-1"
                     @click="setTesterForMe">
-                    指派给我
+                    {{ t('functionCase.addCaseModal.assignToMe') }}
                   </Button>
                 </div>
               </FormItem>
               <FormItem
-                label="开发人"
+                :label="t('functionCase.addCaseModal.developer')"
                 name="developerId"
-                :rules="{required:true,message:'请选择开发人'}">
+                :rules="{required:true,message:t('functionCase.addCaseModal.pleaseSelectDeveloper')}">
                 <Select
                   v-model:value="formState.developerId"
                   :options="members"
@@ -649,12 +649,12 @@ const delCase = (caseItem, idx) => {
                 required>
                 <template #label>
                   <span class="flex items-center">
-                    优先级
+                    {{ t('functionCase.addCaseModal.priority') }}
                     <Tooltip
                       placement="right"
                       arrowPointAtCenter
                       :overlayStyle="{'max-width':'400px'}"
-                      title="优先级用于标识用例的重要性和紧急程度。对于重要、实时性高或者会阻塞其他活动的用例请使用高优先级。">
+                      :title="t('functionCase.addCaseModal.priorityHint')">
                       <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
                     </Tooltip>
                   </span>
@@ -673,12 +673,12 @@ const delCase = (caseItem, idx) => {
                 :rules="{required: formState.actualWorkload, validator: evalWorkloadValidateDate,trigger: 'change' }">
                 <template #label>
                   <span class="flex items-center">
-                    {{ evalWorkloadMethod?.value === 'STORY_POINT'? '评估故事点':'评估工时' }}
+                    {{ evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.addCaseModal.estimatedStoryPoints') : t('functionCase.addCaseModal.estimatedWorkHours') }}
                     <Tooltip
                       placement="right"
                       arrowPointAtCenter
                       :overlayStyle="{'max-width':'400px'}"
-                      :title="evalWorkloadMethod?.value === 'STORY_POINT'?'工作任务量、综合难度、复杂度等的评估值。':'工作评估所花费的时间，以小时为单位计算。'">
+                      :title="evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.addCaseModal.storyPointsHint') : t('functionCase.addCaseModal.workHoursHint')">
                       <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
                     </Tooltip>
                   </span>
@@ -689,17 +689,17 @@ const delCase = (caseItem, idx) => {
                   :disabled="!formState.planId"
                   :min="0.1"
                   :max="1000"
-                  :placeholder="t('最小0.1，最大1000，最多支持2位小数')"
+                  :placeholder="t('functionCase.addCaseModal.minMaxDecimal')"
                   dataType="float"
                   @blur="evalWorkloadChange($event.target.value)" />
               </FormItem>
               <FormItem
                 name="softwareVersion"
-                label="软件版本">
+                :label="t('functionCase.addCaseModal.softwareVersion')">
                 <Select
                   v-model:value="formState.softwareVersion"
                   allowClear
-                  placeholder="请选择所属版本"
+                  :placeholder="t('functionCase.addCaseModal.pleaseSelectVersion')"
                   :action="`${TESTER}/software/version?projectId=${projectInfo.id}`"
                   :params="{filters: [{value: ['NOT_RELEASED', 'RELEASED'], key: 'status', op: 'IN'}]}"
                   :fieldNames="{value:'name', label: 'name'}">
@@ -710,12 +710,12 @@ const delCase = (caseItem, idx) => {
                 :rules="{required: true, validator: validateDate,trigger: 'change' }">
                 <template #label>
                   <span class="flex items-center">
-                    截止时间
+                    {{ t('functionCase.addCaseModal.deadline') }}
                     <Tooltip
                       placement="right"
                       arrowPointAtCenter
                       :overlayStyle="{'max-width':'400px'}"
-                      title="用例截止时间不能超过测试计划截止时间。">
+                      :title="t('functionCase.addCaseModal.deadlineHint')">
                       <Icon icon="icon-tishi1" class="text-tips aml-1 cursor-pointer text-3.5" />
                     </Tooltip>
                   </span>
@@ -726,7 +726,7 @@ const delCase = (caseItem, idx) => {
                   :showTime="{hideDisabledOptions: true,format:'HH:mm:ss'}"
                   :disabled="!formState.planId"
                   allowClear
-                  placeholder="请选择截止时间"
+                  :placeholder="t('functionCase.addCaseModal.pleaseSelectDeadline')"
                   size="small"
                   type="date"
                   class="w-full" />
@@ -734,12 +734,12 @@ const delCase = (caseItem, idx) => {
               <FormItem
                 name="tagIds">
                 <template #label>
-                  <span>标签
+                  <span>{{ t('functionCase.addCaseModal.tags') }}
                     <Tooltip
                       placement="right"
                       arrowPointAtCenter
                       :overlayStyle="{'max-width':'400px'}"
-                      title="用于分类和快速检索，最多支持关联5个。">
+                      :title="t('functionCase.addCaseModal.tagsHint')">
                       <Icon icon="icon-tishi1" class="text-tips cursor-pointer text-3.5" />
                     </Tooltip>
                   </span>
@@ -753,7 +753,7 @@ const delCase = (caseItem, idx) => {
                   :maxTags="5"
                   :allowClear="false"
                   :action="`${TESTER}/tag?projectId=${projectInfo.id}&fullTextSearch=true`"
-                  placeholder="选择或查询标签"
+                  :placeholder="t('functionCase.addCaseModal.selectOrQueryTags')"
                   mode="multiple">
                   <template #option="item">
                     <div class="flex items-center" :title="item.name">
@@ -766,7 +766,7 @@ const delCase = (caseItem, idx) => {
 
               <FormItem
                 name="refTaskIds"
-                label="关联任务"
+                :label="t('functionCase.addCaseModal.relatedTasks')"
                 class="relative">
                 <Select
                   v-model:value="formState.refTaskIds"
@@ -778,7 +778,7 @@ const delCase = (caseItem, idx) => {
                   :maxTagTextLength="15"
                   :maxTags="20"
                   :action="`${TESTER}/task?projectId=${projectInfo.id}&fullTextSearch=true`"
-                  placeholder="最多可关联20个任务"
+                  :placeholder="t('functionCase.addCaseModal.maxRelatedTasks')"
                   mode="multiple">
                   <template #option="record">
                     <div class="flex items-center leading-4.5 overflow-hidden">
@@ -790,7 +790,7 @@ const delCase = (caseItem, idx) => {
                         v-if="record.overdue"
                         class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2"
                         style="transform: scale(0.9);color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                        <span class="inline-block transform-gpu">已逾期</span>
+                        <span class="inline-block transform-gpu">{{ t('functionCase.addCaseModal.overdue') }}</span>
                       </div>
                     </div>
                   </template>
@@ -799,7 +799,7 @@ const delCase = (caseItem, idx) => {
 
               <FormItem
                 name="refCaseIds"
-                label="关联用例"
+                :label="t('functionCase.addCaseModal.relatedCases')"
                 class="relative">
                 <Select
                   v-model:value="formState.refCaseIds"
@@ -811,7 +811,7 @@ const delCase = (caseItem, idx) => {
                   :maxTagTextLength="15"
                   :maxTags="20"
                   :action="`${TESTER}/func/case?projectId=${projectInfo.id}&fullTextSearch=true`"
-                  placeholder="最多可关联20个用例"
+                  :placeholder="t('functionCase.addCaseModal.maxRelatedCases')"
                   mode="multiple">
                   <template #option="record">
                     <div class="flex items-center leading-4.5 overflow-hidden">
@@ -825,7 +825,7 @@ const delCase = (caseItem, idx) => {
               </FormItem>
 
               <FormItem
-                label="附件"
+                :label="t('functionCase.addCaseModal.attachments')"
                 name="attachments">
                 <div
                   style="height: 90px; border-color: rgba(0, 119, 255);background-color: rgba(0, 119, 255, 4%);"
@@ -858,7 +858,7 @@ const delCase = (caseItem, idx) => {
                         :customRequest="() => {}"
                         @change="upLoadFile">
                         <Icon icon="icon-shangchuan" class="text-theme-special mr-1" />
-                        <span class="text-3 leading-3 text-theme-text-hover">继续上传</span>
+                        <span class="text-3 leading-3 text-theme-text-hover">{{ t('functionCase.addCaseModal.continueUpload') }}</span>
                       </Upload>
                     </div>
                   </template>
@@ -870,7 +870,7 @@ const delCase = (caseItem, idx) => {
                         :customRequest="() => {}"
                         @change="upLoadFile">
                         <Icon icon="icon-shangchuan" class="mr-1 text-theme-special" />
-                        <span class="text-3 text-theme-text-hover">上传附件，最多上传5个</span>
+                        <span class="text-3 text-theme-text-hover">{{ t('functionCase.addCaseModal.uploadAttachments') }}</span>
                       </Upload>
                     </div>
                   </template>
@@ -887,13 +887,13 @@ const delCase = (caseItem, idx) => {
           class="px-3"
           :disabled="!caseList?.length"
           @click="save()">
-          {{ t('保存') }}
+          {{ t('actions.save') }}
         </Button>
         <Button
           size="small"
           class="ml-5 px-3"
           @click="close">
-          {{ t('取消') }}
+          {{ t('actions.cancel') }}
         </Button>
       </div>
     </Spin>

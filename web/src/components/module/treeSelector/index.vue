@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, ref } from 'vue';
+import { defineAsyncComponent, onMounted, ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Icon, Input, modal, notification } from '@xcan-angus/vue-ui';
 import { Button, Tree } from 'ant-design-vue';
@@ -31,7 +31,11 @@ const props = withDefaults(defineProps<Props>(), {
   notify: undefined,
   moduleId: '',
   disabled: false,
-  title: t('commonComp.moduleTreeSelector.title')
+  title: ''
+});
+
+const modalTitle = computed(() => {
+  return props.title || t('commonComp.moduleTreeSelector.title');
 });
 
 const emits = defineEmits<{(e: 'loadData', value?: string); (e: 'update:moduleId', value: string):void}>();
@@ -234,7 +238,7 @@ const travelTreeData = (treeData, callback = (item) => item) => {
   return treeData;
 };
 
-const moduleTreeData = ref([{ name: t('commonComp.moduleTreeSelector.noModule') + props.title, id: '-1' }]);
+const moduleTreeData = ref([{ name: t('commonComp.moduleTreeSelector.noModule') + modalTitle.value, id: '-1' }]);
 
 const loadDataList = async () => {
   const [error, { data }] = await modules.getModuleTree({
@@ -243,7 +247,7 @@ const loadDataList = async () => {
   if (error) {
     return;
   }
-  moduleTreeData.value = [{ name: t('commonComp.moduleTreeSelector.noModule') + props.title, id: '-1' }, ...travelTreeData(data || [])];
+  moduleTreeData.value = [{ name: t('commonComp.moduleTreeSelector.noModule') + modalTitle.value, id: '-1' }, ...travelTreeData(data || [])];
 };
 
 onMounted(() => {
@@ -256,26 +260,12 @@ defineExpose({
 </script>
 <template>
   <div class="h-full flex flex-col">
-    <!-- <div class="flex justify-between h-11 space-x-4 p-2">
-      <Input
-        v-model:value="keywords"
-        placeholder="搜索模块"
-        @change="handleSearchModule" />
-      <Button
-        :disabled="!isAdmin && projectInfo?.createdBy !== tenantInfo?.id && projectInfo.ownerId !== tenantInfo?.id"
-        type="primary"
-        size="small"
-        @click="onMenuClick({key: 'add'}, {id: undefined})">
-        <Icon icon="icon-jia" />
-        添加模块
-      </Button>
-    </div> -->
     <div
       :class="{'active': props.moduleId === ''}"
       class="flex items-center space-x-2 tree-title h-9 leading-9 pl-4.5 cursor-pointer all-case"
       @click="handleSelectKeysChange([''])">
       <Icon icon="icon-liebiaoshitu" class="text-3.5" />
-      <span class="flex-1">{{ t('commonComp.moduleTreeSelector.allCases') }}{{ props.title }}</span>
+      <span class="flex-1">{{ t('commonComp.moduleTreeSelector.allCases') }}{{ modalTitle }}</span>
     </div>
     <Tree
       :treeData="moduleTreeData"

@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import elementResizeDetector from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
 import { duration } from '@xcan-angus/infra';
 import * as echarts from 'echarts/core';
+
+const { t } = useI18n();
 import {
   LegendComponent,
   LegendComponentOption,
@@ -122,7 +125,7 @@ onBeforeUnmount(() => {
   <div class="relative w-full h-full">
     <div ref="chartsRef" class="h-full"></div>
     <div class="mark-container leading-5 text-center">
-      <div class="text-3 text-center text-theme-title font-medium">总数</div>
+      <div class="text-3 text-center text-theme-title font-medium">{{ t('functionCase.statisticsPanel.total') }}</div>
       <div class="mt-1 text-4.5 leading-4.5 text-theme-title">{{ props.total }}</div>
     </div>
   </div>

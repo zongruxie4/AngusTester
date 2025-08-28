@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Dropdown, Icon, Input } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 
 import RichEditor from '@/components/richEditor/index.vue';
+
+const { t } = useI18n();
 
 interface Props {
   value: {
@@ -133,25 +136,25 @@ const menus = [
   {
     key: 'delete',
     icon: 'icon-qingchu',
-    name: '删除',
+    name: t('functionCase.addCaseModal.deleteStep'),
     noAuth: true
   },
   {
     key: 'clone',
     icon: 'icon-fuzhi',
-    name: '克隆',
+    name: t('functionCase.addCaseModal.cloneStep'),
     noAuth: true
   },
   {
     key: 'top',
     icon: 'icon-shangyi',
-    name: '上移',
+    name: t('functionCase.addCaseModal.moveToTop'),
     noAuth: true
   },
   {
     key: 'bottom',
     icon: 'icon-xiayi',
-    name: '下移',
+    name: t('functionCase.addCaseModal.moveToBottom'),
     noAuth: true
   }
 ];
@@ -179,8 +182,8 @@ const handleClick = (key:string, item, index) => {
       <div class="border-theme-text-box rounded" :class="{'border': props.showOutBorder}">
         <div class="flex">
           <div class="w-8 flex justify-center pt-1 flex-none">#</div>
-          <div class="px-1.5 py-1 border-theme-text-box border-r flex-1/2">测试步骤</div>
-          <div class="px-1.5 py-1 border-theme-text-box flex-1/2" :class="{'border-r': !props.readonly || props.showOutBorder}">预期结果</div>
+          <div class="px-1.5 py-1 border-theme-text-box border-r flex-1/2">{{ t('functionCase.addCaseModal.stepDescription') }}</div>
+          <div class="px-1.5 py-1 border-theme-text-box flex-1/2" :class="{'border-r': !props.readonly || props.showOutBorder}">{{ t('functionCase.addCaseModal.expectedResult') }}</div>
           <div v-show="!props.readonly" class="w-12 flex-none py-1 text-center">操作</div>
         </div>
         <div
@@ -206,7 +209,7 @@ const handleClick = (key:string, item, index) => {
                 v-model:value="item.step"
                 mode="view"
                 :toolbarOptions="toolbarOptions"
-                :options="{theme: 'bubble', placeholder: '输入测试步骤'}"
+                :options="{theme: 'bubble', placeholder: t('functionCase.addCaseModal.enterStepDescription')}"
                 class="step-content"
                 height="auto" />
               <RichEditor
@@ -215,7 +218,7 @@ const handleClick = (key:string, item, index) => {
                 v-model:value="item.step"
                 mode="edit"
                 :toolbarOptions="toolbarOptions"
-                :options="{theme: 'bubble', placeholder: '输入测试步骤'}"
+                :options="{theme: 'bubble', placeholder: t('functionCase.addCaseModal.enterStepDescription')}"
                 class="step-content"
                 height="auto"
                 @change="inputChange" />
@@ -227,7 +230,7 @@ const handleClick = (key:string, item, index) => {
                 v-model:value="item.expectedResult"
                 mode="view"
                 :toolbarOptions="toolbarOptions"
-                :options="{theme: 'bubble', placeholder: '输入预期结果'}"
+                :options="{theme: 'bubble', placeholder: t('functionCase.addCaseModal.enterExpectedResult')}"
                 class="step-content"
                 height="auto" />
               <RichEditor
@@ -235,7 +238,7 @@ const handleClick = (key:string, item, index) => {
                 :key="`${index}_expectedResult`"
                 v-model:value="item.expectedResult"
                 :toolbarOptions="toolbarOptions"
-                :options="{theme: 'bubble', placeholder: '输入预期结果'}"
+                :options="{theme: 'bubble', placeholder: t('functionCase.addCaseModal.enterExpectedResult')}"
                 class="step-content"
                 height="auto"
                 @change="inputChange" />
@@ -260,28 +263,28 @@ const handleClick = (key:string, item, index) => {
           type="link"
           class="flex items-center px-0 text-3 leading-3 h-4"
           @click="hanldeAdd">
-          <Icon icon="icon-jia" class="mr-1 -mt-0.5" />添加步骤
+          <Icon icon="icon-jia" class="mr-1 -mt-0.5" />{{ t('functionCase.addCaseModal.addStep') }}
         </Button>
       </div>
     </template>
     <template v-if="props.stepView === 'TEXT'">
-      <div class="pl-1">测试步骤</div>
+      <div class="pl-1">{{ t('functionCase.addCaseModal.stepDescription') }}</div>
       <RichEditor
         v-model:value="steps[0].step"
         :mode="props.readonly ? 'view' : 'edit'"
         :disabled="props.readonly"
         :toolbarOptions="toolbarOptions"
-        :options="{theme: 'bubble', placeholder: '输入测试步骤'}"
+        :options="{theme: 'bubble', placeholder: t('functionCase.addCaseModal.enterStepDescription')}"
         :height="100"
         class="border"
         @change="inputChange" />
-      <div class="mt-3 pl-1">预期结果</div>
+      <div class="mt-3 pl-1">{{ t('functionCase.addCaseModal.expectedResult') }}</div>
       <RichEditor
         v-model:value="steps[0].expectedResult"
         :mode="props.readonly ? 'view' : 'edit'"
         :disabled="props.readonly"
         :toolbarOptions="toolbarOptions"
-        :options="{theme: 'bubble', placeholder: '输入预期结果'}"
+        :options="{theme: 'bubble', placeholder: t('functionCase.addCaseModal.enterExpectedResult')}"
         :height="100"
         class="border"
         @change="inputChange" />
