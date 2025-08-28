@@ -4,7 +4,7 @@ import { Button } from 'ant-design-vue';
 import { Icon, NoData } from '@xcan-angus/vue-ui';
 import { cloneDeep } from 'lodash-es';
 import { funcCase } from '@/api/tester';
-
+import { useI18n } from 'vue-i18n';
 import { CaseInfo } from '../../PropsType';
 
 type Props = {
@@ -14,6 +14,8 @@ type Props = {
   dataSource: CaseInfo;
   canEdit: boolean;
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
@@ -102,7 +104,7 @@ const defaultValue = computed(() => {
 <template>
   <div class="mt-4">
     <div class="flex items-center text-theme-title mb-1.75">
-      <span class="font-semibold">测试步骤</span>
+      <span class="font-semibold">{{ t('functionCase.kanbanView.testSteps') }}</span>
       <Button
         v-if="props.canEdit"
         v-show="!editFlag"
@@ -120,12 +122,12 @@ const defaultValue = computed(() => {
       :defaultValue="defaultValue"
       :readonly="!editFlag" />
     <div v-show="editFlag" class="mt-2.5 space-x-2.5 w-full flex items-center justify-end">
-      <Button size="small" @click="cancel">取消</Button>
+      <Button size="small" @click="cancel">{{ t('actions.cancel') }}</Button>
       <Button
         size="small"
         type="primary"
         @click="ok">
-        确定
+        {{ t('actions.confirm') }}
       </Button>
     </div>
   </div>

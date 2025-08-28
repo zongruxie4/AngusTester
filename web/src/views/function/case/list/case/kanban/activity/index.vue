@@ -2,6 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { ActivityInfo, Scroll } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 
 import { ActivityItem } from './PropsType';
 import { CaseInfo } from '../PropsType';
@@ -12,6 +13,8 @@ type Props = {
   appInfo: { id: string; };
   dataSource: CaseInfo;
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
@@ -49,7 +52,7 @@ const targetId = computed(() => {
 </script>
 <template>
   <div class="h-full text-3 leading-5 pl-5">
-    <div class="text-theme-title mb-2.5 font-semibold">活动</div>
+    <div class="text-theme-title mb-2.5 font-semibold">{{ t('functionCase.kanbanView.activity.title') }}</div>
 
     <Scroll
       v-if="targetId"

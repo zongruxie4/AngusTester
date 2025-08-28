@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { Grid, TestResult } from '@xcan-angus/vue-ui';
-
+import { useI18n } from 'vue-i18n';
 import { CaseInfo } from '../../PropsType';
 
 type Props = {
@@ -11,6 +11,8 @@ type Props = {
   dataSource: CaseInfo;
   canEdit: boolean;
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
@@ -51,7 +53,7 @@ const testInfoColumns = [
 
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
-    <div class="text-theme-title mb-2.5 font-semibold">测试信息</div>
+    <div class="text-theme-title mb-2.5 font-semibold">{{ t('functionCase.kanbanView.testInfo') }}</div>
     <Grid
       :columns="testInfoColumns"
       :dataSource="props.dataSource"

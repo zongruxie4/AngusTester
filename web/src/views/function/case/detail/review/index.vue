@@ -1,11 +1,14 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Image, NoData } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 import { funcCase } from '@/api/tester';
 
 interface Props {
   caseDetail: {id: string; reviewNum: number; reviewFailNum: number;};
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   caseDetail: () => ({ id: '' })
@@ -112,29 +115,29 @@ defineExpose({
 </script>
 <template>
   <div class="text-3 overflow-auto h-full">
-    <div class="text-title text-3 font-medium mt-2">评审次数</div>
+    <div class="text-title text-3 font-medium mt-2">{{ t('functionCase.detail.review.reviewCount') }}</div>
     <div class="flex w-150 space-x-15 mt-2">
       <div class="flex-1 inline-flex bg-gray-light rounded">
-        <label class="w-20 px-2 py-1 bg-blue-1 text-white rounded">总共</label>
+        <label class="w-20 px-2 py-1 bg-blue-1 text-white rounded">{{ t('functionCase.detail.review.total') }}</label>
         <div class=" px-2 py-1  w-15 font-medium">
           {{ reviewNum.total }}
         </div>
       </div>
       <div class="flex-1 inline-flex bg-gray-light rounded">
-        <label class="w-20 px-2 py-1 bg-status-success text-white rounded">评审通过</label>
+        <label class="w-20 px-2 py-1 bg-status-success text-white rounded">{{ t('functionCase.detail.review.reviewPassed') }}</label>
         <div class=" px-2 py-1  w-15 font-medium">
           {{ reviewNum.successNum }}
         </div>
       </div>
       <div class="flex-1 inline-flex bg-gray-light rounded">
-        <label class="w-20 px-2 py-1 bg-status-error text-white rounded">评审未通过</label>
+        <label class="w-20 px-2 py-1 bg-status-error text-white rounded">{{ t('functionCase.detail.review.reviewFailed') }}</label>
         <div class=" px-2 py-1  w-15 font-medium">
           {{ reviewNum.failNum }}
         </div>
       </div>
     </div>
 
-    <div class="text-title text-3 font-medium mt-6">评审记录</div>
+    <div class="text-title text-3 font-medium mt-6">{{ t('functionCase.detail.review.reviewRecords') }}</div>
     <div class="mt-2 space-y-2">
       <div
         v-for="record in reviewRecords"
@@ -147,7 +150,7 @@ defineExpose({
             type="avatar"
             :src="record.avatar"
             class="w-5 mr-2" />
-          <span class="font-semibold flex-1/3">{{ record.reviewerName }} {{ record.reviewStatus?.value === 'PASSED' ? '评审通过了用例' : '评审用例未通过' }}</span>
+          <span class="font-semibold flex-1/3">{{ record.reviewerName }} {{ record.reviewStatus?.value === 'PASSED' ? t('functionCase.detail.review.reviewPassedCase') : t('functionCase.detail.review.reviewFailedCase') }}</span>
 
           <div class=" flex-1/2">{{ record.reviewDate }}</div>
         </div>
@@ -158,7 +161,7 @@ defineExpose({
           :title="record.reviewRemark">
           {{ record.reviewRemark }}
         </div>
-        <div v-else class="text-sub-content mt-3 truncate">无说明~ </div>
+        <div v-else class="text-sub-content mt-3 truncate">{{ t('functionCase.detail.review.noRemark') }}</div>
       </div>
     </div>
 
@@ -168,22 +171,22 @@ defineExpose({
 
     <div v-if="!!selectRecordInfo" class="flex max-w-200 ">
       <div class="flex-1 p-2 border-r  space-y-3">
-        <div class="mb-3">评审版本</div>
+        <div class="mb-3">{{ t('functionCase.detail.review.reviewVersion') }}</div>
         <CaseInfo :caseInfo="selectRecordInfo" />
         <Precondition :caseInfo="selectRecordInfo" />
         <div class="font-semibold text-3.5">
-          测试步骤
+          {{ t('functionCase.detail.review.testSteps') }}
         </div>
         <CaseStep :defaultValue="selectRecordInfo?.steps || {}" readonly />
 
         <Description :caseInfo="selectRecordInfo" />
       </div>
       <div class="flex-1 p-2 space-y-3">
-        <div class="mb-3">最新版本</div>
+        <div class="mb-3">{{ t('functionCase.detail.review.latestVersion') }}</div>
         <CaseInfo :caseInfo="props.caseDetail" />
         <Precondition :caseInfo="props.caseDetail" :contentClass="preconditionClass" />
         <div class="font-semibold text-3.5">
-          测试步骤
+          {{ t('functionCase.detail.review.testSteps') }}
         </div>
         <div :class="stepsClass">
           <CaseStep :defaultValue="props?.caseDetail?.steps || []" readonly />
