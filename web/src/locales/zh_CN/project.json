@@ -339,6 +339,17 @@
       "deleteTime": "删除时间",
       "actions": "操作"
     },
+    "stats": {
+      "items": "项目数量"
+    },
+    "filters": {
+      "title": "过滤",
+      "all": "全部"
+    },
+    "empty": {
+      "description": "回收站中没有项目",
+      "hint": "删除的项目将显示在这里，您可以恢复或永久删除它们"
+    },
     "ui": {
       "searchPlaceholder": "请输入查询关键字",
       "adminHint": "只允许管理员和删除人还原或彻底删除回收站数据。",

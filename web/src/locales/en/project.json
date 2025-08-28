@@ -338,6 +338,17 @@
       "deleteTime": "Delete Time",
       "actions": "Actions"
     },
+    "stats": {
+      "items": "Items"
+    },
+    "filters": {
+      "title": "Filter",
+      "all": "All"
+    },
+    "empty": {
+      "description": "No projects in trash",
+      "hint": "Deleted projects will be displayed here, and you can recover or permanently delete them"
+    },
     "ui": {
       "searchPlaceholder": "Please enter search keywords",
       "adminHint": "Only administrators and deleter can recover or permanently delete trash data.",
