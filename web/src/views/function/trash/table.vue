@@ -159,7 +159,6 @@ onMounted(() => {
     rowKey="id"
     class="enhanced-trash-table"
     @change="tableChange">
-
     <!-- Custom cell rendering for enhanced UX -->
     <template #bodyCell="{ record, column }">
       <!-- Deleter column with enhanced avatar display -->

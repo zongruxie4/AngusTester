@@ -2,316 +2,369 @@
 import { inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
-import { Icon, Image, Input, notification, Spin, Table } from '@xcan-angus/vue-ui';
-import { debounce } from 'throttle-debounce';
-import { duration } from '@xcan-angus/infra';
-import { scenario } from '@/api/tester';
+import { Icon, Image, Input, Spin, Table } from '@xcan-angus/vue-ui';
+import { useTrashData } from './composables/useTrashData';
+import { useTableColumns } from './composables/useTableColumns';
+import { useTrashActions } from './composables/useTrashActions';
+import { useSearch } from './composables/useSearch';
+import type { TrashProps, TrashItem } from './types';
 
-import { getCurrentPage } from '@/utils/utils';
-import { TrashItem } from './types';
+/**
+ * Scenario trash component for managing deleted scenario items
+ * Provides functionality to view, restore, and permanently delete items
+ */
+const props = withDefaults(defineProps<TrashProps>(), {
+  projectId: '',
+  userInfo: () => ({ id: '' })
+});
 
+// Internationalization
 const { t } = useI18n();
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-}
+// Inject admin status from parent component
+const isAdmin = inject('isAdmin', ref(false));
 
-const props = withDefaults(defineProps<Props>(), {
-  projectId: undefined,
-  userInfo: undefined
+// Use composables for separation of concerns
+const {
+  tableData,
+  loading,
+  loaded,
+  pagination,
+  loadData,
+  handleTableChange: handleTableDataChange,
+  resetPagination,
+  updateCurrentPage
+} = useTrashData(props.projectId, props.userInfo);
+
+const { columns, emptyTextStyle, defaultTableProps } = useTableColumns();
+
+const { restoreItem, deleteItem, restoreAll, deleteAll } = useTrashActions(props.projectId);
+
+const { inputValue, createInputChangeHandler } = useSearch();
+
+/**
+ * Handle input change with debouncing
+ */
+const inputChange = createInputChangeHandler(() => {
+  resetPagination();
+  loadDataAndRefresh();
 });
 
-const isAdmin = inject('isAdmin', ref<boolean>());
-
-const loading = ref(false);
-const loaded = ref(false);
-
-const tableData = ref<TrashItem[]>([]);
-
-const inputValue = ref<string>();
-const orderBy = ref<string>();
-const orderSort = ref<'ASC' | 'DESC'>();
-const pagination = ref<{ total: number; current: number; pageSize: number; }>({
-  total: 0,
-  current: 1,
-  pageSize: 10
-});
-
-const inputChange = debounce(duration.search, () => {
-  pagination.value.current = 1;
-  loadData();
-});
-
-const recoverAll = async () => {
-  loading.value = true;
-  const params = { projectId: props.projectId };
-  const [error] = await scenario.backAllScenarioTrash(params);
-  if (error) {
-    loading.value = false;
-    return;
+/**
+ * Handle restore all action
+ */
+const handleRestoreAll = async () => {
+  const success = await restoreAll();
+  if (success) {
+    resetPagination();
+    loadDataAndRefresh();
   }
-
-  notification.success(t('scenarioTrash.messages.restoreAllSuccess'));
-  pagination.value.current = 1;
-  loadData();
 };
 
-const deleteAll = async () => {
-  loading.value = true;
-  const params = { projectId: props.projectId };
-  const [error] = await scenario.deleteAllScenarioTrash(params);
-  if (error) {
-    loading.value = false;
-    return;
+/**
+ * Handle delete all action
+ */
+const handleDeleteAll = async () => {
+  const success = await deleteAll();
+  if (success) {
+    resetPagination();
+    loadDataAndRefresh();
   }
-
-  notification.success(t('scenarioTrash.messages.deleteAllSuccess'));
-  pagination.value.current = 1;
-  loadData();
 };
 
-const toRefresh = () => {
-  pagination.value.current = 1;
-  loadData();
+/**
+ * Handle refresh action
+ */
+const handleRefresh = () => {
+  resetPagination();
+  loadDataAndRefresh();
 };
 
-const recoverHandler = async (data:TrashItem) => {
-  loading.value = true;
-  const [error] = await scenario.backScenarioTrash(data.id);
-  if (error) {
-    loading.value = false;
-    return;
+/**
+ * Handle restore action for a single item
+ * @param data - Trash item to restore
+ */
+const handleRestore = async (data: TrashItem) => {
+  const success = await restoreItem(data.id);
+  if (success) {
+    updateCurrentPage();
+    loadDataAndRefresh();
   }
-
-  notification.success(t('scenarioTrash.messages.restoreSuccess'));
-  pagination.value.current = getCurrentPage(pagination.value.current, pagination.value.pageSize, pagination.value.total);
-  loadData();
 };
 
-const deleteHandler = async (data:TrashItem) => {
-  loading.value = true;
-  const [error] = await scenario.deleteScenarioTrash(data.id);
-  if (error) {
-    loading.value = false;
-    return;
+/**
+ * Handle delete action for a single item
+ * @param data - Trash item to delete permanently
+ */
+const handleDelete = async (data: TrashItem) => {
+  const success = await deleteItem(data.id);
+  if (success) {
+    updateCurrentPage();
+    loadDataAndRefresh();
   }
-
-  notification.success(t('scenarioTrash.messages.deleteSuccess'));
-  pagination.value.current = getCurrentPage(pagination.value.current, pagination.value.pageSize, pagination.value.total);
-  loadData();
 };
 
-const tableChange = ({ current = 1, pageSize = 10 }, _filters, sorter: { orderBy: string; orderSort: 'ASC' | 'DESC'; }) => {
-  orderBy.value = sorter.orderBy;
-  orderSort.value = sorter.orderSort;
-  pagination.value.current = current;
-  pagination.value.pageSize = pageSize;
-  loadData();
+/**
+ * Handle table change events (pagination, sorting)
+ * @param paginationInfo - Pagination data
+ * @param filters - Filter data
+ * @param sorter - Sort configuration
+ */
+const tableChange = (
+  paginationInfo: { current?: number; pageSize?: number },
+  filters: any,
+  sorter: { orderBy: string; orderSort: 'ASC' | 'DESC' }
+) => {
+  handleTableDataChange(paginationInfo, filters, sorter);
+  loadDataAndRefresh();
 };
 
-const loadData = async () => {
-  loading.value = true;
-  const params: {
-    projectId: string;
-    pageNo: number;
-    pageSize: number;
-    targetName?: string;
-    orderBy?: string;
-    orderSort?: string;
-  } = {
-    projectId: props.projectId,
-    pageNo: pagination.value.current,
-    pageSize: pagination.value.pageSize
-  };
-
-  if (inputValue.value) {
-    params.targetName = inputValue.value;
-  }
-
-  if (orderSort.value) {
-    params.orderBy = orderBy.value;
-    params.orderSort = orderSort.value;
-  }
-
-  const [error, res] = await scenario.getScenarioTrashList(params);
-  loaded.value = true;
-  loading.value = false;
-  if (error) {
-    return;
-  }
-
-  const data = res?.data || { list: [], total: 0 };
-  const userId = props.userInfo?.id;
-  tableData.value = data.list.map(item => {
-    item.disabled = true;
-    if (isAdmin || userId === item.createdBy || userId === item.deletedBy) {
-      item.disabled = false;
-    }
-
-    return item;
-  });
-  pagination.value.total = +(data.total || 0);
+/**
+ * Load data and handle search parameters
+ */
+const loadDataAndRefresh = async () => {
+  const params = inputValue.value ? { targetName: inputValue.value } : undefined;
+  await loadData(params);
 };
 
+/**
+ * Check if user can perform actions on item
+ * @param item - Trash item to check
+ * @returns Whether user has permission
+ */
+const canPerformActions = (item: TrashItem): boolean => {
+  if (isAdmin?.value) return true;
+  return props.userInfo?.id === item.createdBy || props.userInfo?.id === item.deletedBy;
+};
+
+// Lifecycle and watchers
 onMounted(() => {
-  watch(() => props.projectId, (newValue) => {
-    if (!newValue) {
-      return;
-    }
-
-    pagination.value.current = 1;
-    loadData();
-  }, { immediate: true });
+  watch(
+    () => props.projectId,
+    (newValue) => {
+      if (newValue) {
+        resetPagination();
+        loadDataAndRefresh();
+      }
+    },
+    { immediate: true }
+  );
 });
-
-const columns = [
-  // {
-  //   title: 'ID',
-  //   dataIndex: 'targetId',
-  //   ellipsis: true,
-  //   sorter: false
-  // },
-  {
-    title: t('scenarioTrash.table.columns.name'),
-    dataIndex: 'targetName',
-    width: '35%',
-    ellipsis: true,
-    sorter: false
-  },
-  {
-    title: t('scenarioTrash.table.columns.creator'),
-    dataIndex: 'createdByName',
-    ellipsis: true,
-    sorter: false
-  },
-  {
-    title: t('scenarioTrash.table.columns.deleter'),
-    dataIndex: 'deletedByName',
-    ellipsis: true,
-    sorter: false
-  },
-  {
-    title: t('scenarioTrash.table.columns.deleteTime'),
-    dataIndex: 'deletedDate',
-    ellipsis: true,
-    sorter: true
-  },
-  {
-    title: t('scenarioTrash.table.columns.operation'),
-    dataIndex: 'action',
-    width: 70
-  }
-];
-
-const emptyTextStyle = {
-  margin: '140px auto',
-  height: 'auto'
-};
 </script>
+
 <template>
-  <Spin :spinning="loading" class="h-full px-5 py-5 overflow-auto text-3">
+  <Spin
+    :spinning="loading"
+    class="h-full px-5 py-5 overflow-auto text-3">
+    <!-- Header section with search and actions -->
     <div class="flex items-center justify-between mb-3.5">
+      <!-- Search section -->
       <div class="flex items-center">
         <Input
           v-model:value="inputValue"
           :allowClear="true"
           :maxlength="200"
-          trim
           :placeholder="t('scenarioTrash.table.searchPlaceholder')"
+          trim
           class="w-75"
           @change="inputChange">
           <template #suffix>
-            <Icon class="text-3.5 cursor-pointer text-theme-content" icon="icon-sousuo" />
+            <Icon
+              class="text-3.5 cursor-pointer text-theme-content"
+              icon="icon-sousuo" />
           </template>
         </Input>
+
+        <!-- Admin tip -->
         <div class="flex-1 truncate text-theme-sub-content space-x-1 ml-2">
-          <Icon icon="icon-tishi1" class="text-3.5 text-tips" />
+          <Icon
+            icon="icon-tishi1"
+            class="text-3.5 text-tips" />
           <span>{{ t('scenarioTrash.description') }}</span>
         </div>
       </div>
+
+      <!-- Action buttons -->
       <div class="space-x-2.5">
         <Button
           :disabled="!tableData?.length"
+          :loading="loading"
           size="small"
           type="primary"
-          @click="recoverAll">
-          <Icon icon="icon-zhongzhi" class="text-3.5 mr-1" />
-          <span class>{{ t('scenarioTrash.actions.restoreAll') }}</span>
+          @click="handleRestoreAll">
+          <Icon
+            icon="icon-zhongzhi"
+            class="text-3.5 mr-1" />
+          <span>{{ t('scenarioTrash.actions.restoreAll') }}</span>
         </Button>
+
         <Button
           :disabled="!tableData?.length"
+          :loading="loading"
           size="small"
           type="primary"
           danger
-          @click="deleteAll">
-          <Icon icon="icon-qingchu" class="text-3.5 mr-1" />
-          <span class>{{ t('scenarioTrash.actions.deleteAll') }}</span>
+          @click="handleDeleteAll">
+          <Icon
+            icon="icon-qingchu"
+            class="text-3.5 mr-1" />
+          <span>{{ t('scenarioTrash.actions.deleteAll') }}</span>
         </Button>
+
         <Button
           size="small"
           type="default"
-          @click="toRefresh">
-          <Icon icon="icon-shuaxin" class="text-3.5 mr-1" />
-          <span class>{{ t('scenarioTrash.actions.refresh') }}</span>
+          @click="handleRefresh">
+          <Icon
+            icon="icon-shuaxin"
+            class="text-3.5 mr-1" />
+          <span>{{ t('scenarioTrash.actions.refresh') }}</span>
         </Button>
       </div>
     </div>
+
+    <!-- Enhanced table with improved accessibility and UX -->
     <Table
       v-if="loaded"
       :dataSource="tableData"
       :columns="columns"
       :pagination="pagination"
       :emptyTextStyle="emptyTextStyle"
+      :noDataSize="'small'"
+      :noDataText="t('common.noData')"
+      v-bind="defaultTableProps"
       rowKey="id"
-      size="small"
+      class="enhanced-trash-table"
       @change="tableChange">
+      <!-- Custom cell rendering for enhanced UX -->
       <template #bodyCell="{ record, column }">
+        <!-- Deleter column with enhanced avatar display -->
         <div
           v-if="column.dataIndex === 'deletedByName'"
           :title="record.deletedByName"
-          class="flex items-center overflow-hidden">
-          <div class="flex items-center flex-shrink-0 w-5 h-5 rounded-xl overflow-hidden mr-2">
-            <Image
-              :src="record.deletedByAvatar"
-              type="avatar"
-              class="w-full" />
+          class="flex items-center overflow-hidden group">
+          <div class="relative flex-shrink-0 mr-2">
+            <div class="w-6 h-6 rounded-full overflow-hidden border-2 border-gray-200 group-hover:border-red-300 transition-colors">
+              <Image
+                :src="record.deletedByAvatar"
+                type="avatar"
+                class="w-full h-full object-cover" />
+            </div>
+            <!-- Status indicator for deleter -->
+            <div class="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-red-500 rounded-full border border-white"></div>
           </div>
-          <div class="flex-1 truncate">{{ record.deletedByName }}</div>
+          <div class="flex-1 truncate">
+            <div class="text-sm font-medium text-gray-900 group-hover:text-red-600 transition-colors">
+              {{ record.deletedByName }}
+            </div>
+          </div>
         </div>
+
+        <!-- Creator column with enhanced avatar display -->
         <div
           v-else-if="column.dataIndex === 'createdByName'"
           :title="record.createdByName"
-          class="flex items-center overflow-hidden">
-          <div class="flex items-center flex-shrink-0 w-5 h-5 rounded-xl overflow-hidden mr-2">
-            <Image
-              :src="record.createdByAvatar"
-              type="avatar"
-              class="w-full" />
+          class="flex items-center overflow-hidden group">
+          <div class="relative flex-shrink-0 mr-2">
+            <div class="w-6 h-6 rounded-full overflow-hidden border-2 border-gray-200 group-hover:border-blue-300 transition-colors">
+              <Image
+                :src="record.createdByAvatar"
+                type="avatar"
+                class="w-full h-full object-cover" />
+            </div>
+            <!-- Status indicator for creator -->
+            <div class="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-blue-500 rounded-full border border-white"></div>
           </div>
-          <div class="flex-1 truncate">{{ record.createdByName }}</div>
+          <div class="flex-1 truncate">
+            <div class="text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+              {{ record.createdByName }}
+            </div>
+          </div>
         </div>
-        <div v-else-if="column.dataIndex === 'action'" class="flex items-center space-x-2.5">
+
+        <!-- Action column with enhanced buttons -->
+        <div
+          v-else-if="column.dataIndex === 'action'"
+          class="flex items-center justify-center space-x-2">
+          <!-- Restore button -->
           <Button
-            :disabled="record.disabled"
+            :disabled="!canPerformActions(record)"
             :title="t('scenarioTrash.actions.restore')"
             size="small"
             type="text"
-            class="space-x-1 flex items-center p-0"
-            @click="recoverHandler(record)">
-            <Icon icon="icon-zhongzhi" class="cursor-pointer text-theme-text-hover" />
+            class="flex items-center p-1 hover:bg-green-50 rounded transition-colors"
+            @click="handleRestore(record)">
+            <Icon
+              icon="icon-zhongzhi"
+              :class="[
+                'text-3.5',
+                canPerformActions(record)
+                  ? 'text-green-600 hover:text-green-700'
+                  : 'text-gray-400'
+              ]" />
           </Button>
+
+          <!-- Delete button -->
           <Button
-            :disabled="record.disabled"
+            :disabled="!canPerformActions(record)"
             :title="t('scenarioTrash.actions.delete')"
             size="small"
             type="text"
-            class="space-x-1 flex items-center p-0"
-            @click="deleteHandler(record)">
-            <Icon icon="icon-qingchu" class="text-3.5 cursor-pointer text-theme-text-hover" />
+            class="flex items-center p-1 hover:bg-red-50 rounded transition-colors"
+            @click="handleDelete(record)">
+            <Icon
+              icon="icon-qingchu"
+              :class="[
+                'text-3.5',
+                canPerformActions(record)
+                  ? 'text-red-600 hover:text-red-700'
+                  : 'text-gray-400'
+              ]" />
           </Button>
         </div>
       </template>
     </Table>
   </Spin>
 </template>
+
+<style scoped>
+/**
+ * Enhanced styling for trash table
+ */
+.enhanced-trash-table {
+  @apply bg-white rounded-lg shadow-sm;
+}
+
+.enhanced-trash-table :deep(.ant-table-thead > tr > th) {
+  @apply bg-gray-50 font-semibold text-gray-700;
+}
+
+.enhanced-trash-table :deep(.ant-table-tbody > tr:hover > td) {
+  @apply bg-blue-50;
+}
+
+.enhanced-trash-table :deep(.ant-table-tbody > tr > td) {
+  @apply border-b border-gray-100;
+}
+
+/* Action button hover effects */
+.group:hover .transition-colors {
+  @apply transform scale-105;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .enhanced-trash-table :deep(.ant-table) {
+    @apply text-xs;
+  }
+
+  .w-6 {
+    @apply w-5 h-5;
+  }
+}
+
+/* Empty state styling */
+.enhanced-trash-table :deep(.ant-empty) {
+  @apply py-16;
+}
+</style>
