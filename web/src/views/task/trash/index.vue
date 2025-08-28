@@ -5,7 +5,7 @@ import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { Icon, Input, Spin } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
 import { duration, utils } from '@xcan-angus/infra';
-import { useTaskTrashActions } from './composables/useTaskTrashActions';
+import { useTrashActions } from './composables/useTrashActions';
 import type { TaskTrashComponentProps, TaskTrashTargetType, TaskTrashItem } from './types';
 
 /**
@@ -40,7 +40,7 @@ const {
   loading,
   recoverAll,
   deleteAll
-} = useTaskTrashActions(props.projectId);
+} = useTrashActions(props.projectId);
 
 /**
  * Debounced input change handler

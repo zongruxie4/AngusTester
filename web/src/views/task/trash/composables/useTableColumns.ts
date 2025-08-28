@@ -6,7 +6,7 @@ import type { TaskTableColumn } from '../types';
  * Composable for managing task trash table column configurations
  * @returns Object containing column definitions and table settings
  */
-export function useTaskTableColumns () {
+export function useTableColumns () {
   const { t } = useI18n();
 
   /**

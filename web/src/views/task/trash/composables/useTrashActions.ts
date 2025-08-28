@@ -10,7 +10,7 @@ import type { TaskTrashItem } from '../types';
  * @param projectId - Current project ID
  * @returns Object containing action methods and loading state
  */
-export function useTaskTrashActions (projectId: string) {
+export function useTrashActions (projectId: string) {
   const { t } = useI18n();
   const loading = ref(false);
   const refreshNotify = ref<string>();

@@ -8,7 +8,7 @@ import type { TaskTrashItem, TaskTrashParams, TaskTrashPagination } from '../typ
  * @param userInfo - Current user information
  * @returns Object containing data, pagination, loading states and methods
  */
-export function useTaskTrashData (
+export function useTrashData (
   projectId: string,
   userInfo: { id: string }
 ) {

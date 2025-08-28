@@ -3,9 +3,9 @@ import { onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon, Image, Table } from '@xcan-angus/vue-ui';
-import { useTaskTrashData } from './composables/useTaskTrashData';
-import { useTaskTableColumns } from './composables/useTaskTableColumns';
-import { useTaskTrashActions } from './composables/useTaskTrashActions';
+import { useTrashData } from './composables/useTrashData';
+import { useTableColumns } from './composables/useTableColumns';
+import { useTrashActions } from './composables/useTrashActions';
 import type { TaskTrashTableProps, TaskTrashItem } from './types';
 
 /**
@@ -40,11 +40,11 @@ const {
   handleTableChange: handleTableDataChange,
   resetPagination,
   updateCurrentPage
-} = useTaskTrashData(props.projectId, props.userInfo);
+} = useTrashData(props.projectId, props.userInfo);
 
-const { columns, emptyTextStyle } = useTaskTableColumns();
+const { columns, emptyTextStyle } = useTableColumns();
 
-const { recoverItem, deleteItem } = useTaskTrashActions(props.projectId);
+const { recoverItem, deleteItem } = useTrashActions(props.projectId);
 
 /**
  * Handle recover action for a single item
