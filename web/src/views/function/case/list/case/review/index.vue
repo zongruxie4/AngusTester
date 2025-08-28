@@ -60,7 +60,7 @@ const onFinish = async () => {
   if (error) {
     return;
   }
-  notification.success('评审成功');
+  notification.success(t('functionCase.reviewCase.reviewSuccess'));
   emits('update:visible', false);
   emits('update');
 };
@@ -81,16 +81,16 @@ const changeFailMessage = (value) => {
 };
 
 const failMessage = [
-  '用例名表述不够简短达意。',
-  '用例设计和需求不一致，测试无效。',
-  '缺少必要的前提条件，可能导致无法正常执行。',
-  '用例步骤准确度和正确性不足，无法准确执行和验证。',
-  '用例描述不够清晰，存在二义性或模糊性。',
-  '用例没有覆盖所有的功能点和场景，存在遗漏。',
-  '用例测试边界定义不够清晰。',
-  '优先级安排不合理，可能影响测试的效率和效果。',
-  '与其他用例之间的逻辑关系不一致性或存在冲突。',
-  '其他'
+  t('functionCase.reviewCase.failReasons.caseNameNotClear'),
+  t('functionCase.reviewCase.failReasons.caseDesignInconsistent'),
+  t('functionCase.reviewCase.failReasons.missingPrerequisites'),
+  t('functionCase.reviewCase.failReasons.stepAccuracyInsufficient'),
+  t('functionCase.reviewCase.failReasons.descriptionUnclear'),
+  t('functionCase.reviewCase.failReasons.incompleteCoverage'),
+  t('functionCase.reviewCase.failReasons.boundaryUnclear'),
+  t('functionCase.reviewCase.failReasons.priorityUnreasonable'),
+  t('functionCase.reviewCase.failReasons.logicInconsistent'),
+  t('functionCase.reviewCase.failReasons.other')
 ];
 const failOpt = failMessage.map((i, idx) => ({ label: i, value: idx + 1 === failMessage.length ? 'other' : idx }));
 
@@ -100,7 +100,7 @@ onMounted(() => {
 </script>
 <template>
   <Modal
-    title="评审"
+    :title="t('functionCase.reviewCase.title')"
     :visible="props.visible"
     :width="600"
     :footer="null"
@@ -113,7 +113,7 @@ onMounted(() => {
       @finish="onFinish">
       <FormItem
         name="reviewStatus"
-        label="评审结果"
+        :label="t('functionCase.reviewCase.reviewResult')"
         class="mb-1">
         <RadioGroup
           v-model:value="formState.reviewStatus"
@@ -128,13 +128,13 @@ onMounted(() => {
       </FormItem>
       <FormItem
         name="reviewRemark"
-        label="评审说明">
+        :label="t('functionCase.reviewCase.reviewRemark')">
         <Select
           v-show="formState.reviewStatus === 'FAILED'"
           v-model:value="failMessageValue"
           :options="failOpt"
           class="w-100"
-          placeholder="选择不通过原因"
+          :placeholder="t('functionCase.reviewCase.selectFailReason')"
           @change="changeFailMessage" />
         <Input
           v-show="formState.reviewStatus !== 'FAILED' || failMessageValue === 'other'"
@@ -144,7 +144,7 @@ onMounted(() => {
           class="mt-1"
           :autoSize="{ minRows: 6, maxRows: 6}"
           :maxlength="200"
-          :placeholder="t('输入评审说明，最多可输入200字符')" />
+          :placeholder="t('functionCase.reviewCase.enterReviewRemark')" />
       </FormItem>
       <FormItem class="mt-5">
         <div class="flex justify-end">
@@ -154,13 +154,13 @@ onMounted(() => {
             size="small"
             htmlType="submit"
             class="px-3">
-            提交
+            {{ t('actions.submit') }}
           </Button>
           <Button
             size="small"
             class="ml-5 px-3"
             @click="close">
-            取消
+            {{ t('actions.cancel') }}
           </Button>
         </div>
       </FormItem>

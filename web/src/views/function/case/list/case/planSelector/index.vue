@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { Button, Tag, Tooltip } from 'ant-design-vue';
 import { inject, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { TESTER } from '@xcan-angus/infra';
 import { Icon, Select } from '@xcan-angus/vue-ui';
 import { funcPlan } from '@/api/tester';
+
+const { t } = useI18n();
 
 interface Props {
   planId?: string;
@@ -30,7 +33,7 @@ const todoHandler = () => {
 };
 
 const selectValue = ref<string>();
-const selectChange = (_value:string, option:{name:string;id:string;}) => {
+const selectChange = (_value: any, option: any) => {
   showSelect.value = false;
   const { id, name } = option;
   const exsitId = planInfo.value?.id;
@@ -102,14 +105,14 @@ defineExpose({
         size="small"
         @click="todoHandler">
         <Icon icon="icon-jia" class="text-3 mr-1 -mt-0.25" />
-        计划
+        {{ t('functionCase.selectPlanModal.plan') }}
       </Button>
       <Select
         v-else
         v-model:value="selectValue"
         size="small"
         class="w-43"
-        placeholder="选择计划"
+        :placeholder="t('functionCase.selectPlanModal.selectPlan')"
         showSearch
         :fieldNames="{ label: 'name', value: 'id' }"
         :action="`${TESTER}/func/plan?projectId=${projectInfo.id}&fullTextSearch=true`"

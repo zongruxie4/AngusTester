@@ -77,7 +77,7 @@ const onFinish = async (addBug = false) => {
   if (error) {
     return;
   }
-  notification.success('测试结果修改成功');
+  notification.success(t('functionCase.updateCaseResultModal.testResultUpdateSuccess'));
   emits('update:visible', false);
   emits('update');
   if (addBug) {
@@ -133,7 +133,7 @@ const evalWorkloadChange = (value) => {
 const validateDate = async (_rule: Rule, value: string) => {
   if (formState.value.actualWorkload) {
     if (!value) {
-      return Promise.reject(new Error('请输入评估工作量'));
+      return Promise.reject(new Error(t('functionCase.updateCaseResultModal.enterEvalWorkload')));
     } else {
       return Promise.resolve();
     }
@@ -144,7 +144,7 @@ const validateDate = async (_rule: Rule, value: string) => {
 </script>
 <template>
   <Modal
-    :title="props.resultPassed ? '测试通过' : '测试未通过'"
+    :title="props.resultPassed ? t('functionCase.updateCaseResultModal.testPassed') : t('functionCase.updateCaseResultModal.testNotPassed')"
     :visible="props.visible"
     :width="600"
     :footer="null"
@@ -157,7 +157,7 @@ const validateDate = async (_rule: Rule, value: string) => {
       layout="horizontal"
       @finish="onFinish(false)">
       <FormItem
-        :label="props.selectedCase?.evalWorkloadMethod?.value === 'STORY_POINT' ? '评估故事点' : '评估工时'"
+        :label="props.selectedCase?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.updateCaseResultModal.evalStoryPoint') : t('functionCase.updateCaseResultModal.evalWorkload')"
         name="evalWorkload"
         :rules="{validator: validateDate, trigger: 'change' }">
         <div class="flex items-center text-3">
@@ -167,15 +167,15 @@ const validateDate = async (_rule: Rule, value: string) => {
             dataType="float"
             :min="0.1"
             :max="1000"
-            :placeholder="props.selectedCase?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('最小0.1，最大1000') : t('最小0.1，最大1000')"
+            :placeholder="t('functionCase.updateCaseResultModal.minMaxRange')"
             @blur="evalWorkloadChange($event.target.value)" />
           <span
             v-if="props.selectedCase?.evalWorkloadMethod?.value !== 'STORY_POINT'"
-            class="whitespace-nowrap ml-1">小时</span>
+            class="whitespace-nowrap ml-1">{{ t('functionCase.updateCaseResultModal.hour') }}</span>
         </div>
       </FormItem>
       <FormItem
-        :label="props.selectedCase?.evalWorkloadMethod?.value === 'STORY_POINT' ? '实际故事点' : '实际工时'"
+        :label="props.selectedCase?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.updateCaseResultModal.actualStoryPoint') : t('functionCase.updateCaseResultModal.actualWorkload')"
         name="actualWorkload">
         <div class="flex items-center text-3">
           <Input
@@ -184,15 +184,15 @@ const validateDate = async (_rule: Rule, value: string) => {
             dataType="float"
             :min="0.1"
             :max="1000"
-            :placeholder="props.selectedCase?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('最小0.1，最大1000') : t('最小0.1，最大1000')"
+            :placeholder="t('functionCase.updateCaseResultModal.minMaxRange')"
             @change="actualWorkloadChange($event.target.value)" />
           <span
             v-if="props.selectedCase?.evalWorkloadMethod?.value !== 'STORY_POINT'"
-            class="whitespace-nowrap ml-1">小时</span>
+            class="whitespace-nowrap ml-1">{{ t('functionCase.updateCaseResultModal.hour') }}</span>
         </div>
       </FormItem>
       <FormItem
-        :label="props.resultPassed ? '测试备注' : '不通过原因'"
+        :label="props.resultPassed ? t('functionCase.updateCaseResultModal.testRemark') : t('functionCase.updateCaseResultModal.notPassedReason')"
         name="testRemark"
         :required="props.resultPassed === false">
         <Input
@@ -201,7 +201,7 @@ const validateDate = async (_rule: Rule, value: string) => {
           type="textarea"
           :autoSize="{ minRows: 6, maxRows: 6 }"
           :maxlength="200"
-          :placeholder="t('测试结果或过程说明，最多可输入200字符')" />
+          :placeholder="t('functionCase.updateCaseResultModal.testResultOrProcess')" />
       </FormItem>
       <FormItem class="mt-5">
         <div class="flex justify-end space-x-2">
@@ -212,7 +212,7 @@ const validateDate = async (_rule: Rule, value: string) => {
             size="small"
             class="px-3"
             @click="handleSubmit">
-            {{ t('确认并提交Bug') }}
+            {{ t('functionCase.updateCaseResultModal.confirmAndSubmitBug') }}
           </Button>
           <Button
             :loading="loading"
@@ -220,13 +220,13 @@ const validateDate = async (_rule: Rule, value: string) => {
             size="small"
             htmlType="submit"
             class="px-3">
-            {{ t('确认') }}
+            {{ t('actions.confirm') }}
           </Button>
           <Button
             size="small"
             class="px-3"
             @click="close">
-            {{ t('取消') }}
+            {{ t('actions.cancel') }}
           </Button>
         </div>
       </FormItem>

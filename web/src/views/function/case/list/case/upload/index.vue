@@ -1,11 +1,14 @@
 <script lang="ts" setup>
 import { computed, inject, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon, Modal, Select, Spin } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, RadioGroup, UploadDragger } from 'ant-design-vue';
 import { TESTER, enumUtils } from '@xcan-angus/infra';
 import { StrategyWhenDuplicated } from '@/enums/enums';
 import { formatBytes } from '@/utils/common';
 import { funcCase } from '@/api/tester';
+
+const { t } = useI18n();
 
 export interface Props{
   visible: boolean;
@@ -101,7 +104,7 @@ watch(() => props.visible, newValue => {
 </script>
 <template>
   <Modal
-    title="导入用例"
+    :title="t('functionCase.uploadCase.title')"
     :visible="props.visible"
     @cancel="cancel"
     @ok="ok">
@@ -110,7 +113,7 @@ watch(() => props.visible, newValue => {
       :model="formData"
       size="small">
       <FormItem
-        label="计划"
+        :label="t('functionCase.uploadCase.plan')"
         name="planId"
         required>
         <Select
@@ -119,10 +122,10 @@ watch(() => props.visible, newValue => {
           :action="`${TESTER}/func/plan?projectId=${projectId}&fullTextSearch=true`"
           :defaultActiveFirstOption="true"
           :lazy="false"
-          placeholder="选择计划"
+          :placeholder="t('functionCase.uploadCase.selectPlan')"
           :fieldNames="{value: 'id', label: 'name'}" />
       </FormItem>
-      <FormItem :rules="{message: '请上传文件', validator: validateFile}" name="file">
+      <FormItem :rules="{message: t('functionCase.uploadCase.pleaseUploadFile'), validator: validateFile}" name="file">
         <Spin :spinning="loading">
           <UploadDragger
             v-show="!formData.file"
@@ -133,8 +136,8 @@ watch(() => props.visible, newValue => {
             class="text-3 leading-5">
             <div class="flex flex-col items-center justify-center text-3 leading-5">
               <Icon icon="icon-shangchuan" class="text-5 text-text-link" />
-              <div class="mt-1 mb-1.5 text-text-link">选择文件</div>
-              <div class="text-theme-sub-content">可直接将文件拖入此区域直接上传，文件大小不超过20M，支持.xls .xlsx类型文件。</div>
+              <div class="mt-1 mb-1.5 text-text-link">{{ t('functionCase.uploadCase.selectFile') }}</div>
+              <div class="text-theme-sub-content">{{ t('functionCase.uploadCase.uploadDescription') }}</div>
             </div>
           </UploadDragger>
         </Spin>
@@ -158,12 +161,12 @@ watch(() => props.visible, newValue => {
             size="small"
             @click="handleDownloadTemplate">
             <Icon icon="icon-daochu1" class="text-4 cursor-pointer mr-1" />
-            用例导入模板
+            {{ t('functionCase.uploadCase.caseImportTemplate') }}
           </Button>
         </div>
       </FormItem>
       <FormItem
-        label="遇到重复时的处理策略"
+        :label="t('functionCase.uploadCase.duplicateStrategy')"
         name="strategyWhenDuplicated"
         required>
         <RadioGroup

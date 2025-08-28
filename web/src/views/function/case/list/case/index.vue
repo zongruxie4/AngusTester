@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Switch } from 'ant-design-vue';
+
+const { t } = useI18n();
 import {
   AsyncComponent,
   Colon,
@@ -657,7 +660,7 @@ const tableAction = computed(() => {
       action.menus[_case.id].push({
         key: 'resetTestResult',
         icon: 'icon-zhongzhiceshijieguo',
-        name: '重置测试结果',
+        name: t('functionCase.mainView.resetTestResult'),
         permission: 'resetTestResult'
       });
     }
@@ -666,7 +669,7 @@ const tableAction = computed(() => {
       action.menus[_case.id].push({
         key: 'updateTestResult_canceled',
         icon: 'icon-xiugaiceshijieguo',
-        name: '取消',
+        name: t('functionCase.mainView.cancel'),
         permission: 'edit'
       });
 
@@ -674,24 +677,24 @@ const tableAction = computed(() => {
         action.menus[_case.id].push({
           key: 'updateTestResult_passed',
           icon: 'icon-xiugaiceshijieguo',
-          name: '测试通过',
+          name: t('functionCase.mainView.testPassed'),
           permission: 'updateTestResult'
         }, {
           key: 'updateTestResult_notpassed',
           icon: 'icon-xiugaiceshijieguo',
-          name: '测试未通过',
+          name: t('functionCase.mainView.testNotPassed'),
           permission: 'updateTestResult'
         }, {
           key: 'updateTestResult_blocked',
           icon: 'icon-xiugaiceshijieguo',
-          name: '设为阻塞中',
+          name: t('functionCase.mainView.setBlocked'),
           permission: 'updateTestResult'
         });
       } else {
         action.menus[_case.id].push({
           key: 'retestResult',
           icon: 'icon-xiugaiceshijieguo',
-          name: '重新测试',
+          name: t('functionCase.mainView.retest'),
           permission: 'retestResult'
         });
       }
@@ -701,7 +704,7 @@ const tableAction = computed(() => {
       action.menus[_case.id].push({
         key: 'move',
         icon: 'icon-yidong',
-        name: '移动',
+        name: t('functionCase.mainView.move'),
         permission: 'move'
       });
     }
@@ -882,7 +885,7 @@ const loadEnums = () => {
 };
 
 // 模块相关
-const moduleTreeData = ref([{ name: '无模块用例', id: '-1' }]);
+const moduleTreeData = ref([{ name: t('functionCase.mainView.noModuleCase'), id: '-1' }]);
 const moduleId = ref();
 const loadModuleTree = async (keywords?: string) => {
   const [error, { data }] = await modules.getModuleTree({
@@ -898,7 +901,7 @@ const loadModuleTree = async (keywords?: string) => {
   if (error) {
     return;
   }
-  moduleTreeData.value = [{ name: '无模块用例', id: '-1' }, ...travelTreeData(data || [])];
+  moduleTreeData.value = [{ name: t('functionCase.mainView.noModuleCase'), id: '-1' }, ...travelTreeData(data || [])];
   if (moduleId.value && keywords && !moduleTreeData.value.find(item => item.id === moduleId.value)) {
     moduleId.value = '';
   }
@@ -1006,7 +1009,7 @@ const handleClone = async (rowData: CaseListObj) => {
     updateLoading(false);
     return;
   }
-  notification.success('克隆成功');
+  notification.success(t('functionCase.mainView.cloneSuccess'));
   refreshChange();
 };
 
@@ -1017,8 +1020,8 @@ const refreshRecycleBin = inject('refreshRecycleBin', (_key: 'useCase') => { });
 const handleDelete = async (rowData?: CaseListObj) => {
   modal.confirm({
     centered: true,
-    title: '删除用例',
-    content: rowData ? `确定删除用例【${rowData.name}】吗？` : '确定删除选中的用例吗？',
+    title: t('functionCase.mainView.deleteCase'),
+    content: rowData ? t('functionCase.mainView.confirmDeleteCase', { name: rowData.name }) : t('functionCase.mainView.confirmDeleteSelectedCases'),
     async onOk () {
       await delCase(rowData);
     }
@@ -1039,7 +1042,7 @@ const delCase = async (rowData?: CaseListObj) => {
   actionType.value = 'del';
   refreshChange();
   refreshRecycleBin('useCase');
-  notification.success('删除成功，您可以在回收站查看删除后的用例');
+  notification.success(t('functionCase.mainView.deleteSuccess'));
 };
 
 const getCurrentPage = (pageNo: number, pageSize: number, total: number): number => {
@@ -1066,7 +1069,7 @@ const hanldeResetTestResults = async (rowData: CaseListObj) => {
     updateLoading(false);
     return;
   }
-  notification.success('重置测试结果成功');
+  notification.success(t('functionCase.mainView.resetTestResultSuccess'));
   refreshChange();
 };
 
@@ -1078,7 +1081,7 @@ const handleResetReviewResult = async (rowData: CaseListObj) => {
     updateLoading(false);
     return;
   }
-  notification.success('重置评审结果成功');
+  notification.success(t('functionCase.mainView.resetReviewResultSuccess'));
   refreshChange();
 };
 
@@ -1090,7 +1093,7 @@ const handleReTest = async (rowData: CaseListObj) => {
     updateLoading(false);
     return;
   }
-  notification.success('重置测试状态成功');
+  notification.success(t('functionCase.mainView.resetTestStatusSuccess'));
   refreshChange();
 };
 
@@ -1198,7 +1201,7 @@ const handleSetREsultBlocked = async (value) => {
   if (error) {
     return;
   }
-  notification.success('用例设为阻塞中');
+  notification.success(t('functionCase.mainView.setBlockedSuccess'));
   refreshChange();
 };
 
@@ -1214,7 +1217,7 @@ const handleSetREsultCanceled = async (value) => {
   if (error) {
     return;
   }
-  notification.success('取消成功');
+  notification.success(t('functionCase.mainView.cancelSuccess'));
   refreshChange();
 };
 
@@ -1230,9 +1233,9 @@ const handleCopy = async (value) => {
 
   const message = `${window.location.origin}/function#cases?&id=${value.id}&name=${value.name}&projectId=${projectInfo.value.id}&${_params}&total=${total.value}`;
   toClipboard(message).then(() => {
-    notification.success('复制成功');
+    notification.success(t('functionCase.mainView.copySuccess'));
   }).catch(() => {
-    notification.error('复制失败');
+    notification.error(t('functionCase.mainView.copyFailed'));
   });
 };
 
@@ -1322,7 +1325,7 @@ const handleFavourite = async (rowData: CaseListObj) => {
   if (error) {
     return;
   }
-  notification.success(rowData.favouriteFlag ? '取消收藏成功' : '收藏成功');
+  notification.success(rowData.favouriteFlag ? t('functionCase.mainView.cancelFavouriteSuccess') : t('functionCase.mainView.favouriteSuccess'));
   rowData.favouriteFlag = !rowData.favouriteFlag;
   emits('updateFollowFavourite', 'favourite');
 };
@@ -1334,7 +1337,7 @@ const handleFollow = async (rowData: CaseListObj) => {
   if (error) {
     return;
   }
-  notification.success(rowData.followFlag ? '取消关注成功' : '关注成功');
+  notification.success(rowData.followFlag ? t('functionCase.mainView.cancelFollowSuccess') : t('functionCase.mainView.followSuccess'));
   rowData.followFlag = !rowData.followFlag;
   emits('updateFollowFavourite', 'follow');
 };
@@ -1413,17 +1416,17 @@ const buttonDropdownClick = ({ key }: { key: 'import' | 'export' }) => {
 const modeOptions = [
   {
     key: 'tile',
-    name: '平铺视图',
+    name: t('functionCase.mainView.tileView'),
     label: ''
   },
   {
     key: 'table',
-    name: '列表视图',
+    name: t('functionCase.mainView.listView'),
     label: ''
   },
   {
     key: 'kanban',
-    name: '看板视图',
+    name: t('functionCase.mainView.kanbanView'),
     label: ''
   }
 ];
@@ -1470,37 +1473,37 @@ const detaiIndex = computed(() => {
 const qulickList = [
   {
     type: 'all',
-    name: '所有',
+    name: t('functionCase.mainView.all'),
     selected: false,
     group: 'all'
   },
   {
     type: 'createdBy',
-    name: '我添加的',
+    name: t('functionCase.mainView.myAdded'),
     selected: false,
     group: 'createdBy'
   },
   {
     type: 'testerId',
-    name: '待我测试',
+    name: t('functionCase.mainView.waitingForTest'),
     selected: false,
     group: 'testerId'
   },
   {
     type: 'lastDay',
-    name: '近1天',
+    name: t('functionCase.mainView.lastDay'),
     selected: false,
     group: 'time'
   },
   {
     type: 'lastThreeDays',
-    name: '近3天',
+    name: t('functionCase.mainView.lastThreeDays'),
     selected: false,
     group: 'time'
   },
   {
     type: 'lastWeek',
-    name: '近7天',
+    name: t('functionCase.mainView.lastWeek'),
     selected: false,
     group: 'time'
   }
@@ -1508,86 +1511,86 @@ const qulickList = [
 
 const searchOptions = computed(() => [
   {
-    placeholder: '查询用例编号、名称',
+    placeholder: t('functionCase.case.selectCreator'),
     valueKey: 'name',
     type: 'input',
     allowClear: true
   },
   {
-    placeholder: '选择添加人',
+    placeholder: t('functionCase.case.selectCreator'),
     valueKey: 'createdBy',
     type: 'select-user',
     allowClear: true
   },
   {
-    placeholder: '选择测试人',
+    placeholder: t('functionCase.case.selectTester'),
     valueKey: 'testerId',
     type: 'select-user',
     allowClear: true
   },
   {
-    placeholder: '选择开发人',
+    placeholder: t('functionCase.case.selectDeveloper'),
     valueKey: 'developerId',
     type: 'select-user',
     allowClear: true
   },
   {
-    placeholder: '选择优先级',
+    placeholder: t('functionCase.case.selectPriority'),
     valueKey: 'priority',
     type: 'select-enum',
     enumKey: Priority,
     allowClear: true
   },
   {
-    placeholder: '选择测试结果',
+    placeholder: t('functionCase.case.selectTestResult'),
     valueKey: 'testResult',
     type: 'select-enum',
     enumKey: CaseTestResult,
     allowClear: true
   },
   {
-    placeholder: '选择评审人',
+    placeholder: t('functionCase.case.selectReviewer'),
     valueKey: 'reviewerId',
     type: 'select-user',
     allowClear: true
   },
   {
-    placeholder: '选择评审状态',
+    placeholder: t('functionCase.case.selectReviewStatus'),
     valueKey: 'reviewStatus',
     type: 'select-enum',
     enumKey: ReviewStatusEnum,
     allowClear: true
   },
   {
-    placeholder: ['评审时间从', '评审时间到'],
+    placeholder: [t('functionCase.case.searchPanel.reviewDateFrom'), t('functionCase.case.searchPanel.reviewDateTo')],
     valueKey: 'reviewDate',
     type: 'date-range',
     allowClear: true,
     showTime: true
   },
   {
-    placeholder: ['更新时间从', '更新时间到'],
+    placeholder: [t('functionCase.case.searchPanel.updateDateFrom'), t('functionCase.case.searchPanel.updateDateTo')],
     valueKey: 'lastModifiedDate',
     type: 'date-range',
     allowClear: true,
     showTime: true
   },
   {
-    placeholder: ['完成时间从', '完成时间到'],
+    placeholder: [t('functionCase.case.searchPanel.deadlineDateFrom'), t('functionCase.case.searchPanel.deadlineDateTo')],
     valueKey: 'deadlineDate',
     type: 'date-range',
     allowClear: true,
     showTime: true
   },
   {
-    placeholder: ['添加时间从', '添加时间到'],
+    placeholder: [t('functionCase.case.searchPanel.createdDateFrom'), t('functionCase.case.searchPanel.createdDateTo')],
     valueKey: 'createdDate',
     type: 'date-range',
     allowClear: true,
     showTime: true
   },
   {
-    placeholder: ['测试时间从', '测试时间到'],
+    placeholder: [t('functionCase.case.searchPanel.testResultHandleDateFrom'), t('functionCase.case.searchPanel.testResultHandleDateTo')],
     valueKey: 'testResultHandleDate',
     type: 'date-range',
     allowClear: true,
@@ -1606,13 +1609,13 @@ const searchOptions = computed(() => [
 
 const buttonDropdownMenuItems = computed(() => [
   {
-    name: '导出用例',
+    name: t('functionCase.mainView.expexportCaseortCase'),
     key: 'export',
     icon: 'icon-daochu1',
     noAuth: !caseList.value.length
   },
   {
-    name: '导入用例',
+    name: t('functionCase.mainView.importCase'),
     key: 'import',
     icon: 'icon-shangchuan'
   }
@@ -1620,14 +1623,14 @@ const buttonDropdownMenuItems = computed(() => [
 
 const modeTitle = computed(() => {
   if (props.viewMode === 'kanban') {
-    return '列表视图';
+    return t('functionCase.mainView.listView');
   }
 
   if (props.viewMode === 'tile') {
-    return '看板视图';
+    return t('functionCase.mainView.kanbanView');
   }
 
-  return '平铺视图';
+  return t('functionCase.mainView.tileView');
 });
 
 const modeIcon = computed(() => {
@@ -1645,37 +1648,37 @@ const modeIcon = computed(() => {
 const groupMenuItems = [
   {
     key: 'none',
-    name: '不分组'
+    name: t('functionCase.mainView.noGroup')
   },
   {
     key: 'testerName',
-    name: '按测试人分组'
+    name: t('functionCase.mainView.groupByTester')
   },
   {
     key: 'lastModifiedByName',
-    name: '按最后修改人分组'
+    name: t('functionCase.mainView.groupByLastModifier')
   }
 ];
 
 const sortMenuItems = [
   {
     key: 'createdByName',
-    name: '按添加人排序',
+    name: t('functionCase.mainView.sortByCreator'),
     orderSort: 'ASC'
   },
   {
     key: 'testerName',
-    name: '按测试人排序',
+    name: t('functionCase.mainView.sortByTester'),
     orderSort: 'ASC'
   },
   {
     key: 'priority',
-    name: '按优先级排序',
+    name: t('functionCase.mainView.sortByPriority'),
     orderSort: 'ASC'
   },
   {
     key: 'deadlineDate',
-    name: '按截止时间排序',
+    name: t('functionCase.mainView.sortByDeadline'),
     orderSort: 'ASC'
   }];
 
@@ -1713,7 +1716,7 @@ defineExpose({
               :selectedTypes="selectedTypes"
               @change="quickSearchChange" />
             <div class="px-4 h-7 leading-7 mb-3">
-              <span>已逾期</span>
+              <span>{{ t('functionCase.mainView.overdue') }}</span>
               <Colon class="mr-2" />
               <Switch
                 :checked="overdue"
@@ -1723,7 +1726,7 @@ defineExpose({
             </div>
             <div class="h-7 leading-7 mb-3 mr-5">
               <span class="text-3 text-theme-content">
-                <span>按模块分组</span>
+                <span>{{ t('functionCase.mainView.groupByModule') }}</span>
                 <Colon class="mr-2" />
               </span>
               <Switch
@@ -1752,7 +1755,7 @@ defineExpose({
                   type="text"
                   class="flex items-center px-0 h-5 leading-5 border-0 cursor-pointer mr-5 mb-3">
                   <Icon icon="icon-biaotoupaixu" class="text-3.5" />
-                  <span class="ml-1">排序</span>
+                  <span class="ml-1">{{ t('sort') }}</span>
                 </Button>
               </DropdownSort>
 
@@ -1762,7 +1765,7 @@ defineExpose({
                   type="text"
                   class="flex items-center px-0 h-5 leading-5 border-0 cursor-pointer mr-5 mb-3">
                   <Icon icon="icon-fenzu" class="text-3.5" />
-                  <span class="ml-1">分组</span>
+                  <span class="ml-1">{{ t('functionCase.mainView.group') }}</span>
                 </Button>
               </DropdownGroup>
             </template>
@@ -1802,7 +1805,7 @@ defineExpose({
                 data-type="float"
                 size="small"
                 allowClear
-                placeholder="测试次数"
+                :placeholder="t('functionCase.mainView.testTimes')"
                 style="width: 296px;"
                 :min="0"
                 :debounce="500"
@@ -1826,7 +1829,7 @@ defineExpose({
                 data-type="float"
                 size="small"
                 allowClear
-                placeholder="失败次数"
+                :placeholder="t('functionCase.mainView.failTimes')"
                 style="width: 296px;"
                 :min="0"
                 :debounce="500"
@@ -1850,7 +1853,7 @@ defineExpose({
                 data-type="float"
                 size="small"
                 allowClear
-                placeholder="评审次数"
+                :placeholder="t('functionCase.mainView.reviewTimes')"
                 style="width: 296px;"
                 :min="0"
                 :debounce="500"
@@ -1878,7 +1881,7 @@ defineExpose({
               type="primary"
               @click="handleAiAdd">
               <Icon icon="icon-jia" class="text-3.5" />
-              <span class="ml-1">智能添加用例</span>
+              <span class="ml-1">{{ t('functionCase.mainView.smartAddCase') }}</span>
             </Button>
             <Button
               class="flex-shrink-0 flex items-center pr-0"
@@ -1887,7 +1890,7 @@ defineExpose({
               @click="handleAdd">
               <div class="flex items-center">
                 <Icon icon="icon-jia" class="text-3.5" />
-                <span class="ml-1">添加用例</span>
+                <span class="ml-1">{{ t('functionCase.mainView.addCase') }}</span>
               </div>
               <Dropdown :menuItems="buttonDropdownMenuItems" @click="buttonDropdownClick">
                 <div class="w-5 h-5 flex items-center justify-center">
@@ -1918,7 +1921,7 @@ defineExpose({
             <Tooltip
               arrowPointAtCenter
               placement="topLeft"
-              :title="isOpenCount ? '收起统计' : '查看统计'">
+              :title="isOpenCount ? t('functionCase.mainView.hideStatistics') : t('functionCase.mainView.viewStatistics')">
               <IconCount
                 :value="isOpenCount"
                 class="mr-2 text-4.5"
@@ -1927,7 +1930,7 @@ defineExpose({
             <Tooltip
               arrowPointAtCenter
               placement="topLeft"
-              title="刷新">
+              :title="t('actions.refresh')">
               <IconRefresh class="text-4 mr-3.5" @click="toRefresh" />
             </Tooltip>
           </div>
@@ -1949,7 +1952,7 @@ defineExpose({
             type="link"
             size="small"
             @click="handleAction('move')">
-            移动
+            {{ t('actions.move ') }}
           </Button>
           <Button
             :disabled="batchDisabled.del"
@@ -1957,7 +1960,7 @@ defineExpose({
             type="link"
             size="small"
             @click="handleDelete()">
-            删除
+            {{ t('actions.delete') }}
           </Button>
           <Button
             :disabled="batchDisabled.updateTestResult"
@@ -1965,7 +1968,7 @@ defineExpose({
             type="link"
             size="small"
             @click="handleAction('updateTestResult_passed')">
-            测试通过
+            {{ t('functionCase.mainView.testPassed') }}
           </Button>
           <Button
             :disabled="batchDisabled.updateTestResult"
@@ -1973,7 +1976,7 @@ defineExpose({
             type="link"
             size="small"
             @click="handleAction('updateTestResult_notpassed')">
-            测试未通过
+            {{ t('functionCase.mainView.testNotPassed') }}
           </Button>
           <Button
             danger
@@ -1981,7 +1984,7 @@ defineExpose({
             size="small"
             class="flex items-center px-0 h-5 leading-5"
             @click="cancelSelectedRowKeys">
-            <span>取消批量操作</span>
+            <span>{{ t('functionCase.mainView.cancelBatchOperation') }}</span>
             <span class="ml-1">({{ selectedRowKeys?.length }})</span>
           </Button>
         </div>
@@ -2111,7 +2114,7 @@ defineExpose({
       :userInfo="userInfo"
       :refCaseIds="[selectedCase?.id]"
       :description="selectedCase?.testRemark"
-      :name="`“${selectedCase?.name || ''}” 测试不通过`"
+      :name="t('functionCase.mainView.testNotPassedName', { name: selectedCase?.name || '' })"
       taskType="BUG"
       :confirmorId="selectedCase?.testerId"
       @ok="handleAddTask" />
