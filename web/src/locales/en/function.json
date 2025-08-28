@@ -505,7 +505,7 @@
            "deleteModuleSuccess": "Module deleted successfully",
            "moveSuccess": "Moved successfully"
          }
-       },
+       }
       },
      "functionCase": {
      "case": "Case",
