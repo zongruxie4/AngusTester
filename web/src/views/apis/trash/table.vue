@@ -1,193 +1,146 @@
 <script setup lang="ts">
-import { inject, onMounted, ref, watch } from 'vue';
+import { onMounted, watch } from 'vue';
 import { Button } from 'ant-design-vue';
-import { Icon, Image, notification, Table } from '@xcan-angus/vue-ui';
-import { apis } from '@/api/tester';
+import { Icon, Image, Table } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
+import { useTrashData } from './composables/useTrashData';
+import { useTableColumns } from './composables/useTableColumns';
+import { useTrashActions } from './composables/useTrashActions';
+import type { TrashTableProps, TrashItem } from './types';
 
-const { t } = useI18n();
-
-import { getCurrentPage } from '@/utils/utils';
-import { TrashItem } from './types';
-
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  params: {
-    targetType: 'API' | 'SERVICE';
-    targetName?: string;
-  };
-  notify: string;
-  spinning: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  projectId: undefined,
-  userInfo: undefined,
-  params: undefined,
-  notify: undefined,
+/**
+ * Component props with default values
+ */
+const props = withDefaults(defineProps<TrashTableProps>(), {
+  projectId: '',
+  userInfo: () => ({ id: '' }),
+  params: () => ({ targetType: 'API' as const }),
+  notify: '',
   spinning: false
 });
 
-// eslint-disable-next-line func-call-spacing
+/**
+ * Component emits
+ */
 const emit = defineEmits<{
-  (e: 'update:spinning', value: boolean): void;
-  (e: 'tableChange', value: TrashItem[]):void;
+  'update:spinning': [value: boolean];
+  'tableChange': [value: TrashItem[]];
 }>();
 
-const isAdmin = inject('isAdmin', ref<boolean>());
+// Internationalization
+const { t } = useI18n();
 
-const loaded = ref(false);
+// Use composables
+const {
+  tableData,
+  loading,
+  loaded,
+  pagination,
+  loadData,
+  handleTableChange: handleTableDataChange,
+  resetPagination,
+  updateCurrentPage
+} = useTrashData(props.projectId, props.userInfo);
 
-const tableData = ref<TrashItem[]>([]);
-const orderBy = ref<string>();
-const orderSort = ref<'ASC' | 'DESC'>();
-const pagination = ref<{ total: number; current: number; pageSize: number; }>({
-  total: 0,
-  current: 1,
-  pageSize: 10
-});
+const { columns, emptyTextStyle } = useTableColumns();
 
+const { recoverItem, deleteItem } = useTrashActions(props.projectId);
+
+/**
+ * Handle recover action for a single item
+ * @param data - Trash item to recover
+ */
 const recoverHandler = async (data: TrashItem) => {
   emit('update:spinning', true);
-  const [error] = await apis.backTrash(data.id);
-  if (error) {
-    emit('update:spinning', false);
-    return;
+  const success = await recoverItem(data);
+  if (success) {
+    updateCurrentPage();
+    await loadData(props.params);
   }
-
-  notification.success(t('apiTrash.messages.recoverSuccess'));
-  pagination.value.current = getCurrentPage(pagination.value.current, pagination.value.pageSize, pagination.value.total);
-  loadData();
+  emit('update:spinning', false);
 };
 
+/**
+ * Handle delete action for a single item
+ * @param data - Trash item to delete
+ */
 const deleteHandler = async (data: TrashItem) => {
   emit('update:spinning', true);
-  const [error] = await apis.deleteTrash(data.id);
-  if (error) {
-    emit('update:spinning', false);
-    return;
+  const success = await deleteItem(data);
+  if (success) {
+    updateCurrentPage();
+    await loadData(props.params);
   }
-
-  notification.success(t('tips.deleteSuccess'));
-  pagination.value.current = getCurrentPage(pagination.value.current, pagination.value.pageSize, pagination.value.total);
-  loadData();
-};
-
-const tableChange = ({ current = 1, pageSize = 10 }, _filters, sorter: { orderBy: string; orderSort: 'ASC' | 'DESC'; }) => {
-  orderBy.value = sorter.orderBy;
-  orderSort.value = sorter.orderSort;
-  pagination.value.current = current;
-  pagination.value.pageSize = pageSize;
-  loadData();
-};
-
-const loadData = async () => {
-  emit('update:spinning', true);
-  const params: {
-    projectId: string;
-    pageNo: number;
-    pageSize: number;
-    targetType?: 'API' | 'SERVICE';
-    targetName?: string;
-    orderBy?: string;
-    orderSort?: string;
-  } = {
-    projectId: props.projectId,
-    pageNo: pagination.value.current,
-    pageSize: pagination.value.pageSize
-  };
-
-  if (props.params) {
-    params.targetType = props.params.targetType;
-    params.targetName = props.params.targetName;
-  }
-
-  if (orderSort.value) {
-    params.orderBy = orderBy.value;
-    params.orderSort = orderSort.value;
-  }
-
-  const [error, res] = await apis.getTrashList(params);
-  loaded.value = true;
   emit('update:spinning', false);
-  if (error) {
-    return;
-  }
-
-  const data = res?.data || { list: [], total: 0 };
-  const userId = props.userInfo?.id;
-  tableData.value = data.list.map(item => {
-    item.disabled = true;
-    if (isAdmin || userId === item.createdBy || userId === item.deletedBy) {
-      item.disabled = false;
-    }
-
-    return item;
-  });
-  emit('tableChange', tableData.value);
-  pagination.value.total = +(data.total || 0);
 };
 
-onMounted(() => {
-  watch([() => props.projectId, () => props.params], () => {
-    pagination.value.current = 1;
-    loadData();
-  }, { immediate: true });
+/**
+ * Handle table change events (pagination, sorting)
+ * @param paginationInfo - Pagination information
+ * @param filters - Table filters
+ * @param sorter - Sorting information
+ */
+const tableChange = (
+  paginationInfo: { current?: number; pageSize?: number },
+  filters: any,
+  sorter: { orderBy?: string; orderSort?: 'ASC' | 'DESC' }
+) => {
+  handleTableDataChange(paginationInfo, filters, sorter);
+  loadData(props.params);
+};
 
-  watch(() => props.notify, (newValue) => {
+/**
+ * Watch for prop changes and reload data
+ */
+watch(
+  [() => props.projectId, () => props.params],
+  () => {
+    resetPagination();
+    loadData(props.params);
+  },
+  { immediate: true }
+);
+
+/**
+ * Watch for notify changes and reload data
+ */
+watch(
+  () => props.notify,
+  (newValue) => {
     if (newValue === undefined || newValue === null || newValue === '') {
       return;
     }
+    resetPagination();
+    loadData(props.params);
+  },
+  { immediate: true }
+);
 
-    pagination.value.current = 1;
-    loadData();
-  }, { immediate: true });
-});
-
-const columns = [
-  // {
-  //   title: 'ID',
-  //   dataIndex: 'targetId',
-  //   ellipsis: true,
-  //   sorter: false
-  // },
-  {
-    title: t('apiTrash.table.columns.name'),
-    dataIndex: 'targetName',
-    width: '35%',
-    ellipsis: true,
-    sorter: false
-  },
-  {
-    title: t('apiTrash.table.columns.createdBy'),
-    dataIndex: 'createdByName',
-    ellipsis: true,
-    sorter: false
-  },
-  {
-    title: t('apiTrash.table.columns.deletedBy'),
-    dataIndex: 'deletedByName',
-    ellipsis: true,
-    sorter: false
-  },
-  {
-    title: t('apiTrash.table.columns.deletedDate'),
-    dataIndex: 'deletedDate',
-    ellipsis: true,
-    sorter: true
-  },
-  {
-    title: t('apiTrash.table.columns.action'),
-    dataIndex: 'action',
-    width: 70
+/**
+ * Watch for loading state changes and emit to parent
+ */
+watch(
+  loading,
+  (newLoading) => {
+    emit('update:spinning', newLoading);
   }
-];
+);
 
-const emptyTextStyle = {
-  margin: '140px auto',
-  height: 'auto'
-};
+/**
+ * Watch for table data changes and emit to parent
+ */
+watch(
+  tableData,
+  (newData) => {
+    emit('tableChange', newData);
+  },
+  { deep: true }
+);
+
+// Lifecycle hook
+onMounted(() => {
+  // Initial data loading is handled by watchers
+});
 </script>
 
 <template>
@@ -197,10 +150,13 @@ const emptyTextStyle = {
     :columns="columns"
     :pagination="pagination"
     :emptyTextStyle="emptyTextStyle"
-    rowKey="id"
+    noDataSize="small"
+    :noDataText="t('common.noData')"
     size="small"
+    rowKey="id"
     @change="tableChange">
     <template #bodyCell="{ record, column }">
+      <!-- Deleted by column with avatar -->
       <div
         v-if="column.dataIndex === 'deletedByName'"
         :title="record.deletedByName"
@@ -209,10 +165,12 @@ const emptyTextStyle = {
           <Image
             :src="record.deletedByAvatar"
             type="avatar"
-            class="w-full" />
+            class="w-full object-cover" />
         </div>
-        <div class="flex-1 truncate">{{ record.deletedByName }}</div>
+        <div class="flex-1 truncate text-sm">{{ record.deletedByName }}</div>
       </div>
+
+      <!-- Created by column with avatar -->
       <div
         v-else-if="column.dataIndex === 'createdByName'"
         :title="record.createdByName"
@@ -221,28 +179,39 @@ const emptyTextStyle = {
           <Image
             :src="record.createdByAvatar"
             type="avatar"
-            class="w-full" />
+            class="w-full object-cover" />
         </div>
-        <div class="flex-1 truncate">{{ record.createdByName }}</div>
+        <div class="flex-1 truncate text-sm">{{ record.createdByName }}</div>
       </div>
-      <div v-else-if="column.dataIndex === 'action'" class="flex items-center space-x-2.5">
+
+      <!-- Action column with buttons -->
+      <div
+        v-else-if="column.dataIndex === 'action'"
+        class="flex items-center space-x-2.5">
+        <!-- Recover button -->
         <Button
           :disabled="record.disabled"
           :title="t('apiTrash.table.actions.recover')"
           size="small"
           type="text"
-          class="space-x-1 flex items-center p-0"
+          class="space-x-1 flex items-center p-0 hover:bg-blue-50"
           @click="recoverHandler(record)">
-          <Icon icon="icon-zhongzhi" class="cursor-pointer text-theme-text-hover" />
+          <Icon
+            icon="icon-zhongzhi"
+            class="cursor-pointer text-blue-600 hover:text-blue-800" />
         </Button>
+
+        <!-- Delete button -->
         <Button
           :disabled="record.disabled"
           :title="t('actions.delete')"
           size="small"
           type="text"
-          class="space-x-1 flex items-center p-0"
+          class="space-x-1 flex items-center p-0 hover:bg-red-50"
           @click="deleteHandler(record)">
-          <Icon icon="icon-qingchu" class="text-3.5 cursor-pointer text-theme-text-hover" />
+          <Icon
+            icon="icon-qingchu"
+            class="text-3.5 cursor-pointer text-red-600 hover:text-red-800" />
         </Button>
       </div>
     </template>
@@ -250,8 +219,17 @@ const emptyTextStyle = {
 </template>
 
 <style scoped>
-.link {
-  color: #1890ff;
-  cursor: pointer;
+/**
+ * Table component styles
+ * Using Tailwind CSS classes for most styling
+ */
+.ant-table-tbody > tr:hover > td {
+  @apply bg-gray-50;
 }
+
+.ant-table-thead > tr > th {
+  @apply bg-gray-50 font-medium;
+}
+
+/* Custom button hover effects are handled via Tailwind classes in template */
 </style>
