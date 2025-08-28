@@ -854,7 +854,21 @@
              "placeholder": "Can associate up to 20 cases",
              "overdue": "Overdue",
              "cancel": "Cancel",
-             "confirm": "Confirm"
+             "confirm": "Confirm",
+             "progress": "Progress",
+             "completed": "Completed",
+             "total": "Total",
+             "associateCase": "Associate Case",
+             "confirmCancelAssocCase": "Confirm to cancel associated case 【{name}】?",
+             "associateCaseTip": "\"Associated Case\" are used to establish relationships between different cases for easy management and traceability. Cases that can establish associations include: dependent cases, extended cases, same functionality cases, key functionality cases, etc.",
+             "code": "Code",
+             "name": "Name",
+             "priority": "Priority",
+             "evalStoryPoint": "Estimated Story Points",
+             "status": "Status",
+             "tester": "Tester",
+             "deadline": "Deadline",
+             "actions": "Actions"
            },
            "assocTask": {
              "title": "Associated Tasks",
@@ -1008,8 +1022,108 @@
            "apiTestTip": "Establish association with corresponding API test tasks, facilitating tracking of API test progress and ensuring normal interface operation.",
            "scenarioTestTip": "Establish association with corresponding scenario test tasks, facilitating understanding of functionality effectiveness in real scenarios and ensuring solution completeness.",
            "taskTip": "Record development or testing tasks associated with the current case, helping teams track testing tasks.",
-           "bugTaskName": "Test Not Passed"
+           "bugTaskName": "Test Not Passed",
+           "caseDetail": {
+              "basicInfo": "Basic Info",
+              "name": "Name",
+              "id": "ID",
+              "code": "Code",
+              "reviewStatus": "Review Status",
+              "version": "Version",
+              "softwareVersion": "Software Version",
+              "priority": "Priority",
+              "unplannedCase": "Unplanned Case",
+              "tags": "Tags",
+              "planName": "Plan",
+              "moduleName": "Module",
+              "testResult": "Test Result",
+              "evalStoryPoint": "Estimated Story Points",
+              "evalWorkload": "Estimated Workload",
+              "actualStoryPoint": "Actual Story Points",
+              "actualWorkload": "Actual Workload",
+              "overdue": "Overdue",
+              "personnel": "Personnel",
+              "tester": "Tester",
+              "developer": "Developer",
+              "reviewer": "Reviewer",
+              "creator": "Creator",
+              "lastModifier": "Last Modifier",
+              "assignToMe": "Assign to Me",
+              "date": "Date",
+              "reviewTime": "Review Time",
+              "testCompleteTime": "Test Complete Time",
+              "addTime": "Add Time",
+              "deadline": "Deadline",
+              "lastModifiedTime": "Last Modified Time",
+              "deadlineMustBeFuture": "Deadline must be a future time",
+              "reviewInfo": "Review Info",
+              "enableReview": "Enable Review",
+              "reviewCount": "Review Count",
+              "reviewFailCount": "Review Fail Count",
+              "oneTimePass": "One Time Pass",
+              "reviewOpinion": "Review Opinion",
+              "testInfo": "Test Info",
+              "testCount": "Test Count",
+              "failCount": "Fail Count",
+              "resultRemark": "Result Remark",
+              "precondition": "Precondition",
+              "save": "Save",
+              "cancel": "Cancel",
+              "inputPrecondition": "Input precondition",
+              "descCharLimit": "Description characters cannot exceed 6000",
+              "noData": "No Data",
+              "testSteps": "Test Steps",
+              "description": "Description",
+              "descCharLimit2000": "Description characters cannot exceed 2000",
+              "attachments": "Attachments",
+              "uploadAttachments": "Upload attachments, maximum 5 files",
+              "selectVersion": "Please select version"
+           },
+           "assocCase": {
+              "progress": "Progress",
+              "completed": "Completed",
+              "total": "Total",
+              "associateCase": "Associate Case",
+              "confirmCancelAssocCase": "Confirm to cancel associated case 【{name}】?",
+              "associateCaseTip": "\"Associated Cases\" are used to establish relationships between different cases for easy management and traceability. Cases that can establish associations include: dependent cases, extended cases, same functionality cases, key functionality cases, etc.",
+              "code": "Code",
+              "name": "Name",
+              "priority": "Priority",
+              "evalStoryPoint": "Estimated Story Points",
+              "status": "Status",
+              "tester": "Tester",
+              "deadline": "Deadline",
+              "actions": "Actions",
+              "cancel": "Cancel"
+           },
+           "caseColumConfig": {
+              "tester": "Tester",
+              "developer": "Developer",
+              "reviewer": "Reviewer",
+              "creator": "Creator",
+              "lastModifier": "Last Modifier",
+              "reviewTime": "Review Time",
+              "testCompleteTime": "Test Complete Time",
+              "addTime": "Add Time",
+              "deadline": "Deadline",
+              "lastModifiedTime": "Last Modified Time",
+              "enableReview": "Enable Review",
+              "reviewCount": "Review Count",
+              "reviewFailCount": "Review Fail Count",
+              "oneTimePass": "One Time Pass",
+              "reviewOpinion": "Review Opinion",
+              "testCount": "Test Count",
+              "failCount": "Fail Count",
+              "resultRemark": "Result Remark",
+              "id": "ID",
+              "name": "Name",
+              "method": "Method",
+              "path": "Path",
+              "projectId": "Project ID",
+              "projectName": "Project Name"
+            }
          },
+        
          "review": {
            "reviewCount": "Review Count",
            "total": "Total",
@@ -1035,39 +1149,40 @@
            "actualWorkload": "Actual Workload",
            "overdue": "Overdue"
          }
-    },
-  "functionTrash": {
-    "name": "Trash",
-    "title": "Trash",
-    "placeholder": {
-      "searchKeyword": "Please enter search keyword"
-    },
-    "tips": {
-      "adminOnly": "Only administrators and deleters can restore or permanently delete recycle bin data."
-    },
-    "actions": {
-      "recoverAll": "Restore All",
-      "deleteAll": "Delete All",
-      "refresh": "Refresh",
-      "recover": "Restore",
-      "delete": "Delete"
-    },
-    "messages": {
-      "recoverAllSuccess": "All items restored successfully",
-      "deleteAllSuccess": "All items deleted successfully",
-      "recoverSuccess": "Restored successfully",
-      "deleteSuccess": "Deleted successfully"
-    },
-    "tabs": {
-      "plan": "Plan",
-      "case": "Case"
-    },
-    "columns": {
-      "name": "Name",
-      "creator": "Creator",
-      "deleter": "Deleter",
-      "deleteTime": "Delete Time",
-      "actions": "Actions"
+       },
+    "functionTrash": {
+      "name": "Trash",
+      "title": "Trash",
+      "placeholder": {
+        "searchKeyword": "Please enter search keyword"
+      },
+      "tips": {
+        "adminOnly": "Only administrators and deleters can restore or permanently delete recycle bin data."
+      },
+      "actions": {
+        "recoverAll": "Restore All",
+        "deleteAll": "Delete All",
+        "refresh": "Refresh",
+        "recover": "Restore",
+        "delete": "Delete"
+      },
+      "messages": {
+        "recoverAllSuccess": "All items restored successfully",
+        "deleteAllSuccess": "All items deleted successfully",
+        "recoverSuccess": "Restored successfully",
+        "deleteSuccess": "Deleted successfully"
+      },
+      "tabs": {
+        "plan": "Plan",
+        "case": "Case"
+      },
+      "columns": {
+        "name": "Name",
+        "creator": "Creator",
+        "deleter": "Deleter",
+        "deleteTime": "Delete Time",
+        "actions": "Actions"
+      }
     }
-     }
-     }
+}
+ 

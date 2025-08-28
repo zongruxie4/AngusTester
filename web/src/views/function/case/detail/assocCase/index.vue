@@ -4,6 +4,7 @@ import { AsyncComponent, Hints, Icon, modal, ReviewStatus, Table, TaskPriority, 
 import { TESTER } from '@xcan-angus/infra';
 import { Button } from 'ant-design-vue';
 import { funcCase } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   projectId: string;
@@ -15,6 +16,8 @@ interface Props {
     name: string;
   }[];
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
@@ -80,7 +83,7 @@ const handlePut = async (refCaseIds) => {
 
 const handleDelTask = (record) => {
   modal.confirm({
-    content: `确认取消关联用例【${record.name}】吗？`,
+    content: t('functionCase.kanbanView.assocCase.confirmCancelAssocCase', { name: record.name }),
     onOk () {
       return funcCase.cancelAssociationCase(props.caseId, {
         assocCaseIds: [record.id]
@@ -108,36 +111,44 @@ const openCaseTab = (record) => {
 // 编号、名称、优先级、评估故事点、状态、测试人、截止时间、操作
 const columns = [
   {
+    key: 'code',
     dataIndex: 'code',
-    title: '编号'
+    title: t('functionCase.kanbanView.assocCase.code')
   },
   {
+    key: 'name',
     dataIndex: 'name',
-    title: '名称'
+    title: t('functionCase.kanbanView.assocCase.name')
   },
   {
+    key: 'priority',
     dataIndex: 'priority',
-    title: '优先级'
+    title: t('functionCase.kanbanView.assocCase.priority')
   },
   {
+    key: 'evalWorkload',
     dataIndex: 'evalWorkload',
-    title: '评估故事点'
+    title: t('functionCase.kanbanView.assocCase.evalStoryPoint')
   },
   {
+    key: 'status',
     dataIndex: 'status',
-    title: '状态'
+    title: t('functionCase.kanbanView.assocCase.status')
   },
   {
+    key: 'testerName',
     dataIndex: 'testerName',
-    title: '测试人'
+    title: t('functionCase.kanbanView.assocCase.tester')
   },
   {
+    key: 'deadlineDate',
     dataIndex: 'deadlineDate',
-    title: '截止时间'
+    title: t('functionCase.kanbanView.assocCase.deadline')
   },
   {
+    key: 'action',
     dataIndex: 'action',
-    title: '操作'
+    title: t('functionCase.kanbanView.assocCase.actions')
   }
 ];
 
@@ -167,7 +178,7 @@ const columns = [
         size="small"
         @click="startEdit">
         <Icon icon="icon-jia" class="mr-1" />
-        关联用例
+        {{ t('functionCase.kanbanView.assocCase.associateCase') }}
       </Button>
     </div>
     <Table
@@ -191,7 +202,7 @@ const columns = [
             type="text"
             @click="handleDelTask(record)">
             <Icon icon="icon-qingchu" class="mr-1" />
-            取消
+            {{ t('actions.cancel') }}
           </Button>
         </template>
         <template v-if="column.dataIndex === 'priority'">

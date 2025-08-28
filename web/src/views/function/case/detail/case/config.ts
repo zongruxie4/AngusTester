@@ -1,25 +1,25 @@
 import { i18n } from '@xcan-angus/infra';
-const t = i18n.getI18n().global.t;
+const t = i18n.getI18n()?.global?.t || ((value: string) => value);
 export const bigPeopleInfoColumns = [
   [
     {
-      label: '测试人',
+      label: t('functionCase.detail.caseColumConfig.tester'),
       dataIndex: 'testerName'
     },
     {
-      label: '开发人',
+      label: t('functionCase.detail.caseColumConfig.developer'),
       dataIndex: 'developerName'
     },
     {
-      label: '评审人',
+      label: t('functionCase.detail.caseColumConfig.reviewer'),
       dataIndex: 'reviewerName'
     },
     {
-      label: '添加人',
+      label: t('functionCase.detail.caseColumConfig.creator'),
       dataIndex: 'createdByName'
     },
     {
-      label: '最后修改人',
+      label: t('functionCase.detail.caseColumConfig.lastModifier'),
       dataIndex: 'lastModifiedByName'
     }]
 ];
@@ -28,23 +28,23 @@ export const minPeopleInfoColumns = [[bigPeopleInfoColumns[0][0], bigPeopleInfoC
 export const bigDateInfoColumns = [
   [
     {
-      label: '评审时间',
+      label: t('functionCase.detail.caseColumConfig.reviewTime'),
       dataIndex: 'reviewDate'
     },
     {
-      label: '测试完成时间',
+      label: t('functionCase.detail.caseColumConfig.testCompleteTime'),
       dataIndex: 'testResultHandleDate'
     },
     {
-      label: '添加时间',
+      label: t('functionCase.detail.caseColumConfig.addTime'),
       dataIndex: 'createdDate'
     },
     {
-      label: '截止时间',
+      label: t('functionCase.detail.caseColumConfig.deadline'),
       dataIndex: 'deadlineDate'
     },
     {
-      label: '最后修改时间',
+      label: t('functionCase.detail.caseColumConfig.lastModifiedTime'),
       dataIndex: 'lastModifiedDate'
     }
   ]
@@ -59,24 +59,24 @@ export const minDateInfoColumns = [
 export const bigReviewInfoColumns = [
   [
     {
-      label: '是否开启评审',
+      label: t('functionCase.detail.caseColumConfig.enableReview'),
       dataIndex: 'review',
       customRender: ({ text }) => text ? t('status.yes') : t('status.no')
     },
     {
-      label: '评审次数',
+      label: t('functionCase.detail.caseColumConfig.reviewCount'),
       dataIndex: 'reviewNum'
     },
     {
-      label: '评审失败次数',
+      label: t('functionCase.detail.caseColumConfig.reviewFailCount'),
       dataIndex: 'reviewFailNum'
     },
     {
-      label: '是否一次性通过',
+      label: t('functionCase.detail.caseColumConfig.oneTimePass'),
       dataIndex: 'oneReviewPass'
     },
     {
-      label: '评审意见',
+      label: t('functionCase.detail.caseColumConfig.reviewOpinion'),
       dataIndex: 'reviewRemark'
     }
   ]
@@ -100,19 +100,19 @@ export const bigTestInfoColumns = [
     //   dataIndex: 'testResult'
     // },
     {
-      label: '测试次数',
+      label: t('functionCase.detail.caseColumConfig.testCount'),
       dataIndex: 'testNum'
     },
     {
-      label: '失败次数',
+      label: t('functionCase.detail.caseColumConfig.failCount'),
       dataIndex: 'testFailNum'
     },
     {
-      label: '是否一次性通过',
+      label: t('functionCase.detail.caseColumConfig.oneTimePass'),
       dataIndex: 'oneTestPass'
     },
     {
-      label: '结果备注',
+      label: t('functionCase.detail.caseColumConfig.resultRemark'),
       dataIndex: 'testRemark'
     }
   ]
@@ -131,28 +131,28 @@ export const minTestInfoColumns = [
 export const bigApisInfoColumns = [
   [
     {
-      label: 'ID',
+      label: t('functionCase.detail.caseColumConfig.id'),
       dataIndex: 'apisId'
     },
     {
-      label: '名称',
+      label: t('functionCase.detail.caseColumConfig.name'),
       dataIndex: 'apisSummary'
     },
     {
-      label: '方法',
+      label: t('functionCase.detail.caseColumConfig.method'),
       dataIndex: 'method',
       customRender: ({ text }) => text?.message
     },
     {
-      label: '路径',
+      label: t('functionCase.detail.caseColumConfig.path'),
       dataIndex: 'endpoint'
     },
     {
-      label: '项目ID',
+      label: t('functionCase.detail.caseColumConfig.projectId'),
       dataIndex: 'apisProjectId'
     },
     {
-      label: '项目名称',
+      label: t('functionCase.detail.caseColumConfig.projectName'),
       dataIndex: 'apisProjectName'
     }
   ]

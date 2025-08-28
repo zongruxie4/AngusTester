@@ -113,25 +113,25 @@ const infoExpand = ref(true);
 
 const infoColumns = computed<GridColumns[][]>(() => [
   [
-    { label: '名称', dataIndex: 'name' },
-    { label: 'ID', dataIndex: 'id' },
-    { label: '编号', dataIndex: 'code' },
-    { label: '评审状态', dataIndex: 'reviewStatus' },
-    { label: '版本', dataIndex: 'version' },
-    { label: '软件版本', dataIndex: 'softwareVersion' },
-    { label: '优先级', dataIndex: 'priority' },
-    { label: '计划外用例', dataIndex: 'unplannedFlag', customRender: ({ text }) => text ? t('status.yes') : t('status.no') }
+    { label: t('functionCase.detail.caseDetail.name'), dataIndex: 'name' },
+    { label: t('functionCase.detail.caseDetail.id'), dataIndex: 'id' },
+    { label: t('functionCase.detail.caseDetail.code'), dataIndex: 'code' },
+    { label: t('functionCase.detail.caseDetail.reviewStatus'), dataIndex: 'reviewStatus' },
+    { label: t('functionCase.detail.caseDetail.version'), dataIndex: 'version' },
+    { label: t('functionCase.detail.caseDetail.softwareVersion'), dataIndex: 'softwareVersion' },
+    { label: t('functionCase.detail.caseDetail.priority'), dataIndex: 'priority' },
+    { label: t('functionCase.detail.caseDetail.unplannedCase'), dataIndex: 'unplannedFlag', customRender: ({ text }) => text ? t('status.yes') : t('status.no') }
   ],
   [
-    { label: '标签', dataIndex: 'tags' },
-    { label: '所属计划', dataIndex: 'planName' },
-    { label: '所属模块', dataIndex: 'moduleName' },
+    { label: t('functionCase.detail.caseDetail.tags'), dataIndex: 'tags' },
+    { label: t('functionCase.detail.caseDetail.planName'), dataIndex: 'planName' },
+    { label: t('functionCase.detail.caseDetail.moduleName'), dataIndex: 'moduleName' },
     {
-      label: '测试结果',
+      label: t('functionCase.detail.caseDetail.testResult'),
       dataIndex: 'testResult'
     },
-    { label: props.caseDetail?.evalWorkloadMethod?.value === 'STORY_POINT' ? '评估故事点' : '评估工时', dataIndex: 'evalWorkload', customRender: ({ text }) => text || '--' },
-    { label: props.caseDetail?.evalWorkloadMethod?.value === 'STORY_POINT' ? '实际故事点' : '实际工时', dataIndex: 'actualWorkload', customRender: ({ text }) => text || '--' }
+    { label: props.caseDetail?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.detail.caseDetail.evalStoryPoint') : t('functionCase.detail.caseDetail.evalWorkload'), dataIndex: 'evalWorkload', customRender: ({ text }) => text || '--' },
+    { label: props.caseDetail?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.detail.caseDetail.actualStoryPoint') : t('functionCase.detail.caseDetail.actualWorkload'), dataIndex: 'actualWorkload', customRender: ({ text }) => text || '--' }
   ]
 ]);
 
@@ -321,7 +321,7 @@ const editDeadlineDate = async () => {
   }
 
   if (dayjs(deadlineDate.value).isBefore(dayjs(), 'minute')) {
-    notification.warning('截止时间必须是一个未来时间');
+    notification.warning(t('functionCase.detail.caseDetail.deadlineMustBeFuture'));
     return;
   }
 
@@ -477,7 +477,7 @@ const editorInit = {
     color: #BFBFBF !important;
   }
   `,
-  placeholder: '请输入备注，最多支持2000字符，包括文件上传后URL地址长度' // 设置内容区的占位文字提示
+  placeholder: t('functionCase.detail.caseDetail.inputPrecondition') // 设置内容区的占位文字提示
 };
 
 const descRichRef = ref();
@@ -634,7 +634,7 @@ onBeforeUnmount(() => {
     <div class="flex-1">
       <Toggle
         v-model:open="infoExpand"
-        title="基本信息">
+        :title="t('functionCase.detail.caseDetail.basicInfo')">
         <Grid
           :columns="infoColumns"
           :dataSource="caseDetail"
@@ -653,7 +653,7 @@ onBeforeUnmount(() => {
                   :maxlength="200"
                   size="small"
                   class="absolute -top-1.25"
-                  placeholder="用例名称"
+                  :placeholder="t('functionCase.detail.caseDetail.name')"
                   @blur="editName" />
               </template>
               <template v-else>
@@ -679,7 +679,7 @@ onBeforeUnmount(() => {
                   enumKey="Priority"
                   size="small"
                   class="w-52 absolute -top-1.25"
-                  placeholder="优先级"
+                  :placeholder="t('functionCase.detail.caseDetail.priority')"
                   @blur="editPriority($event.target.value)">
                   <template #option="item">
                     <TaskPriority :value="item" />
@@ -706,7 +706,7 @@ onBeforeUnmount(() => {
                   :defaultOptions="defaultTags"
                   :fieldNames="{ label: 'name', value: 'id' }"
                   :maxTags="5"
-                  :placeholder="t('添加标签数量1~5个')"
+                  :placeholder="t('functionCase.detail.caseDetail.tags')"
                   :class="{'border-error':tagsIds && tagsIds.length > 5 }"
                   :action="`${TESTER}/tag?projectId=${projectId}&fullTextSearch=true`"
                   mode="multiple"
@@ -835,7 +835,7 @@ onBeforeUnmount(() => {
                 v-if="caseDetail?.overdue"
                 class="border border-status-error rounded px-0.5 ml-5"
                 style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                已逾期
+                {{ t('functionCase.detail.caseDetail.overdue') }}
               </div>
             </div>
           </template>
@@ -849,7 +849,7 @@ onBeforeUnmount(() => {
                 ref="versionRef"
                 v-model:value="versionValue"
                 allowClear
-                placeholder="请选择所属版本"
+                                  :placeholder="t('functionCase.detail.caseDetail.selectVersion')"
                 lazy
                 class="w-full max-w-60"
                 :action="`${TESTER}/software/version?projectId=${projectId}`"
@@ -883,7 +883,7 @@ onBeforeUnmount(() => {
       </Toggle>
       <template v-if="!bigLayout">
         <Toggle
-          title="人员"
+          :title="t('functionCase.detail.caseDetail.personnel')"
           class="mt-3.5">
           <Grid
             :columns="peopleInfoColumns"
@@ -916,14 +916,14 @@ onBeforeUnmount(() => {
                   size="small"
                   class="p-0 h-3.5 leading-3.5 ml-1"
                   @click="handleSetTester">
-                  指派给我
+                  {{ t('functionCase.detail.caseDetail.assignToMe') }}
                 </Button>
               </template>
             </template>
           </Grid>
         </Toggle>
         <Toggle
-          title="日期"
+          :title="t('functionCase.detail.caseDetail.date')"
           class="mt-3.5">
           <Grid
             :columns="dateInfoColumns"
@@ -959,7 +959,7 @@ onBeforeUnmount(() => {
           </Grid>
         </Toggle>
         <Toggle
-          title="评审信息"
+          :title="t('functionCase.detail.caseDetail.reviewInfo')"
           class="mt-3.5">
           <Grid
             :columns="reviewInfoColumns"
@@ -974,7 +974,7 @@ onBeforeUnmount(() => {
           </Grid>
         </Toggle>
         <Toggle
-          title="测试信息"
+          :title="t('functionCase.detail.caseDetail.testInfo')"
           class="mt-3.5">
           <Grid
             :columns="testInfoColumns"
@@ -998,22 +998,22 @@ onBeforeUnmount(() => {
         class="mt-3.5">
         <template #title>
           <div class="flex items-center space-x-2">
-            <span>前置条件</span>
+            <span>{{ t('functionCase.detail.caseDetail.precondition') }}</span>
             <template v-if="isEditPrecondition">
-              <Button
-                class="font-normal text-theme-special"
-                type="link"
-                size="small"
-                @click="savePrecondition">
-                保存
-              </Button>
-              <Button
-                class="font-normal text-theme-special"
-                type="link"
-                size="small"
-                @click="cancelEditPrecondition">
-                取消
-              </Button>
+                              <Button
+                  class="font-normal text-theme-special"
+                  type="link"
+                  size="small"
+                  @click="savePrecondition">
+                  {{ t('functionCase.detail.caseDetail.save') }}
+                </Button>
+                              <Button
+                  class="font-normal text-theme-special"
+                  type="link"
+                  size="small"
+                  @click="cancelEditPrecondition">
+                  {{ t('functionCase.detail.caseDetail.cancel') }}
+                </Button>
             </template>
             <Icon
               v-else-if="props.actionAuth.includes('edit')"
@@ -1028,7 +1028,7 @@ onBeforeUnmount(() => {
               ref="preconditionRichRef"
               v-model:value="preconditionContent"
               :options="{ placeholder: t('输入前置条件')}" />
-            <div v-show="preconditionError" class="text-status-error">描述字符不能多于6000</div>
+            <div v-show="preconditionError" class="text-status-error">{{ t('functionCase.detail.caseDetail.descCharLimit') }}</div>
           </template>
           <template v-else>
             <template v-if="caseDetail?.precondition">
@@ -1036,7 +1036,7 @@ onBeforeUnmount(() => {
             </template>
             <template v-else>
               <NoData
-                text="无数据"
+                :text="t('functionCase.detail.caseDetail.noData')"
                 class="my-8"
                 size="small" />
             </template>
@@ -1048,21 +1048,21 @@ onBeforeUnmount(() => {
         class="mt-3.5">
         <template #title>
           <div class="flex items-center space-x-2">
-            <span>测试步骤</span>
+            <span>{{ t('functionCase.detail.caseDetail.testSteps') }}</span>
             <template v-if="isEditSteps">
               <Button
                 class="font-normal text-theme-special"
                 type="link"
                 size="small"
                 @click="saveSteps">
-                保存
+                {{ t('actions.save') }}
               </Button>
               <Button
                 class="font-normal text-theme-special"
                 type="link"
                 size="small"
                 @click="cancelEditSteps">
-                取消
+                {{ t('actions.cancel') }}
               </Button>
             </template>
             <Icon
@@ -1082,7 +1082,7 @@ onBeforeUnmount(() => {
           </template>
           <template v-else>
             <NoData
-              text="无数据"
+              :text="t('functionCase.detail.caseDetail.noData')"
               size="small"
               class="my-8" />
           </template>
@@ -1093,21 +1093,21 @@ onBeforeUnmount(() => {
         class="mt-3.5">
         <template #title>
           <div class="flex items-center space-x-2">
-            <span>描述</span>
+            <span>{{ t('functionCase.detail.caseDetail.description') }}</span>
             <template v-if="isEditDescription">
               <Button
                 class="font-normal text-theme-special"
                 type="link"
                 size="small"
                 @click="saveDescription">
-                保存
+                {{ t('actions.save') }}
               </Button>
               <Button
                 class="font-normal text-theme-special"
                 type="link"
                 size="small"
                 @click="cancelEditDescription">
-                取消
+                {{ t('actions.cancel') }}
               </Button>
             </template>
             <Icon
@@ -1124,7 +1124,7 @@ onBeforeUnmount(() => {
                 ref="descRichRef"
                 v-model:value="descriptionContent"
                 class="add-case" />
-              <div v-show="descError" class="text-status-error">描述字符不能多于2000</div>
+              <div v-show="descError" class="text-status-error">{{ t('functionCase.detail.caseDetail.descCharLimit2000') }}</div>
             </div>
           </template>
           <template v-else-if="caseDetail?.description">
@@ -1134,31 +1134,16 @@ onBeforeUnmount(() => {
           </template>
           <template v-else>
             <NoData
-              text="无数据"
+              :text="t('functionCase.detail.caseDetail.noData')"
               size="small"
               class="mt-20" />
           </template>
         </template>
       </Toggle>
       <template v-if="!bigLayout">
-        <!-- <refTasks
-          class="mt-3.5"
-          :dataSource="caseDetail?.refTaskInfos"
-          :projectId="projectId"
-          :caseId="caseDetail?.id"
-          :case="caseDetail?.refTaskInfos"
-          @ok="editOk"
-          @loadingChange="loadingChange" />
-        <assocCase
-          class="mt-3.5"
-          :dataSource="caseDetail?.refCaseInfos"
-          :projectId="projectId"
-          :caseId="caseDetail?.id"
-          :taskList="caseDetail?.refTaskInfos"
-          @ok="editOk"
-          @loadingChange="loadingChange" /> -->
+        
         <Toggle
-          title="附件"
+          :title="t('functionCase.detail.caseDetail.attachments')"
           class="mt-3.5">
           <div
             style="height: 108px; border-color: rgba(0, 119, 255);background-color: rgba(0, 119, 255, 4%);"
@@ -1194,7 +1179,7 @@ onBeforeUnmount(() => {
                   name="file"
                   :customRequest="upLoadFile">
                   <Icon icon="icon-shangchuan" class="text-theme-special mr-1" />
-                  <span class="text-3 text-theme-text-hover">上传附件，最多上传5个</span>
+                  <span class="text-3 text-theme-text-hover">{{ t('functionCase.detail.caseDetail.uploadAttachments') }}</span>
                 </Upload>
               </template>
             </div>
@@ -1203,7 +1188,7 @@ onBeforeUnmount(() => {
       </template>
     </div>
     <div v-if="bigLayout" class="w-75 flex-none ml-2">
-      <Toggle title="人员">
+      <Toggle :title="t('functionCase.detail.caseDetail.personnel')">
         <Grid
           :columns="peopleInfoColumns"
           :dataSource="caseDetail"
@@ -1235,7 +1220,7 @@ onBeforeUnmount(() => {
                 size="small"
                 class="p-0 h-3.5 leading-3.5 ml-1"
                 @click="handleSetTester">
-                指派给我
+                {{ t('functionCase.detail.caseDetail.assignToMe') }}
               </Button>
             </template>
           </template>
@@ -1243,7 +1228,7 @@ onBeforeUnmount(() => {
       </Toggle>
 
       <Toggle
-        title="日期"
+        :title="t('functionCase.detail.caseDetail.date')"
         class="mt-3.5">
         <Grid
           :columns="dateInfoColumns"
@@ -1281,7 +1266,7 @@ onBeforeUnmount(() => {
       </Toggle>
 
       <Toggle
-        title="评审信息"
+        :title="t('functionCase.detail.caseDetail.reviewInfo')"
         class="mt-3.5">
         <Grid
           :columns="reviewInfoColumns"
@@ -1298,7 +1283,7 @@ onBeforeUnmount(() => {
       </Toggle>
 
       <Toggle
-        title="测试信息"
+        :title="t('functionCase.detail.caseDetail.testInfo')"
         class="mt-3.5">
         <Grid
           :columns="testInfoColumns"
@@ -1331,7 +1316,7 @@ onBeforeUnmount(() => {
         :taskList="caseDetail?.refTaskInfos"
         @ok="editOk" /> -->
       <Toggle
-        title="附件"
+        :title="t('functionCase.detail.caseDetail.attachments')"
         class="mt-3.5">
         <div
           style="height: 108px; border-color: rgba(0, 119, 255);background-color: rgba(0, 119, 255, 4%);"
@@ -1367,7 +1352,7 @@ onBeforeUnmount(() => {
                 name="file"
                 :customRequest="upLoadFile">
                 <Icon icon="icon-shangchuan" class="text-theme-special mr-1" />
-                <span class="text-3 text-theme-text-hover">上传附件，最多上传5个</span>
+                <span class="text-3 text-theme-text-hover">{{ t('functionCase.detail.caseDetail.uploadAttachments') }}</span>
               </Upload>
             </template>
           </div>
