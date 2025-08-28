@@ -1,15 +1,16 @@
-import { ref, computed } from 'vue';
+import { ref, computed, unref } from 'vue';
+import type { Ref } from 'vue';
 import { scenario } from '@/api/tester';
 import { getCurrentPage } from '@/utils/utils';
 import type { TrashItem, TrashParams } from '../types';
 
 /**
  * Composable for managing scenario trash data operations
- * @param projectId - Project identifier
+ * @param projectId - Project identifier (can be reactive)
  * @param userInfo - Current user information
  * @returns Object containing data state and operations
  */
-export function useTrashData (projectId: string, userInfo: { id: string }) {
+export function useTrashData (projectId: string | Ref<string>, userInfo: { id: string }) {
   // State
   const tableData = ref<TrashItem[]>([]);
   const loading = ref(false);
@@ -33,7 +34,8 @@ export function useTrashData (projectId: string, userInfo: { id: string }) {
    * @param params - Additional query parameters
    */
   const loadData = async (params?: TrashParams) => {
-    if (!projectId) return;
+    const currentProjectId = unref(projectId);
+    if (!currentProjectId) return;
 
     loading.value = true;
 
@@ -45,7 +47,7 @@ export function useTrashData (projectId: string, userInfo: { id: string }) {
       orderBy?: string;
       orderSort?: string;
     } = {
-      projectId,
+      projectId: currentProjectId,
       pageNo: pagination.value.current,
       pageSize: pagination.value.pageSize
     };

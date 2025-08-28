@@ -416,6 +416,23 @@
   "scenarioTrash": {
     "name": "Trash",
     "title": "Trash",
+    "placeholder": {
+      "searchKeyword": "Please enter search keyword"
+    },
+    "tips": {
+      "adminOnly": "Only administrators and deleters can restore or permanently delete trash data."
+    },
+    "stats": {
+      "items": "Items"
+    },
+    "filters": {
+      "title": "Filter",
+      "all": "All"
+    },
+    "confirm": {
+      "delete": "Are you sure you want to permanently delete this item?",
+      "deleteAll": "Are you sure you want to permanently delete all items?"
+    },
     "description": "Only administrators and deleters can restore or permanently delete data from the trash.",
     "actions": {
       "restore": "Restore",
@@ -439,6 +456,10 @@
         "operation": "Operation"
       },
       "searchPlaceholder": "Please enter search keywords"
+    },
+    "empty": {
+      "description": "No items in trash",
+      "hint": "Deleted items will appear here"
     }
   }
 }

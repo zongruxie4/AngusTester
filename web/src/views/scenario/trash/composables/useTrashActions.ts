@@ -1,14 +1,15 @@
-import { ref } from 'vue';
+import { ref, unref } from 'vue';
+import type { Ref } from 'vue';
 import { notification } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { scenario } from '@/api/tester';
 
 /**
  * Composable for managing scenario trash action operations
- * @param projectId - Project identifier
+ * @param projectId - Project identifier (can be reactive)
  * @returns Object containing action methods and loading state
  */
-export function useTrashActions (projectId: string) {
+export function useTrashActions (projectId: string | Ref<string>) {
   const { t } = useI18n();
   const loading = ref(false);
 
@@ -52,11 +53,12 @@ export function useTrashActions (projectId: string) {
    * Restore all trash items in the project
    */
   const restoreAll = async (): Promise<boolean> => {
-    if (!projectId) return false;
+    const currentProjectId = unref(projectId);
+    if (!currentProjectId) return false;
 
     loading.value = true;
 
-    const [error] = await scenario.backAllScenarioTrash({ projectId });
+    const [error] = await scenario.backAllScenarioTrash({ projectId: currentProjectId });
     loading.value = false;
 
     if (error) {
@@ -71,11 +73,12 @@ export function useTrashActions (projectId: string) {
    * Permanently delete all trash items in the project
    */
   const deleteAll = async (): Promise<boolean> => {
-    if (!projectId) return false;
+    const currentProjectId = unref(projectId);
+    if (!currentProjectId) return false;
 
     loading.value = true;
 
-    const [error] = await scenario.deleteAllScenarioTrash({ projectId });
+    const [error] = await scenario.deleteAllScenarioTrash({ projectId: currentProjectId });
     loading.value = false;
 
     if (error) {
