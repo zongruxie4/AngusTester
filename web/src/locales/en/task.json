@@ -2058,8 +2058,8 @@
     }
   },
   "taskTrash": {
-    "name": "Recycle Bin",
-    "title": "Recycle Bin",
+    "name": "Trash",
+    "title": "Trash",
     "placeholder": {
       "searchKeyword": "Please enter search keyword"
     },
