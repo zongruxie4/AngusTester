@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { defineAsyncComponent, ref } from 'vue';
 import { TabPane, Tabs } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -48,12 +51,12 @@ const commentByParams = {
 
 <template>
   <div>
-    <div class="text-3.5 font-semibold mb-1">我的用例</div>
+    <div class="text-3.5 font-semibold mb-1">{{ t('functionHome.myCases.title') }}</div>
     <Tabs size="small">
       <TabPane key="create" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">添加的</span>
+            <span class="mr-1">{{ t('functionHome.myCases.added') }}</span>
             <span>(</span>
             <span>{{ createByMeTotal }}</span>
             <span>)</span>
@@ -70,7 +73,7 @@ const commentByParams = {
       <TabPane key="testResult" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">待测试</span>
+            <span class="mr-1">{{ t('functionHome.myCases.pendingTest') }}</span>
             <span>(</span>
             <span>{{ pendingTotal }}</span>
             <span>)</span>
@@ -87,7 +90,7 @@ const commentByParams = {
       <TabPane key="follow" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">关注的</span>
+            <span class="mr-1">{{ t('functionHome.myCases.followed') }}</span>
             <span>(</span>
             <span>{{ followTotal }}</span>
             <span>)</span>
@@ -104,7 +107,7 @@ const commentByParams = {
       <TabPane key="favorite" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">收藏的</span>
+            <span class="mr-1">{{ t('functionHome.myCases.favorited') }}</span>
             <span>(</span>
             <span>{{ favoriteTotal }}</span>
             <span>)</span>
@@ -121,7 +124,7 @@ const commentByParams = {
       <TabPane key="commentBy" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">评论的</span>
+            <span class="mr-1">{{ t('functionHome.myCases.commented') }}</span>
             <span>(</span>
             <span>{{ commentTotal }}</span>
             <span>)</span>

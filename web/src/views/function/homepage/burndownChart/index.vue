@@ -5,6 +5,9 @@ import { RadioGroup } from 'ant-design-vue';
 import elementResizeDetector from 'element-resize-detector';
 import { getDateArr } from '@/utils/utils';
 import { analysis } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface Props {
   userInfo?: {[key: string]: string};
@@ -20,11 +23,11 @@ const projectId = computed(() => {
 const burnDownOpt = computed(() => [
   {
     value: 'NUM',
-    label: '用例数'
+    label: t('functionHome.burndownChart.caseCount')
   },
   {
     value: 'WORKLOAD',
-    label: '工作量'
+    label: t('functionHome.burndownChart.workload')
   }
 ]);
 const burnDownData = ref();
@@ -63,12 +66,12 @@ const burnDownEchartsConfig = {
   },
   series: [
     {
-      name: '剩余',
+      name: t('functionHome.burndownChart.remaining'),
       data: [],
       type: 'line'
     },
     {
-      name: '期望',
+      name: t('functionHome.burndownChart.expected'),
       data: [],
       type: 'line',
       smooth: true
@@ -131,7 +134,7 @@ onBeforeUnmount(() => {
 <template>
   <div class="pt-1.5 flex flex-col">
     <div class="text-3.5 font-semibold flex justify-between">
-      我的燃尽图
+      {{ t('functionHome.burndownChart.title') }}
       <RadioGroup v-model:value="burnDownTarget" :options="burnDownOpt">
       </RadioGroup>
     </div>

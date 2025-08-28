@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import { Icon } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 import { ResourceInfo } from '../../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   dataSource: ResourceInfo;
@@ -40,7 +43,7 @@ onMounted(() => {
 <template>
   <div class="rounded border border-solid border-theme-text-box pt-3.5 pb-2">
     <div class="font-semibold mb-2 px-4">
-      <span class="mr-2">总用例</span>
+      <span class="mr-2">{{ t('functionHome.summary.case.totalCase') }}</span>
       <span class="text-4">{{ total }}</span>
     </div>
 
@@ -48,7 +51,7 @@ onMounted(() => {
       <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
         <Icon icon="icon-daiceshi" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
-          <div class="text-theme-sub-content">待测试<span class="placeholder nth-1"></span></div>
+          <div class="text-theme-sub-content">{{ t('functionHome.summary.case.pending') }}<span class="placeholder nth-1"></span></div>
           <div class="text-4">{{ pendingTotal }}</div>
         </div>
       </div>
@@ -56,7 +59,7 @@ onMounted(() => {
       <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
         <Icon icon="icon-daiqueren" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
-          <div class="text-theme-sub-content">测试通过<span class="placeholder nth-2"></span></div>
+          <div class="text-theme-sub-content">{{ t('functionHome.summary.case.passed') }}<span class="placeholder nth-2"></span></div>
           <div class="text-4">{{ passedTotal }}</div>
         </div>
       </div>
@@ -64,7 +67,7 @@ onMounted(() => {
       <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
         <Icon icon="icon-yiyuqi1" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
-          <div class="text-theme-sub-content">逾期<span class="placeholder nth-3"></span></div>
+          <div class="text-theme-sub-content">{{ t('functionHome.summary.case.overdue') }}<span class="placeholder nth-3"></span></div>
           <div class="text-4">{{ overduetTtal }}</div>
         </div>
       </div>
@@ -72,7 +75,7 @@ onMounted(() => {
       <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
         <Icon icon="icon-tianjiaxuqiu" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
-          <div class="text-theme-sub-content">测试未通过<span class="placeholder nth-4"></span></div>
+          <div class="text-theme-sub-content">{{ t('functionHome.summary.case.notPassed') }}<span class="placeholder nth-4"></span></div>
           <div class="text-4">{{ noPassedTotal }}</div>
         </div>
       </div>
@@ -80,7 +83,7 @@ onMounted(() => {
       <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
         <Icon icon="icon-zusaizhong" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
-          <div class="text-theme-sub-content">阻塞<span class="placeholder nth-5"></span></div>
+          <div class="text-theme-sub-content">{{ t('functionHome.summary.case.blocked') }}<span class="placeholder nth-5"></span></div>
           <div class="text-4">{{ blockedTotal }}</div>
         </div>
       </div>
@@ -88,7 +91,7 @@ onMounted(() => {
       <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
         <Icon icon="icon-yiquxiao" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
-          <div class="text-theme-sub-content">已忽略<span class="placeholder nth-6"></span></div>
+          <div class="text-theme-sub-content">{{ t('functionHome.summary.case.canceled') }}<span class="placeholder nth-6"></span></div>
           <div class="text-4">{{ canceledTotal }}</div>
         </div>
       </div>

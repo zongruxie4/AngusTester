@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import { analysis } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
 
 import { ResourceInfo } from '../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -127,20 +130,20 @@ const reset = () => {
 </script>
 <template>
   <div>
-    <div class="text-3.5 font-semibold mb-3">我添加的</div>
+    <div class="text-3.5 font-semibold mb-3">{{ t('functionHome.myCreationSummary.title') }}</div>
     <div class="flex flex-1 space-x-3.75 justify-start">
       <div class="rounded flex-1 relative">
         <div class="vertical-layout-top yellow-top">
-          <div>计划</div>
+          <div>{{ t('functionHome.myCreationSummary.plan') }}</div>
           <div>{{ allPlan }}</div>
         </div>
         <div class="vertical-layout-bottom yellow-bottom">
           <div>
-            <div>近7天</div>
+            <div>{{ t('functionHome.myCreationSummary.last7Days') }}</div>
             <div>{{ planByLastWeek }}</div>
           </div>
           <div>
-            <div>近30天</div>
+            <div>{{ t('functionHome.myCreationSummary.last30Days') }}</div>
             <div>{{ planByLastMonth }}</div>
           </div>
         </div>
@@ -149,16 +152,16 @@ const reset = () => {
 
       <div class="rounded flex-1 relative">
         <div class="vertical-layout-top red-top">
-          <div>用例</div>
+          <div>{{ t('functionHome.myCreationSummary.case') }}</div>
           <div>{{ allCase }}</div>
         </div>
         <div class="vertical-layout-bottom red-bottom">
           <div>
-            <div>近7天</div>
+            <div>{{ t('functionHome.myCreationSummary.last7Days') }}</div>
             <div>{{ caseByLastWeek }}</div>
           </div>
           <div>
-            <div>近30天</div>
+            <div>{{ t('functionHome.myCreationSummary.last30Days') }}</div>
             <div>{{ caseByLastMonth }}</div>
           </div>
         </div>
@@ -167,16 +170,16 @@ const reset = () => {
 
       <div class="rounded flex-1 relative">
         <div class="vertical-layout-top blue-top">
-          <div>评审</div>
+          <div>{{ t('functionHome.myCreationSummary.review') }}</div>
           <div>{{ allReview }}</div>
         </div>
         <div class="vertical-layout-bottom blue-bottom">
           <div>
-            <div>近7天</div>
+            <div>{{ t('functionHome.myCreationSummary.last7Days') }}</div>
             <div>{{ reviewByLastWeek }}</div>
           </div>
           <div>
-            <div>近30天</div>
+            <div>{{ t('functionHome.myCreationSummary.last30Days') }}</div>
             <div>{{ reviewByLastMonth }}</div>
           </div>
         </div>
@@ -185,57 +188,21 @@ const reset = () => {
 
       <div class="rounded flex-1 relative">
         <div class="vertical-layout-top green-top">
-          <div>基线</div>
+          <div>{{ t('functionHome.myCreationSummary.baseline') }}</div>
           <div>{{ allBaseline }}</div>
         </div>
         <div class="vertical-layout-bottom green-bottom">
           <div>
-            <div>近7天</div>
+            <div>{{ t('functionHome.myCreationSummary.last7Days') }}</div>
             <div>{{ baselineByLastWeek }}</div>
           </div>
           <div>
-            <div>近30天</div>
+            <div>{{ t('functionHome.myCreationSummary.last30Days') }}</div>
             <div>{{ baselineByLastMonth }}</div>
           </div>
         </div>
         <img src="./images/icon-4.png" class="w-15 absolute right-0 top-0" />
       </div>
-
-      <!-- <div class="rounded flex-1 relative">
-        <div class="vertical-layout-top blue-top">
-          <div>标签</div>
-          <div>{{ allTag }}</div>
-        </div>
-        <div class="vertical-layout-bottom blue-bottom">
-          <div>
-            <div>近7天</div>
-            <div>{{ tagByLastWeek }}</div>
-          </div>
-          <div>
-            <div>近30天</div>
-            <div>{{ tagByLastMonth }}</div>
-          </div>
-        </div>
-        <img src="./images/icon-1.png" class="w-15 absolute right-0 top-0" />
-      </div> -->
-
-      <!-- <div class="rounded flex-1 relative">
-        <div class="vertical-layout-top green-top">
-          <div>模块</div>
-          <div>{{ allModule }}</div>
-        </div>
-        <div class="vertical-layout-bottom green-bottom">
-          <div>
-            <div>近7天</div>
-            <div>{{ moduleByLastWeek }}</div>
-          </div>
-          <div>
-            <div>近30天</div>
-            <div>{{ moduleByLastMonth }}</div>
-          </div>
-        </div>
-        <img src="./images/icon-4.png" class="w-15 absolute right-0 top-0" />
-      </div> -->
     </div>
   </div>
 </template>
