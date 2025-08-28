@@ -1,256 +1,180 @@
 <script setup lang="ts">
 // Vue composition API imports
-import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { defineAsyncComponent, onMounted, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-// Utilities
-import { duration } from '@xcan-angus/infra';
-import { debounce } from 'throttle-debounce';
-
 // Custom UI components
-import { AsyncComponent, Hints, Icon, IconRefresh, Input, modal, NoData, notification, Spin } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Hints, Icon, IconRefresh, Input, NoData, Spin } from '@xcan-angus/vue-ui';
 
 // Ant Design components
 import { Button } from 'ant-design-vue';
 
-// API imports and utils
-import { tag } from '@/api/tester';
-import {TagItem, TagProps} from "@/views/project/tag/types";
+// Composables and types
+import { useData, useActions, useManagement } from './composables';
+import type { TagProps } from './types';
 
-// Initialize i18n
+/**
+ * Project Tag Management Component
+ * Provides comprehensive tag management functionality including CRUD operations,
+ * search, pagination, and inline editing capabilities
+ */
+
+// Initialize internationalization
 const { t } = useI18n();
 
-// Props
+// Props definition with proper TypeScript support
 const props = withDefaults(defineProps<TagProps>(), {
-  projectId: undefined,
-  userInfo: undefined,
-  appInfo: undefined,
-  notify: undefined,
+  projectId: '',
+  userInfo: () => ({ id: '' }),
+  appInfo: () => ({ id: '' }),
+  notify: '',
   disabled: false
 });
 
-// Async component definitions
+// Async component definitions for better code splitting
 const CreateModal = defineAsyncComponent(() => import('./add.vue'));
 
-// Constants
-const MAX_LENGTH = 20;
+// Convert props to reactive references for composables
+const projectIdRef = toRef(props, 'projectId');
 
-// Reactive data
-const pageNo = ref(1);
-const pageSize = ref(200);
-const inputValue = ref<string>();
-const loaded = ref(false);
-const loading = ref(false);
-const searchedFlag = ref(false);
-const dataList = ref<TagItem[]>([]);
-const total = ref(0);
-const editId = ref<string>();
-const modalVisible = ref(false);
+// Initialize data management composable
+const {
+  dataList,
+  loading,
+  loaded,
+  searchedFlag,
+  total,
+  showLoadMore,
+  fetchTagList,
+  loadMoreTags,
+  refreshData,
+  searchTags,
+  resetData,
+  addTagToList,
+  removeTagFromList,
+  updateTagInList
+} = useData(projectIdRef);
 
-// Computed properties
-const showLoadMore = computed(() => {
-  return dataList.value.length < total.value;
-});
+// Initialize action management composable
+const {
+  modalVisible,
+  createTag,
+  updateTag,
+  deleteTag,
+  openCreateModal,
+  closeCreateModal,
+  handleCreateSuccess
+} = useActions(
+  refreshData,
+  addTagToList,
+  removeTagFromList,
+  updateTagInList
+);
 
-// Utility functions
-const format = (data: { id: string; name: string; hasEditPermission?: boolean }) => {
-  let showTitle = '';
-  let showName = data.name;
-  if (data.name?.length > MAX_LENGTH) {
-    showTitle = data.name;
-    showName = showName.slice(0, MAX_LENGTH) + '...';
-  }
-
-  return {
-    ...data,
-    showTitle,
-    showName,
-    hasEditPermission: data.hasEditPermission ?? true
-  };
+// Initialize tag management composable with update callback
+const handleTagUpdate = async (index: number, tagId: string, newName: string): Promise<boolean> => {
+  return await updateTag([{ id: tagId, name: newName }], index);
 };
 
-const getParams = () => {
-  const params: {
-    pageNo: number;
-    pageSize: number;
-    projectId: string;
-    filters?: { key: 'name'; op: 'MATCH_END'; value: string }[],
-  } = {
-    pageNo: pageNo.value,
-    pageSize: pageSize.value,
-    projectId: props.projectId
-  };
+const {
+  searchValue,
+  editId,
+  handleSearchChange,
+  clearSearch,
+  startEdit,
+  cancelEdit,
+  handleEditEnter,
+  handleEditBlur,
+  resetState
+} = useManagement(dataList, searchTags, handleTagUpdate);
 
-  if (inputValue.value) {
-    params.filters = [{ key: 'name', op: 'MATCH_END', value: inputValue.value }];
-  }
+// Event handlers for component interactions
 
-  return params;
+/**
+ * Handles the refresh button click
+ * Resets pagination and fetches fresh data
+ */
+const handleRefresh = async (): Promise<void> => {
+  await refreshData();
 };
 
-// Data loading function
-const loadData = async (remainder = 0, _params?:{pageNo?:number;pageSize?:number;}) => {
-  loading.value = true;
-  let params = getParams();
-  if (_params) {
-    params = { ...params, ..._params };
-  }
-
-  const [error, res] = await tag.getTagList(params);
-  loading.value = false;
-  loaded.value = true;
-
-  if (params.filters?.length) {
-    searchedFlag.value = true;
-  } else {
-    searchedFlag.value = false;
-  }
-
-  if (error) {
-    return;
-  }
-
-  const data = res?.data;
-  if (!data) {
-    return;
-  }
-
-  const list = ((data.list || []) as {id:string;name:string;hasEditPermission?:boolean}[]).slice(remainder);
-  const pureList = list.map((item) => {
-    return format(item);
-  });
-
-  if (params.pageNo > 1) {
-    dataList.value.push(...pureList);
-  } else {
-    dataList.value = pureList;
-  }
-
-  total.value = +data.total;
+/**
+ * Handles successful tag creation from modal
+ * Updates local data and closes modal
+ */
+const handleTagCreateSuccess = (newTagData: { id: string; name: string }): void => {
+  handleCreateSuccess(newTagData);
 };
 
-// Event handlers
-const toCreate = () => {
-  modalVisible.value = true;
+/**
+ * Handles tag editing initiation
+ * Starts edit mode for the specified tag
+ */
+const handleTagEdit = (tag: any): void => {
+  startEdit(tag, props.disabled);
 };
 
-const createOk = (data: { id: string; name: string }) => {
-  const _data = format(data);
-  dataList.value.unshift(_data);
-  total.value += 1;
+/**
+ * Handles tag deletion
+ * Shows confirmation and deletes the tag
+ */
+const handleTagDelete = (tag: any, index: number): void => {
+  deleteTag(tag, index);
 };
 
-const refresh = () => {
-  pageNo.value = 1;
-  loadData();
+/**
+ * Handles Enter key press during editing
+ * Saves the edited tag name
+ */
+const handleTagEditEnter = async (tagId: string, index: number, event: { target: { value: string } }): Promise<void> => {
+  await handleEditEnter(tagId, index, event);
 };
 
-const toEdit = (data: TagItem) => {
-  if (props.disabled || !data.hasEditPermission) {
-    return;
-  }
-  editId.value = data.id;
+/**
+ * Handles blur event during editing
+ * Auto-saves after a delay
+ */
+const handleTagEditBlur = (tagId: string, index: number, event: { target: { value: string } }): void => {
+  handleEditBlur(tagId, index, event);
 };
 
-const cancelEdit = () => {
-  editId.value = undefined;
+/**
+ * Handles load more button click
+ * Loads additional tags for pagination
+ */
+const handleLoadMore = async (): Promise<void> => {
+  await loadMoreTags();
 };
 
-const pressEnter = async (id: string, index: number, event: { target: { value: string } }) => {
-  const value = event.target.value;
-  if (!value) {
-    return;
-  }
-
-  if (value === dataList.value[index].showName) {
-    editId.value = undefined;
-    return;
-  }
-
-  loading.value = true;
-  const [error] = await tag.updateTag([{ id, name: value }]);
-  loading.value = false;
-  if (error) {
-    return;
-  }
-
-  dataList.value[index] = format({ id: dataList.value[index].id, name: value, hasEditPermission: dataList.value[index].hasEditPermission });
-  notification.success(t('project.projectEdit.tag.updateSuccess'));
-  editId.value = undefined;
+/**
+ * Resets all component state
+ * Used when switching projects or initializing
+ */
+const resetComponentState = (): void => {
+  resetData();
+  resetState();
+  closeCreateModal();
 };
 
-const hadleblur = (id: string, index: number, event: { target: { value: string } }) => {
-  setTimeout(() => {
-    if (editId.value === id) {
-      pressEnter(id, index, event);
-    }
-  }, 300);
-};
+// Lifecycle hooks and watchers
 
-const toDelete = (data: TagItem, index:number) => {
-  modal.confirm({
-    content: t('project.projectEdit.tag.confirmDelete', { name: data.name }),
-    async onOk () {
-      const id = data.id;
-      loading.value = true;
-      const [error] = await tag.deleteTag([id]);
-      loading.value = false;
-      if (error) {
-        return;
-      }
-
-      notification.success(t('project.projectEdit.tag.deleteSuccess'));
-      dataList.value.splice(index, 1);
-      total.value -= 1;
-
-      // Load additional data if needed after deletion
-      if (index < total.value) {
-        const params = {
-          pageNo: dataList.value.length + 1,
-          pageSize: 1
-        };
-        loadData(0, params);
-      }
-    }
-  });
-};
-
-const loadMore = () => {
-  // Fix pageNo after add/delete operations
-  const remainder = dataList.value.length % pageSize.value;
-  const current = Math.floor(dataList.value.length / pageSize.value);
-  pageNo.value = current + 1;
-  loadData(remainder);
-};
-
-const reset = () => {
-  pageNo.value = 1;
-  inputValue.value = undefined;
-  loaded.value = false;
-  loading.value = false;
-  searchedFlag.value = false;
-  dataList.value = [];
-  total.value = 0;
-  editId.value = undefined;
-  modalVisible.value = false;
-};
-
-// Debounced search handler
-const inputChange = debounce(duration.search, (event: any) => {
-  inputValue.value = event.target.value;
-  pageNo.value = 1;
-  loadData();
-});
-
-// Lifecycle hooks
+/**
+ * Watches for project ID changes and initializes data
+ * Resets state and fetches new data when project changes
+ */
 onMounted(() => {
-  watch(() => props.projectId, (newValue) => {
-    reset();
-    if (!newValue) {
+  watch(projectIdRef, (newProjectId) => {
+    resetComponentState();
+
+    if (!newProjectId) {
       return;
     }
-    loadData();
-  }, { immediate: true });
+
+    // Fetch initial data for the new project
+    fetchTagList();
+  }, {
+    immediate: true
+  });
 });
 </script>
 <template>
@@ -281,6 +205,7 @@ onMounted(() => {
           :spinning="loading"
           class="flex flex-col min-h-96">
           <template v-if="loaded">
+            <!-- Empty state when no tags exist -->
             <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center py-12">
               <img src="../../../assets/images/nodata.png" class="w-32 h-32 mb-4">
               <div v-if="!props.disabled" class="flex items-center text-gray-500 text-xs">
@@ -289,7 +214,7 @@ onMounted(() => {
                   type="link"
                   size="small"
                   class="text-xs py-0 px-1 text-blue-600"
-                  @click="toCreate">
+                  @click="openCreateModal">
                   {{ t('project.projectEdit.tag.addTag') }}
                 </Button>
               </div>
@@ -297,17 +222,19 @@ onMounted(() => {
                 {{ t('project.projectEdit.tag.noTagsDescription') }}
               </div>
             </div>
+
+            <!-- Tags list with search and actions -->
             <template v-else>
               <div class="flex items-center justify-between mt-4 mb-4">
                 <div class="flex items-center">
                   <Input
-                    v-model:value="inputValue"
+                    v-model:value="searchValue"
                     :placeholder="t('project.projectEdit.tag.tagNamePlaceholder')"
                     class="w-64 mr-3"
                     trimAll
                     :allowClear="true"
                     :maxlength="50"
-                    @change="inputChange">
+                    @change="handleSearchChange">
                     <template #suffix>
                       <Icon class="text-xs cursor-pointer text-gray-400" icon="icon-sousuo" />
                     </template>
@@ -320,12 +247,12 @@ onMounted(() => {
                     type="primary"
                     size="small"
                     class="flex items-center space-x-1 text-xs"
-                    @click="toCreate">
+                    @click="openCreateModal">
                     <Icon icon="icon-jia" class="text-xs" />
                     <span>{{ t('project.projectEdit.tag.addTag') }}</span>
                   </Button>
 
-                  <IconRefresh @click="refresh">
+                  <IconRefresh @click="handleRefresh">
                     <template #default>
                       <div class="flex items-center cursor-pointer text-gray-600 space-x-1 hover:text-gray-800 text-xs">
                         <Icon icon="icon-shuaxin" class="text-xs" />
@@ -336,13 +263,16 @@ onMounted(() => {
                 </div>
               </div>
 
+              <!-- No data state for search results -->
               <NoData v-if="dataList.length === 0" class="flex-1 py-12" />
 
+              <!-- Tag display area -->
               <div v-else class="flex items-center flex-wrap gap-2 mt-2">
                 <div
                   v-for="(item, index) in dataList"
                   :key="item.id"
                   class="">
+                  <!-- Inline edit mode -->
                   <div v-if="editId === item.id" class="flex items-center">
                     <Input
                       :placeholder="t('project.projectEdit.tag.tagNamePlaceholder')"
@@ -351,8 +281,8 @@ onMounted(() => {
                       :value="item.name"
                       :allowClear="false"
                       :maxlength="50"
-                      @blur="hadleblur(item.id, index, $event)"
-                      @pressEnter="pressEnter(item.id, index, $event)" />
+                      @blur="handleTagEditBlur(item.id, index, $event)"
+                      @pressEnter="handleTagEditEnter(item.id, index, $event)" />
                     <Button
                       type="link"
                       size="small"
@@ -362,27 +292,29 @@ onMounted(() => {
                     </Button>
                   </div>
 
+                  <!-- Normal display mode -->
                   <div
                     v-else
                     class="flex items-center bg-gray-50 hover:bg-gray-100 rounded-lg px-3 py-1.5 cursor-pointer transition-colors group"
-                    @dblclick="toEdit(item)">
+                    @dblclick="handleTagEdit(item)">
                     <Icon icon="icon-biaoqian1" class="mr-2 text-xs text-gray-500" />
                     <span :title="item.showTitle" class="truncate mr-2 text-xs text-gray-700">{{ item.showName }}</span>
                     <Icon
                       v-if="!props.disabled && item.hasEditPermission"
                       class="text-gray-400 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100 text-xs"
                       icon="icon-shanchuguanbi"
-                      @click="toDelete(item,index)" />
+                      @click="handleTagDelete(item, index)" />
                   </div>
                 </div>
 
+                <!-- Load more button -->
                 <Button
                   v-if="showLoadMore"
                   size="small"
                   type="link"
                   class="px-0 py-0 h-6 leading-6 text-xs text-blue-600"
-                  @click="loadMore">
-                  加载更多
+                  @click="handleLoadMore">
+                  {{ t('common.loadMore') }}
                 </Button>
               </div>
             </template>
@@ -391,11 +323,12 @@ onMounted(() => {
       </div>
     </div>
 
+    <!-- Modal for create tag operation -->
     <AsyncComponent :visible="modalVisible">
       <CreateModal
         v-model:visible="modalVisible"
         :projectId="props.projectId"
-        @ok="createOk" />
+        @ok="handleTagCreateSuccess" />
     </AsyncComponent>
   </div>
 </template>
