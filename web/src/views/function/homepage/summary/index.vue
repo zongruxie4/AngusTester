@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { analysis } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
 
 import { ResourceInfo } from '../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -107,7 +110,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <div class="text-3.5 font-semibold mb-3">资源统计</div>
+    <div class="text-3.5 font-semibold mb-3">{{ t('functionHome.summary.title') }}</div>
     <div class="flex">
       <Plan :dataSource="dataSource" class="w-1.5/5-media mr-media" />
       <Case :dataSource="dataSource" class="w-2/5-media mr-media" />

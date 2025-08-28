@@ -4,9 +4,12 @@ import { Button } from 'ant-design-vue';
 import { Icon, modal, notification, Table, TaskPriority, TestResult } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 import { funcCase } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
 
 import { getCurrentPage } from '@/utils/utils';
 import { CaseItem } from '../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -59,7 +62,7 @@ const pagination = ref<{
       showTotal: (total: number) => {
         if (typeof pagination.value === 'object') {
           const totalPage = Math.ceil(total / pagination.value.pageSize);
-          return `第${pagination.value.current}/${totalPage}页`;
+          return t('functionHome.myCases.pageInfo', { current: pagination.value.current, total: totalPage });
         }
       }
     });
@@ -150,7 +153,7 @@ const loadData = async () => {
 
 const deleteHandler = (data: CaseItem) => {
   modal.confirm({
-    content: `确定删除用例【${data.name}】吗？`,
+    content: t('functionHome.myCases.confirmDeleteCase', { name: data.name }),
     async onOk () {
       const id = data.id;
       const params = [id];
@@ -159,7 +162,7 @@ const deleteHandler = (data: CaseItem) => {
         return;
       }
 
-      notification.success('删除用例成功');
+      notification.success(t('functionHome.myCases.deleteSuccess'));
       emit('update:deletedNotify', utils.uuid());
 
       // 删除已经打开的tabpane
@@ -180,7 +183,7 @@ const cancelFavourite = async (data: CaseItem) => {
     return;
   }
 
-  notification.success('用例取消收藏成功');
+  notification.success(t('functionHome.myCases.cancelFavoriteSuccess'));
   loadData();
 
   if (typeof updateRefreshNotify === 'function') {
@@ -196,7 +199,7 @@ const cancelFollow = async (data: CaseItem) => {
     return;
   }
 
-  notification.success('用例取消关注成功');
+  notification.success(t('functionHome.myCases.cancelFollowSuccess'));
   loadData();
 
   if (typeof updateRefreshNotify === 'function') {
@@ -238,33 +241,33 @@ const columns = computed(() => {
   }[] = Object.prototype.hasOwnProperty.call(props.params, 'testResult')
     ? [
         {
-          title: '编码',
+          title: t('functionHome.myCases.code'),
           dataIndex: 'code',
           ellipsis: true,
           width: '12%'
         },
         {
-          title: '名称',
+          title: t('functionHome.myCases.name'),
           dataIndex: 'name',
           ellipsis: true,
           sorter: true,
           width: '37%'
         },
         {
-          title: '所属计划',
+          title: t('functionHome.myCases.plan'),
           dataIndex: 'planName',
           ellipsis: true,
           width: '25%'
         },
         {
-          title: '优先级',
+          title: t('functionHome.myCases.priority'),
           dataIndex: 'priority',
           ellipsis: true,
           sorter: true,
           width: '9%'
         },
         {
-          title: '截止时间',
+          title: t('functionHome.myCases.deadline'),
           dataIndex: 'deadlineDate',
           ellipsis: true,
           sorter: true,
@@ -273,39 +276,39 @@ const columns = computed(() => {
       ]
     : [
         {
-          title: '编码',
+          title: t('functionHome.myCases.code'),
           dataIndex: 'code',
           ellipsis: true,
           width: '12%'
         },
         {
-          title: '名称',
+          title: t('functionHome.myCases.name'),
           dataIndex: 'name',
           ellipsis: true,
           sorter: true,
           width: '32%'
         },
         {
-          title: '所属计划',
+          title: t('functionHome.myCases.plan'),
           dataIndex: 'planName',
           ellipsis: true,
           width: '21%'
         },
         {
-          title: '测试结果',
+          title: t('functionHome.myCases.testResult'),
           dataIndex: 'testResult',
           ellipsis: true,
           width: '9%'
         },
         {
-          title: '优先级',
+          title: t('functionHome.myCases.priority'),
           dataIndex: 'priority',
           ellipsis: true,
           sorter: true,
           width: '9%'
         },
         {
-          title: '截止时间',
+          title: t('functionHome.myCases.deadline'),
           dataIndex: 'deadlineDate',
           ellipsis: true,
           sorter: true,
@@ -321,7 +324,7 @@ const columns = computed(() => {
     width?: string | number;
     actionKey?: 'favouriteBy' | 'followBy';
   } = {
-    title: '操作',
+    title: t('functionHome.myCases.actions'),
     dataIndex: 'action',
     width: 50
   };
@@ -354,20 +357,20 @@ const emptyTextStyle = {
           <img class="w-27.5" src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3 leading-5">
             <template v-if="!!props.params?.createdBy">
-              <span>您尚未添加任何用例，立即</span>
-              <RouterLink to="/function#cases" class="ml-1 link">添加用例</RouterLink>
+              <span>{{ t('functionHome.myCases.noAddedCases') }}</span>
+              <RouterLink to="/function#cases" class="ml-1 link">{{ t('functionHome.myCases.addCase') }}</RouterLink>
             </template>
 
             <template v-else-if="!!props.params?.favouriteBy">
-              <span>您没有收藏的用例</span>
+              <span>{{ t('functionHome.myCases.noFavoritedCases') }}</span>
             </template>
 
             <template v-else-if="!!props.params?.followBy">
-              <span>您没有关注的用例</span>
+              <span>{{ t('functionHome.myCases.noFollowedCases') }}</span>
             </template>
 
             <template v-else-if="!!props.params?.testerId">
-              <span>您没有待测试的用例</span>
+              <span>{{ t('functionHome.myCases.noPendingCases') }}</span>
             </template>
           </div>
         </div>
@@ -396,7 +399,7 @@ const emptyTextStyle = {
               v-if="record.overdue"
               class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
               style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-              <span class="inline-block transform-gpu scale-90">已逾期</span>
+              <span class="inline-block transform-gpu scale-90">{{ t('functionHome.myCases.overdue') }}</span>
             </span>
           </div>
 
@@ -406,7 +409,7 @@ const emptyTextStyle = {
           <div v-else-if="column.dataIndex === 'action'">
             <template v-if="column.actionKey === 'favouriteBy'">
               <Button
-                title="取消收藏"
+                :title="t('functionHome.myCases.cancelFavorite')"
                 size="small"
                 type="text"
                 class="space-x-1 flex items-center py-0 px-1"
@@ -417,7 +420,7 @@ const emptyTextStyle = {
 
             <template v-else-if="column.actionKey === 'followBy'">
               <Button
-                title="取消关注"
+                :title="t('functionHome.myCases.cancelFollow')"
                 size="small"
                 type="text"
                 class="space-x-1 flex items-center py-0 px-1"
@@ -428,7 +431,7 @@ const emptyTextStyle = {
 
             <template v-else>
               <Button
-                title="删除"
+                :title="t('functionHome.myCases.delete')"
                 size="small"
                 type="text"
                 class="space-x-1 flex items-center py-0 px-1"

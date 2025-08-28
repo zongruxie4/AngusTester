@@ -7,6 +7,7 @@ import { PieChart, PieSeriesOption } from 'echarts/charts';
 import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 import elementResizeDetector from 'element-resize-detector';
+import { useI18n } from 'vue-i18n';
 
 import { ResourceInfo } from '../../PropsType';
 
@@ -21,6 +22,7 @@ const erd = elementResizeDetector({ strategy: 'scroll' });
 const wrapperRef = ref();
 type EChartsOption = echarts.ComposeOption<TooltipComponentOption | LegendComponentOption | PieSeriesOption>;
 
+const { t } = useI18n();
 // const windowResizeNotify = inject('windowResizeNotify', ref<string>());
 
 const containerRef = ref<HTMLElement>();
@@ -165,11 +167,11 @@ onMounted(() => {
     echartOption.series![0].data = [];
 
     const data = newValue.caseByPriority;
-    echartOption.series?.[0].data.push({ name: '最高', value: +data.HIGHEST });
-    echartOption.series?.[0].data.push({ name: '高', value: +data.HIGH });
-    echartOption.series?.[0].data.push({ name: '中', value: +data.MEDIUM });
-    echartOption.series?.[0].data.push({ name: '低', value: +data.LOW });
-    echartOption.series?.[0].data.push({ name: '最低', value: +data.LOWEST });
+    echartOption.series?.[0].data.push({ name: t('functionHome.summary.priority.highest'), value: +data.HIGHEST });
+    echartOption.series?.[0].data.push({ name: t('functionHome.priority.high'), value: +data.HIGH });
+    echartOption.series?.[0].data.push({ name: t('functionHome.summary.priority.medium'), value: +data.MEDIUM });
+    echartOption.series?.[0].data.push({ name: t('functionHome.summary.priority.low'), value: +data.LOW });
+    echartOption.series?.[0].data.push({ name: t('functionHome.summary.priority.lowest'), value: +data.LOWEST });
 
     setEchartOption();
     renderChart();
@@ -193,7 +195,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div ref="wrapperRef" class="flex flex-col rounded border border-solid border-theme-text-box pt-3.5">
-    <div class="font-semibold px-4">优先级</div>
+    <div class="font-semibold px-4">{{ t('functionHome.summary.priority.title') }}</div>
     <div class="flex-1 flex items-center justify-center pr-2">
       <div
         :id="domId"

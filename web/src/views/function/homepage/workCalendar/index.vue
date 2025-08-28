@@ -5,8 +5,11 @@ import { AsyncComponent, Icon, Popover, Select, TestResult } from '@xcan-angus/v
 import { TESTER } from '@xcan-angus/infra';
 import { Dayjs } from 'dayjs';
 import { analysis } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
 
 import { DataItem } from './PropsTyps';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -123,15 +126,15 @@ onMounted(() => {
                 <template #content>
                   <div class="flex items-center flex-nowrap space-x-5 mb-1.5">
                     <div class="flex-shrink-0 space-x-1">
-                      <span>工作量</span>
+                      <span>{{ t('functionHome.workCalendar.workload') }}</span>
                       <span>{{ getTotalNum(getList(current)) }}</span>
                     </div>
                     <div class="flex-shrink-0 space-x-1">
-                      <span>已完成</span>
+                      <span>{{ t('functionHome.workCalendar.completed') }}</span>
                       <span>{{ geCompletedNum(getList(current)) }}</span>
                     </div>
                     <div class="flex-shrink-0 space-x-1">
-                      <span>剩余</span>
+                      <span>{{ t('functionHome.workCalendar.remaining') }}</span>
                       <span>{{ geRemainNum(getList(current)) }}</span>
                     </div>
                   </div>
@@ -159,15 +162,15 @@ onMounted(() => {
                 <template #content>
                   <div class="flex items-center flex-nowrap space-x-5 mb-1.5">
                     <div class="flex-shrink-0 space-x-1">
-                      <span>工作量</span>
+                      <span>{{ t('functionHome.workCalendar.workload') }}</span>
                       <span>{{ getTotalNum(getOverdueList(current)) }}</span>
                     </div>
                     <div class="flex-shrink-0 space-x-1">
-                      <span>已完成</span>
+                      <span>{{ t('functionHome.workCalendar.completed') }}</span>
                       <span>{{ geCompletedNum(getOverdueList(current)) }}</span>
                     </div>
                     <div class="flex-shrink-0 space-x-1">
-                      <span>剩余</span>
+                      <span>{{ t('functionHome.workCalendar.remaining') }}</span>
                       <span>{{ geRemainNum(getOverdueList(current)) }}</span>
                     </div>
                   </div>
@@ -182,7 +185,7 @@ onMounted(() => {
                       <span
                         class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2"
                         style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                        <span class="inline-block transform-gpu scale-90">已逾期</span>
+                        <span class="inline-block transform-gpu scale-90">{{ t('functionHome.myCases.overdue') }}</span>
                       </span>
                     </div>
                   </div>

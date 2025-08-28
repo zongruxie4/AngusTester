@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import { Icon } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 import { ResourceInfo } from '../../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   dataSource: ResourceInfo;
@@ -36,7 +39,7 @@ onMounted(() => {
 <template>
   <div class="flex flex-col rounded border border-solid border-theme-text-box pt-3.5 pb-2">
     <div class="font-semibold px-4">
-      <span class="mr-2">总计划</span>
+      <span class="mr-2">{{ t('functionHome.summary.plan.totalPlan') }}</span>
       <span class="text-4">{{ total }}</span>
     </div>
 
@@ -44,7 +47,7 @@ onMounted(() => {
       <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
         <Icon icon="icon-daiceshi" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
-          <div class="text-theme-sub-content">待开始</div>
+          <div class="text-theme-sub-content">{{ t('functionHome.summary.plan.pending') }}</div>
           <div class="text-4">{{ pendingTotal }}</div>
         </div>
       </div>
@@ -52,7 +55,7 @@ onMounted(() => {
       <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
         <Icon icon="icon-renwuceshizhong" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
-          <div class="text-theme-sub-content">进行中</div>
+          <div class="text-theme-sub-content">{{ t('functionHome.summary.plan.inProgress') }}</div>
           <div class="text-4">{{ progressingTotal }}</div>
         </div>
       </div>
@@ -60,7 +63,7 @@ onMounted(() => {
       <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
         <Icon icon="icon-zusaizhong" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
-          <div class="text-theme-sub-content">阻塞中</div>
+          <div class="text-theme-sub-content">{{ t('functionHome.summary.plan.blocked') }}</div>
           <div class="text-4">{{ blockedTotal }}</div>
         </div>
       </div>
@@ -68,7 +71,7 @@ onMounted(() => {
       <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
         <Icon icon="icon-ceshitongguo" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
-          <div class="text-theme-sub-content">已完成</div>
+          <div class="text-theme-sub-content">{{ t('functionHome.summary.plan.completed') }}</div>
           <div class="text-4">{{ completedTotal }}</div>
         </div>
       </div>

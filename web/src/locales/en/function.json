@@ -1185,6 +1185,107 @@
         "deleter": "Deleter",
         "deleteTime": "Delete Time",
         "actions": "Actions"
+      },
+      "empty": {
+        "description": "Trash is empty",
+        "hint": "Deleted items will be displayed here"
+      }
+    },
+    "functionHome": {
+      "myCases": {
+        "title": "My Cases",
+        "added": "Added",
+        "pendingTest": "Pending Test",
+        "followed": "Followed",
+        "favorited": "Favorited",
+        "commented": "Commented",
+        "noAddedCases": "You haven't added any cases yet, ",
+        "addCase": "Add Case",
+        "noFavoritedCases": "You have no favorited cases",
+        "noFollowedCases": "You have no followed cases",
+        "noPendingCases": "You have no pending test cases",
+        "code": "Code",
+        "name": "Name",
+        "plan": "Plan",
+        "priority": "Priority",
+        "deadline": "Deadline",
+        "testResult": "Test Result",
+        "actions": "Actions",
+        "cancelFavorite": "Cancel Favorite",
+        "cancelFollow": "Cancel Follow",
+        "delete": "Delete",
+        "confirmDeleteCase": "Confirm to delete case 【{name}】?",
+        "deleteSuccess": "Case deleted successfully",
+        "cancelFavoriteSuccess": "Case unfavorited successfully",
+        "cancelFollowSuccess": "Case unfollowed successfully",
+        "overdue": "Overdue",
+        "pageInfo": "Page {current}/{total}"
+      },
+      "workCalendar": {
+        "workload": "Workload",
+        "completed": "Completed",
+        "remaining": "Remaining"
+      },
+      "introduce": {
+        "welcome": "Welcome to AngusTester Function!",
+        "description": "is a functional testing management module, also known as a test case library, used to verify whether software systems meet specifications and user requirements.",
+        "teamWorkTitle": "Here you and your team can complete the following work:",
+        "planTesting": "Organize testers to conduct functional testing activities through \"Plans\";",
+        "reviewCases": "Organize case reviews to identify potential defects and errors early;",
+        "reportAnalysis": "Report and analyze project health, progress, and issue trends."
+      },
+      "activityTimeline": {
+        "myActivity": "My Activity",
+        "allActivity": "All Activity"
+      },
+      "summary": {
+        "title": "Resource Statistics",
+        "priority": {
+          "title": "Priority",
+          "highest": "Highest",
+          "high": "High",
+          "medium": "Medium",
+          "low": "Low",
+          "lowest": "Lowest"
+        },
+        "plan": {
+          "totalPlan": "Total Plan",
+          "pending": "Pending",
+          "inProgress": "In Progress",
+          "blocked": "Blocked",
+          "completed": "Completed"
+        },
+        "case": {
+          "totalCase": "Total Case",
+          "pending": "Pending",
+          "passed": "Passed",
+          "overdue": "Overdue",
+          "notPassed": "Not Passed",
+          "blocked": "Blocked",
+          "canceled": "Canceled"
+        },
+        "review": {
+          "totalReview": "Total Review",
+          "pending": "Pending",
+          "inProgress": "In Progress",
+          "completed": "Completed"
+        },
+        "burndownChart": {
+          "title": "My Burndown Chart",
+          "caseCount": "Case Count",
+          "workload": "Workload",
+          "remaining": "Remaining",
+          "expected": "Expected"
+        },
+        "myCreationSummary": {
+          "title": "My Creations",
+          "plan": "Plan",
+          "case": "Case",
+          "review": "Review",
+          "baseline": "Baseline",
+          "last7Days": "Last 7 Days",
+          "last30Days": "Last 30 Days"
+        }
       }
     }
 }
