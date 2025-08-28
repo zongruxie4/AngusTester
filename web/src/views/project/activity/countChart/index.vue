@@ -54,7 +54,7 @@ const loadScriptType = () => {
   activityGroup.value[0].color = data?.map(item => getScriptTypeColor(item.value));
 };
 
-const getScriptTypeColor = (value:string) => {
+const getScriptTypeColor = (value:string): string => {
   switch (value) {
     case 'PROJECT':
       return 'rgba(166, 206, 255, 1)';
@@ -110,6 +110,8 @@ const getScriptTypeColor = (value:string) => {
       return 'rgba(127, 145, 255, 1)';
     case 'REPORT':
       return 'rgba(57, 129, 184, 1)';
+    default:
+      return 'rgba(45, 142, 255, 1)';
   }
 };
 
@@ -133,7 +135,7 @@ onMounted(() => {
     :apiRouter="props.apiRouter"
     :resource="props.resource"
     :barTitle="props.barTitle"
-    :pieParmas="pieParams"
+    :pieParams="pieParams"
     :hasPieChart="hasPieChart"
     :userId="props.userId"
     :dateType="props.dateType">
