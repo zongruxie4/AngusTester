@@ -43,7 +43,7 @@ const onFinish = async () => {
   if (error) {
     return;
   }
-  notification.success('移动成功');
+  notification.success(t('functionCase.moveCaseModal.moveSuccess'));
   emits('update:visible', false);
   emits('update');
   formState.value.targetPlanId = undefined;
@@ -55,7 +55,7 @@ const format = (data) => {
 </script>
 <template>
   <Modal
-    title="移动"
+    :title="t('functionCase.moveCaseModal.title')"
     :visible="props.visible"
     :width="600"
     :footer="null"
@@ -67,8 +67,8 @@ const format = (data) => {
       @finish="onFinish">
       <FormItem
         name="targetPlanId"
-        label="选择计划"
-        :rules="[{ required: true, message:t('请选择计划') }]"
+        :label="t('functionCase.moveCaseModal.selectPlan')"
+        :rules="[{ required: true, message: t('functionCase.moveCaseModal.pleaseSelectPlan') }]"
         class="flex-1">
         <Select
           v-model:value="formState.targetPlanId"
@@ -77,7 +77,7 @@ const format = (data) => {
           :format="format"
           showSearch
           allowClear
-          placeholder="选择或查询计划">
+          :placeholder="t('functionCase.moveCaseModal.selectOrQueryPlan')">
           <template #option="item">
             <div class="flex items-center">
               <Icon icon="icon-jihua" class="mr-1 text-3.5" />
@@ -99,13 +99,13 @@ const format = (data) => {
             size="small"
             htmlType="submit"
             class="px-3">
-            {{ t('确认') }}
+            {{ t('actions.confirm') }}
           </Button>
           <Button
             size="small"
             class="ml-5 px-3"
             @click="close">
-            {{ t('取消') }}
+            {{ t('actions.cancel') }}
           </Button>
         </div>
       </FormItem>

@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { inject, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Tag, Tooltip } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
 import { Icon, Select } from '@xcan-angus/vue-ui';
 import { tag } from '@/api/tester';
+
+const { t } = useI18n();
 
 interface Props {
   tagIds: string[];
@@ -29,7 +32,7 @@ const todoHandler = () => {
 };
 
 const selectValue = ref<string>();
-const selectChange = (_value:string, option:{name:string;id:string;}) => {
+const selectChange = (_value: any, option: any) => {
   showSelect.value = false;
   const { id, name } = option;
   const tagIds = new Set(tagList.value.map(tag => tag.id));
@@ -101,7 +104,7 @@ defineExpose({
           size="small"
           @click="todoHandler">
           <Icon icon="icon-jia" class="text-3 mr-1 -mt-0.25" />
-          标签
+          {{ t('functionCase.selectTag.tag') }}
         </Button>
       </template>
       <template v-else>
@@ -109,7 +112,7 @@ defineExpose({
           v-model:value="selectValue"
           size="small"
           class="w-43"
-          placeholder="选择标签"
+          :placeholder="t('functionCase.selectTag.selectTag')"
           showSearch
           internal
           :fieldNames="{ label: 'name', value: 'id' }"
