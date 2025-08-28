@@ -52,7 +52,7 @@ export function useTableColumns () {
       key: 'action',
       title: t('projectTrash.table.actions'),
       dataIndex: 'action',
-      width: 70
+      width: 140
     }
   ];
 
