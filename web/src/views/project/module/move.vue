@@ -63,34 +63,34 @@ const okButtonConfig = computed(() => ({
  */
 const loadModuleTree = async (): Promise<void> => {
   isTreeLoading.value = true;
-  
+
   try {
     const [error, response] = await modules.getModuleTree({
       projectId: props.projectId
     });
-    
+
     if (error) {
       console.error('Failed to load module tree:', error);
       return;
     }
 
     const rawData = response?.data || [];
-    
+
     // Process tree data with move restrictions
     const processedChildren = travelTreeData(rawData, (item: ModuleItem) => {
       // Disable modules that cannot be selected as new parent
       const processedItem = { ...item };
-      
+
       // Disable if this is the module being moved or its descendant
       if (item.ids?.includes(props.module.id)) {
         processedItem.disabled = true;
       }
-      
+
       // Disable if selecting this parent would exceed max depth
       if ((item.level || 0) + props.module.childLevels > 4) {
         processedItem.disabled = true;
       }
-      
+
       return processedItem;
     });
 
@@ -101,7 +101,6 @@ const loadModuleTree = async (): Promise<void> => {
       id: '-1',
       children: processedChildren
     }];
-    
   } catch (error) {
     console.error('Unexpected error while loading module tree:', error);
   } finally {
@@ -124,7 +123,7 @@ const handleCancel = (): void => {
  */
 const handleMoveModule = async (): Promise<void> => {
   const newParentId = selectedParentIds.value[0];
-  
+
   // Skip if moving to same parent
   if (props.module.pid === newParentId) {
     closeModal();
@@ -132,14 +131,14 @@ const handleMoveModule = async (): Promise<void> => {
   }
 
   isLoading.value = true;
-  
+
   try {
     // Update module with new parent
     const [error] = await modules.updateModule([{
       id: props.module.id,
       pid: newParentId
     }]);
-    
+
     if (error) {
       console.error('Failed to move module:', error);
       return;
@@ -148,7 +147,6 @@ const handleMoveModule = async (): Promise<void> => {
     // Success handling
     closeModal();
     emits('ok');
-    
   } catch (error) {
     console.error('Unexpected error during module move:', error);
   } finally {
@@ -179,12 +177,12 @@ const canSelectAsParent = (moduleItem: ModuleItem): boolean => {
   if (moduleItem.ids?.includes(props.module.id)) {
     return false;
   }
-  
+
   // Cannot select if it would exceed maximum depth
   if ((moduleItem.level || 0) + props.module.childLevels > 4) {
     return false;
   }
-  
+
   return true;
 };
 
@@ -197,7 +195,7 @@ const canSelectAsParent = (moduleItem: ModuleItem): boolean => {
 onMounted(() => {
   watch(() => props.visible, (isVisible) => {
     resetSelection();
-    
+
     if (isVisible) {
       loadModuleTree();
     } else {
@@ -221,7 +219,7 @@ onMounted(() => {
     <div v-if="isTreeLoading" class="flex justify-center items-center h-64">
       <div class="text-gray-500 text-sm">{{ t('common.loading') }}...</div>
     </div>
-    
+
     <Tree
       v-else-if="treeData.length"
       v-model:selectedKeys="selectedParentIds"
@@ -236,15 +234,15 @@ onMounted(() => {
       }">
       <!-- Custom tree node template -->
       <template #title="{name, id, disabled}">
-        <div 
+        <div
           class="flex items-center space-x-2"
           :class="{ 'text-gray-400 cursor-not-allowed': disabled }">
-          <Icon 
-            v-if="id !== '-1'" 
-            icon="icon-mokuai" 
+          <Icon
+            v-if="id !== '-1'"
+            icon="icon-mokuai"
             :class="{ 'text-gray-300': disabled, 'text-gray-500': !disabled }" />
-          <span 
-            class="flex-1" 
+          <span
+            class="flex-1"
             :class="{ 'text-gray-400': disabled, 'text-gray-800': !disabled }"
             :title="disabled ? t('project.projectEdit.module.cannotSelectAsParent') : name">
             {{ name }}
@@ -252,7 +250,7 @@ onMounted(() => {
         </div>
       </template>
     </Tree>
-    
+
     <div v-else class="text-center text-gray-500 py-8">
       {{ t('project.projectEdit.module.noModulesAvailable') }}
     </div>

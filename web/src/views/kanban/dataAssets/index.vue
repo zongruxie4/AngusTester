@@ -91,7 +91,6 @@ const rankIcon = {
   2: 'icon-disanming'
 };
 const rankingData = ref<{userId: string; fullName: string; avatar: string; count: string}[]>([]);
-// 排名数据
 const loadRankData = async () => {
   const [error, { data = {} }] = await kanban.getRanking({ ...params.value });
   if (error) {
@@ -169,7 +168,6 @@ const loadGrowthTrendData = async () => {
   increasEcharts.setOption(increaseEchartConfig, true);
 };
 
-// 增长趋势图表
 let increasEcharts;
 const increasEmpty = ref();
 const increasRef = ref(); // 增长趋势echarts ref

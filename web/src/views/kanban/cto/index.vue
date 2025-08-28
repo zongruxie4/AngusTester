@@ -65,7 +65,6 @@ const params = computed(() => {
 
 const memberNum = ref(0);
 
-// 总进度
 let progressEchart;
 const progressDatas = ref({});
 const progressRef = ref();
@@ -197,7 +196,6 @@ const recentCompleteEchartConfig = {
   }]
 };
 
-// 近期逾期率
 let recentOverdueRateChart;
 const recentOverdueRef = ref();
 const recentoverdueEchartConfig = {

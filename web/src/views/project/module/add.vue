@@ -57,7 +57,7 @@ const isLoading = ref(false);
  */
 const handleCreateModule = async (): Promise<void> => {
   const trimmedName = inputValue.value?.trim();
-  
+
   // Validate input before proceeding
   if (!trimmedName) {
     return;
@@ -76,7 +76,7 @@ const handleCreateModule = async (): Promise<void> => {
 
     // Call API to create the module
     const [error, response] = await modules.addModule(createParams);
-    
+
     if (error) {
       console.error('Failed to create module:', error);
       return;
@@ -85,20 +85,19 @@ const handleCreateModule = async (): Promise<void> => {
     // Extract created module information
     const createdModule = response?.data?.[0];
     const moduleId = createdModule?.id || '';
-    
+
     // Emit success event with module details
-    emit('ok', { 
-      id: moduleId, 
-      name: trimmedName 
+    emit('ok', {
+      id: moduleId,
+      name: trimmedName
     });
 
     // Reset form and close modal
     resetForm();
     closeModal();
-    
+
     // Show success notification
     notification.success(t('project.projectEdit.module.addSuccess'));
-    
   } catch (error) {
     console.error('Unexpected error during module creation:', error);
   } finally {

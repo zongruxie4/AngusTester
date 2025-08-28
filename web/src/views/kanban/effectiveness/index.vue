@@ -35,7 +35,6 @@ const props = withDefaults(defineProps<Props>(), {
   onShow: false
 });
 
-// 优先级分布
 const priorityRef = ref();
 // let priorityEcharts;
 // const priorityEchartsConfig = {

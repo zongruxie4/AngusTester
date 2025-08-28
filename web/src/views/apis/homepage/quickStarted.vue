@@ -17,10 +17,6 @@ const toDebug = () => {
   addTabPane({ name: t('apis.quickAccess.addApiTabName'), value: 'API', _id: utils.uuid() + 'API' });
 };
 
-// const toCreateService = () => {
-//   addTabPane({ name: '引导添加', value: 'api_conduct_created_service', _id: utils.uuid() + 'api_conduct_created_service', type: 'SERVICE', noCache: true });
-// };
-
 const toImport = () => {
   importModalVisible.value = true;
 };

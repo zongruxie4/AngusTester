@@ -76,7 +76,6 @@ onMounted(() => {
 
 provide('updateProjectInfo', updateProjectInfo);
 
-// 添加指定的tabPane
 provide('addTabPane', (params) => {
   router.replace('/apis#services');
   nextTick(() => {
@@ -84,13 +83,10 @@ provide('addTabPane', (params) => {
   });
 });
 
-// 删除指定的tabPane
 provide('deleteTabPane', (params) => servicesRef.value && servicesRef.value.deleteTabPane(params));
 
-// 更新指定的tabPane
 provide('updateTabPane', (params) => servicesRef.value && servicesRef.value.updateTabPane(params));
 
-// 替换指定tabPane
 provide('replaceTabPane', (params) => servicesRef.value && servicesRef.value.replaceTabPane(params));
 
 provide('updateApiGroup', (params) => servicesRef.value && servicesRef.value.updateApiGroup(params));

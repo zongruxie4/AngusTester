@@ -49,7 +49,6 @@ const getParams = () => {
   };
 };
 
-// 获取空间数据
 const loadData = async () => {
   if (tableLoading.value) {
     return;
@@ -91,7 +90,6 @@ const loadDataAuth = async (list) => {
   });
 };
 
-// 当前选中的数据的 id
 const selectedRowKey = ref<string>('');
 const selectedRow = ref();
 
@@ -100,7 +98,6 @@ watch(() => keyword.value, debounce(duration.search, () => {
   loadData();
 }));
 
-// 变更分页
 const changePage = ({ pageSize, current }) => {
   pagination.current = current;
   pagination.pageSize = pageSize;
@@ -111,7 +108,6 @@ const selectId = ref<string>();
 const auth = ref(false);
 const selectName = ref();
 
-// 删除
 const delConfirm = (record) => {
   modal.confirm({
     content: t('fileSpace.messages.deleteConfirm', { name: record.name }),
@@ -136,10 +132,8 @@ const delConfirm = (record) => {
   });
 };
 
-// 分享
 const shareVisible = ref(false);
 
-// 权限
 const authModalVisible = ref(false);
 const editAuth = (record) => {
   selectId.value = record.id;
@@ -207,7 +201,6 @@ const authFlagChange = ({ auth }:{auth:boolean}) => {
   }
 };
 
-// 保存弹窗内 空间信息
 const saveSpace = async (form) => {
   const [error] = await (form.id ? space.patchSpace({ ...form }) : space.addSpace({ ...form, projectId: projectId.value }));
   if (error) {

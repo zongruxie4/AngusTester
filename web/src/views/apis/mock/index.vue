@@ -183,7 +183,6 @@ const setData = (newData:MockServiceObj) => {
   }
 };
 
-// 批量启动
 const batchStart = async () => {
   if (!rouSelection.value) {
     rouSelection.value = {
@@ -344,7 +343,6 @@ const forceDelete = (record: MockServiceObj) => {
   });
 };
 
-// 批量删除
 const batchDelete = async () => {
   if (!rouSelection.value) {
     rouSelection.value = {
@@ -406,7 +404,6 @@ const handleRefresh = () => {
   getList();
 };
 
-// 单条启动停止
 const handleUpdateStatus = async (item:MockServiceObj) => {
   if (loading.value) {
     return;

@@ -11,7 +11,7 @@ import type { ModuleItem } from '../types';
  * @param onSearch - Callback function for search operations
  * @returns Object containing search state and tree utility functions
  */
-export function useTree(
+export function useTree (
   dataList: Ref<ModuleItem[]>,
   onSearch: (searchTerm: string) => Promise<void>
 ) {

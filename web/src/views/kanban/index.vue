@@ -34,7 +34,6 @@ const creatorObjectName = ref<string>();
 const avatar = ref<string>();
 const creatorModalVisible = ref(false);
 
-// 效能统计类型
 const countType = ref<'task' | 'useCase'>('task');
 const selectedSprintId = ref<string>();
 const selectedPlanId = ref<string>();

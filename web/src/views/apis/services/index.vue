@@ -43,12 +43,12 @@ const currentProxy = ref();
 const ws = ref();
 const uuid = ref('');
 const responseData = ref('');
-const readyState = ref(3); // ws 链接状态
+const readyState = ref(3);
 const responseCount = ref(0);
 
 const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
-const appInfo = ref(appContext.getAccessApp())
+const appInfo = ref(appContext.getAccessApp());
 
 const projectId = computed(() => {
   return projectInfo.value?.id;

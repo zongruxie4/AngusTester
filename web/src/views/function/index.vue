@@ -29,7 +29,6 @@ const projectId = computed(() => {
   return projectInfo.value?.id;
 });
 
-// 新打开TabPane
 const addTabPane = (record) => {
   router.push('/function#cases');
   if (typeof caseRef.value?.updateTabPane === 'function') {
@@ -51,7 +50,6 @@ watch(() => caseRef.value, newValue => {
   immediate: true
 });
 
-// 更新TabPane
 const updateTabPane = (record) => {
   router.push('/function#cases');
   if (typeof caseRef.value?.updateTabPane === 'function') {

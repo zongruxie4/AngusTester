@@ -19,7 +19,7 @@ const Share = defineAsyncComponent(() => import('@/views/data/file/share/index.v
 const MoveModal = defineAsyncComponent(() => import('./components/move.vue'));
 
 const route = useRoute();
-const loading = ref(false); // 表格loading
+const loading = ref(false);
 const parentDirectoryId = ref<string>('-1');
 const spaceId = ref('');
 const spaceName = ref('');
@@ -45,10 +45,6 @@ const state = reactive<{
         sortParam: {},
         selectedRowKeys: []
       });
-
-/**
- * selectedRowKeys 勾选数据id的集合
- */
 
 const drawerMenu = [
   {
