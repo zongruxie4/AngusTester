@@ -46,7 +46,7 @@ export function useTableColumns () {
       title: t('taskTrash.columns.actions'),
       dataIndex: 'action',
       key: 'action',
-      width: 70,
+      width: 100,
       fixed: 'right'
     }
   ]);
