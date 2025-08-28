@@ -4,7 +4,7 @@ import { Button } from 'ant-design-vue';
 import { Icon, Image, Input, Spin, Table } from '@xcan-angus/vue-ui';
 
 import { TrashProps } from './types';
-import { useTrashData } from './composables/useTrashData';
+import { useTrashData } from './composables/useData';
 import { useTableColumns } from './composables/useTableColumns';
 
 /**
@@ -113,6 +113,7 @@ onMounted(() => {
       :emptyTextStyle="emptyTextStyle"
       rowKey="id"
       size="small"
+      v-bind="{} as any"
       @change="tableChange">
       <!-- Custom cell rendering for specific columns -->
       <template #bodyCell="{ record, column }">

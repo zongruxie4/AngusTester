@@ -3,6 +3,6 @@
  * <p>Provides centralized access to all reusable logic functions.</p>
  */
 
-export { useTrashData } from './useTrashData';
+export { useTrashData } from './useData';
 export { useTableColumns } from './useTableColumns';
 export { useUserAvatar } from './useUserAvatar';
