@@ -847,5 +847,39 @@
            "comments": "Comments",
            "activities": "Activities"
          }
+    },
+  "functionTrash": {
+    "name": "Trash",
+    "title": "Trash",
+    "placeholder": {
+      "searchKeyword": "Please enter search keyword"
+    },
+    "tips": {
+      "adminOnly": "Only administrators and deleters can restore or permanently delete recycle bin data."
+    },
+    "actions": {
+      "recoverAll": "Restore All",
+      "deleteAll": "Delete All",
+      "refresh": "Refresh",
+      "recover": "Restore",
+      "delete": "Delete"
+    },
+    "messages": {
+      "recoverAllSuccess": "All items restored successfully",
+      "deleteAllSuccess": "All items deleted successfully",
+      "recoverSuccess": "Restored successfully",
+      "deleteSuccess": "Deleted successfully"
+    },
+    "tabs": {
+      "plan": "Plan",
+      "case": "Case"
+    },
+    "columns": {
+      "name": "Name",
+      "creator": "Creator",
+      "deleter": "Deleter",
+      "deleteTime": "Delete Time",
+      "actions": "Actions"
     }
+  }
 }

@@ -8,7 +8,7 @@ import { duration } from '@xcan-angus/infra';
 import { scenario } from '@/api/tester';
 
 import { getCurrentPage } from '@/utils/utils';
-import { TrashItem } from './PropsType';
+import { TrashItem } from './types';
 
 const { t } = useI18n();
 

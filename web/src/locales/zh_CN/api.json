@@ -2107,35 +2107,6 @@
       "description": "当需要与外部合作伙伴、客户或其他团队进行接口集成，可以通过\"分享\"功能将接口信息传递给他们，简化沟通流程。分享包含详细接口说明信息，包括接口服务器、认证、接口地址、请求格式和响应格式等，确保所有人对接口有一致的理解。"
     }
   },
-  "apiTrash": {
-    "name":"回收站",
-    "title": "回收站",
-    "searchPlaceholder": "请输入查询关键字",
-    "tips": "只允许管理员和删除人还原或彻底删除回收站数据。",
-    "buttons": {
-      "recoverAll": "全部还原"
-    },
-    "tabs": {
-      "service": "服务",
-      "api": "接口"
-    },
-    "table": {
-      "columns": {
-        "name": "名称",
-        "createdBy": "添加人",
-        "deletedBy": "删除人",
-        "deletedDate": "删除时间",
-        "action": "操作"
-      },
-      "actions": {
-        "recover": "还原"
-      }
-    },
-    "messages": {
-      "recoverAllSuccess": "全部还原成功",
-      "recoverSuccess": "还原成功"
-    }
-  },
   "appConfig": {
     "name":"应用配置",
     "title": "应用配置",
@@ -2244,6 +2215,35 @@
       "actions": {
         "selectAll": "全选"
       }
+    }
+  },
+    "apiTrash": {
+    "name":"回收站",
+    "title": "回收站",
+    "searchPlaceholder": "请输入查询关键字",
+    "tips": "只允许管理员和删除人还原或彻底删除回收站数据。",
+    "buttons": {
+      "recoverAll": "全部还原"
+    },
+    "tabs": {
+      "service": "服务",
+      "api": "接口"
+    },
+    "table": {
+      "columns": {
+        "name": "名称",
+        "createdBy": "添加人",
+        "deletedBy": "删除人",
+        "deletedDate": "删除时间",
+        "action": "操作"
+      },
+      "actions": {
+        "recover": "还原"
+      }
+    },
+    "messages": {
+      "recoverAllSuccess": "全部还原成功",
+      "recoverSuccess": "还原成功"
     }
   }
 }
