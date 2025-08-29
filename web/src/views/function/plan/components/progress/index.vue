@@ -3,8 +3,11 @@ import { onMounted, ref, watch } from 'vue';
 import { Image, Modal, Table } from '@xcan-angus/vue-ui';
 import { Progress } from 'ant-design-vue';
 import { analysis } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
 
 import { TableDataObj } from './PropsType';
+
+const { t } = useI18n();
 
 interface Props {
   visible: boolean;
@@ -52,7 +55,7 @@ onMounted(() => {
 
 const tableColumns = [
   {
-    title: '成员',
+    title: t('functionPlan.comp.progress.member'),
     width: 140,
     dataIndex: 'testerName',
     customCell: () => {
@@ -60,7 +63,7 @@ const tableColumns = [
     }
   },
   {
-    title: '进度',
+    title: t('functionPlan.comp.progress.progress'),
     dataIndex: 'passedTestRate',
     width: '15%',
     sorter: (a, b) => +a.passedTestRate - (+b.passedTestRate),
@@ -69,7 +72,7 @@ const tableColumns = [
     }
   },
   {
-    title: '总用例数',
+    title: t('functionPlan.comp.progress.totalCaseNum'),
     dataIndex: 'totalCaseNum',
     sorter: (a, b) => +a.totalCaseNum - (+b.totalCaseNum),
     customCell: () => {
@@ -77,7 +80,7 @@ const tableColumns = [
     }
   },
   {
-    title: '有效用例数',
+    title: t('functionPlan.comp.progress.validCaseNum'),
     dataIndex: 'validCaseNum',
     sorter: (a, b) => +a.validCaseNum - (+b.validCaseNum),
     customCell: () => {
@@ -85,7 +88,7 @@ const tableColumns = [
     }
   },
   {
-    title: '通过测试用例数',
+    title: t('functionPlan.comp.progress.passedTestNum'),
     dataIndex: 'passedTestNum',
     sorter: (a, b) => +a.passedTestNum - (+b.passedTestNum),
     customCell: () => {
@@ -93,20 +96,20 @@ const tableColumns = [
     }
   },
   {
-    title: '评估工作量',
+    title: t('functionPlan.comp.progress.evalWorkload'),
     dataIndex: 'evalWorkload'
   },
   {
-    title: '完成工作量',
+    title: t('functionPlan.comp.progress.completedWorkload'),
     dataIndex: 'completedWorkload'
   },
   {
-    title: '工作量完成率',
+    title: t('functionPlan.comp.progress.completedWorkloadRate'),
     dataIndex: 'completedWorkloadRate',
     customRender: ({ text }) => text + '%'
   },
   {
-    title: '逾期用例数',
+    title: t('functionPlan.comp.progress.overdueNum'),
     dataIndex: 'overdueNum',
     width: '12%',
     sorter: (a, b) => +a.overdueNum - (+b.overdueNum),
@@ -115,7 +118,7 @@ const tableColumns = [
     }
   },
   {
-    title: '逾期率',
+    title: t('functionPlan.comp.progress.overdueRate'),
     dataIndex: 'overdueRate',
     customRender: ({ text }) => text + '%',
     customCell: () => {
@@ -126,7 +129,7 @@ const tableColumns = [
 </script>
 <template>
   <Modal
-    title="成员进度"
+    :title="t('functionPlan.comp.progress.title')"
     :visible="props.visible"
     :width="1200"
     :footer="null"
@@ -156,7 +159,7 @@ const tableColumns = [
               v-if="+record?.passedTestRate === 100"
               class="text-white rounded-full bg-status-success text-3 px-2"
               style="transform: scale(0.8);">
-              已完成
+              {{ t('functionPlan.comp.progress.completed') }}
             </div>
           </div>
         </template>

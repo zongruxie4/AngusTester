@@ -1557,6 +1557,32 @@
           "workload": "工作量",
           "remaining": "剩余",
           "expected": "期望"
+        },
+        "comp": {
+          "burndownChart": {
+            "title": "燃尽图",
+            "caseCount": "用例数",
+            "workload": "工作量",
+            "remaining": "剩余",
+            "expected": "期望"
+          },
+          "progress": {
+            "title": "成员进度",
+            "member": "成员",
+            "progress": "进度",
+            "totalCaseNum": "总用例数",
+            "validCaseNum": "用例数",
+            "passedTestNum": "通过测试用例数",
+            "evalWorkload": "评估工作量",
+            "completedWorkload": "完成工作量",
+            "completedWorkloadRate": "工作量完成率",
+            "overdueNum": "逾期用例数",
+            "overdueRate": "逾期率",
+            "completed": "已完成"
+          },
+          "workCalendar": {
+            "title": "工作日历"
+          }
         }
       }
     }
