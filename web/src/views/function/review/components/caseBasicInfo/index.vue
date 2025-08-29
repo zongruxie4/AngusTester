@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Grid, ReviewStatus, TaskPriority } from '@xcan-angus/vue-ui';
 import { Tag } from 'ant-design-vue';
+
+const { t } = useI18n();
 
 interface Props {
   caseInfo?: {[key: string]: any}
@@ -12,33 +15,33 @@ const props = withDefaults(defineProps<Props>(), {
 
 const infoColumns = computed<GridColumns[][]>(() => [
   [
-    { label: '名称', dataIndex: 'name' },
-    { label: 'ID', dataIndex: 'id' },
-    { label: '编号', dataIndex: 'code' },
+    { label: t('caseReview.comp.caseBasicInfo.name'), dataIndex: 'name' },
+    { label: t('caseReview.comp.caseBasicInfo.id'), dataIndex: 'id' },
+    { label: t('caseReview.comp.caseBasicInfo.code'), dataIndex: 'code' },
     {
-      label: '评审状态',
+      label: t('caseReview.comp.caseBasicInfo.reviewStatus'),
       dataIndex: 'reviewStatus'
     },
     {
-      label: '版本',
+      label: t('caseReview.comp.caseBasicInfo.version'),
       dataIndex: 'version'
     },
     {
-      label: '软件版本',
+      label: t('caseReview.comp.caseBasicInfo.softwareVersion'),
       dataIndex: 'softwareVersion'
     },
-    { label: '优先级', dataIndex: 'priority' },
-    { label: '标签', dataIndex: 'tags' },
+    { label: t('caseReview.comp.caseBasicInfo.priority'), dataIndex: 'priority' },
+    { label: t('caseReview.comp.caseBasicInfo.tags'), dataIndex: 'tags' },
 
-    { label: '所属计划', dataIndex: 'planName' },
-    { label: '所属模块', dataIndex: 'moduleName' },
+    { label: t('caseReview.comp.caseBasicInfo.planName'), dataIndex: 'planName' },
+    { label: t('caseReview.comp.caseBasicInfo.moduleName'), dataIndex: 'moduleName' },
     {
-      label: '测试结果',
+      label: t('caseReview.comp.caseBasicInfo.testResult'),
       dataIndex: 'testResult'
     },
-    { label: props.caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? '评估故事点' : '评估工时', dataIndex: 'evalWorkload', customRender: ({ text }) => text || '--' },
-    { label: props.caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? '实际故事点' : '实际工时', dataIndex: 'actualWorkload', customRender: ({ text }) => text || '--' },
-    { label: '计划外用例', dataIndex: 'unplannedFlag', customRender: ({ text }) => text ? t('status.yes') : t('status.no') }
+    { label: props.caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('caseReview.comp.caseBasicInfo.evalStoryPoint') : t('caseReview.comp.caseBasicInfo.evalWorkload'), dataIndex: 'evalWorkload', customRender: ({ text }) => text || '--' },
+    { label: props.caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('caseReview.comp.caseBasicInfo.actualStoryPoint') : t('caseReview.comp.caseBasicInfo.actualWorkload'), dataIndex: 'actualWorkload', customRender: ({ text }) => text || '--' },
+    { label: t('caseReview.comp.caseBasicInfo.unplannedCase'), dataIndex: 'unplannedFlag', customRender: ({ text }) => text ? t('status.yes') : t('status.no') }
   ]
 ]);
 
@@ -46,7 +49,7 @@ const infoColumns = computed<GridColumns[][]>(() => [
 <template>
   <div class="space-y-3">
     <div class="font-semibold text-3.5">
-      基本信息
+      {{ t('caseReview.comp.caseBasicInfo.title') }}
     </div>
     <Grid
       :columns="infoColumns"
@@ -108,7 +111,7 @@ const infoColumns = computed<GridColumns[][]>(() => [
             v-if="caseInfo?.overdue"
             class="border border-status-error rounded px-0.5 ml-5"
             style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-            已逾期
+            {{ t('caseReview.comp.caseBasicInfo.overdue') }}
           </div>
         </div>
       </template>

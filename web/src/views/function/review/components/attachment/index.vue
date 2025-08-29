@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { NoData } from '@xcan-angus/vue-ui';
 import { download } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 interface Props {
   caseInfo?: {[key: string]: any};
@@ -24,7 +27,7 @@ const handleDownload = (url:string) => {
 <template>
   <div>
     <div v-if="!props.hideTitle" class="font-semibold text-3.5">
-      附件
+      {{ t('caseReview.comp.attachment.title') }}
     </div>
     <template v-if="attachmentsData.length">
       <div style="height: 90px;scrollbar-gutter: stable;" class="overflow-hidden hover:overflow-y-auto -mr-2 pr-1">

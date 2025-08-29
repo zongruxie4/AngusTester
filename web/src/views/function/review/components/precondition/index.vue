@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import { defineAsyncComponent } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface Props {
   caseInfo?: { precondition: string};
@@ -16,7 +19,7 @@ const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/in
 <template>
   <div class="space-y-3">
     <div class="font-semibold text-3.5">
-      前置条件
+      {{ t('caseReview.comp.precondition.title') }}
     </div>
 
     <div v-if="props.caseInfo?.precondition" :class="props.contentClass">
@@ -27,7 +30,7 @@ const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/in
       v-else
       class="text-sub-content"
       :class="props.contentClass">
-      无数据~
+      {{ t('caseReview.comp.precondition.noData') }}
     </div>
   </div>
 </template>

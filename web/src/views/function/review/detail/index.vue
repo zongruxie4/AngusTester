@@ -82,7 +82,7 @@ const startReview = async () => {
   if (error) {
     return;
   }
-  notification.success('评审开始成功');
+  notification.success(t('caseReview.detail.reviewStartedSuccess'));
   loadData(reviewId.value);
 };
 
@@ -93,7 +93,7 @@ const columns = [
     width: 32
   },
   {
-    title: t('用例编号'),
+    title: t('caseReview.detail.caseCode'),
     dataIndex: 'caseInfo',
     customRender: ({ text }) => {
       return text?.code;
@@ -101,7 +101,7 @@ const columns = [
     width: 160
   },
   {
-    title: t('用例名称'),
+    title: t('caseReview.detail.caseName'),
     dataIndex: 'caseInfo',
     ellipsis: true,
     customRender: ({ text }) => {
@@ -112,7 +112,7 @@ const columns = [
     }
   },
   {
-    title: '版本',
+    title: t('caseReview.detail.version'),
     dataIndex: 'caseInfo',
     customRender: ({ text }) => {
       return text?.version ? `v${text.version}` : '--';
@@ -120,7 +120,7 @@ const columns = [
     width: 90
   },
   {
-    title: t('优先级'),
+    title: t('caseReview.detail.priority'),
     dataIndex: 'priority',
     customRender: ({ text }):string => text?.message,
     width: 80,
@@ -129,7 +129,7 @@ const columns = [
     }
   },
   {
-    title: t('评审状态'),
+    title: t('caseReview.detail.reviewStatus'),
     dataIndex: 'reviewStatus',
     customRender: ({ text }):string => text?.message,
     width: '10%',
@@ -138,7 +138,7 @@ const columns = [
     }
   },
   {
-    title: t('添加人'),
+    title: t('caseReview.detail.creator'),
     dataIndex: 'createdByName',
     width: '10%',
     customCell: () => {
@@ -146,7 +146,7 @@ const columns = [
     }
   },
   {
-    title: t('操作'),
+    title: t('caseReview.detail.action'),
     dataIndex: 'action',
     width: 320
   }
@@ -323,7 +323,7 @@ const handleReviewOk = () => {
 
 const delCase = async (record) => {
   modal.confirm({
-    title: `确认取消评审用例【${record?.caseInfo?.name || ''}】吗？`,
+    title: t('caseReview.detail.confirmCancelReviewCase', { name: record?.caseInfo?.name || '' }),
     async onOk () {
       const [error] = await func.deleteReviewCase([record.id]);
       if (error) {
@@ -339,8 +339,8 @@ const delCase = async (record) => {
 
 const restart = async (record) => {
   modal.confirm({
-    title: '重新开始评审',
-    content: `确认重新开始评审用例【${record?.caseInfo?.name || ''}】吗？`,
+    title: t('caseReview.detail.restartReview'),
+    content: t('caseReview.detail.confirmRestartReviewCase', { name: record?.caseInfo?.name || '' }),
     async onOk () {
       const [error] = await func.restartReviewCase([record.id]);
       if (error) {
@@ -381,47 +381,47 @@ const handleAddCase = async (caseIds: string[]) => {
 const activeMenuKey = ref();
 const menuItems = [
   {
-    name: '基本信息',
+    name: t('caseReview.detail.basicInfo'),
     key: 'basic',
     icon: 'icon-jibenxinxi'
   },
   {
-    name: '前置条件',
+    name: t('caseReview.detail.precondition'),
     key: 'precondition',
     icon: 'icon-fuwuqi'
   },
   {
-    name: '步骤',
+    name: t('caseReview.detail.steps'),
     key: 'steps',
     icon: 'icon-zuxiao'
   },
   {
-    name: '评审信息',
+    name: t('caseReview.detail.reviewInfo'),
     key: 'reviewResult',
     icon: 'icon-pingshen'
   },
   {
-    name: '人员',
+    name: t('caseReview.detail.members'),
     key: 'members',
     icon: 'icon-quanburenyuan'
   },
   {
-    name: '测试信息',
+    name: t('caseReview.detail.testInfo'),
     key: 'testInfo',
     icon: 'icon-ceshijieguomingxi'
   },
   {
-    name: '关联任务',
+    name: t('caseReview.detail.assocTasks'),
     key: 'refTasks',
     icon: 'icon-renwu2'
   },
   {
-    name: '关联用例',
+    name: t('caseReview.detail.assocCases'),
     key: 'refUseCases',
     icon: 'icon-yongli1'
   },
   {
-    name: '附件',
+    name: t('caseReview.detail.attachments'),
     key: 'attachment',
     icon: 'icon-wenjian1'
   }
@@ -444,13 +444,13 @@ const menuItems = [
             class="ml-3"
             @click="startReview">
             <Icon icon="icon-kaishi" class="mr-1" />
-            开始评审
+            {{ t('caseReview.detail.startReview') }}
           </Button>
         </div>
         <div class="flex space-x-12">
           <div class="space-y-1">
             <div class="text-center h-6 leading-6 space-x-3">
-              <span>进度</span>
+              <span>{{ t('caseReview.detail.progress') }}</span>
               <span class="font-semibold text-3.5">{{ dataSource?.progress?.completed || 0 }} / {{ dataSource?.progress?.total || 0 }}</span>
             </div>
             <div class="w-30 flex h-2 rounded bg-gray-3">
@@ -464,17 +464,17 @@ const menuItems = [
           <div class="flex-1">
             <div class="flex leading-8 h-8">
               <div class="inline-flex flex-1 pr-2">
-                <label class="w-16">测试计划：</label>
+                <label class="w-16">{{ t('caseReview.detail.testPlan') }}：</label>
                 <div>{{ dataSource?.planName }}</div>
               </div>
               <div class="inline-flex flex-1 pr-2">
-                <label class="w-16">负责人：</label>
+                <label class="w-16">{{ t('caseReview.detail.owner') }}：</label>
                 <div>{{ dataSource?.ownerName }}</div>
               </div>
             </div>
             <div class="flex leading-8 h-8">
               <div class="inline-flex flex-1 pr-2">
-                <label class="w-16">附件：</label>
+                <label class="w-16">{{ t('caseReview.detail.attachments') }}：</label>
                 <div class="flex space-x-2 flex-1">
                   <a
                     v-for="file in (dataSource?.attachments || [])"
@@ -482,11 +482,11 @@ const menuItems = [
                     @click="download(file.url)">
                     {{ file.name }}
                   </a>
-                  <div v-if="!dataSource?.attachments?.length">无</div>
+                  <div v-if="!dataSource?.attachments?.length">{{ t('caseReview.detail.noAttachments') }}</div>
                 </div>
               </div>
               <div class="inline-flex flex-1 pr-2">
-                <label class="w-16">参与人员：</label>
+                <label class="w-16">{{ t('caseReview.detail.participants') }}：</label>
                 <div class="flex space-x-2 flex-wrap flex-1 items-center">
                   <div
                     v-for="person in (dataSource?.participants || []).slice(0, 5)"
@@ -526,17 +526,17 @@ const menuItems = [
         </div>
 
         <Tabs size="small" class="mt-5">
-          <TabPane key="testerResponsibilities" tab="测试用例">
+          <TabPane key="testerResponsibilities" :tab="t('caseReview.detail.testCases')">
             <div class="flex mb-3">
               <Input
                 v-model:value="keywords"
-                placeholder="输入查询名称"
+                :placeholder="t('caseReview.detail.enterQueryName')"
                 class="w-50"
                 @change="handleKeywordChange" />
               <SelectEnum
                 v-model:value="reviewStatus"
                 class="w-50 ml-2"
-                placeholder="选择评审状态"
+                :placeholder="t('caseReview.detail.selectReviewStatus')"
                 enumKey="ReviewStatus"
                 :allowClear="true"
                 @change="handleChangeStatus">
@@ -551,7 +551,7 @@ const menuItems = [
                 type="primary"
                 @click="addReviewCase">
                 <Icon icon="icon-jia" class="mr-1" />
-                添加评审用例
+                {{ t('caseReview.detail.addReviewCase') }}
               </Button>
             </div>
             <Table
@@ -584,7 +584,7 @@ const menuItems = [
                     :disabled="!permissions.includes('REVIEW')"
                     @click.stop="delCase(record)">
                     <Icon icon="icon-qingchu" class="mr-1" />
-                    取消
+                    {{ t('caseReview.detail.cancel') }}
                   </Button>
                   <Button
                     :disabled="!permissions.includes('REVIEW') || record.reviewStatus?.value === 'PENDING' || dataSource?.status?.value === 'PENDING'"
@@ -592,7 +592,7 @@ const menuItems = [
                     size="small"
                     @click.stop="restart(record)">
                     <Icon icon="icon-zhongxinkaishi" class="mr-1" />
-                    重新评审
+                    {{ t('caseReview.detail.restartNewReview') }}
                   </Button>
                   <Button
                     :disabled="!permissions.includes('REVIEW') || record.reviewStatus?.value === 'PENDING' || dataSource?.status?.value === 'PENDING'"
@@ -600,7 +600,7 @@ const menuItems = [
                     size="small"
                     @click.stop="reset(record)">
                     <Icon icon="icon-zhongzhipingshenjieguo" class="mr-1" />
-                    重置评审
+                    {{ t('caseReview.detail.resetReview') }}
                   </Button>
                   <RouterLink :to="`/function#cases?id=${record.caseId}`">
                     <Button
@@ -608,7 +608,7 @@ const menuItems = [
                       size="small"
                       @click.stop>
                       <Icon icon="icon-chakanhuodong" class="mr-1" />
-                      查看
+                      {{ t('caseReview.detail.view') }}
                     </Button>
                   </RouterLink>
                 </template>
@@ -617,8 +617,8 @@ const menuItems = [
 
             <template v-if="selectCaseIds.length">
               <div class="font-semibold text-3.5 mt-5">
-                评审信息
-                <span class="text-sub-content">(已选择{{ selectCaseIds.length }}个)</span>
+                              {{ t('caseReview.detail.reviewInfoSelected') }}
+              <span class="text-sub-content">{{ t('caseReview.detail.selectedCount', { count: selectCaseIds.length }) }}</span>
               </div>
               <ReviewForm
                 class="mt-5 w-100"
@@ -626,14 +626,14 @@ const menuItems = [
                 @update="handleReviewOk" />
             </template>
           </TabPane>
-          <TabPane key="description" tab="评审说明">
+          <TabPane key="description" :tab="t('caseReview.detail.reviewDescription')">
             <div v-if="dataSource?.description" class="">
               <RichEditor
                 :value="dataSource?.description"
                 mode="view" />
             </div>
             <div v-else class="text-sub-content">
-              暂无说明~
+              {{ t('caseReview.detail.noDescription') }}
             </div>
           </TabPane>
         </Tabs>
@@ -656,7 +656,7 @@ const menuItems = [
             :caseInfo="selectCaseInfo?.caseInfo" />
 
           <div class="font-semibold text-3.5">
-            测试步骤
+            {{ t('caseReview.detail.testSteps') }}
           </div>
 
           <CaseStep

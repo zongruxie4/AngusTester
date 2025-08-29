@@ -3,6 +3,7 @@ import { defineAsyncComponent, onMounted, ref } from 'vue';
 import { AsyncComponent, Icon, Input, modal, notification } from '@xcan-angus/vue-ui';
 import { Button, Tree } from 'ant-design-vue';
 import { modules } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
 
 type TagItem = {
   id: string;
@@ -28,6 +29,8 @@ const props = withDefaults(defineProps<Props>(), {
   moduleId: '',
   disabled: false
 });
+
+const { t } = useI18n();
 
 const emits = defineEmits<{(e: 'loadData', value?: string); (e: 'update:moduleId', value: string): void }>();
 
@@ -81,7 +84,7 @@ const pressEnter = async (id: string, event: { target: { value: string } }) => {
   if (error) {
     return;
   }
-  notification.success('修改成功');
+  notification.success(t('caseReview.editForm.modifySuccess'));
   editId.value = undefined;
   emits('loadData', keywords.value);
 };
@@ -97,7 +100,7 @@ const hadleblur = (id: string, event: { target: { value: string } }) => {
 // 删除弹框
 const toDelete = (data: TagItem) => {
   modal.confirm({
-    content: `确定删除模块【${data.name}】吗？`,
+    content: t('caseReview.editForm.confirmDeleteModule', { name: data.name }),
     async onOk () {
       const id = data.id;
       const params = { ids: [id] };
@@ -108,7 +111,7 @@ const toDelete = (data: TagItem) => {
         return;
       }
 
-      notification.success('删除模块成功');
+      notification.success(t('caseReview.editForm.deleteModuleSuccess'));
       emits('loadData', keywords.value);
     }
   });
@@ -158,7 +161,7 @@ const moveUp = async (record) => {
   if (error) {
     return;
   }
-  notification.success('移动成功');
+  notification.success(t('caseReview.editForm.moveSuccess'));
   emits('loadData', keywords.value);
 };
 
@@ -186,7 +189,7 @@ const moveDown = async (record) => {
   if (error) {
     return;
   }
-  notification.success('移动成功');
+  notification.success(t('caseReview.editForm.moveSuccess'));
   emits('loadData', keywords.value);
 };
 
@@ -230,7 +233,7 @@ const travelTreeData = (treeData, callback = (item) => item) => {
   return treeData;
 };
 
-const moduleTreeData = ref([{ name: '无模块用例', id: '-1' }]);
+const moduleTreeData = ref([{ name: t('caseReview.editForm.noModuleCases'), id: '-1' }]);
 
 const loadDataList = async () => {
   const [error, { data }] = await modules.getModuleTree({
@@ -239,7 +242,7 @@ const loadDataList = async () => {
   if (error) {
     return;
   }
-  moduleTreeData.value = [{ name: '无模块用例', id: '-1' }, ...travelTreeData(data || [])];
+  moduleTreeData.value = [{ name: t('caseReview.editForm.noModuleCases'), id: '-1' }, ...travelTreeData(data || [])];
 };
 
 onMounted(() => {
@@ -257,7 +260,7 @@ defineExpose({
       class="flex items-center space-x-2 tree-title h-9 leading-9 pl-4.5 cursor-pointer all-case"
       @click="handleSelectKeysChange([''])">
       <Icon icon="icon-liebiaoshitu" class="text-3.5" />
-      <span class="flex-1">全部用例</span>
+      <span class="flex-1">{{ t('caseReview.editForm.allCases') }}</span>
     </div>
     <Tree
       :treeData="moduleTreeData"
@@ -276,7 +279,7 @@ defineExpose({
         <div v-if="editId === id" class="flex items-center">
           <Input
             ref="nameInputRef"
-            placeholder="请输入模块名称"
+            :placeholder="t('caseReview.editForm.enterModuleName')"
             class="flex-1 mr-2 bg-white"
             trim
             :value="name"
@@ -289,7 +292,7 @@ defineExpose({
             size="small"
             class="px-0 py-0 mr-1"
             @click="cancelEdit">
-            取消
+            {{ t('caseReview.editForm.cancel') }}
           </Button>
         </div>
         <div v-else class="flex items-center space-x-2 tree-title">

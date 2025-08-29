@@ -5,6 +5,7 @@ import { ReviewCaseInfo } from './PropsType';
 import { duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { funcPlan } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   planId: string;
@@ -17,6 +18,8 @@ const props = withDefaults(defineProps<Props>(), {
   reviewId: undefined,
   projectId: undefined
 });
+
+const { t } = useI18n();
 const emit = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'ok', value: string[], rowValue: ReviewCaseInfo[]):void}>();
 
 const ModuleTree = defineAsyncComponent(() => import('@/views/function/review/edit/moduleTree.vue'));
@@ -79,24 +82,24 @@ const handleFilter = debounce(duration.search, () => {
 
 const columns = [
   {
-    title: '编号',
+    title: t('caseReview.editForm.code'),
     dataIndex: 'code'
   },
   {
-    title: '名称',
+    title: t('caseReview.editForm.name'),
     dataIndex: 'name',
     width: '40%'
   },
   {
-    title: '测试人',
+    title: t('caseReview.editForm.tester'),
     dataIndex: 'testerName'
   },
   {
-    title: '开发人',
+    title: t('caseReview.editForm.developer'),
     dataIndex: 'developerName'
   },
   {
-    title: '评审状态',
+    title: t('caseReview.editForm.reviewStatus'),
     dataIndex: 'reviewStatus'
   }
 ];
@@ -111,7 +114,7 @@ const rowSelection = ref({
 </script>
 <template>
   <Modal
-    title="选择用例"
+    :title="t('caseReview.editForm.selectCase')"
     :visible="props.visible"
     :width="1000"
     :loading="loading"
@@ -126,7 +129,7 @@ const rowSelection = ref({
       <div class="flex-1 ml-2">
         <Input
           v-model:value="keywords"
-          placeholder="查询名称、编码"
+          :placeholder="t('caseReview.editForm.queryNameCode')"
           class="w-100"
           @change="handleFilter" />
         <Table

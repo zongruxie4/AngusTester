@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Grid, TestResult } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 interface Props {
   caseInfo?: {[key: string]: any}
@@ -12,19 +15,19 @@ const props = withDefaults(defineProps<Props>(), {
 const testInfoColumns = [
   [
     {
-      label: '测试次数',
+      label: t('caseReview.comp.testInfo.testCount'),
       dataIndex: 'testNum'
     },
     {
-      label: '失败次数',
+      label: t('caseReview.comp.testInfo.failCount'),
       dataIndex: 'testFailNum'
     },
     {
-      label: '是否一次性通过',
+      label: t('caseReview.comp.testInfo.oneTimePass'),
       dataIndex: 'oneTestPass'
     },
     {
-      label: '结果备注',
+      label: t('caseReview.comp.testInfo.resultRemark'),
       dataIndex: 'testRemark'
     }
   ]
@@ -41,7 +44,7 @@ const getOneTestPass = computed(() => {
 <template>
   <div class="space-y-3">
     <div class="font-semibold text-3.5">
-      测试信息
+      {{ t('caseReview.comp.testInfo.title') }}
     </div>
     <Grid
       :columns="testInfoColumns"
