@@ -1,8 +1,8 @@
 export const SETTING_KEYS = {
   // 活动相关配置
-  MAX_RESOURCE_ACTIVITIES: 'MAX_RESOURCE_ACTIVITIES',
-  
-  // 其他配置键可以在这里添加
+  MAX_RESOURCE_ACTIVITIES: 'MAX_RESOURCE_ACTIVITIES'
+
+  // Other configuration keys can be added here
   // API_LOG_CONFIG: 'API_LOG_CONFIG',
   // COMMON_DATA_PERMISSION: 'COMMON_DATA_PERMISSION',
   // HEALTH_CHECK: 'HEALTH_CHECK',
