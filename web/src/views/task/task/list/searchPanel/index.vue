@@ -1044,41 +1044,41 @@ const isScenarioTest = computed(() => {
 const modeOptions = [
   {
     key: 'detail',
-    name: '平铺视图',
+    name: t('task.searchPanel.viewModes.detail'),
     label: ''
 
   },
   {
     key: 'table',
-    name: '列表视图',
+    name: t('task.searchPanel.viewModes.table'),
     label: ''
   },
   {
     key: 'kanban',
-    name: '看板视图',
+    name: t('task.searchPanel.viewModes.kanban'),
     label: ''
   },
   {
     key: 'gantt',
-    name: '甘特视图',
+    name: t('task.searchPanel.viewModes.gantt'),
     label: ''
   }
 ];
 
 const modeTitle = computed(() => {
   if (props.viewMode === 'kanban') {
-    return '看板视图';
+    return t('task.searchPanel.viewModes.kanban');
   }
 
   if (props.viewMode === 'detail') {
-    return '平铺视图';
+    return t('task.searchPanel.viewModes.detail');
   }
 
   if (props.viewMode === 'table') {
-    return '列表视图';
+    return t('task.searchPanel.viewModes.table');
   }
 
-  return '甘特视图';
+  return t('task.searchPanel.viewModes.gantt');
 });
 
 const modeIcon = computed(() => {
@@ -1101,50 +1101,50 @@ const menuItems = computed(():MenuItem[] => {
   return [
     {
       key: 'none',
-      name: '所有'
+      name: t('task.searchPanel.menuItems.all')
     },
     {
       key: 'createdBy',
-      name: '我添加的'
+      name: t('task.searchPanel.menuItems.myCreated')
     },
     {
       key: 'assigneeId',
-      name: '待我处理'
+      name: t('task.searchPanel.menuItems.myAssigned')
     },
     {
       key: 'progress',
-      name: '我处理中'
+      name: t('task.searchPanel.menuItems.myProgress')
     },
     {
       key: 'confirmorId',
-      name: '待我确认'
+      name: t('task.searchPanel.menuItems.myConfirm')
     },
     ...taskTypeList.value,
     {
       key: 'lastDay',
-      name: '近1天'
+      name: t('task.searchPanel.menuItems.lastDay')
     },
     {
       key: 'lastThreeDays',
-      name: '近3天'
+      name: t('task.searchPanel.menuItems.lastThreeDays')
     },
     {
       key: 'lastWeek',
-      name: '近7天'
+      name: t('task.searchPanel.menuItems.lastWeek')
     }
   ];
 });
 
 const searchOptions = [
   {
-    type: 'input',
+    type: 'input' as const,
     valueKey: 'name',
-    placeholder: '查询任务名称、编码'
+    placeholder: t('task.searchPanel.searchOptions.name')
   },
   {
-    type: 'select-enum',
+    type: 'select-enum' as const,
     valueKey: 'status',
-    placeholder: '选择任务状态',
+    placeholder: t('task.searchPanel.searchOptions.status'),
     enumKey: TaskStatusEnum
   },
   // {
@@ -1154,138 +1154,138 @@ const searchOptions = [
   //   enumKey: 'TaskType'
   // },
   {
-    type: 'select-enum',
+    type: 'select-enum' as const,
     valueKey: 'priority',
-    placeholder: '选择优先级',
+    placeholder: t('task.searchPanel.searchOptions.priority'),
     enumKey: Priority
   },
   {
-    type: 'select-user',
+    type: 'select-user' as const,
     valueKey: 'assigneeId',
-    placeholder: '选择经办人',
+    placeholder: t('task.searchPanel.searchOptions.assigneeId'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
   {
-    type: 'select-user',
+    type: 'select-user' as const,
     valueKey: 'confirmorId',
-    placeholder: '选择确认人',
+    placeholder: t('task.searchPanel.searchOptions.confirmorId'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
   {
-    type: 'select-user',
+    type: 'select-user' as const,
     valueKey: 'execBy',
-    placeholder: '选择执行人',
+    placeholder: t('task.searchPanel.searchOptions.execBy'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
   {
-    type: 'select-user',
+    type: 'select-user' as const,
     valueKey: 'createdBy',
-    placeholder: '选择添加人',
+    placeholder: t('task.searchPanel.searchOptions.createdBy'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
   {
-    type: 'select-user',
+    type: 'select-user' as const,
     valueKey: 'lastModifiedBy',
-    placeholder: '选择最后修改人',
+    placeholder: t('task.searchPanel.searchOptions.lastModifiedBy'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
   {
-    type: 'select-enum',
+    type: 'select-enum' as const,
     valueKey: 'testType',
-    placeholder: '选择测试类型',
+    placeholder: t('task.searchPanel.searchOptions.testType'),
     enumKey: TestType
   },
   {
-    type: 'select',
+    type: 'select' as const,
     action: `${TESTER}/module?fullTextSearch=true`,
     params: { projectId: props.projectId },
     valueKey: 'moduleId',
     showSearch: true,
-    placeholder: '选择所属模块',
+    placeholder: t('task.searchPanel.searchOptions.moduleId'),
     fieldNames: { label: 'name', value: 'id' }
   },
   {
-    type: 'select-enum',
+    type: 'select-enum' as const,
     valueKey: 'execResult',
-    placeholder: '选择执行结果',
+    placeholder: t('task.searchPanel.searchOptions.execResult'),
     enumKey: Result
   },
   {
-    type: 'select',
+    type: 'select' as const,
     valueKey: 'targetParentId',
     noDefaultSlot: true
   },
   {
-    type: 'select',
+    type: 'select' as const,
     valueKey: 'targetId',
     noDefaultSlot: true
   },
   {
-    type: 'date-range',
+    type: 'date-range' as const,
     valueKey: 'createdDate',
-    placeholder: ['添加时间从', '添加时间到'],
+    placeholder: t('task.searchPanel.searchOptions.createdDate'),
     showTime: true
   },
   {
-    type: 'date-range',
+    type: 'date-range' as const,
     valueKey: 'startDate',
-    placeholder: ['开始时间从', '开始时间到'],
+    placeholder: t('task.searchPanel.searchOptions.startDate'),
     showTime: true
   },
   {
-    type: 'date-range',
+    type: 'date-range' as const,
     valueKey: 'deadlineDate',
-    placeholder: ['截止时间从', '截止时间到'],
+    placeholder: t('task.searchPanel.searchOptions.deadlineDate'),
     showTime: true
   },
   {
-    type: 'date-range',
+    type: 'date-range' as const,
     valueKey: 'processedDate',
-    placeholder: ['处理时间从', '处理时间到'],
+    placeholder: t('task.searchPanel.searchOptions.processedDate'),
     showTime: true
   },
   {
-    type: 'date-range',
+    type: 'date-range' as const,
     valueKey: 'confirmedDate',
-    placeholder: ['确认时间从', '确认时间到'],
+    placeholder: t('task.searchPanel.searchOptions.confirmedDate'),
     showTime: true
   },
   {
-    type: 'date-range',
+    type: 'date-range' as const,
     valueKey: 'completedDate',
-    placeholder: ['完成时间从', '完成时间到'],
+    placeholder: t('task.searchPanel.searchOptions.completedDate'),
     showTime: true
   },
   {
-    type: 'date-range',
+    type: 'date-range' as const,
     valueKey: 'canceledDate',
-    placeholder: ['取消时间从', '取消时间到'],
+    placeholder: t('task.searchPanel.searchOptions.canceledDate'),
     showTime: true
   },
   {
-    type: 'date-range',
+    type: 'date-range' as const,
     valueKey: 'execDate',
-    placeholder: ['执行时间从', '执行时间到'],
+    placeholder: t('task.searchPanel.searchOptions.execDate'),
     showTime: true
   },
   {
-    type: 'date-range',
+    type: 'date-range' as const,
     valueKey: 'lastModifiedDate',
-    placeholder: ['修改时间从', '修改时间到'],
+    placeholder: t('task.searchPanel.searchOptions.lastModifiedDate'),
     showTime: true
   },
   {
-    type: 'input',
+    type: 'input' as const,
     valueKey: 'evalWorkload',
     noDefaultSlot: true
   },
   {
-    type: 'input',
+    type: 'input' as const,
     valueKey: 'failNum',
     noDefaultSlot: true
   },
   {
-    type: 'input',
+    type: 'input' as const,
     valueKey: 'totalNum',
     noDefaultSlot: true
   }
@@ -1316,41 +1316,41 @@ const fieldNames = { label: 'name', value: 'id' };
 const groupMenuItems = [
   {
     key: 'none',
-    name: '不分组'
+    name: t('task.searchPanel.groupOptions.none')
   },
   {
     key: 'assigneeName',
-    name: '按经办人分组'
+    name: t('task.searchPanel.groupOptions.assigneeName')
   },
   {
     key: 'lastModifiedByName',
-    name: '按最后修改人分组'
+    name: t('task.searchPanel.groupOptions.lastModifiedByName')
   },
   {
     key: 'taskType',
-    name: '按任务类型分组'
+    name: t('task.searchPanel.groupOptions.taskType')
   }
 ];
 
 const sortMenuItems = [
   {
     key: 'createdByName',
-    name: '按添加人排序',
+    name: t('task.searchPanel.sortOptions.createdByName'),
     orderSort: 'ASC'
   },
   {
     key: 'assigneeName',
-    name: '按经办人排序',
+    name: t('task.searchPanel.sortOptions.assigneeName'),
     orderSort: 'ASC'
   },
   {
     key: 'priority',
-    name: '按优先级排序',
+    name: t('task.searchPanel.sortOptions.priority'),
     orderSort: 'ASC'
   },
   {
     key: 'deadlineDate',
-    name: '按截止时间排序',
+    name: t('task.searchPanel.sortOptions.deadlineDate'),
     orderSort: 'ASC'
   }];
 </script>
@@ -1359,7 +1359,7 @@ const sortMenuItems = [
     <div class="flex items-start justify-between mb-1.5">
       <div class="flex items-start transform-gpu translate-y-0.5">
         <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-          <span>快速查询</span>
+          <span>{{ t('task.searchPanel.quickSearch') }}</span>
           <Colon />
         </div>
         <div class="flex  flex-wrap ml-2">
@@ -1378,7 +1378,7 @@ const sortMenuItems = [
               size="small"
               @change="overdueChange">
             </Switch>
-            <span>已逾期</span>
+            <span>{{ t('task.searchPanel.overdue') }}</span>
           </div>
 
           <div class="inline-flex items-center mr-3 mb-3 space-x-1">
@@ -1388,7 +1388,7 @@ const sortMenuItems = [
               style="margin-left:0;"
               @change="moduleFlagChange">
             </Switch>
-            <span>按模块分组</span>
+            <span>{{ t('task.searchPanel.moduleGroup') }}</span>
           </div>
 
           <template v-if="selectedSprint?.id">
@@ -1470,7 +1470,7 @@ const sortMenuItems = [
                 type="text"
                 class="flex items-center px-0 h-5 leading-5 border-0 cursor-pointer mr-5 mb-3">
                 <Icon icon="icon-biaotoupaixu" class="text-3.5" />
-                <span class="ml-1">{{ t('common.sort') }}</span>
+                <span class="ml-1">{{ t('sort') }}</span>
               </Button>
             </DropdownSort>
 
@@ -1483,7 +1483,7 @@ const sortMenuItems = [
                 type="text"
                 class="flex items-center px-0 h-5 leading-5 border-0 cursor-pointer mr-5 mb-3">
                 <Icon icon="icon-fenzu" class="text-3.5" />
-                <span class="ml-1">{{ t('common.group') }}</span>
+                <span class="ml-1">{{ t('group') }}</span>
               </Button>
             </DropdownGroup>
           </template>

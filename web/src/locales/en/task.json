@@ -639,7 +639,6 @@
     "noModuleTask": "No Module Tasks",
     "moduleTree": "Module Tree",
     "statisticsPanel": "Statistics Panel",
-    "searchPanel": "Search Panel",
     "viewMode": {
       "table": "Table View",
       "detail": "Detail View",
@@ -941,7 +940,19 @@
         "taskTypeDistribution": "Task Type Distribution",
         "testTypeDistribution": "Test Type Distribution",
         "priorityDistribution": "Priority Distribution",
-        "statusDistribution": "Status Distribution"
+        "statusDistribution": "Status Distribution",
+        "taskType": "Task Type",
+        "testType": "Test Type",
+        "typeColumns": {
+          "story": "Story",
+          "task": "Task",
+          "bug": "Bug",
+          "requirement": "Requirement",
+          "apiTest": "API Test",
+          "functional": "Functional",
+          "perf": "Performance",
+          "stability": "Stability"
+        }
       },
       "columns": {
         "taskName": "Task Name",
@@ -970,6 +981,70 @@
         "delete": "Delete",
         "move": "Move",
         "export": "Export"
+      }
+    },
+    "searchPanel": {
+      "quickSearch": "快速查询",
+      "overdue": "已逾期",
+      "moduleGroup": "按模块分组",
+      "viewModes": {
+        "detail": "平铺视图",
+        "table": "列表视图",
+        "kanban": "看板视图",
+        "gantt": "甘特视图"
+      },
+      "menuItems": {
+        "all": "所有",
+        "myCreated": "我添加的",
+        "myAssigned": "待我处理",
+        "myProgress": "我处理中",
+        "myConfirm": "待我确认",
+        "lastDay": "近1天",
+        "lastThreeDays": "近3天",
+        "lastWeek": "近7天"
+      },
+      "groupOptions": {
+        "none": "不分组",
+        "assigneeName": "按经办人分组",
+        "lastModifiedByName": "按最后修改人分组",
+        "taskType": "按任务类型分组"
+      },
+      "sortOptions": {
+        "createdByName": "按添加人排序",
+        "assigneeName": "按经办人排序",
+        "priority": "按优先级排序",
+        "deadlineDate": "按截止时间排序"
+      },
+      "searchOptions": {
+        "name": "查询任务名称、编码",
+        "status": "选择任务状态",
+        "priority": "选择优先级",
+        "assigneeId": "选择经办人",
+        "confirmorId": "选择确认人",
+        "execBy": "选择执行人",
+        "createdBy": "选择添加人",
+        "lastModifiedBy": "选择最后修改人",
+        "testType": "选择测试类型",
+        "moduleId": "选择所属模块",
+        "execResult": "选择执行结果",
+        "createdDate": ["添加时间从", "添加时间到"],
+        "startDate": ["开始时间从", "开始时间到"],
+        "deadlineDate": ["截止时间从", "截止时间到"],
+        "processedDate": ["处理时间从", "处理时间到"],
+        "confirmedDate": ["确认时间从", "确认时间到"],
+        "completedDate": ["完成时间从", "完成时间到"],
+        "canceledDate": ["取消时间从", "取消时间到"],
+        "execDate": ["执行时间从", "执行时间到"],
+        "lastModifiedDate": ["修改时间从", "修改时间到"],
+        "evalWorkload": "评估工作量",
+        "failNum": "失败次数",
+        "totalNum": "总次数",
+        "servicePlaceholder": "选择服务",
+        "apiPlaceholder": "选择接口",
+        "scenarioPlaceholder": "选择场景",
+        "workloadPlaceholder": "输入评估工作量",
+        "failNumPlaceholder": "输入失败次数",
+        "totalNumPlaceholder": "输入总次数"
       }
     },
     "detail": {
@@ -1159,6 +1234,34 @@
         "subTask": "Sub Tasks",
         "assocCase": "Associated Cases",
         "assocTask": "Associated Tasks"
+      },
+      "assocTaskTab": {
+        "title": "Tasks",
+        "tips": "Record other tasks associated with the current task to help the team understand the dependencies between tasks."
+      },
+      "asscoRequirements": {
+        "title": "Requirements",
+        "tips": "Trace problems to the original requirements to help understand the background and scope of the problem."
+      },
+      "asscoStory": {
+        "title": "Stories",
+        "tips": "Trace user-centric functional requirements to help understand the background and scope of the problem."
+      },
+      "asscoBug": {
+        "title": "Bugs",
+        "tips": "Trace problems to the original requirements to help understand the background and scope of the problem."
+      },
+      "asscoCase": {
+        "title": "Functional Cases",
+        "tips": "Record other tasks associated with the current task to help the team understand the dependencies between tasks."
+      },
+      "asscoApiTest": {
+        "title": "API Tests",
+        "tips": "Establish a relationship with the corresponding API test task to facilitate the tracking of API test progress and ensure normal operation of the interface."
+      },
+      "asscoScenarioTest": {
+        "title": "Scenario Tests",
+        "tips": "Establish a relationship with the corresponding scenario test task to facilitate the understanding of the effectiveness of functions in real scenarios and ensure the completeness of the solution."
       },
       "noMore": "No More",
       "previousTask": "Previous Task",
@@ -1598,6 +1701,7 @@
           "evalWorkloadMethod": "Workload Evaluation Method",
           "api": "API",
           "priority": "Priority",
+          "selectPriority": "请选择优先级",
           "onePass": "One-Time Pass",
           "actualWorkload": "Actual Workload",
           "actualStoryPoint": "Actual Story Point",
@@ -1978,7 +2082,13 @@
       "startDate": "Start Date: ",
       "releaseDate": "Release Date: ",
       "noStartDate": "No start date set",
-      "noReleaseDate": "No release date set"
+      "noReleaseDate": "No release date set",
+      "chart": {
+        "subtext": "Task Completion Progress",
+        "uncompleted": "Uncompleted",
+        "completed": "Completed",
+        "workload": "Workload Completion Progress"
+      }
     },
     "list": {
       "addedVersions": "Added Versions",

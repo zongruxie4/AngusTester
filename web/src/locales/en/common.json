@@ -84,6 +84,7 @@
   },
   "sort": "Sort",
   "quickSearch": "Quick Search",
+  "group": "Group",
   "commonComp": {
     "apis": {
       "editableSelector": {

@@ -477,7 +477,7 @@ const onePassText = computed(() => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ evalWorkloadMethod === 'STORY_POINT' ? '评估故事点' : '评估工时' }}</span>
+              <span>{{ evalWorkloadMethod === 'STORY_POINT' ? t('task.detailInfo.apis.columns.evalWorkload') : t('task.detailInfo.apis.columns.evalWorkloadHours') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -501,7 +501,7 @@ const onePassText = computed(() => {
                 trimAll
                 :min="0.1"
                 :max="1000"
-                placeholder="最小0.1，最大1000，最多支持2位小数"
+                :placeholder="t('task.detailInfo.apis.columns.evalWorkloadPlaceholder')"
                 @blur="evalWorkloadBlur"
                 @pressEnter="evalWorkloadPressEnter" />
             </AsyncComponent>
@@ -533,7 +533,7 @@ const onePassText = computed(() => {
                 :allowClear="false"
                 internal
                 enumKey="Priority"
-                placeholder="请选择优先级"
+                placeholder="t('task.detailInfo.apis.columns.selectPriority')"
                 class="left-component max-w-52"
                 @change="priorityChange"
                 @blur="priorityBlur">

@@ -736,7 +736,7 @@ const onePassText = computed(() => {
               trimAll
               :min="0.1"
               :max="1000"
-              placeholder="最小0.1，最大1000，最多支持2位小数"
+              :placeholder="t('task.detailInfo.scenario.columns.actualWorkloadPlaceholder')"
               @blur="actualWorkloadBlur"
               @pressEnter="actualWorkloadPressEnter" />
           </AsyncComponent>

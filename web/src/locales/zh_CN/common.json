@@ -86,6 +86,7 @@
   },
   "sort": "排序",
   "quickSearch": "快速查询",
+  "group": "分组",
   "commonComp": {
     "apis": {
       "editableSelector": {

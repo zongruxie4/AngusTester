@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
 import * as eCharts from 'echarts';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface Props {
   chart1Value: {
@@ -35,7 +38,7 @@ const completedEchartConfig = {
     left: '35%',
     bottom: '10%',
     padding: 2,
-    subtext: '完成任务进度',
+    subtext: t('task.detail.chart.subtext'),
     // left: '25%',
     // top: '40%',
     itemGap: 50,
@@ -88,14 +91,14 @@ const completedEchartConfig = {
       },
       data: [
         {
-          name: '未完成',
+          name: t('task.detail.chart.uncompleted'),
           value: 0,
           itemStyle: {
             color: 'rgba(217, 217, 217, 1)'
           }
         },
         {
-          name: '已完成',
+          name: t('task.detail.chart.completed'),
           value: 0,
           itemStyle: {
             color: '#52C41A'
@@ -110,7 +113,7 @@ const completedWorkloadEchartConfig = JSON.parse(JSON.stringify({
   ...completedEchartConfig,
   title: {
     ...completedEchartConfig.title,
-    subtext: '完成工作量进度'
+    subtext: t('task.detail.chart.workload')
   }
 }));
 
