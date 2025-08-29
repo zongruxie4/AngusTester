@@ -16,7 +16,7 @@ import { isEqual } from 'lodash-es';
 import { variable } from '@/api/tester';
 import { ExtractionMethod, Encoding, ExtractionFileType } from '@xcan-angus/infra';
 
-import SelectEnum from '@/components/selectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue';
 import { VariableItem } from '../../PropsType';
 import { FormState } from './PropsType';
 

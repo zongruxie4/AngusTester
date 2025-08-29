@@ -5,9 +5,9 @@ import { ActivityTimeline, Colon, Modal } from '@xcan-angus/vue-ui';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { report as reportApi } from '@/api/tester';
 
-const { t } = useI18n();
-
 import { reportMenus } from '@/views/report/add/config';
+
+const { t } = useI18n();
 
 interface Props {
   visible: boolean;

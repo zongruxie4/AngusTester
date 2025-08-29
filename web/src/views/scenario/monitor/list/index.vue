@@ -8,9 +8,9 @@ import { useRouter } from 'vue-router';
 
 import { scenario } from '@/api/tester';
 import { MonitorInfo } from '../PropsType';
+import SearchPanel from '@/views/scenario/monitor/list/searchPanel/index.vue';
 
 const { t } = useI18n();
-import SearchPanel from '@/views/scenario/monitor/list/searchPanel/index.vue';
 
 const router = useRouter();
 

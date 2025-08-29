@@ -5,9 +5,9 @@ import { PieData, PieSetting } from './PropsType';
 import { ScriptType, enumUtils } from '@xcan-angus/infra';
 import { ExecStatus } from '@/enums/enums';
 import { analysis } from '@/api/tester';
+import Charts from './charts.vue';
 
 const { t } = useI18n();
-import Charts from './charts.vue';
 
 const groupByGroup = ref<PieSetting[]>([
   { key: 'script_type', value: t('execution.chartInfo.scriptType'), type: [] },

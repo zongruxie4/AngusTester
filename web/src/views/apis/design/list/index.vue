@@ -308,7 +308,7 @@ const moreButton = (record) => {
     },
     {
       key: 'publish',
-      name:  t('actions.publish'),
+      name: t('actions.publish'),
       icon: 'icon-fabu'
     },
     {
@@ -390,14 +390,14 @@ const moreButton = (record) => {
                     size="small"
                     @click="editDesign(record)">
                     <Icon icon="icon-bianji" />
-                    {{t('actions.edit')}}
+                    {{ t('actions.edit') }}
                   </Button>
                   <Button
                     type="text"
                     size="small"
                     @click="handleEnterDesign(record)">
                     <Icon icon="icon-sheji" />
-                    {{t('design.home.design_action')}}
+                    {{ t('design.home.design_action') }}
                   </Button>
                   <Dropdown :menuItems="moreButton(record)" @click="handleDesign(record, $event.key)">
                     <Icon icon="icon-gengduo" class="ml-1" />

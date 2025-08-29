@@ -5,9 +5,9 @@ import { AsyncComponent, Colon, DatePicker, Icon, IconRefresh, Image, Select } f
 import { Radio, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
 import DefaultAvatar from './images/default.png';
+import { ProjectInfo } from './PropsType';
 
 const { t } = useI18n();
-import { ProjectInfo } from './PropsType';
 
 // const userInfo = inject<Ref<{ id: string; }>>('tenantInfo', ref({ id: '' }));
 const projectInfo = inject<Ref<ProjectInfo | undefined>>('projectInfo', ref());

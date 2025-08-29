@@ -304,10 +304,10 @@ const loadDataList = async (): Promise<void> => {
 
 const showTotal = (total: number) => {
   const totalPage = Math.ceil(total / pagination.value.pageSize);
-  return t('execution.messages.totalRecords', { 
-    total, 
-    current: pagination.value.current, 
-    totalPage 
+  return t('execution.messages.totalRecords', {
+    total,
+    current: pagination.value.current,
+    totalPage
   });
 };
 
@@ -1038,20 +1038,20 @@ const reportIntervalSelectProps = {
               </div>
               <div class="flex leading-7 justify-center mx-5 flex-none" style="width:40%">
                 <div class="flex w-1/2">
-                                      <div class="text-text-sub-content space-y-1 flex-none w-15">
-                      <div class="whitespace-nowrap h-7">
-                        {{ t('execution.basic.scriptName') }}
-                        <Colon />
-                      </div>
-                      <div class="whitespace-nowrap h-7">
-                        {{ t('execution.basic.priority') }}
-                        <Colon />
-                      </div>
-                      <div class="whitespace-nowrap h-7">
-                        {{ t('execution.messages.modifiedBy') }}
-                        <Colon />
-                      </div>
+                  <div class="text-text-sub-content space-y-1 flex-none w-15">
+                    <div class="whitespace-nowrap h-7">
+                      {{ t('execution.basic.scriptName') }}
+                      <Colon />
                     </div>
+                    <div class="whitespace-nowrap h-7">
+                      {{ t('execution.basic.priority') }}
+                      <Colon />
+                    </div>
+                    <div class="whitespace-nowrap h-7">
+                      {{ t('execution.messages.modifiedBy') }}
+                      <Colon />
+                    </div>
+                  </div>
                   <div class="ml-2 space-y-1" style="width: calc(100% - 68px);min-width:160px">
                     <div class="truncate h-7" :title="item?.scriptName">
                       <template v-if="item?.scriptName">

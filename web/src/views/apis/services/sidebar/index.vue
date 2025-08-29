@@ -350,7 +350,7 @@ const restartContent = ref('');
 const restartTestTask = (item) => {
   modalsConfig.activeId = item.id;
   restartTestVisible.value = true;
-  restartContent.value = t('service.sidebar.restartServiceTip', {name: item.name});
+  restartContent.value = t('service.sidebar.restartServiceTip', { name: item.name });
 };
 
 // 重新打开测试任务
@@ -359,7 +359,7 @@ const reopenContent = ref('');
 const reopenTestTask = (item) => {
   modalsConfig.activeId = item.id;
   reopenTestVisible.value = true;
-  reopenContent.value = t('service.sidebar.reopenServiceTip', {name: item.name});
+  reopenContent.value = t('service.sidebar.reopenServiceTip', { name: item.name });
 };
 
 const translateVisible = ref(false);
@@ -372,7 +372,7 @@ const execTestTipConfig = {
   funcTestExecSmoke: t('service.sidebar.funcTestExecSmokeTip'),
   funcTestExecSecurity: t('service.sidebar.funcTestExecSecurityTip'),
   funcTestExec: t('service.sidebar.funcTestExecTip'),
-  perfTestExec:  t('service.sidebar.perfTestExecTip'),
+  perfTestExec: t('service.sidebar.perfTestExecTip'),
   stabilityTestExec: t('service.sidebar.stabilityTestExecTip')
 };
 
@@ -696,7 +696,7 @@ defineExpose({
 });
 
 const modelTitleMap = {
-  SERVICE: t('service.sidebar.authModel.title'),
+  SERVICE: t('service.sidebar.authModel.title')
 };
 
 const tipMap = {
@@ -775,7 +775,7 @@ const foldActions = ref<{ name: string; key: FoldActionKey; icon: string; }[]>([
     icon: 'icon-daochu1'
   },
   {
-    name:  t('actions.authority'),
+    name: t('actions.authority'),
     key: 'authorization',
     icon: 'icon-quanxian1'
   }

@@ -5,7 +5,7 @@ import { Hints, Icon, IconRequired, Input, notification, SelectInput, Toggle, To
 import { cloneDeep, isEqual } from 'lodash-es';
 import { dataSet } from '@/api/tester';
 
-import SelectEnum from '@/components/selectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue';
 import { DataSetItem } from '../../PropsType';
 import { FormState } from './PropsType';
 

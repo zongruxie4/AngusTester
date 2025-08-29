@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent,  onMounted, reactive, ref, watch } from 'vue';
+import { defineAsyncComponent, onMounted, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Image, Input, NoData } from '@xcan-angus/vue-ui';
 import { appContext, Context } from '@xcan-angus/infra';

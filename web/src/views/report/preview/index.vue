@@ -11,9 +11,9 @@ import html2pdf from 'html3pdf';
 import print from 'print-js';
 import { exec, report } from '@/api/tester';
 
-const { t } = useI18n();
-
 import { ExecContent, ExecInfo, ExecResult, ReportContent, ReportInfo } from './PropsType';
+
+const { t } = useI18n();
 
 const ProjectProgressReport = defineAsyncComponent(() => import('@/views/report/preview/projectProgress/index.vue'));
 const ProjectEfficiencyReport = defineAsyncComponent(() => import('@/views/report/preview/projectEfficiency/index.vue'));

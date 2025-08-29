@@ -74,8 +74,6 @@ import { Arrow, Grid, Icon, IconRequired } from '@xcan-angus/vue-ui';
 import { Button, Popover } from 'ant-design-vue';
 // import { useI18n } from 'vue-i18n';
 
-
-
 export default defineComponent({
   name: 'AttrItemList',
   components: { Arrow, Icon, Popover, Grid, Button, IconRequired },

@@ -8,7 +8,7 @@ import { cloneDeep, isEqual } from 'lodash-es';
 import { ScriptType, XCanDexie, TESTER, duration, enumUtils, appContext, ScriptSource } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { setting } from '@/api/gm';
-import SelectEnum from '@/components/selectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue';
 import { MenuItem } from './PropsType';
 import { ExecStatus } from '@/enums/enums';
 

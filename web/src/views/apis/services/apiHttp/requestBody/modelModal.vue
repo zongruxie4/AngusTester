@@ -107,12 +107,12 @@ watch(() => props.visible, newValue => {
       class="w-50 mb-2"
       :placeholder="t('service.apiRequestBody.modal.searchPlaceholder')"
       size="small" />
-          <div class="leading-8 text-text-content">
-        <div style="background-color: #fafafa;" class="flex items-center px-3 rounded">
-          <div class="flex-1/3">{{ t('service.apiRequestBody.modal.columns.componentName') }}</div>
-          <div class="flex-1/3">{{ t('service.apiRequestBody.modal.columns.modifiedBy') }}</div>
-          <div class="flex-1/3">{{ t('service.apiRequestBody.modal.columns.modifiedTime') }}</div>
-        </div>
+    <div class="leading-8 text-text-content">
+      <div style="background-color: #fafafa;" class="flex items-center px-3 rounded">
+        <div class="flex-1/3">{{ t('service.apiRequestBody.modal.columns.componentName') }}</div>
+        <div class="flex-1/3">{{ t('service.apiRequestBody.modal.columns.modifiedBy') }}</div>
+        <div class="flex-1/3">{{ t('service.apiRequestBody.modal.columns.modifiedTime') }}</div>
+      </div>
       <Spin :spinning="loading">
         <template v-if="!loading&&!showOptions?.length">
           <NoData class="flex items-center min-h-26" />

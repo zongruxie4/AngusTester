@@ -8,9 +8,9 @@ import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 import { ResourceInfo } from '../../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   dataSource: ResourceInfo;

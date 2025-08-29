@@ -1619,15 +1619,15 @@ defineExpose({
         <div ref="oneTimeUnPassedTestRateRef" class="h-70"></div>
       </div>
     </div>
-          <div v-if="!isNormalSize" class="flex space-x-2">
-        <div class="min-w-70 border rounded p-2 flex-1">
-          <div class="font-semibold">{{ props.countType ==='task' ? t('kanban.effectiveness.defectCount') : t('kanban.effectiveness.oneTimeReviewPassedCount') }}</div>
-          <div ref="oneTimeUnPassedTestRef" class="h-70"></div>
-        </div>
-        <div class="min-w-70 border rounded p-2 flex-1">
-          <div class="font-semibold">{{ props.countType ==='task' ? t('kanban.effectiveness.defectRate') : t('kanban.effectiveness.oneTimeReviewPassRate') }}</div>
-          <div ref="oneTimeUnPassedTestRateRef" class="h-70"></div>
-        </div>
+    <div v-if="!isNormalSize" class="flex space-x-2">
+      <div class="min-w-70 border rounded p-2 flex-1">
+        <div class="font-semibold">{{ props.countType ==='task' ? t('kanban.effectiveness.defectCount') : t('kanban.effectiveness.oneTimeReviewPassedCount') }}</div>
+        <div ref="oneTimeUnPassedTestRef" class="h-70"></div>
       </div>
+      <div class="min-w-70 border rounded p-2 flex-1">
+        <div class="font-semibold">{{ props.countType ==='task' ? t('kanban.effectiveness.defectRate') : t('kanban.effectiveness.oneTimeReviewPassRate') }}</div>
+        <div ref="oneTimeUnPassedTestRateRef" class="h-70"></div>
+      </div>
+    </div>
   </div>
 </template>

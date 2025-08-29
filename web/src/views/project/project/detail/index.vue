@@ -1,24 +1,24 @@
 <script lang="ts" setup>
 // Vue composition API imports
-import {defineAsyncComponent, ref, watch} from 'vue';
-import {useI18n} from 'vue-i18n';
+import { defineAsyncComponent, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 // External libraries
 import dayjs from 'dayjs';
 
 // Custom UI components
-import {Icon, Image} from '@xcan-angus/vue-ui';
+import { Icon, Image } from '@xcan-angus/vue-ui';
 
 // Ant Design components
-import {TabPane, Tabs, Tag} from 'ant-design-vue';
+import { TabPane, Tabs, Tag } from 'ant-design-vue';
 
 // API imports
-import {useData} from '../composables/useData';
+import { useData } from '../composables/useData';
 
 // Static assets
 import DefaultProjectImage from '@/views/project/project/images/default.png';
-import {ProjectType} from '@/enums/enums';
-import {DetailProps} from "@/views/project/project/types";
+import { ProjectType } from '@/enums/enums';
+import { DetailProps } from '@/views/project/project/types';
 // Initialize i18n
 const { t } = useI18n();
 

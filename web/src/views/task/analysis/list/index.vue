@@ -208,7 +208,7 @@ onBeforeUnmount(() => {
 <template>
   <div class="p-5 h-full flex flex-col overflow-x-hidden">
     <Introduce />
-            <div class="text-3.5 font-semibold mb-2.5">{{ t('taskAnalysis.addedAnalysis') }}</div>
+    <div class="text-3.5 font-semibold mb-2.5">{{ t('taskAnalysis.addedAnalysis') }}</div>
     <SearchPanel
       v-model:orderBy="orderData.orderBy"
       v-model:orderSort="orderData.orderSort"

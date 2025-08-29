@@ -6,13 +6,13 @@ import dayjs from 'dayjs';
 import { appContext, toClipboard } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 import { formItems, nodeStatus, nodeUseProgresses, viewItem } from './interface';
 import { getDefaultNode, getStrokeColor, installConfigColumns } from '../../interface';
 
 import { nodeCtrl, nodeInfo } from 'src/api/ctrl';
 import { node } from '@/api/tester';
+
+const { t } = useI18n();
 
 type Roles = Array<{value: string, label: string, name: string, disabled?:boolean}>
 

@@ -6,9 +6,9 @@ import { Badge, Button, Popover } from 'ant-design-vue';
 import { toClipboard, TESTER, appContext } from '@xcan-angus/infra';
 import { report } from '@/api/tester';
 
-const { t } = useI18n();
-
 import { getCurrentPage } from '@/utils/utils';
+
+const { t } = useI18n();
 
 const Summary = defineAsyncComponent(() => import('@/views/report/homepage/summary/index.vue'));
 const SearchPanel = defineAsyncComponent(() => import('@/views/report/homepage/searchPanel/index.vue'));

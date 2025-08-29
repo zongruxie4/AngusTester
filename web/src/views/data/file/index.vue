@@ -4,14 +4,14 @@ import { Button } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
 import { AsyncComponent, AuthorizeModal, Drawer, Icon, IconRefresh, Input, modal, Table } from '@xcan-angus/vue-ui';
 import { useRouter } from 'vue-router';
-import { duration, STORAGE,  appContext } from '@xcan-angus/infra';
+import { duration, STORAGE, appContext } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
 
 import { space } from '@/api/storage';
 import { FileCapacity, SpaceInfo } from './components';
 import { PaginationType, SPACE_PERMISSIONS, SpaceInfoType } from './PropsType';
+
+const { t } = useI18n();
 
 const Share = defineAsyncComponent(() => import('@/views/data/file/share/index.vue'));
 const EditSpaceModal = defineAsyncComponent(() => import('@/views/data/file/editSpace/index.vue'));

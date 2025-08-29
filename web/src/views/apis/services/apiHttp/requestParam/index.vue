@@ -481,4 +481,3 @@ defineExpose({
   @apply text-3 leading-7 py-0 min-h-full;
 }
 </style>
-

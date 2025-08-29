@@ -301,10 +301,10 @@ const modalTitle = computed(() => {
                   :key="_variable.id"
                   class="space-y-2 relative variable-item">
                   <div class="flex items-start leading-4.5">
-                                    <div v-if="false" class="w-10 flex-shrink-0 text-theme-sub-content">
-                  <span>{{ t('service.serviceExecTest.labels.name') }}</span>
-                  <Colon />
-                </div>
+                    <div v-if="false" class="w-10 flex-shrink-0 text-theme-sub-content">
+                      <span>{{ t('service.serviceExecTest.labels.name') }}</span>
+                      <Colon />
+                    </div>
                     <div :title="_variable.name" class="text-theme-title font-semibold flex-1 truncate">
                       <em class="w-1.25 h-1.25 inline-block rounded bg-slate-600 mr-1.25"></em>
                       <span>{{ _variable.name }}</span>
@@ -336,10 +336,10 @@ const modalTitle = computed(() => {
                   </div>
 
                   <div v-if="false" class="flex items-start leading-4.5">
-                                    <div class="w-10 flex-shrink-0 text-theme-sub-content">
-                  <span>{{ t('service.serviceExecTest.labels.description') }}</span>
-                  <Colon />
-                </div>
+                    <div class="w-10 flex-shrink-0 text-theme-sub-content">
+                      <span>{{ t('service.serviceExecTest.labels.description') }}</span>
+                      <Colon />
+                    </div>
                     <TypographyParagraph
                       class="break-all"
                       :ellipsis="{ rows: 2, expandable: true, symbol: t('service.serviceExecTest.buttons.more') }"

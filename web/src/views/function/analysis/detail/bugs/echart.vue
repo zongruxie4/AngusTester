@@ -340,14 +340,14 @@ defineExpose({
 <template>
   <div class="flex space-x-2">
     <div class="w-30 space-y-2 text-center">
-              <div>
-          <div><span class="text-8 font-semibold">{{ props.value.testCaseHitRate || 0 }}</span>%</div>
-          <div>{{ t('functionAnalysis.detail.bugs.testCaseHitRate') }}</div>
-        </div>
-        <div>
-          <div><span class="text-8 font-semibold">{{ props.value.testCaseHitNum || 0 }}</span></div>
-          <div>{{ t('functionAnalysis.detail.bugs.testCaseHitCount') }}</div>
-        </div>
+      <div>
+        <div><span class="text-8 font-semibold">{{ props.value.testCaseHitRate || 0 }}</span>%</div>
+        <div>{{ t('functionAnalysis.detail.bugs.testCaseHitRate') }}</div>
+      </div>
+      <div>
+        <div><span class="text-8 font-semibold">{{ props.value.testCaseHitNum || 0 }}</span></div>
+        <div>{{ t('functionAnalysis.detail.bugs.testCaseHitCount') }}</div>
+      </div>
     </div>
     <div ref="bugsRef" class="flex-1 min-w-80 h-40"></div>
     <div ref="bugLevelRef" class="flex-1 h-40"></div>

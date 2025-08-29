@@ -2,9 +2,9 @@
 import { defineAsyncComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
+
+const { t } = useI18n();
 
 const AppInfo = defineAsyncComponent(() => import('@/views/config/appInfo/index.vue'));
 const Indicator = defineAsyncComponent(() => import('@/views/config/indicator/index.vue'));

@@ -166,19 +166,19 @@ const copyText = computed(() => {
           :class="{'res-tab-active':currentTabId==='pretty'}"
           class="flex justify-center items-center min-w-20 h-7 px-3 cursor-pointer bg-gray-light"
           @click="handleSelect('pretty')">
-          {{t('service.apis.response.pretty')}}
+          {{ t('service.apis.response.pretty') }}
         </div>
         <div
           :class="{'res-tab-active':currentTabId==='raw'}"
           class="flex justify-center items-center min-w-20 h-7 px-3 cursor-pointer bg-gray-light"
           @click="handleSelect('raw')">
-          {{t('service.apis.response.raw')}}
+          {{ t('service.apis.response.raw') }}
         </div>
         <div
           :class="{'res-tab-active':currentTabId==='preview'}"
           class="flex justify-center items-center min-w-20 h-7 px-3 cursor-pointer bg-gray-light"
           @click="handleSelect('preview')">
-          {{t('service.apis.response.preview')}}
+          {{ t('service.apis.response.preview') }}
         </div>
       </div>
       <div

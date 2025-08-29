@@ -176,7 +176,7 @@ onMounted(() => {
 
     setEchartOption();
     renderChart();
-  }, );
+  });
 
   watch(() => windowResizeNotify.value, (newValue) => {
     if (newValue === undefined || newValue === null || newValue === '') {

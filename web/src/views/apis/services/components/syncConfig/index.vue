@@ -206,10 +206,10 @@ const addAuth = (sync:SyncObj) => {
   if (sync.auths.length > 1) {
     // 判断最后添加的keyname是否已经存在
     const len = sync.auths.filter(item => item.keyName === sync.auths[sync.auths.length - 1].keyName)?.length;
-      if (len >= 2) {
-    notification.warning(t('service.syncConfig.messages.authNameExists'));
-    return;
-  }
+    if (len >= 2) {
+      notification.warning(t('service.syncConfig.messages.authNameExists'));
+      return;
+    }
   }
   sync.auths.push({
     keyName: '',

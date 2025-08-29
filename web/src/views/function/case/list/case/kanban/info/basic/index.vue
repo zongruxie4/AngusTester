@@ -7,7 +7,7 @@ import { isEqual } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
 import { funcCase } from '@/api/tester';
 
-import SelectEnum from '@/components/selectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue';
 import { CaseInfo } from '../../PropsType';
 
 type Props = {

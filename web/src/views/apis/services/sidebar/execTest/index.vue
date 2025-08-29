@@ -199,15 +199,15 @@ const modalTitle = computed(() => {
 
       <div class="flex items-start mb-2.5">
         <div class="flex items-center flex-shrink-0 mr-2.5 leading-5.5">
-          <span>{{t('service.sidebar.execTest.serviceConfigLabel')}}</span>
+          <span>{{ t('service.sidebar.execTest.serviceConfigLabel') }}</span>
           <Colon />
         </div>
         <RadioGroup
           v-model:value="checkedType"
           name="radioGroup"
           @change="radioChange">
-          <Radio value="none">{{t('service.sidebar.execTest.serviceConfigDefault')}}</Radio>
-          <Radio value="checked">{{t('service.sidebar.execTest.serviceConfigModify')}}</Radio>
+          <Radio value="none">{{ t('service.sidebar.execTest.serviceConfigDefault') }}</Radio>
+          <Radio value="checked">{{ t('service.sidebar.execTest.serviceConfigModify') }}</Radio>
         </RadioGroup>
       </div>
 
@@ -228,7 +228,7 @@ const modalTitle = computed(() => {
                 v-if="!record.variables||!Object.keys(record.variables).length"
                 class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 -translate-y-0.25"
                 style="color: rgba(245, 34, 45, 100%);line-height: 15px;">
-                <span class="inline-block transform-gpu scale-90">{{t('service.sidebar.execTest.variableEmpty')}}</span>
+                <span class="inline-block transform-gpu scale-90">{{ t('service.sidebar.execTest.variableEmpty') }}</span>
               </div>
             </div>
           </template>
@@ -260,7 +260,7 @@ const modalTitle = computed(() => {
 
             <div class="flex items-start leading-4.5 mb-2.5">
               <div v-if="false" class="flex-shrink-0 text-theme-sub-content mr-2">
-                <span>{{t('service.sidebar.execTest.descLabel')}}</span>
+                <span>{{ t('service.sidebar.execTest.descLabel') }}</span>
                 <Colon />
               </div>
               <TypographyParagraph
@@ -268,11 +268,11 @@ const modalTitle = computed(() => {
                 class="break-all"
                 :ellipsis="{ rows: 2, expandable: true, symbol: '更多' }"
                 :content="item.description" />
-              <div v-else>{{t('service.sidebar.execTest.descEmpty')}}</div>
+              <div v-else>{{ t('service.sidebar.execTest.descEmpty') }}</div>
             </div>
 
             <div v-if="!!item.variables?.length">
-              <div v-if="false" class="text-theme-sub-content mb-0.5">{{t('service.sidebar.execTest.variableLabel')}}</div>
+              <div v-if="false" class="text-theme-sub-content mb-0.5">{{ t('service.sidebar.execTest.variableLabel') }}</div>
               <div class="space-y-5">
                 <div
                   v-for="_variable in item.variables"
@@ -280,7 +280,7 @@ const modalTitle = computed(() => {
                   class="space-y-2 relative variable-item">
                   <div class="flex items-start leading-4.5">
                     <div v-if="false" class="w-10 flex-shrink-0 text-theme-sub-content">
-                      <span>{{t('service.sidebar.execTest.variableNameLabel')}}</span>
+                      <span>{{ t('service.sidebar.execTest.variableNameLabel') }}</span>
                       <Colon />
                     </div>
                     <div :title="_variable.name" class="text-theme-title font-semibold flex-1 truncate">
@@ -291,7 +291,7 @@ const modalTitle = computed(() => {
 
                   <div class="flex items-start leading-4.5">
                     <div v-if="false" class="w-10 flex-shrink-0 text-theme-sub-content">
-                      <span>{{t('service.sidebar.execTest.variableValueLabel')}}</span>
+                      <span>{{ t('service.sidebar.execTest.variableValueLabel') }}</span>
                       <Colon />
                     </div>
                     <div class="flex-1 space-y-1 pl-2.5">
@@ -301,7 +301,7 @@ const modalTitle = computed(() => {
                         class="flex items-center justify-between">
                         <div :title="_enum.value" class="truncate flex-1">{{ _enum.value }}</div>
                         <div class="flex items-center leading-5">
-                          <div v-if="_enum.value === _variable.default" class="mr-1 text-text-sub-content text-3">{{t('service.sidebar.execTest.variableValueDefault')}}</div>
+                          <div v-if="_enum.value === _variable.default" class="mr-1 text-text-sub-content text-3">{{ t('service.sidebar.execTest.variableValueDefault') }}</div>
                           <Radio
                             size="small"
                             :checked="_enum.value === _variable.default"
@@ -315,7 +315,7 @@ const modalTitle = computed(() => {
 
                   <div v-if="false" class="flex items-start leading-4.5">
                     <div class="w-10 flex-shrink-0 text-theme-sub-content">
-                      <span>{{t('service.sidebar.execTest.variableDescLabel')}}</span>
+                      <span>{{ t('service.sidebar.execTest.variableDescLabel') }}</span>
                       <Colon />
                     </div>
                     <TypographyParagraph
@@ -326,7 +326,7 @@ const modalTitle = computed(() => {
                 </div>
               </div>
             </div>
-            <div v-else>{{t('service.sidebar.execTest.variableEmpty')}}</div>
+            <div v-else>{{ t('service.sidebar.execTest.variableEmpty') }}</div>
           </div>
         </div>
       </template>

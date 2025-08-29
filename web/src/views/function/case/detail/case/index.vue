@@ -21,7 +21,7 @@ import dayjs from 'dayjs';
 import elementResizeDetector, { Erd } from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
 import { CaseInfoObj, Priority } from '../PropsType';
-import SelectEnum from '@/components/selectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue';
 import {
   bigApisInfoColumns,
   bigDateInfoColumns,
@@ -849,7 +849,7 @@ onBeforeUnmount(() => {
                 ref="versionRef"
                 v-model:value="versionValue"
                 allowClear
-                                  :placeholder="t('functionCase.detail.caseDetail.selectVersion')"
+                :placeholder="t('functionCase.detail.caseDetail.selectVersion')"
                 lazy
                 class="w-full max-w-60"
                 :action="`${TESTER}/software/version?projectId=${projectId}`"
@@ -1000,20 +1000,20 @@ onBeforeUnmount(() => {
           <div class="flex items-center space-x-2">
             <span>{{ t('functionCase.detail.caseDetail.precondition') }}</span>
             <template v-if="isEditPrecondition">
-                              <Button
-                  class="font-normal text-theme-special"
-                  type="link"
-                  size="small"
-                  @click="savePrecondition">
-                  {{ t('functionCase.detail.caseDetail.save') }}
-                </Button>
-                              <Button
-                  class="font-normal text-theme-special"
-                  type="link"
-                  size="small"
-                  @click="cancelEditPrecondition">
-                  {{ t('functionCase.detail.caseDetail.cancel') }}
-                </Button>
+              <Button
+                class="font-normal text-theme-special"
+                type="link"
+                size="small"
+                @click="savePrecondition">
+                {{ t('functionCase.detail.caseDetail.save') }}
+              </Button>
+              <Button
+                class="font-normal text-theme-special"
+                type="link"
+                size="small"
+                @click="cancelEditPrecondition">
+                {{ t('functionCase.detail.caseDetail.cancel') }}
+              </Button>
             </template>
             <Icon
               v-else-if="props.actionAuth.includes('edit')"
@@ -1141,7 +1141,6 @@ onBeforeUnmount(() => {
         </template>
       </Toggle>
       <template v-if="!bigLayout">
-
         <Toggle
           :title="t('functionCase.detail.caseDetail.attachments')"
           class="mt-3.5">

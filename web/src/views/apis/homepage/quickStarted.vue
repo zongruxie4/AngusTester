@@ -23,15 +23,15 @@ const toImport = () => {
 </script>
 <template>
   <div>
-    <div class="text-3.5 font-semibold mb-3">{{t('apis.quickAccess.title')}}</div>
+    <div class="text-3.5 font-semibold mb-3">{{ t('apis.quickAccess.title') }}</div>
     <div class="flex space-x-3.75 flex-1 ">
       <div class="flex flex-col justify-between px-5 pt-4 pb-3.5 border border-theme-text-box rounded w-1/3">
         <div class="text-theme-content mb-3.5">
           <div class="flex items-center space-x-2 mb-2">
             <Icon icon="icon-jiekoutiaoshi" class="text-5" />
-            <span class="title-normal">{{t('apis.quickAccess.debug.title')}}</span>
+            <span class="title-normal">{{ t('apis.quickAccess.debug.title') }}</span>
           </div>
-          <div>{{t('apis.quickAccess.debug.description')}}</div>
+          <div>{{ t('apis.quickAccess.debug.description') }}</div>
         </div>
 
         <div class="flex items-start">
@@ -47,7 +47,7 @@ const toImport = () => {
             class="flex space-x-1"
             @click="toDebug">
             <Icon icon="icon-tiaoshi" />
-            {{t('apis.quickAccess.debug.action')}}
+            {{ t('apis.quickAccess.debug.action') }}
           </Button>
         </div>
       </div>
@@ -56,9 +56,9 @@ const toImport = () => {
         <div class="text-theme-content mb-3.5">
           <div class="flex items-center space-x-2 mb-2">
             <Icon icon="icon-daoruxiangmufuwu" class="text-5" />
-            <span class="title-normal">{{t('apis.quickAccess.import.title')}}</span>
+            <span class="title-normal">{{ t('apis.quickAccess.import.title') }}</span>
           </div>
-          <div>{{t('apis.quickAccess.import.description')}}</div>
+          <div>{{ t('apis.quickAccess.import.description') }}</div>
         </div>
 
         <div class="flex items-start">
@@ -68,7 +68,7 @@ const toImport = () => {
             class="flex space-x-1"
             @click="toImport">
             <Icon icon="icon-daoru" />
-            {{t('apis.quickAccess.import.action')}}
+            {{ t('apis.quickAccess.import.action') }}
           </Button>
         </div>
       </div>

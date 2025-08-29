@@ -279,7 +279,7 @@ defineExpose({
       data-type="en"
       includes="-_." />
     <div class="flex items-center mt-2 space-x-1">
-      <span>{{t('service.dataModel.form.required')}}</span>
+      <span>{{ t('service.dataModel.form.required') }}</span>
       <Switch
         v-model:checked="required"
         size="small" />
@@ -287,7 +287,7 @@ defineExpose({
       <Switch
         v-model:checked="nullable"
         size="small" />
-      <span class="pl-5">{{t('service.dataModel.form.deprecated')}}</span>
+      <span class="pl-5">{{ t('service.dataModel.form.deprecated') }}</span>
       <Switch
         v-model:checked="deprecated"
         size="small" />

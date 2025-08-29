@@ -182,8 +182,8 @@ onMounted(async () => {
               disabled
               :value="createType"
               class="h-6.25 mt-0.75 add-mock-type">
-              <Radio :value="true">{{t('service.mock.mockNew')}}</Radio>
-              <Radio :value="false">{{t('service.mock.mockUpdate')}}</Radio>
+              <Radio :value="true">{{ t('service.mock.mockNew') }}</Radio>
+              <Radio :value="false">{{ t('service.mock.mockUpdate') }}</Radio>
             </RadioGroup>
           </FormItem>
           <FormItem name="name">
@@ -256,14 +256,14 @@ onMounted(async () => {
             </FormItem>
           </template>
           <FormItem>
-            <Button size="small" @click="handleCancel">{{t('actions.confirm')}}</Button>
+            <Button size="small" @click="handleCancel">{{ t('actions.confirm') }}</Button>
             <Button
               size="small"
               type="primary"
               class="ml-3"
               :loading="loading"
               @click="handleSave">
-              {{t('actions.cancel')}}
+              {{ t('actions.cancel') }}
             </Button>
           </FormItem>
         </div>

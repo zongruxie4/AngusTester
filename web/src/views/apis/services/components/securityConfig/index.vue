@@ -7,7 +7,7 @@ import { regexpUtils, utils } from '@xcan-angus/infra';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
 import { useI18n } from 'vue-i18n';
 
-import SelectEnum from '@/components/selectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue';
 import { ApiKeyExtensionFields, AuthConfigObj, FlowKey, ModelObj } from './PropsType';
 
 interface Props {
@@ -890,7 +890,7 @@ const OAuth2AuthorizationTypeOptions = [
         :disabled="props.disabled || authConfigList?.length > 49 || addBtnDisabled"
         @click="addAuthConfig">
         <Icon icon="icon-jia" class="mr-1" />
-        {{t('actions.add')}}
+        {{ t('actions.add') }}
       </Button>
     </div>
     <div
@@ -946,7 +946,7 @@ const OAuth2AuthorizationTypeOptions = [
             <div>
               <div class="flex items-end mt-2">
                 <IconRequired />
-                <span>{{t('service.securityModal.nameLabel')}}</span>
+                <span>{{ t('service.securityModal.nameLabel') }}</span>
                 <Tooltip :title="t('service.securityModal.nameTip')" placement="topLeft">
                   <Icon icon="icon-tishi1" class="ml-1 text-tips cursor-pointer text-3.5" />
                 </Tooltip>
@@ -964,7 +964,7 @@ const OAuth2AuthorizationTypeOptions = [
                 includes="_.-"
                 :placeholder="t('service.securityModal.namePlaceholder')"
                 @change="(event)=>authKeyChange(event.target.value,auth)" />
-              <div><IconRequired />{{t('service.securityModal.typeLabel')}}</div>
+              <div><IconRequired />{{ t('service.securityModal.typeLabel') }}</div>
               <RadioGroup
                 v-model:value="auth.model.type"
                 class="flex flex-wrap mt-2 mb-5"
@@ -973,7 +973,7 @@ const OAuth2AuthorizationTypeOptions = [
                 @change="modelTypeChange(auth)">
               </RadioGroup>
               <template v-if="auth.model.type === 'basic'">
-                <div><IconRequired />{{t('service.securityModal.usernameLabel')}}</div>
+                <div><IconRequired />{{ t('service.securityModal.usernameLabel') }}</div>
                 <Input
                   v-model:value="auth.model.username"
                   type="input"
@@ -985,7 +985,7 @@ const OAuth2AuthorizationTypeOptions = [
                   :disabled="!auth.isEdit"
                   :placeholder="t('service.securityModal.usernamePlaceholder')"
                   @change="(event)=>usernameChange(event.target.value,auth)" />
-                <div><IconRequired />{{t('service.securityModal.passwordLabel')}}</div>
+                <div><IconRequired />{{ t('service.securityModal.passwordLabel') }}</div>
                 <Input
                   v-model:value="auth.model.password"
                   :error="auth.model.passwordErr"
@@ -998,7 +998,7 @@ const OAuth2AuthorizationTypeOptions = [
                   @change="(event)=>passwordChange(event.target.value,auth)" />
               </template>
               <template v-if="auth.model.type === 'bearer'">
-                <div><IconRequired />{{t('service.securityModal.tokenLabel')}} </div>
+                <div><IconRequired />{{ t('service.securityModal.tokenLabel') }} </div>
                 <template v-if="auth.isEdit">
                   <Input
                     v-model:value="auth.model.token"
@@ -1024,7 +1024,7 @@ const OAuth2AuthorizationTypeOptions = [
                     class="flex flex-col border-b border-dashed pb-4"
                     :class="{'border-b-0 pb-0': apikeyIndex === auth.model.apiKeyList.length-1}">
                     <div class="mt-4 flex justify-between">
-                      <span><IconRequired />{{t('service.securityModal.nameLabel')}}</span>
+                      <span><IconRequired />{{ t('service.securityModal.nameLabel') }}</span>
                       <span v-if="auth.isEdit" class="text-4 -mt-1">
                         <template v-if="auth.model.apiKeyList.length < 49">
                           <Icon
@@ -1073,13 +1073,13 @@ const OAuth2AuthorizationTypeOptions = [
                 </div>
               </template>
               <template v-if="auth.model.type === 'oauth2'">
-                <div class="pl-1.75">{{t('service.securityModal.configToken')}} </div>
+                <div class="pl-1.75">{{ t('service.securityModal.configToken') }} </div>
                 <RadioGroup
                   v-model:value="auth.model['x-xc-oauth2-newToken']"
                   class="mt-2 mb-5"
                   :disabled="!auth.isEdit">
-                  <Radio :value="false">{{t('service.securityModal.token_had')}}</Radio>
-                  <Radio :value="true">{{t('service.securityModal.token_generate')}}</Radio>
+                  <Radio :value="false">{{ t('service.securityModal.token_had') }}</Radio>
+                  <Radio :value="true">{{ t('service.securityModal.token_generate') }}</Radio>
                 </RadioGroup>
                 <template v-if="!auth.model['x-xc-oauth2-newToken']">
                   <div>{{ t('service.securityModal.tokenLabel') }}</div>
@@ -1100,7 +1100,7 @@ const OAuth2AuthorizationTypeOptions = [
                   </template>
                 </template>
                 <template v-else>
-                  <div class="pl-1.75">{{t('service.securityModal.authFlowLabel')}}</div>
+                  <div class="pl-1.75">{{ t('service.securityModal.authFlowLabel') }}</div>
                   <Select
                     v-model:value="auth.model['x-xc-oauth2-authFlow']"
                     size="small"
@@ -1108,7 +1108,7 @@ const OAuth2AuthorizationTypeOptions = [
                     :disabled="!auth.isEdit"
                     :options="OAuth2AuthorizationTypeOptions" />
                   <template v-if="['authorizationCode','implicit'].includes(auth.model['x-xc-oauth2-authFlow'])">
-                    <div><IconRequired />{{t('service.securityModal.authorizationUrlLabel')}}</div>
+                    <div><IconRequired />{{ t('service.securityModal.authorizationUrlLabel') }}</div>
                     <Input
                       v-model:value="auth.model.authorizationUrl"
                       size="small"
@@ -1120,11 +1120,11 @@ const OAuth2AuthorizationTypeOptions = [
                       @change="(event)=>tokenUrlChange(event.target.value,auth,'authorizationUrlErr')" />
                     <div class="h-5 text-rule">
                       <template v-if="auth.model.authorizationUrlErr.isError">
-                        {{t('service.securityModal.authorizationUrlRule')}}
+                        {{ t('service.securityModal.authorizationUrlRule') }}
                       </template>
                     </div>
                     <div class="pl-1.75">
-                      {{t('service.securityModal.callbackUrlLabel')}}
+                      {{ t('service.securityModal.callbackUrlLabel') }}
                     </div>
                     <Input
                       v-model:value="auth.model['x-xc-oauth2-callbackUrl']"
@@ -1136,12 +1136,12 @@ const OAuth2AuthorizationTypeOptions = [
                       @change="(event)=>callbackUrlChange(event.target.value,auth,'callbackUrlErr')" />
                     <div class="h-5 text-rule">
                       <template v-if="auth.model.callbackUrlErr.isError">
-                        {{t('service.securityModal.callbackUrlRule')}}
+                        {{ t('service.securityModal.callbackUrlRule') }}
                       </template>
                     </div>
                   </template>
                   <template v-if="!['implicit'].includes(auth.model['x-xc-oauth2-authFlow'])">
-                    <div><IconRequired />{{t('service.securityModal.tokenUrlLabel')}}</div>
+                    <div><IconRequired />{{ t('service.securityModal.tokenUrlLabel') }}</div>
                     <Input
                       v-model:value="auth.model.tokenUrl"
                       size="small"
@@ -1153,11 +1153,11 @@ const OAuth2AuthorizationTypeOptions = [
                       @change="(event)=>tokenUrlChange(event.target.value,auth,'tokenUrlErr')" />
                     <div class="h-5 text-rule">
                       <template v-if="auth.model.tokenUrlErr.isError">
-                        {{t('service.securityModal.tokenUrlRule')}}
+                        {{ t('service.securityModal.tokenUrlRule') }}
                       </template>
                     </div>
                   </template>
-                  <div class="pl-1.75">{{t('service.securityModal.refreshUrlLabel')}}</div>
+                  <div class="pl-1.75">{{ t('service.securityModal.refreshUrlLabel') }}</div>
                   <Input
                     v-model:value="auth.model.refreshUrl"
                     size="small"
@@ -1190,7 +1190,7 @@ const OAuth2AuthorizationTypeOptions = [
                     :maxlength="400"
                     :disabled="!auth.isEdit" />
                   <template v-if="auth.model['x-xc-oauth2-authFlow'] === 'password'">
-                    <div><IconRequired />{{t('service.securityModal.usernameLabel')}}</div>
+                    <div><IconRequired />{{ t('service.securityModal.usernameLabel') }}</div>
                     <Input
                       v-model:value="auth.model['x-xc-oauth2-username']"
                       type="input"
@@ -1202,8 +1202,10 @@ const OAuth2AuthorizationTypeOptions = [
                       :disabled="!auth.isEdit"
                       :placeholder="t('service.securityModal.usernamePlaceholder')"
                       @change="(event)=>usernameChange(event.target.value,auth)" />
-                    <div><IconRequired />
-                      {{ t('service.securityModal.passwordLabel') }}</div>
+                    <div>
+                      <IconRequired />
+                      {{ t('service.securityModal.passwordLabel') }}
+                    </div>
                     <Input
                       v-model:value="auth.model['x-xc-oauth2-password']"
                       :error="auth.model.passwordErr"
@@ -1226,7 +1228,7 @@ const OAuth2AuthorizationTypeOptions = [
                     :tokenSeparators="[',']"
                     :placeholder="t('service.securityModal.scopesPlaceholder')"
                     @change="(value)=>scopesChange(value,auth)" />
-                  <div class="pl-1.75">{{t('service.securityModal.clientAuthTypeLabel')}}</div>
+                  <div class="pl-1.75">{{ t('service.securityModal.clientAuthTypeLabel') }}</div>
                   <SelectEnum
                     v-model:value="auth.model['x-xc-oauth2-clientAuthType']"
                     :disabled="!auth.isEdit"
@@ -1236,7 +1238,7 @@ const OAuth2AuthorizationTypeOptions = [
                 </template>
               </template>
               <template v-if="auth.isEdit">
-                <div class="pl-1.75">{{t('service.securityModal.description')}}</div>
+                <div class="pl-1.75">{{ t('service.securityModal.description') }}</div>
                 <Input
                   v-model:value="auth.description"
                   size="small"
@@ -1249,7 +1251,7 @@ const OAuth2AuthorizationTypeOptions = [
               </template>
               <template v-else>
                 <template v-if="auth.description">
-                  <div>{{t('service.securityModal.description')}}</div>
+                  <div>{{ t('service.securityModal.description') }}</div>
                   <Input
                     :value="auth.description"
                     size="small"
@@ -1266,7 +1268,7 @@ const OAuth2AuthorizationTypeOptions = [
                   type="link"
                   :disabled="authConfigList.length === 1 && auth.isAdd"
                   @click="handleCancel(auth)">
-                  {{t('actions.cancel')}}
+                  {{ t('actions.cancel') }}
                 </Button>
                 <Button
                   type="link"
@@ -1274,7 +1276,7 @@ const OAuth2AuthorizationTypeOptions = [
                   class="px-0"
                   :disabled="props.disabled"
                   @click="handleSave(auth)">
-                  {{t('actions.confirm')}}
+                  {{ t('actions.confirm') }}
                 </Button>
               </div>
             </div>

@@ -4,7 +4,7 @@ import { Button } from 'ant-design-vue';
 import { Icon, modal, notification, Spin } from '@xcan-angus/vue-ui';
 import { toClipboard, utils } from '@xcan-angus/infra';
 import { services } from '@/api/tester';
-import { useI18n } from "vue-i18n";
+import { useI18n } from 'vue-i18n';
 
 import { ServerConfig } from './PropsType';
 
@@ -269,7 +269,7 @@ const serviceId = computed(() => {
         @click="toSave">
         <Icon icon="icon-dangqianxuanzhong" class="text-3.5" />
         <span>
-          {{t('actions.save')}}
+          {{ t('actions.save') }}
         </span>
       </Button>
 
@@ -279,7 +279,7 @@ const serviceId = computed(() => {
         class="mr-3"
         @click="toAddServerDemo">
         <Icon icon="icon-jia" class="mr-1" />
-        <span class="mr-1">{{t('server.detail.serverExample')}}</span>
+        <span class="mr-1">{{ t('server.detail.serverExample') }}</span>
       </Button>
 
       <template v-if="!!serverId">
@@ -289,7 +289,7 @@ const serviceId = computed(() => {
           @click="toDelete">
           <Icon icon="icon-qingchu" class="text-3.5" />
           <span>
-            {{t('actions.delete')}}
+            {{ t('actions.delete') }}
           </span>
         </Button>
 
@@ -299,7 +299,7 @@ const serviceId = computed(() => {
           @click="toClone">
           <Icon icon="icon-fuzhizujian2" class="text-3.5" />
           <span>
-            {{t('actions.clone')}}
+            {{ t('actions.clone') }}
           </span>
         </Button>
 
@@ -309,7 +309,7 @@ const serviceId = computed(() => {
           @click="toCopyLink">
           <Icon icon="icon-fuzhi" class="text-3.5" />
           <span>
-            {{ t('server.detail.copyLink')}}
+            {{ t('server.detail.copyLink') }}
           </span>
         </Button>
 

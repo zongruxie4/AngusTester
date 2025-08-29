@@ -38,12 +38,12 @@ const favouriteByParams = {
 
 <template>
   <div>
-    <div class="text-3.5 font-semibold mb-1">{{t('apis.myApis.title')}}</div>
+    <div class="text-3.5 font-semibold mb-1">{{ t('apis.myApis.title') }}</div>
     <Tabs size="small">
       <TabPane key="create" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">{{t('apis.myApis.createdTab')}}</span>
+            <span class="mr-1">{{ t('apis.myApis.createdTab') }}</span>
             <span>(</span>
             <span>{{ createByMeTotal }}</span>
             <span>)</span>
@@ -59,7 +59,7 @@ const favouriteByParams = {
       <TabPane key="follow" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">{{t('apis.myApis.followTab')}}</span>
+            <span class="mr-1">{{ t('apis.myApis.followTab') }}</span>
             <span>(</span>
             <span>{{ followTotal }}</span>
             <span>)</span>
@@ -75,7 +75,7 @@ const favouriteByParams = {
       <TabPane key="favorite" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">{{t('apis.myApis.favoriteTab')}}</span>
+            <span class="mr-1">{{ t('apis.myApis.favoriteTab') }}</span>
             <span>(</span>
             <span>{{ favoriteTotal }}</span>
             <span>)</span>

@@ -490,7 +490,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.scenario.columns.type') }}</span>
+            <span>{{ t('task.detailInfo.scenario.columns.type') }}</span>
             <Colon class="w-1" />
           </div>
 

@@ -5,11 +5,11 @@ import { Button, Spin, TabPane, Tabs } from 'ant-design-vue';
 import { ActivityTimeline, Drawer, Icon, notification } from '@xcan-angus/vue-ui';
 import { cookieUtils, DomainManager, appContext } from '@xcan-angus/infra';
 
-const { t } = useI18n();
-
 import store from '@/store';
 import { apis, services } from '@/api/tester';
 import { navs, serviceNav, socketNavs, StateType } from './PropsType';
+
+const { t } = useI18n();
 
 const HttpTestInfo = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(resp => resp.HttpTestInfo));
 const Indicator = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(resp => resp.Indicator));

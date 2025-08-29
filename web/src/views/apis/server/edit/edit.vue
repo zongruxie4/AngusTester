@@ -602,7 +602,7 @@ defineExpose({
     <div class="flex items-center mb-3.5">
       <div class="w-10.5 flex items-center leading-7">
         <IconRequired />
-        <span>{{t('server.detail.serverLabel')}}</span>
+        <span>{{ t('server.detail.serverLabel') }}</span>
       </div>
 
       <div class="flex mr-1">
@@ -622,7 +622,7 @@ defineExpose({
 
     <div class="flex items-start mb-3.5">
       <div class="w-10.5 flex items-center leading-7">
-        <span>{{t('server.detail.descLabel')}}</span>
+        <span>{{ t('server.detail.descLabel') }}</span>
       </div>
       <Input
         v-model:value="description"
@@ -648,7 +648,7 @@ defineExpose({
           type="link"
           size="small"
           @click="addVariable(false)">
-          {{t('server.detail.addVariable')}}
+          {{ t('server.detail.addVariable') }}
         </Button>
       </div>
     </div>

@@ -6,7 +6,7 @@ import { utils, enumUtils } from '@xcan-angus/infra';
 import * as echarts from 'echarts';
 import elementResizeDetector from 'element-resize-detector';
 
-import { ApiStatus  } from '@/enums/enums';
+import { ApiStatus } from '@/enums/enums';
 import { analysis } from '@/api/tester';
 
 type Props = {
@@ -40,7 +40,7 @@ const state = reactive({
     unarchivedApisByLastMonth: '0'
   }
 });
-const apiStatusMap = {}
+const apiStatusMap = {};
 
 const statusColorSet = {
   0: 'rgba(200, 202, 208, 1)',
@@ -426,7 +426,7 @@ onBeforeUnmount(() => {
 </script>
 <template>
   <div class="mb-7.5 text-3 leading-5">
-    <div class="text-3.5 font-semibold mb-3">{{t('apis.statisticsCreated.title')}}</div>
+    <div class="text-3.5 font-semibold mb-3">{{ t('apis.statisticsCreated.title') }}</div>
     <div class="flex space-x-3.75 text-content">
       <div
         v-for="(item,index) in statisticConfig"
@@ -456,18 +456,18 @@ onBeforeUnmount(() => {
   </div>
 
   <div class="text-3 leading-5">
-    <div class="text-3.5 font-semibold mb-3">{{t('apis.statistics.title')}}</div>
+    <div class="text-3.5 font-semibold mb-3">{{ t('apis.statistics.title') }}</div>
     <div ref="echartsWrapRef" class="flex space-x-3.75">
       <div class="border border-theme-text-box w-1/3 p-2 rounded">
-        <div class="font-semibold flex items-center px-2">{{t('apis.statistics.service')}} <span class="text-4 ml-2">{{ allService }}</span></div>
+        <div class="font-semibold flex items-center px-2">{{ t('apis.statistics.service') }} <span class="text-4 ml-2">{{ allService }}</span></div>
         <div ref="serviceRef" class="w-full h-65"></div>
       </div>
       <div class="border border-theme-text-box w-1/3 p-2 rounded">
-        <div class="font-semibold flex items-center px-2">{{t('apis.statistics.apis')}} <span class="text-4 ml-2">{{ allApis }}</span></div>
+        <div class="font-semibold flex items-center px-2">{{ t('apis.statistics.apis') }} <span class="text-4 ml-2">{{ allApis }}</span></div>
         <div ref="apiRef" class="w-full h-65"></div>
       </div>
       <div class="border border-theme-text-box w-1/3 p-2 rounded">
-        <div class="font-semibold">{{t('apis.statistics.method')}}</div>
+        <div class="font-semibold">{{ t('apis.statistics.method') }}</div>
         <div ref="methodRef" class="w-full h-65"></div>
       </div>
     </div>

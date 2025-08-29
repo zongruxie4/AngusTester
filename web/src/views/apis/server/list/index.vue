@@ -185,7 +185,7 @@ const searchOptions = [
   },
   {
     type: 'select',
-    placeholder:  t('server.home.searchPanel.servicePlaceholder'),
+    placeholder: t('server.home.searchPanel.servicePlaceholder'),
     valueKey: 'serviceId',
     allowClear: true,
     fieldNames: { label: 'name', value: 'id' },
@@ -270,9 +270,9 @@ const searchOptions = [
                   <Colon />
                   <div class="flex-1 truncate min-w-0 " :title="record.server?.extensions?.['x-xc-id']">{{ record.server?.extensions?.['x-xc-id'] }}</div>
                 </div>
-                <Tag class="relative -top-1 mr-0 px-0.5 h-5" :color="getVariableLength(record) ? 'processing' : 'default'">{{ getVariableLength(record) ? t('server.home.hasVariable') : t('server.home.hasNoVariable')  }}</Tag>
+                <Tag class="relative -top-1 mr-0 px-0.5 h-5" :color="getVariableLength(record) ? 'processing' : 'default'">{{ getVariableLength(record) ? t('server.home.hasVariable') : t('server.home.hasNoVariable') }}</Tag>
               </div>
-              <div v-if="!record.server?.description" class="h-9 leading-4.5 mb-2.5 text-theme-sub-content">{{t('server.home.noDescTip')}}</div>
+              <div v-if="!record.server?.description" class="h-9 leading-4.5 mb-2.5 text-theme-sub-content">{{ t('server.home.noDescTip') }}</div>
               <TypographyParagraph
                 v-else
                 class="h-9 leading-4.5 mb-2.5 text-theme-sub-content"
@@ -280,7 +280,7 @@ const searchOptions = [
                 :ellipsis="{ tooltip: record.server?.description, rows: 2 }" />
 
               <div class="flex items-center mb-2">
-                <div class="flex-shrink-0 flex items-center mr-1.5"><span class="font-semibold">{{t('server.home.serviceBelong')}}</span><Colon /></div>
+                <div class="flex-shrink-0 flex items-center mr-1.5"><span class="font-semibold">{{ t('server.home.serviceBelong') }}</span><Colon /></div>
                 <div class="flex-1 truncate" :title="record.serviceName">{{ record.serviceName }}</div>
               </div>
 

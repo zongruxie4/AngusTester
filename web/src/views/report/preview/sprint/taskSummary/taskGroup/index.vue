@@ -418,7 +418,7 @@ onMounted(() => {
     </div>
 
     <h1 class="text-theme-title font-medium mb-3">
-        <span class="text-3 text-theme-title font-medium">{{ t('reportPreview.sprint.taskSummary.groupStats.byTaskType') }}</span>
+      <span class="text-3 text-theme-title font-medium">{{ t('reportPreview.sprint.taskSummary.groupStats.byTaskType') }}</span>
     </h1>
     <div ref="taskTypeRef" class="flex-1 h-50  w-120">
     </div>

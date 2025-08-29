@@ -145,7 +145,7 @@ const percent = computed(() => {
   </div>
 
   <h2 class="flex items-center space-x-2.5 text-3.5 mb-3.5 text-theme-title">
-    <span id="a16">{{ props.sequence.small[1] }}<em class="inline-block w-3.5"></em> {{ t('reportPreview.projectProgress.scenarioTestSummary.groupStats.title')  }}</span>
+    <span id="a16">{{ props.sequence.small[1] }}<em class="inline-block w-3.5"></em> {{ t('reportPreview.projectProgress.scenarioTestSummary.groupStats.title') }}</span>
   </h2>
   <SceneTestGrouped
     :projectInfo="props.projectInfo"

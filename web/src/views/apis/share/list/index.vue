@@ -6,11 +6,11 @@ import { toClipboard } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 import { ShareInfo } from '../PropsType';
 import SearchPanel from '@/views/apis/share/list/searchPanel/index.vue';
 import { nextTick } from 'process';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;

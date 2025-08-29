@@ -7,9 +7,9 @@ import { utils } from '@xcan-angus/infra';
 import { scenario } from '@/api/tester';
 
 import { getCurrentPage } from '@/utils/utils';
+import { SceneItem } from '../PropsType';
 
 const { t } = useI18n();
-import { SceneItem } from '../PropsType';
 
 type Props = {
   projectId: string;
@@ -269,7 +269,7 @@ const emptyTextStyle = {
           <div class="flex items-center text-theme-sub-content text-3 leading-5">
             <template v-if="!!props.params?.createdBy">
               <span>{{ t('scenarioHome.myScenarios.table.messages.noAddedScenarios') }}</span>
-              <RouterLink to="/scenario#scenario" class="ml-1 link">{{ t('scenarioHome.myScenarios.table.messages.addScenario')  }}</RouterLink>
+              <RouterLink to="/scenario#scenario" class="ml-1 link">{{ t('scenarioHome.myScenarios.table.messages.addScenario') }}</RouterLink>
             </template>
 
             <template v-else-if="!!props.params?.favouriteBy">

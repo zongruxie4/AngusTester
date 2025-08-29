@@ -51,7 +51,7 @@ const testers = computed(() => {
 
     <div class="mb-7">
       <h2 class="flex items-center space-x-2.5 text-3.5 mb-2.5 text-theme-title">
-      <span id="a3.1">3.1<em class="inline-block w-3.5"></em>{{ t('reportPreview.functionPlan.catalog.sections.testSummary') }}</span>
+        <span id="a3.1">3.1<em class="inline-block w-3.5"></em>{{ t('reportPreview.functionPlan.catalog.sections.testSummary') }}</span>
       </h2>
       <div
         v-for="(item) in testers"
@@ -164,7 +164,7 @@ const testers = computed(() => {
             <div class="flex border-b border-solid border-border-input">
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                  {{ t('reportPreview.functionPlan.caseSummary.fields.estimatedWorkload') }}
+                {{ t('reportPreview.functionPlan.caseSummary.fields.estimatedWorkload') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.evalWorkload }}
@@ -195,7 +195,7 @@ const testers = computed(() => {
               </div>
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                  {{ t('reportPreview.functionPlan.caseSummary.fields.workloadSaveRate') }}
+                {{ t('reportPreview.functionPlan.caseSummary.fields.workloadSaveRate') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.savingWorkloadRate }}
@@ -226,7 +226,7 @@ const testers = computed(() => {
             <div class="flex border-b border-solid border-border-input">
               <div
                 class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                  {{ t('reportPreview.functionPlan.reviewSummary.fields.totalReviewCases') }}
+                {{ t('reportPreview.functionPlan.reviewSummary.fields.totalReviewCases') }}
               </div>
               <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
                 {{ casesMap[item.id].statusOverview?.totalReviewCaseNum || 0 }}

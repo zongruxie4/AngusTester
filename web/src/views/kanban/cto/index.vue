@@ -1654,11 +1654,11 @@ defineExpose({
         <div class="flex space-x-2 justify-around">
           <div class="flex-1 pl-5">
             <div><span class="font-semibold text-6">{{ failureAssessmentData?.failureNum || 0 }}</span>/{{ failureAssessmentData?.totalNum || 0 }}</div>
-            <div>{{t('kanban.cto.failureAssessment.failureCount')}}</div>
+            <div>{{ t('kanban.cto.failureAssessment.failureCount') }}</div>
           </div>
           <div class="flex-1 pl-5">
             <div><span class="font-semibold text-6">{{ failureAssessmentData?.failureWorkload || 0 }}</span>/{{ failureAssessmentData?.totalWorkload || 0 }}</div>
-            <div>{{t('kanban.cto.failureAssessment.failureWorkload')}}</div>
+            <div>{{ t('kanban.cto.failureAssessment.failureWorkload') }}</div>
           </div>
           <div class="flex-1 pl-5">
             <div><span class="font-semibold text-6">{{ failureAssessmentData?.failureCompletedNum || 0 }}</span>/{{ failureAssessmentData?.failureNum || 0 }}</div>
@@ -1750,13 +1750,13 @@ defineExpose({
             <div class="flex space-x-2 items-center">
               <span class="flex-2/5">{{ t('kanban.cto.deliveryCycle.totalDuration') }}</span>
               <div class="flex-3/5 min-w-0">
-                                  <span class="font-semibold text-5">{{ leadTimeData.totalProcessingTime || 0 }} </span> {{ t('kanban.cto.deliveryCycle.hours') }}
+                <span class="font-semibold text-5">{{ leadTimeData.totalProcessingTime || 0 }} </span> {{ t('kanban.cto.deliveryCycle.hours') }}
               </div>
             </div>
             <div class="flex space-x-2 items-center">
               <span class="flex-2/5">{{ t('kanban.cto.deliveryCycle.averageDuration') }}</span>
               <div class="flex-3/5 min-w-0">
-                                  <span class=" font-semibold text-5">{{ leadTimeData.userAvgProcessingTime || 0 }} </span> {{ t('kanban.cto.deliveryCycle.hoursPerPerson') }}
+                <span class=" font-semibold text-5">{{ leadTimeData.userAvgProcessingTime || 0 }} </span> {{ t('kanban.cto.deliveryCycle.hoursPerPerson') }}
               </div>
             </div>
           </div>

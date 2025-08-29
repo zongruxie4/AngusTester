@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n';
 import { Button, Form, FormItem } from 'ant-design-vue';
 import { Input, notification, Select, SelectUser, TreeSelect, IconText } from '@xcan-angus/vue-ui';
 import { TESTER, appContext } from '@xcan-angus/infra';
-import SelectEnum from '@/components/selectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue';
 
 import { apis, services } from '@/api/tester';
 

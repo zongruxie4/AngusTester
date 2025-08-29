@@ -6,12 +6,12 @@ import { AsyncComponent, Dropdown, Icon, IconCopy, modal, NoData, notification, 
 import { dataSet } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 import { getCurrentPage } from '@/utils/utils';
 import { DataSetItem } from '../PropsType';
 
 import SearchPanel from '@/views/data/dataset/list/searchPanel/index.vue';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;

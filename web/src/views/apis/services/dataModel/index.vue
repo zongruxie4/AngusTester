@@ -185,7 +185,7 @@ onMounted(() => {
           type="primary"
           size="small"
           @click="selectComp({})">
-          {{t('service.dataModel.addComp')}}
+          {{ t('service.dataModel.addComp') }}
         </Button>
       </div>
       <div
@@ -225,11 +225,11 @@ onMounted(() => {
                 placement="right"
                 @openChange="onPopoverVisibleChange">
                 <template #title>
-                  {{t('service.dataModel.cloneComp')}}
+                  {{ t('service.dataModel.cloneComp') }}
                 </template>
                 <template #content>
                   <div>
-                    {{t('service.dataModel.compNameLabel')}}：
+                    {{ t('service.dataModel.compNameLabel') }}：
                     <Input
                       v-model:value="newCompName"
                       dataType="mixin-en"
@@ -240,7 +240,7 @@ onMounted(() => {
                       size="small"
                       class="mt-1"
                       @click.stop="copyComp(item, key)">
-                      {{t('actions.confirm')}}
+                      {{ t('actions.confirm') }}
                     </Button>
                   </div>
                 </template>

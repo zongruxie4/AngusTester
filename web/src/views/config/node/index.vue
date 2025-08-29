@@ -6,13 +6,13 @@ import { NodeRole, utils, enumUtils, appContext } from '@xcan-angus/infra';
 import { Button, Pagination, Switch } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 import { sortOpt } from './interface';
 import { pubStore } from '@/api/store';
 import { node } from '@/api/tester';
 import { pureParams } from '@/utils/common';
 import { NodeSource } from '@/enums/enums';
+
+const { t } = useI18n();
 
 const NodeItems = defineAsyncComponent(() => import('./components/nodeItems/index.vue'));
 const NodeTip = defineAsyncComponent(() => import('@/views/config/node/components/nodeTip/index.vue'));

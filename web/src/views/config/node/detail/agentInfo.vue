@@ -7,9 +7,9 @@ import duration from 'dayjs/plugin/duration';
 import { ApiType, routerUtils, ApiUrlBuilder } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 import { formatBytes } from '@/utils';
+
+const { t } = useI18n();
 
 interface Props {
   ip: string;

@@ -99,7 +99,6 @@ const refCaseList = computed(() => {
   }) || [];
 });
 
-
 const refCaseIds = computed(() => {
   return refCaseList.value.map(item => item.id);
 });

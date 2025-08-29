@@ -61,9 +61,6 @@ const entries = computed(():{titleIcon: string; title: string; content: string; 
   ].filter(Boolean);
 });
 
-
-
-
 </script>
 <template>
   <div class="space-y-2">
@@ -82,15 +79,15 @@ const entries = computed(():{titleIcon: string; title: string; content: string; 
           <div class="mt-3 text-content">{{ entery.content }}</div>
         </div>
         <Button
-            type="link"
-            size="small"
-            class="w-fit h-5 space-x-1 mt-2"
-            :class="{'text-theme-special text-theme-text-hover': !entery.disabled}"
-            :disabled="entery.disabled"
-            @click="entery.click">
-            <Icon :icon="entery.icon" />
-            <span> {{ entery.action }}</span>
-          </Button>
+          type="link"
+          size="small"
+          class="w-fit h-5 space-x-1 mt-2"
+          :class="{'text-theme-special text-theme-text-hover': !entery.disabled}"
+          :disabled="entery.disabled"
+          @click="entery.click">
+          <Icon :icon="entery.icon" />
+          <span> {{ entery.action }}</span>
+        </Button>
       </div>
     </div>
   </div>

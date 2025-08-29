@@ -3,10 +3,10 @@ import { defineAsyncComponent, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { enumUtils } from '@xcan-angus/infra';
 import { ScenarioPermission } from '@/enums/enums';
-
-const { t } = useI18n();
 import { TabPane, Tabs } from 'ant-design-vue';
 import { Hints } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 const GroupSet = defineAsyncComponent(() => import('@/views/scenario/scenario/auth/groupSet/index.vue'));
 const AuthSet = defineAsyncComponent(() => import('@/views/scenario/scenario/auth/authSet/index.vue'));

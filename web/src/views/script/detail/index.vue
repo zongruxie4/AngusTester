@@ -12,9 +12,9 @@ import { script } from '@/api/tester';
 import { exec } from 'src/api/ctrl';
 import { ai } from 'src/api/gm';
 import { LANG_OPTIONS, TOOLBAR_EXTRA_MENUITEMS, TOOLBAR_MENUITEMS } from './data';
+import { PermissionKey, ScriptInfo } from '../PropsType';
 
 const { t } = useI18n();
-import { PermissionKey, ScriptInfo } from '../PropsType';
 
 const ScriptDetail = defineAsyncComponent(() => import('./scriptInfo.vue'));
 const ScriptForm = defineAsyncComponent(() => import('./scriptForm.vue'));

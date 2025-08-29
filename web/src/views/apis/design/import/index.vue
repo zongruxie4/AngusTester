@@ -6,7 +6,6 @@ import { useI18n } from 'vue-i18n';
 
 import { apis } from '@/api/tester';
 
-
 interface Props {
   visible: boolean;
   projectId: string;

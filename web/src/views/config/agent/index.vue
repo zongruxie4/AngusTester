@@ -127,13 +127,13 @@ onBeforeUnmount(() => {
           <div class="text-theme-title font-medium">
             <Icon class="mr-1.5 -mt-0.5" icon="icon-wudaili" />{{ t('agent.noProxy') }}
           </div>
-          <div class="text-theme-sub-content mt-2 leading-5">{{  t('agent.noProxyDescription') }}</div>
+          <div class="text-theme-sub-content mt-2 leading-5">{{ t('agent.noProxyDescription') }}</div>
         </div>
         <div class="flex-1">
           <div class="text-theme-title font-medium">
             <Icon class="mr-1.5 -mt-0.5" icon="icon-jiekoudaili" />{{ t('agent.clientProxy') }}
           </div>
-          <div class="text-theme-sub-content mt-2 leading-5">{{ t('agent.clientProxyDescription')}}</div>
+          <div class="text-theme-sub-content mt-2 leading-5">{{ t('agent.clientProxyDescription') }}</div>
         </div>
         <div class="flex-1">
           <div class="text-theme-title font-medium">
@@ -143,10 +143,10 @@ onBeforeUnmount(() => {
         </div>
         <div class="flex-1">
           <div class="text-theme-title font-medium">
-            <Icon class="mr-1.5 -mt-0.5" icon="icon-host" />{{t('agent.cloudProxy') }}
+            <Icon class="mr-1.5 -mt-0.5" icon="icon-host" />{{ t('agent.cloudProxy') }}
           </div>
           <div class="text-theme-sub-content mt-2 leading-5">
-            {{t('agent.cloudProxyDescription') }}
+            {{ t('agent.cloudProxyDescription') }}
           </div>
         </div>
       </div>
@@ -204,7 +204,7 @@ onBeforeUnmount(() => {
                 </template>
               </template>
             </Input>
-            <div v-if="hostRule" class="absolute top-12 text-3 leading-3 text-status-error">{{t('agent.addressTip')}}</div>
+            <div v-if="hostRule" class="absolute top-12 text-3 leading-3 text-status-error">{{ t('agent.addressTip') }}</div>
           </div>
           <template v-if="address">
             <template v-if="islinkSuccess">

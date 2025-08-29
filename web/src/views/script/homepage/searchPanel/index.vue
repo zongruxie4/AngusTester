@@ -7,9 +7,9 @@ import { ScriptType, TESTER, XCanDexie, enumUtils, ScriptSource } from '@xcan-an
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 
-const { t } = useI18n();
-
 import { MenuItem } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -614,12 +614,12 @@ const searchOptions = [
   {
     type: 'select-user',
     valueKey: 'createdBy',
-    placeholder: t('scriptHome.searchPanel.creatorPlaceholder'),
+    placeholder: t('scriptHome.searchPanel.creatorPlaceholder')
   },
   {
     type: 'select-user',
     valueKey: 'lastModifiedBy',
-    placeholder: t('scriptHome.searchPanel.modifierPlaceholder'),
+    placeholder: t('scriptHome.searchPanel.modifierPlaceholder')
   },
   {
     type: 'date-range',

@@ -7,9 +7,9 @@ import dayjs from 'dayjs';
 import { AsyncComponent, Icon } from '@xcan-angus/vue-ui';
 import { task } from '@/api/tester';
 
-const { t } = useI18n();
-
 import { TaskInfo } from '../../../../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;

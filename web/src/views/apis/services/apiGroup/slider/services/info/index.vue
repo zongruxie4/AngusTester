@@ -161,13 +161,13 @@ const tipMap = {
   }
 };
 
-const apiStatusOpt = ref<{value: string; label: string}[]>([])
+const apiStatusOpt = ref<{value: string; label: string}[]>([]);
 const loadApiStatusOpt = () => {
-  apiStatusOpt.value = enumUtils.enumToMessages(ApiStatus).map(i => ({value: i.value, label: i.message}));
-}
+  apiStatusOpt.value = enumUtils.enumToMessages(ApiStatus).map(i => ({ value: i.value, label: i.message }));
+};
 
 onMounted(() => {
-  loadApiStatusOpt()
+  loadApiStatusOpt();
 });
 
 </script>

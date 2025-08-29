@@ -80,7 +80,6 @@ const projectTypeName = computed(() => ({
   [ProjectType.TESTING]: t('project.projectEdit.projectTypeName.testing')
 }));
 
-
 /** Get current project type name for display */
 const currentProjectTypeName = computed(() => {
   const typeValue = projectDetail.value.type?.value;

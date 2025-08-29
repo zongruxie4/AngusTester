@@ -5,7 +5,7 @@ import { Grid, Icon, Input } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
 import { useRoute } from 'vue-router';
 
-import SelectEnum from '@/components/selectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue';
 interface Props {
   scriptInfo: Record<string, any> | undefined;
 }

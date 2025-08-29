@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { appContext } from '@xcan-angus/infra'
+import { appContext } from '@xcan-angus/infra';
 
 // eslint-disable-next-line import/no-absolute-path
 import { MockJson } from '@/plugins/gendata/jsonIndex';

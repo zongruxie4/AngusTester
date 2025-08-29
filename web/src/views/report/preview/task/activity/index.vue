@@ -70,7 +70,7 @@ const len = computed(() => {
         </div>
         <div
           class="flex-1 flex items-center bg-blue-table px-1.5 py-1.5">
-            {{ t('reportPreview.task.activity.fields.activityDesc') }}
+          {{ t('reportPreview.task.activity.fields.activityDesc') }}
         </div>
       </div>
 

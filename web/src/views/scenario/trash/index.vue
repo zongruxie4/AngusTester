@@ -289,7 +289,6 @@ onMounted(() => {
       <div class="flex-1 px-4 py-4 overflow-auto">
         <!-- Enhanced data table -->
         <div v-if="loaded" class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-
           <Table
             :dataSource="tableData"
             :columns="columns"

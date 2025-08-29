@@ -5,9 +5,9 @@ import { Hints, Icon, modal, NoData, Spin, DebugLog, ExecLog, ScenarioHttpDebugR
 import { Button, TabPane, Tabs, Tag } from 'ant-design-vue';
 import { scenario } from '@/api/tester';
 import { MonitorInfo } from '../PropsType';
+import Chart from '@/views/scenario/monitor/detail/chart/index.vue';
 
 const { t } = useI18n();
-import Chart from '@/views/scenario/monitor/detail/chart/index.vue';
 // export { default as ScearioSmtpDebugResult } from "./ScearioSmtpDebugResult/index";
 // export { default as ScenarioFtpDebugResult } from "./ScenarioFtpDebugResult/index";
 // export { default as ScenarioHttpDebugResult } from "./ScenarioHttpDebugResult/index";

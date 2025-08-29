@@ -65,7 +65,7 @@ const columns = [
   {
     dataIndex: 'enabled',
     title: t('service.case.columns.enabled'),
-    customRender: ({ text }) => text ? t('service.case.enabled') :  t('service.case.disabled')
+    customRender: ({ text }) => text ? t('service.case.enabled') : t('service.case.disabled')
   },
   {
     dataIndex: 'description',
@@ -127,7 +127,6 @@ const loadCaseData = async () => {
 const onKeywordChange = debounce(duration.search, () => {
   loadCaseData();
 });
-
 
 const caseData = ref<Case[]>([]);
 const editCaseId = ref();
@@ -198,7 +197,6 @@ const enabled = async (item) => {
   loadCaseData();
 };
 
-
 const getStatusColor = (status) => {
   switch (status) {
     case 'FAIL':
@@ -230,7 +228,7 @@ watch(() => props.id, newValue => {
         @change="onKeywordChange" />
       <div class="flex-shrink-0 break-all whitespace-pre-wrap text-3 font-normal text-theme-sub-content">
         <Icon icon="icon-tishi1" />
-        <span>{{t('service.case.hints', {num: caseData?.length})}}</span>
+        <span>{{ t('service.case.hints', {num: caseData?.length}) }}</span>
       </div>
       <div class="flex-1 min-w-0"></div>
       <Button
@@ -239,21 +237,21 @@ watch(() => props.id, newValue => {
         :disabled="loading"
         @click="addOrEditCase">
         <Icon icon="icon-jia" class="text-3.5 mr-1" />
-        <span>{{t('service.case.addCaseAction')}}</span>
+        <span>{{ t('service.case.addCaseAction') }}</span>
       </Button>
       <Button
         size="small"
         :disabled="loading || !caseData.length"
         @click="execAll">
         <Icon icon="icon-zhihangceshi" class="text-3.5 mr-1" />
-        <span>{{t('service.case.execCaseAction')}}</span>
+        <span>{{ t('service.case.execCaseAction') }}</span>
       </Button>
       <Button
         size="small"
         :loading="loading"
         @click="loadCaseData">
         <Icon icon="icon-shuaxin" class="text-3.5 mr-1" />
-        <span>{{t('actions.refresh')}}</span>
+        <span>{{ t('actions.refresh') }}</span>
       </Button>
     </div>
     <Table
@@ -280,7 +278,7 @@ watch(() => props.id, newValue => {
             class="px-1 py-0 text-3"
             @click="handleSingleDebug(record)">
             <Icon icon="icon-tiaoshi" class="mr-1" />
-            <span>{{t('actions.debug')}}</span>
+            <span>{{ t('actions.debug') }}</span>
           </Button>
           <Button
             :loading="cloneLoadingMap[record.id]"
@@ -288,7 +286,7 @@ watch(() => props.id, newValue => {
             class="px-1 py-0 text-3"
             @click="cloneCase(record)">
             <Icon icon="icon-fuzhizujian2" class="mr-1 text-3.5" />
-            <span>{{t('actions.clone')}}</span>
+            <span>{{ t('actions.clone') }}</span>
           </Button>
           <Button
             :loading="enabledLoadingMap[record.id]"
@@ -304,7 +302,7 @@ watch(() => props.id, newValue => {
             class="px-1 py-0 text-3"
             @click="delCase(record)">
             <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
-            <span>{{t('actions.delete')}}</span>
+            <span>{{ t('actions.delete') }}</span>
           </Button>
         </template>
       </template>

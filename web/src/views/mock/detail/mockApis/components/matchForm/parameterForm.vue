@@ -4,7 +4,7 @@ import { Button } from 'ant-design-vue';
 import { Composite, Icon, Input, Validate } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
-import SelectEnum from '@/components/selectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue';
 import { Condition } from './PropsType';
 
 type Parameter = {

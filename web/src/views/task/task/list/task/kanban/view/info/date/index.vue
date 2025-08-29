@@ -121,7 +121,7 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
     <div class="space-y-2.5">
       <div class="flex items-start">
         <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.date.fields.createTime') }}</span>
+          <span>{{ t('task.detailInfo.date.fields.createTime') }}</span>
           <Colon class="w-1" />
         </div>
 

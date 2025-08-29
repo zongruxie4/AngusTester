@@ -8,10 +8,10 @@ import { isEqual } from 'lodash-es';
 import { debounce } from 'throttle-debounce';
 import { func, project } from '@/api/tester';
 
-const { t } = useI18n();
-
 import { BaselineInfo } from '../PropsType';
 import { BaselineCaseInfo, FormState } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;

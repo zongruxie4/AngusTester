@@ -65,15 +65,15 @@ const len = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-35 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{t('reportPreview.functionCase.comment.fields.commentTime')}}
+          {{ t('reportPreview.functionCase.comment.fields.commentTime') }}
         </div>
         <div
           class="w-27 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{t('reportPreview.functionCase.comment.fields.commentPerson')}}
+          {{ t('reportPreview.functionCase.comment.fields.commentPerson') }}
         </div>
         <div
           class="flex-1 flex items-center bg-blue-table px-1.5 py-1.5">
-          {{t('reportPreview.functionCase.comment.fields.commentContent')}}
+          {{ t('reportPreview.functionCase.comment.fields.commentContent') }}
         </div>
       </div>
 
@@ -99,7 +99,7 @@ const len = computed(() => {
       </div>
     </div>
 
-    <div v-else class="content-text-container">{{t('reportPreview.functionCase.comment.noData')}}</div>
+    <div v-else class="content-text-container">{{ t('reportPreview.functionCase.comment.noData') }}</div>
   </div>
 </template>
 

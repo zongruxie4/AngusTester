@@ -7,10 +7,10 @@ import { Button, Tag } from 'ant-design-vue';
 import { debounce, throttle } from 'throttle-debounce';
 import { analysis } from '@/api/tester';
 
-const { t } = useI18n();
-
 import Introduce from '@/views/function/analysis/list/introduce/index.vue';
 import SearchPanel from '@/views/function/analysis/list/searchPanel/index.vue';
+
+const { t } = useI18n();
 
 interface Props {
   projectId: string;

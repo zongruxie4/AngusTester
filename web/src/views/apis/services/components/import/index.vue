@@ -3,7 +3,7 @@ import { inject, onMounted, ref } from 'vue';
 import { Button, Popover, Radio, RadioGroup, UploadDragger } from 'ant-design-vue';
 import { Icon, Input, notification, Spin, Validate } from '@xcan-angus/vue-ui';
 import postmanToOpenApi from '@xcan-angus/postman-to-openapi';
-import SelectEnum from '@/components/selectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue';
 import { useI18n } from 'vue-i18n';
 
 import { services } from '@/api/tester';
@@ -26,7 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
   serviceName: undefined,
   source: 'introduce'
 });
-const { t } = useI18n()
+const { t } = useI18n();
 
 const projectInfo = inject('projectInfo', ref({ id: '' }));
 
@@ -174,7 +174,7 @@ onMounted(() => {
   <div class="text-text-content text-3 flex flex-col w-full">
     <Spin :spinning="isLoading">
       <div v-if="!props.serviceId && props.source !== 'introduce'" class="mb-5 text-3">
-        <div class="mb-2 text-black-active leading-3">{{t('service.importForm.name')}}</div>
+        <div class="mb-2 text-black-active leading-3">{{ t('service.importForm.name') }}</div>
         <Validate :text="nameErrorMsg">
           <Input
             v-model:value="projectServiceName"
@@ -185,7 +185,7 @@ onMounted(() => {
             @change="serviceNameChange" />
         </Validate>
       </div>
-      <div class="leading-3">{{t('service.importForm.sourceLabel')}}</div>
+      <div class="leading-3">{{ t('service.importForm.sourceLabel') }}</div>
       <SelectEnum
         v-model:value="importSource"
         class="w-full mt-2 mb-5"
@@ -206,8 +206,8 @@ onMounted(() => {
             accept=".zip,.rar,.7z,.gz,.tar,.bz2,.xz,.lzma,.json,.yaml,.yml">
             <div class="flex flex-col items-center justify-center text-3 leading-5">
               <Icon icon="icon-shangchuan" class="text-5 text-text-link" />
-              <div class="mt-1 mb-1.5 text-text-link">{{t('service.importForm.fileLabel')}}</div>
-              <div class="text-theme-sub-content">{{t('service.importForm.fileTip')}}</div>
+              <div class="mt-1 mb-1.5 text-text-link">{{ t('service.importForm.fileLabel') }}</div>
+              <div class="text-theme-sub-content">{{ t('service.importForm.fileTip') }}</div>
             </div>
           </UploadDragger>
         </Spin>
@@ -237,18 +237,18 @@ onMounted(() => {
 
       <template v-if="props.source == 'projectOrService'">
         <div class="space-y-0.5 mb-5 leading-5">
-          <div>{{t('service.importForm.strategyWhenDuplicated')}}</div>
+          <div>{{ t('service.importForm.strategyWhenDuplicated') }}</div>
           <RadioGroup v-model:value="strategyWhenDuplicated">
-            <Radio value="COVER">{{t('service.importForm.strategy_cover')}}</Radio>
-            <Radio value="IGNORE">{{t('service.importForm.strategy_ignore')}}</Radio>
+            <Radio value="COVER">{{ t('service.importForm.strategy_cover') }}</Radio>
+            <Radio value="IGNORE">{{ t('service.importForm.strategy_ignore') }}</Radio>
           </RadioGroup>
         </div>
 
         <div class="space-y-0.5 leading-5">
-          <div>{{t('service.importForm.deleteWhenNotExisted')}}</div>
+          <div>{{ t('service.importForm.deleteWhenNotExisted') }}</div>
           <RadioGroup v-model:value="deleteWhenNotExisted">
-            <Radio :value="true">{{t('service.importForm.delete_y')}}</Radio>
-            <Radio :value="false">{{t('service.importForm.delete_n')}}</Radio>
+            <Radio :value="true">{{ t('service.importForm.delete_y') }}</Radio>
+            <Radio :value="false">{{ t('service.importForm.delete_n') }}</Radio>
           </RadioGroup>
         </div>
       </template>
@@ -259,7 +259,7 @@ onMounted(() => {
           size="small"
           class="mr-5"
           @click="closeModal">
-          {{t('actions.cancel')}}
+          {{ t('actions.cancel') }}
         </Button>
       </template>
       <Button
@@ -267,7 +267,7 @@ onMounted(() => {
         size="small"
         :loading="isLoading || progressing"
         @click="saveModalData">
-        {{t('actions.confirm')}}
+        {{ t('actions.confirm') }}
       </Button>
     </div>
   </div>

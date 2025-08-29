@@ -7,7 +7,7 @@ import { IconRequired, Input, notification, Select, Spin, ExecSettingForm } from
 import { TESTER } from '@xcan-angus/infra';
 import { angusScript } from '@/api/tester';
 
-import SelectEnum from '@/components/selectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue';
 import { exec } from 'src/api/ctrl';
 
 const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));

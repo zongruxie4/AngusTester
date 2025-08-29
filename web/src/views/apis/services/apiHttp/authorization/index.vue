@@ -7,7 +7,7 @@ import { encode } from '@/utils/secure';
 import { http, utils } from '@xcan-angus/infra';
 import axios from 'axios';
 import { services } from '@/api/tester';
-import SelectEnum from '@/components/selectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue';
 
 import {
   AuthItem,
@@ -712,7 +712,7 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
         <div class="flex items-center flex-grow flex-shrink">
           <span class="text-3 leading-3 w-15">{{ t('service.apiAuthorization.basic.password') }}</span>
           <Input
-                          :placeholder="t('service.apiAuthorization.basic.passwordPlaceholder')"
+            :placeholder="t('service.apiAuthorization.basic.passwordPlaceholder')"
             :value="httpAuthData?.value"
             :allowClear="true"
             type="password"
@@ -725,7 +725,7 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
         <div class="flex items-center">
           <span class="w-15">{{ t('service.apiAuthorization.bearer.token') }}</span>
           <Input
-                          :placeholder="t('service.apiAuthorization.bearer.tokenPlaceholder')"
+            :placeholder="t('service.apiAuthorization.bearer.tokenPlaceholder')"
             :value="httpAuthData?.name"
             :allowClear="true"
             class="w-100"
@@ -790,7 +790,6 @@ defineExpose({ getAuthData, onResponse, getModelResolve });
                 :placeholder="item.maxLength ? t('service.apiAuthorization.messages.maxLengthTip', { maxLength: item.maxLength }) : ''"
                 :maxLength="item.maxLength"
                 @blur="onOauthChange" />
-
             </div>
             <div class="flex items-center">
               <span class="w-25">{{ t('service.apiAuthorization.oauth2.clientAuth') }}</span>

@@ -4,7 +4,7 @@ import { Badge, TabPane, Tabs } from 'ant-design-vue';
 import { Composite, HttpMethodText, Input, ExecAuthencation, ApiUtils as angusUtils } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
-import SelectEnum from '@/components/selectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue';
 import { HttpMethod, HttpServer, RequestConfigs } from './PropsType';
 
 export type ParameterConfig = {

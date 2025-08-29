@@ -1182,12 +1182,12 @@ const selectNone = computed(() => {
                       @visibleChange="visibleChange($event, element.id)">
                       <template #content>
                         <div class="max-w-100 space-y-1 leading-5 text-3 truncate">
-                                                      <div
-                              :title="t('backlog.moveToBacklog')"
-                              class="popover-item truncate cursor-pointer px-2"
-                              @click="moveToBacklog(item.id, element, index)">
-                              {{ t('backlog.moveToBacklog') }}
-                            </div>
+                          <div
+                            :title="t('backlog.moveToBacklog')"
+                            class="popover-item truncate cursor-pointer px-2"
+                            @click="moveToBacklog(item.id, element, index)">
+                            {{ t('backlog.moveToBacklog') }}
+                          </div>
                           <template v-for="_sprint in sprintList" :key="_sprint.id">
                             <div
                               v-if="_sprint.id !== item.id"

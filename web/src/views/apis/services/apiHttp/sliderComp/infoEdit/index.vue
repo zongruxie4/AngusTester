@@ -17,7 +17,7 @@ import {
 import { apis, services } from '@/api/tester';
 import { TESTER, appContext } from '@xcan-angus/infra';
 import { Button, Form, FormItem } from 'ant-design-vue';
-import SelectEnum from '@/components/selectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue';
 
 interface Props {
   disabled:boolean
@@ -249,7 +249,7 @@ onMounted(() => {
         <div v-if="state.id" class="mb-2 flex items-center space-x-2"><span>ID:  {{ state.id }}</span> <IconCopy :copyText="state.id" /></div>
         <p v-if="form.status === 'RELEASED'" class="text-3 text-status-orange mt-1">{{ t('service.apiSliderSave.tips.releasedApiNotEditable') }}</p>
       </FormItem>
-              <FormItem :label="t('service.apiSliderSave.labels.summary')" name="summary">
+      <FormItem :label="t('service.apiSliderSave.labels.summary')" name="summary">
         <Tooltip
           :visible="stepVisible && stepKey === 'debugApiSix'"
           :overlayStyle="{'min-width': '240px'}"
@@ -291,7 +291,7 @@ onMounted(() => {
           size="small"
           :placeholder="t('service.apiSliderSave.form.operationIdPlaceholder')" />
       </FormItem>
-              <FormItem :label="t('service.apiSliderSave.labels.owner')" name="ownerId">
+      <FormItem :label="t('service.apiSliderSave.labels.owner')" name="ownerId">
         <SelectUser
           v-model:value="form.ownerId"
           class="rounded-border"

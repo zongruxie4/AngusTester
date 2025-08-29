@@ -133,7 +133,7 @@ const loadData = async () => {
 
 const deleteHandler = (data: ApiItem) => {
   modal.confirm({
-    content: t('apis.myApis.deleteTip', {name: data.summary}),
+    content: t('apis.myApis.deleteTip', { name: data.summary }),
     async onOk () {
       const id = data.id;
       const params = { ids: [id] };
@@ -291,22 +291,22 @@ const emptyTextStyle = {
           <img class="w-27.5" src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3 leading-5">
             <template v-if="!!props.params?.createdBy">
-              <span>{{  t('apis.myApis.createdEmptyTip') }}</span>
+              <span>{{ t('apis.myApis.createdEmptyTip') }}</span>
               <Button
                 type="link"
                 size="small"
                 class="py-0 px-1 h-5 leading-5"
                 @click="toCreateApi">
-                {{  t('apis.myApis.addApiAction') }}
+                {{ t('apis.myApis.addApiAction') }}
               </Button>
             </template>
 
             <template v-else-if="!!props.params?.favouriteBy">
-              <span>{{  t('apis.myApis.favoriteEmptyTip') }}</span>
+              <span>{{ t('apis.myApis.favoriteEmptyTip') }}</span>
             </template>
 
             <template v-else-if="!!props.params?.followBy">
-              <span>{{  t('apis.myApis.followEmptyTip') }}</span>
+              <span>{{ t('apis.myApis.followEmptyTip') }}</span>
             </template>
           </div>
         </div>

@@ -6,7 +6,7 @@ import { LoadingOutlined } from '@ant-design/icons-vue';
 import { isEqual } from 'lodash-es';
 import { localStore, appContext } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
-import SelectEnum from '@/components/selectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue';
 
 import { useI18n } from 'vue-i18n';
 
@@ -292,7 +292,7 @@ watch([() => apiDebugRef.value], () => {
           class="px-3 ml-5"
           :loading="loading"
           @click.prevent="onSubmit(false)">
-          {{t('actions.saveAndAdd')}}
+          {{ t('actions.saveAndAdd') }}
         </Button>
         <Button
           size="small"
@@ -355,7 +355,7 @@ watch([() => apiDebugRef.value], () => {
                     class="w-20 px-0"
                     @click="stopDebugCase">
                     <LoadingOutlined />
-                    {{t('actions.stop')}}
+                    {{ t('actions.stop') }}
                   </Button>
                   <Button
                     v-else
@@ -364,7 +364,7 @@ watch([() => apiDebugRef.value], () => {
                     class="w-20 px-0"
                     @click="debugCase">
                     <Icon icon="icon-fasong" class="mr-1" />
-                    {{t('service.case.debugModal.debugAction')}}
+                    {{ t('service.case.debugModal.debugAction') }}
                   </Button>
                 </div>
               </FormItem>

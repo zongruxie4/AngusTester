@@ -113,7 +113,7 @@ const handleSelectServer = (value: string, item: HttpServer) => {
 const httpMethodOpt = ref<{value: string; label: string}[]>([]);
 const loadHttpMethodOpt = () => {
   const data = enumUtils.enumToMessages(HttpMethod);
-  httpMethodOpt.value = data.map(i => ({value: i.value, label: i.message}))
+  httpMethodOpt.value = data.map(i => ({ value: i.value, label: i.message }));
 };
 
 // 前端数据库存储的 server
@@ -298,7 +298,7 @@ const serverListOpt = computed(() => {
         style="height:30px;"
         :allowClear="false"
         size="normal"
-        :options="httpMethodOpt"/>
+        :options="httpMethodOpt" />
       <Divider type="vertical" class="h-auto mx-0" />
       <Dropdown :visible="showServerListDrop && !!serverListOpt.length">
         <ServerInput
@@ -441,7 +441,7 @@ const serverListOpt = computed(() => {
             class="ml-2"
             :disabled="!auths.includes('MODIFY')"
             @click="emit('save')">
-            {{t('actions.save')}}
+            {{ t('actions.save') }}
           </Button>
           <Button
             class="ml-2"
@@ -466,12 +466,12 @@ const serverListOpt = computed(() => {
                 <div class="text-4 text-text-title">{{ stepContent.title }}</div>
                 <div class="mt-2">{{ stepContent.content }}</div>
                 <div class="flex justify-end mt-5">
-                                <Button
-                size="small"
-                type="primary"
-                @click="guideStep('debugApiSix')">
-                {{ t('service.apiServerPath.actions.nextStep') }}
-              </Button>
+                  <Button
+                    size="small"
+                    type="primary"
+                    @click="guideStep('debugApiSix')">
+                    {{ t('service.apiServerPath.actions.nextStep') }}
+                  </Button>
                 </div>
               </div>
             </template>
@@ -492,7 +492,7 @@ const serverListOpt = computed(() => {
           <template #icon>
             <Icon class="mr-2" icon="icon-baocun" />
           </template>
-          {{t('actions.save')}}
+          {{ t('actions.save') }}
         </Button>
         <Button
           class="ml-2"

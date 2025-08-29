@@ -6,7 +6,6 @@ import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
 import { appContext } from '@xcan-angus/infra';
 
-
 interface Props {
   loading: boolean;
 }
@@ -14,7 +13,6 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   loading: false
 });
-
 
 const emits = defineEmits<{(e: 'change', value: {
   orderBy?: string;
@@ -278,7 +276,7 @@ onMounted(() => {
           size="small"
           @click="add">
           <Icon icon="icon-jia" class="text-3.5 mr-1" />
-          <span>{{t('design.home.add_action')}}</span>
+          <span>{{ t('design.home.add_action') }}</span>
         </Button>
 
         <Button
@@ -286,7 +284,7 @@ onMounted(() => {
           size="small"
           @click="importService">
           <Icon icon="icon-shangchuan" class="text-3.5 mr-1" />
-          <span>{{t('design.home.import_service_action')}}</span>
+          <span>{{ t('design.home.import_service_action') }}</span>
         </Button>
 
         <Button
@@ -294,7 +292,7 @@ onMounted(() => {
           size="small"
           @click="importDesign">
           <Icon icon="icon-shangchuan" class="text-3.5 mr-1" />
-          <span>{{t('design.home.import_design_action')}}</span>
+          <span>{{ t('design.home.import_design_action') }}</span>
         </Button>
 
         <IconRefresh
@@ -304,7 +302,7 @@ onMounted(() => {
           <template #default>
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-shuaxin" class="text-3.5" />
-              <span class="ml-1">{{t('design.home.refresh_action')}}</span>
+              <span class="ml-1">{{ t('design.home.refresh_action') }}</span>
             </div>
           </template>
         </IconRefresh>

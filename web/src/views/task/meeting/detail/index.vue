@@ -157,7 +157,7 @@ onMounted(() => {
 
       <div class="flex items-start">
         <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-                      <span>{{ t('taskMeeting.columns.participants') }}</span>
+          <span>{{ t('taskMeeting.columns.participants') }}</span>
           <Colon class="w-1" />
         </div>
 
@@ -165,7 +165,7 @@ onMounted(() => {
       </div>
       <div class="flex items-start">
         <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-                      <span>{{ t('taskMeeting.columns.content') }}</span>
+          <span>{{ t('taskMeeting.columns.content') }}</span>
           <Colon class="w-1" />
         </div>
 

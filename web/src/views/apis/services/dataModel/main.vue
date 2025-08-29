@@ -544,12 +544,12 @@ provide('serviceId', props.id);
           type="primary"
           size="small"
           @click="submitSchema">
-          {{t('actions.save')}}
+          {{ t('actions.save') }}
         </Button>
         <Button
           size="small"
           @click="closeCurrentTab">
-          {{t('actions.cancel')}}
+          {{ t('actions.cancel') }}
         </Button>
       </div>
       <AddAttrModal

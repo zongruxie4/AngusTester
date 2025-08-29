@@ -178,7 +178,7 @@ const configColumns = computed(() => {
       title: t('notification.columns.noticeType'),
       dataIndex: 'noticeType'
     }
-  ]
+  ];
 });
 
 const recordColumns = computed(() => {
@@ -331,7 +331,7 @@ onMounted(() => {
           <Popover placement="right">
             <template #content>
               <div class="max-w-110">
-                {{t('notification.config.push_config_tip')}}
+                {{ t('notification.config.push_config_tip') }}
               </div>
             </template>
             <Icon icon="icon-tishi1" class="text-tips text-3.5 ml-2" />

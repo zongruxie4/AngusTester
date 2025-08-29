@@ -3,7 +3,7 @@ import { computed, inject, ref } from 'vue';
 import { Dropdown, HttpMethodText, Icon, IconRefresh, notification, Scroll } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
-import { useI18n } from 'vue-i18n'
+import { useI18n } from 'vue-i18n';
 import { apis } from '@/api/tester';
 
 import { UnarchivedItem } from './PropsType';
@@ -195,7 +195,7 @@ defineExpose({
         type="text"
         @click="refresh">
         <IconRefresh class="text-3.5 mr-1" />
-        <span>{{t('actions.refresh')}}</span>
+        <span>{{ t('actions.refresh') }}</span>
       </Button>
     </div>
   </div>

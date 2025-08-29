@@ -259,7 +259,7 @@ const confirmorDefaultOptions = computed(() => {
 
       <div class="flex items-start">
         <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.personnel.fields.assignee') }}</span>
+          <span>{{ t('task.detailInfo.personnel.fields.assignee') }}</span>
           <Colon class="w-1" />
         </div>
 

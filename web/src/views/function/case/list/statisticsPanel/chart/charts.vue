@@ -5,8 +5,6 @@ import elementResizeDetector from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
 import { duration } from '@xcan-angus/infra';
 import * as echarts from 'echarts/core';
-
-const { t } = useI18n();
 import {
   LegendComponent,
   LegendComponentOption,
@@ -18,6 +16,8 @@ import {
 import { PieChart, PieSeriesOption } from 'echarts/charts';
 import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
+
+const { t } = useI18n();
 
 interface Props {
   color:string[],

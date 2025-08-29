@@ -100,7 +100,7 @@ const artResult = computed(() => {
     <div class="border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">
         <div class="w-37 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-            {{ t('reportPreview.task.info.testing.perf.resultInfo.testParams') }}
+          {{ t('reportPreview.task.info.testing.perf.resultInfo.testParams') }}
         </div>
         <div class="flex-1 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
           {{ t('reportPreview.task.info.testing.perf.resultInfo.testMetrics') }}

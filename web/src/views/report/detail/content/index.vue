@@ -6,9 +6,9 @@ import { Tree } from 'ant-design-vue';
 import { exec, task, funcPlan, funcCase, apis, services, scenario } from '@/api/tester';
 import { user, dept, group } from 'src/api/gm';
 
-const { t } = useI18n();
-
 import { treeData } from './config';
+
+const { t } = useI18n();
 
 interface Props {
   template?: 'PROJECT_PROGRESS'|'TASK_SPRINT'|'TASK'|'FUNC_TESTING_PLAN'|'FUNC_TESTING_CASE'|'SERVICES_TESTING_RESULT'|'APIS_TESTING_RESULT'|'SCENARIO_TESTING_RESULT'|'EXEC_FUNCTIONAL_RESULT'|'EXEC_PERFORMANCE_RESULT'|'EXEC_STABILITY_RESULT'|'EXEC_CUSTOMIZATION_RESULT';

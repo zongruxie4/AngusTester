@@ -198,22 +198,22 @@ const caseSummary = computed(() => {
         <div class="mb-1">{{ t('reportPreview.execFunction.detail.execResult.fields.testCases') }}：</div>
         <div class="flex items-center space-x-3.5">
           <div class="flex items-center leading-6 w-40">
-                          <div class="flex-1 text-white px-2 rounded bg-blue-1">{{ t('reportPreview.execFunction.detail.execResult.summary.total') }}</div>
+            <div class="flex-1 text-white px-2 rounded bg-blue-1">{{ t('reportPreview.execFunction.detail.execResult.summary.total') }}</div>
             <div class="flex-1 bg-gray-light px-2 rounded-r">{{ caseSummary?.totalNum ||0 }}</div>
           </div>
 
           <div class="flex items-center leading-6 w-40">
-                          <div class="flex-1 text-white px-2 rounded bg-status-success">{{ t('reportPreview.execFunction.detail.execResult.summary.passed') }}</div>
+            <div class="flex-1 text-white px-2 rounded bg-status-success">{{ t('reportPreview.execFunction.detail.execResult.summary.passed') }}</div>
             <div class="flex-1 bg-gray-light px-2 rounded-r">{{ caseSummary?.successNum||0 }}</div>
           </div>
 
           <div class="flex items-center leading-6 w-40">
-                          <div class="flex-1 text-white px-2 rounded bg-status-error">{{ t('reportPreview.execFunction.detail.execResult.summary.failed') }}</div>
+            <div class="flex-1 text-white px-2 rounded bg-status-error">{{ t('reportPreview.execFunction.detail.execResult.summary.failed') }}</div>
             <div class="flex-1 bg-gray-light px-2 rounded-r">{{ caseSummary?.failNum ||0 }}</div>
           </div>
 
           <div class="flex items-center leading-6 w-40">
-                          <div class="flex-1 text-white px-2 rounded bg-gray-icon">{{ t('reportPreview.execFunction.detail.execResult.summary.disabled') }}</div>
+            <div class="flex-1 text-white px-2 rounded bg-gray-icon">{{ t('reportPreview.execFunction.detail.execResult.summary.disabled') }}</div>
             <div class="flex-1 bg-gray-light px-2 rounded-r">{{ caseSummary?.disabledNum ||0 }}</div>
           </div>
         </div>

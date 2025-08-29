@@ -19,14 +19,14 @@ import {
 import { toClipboard, TESTER, appContext } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 import { infoItem, internetInfo, nodeEchartsTabs, nodeUseProgresses } from './interface';
 import { getStrokeColor, installConfigColumns } from '../interface';
 import { nodeCtrl, nodeInfo } from 'src/api/ctrl';
 import { node } from '@/api/tester';
 
 import { formatBytes, formatBytesToUnit } from '@/utils/common';
+
+const { t } = useI18n();
 
 const AgentChart = defineAsyncComponent(() => import('./agentChart.vue'));
 const AgentInfo = defineAsyncComponent(() => import('./agentInfo.vue'));
@@ -1231,7 +1231,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
                 class="node-action-btn"
                 @click="delNode()">
                 <Icon icon="icon-qingchu" class="mr-1" />
-                                  <span>{{ t('node.nodeDetail.buttons.delete') }}</span>
+                <span>{{ t('node.nodeDetail.buttons.delete') }}</span>
               </Button>
               <Tooltip v-if="state.infos.installNodeAgent || state.infos.free || !isAdmin" :title="getOnlineInstallTip(state)">
                 <Button
@@ -1249,7 +1249,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
                 :loading="installing"
                 class="node-action-btn"
                 @click="installAgen">
-                                  <Icon icon="icon-anzhuangdaili" />{{ t('node.nodeDetail.buttons.onlineInstallAgent') }}
+                <Icon icon="icon-anzhuangdaili" />{{ t('node.nodeDetail.buttons.onlineInstallAgent') }}
                 <Hints
                   v-if="installing"
                   class="absolute left-5 -bottom-3"
@@ -1268,7 +1268,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
                 :disabled="!isAdmin"
                 class="node-action-btn"
                 @click="getInstallStep">
-                                  <Icon icon="icon-anzhuangdaili" />{{ t('node.nodeDetail.buttons.manualInstallAgent') }}
+                <Icon icon="icon-anzhuangdaili" />{{ t('node.nodeDetail.buttons.manualInstallAgent') }}
               </Button>
               <Button class="node-action-btn" @click="turnback">
                 <Icon icon="icon-fanhui" />{{ t('node.nodeDetail.buttons.back') }}

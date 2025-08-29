@@ -4,9 +4,9 @@ import { useI18n } from 'vue-i18n';
 import * as echarts from 'echarts';
 import elementResizeDetectorMaker from 'element-resize-detector';
 import { Icon } from '@xcan-angus/vue-ui';
+import { Popover } from 'ant-design-vue';
 
 const { t } = useI18n();
-import { Popover } from 'ant-design-vue';
 
 interface Props {
 

@@ -9,12 +9,12 @@ export const textList = [
   },
   {
     icon: 'icon-daoruyiyoufuwujixitongyangli1',
-    name:  t('mock.introduce.importService'),
+    name: t('mock.introduce.importService'),
     description: t('mock.introduce.importService_desc')
   },
   {
     icon: 'icon-daoruxiangmufuwu',
     name: t('mock.introduce.importFile'),
-    description: t('mock.introduce.importFile_desc'),
+    description: t('mock.introduce.importFile_desc')
   }
 ];

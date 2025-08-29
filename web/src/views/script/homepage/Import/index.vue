@@ -217,7 +217,7 @@ const rules = {
               </div>
             </Upload>
 
-              <div class="text-text-sub-content mt-1">{{ t('scriptHome.import.form.uploadTip') }}</div>
+            <div class="text-text-sub-content mt-1">{{ t('scriptHome.import.form.uploadTip') }}</div>
           </div>
 
           <div v-if="formState.content" class="relative">

@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { inject, onMounted, computed } from 'vue';
+import { onMounted, computed } from 'vue';
 import { Button, Tooltip, Popconfirm, Badge } from 'ant-design-vue';
 import { Icon, Image, Input, Spin, Table } from '@xcan-angus/vue-ui';
 
 import { TrashProps } from './types';
-import { useTrashData } from './composables/useData';
+import { useTrashData } from './composables/useTrashData';
 import { useTableColumns } from './composables/useTableColumns';
 
 /**
@@ -17,15 +17,12 @@ const props = withDefaults(defineProps<TrashProps>(), {
   notify: undefined
 });
 
-// Inject admin status from parent component
-const isAdmin = inject('isAdmin', false);
-
 // Initialize composables for data management and table configuration
 const {
   loading, loaded, tableData, inputValue, pagination,
   backTrash, deleteTrash, backAll, deleteAll,
   toRefresh, inputChange, tableChange, watchProjectId, watchNotify
-} = useTrashData(props.projectId, props.userInfo, isAdmin);
+} = useTrashData(props.projectId, props.userInfo);
 
 const { columns, emptyTextStyle } = useTableColumns();
 

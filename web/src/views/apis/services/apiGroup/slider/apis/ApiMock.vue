@@ -208,16 +208,16 @@ const format = (data) => {
           <template v-if="createType === '1'">
             <Hints :text="t('service.ApiMock.hints.generateMockApi')" />
             <Input v-model:value="summary" :placeholder="t('service.ApiMock.placeholder.inputMockApiName')" />
-                          <div class="flex justify-end">
-                <Button
-                  :disabled="!mockServiceId || props.disabled"
-                  :loading="createApiLoading"
-                  size="small"
-                  type="primary"
-                  @click="createMockApiById">
-                  {{ t('actions.confirm') }}
-                </Button>
-              </div>
+            <div class="flex justify-end">
+              <Button
+                :disabled="!mockServiceId || props.disabled"
+                :loading="createApiLoading"
+                size="small"
+                type="primary"
+                @click="createMockApiById">
+                {{ t('actions.confirm') }}
+              </Button>
+            </div>
           </template>
           <template v-else>
             <Hints :text="t('service.ApiMock.hints.associateMockApi')" />
@@ -232,15 +232,15 @@ const format = (data) => {
               allowClear
               :placeholder="t('service.ApiMock.placeholder.selectMockApi')"
               showSearch />
-                          <div class="flex justify-end">
-                <Button
-                  :disabled="!mockServiceId || !selectedMockApiId || props.disabled"
-                  size="small"
-                  type="primary"
-                  @click="relatedMockServiceApi">
-                  {{ t('actions.confirm') }}
-                </Button>
-              </div>
+            <div class="flex justify-end">
+              <Button
+                :disabled="!mockServiceId || !selectedMockApiId || props.disabled"
+                size="small"
+                type="primary"
+                @click="relatedMockServiceApi">
+                {{ t('actions.confirm') }}
+              </Button>
+            </div>
           </template>
         </div>
       </template>

@@ -122,7 +122,6 @@ const openTask = (record) => {
 
 // 编号、名称、类型、优先级、评估故事点、状态、经办人、截止时间、操作
 
-
 const columns = [
   {
     key: 'code',

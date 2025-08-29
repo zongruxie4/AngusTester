@@ -1602,11 +1602,11 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
                       <div class="flex items-center space-x-3.5">
                         <Tooltip trigger="hover">
                           <template #title>
-                                                      <div class="flex items-center overflow-hidden">
-                            <span class="flex-shrink-0">{{ t('task.detail.columns.assignee') }}</span>
-                            <Colon class="mr-1.5" />
-                            <span :title="element.assigneeName" class="truncate">{{ element.assigneeName }}</span>
-                          </div>
+                            <div class="flex items-center overflow-hidden">
+                              <span class="flex-shrink-0">{{ t('task.detail.columns.assignee') }}</span>
+                              <Colon class="mr-1.5" />
+                              <span :title="element.assigneeName" class="truncate">{{ element.assigneeName }}</span>
+                            </div>
                           </template>
                           <div style="width:20px;" class="flex-shrink-0">
                             <Image

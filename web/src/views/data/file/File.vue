@@ -6,12 +6,12 @@ import { AsyncComponent, Drawer, Icon, Input, modal, notification, Table } from 
 import { download, toClipboard } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 import { fileApi, space } from '@/api/storage';
 import { parseQuery } from '@/utils/url';
 import { columns, CrumbType, SearchType, SortType, SourceType, SPACE_PERMISSIONS } from './PropsType';
 import { FileCapacity, FileCrumb, FileIcon, FileSearch, FileSort, FileUpload, SpaceInfo } from './components';
+
+const { t } = useI18n();
 
 type TargetType = 'file' | 'directory' | undefined
 

@@ -308,7 +308,6 @@ defineExpose({
             icon="icon-liebiaoshitu"
             class="text-3.5" />
           <span class="flex-1">{{ name }}</span>
-
         </div>
       </template>
     </Tree>

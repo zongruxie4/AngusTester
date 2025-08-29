@@ -2,7 +2,7 @@ import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { notification } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
-import { duration } from '@xcan-angus/infra';
+import { appContext, duration } from '@xcan-angus/infra';
 import { project } from '@/api/tester';
 import { getCurrentPage } from '@/utils/utils';
 import { TrashItem } from '../types';
@@ -11,19 +11,19 @@ import { TrashItem } from '../types';
  * <p>Composable for managing trash data operations including CRUD operations,</p>
  * <p>pagination, search, and sorting functionality.</p>
  */
-export function useTrashData(projectId: string, userInfo: { id: string }, isAdmin: boolean) {
+export function useTrashData (projectId: string, userInfo: { id: string }) {
   const { t } = useI18n();
-  
+
   // Reactive state for data management
   const loading = ref(false);
   const loaded = ref(false);
   const tableData = ref<TrashItem[]>([]);
-  
+
   // Search and filter state
   const inputValue = ref<string>();
   const orderBy = ref<string>();
   const orderSort = ref<'ASC' | 'DESC'>();
-  
+
   // Pagination state
   const pagination = ref<{ total: number; current: number; pageSize: number; }>({
     total: 0,
@@ -31,10 +31,13 @@ export function useTrashData(projectId: string, userInfo: { id: string }, isAdmi
     pageSize: 10
   });
 
+  // Injected dependencies
+  const isAdmin = appContext.isAdmin();
+
   /**
    * <p>Recovers a single item from trash by calling the backend API.</p>
    * <p>Updates pagination and refreshes the list after successful recovery.</p>
-   * 
+   *
    * @param data - The trash item to recover
    */
   const backTrash = async (data: TrashItem) => {
@@ -47,8 +50,8 @@ export function useTrashData(projectId: string, userInfo: { id: string }, isAdmi
 
     notification.success(t('projectTrash.messages.recoverSuccess'));
     pagination.value.current = getCurrentPage(
-      pagination.value.current, 
-      pagination.value.pageSize, 
+      pagination.value.current,
+      pagination.value.pageSize,
       pagination.value.total
     );
     await getList();
@@ -57,7 +60,7 @@ export function useTrashData(projectId: string, userInfo: { id: string }, isAdmi
   /**
    * <p>Permanently deletes a single item from trash.</p>
    * <p>Updates pagination and refreshes the list after successful deletion.</p>
-   * 
+   *
    * @param data - The trash item to delete
    */
   const deleteTrash = async (data: TrashItem) => {
@@ -70,8 +73,8 @@ export function useTrashData(projectId: string, userInfo: { id: string }, isAdmi
 
     notification.success(t('projectTrash.messages.deleteSuccess'));
     pagination.value.current = getCurrentPage(
-      pagination.value.current, 
-      pagination.value.pageSize, 
+      pagination.value.current,
+      pagination.value.pageSize,
       pagination.value.total
     );
     await getList();
@@ -151,7 +154,7 @@ export function useTrashData(projectId: string, userInfo: { id: string }, isAdmi
 
     const data = res?.data || { list: [], total: 0 };
     const userId = userInfo?.id;
-    
+
     // Process items to set disabled state based on user permissions
     tableData.value = data.list.map(item => {
       item.disabled = true;
@@ -160,7 +163,7 @@ export function useTrashData(projectId: string, userInfo: { id: string }, isAdmi
       }
       return item;
     });
-    
+
     pagination.value.total = +(data.total || 0);
   };
 
@@ -184,14 +187,14 @@ export function useTrashData(projectId: string, userInfo: { id: string }, isAdmi
   /**
    * <p>Handles table changes including pagination, sorting, and filtering.</p>
    * <p>Updates internal state and triggers list refresh.</p>
-   * 
+   *
    * @param paginationInfo - Pagination change information
    * @param filters - Filter information (unused)
    * @param sorter - Sorting information
    */
   const tableChange = (
-    { current = 1, pageSize = 10 }, 
-    _filters, 
+    { current = 1, pageSize = 10 },
+    _filters,
     sorter: { orderBy: string; orderSort: 'ASC' | 'DESC'; }
   ) => {
     orderBy.value = sorter.orderBy;
@@ -236,7 +239,7 @@ export function useTrashData(projectId: string, userInfo: { id: string }, isAdmi
     orderBy,
     orderSort,
     pagination,
-    
+
     // Methods
     backTrash,
     deleteTrash,

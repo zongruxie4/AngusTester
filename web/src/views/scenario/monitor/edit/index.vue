@@ -7,9 +7,9 @@ import { utils, TESTER, GM } from '@xcan-angus/infra';
 import { scenario } from '@/api/tester';
 
 import { FormState } from './PropsType';
+import { MonitorInfo } from '../PropsType';
 
 const { t } = useI18n();
-import { MonitorInfo } from '../PropsType';
 
 type Props = {
   projectId: string;
@@ -137,7 +137,7 @@ const editOk = async () => {
   if (error) {
     return;
   }
-        notification.success(t('common.modifySuccess'));
+  notification.success(t('common.modifySuccess'));
   deleteTabPane([props._id]);
 };
 
@@ -149,7 +149,7 @@ const addOk = async () => {
   if (error) {
     return;
   }
-        notification.success(t('common.addSuccess'));
+  notification.success(t('common.addSuccess'));
   deleteTabPane([props._id]);
 };
 

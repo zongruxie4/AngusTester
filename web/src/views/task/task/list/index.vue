@@ -7,7 +7,6 @@ import { http, utils, TESTER, download } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 
-
 import { getCurrentPage } from '@/utils/utils';
 import { TaskInfo } from '../../PropsType';
 import { ActionMenuItem, travelTreeData } from './PropsType';

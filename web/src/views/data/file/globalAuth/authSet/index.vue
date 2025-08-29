@@ -8,11 +8,11 @@ import { Icon, Input, NoData, Spin } from '@xcan-angus/vue-ui';
 import { space } from '@/api/storage';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 import CheckboxGroup from './CheckboxGroup.vue';
 
 import { SpaceItem } from './PropsType';
+
+const { t } = useI18n();
 
 interface Props {
   authObjectId: string | undefined;

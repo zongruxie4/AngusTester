@@ -176,7 +176,7 @@ const burnDownCharts = computed(() => {
             </div>
             <div
               class="w-30 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-                {{ t('reportPreview.functionPlan.caseSummary.fields.oneTimeReviewPassRate') }}
+              {{ t('reportPreview.functionPlan.caseSummary.fields.oneTimeReviewPassRate') }}
             </div>
             <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
               {{ oneTimePassedReviewRate }}

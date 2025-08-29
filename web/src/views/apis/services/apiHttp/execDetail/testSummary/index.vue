@@ -112,7 +112,6 @@ const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined
 });
 
-
 const resultSummary = computed(() => {
   return props.dataSource?.resultSummary;
 });

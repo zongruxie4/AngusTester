@@ -819,12 +819,12 @@ const zoomInFlagCacheKey = computed(() => {
               name="targetId"
               :label="t('task.editModal.form.scenario')"
               class="flex-1 min-w-0"
-                              :rules="{ required: true, message: t('task.editModal.form.scenarioRule') }">
+              :rules="{ required: true, message: t('task.editModal.form.scenarioRule') }">
               <Select
                 v-model:value="formState.targetId"
                 showSearch
                 internal
-                                  :placeholder="t('task.editModal.form.scenarioPlaceholder')"
+                :placeholder="t('task.editModal.form.scenarioPlaceholder')"
                 :fieldNames="{ label: 'name', value: 'id' }"
                 :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
                 :readonly="!!props.taskId" />
@@ -848,7 +848,7 @@ const zoomInFlagCacheKey = computed(() => {
             <FormItem
               name="targetParentId"
               :label="t('task.editModal.form.service')"
-                              :rules="{ required: true, message: t('task.editModal.form.serviceRule') }">
+              :rules="{ required: true, message: t('task.editModal.form.serviceRule') }">
               <Select
                 v-model:value="formState.targetParentId"
                 :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
@@ -858,7 +858,7 @@ const zoomInFlagCacheKey = computed(() => {
                 internal
                 defaultActiveFirstOption
                 showSearch
-                                  :placeholder="t('task.editModal.form.servicePlaceholder')">
+                :placeholder="t('task.editModal.form.servicePlaceholder')">
                 <template #option="record">
                   <div class="text-3 leading-3 flex items-center h-6.5">
                     <IconText
@@ -877,12 +877,12 @@ const zoomInFlagCacheKey = computed(() => {
                 :label="t('task.editModal.form.api')"
                 name="targetId"
                 class="flex-1 min-w-0"
-                                  :rules="{ required: true, message: t('task.editModal.form.apiRule') }">
+                :rules="{ required: true, message: t('task.editModal.form.apiRule') }">
                 <Select
                   v-model:value="formState.targetId"
                   showSearch
                   internal
-                                      :placeholder="t('task.editModal.form.apiPlaceholder')"
+                  :placeholder="t('task.editModal.form.apiPlaceholder')"
                   :fieldNames="{ label: 'summary', value: 'id' }"
                   :action="`${TESTER}/apis?projectId=${props.projectId}&serviceId=${formState.targetParentId}&fullTextSearch=true`"
                   :readonly="!!props.taskId || !formState.targetParentId" />
@@ -1037,9 +1037,9 @@ const zoomInFlagCacheKey = computed(() => {
         <div class="w-80  pl-2 border-l">
           <FormItem
             v-if="proTypeShowMap.showSprint"
-                          :label="t('task.editModal.form.sprint')"
+            :label="t('task.editModal.form.sprint')"
             name="sprintId"
-                          :rules="{ required: true, message: t('task.editModal.form.sprintRule') }">
+            :rules="{ required: true, message: t('task.editModal.form.sprintRule') }">
             <Select
               v-model:value="formState.sprintId"
               :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
@@ -1047,7 +1047,7 @@ const zoomInFlagCacheKey = computed(() => {
               :readonly="!!props.taskId"
               showSearch
               internal
-                              :placeholder="t('task.editModal.form.sprintPlaceholder')"
+              :placeholder="t('task.editModal.form.sprintPlaceholder')"
               @change="sprintChange">
               <template #option="record">
                 <div class="flex items-center" :title="record.name">
@@ -1068,7 +1068,7 @@ const zoomInFlagCacheKey = computed(() => {
               size="small"
               showSearch
               allowClear
-                              :placeholder="t('task.editModal.form.modulePlaceholder')">
+              :placeholder="t('task.editModal.form.modulePlaceholder')">
               <template #title="item">
                 <div class="flex items-center" :title="item.name">
                   <Icon icon="icon-mokuai" class="mr-1 text-3.5" />
@@ -1098,7 +1098,7 @@ const zoomInFlagCacheKey = computed(() => {
               v-model:value="formState.parentTaskId"
               showSearch
               internal
-                                :placeholder="t('task.editModal.form.parentTaskPlaceholder')"
+              :placeholder="t('task.editModal.form.parentTaskPlaceholder')"
               :excludes="taskIdExcludes"
               :fieldNames="{ label: 'name', value: 'id' }"
               :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`">
@@ -1168,7 +1168,7 @@ const zoomInFlagCacheKey = computed(() => {
             <Select
               v-model:value="formState.softwareVersion"
               allowClear
-                              :placeholder="t('task.editModal.form.softwareVersionPlaceholder')"
+              :placeholder="t('task.editModal.form.softwareVersionPlaceholder')"
               :action="`${TESTER}/software/version?projectId=${props.projectId}`"
               :params="{filters: [{value: ['NOT_RELEASED', 'RELEASED'], key: 'status', op: 'IN'}]}"
               :fieldNames="{value:'name', label: 'name'}">

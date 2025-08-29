@@ -735,7 +735,7 @@ const statusStyleMap = {
           href="/mockservice/add"
           class="inline-flex space-x-1">
           <Icon icon="icon-jia" class="text-3.5" />
-          {{t('mock.actions.addMock')}}
+          {{ t('mock.actions.addMock') }}
         </Button>
         <!-- <ButtonAuth
           code="MockServiceAdd"
@@ -747,13 +747,13 @@ const statusStyleMap = {
           size="small"
           @click="batchStart ">
           <Icon icon="icon-qidong" class="mr-1 text-3.5" />
-          <span>{{t('mock.actions.start')}}</span>
+          <span>{{ t('mock.actions.start') }}</span>
         </Button>
         <Button
           size="small"
           @click="batchDelete">
           <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
-          <span>{{t('actions.delete')}}</span>
+          <span>{{ t('actions.delete') }}</span>
         </Button>
         <ButtonAuth
           code="MockServiceExport"
@@ -765,7 +765,7 @@ const statusStyleMap = {
           :disabled="loading"
           @click="handleRefresh">
           <Icon icon="icon-shuaxin" class="text-3.5 mr-1" />
-          <span>{{t('actions.refresh')}}</span>
+          <span>{{ t('actions.refresh') }}</span>
         </Button>
       </div>
     </div>
@@ -850,7 +850,7 @@ const statusStyleMap = {
               v-if="(!record.auth || record.currentAuthsValue.includes('RUN')) && record.status?.value !== 'STARTING'"
               class="ml-2 cursor-pointer flex items-center text-3"
               @click="handleUpdateStatus(record)">
-              <Icon :icon="record.status?.value !== 'RUNNING'?'icon-qidong':'icon-zhongzhi2'" class="mr-1" />{{ record.status?.value !== 'RUNNING'? t('mock.actions.start') :t('mock.actions.stop')  }}
+              <Icon :icon="record.status?.value !== 'RUNNING'?'icon-qidong':'icon-zhongzhi2'" class="mr-1" />{{ record.status?.value !== 'RUNNING'? t('mock.actions.start') :t('mock.actions.stop') }}
             </a>
             <a
               v-else

@@ -26,11 +26,11 @@ const columns = [
   <div class="p-5">
     <div class="flex items-center space-x-2">
       <Icon icon="icon-anquanceshi" class="text-5" />
-      <span class="text-4 font-semibold">{{t('service.sidebar.securityResult.title')}}</span>
+      <span class="text-4 font-semibold">{{ t('service.sidebar.securityResult.title') }}</span>
     </div>
     <div class="flex items-center space-x-5 mt-2">
       <div class="rounded-full w-14 h-14 border text-5 text-center flex flex-col justify-center">
-        {{t('service.sidebar.securityResult.passed')}}
+        {{ t('service.sidebar.securityResult.passed') }}
       </div>
       <Grid
         class="w-120"

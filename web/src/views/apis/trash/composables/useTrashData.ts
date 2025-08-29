@@ -1,4 +1,5 @@
-import { computed, ref, inject, unref, type Ref } from 'vue';
+import { computed, ref, unref, type Ref } from 'vue';
+import { appContext } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
 import type { TrashItem, TrashParams, TrashPagination } from '../types';
 
@@ -25,7 +26,7 @@ export function useTrashData (
   });
 
   // Injected dependencies
-  const isAdmin = inject('isAdmin', ref<boolean>());
+  const isAdmin = appContext.isAdmin();
 
   /**
    * Load trash data with current parameters
@@ -57,18 +58,16 @@ export function useTrashData (
 
     try {
       const [error, res] = await apis.getTrashList(requestParams);
-
       if (error) {
         throw error;
       }
-
       const data = res?.data || { list: [], total: 0 };
       const userId = userInfo?.id;
 
       // Process data to add permission flags
       tableData.value = data.list.map(item => ({
         ...item,
-        disabled: !(isAdmin?.value || userId === item.createdBy || userId === item.deletedBy)
+        disabled: !(isAdmin || userId === item.createdBy || userId === item.deletedBy)
       }));
 
       pagination.value.total = +(data.total || 0);
@@ -88,7 +87,7 @@ export function useTrashData (
    */
   const handleTableChange = (
     paginationInfo: { current?: number; pageSize?: number },
-    filters: any,
+    _filters: any,
     sorter: { orderBy?: string; orderSort?: 'ASC' | 'DESC' }
   ) => {
     const { current = 1, pageSize = 10 } = paginationInfo;

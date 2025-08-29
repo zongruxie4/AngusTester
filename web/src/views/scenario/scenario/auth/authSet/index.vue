@@ -10,9 +10,9 @@ import { scenario } from '@/api/tester';
 
 import CheckboxGroup from './checkboxGroup.vue';
 
-const { t } = useI18n();
-
 import { DataItem } from './PropsType';
+
+const { t } = useI18n();
 
 interface Props {
   projectId: string;

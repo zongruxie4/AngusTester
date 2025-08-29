@@ -388,7 +388,7 @@ onMounted(async () => {
       <div class="flex flex-wrap">
         <template v-if="props.type !=='APIS' && props.type !=='API'">
           <div class="flex-1/2">
-            <span>{{t('service.sidebar.exportServiceModal.exportTypeLabel')}}<Colon class="ml-1 mr-3.5" /></span>
+            <span>{{ t('service.sidebar.exportServiceModal.exportTypeLabel') }}<Colon class="ml-1 mr-3.5" /></span>
             <RadioGroup
               :value="exportType"
               :options="exportTypes"
@@ -399,7 +399,7 @@ onMounted(async () => {
 
         <template v-if="props.type !=='API'">
           <div class="mt-1.5 flex-1/2">
-            <span>{{t('service.sidebar.exportServiceModal.onlyApisComponentsLabel')}}<Colon class="ml-1 mr-3.5" /></span>
+            <span>{{ t('service.sidebar.exportServiceModal.onlyApisComponentsLabel') }}<Colon class="ml-1 mr-3.5" /></span>
             <RadioGroup
               v-model:value="onlyApisComponents"
               :options="compTypeOption">
@@ -408,7 +408,7 @@ onMounted(async () => {
         </template>
 
         <div class="mt-1.5 flex-1/2">
-          <span>{{t('service.sidebar.exportServiceModal.formatLabel')}}<Colon class="ml-1 mr-3.5" /></span>
+          <span>{{ t('service.sidebar.exportServiceModal.formatLabel') }}<Colon class="ml-1 mr-3.5" /></span>
           <RadioGroup
             v-model:value="format"
             :options="formatTypes">
@@ -431,7 +431,7 @@ onMounted(async () => {
         <template v-if="exportType === 'APIS'">
           <div class="mt-2 inline-flex flex-1/2">
             <div class="inline-flex items-center">
-              <span>{{t('service.sidebar.exportServiceModal.serviceLabel')}}<Colon class="ml-1 mr-3.5" /></span>
+              <span>{{ t('service.sidebar.exportServiceModal.serviceLabel') }}<Colon class="ml-1 mr-3.5" /></span>
             </div>
             <TreeSelect
               ref="treeRef"
@@ -465,7 +465,7 @@ onMounted(async () => {
               :checked="projectCheckAll"
               :indeterminate="indeterminate"
               @change="onCheckAllChange">
-              {{t('service.sidebar.exportServiceModal.serviceNameLabel')}}
+              {{ t('service.sidebar.exportServiceModal.serviceNameLabel') }}
             </Checkbox>
           </div>
           <Spin

@@ -2,8 +2,6 @@
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Switch } from 'ant-design-vue';
-
-const { t } = useI18n();
 import {
   AsyncComponent,
   Colon,
@@ -36,6 +34,8 @@ import { CaseTestResult } from '@/enums/enums';
 import { CASE_PROJECT_PERMISSIONS, useCaseActionAuth } from '../useCaseActionAuth';
 // eslint-disable-next-line import/no-absolute-path
 import Template from '/file/Import_Case_Template.xlsx?url';
+
+const { t } = useI18n();
 
 const InfoView = defineAsyncComponent(() => import('./infoView.vue'));
 const TableView = defineAsyncComponent(() => import('./tableView.vue'));

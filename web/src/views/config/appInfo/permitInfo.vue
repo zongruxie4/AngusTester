@@ -5,9 +5,9 @@ import { appContext } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 import { edition } from '@/api/store';
+
+const { t } = useI18n();
 
 const editionType = ref<string>();
 

@@ -7,7 +7,7 @@ import { Button, Divider } from 'ant-design-vue';
 import { CompObj, ComponentsType, ExampleObject, HeaderObject } from './PropsType';
 import YAML from 'yaml';
 import { useI18n } from 'vue-i18n';
-import SelectEnum from '@/components/selectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue';
 
 import { services } from '@/api/tester';
 
@@ -243,16 +243,20 @@ const modeContent = computed(() => {
     @cancel="handleCancel">
     <div class="text-3 text-text-sub-content">
       <div class="flex flex-col">
-        <div><IconRequired />
-          {{ t('service.oas.addModal.typeLabel') }}</div>
+        <div>
+          <IconRequired />
+          {{ t('service.oas.addModal.typeLabel') }}
+        </div>
         <Select
           v-model:value="compType"
           :disabled="props.modalType === 'view' || props.modalType === 'edit'"
           :options="compTypesEnum"
           :placeholder="t('service.oas.addModal.typePlaceholder')"
           class="w-full mb-2" />
-        <div><IconRequired />
-          {{ t('service.oas.addModal.nameLabel') }}</div>
+        <div>
+          <IconRequired />
+          {{ t('service.oas.addModal.nameLabel') }}
+        </div>
         <Input
           v-model:value="compName"
           :disabled="props.modalType === 'view' || props.modalType === 'edit'"
@@ -300,8 +304,10 @@ const modeContent = computed(() => {
               type="textarea"
               :placeholder="t('service.oas.addModal.descriptionPlaceholder')"
               class="w-full" />
-            <div class="mt-2"><IconRequired />
-              {{ t('service.oas.addModal.exampleLabel') }}</div>
+            <div class="mt-2">
+              <IconRequired />
+              {{ t('service.oas.addModal.exampleLabel') }}
+            </div>
             <Input
               v-model:value="examples.value"
               :disabled="props.modalType === 'view' || (!openEdit && modalType === 'edit' && props.component?.isQuote)"
@@ -314,7 +320,7 @@ const modeContent = computed(() => {
               @change="exampleValueChange" />
           </template>
           <template v-if="compType === 'headers'">
-            <div class="mt-2"><IconRequired />{{t('service.oas.addModal.schemaTypeLabel')}}</div>
+            <div class="mt-2"><IconRequired />{{ t('service.oas.addModal.schemaTypeLabel') }}</div>
             <SelectEnum
               v-model:value="headers.schema.type"
               :excludes="getExcludes"
@@ -370,14 +376,14 @@ const modeContent = computed(() => {
       </div>
     </div>
     <template v-if="props.modalType !=='view'" #footer>
-      <Button size="small" @click="handleCancel">{{t('actions.cancel')}}</Button>
+      <Button size="small" @click="handleCancel">{{ t('actions.cancel') }}</Button>
       <Button
         :disabled="!openEdit && modalType === 'edit' && props.component.isQuote"
         type="primary"
         size="small"
         :loading="loading"
         @click="handleSave">
-        {{t('actions.confirm')}}
+        {{ t('actions.confirm') }}
       </Button>
     </template>
   </Modal>

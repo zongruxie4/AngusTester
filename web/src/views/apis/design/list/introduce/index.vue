@@ -33,7 +33,7 @@ onBeforeUnmount(() => {
     <div class="text-3.5 font-semibold mb-2.5">{{ t('design.home.introduceTitle') }}</div>
     <div class="mb-2">
       <div>
-        {{t('design.home.introduceContent')}}
+        {{ t('design.home.introduceContent') }}
       </div>
     </div>
   </div>

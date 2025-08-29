@@ -8,10 +8,10 @@ import { duration } from '@xcan-angus/infra';
 import { Icon, Input, NoData, Spin } from '@xcan-angus/vue-ui';
 import { report } from '@/api/tester';
 
-const { t } = useI18n();
-
 import CheckboxGroup from './checkboxGroup.vue';
 import { SpaceItem } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;

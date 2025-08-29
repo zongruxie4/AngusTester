@@ -268,7 +268,7 @@ const refreshList = () => {
         :disabled="props.disabled"
         @click="addComponent">
         <Icon icon="icon-jia" class="mr-1" />
-        {{t('service.oas.designCompAction')}}
+        {{ t('service.oas.designCompAction') }}
       </Button>
       <IconRefresh class="text-3.5" @click="refreshList" />
     </div>

@@ -16,10 +16,10 @@ import {
 import { toClipboard } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 
-const { t } = useI18n();
-
 import { TaskInfo } from '../../../../PropsType';
 import { ActionMenuItem } from '../../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -935,7 +935,7 @@ const EXEC_RESULT_COLOR = {
         size="small"
         class="flex items-center px-0 h-5 leading-5"
         @click="batchCancel">
-                 {{ t('actions.cancel') }}
+        {{ t('actions.cancel') }}
       </Button>
 
       <Button

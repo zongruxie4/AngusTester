@@ -39,7 +39,7 @@ const projectInfo = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-5">
-        <span id="a1" class="text-4 text-theme-title font-medium">{{ sequence.big }}、<em class="inline-block w-0.25"></em>{{ t('reportPreview.projectProgress.info.title') }}</span>
+      <span id="a1" class="text-4 text-theme-title font-medium">{{ sequence.big }}、<em class="inline-block w-0.25"></em>{{ t('reportPreview.projectProgress.info.title') }}</span>
     </h1>
 
     <div class="flex-1 border border-solid border-border-input">

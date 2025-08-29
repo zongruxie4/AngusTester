@@ -3,7 +3,7 @@ import { defineAsyncComponent, onMounted, ref } from 'vue';
 import { Spin } from '@xcan-angus/vue-ui';
 import YAML from 'yaml';
 import { services } from '@/api/tester';
-import { OpenApiInfo,  } from './PropsType';
+import { OpenApiInfo } from './PropsType';
 
 interface Props {
   serviceId: string;
@@ -21,7 +21,6 @@ const loading = ref(false);
 const openapiMetaData = ref<OpenApiInfo>();
 const openapiYamlData = ref<string>('');
 
-
 const loadData = async () => {
   if (loading.value) {
     return;
@@ -36,7 +35,6 @@ const loadData = async () => {
 
   openapiMetaData.value = JSON.parse(data || '{}');
   openapiYamlData.value = YAML.stringify(openapiMetaData.value, null, 2);
-  
 
   loading.value = false;
 };

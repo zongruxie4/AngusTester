@@ -8,7 +8,7 @@ import { axiosClient, utils } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import { type AssertResult, type ConditionResult } from '@xcan-angus/vue-ui/types';
-import { apis } from '@/api/tester';
+import { apis, services } from '@/api/tester';
 
 import {
   ApiInfo,
@@ -22,7 +22,6 @@ import {
 import { getRequestBodyData } from './utils';
 // import PIcon from './PIcon/index.vue';
 import { API_EXTENSION_KEY } from './PropsType.ts';
-import { services } from '@/api/tester';
 
 export interface Props {
   disabled: boolean;
@@ -1321,7 +1320,7 @@ defineExpose({
 </script>
 <template>
   <span class="text-3 ">
-    {{t('service.case.debugModal.apisLabel')}}
+    {{ t('service.case.debugModal.apisLabel') }}
   </span>
   <div class="flex space-x-2 pr-20">
     <Select
@@ -1342,7 +1341,7 @@ defineExpose({
       class="flex-1" />
   </div>
   <span class="text-3 mt-4">
-    {{t('service.case.debugModal.caseLabel')}}
+    {{ t('service.case.debugModal.caseLabel') }}
   </span>
   <div ref="apiEleRef" class="flex-1 min-h-0 overflow-auto pr-2">
     <Tabs v-model:activeKey="activeTab" size="small">
@@ -1391,7 +1390,7 @@ defineExpose({
       <TabPane key="body" :forceRender="false">
         <template #tab>
           <Badge v-show="hasBodyContent" status="success" />
-          <span>{{ t('service.case.debugModal.requestBodyTab')}}</span>
+          <span>{{ t('service.case.debugModal.requestBodyTab') }}</span>
         </template>
         <ApiBody
           ref="bodyRef"
@@ -1428,7 +1427,7 @@ defineExpose({
       </TabPane> -->
     </Tabs>
     <div v-show="assertionsParam.length || !props.viewType" class="mt-20">
-      <div class="border-b mb-3 text-3">{{ t('service.case.debugModal.assertTab')}}</div>
+      <div class="border-b mb-3 text-3">{{ t('service.case.debugModal.assertTab') }}</div>
       <ApiAssert
         :id="caseInfo.apisId"
         ref="assertRef"
@@ -1491,12 +1490,12 @@ defineExpose({
         <div class="flex items-center flex-nowrap whitespace-nowrap mr-7.5 text-3 leading-3 text-text-sub-content">
           <ResponseStatus :status="responseState?.status" @rendered="rendered('responseStatus')" />
           <div class="flex items-center flex-nowrap whitespace-nowrap mr-7.5">
-            <span class="mr-1">{{t('service.case.debugModal.duration')}}:</span>
+            <span class="mr-1">{{ t('service.case.debugModal.duration') }}:</span>
             <span class>{{ responseState?.performance?.duration && (responseState?.performance?.duration.toFixed(0)
               + 'ms') }}</span>
           </div>
           <div class="flex items-center flex-nowrap whitespace-nowrap">
-            <span class="mr-1">{{t('service.case.debugModal.respSize')}}:</span>
+            <span class="mr-1">{{ t('service.case.debugModal.respSize') }}:</span>
             <span class>{{ isNaN(Number(responseState?.size)) ? responseState?.size :
               apiUtils.formatBytes(Number(responseState?.size)) }}</span>
           </div>

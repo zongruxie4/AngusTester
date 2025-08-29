@@ -6,12 +6,12 @@ import { Colon, Icon, modal, NoData, notification, Spin } from '@xcan-angus/vue-
 import dayjs from 'dayjs';
 import { func } from '@/api/tester';
 
-const { t } = useI18n();
-
 import { BaselineInfo } from '../PropsType';
 
 import SearchPanel from '@/views/function/baseline/list/searchPanel/index.vue';
 import RichText from '@/components/richEditor/textContent/index.vue';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -284,15 +284,15 @@ const sortMenuItems: {
                 </div> -->
 
                 <div class="flex">
-                    <div
-                      class="text-theme-sub-content text-3 leading-4 flex items-center flex-none whitespace-nowrap mr-3.5">
-                      <Icon
-                        v-if="item.established"
-                        icon="icon-duihao-copy"
-                        class="mr-1" />
-                      <div>{{ item.established ? t('functionBaseline.list.established') : t('functionBaseline.list.notEstablished') }}</div>
-                    </div>
+                  <div
+                    class="text-theme-sub-content text-3 leading-4 flex items-center flex-none whitespace-nowrap mr-3.5">
+                    <Icon
+                      v-if="item.established"
+                      icon="icon-duihao-copy"
+                      class="mr-1" />
+                    <div>{{ item.established ? t('functionBaseline.list.established') : t('functionBaseline.list.notEstablished') }}</div>
                   </div>
+                </div>
               </div>
               <!-- <div class="px-3.5 flex mt-3 justify-end text-3 text-theme-sub-content">
                 <div class="ml-8 text-theme-content">共{{ item.caseNum || 0 }}条用例</div>
@@ -318,17 +318,17 @@ const sortMenuItems: {
                 </div>
 
                 <div class="flex ml-8 mt-3">
-                    <div
-                      class="truncate text-theme-content"
-                      style="max-width: 100px;"
-                      :title="item.lastModifiedByName">
-                      {{ item.lastModifiedByName }}
-                    </div>
-                    <div class="mx-2 whitespace-nowrap">{{ t('functionBaseline.list.modifiedBy') }}</div>
-                    <div class="whitespace-nowrap text-theme-content">
-                      {{ item.lastModifiedDate }}
-                    </div>
+                  <div
+                    class="truncate text-theme-content"
+                    style="max-width: 100px;"
+                    :title="item.lastModifiedByName">
+                    {{ item.lastModifiedByName }}
                   </div>
+                  <div class="mx-2 whitespace-nowrap">{{ t('functionBaseline.list.modifiedBy') }}</div>
+                  <div class="whitespace-nowrap text-theme-content">
+                    {{ item.lastModifiedDate }}
+                  </div>
+                </div>
               </div>
 
               <div class="px-3.5 flex justify-between items-end text-3 my-2.5 relative">

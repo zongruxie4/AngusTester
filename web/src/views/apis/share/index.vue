@@ -6,9 +6,9 @@ import { utils } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 import { IPane } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;

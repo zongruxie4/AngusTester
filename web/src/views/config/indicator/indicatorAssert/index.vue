@@ -10,7 +10,7 @@ import xpath from './utils/xpath';
 import regexp from './utils/regexp';
 import { Extraction } from './utils/extract/PropsType';
 import { FormItem } from './PropsType';
-import SelectEnum from '@/components/selectEnum/index.vue'
+import SelectEnum from '@/components/selectEnum/index.vue';
 
 interface Props {
   value: FormItem;

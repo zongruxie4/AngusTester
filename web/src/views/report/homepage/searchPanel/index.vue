@@ -7,9 +7,9 @@ import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { XCanDexie, TESTER, CombinedTargetType } from '@xcan-angus/infra';
 
-const { t } = useI18n();
-
 import { MenuItem } from './PropsType';
+
+const { t } = useI18n();
 
 type OrderByKey = 'createdDate' | 'createdByName';
 type OrderSortKey = 'ASC' | 'DESC';

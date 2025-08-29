@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { Modal, notification, IconText, TreeSelect } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
-import { useI18n } from 'vue-i18n'
+import { useI18n } from 'vue-i18n';
 import { apis } from '@/api/tester';
 import { TESTER } from '@xcan-angus/infra';
 

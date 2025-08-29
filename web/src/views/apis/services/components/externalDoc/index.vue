@@ -78,13 +78,13 @@ watch(() => props.data, newValue => {
         type="link"
         size="small"
         @click="saveDoc">
-        {{t('actions.save')}}
+        {{ t('actions.save') }}
       </Button>
       <Button
         type="link"
         size="small"
         @click="cancel">
-        {{t('actions.cancel')}}
+        {{ t('actions.cancel') }}
       </Button>
     </template>
   </div>

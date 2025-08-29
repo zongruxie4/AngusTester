@@ -3,9 +3,9 @@ import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { analysis } from '@/api/tester';
 
-const { t } = useI18n();
-
 import { ResourceInfo } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;

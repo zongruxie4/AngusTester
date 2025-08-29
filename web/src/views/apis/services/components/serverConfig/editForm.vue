@@ -571,10 +571,10 @@ const addServerBtnDisabled = computed(() => {
 
 defineExpose({
   getData: () => {
-          if (!isValid()) {
-        notification.error(t('service.serverConfig.messages.configError'));
-        return;
-      }
+    if (!isValid()) {
+      notification.error(t('service.serverConfig.messages.configError'));
+      return;
+    }
     const data = getData();
     return data;
   }

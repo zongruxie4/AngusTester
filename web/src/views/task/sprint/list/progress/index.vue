@@ -5,9 +5,9 @@ import { Image, Modal, Table } from '@xcan-angus/vue-ui';
 import { Progress } from 'ant-design-vue';
 import { analysis } from '@/api/tester';
 
-const { t } = useI18n();
-
 import { TableDataObj } from './PropsType';
+
+const { t } = useI18n();
 
 interface Props {
   visible: boolean;

@@ -92,8 +92,8 @@ const setException = () => {
     exception.value = {
       code: detail.value?.meterStatus || '',
       message: meterMessage,
-              codeName: t('reportPreview.execPerf.sampling.fields.samplingStatus'),
-        messageName: t('reportPreview.execPerf.sampling.fields.failureReason')
+      codeName: t('reportPreview.execPerf.sampling.fields.samplingStatus'),
+      messageName: t('reportPreview.execPerf.sampling.fields.failureReason')
     };
     return;
   }

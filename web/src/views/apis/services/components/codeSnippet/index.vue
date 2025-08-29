@@ -404,14 +404,14 @@ watch(() => props.id, async () => {
           size="small"
           class="text-left inline-block"
           @click="copyCode">
-          {{t('actions.copy')}}
+          {{ t('actions.copy') }}
         </Button>
         <Button
           type="link"
           size="small"
           class="text-left  inline-block"
           @click="refresh">
-          {{t('actions.refresh')}}
+          {{ t('actions.refresh') }}
         </Button>
       </div>
     </div>

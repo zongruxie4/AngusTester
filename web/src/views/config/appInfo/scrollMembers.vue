@@ -5,7 +5,7 @@ import { Button } from 'ant-design-vue';
 
 import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
-import {appContext, duration, GM} from '@xcan-angus/infra';
+import { appContext, duration, GM } from '@xcan-angus/infra';
 
 import { auth } from 'src/api/gm';
 import { Params, Policy, TableData } from './interface';

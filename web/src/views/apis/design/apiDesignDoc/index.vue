@@ -80,7 +80,7 @@ onMounted(async () => {
         <div slot="docTitle" class="flex justify-center items-center space-x-2 mb-3">
           <Tag color="green" class="text-3.5 rounded-full">{{ designInfo.openapiSpecVersion }}</Tag>
           <div class="text-5 font-medium">{{ designInfo.name }}</div>
-          <div>{{ designInfo.lastModifiedByName }}{{t('design.detail.modifyTip', {time: designInfo.lastModifiedDate})}}</div>
+          <div>{{ designInfo.lastModifiedByName }}{{ t('design.detail.modifyTip', {time: designInfo.lastModifiedDate}) }}</div>
           <div class="relative left-20 space-x-2">
             <Button
               type="primary"

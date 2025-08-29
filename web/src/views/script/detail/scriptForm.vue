@@ -5,10 +5,10 @@ import { Input } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
 
 import SelectEnum from '@/components/selectEnum/index.vue';
-
-const { t } = useI18n();
 import { ScriptInfo } from '../PropsType';
 import { FormState } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   dataSource: ScriptInfo;

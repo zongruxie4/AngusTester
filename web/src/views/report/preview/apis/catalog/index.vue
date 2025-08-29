@@ -16,27 +16,27 @@ const DashedLine = defineAsyncComponent(() => import('./dashedLine.vue'));
 
     <div class="space-y-3.5">
       <a href="#a1" class="flex items-center space-x-2.5">
-                 <span class="h1">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.apis.catalog.sections.apiInfo') }}</span>
+        <span class="h1">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.apis.catalog.sections.apiInfo') }}</span>
         <DashedLine />
       </a>
       <a href="#a2" class="flex items-center space-x-2.5">
-                 <span class="h1">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.apis.catalog.sections.apiTestSummary') }}</span>
+        <span class="h1">{{ t('reportPreview.serial.2') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.apis.catalog.sections.apiTestSummary') }}</span>
         <DashedLine />
       </a>
       <a href="#a3" class="flex items-center space-x-2.5">
-                 <span class="h1">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.apis.catalog.sections.apiTestDetail') }}</span>
+        <span class="h1">{{ t('reportPreview.serial.3') }}<em class="inline-block w-0.25 font-medium"></em>{{ t('reportPreview.apis.catalog.sections.apiTestDetail') }}</span>
         <DashedLine />
       </a>
       <a href="#a3.1" class="flex items-center space-x-2.5">
-                 <span>3.1<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.apis.catalog.sections.functionalTest') }}</span>
+        <span>3.1<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.apis.catalog.sections.functionalTest') }}</span>
         <DashedLine />
       </a>
       <a href="#a3.2" class="flex items-center space-x-2.5">
-                 <span>3.2<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.apis.catalog.sections.performanceTest') }}</span>
+        <span>3.2<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.apis.catalog.sections.performanceTest') }}</span>
         <DashedLine />
       </a>
       <a href="#a3.3" class="flex items-center space-x-2.5">
-                 <span>3.3<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.apis.catalog.sections.stabilityTest') }}</span>
+        <span>3.3<em class="inline-block w-4.25 font-medium"></em>{{ t('reportPreview.apis.catalog.sections.stabilityTest') }}</span>
         <DashedLine />
       </a>
     </div>
