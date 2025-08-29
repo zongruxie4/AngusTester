@@ -586,6 +586,36 @@ export enum ExampleDataType {
   REPORT = 'REPORT'
 }
 
+// CombinedTargetType Enums
+export enum CombinedTargetType {
+  PROJECT = 'PROJECT',
+  TAG = 'TAG',
+  MODULE = 'MODULE',
+  TASK = 'TASK',
+  TASK_SPRINT = 'TASK_SPRINT',
+  SOFTWARE_VERSION = 'SOFTWARE_VERSION',
+  TASK_ANALYSIS = 'TASK_ANALYSIS',
+  MEETING = 'MEETING',
+  FUNC_PLAN = 'FUNC_PLAN',
+  FUNC_REVIEW = 'FUNC_REVIEW',
+  FUNC_CASE = 'FUNC_CASE',
+  FUNC_CASE_BASELINE = 'FUNC_CASE_BASELINE',
+  FUNC_CASE_ANALYSIS = 'FUNC_CASE_ANALYSIS',
+  SERVICE = 'SERVICE',
+  API = 'API',
+  API_CASE = 'API_CASE',
+  API_DESIGN = 'API_DESIGN',
+  SCENARIO = 'SCENARIO',
+  SCENARIO_MONITOR = 'SCENARIO_MONITOR',
+  SCRIPT = 'SCRIPT',
+  VARIABLE = 'VARIABLE',
+  DATASET = 'DATASET',
+  MOCK_SERVICE = 'MOCK_SERVICE',
+  MOCK_APIS = 'MOCK_APIS',
+  EXECUTION = 'EXECUTION',
+  REPORT = 'REPORT'
+}
+
 export const enumNamespaceMap = new Map<any, string>([
   [NodeSource, 'xcm.enum.NodeSource'],
   [CountScriptType, 'xcm.enum.CountScriptType'],
@@ -654,5 +684,6 @@ export const enumNamespaceMap = new Map<any, string>([
   [ReportCategory, 'xcm.enum.ReportCategory'],
   [ReportTemplate, 'xcm.enum.ReportTemplate'],
   [ExampleDataType, 'xcm.enum.ExampleDataType'],
-  [AssociateTargetType, 'xcm.enum.AssociateTargetType']
+  [AssociateTargetType, 'xcm.enum.AssociateTargetType'],
+  [CombinedTargetType, 'xcm.enum.CombinedTargetType']
 ]);

@@ -496,6 +496,34 @@
       "AssociateTargetType": {
         "EXEC": "Execution",
         "REPORTER": "Report"
+      },
+      "CombinedTargetType": {
+        "PROJECT": "Project",
+        "TAG": "Tag",
+        "MODULE": "Module",
+        "TASK": "Task",
+        "TASK_SPRINT": "Sprint",
+        "SOFTWARE_VERSION": "Software Version",
+        "TASK_ANALYSIS": "Task Analysis",
+        "MEETING": "Meeting",
+        "FUNC_PLAN": "Test Plan",
+        "FUNC_REVIEW": "Case Review",
+        "FUNC_CASE": "Case",
+        "FUNC_CASE_BASELINE": "Baseline",
+        "FUNC_CASE_ANALYSIS": "Case Analysis",
+        "SERVICE": "Service",
+        "API": "Api",
+        "API_CASE": "Api Case",
+        "API_DESIGN": "Api Design",
+        "SCENARIO": "Scenario",
+        "SCENARIO_MONITOR": "Scenario Monitoring",
+        "SCRIPT": "Script",
+        "VARIABLE": "Variable",
+        "DATASET": "Dataset",
+        "MOCK_SERVICE": "Mock Service",
+        "MOCK_APIS": "Mock Apis",
+        "EXECUTION": "Execution",
+        "REPORT": "Report"
       }
     }
   }

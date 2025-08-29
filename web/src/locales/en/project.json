@@ -285,15 +285,7 @@
       "maxResourceActivities": "Each resource only saves the latest {maxResource} activities. Older entries are automatically removed."
     },
     "chart": {
-      "activity": "Activity",
-      "resourceType": "Resource Type",
-      "add": "Add",
-      "timeUnit": "Time Unit",
-      "total": "Total",
-      "today": "Today",
-      "last7Days": "Last 7 Days",
-      "last1Month": "Last Month",
-      "last1Year": "Last Year"
+      "resourceType": "Resource Type"
     },
     "searchPanel": {
       "dropdownMenu": {
