@@ -1,194 +1,115 @@
 <script setup lang='ts'>
-import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Hints, Image, Table } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
-import { duration, TESTER } from '@xcan-angus/infra';
-import DOMPurify from 'dompurify';
+import { duration } from '@xcan-angus/infra';
 
-import { activity } from '@/api/tester';
-import { setting } from '@/api/gm';
+import SearchPanel from '@/views/project/activity/searchPanel.vue';
+import Dashboard from '@/components/dashboard/Dashboard.vue';
 
-import SearchPanel from '@/views/project/activity/searchPanel/index.vue';
+import { useActivityData } from './composables/useActivityData';
+import { useTableColumns } from './composables/useTableColumns';
+import { useDashboardConfig } from './composables/useDashboardConfig';
+import type { SearchPanelChangeData } from './types';
 
-type FilterOp = 'EQUAL' | 'NOT_EQUAL' | 'GREATER_THAN' | 'GREATER_THAN_EQUAL' | 'LESS_THAN' | 'LESS_THAN_EQUAL' | 'CONTAIN' | 'NOT_CONTAIN' | 'MATCH_END' | 'MATCH' | 'IN' | 'NOT_IN'
-type Filters = { key: string, value: string | boolean | string[], op: FilterOp };
-type SearchParam = {
-    pageNo: number;
-    pageSize: number;
-    filters?: Filters[];
-    orderBy?: string;
-    orderSort?: 'ASC' | 'DESC';
-    [key: string]: any;
-};
-
-const Statistics = defineAsyncComponent(() => import('@/views/project/activity/countChart/index.vue'));
-
+// Internationalization
 const { t } = useI18n();
 
-interface Activity {
-    id: string
-    optDate: string
-    targetId: string
-    targetType: any
-    title: string,
-    fullName: string,
-    description: string,
-    detail: string,
-    details: string[],
-    avatar?: string
-}
+// Use composables
+const {
+  tableData,
+  loading,
+  maxResource,
+  pagination,
+  loadActivityList,
+  loadMaxResourceSetting,
+  handleTableChange,
+  updateSearchParams,
+  refreshAllData
+} = useActivityData();
 
+const { columns, defaultTableProps } = useTableColumns();
+const { dashboardConfig, dashboardConstants } = useDashboardConfig();
+
+// UI state
 const showCount = ref(true);
-const openCount = () => {
+
+/**
+ * Toggle statistics panel visibility
+ */
+const toggleCount = () => {
   showCount.value = !showCount.value;
 };
 
-const total = ref(0);
-const params = ref<SearchParam>({ pageNo: 1, pageSize: 10, filters: [] });
-const tableData = ref<Activity[]>([]);
-
-const loading = ref(false);
-const getList = async () => {
-  if (loading.value) {
-    return;
-  }
-  loading.value = true;
-  const [error, { data = { list: [], total: 0 } }] = await activity.getActivityList(params.value);
-  loading.value = false;
-  if (error) {
-    return;
-  }
-  tableData.value = data.list?.map(item => {
-    return {
-      ...item,
-      detail: DOMPurify.sanitize(item.detail)
-    };
-  });
-  total.value = +data.total;
+/**
+ * Handle search panel change events
+ *
+ * @param data - Search panel change data
+ */
+const handleSearchChange = (data: SearchPanelChangeData) => {
+  updateSearchParams(data);
 };
 
-const searchChange = (data:{filters: Filters[]}) => {
-  params.value.pageNo = 1;
-  params.value.filters = data.filters;
-  getList();
+/**
+ * Handle refresh events
+ */
+const handleRefresh = () => {
+  refreshAllData();
 };
 
-const maxResource = ref('0');
-const getMaxResourceActivities = async () => {
-  const [error, { data }] = await setting.getSettingByKey('MAX_RESOURCE_ACTIVITIES');
-  if (error) {
-    return;
+/**
+ * Debounced table change handler for better performance
+ */
+const debouncedTableChange = debounce(
+  duration.search,
+  (_pagination: any, _filters: any, sorter: any) => {
+    handleTableChange(_pagination, _filters, sorter);
   }
-  maxResource.value = data.maxResourceActivities;
-};
+);
 
-const tableChange = debounce(duration.search, (_pagination, _filters, sorter) => {
-  const { current, pageSize } = _pagination;
-  params.value.pageNo = current;
-  params.value.pageSize = pageSize;
-  params.value.orderBy = sorter.orderBy;
-  params.value.orderSort = sorter.orderSort;
-  getList();
-});
-
-const pagination = computed(() => {
-  return {
-    current: params.value.pageNo,
-    pageSize: params.value.pageSize,
-    total: total.value
-  };
-});
-
+// Initialize data on component mount
 onMounted(() => {
-  getList();
-  getMaxResourceActivities();
+  loadActivityList();
+  loadMaxResourceSetting();
 });
-
-const columns = [
-  {
-    title: t('projectActivity.table.operator'),
-    dataIndex: 'fullName',
-    width: '10%',
-    ellipsis: true
-  },
-  {
-    title: t('projectActivity.table.activityTime'),
-    dataIndex: 'optDate',
-    sorter: true,
-    width: '10%',
-    customCell: () => {
-      return { style: 'white-space:nowrap;' };
-    }
-  },
-  {
-    title: t('projectActivity.table.projectName'),
-    dataIndex: 'projectName',
-    groupName: 'project',
-    width: '15%',
-    ellipsis: true
-  },
-  {
-    title: t('projectActivity.table.projectId'),
-    dataIndex: 'projectId',
-    groupName: 'project',
-    hide: true,
-    width: '15%'
-  },
-  {
-    title: t('projectActivity.table.resourceType'),
-    dataIndex: 'targetType',
-    customRender: ({ text }) => text?.message,
-    width: '8%'
-  },
-  {
-    title: t('projectActivity.table.targetId'),
-    dataIndex: 'targetId',
-    width: '17%',
-    groupName: 'source',
-    hide: true,
-    customCell: () => {
-      return { style: 'white-space:nowrap;' };
-    }
-  },
-  {
-    title: t('projectActivity.table.targetName'),
-    dataIndex: 'targetName',
-    width: '17%',
-    ellipsis: true,
-    groupName: 'source'
-  },
-  {
-    title: t('projectActivity.table.activityContent'),
-    width: '40%',
-    dataIndex: 'detail'
-  }
-];
-
-// const searchParams = computed(() => params.value.filters);
 </script>
+
 <template>
   <div class="p-3.5 px-5 text-3">
-    <Statistics
-      :visible="showCount"
-      :barTitle="t('projectActivity.chart.activity')"
-      resource="Activity"
-      :apiRouter="TESTER" />
+    <!-- Statistics dashboard panel -->
+    <div v-if="showCount" class="mb-4">
+      <Dashboard
+        :config="dashboardConfig"
+        :apiRouter="dashboardConstants.apiRouter"
+        :resource="dashboardConstants.resource"
+        :barTitle="dashboardConstants.barTitle"
+        :dateType="dashboardConstants.dateType"
+        :showChartParam="dashboardConstants.showChartParam" />
+    </div>
+
+    <!-- Max resource hint -->
     <Hints class="mb-2" :text="t('projectActivity.hints.maxResourceActivities', { maxResource })" />
+
+    <!-- Search panel component -->
     <SearchPanel
       :loading="loading"
       :showCount="showCount"
-      @openCount="openCount"
-      @change="searchChange"
-      @refresh="getList" />
+      @openCount="toggleCount"
+      @change="handleSearchChange"
+      @refresh="handleRefresh" />
+
+    <!-- Activity table -->
     <Table
-      rowKey="id"
+      v-bind="defaultTableProps"
       :loading="loading"
       :columns="columns"
       :dataSource="tableData"
       :pagination="pagination"
-      @change="tableChange">
+      :noDataText="t('common.noData')"
+      @change="debouncedTableChange">
       <template #bodyCell="{ column, text, record }">
+        <!-- Operator column with avatar -->
         <template v-if="column.dataIndex === 'fullName'">
           <div class="flex items-center">
             <Image
@@ -198,6 +119,8 @@ const columns = [
             {{ text }}
           </div>
         </template>
+
+        <!-- Activity detail column with HTML content -->
         <template v-if="column.dataIndex === 'detail'">
           <div
             class="w-full truncate cursor-pointer"
