@@ -6,8 +6,11 @@ import { LegendComponent, LegendComponentOption, TooltipComponent, TooltipCompon
 import { PieChart, PieSeriesOption } from 'echarts/charts';
 import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
+import { useI18n } from 'vue-i18n';
 
 import { ResourceInfo } from '../../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   dataSource: ResourceInfo;
@@ -108,12 +111,12 @@ onMounted(() => {
 
     // 重置数据
     echartOption.series![0].data = [];
-    echartOption.series?.[0].data.push({ name: '故事', value: +newValue.storyNum });
-    echartOption.series?.[0].data.push({ name: '任务', value: +newValue.taskNum });
-    echartOption.series?.[0].data.push({ name: '缺陷', value: +newValue.bugNum });
-    echartOption.series?.[0].data.push({ name: '需求', value: +newValue.requirementNum });
-    echartOption.series?.[0].data.push({ name: '接口测试', value: +newValue.apiTestNum });
-    echartOption.series?.[0].data.push({ name: '场景测试', value: +newValue.scenarioTestNum });
+    echartOption.series?.[0].data.push({ name: t('task.list.statistics.typeColumns.story'), value: +newValue.storyNum });
+    echartOption.series?.[0].data.push({ name: t('task.list.statistics.typeColumns.task'), value: +newValue.taskNum });
+    echartOption.series?.[0].data.push({ name: t('task.list.statistics.typeColumns.bug'), value: +newValue.bugNum });
+    echartOption.series?.[0].data.push({ name: t('task.list.statistics.typeColumns.requirement'), value: +newValue.requirementNum });
+    echartOption.series?.[0].data.push({ name: t('task.list.statistics.typeColumns.apiTest'), value: +newValue.apiTestNum });
+    echartOption.series?.[0].data.push({ name: t('task.list.statistics.typeColumns.scenarioTest'), value: +newValue.scenarioTestNum });
 
     renderChart();
   }, { immediate: true });
@@ -135,7 +138,7 @@ onMounted(() => {
       ref="containerRef"
       class="h-34"></div>
     <div class="mark-container">
-      <div class="text-center">任务类型</div>
+      <div class="text-center">{{ t('task.list.statistics.taskType') }}</div>
       <div class="text-3.5 text-center font-semibold">{{ props.dataSource?.totalTaskTypeNum }}</div>
     </div>
   </div>

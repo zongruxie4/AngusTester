@@ -1,5 +1,8 @@
 <script lang="ts" setup>
+import { useI18n } from 'vue-i18n';
 import { Grid } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 interface Props {
   caseInfo?: {[key: string]: any}
@@ -11,23 +14,23 @@ const props = withDefaults(defineProps<Props>(), {
 const peopleInfoColumns = [
   [
     {
-      label: '测试人',
+      label: t('caseReview.comp.member.tester'),
       dataIndex: 'testerName'
     },
     {
-      label: '开发人',
+      label: t('caseReview.comp.member.developer'),
       dataIndex: 'developerName'
     },
     {
-      label: '评审人',
+      label: t('caseReview.comp.member.reviewer'),
       dataIndex: 'reviewerName'
     },
     {
-      label: '添加人',
+      label: t('caseReview.comp.member.creator'),
       dataIndex: 'createdByName'
     },
     {
-      label: '最后修改人',
+      label: t('caseReview.comp.member.lastModifier'),
       dataIndex: 'lastModifiedByName'
     }]
 ];
@@ -36,7 +39,7 @@ const peopleInfoColumns = [
 <template>
   <div class="space-y-3">
     <div class="font-semibold text-3.5">
-      人员信息
+      {{ t('caseReview.comp.member.title') }}
     </div>
     <Grid
       :columns="peopleInfoColumns"

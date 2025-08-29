@@ -494,7 +494,7 @@ const onePassText = computed(() => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ evalWorkloadMethod === 'STORY_POINT' ? '评估故事点' : '评估工时' }}</span>
+              <span>{{ evalWorkloadMethod === 'STORY_POINT' ? t('task.detailInfo.basic.columns.evalWorkload') : t('task.detailInfo.basic.columns.evalWorkloadHours') }}</span>
               <Colon class="w-1" />
             </div>
 

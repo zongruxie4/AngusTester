@@ -130,7 +130,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: '/apis#mock',
-        component: () => import('@/views/mock/index.vue')
+        component: () => import('@/views/apis/mock/index.vue')
       },
       {
         path: '/mockservice/add',

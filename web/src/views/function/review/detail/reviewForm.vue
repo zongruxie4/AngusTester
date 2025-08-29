@@ -43,7 +43,7 @@ const onFinish = async () => {
   if (error) {
     return;
   }
-  notification.success('评审成功');
+  notification.success(t('caseReview.detail.reviewSuccess'));
   emits('update');
 };
 
@@ -63,16 +63,16 @@ const changeFailMessage = (value) => {
 };
 
 const failMessage = [
-  '用例名表述不够简短达意',
-  '用例设计和需求不一致，测试无效',
-  '缺少必要的前提条件，可能导致无法正常执行',
-  '用例步骤准确度和正确性不足，无法准确执行和验证',
-  '用例描述不够清晰，存在二义性或模糊性',
-  '用例没有覆盖所有的功能点和场景，存在遗漏',
-  '用例测试边界定义不够清晰',
-  '优先级安排不合理，可能影响测试的效率和效果',
-  '与其他用例之间的逻辑关系不一致性或存在冲突',
-  '其他'
+  t('caseReview.detail.failReasons.caseNameNotClear'),
+  t('caseReview.detail.failReasons.caseDesignInconsistent'),
+  t('caseReview.detail.failReasons.missingPrerequisites'),
+  t('caseReview.detail.failReasons.stepAccuracyInsufficient'),
+  t('caseReview.detail.failReasons.descriptionUnclear'),
+  t('caseReview.detail.failReasons.incompleteCoverage'),
+  t('caseReview.detail.failReasons.boundaryUnclear'),
+  t('caseReview.detail.failReasons.priorityUnreasonable'),
+  t('caseReview.detail.failReasons.logicInconsistent'),
+  t('caseReview.detail.failReasons.other')
 ];
 const failOpt = failMessage.map((i, idx) => ({ label: i, value: idx + 1 === failMessage.length ? 'other' : idx }));
 
@@ -89,7 +89,7 @@ onMounted(() => {
     @finish="onFinish">
     <FormItem
       name="reviewStatus"
-      label="评审结果"
+      :label="t('caseReview.detail.reviewResult')"
       class="mb-1">
       <RadioGroup
         v-model:value="formState.reviewStatus"
@@ -104,13 +104,13 @@ onMounted(() => {
     </FormItem>
     <FormItem
       name="reviewRemark"
-      label="评审意见">
+      :label="t('caseReview.detail.reviewOpinion')">
       <Select
         v-show="formState.reviewStatus === 'FAILED'"
         v-model:value="failMessageValue"
         :options="failOpt"
         class="w-100"
-        placeholder="选择不通过原因"
+        :placeholder="t('caseReview.detail.selectFailReason')"
         @change="changeFailMessage" />
       <Input
         v-show="formState.reviewStatus !== 'FAILED' || failMessageValue === 'other'"
@@ -120,7 +120,7 @@ onMounted(() => {
         class="mt-1"
         :autoSize="{ minRows: 6, maxRows: 6}"
         :maxlength="200"
-        :placeholder="t('输入评审意见，最多可输入200字符')" />
+        :placeholder="t('caseReview.detail.enterReviewOpinion')" />
     </FormItem>
     <FormItem class="mt-5">
       <div class="flex justify-end">
@@ -130,7 +130,7 @@ onMounted(() => {
           size="small"
           htmlType="submit"
           class="px-3">
-          提交
+          {{ t('caseReview.detail.submit') }}
         </Button>
       </div>
     </FormItem>

@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { inject, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Switch } from 'ant-design-vue';
 import { Composite, Icon, IconRequired, Input, notification, Validate } from '@xcan-angus/vue-ui';
 import { regexpUtils, utils, axiosClient } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 import SelectEnum from '@/components/selectEnum/index.vue';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
@@ -71,7 +74,7 @@ const validateUrl = (value:string|undefined):boolean => {
 
   if (!regexpUtils.isUrl(value)) {
     urlError.value = true;
-    urlErrorMessage.value = '回推地址格式错误';
+    urlErrorMessage.value = t('mock.mockApisComp.contentForm.pushBack.urlFormatError');
     return false;
   }
 
@@ -158,7 +161,7 @@ const sendRequest = async () => {
     });
     WS.value.send(api);
   } else if (WS.value && WS.value.readyState !== 1) {
-    notification.error('代理未链接， 请检查代理配置');
+    notification.error(t('mock.mockApisComp.contentForm.pushBack.proxyNotConnected'));
   } else {
     const header: Record<string, string> = {};
     if (headerData.length) {
@@ -207,7 +210,7 @@ const sendRequest = async () => {
 const onHttpResponse = async (resp) => {
   const status = resp.request?.status;
   if (status === undefined) {
-    notification.warning('请求错误');
+    notification.warning(t('mock.mockApisComp.contentForm.pushBack.requestError'));
     return;
   }
   if (status === 0) {
@@ -349,7 +352,7 @@ const optionStyle = {
   <div class="leading-5">
     <div class="flex items-center justify-between">
       <div class="flex items-center">
-        <div class="mr-1.5">请求触发后自动推送</div>
+        <div class="mr-1.5">{{ t('mock.mockApisComp.contentForm.pushBack.autoPushAfterRequest') }}</div>
         <Switch v-model:checked="autoPush" size="small" />
       </div>
       <Button
@@ -372,7 +375,7 @@ const optionStyle = {
           :optionStyle="optionStyle"
           class="w-25 flex-shrink-0"
           enumKey="HttpMethod"
-          placeholder="请求方法"
+          :placeholder="t('mock.mockApisComp.contentForm.pushBack.requestMethod')"
           @change="httpMethodChange" />
         <Validate
           fixed
@@ -383,7 +386,7 @@ const optionStyle = {
             :error="urlError"
             :maxlength="800"
             trim
-            placeholder="最大支持800个字符"
+            :placeholder="t('mock.mockApisComp.contentForm.pushBack.maxLengthPlaceholder')"
             @change="urlChange" />
         </Validate>
       </Composite>

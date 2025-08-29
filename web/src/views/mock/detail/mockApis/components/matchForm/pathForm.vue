@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Composite, Icon, Input, notification, Popover } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 import SelectEnum from '@/components/selectEnum/index.vue';
 import { StringCondition } from './PropsType';
@@ -68,7 +71,7 @@ onMounted(() => {
 
 const add = () => {
   if (idList.value.length) {
-    notification.info('只能添加一个路径');
+    notification.info(t('mock.mockApisComp.matchForm.pathForm.notifications.onlyOnePath'));
     return;
   }
 
@@ -141,23 +144,23 @@ const excludes = ({ value }: { value: StringCondition }) => {
 
 const placeholderMap = {
   REG_MATCH: '正则表达式',
-  EQUAL: '以斜杠 / 开始；路径段之间使用斜杠 / 分隔，且不包含特殊字符（如?、#等）',
-  NOT_EQUAL: '以斜杠 / 开始；路径段之间使用斜杠 / 分隔，且不包含特殊字符（如?、#等）',
-  CONTAIN: '以斜杠 / 开始；路径段之间使用斜杠 / 分隔，且不包含特殊字符（如?、#等）',
-  NOT_CONTAIN: '以斜杠 / 开始；路径段之间使用斜杠 / 分隔，且不包含特殊字符（如?、#等）'
+  EQUAL: t('mock.mockApisComp.matchForm.pathForm.descriptions.equal'),
+  NOT_EQUAL: t('mock.mockApisComp.matchForm.pathForm.descriptions.notEqual'),
+  CONTAIN: t('mock.mockApisComp.matchForm.pathForm.descriptions.contain'),
+  NOT_CONTAIN: t('mock.mockApisComp.matchForm.pathForm.descriptions.notContain')
 };
 </script>
 <template>
   <div v-if="idList.length" class="leading-5">
     <div class="flex items-center">
-      <span class="mr-1 mb-0.5">路径</span>
+      <span class="mr-1 mb-0.5">{{ t('mock.mockApisComp.matchForm.pathForm.path') }}</span>
       <Popover destroyTooltipOnHide>
         <template #content>
           <ul style="max-width: 520px;" class="pl-4 list-disc whitespace-pre-line break-all space-y-1">
-            <li>路径以斜杠 / 开始，表示根路径。</li>
-            <li>路径由多个路径段组成，路径段之间使用斜杠 / 分隔。</li>
-            <li>每个路径段可以是字母、数字、减号、下划线等字符组成，且不包含特殊字符（如?、#等）。</li>
-            <li>路径段不可以为空字符串。</li>
+            <li>{{ t('mock.mockApisComp.matchForm.pathForm.rules.rootPath') }}</li>
+            <li>{{ t('mock.mockApisComp.matchForm.pathForm.rules.pathSegments') }}</li>
+            <li>{{ t('mock.mockApisComp.matchForm.pathForm.rules.segmentChars') }}</li>
+            <li>{{ t('mock.mockApisComp.matchForm.pathForm.rules.segmentNotEmpty') }}</li>
           </ul>
         </template>
         <Icon icon="icon-shuoming" class="text-tips cursor-pointer text-3.5" />
@@ -170,7 +173,7 @@ const placeholderMap = {
           :excludes="excludes"
           enumKey="FullMatchCondition"
           class="w-48"
-          placeholder="运算条件" />
+          :placeholder="t('mock.mockApisComp.matchForm.pathForm.operationCondition')" />
         <Input
           v-model:value="inputValue"
           :maxlength="4096"

@@ -4,8 +4,11 @@ import { Button, Progress, TabPane, Tabs } from 'ant-design-vue';
 import { Colon, Icon, Image, notification, Spin, Table } from '@xcan-angus/vue-ui';
 import { TESTER, toClipboard, download } from '@xcan-angus/infra';
 import { funcPlan } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
 
 import { PlanInfo } from '../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -135,9 +138,9 @@ const toExport = async () => {
 const toCopyHref = () => {
   const message = window.location.origin + '/function#plans?id=' + planId.value;
   toClipboard(message).then(() => {
-    notification.success('复制成功');
+    notification.success(t('tips.copySuccess'));
   }).catch(() => {
-    notification.error('复制失败');
+    notification.error(t('functionPlan.planDetail.notifications.copyFailed'));
   });
 };
 
@@ -184,14 +187,16 @@ const columns = [
   //   ellipsis: true
   // },
   {
+    key: 'name',
     dataIndex: 'name',
-    title: '姓名',
+    title: t('functionPlan.planDetail.table.name'),
     width: '25%',
     ellipsis: true
   },
   {
+    key: 'content',
     dataIndex: 'content',
-    title: '工作职责',
+    title: t('functionPlan.planDetail.table.workResponsibilities'),
     ellipsis: true
   }
 ];
@@ -208,7 +213,7 @@ const columns = [
           class="flex items-center space-x-1 leading-6.5 px-1.75"
           :to="`/function#plans?id=${planId}&type=edit`">
           <Icon icon="icon-shuxie" class="text-3.5" />
-          <span>编辑</span>
+          <span>{{ t('functionPlan.planDetail.buttons.edit') }}</span>
         </RouterLink>
       </Button>
 
@@ -219,7 +224,7 @@ const columns = [
         class="flex items-center space-x-1"
         @click="goCase">
         <Icon icon="icon-ceshiyongli1" class="text-3.5" />
-        <span>查看用例</span>
+        <span>{{ t('functionPlan.planDetail.buttons.viewCases') }}</span>
       </Button>
 
       <!-- <Button
@@ -241,7 +246,7 @@ const columns = [
         class="flex items-center space-x-1"
         @click="toExport">
         <Icon icon="icon-daochu" class="text-3.5" />
-        <span>导出用例</span>
+        <span>{{ t('functionPlan.planDetail.buttons.exportCases') }}</span>
       </Button>
 
       <Button
@@ -249,7 +254,7 @@ const columns = [
         class="flex items-center"
         @click="toCopyHref">
         <Icon class="mr-1 flex-shrink-0" icon="icon-fuzhi" />
-        <span>复制链接</span>
+        <span>{{ t('functionPlan.planDetail.buttons.copyLink') }}</span>
       </Button>
 
       <Button
@@ -258,17 +263,17 @@ const columns = [
         class="flex items-center"
         @click="toRefresh">
         <Icon class="mr-1 flex-shrink-0" icon="icon-shuaxin" />
-        <span>刷新</span>
+        <span>{{ t('functionPlan.planDetail.buttons.refresh') }}</span>
       </Button>
     </div>
 
     <div class="max-w-250 mb-2">
-      <div class="text-theme-title mb-2">基本信息</div>
+      <div class="text-theme-title mb-2">{{ t('functionPlan.planDetail.basicInfo.title') }}</div>
       <div class="space-y-2.5">
         <div class="flex items-start space-x-5">
           <div class="w-1/2 flex items-start">
             <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>计划名称</span>
+              <span>{{ t('functionPlan.planDetail.basicInfo.planName') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -277,13 +282,13 @@ const columns = [
 
           <div class="w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>时间计划</span>
+              <span>{{ t('functionPlan.planDetail.basicInfo.timePlan') }}</span>
               <Colon class="w-1" />
             </div>
 
             <div class="text-3 whitespace-nowrap">
               <span>{{ dataSource?.startDate }}</span>
-              <span class="mx-2">至</span>
+              <span class="mx-2">{{ t('functionPlan.planDetail.basicInfo.to') }}</span>
               <span>{{ dataSource?.deadlineDate }}</span>
             </div>
           </div>
@@ -292,7 +297,7 @@ const columns = [
         <div class="flex items-start space-x-5">
           <div class="w-1/2 flex items-start">
             <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>负责人</span>
+              <span>{{ t('functionPlan.planDetail.basicInfo.owner') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -301,7 +306,7 @@ const columns = [
 
           <div class="w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>用例前缀</span>
+              <span>{{ t('functionPlan.planDetail.basicInfo.casePrefix') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -312,7 +317,7 @@ const columns = [
         <div class="flex items-start space-x-5">
           <div class="w-1/2 flex items-center">
             <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>是否评审</span>
+              <span>{{ t('functionPlan.planDetail.basicInfo.isReview') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -323,7 +328,7 @@ const columns = [
 
           <div class="w-1/2 flex items-center">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>工作量评估</span>
+              <span>{{ t('functionPlan.planDetail.basicInfo.workloadAssessment') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -336,7 +341,7 @@ const columns = [
         <div class="flex items-start space-x-5">
           <div class="w-1/2 flex items-center">
             <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>状态</span>
+              <span>{{ t('functionPlan.planDetail.basicInfo.status') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -349,7 +354,7 @@ const columns = [
 
           <div class="w-1/2 flex items-center">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>进度</span>
+              <span>{{ t('functionPlan.planDetail.basicInfo.progress') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -360,7 +365,7 @@ const columns = [
         <div class="flex items-start">
           <div style="width:calc(50% - 10px);" class="flex items-start">
             <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>附件</span>
+              <span>{{ t('functionPlan.planDetail.basicInfo.attachments') }}</span>
               <Colon class="w-1" />
             </div>
 
@@ -380,7 +385,7 @@ const columns = [
     </div>
 
     <Tabs size="small" class="max-w-250">
-      <TabPane key="testerResponsibilities" tab="测试人员">
+      <TabPane key="testerResponsibilities" :tab="t('functionPlan.planDetail.tabs.testers')">
         <Table
           :columns="columns"
           :dataSource="testerResponsibilities"
@@ -398,7 +403,7 @@ const columns = [
           </template>
         </Table>
       </TabPane>
-      <TabPane key="testingObjectives" tab="测试目标">
+      <TabPane key="testingObjectives" :tab="t('functionPlan.planDetail.tabs.testingObjectives')">
         <div class="space-y-1 whitespace-pre-wrap break-words break-all">
           <!-- {{ dataSource?.testingObjectives }} -->
           <RichEditor
@@ -407,7 +412,7 @@ const columns = [
             mode="view" />
         </div>
       </TabPane>
-      <TabPane key="testingScope" tab="测试范围">
+      <TabPane key="testingScope" :tab="t('functionPlan.planDetail.tabs.testingScope')">
         <div class="space-y-1 whitespace-pre-wrap break-words break-all">
           <!-- {{ dataSource?.testingScope }} -->
           <RichEditor
@@ -416,7 +421,7 @@ const columns = [
             mode="view" />
         </div>
       </TabPane>
-      <TabPane key="acceptanceCriteria" tab="验收标准">
+      <TabPane key="acceptanceCriteria" :tab="t('functionPlan.planDetail.tabs.acceptanceCriteria')">
         <div class="space-y-1 whitespace-pre-wrap break-words break-all">
           <!-- {{ dataSource?.acceptanceCriteria }} -->
           <RichEditor
@@ -425,7 +430,7 @@ const columns = [
             mode="view" />
         </div>
       </TabPane>
-      <TabPane key="otherInformation" tab="其他说明">
+      <TabPane key="otherInformation" :tab="t('functionPlan.planDetail.tabs.otherInformation')">
         <div class="space-y-1 whitespace-pre-wrap break-words break-all">
           <RichEditor
             v-if="dataSource?.otherInformation"
@@ -433,13 +438,13 @@ const columns = [
             mode="view" />
         </div>
       </TabPane>
-      <TabPane key="chart" tab="燃尽图">
+      <TabPane key="chart" :tab="t('functionPlan.planDetail.tabs.burnDownChart')">
         <BurnDownChart :planId="planId" />
       </TabPane>
-      <TabPane key="progress" tab="成员进度">
+      <TabPane key="progress" :tab="t('functionPlan.planDetail.tabs.memberProgress')">
         <MemberProgress :planId="planId" :projectId="props.projectId" />
       </TabPane>
-      <TabPane key="workCalendar" tab="工作日历">
+      <TabPane key="workCalendar" :tab="t('functionPlan.planDetail.tabs.workCalendar')">
         <WorkCalendar
           :projectId="props.projectId"
           :userInfo="props.userInfo"

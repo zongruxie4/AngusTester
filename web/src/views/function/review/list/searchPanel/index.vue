@@ -5,6 +5,7 @@ import { EnumMessage, enumUtils, appContext } from '@xcan-angus/infra';
 import { FuncPlanStatus } from '@/enums/enums';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
   loading: boolean;
@@ -13,6 +14,8 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   loading: false
 });
+
+const { t } = useI18n();
 
 type OrderByKey = string;
 type OrderSortKey = 'ASC' | 'DESC';
@@ -38,7 +41,7 @@ const searchPanelOptions = [
   {
     valueKey: 'name',
     type: 'input',
-    placeholder: '查询评审名称、描述',
+    placeholder: t('caseReview.list.searchReviewNameDescription'),
     allowClear: true,
     maxlength: 100
   },
@@ -53,7 +56,7 @@ const searchPanelOptions = [
     valueKey: 'ownerId',
     type: 'select-user',
     allowClear: true,
-    placeholder: '选择负责人',
+    placeholder: t('caseReview.list.selectOwner'),
     maxlength: 100
   },
   {
@@ -61,7 +64,7 @@ const searchPanelOptions = [
     type: 'date',
     valueType: 'start',
     op: 'GREATER_THAN_EQUAL',
-    placeholder: '评审开始时间大于等于',
+    placeholder: t('caseReview.list.reviewStartTimeGreaterEqual'),
     showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', 'HH:mm:ss') },
     allowClear: true
   },
@@ -70,7 +73,7 @@ const searchPanelOptions = [
     type: 'date',
     valueType: 'start',
     op: 'LESS_THAN_EQUAL',
-    placeholder: '评审截止时间小于等于',
+    placeholder: t('caseReview.list.reviewDeadlineTimeLessEqual'),
     showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', 'HH:mm:ss') },
     allowClear: true
   }
@@ -82,22 +85,22 @@ const sortMenuItems: {
   orderSort: OrderSortKey;
 }[] = [
   {
-    name: '按名称',
+    name: t('caseReview.list.sortByName'),
     key: 'name',
     orderSort: 'DESC'
   },
   {
-    name: '按负责人',
+    name: t('caseReview.list.sortByOwner'),
     key: 'ownerId',
     orderSort: 'ASC'
   },
   {
-    name: '按添加人',
+    name: t('caseReview.list.sortByAddPerson'),
     key: 'createdBy',
     orderSort: 'ASC'
   },
   {
-    name: '按添加时间',
+    name: t('caseReview.list.sortByAddTime'),
     key: 'createdDate',
     orderSort: 'ASC'
   }
@@ -106,32 +109,32 @@ const sortMenuItems: {
 const menuItems = computed(() => [
   {
     key: '',
-    name: '全部'
+    name: t('caseReview.list.all')
   },
   {
     key: 'ownerId',
-    name: '我负责的'
+    name: t('caseReview.list.myResponsible')
   },
   {
     key: 'createdBy',
-    name: '我创建的'
+    name: t('caseReview.list.myCreated')
   },
   {
     key: 'lastModifiedBy',
-    name: '我修改的'
+    name: t('caseReview.list.myModified')
   },
   ...planStatusTypeOpt.value,
   {
     key: 'lastDay',
-    name: '近1天'
+    name: t('caseReview.list.lastDay')
   },
   {
     key: 'lastThreeDays',
-    name: '近3天'
+    name: t('caseReview.list.lastThreeDays')
   },
   {
     key: 'lastWeek',
-    name: '近7天'
+    name: t('caseReview.list.lastWeek')
   }
 ]);
 
@@ -307,7 +310,7 @@ onMounted(() => {
   <div class="mt-2.5 mb-3.5">
     <div class="flex">
       <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-        <span>快速查询</span>
+        <span>{{ t('caseReview.list.quickQuery') }}</span>
         <Colon />
       </div>
       <div class="flex  flex-wrap ml-2">
@@ -335,7 +338,7 @@ onMounted(() => {
           class="p-0">
           <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/function#reviews?type=ADD`">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span>添加评审</span>
+            <span>{{ t('caseReview.list.addReview') }}</span>
           </RouterLink>
         </Button>
 
@@ -346,7 +349,7 @@ onMounted(() => {
           @click="toSort">
           <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
             <Icon icon="icon-shunxu" class="text-3.5" />
-            <span>排序</span>
+            <span>{{ t('caseReview.list.sort') }}</span>
           </div>
         </DropdownSort>
 
@@ -357,7 +360,7 @@ onMounted(() => {
           <template #default>
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-shuaxin" class="text-3.5" />
-              <span class="ml-1">刷新</span>
+              <span class="ml-1">{{ t('caseReview.list.refresh') }}</span>
             </div>
           </template>
         </IconRefresh>

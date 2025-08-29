@@ -208,7 +208,7 @@ const toStart = async () => {
   }
 
   emit('refreshChange');
-  notification.success('任务开始处理成功');
+  notification.success(t('task.messages.startSuccess'));
   const detailData = await loadData();
   emitDataChange(detailData);
 };
@@ -225,7 +225,7 @@ const toProcessed = async () => {
   }
 
   emit('refreshChange');
-  notification.success('任务已处理成功');
+  notification.success(t('task.table.messages.processedSuccess'));
   const detailData = await loadData();
   emitDataChange(detailData);
 };
@@ -274,7 +274,7 @@ const toReopen = async () => {
   }
 
   emit('refreshChange');
-  notification.success('任务重新打开成功');
+  notification.success(t('task.table.messages.reopenSuccess'));
   const detailData = await loadData();
   emitDataChange(detailData);
 };
@@ -291,7 +291,7 @@ const toRestart = async () => {
   }
 
   emit('refreshChange');
-  notification.success('任务重新开始成功');
+  notification.success(t('task.table.messages.restartSuccess'));
   const detailData = await loadData();
   emitDataChange(detailData);
 };
@@ -308,7 +308,7 @@ const toCancel = async () => {
   }
 
   emit('refreshChange');
-  notification.success('任务取消成功');
+  notification.success(t('task.table.messages.cancelSuccess'));
   const detailData = await loadData();
   emitDataChange(detailData);
 };
@@ -618,21 +618,21 @@ const menuItemsMap = computed(() => {
 
     const menuItems: ActionMenuItem[] = [
       {
-        name: '编辑',
+        name: t('actions.edit'),
         key: 'edit',
         icon: 'icon-shuxie',
         disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
         hide: true
       },
       {
-        name: '删除',
+        name: t('actions.delete'),
         key: 'delete',
         icon: 'icon-qingchu',
         disabled: !isAdministrator && !permissions.includes('DELETE_TASK') && sprintAuth,
         hide: true
       },
       {
-        name: '拆分',
+        name: t('task.detail.actions.split'),
         key: 'split',
         icon: 'icon-guanlianziyuan',
         disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
@@ -642,7 +642,7 @@ const menuItemsMap = computed(() => {
 
     if (status === 'PENDING') {
       menuItems.push({
-        name: '开始处理',
+        name: t('task.actions.start'),
         key: 'start',
         icon: 'icon-kaishi',
         disabled: !isAdministrator && !isAssignee,
@@ -652,7 +652,7 @@ const menuItemsMap = computed(() => {
 
     if (status === 'IN_PROGRESS') {
       menuItems.push({
-        name: '已处理',
+        name: t('task.actions.complete'),
         key: 'processed',
         icon: 'icon-yichuli',
         disabled: !isAdministrator && !isAssignee,
@@ -662,7 +662,7 @@ const menuItemsMap = computed(() => {
 
     if (status === 'CONFIRMING') {
       menuItems.push({
-        name: '确认完成',
+        name: t('task.actions.confirmComplete'),
         key: 'completed',
         icon: 'icon-yiwancheng',
         disabled: !isAdministrator && !isConfirmor,
@@ -670,7 +670,7 @@ const menuItemsMap = computed(() => {
       });
 
       menuItems.push({
-        name: '确认未完成',
+        name: t('task.actions.confirmIncomplete'),
         key: 'uncompleted',
         icon: 'icon-shibaiyuanyin',
         disabled: !isAdministrator && !isConfirmor,
@@ -680,27 +680,27 @@ const menuItemsMap = computed(() => {
 
     if (status === 'CANCELED' || status === 'COMPLETED') {
       menuItems.push({
-        name: '重新打开',
+        name: t('task.actions.reopen'),
         key: 'reopen',
         icon: 'icon-zhongxindakaiceshirenwu',
         disabled: !isAdministrator && !permissions.includes('REOPEN_TASK') && !isAssignee,
         hide: false,
-        tip: '将任务状态更新为`待处理`、 不清理统计计数和状态。'
+        tip: t('task.tips.reopenTip')
       });
 
       menuItems.push({
-        name: '重新开始',
+        name: t('task.actions.restart'),
         key: 'restart',
         icon: 'icon-zhongxinkaishiceshi',
         disabled: !isAdministrator && !permissions.includes('RESTART_TASK'),
         hide: false,
-        tip: '将任务更新为`待处理`，相关统计计数和状态会被清除。'
+        tip: t('task.tips.restartTip')
       });
     }
 
     if (status !== 'CANCELED' && status !== 'COMPLETED') {
       menuItems.push({
-        name: '取消',
+        name: t('actions.cancel'),
         key: 'cancel',
         icon: 'icon-zhongzhi2',
         disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
@@ -710,7 +710,7 @@ const menuItemsMap = computed(() => {
 
     if (favouriteFlag) {
       menuItems.push({
-        name: '取消收藏',
+        name: t('task.actions.unfavorite'),
         key: 'cancelFavourite',
         icon: 'icon-quxiaoshoucang',
         disabled: false,
@@ -718,7 +718,7 @@ const menuItemsMap = computed(() => {
       });
     } else {
       menuItems.push({
-        name: '收藏',
+        name: t('task.actions.favorite'),
         key: 'favourite',
         icon: 'icon-yishoucang',
         disabled: false,
@@ -728,7 +728,7 @@ const menuItemsMap = computed(() => {
 
     if (followFlag) {
       menuItems.push({
-        name: '取消关注',
+        name: t('task.actions.unfollow'),
         key: 'cancelFollow',
         icon: 'icon-quxiaoguanzhu',
         disabled: false,
@@ -736,7 +736,7 @@ const menuItemsMap = computed(() => {
       });
     } else {
       menuItems.push({
-        name: '关注',
+        name: t('task.actions.follow'),
         key: 'follow',
         icon: 'icon-yiguanzhu',
         disabled: false,
@@ -745,7 +745,7 @@ const menuItemsMap = computed(() => {
     }
 
     menuItems.push({
-      name: '移动',
+      name: t('task.actions.move'),
       key: 'move',
       icon: 'icon-yidong',
       disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
@@ -753,7 +753,7 @@ const menuItemsMap = computed(() => {
     });
 
     menuItems.push({
-      name: '复制链接',
+      name: t('task.copyLink'),
       key: 'copyLink',
       icon: 'icon-fuzhi',
       disabled: false,
@@ -794,7 +794,7 @@ const getRefTaskNum = (type = 'TASK') => {
           class="flex items-center"
           @click="toStart">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-kaishi" />
-          <span>开始处理</span>
+          <span>{{ t('task.actions.start') }}</span>
         </Button>
 
         <Button
@@ -805,7 +805,7 @@ const getRefTaskNum = (type = 'TASK') => {
           class="flex items-center"
           @click="toProcessed">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-kaishi" />
-          <span>已处理</span>
+          <span>{{ t('task.actions.complete') }}</span>
         </Button>
 
         <Button
@@ -816,7 +816,7 @@ const getRefTaskNum = (type = 'TASK') => {
           class="flex items-center"
           @click="toCompleted">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-kaishi" />
-          <span>确认完成</span>
+          <span>{{ t('task.actions.confirmComplete') }}</span>
         </Button>
 
         <Button
@@ -827,7 +827,7 @@ const getRefTaskNum = (type = 'TASK') => {
           class="flex items-center"
           @click="toUncomplete">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-kaishi" />
-          <span>确认未完成</span>
+          <span>{{ t('task.actions.confirmIncomplete') }}</span>
         </Button>
 
         <Button
@@ -838,11 +838,11 @@ const getRefTaskNum = (type = 'TASK') => {
           class="flex items-center"
           @click="toReopen">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-kaishi" />
-          <span>重新打开</span>
+          <span>{{ t('task.actions.reopen') }}</span>
           <Popover placement="bottom">
             <template #content>
               <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                将任务状态更新为`待处理`、 不清理统计计数和状态。
+                {{ t('task.tips.reopenTip') }}
               </div>
             </template>
             <Icon icon="icon-tishi1" class="text-tips ml-1" />
@@ -857,11 +857,11 @@ const getRefTaskNum = (type = 'TASK') => {
           class="flex items-center"
           @click="toRestart">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-kaishi" />
-          <span>重新开始</span>
+          <span>{{ t('task.actions.restart') }}</span>
           <Popover placement="bottom">
             <template #content>
               <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                将任务更新为`待处理`，相关统计计数和状态会被清除。
+                {{ t('task.tips.restartTip') }}
               </div>
             </template>
             <Icon icon="icon-tishi1" class="text-tips ml-1" />
@@ -895,7 +895,7 @@ const getRefTaskNum = (type = 'TASK') => {
           class="flex items-center"
           @click="toCancel">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-zhongzhi2" />
-          <span>取消</span>
+          <span>{{ t('actions.cancel') }}</span>
         </Button>
 
         <Button
@@ -905,7 +905,7 @@ const getRefTaskNum = (type = 'TASK') => {
           class="flex items-center"
           @click="toDelete">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-qingchu" />
-          <span>删除</span>
+          <span>{{ t('actions.delete') }}</span>
         </Button>
 
         <Button
@@ -915,7 +915,7 @@ const getRefTaskNum = (type = 'TASK') => {
           class="flex items-center"
           @click="toFavourite">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-yishoucang" />
-          <span>收藏</span>
+          <span>{{ t('task.actions.favorite') }}</span>
         </Button>
 
         <Button
@@ -925,7 +925,7 @@ const getRefTaskNum = (type = 'TASK') => {
           class="flex items-center"
           @click="toDeleteFavourite">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-quxiaoshoucang" />
-          <span>取消收藏</span>
+          <span>{{ t('task.actions.unfavorite') }}</span>
         </Button>
 
         <Button
@@ -935,7 +935,7 @@ const getRefTaskNum = (type = 'TASK') => {
           class="flex items-center"
           @click="toFollow">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-yiguanzhu" />
-          <span>关注</span>
+          <span>{{ t('task.actions.follow') }}</span>
         </Button>
 
         <Button
@@ -945,7 +945,7 @@ const getRefTaskNum = (type = 'TASK') => {
           class="flex items-center"
           @click="toDeleteFollow">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-quxiaoguanzhu" />
-          <span>取消关注</span>
+          <span>{{ t('task.actions.unfollow') }}</span>
         </Button>
 
         <Button
@@ -1071,15 +1071,15 @@ const getRefTaskNum = (type = 'TASK') => {
           :appInfo="props.appInfo"
           :dataSource="taskInfo?.refTaskInfos || []"
           :taskId="props.id"
-          title="任务"
+          :title="t('task.detail.assocTaskTab.title')"
+          :tips="t('task.detail.assocTaskTab.tips')"
           taskType="TASK"
-          tips="记录与当前任务相关联的其他任务，帮助团队了解任务之间的依赖关系。"
           @editSuccess="loadData" />
       </TabPane>
       <TabPane key="asscoRequirements">
         <template #tab>
           <div class="inline-flex">
-            <span>需求</span>
+            <span>{{ t('task.detail.asscoRequirements.title') }}</span>
             <span>({{ getRefTaskNum('REQUIREMENT') }})</span>
           </div>
         </template>
@@ -1090,15 +1090,15 @@ const getRefTaskNum = (type = 'TASK') => {
           :appInfo="props.appInfo"
           :dataSource="taskInfo?.refTaskInfos || []"
           :taskId="props.id"
-          title="需求"
+          :title="t('task.detail.asscoRequirements.title')"
+          :tips="t('task.detail.asscoRequirements.tips')"
           taskType="REQUIREMENT"
-          tips="追溯问题到原始需求，方便理解问题产生的背景和影响范围。"
           @editSuccess="loadData" />
       </TabPane>
       <TabPane key="asscoStory">
         <template #tab>
           <div class="inline-flex">
-            <span>故事</span>
+            <span>{{ t('task.detail.asscoStory.title') }}</span>
             <span>({{ getRefTaskNum('STORY') }})</span>
           </div>
         </template>
@@ -1109,15 +1109,15 @@ const getRefTaskNum = (type = 'TASK') => {
           :appInfo="props.appInfo"
           :dataSource="taskInfo?.refTaskInfos || []"
           :taskId="props.id"
-          title="故事"
+          :title="t('task.detail.asscoStory.title')"
+          :tips="t('task.detail.asscoStory.tips')"
           taskType="STORY"
-          tips="追溯用户角度描述功能需求，方便理解问题产生的背景和影响范围。"
           @editSuccess="loadData" />
       </TabPane>
       <TabPane key="asscoBug">
         <template #tab>
           <div class="inline-flex">
-            <span>缺陷</span>
+            <span>{{ t('task.detail.asscoBug.title') }}</span>
             <span>({{ getRefTaskNum('BUG') }})</span>
           </div>
         </template>
@@ -1128,15 +1128,15 @@ const getRefTaskNum = (type = 'TASK') => {
           :appInfo="props.appInfo"
           :dataSource="taskInfo?.refTaskInfos || []"
           :taskId="props.id"
-          title="缺陷"
+          :title="t('task.detail.asscoBug.title')"
+          :tips="t('task.detail.asscoBug.tips')"
           taskType="BUG"
-          tips="追踪软件功能中的错误，确保及时修复，帮助识别和解决系统性问题。"
           @editSuccess="loadData" />
       </TabPane>
       <TabPane key="asscoCase">
         <template #tab>
           <div class="inline-flex">
-            <span>功能用例</span>
+            <span>{{ t('task.detail.asscoCase.title') }}</span>
             <span>({{ taskInfo?.refCaseInfos?.length || 0 }})</span>
           </div>
         </template>
@@ -1151,7 +1151,7 @@ const getRefTaskNum = (type = 'TASK') => {
       <TabPane key="asscoApiTest">
         <template #tab>
           <div class="inline-flex">
-            <span>接口测试</span>
+            <span>{{ t('task.detail.asscoApiTest.title') }}</span>
             <span>({{ getRefTaskNum('API_TEST') }})</span>
           </div>
         </template>
@@ -1162,15 +1162,15 @@ const getRefTaskNum = (type = 'TASK') => {
           :appInfo="props.appInfo"
           :dataSource="taskInfo?.refTaskInfos || []"
           :taskId="props.id"
-          title="接口测试"
+          :title="t('task.detail.asscoApiTest.title')"
+          :tips="t('task.detail.asscoApiTest.tips')"
           taskType="API_TEST"
-          tips="建立与对应接口测试任务关联关系，方便追溯接口测试进展，确保接口正常工作。"
           @editSuccess="loadData" />
       </TabPane>
       <TabPane key="asscoScenTest">
         <template #tab>
           <div class="inline-flex">
-            <span>场景测试</span>
+            <span>{{ t('task.detail.asscoScenarioTest.title') }}</span>
             <span>({{ getRefTaskNum('SCENARIO_TEST') }})</span>
           </div>
         </template>
@@ -1181,9 +1181,9 @@ const getRefTaskNum = (type = 'TASK') => {
           :appInfo="props.appInfo"
           :dataSource="taskInfo?.refTaskInfos || []"
           :taskId="props.id"
-          title="场景测试"
+          :title="t('task.detail.asscoScenarioTest.title')"
+          :tips="t('task.detail.asscoScenarioTest.tips')"
           taskType="SCENARIO_TEST"
-          tips="建立与对应场景测试任务关联关系，方便了解真实场景中功能的有效性，确保解决方案的完整性。"
           @editSuccess="loadData" />
       </TabPane>
 

@@ -639,7 +639,6 @@
     "noModuleTask": "无模块任务",
     "moduleTree": "模块树",
     "statisticsPanel": "统计面板",
-    "searchPanel": "搜索面板",
     "viewMode": {
       "table": "表格视图",
       "detail": "详情视图",
@@ -941,7 +940,19 @@
         "taskTypeDistribution": "任务类型分布",
         "testTypeDistribution": "测试类型分布",
         "priorityDistribution": "优先级分布",
-        "statusDistribution": "状态分布"
+        "statusDistribution": "状态分布",
+        "taskType": "任务类型",
+        "testType": "测试类型",
+        "typeColumns": {
+          "story": "故事",
+          "task": "任务",
+          "bug": "缺陷",
+          "requirement": "需求",
+          "apiTest": "接口测试",
+          "functional": "功能",
+          "perf": "性能",
+          "stability": "稳定性"
+        }
       },
       "columns": {
         "taskName": "任务名称",
@@ -970,6 +981,70 @@
         "delete": "删除",
         "move": "移动",
         "export": "导出"
+      }
+    },
+    "searchPanel": {
+      "quickSearch": "快速查询",
+      "overdue": "已逾期",
+      "moduleGroup": "按模块分组",
+      "viewModes": {
+        "detail": "平铺视图",
+        "table": "列表视图",
+        "kanban": "看板视图",
+        "gantt": "甘特视图"
+      },
+      "menuItems": {
+        "all": "所有",
+        "myCreated": "我添加的",
+        "myAssigned": "待我处理",
+        "myProgress": "我处理中",
+        "myConfirm": "待我确认",
+        "lastDay": "近1天",
+        "lastThreeDays": "近3天",
+        "lastWeek": "近7天"
+      },
+      "groupOptions": {
+        "none": "不分组",
+        "assigneeName": "按经办人分组",
+        "lastModifiedByName": "按最后修改人分组",
+        "taskType": "按任务类型分组"
+      },
+      "sortOptions": {
+        "createdByName": "按添加人排序",
+        "assigneeName": "按经办人排序",
+        "priority": "按优先级排序",
+        "deadlineDate": "按截止时间排序"
+      },
+      "searchOptions": {
+        "name": "查询任务名称、编码",
+        "status": "选择任务状态",
+        "priority": "选择优先级",
+        "assigneeId": "选择经办人",
+        "confirmorId": "选择确认人",
+        "execBy": "选择执行人",
+        "createdBy": "选择添加人",
+        "lastModifiedBy": "选择最后修改人",
+        "testType": "选择测试类型",
+        "moduleId": "选择所属模块",
+        "execResult": "选择执行结果",
+        "createdDate": ["添加时间从", "添加时间到"],
+        "startDate": ["开始时间从", "开始时间到"],
+        "deadlineDate": ["截止时间从", "截止时间到"],
+        "processedDate": ["处理时间从", "处理时间到"],
+        "confirmedDate": ["确认时间从", "确认时间到"],
+        "completedDate": ["完成时间从", "完成时间到"],
+        "canceledDate": ["取消时间从", "取消时间到"],
+        "execDate": ["执行时间从", "执行时间到"],
+        "lastModifiedDate": ["修改时间从", "修改时间到"],
+        "evalWorkload": "评估工作量",
+        "failNum": "失败次数",
+        "totalNum": "总次数",
+        "servicePlaceholder": "选择服务",
+        "apiPlaceholder": "选择接口",
+        "scenarioPlaceholder": "选择场景",
+        "workloadPlaceholder": "输入评估工作量",
+        "failNumPlaceholder": "输入失败次数",
+        "totalNumPlaceholder": "输入总次数"
       }
     },
     "detail": {
@@ -1159,6 +1234,34 @@
         "subTask": "子任务",
         "assocCase": "关联用例",
         "assocTask": "关联任务"
+      },
+      "assocTaskTab": {
+        "title": "任务",
+        "tips": "记录与当前任务相关联的其他任务，帮助团队了解任务之间的依赖关系。"
+      },
+      "asscoRequirements": {
+        "title": "需求",
+        "tips": "追溯问题到原始需求，方便理解问题产生的背景和影响范围。"
+      },
+      "asscoStory": {
+        "title": "故事",
+        "tips": "追溯用户角度描述功能需求，方便理解问题产生的背景和影响范围。"
+      },
+      "asscoBug": {
+        "title": "缺陷",
+        "tips": "追溯问题到原始需求，方便理解问题产生的背景和影响范围。"
+      },
+      "asscoCase": {
+        "title": "功能用例",
+        "tips": "记录与当前任务相关联的其他任务，帮助团队了解任务之间的依赖关系。"
+      },
+      "asscoApiTest": {
+        "title": "接口测试",
+        "tips": "建立与对应接口测试任务关联关系，方便追溯接口测试进展，确保接口正常工作。"
+      },
+      "asscoScenarioTest": {
+        "title": "场景测试",
+        "tips": "建立与对应场景测试任务关联关系，方便了解真实场景中功能的有效性，确保解决方案的完整性。"
       },
       "noMore": "没有了",
       "previousTask": "上一条任务",
@@ -1596,9 +1699,12 @@
           "evalWorkloadMethod": "工作量评估方式",
           "api": "接口",
           "priority": "优先级",
+          "selectPriority": "请选择优先级",
           "onePass": "一次性通过",
           "actualWorkload": "实际工时",
           "actualStoryPoint": "实际故事点",
+          "evalWorkload": "评估故事点",
+          "evalWorkloadHours": "评估工时",
           "actualWorkloadPlaceholder": "最小0.1，最大1000，最多支持2位小数",
           "evalWorkloadPlaceholder": "最小0.1，最大1000，最多支持2位小数",
           "failNum": "处理失败次数",
@@ -1694,6 +1800,8 @@
           "onePass": "一次性通过",
           "actualWorkload": "实际工时",
           "actualStoryPoint": "实际故事点",
+          "evalWorkload": "评估故事点",
+          "evalWorkloadHours": "评估工时",
           "actualWorkloadPlaceholder": "最小0.1，最大1000，最多支持2位小数",
           "evalWorkloadPlaceholder": "最小0.1，最大1000，最多支持2位小数",
           "missingBugFlag": "漏测",
@@ -1979,7 +2087,13 @@
       "startDate": "开始日期：",
       "releaseDate": "发布日期：",
       "noStartDate": "没有设置开始日期",
-      "noReleaseDate": "没有设置发布日期"
+      "noReleaseDate": "没有设置发布日期",
+      "chart": {
+        "subtext": "完成任务进度",
+        "uncompleted": "未完成",
+        "completed": "已完成",
+        "workload": "完成工作量进度"
+      }
     },
     "list": {
       "addedVersions": "已添加的版本",

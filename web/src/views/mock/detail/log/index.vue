@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon, notification, PureCard, Select } from '@xcan-angus/vue-ui';
 import { Button, RadioGroup } from 'ant-design-vue';
 import { ApiType, routerUtils, ApiUrlBuilder } from '@xcan-angus/infra';
 import axios from 'axios';
+
+const { t } = useI18n();
 
 import { mock } from '@/api/tester';
 
@@ -22,15 +25,15 @@ const errorInfo = ref('');
 const linesOpt = [
   {
     value: '500',
-    label: '末尾500行'
+    label: t('mock.mockDetail.log.lineOptions.last500')
   },
   {
     value: '1000',
-    label: '末尾1000行'
+    label: t('mock.mockDetail.log.lineOptions.last1000')
   },
   {
     value: '10000',
-    label: '末尾10000行'
+    label: t('mock.mockDetail.log.lineOptions.last10000')
   }
 ];
 
@@ -131,7 +134,7 @@ const closeErrInfo = () => {
 
 const downloadLog = () => {
   if (!content.value) {
-    notification.warning('无可下载内容');
+    notification.warning(t('mock.mockDetail.log.notifications.noDownloadContent'));
     return;
   }
   const blob = new Blob([content.value], {
@@ -187,14 +190,14 @@ onBeforeUnmount(() => {
   <PureCard class="text-3 px-5 h-full flex flex-col pb-5 pt-3">
     <div v-if="showErr" class="border border-border-error rounded-xl px-2 py-1 flex items-center text-3 space-x-1 my-4 bg-bg-red">
       <Icon icon="icon-tishi1" class="text-blue-icon text-3.5" />
-      <span class="text-rule flex-1">{{ errorInfo || `无访问代理信息，连接失败地址：http://${ip}:${port}` }}</span>
+      <span class="text-rule flex-1">{{ errorInfo || t('mock.mockDetail.log.errorInfo') + `http://${ip}:${port}` }}</span>
       <Icon
         icon="icon-cuowu"
         class="text-3.5 cursor-pointer"
         @click="closeErrInfo" />
     </div>
     <div>
-      <span>日志文件:</span>
+      <span>{{ t('mock.mockDetail.log.logFile') }}</span>
       <Select
         v-model:value="logTextParam.logName"
         class="w-70 ml-2"
@@ -202,7 +205,7 @@ onBeforeUnmount(() => {
       </Select>
     </div>
     <div class="flex items-center space-x-2 my-2">
-      <span>浏览日志:</span>
+      <span>{{ t('mock.mockDetail.log.browseLog') }}</span>
       <RadioGroup
         v-model:value="logTextParam.linesNum"
         :options="linesOpt"
@@ -212,14 +215,14 @@ onBeforeUnmount(() => {
           class="py-0 h-5"
           size="small"
           @click="downloadLog">
-          下载
+          {{ t('mock.mockDetail.log.download') }}
         </Button>
         <Button
           class="py-0 h-5 ml-2"
           size="small"
           :disabled="!logTextParam.logName || loadingLog"
           @click="loadLogContent">
-          刷新
+          {{ t('mock.mockDetail.log.refresh') }}
         </Button>
         <!-- <span class="ml-2">
           自动刷新：

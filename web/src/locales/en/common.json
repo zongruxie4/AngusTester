@@ -72,7 +72,9 @@
     "createdByMe": "Created by Me",
     "modifiedByMe": "Modified by Me",
     "addByMe": "Added by Me",
-    "tester": "Test for me"
+    "tester": "Test for me",
+    "myResponsible": "My Responsible",
+    "title": "Quick Search"
   },
   "tips": {
     "saveSuccess": "Save successful",
@@ -90,6 +92,7 @@
   },
   "sort": "Sort",
   "quickSearch": "Quick Search",
+  "group": "Group",
   "commonComp": {
     "apis": {
       "editableSelector": {
@@ -368,54 +371,98 @@
                      "selectAll": "Select All",
            "saveAndCopy": "Save and Copy"
          }
-       },
-       "createTaskTestModal": {
-         "title": "Generate Test Task",
-         "functionalTest": "Functional Test",
-         "performanceTest": "Performance Test",
-         "stabilityTest": "Stability Test",
-         "functionalTestConfig": "Functional Test Task Configuration",
-         "performanceTestConfig": "Performance Test Task Configuration",
-         "stabilityTestConfig": "Stability Test Task Configuration",
-         "taskSprint": "Task Sprint",
-         "testType": "Test Type",
-         "selectSprint": "Please select sprint",
-         "selectTestType": "Please select test type",
-         "assignee": "Assignee",
-         "selectAssignee": "Please select assignee",
-         "deadlineDate": "Test Deadline",
-         "priority": "Priority",
-         "generateSuccess": "Task generated successfully",
-         "validation": {
-           "testTypeRequired": "Please select test type"
-         }
-       },
-       "delTaskTestModal": {
-         "title": "Delete Test Task",
-         "functionalTest": "Functional Test",
-         "performanceTest": "Performance Test",
-         "stabilityTest": "Stability Test",
-         "selectDeleteTestType": "Select Test Type to Delete",
-         "selectTestType": "Please select test type",
-         "confirmMessage": "This operation will permanently delete the task. Are you sure you want to continue?",
-         "deleteSuccess": "Test task deleted successfully"
-       },
-       "reopenTaskTestModal": {
-         "title": "Reopen Test Task",
-         "reopenSuccess": "Test task reopened successfully"
-       },
-       "restartTaskTestModal": {
-         "title": "Restart Test",
-         "restartSuccess": "Test restarted successfully"
-       },
-       "selectTaskByModuleModal": {
-         "title": "Select Task",
-         "task": "Task",
-         "searchPlaceholder": "Search by name or code",
-         "code": "Code",
-         "name": "Name",
-         "status": "Status",
-         "type": "Type"
-       }
-     }
-   }
+    },
+    "createTaskTestModal": {
+      "title": "Generate Test Task",
+      "functionalTest": "Functional Test",
+      "performanceTest": "Performance Test",
+      "stabilityTest": "Stability Test",
+      "functionalTestConfig": "Functional Test Task Configuration",
+      "performanceTestConfig": "Performance Test Task Configuration",
+      "stabilityTestConfig": "Stability Test Task Configuration",
+      "taskSprint": "Task Sprint",
+      "testType": "Test Type",
+      "selectSprint": "Please select sprint",
+      "selectTestType": "Please select test type",
+      "assignee": "Assignee",
+      "selectAssignee": "Please select assignee",
+      "deadlineDate": "Test Deadline",
+      "priority": "Priority",
+      "generateSuccess": "Task generated successfully",
+      "validation": {
+        "testTypeRequired": "Please select test type"
+      }
+    },
+    "delTaskTestModal": {
+      "title": "Delete Test Task",
+      "functionalTest": "Functional Test",
+      "performanceTest": "Performance Test",
+      "stabilityTest": "Stability Test",
+      "selectDeleteTestType": "Select Test Type to Delete",
+      "selectTestType": "Please select test type",
+      "confirmMessage": "This operation will permanently delete the task. Are you sure you want to continue?",
+      "deleteSuccess": "Test task deleted successfully"
+    },
+    "reopenTaskTestModal": {
+      "title": "Reopen Test Task",
+      "reopenSuccess": "Test task reopened successfully"
+    },
+    "restartTaskTestModal": {
+      "title": "Restart Test",
+      "restartSuccess": "Test restarted successfully"
+    },
+    "selectTaskByModuleModal": {
+      "title": "Select Task",
+      "task": "Task",
+      "searchPlaceholder": "Search by name or code",
+      "code": "Code",
+      "name": "Name",
+      "status": "Status",
+      "type": "Type"
+    },
+    "chart": {
+      "cpu": {
+        "title": "Processor",
+        "titleWithCores": "Processor ({cores} cores)",
+        "legend": {
+          "cpuCount": "CPU Count",
+          "systemCpuUsage": "System CPU Usage",
+          "processCpuUsage": "Process CPU Usage"
+        },
+        "series": {
+          "systemCpuUsage": "System CPU Usage",
+          "processCpuUsage": "Process CPU Usage"
+        }
+      },
+      "ram": {
+        "title": "Memory (JVM, GB)",
+        "legend": {
+          "maxAvailableMemory": "Max Available Memory",
+          "usedMemory": "Used Memory",
+          "committedMemory": "Committed Memory"
+        },
+        "series": {
+          "maxAvailableMemory": "Max Available Memory",
+          "usedMemory": "Used Memory",
+          "committedMemory": "Committed Memory"
+        }
+      },
+      "cache": {
+        "title": "Cache (JVM, GB)",
+        "legend": {
+          "totalCacheSize": "Total Cache Size",
+          "usedCacheSize": "Used Cache Size",
+          "cacheCount": "Cache Count"
+        },
+        "series": {
+          "totalCacheSize": "Total Cache Size",
+          "usedCacheSize": "Used Cache Size",
+          "cacheCount": "Cache Count"
+        }
+      },
+      "bar": {
+        "titleFormat": "{title} ( {unit} , Total: {total})"
+      }
+    }
+  }
+}

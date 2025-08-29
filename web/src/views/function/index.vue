@@ -3,6 +3,9 @@ import { computed, defineAsyncComponent, inject, nextTick, onMounted, provide, r
 import { XCanDexie, sessionStore, utils, appContext } from '@xcan-angus/infra';
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 type MenuKey = 'homepage' | 'plans' | 'cases' | 'modules' | 'tags' | 'trash';
 
@@ -169,13 +172,13 @@ provide('setCaseListPlanParam', setCaseListPlanParam);
 
 const menuItems = computed(() => {
   return [
-    { name: '主页', key: 'homepage', icon: 'icon-zhuye' },
-    { name: '计划', key: 'plans', icon: 'icon-jihua1' },
-    { name: '用例', key: 'cases', icon: 'icon-ceshiyongli1' },
-    { name: '评审', key: 'reviews', icon: 'icon-pingshen' },
-    { name: '基线', key: 'baseline', icon: 'icon-jixian' },
-    editionType.value !== 'COMMUNITY' && { name: '分析', icon: 'icon-fenxi', key: 'analysis' },
-    { name: '回收站', key: 'trash', icon: 'icon-qingchu' }
+    { name: t('functionHome.name'), key: 'homepage', icon: 'icon-zhuye' },
+    { name: t('functionPlan.name'), key: 'plans', icon: 'icon-jihua1' },
+    { name: t('functionCase.name'), key: 'cases', icon: 'icon-ceshiyongli1' },
+    { name: t('caseReview.name'), key: 'reviews', icon: 'icon-pingshen' },
+    { name: t('functionBaseline.name'), key: 'baseline', icon: 'icon-jixian' },
+    editionType.value !== 'COMMUNITY' && { name: t('functionAnalysis.name'), icon: 'icon-fenxi', key: 'analysis' },
+    { name: t('functionTrash.name'), key: 'trash', icon: 'icon-qingchu' }
   ].filter(Boolean);
 });
 </script>

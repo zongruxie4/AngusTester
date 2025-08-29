@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, notification } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 import { Condition, ResponseMatchConfig } from './PropsType';
 import PathForm from './pathForm.vue';
@@ -13,6 +14,8 @@ interface Props {
   value:ResponseMatchConfig;
   notify:number;
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   value: undefined,
@@ -201,7 +204,7 @@ defineExpose({
         size="small"
         @click="addPathHandler">
         <div class="flex items-center">
-          <Icon icon="icon-jia" class="mr-1" /><span>路径</span>
+          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('mock.mockApisComp.matchForm.pathForm.path') }}</span>
         </div>
       </Button>
       <Button
@@ -209,7 +212,7 @@ defineExpose({
         size="small"
         @click="addQueryHandler">
         <div class="flex items-center">
-          <Icon icon="icon-jia" class="mr-1" /><span>查询参数</span>
+          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('mock.mockApisComp.matchForm.parameterForm.queryParameters') }}</span>
         </div>
       </Button>
       <Button
@@ -217,7 +220,7 @@ defineExpose({
         size="small"
         @click="addHeaderHandler">
         <div class="flex items-center">
-          <Icon icon="icon-jia" class="mr-1" /><span>请求头</span>
+          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('mock.mockApisComp.matchForm.selectInputForm.requestHeader') }}</span>
         </div>
       </Button>
       <Button
@@ -225,7 +228,7 @@ defineExpose({
         size="small"
         @click="addRequestBodyHandler">
         <div class="flex items-center">
-          <Icon icon="icon-jia" class="mr-1" /><span>请求体</span>
+          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('mock.mockApisComp.matchForm.requestBody.requestBody') }}</span>
         </div>
       </Button>
     </div>

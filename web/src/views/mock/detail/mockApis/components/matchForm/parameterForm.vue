@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Composite, Icon, Input, Validate } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 import SelectEnum from '@/components/selectEnum/index.vue';
 import { Condition } from './PropsType';
@@ -203,9 +206,9 @@ const placeholderMap = computed(() => {
     if (emptyConditions.includes(condition)) {
       map[id] = '';
     } else if (condition === 'REG_MATCH') {
-      map[id] = '正则表达式';
+      map[id] = t('mock.mockApisComp.matchForm.parameterForm.regMatch');
     } else {
-      map[id] = '参数值，最大支持4096个字符';
+      map[id] = t('mock.mockApisComp.matchForm.parameterForm.parameterValue');
     }
   }
 
@@ -229,7 +232,7 @@ const disabledMap = computed(() => {
 </script>
 <template>
   <div v-if="!!idList.length" class="leading-5">
-    <div class="flex items-center mb-0.5">查询参数</div>
+    <div class="flex items-center mb-0.5">{{ t('mock.mockApisComp.matchForm.parameterForm.queryParameters') }}</div>
     <div class="space-y-2">
       <div
         v-for="(item,index) in idList"
@@ -242,7 +245,7 @@ const disabledMap = computed(() => {
             :error="nameErrorSet.has(item)"
             style="flex: 0 0 calc((100% - 200px) * 2/5);"
             trim
-            placeholder="参数名称，最大支持400个字符"
+            :placeholder="t('mock.mockApisComp.matchForm.parameterForm.parameterName')"
             @change="nameChange($event,item)" />
           <SelectEnum
             :value="dataMap[item].condition"

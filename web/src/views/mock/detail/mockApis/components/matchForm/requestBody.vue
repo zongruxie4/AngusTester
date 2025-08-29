@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Input, notification } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 import SelectEnum from '@/components/selectEnum/index.vue';
 import { Condition, ResponseMatchConfig } from './PropsType';
@@ -92,7 +95,7 @@ onMounted(() => {
 
 const add = () => {
   if (idList.value.length) {
-    notification.info('只能添加一个请求体');
+    notification.info(t('mock.mockApisComp.matchForm.requestBody.notifications.onlyOneBody'));
     return;
   }
 
@@ -172,18 +175,18 @@ const showEditor = computed(() => {
 });
 
 const placeholderMap = {
-  GREATER_THAN: '值',
-  GREATER_THAN_EQUAL: '值',
-  LESS_THAN: '值',
-  LESS_THAN_EQUAL: '值',
-  REG_MATCH: '正则表达式',
-  XPATH_MATCH: 'XPath表达式',
-  JSON_PATH_MATCH: 'JSONPath表达式'
+  GREATER_THAN: t('mock.mockApisComp.matchForm.requestBody.value'),
+  GREATER_THAN_EQUAL: t('mock.mockApisComp.matchForm.requestBody.value'),
+  LESS_THAN: t('mock.mockApisComp.matchForm.requestBody.value'),
+  LESS_THAN_EQUAL: t('mock.mockApisComp.matchForm.requestBody.value'),
+  REG_MATCH: t('mock.mockApisComp.matchForm.parameterForm.regMatch'),
+  XPATH_MATCH: t('mock.mockApisComp.matchForm.requestBody.xpathMatch'),
+  JSON_PATH_MATCH: t('mock.mockApisComp.matchForm.requestBody.jsonPathMatch')
 };
 </script>
 <template>
   <div v-if="!!idList.length" class="leading-5">
-    <div class="flex items-center mb-0.5">请求体</div>
+    <div class="flex items-center mb-0.5">{{ t('mock.mockApisComp.contentForm.requestBody') }}</div>
     <div class="flex items-center justify-between space-x-2">
       <SelectEnum
         v-model:value="selectValue"
@@ -196,7 +199,7 @@ const placeholderMap = {
           type="link"
           size="small"
           @click="deleteHandler">
-          <span>删除</span>
+          <span>{{ t('actions.delete') }}</span>
         </Button>
         <template v-if="showEditor">
           <Button
@@ -204,14 +207,14 @@ const placeholderMap = {
             type="link"
             size="small"
             @click="format">
-            <span>格式化</span>
+            <span>{{ t('mock.mockApisComp.matchForm.requestBody.format') }}</span>
           </Button>
           <Button
             style="padding: 0;"
             type="link"
             size="small"
             @click="clear">
-            <span>清空</span>
+            <span>{{ t('mock.mockApisComp.matchForm.requestBody.clear') }}</span>
           </Button>
         </template>
       </div>

@@ -123,27 +123,27 @@ const paginationChange = async (page: number, size: number) => {
 const gridColumns = [
   [
     {
-      label: t('接口名称'),
+              label: t('mock.mockDetail.requestRecord.apiName'),
       dataIndex: 'summary'
     },
     {
-      label: t('请求ID'),
+              label: t('mock.mockDetail.requestRecord.requestId'),
       dataIndex: 'requestId'
     },
     {
-      label: t('请求时间'),
+              label: t('mock.mockDetail.requestRecord.requestTime'),
       dataIndex: 'requestDate'
     },
     {
-      label: t('请求地址'),
+              label: t('mock.mockDetail.requestRecord.requestUrl'),
       dataIndex: 'endpoint'
     },
     {
-      label: t('请求方法'),
+              label: t('mock.mockDetail.requestRecord.requestMethod'),
       dataIndex: 'method'
     },
     {
-      label: t('状态码'),
+              label: t('mock.mockDetail.requestRecord.statusCode'),
       dataIndex: 'responseStatus'
     }
   ]
@@ -152,15 +152,15 @@ const gridColumns = [
 const currentTabId = ref<string>('pretty');
 const tabs = [
   {
-    name: '美化格式',
+          name: t('mock.mockDetail.requestRecord.formatOptions.beautify'),
     value: 'pretty'
   },
   {
-    name: '原生格式',
+          name: t('mock.mockDetail.requestRecord.formatOptions.raw'),
     value: 'raw'
   },
   {
-    name: '预览',
+          name: t('mock.mockDetail.requestRecord.formatOptions.preview'),
     value: 'preview'
   }
 ];
@@ -189,13 +189,13 @@ const textColor = {
 };
 </script>
 <template>
-  <Hints text="当前请求记录是Mock服务收集的Mock接口调用日志，系统1秒内最大采集3条请求日志。每个Mock接口只保留最近100条请求记录。注意：如需要开启或关闭请求日志收集，请在“设置”->“记录请求日志”配置，开启后会降低Mock接口性能。" class="mb-2" />
+  <Hints :text="t('mock.mockDetail.mockSet.requestRecord.hints')" class="mb-2" />
   <PureCard class="p-3.5 flex" style="height: calc(100% - 28px);">
     <Spin
       :spinning="loading"
       class="w-80 border-r border-border-divider h-full flex flex-col">
       <div class="pr-3.5 mb-2 flex items-center">
-        <Input placeholder="查询接口名称、路径" @change="handleSearch">
+        <Input :placeholder="t('mock.mockDetail.control.searchApiNamePath')" @change="handleSearch">
           <template #suffix>
             <Icon icon="icon-sousuo" class="text-4 text-theme-sub-content" />
           </template>
@@ -265,7 +265,7 @@ const textColor = {
       class="flex-1 ml-3.5 h-full -mr-3.5">
       <TabPane
         :key="0"
-        :tab="t('基本信息')"
+        :tab="t('mock.mockDetail.mockSet.basicInfo.title')"
         class="h-full">
         <template v-if="detail">
           <Grid
@@ -287,7 +287,7 @@ const textColor = {
         class="flex-1 flex flex-col"
         forceRender>
         <template v-if="detail">
-          <div class="text-3 text-text-title pl-1.25 mb-1">请求头</div>
+          <div class="text-3 text-text-title pl-1.25 mb-1">{{ t('mock.mockDetail.mockSet.requestRecord.requestHeader') }}</div>
           <Grid
             :columns="requestColumns"
             :dataSource="requestInfo"
@@ -296,7 +296,7 @@ const textColor = {
             labelSpacing="80px"
             marginBottom="0px"
             class="-ml-2 grid-row" />
-          <div class="text-3 text-text-title pl-1.25 mt-5 mb-1">请求体</div>
+          <div class="text-3 text-text-title pl-1.25 mt-5 mb-1">{{ t('mock.mockDetail.mockSet.requestRecord.requestBody') }}</div>
           <template v-if="detail?.requestBody">
             <div class="bg-bg-table-head text-3 text-text-content p-2 rounded-sm" style="min-height: 34px;">
               {{ detail.requestBody }}
@@ -318,7 +318,7 @@ const textColor = {
         class="flex-1 flex flex-col"
         forceRender>
         <template v-if="detail">
-          <div class="text-3 text-text-title pl-1.25 mb-1">响应头</div>
+          <div class="text-3 text-text-title pl-1.25 mb-1">{{ t('mock.mockDetail.mockSet.requestRecord.responseHeader') }}</div>
           <Grid
             :columns="responseColumns"
             :dataSource="responseInfo"
@@ -327,7 +327,7 @@ const textColor = {
             labelSpacing="80px"
             marginBottom="0px"
             class="-ml-2 grid-row" />
-          <div class="text-3 text-text-title pl-1.25 mt-5 mb-2">响应体</div>
+          <div class="text-3 text-text-title pl-1.25 mt-5 mb-2">{{ t('mock.mockDetail.mockSet.requestRecord.responseBody') }}</div>
           <template v-if="detail?.responseBody">
             <div class="flex mb-3 flex-freeze-auto items-center rounded text-3 text-text-sub-content">
               <div

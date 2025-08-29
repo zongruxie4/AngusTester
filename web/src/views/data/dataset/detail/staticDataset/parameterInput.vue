@@ -1,9 +1,12 @@
 <script lang="ts" setup>
+import { useI18n } from 'vue-i18n';
 import { onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, IconCopy, IconRequired, Input, Tooltip, FunctionsButton, ParamInput } from '@xcan-angus/vue-ui';
 import { utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
+
+const { t } = useI18n();
 
 export interface Option {
   name: string;
@@ -56,7 +59,7 @@ const nameChange = debounce(duration.delay, (event: { target: { value: string; }
     const _id = ids[i];
     if (duplicates.includes(data[_id].name)) {
       nameErrorSet.value.add(_id);
-      errorMessage.value.set(_id, '名称重复');
+      errorMessage.value.set(_id, t('dataset.detail.staticDataset.parameterInput.errors.duplicate'));
     } else {
       nameErrorSet.value.delete(_id);
       errorMessage.value.delete(_id);
@@ -76,7 +79,7 @@ const nameBlur = (event: { target: { value: string; } }, id: string) => {
   const rex = new RegExp(/[^a-zA-Z0-9!$%^&*_\-+=./]/);
   if (rex.test(name)) {
     nameErrorSet.value.add(id);
-    errorMessage.value.set(id, '名称支持数字、字母和!$%^&*_-+=./');
+    errorMessage.value.set(id, t('dataset.detail.staticDataset.parameterInput.errors.invalid'));
   }
 };
 
@@ -175,7 +178,7 @@ const isValid = (): boolean => {
       const rex = new RegExp(/[a-zA-Z0-9!$%^&*_\-+=./]+/);
       if (!rex.test(name)) {
         nameErrorSet.value.add(id);
-        errorMessage.value.set(id, '名称支持数字、字母和!$%^&*_-+=./');
+        errorMessage.value.set(id, t('dataset.detail.staticDataset.parameterInput.errors.invalid'));
       }
     }
 
@@ -212,11 +215,11 @@ defineExpose({
     <div class="flex items-center space-x-2 mb-1">
       <div class="w-100 flex items-center">
         <IconRequired />
-        <span>名称</span>
+        <span>{{ t('dataset.detail.staticDataset.parameterInput.name') }}</span>
       </div>
       <div class="flex-1 flex items-center">
         <IconRequired />
-        <span>值</span>
+        <span>{{ t('dataset.detail.staticDataset.parameterInput.value') }}</span>
       </div>
       <FunctionsButton class="text-3.5" />
     </div>
@@ -241,7 +244,7 @@ defineExpose({
                 excludes="{}"
                 includes="\!\$%\^&\*_\-+=\.\/"
                 dataType="mixin-en"
-                placeholder="支持数字、字母和!$%^&*_-+=./，最长100个字符"
+                :placeholder="t('dataset.detail.staticDataset.parameterInput.namePlaceholder')"
                 size="small"
                 tirmAll
                 class="flex-1 has-suffix"
@@ -266,7 +269,7 @@ defineExpose({
             :error="valueErrorSet.has(item)"
             class="flex-1"
             trim
-            placeholder="参数值，值可以是常量或Mock函数，最长4096个字符，值示例：123456、true、@String(5,10)"
+            :placeholder="t('dataset.detail.staticDataset.parameterInput.valuePlaceholder')"
             @blur="valueChange($event, item)" />
           <!-- <Input
             v-model:value="dataMap[item].value"

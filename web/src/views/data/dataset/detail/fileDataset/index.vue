@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { Hints, Icon, IconRequired, Input, notification, SelectInput, Toggle, Tooltip } from '@xcan-angus/vue-ui';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { dataSet } from '@/api/tester';
+
+const { t } = useI18n();
 
 import SelectEnum from '@/components/selectEnum/index.vue';
 import { DataSetItem } from '../../PropsType';
@@ -144,7 +147,7 @@ const toEdit = async () => {
     return;
   }
 
-  notification.success('数据集修改成功');
+  notification.success(t('dataset.detail.fileDataset.notifications.updateSuccess'));
   emit('ok', params, true);
 };
 
@@ -157,7 +160,7 @@ const toCreate = async () => {
     return;
   }
 
-  notification.success('数据集添加成功');
+  notification.success(t('dataset.detail.fileDataset.notifications.addSuccess'));
   const id = res?.data?.id;
   emit('ok', { ...params, id }, false);
 };
@@ -337,12 +340,12 @@ const inputProps = {
   <div class="flex items-center mb-3.5">
     <div class="mr-2.5 flex-shrink-0">
       <IconRequired />
-      <span>名称</span>
+      <span>{{ t('dataset.detail.fileDataset.form.name') }}</span>
     </div>
     <Input
       v-model:value="dataSetName"
       :maxlength="100"
-      placeholder="数据集名称，最长100个字符"
+      :placeholder="t('dataset.detail.fileDataset.form.namePlaceholder')"
       trimAll
       excludes="{}" />
   </div>

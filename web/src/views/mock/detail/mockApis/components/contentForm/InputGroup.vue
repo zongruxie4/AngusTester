@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 import { ContentType, ParametersType } from './PropsType';
 import PureFormInput from '@/views/mock/detail/mockApis/components/pureFormInput/index.vue';
@@ -132,7 +135,7 @@ const fielaNames = { label: 'name', value: 'value' };
         size="small"
         @click="addQueryHandler">
         <div class="flex items-center">
-          <Icon icon="icon-jia" class="mr-1" /><span>查询参数</span>
+          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('mock.mockApisComp.contentForm.inputGroup.queryParameters') }}</span>
         </div>
       </Button>
       <Button
@@ -140,7 +143,7 @@ const fielaNames = { label: 'name', value: 'value' };
         size="small"
         @click="addHeaderHandler">
         <div class="flex items-center">
-          <Icon icon="icon-jia" class="mr-1" /><span>请求头</span>
+          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('mock.mockApisComp.contentForm.inputGroup.requestHeaders') }}</span>
         </div>
       </Button>
       <Button
@@ -155,7 +158,7 @@ const fielaNames = { label: 'name', value: 'value' };
 
     <PureFormInput
       ref="queryFormRef"
-      label="查询参数"
+      :label="t('mock.mockApisComp.contentForm.inputGroup.queryParameters')"
       class="mt-4"
       :fielaNames="fielaNames"
       :value="queryParameters"
@@ -163,7 +166,7 @@ const fielaNames = { label: 'name', value: 'value' };
 
     <SelectInputForm
       ref="headerFormRef"
-      label="请求头"
+      :label="t('mock.mockApisComp.contentForm.inputGroup.requestHeaders')"
       class="mt-4"
       enumKey="HttpRequestHeader"
       :fielaNames="fielaNames"

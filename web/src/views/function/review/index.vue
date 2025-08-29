@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
@@ -24,6 +25,7 @@ const ReviewEdit = defineAsyncComponent(() => import('@/views/function/review/ed
 
 const route = useRoute();
 const router = useRouter();
+const { t } = useI18n();
 const browserTabRef = ref();
 
 const addTabPane = (data: IPane) => {
@@ -55,8 +57,8 @@ const initialize = () => {
         return {
           _id: 'reviewList',
           value: 'reviewList',
-          name: '评审',
-          closable: false // 是否允许关闭，true - 允许关闭，false - 禁止关闭
+          name: t('caseReview.review'),
+          closable: false // Whether to allow closing, true - allow closing, false - prohibit closing
         };
       }
     });
@@ -103,7 +105,7 @@ const hashChange = (hash: string) => {
         const id = utils.uuid();
         return {
           _id: id,
-          name: '添加评审',
+          name: t('caseReview.addReview'),
           value: 'reviewEdit',
           noCache: true,
           data: { _id: id }
@@ -137,19 +139,19 @@ const storageKey = computed(() => {
   return `review${props.projectId}`;
 });
 
-// 添加指定的tabPane
+// Add specified tabPane
 provide('addTabPane', addTabPane);
 
-// 获取tabPane
+// Get tabPane
 provide('getTabPane', getTabPane);
 
-// 删除指定的tabPane
+// Delete specified tabPane
 provide('deleteTabPane', deleteTabPane);
 
-// 更新指定的tabPane
+// Update specified tabPane
 provide('updateTabPane', updateTabPane);
 
-// 替换指定tabPane
+// Replace specified tabPane
 provide('replaceTabPane', replaceTabPane);
 </script>
 <template>

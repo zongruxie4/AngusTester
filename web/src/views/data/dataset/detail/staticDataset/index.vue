@@ -1,9 +1,12 @@
 <script lang="ts" setup>
+import { useI18n } from 'vue-i18n';
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { Hints, IconRequired, Input, notification } from '@xcan-angus/vue-ui';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { dataSet } from '@/api/tester';
+
+const { t } = useI18n();
 
 import { DataSetItem } from '../../PropsType';
 import { FormState } from './PropsType';
@@ -112,7 +115,7 @@ const toEdit = async () => {
     return;
   }
 
-  notification.success('数据集修改成功');
+  notification.success(t('dataset.detail.staticDataset.notifications.editSuccess'));
   emit('ok', params, true);
 };
 
@@ -125,7 +128,7 @@ const toCreate = async () => {
     return;
   }
 
-  notification.success('数据集添加成功');
+  notification.success(t('dataset.detail.staticDataset.notifications.addSuccess'));
   const id = res?.data?.id;
   emit('ok', { ...params, id }, false);
 };
@@ -211,12 +214,12 @@ const okButtonDisabled = computed(() => {
   <div class="flex items-center mb-3.5">
     <div class="flex items-center flex-shrink-0 mr-2.5">
       <IconRequired />
-      <span>名称</span>
+      <span>{{ t('dataset.detail.staticDataset.name') }}</span>
     </div>
     <Input
       v-model:value="dataSetName"
       :maxlength="100"
-      placeholder="数据集名称，最长100个字符"
+      :placeholder="t('dataset.detail.staticDataset.namePlaceholder')"
       trimAll
       excludes="{}" />
   </div>
@@ -224,7 +227,7 @@ const okButtonDisabled = computed(() => {
   <div class="flex items-start">
     <div class="flex items-center flex-shrink-0 mr-2.5 transform-gpu translate-y-1">
       <IconRequired class="invisible" />
-      <span>描述</span>
+      <span>{{ t('dataset.detail.staticDataset.description') }}</span>
     </div>
     <Input
       v-model:value="description"
@@ -233,7 +236,7 @@ const okButtonDisabled = computed(() => {
       showCount
       type="textarea"
       class="flex-1"
-      placeholder="数据集描述，最长200个字符"
+      :placeholder="t('dataset.detail.staticDataset.descriptionPlaceholder')"
       trim />
   </div>
 
@@ -245,12 +248,12 @@ const okButtonDisabled = computed(() => {
       <template #tab>
         <div class="flex items-center font-normal">
           <IconRequired />
-          <span>参数</span>
+          <span>{{ t('dataset.detail.staticDataset.parameters') }}</span>
         </div>
       </template>
 
       <div>
-        <Hints class="mb-2" text="在采样时根据Mock数据函数动态生成参数值，每个数据集最大允许添加200个参数，最大支持生成1000亿行数据。" />
+        <Hints class="mb-2" :text="t('dataset.detail.staticDataset.hints')" />
         <ParameterInput
           ref="parametersRef"
           :defaultValue="defaultParameters"
@@ -261,7 +264,7 @@ const okButtonDisabled = computed(() => {
     <TabPane key="preview">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>预览</span>
+          <span>{{ t('dataset.detail.staticDataset.preview') }}</span>
         </div>
       </template>
 
@@ -271,7 +274,7 @@ const okButtonDisabled = computed(() => {
     <TabPane v-if="dataSetId" key="use">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>使用</span>
+          <span>{{ t('dataset.detail.staticDataset.use') }}</span>
         </div>
       </template>
 

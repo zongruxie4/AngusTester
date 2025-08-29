@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Icon, notification, Toggle, ApiUtils as apiUtils, ResponseStatus } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { LoadingOutlined } from '@ant-design/icons-vue';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
 import { convertBlob } from '@/views/apis/services/apiHttp/utils';
 import { EnumMessage, HttpStatus, utils, enumUtils, axiosClient } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 import { dataURLtoBlob, getFileSuffixByContentType } from '@/utils/blob';
 import UrlForm from '@/views/mock/detail/mockApis/components/urlForm/index.vue';
@@ -182,7 +185,7 @@ const sendRequest = async () => {
     });
     WS.value.send(api);
   } else if (WS.value && WS.value.readyState !== 1) {
-    notification.error('代理未链接， 请检查代理配置');
+    notification.error(t('mock.mockApis.debugApis.notifications.proxyNotConnected'));
     debugging.value = false;
   } else {
     const header: Record<string, string> = {};
@@ -367,21 +370,21 @@ onMounted(() => {
         class="bg-status-success text-white flex flex-col items-center rounded-l-xl py-2 h-max cursor-pointer"
         @click="changeShowDebug(true)">
         <Icon icon="icon-zhihangceshi" class="text-3.5 leading-3.5" />
-        <span style="writing-mode: vertical-lr;" class="mt-1">测试请求</span>
+        <span style="writing-mode: vertical-lr;" class="mt-1">{{ t('mock.mockApis.debugApis.testRequest') }}</span>
       </div>
       <div
         v-show="!spread || !showDebug"
         class="bg-orange-bg text-white flex flex-col items-center rounded-l-xl py-2 h-max cursor-pointer"
         @click="changeShowDebug(false)">
         <Icon icon="icon-jiekoudaili" class="text-3.5 leading-3.5" />
-        <span style="writing-mode: vertical-lr;" class="mt-1">代理</span>
+        <span style="writing-mode: vertical-lr;" class="mt-1">{{ t('mock.mockApis.debugApis.proxy') }}</span>
       </div>
     </div>
     <div
       class="bg-white border-status-success rounded transition-all duration-500 box-border overflow-x-hidden overflow-y-auto space-y-5"
       :class="[spread && showDebug ? 'w-200 border p-3' : 'w-0 border-0']"
       style="height: 70vh;">
-      <span class="font-semibold">测试请求</span>
+      <span class="font-semibold">{{ t('mock.mockApis.debugApis.testRequest') }}</span>
       <UrlForm
         ref="urlRef"
         v-model:method="method"
@@ -396,7 +399,7 @@ onMounted(() => {
             size="small"
             @click="stopDebug">
             <LoadingOutlined />
-            终止
+            {{ t('mock.mockApis.debugApis.stop') }}
           </Button>
         </template>
         <template v-else>
@@ -404,13 +407,13 @@ onMounted(() => {
             size="small"
             type="primary"
             @click="sendRequest">
-            发送
+            {{ t('mock.mockApis.debugApis.send') }}
           </Button>
         </template>
       </div>
       <div>
         <div class="space-x-2 mb-1.5">
-          <span class="font-semibold">响应</span>
+          <span class="font-semibold">{{ t('mock.mockApis.debugApis.response') }}</span>
           <ResponseStatus v-if="responseContent?.status > 0" :status="responseContent?.status" />
         </div>
         <div class="min-h-50 bg-gray-light rounded whitespace-break-spaces space-y-2 p-2">

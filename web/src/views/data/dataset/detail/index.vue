@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { AsyncComponent, modal, notification, Spin } from '@xcan-angus/vue-ui';
 import { toClipboard, utils } from '@xcan-angus/infra';
 import { dataSet } from '@/api/tester';
+
+const { t } = useI18n();
 
 import { DataSetItem } from '../PropsType';
 
@@ -66,7 +69,7 @@ const toDelete = () => {
   }
 
   modal.confirm({
-    content: `确定删除数据集【${data.name}】吗？`,
+    content: t('dataset.detail.notifications.deleteConfirm', { name: data.name }),
     async onOk () {
       const id = data.id;
       const [error] = await dataSet.deleteDataSet([id]);
@@ -74,7 +77,7 @@ const toDelete = () => {
         return;
       }
 
-      notification.success('数据集删除成功');
+      notification.success(t('dataset.detail.notifications.deleteSuccess'));
       deleteTabPane([id]);
 
       nextTick(() => {
@@ -102,7 +105,7 @@ const toClone = async () => {
     return;
   }
 
-  notification.success('数据集克隆成功');
+  notification.success(t('dataset.detail.notifications.cloneSuccess'));
   nextTick(() => {
     updateTabPane({ _id: 'dataSetList', notify: utils.uuid() });
   });
@@ -110,9 +113,9 @@ const toClone = async () => {
 
 const toCopyLink = (id: string) => {
   toClipboard(window.location.origin + `/data#dataSet?id=${id}`).then(() => {
-    notification.success('复制链接成功');
+    notification.success(t('dataset.detail.notifications.copyLinkSuccess'));
   }).catch(() => {
-    notification.error('复制链接失败');
+    notification.error(t('dataset.detail.notifications.copyLinkFail'));
   });
 };
 

@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import { computed, inject, onMounted, reactive, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon, Input, notification, PureCard, Select, Tooltip } from '@xcan-angus/vue-ui';
 import { Button, Card, Form, FormItem, Popover, Upload } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
@@ -7,6 +8,8 @@ import type { Rule } from 'ant-design-vue/es/form';
 import { TESTER, appContext } from '@xcan-angus/infra';
 import postmanToOpenApi from '@xcan-angus/postman-to-openapi';
 import SelectEnum from '@/components/selectEnum/index.vue';
+
+const { t } = useI18n();
 
 import { formatBytes } from '@/utils/common';
 import { mock, node } from '@/api/tester';
@@ -57,9 +60,9 @@ const formState = ref<ImportExistForm>({
 const domainRegex = /^(?=.{1,253}$)([a-z0-9]|[a-z0-9][a-z0-9\\-]{0,61}[a-z0-9])\.angusmock\.cloud$/;
 const serviceDomainValidate = async (_rule: Rule, value: string) => {
   if (!value) {
-    return Promise.reject(new Error('请输入域名'));
+    return Promise.reject(new Error(t('mock.addMock.validation.enterDomain')));
   } else if (!domainRegex.test(value + '.angusmock.cloud')) {
-    return Promise.reject(new Error('请输入正确的域名'));
+    return Promise.reject(new Error(t('mock.addMock.validation.enterCorrectDomain')));
   } else {
     return Promise.resolve();
   }
@@ -67,9 +70,9 @@ const serviceDomainValidate = async (_rule: Rule, value: string) => {
 
 const rules = computed(() => {
   const baseRule = {
-    name: [{ required: true, message: '请输入名称', trigger: 'change' }],
-    servicePort: [{ required: true, message: '请输入端口（1~65535）', trigger: 'change' }],
-    nodeId: [{ required: true, message: '请选择节点', trigger: 'change' }]
+    name: [{ required: true, message: t('mock.addMock.validation.enterName'), trigger: 'change' }],
+    servicePort: [{ required: true, message: t('mock.addMock.validation.enterPort'), trigger: 'change' }],
+    nodeId: [{ required: true, message: t('mock.addMock.validation.selectNode'), trigger: 'change' }]
   };
 
   const privateRule = {
@@ -84,7 +87,7 @@ const rules = computed(() => {
   if (activeTab.value === 1) {
     publicRule = {
       ...publicRule,
-      serviceId: [{ required: true, message: '请选择项目服务', trigger: 'change' }]
+      serviceId: [{ required: true, message: t('mock.addMock.validation.selectProjectService'), trigger: 'change' }]
     };
   }
 
@@ -231,7 +234,7 @@ const handleSave = () => {
     const [error] = activeTab.value === 0 ? await mock.addService(params) : activeTab.value === 1 ? await mock.addServiceByAssoc(params) : await mock.addServiceFromFile(formData);
     loading.value = false;
     if (error) { return; }
-    notification.success('添加成功');
+    notification.success(t('mock.addMock.notifications.addSuccess'));
     router.push('/apis#mock');
   }, () => { /** */ });
 };
@@ -273,34 +276,34 @@ onMounted(async () => {
         :rules="rules">
         <div class="flex">
           <div>
-            <FormItem label="名称" required />
+            <FormItem :label="t('mock.addMock.form.name')" required />
             <FormItem
-              label="域名"
+              :label="t('mock.addMock.form.domain')"
               :required="!isPrivate"
               :class="isPrivate?'pl-2.25':''" />
-            <FormItem label="端口" required />
-            <FormItem label="节点" required />
+            <FormItem :label="t('mock.addMock.form.port')" required />
+            <FormItem :label="t('mock.addMock.form.node')" required />
             <template v-if="activeTab===1">
-              <FormItem label="服务" required />
+              <FormItem :label="t('mock.addMock.form.service')" required />
               <template v-if="formState.serviceId">
-                <FormItem label="接口" />
+                <FormItem :label="t('mock.addMock.form.api')" />
               </template>
             </template>
             <template v-if="activeTab===2">
-              <FormItem label="导入来源" required />
+              <FormItem :label="t('mock.addMock.form.importSource')" required />
             </template>
           </div>
           <div class="w-150">
             <FormItem name="name">
               <Input
                 v-model:value="formState.name"
-                placeholder="服务标识命名信息，最多允许100个字符"
+                :placeholder="t('mock.addMock.form.namePlaceholder')"
                 :maxlength="100" />
             </FormItem>
             <FormItem name="serviceDomain" class="relative">
               <Input
                 v-model:value="formState.serviceDomain"
-                placeholder="为服务设置域名后，可以通过域名访问Mock接口">
+                :placeholder="t('mock.addMock.form.domainPlaceholder')">
                 <template v-if="!isPrivate" #addonAfter>
                   <span>.angusmock.cloud</span>
                 </template>
@@ -308,7 +311,7 @@ onMounted(async () => {
               <template v-if="!isPrivate">
                 <Tooltip
                   placement="right"
-                  title="域名解析生效预计需要60秒以内的延迟。">
+                  :title="t('mock.addMock.form.domainTooltip')">
                   <Icon class="text-tips absolute -right-5 top-1.75 cursor-pointer text-3.5" icon="icon-tishi1" />
                 </Tooltip>
               </template>
@@ -317,7 +320,7 @@ onMounted(async () => {
               <Input
                 v-model:value="formState.servicePort"
                 dataType="number"
-                placeholder="服务所监听的端口，服务添加后不允许修改(1~65535)"
+                :placeholder="t('mock.addMock.form.portPlaceholder')"
                 :min="1"
                 :max="65535" />
             </FormItem>
@@ -325,7 +328,7 @@ onMounted(async () => {
               <Select
                 v-model:value="formState.nodeId"
                 :options="state.nodeOptions"
-                placeholder="服务所运行的节点，服务添加后不允许修改"
+                :placeholder="t('mock.addMock.form.nodePlaceholder')"
                 size="small">
               </Select>
             </FormItem>
@@ -338,7 +341,7 @@ onMounted(async () => {
                   :format="treeSelectFormat"
                   showSearch
                   allowClear
-                  placeholder="选择或查询服务"
+                  :placeholder="t('mock.addMock.form.servicePlaceholder')"
                   @change="treeSelectChange">
                   <template #title="item">
                     <div class="text-3 leading-3 flex items-center h-6.5 pr-2 space-x-2" :class="item.mockServiceId?'text-text-disabled':'text-text-content'">
@@ -349,7 +352,7 @@ onMounted(async () => {
                         {{ item.name }}
                       </div>
                       <template v-if="item.mockServiceId">
-                        <div clas="flex-none ml">(已关联)</div>
+                        <div clas="flex-none ml">{{ t('mock.addMock.form.associated') }}</div>
                       </template>
                     </div>
                   </template>
@@ -385,10 +388,10 @@ onMounted(async () => {
                         class="text-3 leading-3"
                         accept=".zip,.rar,.7z,.gz,.tar,.bz2,.xz,.lzma,.json,.yaml,.yml">
                         <Icon icon="icon-shangchuan" class="text-5 leading-5 text-text-link" />
-                        <div class="text-3 leading-3 mt-2 text-text-link text-center">上传文件</div>
+                        <div class="text-3 leading-3 mt-2 text-text-link text-center">{{ t('mock.addMock.upload.uploadFile') }}</div>
                       </Upload>
                     </div>
-                    <p class="text-3 leading-3 text-text-sub-content text-center mt-2">直接粘贴内容或拖动文件或点击上传文件，文件大小不超过20M</p>
+                    <p class="text-3 leading-3 text-text-sub-content text-center mt-2">{{ t('mock.addMock.upload.uploadDescription') }}</p>
                   </template>
                   <template v-if="formState.text">
                     <div
@@ -398,7 +401,7 @@ onMounted(async () => {
                     </div>
                     <a
                       class="absolute right-3.5 top-0 text-3 text-text-link"
-                      @click="delUploadText">清空</a>
+                      @click="delUploadText">{{ t('mock.addMock.upload.clear') }}</a>
                   </template>
                   <div
                     v-if="formState.file"
@@ -420,20 +423,20 @@ onMounted(async () => {
                 </div>
                 <div class="text-3 text-rule h-4">
                   <template v-if="fileErr">
-                    请先上传文件
+                    {{ t('mock.addMock.upload.fileRequired') }}
                   </template>
                   <template v-if="sizeErr">
-                    上传文件或文本大小超过20M，请重新上传
+                    {{ t('mock.addMock.upload.fileSizeExceeded') }}
                   </template>
                   <template v-if="versionRuleErr">
-                    请检查文件是否是Postman Collection V2/V2.1 版本JSON文件
+                    {{ t('mock.addMock.upload.postmanVersionError') }}
                   </template>
                 </div>
               </FormItem>
             </template>
             <FormItem>
               <RouterLink to="/mockservice">
-                <Button size="small">取消</Button>
+                <Button size="small">{{ t('mock.addMock.buttons.cancel') }}</Button>
               </RouterLink>
               <Button
                 size="small"
@@ -441,7 +444,7 @@ onMounted(async () => {
                 class="ml-3"
                 :loading="loading"
                 @click="handleSave">
-                确定
+                {{ t('mock.addMock.buttons.confirm') }}
               </Button>
             </FormItem>
           </div>

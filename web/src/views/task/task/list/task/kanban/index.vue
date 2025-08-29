@@ -816,7 +816,7 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
         } else {
           resetDrag(id, index, status, toStatus);
         }
-        notification.warning('没有取消任务权限');
+        notification.warning(t('task.kanbanView.messages.noCancelPermission'));
         return;
       }
     } else {

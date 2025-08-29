@@ -6,8 +6,10 @@ import { LegendComponent, LegendComponentOption, TooltipComponent, TooltipCompon
 import { PieChart, PieSeriesOption } from 'echarts/charts';
 import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
+import { useI18n } from 'vue-i18n';
 
 import { ResourceInfo } from '../../PropsType';
+const { t } = useI18n();
 
 type Props = {
   dataSource: ResourceInfo;
@@ -108,9 +110,9 @@ onMounted(() => {
 
     // 重置数据
     echartOption.series![0].data = [];
-    echartOption.series?.[0].data.push({ name: '功能', value: +newValue.functionalNum });
-    echartOption.series?.[0].data.push({ name: '性能', value: +newValue.perfNum });
-    echartOption.series?.[0].data.push({ name: '稳定性', value: +newValue.stabilityNum });
+    echartOption.series?.[0].data.push({ name: t('task.list.statistics.typeColumns.functional'), value: +newValue.functionalNum });
+    echartOption.series?.[0].data.push({ name: t('task.list.statistics.typeColumns.perf'), value: +newValue.perfNum });
+    echartOption.series?.[0].data.push({ name: t('task.list.statistics.typeColumns.stability'), value: +newValue.stabilityNum });
 
     renderChart();
   }, { immediate: true });
@@ -132,7 +134,7 @@ onMounted(() => {
       ref="containerRef"
       class="h-34"></div>
     <div class="mark-container">
-      <div class="text-center">测试类型</div>
+      <div class="text-center">{{ t('task.list.statistics.testType') }}</div>
       <div class="text-3.5 text-center font-semibold">{{ props.dataSource?.totalTestTypeNum }}</div>
     </div>
   </div>

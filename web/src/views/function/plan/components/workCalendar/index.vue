@@ -2,6 +2,9 @@
 import { Modal } from '@xcan-angus/vue-ui';
 import { defineAsyncComponent, ref } from 'vue';
 import { appContext } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface Props {
   visible: boolean;
@@ -29,7 +32,7 @@ const cancel = () => {
     :visible="props.visible"
     :footer="null"
     :width="800"
-    title="工作日历"
+    :title="t('functionPlan.comp.workCalendar.title')"
     @cancel="cancel">
     <WorkCalendar
       :projectId="props.projectId"

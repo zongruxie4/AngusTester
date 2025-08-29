@@ -19,6 +19,7 @@ import { isEqual } from 'lodash-es';
 import { debounce } from 'throttle-debounce';
 import RichEditor from '@/components/richEditor/index.vue';
 import { func, funcPlan, project } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
 
 import { ReviewInfo } from '../PropsType';
 import { FormState, ReviewCaseInfo } from './PropsType';
@@ -39,6 +40,8 @@ const props = withDefaults(defineProps<Props>(), {
   appInfo: undefined,
   data: undefined
 });
+
+const { t } = useI18n();
 
 const SelectCaseModal = defineAsyncComponent(() => import('./selectCaseModal.vue'));
 
@@ -143,7 +146,7 @@ const editOk = async () => {
     return;
   }
 
-  notification.success('修改成功');
+  notification.success(t('caseReview.editForm.modifySuccess'));
 
   const id = params.id;
   const name = params.name;
@@ -163,7 +166,7 @@ const addOk = async () => {
     return;
   }
 
-  notification.success('添加成功');
+  notification.success(t('caseReview.editForm.addSuccess'));
 
   const _id = props.data?._id;
   const newId = res?.data?.id;
@@ -174,7 +177,7 @@ const addOk = async () => {
 const descRichRef = ref();
 const validateDesc = async () => {
   if (descRichRef.value && descRichRef.value.getLength() > 2000) {
-    return Promise.reject(new Error('字符不能超过2000'));
+    return Promise.reject(new Error(t('caseReview.editForm.charLimitExceeded')));
   }
   return Promise.resolve();
 };
@@ -198,7 +201,7 @@ const toDelete = async () => {
   }
 
   modal.confirm({
-    content: `确定删除评审【${data.name}】吗？`,
+    content: t('caseReview.editForm.confirmDeleteReview', { name: data.name }),
     async onOk () {
       const id = data.id;
       loading.value = true;
@@ -208,7 +211,7 @@ const toDelete = async () => {
         return;
       }
 
-      notification.success('评审删除成功， 您可以在回收站查看删除后的评审');
+      notification.success(t('caseReview.editForm.reviewDeletedSuccess'));
       deleteTabPane([id]);
       refreshList();
     }
@@ -408,7 +411,7 @@ const pagination = ref({
 const caseList = ref<ReviewCaseInfo[]>([]);
 const columns = [
   {
-    title: '用例ID',
+    title: t('caseReview.editForm.caseId'),
     dataIndex: 'caseId',
     customRender: ({ record }) => {
       if (reviewId.value) {
@@ -418,7 +421,7 @@ const columns = [
     }
   },
   {
-    title: '名称',
+    title: t('caseReview.editForm.name'),
     dataIndex: 'caseName',
     customRender: ({ record }) => {
       if (reviewId.value) {
@@ -428,11 +431,11 @@ const columns = [
     }
   },
   {
-    title: '评审状态',
+    title: t('caseReview.editForm.reviewStatus'),
     dataIndex: 'reviewStatus'
   },
   {
-    title: '操作',
+    title: t('caseReview.editForm.action'),
     dataIndex: 'action'
   }
 ];
@@ -440,7 +443,7 @@ const columns = [
 const delCase = async (record: ReviewCaseInfo) => {
   if (reviewId.value) {
     modal.confirm({
-      title: `确认删除【${record.name}】吗？`,
+      title: t('caseReview.editForm.confirmDeleteCase', { name: record.name }),
       async onOk () {
         const [error] = await func.deleteReviewCase([record.id]);
         if (error) {
@@ -500,7 +503,7 @@ const editFlag = computed(() => {
         class="flex items-center space-x-1"
         @click="ok">
         <Icon icon="icon-dangqianxuanzhong" class="text-3.5" />
-        <span>保存</span>
+        <span>{{ t('caseReview.editForm.save') }}</span>
       </Button>
 
       <template v-if="editFlag">
@@ -511,7 +514,7 @@ const editFlag = computed(() => {
           class="flex items-center space-x-1"
           @click="toDelete">
           <Icon icon="icon-qingchu" class="text-3.5" />
-          <span>删除</span>
+          <span>{{ t('caseReview.editForm.delete') }}</span>
         </Button>
         <Button
           :disabled="!isAdmin && !permissions.includes('REVIEW')"
@@ -520,7 +523,7 @@ const editFlag = computed(() => {
           :href="`/function#reviews?id=${reviewId}`"
           class="flex items-center space-x-1">
           <Icon icon="icon-pingshen" class="text-3.5" />
-          <span>立即评审</span>
+          <span>{{ t('caseReview.editForm.reviewNow') }}</span>
         </Button>
       </template>
 
@@ -528,7 +531,7 @@ const editFlag = computed(() => {
         size="small"
         class="flex items-center space-x-1"
         @click="cancel">
-        <span>取消</span>
+        <span>{{ t('caseReview.editForm.cancel') }}</span>
       </Button>
     </div>
 
@@ -540,52 +543,52 @@ const editFlag = computed(() => {
       size="small"
       layout="horizontal">
       <FormItem
-        label="名称"
+        :label="t('caseReview.editForm.name')"
         name="name"
-        :rules="{ required: true, message: '请输入评审名称' }">
+        :rules="{ required: true, message: t('caseReview.editForm.enterReviewName') }">
         <Input
           v-model:value="formState.name"
           size="small"
           :maxlength="200"
-          :placeholder="'评审简要概述，最多支持200个字符'" />
+          :placeholder="t('caseReview.editForm.reviewBriefOverview')" />
       </FormItem>
       <FormItem
-        label="测试计划"
+        :label="t('caseReview.editForm.testPlan')"
         name="planId"
-        :rules="{ required: true, message: '请选择测试计划' }">
+        :rules="{ required: true, message: t('caseReview.editForm.selectTestPlan') }">
         <Select
           v-model:value="formState.planId"
           size="small"
           :disabled="!!reviewId"
           :action="`${TESTER}/func/plan?projectId=${props.projectId}&review=true&fullTextSearch=true`"
           :fieldNames="{value: 'id', label: 'name'}"
-          :placeholder="'选择测试计划'"
+          :placeholder="t('caseReview.editForm.selectTestPlanPlaceholder')"
           @change="handleChangePlanId" />
       </FormItem>
 
       <FormItem
-        label="负责人"
+        :label="t('caseReview.editForm.owner')"
         name="ownerId"
         class="relative"
-        :rules="{ required: true, message: '请选择负责人' }">
+        :rules="{ required: true, message: t('caseReview.editForm.selectOwner') }">
         <Select
           v-model:value="formState.ownerId"
           :options="members"
           size="small"
-          placeholder="选择负责人" />
+          :placeholder="t('caseReview.editForm.selectOwnerPlaceholder')" />
       </FormItem>
 
       <FormItem
-        label="参与人员"
+        :label="t('caseReview.editForm.participants')"
         name="participantIds"
         class="relative"
-        :rules="{ required: true, message: '请选择参与人员' }">
+        :rules="{ required: true, message: t('caseReview.editForm.selectParticipants') }">
         <Select
           v-model:value="formState.participantIds"
           :options="members"
           mode="multiple"
           size="small"
-          placeholder="选择参与人员" />
+          :placeholder="t('caseReview.editForm.selectParticipantsPlaceholder')" />
       </FormItem>
 
       <FormItem label="附件">
@@ -598,7 +601,7 @@ const editFlag = computed(() => {
             :customRequest="upLoadFile">
             <a class="text-theme-special text-theme-text-hover text-3 flex items-center leading-5 h-5 mt-0.5">
               <Icon icon="icon-lianjie1" class="mr-1" />
-              <span class="whitespace-nowrap">上传附件</span>
+              <span class="whitespace-nowrap">{{ t('caseReview.editForm.uploadAttachments') }}</span>
             </a>
           </Upload>
           <Popover
@@ -607,7 +610,7 @@ const editFlag = computed(() => {
             :overlayStyle="{ 'max-width': '400px' }">
             <template #content>
               <div class="text-3 text-theme-sub-content leading-4 break-all">
-                其他文档，如：需求说明书、参考资料、系统架构图、测试规范、技术文档等。支持的格式："jpg","bmp","png","gif","txt","docx","jpeg","rar","zip","doc","xlsx","xls","pdf"；最多上传10个附件。
+                {{ t('caseReview.editForm.attachmentsDescription') }}
               </div>
             </template>
             <Icon icon="icon-tishi1" class="text-tips ml-1 -mt-0.25 text-3.5 cursor-pointer" />
@@ -639,12 +642,12 @@ const editFlag = computed(() => {
         <TabPane
           key="funcCase"
           forceRender
-          tab="评审用例">
+          :tab="t('caseReview.editForm.reviewCases')">
           <div class="flex justify-between mb-3">
             <Input
               v-model:value="keywords"
               :disabled="!reviewId"
-              placeholder="输入查询名称"
+              :placeholder="t('caseReview.editForm.enterQueryName')"
               class="w-50"
               @change="onKeywordChange" />
             <Button
@@ -653,7 +656,7 @@ const editFlag = computed(() => {
               type="primary"
               @click="addReviewCase">
               <Icon icon="icon-jia" class="mr-1" />
-              添加评审用例
+              {{ t('caseReview.editForm.addReviewCase') }}
             </Button>
           </div>
           <Table
@@ -671,7 +674,7 @@ const editFlag = computed(() => {
                   size="small"
                   @click="delCase(record)">
                   <Icon icon="icon-qingchu" />
-                  删除
+                  {{ t('caseReview.editForm.delete') }}
                 </Button>
               </template>
               <template v-if="column.dataIndex === 'reviewStatus'">
@@ -680,7 +683,7 @@ const editFlag = computed(() => {
             </template>
           </Table>
         </TabPane>
-        <TabPane key="description" tab="评审说明">
+        <TabPane key="description" :tab="t('caseReview.editForm.reviewDescription')">
           <!-- <Textarea
             v-model:value="formState.description"
             :rows="8"

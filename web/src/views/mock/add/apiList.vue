@@ -85,7 +85,7 @@ watch([() => projectId.value, () => props.serviceId, () => params.value], () => 
     <FormItemRest>
       <Input
         v-model:value="name"
-        :placeholder="t('查询接口名称')"
+        :placeholder="t('mock.addMock.apiList.searchApiName')"
         :disabled="!props.serviceId"
         class="mb-2"
         allowClear>
@@ -95,13 +95,13 @@ watch([() => projectId.value, () => props.serviceId, () => params.value], () => 
       </Input>
       <div class="flex py-0.5 bg-bg-table-head text-text-title text-3 font-normal mb-1 pl-7.5">
         <div class="w-20 mr-2">
-          请求方法
+          {{ t('mock.addMock.apiList.requestMethod') }}
         </div>
         <div class="w-40 mr-2">
           URL
         </div>
         <div class="flex-1">
-          接口名称
+          {{ t('mock.addMock.apiList.apiName') }}
         </div>
       </div>
       <!-- <div class="h-70 overflow-y-auto space-y-2">
@@ -140,7 +140,7 @@ watch([() => projectId.value, () => props.serviceId, () => params.value], () => 
         :checked="(checkedList.length > 0 && checkedList.length === dataList.length)"
         :indeterminate="(checkedList.length > 0 && checkedList.length !== dataList.length)"
         @change="onCheckAllChange">
-        {{ t('全选') }}
+        {{ t('mock.addMock.apiList.selectAll') }}
       </Checkbox>
     </FormItemRest>
   </div>

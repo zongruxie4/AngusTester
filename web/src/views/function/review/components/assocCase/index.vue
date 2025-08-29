@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon, NoData } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -38,7 +41,7 @@ const dataList = computed(() => {
 <template>
   <div>
     <div v-if="!hideTitle" class="font-semibold text-3.5">
-      关联用例
+      {{ t('caseReview.comp.assocCase.title') }}
     </div>
     <div v-if="dataList.length" class="text-3 leading-5 pl-5.5 pt-2 space-y-0.5">
       <RouterLink

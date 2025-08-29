@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Icon, IconRequired, notification, SelectInput, Tooltip, FunctionsButton } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 import { ContentEncoding, DelayData, ResponseContentConfig, ResponseHeader } from './PropsType';
 import DelayParameter from './delayParameter.vue';
@@ -44,7 +47,7 @@ const httpStatusChange = (value:string) => {
 const addResponseHeader = () => {
   if (typeof pureInputRef.value?.add === 'function') {
     if (headerIds.value.length >= MAX_HEADER_NUM) {
-      notification.error(`最大支持 ${MAX_HEADER_NUM} 个响应头`);
+      notification.error(t('mock.mockApisComp.contentForm.notifications.maxHeaderError', { maxHeaderNum: MAX_HEADER_NUM }));
       return;
     }
 
@@ -193,10 +196,10 @@ const inputProps = {
       <div class="space-y-2">
         <div class="flex items-center h-7">
           <IconRequired />
-          <span>状态码</span>
+          <span>{{ t('mock.mockApisComp.contentForm.statusCode') }}</span>
         </div>
         <div class="flex items-center h-7">
-          <span>响应延时</span>
+          <span>{{ t('mock.mockApisComp.contentForm.responseDelay') }}</span>
         </div>
       </div>
       <div class="space-y-2">
@@ -229,10 +232,10 @@ const inputProps = {
         :disabled="addHeaderDisabled"
         @click="addResponseHeader">
         <Icon icon="icon-jia" class="mr-1" />
-        <span>响应头</span>
+        <span>{{ t('mock.mockApisComp.contentForm.responseHeaders') }}</span>
       </Button>
       <Tooltip>
-        <template #title>最大支持{{ MAX_HEADER_NUM }}个响应头</template>
+        <template #title>{{ t('mock.mockApisComp.contentForm.maxHeaderNum', { MAX_HEADER_NUM }) }}</template>
         <Icon icon="icon-shuoming" class="text-tips cursor-pointer text-3.5 ml-1" />
       </Tooltip>
     </div>
@@ -251,14 +254,14 @@ const inputProps = {
       :readonly="codeEditorReadonly"
       class="mt-4.5"
       @clear="codeEditorClear">
-      <template #leftextra><div>响应体</div></template>
+      <template #leftextra><div>{{ t('mock.mockApisComp.contentForm.responseBody') }}</div></template>
       <template #rightextra>
         <FunctionsButton>
           <Button
             style="padding: 0;"
             type="link"
             size="small">
-            Mock函数助手
+            {{ t('mock.mockApisComp.contentForm.mockFunctionHelper') }}
           </Button>
         </FunctionsButton>
         <Button
@@ -266,7 +269,7 @@ const inputProps = {
           type="link"
           size="small"
           @click="insertFile">
-          <span>插入文件</span>
+          <span>{{ t('mock.mockApisComp.contentForm.insertFile') }}</span>
         </Button>
       </template>
     </CodeEditor>
