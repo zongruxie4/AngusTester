@@ -31,9 +31,12 @@ import dayjs from 'dayjs';
 import { isEqual } from 'lodash-es';
 import type { Rule } from 'ant-design-vue/es/form';
 import { funcPlan, project } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
 
 import { PlanInfo } from '../PropsType';
 import { FormState } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -98,11 +101,11 @@ const authorizeModalVisible = ref(false);
 
 const validateDate = async (_rule: Rule, value: string) => {
   if (!value) {
-    return Promise.reject(new Error('请选择计划时间'));
+    return Promise.reject(new Error(t('functionPlan.editForm.validation.selectPlanTime')));
   } else if (!value[0]) {
-    return Promise.reject(new Error('请选择计划开始时间'));
+    return Promise.reject(new Error(t('functionPlan.editForm.validation.selectStartTime')));
   } else if (!value[1]) {
-    return Promise.reject(new Error('请选择计划截止时间'));
+    return Promise.reject(new Error(t('functionPlan.editForm.validation.selectDeadlineTime')));
   } else {
     return Promise.resolve();
   }
@@ -110,12 +113,12 @@ const validateDate = async (_rule: Rule, value: string) => {
 
 const validateTester = async () => {
   if (Object.keys(formState.value.testerResponsibilities).length === 0) {
-    return Promise.reject(new Error('请选择测试人员'));
+    return Promise.reject(new Error(t('functionPlan.editForm.validation.selectTester')));
   }
   if (testerSelectRef.value.validate()) {
     return Promise.resolve();
   } else {
-    return Promise.reject(new Error('人员重复，请重新选择'));
+    return Promise.reject(new Error(t('functionPlan.editForm.validation.duplicatePersonnel')));
   }
 };
 
@@ -146,22 +149,22 @@ const infoRichRef = ref();
 const validateMaxLength = async (value) => {
   if (value.field === 'testingObjectives') {
     if (objectiveRichRef.value && objectiveRichRef.value.getLength() > 2000) {
-      Promise.reject(new Error('字符不能超过2000'));
+      Promise.reject(new Error(t('functionPlan.editForm.validation.charLimit2000')));
     }
   }
   if (value.field === 'otherInformation') {
     if (infoRichRef.value && infoRichRef.value.getLength() > 2000) {
-      Promise.reject(new Error('字符不能超过2000'));
+      Promise.reject(new Error(t('functionPlan.editForm.validation.charLimit2000')));
     }
   }
   if (value.field === 'acceptanceCriteria') {
     if (criteriaRichRef.value && criteriaRichRef.value.getLength() > 2000) {
-      Promise.reject(new Error('字符不能超过2000'));
+      Promise.reject(new Error(t('functionPlan.editForm.validation.charLimit2000')));
     }
   }
   if (value.field === 'testingScope') {
     if (scopeRichRef.value && scopeRichRef.value.getLength() > 2000) {
-      Promise.reject(new Error('字符不能超过2000'));
+      Promise.reject(new Error(t('functionPlan.editForm.validation.charLimit2000')));
     }
   }
   return Promise.resolve();
@@ -269,7 +272,7 @@ const editOk = async () => {
     return;
   }
 
-  notification.success('修改成功');
+  notification.success(t('functionPlan.editForm.notifications.saveSuccess'));
 
   const id = params.id;
   const name = params.name;
@@ -289,7 +292,7 @@ const addOk = async () => {
     return;
   }
 
-  notification.success('添加成功');
+  notification.success(t('functionPlan.editForm.notifications.addSuccess'));
 
   const _id = props.data?._id;
   const newId = res?.data?.id;
@@ -299,7 +302,7 @@ const addOk = async () => {
 
 const validateMaxLen = (val) => {
   if (formState.value[val.field].length > 2000) {
-    return Promise.reject('字符不能超过2000个字符');
+    return Promise.reject(t('functionPlan.editForm.validation.charLimit2000WithCount'));
   }
   return Promise.resolve();
 };
@@ -333,7 +336,7 @@ const toStart = async () => {
     return;
   }
 
-  notification.success('计划开始成功');
+  notification.success(t('functionPlan.editForm.notifications.planStartSuccess'));
   loadData(id);
   refreshList();
 };
@@ -351,7 +354,7 @@ const toCompleted = async () => {
     return;
   }
 
-  notification.success('计划已完成');
+  notification.success(t('functionPlan.editForm.notifications.planCompletedSuccess'));
   loadData(id);
   refreshList();
 };
@@ -363,7 +366,7 @@ const toDelete = async () => {
   }
 
   modal.confirm({
-    content: `确定删除计划【${data.name}】吗？`,
+    content: t('functionPlan.editForm.notifications.confirmDeletePlan', { name: data.name }),
     async onOk () {
       const id = data.id;
       loading.value = true;
@@ -373,7 +376,7 @@ const toDelete = async () => {
         return;
       }
 
-      notification.success('计划删除成功， 您可以在回收站查看删除后的计划');
+      notification.success(t('functionPlan.editForm.notifications.planDeleteSuccess'));
       deleteTabPane([id]);
       refreshList();
     }
@@ -407,7 +410,7 @@ const toClone = async () => {
     return;
   }
 
-  notification.success('计划克隆成功');
+  notification.success(t('functionPlan.editForm.notifications.planCloneSuccess'));
   refreshList();
 };
 
@@ -425,7 +428,7 @@ const toResetTestResult = async () => {
     return;
   }
 
-  notification.success('计划重置测试成功');
+  notification.success(t('functionPlan.editForm.notifications.planResetTestSuccess'));
   loadData(id);
   refreshList();
 };
@@ -444,7 +447,7 @@ const toResetReviewResult = async () => {
     return;
   }
 
-  notification.success('计划重置评审成功');
+  notification.success(t('functionPlan.editForm.notifications.planResetReviewSuccess'));
   loadData(id);
   refreshList();
 };
@@ -456,9 +459,9 @@ const toCopyLink = () => {
   }
 
   toClipboard(window.location.origin + `/function#plans?id=${id}`).then(() => {
-    notification.success('复制链接成功');
+    notification.success(t('functionPlan.editForm.notifications.copyLinkSuccess'));
   }).catch(() => {
-    notification.error('复制链接失败');
+    notification.error(t('functionPlan.editForm.notifications.copyLinkFailed'));
   });
 };
 
@@ -476,6 +479,7 @@ const loadData = async (id: string) => {
     return;
   }
 
+  debugger;
   loading.value = true;
   const [error, res] = await funcPlan.getPlanDetail(id);
   loading.value = false;
@@ -606,7 +610,7 @@ const loadPermissions = async (id: string) => {
   };
   loading.value = true;
   const [error, res] = await funcPlan.getCurrentAuthByPlanId(id, params);
-  loading.value = true;
+  loading.value = false;
   if (error) {
     return;
   }
@@ -688,7 +692,7 @@ const autoSize = {
         class="flex items-center space-x-1"
         @click="ok">
         <Icon icon="icon-dangqianxuanzhong" class="text-3.5" />
-        <span>保存</span>
+        <span>{{ t('functionPlan.editForm.buttons.save') }}</span>
       </Button>
 
       <template v-if="editFlag">
@@ -700,7 +704,7 @@ const autoSize = {
           class="flex items-center space-x-1"
           @click="toStart">
           <Icon icon="icon-kaishi" class="text-3.5" />
-          <span>重新开始</span>
+          <span>{{ t('functionPlan.editForm.buttons.restart') }}</span>
         </Button>
 
         <Button
@@ -711,7 +715,7 @@ const autoSize = {
           class="flex items-center space-x-1"
           @click="toStart">
           <Icon icon="icon-kaishi" class="text-3.5" />
-          <span>开始</span>
+          <span>{{ t('functionPlan.editForm.buttons.start') }}</span>
         </Button>
 
         <template v-if="status === 'IN_PROGRESS'">
@@ -722,7 +726,7 @@ const autoSize = {
             class="flex items-center space-x-1"
             @click="toCompleted">
             <Icon icon="icon-yiwancheng" class="text-3.5" />
-            <span>完成</span>
+            <span>{{ t('functionPlan.editForm.buttons.complete') }}</span>
           </Button>
 
           <Button
@@ -732,7 +736,7 @@ const autoSize = {
             class="flex items-center space-x-1"
             @click="toCompleted">
             <Icon icon="icon-zusai" class="text-3.5" />
-            <span>阻塞</span>
+            <span>{{ t('functionPlan.editForm.buttons.block') }}</span>
           </Button>
         </template>
 
@@ -743,7 +747,7 @@ const autoSize = {
           class="flex items-center space-x-1"
           @click="toDelete">
           <Icon icon="icon-qingchu" class="text-3.5" />
-          <span>删除</span>
+          <span>{{ t('functionPlan.editForm.buttons.delete') }}</span>
         </Button>
 
         <Button
@@ -753,7 +757,7 @@ const autoSize = {
           class="flex items-center space-x-1"
           @click="toGrant">
           <Icon icon="icon-quanxian1" class="text-3.5" />
-          <span>权限</span>
+          <span>{{ t('functionPlan.editForm.buttons.permission') }}</span>
         </Button>
 
         <Button
@@ -762,7 +766,7 @@ const autoSize = {
           class="flex items-center space-x-1"
           @click="toClone">
           <Icon icon="icon-fuzhizujian2" class="text-3.5" />
-          <span>克隆</span>
+          <span>{{ t('functionPlan.editForm.buttons.clone') }}</span>
         </Button>
 
         <Button
@@ -772,7 +776,7 @@ const autoSize = {
           class="flex items-center space-x-1"
           @click="toResetTestResult">
           <Icon icon="icon-zhongzhiceshijieguo" class="text-3.5" />
-          <span>重置测试</span>
+          <span>{{ t('functionPlan.editForm.buttons.resetTest') }}</span>
         </Button>
 
         <Button
@@ -782,7 +786,7 @@ const autoSize = {
           class="flex items-center space-x-1"
           @click="toResetReviewResult">
           <Icon icon="icon-zhongzhipingshenjieguo" class="text-3.5" />
-          <span>重置评审</span>
+          <span>{{ t('functionPlan.editForm.buttons.resetReview') }}</span>
         </Button>
 
         <Button
@@ -791,7 +795,7 @@ const autoSize = {
           class="flex items-center space-x-1"
           @click="toCopyLink">
           <Icon icon="icon-fuzhi" class="text-3.5" />
-          <span>复制链接</span>
+          <span>{{ t('functionPlan.editForm.buttons.copyLink') }}</span>
         </Button>
 
         <Button
@@ -800,7 +804,7 @@ const autoSize = {
           class="flex items-center space-x-1"
           @click="toRefresh">
           <Icon icon="icon-shuaxin" class="text-3.5" />
-          <span>刷新</span>
+          <span>{{ t('functionPlan.editForm.buttons.refresh') }}</span>
         </Button>
       </template>
 
@@ -809,7 +813,7 @@ const autoSize = {
         size="small"
         class="flex items-center space-x-1"
         @click="cancelEdit">
-        <span>取消</span>
+        <span>{{ t('functionPlan.editForm.buttons.cancel') }}</span>
       </Button>
     </div>
 
@@ -821,33 +825,33 @@ const autoSize = {
       size="small"
       layout="horizontal">
       <FormItem
-        label="计划名称"
+        :label="t('functionPlan.editForm.form.planName')"
         name="name"
-        :rules="{ required: true, message: '请输入计划名称' }">
+        :rules="{ required: true, message: t('functionPlan.editForm.form.enterPlanName') }">
         <Input
           v-model:value="formState.name"
           size="small"
           :maxlength="200"
-          :placeholder="'计划简要概述，最多支持200个字符'" />
+          :placeholder="t('functionPlan.editForm.form.planNamePlaceholder')" />
       </FormItem>
 
       <FormItem
-        label="负责人"
+        :label="t('functionPlan.editForm.form.owner')"
         name="ownerId"
         class="relative"
-        :rules="{ required: true, message: '请选择负责人' }">
+        :rules="{ required: true, message: t('functionPlan.editForm.form.selectOwner') }">
         <Select
           v-model:value="formState.ownerId"
           :options="members"
           size="small"
-          placeholder="选择负责人" />
+          :placeholder="t('functionPlan.editForm.form.selectOwnerPlaceholder')" />
         <Tooltip
           placement="right"
           arrowPointAtCenter
           :overlayStyle="{ 'max-width': '400px' }">
           <template #title>
             <div>
-              通过为计划设置负责人，可以明确测试的责任和权利，更好地促进任务的完成和进度控制，如：解决问题、推进进度、协作团队成员、识别和管理风险等。
+              {{ t('functionPlan.editForm.form.ownerTooltip') }}
             </div>
           </template>
           <Icon icon="icon-tishi1" class="text-tips absolute top-1.5 ml-1 text-3.5 z-10 cursor-pointer" />
@@ -855,7 +859,7 @@ const autoSize = {
       </FormItem>
 
       <FormItem
-        label="时间计划"
+        :label="t('functionPlan.editForm.form.timePlan')"
         name="date"
         :rules="{ required: true, validator: validateDate, trigger: 'change' }">
         <DatePicker
@@ -863,7 +867,7 @@ const autoSize = {
           format="YYYY-MM-DD HH:mm:ss"
           :showNow="false"
           :showTime="{ format: 'HH:mm:ss' }"
-          :placeholder="['开始时间', '截止时间']"
+          :placeholder="[t('functionPlan.editForm.form.startTime'), t('functionPlan.editForm.form.deadlineTime')]"
           type="date-range"
           size="small"
           class="w-full" />
@@ -872,14 +876,14 @@ const autoSize = {
           arrowPointAtCenter
           :overlayStyle="{ 'max-width': '400px' }">
           <template #title>
-            <div>确定测试活动的开始时间和结束时间，以确保在项目周期内完成所有测试。</div>
+            <div>{{ t('functionPlan.editForm.form.timePlanTooltip') }}</div>
           </template>
           <Icon icon="icon-tishi1" class="text-tips absolute top-1.5 ml-1 text-3.5 cursor-pointer" />
         </Tooltip>
       </FormItem>
 
       <FormItem
-        label="测试人员"
+        :label="t('functionPlan.editForm.form.testers')"
         name="testerResponsibilities"
         class="relative"
         :rules="[{ required: true }, { validator: validateTester }]">
@@ -896,7 +900,7 @@ const autoSize = {
           :overlayStyle="{ 'max-width': '400px' }">
           <template #title>
             <div>
-              明确参与本次测试计划的测试人员，只允许测试人员参与测试活动。确定测试人员的角色，负责测试的范围，或执行哪些测试任务和测试用例，避免责任模糊和任务遗漏。
+              {{ t('functionPlan.editForm.form.testersTooltip') }}
             </div>
           </template>
           <Icon icon="icon-tishi1" class="text-tips absolute top-1.5 ml-1 text-3.5 cursor-pointer" />
@@ -904,7 +908,7 @@ const autoSize = {
       </FormItem>
 
       <FormItem
-        label="是否评审"
+        :label="t('functionPlan.editForm.form.isReview')"
         required
         class="flex-1"
         name="review">
@@ -915,10 +919,10 @@ const autoSize = {
           :overlayStyle="{ 'max-width': '430px' }">
           <template #title>
             <div>
-              <span class="mr-2">关闭后会自动清除用例评审状态（不包括评审次数计数），确认是否继续？</span>
-              <a class="text-theme-special" @click="handleReviewFlagOk">确认</a>
+              <span class="mr-2">{{ t('functionPlan.editForm.form.reviewCloseConfirm') }}</span>
+              <a class="text-theme-special" @click="handleReviewFlagOk">{{ t('functionPlan.editForm.form.confirm') }}</a>
               <Divider type="vertical" />
-              <a class="text-theme-special" @click="handleReviewFlagCancel">取消</a>
+              <a class="text-theme-special" @click="handleReviewFlagCancel">{{ t('functionPlan.editForm.form.cancel') }}</a>
             </div>
           </template>
           <Switch
@@ -933,7 +937,7 @@ const autoSize = {
           :overlayStyle="{ 'max-width': '400px' }">
           <template #title>
             <div>
-              开启后，团队内部可通过审核过程评估测试用例、测试步骤和测试结果等方面的质量和有效性，并且开启后只有用例评审通过后才可以进入测试，默认开启。
+              {{ t('functionPlan.editForm.form.reviewTooltip') }}
             </div>
           </template>
           <Icon icon="icon-tishi1" class="text-tips mt-0.25 ml-1 text-3.5 cursor-pointer" />
@@ -941,7 +945,7 @@ const autoSize = {
       </FormItem>
 
       <FormItem
-        label="工作量评估"
+        :label="t('functionPlan.editForm.form.workloadAssessment')"
         name="evalWorkloadMethod"
         class="flex-1">
         <RadioGroup
@@ -961,8 +965,7 @@ const autoSize = {
           :overlayStyle="{ 'max-width': '400px' }">
           <template #title>
             <div>
-              指定工作量评估方式。工时是指每个人员完成一项工作实际所花费的时间，
-              以小时为单位计算；故事点是基于工作任务量、综合难度、复杂度等的评估值，使用故事点能强制团队细分任务中问题，具有灵活、敏捷度高的特点，推荐使用。
+              {{ t('functionPlan.editForm.form.workloadAssessmentTooltip') }}
             </div>
           </template>
           <Icon icon="icon-tishi1" class="text-tips text-3.5 cursor-pointer" />
@@ -970,7 +973,7 @@ const autoSize = {
       </FormItem>
 
       <FormItem
-        label="用例前缀"
+        :label="t('functionPlan.editForm.form.casePrefix')"
         name="casePrefix"
         class="relative flex-1">
         <Input
@@ -979,19 +982,19 @@ const autoSize = {
           :readonly="!!dataSource?.id"
           :disabled="!!dataSource?.id"
           :maxlength="40"
-          :placeholder="'用例前缀，最多可输入40个字符'" />
+          :placeholder="t('functionPlan.editForm.form.casePrefixPlaceholder')" />
         <Tooltip
           placement="right"
           arrowPointAtCenter
           :overlayStyle="{ 'max-width': '400px' }">
           <template #title>
-            <div>设置后计划下用例名会以该前缀开头，不允许修改。</div>
+            <div>{{ t('functionPlan.editForm.form.casePrefixTooltip') }}</div>
           </template>
           <Icon icon="icon-tishi1" class="text-tips absolute top-1.5 ml-1 text-3.5 cursor-pointer" />
         </Tooltip>
       </FormItem>
 
-      <FormItem label="附件">
+      <FormItem :label="t('functionPlan.editForm.form.attachments')">
         <div class="flex items-center mt-0.5">
           <Upload
             :fileList="[]"
@@ -1000,7 +1003,7 @@ const autoSize = {
             :customRequest="upLoadFile">
             <a class="text-theme-special text-theme-text-hover text-3 flex items-center leading-5 h-5 mt-0.5">
               <Icon icon="icon-lianjie1" class="mr-1" />
-              <span class="whitespace-nowrap">上传附件</span>
+              <span class="whitespace-nowrap">{{ t('functionPlan.editForm.form.uploadAttachments') }}</span>
             </a>
           </Upload>
           <Popover
@@ -1009,7 +1012,7 @@ const autoSize = {
             :overlayStyle="{ 'max-width': '400px' }">
             <template #content>
               <div class="text-3 text-theme-sub-content leading-4 break-all">
-                其他文档，如：需求说明书、参考资料、系统架构图、测试规范、技术文档等。支持的格式："jpg","bmp","png","gif","txt","docx","jpeg","rar","zip","doc","xlsx","xls","pdf"；最多上传10个附件。
+                {{ t('functionPlan.editForm.form.attachmentsTooltip') }}
               </div>
             </template>
             <Icon icon="icon-tishi1" class="text-tips ml-1 -mt-0.25 text-3.5 cursor-pointer" />
@@ -1043,18 +1046,18 @@ const autoSize = {
           <template #tab>
             <div class="text-right pr-2">
               <IconRequired />
-              <span>测试目标</span>
+              <span>{{ t('functionPlan.editForm.form.testingObjectives') }}</span>
             </div>
           </template>
           <FormItem
             label=""
             class="!mb-5"
             name="testingObjectives"
-            :rules="[{ validator: validateRequired, message: '请输入测试目标' }, {validator: validateMaxLength}]">
+            :rules="[{ validator: validateRequired, message: t('functionPlan.editForm.form.enterTestingObjectives') }, {validator: validateMaxLength}]">
             <RichEditor
               ref="objectiveRichRef"
               v-model:value="formState.testingObjectives"
-              :options="{placeholder: '界定测试活动所涵盖的具体内容和范围，包括测试哪些功能模块、平台、版本等。'}" />
+              :options="{placeholder: t('functionPlan.editForm.form.testingObjectivesPlaceholder')}" />
             <!-- <Textarea
               v-model:value="formState.testingObjectives"
               size="small"
@@ -1067,17 +1070,17 @@ const autoSize = {
         <TabPane key="testingScope" forceRender>
           <template #tab>
             <IconRequired />
-            <span>测试范围</span>
+            <span>{{ t('functionPlan.editForm.form.testingScope') }}</span>
           </template>
           <FormItem
             label=""
             name="testingScope"
             class="!mb-5"
-            :rules="[{ validator: validateRequired, message: '请输入测试范围' }, {validator: validateMaxLength}]">
+            :rules="[{ validator: validateRequired, message: t('functionPlan.editForm.form.enterTestingScope') }, {validator: validateMaxLength}]">
             <RichEditor
               ref="scopeRichRef"
               v-model:value="formState.testingScope"
-              :options="{placeholder: '界定测试活动所涵盖的具体内容和范围，包括测试哪些功能模块、平台、版本等。'}" />
+              :options="{placeholder: t('functionPlan.editForm.form.testingScopePlaceholder')}" />
             <!-- <Textarea
               v-model:value="formState.testingScope"
               size="small"
@@ -1089,7 +1092,7 @@ const autoSize = {
         </TabPane>
         <TabPane
           key="acceptanceCriteria"
-          tab="验收标准"
+          :tab="t('functionPlan.editForm.form.acceptanceCriteria')"
           forceRender>
           <FormItem
             label=""
@@ -1098,7 +1101,7 @@ const autoSize = {
             <RichEditor
               ref="criteriaRichRef"
               v-model:value="formState.acceptanceCriteria"
-              :options="{placeholder: '明确计软件产品交付的具体条件和标准。'}" />
+              :options="{placeholder: t('functionPlan.editForm.form.acceptanceCriteriaPlaceholder')}" />
             <!-- <Textarea
               v-model:value="formState.acceptanceCriteria"
               size="small"
@@ -1111,7 +1114,7 @@ const autoSize = {
         </TabPane>
         <TabPane
           key="otherInformation"
-          tab="其他说明"
+          :tab="t('functionPlan.editForm.form.otherInformation')"
           forceRender>
           <FormItem
             label=""
@@ -1120,7 +1123,7 @@ const autoSize = {
             <RichEditor
               ref="infoRichRef"
               v-model:value="formState.otherInformation"
-              :options="{placeholder: '其他说明，如测试策略、风险评估和管理等。'}" />
+              :options="{placeholder: t('functionPlan.editForm.form.otherInformationPlaceholder')}" />
             <!-- <Textarea
               v-model:value="formState.otherInformation"
               size="small"
@@ -1145,9 +1148,9 @@ const autoSize = {
         :updateUrl="`${TESTER}/func/plan/auth`"
         :enabledUrl="`${TESTER}/func/plan/${dataSource?.id}/auth/enabled`"
         :initStatusUrl="`${TESTER}/func/plan/${dataSource?.id}/auth/status`"
-        onTips="开启&quot;有权限控制&quot;后，需要手动授权服务权限后才会有计划相应操作权限，默认开启&quot;有权限控制&quot;。注意：如果授权对象没有父级项目权限将自动授权查看权限。"
-        offTips="开启&quot;无权限控制&quot;后，将允许所有用户公开查看和操作当前计划，查看用户同时需要有当前计划父级项目权限。"
-        title="计划权限"
+        :onTips="t('functionPlan.editForm.permissionModal.onTips')"
+        :offTips="t('functionPlan.editForm.permissionModal.offTips')"
+        :title="t('functionPlan.editForm.permissionModal.title')"
         @change="authFlagChange" />
     </AsyncComponent>
   </Spin>

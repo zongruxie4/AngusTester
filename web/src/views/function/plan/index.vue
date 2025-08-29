@@ -3,8 +3,11 @@ import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from '
 import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 
 import { IPane } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -55,7 +58,7 @@ const initialize = () => {
         return {
           _id: 'planList',
           value: 'planList',
-          name: '计划',
+          name: t('functionPlan.main.plan'),
           closable: false // 是否允许关闭，true - 允许关闭，false - 禁止关闭
         };
       }
@@ -103,7 +106,7 @@ const hashChange = (hash: string) => {
         const id = utils.uuid();
         return {
           _id: id,
-          name: '添加计划',
+          name: t('functionPlan.main.addPlan'),
           value: 'planEdit',
           noCache: true,
           data: { _id: id }

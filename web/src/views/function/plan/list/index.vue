@@ -19,11 +19,14 @@ import { utils, TESTER, download } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import ProcessPng from './images/process.png';
 import { funcPlan } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
 
 import { FuncPlanStatus } from '@/enums/enums';
 import { PlanInfo } from '../PropsType';
 
 import SearchPanel from '@/views/function/plan/list/searchPanel/index.vue';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -126,7 +129,7 @@ const toStart = async (data: PlanInfo, index: number) => {
     return;
   }
 
-  notification.success('计划开始成功');
+  notification.success(t('functionPlan.list.planStartSuccess'));
   setTableData(id, index);
 };
 
@@ -139,7 +142,7 @@ const toCompleted = async (data: PlanInfo, index: number) => {
     return;
   }
 
-  notification.success('计划已完成');
+  notification.success(t('functionPlan.list.planCompletedSuccess'));
   setTableData(id, index);
 };
 
@@ -152,13 +155,13 @@ const toBlock = async (data: PlanInfo, index: number) => {
     return;
   }
 
-  notification.success('计划标记为阻塞成功');
+  notification.success(t('functionPlan.list.planBlockedSuccess'));
   setTableData(id, index);
 };
 
 const toDelete = async (data: PlanInfo) => {
   modal.confirm({
-    content: `确定删除计划【${data.name}】吗？`,
+    content: t('functionPlan.list.confirmDeletePlan', { name: data.name }),
     async onOk () {
       const id = data.id;
       const [error] = await funcPlan.deletePlan(id);
@@ -166,7 +169,7 @@ const toDelete = async (data: PlanInfo) => {
         return;
       }
 
-      notification.success('计划删除成功， 您可以在回收站查看删除后的计划');
+      notification.success(t('functionPlan.list.planDeleteSuccess'));
       loadData();
 
       deleteTabPane([id]);
@@ -196,7 +199,7 @@ const toClone = async (data: PlanInfo) => {
     return;
   }
 
-  notification.success('计划克隆成功');
+  notification.success(t('functionPlan.list.planCloneSuccess'));
   loadData();
 };
 
@@ -210,7 +213,7 @@ const toResetTestResult = async (data: PlanInfo) => {
     return;
   }
 
-  notification.success('计划重置测试成功');
+  notification.success(t('functionPlan.list.planResetTestSuccess'));
 };
 
 const toResetReviewResult = async (data: PlanInfo) => {
@@ -223,7 +226,7 @@ const toResetReviewResult = async (data: PlanInfo) => {
     return;
   }
 
-  notification.success('计划重置评审成功');
+  notification.success(t('functionPlan.list.planResetReviewSuccess'));
 };
 
 const toExport = async (data: PlanInfo) => {
@@ -425,137 +428,74 @@ const dropdownPermissionsMap = computed(() => {
   return map;
 });
 
-const searchPanelOptions = [
-  {
-    valueKey: 'name',
-    type: 'input',
-    placeholder: '查询计划名称、描述',
-    allowClear: true,
-    maxlength: 100
-  },
-  {
-    valueKey: 'review',
-    type: 'select',
-    allowClear: true,
-    options: [{ label: t('status.yes'), value: true }, { label: t('status.no'), value: false }],
-    placeholder: '是否评审'
-  },
-  {
-    valueKey: 'status',
-    type: 'select-enum',
-    enumKey: FuncPlanStatus,
-    placeholder: '选择状态',
-    allowClear: true
-  },
-  {
-    valueKey: 'ownerId',
-    type: 'select-user',
-    allowClear: true,
-    placeholder: '选择负责人',
-    maxlength: 100
-  },
-  {
-    valueKey: 'startDate',
-    type: 'date',
-    valueType: 'start',
-    op: 'GREATER_THAN_EQUAL',
-    placeholder: '计划开始时间大于等于',
-    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', 'HH:mm:ss') },
-    allowClear: true
-  },
-  {
-    valueKey: 'deadlineDate',
-    type: 'date',
-    valueType: 'start',
-    op: 'LESS_THAN_EQUAL',
-    placeholder: '计划截止时间小于等于',
-    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', 'HH:mm:ss') },
-    allowClear: true
-  }
-];
+
 
 const dropdownMenuItems = [
   {
     key: 'block',
     icon: 'icon-zusai',
-    name: '阻塞',
+    name: t('functionPlan.list.block'),
     permission: 'block'
   },
   {
     key: 'delete',
     icon: 'icon-qingchu',
-    name: '删除',
+    name: t('functionPlan.list.delete'),
     permission: 'delete'
   },
   {
     key: 'grant',
     icon: 'icon-quanxian1',
-    name: '权限',
+    name: t('functionPlan.list.permission'),
     permission: 'grant'
   },
   {
     key: 'clone',
     icon: 'icon-fuzhi',
-    name: '克隆',
+    name: t('functionPlan.list.clone'),
     noAuth: true,
     permission: 'clone'
   },
   {
     key: 'resetTestResult',
     icon: 'icon-zhongzhiceshijieguo',
-    name: '重置测试',
+    name: t('functionPlan.list.resetTest'),
     permission: 'resetTestResult'
   },
   {
     key: 'resetReviewResult',
     icon: 'icon-zhongzhipingshenjieguo',
-    name: '重置评审',
+    name: t('functionPlan.list.resetReview'),
     permission: 'resetReviewResult'
   },
   {
     key: 'viewBurnDown',
     icon: 'icon-jiankong',
     noAuth: true,
-    name: '查看燃尽图'
+    name: t('functionPlan.list.viewBurnDown')
   },
   {
     key: 'viewProgress',
     icon: 'icon-jiankong',
     noAuth: true,
-    name: '查看成员进度'
+    name: t('functionPlan.list.viewProgress')
   },
   {
     key: 'viewWrokCalendar',
     icon: 'icon-jiankong',
     noAuth: true,
-    name: '查看工作日历'
+    name: t('functionPlan.list.viewWorkCalendar')
   },
   {
     key: 'export',
     icon: 'icon-daochu',
-    name: '导出用例',
+    name: t('functionPlan.list.exportCase'),
     permission: 'export'
   }
 ];
 
 const pageSizeOptions = ['5', '10', '15', '20', '30'];
 
-const sortMenuItems: {
-  name: string;
-  key: OrderByKey;
-  orderSort: OrderSortKey;
-}[] = [
-  {
-    name: '按添加时间',
-    key: 'createdDate',
-    orderSort: 'DESC'
-  },
-  {
-    name: '按添加人',
-    key: 'createdByName',
-    orderSort: 'ASC'
-  }
-];
 </script>
 
 <template>
@@ -563,9 +503,9 @@ const sortMenuItems: {
     <div class="flex space-x-2">
       <Introduce class="mb-7 flex-1" />
       <div class="flex flex-col w-145">
-        <div class="text-3.5 font-semibold mb-2.5">敏捷测试</div>
+        <div class="text-3.5 font-semibold mb-2.5">{{ t('functionPlan.list.agileTesting') }}</div>
         <div>
-          在敏捷软件开发环境中进行的软件测试，测试与开发的紧密协作，通过持续的反馈和协作，提升软件的质量和满足用户需求。
+          {{ t('functionPlan.list.agileTestingDesc') }}
         </div>
         <div class="flex-1 flex flex-col justify-center">
           <img :src="ProcessPng" class="mt-2 items-center" />
@@ -573,15 +513,15 @@ const sortMenuItems: {
       </div>
     </div>
 
-    <div class="text-3.5 font-semibold mb-1">已添加的计划</div>
+    <div class="text-3.5 font-semibold mb-1">{{ t('functionPlan.list.addedPlans') }}</div>
     <Spin :spinning="loading" class="flex-1 flex flex-col">
       <template v-if="loaded">
         <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
-            <span>您尚未添加任何计划，立即</span>
+            <span>{{ t('functionPlan.list.noPlans') }}</span>
             <RouterLink class="router-link flex-1 truncate" :to="`/function#plans?type=ADD`">
-              添加计划
+              {{ t('functionPlan.list.addPlan') }}
             </RouterLink>
           </div>
         </div>
@@ -610,7 +550,7 @@ const sortMenuItems: {
 
                 <div class="text-3 whitespace-nowrap">
                   <span class="text-theme-title ml-2">{{ item.startDate }}</span>
-                  <span class="text-theme-sub-content mx-2">至</span>
+                  <span class="text-theme-sub-content mx-2">{{ t('functionPlan.list.to') }}</span>
                   <span class="text-theme-title">{{ item.deadlineDate }}</span>
                 </div>
 
@@ -628,7 +568,7 @@ const sortMenuItems: {
                 <div class="flex leading-5">
                   <div class="flex mr-10 items-center">
                     <div class="mr-2">
-                      <span>负责人</span>
+                      <span>{{ t('functionPlan.list.owner') }}</span>
                       <Colon />
                     </div>
                     <div class="w-5 h-5 rounded-full mr-1 overflow-hidden">
@@ -647,7 +587,7 @@ const sortMenuItems: {
 
                   <div class="flex items-center">
                     <div class="mr-2">
-                      <span>成员</span>
+                      <span>{{ t('functionPlan.list.members') }}</span>
                       <Colon />
                     </div>
 
@@ -668,7 +608,7 @@ const sortMenuItems: {
                         placement="bottomLeft"
                         internal>
                         <template #title>
-                          <span class="text-3">所有成员</span>
+                          <span class="text-3">{{ t('functionPlan.list.allMembers') }}</span>
                         </template>
                         <template #content>
                           <div class="flex flex-wrap" style="max-width: 700px;">
@@ -702,14 +642,14 @@ const sortMenuItems: {
                   </div>
                 </div>
 
-                <div class="ml-8 text-theme-content">共{{ item.caseNum }}条用例</div>
+                <div class="ml-8 text-theme-content">{{ t('functionPlan.list.totalCases', { count: item.caseNum }) }}</div>
               </div>
 
               <div class="px-3.5 flex flex-start justify-between text-3 text-theme-sub-content">
                 <div class="flex flex-wrap">
                   <div class="flex mt-3">
                     <div class="mr-2 whitespace-nowrap">
-                      <span>ID</span>
+                      <span>{{ t('functionPlan.list.id') }}</span>
                       <Colon />
                     </div>
                     <div class="text-theme-content">{{ item.id || "--" }}</div>
@@ -717,7 +657,7 @@ const sortMenuItems: {
 
                   <div class="flex ml-8  mt-3">
                     <div class="mr-2 whitespace-nowrap">
-                      <span>是否评审</span>
+                      <span>{{ t('functionPlan.list.isReviewLabel') }}</span>
                       <Colon />
                     </div>
                     <div class="text-theme-content">{{ item.review ? t('status.yes') : t('status.no') }}</div>
@@ -725,7 +665,7 @@ const sortMenuItems: {
 
                   <div class="flex ml-8  mt-3">
                     <div class="mr-2 whitespace-nowrap">
-                      <span>工作量评估</span>
+                      <span>{{ t('functionPlan.list.workloadAssessment') }}</span>
                       <Colon />
                     </div>
                     <div class="text-theme-content">{{ item.evalWorkloadMethod.message }}</div>
@@ -733,7 +673,7 @@ const sortMenuItems: {
 
                   <div v-if="item.casePrefix" class="flex ml-8 mt-3 relative">
                     <div class="mr-2 whitespace-nowrap">
-                      <span>用例前缀</span>
+                      <span>{{ t('functionPlan.list.casePrefix') }}</span>
                       <Colon />
                     </div>
                     <div
@@ -745,7 +685,7 @@ const sortMenuItems: {
                   </div>
 
                   <div v-if="item.attachments?.length" class="whitespace-nowrap ml-8 mt-3">
-                    <span>附件数</span>
+                    <span>{{ t('functionPlan.list.attachmentCount') }}</span>
                     <Colon />
                     <Popover placement="bottomLeft" internal>
                       <template #content>
@@ -772,7 +712,7 @@ const sortMenuItems: {
                     :title="item.lastModifiedByName">
                     {{ item.lastModifiedByName }}
                   </div>
-                  <div class="mx-2 whitespace-nowrap">修改于</div>
+                  <div class="mx-2 whitespace-nowrap">{{ t('functionPlan.list.modifiedBy') }}</div>
                   <div class="whitespace-nowrap text-theme-content">
                     {{ item.lastModifiedDate }}
                   </div>
@@ -784,12 +724,12 @@ const sortMenuItems: {
                   :title="item.otherInformation"
                   class="truncate mr-8"
                   style="max-width: 70%;">
-                  <RichText :value="item.otherInformation" emptyText="无说明~" />
+                  <RichText :value="item.otherInformation" :emptyText="t('functionPlan.list.noDescription')" />
                 </div>
                 <div class="flex space-x-3 items-center justify-between h-4 leading-5">
                   <RouterLink class="flex items-center space-x-1" :to="`/function#plans?id=${item.id}&type=edit`">
                     <Icon icon="icon-shuxie" class="text-3.5" />
-                    <span>编辑</span>
+                    <span>{{ t('functionPlan.list.edit') }}</span>
                   </RouterLink>
 
                   <Button
@@ -799,7 +739,7 @@ const sortMenuItems: {
                     class="px-0 flex items-center space-x-1"
                     @click="goCase(item)">
                     <Icon icon="icon-ceshiyongli1" class="text-3.5" />
-                    <span>查看用例</span>
+                    <span>{{ t('functionPlan.list.viewCases') }}</span>
                   </Button>
 
                   <Button
@@ -809,7 +749,7 @@ const sortMenuItems: {
                     class="px-0 flex items-center space-x-1"
                     @click="toStart(item, index)">
                     <Icon icon="icon-kaishi" class="text-3.5" />
-                    <span>{{ item.status.value === 'COMPLETED' ? '重新开始' : '开始' }}</span>
+                    <span>{{ item.status.value === 'COMPLETED' ? t('functionPlan.list.restart') : t('functionPlan.list.start') }}</span>
                   </Button>
 
                   <Button
@@ -819,7 +759,7 @@ const sortMenuItems: {
                     class="px-0 flex items-center space-x-1"
                     @click="toCompleted(item, index)">
                     <Icon icon="icon-yiwancheng" class="text-3.5" />
-                    <span>完成</span>
+                    <span>{{ t('functionPlan.list.complete') }}</span>
                   </Button>
 
                   <Dropdown
@@ -872,9 +812,9 @@ const sortMenuItems: {
         :updateUrl="`${TESTER}/func/plan/auth`"
         :enabledUrl="`${TESTER}/func/plan/${selectedData?.id}/auth/enabled`"
         :initStatusUrl="`${TESTER}/func/plan/${selectedData?.id}/auth/status`"
-        onTips="开启&quot;有权限控制&quot;后，需要手动授权服务权限后才会有计划相应操作权限，默认开启&quot;有权限控制&quot;。注意：如果授权对象没有父级项目权限将自动授权查看权限。"
-        offTips="开启&quot;无权限控制&quot;后，将允许所有用户公开查看和操作当前计划，查看用户同时需要有当前计划父级项目权限。"
-        title="计划权限"
+        :onTips="t('functionPlan.list.permissionControlOnTips')"
+        :offTips="t('functionPlan.list.permissionControlOffTips')"
+        :title="t('functionPlan.list.planPermission')"
         @change="authFlagChange" />
     </AsyncComponent>
 

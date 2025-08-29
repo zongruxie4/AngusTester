@@ -3,6 +3,9 @@ import { computed, onMounted, ref, watch } from 'vue';
 import * as echarts from 'echarts';
 import { RadioGroup } from 'ant-design-vue';
 import { analysis } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface Props {
   planId: string;
@@ -15,11 +18,11 @@ const props = withDefaults(defineProps<Props>(), {
 const burnDownOpt = computed(() => [
   {
     value: 'NUM',
-    label: '用例数'
+    label: t('functionPlan.planDetail.burnDownChart.caseCount')
   },
   {
     value: 'WORKLOAD',
-    label: '工作量'
+    label: t('functionPlan.planDetail.burnDownChart.workload')
   }
 ]);
 
@@ -52,12 +55,12 @@ const burnDownEchartsConfig = {
   },
   series: [
     {
-      name: '剩余',
+      name: t('functionPlan.planDetail.burnDownChart.remaining'),
       data: [],
       type: 'line'
     },
     {
-      name: '期望',
+      name: t('functionPlan.planDetail.burnDownChart.expected'),
       data: [],
       type: 'line',
       smooth: true

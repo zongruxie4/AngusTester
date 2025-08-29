@@ -64,7 +64,9 @@
     "createdByMe": "Created by Me",
     "modifiedByMe": "Modified by Me",
     "addByMe": "Added by Me",
-    "tester": "Test for me"
+    "tester": "Test for me",
+    "myResponsible": "My Responsible",
+    "title": "Quick Search"
   },
   "tips": {
     "saveSuccess": "Save successful",

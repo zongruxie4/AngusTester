@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue';
 import { Input, Select } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface Props {
     value: {[userId: string]: string};
@@ -101,14 +104,14 @@ defineExpose({
         :error="!!item.id && !!repeatIds.includes(item.id)"
         size="small"
         allowClear
-        placeholder="选择人员"
+        :placeholder="t('functionPlan.editForm.testerSelect.selectPersonnel')"
         class="!w-50"
         @change="onUserChange" />
       <div class="flex-1">
         <Input
           v-model:value="item.description"
           :maxlength="1000"
-          placeholder="工作职责"
+          :placeholder="t('functionPlan.editForm.testerSelect.workResponsibilities')"
           @blur="change" />
       </div>
     </div>

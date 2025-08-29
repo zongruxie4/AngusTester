@@ -5,6 +5,9 @@ import { enumUtils, appContext } from '@xcan-angus/infra';
 import { FuncPlanStatus } from '@/enums/enums';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface Props {
   loading: boolean;
@@ -38,7 +41,7 @@ const searchPanelOptions = [
   {
     valueKey: 'name',
     type: 'input',
-    placeholder: '查询计划名称、描述',
+    placeholder: t('functionPlan.list.searchPlanName'),
     allowClear: true,
     maxlength: 100
   },
@@ -47,13 +50,13 @@ const searchPanelOptions = [
     type: 'select',
     allowClear: true,
     options: [{ label: t('status.yes'), value: true }, { label: t('status.no'), value: false }],
-    placeholder: '是否评审'
+    placeholder: t('functionPlan.list.isReview')
   },
   {
     valueKey: 'ownerId',
     type: 'select-user',
     allowClear: true,
-    placeholder: '选择负责人',
+    placeholder: t('functionPlan.list.selectOwner'),
     maxlength: 100
   },
   {
@@ -61,7 +64,7 @@ const searchPanelOptions = [
     type: 'date',
     valueType: 'start',
     op: 'GREATER_THAN_EQUAL',
-    placeholder: '计划开始时间大于等于',
+    placeholder: t('functionPlan.list.planStartTime'),
     showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', 'HH:mm:ss') },
     allowClear: true
   },
@@ -70,7 +73,7 @@ const searchPanelOptions = [
     type: 'date',
     valueType: 'start',
     op: 'LESS_THAN_EQUAL',
-    placeholder: '计划截止时间小于等于',
+    placeholder: t('functionPlan.list.planDeadlineTime'),
     showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', 'HH:mm:ss') },
     allowClear: true
   }
@@ -82,22 +85,22 @@ const sortMenuItems: {
   orderSort: OrderSortKey;
 }[] = [
   {
-    name: '按名称',
+    name: t('functionPlan.list.sortByName'),
     key: 'name',
     orderSort: 'DESC'
   },
   {
-    name: '按负责人',
+    name: t('functionPlan.list.sortByOwner'),
     key: 'ownerId',
     orderSort: 'ASC'
   },
   {
-    name: '按添加人',
+    name: t('functionPlan.list.sortByCreator'),
     key: 'createdBy',
     orderSort: 'ASC'
   },
   {
-    name: '按添加时间',
+    name: t('functionPlan.list.sortByAddTime'),
     key: 'createdDate',
     orderSort: 'ASC'
   }
@@ -106,32 +109,32 @@ const sortMenuItems: {
 const menuItems = computed(() => [
   {
     key: '',
-    name: '全部'
+    name: t('quickSearchTags.all')
   },
   {
     key: 'ownerId',
-    name: '我负责的'
+    name: t('quickSearchTags.myResponsible')
   },
   {
     key: 'createdBy',
-    name: '我创建的'
+    name: t('quickSearchTags.createdByMe')
   },
   {
     key: 'lastModifiedBy',
-    name: '我修改的'
+    name: t('quickSearchTags.modifiedByMe')
   },
   ...planStatusTypeOpt.value,
   {
     key: 'lastDay',
-    name: '近1天'
+    name: t('quickSearchTags.past1Day')
   },
   {
     key: 'lastThreeDays',
-    name: '近3天'
+    name: t('quickSearchTags.past3Day')
   },
   {
     key: 'lastWeek',
-    name: '近7天'
+    name: t('quickSearchTags.past7Day')
   }
 ]);
 
@@ -307,7 +310,7 @@ onMounted(() => {
   <div class="mt-2.5 mb-3.5">
     <div class="flex">
       <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-        <span>快速查询</span>
+        <span>{{ t('quickSearchTags.title') }}</span>
         <Colon />
       </div>
       <div class="flex  flex-wrap ml-2">
@@ -335,7 +338,7 @@ onMounted(() => {
           class="p-0">
           <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/function#plans?type=ADD`">
             <Icon icon="icon-jia" class="text-3.5" />
-            <span>添加计划</span>
+            <span>{{ t('functionPlan.list.addPlan') }}</span>
           </RouterLink>
         </Button>
 
@@ -346,7 +349,7 @@ onMounted(() => {
           @click="toSort">
           <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
             <Icon icon="icon-shunxu" class="text-3.5" />
-            <span>排序</span>
+            <span>{{ t('sort') }}</span>
           </div>
         </DropdownSort>
 
@@ -357,7 +360,7 @@ onMounted(() => {
           <template #default>
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-shuaxin" class="text-3.5" />
-              <span class="ml-1">刷新</span>
+              <span class="ml-1">{{ t('actions.refresh') }}</span>
             </div>
           </template>
         </IconRefresh>
