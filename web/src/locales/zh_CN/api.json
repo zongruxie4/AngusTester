@@ -225,6 +225,7 @@
     "in_starting": "正在启动中",
     "refreshInstance_tip": "刷新实例会强制同步服务配置、接口安全、跨域设置和Mock接口到运行的服务实例。",
     "refreshInstance_success": "刷新实例成功",
+    "console": "控制台",
     "searchPanel": {
       "namePlaceholder": "查询服务ID、名称",
       "nodeIpPlaceholder": "查询服务IP",
@@ -366,7 +367,7 @@
         },
         "settings": {
           "logTooltip": "记录基本信息以及请求和响应头。",
-          "corsTooltip": "当通过浏览器访问Mock接口站点域名和访问Mock接口地址不一致时，会触发浏览器同源访问策略（CORS）限制导致接口无法访问，通过当前"跨域配置"可以自由制定跨域访问策略。修改后需要重启服务或刷新实例后生效。"
+          "corsTooltip": "当通过浏览器访问Mock接口站点域名和访问Mock接口地址不一致时，会触发浏览器同源访问策略（CORS）限制导致接口无法访问，通过当前\"跨域配置\"可以自由制定跨域访问策略。修改后需要重启服务或刷新实例后生效。"
         },
         "requestRecord": {
           "apiName": "接口名称",
@@ -627,6 +628,17 @@
           "queryParameters": "查询参数",
           "requestHeaders": "请求头"
         }
+      }
+    },
+    "exportModal": {
+      "title": "导出",
+      "format": "格式",
+      "fields": {
+        "endpoint": "路径",
+        "summary": "名称"
+      },
+      "notifications": {
+        "exportSuccess": "导出成功"
       }
     }
   },

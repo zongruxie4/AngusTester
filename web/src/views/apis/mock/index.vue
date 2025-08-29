@@ -494,7 +494,6 @@ const searchPanelRef = ref();
 onMounted(() => {
   watch(() => projectId.value, newValue => {
     if (newValue) {
-      debugger;
       if (route.query.sid) {
         nextTick(() => {
           searchPanelRef.value.setConfigs([{ valueKey: 'name', value: route.query.sid }]);
@@ -827,7 +826,7 @@ const statusStyleMap = {
                     <span>{{ record?.failTips.message }}<span v-if="record.failTips?.exitCode !== null || record.failTips?.exitCode !== ''" class="ml-2">(退出码<Colon class="mr-1" />{{ record.failTips.exitCode }})</span></span>
                   </div>
                   <div v-if="record.failTips?.console?.length">
-                    <div class="mt-2">控制台<Colon /></div>
+                    <div class="mt-2">{{ t('mock.console') }}<Colon /></div>
                     <div
                       v-for="(item,index) in record.failTips.console"
                       :key="index"

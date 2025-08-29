@@ -179,6 +179,7 @@
     "in_starting": "Starting",
     "refreshInstance_tip": "Refreshing the instance will forcibly synchronize service configuration, interface security, CORS settings and Mock interfaces to the running service instance.",
     "refreshInstance_success": "Instance Refreshed Successfully",
+    "console": "Console",
     "searchPanel": {
       "namePlaceholder": "Search service ID, name",
       "nodeIpPlaceholder": "Search service IP",
@@ -225,362 +226,373 @@
     },
     "addMock": {
       "validation": {
-        "enterDomain": "请输入域名",
-        "enterCorrectDomain": "请输入正确的域名",
-        "enterName": "请输入名称",
-        "enterPort": "请输入端口（1~65535）",
-        "selectNode": "请选择节点",
-        "selectProjectService": "请选择项目服务"
+        "enterDomain": "please enter domain",
+        "enterCorrectDomain": "please enter correct domain",
+        "enterName": "please enter name",
+        "enterPort": "please enter port (1~65535)",
+        "selectNode": "please select node",
+        "selectProjectService": "please select project service"
       },
       "notifications": {
-        "addSuccess": "添加成功"
+        "addSuccess": "add successfully"
       },
       "form": {
-        "name": "名称",
-        "namePlaceholder": "服务标识命名信息，最多允许100个字符",
-        "domain": "域名",
-        "domainPlaceholder": "为服务设置域名后，可以通过域名访问Mock接口",
-        "domainTooltip": "域名解析生效预计需要60秒以内的延迟。",
-        "port": "端口",
-        "portPlaceholder": "服务所监听的端口，服务添加后不允许修改(1~65535)",
-        "node": "节点",
-        "nodePlaceholder": "服务所运行的节点，服务添加后不允许修改",
-        "service": "服务",
-        "servicePlaceholder": "选择或查询服务",
-        "api": "接口",
-        "importSource": "导入来源",
-        "associated": "(已关联)"
+        "name": "name",
+        "namePlaceholder": "service identifier naming information, up to 100 characters",
+        "domain": "domain",
+        "domainPlaceholder": "after setting the domain name for the service, the mock interface can be accessed through the domain name",
+        "domainTooltip": "domain name resolution is expected to take effect within 60 seconds.",
+        "port": "port",
+        "portPlaceholder": "the port listened by the service, the service cannot be modified after adding (1~65535)",
+        "node": "node",
+        "nodePlaceholder": "the node where the service is running, the service cannot be modified after adding",
+        "service": "service",
+        "servicePlaceholder": "select or search service",
+        "api": "api",
+        "importSource": "import source",
+        "associated": "(associated)"
       },
       "upload": {
-        "uploadFile": "上传文件",
-        "uploadDescription": "直接粘贴内容或拖动文件或点击上传文件，文件大小不超过20M",
-        "clear": "清空",
-        "fileRequired": "请先上传文件",
-        "fileSizeExceeded": "上传文件或文本大小超过20M，请重新上传",
-        "postmanVersionError": "请检查文件是否是Postman Collection V2/V2.1 版本JSON文件"
+        "uploadFile": "upload file",
+        "uploadDescription": "directly paste content or drag and drop files or click to upload files, the file size does not exceed 20M",
+        "clear": "clear",
+        "fileRequired": "please upload the file first",
+        "fileSizeExceeded": "the file or text size exceeds 20M, please re-upload",
+        "postmanVersionError": "please check if the file is a Postman Collection V2/V2.1 version JSON file"
       },
       "buttons": {
-        "cancel": "取消",
-        "confirm": "确定"
+        "cancel": "cancel",
+        "confirm": "confirm"
       },
       "apiList": {
-        "searchApiName": "查询接口名称",
-        "requestMethod": "请求方法",
-        "apiName": "接口名称",
-        "selectAll": "全选"
+        "searchApiName": "search api name",
+        "requestMethod": "request method",
+        "apiName": "api name",
+        "selectAll": "select all"
       }
     },
     "mockDetail": {
       "menu": {
-        "apis": "接口",
-        "request": "请求",
-        "log": "日志",
-        "activity": "活动",
-        "monitor": "监控",
-        "setting": "设置"
+        "apis": "api",
+        "request": "request",
+        "log": "log",
+        "activity": "activity",
+        "monitor": "monitor",
+        "setting": "setting"
       },
       "control": {
-        "apiName": "接口名称",
-        "apiInfo": "接口信息",
-        "requestCount": "请求数",
-        "mockExceptionCount": "模拟异常数",
-        "pushbackCount": "回推数",
-        "successCount": "成功数",
-        "exceptionCount": "异常数",
-        "apiCount": "接口数",
-        "searchApiNamePath": "查询接口名称、路径",
+        "apiName": "api name",
+        "apiInfo": "api info",
+        "requestCount": "request count",
+        "mockExceptionCount": "mock exception count",
+        "pushbackCount": "pushback count",
+        "successCount": "success count",
+        "exceptionCount": "exception count",
+        "apiCount": "api count",
+        "searchApiNamePath": "search api name, path",
         "tooltips": {
-          "requestCount": "调用Mock接口次数。",
-          "mockExceptionCount": "返回Http状态码为4xx和5xx响应次数。",
-          "pushbackCount": "Mock服务向用户配置回推接口推送请求次数。",
-          "successCount": "返回状态码为2xx请求次数。",
-          "exceptionCount": "Mock接口配置错误或程序自身导致的错误。"
+          "requestCount": "the number of times the mock interface is called.",
+          "mockExceptionCount": "the number of times the mock interface returns an Http status code of 4xx and 5xx response.",
+          "pushbackCount": "the number of times the mock service pushes a request to the user's configured pushback interface.",
+          "successCount": "the number of times the request returns a status code of 2xx.",
+          "exceptionCount": "the number of times the mock interface configuration errors or the program itself causes errors."
         }
       },
       "mockSet": {
         "notifications": {
-          "modifySuccess": "修改成功"
+          "modifySuccess": "modify successfully"
         },
         "validation": {
-          "enterParamName": "请输入参数名",
-          "paramNameDuplicate": "参数名称重复",
-          "enterName": "请输入名称",
-          "enterDomain": "请输入域名"
+          "enterParamName": "please enter parameter name",
+          "paramNameDuplicate": "parameter name duplicate",
+          "enterName": "please enter name",
+          "enterDomain": "please enter domain"
         },
         "basicInfo": {
-          "title": "基本信息",
-          "name": "名称",
-          "nameTooltip": "服务标识命名信息，最多允许100个字符。",
-          "domain": "域名",
-          "domainTooltip": "为服务设置域名后，可以通过域名访问Mock接口，设置的域名需要被解析到所在节点的IP。"
+          "title": "basic information",
+          "name": "name",
+          "nameTooltip": "service identifier naming information, up to 100 characters.",
+          "domain": "domain",
+          "domainTooltip": "after setting the domain name for the service, the mock interface can be accessed through the domain name, the domain name set needs to be resolved to the IP of the node where it is located."
         },
         "buttons": {
-          "cancel": "取消",
-          "confirm": "确定"
+          "cancel": "cancel",
+          "confirm": "confirm"
         },
         "settings": {
-          "logTooltip": "记录基本信息以及请求和响应头。",
-          "corsTooltip": "当通过浏览器访问Mock接口站点域名和访问Mock接口地址不一致时，会触发浏览器同源访问策略（CORS）限制导致接口无法访问，通过当前"跨域配置"可以自由制定跨域访问策略。修改后需要重启服务或刷新实例后生效。"
+          "logTooltip": "record basic information and request and response headers.",
+          "corsTooltip": "when the domain name of the mock interface site accessed through the browser and the address of the mock interface are inconsistent, the browser's same-origin access policy (CORS) restriction will be triggered, causing the interface to be inaccessible. The current \"cross-origin configuration\" can freely制定跨域访问策略。修改后需要重启服务或刷新实例后生效。"
         },
         "requestRecord": {
-          "apiName": "接口名称",
-          "requestId": "请求ID",
-          "requestTime": "请求时间",
-          "requestUrl": "请求地址",
-          "requestMethod": "请求方法",
-          "statusCode": "状态码",
+          "apiName": "api name",
+          "requestId": "request ID",
+          "requestTime": "request time",
+          "requestUrl": "request address",
+          "requestMethod": "request method",
+          "statusCode": "status code",
           "formatOptions": {
-            "beautify": "美化格式",
-            "raw": "原生格式",
-            "preview": "预览"
+            "beautify": "beautify",
+            "raw": "raw",
+            "preview": "preview"
           },
-          "requestInfo": "请求信息",
-          "requestHeader": "请求头",
-          "requestBody": "请求体",
-          "responseInfo": "响应信息",
-          "responseHeader": "响应头",
-          "responseBody": "响应体",
-          "hints": "当前请求记录是Mock服务收集的Mock接口调用日志，系统1秒内最大采集3条请求日志。每个Mock接口只保留最近100条请求记录。注意：如需要开启或关闭请求日志收集，请在\"设置\"->\"记录请求日志\"配置，开启后会降低Mock接口性能。"
+          "requestInfo": "request info",
+          "requestHeader": "request header",
+          "requestBody": "request body",
+          "responseInfo": "response info",
+          "responseHeader": "response header",
+          "responseBody": "response body",
+          "hints": "the current request record is a mock service collection mock interface call log, the system collects up to 3 request logs per second. Each mock interface only retains the last 100 request records. Note: if you need to enable or disable request log collection, please configure \"settings\"->\"record request log\", after enabling, the mock interface performance will be reduced."
         },
         "log": {
           "lineOptions": {
-            "last500": "末尾500行",
-            "last1000": "末尾1000行",
-            "last10000": "末尾10000行"
+            "last500": "last 500 lines",
+            "last1000": "last 1000 lines",
+            "last10000": "last 10000 lines"
           },
           "notifications": {
-            "noDownloadContent": "无可下载内容"
+            "noDownloadContent": "no downloadable content"
           },
-          "errorInfo": "无访问代理信息，连接失败地址：",
-          "logFile": "日志文件:",
-          "browseLog": "浏览日志:",
-          "download": "下载",
-          "refresh": "刷新",
-          "autoRefresh": "自动刷新："
+          "errorInfo": "no access proxy information, connection failed address:",
+          "logFile": "log file:",
+          "browseLog": "browse log:",
+          "download": "download",
+          "refresh": "refresh",
+          "autoRefresh": "auto refresh:"
         },
         "activity": {
-          "pageInfo": "共{total}条记录，第{current} / {totalPage}页",
-          "searchPlaceholder": "查询活动详情"
+          "pageInfo": "total {total} records, page {current} / {totalPage}",
+          "searchPlaceholder": "search activity details"
         }
       }
     },
     "mockApis": {
       "debugApis": {
-        "testRequest": "测试请求",
-        "proxy": "代理",
-        "stop": "终止",
-        "send": "发送",
-        "response": "响应",
+        "testRequest": "test request",
+        "proxy": "proxy",
+        "stop": "stop",
+        "send": "send",
+        "response": "response",
         "notifications": {
-          "proxyNotConnected": "代理未链接， 请检查代理配置"
+          "proxyNotConnected": "proxy not connected, please check the proxy configuration"
         }
       },
       "codeForm": {
         "notifications": {
-          "yamlFormatError": "yaml内容格式错误，请检查并更正"
+          "yamlFormatError": "yaml content format error, please check and correct"
         }
       },
       "notifications": {
-        "copyApiSuccess": "复制接口添加成功",
-        "linkApiSuccess": "关联接口添加成功",
-        "importDemoSuccess": "导入示例成功",
-        "cloneSuccess": "克隆成功",
-        "deleteSuccess": "删除成功",
-        "refreshInstanceSuccess": "刷新实例接口成功",
-        "saveSuccess": "保存成功",
-        "dataError": "数据有误，请检查并更正后再保存。"
+        "copyApiSuccess": "copy api add successfully",
+        "linkApiSuccess": "link api add successfully",
+        "importDemoSuccess": "import demo successfully",
+        "cloneSuccess": "clone successfully",
+        "deleteSuccess": "delete successfully",
+        "refreshInstanceSuccess": "refresh instance api successfully",
+        "saveSuccess": "save successfully",
+        "dataError": "data error, please check and correct before saving."
       },
       "validation": {
-        "nameDuplicate": "名称重复"
+        "nameDuplicate": "name duplicate"
       },
       "confirmations": {
-        "deleteApi": "确认要删除接口【{name}】吗？",
-        "refreshInstance": "刷新实例接口会强制同步当前Mock接口信息到运行的服务实例。"
+        "deleteApi": "confirm to delete api【{name}】?",
+        "refreshInstance": "refresh instance api will force synchronize the current mock interface information to the running service instance."
       },
       "hints": {
-        "mockDescription": "当某个接口尚未实现或无法访问时，可以通过Mock接口模仿真实接口的行为和数据返回，以便进行开发和测试工作，从而提高开发和测试效率。注意：Mock接口保存后才生效。"
+        "mockDescription": "when an interface is not implemented or cannot be accessed, the mock interface can be used to imitate the behavior and data return of the real interface, so as to improve the efficiency of development and testing. Note: the mock interface takes effect after saving."
       },
       "search": {
-        "placeholder": "查询名称"
+        "placeholder": "search name"
       },
       "buttons": {
-        "addApi": "添加接口",
-        "save": "保存",
-        "clone": "克隆",
-        "export": "导出",
-        "delete": "删除",
-        "refreshInstance": "刷新实例接口",
-        "refresh": "刷新",
-        "back": "返回",
-        "addResponse": "添加响应",
-        "deleteResponse": "删除响应"
+        "addApi": "add api",
+        "save": "save",
+        "clone": "clone",
+        "export": "export",
+        "delete": "delete",
+        "refreshInstance": "refresh instance api",
+        "refresh": "refresh",
+        "back": "back",
+        "addResponse": "add response",
+        "deleteResponse": "delete response"
       },
       "menuItems": {
-        "clone": "克隆",
-        "delete": "删除",
-        "export": "导出",
-        "copyApi": "复制接口添加",
-        "linkApi": "关联接口添加",
-        "import": "导入接口",
-        "importDemo": "导入示例"
+        "clone": "clone",
+        "delete": "delete",
+        "export": "export",
+        "copyApi": "copy api add",
+        "linkApi": "link api add",
+        "import": "import api",
+        "importDemo": "import demo"
       },
       "sortMenuItems": {
-        "createdDate": "按添加时间",
-        "id": "按ID"
+        "createdDate": "by added time",
+        "id": "by id"
       },
       "form": {
-        "request": "请求",
-        "name": "名称",
-        "namePlaceholder": "最大支持400个字符",
-        "description": "描述",
-        "descriptionPlaceholder": "最大支持20000个字符",
-        "response": "响应",
-        "responseTooltip": "最大支持配置50个响应",
-        "namePlaceholderShort": "最大支持200个字符"
+        "request": "request",
+        "name": "name",
+        "namePlaceholder": "maximum support 400 characters",
+        "description": "description",
+        "descriptionPlaceholder": "maximum support 20000 characters",
+        "response": "response",
+        "responseTooltip": "maximum support 50 responses",
+        "namePlaceholderShort": "maximum support 200 characters"
       },
       "response": {
-        "match": "匹配",
-        "matchTooltip": "指定返回当前响应所需满足的匹配请求条件。注意：当存在满足匹配的多个响应时，将返回优先级最高的响应，如果没有配置匹配条件或优先级相同，则返回第一个条件或最先配置的条件。",
-        "priority": "优先级",
-        "priorityTooltip": "值越大优先级越高，值范围：0~2147483647。注意：仅当存在满足匹配的多个响应时，才会返回优先级最高的响应。",
-        "content": "内容",
-        "pushback": "回推",
-        "pushbackTooltip": "回推可以用于在接收到 Mock 请求后，自动向指定地址推送一个 Http 请求，如：支付回调。",
-        "enable": "启用",
-        "disable": "关闭"
+        "match": "match",
+        "matchTooltip": "specify the matching request conditions that need to be satisfied for the current response. Note: when there are multiple responses that meet the matching conditions, the response with the highest priority will be returned. If no matching conditions are configured or the priority is the same, the first condition or the first configured condition will be returned.",
+        "priority": "priority",
+        "priorityTooltip": "the higher the value, the higher the priority, the value range is 0~2147483647. Note: only when there are multiple responses that meet the matching conditions will the response with the highest priority be returned.",
+        "content": "content",
+        "pushback": "pushback",
+        "pushbackTooltip": "pushback can be used to automatically push an Http request to a specified address after receiving a mock request, such as payment callback.",
+        "enable": "enable",
+        "disable": "disable"
       },
       "modals": {
-        "copyApi": "复制接口添加",
-        "linkApi": "关联接口添加"
+        "copyApi": "copy api add",
+        "linkApi": "link api add"
       }
     },
     "mockApisComp": {
       "textareaEditor": {
-        "maxLengthSupport": "最大支持字符数",
-        "showCount": "是否显示已输入字符串数量",
-        "maxLengthMessage": "最大支持{maxlength}个字符",
-        "errorMessage": "最大支持{maxlength}字符，已输入{length}字符",
-        "format": "格式化",
-        "clear": "清空"
+        "maxLengthSupport": "maximum support characters",
+        "showCount": "whether to display the number of input strings",
+        "maxLengthMessage": "maximum support {maxlength} characters",
+        "errorMessage": "maximum support {maxlength} characters, already input {length} characters",
+        "format": "format",
+        "clear": "clear"
       },
       "codeEditor": {
-        "maxLengthSupport": "最大支持字符数",
-        "showCount": "是否显示已输入字符串数量",
-        "errorMessage": "最大支持{maxlength}字符，已输入{length}字符",
-        "format": "格式化",
-        "clear": "清空"
+        "maxLengthSupport": "maximum support characters",
+        "showCount": "whether to display the number of input strings",
+        "errorMessage": "maximum support {maxlength} characters, already input {length} characters",
+        "format": "format",
+        "clear": "clear"
       },
       "agent": {
-        "noProxy": "无代理",
-        "clientProxy": "客户端代理",
-        "serverProxy": "服务端代理",
-        "cloudProxy": "云代理",
-        "proxyConfig": "代理配置",
-        "notConnected": "未连接",
-        "connected": "已连接",
+        "noProxy": "no proxy",
+        "clientProxy": "client proxy",
+        "serverProxy": "server proxy",
+        "cloudProxy": "cloud proxy",
+        "proxyConfig": "proxy config",
+        "notConnected": "not connected",
+        "connected": "connected",
         "notifications": {
-          "onlyOnePath": "只能添加一个路径",
-          "notConfigured": "未配置或启用服务端代理，请检查\"应用管理->代理配置\"",
-          "connectionFailed": "代理连接失败，请检查代理服务是否已运行。"
+          "onlyOnePath": "only one path can be added",
+          "notConfigured": "not configured or enabled server proxy, please check \"application management->proxy config\"",
+          "connectionFailed": "proxy connection failed, please check if the proxy service is running."
         },
         "descriptions": {
-          "noProxy": "通过浏览器直接请求接口，对非同源访问接口服务器端需要取消跨域限制。",
-          "clientProxy": "需要在访问浏览器所在电脑中安装\"<a href='https://www.xcan.cloud/help' target=\"_blank\"  class=\"text-text-link\">代理程序<a>\"，配置后将使用客户端代理发送请求。",
-          "serverProxy": "需要将\"代理程序\"单独安装在共享网络的服务器主机，使用服务端代理无需用户在各自电脑中安装代理程序，配置后将使用服务端代理发送请求。推荐方式",
-          "cloudProxy": "通过AngusTester云服务器节点请求接口，注意：不能访问到客户内网服务地址。"
+          "noProxy": "request interfaces directly through the browser, and the server-side access to non-same-origin interfaces needs to cancel the cross-origin restriction.",
+          "clientProxy": "an \"<a href='https://www.xcan.cloud/help' target=\"_blank\"  class=\"text-text-link\">proxy program<a>\" needs to be installed on the computer where the browser is accessed, and after configuration, the request will be sent using the client proxy.",
+          "serverProxy": "the \"proxy program\" needs to be installed separately on the server host of the shared network, and the server proxy does not require the user to install the proxy program on their own computer, and after configuration, the request will be sent using the server proxy. Recommended method",
+          "cloudProxy": "request interfaces through AngusTester cloud server nodes, note: cannot access customer intranet service addresses."
         }
       },
       "urlForm": {
-        "methodPath": "方法/路径",
-        "requestMethod": "请求方法",
-        "maxLengthPlaceholder": "最大支持800个字符"
+        "methodPath": "method/path",
+        "requestMethod": "request method",
+        "maxLengthPlaceholder": "maximum support 800 characters"
       },
       "matchForm": {
         "pathForm": {
-          "path": "路径",
-          "operationCondition": "运算条件",
+          "path": "path",
+          "operationCondition": "operation condition",
           "notifications": {
-            "onlyOnePath": "只能添加一个路径"
+            "onlyOnePath": "only one path can be added"
           },
           "descriptions": {
-            "equal": "以斜杠 / 开始；路径段之间使用斜杠 / 分隔，且不包含特殊字符（如?、#等）",
-            "notEqual": "以斜杠 / 开始；路径段之间使用斜杠 / 分隔，且不包含特殊字符（如?、#等）",
-            "contain": "以斜杠 / 开始；路径段之间使用斜杠 / 分隔，且不包含特殊字符（如?、#等）",
-            "notContain": "以斜杠 / 开始；路径段之间使用斜杠 / 分隔，且不包含特殊字符（如?、#等）"
+            "equal": "start with /; path segments are separated by /, and do not contain special characters (such as ? and #)",
+            "notEqual": "start with /; path segments are separated by /, and do not contain special characters (such as ? and #)",
+            "contain": "start with /; path segments are separated by /, and do not contain special characters (such as ? and #)",
+            "notContain": "start with /; path segments are separated by /, and do not contain special characters (such as ? and #)"
           },
           "rules": {
-            "rootPath": "路径以斜杠 / 开始，表示根路径。",
-            "pathSegments": "路径由多个路径段组成，路径段之间使用斜杠 / 分隔。",
-            "segmentChars": "每个路径段可以是字母、数字、减号、下划线等字符组成，且不包含特殊字符（如?、#等）。",
-            "segmentNotEmpty": "路径段不可以为空字符串。"
+            "rootPath": "the path starts with /, indicating the root path.",
+            "pathSegments": "the path consists of multiple path segments, and the path segments are separated by /.",
+            "segmentChars": "each path segment can be composed of letters, numbers, hyphens, underscores, etc., and does not contain special characters (such as ? and #).",
+            "segmentNotEmpty": "the path segment cannot be an empty string."
           }
         },
         "selectInputForm": {
-          "requestHeader": "请求头",
-          "parameterName": "参数名称，最大支持400个字符",
-          "parameterValue": "参数值，最大支持4096个字符",
-          "operator": "运算符"
+          "requestHeader": "request header",
+          "parameterName": "parameter name, maximum support 400 characters",
+          "parameterValue": "parameter value, maximum support 4096 characters",
+          "operator": "operator"
         },
          "parameterForm": {
-          "regMatch": "正则表达式",
-          "queryParameters": "查询参数",
-          "parameterName": "参数名称，最大支持400个字符",
-          "parameterValue": "参数值，最大支持4096个字符"
+          "regMatch": "regular expression",
+          "queryParameters": "query parameters",
+          "parameterName": "parameter name, maximum support 400 characters",
+          "parameterValue": "parameter value, maximum support 4096 characters"
         },
          "requestBody": {
-            "requestBody": "请求体",
-            "format": "格式化",
-            "clear": "清空",
-            "value": "值",
-            "xpathMatch": "XPath表达式",
-            "jsonPathMatch": "JSONPath表达式",
+            "requestBody": "request body",
+            "format": "format",
+            "clear": "clear",
+            "value": "value",
+            "xpathMatch": "XPath expression",
+            "jsonPathMatch": "JSONPath expression",
             "notifications": {
-              "onlyOneBody": "只能添加一个请求体"
+              "onlyOneBody": "only one request body can be added"
             }
         }
       },
       "contentForm": {
-        "statusCode": "状态码",
-        "responseDelay": "响应延时",
-        "responseHeaders": "响应头",
-        "responseBody": "响应体",
-        "mockFunctionHelper": "Mock函数助手",
-        "insertFile": "插入文件",
-        "maxHeaderNum": "最大支持{{ MAX_HEADER_NUM }}个响应头",
-        "maxHeaderNumError": "最大支持 {maxHeaderNum} 个响应头",
+        "statusCode": "status code",
+        "responseDelay": "response delay",
+        "responseHeaders": "response headers",
+        "responseBody": "response body",
+        "mockFunctionHelper": "mock function helper",
+        "insertFile": "insert file",
+        "maxHeaderNum": "maximum support {{ MAX_HEADER_NUM }} response headers",
+        "maxHeaderNumError": "maximum support {maxHeaderNum} response headers",
         "notifications": {
-          "maxHeaderError": "最大支持 {maxHeaderNum} 个响应头"
+          "maxHeaderError": "maximum support {maxHeaderNum} response headers"
         },
         "importFileModal": {
-          "title": "编码文件",
-          "maxFileSize": "最大支持编码10M文件",
-          "encoding": "编码"
+          "title": "encode file",
+          "maxFileSize": "maximum support encode 10M file",
+          "encoding": "encoding"
         },
         "selectInputForm": {
-          "parameterName": "参数名称，最大支持400个字符",
-          "parameterValue": "参数值，最大支持4096个字符"
+          "parameterName": "parameter name, maximum support 400 characters",
+          "parameterValue": "parameter value, maximum support 4096 characters"
         },
-        "requestBody": "请求体",
+        "requestBody": "request body",
         "pushBack": {
-          "urlFormatError": "回推地址格式错误",
-          "proxyNotConnected": "代理未链接， 请检查代理配置",
-          "requestError": "请求错误",
-          "autoPushAfterRequest": "请求触发后自动推送",
-          "requestMethod": "请求方法",
-          "maxLengthPlaceholder": "最大支持800个字符"
+          "urlFormatError": "pushback address format error",
+          "proxyNotConnected": "proxy not connected, please check the proxy configuration",
+          "requestError": "request error",
+          "autoPushAfterRequest": "request trigger after automatic push",
+          "requestMethod": "request method",
+          "maxLengthPlaceholder": "maximum support 800 characters"
         },
         "delayParameter": {
-          "maxLessThanMin": "最大值小于最小值",
+          "maxLessThanMin": "maximum value is less than the minimum value",
           "delayOptions": {
-            "none": "无延迟",
-            "fixed": "固定延迟",
-            "random": "随机延迟"
+            "none": "no delay",
+            "fixed": "fixed delay",
+            "random": "random delay"
           }
         },
         "inputGroup": {
-          "queryParameters": "查询参数",
-          "requestHeaders": "请求头"
+          "queryParameters": "query parameters",
+          "requestHeaders": "request headers"
         }
+      }
+    },
+    "exportModal": {
+      "title": "Export",
+      "format": "Format",
+      "fields": {
+        "endpoint": "Path",
+        "summary": "Name"
+      },
+      "notifications": {
+        "exportSuccess": "Export successfully"
       }
     }
   },

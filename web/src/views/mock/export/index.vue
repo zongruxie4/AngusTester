@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed, inject, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Colon, Modal, notification, SelectApi, Spin } from '@xcan-angus/vue-ui';
 import { RadioGroup } from 'ant-design-vue';
 import { TESTER, download } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 import { MockServiceObj } from '../PropsType';
 
@@ -52,7 +55,7 @@ const handleOk = async () => {
   if (error) {
     return;
   }
-  notification.success('导出成功');
+  notification.success(t('mock.exportModal.notifications.exportSuccess'));
   emit('update:visible', false);
 };
 
@@ -134,12 +137,12 @@ const formatTypes = [{
   <Modal
     :visible="props.visible"
     :width="800"
-    title="导出"
+    :title="t('mock.exportModal.title')"
     @cancel="handleCancel"
     @ok="handleOk">
     <Spin :spinning="loading">
       <div class="flex items-center">
-        <span>格式<Colon class="ml-1 mr-3.5" /></span>
+        <span>{{ t('mock.exportModal.format') }}<Colon class="ml-1 mr-3.5" /></span>
         <RadioGroup
           v-model:value="format"
           :options="formatTypes">
@@ -151,8 +154,8 @@ const formatTypes = [{
         class="mt-2"
         mode="multiple"
         :fields=" [
-          { key: 'endpoint', name: '路径' },
-          { key: 'summary', name: '名称' }
+          { key: 'endpoint', name: t('mock.exportModal.fields.endpoint') },
+          { key: 'summary', name: t('mock.exportModal.fields.summary') }
         ]"
         treeLabel=""
         :treeProps="treeProps"
