@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { inject, onMounted, ref, watch } from 'vue';
-import { Button, Tooltip, Popconfirm } from 'ant-design-vue';
+import { Button, Tooltip } from 'ant-design-vue';
 import { Icon, Image, Table } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { useTrashData } from './composables/useTrashData';
@@ -26,7 +26,7 @@ const props = withDefaults(defineProps<TrashTableProps & { isAdmin?: boolean }>(
  */
 const emit = defineEmits<{
   'update:spinning': [value: boolean];
-  'tableChange': [value: TrashItem[]];
+  'tableChange': [value: { list: TrashItem[]; total: number }];
 }>();
 
 // Internationalization
@@ -106,7 +106,7 @@ const tableChange = (
  */
 const loadDataAndEmit = async () => {
   await loadData(props.params);
-  emit('tableChange', tableData.value);
+  emit('tableChange', { list: tableData.value, total: pagination.value.total });
 };
 
 /**
@@ -209,21 +209,16 @@ onMounted(() => {
             </Button>
           </Tooltip>
 
-          <Popconfirm
-            :title="t('functionTrash.confirm.delete')"
-            :okText="t('common.confirm')"
-            :cancelText="t('common.cancel')"
-            @confirm="deleteHandler(record)">
-            <Tooltip :title="t('functionTrash.actions.delete')">
-              <Button
-                :disabled="!canPerformActions(record)"
-                type="text"
-                size="small"
-                class="action-icon-button delete-button">
-                <Icon icon="icon-qingchu" class="text-sm" />
-              </Button>
-            </Tooltip>
-          </Popconfirm>
+          <Tooltip :title="t('functionTrash.actions.delete')">
+            <Button
+              :disabled="!canPerformActions(record)"
+              type="text"
+              size="small"
+              class="action-icon-button delete-button"
+              @click="deleteHandler(record)">
+              <Icon icon="icon-qingchu" class="text-sm" />
+            </Button>
+          </Tooltip>
         </div>
 
         <!-- Enhanced target name cell -->

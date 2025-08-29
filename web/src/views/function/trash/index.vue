@@ -30,6 +30,7 @@ const isAdmin = inject('isAdmin', ref(false));
 const activeKey = ref<'PLAN' | 'CASE'>('PLAN');
 const refreshNotify = ref<string>();
 const tableDataMap = ref<Record<string, TrashItem[]>>({});
+const totalItemsMap = ref<Record<string, number>>({});
 
 // Use composables
 const { inputValue, createInputChangeHandler } = useSearch();
@@ -77,11 +78,12 @@ const clearSearchAndRefresh = () => {
 
 /**
  * Handle table data change from child component
- * @param listData - Updated table data
+ * @param data - Table data and pagination info
  * @param key - Tab key (PLAN or CASE)
  */
-const handleTableChange = (listData: TrashItem[], key: string) => {
-  tableDataMap.value[key] = listData;
+const handleTableChange = (data: { list: TrashItem[]; total: number }, key: string) => {
+  tableDataMap.value[key] = data.list;
+  totalItemsMap.value[key] = data.total;
 };
 
 /**
@@ -93,8 +95,7 @@ const handleRefresh = () => {
 
 // Computed properties
 const itemCount = computed(() => {
-  const currentData = tableDataMap.value[activeKey.value];
-  return currentData?.length || 0;
+  return totalItemsMap.value[activeKey.value] || 0;
 });
 
 const hasItems = computed(() => {

@@ -34,6 +34,7 @@ const activeKey = ref<TaskTrashTargetType>('TASK_SPRINT');
 const inputValue = ref<string>();
 const notify = ref<string>();
 const tableDataMap = ref<Record<TaskTrashTargetType, TaskTrashItem[]>>({} as Record<TaskTrashTargetType, TaskTrashItem[]>);
+const totalItemsMap = ref<Record<TaskTrashTargetType, number>>({} as Record<TaskTrashTargetType, number>);
 
 // Use task trash actions composable
 const {
@@ -41,6 +42,13 @@ const {
   recoverAll,
   deleteAll
 } = useTrashActions(props.projectId);
+
+// Get current active tab data
+const currentTableData = computed(() => tableDataMap.value[activeKey.value] || []);
+const currentTotalItems = computed(() => totalItemsMap.value[activeKey.value] || 0);
+
+const hasItems = computed(() => currentTableData.value && currentTableData.value.length > 0);
+const itemCount = computed(() => currentTotalItems.value);
 
 /**
  * Debounced input change handler
@@ -82,21 +90,6 @@ const apiParams = computed(() => {
 });
 
 /**
- * Computed property for item count
- */
-const itemCount = computed(() => {
-  const currentData = tableDataMap.value[activeKey.value];
-  return currentData?.length || 0;
-});
-
-/**
- * Computed property to check if there are items in current tab
- */
-const hasItems = computed(() => {
-  return itemCount.value > 0;
-});
-
-/**
  * Computed property to check if actions can be performed
  */
 const canPerformActions = computed(() => {
@@ -125,6 +118,15 @@ const clearSearchAndRefresh = () => {
  */
 const handleChange = (listData: TaskTrashItem[], key: TaskTrashTargetType) => {
   tableDataMap.value[key] = listData;
+};
+
+/**
+ * Handle pagination data change events
+ * @param total - Total items count
+ * @param key - Tab key (TASK_SPRINT or TASK)
+ */
+const handlePaginationChange = (total: number, key: TaskTrashTargetType) => {
+  totalItemsMap.value[key] = total;
 };
 
 /**
@@ -299,7 +301,8 @@ onMounted(() => {
                 :projectId="props.projectId"
                 :userInfo="props.userInfo"
                 :params="serviceParams"
-                @listChange="handleChange($event, 'TASK_SPRINT')" />
+                @listChange="handleChange($event, 'TASK_SPRINT')"
+                @paginationChange="handlePaginationChange($event, 'TASK_SPRINT')" />
             </TabPane>
 
             <!-- TASK tab -->
@@ -310,7 +313,8 @@ onMounted(() => {
                 :projectId="props.projectId"
                 :userInfo="props.userInfo"
                 :params="apiParams"
-                @listChange="handleChange($event, 'TASK')" />
+                @listChange="handleChange($event, 'TASK')"
+                @paginationChange="handlePaginationChange($event, 'TASK')" />
             </TabPane>
           </Tabs>
         </div>

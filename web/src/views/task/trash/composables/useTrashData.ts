@@ -1,4 +1,5 @@
-import { computed, ref, inject } from 'vue';
+import { computed, ref } from 'vue';
+import { appContext } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import type { TaskTrashItem, TaskTrashParams, TaskTrashPagination } from '../types';
 
@@ -25,7 +26,7 @@ export function useTrashData (
   });
 
   // Injected dependencies
-  const isAdmin = inject('isAdmin', ref<boolean>());
+  const isAdmin = appContext.isAdmin();
 
   /**
    * Load task trash data with current parameters
@@ -57,7 +58,7 @@ export function useTrashData (
       // Process data to add permission flags
       tableData.value = data.list.map(item => ({
         ...item,
-        disabled: !(isAdmin?.value || userId === item.createdBy || userId === item.deletedBy)
+        disabled: !(isAdmin || userId === item.createdBy || userId === item.deletedBy)
       }));
 
       pagination.value.total = +(data.total || 0);

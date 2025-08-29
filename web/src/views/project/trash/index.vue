@@ -31,9 +31,9 @@ const { columns, emptyTextStyle } = useTableColumns();
 
 // Computed properties for enhanced UI
 const hasItems = computed(() => tableData.value && tableData.value.length > 0);
-const itemCount = computed(() => tableData.value?.length || 0);
+const itemCount = computed(() => pagination.value.total || 0);
 const canPerformActions = computed(() => hasItems.value && !loading.value);
-const hasSearchValue = computed(() => inputValue.value && inputValue.value.trim() !== '');
+const hasSearchValue = computed(() => Boolean(inputValue.value && inputValue.value.trim() !== ''));
 
 /**
  * <p>Clear search input and refresh list when filter is clicked.</p>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Button, Tooltip, Popconfirm } from 'ant-design-vue';
+import { Button, Tooltip } from 'ant-design-vue';
 import { Icon, Image, Table } from '@xcan-angus/vue-ui';
 import { useTrashData } from './composables/useTrashData';
 import { useTableColumns } from './composables/useTableColumns';
@@ -25,6 +25,7 @@ const props = withDefaults(defineProps<TaskTrashTableProps>(), {
 const emit = defineEmits<{
   'update:spinning': [value: boolean];
   'listChange': [value: TaskTrashItem[]];
+  'paginationChange': [value: number];
 }>();
 
 // Internationalization
@@ -137,6 +138,17 @@ watch(
   { deep: true }
 );
 
+/**
+ * Watch for pagination changes and emit total to parent
+ */
+watch(
+  () => pagination.value.total,
+  (newTotal) => {
+    emit('paginationChange', newTotal);
+  },
+  { immediate: true }
+);
+
 // Lifecycle hook
 onMounted(() => {
   // Initial data loading is handled by watchers
@@ -206,21 +218,16 @@ onMounted(() => {
             </Button>
           </Tooltip>
 
-          <Popconfirm
-            :title="t('taskTrash.confirm.delete')"
-            :okText="t('common.confirm')"
-            :cancelText="t('common.cancel')"
-            @confirm="deleteHandler(record)">
-            <Tooltip :title="t('taskTrash.actions.delete')">
-              <Button
-                :disabled="record.disabled"
-                type="text"
-                size="small"
-                class="action-icon-button delete-button">
-                <Icon icon="icon-qingchu" class="text-sm" />
-              </Button>
-            </Tooltip>
-          </Popconfirm>
+          <Tooltip :title="t('taskTrash.actions.delete')">
+            <Button
+              :disabled="record.disabled"
+              type="text"
+              size="small"
+              class="action-icon-button delete-button"
+              @click="deleteHandler(record)">
+              <Icon icon="icon-qingchu" class="text-sm" />
+            </Button>
+          </Tooltip>
         </div>
 
         <!-- Enhanced target name cell -->

@@ -423,7 +423,7 @@
       "adminOnly": "只允许管理员和删除人还原或彻底删除回收站数据。"
     },
     "stats": {
-      "items": "项"
+      "items": "数量"
     },
     "filters": {
       "title": "筛选",
