@@ -3,6 +3,9 @@ import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from '
 import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -108,7 +111,7 @@ const hashChange = (hash: string) => {
         const id = utils.uuid();
         return {
           _id: id,
-          name: '添加分析',
+          name: t('functionAnalysis.list.addAnalysis'),
           value: 'analysisEdit',
           noCache: true,
           data: { _id: id }

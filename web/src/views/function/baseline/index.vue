@@ -3,6 +3,9 @@ import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from '
 import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import { IPane } from './PropsType';
 
@@ -55,7 +58,7 @@ const initialize = () => {
         return {
           _id: 'baselineList',
           value: 'baselineList',
-          name: '基线',
+          name: t('functionBaseline.name'),
           closable: false // 是否允许关闭，true - 允许关闭，false - 禁止关闭
         };
       }
@@ -103,7 +106,7 @@ const hashChange = (hash: string) => {
         const id = utils.uuid();
         return {
           _id: id,
-          name: '添加基线',
+          name: t('functionBaseline.list.addBaseline'),
           value: 'baselineEdit',
           noCache: true,
           data: { _id: id }
