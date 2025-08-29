@@ -88,13 +88,11 @@ onMounted(() => {
         :showChartParam="dashboardConstants.showChartParam" />
     </div>
 
-    <!-- Max resource hint -->
-    <Hints class="mb-2" :text="t('projectActivity.hints.maxResourceActivities', { maxResource })" />
-
     <!-- Search panel component -->
     <SearchPanel
       :loading="loading"
       :showCount="showCount"
+      :maxResource="maxResource"
       @openCount="toggleCount"
       @change="handleSearchChange"
       @refresh="handleRefresh" />

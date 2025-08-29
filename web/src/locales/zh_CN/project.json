@@ -286,7 +286,7 @@
       "maxResourceActivities": "每个资源只保存最近{maxResource}条活动，超过{maxResource}条时将自动被删除。"
     },
     "chart": {
-      "resourceType": "资源类型"
+      "resourceType": "总数"
     },
     "searchPanel": {
       "searchOptions": {

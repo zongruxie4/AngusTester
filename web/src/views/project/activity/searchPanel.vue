@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { Colon, IconCount, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
+import { Colon, IconCount, IconRefresh, SearchPanel, Hints } from '@xcan-angus/vue-ui';
 import { Tooltip } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
@@ -12,11 +12,13 @@ const { t } = useI18n();
 interface Props {
   loading: boolean;
   selectedNum?: number;
-  showCount?: boolean
+  showCount?: boolean;
+  maxResource?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  loading: false
+  loading: false,
+  maxResource: 0
 });
 
 // Component emits
@@ -112,20 +114,22 @@ defineExpose({
 <template>
   <div class="mt-2.5 mb-3.5">
     <!-- Quick search menu -->
-    <div class="flex">
-      <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
+    <div class="flex items-center mb-3">
+      <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 rounded-full"></div>
+      <div class="whitespace-nowrap text-3 text-text-sub-content">
         <span>{{ t('projectActivity.searchPanel.ui.quickQuery') }}</span>
         <Colon />
       </div>
-      <div class="flex flex-wrap ml-2">
+      <div class="flex flex-wrap items-center ml-2">
         <div
           v-for="item in menuItems"
           :key="item.key"
           :class="{ 'active-key': selectedMenuMap[item.key] }"
-          class="px-2.5 h-6 leading-6 mr-3 mb-3 rounded bg-gray-light cursor-pointer"
+          class="px-2.5 h-6 leading-6 mr-3 rounded bg-gray-light cursor-pointer font-semibold"
           @click="onMenuItemClick(item)">
           {{ item.name }}
         </div>
+        <Hints :text="t('projectActivity.hints.maxResourceActivities', { maxResource })" />
       </div>
     </div>
 
@@ -136,6 +140,7 @@ defineExpose({
         :options="searchPanelOptions"
         class="flex-1 mr-3.5"
         @change="onSearchChange" />
+      <!-- Max resource hint -->
 
       <div class="flex items-center space-x-3">
         <!-- Toggle statistics panel button -->
