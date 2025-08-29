@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Composite, Icon, Input, SelectInput } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 type ParametersType = { name: string; value: string; disabled: boolean }
 
@@ -211,7 +214,7 @@ const inputProps = {
             mode="combination"
             style="flex: 1 1 40%;"
             trim
-            placeholder="参数名称，最大支持400个字符"
+            :placeholder="t('mock.mockApisComp.contentForm.selectInputForm.parameterName')"
             @change="nameChange($event, item)">
             <template #option="record">
               <div class="truncate" :title="record._value + '-' + record.message">
@@ -226,7 +229,7 @@ const inputProps = {
             :disabled="dataMap[item].disabled"
             trim
             style="flex: 1 1 60%;"
-            placeholder="参数值，最大支持4096个字符"
+            :placeholder="t('mock.mockApisComp.contentForm.selectInputForm.parameterValue')"
             @change="valueChange($event, item)" />
         </Composite>
         <div class="flex-shrink-0 space-x-1">

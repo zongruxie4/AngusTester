@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { ActivityInfo, IconRefresh, Input, PureCard, Spin } from '@xcan-angus/vue-ui';
 import { Pagination } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
 import { duration } from '@xcan-angus/infra';
 import { activity } from '@/api/tester';
+
+const { t } = useI18n();
 
 interface Activity {
     id: string
@@ -57,7 +60,7 @@ const getList = async () => {
 
 const showTotal = (total) => {
   const totalPage = Math.ceil(total / params.value.pageSize);
-  return `共${total}条记录，第${params.value.pageNo} / ${totalPage}页`;
+  return t('mock.mockDetail.activity.pageInfo', { total, current: params.value.pageNo, totalPage });
 };
 
 const onShowSizeChange = (page: number, pageSize: number) => {
@@ -77,7 +80,7 @@ onMounted(() => {
         v-model:value="detail"
         :allowClear="true"
         class="w-100"
-        placeholder="查询活动详情"
+        :placeholder="t('mock.mockDetail.activity.searchPlaceholder')"
         size="small"
         @change="searchInputChange($event.target.value)" />
       <IconRefresh

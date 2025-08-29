@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Input, Validate } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 import { isHtml, isJSON, isXML, isYAML } from './utils';
 
@@ -57,7 +60,7 @@ const autoSize = {
 };
 
 const placeholder = computed(() => {
-  return `最大支持${props.maxlength}个字符`;
+  return t('mock.mockApisComp.textareaEditor.maxLengthMessage', { maxlength: props.maxlength });
 });
 
 onMounted(() => {
@@ -70,7 +73,7 @@ const isValid = ():boolean => {
   const length = content.value.length;
   error.value = length >= props.maxlength;
   if (error.value) {
-    errorMessage.value = `最大支持${props.maxlength}字符，已输入${length}字符`;
+    errorMessage.value = t('mock.mockApisComp.textareaEditor.errorMessage', { maxlength: props.maxlength, length });
   } else {
     errorMessage.value = '';
   }
@@ -100,7 +103,7 @@ defineExpose({
           size="small"
           @click="format">
           <!-- <Icon icon="icon-geshihua" class="mr-0.5 text-3.25" /> -->
-          <span>格式化</span>
+          <span>{{ t('mock.mockApisComp.textareaEditor.format') }}</span>
         </Button>
         <Button
           style="padding: 0;"
@@ -108,7 +111,7 @@ defineExpose({
           size="small"
           @click="clear">
           <!-- <Icon icon="icon-qingchu" class="mr-0.5 text-3.25" /> -->
-          <span>清空</span>
+          <span>{{ t('mock.mockApisComp.textareaEditor.clear') }}</span>
         </Button>
       </div>
     </div>

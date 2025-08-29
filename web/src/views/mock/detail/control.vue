@@ -248,40 +248,40 @@ onMounted(() => {
 
 const columns = [
   {
-    title: t('接口名称'),
+            title: t('mock.mockDetail.control.apiName'),
     dataIndex: 'summary',
     width: '15%',
     ellipsis: true
   },
   {
-    title: t('接口信息'),
+            title: t('mock.mockDetail.control.apiInfo'),
     dataIndex: 'method',
     width: '35%'
   },
   {
-    title: t('请求数'),
+            title: t('mock.mockDetail.control.requestCount'),
     dataIndex: 'requestNum',
     customRender: ({ text }):string => text || '--',
     width: '10%'
   },
   {
-    title: t('模拟异常数'),
+            title: t('mock.mockDetail.control.mockExceptionCount'),
     dataIndex: 'simulateErrorNum',
     width: '10%'
   },
   {
-    title: t('回推数'),
+            title: t('mock.mockDetail.control.pushbackCount'),
     dataIndex: 'pushbackNum',
     width: '10%'
   },
   {
-    title: t('成功数'),
+            title: t('mock.mockDetail.control.successCount'),
     dataIndex: 'successNum',
     customRender: ({ text }):string => text || '--',
     width: '10%'
   },
   {
-    title: t('异常数'),
+            title: t('mock.mockDetail.control.exceptionCount'),
     dataIndex: 'exceptionNum',
     width: '10%'
   }
@@ -289,32 +289,32 @@ const columns = [
 
 const mockServiceCount = [
   {
-    name: '接口数',
+          name: t('mock.mockDetail.control.apiCount'),
     key: 'apisNum',
     icon: 'icon-jiekoushu'
   },
   {
-    name: '请求数',
+          name: t('mock.mockDetail.control.requestCount'),
     key: 'requestNum',
     icon: 'icon-qingqiushu'
   },
   {
-    name: '模拟异常数',
+          name: t('mock.mockDetail.control.mockExceptionCount'),
     key: 'simulateErrorNum',
     icon: 'icon-moniyichangshu'
   },
   {
-    name: '回推数',
+          name: t('mock.mockDetail.control.pushbackCount'),
     key: 'pushbackNum',
     icon: 'icon-huituishu'
   },
   {
-    name: '成功数',
+          name: t('mock.mockDetail.control.successCount'),
     key: 'successNum',
     icon: 'icon-chenggongshu1'
   },
   {
-    name: '异常数',
+          name: t('mock.mockDetail.control.exceptionCount'),
     key: 'exceptionNum',
     icon: 'icon-yichangshu1'
   }
@@ -391,7 +391,7 @@ const bgColor = {
       <Input
         allowClear
         class="w-60"
-        placeholder="查询接口名称、路径"
+        :placeholder="t('mock.mockDetail.control.searchApiNamePath')"
         @change="handleChange($event.target.value)" />
       <IconRefresh
         :loading="tableLoading"
@@ -409,7 +409,7 @@ const bgColor = {
         <template v-if="column.dataIndex === 'requestNum'">
           {{ title }}
           <Tooltip
-            title="调用Mock接口次数。"
+            :title="t('mock.mockDetail.control.tooltips.requestCount')"
             placement="top"
             arrowPointAtCenter
             :overlayStyle="{'max-width': '600px'}">
@@ -419,7 +419,7 @@ const bgColor = {
         <template v-if="column.dataIndex === 'simulateErrorNum'">
           {{ title }}
           <Tooltip
-            title="返回Http状态码为4xx和5xx响应次数。"
+            :title="t('mock.mockDetail.control.tooltips.mockExceptionCount')"
             placement="top"
             arrowPointAtCenter
             :overlayStyle="{'max-width': '600px'}">
@@ -429,7 +429,7 @@ const bgColor = {
         <template v-if="column.dataIndex === 'pushbackNum'">
           {{ title }}
           <Tooltip
-            title="Mock服务向用户配置回推接口推送请求次数。"
+            :title="t('mock.mockDetail.control.tooltips.pushbackCount')"
             placement="top"
             arrowPointAtCenter
             :overlayStyle="{'max-width': '600px'}">
@@ -439,7 +439,7 @@ const bgColor = {
         <template v-if="column.dataIndex === 'successNum'">
           {{ title }}
           <Tooltip
-            title="返回状态码为2xx请求次数。"
+            :title="t('mock.mockDetail.control.tooltips.successCount')"
             placement="top"
             arrowPointAtCenter
             :overlayStyle="{'max-width': '600px'}">
@@ -449,7 +449,7 @@ const bgColor = {
         <template v-if="column.dataIndex === 'exceptionNum'">
           {{ title }}
           <Tooltip
-            title="Mock接口配置错误或程序自身导致的错误。"
+            :title="t('mock.mockDetail.control.tooltips.exceptionCount')"
             placement="top"
             arrowPointAtCenter
             :overlayStyle="{'max-width': '600px'}">

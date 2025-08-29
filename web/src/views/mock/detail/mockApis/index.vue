@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import {
   Arrow,
   AsyncComponent,
@@ -26,6 +27,8 @@ import { utils, TESTER, duration, download } from '@xcan-angus/infra';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { Button, Collapse, CollapsePanel, Switch } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
+
+const { t } = useI18n();
 
 import { type AgentValue } from '@/views/apis/services/components/agent/PropsTypes';
 import { mock } from '@/api/tester';
@@ -413,7 +416,7 @@ const copyApiOk = async ({ id }) => {
   apiCopyModalVisible.value = false;
   mockAPIId.value = data.id;
   mockAPIConfig.value = undefined;
-  notification.success('复制接口添加成功');
+  notification.success(t('mock.mockApis.notifications.copyApiSuccess'));
   toRefresh();
   nextTick(() => {
     scrollToTop();
@@ -431,7 +434,7 @@ const linkApiOk = async ({ id }) => {
   apiLinkModalVisible.value = false;
   mockAPIId.value = data.id;
   mockAPIConfig.value = undefined;
-  notification.success('关联接口添加成功');
+  notification.success(t('mock.mockApis.notifications.linkApiSuccess'));
   toRefresh();
   nextTick(() => {
     scrollToTop();
@@ -457,7 +460,7 @@ const importDemo = async () => {
     return;
   }
 
-  notification.success('导入示例成功');
+  notification.success(t('mock.mockApis.notifications.importDemoSuccess'));
   toRefresh();
   nextTick(() => {
     scrollToTop();
@@ -473,7 +476,7 @@ const clone = async (id: string) => {
   }
 
   toRefresh();
-  notification.success('克隆成功');
+  notification.success(t('mock.mockApis.notifications.cloneSuccess'));
 };
 
 const toExport = (id: string) => {
@@ -485,7 +488,7 @@ const del = async (id: string) => {
   const { summary: _summary, isTempFlag } = apiDataMap.value[id];
   modal.confirm({
     centered: true,
-    content: `确认要删除接口【${_summary}】吗？`,
+    content: t('mock.mockApis.confirmations.deleteApi', { name: _summary }),
     async onOk () {
       const checkedId = mockAPIConfig.value?.id;
       const checkedIndex = apiIds.value.findIndex(item => item === checkedId);
@@ -497,7 +500,7 @@ const del = async (id: string) => {
           return;
         }
 
-        notification.success('删除成功');
+        notification.success(t('mock.mockApis.notifications.deleteSuccess'));
 
         if (typeof scrollRef.value?.delete === 'function') {
           if (apiIds.value.length === 1) {
@@ -547,7 +550,7 @@ const refreshInfo = () => {
 
 const refreshInstance = () => {
   modal.confirm({
-    content: '刷新实例接口会强制同步当前Mock接口信息到运行的服务实例。',
+    content: t('mock.mockApis.confirmations.refreshInstance'),
     async onOk () {
       loading.value = true;
       const [error] = await mock.syncApiInstanceConfig(mockAPIId.value!);
@@ -556,7 +559,7 @@ const refreshInstance = () => {
         return;
       }
 
-      notification.success('刷新实例接口成功');
+      notification.success(t('mock.mockApis.notifications.refreshInstanceSuccess'));
     }
   });
 };
@@ -754,7 +757,7 @@ const save = async (): Promise<void> => {
   }
 
   if (errorNum) {
-    notification.error('数据有误，请检查并更正后再保存。');
+    notification.error(t('mock.mockApis.notifications.dataError'));
     return;
   }
 
@@ -830,7 +833,7 @@ const saveResponse = async (id: string, isUpdateFlag: boolean) => {
     return;
   }
 
-  notification.success('保存成功');
+  notification.success(t('mock.mockApis.notifications.saveSuccess'));
   loading.value = false;
 };
 
@@ -883,10 +886,10 @@ const validateRepeatName = (id?: string): boolean => {
     if (repeatNameSet.has(data[key])) {
       if (id) {
         nameErrorSet.value.add(id);
-        nameErrorMessage.value[id] = '名称重复';
+        nameErrorMessage.value[id] = t('mock.mockApis.validation.nameDuplicate');
       } else {
         nameErrorSet.value.add(key);
-        nameErrorMessage.value[key] = '名称重复';
+                  nameErrorMessage.value[key] = t('mock.mockApis.validation.nameDuplicate');
       }
 
       errorNum++;
@@ -1241,19 +1244,19 @@ const menuItems = ref([
   {
     key: 'clone',
     icon: 'icon-fuzhizujian2',
-    name: '克隆',
+    name: t('mock.mockApis.menuItems.clone'),
     permission: 'ADD'
   },
   {
     key: 'delete',
     icon: 'icon-fz',
-    name: '删除',
+    name: t('mock.mockApis.menuItems.delete'),
     permission: 'DELETE'
   },
   {
     key: 'export',
     icon: 'icon-daochu1',
-    name: '导出',
+    name: t('mock.mockApis.menuItems.export'),
     permission: 'EXPORT'
   }
 ]);
@@ -1261,35 +1264,35 @@ const dropdownMenuItems = ref([
   {
     key: 'copyApi',
     icon: 'icon-fuzhizujian2',
-    name: '复制接口添加',
+    name: t('mock.mockApis.menuItems.copyApi'),
     noAuth: true
   },
   {
     key: 'linkApi',
     icon: 'icon-yinyong',
-    name: '关联接口添加',
+    name: t('mock.mockApis.menuItems.linkApi'),
     noAuth: true
   },
   {
     key: 'import',
     icon: 'icon-daoru',
-    name: '导入接口',
+    name: t('mock.mockApis.menuItems.import'),
     noAuth: true
   },
   {
     key: 'importDemo',
     icon: 'icon-daoru',
-    name: '导入示例',
+    name: t('mock.mockApis.menuItems.importDemo'),
     noAuth: true
   }
 ]);
 
 const sortMenuItems = [{
-  name: '按添加时间',
+  name: t('mock.mockApis.sortMenuItems.createdDate'),
   key: 'createdDate',
   orderSort: 'DESC'
 }, {
-  name: '按ID',
+  name: t('mock.mockApis.sortMenuItems.id'),
   key: 'id',
   orderSort: 'ASC'
 }];
@@ -1303,7 +1306,7 @@ provide('currentProxy', currentProxy);
 provide('proxyOptObj', proxyOptObj);
 </script>
 <template>
-  <Hints class="mb-1.5" text="当某个接口尚未实现或无法访问时，可以通过Mock接口模仿真实接口的行为和数据返回，以便进行开发和测试工作，从而提高开发和测试效率。注意：Mock接口保存后才生效。" />
+  <Hints class="mb-1.5" :text="t('mock.mockApis.hints.mockDescription')" />
   <PureCard style="height: calc(100% - 24px);" class="flex-1 flex flex-nowrap pl-3.5 py-3.5 relative">
     <Spin
       :delay="0"
@@ -1311,7 +1314,7 @@ provide('proxyOptObj', proxyOptObj);
       class="flex flex-col w-80 h-full">
       <div class="flex flex-nowrap space-x-2 mb-2">
         <Input
-          placeholder="查询名称"
+          :placeholder="t('mock.mockApis.search.placeholder')"
           class="flex-1"
           :allowClear="true"
           :value="inputValue"
@@ -1327,7 +1330,7 @@ provide('proxyOptObj', proxyOptObj);
           size="small"
           style="padding-right: 0;"
           @click="create">
-          <span>添加接口</span>
+          <span>{{ t('mock.mockApis.buttons.addApi') }}</span>
           <Dropdown :menuItems="dropdownMenuItems" @click="buttonDropdownClick">
             <span class="inline-block w-5 h-5">
               <Icon class="text-white" icon="icon-more" />
@@ -1403,7 +1406,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="save">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-baocun" />
-            <span>保存</span>
+            <span>{{ t('actions.save') }}</span>
           </div>
         </Button>
         <Button
@@ -1413,7 +1416,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="clone(mockAPIId!)">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-fuzhizujian2" />
-            <span>克隆</span>
+            <span>{{ t('actions.clone') }}</span>
           </div>
         </Button>
         <Button
@@ -1423,7 +1426,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="toExport(mockAPIId!)">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-fuzhizujian2" />
-            <span>导出</span>
+            <span>{{ t('actions.export') }}</span>
           </div>
         </Button>
         <Button
@@ -1434,7 +1437,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="del(mockAPIId!)">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-qingchu" />
-            <span>删除</span>
+            <span>{{t('actions.delete')}}</span>
           </div>
         </Button>
         <Button
@@ -1445,7 +1448,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="refreshInstance">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-peizhifuwutongbu" />
-            <span>刷新实例接口</span>
+            <span>{{ t('mock.mockApis.buttons.refreshInstance') }}</span>
           </div>
         </Button>
         <Button
@@ -1456,7 +1459,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="refreshInfo">
           <div class="flex items-center space-x-1">
             <IconRefresh />
-            <span>刷新</span>
+            <span>{{ t('actions.refresh') }}</span>
           </div>
         </Button>
         <Button
@@ -1465,14 +1468,14 @@ provide('proxyOptObj', proxyOptObj);
           @click="goback">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-fanhui" />
-            <span>返回</span>
+            <span>{{t('mock.mockApis.buttons.back')}}</span>
           </div>
         </Button>
       </div>
       <div :id="domId" class="w-full flex-1 overflow-auto space-y-6 scroll-smooth">
         <div class="space-y-2">
           <div class="flex items-center text-3.5 space-x-1 text-text-title">
-            <div>请求</div>
+            <div>{{ t('mock.mockApis.form.request') }}</div>
             <div v-if="isSavedMockApi" class="flex items-center text-3 text-theme-sub-content">
               <span class="mx-0.5">(</span>
               <div class="flex items-center translate-y-0.25">
@@ -1491,14 +1494,14 @@ provide('proxyOptObj', proxyOptObj);
               <div class="flex items-center justify-between">
                 <div class="flex items-center mb-0.5">
                   <IconRequired />
-                  <span>名称</span>
+                  <span>{{ t('mock.mockApis.form.name') }}</span>
                 </div>
               </div>
               <Input
                 :maxlength="400"
                 :value="summary"
                 :error="summaryError"
-                placeholder="最大支持400个字符"
+                :placeholder="t('mock.mockApis.form.namePlaceholder')"
                 trim
                 @change="summaryChange" />
             </div>
@@ -1512,14 +1515,14 @@ provide('proxyOptObj', proxyOptObj);
               :options="serviceUrlOptions" />
 
             <div class="pr-5.25">
-              <div class="mb-0.5">描述</div>
+              <div class="mb-0.5">{{ t('mock.mockApis.form.description') }}</div>
               <Input
                 :maxlength="20000"
                 :value="description"
                 :autoSize="{ minRows: 5, maxRows: 5 }"
                 showCount
                 type="textarea"
-                placeholder="最大支持20000个字符"
+                :placeholder="t('mock.mockApis.form.descriptionPlaceholder')"
                 trim
                 @change="descriptionChange" />
             </div>
@@ -1528,9 +1531,9 @@ provide('proxyOptObj', proxyOptObj);
         <div class="pr-5.25 space-y-2">
           <div class="flex items-center justify-between leading-5 pr-3.25 text-3.5 text-text-title">
             <div>
-              <span>响应</span>
+              <span>{{ t('mock.mockApis.form.response') }}</span>
               <Tooltip>
-                <template #title>最大支持配置50个响应</template>
+                <template #title>{{ t('mock.mockApis.form.responseTooltip') }}</template>
                 <Icon icon="icon-shuoming" class="text-tips cursor-pointer text-3.5 ml-1" />
               </Tooltip>
             </div>
@@ -1540,7 +1543,7 @@ provide('proxyOptObj', proxyOptObj);
               @click="addResponse">
               <div class="flex items-center space-x-1">
                 <Icon icon="icon-jia" />
-                <span>添加响应</span>
+                <span>{{ t('mock.mockApis.buttons.addResponse') }}</span>
               </div>
             </Button>
           </div>
@@ -1563,7 +1566,7 @@ provide('proxyOptObj', proxyOptObj);
                     <div class="flex items-center flex-1 space-x-2">
                       <div class="flex items-center flex-shrink-0 flex-nowrap whitespace-nowrap mb-0.5">
                         <IconRequired />
-                        <span>名称</span>
+                        <span>{{ t('mock.mockApis.form.name') }}</span>
                       </div>
 
                       <Validate
@@ -1574,7 +1577,7 @@ provide('proxyOptObj', proxyOptObj);
                           :maxlength="200"
                           :value="nameMap[item]"
                           :error="nameErrorSet.has(item)"
-                          placeholder="最大支持200个字符"
+                          :placeholder="t('mock.mockApis.form.namePlaceholder')"
                           trim
                           @change="nameChange($event, item)" />
                       </Validate>
@@ -1590,7 +1593,7 @@ provide('proxyOptObj', proxyOptObj);
                       @click="deleteResponse(index, item)">
                       <div class="flex items-center space-x-1">
                         <Icon icon="icon-qingchu" />
-                        <span>删除响应</span>
+                        <span>{{ t('mock.mockApis.buttons.deleteResponse') }}</span>
                       </div>
                     </Button>
                   </template>
@@ -1605,10 +1608,10 @@ provide('proxyOptObj', proxyOptObj);
                     <div class="flex items-center py-3">
                       <Arrow :open="openKeys.includes(item + '-1')" @change="arrowChange(item + '-1')" />
                       <div class="flex items-center ml-1">
-                        <span>匹配</span>
+                        <span>{{ t('mock.mockApis.response.match') }}</span>
                         <Tooltip>
                           <template #title>
-                            指定返回当前响应所需满足的匹配请求条件。注意：当存在满足匹配的多个响应时，将返回优先级最高的响应，如果没有配置匹配条件或优先级相同，则返回第一个条件或最先配置的条件。
+                            {{ t('mock.mockApis.response.matchTooltip') }}
                           </template>
                           <Icon icon="icon-shuoming" class="text-tips cursor-pointer text-3.5 ml-1" />
                         </Tooltip>
@@ -1619,9 +1622,9 @@ provide('proxyOptObj', proxyOptObj);
                   <div class="flex items-center leading-5 mb-5 space-x-2">
                     <div class="flex items-center">
                       <IconRequired />
-                      <span>优先级</span>
+                      <span>{{ t('mock.mockApis.response.priority') }}</span>
                       <Tooltip>
-                        <template #title>值越大优先级越高，值范围：0~2147483647。注意：仅当存在满足匹配的多个响应时，才会返回优先级最高的响应。</template>
+                        <template #title>{{ t('mock.mockApis.response.priorityTooltip') }}</template>
                         <Icon icon="icon-shuoming" class="text-tips cursor-pointer text-3.5 ml-0.75" />
                       </Tooltip>
                     </div>
@@ -1655,7 +1658,7 @@ provide('proxyOptObj', proxyOptObj);
                       <Arrow :open="openKeys.includes(item + '-2')" @change="arrowChange(item + '-2')" />
                       <div class="flex items-center ml-1">
                         <IconRequired />
-                        <span>内容</span>
+                        <span>{{ t('mock.mockApis.response.content') }}</span>
                       </div>
                     </div>
                   </template>
@@ -1678,9 +1681,9 @@ provide('proxyOptObj', proxyOptObj);
                         :open="openKeys.includes(item + '-3')"
                         @change="arrowChange(item + '-3')" />
                       <div class="flex items-center ml-1">
-                        <span>回推</span>
+                        <span>{{ t('mock.mockApis.response.pushback') }}</span>
                         <Tooltip>
-                          <template #title>回推可以用于在接收到 Mock 请求后，自动向指定地址推送一个 Http 请求，如：支付回调。</template>
+                          <template #title>{{ t('mock.mockApis.response.pushbackTooltip') }}</template>
                           <Icon icon="icon-shuoming" class="text-tips cursor-pointer text-3.5 ml-1" />
                         </Tooltip>
                       </div>
@@ -1689,8 +1692,8 @@ provide('proxyOptObj', proxyOptObj);
                         :checked="enablePushbackSet.has(item)"
                         size="small"
                         class="ml-1.5"
-                        checkedChildren="启用"
-                        unCheckedChildren="关闭"
+                        checkedChildren="t('mock.mockApis.response.enable')"
+                        unCheckedChildren="t('mock.mockApis.response.disable')"
                         @change="enableChange($event, item)" />
                     </div>
                   </template>

@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import YAML from 'yaml';
 import { notification } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 import MonacoEditor from '@/components/monacoEditor/index.vue';
 
@@ -49,7 +52,7 @@ const isValid = ():boolean => {
     YAML.parse(content.value);
     return true;
   } catch (error) {
-    notification.error('yaml内容格式错误，请检查并更正');
+    notification.error(t('mock.mockApis.codeForm.notifications.yamlFormatError'));
     return false;
   }
 };

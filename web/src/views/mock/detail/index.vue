@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { Breadcrumb } from 'ant-design-vue';
 import { Sidebar } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 type MenuItem = {
   code: 'apis' | 'request' | 'activity' |'monitor' | 'set'|'log';
@@ -25,67 +28,67 @@ const menuItems:MenuItem[] = [
   {
     code: 'apis',
     icon: 'icon-jiekou',
-    showName: '接口',
+    showName: t('mock.mockDetail.menu.apis'),
     url: `/mockservice/${id}/apis`,
     show: true,
     breadcrumb: [
       { name: 'Mock', path: '/apis#mock', id: '1001' },
-      { name: '接口', id: '1002' }
+      { name: t('mock.mockDetail.menu.apis'), id: '1002' }
     ]
   },
   {
     code: 'request',
     icon: 'icon-qingqiushu',
-    showName: '请求',
+    showName: t('mock.mockDetail.menu.request'),
     url: `/mockservice/${id}/request`,
     show: true,
     breadcrumb: [
       { name: 'Mock', path: '/apis#mock', id: '2001' },
-      { name: '请求', id: '2002' }
+      { name: t('mock.mockDetail.menu.request'), id: '2002' }
     ]
   },
   {
     code: 'log',
     icon: 'icon-zidingyizhibiao1',
-    showName: '日志',
+    showName: t('mock.mockDetail.menu.log'),
     url: `/mockservice/${id}/log`,
     show: true,
     breadcrumb: [
       { name: 'Mock', path: '/apis#mock', id: '2001' },
-      { name: '日志', id: '6002' }
+      { name: t('mock.mockDetail.menu.log'), id: '6002' }
     ]
   },
   {
     code: 'activity',
     icon: 'icon-lishijilu',
-    showName: '活动',
+    showName: t('mock.mockDetail.menu.activity'),
     url: `/mockservice/${id}/activity`,
     show: true,
     breadcrumb: [
       { name: 'Mock', path: '/apis#mock', id: '3001' },
-      { name: '活动', id: '3002' }
+      { name: t('mock.mockDetail.menu.activity'), id: '3002' }
     ]
   },
   {
     code: 'monitor',
     icon: 'icon-jiankong',
-    showName: '监控',
+    showName: t('mock.mockDetail.menu.monitor'),
     url: `/mockservice/${id}/monitor`,
     show: true,
     breadcrumb: [
       { name: 'Mock', path: '/apis#mock', id: '4001' },
-      { name: '监控', id: '4002' }
+      { name: t('mock.mockDetail.menu.monitor'), id: '4002' }
     ]
   },
   {
     code: 'set',
     icon: 'icon-shezhi1',
-    showName: '设置',
+    showName: t('mock.mockDetail.menu.setting'),
     url: `/mockservice/${id}/setting`,
     show: true,
     breadcrumb: [
       { name: 'Mock', path: '/apis#mock', id: '5001' },
-      { name: '设置', id: '5002' }
+      { name: t('mock.mockDetail.menu.setting'), id: '5002' }
     ]
   }
 ];

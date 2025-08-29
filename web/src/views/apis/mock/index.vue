@@ -800,11 +800,11 @@ const statusStyleMap = {
           <div>
             <div class="flex items-start">
               <span>{{ text }}</span>
-              <span title="复制"><IconCopy class="ml-2 -mt-0.5 text-3.5" :copyText="text" /></span>
+              <span :title="t('actions.copy')"><IconCopy class="ml-2 -mt-0.5 text-3.5" :copyText="text" /></span>
             </div>
             <div v-if="text && record?.serviceDomainUrl">
               <span>{{ record?.serviceDomainUrl }}</span>
-              <span title="复制"><IconCopy class="ml-2 -mt-0.5 text-3.5" :copyText="record?.serviceDomainUrl" /></span>
+              <span :title="t('actions.copy')"><IconCopy class="ml-2 -mt-0.5 text-3.5" :copyText="record?.serviceDomainUrl" /></span>
             </div>
           </div>
         </template>
@@ -862,13 +862,13 @@ const statusStyleMap = {
               v-if="(!record.auth || record.currentAuthsValue.includes('DELETE')) && record.status?.value === 'NOT_STARTED' "
               class="mx-2 cursor-pointer flex items-center"
               @click="handleDelete([record.id])">
-              <Icon icon="icon-qingchu" class="mr-1 text-3.5" />删除
+              <Icon icon="icon-qingchu" class="mr-1 text-3.5" />{{ t('actions.delete') }}
             </a>
             <a
               v-else
               class="mx-2 flex items-center"
               disabled>
-              <Icon icon="icon-qingchu" class="mr-1 text-3.5" />删除
+              <Icon icon="icon-qingchu" class="mr-1 text-3.5" />{{ t('actions.delete') }}
             </a>
             <Dropdown
               :admin="false"

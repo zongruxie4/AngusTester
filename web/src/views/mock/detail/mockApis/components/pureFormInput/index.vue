@@ -3,6 +3,9 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Composite, Icon, Input } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface Props {
   value?: { [key: string]: string; }[];
@@ -160,7 +163,7 @@ defineExpose({
             :error="nameErrorSet.has(item)"
             style="flex: 1 1 40%;"
             trim
-            placeholder="参数名称，最大支持400个字符"
+            :placeholder="t('mock.mockApisComp.pureFormInput.parameterName')"
             @change="nameChange($event, item)" />
           <Input
             :value="dataMap[item].value"
@@ -168,7 +171,7 @@ defineExpose({
             :error="valueErrorSet.has(item)"
             trim
             style="flex: 1 1 60%;"
-            placeholder="参数值，最大支持4096个字符"
+            :placeholder="t('mock.mockApisComp.pureFormInput.parameterValue')"
             @change="valueChange($event, item)" />
         </Composite>
         <div class="flex-shrink-0 space-x-1">

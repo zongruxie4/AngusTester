@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Composite, Icon, Input, SelectInput, Validate } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 import SelectEnum from '@/components/selectEnum/index.vue';
 import { Condition } from './PropsType';
@@ -206,9 +209,9 @@ const placeholderMap = computed(() => {
     if (emptyConditions.includes(condition)) {
       map[id] = '';
     } else if (condition === 'REG_MATCH') {
-      map[id] = '正则表达式';
+      map[id] = t('mock.mockApisComp.matchForm.parameterForm.regMatch');
     } else {
-      map[id] = '参数值，最大支持4096个字符';
+      map[id] = t('mock.mockApisComp.matchForm.selectInputForm.parameterValue');
     }
   }
 
@@ -239,7 +242,7 @@ const inputProps = {
 </script>
 <template>
   <div v-if="!!idList.length" class="leading-5">
-    <div class="flex items-center mb-0.5">请求头</div>
+    <div class="flex items-center mb-0.5">{{ t('mock.mockApisComp.matchForm.selectInputForm.requestHeader') }}</div>
     <div class="space-y-2">
       <div
         v-for="(item,index) in idList"
@@ -258,7 +261,7 @@ const inputProps = {
             mode="combination"
             style="flex: 0 0 calc((100% - 200px) * 2/5);"
             trim
-            placeholder="参数名称，最大支持400个字符"
+            :placeholder="t('mock.mockApisComp.matchForm.selectInputForm.parameterName')"
             @change="nameChange($event,item)">
             <template #option="record">
               <div class="truncate" :title="record._value+'-'+record.message">{{ record._value }} - {{ record.message }}</div>
@@ -269,7 +272,7 @@ const inputProps = {
             :excludes="excludes"
             enumKey="FullMatchCondition"
             class="flex-shrink-0 w-48"
-            placeholder="运算符"
+            :placeholder="t('mock.mockApisComp.matchForm.selectInputForm.operator')"
             @change="conditionChange($event,item)" />
           <Validate
             class="flex-1"

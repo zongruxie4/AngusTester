@@ -173,7 +173,7 @@ const handleEdit = (key:string, type:'open' | 'cancel' | 'save', formType: 'info
           return;
         }
         mockServiceInfo.value[key] = _params[key];
-        notification.success('修改成功');
+        notification.success(t('mock.mockDetail.mockSet.notifications.modifySuccess'));
         editValue.value = false;
       }).catch();
     }
@@ -207,7 +207,7 @@ const handleEdit = (key:string, type:'open' | 'cancel' | 'save', formType: 'info
           return;
         }
         mockServiceInfo.value.setting[key] = _params.setting[key];
-        notification.success('修改成功');
+        notification.success(t('mock.mockDetail.mockSet.notifications.modifySuccess'));
         editValue.value = false;
       }).catch();
     }
@@ -241,7 +241,7 @@ const handleEdit = (key:string, type:'open' | 'cancel' | 'save', formType: 'info
           return;
         }
         mockServiceInfo.value.apisCors[key] = _params.apisCors[key];
-        notification.success('修改成功');
+        notification.success(t('mock.mockDetail.mockSet.notifications.modifySuccess'));
         editValue.value = false;
       }).catch();
     }
@@ -268,7 +268,7 @@ const updateSetting = async (_params, key:string) => {
 
   mockServiceInfo.value.setting[key] = _params.setting[key];
   setting.value[key] = _params.setting[key];
-  notification.success('修改成功');
+  notification.success(t('mock.mockDetail.mockSet.notifications.modifySuccess'));
 };
 
 const apisCorsEnabledFlagChange = (value) => {
@@ -288,7 +288,7 @@ const updateApiCors = async (_params, key:string) => {
 
   mockServiceInfo.value.apisCors[key] = _params.apisCors[key];
   apisCors.value[key] = _params.apisCors[key];
-  notification.success('修改成功');
+  notification.success(t('mock.mockDetail.mockSet.notifications.modifySuccess'));
 };
 
 const suretyFormRef = ref();
@@ -302,7 +302,7 @@ const saveSureTy = async () => {
     isOpenSurety.value = !!mockServiceInfo.value.apisSecurity?.length;
     return;
   }
-  notification.success('修改成功');
+  notification.success(t('mock.mockDetail.mockSet.notifications.modifySuccess'));
 };
 
 const addApisSecurityItem = () => {
@@ -337,7 +337,7 @@ const delApisSecurityItem = (index:number) => {
 
 const keNameValidator = async (_rule: Rule, value: string) => {
   if (!value) {
-    return Promise.reject(new Error('请输入参数名'));
+    return Promise.reject(new Error(t('mock.mockDetail.mockSet.validation.enterParamName')));
   } else {
     const keyNames = new Set();
     const hasDuplicates = suretyFormState.value.apisSecurity.some(obj => {
@@ -348,7 +348,7 @@ const keNameValidator = async (_rule: Rule, value: string) => {
       return false;
     });
     if (hasDuplicates) {
-      return Promise.reject(new Error('参数名称重复'));
+      return Promise.reject(new Error(t('mock.mockDetail.mockSet.validation.paramNameDuplicate')));
     } else {
       suretyFormRef.value.clearValidate();
       return Promise.resolve();
@@ -376,7 +376,7 @@ const hasEditAuth = computed(() => {
 <template>
   <Card>
     <template #title>
-      <span class="text-3 font-medium">基本信息</span>
+      <span class="text-3 font-medium">{{ t('mock.mockDetail.mockSet.basicInfo.title') }}</span>
     </template>
     <Form
       ref="infoFormRef"
@@ -395,14 +395,14 @@ const hasEditAuth = computed(() => {
         <Input :value="mockServiceInfo?.id" disabled />
       </FormItem>
       <FormItem
-        :rules="{ required: true, message: '请输入名称', trigger: 'change' }"
+        :rules="{ required: true, message: t('mock.mockDetail.mockSet.validation.enterName'), trigger: 'change' }"
         name="name"
         class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('名称') }}</span>
+            <span>{{ t('mock.mockDetail.mockSet.basicInfo.name') }}</span>
             <Tooltip
-              title="服务标识命名信息，最多允许100个字符。"
+              :title="t('mock.mockDetail.mockSet.basicInfo.nameTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '600px'}">
@@ -420,9 +420,9 @@ const hasEditAuth = computed(() => {
           :disabled="!editName">
           <template v-if="hasEditAuth" #suffix>
             <template v-if="editName">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('name','cancel','infoForm')">取消</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('name','cancel','infoForm')">{{ t('mock.mockDetail.mockSet.buttons.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('name','save','infoForm')">确定</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('name','save','infoForm')">{{ t('mock.mockDetail.mockSet.buttons.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -434,14 +434,14 @@ const hasEditAuth = computed(() => {
         </Input>
       </FormItem>
       <FormItem
-        :rules="{ required: true, message: '请输入域名', trigger: 'change' }"
+        :rules="{ required: true, message: t('mock.mockDetail.mockSet.validation.enterDomain'), trigger: 'change' }"
         name="serviceDomainUrl"
         class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('域名') }}</span>
+            <span>{{ t('mock.mockDetail.mockSet.basicInfo.domain') }}</span>
             <Tooltip
-              title="为服务设置域名后，可以通过域名访问Mock接口，设置的域名需要被解析到所在节点的IP。"
+              :title="t('mock.mockDetail.mockSet.basicInfo.domainTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '600px'}">
@@ -455,9 +455,9 @@ const hasEditAuth = computed(() => {
           :disabled="!editServiceDomain">
           <template v-if="editionType !== 'CLOUD_SERVICE' && hasEditAuth" #suffix>
             <template v-if="editServiceDomain">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('serviceDomainUrl','cancel','infoForm')">取消</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('serviceDomainUrl','cancel','infoForm')">{{ t('mock.mockDetail.mockSet.buttons.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('serviceDomainUrl','save','infoForm')">确定</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('serviceDomainUrl','save','infoForm')">{{ t('mock.mockDetail.mockSet.buttons.confirm') }}</a>
             </template>
             <template v-else>
               <Icon

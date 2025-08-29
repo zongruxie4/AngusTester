@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { utils } from '@xcan-angus/infra';
 import { Input, Select, Validate } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 import { DelayData, DelayMode } from './PropsType';
 
@@ -58,7 +61,7 @@ const validateMaxRandomTime = () => {
   if (!utils.isEmpty(maxRandomTime.value) && !utils.isEmpty(minRandomTime.value)) {
     if (+maxRandomTime.value! < +minRandomTime.value!) {
       maxRandomTimeError.value = true;
-      maxRandomTimeErrorMessage.value = '最大值小于最小值';
+      maxRandomTimeErrorMessage.value = t('mock.mockApisComp.contentForm.delayParameter.maxLessThanMin');
     }
   }
 };
@@ -119,9 +122,9 @@ const showRandomTimeInput = computed(() => {
 });
 
 const delayModeOptions: { label: string; value: DelayMode }[] = [
-  { label: '无延迟', value: 'NONE' },
-  { label: '固定延迟', value: 'FIXED' },
-  { label: '随机延迟', value: 'RANDOM' }
+  { label: t('mock.mockApisComp.contentForm.delayParameter.delayOptions.none'), value: 'NONE' },
+  { label: t('mock.mockApisComp.contentForm.delayParameter.delayOptions.fixed'), value: 'FIXED' },
+  { label: t('mock.mockApisComp.contentForm.delayParameter.delayOptions.random'), value: 'RANDOM' }
 ];
 
 defineExpose({
