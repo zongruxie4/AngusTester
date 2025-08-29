@@ -5,6 +5,9 @@ import { Hints, Icon, IconRequired, Input, notification, Toggle, Tooltip } from 
 import { cloneDeep, isEqual } from 'lodash-es';
 import { dataSet } from '@/api/tester';
 import { ExtractionMethod } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import SelectEnum from '@/components/selectEnum/index.vue';
 import { DataSetItem } from '../../PropsType';
@@ -159,7 +162,7 @@ const toEdit = async () => {
     return;
   }
 
-  notification.success('数据集修改成功');
+  notification.success(t('dataset.detail.jdbcDataset.notifications.updateSuccess'));
   emit('ok', params, true);
 };
 
@@ -172,7 +175,7 @@ const toCreate = async () => {
     return;
   }
 
-  notification.success('数据集添加成功');
+  notification.success(t('dataset.detail.jdbcDataset.notifications.addSuccess'));
   const id = res?.data?.id;
   emit('ok', { ...params, id }, false);
 };
@@ -321,12 +324,12 @@ const okButtonDisabled = computed(() => {
   <div class="flex items-center mb-3.5">
     <div class="mr-2.5 flex-shrink-0">
       <IconRequired />
-      <span>名称</span>
+      <span>{{ t('dataset.detail.jdbcDataset.form.name') }}</span>
     </div>
     <Input
       v-model:value="dataSetName"
       :maxlength="100"
-      placeholder="数据集名称，最长100个字符"
+      :placeholder="t('dataset.detail.jdbcDataset.form.namePlaceholder')"
       trimAll
       excludes="{}" />
   </div>
@@ -334,7 +337,7 @@ const okButtonDisabled = computed(() => {
   <div class="flex items-start">
     <div class="mr-2.5 flex items-center flex-shrink-0 transform-gpu translate-y-1">
       <IconRequired class="invisible" />
-      <span>描述</span>
+      <span>{{ t('dataset.detail.jdbcDataset.form.description') }}</span>
     </div>
     <Input
       v-model:value="description"
@@ -343,7 +346,7 @@ const okButtonDisabled = computed(() => {
       showCount
       type="textarea"
       class="flex-1"
-      placeholder="数据集描述，最长200个字符"
+      :placeholder="t('dataset.detail.jdbcDataset.form.descriptionPlaceholder')"
       trim />
   </div>
 
@@ -355,14 +358,14 @@ const okButtonDisabled = computed(() => {
       <template #tab>
         <div class="flex items-center font-normal">
           <IconRequired />
-          <span>提取</span>
+          <span>{{ t('dataset.detail.jdbcDataset.form.extraction') }}</span>
         </div>
       </template>
 
       <div>
-        <Hints class="mb-2.5" text="每次执行测试前从数据库中查询结果中提取一个值作为数据集值。" />
+        <Hints class="mb-2.5" :text="t('dataset.detail.jdbcDataset.form.hints')" />
 
-        <Toggle title="参数名称" class="text-3 leading-5 mb-3.5 params-container">
+        <Toggle :title="t('dataset.detail.jdbcDataset.form.parameterName')" class="text-3 leading-5 mb-3.5 params-container">
           <ParameterNameInput
             ref="parametersRef"
             :columnIndex="columnIndex"
@@ -370,7 +373,7 @@ const okButtonDisabled = computed(() => {
             @change="parametersChange" />
         </Toggle>
 
-        <Toggle title="读取配置" class="text-3 leading-5 mb-3.5">
+        <Toggle :title="t('dataset.detail.jdbcDataset.form.readConfig')" class="text-3 leading-5 mb-3.5">
           <div class="flex items-center justify-start mb-3.5">
             <div class="w-19.5 flex-shrink-0">
             </div>
@@ -380,7 +383,7 @@ const okButtonDisabled = computed(() => {
               class="flex items-center p-0 border-none h-3.5 leading-3.5 space-x-1"
               @click="toSelectDataSource">
               <Icon icon="icon-xuanze" class="text-3.5" />
-              <span>选择数据源</span>
+              <span>{{ t('dataset.detail.jdbcDataset.form.selectDataSource') }}</span>
             </Button>
           </div>
 
@@ -388,12 +391,12 @@ const okButtonDisabled = computed(() => {
             <div class="w-1/2 flex items-center">
               <div class="w-19.5 flex-shrink-0">
                 <IconRequired />
-                <span>数据库类型</span>
+                <span>{{ t('dataset.detail.jdbcDataset.form.databaseType') }}</span>
               </div>
               <SelectEnum
                 v-model:value="dbType"
                 enumKey="DatabaseType"
-                placeholder="数据库类型"
+                :placeholder="t('dataset.detail.jdbcDataset.form.databaseTypePlaceholder')"
                 class="w-full-24" />
             </div>
           </div>
@@ -415,11 +418,11 @@ const okButtonDisabled = computed(() => {
             <div class="w-1/2 flex items-center">
               <div class="w-19.5 flex-shrink-0">
                 <IconRequired />
-                <span>用户名</span>
+                <span>{{ t('dataset.detail.jdbcDataset.form.username') }}</span>
               </div>
               <Input
                 v-model:value="username"
-                placeholder="用户名，最长200个字符"
+                :placeholder="t('dataset.detail.jdbcDataset.form.usernamePlaceholder')"
                 class="w-full-24"
                 trim
                 :maxlength="200" />
@@ -428,11 +431,11 @@ const okButtonDisabled = computed(() => {
             <div class="w-1/2 flex items-center">
               <div class="w-16 flex-shrink-0">
                 <IconRequired />
-                <span>密码</span>
+                <span>{{ t('dataset.detail.jdbcDataset.form.password') }}</span>
               </div>
               <Input
                 v-model:value="password"
-                placeholder="密码，最长800个字符"
+                :placeholder="t('dataset.detail.jdbcDataset.form.passwordPlaceholder')"
                 class="w-full-20.5"
                 trim
                 :maxlength="800" />
@@ -442,11 +445,11 @@ const okButtonDisabled = computed(() => {
           <div class="flex items-start mb-3.5">
             <div class="w-19.5 flex-shrink-0 transform-gpu translate-y-1">
               <IconRequired />
-              <span>Select语句</span>
+              <span>{{ t('dataset.detail.jdbcDataset.form.selectStatement') }}</span>
             </div>
             <Input
               v-model:value="selectSqlString"
-              placeholder="查询表数据Select语句，不需要指定分页参数，默认每次拉取5000条，最长1024个字符"
+              :placeholder="t('dataset.detail.jdbcDataset.form.selectStatementPlaceholder')"
               class="w-full-24"
               type="textarea"
               trim
@@ -458,15 +461,15 @@ const okButtonDisabled = computed(() => {
             <div class="w-1/2 flex items-center">
               <div class="w-19.5 flex-shrink-0">
                 <IconRequired />
-                <span>读开始行</span>
+                <span>{{ t('dataset.detail.jdbcDataset.form.readStartRow') }}</span>
               </div>
               <Input
                 v-model:value="rowIndex"
                 :maxlength="4"
                 dataType="number"
-                placeholder="读取行索引，默认从0开始"
+                :placeholder="t('dataset.detail.jdbcDataset.form.readStartRowPlaceholder')"
                 trimAll />
-              <Tooltip title="读取参数值开始行，默认索引基于0开始，即读取第一行。">
+              <Tooltip :title="t('dataset.detail.jdbcDataset.form.readStartRowTooltip')">
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5 cursor-pointer" />
               </Tooltip>
             </div>
@@ -474,44 +477,44 @@ const okButtonDisabled = computed(() => {
             <div class="w-1/2 flex items-center">
               <div class="w-16 flex-shrink-0">
                 <IconRequired />
-                <span>读开始列</span>
+                <span>{{ t('dataset.detail.jdbcDataset.form.readStartColumn') }}</span>
               </div>
               <Input
                 v-model:value="columnIndex"
                 :maxlength="4"
                 dataType="number"
-                placeholder="读取列索引，默认从0开始"
+                :placeholder="t('dataset.detail.jdbcDataset.form.readStartColumnPlaceholder')"
                 trimAll />
-              <Tooltip title="读取参数开始列，默认索引基于0开始，即读取第一列。">
+              <Tooltip :title="t('dataset.detail.jdbcDataset.form.readStartColumnTooltip')">
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5 cursor-pointer" />
               </Tooltip>
             </div>
           </div>
         </Toggle>
 
-        <Toggle title="提取配置" class="text-3 leading-5">
+        <Toggle :title="t('dataset.detail.jdbcDataset.form.extractionConfig')" class="text-3 leading-5">
           <tempalte v-if="method === 'EXACT_VALUE'">
             <div class="flex items-center space-x-5 mb-3.5">
               <div class="w-1/2 flex items-center">
                 <div class="w-19.5 flex-shrink-0">
                   <IconRequired />
-                  <span>提取方式</span>
+                  <span>{{ t('dataset.detail.jdbcDataset.form.extractionMethod') }}</span>
                 </div>
                 <SelectEnum
                   v-model:value="method"
                   enumKey="ExtractionMethod"
-                  placeholder="提取方式"
+                  :placeholder="t('dataset.detail.jdbcDataset.form.extractionMethodPlaceholder')"
                   class="w-full-24" />
               </div>
 
               <div class="w-1/2 flex items-center">
                 <div class="w-16 flex-shrink-0">
                   <IconRequired class="invisible" />
-                  <span>缺省值</span>
+                  <span>{{ t('dataset.detail.jdbcDataset.form.defaultValue') }}</span>
                 </div>
                 <Input
                   v-model:value="defaultValue"
-                  placeholder="缺省值，最长4096个字符"
+                  :placeholder="t('dataset.detail.jdbcDataset.form.defaultValuePlaceholder')"
                   class="w-full-20.5"
                   trim
                   :maxlength="4096" />
@@ -524,23 +527,23 @@ const okButtonDisabled = computed(() => {
               <div class="w-1/2 flex items-center">
                 <div class="w-19.5 flex-shrink-0">
                   <IconRequired />
-                  <span>提取方式</span>
+                  <span>{{ t('dataset.detail.jdbcDataset.form.extractionMethod') }}</span>
                 </div>
                 <SelectEnum
                   v-model:value="method"
                   enumKey="ExtractionMethod"
-                  placeholder="提取方式"
+                  :placeholder="t('dataset.detail.jdbcDataset.form.extractionMethodPlaceholder')"
                   class="w-full-24" />
               </div>
 
               <div class="w-1/2 flex items-center">
                 <div class="w-16 flex-shrink-0">
                   <IconRequired />
-                  <span>表达式</span>
+                  <span>{{ t('dataset.detail.jdbcDataset.form.expression') }}</span>
                 </div>
                 <Input
                   v-model:value="expression"
-                  placeholder="表达式，最长1024个字符"
+                  :placeholder="t('dataset.detail.jdbcDataset.form.expressionPlaceholder')"
                   class="w-full-20.5"
                   trim
                   :maxlength="1024" />
@@ -551,11 +554,11 @@ const okButtonDisabled = computed(() => {
               <div class="w-1/2 flex items-center">
                 <div class="w-19.5 flex-shrink-0">
                   <IconRequired class="invisible" />
-                  <span>匹配项</span>
+                  <span>{{ t('dataset.detail.jdbcDataset.form.matchItem') }}</span>
                 </div>
                 <Input
                   v-model:value="matchItem"
-                  placeholder="匹配项，范围0-2000（可选）"
+                  :placeholder="t('dataset.detail.jdbcDataset.form.matchItemPlaceholder')"
                   class="w-full-24"
                   dataType="number"
                   trimAll
@@ -567,11 +570,11 @@ const okButtonDisabled = computed(() => {
               <div class="w-1/2 flex items-center">
                 <div class="w-16 flex-shrink-0">
                   <IconRequired class="invisible" />
-                  <span>缺省值</span>
+                  <span>{{ t('dataset.detail.jdbcDataset.form.defaultValue') }}</span>
                 </div>
                 <Input
                   v-model:value="defaultValue"
-                  placeholder="缺省值，最长4096个字符"
+                  :placeholder="t('dataset.detail.jdbcDataset.form.defaultValuePlaceholder')"
                   class="w-full-20.5"
                   trim
                   :maxlength="4096" />
@@ -585,7 +588,7 @@ const okButtonDisabled = computed(() => {
     <TabPane key="preview">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>预览</span>
+          <span>{{ t('dataset.detail.jdbcDataset.tabs.preview') }}</span>
         </div>
       </template>
 
@@ -595,7 +598,7 @@ const okButtonDisabled = computed(() => {
     <TabPane v-if="dataSetId" key="use">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>使用</span>
+          <span>{{ t('dataset.detail.jdbcDataset.tabs.use') }}</span>
         </div>
       </template>
 

@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
+
+const { t } = useI18n();
 
 type Props = {
   editFlag: boolean;
@@ -28,7 +31,7 @@ const emit = defineEmits<{
       @click="emit('click', 'ok')">
       <Icon icon="icon-dangqianxuanzhong" class="text-3.5" />
       <span>
-        保存
+        {{ t('dataset.detail.buttonGroup.save') }}
       </span>
     </Button>
 
@@ -40,7 +43,7 @@ const emit = defineEmits<{
         @click="emit('click', 'delete')">
         <Icon icon="icon-qingchu" class="text-3.5" />
         <span>
-          删除
+          {{ t('dataset.detail.buttonGroup.delete') }}
         </span>
       </Button>
 
@@ -51,7 +54,7 @@ const emit = defineEmits<{
         @click="emit('click', 'export')">
         <Icon icon="icon-fuzhizujian2" class="text-3.5" />
         <span>
-          导出
+          {{ t('dataset.detail.buttonGroup.export') }}
         </span>
       </Button>
 
@@ -62,7 +65,7 @@ const emit = defineEmits<{
         @click="emit('click', 'clone')">
         <Icon icon="icon-fuzhizujian2" class="text-3.5" />
         <span>
-          克隆
+          {{ t('dataset.detail.buttonGroup.clone') }}
         </span>
       </Button>
 
@@ -73,7 +76,7 @@ const emit = defineEmits<{
         @click="emit('click', 'copyLink')">
         <Icon icon="icon-fuzhi" class="text-3.5" />
         <span>
-          复制链接
+          {{ t('dataset.detail.buttonGroup.copyLink') }}
         </span>
       </Button>
 
@@ -84,7 +87,7 @@ const emit = defineEmits<{
         @click="emit('click', 'refresh')">
         <Icon icon="icon-shuaxin" class="text-3.5" />
         <span>
-          刷新
+          {{ t('dataset.detail.buttonGroup.refresh') }}
         </span>
       </Button>
     </template>

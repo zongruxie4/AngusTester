@@ -122,6 +122,207 @@
     "exportModal": {
       "title": "Download Dataset",
       "format": "Format"
+    },
+    "detail": {
+      "notifications": {
+        "deleteConfirm": "Are you sure to delete dataset [{name}]?",
+        "deleteSuccess": "Dataset deleted successfully",
+        "cloneSuccess": "Dataset cloned successfully",
+        "copyLinkSuccess": "Copy link successfully",
+        "copyLinkFail": "Copy link failed"
+      },
+      "buttonGroup": {
+        "save": "Save",
+        "delete": "Delete",
+        "export": "Export",
+        "clone": "Clone",
+        "copyLink": "Copy Link",
+        "refresh": "Refresh"
+      },
+      
+      "fileDataset": {
+        "notifications": {
+          "updateSuccess": "Dataset modified successfully",
+          "addSuccess": "Dataset added successfully"
+        },
+        "form": {
+          "name": "Name",
+          "namePlaceholder": "Dataset name, maximum 100 characters",
+          "description": "Description",
+          "descriptionPlaceholder": "Dataset description, maximum 200 characters",
+          "extraction": "Extraction",
+          "hints": "Read dataset from file, each dataset allows a maximum of 200 parameters, each parameter file cannot exceed 500MB, and the total number of rows cannot exceed 1000000.",
+          "parameterName": "Parameter Name",
+          "readConfig": "Read Config",
+          "filePath": "File Path",
+          "filePathPlaceholder": "File local path or file URL, maximum 800 characters",
+          "fileType": "File Type",
+          "fileEncoding": "File Encoding",
+          "readStartRow": "Read Start Row",
+          "readStartRowPlaceholder": "Read row index, default from 0",
+          "readStartRowTooltip": "Read parameter value start row, default index based on 0, that is, read the first row. Note: When the first row is the parameter name title row, usually need to read data from index 1, that is, the second row.",
+          "readStartColumn": "Read Start Column",
+          "readStartColumnPlaceholder": "Read column index, default from 0",
+          "readStartColumnTooltip": "Read parameter start column, default index based on 0, that is, read the first column.",
+          "separator": "Separator",
+          "separatorTooltip": "Csv type file parameter. Used to separate different fields or data columns in CSV files, the default value is \",\".",
+          "escapeChar": "Escape Character",
+          "escapeCharTooltip": "Csv type file parameter, used to escape special characters in fields, especially when the quote character itself is included as a text character, the default is \"\\\".",
+          "quoteChar": "Quote Character",
+          "quoteCharTooltip": "Csv type file parameter. Used to represent the start and end of fields in CSV files, especially when fields contain special characters such as separators (such as commas) or line breaks, the default is \"\\\".",
+          "extractionConfig": "Extraction Config",
+          "extractionMethod": "Extraction Method",
+          "extractionMethodPlaceholder": "Extraction Method",
+          "defaultValue": "Default Value",
+          "defaultValuePlaceholder": "Default value, maximum 4096 characters",
+          "expression": "Expression",
+          "expressionPlaceholder": "Expression, maximum 1024 characters",
+          "matchItem": "Match Item",
+          "matchItemPlaceholder": "Match item, range 0 ~ 2000"
+        },
+        "tabs": {
+          "preview": "Preview",
+          "use": "Use"
+        }
+      },
+      "jdbcDataset": {
+        "notifications": {
+          "updateSuccess": "Dataset modified successfully",
+          "addSuccess": "Dataset added successfully"
+        },
+        "form": {
+          "name": "Name",
+          "namePlaceholder": "Dataset name, maximum 100 characters",
+          "description": "Description",
+          "descriptionPlaceholder": "Dataset description, maximum 200 characters",
+          "extraction": "Extraction",
+          "hints": "Extract a value from the database query result before each test execution as a dataset value.",
+          "parameterName": "Parameter Name",
+          "readConfig": "Read Config",
+          "selectDataSource": "Select Data Source",
+          "databaseType": "Database Type",
+          "databaseTypePlaceholder": "Database Type",
+          "jdbcUrl": "JdbcUrl",
+          "jdbcUrlPlaceholder": "Jdbc URL, maximum 2048 characters",
+          "username": "Username",
+          "usernamePlaceholder": "Username, maximum 200 characters",
+          "password": "Password",
+          "passwordPlaceholder": "Password, maximum 800 characters",
+          "selectStatement": "Select Statement",
+          "selectStatementPlaceholder": "Select statement to query table data, no need to specify paging parameters, default fetch 5000 rows each time, maximum 1024 characters",
+          "readStartRow": "Read Start Row",
+          "readStartRowPlaceholder": "Read row index, default from 0",
+          "readStartRowTooltip": "Read parameter value start row, default index based on 0, that is, read the first row.",
+          "readStartColumn": "Read Start Column",
+          "readStartColumnPlaceholder": "Read column index, default from 0",
+          "readStartColumnTooltip": "Read parameter start column, default index based on 0, that is, read the first column.",
+          "extractionConfig": "Extraction Config",
+          "extractionMethod": "Extraction Method",
+          "extractionMethodPlaceholder": "Extraction Method",
+          "defaultValue": "Default Value",
+          "defaultValuePlaceholder": "Default value, maximum 4096 characters",
+          "expression": "Expression",
+          "expressionPlaceholder": "Expression, maximum 1024 characters",
+          "matchItem": "Match Item",
+          "matchItemPlaceholder": "Match item, range 0-2000 (optional)"
+        },
+        "tabs": {
+          "preview": "Preview",
+          "use": "Use"
+        }
+      },
+      "useList": {
+        "notifications": {
+          "deleteConfirm": "Confirm to delete resource [{name}]?",
+          "deleteSuccess": "Delete resource successfully",
+          "batchDeleteLimit": "Maximum support batch deletion of {max} resources, currently {current} resources are selected.",
+          "batchDeleteConfirm": "Confirm to delete the selected {num} resources?",
+          "batchDeleteAllSuccess": "The selected {num} resources were all deleted successfully",
+          "batchDeleteAllFail": "The selected {num} resources were all deleted failed",
+          "batchDeletePartialSuccess": "The selected {success} resources were deleted successfully, {fail} resources were deleted failed",
+          "batchDeleteLimitInfo": "Maximum support batch deletion of {max} resources, currently {current} resources are selected."
+        },
+        "table": {
+          "resourceType": "Resource Type",
+          "resourceId": "Resource ID",
+          "resourceName": "Resource Name",
+          "action": "Action"
+        },
+        "buttons": {
+          "batchDelete": "Batch Delete",
+          "deleteSelected": "Delete Selected",
+          "cancelDelete": "Cancel Delete"
+        },
+        "hints": "View resource information using datasets."
+      },
+      "matchItemPopover": {
+        "title": "Match Item",
+        "description": "When the expression matches multiple values or the result is an array, specify the value as the expected value of the expression, support position from 0 to maximum value 2000, return null when the specified position data does not exist, and merge multiple values into a value when not specified.",
+        "regexp": {
+          "name": "Regexp Match",
+          "columns": {
+            "data": "Match Value",
+            "expression": "Expression",
+            "result": "Match Result",
+            "item": "Match Item"
+          },
+          "item": "Default to merge match values when not specified position: \"1888888888813999999999\", specified position 0 to get value: \"18888888888\", specified position 1 to get value: \"13999999999\"."
+        },
+        "jsonpath": {
+          "name": "JSONPath Match",
+          "columns": {
+            "data": "Match Value",
+            "expression": "Expression",
+            "result": "Match Result",
+            "item": "Match Item"
+          },
+          "item": "Default to merge match values when not specified position: [{\"title\":\"Sayings of the Century\",\"price\":100},{\"title\":\"confucianism\",\"price\":200}], specified position 0 to get value: {\"title\":\"Sayings of the Century\",\"price\":100}, specified position 1 to get value: {\"title\":\"confucianism\",\"price\":200}."
+        },
+        "xpath": {
+          "name": "XPath Match",
+          "columns": {
+            "data": "Match Value",
+            "expression": "Expression",
+            "result": "Match Result",
+            "item": "Match Item"
+          },
+          "item": "Default to merge match values when not specified position: \"30codingbasketballAngus132codingAngus2\", specified position 0 to get value: \"30codingbasketballAngus1\", specified position 1 to get value: \"32codingAngus2\"."
+        }
+      },
+      "parameterNameInput": {
+        "name": "Name",
+        "readColumn": "Read Column",
+        "tooltip": "The parameter name order must be consistent with the file column data order, each name must be 100 characters or less.",
+        "placeholder": "Support numbers, letters and !$%^&*_-+=./, maximum 100 characters",
+        "errors": {
+          "duplicate": "Name duplicate",
+          "invalid": "Name support numbers, letters and !$%^&*_-+=./"
+        }
+      },
+      "staticDataset": {
+        "notifications": {
+          "editSuccess": "Dataset modified successfully",
+          "addSuccess": "Dataset added successfully"
+        },
+        "name": "Name",
+        "description": "Description",
+        "parameters": "Parameters",
+        "preview": "Preview",
+        "use": "Use",
+        "namePlaceholder": "Dataset name, maximum 100 characters",
+        "descriptionPlaceholder": "Dataset description, maximum 200 characters",
+        "hints": "Generate parameter values dynamically based on Mock data functions during sampling, each dataset allows a maximum of 200 parameters, and supports generating up to 1000 billion rows of data.",
+        "parameterInput": {
+          "name": "Name",
+          "value": "Value",
+          "namePlaceholder": "Support numbers, letters and !$%^&*_-+=./, maximum 100 characters",
+          "valuePlaceholder": "Parameter value, value can be constant or Mock function, maximum 4096 characters, value example: 123456, true, @String(5,10)",
+          "errors": {
+            "duplicate": "Name duplicate",
+            "invalid": "Name support numbers, letters and !$%^&*_-+=./"
+          }
+        }
+      }
     }
   },
   "datasource": {

@@ -1,9 +1,12 @@
 <script lang="ts" setup>
+import { useI18n } from 'vue-i18n';
 import { computed, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, IconCopy, IconRequired, Input, Tooltip } from '@xcan-angus/vue-ui';
 import { utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
+
+const { t } = useI18n();
 
 type Props = {
   defaultValue: { name: string }[];
@@ -52,7 +55,7 @@ const nameChange = debounce(duration.delay, (event: { target: { value: string; }
     const _id = ids[i];
     if (duplicates.includes(data[_id].name)) {
       nameErrorSet.value.add(_id);
-      errorMessage.value.set(_id, '名称重复');
+      errorMessage.value.set(_id, t('dataset.detail.parameterNameInput.errors.duplicate'));
     } else {
       nameErrorSet.value.delete(_id);
       errorMessage.value.delete(_id);
@@ -72,7 +75,7 @@ const nameBlur = (event: { target: { value: string; } }, id: string) => {
   const rex = new RegExp(/[^a-zA-Z0-9!$%^&*_\-+=./]/);
   if (rex.test(name)) {
     nameErrorSet.value.add(id);
-    errorMessage.value.set(id, '名称支持数字、字母和!$%^&*_-+=./');
+    errorMessage.value.set(id, t('dataset.detail.parameterNameInput.errors.invalid'));
   }
 };
 
@@ -172,7 +175,7 @@ const isValid = (): boolean => {
       const rex = new RegExp(/[a-zA-Z0-9!$%^&*_\-+=./]+/);
       if (!rex.test(name)) {
         nameErrorSet.value.add(id);
-        errorMessage.value.set(id, '名称支持数字、字母和!$%^&*_-+=./');
+        errorMessage.value.set(id, t('dataset.detail.parameterNameInput.errors.invalid'));
       }
     }
   }
@@ -202,14 +205,14 @@ defineExpose({
     <div class="flex items-center space-x-2 mb-1 pr-9">
       <div class="w-1/2 flex items-center">
         <IconRequired />
-        <span>名称</span>
-        <Tooltip title="参数名顺序必须和文件列数据顺序一致，每个名称最长100个字符。">
+        <span>{{ t('dataset.detail.parameterNameInput.name') }}</span>
+        <Tooltip :title="t('dataset.detail.parameterNameInput.tooltip')">
           <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5 cursor-pointer" />
         </Tooltip>
       </div>
       <div class="flex items-center">
         <IconRequired />
-        <span>读取列</span>
+        <span>{{ t('dataset.detail.parameterNameInput.readColumn') }}</span>
       </div>
     </div>
 
@@ -233,7 +236,7 @@ defineExpose({
                 excludes="{}"
                 includes="\!\$%\^&\*_\-+=\.\/"
                 dataType="mixin-en"
-                placeholder="支持数字、字母和!$%^&*_-+=./，最长100个字符"
+                :placeholder="t('dataset.detail.parameterNameInput.placeholder')"
                 size="small"
                 tirmAll
                 class="flex-1 has-suffix"
