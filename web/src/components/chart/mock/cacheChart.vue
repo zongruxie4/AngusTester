@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { inject, onBeforeMount, onMounted, Ref, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as echarts from 'echarts/core';
 
 import {
@@ -47,6 +48,7 @@ echarts.use([
   UniversalTransition
 ]);
 
+const { t } = useI18n();
 const chartsRef = ref();
 let myChart: echarts.ECharts;
 
@@ -63,7 +65,7 @@ const initCharts = () => {
 
 const chartsOption = {
   title: {
-    text: '缓存区(JVM、单位GB)',
+    text: t('commonComp.chart.cache.title'),
     left: 'center',
     textStyle: {
       fontSize: 12,
@@ -90,7 +92,7 @@ const chartsOption = {
     }
   },
   legend: {
-    data: ['总缓存区大小', '已使用缓存大小', '缓存区数'],
+    data: [t('commonComp.chart.cache.legend.totalCacheSize'), t('commonComp.chart.cache.legend.usedCacheSize'), t('commonComp.chart.cache.legend.cacheCount')],
     left: 'center',
     bottom: '20',
     itemStyle: {
@@ -139,7 +141,7 @@ const chartsOption = {
   ],
   series: [
     {
-      name: '总缓存区大小',
+      name: t('commonComp.chart.cache.series.totalCacheSize'),
       type: 'line',
       lineStyle: {
         width: 1
@@ -163,7 +165,7 @@ const chartsOption = {
       data: props.totalData
     },
     {
-      name: '已使用缓存大小',
+      name: t('commonComp.chart.cache.series.usedCacheSize'),
       type: 'line',
       areaStyle: {
         color: 'rgba(45,142,255,1)'
@@ -187,7 +189,7 @@ const chartsOption = {
       data: props.usedData
     },
     {
-      name: '缓存区数',
+      name: t('commonComp.chart.cache.series.cacheCount'),
       type: 'line',
       yAxisIndex: 1,
       areaStyle: {},

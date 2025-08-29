@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { inject, onBeforeMount, onMounted, Ref, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as echarts from 'echarts/core';
 
 import {
@@ -43,6 +44,7 @@ echarts.use([
   UniversalTransition
 ]);
 
+const { t } = useI18n();
 const chartsRef = ref();
 let myChart: echarts.ECharts;
 
@@ -59,7 +61,7 @@ const initCharts = () => {
 
 const chartsOption = {
   title: {
-    text: '内存(JVM、单位GB)',
+    text: t('commonComp.chart.ram.title'),
     left: 'center',
     textStyle: {
       fontSize: 12,
@@ -86,7 +88,7 @@ const chartsOption = {
     }
   },
   legend: {
-    data: ['最大可用内存', '已使用内存', '已提交内存'],
+    data: [t('commonComp.chart.ram.legend.maxAvailableMemory'), t('commonComp.chart.ram.legend.usedMemory'), t('commonComp.chart.ram.legend.committedMemory')],
     left: 'center',
     bottom: '20',
     itemStyle: {
@@ -124,7 +126,7 @@ const chartsOption = {
   ],
   series: [
     {
-      name: '最大可用内存',
+      name: t('commonComp.chart.ram.series.maxAvailableMemory'),
       type: 'line',
       areaStyle: {
         color: 'rgba(82, 196, 26, 1)'
@@ -148,7 +150,7 @@ const chartsOption = {
       data: props.totalData
     },
     {
-      name: '已使用内存',
+      name: t('commonComp.chart.ram.series.usedMemory'),
       type: 'line',
       areaStyle: {
 
@@ -172,7 +174,7 @@ const chartsOption = {
       data: props.usedData
     },
     {
-      name: '已提交内存',
+      name: t('commonComp.chart.ram.series.committedMemory'),
       type: 'line',
       areaStyle: {
         color: 'rgba(171,211,255,1)'

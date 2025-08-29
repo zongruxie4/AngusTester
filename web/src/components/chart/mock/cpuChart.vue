@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { inject, onBeforeMount, onMounted, Ref, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as echarts from 'echarts/core';
 import {
   DataZoomComponent,
@@ -42,6 +43,7 @@ echarts.use([
   UniversalTransition
 ]);
 
+const { t } = useI18n();
 const chartsRef = ref();
 let myChart: echarts.ECharts;
 
@@ -58,7 +60,7 @@ const initCharts = () => {
 
 const chartsOption = {
   title: {
-    text: props.totalData.length ? `处理器 (${props.totalData[0]}核)` : '处理器',
+    text: props.totalData.length ? t('commonComp.chart.cpu.titleWithCores', { cores: props.totalData[0] }) : t('commonComp.chart.cpu.title'),
     left: 'center',
     textStyle: {
       fontSize: 12,
@@ -87,7 +89,7 @@ const chartsOption = {
     valueFormatter: (value) => value ? value + '%' : value
   },
   legend: {
-    data: ['CPU数', '系统CPU使用率', '进程CPU使用率'],
+    data: [t('commonComp.chart.cpu.legend.cpuCount'), t('commonComp.chart.cpu.legend.systemCpuUsage'), t('commonComp.chart.cpu.legend.processCpuUsage')],
     left: 'center',
     bottom: '20',
     itemStyle: {
@@ -125,7 +127,7 @@ const chartsOption = {
   ],
   series: [
     {
-      name: '系统CPU使用率',
+      name: t('commonComp.chart.cpu.series.systemCpuUsage'),
       type: 'line',
       lineStyle: {
         width: 1
@@ -149,7 +151,7 @@ const chartsOption = {
       data: props.systemCpuUsed
     },
     {
-      name: '进程CPU使用率',
+      name: t('commonComp.chart.cpu.series.processCpuUsage'),
       type: 'line',
       areaStyle: {
         color: 'rgba(45,142,255,1)'
@@ -179,7 +181,7 @@ const chartsOption = {
 // Enable data zoom when user click bar.
 
 watch(() => props.xData, () => {
-  chartsOption.title.text = props.totalData.length ? `处理器 (${props.totalData[0]}核)` : '处理器';
+  chartsOption.title.text = props.totalData.length ? t('commonComp.chart.cpu.titleWithCores', { cores: props.totalData[0] }) : t('commonComp.chart.cpu.title');
   chartsOption.xAxis[0].data = props.xData;
   chartsOption.series[0].data = props.systemCpuUsed;
   chartsOption.series[1].data = props.processCpuUsed;

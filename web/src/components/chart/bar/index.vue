@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onBeforeMount, onMounted, Ref, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as echarts from 'echarts/core';
 import { NoData } from '@xcan-angus/vue-ui';
 
@@ -30,6 +31,7 @@ echarts.use([
   CanvasRenderer
 ]);
 
+const { t } = useI18n();
 const chartsRef = ref();
 let myChart: echarts.ECharts;
 
@@ -56,7 +58,11 @@ const chartsOption = {
     left: 40
   },
   title: {
-    text: `${props.title} ( ${props.unit} , 总数: ${props.yData.length ? props.yData.reduce((n, m) => Number(n) + Number(m)) : ''})`,
+    text: t('commonComp.chart.bar.titleFormat', { 
+      title: props.title, 
+      unit: props.unit, 
+      total: props.yData.length ? props.yData.reduce((n, m) => Number(n) + Number(m)) : ''
+    }),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -129,7 +135,11 @@ const chartsOption = {
 
 // Enable data zoom when user click bar.
 watch(() => props.xData, () => {
-  chartsOption.title.text = `${props.title} ( ${props.unit} , 总数: ${props.yData.length ? props.yData.reduce((n, m) => Number(n) + Number(m)) : ''})`;
+  chartsOption.title.text = t('commonComp.chart.bar.titleFormat', { 
+    title: props.title, 
+    unit: props.unit, 
+    total: props.yData.length ? props.yData.reduce((n, m) => Number(n) + Number(m)) : ''
+  });
   chartsOption.xAxis[0].data = props.xData;
   chartsOption.yAxis[0].max = props.yData.every(element => element === null) ? 100 : 'dataMax';
   chartsOption.series[0].data = props.yData;
