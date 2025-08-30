@@ -96,8 +96,11 @@ watch(() => props.ip, async newValue => {
     })
     .catch(err => {
       showErr.value = true;
-      if (err.response.data) {
+      // 修复：添加检查确保 err.response 存在
+      if (err.response && err.response.data) {
         errorInfo.value = err.response.data;
+      } else if (err.message) {
+        errorInfo.value = err.message;
       } else {
         errorInfo.value = '';
       }

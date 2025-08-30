@@ -14,8 +14,8 @@ import { NodeSource } from '@/enums/enums';
 
 const { t } = useI18n();
 
-const NodeItems = defineAsyncComponent(() => import('./components/nodeItems/index.vue'));
-const NodeTip = defineAsyncComponent(() => import('@/views/config/node/components/nodeTip/index.vue'));
+const NodeItems = defineAsyncComponent(() => import('./components/NodeItems.vue'));
+const NodeTip = defineAsyncComponent(() => import('@/views/config/node/components/NodeTip.vue'));
 
 const isAdmin = inject('isAdmin', ref(false));
 

@@ -113,7 +113,7 @@ export function useProxyData () {
     }
 
     // Show success notification and reload data
-    notification.success(t('agent.proxyConfigModifiedSuccess'));
+    notification.success(t('proxy.proxyConfigModifiedSuccess'));
     await loadProxyConfiguration();
   };
 

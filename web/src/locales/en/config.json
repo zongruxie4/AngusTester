@@ -605,15 +605,15 @@
           "applicationNode": "Application Node"
         },
         "nodeStatus": {
-          "enabledStatus": "Enabled Status:",
-          "agentInstallStatus": "Agent Install Status:",
-          "connectionStatus": "Connection Status:",
+          "enabledStatus": "Status:",
+          "agentInstallStatus": "Agent Status:",
+          "connectionStatus": "Connected:",
           "enabled": "Enabled",
-          "notEnabled": "Not Enabled",
+          "notEnabled": "Disabled",
           "installed": "Installed",
           "notInstalled": "Not Installed",
-          "connected": "Connected",
-          "notConnected": "Not Connected"
+          "connected": "Yes",
+          "notConnected": "No"
         },
         "viewItem": {
           "id": "ID: ",
@@ -644,15 +644,15 @@
         }
       },
       "nodeTip": {
-        "title": "Tips: 1. Node System: Supports Linux, Mac, Windows operating systems, Linux is recommended. 2. Adding and Installing Agents: Before executing tasks, you need to add nodes and install agents. If automatic agent installation fails due to network or server account issues, please follow the manual installation prompts, and ensure the agent is in a connected state before executing tasks (if not started, start the agent first). 3. Node Role Configuration: A node can take on multiple roles, but to improve performance test accuracy, please configure a single \"execution\" node role for stress test nodes. 4. Network Environment Selection: During stress testing, if you want to restore the user's real access environment (such as network latency), please use public network nodes; if you want to exclude network latency interference to test application limits, please add nodes in the same intranet environment as the test application.\n5. By default, only system administrators and application administrators are allowed to perform management operations on nodes.",
+        "title": "Tips: Supported operating systems include Linux (recommended), macOS, and Windows. Before executing tasks, add nodes and install agents - if auto-installation fails due to network/account issues, follow manual installation prompts and verify agent connectivity (start if inactive). While nodes support multiple roles, configure stress test nodes with a single \"Execution\" role for accurate performance measurement. Choose public-network nodes to simulate real-user conditions (with latency) or same-intranet nodes to test application limits without network interference. Note: Node management is restricted to system and application administrators by default.",
         "steps": {
           "managementNode": {
             "title": "Management Node",
-            "content": "Used for deploying and running Web UI applications"
+            "content": "Used for deploying and running Web UI applications."
           },
           "controllerNode": {
             "title": "Controller Node",
-            "content": "Used for scheduling, managing, monitoring execution and proxy services"
+            "content": "Used for scheduling, managing, monitoring execution and proxy services."
           },
           "executionNode": {
             "title": "Execution Node",
@@ -660,11 +660,11 @@
           },
           "mockNode": {
             "title": "Mock Node",
-            "content": "Runs Mock services and Mock interfaces"
+            "content": "Runs Mock services and Mock interfaces."
           },
           "applicationNode": {
             "title": "Application Node",
-            "content": "The node where the test application is located, used to observe the system load of the stressed application node during stress testing, helping to locate and analyze performance issues"
+            "content": "Hosts the testing application and monitors target node load during stress tests for performance diagnostics."
           }
         }
       }
