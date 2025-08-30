@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { AsyncComponent, modal, notification, Spin } from '@xcan-angus/vue-ui';
 import { toClipboard, utils } from '@xcan-angus/infra';
 import { variable } from '@/api/tester';
 
 import { VariableItem } from '../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -67,7 +70,7 @@ const toDelete = () => {
   }
 
   modal.confirm({
-    content: `确定删除变量【${data.name}】吗？`,
+    content: t('dataVariable.detail.notifications.deleteConfirm', { name: data.name }),
     async onOk () {
       const id = data.id;
       const [error] = await variable.deleteVariables([id]);
@@ -75,7 +78,7 @@ const toDelete = () => {
         return;
       }
 
-      notification.success('变量删除成功');
+      notification.success(t('dataVariable.detail.notifications.deleteSuccess'));
       deleteTabPane([id]);
 
       nextTick(() => {
@@ -103,7 +106,7 @@ const toClone = async () => {
     return;
   }
 
-  notification.success('变量克隆成功');
+  notification.success(t('dataVariable.detail.notifications.cloneSuccess'));
   nextTick(() => {
     updateTabPane({ _id: 'variableList', notify: utils.uuid() });
   });
@@ -111,9 +114,9 @@ const toClone = async () => {
 
 const toCopyLink = (id: string) => {
   toClipboard(window.location.origin + `/data#variables?id=${id}`).then(() => {
-    notification.success('复制链接成功');
+    notification.success(t('dataVariable.detail.notifications.copyLinkSuccess'));
   }).catch(() => {
-    notification.error('复制链接失败');
+    notification.error(t('dataVariable.detail.notifications.copyLinkFail'));
   });
 };
 

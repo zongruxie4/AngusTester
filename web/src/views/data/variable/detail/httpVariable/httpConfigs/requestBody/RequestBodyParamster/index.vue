@@ -7,6 +7,9 @@ import { utils, duration, codeUtils } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
 import { RequestBodyFormItem } from '../PropsType';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const { gzip, ungzip } = codeUtils;
 
@@ -402,7 +405,7 @@ const selectOptions = computed(() => {
         @change="checkboxChange($event, index, item)" />
       <Input
         v-model:value="dataMap[item].name"
-        placeholder="请输入参数名称"
+        placeholder="t('dataVariable.detail.httpVariable.httpConfigs.requestBodyParamster.parameterNamePlaceholder')"
         trim
         class="max-w-100 flex-1"
         :error="nameErrorSet.has(item)"
@@ -410,7 +413,7 @@ const selectOptions = computed(() => {
       <Select
         v-model:value="dataMap[item].type"
         class="w-25"
-        placeholder="请选择参数类型"
+        placeholder="t('dataVariable.detail.httpVariable.httpConfigs.requestBodyParamster.parameterTypePlaceholder')"
         :options="selectOptions"
         @change="typeChange($event, index, item)" />
       <div
@@ -426,7 +429,7 @@ const selectOptions = computed(() => {
             size="small"
             class="mr-3 transform-gpu translate-y-0.25">
             <Icon icon="icon-xuanze" class="mr-1" />
-            <span>选择文件</span>
+            <span>{{ t('dataVariable.detail.httpVariable.httpConfigs.requestBodyParamster.selectFile') }}</span>
           </Button>
         </Upload>
         <template v-if="!!fileMap[item]?.length">
@@ -449,7 +452,7 @@ const selectOptions = computed(() => {
       <Input
         v-else
         v-model:value="dataMap[item].value"
-        placeholder="请输入参数值，最多可输入4096个字符"
+        :placeholder="t('dataVariable.detail.httpVariable.httpConfigs.requestBodyParamster.parameterValuePlaceholder')"
         trim
         class="flex-1"
         :maxlength="4096"

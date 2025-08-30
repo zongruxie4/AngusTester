@@ -113,7 +113,7 @@ const generatedata = async () => {
       return;
     }
     scriptId.value = data.id;
-    notification.success(`创建生成数据【${mockData.name}】成功，请在“执行”中查看进度和结果。`);
+    notification.success(t('gendata.messages.generateDataSuccessWithName', { name: mockData.name }));
     cancel();
   });
 };

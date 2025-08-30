@@ -1,10 +1,13 @@
 
 <script lang="ts" setup>
 import { onMounted, ref, watch, watchEffect } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Checkbox } from 'ant-design-vue';
 import { Icon, Input, Select } from '@xcan-angus/vue-ui';
 import { utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
+
+const { t } = useI18n();
 
 export interface OptionProps {
   name: string;
@@ -215,7 +218,7 @@ const options = [{ label: 'query', value: 'query' }, { label: 'path', value: 'pa
           v-model:value="dataMap[item].name"
           :maxLength="400"
           :error="nameErrorSet.has(item)"
-          placeholder="参数名称"
+          :placeholder="t('dataVariable.detail.httpVariable.httpConfigs.parameterInput.namePlaceholder')"
           size="small"
           tirmAll
           style="flex:0 0 calc((100% - 84px)*3.5/10);max-width: 400px;"
@@ -232,7 +235,7 @@ const options = [{ label: 'query', value: 'query' }, { label: 'path', value: 'pa
           :maxlength="4096"
           class="flex-1"
           trim
-          placeholder="参数值，最长4096个字符"
+          :placeholder="t('dataVariable.detail.httpVariable.httpConfigs.parameterInput.valuePlaceholder')"
           @change="valueChange" />
       </div>
       <Button

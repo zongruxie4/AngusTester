@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Hints, Icon, Spin } from '@xcan-angus/vue-ui';
 import { variable } from '@/api/tester';
 import { ExtractionMethod, ExtractionSource, ExtractionFileType, Encoding } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 type Props = {
   dataSource: {
@@ -99,7 +102,7 @@ onMounted(() => {
 <template>
   <Spin :spinning="loading" class="text-3 leading-5">
     <div class="flex items-center justify-between mb-2.5">
-      <Hints text="实际变量值在执行采样前生成，并且会执行过程中保持不变。" />
+      <Hints :text="t('dataVariable.detail.previewData.title')" />
       <Button
         :disabled="loading"
         size="small"
@@ -107,12 +110,13 @@ onMounted(() => {
         class="px-0 h-5 leading-5 border-0 text-theme-content text-theme-text-hover"
         @click="refresh">
         <Icon icon="icon-shuaxin" class="text-3.5" />
-        <span class="ml-1">刷新</span>
+        <span class="ml-1">{{ t('dataVariable.detail.previewData.refresh') }}</span>
       </Button>
     </div>
 
     <div class="content-container rounded border border-solid border-theme-text-box">
       <span v-if="errorMessage" class="text-status-error">{{ errorMessage }}</span>
+      <span v-else-if="!content">{{ t('dataVariable.detail.previewData.noData') }}</span>
       <span v-else>{{ content }}</span>
     </div>
   </Spin>

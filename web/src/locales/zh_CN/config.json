@@ -636,6 +636,16 @@
           "swapArea": "交换区",
           "upload": "上传",
           "download": "下载"
+        },
+        "sortOptions": {
+          "byAddTime": "按添加时间",
+          "byName": "按名称"
+        },
+        "installConfigColumns": {
+          "tenantId": "租户ID",
+          "deviceId": "设备ID",
+          "serverCtrlUrlPrefix": "控制器地址",
+          "ctrlAccessToken": "设备访问令牌"
         }
       },
       "nodeTip": {

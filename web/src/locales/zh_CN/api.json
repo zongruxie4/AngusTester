@@ -1119,7 +1119,33 @@
         "pretty": "美化格式",
         "raw": "原生格式",
         "preview": "预览"
-      }
+      },
+      "navs": {
+          "apiInfo": "接口信息",
+          "performance": "测试指标",
+          "testInfo": "测试结果",
+          "case": "接口用例",
+          "activity": "活动",
+          "agent": "接口代理",
+          "code": "代码",
+          "apiMock": "Mock接口"
+        },
+        "serviceNav": {
+          "projectInfo": "服务信息",
+          "openapi": "文档信息",
+          "syncConfig": "同步配置",
+          "security": "安全方案配置",
+          "serverConfig": "服务器配置",
+          "activity": "活动",
+          "agent": "服务代理",
+          "tag": "标签",
+          "componnet": "组件"
+        },
+        "socketNavs": {
+          "apiInfo": "接口信息",
+          "activity": "活动",
+          "agent": "接口代理"
+        }
     },
     "security": {
       "hints": "声明可用于接口的安全方案",

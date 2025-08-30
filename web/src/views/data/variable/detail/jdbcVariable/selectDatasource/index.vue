@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { IconRequired, Modal, Select } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -55,7 +58,7 @@ const apisAction = computed(() => {
 
 <template>
   <Modal
-    title="选择数据源"
+    :title="t('dataVariable.detail.jdbcVariable.selectDatasource.title')"
     :visible="props.visible"
     :okButtonProps="okButtonProps"
     @cancel="cancel"
@@ -63,11 +66,11 @@ const apisAction = computed(() => {
     <div class="flex items-center">
       <div class="flex-shrink-0 mr-2.5">
         <IconRequired class="invisible" />
-        <span>选择数据源</span>
+        <span>{{ t('dataVariable.detail.jdbcVariable.selectDatasource.title') }}</span>
       </div>
       <Select
         showSearch
-        placeholder="选择数据源"
+        :placeholder="t('dataVariable.detail.jdbcVariable.selectDatasource.title')"
         class="w-full"
         :action="apisAction"
         :fieldNames="{ label: 'name', value: 'id' }"

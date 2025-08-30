@@ -1073,6 +1073,32 @@
         "pretty": "Pretty",
         "raw": "Raw",
         "preview": "Preview"
+      },
+      "navs": {
+        "apiInfo": "API Info",
+        "performance": "Performance",
+        "testInfo": "Test Result",
+        "case": "Case",
+        "activity": "Activity",
+        "agent": "Agent",
+        "code": "Code",
+        "apiMock": "Mock API"
+      },
+      "serviceNav": {
+        "projectInfo": "Service Info",
+        "openapi": "Document Info",
+        "syncConfig": "Sync Config",
+        "security": "Security Config",
+        "serverConfig": "Server Config",
+        "activity": "Activity",
+        "agent": "Service Agent",
+        "tag": "Tag",
+        "componnet": "Component"
+      },
+      "socketNavs": {
+        "apiInfo": "API Info",
+        "activity": "Activity",
+        "agent": "Agent"
       }
     },
     "security": {

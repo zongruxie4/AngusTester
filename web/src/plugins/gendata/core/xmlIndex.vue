@@ -3,7 +3,6 @@ import { ref, watch, nextTick, inject, computed } from 'vue';
 import { PureCard, notification } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
-import { TESTER, http } from '@xcan-angus/infra';
 import { mock } from '@/api/tester';
 
 import { UserInfo } from './PropsType';
@@ -113,7 +112,7 @@ const generatedata = async () => {
       return;
     }
     scriptId.value = data.id;
-    notification.success(`创建生成数据【${mockData.name}】成功，请在“执行”中查看进度和结果。`);
+    notification.success(t('gendata.messages.generateDataSuccessWithName', { name: mockData.name }));
     cancel();
   });
 };

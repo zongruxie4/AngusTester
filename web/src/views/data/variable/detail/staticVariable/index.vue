@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Radio, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
 import { Hints, IconRequired, Input, notification, Validate, FunctionsButton, ParamTextarea } from '@xcan-angus/vue-ui';
 import { isEqual } from 'lodash-es';
@@ -7,6 +8,8 @@ import { variable } from '@/api/tester';
 
 import { VariableItem } from '../../PropsType';
 import { FormState } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -125,7 +128,7 @@ const toEdit = async () => {
     return;
   }
 
-  notification.success('变量修改成功');
+  notification.success(t('dataVariable.detail.staticVariable.notifications.editSuccess'));
   emit('ok', params, true);
 };
 
@@ -138,7 +141,7 @@ const toCreate = async () => {
     return;
   }
 
-  notification.success('变量添加成功');
+  notification.success(t('dataVariable.detail.staticVariable.notifications.addSuccess'));
   const id = res?.data?.id;
   emit('ok', { ...params, id }, false);
 };
@@ -223,7 +226,7 @@ const okButtonDisabled = computed(() => {
   <div class="flex items-start mb-3.5">
     <div class="flex items-center flex-shrink-0 mr-2.5 leading-7">
       <IconRequired />
-      <span>名称</span>
+      <span>{{ t('dataVariable.detail.staticVariable.name') }}</span>
     </div>
     <Validate
       class="flex-1"
@@ -237,7 +240,7 @@ const okButtonDisabled = computed(() => {
         dataType="mixin-en"
         excludes="{}"
         includes="\!\$%\^&\*_\-+=\.\/"
-        placeholder="支持数字、字母和!$%^&*_-+=./，最长100个字符"
+        :placeholder="t('dataVariable.detail.staticVariable.namePlaceholder')"
         trimAll
         @change="nameChange"
         @blur="nameBlur" />
@@ -247,14 +250,14 @@ const okButtonDisabled = computed(() => {
   <div class="flex items-center mb-3.5">
     <div class="flex items-center flex-shrink-0 mr-2.5">
       <IconRequired />
-      <span>密码</span>
+      <span>{{ t('dataVariable.detail.staticVariable.password') }}</span>
     </div>
     <RadioGroup v-model:value="passwordValue" name="passwordValue">
-      <Radio :value="false">否</Radio>
+      <Radio :value="false">{{ t('dataVariable.detail.staticVariable.no') }}</Radio>
       <Radio :value="true">
         <div class="flex items-center">
-          <span class="mr-2">是</span>
-          <Hints text="如果是密码类型变量，变量值在界面上对用户不可见。" />
+          <span class="mr-2">{{ t('dataVariable.detail.staticVariable.yes') }}</span>
+          <Hints :text="t('dataVariable.detail.staticVariable.passwordHint')" />
         </div>
       </Radio>
     </RadioGroup>
@@ -263,7 +266,7 @@ const okButtonDisabled = computed(() => {
   <div class="flex items-start">
     <div class="flex items-center flex-shrink-0 mr-2.5 transform-gpu translate-y-1">
       <IconRequired class="invisible" />
-      <span>描述</span>
+      <span>{{ t('dataVariable.detail.staticVariable.description') }}</span>
     </div>
     <Input
       v-model:value="description"
@@ -272,7 +275,7 @@ const okButtonDisabled = computed(() => {
       showCount
       type="textarea"
       class="flex-1"
-      placeholder="变量描述，最大支持200个字符"
+      :placeholder="t('dataVariable.detail.staticVariable.descriptionPlaceholder')"
       trim />
   </div>
 
@@ -284,26 +287,26 @@ const okButtonDisabled = computed(() => {
       <template #tab>
         <div class="flex items-center font-normal">
           <IconRequired />
-          <span>值</span>
+          <span>{{ t('dataVariable.detail.staticVariable.value') }}</span>
         </div>
       </template>
 
       <div class="flex">
-        <Hints class="mb-2.5" text="定义一个常量、Mock数据函数或包含Mock数据函数的文本作为变量值。如果变量值中包含Mock数据函数，默认每一次迭代前更新一次值，同一个迭代内采样请求变量值保持不变。" />
+        <Hints class="mb-2.5" :text="t('dataVariable.detail.staticVariable.hints')" />
         <FunctionsButton class="ml-1 text-3.5" />
       </div>
       <ParamTextarea
         :value="variableValue"
         :maxLength="4096"
         :height="60"
-        placeholder="变量值，支持Mock函数，最大支持4096个字符。值示例：123456、true、@String(5,10)"
+        :placeholder="t('dataVariable.detail.staticVariable.valuePlaceholder')"
         @blur="handleBlurValue" />
     </TabPane>
 
     <TabPane key="preview">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>预览</span>
+          <span>{{ t('dataVariable.detail.staticVariable.preview') }}</span>
         </div>
       </template>
 
@@ -313,7 +316,7 @@ const okButtonDisabled = computed(() => {
     <TabPane v-if="variableId" key="use">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>使用</span>
+          <span>{{ t('dataVariable.detail.staticVariable.use') }}</span>
         </div>
       </template>
 

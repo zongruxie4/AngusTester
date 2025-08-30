@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Hints, Icon, modal, NoData, notification, Spin, Table } from '@xcan-angus/vue-ui';
 import { paramTarget, variable } from '@/api/tester';
 
 import { SourceItem } from '../../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   id: string;
@@ -28,7 +31,7 @@ const dataList = ref<SourceItem[]>([]);
 
 const toDelete = (data: SourceItem) => {
   modal.confirm({
-    content: `确定删除资源【${data.targetName}】吗？`,
+    content: t('dataVariable.detail.useList.notifications.deleteConfirm', { name: data.targetName }),
     async onOk () {
       loading.value = true;
       const params = [props.id];
@@ -39,7 +42,7 @@ const toDelete = (data: SourceItem) => {
       }
 
       pagination.value.total = pagination.value.total - 1;
-      notification.success('删除资源成功');
+      notification.success(t('dataVariable.detail.useList.notifications.deleteSuccess'));
       dataList.value = dataList.value.filter((item) => item.targetId !== data.targetId);
     }
   });
@@ -68,12 +71,12 @@ const toBatchDelete = () => {
   }
 
   if (selectedNum > MAX_NUM) {
-    notification.error(`最大支持批量删除${MAX_NUM}个资源，当前已选中${selectedNum}个资源。`);
+    notification.error(t('dataVariable.detail.useList.notifications.batchDeleteLimit', { max: MAX_NUM, current: selectedNum }));
     return;
   }
 
   modal.confirm({
-    content: `确定删除选中的 ${selectedNum} 条资源吗？`,
+    content: t('dataVariable.detail.useList.notifications.batchDeleteConfirm', { num: selectedNum }),
     async onOk () {
       const ids = selectedRowKeys;
       const num = ids.length;
@@ -99,7 +102,7 @@ const toBatchDelete = () => {
 
         const errorNum = errorIds.length;
         if (errorNum === 0) {
-          notification.success(`选中的 ${num} 条资源全部删除成功`);
+          notification.success(t('dataVariable.detail.useList.notifications.batchDeleteAllSuccess', { num }));
           pagination.value.total = pagination.value.total - num;
           rowSelection.value = undefined;
           dataList.value = dataList.value.filter((item) => !ids.includes(item.targetId));
@@ -107,12 +110,12 @@ const toBatchDelete = () => {
         }
 
         if (errorNum === num) {
-          notification.error(`选中的 ${num} 条资源全部删除失败`);
+          notification.error(t('dataVariable.detail.useList.notifications.batchDeleteAllFail'));
           return;
         }
 
         const successIds = ids.filter(item => !errorIds.includes(item));
-        notification.warning(`选中的 ${num - errorNum} 条资源删除成功，${errorNum} 条资源删除失败`);
+        notification.warning(t('dataVariable.detail.useList.notifications.batchDeletePartialSuccess', { success: successIds.length, fail: errorNum }));
         rowSelection.value!.selectedRowKeys = rowSelection.value!.selectedRowKeys.filter((item) => !successIds.includes(item));
         dataList.value = dataList.value.filter((item) => !successIds.includes(item.targetId));
       });
@@ -149,7 +152,7 @@ const tableSelect = (keys: string[]) => {
 
   const selectedNum = selectedRowKeys.length;
   if (selectedNum > MAX_NUM) {
-    notification.info(`最大支持批量删除 ${MAX_NUM} 个资源，当前已选中 ${selectedNum} 个资源。`);
+    notification.info(t('dataVariable.detail.useList.notifications.batchDeleteLimit', { max: MAX_NUM, current: selectedNum }));
   }
 
   rowSelection.value.selectedRowKeys = selectedRowKeys;
@@ -203,24 +206,24 @@ const selectedNum = computed(() => {
 
 const columns = [
   {
-    title: '资源类型',
+    title: t('dataVariable.detail.useList.columns.targetType'),
     dataIndex: 'targetType',
     width: '10%',
     ellipsis: true
   },
   {
-    title: '资源ID',
+    title: t('dataVariable.detail.useList.columns.targetId'),
     dataIndex: 'targetId',
     width: '20%',
     ellipsis: true
   },
   {
-    title: '资源名称',
+    title: t('dataVariable.detail.useList.columns.targetName'),
     dataIndex: 'targetName',
     ellipsis: true
   },
   {
-    title: '操作',
+    title: t('dataVariable.detail.useList.columns.action'),
     dataIndex: 'action',
     width: 70
   }
@@ -230,7 +233,7 @@ const columns = [
 <template>
   <Spin :spinning="loading" class="text-3 leading-5">
     <div class="flex items-center justify-between mb-2">
-      <Hints text="查看使用数据集的资源信息。" />
+      <Hints :text="t('dataVariable.detail.useList.title')" />
       <div v-if="!rowSelection" class="flex items-center space-x-2.5">
         <Button
           v-if="dataList.length"
@@ -240,7 +243,7 @@ const columns = [
           class="flex items-center px-0 h-5 leading-5 border-0 text-theme-text-hover"
           @click="toBatchDelete">
           <Icon icon="icon-qingchu" class="text-3.5" />
-          <span class="ml-1">批量删除</span>
+          <span class="ml-1">{{ t('dataVariable.detail.useList.buttons.batchDelete') }}</span>
         </Button>
 
         <Button
@@ -250,7 +253,7 @@ const columns = [
           class="flex items-center px-0 h-5 leading-5 border-0 text-theme-text-hover"
           @click="refresh">
           <Icon icon="icon-shuaxin" class="text-3.5" />
-          <span class="ml-1">刷新</span>
+          <span class="ml-1">{{ t('dataVariable.detail.useList.buttons.refresh') }}</span>
         </Button>
       </div>
 
@@ -263,7 +266,7 @@ const columns = [
           @click="toBatchDelete">
           <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
           <div class="flex items-center">
-            <span class="mr-0.5">删除选中</span>
+            <span class="mr-0.5">{{ t('dataVariable.detail.useList.buttons.deleteSelected') }}</span>
             <span>({{ selectedNum }})</span>
           </div>
         </Button>
@@ -274,7 +277,7 @@ const columns = [
           class="flex items-center px-0 h-5 leading-5 border-0 text-theme-text-hover"
           @click="toCancelBatchDelete">
           <Icon icon="icon-fanhui" class="mr-1" />
-          <span>取消删除</span>
+          <span>{{ t('dataVariable.detail.useList.buttons.cancelDelete') }}</span>
         </Button>
       </div>
     </div>
@@ -306,7 +309,7 @@ const columns = [
             class="flex items-center px-0"
             @click="toDelete(record)">
             <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
-            <span>删除</span>
+            <span>{{ t('dataVariable.detail.useList.buttons.delete') }}</span>
           </Button>
         </template>
       </Table>

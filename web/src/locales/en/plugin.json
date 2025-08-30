@@ -348,6 +348,7 @@
       "operationSuccess": "Operation Successful",
       "operationFailed": "Operation Failed",
       "generateDataSuccess": "Data generation created successfully, please check progress and results in 'Execution'.",
+      "generateDataSuccessWithName": "Data generation [{name}] created successfully, please check progress and results in 'Execution'.",
       "confirmDelete": "Confirm Delete",
       "noData": "No Data",
       "loading": "Loading...",

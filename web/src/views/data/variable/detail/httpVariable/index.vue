@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
 import {
   AsyncComponent,
@@ -19,6 +20,8 @@ import SelectEnum from '@/components/selectEnum/index.vue';
 import { VariableItem } from '../../PropsType';
 import { FormState } from './PropsType';
 import { getRequestConfigs } from './getRequestConfigs';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -189,7 +192,7 @@ const toEdit = async () => {
     return;
   }
 
-  notification.success('变量修改成功');
+  notification.success(t('dataVariable.detail.httpVariable.notifications.editSuccess'));
   emit('ok', params, true);
 };
 
@@ -202,7 +205,7 @@ const toCreate = async () => {
     return;
   }
 
-  notification.success('变量添加成功');
+  notification.success(t('dataVariable.detail.httpVariable.notifications.addSuccess'));
   const id = res?.data?.id;
   emit('ok', { ...params, id }, false);
 };
@@ -344,11 +347,11 @@ const okButtonDisabled = computed(() => {
   <div class="flex items-start mb-3.5">
     <div class="flex items-center flex-shrink-0 mr-2.5 leading-7">
       <IconRequired />
-      <span>名称</span>
+      <span>{{ t('dataVariable.detail.httpVariable.name') }}</span>
     </div>
     <Validate
       class="flex-1"
-      text="支持数字、字母和!$%^&*_-+=./"
+      :text="t('dataVariable.detail.httpVariable.nameSupport')"
       mode="error"
       :error="variableNameError">
       <Input
@@ -358,7 +361,7 @@ const okButtonDisabled = computed(() => {
         dataType="mixin-en"
         excludes="{}"
         includes="\!\$%\^&\*_\-+=\.\/"
-        placeholder="支持数字、字母和!$%^&*_-+=./，最长100个字符"
+        :placeholder="t('dataVariable.detail.httpVariable.namePlaceholder')"
         trimAll
         @change="nameChange"
         @blur="nameBlur" />
@@ -368,7 +371,7 @@ const okButtonDisabled = computed(() => {
   <div class="flex items-start">
     <div class="mr-2.5 flex items-center flex-shrink-0 transform-gpu translate-y-1">
       <IconRequired class="invisible" />
-      <span>描述</span>
+      <span>{{ t('dataVariable.detail.httpVariable.description') }}</span>
     </div>
     <Input
       v-model:value="description"
@@ -377,7 +380,7 @@ const okButtonDisabled = computed(() => {
       showCount
       type="textarea"
       class="flex-1"
-      placeholder="变量描述，最长200个字符"
+      :placeholder="t('dataVariable.detail.httpVariable.descriptionPlaceholder')"
       trim />
   </div>
 
@@ -389,13 +392,14 @@ const okButtonDisabled = computed(() => {
       <template #tab>
         <div class="flex items-center font-normal">
           <IconRequired />
-          <span>提取</span>
+          <span>{{ t('dataVariable.detail.httpVariable.extract') }}</span>
         </div>
       </template>
 
       <div>
-        <Hints class="mb-2.5" text="每次执行测试前从Http中提取一个值作为变量值，常用于获取一个用户访问令牌，避免每次手动更新。" />
-        <Toggle title="读取配置" class="text-3 leading-5 mb-3.5">
+        <Hints class="mb-2.5" :text="t('dataVariable.detail.httpVariable.hints')" />
+
+        <Toggle :title="t('dataVariable.detail.httpVariable.readConfig')" class="text-3 leading-5 mb-3.5">
           <div class="flex items-center justify-start mb-3.5">
             <div class="w-16 flex-shrink-0">
             </div>
@@ -405,16 +409,14 @@ const okButtonDisabled = computed(() => {
               class="flex items-center p-0 border-none h-3.5 leading-3.5 space-x-1"
               @click="toSelectApi">
               <Icon icon="icon-xuanze" class="text-3.5" />
-              <span>
-                选择接口
-              </span>
+              <span>{{ t('dataVariable.detail.httpVariable.selectApi') }}</span>
             </Button>
           </div>
 
           <div class="flex items-start mb-3.5">
             <div class="w-16 flex-shrink-0 transform-gpu translate-y-1">
               <IconRequired />
-              <span>接口配置</span>
+              <span>{{ t('dataVariable.detail.httpVariable.interfaceConfig') }}</span>
             </div>
             <HTTPConfigs
               ref="httpConfigsRef"
@@ -423,26 +425,26 @@ const okButtonDisabled = computed(() => {
           </div>
         </Toggle>
 
-        <Toggle title="提取配置" class="text-3 leading-5">
+        <Toggle :title="t('dataVariable.detail.httpVariable.extractConfig')" class="text-3 leading-5">
           <template v-if="method === 'EXACT_VALUE'">
             <template v-if="['REQUEST_RAW_BODY', 'RESPONSE_BODY'].includes(location)">
               <div class="flex items-center space-x-5 mb-3.5">
                 <div class="w-1/2 flex items-center">
                   <div class="w-16 flex-shrink-0">
                     <IconRequired />
-                    <span>提取方式</span>
+                    <span>{{ t('dataVariable.detail.httpVariable.extractMethod') }}</span>
                   </div>
                   <SelectEnum
                     v-model:value="method"
                     enumKey="ExtractionMethod"
-                    placeholder="提取方式"
+                    :placeholder="t('dataVariable.detail.httpVariable.extractMethodPlaceholder')"
                     class="w-full-16" />
                 </div>
 
                 <div class="w-1/2 flex items-center">
                   <div class="w-16 flex-shrink-0">
                     <IconRequired />
-                    <span>提取位置</span>
+                    <span>{{ t('dataVariable.detail.httpVariable.extractPosition') }}</span>
                   </div>
                   <SelectEnum
                     v-model:value="location"
@@ -455,11 +457,11 @@ const okButtonDisabled = computed(() => {
                 <div class="w-1/2 flex items-center">
                   <div class="w-16 flex-shrink-0">
                     <IconRequired class="invisible" />
-                    <span>缺省值</span>
+                    <span>{{t('dataVariable.detail.httpVariable.defaultValue')}}</span>
                   </div>
                   <Input
                     v-model:value="defaultValue"
-                    placeholder="缺省值，最长4096个字符"
+                    :placeholder="t('dataVariable.detail.httpVariable.defaultValuePlaceholder')"
                     class="w-full-16"
                     trim
                     :maxlength="4096" />
@@ -472,19 +474,19 @@ const okButtonDisabled = computed(() => {
                 <div class="w-1/2 flex items-center">
                   <div class="w-16 flex-shrink-0">
                     <IconRequired />
-                    <span>提取方式</span>
+                    <span>{{ t('dataVariable.detail.httpVariable.extractMethod') }}</span>
                   </div>
                   <SelectEnum
                     v-model:value="method"
                     enumKey="ExtractionMethod"
-                    placeholder="提取方式"
+                    :placeholder="t('dataVariable.detail.httpVariable.extractMethodPlaceholder')"
                     class="w-full-16" />
                 </div>
 
                 <div class="w-1/2 flex items-center">
                   <div class="w-16 flex-shrink-0">
                     <IconRequired />
-                    <span>提取位置</span>
+                    <span>{{ t('dataVariable.detail.httpVariable.extractPosition') }}</span>
                   </div>
                   <SelectEnum
                     v-model:value="location"
@@ -497,11 +499,11 @@ const okButtonDisabled = computed(() => {
                 <div class="w-1/2 flex items-center">
                   <div class="w-16 flex-shrink-0">
                     <IconRequired />
-                    <span>参数名称</span>
+                    <span>{{ t('dataVariable.detail.httpVariable.expression') }}</span>
                   </div>
                   <Input
                     v-model:value="parameterName"
-                    placeholder="参数名称，最长400个字符"
+                    :placeholder="t('dataVariable.detail.httpVariable.parameterNamePlaceholder')"
                     class="w-full-16"
                     trimAll
                     :maxlength="400" />
@@ -510,11 +512,11 @@ const okButtonDisabled = computed(() => {
                 <div class="w-1/2 flex items-center">
                   <div class="w-16 flex-shrink-0">
                     <IconRequired class="invisible" />
-                    <span>缺省值</span>
+                    <span>{{ t('dataVariable.detail.httpVariable.defaultValue') }}</span>
                   </div>
                   <Input
                     v-model:value="defaultValue"
-                    placeholder="缺省值，最长4096个字符"
+                    :placeholder="t('dataVariable.detail.httpVariable.defaultValuePlaceholder')"
                     class="w-full-16"
                     trim
                     :maxlength="4096" />
@@ -529,19 +531,19 @@ const okButtonDisabled = computed(() => {
                 <div class="w-1/2 flex items-center">
                   <div class="w-16 flex-shrink-0">
                     <IconRequired />
-                    <span>提取方式</span>
+                    <span>{{ t('dataVariable.detail.httpVariable.extractMethod') }}</span>
                   </div>
                   <SelectEnum
                     v-model:value="method"
                     enumKey="ExtractionMethod"
-                    placeholder="提取方式"
+                    :placeholder="t('dataVariable.detail.httpVariable.extractMethodPlaceholder')"
                     class="w-full-16" />
                 </div>
 
                 <div class="w-1/2 flex items-center">
                   <div class="w-16 flex-shrink-0">
                     <IconRequired />
-                    <span>提取位置</span>
+                    <span>{{ t('dataVariable.detail.httpVariable.extractPosition') }}</span>
                   </div>
                   <SelectEnum
                     v-model:value="location"
@@ -554,11 +556,11 @@ const okButtonDisabled = computed(() => {
                 <div class="w-1/2 flex items-center">
                   <div class="w-16 flex-shrink-0">
                     <IconRequired />
-                    <span>表达式</span>
+                    <span>{{ t('dataVariable.detail.httpVariable.expression') }}</span>
                   </div>
                   <Input
                     v-model:value="expression"
-                    placeholder="表达式，最长1024个字符"
+                    :placeholder="t('dataVariable.detail.httpVariable.expressionPlaceholder')"
                     class="w-full-16"
                     trim
                     :maxlength="1024" />
@@ -567,11 +569,11 @@ const okButtonDisabled = computed(() => {
                 <div class="w-1/2 flex items-center">
                   <div class="w-16 flex-shrink-0">
                     <IconRequired class="invisible" />
-                    <span>匹配项</span>
+                    <span>{{ t('dataVariable.detail.httpVariable.matchItem') }}</span>
                   </div>
                   <Input
                     v-model:value="matchItem"
-                    placeholder="匹配项，范围0-2000（可选）"
+                    :placeholder="t('dataVariable.detail.httpVariable.matchItemPlaceholder')"
                     class="w-full-20.5"
                     dataType="number"
                     trimAll
@@ -585,11 +587,11 @@ const okButtonDisabled = computed(() => {
                 <div class="w-1/2 flex items-center">
                   <div class="w-16 flex-shrink-0">
                     <IconRequired class="invisible" />
-                    <span>缺省值</span>
+                    <span>{{ t('dataVariable.detail.httpVariable.defaultValue') }}</span>
                   </div>
                   <Input
                     v-model:value="defaultValue"
-                    placeholder="缺省值，最长4096个字符"
+                    :placeholder="t('dataVariable.detail.httpVariable.defaultValuePlaceholder')"
                     class="w-full-16"
                     trim
                     :maxlength="4096" />
@@ -602,19 +604,19 @@ const okButtonDisabled = computed(() => {
                 <div class="w-1/2 flex items-center">
                   <div class="w-16 flex-shrink-0">
                     <IconRequired />
-                    <span>提取方式</span>
+                    <span>{{ t('dataVariable.detail.httpVariable.extractMethod') }}</span>
                   </div>
                   <SelectEnum
                     v-model:value="method"
                     enumKey="ExtractionMethod"
-                    placeholder="提取方式"
+                    :placeholder="t('dataVariable.detail.httpVariable.extractMethodPlaceholder')"
                     class="w-full-20.5" />
                 </div>
 
                 <div class="w-1/2 flex items-center">
                   <div class="w-16 flex-shrink-0">
                     <IconRequired />
-                    <span>提取位置</span>
+                    <span>{{ t('dataVariable.detail.httpVariable.extractPosition') }}</span>
                   </div>
                   <SelectEnum
                     v-model:value="location"
@@ -627,11 +629,11 @@ const okButtonDisabled = computed(() => {
                 <div class="w-1/2 flex items-center">
                   <div class="w-16 flex-shrink-0">
                     <IconRequired :class="{ invisible: ['REQUEST_RAW_BODY', 'RESPONSE_BODY'].includes(location) }" />
-                    <span>参数名称</span>
+                    <span>{{ t('dataVariable.detail.httpVariable.parameterName') }}</span>
                   </div>
                   <Input
                     v-model:value="parameterName"
-                    placeholder="参数名称，最长400个字符"
+                    :placeholder="t('dataVariable.detail.httpVariable.parameterNamePlaceholder')"
                     class="w-full-20.5"
                     trimAll
                     :maxlength="400" />
@@ -640,11 +642,11 @@ const okButtonDisabled = computed(() => {
                 <div class="w-1/2 flex items-center">
                   <div class="w-16 flex-shrink-0">
                     <IconRequired />
-                    <span>表达式</span>
+                    <span>{{ t('dataVariable.detail.httpVariable.expression') }}</span>
                   </div>
                   <Input
                     v-model:value="expression"
-                    placeholder="表达式，最长1024个字符"
+                    :placeholder="t('dataVariable.detail.httpVariable.expressionPlaceholder ')"
                     class="w-full-16"
                     trim
                     :maxlength="1024" />
@@ -655,11 +657,11 @@ const okButtonDisabled = computed(() => {
                 <div class="w-1/2 flex items-center">
                   <div class="w-16 flex-shrink-0">
                     <IconRequired class="invisible" />
-                    <span>匹配项</span>
+                    <span>{{ t('dataVariable.detail.httpVariable.matchItem') }}</span>
                   </div>
                   <Input
                     v-model:value="matchItem"
-                    placeholder="匹配项，范围0-2000（可选）"
+                    :placeholder="t('dataVariable.detail.httpVariable.matchItemPlaceholder')"
                     class="w-full-20.5"
                     dataType="number"
                     trimAll
@@ -671,11 +673,11 @@ const okButtonDisabled = computed(() => {
                 <div class="w-1/2 flex items-center">
                   <div class="w-16 flex-shrink-0">
                     <IconRequired class="invisible" />
-                    <span>缺省值</span>
+                    <span>{{ t('dataVariable.detail.httpVariable.defaultValue') }}</span>
                   </div>
                   <Input
                     v-model:value="defaultValue"
-                    placeholder="缺省值，最长4096个字符"
+                    :placeholder="t('dataVariable.detail.httpVariable.defaultValuePlaceholder')"
                     class="w-full-16"
                     trim
                     :maxlength="4096" />
@@ -690,7 +692,7 @@ const okButtonDisabled = computed(() => {
     <TabPane key="preview">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>预览</span>
+          <span>{{ t('dataVariable.detail.httpVariable.preview') }}</span>
         </div>
       </template>
 
@@ -700,7 +702,7 @@ const okButtonDisabled = computed(() => {
     <TabPane v-if="variableId" key="use">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>使用</span>
+          <span>{{ t('dataVariable.detail.httpVariable.use') }}</span>
         </div>
       </template>
 
@@ -709,11 +711,7 @@ const okButtonDisabled = computed(() => {
   </Tabs>
 
   <AsyncComponent :visible="selectApiVisible">
-    <!-- <SelectApiModal
-      v-model:visible="selectApiVisible"
-      :projectId="props.projectId"
-      :userInfo="props.userInfo"
-      @ok="selectApiOk" /> -->
+
     <SelectApisByServiceModal
       v-model:visible="selectApiVisible"
       :selectSingle="true"

@@ -1,12 +1,16 @@
+import { i18n } from '@xcan-angus/infra';
+const I18nInstance = i18n.getI18n();
+const t = I18nInstance?.global?.t || ((value: string):string => value);
+
 
 export const sortOpt = [
   {
-    name: '按添加时间',
+    name: t('node.nodeItem.interface.sortOptions.byAddTime'),
     key: 'createdDate',
     orderSort: 'DESC'
   },
   {
-    name: '按名称',
+    name: t('node.nodeItem.interface.sortOptions.byName'),
     key: 'name',
     orderSort: 'ASC'
   }
@@ -16,19 +20,19 @@ export const installConfigColumns = [
   [
     {
       dataIndex: 'tenantId',
-      label: '租户ID'
+      label: t('node.nodeItem.interface.installConfigColumns.tenantId')
     },
     {
       dataIndex: 'deviceId',
-      label: '设备ID'
+      label: t('node.nodeItem.interface.installConfigColumns.deviceId')
     },
     {
       dataIndex: 'serverCtrlUrlPrefix',
-      label: '控制器地址'
+      label: t('node.nodeItem.interface.installConfigColumns.serverCtrlUrlPrefix')
     },
     {
       dataIndex: 'ctrlAccessToken',
-      label: '设备访问令牌'
+      label: t('node.nodeItem.interface.installConfigColumns.ctrlAccessToken')
     }
   ]
 ];

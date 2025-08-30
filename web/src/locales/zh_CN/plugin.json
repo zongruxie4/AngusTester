@@ -338,6 +338,7 @@
       "operationSuccess": "操作成功",
       "operationFailed": "操作失败",
       "generateDataSuccess": "创建生成数据成功，请在\"执行\"中查看进度和结果。",
+      "generateDataSuccessWithName": "创建生成数据【{name}】成功，请在\"执行\"中查看进度和结果。",
       "confirmDelete": "确认删除",
       "noData": "暂无数据",
       "loading": "加载中...",
