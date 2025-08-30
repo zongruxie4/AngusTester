@@ -326,6 +326,7 @@
     }
   },
   "datasource": {
+    "name": "Data Source",
     "title": "About Data Source",
     "description": "Supports managing and connecting multiple data sources. After configuring data source information, you can quickly generate test data, project demonstration scenarios, and quickly reference data source configuration information in JDBC tests, parameterized variables, and datasets.",
     "addedTitle": "Added Data Sources",
@@ -382,6 +383,7 @@
     }
   },
   "dataHome": {
+    "name": "Home",
     "activityTimeline": {
       "myActivity": "My Activity",
       "allActivity": "All Activity"
@@ -459,6 +461,7 @@
     }
   },
   "fileSpace": {
+    "name": "File",
     "title": "About Files",
     "addedTitle": "Added Spaces",
     "searchPlaceholder": "Search space name",
@@ -475,7 +478,10 @@
       "quota": "Quota",
       "addTime": "Add Time",
       "addBy": "Added By",
-      "action": "Action"
+      "action": "Action",
+      "name": "Name",
+      "actualSize": "Actual Size",
+      "lastModifiedDate": "Last Modified Date"
     },
     "actions": {
       "edit": "Edit",
@@ -661,6 +667,7 @@
     }
   },
   "dataVariable": {
+    "name": "Variable",
     "title": "Variable",
     "addVariable": {
       "static": "Add Static Variable",

@@ -103,7 +103,7 @@ const apiSuretyChange = async (value:boolean) => {
       return;
     }
     loadInfo();
-    notification.success('修改成功');
+    notification.success(t('mock.mockDetail.mockSet.notifications.modifySuccess'));
   }
 };
 
@@ -472,9 +472,9 @@ const hasEditAuth = computed(() => {
       <FormItem class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('端口') }}</span>
+            <span>{{ t('api.mockDetail.mockSet.basicInfo.port') }}</span>
             <Tooltip
-              title="服务所监听的端口，服务添加后不允许修改。"
+              :title="t('api.mockDetail.mockSet.basicInfo.portTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '600px'}">
@@ -487,9 +487,9 @@ const hasEditAuth = computed(() => {
       <FormItem class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('节点') }}</span>
+            <span>{{ t('api.mockDetail.mockSet.basicInfo.node') }}</span>
             <Tooltip
-              title="服务所运行的节点，服务添加后不允许修改。"
+              :title="t('api.mockDetail.mockSet.basicInfo.nodeTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '600px'}">
@@ -504,8 +504,8 @@ const hasEditAuth = computed(() => {
   <Card class="mt-2">
     <template #title>
       <div class="flex items-start">
-        <span class="text-3 flex-none  font-medium">服务配置</span>
-        <Hints class="mt-2.75 ml-2" text="服务运行时主要参数配置，更多参数配置请查看官网相关文档。修改后需要重启服务生效。" />
+        <span class="text-3 flex-none  font-medium">{{ t('api.mockDetail.mockSet.basicInfo.serviceConfig') }}</span>
+        <Hints class="mt-2.75 ml-2" :text="t('api.mockDetail.mockSet.basicInfo.serviceConfigTooltip')" />
       </div>
     </template>
     <Form
@@ -518,9 +518,9 @@ const hasEditAuth = computed(() => {
       <FormItem name="useSsl" class="w-150 hidden">
         <template #label>
           <div class="flex items-center" @click.prevent>
-            <span>{{ t('开启SSL') }}</span>
+            <span>{{ t('api.mockDetail.mockSet.basicInfo.useSsl') }}</span>
             <Tooltip
-              title="在Netty Http服务器上启用SSL选项，默认为不开启。"
+              :title="t('api.mockDetail.mockSet.basicInfo.useSslTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '600px'}">
@@ -538,9 +538,9 @@ const hasEditAuth = computed(() => {
       <FormItem name="workThreadNum" class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('线程数') }}</span>
+            <span>{{ t('api.mockDetail.mockSet.basicInfo.workThreadNum') }}</span>
             <Tooltip
-              title="处理请求的线程数，最大10000，默认256。"
+              :title="t('api.mockDetail.mockSet.basicInfo.workThreadNumTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '600px'}">
@@ -556,9 +556,9 @@ const hasEditAuth = computed(() => {
           :disabled="!editWorkThreadNum">
           <template v-if="hasEditAuth" #suffix>
             <template v-if="editWorkThreadNum">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('workThreadNum','cancel','settingForm')">取消</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('workThreadNum','cancel','settingForm')">{{ t('actions.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('workThreadNum','save','settingForm')">确定</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('workThreadNum','save','settingForm')">{{ t('actions.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -575,9 +575,9 @@ const hasEditAuth = computed(() => {
         class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('开启Netty日志') }}</span>
-            <Tooltip
-              title="建议仅在调试模式下打开，默认为不开启。"
+                    <span>{{ t('mock.mockDetail.mockSet.settings.enableNettyLog') }}</span>
+        <Tooltip
+          :title="t('mock.mockDetail.mockSet.settings.enableNettyLogTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '600px'}">
@@ -595,9 +595,9 @@ const hasEditAuth = computed(() => {
       <FormItem name="logFileLevel" class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('文件日志级别') }}</span>
+            <span>{{ t('api.mockDetail.mockSet.basicInfo.logLevel') }}</span>
             <Tooltip
-              title="配置请求日志信息级别，包括四个选项：NONE、BASIC、HEADERS和FULL。"
+              :title="t('api.mockDetail.mockSet.basicInfo.logLevelTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '600px'}">
@@ -613,7 +613,7 @@ const hasEditAuth = computed(() => {
           <Radio value="NONE">
             None
             <Tooltip
-              title="无日志记录。"
+              :title="t('api.mockDetail.mockSet.basicInfo.logFileLevel.none')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '400px'}">
@@ -623,7 +623,7 @@ const hasEditAuth = computed(() => {
           <Radio value="BASIC">
             Basic
             <Tooltip
-              title="只记录请求方法和URL以及响应状态代码和执行时间，默认。"
+              :title="t('api.mockDetail.mockSet.basicInfo.logFileLevel.basic')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '400px'}">
@@ -633,7 +633,7 @@ const hasEditAuth = computed(() => {
           <Radio value="HEADERS">
             Headers
             <Tooltip
-              title="记录基本信息以及请求和响应头。"
+              :title="t('api.mockDetail.mockSet.basicInfo.logFileLevel.headers')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '400px'}">
@@ -643,7 +643,7 @@ const hasEditAuth = computed(() => {
           <Radio value="FULL">
             Full
             <Tooltip
-              title="记录请求和响应头、正文和元数据。"
+              :title="t('api.mockDetail.mockSet.basicInfo.logFileLevel.full')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '400px'}">
@@ -656,9 +656,9 @@ const hasEditAuth = computed(() => {
       <FormItem name="sendRequestLog" class="w-150">
         <template #label>
           <div class="flex items-center" @click.prevent>
-            <span>{{ t('记录请求日志') }}</span>
+            <span>{{ t('api.mockDetail.mockSet.basicInfo.sendRequestLog') }}</span>
             <Tooltip
-              title="是否发送Mock请求日志到服务端。"
+              :title="t('api.mockDetail.mockSet.basicInfo.sendRequestLogTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '600px'}">
@@ -676,9 +676,9 @@ const hasEditAuth = computed(() => {
       <FormItem name="maxContentLength" class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('最大请求大小') }}</span>
+            <span>{{ t('api.mockDetail.mockSet.basicInfo.maxContentLength') }}</span>
             <Tooltip
-              title="允许的最大请求大小，默认为1000*1024*1024（1000MB）。"
+              :title="t('api.mockDetail.mockSet.basicInfo.maxContentLengthTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '600px'}">
@@ -693,9 +693,9 @@ const hasEditAuth = computed(() => {
           dataType="number">
           <template v-if="hasEditAuth" #suffix>
             <template v-if="editMaxContentLength">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('maxContentLength','cancel','settingForm')">取消</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('maxContentLength','cancel','settingForm')">{{ t('actions.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('maxContentLength','save','settingForm')">确定</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('maxContentLength','save','settingForm')">{{ t('actions.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -709,9 +709,9 @@ const hasEditAuth = computed(() => {
       <FormItem name="workPushbackThreadNum" class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('回推线程数') }}</span>
+            <span>{{ t('api.mockDetail.mockSet.basicInfo.pushbackThreadNum') }}</span>
             <Tooltip
-              title="处理回推请求的线程数，默认为8。"
+              :title="t('api.mockDetail.mockSet.basicInfo.pushbackThreadNumTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '1000px'}">
@@ -726,9 +726,9 @@ const hasEditAuth = computed(() => {
           dataType="number">
           <template v-if="hasEditAuth" #suffix>
             <template v-if="editWorkPushbackThreadNum">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('workPushbackThreadNum','cancel','settingForm')">取消</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('workPushbackThreadNum','cancel','settingForm')">{{ t('actions.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('workPushbackThreadNum','save','settingForm')">确定</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('workPushbackThreadNum','save','settingForm')">{{ t('actions.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -742,9 +742,9 @@ const hasEditAuth = computed(() => {
       <FormItem name="maxPushbackConnectTimeout" class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('回推连接超时') }}</span>
+            <span>{{ t('api.mockDetail.mockSet.basicInfo.pushbackConnectTimeout') }}</span>
             <Tooltip
-              title="回推时最大连接超时，单位毫秒，默认5000。"
+              :title="t('api.mockDetail.mockSet.basicInfo.pushbackConnectTimeoutTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '1000px'}">
@@ -760,9 +760,9 @@ const hasEditAuth = computed(() => {
           includes="-">
           <template v-if="hasEditAuth" #suffix>
             <template v-if="editMaxPushbackConnectTimeout">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('maxPushbackConnectTimeout','cancel','settingForm')">取消</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('maxPushbackConnectTimeout','cancel','settingForm')">{{ t('actions.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('maxPushbackConnectTimeout','save','settingForm')">确定</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('maxPushbackConnectTimeout','save','settingForm')">{{ t('actions.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -776,9 +776,9 @@ const hasEditAuth = computed(() => {
       <FormItem name="maxPushbackRequestTimeout" class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('回推请求超时') }}</span>
+            <span>{{ t('api.mockDetail.mockSet.basicInfo.pushbackRequestTimeout') }}</span>
             <Tooltip
-              title="回推时最大请求超时，单位毫秒，默认-1不超时。"
+              :title="t('api.mockDetail.mockSet.basicInfo.pushbackRequestTimeoutTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '1000px'}">
@@ -794,9 +794,9 @@ const hasEditAuth = computed(() => {
           includes="-">
           <template v-if="hasEditAuth" #suffix>
             <template v-if="editMaxPushbackRequestTimeout">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('maxPushbackRequestTimeout','cancel','settingForm')">取消</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('maxPushbackRequestTimeout','cancel','settingForm')">{{ t('actions.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('maxPushbackRequestTimeout','save','settingForm')">确定</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('maxPushbackRequestTimeout','save','settingForm')">{{ t('actions.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -812,8 +812,8 @@ const hasEditAuth = computed(() => {
   <Card class="mt-2">
     <template #title>
       <div class="flex items-start">
-        <span class="text-3 flex-none font-medium">接口安全</span>
-        <Hints class="mt-2.75 ml-2" text="修改后需要重启服务或刷新实例后生效。" />
+        <span class="text-3 flex-none font-medium">{{ t('api.mockDetail.mockSet.basicInfo.surety') }}</span>
+        <Hints class="mt-2.75 ml-2" :text="t('api.mockDetail.mockSet.basicInfo.suretyHints')" />
       </div>
     </template>
     <Form
@@ -826,9 +826,9 @@ const hasEditAuth = computed(() => {
       <FormItem class="w-150">
         <template #label>
           <div class="flex items-center" @click.prevent>
-            <span>{{ t('接口安全') }}</span>
+            <span>{{ t('api.mockDetail.mockSet.basicInfo.surety') }}</span>
             <Tooltip
-              title="用于配置访问接口所需的授权信息，开启配置后访问接口必须携带授权参数才可以访问接口。最多允许添加10个。"
+              :title="t('api.mockDetail.mockSet.basicInfo.suretyTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '1000px'}">
@@ -853,20 +853,20 @@ const hasEditAuth = computed(() => {
             class="flex-1"
             :name="['apisSecurity', index, 'keyName']"
             :rules="{required: true, validator: keNameValidator}">
-            <Input v-model:value="item.keyName" placeholder="参数名" />
+            <Input v-model:value="item.keyName" :placeholder="t('api.mockDetail.mockSet.basicInfo.paramsName')" />
           </FormItem>
           <FormItem class="w-20">
             <Select
               v-model:value="item.in"
               :options="inOptions"
               size="small"
-              placeholder="位置" />
+              :placeholder="t('api.mockDetail.mockSet.basicInfo.in')"/>
           </FormItem>
           <FormItem
             class="flex-1"
             :name="['apisSecurity', index, 'value']"
-            :rules="{required: true, message: '请输入value'}">
-            <Input v-model:value="item.value" placeholder="参数值" />
+            :rules="{required: true, message: t('api.mockDetail.mockSet.basicInfo.paramsValueRule')}">
+            <Input v-model:value="item.value" :placeholder="t('api.mockDetail.mockSet.basicInfo.paramsValue')" />
           </FormItem>
           <div
             class="flex items-center text-4 absolute top-1.5"
@@ -889,7 +889,7 @@ const hasEditAuth = computed(() => {
           size="small"
           :disabled="!hasEditAuth"
           @click="saveSureTy">
-          保存
+          {{ t('actions.save') }}
         </Button>
       </FormItem>
     </Form>
@@ -897,8 +897,8 @@ const hasEditAuth = computed(() => {
   <Card class="mt-2">
     <template #title>
       <div class="flex items-start">
-        <span class="text-3 flex-none font-medium">跨域设置</span>
-        <Hints class="mt-2.75 ml-2" text="当通过浏览器访问Mock接口站点域名和访问Mock接口地址不一致时，会触发浏览器同源访问策略（CORS）限制导致接口无法访问，通过当前“跨域配置”可以自由制定跨域访问策略。修改后需要重启服务或刷新实例后生效。" />
+        <span class="text-3 flex-none font-medium">{{ t('mock.mockDetail.mockSet.cors.title') }}</span>
+        <Hints class="mt-2.75 ml-2" :text="t('mock.mockDetail.mockSet.cors.description')" />
       </div>
     </template>
     <Form
@@ -911,9 +911,9 @@ const hasEditAuth = computed(() => {
       <FormItem name="enabled" class="w-150">
         <template #label>
           <div class="flex items-center" @click.prevent>
-            <span>{{ t('是否开启') }}</span>
+            <span>{{ t('mock.mockDetail.mockSet.cors.enabled') }}</span>
             <Tooltip
-              title="启用跨域访问限制配置，默认为不启用。"
+              :title="t('mock.mockDetail.mockSet.cors.enabledTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '1000px'}">
@@ -935,9 +935,9 @@ const hasEditAuth = computed(() => {
         <FormItem name="allowCorsOrigin" class="w-150">
           <template #label>
             <div class="flex items-center">
-              <span>{{ t('允许的域') }}</span>
+              <span>{{ t('mock.mockDetail.mockSet.cors.allowOrigin') }}</span>
               <Tooltip
-                title="指定哪些网站可以参与跨来源资源共享，默认设置*，通过响应头Access-Control-Allow-Origin返回。"
+                :title="t('mock.mockDetail.mockSet.cors.allowOriginTooltip')"
                 placement="topLeft"
                 arrowPointAtCenter
                 :overlayStyle="{'max-width': '1000px'}">
@@ -950,9 +950,9 @@ const hasEditAuth = computed(() => {
             :disabled="!editOrigin">
             <template v-if="hasEditAuth" #suffix>
               <template v-if="editOrigin">
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsOrigin','cancel','apisCorsForm')">取消</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsOrigin','cancel','apisCorsForm')">{{ t('mock.mockDetail.mockSet.buttons.cancel') }}</a>
                 <Divider type="vertical" />
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsOrigin','save','apisCorsForm')">确定</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsOrigin','save','apisCorsForm')">{{ t('mock.mockDetail.mockSet.buttons.confirm') }}</a>
               </template>
               <template v-else>
                 <Icon
@@ -966,9 +966,9 @@ const hasEditAuth = computed(() => {
         <FormItem name="allowCorsCredentials" class="relative w-150">
           <template #label>
             <div class="flex items-center">
-              <span>{{ t('允许访问凭证') }}</span>
+              <span>{{ t('mock.mockDetail.mockSet.cors.allowCredentials') }}</span>
               <Tooltip
-                title="指定第三方站点可能能够执行特权操作并检索敏感信息，默认为true，通过响应头Access-Control-Allow-Credentials返回。"
+                :title="t('mock.mockDetail.mockSet.cors.allowCredentialsTooltip')"
                 placement="topLeft"
                 arrowPointAtCenter
                 :overlayStyle="{'max-width': '1000px'}">
@@ -983,9 +983,9 @@ const hasEditAuth = computed(() => {
             :disabled="!editCredentials" />
           <div class="absolute right-2 top-0.75">
             <template v-if="editCredentials">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsCredentials','cancel','apisCorsForm')">取消</a>
-              <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsCredentials','save','apisCorsForm')">确定</a>
+                              <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsCredentials','cancel','apisCorsForm')">{{ t('mock.mockDetail.mockSet.buttons.cancel') }}</a>
+                <Divider type="vertical" />
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsCredentials','save','apisCorsForm')">{{ t('mock.mockDetail.mockSet.buttons.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -998,9 +998,9 @@ const hasEditAuth = computed(() => {
         <FormItem name="allowCorsRequestMethods" class="relative w-150">
           <template #label>
             <div class="flex items-center">
-              <span>{{ t('允许的请求方法') }}</span>
+              <span>{{ t('mock.mockDetail.mockSet.cors.allowRequestMethods') }}</span>
               <Tooltip
-                title="指定允许的HTTP方法，默认为GET、POST、PUT、PATCH、DELETE、OPTIONS、HEAD，通过响应头Access-Control-Allow-Methods返回。"
+                :title="t('mock.mockDetail.mockSet.cors.allowRequestMethodsTooltip')"
                 placement="topLeft"
                 arrowPointAtCenter
                 :overlayStyle="{'max-width': '1000px'}">
@@ -1015,9 +1015,9 @@ const hasEditAuth = computed(() => {
             :class="editRequestMethods?'api-cors-allow-cors-request-methods-edit':'api-cors-allow-cors-request-methods'">
             <template v-if="hasEditAuth" #suffix>
               <template v-if="editRequestMethods">
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsRequestMethods','cancel','apisCorsForm')">取消</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsRequestMethods','cancel','apisCorsForm')">{{ t('mock.mockDetail.mockSet.buttons.cancel') }}</a>
                 <Divider type="vertical" />
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsRequestMethods','save','apisCorsForm')">确定</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsRequestMethods','save','apisCorsForm')">{{ t('mock.mockDetail.mockSet.buttons.confirm') }}</a>
               </template>
               <template v-else>
                 <Icon
@@ -1031,9 +1031,9 @@ const hasEditAuth = computed(() => {
         <FormItem name="allowCorsRequestHeaders" class="relative w-150">
           <template #label>
             <div class="flex items-center">
-              <span>{{ t('允许的请求头') }}</span>
+              <span>{{ t('mock.mockDetail.mockSet.cors.allowRequestHeaders') }}</span>
               <Tooltip
-                title="指定允许客户端使用的HTTP请求标头，默认不指定，通过响应头Access-Control-Allow-Headers返回。"
+                :title="t('mock.mockDetail.mockSet.cors.allowRequestHeadersTooltip')"
                 placement="topLeft"
                 arrowPointAtCenter
                 :overlayStyle="{'max-width': '1000px'}">
@@ -1044,9 +1044,9 @@ const hasEditAuth = computed(() => {
           <Input v-model:value="apisCors.allowCorsRequestHeaders" :disabled="!editRequestHeaders">
             <template v-if="hasEditAuth" #suffix>
               <template v-if="editRequestHeaders">
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsRequestHeaders','cancel','apisCorsForm')">取消</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsRequestHeaders','cancel','apisCorsForm')">{{ t('mock.mockDetail.mockSet.buttons.cancel') }}</a>
                 <Divider type="vertical" />
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsRequestHeaders','save','apisCorsForm')">确定</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsRequestHeaders','save','apisCorsForm')">{{ t('mock.mockDetail.mockSet.buttons.confirm') }}</a>
               </template>
               <template v-else>
                 <Icon
@@ -1060,9 +1060,9 @@ const hasEditAuth = computed(() => {
         <FormItem name="allowExposeHeaders" class="relative w-150">
           <template #label>
             <div class="flex items-center">
-              <span>{{ t('可访问的响应头') }}</span>
+              <span>{{ t('mock.mockDetail.mockSet.cors.allowExposeHeaders') }}</span>
               <Tooltip
-                title="指定允许访问响应中的那些标头字段，这些字段不包括浏览器可以访问的默认头，默认不指定，通过响应头Access-Control-Expose-Headers返回。"
+                :title="t('mock.mockDetail.mockSet.cors.allowExposeHeadersTooltip')"
                 placement="topLeft"
                 arrowPointAtCenter
                 :overlayStyle="{'max-width': '1000px'}">
@@ -1073,9 +1073,9 @@ const hasEditAuth = computed(() => {
           <Input v-model:value="apisCors.allowExposeHeaders" :disabled="!editExposeHeaders">
             <template v-if="hasEditAuth" #suffix>
               <template v-if="editExposeHeaders">
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowExposeHeaders','cancel','apisCorsForm')">取消</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowExposeHeaders','cancel','apisCorsForm')">{{ t('mock.mockDetail.mockSet.buttons.cancel') }}</a>
                 <Divider type="vertical" />
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowExposeHeaders','save','apisCorsForm')">确定</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowExposeHeaders','save','apisCorsForm')">{{ t('mock.mockDetail.mockSet.buttons.confirm') }}</a>
               </template>
               <template v-else>
                 <Icon

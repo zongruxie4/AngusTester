@@ -326,6 +326,7 @@
     }
   },
   "datasource": {
+    "name": "数据源",
     "title": "关于数据源",
     "description": "支持管理和连接多种数据源，配置数据源信息后，可以快速生成测试、项目演示等场景数据，以及在JDBC测试、参数化变量、数据集中快速引用数据源配置信息。",
     "addedTitle": "已添加数据源",
@@ -382,6 +383,7 @@
     }
   },
   "dataHome": {
+    "name": "主页",
     "activityTimeline": {
       "myActivity": "我的活动",
       "allActivity": "所有活动"
@@ -459,6 +461,7 @@
     }
   },
   "fileSpace": {
+    "name": "文件",
     "title": "关于文件",
     "addedTitle": "已添加空间",
     "searchPlaceholder": "查询空间名称",
@@ -475,7 +478,10 @@
       "quota": "配额",
       "addTime": "添加时间",
       "addBy": "添加人",
-      "action": "操作"
+      "action": "操作",
+      "name": "名称",
+      "actualSize": "实际大小",
+      "lastModifiedDate": "修改时间"
     },
     "actions": {
       "edit": "编辑",
@@ -661,6 +667,7 @@
     }
   },
   "dataVariable": {
+    "name": "变量",
     "title": "变量",
     "addVariable": {
       "static": "添加静态变量",
