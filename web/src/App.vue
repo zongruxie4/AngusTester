@@ -4,7 +4,7 @@ import { ConfigProvider, Denied, Header, NetworkError, NotFound } from '@xcan-an
 import { utils, duration, appContext } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { mock } from '@/api/tester';
-import GlobalConstantConfig from '@/globalConstantConfig';
+import GlobalConstantConfig from '@/globalConstant';
 import { ai } from '@/api/gm';
 
 import store from './store';

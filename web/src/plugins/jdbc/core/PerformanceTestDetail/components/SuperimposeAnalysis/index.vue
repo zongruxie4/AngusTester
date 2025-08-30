@@ -128,7 +128,7 @@ const responseTimeExpand = ref(true);
 const errorExpand = ref(true);
 
 const threadOptions = [
-  
+
   {
     label: t('ftpPlugin.performanceTestDetail.superimposeAnalysis.threadOptions.maxThreadCount'),
     value: 'threadMaxPoolSize'

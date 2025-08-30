@@ -285,15 +285,7 @@
       "maxResourceActivities": "Each resource only saves the latest {maxResource} activities. Older entries are automatically removed."
     },
     "chart": {
-      "activity": "Activity",
-      "resourceType": "Resource Type",
-      "add": "Add",
-      "timeUnit": "Time Unit",
-      "total": "Total",
-      "today": "Today",
-      "last7Days": "Last 7 Days",
-      "last1Month": "Last Month",
-      "last1Year": "Last Year"
+      "resourceType": "Total"
     },
     "searchPanel": {
       "dropdownMenu": {
@@ -305,12 +297,12 @@
         "selectActivityResource": "Select Activity Resource",
         "selectProject": "Select Project",
         "selectOperator": "Select Operator",
-        "activityTimeFrom": "Activity Time From",
-        "activityTimeTo": "Activity Time To"
+        "activityTimeFrom": "Start Date",
+        "activityTimeTo": "End Date"
       },
       "quickQuery": {
         "all": "All",
-        "myActivity": "My Activity",
+        "myActivity": "My Activities",
         "last1Day": "Last Day",
         "last3Days": "Last 3 Days",
         "last7Days": "Last Week"

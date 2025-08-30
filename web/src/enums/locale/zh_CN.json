@@ -496,6 +496,34 @@
       "AssociateTargetType": {
         "EXEC": "执行",
         "REPORTER": "报告"
+      },
+      "CombinedTargetType": {
+        "PROJECT": "项目",
+        "TAG": "标签",
+        "MODULE": "模块",
+        "TASK": "任务",
+        "TASK_SPRINT": "迭代",
+        "SOFTWARE_VERSION": "软件版本",
+        "TASK_ANALYSIS": "任务分析",
+        "MEETING": "会议",
+        "FUNC_PLAN": "功能计划",
+        "FUNC_REVIEW": "功能评审",
+        "FUNC_CASE": "功能用例",
+        "FUNC_CASE_BASELINE": "用例基线",
+        "FUNC_CASE_ANALYSIS": "用例分析",
+        "SERVICE": "服务",
+        "API": "接口",
+        "API_CASE": "接口用例",
+        "API_DESIGN": "接口设计",
+        "SCENARIO": "场景",
+        "SCENARIO_MONITOR": "场景监控",
+        "SCRIPT": "脚本",
+        "VARIABLE": "变量",
+        "DATASET": "数据集",
+        "MOCK_SERVICE": "Mock服务",
+        "MOCK_APIS": "Mock接口",
+        "EXECUTION": "执行",
+        "REPORT": "报告"
       }
     }
   }
