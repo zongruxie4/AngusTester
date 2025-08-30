@@ -1,10 +1,13 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Colon, Hints, IconRequired, Select } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
 import { TESTER, http } from '@xcan-angus/infra';
 import { contentTreeData } from './config';
 import { apis } from '@/api/tester';
+
+const { t } = useI18n();
 
 interface Props {
   projectId: string;
@@ -79,16 +82,16 @@ defineExpose({
 <template>
   <div class="flex items-center space-x-1">
     <span class="h-4 w-1.5 bg-blue-border1"></span>
-    <span>过滤</span>
+    <span>{{ t('reportAdd.apisContent.filter') }}</span>
   </div>
   <div class="flex mt-2 pl-2">
     <div class="inline-flex flex-1 items-center space-x-2">
       <span>
-        服务
+        {{ t('reportAdd.apisContent.service') }}
       </span><Colon />
       <Select
         v-model:value="serviceId"
-        placeholder="选择服务"
+        :placeholder="t('reportAdd.apisContent.servicePlaceholder')"
         :disabled="!props.projectId || props.disabled"
         :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
         :lazy="false"
@@ -97,11 +100,11 @@ defineExpose({
         class="w-50" />
       <span>
         <IconRequired />
-        接口
+        {{ t('reportAdd.apisContent.api') }}
       </span><Colon />
       <Select
         v-model:value="apisId"
-        placeholder="选择接口"
+        :placeholder="t('reportAdd.apisContent.apiPlaceholder')"
         :showSearch="true"
         :error="valid && !apisId"
         :disabled="!projectId || props.disabled"
@@ -114,8 +117,8 @@ defineExpose({
   </div>
   <div class="flex items-center space-x-1 mt-4">
     <span class="h-4 w-1.5 bg-blue-border1"></span>
-    <span>内容</span>
-    <Hints text="以下是报告输出内容目录信息。" />
+    <span>{{ t('reportAdd.apisContent.content') }}</span>
+    <Hints :text="t('reportAdd.apisContent.contentHints')" />
   </div>
   <Tree
     v-model:checkedKeys="checked"

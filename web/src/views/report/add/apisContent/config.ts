@@ -1,66 +1,70 @@
+import { i18n } from '@xcan-angus/infra';
+
+const t = i18n.getI18n()?.global?.t || ((value: string):string => value);
+
 export const contentTreeData = [
   {
-    title: '接口基本信息',
+    title: t('reportAdd.apisContent.contentTree.apisBasic'),
     key: 'apisBasic'
   },
   {
-    title: '接口测试汇总结果',
+    title: t('reportAdd.apisContent.contentTree.apisTestt'),
     key: 'apisTestt'
   },
   {
-    title: '接口测试结果详细信息',
+    title: t('reportAdd.apisContent.contentTree.apisDetail'),
     key: 'apisDetail',
     children: [
       {
-        title: '功能测试结果',
+        title: t('reportAdd.apisContent.contentTree.funcTest'),
         key: 'funcTest',
         children: [
           {
-            title: '测试基本信息',
+            title: t('reportAdd.apisContent.contentTree.info'),
             key: 'info'
           },
           {
-            title: '测试用例统计',
+            title: t('reportAdd.apisContent.contentTree.cases'),
             key: 'cases'
           },
           {
-            title: '测试用例结果明细',
+            title: t('reportAdd.apisContent.contentTree.casesDetail'),
             key: 'casesDetail'
           }
         ]
       },
       {
-        title: '性能测试结果',
+        title: t('reportAdd.apisContent.contentTree.perfTest'),
         key: 'perfTest',
         children: [
           {
-            title: '测试基本信息',
+            title: t('reportAdd.apisContent.contentTree.info'),
             key: 'info'
           },
           {
-            title: '详细测试结果',
+            title: t('reportAdd.apisContent.contentTree.detail'),
             key: 'detail'
           },
           {
-            title: '测试指标',
+            title: t('reportAdd.apisContent.contentTree.indicator'),
             key: 'indicator'
           }
         ]
       },
       {
-        title: '稳定性测试结果',
+        title: t('reportAdd.apisContent.contentTree.stabilityTest'),
         key: 'stabilityTest',
         children: [
           {
-            title: '测试基本信息',
+            title: t('reportAdd.apisContent.contentTree.info'),
             key: 'info'
           },
           {
-            title: '详细测试结果',
+            title: t('reportAdd.apisContent.contentTree.detail'),
             key: 'detail'
           },
           {
-            title: '测试指标',
+            title: t('reportAdd.apisContent.contentTree.indicator'),
             key: 'indicator'
           }
         ]

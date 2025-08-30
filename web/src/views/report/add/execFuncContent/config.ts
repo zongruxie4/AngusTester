@@ -1,35 +1,39 @@
+import { i18n } from '@xcan-angus/infra';
+
+const t = i18n.getI18n()?.global?.t || ((value: string):string => value);
+
 export const contentTreeData = [
   {
-    title: '执行信息',
+    title: t('reportAdd.execFuncContent.contentTree.exec'),
     key: 'exec',
     children: [
       {
-        title: '执行基本信息',
+        title: t('reportAdd.execFuncContent.contentTree.basic'),
         key: 'basic'
       },
       {
-        title: '执行结果',
+        title: t('reportAdd.execFuncContent.contentTree.execResult'),
         key: 'execResult'
       }
     ]
   },
   {
-    title: '迭代结果',
+    title: t('reportAdd.execFuncContent.contentTree.sprint'),
     key: 'sprint'
   },
   {
-    title: '日志信息',
+    title: t('reportAdd.execFuncContent.contentTree.log'),
     key: 'log',
     children: [
       {
-        title: '执行调度日志',
+        title: t('reportAdd.execFuncContent.contentTree.dispatch'),
         key: 'dispatch',
-        tips: '多个节点时只展示第一个执行节点日志。'
+        tips: t('reportAdd.execFuncContent.contentTree.dispatchTips')
       },
       {
-        title: '执行采样日志',
+        title: t('reportAdd.execFuncContent.contentTree.sampling'),
         key: 'sampling',
-        tips: '多个节点时只展示第一个执行节点日志，最多支持10000行日志信息。'
+        tips: t('reportAdd.execFuncContent.contentTree.samplingTips')
       }
     ]
   }

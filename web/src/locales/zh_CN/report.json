@@ -1,4 +1,388 @@
 {
+  "reportAdd": {
+    "title": {
+      "add": "添加报告",
+      "edit": "编辑报告"
+    },
+    "form": {
+      "name": "名称",
+      "namePlaceholder": "报告名称，最长100个字符",
+      "version": "版本",
+      "versionPlaceholder": "报告版本，默认1.0.0，最长20个字符",
+      "description": "描述",
+      "descriptionPlaceholder": "报告描述，使用描述解释此报告的内容和目的，或添加其他资源的链接，最长200个字符"
+    },
+    "tabs": {
+      "createdDate": "生成时间",
+      "basic": "基本信息",
+      "content": "内容"
+    },
+    "reportInfo": {
+      "category": "分类",
+      "reporter": "报告人",
+      "description": "描述"
+    },
+    "notifications": {
+      "updateSuccess": "更新报告成功",
+      "addSuccess": "添加报告成功"
+    },
+    "menus": {
+      "project": {
+        "label": "项目报告",
+        "progress": {
+          "label": "项目进度报告",
+          "description": "报告项目任务、功能测试、接口测试、场景测试四部分完成进度。"
+        }
+      },
+      "task": {
+        "label": "任务报告",
+        "sprint": {
+          "label": "迭代报告",
+          "description": "报告迭代信息、研发任务完成进度，迭代和经办人汇总统计信息。"
+        },
+        "task": {
+          "label": "任务报告",
+          "description": "报告单个任务处理结果及详情信息。"
+        }
+      },
+      "functional": {
+        "label": "功能测试报告",
+        "plan": {
+          "label": "测试计划报告",
+          "description": "报告测试计划信息、用例测试进度、测试计划和测试人汇总统计信息。"
+        },
+        "case": {
+          "label": "测试用例报告",
+          "description": "报告单个用例测试结果及详情信息。"
+        }
+      },
+      "apis": {
+        "label": "接口测试报告",
+        "services": {
+          "label": "服务测试结果报告",
+          "description": "报告服务信息、汇总统计及服务下接口测试结果信息。"
+        },
+        "apis": {
+          "label": "接口测试结果报告",
+          "description": "报告接口信息、功能测试、性能测试、稳定性测试结果。"
+        }
+      },
+      "scenario": {
+        "label": "场景测试报告",
+        "result": {
+          "label": "场景测试结果报告",
+          "description": "报告场景信息、功能测试、性能测试、稳定性测试结果。"
+        }
+      },
+      "execution": {
+        "label": "执行报告",
+        "functional": {
+          "label": "执行功能测试报告",
+          "description": "报告执行功能测试采样指标详细结果。"
+        },
+        "performance": {
+          "label": "执行性能测试报告",
+          "description": "报告执行性能测试采样指标详细结果。"
+        },
+        "stability": {
+          "label": "执行稳定性测试报告",
+          "description": "报告执行稳定性测试采样指标详细结果。"
+        },
+        "customization": {
+          "label": "执行自定义测试报告",
+          "description": "报告执行自定义测试采样指标详细结果。"
+        }
+      }
+    },
+    "execPerfContent": {
+      "filter": "过滤",
+      "execution": "执行",
+      "executionPlaceholder": "选择执行",
+      "content": "内容",
+      "contentHints": "以下是报告输出内容目录信息。",
+      "contentTree": {
+        "exec": "执行信息",
+        "basic": "执行基本信息",
+        "execResult": "执行结果",
+        "total": "汇总结果",
+        "name": "名称",
+        "sampling": "采样数",
+        "qps": "事务数",
+        "minmax": "最小/最大/平均",
+        "qps/s": "每秒事务数",
+        "errRate0": "错误率",
+        "percent": "P50/P75/P90/P99/P999",
+        "download/s0": "下载/秒",
+        "upload/s0": "上传/秒",
+        "indicatorChart": "采样指标时序图",
+        "tps": "吞吐量",
+        "thread0": "并发数",
+        "response": "响应时间",
+        "error0": "错误",
+        "statusCode": "状态码（只有HTTP协议才有）",
+        "node": "节点资源",
+        "nodeTips": "有应用节点时展示应用节点资源数据、没有时展示执行节点资源数据，多个节点时只展示第一个节点数据。",
+        "superposition": "叠加分析",
+        "QPS/TPS": "吞吐量（QPS/TPS）",
+        "QPS/s": "每秒事务数",
+        "vu": "并发数（VU）",
+        "thread": "线程数",
+        "rt": "响应时间（RT、毫秒）",
+        "average": "平均",
+        "error": "错误（ERROR）",
+        "errRate": "错误率",
+        "other": "其他信息",
+        "dispatch": "执行调度日志",
+        "dispatchTips": "多个节点时只展示第一个执行节点日志。",
+        "samplingLog": "执行采样日志",
+        "samplingTips": "多个节点时只展示第一个执行节点日志，最多支持10000行日志信息。"
+      }
+    },
+    "execFuncContent": {
+      "filter": "过滤",
+      "execution": "执行",
+      "executionPlaceholder": "选择执行",
+      "content": "内容",
+      "contentHints": "以下是报告输出内容目录信息。",
+      "contentTree": {
+        "exec": "执行信息",
+        "basic": "执行基本信息",
+        "execResult": "执行结果",
+        "sprint": "迭代结果",
+        "log": "日志信息",
+        "dispatch": "执行调度日志",
+        "dispatchTips": "多个节点时只展示第一个执行节点日志。",
+        "sampling": "执行采样日志",
+        "samplingTips": "多个节点时只展示第一个执行节点日志，最多支持10000行日志信息。"
+      }
+    },
+    "basic": {
+      "options": {
+        "name": "展示报告名称",
+        "user": "展示报告人",
+        "createdDate": "展示报告生成时间",
+        "version": "展示报告版本",
+        "reportContacts": "展示联系人",
+        "description": "展示报告描述",
+        "reportCopyright": "展示版权说明",
+        "otherInformation": "其他信息",
+        "watermark": "为报告内容添加水印"
+      },
+      "placeholders": {
+        "reportContacts": "联系人信息，默认为当前用户名称和邮箱，最长200个字符",
+        "reportCopyright": "报告版权说明，申明版权所有、使用范围限制等，最长200个字符",
+        "otherInformation": "其他信扩展息，用于对报告补充说明，最长200个字符",
+        "watermark": "水印文案，默认为当前租户名，最长100个字符"
+      }
+    },
+    "taskContent": {
+      "filter": "过滤",
+      "sprint": "迭代",
+      "sprintPlaceholder": "选择迭代",
+      "task": "任务",
+      "taskPlaceholder": "选择任务",
+      "content": "内容",
+      "contentHints": "以下是报告输出内容目录信息。",
+      "contentTree": {
+        "basic": "基本信息",
+        "user": "人员信息",
+        "date": "日期信息",
+        "description": "描述",
+        "subTask": "子任务",
+        "task": "关联任务",
+        "cases": "关联用例",
+        "test": "测试信息",
+        "testTips": "测试类型任务时展示。",
+        "testSource": "测试资源",
+        "exec": "执行信息",
+        "result": "测试结果",
+        "remark": "备注",
+        "activity": "活动",
+        "comment": "评论"
+      }
+    },
+    "sprintContent": {
+      "filter": "过滤",
+      "sprint": "迭代",
+      "sprintPlaceholder": "选择迭代",
+      "organization": "组织人员",
+      "user": "用户",
+      "userPlaceholder": "选择用户",
+      "dept": "部门",
+      "deptPlaceholder": "选择部门",
+      "group": "组",
+      "groupPlaceholder": "选择组",
+      "organizationHints": "用于输出指定组织或人员项目报告。",
+      "time": "时间",
+      "timeHints": "用于输出指定时间范围项目报告。",
+      "content": "内容",
+      "contentHints": "以下是报告输出内容目录信息。",
+      "contentTree": {
+        "sprintDetail": "迭代信息",
+        "basic": "基本信息",
+        "taskDetail": "验收标准",
+        "meetings": "会议记录",
+        "others": "其他说明",
+        "task": "研发任务",
+        "taskTotal": "任务汇总结果",
+        "taskburndown": "燃尽图",
+        "groupedTotal": "分组统计",
+        "assigneeId": "经办人汇总结果",
+        "assigneeId_taskTotal": "任务汇总结果",
+        "assigneeId_burndown": "燃尽图",
+        "assigneeId_groupedTotal": "分组统计"
+      }
+    },
+    "servicesContent": {
+      "filter": "过滤",
+      "service": "服务",
+      "servicePlaceholder": "选择服务",
+      "content": "内容",
+      "contentHints": "以下是报告输出内容目录信息。",
+      "contentTree": {
+        "serviceDetail": "服务信息",
+        "apisGroupedTotal": "接口分组统计",
+        "serviceTotal": "测试结果汇总",
+        "testProcess": "测试进度",
+        "testApi": "测试接口统计",
+        "testStatus": "测试状态统计"
+      }
+    },
+    "scenarioContent": {
+      "filter": "过滤",
+      "scenario": "场景",
+      "scenarioPlaceholder": "选择场景",
+      "content": "内容",
+      "contentHints": "以下是报告输出内容目录信息。",
+      "contentTree": {
+        "scenario": "场景基本信息",
+        "scenarioTotal": "场景测试汇总结果",
+        "scenarioTestDetail": "场景测试结果详细信息",
+        "funcTest": "功能测试结果",
+        "perfTest": "性能测试结果",
+        "stabilityTest": "稳定性测试结果",
+        "info": "测试基本信息",
+        "apis": "测试接口统计",
+        "apisDetail": "测试接口结果明细",
+        "detail": "详细测试结果",
+        "indicator": "测试指标"
+      }
+    },
+    "projectProcessContent": {
+      "filter": "过滤",
+      "organization": "组织人员",
+      "user": "用户",
+      "userPlaceholder": "选择用户",
+      "dept": "部门",
+      "deptPlaceholder": "选择部门",
+      "group": "组",
+      "groupPlaceholder": "选择组",
+      "organizationHints": "用于输出指定组织或人员项目报告。",
+      "time": "时间",
+      "timeHints": "用于输出指定时间范围项目报告。",
+      "content": "内容",
+      "contentHints": "以下是报告输出内容目录信息。",
+      "contentTree": {
+        "projectInfo": "项目信息",
+        "task": "研发任务",
+        "taskTotal": "任务汇总结果",
+        "taskburndown": "任务燃尽图",
+        "taskgroup": "任务分组统计",
+        "func": "功能测试",
+        "funcTotal": "用例测试汇总结果",
+        "funcReviewTotal": "用例评审汇总结果",
+        "caseburndown": "用例燃尽图",
+        "casegroup": "用例分组统计",
+        "apis": "接口测试",
+        "apisTotal": "接口测试汇总结果",
+        "apisgroup": "接口分组统计",
+        "scenario": "场景测试",
+        "scenarioTotal": "场景测试汇总结果",
+        "scenariogroup": "场景分组统计"
+      }
+    },
+    "planContent": {
+      "filter": "过滤",
+      "testPlan": "测试计划",
+      "testPlanPlaceholder": "选择计划",
+      "organization": "组织人员",
+      "user": "用户",
+      "userPlaceholder": "选择用户",
+      "dept": "部门",
+      "deptPlaceholder": "选择部门",
+      "group": "组",
+      "groupPlaceholder": "选择组",
+      "organizationHints": "用于输出指定组织或人员项目报告。",
+      "time": "时间",
+      "timeHints": "用于输出指定时间范围项目报告。",
+      "content": "内容",
+      "contentHints": "以下是报告输出内容目录信息。",
+      "contentTree": {
+        "planDetail": "测试计划信息",
+        "basic": "基本信息",
+        "tester": "测试人员与职责",
+        "objective": "测试目标",
+        "scope": "测试范围",
+        "acceptanceCriteria": "验收标准",
+        "other": "其他说明",
+        "caseTotal": "用例汇总结果",
+        "casesTotal": "测试汇总结果",
+        "casesReviewTotal": "评审汇总结果",
+        "hurndowm": "燃尽图",
+        "grouped": "分组统计",
+        "resultkDetail": "测试人汇总结果",
+        "testTotal": "测试汇总结果",
+        "reviewTotal": "评审汇总结果",
+        "burndown": "燃尽图",
+        "groupedTotal": "分组统计"
+      }
+    },
+    "caseContent": {
+      "filter": "过滤",
+      "testPlan": "测试计划",
+      "testPlanPlaceholder": "选择计划",
+      "testCase": "用例",
+      "testCasePlaceholder": "选择用例",
+      "content": "内容",
+      "contentHints": "以下是报告输出内容目录信息。",
+      "contentTree": {
+        "basic": "基本信息",
+        "user": "人员信息",
+        "date": "日期信息",
+        "condition": "前置条件",
+        "steps": "测试步骤",
+        "description": "描述",
+        "preview": "评审信息",
+        "test": "测试信息",
+        "task": "关联任务",
+        "cases": "关联用例",
+        "activity": "活动",
+        "comment": "评论"
+      }
+    },
+    "apisContent": {
+      "filter": "过滤",
+      "service": "服务",
+      "servicePlaceholder": "选择服务",
+      "api": "接口",
+      "apiPlaceholder": "选择接口",
+      "content": "内容",
+      "contentHints": "以下是报告输出内容目录信息。",
+      "contentTree": {
+        "apisBasic": "接口基本信息",
+        "apisTestt": "接口测试汇总结果",
+        "apisDetail": "接口测试结果详细信息",
+        "funcTest": "功能测试结果",
+        "perfTest": "性能测试结果",
+        "stabilityTest": "稳定性测试结果",
+        "info": "测试基本信息",
+        "cases": "测试用例统计",
+        "casesDetail": "测试用例结果明细",
+        "detail": "详细测试结果",
+        "indicator": "测试指标"
+      }
+    }
+  },
   "reportHome": {
     "messages": {
       "deleteSuccess": "删除成功",

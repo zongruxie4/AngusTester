@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch, Ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Icon, Input, Modal, notification } from '@xcan-angus/vue-ui';
 import { Form, FormItem, Menu, MenuItem, MenuItemGroup, TabPane, Tabs, Textarea } from 'ant-design-vue';
 import { appContext } from '@xcan-angus/infra';
@@ -7,6 +8,8 @@ import { appContext } from '@xcan-angus/infra';
 import { reportMenus } from './config';
 import dayjs from 'dayjs';
 import { report as reportApi } from '@/api/tester';
+
+const { t } = useI18n();
 
 interface Props {
   reportId?: string;
@@ -234,9 +237,9 @@ const ok = () => {
       return;
     }
     if (reportId.value) {
-      notification.success('更新报告成功');
+      notification.success(t('reportAdd.notification.updateSuccess'));
     } else {
-      notification.success('添加报告成功');
+      notification.success(t('reportAdd.notification.addSuccess'));
     }
     emits('ok');
     cancel();
@@ -277,7 +280,7 @@ onMounted(() => {
 <template>
   <Modal
     :visible="props.visible"
-    :title="reportId ? '编辑报告' : '添加报告'"
+    :title="reportId ? t('reportAdd.title.edit') : t('reportAdd.title.add')"
     :width="1200"
     :okButtonProps="{
       loading: loading
@@ -316,10 +319,10 @@ onMounted(() => {
             <div class="space-y-2 flex-1 min-w-0">
               <div class="font-semibold text-3.5">{{ report?.label }}</div>
               <div class="flex justify-between">
-                <div class="text-3 flex-1">分类： {{ reportTypeName }}</div>
-                <div class="text-3 flex-1">报告人： {{ reportId ? createdByName : tenantInfo?.fullName }}</div>
+                <div class="text-3 flex-1">{{ t('reportAdd.reportInfo.category') }}： {{ reportTypeName }}</div>
+                <div class="text-3 flex-1">{{ t('reportAdd.reportInfo.reporter') }}： {{ reportId ? createdByName : tenantInfo?.fullName }}</div>
               </div>
-              <div class="text-3">描述： {{ report?.description }}</div>
+              <div class="text-3">{{ t('reportAdd.reportInfo.description') }}： {{ report?.description }}</div>
             </div>
           </div>
           <Form :labelCol="{style: {width: '50px'}}">
@@ -328,29 +331,29 @@ onMounted(() => {
                 class="flex-1 min-w-0 !mb-5"
                 :class="{'ant-form-item-has-error': isValid && !formState.name}"
                 required
-                label="名称">
+                :label="t('reportAdd.form.name')">
                 <Input
                   v-model:value="formState.name"
                   :maxlength="100"
-                  placeholder="报告名称，最长100个字符" />
+                  :placeholder="t('reportAdd.form.namePlaceholder')" />
               </FormItem>
               <FormItem
                 class="flex-1 min-w-0 !mb-5"
                 :class="{'ant-form-item-has-error': isValid && !formState.version }"
                 required
-                label="版本">
+                :label="t('reportAdd.form.version')">
                 <Input
                   v-model:value="formState.version"
                   :maxlength="20"
-                  placeholder="报告版本，默认1.0.0，最长20个字符" />
+                  :placeholder="t('reportAdd.form.versionPlaceholder')" />
               </FormItem>
             </div>
             <div class="flex space-x-2 items-center">
-              <FormItem class="flex-1 min-w-0 !mb-5" label="描述">
+              <FormItem class="flex-1 min-w-0 !mb-5" :label="t('reportAdd.form.description')">
                 <Textarea
                   v-model:value="formState.description"
                   :maxlength="200"
-                  placeholder="报告描述，使用描述解释此报告的内容和目的，或添加其他资源的链接，最长200个字符"
+                  :placeholder="t('reportAdd.form.descriptionPlaceholder')"
                   showCount
                   :autoSize="autoSize"
                   @change="descriptionChangeMark" />
@@ -358,18 +361,18 @@ onMounted(() => {
             </div>
           </Form>
           <Tabs v-model:activeKey="activeTab" size="small">
-            <TabPane key="createdDate" tab="生成时间">
+            <TabPane key="createdDate" :tab="t('reportAdd.tabs.createdDate')">
               <CreatedDate
                 ref="createdDateRef"
                 :createTimeSetting="createTimeSetting"
                 :showPeriodically="!reportType[0].includes('EXEC')" />
             </TabPane>
-            <TabPane key="basic" tab="基本信息">
+            <TabPane key="basic" :tab="t('reportAdd.tabs.basic')">
               <Basic ref="basicDateRef" :basicInfoSetting="basicInfoSetting" />
             </TabPane>
             <TabPane
               key="content"
-              tab="内容"
+              :tab="t('reportAdd.tabs.content')"
               forceRender>
               <template v-if="reportType[0] === 'PROJECT_PROGRESS'">
                 <ProjectProcessContent
@@ -438,9 +441,9 @@ onMounted(() => {
                 <ExecPerfStabilityCustomContent
                   ref="contentRef"
                   :disabled="!!reportId"
-                  execType="TEST_PERFORMANCE"
                   :projectId="projectId"
-                  :contentSetting="contentSetting.filter" />
+                  :contentSetting="contentSetting.filter"
+                  execType="TEST_PERFORMANCE" />
               </template>
               <template v-if="reportType[0] === 'EXEC_STABILITY_RESULT'">
                 <ExecPerfStabilityCustomContent

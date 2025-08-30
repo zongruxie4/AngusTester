@@ -1,61 +1,65 @@
+import { i18n } from '@xcan-angus/infra';
+
+const t = i18n.getI18n()?.global?.t || ((value: string):string => value);
+
 export const contentTreeData = [
   {
-    title: '基本信息',
+    title: t('reportAdd.taskContent.contentTree.basic'),
     key: 'basic'
   },
   {
-    title: '人员信息',
+    title: t('reportAdd.taskContent.contentTree.user'),
     key: 'user'
   },
   {
-    title: '日期信息',
+    title: t('reportAdd.taskContent.contentTree.date'),
     key: 'date'
   },
   {
-    title: '描述',
+    title: t('reportAdd.taskContent.contentTree.description'),
     key: 'description'
   },
   {
-    title: '子任务',
+    title: t('reportAdd.taskContent.contentTree.subTask'),
     key: 'subTask'
   },
   {
-    title: '关联任务',
+    title: t('reportAdd.taskContent.contentTree.task'),
     key: 'task'
   },
   {
-    title: '关联用例',
+    title: t('reportAdd.taskContent.contentTree.cases'),
     key: 'cases'
   },
   {
-    title: '测试信息',
+    title: t('reportAdd.taskContent.contentTree.test'),
     key: 'test',
-    tips: '测试类型任务时展示。',
+    tips: t('reportAdd.taskContent.contentTree.testTips'),
     children: [
       {
-        title: '测试资源',
+        title: t('reportAdd.taskContent.contentTree.testSource'),
         key: 'testSource'
       },
       {
-        title: '执行信息',
+        title: t('reportAdd.taskContent.contentTree.exec'),
         key: 'exec'
       },
       {
-        title: '测试结果',
+        title: t('reportAdd.taskContent.contentTree.result'),
         key: 'result'
       }
     ]
   },
   {
-    title: '备注',
+    title: t('reportAdd.taskContent.contentTree.remark'),
     key: 'remark'
   },
   {
-    title: '活动',
+    title: t('reportAdd.taskContent.contentTree.activity'),
     key: 'activity'
   },
   {
-    title: '评论',
+    title: t('reportAdd.taskContent.contentTree.comment'),
     key: 'comment'
   }
 ];

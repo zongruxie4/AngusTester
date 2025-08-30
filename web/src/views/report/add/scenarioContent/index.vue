@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Colon, Hints, IconRequired, Select } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
 import { contentTreeData } from './config';
+
+const { t } = useI18n();
 
 interface Props {
   projectId: string;
@@ -64,15 +67,15 @@ defineExpose({
 <template>
   <div class="flex items-center space-x-1">
     <span class="h-4 w-1.5 bg-blue-border1"></span>
-    <span>过滤</span>
+    <span>{{ t('reportAdd.scenarioContent.filter') }}</span>
   </div>
   <div class="flex mt-2 pl-2">
     <div class="inline-flex flex-1 items-center space-x-2">
-      <div class="w-10 text-right"><IconRequired class="mr-1" />场景</div>
+      <div class="w-10 text-right"><IconRequired class="mr-1" />{{ t('reportAdd.scenarioContent.scenario') }}</div>
       <Colon />
       <Select
         v-model:value="scenarioId"
-        placeholder="选择场景"
+        :placeholder="t('reportAdd.scenarioContent.scenarioPlaceholder')"
         :showSearch="true"
         :error="valid && !scenarioId"
         :disabled="!props.projectId || props.disabled"
@@ -85,8 +88,8 @@ defineExpose({
   </div>
   <div class="flex items-center space-x-1 mt-4">
     <span class="h-4 w-1.5 bg-blue-border1"></span>
-    <span>内容</span>
-    <Hints text="以下是报告输出内容目录信息。" />
+    <span>{{ t('reportAdd.scenarioContent.content') }}</span>
+    <Hints :text="t('reportAdd.scenarioContent.contentHints')" />
   </div>
   <Tree
     v-model:checkedKeys="checked"

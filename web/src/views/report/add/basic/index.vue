@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Checkbox, CheckboxGroup, Textarea } from 'ant-design-vue';
+
+const { t } = useI18n();
 
 interface Props {
   basicInfoSetting: {
@@ -25,39 +28,39 @@ const props = withDefaults(defineProps<Props>(), {
 const options = [
   {
     value: 'name',
-    label: '展示报告名称'
+    label: t('reportAdd.basic.options.name')
   },
   {
     value: 'user',
-    label: '展示报告人'
+    label: t('reportAdd.basic.options.user')
   },
   {
     value: 'createdDate',
-    label: '展示报告生成时间'
+    label: t('reportAdd.basic.options.createdDate')
   },
   {
     value: 'version',
-    label: '展示报告版本'
+    label: t('reportAdd.basic.options.version')
   },
   {
     value: 'reportContacts',
-    label: '展示联系人'
+    label: t('reportAdd.basic.options.reportContacts')
   },
   {
     value: 'description',
-    label: '展示报告描述'
+    label: t('reportAdd.basic.options.description')
   },
   {
     value: 'reportCopyright',
-    label: '展示版权说明'
+    label: t('reportAdd.basic.options.reportCopyright')
   },
   {
     value: 'otherInformation',
-    label: '其他信息'
+    label: t('reportAdd.basic.options.otherInformation')
   },
   {
     value: 'watermark',
-    label: '为报告内容添加水印'
+    label: t('reportAdd.basic.options.watermark')
   }
 ];
 
@@ -70,10 +73,10 @@ const basicInfoSetting = ref({
 });
 
 const placeholderConfig = {
-  reportContacts: '联系人信息，默认为当前用户名称和邮箱，最长200个字符',
-  reportCopyright: '报告版权说明，申明版权所有、使用范围限制等，最长200个字符',
-  otherInformation: '其他信扩展息，用于对报告补充说明，最长200个字符',
-  watermark: '水印文案，默认为当前租户名，最长100个字符'
+  reportContacts: t('reportAdd.basic.placeholders.reportContacts'),
+  reportCopyright: t('reportAdd.basic.placeholders.reportCopyright'),
+  otherInformation: t('reportAdd.basic.placeholders.otherInformation'),
+  watermark: t('reportAdd.basic.placeholders.watermark')
 };
 
 const maxlengthConfig = {

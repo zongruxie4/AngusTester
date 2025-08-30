@@ -1,58 +1,62 @@
+import { i18n } from '@xcan-angus/infra';
+
+const t = i18n.getI18n()?.global?.t || ((value: string):string => value);
+
 export const contentTreeData = [
   {
-    title: '迭代信息',
+    title: t('reportAdd.sprintContent.contentTree.sprintDetail'),
     key: 'sprintDetail',
     children: [
       {
-        title: '基本信息',
+        title: t('reportAdd.sprintContent.contentTree.basic'),
         key: 'basic'
       },
       {
-        title: '验收标准',
+        title: t('reportAdd.sprintContent.contentTree.taskDetail'),
         key: 'taskDetail'
       },
       {
-        title: '会议记录',
+        title: t('reportAdd.sprintContent.contentTree.meetings'),
         key: 'meetings'
       },
       {
-        title: '其他说明',
+        title: t('reportAdd.sprintContent.contentTree.others'),
         key: 'others'
       }
     ]
   },
   {
-    title: '研发任务',
+    title: t('reportAdd.sprintContent.contentTree.task'),
     key: 'task',
     children: [
       {
-        title: '任务汇总结果',
+        title: t('reportAdd.sprintContent.contentTree.taskTotal'),
         key: 'taskTotal'
       },
       {
-        title: '燃尽图',
+        title: t('reportAdd.sprintContent.contentTree.taskburndown'),
         key: 'taskburndown'
       },
       {
-        title: '分组统计',
+        title: t('reportAdd.sprintContent.contentTree.groupedTotal'),
         key: 'groupedTotal'
       }
     ]
   },
   {
-    title: '经办人汇总结果',
+    title: t('reportAdd.sprintContent.contentTree.assigneeId'),
     key: 'assigneeId',
     children: [
       {
-        title: '任务汇总结果',
+        title: t('reportAdd.sprintContent.contentTree.assigneeId_taskTotal'),
         key: 'assigneeId_taskTotal'
       },
       {
-        title: '燃尽图',
+        title: t('reportAdd.sprintContent.contentTree.assigneeId_burndown'),
         key: 'assigneeId_burndown'
       },
       {
-        title: '分组统计',
+        title: t('reportAdd.sprintContent.contentTree.assigneeId_groupedTotal'),
         key: 'assigneeId_groupedTotal'
       }
     ]

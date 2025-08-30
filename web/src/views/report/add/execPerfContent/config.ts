@@ -1,181 +1,133 @@
+import { i18n } from '@xcan-angus/infra';
+
+const t = i18n.getI18n()?.global?.t || ((value: string):string => value);
+
 export const contentTreeData = [
   {
-    title: '执行信息',
+    title: t('reportAdd.execPerfContent.contentTree.exec'),
     key: 'exec',
     children: [
       {
-        title: '执行基本信息',
+        title: t('reportAdd.execPerfContent.contentTree.basic'),
         key: 'basic'
       },
       {
-        title: '执行结果',
+        title: t('reportAdd.execPerfContent.contentTree.execResult'),
         key: 'execResult'
       }
     ]
   },
   {
-    title: '汇总结果',
+    title: t('reportAdd.execPerfContent.contentTree.total'),
     key: 'total',
     children: [
       {
-        title: '名称',
+        title: t('reportAdd.execPerfContent.contentTree.name'),
         key: 'name'
       },
       {
-        title: '采样数',
+        title: t('reportAdd.execPerfContent.contentTree.sampling'),
         key: 'sampling'
       },
       {
-        title: '事务数',
+        title: t('reportAdd.execPerfContent.contentTree.qps'),
         key: 'qps'
       },
       {
-        title: '最小/最大/平均',
+        title: t('reportAdd.execPerfContent.contentTree.minmax'),
         key: 'minmax'
       },
       {
-        title: '每秒事务数',
+        title: t('reportAdd.execPerfContent.contentTree.qps/s'),
         key: 'qps/s'
       },
       {
-        title: '错误率',
+        title: t('reportAdd.execPerfContent.contentTree.errRate0'),
         key: 'errRate0'
       },
       {
-        title: 'P50/P75/P90/P99/P999',
+        title: t('reportAdd.execPerfContent.contentTree.percent'),
         key: 'percent'
       },
       {
-        title: '下载/秒',
+        title: t('reportAdd.execPerfContent.contentTree.download/s0'),
         key: 'download/s0'
       },
       {
-        title: '上传/秒',
+        title: t('reportAdd.execPerfContent.contentTree.upload/s0'),
         key: 'upload/s0'
       }
     ]
   },
   {
-    title: '采样指标时序图',
+    title: t('reportAdd.execPerfContent.contentTree.indicatorChart'),
     key: 'indicatorChart',
     children: [
       {
-        title: '吞吐量',
+        title: t('reportAdd.execPerfContent.contentTree.tps'),
         key: 'tps'
       },
       {
-        title: '并发数',
+        title: t('reportAdd.execPerfContent.contentTree.thread0'),
         key: 'thread0'
       },
       {
-        title: '响应时间',
+        title: t('reportAdd.execPerfContent.contentTree.response'),
         key: 'response'
       },
       {
-        title: '错误',
+        title: t('reportAdd.execPerfContent.contentTree.error0'),
         key: 'error0'
       },
       {
-        title: '状态码（只有HTTP协议才有）',
+        title: t('reportAdd.execPerfContent.contentTree.statusCode'),
         key: 'statusCode'
       },
       {
-        title: '节点资源',
+        title: t('reportAdd.execPerfContent.contentTree.node'),
         key: 'node',
-        tips: '有应用节点时展示应用节点资源数据、没有时展示执行节点资源数据，多个节点时只展示第一个节点数据。'
+        tips: t('reportAdd.execPerfContent.contentTree.nodeTips')
       },
       {
-        title: '叠加分析',
+        title: t('reportAdd.execPerfContent.contentTree.superposition'),
         key: 'superposition',
         children: [
           {
-            title: '吞吐量（QPS/TPS）',
+            title: t('reportAdd.execPerfContent.contentTree.QPS/TPS'),
             key: 'QPS/TPS',
             children: [
-              // {
-              //   title: '每秒查询数',
-              //   key: 'TPS/s',
-              // },
               {
-                title: '每秒事务数',
+                title: t('reportAdd.execPerfContent.contentTree.QPS/s'),
                 key: 'QPS/s'
               }
-              // {
-              //   title: '下载/秒',
-              //   key: 'download/s'
-              // },
-              // {
-              //   title: '上传/秒',
-              //   key: 'upload/s'
-              // },
             ]
           },
           {
-            title: '并发数（VU）',
+            title: t('reportAdd.execPerfContent.contentTree.vu'),
             key: 'vu',
             children: [
               {
-                title: '线程数',
+                title: t('reportAdd.execPerfContent.contentTree.thread'),
                 key: 'thread'
               }
-              // {
-              //   title: '最大线程数',
-              //   key: 'maxthread',
-              // },
-              // {
-              //   title: '活跃线程数',
-              //   key: 'activethread'
-              // }
             ]
           },
           {
-            title: '响应时间（RT、毫秒）',
+            title: t('reportAdd.execPerfContent.contentTree.rt'),
             key: 'rt',
             children: [
               {
-                title: '平均',
+                title: t('reportAdd.execPerfContent.contentTree.average'),
                 key: 'average'
               }
-              // {
-              //   title: '最小',
-              //   key: 'min',
-              // },
-              // {
-              //   title: '最大',
-              //   key: 'max'
-              // },
-              // {
-              //   title: 'P50',
-              //   key: 'P50'
-              // },
-              // {
-              //   title: 'P90',
-              //   key: 'P90'
-              // },
-              // {
-              //   title: 'P95',
-              //   key: 'P95'
-              // },
-              // {
-              //   title: 'P99',
-              //   key: 'P99'
-              // },
-              // {
-              //   title: 'P999',
-              //   key: 'P999'
-              // },
             ]
           },
           {
-            title: '错误（ERROR）',
+            title: t('reportAdd.execPerfContent.contentTree.error'),
             key: 'error',
             children: [
-              // {
-              //   title: '错误数',
-              //   key: 'errNum',
-              // },
               {
-                title: '错误率',
+                title: t('reportAdd.execPerfContent.contentTree.errRate'),
                 key: 'errRate'
               }
             ]
@@ -185,18 +137,18 @@ export const contentTreeData = [
     ]
   },
   {
-    title: '其他信息',
+    title: t('reportAdd.execPerfContent.contentTree.other'),
     key: 'other',
     children: [
       {
-        title: '执行调度日志',
+        title: t('reportAdd.execPerfContent.contentTree.dispatch'),
         key: 'dispatch',
-        tips: '多个节点时只展示第一个执行节点日志。'
+        tips: t('reportAdd.execPerfContent.contentTree.dispatchTips')
       },
       {
-        title: '执行采样日志',
+        title: t('reportAdd.execPerfContent.contentTree.samplingLog'),
         key: 'sampling',
-        tips: '多个节点时只展示第一个执行节点日志，最多支持10000行日志信息。'
+        tips: t('reportAdd.execPerfContent.contentTree.samplingTips')
       }
     ]
   }

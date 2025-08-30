@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Colon, Hints, IconRequired, Select } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
 import { contentTreeData } from './config';
+
+const { t } = useI18n();
 
 interface Props {
   projectId: string;
@@ -73,13 +76,13 @@ defineExpose({
 <template>
   <div class="flex items-center space-x-1">
     <span class="h-4 w-1.5 bg-blue-border1"></span>
-    <span>过滤</span>
+    <span>{{ t('reportAdd.taskContent.filter') }}</span>
   </div>
   <div class="mt-2  pl-2 space-y-2">
     <div class="flex flex-1 items-center space-x-2">
       <div class="w-10 text-right">
         <IconRequired />
-        迭代
+        {{ t('reportAdd.taskContent.sprint') }}
       </div>
       <Colon />
       <Select
@@ -89,7 +92,7 @@ defineExpose({
         :error="isValid && !sprintId"
         allowClear
         class="w-72"
-        placeholder="选择迭代"
+        :placeholder="t('reportAdd.taskContent.sprintPlaceholder')"
         :action="`${TESTER}/task/sprint?projectId=${props.projectId || ''}&fullTextSearch=true`"
         :fieldNames="{ label: 'name', value: 'id' }"
         @change="handleSprintChange">
@@ -98,7 +101,7 @@ defineExpose({
     <div class="flex flex-1 items-center space-x-2">
       <div class="w-10 text-right">
         <IconRequired />
-        任务
+        {{ t('reportAdd.taskContent.task') }}
       </div>
       <Colon />
       <Select
@@ -110,7 +113,7 @@ defineExpose({
         :error="isValid && !taskId"
         allowClear
         class="w-72"
-        placeholder="选择任务"
+        :placeholder="t('reportAdd.taskContent.taskPlaceholder')"
         :action="`${TESTER}/task?projectId=${props.projectId}&sprintId=${sprintId || ''}&fullTextSearch=true`"
         :fieldNames="{ label: 'name', value: 'id' }">
       </Select>
@@ -120,8 +123,8 @@ defineExpose({
   </div>
   <div class="flex items-center space-x-1 mt-4">
     <span class="h-4 w-1.5 bg-blue-border1"></span>
-    <span>内容</span>
-    <Hints text="以下是报告输出内容目录信息。" />
+    <span>{{ t('reportAdd.taskContent.content') }}</span>
+    <Hints :text="t('reportAdd.taskContent.contentHints')" />
   </div>
   <Tree
     v-model:checkedKeys="checked"

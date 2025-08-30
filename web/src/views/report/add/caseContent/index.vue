@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Colon, Hints, IconRequired, Select } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
 import { contentTreeData } from './config';
+
+const { t } = useI18n();
 
 interface Props {
   projectId: string;
@@ -73,11 +76,11 @@ defineExpose({
 <template>
   <div class="flex items-center space-x-1">
     <span class="h-4 w-1.5 bg-blue-border1"></span>
-    <span>过滤</span>
+    <span>{{ t('reportAdd.caseContent.filter') }}</span>
   </div>
   <div class="mt-2  pl-2 space-y-2">
     <div class="flex flex-1 items-center space-x-2">
-      <div class="w-15 text-right"><IconRequired class="mr-1" />测试计划</div>
+      <div class="w-15 text-right"><IconRequired class="mr-1" />{{ t('reportAdd.caseContent.testPlan') }}</div>
       <Colon />
       <Select
         v-model:value="planId"
@@ -88,14 +91,14 @@ defineExpose({
         :defaultActiveFirstOption="true"
         allowClear
         class="w-72"
-        placeholder="选择计划"
+        :placeholder="t('reportAdd.caseContent.testPlanPlaceholder')"
         :action="`${TESTER}/func/plan?projectId=${props.projectId || ''}&fullTextSearch=true`"
         :fieldNames="{ label: 'name', value: 'id' }"
         @change="handleSprintChange">
       </Select>
     </div>
     <div class="flex flex-1 items-center space-x-2">
-      <div class="w-15 text-right"><IconRequired class="mr-1" />用例</div>
+      <div class="w-15 text-right"><IconRequired class="mr-1" />{{ t('reportAdd.caseContent.testCase') }}</div>
       <Colon />
       <Select
         v-model:value="caseId"
@@ -106,7 +109,7 @@ defineExpose({
         :error="isValid && !caseId"
         allowClear
         class="w-72"
-        placeholder="选择用例"
+        :placeholder="t('reportAdd.caseContent.testCasePlaceholder')"
         :action="`${TESTER}/func/case?projectId=${props.projectId}&planId=${planId || ''}&fullTextSearch=true`"
         :fieldNames="{ label: 'name', value: 'id' }">
       </Select>
@@ -116,8 +119,8 @@ defineExpose({
   </div>
   <div class="flex items-center space-x-1 mt-4">
     <span class="h-4 w-1.5 bg-blue-border1"></span>
-    <span>内容</span>
-    <Hints text="以下是报告输出内容目录信息。" />
+    <span>{{ t('reportAdd.caseContent.content') }}</span>
+    <Hints :text="t('reportAdd.caseContent.contentHints')" />
   </div>
   <Tree
     v-model:checkedKeys="checked"

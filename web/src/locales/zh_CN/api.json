@@ -1115,6 +1115,40 @@
       }
     },
     "apis": {
+      "collapseButtonGroup": {
+        "edit": "编辑",
+        "clone": "克隆",
+        "delete": "删除"
+      },
+      "buttonGroup": {
+        "mockApi": "Mock接口",
+        "addWatch": "关注",
+        "cancelWatch": "取消关注",
+        "addFavourite": "收藏",
+        "cancelFavourite": "取消收藏",
+        "remove": "移动",
+        "auth": "权限",
+        "export": "导出",
+        "status": "修改状态",
+        "testScript": "测试脚本",
+        "generateTestScript": "生成测试脚本",
+        "generateTestScriptTip": "生成接口功能、性能和稳定性测试脚本。",
+        "deleteTestScript": "删除测试脚本",
+        "deleteTestScriptTip": "删除接口功能、性能和稳定性测试脚本。",
+        "exec": "执行测试",
+        "funcTestExec": "执行功能测试",
+        "perfTestExec": "执行性能测试",
+        "stabilityTestExec": "执行稳定性测试",
+        "testTask": "测试任务",
+        "setTest": "生成测试任务",
+        "setTestTip": "生成功能、性能和稳定性测试任务。",
+        "reTest": "重新开始测试任务",
+        "reTestTip": "将任务更新为`待处理`，相关统计计数和状态会被清除。",
+        "reopen": "重新打开测试任务",
+        "reopenTip": "将任务状态更新为`待处理`、 不清理统计计数和状态。",
+        "deleteTask": "删除测试任务",
+        "deleteTaskTip": "删除接口对应功能、性能和稳定性测试任务，包括测试脚本。"
+      },
       "response": {
         "pretty": "美化格式",
         "raw": "原生格式",
@@ -1129,23 +1163,23 @@
           "agent": "接口代理",
           "code": "代码",
           "apiMock": "Mock接口"
-        },
-        "serviceNav": {
-          "projectInfo": "服务信息",
-          "openapi": "文档信息",
-          "syncConfig": "同步配置",
-          "security": "安全方案配置",
-          "serverConfig": "服务器配置",
-          "activity": "活动",
-          "agent": "服务代理",
-          "tag": "标签",
-          "componnet": "组件"
-        },
-        "socketNavs": {
-          "apiInfo": "接口信息",
-          "activity": "活动",
-          "agent": "接口代理"
-        }
+      },
+      "serviceNav": {
+        "projectInfo": "服务信息",
+        "openapi": "文档信息",
+        "syncConfig": "同步配置",
+        "security": "安全方案配置",
+        "serverConfig": "服务器配置",
+        "activity": "活动",
+        "agent": "服务代理",
+        "tag": "标签",
+        "componnet": "组件"
+      },
+      "socketNavs": {
+        "apiInfo": "接口信息",
+        "activity": "活动",
+        "agent": "接口代理"
+      }
     },
     "security": {
       "hints": "声明可用于接口的安全方案",
