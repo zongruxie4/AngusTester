@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, Ref, ref, watch } from 'vue';
 import { utils, appContext } from '@xcan-angus/infra';
-
+import { useI18n } from 'vue-i18n';
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
 
 type MenuKey = 'homepage' | 'variables' | 'dataSet' | 'file' | 'dataSource';
@@ -11,6 +11,8 @@ const Variables = defineAsyncComponent(() => import('@/views/data/variable/index
 const DataSet = defineAsyncComponent(() => import('@/views/data/dataset/index.vue'));
 const FileData = defineAsyncComponent(() => import('@/views/data/file/index.vue'));
 const SourceData = defineAsyncComponent(() => import('@/views/data/datasource/index.vue'));
+
+const { t } = useI18n();
 
 const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
@@ -38,11 +40,11 @@ const projectId = computed(() => {
 });
 
 const menuItems = [
-  { name: '主页', icon: 'icon-zhuye', key: 'homepage' },
-  { name: '变量', icon: 'icon-bianliang1', key: 'variables' },
-  { name: '数据集', icon: 'icon-shujuji', key: 'dataSet' },
-  { name: '文件', icon: 'icon-wenjian1', key: 'file' },
-  { name: '数据源', icon: 'icon-shujuyuan', key: 'dataSource' }
+  { name: t('data.dataHome.name'), icon: 'icon-zhuye', key: 'homepage' },
+  { name: t('data.dataVariable.name'), icon: 'icon-bianliang1', key: 'variables' },
+  { name: t('data.dataset.name'), icon: 'icon-shujuji', key: 'dataSet' },
+  { name: t('data.fileSpace.name'), icon: 'icon-wenjian1', key: 'file' },
+  { name: t('data.dataSource.name'), icon: 'icon-shujuyuan', key: 'dataSource' }
 ];
 </script>
 <template>

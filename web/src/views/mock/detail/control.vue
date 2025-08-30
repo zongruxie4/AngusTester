@@ -248,40 +248,40 @@ onMounted(() => {
 
 const columns = [
   {
-            title: t('mock.mockDetail.control.apiName'),
+    title: t('mock.mockDetail.control.apiName'),
     dataIndex: 'summary',
     width: '15%',
     ellipsis: true
   },
   {
-            title: t('mock.mockDetail.control.apiInfo'),
+    title: t('mock.mockDetail.control.apiInfo'),
     dataIndex: 'method',
     width: '35%'
   },
   {
-            title: t('mock.mockDetail.control.requestCount'),
+    title: t('mock.mockDetail.control.requestCount'),
     dataIndex: 'requestNum',
     customRender: ({ text }):string => text || '--',
     width: '10%'
   },
   {
-            title: t('mock.mockDetail.control.mockExceptionCount'),
+    title: t('mock.mockDetail.control.mockExceptionCount'),
     dataIndex: 'simulateErrorNum',
     width: '10%'
   },
   {
-            title: t('mock.mockDetail.control.pushbackCount'),
+    title: t('mock.mockDetail.control.pushbackCount'),
     dataIndex: 'pushbackNum',
     width: '10%'
   },
   {
-            title: t('mock.mockDetail.control.successCount'),
+     title: t('mock.mockDetail.control.successCount'),
     dataIndex: 'successNum',
     customRender: ({ text }):string => text || '--',
     width: '10%'
   },
   {
-            title: t('mock.mockDetail.control.exceptionCount'),
+    title: t('mock.mockDetail.control.exceptionCount'),
     dataIndex: 'exceptionNum',
     width: '10%'
   }
@@ -289,32 +289,32 @@ const columns = [
 
 const mockServiceCount = [
   {
-          name: t('mock.mockDetail.control.apiCount'),
+    name: t('mock.mockDetail.control.apiCount'),
     key: 'apisNum',
     icon: 'icon-jiekoushu'
   },
   {
-          name: t('mock.mockDetail.control.requestCount'),
+    name: t('mock.mockDetail.control.requestCount'),
     key: 'requestNum',
     icon: 'icon-qingqiushu'
   },
   {
-          name: t('mock.mockDetail.control.mockExceptionCount'),
+    name: t('mock.mockDetail.control.mockExceptionCount'),
     key: 'simulateErrorNum',
     icon: 'icon-moniyichangshu'
   },
   {
-          name: t('mock.mockDetail.control.pushbackCount'),
+    name: t('mock.mockDetail.control.pushbackCount'),
     key: 'pushbackNum',
     icon: 'icon-huituishu'
   },
   {
-          name: t('mock.mockDetail.control.successCount'),
+    name: t('mock.mockDetail.control.successCount'),
     key: 'successNum',
     icon: 'icon-chenggongshu1'
   },
   {
-          name: t('mock.mockDetail.control.exceptionCount'),
+    name: t('mock.mockDetail.control.exceptionCount'),
     key: 'exceptionNum',
     icon: 'icon-yichangshu1'
   }

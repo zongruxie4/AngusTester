@@ -1,23 +1,27 @@
+import { i18n } from '@xcan-angus/infra';
+
+const t = i18n.getI18n()?.global?.t || ((value: string) => value);
+
 export const columns = [
-  { title: '名称', dataIndex: 'name', width: '30%', ellipsis: true },
+  { title: t('fileSpace.columns.name'), dataIndex: 'name', width: '30%', ellipsis: true },
   {
-    title: '文件数',
+    title: t('fileSpace.columns.fileCount'),
     dataIndex: 'fileNum',
     width: 60,
     ellipsis: true
   },
   {
-    title: '文件夹数',
+    title: t('fileSpace.columns.folderCount'),
     dataIndex: 'subDirectoryNum',
     width: 80,
     ellipsis: true
   },
   {
-    title: '实际大小', dataIndex: 'size', ellipsis: true, width: 80
+    title: t('fileSpace.columns.actualSize'), dataIndex: 'size', ellipsis: true, width: 80
   },
-  { title: '修改时间', dataIndex: 'lastModifiedDate', ellipsis: true, width: 160 },
+  { title: t('fileSpace.columns.lastModifiedDate'), dataIndex: 'lastModifiedDate', ellipsis: true, width: 160 },
   {
-    title: '操作', dataIndex: 'action', width: 380
+    title: t('fileSpace.columns.action'), dataIndex: 'action', width: 380
   }
 ];
 
