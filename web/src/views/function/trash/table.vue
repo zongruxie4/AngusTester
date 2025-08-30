@@ -121,29 +121,47 @@ const canPerformActions = (item: TrashItem): boolean => {
 
 // Lifecycle and watchers
 onMounted(() => {
-  // Watch for prop changes and reload data
-  watch(
-    [() => props.projectId, () => props.params],
-    () => {
-      if (props.projectId) {
-        resetPagination();
-        loadDataAndEmit();
-      }
-    },
-    { immediate: true }
-  );
-
-  // Watch for notification changes to refresh data
-  watch(
-    () => props.notify,
-    (newValue) => {
-      if (newValue) {
-        resetPagination();
-        loadDataAndEmit();
-      }
-    }
-  );
+  // Load initial data
+  loadDataAndEmit();
 });
+
+// Watch for prop changes and reload data
+watch(
+  [() => props.projectId, () => props.params],
+  () => {
+    if (props.projectId) {
+      resetPagination();
+      loadDataAndEmit();
+    }
+  },
+  { immediate: false }
+);
+
+// Watch for notification changes to refresh data
+watch(
+  () => props.notify,
+  (newValue) => {
+    if (newValue) {
+      resetPagination();
+      loadDataAndEmit();
+    }
+  }
+);
+
+// Watch for activeKey changes to reload data when tab is switched
+const previousParams = ref(props.params);
+watch(
+  () => props.params,
+  (newParams) => {
+    // Check if params actually changed (deep comparison)
+    if (JSON.stringify(newParams) !== JSON.stringify(previousParams.value)) {
+      previousParams.value = newParams;
+      resetPagination();
+      loadDataAndEmit();
+    }
+  },
+  { deep: true }
+);
 </script>
 
 <template>
