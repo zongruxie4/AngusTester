@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import * as echarts from 'echarts';
 import dayjs from 'dayjs';
 import { Button, Progress, RadioButton, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
 import {
@@ -24,7 +23,8 @@ import { getStrokeColor, installConfigColumns } from '../interface';
 import { nodeCtrl, nodeInfo } from 'src/api/ctrl';
 import { node } from '@/api/tester';
 
-import { formatBytes, formatBytesToUnit } from '@/utils/common';
+import { formatBytes } from '@/utils/common';
+import { EChartsManager } from './echartsManager';
 
 const { t } = useI18n();
 
@@ -35,24 +35,17 @@ const Execution = defineAsyncComponent(() => import('./Execution.vue'));
 const MockService = defineAsyncComponent(() => import('./MockService.vue'));
 const ExecutionPropulsion = defineAsyncComponent(() => import('./ExecutionPropulsion.vue'));
 
-const defaultLegend = {
-  type: 'plain',
-  data: [],
-  y: 'bottom',
-  x: 'center'
-};
-
 const echartRef = ref();
 
-let myEchart;
 const route = useRoute();
 const router = useRouter();
-const id = ref(route.params.id);
+const id = ref(route.params.id as string);
 
-const state = reactive<{infos: Record<string, any>, linuxOfflineInstallSteps: Record<string, any>, windowsOfflineInstallSteps: Record<string, any>}>({
+const state = reactive<{infos: Record<string, any>, linuxOfflineInstallSteps: Record<string, any>, windowsOfflineInstallSteps: Record<string, any>, installConfig?: any}>({
   infos: {},
   linuxOfflineInstallSteps: {},
-  windowsOfflineInstallSteps: {}
+  windowsOfflineInstallSteps: {},
+  installConfig: undefined
 });
 
 const showPassword = ref(false);
@@ -69,15 +62,13 @@ const currentSourceServer = ref();
 
 const chartParams = ref({}); // 图表参数
 
-let chartsData: any[] = [];
-
 const activeTab = ref('cpu');
 
-const diskNames = ref([]); // 所有磁盘名字 list
-const activeDisk = ref(); // 选中的磁盘
+const diskNames = ref<{label: string, value: string}[]>([]); // 所有磁盘名字 list
+const activeDisk = ref<string>(); // 选中的磁盘
 
-const networkNames = ref([]); // 所有网络名字
-const activeNetwork = ref(); // 选中的网络
+const networkNames = ref<{label: string, value: string}[]>([]); // 所有网络名字
+const activeNetwork = ref<string>(); // 选中的网络
 
 const notMerge = ref(true); // 图表数据覆盖是否重新渲染
 
@@ -95,84 +86,11 @@ const timestamp = ref<string | undefined>(); // 选择时间段
 
 const showInstallStep = ref(false); // 显示手动安装步骤
 
-const tableData = ref<{name: string, unit: string, average: string, high: string, low: string, latest: string}[]>([]);
-const sourceUse = reactive({
-  cpu: 0,
-  cpuPercent: 0,
-  cpuTotal: 0,
-  memory: '0',
-  memoryPercent: 0,
-  memoryTotal: '0',
-  swap: '0',
-  swapPercent: 0,
-  swapTotal: '0',
-  disk: '0',
-  diskPercent: 0,
-  diskTotal: '0',
-  txBytesRate: 0,
-  rxBytesRate: 0,
-  txBytes: '0',
-  rxBytes: '0'
-});
+// 创建ECharts管理器实例
+const echartsManager = new EChartsManager();
+const sourceUse = echartsManager.getSourceUse();
 
-// echarts 图表配置
-const echartsOpt = {
-  title: {
-    text: ' '
-  },
-  tooltip: {
-    trigger: 'axis',
-    textStyle: {
-      fontSize: 12
-    }
-  },
-  grid: {
-    top: '3%',
-    left: '3%',
-    right: '3%',
-    bottom: '12%',
-    containLabel: true
-  },
-  xAxis: {
-    type: 'category',
-    boundaryGap: false,
-    data: [],
-    splitLine: {
-      show: true,
-      lineStyle: {
-        type: 'dashed'
-      }
-    }
-  },
-  yAxis: {
-    type: 'value',
-    splitLine: {
-      show: true,
-      lineStyle: {
-        type: 'dashed'
-      }
-    }
-
-  },
-  series: []
-};
-
-const initEcharts = () => {
-  myEchart = echarts.init(echartRef.value);
-  myEchart.setOption(echartsOpt);
-};
-
-const getDefaultLineConfig = () => {
-  return {
-    data: [] as number[],
-    type: 'line',
-    smooth: true,
-    showSymbol: false,
-    lineStyle: {
-      width: 1
-    }
-  };
-};
+const showNoData = ref(false); // 是否显示无数据提示
 
 const loadingInfo = ref(true);
 // 获取节点基本信息
@@ -207,15 +125,16 @@ const installAgen = async () => {
   const [error] = await node.installNodeAgent({ id: id.value });
   installing.value = false;
   if (error) {
-    if (typeof error.data !== 'object') {
+    // 检查error是否有data属性并且是对象类型
+    if (error && typeof error === 'object' && 'data' in error && typeof error.data !== 'object') {
       return;
     }
-    if (error.data.linuxOfflineInstallSteps) {
-      state.linuxOfflineInstallSteps = error.data.linuxOfflineInstallSteps;
+    if (error && typeof error === 'object' && 'data' in error && error.data && typeof error.data === 'object' && 'linuxOfflineInstallSteps' in error.data) {
+      state.linuxOfflineInstallSteps = error.data.linuxOfflineInstallSteps as Record<string, any>;
       showInstallStep.value = true;
     }
-    if (error.data.windowsOfflineInstallSteps) {
-      state.windowsOfflineInstallSteps = error.data.windowsOfflineInstallSteps;
+    if (error && typeof error === 'object' && 'data' in error && error.data && typeof error.data === 'object' && 'windowsOfflineInstallSteps' in error.data) {
+      state.windowsOfflineInstallSteps = error.data.windowsOfflineInstallSteps as Record<string, any>;
       showInstallStep.value = true;
     }
     return;
@@ -286,18 +205,18 @@ const loadMetrics = async () => {
   // 内存  cvsMemory => free,used,freePercent,usedPercent,actualFree,actualUsed,actualFreePercent,actualUsedPercent,swapFree,swapUsed
   // 取实际使用值
   if (cvsMemory) {
-    const cvsMemory = cvsMemory.split(',');
-    const memoryPercent = +(+cvsMemory[7]).toFixed(2);
-    const memory = +(+cvsMemory[5]).toFixed(2);
-    const memoryTotal = +(+cvsMemory[4] + +cvsMemory[5]).toFixed(2);
+    const cvsMemoryValues = cvsMemory.split(',');
+    const memoryPercent = +(+cvsMemoryValues[7]).toFixed(2);
+    const memory = +(+cvsMemoryValues[5]).toFixed(2);
+    const memoryTotal = +(+cvsMemoryValues[4] + +cvsMemoryValues[5]).toFixed(2);
     sourceUse.memory = formatBytes(memory, 2);
     sourceUse.memoryPercent = memoryPercent;
     sourceUse.memoryTotal = formatBytes(memoryTotal, 2);
 
     // 交换区
-    const swapTotal = (+cvsMemory[9] || 0) + (+cvsMemory[8] || 0);
-    const swapPercent = +((+cvsMemory[9] || 0) / (+swapTotal || 1) * 100).toFixed(2);
-    const swap = (+cvsMemory[9] || 0);
+    const swapTotal = (+cvsMemoryValues[9] || 0) + (+cvsMemoryValues[8] || 0);
+    const swapPercent = +((+cvsMemoryValues[9] || 0) / (+swapTotal || 1) * 100).toFixed(2);
+    const swap = (+cvsMemoryValues[9] || 0);
     sourceUse.swapTotal = formatBytes(swapTotal, 2);
     sourceUse.swapPercent = swapPercent;
     sourceUse.swap = formatBytes(swap, 2);
@@ -385,471 +304,25 @@ const setNetworkData = () => {
   }
 };
 
-// 图表数据 CPU
-const loadCpuEchartData = async (data) => {
-  chartsData = data;
-  // 'CPU 空闲百分比', '系统空间占用 CPU 百分比', '用户空间占 CPU 百分比', '等待 IO 操作的 CPU 百分比', '其他占用 CPU 百分比', '当前占用的总 CPU 百分比'
-  // const dataType = ['idle', 'sys', 'sys', 'wait', 'other', 'total'];
-  const dataType = [t('node.nodeDetail.chartOptions.cpu.idle'), t('node.nodeDetail.chartOptions.cpu.sys'), t('node.nodeDetail.chartOptions.cpu.user'), t('node.nodeDetail.chartOptions.cpu.wait'), t('node.nodeDetail.chartOptions.cpu.other'), t('node.nodeDetail.chartOptions.cpu.total')];
-  const seriesData = dataType.map(type => {
-    return {
-      ...getDefaultLineConfig(),
-      name: type
-    };
-  });
-
-  chartsData.forEach(item => {
-    const cpusValues = item.cvsCpu.split(',');
-    cpusValues.forEach((val, idx) => {
-      seriesData[idx].data.push(+(+val).toFixed(2));
-    });
-  });
-  if (chartsData.length) {
-    tableData.value = dataType.map((name, idx) => {
-      const total = seriesData[idx].data.reduce((pre, current) => {
-        return pre + current;
-      }, 0);
-      const average = (total / (seriesData[idx].data.length || 1)).toFixed(2);
-      return {
-        name,
-        unit: '%',
-        average: average + '%',
-        high: Math.max(...(seriesData[idx].data)) + '%',
-        low: Math.min(...(seriesData[idx].data)) + '%',
-        latest: seriesData[idx].data[seriesData[idx].data.length - 1] + '%'
-      };
-    });
-  } else {
-    tableData.value = [];
-  }
-
-  const legend = notMerge.value
-    ? {
-        legend: {
-          type: 'plain',
-          data: dataType,
-          y: 'bottom',
-          x: 'center'
-        }
-      }
-    : {};
-  myEchart.setOption({
-    ...echartsOpt,
-    ...legend,
-    xAxis: [
-      {
-        data: chartsData.map(i => i.timestamp)
-      }
-    ],
-    series: seriesData.every(serries => !serries.data.length) ? [{ ...getDefaultLineConfig(), data: [60] }] : seriesData
-  }, notMerge.value);
-};
-
-let memoryEchartOption;
-let memoryPercentEchartOption;
-let memoryTableData;
-
-// 图表数据 内存
-const loadMemoryEchartData = async (data) => {
-  const dataType = [t('node.nodeDetail.chartOptions.memory.free'), t('node.nodeDetail.chartOptions.memory.used'), t('node.nodeDetail.chartOptions.memory.freePercent'), t('node.nodeDetail.chartOptions.memory.usedPercent'), t('node.nodeDetail.chartOptions.memory.actualFree'), t('node.nodeDetail.chartOptions.memory.actualUsed'), t('node.nodeDetail.chartOptions.memory.actualFreePercent'), t('node.nodeDetail.chartOptions.memory.actualUsedPercent'), t('node.nodeDetail.chartOptions.memory.swapFree'), t('node.nodeDetail.chartOptions.memory.swapUsed')];
-  const dataTypeKey = ['free', 'used', 'freePercent', 'usedPercent', 'actualFree', 'actualUsed', 'actualFreePercent', 'actualUsedPercent', 'swapFree', 'swapUsed'];
-  chartsData = data;
-  // loadingChartData.value = false;
-  const seriesData = dataType.map(type => {
-    return {
-      ...getDefaultLineConfig(),
-      name: type
-    };
-  });
-  chartsData.forEach(item => {
-    // 'free', 'used', 'freePercent', 'usedPercent', 'actualFree', 'actualUsed', 'actualFreePercent', 'actualUsedPercent', 'swapFree', 'swapUsed'
-    const values = item.cvsMemory.split(',');
-    values.forEach((val, idx) => {
-      if (dataTypeKey[idx].includes('Percent')) {
-        seriesData[idx].data.push(+val);
-      } else {
-        seriesData[idx].data.push(+formatBytesToUnit(val, 'GB', 2));
-      }
-    });
-  });
-
-  if (chartsData.length) {
-    memoryTableData = dataType.map((name, idx) => {
-      const total = seriesData[idx].data.reduce((pre, current) => {
-        return pre + current;
-      }, 0);
-      let average = (total / (seriesData[idx].data.length || 1)).toFixed(2);
-      let high = Math.max(...(seriesData[idx].data)) + '';
-      let low = Math.min(...(seriesData[idx].data)) + '';
-      let latest = seriesData[idx].data[seriesData[idx].data.length - 1] + '';
-      if (dataTypeKey[idx].includes('Percent')) {
-        average += '%';
-        high += '%';
-        low += '%';
-        latest += '%';
-      } else {
-        average += ' GB';
-        high += ' GB';
-        low += ' GB';
-        latest += ' GB';
-      }
-
-      return {
-        name,
-        unit: dataTypeKey[idx].includes('Percent') ? '%' : 'B',
-        average: average,
-        high: high,
-        low: low,
-        latest: latest
-      };
-    });
-  } else {
-    memoryTableData = [];
-  }
-  if (showMemoryPercentChart.value) {
-    tableData.value = memoryTableData.filter(i => i.unit === '%');
-  } else {
-    tableData.value = memoryTableData.filter(i => i.unit !== '%');
-  }
-
-  const seriesPercentData = seriesData.splice(2, 2).concat(seriesData.splice(4, 2));
-  const percentDataType = dataType.splice(2, 2).concat(dataType.splice(4, 2));
-  const legend = {
-    ...defaultLegend,
-    data: dataType
-  };
-  const percentLegend = {
-    ...defaultLegend,
-    data: percentDataType
-  };
-
-  memoryEchartOption = {
-    ...echartsOpt,
-    legend: legend,
-    xAxis: [
-      {
-        data: chartsData.map(i => i.timestamp)
-      }
-    ],
-    series: seriesData.every(serries => !serries.data.length) ? [{ ...getDefaultLineConfig(), data: [50] }] : seriesData
-  };
-  memoryPercentEchartOption = {
-    ...echartsOpt,
-    legend: percentLegend,
-    xAxis: [
-      {
-        data: chartsData.map(i => i.timestamp)
-      }
-    ],
-    series: seriesPercentData.every(serries => !serries.data.length) ? [{ ...getDefaultLineConfig(), data: [50] }] : seriesPercentData
-  };
-  myEchart.setOption(showMemoryPercentChart.value ? memoryPercentEchartOption : memoryEchartOption, notMerge.value);
-};
-
-let diskChartOption;
-let percentChartOption;
-let rateChartOption;
-let bytesRateChartOption;
-let diskTableData;
-
-// 图表数据 磁盘
-const loadDiskEchartData = async (data) => {
-  chartsData = data;
-  const dataType = [t('node.nodeDetail.chartOptions.disk.total'), t('node.nodeDetail.chartOptions.disk.free'), t('node.nodeDetail.chartOptions.disk.used'), t('node.nodeDetail.chartOptions.disk.avail'), t('node.nodeDetail.chartOptions.disk.usePercent'), t('node.nodeDetail.chartOptions.disk.readsRate'), t('node.nodeDetail.chartOptions.disk.writesRate'), t('node.nodeDetail.chartOptions.disk.readBytesRate'), t('node.nodeDetail.chartOptions.disk.writeBytesRate')];
-  const dataTypeKey = ['total', 'free', 'used', 'avail', 'usePercent', 'readsRate', 'writesRate', 'readBytesRate', 'writeBytesRate'];
-  const seriesData = dataType.map(type => {
-    return {
-      ...getDefaultLineConfig(),
-      name: type
-    };
-  });
-  chartsData.forEach(item => {
-    const diskValues = item.cvsValue.split(',');
-    diskValues.forEach((val, idx) => {
-      if (dataTypeKey[idx].includes('Percent') || dataTypeKey[idx].includes('BytesRate') || dataTypeKey[idx].includes('Rate')) {
-        seriesData[idx].data.push(+val);
-      } else {
-        seriesData[idx].data.push(+formatBytesToUnit(val, 'GB', 2));
-      }
-    });
-  });
-  if (chartsData.length) {
-    diskTableData = dataType.map((name, idx) => {
-      const total = seriesData[idx].data.reduce((pre, current) => {
-        return pre + current;
-      }, 0);
-      let average = (total / (seriesData[idx].data.length || 1)).toFixed(2);
-      let high = Math.max(...(seriesData[idx].data)) + '';
-      let low = Math.min(...(seriesData[idx].data)) + '';
-      let latest = seriesData[idx].data[seriesData[idx].data.length - 1] + '';
-      let unit;
-      if (dataTypeKey[idx].includes('Percent')) {
-        average += '%';
-        high += '%';
-        low += '%';
-        latest += '%';
-        unit = '%';
-      } else if (dataTypeKey[idx].includes('BytesRate')) {
-        average += ' MB/s';
-        high += ' MB/s';
-        low += ' MB/s';
-        latest += 'MB/s';
-        unit = 'MB/s';
-      } else if (dataTypeKey[idx].includes('Rate')) {
-        average += ' IO/s';
-        high += ' IO/s';
-        low += ' IO/s';
-        latest += ' IO/s';
-        unit = 'IO/s';
-      } else {
-        average += ' GB';
-        high += ' GB';
-        low += ' GB';
-        latest += ' GB';
-        unit = 'GB';
-      }
-      return {
-        name,
-        average: average,
-        high: high,
-        low: low,
-        latest: latest,
-        unit
-      };
-    });
-  } else {
-    diskTableData = [];
-  }
-  switch (diskChartKey.value) {
-    case 'disk':
-      tableData.value = diskTableData.filter(i => i.unit === 'GB');
-      break;
-    case 'percent':
-      tableData.value = diskTableData.filter(i => i.unit === '%');
-      break;
-    case 'rate':
-      tableData.value = diskTableData.filter(i => i.unit === 'IO/s');
-      break;
-    case 'bytesRate':
-      tableData.value = diskTableData.filter(i => i.unit === 'MB/s');
-      break;
-    default:
-      tableData.value = [];
-  }
-  const percentSeriesData = seriesData.splice(4, 1);
-  const percentDataType = dataType.splice(4, 1);
-  const percentLegend = { ...defaultLegend, data: percentDataType };
-  percentChartOption = {
-    ...echartsOpt,
-    legend: percentLegend,
-    xAxis: [
-      {
-        data: chartsData.map(i => i.timestamp)
-      }
-    ],
-    series: percentSeriesData.every(serries => !serries.data.length) ? [{ ...getDefaultLineConfig(), data: [50] }] : percentSeriesData
-  };
-
-  const rateSeriesData = seriesData.splice(4, 2);
-  const rateDataType = dataType.splice(4, 2);
-  const rateLegend = { ...defaultLegend, data: rateDataType };
-  rateChartOption = {
-    ...echartsOpt,
-    legend: rateLegend,
-    xAxis: [
-      {
-        data: chartsData.map(i => i.timestamp)
-      }
-    ],
-    series: rateSeriesData.every(serries => !serries.data.length) ? [{ ...getDefaultLineConfig(), data: [50] }] : rateSeriesData
-  };
-
-  const bytesRateSeriesData = seriesData.splice(4, 2);
-  const bytesRateDataType = dataType.splice(4, 2);
-  const bytesLegend = { ...defaultLegend, data: bytesRateDataType };
-  bytesRateChartOption = {
-    ...echartsOpt,
-    legend: bytesLegend,
-    xAxis: [
-      {
-        data: chartsData.map(i => i.timestamp)
-      }
-    ],
-    series: bytesRateSeriesData.every(serries => !serries.data.length) ? [{ ...getDefaultLineConfig(), data: [50] }] : bytesRateSeriesData
-  };
-  const legend = { ...defaultLegend, data: dataType };
-  diskChartOption = {
-    ...echartsOpt,
-    legend: legend,
-    xAxis: [
-      {
-        data: chartsData.map(i => i.timestamp)
-      }
-    ],
-    series: seriesData.every(serries => !serries.data.length) ? [{ ...getDefaultLineConfig(), data: [50] }] : seriesData
-  };
-  let showEchartOptions;
-  if (diskChartKey.value === 'disk') {
-    showEchartOptions = diskChartOption;
-  }
-  if (diskChartKey.value === 'percent') {
-    showEchartOptions = percentChartOption;
-  }
-  if (diskChartKey.value === 'rate') {
-    showEchartOptions = rateChartOption;
-  }
-  if (diskChartKey.value === 'bytesRate') {
-    showEchartOptions = bytesRateChartOption;
-  }
-  myEchart.setOption(showEchartOptions, notMerge.value);
-};
-
-let networkChartOption;
-let bytesChartOption;
-let packetChartOption;
-let networkTableData;
-
-// 图表数据 网络
-const loadNetworkEchartData = async (data) => {
-  chartsData = data;
-  const dataTypeKey = ['rxBytes', 'rxBytesRate', 'rxErrors', 'txBytes', 'txBytesRate'];
-  const dataType = [t('node.nodeDetail.chartOptions.network.rxBytes'), t('node.nodeDetail.chartOptions.network.rxBytesRate'), t('node.nodeDetail.chartOptions.network.rxErrors'), t('node.nodeDetail.chartOptions.network.txBytes'), t('node.nodeDetail.chartOptions.network.txBytesRate')];
-  const seriesData = dataType.map(type => {
-    return {
-      ...getDefaultLineConfig(),
-      name: type
-    };
-  });
-  chartsData.forEach(item => {
-    const valus = item.cvsValue.split(',');
-    valus.forEach((val, idx) => {
-      if (dataTypeKey[idx].includes('BytesRate')) {
-        seriesData[idx].data.push(+val);
-      } else if (dataTypeKey[idx].includes('Bytes')) {
-        seriesData[idx].data.push(+formatBytesToUnit(val, 'GB', 2));
-      } else {
-        seriesData[idx].data.push(+val);
-      }
-    });
-  });
-  if (chartsData.length) {
-    networkTableData = dataType.map((name, idx) => {
-      const total = seriesData[idx].data.reduce((pre, current) => {
-        return pre + current;
-      }, 0);
-      let average = (total / (seriesData[idx].data.length || 1)).toFixed(2);
-      let high = Math.max(...(seriesData[idx].data)) + '';
-      let low = Math.min(...(seriesData[idx].data)) + '';
-      let latest = seriesData[idx].data[seriesData[idx].data.length - 1] + '';
-      if (dataTypeKey[idx].includes('BytesRate')) {
-        average += 'MB/s';
-        high += 'MB/s';
-        low += 'MB/s';
-        latest += 'MB/s';
-      } else if (dataTypeKey[idx].includes('Bytes')) {
-        average += ' GB';
-        high += ' GB';
-        low += ' GB';
-        latest += ' GB';
-      } else {
-        average += ' packets';
-        high += ' packets';
-        low += ' packets';
-        latest += ' packets';
-      }
-
-      const unit = dataTypeKey[idx].includes('BytesRate') ? 'MB/s' : dataTypeKey[idx].includes('Bytes') ? 'GB' : 'packets';
-      return {
-        name,
-        unit,
-        average: average,
-        high: high,
-        low: low,
-        latest: latest
-      };
-    });
-  } else {
-    networkTableData = [];
-  }
-
-  if (networkChartKey.value === 'network') {
-    tableData.value = networkTableData.filter(i => i.unit === 'MB/s');
-  } else if (networkChartKey.value === 'packet') {
-    tableData.value = networkTableData.filter(i => i.unit === 'packets');
-  } else {
-    tableData.value = networkTableData.filter(i => i.unit === 'GB');
-  }
-
-  const networkSeriesData = seriesData.splice(1, 1).concat(seriesData.splice(3, 1));
-  const networkDataTypeKey = dataType.splice(1, 1).concat(dataType.splice(3, 1));
-  const networkLengend = { ...defaultLegend, data: networkDataTypeKey };
-  networkChartOption = {
-    ...echartsOpt,
-    legend: networkLengend,
-    xAxis: [
-      {
-        data: chartsData.map(i => i.timestamp)
-      }
-    ],
-    series: networkSeriesData.every(serries => !serries.data.length) ? [{ ...getDefaultLineConfig(), data: [50] }] : networkSeriesData
-  };
-
-  const packetSeriesData = seriesData.splice(1, 1);
-  const packetDataTypeKey = dataType.splice(1, 1);
-  const packetLengend = { ...defaultLegend, data: packetDataTypeKey };
-  packetChartOption = {
-    ...echartsOpt,
-    legend: packetLengend,
-    xAxis: [
-      {
-        data: chartsData.map(i => i.timestamp)
-      }
-    ],
-    series: packetSeriesData.every(serries => !serries.data.length) ? [{ ...getDefaultLineConfig(), data: [50] }] : packetSeriesData
-  };
-  const legend = { ...defaultLegend, data: dataType };
-  bytesChartOption = {
-    ...echartsOpt,
-    legend: legend,
-    xAxis: [
-      {
-        data: chartsData.map(i => i.timestamp)
-      }
-    ],
-    series: seriesData.every(serries => !serries.data.length) ? [{ ...getDefaultLineConfig(), data: [50] }] : seriesData
-  };
-  let showChartOption;
-  if (networkChartKey.value === 'network') {
-    showChartOption = networkChartOption;
-  }
-  if (networkChartKey.value === 'packet') {
-    showChartOption = packetChartOption;
-  }
-  if (networkChartKey.value === 'bytes') {
-    showChartOption = bytesChartOption;
-  }
-  myEchart.setOption(showChartOption, notMerge.value);
-};
-
-const showNoData = ref(false);
 // 图表数据变更
 const onChartDataChange = (data) => {
+  echartsManager.setChartsData(data);
   if (!data.length) {
     showNoData.value = true;
   } else {
     showNoData.value = false;
   }
   if (activeTab.value === 'cpu') {
-    loadCpuEchartData(data);
+    echartsManager.loadCpuEchartData(data, t, notMerge.value);
   }
   if (activeTab.value === 'memory') {
-    loadMemoryEchartData(data);
+    echartsManager.loadMemoryEchartData(data, t, showMemoryPercentChart.value, notMerge.value);
   }
   if (activeTab.value === 'disk') {
-    loadDiskEchartData(data);
+    echartsManager.loadDiskEchartData(data, t, diskChartKey.value, notMerge.value);
   }
   if (activeTab.value === 'network') {
-    loadNetworkEchartData(data);
+    echartsManager.loadNetworkEchartData(data, t, networkChartKey.value, notMerge.value);
   }
 };
 
@@ -944,57 +417,15 @@ const proxyOpt = [
 ];
 
 watch(() => showMemoryPercentChart.value, () => {
-  if (memoryPercentEchartOption || memoryEchartOption) {
-    myEchart.setOption(showMemoryPercentChart.value ? memoryPercentEchartOption : memoryEchartOption, true);
-    if (showMemoryPercentChart.value) {
-      tableData.value = memoryTableData.filter(i => i.unit === '%');
-    } else {
-      tableData.value = memoryTableData.filter(i => i.unit !== '%');
-    }
-  }
+  echartsManager.updateChartDisplay(activeTab.value, showMemoryPercentChart.value, diskChartKey.value, networkChartKey.value);
 });
 
 watch(() => diskChartKey.value, () => {
-  let showEchartOptions;
-
-  if (diskChartKey.value === 'disk') {
-    showEchartOptions = diskChartOption;
-    tableData.value = diskTableData.filter(i => i.unit === 'GB');
-  }
-  if (diskChartKey.value === 'percent') {
-    showEchartOptions = percentChartOption;
-    tableData.value = diskTableData.filter(i => i.unit === '%');
-  }
-  if (diskChartKey.value === 'rate') {
-    showEchartOptions = rateChartOption;
-    tableData.value = diskTableData.filter(i => i.unit === 'IO/s');
-  }
-  if (diskChartKey.value === 'bytesRate') {
-    showEchartOptions = bytesRateChartOption;
-    tableData.value = diskTableData.filter(i => i.unit === 'MB/s');
-  }
-  if (showEchartOptions) {
-    myEchart.setOption(showEchartOptions, true);
-  }
+  echartsManager.updateChartDisplay(activeTab.value, showMemoryPercentChart.value, diskChartKey.value, networkChartKey.value);
 });
 
 watch(() => networkChartKey.value, () => {
-  let showChartOption;
-  if (networkChartKey.value === 'network') {
-    showChartOption = networkChartOption;
-    tableData.value = networkTableData.filter(i => i.unit === 'MB/s');
-  }
-  if (networkChartKey.value === 'packet') {
-    showChartOption = packetChartOption;
-    tableData.value = networkTableData.filter(i => i.unit === 'packets');
-  }
-  if (networkChartKey.value === 'bytes') {
-    showChartOption = bytesChartOption;
-    tableData.value = networkTableData.filter(i => i.unit === 'GB');
-  }
-  if (showChartOption) {
-    myEchart.setOption(showChartOption, true);
-  }
+  echartsManager.updateChartDisplay(activeTab.value, showMemoryPercentChart.value, diskChartKey.value, networkChartKey.value);
 });
 
 const isAdmin = inject('isAdmin', ref(false));
@@ -1003,7 +434,7 @@ const userInfo = ref(appContext.getUser());
 onMounted(async () => {
   id.value = route.params.id as string;
   await loadInfo();
-  initEcharts();
+  echartsManager.initEcharts(echartRef.value);
   await loadMetrics();
   await loadNetwork();
   timestamp.value = '5-minute';
