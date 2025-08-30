@@ -86,7 +86,7 @@
     }
   },
   "app": {
-    "name": "Application",
+    "name": "App",
     "title": "Application Settings",
     "description": "Configure basic parameters and function options of the application"
   },

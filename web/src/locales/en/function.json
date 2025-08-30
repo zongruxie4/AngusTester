@@ -1165,6 +1165,13 @@
     "tips": {
       "adminOnly": "Only administrators and deleters can restore or permanently delete recycle bin data."
     },
+    "stats": {
+      "items": "Items"
+    },
+    "filters": {
+      "title": "Filter",
+      "all": "All"
+    },
     "actions": {
       "recoverAll": "Restore All",
       "deleteAll": "Delete All",
