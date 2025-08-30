@@ -26,6 +26,10 @@ export function usePermitInfo () {
       dataIndex: 'goodsCode'
     },
     {
+      label: t('app.config.permitInfo.columns.goodsVersion'),
+      dataIndex: 'goodsVersion'
+    },
+    {
       label: t('app.config.permitInfo.columns.provider'),
       dataIndex: 'provider'
     },
@@ -42,12 +46,12 @@ export function usePermitInfo () {
       dataIndex: 'licenseNo'
     },
     {
-      label: t('app.config.permitInfo.columns.beginDate'),
+      label: t('app.config.permitInfo.columns.issuedDate'),
       dataIndex: 'beginDate'
     },
     {
-      label: t('app.config.permitInfo.columns.endDate'),
-      dataIndex: 'endDate'
+      label: t('app.config.permitInfo.columns.expiredDate'),
+      dataIndex: 'expiredDate'
     },
     {
       label: t('app.config.permitInfo.columns.signature'),
@@ -66,6 +70,10 @@ export function usePermitInfo () {
     {
       label: t('app.config.permitInfo.columns.goodsCode'),
       dataIndex: 'goodsCode'
+    },
+    {
+      label: t('app.config.permitInfo.columns.goodsVersion'),
+      dataIndex: 'goodsVersion'
     },
     {
       label: t('app.config.permitInfo.columns.provider'),

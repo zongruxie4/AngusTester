@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Tooltip } from 'ant-design-vue';
-import { Grid, Modal, Select } from '@xcan-angus/vue-ui';
+import { Modal, Select } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { AuthObjectType } from '@xcan-angus/infra';
 import { useAddMember } from './composables/useAddMember';
@@ -80,22 +80,6 @@ const getPopupContainer = (el: HTMLElement): HTMLElement => {
   }
   return document.body;
 };
-
-/**
- * Grid columns configuration
- */
-const gridColumns = [
-  [
-    {
-      label: columnLabel.value,
-      dataIndex: 'users'
-    },
-    {
-      label: t('app.config.addMembers.columns.policy'),
-      dataIndex: 'policys'
-    }
-  ]
-];
 </script>
 <template>
   <Modal
@@ -106,8 +90,19 @@ const gridColumns = [
     :width="600"
     @cancel="handleCancel"
     @ok="handleOk">
-    <Grid :columns="gridColumns" marginBottom="24px">
-      <template #users>
+    <div class="add-member-form">
+            
+      <!-- Tips Information -->
+      <div class="form-tips">
+        <div class="tips-icon">💡</div>
+        <div class="tips-content">
+          <p class="tips-title">{{ t('app.config.addMembers.tips.title') }}</p>
+          <p class="tips-text">{{ t('app.config.addMembers.tips.description') }}</p>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-label">{{ columnLabel }}</div>
         <Select
           v-model:value="selectedUserIds"
           :placeholder="placeholder"
@@ -117,7 +112,7 @@ const gridColumns = [
           allowClear
           showSearch
           mode="multiple"
-          class="w-full -mt-1.5"
+          class="w-full"
           optionLabelProp="label"
           @change="userChange">
           <template #option="record">
@@ -129,12 +124,14 @@ const gridColumns = [
             </Tooltip>
           </template>
         </Select>
-      </template>
-      <template #policys>
+      </div>
+      
+      <div class="form-section mt-4">
+        <div class="form-label">{{ t('app.config.addMembers.columns.policy') }}</div>
         <Select
           v-model:value="selectedPolicyIds"
           :placeholder="t('app.config.addMembers.placeholders.selectPolicy')"
-          class="w-full -mt-1.5"
+          class="w-full"
           mode="multiple"
           :error="policyError"
           :action="policyAction"
@@ -143,12 +140,65 @@ const gridColumns = [
           showSearch
           @change="policyChange">
         </Select>
-      </template>
-    </Grid>
+      </div>
+
+    </div>
   </Modal>
 </template>
 <style scoped>
 .my-tabs-bordr {
   border-color: var(--content-special-text);
+}
+
+.add-member-form {
+  padding: 8px 0;
+}
+
+.form-section {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: var(--theme-title);
+  font-size: 12px;
+}
+
+/* Tips Information Styles */
+.form-tips {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border: 1px solid #bae7ff;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.tips-icon {
+  font-size: 18px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.tips-content {
+  flex: 1;
+}
+
+.tips-title {
+  margin: 0 0 6px 0;
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--text-color, #262626);
+  line-height: 1.4;
+}
+
+.tips-text {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-color-secondary, #595959);
+  line-height: 1.5;
 }
 </style>

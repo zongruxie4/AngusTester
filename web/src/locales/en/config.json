@@ -101,15 +101,18 @@
         "permission": "License Information"
       },
       "permitInfo": {
+        "title": "License Information",
+        "description": "View and manage your application license information, including edition type, product code, issuer and other details.",
         "columns": {
           "editionType": "Edition Type",
           "goodsCode": "Product Code",
+          "goodsVersion": "Product Version",
           "provider": "Provider",
           "issuer": "Issuer",
           "holder": "Holder",
           "licenseNo": "License Number",
-          "beginDate": "License Issue Date",
-          "endDate": "License Expiry Date",
+          "issuedDate": "License Issue Date",
+          "expiredDate": "License Expiry Date",
           "signature": "License Certificate MD5 Signature"
         },
         "remainingDays": "Remaining {days} days"
@@ -121,10 +124,14 @@
           "group": "Add Group"
         },
         "columns": {
-          "user": "User",
-          "dept": "Department",
-          "group": "Group",
-          "policy": "Policy"
+          "user": "Authorize User",
+          "dept": "Authorize Department",
+          "group": "Authorize Group",
+          "policy": "Authorize Policy"
+        },
+        "tips": {
+          "title": "Instructions",
+          "description": "Select users and corresponding policies. The system will assign appropriate permissions to the selected users."
         },
         "labels": {
           "selectUser": "Select User",
@@ -134,6 +141,10 @@
         },
         "placeholders": {
           "selectPolicy": "Select Policy"
+        },
+        "errors": {
+          "userRequired": "Please select users",
+          "policyRequired": "Please select policies"
         }
       },
       "memberList": {

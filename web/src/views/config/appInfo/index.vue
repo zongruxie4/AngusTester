@@ -8,7 +8,7 @@ import { TabPane, Tabs } from 'ant-design-vue';
 // Async component imports
 const MemberTab = defineAsyncComponent(() => import('./MemberTab.vue'));
 const Quota = defineAsyncComponent(() => import('./Quota.vue'));
-const PermitInfo = defineAsyncComponent(() => import('./PermitInfo.vue'));
+const LicenseInfo = defineAsyncComponent(() => import('./LicenseInfo.vue'));
 
 // Reactive data for application information
 const appInfo = ref(appContext.getAccessApp());
@@ -58,7 +58,7 @@ watch(() => appInfo.value, (newValue) => {
           disabled
           class="w-100 mt-2" />
       </div>
-      <div class="mt-5">
+      <div class="mt-5 mb-3">
         <div class="font-medium text-3.5 leading-3.5 text-theme-title">{{ t('app.config.labels.domain') }}</div>
         <Input
           v-model:value="appUrl"
@@ -79,7 +79,7 @@ watch(() => appInfo.value, (newValue) => {
         <TabPane
           key="permission"
           :tab="t('app.config.tabs.permission')">
-          <PermitInfo />
+          <LicenseInfo />
         </TabPane>
       </Tabs>
     </div>
