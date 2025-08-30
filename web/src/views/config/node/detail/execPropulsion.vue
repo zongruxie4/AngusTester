@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { inject, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { modal, notification, Table } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { node } from '@/api/tester';

@@ -2,7 +2,7 @@
 import { CheckboxGroup, Form, FormItem, Popover, Select, Tag } from 'ant-design-vue';
 import { reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { EnumMessage, ReceiveChannelType, enumUtils } from '@xcan-angus/infra';
+import { EnumMessage, enumUtils, ReceiveChannelType } from '@xcan-angus/infra';
 import { Modal, notification } from '@xcan-angus/vue-ui';
 
 import { event } from '@/api/gm';

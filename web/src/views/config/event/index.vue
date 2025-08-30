@@ -4,14 +4,14 @@ import { computed, defineAsyncComponent, onMounted, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Hints, Icon, IconRefresh, SearchPanel, Table } from '@xcan-angus/vue-ui';
 import DOMPurify from 'dompurify';
-import { CombinedTargetType, NoticeType, enumUtils, EnumMessage, EventPushStatus } from '@xcan-angus/infra';
+import { CombinedTargetType, EnumMessage, enumUtils, EventPushStatus, NoticeType } from '@xcan-angus/infra';
 
-import { _configColumns, _recordColumns, PushRecord, PushSetting } from './interface';
+import { PushRecord, PushSetting } from './types';
 import { event, setting } from '@/api/gm';
 import { analysis } from 'src/api/gm';
 
 const InfoCard = defineAsyncComponent(() => import('./infoCard.vue'));
-const ExpandHead = defineAsyncComponent(() => import('./expand-head.vue'));
+const ExpandHead = defineAsyncComponent(() => import('./expandHead.vue'));
 const ReceiveConfig = defineAsyncComponent(() => import('./receiveConfig.vue'));
 const Receiver = defineAsyncComponent(() => import('./receiver.vue'));
 

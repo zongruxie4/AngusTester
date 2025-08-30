@@ -2,7 +2,7 @@
 <script lang="ts" setup>
 import { onMounted, reactive, ref } from 'vue';
 import { Icon, Input, notification, Select, ShortDuration } from '@xcan-angus/vue-ui';
-import { EnumMessage, Percentile, ShortTimeUnit, enumUtils } from '@xcan-angus/infra';
+import { EnumMessage, enumUtils, Percentile, ShortTimeUnit } from '@xcan-angus/infra';
 import { Button } from 'ant-design-vue';
 import { splitDuration } from '@/utils/utils';
 

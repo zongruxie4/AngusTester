@@ -88,7 +88,122 @@
   "app": {
     "name": "App",
     "title": "Application Settings",
-    "description": "Configure basic parameters and function options of the application"
+    "config": {
+      "name": "Application Configuration",
+      "title": "Application Configuration",
+      "labels": {
+        "name": "Name",
+        "domain": "Domain"
+      },
+      "tabs": {
+        "member": "Application Members",
+        "quota": "Application Quota",
+        "permission": "License Information"
+      },
+      "permitInfo": {
+        "columns": {
+          "editionType": "Edition Type",
+          "goodsCode": "Product Code",
+          "provider": "Provider",
+          "issuer": "Issuer",
+          "holder": "Holder",
+          "licenseNo": "License Number",
+          "beginDate": "License Issue Date",
+          "endDate": "License Expiry Date",
+          "signature": "License Certificate MD5 Signature"
+        },
+        "remainingDays": "Remaining {days} days"
+      },
+      "addMembers": {
+        "title": {
+          "user": "Add User",
+          "dept": "Add Department",
+          "group": "Add Group"
+        },
+        "columns": {
+          "user": "User",
+          "dept": "Department",
+          "group": "Group",
+          "policy": "Policy"
+        },
+        "labels": {
+          "selectUser": "Select User",
+          "selectDept": "Select Department",
+          "selectGroup": "Select Group",
+          "selectPolicy": "Select Policy"
+        },
+        "placeholders": {
+          "selectPolicy": "Select Policy"
+        }
+      },
+      "memberList": {
+        "buttons": {
+          "addMember": "Add Member",
+          "addDept": "Add Department",
+          "addGroup": "Add Group",
+          "authorizePolicy": "Authorize Policy"
+        },
+        "placeholders": {
+          "searchMember": "Search Member",
+          "searchDept": "Search Department",
+          "searchGroup": "Search Group",
+          "searchPolicy": "Search Policy Name"
+        },
+        "hints": "Assign specific functional menu permissions to project members to clearly define each member's scope of responsibility within the project. Only system administrators and application administrators can add application members and perform permission policy authorization operations.",
+        "table": {
+          "columns": {
+            "policyId": "Policy ID",
+            "policyName": "Policy Name",
+            "policyCode": "Policy Code",
+            "policyDescription": "Policy Description",
+            "policySource": "Policy Source",
+            "joinTime": "Join Time",
+            "action": "Action"
+          },
+          "actions": {
+            "cancelAuth": "Cancel"
+          },
+          "sources": {
+            "appDefault": "Application Default Authorization",
+            "openAuth": "Open Authorization"
+          }
+        }
+      },
+      "quota": {
+        "hints": "If you need to extend resource quotas, you can submit a ticket to contact the ticket engineer to help you!",
+        "table": {
+          "columns": {
+            "resourceName": "Resource Name",
+            "quotaKey": "Quota Key",
+            "currentQuota": "Current Quota",
+            "defaultQuota": "Default Quota",
+            "maxQuota": "Maximum Quota"
+          }
+        }
+      },
+      "policyModal": {
+        "title": "Authorize Policy",
+        "placeholders": {
+          "searchPolicy": "Search Policy Name"
+        },
+        "table": {
+          "headers": {
+            "id": "ID",
+            "name": "Name",
+            "code": "Code",
+            "description": "Description",
+            "status": "Status"
+          },
+          "status": {
+            "enabled": "Enabled",
+            "disabled": "Disabled"
+          }
+        },
+        "actions": {
+          "selectAll": "Select All"
+        }
+      }
+    }
   },
   "script": {
     "name": "Script",

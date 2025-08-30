@@ -3,7 +3,7 @@ import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue';
 import { Icon, notification, Select } from '@xcan-angus/vue-ui';
 import { Button, RadioGroup } from 'ant-design-vue';
 import axios from 'axios';
-import { routerUtils, ApiType, ApiUrlBuilder } from '@xcan-angus/infra';
+import { ApiType, ApiUrlBuilder, routerUtils } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();

@@ -1,4 +1,4 @@
-import { ExtractionMethod, AuthClientIn, SecurityIn } from '@xcan-angus/infra';
+import { AuthClientIn, ExtractionMethod, SecurityIn } from '@xcan-angus/infra';
 
 export type DefaultExtraction = {
   defaultValue: string;

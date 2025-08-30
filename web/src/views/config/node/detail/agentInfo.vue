@@ -4,7 +4,7 @@ import { Grid, Icon, Tooltip } from '@xcan-angus/vue-ui';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import { ApiType, routerUtils, ApiUrlBuilder } from '@xcan-angus/infra';
+import { ApiType, ApiUrlBuilder, routerUtils } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
 import { formatBytes } from '@/utils';

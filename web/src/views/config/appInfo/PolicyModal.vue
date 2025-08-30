@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
 import { Icon, Input, Modal, Scroll } from '@xcan-angus/vue-ui';
 import { Checkbox, CheckboxGroup, Divider } from 'ant-design-vue';
-import { duration, GM } from '@xcan-angus/infra';
+import { AuthObjectType, duration } from '@xcan-angus/infra';
+import { usePolicyManagement } from './composables/usePolicyManagement';
 
 interface Props {
   visible: boolean;
   appId: string;
-  type?: 'Group' | 'Dept' | 'User'
-  userId?:string;
+  type?: AuthObjectType;
+  userId?: string;
   deptId?: string;
-  groupId?:string;
+  groupId?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -24,29 +25,55 @@ const props = withDefaults(defineProps<Props>(), {
   groupId: undefined
 });
 
-const emit = defineEmits<{(e: 'update:visible', value:boolean): void,
-(e: 'change', addIds:string[], addPolicys:{id:string, name:string}[]): void }>();
+// eslint-disable-next-line func-call-spacing
+const emit = defineEmits<{
+  (e: 'update:visible', value: boolean): void;
+  (e: 'change', addIds: string[], addPolicies: { id: string; name: string }[]): void;
+}>();
 
 const { t } = useI18n();
 
-const params = ref<{ filters:{key:'name', op: 'MATCH_END', value: string | undefined}[], enabled:boolean, appId:string}>({ filters: [], enabled: true, appId: props.appId });
-const notify = ref(0);
-const dataList = ref<{id:string, name:string, code:string, description:string, appName:string, enabled:boolean}[]>([]); // 已加载的策略
-const checkedList = ref<string[]>([]); // 当前已选择的策略的Ids
-const indeterminate = ref(false);
-const loading = ref(false);
+// Use composable for policy management functionality
+const {
+  // Reactive data
+  params,
+  notify,
+  dataList,
+  checkedList,
+  indeterminate,
+  loading,
 
-const onCheckAllChange = e => {
-  if (e.target.checked) {
-    checkedList.value = dataList.value.map(m => m.id);
-    indeterminate.value = true;
-  } else {
-    indeterminate.value = false;
-    checkedList.value = [];
-  }
-};
+  // Computed properties
+  action,
 
-const handleInputChange = debounce(duration.search, (event:ChangeEvent) => {
+  // Methods
+  onCheckAllChange,
+  handleChange
+} = usePolicyManagement(
+  props.type || AuthObjectType.USER,
+  props.appId,
+  computed(() => {
+    switch (props.type || AuthObjectType.USER) {
+      case AuthObjectType.USER:
+        return props.userId || '';
+      case AuthObjectType.DEPT:
+        return props.deptId || '';
+      case AuthObjectType.GROUP:
+        return props.groupId || '';
+      default:
+        return '';
+    }
+  }),
+  computed(() => props.userId),
+  computed(() => props.deptId),
+  computed(() => props.groupId)
+);
+
+/**
+ * Handle search input change with debouncing
+ * @param event - The input change event
+ */
+const handleInputChange = debounce(duration.search, (event: any) => {
   const value = event.target.value;
   if (value) {
     params.value.filters[0] = { key: 'name', op: 'MATCH_END', value: value };
@@ -55,43 +82,36 @@ const handleInputChange = debounce(duration.search, (event:ChangeEvent) => {
   params.value.filters = [];
 });
 
+/**
+ * Handle modal confirmation
+ */
 const handleOk = () => {
-  // 所有选择的策略 checkedList:ids, checkedPolicys:policys
-  const checkedPolicys = dataList.value.filter(item => checkedList.value.includes(item.id));
-  emit('change', checkedList.value, checkedPolicys);
+  const checkedPolicies = dataList.value.filter(item => checkedList.value.includes(item.id));
+  // Pass the correct parameters to the change event
+  // The parent component will handle the selectId parameter
+  emit('change', checkedList.value, checkedPolicies);
   emit('update:visible', false);
 };
 
+/**
+ * Handle modal cancellation
+ */
 const handleCancel = () => {
   emit('update:visible', false);
 };
 
-const handleChange = (value) => {
-  dataList.value = value;
-};
-
+/**
+ * Watch for visibility changes to refresh data
+ */
 watch(() => props.visible, newValue => {
   if (newValue) {
     notify.value++;
   }
 });
-
-const action = computed(() => {
-  switch (props.type) {
-    case 'User':
-      return `${GM}/auth/user/${props.userId}/unauth/policy`;
-    case 'Group':
-      return `${GM}/auth/group/${props.groupId}/unauth/policy`;
-    case 'Dept':
-      return `${GM}/auth/dept/${props.deptId}/unauth/policy`;
-    default: return '';
-  }
-});
-
 </script>
 <template>
   <Modal
-    :title="t('appConfig.policyModal.title')"
+    :title="t('app.config.policyModal.title')"
     :visible="props.visible"
     :centered="true"
     :keyboard="true"
@@ -102,7 +122,7 @@ const action = computed(() => {
     <div class="-mt-3">
       <div class="mb-2 flex space-x-2">
         <Input
-          :placeholder="t('appConfig.policyModal.placeholders.searchPolicy')"
+          :placeholder="t('app.config.policyModal.placeholders.searchPolicy')"
           size="small"
           class="w-1/2"
           allowClear
@@ -114,19 +134,19 @@ const action = computed(() => {
       </div>
       <div class="flex py-0.5 bg-theme-form-head text-theme-title text-3 font-normal mb-1">
         <div class="pl-6 w-46">
-          {{ t('appConfig.policyModal.table.headers.id') }}
+          {{ t('app.config.policyModal.table.headers.id') }}
         </div>
         <div class="w-40 mr-2">
-          {{ t('appConfig.policyModal.table.headers.name') }}
+          {{ t('app.config.policyModal.table.headers.name') }}
         </div>
         <div class="w-60 mr-2">
-          {{ t('appConfig.policyModal.table.headers.code') }}
+          {{ t('app.config.policyModal.table.headers.code') }}
         </div>
         <div class="w-100 mr-2">
-          {{ t('appConfig.policyModal.table.headers.description') }}
+          {{ t('app.config.policyModal.table.headers.description') }}
         </div>
         <div class="w-20">
-          {{ t('appConfig.policyModal.table.headers.status') }}
+          {{ t('app.config.policyModal.table.headers.status') }}
         </div>
       </div>
       <Scroll
@@ -144,7 +164,7 @@ const action = computed(() => {
             v-for="item,index in dataList"
             :key="item.id"
             class="flex-1 items-center flex text-3 text-theme-content"
-            :calss="{'mt-2':index>0}">
+            :class="{'mt-2':index>0}">
             <Checkbox
               :value="item.id">
             </Checkbox>
@@ -152,13 +172,13 @@ const action = computed(() => {
             <div class="truncate w-40 mr-2 mt-0.5" :title="item.name">{{ item.name }}</div>
             <div class="truncate w-60 mr-2 mt-0.5" :title="item.code">{{ item.code }}</div>
             <div class="truncate w-100 mr-2 mt-0.5" :title="item.description">{{ item.description }}</div>
-            <div class="truncate w-20 mt-0.5">{{ item.enabled ? t('appConfig.policyModal.table.status.enabled') : t('appConfig.policyModal.table.status.disabled') }}</div>
+            <div class="truncate w-20 mt-0.5">{{ item.enabled ? t('app.config.policyModal.table.status.enabled') : t('app.config.policyModal.table.status.disabled') }}</div>
           </div>
         </CheckboxGroup>
       </Scroll>
       <Divider class="my-2" />
       <Checkbox :indeterminate="indeterminate" @change="onCheckAllChange">
-        {{ t('appConfig.policyModal.actions.selectAll') }}
+        {{ t('app.config.policyModal.actions.selectAll') }}
       </Checkbox>
     </div>
   </Modal>

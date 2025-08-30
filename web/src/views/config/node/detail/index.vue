@@ -16,7 +16,7 @@ import {
   Spin,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { toClipboard, TESTER, appContext } from '@xcan-angus/infra';
+import { appContext, TESTER, toClipboard } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
 import { infoItem, internetInfo, nodeEchartsTabs, nodeUseProgresses } from './interface';

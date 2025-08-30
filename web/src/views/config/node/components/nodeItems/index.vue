@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Button, CheckboxGroup, Popover, Progress, TabPane, Tabs, Tag } from 'ant-design-vue';
-import { computed, inject, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { Grid, Hints, Icon, Input, modal, notification, Tooltip } from '@xcan-angus/vue-ui';
 import dayjs from 'dayjs';
 import { appContext, toClipboard } from '@xcan-angus/infra';
