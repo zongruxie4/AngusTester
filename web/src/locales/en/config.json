@@ -231,8 +231,6 @@
     "efficiencyTitle": "Efficiency indicators are used for setting and determining work efficiency level standards for projects, plans, iterations, organizational personnel, etc.",
     "efficiency": {
       "title": "Platform Default Efficiency Indicators",
-      "buttons": {
-      },
       "table": {
         "columns": {
           "level": "Level",
@@ -255,8 +253,6 @@
     },
     "function": {
       "title": "Platform Default Function Indicators",
-      "buttons": {
-      },
       "testCases": {
         "smoke": {
           "title": "Smoke Test Cases",

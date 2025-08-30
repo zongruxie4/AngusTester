@@ -247,8 +247,6 @@
     "efficiencyTitle": "效能指标用于项目、计划、迭代、组织人员工等工作效能等级标准设置和判定。",
     "efficiency": {
       "title": "平台默认效能指标",
-      "buttons": {
-      },
       "table": {
         "columns": {
           "level": "等级",
@@ -271,8 +269,6 @@
     },
     "function": {
       "title": "平台默认功能指标",
-      "buttons": {
-      },
       "testCases": {
         "smoke": {
           "title": "冒烟测试用例",
