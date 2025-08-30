@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import { Icon } from '@xcan-angus/vue-ui';
 
 interface Props {
-  icon:string // card左侧图标
+  icon:string
   name:string,
   value: string | number,
   iconColor?:string

@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { PushSetting } from './types';
-import { EnumMessage, enumUtils, NoticeType, ReceiverType } from '@xcan-angus/infra';
-import { event } from '@/api/gm';
-import { Modal, notification, SelectUser } from '@xcan-angus/vue-ui';
+import { Modal, SelectUser } from '@xcan-angus/vue-ui';
 import { Checkbox, CheckboxGroup, Form, FormItem } from 'ant-design-vue';
+import { useReceiver } from './composables';
 
 interface Props {
   visible: boolean,
@@ -20,55 +19,48 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{(e: 'update:visible', value: boolean): void, (e: 'refresh'): void }>();
 
 const { t } = useI18n();
-const formRef = ref();
 
-const receiversType = ref<EnumMessage<string>[]>([]);
-const otherReceiversType = ref<EnumMessage<string>>({ value: '', message: '' });
-const defaultUsers = ref<{
-  value: string,
-  label: string
-}[]>((props.selectedItem?.receiveSetting?.receivers?.receivers || []).map(i => ({ label: i.fullName, value: i.id })));
-const users = ref<string[]>(defaultUsers.value.map(user => user.value));
-const noticeTypeOpt = ref<{ value: string, message: string }[]>([]);
-const noticeType = ref<string[]>((props.selectedItem?.receiveSetting?.receivers?.noticeTypes || []).map(i => i.value));
+// Use composable for receiver management
+const {
+  // Reactive data
+  receiversType,
+  otherReceiversType,
+  users,
+  noticeTypeOpt,
+  noticeType,
+  receivingMethods,
 
+  // Methods
+  initReceiver,
+  saveReceiver
+} = useReceiver();
+
+/**
+ * Initialize receiver configuration
+ */
 const init = () => {
-  loadReceiverEnum();
-  loadNoticeType();
+  initReceiver(props.selectedItem);
 };
 
-const loadReceiverEnum = () => {
-  const data = enumUtils.enumToMessages(ReceiverType);
-  receiversType.value = (data || []).filter(type => type.value !== 'OTHER');
-  otherReceiversType.value = (data || []).find(type => type.value === 'OTHER') || { value: '', message: '' };
-};
-
-const loadNoticeType = () => {
-  const data = enumUtils.enumToMessages(NoticeType);
-  noticeTypeOpt.value = (data || []).map(val => ({ ...val, label: val.message }));
-};
-
-const receivingMethods = ref<string[]>(props.selectedItem?.receiveSetting?.receivers?.receiverTypes.map(m => m.value) || []);
-
+/**
+ * Handle OK button click
+ */
 const handleOk = async () => {
-  const otherTypeValue = users.value.length ? [otherReceiversType.value.value] : [];
-  const [error] = await event.putReceiver({
-    id: props.selectedItem.id,
-    receiverIds: users.value,
-    receiverTypes: [...receivingMethods.value, ...otherTypeValue],
-    noticeTypes: noticeType.value
-  });
-
-  if (error) {
-    return;
+  const success = await saveReceiver(props.selectedItem.id);
+  if (success) {
+    emit('update:visible', false);
+    emit('refresh');
   }
-  notification.success(t('notification.receiver.configSuccess'));
-  emit('update:visible', false);
-  emit('refresh');
 };
+
+/**
+ * Handle cancel button click
+ */
 const handleCancel = () => {
   emit('update:visible', false);
 };
+
+// Initialize on component mount
 onMounted(() => {
   init();
 });
