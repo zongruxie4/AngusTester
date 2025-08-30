@@ -91,7 +91,6 @@ const getPopupContainer = (el: HTMLElement): HTMLElement => {
     @cancel="handleCancel"
     @ok="handleOk">
     <div class="add-member-form">
-            
       <!-- Tips Information -->
       <div class="form-tips">
         <div class="tips-icon">💡</div>
@@ -125,7 +124,7 @@ const getPopupContainer = (el: HTMLElement): HTMLElement => {
           </template>
         </Select>
       </div>
-      
+
       <div class="form-section mt-4">
         <div class="form-label">{{ t('app.config.addMembers.columns.policy') }}</div>
         <Select
@@ -141,7 +140,6 @@ const getPopupContainer = (el: HTMLElement): HTMLElement => {
           @change="policyChange">
         </Select>
       </div>
-
     </div>
   </Modal>
 </template>

@@ -29,14 +29,14 @@ init();
       <h2 class="page-title">{{ t('app.config.permitInfo.title') }}</h2>
       <p class="page-subtitle">{{ t('app.config.permitInfo.description') }}</p>
     </div>
-    
+
     <div class="license-content">
-      <Grid 
-        :columns="columns" 
+      <Grid
+        :columns="columns"
         :dataSource="dataSource"
         :spacing="16"
         :marginBottom="4"
-        label-spacing="8px"
+        labelSpacing="8px"
         font-size="12px"
         class="license-grid">
         <template #editionType="{text}">

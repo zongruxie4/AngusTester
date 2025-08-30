@@ -1,149 +1,89 @@
 <script setup lang="ts">
 import { Switch } from 'ant-design-vue';
-import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { debounce } from 'throttle-debounce';
-import { Icon, Input, notification } from '@xcan-angus/vue-ui';
-import { duration } from '@xcan-angus/infra';
+import { Icon, Input } from '@xcan-angus/vue-ui';
 
-import { setting } from '@/api/gm';
-import apple from './assets/images/apple.png';
-import windows from './assets/images/windows.png';
-import linux from './assets/images/linux.png';
-import sd from './assets/images/sd.png';
-import wlj from './assets/images/wlj.png';
-import ylj from './assets/images/ylj.png';
+// Import images for UI display
+import apple from './images/apple.png';
+import windows from './images/windows.png';
+import linux from './images/linux.png';
+import sd from './images/sd.png';
+import wlj from './images/wlj.png';
+import ylj from './images/ylj.png';
 
+// Import composables for proxy data management
+import { useProxyData } from './composables';
+
+// Initialize i18n for internationalization
 const { t } = useI18n();
 
-const loading = ref(false);
-const dataList = ref<{ url: string, enabled: boolean }>({ url: '', enabled: false });
-const checked = ref(false);
-const address = ref('');
-const hostRule = ref(false);
-const isEdit = ref(true);
-const islinkSuccess = ref(false);
-const newLint = ref(false);
-let isInit = false;
-let ws:null | WebSocket = null;
-const init = () => {
-  loadDataList();
-};
+// Initialize proxy data composable
+const {
+  proxyConfig,
+  connectionStatus,
+  isEditMode,
+  addressValidationError,
+  toggleEditMode,
+  handleProxyToggle,
+  validateProxyAddress
+} = useProxyData();
 
-const openEdit = () => {
-  isEdit.value = !isEdit.value;
-};
-
-const testLint = () => {
-  newLint.value = true;
-  ws = new WebSocket(address.value);
-  if (!ws) {
-    return;
-  }
-  ws.onopen = () => {
-    islinkSuccess.value = true;
-    isEdit.value = true;
-    if (!isInit) {
-      const params = { enabled: checked.value, url: address.value };
-      patchPorxySetting(params);
-    }
-  };
-
-  islinkSuccess.value = false;
-};
-
-const loadDataList = async () => {
-  loading.value = true;
-  const [error, { data = {} }] = await setting.getTenantApiProxy();
-  loading.value = false;
-  if (error || !data) {
-    return;
-  }
-  dataList.value = data;
-  checked.value = data.enabled;
-  if (data.url) {
-    address.value = data.url;
-    isInit = true;
-    testLint();
-  }
-};
-
-const patchPorxySetting = async (params) => {
-  if (hostRule.value) {
-    return;
-  }
-
-  if (!islinkSuccess.value) {
-    return;
-  }
-
-  loading.value = true;
-  const [error] = await setting.updateTenantApiProxy(params);
-  loading.value = false;
-  if (error) {
-    return;
-  }
-  notification.success(t('agent.proxyConfigModifiedSuccess'));
-  loadDataList();
-};
-
-const handleChange = () => {
-  const params = { enabled: checked.value, url: address.value };
-  patchPorxySetting(params);
-};
-
-const handleInputChange = debounce(duration.search, () => {
-  if (!address.value) {
-    hostRule.value = true;
-    return;
-  } else {
-    hostRule.value = false;
-  }
-
-  isInit = false;
-  testLint();
-  const params = { enabled: checked.value, url: address.value };
-  patchPorxySetting(params);
-});
-
-onMounted(() => {
-  init();
-});
-
-onBeforeUnmount(() => {
-  ws && ws.close(1000);
-});
-
+// Reference to input element for focus management
+const addressInputRef = ref<HTMLInputElement | null>(null);
 </script>
+
 <template>
   <div class="px-5 py-3">
+    <!-- Proxy information panel with descriptions of different proxy types -->
     <div class="border rounded p-5" style="border-color: #bcdcff;background-color: #f9fcff;">
       <div class="text-3 leading-3 flex">
         <Icon class="text-tips text-3.5 mt-0.5" icon="icon-tishi1" />
-        <p class="text-theme-title font-medium text-3 ml-1.5 leading-5 whitespace-pre-wrap">{{ t('agent.title') }}</p>
+        <p class="text-theme-title font-medium text-3 ml-1.5 leading-5 whitespace-pre-wrap">
+          {{ t('agent.title') }}
+        </p>
       </div>
+
+      <!-- Proxy type descriptions -->
       <div class="text-3 leading-3 flex space-x-10 mx-5 mt-5">
+        <!-- No proxy description -->
         <div class="flex-1">
           <div class="text-theme-title font-medium">
-            <Icon class="mr-1.5 -mt-0.5" icon="icon-wudaili" />{{ t('agent.noProxy') }}
+            <Icon class="mr-1.5 -mt-0.5" icon="icon-wudaili" />
+            {{ t('agent.noProxy') }}
           </div>
-          <div class="text-theme-sub-content mt-2 leading-5">{{ t('agent.noProxyDescription') }}</div>
-        </div>
-        <div class="flex-1">
-          <div class="text-theme-title font-medium">
-            <Icon class="mr-1.5 -mt-0.5" icon="icon-jiekoudaili" />{{ t('agent.clientProxy') }}
+          <div class="text-theme-sub-content mt-2 leading-5">
+            {{ t('agent.noProxyDescription') }}
           </div>
-          <div class="text-theme-sub-content mt-2 leading-5">{{ t('agent.clientProxyDescription') }}</div>
         </div>
+
+        <!-- Client proxy description -->
         <div class="flex-1">
           <div class="text-theme-title font-medium">
-            <Icon class="mr-1.5 -mt-0.5" icon="icon-host" />{{ t('agent.serverProxy') }}
+            <Icon class="mr-1.5 -mt-0.5" icon="icon-jiekoudaili" />
+            {{ t('agent.clientProxy') }}
           </div>
-          <div class="text-theme-sub-content mt-2 leading-5">{{ t('agent.serverProxyDescription') }}</div>
+          <div class="text-theme-sub-content mt-2 leading-5">
+            {{ t('agent.clientProxyDescription') }}
+          </div>
         </div>
+
+        <!-- Server proxy description -->
         <div class="flex-1">
           <div class="text-theme-title font-medium">
-            <Icon class="mr-1.5 -mt-0.5" icon="icon-host" />{{ t('agent.cloudProxy') }}
+            <Icon class="mr-1.5 -mt-0.5" icon="icon-host" />
+            {{ t('agent.serverProxy') }}
+          </div>
+          <div class="text-theme-sub-content mt-2 leading-5">
+            {{ t('agent.serverProxyDescription') }}
+          </div>
+        </div>
+
+        <!-- Cloud proxy description -->
+        <div class="flex-1">
+          <div class="text-theme-title font-medium">
+            <Icon class="mr-1.5 -mt-0.5" icon="icon-host" />
+            {{ t('agent.cloudProxy') }}
           </div>
           <div class="text-theme-sub-content mt-2 leading-5">
             {{ t('agent.cloudProxyDescription') }}
@@ -151,51 +91,75 @@ onBeforeUnmount(() => {
         </div>
       </div>
     </div>
+
+    <!-- Download proxy section (currently hidden) -->
     <template v-if="false">
-      <div class="font-medium text-3.5 leading-3.5 text-theme-title pb-2 mx-5 mt-10">{{ t('agent.downloadProxy') }}</div>
-      <div class="flex 2xl:space-x-2 m-2 5xl:space-x-7.5  text-3 leading-3">
-        <div class="px-7.5 py-3.75 w-1/4  flex items-center text-theme-text-hover cursor-pointer">
-          <img :src="windows" class="w-7.5 mr-5" /><span>{{ t('agent.windowsDesktopProxy') }}</span>
-        </div>
-        <div class="px-7.5 py-3.75 w-1/4  flex items-center text-theme-text-hover cursor-pointer">
-          <img :src="apple" class="w-7.5 mr-5" /><span>{{ t('agent.macDesktopProxy') }}</span>
-        </div>
-        <div class="px-7.5 py-3.75 w-1/4  flex items-center text-theme-text-hover cursor-pointer">
-          <img :src="linux" class="w-7.5 mr-5" /><span>{{ t('agent.linuxProxy') }}</span>
+      <div class="font-medium text-3.5 leading-3.5 text-theme-title pb-2 mx-5 mt-10">
+        {{ t('agent.downloadProxy') }}
+      </div>
+      <div class="flex 2xl:space-x-2 m-2 5xl:space-x-7.5 text-3 leading-3">
+        <div class="px-7.5 py-3.75 w-1/4 flex items-center text-theme-text-hover cursor-pointer">
+          <img :src="windows" class="w-7.5 mr-5" />
+          <span>{{ t('agent.windowsDesktopProxy') }}</span>
         </div>
         <div class="px-7.5 py-3.75 w-1/4 flex items-center text-theme-text-hover cursor-pointer">
-          <img :src="sd" class="w-7.5 mr-5" /><span>{{ t('agent.manualInstallPackage') }}</span>
+          <img :src="apple" class="w-7.5 mr-5" />
+          <span>{{ t('agent.macDesktopProxy') }}</span>
+        </div>
+        <div class="px-7.5 py-3.75 w-1/4 flex items-center text-theme-text-hover cursor-pointer">
+          <img :src="linux" class="w-7.5 mr-5" />
+          <span>{{ t('agent.linuxProxy') }}</span>
+        </div>
+        <div class="px-7.5 py-3.75 w-1/4 flex items-center text-theme-text-hover cursor-pointer">
+          <img :src="sd" class="w-7.5 mr-5" />
+          <span>{{ t('agent.manualInstallPackage') }}</span>
         </div>
       </div>
     </template>
-    <div class="font-medium text-3.5 leading-3.5 text-theme-title pb-2 mt-10">{{ t('agent.serverRequestProxyConfig') }}</div>
-    <div class="flex space-x-5 text-theme-sub-content  text-3 leading-3">
+
+    <!-- Server request proxy configuration -->
+    <div class="font-medium text-3.5 leading-3.5 text-theme-title pb-2 mt-10">
+      {{ t('agent.serverRequestProxyConfig') }}
+    </div>
+
+    <div class="flex space-x-5 text-theme-sub-content text-3 leading-3">
+      <!-- Labels column -->
       <div>
-        <div class="h-12" style="line-height: 48px;">{{ t('agent.enable') }}</div>
-        <div class="h-12" style="line-height: 48px;">{{ t('agent.proxyAddress') }}</div>
+        <div class="h-12" style="line-height: 48px;">
+          {{ t('agent.enable') }}
+        </div>
+        <div class="h-12" style="line-height: 48px;">
+          {{ t('agent.proxyAddress') }}
+        </div>
       </div>
+
+      <!-- Configuration inputs column -->
       <div class="w-150 text-theme-content">
+        <!-- Enable switch -->
         <div class="h-12" style="line-height: 48px;">
           <Switch
-            v-model:checked="checked"
+            v-model:checked="proxyConfig.enabled"
             size="small"
             class="w-8"
-            @change="handleChange" />
+            @change="handleProxyToggle" />
         </div>
+
+        <!-- Proxy address input -->
         <div class="flex h-12 whitespace-nowrap text-theme-sub-content" style="line-height: 48px;">
           <div class="h-12 relative">
             <Input
-              v-model:value="address"
-              :disabled="isEdit"
+              ref="addressInputRef"
+              v-model:value="proxyConfig.url"
+              :disabled="isEditMode"
               class="w-100 h-8"
-              placeholder="请输入地址"
-              @change="handleInputChange">
+              :placeholder="t('agent.inputProxyAddress')"
+              @change="validateProxyAddress">
               <template #suffix>
-                <template v-if="checked">
+                <template v-if="proxyConfig.enabled">
                   <Icon
                     icon="icon-shuxie"
                     class="text-theme-special text-theme-text-hove cursor-pointer"
-                    @click="openEdit" />
+                    @click="toggleEditMode" />
                 </template>
                 <template v-else>
                   <Icon
@@ -204,20 +168,35 @@ onBeforeUnmount(() => {
                 </template>
               </template>
             </Input>
-            <div v-if="hostRule" class="absolute top-12 text-3 leading-3 text-status-error">{{ t('agent.addressTip') }}</div>
+
+            <!-- Address validation error message -->
+            <div
+              v-if="addressValidationError"
+              class="absolute top-12 text-3 leading-3 text-status-error">
+              {{ t('agent.addressTip') }}
+            </div>
           </div>
-          <template v-if="address">
-            <template v-if="islinkSuccess">
+
+          <!-- Connection status indicator -->
+          <template v-if="proxyConfig.url">
+            <template v-if="connectionStatus.isConnected">
               <div class="flex items-center ml-3">
-                <img :src="ylj" class="w-4 mr-2" /><span>
-                  {{ newLint ? t('agent.connectionSuccess') : t('agent.connected') }}</span>
+                <img :src="ylj" class="w-4 mr-2" />
+                <span>
+                  {{ connectionStatus.isNewConnection ?
+                    t('agent.connectionSuccess') :
+                    t('agent.connected') }}
+                </span>
               </div>
             </template>
             <template v-else>
               <div class="flex items-center ml-3">
-                <img :src="wlj" class="w-4 mr-2" /><span>{{
-                  newLint ? t('agent.connectionFailed') : t('agent.notConnected')
-                }}</span>
+                <img :src="wlj" class="w-4 mr-2" />
+                <span>
+                  {{ connectionStatus.isNewConnection ?
+                    t('agent.connectionFailed') :
+                    t('agent.notConnected') }}
+                </span>
               </div>
             </template>
           </template>
@@ -226,7 +205,9 @@ onBeforeUnmount(() => {
     </div>
   </div>
 </template>
+
 <style scoped>
+/* Animation styles for information panels */
 .open-info {
   width: 320px;
 }
