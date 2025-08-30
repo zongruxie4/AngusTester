@@ -456,7 +456,8 @@
         "method1": "Installation Method 1:",
         "method2": "Installation Method 2:",
         "downloadScript": "1). Download automatic installation script:",
-        "copyScript": "2). Copy {scriptName} to custom installation directory, run script to install:"
+        "copyScript": "2). Copy {scriptName} to custom installation directory, run script to install:",
+        
       },
       "interface": {
         "formItems": {
@@ -507,6 +508,16 @@
           "swapArea": "Swap Area",
           "upload": "Upload",
           "download": "Download"
+        },
+        "sortOptions": {
+          "byAddTime": "By Add Time",
+          "byName": "By Name"
+        },
+        "installConfigColumns": {
+          "tenantId": "Tenant ID",
+          "deviceId": "Device ID",
+          "serverCtrlUrlPrefix": "Controller Address",
+          "ctrlAccessToken": "Device Access Token"
         }
       },
       "nodeTip": {

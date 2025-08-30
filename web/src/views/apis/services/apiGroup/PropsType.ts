@@ -1,4 +1,7 @@
 import { Method } from '@/views/apis/services/apiHttp/interface';
+import { i18n } from '@xcan-angus/infra';
+
+const t = i18n.getI18n()?.global?.t || ((value: string):string => value);
 
 export type NavItem = {
   icon: string,
@@ -41,28 +44,28 @@ export interface StateType {
 export const navs: NavItem[] = [
   {
     icon: 'icon-fuwuxinxi',
-    name: '接口信息',
+    name: t('service.apis.navs.apiInfo'),
     value: 'apiInfo', // 1
     disabled: true,
     auth: 'MODIFY'
   },
   {
     icon: 'icon-zhibiao',
-    name: '测试指标',
+    name: t('service.apis.navs.performance'),
     value: 'performance', // 2
     disabled: true,
     auth: 'MODIFY'
   },
   {
     icon: 'icon-zhihangceshi',
-    name: '测试结果',
+    name: t('service.apis.navs.testInfo'),
     value: 'testInfo', // 5
     auth: 'MODIFY',
     disabled: true
   },
   {
     icon: 'icon-yongliku',
-    name: '接口用例',
+    name: t('service.apis.navs.case'),
     value: 'case', // 5
     auth: 'MODIFY',
     disabled: true
@@ -77,9 +80,9 @@ export const navs: NavItem[] = [
   // },
   {
     icon: 'icon-lishijilu',
-    name: '活动',
+    name: t('service.apis.navs.activity'),
     value: 'activity', // 4
-    auth: 'VIEW',
+    auth: 'VIEW ',
     disabled: true
   },
   // {
@@ -98,23 +101,23 @@ export const navs: NavItem[] = [
   // },
   {
     icon: 'icon-jiekoudaili',
-    name: '接口代理',
+    name: t('service.apis.navs.agent'),
     value: 'agent',
     auth: 'MODIFY',
     disabled: true
   },
   {
     icon: 'icon-daimashitu',
-    name: '代码',
+    name: t('service.apis.navs.code'),
     value: 'code',
-    auth: 'VIEW',
+    auth: 'VIEW ',
     disabled: true
   },
   {
     icon: 'icon-mockjiedian',
-    name: 'Mock接口',
+    name: t('service.apis.navs.apiMock'),
     value: 'apiMock',
-    auth: 'VIEW',
+    auth: 'VIEW ',
     disabled: true
   }
 ];
@@ -122,35 +125,35 @@ export const navs: NavItem[] = [
 export const serviceNav: NavItem[] = [
   {
     icon: 'icon-fuwuxinxi',
-    name: '服务信息',
+    name: t('service.apis.serviceNav.projectInfo'),
     value: 'projectInfo', // 1
     auth: 'GRANT',
     disabled: true
   },
   {
     icon: 'icon-wendangxinxi',
-    name: '文档信息',
+    name: t('service.apis.serviceNav.openapi'),
     value: 'openapi',
     auth: 'GRANT',
     disabled: true
   },
   {
     icon: 'icon-peizhifuwutongbu',
-    name: '同步配置',
+    name: t('service.apis.serviceNav.syncConfig'),
     value: 'syncConfig', // 6
     auth: 'MODIFY',
     disabled: true
   },
   {
     icon: 'icon-renzhengtou',
-    name: '安全方案配置',
+    name: t('service.apis.serviceNav.security'),
     value: 'security', // 7
     auth: 'MODIFY',
     disabled: true
   },
   {
     icon: 'icon-host',
-    name: '服务器配置',
+    name: t('service.apis.serviceNav.serverConfig'),
     value: 'serverConfig', // 8
     auth: 'MODIFY',
     disabled: true
@@ -171,8 +174,8 @@ export const serviceNav: NavItem[] = [
   // },
   {
     icon: 'icon-lishijilu',
-    name: '活动',
-    auth: 'VIEW',
+    name: t('service.apis.serviceNav.activity'),
+    auth: 'VIEW ',
     value: 'activity',
     disabled: true
   },
@@ -192,21 +195,21 @@ export const serviceNav: NavItem[] = [
   // },
   {
     icon: 'icon-jiekoudaili',
-    name: '服务代理',
+    name: t('service.apis.serviceNav.agent'),
     value: 'agent',
     auth: 'MODIFY',
     disabled: true
   },
   {
     icon: 'icon-biaoqian',
-    name: '标签',
+    name: t('service.apis.serviceNav.tag'),
     value: 'tag', // 9
     auth: 'MODIFY',
     disabled: true
   },
   {
     icon: 'icon-zujian',
-    name: '组件',
+    name: t('service.apis.serviceNav.componnet'),
     value: 'componnet', // componnet 10
     auth: 'MODIFY',
     disabled: true
@@ -223,7 +226,7 @@ export const serviceNav: NavItem[] = [
 export const socketNavs: NavItem[] = [
   {
     icon: 'icon-fuwuxinxi',
-    name: '接口信息',
+    name: t('service.apis.socketNavs.apiInfo'),
     value: 'apiInfo', // save
     auth: 'MODIFY'
   },
@@ -243,9 +246,9 @@ export const socketNavs: NavItem[] = [
   // },
   {
     icon: 'icon-lishijilu',
-    name: '活动',
+    name: t('service.apis.socketNavs.activity'),
     value: 'activity', // 4
-    auth: 'VIEW',
+    auth: 'VIEW ',
     disabled: true
   },
   // {
@@ -264,7 +267,7 @@ export const socketNavs: NavItem[] = [
   // },
   {
     icon: 'icon-jiekoudaili',
-    name: '接口代理',
+    name: t('service.apis.socketNavs.agent'),
     value: 'agent',
     auth: 'MODIFY',
     disabled: true
