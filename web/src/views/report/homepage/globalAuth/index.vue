@@ -63,8 +63,6 @@ onMounted(() => {
   }, { immediate: true });
 });
 
-const text = '授权给指定的"功能"操作权限给用户、部门、组，授予权限时“查看”权限是必须的。用户只能授权自己有授权权限的功能。';
-
 const bodyStyle = {
   padding: '0 20px',
   height: 'calc(100% - 70px)'

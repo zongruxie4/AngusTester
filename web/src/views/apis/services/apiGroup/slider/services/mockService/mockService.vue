@@ -263,7 +263,7 @@ const statusStyleMap = {
       </template>
       <template v-else>
         <div class="p-2 border border-blue-border rounded bg-blue-bg-light">
-          <Hints text="Mock服务可快速生成并模拟您所依赖的API，使开发和测试能够并行进行，从而加快开发速度，实现更全面的测试，并更早地交付稳定的产品或应用。您可以通过“生成Mock服务”或“关联Mock服务”两种方式，为当前服务的接口创建对应的模拟接口。这些模拟接口将提供模拟数据，便于进行接口调试和测试。" />
+          <Hints :text="t('service.mockService.description.title')" />
         </div>
         <div class=" mt-3">
           <RadioGroup

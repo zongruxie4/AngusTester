@@ -571,6 +571,20 @@
   "reportPreview": {
     "loading": "Loading data...",
     "generating": "Generating PDF file...",
+    "mainTitle": {
+      "reporter": "Reporter",
+      "reportDate": "Report Date",
+      "reportVersion": "Report Version",
+      "reportTemplate": "Report Template"
+    },
+    "description": {
+      "summary": "Summary",
+      "progress": "Progress",
+      "description": "Description",
+      "contact": "Contact",
+      "copyright": "Copyright",
+      "other": "Other"
+    },
     "actions": {
       "exportPDF": "Export PDF",
       "printPDF": "Print PDF"

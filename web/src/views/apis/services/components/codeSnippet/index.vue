@@ -300,7 +300,7 @@ const selectLanguage = (funcs, l) => {
 const copyCode = () => {
   toClipboard(codeContent.value)
     .then(() => {
-      notification.success('复制成功');
+      notification.success(t('tips.copySuccess'));
     });
 };
 

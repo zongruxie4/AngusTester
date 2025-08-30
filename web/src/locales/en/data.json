@@ -555,6 +555,23 @@
         "copySuccess": "Copied successfully",
         "link": "Link: {url}",
         "linkAndPassword": "Link: {url} Password: {password}"
+      },
+      "shareList": {
+        "addShare": "Add Share",
+        "searchRemark": "Search Remark",
+        "link": "Link",
+        "password": "Password",
+        "validityPeriod": "Validity Period",
+        "permanentValid": "Permanent",
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "loadMore": "Load More",
+        "notifications": {
+          "deleteSuccess": "Delete Share Record Success",
+          "passwordEmpty": "The input password cannot be empty",
+          "modifyPasswordSuccess": "Modify Password Success",
+          "copySuccess": "Copy Success"
+        }
       }
     },
     "introduce": {

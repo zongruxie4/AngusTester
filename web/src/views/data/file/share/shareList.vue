@@ -1,12 +1,15 @@
 <script lang="ts" setup>
 import { Divider, Tooltip } from 'ant-design-vue';
 import { defineAsyncComponent, onMounted, reactive, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Icon, IconCopy, Input, NoData, notification } from '@xcan-angus/vue-ui';
 import { toClipboard } from '@xcan-angus/infra';
 
 import ColumnItem from '@/components/share/columnItem/index.vue';
 import type { ListType, StateType } from './interface';
 import { space } from '@/api/storage';
+
+const { t } = useI18n();
 
 const Share = defineAsyncComponent(() => import('./index.vue'));
 
@@ -83,7 +86,7 @@ const delShare = async (id:string) => {
   if (error) {
     return;
   }
-  notification.success('删除分享记录成功');
+  notification.success(t('fileSpace.share.shareList.notifications.deleteSuccess'));
   pagination.current = 1;
   loadList();
 };
@@ -97,7 +100,7 @@ const openEditPassd = (item: ListType) => {
 // 修改密码
 const patchPassd = async (item:ListType) => {
   if (!item.tempPass) {
-    notification.error('输入的密码不能为空');
+    notification.error(t('fileSpace.share.shareList.notifications.passwordEmpty'));
   }
   const params = {
     id: item.id,
@@ -114,7 +117,7 @@ const patchPassd = async (item:ListType) => {
   }
   item.password = item.tempPass as string;
   item.editPassd = false;
-  notification.success('修改密码成功');
+  notification.success(t('fileSpace.share.shareList.notifications.modifyPasswordSuccess'));
 };
 
 // 取消修改密码
@@ -126,12 +129,12 @@ const cancelPassd = (item: ListType) => {
 const copy = (item:ListType) => {
   let message;
   if (!item.public0) {
-    message = `链接: ${item.url} 密码: ${item.password || ''}`;
+    message = t('fileSpace.share.messages.linkAndPassword', { url: item.url, password: item.password || '' });
   } else {
-    message = `链接: ${item.url}`;
+    message = t('fileSpace.share.messages.link', { url: item.url });
   }
   toClipboard(message).then(() => {
-    notification.success('复制成功');
+    notification.success(t('fileSpace.share.shareList.notifications.copySuccess'));
   });
 };
 
@@ -168,12 +171,12 @@ onMounted(() => {
       class="rounded text-3 leading-3 h-7"
       :disabled="disabled"
       @click="openShareDialog">
-      添加分享
+      {{ t('fileSpace.share.shareList.addShare') }}
     </Button>
     <Divider class="my-3"></Divider>
     <Input
       v-model:value="remark"
-      placeholder="查询备注信息"
+      :placeholder="t('fileSpace.share.shareList.searchRemark')"
       size="small"
       class="mb-3" />
     <template v-if="state.list.length">
@@ -185,7 +188,7 @@ onMounted(() => {
           {{ item.type.message }}
         </column-item> -->
         <column-item
-          label="链接"
+          :label="t('fileSpace.share.shareList.link')"
           className="w-18">
           <Tooltip>
             <template #title>
@@ -196,7 +199,7 @@ onMounted(() => {
         </column-item>
         <column-item
           v-if="!item.public0"
-          label="密码"
+          :label="t('fileSpace.share.shareList.password')"
           className="w-18">
           <div class="flex items-center">
             <template v-if="!item.editPassd">
@@ -217,23 +220,23 @@ onMounted(() => {
                 size="small"
                 class="mx-2.5 text-3 leading-3"
                 @click="patchPassd(item)">
-                确认
+                {{ t('fileSpace.share.shareList.confirm') }}
               </Button>
               <Button
                 size="small"
                 class="text-3 leading-3"
                 @click="cancelPassd(item)">
-                取消
+                {{ t('fileSpace.share.shareList.cancel') }}
               </Button>
             </template>
           </div>
         </column-item>
         <column-item
-          label="有效期"
+          :label="t('fileSpace.share.shareList.validityPeriod')"
           className="w-18">
           <div class="flex justify-between w-full">
             <span>
-              {{ item.expiredFlag ? item.expiredDuration : '永久有效' }}
+              {{ item.expiredFlag ? item.expiredDuration : t('fileSpace.share.shareList.permanentValid') }}
             </span>
             <span class="text-gray-icon">
               <Icon
@@ -255,7 +258,7 @@ onMounted(() => {
       <NoData></NoData>
     </template>
     <div v-show="showMore" class="w-full text-center">
-      <Button type="link" @click="loadList(true)">加载更多</Button>
+      <Button type="link" @click="loadList(true)">{{ t('fileSpace.share.shareList.loadMore') }}</Button>
     </div>
     <AsyncComponent :visible="state.visible">
       <Share
