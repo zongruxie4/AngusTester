@@ -8,6 +8,10 @@ import pretty from 'pretty';
 import jsBeautify from 'js-beautify';
 
 import { ContentType, RequestBody } from './PropsType';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
+
 const { gzip, ungzip } = codeUtils;
 export interface Props {
   value: RequestBody;
@@ -412,13 +416,13 @@ const language = computed(() => {
           size="small"
           class="ml-2"
           @click="formatRawContent">
-          格式化
+          {{ t('dataVariable.detail.httpVariable.httpConfigs.formatRawContent') }}
         </Button>
         <Button
           type="link"
           size="small"
           @click="compressRawContent">
-          压缩
+          {{ t('dataVariable.detail.httpVariable.httpConfigs.compressRawContent') }}
         </Button>
       </template>
     </div>
@@ -464,7 +468,7 @@ const language = computed(() => {
           :disabled="!!fileName"
           size="small">
           <Icon icon="icon-tuisongtongzhi" class="mr-1" />
-          <span>上传文件</span>
+          <span>{{ t('dataVariable.detail.httpVariable.httpConfigs.uploadFile') }}</span>
         </Button>
       </Upload>
       <template v-if="!!fileName">

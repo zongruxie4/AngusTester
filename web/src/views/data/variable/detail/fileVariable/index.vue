@@ -15,10 +15,12 @@ import {
 import { isEqual } from 'lodash-es';
 import { variable } from '@/api/tester';
 import { ExtractionMethod, Encoding, ExtractionFileType } from '@xcan-angus/infra';
-
+import { useI18n } from 'vue-i18n';
 import SelectEnum from '@/components/selectEnum/index.vue';
 import { VariableItem } from '../../PropsType';
 import { FormState } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -163,7 +165,7 @@ const toEdit = async () => {
     return;
   }
 
-  notification.success('变量修改成功');
+  notification.success(t('dataVariable.detail.fileVariable.notifications.editSuccess'));
   emit('ok', params, true);
 };
 
@@ -176,7 +178,7 @@ const toCreate = async () => {
     return;
   }
 
-  notification.success('变量添加成功');
+  notification.success(t('dataVariable.detail.fileVariable.notifications.addSuccess'));
   const id = res?.data?.id;
   emit('ok', { ...params, id }, false);
 };
@@ -345,11 +347,11 @@ const inputProps = {
   <div class="flex items-start mb-3.5">
     <div class="flex items-center flex-shrink-0 mr-2.5 leading-7">
       <IconRequired />
-      <span>名称</span>
+      <span>{{ t('dataVariable.detail.fileVariable.name') }}</span>
     </div>
     <Validate
       class="flex-1"
-      text="支持数字、字母和!$%^&*_-+=./"
+      :text="t('dataVariable.detail.fileVariable.nameSupport')"
       mode="error"
       :error="variableNameError">
       <Input
@@ -359,7 +361,7 @@ const inputProps = {
         dataType="mixin-en"
         excludes="{}"
         includes="\!\$%\^&\*_\-+=\.\/"
-        placeholder="支持数字、字母和!$%^&*_-+=./，最长100个字符"
+        :placeholder="t('dataVariable.detail.fileVariable.namePlaceholder')"
         trimAll
         @change="nameChange"
         @blur="nameBlur" />
@@ -369,7 +371,7 @@ const inputProps = {
   <div class="flex items-start">
     <div class="mr-2.5 flex items-center flex-shrink-0 transform-gpu translate-y-1">
       <IconRequired class="invisible" />
-      <span>描述</span>
+      <span>{{ t('dataVariable.detail.fileVariable.description') }}</span>
     </div>
     <Input
       v-model:value="description"
@@ -378,7 +380,7 @@ const inputProps = {
       showCount
       type="textarea"
       class="flex-1"
-      placeholder="变量描述，最长200个字符"
+      :placeholder="t('dataVariable.detail.fileVariable.descriptionPlaceholder')"
       trim />
   </div>
 
@@ -390,24 +392,24 @@ const inputProps = {
       <template #tab>
         <div class="flex items-center font-normal">
           <IconRequired />
-          <span>提取</span>
+          <span>{{ t('dataVariable.detail.fileVariable.extract') }}</span>
         </div>
       </template>
 
       <div>
-        <Hints class="mb-2.5" text="每次执行测试前从文件中提取一个值作为变量值。" />
+        <Hints class="mb-2.5" :text="t('dataVariable.detail.fileVariable.extractHint')" />
 
-        <Toggle title="读取配置" class="text-3 leading-5 mb-3.5">
+        <Toggle :title="t('dataVariable.detail.fileVariable.readConfig')" class="text-3 leading-5 mb-3.5">
           <div class="flex items-center mb-3.5">
             <div class="w-16 flex-shrink-0">
               <IconRequired />
-              <span>文件路径</span>
+              <span>{{ t('dataVariable.detail.fileVariable.filePath') }}</span>
             </div>
             <Input
               v-model:value="filePath"
               :maxlength="800"
               style="width:calc(100% - 82px);"
-              placeholder="文件本地路径或文件URL，最长800个字符"
+              :placeholder="t('dataVariable.detail.fileVariable.filePathPlaceholder')"
               trimAll />
           </div>
 
@@ -415,7 +417,7 @@ const inputProps = {
             <div class="w-1/2 flex items-center">
               <div class="w-16 flex-shrink-0">
                 <IconRequired />
-                <span>文件类型</span>
+                <span>{{ t('dataVariable.detail.fileVariable.fileType') }}</span>
               </div>
               <SelectEnum
                 v-model:value="fileType"
@@ -426,7 +428,7 @@ const inputProps = {
             <div class="w-1/2 flex items-center">
               <div class="w-16 flex-shrink-0">
                 <IconRequired />
-                <span>文件编码</span>
+                <span>{{ t('dataVariable.detail.fileVariable.fileEncoding') }}</span>
               </div>
               <SelectInput
                 v-model:value="encoding"
@@ -440,15 +442,15 @@ const inputProps = {
             <div class="w-1/2 flex items-center">
               <div class="w-16 flex-shrink-0">
                 <IconRequired />
-                <span>读开始行</span>
+                <span>{{ t('dataVariable.detail.fileVariable.readStartRow') }}</span>
               </div>
               <Input
                 v-model:value="rowIndex"
                 :maxlength="4"
                 dataType="number"
-                placeholder="读取行索引，默认从0开始"
+                :placeholder="t('dataVariable.detail.fileVariable.readStartRowPlaceholder')"
                 trimAll />
-              <Tooltip title="读取参数值开始行，默认索引基于0开始，即读取第一行。注意：第一行为参数名标题行时，通常需要从索引1即第二行读取数据。">
+              <Tooltip :title="t('dataVariable.detail.fileVariable.readStartRowTooltip')" class="text-tips ml-1 text-3.5 cursor-pointer">
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5 cursor-pointer" />
               </Tooltip>
             </div>
@@ -456,15 +458,15 @@ const inputProps = {
             <div class="w-1/2 flex items-center">
               <div class="w-16 flex-shrink-0">
                 <IconRequired />
-                <span>读开始列</span>
+                <span>{{ t('dataVariable.detail.fileVariable.readStartColumn') }}</span>
               </div>
               <Input
                 v-model:value="columnIndex"
                 :maxlength="4"
                 dataType="number"
-                placeholder="读取列索引，默认从0开始"
+                :placeholder="t('dataVariable.detail.fileVariable.readStartColumnPlaceholder')"
                 trimAll />
-              <Tooltip title="读取参数开始列，默认索引基于0开始，即读取第一列。">
+              <Tooltip :title="t('dataVariable.detail.fileVariable.readStartColumnTooltip')" class="text-tips ml-1 text-3.5 cursor-pointer">
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5 cursor-pointer" />
               </Tooltip>
             </div>
@@ -474,13 +476,13 @@ const inputProps = {
             <div class="w-1/2 flex items-center">
               <div class="w-16 flex-shrink-0">
                 <IconRequired />
-                <span>分隔符</span>
+                <span>{{ t('dataVariable.detail.fileVariable.separator') }}</span>
               </div>
               <Input
                 v-model:value="separatorChar"
                 :maxlength="1"
                 trimAll />
-              <Tooltip title="Csv类型文件参数。用于分隔CSV文件中的不同字段或数据列，默认值为“,”。">
+              <Tooltip :title="t('dataVariable.detail.fileVariable.separatorTooltip')" class="text-tips ml-1 text-3.5 cursor-pointer">
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5 cursor-pointer" />
               </Tooltip>
             </div>
@@ -488,13 +490,13 @@ const inputProps = {
             <div class="w-1/2 flex items-center">
               <div class="w-16 flex-shrink-0">
                 <IconRequired />
-                <span>转义符</span>
+                <span>{{ t('dataVariable.detail.fileVariable.escapeChar') }}</span>
               </div>
               <Input
                 v-model:value="escapeChar"
                 :maxlength="1"
                 trimAll />
-              <Tooltip title="Csv类型文件参数，用于转义字段中的特殊字符，特别是将引号字符本身作为文字字符包含在内，默认为“\”。">
+              <Tooltip :title="t('dataVariable.detail.fileVariable.escapeCharTooltip')" class="text-tips ml-1 text-3.5 cursor-pointer">
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5 cursor-pointer" />
               </Tooltip>
             </div>
@@ -504,42 +506,42 @@ const inputProps = {
             <div class="w-1/2 flex items-center">
               <div class="w-16 flex-shrink-0">
                 <IconRequired />
-                <span>引用符</span>
+                <span>{{ t('dataVariable.detail.fileVariable.quoteChar') }}</span>
               </div>
               <Input
                 v-model:value="quoteChar"
                 :maxlength="1"
                 trimAll />
-              <Tooltip title="Csv类型文件参数。用于表示CSV文件中字段的开始和结束，特别是当字段包含分隔符（例如逗号）或换行符等特殊字符时，默认为“\”。">
+              <Tooltip :title="t('dataVariable.detail.fileVariable.quoteCharTooltip')" class="text-tips ml-1 text-3.5 cursor-pointer">
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5 cursor-pointer" />
               </Tooltip>
             </div>
           </div>
         </Toggle>
 
-        <Toggle title="提取配置" class="text-3 leading-5">
+        <Toggle :title="t('dataVariable.detail.fileVariable.extractConfig')" class="text-3 leading-5">
           <template v-if="method === 'EXACT_VALUE'">
             <div class="flex items-center space-x-5 mb-3.5">
               <div class="w-1/2 flex items-center">
                 <div class="w-16 flex-shrink-0">
                   <IconRequired />
-                  <span>提取方式</span>
+                  <span>{{ t('dataVariable.detail.fileVariable.extractMethod') }}</span>
                 </div>
                 <SelectEnum
                   v-model:value="method"
                   enumKey="ExtractionMethod"
-                  placeholder="提取方式"
+                  :placeholder="t('dataVariable.detail.fileVariable.extractMethodPlaceholder')"
                   class="w-full-20.5 " />
               </div>
 
               <div class="w-1/2 flex items-center">
                 <div class="w-16 flex-shrink-0">
                   <IconRequired class="invisible" />
-                  <span>缺省值</span>
+                  <span>{{ t('dataVariable.detail.fileVariable.defaultValue') }}</span>
                 </div>
                 <Input
                   v-model:value="defaultValue"
-                  placeholder="缺省值，最长4096个字符"
+                  :placeholder="t('dataVariable.detail.fileVariable.defaultValuePlaceholder')"
                   class="w-full-20.5 "
                   trim
                   :maxlength="4096" />
@@ -552,23 +554,23 @@ const inputProps = {
               <div class="w-1/2 flex items-center">
                 <div class="w-16 flex-shrink-0">
                   <IconRequired />
-                  <span>提取方式</span>
+                  <span>{{ t('dataVariable.detail.fileVariable.extractMethod') }}</span>
                 </div>
                 <SelectEnum
                   v-model:value="method"
                   enumKey="ExtractionMethod"
-                  placeholder="提取方式"
+                  :placeholder="t('dataVariable.detail.fileVariable.extractMethodPlaceholder')"
                   class="w-full-20.5 " />
               </div>
 
               <div class="w-1/2 flex items-center">
                 <div class="w-16 flex-shrink-0">
                   <IconRequired />
-                  <span>表达式</span>
+                  <span>{{ t('dataVariable.detail.fileVariable.expression') }}</span>
                 </div>
                 <Input
                   v-model:value="expression"
-                  placeholder="表达式，最长1024个字符"
+                  :placeholder="t('dataVariable.detail.fileVariable.expressionPlaceholder')"
                   class="w-full-20.5 "
                   trimAll />
               </div>
@@ -578,11 +580,11 @@ const inputProps = {
               <div class="w-1/2 flex items-center">
                 <div class="w-16 flex-shrink-0">
                   <IconRequired class="invisible" />
-                  <span>匹配项</span>
+                  <span>{{ t('dataVariable.detail.fileVariable.matchItem') }}</span>
                 </div>
                 <Input
                   v-model:value="matchItem"
-                  placeholder="匹配项，范围0 ~ 2000"
+                  :placeholder="t('dataVariable.detail.fileVariable.matchItemPlaceholder')"
                   class="w-full-20.5 "
                   dataType="number"
                   trimAll
@@ -594,11 +596,11 @@ const inputProps = {
               <div class="w-1/2 flex items-center">
                 <div class="w-16 flex-shrink-0">
                   <IconRequired class="invisible" />
-                  <span>缺省值</span>
+                  <span>{{ t('dataVariable.detail.fileVariable.defaultValue') }}</span>
                 </div>
                 <Input
                   v-model:value="defaultValue"
-                  placeholder="缺省值，最长4096个字符"
+                  :placeholder="t('dataVariable.detail.fileVariable.defaultValuePlaceholder')"
                   class="w-full-20.5 "
                   trim
                   :maxlength="4096" />
@@ -612,7 +614,7 @@ const inputProps = {
     <TabPane key="preview">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>预览</span>
+          <span>{{ t('dataVariable.detail.fileVariable.preview') }}</span>
         </div>
       </template>
 
@@ -622,7 +624,7 @@ const inputProps = {
     <TabPane v-if="variableId" key="use">
       <template #tab>
         <div class="flex items-center font-normal">
-          <span>使用</span>
+          <span>{{ t('dataVariable.detail.fileVariable.use') }}</span>
         </div>
       </template>
 

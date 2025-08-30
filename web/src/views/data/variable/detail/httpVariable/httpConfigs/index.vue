@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref, watch, watchEffect } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Badge, TabPane, Tabs } from 'ant-design-vue';
 import { Composite, HttpMethodText, Input, ExecAuthencation, ApiUtils as angusUtils } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
 import SelectEnum from '@/components/selectEnum/index.vue';
 import { HttpMethod, HttpServer, RequestConfigs } from './PropsType';
+
+const { t } = useI18n();
 
 export type ParameterConfig = {
   name: string;
@@ -590,7 +593,7 @@ defineExpose({
         :allowClear="false"
         style="flex:1 1 40%"
         class="input-container"
-        placeholder="接口路径，以 “ / ” 起始"
+        placeholder="t('dataVariable.detail.httpVariable.httpConfigs.requestUrlPlaceholder')"
         size="default"
         @change="urlChange"
         @blur="urlBlur" />
@@ -603,7 +606,7 @@ defineExpose({
             size="small"
             :count="queryPathErrorNum">
             <div class="flex items-center space-x-0.5">
-              <div>请求参数</div>
+              <div>{{ t('dataVariable.detail.httpVariable.httpConfigs.requestParameters') }}</div>
               <div class="flex items-center space-x-0.5">
                 <em>(</em>
                 <span>{{ queryPathNum }}</span>
@@ -629,7 +632,7 @@ defineExpose({
             size="small"
             :count="headerErrorNum">
             <div class="flex items-center space-x-0.5">
-              <div>请求头</div>
+              <div>{{ t('dataVariable.detail.httpVariable.httpConfigs.requestHeaders') }}</div>
               <div class="flex items-center space-x-0.5">
                 <em>(</em>
                 <span>{{ headerNum }}</span>
@@ -654,7 +657,7 @@ defineExpose({
             size="small"
             :count="cookieErrorNum">
             <div class="flex items-center space-x-0.5">
-              <div>Cookie</div>
+              <div>{{ t('dataVariable.detail.httpVariable.httpConfigs.requestCookie') }}</div>
               <div class="flex items-center space-x-0.5">
                 <em>(</em>
                 <span>{{ cookieNum }}</span>
@@ -674,7 +677,7 @@ defineExpose({
       <TabPane key="Authorization">
         <template #tab>
           <Badge v-if="!!authentication?.type" color="green" />
-          <span>Authorization</span>
+          <span>{{ t('dataVariable.detail.httpVariable.httpConfigs.requestAuthorization') }}</span>
         </template>
         <ExecAuthencation
           :defaultValue="defaultAuthentication"
@@ -684,7 +687,7 @@ defineExpose({
       <TabPane key="body">
         <template #tab>
           <Badge v-if="hasRequestBody" color="green" />
-          <Badge size="small" :count="bodyErrorNum">请求体</Badge>
+          <Badge size="small" :count="bodyErrorNum">{{ t('dataVariable.detail.httpVariable.httpConfigs.requestBody') }}</Badge>
         </template>
         <RequestBody
           ref="bodyRef"
