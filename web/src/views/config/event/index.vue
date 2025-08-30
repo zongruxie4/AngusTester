@@ -1,304 +1,53 @@
 <script setup lang="ts">
 import { Badge, CheckboxGroup, Divider, Popover } from 'ant-design-vue';
-import { computed, defineAsyncComponent, onMounted, reactive, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { defineAsyncComponent } from 'vue';
 import { AsyncComponent, Hints, Icon, IconRefresh, SearchPanel, Table } from '@xcan-angus/vue-ui';
-import DOMPurify from 'dompurify';
-import { CombinedTargetType, NoticeType, enumUtils, EnumMessage, EventPushStatus } from '@xcan-angus/infra';
+import { useEventData } from './composables';
 
-import { _configColumns, _recordColumns, PushRecord, PushSetting } from './interface';
-import { event, setting } from '@/api/gm';
-import { analysis } from 'src/api/gm';
+const InfoCard = defineAsyncComponent(() => import('./InfoCard.vue'));
+const ExpandHead = defineAsyncComponent(() => import('./ExpandHead.vue'));
+const ReceiveConfig = defineAsyncComponent(() => import('./ReceiveConfig.vue'));
+const Receiver = defineAsyncComponent(() => import('./Receiver.vue'));
 
-const InfoCard = defineAsyncComponent(() => import('./infoCard.vue'));
-const ExpandHead = defineAsyncComponent(() => import('./expand-head.vue'));
-const ReceiveConfig = defineAsyncComponent(() => import('./receiveConfig.vue'));
-const Receiver = defineAsyncComponent(() => import('./receiver.vue'));
+// Use composable for event data management
+const {
+  // Reactive data
+  configLoading,
+  recordLoading,
+  showRecord,
+  showConfigure,
+  receiverVisible,
+  configureVisible,
+  state,
+  pushSettingList,
+  pushRecordList,
+  noticeType,
 
-const configLoading = ref(false);
-const recordLoading = ref(false);
-const showRecord = ref(true);
-const showConfigure = ref(true);
-const receiverVisible = ref(false);
-const configureVisible = ref(false);
+  // Computed properties
+  configColumns,
+  recordColumns,
+  pagination,
+  searchLogOpt,
 
-const params: { pageNo: number, pageSize: number } = reactive({ pageNo: 1, pageSize: 10 });
-const searchParams = ref<{key: string, value: any, op: string}[]>([]);
-const state: {
-  count: {
-    pushFail: string,
-    pushSuccess: string,
-    ignore: string,
-    total: string
-  },
-  selectedItem:PushSetting
-} = reactive({
-  count: {
-    pushFail: '0',
-    pushSuccess: '0',
-    ignore: '0',
-    total: '0'
-  },
-  selectedItem: {} as PushSetting
-});
+  // Methods
+  openReceiveChannel,
+  openReceiver,
+  changeLogParams,
+  changePagination,
+  handleChangeNoticeType,
+  getReceiver,
+  getTargetTypeName,
+  getStatus,
+  loadPushConfigList,
+  loadPushRecordList,
+  onMountedInit,
 
-const pushSettingList = ref<PushSetting[]>([]);
-const pushRecordList = ref<PushRecord[]>([]);
-const pageTotal = ref(0);
+  // i18n
+  t
+} = useEventData();
 
-const targetTypeEnums = ref<EnumMessage<CombinedTargetType>[]>([]);
-const noticeType = ref<EnumMessage<NoticeType>[]>([]);
-const eventDataNoticeType = ref<{eventCode: string; noticeTypes: EnumMessage<CombinedTargetType>[]}[]>([]);
-
-const { t } = useI18n();
-
-const init = async () => {
-  loadEnums();
-  await loadEventNoticeTypeByEventCode();
-  await loadPushConfigList();
-  await loadStatistics();
-  await loadPushRecordList();
-};
-
-const loadEnums = () => {
-  const data1 = enumUtils.enumToMessages(CombinedTargetType);
-  const data2 = enumUtils.enumToMessages(NoticeType);
-  targetTypeEnums.value = (data1 || []) as EnumMessage<CombinedTargetType>[];
-  noticeType.value = (data2 || []).map(i => {
-    return {
-      ...i,
-      label: i.message
-    };
-  }) as EnumMessage<NoticeType>[];
-};
-
-const loadEventNoticeTypeByEventCode = async () => {
-  const [error, { data }] = await setting.getEventNoticeType();
-  if (error) {
-    return;
-  }
-  eventDataNoticeType.value = data || [];
-};
-
-const getTargetTypeName = (value: string) => {
-  const target = targetTypeEnums.value.find(i => i.value === value);
-  return target?.message || '  ';
-};
-
-const loadStatistics = async () => {
-  // const [error, { data = { pushFail: '0', pushSuccess: '0', pushing: '0', unPush: '0' } }] = await event.loadStatistics();
-  const [error, { data = { push_status: {} } }] = await analysis.loadCustomizationSummary({
-    aggregates: [
-      {
-        column: 'id',
-        function: 'COUNT'
-      }
-    ],
-    groupBy: 'STATUS',
-    groupByColumns: ['type', 'push_status'],
-    name: 'Event',
-    appCode: 'AngusTester'
-  });
-  if (error) {
-    return;
-  }
-  const { PUSH_SUCCESS = { COUNT_id: 0, TOTAL_COUNT_id: 0 }, PUSH_FAIL = { COUNT_id: 0, TOTAL_COUNT_id: 0 }, IGNORED = { COUNT_id: 0, TOTAL_COUNT_id: 0 } } = data.push_status;
-  state.count.pushSuccess = PUSH_SUCCESS.COUNT_id;
-  state.count.ignore = IGNORED.COUNT_id;
-  state.count.pushFail = PUSH_FAIL.COUNT_id;
-  state.count.total = (+PUSH_SUCCESS.TOTAL_COUNT_id || +PUSH_FAIL.TOTAL_COUNT_id || +IGNORED.TOTAL_COUNT_id || 0) + '';
-};
-
-const loadPushConfigList = async () => {
-  configLoading.value = true;
-  const [error, res] = await event.getCurrentTemplateList({
-    appCode: 'AngusTester',
-    pageSize: 2000
-  });
-  configLoading.value = false;
-  if (error) {
-    return;
-  }
-
-  pushSettingList.value = res.data.list?.map(item => {
-    const noticeTypesObj = eventDataNoticeType.value.find(i => i.eventCode === item.eventCode)?.noticeTypes || [];
-    return {
-      ...item,
-      pushMsg: DOMPurify.sanitize(item.pushMsg || ''),
-      noticeTypes: noticeTypesObj.map(i => i.value)
-    };
-  }) || [];
-};
-
-const loadPushRecordList = async () => {
-  if (recordLoading.value) {
-    return;
-  }
-  recordLoading.value = true;
-  const [error, { data = { list: [], total: 0 } }] = await event.getRecordList({ ...params, filters: searchParams.value, appCode: 'AngusTester' });
-  recordLoading.value = false;
-  if (error) {
-    return;
-  }
-
-  pushRecordList.value = data.list;
-  pageTotal.value = +data.total;
-};
-
-// 接收通道
-const openReceiveChannel = (record:PushSetting) => {
-  state.selectedItem = record;
-  configureVisible.value = true;
-};
-
-// 接收人
-const openReceiver = (record:PushSetting) => {
-  state.selectedItem = record;
-  receiverVisible.value = true;
-};
-
-// 查询条件变更
-const changeLogParams = (value) => {
-  searchParams.value = value;
-  params.pageNo = 1;
-  loadPushRecordList();
-};
-
-const configColumns = computed(() => {
-  return [
-    {
-      title: t('notification.columns.eventName'),
-      dataIndex: 'eventName'
-    },
-    {
-      title: t('notification.columns.category'),
-      dataIndex: 'targetType'
-    },
-    {
-      title: t('notification.columns.noticeType'),
-      dataIndex: 'noticeType'
-    }
-  ];
-});
-
-const recordColumns = computed(() => {
-  return [
-    {
-      title: t('notification.columns.eventId'),
-      dataIndex: 'id',
-      key: 'id',
-      width: '12%'
-    },
-    {
-      title: t('notification.columns.eventName'),
-      dataIndex: 'name',
-      width: '12%',
-      ellipsis: true
-    },
-    {
-      title: t('notification.columns.content'),
-      dataIndex: 'description',
-      ellipsis: true
-    },
-    {
-      title: t('notification.columns.receiver'),
-      dataIndex: 'fullName',
-      width: '12%'
-    },
-    {
-      title: t('notification.columns.createdDate'),
-      key: 'createdDate',
-      dataIndex: 'createdDate',
-      width: '12%'
-    },
-    {
-      title: t('notification.columns.pushStatus'),
-      dataIndex: 'pushStatus',
-      key: 'pushStatus',
-      width: '12%'
-    }
-
-  ];
-});
-
-const pagination = computed(() => {
-  return {
-    current: params.pageNo,
-    pageSize: params.pageSize,
-    total: pageTotal.value
-  };
-});
-
-const changePagination = (_pagination) => {
-  const { current, pageSize } = _pagination;
-  params.pageNo = current;
-  params.pageSize = pageSize;
-  loadPushRecordList();
-};
-
-const handleChangeNoticeType = async (typesValue, eventCode) => {
-  const params = pushSettingList.value.map(i => {
-    return {
-      eventCode: i.eventCode,
-      noticeTypes: i.eventCode === eventCode ? typesValue : i.noticeTypes
-    };
-  });
-  const [error] = await setting.putEventNotice(params);
-
-  if (error) {
-    return;
-  }
-
-  pushSettingList.value.forEach(item => {
-    if (item.eventCode === eventCode) {
-      item.noticeTypes = typesValue;
-    }
-  });
-};
-
-const getReceiver = (receiveSetting) => {
-  const receiverTypes: string[] = receiveSetting?.receivers?.receiverTypes?.map(m => m.message) || [];
-  const otherUser: string[] = receiveSetting?.receivers?.receivers?.map(m => m.fullName) || [];
-  return [...otherUser, ...receiverTypes].join('、');
-};
-
-const searchLogOpt = [
-  {
-    valueKey: 'code',
-    type: 'input',
-    placeholder: t('notification.searchLogPlaceholder.code'),
-    allowClear: true
-  },
-  {
-    valueKey: 'pushStatus',
-    type: 'select-enum',
-    enumKey: EventPushStatus,
-    placeholder: t('notification.searchLogPlaceholder.pushStatus'),
-    allowClear: true
-  },
-  {
-    type: 'date-range',
-    valueKey: 'createdDate',
-    placeholder: [t('notification.searchLogPlaceholder.startDate'), t('notification.searchLogPlaceholder.endDate')]
-  }
-];
-
-const obj:{
-  [key:string]:string
-} = {
-  UN_PUSH: 'default',
-  PUSHING: 'processing',
-  PUSH_SUCCESS: 'success',
-  PUSH_FAIL: 'error'
-};
-
-const getStatus = (key:string):string => {
-  return obj[key];
-};
-
-onMounted(() => {
-  init();
-});
+// Initialize data on component mount
+onMountedInit();
 
 </script>
 
@@ -346,7 +95,7 @@ onMounted(() => {
         class="my-3.5"
         :dataSource="pushSettingList"
         :columns="configColumns"
-        :scroll="{y:pushSettingList.length>10?'180px':'220px'}"
+        :scroll="{y:pushSettingList.length>10?'180px':'220px', x: 'max-content', scrollToFirstRowOnChange: false}"
         :loading="configLoading"
         :pagination="pushSettingList?.length > 10">
         <template #bodyCell="{ column, text, record }">
@@ -363,7 +112,7 @@ onMounted(() => {
             <CheckboxGroup
               :value="record.noticeTypes"
               :options="noticeType"
-              @change="handleChangeNoticeType($event, record.eventCode)" />
+              @change="handleChangeNoticeType($event as string[], record.eventCode)" />
           </template>
           <template v-if="column.dataIndex === 'operate'">
             <a class="text-theme-text-hover" @click="openReceiveChannel(record)">{{
@@ -416,7 +165,7 @@ onMounted(() => {
         <template #bodyCell="{ column, text, record }">
           <template v-if="column.dataIndex === 'pushStatus'">
             <Badge
-              :status="getStatus(text.value)"
+              :status="getStatus(text.value) as any"
               :text="text.message">
             </Badge>
             <Popover

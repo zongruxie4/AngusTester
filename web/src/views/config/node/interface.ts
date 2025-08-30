@@ -2,7 +2,6 @@ import { i18n } from '@xcan-angus/infra';
 const I18nInstance = i18n.getI18n();
 const t = I18nInstance?.global?.t || ((value: string):string => value);
 
-
 export const sortOpt = [
   {
     name: t('node.nodeItem.interface.sortOptions.byAddTime'),

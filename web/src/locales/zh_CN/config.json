@@ -1,15 +1,15 @@
 {
-  "agent": {
+  "proxy": {
     "name": "代理",
-    "title": "通过设置请求代理，可以绕过跨域限制，使得请求能够成功发送到目标服务器。使用代理可以轻松捕获和查看发送和接收的请求和响应。这对于调试 API 调用、检查请求头、请求体和响应数据非常有用。\n您可根据自身的网络环境选择适合的代理服务。",
+    "title": "通过设置请求代理，可以绕过跨域限制，使得请求能够成功发送到目标服务器。使用代理可以轻松捕获和查看发送和接收的请求和响应。这对于调试 API 调用、检查请求头、请求体和响应数据非常有用。您可根据自身的网络环境选择适合的代理服务。",
     "noProxy": "无代理",
-    "noProxyDescription": "通过浏览器直接请求接口，对非同源访问接口服务器端接口需要取消跨域限制。",
+    "noProxyDescription": "通过浏览器直接请求接口，需要取消跨域限制才能访问非同源服务器接口。",
     "clientProxy": "客户端代理",
-    "clientProxyDescription": "需要在访问浏览器所在电脑中安装\"代理程序\"，配置后将使用客户端代理发送请求。",
+    "clientProxyDescription": "需要在浏览器所在电脑安装\"代理程序\"，配置后将使用客户端代理发送请求。",
     "serverProxy": "服务端代理",
-    "serverProxyDescription": "需要将\"代理程序\"单独安装在共享网络的服务器主机，使用服务端代理无需用户在各自电脑中安装代理程序，配置后将使用服务端代理发送请求。",
+    "serverProxyDescription": "需要将\"代理程序\"安装在共享网络的服务器主机，使用服务端代理无需用户在各自电脑安装代理程序。",
     "cloudProxy": "云代理",
-    "cloudProxyDescription": "通过AngusTester云服务器节点请求接口，注意：不能访问到客户内网服务地址。",
+    "cloudProxyDescription": "通过AngusTester云服务器节点请求接口，注意：无法访问客户内网服务地址。",
     "downloadProxy": "下载代理程序",
     "windowsDesktopProxy": "Windows桌面代理",
     "macDesktopProxy": "Mac桌面代理",
@@ -104,13 +104,133 @@
   "app": {
     "name": "应用",
     "title": "应用设置",
-    "description": "配置应用的基本参数和功能选项",
-    "addMember": "加入成员",
-    "addDept": "加入部门",
-    "addGroup": "加入组",
-    "member_placeholder": "查询成员名称",
-    "dept_placeholder": "查询部门名称",
-    "group_placeholder": "查询组名称"
+    "config": {
+      "name": "应用配置",
+      "title": "应用配置",
+      "labels": {
+        "name": "名称",
+        "domain": "域名"
+      },
+      "tabs": {
+        "member": "应用成员",
+        "quota": "应用配额",
+        "permission": "许可信息"
+      },
+      "permitInfo": {
+        "title": "许可信息",
+        "description": "查看和管理您的应用许可信息，包括版本类型、产品编码、发行者等详细信息。",
+        "columns": {
+          "editionType": "版本类型",
+          "goodsCode": "产品编码",
+          "goodsVersion": "产品版本",
+          "provider": "提供者",
+          "issuer": "发行者",
+          "holder": "持有者",
+          "licenseNo": "许可编号",
+          "issuedDate": "许可发行日期",
+          "expiredDate": "许可过期日期",
+          "signature": "许可证书MD5签名"
+        },
+        "remainingDays": "剩余{days}天"
+      },
+      "addMembers": {
+        "title": {
+          "user": "加入用户",
+          "dept": "加入部门",
+          "group": "加入组"
+        },
+        "columns": {
+          "user": "授权用户",
+          "dept": "授权部门",
+          "group": "授权组",
+          "policy": "授权策略"
+        },
+        "tips": {
+          "title": "添加说明",
+          "description": "选择用户和对应的策略，系统将为选中的用户分配相应的权限。"
+        },
+        "labels": {
+          "selectUser": "选择用户",
+          "selectDept": "选择部门",
+          "selectGroup": "选择组",
+          "selectPolicy": "选择策略"
+        },
+        "placeholders": {
+          "selectPolicy": "选择策略"
+        },
+        "errors": {
+          "userRequired": "请选择用户",
+          "policyRequired": "请选择策略"
+        }
+      },
+      "memberList": {
+        "buttons": {
+          "addMember": "添加成员",
+          "addDept": "添加部门",
+          "addGroup": "添加组",
+          "authorizePolicy": "授权策略"
+        },
+        "placeholders": {
+          "searchMember": "搜索成员",
+          "searchDept": "搜索部门",
+          "searchGroup": "搜索组",
+          "searchPolicy": "查询策略名称"
+        },
+        "hints": "为项目成员分配特定的功能菜单权限，可以明确每个成员在项目中的职责范围。只允许系统管理员和应用管理员添加应用成员和授权权限策略操作。",
+        "table": {
+          "columns": {
+            "policyId": "策略ID",
+            "policyName": "策略名称",
+            "policyCode": "策略编码",
+            "policyDescription": "策略描述",
+            "policySource": "策略来源",
+            "joinTime": "加入时间",
+            "action": "操作"
+          },
+          "actions": {
+            "cancelAuth": "取消授权"
+          },
+          "sources": {
+            "appDefault": "应用默认授权",
+            "openAuth": "开通授权"
+          }
+        }
+      },
+      "quota": {
+        "hints": "若有扩展资源配额的需求，可以提交工单联系工单工程师帮您处理！",
+        "table": {
+          "columns": {
+            "resourceName": "资源名称",
+            "quotaKey": "配额Key",
+            "currentQuota": "当前配额",
+            "defaultQuota": "默认配额",
+            "maxQuota": "允许上限"
+          }
+        }
+      },
+      "policyModal": {
+        "title": "授权策略",
+        "placeholders": {
+          "searchPolicy": "查询策略名称"
+        },
+        "table": {
+          "headers": {
+            "id": "ID",
+            "name": "名称",
+            "code": "编码",
+            "description": "描述",
+            "status": "状态"
+          },
+          "status": {
+            "enabled": "启用",
+            "disabled": "禁用"
+          }
+        },
+        "actions": {
+          "selectAll": "全选"
+        }
+      }
+    }
   },
   "script": {
     "name": "脚本",
@@ -127,8 +247,6 @@
     "efficiencyTitle": "效能指标用于项目、计划、迭代、组织人员工等工作效能等级标准设置和判定。",
     "efficiency": {
       "title": "平台默认效能指标",
-      "buttons": {
-      },
       "table": {
         "columns": {
           "level": "等级",
@@ -151,8 +269,6 @@
     },
     "function": {
       "title": "平台默认功能指标",
-      "buttons": {
-      },
       "testCases": {
         "smoke": {
           "title": "冒烟测试用例",
@@ -540,7 +656,7 @@
         }
       },
       "nodeTip": {
-        "title": "提示：1. 节点系统：支持Linux、Mac、Windows 操作系统，推荐使用Linux。2. 添加和安装代理：在执行任务之前，您需要先添加节点并为节点安装代理，如果因为网络或服务器账户等问题无法自动安装代理，请按照手动安装的提示进行操作，请确保在执行任务之前，代理处于连接状态（如果代理未启动，则需要先启动代理）。3.节点角色配置：一个节点可以承担多个角色，但为了提高性能测试结果的准确性，请为压测节点配置单一的\"执行\"节点角色。4. 网络环境选择：在压力测试时，如果您想尽可能还原用户真实的访问环境（如网络延迟），请使用公网节点进行测试。如果您想排除网络延迟对测试结果的干扰，以测试应用的极限性能，请添加和测试应用在相同内网环境的节点进行测试。5. 默认只允许系统管理员和应用管理员对节点进行管理操作。",
+        "title": "提示：本系统支持 Linux（推荐）、macOS 和 Windows 操作系统。在执行任务前，请先添加节点并安装代理程序——若因网络或账户问题导致自动安装失败，请按提示手动安装并检查代理连接状态（若未运行需手动启动）。虽然节点支持多角色配置，但进行压力测试时建议仅分配\"执行(Execution)\"角色以确保性能测试准确性。根据测试需求选择节点类型：使用公网节点可模拟真实用户环境（包含网络延迟），而选用同内网节点则能排除网络干扰、测试应用极限性能。注意：默认情况下，仅系统管理员和应用管理员具有节点管理权限。",
         "steps": {
           "managementNode": {
             "title": "管理节点",

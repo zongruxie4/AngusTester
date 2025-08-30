@@ -9,7 +9,7 @@ const { t } = useI18n();
 const AppInfo = defineAsyncComponent(() => import('@/views/config/appInfo/index.vue'));
 const Indicator = defineAsyncComponent(() => import('@/views/config/indicator/index.vue'));
 const Event = defineAsyncComponent(() => import('@/views/config/event/index.vue'));
-const Agent = defineAsyncComponent(() => import('@/views/config/agent/index.vue'));
+const Proxy = defineAsyncComponent(() => import('@/views/config/proxy/index.vue'));
 
 const Node = defineAsyncComponent(() => import('./node/index.vue'));
 
@@ -24,7 +24,7 @@ const menuItems: {
   { icon: 'icon-zhibiao', name: t('indicator.name'), key: 'indicator' },
   { icon: 'icon-tuisongtongzhi', name: t('notification.name'), key: 'event' },
   { icon: 'icon-guanlijiedian', name: t('node.name'), key: 'node' },
-  { icon: 'icon-jiekoudaili', name: t('agent.name'), key: 'agent' }
+  { icon: 'icon-jiekoudaili', name: t('proxy.name'), key: 'proxy' }
 ];
 </script>
 <template>
@@ -38,8 +38,8 @@ const menuItems: {
     <template #event>
       <Event v-if="activeKey === 'event'" class="overflow-auto h-full" />
     </template>
-    <template #agent>
-      <Agent v-if="activeKey === 'agent'" class="overflow-auto h-full" />
+    <template #proxy>
+      <Proxy v-if="activeKey === 'proxy'" class="overflow-auto h-full" />
     </template>
     <template #node>
       <Node class="overflow-auto h-full" />

@@ -16,7 +16,7 @@ import {
   Spin,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { toClipboard, TESTER, appContext } from '@xcan-angus/infra';
+import { appContext, TESTER, toClipboard } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
 import { infoItem, internetInfo, nodeEchartsTabs, nodeUseProgresses } from './interface';
@@ -28,12 +28,12 @@ import { formatBytes, formatBytesToUnit } from '@/utils/common';
 
 const { t } = useI18n();
 
-const AgentChart = defineAsyncComponent(() => import('./agentChart.vue'));
-const AgentInfo = defineAsyncComponent(() => import('./agentInfo.vue'));
-const Execute = defineAsyncComponent(() => import('./execute.vue'));
-const Log = defineAsyncComponent(() => import('./log.vue'));
-const MockService = defineAsyncComponent(() => import('./mockService.vue'));
-const ExecPropulsion = defineAsyncComponent(() => import('./execPropulsion.vue'));
+const AgentChart = defineAsyncComponent(() => import('./AgentChart.vue'));
+const AgentInfo = defineAsyncComponent(() => import('./AgentInfo.vue'));
+const AgentLog = defineAsyncComponent(() => import('./AgentLog.vue'));
+const Execution = defineAsyncComponent(() => import('./Execution.vue'));
+const MockService = defineAsyncComponent(() => import('./MockService.vue'));
+const ExecutionPropulsion = defineAsyncComponent(() => import('./ExecutionPropulsion.vue'));
 
 const defaultLegend = {
   type: 'plain',
@@ -44,7 +44,7 @@ const defaultLegend = {
 
 const echartRef = ref();
 
-let myEcahrt;
+let myEchart;
 const route = useRoute();
 const router = useRouter();
 const id = ref(route.params.id);
@@ -55,7 +55,7 @@ const state = reactive<{infos: Record<string, any>, linuxOfflineInstallSteps: Re
   windowsOfflineInstallSteps: {}
 });
 
-const showPassd = ref(false);
+const showPassword = ref(false);
 
 const chartServersMap = {
   cpu: `${TESTER}/node/${id.value}/metrics/cpu`,
@@ -157,9 +157,9 @@ const echartsOpt = {
   series: []
 };
 
-const initEcahrts = () => {
-  myEcahrt = echarts.init(echartRef.value);
-  myEcahrt.setOption(echartsOpt);
+const initEcharts = () => {
+  myEchart = echarts.init(echartRef.value);
+  myEchart.setOption(echartsOpt);
 };
 
 const getDefaultLineConfig = () => {
@@ -197,7 +197,7 @@ const loadInfo = async () => {
 
 // 显示密码
 const handleShowPassd = () => {
-  showPassd.value = !showPassd.value;
+  showPassword.value = !showPassword.value;
 };
 
 const installing = ref(false); // 代理安装中
@@ -253,12 +253,12 @@ const turnback = () => {
   router.push({ path: '/config#node' });
 };
 
-const enableding = ref(false); // 启用、禁用中
+const enabled = ref(false); // 启用、禁用中
 // 启用 禁用
 const enableNode = async () => {
-  enableding.value = true;
+  enabled.value = true;
   const [error] = await node.enableNode([{ enabled: !state.infos.enabled, id: id.value }]);
-  enableding.value = false;
+  enabled.value = false;
   if (error) {
     return;
   }
@@ -286,18 +286,18 @@ const loadMetrics = async () => {
   // 内存  cvsMemory => free,used,freePercent,usedPercent,actualFree,actualUsed,actualFreePercent,actualUsedPercent,swapFree,swapUsed
   // 取实际使用值
   if (cvsMemory) {
-    const cvsMemorys = cvsMemory.split(',');
-    const memoryPercent = +(+cvsMemorys[7]).toFixed(2);
-    const memory = +(+cvsMemorys[5]).toFixed(2);
-    const memoryTotal = +(+cvsMemorys[4] + +cvsMemorys[5]).toFixed(2);
+    const cvsMemory = cvsMemory.split(',');
+    const memoryPercent = +(+cvsMemory[7]).toFixed(2);
+    const memory = +(+cvsMemory[5]).toFixed(2);
+    const memoryTotal = +(+cvsMemory[4] + +cvsMemory[5]).toFixed(2);
     sourceUse.memory = formatBytes(memory, 2);
     sourceUse.memoryPercent = memoryPercent;
     sourceUse.memoryTotal = formatBytes(memoryTotal, 2);
 
     // 交换区
-    const swapTotal = (+cvsMemorys[9] || 0) + (+cvsMemorys[8] || 0);
-    const swapPercent = +((+cvsMemorys[9] || 0) / (+swapTotal || 1) * 100).toFixed(2);
-    const swap = (+cvsMemorys[9] || 0);
+    const swapTotal = (+cvsMemory[9] || 0) + (+cvsMemory[8] || 0);
+    const swapPercent = +((+cvsMemory[9] || 0) / (+swapTotal || 1) * 100).toFixed(2);
+    const swap = (+cvsMemory[9] || 0);
     sourceUse.swapTotal = formatBytes(swapTotal, 2);
     sourceUse.swapPercent = swapPercent;
     sourceUse.swap = formatBytes(swap, 2);
@@ -337,7 +337,7 @@ const loadMetrics = async () => {
 
 const networkDeviceData = ref<{deviceName: string, networkUsage: {cvsValue: string, timestamp: string}}[]>([]);
 const currentDeviceName = ref();
-let networdkDatatime = '';
+let networkDatatime = '';
 
 const onDeviceNameChange = (value) => {
   currentDeviceName.value = value;
@@ -351,7 +351,7 @@ const loadNetwork = async () => {
     return;
   }
   networkDeviceData.value = res.data || [];
-  networdkDatatime = res.datetime;
+  networkDatatime = res.datetime;
   if (!currentDeviceName.value || !networkDeviceData.value.find(item => item.deviceName === currentDeviceName.value)) {
     currentDeviceName.value = networkDeviceData.value[0]?.deviceName;
   }
@@ -375,7 +375,7 @@ const setNetworkData = () => {
 
   if (currentNetworkUsage?.networkUsage) {
     const timestamp = currentNetworkUsage?.networkUsage?.timestamp;
-    const datetime = networdkDatatime;
+    const datetime = networkDatatime;
     if (dayjs(timestamp).add(30, 'second') < dayjs(datetime)) {
       sourceUse.rxBytesRate = 0;
       sourceUse.txBytesRate = 0;
@@ -387,22 +387,6 @@ const setNetworkData = () => {
 
 // 图表数据 CPU
 const loadCpuEchartData = async (data) => {
-  // const param = getChartParam();
-  // const [error, res] = await nodeCtrl.getCpuData({ id: id.value, ...param });
-  // if (error) {
-  //   return;
-  // }
-  // if (pagination.pageNo === 1) {
-  //   chartsData = res.data?.list || [];
-  // } else {
-  //   chartsData = chartsData.concat(res.data?.list || []);
-  // }
-  // if (chartsData.length < res.data.total) {
-  //   pagination.pageNo += 1;
-  //   loadCpuEchartData();
-  //   return;
-  // }
-
   chartsData = data;
   // 'CPU 空闲百分比', '系统空间占用 CPU 百分比', '用户空间占 CPU 百分比', '等待 IO 操作的 CPU 百分比', '其他占用 CPU 百分比', '当前占用的总 CPU 百分比'
   // const dataType = ['idle', 'sys', 'sys', 'wait', 'other', 'total'];
@@ -449,7 +433,7 @@ const loadCpuEchartData = async (data) => {
         }
       }
     : {};
-  myEcahrt.setOption({
+  myEchart.setOption({
     ...echartsOpt,
     ...legend,
     xAxis: [
@@ -467,26 +451,8 @@ let memoryTableData;
 
 // 图表数据 内存
 const loadMemoryEchartData = async (data) => {
-  // const param = getChartParam();
-  // // loadingChartData.value = true;
-  // const [error, res] = await nodeCtrl.getMemoryData({ id: id.value, ...param });
-  // // '物理内存剩余量', '物理内存使用量', '实际空闲物理内存百分比', '实际使用物理内存的百分比', '实际空闲内存', '实际使用内存', '空闲内存占用的百分比', '使用内存占用的百分比', '交换区使用量', '交换区剩余量'
-  // const dataType = ['物理内存剩余量(GB)', '物理内存使用量(GB)', '实际空闲物理内存百分比(%)', '实际使用物理内存的百分比(%)', '实际空闲内存(GB)', '实际使用内存(GB)', '空闲内存占用的百分比(%)', '使用内存占用的百分比(%)', '交换区使用量(GB)', '交换区剩余量(GB)'];
   const dataType = [t('node.nodeDetail.chartOptions.memory.free'), t('node.nodeDetail.chartOptions.memory.used'), t('node.nodeDetail.chartOptions.memory.freePercent'), t('node.nodeDetail.chartOptions.memory.usedPercent'), t('node.nodeDetail.chartOptions.memory.actualFree'), t('node.nodeDetail.chartOptions.memory.actualUsed'), t('node.nodeDetail.chartOptions.memory.actualFreePercent'), t('node.nodeDetail.chartOptions.memory.actualUsedPercent'), t('node.nodeDetail.chartOptions.memory.swapFree'), t('node.nodeDetail.chartOptions.memory.swapUsed')];
   const dataTypeKey = ['free', 'used', 'freePercent', 'usedPercent', 'actualFree', 'actualUsed', 'actualFreePercent', 'actualUsedPercent', 'swapFree', 'swapUsed'];
-  // if (error) {
-  //   return;
-  // }
-  // if (pagination.pageNo === 1) {
-  //   chartsData = res.data?.list || [];
-  // } else {
-  //   chartsData = chartsData.concat(res.data?.list || []);
-  // }
-  // if (chartsData.length < res.data.total) {
-  //   pagination.pageNo += 1;
-  //   loadMemoryEchartData();
-  //   return;
-  // }
   chartsData = data;
   // loadingChartData.value = false;
   const seriesData = dataType.map(type => {
@@ -577,7 +543,7 @@ const loadMemoryEchartData = async (data) => {
     ],
     series: seriesPercentData.every(serries => !serries.data.length) ? [{ ...getDefaultLineConfig(), data: [50] }] : seriesPercentData
   };
-  myEcahrt.setOption(showMemoryPercentChart.value ? memoryPercentEchartOption : memoryEchartOption, notMerge.value);
+  myEchart.setOption(showMemoryPercentChart.value ? memoryPercentEchartOption : memoryEchartOption, notMerge.value);
 };
 
 let diskChartOption;
@@ -588,27 +554,7 @@ let diskTableData;
 
 // 图表数据 磁盘
 const loadDiskEchartData = async (data) => {
-  // loadingChartData.value = true;
-  // const param = getChartParam({ filters: [{ key: 'deviceName', op: 'MATCH_END', value: activeDisk.value }] });
-  // const [error, res] = await nodeCtrl.getDiskData({ id: id.value, ...param });
-  // if (error) {
-  //   return;
-  // }
-  // if (pagination.pageNo === 1) {
-  //   chartsData = res.data?.[0]?.values?.list || [];
-  // } else {
-  //   chartsData = chartsData.concat(res.data?.[0]?.values?.list || []);
-  // }
-  // if (res.data?.[0]?.values?.total && chartsData.length < res.data?.[0]?.values?.total) {
-  //   pagination.pageNo += 1;
-  //   loadDiskEchartData();
-  //   return;
-  // }
   chartsData = data;
-  // loadingChartData.value = false;
-  // '磁盘总大小', '本地文件系统剩余大小', '本地文件系统已用大小', '本地文件系统可用大小', '本地文件系统使用率', '每秒磁盘读次数', '每秒磁盘写次数', '每秒磁盘读取 MB 数', '每秒磁盘写入 MB 数'
-  // const dataTypeKey = ['total', 'free', 'used', 'avail', 'usePercent', 'readsRate', 'writesRate', 'readBytesRate', 'writeBytesRate'];
-  // const dataType = ['磁盘总大小(GB)', '本地文件系统剩余大小(GB)', '本地文件系统已用大小(GB)', '本地文件系统可用大小(GB)', '本地文件系统使用率(%)', '每秒磁盘读次数(IO/s)', '每秒磁盘写次数(IO/s)', '每秒磁盘读取 MB 数(MB/s)', '每秒磁盘写入 MB 数(MB/s)'];
   const dataType = [t('node.nodeDetail.chartOptions.disk.total'), t('node.nodeDetail.chartOptions.disk.free'), t('node.nodeDetail.chartOptions.disk.used'), t('node.nodeDetail.chartOptions.disk.avail'), t('node.nodeDetail.chartOptions.disk.usePercent'), t('node.nodeDetail.chartOptions.disk.readsRate'), t('node.nodeDetail.chartOptions.disk.writesRate'), t('node.nodeDetail.chartOptions.disk.readBytesRate'), t('node.nodeDetail.chartOptions.disk.writeBytesRate')];
   const dataTypeKey = ['total', 'free', 'used', 'avail', 'usePercent', 'readsRate', 'writesRate', 'readBytesRate', 'writeBytesRate'];
   const seriesData = dataType.map(type => {
@@ -755,7 +701,7 @@ const loadDiskEchartData = async (data) => {
   if (diskChartKey.value === 'bytesRate') {
     showEchartOptions = bytesRateChartOption;
   }
-  myEcahrt.setOption(showEchartOptions, notMerge.value);
+  myEchart.setOption(showEchartOptions, notMerge.value);
 };
 
 let networkChartOption;
@@ -765,26 +711,8 @@ let networkTableData;
 
 // 图表数据 网络
 const loadNetworkEchartData = async (data) => {
-  // loadingChartData.value = true;
-  // const param = getChartParam({ filters: [{ key: 'deviceName', op: 'MATCH_END', value: activeNetwork.value }] });
-  // const [error, res] = await nodeCtrl.getNetworkData({ id: id.value, ...param });
-  // if (error) {
-  //   return;
-  // }
-  // if (pagination.pageNo === 1) {
-  //   chartsData = res.data?.[0]?.values?.list || [];
-  // } else {
-  //   chartsData = chartsData.concat(res.data?.[0]?.values?.list || []);
-  // }
-  // if (res.data?.[0]?.values?.total && chartsData.length < res.data?.[0]?.values?.total) {
-  //   pagination.pageNo += 1;
-  //   loadNetworkEchartData();
-  // }
   chartsData = data;
-  // loadingChartData.value = false;
-  // '接收到的总字节数', '每秒接收的 MB 数', '接收到的错误包数', '发送的总字节数', '每秒发送的 MB 数'
   const dataTypeKey = ['rxBytes', 'rxBytesRate', 'rxErrors', 'txBytes', 'txBytesRate'];
-  // const dataType = ['接收到的总字节(GB)', '每秒接收的 MB 数(MB/s)', '接收到的错误包数(packets)', '发送的总字节(GB)', '每秒发送的 MB 数(MB/s)'];
   const dataType = [t('node.nodeDetail.chartOptions.network.rxBytes'), t('node.nodeDetail.chartOptions.network.rxBytesRate'), t('node.nodeDetail.chartOptions.network.rxErrors'), t('node.nodeDetail.chartOptions.network.txBytes'), t('node.nodeDetail.chartOptions.network.txBytesRate')];
   const seriesData = dataType.map(type => {
     return {
@@ -854,10 +782,10 @@ const loadNetworkEchartData = async (data) => {
 
   const networkSeriesData = seriesData.splice(1, 1).concat(seriesData.splice(3, 1));
   const networkDataTypeKey = dataType.splice(1, 1).concat(dataType.splice(3, 1));
-  const networdLengend = { ...defaultLegend, data: networkDataTypeKey };
+  const networkLengend = { ...defaultLegend, data: networkDataTypeKey };
   networkChartOption = {
     ...echartsOpt,
-    legend: networdLengend,
+    legend: networkLengend,
     xAxis: [
       {
         data: chartsData.map(i => i.timestamp)
@@ -900,7 +828,7 @@ const loadNetworkEchartData = async (data) => {
   if (networkChartKey.value === 'bytes') {
     showChartOption = bytesChartOption;
   }
-  myEcahrt.setOption(showChartOption, notMerge.value);
+  myEchart.setOption(showChartOption, notMerge.value);
 };
 
 const showNoData = ref(false);
@@ -927,14 +855,12 @@ const onChartDataChange = (data) => {
 
 const loadEchartData = async () => {
   if (activeTab.value === 'cpu') {
-    // loadCpuEchartData();
     currentSourceServer.value = chartServersMap.cpu;
     chartParams.value = {
       orderSort: 'ASC'
     };
   }
   if (activeTab.value === 'memory') {
-    // loadMemoryEchartData();
     currentSourceServer.value = chartServersMap.memory;
     chartParams.value = {
       orderSort: 'ASC'
@@ -964,7 +890,6 @@ const loadEchartData = async () => {
       filters: [{ key: 'deviceName', op: 'EQUAL', value: activeDisk.value }]
     };
     currentSourceServer.value = chartServersMap.disk;
-    // loadDiskEchartData();
   }
 
   if (activeTab.value === 'network') {
@@ -991,7 +916,6 @@ const loadEchartData = async () => {
       filters: [{ key: 'deviceName', op: 'EQUAL', value: activeNetwork.value }]
     };
     currentSourceServer.value = chartServersMap.network;
-    // loadNetworkEchartData();
   }
 };
 
@@ -1004,9 +928,6 @@ const refreshTimer = () => {
     }
     loadMetrics();
     loadNetwork();
-    // if (timestamp.value && aotuRefresh.value) {
-    //   resetTimestamp();
-    // }
   }, 5000);
 };
 
@@ -1022,18 +943,9 @@ const proxyOpt = [
   }
 ];
 
-// const resetTimestamp = () => {
-//   date.value = [] as string[];
-//   const subTime = (timestamp.value as string).split('-');
-//   const now = dayjs();
-//   timestempEnd.value = now.format('YYYY-MM-DD HH:mm:ss');
-//   timestempStart.value = now.subtract(+subTime[0], subTime[1] as ManipulateType).format('YYYY-MM-DD HH:mm:ss');
-//   notMerge.value = false;
-// };
-
 watch(() => showMemoryPercentChart.value, () => {
   if (memoryPercentEchartOption || memoryEchartOption) {
-    myEcahrt.setOption(showMemoryPercentChart.value ? memoryPercentEchartOption : memoryEchartOption, true);
+    myEchart.setOption(showMemoryPercentChart.value ? memoryPercentEchartOption : memoryEchartOption, true);
     if (showMemoryPercentChart.value) {
       tableData.value = memoryTableData.filter(i => i.unit === '%');
     } else {
@@ -1062,7 +974,7 @@ watch(() => diskChartKey.value, () => {
     tableData.value = diskTableData.filter(i => i.unit === 'MB/s');
   }
   if (showEchartOptions) {
-    myEcahrt.setOption(showEchartOptions, true);
+    myEchart.setOption(showEchartOptions, true);
   }
 });
 
@@ -1081,7 +993,7 @@ watch(() => networkChartKey.value, () => {
     tableData.value = networkTableData.filter(i => i.unit === 'GB');
   }
   if (showChartOption) {
-    myEcahrt.setOption(showChartOption, true);
+    myEchart.setOption(showChartOption, true);
   }
 });
 
@@ -1090,10 +1002,10 @@ const tenantInfo = ref(appContext.getTenant());
 const userInfo = ref(appContext.getUser());
 onMounted(async () => {
   id.value = route.params.id as string;
-  loadInfo();
-  initEcahrts();
-  loadMetrics();
-  loadNetwork();
+  await loadInfo();
+  initEcharts();
+  await loadMetrics();
+  await loadNetwork();
   timestamp.value = '5-minute';
   currentSourceServer.value = chartServersMap.cpu;
   refreshTimer();
@@ -1140,44 +1052,9 @@ onBeforeUnmount(() => {
 
 // 监听 tab 变更
 watch([() => activeTab.value, () => activeDisk.value, () => activeNetwork.value], () => {
-  // pagination.pageNo = 1;
-  // refreshTimer();
   notMerge.value = true;
   loadEchartData();
 });
-
-// 监听时间段变化
-// watch(() => timestamp.value, (newValue) => {
-//   if (newValue) {
-//     date.value = [] as string[];
-//     const subTime = newValue.split('-');
-//     const now = dayjs();
-//     timestempEnd.value = now.format('YYYY-MM-DD HH:mm:ss');
-//     timestempStart.value = now.subtract(+subTime[0], subTime[1] as ManipulateType).format('YYYY-MM-DD HH:mm:ss');
-//   } else if (!date.value.length) {
-//     timestempStart.value = '';
-//     timestempEnd.value = '';
-//   }
-//   notMerge.value = true;
-// });
-
-// 监听时间段变化
-// watch(() => date.value, newValue => {
-//   if (newValue?.length) {
-//     timestempStart.value = newValue[0];
-//     timestempEnd.value = newValue[1];
-//     notMerge.value = true;
-//     timestamp.value = undefined;
-//   } else if (!timestamp.value) {
-//     timestamp.value = '5-minute';
-//   }
-// });
-
-// watch([() => timestempStart.value, () => timestempEnd.value], () => {
-//   pagination.pageNo = 1;
-//   refreshTimer();
-//   loadEchartData();
-// });
 
 const showInstallCtrlAccessToken = ref(false);
 const toggleShowCtrlAccessToken = () => {
@@ -1205,7 +1082,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
               <Button
                 v-if="!state.infos.enabled"
                 class="node-action-btn"
-                :loading="enableding"
+                :loading="enabled"
                 :disabled="state.infos?.tenantId !== tenantInfo?.id || !(isAdmin || state.infos?.createdBy === userInfo?.id)"
                 @click="enableNode">
                 <Icon icon="icon-qiyong" />{{ t('node.nodeDetail.buttons.enable') }}
@@ -1213,7 +1090,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
               <Button
                 v-else
                 class="node-action-btn"
-                :loading="enableding"
+                :loading="enabled"
                 :disabled="state.infos?.tenantId !== tenantInfo?.id || !(isAdmin || state.infos?.createdBy === userInfo?.id)"
                 @click="enableNode">
                 <Icon icon="icon-jinyong" />{{ t('node.nodeDetail.buttons.disable') }}
@@ -1296,19 +1173,6 @@ const activeKey = ref<'source' | 'proxy'>('source');
                   </p>
                 </div>
               </TabPane>
-              <!--              <TabPane key="windows" tab="Windows系统自动安装步骤">-->
-              <!--                <div class="text-3">-->
-              <!--                  安装方式1：-->
-              <!--                  <p class="install-step whitespace-pre-line">-->
-              <!--                    {{ state.windowsOfflineInstallSteps?.onlineInstallCmd }}-->
-              <!--                  </p>-->
-              <!--                  安装方式2：-->
-              <!--                  <p class="install-step whitespace-pre-line">-->
-              <!--                    1).下载自动安装脚本：<a class="cursor-pointer" :href="state.windowsOfflineInstallSteps?.installScriptUrl">{{ state.windowsOfflineInstallSteps?.installScriptName }}</a> <br />-->
-              <!--                    2).将{{ state.windowsOfflineInstallSteps?.installScriptName }}复制到自定义的安装目录，运行脚本安装：<br /> { state.windowsOfflineInstallSteps?.runInstallCmd }}-->
-              <!--                  </p>-->
-              <!--                </div>-->
-              <!--              </TabPane>-->
               <TabPane key="config" :tab="t('node.nodeDetail.installSteps.configTitle')">
                 <Grid
                   :dataSource="state.installConfig"
@@ -1362,7 +1226,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
             :dataSource="state.infos"
             :columns="infoItem">
             <template #password="{text}">
-              <template v-if="showPassd">
+              <template v-if="showPassword">
                 <span class="text-black-active align-middle">{{ text }}</span>
                 <Icon
                   icon="icon-zhengyan"
@@ -1372,17 +1236,12 @@ const activeKey = ref<'source' | 'proxy'>('source');
               <template v-else>
                 <div class="inline-flex items-center">
                   <span class="text-black-active">******</span>
-                  <!-- <Icon
-                    icon="icon-biyan"
-                    class="text-3 cursor-pointer ml-2"
-                    @click="handleShowPassd" /> -->
                 </div>
               </template>
             </template>
             <template #spec="{record}">
               <div v-if="!!record.text">
                 {{ record.text?.showLabel }}
-                <!-- {{ `${record.text?.cpu}/${record.text?.memory}/${record.text?.disk}/${record.text?.network || ''}` }} -->
               </div>
             </template>
             <template #roles="{text}">
@@ -1410,9 +1269,6 @@ const activeKey = ref<'source' | 'proxy'>('source');
           <Tabs v-model:activeKey="activeKey" size="small">
             <TabPane key="source" forceRender>
               <template #tab><span class="font-semibold">{{ t('node.nodeDetail.labels.resourceMonitoring') }}</span></template>
-              <!-- <div class="title flex pt-4">
-                <span class="mr-15 font-semibold">资源使用</span>
-              </div> -->
               <ul class="flex pb-5 justify-between text-3">
                 <li
                   v-for="item in nodeUseProgresses"
@@ -1483,10 +1339,6 @@ const activeKey = ref<'source' | 'proxy'>('source');
                     class="ml-2 min-w-25"
                     size="small"
                     :options="diskNames" />
-                  <!-- <RadioGroup v-show="activeTab === 'disk'"
-                            v-model:value="activeDisk"
-                            class="ml-2"
-                            :options="diskNames" /> -->
                   <Select
                     v-show="activeTab === 'network'"
                     v-model:value="activeNetwork"
@@ -1499,21 +1351,6 @@ const activeKey = ref<'source' | 'proxy'>('source');
                             :options="networkNames" /> -->
                 </div>
                 <div class="flex items-center">
-                  <!-- <span>自动刷新</span>
-            <Switch
-              v-model:checked="aotuRefresh"
-              size="small"
-              class="mx-2"></Switch>
-            <Select
-              v-model:value="timestamp"
-              :options="timeOpt"
-              class="w-40"
-              size="small"
-              :allowClear="false" />
-            <DatePicker
-              v-model:value="date"
-              valueType="multiple"
-              class="ml-2 py-0.5 px-1.75" /> -->
                   <template v-if="activeKey === 'source'">
                     <IntervalTimestamp
                       v-model:loading="loadingChart"
@@ -1552,15 +1389,6 @@ const activeKey = ref<'source' | 'proxy'>('source');
                   v-if="showNoData"
                   class="absolute top-0 left-1/2 -translate-x-1/2" />
               </Spin>
-              <!-- table -->
-              <!-- <Table
-                v-if="!!tableData.length"
-                :columns="columns"
-                :pagination="false"
-                :dataSource="tableData"
-                size="small"
-                class="mb-20 mt-7.5">
-              </Table> -->
             </TabPane>
             <TabPane key="proxy">
               <template #tab><span class="font-semibold">{{ t('node.nodeDetail.labels.proxyService') }}</span></template>
@@ -1576,7 +1404,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
                 <AgentChart :id="id" />
               </template>
               <template v-if="proxyActiveKey==='log'">
-                <Log
+                <AgentLog
                   class="mt-4"
                   :ip="state.infos.publicIp || state.infos.ip"
                   :port="state.infos.agentPort" />
@@ -1585,11 +1413,11 @@ const activeKey = ref<'source' | 'proxy'>('source');
             <template v-if="state.infos?.rolesValues?.includes('EXECUTION')">
               <TabPane key="execTask">
                 <template #tab><span class="font-semibold">{{ t('node.nodeDetail.labels.executingTasks') }}</span></template>
-                <Execute :id="id" />
+                <Execution :id="id" />
               </TabPane>
               <TabPane key="execPropulsion">
                 <template #tab><span class="font-semibold">{{ t('node.nodeDetail.labels.executorProcess') }}</span></template>
-                <ExecPropulsion :nodeId="id" :tenantId="state.infos?.tenantId" />
+                <ExecutionPropulsion :nodeId="id" :tenantId="state.infos?.tenantId" />
               </TabPane>
             </template>
             <template v-if="state.infos?.rolesValues?.includes('MOCK_SERVICE')">

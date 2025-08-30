@@ -1,19 +1,21 @@
 {
-  "agent": {
+  "proxy": {
     "name": "Proxy",
-    "title": "By setting up request proxy, you can bypass cross-origin restrictions and successfully send requests to target servers. Using proxy can easily capture and view sent and received requests and responses. This is very useful for debugging API calls, checking request headers, request bodies and response data.\nYou can choose a suitable proxy service according to your network environment.",
+    "title": "By setting up request proxy, you can bypass cross-origin restrictions and successfully send requests to target servers. Using proxy can easily capture and view sent and received requests and responses. This is very useful for debugging API calls, checking request headers, request bodies and response data. You can choose a suitable proxy service according to your network environment.",
     "noProxy": "No Proxy",
-    "noProxyDescription": "Request interfaces directly through browser, cross-origin restrictions need to be removed for non-same-origin access to server-side interfaces.",
+    "noProxyDescription": "Request interfaces directly through browser, cross-origin restrictions need to be removed to access non-same-origin server interfaces.",
     "clientProxy": "Client Proxy",
     "clientProxyDescription": "Need to install \"proxy program\" on the computer where the browser is located, after configuration, client proxy will be used to send requests.",
     "serverProxy": "Server Proxy",
-    "serverProxyDescription": "Need to install \"proxy program\" separately on a server host in a shared network, using server proxy does not require users to install proxy programs on their respective computers, after configuration, server proxy will be used to send requests.",
+    "serverProxyDescription": "Need to install \"proxy program\" on a server host in a shared network, using server proxy does not require users to install proxy programs on their respective computers.",
+    "cloudProxy": "Cloud Proxy",
+    "cloudProxyDescription": "Request interfaces through AngusTester cloud server nodes. Note: Cannot access customer intranet service addresses.",
     "downloadProxy": "Download Proxy Program",
     "windowsDesktopProxy": "Windows Desktop Proxy",
     "macDesktopProxy": "Mac Desktop Proxy",
     "linuxProxy": "Linux Proxy",
     "manualInstallPackage": "Manual Install Package",
-    "serverRequestProxyConfig": "Server Request Proxy Configuration",
+    "serverRequestProxyConfig": "Server Client Proxy Configuration",
     "enable": "Enable:",
     "proxyAddress": "Proxy Address:",
     "cancel": "Cancel",
@@ -88,7 +90,133 @@
   "app": {
     "name": "App",
     "title": "Application Settings",
-    "description": "Configure basic parameters and function options of the application"
+    "config": {
+      "name": "Application Configuration",
+      "title": "Application Configuration",
+      "labels": {
+        "name": "Name",
+        "domain": "Domain"
+      },
+      "tabs": {
+        "member": "Application Members",
+        "quota": "Application Quota",
+        "permission": "License Information"
+      },
+      "permitInfo": {
+        "title": "License Information",
+        "description": "View and manage your application license information, including edition type, product code, issuer and other details.",
+        "columns": {
+          "editionType": "Edition Type",
+          "goodsCode": "Product Code",
+          "goodsVersion": "Product Version",
+          "provider": "Provider",
+          "issuer": "Issuer",
+          "holder": "Holder",
+          "licenseNo": "License Number",
+          "issuedDate": "License Issue Date",
+          "expiredDate": "License Expiry Date",
+          "signature": "License Certificate MD5 Signature"
+        },
+        "remainingDays": "Remaining {days} days"
+      },
+      "addMembers": {
+        "title": {
+          "user": "Add User",
+          "dept": "Add Department",
+          "group": "Add Group"
+        },
+        "columns": {
+          "user": "Authorize User",
+          "dept": "Authorize Department",
+          "group": "Authorize Group",
+          "policy": "Authorize Policy"
+        },
+        "tips": {
+          "title": "Instructions",
+          "description": "Select users and corresponding policies. The system will assign appropriate permissions to the selected users."
+        },
+        "labels": {
+          "selectUser": "Select User",
+          "selectDept": "Select Department",
+          "selectGroup": "Select Group",
+          "selectPolicy": "Select Policy"
+        },
+        "placeholders": {
+          "selectPolicy": "Select Policy"
+        },
+        "errors": {
+          "userRequired": "Please select users",
+          "policyRequired": "Please select policies"
+        }
+      },
+      "memberList": {
+        "buttons": {
+          "addMember": "Add Member",
+          "addDept": "Add Department",
+          "addGroup": "Add Group",
+          "authorizePolicy": "Authorize Policy"
+        },
+        "placeholders": {
+          "searchMember": "Search Member",
+          "searchDept": "Search Department",
+          "searchGroup": "Search Group",
+          "searchPolicy": "Search Policy Name"
+        },
+        "hints": "Assign specific functional menu permissions to project members to clearly define each member's scope of responsibility within the project. Only system administrators and application administrators can add application members and perform permission policy authorization operations.",
+        "table": {
+          "columns": {
+            "policyId": "Policy ID",
+            "policyName": "Policy Name",
+            "policyCode": "Policy Code",
+            "policyDescription": "Policy Description",
+            "policySource": "Policy Source",
+            "joinTime": "Join Time",
+            "action": "Action"
+          },
+          "actions": {
+            "cancelAuth": "Cancel"
+          },
+          "sources": {
+            "appDefault": "Application Default Authorization",
+            "openAuth": "Open Authorization"
+          }
+        }
+      },
+      "quota": {
+        "hints": "If you need to extend resource quotas, you can submit a ticket to contact the ticket engineer to help you!",
+        "table": {
+          "columns": {
+            "resourceName": "Resource Name",
+            "quotaKey": "Quota Key",
+            "currentQuota": "Current Quota",
+            "defaultQuota": "Default Quota",
+            "maxQuota": "Maximum Quota"
+          }
+        }
+      },
+      "policyModal": {
+        "title": "Authorize Policy",
+        "placeholders": {
+          "searchPolicy": "Search Policy Name"
+        },
+        "table": {
+          "headers": {
+            "id": "ID",
+            "name": "Name",
+            "code": "Code",
+            "description": "Description",
+            "status": "Status"
+          },
+          "status": {
+            "enabled": "Enabled",
+            "disabled": "Disabled"
+          }
+        },
+        "actions": {
+          "selectAll": "Select All"
+        }
+      }
+    }
   },
   "script": {
     "name": "Script",
@@ -105,8 +233,6 @@
     "efficiencyTitle": "Efficiency indicators are used for setting and determining work efficiency level standards for projects, plans, iterations, organizational personnel, etc.",
     "efficiency": {
       "title": "Platform Default Efficiency Indicators",
-      "buttons": {
-      },
       "table": {
         "columns": {
           "level": "Level",
@@ -129,8 +255,6 @@
     },
     "function": {
       "title": "Platform Default Function Indicators",
-      "buttons": {
-      },
       "testCases": {
         "smoke": {
           "title": "Smoke Test Cases",
@@ -456,8 +580,7 @@
         "method1": "Installation Method 1:",
         "method2": "Installation Method 2:",
         "downloadScript": "1). Download automatic installation script:",
-        "copyScript": "2). Copy {scriptName} to custom installation directory, run script to install:",
-        
+        "copyScript": "2). Copy {scriptName} to custom installation directory, run script to install:"
       },
       "interface": {
         "formItems": {
@@ -482,15 +605,15 @@
           "applicationNode": "Application Node"
         },
         "nodeStatus": {
-          "enabledStatus": "Enabled Status:",
-          "agentInstallStatus": "Agent Install Status:",
-          "connectionStatus": "Connection Status:",
+          "enabledStatus": "Status:",
+          "agentInstallStatus": "Agent Status:",
+          "connectionStatus": "Connected:",
           "enabled": "Enabled",
-          "notEnabled": "Not Enabled",
+          "notEnabled": "Disabled",
           "installed": "Installed",
           "notInstalled": "Not Installed",
-          "connected": "Connected",
-          "notConnected": "Not Connected"
+          "connected": "Yes",
+          "notConnected": "No"
         },
         "viewItem": {
           "id": "ID: ",
@@ -521,15 +644,15 @@
         }
       },
       "nodeTip": {
-        "title": "Tips: 1. Node System: Supports Linux, Mac, Windows operating systems, Linux is recommended. 2. Adding and Installing Agents: Before executing tasks, you need to add nodes and install agents for the nodes. If automatic agent installation fails due to network or server account issues, please follow the manual installation prompts. Please ensure that the agent is in a connected state before executing tasks (if the agent is not started, you need to start the agent first). 3. Node Role Configuration: A node can take on multiple roles, but to improve the accuracy of performance test results, please configure a single \"execution\" node role for stress test nodes. 4. Network Environment Selection: During stress testing, if you want to restore the user's real access environment (such as network latency) as much as possible, please use public network nodes for testing. If you want to exclude network latency interference on test results to test the application's ultimate performance, please add nodes in the same intranet environment as the test application for testing. 5. By default, only system administrators and application administrators are allowed to perform management operations on nodes.",
+        "title": "Tips: Supported operating systems include Linux (recommended), macOS, and Windows. Before executing tasks, add nodes and install agents - if auto-installation fails due to network/account issues, follow manual installation prompts and verify agent connectivity (start if inactive). While nodes support multiple roles, configure stress test nodes with a single \"Execution\" role for accurate performance measurement. Choose public-network nodes to simulate real-user conditions (with latency) or same-intranet nodes to test application limits without network interference. Note: Node management is restricted to system and application administrators by default.",
         "steps": {
           "managementNode": {
             "title": "Management Node",
-            "content": "Used for deploying and running Web UI applications"
+            "content": "Used for deploying and running Web UI applications."
           },
           "controllerNode": {
             "title": "Controller Node",
-            "content": "Used for scheduling, managing, monitoring execution and proxy services"
+            "content": "Used for scheduling, managing, monitoring execution and proxy services."
           },
           "executionNode": {
             "title": "Execution Node",
@@ -537,11 +660,11 @@
           },
           "mockNode": {
             "title": "Mock Node",
-            "content": "Runs Mock services and Mock interfaces"
+            "content": "Runs Mock services and Mock interfaces."
           },
           "applicationNode": {
             "title": "Application Node",
-            "content": "The node where the test application is located, used to observe the system load of the stressed application node during stress testing, helping to locate and analyze performance issues"
+            "content": "Hosts the testing application and monitors target node load during stress tests for performance diagnostics."
           }
         }
       }

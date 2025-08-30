@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { defineAsyncComponent, nextTick, onMounted, reactive, ref, inject } from 'vue';
+import { defineAsyncComponent, inject, nextTick, onMounted, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { DropdownSort, Icon, IconRefresh, NoData, SearchPanel, Spin } from '@xcan-angus/vue-ui';
-import { NodeRole, utils, enumUtils, appContext } from '@xcan-angus/infra';
+import { appContext, enumUtils, NodeRole, utils } from '@xcan-angus/infra';
 import { Button, Pagination, Switch } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
@@ -14,8 +14,8 @@ import { NodeSource } from '@/enums/enums';
 
 const { t } = useI18n();
 
-const NodeItems = defineAsyncComponent(() => import('./components/nodeItems/index.vue'));
-const NodeTip = defineAsyncComponent(() => import('@/views/config/node/components/nodeTip/index.vue'));
+const NodeItems = defineAsyncComponent(() => import('./components/NodeItems.vue'));
+const NodeTip = defineAsyncComponent(() => import('@/views/config/node/components/NodeTip.vue'));
 
 const isAdmin = inject('isAdmin', ref(false));
 
