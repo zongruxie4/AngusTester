@@ -1,4 +1,388 @@
 {
+  "reportAdd": {
+    "title": {
+      "add": "Add Report",
+      "edit": "Edit Report"
+    },
+    "form": {
+      "name": "Name",
+      "namePlaceholder": "Report name, maximum 100 characters",
+      "version": "Version",
+      "versionPlaceholder": "Report version, default 1.0.0, maximum 20 characters",
+      "description": "Description",
+      "descriptionPlaceholder": "Report description, use description to explain the content and purpose of this report, or add links to other resources, maximum 200 characters"
+    },
+    "tabs": {
+      "createdDate": "Created Date",
+      "basic": "Basic Info",
+      "content": "Content"
+    },
+    "reportInfo": {
+      "category": "Category",
+      "reporter": "Reporter",
+      "description": "Description"
+    },
+    "notifications": {
+      "updateSuccess": "Update report successfully",
+      "addSuccess": "Add report successfully"
+    },
+    "menus": {
+      "project": {
+        "label": "Project Report",
+        "progress": {
+          "label": "Project Progress Report",
+          "description": "Report project task, functional test, API test, scenario test four parts of completion progress."
+        }
+      },
+      "task": {
+        "label": "Task Report",
+        "sprint": {
+          "label": "Sprint Report",
+          "description": "Report sprint information, development task completion progress, iteration and assignee summary statistics information."
+        },
+        "task": {
+          "label": "Task Report",
+          "description": "Report the processing results and detailed information of a single task."
+        }
+      },
+      "functional": {
+        "label": "Functional Test Report",
+        "plan": {
+          "label": "Test Plan Report",
+          "description": "Report test plan information, case test progress, test plan and test person summary statistics information."
+        },
+        "case": {
+          "label": "Test Case Report",
+          "description": "Report the test results and detailed information of a single test case."
+        }
+      },
+      "apis": {
+        "label": "API Test Report",
+        "services": {
+          "label": "Service Test Result Report",
+          "description": "Report service information, summary statistics and API test results information under the service."
+        },
+        "apis": {
+          "label": "API Test Result Report",
+          "description": "Report API information, functional test, performance test, stability test results."
+        }
+      },
+      "scenario": {
+        "label": "Scenario Test Report",
+        "result": {
+          "label": "Scenario Test Result Report",
+          "description": "Report scenario information, functional test, performance test, stability test results."
+        }
+      },
+      "execution": {
+        "label": "Execution Report",
+        "functional": {
+          "label": "Functional Test Report",
+          "description": "Report the execution functional test sampling index detailed results."
+        },
+        "performance": {
+          "label": "Performance Test Report",
+          "description": "Report the execution performance test sampling index detailed results."
+        },
+        "stability": {
+          "label": "Stability Test Report",
+          "description": "Report the execution stability test sampling index detailed results."
+        },
+        "customization": {
+          "label": "Customization Test Report",
+          "description": "Report the execution customization test sampling index detailed results."
+        }
+      }
+    },
+    "execPerfContent": {
+      "filter": "Filter",
+      "execution": "Execution",
+      "executionPlaceholder": "Select execution",
+      "content": "Content",
+      "contentHints": "The following is the report output content directory information.",
+      "contentTree": {
+        "exec": "Execution information",
+        "basic": "Execution basic information",
+        "execResult": "Execution result",
+        "total": "Summary results",
+        "name": "Name",
+        "sampling": "Sampling number",
+        "qps": "Transaction number",
+        "minmax": "Minimum/Maximum/Average",
+        "qps/s": "Transactions per second",
+        "errRate0": "Error rate",
+        "percent": "P50/P75/P90/P99/P999",
+        "download/s0": "Download/second",
+        "upload/s0": "Upload/second",
+        "indicatorChart": "Sampling index time series chart",
+        "tps": "Throughput",
+        "thread0": "Concurrency",
+        "response": "Response time",
+        "error0": "Error",
+        "statusCode": "Status code (only HTTP protocol)",
+        "node": "Node resource",
+        "nodeTips": "When there is an application node, the application node resource data is displayed, and when there is no application node, the execution node resource data is displayed. When there are multiple nodes, only the data of the first node is displayed.",
+        "superposition": "Superposition analysis",
+        "QPS/TPS": "Throughput (QPS/TPS)",
+        "QPS/s": "Transactions per second",
+        "vu": "Concurrency (VU)",
+        "thread": "Thread number",
+        "rt": "Response time (RT, milliseconds)",
+        "average": "Average",
+        "error": "Error (ERROR)",
+        "errRate": "Error rate",
+        "other": "Other information",
+        "dispatch": "Execution scheduling log",
+        "dispatchTips": "When there are multiple nodes, only the log of the first execution node is displayed.",
+        "samplingLog": "Execution sampling log",
+        "samplingTips": "When there are multiple nodes, only the log of the first execution node is displayed, and a maximum of 10000 lines of log information is supported."
+      }
+    },
+    "execFuncContent": {
+      "filter": "Filter",
+      "execution": "Execution",
+      "executionPlaceholder": "Select execution",
+      "content": "Content",
+      "contentHints": "The following is the report output content directory information.",
+      "contentTree": {
+        "exec": "Execution information",
+        "basic": "Execution basic information",
+        "execResult": "Execution result",
+        "sprint": "Iteration result",
+        "log": "Log information",
+        "dispatch": "Execution scheduling log",
+        "dispatchTips": "When there are multiple nodes, only the log of the first execution node is displayed.",
+        "sampling": "Execution sampling log",
+        "samplingTips": "When there are multiple nodes, only the log of the first execution node is displayed, and a maximum of 10000 lines of log information is supported."
+      }
+    },
+    "basic": {
+      "options": {
+        "name": "Report name",
+        "user": "Report person",
+        "createdDate": "Report generation time",
+        "version": "Report version",
+        "reportContacts": "Report contacts",
+        "description": "Report description",
+        "reportCopyright": "Report copyright",
+        "otherInformation": "Other information",
+        "watermark": "Add watermark to report content"
+      },
+      "placeholders": {
+        "reportContacts": "Contact information, the default is the current user name and email, the maximum length is 200 characters",
+        "reportCopyright": "Report copyright, declare copyright ownership, usage restrictions, etc., the maximum length is 200 characters",
+        "otherInformation": "Other information, used to supplement the report, the maximum length is 200 characters",
+        "watermark": "Watermark text, the default is the current tenant name, the maximum length is 100 characters"
+      }
+    },
+    "taskContent": {
+      "filter": "Filter",
+      "sprint": "Sprint",
+      "sprintPlaceholder": "Select iteration",
+      "task": "Task",
+      "taskPlaceholder": "Select task",
+      "content": "Content",
+      "contentHints": "The following is the report output content directory information.",
+      "contentTree": {
+        "basic": "Basic information",
+        "user": "User information",
+        "date": "Date information",
+        "description": "Description",
+        "subTask": "Sub-task",
+        "task": "Task",
+        "cases": "Case",
+        "test": "Test information",
+        "testTips": "Test type task display.",
+        "testSource": "Test resource",
+        "exec": "Execution information",
+        "result": "Test result",
+        "remark": "Remark",
+        "activity": "Activity",
+        "comment": "Comment"
+      }
+    },
+    "sprintContent": {
+      "filter": "Filter",
+      "sprint": "Sprint",
+      "sprintPlaceholder": "Select iteration",
+      "organization": "Organization",
+      "user": "User",
+      "userPlaceholder": "Select user",
+      "dept": "Department",
+      "deptPlaceholder": "Select department",
+      "group": "Group",
+      "groupPlaceholder": "Select group",
+      "organizationHints": "Used to output project reports for specified organizations or personnel.",
+      "time": "Time",
+      "timeHints": "Used to output project reports for specified time ranges.",
+      "content": "Content",
+      "contentHints": "The following is the report output content directory information.",
+      "contentTree": {
+        "sprintDetail": "Sprint information",
+        "basic": "Basic information",
+        "taskDetail": "Acceptance criteria",
+        "meetings": "Meeting record",
+        "others": "Other information",
+        "task": "Development task",
+        "taskTotal": "Task summary results",
+        "taskburndown": "Burn-down chart",
+        "groupedTotal": "Grouped statistics",
+        "assigneeId": "Assignee summary results",
+        "assigneeId_taskTotal": "Task summary results",
+        "assigneeId_burndown": "Burn-down chart",
+        "assigneeId_groupedTotal": "Grouped statistics"
+      }
+    },
+    "servicesContent": {
+      "filter": "Filter",
+      "service": "Service",
+      "servicePlaceholder": "Select service",
+      "content": "Content",
+      "contentHints": "The following is the report output content directory information.",
+      "contentTree": {
+        "serviceDetail": "Service information",
+        "apisGroupedTotal": "Interface grouped statistics",
+        "serviceTotal": "Test result summary",
+        "testProcess": "Test progress",
+        "testApi": "Test interface statistics",
+        "testStatus": "Test status statistics"
+      }
+    },
+    "scenarioContent": {
+      "filter": "Filter",
+      "scenario": "Scenario",
+      "scenarioPlaceholder": "Select scenario",
+      "content": "Content",
+      "contentHints": "The following is the report output content directory information.",
+      "contentTree": {
+        "scenario": "Scenario basic information",
+        "scenarioTotal": "Scenario test summary results",
+        "scenarioTestDetail": "Scenario test result detailed information",
+        "funcTest": "Functional test result",
+        "perfTest": "Performance test result",
+        "stabilityTest": "Stability test result",
+        "info": "Test basic information",
+        "apis": "Test interface statistics",
+        "apisDetail": "Test interface result detailed information",
+        "detail": "Detailed test result",
+        "indicator": "Test indicator"
+      }
+    },
+    "projectProcessContent": {
+      "filter": "Filter",
+      "organization": "Organization personnel",
+      "user": "User",
+      "userPlaceholder": "Select user",
+      "dept": "Department",
+      "deptPlaceholder": "Select department",
+      "group": "Group",
+      "groupPlaceholder": "Select group",
+      "organizationHints": "Used to output project reports for specified organizations or personnel.",
+      "time": "Time",
+      "timeHints": "Used to output project reports for specified time ranges.",
+      "content": "Content",
+      "contentHints": "The following is the report output content directory information.",
+      "contentTree": {
+        "projectInfo": "Project information",
+        "task": "Development task",
+        "taskTotal": "Task summary results",
+        "taskburndown": "Task burn-down chart",
+        "taskgroup": "Task grouped statistics",
+        "func": "Functional test",
+        "funcTotal": "Test case summary results",
+        "funcReviewTotal": "Test case review summary results",
+        "caseburndown": "Test case burn-down chart",
+        "casegroup": "Test case grouped statistics",
+        "apis": "API test",
+        "apisTotal": "API test summary results",
+        "apisgroup": "API grouped statistics",
+        "scenario": "Scenario test",
+        "scenarioTotal": "Scenario test summary results",
+        "scenariogroup": "Scenario grouped statistics"
+      }
+    },
+    "planContent": {
+      "filter": "Filter",
+      "testPlan": "Test plan",
+      "testPlanPlaceholder": "Select plan",
+      "organization": "Organization personnel",
+      "user": "User",
+      "userPlaceholder": "Select user",
+      "dept": "Department",
+      "deptPlaceholder": "Select department",
+      "group": "Group",
+      "groupPlaceholder": "Select group",
+      "organizationHints": "Used to output project reports for specified organizations or personnel.",
+      "time": "Time",
+      "timeHints": "Used to output project reports for specified time ranges.",
+      "content": "Content",
+      "contentHints": "The following is the report output content directory information.",
+      "contentTree": {
+        "planDetail": "Plan information",
+        "basic": "Basic information",
+        "tester": "Test personnel and responsibilities",
+        "objective": "Test objective",
+        "scope": "Test scope",
+        "acceptanceCriteria": "Acceptance criteria",
+        "other": "Other information",
+        "caseTotal": "Test case summary results",
+        "casesTotal": "Test summary results",
+        "casesReviewTotal": "Review summary results",
+        "hurndowm": "Burn-down chart",
+        "grouped": "Grouped statistics",
+        "resultkDetail": "Test person summary results",
+        "testTotal": "Test summary results",
+        "reviewTotal": "Review summary results",
+        "burndown": "Burn-down chart",
+        "groupedTotal": "Grouped statistics"
+      }
+    },
+    "caseContent": {
+      "filter": "Filter",
+      "testPlan": "Test Plan",
+      "testPlanPlaceholder": "Select plan",
+      "testCase": "Test Case",
+      "testCasePlaceholder": "Select case",
+      "content": "Content",
+      "contentHints": "The following is the report output content directory information.",
+      "contentTree": {
+        "basic": "Basic Information",
+        "user": "User Information",
+        "date": "Date Information",
+        "condition": "Precondition",
+        "steps": "Test Steps",
+        "description": "Description",
+        "preview": "Review Information",
+        "test": "Test Information",
+        "task": "Task",
+        "cases": "Case",
+        "activity": "Activity",
+        "comment": "Comment"
+      }
+    },
+    "apisContent": {
+      "filter": "Filter",
+      "service": "Service",
+      "servicePlaceholder": "Select service",
+      "api": "API",
+      "apiPlaceholder": "Select API",
+      "content": "Content",
+      "contentHints": "The following is the report output content directory information.",
+      "contentTree": {
+        "apisBasic": "API basic information",
+        "apisTestt": "API test summary results",
+        "apisDetail": "API test result detailed information",
+        "funcTest": "Functional test result",
+        "perfTest": "Performance test result",
+        "stabilityTest": "Stability test result",
+        "info": "Test basic information",
+        "cases": "Test case statistics",
+        "casesDetail": "Test case result detailed information",
+        "detail": "Detailed test result",
+        "indicator": "Test indicator"
+      }
+    }
+  },
   "reportHome": {
     "messages": {
       "deleteSuccess": "Delete successful",
@@ -187,6 +571,20 @@
   "reportPreview": {
     "loading": "Loading data...",
     "generating": "Generating PDF file...",
+    "mainTitle": {
+      "reporter": "Reporter",
+      "reportDate": "Report Date",
+      "reportVersion": "Report Version",
+      "reportTemplate": "Report Template"
+    },
+    "description": {
+      "summary": "Summary",
+      "progress": "Progress",
+      "description": "Description",
+      "contact": "Contact",
+      "copyright": "Copyright",
+      "other": "Other"
+    },
     "actions": {
       "exportPDF": "Export PDF",
       "printPDF": "Print PDF"

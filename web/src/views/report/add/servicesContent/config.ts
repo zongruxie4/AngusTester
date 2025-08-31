@@ -1,26 +1,30 @@
+import { i18n } from '@xcan-angus/infra';
+
+const t = i18n.getI18n()?.global?.t || ((value: string):string => value);
+
 export const contentTreeData = [
   {
-    title: '服务信息',
+    title: t('reportAdd.servicesContent.contentTree.serviceDetail'),
     key: 'serviceDetail'
   },
   {
-    title: '接口分组统计',
+    title: t('reportAdd.servicesContent.contentTree.apisGroupedTotal'),
     key: 'apisGroupedTotal'
   },
   {
-    title: '测试结果汇总',
+    title: t('reportAdd.servicesContent.contentTree.serviceTotal'),
     key: 'serviceTotal',
     children: [
       {
-        title: '测试进度',
+        title: t('reportAdd.servicesContent.contentTree.testProcess'),
         key: 'testProcess'
       },
       {
-        title: '测试接口统计',
+        title: t('reportAdd.servicesContent.contentTree.testApi'),
         key: 'testApi'
       },
       {
-        title: '测试状态统计',
+        title: t('reportAdd.servicesContent.contentTree.testStatus'),
         key: 'testStatus'
       }
     ]

@@ -555,6 +555,23 @@
         "copySuccess": "复制成功",
         "link": "链接: {url}",
         "linkAndPassword": "链接: {url} 密码: {password}"
+      },
+      "shareList": {
+        "addShare": "添加分享",
+        "searchRemark": "查询备注信息",
+        "link": "链接",
+        "password": "密码",
+        "validityPeriod": "有效期",
+        "permanentValid": "永久有效",
+        "confirm": "确认",
+        "cancel": "取消",
+        "loadMore": "加载更多",
+        "notifications": {
+          "deleteSuccess": "删除分享记录成功",
+          "passwordEmpty": "输入的密码不能为空",
+          "modifyPasswordSuccess": "修改密码成功",
+          "copySuccess": "复制成功"
+        }
       }
     },
     "introduce": {

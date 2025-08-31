@@ -1069,6 +1069,40 @@
       }
     },
     "apis": {
+      "collapseButtonGroup": {
+        "edit": "Edit",
+        "clone": "Clone",
+        "delete": "Delete"
+      },
+      "buttonGroup": {
+        "mockApi": "Mock Api",
+        "addWatch": "关注",
+        "cancelWatch": "Cancel Watch",
+        "addFavourite": "Add Favourite",
+        "cancelFavourite": "Cancel Favourite",
+        "remove": "Move",
+        "auth": "Auth",
+        "export": "Export",
+        "status": "Modify Status",
+        "testScript": "Test Script",
+        "generateTestScript": "Generate Test Script",
+        "generateTestScriptTip": "Generate interface functional, performance and stability test scripts.",
+        "deleteTestScript": "Delete Test Script",
+        "deleteTestScriptTip": "Delete interface functional, performance and stability test scripts.",
+        "exec": "Execute Test",
+        "funcTestExec": "Execute Functional Test",
+        "perfTestExec": "Execute Performance Test",
+        "stabilityTestExec": "Execute Stability Test",
+        "testTask": "Test Task",
+        "setTest": "Generate Test Task",
+        "setTestTip": "Generate functional, performance and stability test tasks.",
+        "reTest": "Re-start Test Task",
+        "reTestTip": "Update the task to \"Pending\" and the related statistics and status will be cleared.",
+        "reopen": "Re-open Test Task",
+        "reopenTip": "Update the task to \"Pending\" and the statistics and status will not be cleared.",
+        "deleteTask": "Delete Test Task",
+        "deleteTaskTip": "Delete interface corresponding functional, performance and stability test tasks, including test scripts."
+      },
       "response": {
         "pretty": "Pretty",
         "raw": "Raw",

@@ -1,50 +1,54 @@
+import { i18n } from '@xcan-angus/infra';
+
+const t = i18n.getI18n()?.global?.t || ((value: string):string => value);
+
 export const contentTreeData = [
   {
-    title: '基本信息',
+    title: t('reportAdd.caseContent.contentTree.basic'),
     key: 'basic'
   },
   {
-    title: '人员信息',
+    title: t('reportAdd.caseContent.contentTree.user'),
     key: 'user'
   },
   {
-    title: '日期信息',
+    title: t('reportAdd.caseContent.contentTree.date'),
     key: 'date'
   },
   {
-    title: '前置条件',
+    title: t('reportAdd.caseContent.contentTree.condition'),
     key: 'condition'
   },
   {
-    title: '测试步骤',
+    title: t('reportAdd.caseContent.contentTree.steps'),
     key: 'steps'
   },
   {
-    title: '描述',
+    title: t('reportAdd.caseContent.contentTree.description'),
     key: 'description'
   },
   {
-    title: '评审信息',
+    title: t('reportAdd.caseContent.contentTree.preview'),
     key: 'preview'
   },
   {
-    title: '测试信息',
+    title: t('reportAdd.caseContent.contentTree.test'),
     key: 'test'
   },
   {
-    title: '关联任务',
+    title: t('reportAdd.caseContent.contentTree.task'),
     key: 'task'
   },
   {
-    title: '关联用例',
+    title: t('reportAdd.caseContent.contentTree.cases'),
     key: 'cases'
   },
   {
-    title: '活动',
+    title: t('reportAdd.caseContent.contentTree.activity'),
     key: 'activity'
   },
   {
-    title: '评论',
+    title: t('reportAdd.caseContent.contentTree.comment'),
     key: 'comment'
   }
 ];

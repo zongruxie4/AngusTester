@@ -1,90 +1,78 @@
+import { i18n } from '@xcan-angus/infra';
+
+const t = i18n.getI18n()?.global?.t || ((value: string):string => value);
+
 export const contentTreeData = [
   {
-    title: '项目信息',
+    title: t('reportAdd.projectProcessContent.contentTree.projectInfo'),
     key: 'projectInfo'
   },
   {
-    title: '研发任务',
+    title: t('reportAdd.projectProcessContent.contentTree.task'),
     key: 'task',
     children: [
       {
-        title: '任务汇总结果',
+        title: t('reportAdd.projectProcessContent.contentTree.taskTotal'),
         key: 'taskTotal'
       },
       {
-        title: '任务燃尽图',
+        title: t('reportAdd.projectProcessContent.contentTree.taskburndown'),
         key: 'taskburndown'
       },
       {
-        title: '任务分组统计',
+        title: t('reportAdd.projectProcessContent.contentTree.taskgroup'),
         key: 'taskgroup'
       }
-      // {
-      //   title: '任务结果明细',
-      //   key: 'taskDetail'
-      // }
     ]
   },
   {
-    title: '功能测试',
+    title: t('reportAdd.projectProcessContent.contentTree.func'),
     key: 'func',
     children: [
       {
-        title: '用例测试汇总结果',
+        title: t('reportAdd.projectProcessContent.contentTree.funcTotal'),
         key: 'funcTotal'
       },
       {
-        title: '用例评审汇总结果',
+        title: t('reportAdd.projectProcessContent.contentTree.funcReviewTotal'),
         key: 'funcReviewTotal'
       },
       {
-        title: '用例燃尽图',
+        title: t('reportAdd.projectProcessContent.contentTree.caseburndown'),
         key: 'caseburndown'
       },
       {
-        title: '用例分组统计',
+        title: t('reportAdd.projectProcessContent.contentTree.casegroup'),
         key: 'casegroup'
       }
-      // {
-      //   title: '用例测试结果明细',
-      //   key: 'funcDetail'
-      // }
     ]
   },
   {
-    title: '接口测试',
+    title: t('reportAdd.projectProcessContent.contentTree.apis'),
     key: 'apis',
     children: [
       {
-        title: '接口测试汇总结果',
+        title: t('reportAdd.projectProcessContent.contentTree.apisTotal'),
         key: 'apisTotal'
       },
       {
-        title: '接口分组统计',
+        title: t('reportAdd.projectProcessContent.contentTree.apisgroup'),
         key: 'apisgroup'
       }
-      // {
-      //   title: '接口测试结果明细',
-      //   key: 'apisDetail'
-      // }
     ]
   },
   {
-    title: '场景测试',
+    title: t('reportAdd.projectProcessContent.contentTree.scenario'),
     key: 'scenario',
     children: [
       {
-        title: '场景测试汇总结果',
+        title: t('reportAdd.projectProcessContent.contentTree.scenarioTotal'),
         key: 'scenarioTotal'
       },
       {
-        title: '场景分组统计',
+        title: t('reportAdd.projectProcessContent.contentTree.scenariogroup'),
         key: 'scenariogroup'
       }
-      // {
-      //   title: '场景测试结果明细',
-      //   key: 'scenarioDetail'
-      // }
     ]
   }
 ];

@@ -613,7 +613,7 @@ const sysItems = [
     </div>
 
     <li class="mb-2">
-      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>测试用例结果明细</span>
+      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.apis.testResultDetail.funcTestResult.caseResultDetail.title') }}</span>
     </li>
 
     <div class="mb-5">
@@ -637,11 +637,11 @@ const sysItems = [
     </div>
 
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a3.2" class="text-3.5 text-theme-title font-medium">3.2、<em class="inline-block w-0.25"></em>性能测试</span>
+      <span id="a3.2" class="text-3.5 text-theme-title font-medium">3.2、<em class="inline-block w-0.25"></em>{{ t('reportPreview.apis.testResultDetail.performanceTest.title') }}</span>
     </h1>
 
     <li class="mb-2">
-      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>测试基本信息</span>
+      <span class="text-3 text-theme-title font-medium"><em class="inline-block w-0.25"></em>{{ t('reportPreview.apis.testResultDetail.performanceTest.basicInfo') }}</span>
     </li>
 
     <div v-if="TEST_PERFORMANCE" class="mb-5">

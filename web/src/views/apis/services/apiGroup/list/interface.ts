@@ -1,127 +1,132 @@
+import { i18n } from '@xcan-angus/infra';
+
+const t = i18n.getI18n()?.global?.t || ((value: string):string => value);
+
 export const CollapseButtonGroup = [
   {
-    label: '编辑',
+    label: t('service.apis.collapseButtonGroup.edit'),
     value: 'edit',
     auth: 'VIEW',
     icon: 'icon-bianji',
     disabled: false
   },
   {
-    label: '克隆',
+    label: t('service.apis.collapseButtonGroup.clone'),
     value: 'patchClone',
     auth: 'VIEW',
     icon: 'icon-fuzhi',
     disabled: false
   },
   {
-    label: '删除',
+    label: t('service.apis.collapseButtonGroup.delete'),
     value: 'del',
     icon: 'icon-qingchu',
     auth: 'DELETE',
     disabled: false
   }
 ];
+
 export const ButtonGroup = [
   {
-    name: 'Mock接口',
+    name: t('service.apis.buttonGroup.mockApi'),
     key: 'mock',
     permission: 'MOCK',
     icon: 'icon-mockjiedian'
   }, {
-    name: '关注',
+    name: t('service.apis.buttonGroup.addWatch'),
     key: 'addWatch',
     permission: 'VIEW',
     disabled: false,
     icon: 'icon-yiguanzhu'
   }, {
-    name: '取消关注',
+    name: t('service.apis.buttonGroup.cancelWatch'),
     key: 'cancelWatch',
     permission: 'VIEW',
     disabled: false,
     icon: 'icon-quxiaoguanzhu'
   }, {
-    name: '收藏',
+    name: t('service.apis.buttonGroup.addFavourite'),
     key: 'addFavourite',
     permission: 'VIEW',
     disabled: false,
     icon: 'icon-shoucang2'
   }, {
-    name: '取消收藏',
+    name: t('service.apis.buttonGroup.cancelFavourite'),
     key: 'cancelFavourite',
     permission: 'VIEW',
     disabled: false,
     icon: 'icon-quxiaoshoucang'
   },
   {
-    name: '移动',
+    name: t('service.apis.buttonGroup.remove'),
     key: 'remove',
     permission: 'MODIFY',
     disabled: false,
     icon: 'icon-yidong'
   }, {
-    name: '权限',
+    name: t('service.apis.buttonGroup.auth'),
     key: 'auth',
     permission: 'GRANT',
     disabled: false,
     icon: 'icon-quanxian1'
   }, {
-    name: '导出',
+    name: t('service.apis.buttonGroup.export'),
     key: 'export',
     permission: 'EXPORT',
     disabled: false,
     icon: 'icon-daochu'
   }, {
-    name: '修改状态',
+    name: t('service.apis.buttonGroup.status'),
     key: 'status',
     permission: 'MODIFY',
     disabled: false,
     icon: 'icon-shuxie'
   },
   {
-    name: '测试脚本',
+    name: t('service.apis.buttonGroup.testScript'),
     key: 'testScript',
     permission: 'TEST',
     icon: 'icon-ceshijiaoben',
     children: [
       {
-        name: '生成测试脚本',
+        name: t('service.apis.buttonGroup.generateTestScript'),
         key: 'setTestScript',
         permission: 'TEST',
         disabled: false,
         icon: 'icon-shengchengceshijiaoben',
-        tip: '生成接口功能、性能和稳定性测试脚本。'
+        tip: t('service.apis.buttonGroup.generateTestScriptTip')
       },
       {
-        name: '删除测试脚本',
+        name: t('service.apis.buttonGroup.deleteTestScript'),
         key: 'delTestScript',
         permission: 'TEST',
         disabled: false,
         icon: 'icon-shanchuceshijiaoben',
-        tip: '删除接口功能、性能和稳定性测试脚本。'
+        tip: t('service.apis.buttonGroup.deleteTestScriptTip')
       }
     ]
   },
   {
-    name: '执行测试',
+    name: t('service.apis.buttonGroup.exec'),
     key: 'exec',
     disabled: false,
     permission: 'TEST',
     icon: 'icon-ceshijiaoben',
     children: [
       {
-        name: '执行功能测试',
+        name: t('service.apis.buttonGroup.funcTestExec'),
         key: 'funcTestExec',
         permission: 'TEST',
         icon: 'icon-shengchengceshijiaoben'
       },
       {
-        name: '执行性能测试',
+        name: t('service.apis.buttonGroup.perfTestExec'),
         key: 'perfTestExec',
         permission: 'TEST',
         icon: 'icon-shanchuceshijiaoben'
       },
       {
-        name: '执行稳定性测试',
+        name: t('service.apis.buttonGroup.stabilityTestExec'),
         key: 'stabilityTestExec',
         permission: 'TEST',
         icon: 'icon-shanchuceshijiaoben'
@@ -129,42 +134,42 @@ export const ButtonGroup = [
     ]
   },
   {
-    name: '测试任务',
+    name: t('service.apis.buttonGroup.testTask'),
     key: 'testTask',
     permission: 'TEST',
     icon: 'icon-ceshirenwu',
     children: [
       {
-        name: '生成测试任务',
+        name: t('service.apis.buttonGroup.setTest'),
         key: 'setTest',
         permission: 'TEST',
         disabled: false,
         icon: 'icon-shengchengceshirenwu1',
-        tip: '生成功能、性能和稳定性测试任务。'
+        tip: t('service.apis.buttonGroup.setTestTip')
       },
       {
-        name: '重新开始测试任务',
+        name: t('service.apis.buttonGroup.reTest'),
         key: 'reTest',
         permission: 'TEST',
         disabled: false,
         icon: 'icon-zhongxinkaishiceshi',
-        tip: '将任务更新为`待处理`，相关统计计数和状态会被清除。'
+        tip: t('service.apis.buttonGroup.reTestTip')
       },
       {
-        name: '重新打开测试任务',
+        name: t('service.apis.buttonGroup.reopen'),
         key: 'reopen',
         permission: 'TEST',
         disabled: false,
         icon: 'icon-zhongxindakaiceshirenwu',
-        tip: '将任务状态更新为`待处理`、 不清理统计计数和状态。'
+        tip: t('service.apis.buttonGroup.reopenTip')
       },
       {
-        name: '删除测试任务',
+        name: t('service.apis.buttonGroup.deleteTask'),
         key: 'deleteTask',
         icon: 'icon-shanchuceshirenwu1',
         permission: 'TEST',
         disabled: false,
-        tip: '删除接口对应功能、性能和稳定性测试任务，包括测试脚本。'
+        tip: t('service.apis.buttonGroup.deleteTaskTip')
       }
     ]
   }];

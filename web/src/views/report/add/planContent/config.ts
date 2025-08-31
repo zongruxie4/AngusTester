@@ -1,78 +1,78 @@
+import { i18n } from '@xcan-angus/infra';
+
+const t = i18n.getI18n()?.global?.t || ((value: string):string => value);
+
 export const contentTreeData = [
   {
-    title: '测试计划信息',
+    title: t('reportAdd.planContent.contentTree.planDetail'),
     key: 'planDetail',
     children: [
       {
-        title: '基本信息',
+        title: t('reportAdd.planContent.contentTree.basic'),
         key: 'basic'
       },
       {
-        title: '测试人员与职责',
+        title: t('reportAdd.planContent.contentTree.tester'),
         key: 'tester'
       },
       {
-        title: '测试目标',
+        title: t('reportAdd.planContent.contentTree.objective'),
         key: 'objective'
       },
       {
-        title: '测试范围',
+        title: t('reportAdd.planContent.contentTree.scope'),
         key: 'scope'
       },
       {
-        title: '验收标准',
+        title: t('reportAdd.planContent.contentTree.acceptanceCriteria'),
         key: 'acceptanceCriteria'
       },
       {
-        title: '其他说明',
+        title: t('reportAdd.planContent.contentTree.other'),
         key: 'other'
       }
     ]
   },
   {
-    title: '用例汇总结果',
+    title: t('reportAdd.planContent.contentTree.caseTotal'),
     key: 'caseTotal',
     children: [
       {
-        title: '测试汇总结果',
+        title: t('reportAdd.planContent.contentTree.casesTotal'),
         key: 'casesTotal'
       },
       {
-        title: '评审汇总结果',
+        title: t('reportAdd.planContent.contentTree.casesReviewTotal'),
         key: 'casesReviewTotal'
       },
       {
-        title: '燃尽图',
+        title: t('reportAdd.planContent.contentTree.hurndowm'),
         key: 'hurndowm'
       },
       {
-        title: '分组统计',
+        title: t('reportAdd.planContent.contentTree.grouped'),
         key: 'grouped'
       }
-      // {
-      //   title: '测试人员用例汇总结果',
-      //   key: 'testerDetail'
-      // }
     ]
   },
   {
-    title: '测试人汇总结果',
+    title: t('reportAdd.planContent.contentTree.resultkDetail'),
     key: 'resultkDetail',
     children: [
       {
-        title: '测试汇总结果',
+        title: t('reportAdd.planContent.contentTree.testTotal'),
         key: 'testTotal'
       },
       {
-        title: '评审汇总结果',
+        title: t('reportAdd.planContent.contentTree.reviewTotal'),
         key: 'reviewTotal'
       },
       {
-        title: '燃尽图',
+        title: t('reportAdd.planContent.contentTree.burndown'),
         key: 'burndown'
       },
       {
-        title: '分组统计',
+        title: t('reportAdd.planContent.contentTree.groupedTotal'),
         key: 'groupedTotal'
       }
     ]

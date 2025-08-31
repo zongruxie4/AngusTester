@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch, inject, Ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Colon, DatePicker, Hints, Select } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
 import { GM } from '@xcan-angus/infra';
 import { contentTreeData } from './config';
+
+const { t } = useI18n();
 
 interface Props {
   projectId: string;
@@ -25,15 +28,15 @@ const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', r
 const targetTypeOpt = [
   {
     value: 'USER',
-    label: '用户'
+    label: t('reportAdd.projectProcessContent.user')
   },
   {
     value: 'DEPT',
-    label: '部门'
+    label: t('reportAdd.projectProcessContent.dept')
   },
   {
     value: 'GROUP',
-    label: '组'
+    label: t('reportAdd.projectProcessContent.group')
   }
 ];
 
@@ -101,11 +104,11 @@ defineExpose({
 <template>
   <div class="flex items-center space-x-1">
     <span class="h-4 w-1.5 bg-blue-border1"></span>
-    <span>过滤</span>
+    <span>{{ t('reportAdd.projectProcessContent.filter') }}</span>
   </div>
   <div class="mt-2 space-y-2 pl-2">
     <div class="flex flex-1 items-center space-x-2">
-      <span class="w-14 text-right">组织人员</span><Colon />
+      <span class="w-14 text-right">{{ t('reportAdd.projectProcessContent.organization') }}</span><Colon />
       <Select
         v-model:value="creatorObjectType"
         :options="targetTypeOpt"
@@ -118,7 +121,7 @@ defineExpose({
         :showSearch="true"
         allowClear
         class="w-50"
-        placeholder="选择用户"
+        :placeholder="t('reportAdd.projectProcessContent.userPlaceholder')"
         :action="`${GM}/user?fullTextSearch=true`"
         :fieldNames="{ label: 'fullName', value: 'id' }">
       </Select>
@@ -126,7 +129,7 @@ defineExpose({
       <Select
         v-if="creatorObjectType === 'DEPT'"
         v-model:value="creatorObjectId"
-        placeholder="选择部门"
+        :placeholder="t('reportAdd.projectProcessContent.deptPlaceholder')"
         class="w-50"
         allowClear
         :showSearch="true"
@@ -137,30 +140,30 @@ defineExpose({
       <Select
         v-if="creatorObjectType === 'GROUP'"
         v-model:value="creatorObjectId"
-        placeholder="选择组"
+        :placeholder="t('reportAdd.projectProcessContent.groupPlaceholder')"
         class="w-50"
         allowClear
         :showSearch="true"
         :action="`${GM}/group?fullTextSearch=true`"
         :fieldNames="{ label: 'name', value: 'id' }">
       </Select>
-      <Hints text="用于输出指定组织或人员项目报告。" />
+      <Hints :text="t('reportAdd.projectProcessContent.organizationHints')" />
     </div>
     <div class="flex flex-1 items-center space-x-2">
-      <span class="w-14 text-right">时间</span>
+      <span class="w-14 text-right">{{ t('reportAdd.projectProcessContent.time') }}</span>
       <Colon />
       <DatePicker
         v-model:value="dateRange"
         showTime
         class="w-72 flex-shrink-0"
         type="date-range" />
-      <Hints text="用于输出指定时间范围项目报告。" />
+      <Hints :text="t('reportAdd.projectProcessContent.timeHints')" />
     </div>
   </div>
   <div class="flex items-center space-x-1 mt-4">
     <span class="h-4 w-1.5 bg-blue-border1"></span>
-    <span>内容</span>
-    <Hints text="以下是报告输出内容目录信息。" />
+    <span>{{ t('reportAdd.projectProcessContent.content') }}</span>
+    <Hints :text="t('reportAdd.projectProcessContent.contentHints')" />
   </div>
   <Tree
     v-model:checkedKeys="checked"
