@@ -2,16 +2,111 @@ import * as echarts from 'echarts';
 import { reactive, Ref, ref } from 'vue';
 import { formatBytesToUnit } from '@/utils/common';
 
-// ECharts配置选项
-export const echartsOpt = {
-  title: {
-    text: ' '
-  },
+// ============================================================================
+// Type Definitions
+// ============================================================================
+
+/**
+ * Chart data item interface
+ * <p>
+ * Represents a single data point in the chart with timestamp and values.
+ * </p>
+ */
+export interface ChartDataItem {
+  timestamp: string;
+  cvsCpu?: string;
+  cvsMemory?: string;
+  cvsValue?: string;
+}
+
+/**
+ * Table data item interface
+ * <p>
+ * Represents a row in the statistics table below the chart.
+ * </p>
+ */
+export interface TableDataItem {
+  name: string;
+  unit: string;
+  average: string;
+  high: string;
+  low: string;
+  latest: string;
+}
+
+/**
+ * Series data interface for ECharts
+ * <p>
+ * Represents a single line series in the chart.
+ * </p>
+ */
+export interface SeriesData {
+  data: number[];
+  type: string;
+  name: string;
+  smooth: boolean;
+  showSymbol: boolean;
+  lineStyle: {
+    width: number;
+  };
+}
+
+/**
+ * Chart option interface
+ * <p>
+ * Represents the complete ECharts configuration.
+ * </p>
+ */
+export interface ChartOption {
+  title: { text: string };
+  tooltip: { trigger: string; textStyle: { fontSize: number } };
+  grid: { top: string; left: string; right: string; bottom: string; containLabel: boolean };
+  xAxis: Array<{ data: string[] }>;
+  yAxis: Array<{ type: string; splitLine: { show: boolean; lineStyle: { type: string } } }>;
+  series: SeriesData[];
+  legend?: { type: string; data: string[]; y: string; x: string };
+}
+
+/**
+ * Resource usage data interface
+ * <p>
+ * Represents current resource usage metrics for the node.
+ * </p>
+ */
+export interface ResourceUsage {
+  cpu: number;
+  cpuPercent: number;
+  cpuTotal: number;
+  memory: string;
+  memoryPercent: number;
+  memoryTotal: string;
+  swap: string;
+  swapPercent: number;
+  swapTotal: string;
+  disk: string;
+  diskPercent: number;
+  diskTotal: string;
+  txBytesRate: number;
+  rxBytesRate: number;
+  txBytes: string;
+  rxBytes: string;
+}
+
+// ============================================================================
+// Constants and Default Configurations
+// ============================================================================
+
+/**
+ * Default ECharts configuration options
+ * <p>
+ * Base configuration shared across all chart types.
+ * </p>
+ */
+export const DEFAULT_ECHARTS_OPTIONS: ChartOption = {
+  title: { text: ' ' },
   tooltip: {
     trigger: 'axis',
-    textStyle: {
-      fontSize: 12
-    }
+    textStyle: { fontSize: 12 }
   },
   grid: {
     top: '3%',
@@ -20,70 +115,590 @@ export const echartsOpt = {
     bottom: '12%',
     containLabel: true
   },
-  xAxis: {
+  xAxis: [{
     type: 'category',
     boundaryGap: false,
-    data: [] as string[],
+    data: [],
     splitLine: {
       show: true,
-      lineStyle: {
-        type: 'dashed'
-      }
+      lineStyle: { type: 'dashed' }
     }
-  },
-  yAxis: {
+  }],
+  yAxis: [{
     type: 'value',
     splitLine: {
       show: true,
-      lineStyle: {
-        type: 'dashed'
-      }
+      lineStyle: { type: 'dashed' }
     }
-  },
-  series: [] as any[]
+  }],
+  series: []
 };
 
-export const defaultLegend = {
-  type: 'plain',
+/**
+ * Default legend configuration
+ * <p>
+ * Standard legend positioning and styling.
+ * </p>
+ */
+export const DEFAULT_LEGEND = {
+  type: 'plain' as const,
   data: [] as string[],
-  y: 'bottom',
-  x: 'center'
+  y: 'bottom' as const,
+  x: 'center' as const
 };
 
-// 获取默认线条配置
-export const getDefaultLineConfig = () => {
-  return {
-    data: [] as number[],
-    type: 'line',
-    smooth: true,
-    showSymbol: false,
-    lineStyle: {
-      width: 1
+/**
+ * Default line series configuration
+ * <p>
+ * Common line chart styling and behavior.
+ * </p>
+ */
+export const getDefaultLineConfig = (): Omit<SeriesData, 'name'> => ({
+  data: [],
+  type: 'line',
+  smooth: true,
+  showSymbol: false,
+  lineStyle: { width: 1 }
+});
+
+/**
+ * Create a complete series data object with name
+ * <p>
+ * Helper function to create a complete series with the provided name.
+ * </p>
+ */
+export const createSeriesData = (name: string): SeriesData => ({
+  ...getDefaultLineConfig(),
+  name
+});
+
+// ============================================================================
+// Chart Data Processing Utilities
+// ============================================================================
+
+/**
+ * Utility class for processing chart data
+ * <p>
+ * Contains helper methods for data transformation and calculation.
+ * </p>
+ */
+class ChartDataProcessor {
+  /**
+   * Process CPU data and calculate statistics
+   * <p>
+   * Converts raw CPU data to series format and calculates table statistics.
+   * </p>
+   */
+  static processCpuData(data: ChartDataItem[], t: (key: string) => string): {
+    seriesData: SeriesData[];
+    tableData: TableDataItem[];
+  } {
+    const dataTypes = [
+      t('node.nodeDetail.chartOptions.cpu.idle'),
+      t('node.nodeDetail.chartOptions.cpu.sys'),
+      t('node.nodeDetail.chartOptions.cpu.user'),
+      t('node.nodeDetail.chartOptions.cpu.wait'),
+      t('node.nodeDetail.chartOptions.cpu.other'),
+      t('node.nodeDetail.chartOptions.cpu.total')
+    ];
+
+    const seriesData = dataTypes.map(name => createSeriesData(name));
+
+    // Process each data point
+    data.forEach(item => {
+      if (item.cvsCpu) {
+        const cpuValues = item.cvsCpu.split(',');
+        cpuValues.forEach((val, idx) => {
+          if (seriesData[idx]) {
+            seriesData[idx].data.push(+(+val).toFixed(2));
+          }
+        });
+      }
+    });
+
+    // Calculate table statistics
+    const tableData = seriesData.map((series, idx) => {
+      const values = series.data;
+      if (values.length === 0) {
+        return {
+          name: dataTypes[idx],
+          unit: '%',
+          average: '0%',
+          high: '0%',
+          low: '0%',
+          latest: '0%'
+        };
+      }
+
+      const total = values.reduce((sum, val) => sum + val, 0);
+      const average = (total / values.length).toFixed(2);
+      const high = Math.max(...values).toFixed(2);
+      const low = Math.min(...values).toFixed(2);
+      const latest = values[values.length - 1].toFixed(2);
+
+      return {
+        name: dataTypes[idx],
+        unit: '%',
+        average: `${average}%`,
+        high: `${high}%`,
+        low: `${low}%`,
+        latest: `${latest}%`
+      };
+    });
+
+    return { seriesData, tableData };
+  }
+
+  /**
+   * Process memory data and calculate statistics
+   * <p>
+   * Handles both absolute values and percentages for memory metrics.
+   * </p>
+   */
+  static processMemoryData(
+    data: ChartDataItem[],
+    t: (key: string) => string,
+    showMemoryPercentChart: boolean
+  ): {
+    seriesData: SeriesData[];
+    tableData: TableDataItem[];
+    percentSeriesData: SeriesData[];
+    percentTableData: TableDataItem[];
+  } {
+    const dataTypes = [
+      t('node.nodeDetail.chartOptions.memory.free'),
+      t('node.nodeDetail.chartOptions.memory.used'),
+      t('node.nodeDetail.chartOptions.memory.freePercent'),
+      t('node.nodeDetail.chartOptions.memory.usedPercent'),
+      t('node.nodeDetail.chartOptions.memory.actualFree'),
+      t('node.nodeDetail.chartOptions.memory.actualUsed'),
+      t('node.nodeDetail.chartOptions.memory.actualFreePercent'),
+      t('node.nodeDetail.chartOptions.memory.actualUsedPercent'),
+      t('node.nodeDetail.chartOptions.memory.swapFree'),
+      t('node.nodeDetail.chartOptions.memory.swapUsed')
+    ];
+
+    const dataTypeKeys = [
+      'free', 'used', 'freePercent', 'usedPercent', 'actualFree', 'actualUsed',
+      'actualFreePercent', 'actualUsedPercent', 'swapFree', 'swapUsed'
+    ];
+
+    const seriesData = dataTypes.map(name => createSeriesData(name));
+
+    // Process each data point
+    data.forEach(item => {
+      if (item.cvsMemory) {
+        const values = item.cvsMemory.split(',');
+        values.forEach((val, idx) => {
+          if (seriesData[idx]) {
+            if (dataTypeKeys[idx].includes('Percent')) {
+              seriesData[idx].data.push(+val);
+            } else {
+              const formattedValue = formatBytesToUnit(parseFloat(val), 'GB', 2);
+              const numericValue = typeof formattedValue === 'string' ? parseFloat(formattedValue) : formattedValue;
+              seriesData[idx].data.push(numericValue);
+            }
+          }
+        });
+      }
+    });
+
+    // Calculate table statistics
+    const tableData = seriesData.map((series, idx) => {
+      const values = series.data;
+      if (values.length === 0) {
+        return {
+          name: dataTypes[idx],
+          unit: dataTypeKeys[idx].includes('Percent') ? '%' : 'GB',
+          average: dataTypeKeys[idx].includes('Percent') ? '0%' : '0 GB',
+          high: dataTypeKeys[idx].includes('Percent') ? '0%' : '0 GB',
+          low: dataTypeKeys[idx].includes('Percent') ? '0%' : '0 GB',
+          latest: dataTypeKeys[idx].includes('Percent') ? '0%' : '0 GB'
+        };
+      }
+
+      const total = values.reduce((sum, val) => sum + val, 0);
+      const average = (total / values.length).toFixed(2);
+      const high = Math.max(...values).toFixed(2);
+      const low = Math.min(...values).toFixed(2);
+      const latest = values[values.length - 1].toFixed(2);
+
+      if (dataTypeKeys[idx].includes('Percent')) {
+        return {
+          name: dataTypes[idx],
+          unit: '%',
+          average: `${average}%`,
+          high: `${high}%`,
+          low: `${low}%`,
+          latest: `${latest}%`
+        };
+      } else {
+        return {
+          name: dataTypes[idx],
+          unit: 'GB',
+          average: `${average} GB`,
+          high: `${high} GB`,
+          low: `${low} GB`,
+          latest: `${latest} GB`
+        };
+      }
+    });
+
+    // Separate percent and absolute data
+    const percentSeriesData = seriesData.slice(2, 4).concat(seriesData.slice(6, 8));
+    const percentTableData = tableData.slice(2, 4).concat(tableData.slice(6, 8));
+
+    // Filter table data based on chart type
+    const filteredTableData = showMemoryPercentChart
+      ? tableData.filter(item => item.unit === '%')
+      : tableData.filter(item => item.unit !== '%');
+
+    return {
+      seriesData: seriesData.slice(0, 2).concat(seriesData.slice(4, 6)).concat(seriesData.slice(8)),
+      tableData: filteredTableData,
+      percentSeriesData,
+      percentTableData
+    };
+  }
+
+  /**
+   * Process disk data and calculate statistics
+   * <p>
+   * Handles different disk metrics including capacity, IO rates, and percentages.
+   * </p>
+   */
+  static processDiskData(
+    data: ChartDataItem[],
+    t: (key: string) => string,
+    diskChartKey: string
+  ): {
+    seriesData: SeriesData[];
+    tableData: TableDataItem[];
+    chartOptions: Record<string, ChartOption>;
+  } {
+    const dataTypes = [
+      t('node.nodeDetail.chartOptions.disk.total'),
+      t('node.nodeDetail.chartOptions.disk.free'),
+      t('node.nodeDetail.chartOptions.disk.used'),
+      t('node.nodeDetail.chartOptions.disk.avail'),
+      t('node.nodeDetail.chartOptions.disk.usePercent'),
+      t('node.nodeDetail.chartOptions.disk.readsRate'),
+      t('node.nodeDetail.chartOptions.disk.writesRate'),
+      t('node.nodeDetail.chartOptions.disk.readBytesRate'),
+      t('node.nodeDetail.chartOptions.disk.writeBytesRate')
+    ];
+
+    const dataTypeKeys = [
+      'total', 'free', 'used', 'avail', 'usePercent', 'readsRate', 'writesRate',
+      'readBytesRate', 'writeBytesRate'
+    ];
+
+    const seriesData = dataTypes.map(name => createSeriesData(name));
+
+    // Process each data point
+    data.forEach(item => {
+      if (item.cvsValue) {
+        const diskValues = item.cvsValue.split(',');
+        diskValues.forEach((val, idx) => {
+          if (seriesData[idx]) {
+            if (dataTypeKeys[idx].includes('Percent') || dataTypeKeys[idx].includes('Rate')) {
+              seriesData[idx].data.push(+val);
+            } else {
+              const formattedValue = formatBytesToUnit(parseFloat(val), 'GB', 2);
+              const numericValue = typeof formattedValue === 'string' ? parseFloat(formattedValue) : formattedValue;
+              seriesData[idx].data.push(numericValue);
+            }
+          }
+        });
+      }
+    });
+
+    // Calculate table statistics
+    const tableData = seriesData.map((series, idx) => {
+      const values = series.data;
+      if (values.length === 0) {
+        let unit = 'GB';
+        if (dataTypeKeys[idx].includes('Percent')) unit = '%';
+        else if (dataTypeKeys[idx].includes('BytesRate')) unit = 'MB/s';
+        else if (dataTypeKeys[idx].includes('Rate')) unit = 'IO/s';
+
+        return {
+          name: dataTypes[idx],
+          unit,
+          average: `0${unit}`,
+          high: `0${unit}`,
+          low: `0${unit}`,
+          latest: `0${unit}`
+        };
+      }
+
+      const total = values.reduce((sum, val) => sum + val, 0);
+      const average = (total / values.length).toFixed(2);
+      const high = Math.max(...values).toFixed(2);
+      const low = Math.min(...values).toFixed(2);
+      const latest = values[values.length - 1].toFixed(2);
+
+      let unit = 'GB';
+      if (dataTypeKeys[idx].includes('Percent')) unit = '%';
+      else if (dataTypeKeys[idx].includes('BytesRate')) unit = 'MB/s';
+      else if (dataTypeKeys[idx].includes('Rate')) unit = 'IO/s';
+
+      return {
+        name: dataTypes[idx],
+        unit,
+        average: `${average}${unit}`,
+        high: `${high}${unit}`,
+        low: `${low}${unit}`,
+        latest: `${latest}${unit}`
+      };
+    });
+
+    // Filter table data based on chart type
+    let filteredTableData: TableDataItem[] = [];
+    switch (diskChartKey) {
+      case 'disk':
+        filteredTableData = tableData.filter(item => item.unit === 'GB');
+        break;
+      case 'percent':
+        filteredTableData = tableData.filter(item => item.unit === '%');
+        break;
+      case 'rate':
+        filteredTableData = tableData.filter(item => item.unit === 'IO/s');
+        break;
+      case 'bytesRate':
+        filteredTableData = tableData.filter(item => item.unit === 'MB/s');
+        break;
+      default:
+        filteredTableData = [];
     }
-  };
-};
 
-// ECharts管理器类
+    // Create chart options for different views
+    const chartOptions: Record<string, ChartOption> = {};
+
+    // Main disk chart (capacity)
+    chartOptions.disk = {
+      ...DEFAULT_ECHARTS_OPTIONS,
+      legend: { ...DEFAULT_LEGEND, data: dataTypes },
+      xAxis: [{ data: data.map(item => item.timestamp) }],
+      series: seriesData.every(series => series.data.length === 0)
+        ? [createSeriesData('Default')]
+        : seriesData
+    };
+
+    // Percent chart
+    const percentSeriesData = seriesData.slice(4, 5);
+    const percentDataTypes = dataTypes.slice(4, 5);
+    chartOptions.percent = {
+      ...DEFAULT_ECHARTS_OPTIONS,
+      legend: { ...DEFAULT_LEGEND, data: percentDataTypes },
+      xAxis: [{ data: data.map(item => item.timestamp) }],
+      series: percentSeriesData.every(series => series.data.length === 0)
+        ? [{ ...getDefaultLineConfig(), data: [50] }]
+        : percentSeriesData
+    };
+
+    // Rate chart
+    const rateSeriesData = seriesData.slice(5, 7);
+    const rateDataTypes = dataTypes.slice(5, 7);
+    chartOptions.rate = {
+      ...DEFAULT_ECHARTS_OPTIONS,
+      legend: { ...DEFAULT_LEGEND, data: rateDataTypes },
+      xAxis: [{ data: data.map(item => item.timestamp) }],
+      series: rateSeriesData.every(series => series.data.length === 0)
+        ? [{ ...getDefaultLineConfig(), data: [50] }]
+        : rateSeriesData
+    };
+
+    // Bytes rate chart
+    const bytesRateSeriesData = seriesData.slice(7, 9);
+    const bytesRateDataTypes = dataTypes.slice(7, 9);
+    chartOptions.bytesRate = {
+      ...DEFAULT_ECHARTS_OPTIONS,
+      legend: { ...DEFAULT_LEGEND, data: bytesRateDataTypes },
+      xAxis: [{ data: data.map(item => item.timestamp) }],
+      series: bytesRateSeriesData.every(series => series.data.length === 0)
+        ? [{ ...getDefaultLineConfig(), data: [50] }]
+        : bytesRateSeriesData
+    };
+
+    return {
+      seriesData,
+      tableData: filteredTableData,
+      chartOptions
+    };
+  }
+
+  /**
+   * Process network data and calculate statistics
+   * <p>
+   * Handles network metrics including bytes, rates, and packet counts.
+   * </p>
+   */
+  static processNetworkData(
+    data: ChartDataItem[],
+    t: (key: string) => string,
+    networkChartKey: string
+  ): {
+    seriesData: SeriesData[];
+    tableData: TableDataItem[];
+    chartOptions: Record<string, ChartOption>;
+  } {
+    const dataTypeKeys = ['rxBytes', 'rxBytesRate', 'rxErrors', 'txBytes', 'txBytesRate'];
+    const dataTypes = [
+      t('node.nodeDetail.chartOptions.network.rxBytes'),
+      t('node.nodeDetail.chartOptions.network.rxBytesRate'),
+      t('node.nodeDetail.chartOptions.network.rxErrors'),
+      t('node.nodeDetail.chartOptions.network.txBytes'),
+      t('node.nodeDetail.chartOptions.network.txBytesRate')
+    ];
+
+    const seriesData = dataTypes.map(name => createSeriesData(name));
+
+    // Process each data point
+    data.forEach(item => {
+      if (item.cvsValue) {
+        const values = item.cvsValue.split(',');
+        values.forEach((val, idx) => {
+          if (seriesData[idx]) {
+            if (dataTypeKeys[idx].includes('BytesRate')) {
+              seriesData[idx].data.push(+val);
+            } else if (dataTypeKeys[idx].includes('Bytes')) {
+              const formattedValue = formatBytesToUnit(parseFloat(val), 'GB', 2);
+              const numericValue = typeof formattedValue === 'string' ? parseFloat(formattedValue) : formattedValue;
+              seriesData[idx].data.push(numericValue);
+            } else {
+              seriesData[idx].data.push(+val);
+            }
+          }
+        });
+      }
+    });
+
+    // Calculate table statistics
+    const tableData = seriesData.map((series, idx) => {
+      const values = series.data;
+      if (values.length === 0) {
+        let unit = 'packets';
+        if (dataTypeKeys[idx].includes('BytesRate')) unit = 'MB/s';
+        else if (dataTypeKeys[idx].includes('Bytes')) unit = 'GB';
+
+        return {
+          name: dataTypes[idx],
+          unit,
+          average: `0${unit}`,
+          high: `0${unit}`,
+          low: `0${unit}`,
+          latest: `0${unit}`
+        };
+      }
+
+      const total = values.reduce((sum, val) => sum + val, 0);
+      const average = (total / values.length).toFixed(2);
+      const high = Math.max(...values).toFixed(2);
+      const low = Math.min(...values).toFixed(2);
+      const latest = values[values.length - 1].toFixed(2);
+
+      let unit = 'packets';
+      if (dataTypeKeys[idx].includes('BytesRate')) unit = 'MB/s';
+      else if (dataTypeKeys[idx].includes('Bytes')) unit = 'GB';
+
+      return {
+        name: dataTypes[idx],
+        unit,
+        average: `${average}${unit}`,
+        high: `${high}${unit}`,
+        low: `${low}${unit}`,
+        latest: `${latest}${unit}`
+      };
+    });
+
+    // Filter table data based on chart type
+    let filteredTableData: TableDataItem[] = [];
+    switch (networkChartKey) {
+      case 'network':
+        filteredTableData = tableData.filter(item => item.unit === 'MB/s');
+        break;
+      case 'packet':
+        filteredTableData = tableData.filter(item => item.unit === 'packets');
+        break;
+      case 'bytes':
+        filteredTableData = tableData.filter(item => item.unit === 'GB');
+        break;
+      default:
+        filteredTableData = [];
+    }
+
+    // Create chart options for different views
+    const chartOptions: Record<string, ChartOption> = {};
+
+    // Network rate chart (MB/s)
+    const networkSeriesData = [seriesData[1], seriesData[4]];
+    const networkDataTypes = [dataTypes[1], dataTypes[4]];
+    chartOptions.network = {
+      ...DEFAULT_ECHARTS_OPTIONS,
+      legend: { ...DEFAULT_LEGEND, data: networkDataTypes },
+      xAxis: [{ data: data.map(item => item.timestamp) }],
+      series: networkSeriesData.every(series => series.data.length === 0)
+        ? [{ ...getDefaultLineConfig(), data: [50] }]
+        : networkSeriesData
+    };
+
+    // Packet chart
+    const packetSeriesData = [seriesData[2]];
+    const packetDataTypes = [dataTypes[2]];
+    chartOptions.packet = {
+      ...DEFAULT_ECHARTS_OPTIONS,
+      legend: { ...DEFAULT_LEGEND, data: packetDataTypes },
+      xAxis: [{ data: data.map(item => item.timestamp) }],
+      series: packetSeriesData.every(series => series.data.length === 0)
+        ? [{ ...getDefaultLineConfig(), data: [50] }]
+        : packetSeriesData
+    };
+
+    // Bytes chart (GB)
+    chartOptions.bytes = {
+      ...DEFAULT_ECHARTS_OPTIONS,
+      legend: { ...DEFAULT_LEGEND, data: dataTypes },
+      xAxis: [{ data: data.map(item => item.timestamp) }],
+      series: seriesData.every(series => series.data.length === 0)
+        ? [{ ...getDefaultLineConfig(), data: [50] }]
+        : seriesData
+    };
+
+    return {
+      seriesData,
+      tableData: filteredTableData,
+      chartOptions
+    };
+  }
+}
+
+// ============================================================================
+// ECharts Manager Class
+// ============================================================================
+
+/**
+ * ECharts Manager for handling chart operations
+ * <p>
+ * Manages ECharts instances, data processing, and chart updates for different
+ * resource types (CPU, Memory, Disk, Network).
+ * </p>
+ */
 export class EChartsManager {
   private myEchart: echarts.ECharts | null = null;
-  private chartsData: any[] = [];
-  private memoryTableData: any[] = [];
-  private diskTableData: any[] = [];
-  private networkTableData: any[] = [];
+  private chartsData: ChartDataItem[] = [];
+  
+  // Table data for different resource types
+  private memoryTableData: TableDataItem[] = [];
+  private diskTableData: TableDataItem[] = [];
+  private networkTableData: TableDataItem[] = [];
 
-  // 图表选项缓存
-  private memoryEchartOption: any = null;
-  private memoryPercentEchartOption: any = null;
-  private diskChartOption: any = null;
-  private percentChartOption: any = null;
-  private rateChartOption: any = null;
-  private bytesRateChartOption: any = null;
-  private networkChartOption: any = null;
-  private bytesChartOption: any = null;
-  private packetChartOption: any = null;
+  // Chart options cache for different views
+  private chartOptionsCache: Record<string, ChartOption> = {};
 
-  private tableData: Ref<any[]> = ref([]);
-  private sourceUse: any = reactive({
+  // Reactive state
+  private tableData: Ref<TableDataItem[]> = ref([]);
+  private sourceUse: ResourceUsage = reactive({
     cpu: 0,
     cpuPercent: 0,
     cpuTotal: 0,
@@ -102,619 +717,293 @@ export class EChartsManager {
     rxBytes: '0'
   });
 
-  // 初始化ECharts实例
-  initEcharts (echartRef: HTMLElement) {
+  /**
+   * Initialize ECharts instance
+   * <p>
+   * Creates and configures the ECharts instance with the provided DOM element.
+   * </p>
+   */
+  initEcharts(echartRef: HTMLElement): void {
     if (echartRef) {
       this.myEchart = echarts.init(echartRef);
-      this.myEchart.setOption(echartsOpt);
+      this.myEchart.setOption(DEFAULT_ECHARTS_OPTIONS);
     }
   }
 
-  // 设置图表数据
-  setChartsData (data: any[]) {
+  /**
+   * Set chart data
+   * <p>
+   * Updates the internal chart data storage.
+   * </p>
+   */
+  setChartsData(data: ChartDataItem[]): void {
     this.chartsData = data;
   }
 
-  // 获取表格数据
-  getTableData () {
+  /**
+   * Get table data
+   * <p>
+   * Returns the current table data for display.
+   * </p>
+   */
+  getTableData(): Ref<TableDataItem[]> {
     return this.tableData;
   }
 
-  // 获取资源使用数据
-  getSourceUse () {
+  /**
+   * Get resource usage data
+   * <p>
+   * Returns the current resource usage metrics.
+   * </p>
+   */
+  getSourceUse(): ResourceUsage {
     return this.sourceUse;
   }
 
-  // 加载CPU图表数据
-  loadCpuEchartData (data: any[], t: (key: string) => string, notMerge = true) {
-    this.chartsData = data;
-    const dataType = [
-      t('node.nodeDetail.chartOptions.cpu.idle'),
-      t('node.nodeDetail.chartOptions.cpu.sys'),
-      t('node.nodeDetail.chartOptions.cpu.user'),
-      t('node.nodeDetail.chartOptions.cpu.wait'),
-      t('node.nodeDetail.chartOptions.cpu.other'),
-      t('node.nodeDetail.chartOptions.cpu.total')
-    ];
+  /**
+   * Load CPU chart data
+   * <p>
+   * Processes CPU data and updates the chart and table.
+   * </p>
+   */
+  loadCpuEchartData(data: ChartDataItem[], t: (key: string) => string, notMerge = true): void {
+    try {
+      this.chartsData = data;
+      const { seriesData, tableData } = ChartDataProcessor.processCpuData(data, t);
+      
+      this.tableData.value = tableData;
 
-    const seriesData = dataType.map(type => {
-      return {
-        ...getDefaultLineConfig(),
-        name: type
-      };
-    });
-
-    this.chartsData.forEach(item => {
-      const cpusValues = item.cvsCpu.split(',');
-      cpusValues.forEach((val: string, idx: number) => {
-        seriesData[idx].data.push(+(+val).toFixed(2));
-      });
-    });
-
-    if (this.chartsData.length) {
-      this.tableData.value = dataType.map((name, idx) => {
-        const total = seriesData[idx].data.reduce((pre: number, current: number) => {
-          return pre + current;
-        }, 0);
-        const average = (total / (seriesData[idx].data.length || 1)).toFixed(2);
-        return {
-          name,
-          unit: '%',
-          average: average + '%',
-          high: Math.max(...(seriesData[idx].data)) + '%',
-          low: Math.min(...(seriesData[idx].data)) + '%',
-          latest: seriesData[idx].data[seriesData[idx].data.length - 1] + '%'
-        };
-      });
-    } else {
-      this.tableData.value = [];
-    }
-
-    const legend = notMerge
-      ? {
-          legend: {
-            type: 'plain',
-            data: dataType,
-            y: 'bottom',
-            x: 'center'
-          }
+      const legend = notMerge ? {
+        legend: {
+          ...DEFAULT_LEGEND,
+          data: seriesData.map(series => series.name)
         }
-      : {};
+      } : {};
 
-    if (this.myEchart) {
-      this.myEchart.setOption({
-        ...echartsOpt,
+      const chartOption: ChartOption = {
+        ...DEFAULT_ECHARTS_OPTIONS,
         ...legend,
-        xAxis: [
-          {
-            data: this.chartsData.map(i => i.timestamp)
-          }
-        ],
-        series: seriesData.every(serries => !serries.data.length) ? [{ ...getDefaultLineConfig(), data: [60] }] : seriesData
-      }, notMerge);
-    }
-  }
-
-  // 加载内存图表数据
-  loadMemoryEchartData (data: any[], t: (key: string) => string, showMemoryPercentChart: boolean, notMerge = true) {
-    const dataType = [
-      t('node.nodeDetail.chartOptions.memory.free'),
-      t('node.nodeDetail.chartOptions.memory.used'),
-      t('node.nodeDetail.chartOptions.memory.freePercent'),
-      t('node.nodeDetail.chartOptions.memory.usedPercent'),
-      t('node.nodeDetail.chartOptions.memory.actualFree'),
-      t('node.nodeDetail.chartOptions.memory.actualUsed'),
-      t('node.nodeDetail.chartOptions.memory.actualFreePercent'),
-      t('node.nodeDetail.chartOptions.memory.actualUsedPercent'),
-      t('node.nodeDetail.chartOptions.memory.swapFree'),
-      t('node.nodeDetail.chartOptions.memory.swapUsed')
-    ];
-
-    const dataTypeKey = [
-      'free', 'used', 'freePercent', 'usedPercent', 'actualFree', 'actualUsed',
-      'actualFreePercent', 'actualUsedPercent', 'swapFree', 'swapUsed'
-    ];
-
-    this.chartsData = data;
-    const seriesData = dataType.map(type => {
-      return {
-        ...getDefaultLineConfig(),
-        name: type
+        xAxis: [{ data: data.map(item => item.timestamp) }],
+        series: seriesData.every(series => series.data.length === 0)
+          ? [{ ...getDefaultLineConfig(), data: [60] }]
+          : seriesData
       };
-    });
 
-    this.chartsData.forEach(item => {
-      const values = item.cvsMemory.split(',');
-      values.forEach((val: string, idx: number) => {
-        if (dataTypeKey[idx].includes('Percent')) {
-          seriesData[idx].data.push(+val);
-        } else {
-          const formattedValue = formatBytesToUnit(parseFloat(val), 'GB', 2);
-          const numericValue = typeof formattedValue === 'string' ? parseFloat(formattedValue) : formattedValue;
-          seriesData[idx].data.push(numericValue);
-        }
-      });
-    });
-
-    if (this.chartsData.length) {
-      this.memoryTableData = dataType.map((name, idx) => {
-        const total = seriesData[idx].data.reduce((pre: number, current: number) => {
-          return pre + current;
-        }, 0);
-        let average = (total / (seriesData[idx].data.length || 1)).toFixed(2);
-        let high = Math.max(...(seriesData[idx].data)) + '';
-        let low = Math.min(...(seriesData[idx].data)) + '';
-        let latest = seriesData[idx].data[seriesData[idx].data.length - 1] + '';
-
-        if (dataTypeKey[idx].includes('Percent')) {
-          average += '%';
-          high += '%';
-          low += '%';
-          latest += '%';
-        } else {
-          average += ' GB';
-          high += ' GB';
-          low += ' GB';
-          latest += ' GB';
-        }
-
-        return {
-          name,
-          unit: dataTypeKey[idx].includes('Percent') ? '%' : 'B',
-          average: average,
-          high: high,
-          low: low,
-          latest: latest
-        };
-      });
-    } else {
-      this.memoryTableData = [];
-    }
-
-    if (showMemoryPercentChart) {
-      this.tableData.value = this.memoryTableData.filter(i => i.unit === '%');
-    } else {
-      this.tableData.value = this.memoryTableData.filter(i => i.unit !== '%');
-    }
-
-    const seriesPercentData = seriesData.splice(2, 2).concat(seriesData.splice(4, 2));
-    const percentDataType = dataType.splice(2, 2).concat(dataType.splice(4, 2));
-    const legend = {
-      ...defaultLegend,
-      data: dataType
-    };
-    const percentLegend = {
-      ...defaultLegend,
-      data: percentDataType
-    };
-
-    this.memoryEchartOption = {
-      ...echartsOpt,
-      legend: legend,
-      xAxis: [
-        {
-          data: this.chartsData.map(i => i.timestamp)
-        }
-      ],
-      series: seriesData.every(serries => !serries.data.length) ? [{ ...getDefaultLineConfig(), data: [50] }] : seriesData
-    };
-
-    this.memoryPercentEchartOption = {
-      ...echartsOpt,
-      legend: percentLegend,
-      xAxis: [
-        {
-          data: this.chartsData.map(i => i.timestamp)
-        }
-      ],
-      series: seriesPercentData.every(serries => !serries.data.length) ? [{ ...getDefaultLineConfig(), data: [50] }] : seriesPercentData
-    };
-
-    if (this.myEchart) {
-      this.myEchart.setOption(
-        showMemoryPercentChart ? this.memoryPercentEchartOption : this.memoryEchartOption,
-        notMerge
-      );
+      if (this.myEchart) {
+        this.myEchart.setOption(chartOption, notMerge);
+      }
+    } catch (error) {
+      console.error('Error loading CPU chart data:', error);
     }
   }
 
-  // 加载磁盘图表数据
-  loadDiskEchartData (
-    data: any[],
+  /**
+   * Load memory chart data
+   * <p>
+   * Processes memory data and updates the chart and table.
+   * </p>
+   */
+  loadMemoryEchartData(
+    data: ChartDataItem[],
+    t: (key: string) => string,
+    showMemoryPercentChart: boolean,
+    notMerge = true
+  ): void {
+    try {
+      this.chartsData = data;
+      const { seriesData, tableData, percentSeriesData, percentTableData } = 
+        ChartDataProcessor.processMemoryData(data, t, showMemoryPercentChart);
+
+      this.memoryTableData = tableData;
+      this.tableData.value = showMemoryPercentChart
+        ? this.memoryTableData.filter(item => item.unit === '%')
+        : this.memoryTableData.filter(item => item.unit !== '%');
+
+      // Cache chart options
+      this.chartOptionsCache.memory = {
+        ...DEFAULT_ECHARTS_OPTIONS,
+        legend: { ...DEFAULT_LEGEND, data: seriesData.map(series => series.name) },
+        xAxis: [{ data: data.map(item => item.timestamp) }],
+        series: seriesData.every(series => series.data.length === 0)
+          ? [{ ...getDefaultLineConfig(), data: [50] }]
+          : seriesData
+      };
+
+      this.chartOptionsCache.memoryPercent = {
+        ...DEFAULT_ECHARTS_OPTIONS,
+        legend: { ...DEFAULT_LEGEND, data: percentSeriesData.map(series => series.name) },
+        xAxis: [{ data: data.map(item => item.timestamp) }],
+        series: percentSeriesData.every(series => series.data.length === 0)
+          ? [{ ...getDefaultLineConfig(), data: [50] }]
+          : percentSeriesData
+      };
+
+      const chartOption = showMemoryPercentChart
+        ? this.chartOptionsCache.memoryPercent
+        : this.chartOptionsCache.memory;
+
+      if (this.myEchart) {
+        this.myEchart.setOption(chartOption, notMerge);
+      }
+    } catch (error) {
+      console.error('Error loading memory chart data:', error);
+    }
+  }
+
+  /**
+   * Load disk chart data
+   * <p>
+   * Processes disk data and updates the chart and table.
+   * </p>
+   */
+  loadDiskEchartData(
+    data: ChartDataItem[],
     t: (key: string) => string,
     diskChartKey: string,
     notMerge = true
-  ) {
-    this.chartsData = data;
-    const dataType = [
-      t('node.nodeDetail.chartOptions.disk.total'),
-      t('node.nodeDetail.chartOptions.disk.free'),
-      t('node.nodeDetail.chartOptions.disk.used'),
-      t('node.nodeDetail.chartOptions.disk.avail'),
-      t('node.nodeDetail.chartOptions.disk.usePercent'),
-      t('node.nodeDetail.chartOptions.disk.readsRate'),
-      t('node.nodeDetail.chartOptions.disk.writesRate'),
-      t('node.nodeDetail.chartOptions.disk.readBytesRate'),
-      t('node.nodeDetail.chartOptions.disk.writeBytesRate')
-    ];
+  ): void {
+    try {
+      this.chartsData = data;
+      const { seriesData, tableData, chartOptions } = 
+        ChartDataProcessor.processDiskData(data, t, diskChartKey);
 
-    const dataTypeKey = [
-      'total', 'free', 'used', 'avail', 'usePercent', 'readsRate', 'writesRate',
-      'readBytesRate', 'writeBytesRate'
-    ];
+      this.diskTableData = tableData;
+      this.tableData.value = tableData;
 
-    const seriesData = dataType.map(type => {
-      return {
-        ...getDefaultLineConfig(),
-        name: type
-      };
-    });
+      // Cache all chart options
+      Object.assign(this.chartOptionsCache, chartOptions);
 
-    this.chartsData.forEach(item => {
-      const diskValues = item.cvsValue.split(',');
-      diskValues.forEach((val: string, idx: number) => {
-        if (dataTypeKey[idx].includes('Percent') || dataTypeKey[idx].includes('BytesRate') || dataTypeKey[idx].includes('Rate')) {
-          seriesData[idx].data.push(+val);
-        } else {
-          const formattedValue = formatBytesToUnit(parseFloat(val), 'GB', 2);
-          const numericValue = typeof formattedValue === 'string' ? parseFloat(formattedValue) : formattedValue;
-          seriesData[idx].data.push(numericValue);
-        }
-      });
-    });
-
-    if (this.chartsData.length) {
-      this.diskTableData = dataType.map((name, idx) => {
-        const total = seriesData[idx].data.reduce((pre: number, current: number) => {
-          return pre + current;
-        }, 0);
-        let average = (total / (seriesData[idx].data.length || 1)).toFixed(2);
-        let high = Math.max(...(seriesData[idx].data)) + '';
-        let low = Math.min(...(seriesData[idx].data)) + '';
-        let latest = seriesData[idx].data[seriesData[idx].data.length - 1] + '';
-        let unit;
-
-        if (dataTypeKey[idx].includes('Percent')) {
-          average += '%';
-          high += '%';
-          low += '%';
-          latest += '%';
-          unit = '%';
-        } else if (dataTypeKey[idx].includes('BytesRate')) {
-          average += ' MB/s';
-          high += ' MB/s';
-          low += ' MB/s';
-          latest += 'MB/s';
-          unit = 'MB/s';
-        } else if (dataTypeKey[idx].includes('Rate')) {
-          average += ' IO/s';
-          high += ' IO/s';
-          low += ' IO/s';
-          latest += ' IO/s';
-          unit = 'IO/s';
-        } else {
-          average += ' GB';
-          high += ' GB';
-          low += ' GB';
-          latest += ' GB';
-          unit = 'GB';
-        }
-
-        return {
-          name,
-          average: average,
-          high: high,
-          low: low,
-          latest: latest,
-          unit
-        };
-      });
-    } else {
-      this.diskTableData = [];
-    }
-
-    switch (diskChartKey) {
-      case 'disk':
-        this.tableData.value = this.diskTableData.filter(i => i.unit === 'GB');
-        break;
-      case 'percent':
-        this.tableData.value = this.diskTableData.filter(i => i.unit === '%');
-        break;
-      case 'rate':
-        this.tableData.value = this.diskTableData.filter(i => i.unit === 'IO/s');
-        break;
-      case 'bytesRate':
-        this.tableData.value = this.diskTableData.filter(i => i.unit === 'MB/s');
-        break;
-      default:
-        this.tableData.value = [];
-    }
-
-    const percentSeriesData = seriesData.splice(4, 1);
-    const percentDataType = dataType.splice(4, 1);
-    const percentLegend = { ...defaultLegend, data: percentDataType };
-
-    this.percentChartOption = {
-      ...echartsOpt,
-      legend: percentLegend,
-      xAxis: [
-        {
-          data: this.chartsData.map(i => i.timestamp)
-        }
-      ],
-      series: percentSeriesData.every(serries => !serries.data.length) ? [{ ...getDefaultLineConfig(), data: [50] }] : percentSeriesData
-    };
-
-    const rateSeriesData = seriesData.splice(4, 2);
-    const rateDataType = dataType.splice(4, 2);
-    const rateLegend = { ...defaultLegend, data: rateDataType };
-
-    this.rateChartOption = {
-      ...echartsOpt,
-      legend: rateLegend,
-      xAxis: [
-        {
-          data: this.chartsData.map(i => i.timestamp)
-        }
-      ],
-      series: rateSeriesData.every(serries => !serries.data.length) ? [{ ...getDefaultLineConfig(), data: [50] }] : rateSeriesData
-    };
-
-    const bytesRateSeriesData = seriesData.splice(4, 2);
-    const bytesRateDataType = dataType.splice(4, 2);
-    const bytesLegend = { ...defaultLegend, data: bytesRateDataType };
-
-    this.bytesRateChartOption = {
-      ...echartsOpt,
-      legend: bytesLegend,
-      xAxis: [
-        {
-          data: this.chartsData.map(i => i.timestamp)
-        }
-      ],
-      series: bytesRateSeriesData.every(serries => !serries.data.length) ? [{ ...getDefaultLineConfig(), data: [50] }] : bytesRateSeriesData
-    };
-
-    const legend = { ...defaultLegend, data: dataType };
-
-    this.diskChartOption = {
-      ...echartsOpt,
-      legend: legend,
-      xAxis: [
-        {
-          data: this.chartsData.map(i => i.timestamp)
-        }
-      ],
-      series: seriesData.every(serries => !serries.data.length) ? [{ ...getDefaultLineConfig(), data: [50] }] : seriesData
-    };
-
-    let showEchartOptions;
-    if (diskChartKey === 'disk') {
-      showEchartOptions = this.diskChartOption;
-    }
-    if (diskChartKey === 'percent') {
-      showEchartOptions = this.percentChartOption;
-    }
-    if (diskChartKey === 'rate') {
-      showEchartOptions = this.rateChartOption;
-    }
-    if (diskChartKey === 'bytesRate') {
-      showEchartOptions = this.bytesRateChartOption;
-    }
-
-    if (this.myEchart) {
-      this.myEchart.setOption(showEchartOptions, notMerge);
+      const chartOption = chartOptions[diskChartKey];
+      if (chartOption && this.myEchart) {
+        this.myEchart.setOption(chartOption, notMerge);
+      }
+    } catch (error) {
+      console.error('Error loading disk chart data:', error);
     }
   }
 
-  // 加载网络图表数据
-  loadNetworkEchartData (
-    data: any[],
+  /**
+   * Load network chart data
+   * <p>
+   * Processes network data and updates the chart and table.
+   * </p>
+   */
+  loadNetworkEchartData(
+    data: ChartDataItem[],
     t: (key: string) => string,
     networkChartKey: string,
     notMerge = true
-  ) {
-    this.chartsData = data;
-    const dataTypeKey = ['rxBytes', 'rxBytesRate', 'rxErrors', 'txBytes', 'txBytesRate'];
-    const dataType = [
-      t('node.nodeDetail.chartOptions.network.rxBytes'),
-      t('node.nodeDetail.chartOptions.network.rxBytesRate'),
-      t('node.nodeDetail.chartOptions.network.rxErrors'),
-      t('node.nodeDetail.chartOptions.network.txBytes'),
-      t('node.nodeDetail.chartOptions.network.txBytesRate')
-    ];
+  ): void {
+    try {
+      this.chartsData = data;
+      const { seriesData, tableData, chartOptions } = 
+        ChartDataProcessor.processNetworkData(data, t, networkChartKey);
 
-    const seriesData = dataType.map(type => {
-      return {
-        ...getDefaultLineConfig(),
-        name: type
-      };
-    });
+      this.networkTableData = tableData;
+      this.tableData.value = tableData;
 
-    this.chartsData.forEach(item => {
-      const valus = item.cvsValue.split(',');
-      valus.forEach((val: string, idx: number) => {
-        if (dataTypeKey[idx].includes('BytesRate')) {
-          seriesData[idx].data.push(+val);
-        } else if (dataTypeKey[idx].includes('Bytes')) {
-          const formattedValue = formatBytesToUnit(parseFloat(val), 'GB', 2);
-          const numericValue = typeof formattedValue === 'string' ? parseFloat(formattedValue) : formattedValue;
-          seriesData[idx].data.push(numericValue);
-        } else {
-          seriesData[idx].data.push(+val);
-        }
-      });
-    });
+      // Cache all chart options
+      Object.assign(this.chartOptionsCache, chartOptions);
 
-    if (this.chartsData.length) {
-      this.networkTableData = dataType.map((name, idx) => {
-        const total = seriesData[idx].data.reduce((pre: number, current: number) => {
-          return pre + current;
-        }, 0);
-        let average = (total / (seriesData[idx].data.length || 1)).toFixed(2);
-        let high = Math.max(...(seriesData[idx].data)) + '';
-        let low = Math.min(...(seriesData[idx].data)) + '';
-        let latest = seriesData[idx].data[seriesData[idx].data.length - 1] + '';
-
-        if (dataTypeKey[idx].includes('BytesRate')) {
-          average += 'MB/s';
-          high += 'MB/s';
-          low += 'MB/s';
-          latest += 'MB/s';
-        } else if (dataTypeKey[idx].includes('Bytes')) {
-          average += ' GB';
-          high += ' GB';
-          low += ' GB';
-          latest += ' GB';
-        } else {
-          average += ' packets';
-          high += ' packets';
-          low += ' packets';
-          latest += ' packets';
-        }
-
-        const unit = dataTypeKey[idx].includes('BytesRate') ? 'MB/s' : dataTypeKey[idx].includes('Bytes') ? 'GB' : 'packets';
-        return {
-          name,
-          unit,
-          average: average,
-          high: high,
-          low: low,
-          latest: latest
-        };
-      });
-    } else {
-      this.networkTableData = [];
-    }
-
-    if (networkChartKey === 'network') {
-      this.tableData.value = this.networkTableData.filter(i => i.unit === 'MB/s');
-    } else if (networkChartKey === 'packet') {
-      this.tableData.value = this.networkTableData.filter(i => i.unit === 'packets');
-    } else {
-      this.tableData.value = this.networkTableData.filter(i => i.unit === 'GB');
-    }
-
-    const networkSeriesData = seriesData.splice(1, 1).concat(seriesData.splice(3, 1));
-    const networkDataTypeKey = dataType.splice(1, 1).concat(dataType.splice(3, 1));
-    const networkLengend = { ...defaultLegend, data: networkDataTypeKey };
-
-    this.networkChartOption = {
-      ...echartsOpt,
-      legend: networkLengend,
-      xAxis: [
-        {
-          data: this.chartsData.map(i => i.timestamp)
-        }
-      ],
-      series: networkSeriesData.every(series => !series.data.length) ? [{ ...getDefaultLineConfig(), data: [50] }] : networkSeriesData
-    };
-
-    const packetSeriesData = seriesData.splice(1, 1);
-    const packetDataTypeKey = dataType.splice(1, 1);
-    const packetLegend = { ...defaultLegend, data: packetDataTypeKey };
-
-    this.packetChartOption = {
-      ...echartsOpt,
-      legend: packetLegend,
-      xAxis: [
-        {
-          data: this.chartsData.map(i => i.timestamp)
-        }
-      ],
-      series: packetSeriesData.every(serries => !serries.data.length) ? [{ ...getDefaultLineConfig(), data: [50] }] : packetSeriesData
-    };
-
-    const legend = { ...defaultLegend, data: dataType };
-
-    this.bytesChartOption = {
-      ...echartsOpt,
-      legend: legend,
-      xAxis: [
-        {
-          data: this.chartsData.map(i => i.timestamp)
-        }
-      ],
-      series: seriesData.every(serries => !serries.data.length) ? [{ ...getDefaultLineConfig(), data: [50] }] : seriesData
-    };
-
-    let showChartOption;
-    if (networkChartKey === 'network') {
-      showChartOption = this.networkChartOption;
-    }
-    if (networkChartKey === 'packet') {
-      showChartOption = this.packetChartOption;
-    }
-    if (networkChartKey === 'bytes') {
-      showChartOption = this.bytesChartOption;
-    }
-
-    if (this.myEchart) {
-      this.myEchart.setOption(showChartOption, notMerge);
+      const chartOption = chartOptions[networkChartKey];
+      if (chartOption && this.myEchart) {
+        this.myEchart.setOption(chartOption, notMerge);
+      }
+    } catch (error) {
+      console.error('Error loading network chart data:', error);
     }
   }
 
-  // 根据图表类型更新显示
-  updateChartDisplay (
+  /**
+   * Update chart display based on active tab and options
+   * <p>
+   * Switches between different chart views without reloading data.
+   * </p>
+   */
+  updateChartDisplay(
     activeTab: string,
     showMemoryPercentChart: boolean,
     diskChartKey: string,
     networkChartKey: string
-  ) {
-    if (activeTab === 'memory' && (this.memoryPercentEchartOption || this.memoryEchartOption)) {
-      if (this.myEchart) {
-        this.myEchart.setOption(
-          showMemoryPercentChart ? this.memoryPercentEchartOption : this.memoryEchartOption,
-          true
-        );
-      }
-      if (showMemoryPercentChart) {
-        this.tableData.value = this.memoryTableData.filter(i => i.unit === '%');
-      } else {
-        this.tableData.value = this.memoryTableData.filter(i => i.unit !== '%');
-      }
-    }
+  ): void {
+    try {
+      if (activeTab === 'memory') {
+        const chartOption = showMemoryPercentChart
+          ? this.chartOptionsCache.memoryPercent
+          : this.chartOptionsCache.memory;
 
-    if (activeTab === 'disk') {
-      let showEchartOptions;
-      if (diskChartKey === 'disk') {
-        showEchartOptions = this.diskChartOption;
-        this.tableData.value = this.diskTableData.filter(i => i.unit === 'GB');
-      }
-      if (diskChartKey === 'percent') {
-        showEchartOptions = this.percentChartOption;
-        this.tableData.value = this.diskTableData.filter(i => i.unit === '%');
-      }
-      if (diskChartKey === 'rate') {
-        showEchartOptions = this.rateChartOption;
-        this.tableData.value = this.diskTableData.filter(i => i.unit === 'IO/s');
-      }
-      if (diskChartKey === 'bytesRate') {
-        showEchartOptions = this.bytesRateChartOption;
-        this.tableData.value = this.diskTableData.filter(i => i.unit === 'MB/s');
-      }
-      if (showEchartOptions && this.myEchart) {
-        this.myEchart.setOption(showEchartOptions, true);
-      }
-    }
+        if (chartOption && this.myEchart) {
+          this.myEchart.setOption(chartOption, true);
+        }
 
-    if (activeTab === 'network') {
-      let showChartOption;
-      if (networkChartKey === 'network') {
-        showChartOption = this.networkChartOption;
-        this.tableData.value = this.networkTableData.filter(i => i.unit === 'MB/s');
+        this.tableData.value = showMemoryPercentChart
+          ? this.memoryTableData.filter(item => item.unit === '%')
+          : this.memoryTableData.filter(item => item.unit !== '%');
       }
-      if (networkChartKey === 'packet') {
-        showChartOption = this.packetChartOption;
-        this.tableData.value = this.networkTableData.filter(i => i.unit === 'packets');
+
+      if (activeTab === 'disk') {
+        const chartOption = this.chartOptionsCache[diskChartKey];
+        if (chartOption && this.myEchart) {
+          this.myEchart.setOption(chartOption, true);
+        }
+
+        // Update table data based on chart type
+        switch (diskChartKey) {
+          case 'disk':
+            this.tableData.value = this.diskTableData.filter(item => item.unit === 'GB');
+            break;
+          case 'percent':
+            this.tableData.value = this.diskTableData.filter(item => item.unit === '%');
+            break;
+          case 'rate':
+            this.tableData.value = this.diskTableData.filter(item => item.unit === 'IO/s');
+            break;
+          case 'bytesRate':
+            this.tableData.value = this.diskTableData.filter(item => item.unit === 'MB/s');
+            break;
+        }
       }
-      if (networkChartKey === 'bytes') {
-        showChartOption = this.bytesChartOption;
-        this.tableData.value = this.networkTableData.filter(i => i.unit === 'GB');
+
+      if (activeTab === 'network') {
+        const chartOption = this.chartOptionsCache[networkChartKey];
+        if (chartOption && this.myEchart) {
+          this.myEchart.setOption(chartOption, true);
+        }
+
+        // Update table data based on chart type
+        switch (networkChartKey) {
+          case 'network':
+            this.tableData.value = this.networkTableData.filter(item => item.unit === 'MB/s');
+            break;
+          case 'packet':
+            this.tableData.value = this.networkTableData.filter(item => item.unit === 'packets');
+            break;
+          case 'bytes':
+            this.tableData.value = this.networkTableData.filter(item => item.unit === 'GB');
+            break;
+        }
       }
-      if (showChartOption && this.myEchart) {
-        this.myEchart.setOption(showChartOption, true);
-      }
+    } catch (error) {
+      console.error('Error updating chart display:', error);
     }
+  }
+
+  /**
+   * Cleanup resources
+   * <p>
+   * Disposes of the ECharts instance and clears cached data.
+   * </p>
+   */
+  cleanup(): void {
+    if (this.myEchart) {
+      this.myEchart.dispose();
+      this.myEchart = null;
+    }
+    this.chartOptionsCache = {};
+    this.chartsData = [];
+    this.memoryTableData = [];
+    this.diskTableData = [];
+    this.networkTableData = [];
+    this.tableData.value = [];
   }
 }

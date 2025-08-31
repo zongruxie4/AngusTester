@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { defineAsyncComponent, inject, nextTick, onMounted, reactive, ref } from 'vue';
+import { defineAsyncComponent, nextTick, onMounted, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { DropdownSort, Icon, IconRefresh, NoData, SearchPanel, Spin } from '@xcan-angus/vue-ui';
-import { appContext, enumUtils, NodeRole, utils } from '@xcan-angus/infra';
+import { appContext, enumUtils, NodeRole, EditionType, utils } from '@xcan-angus/infra';
 import { Button, Pagination, Switch } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
@@ -17,8 +17,6 @@ const { t } = useI18n();
 const NodeItems = defineAsyncComponent(() => import('./components/NodeItems.vue'));
 const NodeTip = defineAsyncComponent(() => import('@/views/config/node/components/NodeTip.vue'));
 
-const isAdmin = inject('isAdmin', ref(false));
-
 const state = reactive<{nodeList: Array<Record<string, any>>}>({
   nodeList: []
 });
@@ -26,7 +24,7 @@ const state = reactive<{nodeList: Array<Record<string, any>>}>({
 const route = useRoute();
 const nodeListRef = ref();
 const editionType = ref<string>();
-const disabledRoles = ['MANAGEMENT', 'CONTROLLER'];
+const disabledRoles = [NodeRole.MANAGEMENT, NodeRole.CONTROLLER];
 const loading = ref(false); // loading list
 const autoRefresh = ref(false); // 是否开启自动刷新磁盘数据
 
@@ -175,7 +173,7 @@ onMounted(async () => {
       searchPanelRef.value.setConfigs([{ valueKey: 'name', value: route.query.id }]);
     });
   } else {
-    handleRefreshList();
+    await handleRefreshList();
   }
 });
 </script>
@@ -189,12 +187,6 @@ onMounted(async () => {
         :options="searchOpt"
         @change="changeForm" />
       <div class="flex items-center space-x-2.5">
-        <!-- <ButtonAuth
-          code="NodeAdd"
-          type="primary"
-          icon="icon-jia"
-          iconStyle="font-size:14px;"
-          @click="handleAdd" /> -->
         <Button
           type="primary"
           size="small"
@@ -203,14 +195,8 @@ onMounted(async () => {
           <Icon icon="icon-jia" />
           {{ t('node.buttons.addNode') }}
         </Button>
-        <!-- <ButtonAuth
-          v-if="editionType === 'CLOUD_SERVICE'"
-          code="NodeBuy"
-          icon="icon-zaixiangoumai"
-          iconStyle="font-size:14px;"
-          @click="gotoBuy" /> -->
         <Button
-          v-if="editionType === 'CLOUD_SERVICE'"
+          v-if="editionType === EditionType.CLOUD_SERVICE"
           size="small"
           class="flex space-x-1"
           @click="gotoBuy">
@@ -246,7 +232,7 @@ onMounted(async () => {
         :roleOptions="roleOptions"
         :nodeList="state.nodeList"
         :autoRefresh="autoRefresh"
-        :isAdmin="isAdmin"
+        :isAdmin="appContext.isAdmin()"
         @loadList="handleRefreshList"
         @cancel="deleteItem" />
       <NoData v-show="pagination.total === 0" class="mt-45" />

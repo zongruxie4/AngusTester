@@ -1,11 +1,3 @@
-/**
- * Node charts management composable
- * <p>
- * This composable handles all chart-related operations including chart configuration,
- * data loading, chart type switching, and display options management.
- * </p>
- */
-
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { TESTER } from '@xcan-angus/infra';

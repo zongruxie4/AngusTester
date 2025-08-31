@@ -15,8 +15,8 @@ const SourceData = defineAsyncComponent(() => import('@/views/data/datasource/in
 const { t } = useI18n();
 
 const userInfo = ref(appContext.getUser());
-const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
 const appInfo = ref(appContext.getAccessApp());
+const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
 
 const activeKey = ref<MenuKey>('homepage');
 

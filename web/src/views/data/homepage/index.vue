@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, provide, ref, watch } from 'vue';
+import { User, AppInfo } from '@xcan-angus/infra';
 
 type Props = {
   projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
+  userInfo: User;
+  appInfo: AppInfo;
   refreshNotify: string;
 }
 

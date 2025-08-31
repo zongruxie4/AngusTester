@@ -1,11 +1,3 @@
-/**
- * Node data management composable
- * <p>
- * This composable handles all node basic information operations including
- * loading node details, managing node state, and handling installation steps.
- * </p>
- */
-
 import { reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { modal } from '@xcan-angus/vue-ui';

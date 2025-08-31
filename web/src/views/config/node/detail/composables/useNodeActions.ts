@@ -1,12 +1,4 @@
-/**
- * Node actions management composable
- * <p>
- * This composable handles utility functions, timer management, and permission checks
- * for various node operations and UI interactions.
- * </p>
- */
-
-import { inject, onBeforeUnmount, ref } from 'vue';
+import { onBeforeUnmount, ref } from 'vue';
 import { appContext, toClipboard } from '@xcan-angus/infra';
 import { notification } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
@@ -22,7 +14,7 @@ export function useNodeActions () {
   const { t } = useI18n();
 
   // System context and permissions
-  const isAdmin = inject('isAdmin', ref(false));
+  const isAdmin = ref(appContext.isAdmin());
   const tenantInfo = ref(appContext.getTenant());
   const userInfo = ref(appContext.getUser());
 

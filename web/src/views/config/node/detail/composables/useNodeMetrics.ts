@@ -1,11 +1,3 @@
-/**
- * Node metrics management composable
- * <p>
- * This composable handles all node resource monitoring operations including
- * CPU, memory, disk, and network metrics collection and processing.
- * </p>
- */
-
 import { reactive, ref } from 'vue';
 import dayjs from 'dayjs';
 import { nodeCtrl } from '@/api/ctrl';
