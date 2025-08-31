@@ -7,7 +7,7 @@ import { dataSet } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
 import { getCurrentPage } from '@/utils/utils';
-import { DataSetItem } from '../PropsType';
+import { DataSetItem } from '../types';
 
 import SearchPanel from '@/views/data/dataset/list/searchPanel/index.vue';
 

@@ -7,7 +7,7 @@ import { dataSet } from '@/api/tester';
 
 const { t } = useI18n();
 
-import { DataSetItem } from '../PropsType';
+import { DataSetItem } from '../types';
 
 type Props = {
   projectId: string;
@@ -31,9 +31,9 @@ const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabP
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const replaceTabPane = inject<(id: string, data: { [key: string]: any }) => void>('replaceTabPane', () => ({}));
 
-const StaticDataSet = defineAsyncComponent(() => import('@/views/data/dataset/detail/staticDataset/index.vue'));
-const FileDataSet = defineAsyncComponent(() => import('@/views/data/dataset/detail/fileDataset/index.vue'));
-const JdbcDataSet = defineAsyncComponent(() => import('@/views/data/dataset/detail/jdbcDataset/index.vue'));
+const StaticDataSet = defineAsyncComponent(() => import('@/views/data/dataset/detail/StaticDataSet.vue'));
+const FileDataSet = defineAsyncComponent(() => import('@/views/data/dataset/detail/FileDataSet.vue'));
+const JdbcDataSet = defineAsyncComponent(() => import('@/views/data/dataset/detail/JdbcDataSet.vue'));
 const ExportDataSetModal = defineAsyncComponent(() => import('@/views/data/dataset/export/index.vue'));
 
 const loading = ref(false);

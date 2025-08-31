@@ -2,7 +2,7 @@
 import { defineAsyncComponent } from 'vue';
 import { Modal } from '@xcan-angus/vue-ui';
 
-import { DataSetItem } from '../../PropsType';
+import { DataSetItem } from '../../types';
 
 type Props = {
   projectId: string;
@@ -21,7 +21,7 @@ const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
 }>();
 
-const PreviewData = defineAsyncComponent(() => import('@/views/data/dataset/previewData/index.vue'));
+const PreviewData = defineAsyncComponent(() => import('@/views/data/dataset/preview/index.vue'));
 
 const cancel = () => {
   emit('update:visible', false);
