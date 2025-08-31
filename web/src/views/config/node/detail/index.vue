@@ -29,7 +29,7 @@ const AgentInfo = defineAsyncComponent(() => import('./AgentInfo.vue'));
 const AgentLog = defineAsyncComponent(() => import('./AgentLog.vue'));
 const Execution = defineAsyncComponent(() => import('./Execution.vue'));
 const MockService = defineAsyncComponent(() => import('./MockService.vue'));
-const ExecutionPropulsion = defineAsyncComponent(() => import('./ExecutionPropulsion.vue'));
+const ExecutionPropulsion = defineAsyncComponent(() => import('./ExecutionProcess.vue'));
 
 // Route and node ID
 const route = useRoute();

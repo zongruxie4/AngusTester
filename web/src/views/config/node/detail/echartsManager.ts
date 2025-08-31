@@ -189,7 +189,7 @@ class ChartDataProcessor {
    * Converts raw CPU data to series format and calculates table statistics.
    * </p>
    */
-  static processCpuData(data: ChartDataItem[], t: (key: string) => string): {
+  static processCpuData (data: ChartDataItem[], t: (key: string) => string): {
     seriesData: SeriesData[];
     tableData: TableDataItem[];
   } {
@@ -255,7 +255,7 @@ class ChartDataProcessor {
    * Handles both absolute values and percentages for memory metrics.
    * </p>
    */
-  static processMemoryData(
+  static processMemoryData (
     data: ChartDataItem[],
     t: (key: string) => string,
     showMemoryPercentChart: boolean
@@ -367,7 +367,7 @@ class ChartDataProcessor {
    * Handles different disk metrics including capacity, IO rates, and percentages.
    * </p>
    */
-  static processDiskData(
+  static processDiskData (
     data: ChartDataItem[],
     t: (key: string) => string,
     diskChartKey: string
@@ -534,7 +534,7 @@ class ChartDataProcessor {
    * Handles network metrics including bytes, rates, and packet counts.
    * </p>
    */
-  static processNetworkData(
+  static processNetworkData (
     data: ChartDataItem[],
     t: (key: string) => string,
     networkChartKey: string
@@ -687,7 +687,7 @@ class ChartDataProcessor {
 export class EChartsManager {
   private myEchart: echarts.ECharts | null = null;
   private chartsData: ChartDataItem[] = [];
-  
+
   // Table data for different resource types
   private memoryTableData: TableDataItem[] = [];
   private diskTableData: TableDataItem[] = [];
@@ -723,7 +723,7 @@ export class EChartsManager {
    * Creates and configures the ECharts instance with the provided DOM element.
    * </p>
    */
-  initEcharts(echartRef: HTMLElement): void {
+  initEcharts (echartRef: HTMLElement): void {
     if (echartRef) {
       this.myEchart = echarts.init(echartRef);
       this.myEchart.setOption(DEFAULT_ECHARTS_OPTIONS);
@@ -736,7 +736,7 @@ export class EChartsManager {
    * Updates the internal chart data storage.
    * </p>
    */
-  setChartsData(data: ChartDataItem[]): void {
+  setChartsData (data: ChartDataItem[]): void {
     this.chartsData = data;
   }
 
@@ -746,7 +746,7 @@ export class EChartsManager {
    * Returns the current table data for display.
    * </p>
    */
-  getTableData(): Ref<TableDataItem[]> {
+  getTableData (): Ref<TableDataItem[]> {
     return this.tableData;
   }
 
@@ -756,7 +756,7 @@ export class EChartsManager {
    * Returns the current resource usage metrics.
    * </p>
    */
-  getSourceUse(): ResourceUsage {
+  getSourceUse (): ResourceUsage {
     return this.sourceUse;
   }
 
@@ -766,19 +766,21 @@ export class EChartsManager {
    * Processes CPU data and updates the chart and table.
    * </p>
    */
-  loadCpuEchartData(data: ChartDataItem[], t: (key: string) => string, notMerge = true): void {
+  loadCpuEchartData (data: ChartDataItem[], t: (key: string) => string, notMerge = true): void {
     try {
       this.chartsData = data;
       const { seriesData, tableData } = ChartDataProcessor.processCpuData(data, t);
-      
+
       this.tableData.value = tableData;
 
-      const legend = notMerge ? {
-        legend: {
-          ...DEFAULT_LEGEND,
-          data: seriesData.map(series => series.name)
-        }
-      } : {};
+      const legend = notMerge
+        ? {
+            legend: {
+              ...DEFAULT_LEGEND,
+              data: seriesData.map(series => series.name)
+            }
+          }
+        : {};
 
       const chartOption: ChartOption = {
         ...DEFAULT_ECHARTS_OPTIONS,
@@ -803,7 +805,7 @@ export class EChartsManager {
    * Processes memory data and updates the chart and table.
    * </p>
    */
-  loadMemoryEchartData(
+  loadMemoryEchartData (
     data: ChartDataItem[],
     t: (key: string) => string,
     showMemoryPercentChart: boolean,
@@ -811,7 +813,7 @@ export class EChartsManager {
   ): void {
     try {
       this.chartsData = data;
-      const { seriesData, tableData, percentSeriesData, percentTableData } = 
+      const { seriesData, tableData, percentSeriesData, percentTableData } =
         ChartDataProcessor.processMemoryData(data, t, showMemoryPercentChart);
 
       this.memoryTableData = tableData;
@@ -856,7 +858,7 @@ export class EChartsManager {
    * Processes disk data and updates the chart and table.
    * </p>
    */
-  loadDiskEchartData(
+  loadDiskEchartData (
     data: ChartDataItem[],
     t: (key: string) => string,
     diskChartKey: string,
@@ -864,7 +866,7 @@ export class EChartsManager {
   ): void {
     try {
       this.chartsData = data;
-      const { seriesData, tableData, chartOptions } = 
+      const { seriesData, tableData, chartOptions } =
         ChartDataProcessor.processDiskData(data, t, diskChartKey);
 
       this.diskTableData = tableData;
@@ -888,7 +890,7 @@ export class EChartsManager {
    * Processes network data and updates the chart and table.
    * </p>
    */
-  loadNetworkEchartData(
+  loadNetworkEchartData (
     data: ChartDataItem[],
     t: (key: string) => string,
     networkChartKey: string,
@@ -896,7 +898,7 @@ export class EChartsManager {
   ): void {
     try {
       this.chartsData = data;
-      const { seriesData, tableData, chartOptions } = 
+      const { seriesData, tableData, chartOptions } =
         ChartDataProcessor.processNetworkData(data, t, networkChartKey);
 
       this.networkTableData = tableData;
@@ -920,7 +922,7 @@ export class EChartsManager {
    * Switches between different chart views without reloading data.
    * </p>
    */
-  updateChartDisplay(
+  updateChartDisplay (
     activeTab: string,
     showMemoryPercentChart: boolean,
     diskChartKey: string,
@@ -994,7 +996,7 @@ export class EChartsManager {
    * Disposes of the ECharts instance and clears cached data.
    * </p>
    */
-  cleanup(): void {
+  cleanup (): void {
     if (this.myEchart) {
       this.myEchart.dispose();
       this.myEchart = null;

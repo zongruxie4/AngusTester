@@ -1,146 +1,155 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
 import { Grid, Icon, Tooltip } from '@xcan-angus/vue-ui';
-import axios from 'axios';
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-import { ApiType, ApiUrlBuilder, routerUtils } from '@xcan-angus/infra';
-import { useI18n } from 'vue-i18n';
-
+import { useAgentInfo } from './composables/useAgentInfo';
 import { formatBytes } from '@/utils';
+import type { AgentInfoProps } from './types';
 
-const { t } = useI18n();
-
-interface Props {
-  ip: string;
-  port?: string;
-}
-dayjs.extend(duration);
-const props = withDefaults(defineProps<Props>(), {
-  // dataSource: () => ({})
+/**
+ * <p>Component props with default values</p>
+ * <p>Provides default values for optional props</p>
+ */
+const props = withDefaults(defineProps<AgentInfoProps>(), {
   ip: '',
   port: '6807'
 });
 
-const columns = [
-  [
-    {
-      dataIndex: 'version',
-      label: t('node.nodeDetail.agentInfo.columns.version')
-    },
-    {
-      dataIndex: 'home',
-      label: t('node.nodeDetail.agentInfo.columns.home')
-    }
-  ],
-  [
-    {
-      dataIndex: 'uptime',
-      label: t('node.nodeDetail.agentInfo.columns.uptime')
-    },
-    {
-      dataIndex: 'diskSpace',
-      label: t('node.nodeDetail.agentInfo.columns.diskSpace')
-    }
-  ],
-  [
-    {
-      dataIndex: 'port',
-      label: t('node.nodeDetail.agentInfo.columns.port')
-    },
-    {
-      dataIndex: 'health',
-      label: t('node.nodeDetail.agentInfo.columns.health')
-    }
-  ]
-];
-
-const showErr = ref(false);
-const errorInfo = ref('');
-const closeErrInfo = () => {
-  showErr.value = false;
-};
-
-const dataSource = ref<{[key: string]: string}>({});
-
-watch(() => props.ip, async newValue => {
-  if (!newValue) {
-    return;
-  }
-
-  const routeConfig = routerUtils.getTesterApiRouteConfig(ApiType.PUB_API);
-  const url = ApiUrlBuilder.buildApiUrl(routeConfig, `/proxy?targetAddr=http://${newValue}:${props.port}`);
-  axios.get(url, {
-    timeout: 2000
-  })
-    .then(resp => {
-      const data = resp.data;
-      showErr.value = false;
-      dataSource.value.version = data.version;
-      dataSource.value.home = data.home;
-      const hour = dayjs.duration(+data.uptime).hours();
-      const minute = dayjs.duration(+data.uptime).minutes();
-      const seconds = dayjs.duration(+data.uptime).seconds();
-      dataSource.value.uptime = `${hour ? hour + t('node.nodeDetail.agentInfo.timeUnits.hour') : ''}${minute ? minute + t('node.nodeDetail.agentInfo.timeUnits.minute') : ''}${seconds ? seconds + t('node.nodeDetail.agentInfo.timeUnits.second') : ''}`;
-      dataSource.value.diskSpace = data.diskSpace;
-      dataSource.value.ip = data.server?.ip;
-      dataSource.value.port = data.server?.port;
-      dataSource.value.health = data.health?.status?.status; // 'UP' | ''
-      if (dataSource.value.health !== 'UP') {
-        const errorObj = data.health?.detail || {};
-        dataSource.value.errorTip = Object.values(errorObj).join(',');
-      }
-    })
-    .catch(err => {
-      showErr.value = true;
-      // 修复：添加检查确保 err.response 存在
-      if (err.response && err.response.data) {
-        errorInfo.value = err.response.data;
-      } else if (err.message) {
-        errorInfo.value = err.message;
-      } else {
-        errorInfo.value = '';
-      }
-    });
-}, {
-  immediate: true
+/**
+ * <p>Agent info data management</p>
+ * <p>Handles agent information retrieval, data processing, and grid configuration</p>
+ */
+const {
+  agentInfoData,
+  showError,
+  errorInfo,
+  gridColumns,
+  closeErrorInfo
+} = useAgentInfo({
+  ip: props.ip,
+  port: props.port
 });
-
 </script>
+
 <template>
-  <div v-if="showErr" class="border border-border-error rounded-xl px-2 py-1 flex items-center text-3 space-x-1 my-4 bg-bg-red">
-    <Icon icon="icon-tishi1" class="text-blue-icon text-3.5" />
-    <span class="text-rule flex-1">{{ errorInfo || `无访问代理信息，连接失败地址：http://${props.ip}:${props.port}` }}</span>
-    <Icon
-      icon="icon-cuowu"
-      class="text-3.5 cursor-pointer"
-      @click="closeErrInfo" />
-  </div>
-  <div class="font-medium text-3 my-5">
-    {{ t('node.nodeDetail.agentInfo.title') }}
-  </div>
-  <Grid
-    class="ml-6"
-    :columns="columns"
-    :dataSource="dataSource">
-    <template #health="text">
-      <template v-if="text.text && text.text==='UP'">{{ t('node.nodeDetail.agentInfo.health.normal') }}</template>
-      <template v-else-if="text.text">
-        <Tooltip>
-          <template #title>{{ dataSource.errorTip }}</template>
-          <span>
-            {{ t('node.nodeDetail.agentInfo.health.abnormal') }}
-            <Icon class="text-rule" icon="icon-jinggao" />
+  <div class="agent-info-container">
+    <!-- Error Display -->
+    <div v-if="showError" class="error-banner">
+      <Icon icon="icon-tishi1" class="error-icon" />
+      <span class="error-text">
+        {{ errorInfo || `无访问代理信息，连接失败地址：http://${props.ip}:${props.port}` }}
+      </span>
+      <Icon
+        icon="icon-cuowu"
+        class="close-icon"
+        @click="closeErrorInfo" />
+    </div>
+
+    <!-- Agent Info Title -->
+    <div class="info-title">
+      {{ $t('node.nodeDetail.agentInfo.title') }}
+    </div>
+
+    <!-- Agent Information Grid -->
+    <Grid
+      class="info-grid"
+      :columns="gridColumns"
+      :dataSource="agentInfoData">
+      <!-- Custom cell rendering for health status -->
+      <template #health="text">
+        <template v-if="text.text && text.text === 'UP'">
+          {{ $t('node.nodeDetail.agentInfo.health.normal') }}
+        </template>
+        <template v-else-if="text.text">
+          <Tooltip>
+            <template #title>{{ agentInfoData.errorTip }}</template>
+            <span class="health-warning">
+              {{ $t('node.nodeDetail.agentInfo.health.abnormal') }}
+              <Icon class="warning-icon" icon="icon-jinggao" />
+            </span>
+          </Tooltip>
+        </template>
+      </template>
+
+      <!-- Custom cell rendering for disk space -->
+      <template #diskSpace="record">
+        <template v-if="record.text">
+          <span
+            class="disk-space"
+            :class="{ 'disk-space-warning': record.text.used / record.text.total > 0.8 }">
+            {{ formatBytes(record.text.used) }} / {{ formatBytes(record.text.total) }}
           </span>
-        </Tooltip>
+        </template>
       </template>
-    </template>
-    <template #diskSpace="record">
-      <template v-if="record.text">
-        <span :class="{'text-rule': record.text.used / record.text.total > 0.8}">
-          {{ formatBytes(record.text.used) }} / {{ formatBytes(record.text.total) }}
-        </span>
-      </template>
-    </template>
-  </Grid>
+    </Grid>
+  </div>
 </template>
+
+<style scoped>
+.agent-info-container {
+  padding: 16px;
+}
+
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 16px;
+  margin: 16px 0;
+  background-color: var(--bg-red);
+  border: 1px solid var(--border-error);
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.error-icon {
+  font-size: 14px;
+  color: var(--blue-icon);
+  flex-shrink: 0;
+}
+
+.error-text {
+  color: var(--text-rule);
+  flex: 1;
+}
+
+.close-icon {
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--text-rule);
+  transition: color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.close-icon:hover {
+  color: var(--text-primary);
+}
+
+.info-title {
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--text-primary);
+  margin: 20px 0;
+}
+
+.info-grid {
+  margin-left: 24px;
+}
+
+.health-warning {
+  color: var(--text-rule);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.warning-icon {
+  color: var(--text-rule);
+}
+
+.disk-space {
+  color: var(--text-primary);
+}
+
+.disk-space-warning {
+  color: var(--text-rule);
+}
+</style>
