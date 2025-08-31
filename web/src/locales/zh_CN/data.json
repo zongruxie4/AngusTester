@@ -411,23 +411,23 @@
     },
     "introduce": {
       "welcome": "欢迎进入Angus数据！",
-      "description": "数据可以帮助您生成、管理业务数据和测试数据，并且基于数据生成参数化变量或数据集。",
-      "title": "AngusTester 提供了四种参数化方式，以满足不同的需求：",
+      "description": "数据管理功能支持生成业务数据、测试数据，并创建参数化变量和数据集。",
+      "title": "AngusTester 提供四种参数化方式：",
       "variable": {
         "title": "变量",
-        "content": "定义一个可以在整个测试过程中共享和重复使用的常量值。"
+        "content": "定义可在整个测试过程中重复使用的常量值。"
       },
       "dataset": {
         "title": "数据集",
-        "content": "定义一组相关的数据参数，通常为实际的测试数据，在执行时动态改变值。"
+        "content": "定义一组相关测试数据，执行时动态更新值。"
       },
       "mockFunction": {
         "title": "Mock函数",
-        "content": "通过在测试中引用 mock 函数，在执行时动态生成对应参数值或随机值。"
+        "content": "执行时动态生成参数值或随机值。"
       },
       "samplingExtraction": {
         "title": "采样提取变量",
-        "content": "从上一个采样的请求或响应中提取一个值，作为后续采样的参数值，每次迭代时重新提取。"
+        "content": "从上一个请求或响应中提取值，作为后续采样的参数，每次迭代重新提取。"
       }
     },
     "summaryTable": {

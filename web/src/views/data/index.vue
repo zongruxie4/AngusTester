@@ -40,11 +40,11 @@ const projectId = computed(() => {
 });
 
 const menuItems = [
-  { name: t('data.dataHome.name'), icon: 'icon-zhuye', key: 'homepage' },
-  { name: t('data.dataVariable.name'), icon: 'icon-bianliang1', key: 'variables' },
-  { name: t('data.dataset.name'), icon: 'icon-shujuji', key: 'dataSet' },
-  { name: t('data.fileSpace.name'), icon: 'icon-wenjian1', key: 'file' },
-  { name: t('data.dataSource.name'), icon: 'icon-shujuyuan', key: 'dataSource' }
+  { name: t('dataHome.name'), icon: 'icon-zhuye', key: 'homepage' },
+  { name: t('dataVariable.name'), icon: 'icon-bianliang1', key: 'variables' },
+  { name: t('dataset.name'), icon: 'icon-shujuji', key: 'dataSet' },
+  { name: t('fileSpace.name'), icon: 'icon-wenjian1', key: 'file' },
+  { name: t('datasource.name'), icon: 'icon-shujuyuan', key: 'dataSource' }
 ];
 </script>
 <template>

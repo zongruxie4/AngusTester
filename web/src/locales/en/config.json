@@ -359,7 +359,7 @@
     "searchOptions": {
       "node": {
         "label": "Node",
-        "placeholder": "Search node name, ID"
+        "placeholder": "Search node name, id"
       },
       "ip": {
         "label": "IP",
@@ -680,7 +680,7 @@
           "cpu": "CPU",
           "memory": "Memory",
           "fileSystem": "File System",
-          "swapArea": "Swap Area",
+          "swapArea": "Swap",
           "network": "Network",
           "upload": "Upload",
           "download": "Download",

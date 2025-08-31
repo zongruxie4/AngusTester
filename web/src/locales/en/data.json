@@ -411,23 +411,23 @@
     },
     "introduce": {
       "welcome": "Welcome to Angus Data!",
-      "description": "Data can help you generate and manage business data and test data, and generate parameterized variables or datasets based on data.",
-      "title": "AngusTester provides four parameterization methods to meet different needs:",
+      "description": "Data management features support generating business data, test data, and creating parameterized variables and datasets.",
+      "title": "AngusTester provides four parameterization methods:",
       "variable": {
         "title": "Variable",
-        "content": "Define a constant value that can be shared and reused throughout the testing process."
+        "content": "Define constant values that can be reused throughout the testing process."
       },
       "dataset": {
         "title": "Dataset",
-        "content": "Define a set of related data parameters, usually actual test data, that dynamically change values during execution."
+        "content": "Define a set of related test data that updates dynamically during execution."
       },
       "mockFunction": {
         "title": "Mock Function",
-        "content": "By referencing mock functions in tests, dynamically generate corresponding parameter values or random values during execution."
+        "content": "Dynamically generate parameter values or random values during execution."
       },
       "samplingExtraction": {
         "title": "Sampling Extraction Variable",
-        "content": "Extract a value from the previous sampling request or response as a parameter value for subsequent sampling, and re-extract it each time it iterates."
+        "content": "Extract values from previous requests or responses as parameters for subsequent sampling, re-extracting on each iteration."
       }
     },
     "summaryTable": {

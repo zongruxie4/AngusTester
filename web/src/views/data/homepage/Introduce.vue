@@ -27,7 +27,7 @@ const tipItems = [
   <div>
     <div class="text-3.5 font-semibold mb-2.5">{{ t('dataHome.introduce.welcome') }}</div>
     <div class="flex items-center justify-between space-x-2.5">
-      <img class="w-1/3" src="images/introduce.png" />
+      <img class="w-1/3" src="./images/introduce.png" />
       <div>{{ t('dataHome.introduce.description') }}</div>
     </div>
     <div class="mt-2 mr-5">
