@@ -9,7 +9,7 @@ import { useI18n } from 'vue-i18n';
 import { getCurrentPage } from '@/utils/utils';
 import { DataSetItem } from '../types';
 
-import SearchPanel from '@/views/data/dataset/list/searchPanel/index.vue';
+import SearchPanel from '@/views/data/dataset/list/SearchPanel.vue';
 
 const { t } = useI18n();
 
@@ -29,10 +29,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 
-const Introduce = defineAsyncComponent(() => import('@/views/data/dataset/list/introduce/index.vue'));
-const ImportDataSetModal = defineAsyncComponent(() => import('@/views/data/dataset/list/import/index.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/data/dataset/list/Introduce.vue'));
+const ImportDataSetModal = defineAsyncComponent(() => import('@/views/data/dataset/list/Import.vue'));
 const ExportDataSetModal = defineAsyncComponent(() => import('@/views/data/dataset/export/index.vue'));
-const PreviewDataSetModal = defineAsyncComponent(() => import('@/views/data/dataset/list/previewData/index.vue'));
+const PreviewDataSetModal = defineAsyncComponent(() => import('@/views/data/dataset/list/PreviewData.vue'));
 
 type OrderByKey = 'lastModifiedDate' | 'lastModifiedByName';
 type OrderSortKey = 'ASC' | 'DESC';

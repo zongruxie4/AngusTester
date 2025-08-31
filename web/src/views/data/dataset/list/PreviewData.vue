@@ -2,7 +2,7 @@
 import { defineAsyncComponent } from 'vue';
 import { Modal } from '@xcan-angus/vue-ui';
 
-import { DataSetItem } from '../../types';
+import { DataSetItem } from '../types';
 
 type Props = {
   projectId: string;
