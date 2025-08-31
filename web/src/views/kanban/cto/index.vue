@@ -428,22 +428,22 @@ const overdueTaskConfig = {
       length: 5,
       length2: 5
     },
-    data: [
-      {
-        name: '逾期数',
-        value: 0,
-        itemStyle: {
-          color: 'rgba(245, 34, 45, 1)'
+          data: [
+        {
+          name: t('kanban.cto.overdue.overdueCount'),
+          value: 0,
+          itemStyle: {
+            color: 'rgba(245, 34, 45, 1)'
+          }
+        },
+        {
+          name: t('kanban.cto.overdue.nonOverdueCount'),
+          value: 0,
+          itemStyle: {
+            color: 'rgba(217, 217, 217, 1)'
+          }
         }
-      },
-      {
-        name: '非逾期数',
-        value: 0,
-        itemStyle: {
-          color: 'rgba(217, 217, 217, 1)'
-        }
-      }
-    ]
+      ]
   }]
 };
 
@@ -455,26 +455,26 @@ const unplanTaskNumConfig = {
   ...recentCompleteEchartConfig,
   title: {
     ...recentCompleteEchartConfig.title,
-    subtext: '计划外任务占比'
+    subtext: t('kanban.cto.unplanned.unplannedTaskRatio')
   },
   series: [{
     ...recentCompleteEchartConfig.series[0],
-    data: [
-      {
-        name: '计划外数',
-        value: 0,
-        itemStyle: {
-          color: 'gold'
+          data: [
+        {
+          name: t('kanban.cto.unplanned.unplannedCount'),
+          value: 0,
+          itemStyle: {
+            color: 'gold'
+          }
+        },
+        {
+          name: t('kanban.cto.unplanned.nonUnplannedCount'),
+          value: 0,
+          itemStyle: {
+            color: 'rgba(45, 142, 255, 1)'
+          }
         }
-      },
-      {
-        name: '非计划外数',
-        value: 0,
-        itemStyle: {
-          color: 'rgba(45, 142, 255, 1)'
-        }
-      }
-    ]
+      ]
   }]
 };
 
@@ -485,26 +485,26 @@ const unplannedWorkloadConfig = {
   ...recentCompleteEchartConfig,
   title: {
     ...recentCompleteEchartConfig.title,
-    subtext: '计划外工作量占比'
+    subtext: t('kanban.cto.unplanned.unplannedWorkloadRatio')
   },
   series: [{
     ...recentCompleteEchartConfig.series[0],
-    data: [
-      {
-        name: '计划外量',
-        value: 0,
-        itemStyle: {
-          color: 'gold'
+          data: [
+        {
+          name: t('kanban.cto.unplanned.unplannedAmount'),
+          value: 0,
+          itemStyle: {
+            color: 'gold'
+          }
+        },
+        {
+          name: t('kanban.cto.unplanned.nonUnplannedAmount'),
+          value: 0,
+          itemStyle: {
+            color: 'rgba(45, 142, 255, 1)'
+          }
         }
-      },
-      {
-        name: '非计划外量',
-        value: 0,
-        itemStyle: {
-          color: 'rgba(45, 142, 255, 1)'
-        }
-      }
-    ]
+      ]
   }]
 };
 
@@ -516,26 +516,26 @@ const criticalFailureConfig = {
   ...recentCompleteEchartConfig,
   title: {
     ...recentCompleteEchartConfig.title,
-    subtext: '致命故障占比'
+    subtext: t('kanban.cto.failureAssessment.criticalFailureRatio')
   },
   series: [{
     ...recentCompleteEchartConfig.series[0],
-    data: [
-      {
-        name: '致命数',
-        value: 0,
-        itemStyle: {
-          color: 'rgba(245, 34, 45, 1)'
+          data: [
+        {
+          name: t('kanban.cto.failureAssessment.criticalCount'),
+          value: 0,
+          itemStyle: {
+            color: 'rgba(245, 34, 45, 1)'
+          }
+        },
+        {
+          name: t('kanban.cto.failureAssessment.nonCriticalCount'),
+          value: 0,
+          itemStyle: {
+            color: 'rgba(45, 142, 255, 1)'
+          }
         }
-      },
-      {
-        name: '非致命数',
-        value: 0,
-        itemStyle: {
-          color: 'rgba(45, 142, 255, 1)'
-        }
-      }
-    ]
+      ]
   }]
 };
 
@@ -545,26 +545,26 @@ const majorFailureConfig = {
   ...recentCompleteEchartConfig,
   title: {
     ...recentCompleteEchartConfig.title,
-    subtext: '严重故障占比'
+    subtext: t('kanban.cto.failureAssessment.majorFailureRatio')
   },
   series: [{
     ...recentCompleteEchartConfig.series[0],
-    data: [
-      {
-        name: '严重数',
-        value: 0,
-        itemStyle: {
-          color: 'gold'
+          data: [
+        {
+          name: t('kanban.cto.failureAssessment.majorCount'),
+          value: 0,
+          itemStyle: {
+            color: 'gold'
+          }
+        },
+        {
+          name: t('kanban.cto.failureAssessment.nonMajorCount'),
+          value: 0,
+          itemStyle: {
+            color: 'rgba(45, 142, 255, 1)'
+          }
         }
-      },
-      {
-        name: '非严重数',
-        value: 0,
-        itemStyle: {
-          color: 'rgba(45, 142, 255, 1)'
-        }
-      }
-    ]
+      ]
   }]
 };
 
@@ -574,26 +574,26 @@ const minorFailureConfig = {
   ...recentCompleteEchartConfig,
   title: {
     ...recentCompleteEchartConfig.title,
-    subtext: '一般故障占比'
+    subtext: t('kanban.cto.failureAssessment.minorFailureRatio')
   },
   series: [{
     ...recentCompleteEchartConfig.series[0],
-    data: [
-      {
-        name: '一般数',
-        value: 0,
-        itemStyle: { // rgba(255, 165, 43, 1)
-          color: 'rgba(255, 165, 43, 1)'
+          data: [
+        {
+          name: t('kanban.cto.failureAssessment.minorCount'),
+          value: 0,
+          itemStyle: { // rgba(255, 165, 43, 1)
+            color: 'rgba(255, 165, 43, 1)'
+          }
+        },
+        {
+          name: t('kanban.cto.failureAssessment.nonMinorCount'),
+          value: 0,
+          itemStyle: {
+            color: 'rgba(45, 142, 255, 1)'
+          }
         }
-      },
-      {
-        name: '非一般数',
-        value: 0,
-        itemStyle: {
-          color: 'rgba(45, 142, 255, 1)'
-        }
-      }
-    ]
+      ]
   }]
 };
 
@@ -603,26 +603,26 @@ const trivialFailureConfig = {
   ...recentCompleteEchartConfig,
   title: {
     ...recentCompleteEchartConfig.title,
-    subtext: '轻微故障占比'
+    subtext: t('kanban.cto.failureAssessment.trivialFailureRatio')
   },
   series: [{
     ...recentCompleteEchartConfig.series[0],
-    data: [
-      {
-        name: '轻微数',
-        value: 0,
-        itemStyle: {
-          color: 'rgba(136, 185, 242, 1)'
+          data: [
+        {
+          name: t('kanban.cto.failureAssessment.trivialCount'),
+          value: 0,
+          itemStyle: {
+            color: 'rgba(136, 185, 242, 1)'
+          }
+        },
+        {
+          name: t('kanban.cto.failureAssessment.nonTrivialCount'),
+          value: 0,
+          itemStyle: {
+            color: 'rgba(45, 142, 255, 1)'
+          }
         }
-      },
-      {
-        name: '非轻微数',
-        value: 0,
-        itemStyle: {
-          color: 'rgba(45, 142, 255, 1)'
-        }
-      }
-    ]
+      ]
   }]
 };
 
@@ -646,7 +646,7 @@ const taskTypeEchartsConfig = {
   },
   series: [
     {
-      name: '总数',
+      name: t('kanban.cto.taskTypes.total'),
       type: 'pie',
       radius: ['30%', '50%'],
       center: ['35%', '50%'],
@@ -737,7 +737,7 @@ const taskStatusEchartsConfig = {
   },
   series: [
     {
-      name: '总数',
+      name: t('kanban.cto.taskTypes.total'),
       type: 'pie',
       radius: ['30%', '50%'],
       center: ['35%', '50%'],
@@ -853,20 +853,20 @@ const apiOpenTestConfig = {
   ...recentCompleteEchartConfig,
   title: {
     ...recentCompleteEchartConfig.title,
-    subtext: '开启测试数占比'
+    subtext: t('kanban.cto.apiTest.enabledTestRatio')
   },
   series: [{
     ...recentCompleteEchartConfig.series[0],
     data: [
       {
-        name: '开启数',
+        name: t('kanban.cto.apiTest.enabledCount'),
         value: 0,
         itemStyle: {
           color: 'rgba(136, 185, 242, 1)'
         }
       },
       {
-        name: '未开启数',
+        name: t('kanban.cto.apiTest.nonEnabledCount'),
         value: 0,
         itemStyle: {
           color: 'rgba(217, 217, 217, 1)'
@@ -883,20 +883,20 @@ const apiSuccessTestConfig = {
   ...recentCompleteEchartConfig,
   title: {
     ...recentCompleteEchartConfig.title,
-    subtext: '通过测试占比'
+    subtext: t('kanban.cto.apiTest.passedTestRatio')
   },
   series: [{
     ...recentCompleteEchartConfig.series[0],
     data: [
       {
-        name: '通过数',
+        name: t('kanban.cto.apiTest.passedCount'),
         value: 0,
         itemStyle: {
           color: '#52C41A'
         }
       },
       {
-        name: '未通过数',
+        name: t('kanban.cto.apiTest.nonPassedCount'),
         value: 0,
         itemStyle: {
           color: 'rgba(217, 217, 217, 1)'
@@ -914,20 +914,20 @@ const scenarioOpenTestConfig = {
   ...recentCompleteEchartConfig,
   title: {
     ...recentCompleteEchartConfig.title,
-    subtext: '开启测试数占比'
+    subtext: t('kanban.cto.scenarioTest.enabledTestRatio')
   },
   series: [{
     ...recentCompleteEchartConfig.series[0],
     data: [
       {
-        name: '开启数',
+        name: t('kanban.cto.apiTest.enabledCount'),
         value: 0,
         itemStyle: {
           color: 'rgba(136, 185, 242, 1)'
         }
       },
       {
-        name: '未开启数',
+        name: t('kanban.cto.apiTest.nonEnabledCount'),
         value: 0,
         itemStyle: {
           color: 'rgba(217, 217, 217, 1)'
@@ -944,20 +944,20 @@ const scenarioSuccessTestConfig = {
   ...recentCompleteEchartConfig,
   title: {
     ...recentCompleteEchartConfig.title,
-    subtext: '通过测试占比'
+    subtext: t('kanban.cto.scenarioTest.passedTestRatio')
   },
   series: [{
     ...recentCompleteEchartConfig.series[0],
     data: [
       {
-        name: '通过数',
+        name: t('kanban.cto.apiTest.passedCount'),
         value: 0,
         itemStyle: {
           color: '#52C41A'
         }
       },
       {
-        name: '未通过数',
+        name: t('kanban.cto.apiTest.nonPassedCount'),
         value: 0,
         itemStyle: {
           color: 'rgba(217, 217, 217, 1)'
@@ -987,7 +987,7 @@ const testStatusConfig = {
   },
   series: [
     {
-      name: '总数',
+      name: t('kanban.cto.taskTypes.total'),
       type: 'pie',
       radius: ['30%', '50%'],
       center: ['35%', '50%'],
@@ -1012,35 +1012,35 @@ const testStatusConfig = {
       },
       data: [
         {
-          name: '待测试',
+          name: t('kanban.cto.testStatus.pendingTest'),
           value: 0,
           itemStyle: {
             color: 'rgba(45, 142, 255, 1)'
           }
         },
         {
-          name: '测试通过',
+          name: t('kanban.cto.testStatus.testPassed'),
           value: 0,
           itemStyle: {
             color: 'rgba(82, 196, 26, 1)'
           }
         },
         {
-          name: '测试未通过',
+          name: t('kanban.cto.testStatus.testFailed'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'
           }
         },
         {
-          name: '阻塞',
+          name: t('kanban.cto.testStatus.blocked'),
           value: 0,
           itemStyle: {
             color: 'rgba(255, 165, 43, 1)'
           }
         },
         {
-          name: '已取消',
+          name: t('kanban.cto.testStatus.cancelled'),
           value: 0,
           itemStyle: {
             color: 'rgba(45, 142, 255, 1)'
@@ -1071,7 +1071,7 @@ const reviewStatusConfig = {
   },
   series: [
     {
-      name: '总数',
+      name: t('kanban.cto.taskTypes.total'),
       type: 'pie',
       radius: ['30%', '50%'],
       center: ['35%', '50%'],
@@ -1096,21 +1096,21 @@ const reviewStatusConfig = {
       },
       data: [
         {
-          name: '待评审',
+          name: t('kanban.cto.reviewStatus.pendingReview'),
           value: 0,
           itemStyle: {
             color: 'rgba(201, 119, 255, 1)'
           }
         },
         {
-          name: '评审通过',
+          name: t('kanban.cto.reviewStatus.reviewPassed'),
           value: 0,
           itemStyle: {
             color: 'rgba(82, 196, 26, 1)'
           }
         },
         {
-          name: '评审未通过',
+          name: t('kanban.cto.reviewStatus.reviewFailed'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'
@@ -1717,7 +1717,7 @@ defineExpose({
     <div class="flex space-x-2 h-50">
       <div class="rounded h-full flex-1/2 flex space-x-2">
         <div class="flex-1/2 border rounded p-2 flex flex-col space-y-2">
-          <div class="font-semibold">{{ props.countType === 'task' ? t('kanban.cto.taskType') : t('kanban.cto.testStatus') }}</div>
+          <div class="font-semibold">{{ props.countType === 'task' ? t('kanban.cto.taskType') : t('kanban.cto.testStatusLable') }}</div>
           <div
             v-show="props.countType === 'task'"
             ref="taskTypeRef"
@@ -1728,7 +1728,7 @@ defineExpose({
             class="flex-1"></div>
         </div>
         <div class="flex-1/2  border rounded p-2 flex flex-col space-y-2">
-          <div class="font-semibold">{{ props.countType === 'task' ? t('kanban.cto.taskStatusName') : t('kanban.cto.reviewStatus') }}</div>
+          <div class="font-semibold">{{ props.countType === 'task' ? t('kanban.cto.taskStatusName') : t('kanban.cto.reviewStatusLable') }}</div>
           <div
             v-show="props.countType === 'task'"
             ref="taskStatusRef"
