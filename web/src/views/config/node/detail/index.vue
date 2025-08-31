@@ -1,33 +1,29 @@
 <script setup lang="ts">
-import { defineAsyncComponent, inject, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import dayjs from 'dayjs';
+/**
+ * Node Detail Page Component
+ * <p>
+ * This component displays detailed information about a specific node including
+ * basic information, resource monitoring, proxy service status, and execution tasks.
+ * The component uses composables to separate business logic from UI presentation.
+ * </p>
+ */
+
+import { defineAsyncComponent, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import { Button, Progress, RadioButton, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
-import {
-  Grid,
-  Hints,
-  Icon,
-  IntervalTimestamp,
-  modal,
-  NoData,
-  notification,
-  Select,
-  Spin,
-  Tooltip
-} from '@xcan-angus/vue-ui';
-import { appContext, TESTER, toClipboard } from '@xcan-angus/infra';
-import { useI18n } from 'vue-i18n';
+import { Grid, Hints, Icon, IntervalTimestamp, NoData, Select, Spin, Tooltip } from '@xcan-angus/vue-ui';
 
-import { infoItem, internetInfo, nodeEchartsTabs, nodeUseProgresses } from './interface';
-import { getStrokeColor, installConfigColumns } from '../interface';
-import { nodeCtrl, nodeInfo } from 'src/api/ctrl';
-import { node } from '@/api/tester';
+// Import interfaces and utilities
+// Import composables
+import { infoItem, installConfigColumns, useNodeData } from './composables/useNodeData';
+import { getStrokeColor, internetInfo, nodeUseProgresses, useNodeMetrics } from './composables/useNodeMetrics';
+import { nodeEchartsTabs, useNodeCharts } from './composables/useNodeCharts';
+import { useNodeActions } from './composables/useNodeActions';
 
-import { formatBytes } from '@/utils/common';
+// Import ECharts manager
 import { EChartsManager } from './echartsManager';
 
-const { t } = useI18n();
-
+// Async component imports
 const AgentChart = defineAsyncComponent(() => import('./AgentChart.vue'));
 const AgentInfo = defineAsyncComponent(() => import('./AgentInfo.vue'));
 const AgentLog = defineAsyncComponent(() => import('./AgentLog.vue'));
@@ -35,582 +31,289 @@ const Execution = defineAsyncComponent(() => import('./Execution.vue'));
 const MockService = defineAsyncComponent(() => import('./MockService.vue'));
 const ExecutionPropulsion = defineAsyncComponent(() => import('./ExecutionPropulsion.vue'));
 
-const echartRef = ref();
-
+// Route and node ID
 const route = useRoute();
-const router = useRouter();
-const id = ref(route.params.id as string);
+const id = ref<string>(route.params.id as string);
 
-const state = reactive<{infos: Record<string, any>, linuxOfflineInstallSteps: Record<string, any>, windowsOfflineInstallSteps: Record<string, any>, installConfig?: any}>({
-  infos: {},
-  linuxOfflineInstallSteps: {},
-  windowsOfflineInstallSteps: {},
-  installConfig: undefined
-});
-
-const showPassword = ref(false);
-
-const chartServersMap = {
-  cpu: `${TESTER}/node/${id.value}/metrics/cpu`,
-  memory: `${TESTER}/node/${id.value}/metrics/memory`,
-  disk: `${TESTER}/node/${id.value}/metrics/disk`,
-  network: `${TESTER}/node/${id.value}/metrics/network`
-};
-const loadingChart = ref(false);
-
-const currentSourceServer = ref();
-
-const chartParams = ref({}); // 图表参数
-
-const activeTab = ref('cpu');
-
-const diskNames = ref<{label: string, value: string}[]>([]); // 所有磁盘名字 list
-const activeDisk = ref<string>(); // 选中的磁盘
-
-const networkNames = ref<{label: string, value: string}[]>([]); // 所有网络名字
-const activeNetwork = ref<string>(); // 选中的网络
-
-const notMerge = ref(true); // 图表数据覆盖是否重新渲染
-
-const memoryDataOptions = [{ label: t('node.nodeDetail.chartOptions.memory.usage'), value: false }, { label: t('node.nodeDetail.chartOptions.memory.usageRate'), value: true }];
-const diskDataOptions = [
-  // { label: '使用量', value: 'disk' }, { label: '使用率', value: 'percent' },
-  { label: t('node.nodeDetail.chartOptions.disk.iops'), value: 'rate' }, { label: t('node.nodeDetail.chartOptions.disk.mbPerSecond'), value: 'bytesRate' }];
-const networkDataOptions = [{ label: t('node.nodeDetail.chartOptions.network.mbPerSecond'), value: 'network' }, { label: t('node.nodeDetail.chartOptions.network.bytes'), value: 'bytes' }, { label: t('node.nodeDetail.chartOptions.network.errorPackets'), value: 'packet' }];
-
-const showMemoryPercentChart = ref(false); // 显示内存百分比图表
-const diskChartKey = ref('rate'); // 显示文件系统百分比图表
-const networkChartKey = ref('network');
-
-const timestamp = ref<string | undefined>(); // 选择时间段
-
-const showInstallStep = ref(false); // 显示手动安装步骤
-
-// 创建ECharts管理器实例
+// ECharts reference and manager
+const echartRef = ref();
 const echartsManager = new EChartsManager();
-const sourceUse = echartsManager.getSourceUse();
 
-const showNoData = ref(false); // 是否显示无数据提示
+// Initialize composables
+const {
+  state,
+  loadingInfo,
+  showPassword,
+  showInstallStep,
+  showInstallCtrlAccessToken,
+  installing,
+  enabled,
+  activeKey,
+  loadInfo,
+  handleShowPassword,
+  installAgent,
+  getInstallStep,
+  foldInstallAgent,
+  turnback,
+  enableNode,
+  deleteNode,
+  toggleShowCtrlAccessToken,
+  getOnlineInstallTip,
+  getDeleteTip
+} = useNodeData();
 
-const loadingInfo = ref(true);
-// 获取节点基本信息
-const loadInfo = async () => {
-  loadingInfo.value = true;
-  const [error, res] = await node.getNodeDetail(id.value);
-  loadingInfo.value = false;
-  if (error) {
-    return;
-  }
-  // delete res.data.online;
-  const rolesName = res.data.roles.map(i => i.message).join(',');
-  const rolesValues = res.data.roles.map(i => i.value);
-  state.infos = {
-    ...state.infos,
-    ...res.data,
-    sourceName: res.data.source.message,
-    rolesName,
-    rolesValues
-  };
-};
+const {
+  sourceUse,
+  networkDeviceData,
+  currentDeviceName,
+  loadMetrics,
+  loadNetwork,
+  onDeviceNameChange
+} = useNodeMetrics();
 
-// 显示密码
-const handleShowPassd = () => {
-  showPassword.value = !showPassword.value;
-};
+const {
+  loadingChart,
+  currentSourceServer,
+  chartParams,
+  activeTab,
+  showNoData,
+  memoryDataOptions,
+  diskDataOptions,
+  networkDataOptions,
+  showMemoryPercentChart,
+  diskChartKey,
+  networkChartKey,
+  diskNames,
+  activeDisk,
+  networkNames,
+  activeNetwork,
+  chartServersMap,
+  onChartDataChange,
+  loadEchartData
+} = useNodeCharts(id.value, echartsManager);
 
-const installing = ref(false); // 代理安装中
-// 安装代理
-const installAgen = async () => {
-  installing.value = true;
-  const [error] = await node.installNodeAgent({ id: id.value });
-  installing.value = false;
-  if (error) {
-    // 检查error是否有data属性并且是对象类型
-    if (error && typeof error === 'object' && 'data' in error && typeof error.data !== 'object') {
-      return;
-    }
-    if (error && typeof error === 'object' && 'data' in error && error.data && typeof error.data === 'object' && 'linuxOfflineInstallSteps' in error.data) {
-      state.linuxOfflineInstallSteps = error.data.linuxOfflineInstallSteps as Record<string, any>;
-      showInstallStep.value = true;
-    }
-    if (error && typeof error === 'object' && 'data' in error && error.data && typeof error.data === 'object' && 'windowsOfflineInstallSteps' in error.data) {
-      state.windowsOfflineInstallSteps = error.data.windowsOfflineInstallSteps as Record<string, any>;
-      showInstallStep.value = true;
-    }
-    return;
-  }
+const {
+  isAdmin,
+  tenantInfo,
+  userInfo,
+  copyContent,
+  refreshTimer,
+  canPerformActions,
+  canDeleteNode,
+  canInstallAgent
+} = useNodeActions();
 
-  state.infos.geAgentInstallationCmd = true;
-};
+// UI state
+const proxyActiveKey = ref<'proxy' | 'log'>('proxy');
 
-// 手动安装步骤
-const getInstallStep = async () => {
-  if (showInstallStep.value) {
-    foldInstallAgent();
-    return;
-  }
-  const [error, res] = await nodeInfo.geAgentInstallationCmd({ id: id.value });
-  if (error) {
-    return;
-  }
-  showInstallStep.value = true;
-  if (res.data.linuxOfflineInstallSteps) {
-    state.linuxOfflineInstallSteps = res.data.linuxOfflineInstallSteps;
-  }
-  if (res.data.windowsOfflineInstallSteps) {
-    state.windowsOfflineInstallSteps = res.data.windowsOfflineInstallSteps;
-  }
-  state.installConfig = res.data?.installConfig || {};
-};
-
-// 收起手动安装步骤
-const foldInstallAgent = () => {
-  showInstallStep.value = false;
-};
-
-const turnback = () => {
-  router.push({ path: '/config#node' });
-};
-
-const enabled = ref(false); // 启用、禁用中
-// 启用 禁用
-const enableNode = async () => {
-  enabled.value = true;
-  const [error] = await node.enableNode([{ enabled: !state.infos.enabled, id: id.value }]);
-  enabled.value = false;
-  if (error) {
-    return;
-  }
-  state.infos.enabled = !state.infos.enabled;
-};
-
-// 资源使用 ->cpu 内存 文件系统 交换区
-const loadMetrics = async () => {
-  const [error, res] = await nodeCtrl.getLatestMetrics(id.value);
-  if (error) {
-    return;
-  }
-  const { cvsCpu, cvsFilesystem, cvsMemory } = res.data || {};
-
-  // CPU cvsCpu => idle,sys,user,wait,other,total
-  if (cvsCpu) {
-    const cpu = +(+cvsCpu.split(',')[5]).toFixed(2);
-    const cpuPercent = cpu;
-    const cpuTotal = (100 - cpu).toFixed(2);
-    sourceUse.cpu = cpu;
-    sourceUse.cpuPercent = cpuPercent;
-    sourceUse.cpuTotal = cpuTotal;
-  }
-
-  // 内存  cvsMemory => free,used,freePercent,usedPercent,actualFree,actualUsed,actualFreePercent,actualUsedPercent,swapFree,swapUsed
-  // 取实际使用值
-  if (cvsMemory) {
-    const cvsMemoryValues = cvsMemory.split(',');
-    const memoryPercent = +(+cvsMemoryValues[7]).toFixed(2);
-    const memory = +(+cvsMemoryValues[5]).toFixed(2);
-    const memoryTotal = +(+cvsMemoryValues[4] + +cvsMemoryValues[5]).toFixed(2);
-    sourceUse.memory = formatBytes(memory, 2);
-    sourceUse.memoryPercent = memoryPercent;
-    sourceUse.memoryTotal = formatBytes(memoryTotal, 2);
-
-    // 交换区
-    const swapTotal = (+cvsMemoryValues[9] || 0) + (+cvsMemoryValues[8] || 0);
-    const swapPercent = +((+cvsMemoryValues[9] || 0) / (+swapTotal || 1) * 100).toFixed(2);
-    const swap = (+cvsMemoryValues[9] || 0);
-    sourceUse.swapTotal = formatBytes(swapTotal, 2);
-    sourceUse.swapPercent = swapPercent;
-    sourceUse.swap = formatBytes(swap, 2);
-  }
-
-  // 文件系统 cvsFilesystem => free,used,avail,usePercent
-  if (cvsFilesystem) {
-    const cvsFilesystems = cvsFilesystem.split(',');
-    const disk = +(+cvsFilesystems[1]).toFixed(2);
-    const diskPercent = +(+cvsFilesystems[3]).toFixed(2);
-    const diskTotal = +(Number(cvsFilesystems[0]) + Number(cvsFilesystems[1])).toFixed(2);
-    sourceUse.disk = formatBytes(disk, 2);
-    sourceUse.diskPercent = diskPercent;
-    sourceUse.diskTotal = formatBytes(diskTotal, 2);
-  }
-
-  if (res.data) {
-    const timestamp = res.data?.timestamp;
-    const datetime = res.datetime;
-    // state.infos.online = true;
-    if (dayjs(timestamp).add(30, 'second') < dayjs(datetime)) {
-      sourceUse.cpu = 0;
-      sourceUse.cpuPercent = 0;
-      sourceUse.cpuTotal = 0;
-      sourceUse.memory = '0';
-      sourceUse.memoryPercent = 0;
-      sourceUse.memoryTotal = '0';
-      sourceUse.disk = '0';
-      sourceUse.diskPercent = 0;
-      sourceUse.diskTotal = '0';
-      // state.infos.online = false;
-    }
-  } else {
-    // state.infos.online = false;
-  }
-};
-
-const networkDeviceData = ref<{deviceName: string, networkUsage: {cvsValue: string, timestamp: string}}[]>([]);
-const currentDeviceName = ref();
-let networkDatatime = '';
-
-const onDeviceNameChange = (value) => {
-  currentDeviceName.value = value;
-  setNetworkData();
-};
-
-// 资源使用 ->网络
-const loadNetwork = async () => {
-  const [error, res] = await nodeCtrl.getNetworkInfoMetrics(id.value);
-  if (error) {
-    return;
-  }
-  networkDeviceData.value = res.data || [];
-  networkDatatime = res.datetime;
-  if (!currentDeviceName.value || !networkDeviceData.value.find(item => item.deviceName === currentDeviceName.value)) {
-    currentDeviceName.value = networkDeviceData.value[0]?.deviceName;
-  }
-  if (!currentDeviceName.value) {
-    return;
-  }
-  setNetworkData();
-};
-
-const setNetworkData = () => {
-  const currentNetworkUsage = networkDeviceData.value.find(item => item.deviceName === currentDeviceName.value);
-  const { cvsValue } = currentNetworkUsage?.networkUsage || {};
-  if (!cvsValue) {
-    return;
-  }
-  const cvsValues = cvsValue.split(',');
-  sourceUse.rxBytesRate = +(+cvsValues[1]); // 下载
-  sourceUse.txBytesRate = +(+cvsValues[4]); // 上传
-  sourceUse.rxBytes = formatBytes(+cvsValues[0], 2); // 总下载
-  sourceUse.txBytes = formatBytes(+cvsValues[3], 2); // 总上传
-
-  if (currentNetworkUsage?.networkUsage) {
-    const timestamp = currentNetworkUsage?.networkUsage?.timestamp;
-    const datetime = networkDatatime;
-    if (dayjs(timestamp).add(30, 'second') < dayjs(datetime)) {
-      sourceUse.rxBytesRate = 0;
-      sourceUse.txBytesRate = 0;
-      sourceUse.rxBytes = '0';
-      sourceUse.txBytes = '0';
-    }
-  }
-};
-
-// 图表数据变更
-const onChartDataChange = (data) => {
-  echartsManager.setChartsData(data);
-  if (!data.length) {
-    showNoData.value = true;
-  } else {
-    showNoData.value = false;
-  }
-  if (activeTab.value === 'cpu') {
-    echartsManager.loadCpuEchartData(data, t, notMerge.value);
-  }
-  if (activeTab.value === 'memory') {
-    echartsManager.loadMemoryEchartData(data, t, showMemoryPercentChart.value, notMerge.value);
-  }
-  if (activeTab.value === 'disk') {
-    echartsManager.loadDiskEchartData(data, t, diskChartKey.value, notMerge.value);
-  }
-  if (activeTab.value === 'network') {
-    echartsManager.loadNetworkEchartData(data, t, networkChartKey.value, notMerge.value);
-  }
-};
-
-const loadEchartData = async () => {
-  if (activeTab.value === 'cpu') {
-    currentSourceServer.value = chartServersMap.cpu;
-    chartParams.value = {
-      orderSort: 'ASC'
-    };
-  }
-  if (activeTab.value === 'memory') {
-    currentSourceServer.value = chartServersMap.memory;
-    chartParams.value = {
-      orderSort: 'ASC'
-    };
-  }
-  if (activeTab.value === 'disk') {
-    if (!diskNames.value.length) {
-      // loadingChartData.value = true;
-      const [error, res] = await nodeCtrl.getDiskInfoMetrics(id.value);
-      if (error) {
-        return;
-      }
-
-      const _diskNames:{label: string, value: string}[] = [];
-      const deviceNameMp = {};
-      for (const item of (res.data || [])) {
-        if (!deviceNameMp[item.deviceName]) {
-          _diskNames.push({ label: item.deviceName, value: item.deviceName });
-          deviceNameMp[item.deviceName] = true;
-        }
-      }
-      diskNames.value = _diskNames;
-      activeDisk.value = diskNames.value?.[0]?.value;
-    }
-    chartParams.value = {
-      orderSort: 'ASC',
-      filters: [{ key: 'deviceName', op: 'EQUAL', value: activeDisk.value }]
-    };
-    currentSourceServer.value = chartServersMap.disk;
-  }
-
-  if (activeTab.value === 'network') {
-    if (!networkNames.value.length) {
-      // loadingChartData.value = true;
-      const [error, res] = await nodeCtrl.getNetworkInfoMetrics(id.value);
-      if (error) {
-        return;
-      }
-      const _networkNames: {label: string, value: string}[] = [];
-      const networkNamesMp = {};
-      for (const item of (res.data || [])) {
-        if (!networkNamesMp[item.deviceName]) {
-          _networkNames.push({ label: item.deviceName, value: item.deviceName });
-          networkNamesMp[item.deviceName] = true;
-        }
-      }
-
-      networkNames.value = _networkNames;
-      activeNetwork.value = networkNames.value?.[0]?.value;
-    }
-    chartParams.value = {
-      orderSort: 'ASC',
-      filters: [{ key: 'deviceName', op: 'EQUAL', value: activeNetwork.value }]
-    };
-    currentSourceServer.value = chartServersMap.network;
-  }
-};
-
-let timer; // 定时刷新数据
-const refreshTimer = () => {
-  timer && clearInterval(timer);
-  timer = setInterval(() => {
-    if (activeKey.value !== 'source') {
-      return;
-    }
-    loadMetrics();
-    loadNetwork();
-  }, 5000);
-};
-
-const proxyActiveKey = ref('proxy');
+// Proxy options
 const proxyOpt = [
   {
-    label: t('node.nodeDetail.proxyOpt.proxyInfo'),
+    label: '代理信息',
     value: 'proxy'
   },
   {
-    label: t('node.nodeDetail.proxyOpt.log'),
+    label: '日志',
     value: 'log'
   }
 ];
 
-watch(() => showMemoryPercentChart.value, () => {
-  echartsManager.updateChartDisplay(activeTab.value, showMemoryPercentChart.value, diskChartKey.value, networkChartKey.value);
-});
-
-watch(() => diskChartKey.value, () => {
-  echartsManager.updateChartDisplay(activeTab.value, showMemoryPercentChart.value, diskChartKey.value, networkChartKey.value);
-});
-
-watch(() => networkChartKey.value, () => {
-  echartsManager.updateChartDisplay(activeTab.value, showMemoryPercentChart.value, diskChartKey.value, networkChartKey.value);
-});
-
-const isAdmin = inject('isAdmin', ref(false));
-const tenantInfo = ref(appContext.getTenant());
-const userInfo = ref(appContext.getUser());
-onMounted(async () => {
+/**
+ * Initialize component data
+ * <p>
+ * Loads initial node information, initializes ECharts, and sets up refresh timer.
+ * </p>
+ */
+const initializeComponent = () => {
   id.value = route.params.id as string;
-  await loadInfo();
-  echartsManager.initEcharts(echartRef.value);
-  await loadMetrics();
-  await loadNetwork();
-  timestamp.value = '5-minute';
-  currentSourceServer.value = chartServersMap.cpu;
-  refreshTimer();
-});
 
-const getOnlineInstallTip = (node) => {
-  if (node.infos.geAgentInstallationCmd) {
-    return t('node.nodeDetail.labels.installed');
-  }
-  if (!isAdmin.value) {
-    return t('node.nodeDetail.labels.installAgentTip');
-  }
-};
+  // Load data sequentially
+  loadInfo(id.value).then(() => {
+    echartsManager.initEcharts(echartRef.value);
+    return loadMetrics(id.value);
+  }).then(() => {
+    return loadNetwork(id.value);
+  }).then(() => {
+    // Set initial chart server and load initial chart data
+    currentSourceServer.value = chartServersMap.cpu;
+    loadEchartData();
 
-const delNode = () => {
-  modal.confirm({
-    content: `确定删除节点【${state.infos.name}】吗?`,
-    onOk: async () => {
-      const [error] = await node.deleteNode({ ids: [id.value] });
-      if (error) {
-        return;
-      }
-      turnback();
-    }
+    // Start refresh timer
+    refreshTimer(() => {
+      loadMetrics(id.value);
+      loadNetwork(id.value);
+    }, activeKey.value);
+  }).catch(error => {
+    console.error('Failed to initialize component:', error);
   });
 };
 
-// 删除按钮禁用提示
-const getDelTip = (node) => {
-  if (node.enabled) {
-    return t('node.nodeDetail.labels.disableDelete');
-  }
-  if (!isAdmin.value) {
-    return t('node.nodeDetail.labels.deleteNodeTip');
-  }
-  if (node.source?.value !== 'OWN_NODE') {
-    return t('node.nodeDetail.labels.onlyOwnNode');
-  }
+/**
+ * Handle node deletion with confirmation
+ * <p>
+ * Shows confirmation dialog and deletes the node if confirmed.
+ * </p>
+ */
+const handleDeleteNode = () => {
+  deleteNode(id.value, state.infos.name || '');
 };
 
-onBeforeUnmount(() => {
-  timer && clearInterval(timer);
+/**
+ * Handle agent installation
+ * <p>
+ * Attempts to install the agent on the node.
+ * </p>
+ */
+const handleInstallAgent = () => {
+  installAgent(id.value);
+};
+
+/**
+ * Handle manual installation steps
+ * <p>
+ * Fetches and displays manual installation instructions.
+ * </p>
+ */
+const handleGetInstallStep = () => {
+  getInstallStep(id.value);
+};
+
+/**
+ * Handle node enable/disable toggle
+ * <p>
+ * Toggles the node's enabled state.
+ * </p>
+ */
+const handleEnableNode = () => {
+  enableNode(id.value);
+};
+
+// Initialize component on mount
+onMounted(() => {
+  initializeComponent();
 });
-
-// 监听 tab 变更
-watch([() => activeTab.value, () => activeDisk.value, () => activeNetwork.value], () => {
-  notMerge.value = true;
-  loadEchartData();
-});
-
-const showInstallCtrlAccessToken = ref(false);
-const toggleShowCtrlAccessToken = () => {
-  showInstallCtrlAccessToken.value = !showInstallCtrlAccessToken.value;
-};
-
-const copyContent = (text) => {
-  toClipboard(text).then(() => {
-    notification.success(t('node.nodeDetail.labels.copySuccess'));
-  });
-};
-
-const activeKey = ref<'source' | 'proxy'>('source');
 </script>
 
 <template>
   <div class="h-full overflow-auto">
     <Spin :spinning="loadingInfo" mask>
       <div class="bg-white px-10 text-3">
-        <!-- 基本信息 -->
+        <!-- Basic Information Section -->
         <div class="basic">
           <div class="title flex justify-between pt-2.5 items-center">
             <span class="mr-15 font-semibold">基本信息</span>
             <div class="detai-btns-wrapper">
+              <!-- Enable/Disable Button -->
               <Button
                 v-if="!state.infos.enabled"
                 class="node-action-btn"
                 :loading="enabled"
-                :disabled="state.infos?.tenantId !== tenantInfo?.id || !(isAdmin || state.infos?.createdBy === userInfo?.id)"
-                @click="enableNode">
-                <Icon icon="icon-qiyong" />{{ t('node.nodeDetail.buttons.enable') }}
+                :disabled="!canPerformActions(state.infos?.tenantId, state.infos?.createdBy)"
+                @click="handleEnableNode">
+                <Icon icon="icon-qiyong" />{{ '启用' }}
               </Button>
               <Button
                 v-else
                 class="node-action-btn"
                 :loading="enabled"
-                :disabled="state.infos?.tenantId !== tenantInfo?.id || !(isAdmin || state.infos?.createdBy === userInfo?.id)"
-                @click="enableNode">
-                <Icon icon="icon-jinyong" />{{ t('node.nodeDetail.buttons.disable') }}
+                :disabled="!canPerformActions(state.infos?.tenantId, state.infos?.createdBy)"
+                @click="handleEnableNode">
+                <Icon icon="icon-jinyong" />{{ '禁用' }}
               </Button>
-              <Tooltip v-if="state.infos?.tenantId !== tenantInfo?.id || !(isAdmin || state.infos?.createdBy === userInfo?.id) || state.infos?.enabled" :title="getDelTip(state.infos)">
-                <Button
-                  class="node-action-btn"
-                  :disabled="true">
+
+              <!-- Delete Button -->
+              <Tooltip v-if="!canDeleteNode(state.infos)" :title="getDeleteTip(state.infos, isAdmin, tenantInfo, userInfo)">
+                <Button class="node-action-btn" :disabled="true">
                   <Icon icon="icon-qingchu" class="mr-1" />
-                  <span>{{ t('node.nodeDetail.buttons.delete') }}</span>
+                  <span>{{ '删除' }}</span>
                 </Button>
               </Tooltip>
               <Button
                 v-else
                 class="node-action-btn"
-                @click="delNode()">
+                @click="handleDeleteNode">
                 <Icon icon="icon-qingchu" class="mr-1" />
-                <span>{{ t('node.nodeDetail.buttons.delete') }}</span>
+                <span>{{ '删除' }}</span>
               </Button>
-              <Tooltip v-if="state.infos.installNodeAgent || state.infos.free || !isAdmin" :title="getOnlineInstallTip(state)">
+
+              <!-- Online Install Agent Button -->
+              <Tooltip v-if="state.infos.installNodeAgent || state.infos.free || !canInstallAgent()" :title="getOnlineInstallTip(state, isAdmin)">
                 <Button
                   :disabled="true"
                   :loading="installing"
                   class="node-action-btn"
-                  @click="installAgen">
+                  @click="handleInstallAgent">
                   <Icon icon="icon-anzhuangdaili" />
-                  {{ t('node.nodeDetail.buttons.onlineInstallAgent') }}
+                  {{ '在线安装代理' }}
                 </Button>
               </Tooltip>
               <Button
                 v-else
-                :disabled="state.infos.installNodeAgent || !isAdmin"
+                :disabled="state.infos.installNodeAgent || !canInstallAgent()"
                 :loading="installing"
                 class="node-action-btn"
-                @click="installAgen">
-                <Icon icon="icon-anzhuangdaili" />{{ t('node.nodeDetail.buttons.onlineInstallAgent') }}
+                @click="handleInstallAgent">
+                <Icon icon="icon-anzhuangdaili" />{{ '在线安装代理' }}
                 <Hints
                   v-if="installing"
                   class="absolute left-5 -bottom-3"
-                  :text="t('node.nodeDetail.labels.estimatedTime')" />
+                  :text="'预计需要几分钟时间'" />
               </Button>
-              <Tooltip v-if="!isAdmin || state.infos.free" :title="!isAdmin ? `安装代理需要系统管理员或应用管理员权限` : ''">
+
+              <!-- Manual Install Agent Button -->
+              <Tooltip v-if="!canInstallAgent() || state.infos.free" :title="!canInstallAgent() ? '安装代理需要系统管理员或应用管理员权限' : ''">
                 <Button
                   :disabled="true"
                   class="node-action-btn"
-                  @click="getInstallStep">
-                  <Icon icon="icon-anzhuangdaili" />{{ t('node.nodeDetail.buttons.manualInstallAgent') }}
+                  @click="handleGetInstallStep">
+                  <Icon icon="icon-anzhuangdaili" />{{ '手动安装代理' }}
                 </Button>
               </Tooltip>
               <Button
                 v-else
-                :disabled="!isAdmin"
+                :disabled="!canInstallAgent()"
                 class="node-action-btn"
-                @click="getInstallStep">
-                <Icon icon="icon-anzhuangdaili" />{{ t('node.nodeDetail.buttons.manualInstallAgent') }}
+                @click="handleGetInstallStep">
+                <Icon icon="icon-anzhuangdaili" />{{ '手动安装代理' }}
               </Button>
+
+              <!-- Back Button -->
               <Button class="node-action-btn" @click="turnback">
-                <Icon icon="icon-fanhui" />{{ t('node.nodeDetail.buttons.back') }}
+                <Icon icon="icon-fanhui" />{{ '返回' }}
               </Button>
             </div>
           </div>
-          <!-- 手动安装步骤 -->
+
+          <!-- Manual Installation Steps -->
           <div v-show="showInstallStep" class="pt-4 mb-4 relative">
             <Tabs size="small">
-              <TabPane key="linux" :tab="t('node.nodeDetail.installSteps.linuxTitle')">
-                <div class="text-3">{{ t('node.nodeDetail.installSteps.description') }}</div>
+              <TabPane key="linux" tab="Linux">
+                <div class="text-3">请按照以下步骤手动安装代理：</div>
                 <div class="text-3">
-                  {{ t('node.nodeDetail.installSteps.method1') }}<Icon
+                  方法1：复制以下命令到目标服务器执行
+                  <Icon
                     icon="icon-fuzhi"
                     class="cursor-pointer text-3.5 text-blue-1"
-                    @click="copyContent(state.linuxOfflineInstallSteps?.onlineInstallCmd)" />
+                    @click="copyContent(state.linuxOfflineInstallSteps?.onlineInstallCmd || '')" />
                   <p class="install-step whitespace-pre-line">
                     {{ state.linuxOfflineInstallSteps?.onlineInstallCmd }}
                   </p>
-                  {{ t('node.nodeDetail.installSteps.method2') }}
+                  方法2：下载安装脚本
                   <p class="install-step whitespace-pre-line">
-                    {{ t('node.nodeDetail.installSteps.downloadScript') }}<a class="cursor-pointer" :href="state.linuxOfflineInstallSteps?.installScriptUrl">{{ state.linuxOfflineInstallSteps?.installScriptName }}</a> <br />
-                    {{ t('node.nodeDetail.installSteps.copyScript', { scriptName: state.linuxOfflineInstallSteps?.installScriptName }) }}<br />
-                    {{ state.linuxOfflineInstallSteps?.runInstallCmd }}
+                    下载脚本：<a class="cursor-pointer" :href="state.linuxOfflineInstallSteps?.installScriptUrl">{{ state.linuxOfflineInstallSteps?.installScriptName }}</a> <br />
+                    复制脚本到目标服务器：{{ state.linuxOfflineInstallSteps?.installScriptName }}<br />
+                    执行安装命令：{{ state.linuxOfflineInstallSteps?.runInstallCmd }}
                   </p>
                 </div>
               </TabPane>
-              <TabPane key="config" :tab="t('node.nodeDetail.installSteps.configTitle')">
+              <TabPane key="config" tab="配置信息">
                 <Grid
                   :dataSource="state.installConfig"
                   :columns="installConfigColumns">
                   <template #tenantId="{text}">
                     <div class="flex items-center">
-                      <span>{{ text }}</span> <Button
+                      <span>{{ text }}</span>
+                      <Button
                         type="link"
                         size="small"
                         @click="copyContent(text)">
@@ -620,7 +323,8 @@ const activeKey = ref<'source' | 'proxy'>('source');
                   </template>
                   <template #deviceId="{text}">
                     <div class="flex items-center">
-                      <span>{{ text }}</span> <Button
+                      <span>{{ text }}</span>
+                      <Button
                         type="link"
                         size="small"
                         @click="copyContent(text)">
@@ -648,9 +352,11 @@ const activeKey = ref<'source' | 'proxy'>('source');
               type="link"
               size="small"
               @click="foldInstallAgent">
-              {{ t('node.nodeDetail.buttons.fold') }}
+              {{ '收起' }}
             </Button>
           </div>
+
+          <!-- Node Information Grid -->
           <Grid
             class="py-4 status-wrapper"
             font-size="12px"
@@ -662,7 +368,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
                 <Icon
                   icon="icon-zhengyan"
                   class="text-3 cursor-pointer align-middle ml-2"
-                  @click="handleShowPassd" />
+                  @click="handleShowPassword" />
               </template>
               <template v-else>
                 <div class="inline-flex items-center">
@@ -685,21 +391,30 @@ const activeKey = ref<'source' | 'proxy'>('source');
               <template v-else>--</template>
             </template>
             <template #enabled="{text}">
-              <span class="status flex items-center" :class="{'success': text, 'fail': !text}">{{ text ? t('node.nodeDetail.status.enabled') : t('node.nodeDetail.status.disabled') }}</span>
+              <span class="status flex items-center" :class="{'success': text, 'fail': !text}">
+                {{ text ? '已启用' : '已禁用' }}
+              </span>
             </template>
             <template #installAgent="{text}">
-              <span class="status  flex items-center" :class="{'success': text, 'fail': !text}">{{ text ? t('node.nodeDetail.status.installed') : t('node.nodeDetail.status.notInstalled') }}</span>
+              <span class="status flex items-center" :class="{'success': text, 'fail': !text}">
+                {{ text ? '已安装' : '未安装' }}
+              </span>
             </template>
             <template #online="{text}">
-              <span class="status  flex items-center" :class="{'success': text, 'fail': !text}">{{ text ? t('node.nodeDetail.status.connected') : t('node.nodeDetail.status.notConnected') }}</span>
+              <span class="status flex items-center" :class="{'success': text, 'fail': !text}">
+                {{ text ? '已连接' : '未连接' }}
+              </span>
             </template>
           </Grid>
         </div>
-        <!-- 资源使用 -->
+
+        <!-- Resource Monitoring Section -->
         <div class="source">
           <Tabs v-model:activeKey="activeKey" size="small">
             <TabPane key="source" forceRender>
-              <template #tab><span class="font-semibold">{{ t('node.nodeDetail.labels.resourceMonitoring') }}</span></template>
+              <template #tab><span class="font-semibold">资源监控</span></template>
+
+              <!-- Resource Usage Progress Bars -->
               <ul class="flex pb-5 justify-between text-3">
                 <li
                   v-for="item in nodeUseProgresses"
@@ -720,11 +435,11 @@ const activeKey = ref<'source' | 'proxy'>('source');
                     <div v-if="item.valueKey !== 'network'" class="pl-5 w-35">
                       <span class="text-3">{{ item.label }}</span>
                       <div class="leading-5">
-                        <label class="inline-block w-12 text-text-content">{{ t('node.nodeDetail.labels.used') }}:</label>
+                        <label class="inline-block w-12 text-text-content">使用:</label>
                         <span class="text-black-active ">{{ sourceUse[item.valueKey] }}{{ item.unit }}</span>
                       </div>
                       <div class="leading-5">
-                        <label class="inline-block w-12 text-text-content">{{ item.valueKey === 'cpu' ? t('node.nodeDetail.labels.idle') : t('node.nodeDetail.labels.total') }}:</label>
+                        <label class="inline-block w-12 text-text-content">{{ item.valueKey === 'cpu' ? '空闲' : '总计' }}:</label>
                         <span class="text-black-active ">{{ sourceUse[item.totalKey] }}{{ item.unit }}</span>
                       </div>
                     </div>
@@ -736,7 +451,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
                           :options="networkDeviceData"
                           :fieldNames="{value: 'deviceName', label: 'deviceName'}"
                           class="min-w-25 device-select"
-                          @change="onDeviceNameChange" />
+                          @change="(value: any) => onDeviceNameChange(value)" />
                       </div>
                       <div class="flex w-full flex-wrap">
                         <div
@@ -751,6 +466,8 @@ const activeKey = ref<'source' | 'proxy'>('source');
                   </div>
                 </li>
               </ul>
+
+              <!-- Chart Controls -->
               <div class="flex justify-between">
                 <div>
                   <RadioGroup
@@ -776,10 +493,6 @@ const activeKey = ref<'source' | 'proxy'>('source');
                     class="ml-2 min-w-25"
                     size="small"
                     :options="networkNames" />
-                  <!-- <RadioGroup v-show="activeTab === 'network'"
-                            v-model:value="activeNetwork"
-                            class="ml-2"
-                            :options="networkNames" /> -->
                 </div>
                 <div class="flex items-center">
                   <template v-if="activeKey === 'source'">
@@ -791,6 +504,8 @@ const activeKey = ref<'source' | 'proxy'>('source');
                   </template>
                 </div>
               </div>
+
+              <!-- Chart Options -->
               <RadioGroup
                 v-show="activeTab==='memory'"
                 v-model:value="showMemoryPercentChart"
@@ -810,6 +525,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
                 size="small"
                 :options="networkDataOptions" />
 
+              <!-- Chart Display -->
               <Spin
                 :spinning="loadingChart"
                 mask
@@ -821,8 +537,10 @@ const activeKey = ref<'source' | 'proxy'>('source');
                   class="absolute top-0 left-1/2 -translate-x-1/2" />
               </Spin>
             </TabPane>
+
+            <!-- Proxy Service Tab -->
             <TabPane key="proxy">
-              <template #tab><span class="font-semibold">{{ t('node.nodeDetail.labels.proxyService') }}</span></template>
+              <template #tab><span class="font-semibold">代理服务</span></template>
               <RadioGroup
                 v-model:value="proxyActiveKey"
                 :options="proxyOpt"
@@ -831,29 +549,33 @@ const activeKey = ref<'source' | 'proxy'>('source');
                 optionType="button">
               </RadioGroup>
               <template v-if="proxyActiveKey==='proxy'">
-                <AgentInfo :ip="state.infos.publicIp || state.infos.ip" :port="state.infos.port" />
+                <AgentInfo :ip="state.infos.publicIp || state.infos.ip" :port="state.infos.port || 0" />
                 <AgentChart :id="id" />
               </template>
               <template v-if="proxyActiveKey==='log'">
                 <AgentLog
                   class="mt-4"
                   :ip="state.infos.publicIp || state.infos.ip"
-                  :port="state.infos.agentPort" />
+                  :port="state.infos.agentPort || 0" />
               </template>
             </TabPane>
+
+            <!-- Execution Tasks Tab -->
             <template v-if="state.infos?.rolesValues?.includes('EXECUTION')">
               <TabPane key="execTask">
-                <template #tab><span class="font-semibold">{{ t('node.nodeDetail.labels.executingTasks') }}</span></template>
+                <template #tab><span class="font-semibold">执行任务</span></template>
                 <Execution :id="id" />
               </TabPane>
               <TabPane key="execPropulsion">
-                <template #tab><span class="font-semibold">{{ t('node.nodeDetail.labels.executorProcess') }}</span></template>
+                <template #tab><span class="font-semibold">执行器进程</span></template>
                 <ExecutionPropulsion :nodeId="id" :tenantId="state.infos?.tenantId" />
               </TabPane>
             </template>
+
+            <!-- Mock Service Tab -->
             <template v-if="state.infos?.rolesValues?.includes('MOCK_SERVICE')">
               <TabPane key="mock">
-                <template #tab><span class="font-semibold">{{ t('node.nodeDetail.labels.mockServiceInstance') }}</span></template>
+                <template #tab><span class="font-semibold">Mock服务实例</span></template>
                 <MockService :nodeId="id" />
               </TabPane>
             </template>
@@ -863,6 +585,7 @@ const activeKey = ref<'source' | 'proxy'>('source');
     </Spin>
   </div>
 </template>
+
 <style scoped>
 .node-action-btn {
   @apply rounded mr-2 text-text-content text-3 border-0  px-2 shadow-none inline-flex items-center;
@@ -912,7 +635,6 @@ const activeKey = ref<'source' | 'proxy'>('source');
 
 .status-wrapper .status::before {
   @apply w-1.5 h-1.5 rounded-full mr-2 relative inline-block;
-
   content: "";
 }
 
@@ -964,8 +686,6 @@ const activeKey = ref<'source' | 'proxy'>('source');
 
 .install-step {
   @apply px-3 py-1.5 my-2 leading-6;
-
   background-color: #f6f6f6;
 }
-
 </style>

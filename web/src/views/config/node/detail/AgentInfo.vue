@@ -68,9 +68,6 @@ watch(() => props.ip, async newValue => {
     return;
   }
 
-  // const host = await site.getUrl('apis');
-  // const privHost = await site.getUrl('at');
-  // const isPrivate = await site.isPrivate();
   const routeConfig = routerUtils.getTesterApiRouteConfig(ApiType.PUB_API);
   const url = ApiUrlBuilder.buildApiUrl(routeConfig, `/proxy?targetAddr=http://${newValue}:${props.port}`);
   axios.get(url, {

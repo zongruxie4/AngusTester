@@ -1,5 +1,5 @@
 import * as echarts from 'echarts';
-import { Ref, reactive, ref } from 'vue';
+import { reactive, Ref, ref } from 'vue';
 import { formatBytesToUnit } from '@/utils/common';
 
 // ECharts配置选项
