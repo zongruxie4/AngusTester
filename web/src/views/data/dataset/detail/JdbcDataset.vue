@@ -1,16 +1,10 @@
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
-import { Button, TabPane, Tabs } from 'ant-design-vue';
-import { Hints, Icon, IconRequired, Input, notification, Toggle, Tooltip } from '@xcan-angus/vue-ui';
-import { cloneDeep, isEqual } from 'lodash-es';
-import { dataSet } from '@/api/tester';
-import { ExtractionMethod } from '@xcan-angus/infra';
+import { defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useJdbcDataset } from './composables/useJdbcDataset';
+import { DataSetItem } from '../types';
 
 const { t } = useI18n();
-
-import SelectEnum from '@/components/selectEnum/index.vue';
-import { JdbcDatasetFormState, DataSetItem } from '../types';
 
 type Props = {
   projectId: string;
@@ -43,274 +37,46 @@ const DataSetUseList = defineAsyncComponent(() => import('@/views/data/dataset/d
 const MatchItemPopover = defineAsyncComponent(() => import('@/views/data/dataset/detail/MatchItemPopover.vue'));
 const SelectDataSourceModal = defineAsyncComponent(() => import('@/views/data/variable/detail/jdbc/SelectDatasource.vue'));
 
-const parametersRef = ref();
+// Use the composable for JDBC dataset logic
+const {
+  // State
+  activeKey,
+  dataSetName,
+  description,
+  defaultParameters,
+  dbType,
+  jdbcUrl,
+  username,
+  password,
+  selectSqlString,
+  rowIndex,
+  columnIndex,
+  method,
+  defaultValue,
+  expression,
+  matchItem,
+  previewData,
+  modalVisible,
+  parametersRef,
 
-const confirmLoading = ref(false);
-const activeKey = ref<'value' | 'preview' | 'use'>('value');
+  // Computed properties
+  dataSetId,
+  editFlag,
+  okButtonDisabled,
 
-const dataSetName = ref<string>('');
-const description = ref<string>('');
+  // Methods
+  openDataSourceModal,
+  handleSelectedDataSource,
+  handleButtonClick,
+  handleParametersChange,
+  initialize,
+  updatePreviewData
+} = useJdbcDataset(props, emit as any);
 
-const parameters = ref<{ name: string; }[]>([]);
-const defaultParameters = ref<{ name: string; }[]>([]);
-
-const dbType = ref<string>();
-const jdbcUrl = ref<string>('');
-const username = ref<string>('');
-const password = ref<string>('');
-const selectSqlString = ref<string>('');
-const rowIndex = ref<string>('0');
-const columnIndex = ref<string>('0');
-
-const method = ref<ExtractionMethod>(ExtractionMethod.EXACT_VALUE);
-const defaultValue = ref<string>('');
-const expression = ref<string>('');
-const matchItem = ref<string>('');
-
-const previewData = ref<{
-  id: string | undefined;
-  projectId: string;
-  name: string;
-  parameters: { name: string }[];
-  extraction: {
-    source: 'JDBC';
-    method: ExtractionMethod;
-    expression: string;
-    defaultValue: string;
-    matchItem: string;
-    datasource: {
-      type: string | undefined;
-      username: string;
-      password: string;
-      jdbcUrl: string;
-    };
-    select: string;
-    rowIndex: string;
-    columnIndex: string;
-  };
-}>();
-
-const modalVisible = ref(false);
-
-const toSelectDataSource = () => {
-  modalVisible.value = true;
-};
-
-const selectedDataSourceOk = (data) => {
-  dbType.value = data.database;
-  jdbcUrl.value = data.jdbcUrl;
-  username.value = data.username;
-  password.value = data.password;
-};
-
-const buttonGroupClick = (key: 'ok' | 'delete' | 'export' | 'clone' | 'copyLink' | 'refresh') => {
-  if (key === 'ok') {
-    ok();
-    return;
-  }
-
-  if (key === 'delete') {
-    emit('delete', dataSetId.value);
-    return;
-  }
-
-  if (key === 'export') {
-    emit('export', dataSetId.value);
-    return;
-  }
-
-  if (key === 'clone') {
-    emit('clone', dataSetId.value);
-    return;
-  }
-
-  if (key === 'copyLink') {
-    emit('copyLink', dataSetId.value);
-    return;
-  }
-
-  if (key === 'refresh') {
-    emit('refresh', dataSetId.value);
-  }
-};
-
-const ok = async () => {
-  let validFlag = true;
-  if (typeof parametersRef.value?.isValid === 'function') {
-    validFlag = parametersRef.value.isValid();
-  }
-
-  if (!validFlag) {
-    return;
-  }
-
-  if (editFlag.value) {
-    toEdit();
-    return;
-  }
-
-  toCreate();
-};
-
-const toEdit = async () => {
-  const params = getParams();
-  confirmLoading.value = true;
-  const [error] = await dataSet.putDataSet(params);
-  confirmLoading.value = false;
-  if (error) {
-    return;
-  }
-
-  notification.success(t('dataset.detail.jdbcDataset.notifications.updateSuccess'));
-  emit('ok', params, true);
-};
-
-const toCreate = async () => {
-  const params = getParams();
-  confirmLoading.value = true;
-  const [error, res] = await dataSet.addDataSet(params);
-  confirmLoading.value = false;
-  if (error) {
-    return;
-  }
-
-  notification.success(t('dataset.detail.jdbcDataset.notifications.addSuccess'));
-  const id = res?.data?.id;
-  emit('ok', { ...params, id }, false);
-};
-
-const parametersChange = (data: { name: string; }[]) => {
-  parameters.value = data;
-};
-
-const getParams = (): JdbcDatasetFormState => {
-  const params: JdbcDatasetFormState = {
-    projectId: props.projectId,
-    name: dataSetName.value,
-    description: description.value,
-    parameters: parameters.value,
-    extraction: {
-      source: 'JDBC',
-      method: method.value,
-      defaultValue: defaultValue.value,
-      expression: expression.value,
-      matchItem: matchItem.value,
-      select: selectSqlString.value,
-      rowIndex: rowIndex.value,
-      columnIndex: columnIndex.value,
-      datasource: {
-        type: dbType.value,
-        jdbcUrl: jdbcUrl.value,
-        username: username.value,
-        password: password.value
-      }
-    }
-  };
-
-  const id = dataSetId.value;
-  if (id) {
-    params.id = id;
-  }
-
-  return params;
-};
-
-const initialize = () => {
-  const data = props.dataSource;
-  if (!data) {
-    return;
-  }
-
-  const { extraction } = data || {};
-  dataSetName.value = data.name;
-  description.value = data.description;
-  parameters.value = data.parameters || [];
-  defaultParameters.value = cloneDeep(data.parameters);
-
-  const datasource = extraction.datasource;
-  dbType.value = datasource.type?.value;
-  jdbcUrl.value = datasource.jdbcUrl;
-  username.value = datasource.username;
-  password.value = datasource.password;
-
-  selectSqlString.value = extraction.select;
-  rowIndex.value = extraction.rowIndex;
-  columnIndex.value = extraction.columnIndex;
-
-  defaultValue.value = extraction.defaultValue;
-  expression.value = extraction.expression;
-  matchItem.value = extraction.matchItem;
-};
-
-onMounted(() => {
-  watch(() => props.dataSource, (newValue) => {
-    if (!newValue) {
-      return;
-    }
-
-    initialize();
-  }, { immediate: true });
-
-  watch(() => activeKey.value, (newValue) => {
-    if (newValue !== 'preview') {
-      return;
-    }
-
-    const newData = {
-      id: props.dataSource?.id,
-      projectId: props.projectId,
-      name: dataSetName.value,
-      parameters: parameters.value,
-      extraction: {
-        source: 'JDBC',
-        method: method.value,
-        expression: expression.value,
-        defaultValue: defaultValue.value,
-        matchItem: matchItem.value,
-        datasource: {
-          type: dbType.value,
-          username: username.value,
-          password: password.value,
-          jdbcUrl: jdbcUrl.value
-        },
-        select: selectSqlString.value,
-        rowIndex: rowIndex.value,
-        columnIndex: columnIndex.value
-      }
-    };
-
-    if (!isEqual(newData, previewData.value)) {
-      previewData.value = newData;
-    }
-  }, { immediate: true });
-});
-
-const dataSetId = computed(() => {
-  return props.dataSource?.id || '';
-});
-
-const editFlag = computed(() => {
-  return !!props.dataSource?.id;
-});
-
-const okButtonDisabled = computed(() => {
-  let disabled = !dataSetName.value ||
-    !dbType.value ||
-    !jdbcUrl.value ||
-    !username.value ||
-    !password.value ||
-    !selectSqlString.value ||
-    !rowIndex.value ||
-    !columnIndex.value ||
-    !method.value;
-
-  if (!disabled) {
-    if (['JSON_PATH', 'REGEX', 'X_PATH'].includes(method.value)) {
-      disabled = !expression.value;
-    }
-  }
-
-  return disabled;
+// Expose methods for parent components
+defineExpose({
+  initialize,
+  updatePreviewData
 });
 </script>
 <template>
@@ -318,7 +84,7 @@ const okButtonDisabled = computed(() => {
     :editFlag="editFlag"
     :okButtonDisabled="okButtonDisabled"
     class="mb-5"
-    @click="buttonGroupClick" />
+    @click="handleButtonClick" />
 
   <div class="flex items-center mb-3.5">
     <div class="mr-2.5 flex-shrink-0">
@@ -369,7 +135,7 @@ const okButtonDisabled = computed(() => {
             ref="parametersRef"
             :columnIndex="columnIndex"
             :defaultValue="defaultParameters"
-            @change="parametersChange" />
+            @change="handleParametersChange" />
         </Toggle>
 
         <Toggle :title="t('dataset.detail.jdbcDataset.form.readConfig')" class="text-3 leading-5 mb-3.5">
@@ -380,7 +146,7 @@ const okButtonDisabled = computed(() => {
               type="link"
               size="small"
               class="flex items-center p-0 border-none h-3.5 leading-3.5 space-x-1"
-              @click="toSelectDataSource">
+              @click="openDataSourceModal">
               <Icon icon="icon-xuanze" class="text-3.5" />
               <span>{{ t('dataset.detail.jdbcDataset.form.selectDataSource') }}</span>
             </Button>
@@ -492,7 +258,7 @@ const okButtonDisabled = computed(() => {
         </Toggle>
 
         <Toggle :title="t('dataset.detail.jdbcDataset.form.extractionConfig')" class="text-3 leading-5">
-          <tempalte v-if="method === 'EXACT_VALUE'">
+          <template v-if="method === 'EXACT_VALUE'">
             <div class="flex items-center space-x-5 mb-3.5">
               <div class="w-1/2 flex items-center">
                 <div class="w-19.5 flex-shrink-0">
@@ -519,7 +285,7 @@ const okButtonDisabled = computed(() => {
                   :maxlength="4096" />
               </div>
             </div>
-          </tempalte>
+          </template>
 
           <template v-else>
             <div class="flex items-center space-x-5 mb-3.5">
@@ -608,7 +374,7 @@ const okButtonDisabled = computed(() => {
   <SelectDataSourceModal
     v-model:visible="modalVisible"
     :projectId="props.projectId"
-    @ok="selectedDataSourceOk" />
+    @ok="handleSelectedDataSource" />
 </template>
 <style scoped>
 :deep(.toggle-title) {

@@ -394,7 +394,7 @@
       "totalVariable": "Total Variable",
       "dataset": "Dataset",
       "file": "File",
-      "dataSourceSet": "Data Source Set",
+      "dataSourceSet": "Dataource",
       "last7Days": "Last 7 Days",
       "last30Days": "Last 30 Days",
       "usedCount": "Used Count",
@@ -775,7 +775,7 @@
       }
     },
     "introduce": {
-      "title": "About Variables",
+      "title": "About Variable",
       "description": "Used to define a value that can be reused. After defining a variable, you can use the variable placeholder {variableName} to reference the variable. Variables make testing and maintenance more efficient and flexible, while improving the repeatability and scalability of tests.",
       "note": "Note: Before executing sampling, variable placeholders will be replaced with corresponding variable values, and the values will not change during execution. AngusTester variables support defining static variables and also support the following three ways to extract a variable:",
       "types": {

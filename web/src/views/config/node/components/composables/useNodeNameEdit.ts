@@ -1,18 +1,7 @@
-/**
- * Node name editing management composable
- *
- * <p>This composable handles all node name editing operations including:
- * - Inline name editing with input field
- * - Auto-focus management
- * - Blur event handling for saving changes
- * - Input validation and error handling</p>
- */
-
 import { ref, nextTick } from 'vue';
 import { notification } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
-import { NodeData } from '../types';
 import { node } from '@/api/tester';
 
 /**

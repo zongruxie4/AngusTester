@@ -5,9 +5,9 @@ import { AsyncComponent, modal, notification, Spin } from '@xcan-angus/vue-ui';
 import { toClipboard, utils } from '@xcan-angus/infra';
 import { dataSet } from '@/api/tester';
 
-const { t } = useI18n();
-
 import { DataSetItem } from '../types';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -31,9 +31,9 @@ const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabP
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const replaceTabPane = inject<(id: string, data: { [key: string]: any }) => void>('replaceTabPane', () => ({}));
 
-const StaticDataSet = defineAsyncComponent(() => import('@/views/data/dataset/detail/StaticDataSet.vue'));
-const FileDataSet = defineAsyncComponent(() => import('@/views/data/dataset/detail/FileDataSet.vue'));
-const JdbcDataSet = defineAsyncComponent(() => import('@/views/data/dataset/detail/JdbcDataSet.vue'));
+const StaticDataSet = defineAsyncComponent(() => import('@/views/data/dataset/detail/StaticDataset.vue'));
+const FileDataSet = defineAsyncComponent(() => import('@/views/data/dataset/detail/FileDataset.vue'));
+const JdbcDataSet = defineAsyncComponent(() => import('@/views/data/dataset/detail/JdbcDataset.vue'));
 const ExportDataSetModal = defineAsyncComponent(() => import('@/views/data/dataset/export/index.vue'));
 
 const loading = ref(false);

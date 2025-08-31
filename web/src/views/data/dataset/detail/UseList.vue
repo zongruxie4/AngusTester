@@ -1,16 +1,9 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
-import { Button } from 'ant-design-vue';
-import { Hints, Icon, modal, NoData, notification, Spin, Table } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-
-
-import { SourceItem } from '../types';
-import { dataSet, paramTarget } from '@/api/tester';
-
-
+import { useDatasetUsage } from './composables/useDatasetUsage';
 
 const { t } = useI18n();
+
 type Props = {
   id: string;
 }
@@ -19,219 +12,26 @@ const props = withDefaults(defineProps<Props>(), {
   id: undefined
 });
 
-const MAX_NUM = 200;
+// Use the composable for dataset usage logic
+const {
+  // State
+  loading,
+  loaded,
+  pagination,
+  rowSelection,
+  dataList,
 
-const loading = ref(false);
-const loaded = ref(false);
-const pagination = ref<{ current: number; pageSize: number; total: number; showSizeChanger: false; }>({ current: 1, pageSize: 10, total: 0, showSizeChanger: false });
-const rowSelection = ref<{
-  onChange:(key: string[]) => void;
-  getCheckboxProps: (data: SourceItem) => ({ disabled: boolean; });
-  selectedRowKeys: string[];
-}>();
-const dataList = ref<SourceItem[]>([]);
+  // Computed properties
+  selectedNum,
+  columns,
 
-const toDelete = (data: SourceItem) => {
-  modal.confirm({
-    content: t('dataset.detail.useList.notifications.deleteConfirm', { name: data.targetName }),
-    async onOk () {
-      loading.value = true;
-      const params = [props.id];
-      const [error] = await paramTarget.deleteDataSet(data.targetId, data.targetType?.value, params, { dataType: true });
-      loading.value = false;
-      if (error) {
-        return;
-      }
-
-      pagination.value.total = pagination.value.total - 1;
-      notification.success(t('dataset.detail.useList.notifications.deleteSuccess'));
-      dataList.value = dataList.value.filter((item) => item.targetId !== data.targetId);
-    }
-  });
-};
-
-const toBatchDelete = () => {
-  if (!rowSelection.value) {
-    rowSelection.value = {
-      onChange: tableSelect,
-      getCheckboxProps: () => {
-        return {
-          disabled: false
-        };
-      },
-      selectedRowKeys: []
-    };
-
-    return;
-  }
-
-  const selectedRowKeys = rowSelection.value.selectedRowKeys;
-  const selectedNum = selectedRowKeys.length;
-  if (!selectedNum) {
-    rowSelection.value = undefined;
-    return;
-  }
-
-  if (selectedNum > MAX_NUM) {
-    notification.error(t('dataset.detail.useList.notifications.batchDeleteLimit', { max: MAX_NUM, current: selectedNum }));
-    return;
-  }
-
-  modal.confirm({
-    content: t('dataset.detail.useList.notifications.batchDeleteConfirm', { num: selectedNum }),
-    async onOk () {
-      const ids = selectedRowKeys;
-      const num = ids.length;
-      const params = [props.id];
-      const promises: Promise<any>[] = [];
-      for (let i = 0; i < num; i++) {
-        const data = dataList.value.find((item) => item.targetId === ids[i]);
-        if (data) {
-          const _promise = paramTarget.deleteDataSet(data.targetId, data.targetType?.value, params, { dataType: true, silence: true });
-          promises.push(_promise);
-        }
-      }
-
-      loading.value = true;
-      Promise.all(promises).then((res: [Error | null, any][]) => {
-        loading.value = false;
-        const errorIds: string[] = [];
-        for (let i = 0, len = res.length; i < len; i++) {
-          if (res[i][0]) {
-            errorIds.push(ids[i]);
-          }
-        }
-
-        const errorNum = errorIds.length;
-        if (errorNum === 0) {
-          notification.success(t('dataset.detail.useList.notifications.batchDeleteAllSuccess', { num }));
-          pagination.value.total = pagination.value.total - num;
-          rowSelection.value = undefined;
-          dataList.value = dataList.value.filter((item) => !ids.includes(item.targetId));
-          return;
-        }
-
-        if (errorNum === num) {
-          notification.error(t('dataset.detail.useList.notifications.batchDeleteAllFail', { num }));
-          return;
-        }
-
-        const successIds = ids.filter(item => !errorIds.includes(item));
-        notification.warning(t('dataset.detail.useList.notifications.batchDeletePartialSuccess', { success: num - errorNum, fail: errorNum }));
-        rowSelection.value!.selectedRowKeys = rowSelection.value!.selectedRowKeys.filter((item) => !successIds.includes(item));
-        dataList.value = dataList.value.filter((item) => !successIds.includes(item.targetId));
-      });
-    }
-  });
-};
-
-const toCancelBatchDelete = () => {
-  rowSelection.value = undefined;
-};
-
-const tableSelect = (keys: string[]) => {
-  if (!rowSelection.value) {
-    return;
-  }
-
-  const currentIds = dataList.value.map(item => item.targetId);
-  const deleteIds = currentIds.reduce((prev, cur) => {
-    if (!keys.includes(cur)) {
-      prev.push(cur);
-    }
-
-    return prev;
-  }, [] as string[]);
-
-  // 删除反选的数据集
-  const selectedRowKeys = rowSelection.value.selectedRowKeys.filter(item => !deleteIds.includes(item));
-
-  for (let i = 0, len = keys.length; i < len; i++) {
-    if (!selectedRowKeys.includes(keys[i])) {
-      selectedRowKeys.push(keys[i]);
-    }
-  }
-
-  const selectedNum = selectedRowKeys.length;
-  if (selectedNum > MAX_NUM) {
-    notification.info(t('dataset.detail.useList.notifications.batchDeleteLimitInfo', { max: MAX_NUM, current: selectedNum }));
-  }
-
-  rowSelection.value.selectedRowKeys = selectedRowKeys;
-};
-
-const refresh = () => {
-  if (loading.value) {
-    return;
-  }
-
-  loadData();
-};
-
-const loadData = async () => {
-  loading.value = true;
-  const [error, res] = await dataSet.getDataSetTarget(props.id);
-  loading.value = false;
-  loaded.value = true;
-  if (error) {
-    pagination.value.total = 0;
-    dataList.value = [];
-    if (rowSelection.value) {
-      rowSelection.value = undefined;
-    }
-
-    return;
-  }
-
-  const data = res?.data || [];
-  pagination.value.total = data.length;
-  dataList.value = data;
-
-  if (rowSelection.value) {
-    rowSelection.value = undefined;
-  }
-};
-
-onMounted(() => {
-  watch(() => props.id, (newValue) => {
-    if (!newValue) {
-      return;
-    }
-
-    loadData();
-  }, { immediate: true });
-});
-
-const selectedNum = computed(() => {
-  return rowSelection.value?.selectedRowKeys?.length || 0;
-});
-
-const columns = [
-  {
-    title: t('dataset.detail.useList.table.resourceType'),
-    dataIndex: 'targetType',
-    width: '10%',
-    ellipsis: true
-  },
-  {
-    title: t('dataset.detail.useList.table.resourceId'),
-    dataIndex: 'targetId',
-    width: '20%',
-    ellipsis: true
-  },
-  {
-    title: t('dataset.detail.useList.table.resourceName'),
-    dataIndex: 'targetName',
-    ellipsis: true
-  },
-  {
-    title: t('dataset.detail.useList.table.action'),
-    dataIndex: 'action',
-    width: 70
-  }
-];
+  // Methods
+  deleteUsage,
+  startBatchDelete,
+  cancelBatchDelete,
+  refresh
+} = useDatasetUsage(props);
 </script>
-
 <template>
   <Spin :spinning="loading" class="text-3 leading-5">
     <div class="flex items-center justify-between mb-2">
@@ -243,7 +43,7 @@ const columns = [
           size="small"
           type="text"
           class="flex items-center px-0 h-5 leading-5 border-0 text-theme-text-hover"
-          @click="toBatchDelete">
+          @click="startBatchDelete">
           <Icon icon="icon-qingchu" class="text-3.5" />
           <span class="ml-1">{{ t('dataset.detail.useList.buttons.batchDelete') }}</span>
         </Button>
@@ -265,7 +65,7 @@ const columns = [
           type="text"
           size="small"
           class="flex items-center px-0 h-5 leading-5 border-0"
-          @click="toBatchDelete">
+          @click="startBatchDelete">
           <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
           <div class="flex items-center">
             <span class="mr-0.5">{{ t('dataset.detail.useList.buttons.deleteSelected') }}</span>
@@ -277,7 +77,7 @@ const columns = [
           type="text"
           size="small"
           class="flex items-center px-0 h-5 leading-5 border-0 text-theme-text-hover"
-          @click="toCancelBatchDelete">
+          @click="cancelBatchDelete">
           <Icon icon="icon-fanhui" class="mr-1" />
           <span>{{ t('dataset.detail.useList.buttons.cancelDelete') }}</span>
         </Button>
@@ -309,7 +109,7 @@ const columns = [
             type="text"
             size="small"
             class="flex items-center px-0"
-            @click="toDelete(record)">
+            @click="deleteUsage(record)">
             <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
             <span>{{ t('actions.delete') }}</span>
           </Button>

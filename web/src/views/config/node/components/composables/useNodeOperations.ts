@@ -1,14 +1,3 @@
-/**
- * Node operations management composable
- *
- * <p>This composable handles all node operational functions including:
- * - Agent installation (online and manual)
- * - Node enable/disable operations
- * - Agent restart operations
- * - Connection testing
- * - Installation step management</p>
- */
-
 import { reactive, ref } from 'vue';
 import { notification } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';

@@ -1,10 +1,7 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
-import { computed, onMounted, ref, watch } from 'vue';
-import { Button } from 'ant-design-vue';
-import { Icon, IconCopy, IconRequired, Input, Tooltip } from '@xcan-angus/vue-ui';
-import { utils, duration } from '@xcan-angus/infra';
-import { debounce } from 'throttle-debounce';
+import { computed } from 'vue';
+import { useParameterNameInput } from './composables/useParameterNameInput';
 
 const { t } = useI18n();
 
@@ -23,112 +20,23 @@ const emit = defineEmits<{
   (e: 'change', value: { name: string }[]): void;
 }>();
 
-const idList = ref<string[]>([]);
-const dataMap = ref<{ [key: string]: { name: string } }>({});
-const errorMessage = ref<Map<string, string>>(new Map());
-const nameErrorSet = ref<Set<string>>(new Set());
+// Use the composable for parameter name input logic
+const {
+  // State
+  idList,
+  dataMap,
+  errorMessage,
+  nameErrorSet,
 
-const nameChange = debounce(duration.delay, (event: { target: { value: string; } }, id: string, index: number) => {
-  nameErrorSet.value.delete(id);
-  errorMessage.value.delete(id);
-  // 保证最后一条是空的
-  if (index === idList.value.length - 1 && event.target.value) {
-    addNewItem();
-  }
+  // Methods
+  nameChange,
+  nameBlur,
+  deleteHandler,
+  isValid,
+  getData
+} = useParameterNameInput(props, emit);
 
-  // 校验名称是否重复
-  const duplicates: string[] = [];
-  const uniqueNames = new Set();
-  const names = Object.values(dataMap.value).map(item => item.name).filter(item => item);
-  for (let i = 0, len = names.length; i < len; i++) {
-    const name = names[i];
-    if (uniqueNames.has(name)) {
-      duplicates.push(name);
-    } else {
-      uniqueNames.add(name);
-    }
-  }
-
-  const ids = idList.value;
-  const data = dataMap.value;
-  for (let i = 0, len = ids.length; i < len; i++) {
-    const _id = ids[i];
-    if (duplicates.includes(data[_id].name)) {
-      nameErrorSet.value.add(_id);
-      errorMessage.value.set(_id, t('dataset.detail.parameterNameInput.errors.duplicate'));
-    } else {
-      nameErrorSet.value.delete(_id);
-      errorMessage.value.delete(_id);
-    }
-  }
-
-  emitChange();
-});
-
-const nameBlur = (event: { target: { value: string; } }, id: string) => {
-  const name = event.target.value;
-  if (!name) {
-    return;
-  }
-
-  // eslint-disable-next-line prefer-regex-literals
-  const rex = new RegExp(/[^a-zA-Z0-9!$%^&*_\-+=./]/);
-  if (rex.test(name)) {
-    nameErrorSet.value.add(id);
-    errorMessage.value.set(id, t('dataset.detail.parameterNameInput.errors.invalid'));
-  }
-};
-
-const emitChange = () => {
-  const data = getData();
-  emit('change', data);
-};
-
-const addNewItem = () => {
-  const id = utils.uuid();
-  const data = { name: '', value: '' };
-  idList.value.push(id);
-  dataMap.value[id] = data;
-};
-
-const deleteHandler = (id: string, index: number): void => {
-  const length = idList.value.length - 1;
-  idList.value.splice(index, 1);
-
-  delete dataMap.value[id];
-  errorMessage.value.delete(id);
-  nameErrorSet.value.delete(id);
-  emitChange();
-
-  // 删除的是最后一条，自动添加一条新断言
-  if (index === length) {
-    addNewItem();
-  }
-};
-
-const reset = () => {
-  idList.value = [];
-  dataMap.value = {};
-  errorMessage.value.clear();
-  nameErrorSet.value.clear();
-};
-
-onMounted(() => {
-  watch(() => props.defaultValue, () => {
-    reset();
-    if (props.defaultValue?.length) {
-      const dataList = props.defaultValue;
-      for (let i = 0, len = dataList.length; i < len; i++) {
-        const id = utils.uuid();
-        idList.value.push(id);
-        dataMap.value[id] = dataList[i];
-      }
-    }
-
-    addNewItem();
-  }, { immediate: true });
-});
-
+// Computed property for mapping values based on column index
 const valueMap = computed(() => {
   const num = props.columnIndex ? +props.columnIndex : 0;
   const len = idList.value.length - 1;
@@ -140,61 +48,7 @@ const valueMap = computed(() => {
   }, {} as { [key: string]: number });
 });
 
-const isValid = (): boolean => {
-  errorMessage.value.clear();
-  nameErrorSet.value.clear();
-  const ids = idList.value;
-  const data = dataMap.value;
-
-  // 校验名称是否重复
-  const duplicates: string[] = [];
-  const uniqueNames = new Set();
-  const names = Object.values(dataMap.value).map(item => item.name).filter(item => item);
-  for (let i = 0, len = names.length; i < len; i++) {
-    const name = names[i];
-    if (uniqueNames.has(name)) {
-      duplicates.push(name);
-    } else {
-      uniqueNames.add(name);
-    }
-  }
-
-  // 最后一条是空数据，不校验
-  for (let i = 0, len = ids.length - 1; i < len; i++) {
-    const id = ids[i];
-    const { name } = data[id];
-    if (!name) {
-      nameErrorSet.value.add(id);
-    } else {
-      if (duplicates.includes(name)) {
-        nameErrorSet.value.add(id);
-        errorMessage.value.set(id, '名称重复');
-      }
-
-      // eslint-disable-next-line prefer-regex-literals
-      const rex = new RegExp(/[a-zA-Z0-9!$%^&*_\-+=./]+/);
-      if (!rex.test(name)) {
-        nameErrorSet.value.add(id);
-        errorMessage.value.set(id, t('dataset.detail.parameterNameInput.errors.invalid'));
-      }
-    }
-  }
-
-  return !(nameErrorSet.value.size);
-};
-
-const getData = () => {
-  const ids = idList.value;
-  const _dataMap = dataMap.value;
-  const dataList: { name: string; }[] = [];
-  // 最后一条是空数据
-  for (let i = 0, len = ids.length - 1; i < len; i++) {
-    dataList.push({ ..._dataMap[ids[i]] });
-  }
-
-  return dataList;
-};
-
+// Expose methods for parent components
 defineExpose({
   getData,
   isValid

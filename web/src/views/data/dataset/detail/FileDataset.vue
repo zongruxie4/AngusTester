@@ -1,15 +1,10 @@
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { TabPane, Tabs } from 'ant-design-vue';
-import { Hints, Icon, IconRequired, Input, notification, SelectInput, Toggle, Tooltip } from '@xcan-angus/vue-ui';
-import { cloneDeep, isEqual } from 'lodash-es';
-import { dataSet } from '@/api/tester';
+import { useFileDataset } from './composables/useFileDataset';
+import { DataSetItem } from '../types';
 
 const { t } = useI18n();
-
-import SelectEnum from '@/components/selectEnum/index.vue';
-import { FileDataSetFormState, DataSetItem } from '../types';
 
 type Props = {
   projectId: string;
@@ -40,261 +35,46 @@ const ParameterNameInput = defineAsyncComponent(() => import('@/views/data/datas
 const PreviewData = defineAsyncComponent(() => import('@/views/data/dataset/preview/index.vue'));
 const DataSetUseList = defineAsyncComponent(() => import('@/views/data/dataset/detail/UseList.vue'));
 const MatchItemPopover = defineAsyncComponent(() => import('@/views/data/dataset/detail/MatchItemPopover.vue'));
+const SelectEnum = defineAsyncComponent(() => import('@/components/selectEnum/index.vue'));
 
-const parametersRef = ref();
+// Use the composable for file dataset logic
+const {
+  // State
+  activeKey,
+  dataSetName,
+  description,
+  defaultParameters,
+  filePath,
+  fileType,
+  encoding,
+  rowIndex,
+  columnIndex,
+  separatorChar,
+  escapeChar,
+  quoteChar,
+  method,
+  defaultValue,
+  expression,
+  matchItem,
+  previewData,
+  parametersRef,
 
-const confirmLoading = ref(false);
-const activeKey = ref<'value' | 'preview' | 'use'>('value');
+  // Computed properties
+  dataSetId,
+  editFlag,
+  okButtonDisabled,
 
-const dataSetName = ref<string>('');
-const description = ref<string>('');
+  // Methods
+  handleButtonClick,
+  handleParametersChange,
+  initialize,
+  updatePreviewData
+} = useFileDataset(props, emit as any);
 
-const parameters = ref<{ name: string; }[]>([]);
-const defaultParameters = ref<{ name: string; }[]>([]);
-
-const filePath = ref<string>('');
-const fileType = ref<'CSV' | 'EXCEL' | 'TXT'>('CSV');
-const encoding = ref<'UTF-8' | 'UTF-16' | 'UTF-16BE' | 'UTF-16LE' | 'US-ASCII' | 'ISO-8859-1'>('UTF-8');
-const rowIndex = ref<string>('0');
-const columnIndex = ref<string>('0');
-const separatorChar = ref<string>(',');
-const escapeChar = ref<string>('\\');
-const quoteChar = ref<string>('"');
-
-const method = ref<'EXACT_VALUE' | 'JSON_PATH' | 'REGEX' | 'X_PATH'>('EXACT_VALUE');
-const defaultValue = ref<string>('');
-const expression = ref<string>('');
-const matchItem = ref<string>('');
-
-const previewData = ref<{
-  id: string | undefined;
-  projectId: string;
-  name: string;
-  parameters: { name: string }[];
-  extraction: {
-    source: 'FILE';
-    fileType: 'CSV' | 'EXCEL' | 'TXT';
-    path: string;
-    encoding: string;
-    quoteChar: string;
-    escapeChar: string;
-    separatorChar: string;
-    rowIndex: string;
-    columnIndex: string;
-    method: 'EXACT_VALUE' | 'JSON_PATH' | 'REGEX' | 'X_PATH';
-    defaultValue: string;
-    expression: string;
-    matchItem: string;
-  };
-}>();
-
-const buttonGroupClick = (key: 'ok' | 'delete' | 'export' | 'clone' | 'copyLink' | 'refresh') => {
-  if (key === 'ok') {
-    ok();
-    return;
-  }
-
-  if (key === 'delete') {
-    emit('delete', dataSetId.value);
-    return;
-  }
-
-  if (key === 'export') {
-    emit('export', dataSetId.value);
-    return;
-  }
-
-  if (key === 'clone') {
-    emit('clone', dataSetId.value);
-    return;
-  }
-
-  if (key === 'copyLink') {
-    emit('copyLink', dataSetId.value);
-    return;
-  }
-
-  if (key === 'refresh') {
-    emit('refresh', dataSetId.value);
-  }
-};
-
-const ok = async () => {
-  let validFlag = true;
-  if (typeof parametersRef.value?.isValid === 'function') {
-    validFlag = parametersRef.value.isValid();
-  }
-
-  if (!validFlag) {
-    return;
-  }
-
-  if (editFlag.value) {
-    toEdit();
-    return;
-  }
-
-  toCreate();
-};
-
-const toEdit = async () => {
-  const params = getParams();
-  confirmLoading.value = true;
-  const [error] = await dataSet.putDataSet(params);
-  confirmLoading.value = false;
-  if (error) {
-    return;
-  }
-
-  notification.success(t('dataset.detail.fileDataset.notifications.updateSuccess'));
-  emit('ok', params, true);
-};
-
-const toCreate = async () => {
-  const params = getParams();
-  confirmLoading.value = true;
-  const [error, res] = await dataSet.addDataSet(params);
-  confirmLoading.value = false;
-  if (error) {
-    return;
-  }
-
-  notification.success(t('dataset.detail.fileDataset.notifications.addSuccess'));
-  const id = res?.data?.id;
-  emit('ok', { ...params, id }, false);
-};
-
-const parametersChange = (data: { name: string; }[]) => {
-  parameters.value = data;
-};
-
-const getParams = (): FileDataSetFormState => {
-  const params: FileDataSetFormState = {
-    projectId: props.projectId,
-    name: dataSetName.value,
-    description: description.value,
-    parameters: parameters.value,
-    extraction: {
-      columnIndex: columnIndex.value,
-      encoding: encoding.value,
-      escapeChar: escapeChar.value,
-      fileType: fileType.value,
-      path: filePath.value,
-      quoteChar: quoteChar.value,
-      rowIndex: rowIndex.value,
-      separatorChar: separatorChar.value,
-      source: 'FILE',
-      method: method.value,
-      defaultValue: defaultValue.value,
-      expression: expression.value,
-      matchItem: matchItem.value
-    }
-  };
-
-  const id = dataSetId.value;
-  if (id) {
-    params.id = id;
-  }
-
-  return params;
-};
-
-const initialize = () => {
-  const data = props.dataSource;
-  if (!data) {
-    return;
-  }
-
-  const { extraction } = data || {};
-  dataSetName.value = data.name;
-  description.value = data.description;
-  parameters.value = data.parameters || [];
-  defaultParameters.value = cloneDeep(data.parameters);
-
-  filePath.value = extraction.path;
-  filePath.value = extraction.path;
-  fileType.value = extraction.fileType?.value;
-  encoding.value = extraction.encoding;
-  rowIndex.value = extraction.rowIndex;
-  columnIndex.value = extraction.columnIndex;
-  separatorChar.value = extraction.separatorChar;
-  escapeChar.value = extraction.escapeChar;
-  quoteChar.value = extraction.quoteChar;
-
-  method.value = extraction.method?.value;
-  defaultValue.value = extraction.defaultValue;
-  expression.value = extraction.expression;
-  matchItem.value = extraction.matchItem;
-};
-
-onMounted(() => {
-  watch(() => props.dataSource, (newValue) => {
-    if (!newValue) {
-      return;
-    }
-
-    initialize();
-  }, { immediate: true });
-
-  watch(() => activeKey.value, (newValue) => {
-    if (newValue !== 'preview') {
-      return;
-    }
-
-    const newData = {
-      id: props.dataSource?.id,
-      projectId: props.projectId,
-      name: dataSetName.value,
-      parameters: parameters.value,
-      extraction: {
-        source: 'FILE',
-        fileType: fileType.value,
-        path: filePath.value,
-        encoding: encoding.value,
-        quoteChar: quoteChar.value,
-        escapeChar: escapeChar.value,
-        separatorChar: separatorChar.value,
-        rowIndex: rowIndex.value,
-        columnIndex: columnIndex.value,
-        method: method.value,
-        defaultValue: defaultValue.value,
-        expression: expression.value,
-        matchItem: matchItem.value
-      }
-    };
-
-    if (!isEqual(newData, previewData.value)) {
-      previewData.value = newData;
-    }
-  }, { immediate: true });
-});
-
-const dataSetId = computed(() => {
-  return props.dataSource?.id || '';
-});
-
-const editFlag = computed(() => {
-  return !!props.dataSource?.id;
-});
-
-const okButtonDisabled = computed(() => {
-  let disabled = !dataSetName.value ||
-    !filePath.value ||
-    !fileType.value ||
-    !encoding.value ||
-    !rowIndex.value ||
-    !columnIndex.value ||
-    !separatorChar.value ||
-    !escapeChar.value ||
-    !quoteChar.value;
-
-  if (!disabled) {
-    if (['JSON_PATH', 'REGEX', 'X_PATH'].includes(method.value)) {
-      disabled = !expression.value;
-    }
-  }
-
-  return disabled;
+// Expose methods for parent components
+defineExpose({
+  initialize,
+  updatePreviewData
 });
 
 const encodingOptions = [
@@ -334,7 +114,7 @@ const inputProps = {
     :editFlag="editFlag"
     :okButtonDisabled="okButtonDisabled"
     class="mb-5"
-    @click="buttonGroupClick" />
+    @click="handleButtonClick" />
 
   <div class="flex items-center mb-3.5">
     <div class="mr-2.5 flex-shrink-0">
@@ -385,7 +165,7 @@ const inputProps = {
             ref="parametersRef"
             :columnIndex="columnIndex"
             :defaultValue="defaultParameters"
-            @change="parametersChange" />
+            @change="handleParametersChange" />
         </Toggle>
 
         <Toggle :title="t('dataset.detail.fileDataset.form.readConfig')" class="text-3 leading-5 mb-3.5">

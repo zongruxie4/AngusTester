@@ -4,6 +4,10 @@ import { Radio, RadioGroup } from 'ant-design-vue';
 import { Colon, Modal } from '@xcan-angus/vue-ui';
 import { download, TESTER } from '@xcan-angus/infra';
 
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
+
 interface Props {
   visible: boolean;
   projectId: string;
@@ -44,12 +48,12 @@ const ok = () => {
     :visible="props.visible"
     :width="500"
     :confirmLoading="loading"
-    title="下载数据集"
+    :title="t('dataset.exportModal.title')"
     @cancel="cancel"
     @ok="ok">
     <div class="flex items-center">
       <div class="flex items-center mr-3.5">
-        <span>格式</span>
+        <span>{{ t('dataset.exportModal.format') }}</span>
         <Colon />
       </div>
       <RadioGroup v-model:value="fileType" name="fileType">
