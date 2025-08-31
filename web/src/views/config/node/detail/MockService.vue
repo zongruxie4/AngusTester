@@ -1,102 +1,105 @@
 <script lang="ts" setup>
-import { computed, inject, onMounted, ref, watch } from 'vue';
 import { Table } from '@xcan-angus/vue-ui';
-import { mock } from '@/api/tester';
-import { useI18n } from 'vue-i18n';
+import { useProjectInfo } from './composables/useProjectInfo';
+import { useMockServiceData } from './composables/useMockServiceData';
+import { useMockServiceTableColumns } from './composables/useMockServiceTableColumns';
+import { MockServiceProps } from '@/views/config/node/detail/types';
 
-const { t } = useI18n();
-
-interface Props {
-  nodeId: string
-}
-
-const projectInfo = inject('projectInfo', ref({ id: '' }));
-const projectId = computed(() => {
-  return projectInfo.value?.id;
-});
-
-const props = withDefaults(defineProps<Props>(), {
+/**
+ * <p>Component props with default values</p>
+ * <p>Provides default values for optional props</p>
+ */
+const props = withDefaults(defineProps<MockServiceProps>(), {
   nodeId: ''
 });
-const pagination = ref({
-  current: 1,
-  pageSize: 10,
-  total: 0,
-  pageSizeOptions: [10]
-});
 
-const columns = [
-  {
-    dataIndex: 'id',
-    title: t('node.nodeDetail.mockService.columns.serviceId')
-  },
-  {
-    dataIndex: 'name',
-    title: t('node.nodeDetail.mockService.columns.name')
-  },
-  {
-    dataIndex: 'status',
-    title: t('node.nodeDetail.mockService.columns.status')
-  },
-  {
-    dataIndex: 'serviceHostUrl',
-    title: t('node.nodeDetail.mockService.columns.accessUrl')
-  },
-  {
-    dataIndex: 'servicePort',
-    title: t('node.nodeDetail.mockService.columns.accessPort')
-  },
-  {
-    dataIndex: 'createdByName',
-    title: t('node.nodeDetail.mockService.columns.creator')
-  },
-  {
-    dataIndex: 'createdDate',
-    title: t('node.nodeDetail.mockService.columns.createTime')
-  }
-];
-// 服务ID、名称、状态、访问地址、端口、添加人、添加时间
-const servieData = ref([]);
-const loadServiceData = async () => {
-  const { current, pageSize } = pagination.value;
-  const [error, { data = { list: [], total: 0 } }] = await mock.getServiceList({ nodeId: props.nodeId, projectId: projectId.value, pageNo: current, pageSize });
-  if (error) {
-    return;
-  }
-  servieData.value = data.list || [];
-  pagination.value.total = +data.total || 0;
-};
+/**
+ * <p>Project information management</p>
+ * <p>Provides access to current project details</p>
+ */
+const { projectId } = useProjectInfo();
 
-const onPageChange = (page) => {
-  pagination.value.current = page.current;
-  pagination.value.pageSize = page.pageSize;
-  loadServiceData();
-};
-onMounted(() => {
-  watch(() => projectId.value, (newValue) => {
-    if (newValue) {
-      if (props.nodeId) {
-        loadServiceData();
-      }
-    }
-  }, {
-    immediate: true
-  });
-});
+/**
+ * <p>Mock service data management</p>
+ * <p>Handles data fetching, pagination, and state management</p>
+ */
+const {
+  mockServiceData,
+  pagination,
+  isLoading,
+  error,
+  handlePaginationChange
+} = useMockServiceData(props.nodeId, projectId.value);
 
+/**
+ * <p>Table column configuration</p>
+ * <p>Provides reactive column definitions with internationalization</p>
+ */
+const { columns } = useMockServiceTableColumns();
 </script>
+
 <template>
-  <Table
-    :dataSource="servieData"
-    :columns="columns"
-    :pagination="pagination"
-    size="small"
-    noDataSize="small"
-    @change="onPageChange">
-    <template #bodyCell="{ column, record }">
-      <template v-if="column.dataIndex === 'status'">
-        {{ record.status?.message }}
+  <div class="mock-service-container">
+    <!-- Error Display -->
+    <div v-if="error" class="error-message">
+      {{ error }}
+    </div>
+
+    <!-- Mock Service Table -->
+    <Table
+      :dataSource="mockServiceData"
+      :columns="columns"
+      :pagination="pagination"
+      :loading="isLoading"
+      size="small"
+      noDataSize="small"
+      @change="handlePaginationChange">
+      <!-- Custom cell rendering for status column -->
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.dataIndex === 'status'">
+          <span class="status-cell">
+            {{ record.status?.message }}
+          </span>
+        </template>
       </template>
-    </template>
-  </Table>
+
+      <!-- Empty state when no data is available -->
+      <template #empty>
+        <div class="empty-state">
+          <p>No mock services found for this node</p>
+        </div>
+      </template>
+    </Table>
+  </div>
 </template>
+
+<style scoped>
+.mock-service-container {
+  padding: 16px;
+}
+
+.error-message {
+  color: #ff4d4f;
+  background-color: #fff2f0;
+  border: 1px solid #ffccc7;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.status-cell {
+  font-weight: 500;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #8c8c8c;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 14px;
+}
+</style>

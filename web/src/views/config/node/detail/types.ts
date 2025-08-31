@@ -160,3 +160,85 @@ export interface ExecutionPropulsionProps {
 export interface MockServiceProps {
   nodeId: string;
 }
+
+/**
+ * <p>Mock service related types and interfaces</p>
+ * <p>Provides type definitions for mock service data structures and API responses</p>
+ */
+export interface MockService {
+  /** Unique identifier for the mock service */
+  id: string;
+  /** Name of the mock service */
+  name: string;
+  /** Current status of the mock service */
+  status: {
+    /** Status message */
+    message: string;
+    /** Status code */
+    code?: string;
+  };
+  /** Host URL for accessing the mock service */
+  serviceHostUrl: string;
+  /** Port number for the mock service */
+  servicePort: number;
+  /** Name of the user who created the service */
+  createdByName: string;
+  /** Date when the service was created */
+  createdDate: string;
+}
+
+/**
+ * <p>Mock service list API response structure</p>
+ * <p>Defines the response format for mock service list API calls</p>
+ */
+export interface MockServiceListResponse {
+  /** List of mock services */
+  list: MockService[];
+  /** Total count of available services */
+  total: number;
+}
+
+/**
+ * <p>Mock service list request parameters</p>
+ * <p>Defines the parameters required for fetching mock service list</p>
+ */
+export interface MockServiceListParams {
+  /** Node identifier */
+  nodeId: string;
+  /** Project identifier */
+  projectId: string;
+  /** Page number for pagination */
+  pageNo: number;
+  /** Number of items per page */
+  pageSize: number;
+}
+
+/**
+ * <p>Table pagination configuration</p>
+ * <p>Defines pagination settings for the mock service table</p>
+ */
+export interface TablePagination {
+  /** Current page number */
+  current: number;
+  /** Number of items per page */
+  pageSize: number;
+  /** Total number of items */
+  total: number;
+  /** Available page size options */
+  pageSizeOptions: number[];
+}
+
+/**
+ * <p>Table column definition</p>
+ * <p>Defines the structure and configuration for table columns</p>
+ */
+export interface TableColumn {
+  /** Data field identifier */
+  dataIndex: string;
+  /** Column header title */
+  title: string;
+  /** Column width (optional) */
+  width?: number;
+  /** Whether column is sortable (optional) */
+  sorter?: boolean;
+}
