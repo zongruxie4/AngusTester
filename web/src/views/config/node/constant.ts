@@ -2,19 +2,6 @@ import { i18n } from '@xcan-angus/infra';
 const I18nInstance = i18n.getI18n();
 const t = I18nInstance?.global?.t || ((value: string):string => value);
 
-export const sortOpt = [
-  {
-    name: t('node.nodeItem.interface.sortOptions.byAddTime'),
-    key: 'createdDate',
-    orderSort: 'DESC'
-  },
-  {
-    name: t('node.nodeItem.interface.sortOptions.byName'),
-    key: 'name',
-    orderSort: 'ASC'
-  }
-];
-
 export const installConfigColumns = [
   [
     {
@@ -63,18 +50,3 @@ export const getStrokeColor = (percent: number) => {
     return '#52C41A';
   }
 };
-
-export interface Params {
-  name?: string,
-  nodeRole?: string,
-  createdBy?: string,
-  source?: string,
-  orderBy?:string,
-  orderSort?: string,
-  'filters[0].key'?: string,
-  'filters[0].op'?: string,
-  'filters[0].value'?: string,
-  'filters[1].key'?: string,
-  'filters[1].op'?: string,
-  'filters[1].value'?: string,
-}

@@ -684,8 +684,8 @@
           "network": "Network",
           "upload": "Upload",
           "download": "Download",
-          "totalUpload": "Total Upload",
-          "totalDownload": "Total Download"
+          "totalUpload": "Total",
+          "totalDownload": "Total"
         },
         "sortOptions": {
           "byAddTime": "By Add Time",

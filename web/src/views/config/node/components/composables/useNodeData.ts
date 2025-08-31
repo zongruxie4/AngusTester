@@ -8,7 +8,7 @@ import {
   NodeItemsProps,
   NodeItemsEmits
 } from '../types';
-import { getDefaultNode } from '../../interface';
+import { getDefaultNode } from '../../constant';
 import { node } from '@/api/tester';
 
 /**

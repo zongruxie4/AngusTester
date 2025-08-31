@@ -5,7 +5,7 @@ import { Grid, Hints, Icon, Input, Tooltip } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
 import { formItems, nodeStatus, nodeUseProgresses, viewItem } from './constant';
-import { getStrokeColor, installConfigColumns } from '../interface';
+import { getStrokeColor, installConfigColumns } from '../constant';
 import { NodeItemsProps, NodeItemsEmits } from './types';
 
 // Import composables
