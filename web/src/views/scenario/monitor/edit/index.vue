@@ -81,7 +81,7 @@ const handleSceneChange = (_id: string, option) => {
 const orgs = ref<{name: string; id: string}[]>([{ id: props.userInfo?.id, name: props.userInfo?.fullName }]);
 const validateOrgs = () => {
   if (!orgs.value.length) {
-    return Promise.reject(t('common.pleaseSelect'));
+    return Promise.reject(t('scenarioMonitor.edit.selectOrgsRule'));
   }
   return Promise.resolve();
 };
@@ -137,7 +137,7 @@ const editOk = async () => {
   if (error) {
     return;
   }
-  notification.success(t('common.modifySuccess'));
+  notification.success(t('tips.modifySuccess'));
   deleteTabPane([props._id]);
 };
 
@@ -149,7 +149,7 @@ const addOk = async () => {
   if (error) {
     return;
   }
-  notification.success(t('common.addSuccess'));
+  notification.success(t('tips.addSuccess'));
   deleteTabPane([props._id]);
 };
 

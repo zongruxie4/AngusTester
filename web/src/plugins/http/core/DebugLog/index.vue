@@ -61,11 +61,11 @@ const downloadLog = () => {
           <Colon class="mr-2" />
           <template v-if="props.value?.success">
             <span class="inline-block w-1.5 h-1.5 mr-1 rounded bg-status-success"></span>
-            <span>{{ t('common.success') }}</span>
+            <span>{{ t('status.success') }}</span>
           </template>
           <template v-else>
             <span class="inline-block w-1.5 h-1.5 mr-1 rounded bg-status-error"></span>
-            <span>{{ t('common.failure') }}</span>
+            <span>{{ t('status.failure') }}</span>
           </template>
         </div>
         <div class="flex items-center mr-15">

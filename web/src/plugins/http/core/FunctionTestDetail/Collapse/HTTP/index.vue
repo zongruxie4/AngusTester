@@ -158,15 +158,15 @@ const showBasicInfo = computed(() => {
           <div class="flex-1 justify-end flex items-center mr-3">
             <template v-if="showBasicInfo">
               <div class="mr-5">
-                <span class="mr-0.5">{{ t('common.statusCode') }}<Colon /></span>
+                <span class="mr-0.5">{{ t('httPlugin.functionTestDetail.statusCode') }}<Colon /></span>
                 <span class="text-theme-sub-content">{{ httpStatus }}</span>
               </div>
               <div class="mr-5">
-                <span class="mr-0.5">{{ t('common.duration') }}<Colon /></span>
+                <span class="mr-0.5">{{ t('httPlugin.functionTestDetail.duration') }}<Colon /></span>
                 <span class="text-theme-sub-content"> {{ runtime }}</span>
               </div>
               <div class="mr-5">
-                <span class="mr-0.5">{{ t('common.size') }}<Colon /></span>
+                <span class="mr-0.5">{{ t('httPlugin.functionTestDetail.size') }}<Colon /></span>
                 <span class="text-theme-sub-content"> {{ bodySize }}</span>
               </div>
             </template>

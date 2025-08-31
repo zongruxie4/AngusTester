@@ -252,8 +252,8 @@ onMounted(() => {
 
                 <Popconfirm
                   :title="t('taskTrash.confirm.deleteAll')"
-                  :okText="t('common.confirm')"
-                  :cancelText="t('common.cancel')"
+                  :okText="t('actions.confirm')"
+                  :cancelText="t('actions.cancel')"
                   @confirm="handleDeleteAll">
                   <Tooltip :title="t('taskTrash.actions.deleteAll')">
                     <Button

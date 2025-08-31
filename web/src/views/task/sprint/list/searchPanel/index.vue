@@ -337,7 +337,7 @@ onMounted(() => {
           @click="toSort">
           <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
             <Icon icon="icon-shunxu" class="text-3.5" />
-            <span>{{ t('common.sort') }}</span>
+            <span>{{ t('sort') }}</span>
           </div>
         </DropdownSort>
 
@@ -348,7 +348,7 @@ onMounted(() => {
           <template #default>
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-shuaxin" class="text-3.5" />
-              <span class="ml-1">{{ t('common.actions.refresh') }}</span>
+              <span class="ml-1">{{ t('actions.refresh') }}</span>
             </div>
           </template>
         </IconRefresh>

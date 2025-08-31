@@ -89,7 +89,8 @@
         "duration": "Duration",
         "iteration": "Iterations",
         "request": "Requests",
-        "responseTime": "Response Time"
+        "responseTime": "Response Time",
+        "assertion": "Assertion"
       },
       "collapse": {
         "iteration": "Iteration {iteration}"
@@ -1014,6 +1015,9 @@
     },
     "functionTestDetail": {
       "pending": "Executing...",
+      "statusCode": "Status Code",
+      "duration": "Duration",
+      "size": "Size",
       "basicInfo": {
         "duration": "Duration",
         "iteration": "Iterations",

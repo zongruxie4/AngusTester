@@ -144,8 +144,8 @@ onMounted(() => {
 
                 <Popconfirm
                   :title="$t('projectTrash.confirm.deleteAll')"
-                  :okText="$t('common.confirm')"
-                  :cancelText="$t('common.cancel')"
+                  :okText="$t('actions.confirm')"
+                  :cancelText="$t('actions.cancel')"
                   @confirm="deleteAll">
                   <Tooltip :title="$t('projectTrash.ui.deleteAll')">
                     <Button
@@ -242,8 +242,8 @@ onMounted(() => {
 
                 <Popconfirm
                   :title="$t('projectTrash.confirm.delete')"
-                  :okText="$t('common.confirm')"
-                  :cancelText="$t('common.cancel')"
+                  :okText="$t('actions.confirm')"
+                  :cancelText="$t('actions.cancel')"
                   @confirm="deleteTrash(record)">
                   <Tooltip :title="$t('actions.delete')">
                     <Button

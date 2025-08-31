@@ -211,8 +211,8 @@ onMounted(() => {
 
           <Popconfirm
             :title="t('apiTrash.confirm.delete')"
-            :okText="t('common.confirm')"
-            :cancelText="t('common.cancel')"
+            :okText="t('actions.confirm')"
+            :cancelText="t('actions.cancel')"
             @confirm="deleteHandler(record)">
             <Tooltip :title="t('actions.delete')">
               <Button

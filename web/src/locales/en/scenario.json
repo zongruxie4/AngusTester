@@ -90,7 +90,8 @@
       },
       "selectUser": "Select User",
       "selectDept": "Select Department",
-      "selectGroup": "Select Group"
+      "selectGroup": "Select Group",
+      "selectOrgsRule": "Please select"
     },
     "detail": {
       "successRate": "Success Rate",

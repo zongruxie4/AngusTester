@@ -238,8 +238,8 @@ const handleRefresh = () => {
 
                 <Popconfirm
                   :title="t('apiTrash.confirm.deleteAll')"
-                  :okText="t('common.confirm')"
-                  :cancelText="t('common.cancel')"
+                  :okText="t('actions.confirm')"
+                  :cancelText="t('actions.cancel')"
                   @confirm="handleDeleteAll">
                   <Tooltip :title="t('apiTrash.actions.deleteAll')">
                     <Button

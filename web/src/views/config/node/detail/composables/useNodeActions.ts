@@ -1,7 +1,6 @@
 import { onBeforeUnmount, ref } from 'vue';
-import { appContext, toClipboard } from '@xcan-angus/infra';
+import { appContext, toClipboard, i18n } from '@xcan-angus/infra';
 import { notification } from '@xcan-angus/vue-ui';
-import { useI18n } from 'vue-i18n';
 
 /**
  * Composable for managing node utility functions and system operations
@@ -11,7 +10,7 @@ import { useI18n } from 'vue-i18n';
  * </p>
  */
 export function useNodeActions () {
-  const { t } = useI18n();
+  const t = i18n.getI18n()?.global?.t || ((value: string) => value);
 
   // System context and permissions
   const isAdmin = ref(appContext.isAdmin());
@@ -33,7 +32,7 @@ export function useNodeActions () {
       notification.success(t('node.nodeDetail.labels.copySuccess'));
     } catch (error) {
       console.error('Failed to copy content:', error);
-      notification.error(t('common.error.copyFailed'));
+      notification.error(t('tips.copyFailed'));
     }
   };
 
