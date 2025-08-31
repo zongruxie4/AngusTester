@@ -31,7 +31,7 @@ type SearchParam = {
     [key: string]: any;
 };
 
-const AddModal = defineAsyncComponent(() => import('./add.vue'));
+const AddModal = defineAsyncComponent(() => import('./Add.vue'));
 
 const { t } = useI18n();
 const projectInfo = inject('projectInfo', ref({ id: '' }));

@@ -574,7 +574,7 @@ onMounted(() => {
                 <template #tab><span class="font-semibold">{{ t('node.message.executorProcess') }}</span></template>
                 <ExecutionPropulsion :nodeId="id" :tenantId="state.infos?.tenantId" />
               </TabPane>
-            </template>
+            </template> // TODO
 
             <!-- Mock Service Tab -->
             <template v-if="state.infos?.rolesValues?.includes('MOCK_SERVICE')">

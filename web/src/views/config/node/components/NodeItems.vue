@@ -1,27 +1,26 @@
 <script setup lang="ts">
 import { Button, CheckboxGroup, Popover, Progress, TabPane, Tabs, Tag } from 'ant-design-vue';
-import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
-import { Grid, Hints, Icon, Input, modal, notification, Tooltip } from '@xcan-angus/vue-ui';
-import dayjs from 'dayjs';
-import { appContext, toClipboard } from '@xcan-angus/infra';
+import { computed, onMounted, watch } from 'vue';
+import { Grid, Hints, Icon, Input, Tooltip } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
 import { formItems, nodeStatus, nodeUseProgresses, viewItem } from './interface';
-import { getDefaultNode, getStrokeColor, installConfigColumns } from '../interface';
+import { getStrokeColor, installConfigColumns } from '../interface';
+import { NodeItemsProps, NodeItemsEmits } from './types';
 
-import { nodeCtrl, nodeInfo } from '@/api/ctrl';
-import { node } from '@/api/tester';
+// Import composables
+import { useNodeData } from './composables/useNodeData';
+import { useNodeOperations } from './composables/useNodeOperations';
+import { useNodeMonitoring } from './composables/useNodeMonitoring';
+import { useNodeNameEdit } from './composables/useNodeNameEdit';
+import { useNodeUtils } from './composables/useNodeUtils';
 
 const { t } = useI18n();
 
-type Roles = Array<{value: string, label: string, name: string, disabled?:boolean}>
-
-interface Props {
-  nodeList: Array<Record<string, any>>;
-  roleOptions: Roles;
-  autoRefresh: boolean;
-  isAdmin: boolean;
-}
+/**
+ * Component props definition
+ */
+interface Props extends NodeItemsProps {}
 
 const props = withDefaults(defineProps<Props>(), {
   nodeList: () => [],
@@ -30,468 +29,174 @@ const props = withDefaults(defineProps<Props>(), {
   isAdmin: false
 });
 
-const nodeParams = reactive({
-  name: '',
-  ip: '',
-  publicIp: '',
-  domain: '',
-  username: '',
-  password: '',
-  sshPort: '',
-  roles: [],
-  id: ''
-});
+/**
+ * Component emits definition
+ */
+const emits = defineEmits<NodeItemsEmits>();
 
-// eslint-disable-next-line func-call-spacing
-const emits = defineEmits<{
-  (e: 'cancel'): void,
-  (e: 'loadList'): void
-}>();
+// Initialize composables
+const {
+  nodeList,
+  nodeParams,
+  validated,
+  showPortTip,
+  testBtnDisable,
+  addNode,
+  cancelEdit,
+  changeEditable,
+  saveNode,
+  deleteNode,
+  getEditTip,
+  getDeleteTip
+} = useNodeData(props, emits);
 
-const tenantInfo = ref(appContext.getTenant());
-const userInfo = ref(appContext.getUser());
+const {
+  loadingStates,
+  showTested,
+  testSuccess,
+  testFailContent,
+  showInstallCtrlAccessTokenMap,
+  getOnlineInstallTip,
+  installAgent,
+  foldInstallAgent,
+  showInstallStep,
+  restartAgent,
+  toggleNodeEnabled,
+  testConnection,
+  toggleShowCtrlAccessToken,
+  resetConnectionTest
+} = useNodeOperations(emits);
 
-const validated = ref(false);
+const {
+  startMonitoringInterval
+} = useNodeMonitoring(props, nodeList);
 
-const showTested = ref(false); // 是否点击果测试链接
+const {
+  editNameInputRef,
+  editNameValue,
+  editNameId,
+  editNodeName,
+  handleNameBlur,
+  cancelNameEdit,
+  isEditingName
+} = useNodeNameEdit();
 
-const testSuccess = ref(false); // 测试链接状态
+const {
+  tenantInfo,
+  userInfo,
+  isPrivate,
+  copyToClipboard,
+  canEditNode,
+  canDeleteNode,
+  canToggleNodeEnabled,
+  canRestartAgent,
+  canInstallAgent,
+  getDisabledButtonTooltip
+} = useNodeUtils(props);
 
-const testFailContent = ref(); // 链接测试失败消息
-
-const installingMap = reactive({}); // 代理安装中
-
-const enabledingMap = reactive({}); // 启用/禁用中
-
-const restartingMap = reactive({}); // 重启
-
-const nodeList = ref<Array<Record<string, any>>>([]);
-
-const isPrivate = ref(false);
-
-
-// 显示端口号校验提示
-const showPortTip = computed(() => {
-  const sshPort = Number(nodeParams.sshPort);
-  return validated.value && !!nodeParams.sshPort && !(sshPort >= 1 && sshPort <= 65535);
-});
-
-// 显示测试链接 按钮
-const testBtnDisable = computed(() => {
-  return !nodeParams.ip && !nodeParams.publicIp;
-});
-
-const validate = () => {
-  const sshPort = Number(nodeParams.sshPort);
-  return nodeParams.name?.trim() && nodeParams.ip?.trim() && (!nodeParams.sshPort?.trim() || (sshPort >= 1 && sshPort <= 65535)) && nodeParams.roles.length > 0;
-};
-
-// 添加
+/**
+ * Enhanced add function that resets connection test state
+ */
 const add = () => {
-  if (nodeList.value[0]?.editable && !nodeList.value[0]?.id) {
-    return;
-  }
-  nodeList.value.unshift(getDefaultNode());
-  changeEditable(nodeList.value[0]);
-  showTested.value = false;
+  addNode();
+  resetConnectionTest();
 };
 
-// 取消 click
-const cancel = (state) => {
-  if (state?.id) {
-    state.editable = false;
-  } else {
-    nodeList.value.shift();
-    emits('cancel');
-  }
-  showTested.value = false;
-  validated.value = false;
-  testFailContent.value = '';
+/**
+ * Enhanced cancel function that resets connection test state
+ */
+const cancel = (state: any) => {
+  cancelEdit(state);
+  resetConnectionTest();
 };
 
-// 编辑几点按钮禁用提示
-const getEditTip = (node) => {
-  if (node.source?.value !== 'OWN_NODE') {
-    return t('node.nodeItem.tips.editOwnNode');
-  }
-  if (!props.isAdmin) {
-    return t('node.nodeItem.tips.editPermission');
-  }
+/**
+ * Enhanced changeEditable function that resets connection test state
+ */
+const changeEditableEnhanced = (state: any) => {
+  changeEditable(state);
+  resetConnectionTest();
 };
 
-// 编辑 click
-const changeEditable = (state) => {
-  if (nodeList.value.some(i => i.editable)) {
-    nodeList.value.forEach(node => {
-      if (node.editable) {
-        cancel(node);
-      }
-    });
-  }
-  state.editable = !state.editable;
-  nodeParams.domain = state.domain;
-  nodeParams.ip = state.ip;
-  nodeParams.publicIp = state.publicIp;
-  nodeParams.id = state.id;
-  nodeParams.name = state.name;
-  nodeParams.username = state.username;
-  nodeParams.password = state.password;
-  nodeParams.sshPort = state.sshPort;
-  nodeParams.roles = state.roles.map(i => i.value);
+/**
+ * Enhanced save function that resets connection test state
+ */
+const saveNodeEnhanced = async () => {
+  await saveNode();
+  resetConnectionTest();
 };
 
-// 保存
-const saveNode = async () => {
-  validated.value = true;
-  if (validate()) {
-    validated.value = false;
-    showTested.value = false;
-    const response = await (!nodeParams.id
-      ? node.addNode([{ ...nodeParams }])
-      : node.updateNode([{ ...nodeParams }]));
-    const [error] = response;
-    if (error) {
-      return;
-    }
-    if (nodeParams.id) {
-      notification.success(t('node.nodeItem.labels.updateNodeSuccess'));
-    } else {
-      notification.success(t('node.nodeItem.labels.addNodeSuccess'));
-    }
-    emits('loadList');
-  }
+/**
+ * Enhanced delete function
+ */
+const delNode = (state: any) => {
+  deleteNode(state);
 };
 
-// 删除按钮禁用提示
-const getDelTip = (node) => {
-  if (node.enabled) {
-    return t('node.nodeItem.tips.disableDelete');
-  }
-  if (!props.isAdmin) {
-    return t('node.nodeItem.tips.deletePermission');
-  }
-  if (node.source?.value !== 'OWN_NODE') {
-    return t('node.nodeItem.tips.deleteOwnNode');
-  }
+/**
+ * Enhanced enable function
+ */
+const enable = async (state: any) => {
+  await toggleNodeEnabled(state);
 };
 
-// 删除
-const delNode = (state) => {
-  modal.confirm({
-    content: t('node.nodeItem.confirm.deleteNode', { name: state.name }),
-    onOk: async () => {
-      const [error] = await node.deleteNode({ ids: state.id });
-      if (error) {
-        return;
-      }
-      emits('loadList');
-    }
-  });
-};
-
-// 安装 代理按钮禁用提示
-const getOnlineInstallTip = (node) => {
-  if (node.geAgentInstallationCmd) {
-    return t('node.nodeItem.tips.alreadyInstalled');
-  }
-  if (props.isAdmin) {
-    return t('node.nodeItem.tips.installPermission');
-  }
-};
-
-// 安装 代理
-const installAgent = async (state) => {
-  if (installingMap[state.id]) {
-    return;
-  }
-  installingMap[state.id] = true;
-  const [error] = await node.installNodeAgent({ id: state.id });
-  installingMap[state.id] = false;
-  if (error) {
-    // if (error.data.linuxOfflineInstallCmd || error.data.windowsOfflineInstallCmd) {
-    //   state.linuxOfflineInstallCmd = error.data.linuxOfflineInstallCmd;
-    //   state.windowsOfflineInstallCmd = error.data.windowsOfflineInstallCmd;
-    //   state.showInstallAgent = true;
-    // }
-    if (typeof error.data !== 'object') {
-      return;
-    }
-    if (error.data.linuxOfflineInstallSteps) {
-      state.linuxOfflineInstallSteps = error.data.linuxOfflineInstallSteps;
-      state.showInstallAgent = true;
-    }
-    if (error.data.windowsOfflineInstallSteps) {
-      state.windowsOfflineInstallSteps = error.data.windowsOfflineInstallSteps;
-      state.showInstallAgent = true;
-    }
-    return;
-  }
-  emits('loadList');
-  notification.success(t('node.nodeItem.labels.installSuccess'));
-};
-
-// 收起手动安装代理
-const foldInstallAgent = (state) => {
-  state.showInstallAgent = !state.showInstallAgent;
-};
-
-// 查询手动安装代理步骤
-const showInstallStep = async (state) => {
-  if (state.showInstallAgent) {
-    foldInstallAgent(state);
-    return;
-  }
-  const [error, res] = await nodeInfo.geAgentInstallationCmd({ id: state.id });
-  if (error) {
-    return;
-  }
-  state.showInstallAgent = true;
-  // if (res.data.linuxOfflineInstallCmd || res.data.windowsOfflineInstallCmd) {
-  //   state.linuxOfflineInstallCmd = res.data.linuxOfflineInstallCmd;
-  //   state.windowsOfflineInstallCmd = res.data.windowsOfflineInstallCmd;
-  // }
-  if (res.data.linuxOfflineInstallSteps) {
-    state.linuxOfflineInstallSteps = res.data.linuxOfflineInstallSteps;
-  }
-  if (res.data.windowsOfflineInstallSteps) {
-    state.windowsOfflineInstallSteps = res.data.windowsOfflineInstallSteps;
-  }
-  state.installConfig = res.data?.installConfig || {};
-};
-
-// 重启代理
-const restartAgent = async (state) => {
-  restartingMap[state.id] = true;
-  const [error] = await node.restartNodeAgent(state.id);
-  if (error) {
-    restartingMap[state.id] = false;
-    return;
-  }
-  setTimeout(() => {
-    restartingMap[state.id] = false;
-    emits('loadList');
-  }, 16000);
-};
-
-// 禁用
-const enable = async (state) => {
-  enabledingMap[state.id] = true;
-  const [error] = await node.enableNode([{ enabled: !state.enabled, id: state.id }]);
-  enabledingMap[state.id] = false;
-  if (error) {
-    return;
-  }
-  emits('loadList');
-};
-
-// 测试链接
+/**
+ * Enhanced test function
+ */
 const test = async () => {
-  const { ip, password, sshPort, username, publicIp } = nodeParams;
-  const [error] = await node.testNodeConnection({ ip: publicIp || ip, password, sshPort: Number(sshPort), username });
-  showTested.value = true;
-  if (error) {
-    testSuccess.value = false;
-    testFailContent.value = error.message;
-    return;
-  }
-  testSuccess.value = true;
+  await testConnection(nodeParams);
 };
 
-// 编辑节点名称
-const editNameInputref = ref();
-const editNameValue = ref();
-const editNameId = ref();
-const editName = (name, id) => {
-  editNameId.value = id;
-  editNameValue.value = name;
-  setTimeout(() => {
-    editNameInputref.value?.[0].focus();
-  });
+/**
+ * Enhanced edit name function
+ */
+const editName = (name: string, id: string) => {
+  editNodeName(name, id);
 };
 
-// 节点名称失焦
-const nodeNameBlur = async (name, id) => {
-  if (name === editNameValue.value || !editNameValue.value.trim()) {
-    editNameId.value = undefined;
-    return;
-  }
-
-  const [error] = await node.updateNode([{ id, name: editNameValue.value }]);
-  if (error) {
-    return;
-  }
-  editNameId.value = undefined;
+/**
+ * Enhanced node name blur function
+ */
+const nodeNameBlur = async (name: string, id: string) => {
+  await handleNameBlur(name, id);
+  
+  // Update local node list after successful name change
   nodeList.value.forEach(node => {
     if (node.id === id) {
       node.name = editNameValue.value;
     }
   });
-  notification.success(t('node.nodeItem.labels.modifyNodeNameSuccess'));
 };
 
-// 网络接口
-const loadNodeNetWork = (id) => {
-  return nodeCtrl.getNetworkInfoMetrics(id);
+/**
+ * Enhanced copy content function
+ */
+const copyContent = (text: string) => {
+  copyToClipboard(text);
 };
 
-// 资源接口
-const loadNodeMetrics = (id) => {
-  return nodeCtrl.getLatestMetrics(id);
-};
-
-// 请求多个节点网络数据
-const loadNodeMetricsNetwork = () => {
-  return Promise.all(nodeList.value.filter(node => node.id).map(node => loadNodeNetWork(node.id)))
-    .then(resp => {
-      nodeList.value.forEach(node => {
-        if (node.id) {
-          const [error, res] = resp[0];
-          if (error) {
-            return;
-          }
-          // rxBytes,rxBytesRate,rxErrors,txBytes,txBytesRate
-          const { cvsValue = '' } = res.data?.[0]?.networkUsage || {};
-          const cvsValues = cvsValue.split(',');
-          if (cvsValues.length > 1) {
-            const rxBytesRate = (+cvsValues[1] || 0); // 下载
-            const txBytesRate = (+cvsValues[4] || 0); // 上传
-            node.monitorData = {
-              ...node.monitorData,
-              rxBytesRate,
-              txBytesRate
-            };
-          } else {
-            node.monitorData = {
-              ...node.monitorData,
-              rxBytesRate: 0,
-              txBytesRate: 0
-            };
-          }
-
-          if (res.data?.[0]?.networkUsage) {
-            const timestamp = res.data?.[0]?.networkUsage.timestamp;
-            const datetime = res.datetime;
-            if (dayjs(timestamp).add(30, 'second') < dayjs(datetime)) {
-              node.monitorData = {
-                ...node.monitorData,
-                rxBytesRate: 0,
-                txBytesRate: 0
-              };
-            }
-          }
-          resp.shift();
-        }
-      });
-    });
-};
-
-// 请求多个节点资源使用数据
-const loadNodeListMetrics = () => {
-  return Promise.all(nodeList.value.filter(node => node.id).map(node => loadNodeMetrics(node.id)))
-    .then(resp => {
-      nodeList.value.forEach((node) => {
-        if (node.id) {
-          const [error, res] = resp[0];
-          if (error) {
-            return;
-          }
-          const { cvsCpu = '', cvsFilesystem = '', cvsMemory = '' } = res.data || {};
-          // cvsCpu：idle,sys,user,wait,other,total 取 total
-          const cpu = (+cvsCpu.split(',')[5] || 0).toFixed(2);
-          // cvsMemory：free,used,freePercent,usedPercent,actualFree,actualUsed,actualFreePercent,actualUsedPercent,swapFree,swapUsed 取 usedPercent,改为实际内存actualUsedPercent 再次改为usedPercent, 再次改为actualUsedPercent
-          const memory = (+cvsMemory.split(',')[7] || 0).toFixed(2);
-          // cvsFilesystem：free,used,avail,usePercent 取 usePercent
-          const disk = (+cvsFilesystem.split(',')[3] || 0).toFixed(2);
-          // cvsMemory：free,used,freePercent,usedPercent,actualFree,actualUsed,actualFreePercent,actualUsedPercent,swapFree,swapUsed 取 swapUsed
-          const cvsMemories = cvsMemory.split(',');
-          const swapTotal = (+cvsMemories[9] || 0) + (+cvsMemories[8] || 0);
-          const swap = ((+cvsMemories[9] || 0) / (+swapTotal || 1) * 100).toFixed(2);
-          node.monitorData = {
-            ...node.monitorData,
-            cpu,
-            memory,
-            disk,
-            swap
-          };
-          if (res.data) {
-            const timestamp = res.data?.timestamp;
-            const datetime = res.datetime;
-            // node.online = true;
-            if (dayjs(timestamp).add(30, 'second') < dayjs(datetime)) {
-              node.monitorData = {
-                ...node.monitorData,
-                cpu: 0,
-                memory: 0,
-                disk: 0,
-                swap: 0
-              };
-              // node.online = false;
-            }
-          } else {
-            // node.online = false;
-          }
-          resp.shift();
-        }
-      });
-    });
-};
-
-let timer;
-
-// 定时获取监控数据
-const startInterval = () => {
-  loadNodeListMetrics();
-  loadNodeMetricsNetwork();
-  timer && clearInterval(timer);
-  if (props.autoRefresh) {
-    timer = setInterval(() => {
-      loadNodeListMetrics();
-      loadNodeMetricsNetwork();
-    }, 5000);
-  }
-};
-
-watch(() => props.nodeList, newValue => {
-  if (newValue) {
-    nodeList.value = JSON.parse(JSON.stringify(newValue));
-  } else {
-    nodeList.value = [];
-  }
-  startInterval();
+// Watch for changes in props.nodeList and start monitoring
+watch(() => props.nodeList, () => {
+  startMonitoringInterval();
 }, {
   deep: true,
   immediate: true
 });
 
-watch(() => props.autoRefresh, newValue => {
+// Watch for changes in autoRefresh setting
+watch(() => props.autoRefresh, (newValue) => {
   if (newValue) {
-    startInterval();
-  } else {
-    timer && clearInterval(timer);
+    startMonitoringInterval();
   }
 });
 
-onMounted(async () => {
-  isPrivate.value = appContext.isPrivateEdition();
+// Expose methods for parent component
+defineExpose({ 
+  add, 
+  startInterval: startMonitoringInterval 
 });
-
-const showInstallCtrlAccessTokenMap = ref<{[key: string]: boolean}>({});
-const toggleShowCtrlAccessToken = (id) => {
-  showInstallCtrlAccessTokenMap.value[id] = !showInstallCtrlAccessTokenMap.value[id];
-};
-
-const copyContent = (text) => {
-  toClipboard(text).then(() => {
-    notification.success(t('node.nodeItem.labels.copySuccess'));
-  });
-};
-
-onBeforeUnmount(() => {
-  timer && clearInterval(timer);
-});
-defineExpose({ add, startInterval });
-
 </script>
+
 <template>
   <div
     v-for="state in nodeList"
@@ -502,17 +207,17 @@ defineExpose({ add, startInterval });
       <div class="flex items-center">
         <span v-if="!state.id">{{ t('node.buttons.addNode') }}</span>
         <template v-else>
-          <template v-if="editNameId !== state.id">
+          <template v-if="!isEditingName(state.id)">
             <RouterLink :to="`/node/detail/${state.id}`"><span class="text-3.5">{{ state.name }}</span></RouterLink>
             <Icon
-              v-if="!state.free || tenantInfo.id === '1'"
+              v-if="!state.free || tenantInfo?.id === '1'"
               icon="icon-shuxie"
               class="ml-1 hover:text-blue-1 cursor-pointer"
               @click="editName(state.name, state.id)" />
           </template>
           <template v-else>
             <Input
-              ref="editNameInputref"
+              ref="editNameInputRef"
               v-model:value="editNameValue"
               :placeholder="t('node.nodeItem.labels.inputLimit200')"
               trim
@@ -592,7 +297,7 @@ defineExpose({ add, startInterval });
               <CheckboxGroup
                 v-model:value="nodeParams.roles"
                 class="mt-3 check-box-group"
-                :options="roleOptions">
+                :options="props.roleOptions">
               </CheckboxGroup>
               <span
                 class="text-status-error"
@@ -605,7 +310,7 @@ defineExpose({ add, startInterval });
           <Button
             type="primary"
             class="node-normal-btn"
-            @click="saveNode">
+            @click="saveNodeEnhanced">
             {{ t('actions.save') }}
           </Button>
           <Button class="node-normal-btn" @click="cancel(state)">{{ t('node.nodeItem.buttons.cancel') }}</Button>
@@ -654,7 +359,7 @@ defineExpose({ add, startInterval });
             </div>
             <div class="pb-2 flex justify-between max-w-180">
               <!-- 权限控制：（1、只允许管理员修改 || 2、自己添加的节点允许修改）&& 3、不允许修改租户1共享的节点。 -->
-              <Tooltip v-if="state.tenantId !== tenantInfo.id || !(props.isAdmin || state.createdBy === userInfo.id)" :title="getEditTip(state)">
+              <Tooltip v-if="!canEditNode(state)" :title="getEditTip(state)">
                 <Button
                   type="text"
                   :disabled="true"
@@ -669,13 +374,13 @@ defineExpose({ add, startInterval });
                 type="text"
                 size="small"
                 class="flex space-x-1"
-                @click="changeEditable(state)">
+                @click="changeEditableEnhanced(state)">
                 <Icon icon="icon-shuxie" />
                 {{ t('actions.edit') }}
               </Button>
               <Button
                 type="text"
-                :disabled="state.tenantId !== tenantInfo.id || !(props.isAdmin || state.createdBy === userInfo.id)"
+                :disabled="!canToggleNodeEnabled(state)"
                 :showTextIndex="state.enabled?0:1"
                 size="small"
                 class="flex space-x-1"
@@ -683,23 +388,16 @@ defineExpose({ add, startInterval });
                 <Icon :icon="state.enabled?'icon-jinyong':'icon-qiyong'" />
                 {{ state.enabled ? t('node.nodeItem.buttons.disable') : t('node.nodeItem.buttons.enable') }}
               </Button>
-              <Tooltip v-if="state.tenantId !== tenantInfo.id || !(props.isAdmin || state.createdBy === userInfo.id) || state.enabled" :title="getDelTip(state)">
+              <Tooltip v-if="!canDeleteNode(state)" :title="getDeleteTip(state)">
                 <Button
                   type="text"
                   :disabled="true"
                   size="small"
-                  class="flex space-x-1"
-                  @click="enable(state)">
+                  class="flex space-x-1">
                   <Icon icon="icon-qingchu" />
                   {{ t('actions.delete') }}
                 </Button>
               </Tooltip>
-              <!-- <ButtonAuth
-                v-else
-                code="NodeDelete"
-                type="text"
-                icon="icon-qingchu"
-                @click="delNode(state)" /> -->
               <Button
                 v-else
                 type="text"
@@ -710,11 +408,6 @@ defineExpose({ add, startInterval });
                 {{ t('actions.delete') }}
               </Button>
               <Tooltip v-if="state.free" :title="getOnlineInstallTip(state)">
-                <!-- <ButtonAuth
-                  code="InstallAgentOnline"
-                  type="text"
-                  :disabled="true"
-                  icon="icon-anzhuangdaili" /> -->
                 <Button
                   type="text"
                   :disabled="true"
@@ -728,16 +421,16 @@ defineExpose({ add, startInterval });
                 v-else
                 :disabled="state.installAgent"
                 class="node-action-btn"
-                :loading="installingMap[state.id]"
+                :loading="loadingStates.installingMap[state.id]"
                 @click="installAgent(state)">
                 <Icon icon="icon-anzhuangdaili" class="mr-1" />
                 <span> {{ t('node.nodeItem.buttons.onlineInstall') }} </span>
                 <Hints
-                  v-if="installingMap[state.id]"
+                  v-if="loadingStates.installingMap[state.id]"
                   class="ml-1"
                   :text="t('node.nodeItem.labels.estimatedTime')" />
               </Button>
-              <Tooltip v-if="state.free" :title="!props.isAdmin ? `手动安装代理需要系统管理员或应用管理员权限` : ''">
+              <Tooltip v-if="state.free" :title="getDisabledButtonTooltip(state, 'manualInstall')">
                 <Button
                   type="text"
                   :disabled="true"
@@ -760,8 +453,8 @@ defineExpose({ add, startInterval });
                 type="text"
                 size="small"
                 class="flex space-x-1"
-                :loading="restartingMap[state.id]"
-                :disabled="state.tenantId !== tenantInfo.id || !(props.isAdmin || state.createdBy === userInfo.id)"
+                :loading="loadingStates.restartingMap[state.id]"
+                :disabled="!canRestartAgent(state)"
                 @click="restartAgent(state)">
                 <Icon icon="icon-zhongxinkaishi" />
                 {{ t('node.nodeItem.buttons.restartAgent') }}
@@ -812,21 +505,6 @@ defineExpose({ add, startInterval });
                 </p>
               </div>
             </TabPane>
-            <!--            <TabPane key="windows" tab="Windows系统自动安装步骤">-->
-            <!--              <div class="text-3">-->
-            <!--                安装方式1：-->
-            <!--                <p class="install-step whitespace-pre-line">-->
-            <!--                  {{ state.windowsOfflineInstallSteps?.onlineInstallCmd }}-->
-            <!--                </p>-->
-            <!--                安装方式2：-->
-            <!--                <p class="install-step whitespace-pre-line">-->
-            <!--                  1).下载自动安装脚本：<a class="cursor-pointer" :href="state.windowsOfflineInstallSteps?.installScriptUrl">{{ state.windowsOfflineInstallSteps?.installScriptName }}</a> <br />-->
-            <!--                  2).将{{ state.windowsOfflineInstallSteps?.installScriptName }}复制到自定义的安装目录，运行脚本安装：<br />-->
-            <!--                  {{ state.windowsOfflineInstallSteps?.runInstallCmd }}-->
-
-            <!--                </p>-->
-            <!--              </div>-->
-            <!--            </TabPane>-->
             <TabPane key="config" :tab="t('node.nodeItem.installSteps.configTitle')">
               <Grid
                 :dataSource="state.installConfig"
@@ -888,6 +566,7 @@ defineExpose({ add, startInterval });
     </div>
   </div>
 </template>
+
 <style scoped>
 .node-action-btn {
   @apply rounded mr-2 text-text-content text-3 border-0  px-2 shadow-none flex items-center;
