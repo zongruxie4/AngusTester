@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { Button, CheckboxGroup, Popover, Progress, TabPane, Tabs, Tag } from 'ant-design-vue';
-import { computed, onMounted, watch } from 'vue';
+import { watch } from 'vue';
 import { Grid, Hints, Icon, Input, Tooltip } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
-import { formItems, nodeStatus, nodeUseProgresses, viewItem } from './interface';
+import { formItems, nodeStatus, nodeUseProgresses, viewItem } from './constant';
 import { getStrokeColor, installConfigColumns } from '../interface';
 import { NodeItemsProps, NodeItemsEmits } from './types';
 
@@ -20,7 +20,7 @@ const { t } = useI18n();
 /**
  * Component props definition
  */
-interface Props extends NodeItemsProps {}
+type Props = NodeItemsProps
 
 const props = withDefaults(defineProps<Props>(), {
   nodeList: () => [],
@@ -74,23 +74,18 @@ const {
 const {
   editNameInputRef,
   editNameValue,
-  editNameId,
   editNodeName,
   handleNameBlur,
-  cancelNameEdit,
   isEditingName
 } = useNodeNameEdit();
 
 const {
   tenantInfo,
-  userInfo,
-  isPrivate,
   copyToClipboard,
   canEditNode,
   canDeleteNode,
   canToggleNodeEnabled,
   canRestartAgent,
-  canInstallAgent,
   getDisabledButtonTooltip
 } = useNodeUtils(props);
 
@@ -159,7 +154,7 @@ const editName = (name: string, id: string) => {
  */
 const nodeNameBlur = async (name: string, id: string) => {
   await handleNameBlur(name, id);
-  
+
   // Update local node list after successful name change
   nodeList.value.forEach(node => {
     if (node.id === id) {
@@ -191,9 +186,9 @@ watch(() => props.autoRefresh, (newValue) => {
 });
 
 // Expose methods for parent component
-defineExpose({ 
-  add, 
-  startInterval: startMonitoringInterval 
+defineExpose({
+  add,
+  startInterval: startMonitoringInterval
 });
 </script>
 
@@ -278,7 +273,7 @@ defineExpose({
           <div class="mt-4 w-1/3">
             {{ t('node.nodeItem.labels.role') }} <span class="text-status-error">*</span>
             <Popover
-              title="可根据您的实际需求，勾选节点对应的角色"
+              :title="t('node.nodeItem.tips.roleDescription')"
               placement="bottomLeft"
               class="text-3">
               <template #content>
