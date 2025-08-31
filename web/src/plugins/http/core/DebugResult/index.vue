@@ -120,7 +120,7 @@ const isError = computed(() => {
       <div v-if="isError" class="space-y-2">
         <div class="flex items-start">
           <div class="flex items-center w-16 text-theme-sub-content">{{ t('httPlugin.debugResult.debugResult') }}<Colon /></div>
-          <Badge status="error" :text="t('common.failure')" />
+          <Badge status="error" :text="t('status.failure')" />
         </div>
         <template v-if="props.httpError">
           <div class="flex items-start">

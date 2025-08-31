@@ -716,7 +716,7 @@ const dropdownMockMenuItems = [
   {
     key: 'delete',
     icon: 'icon-qingchu',
-    name: t('common.actions.delete'),
+    name: t('actions.delete'),
     permission: 'delete'
   }
 ];
@@ -737,7 +737,7 @@ const dropdownMenuItems = [
   {
     key: 'delete',
     icon: 'icon-qingchu',
-    name: t('common.actions.delete'),
+    name: t('actions.delete'),
     permission: 'delete'
   }
 ];

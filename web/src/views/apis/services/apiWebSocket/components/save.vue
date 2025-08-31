@@ -275,7 +275,7 @@ onMounted(async () => {
         :loading="isLoading"
         :disabled="!auths.includes('MODIFY')"
         @click="save">
-        {{ t('.actions.save') }}
+        {{ t('actions.save') }}
       </Button>
       <Button
         class="rounded"

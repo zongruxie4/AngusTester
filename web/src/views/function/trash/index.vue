@@ -243,8 +243,8 @@ watch(
 
                 <Popconfirm
                   :title="t('functionTrash.confirm.deleteAll')"
-                  :okText="t('common.confirm')"
-                  :cancelText="t('common.cancel')"
+                  :okText="t('actions.confirm')"
+                  :cancelText="t('actions.cancel')"
                   @confirm="handleDeleteAll">
                   <Tooltip :title="t('functionTrash.actions.deleteAll')">
                     <Button

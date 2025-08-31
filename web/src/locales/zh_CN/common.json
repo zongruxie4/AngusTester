@@ -1,7 +1,10 @@
 {
   "common": {
     "noData": "无数据",
-    "loading": "加载中..."
+    "loading": "加载中...",
+    "name": "名称",
+    "creator": "添加人",
+    "actions": "操作"
   },
   "time": {
     "year": "年",
@@ -90,7 +93,8 @@
     "moveSuccess": "移动成功",
     "modifySuccess": "修改成功",
     "copySuccess": "复制成功",
-    "shareSuccess": "分享成功"
+    "shareSuccess": "分享成功",
+    "copyFailed": "复制失败"
   },
   "sort": "排序",
   "quickSearch": "快速查询",

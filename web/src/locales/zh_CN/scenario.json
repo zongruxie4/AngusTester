@@ -90,7 +90,8 @@
       },
       "selectUser": "选择用户",
       "selectDept": "选择部门",
-      "selectGroup": "选择组"
+      "selectGroup": "选择组",
+      "selectOrgsRule": "请选择"
     },
     "detail": {
       "successRate": "成功率",

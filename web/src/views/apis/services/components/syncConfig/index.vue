@@ -925,7 +925,7 @@ const handleSaveOk = () => {
                   class="px-0 mx-2"
                   :disabled="syncList.length === 1 && sync.isAdd"
                   @click="(e) => cancelEdit(e,sync)">
-                  {{ t('.actions.cancel') }}
+                  {{ t('actions.cancel') }}
                 </Button>
                 <Button
                   size="small"

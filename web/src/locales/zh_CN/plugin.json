@@ -89,7 +89,8 @@
         "duration": "运行时间",
         "iteration": "迭代数",
         "request": "请求数",
-        "responseTime": "响应时间"
+        "responseTime": "响应时间",
+        "assertion": "断言"
       },
       "collapse": {
         "iteration": "第{iteration}次迭代"
@@ -1014,6 +1015,9 @@
     },
     "functionTestDetail": {
       "pending": "执行中...",
+      "statusCode": "状态码",
+      "duration": "耗时",
+      "size": "大小",
       "basicInfo": {
         "duration": "运行时间",
         "iteration": "迭代数",
