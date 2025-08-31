@@ -16,10 +16,10 @@ const props = withDefaults(defineProps<Props>(), {
   refreshNotify: undefined
 });
 
-const MyCreationSummary = defineAsyncComponent(() => import('@/views/data/homepage/myCreationSummary/index.vue'));
-const Statistics = defineAsyncComponent(() => import('./statistics.vue'));
-const ActivityTimeline = defineAsyncComponent(() => import('./activityTimeline.vue'));
-const Introduce = defineAsyncComponent(() => import('@/views/data/homepage/introduce/index.vue'));
+const MyCreationSummary = defineAsyncComponent(() => import('@/views/data/homepage/summary/index.vue'));
+const Statistics = defineAsyncComponent(() => import('./Statistics.vue'));
+const ActivityTimeline = defineAsyncComponent(() => import('./ActivityTimeline.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/data/homepage/Introduce.vue'));
 
 const notify = ref<string>();
 

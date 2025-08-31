@@ -9,7 +9,7 @@ import { space } from '@/api/storage';
 import { useI18n } from 'vue-i18n';
 
 import { getCurrentPage } from '@/utils/utils';
-import { CreatedItem } from './PropsType';
+import { CreatedItem } from './types';
 
 const { t } = useI18n();
 
