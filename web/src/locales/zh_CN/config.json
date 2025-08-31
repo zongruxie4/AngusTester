@@ -329,6 +329,37 @@
   "node": {
     "name": "节点",
     "title": "节点管理",
+    "message": {
+      "basicInfo": "基本信息",
+      "enable": "启用",
+      "disable": "禁用",
+      "delete": "删除",
+      "onlineInstallAgent": "在线安装代理",
+      "manualInstallAgent": "手动安装代理",
+      "back": "返回",
+      "fold": "收起",
+      "estimatedTime": "预计需要几分钟时间",
+      "installAgentPermission": "安装代理需要系统管理员或应用管理员权限",
+      "manualInstallSteps": "请按照以下步骤手动安装代理：",
+      "method1": "方法1：复制以下命令到目标服务器执行",
+      "method2": "方法2：下载安装脚本",
+      "downloadScript": "下载脚本：",
+      "copyScriptToServer": "复制脚本到目标服务器：",
+      "runInstallCommand": "执行安装命令：",
+      "configInfo": "配置信息",
+      "use": "使用",
+      "idle": "空闲",
+      "total": "总计",
+      "resourceMonitoring": "资源监控",
+      "agentService": "代理服务",
+      "executingTasks": "执行任务",
+      "executorProcess": "执行器进程",
+      "mockServiceInstance": "Mock服务实例",
+      "processMonitoring": "进程监控",
+      "noExecutionRecords": "No execution records found for this node",
+      "noProcessData": "No process data available for this node",
+      "noMockServices": "No mock services found for this node"
+    },
     "buttons": {
       "addNode": "添加节点",
       "buyNode": "购买节点",
@@ -445,7 +476,7 @@
       },
       "labels": {
         "resourceMonitoring": "资源监控",
-        "proxyService": "代理服务",
+        "agentService": "代理服务",
         "executingTasks": "执行中任务",
         "executorProcess": "执行器进程",
         "mockServiceInstance": "Mock服务实例",
@@ -475,12 +506,26 @@
         "connected": "已连接",
         "notConnected": "未连接"
       },
-      "proxyOpt": {
-        "proxyInfo": "代理信息",
+      "agentOpt": {
+        "agentInfo": "代理信息",
         "log": "日志",
         "installAgentTip": "安装代理需要系统管理员或应用管理员权限"
       },
       "chartOptions": {
+        "timeOptions": {
+          "threeMinutes": "最近3分钟",
+          "fiveMinutes": "最近5分钟",
+          "tenMinutes": "最近10分钟",
+          "oneHour": "最近1小时",
+          "threeHours": "最近3小时"
+        },
+        "columns": {
+          "name": "名称",
+          "average": "平均值",
+          "highest": "最高",
+          "lowest": "最低",
+          "latest": "最新值"
+        },
         "cpu": {
           "idle": "CPU空闲百分比",
           "sys": "系统空间占用 CPU 百分比",
@@ -497,7 +542,9 @@
           "freePercent": "实际空闲物理内存百分比(%)",
           "usedPercent": "实际使用物理内存的百分比(%)",
           "actualFree": "实际空闲内存(GB)",
-          "actualUsed": "实际使用内存(GB)"
+          "actualUsed": "实际使用内存(GB)",
+          "swapFree": "交换区空闲(GB)",
+          "swapUsed": "交换区使用(GB)"
         },
         "disk": {
           "iops": "IOPS",
@@ -533,7 +580,8 @@
         "delete": "删除",
         "onlineInstall": "在线安装",
         "manualInstall": "手动安装",
-        "restartProxy": "重启代理"
+        "restartAgent": "重启代理",
+        "collapse": "收起"
       },
       "labels": {
         "role": "角色",
@@ -603,6 +651,7 @@
           "username": "用户名",
           "password": "密码",
           "sshPort": "SSH端口",
+          "role": "角色",
           "inputLimit200": "输入限制200字符以内",
           "inputNodeIP": "输入节点IP地址",
           "inputNodeDomain": "输入节点域名",
@@ -634,15 +683,21 @@
           "source": "来源: ",
           "role": "角色: ",
           "specification": "规格: ",
-          "system": "系统: "
+          "system": "系统: ",
+          "creator": "添加人: ",
+          "addTime": "添加时间: ",
+          "expiredTime": "到期时间: "
         },
         "nodeUseProgresses": {
           "cpu": "CPU",
           "memory": "内存",
           "fileSystem": "文件系统",
           "swapArea": "交换区",
+          "network": "网络",
           "upload": "上传",
-          "download": "下载"
+          "download": "下载",
+          "totalUpload": "总上传",
+          "totalDownload": "总下载"
         },
         "sortOptions": {
           "byAddTime": "按添加时间",

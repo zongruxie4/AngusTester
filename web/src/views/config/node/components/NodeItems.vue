@@ -69,12 +69,6 @@ const nodeList = ref<Array<Record<string, any>>>([]);
 
 const isPrivate = ref(false);
 
-const disabledRestart = computed(() => {
-  // if (isPrivate.value) {
-  //   return !props.isAdmin
-  // }
-  return !props.isAdmin;
-});
 
 // 显示端口号校验提示
 const showPortTip = computed(() => {
@@ -266,7 +260,7 @@ const showInstallStep = async (state) => {
 };
 
 // 重启代理
-const restartProxy = async (state) => {
+const restartAgent = async (state) => {
   restartingMap[state.id] = true;
   const [error] = await node.restartNodeAgent(state.id);
   if (error) {
@@ -361,22 +355,12 @@ const loadNodeMetricsNetwork = () => {
           if (cvsValues.length > 1) {
             const rxBytesRate = (+cvsValues[1] || 0); // 下载
             const txBytesRate = (+cvsValues[4] || 0); // 上传
-            // node.spec = {
-            //   ...node.spec,
-            //   rxBytesRate,
-            //   txBytesRate
-            // };
             node.monitorData = {
               ...node.monitorData,
               rxBytesRate,
               txBytesRate
             };
           } else {
-            // node.spec = {
-            //   ...node.spec,
-            //   rxBytesRate: 0,
-            //   txBytesRate: 0
-            // };
             node.monitorData = {
               ...node.monitorData,
               rxBytesRate: 0,
@@ -388,11 +372,6 @@ const loadNodeMetricsNetwork = () => {
             const timestamp = res.data?.[0]?.networkUsage.timestamp;
             const datetime = res.datetime;
             if (dayjs(timestamp).add(30, 'second') < dayjs(datetime)) {
-              // node.spec = {
-              //   ...node.spec,
-              //   rxBytesRate: 0,
-              //   txBytesRate: 0
-              // };
               node.monitorData = {
                 ...node.monitorData,
                 rxBytesRate: 0,
@@ -427,13 +406,6 @@ const loadNodeListMetrics = () => {
           const cvsMemories = cvsMemory.split(',');
           const swapTotal = (+cvsMemories[9] || 0) + (+cvsMemories[8] || 0);
           const swap = ((+cvsMemories[9] || 0) / (+swapTotal || 1) * 100).toFixed(2);
-          // node.spec = {
-          //   ...node.spec,
-          //   cpu,
-          //   memory,
-          //   disk,
-          //   swap
-          // };
           node.monitorData = {
             ...node.monitorData,
             cpu,
@@ -446,13 +418,6 @@ const loadNodeListMetrics = () => {
             const datetime = res.datetime;
             // node.online = true;
             if (dayjs(timestamp).add(30, 'second') < dayjs(datetime)) {
-              // node.spec = {
-              //   ...node.spec,
-              //   cpu: 0,
-              //   memory: 0,
-              //   disk: 0,
-              //   swap: 0
-              // };
               node.monitorData = {
                 ...node.monitorData,
                 cpu: 0,
@@ -498,7 +463,6 @@ watch(() => props.nodeList, newValue => {
   immediate: true
 });
 
-// 自动刷新
 watch(() => props.autoRefresh, newValue => {
   if (newValue) {
     startInterval();
@@ -558,7 +522,7 @@ defineExpose({ add, startInterval });
         </template>
         <Tooltip
           color="#fff"
-          overlayClassName="proxy-uninstall"
+          overlayClassName="agent-uninstall"
           placement="right">
           <template #title><div class="text-3">{{ t('node.nodeItem.labels.installAgentTip') }}</div></template>
           <p v-show="!state.installAgent && !!state.id" class="text-http-put ml-6 cursor-pointer"><Icon icon="icon-tishi1" class="text-3.5" /></p>
@@ -774,11 +738,6 @@ defineExpose({ add, startInterval });
                   :text="t('node.nodeItem.labels.estimatedTime')" />
               </Button>
               <Tooltip v-if="state.free" :title="!props.isAdmin ? `手动安装代理需要系统管理员或应用管理员权限` : ''">
-                <!-- <ButtonAuth
-                  code="InstallAgentManually"
-                  type="text"
-                  :disabled="true"
-                  icon="icon-anzhuangdaili" /> -->
                 <Button
                   type="text"
                   :disabled="true"
@@ -788,12 +747,6 @@ defineExpose({ add, startInterval });
                   {{ t('node.nodeItem.buttons.manualInstall') }}
                 </Button>
               </Tooltip>
-              <!-- <ButtonAuth
-                v-else
-                code="InstallAgentManually"
-                type="text"
-                icon="icon-anzhuangdaili"
-                @click="showInstallStep(state)" /> -->
               <Button
                 v-else
                 type="text"
@@ -809,9 +762,9 @@ defineExpose({ add, startInterval });
                 class="flex space-x-1"
                 :loading="restartingMap[state.id]"
                 :disabled="state.tenantId !== tenantInfo.id || !(props.isAdmin || state.createdBy === userInfo.id)"
-                @click="restartProxy(state)">
+                @click="restartAgent(state)">
                 <Icon icon="icon-zhongxinkaishi" />
-                {{ t('node.nodeItem.buttons.restartProxy') }}
+                {{ t('node.nodeItem.buttons.restartAgent') }}
               </Button>
             </div>
           </div>
@@ -928,7 +881,7 @@ defineExpose({ add, startInterval });
             type="link"
             size="small"
             @click="foldInstallAgent(state)">
-            {{ t('node.nodeItem.buttons.fold') }}
+            {{ t('node.nodeItem.buttons.collapse') }}
           </Button>
         </div>
       </div>
@@ -1005,7 +958,7 @@ defineExpose({ add, startInterval });
   font-size: 18px;
 }
 
-.proxy-uninstall {
+.agent-uninstall {
   max-width: inherit;
 }
 </style>

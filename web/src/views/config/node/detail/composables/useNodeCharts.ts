@@ -1,14 +1,17 @@
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { TESTER } from '@xcan-angus/infra';
+import { TESTER, i18n } from '@xcan-angus/infra';
 import { nodeCtrl } from '@/api/ctrl';
 import { EChartsManager } from '../echartsManager';
 import { ActiveTabKey, ChartDataOption, ChartParams, ChartServerMap } from '../types';
 
+const I18nInstance = i18n.getI18n();
+const t = I18nInstance?.global?.t || ((value: string): string => value);
+
 // Chart tabs configuration for resource monitoring
 export const nodeEchartsTabs = [
   {
-    label: 'CPU',
+    label: t('node.nodeItem.interface.nodeUseProgresses.cpu'),
     value: 90,
     valueKey: 'cpu',
     totalKey: 'cpuTotal',
@@ -16,7 +19,7 @@ export const nodeEchartsTabs = [
     unit: '%'
   },
   {
-    label: '内存',
+    label: t('node.nodeItem.interface.nodeUseProgresses.memory'),
     value: 60,
     valueKey: 'memory',
     totalKey: 'memoryTotal',
@@ -24,7 +27,7 @@ export const nodeEchartsTabs = [
     unit: ''
   },
   {
-    label: '磁盘',
+    label: t('node.nodeItem.interface.nodeUseProgresses.fileSystem'),
     value: 45,
     valueKey: 'disk',
     totalKey: 'diskTotal',
@@ -32,7 +35,7 @@ export const nodeEchartsTabs = [
     unit: ''
   },
   {
-    label: '网络',
+    label: t('node.nodeItem.interface.nodeUseProgresses.network'),
     value: 29,
     valueKey: 'network',
     totalKey: 'network',
@@ -44,50 +47,50 @@ export const nodeEchartsTabs = [
 export const timeOpt = [
   {
     value: '3-minute',
-    label: '最近3分钟'
+    label: t('node.nodeDetail.chartOptions.timeOptions.threeMinutes')
   },
   {
     value: '5-minute',
-    label: '最近5分钟'
+    label: t('node.nodeDetail.chartOptions.timeOptions.fiveMinutes')
   },
   {
     value: '10-minute',
-    label: '最近10分钟'
+    label: t('node.nodeDetail.chartOptions.timeOptions.tenMinutes')
   },
   {
     value: '1-hour',
-    label: '最近1小时'
+    label: t('node.nodeDetail.chartOptions.timeOptions.oneHour')
   },
   {
     value: '3-hour',
-    label: '最近3小时'
+    label: t('node.nodeDetail.chartOptions.timeOptions.threeHours')
   }
 ];
 
 // Chart data columns configuration
 export const columns = [
   {
-    title: '名称',
+    title: t('node.nodeDetail.chartOptions.columns.name'),
     dataIndex: 'name',
     key: 'name'
   },
   {
-    title: '平均值',
+    title: t('node.nodeDetail.chartOptions.columns.average'),
     dataIndex: 'average',
     key: 'average'
   },
   {
-    title: '最高',
+    title: t('node.nodeDetail.chartOptions.columns.highest'),
     dataIndex: 'high',
     key: 'high'
   },
   {
-    title: '最低',
+    title: t('node.nodeDetail.chartOptions.columns.lowest'),
     dataIndex: 'low',
     key: 'low'
   },
   {
-    title: '最新值',
+    title: t('node.nodeDetail.chartOptions.columns.latest'),
     dataIndex: 'latest',
     key: 'latest'
   }

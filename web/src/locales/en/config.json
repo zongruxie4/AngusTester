@@ -315,6 +315,37 @@
   "node": {
     "name": "Node",
     "title": "Node Management",
+    "message": {
+      "basicInfo": "Basic Information",
+      "enable": "Enable",
+      "disable": "Disable",
+      "delete": "Delete",
+      "onlineInstallAgent": "Online Install Agent",
+      "manualInstallAgent": "Manual Install Agent",
+      "back": "Back",
+      "fold": "Fold",
+      "estimatedTime": "Estimated to take several minutes",
+      "installAgentPermission": "Installing agent requires system administrator or application administrator permissions",
+      "manualInstallSteps": "Please follow the steps below to manually install the agent:",
+      "method1": "Method 1: Copy the following command to the target server for execution",
+      "method2": "Method 2: Download installation script",
+      "downloadScript": "Download script:",
+      "copyScriptToServer": "Copy script to target server:",
+      "runInstallCommand": "Execute installation command:",
+      "configInfo": "Configuration Information",
+      "use": "Used",
+      "idle": "Idle",
+      "total": "Total",
+      "resourceMonitoring": "Resource Monitoring",
+      "agentService": "Agent Service",
+      "executingTasks": "Executing Tasks",
+      "executorProcess": "Executor Process",
+      "mockServiceInstance": "Mock Service Instance",
+      "processMonitoring": "Process Monitoring",
+      "noExecutionRecords": "No execution records found for this node",
+      "noProcessData": "No process data available for this node",
+      "noMockServices": "No mock services found for this node"
+    },
     "buttons": {
       "addNode": "Add Node",
       "buyNode": "Buy Node",
@@ -431,7 +462,7 @@
       },
       "labels": {
         "resourceMonitoring": "Resource Monitoring",
-        "proxyService": "Proxy Service",
+        "agentService": "Agent Service",
         "executingTasks": "Executing Tasks",
         "executorProcess": "Executor Process",
         "mockServiceInstance": "Mock Service Instance",
@@ -461,14 +492,28 @@
         "connected": "Connected",
         "notConnected": "Not Connected"
       },
-      "proxyOpt": {
-        "proxyInfo": "Proxy Information",
+      "agentOpt": {
+        "agentInfo": "Agent Information",
         "log": "Log",
         "installAgentTip": "Install agent requires system administrator or application administrator permissions",
         "deleteNodeTip": "Delete node requires system administrator or application administrator permissions",
         "onlyOwnNode": "Only own node can be deleted"
       },
       "chartOptions": {
+        "timeOptions": {
+          "threeMinutes": "Last 3 minutes",
+          "fiveMinutes": "Last 5 minutes",
+          "tenMinutes": "Last 10 minutes",
+          "oneHour": "Last 1 hour",
+          "threeHours": "Last 3 hours"
+        },
+        "columns": {
+          "name": "Name",
+          "average": "Average",
+          "highest": "Highest",
+          "lowest": "Lowest",
+          "latest": "Latest"
+        },
         "cpu": {
           "idle": "CPU Idle Percentage",
           "sys": "System Space Occupied CPU Percentage",
@@ -485,7 +530,9 @@
           "freePercent": "Actual Free Physical Memory Percentage (%)",
           "usedPercent": "Actual Used Physical Memory Percentage (%)",
           "actualFree": "Actual Free Memory (GB)",
-          "actualUsed": "Actual Used Memory (GB)"
+          "actualUsed": "Actual Used Memory (GB)",
+          "swapFree": "Swap Free (GB)",
+          "swapUsed": "Swap Used (GB)"
         },
         "disk": {
           "iops": "IOPS",
@@ -521,7 +568,8 @@
         "delete": "Delete",
         "onlineInstall": "Online Install",
         "manualInstall": "Manual Install",
-        "restartProxy": "Restart Proxy"
+        "restartAgent": "Restart Agent",
+        "collapse": "Collapse"
       },
       "labels": {
         "role": "Role",
@@ -547,7 +595,7 @@
         "mockNode": "Mock Node: ",
         "appNode": "Application Node: ",
         "managerNodeDesc": "Deploy and run Web UI applications",
-        "controllerNodeDesc": "Used for scheduling, managing, monitoring execution and proxy services.",
+        "controllerNodeDesc": "Used for scheduling, managing, monitoring execution and agent services.",
         "execNodeDesc": "Used for executing functional tests, performance tests, data generation, etc.",
         "mockNodeDesc": "Runs Mock services and Mock interfaces.",
         "appNodeDesc": "The node where the test application is located, used to observe the system load of the stressed application node during stress testing, helping to locate and analyze performance issues.",
@@ -565,7 +613,7 @@
         "roleDescription": "You can check the corresponding role of the node according to your actual needs",
         "roleHint": "Tips: Node must be Linux (recommended), Mac, Windows system; Before executing tasks, you need to add nodes to the node list and install agents. If automatic \"agent installation\" fails due to network or server root account issues, you need to install agents according to the \"manual installation\" method to ensure the agent is in a connected state before executing tasks (if not started, you need to start the agent first); A node can take on multiple roles at the same time. To ensure more accurate test results, please use a single \"execution node\" role for stress test nodes; During stress testing, if you want to restore the user's real access environment and experience as much as possible, please use public network nodes. If you want to exclude interference from network and other external factors to test the application service's limits, you need to add your own intranet machines to the nodes.",
         "managementNode": "Management Node: Deploy and run Web UI applications",
-        "controllerNode": "Controller Node: Used for scheduling, managing, monitoring execution and proxy services.",
+        "controllerNode": "Controller Node: Used for scheduling, managing, monitoring execution and agent services.",
         "executionNode": "Execution Node: Used for executing functional tests, performance tests, data generation, etc.",
         "mockNode": "Mock Node: Runs Mock services and Mock interfaces.",
         "applicationNode": "Application Node: The node where the test application is located, used to observe the system load of the stressed application node during stress testing, helping to locate and analyze performance issues."
@@ -591,6 +639,7 @@
           "username": "Username",
           "password": "Password",
           "sshPort": "SSH Port",
+          "role": "Role",
           "inputLimit200": "Input limit 200 characters",
           "inputNodeIP": "Enter node IP address",
           "inputNodeDomain": "Enter node domain",
@@ -622,15 +671,21 @@
           "source": "Source: ",
           "role": "Role: ",
           "specification": "Specification: ",
-          "system": "System: "
+          "system": "System: ",
+          "creator": "Creator: ",
+          "addTime": "Add Time: ",
+          "expiredTime": "Expired Time: "
         },
         "nodeUseProgresses": {
           "cpu": "CPU",
           "memory": "Memory",
           "fileSystem": "File System",
           "swapArea": "Swap Area",
+          "network": "Network",
           "upload": "Upload",
-          "download": "Download"
+          "download": "Download",
+          "totalUpload": "Total Upload",
+          "totalDownload": "Total Download"
         },
         "sortOptions": {
           "byAddTime": "By Add Time",
@@ -652,7 +707,7 @@
           },
           "controllerNode": {
             "title": "Controller Node",
-            "content": "Used for scheduling, managing, monitoring execution and proxy services."
+            "content": "Used for scheduling, managing, monitoring execution and agent services."
           },
           "executionNode": {
             "title": "Execution Node",

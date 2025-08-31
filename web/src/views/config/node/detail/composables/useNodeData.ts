@@ -1,5 +1,5 @@
 import { reactive, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { modal } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { node } from '@/api/tester';
@@ -13,69 +13,69 @@ const t = I18nInstance?.global?.t || ((value: string): string => value);
 // Grid column configuration for node information display
 export const infoItem = [
   [{
-    label: '名称',
+    label: t('node.nodeItem.interface.formItems.nodeName'),
     dataIndex: 'name'
   },
   {
-    label: '用户名',
+    label: t('node.nodeItem.interface.formItems.username'),
     dataIndex: 'username'
   },
   {
-    label: '来源',
+    label: t('node.searchOptions.source.label'),
     dataIndex: 'sourceName'
   },
   {
-    label: '域名',
+    label: t('node.nodeItem.interface.formItems.domain'),
     dataIndex: 'domain'
   }],
   [{
-    label: '启用状态',
+    label: t('node.nodeItem.interface.nodeStatus.enabledStatus'),
     dataIndex: 'enabled'
   },
   {
-    label: '内网IP地址',
+    label: t('node.nodeItem.interface.formItems.intranetIP'),
     dataIndex: 'ip'
   },
   {
-    label: '密码',
+    label: t('node.nodeItem.interface.formItems.password'),
     dataIndex: 'password'
   },
   {
-    label: '角色',
+    label: t('node.nodeItem.interface.formItems.role'),
     dataIndex: 'roles'
   }
   ],
   [{
-    label: '代理状态',
+    label: t('node.nodeItem.interface.nodeStatus.agentInstallStatus'),
     dataIndex: 'installAgent'
   },
   {
-    label: '公网IP地址',
+    label: t('node.nodeItem.interface.formItems.publicIP'),
     dataIndex: 'publicIp'
   },
   {
-    label: '规格',
+    label: t('node.nodeItem.interface.viewItem.specification'),
     dataIndex: 'spec'
   },
   {
-    label: '端口',
+    label: t('node.nodeItem.interface.formItems.sshPort'),
     dataIndex: 'sshPort'
   }
   ],
   [{
-    label: '连接状态',
+    label: t('node.nodeItem.interface.nodeStatus.connectionStatus'),
     dataIndex: 'online'
   },
   {
-    label: '添加人',
+    label: t('node.nodeItem.interface.viewItem.creator'),
     dataIndex: 'createdByName'
   },
   {
-    label: '添加时间',
+    label: t('node.nodeItem.interface.viewItem.addTime'),
     dataIndex: 'createdDate'
   },
   {
-    label: '到期时间',
+    label: t('node.nodeItem.interface.viewItem.expiredTime'),
     dataIndex: 'instanceExpiredDate'
   }]
 ];
@@ -111,7 +111,6 @@ export const installConfigColumns = [
  */
 export function useNodeData () {
   const { t } = useI18n();
-  const route = useRoute();
   const router = useRouter();
 
   // Reactive state for node information

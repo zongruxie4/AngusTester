@@ -4,6 +4,7 @@ import { IntervalTimestamp } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { useAgentChart } from './composables/useAgentChart';
 import type { AgentChartProps } from './types';
+import { useI18n } from 'vue-i18n';
 
 /**
  * <p>Async chart components for better performance</p>
@@ -21,6 +22,9 @@ const props = withDefaults(defineProps<AgentChartProps>(), {
   id: undefined
 });
 
+// Internationalization
+const { t } = useI18n();
+
 /**
  * <p>Agent chart data management</p>
  * <p>Handles chart data processing and state management for cache, RAM, and CPU charts</p>
@@ -37,7 +41,7 @@ const {
   <div class="agent-chart-container">
     <!-- Chart Header -->
     <div class="chart-header">
-      <h3 class="chart-title">进程监控</h3>
+      <h3 class="chart-title">{{ t('node.message.processMonitoring') }}</h3>
 
       <!-- Time Interval Selector -->
       <div class="time-selector">

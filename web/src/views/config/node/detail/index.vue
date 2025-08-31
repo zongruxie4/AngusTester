@@ -3,7 +3,7 @@
  * Node Detail Page Component
  * <p>
  * This component displays detailed information about a specific node including
- * basic information, resource monitoring, proxy service status, and execution tasks.
+ * basic information, resource monitoring, agent service status, and execution tasks.
  * The component uses composables to separate business logic from UI presentation.
  * </p>
  */
@@ -12,6 +12,7 @@ import { defineAsyncComponent, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { Button, Progress, RadioButton, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
 import { Grid, Hints, Icon, IntervalTimestamp, NoData, Select, Spin, Tooltip } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
 
 // Import interfaces and utilities
 // Import composables
@@ -34,6 +35,9 @@ const ExecutionPropulsion = defineAsyncComponent(() => import('./ExecutionProces
 // Route and node ID
 const route = useRoute();
 const id = ref<string>(route.params.id as string);
+
+// Internationalization
+const { t } = useI18n();
 
 // ECharts reference and manager
 const echartRef = ref();
@@ -104,16 +108,16 @@ const {
 } = useNodeActions();
 
 // UI state
-const proxyActiveKey = ref<'proxy' | 'log'>('proxy');
+const agentActiveKey = ref<'agent' | 'log'>('agent');
 
-// Proxy options
-const proxyOpt = [
+// Agent options
+const AgentOpt = [
   {
-    label: '代理信息',
-    value: 'proxy'
+    label: t('node.nodeDetail.agentOpt.agentInfo'),
+    value: 'agent'
   },
   {
-    label: '日志',
+    label: t('node.nodeDetail.log.title'),
     value: 'log'
   }
 ];
@@ -201,7 +205,7 @@ onMounted(() => {
         <!-- Basic Information Section -->
         <div class="basic">
           <div class="title flex justify-between pt-2.5 items-center">
-            <span class="mr-15 font-semibold">基本信息</span>
+            <span class="mr-15 font-semibold">{{ t('node.message.basicInfo') }}</span>
             <div class="detai-btns-wrapper">
               <!-- Enable/Disable Button -->
               <Button
@@ -210,7 +214,7 @@ onMounted(() => {
                 :loading="enabled"
                 :disabled="!canPerformActions(state.infos?.tenantId, state.infos?.createdBy)"
                 @click="handleEnableNode">
-                <Icon icon="icon-qiyong" />{{ '启用' }}
+                <Icon icon="icon-qiyong" />{{ t('node.message.enable') }}
               </Button>
               <Button
                 v-else
@@ -218,14 +222,14 @@ onMounted(() => {
                 :loading="enabled"
                 :disabled="!canPerformActions(state.infos?.tenantId, state.infos?.createdBy)"
                 @click="handleEnableNode">
-                <Icon icon="icon-jinyong" />{{ '禁用' }}
+                <Icon icon="icon-jinyong" />{{ t('node.message.disable') }}
               </Button>
 
               <!-- Delete Button -->
               <Tooltip v-if="!canDeleteNode(state.infos)" :title="getDeleteTip(state.infos, isAdmin, tenantInfo, userInfo)">
                 <Button class="node-action-btn" :disabled="true">
                   <Icon icon="icon-qingchu" class="mr-1" />
-                  <span>{{ '删除' }}</span>
+                  <span>{{ t('node.message.delete') }}</span>
                 </Button>
               </Tooltip>
               <Button
@@ -233,7 +237,7 @@ onMounted(() => {
                 class="node-action-btn"
                 @click="handleDeleteNode">
                 <Icon icon="icon-qingchu" class="mr-1" />
-                <span>{{ '删除' }}</span>
+                <span>{{ t('node.message.delete') }}</span>
               </Button>
 
               <!-- Online Install Agent Button -->
@@ -244,7 +248,7 @@ onMounted(() => {
                   class="node-action-btn"
                   @click="handleInstallAgent">
                   <Icon icon="icon-anzhuangdaili" />
-                  {{ '在线安装代理' }}
+                  {{ t('node.message.onlineInstallAgent') }}
                 </Button>
               </Tooltip>
               <Button
@@ -253,20 +257,20 @@ onMounted(() => {
                 :loading="installing"
                 class="node-action-btn"
                 @click="handleInstallAgent">
-                <Icon icon="icon-anzhuangdaili" />{{ '在线安装代理' }}
+                <Icon icon="icon-anzhuangdaili" />{{ t('node.message.onlineInstallAgent') }}
                 <Hints
                   v-if="installing"
                   class="absolute left-5 -bottom-3"
-                  :text="'预计需要几分钟时间'" />
+                  :text="t('node.message.estimatedTime')" />
               </Button>
 
               <!-- Manual Install Agent Button -->
-              <Tooltip v-if="!canInstallAgent() || state.infos.free" :title="!canInstallAgent() ? '安装代理需要系统管理员或应用管理员权限' : ''">
+              <Tooltip v-if="!canInstallAgent() || state.infos.free" :title="!canInstallAgent() ? t('node.message.installAgentPermission') : ''">
                 <Button
                   :disabled="true"
                   class="node-action-btn"
                   @click="handleGetInstallStep">
-                  <Icon icon="icon-anzhuangdaili" />{{ '手动安装代理' }}
+                  <Icon icon="icon-anzhuangdaili" />{{ t('node.message.manualInstallAgent') }}
                 </Button>
               </Tooltip>
               <Button
@@ -274,12 +278,12 @@ onMounted(() => {
                 :disabled="!canInstallAgent()"
                 class="node-action-btn"
                 @click="handleGetInstallStep">
-                <Icon icon="icon-anzhuangdaili" />{{ '手动安装代理' }}
+                <Icon icon="icon-anzhuangdaili" />{{ t('node.message.manualInstallAgent') }}
               </Button>
 
               <!-- Back Button -->
               <Button class="node-action-btn" @click="turnback">
-                <Icon icon="icon-fanhui" />{{ '返回' }}
+                <Icon icon="icon-fanhui" />{{ t('node.message.back') }}
               </Button>
             </div>
           </div>
@@ -288,9 +292,9 @@ onMounted(() => {
           <div v-show="showInstallStep" class="pt-4 mb-4 relative">
             <Tabs size="small">
               <TabPane key="linux" tab="Linux">
-                <div class="text-3">请按照以下步骤手动安装代理：</div>
+                <div class="text-3">{{ t('node.message.manualInstallSteps') }}</div>
                 <div class="text-3">
-                  方法1：复制以下命令到目标服务器执行
+                  {{ t('node.message.method1') }}
                   <Icon
                     icon="icon-fuzhi"
                     class="cursor-pointer text-3.5 text-blue-1"
@@ -298,15 +302,15 @@ onMounted(() => {
                   <p class="install-step whitespace-pre-line">
                     {{ state.linuxOfflineInstallSteps?.onlineInstallCmd }}
                   </p>
-                  方法2：下载安装脚本
+                  {{ t('node.message.method2') }}
                   <p class="install-step whitespace-pre-line">
-                    下载脚本：<a class="cursor-pointer" :href="state.linuxOfflineInstallSteps?.installScriptUrl">{{ state.linuxOfflineInstallSteps?.installScriptName }}</a> <br />
-                    复制脚本到目标服务器：{{ state.linuxOfflineInstallSteps?.installScriptName }}<br />
-                    执行安装命令：{{ state.linuxOfflineInstallSteps?.runInstallCmd }}
+                    {{ t('node.message.downloadScript') }}<a class="cursor-pointer" :href="state.linuxOfflineInstallSteps?.installScriptUrl">{{ state.linuxOfflineInstallSteps?.installScriptName }}</a> <br />
+                    {{ t('node.message.copyScriptToServer') }}{{ state.linuxOfflineInstallSteps?.installScriptName }}<br />
+                    {{ t('node.message.runInstallCommand') }}{{ state.linuxOfflineInstallSteps?.runInstallCmd }}
                   </p>
                 </div>
               </TabPane>
-              <TabPane key="config" tab="配置信息">
+              <TabPane key="config" :tab="t('node.message.configInfo')">
                 <Grid
                   :dataSource="state.installConfig"
                   :columns="installConfigColumns">
@@ -352,7 +356,7 @@ onMounted(() => {
               type="link"
               size="small"
               @click="foldInstallAgent">
-              {{ '收起' }}
+              {{ t('node.message.fold') }}
             </Button>
           </div>
 
@@ -392,17 +396,17 @@ onMounted(() => {
             </template>
             <template #enabled="{text}">
               <span class="status flex items-center" :class="{'success': text, 'fail': !text}">
-                {{ text ? '已启用' : '已禁用' }}
+                {{ text ? t('node.nodeItem.interface.nodeStatus.enabled') : t('node.nodeItem.interface.nodeStatus.notEnabled') }}
               </span>
             </template>
             <template #installAgent="{text}">
               <span class="status flex items-center" :class="{'success': text, 'fail': !text}">
-                {{ text ? '已安装' : '未安装' }}
+                {{ text ? t('node.nodeItem.interface.nodeStatus.installed') : t('node.nodeItem.interface.nodeStatus.notInstalled') }}
               </span>
             </template>
             <template #online="{text}">
               <span class="status flex items-center" :class="{'success': text, 'fail': !text}">
-                {{ text ? '已连接' : '未连接' }}
+                {{ text ? t('node.nodeItem.interface.nodeStatus.connected') : t('node.nodeItem.interface.nodeStatus.notConnected') }}
               </span>
             </template>
           </Grid>
@@ -412,7 +416,7 @@ onMounted(() => {
         <div class="source">
           <Tabs v-model:activeKey="activeKey" size="small">
             <TabPane key="source" forceRender>
-              <template #tab><span class="font-semibold">资源监控</span></template>
+              <template #tab><span class="font-semibold">{{ t('node.message.resourceMonitoring') }}</span></template>
 
               <!-- Resource Usage Progress Bars -->
               <ul class="flex pb-5 justify-between text-3">
@@ -435,11 +439,11 @@ onMounted(() => {
                     <div v-if="item.valueKey !== 'network'" class="pl-5 w-35">
                       <span class="text-3">{{ item.label }}</span>
                       <div class="leading-5">
-                        <label class="inline-block w-12 text-text-content">使用:</label>
+                        <label class="inline-block w-12 text-text-content">{{ t('node.message.use') }}:</label>
                         <span class="text-black-active ">{{ sourceUse[item.valueKey] }}{{ item.unit }}</span>
                       </div>
                       <div class="leading-5">
-                        <label class="inline-block w-12 text-text-content">{{ item.valueKey === 'cpu' ? '空闲' : '总计' }}:</label>
+                        <label class="inline-block w-12 text-text-content">{{ item.valueKey === 'cpu' ? t('node.message.idle') : t('node.message.total') }}:</label>
                         <span class="text-black-active ">{{ sourceUse[item.totalKey] }}{{ item.unit }}</span>
                       </div>
                     </div>
@@ -538,21 +542,21 @@ onMounted(() => {
               </Spin>
             </TabPane>
 
-            <!-- Proxy Service Tab -->
-            <TabPane key="proxy">
-              <template #tab><span class="font-semibold">代理服务</span></template>
+            <!-- Agent Service Tab -->
+            <TabPane key="agent">
+              <template #tab><span class="font-semibold">{{ t('node.message.agentService') }}</span></template>
               <RadioGroup
-                v-model:value="proxyActiveKey"
-                :options="proxyOpt"
+                v-model:value="agentActiveKey"
+                :options="AgentOpt"
                 size="small"
                 buttonStyle="solid"
                 optionType="button">
               </RadioGroup>
-              <template v-if="proxyActiveKey==='proxy'">
+              <template v-if="agentActiveKey==='agent'">
                 <AgentInfo :ip="state.infos.publicIp || state.infos.ip" :port="state.infos.port || 0" />
                 <AgentChart :id="id" />
               </template>
-              <template v-if="proxyActiveKey==='log'">
+              <template v-if="agentActiveKey==='log'">
                 <AgentLog
                   class="mt-4"
                   :ip="state.infos.publicIp || state.infos.ip"
@@ -563,11 +567,11 @@ onMounted(() => {
             <!-- Execution Tasks Tab -->
             <template v-if="state.infos?.rolesValues?.includes('EXECUTION')">
               <TabPane key="execTask">
-                <template #tab><span class="font-semibold">执行任务</span></template>
+                <template #tab><span class="font-semibold">{{ t('node.message.executingTasks') }}</span></template>
                 <Execution :id="id" />
               </TabPane>
               <TabPane key="execPropulsion">
-                <template #tab><span class="font-semibold">执行器进程</span></template>
+                <template #tab><span class="font-semibold">{{ t('node.message.executorProcess') }}</span></template>
                 <ExecutionPropulsion :nodeId="id" :tenantId="state.infos?.tenantId" />
               </TabPane>
             </template>
@@ -575,7 +579,7 @@ onMounted(() => {
             <!-- Mock Service Tab -->
             <template v-if="state.infos?.rolesValues?.includes('MOCK_SERVICE')">
               <TabPane key="mock">
-                <template #tab><span class="font-semibold">Mock服务实例</span></template>
+                <template #tab><span class="font-semibold">{{ t('node.message.mockServiceInstance') }}</span></template>
                 <MockService :nodeId="id" />
               </TabPane>
             </template>

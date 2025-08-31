@@ -121,7 +121,7 @@ export interface InstallSteps {
  * Tab key types
  */
 export type ActiveTabKey = 'cpu' | 'memory' | 'disk' | 'network';
-export type ActiveKey = 'source' | 'proxy';
+export type ActiveKey = 'source' | 'agent';
 
 /**
  * Chart data options interface

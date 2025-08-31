@@ -35,7 +35,7 @@ const {
     <div v-if="showError" class="error-banner">
       <Icon icon="icon-tishi1" class="error-icon" />
       <span class="error-text">
-        {{ errorInfo || `无访问代理信息，连接失败地址：http://${props.ip}:${props.port}` }}
+        {{ errorInfo || $t('node.nodeDetail.log.errorText', { ip: props.ip, port: props.port }) }}
       </span>
       <Icon
         icon="icon-cuowu"

@@ -66,7 +66,7 @@ const { columns } = useMockServiceTableColumns();
       <!-- Empty state when no data is available -->
       <template #empty>
         <div class="empty-state">
-          <p>No mock services found for this node</p>
+          <p>{{ $t('node.message.noMockServices') }}</p>
         </div>
       </template>
     </Table>

@@ -60,7 +60,7 @@ const {
       <!-- Empty state when no data is available -->
       <template #empty>
         <div class="empty-state">
-          <p>No execution records found for this node</p>
+          <p>{{ $t('node.message.noExecutionRecords') }}</p>
         </div>
       </template>
     </Table>

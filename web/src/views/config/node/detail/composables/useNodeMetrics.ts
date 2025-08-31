@@ -3,11 +3,15 @@ import dayjs from 'dayjs';
 import { nodeCtrl } from '@/api/ctrl';
 import { formatBytes } from '@/utils/common';
 import { NetworkDeviceData, ResourceUsage } from '../types';
+import { i18n } from '@xcan-angus/infra';
+
+const I18nInstance = i18n.getI18n();
+const t = I18nInstance?.global?.t || ((value: string): string => value);
 
 // Resource usage progress configuration for monitoring display
 export const nodeUseProgresses = [
   {
-    label: 'CPU',
+    label: t('node.nodeItem.interface.nodeUseProgresses.cpu'),
     value: 90,
     valueKey: 'cpu',
     totalKey: 'cpuTotal',
@@ -15,7 +19,7 @@ export const nodeUseProgresses = [
     unit: '%'
   },
   {
-    label: '内存',
+    label: t('node.nodeItem.interface.nodeUseProgresses.memory'),
     value: 60,
     valueKey: 'memory',
     totalKey: 'memoryTotal',
@@ -23,7 +27,7 @@ export const nodeUseProgresses = [
     unit: ''
   },
   {
-    label: '文件系统',
+    label: t('node.nodeItem.interface.nodeUseProgresses.fileSystem'),
     value: 45,
     valueKey: 'disk',
     totalKey: 'diskTotal',
@@ -31,7 +35,7 @@ export const nodeUseProgresses = [
     unit: ''
   },
   {
-    label: '交换区',
+    label: t('node.nodeItem.interface.nodeUseProgresses.swapArea'),
     value: 45,
     valueKey: 'swap',
     totalKey: 'swapTotal',
@@ -39,7 +43,7 @@ export const nodeUseProgresses = [
     unit: ''
   },
   {
-    label: '网络',
+    label: t('node.nodeItem.interface.nodeUseProgresses.network'),
     value: 29,
     valueKey: 'network',
     totalKey: 'network',
@@ -50,22 +54,22 @@ export const nodeUseProgresses = [
 // Network information display configuration
 export const internetInfo = [
   {
-    label: '上传: ',
+    label: t('node.nodeItem.interface.nodeUseProgresses.upload') + ': ',
     valueKey: 'txBytesRate',
     unit: 'MB/s'
   },
   {
-    label: ' 下载: ',
+    label: ' ' + t('node.nodeItem.interface.nodeUseProgresses.download') + ': ',
     valueKey: 'rxBytesRate',
     unit: 'MB/s'
   },
   {
-    label: '总上传: ',
+    label: t('node.nodeItem.interface.nodeUseProgresses.totalUpload') + ': ',
     valueKey: 'txBytes',
     unit: ''
   },
   {
-    label: '总下载: ',
+    label: t('node.nodeItem.interface.nodeUseProgresses.totalDownload') + ': ',
     valueKey: 'rxBytes',
     unit: ''
   }

@@ -79,7 +79,7 @@ const {
       <!-- Empty state when no data is available -->
       <template #empty>
         <div class="empty-state">
-          <p>No process data available for this node</p>
+          <p>{{ $t('node.message.noProcessData') }}</p>
         </div>
       </template>
     </Table>
