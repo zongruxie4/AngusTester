@@ -136,11 +136,11 @@ const handleOpenDetailTab = (projectData: Project): void => {
 
 // Check user permissions
 const canUserEditProject = (projectData: Project): boolean => {
-  return canEditProject(projectData, String(props.userInfo?.id || ''), appContext.isAdmin());
+  return canEditProject(projectData, String(props.userInfo?.id || ''), (appContext.isAppAdmin() || appContext.isSysAdmin()));
 };
 
 const canUserDeleteProject = (projectData: Project): boolean => {
-  return canDeleteProject(projectData, String(props.userInfo?.id || ''), appContext.isAdmin());
+  return canDeleteProject(projectData, String(props.userInfo?.id || ''), (appContext.isAppAdmin() || appContext.isSysAdmin()));
 };
 
 // Lifecycle hooks
