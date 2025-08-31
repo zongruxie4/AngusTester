@@ -212,7 +212,8 @@
         "unplannedWorkload": "Unplanned Workload",
         "unplannedWorkloadRatio": "Unplanned Workload Ratio",
         "unplannedAmount": "Unplanned Amount",
-        "nonUnplannedAmount": "Non-Unplanned Amount"
+        "nonUnplannedAmount": "Non-Unplanned Amount",
+        "estimatedTime": "Estimated Time"
       },
       "failure": {
         "failureAssessment": "Failure Assessment",
@@ -272,19 +273,37 @@
         "nonPassedCount": "Non-Passed Count"
       },
       "scenarioTest": {
-        "scenarioTest": "Scenario Test"
+        "scenarioTest": "Scenario Test",
+        "enabledTestRatio": "Enabled Test Ratio",
+        "passedTestRatio": "Passed Test Ratio"
       },
       "failureAssessment": {
         "failureAssessment": "Failure Assessment",
         "failureCount": "Failure Count",
         "failureWorkload": "Failure Workload",
         "failureCompletedNum": "Failure Completed Num",
-        "failureOverdueNum": "Failure Overdue Num"
+        "failureOverdueNum": "Failure Overdue Num",
+        "criticalFailureRatio": "Critical Failure Ratio",
+        "majorFailureRatio": "Major Failure Ratio",
+        "minorFailureRatio": "Minor Failure Ratio",
+        "trivialFailureRatio": "Trivial Failure Ratio"
       },
       "taskType": "Task Type",
-      "testStatus": "Test Status",
+      "testStatusLable": "Test Status",
       "taskStatusName": "Task Status",
-      "reviewStatus": "Review Status"
+      "reviewStatusLable": "Review Status",
+      "testStatus": {
+        "pendingTest": "Pending Test",
+        "testPassed": "Test Passed",
+        "testFailed": "Test Failed",
+        "blocked": "Blocked",
+        "cancelled": "Cancelled"
+      },
+      "reviewStatus": {
+        "pendingReview": "Pending Review",
+        "reviewPassed": "Review Passed",
+        "reviewFailed": "Review Failed"
+      }
     }
   }
 }

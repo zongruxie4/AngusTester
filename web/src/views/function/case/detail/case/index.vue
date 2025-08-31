@@ -762,7 +762,7 @@ onBeforeUnmount(() => {
                   placement="rightTop"
                   arrowPointAtCenter>
                   <template #content>
-                    <div class="text-3 text-theme-sub-content max-w-75 leading-4">{{ caseDetail?.evalWorkloadMethod?.value === 'STORY_POINT'?'工作任务量、综合难度、复杂度等的评估值。':'工作评估所花费的时间，以小时为单位计算。' }}</div>
+                    <div class="text-3 text-theme-sub-content max-w-75 leading-4">{{ caseDetail?.evalWorkloadMethod?.value === 'STORY_POINT'?t('functionCase.kanbanView.infoBasic.evalWorkloadTip'):t('functionCase.kanbanView.infoBasic.evalWorkloadTipTime') }}</div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />
                 </Popover>
@@ -796,7 +796,7 @@ onBeforeUnmount(() => {
                   placement="rightTop"
                   arrowPointAtCenter>
                   <template #content>
-                    <div class="text-3 text-theme-sub-content max-w-75 leading-4">{{ caseDetail?.evalWorkloadMethod?.value === 'STORY_POINT'?'工作任务量、综合难度、复杂度等的实际值。':'工作实际所花费的时间，以小时为单位计算。' }}</div>
+                    <div class="text-3 text-theme-sub-content max-w-75 leading-4">{{ caseDetail?.evalWorkloadMethod?.value === 'STORY_POINT'?t('functionCase.kanbanView.infoBasic.actualWorkloadTip'):t('functionCase.kanbanView.infoBasic.actualWorkloadTipTime') }}</div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-3.5 text-tips ml-2 cursor-pointer flex-none" />
                 </Popover>

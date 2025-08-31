@@ -353,8 +353,8 @@ const restart = async (record) => {
 
 const reset = async (record) => {
   modal.confirm({
-    title: '重置评审',
-    content: `将用例更新为“待评审”，相关统计计数和状态会被清除。确认重置用例【${record?.caseInfo?.name || ''}】评审结果吗？`,
+    title: t('caseReview.detail.resetReview'),
+    content: t('caseReview.detail.confirmResetReviewCase', { name: record?.caseInfo?.name || '' }),
     async onOk () {
       const [error] = await func.resetReviewCase([record.id]);
       if (error) {
