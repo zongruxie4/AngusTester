@@ -1,79 +1,110 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
 import { Table } from '@xcan-angus/vue-ui';
-import { nodeCtrl } from 'src/api/ctrl';
-import { useI18n } from 'vue-i18n';
+import { useExecution } from './composables/useExecution';
+import type { ExecutionProps } from './types';
 
-const { t } = useI18n();
-
-interface Props {
-  id: string; // node id
-}
-
-const props = withDefaults(defineProps<Props>(), {
+/**
+ * <p>Component props with default values</p>
+ * <p>Provides default values for optional props</p>
+ */
+const props = withDefaults(defineProps<ExecutionProps>(), {
   id: ''
 });
 
-const columns = [
-  {
-    dataIndex: 'id',
-    title: t('node.nodeDetail.execute.columns.execId')
-  },
-  {
-    dataIndex: 'name',
-    title: t('node.nodeDetail.execute.columns.execName')
-  },
-
-  {
-    dataIndex: 'scriptType',
-    title: t('node.nodeDetail.execute.columns.testType')
-  },
-  {
-    dataIndex: 'plugin',
-    title: t('node.nodeDetail.execute.columns.plugin')
-  },
-  {
-    dataIndex: 'execByName',
-    title: t('node.nodeDetail.execute.columns.executor')
-  },
-  {
-    dataIndex: 'actualStartDate',
-    title: t('node.nodeDetail.execute.columns.startTime')
-  }
-];
-
-const dataSource = ref<{[key: string]: string}[]>([]);
-
-watch(() => props.id, async newValue => {
-  if (newValue) {
-    const [error, { data }] = await nodeCtrl.getExecInfo(props.id);
-    if (error) {
-      return;
-    }
-    dataSource.value = data || [];
-  }
-}, {
-  immediate: true
-});
-
+/**
+ * <p>Execution data management</p>
+ * <p>Handles execution data fetching and table configuration</p>
+ */
+const {
+  executionDataSource,
+  isLoading,
+  error,
+  tableColumns
+} = useExecution(props.id);
 </script>
+
 <template>
-  <Table
-    :dataSource="dataSource"
-    :columns="columns"
-    :pagination="false"
-    size="small"
-    noDataSize="small">
-    <template #bodyCell="{ column, record }">
-      <template v-if="column.dataIndex === 'name'">
-        <a
-          class="text-theme-special"
-          :href="`/execution/info/${record.id}`"
-          target="_blank">{{ record.name || '--' }}</a>
+  <div class="execution-container">
+    <!-- Error Display -->
+    <div v-if="error" class="error-message">
+      {{ error }}
+    </div>
+
+    <!-- Execution Table -->
+    <Table
+      :dataSource="executionDataSource"
+      :columns="tableColumns"
+      :loading="isLoading"
+      :pagination="false"
+      size="small"
+      noDataSize="small">
+      <!-- Custom cell rendering for name column -->
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.dataIndex === 'name'">
+          <a
+            class="execution-link"
+            :href="`/execution/info/${record.id}`"
+            target="_blank">
+            {{ record.name || '--' }}
+          </a>
+        </template>
+
+        <!-- Custom cell rendering for script type column -->
+        <template v-if="column.dataIndex === 'scriptType'">
+          <span class="script-type">
+            {{ record.scriptType?.message }}
+          </span>
+        </template>
       </template>
-      <template v-if="column.dataIndex === 'scriptType'">
-        {{ record.scriptType?.message }}
+
+      <!-- Empty state when no data is available -->
+      <template #empty>
+        <div class="empty-state">
+          <p>No execution records found for this node</p>
+        </div>
       </template>
-    </template>
-  </Table>
+    </Table>
+  </div>
 </template>
+
+<style scoped>
+.execution-container {
+  padding: 16px;
+}
+
+.error-message {
+  color: #ff4d4f;
+  background-color: #fff2f0;
+  border: 1px solid #ffccc7;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.execution-link {
+  color: var(--theme-special);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.execution-link:hover {
+  color: var(--theme-special-hover);
+  text-decoration: underline;
+}
+
+.script-type {
+  font-weight: 500;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #8c8c8c;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 14px;
+}
+</style>
