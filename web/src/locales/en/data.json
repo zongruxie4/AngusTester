@@ -16,7 +16,7 @@
       "noDataText": "You haven't added any datasets yet, immediately",
       "or": "or",
       "uploadDataset": "Upload Dataset",
-      "noDescription": "No description~",
+      "noDescription": "No description ~",
       "buttonDropdown": {
         "fileExtractDataset": "File Extract Dataset",
         "jdbcExtractDataset": "Jdbc Extract Dataset"
@@ -89,7 +89,7 @@
     },
     "introduce": {
       "title": "About Dataset",
-      "description": "Used to define a set of related data parameter values, usually actual test data, such as: user data, order data, account data, etc. After defining a dataset, you can use parameter name placeholders {parameter name} to reference dataset parameters.",
+      "description": "Used to define a set of related data parameter values, usually actual test data, such as: user data, order data, account data, etc. After defining a dataset, you can use parameter name placeholders {parameterName} to reference dataset parameters.",
       "note": "Note: Datasets are loaded before execution sampling, and parameter values are dynamically changed during the sampling process. AngusTester supports the following three ways to define datasets:",
       "types": {
         "staticDataset": {
@@ -698,7 +698,7 @@
       "addStaticVariable": "Add Static Variable",
       "uploadVariable": "Upload Variable",
       "or": "or",
-      "noDescription": "No description~",
+      "noDescription": "No description ~",
       "isPassword": "Yes",
       "notPassword": "No",
       "columns": {

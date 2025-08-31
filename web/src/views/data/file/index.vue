@@ -65,6 +65,14 @@ const loadData = async () => {
   dataList.value = list || [];
   pagination.total = +total || 0;
   selectedRowKey.value = '';
+  
+  // 确保所有空间的 auth 字段都有默认值
+  dataList.value.forEach(space => {
+    if (!space.auth || !Array.isArray(space.auth)) {
+      space.auth = [];
+    }
+  });
+  
   if (isAdmin.value) {
     dataList.value.forEach(space => {
       space.auth = SPACE_PERMISSIONS;
@@ -84,9 +92,12 @@ const loadDataAuth = async (list) => {
   }
   const authList = res.data || {};
   dataList.value.forEach(space => {
-    space.auth = authList[space.id].spaceAuth
-      ? (authList[space.id].permissions || []).map(auth => auth.value)
-      : SPACE_PERMISSIONS;
+    // 确保 auth 字段始终是数组类型
+    if (authList[space.id] && authList[space.id].spaceAuth) {
+      space.auth = (authList[space.id].permissions || []).map(auth => auth.value);
+    } else {
+      space.auth = SPACE_PERMISSIONS;
+    }
   });
 };
 
@@ -105,7 +116,7 @@ const changePage = ({ pageSize, current }) => {
 };
 
 const selectId = ref<string>();
-const auth = ref(false);
+const auth = ref<string[]>([]);
 const selectName = ref();
 
 const delConfirm = (record) => {
@@ -137,7 +148,7 @@ const shareVisible = ref(false);
 const authModalVisible = ref(false);
 const editAuth = (record) => {
   selectId.value = record.id;
-  auth.value = record.auth;
+  auth.value = record.auth || [];
   authModalVisible.value = true;
 };
 
@@ -175,6 +186,11 @@ const getNameById = computed(() => {
   return selectRow?.name;
 });
 
+// 安全获取权限数组的辅助函数
+const getSafeAuth = (record: any) => {
+  return Array.isArray(record?.auth) ? record.auth : [];
+};
+
 const editVisible = ref(false);
 const editSpace = (id:string) => {
   editVisible.value = true;
@@ -190,7 +206,7 @@ const openAuthorizeModal = () => {
   globalAuthVisible.value = true;
 };
 
-const authFlagChange = ({ auth }:{auth:boolean}) => {
+const authFlagChange = ({ auth }: { auth: string[] }) => {
   const data = dataList.value;
   const targetId = selectId.value;
   for (let i = 0, len = data.length; i < len; i++) {
@@ -378,7 +394,7 @@ const columns = [
           </template>
           <template v-if="column.dataIndex === 'action'">
             <div class="space-x-2.5 flex items-center leading-4">
-              <template v-if="record.auth?.includes('MODIFY')">
+              <template v-if="getSafeAuth(record).includes('MODIFY')">
                 <a class="whitespace-nowrap" @click.stop="editSpace(record.id)">
                   <Icon icon="icon-bianji" class="align-text-bottom" />
                   {{ t('actions.edit') }}
@@ -390,7 +406,7 @@ const columns = [
                   {{ t('actions.edit') }}
                 </span>
               </template>
-              <template v-if="record.auth?.includes('GRANT')">
+              <template v-if="getSafeAuth(record).includes('GRANT')">
                 <a class="whitespace-nowrap" @click.stop="editAuth(record)">
                   <Icon icon="icon-quanxian1" class="align-text-bottom" />
                   {{ t('fileSpace.actions.permission') }}
@@ -402,7 +418,7 @@ const columns = [
                   {{ t('fileSpace.actions.permission') }}
                 </span>
               </template>
-              <!-- <template v-if="record.auth?.includes('SHARE')">
+              <!-- <template v-if="getSafeAuth(record).includes('SHARE')">
                 <a class="whitespace-nowrap" @click.stop="share(record)">
                   <Icon icon="icon-fenxiang" class="align-text-bottom" />
                   分享
@@ -414,7 +430,7 @@ const columns = [
                   分享
                 </span>
               </template> -->
-              <template v-if="record.auth?.includes('DELETE')">
+              <template v-if="getSafeAuth(record).includes('DELETE')">
                 <a class="whitespace-nowrap" @click.stop="delConfirm(record)">
                   <Icon icon="icon-qingchu" class="align-text-bottom" />
                   {{ t('actions.delete') }}

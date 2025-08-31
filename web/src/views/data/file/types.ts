@@ -49,7 +49,7 @@ export interface SourceType {
 export interface SpaceInfoType {
   id: string;
   name: string;
-  auth: boolean;
+  auth: string[];
   quotaSize?: {
     value: string;
     unit: {
