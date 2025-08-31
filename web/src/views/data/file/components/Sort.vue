@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import FileIcon from '@/views/data/file/components/icon/index.vue';
+import FileIcon from '@/views/data/file/components/Icon.vue';
 import { DropdownSort } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 

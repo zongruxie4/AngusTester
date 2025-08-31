@@ -6,7 +6,7 @@ import { STORAGE } from '@xcan-angus/infra';
 import { Select } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
-import FileIcon from '@/views/data/file/components/icon/index.vue';
+import FileIcon from '@/views/data/file/components/Icon.vue';
 
 const { t } = useI18n();
 

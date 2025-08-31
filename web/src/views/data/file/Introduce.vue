@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
-import datapng from './Image/shengchengshuju.png';
-import storagepng from './Image/cunchuhebeifen.png';
-import safepng from './Image/anquanheshujubaohu.png';
-import spacepng from './Image/cunchukongjianguanli.png';
+import datapng from '@/views/data/file/images/shengchengshuju.png';
+import storagepng from '@/views/data/file/images/cunchuhebeifen.png';
+import safepng from '@/views/data/file/images/anquanheshujubaohu.png';
+import spacepng from '@/views/data/file/images/cunchukongjianguanli.png';
 
 const { t } = useI18n();
 

@@ -9,15 +9,15 @@ import { useI18n } from 'vue-i18n';
 
 import { space } from '@/api/storage';
 import { FileCapacity, SpaceInfo } from './components';
-import { PaginationType, SPACE_PERMISSIONS, SpaceInfoType } from './PropsType';
+import { PaginationType, SPACE_PERMISSIONS, SpaceInfoType } from './types';
 
 const { t } = useI18n();
 
 const Share = defineAsyncComponent(() => import('@/views/data/file/share/index.vue'));
-const EditSpaceModal = defineAsyncComponent(() => import('@/views/data/file/editSpace/index.vue'));
-const Shared = defineAsyncComponent(() => import('@/views/data/file/share/shareList.vue'));
-const GlobalAuth = defineAsyncComponent(() => import('@/views/data/file/globalAuth/index.vue'));
-const Introduce = defineAsyncComponent(() => import('@/views/data/file/introduce/index.vue'));
+const EditSpaceModal = defineAsyncComponent(() => import('@/views/data/file/EditSpace.vue'));
+const Shared = defineAsyncComponent(() => import('@/views/data/file/share/ShareList.vue'));
+const GlobalAuth = defineAsyncComponent(() => import('@/views/data/file/auth/index.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/data/file/Introduce.vue'));
 
 const router = useRouter();
 const appInfo = inject('appInfo', ref());

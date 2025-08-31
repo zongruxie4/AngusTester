@@ -17,7 +17,7 @@ const props = withDefaults(defineProps<Props>(), {
   notify: undefined
 });
 
-const Table = defineAsyncComponent(() => import('./table.vue'));
+const Table = defineAsyncComponent(() => import('./Table.vue'));
 
 const deletedNotify = ref<string>();
 

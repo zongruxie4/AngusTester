@@ -8,8 +8,8 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-const GroupSet = defineAsyncComponent(() => import('@/views/data/file/globalAuth/groupSet/index.vue'));
-const AuthSet = defineAsyncComponent(() => import('@/views/data/file/globalAuth/authSet/index.vue'));
+const GroupSet = defineAsyncComponent(() => import('@/views/data/file/auth/GroupSet.vue'));
+const AuthSet = defineAsyncComponent(() => import('@/views/data/file/auth/AuthSet.vue'));
 
 interface Props {
   appId: string;

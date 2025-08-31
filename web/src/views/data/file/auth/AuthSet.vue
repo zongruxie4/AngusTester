@@ -10,7 +10,7 @@ import { useI18n } from 'vue-i18n';
 
 import CheckboxGroup from './CheckboxGroup.vue';
 
-import { SpaceItem } from './PropsType';
+import { SpaceItem } from './types';
 
 const { t } = useI18n();
 

@@ -8,7 +8,7 @@ import { useI18n } from 'vue-i18n';
 
 import { fileApi, space } from '@/api/storage';
 import { parseQuery } from '@/utils/url';
-import { columns, CrumbType, SearchType, SortType, SourceType, SPACE_PERMISSIONS } from './PropsType';
+import { columns, CrumbType, SearchType, SortType, SourceType, SPACE_PERMISSIONS } from './types';
 import { FileCapacity, FileCrumb, FileIcon, FileSearch, FileSort, FileUpload, SpaceInfo } from './components';
 
 const { t } = useI18n();
@@ -16,7 +16,7 @@ const { t } = useI18n();
 type TargetType = 'file' | 'directory' | undefined
 
 const Share = defineAsyncComponent(() => import('@/views/data/file/share/index.vue'));
-const MoveModal = defineAsyncComponent(() => import('./components/move.vue'));
+const MoveModal = defineAsyncComponent(() => import('./components/Move.vue'));
 
 const route = useRoute();
 const loading = ref(false);

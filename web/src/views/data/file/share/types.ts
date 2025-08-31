@@ -1,17 +1,3 @@
-
-// export apis StateType{
-//   form:{
-//     expiredDay:number,
-//     password:string,
-//     public0:boolean,
-//     url:string,
-//     targetType:string,
-//     uri:string,
-//     remark?: string
-//   },
-//   enums:Array<{value: boolean, label: string}>
-// }
-
 export interface ListType{
   expiredDuration: {
     value: string,

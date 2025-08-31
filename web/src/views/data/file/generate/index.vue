@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue';
 
-const MockCsv = defineAsyncComponent(() => import('./mockCsv.vue'));
-const MockJson = defineAsyncComponent(() => import('./mockJson.vue'));
-const MockCustom = defineAsyncComponent(() => import('./mockCustom.vue'));
-const MockExcel = defineAsyncComponent(() => import('./mockExcel.vue'));
-const MockSql = defineAsyncComponent(() => import('./mockSql.vue'));
-const MockTab = defineAsyncComponent(() => import('./mockTab.vue'));
-const MockXml = defineAsyncComponent(() => import('./mockXml.vue'));
+const MockCsv = defineAsyncComponent(() => import('./MockCsv.vue'));
+const MockJson = defineAsyncComponent(() => import('./MockJson.vue'));
+const MockCustom = defineAsyncComponent(() => import('./MockCustom.vue'));
+const MockExcel = defineAsyncComponent(() => import('./MockExcel.vue'));
+const MockSql = defineAsyncComponent(() => import('./MockSql.vue'));
+const MockTab = defineAsyncComponent(() => import('./MockTab.vue'));
+const MockXml = defineAsyncComponent(() => import('./MockXml.vue'));
 
 const format = ref<'CSV'|'JSON'|'CUSTOM'|'EXCEL'|'SQL'|'TAB'|'XML'>('CSV');
 const params = ref<{ [key: string]: any }>();

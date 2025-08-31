@@ -6,7 +6,7 @@ import { AsyncComponent, Icon, IconCopy, Input, NoData, notification } from '@xc
 import { toClipboard } from '@xcan-angus/infra';
 
 import ColumnItem from '@/components/share/columnItem/index.vue';
-import type { ListType, StateType } from './interface';
+import type { ListType, StateType } from './types';
 import { space } from '@/api/storage';
 
 const { t } = useI18n();
