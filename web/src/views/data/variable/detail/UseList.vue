@@ -5,7 +5,7 @@ import { Button } from 'ant-design-vue';
 import { Hints, Icon, modal, NoData, notification, Spin, Table } from '@xcan-angus/vue-ui';
 import { paramTarget, variable } from '@/api/tester';
 
-import { SourceItem } from '../../PropsType';
+import { SourceItem } from '../types';
 
 const { t } = useI18n();
 

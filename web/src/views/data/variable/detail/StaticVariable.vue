@@ -6,8 +6,7 @@ import { Hints, IconRequired, Input, notification, Validate, FunctionsButton, Pa
 import { isEqual } from 'lodash-es';
 import { variable } from '@/api/tester';
 
-import { VariableItem } from '../../PropsType';
-import { FormState } from './PropsType';
+import { StaticVariableFormState, VariableItem } from '../types';
 
 const { t } = useI18n();
 
@@ -33,9 +32,9 @@ const emit = defineEmits<{
   (e: 'refresh', value: string): void;
 }>();
 
-const ButtonGroup = defineAsyncComponent(() => import('@/views/data/variable/detail/buttonGroup/index.vue'));
-const PreviewData = defineAsyncComponent(() => import('@/views/data/variable/detail/previewData/index.vue'));
-const VariableUseList = defineAsyncComponent(() => import('@/views/data/variable/detail/useList/index.vue'));
+const ButtonGroup = defineAsyncComponent(() => import('@/views/data/variable/detail/ButtonGroup.vue'));
+const PreviewData = defineAsyncComponent(() => import('@/views/data/variable/detail/PreviewData.vue'));
+const VariableUseList = defineAsyncComponent(() => import('@/views/data/variable/detail/UseList.vue'));
 
 const confirmLoading = ref(false);
 const activeKey = ref<'value' | 'preview' | 'use'>('value');
@@ -150,8 +149,8 @@ const handleBlurValue = (targetText) => {
   variableValue.value = targetText;
 };
 
-const getParams = ():FormState => {
-  const params:FormState = {
+const getParams = ():StaticVariableFormState => {
+  const params:StaticVariableFormState = {
     projectId: props.projectId,
     name: variableName.value,
     value: variableValue.value,

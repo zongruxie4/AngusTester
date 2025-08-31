@@ -7,9 +7,9 @@ import { variable } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
 import { getCurrentPage } from '@/utils/utils';
-import { VariableItem } from '../PropsType';
+import { VariableItem } from '../types';
 
-import SearchPanel from '@/views/data/variable/list/searchPanel/index.vue';
+import SearchPanel from '@/views/data/variable/list/SearchPanel.vue';
 
 const { t } = useI18n();
 
@@ -29,8 +29,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 
-const Introduce = defineAsyncComponent(() => import('@/views/data/variable/list/introduce/index.vue'));
-const Import = defineAsyncComponent(() => import('@/views/data/variable/list/import/index.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/data/variable/list/Introduce.vue'));
+const Import = defineAsyncComponent(() => import('@/views/data/variable/list/Import.vue'));
 const Export = defineAsyncComponent(() => import('@/views/data/variable/export/index.vue'));
 
 type OrderByKey = 'lastModifiedDate' | 'lastModifiedByName';

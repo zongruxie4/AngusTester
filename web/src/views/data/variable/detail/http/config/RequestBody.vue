@@ -7,8 +7,8 @@ import { duration, utils, codeUtils } from '@xcan-angus/infra';
 import pretty from 'pretty';
 import jsBeautify from 'js-beautify';
 
-import { ContentType, RequestBody } from './PropsType';
 import { useI18n } from 'vue-i18n';
+import {ContentType, RequestBody} from "@/views/data/variable/detail/http/config/types";
 
 const { t } = useI18n();
 
@@ -32,7 +32,7 @@ const emit = defineEmits<{
   (e: 'update:errorNum', value: number): void;
 }>();
 
-const RequestBodyParamster = defineAsyncComponent(() => import('./RequestBodyParamster/index.vue'));
+const RequestBodyParamster = defineAsyncComponent(() => import('./RequestBodyParameter.vue'));
 
 const ENCODED_TYPE = 'application/x-www-form-urlencoded';
 const STREAM_TYPE = 'application/octet-stream';

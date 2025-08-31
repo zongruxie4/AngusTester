@@ -1,3 +1,5 @@
+import { HttpMethod } from '@xcan-angus/infra';
+
 export type HttpServer = {
     id: string;
     url: string;
@@ -6,9 +8,6 @@ export type HttpServer = {
     'x-xc-serverSource'?: string;
     '"x-xc-id"'?: string;
 }
-
-export type HttpMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS' | 'TRACE';
-export type AssertionCondition = 'CONTAIN' | 'EQUAL' | 'GREATER_THAN' | 'GREATER_THAN_EQUAL' | 'IS_EMPTY' | 'IS_NULL' | 'JSON_PATH_MATCH' | 'LESS_THAN' | 'LESS_THAN_EQUAL' | 'NOT_CONTAIN' | 'NOT_EMPTY' | 'NOT_EQUAL' | 'NOT_NULL' | 'REG_MATCH' | 'XPATH_MATCH'
 
 export type RequestConfigs = {
     method: HttpMethod;
@@ -87,3 +86,48 @@ export type RequestConfigs = {
         };
     };
 }
+
+export type RequestBodyFormItem = {
+  id: string;
+  name: string;
+  type: 'string' | 'number' | 'integer' | 'boolean' | 'array' | 'file' | 'file(array)';
+  description?: string;
+  enabled?: boolean;
+  format?: 'binary' | 'string';
+  contentType?: string;
+  contentEncoding?: 'gzip_base64';
+  fileName?: string;
+  value?: string;
+}
+
+export type ContentType = null |
+  'application/x-www-form-urlencoded' |
+  'multipart/form-data' |
+  'application/json' |
+  'text/html' |
+  'application/xml' |
+  'application/javascript' |
+  'text/plain' |
+  'application/octet-stream' |
+  '*/*';
+
+export type RequestBody = {
+  forms: RequestBodyFormItem[];
+  rawContent: string;
+  type: 'string' | 'number' | 'integer' | 'boolean';
+  format: 'string' | 'binary';
+  contentEncoding: 'gzip_base64';
+  fileName: string;
+};
+
+export const deepParseJson = (jsonStr: string) => {
+  try {
+    const result = JSON.parse(jsonStr);
+    if (typeof result === 'string') {
+      return deepParseJson(result);
+    }
+    return result;
+  } catch {
+    return jsonStr;
+  }
+};

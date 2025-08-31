@@ -2,24 +2,13 @@
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
-import {
-  AsyncComponent,
-  Hints,
-  Icon,
-  IconRequired,
-  Input,
-  notification,
-  Toggle,
-  Validate
-  , SelectApisByServiceModal
-} from '@xcan-angus/vue-ui';
+import { AsyncComponent, Hints, Icon, IconRequired, Input, notification, Toggle, Validate, SelectApisByServiceModal } from '@xcan-angus/vue-ui';
 import { isEqual } from 'lodash-es';
 import { variable, apis } from '@/api/tester';
 
 import SelectEnum from '@/components/selectEnum/index.vue';
-import { VariableItem } from '../../PropsType';
-import { FormState } from './PropsType';
-import { getRequestConfigs } from './getRequestConfigs';
+import { HttpVariableFormState, VariableItem } from '../types';
+import { requestConfigs } from './http/RequestConfigs';
 
 const { t } = useI18n();
 
@@ -47,11 +36,11 @@ const emit = defineEmits<{
   (e: 'refresh', value: string): void;
 }>();
 
-const ButtonGroup = defineAsyncComponent(() => import('@/views/data/variable/detail/buttonGroup/index.vue'));
-const PreviewData = defineAsyncComponent(() => import('@/views/data/variable/detail/previewData/index.vue'));
-const VariableUseList = defineAsyncComponent(() => import('@/views/data/variable/detail/useList/index.vue'));
-const MatchItemPopover = defineAsyncComponent(() => import('@/views/data/variable/detail/matchItemPopover/index.vue'));
-const HTTPConfigs = defineAsyncComponent(() => import('@/views/data/variable/detail/httpVariable/httpConfigs/index.vue'));
+const ButtonGroup = defineAsyncComponent(() => import('@/views/data/variable/detail/ButtonGroup.vue'));
+const PreviewData = defineAsyncComponent(() => import('@/views/data/variable/detail/PreviewData.vue'));
+const VariableUseList = defineAsyncComponent(() => import('@/views/data/variable/detail/UseList.vue'));
+const MatchItemPopover = defineAsyncComponent(() => import('@/views/data/variable/detail/MatchItemPopover.vue'));
+const HTTPConfigs = defineAsyncComponent(() => import('@/views/data/variable/detail/http/config/index.vue'));
 // const SelectApiModal = defineAsyncComponent(() => import('./SelectApiModal/index.vue'));
 
 const httpConfigsRef = ref();
@@ -64,7 +53,7 @@ const variableNameError = ref(false);
 const description = ref<string>('');
 
 const method = ref<'EXACT_VALUE' | 'JSON_PATH' | 'REGEX' | 'X_PATH'>('EXACT_VALUE');
-const location = ref<FormState['extraction']['location']>('RESPONSE_BODY');
+const location = ref<HttpVariableFormState['extraction']['location']>('RESPONSE_BODY');
 const parameterName = ref<string>('');
 const defaultValue = ref<string>('');
 const expression = ref<string>('');
@@ -105,7 +94,7 @@ const selectApiOk = async (ids: string[]) => {
     return;
   }
 
-  requestConfigs.value = await getRequestConfigs(data);
+  requestConfigs.value = await requestConfigs(data);
 };
 
 const nameChange = () => {
@@ -210,8 +199,8 @@ const toCreate = async () => {
   emit('ok', { ...params, id }, false);
 };
 
-const getParams = (): FormState => {
-  const params: FormState = {
+const getParams = (): HttpVariableFormState => {
+  const params: HttpVariableFormState = {
     projectId: props.projectId,
     name: variableName.value,
     description: description.value,

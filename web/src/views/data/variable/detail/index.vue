@@ -5,7 +5,7 @@ import { AsyncComponent, modal, notification, Spin } from '@xcan-angus/vue-ui';
 import { toClipboard, utils } from '@xcan-angus/infra';
 import { variable } from '@/api/tester';
 
-import { VariableItem } from '../PropsType';
+import { VariableItem } from '../types';
 
 const { t } = useI18n();
 
@@ -31,10 +31,10 @@ const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabP
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const replaceTabPane = inject<(id: string, data: { [key: string]: any }) => void>('replaceTabPane', () => ({}));
 
-const StaticVariable = defineAsyncComponent(() => import('@/views/data/variable/detail/staticVariable/index.vue'));
-const FileVariable = defineAsyncComponent(() => import('@/views/data/variable/detail/fileVariable/index.vue'));
-const HttpVariable = defineAsyncComponent(() => import('@/views/data/variable/detail/httpVariable/index.vue'));
-const JdbcVariable = defineAsyncComponent(() => import('@/views/data/variable/detail/jdbcVariable/index.vue'));
+const StaticVariable = defineAsyncComponent(() => import('@/views/data/variable/detail/StaticVariable.vue'));
+const FileVariable = defineAsyncComponent(() => import('@/views/data/variable/detail/FileVariable.vue'));
+const HttpVariable = defineAsyncComponent(() => import('@/views/data/variable/detail/HttpVariable.vue'));
+const JdbcVariable = defineAsyncComponent(() => import('@/views/data/variable/detail/JdbcVariable.vue'));
 const ExportVariables = defineAsyncComponent(() => import('@/views/data/variable/export/index.vue'));
 
 const loading = ref(false);

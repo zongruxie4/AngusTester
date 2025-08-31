@@ -1,22 +1,4 @@
-import { ExtractionMethod, HttpExtractionLocation, HttpMethod } from '@xcan-angus/infra';
-
-export type FormState = {
-    projectId: string;
-    name: string;
-    description: string;
-    passwordValue: false;
-    extraction: {
-        source: 'http';
-        method: ExtractionMethod;
-        expression: string;
-        defaultValue: string;
-        location: HttpExtractionLocation;
-        matchItem: string;
-        parameterName: string;
-        request: { url: string; };
-    };
-    id?: string;
-}
+import { HttpMethod } from '@xcan-angus/infra';
 
 // TODO 存在重复代码
 export type RequestConfig = {

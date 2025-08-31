@@ -41,7 +41,7 @@ const ParameterNameInput = defineAsyncComponent(() => import('@/views/data/datas
 const PreviewData = defineAsyncComponent(() => import('@/views/data/dataset/preview/index.vue'));
 const DataSetUseList = defineAsyncComponent(() => import('@/views/data/dataset/detail/UseList.vue'));
 const MatchItemPopover = defineAsyncComponent(() => import('@/views/data/dataset/detail/MatchItemPopover.vue'));
-const SelectDataSourceModal = defineAsyncComponent(() => import('@/views/data/variable/detail/jdbcVariable/selectDatasource/index.vue'));
+const SelectDataSourceModal = defineAsyncComponent(() => import('@/views/data/variable/detail/jdbc/SelectDatasource.vue'));
 
 const parametersRef = ref();
 

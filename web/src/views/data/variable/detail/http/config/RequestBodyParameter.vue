@@ -6,8 +6,8 @@ import { Icon, Input, notification, Select } from '@xcan-angus/vue-ui';
 import { utils, duration, codeUtils } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
-import { RequestBodyFormItem } from '../PropsType';
 import { useI18n } from 'vue-i18n';
+import {RequestBodyFormItem} from "@/views/data/variable/detail/http/config/types";
 
 const { t } = useI18n();
 

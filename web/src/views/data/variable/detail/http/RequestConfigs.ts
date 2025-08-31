@@ -1,7 +1,7 @@
 import { uniq } from 'lodash-es';
 import qs from 'qs';
 import { ApiUtils as angusUtils } from '@xcan-angus/vue-ui';
-import { Authentication, AvailableServer, RequestBody, RequestConfig } from './PropsType';
+import { Authentication, AvailableServer, RequestBody, RequestConfig } from './types';
 import { variable } from '@/api/tester';
 
 export const password = [
@@ -325,7 +325,7 @@ const formApiAuthToScenarioAuth = (authentication) => {
  * @param data 接口详情
  * @returns 变量里的request配置
  */
-export const getRequestConfigs = async (data) => {
+export const requestConfigs = async (data) => {
   const {
     id,
     projectId,

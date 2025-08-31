@@ -3,7 +3,7 @@ import { nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { Popover, Radio } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
 
-import { HttpServer } from './PropsType';
+import { HttpServer } from './types';
 
 interface Props {
   value: string;

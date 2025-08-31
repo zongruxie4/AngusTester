@@ -1,4 +1,84 @@
-import { ExtractionMethod, ExtractionSource, ExtractionFileType, Encoding } from '@xcan-angus/infra';
+import {
+  ExtractionMethod,
+  ExtractionSource,
+  ExtractionFileType,
+  Encoding,
+  HttpExtractionLocation
+} from '@xcan-angus/infra';
+
+export type StaticVariableFormState = {
+  projectId: string;
+  name: string;
+  value: string;
+  passwordValue: boolean;
+  description: string;
+  id?: string;
+}
+
+export type HttpVariableFormState = {
+  projectId: string;
+  name: string;
+  description: string;
+  passwordValue: false;
+  extraction: {
+    source: 'http';
+    method: ExtractionMethod;
+    expression: string;
+    defaultValue: string;
+    location: HttpExtractionLocation;
+    matchItem: string;
+    parameterName: string;
+    request: { url: string; };
+  };
+  id?: string;
+}
+
+export type JdbcVariableFormState = {
+  projectId: string;
+  name: string;
+  description: string;
+  passwordValue: false;
+  extraction: {
+    source: 'JDBC';
+    method: ExtractionMethod;
+    expression: string;
+    defaultValue: string;
+    matchItem: string;
+    datasource: {
+      type: string | undefined;
+      username: string;
+      password: string;
+      jdbcUrl: string;
+    };
+    select: string;
+    rowIndex: string;
+    columnIndex: string;
+  };
+  id?: string;
+}
+
+export type FileVariableFormState = {
+  projectId: string;
+  name: string;
+  passwordValue: false,
+  description: string;
+  extraction: {
+    source: 'FILE';
+    fileType: 'CSV' | 'EXCEL' | 'TXT';
+    path: string;
+    encoding: string;
+    quoteChar: string;
+    escapeChar: string;
+    separatorChar: string;
+    rowIndex: string;
+    columnIndex: string;
+    method: 'EXACT_VALUE' | 'JSON_PATH' | 'REGEX' | 'X_PATH';
+    defaultValue: string;
+    expression: string;
+    matchItem: string;
+  };
+  id?: string;
+}
 
 export type VariableItem = {
     createdBy: string;

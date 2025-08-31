@@ -3,10 +3,10 @@ import { computed, defineAsyncComponent, onMounted, ref, watch, watchEffect } fr
 import { useI18n } from 'vue-i18n';
 import { Badge, TabPane, Tabs } from 'ant-design-vue';
 import { Composite, HttpMethodText, Input, ExecAuthencation, ApiUtils as angusUtils } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/infra';
+import { utils, HttpMethod, ParameterIn } from '@xcan-angus/infra';
 
 import SelectEnum from '@/components/selectEnum/index.vue';
-import { HttpMethod, HttpServer, RequestConfigs } from './PropsType';
+import { HttpServer, RequestConfigs } from './types';
 
 const { t } = useI18n();
 
@@ -35,7 +35,7 @@ const emit = defineEmits<{
   (e: 'update:errorNum', value: number): void;
 }>();
 
-const RequestBody = defineAsyncComponent(() => import('@/views/data/variable/detail/httpVariable/httpConfigs/requestBody/index.vue'));
+const RequestBody = defineAsyncComponent(() => import('@/views/data/variable/detail/http/config/RequestBody.vue'));
 const ParameterInput = defineAsyncComponent(() => import('./ParameterInput.vue'));
 const ParameterPure = defineAsyncComponent(() => import('./ParameterPure.vue'));
 const ServerInput = defineAsyncComponent(() => import('./ServerInput.vue'));
