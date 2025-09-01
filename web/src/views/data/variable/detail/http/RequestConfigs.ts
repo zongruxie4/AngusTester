@@ -321,7 +321,6 @@ const formApiAuthToScenarioAuth = (authentication) => {
 };
 
 /**
- *
  * @param data 接口详情
  * @returns 变量里的request配置
  */

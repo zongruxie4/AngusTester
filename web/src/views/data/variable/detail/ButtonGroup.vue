@@ -2,89 +2,113 @@
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
+import { ButtonGroupAction, ButtonGroupProps } from './types';
 
 const { t } = useI18n();
 
-type Props = {
-  editFlag: boolean;
-  okButtonDisabled: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<ButtonGroupProps>(), {
   editFlag: false,
   okButtonDisabled: false
 });
 
+/**
+ * Component emit definition
+ * Defines the events that this component can emit to its parent
+ */
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
-  (e: 'click', value:'ok'|'delete'|'export'|'clone'|'copyLink'|'refresh'): void;
+  /**
+   * Emit click event with the action type
+   * @param event - The event name ('click')
+   * @param action - The action type that was clicked
+   */
+  (e: 'click', action: ButtonGroupAction): void;
 }>();
+
+/**
+ * Handle button click events
+ * Emits the appropriate action to the parent component
+ *
+ * @param action - The action type to emit
+ */
+const handleClick = (action: ButtonGroupAction) => {
+  emit('click', action);
+};
 </script>
 
 <template>
+  <!-- Button group container -->
   <div class="flex items-center space-x-2.5">
+    <!-- Save button - always visible -->
+    <!-- Primary action for saving variable changes -->
     <Button
       :disabled="props.okButtonDisabled"
       type="primary"
       size="small"
       class="flex items-center space-x-1"
-      @click="emit('click','ok')">
+      @click="handleClick('ok')">
       <Icon icon="icon-dangqianxuanzhong" class="text-3.5" />
       <span>
         {{ t('dataVariable.detail.buttonGroup.save') }}
       </span>
     </Button>
 
+    <!-- Edit mode buttons - only visible when editing an existing variable -->
     <template v-if="props.editFlag">
+      <!-- Delete button - removes the variable -->
       <Button
         type="default"
         size="small"
         class="flex items-center space-x-1"
-        @click="emit('click','delete')">
+        @click="handleClick('delete')">
         <Icon icon="icon-qingchu" class="text-3.5" />
         <span>
           {{ t('dataVariable.detail.buttonGroup.delete') }}
         </span>
       </Button>
 
+      <!-- Export button - exports the variable configuration -->
       <Button
         type="default"
         size="small"
         class="flex items-center space-x-1"
-        @click="emit('click', 'export')">
+        @click="handleClick('export')">
         <Icon icon="icon-fuzhizujian2" class="text-3.5" />
         <span>
           {{ t('dataVariable.detail.buttonGroup.export') }}
         </span>
       </Button>
 
+      <!-- Clone button - creates a copy of the variable -->
       <Button
         type="default"
         size="small"
         class="flex items-center space-x-1"
-        @click="emit('click','clone')">
+        @click="handleClick('clone')">
         <Icon icon="icon-fuzhizujian2" class="text-3.5" />
         <span>
           {{ t('dataVariable.detail.buttonGroup.clone') }}
         </span>
       </Button>
 
+      <!-- Copy link button - copies the variable URL to clipboard -->
       <Button
         type="default"
         size="small"
         class="flex items-center space-x-1"
-        @click="emit('click','copyLink')">
+        @click="handleClick('copyLink')">
         <Icon icon="icon-fuzhi" class="text-3.5" />
         <span>
           {{ t('dataVariable.detail.buttonGroup.copyLink') }}
         </span>
       </Button>
 
+      <!-- Refresh button - reloads variable data -->
       <Button
         type="default"
         size="small"
         class="flex items-center space-x-1"
-        @click="emit('click','refresh')">
+        @click="handleClick('refresh')">
         <Icon icon="icon-shuaxin" class="text-3.5" />
         <span>
           {{ t('dataVariable.detail.buttonGroup.refresh') }}

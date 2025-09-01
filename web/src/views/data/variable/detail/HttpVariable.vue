@@ -1,338 +1,94 @@
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { defineAsyncComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
-import { AsyncComponent, Hints, Icon, IconRequired, Input, notification, Toggle, Validate, SelectApisByServiceModal } from '@xcan-angus/vue-ui';
-import { isEqual } from 'lodash-es';
-import { variable, apis } from '@/api/tester';
-
+import { AsyncComponent, Hints, Icon, IconRequired, Input, Toggle, Validate, SelectApisByServiceModal } from '@xcan-angus/vue-ui';
 import SelectEnum from '@/components/selectEnum/index.vue';
-import { HttpVariableFormState, VariableItem } from '../types';
-import { requestConfigs } from './http/RequestConfigs';
+import { useHttpVariable } from './composables/useHttpVariable';
+import { VariableItem } from '../types';
+import { VariableDataProps } from '@/views/data/variable/detail/types';
 
 const { t } = useI18n();
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  visible: boolean;
-  dataSource?: VariableItem;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<VariableDataProps>(), {
   projectId: undefined,
   userInfo: undefined,
-  visible: false,
   dataSource: undefined
 });
 
-// eslint-disable-next-line func-call-spacing
+/**
+ * Component emit definition
+ */
 const emit = defineEmits<{
+  /** Emit when form is submitted successfully */
   (e: 'ok', data: VariableItem, isEdit: boolean): void;
+
+  /** Emit when delete action is requested */
   (e: 'delete', value: string): void;
+
+  /** Emit when export action is requested */
   (e: 'export', value: string): void;
+
+  /** Emit when clone action is requested */
   (e: 'clone', value: string): void;
+
+  /** Emit when copy link action is requested */
   (e: 'copyLink', value: string): void;
+
+  /** Emit when refresh action is requested */
   (e: 'refresh', value: string): void;
 }>();
 
+// Async components for better code splitting and performance
 const ButtonGroup = defineAsyncComponent(() => import('@/views/data/variable/detail/ButtonGroup.vue'));
 const PreviewData = defineAsyncComponent(() => import('@/views/data/variable/detail/PreviewData.vue'));
-const VariableUseList = defineAsyncComponent(() => import('@/views/data/variable/detail/UseList.vue'));
+const VariableUsageList = defineAsyncComponent(() => import('@/views/data/variable/detail/UsageList.vue'));
 const MatchItemPopover = defineAsyncComponent(() => import('@/views/data/variable/detail/MatchItemPopover.vue'));
 const HTTPConfigs = defineAsyncComponent(() => import('@/views/data/variable/detail/http/config/index.vue'));
-// const SelectApiModal = defineAsyncComponent(() => import('./SelectApiModal/index.vue'));
 
+// Use the HTTP variable composable for form logic
+const {
+  // State
+  activeKey,
+  variableName,
+  variableNameError,
+  description,
+  previewData,
+
+  // HTTP configuration fields
+  method,
+  location,
+  parameterName,
+  defaultValue,
+  expression,
+  matchItem,
+  selectApiVisible,
+  requestConfigs,
+
+  // Methods
+  nameChange,
+  nameBlur,
+  buttonGroupClick,
+  toSelectApi,
+  selectApiOk,
+  okButtonDisabled,
+  variableId,
+  editFlag
+} = useHttpVariable(props, emit);
+
+// Reference to HTTPConfigs component for validation
 const httpConfigsRef = ref();
-
-const confirmLoading = ref(false);
-const activeKey = ref<'value' | 'preview' | 'use'>('value');
-
-const variableName = ref<string>('');
-const variableNameError = ref(false);
-const description = ref<string>('');
-
-const method = ref<'EXACT_VALUE' | 'JSON_PATH' | 'REGEX' | 'X_PATH'>('EXACT_VALUE');
-const location = ref<HttpVariableFormState['extraction']['location']>('RESPONSE_BODY');
-const parameterName = ref<string>('');
-const defaultValue = ref<string>('');
-const expression = ref<string>('');
-const matchItem = ref<string>('');
-
-const selectApiVisible = ref(false);
-const requestConfigs = ref<{ url: string; }>({
-  url: ''
-});
-
-const previewData = ref<{
-  name: string;
-  extraction: {
-    source: 'HTTP';
-    method: 'EXACT_VALUE' | 'JSON_PATH' | 'REGEX' | 'X_PATH';
-    expression: string;
-    defaultValue: string;
-    location: 'QUERY_PARAMETER' | 'PATH_PARAMETER' | 'REQUEST_HEADER' | 'FORM_PARAMETER' | 'REQUEST_RAW_BODY' | 'RESPONSE_HEADER' | 'RESPONSE_BODY';
-    matchItem: string;
-    parameterName: string;
-    request: { url: string; };
-  };
-}>();
-
-const toSelectApi = () => {
-  selectApiVisible.value = true;
-};
-
-const selectApiOk = async (ids: string[]) => {
-  selectApiVisible.value = false;
-  const [error, res] = await apis.getApiDetail(ids[0], true);
-  if (error) {
-    return;
-  }
-
-  const data = res?.data;
-  if (!data) {
-    return;
-  }
-
-  requestConfigs.value = await requestConfigs(data);
-};
-
-const nameChange = () => {
-  variableNameError.value = false;
-};
-
-const nameBlur = (event: { target: { value: string; } }) => {
-  const name = event.target.value;
-  if (!name) {
-    return;
-  }
-
-  validName(name);
-};
-
-const validName = (name:string) => {
-  // eslint-disable-next-line prefer-regex-literals
-  const rex = new RegExp(/[^a-zA-Z0-9!$%^&*_\-+=./]/);
-  if (rex.test(name)) {
-    variableNameError.value = true;
-    return false;
-  }
-
-  return true;
-};
-
-const buttonGroupClick = (key: 'ok' | 'delete'|'export' | 'clone' | 'copyLink' | 'refresh') => {
-  if (key === 'ok') {
-    ok();
-    return;
-  }
-
-  if (key === 'delete') {
-    emit('delete', variableId.value);
-    return;
-  }
-
-  if (key === 'export') {
-    emit('export', variableId.value);
-    return;
-  }
-
-  if (key === 'clone') {
-    emit('clone', variableId.value);
-    return;
-  }
-
-  if (key === 'copyLink') {
-    emit('copyLink', variableId.value);
-    return;
-  }
-
-  if (key === 'refresh') {
-    emit('refresh', variableId.value);
-  }
-};
-
-const ok = async () => {
-  if (!validName(variableName.value)) {
-    return;
-  }
-
-  if (typeof httpConfigsRef.value?.isValid === 'function') {
-    const validFlag = httpConfigsRef.value?.isValid();
-    if (!validFlag) {
-      return;
-    }
-  }
-
-  if (editFlag.value) {
-    toEdit();
-    return;
-  }
-
-  toCreate();
-};
-
-const toEdit = async () => {
-  const params = getParams();
-  confirmLoading.value = true;
-  const [error] = await variable.putVariables(params);
-  confirmLoading.value = false;
-  if (error) {
-    return;
-  }
-
-  notification.success(t('dataVariable.detail.httpVariable.notifications.editSuccess'));
-  emit('ok', params, true);
-};
-
-const toCreate = async () => {
-  const params = getParams();
-  confirmLoading.value = true;
-  const [error, res] = await variable.addVariables(params);
-  confirmLoading.value = false;
-  if (error) {
-    return;
-  }
-
-  notification.success(t('dataVariable.detail.httpVariable.notifications.addSuccess'));
-  const id = res?.data?.id;
-  emit('ok', { ...params, id }, false);
-};
-
-const getParams = (): HttpVariableFormState => {
-  const params: HttpVariableFormState = {
-    projectId: props.projectId,
-    name: variableName.value,
-    description: description.value,
-    passwordValue: false,
-    extraction: {
-      source: 'HTTP',
-      method: method.value,
-      defaultValue: defaultValue.value,
-      expression: expression.value,
-      matchItem: matchItem.value,
-      parameterName: parameterName.value,
-      location: location.value,
-      request: {
-        url: ''
-      }
-    }
-  };
-
-  if (typeof httpConfigsRef.value?.getData === 'function') {
-    params.extraction.request = httpConfigsRef.value.getData();
-  }
-
-  const id = variableId.value;
-  if (id) {
-    params.id = id;
-  }
-
-  return params;
-};
-
-const initialize = () => {
-  const data = props.dataSource;
-  if (!data) {
-    return;
-  }
-
-  const { extraction } = data || {};
-  variableName.value = data.name;
-  description.value = data.description;
-
-  method.value = extraction.method?.value || 'EXACT_VALUE';
-  parameterName.value = extraction.parameterName;
-  defaultValue.value = extraction.defaultValue;
-  expression.value = extraction.expression;
-  matchItem.value = extraction.matchItem;
-
-  let _request = extraction.request;
-  if (_request) {
-    if (!_request?.url) {
-      _request.url = '';
-    }
-  } else {
-    _request = { url: '' };
-  }
-
-  requestConfigs.value = _request;
-};
-
-onMounted(() => {
-  watch(() => props.dataSource, (newValue) => {
-    if (!newValue) {
-      return;
-    }
-
-    initialize();
-  }, { immediate: true });
-
-  watch(() => activeKey.value, (newValue) => {
-    if (newValue !== 'preview') {
-      return;
-    }
-
-    let request = requestConfigs.value;
-    if (typeof httpConfigsRef.value?.getData === 'function') {
-      request = httpConfigsRef.value?.getData();
-    }
-
-    const newData = {
-      name: variableName.value,
-      extraction: {
-        request,
-        source: 'HTTP',
-        method: method.value,
-        expression: expression.value,
-        defaultValue: defaultValue.value,
-        location: location.value,
-        matchItem: matchItem.value,
-        parameterName: parameterName.value
-      }
-    };
-
-    if (!isEqual(newData, previewData.value)) {
-      previewData.value = newData;
-    }
-  }, { immediate: true });
-});
-
-const variableId = computed(() => {
-  return props.dataSource?.id || '';
-});
-
-const editFlag = computed(() => {
-  return !!props.dataSource?.id;
-});
-
-const okButtonDisabled = computed(() => {
-  let disabled = !variableName.value ||
-    !method.value ||
-    !location.value;
-
-  if (!disabled) {
-    if (!['REQUEST_RAW_BODY', 'RESPONSE_BODY'].includes(location.value)) {
-      disabled = !parameterName.value;
-    }
-  }
-
-  if (!disabled) {
-    if (['JSON_PATH', 'REGEX', 'X_PATH'].includes(method.value)) {
-      disabled = !expression.value;
-    }
-  }
-
-  return disabled;
-});
 </script>
+
 <template>
+  <!-- Button group for variable actions -->
   <ButtonGroup
     :editFlag="editFlag"
     :okButtonDisabled="okButtonDisabled"
     class="mb-5"
     @click="buttonGroupClick" />
 
+  <!-- Variable name input -->
   <div class="flex items-start mb-3.5">
     <div class="flex items-center flex-shrink-0 mr-2.5 leading-7">
       <IconRequired />
@@ -357,6 +113,7 @@ const okButtonDisabled = computed(() => {
     </Validate>
   </div>
 
+  <!-- Variable description textarea -->
   <div class="flex items-start">
     <div class="mr-2.5 flex items-center flex-shrink-0 transform-gpu translate-y-1">
       <IconRequired class="invisible" />
@@ -373,10 +130,12 @@ const okButtonDisabled = computed(() => {
       trim />
   </div>
 
+  <!-- Tabbed interface for configuration, preview, and usage -->
   <Tabs
     v-model:activeKey="activeKey"
     size="small"
     class="ant-tabs-nav-mb-2.5">
+    <!-- Configuration tab -->
     <TabPane key="value">
       <template #tab>
         <div class="flex items-center font-normal">
@@ -386,9 +145,12 @@ const okButtonDisabled = computed(() => {
       </template>
 
       <div>
+        <!-- Configuration hints -->
         <Hints class="mb-2.5" :text="t('dataVariable.detail.httpVariable.hints')" />
 
+        <!-- HTTP request configuration -->
         <Toggle :title="t('dataVariable.detail.httpVariable.readConfig')" class="text-3 leading-5 mb-3.5">
+          <!-- API selection button -->
           <div class="flex items-center justify-start mb-3.5">
             <div class="w-16 flex-shrink-0">
             </div>
@@ -402,6 +164,7 @@ const okButtonDisabled = computed(() => {
             </Button>
           </div>
 
+          <!-- HTTP interface configuration -->
           <div class="flex items-start mb-3.5">
             <div class="w-16 flex-shrink-0 transform-gpu translate-y-1">
               <IconRequired />
@@ -414,8 +177,11 @@ const okButtonDisabled = computed(() => {
           </div>
         </Toggle>
 
+        <!-- Extraction configuration -->
         <Toggle :title="t('dataVariable.detail.httpVariable.extractConfig')" class="text-3 leading-5">
+          <!-- Exact value extraction method -->
           <template v-if="method === 'EXACT_VALUE'">
+            <!-- Configuration for request/response body -->
             <template v-if="['REQUEST_RAW_BODY', 'RESPONSE_BODY'].includes(location)">
               <div class="flex items-center space-x-5 mb-3.5">
                 <div class="w-1/2 flex items-center">
@@ -446,7 +212,7 @@ const okButtonDisabled = computed(() => {
                 <div class="w-1/2 flex items-center">
                   <div class="w-16 flex-shrink-0">
                     <IconRequired class="invisible" />
-                    <span>{{t('dataVariable.detail.httpVariable.defaultValue')}}</span>
+                    <span>{{ t('dataVariable.detail.httpVariable.defaultValue') }}</span>
                   </div>
                   <Input
                     v-model:value="defaultValue"
@@ -458,6 +224,7 @@ const okButtonDisabled = computed(() => {
               </div>
             </template>
 
+            <!-- Configuration for other locations (headers, parameters, etc.) -->
             <template v-else>
               <div class="flex items-center space-x-5 mb-3.5">
                 <div class="w-1/2 flex items-center">
@@ -514,7 +281,9 @@ const okButtonDisabled = computed(() => {
             </template>
           </template>
 
+          <!-- Pattern-based extraction methods (JSON_PATH, REGEX, X_PATH) -->
           <template v-else>
+            <!-- Configuration for request/response body -->
             <template v-if="['REQUEST_RAW_BODY', 'RESPONSE_BODY'].includes(location)">
               <div class="flex items-center space-x-5 mb-3.5">
                 <div class="w-1/2 flex items-center">
@@ -588,6 +357,7 @@ const okButtonDisabled = computed(() => {
               </div>
             </template>
 
+            <!-- Configuration for other locations (headers, parameters, etc.) -->
             <template v-else>
               <div class="flex items-center space-x-5 mb-3.5">
                 <div class="w-1/2 flex items-center">
@@ -678,6 +448,7 @@ const okButtonDisabled = computed(() => {
       </div>
     </TabPane>
 
+    <!-- Preview tab -->
     <TabPane key="preview">
       <template #tab>
         <div class="flex items-center font-normal">
@@ -688,6 +459,7 @@ const okButtonDisabled = computed(() => {
       <PreviewData :dataSource="previewData" />
     </TabPane>
 
+    <!-- Usage tab - only visible for existing variables -->
     <TabPane v-if="variableId" key="use">
       <template #tab>
         <div class="flex items-center font-normal">
@@ -695,12 +467,12 @@ const okButtonDisabled = computed(() => {
         </div>
       </template>
 
-      <VariableUseList :id="variableId" />
+      <VariableUsageList :id="variableId" />
     </TabPane>
   </Tabs>
 
+  <!-- API selection modal -->
   <AsyncComponent :visible="selectApiVisible">
-
     <SelectApisByServiceModal
       v-model:visible="selectApiVisible"
       :selectSingle="true"

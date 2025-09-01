@@ -1,13 +1,12 @@
 <script lang="ts" setup>
 import { Divider, Tooltip } from 'ant-design-vue';
-import { defineAsyncComponent, onMounted, reactive, ref, watch } from 'vue';
+import { defineAsyncComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { AsyncComponent, Icon, IconCopy, Input, NoData, notification } from '@xcan-angus/vue-ui';
-import { toClipboard } from '@xcan-angus/infra';
+import { Icon, IconCopy, Input, NoData, notification } from '@xcan-angus/vue-ui';
 
 import ColumnItem from '@/components/share/columnItem/index.vue';
-import type { ListType, StateType } from './types';
-import { space } from '@/api/storage';
+import { useShareList } from './composables/useShareList';
+import type { ShareListItem } from './types';
 
 const { t } = useI18n();
 
@@ -16,10 +15,10 @@ const Share = defineAsyncComponent(() => import('./index.vue'));
 type Type = 'API' | 'PROJECT' | 'SERVICE' | 'DATA'
 
 interface Props {
-  disabled:boolean,
-  id: string,
-  type?: Type,
-  name: string
+  disabled: boolean;
+  id: string;
+  type?: Type;
+  name: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -28,139 +27,42 @@ const props = withDefaults(defineProps<Props>(), {
   type: 'API'
 });
 
-const pagination = reactive({
-  total: 0,
-  current: 1,
-  pageSize: 10
-});
+// Use the share list composable
+const {
+  state,
+  showMore,
+  remark,
+  shareId,
+  loadList,
+  deleteShare,
+  copyToClipboard,
+  openEditPassword,
+  updatePassword,
+  cancelPasswordEdit,
+  openShareDialog,
+  handleShareEnd
+} = useShareList();
 
-const state:StateType = reactive({
-  visible: false,
-  list: []
-});
+// Initialize the composable
+useShareList().init(props);
 
-const showMore = ref(false);
-const remark = ref();
-
-watch(() => remark.value, () => {
-  pagination.current = 1;
-  loadList();
-});
-
-watch(() => props.id, newValue => {
-  if (newValue) {
-    pagination.current = 1;
-    loadList();
-  }
-});
-
-// 查询服务分享记录
-const loadList = async (loadMore = false) => {
-  if (loadMore) {
-    pagination.current += 1;
-  }
-  const params = {
-    pageNo: pagination.current,
-    pageSize: pagination.pageSize,
-    spaceId: props.id,
-    filters: remark.value ? [{ value: remark.value, key: 'remark', op: 'MATCH_END' }] : undefined
-  };
-  const [error, res = { data: { list: [] } }] = await space.getSharedList(params);
-  if (error) {
-    return;
-  }
-  if (loadMore) {
-    state.list.push(...res.data.list);
-  } else {
-    state.list = res.data.list || [];
-  }
-  if (state.list.length === +res.data.total) {
-    showMore.value = false;
-  } else {
-    showMore.value = true;
-  }
-};
-// 删除分享
-const delShare = async (id:string) => {
-  const [error] = await space.deleteShare([id]);
-  if (error) {
-    return;
-  }
-  notification.success(t('fileSpace.share.shareList.notifications.deleteSuccess'));
-  pagination.current = 1;
-  loadList();
-};
-
-// 设置密码可以编辑
-const openEditPassd = (item: ListType) => {
-  item.editPassd = true;
-  item.tempPass = item.password;
-};
-
-// 修改密码
-const patchPassd = async (item:ListType) => {
-  if (!item.tempPass) {
-    notification.error(t('fileSpace.share.shareList.notifications.passwordEmpty'));
-  }
-  const params = {
-    id: item.id,
-    expiredFlag: item.expiredFlag,
-    objectIds: item.objectIds,
-    public0: item.public0,
-    remark: item.remark,
-    expiredDuration: item.expiredDuration ? { ...item.expiredDuration, unit: item.expiredDuration.unit.value } : undefined,
-    password: item.tempPass
-  };
-  const [error] = await space.patchShare(params);
-  if (error) {
-    return;
-  }
-  item.password = item.tempPass as string;
-  item.editPassd = false;
-  notification.success(t('fileSpace.share.shareList.notifications.modifyPasswordSuccess'));
-};
-
-// 取消修改密码
-const cancelPassd = (item: ListType) => {
-  item.editPassd = false;
-};
-
-// 复制密码和链接
-const copy = (item:ListType) => {
-  let message;
-  if (!item.public0) {
-    message = t('fileSpace.share.messages.linkAndPassword', { url: item.url, password: item.password || '' });
-  } else {
-    message = t('fileSpace.share.messages.link', { url: item.url });
-  }
-  toClipboard(message).then(() => {
-    notification.success(t('fileSpace.share.shareList.notifications.copySuccess'));
-  });
-};
-
-const shareId = ref();
-// 编辑分享
-const edit = (item) => {
+/**
+ * Edit an existing share
+ * 
+ * @param item - Share item to edit
+ */
+const edit = (item: ShareListItem) => {
   shareId.value = item.id;
   state.visible = true;
 };
 
-// 添加分享
-const openShareDialog = () => {
+/**
+ * Add a new share
+ */
+const addShare = () => {
   shareId.value = undefined;
   state.visible = true;
 };
-
-//
-const handleShareEnd = () => {
-  pagination.current = 1;
-  loadList();
-};
-
-onMounted(() => {
-  pagination.current = 1;
-  loadList();
-});
 </script>
 
 <template>
@@ -170,7 +72,7 @@ onMounted(() => {
       type="primary"
       class="rounded text-3 leading-3 h-7"
       :disabled="disabled"
-      @click="openShareDialog">
+      @click="addShare">
       {{ t('fileSpace.share.shareList.addShare') }}
     </Button>
     <Divider class="my-3"></Divider>
@@ -208,7 +110,7 @@ onMounted(() => {
                 icon="icon-zhongzhi"
                 class="ml-2 text-gray-icon cursor-pointer"
                 :class="{'cursor-not-allowed': disabled}"
-                @click="!disabled && openEditPassd(item)" />
+                @click="!disabled && openEditPassword(item)" />
             </template>
             <template v-else>
               <Input
@@ -219,13 +121,13 @@ onMounted(() => {
                 type="primary"
                 size="small"
                 class="mx-2.5 text-3 leading-3"
-                @click="patchPassd(item)">
+                @click="updatePassword(item)">
                 {{ t('fileSpace.share.shareList.confirm') }}
               </Button>
               <Button
                 size="small"
                 class="text-3 leading-3"
-                @click="cancelPassd(item)">
+                @click="cancelPasswordEdit(item)">
                 {{ t('fileSpace.share.shareList.cancel') }}
               </Button>
             </template>
@@ -243,11 +145,11 @@ onMounted(() => {
                 icon="icon-bianji"
                 class="mr-3 cursor-pointer"
                 @click="edit(item)" />
-              <IconCopy class="mr-3" @click="copy(item)" />
+              <IconCopy class="mr-3" @click="copyToClipboard(item)" />
               <Icon
                 icon="icon-qingchu"
                 class="cursor-pointer text-3.5"
-                @click="delShare(item.id)" />
+                @click="deleteShare(item.id)" />
             </span>
           </div>
         </column-item>

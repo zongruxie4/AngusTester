@@ -1,323 +1,97 @@
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { defineAsyncComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
-import { Hints, Icon, IconRequired, Input, notification, Toggle, Tooltip } from '@xcan-angus/vue-ui';
-import { isEqual } from 'lodash-es';
-import { variable } from '@/api/tester';
-
+import { Hints, Icon, IconRequired, Input, Toggle, Tooltip, Validate } from '@xcan-angus/vue-ui';
 import SelectEnum from '@/components/selectEnum/index.vue';
-import { JdbcVariableFormState, VariableItem } from '../types';
+import { useJdbcVariable } from './composables/useJdbcVariable';
+import { VariableItem } from '../types';
+import { VariableDataProps } from '@/views/data/variable/detail/types';
 
 const { t } = useI18n();
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  dataSource?: VariableItem;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<VariableDataProps>(), {
   projectId: undefined,
   userInfo: undefined,
   dataSource: undefined
 });
 
-// eslint-disable-next-line func-call-spacing
+/**
+ * Component emit definition
+ */
 const emit = defineEmits<{
+  /** Emit when form is submitted successfully */
   (e: 'ok', data: VariableItem, isEdit: boolean): void;
+
+  /** Emit when delete action is requested */
   (e: 'delete', value: string): void;
+
+  /** Emit when export action is requested */
   (e: 'export', value: string): void;
+
+  /** Emit when clone action is requested */
   (e: 'clone', value: string): void;
+
+  /** Emit when copy link action is requested */
   (e: 'copyLink', value: string): void;
+
+  /** Emit when refresh action is requested */
   (e: 'refresh', value: string): void;
 }>();
 
+// Async components for better code splitting and performance
 const ButtonGroup = defineAsyncComponent(() => import('@/views/data/variable/detail/ButtonGroup.vue'));
 const PreviewData = defineAsyncComponent(() => import('@/views/data/variable/detail/PreviewData.vue'));
-const VariableUseList = defineAsyncComponent(() => import('@/views/data/variable/detail/UseList.vue'));
+const VariableUsageList = defineAsyncComponent(() => import('@/views/data/variable/detail/UsageList.vue'));
 const MatchItemPopover = defineAsyncComponent(() => import('@/views/data/variable/detail/MatchItemPopover.vue'));
 const SelectDataSourceModal = defineAsyncComponent(() => import('@/views/data/variable/detail/jdbc/SelectDatasource.vue'));
 
-const modalVisible = ref(false);
+// Use the JDBC variable composable for form logic
+const {
+  // State
+  activeKey,
+  variableName,
+  variableNameError,
+  description,
+  previewData,
+  modalVisible,
 
-const confirmLoading = ref(false);
-const activeKey = ref<'value' | 'preview' | 'use'>('value');
+  // Database configuration fields
+  dbType,
+  jdbcUrl,
+  username,
+  password,
+  selectSqlString,
+  rowIndex,
+  columnIndex,
 
-const variableName = ref<string>('');
-const variableNameError = ref(false);
-const description = ref<string>('');
+  // Extraction configuration fields
+  method,
+  defaultValue,
+  expression,
+  matchItem,
 
-const dbType = ref<string>();
-const jdbcUrl = ref<string>('');
-const username = ref<string>('');
-const password = ref<string>('');
-const selectSqlString = ref<string>('');
-const rowIndex = ref<string>('0');
-const columnIndex = ref<string>('0');
-
-const method = ref<'EXACT_VALUE' | 'JSON_PATH' | 'REGEX' | 'X_PATH'>('EXACT_VALUE');
-const defaultValue = ref<string>('');
-const expression = ref<string>('');
-const matchItem = ref<string>('');
-
-const previewData = ref<{
-  name: string;
-  extraction: {
-    source: 'JDBC';
-    method: 'EXACT_VALUE' | 'JSON_PATH' | 'REGEX' | 'X_PATH';
-    expression: string;
-    defaultValue: string;
-    matchItem: string;
-    datasource: {
-      type: string | undefined;
-      username: string;
-      password: string;
-      jdbcUrl: string;
-    };
-    select: string;
-    rowIndex: string;
-    columnIndex: string;
-  };
-}>();
-
-const toSelectDataSource = () => {
-  modalVisible.value = true;
-};
-
-const selectedDataSourceOk = (data) => {
-  dbType.value = data.database;
-  jdbcUrl.value = data.jdbcUrl;
-  username.value = data.username;
-  password.value = data.password;
-};
-
-const nameChange = () => {
-  variableNameError.value = false;
-};
-
-const nameBlur = (event: { target: { value: string; } }) => {
-  const name = event.target.value;
-  if (!name) {
-    return;
-  }
-
-  validName(name);
-};
-
-const validName = (name: string) => {
-  // eslint-disable-next-line prefer-regex-literals
-  const rex = new RegExp(/[^a-zA-Z0-9!$%^&*_\-+=./]/);
-  if (rex.test(name)) {
-    variableNameError.value = true;
-    return false;
-  }
-
-  return true;
-};
-
-const buttonGroupClick = (key: 'ok' | 'delete' | 'export' | 'clone' | 'copyLink' | 'refresh') => {
-  if (key === 'ok') {
-    ok();
-    return;
-  }
-
-  if (key === 'delete') {
-    emit('delete', variableId.value);
-    return;
-  }
-
-  if (key === 'export') {
-    emit('export', variableId.value);
-    return;
-  }
-
-  if (key === 'clone') {
-    emit('clone', variableId.value);
-    return;
-  }
-
-  if (key === 'copyLink') {
-    emit('copyLink', variableId.value);
-    return;
-  }
-
-  if (key === 'refresh') {
-    emit('refresh', variableId.value);
-  }
-};
-
-const ok = async () => {
-  if (!validName(variableName.value)) {
-    return;
-  }
-
-  if (editFlag.value) {
-    toEdit();
-    return;
-  }
-
-  toCreate();
-};
-
-const toEdit = async () => {
-  const params = getParams();
-  confirmLoading.value = true;
-  const [error] = await variable.putVariables(params);
-  confirmLoading.value = false;
-  if (error) {
-    return;
-  }
-
-  notification.success(t('dataVariable.detail.jdbcVariable.notifications.editSuccess'));
-  emit('ok', params, true);
-};
-
-const toCreate = async () => {
-  const params = getParams();
-  confirmLoading.value = true;
-  const [error, res] = await variable.addVariables(params);
-  confirmLoading.value = false;
-  if (error) {
-    return;
-  }
-
-  notification.success(t('dataVariable.detail.jdbcVariable.notifications.addSuccess'));
-  const id = res?.data?.id;
-  emit('ok', { ...params, id }, false);
-};
-
-const getParams = (): JdbcVariableFormState => {
-  const params: JdbcVariableFormState = {
-    projectId: props.projectId,
-    name: variableName.value,
-    description: description.value,
-    passwordValue: false,
-    extraction: {
-      source: 'JDBC',
-      method: method.value,
-      defaultValue: defaultValue.value,
-      expression: expression.value,
-      matchItem: matchItem.value,
-      select: selectSqlString.value,
-      rowIndex: rowIndex.value,
-      columnIndex: columnIndex.value,
-      datasource: {
-        type: dbType.value,
-        jdbcUrl: jdbcUrl.value,
-        username: username.value,
-        password: password.value
-      }
-    }
-  };
-
-  const id = variableId.value;
-  if (id) {
-    params.id = id;
-  }
-
-  return params;
-};
-
-const initialize = () => {
-  const data = props.dataSource;
-  if (!data) {
-    return;
-  }
-
-  const { extraction } = data || {};
-  variableName.value = data.name;
-  description.value = data.description;
-
-  const datasource = extraction.datasource;
-  dbType.value = datasource.type?.value;
-  jdbcUrl.value = datasource.jdbcUrl;
-  username.value = datasource.username;
-  password.value = datasource.password;
-
-  selectSqlString.value = extraction.select;
-  rowIndex.value = extraction.rowIndex;
-  columnIndex.value = extraction.columnIndex;
-
-  defaultValue.value = extraction.defaultValue;
-  expression.value = extraction.expression;
-  matchItem.value = extraction.matchItem;
-};
-
-onMounted(() => {
-  watch(() => props.dataSource, (newValue) => {
-    if (!newValue) {
-      return;
-    }
-
-    initialize();
-  }, { immediate: true });
-
-  watch(() => activeKey.value, (newValue) => {
-    if (newValue !== 'preview') {
-      return;
-    }
-
-    const newData = {
-      name: variableName.value,
-      extraction: {
-        source: 'JDBC',
-        method: method.value,
-        expression: expression.value,
-        defaultValue: defaultValue.value,
-        matchItem: matchItem.value,
-        datasource: {
-          type: dbType.value,
-          username: username.value,
-          password: password.value,
-          jdbcUrl: jdbcUrl.value
-        },
-        select: selectSqlString.value,
-        rowIndex: rowIndex.value,
-        columnIndex: columnIndex.value
-      }
-    };
-
-    if (!isEqual(newData, previewData.value)) {
-      previewData.value = newData;
-    }
-  }, { immediate: true });
-});
-
-const variableId = computed(() => {
-  return props.dataSource?.id || '';
-});
-
-const editFlag = computed(() => {
-  return !!props.dataSource?.id;
-});
-
-const okButtonDisabled = computed(() => {
-  let disabled = !variableName.value ||
-    !dbType.value ||
-    !jdbcUrl.value ||
-    !username.value ||
-    !password.value ||
-    !selectSqlString.value ||
-    !rowIndex.value ||
-    !columnIndex.value ||
-    !method.value;
-
-  if (!disabled) {
-    if (['JSON_PATH', 'REGEX', 'X_PATH'].includes(method.value)) {
-      disabled = !expression.value;
-    }
-  }
-  return disabled;
-});
+  // Methods
+  nameChange,
+  nameBlur,
+  buttonGroupClick,
+  toSelectDataSource,
+  selectedDataSourceOk,
+  okButtonDisabled,
+  variableId,
+  editFlag
+} = useJdbcVariable(props, emit);
 </script>
+
 <template>
+  <!-- Button group for variable actions -->
   <ButtonGroup
     :editFlag="editFlag"
     :okButtonDisabled="okButtonDisabled"
     class="mb-5"
     @click="buttonGroupClick" />
 
+  <!-- Variable name input -->
   <div class="flex items-start mb-3.5">
     <div class="flex items-center flex-shrink-0 mr-2.5 leading-7">
       <IconRequired />
@@ -342,6 +116,7 @@ const okButtonDisabled = computed(() => {
     </Validate>
   </div>
 
+  <!-- Variable description textarea -->
   <div class="flex items-start">
     <div class="mr-2.5 flex items-center flex-shrink-0 transform-gpu translate-y-1">
       <IconRequired class="invisible" />
@@ -358,10 +133,12 @@ const okButtonDisabled = computed(() => {
       trim />
   </div>
 
+  <!-- Tabbed interface for configuration, preview, and usage -->
   <Tabs
     v-model:activeKey="activeKey"
     size="small"
     class="ant-tabs-nav-mb-2.5">
+    <!-- Configuration tab -->
     <TabPane key="value">
       <template #tab>
         <div class="flex items-center font-normal">
@@ -371,9 +148,12 @@ const okButtonDisabled = computed(() => {
       </template>
 
       <div>
+        <!-- Configuration hints -->
         <Hints class="mb-2.5" :text="t('dataVariable.detail.jdbcVariable.hints')" />
 
+        <!-- Database connection configuration -->
         <Toggle :title="t('dataVariable.detail.jdbcVariable.readConfig')" class="text-3 leading-5 mb-3.5">
+          <!-- Data source selection button -->
           <div class="flex items-center justify-start mb-3.5">
             <div class="w-19.5 flex-shrink-0">
             </div>
@@ -387,6 +167,7 @@ const okButtonDisabled = computed(() => {
             </Button>
           </div>
 
+          <!-- Database type and JDBC URL -->
           <div class="flex items-center space-x-5 mb-3.5">
             <div class="w-1/2 flex items-center">
               <div class="w-19.5 flex-shrink-0">
@@ -395,7 +176,7 @@ const okButtonDisabled = computed(() => {
               </div>
               <SelectEnum
                 v-model:value="dbType"
-                 enumKey="DatabaseType"
+                enumKey="DatabaseType"
                 :placeholder="t('dataVariable.detail.jdbcVariable.databaseTypePlaceholder')"
                 class="w-full-24" />
             </div>
@@ -414,6 +195,7 @@ const okButtonDisabled = computed(() => {
             </div>
           </div>
 
+          <!-- Username and password -->
           <div class="flex items-center space-x-5 mb-3.5">
             <div class="w-1/2 flex items-center">
               <div class="w-19.5 flex-shrink-0">
@@ -442,6 +224,7 @@ const okButtonDisabled = computed(() => {
             </div>
           </div>
 
+          <!-- SQL select statement -->
           <div class="flex items-start mb-3.5">
             <div class="w-19.5 flex-shrink-0 transform-gpu translate-y-1">
               <IconRequired />
@@ -457,6 +240,7 @@ const okButtonDisabled = computed(() => {
               :maxlength="1024" />
           </div>
 
+          <!-- Row and column index inputs -->
           <div class="flex items-center space-x-5 mb-3.5">
             <div class="w-1/2 flex items-center">
               <div class="w-19.5 flex-shrink-0">
@@ -492,7 +276,9 @@ const okButtonDisabled = computed(() => {
           </div>
         </Toggle>
 
+        <!-- Extraction configuration -->
         <Toggle :title="t('dataVariable.detail.jdbcVariable.extractConfig')" class="text-3 leading-5">
+          <!-- Exact value extraction method -->
           <template v-if="method === 'EXACT_VALUE'">
             <div class="flex items-center space-x-5 mb-3.5">
               <div class="w-1/2 flex items-center">
@@ -522,6 +308,7 @@ const okButtonDisabled = computed(() => {
             </div>
           </template>
 
+          <!-- Pattern-based extraction methods (JSON_PATH, REGEX, X_PATH) -->
           <template v-else>
             <div class="flex items-center space-x-5 mb-3.5">
               <div class="w-1/2 flex items-center">
@@ -584,6 +371,7 @@ const okButtonDisabled = computed(() => {
       </div>
     </TabPane>
 
+    <!-- Preview tab -->
     <TabPane key="preview">
       <template #tab>
         <div class="flex items-center font-normal">
@@ -594,6 +382,7 @@ const okButtonDisabled = computed(() => {
       <PreviewData :dataSource="previewData" />
     </TabPane>
 
+    <!-- Usage tab - only visible for existing variables -->
     <TabPane v-if="variableId" key="use">
       <template #tab>
         <div class="flex items-center font-normal">
@@ -601,14 +390,15 @@ const okButtonDisabled = computed(() => {
         </div>
       </template>
 
-      <VariableUseList :id="variableId" />
+      <VariableUsageList :id="variableId" />
     </TabPane>
   </Tabs>
 
+  <!-- Data source selection modal -->
   <SelectDataSourceModal
+    v-model:visible="modalVisible"
     :projectId="props.projectId"
     :userInfo="props.userInfo"
-    v-model:visible="modalVisible"
     @ok="selectedDataSourceOk" />
 </template>
 

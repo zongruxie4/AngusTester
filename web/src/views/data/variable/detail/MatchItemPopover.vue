@@ -2,125 +2,46 @@
 import { useI18n } from 'vue-i18n';
 import { Popover } from 'ant-design-vue';
 import { Grid, Hints, Icon } from '@xcan-angus/vue-ui';
-import beautify from 'js-beautify';
+import { useMatchItemPopover } from './composables/useMatchItemPopover';
 
 const { t } = useI18n();
 
-const prettyXml = (data: string) => {
-  return beautify.html(data, {
-    unformatted: ['code', 'pre', 'em', 'strong', 'span'],
-    indent_inner_html: true,
-    indent_char: ' ',
-    indent_size: 2
-  });
-};
-
-const matchItemList = [
-  {
-    key: 'regexp',
-    name: t('dataVariable.detail.matchItemPopover.regexp.name'),
-    columns: [[
-      {
-        dataIndex: 'data',
-        label: t('dataVariable.detail.matchItemPopover.regexp.columns.data')
-      },
-      {
-        dataIndex: 'expression',
-        label: t('dataVariable.detail.matchItemPopover.regexp.columns.regexp')
-      },
-      {
-        dataIndex: 'result',
-        label: t('dataVariable.detail.matchItemPopover.regexp.columns.group')
-      },
-      {
-        dataIndex: 'item',
-        label: t('dataVariable.detail.matchItemPopover.regexp.item')
-      }
-    ]],
-    data: {
-      data: 'hello, RegexExtraction! my phone number is 18888888888 and 13999999999.',
-      expression: '(1\\d{10})',
-      result: '["18888888888","13999999999"]',
-      item: '不指定位置默认取合并结果合并匹配值："1888888888813999999999"，指定位置0取值："18888888888"，指定位置1取值："13999999999"。'
-    }
-  },
-  {
-    key: 'jsonpath',
-    name: t('dataVariable.detail.matchItemPopover.jsonpath.name'),
-    columns: [[
-      {
-        dataIndex: 'data',
-        label: t('dataVariable.detail.matchItemPopover.jsonpath.columns.data')
-      },
-      {
-        dataIndex: 'expression',
-        label: t('dataVariable.detail.matchItemPopover.jsonpath.columns.jsonpath')
-      },
-      {
-        dataIndex: 'result',
-        label: t('dataVariable.detail.matchItemPopover.jsonpath.columns.result')
-      },
-      {
-        dataIndex: 'item',
-        label: t('dataVariable.detail.matchItemPopover.jsonpath.item')
-      }
-    ]],
-    data: {
-      data: { store: { book: [{ title: 'Sayings of the Century', price: 100 }, { title: 'Confucianism', price: 200 }] } },
-      expression: '$.store.book[*]',
-      result: '[{"title":"Sayings of the Century","price":100},{"title":"confucianism","price":200}]',
-      item: '不指定位置默认取合并结果：[{"title":"Sayings of the Century","price":100},{"title":"confucianism","price":200}]，指定位置0取值：{"title":"Sayings of the Century","price":100}，指定位置1取值：{"title":"confucianism","price":200}。'
-    }
-  },
-  {
-    key: 'xpath',
-    name: t('dataVariable.detail.matchItemPopover.xpath.name'),
-    columns: [[
-      {
-        dataIndex: 'data',
-        label: t('dataVariable.detail.matchItemPopover.xpath.columns.data')
-      },
-      {
-        dataIndex: 'expression',
-        label: t('dataVariable.detail.matchItemPopover.xpath.columns.xpath')
-      },
-      {
-        dataIndex: 'result',
-        label: t('dataVariable.detail.matchItemPopover.xpath.columns.result')
-      },
-      {
-        dataIndex: 'item',
-        label: t('dataVariable.detail.matchItemPopover.xpath.item')
-      }
-    ]],
-    data: {
-      data: prettyXml('<?xml version="1.0" encoding="UTF-8" standalone="yes"?><persons><person><age>30</age><interests>coding</interests>' +
-        '<interests>basketball</interests><name>Angus1</name></person><person><age>32</age><interests>coding</interests><name>Angus2</name></person></persons>'),
-      expression: '/persons/person[age >= 30]',
-      result: '["30codingbasketballAngus1", "32codingAngus2"]',
-      item: '不指定位置默认取合并结果："30codingbasketballAngus132codingAngus2"，指定位置0取值："30codingbasketballAngus1"，指定位置1取值："30codingbasketballAngus2"。'
-    }
-  }
-];
+// Use the match item popover composable for example data
+const {
+  matchItemList
+} = useMatchItemPopover();
 </script>
+
 <template>
+  <!-- Popover container -->
   <Popover destroyTooltipOnHide overlayClassName="overflow-auto">
+    <!-- Trigger element (info icon) -->
     <div class="flex-shrink-0 flex items-center cursor-pointer w-4 h-7">
       <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5 cursor-pointer" />
     </div>
+
+    <!-- Popover content -->
     <template #content>
       <div class="w-196 space-y-2 text-3 text-theme-content">
+        <!-- Title -->
         <Hints :text="t('dataVariable.detail.matchItemPopover.title')" class="!font-semibold !text-theme-content" />
+
+        <!-- Description -->
         <div>
           {{ t('dataVariable.detail.matchItemPopover.description') }}
         </div>
+
+        <!-- Examples list -->
         <ol class="pl-4 space-y-2">
           <li
             v-for="item in matchItemList"
             :key="item.key"
             style="list-style-type: circle;"
             class="space-y-2">
+            <!-- Example title -->
             <div class="font-semibold">{{ item.name }}</div>
+
+            <!-- Example details grid -->
             <Grid
               labelStyle="color: var(--content-text-sub-content);"
               valueStyle="color: var(--content-text-sub-content);"
@@ -144,7 +65,9 @@ const matchItemList = [
     </template>
   </Popover>
 </template>
+
 <style scoped>
+/* Code block styling */
 pre code {
   font-size: 13px;
   line-height: 18px;
@@ -155,6 +78,7 @@ pre code {
 </style>
 
 <style>
+/* Popover scrollable content styling */
 .ant-popover.overflow-auto .ant-popover-inner-content {
   max-height: 60vh;
   overflow: auto;

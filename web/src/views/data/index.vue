@@ -6,7 +6,7 @@ import LeftMenu from '@/components/layout/leftMenu/index.vue';
 
 type MenuKey = 'homepage' | 'variables' | 'dataSet' | 'file' | 'dataSource';
 
-const Homepage = defineAsyncComponent(() => import('@/views/data/homepage/index.vue'));
+const Homepage = defineAsyncComponent(() => import('@/views/data/home/index.vue'));
 const Variables = defineAsyncComponent(() => import('@/views/data/variable/index.vue'));
 const DataSet = defineAsyncComponent(() => import('@/views/data/dataset/index.vue'));
 const FileData = defineAsyncComponent(() => import('@/views/data/file/index.vue'));

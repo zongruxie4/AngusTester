@@ -1,14 +1,10 @@
 <script lang="ts" setup>
-import { computed, inject, ref, watch } from 'vue';
+import { computed, inject, ref } from 'vue';
 import type { TreeProps } from 'ant-design-vue';
 import { Tree } from 'ant-design-vue';
 import { Icon, Modal } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-
-import { space } from '@/api/storage';
-import store from '@/store';
-
-const { t } = useI18n();
+import { useMove } from './composables/useMove';
 
 interface Props {
   visible: boolean,
@@ -22,75 +18,35 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{(e: 'ok', target: {targetSpaceId: string, targetDirectoryId?: string}): void, (e: 'update:visible', value: boolean): void}>();
 
+const { t } = useI18n();
+
+// Inject project information
 const projectInfo = inject('projectInfo', ref({ id: '' }));
 const projectId = computed(() => {
   return projectInfo.value?.id;
 });
 
-const expandedKeys = ref<string[]>([]);
-const selectedKeys = ref<string[]>([]);
+// Use the move composable
+const { expandedKeys, selectedKeys, target, treeData, loadNodeData, handleSelect, resetTreeState, init } = useMove(props, projectId.value);
 
-const target = ref<{targetSpaceId?: string, targetDirectoryId?: string}>({});
+// Initialize the composable
+init();
 
-const treeData = ref<TreeProps['treeData']>([]);
-const loadSpace = async () => {
-  const [error, res = { data: {} }] = await space.getSpaceList({ appCode: 'AngusTester', pageSize: store.state.maxPageSize, projectId: projectId.value });
-  if (error) {
-    return;
-  }
-  treeData.value = (res.data.list || []).map(data => ({ ...data, type: 'SPACE' })).slice();
-};
-
-const onLoadData:TreeProps['loadData'] = treeNode => {
-  const spaceId = treeNode.type?.value === 'DIRECTORY' ? treeNode.spaceId : treeNode.id;
-  const parentDirectoryId = treeNode.type?.value === 'DIRECTORY' ? treeNode.id : '-1';
-  return space.getFileList({ spaceId, parentDirectoryId, filters: [{ key: 'type', value: 'DIRECTORY', op: 'EQUAL' }], pageSize: store.state.maxPageSize, pageNo: 1 })
-    .then(([error, res]) => {
-      if (error) {
-        return;
-      }
-      if (treeNode.dataRef?.children) {
-        return;
-      }
-
-      if (treeNode.dataRef) {
-        treeNode.dataRef.children = (res.data.list || []).map(data => ({ ...data, spaceId: spaceId, isLeaf: data.summary.subDirectoryNum === '0' })).filter(data => !props.moveIds?.includes(data.id));
-      }
-      treeData.value = [...treeData.value];
-    });
-};
-
-const confirm = () => {
+/**
+ * Confirm move operation
+ */
+const confirm = (): void => {
   if (selectedKeys.value.length) {
     emit('ok', target.value as {targetSpaceId: string, targetDirectoryId?: string});
   }
 };
 
-const cancel = () => {
+/**
+ * Cancel move operation
+ */
+const cancel = (): void => {
   emit('update:visible', false);
 };
-
-watch(() => props.visible, newValue => {
-  if (newValue) {
-    loadSpace();
-  } else {
-    expandedKeys.value = [];
-    treeData.value = [];
-    selectedKeys.value = [];
-  }
-}, {
-  immediate: true
-});
-
-const handleSelect = (_selectedKeys, { selected, selectedNodes }) => {
-  if (selected) {
-    const { type, id, spaceId } = selectedNodes[0];
-    target.value = type === 'SPACE' ? { targetSpaceId: id } : { targetSpaceId: spaceId, targetDirectoryId: id };
-  } else {
-    target.value = {};
-  }
-};
-
 </script>
 <template>
   <Modal
@@ -109,7 +65,7 @@ const handleSelect = (_selectedKeys, { selected, selectedNodes }) => {
       class="space-tree"
       :height="400"
       :fieldNames="{children:'children', title:'name', key:'id'}"
-      :loadData="onLoadData"
+      :loadData="loadNodeData"
       :treeData="treeData"
       @select="handleSelect">
       <template #icon="{type}">

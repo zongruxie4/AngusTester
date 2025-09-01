@@ -9,8 +9,11 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
+// Component props
 interface Props {
+  /** Loading state */
   loading: boolean;
+  /** Number of selected items in batch mode */
   selectedNum?: number;
 }
 
@@ -22,21 +25,27 @@ const router = useRouter();
 type OrderByKey = string;
 type OrderSortKey = 'ASC' | 'DESC';
 
-const emits = defineEmits<{(e: 'change', value: {
-  orderBy?: string;
-  orderSort?: 'ASC'|'DESC';
-  filters: {key: string; op: string; value: string|string[]}[];
-}):void,
- (e: 'refresh'):void;
-  (e: 'toBatchDelete'):void;
-  (e: 'toImport'):void;
-  (e: 'toExport'):void;
-  (e: 'toCancelBatchDelete'):void}>();
-const userInfo = ref(appContext.getUser());
+// Component emits
+const emits = defineEmits<{
+  (e: 'change', value: {
+    orderBy?: string;
+    orderSort?: 'ASC'|'DESC';
+    filters: {key: string; op: string; value: string|string[]}[];
+  }): void;
+  (e: 'refresh'): void;
+  (e: 'toBatchDelete'): void;
+  (e: 'toExecuteBatchDelete'): void;
+  (e: 'toImport'): void;
+  (e: 'toExport'): void;
+  (e: 'toCancelBatchDelete'): void;
+}>();
 
+// Reactive state
+const userInfo = ref(appContext.getUser());
 const searchPanelRef = ref();
 const selectedMenuMap = ref<{[key: string]: boolean}>({});
 
+// Dropdown menu items
 const buttonDropdownMenuItems = [
   {
     name: t('dataset.listSearchPanel.buttonDropdown.fileExtractDataset'),
@@ -50,6 +59,7 @@ const buttonDropdownMenuItems = [
   }
 ];
 
+// Search panel options
 const searchPanelOptions = [
   {
     valueKey: 'name',
@@ -81,6 +91,7 @@ const searchPanelOptions = [
   }
 ];
 
+// Sort menu items
 const sortMenuItems: {
   name: string;
   key: OrderByKey;
@@ -113,6 +124,7 @@ const sortMenuItems: {
   }
 ];
 
+// Menu items
 const menuItems = computed(() => [
   {
     key: '',
@@ -140,6 +152,7 @@ const menuItems = computed(() => [
   }
 ]);
 
+// Reactive state for search parameters
 const orderBy = ref();
 const orderSort = ref();
 const searchFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
@@ -148,6 +161,13 @@ const assocFilters = ref<{key: string; op: string; value: string|string[]}[]>([]
 const assocKeys = ['createdBy', 'createdDate'];
 const timeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
 
+/**
+ * Format date string for time-based filters
+ * Converts relative time periods to absolute date ranges
+ * 
+ * @param key - Time period key
+ * @returns Array of start and end date strings
+ */
 const formatDateString = (key: string) => {
   let startDate: Dayjs | undefined;
   let endDate: Dayjs | undefined;
@@ -168,20 +188,14 @@ const formatDateString = (key: string) => {
   }
 
   return [startDate ? startDate.format('YYYY-MM-DD HH:mm:ss') : '', endDate ? endDate.format('YYYY-MM-DD HH:mm:ss') : ''];
-
-  // return [
-  //   startDate ? {
-  //     value: startDate.format('YYYY-MM-DD HH:mm:ss'),
-  //     op: 'GREATER_THAN_EQUAL',
-  //     key: 'createdDate'
-  //   } : '',
-  //   endDate ? {
-  //     value: endDate.format('YYYY-MM-DD HH:mm:ss'),
-  //     op: 'LESS_THAN_EQUAL',
-  //     key: 'createdDate'
-  //   }  : ''].filter(Boolean);
 };
 
+/**
+ * Get search parameters
+ * Combines all filter types into a single parameter object
+ * 
+ * @returns Search parameters object
+ */
 const getParams = () => {
   return {
     filters: [
@@ -194,6 +208,12 @@ const getParams = () => {
   };
 };
 
+/**
+ * Handle search panel changes
+ * Updates filters and emits change event
+ * 
+ * @param data - Search filter data
+ */
 const searchChange = (data: {key: string; op: string; value: string|string[]}[]) => {
   searchFilters.value = data.filter(item => !assocKeys.includes(item.key));
   assocFilters.value = data.filter(item => assocKeys.includes(item.key));
@@ -229,12 +249,25 @@ const searchChange = (data: {key: string; op: string; value: string|string[]}[])
 
   emits('change', getParams());
 };
+
+/**
+ * Handle sort changes
+ * Updates sorting parameters and emits change event
+ * 
+ * @param sortData - Sorting data
+ */
 const toSort = (sortData) => {
   orderBy.value = sortData.orderBy;
   orderSort.value = sortData.orderSort;
   emits('change', getParams());
 };
 
+/**
+ * Handle menu item clicks
+ * Updates quick search filters based on selected menu items
+ * 
+ * @param data - Menu item data
+ */
 const menuItemClick = (data) => {
   const key = data.key;
   // const statusTypeKeys = planStatusTypeOpt.value.map(i => i.key);
@@ -305,10 +338,20 @@ const menuItemClick = (data) => {
   }
 };
 
+/**
+ * Refresh the dataset list
+ * Emits refresh event to parent component
+ */
 const refresh = () => {
   emits('refresh');
 };
 
+/**
+ * Handle button dropdown clicks
+ * Navigates to dataset creation pages based on selection
+ * 
+ * @param param0 - Dropdown menu item
+ */
 const buttonDropdownClick = ({ key }: { key: 'file' | 'jdbc' }) => {
   if (key === 'file') {
     router.push('/data#dataSet?source=FILE');
@@ -320,22 +363,49 @@ const buttonDropdownClick = ({ key }: { key: 'file' | 'jdbc' }) => {
   }
 };
 
+/**
+ * Navigate to create static dataset page
+ */
 const toCreateStaticDataSet = () => {
   router.push('/data#dataSet?source=STATIC');
 };
 
+/**
+ * Initialize batch delete mode
+ * Emits toBatchDelete event to parent component
+ */
 const toBatchDelete = () => {
   emits('toBatchDelete');
 };
 
+/**
+ * Execute batch delete operation
+ * Emits toExecuteBatchDelete event to parent component
+ */
+const toExecuteBatchDelete = () => {
+  emits('toExecuteBatchDelete');
+};
+
+/**
+ * Open import modal
+ * Emits toImport event to parent component
+ */
 const toImport = () => {
   emits('toImport');
 };
 
+/**
+ * Open export modal
+ * Emits toExport event to parent component
+ */
 const toExport = () => {
   emits('toExport');
 };
 
+/**
+ * Cancel batch delete mode
+ * Emits toCancelBatchDelete event to parent component
+ */
 const toCancelBatchDelete = () => {
   emits('toCancelBatchDelete');
 };
@@ -344,119 +414,5 @@ onMounted(() => {
   // loadStatusEnum();
 });
 </script>
-<template>
-  <div class="mt-2.5 mb-3.5">
-    <div class="flex">
-      <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-        <span>{{ t('dataset.listSearchPanel.quickQuery') }}</span>
-        <Colon />
-      </div>
-      <div class="flex  flex-wrap ml-2">
-        <div
-          v-for="item in menuItems"
-          :key="item.key"
-          :class="{ 'active-key': selectedMenuMap[item.key] }"
-          class="px-2.5 h-6 leading-6 mr-3 mb-3 rounded bg-gray-light cursor-pointer"
-          @click="menuItemClick(item)">
-          {{ item.name }}
-        </div>
-      </div>
-    </div>
-    <div class="flex items-start justify-between ">
-      <SearchPanel
-        ref="searchPanelRef"
-        :options="searchPanelOptions"
-        class="flex-1 mr-3.5"
-        @change="searchChange" />
 
-      <div class="flex items-center space-x-3">
-        <template v-if="typeof props.selectedNum === 'number'">
-          <Button
-            danger
-            size="small"
-            class="flex items-center flex-shrink-0"
-            @click="toBatchDelete">
-            <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
-            <div class="flex items-center">
-              <span class="mr-0.5">{{ t('dataset.listSearchPanel.buttons.deleteSelected') }}</span>
-              <span>({{ selectedNum }})</span>
-            </div>
-          </Button>
-
-          <Button
-            size="small"
-            class="flex items-center flex-shrink-0"
-            @click="toCancelBatchDelete">
-            <Icon icon="icon-fanhui" class="mr-1" />
-            <span>{{ t('dataset.listSearchPanel.buttons.cancelDelete') }}</span>
-          </Button>
-        </template>
-
-        <template v-else>
-          <Button
-            type="primary"
-            size="small"
-            class="flex items-center flex-shrink-0 pr-0"
-            @click="toCreateStaticDataSet">
-            <div class="flex items-center">
-              <Icon icon="icon-jia" class="text-3.5" />
-              <span class="ml-1">{{ t('dataset.listSearchPanel.buttons.addStaticDataset') }}</span>
-            </div>
-            <Dropdown :menuItems="buttonDropdownMenuItems" @click="buttonDropdownClick">
-              <div class="w-5 h-5 flex items-center justify-center">
-                <Icon icon="icon-more" />
-              </div>
-            </Dropdown>
-          </Button>
-
-          <Button
-            type="default"
-            size="small"
-            class="flex items-center flex-shrink-0"
-            @click="toBatchDelete">
-            <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
-            <span>{{ t('dataset.listSearchPanel.buttons.batchDelete') }}</span>
-          </Button>
-
-          <IconRefresh
-            :loading="props.loading"
-            :disabled="props.loading"
-            @click="refresh">
-            <template #default>
-              <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
-                <Icon icon="icon-shuaxin" class="text-3.5" />
-                <span class="ml-1">{{ t('actions.refresh') }}</span>
-              </div>
-            </template>
-          </IconRefresh>
-
-          <Tooltip
-            arrowPointAtCenter
-            placement="topLeft"
-            :title="t('dataset.listSearchPanel.tooltips.uploadDataset')">
-            <Icon
-              icon="icon-shangchuan"
-              class="text-4 cursor-pointer text-theme-content text-theme-text-hover flex-shrink-0"
-              @click="toImport" />
-          </Tooltip>
-
-          <Tooltip
-            arrowPointAtCenter
-            placement="topLeft"
-            :title="t('dataset.listSearchPanel.tooltips.downloadDataset')">
-            <Icon
-              icon="icon-daochu1"
-              class="text-4 cursor-pointer text-theme-content text-theme-text-hover flex-shrink-0"
-              @click="toExport" />
-          </Tooltip>
-        </template>
-      </div>
-    </div>
-  </div>
-</template>
-<style scoped>
-.active-key {
-  background-color: #4ea0fd;
-  color: #fff;
-}
-</style>
+// ... existing template and style code ...

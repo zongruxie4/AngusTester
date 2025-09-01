@@ -1,42 +1,67 @@
-<script lang="ts" setup>
+<script setup lang="ts">
+/**
+ * Search Panel Component for Variable List
+ * 
+ * <p>Component that provides search, filter, and quick action functionality</p>
+ * <p>Includes quick search options, advanced search panel, and action buttons</p>
+ */
+
 import { computed, onMounted, ref } from 'vue';
 import { Colon, Dropdown, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { useRouter } from 'vue-router';
-import { Button } from 'ant-design-vue';
+import { Button, Tooltip } from 'ant-design-vue';
 import { appContext } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
+// Import types
+import type { SearchPanelProps, SearchFilter, SortConfig, SearchPanelOption } from './types';
+
 const { t } = useI18n();
 
-interface Props {
-  loading: boolean;
-  selectedNum?: number;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+// Component props
+const props = withDefaults(defineProps<SearchPanelProps>(), {
   loading: false
 });
 
 const router = useRouter();
-type OrderByKey = string;
-type OrderSortKey = 'ASC' | 'DESC';
 
-const emits = defineEmits<{(e: 'change', value: {
-  orderBy?: string;
-  orderSort?: 'ASC'|'DESC';
-  filters: {key: string; op: string; value: string|string[]}[];
-}):void,
- (e: 'refresh'):void;
-  (e: 'toBatchDelete'):void;
-  (e: 'toImport'):void;
-  (e: 'toExport'):void;
-  (e: 'toCancelBatchDelete'):void}>();
+// Component emits
+const emits = defineEmits<{
+  (e: 'change', value: {
+    orderBy?: string;
+    orderSort?: 'ASC' | 'DESC';
+    filters: SearchFilter[];
+  }): void;
+  (e: 'refresh'): void;
+  (e: 'toBatchDelete'): void;
+  (e: 'toImport'): void;
+  (e: 'toExport'): void;
+  (e: 'toCancelBatchDelete'): void;
+}>();
+
+// User context
 const userInfo = ref(appContext.getUser());
 
+// Component refs
 const searchPanelRef = ref();
-const selectedMenuMap = ref<{[key: string]: boolean}>({});
 
+// State management
+const selectedMenuMap = ref<{ [key: string]: boolean }>({});
+const orderBy = ref<string>();
+const orderSort = ref<'ASC' | 'DESC'>();
+const searchFilters = ref<SearchFilter[]>([]);
+const quickSearchFilters = ref<SearchFilter[]>([]);
+const assocFilters = ref<SearchFilter[]>([]);
+
+// Constants
+const assocKeys = ['createdBy', 'lastModifiedBy', 'createdDate'];
+const timeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
+const establishedKeys = ['established=1', 'established=0'];
+
+/**
+ * Button dropdown menu items for different extraction types
+ */
 const buttonDropdownMenuItems = [
   {
     name: t('dataVariable.list.searchPanel.dropdown.fileExtract'),
@@ -55,6 +80,9 @@ const buttonDropdownMenuItems = [
   }
 ];
 
+/**
+ * Search panel configuration options
+ */
 const searchPanelOptions = [
   {
     valueKey: 'name',
@@ -63,33 +91,27 @@ const searchPanelOptions = [
     allowClear: true,
     maxlength: 100
   },
-  // {
-  //   valueKey: 'status',
-  //   type: 'select-enum',
-  //   enumKey: 'FuncReviewStatus',
-  //   placeholder: '选择状态',
-  //   allowClear: true
-  // },
   {
     valueKey: 'createdBy',
     type: 'select-user',
     allowClear: true,
-    placeholder: t('dataVariable.list.searchPanel.searchOptions.createdByPlaceholder'),
-    maxlength: 100
+    placeholder: t('dataVariable.list.searchPanel.searchOptions.createdByPlaceholder')
   },
   {
     valueKey: 'createdDate',
     type: 'date-range',
     allowClear: true,
-    placeholder: t('dataVariable.list.searchPanel.searchOptions.createdDatePlaceholder'),
-    maxlength: 100
+    placeholder: t('dataVariable.list.searchPanel.searchOptions.createdDatePlaceholder')
   }
 ];
 
+/**
+ * Sort menu configuration
+ */
 const sortMenuItems: {
   name: string;
-  key: OrderByKey;
-  orderSort: OrderSortKey;
+  key: string;
+  orderSort: 'ASC' | 'DESC';
 }[] = [
   {
     name: t('dataVariable.list.searchPanel.sortOptions.byName'),
@@ -118,6 +140,9 @@ const sortMenuItems: {
   }
 ];
 
+/**
+ * Quick search menu items
+ */
 const menuItems = computed(() => [
   {
     key: '',
@@ -145,50 +170,43 @@ const menuItems = computed(() => [
   }
 ]);
 
-const orderBy = ref();
-const orderSort = ref();
-const searchFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
-const quickSearchFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
-const assocFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
-const assocKeys = ['createdBy', 'lastModifiedBy', 'createdDate'];
-const timeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
-const establishedKeys = ['established=1', 'established=0'];
-
-const formatDateString = (key: string) => {
+/**
+ * Format date string based on time key
+ * 
+ * @param key - Time key identifier
+ * @returns Array of start and end date strings
+ */
+const formatDateString = (key: string): [string, string] => {
   let startDate: Dayjs | undefined;
   let endDate: Dayjs | undefined;
 
-  if (key === 'lastDay') {
-    startDate = dayjs().startOf('date');
-    endDate = dayjs();
+  switch (key) {
+    case 'lastDay':
+      startDate = dayjs().startOf('date');
+      endDate = dayjs();
+      break;
+    case 'lastThreeDays':
+      startDate = dayjs().startOf('date').subtract(3, 'day').add(1, 'day');
+      endDate = dayjs();
+      break;
+    case 'lastWeek':
+      startDate = dayjs().startOf('date').subtract(1, 'week').add(1, 'day');
+      endDate = dayjs();
+      break;
   }
 
-  if (key === 'lastThreeDays') {
-    startDate = dayjs().startOf('date').subtract(3, 'day').add(1, 'day');
-    endDate = dayjs();
-  }
-
-  if (key === 'lastWeek') {
-    startDate = dayjs().startOf('date').subtract(1, 'week').add(1, 'day');
-    endDate = dayjs();
-  }
-
-  return [startDate ? startDate.format('YYYY-MM-DD HH:mm:ss') : '', endDate ? endDate.format('YYYY-MM-DD HH:mm:ss') : ''];
-
-  // return [
-  //   startDate ? {
-  //     value: startDate.format('YYYY-MM-DD HH:mm:ss'),
-  //     op: 'GREATER_THAN_EQUAL',
-  //     key: 'createdDate'
-  //   } : '',
-  //   endDate ? {
-  //     value: endDate.format('YYYY-MM-DD HH:mm:ss'),
-  //     op: 'LESS_THAN_EQUAL',
-  //     key: 'createdDate'
-  //   }  : ''].filter(Boolean);
+  return [
+    startDate ? startDate.format('YYYY-MM-DD HH:mm:ss') : '',
+    endDate ? endDate.format('YYYY-MM-DD HH:mm:ss') : ''
+  ];
 };
 
-const getParams = () => {
+/**
+ * Get current search parameters
+ * 
+ * @returns Object containing current search configuration
+ */
+const getCurrentParams = () => {
   return {
     filters: [
       ...quickSearchFilters.value,
@@ -200,53 +218,81 @@ const getParams = () => {
   };
 };
 
-const searchChange = (data: {key: string; op: string; value: string|string[]}[]) => {
+/**
+ * Handle search panel changes
+ * 
+ * @param data - Search panel data with filters
+ */
+const handleSearchPanelChange = (data: { filters: SearchFilter[] }) => {
   searchFilters.value = data.filter(item => !assocKeys.includes(item.key));
   assocFilters.value = data.filter(item => assocKeys.includes(item.key));
 
+  // Update selected menu map based on filters
+  updateSelectedMenuMap();
+  
+  emits('change', getCurrentParams());
+};
+
+/**
+ * Update selected menu map based on current filters
+ */
+const updateSelectedMenuMap = () => {
   if (!assocFilters.value.length) {
-    assocKeys.forEach(i => {
-      if (i === 'createdDate') {
-        timeKeys.forEach(t => delete selectedMenuMap.value[t]);
+    // Clear all associated keys
+    assocKeys.forEach(key => {
+      if (key === 'createdDate') {
+        timeKeys.forEach(timeKey => delete selectedMenuMap.value[timeKey]);
       } else {
-        delete selectedMenuMap.value[i];
+        delete selectedMenuMap.value[key];
       }
     });
   } else {
+    // Update selected menu map based on filters
     assocKeys.forEach(key => {
-      if (key === 'createdBy' || key === 'lastModifiedBy') {
-        const filterItem = assocFilters.value.find(i => i.key === key);
-        if (!filterItem || filterItem.value !== userInfo.value?.id) {
-          delete selectedMenuMap.value[key];
-        }
+        if (key === 'createdBy' || key === 'lastModifiedBy') {
+    const filterItem = assocFilters.value.find(item => item.key === key);
+    if (!filterItem || filterItem.value !== userInfo.value?.id) {
+      delete selectedMenuMap.value[key];
+    }
+  }
+  if (key === 'createdDate') {
+    const filterItem = assocFilters.value.filter(item => item.key === key);
+    const timeKey = timeKeys.find(t => selectedMenuMap.value[t]);
+    if (timeKey && filterItem.length > 0) {
+      const timeValue = formatDateString(timeKey);
+      if (timeValue[0] !== filterItem[0].value || timeValue[1] !== filterItem[1].value) {
+        delete selectedMenuMap.value[timeKey];
       }
-      if (key === 'createdDate') {
-        const filterItem = assocFilters.value.filter(i => i.key === key);
-        const timeKey = timeKeys.find(t => selectedMenuMap.value[t]);
-        if (timeKey) {
-          const timeValue = formatDateString(timeKey);
-          if (timeValue[0] !== filterItem[0].value || timeValue[1] !== filterItem[1].value) {
-            delete selectedMenuMap.value[timeKey];
-          }
-        }
-      }
+    }
+  }
     });
   }
-
-  emits('change', getParams());
 };
-const toSort = (sortData) => {
+
+/**
+ * Handle sort changes
+ * 
+ * @param sortData - Sort configuration data
+ */
+const handleSortChange = (sortData: SortConfig) => {
   orderBy.value = sortData.orderBy;
   orderSort.value = sortData.orderSort;
-  emits('change', getParams());
+  emits('change', getCurrentParams());
 };
 
-const menuItemClick = (data) => {
+/**
+ * Handle menu item clicks for quick search
+ * 
+ * @param data - Menu item data
+ */
+const handleMenuItemClick = (data: { key: string }) => {
   const key = data.key;
-  // const statusTypeKeys = planStatusTypeOpt.value.map(i => i.key);
   let searchChangeFlag = false;
+
   if (selectedMenuMap.value[key]) {
+    // Remove selection
     delete selectedMenuMap.value[key];
+    
     if (timeKeys.includes(key) && assocKeys.includes('createdDate')) {
       searchPanelRef.value.setConfigs([
         { valueKey: 'createdDate', value: undefined }
@@ -259,35 +305,53 @@ const menuItemClick = (data) => {
       searchChangeFlag = true;
     }
   } else {
+    // Add selection
     if (key === '') {
+      // Select "All" - clear other selections
       selectedMenuMap.value = { '': true };
       quickSearchFilters.value = [];
-      // 清空搜索面板
+      
       if (typeof searchPanelRef.value?.clear === 'function') {
         searchPanelRef.value.clear();
         searchChangeFlag = true;
       }
     } else {
       delete selectedMenuMap.value[''];
-    }
-    if (timeKeys.includes(key)) {
-      timeKeys.forEach(timeKey => delete selectedMenuMap.value[timeKey]);
-      selectedMenuMap.value[key] = true;
-    } else if (establishedKeys.includes(key)) {
-      establishedKeys.forEach(statusKey => delete selectedMenuMap.value[statusKey]);
-      selectedMenuMap.value[key] = true;
-    } else {
-      selectedMenuMap.value[key] = true;
+      
+      if (timeKeys.includes(key)) {
+        // Time-based selection
+        timeKeys.forEach(timeKey => delete selectedMenuMap.value[timeKey]);
+        selectedMenuMap.value[key] = true;
+      } else if (establishedKeys.includes(key)) {
+        // Status-based selection
+        establishedKeys.forEach(statusKey => delete selectedMenuMap.value[statusKey]);
+        selectedMenuMap.value[key] = true;
+      } else {
+        selectedMenuMap.value[key] = true;
+      }
     }
   }
+
+  // Update quick search filters
+  updateQuickSearchFilters();
+  
+  if (!searchChangeFlag) {
+    emits('change', getCurrentParams());
+  }
+};
+
+/**
+ * Update quick search filters based on selected menu items
+ */
+const updateQuickSearchFilters = () => {
   const userId = userInfo.value?.id;
-  const timeFilters: {key: string; op: string; value: string}[] = [];
-  const assocFiltersInQuick = [];
+  const timeFilters: SearchFilter[] = [];
+  const assocFiltersInQuick: any[] = [];
+
   quickSearchFilters.value = Object.keys(selectedMenuMap.value).map(key => {
     if (key === '') {
       return undefined;
-    } else if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(key)) {
-      // timeFilters = formatDateString(key);
+    } else if (timeKeys.includes(key)) {
       assocFiltersInQuick.push({ valueKey: 'createdDate', value: formatDateString(key) });
       return undefined;
     } else if (assocKeys.includes(key)) {
@@ -302,141 +366,172 @@ const menuItemClick = (data) => {
         value: userId
       };
     }
-  }).filter(Boolean);
+  }).filter((item): item is SearchFilter => item !== undefined);
+
   quickSearchFilters.value.push(...timeFilters);
+  
   if (assocFiltersInQuick.length) {
-    searchPanelRef.value.setConfigs([
-      ...assocFiltersInQuick
-    ]);
-    searchChangeFlag = true;
-  }
-  if (!searchChangeFlag) {
-    emits('change', getParams());
+    searchPanelRef.value.setConfigs(assocFiltersInQuick);
   }
 };
 
-const refresh = () => {
+/**
+ * Handle refresh action
+ */
+const handleRefresh = () => {
   emits('refresh');
 };
 
-const buttonDropdownClick = ({ key }: { key: 'file' | 'http' | 'jdbc' }) => {
-  if (key === 'file') {
-    router.push('/data#variables?source=FILE');
-    return;
-  }
-
-  if (key === 'http') {
-    router.push('/data#variables?source=HTTP');
-    return;
-  }
-
-  if (key === 'jdbc') {
-    router.push('/data#variables?source=JDBC');
+/**
+ * Handle button dropdown clicks for different extraction types
+ * 
+ * @param key - Extraction type key
+ */
+const handleButtonDropdownClick = ({ key }: { key: 'file' | 'http' | 'jdbc' }) => {
+  switch (key) {
+    case 'file':
+      router.push('/data#variables?source=FILE');
+      break;
+    case 'http':
+      router.push('/data#variables?source=HTTP');
+      break;
+    case 'jdbc':
+      router.push('/data#variables?source=JDBC');
+      break;
   }
 };
 
-const toCreateStaticVariable = () => {
+/**
+ * Navigate to create static variable page
+ */
+const navigateToCreateStaticVariable = () => {
   router.push('/data#variables?source=STATIC');
 };
 
-const toBatchDelete = () => {
+/**
+ * Handle batch delete action
+ */
+const handleBatchDelete = () => {
   emits('toBatchDelete');
 };
 
-const toImport = () => {
+/**
+ * Handle import action
+ */
+const handleImport = () => {
   emits('toImport');
 };
 
-const toExport = () => {
+/**
+ * Handle export action
+ */
+const handleExport = () => {
   emits('toExport');
 };
 
-const toCancelBatchDelete = () => {
+/**
+ * Handle cancel batch delete action
+ */
+const handleCancelBatchDelete = () => {
   emits('toCancelBatchDelete');
 };
 
 onMounted(() => {
-  // loadStatusEnum();
+  // Component initialization logic can be added here
 });
 </script>
+
 <template>
   <div class="mt-2.5 mb-3.5">
+    <!-- Quick Search Section -->
     <div class="flex">
       <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
         <span>{{ t('dataVariable.list.searchPanel.quickSearch') }}</span>
         <Colon />
       </div>
-      <div class="flex  flex-wrap ml-2">
+      
+      <div class="flex flex-wrap ml-2">
         <div
           v-for="item in menuItems"
           :key="item.key"
           :class="{ 'active-key': selectedMenuMap[item.key] }"
           class="px-2.5 h-6 leading-6 mr-3 mb-3 rounded bg-gray-light cursor-pointer"
-          @click="menuItemClick(item)">
+          @click="handleMenuItemClick(item)">
           {{ item.name }}
         </div>
       </div>
     </div>
-    <div class="flex items-start justify-between ">
+
+    <!-- Search Panel and Action Buttons -->
+    <div class="flex items-start justify-between">
+      <!-- Advanced Search Panel -->
       <SearchPanel
         ref="searchPanelRef"
         :options="searchPanelOptions"
         class="flex-1 mr-3.5"
-        @change="searchChange" />
+        @change="handleSearchPanelChange" />
 
+      <!-- Action Buttons -->
       <div class="flex items-center space-x-3">
+        <!-- Batch Delete Actions (when items are selected) -->
         <template v-if="typeof props.selectedNum === 'number'">
           <Button
             danger
             size="small"
             class="flex items-center flex-shrink-0"
-            @click="toBatchDelete">
+            @click="handleBatchDelete">
             <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
             <div class="flex items-center">
               <span class="mr-0.5">{{ t('dataVariable.list.searchPanel.buttons.deleteSelected') }}</span>
-              <span>({{ selectedNum }})</span>
+              <span>({{ props.selectedNum }})</span>
             </div>
           </Button>
 
           <Button
             size="small"
             class="flex items-center flex-shrink-0"
-            @click="toCancelBatchDelete">
+            @click="handleCancelBatchDelete">
             <Icon icon="icon-fanhui" class="mr-1" />
             <span>{{ t('dataVariable.list.searchPanel.buttons.cancelDelete') }}</span>
           </Button>
         </template>
 
+        <!-- Default Action Buttons -->
         <template v-else>
+          <!-- Add Variable Button with Dropdown -->
           <Button
             type="primary"
             size="small"
             class="flex items-center flex-shrink-0 pr-0"
-            @click="toCreateStaticVariable">
+            @click="navigateToCreateStaticVariable">
             <div class="flex items-center">
               <Icon icon="icon-jia" class="text-3.5" />
               <span class="ml-1">{{ t('dataVariable.list.searchPanel.buttons.addStaticVariable') }}</span>
             </div>
-            <Dropdown :menuItems="buttonDropdownMenuItems" @click="buttonDropdownClick">
+            <Dropdown 
+              :menuItems="buttonDropdownMenuItems" 
+              @click="handleButtonDropdownClick">
               <div class="w-5 h-5 flex items-center justify-center">
                 <Icon icon="icon-more" />
               </div>
             </Dropdown>
           </Button>
 
+          <!-- Batch Delete Button -->
           <Button
             type="default"
             size="small"
             class="flex items-center flex-shrink-0"
-            @click="toBatchDelete">
+            @click="handleBatchDelete">
             <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
             <span>{{ t('dataVariable.list.searchPanel.buttons.batchDelete') }}</span>
           </Button>
 
+          <!-- Refresh Button -->
           <IconRefresh
             :loading="props.loading"
             :disabled="props.loading"
-            @click="refresh">
+            @click="handleRefresh">
             <template #default>
               <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
                 <Icon icon="icon-shuaxin" class="text-3.5" />
@@ -445,6 +540,7 @@ onMounted(() => {
             </template>
           </IconRefresh>
 
+          <!-- Import Button -->
           <Tooltip
             arrowPointAtCenter
             placement="topLeft"
@@ -452,9 +548,10 @@ onMounted(() => {
             <Icon
               icon="icon-shangchuan"
               class="text-4 cursor-pointer text-theme-content text-theme-text-hover flex-shrink-0"
-              @click="toImport" />
+              @click="handleImport" />
           </Tooltip>
 
+          <!-- Export Button -->
           <Tooltip
             arrowPointAtCenter
             placement="topLeft"
@@ -462,13 +559,14 @@ onMounted(() => {
             <Icon
               icon="icon-daochu1"
               class="text-4 cursor-pointer text-theme-content text-theme-text-hover flex-shrink-0"
-              @click="toExport()" />
+              @click="handleExport" />
           </Tooltip>
         </template>
       </div>
     </div>
   </div>
 </template>
+
 <style scoped>
 .active-key {
   background-color: #4ea0fd;

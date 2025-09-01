@@ -1,319 +1,125 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, onMounted, reactive, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, inject, onMounted, watch } from 'vue';
 import { Button } from 'ant-design-vue';
-import { debounce } from 'throttle-debounce';
-import { AsyncComponent, AuthorizeModal, Drawer, Icon, IconRefresh, Input, modal, Table } from '@xcan-angus/vue-ui';
-import { useRouter } from 'vue-router';
-import { duration, STORAGE, appContext } from '@xcan-angus/infra';
+import { AsyncComponent, AuthorizeModal, Drawer, Icon, IconRefresh, Input, Table } from '@xcan-angus/vue-ui';
+import { STORAGE, appContext } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
-import { space } from '@/api/storage';
 import { FileCapacity, SpaceInfo } from './components';
-import { PaginationType, SPACE_PERMISSIONS, SpaceInfoType } from './types';
+import { useSpaceData } from './composables/useSpaceData';
+import { useTableColumns } from './composables/useTableColumns';
+import { useSpaceManagement } from './composables/useSpaceManagement';
+import { useDrawerMenu } from './composables/useDrawerMenu';
 
 const { t } = useI18n();
 
+// Async component imports for better performance
 const Share = defineAsyncComponent(() => import('@/views/data/file/share/index.vue'));
 const EditSpaceModal = defineAsyncComponent(() => import('@/views/data/file/EditSpace.vue'));
 const Shared = defineAsyncComponent(() => import('@/views/data/file/share/ShareList.vue'));
 const GlobalAuth = defineAsyncComponent(() => import('@/views/data/file/auth/index.vue'));
 const Introduce = defineAsyncComponent(() => import('@/views/data/file/Introduce.vue'));
 
-const router = useRouter();
+// Dependency injection for app context
 const appInfo = inject('appInfo', ref());
 const isAdmin = inject('isAdmin', ref(false));
 const projectInfo = inject('projectInfo', ref({ id: '' }));
+
+// Application state
 const isPrivate = ref(false);
 
-const projectId = computed(() => {
-  return projectInfo.value?.id;
+// Computed project ID
+const projectId = computed(() => projectInfo.value?.id);
+
+// Composable usage for different concerns
+const {
+  pagination,
+  dataList,
+  tableLoading,
+  keyword,
+  selectedRowKey,
+  selectedRow,
+  getNameById,
+  loadData,
+  changePage,
+  delConfirm,
+  openSpace,
+  handleRowSelect,
+  getSafeAuth
+} = useSpaceData();
+
+const { spaceColumns } = useTableColumns();
+
+const {
+  editVisible,
+  authModalVisible,
+  globalAuthVisible,
+  selectId,
+  auth,
+  defaultIds,
+  editSpace,
+  createSpace,
+  openAuthorizeModal,
+  editAuth,
+  authFlagChange,
+  saveSpace
+} = useSpaceManagement();
+
+const {
+  drawerRef,
+  activeDrawerKey,
+  spaceDrawerMenu,
+  dynamicDrawerMenu
+} = useDrawerMenu();
+
+/**
+ * <p>Watch for project ID changes and reload data when project changes.</p>
+ * <p>This ensures the space list is updated when switching between projects.</p>
+ */
+watch(() => projectId.value, (newValue) => {
+  if (newValue) {
+    pagination.current = 1;
+    loadData(newValue, isAdmin.value);
+  }
+}, {
+  immediate: true
 });
 
-const globalAuthVisible = ref(false);
-
-const pagination = reactive<PaginationType>({
-  current: 1,
-  pageSize: 10,
-  total: 0,
-  hideOnSinglePage: true
-});
-
-const dataList = ref<SpaceInfoType[]>([]);
-const tableLoading = ref(false);
-const keyword = ref();
-const getParams = () => {
-  return {
-    pageSize: pagination.pageSize,
-    pageNo: pagination.current,
-    filters: keyword.value ? [{ value: keyword.value, op: 'MATCH_END', key: 'name' }] : undefined
-  };
-};
-
-const loadData = async () => {
-  if (tableLoading.value) {
-    return;
-  }
-  const params = getParams();
-  tableLoading.value = true;
-
-  const [error, resp] = await space.getSpaceList({ ...params, appCode: 'AngusTester', admin: true, projectId: projectId.value });
-  tableLoading.value = false;
-  if (error) {
-    return;
-  }
-  const { list, total } = resp.data || {};
-  dataList.value = list || [];
-  pagination.total = +total || 0;
-  selectedRowKey.value = '';
-  
-  // 确保所有空间的 auth 字段都有默认值
-  dataList.value.forEach(space => {
-    if (!space.auth || !Array.isArray(space.auth)) {
-      space.auth = [];
-    }
-  });
-  
-  if (isAdmin.value) {
-    dataList.value.forEach(space => {
-      space.auth = SPACE_PERMISSIONS;
-    });
-    return;
-  }
-  if (dataList.value?.length > 0) {
-    loadDataAuth(dataList.value);
-  }
-};
-
-const loadDataAuth = async (list) => {
-  const ids = list.map(space => space.id);
-  const [error, res] = await space.getSpaceCurrentAuthList({ ids, admin: true });
-  if (error) {
-    return;
-  }
-  const authList = res.data || {};
-  dataList.value.forEach(space => {
-    // 确保 auth 字段始终是数组类型
-    if (authList[space.id] && authList[space.id].spaceAuth) {
-      space.auth = (authList[space.id].permissions || []).map(auth => auth.value);
-    } else {
-      space.auth = SPACE_PERMISSIONS;
-    }
-  });
-};
-
-const selectedRowKey = ref<string>('');
-const selectedRow = ref();
-
-watch(() => keyword.value, debounce(duration.search, () => {
-  pagination.current = 1;
-  loadData();
-}));
-
-const changePage = ({ pageSize, current }) => {
-  pagination.current = current;
-  pagination.pageSize = pageSize;
-  loadData();
-};
-
-const selectId = ref<string>();
-const auth = ref<string[]>([]);
-const selectName = ref();
-
-const delConfirm = (record) => {
-  modal.confirm({
-    content: t('fileSpace.messages.deleteConfirm', { name: record.name }),
-    onOk () {
-      return new Promise<void>((resolve, reject) => {
-        space.deleteSpace(record.id).then(([error]) => {
-          if (error) {
-            // eslint-disable-next-line prefer-promise-reject-errors
-            reject();
-            return;
-          }
-          resolve();
-
-          if (dataList.value.length === 1 && pagination.current > 1) {
-            pagination.current--;
-          }
-
-          loadData();
-        });
-      });
-    }
-  });
-};
-
-const shareVisible = ref(false);
-
-const authModalVisible = ref(false);
-const editAuth = (record) => {
-  selectId.value = record.id;
-  auth.value = record.auth || [];
-  authModalVisible.value = true;
-};
-
-const openSpace = (record) => {
-  router.push({ path: `/data/file/${record.id}`, query: { spaceName: record.name } });
-};
-
-const drawer = ref();
-const activeDrawerKey = ref();
-
-const putCustom = (record) => {
-  return {
-    onClick: () => {
-      if (record.id === selectedRowKey.value) {
-        selectedRow.value = undefined;
-        selectedRowKey.value = '';
-        drawer.value.close();
-      } else {
-        selectedRowKey.value = record.id;
-        selectedRow.value = record;
-        // if (!activeDrawerKey.value) {
-        //   drawer.value.open('info');
-        // }
-      }
-    }
-  };
-};
-
-const getNameById = computed(() => {
-  if (!selectedRowKey.value) {
-    return '';
-  }
-
-  const selectRow = dataList.value.find(row => row.id === selectedRowKey.value);
-  return selectRow?.name;
-});
-
-// 安全获取权限数组的辅助函数
-const getSafeAuth = (record: any) => {
-  return Array.isArray(record?.auth) ? record.auth : [];
-};
-
-const editVisible = ref(false);
-const editSpace = (id:string) => {
-  editVisible.value = true;
-  selectId.value = id;
-};
-
-const createSpace = () => {
-  editVisible.value = true;
-  selectId.value = undefined;
-};
-
-const openAuthorizeModal = () => {
-  globalAuthVisible.value = true;
-};
-
-const authFlagChange = ({ auth }: { auth: string[] }) => {
-  const data = dataList.value;
-  const targetId = selectId.value;
-  for (let i = 0, len = data.length; i < len; i++) {
-    if (data[i].id === targetId) {
-      data[i].auth = auth;
-      break;
-    }
-  }
-};
-
-const saveSpace = async (form) => {
-  const [error] = await (form.id ? space.patchSpace({ ...form }) : space.addSpace({ ...form, projectId: projectId.value }));
-  if (error) {
-    return;
-  }
-  editVisible.value = false;
-  loadData();
-};
-
+/**
+ * <p>Component lifecycle hook for initialization.</p>
+ * <p>Sets up private edition flag and initial data loading.</p>
+ */
 onMounted(async () => {
   isPrivate.value = appContext.isPrivateEdition();
-  watch(() => projectId.value, newValue => {
-    if (newValue) {
-      pagination.current = 1;
-      loadData();
-    }
-  }, {
-    immediate: true
-  });
 });
 
-const defaultIds = computed(() => {
-  return selectId.value ? [selectId.value] : [];
-});
-
+/**
+ * <p>Computed drawer menu items based on selected row data.</p>
+ * <p>Dynamically shows relevant menu items based on available information.</p>
+ */
 const drawerMenu = computed(() => {
-  const { quotaSize } = selectedRow.value || {};
-  return [
-    selectedRowKey.value && {
-      icon: 'icon-fuwuxinxi',
-      name: t('fileSpace.drawer.basicInfo'),
-      key: 'info'
-    },
-    selectedRowKey.value && {
-      icon: 'icon-rongliang',
-      name: selectedRowKey.value ? t('fileSpace.drawer.spaceCapacity') + quotaSize?.value + quotaSize.unit?.message : t('fileSpace.drawer.accountStorageCapacity'),
-      key: 'size'
-    }
-    // selectedRowKey.value && {
-    //   icon: 'icon-fenxiang',
-    //   name: '分享',
-    //   key: 'share'
-    // }
-  ].filter(Boolean);
+  return dynamicDrawerMenu.value(selectedRow.value, selectedRowKey.value);
 });
-
-const columns = [
-  {
-    dataIndex: 'name',
-    key: 'name',
-    title: t('fileSpace.columns.spaceName')
-  },
-  {
-    dataIndex: 'subDirectoryNum',
-    key: 'subDirectoryNum',
-    title: t('fileSpace.columns.folderCount')
-  },
-  {
-    dataIndex: 'subFileNum',
-    key: 'subFileNum',
-    title: t('fileSpace.columns.fileCount')
-  },
-  {
-    dataIndex: 'size',
-    key: 'size',
-    title: t('fileSpace.columns.used')
-  },
-  {
-    dataIndex: 'quotaSize',
-    key: 'quotaSize',
-    title: t('fileSpace.columns.quota')
-  },
-  {
-    dataIndex: 'createdDate',
-    key: 'createdDate',
-    title: t('fileSpace.columns.addTime')
-  },
-  {
-    dataIndex: 'createdByName',
-    key: 'createdByName',
-    title: t('fileSpace.columns.addBy')
-  },
-  {
-    dataIndex: 'action',
-    key: 'action',
-    title: t('fileSpace.columns.action'),
-    width: 160
-  }
-];
 </script>
+
 <template>
   <div class="flex h-full">
+    <!-- Main content area -->
     <div class="p-5 flex-1 overflow-y-auto">
-      <div class="text-3.5 font-semibold mb-2.5">{{ t('fileSpace.title') }}</div>
+      <!-- Page title and introduction -->
+      <div class="text-3.5 font-semibold mb-2.5">
+        {{ t('fileSpace.title') }}
+      </div>
       <Introduce />
-      <div class="text-3.5 font-semibold mb-2.5 mt-4">{{ t('fileSpace.addedTitle') }}</div>
+      
+      <!-- Added spaces section -->
+      <div class="text-3.5 font-semibold mb-2.5 mt-4">
+        {{ t('fileSpace.addedTitle') }}
+      </div>
+      
+      <!-- Search and action bar -->
       <div class="flex justify-between pb-3">
+        <!-- Search input -->
         <Input
           v-model:value="keyword"
           class="w-70"
@@ -325,12 +131,9 @@ const columns = [
           </template>
         </Input>
 
+        <!-- Action buttons -->
         <div class="flex items-center space-x-2.5">
-          <!-- <ButtonAuth
-            code="DataGenerate"
-            type="primary"
-            href="/data/generate"
-            icon="icon-shengchengshuju" /> -->
+          <!-- Generate data button -->
           <Button
             type="primary"
             size="small"
@@ -339,11 +142,8 @@ const columns = [
             <Icon icon="icon-shengchengshuju" />
             {{ t('fileSpace.buttons.generateData') }}
           </Button>
-          <!-- <ButtonAuth
-            code="DataSpaceAdd"
-            type="primary"
-            icon="icon-create-script"
-            @click="createSpace" /> -->
+          
+          <!-- Add space button -->
           <Button
             type="primary"
             size="small"
@@ -352,6 +152,8 @@ const columns = [
             <Icon icon="icon-create-script" />
             {{ t('fileSpace.buttons.addSpace') }}
           </Button>
+          
+          <!-- Space permission button -->
           <Button
             class="flex items-center"
             size="small"
@@ -360,40 +162,56 @@ const columns = [
             <Icon icon="icon-quanxian1" class="mr-1" />
             <span>{{ t('fileSpace.buttons.spacePermission') }}</span>
           </Button>
+          
+          <!-- Refresh button -->
           <Button
             :disabled="tableLoading"
             class="flex items-center"
             size="small"
             type="default"
-            @click="loadData">
+            @click="loadData(projectId, isAdmin)">
             <IconRefresh />
           </Button>
         </div>
       </div>
+
+      <!-- Spaces table -->
       <Table
         rowKey="id"
         size="small"
-        :columns="columns"
+        :columns="spaceColumns"
         :pagination="pagination"
         :dataSource="dataList"
         :loading="tableLoading"
         :rowClassName="(record) => record.id === selectedRowKey ? 'ant-table-row-selected' : ''"
-        :customRow="putCustom"
+        :customRow="(record) => ({ onClick: () => handleRowSelect(record) })"
         @change="changePage">
-        <template #bodyCell="{record, column}">
+        
+        <!-- Custom cell rendering -->
+        <template #bodyCell="{ record, column }">
+          <!-- Space name column -->
           <template v-if="column.dataIndex === 'name'">
             <div class="flex items-center">
               <Icon icon="icon-kongjian" class="flex-shrink-0 text-4 mr-2" />
               <div class="flex items-center w-75 space-name-wrapper">
-                <span class="cursor-pointer text-theme-text-hover" @click.stop="openSpace(record)">{{ record.name }}</span>
+                <span 
+                  class="cursor-pointer text-theme-text-hover" 
+                  @click.stop="openSpace(record)">
+                  {{ record.name }}
+                </span>
               </div>
             </div>
           </template>
+          
+          <!-- Quota size column -->
           <template v-if="column.dataIndex === 'quotaSize'">
             {{ record.quotaSize ? (record.quotaSize.value + record.quotaSize.unit.message) : '--' }}
           </template>
+          
+          <!-- Action column -->
           <template v-if="column.dataIndex === 'action'">
             <div class="space-x-2.5 flex items-center leading-4">
+              <!-- Edit action -->
               <template v-if="getSafeAuth(record).includes('MODIFY')">
                 <a class="whitespace-nowrap" @click.stop="editSpace(record.id)">
                   <Icon icon="icon-bianji" class="align-text-bottom" />
@@ -406,6 +224,8 @@ const columns = [
                   {{ t('actions.edit') }}
                 </span>
               </template>
+              
+              <!-- Permission action -->
               <template v-if="getSafeAuth(record).includes('GRANT')">
                 <a class="whitespace-nowrap" @click.stop="editAuth(record)">
                   <Icon icon="icon-quanxian1" class="align-text-bottom" />
@@ -418,20 +238,10 @@ const columns = [
                   {{ t('fileSpace.actions.permission') }}
                 </span>
               </template>
-              <!-- <template v-if="getSafeAuth(record).includes('SHARE')">
-                <a class="whitespace-nowrap" @click.stop="share(record)">
-                  <Icon icon="icon-fenxiang" class="align-text-bottom" />
-                  分享
-                </a>
-              </template>
-              <template v-else>
-                <span class="text-text-disabled whitespace-nowrap">
-                  <Icon icon="icon-fenxiang" class="align-text-bottom" />
-                  分享
-                </span>
-              </template> -->
+              
+              <!-- Delete action -->
               <template v-if="getSafeAuth(record).includes('DELETE')">
-                <a class="whitespace-nowrap" @click.stop="delConfirm(record)">
+                <a class="whitespace-nowrap" @click.stop="delConfirm(record, projectId, isAdmin)">
                   <Icon icon="icon-qingchu" class="align-text-bottom" />
                   {{ t('actions.delete') }}
                 </a>
@@ -448,46 +258,43 @@ const columns = [
       </Table>
     </div>
 
+    <!-- Right sidebar drawer -->
     <Drawer
       v-show="selectedRow"
-      ref="drawer"
+      ref="drawerRef"
       v-model:activeKey="activeDrawerKey"
       :menuItems="drawerMenu">
+      
+      <!-- Basic info tab -->
       <template #info>
         <SpaceInfo
-          v-if="activeDrawerKey==='info'"
+          v-if="activeDrawerKey === 'info'"
           :id="selectedRowKey"
           type="space" />
       </template>
 
+      <!-- Space capacity tab -->
       <template #size>
         <FileCapacity
-          v-if="activeDrawerKey==='size'"
+          v-if="activeDrawerKey === 'size'"
           :id="selectedRowKey" />
       </template>
 
+      <!-- Share tab -->
       <template #share>
         <Shared
-          v-if="activeDrawerKey==='share'"
+          v-if="activeDrawerKey === 'share'"
           :id="selectedRowKey"
           :name="getNameById" />
       </template>
     </Drawer>
 
-    <AsyncComponent :visible="shareVisible">
-      <Share
-        :id="selectId"
-        v-model:visible="shareVisible"
-        :spaceId="selectId"
-        :spaceName="selectName"
-        :defaultIds="defaultIds" />
-    </AsyncComponent>
-
+    <!-- Async modals -->
     <AsyncComponent :visible="editVisible">
       <EditSpaceModal
         :id="selectId"
         v-model:visible="editVisible"
-        @ok="saveSpace" />
+        @ok="(form) => saveSpace(form, projectId, () => loadData(projectId, isAdmin))" />
     </AsyncComponent>
 
     <AsyncComponent :visible="authModalVisible">
@@ -504,7 +311,7 @@ const columns = [
         :onTips="t('fileSpace.permissionModal.onTips')"
         :offTips="t('fileSpace.permissionModal.offTips')"
         :title="t('fileSpace.permissionModal.title')"
-        @change="authFlagChange" />
+        @change="(authData) => authFlagChange(authData, dataList)" />
     </AsyncComponent>
 
     <AsyncComponent :visible="globalAuthVisible">
@@ -512,4 +319,9 @@ const columns = [
     </AsyncComponent>
   </div>
 </template>
-./components
+
+<style scoped>
+.space-name-wrapper {
+  @apply truncate;
+}
+</style>

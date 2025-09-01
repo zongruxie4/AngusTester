@@ -1,168 +1,45 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Hints, Icon, Input, NoData, Spin, Table } from '@xcan-angus/vue-ui';
-import { utils, duration, ExtractionMethod, ExtractionSource, ExtractionFileType, Encoding } from '@xcan-angus/infra';
-import { debounce } from 'throttle-debounce';
-import { dataSet } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
+import { usePreviewData } from './composables/usePreviewData';
+import { PreviewDataSource } from './types';
 
 const { t } = useI18n();
 
-type TableData = {
-  [key: string]: string;
-} & { id: string; }
-
-type Props = {
-  dataSource: {
-    id: string;
-    projectId: string;
-    extracted: boolean;
-    name: string;
-    extraction: {
-      defaultValue: string;
-      expression: string;
-      failureMessage: string;
-      finalValue: string;
-      matchItem: string;
-      method: ExtractionMethod;
-      name: string;
-      source: ExtractionSource;
-      value: string;
-      fileType: ExtractionFileType;
-      path: string;
-      encoding: Encoding;
-      quoteChar: string;
-      escapeChar: string;
-      separatorChar: string;
-      rowIndex: string;
-      columnIndex: string;
-      select: string;
-      parameterName: string;
-      datasource: {
-        type: string;
-        username: string;
-        password: string;
-        jdbcUrl: string;
-      };
-    };
-    parameters: {
-      name: string;
-      value: string;
-    }[];
-  };
+// Define component props with explicit typing
+interface Props {
+  dataSource?: PreviewDataSource;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined
 });
 
-const rowNum = ref<string>('20');
+// Use the composable for preview data logic
+const {
+  // State
+  rowNum,
+  pagination,
+  loading,
+  loaded,
+  errorMessage,
+  columns,
+  dataList,
 
-const pagination = ref<{ current: number; pageSize: number; total: number; showSizeChanger: false; }>({ current: 1, pageSize: 10, total: 0, showSizeChanger: false });
+  // Computed properties
+  noDataText,
 
-const loading = ref(false);
-const loaded = ref(false);
-const errorMessage = ref<string>();
-const columns = ref<{
-  title: string;
-  dataIndex: string;
-  ellipsis: true
-}[]>([]);
-const dataList = ref<TableData[]>([]);
+  // Methods
+  handleRowNumChange,
+  refresh
+} = usePreviewData(props);
 
-const inputChange = debounce(duration.search, (event: { target: { value: string; } }) => {
-  const value = event.target.value;
-  rowNum.value = value || '20';
-
-  loadData();
-});
-
-const refresh = () => {
-  if (loading.value) {
-    return;
-  }
-
-  loadData();
+// Convert event to string value for input change handler
+const onInputChange = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  handleRowNumChange({ target: { value: target.value } });
 };
-
-const loadData = async () => {
-  if (!props.dataSource || loading.value) {
-    return;
-  }
-
-  const params = {
-    ...props.dataSource,
-    rowNum: rowNum.value
-  };
-
-  loading.value = true;
-  const [error, res] = await dataSet.previewDataSetValue(params, { silence: true });
-  loading.value = false;
-  loaded.value = true;
-  columns.value = [];
-  dataList.value = [];
-  pagination.value.total = 0;
-
-  if (error) {
-    errorMessage.value = error.message;
-    return;
-  }
-
-  errorMessage.value = undefined;
-
-  const data = res?.data;
-  if (data) {
-    const entries = Object.entries(data);
-    entries.every(([key, value]) => {
-      columns.value.push({ dataIndex: key, title: key, ellipsis: true });
-      if (Array.isArray(value)) {
-        const newValue = value as string[];
-        newValue.every((item, index) => {
-          if (dataList.value[index]) {
-            dataList.value[index][key] = item;
-          } else {
-            dataList.value[index] = {
-              id: utils.uuid(),
-              [key]: item
-            };
-          }
-
-          return true;
-        });
-      }
-      return true;
-    });
-
-    pagination.value.total = dataList.value.length;
-  }
-};
-
-const reset = () => {
-  rowNum.value = '20';
-  pagination.value.total = 0;
-  loading.value = false;
-  loaded.value = false;
-  errorMessage.value = undefined;
-  columns.value = [];
-  dataList.value = [];
-};
-
-onMounted(() => {
-  watch(() => props.dataSource, (newValue) => {
-    reset();
-
-    if (!newValue) {
-      return;
-    }
-
-    loadData();
-  }, { immediate: true });
-});
-
-const noDataText = computed(() => {
-  return errorMessage.value ? errorMessage.value : t('dataset.preview.noData');
-});
 </script>
 
 <template>
@@ -181,7 +58,7 @@ const noDataText = computed(() => {
             :max="10000"
             dataType="integer"
             class="w-25"
-            @change="inputChange" />
+            @change="onInputChange" />
         </div>
 
         <Button
@@ -210,7 +87,9 @@ const noDataText = computed(() => {
         :columns="columns"
         :pagination="pagination"
         rowKey="id"
-        class="flex-1" />
+        class="flex-1"
+        noDataSize="small"
+        :noDataText="noDataText" />
     </template>
   </Spin>
 </template>

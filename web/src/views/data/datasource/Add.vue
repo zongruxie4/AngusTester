@@ -1,173 +1,81 @@
 <script lang="ts" setup>
-import { computed, inject, ref, watch } from 'vue';
-import { IconRequired, Input, Modal, notification } from '@xcan-angus/vue-ui';
-import { Form, FormItem } from 'ant-design-vue';
-import { dataSource } from '@/api/tester';
-import SelectEnum from '@/components/selectEnum/index.vue';
+import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { IconRequired, Input, Modal } from '@xcan-angus/vue-ui';
+import { Form, FormItem } from 'ant-design-vue';
+import SelectEnum from '@/components/selectEnum/index.vue';
+import { AddModalProps, AddModalEmits } from './types';
+import { useAddModal } from './composables/useAddModal';
 
 const { t } = useI18n();
-interface Props {
-  visible: boolean;
-  editData?: Record<string, any>;
-}
 
-const props = withDefaults(defineProps<Props>(), {
+/**
+ * <p>Component props definition</p>
+ * <p>Defines the interface for component properties</p>
+ */
+const props = withDefaults(defineProps<AddModalProps>(), {
   visible: false,
-  editData: undefined
+  editData: undefined,
+  projectId: ''
 });
 
-const projectInfo = inject('projectInfo', ref({ id: '' }));
-const projectId = computed(() => {
-  return projectInfo.value?.id;
-});
-const loading = ref(false);
+/**
+ * <p>Component emits definition</p>
+ * <p>Defines all possible events that can be emitted by this component</p>
+ */
+const emit = defineEmits<AddModalEmits>();
 
-const formState = ref({
-  name: '',
-  database: undefined,
-  driverClassName: '',
-  jdbcUrl: '',
-  password: '',
-  username: ''
-});
+/**
+ * <p>Main composable for modal functionality</p>
+ * <p>Handles form state, validation, and database configuration</p>
+ */
+const {
+  loading,
+  formRef,
+  formState,
+  shouldShowCredentials,
+  initializeFormWithEditData,
+  resetFormState,
+  handleDatabaseChange,
+  handleFormSubmit
+} = useAddModal(props.projectId);
 
-const emits = defineEmits<{(e: 'update:visible', value: boolean), (e: 'refresh')}>();
-
-const handleClose = () => {
-  emits('update:visible', false);
+/**
+ * <p>Handle modal close action</p>
+ * <p>Emits close event to parent component</p>
+ */
+const handleClose = (): void => {
+  emit('update:visible', false);
 };
 
-const formRef = ref();
-
-const handleOk = async () => {
-  if (!formRef.value) {
-    return;
+/**
+ * <p>Handle form submission</p>
+ * <p>Validates form and submits data, then closes modal and refreshes parent</p>
+ */
+const handleOk = async (): Promise<void> => {
+  const success = await handleFormSubmit();
+  if (success) {
+    emit('update:visible', false);
+    emit('refresh');
   }
-  formRef.value.validate().then(() => {
-    if (props.editData) {
-      edit();
-    } else {
-      add();
-    }
-  });
 };
 
-const edit = async () => {
-  if (loading.value) {
-    return;
-  }
-
-  const params:Record<string, any> = {
-    id: props.editData?.id,
-    name: formState.value.name,
-    database: formState.value.database,
-    driverClassName: formState.value.driverClassName,
-    jdbcUrl: formState.value.jdbcUrl,
-    password: formState.value.password,
-    projectId: projectId.value,
-    username: formState.value.username
-  };
-
-  loading.value = true;
-  const [error] = await dataSource.putDataSource(params);
-  loading.value = false;
-  if (error) {
-    return;
-  }
-  notification.success(t('tips.modifySuccess'));
-  emits('update:visible', false);
-  emits('refresh');
-};
-
-const add = async () => {
-  if (loading.value) {
-    return;
-  }
-  loading.value = true;
-  const [error] = await dataSource.addDataSource({ ...formState.value, projectId: projectId.value });
-  loading.value = false;
-  if (error) {
-    return;
-  }
-  notification.success(t('tips.addSuccess'));
-  emits('update:visible', false);
-  emits('refresh');
-};
-
+// Watch for visible changes and initialize form
 watch(() => props.visible, (newValue) => {
   if (!newValue) {
     return;
   }
+  
   if (props.editData) {
-    const _data = props.editData;
-    formState.value = {
-      name: _data.name,
-      database: _data.database,
-      driverClassName: _data.driverClassName,
-      jdbcUrl: _data.jdbcUrl,
-      username: _data.username,
-      password: _data.password
-    };
-    return;
+    initializeFormWithEditData(props.editData);
+  } else {
+    resetFormState();
   }
-
-  formState.value = {
-    name: '',
-    database: undefined,
-    driverClassName: '',
-    jdbcUrl: '',
-    password: '',
-    username: ''
-  };
 }, {
   immediate: true
 });
-
-// 切换类型设置默认值
-const databaseChange = (value:string) => {
-  switch (value) {
-    case 'H2':
-      formState.value.driverClassName = 'org.h2.Driver';
-      formState.value.jdbcUrl = 'jdbc:h2:~/sample_db';
-      break;
-    case 'HSQLDB':
-      formState.value.driverClassName = 'org.hsqldb.jdbc.JDBCDriver';
-      formState.value.jdbcUrl = 'jdbc:hsqldb:mem:sample_db';
-      break;
-    case 'SQLITE':
-      formState.value.driverClassName = 'org.sqlite.JDBC';
-      formState.value.jdbcUrl = 'jdbc:sqlite:sample_db';
-      break;
-    case 'POSTGRES':
-      formState.value.driverClassName = 'org.postgresql.Driver';
-      formState.value.jdbcUrl = 'jdbc:postgresql://127.0.0.1:5432/sample_db';
-      break;
-    case 'MARIADB':
-      formState.value.driverClassName = 'org.mariadb.jdbc.Driver';
-      formState.value.jdbcUrl = 'jdbc:mariadb://127.0.0.1:3306/sample_db';
-      break;
-    case 'MYSQL':
-      formState.value.driverClassName = 'com.mysql.cj.jdbc.Driver';
-      formState.value.jdbcUrl = 'jdbc:mysql://127.0.0.1:3306/sample_db';
-      break;
-    case 'ORACLE':
-      formState.value.driverClassName = 'oracle.jdbc.driver.OracleDriver';
-      formState.value.jdbcUrl = 'jdbc:oracle:thin://127.0.0.1:1521:sample_db';
-      break;
-    case 'SQLSERVER':
-      formState.value.driverClassName = 'com.microsoft.sqlserver.jdbc.SQLServerDriver';
-      formState.value.jdbcUrl = 'jdbc:sqlserver://127.0.0.1:1433;databaseName=sample_db';
-      break;
-    case 'DB2':
-      formState.value.driverClassName = 'com.ibm.db2.jcc.DB2Driver';
-      formState.value.jdbcUrl = 'jdbc:db2://127.0.0.1:50000/sample_db';
-      break;
-  }
-  formRef.value.clearValidate();
-};
-
 </script>
+
 <template>
   <Modal
     :title="props.editData ? t('datasource.form.title.edit') : t('datasource.form.title.add')"
@@ -175,42 +83,72 @@ const databaseChange = (value:string) => {
     :visible="visible"
     @cancel="handleClose"
     @ok="handleOk">
+    
     <div class="text-3 text-content flex">
+      <!-- Form Labels -->
       <div class="space-y-5 pt-1.5 mr-5">
-        <div class="h-7"><IconRequired />{{ t('datasource.form.labels.type') }}</div>
-        <div class="h-7"><IconRequired />{{ t('datasource.form.labels.name') }}</div>
-        <div class="h-7 pl-1.75">{{ t('datasource.form.labels.driverClassName') }}</div>
-        <div class="h-7"><IconRequired />{{ t('datasource.form.labels.jdbcUrl') }}</div>
-        <template v-if="formState.database !== 'SQLITE'">
-          <div class="h-7 pl-1.75">{{ t('datasource.form.labels.username') }}</div>
-          <div class="h-7 pl-1.75">{{ t('datasource.form.labels.password') }}</div>
+        <div class="h-7">
+          <IconRequired />{{ t('datasource.form.labels.type') }}
+        </div>
+        <div class="h-7">
+          <IconRequired />{{ t('datasource.form.labels.name') }}
+        </div>
+        <div class="h-7 pl-1.75">
+          {{ t('datasource.form.labels.driverClassName') }}
+        </div>
+        <div class="h-7">
+          <IconRequired />{{ t('datasource.form.labels.jdbcUrl') }}
+        </div>
+        <template v-if="shouldShowCredentials">
+          <div class="h-7 pl-1.75">
+            {{ t('datasource.form.labels.username') }}
+          </div>
+          <div class="h-7 pl-1.75">
+            {{ t('datasource.form.labels.password') }}
+          </div>
         </template>
       </div>
+      
+      <!-- Form Fields -->
       <Form
         ref="formRef"
         class="flex-1"
         :model="formState">
+        
+        <!-- Database Type Selection -->
         <FormItem name="database" :rules="{required:true,message:t('datasource.form.rules.databaseType')}">
           <SelectEnum
             v-model:value="formState.database"
             :disabled="!!props.editData"
             enumKey="DatabaseType"
             :placeholder="t('datasource.form.placeholders.databaseType')"
-            @change="databaseChange" />
+            @change="handleDatabaseChange" />
         </FormItem>
+        
+        <!-- Data Source Name -->
         <FormItem name="name" :rules="{required:true,message:t('datasource.form.rules.name')}">
           <Input
             v-model:value="formState.name"
             :maxlength="100"
             :placeholder="t('datasource.form.placeholders.name')" />
         </FormItem>
+        
+        <!-- Driver Class Name -->
         <FormItem name="driverClassName">
-          <Input v-model:value="formState.driverClassName" :placeholder="t('datasource.form.placeholders.driverClassName')" />
+          <Input 
+            v-model:value="formState.driverClassName" 
+            :placeholder="t('datasource.form.placeholders.driverClassName')" />
         </FormItem>
+        
+        <!-- JDBC URL -->
         <FormItem name="jdbcUrl" :rules="{required:true,message:t('datasource.form.rules.jdbcUrl')}">
-          <Input v-model:value="formState.jdbcUrl" :placeholder="t('datasource.form.placeholders.jdbcUrl')" />
+          <Input 
+            v-model:value="formState.jdbcUrl" 
+            :placeholder="t('datasource.form.placeholders.jdbcUrl')" />
         </FormItem>
-        <template v-if="formState.database !== 'SQLITE'">
+        
+        <!-- Username and Password (conditional) -->
+        <template v-if="shouldShowCredentials">
           <FormItem name="username">
             <Input
               v-model:value="formState.username"

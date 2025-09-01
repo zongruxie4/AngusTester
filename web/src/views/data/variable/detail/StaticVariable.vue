@@ -1,227 +1,92 @@
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Radio, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
-import { Hints, IconRequired, Input, notification, Validate, FunctionsButton, ParamTextarea } from '@xcan-angus/vue-ui';
-import { isEqual } from 'lodash-es';
-import { variable } from '@/api/tester';
-
-import { StaticVariableFormState, VariableItem } from '../types';
+import { FunctionsButton, Hints, IconRequired, Input, ParamTextarea, Validate } from '@xcan-angus/vue-ui';
+import { useStaticVariable } from './composables/useStaticVariable';
+import { VariableItem } from '../types';
+import { VariableDataProps } from '@/views/data/variable/detail/types';
 
 const { t } = useI18n();
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  dataSource?: VariableItem;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<VariableDataProps>(), {
   projectId: undefined,
   userInfo: undefined,
   dataSource: undefined
 });
 
-// eslint-disable-next-line func-call-spacing
+/**
+ * Component emit definition
+ * Defines the events that this component can emit to its parent
+ */
 const emit = defineEmits<{
+  /** Emit when form is submitted successfully */
   (e: 'ok', data: VariableItem, isEdit: boolean): void;
+
+  /** Emit when delete action is requested */
   (e: 'delete', value: string): void;
+
+  /** Emit when export action is requested */
   (e: 'export', value: string): void;
+
+  /** Emit when clone action is requested */
   (e: 'clone', value: string): void;
+
+  /** Emit when copy link action is requested */
   (e: 'copyLink', value: string): void;
+
+  /** Emit when refresh action is requested */
   (e: 'refresh', value: string): void;
 }>();
 
+// Async components for better code splitting and performance
 const ButtonGroup = defineAsyncComponent(() => import('@/views/data/variable/detail/ButtonGroup.vue'));
 const PreviewData = defineAsyncComponent(() => import('@/views/data/variable/detail/PreviewData.vue'));
-const VariableUseList = defineAsyncComponent(() => import('@/views/data/variable/detail/UseList.vue'));
+const VariableUsageList = defineAsyncComponent(() => import('@/views/data/variable/detail/UsageList.vue'));
 
-const confirmLoading = ref(false);
-const activeKey = ref<'value' | 'preview' | 'use'>('value');
+// Use the static variable composable for form logic
+const {
+  // State management
+  activeKey,
+  variableName,
+  variableNameError,
+  description,
+  previewData,
+  passwordValue,
+  variableValue,
 
-const passwordValue = ref(false);
-const variableName = ref<string>('');
-const variableNameError = ref(false);
-const description = ref<string>('');
-const variableValue = ref<string>('');
+  // Event handlers
+  nameChange,
+  nameBlur,
+  buttonGroupClick,
 
-const previewData = ref<{
-  name: string;
-  value: string;
-}>();
+  // Computed properties
+  okButtonDisabled,
+  variableId,
+  editFlag
+} = useStaticVariable(props, emit);
 
-const nameChange = () => {
-  variableNameError.value = false;
-};
-
-const nameBlur = (event: { target: { value: string; } }) => {
-  const name = event.target.value;
-  if (!name) {
-    return;
-  }
-
-  validName(name);
-};
-
-const validName = (name:string) => {
-  // eslint-disable-next-line prefer-regex-literals
-  const rex = new RegExp(/[^a-zA-Z0-9!$%^&*_\-+=./]/);
-  if (rex.test(name)) {
-    variableNameError.value = true;
-    return false;
-  }
-
-  return true;
-};
-
-const buttonGroupClick = (key: 'ok' | 'delete'|'export' | 'clone' | 'copyLink' | 'refresh') => {
-  if (key === 'ok') {
-    ok();
-    return;
-  }
-
-  if (key === 'delete') {
-    emit('delete', variableId.value);
-    return;
-  }
-
-  if (key === 'export') {
-    emit('export', variableId.value);
-    return;
-  }
-
-  if (key === 'clone') {
-    emit('clone', variableId.value);
-    return;
-  }
-
-  if (key === 'copyLink') {
-    emit('copyLink', variableId.value);
-    return;
-  }
-
-  if (key === 'refresh') {
-    emit('refresh', variableId.value);
-  }
-};
-
-const ok = async () => {
-  if (!validName(variableName.value)) {
-    return;
-  }
-
-  if (editFlag.value) {
-    toEdit();
-    return;
-  }
-
-  toCreate();
-};
-
-const toEdit = async () => {
-  const params = getParams();
-  confirmLoading.value = true;
-  const [error] = await variable.putVariables(params);
-  confirmLoading.value = false;
-  if (error) {
-    return;
-  }
-
-  notification.success(t('dataVariable.detail.staticVariable.notifications.editSuccess'));
-  emit('ok', params, true);
-};
-
-const toCreate = async () => {
-  const params = getParams();
-  confirmLoading.value = true;
-  const [error, res] = await variable.addVariables(params);
-  confirmLoading.value = false;
-  if (error) {
-    return;
-  }
-
-  notification.success(t('dataVariable.detail.staticVariable.notifications.addSuccess'));
-  const id = res?.data?.id;
-  emit('ok', { ...params, id }, false);
-};
-
-const handleBlurValue = (targetText) => {
+/**
+ * Handle value input blur event
+ * Updates the variableValue ref when the textarea loses focus
+ *
+ * @param targetText - The text value from the input
+ */
+const handleBlurValue = (targetText: string) => {
   variableValue.value = targetText;
 };
-
-const getParams = ():StaticVariableFormState => {
-  const params:StaticVariableFormState = {
-    projectId: props.projectId,
-    name: variableName.value,
-    value: variableValue.value,
-    passwordValue: passwordValue.value,
-    description: description.value
-  };
-
-  const id = variableId.value;
-  if (id) {
-    params.id = id;
-  }
-
-  return params;
-};
-
-const initialize = () => {
-  const data = props.dataSource;
-  if (!data) {
-    return;
-  }
-
-  passwordValue.value = data.passwordValue;
-  variableName.value = data.name;
-  variableValue.value = data.value;
-  description.value = data.description;
-};
-
-onMounted(() => {
-  watch(() => props.dataSource, (newValue) => {
-    if (!newValue) {
-      return;
-    }
-
-    initialize();
-  }, { immediate: true });
-
-  watch(() => activeKey.value, (newValue) => {
-    if (newValue !== 'preview') {
-      return;
-    }
-
-    const newData = {
-      name: variableName.value,
-      value: variableValue.value
-    };
-
-    if (!isEqual(newData, previewData.value)) {
-      previewData.value = newData;
-    }
-  }, { immediate: true });
-});
-
-const variableId = computed(() => {
-  return props.dataSource?.id || '';
-});
-
-const editFlag = computed(() => {
-  return !!props.dataSource?.id;
-});
-
-const okButtonDisabled = computed(() => {
-  return !variableName.value || !variableValue.value;
-});
 </script>
+
 <template>
+  <!-- Button group for variable actions -->
   <ButtonGroup
     :editFlag="editFlag"
     :okButtonDisabled="okButtonDisabled"
     class="mb-5"
     @click="buttonGroupClick" />
 
+  <!-- Variable name input field -->
+  <!-- Required field with validation -->
   <div class="flex items-start mb-3.5">
     <div class="flex items-center flex-shrink-0 mr-2.5 leading-7">
       <IconRequired />
@@ -229,7 +94,7 @@ const okButtonDisabled = computed(() => {
     </div>
     <Validate
       class="flex-1"
-      text="支持数字、字母和!$%^&*_-+=./"
+      :text="t('dataVariable.detail.staticVariable.nameSupport')"
       mode="error"
       :error="variableNameError">
       <Input
@@ -246,6 +111,8 @@ const okButtonDisabled = computed(() => {
     </Validate>
   </div>
 
+  <!-- Password value toggle -->
+  <!-- Allows user to mark variable value as sensitive -->
   <div class="flex items-center mb-3.5">
     <div class="flex items-center flex-shrink-0 mr-2.5">
       <IconRequired />
@@ -262,6 +129,8 @@ const okButtonDisabled = computed(() => {
     </RadioGroup>
   </div>
 
+  <!-- Variable description textarea -->
+  <!-- Optional field for variable documentation -->
   <div class="flex items-start">
     <div class="flex items-center flex-shrink-0 mr-2.5 transform-gpu translate-y-1">
       <IconRequired class="invisible" />
@@ -278,10 +147,12 @@ const okButtonDisabled = computed(() => {
       trim />
   </div>
 
+  <!-- Tabbed interface for value, preview, and usage -->
   <Tabs
     v-model:activeKey="activeKey"
     size="small"
     class="ant-tabs-nav-mb-2.5">
+    <!-- Value configuration tab -->
     <TabPane key="value">
       <template #tab>
         <div class="flex items-center font-normal">
@@ -302,6 +173,7 @@ const okButtonDisabled = computed(() => {
         @blur="handleBlurValue" />
     </TabPane>
 
+    <!-- Preview tab -->
     <TabPane key="preview">
       <template #tab>
         <div class="flex items-center font-normal">
@@ -312,6 +184,7 @@ const okButtonDisabled = computed(() => {
       <PreviewData :dataSource="previewData" />
     </TabPane>
 
+    <!-- Usage tab - only visible for existing variables -->
     <TabPane v-if="variableId" key="use">
       <template #tab>
         <div class="flex items-center font-normal">
@@ -319,7 +192,7 @@ const okButtonDisabled = computed(() => {
         </div>
       </template>
 
-      <VariableUseList :id="variableId" />
+      <VariableUsageList :id="variableId" />
     </TabPane>
   </Tabs>
 </template>

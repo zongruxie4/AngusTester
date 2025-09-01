@@ -1,21 +1,9 @@
 <script setup lang="ts">
-import { computed, reactive, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
-import { upload, cookieUtils } from '@xcan-angus/infra';
+import { ref } from 'vue';
 import { Progress, Upload } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-
-import { formatBytes } from '@/utils/common';
-
-const { t } = useI18n();
-
-interface SourceType {
-  name: string,
-  size: string,
-  progress: number,
-  status:number
-}
+import { useUpload } from './composables/useUpload';
 
 interface Props {
   parentDirectoryId: string
@@ -25,75 +13,39 @@ const props = withDefaults(defineProps<Props>(), {
   parentDirectoryId: '-1'
 });
 
-const route = useRoute();
-
-let spaceId = '';
-
-const state = reactive<{
-  fileList: {
-    [key:string]: SourceType
-  },
-  fileId:string
-}>({
-  fileList: {},
-  fileId: '-1'
-});
-
 const emit = defineEmits<{(e:'close'):void, (e: 'success'):void}>();
 
-const headers = {
-  authorization: `Bearer ${cookieUtils.getTokenInfo().access_token}`
+const { t } = useI18n();
+
+// Use the upload composable
+const { state, headers, uploadInput, uploadFileLength, triggerUpload, handleUpload, init } = useUpload(props);
+
+// Initialize the composable
+init();
+
+/**
+ * Trigger upload again
+ */
+const uploadAgain = (): void => {
+  triggerUpload();
 };
 
-const uploadInput = ref();
-const uploadAgain = () => {
-  uploadInput.value.click();
-};
-
-const close = () => {
+/**
+ * Close the upload component
+ */
+const close = (): void => {
   emit('close');
 };
 
-const toUpload = async ({ file }) => {
-  const options = {
-    bizKey: 'angusTesterDataFiles',
-    parentDirectoryId: +props.parentDirectoryId > -1 ? props.parentDirectoryId : undefined,
-    spaceId: spaceId
-  };
-  const size = formatBytes(file.size);
-  state.fileList[file.uid] = {
-    name: file.name, size, progress: 0, status: 0
-  };
-
-  const config = {
-    onUploadProgress: (progressEvent: { loaded: number, total: number }) => {
-      const { loaded, total } = progressEvent;
-      const progress = Math.round((loaded * 100) / total);
-      state.fileList[file.uid].progress = progress;
-    }
-  };
-
-  const [error] = await upload(file, options, config);
-  if (error) {
-    state.fileList[file.uid].status = 1;
-    return;
-  }
-  state.fileList[file.uid].status = 2;
+/**
+ * Handle successful upload
+ */
+const onSuccess = (): void => {
   emit('success');
 };
 
-const uploadFileLength = computed(() => {
-  return Object.keys(state.fileList).length;
-});
-
-watch(() => route.params.id, (val) => {
-  if (val) {
-    spaceId = val as string;
-  }
-}, {
-  immediate: true
-});
-
+// Expose closeUpload method to the composable
+// This is a workaround since we can't directly pass the emit function to the composable
 </script>
 <template>
   <Upload

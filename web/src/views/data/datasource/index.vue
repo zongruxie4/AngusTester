@@ -1,5 +1,5 @@
-<script setup lang="ts">
-import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
+<script lang="ts" setup>
+import { computed, defineAsyncComponent, inject } from 'vue';
 import { Button, Pagination } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import {
@@ -8,203 +8,77 @@ import {
   Icon,
   IconRefresh,
   Image,
-  modal,
   NoData,
-  notification,
   SearchPanel,
   Spin,
   Tooltip
 } from '@xcan-angus/vue-ui';
-
-import { DatabaseType } from '@xcan-angus/infra';
-import { dataSource } from '@/api/tester';
-import { getCurrentPage } from '@/utils/utils';
-
-type FilterOp = 'EQUAL' | 'NOT_EQUAL' | 'GREATER_THAN' | 'GREATER_THAN_EQUAL' | 'LESS_THAN' | 'LESS_THAN_EQUAL' | 'CONTAIN' | 'NOT_CONTAIN' | 'MATCH_END' | 'MATCH' | 'IN' | 'NOT_IN'
-type Filters = { key: string, value: string | boolean | string[], op: FilterOp };
-type SearchParam = {
-    pageNo: number;
-    pageSize: number;
-    filters?: Filters[];
-    orderBy?: string;
-    orderSort?: 'ASC' | 'DESC';
-    [key: string]: any;
-};
-
-const AddModal = defineAsyncComponent(() => import('./Add.vue'));
+import { useDataSource } from './composables/useDataSource';
 
 const { t } = useI18n();
+
+// Async component imports for better performance
+const AddModal = defineAsyncComponent(() => import('./Add.vue'));
+
+// Inject project information
 const projectInfo = inject('projectInfo', ref({ id: '' }));
-const projectId = computed(() => {
-  return projectInfo.value?.id;
-});
+const projectId = computed(() => projectInfo.value?.id);
 
-const isFirstLoad = ref(true);
-const loading = ref(false);
-const params = ref<SearchParam>({ pageNo: 1, pageSize: 40, filters: [] });
-const total = ref(0);
-const searchChange = (data: { key: string; value: string; op: FilterOp; }[]) => {
-  params.value.pageNo = 1;
-  params.value.filters = data;
-  getList();
-};
-
-const dataList = ref<Record<string, any>[]>([]);
-
-const dataMap = ref<Record<string, any>>({});
-const getList = async () => {
-  dataMap.value = {};
-  if (loading.value) {
-    return;
-  }
-  loading.value = true;
-  const [error, { data = { list: [], total: 0 } }] = await dataSource.getDataSourceList({ ...params.value, projectId: projectId.value });
-  loading.value = false;
-  isFirstLoad.value = false;
-  if (error) {
-    return;
-  }
-  const len = data.list.length;
-  if (len > 0) {
-    for (let i = 0; i < len; i++) {
-      const item = {
-        ...data.list[i],
-        connSuccess: undefined,
-        connFailureMessage: undefined,
-        testLoading: false
-      };
-      dataMap.value[item.id] = item;
-    }
-  }
-  dataList.value = data.list || [];
-  total.value = +data.total;
-};
-
-const refreshList = () => {
-  params.value.pageNo = 1;
-  getList();
-};
-
-const visible = ref(false);
-const handleAdd = () => {
-  editData.value = undefined;
-  visible.value = true;
-};
-
-const editData = ref();
-const handleEdit = (record) => {
-  editData.value = record;
-  visible.value = true;
-};
-
-const handleDel = (record) => {
-  modal.confirm({
-    centered: true,
-    content: t('datasource.messages.deleteConfirm', { name: record.name }),
-    async onOk () {
-      loading.value = true;
-      const [error] = await dataSource.deleteDataSource(record.id);
-      loading.value = false;
-      if (error) {
-        return;
-      }
-      notification.success(t('tips.deleteSuccess'));
-      params.value.pageNo = getCurrentPage(params.value.pageNo as number, params.value.pageSize as number, total.value);
-      getList();
-    }
-  });
-};
-
-const testLink = async (record) => {
-  if (loading.value) {
-    return;
-  }
-  loading.value = true;
-  dataMap.value[record.id].testLoading = true;
-  const [error, { data }] = await dataSource.testById(record.id);
-  dataMap.value[record.id].testLoading = false;
-  loading.value = false;
-  if (error) {
-    return;
-  }
-
-  dataMap.value[record.id].connSuccess = data.connSuccess;
-  dataMap.value[record.id].connFailureMessage = data.connFailureMessage;
-};
-
-onMounted(() => {
-  watch(() => projectId.value, newValue => {
-    if (newValue) {
-      params.value.pageNo = 1;
-      getList();
-    }
-  }, {
-    immediate: true
-  });
-});
-
-const searchOption = [
-  {
-    valueKey: 'name',
-    type: 'input',
-    placeholder: t('datasource.searchOptions.namePlaceholder'),
-    allowClear: true,
-    maxlength: 100
-  },
-  {
-    valueKey: 'database',
-    type: 'select-enum',
-    enumKey: DatabaseType,
-    placeholder: t('datasource.searchOptions.databasePlaceholder'),
-    allowClear: true
-  },
-  {
-    valueKey: 'lastModifiedBy',
-    type: 'select-user',
-    placeholder: t('datasource.searchOptions.lastModifiedByPlaceholder'),
-    maxlength: 100
-  },
-  {
-    valueKey: 'lastModifiedDate',
-    type: 'date-range',
-    placeholder: t('datasource.searchOptions.lastModifiedDatePlaceholder'),
-    allowClear: true,
-    showTime: true
-  }
-];
-
-const showTotal = (total: number) => {
-  const totalPage = Math.ceil(total / params.value.pageSize);
-  return t('execute.pageShowTotal', { total, pageNo: params.value.pageNo, totalPage });
-};
-
-const paginationChange = (page:number, size:number) => {
-  params.value.pageNo = page;
-  params.value.pageSize = size;
-  getList();
-};
+/**
+ * <p>Main composable for component logic</p>
+ * <p>Integrates all business logic, validation, and API operations</p>
+ */
+const {
+  // State
+  loading,
+  isFirstLoad,
+  dataList,
+  dataMap,
+  total,
+  params,
+  isModalVisible,
+  editData,
+  
+  // Search configuration
+  searchOptions,
+  generatePaginationTotalText,
+  shouldShowPagination,
+  
+  // Methods
+  handleSearchChange,
+  handlePaginationChange,
+  handleRefresh,
+  handleAdd,
+  handleEdit,
+  handleDelete,
+  handleTestConnection,
+  handleModalClose,
+  handleModalRefresh
+} = useDataSource(projectId.value);
 </script>
+
 <template>
   <Spin
     :spinning="loading"
     class="pl-5 py-5 w-full h-full flex flex-col">
+    
+    <!-- Page Header -->
     <div class="text-3.5 font-semibold mb-2.5">{{ t('datasource.title') }}</div>
     <div class="mb-6 text-3">
       <div>{{ t('datasource.description') }}</div>
     </div>
+    
+    <!-- Added Data Sources Section -->
     <div class="text-3.5 font-semibold mb-2.5">{{ t('datasource.addedTitle') }}</div>
+    
+    <!-- Search and Action Bar -->
     <div class="flex pr-5">
       <SearchPanel
-        :options="searchOption"
+        :options="searchOptions"
         :width="284"
         class="flex-1"
-        @change="searchChange" />
+        @change="handleSearchChange" />
       <div class="flex space-x-2.5">
-        <!-- <ButtonAuth
-          code="DataSourcesAdd"
-          type="primary"
-          icon="icon-jia"
-          @click="handleAdd" /> -->
         <Button
           type="primary"
           size="small"
@@ -217,11 +91,13 @@ const paginationChange = (page:number, size:number) => {
           class="flex items-center"
           size="small"
           type="default"
-          @click="refreshList">
+          @click="handleRefresh">
           <IconRefresh />
         </Button>
       </div>
     </div>
+
+    <!-- Data Source List -->
     <template v-if="!isFirstLoad">
       <template v-if="dataList?.length">
         <GridList
@@ -231,8 +107,10 @@ const paginationChange = (page:number, size:number) => {
           :dataSource="dataList">
           <template #default="record">
             <div class="px-3 pt-3 pb-2.5 border rounded border-border-divider flex flex-col justify-between w-full">
+              <!-- Data Source Header -->
               <div class="w-full flex-1">
                 <div class="flex items-center w-full mb-4">
+                  <!-- Database Icon -->
                   <div style="background-color: #F7F8FB;" class="w-15 h-15 flex-none p-1.25 rounded mr-2.5">
                     <template v-if="record.database === 'H2'">
                       <img src="../../../assets/database/H2.png" class="w-full h-full" />
@@ -262,11 +140,19 @@ const paginationChange = (page:number, size:number) => {
                       <img src="../../../assets/database/DB2.png" class="w-full h-full" />
                     </template>
                   </div>
+                  
+                  <!-- Data Source Info -->
                   <div class="flex items-center" style="width: calc(100% - 70px);">
-                    <div class="mr-5 truncate flex-1 text-3.5 font-medium text-text-title" :title="record.name">{{ record.name }}</div>
-                    <div class="px-2 py-0.25 whitespace-nowrap rounded -mt-10" style="background-color: #F7F8FB;color: #828894;">{{ record.database }}</div>
+                    <div class="mr-5 truncate flex-1 text-3.5 font-medium text-text-title" :title="record.name">
+                      {{ record.name }}
+                    </div>
+                    <div class="px-2 py-0.25 whitespace-nowrap rounded -mt-10" style="background-color: #F7F8FB;color: #828894;">
+                      {{ record.database }}
+                    </div>
                   </div>
                 </div>
+                
+                <!-- User Info -->
                 <div class="flex items-center text-text-sub-content">
                   <div class="flex-none">
                     <Image
@@ -280,11 +166,16 @@ const paginationChange = (page:number, size:number) => {
                     :title="record.lastModifiedByName">
                     {{ record.lastModifiedByName }}
                   </div>
-                  <div class="flex-none leading-5">&nbsp;&nbsp;{{ t('datasource.lastModifiedBy') }}&nbsp;&nbsp;{{ record.lastModifiedDate }}</div>
+                  <div class="flex-none leading-5">
+                    &nbsp;&nbsp;{{ t('datasource.lastModifiedBy') }}&nbsp;&nbsp;{{ record.lastModifiedDate }}
+                  </div>
                 </div>
               </div>
+              
+              <!-- Action Bar -->
               <div class="border-t border-border-divider my-2.5"></div>
               <div class="flex justify-between items-center leading-3">
+                <!-- Edit/Delete Actions -->
                 <div class="flex space-x-2">
                   <Icon
                     icon="icon-shuxie"
@@ -293,10 +184,14 @@ const paginationChange = (page:number, size:number) => {
                   <Icon
                     icon="icon-qingchu"
                     class="text-3.5 text-text-sub-content cursor-pointer hover:text-text-link-hover"
-                    @click="handleDel(record)" />
+                    @click="handleDelete(record)" />
                 </div>
+                
+                <!-- Connection Test Status -->
                 <div class="flex items-center h-3">
-                  <tempalte v-if="dataMap[record.id]?.testLoading" class="text-text-sub-content">{{ t('datasource.testConnection.testing') }}</tempalte>
+                  <template v-if="dataMap[record.id]?.testLoading" class="text-text-sub-content">
+                    {{ t('datasource.testConnection.testing') }}
+                  </template>
                   <template v-else>
                     <template v-if="(typeof dataMap[record.id]?.connSuccess) === 'boolean'">
                       <div class="flex items-center">
@@ -315,12 +210,20 @@ const paginationChange = (page:number, size:number) => {
                               <span>{{ t('datasource.testConnection.failed') }}</span>
                             </div>
                           </Tooltip>
-                          <div><a class="ml-2" @click="testLink(record)">{{ t('datasource.testConnection.retest') }}</a></div>
+                          <div>
+                            <a class="ml-2" @click="handleTestConnection(record)">
+                              {{ t('datasource.testConnection.retest') }}
+                            </a>
+                          </div>
                         </template>
                       </div>
                     </template>
                     <template v-else>
-                      <div><a @click="testLink(record)">{{ t('datasource.testConnection.testConnection') }}</a></div>
+                      <div>
+                        <a @click="handleTestConnection(record)">
+                          {{ t('datasource.testConnection.testConnection') }}
+                        </a>
+                      </div>
                     </template>
                   </template>
                 </div>
@@ -328,18 +231,22 @@ const paginationChange = (page:number, size:number) => {
             </div>
           </template>
         </GridList>
+        
+        <!-- Pagination -->
         <Pagination
-          v-if="total > 40"
+          v-if="shouldShowPagination(total, params.pageSize)"
           :current="params.pageNo"
           :pageSize="params.pageSize"
           :total="total"
           :hideOnSinglePage="false"
-          :showTotal="showTotal"
+          :showTotal="(total) => generatePaginationTotalText(total, params.pageNo, params.pageSize)"
           :showSizeChanger="false"
           size="middle"
           class="justify-end mr-5"
-          @change="paginationChange" />
+          @change="handlePaginationChange" />
       </template>
+      
+      <!-- No Data State -->
       <template v-if="!loading && !dataList?.length">
         <div class="pt-45">
           <NoData />
@@ -347,11 +254,13 @@ const paginationChange = (page:number, size:number) => {
       </template>
     </template>
   </Spin>
-  <AsyncComponent :visible="visible">
+  
+  <!-- Add/Edit Modal -->
+  <AsyncComponent :visible="isModalVisible">
     <AddModal
-      v-model:visible="visible"
+      v-model:visible="isModalVisible"
       :editData="editData"
       :projectId="projectId"
-      @refresh="refreshList" />
+      @refresh="handleModalRefresh" />
   </AsyncComponent>
 </template>

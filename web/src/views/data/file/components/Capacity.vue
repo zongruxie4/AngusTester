@@ -1,15 +1,9 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref, watch } from 'vue';
+import { watch } from 'vue';
 import { Button, Progress, Spin } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
-
-import { space } from '@/api/storage';
-import { store } from '@/api/store';
-import { SourceType } from './type';
-import { appContext } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
+import { useCapacity } from './composables/useCapacity';
 
 interface Props {
   id: string
@@ -17,70 +11,31 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {});
 
-const state = reactive<{
-  loading: boolean,
-  source: SourceType
-}>({
-  loading: false,
-  source: {
-  }
-});
+const { t } = useI18n();
 
-const percent = ref(0);
-const couldDiskUrl = ref();
+// Use the capacity composable
+const { state, percent, cloudDiskUrl, loadCapacity, init } = useCapacity();
 
-const loadCloudDiskPayUrl = async () => {
-  const isPrivate = appContext.isPrivateEdition();
-  if (isPrivate) {
-    return;
-  }
-  const [error, res] = await store.getStoreList({ code: 'CloudDisk' });
-  if (error) {
-    return;
-  }
-  couldDiskUrl.value = res.data.list?.[0].pricingUrl;
-};
+// Initialize the composable
+init();
 
-const load = async () => {
-  state.loading = true;
-  const [error, res] = await space.getSpaceDetail(props.id);
-  state.loading = false;
-  if (error) {
-    return;
-  }
-  state.source = res.data.summary;
-  percent.value = Math.round(+(state.source.usage || 0) * 10000) / 100;
-};
-
-// const getSpaceName = computed(() => {
-//   return props.id ? '空间容量：' : '账户存储容量：';
-// });
-
+// Watch for space ID changes and load capacity data
 watch(() => props.id, newValue => {
   if (!newValue) {
     return;
   }
-  load();
+  loadCapacity(newValue);
 }, {
   immediate: true
 });
 
-onMounted(() => {
-  loadCloudDiskPayUrl();
-});
-
 </script>
+
 <template>
   <div class="text-3 text-center px-4">
     <Spin
       :tip="t('fileSpace.capacity.loading')"
       :spinning="state.loading">
-      <!-- <div class="mb-12.5 text-left">
-        <span class="text-theme-title font-medium mr-2.5">{{ getSpaceName }}</span>
-        <span>
-          {{ state.source?.quotaSize?.value || '' }}{{ state.source?.quotaSize?.unit?.message || '' }}
-        </span>
-      </div> -->
       <Progress
         type="circle"
         class="mt-12"
@@ -98,10 +53,12 @@ onMounted(() => {
         :showInfo="false"
         :stroke-width="6"
         class="mt-7 block" />
-      <p class="text-theme-sub-content">{{ state.source?.usedSize }} / {{ state.source?.quotaSize?.value || '' }}{{ state.source?.quotaSize?.unit?.message || '' }}</p>
-      <div v-if="couldDiskUrl" class="py-2 px-3 rounded bg-gray-light text-theme-special mt-5 cursor-pointer inline-block">
+      <p class="text-theme-sub-content">
+        {{ state.source?.usedSize }} / {{ state.source?.quotaSize?.value || '' }}{{ state.source?.quotaSize?.unit?.message || '' }}
+      </p>
+      <div v-if="cloudDiskUrl" class="py-2 px-3 rounded bg-gray-light text-theme-special mt-5 cursor-pointer inline-block">
         <Button
-          :href="couldDiskUrl"
+          :href="cloudDiskUrl"
           type="link"
           size="small"
           target="_blank">

@@ -1,26 +1,10 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { AsyncComponent, modal, notification, Spin } from '@xcan-angus/vue-ui';
-import { toClipboard, utils } from '@xcan-angus/infra';
-import { variable } from '@/api/tester';
+import { computed, defineAsyncComponent, inject, onMounted, watch } from 'vue';
+import { AsyncComponent, Spin } from '@xcan-angus/vue-ui';
+import { useVariableDetail } from './composables/useVariableDetail';
+import { VariableProps } from '@/views/data/variable/detail/types';
 
-import { VariableItem } from '../types';
-
-const { t } = useI18n();
-
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  visible: boolean;
-  data: {
-    _id: string;
-    id: string | undefined;
-    source: 'STATIC' | 'FILE' | 'http' | 'JDBC' | undefined;
-  }
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<VariableProps>(), {
   projectId: undefined,
   userInfo: undefined,
   visible: false,
@@ -37,119 +21,28 @@ const HttpVariable = defineAsyncComponent(() => import('@/views/data/variable/de
 const JdbcVariable = defineAsyncComponent(() => import('@/views/data/variable/detail/JdbcVariable.vue'));
 const ExportVariables = defineAsyncComponent(() => import('@/views/data/variable/export/index.vue'));
 
-const loading = ref(false);
-const loaded = ref(false);
-const dataSource = ref<VariableItem>();
+// Use the variable detail composable for business logic
+const {
+  // State
+  loading,
+  loaded,
+  dataSource,
+  exportModalVisible,
+  exportId,
 
-const exportModalVisible = ref(false);
-const exportId = ref<string>();
-
-const ok = (data: VariableItem, isEdit = false) => {
-  const { id, name } = data;
-  if (!isEdit) {
-    const _id = props.data?._id;
-    replaceTabPane(_id, { _id: id, uiKey: id, name, data: { _id: id, id } });
-  } else {
-    updateTabPane({ _id: id, name, data: { id } });
-
-    // 更新数据名称
-    if (dataSource.value) {
-      dataSource.value.name = data.name;
-    }
-  }
-
-  nextTick(() => {
-    updateTabPane({ _id: 'variableList', notify: utils.uuid() });
-  });
-};
-
-const toDelete = () => {
-  const data = dataSource.value;
-  if (!data) {
-    return;
-  }
-
-  modal.confirm({
-    content: t('dataVariable.detail.notifications.deleteConfirm', { name: data.name }),
-    async onOk () {
-      const id = data.id;
-      const [error] = await variable.deleteVariables([id]);
-      if (error) {
-        return;
-      }
-
-      notification.success(t('dataVariable.detail.notifications.deleteSuccess'));
-      deleteTabPane([id]);
-
-      nextTick(() => {
-        updateTabPane({ _id: 'variableList', notify: utils.uuid() });
-      });
-    }
-  });
-};
-
-const toExport = (id: string) => {
-  exportModalVisible.value = true;
-  exportId.value = id;
-};
-
-const toClone = async () => {
-  const data = dataSource.value;
-  if (!data) {
-    return;
-  }
-
-  loading.value = true;
-  const [error] = await variable.cloneVariable([data.id]);
-  loading.value = false;
-  if (error) {
-    return;
-  }
-
-  notification.success(t('dataVariable.detail.notifications.cloneSuccess'));
-  nextTick(() => {
-    updateTabPane({ _id: 'variableList', notify: utils.uuid() });
-  });
-};
-
-const toCopyLink = (id: string) => {
-  toClipboard(window.location.origin + `/data#variables?id=${id}`).then(() => {
-    notification.success(t('dataVariable.detail.notifications.copyLinkSuccess'));
-  }).catch(() => {
-    notification.error(t('dataVariable.detail.notifications.copyLinkFail'));
-  });
-};
-
-const toRefresh = (id: string) => {
-  loadData(id);
-};
-
-const loadData = async (id: string) => {
-  if (loading.value) {
-    return;
-  }
-
-  loading.value = true;
-  const [error, res] = await variable.getVariableDetail(id);
-  loading.value = false;
-  loaded.value = true;
-  if (error) {
-    notification.error(error.message);
-    deleteTabPane([id]);
-    return;
-  }
-
-  const data = res?.data as VariableItem;
-  if (!data) {
-    return;
-  }
-
-  dataSource.value = data;
-  const name = data.name;
-  if (name && typeof updateTabPane === 'function') {
-    updateTabPane({ name, _id: id });
-  }
-};
+  // Methods
+  loadData,
+  handleOk,
+  handleDelete,
+  handleExport,
+  handleClone,
+  handleCopyLink,
+  handleRefresh
+} = useVariableDetail(props, {
+  updateTabPane,
+  deleteTabPane,
+  replaceTabPane
+});
 
 onMounted(() => {
   watch(() => props.data, (newValue, oldValue) => {
@@ -157,12 +50,10 @@ onMounted(() => {
     if (!id) {
       return;
     }
-
     const oldId = oldValue?.id;
     if (id === oldId) {
       return;
     }
-
     loadData(id);
   }, { immediate: true });
 });
@@ -182,16 +73,12 @@ const source = computed(() => {
         if (!extraction) {
           return 'STATIC';
         }
-
         return extraction.source;
       }
-
       return undefined;
     }
-
     return undefined;
   }
-
   return source;
 });
 </script>
@@ -203,48 +90,48 @@ const source = computed(() => {
         <StaticVariable
           :projectId="props.projectId"
           :dataSource="dataSource"
-          @ok="ok"
-          @delete="toDelete"
-          @export="toExport"
-          @clone="toClone"
-          @copyLink="toCopyLink"
-          @refresh="toRefresh" />
+          @ok="handleOk"
+          @delete="handleDelete"
+          @export="handleExport"
+          @clone="handleClone"
+          @copyLink="handleCopyLink"
+          @refresh="handleRefresh" />
       </AsyncComponent>
 
       <AsyncComponent :visible="source === 'FILE'">
         <FileVariable
           :projectId="props.projectId"
           :dataSource="dataSource"
-          @ok="ok"
-          @delete="toDelete"
-          @export="toExport"
-          @clone="toClone"
-          @copyLink="toCopyLink"
-          @refresh="toRefresh" />
+          @ok="handleOk"
+          @delete="handleDelete"
+          @export="handleExport"
+          @clone="handleClone"
+          @copyLink="handleCopyLink"
+          @refresh="handleRefresh" />
       </AsyncComponent>
 
       <AsyncComponent :visible="source === 'HTTP'">
         <HttpVariable
           :projectId="props.projectId"
           :dataSource="dataSource"
-          @ok="ok"
-          @delete="toDelete"
-          @export="toExport"
-          @clone="toClone"
-          @copyLink="toCopyLink"
-          @refresh="toRefresh" />
+          @ok="handleOk"
+          @delete="handleDelete"
+          @export="handleExport"
+          @clone="handleClone"
+          @copyLink="handleCopyLink"
+          @refresh="handleRefresh" />
       </AsyncComponent>
 
       <AsyncComponent :visible="source === 'JDBC'">
         <JdbcVariable
           :projectId="props.projectId"
           :dataSource="dataSource"
-          @ok="ok"
-          @delete="toDelete"
-          @export="toExport"
-          @clone="toClone"
-          @copyLink="toCopyLink"
-          @refresh="toRefresh" />
+          @ok="handleOk"
+          @delete="handleDelete"
+          @export="handleExport"
+          @clone="handleClone"
+          @copyLink="handleCopyLink"
+          @refresh="handleRefresh" />
       </AsyncComponent>
     </div>
   </Spin>

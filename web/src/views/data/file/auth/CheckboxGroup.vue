@@ -1,51 +1,65 @@
 <script setup lang="ts">
 import { Checkbox } from 'ant-design-vue';
+import { useCheckboxGroup } from './composables/useCheckboxGroup';
+import type { CheckboxGroupProps, CheckboxGroupEmits } from './types';
 
-interface Props {
-    options: { label: string; value: string }[];
-    disabled: boolean;
-    value: string[];
-}
+/**
+ * <p>
+ * CheckboxGroup component for managing permission selections
+ * </p>
+ * <p>
+ * This component renders a group of checkboxes with special logic for VIEW permission.
+ * When any non-VIEW permission is selected, VIEW permission is automatically added.
+ * When VIEW permission is deselected, all other permissions are removed.
+ * </p>
+ */
 
-const props = withDefaults(defineProps<Props>(), {
+// Component props with default values
+const props = withDefaults(defineProps<CheckboxGroupProps>(), {
   options: () => [],
   disabled: false,
   value: () => []
 });
 
-const emit = defineEmits<{(e: 'change', value: string[]) }>();
+// Component emits
+const emit = defineEmits<CheckboxGroupEmits>();
 
-const change = (event: { target: { checked: boolean; } }, value: string) => {
-  const checked = event.target.checked;
-  if (checked && !props.value.includes(value)) {
-    const newValue = value !== 'VIEW' && !props.value.includes('VIEW') ? props.value.concat([value, 'VIEW']) : props.value.concat([value]);
-    emit('change', newValue);
-    return;
-  }
-
-  const temp = value !== 'VIEW' ? props.value.filter(item => item !== value) : [];
-  emit('change', temp);
-};
+// Use the checkbox group composable for logic separation
+const { isOptionSelected, handleCheckboxChange } = useCheckboxGroup(props, emit);
 </script>
+
 <template>
-  <div class="ant-checkbox-group">
+  <div class="checkbox-group">
     <Checkbox
-      v-for="item in props.options"
-      :key="item.value"
+      v-for="option in props.options"
+      :key="option.value"
       :disabled="props.disabled"
-      :checked="props.value.includes(item.value)"
-      @change="change($event, item.value)">
-      {{ item.label }}
+      :checked="isOptionSelected(option.value)"
+      @change="(event) => handleCheckboxChange(event, option.value)"
+    >
+      {{ option.label }}
     </Checkbox>
   </div>
 </template>
+
 <style scoped>
+/**
+ * <p>
+ * Styling for the checkbox group component
+ * </p>
+ */
+
+.checkbox-group {
+  /* Container for the checkbox group */
+}
+
+/* Spacing between adjacent checkboxes */
 .ant-checkbox-wrapper + .ant-checkbox-wrapper {
   margin-left: 6px;
 }
 
-.ant-checkbox-group .ant-checkbox-wrapper:first-child {
+/* Left margin for the first checkbox in the group */
+.checkbox-group .ant-checkbox-wrapper:first-child {
   margin-left: 6px;
 }
-
 </style>

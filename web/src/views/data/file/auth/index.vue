@@ -1,66 +1,58 @@
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
-import { enumUtils } from '@xcan-angus/infra';
-import { SpacePermission } from '@/enums/enums';
+import { defineAsyncComponent, onMounted } from 'vue';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { Hints, Modal } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
+import { useIndex } from './composables/useIndex';
+import type { IndexProps, IndexEmits } from './types';
+
 const { t } = useI18n();
 
+/**
+ * <p>
+ * Main authentication modal component for managing user, department, and group permissions
+ * </p>
+ * <p>
+ * This component provides a tabbed interface for managing different types of entity
+ * permissions with integrated search and selection capabilities
+ * </p>
+ */
+
+// Async component imports
 const GroupSet = defineAsyncComponent(() => import('@/views/data/file/auth/GroupSet.vue'));
 const AuthSet = defineAsyncComponent(() => import('@/views/data/file/auth/AuthSet.vue'));
 
-interface Props {
-  appId: string;
-  visible: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+// Component props with default values
+const props = withDefaults(defineProps<IndexProps>(), {
   appId: undefined,
   visible: false
 });
 
-// eslint-disable-next-line func-call-spacing
-const emit = defineEmits<{
-  (e:'update:visible', value:boolean):void;
-}>();
+// Component emits
+const emit = defineEmits<IndexEmits>();
 
-const activeKey = ref<'user'|'dept'|'group'>('user');
-const checkedUserId = ref<string>();
-const checkedGroupId = ref<string>();
-const checkedDeptId = ref<string>();
+// Use the index composable for logic separation
+const {
+  // State
+  activeKey,
+  checkedUserId,
+  checkedGroupId,
+  checkedDeptId,
+  permissions,
+  loaded,
+  
+  // Methods
+  cancel,
+  setupWatchers
+} = useIndex(props, emit);
 
-const permissions = ref<{value:string, label:string}[]>([]);
-const loaded = ref(false);
-
-const cancel = () => {
-  emit('update:visible', false);
-};
-
-const loadEnums = () => {
-  const res = enumUtils.enumToMessages(SpacePermission);
-  permissions.value = res.map(item => ({ label: item.message, value: item.value }));
-};
-
+// Lifecycle hooks
 onMounted(() => {
-  watch(() => props.visible, (newValue) => {
-    if (!newValue) {
-      return;
-    }
-
-    activeKey.value = 'user';
-    checkedUserId.value = undefined;
-    checkedGroupId.value = undefined;
-    checkedDeptId.value = undefined;
-
-    loaded.value = false;
-    // permissions.value = [];
-
-    loadEnums();
-  }, { immediate: true });
+  setupWatchers();
 });
 
+// Computed values
 const text = t('fileSpace.globalAuth.description');
 
 const bodyStyle = {
@@ -77,13 +69,19 @@ const bodyStyle = {
     :bodyStyle="bodyStyle"
     style="width: 98%;height: 95%;"
     wrapClassName="authorize-modal-wrapper"
-    @cancel="cancel">
+    @cancel="cancel"
+  >
     <div class="h-full pt-2">
+      <!-- Description Hints -->
       <Hints :text="text" />
+      
+      <!-- Tab Navigation -->
       <Tabs
         v-model:activeKey="activeKey"
         size="small"
-        style="height: calc(100% - 18px);">
+        style="height: calc(100% - 18px);"
+      >
+        <!-- User Tab -->
         <TabPane key="user" :tab="t('fileSpace.globalAuth.tabs.user')">
           <GroupSet
             key="user"
@@ -92,15 +90,19 @@ const bodyStyle = {
             type="user"
             class="flex-shrink-0 flex-grow-0 w-75 mr-4"
             :visible="props.visible"
-            :appId="props.appId" />
+            :appId="props.appId"
+          />
           <AuthSet
             v-if="loaded"
             key="user"
             type="user"
             class="flex-1"
             :authObjectId="checkedUserId"
-            :permissions="permissions" />
+            :permissions="permissions"
+          />
         </TabPane>
+        
+        <!-- Department Tab -->
         <TabPane key="dept" :tab="t('fileSpace.globalAuth.tabs.dept')">
           <GroupSet
             key="dept"
@@ -109,15 +111,19 @@ const bodyStyle = {
             type="dept"
             class="flex-shrink-0 flex-grow-0 w-75 mr-4"
             :visible="props.visible"
-            :appId="props.appId" />
+            :appId="props.appId"
+          />
           <AuthSet
             v-if="loaded"
             key="dept"
             type="dept"
             class="flex-1"
             :authObjectId="checkedDeptId"
-            :permissions="permissions" />
+            :permissions="permissions"
+          />
         </TabPane>
+        
+        <!-- Group Tab -->
         <TabPane key="group" :tab="t('fileSpace.globalAuth.tabs.group')">
           <GroupSet
             key="group"
@@ -126,29 +132,41 @@ const bodyStyle = {
             type="group"
             class="flex-shrink-0 flex-grow-0 w-75 mr-4"
             :visible="props.visible"
-            :appId="props.appId" />
+            :appId="props.appId"
+          />
           <AuthSet
             v-if="loaded"
             key="group"
             type="group"
             class="flex-1"
             :authObjectId="checkedGroupId"
-            :permissions="permissions" />
+            :permissions="permissions"
+          />
         </TabPane>
       </Tabs>
     </div>
   </Modal>
 </template>
+
 <style>
+/**
+ * <p>
+ * Global styles for the authorize modal wrapper
+ * </p>
+ */
+
+/* Modal content height */
 .authorize-modal-wrapper .ant-modal-content {
   height: 100%;
 }
 
-.authorize-modal-wrapper  .ant-tabs .ant-tabs-nav {
+/* Tab navigation styling */
+.authorize-modal-wrapper .ant-tabs .ant-tabs-nav {
   margin: 0;
 }
 
-.authorize-modal-wrapper  .ant-tabs .ant-tabs-tabpane {
+/* Tab pane layout */
+.authorize-modal-wrapper .ant-tabs .ant-tabs-tabpane {
   display: flex;
   padding: 8px 0;
 }

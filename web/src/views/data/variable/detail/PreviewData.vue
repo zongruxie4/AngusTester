@@ -1,106 +1,44 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Hints, Icon, Spin } from '@xcan-angus/vue-ui';
-import { variable } from '@/api/tester';
-import { ExtractionMethod, ExtractionSource, ExtractionFileType, Encoding } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+import { usePreviewData } from './composables/usePreviewData';
 
-const { t } = useI18n();
-
-type Props = {
+/**
+ * Component props definition
+ */
+interface Props {
+  /** Data source for the preview */
   dataSource: {
     name: string;
     value: string;
     id: string;
     projectId: string;
-    extraction: { // TODO 可复用定义
-      defaultValue: string;
-      expression: string;
-      failureMessage: string;
-      finalValue: string;
-      matchItem: string;
-      method: ExtractionMethod;
-      name: string;
-      source: ExtractionSource;
-      value: string;
-      fileType: ExtractionFileType;
-      path: string;
-      encoding: Encoding;
-      quoteChar: string;
-      escapeChar: string;
-      separatorChar: string;
-      rowIndex: string;
-      columnIndex: string;
-      select: string;
-      parameterName: string;
-      request: {
-        url: string;
-      };
-      datasource: {
-        type: string;
-        username: string;
-        password: string;
-        jdbcUrl: string;
-      }
-    };
+    extraction: any; // TODO 可复用定义
   };
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined
 });
 
-const loading = ref(false);
-const content = ref<string>();
-const errorMessage = ref<string>();
+// Use the preview data composable for preview logic
+const {
+  // State
+  loading,
+  content,
+  errorMessage,
 
-const refresh = () => {
-  if (loading.value) {
-    return;
-  }
-
-  loadData();
-};
-
-const loadData = async () => {
-  if (!props.dataSource) {
-    return;
-  }
-
-  loading.value = true;
-  const [error, res] = await variable.previewVariableValue(props.dataSource, { silence: true });
-  loading.value = false;
-  if (error) {
-    errorMessage.value = error.message;
-    return;
-  }
-
-  content.value = res?.data;
-  errorMessage.value = undefined;
-};
-
-const reset = () => {
-  loading.value = false;
-  content.value = undefined;
-  errorMessage.value = undefined;
-};
-
-onMounted(() => {
-  watch(() => props.dataSource, (newValue) => {
-    reset();
-
-    if (!newValue) {
-      return;
-    }
-
-    loadData();
-  }, { immediate: true });
-});
+  // Methods
+  refresh
+} = usePreviewData(props);
 </script>
 
 <template>
   <Spin :spinning="loading" class="text-3 leading-5">
+    <!-- Header with title and refresh button -->
     <div class="flex items-center justify-between mb-2.5">
       <Hints :text="t('dataVariable.detail.previewData.title')" />
       <Button
@@ -114,13 +52,20 @@ onMounted(() => {
       </Button>
     </div>
 
+    <!-- Preview content area -->
     <div class="content-container rounded border border-solid border-theme-text-box">
+      <!-- Error message -->
       <span v-if="errorMessage" class="text-status-error">{{ errorMessage }}</span>
+
+      <!-- No data message -->
       <span v-else-if="!content">{{ t('dataVariable.detail.previewData.noData') }}</span>
+
+      <!-- Preview content -->
       <span v-else>{{ content }}</span>
     </div>
   </Spin>
 </template>
+
 <style scoped>
 .content-container {
   height: 316px;

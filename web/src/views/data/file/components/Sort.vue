@@ -2,31 +2,23 @@
 import FileIcon from '@/views/data/file/components/Icon.vue';
 import { DropdownSort } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
+import { useSort } from './composables/useSort';
+
+const emit = defineEmits<{(e: 'sort', param: { orderBy?: string; orderSort?: string }): void}>();
 
 const { t } = useI18n();
 
-interface SortType {
-    orderBy?: string,
-    orderSort?: string
-}
+// Use the sort composable
+const { sortMenuItems, handleSortSelection } = useSort();
 
-const emit = defineEmits<{(e: 'sort', param: SortType):void}>();
-
-const menus = [
-  {
-    key: 'lastModifiedDate',
-    name: t('fileSpace.sort.menuItems.lastModifiedDate'),
-    orderSort: 'ASC'
-  },
-  {
-    key: 'type',
-    name: t('fileSpace.sort.menuItems.type'),
-    orderSort: 'ASC'
-  }
-];
-
-const handleSelect = ({ orderBy, orderSort }) => {
-  emit('sort', { orderSort, orderBy });
+/**
+ * Handle sort menu item selection
+ * 
+ * @param sortData - Selected sort data
+ */
+const handleSelect = (sortData: { orderBy: string; orderSort: string }): void => {
+  const sortParams = handleSortSelection(sortData);
+  emit('sort', sortParams);
 };
 </script>
 <template>

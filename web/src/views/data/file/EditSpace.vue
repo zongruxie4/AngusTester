@@ -6,32 +6,24 @@ import { Form, FormItem } from 'ant-design-vue';
 import SelectEnum from '@/components/selectEnum/index.vue';
 import { useI18n } from 'vue-i18n';
 
+import { SpaceFormState, EditSpaceProps, EditSpaceEmits } from './types';
+
 const { t } = useI18n();
-interface FormState {
-  name: string,
-  quotaSize: {
-    value?: string,
-    unit: string
-  },
-  remark: string,
-  id?: string
-}
 
-interface Props {
-  visible: boolean;
-  id?: string|undefined;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+// Component props with default values
+const props = withDefaults(defineProps<EditSpaceProps>(), {
   visible: false,
   id: undefined
 });
 
-const emits = defineEmits<{(e: 'ok', form: Record<string, any>): void, (e: 'update:visible', value: boolean):void}>();
+// Component emits for parent communication
+const emits = defineEmits<EditSpaceEmits>();
 
-const fromRef = ref();
+// Form reference for validation
+const formRef = ref();
 
-const form = reactive<FormState>({
+// Reactive form state
+const form = reactive<SpaceFormState>({
   name: '',
   quotaSize: {
     value: undefined,
@@ -40,6 +32,10 @@ const form = reactive<FormState>({
   remark: ''
 });
 
+/**
+ * <p>Reset form to initial state.</p>
+ * <p>Clears all form fields and resets to default values.</p>
+ */
 const resetForm = () => {
   form.name = '';
   form.quotaSize = {
@@ -50,6 +46,10 @@ const resetForm = () => {
   form.id = undefined;
 };
 
+/**
+ * <p>Load space details for editing existing space.</p>
+ * <p>Fetches space information from API and populates form fields.</p>
+ */
 const loadDetail = async () => {
   const id = props.id;
   if (!id) {
@@ -63,6 +63,7 @@ const loadDetail = async () => {
 
   const { name, quotaSize, remark } = data;
 
+  // Handle quota size configuration
   if (quotaSize) {
     form.quotaSize = {
       ...quotaSize,
@@ -80,17 +81,26 @@ const loadDetail = async () => {
   form.id = id;
 };
 
+/**
+ * <p>Handle quota size input blur event.</p>
+ * <p>Validates and adjusts size values based on selected unit to ensure minimum requirements.</p>
+ */
 const onSizeBlur = () => {
+  // Validate Megabytes (minimum 100 MB)
   if (form.quotaSize.unit === 'Megabytes') {
     if (form.quotaSize.value && +form.quotaSize.value < 100) {
       form.quotaSize.value = '100';
     }
   }
+  
+  // Validate Gigabytes (minimum 0.1 GB)
   if (form.quotaSize.unit === 'Gigabytes') {
     if (form.quotaSize.value && +form.quotaSize.value < 0.1) {
       form.quotaSize.value = '0.1';
     }
   }
+  
+  // Validate Terabytes (minimum 0.0001 TB)
   if (form.quotaSize.unit === 'Terabytes') {
     if (form.quotaSize.value && +form.quotaSize.value < 0.0001) {
       form.quotaSize.value = '0.0001';
@@ -98,18 +108,33 @@ const onSizeBlur = () => {
   }
 };
 
+/**
+ * <p>Confirm form submission.</p>
+ * <p>Validates form fields and emits success event with form data.</p>
+ */
 const confirm = () => {
-  fromRef.value.validateFields().then(() => {
+  formRef.value.validateFields().then(() => {
     const quotaSize = form.quotaSize;
-    emits('ok', { ...form, quotaSize: quotaSize.value ? form.quotaSize : undefined });
+    // Emit form data, excluding quotaSize if no value is set
+    emits('ok', { 
+      ...form, 
+      quotaSize: quotaSize.value ? form.quotaSize : undefined 
+    });
   });
 };
 
+/**
+ * <p>Close modal and emit visibility update event.</p>
+ */
 const closeModal = () => {
   emits('update:visible', false);
 };
 
-watch(() => props.visible, newValue => {
+/**
+ * <p>Watch for modal visibility changes.</p>
+ * <p>Loads space details when editing existing space or resets form for new space.</p>
+ */
+watch(() => props.visible, (newValue) => {
   if (newValue && props.id) {
     loadDetail();
   } else {
@@ -119,21 +144,33 @@ watch(() => props.visible, newValue => {
   immediate: true
 });
 
-const excludes = ({ value }):boolean => {
+/**
+ * <p>Filter function for excluding certain data units from selection.</p>
+ * <p>Prevents selection of Bytes and Kilobytes as they are too small for practical use.</p>
+ * 
+ * @param param - Object containing the value to check
+ * @returns Boolean indicating whether the value should be excluded
+ */
+const excludes = ({ value }: { value: string }): boolean => {
   return ['Bytes', 'Kilobytes'].includes(value);
 };
 </script>
+
 <template>
   <Modal
     :title="t('fileSpace.spaceForm.title')"
     :visible="visible"
     @cancel="closeModal"
     @ok="confirm">
+    
+    <!-- Space configuration form -->
     <Form
-      ref="fromRef"
+      ref="formRef"
       :model="form"
       size="small"
       layout="vertical">
+      
+      <!-- Space name field -->
       <FormItem
         :label="t('fileSpace.spaceForm.form.spaceName')"
         name="name"
@@ -144,10 +181,15 @@ const excludes = ({ value }):boolean => {
           size="small"
           :maxlength="100" />
       </FormItem>
+      
+      <!-- Quota size field -->
       <FormItem name="quotaSize">
         <template #label>
           <div class="flex items-end">
-            <span>{{ t('fileSpace.spaceForm.form.spaceQuota') }} </span><span class="text-gray-text-light text-3">{{ t('fileSpace.spaceForm.quotaDescription') }}</span>
+            <span>{{ t('fileSpace.spaceForm.form.spaceQuota') }} </span>
+            <span class="text-gray-text-light text-3">
+              {{ t('fileSpace.spaceForm.quotaDescription') }}
+            </span>
           </div>
         </template>
         <Input
@@ -169,6 +211,8 @@ const excludes = ({ value }):boolean => {
           </template>
         </Input>
       </FormItem>
+      
+      <!-- Remarks field -->
       <FormItem :label="t('fileSpace.spaceForm.form.remark')">
         <Input
           v-model:value="form.remark"
