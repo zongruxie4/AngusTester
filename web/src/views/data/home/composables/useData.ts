@@ -1,18 +1,18 @@
 import { reactive, ref } from 'vue';
 import { utils } from '@xcan-angus/infra';
 import { analysis } from '@/api/tester';
-import { UserStatistics, ProjectStatistics } from '../types';
+import { UserCreationStatistics, ProjectCreationStatistics } from '../types';
 
 /**
  * <p>Composable for managing homepage data state and operations</p>
  * <p>Handles all data fetching, state management, and data transformations</p>
  */
-export function useData(projectId: string, userId: string) {
+export function useData (projectId: string, userId: string) {
   // Loading state
   const loading = ref(false);
 
   // User-specific statistics state
-  const userStatistics = reactive<UserStatistics>({
+  const userStatistics = reactive<UserCreationStatistics>({
     allService: '0',
     serviceByLastWeek: '0',
     serviceByLastMonth: '0',
@@ -25,7 +25,7 @@ export function useData(projectId: string, userId: string) {
   });
 
   // Project-wide statistics state
-  const projectStatistics = reactive<ProjectStatistics>({
+  const projectStatistics = reactive<ProjectCreationStatistics>({
     allVariable: 0,
     allDataset: 0,
     allDatasource: 0,
@@ -61,16 +61,15 @@ export function useData(projectId: string, userId: string) {
    */
   const loadUserStatistics = async (): Promise<void> => {
     loading.value = true;
-    
+
     try {
       const params = {
         creatorObjectType: 'USER',
         creatorObjectId: userId,
         projectId
       };
-      
+
       const [error, res] = await analysis.getDataStatistics(params);
-      
       if (error || utils._typeof(res?.data) !== 'object') {
         return;
       }
@@ -88,23 +87,23 @@ export function useData(projectId: string, userId: string) {
    */
   const loadProjectStatistics = async (): Promise<void> => {
     loading.value = true;
-    
+
     try {
       const params = { projectId };
       const [error, res] = await analysis.getDataStatistics(params);
-      
+
       if (error || utils._typeof(res?.data) !== 'object') {
         return;
       }
 
       const { data } = res;
-      
+
       // Update project statistics with API response
       projectStatistics.allVariable = data.allVariable;
       projectStatistics.allDataset = data.allDataset;
       projectStatistics.allDatasource = data.allDatasource;
       projectStatistics.allFile = data.allFile;
-      
+
       // Update variable usage statistics
       const { IN_USE = 0, NOT_IN_USE = 0 } = data.variableByUse;
       projectStatistics.variableByUse.IN_USE = IN_USE;
@@ -117,11 +116,11 @@ export function useData(projectId: string, userId: string) {
       projectStatistics.fileByResourceType.FILE = FILE;
 
       // Update datasource database type statistics
-      const { 
-        H2 = 0, HSQLDB = 0, SQLITE = 0, POSTGRES = 0, 
-        MARIADB = 0, MYSQL = 0, ORACLE = 0, SQLSERVER = 0 
+      const {
+        H2 = 0, HSQLDB = 0, SQLITE = 0, POSTGRES = 0,
+        MARIADB = 0, MYSQL = 0, ORACLE = 0, SQLSERVER = 0
       } = data.datasourceByDb;
-      
+
       projectStatistics.datasourceByDb.H2 = H2;
       projectStatistics.datasourceByDb.HSQLDB = HSQLDB;
       projectStatistics.datasourceByDb.SQLITE = SQLITE;
@@ -161,7 +160,7 @@ export function useData(projectId: string, userId: string) {
     loading,
     userStatistics,
     projectStatistics,
-    
+
     // Methods
     loadUserStatistics,
     loadProjectStatistics,

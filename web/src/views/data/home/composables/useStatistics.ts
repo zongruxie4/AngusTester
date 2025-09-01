@@ -7,7 +7,7 @@ import { useECharts } from './useECharts';
  * <p>Main composable for Statistics component business logic</p>
  * <p>Integrates all other composables and provides the main component functionality</p>
  */
-export function useStatistics(projectId: string, userId: string) {
+export function useStatistics (projectId: string, userId: string) {
   // Initialize all composables
   const data = useData(projectId, userId);
   const chartConfig = useChartConfig();
@@ -20,18 +20,18 @@ export function useStatistics(projectId: string, userId: string) {
   const initializeStatistics = async (): Promise<void> => {
     // Initialize chart instances
     charts.initializeCharts();
-    
+
     // Set initial chart options
     const variableOption = chartConfig.createVariableChartOption();
     const dataSetOption = chartConfig.createDatasetChartOption();
     const fileOption = chartConfig.createFileChartOption();
     const dataSourceOption = chartConfig.createDatasourceChartOption();
-    
+
     charts.setChartOptions(variableOption, dataSetOption, fileOption, dataSourceOption);
-    
+
     // Load initial data
     await data.loadAllStatistics();
-    
+
     // Update charts with loaded data
     charts.updateChartData(data.projectStatistics);
   };
@@ -61,13 +61,13 @@ export function useStatistics(projectId: string, userId: string) {
   return {
     // Data state and methods
     ...data,
-    
+
     // Chart configuration
     ...chartConfig,
-    
+
     // Chart management
     ...charts,
-    
+
     // Business logic methods
     initializeStatistics,
     refreshStatistics

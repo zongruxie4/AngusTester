@@ -31,33 +31,28 @@ const introductionTips: IntroductionTip[] = [
 <template>
   <div class="bg-white rounded border border-border-divider p-5">
     <!-- Welcome Section -->
-    <div class="text-3.5 font-semibold mb-2.5 text-text-title">
-      {{ t('dataHome.introduce.welcome') }}
+    <div class="text-3.5 font-semibold text-text-title">
+      {{ t('dataHome.introduce.title') }}
     </div>
-    
+
     <!-- Introduction Image and Description -->
-    <div class="flex items-center justify-between space-x-2.5 mb-4">
-      <img 
-        class="w-1/3" 
-        src="./images/introduce.png" 
+    <div class="flex items-center justify-between space-x-2.5">
+      <img
+        class="w-1/3"
+        src="./images/introduce.png"
         alt="Introduction illustration" />
       <div class="text-text-content">
         {{ t('dataHome.introduce.description') }}
       </div>
     </div>
-    
+
     <!-- Feature Tips Section -->
-    <div class="mt-2">
-      <div class="font-semibold mb-1.5 text-text-title">
-        {{ t('dataHome.introduce.title') }}
-      </div>
-      <div
-        v-for="tip in introductionTips"
-        :key="tip.title"
-        class="mb-1 text-text-content">
-        <span class="font-semibold">{{ tip.title }}: </span>
-        <span>{{ tip.content }}</span>
-      </div>
+    <div
+      v-for="tip in introductionTips"
+      :key="tip.title"
+      class="mb-1 text-text-content">
+      <span class="font-semibold">{{ tip.title }}: </span>
+      <span>{{ tip.content }}</span>
     </div>
   </div>
 </template>

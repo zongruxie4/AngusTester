@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<HomepageProps>(), {
 });
 
 // Async component imports for better performance
-const MyCreationSummary = defineAsyncComponent(() => import('@/views/data/home/summary/index.vue'));
+const CreationSummary = defineAsyncComponent(() => import('@/views/data/home/Added.vue'));
 const Statistics = defineAsyncComponent(() => import('./Statistics.vue'));
 const ActivityTimeline = defineAsyncComponent(() => import('./ActivityTimeline.vue'));
 const Introduce = defineAsyncComponent(() => import('@/views/data/home/Introduce.vue'));
@@ -50,7 +50,7 @@ provide('updateRefreshNotify', updateRefreshNotify);
     <!-- Main Content Area -->
     <div class="flex-1 min-h-full min-w-0">
       <!-- My Creation Summary Section -->
-      <MyCreationSummary
+      <CreationSummary
         :notify="notify"
         :userInfo="props.userInfo"
         :projectId="props.projectId"

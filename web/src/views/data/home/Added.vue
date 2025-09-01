@@ -3,32 +3,48 @@ import { defineAsyncComponent, ref } from 'vue';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
+import { AddedProps } from '@/views/data/home/types';
+
 const { t } = useI18n();
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  notify: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+/**
+ * <p>
+ * Component props with default values
+ * </p>
+ */
+const props = withDefaults(defineProps<AddedProps>(), {
   projectId: undefined,
   userInfo: undefined,
   notify: undefined
 });
 
-const Table = defineAsyncComponent(() => import('./Table.vue'));
+/**
+ * <p>
+ * Async component for data table
+ * </p>
+ */
+const Table = defineAsyncComponent(() => import('./AddedTable.vue'));
 
+/**
+ * <p>
+ * Reactive state for tracking deleted notifications and totals
+ * </p>
+ */
 const deletedNotify = ref<string>();
-
 const variableTotal = ref(0);
 const dataSetTotal = ref(0);
 </script>
 
 <template>
   <div>
-    <div class="text-3.5 font-semibold mb-1">{{ t('dataHome.myCreationSummary.title') }}</div>
+    <!-- Section title -->
+    <div class="text-3.5 font-semibold mb-1">
+      {{ t('dataHome.myCreationSummary.title') }}
+    </div>
+
+    <!-- Tab navigation -->
     <Tabs size="small">
+      <!-- Variables tab -->
       <TabPane key="variable" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
@@ -38,6 +54,8 @@ const dataSetTotal = ref(0);
             <span>)</span>
           </div>
         </template>
+
+        <!-- Variables table component -->
         <Table
           v-model:total="variableTotal"
           v-model:deletedNotify="deletedNotify"
@@ -46,6 +64,8 @@ const dataSetTotal = ref(0);
           :notify="props.notify"
           :projectId="props.projectId" />
       </TabPane>
+
+      <!-- Datasets tab -->
       <TabPane key="dataSet" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
@@ -55,6 +75,8 @@ const dataSetTotal = ref(0);
             <span>)</span>
           </div>
         </template>
+
+        <!-- Datasets table component -->
         <Table
           v-model:total="dataSetTotal"
           v-model:deletedNotify="deletedNotify"
@@ -63,38 +85,6 @@ const dataSetTotal = ref(0);
           :userId="props.userInfo?.id"
           :projectId="props.projectId" />
       </TabPane>
-      <!-- <TabPane key="space" forceRender>
-        <template #tab>
-          <div class="flex items-center flex-nowrap">
-            <span class="mr-1">添加的空间</span>
-            <span>(</span>
-            <span>{{ spaceTotal }}</span>
-            <span>)</span>
-          </div>
-        </template>
-        <Table
-          v-model:total="spaceTotal"
-          v-model:deletedNotify="deletedNotify"
-          type="space"
-          :notify="props.notify"
-          :userId="props.userInfo?.id"
-          :projectId="props.projectId" />
-      </TabPane>
-      <TabPane key="dataSource" forceRender>
-        <template #tab>
-          <div class="flex items-center flex-nowrap">
-            <span class="mr-1">添加的数据源</span>
-            <span>({{ dataSourceTotal }})</span>
-          </div>
-        </template>
-        <Table
-          v-model:total="dataSourceTotal"
-          v-model:deletedNotify="deletedNotify"
-          type="dataSource"
-          :notify="props.notify"
-          :userId="props.userInfo?.id"
-          :projectId="props.projectId" />
-      </TabPane> -->
     </Tabs>
   </div>
 </template>

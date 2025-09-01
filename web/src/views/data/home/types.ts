@@ -1,4 +1,54 @@
-import { User, AppInfo } from '@xcan-angus/infra';
+import { AppInfo, User } from '@xcan-angus/infra';
+
+/**
+ * <p>
+ * Data type enumeration for different item types
+ * </p>
+ */
+export type DataType = 'dataSet' | 'space' | 'dataSource' | 'variable';
+
+/**
+ * <p>
+ * Props interface for the main Added component
+ * </p>
+ */
+export type AddedProps = {
+  projectId: string;
+  userInfo: { id: string; };
+  notify: string;
+}
+
+/**
+ * <p>
+ * Props interface for the Table component
+ * </p>
+ */
+export type AddedTableProps = {
+  projectId: string;
+  userId: string;
+  total: number;
+  notify: string;
+  deletedNotify: string;
+  type: DataType;
+}
+
+/**
+ * <p>
+ * Created item interface representing a data item
+ * </p>
+ */
+export type AddedItem = {
+  id: string;
+  name: string;
+  createdBy: string;
+  createdByName: string;
+  ownerId: string;
+  ownerName: string;
+  avatar: string;
+  createdDate: string;
+  lastModifiedDate: string;
+  auth: boolean;
+}
 
 /**
  * <p>Component props interface for main homepage component</p>
@@ -45,7 +95,7 @@ export interface ActivityTimelineProps {
  * <p>Statistics data structure for user-specific statistics</p>
  * <p>Contains counts for services and APIs created by the user</p>
  */
-export interface UserStatistics {
+export interface UserCreationStatistics {
   /** Total number of services created by user */
   allService: string;
   /** Services created in last week */
@@ -70,7 +120,7 @@ export interface UserStatistics {
  * <p>Project-wide statistics data structure</p>
  * <p>Contains counts for all project resources</p>
  */
-export interface ProjectStatistics {
+export interface ProjectCreationStatistics {
   /** Total number of variables in project */
   allVariable: number;
   /** Total number of datasets in project */
@@ -142,11 +192,17 @@ export interface ChartOption {
     show: boolean;
   };
   legend: {
-    bottom: string;
-    right: string;
+    top?: string;
+    bottom?: string;
+    left?: string;
+    right?: string;
     orient: string;
     itemHeight: number;
     itemWidth: number;
+    itemGap?: number;
+    textStyle?: {
+      fontSize: number;
+    };
   };
   grid: {
     top: string;
@@ -164,15 +220,19 @@ export interface ChartOption {
     label: {
       show: boolean;
       formatter: string;
+      fontSize?: number;
     };
     emphasis: {
       label: {
         show: boolean;
+        fontSize?: number;
+        fontWeight?: string;
       };
     };
     labelLine: {
       show: boolean;
       length: number;
+      length2?: number;
     };
     data: Array<{
       name: string;
