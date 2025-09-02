@@ -7,6 +7,7 @@ import { space } from '@/api/storage';
 import { useI18n } from 'vue-i18n';
 
 import { AddedItem, DataType } from '@/views/data/home/types';
+import { update } from 'lodash-es';
 
 /**
  * <p>
@@ -16,9 +17,11 @@ import { AddedItem, DataType } from '@/views/data/home/types';
  * Provides functionality for loading, deleting, and paginating data with proper error handling
  * </p>
  */
-export function useAddedData (projectId: string, userId: string, type: DataType) {
+export function useAddedData (_projectId: string, userId: string, type: DataType) {
   const { t } = useI18n();
   const router = useRouter();
+
+  const projectId = ref(_projectId);
 
   // API configuration for different data types
   const loadDataApiConfig = {
@@ -61,6 +64,10 @@ export function useAddedData (projectId: string, userId: string, type: DataType)
   const appInfo = inject('appInfo', ref({ code: '' }));
   const updateRefreshNotify = inject<(value: string) => void>('updateRefreshNotify');
 
+  const updateProjectId = (_projectId: string) => {
+    projectId.value = _projectId;
+  };
+
   /**
    * <p>
    * Load data from API based on current pagination and sorting parameters
@@ -79,7 +86,7 @@ export function useAddedData (projectId: string, userId: string, type: DataType)
       orderSort?: string;
       appCode?: string;
     } = {
-      projectId,
+      projectId: projectId.value,
       pageNo: current,
       pageSize,
       createdBy: userId,
@@ -168,6 +175,7 @@ export function useAddedData (projectId: string, userId: string, type: DataType)
     loadData,
     handleTableChange,
     deleteItem,
-    navigateToCreate
+    navigateToCreate,
+    updateProjectId
   };
 }
