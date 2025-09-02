@@ -389,18 +389,15 @@
       "allActivity": "All Activity"
     },
     "statistics": {
-      "myAdded": "My Added",
-      "resourceStatistics": "Resource Statistics",
-      "totalVariable": "Total Variable",
+      "resourceStatistics": "Total Resources",
+      "variable": "Variable",
       "dataset": "Dataset",
       "file": "File",
-      "dataSourceSet": "Dataource",
-      "last7Days": "Last 7 Days",
-      "last30Days": "Last 30 Days",
-      "usedCount": "Used Count",
-      "unusedCount": "Unused Count",
       "space": "Space",
-      "directory": "Directory"
+      "directory": "Directory",
+      "datasource": "Datasource",
+      "usedCount": "Used Count",
+      "unusedCount": "Unused Count"
     },
     "myCreationSummary": {
       "title": "My Parameterization",
@@ -410,9 +407,8 @@
       "addedDataSources": "Added Data Sources"
     },
     "introduce": {
-      "welcome": "Welcome to Angus Data!",
-      "description": "Data management features support generating business data, test data, and creating parameterized variables and datasets.",
-      "title": "AngusTester provides four parameterization methods:",
+      "title": "AngusTester Parameterization Methods:",
+      "description": "Define reusable variables, dynamic data, mock functions, and parameter extraction mechanisms to automate testing workflows.",
       "variable": {
         "title": "Variable",
         "content": "Define constant values that can be reused throughout the testing process."

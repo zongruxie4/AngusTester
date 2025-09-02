@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, defineAsyncComponent, onMounted, watch } from 'vue';
-import { TESTER, enumUtils, EnumMessage } from '@xcan-angus/infra';
+import { TESTER, EnumMessage } from '@xcan-angus/infra';
 import { fetchSummaryData, convertToLineChartData, getDefaultDateFilters, getDateFiltersAndUnit } from './utils';
 import { GroupBy, AggregateFunction, DateRangeType, ChartType } from './enums';
 import type { ChartConfig } from './types';

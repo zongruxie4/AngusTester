@@ -41,7 +41,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: '/script',
-        component: () => import('@/views/script/homepage/index.vue')
+        component: () => import('@/views/script/home/index.vue')
       },
       {
         path: '/script/edit',
@@ -134,7 +134,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: '/mockservice/add',
-        component: () => import('@/views/mock/add/index.vue'),
+        component: () => import('@/views/apis/mock/add/index.vue'),
         meta: {
           breadcrumb: [
             {
@@ -147,31 +147,31 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: '/apis#mock',
-        component: () => import('@/views/mock/detail/index.vue'),
+        component: () => import('@/views/apis/mock/detail/index.vue'),
         children: [
           {
             path: '/mockservice/:id/apis',
-            component: () => import('@/views/mock/detail/mockApis/index.vue')
+            component: () => import('@/views/apis/mock/detail/apis/index.vue')
           },
           {
             path: '/mockservice/:id/request',
-            component: () => import('@/views/mock/detail/requestRecord/index.vue')
+            component: () => import('@/views/apis/mock/detail/RequestRecord.vue')
           },
           {
             path: '/mockservice/:id/log',
-            component: () => import('@/views/mock/detail/log/index.vue')
+            component: () => import('@/views/apis/mock/detail/Log.vue')
           },
           {
             path: '/mockservice/:id/activity',
-            component: () => import('@/views/mock/detail/activity/index.vue')
+            component: () => import('@/views/apis/mock/detail/Activity.vue')
           },
           {
             path: '/mockservice/:id/monitor',
-            component: () => import('@/views/mock/detail/control.vue')
+            component: () => import('@/views/apis/mock/detail/Control.vue')
           },
           {
             path: '/mockservice/:id/setting',
-            component: () => import('@/views/mock/detail/mockSet.vue')
+            component: () => import('@/views/apis/mock/detail/Setting.vue')
           }
         ]
       },

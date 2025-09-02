@@ -389,18 +389,15 @@
       "allActivity": "所有活动"
     },
     "statistics": {
-      "myAdded": "我添加的",
-      "resourceStatistics": "资源统计",
-      "totalVariable": "总变量",
+      "resourceStatistics": "总资源",
+      "variable": "变量",
       "dataset": "数据集",
       "file": "文件",
-      "dataSourceSet": "数据源集",
-      "last7Days": "近7天",
-      "last30Days": "近30天",
-      "usedCount": "使用数",
-      "unusedCount": "未使用数",
       "space": "空间",
-      "directory": "目录"
+      "directory": "目录",
+      "datasource": "数据源",
+      "usedCount": "使用数",
+      "unusedCount": "未使用数"
     },
     "myCreationSummary": {
       "title": "我的参数化",
@@ -410,9 +407,8 @@
       "addedDataSources": "添加的数据源"
     },
     "introduce": {
-      "welcome": "欢迎进入Angus数据！",
-      "description": "数据管理功能支持生成业务数据、测试数据，并创建参数化变量和数据集。",
-      "title": "AngusTester 提供四种参数化方式：",
+      "title": "AngusTester 参数化方式：",
+      "description": "定义可复用变量、动态数据、模拟函数及参数提取机制，支撑测试流程自动化。",
       "variable": {
         "title": "变量",
         "content": "定义可在整个测试过程中重复使用的常量值。"
