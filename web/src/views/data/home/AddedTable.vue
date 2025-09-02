@@ -150,7 +150,7 @@ const emptyTextStyle = {
     <template v-if="loaded">
       <!-- Empty state display -->
       <template v-if="isEmpty">
-        <div class="flex-1 flex flex-col items-center justify-center h-full">
+        <div class="flex-1 flex flex-col items-center justify-center">
           <img class="w-27.5" src="../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3 leading-5">
             <span>{{ emptyStateConfig.message }}</span>

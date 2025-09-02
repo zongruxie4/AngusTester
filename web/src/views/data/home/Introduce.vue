@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
+import { Icon } from '@xcan-angus/vue-ui';
 import { IntroductionTip } from './types';
 
 const { t } = useI18n();
@@ -29,7 +30,7 @@ const introductionTips: IntroductionTip[] = [
 </script>
 
 <template>
-  <div class="bg-white rounded border border-border-divider p-5">
+  <div class="bg-white rounded px-5 pt-0 pb-0">
     <!-- Welcome Section -->
     <div class="text-3.5 font-semibold text-text-title">
       {{ t('dataHome.introduce.title') }}
@@ -51,6 +52,7 @@ const introductionTips: IntroductionTip[] = [
       v-for="tip in introductionTips"
       :key="tip.title"
       class="mb-1 text-text-content">
+      <Icon icon="icon-duihaolv" class="flex-shrink-0 mr-1.5 text-3.5 transform-gpu translate-y" />
       <span class="font-semibold">{{ tip.title }}: </span>
       <span>{{ tip.content }}</span>
     </div>
