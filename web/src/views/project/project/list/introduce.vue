@@ -54,7 +54,7 @@ const stepData = [
 
 <template>
   <div>
-    <div class="text-3.5 font-semibold mb-2.5">{{ t('project.aboutProject') }}</div>
+    <div class="text-3.5 font-semibold mb-1.5">{{ t('project.aboutProject') }}</div>
     <div class="mb-6">
       <div>{{ t('project.projectDescription') }}</div>
     </div>
@@ -85,7 +85,7 @@ const stepData = [
 
 <style scoped>
 .process-step {
-  @apply relative flex flex-col items-start p-5 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200/60 shadow-sm hover:shadow-md transition-all duration-300;
+  @apply relative flex flex-col items-start p-3 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200/60 shadow-sm hover:shadow-md transition-all duration-300;
   min-width: 200px;
   backdrop-filter: blur(8px);
 }
@@ -96,11 +96,11 @@ const stepData = [
 }
 
 .step-header {
-  @apply flex items-center mb-3 space-x-3 justify-start;
+  @apply flex items-center mb-2 space-x-3 justify-start;
 }
 
 .step-icon-wrapper {
-  @apply w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-md;
+  @apply w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-md;
 }
 
 .step-icon {

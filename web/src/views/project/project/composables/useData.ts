@@ -38,10 +38,10 @@ export function useData () {
 
   /** Pagination configuration */
   const pagination = reactive({
-    pageSize: 5,
+    pageSize: 4,
     current: 1,
     total: 0,
-    pageSizeOptions: [5],
+    pageSizeOptions: [4],
     hideOnSinglePage: true
   });
 

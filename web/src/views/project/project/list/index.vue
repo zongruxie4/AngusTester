@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 // Vue composition API imports
-import { defineAsyncComponent, onMounted, computed } from 'vue';
+import { defineAsyncComponent, onMounted, computed, ref, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 // Ant Design components
@@ -143,9 +143,44 @@ const canUserDeleteProject = (projectData: Project): boolean => {
   return canDeleteProject(projectData, String(props.userInfo?.id || ''), (appContext.isAppAdmin() || appContext.isSysAdmin()));
 };
 
+/**
+ * <p>Dynamic height calculation for activity timeline</p>
+ * <p>Automatically calculates remaining screen height</p>
+ */
+const timelineHeight = ref('calc(100vh - 400px)');
+
+/**
+ * <p>Calculate dynamic height based on screen size and other elements</p>
+ * <p>Updates height when window resizes</p>
+ */
+const calculateHeight = () => {
+  const viewportHeight = window.innerHeight;
+  const headerHeight = 64; // Estimated header height
+  const padding = 40; // Page padding
+  const otherElementsHeight = 260; // Estimated height of other elements (statistics cards, charts, etc.)
+
+  const availableHeight = viewportHeight - headerHeight - padding - otherElementsHeight;
+  const finalHeight = Math.max(availableHeight, 350); // Minimum height 350px
+
+  timelineHeight.value = `${finalHeight}px`;
+};
+
+/**
+ * <p>Handle window resize for responsive height</p>
+ */
+const handleResize = () => {
+  calculateHeight();
+};
+
 // Lifecycle hooks
 onMounted(() => {
   fetchProjectList();
+  calculateHeight();
+  window.addEventListener('resize', handleResize);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize);
 });
 
 // Expose methods for parent component
@@ -155,7 +190,7 @@ defineExpose({
 </script>
 <template>
   <div class="p-5 overflow-y-auto text-3 flex flex-col h-full">
-    <Introduce class="mb-7" />
+    <Introduce class="mb-5" />
     <div class="flex space-x-6 min-h-0 flex-1">
       <div class="flex-1 space-y-2 mr-8 min-w-0">
         <div class="text-3.5 font-semibold mb-1">{{ t('project.addedProjects') }}</div>
@@ -402,7 +437,7 @@ defineExpose({
         </Spin>
       </div>
 
-      <Tabs size="small" class="w-right h-115">
+      <Tabs size="small" class="w-right" :style="{ height: timelineHeight }">
         <TabPane key="my" :tab="t('project.myActivity')">
           <ActivityTimeline
             :types="activityType"
@@ -434,16 +469,33 @@ defineExpose({
   }
 }
 
+/* 添加活动线组件的样式 */
+.ant-tabs {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.ant-tabs>:deep(.ant-tabs-content-holder) {
+  flex: 1;
+  overflow: hidden;
+}
+
+.ant-tabs>:deep(.ant-tabs-tabpane) {
+  height: 100%;
+  overflow: auto;
+}
+
 .project-list-container {
   border-top: 1px solid var(--theme-text-box);
   flex: 1;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .project-item {
   display: flex;
   align-items: flex-start;
-  padding: 1rem 1.25rem 0.5rem 1.25rem;
+  padding: 1rem 1.25rem 0.2rem 1.25rem;
   border-bottom: 1px solid #f1f5f9;
   border-top: 1px solid #f1f5f9;
   transition: all 0.3s ease;
