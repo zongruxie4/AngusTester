@@ -3,7 +3,7 @@ import { Button } from 'ant-design-vue';
 import { Hints, Icon, Input, NoData, Spin, Table } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { usePreviewData } from './composables/usePreviewData';
-import { PreviewDataSource } from './types';
+import { PreviewDataSource } from '../types';
 
 const { t } = useI18n();
 

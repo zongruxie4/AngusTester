@@ -95,7 +95,7 @@ const {
 
   <!-- Variable name input -->
   <div class="flex items-start mb-3.5">
-    <div class="flex items-center flex-shrink-0 mr-2.5 leading-7">
+    <div class="flex justify-end items-center flex-shrink-0 mr-2.5  w-18 font-semibold leading-7">
       <IconRequired />
       <span>{{ t('dataVariable.detail.fileVariable.name') }}</span>
     </div>
@@ -120,7 +120,7 @@ const {
 
   <!-- Variable description textarea -->
   <div class="flex items-start">
-    <div class="mr-2.5 flex items-center flex-shrink-0 transform-gpu translate-y-1">
+    <div class="mr-2.5 w-18 font-semibold flex justify-end items-center flex-shrink-0 transform-gpu translate-y-1">
       <IconRequired class="invisible" />
       <span>{{ t('dataVariable.detail.fileVariable.description') }}</span>
     </div>
@@ -157,7 +157,7 @@ const {
         <Toggle :title="t('dataVariable.detail.fileVariable.readConfig')" class="text-3 leading-5 mb-3.5">
           <!-- File path input -->
           <div class="flex items-center mb-3.5">
-            <div class="w-16 flex-shrink-0">
+            <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
               <IconRequired />
               <span>{{ t('dataVariable.detail.fileVariable.filePath') }}</span>
             </div>
@@ -172,7 +172,7 @@ const {
           <!-- File type and encoding selection -->
           <div class="flex items-center space-x-5 mb-3.5">
             <div class="w-1/2 flex items-center">
-              <div class="w-16 flex-shrink-0">
+              <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataVariable.detail.fileVariable.fileType') }}</span>
               </div>
@@ -183,7 +183,7 @@ const {
             </div>
 
             <div class="w-1/2 flex items-center">
-              <div class="w-16 flex-shrink-0">
+              <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataVariable.detail.fileVariable.fileEncoding') }}</span>
               </div>
@@ -198,7 +198,7 @@ const {
           <!-- Row and column index inputs -->
           <div class="flex items-center space-x-5 mb-3.5">
             <div class="w-1/2 flex items-center">
-              <div class="w-16 flex-shrink-0">
+              <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataVariable.detail.fileVariable.readStartRow') }}</span>
               </div>
@@ -214,7 +214,7 @@ const {
             </div>
 
             <div class="w-1/2 flex items-center">
-              <div class="w-16 flex-shrink-0">
+              <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataVariable.detail.fileVariable.readStartColumn') }}</span>
               </div>
@@ -233,7 +233,7 @@ const {
           <!-- Separator, escape, and quote character inputs -->
           <div class="flex items-center space-x-5 mb-3.5">
             <div class="w-1/2 flex items-center">
-              <div class="w-16 flex-shrink-0">
+              <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataVariable.detail.fileVariable.separator') }}</span>
               </div>
@@ -247,7 +247,7 @@ const {
             </div>
 
             <div class="w-1/2 flex items-center">
-              <div class="w-16 flex-shrink-0">
+              <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataVariable.detail.fileVariable.escapeChar') }}</span>
               </div>
@@ -263,7 +263,7 @@ const {
 
           <div class="flex items-center space-x-5 mb-3.5">
             <div class="w-1/2 flex items-center">
-              <div class="w-16 flex-shrink-0">
+              <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataVariable.detail.fileVariable.quoteChar') }}</span>
               </div>
@@ -284,7 +284,7 @@ const {
           <template v-if="method === 'EXACT_VALUE'">
             <div class="flex items-center space-x-5 mb-3.5">
               <div class="w-1/2 flex items-center">
-                <div class="w-16 flex-shrink-0">
+                <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                   <IconRequired />
                   <span>{{ t('dataVariable.detail.fileVariable.extractMethod') }}</span>
                 </div>
@@ -296,7 +296,7 @@ const {
               </div>
 
               <div class="w-1/2 flex items-center">
-                <div class="w-16 flex-shrink-0">
+                <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                   <IconRequired class="invisible" />
                   <span>{{ t('dataVariable.detail.fileVariable.defaultValue') }}</span>
                 </div>
@@ -314,7 +314,7 @@ const {
           <template v-else>
             <div class="flex items-center space-x-5 mb-3.5">
               <div class="w-1/2 flex items-center">
-                <div class="w-16 flex-shrink-0">
+                <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                   <IconRequired />
                   <span>{{ t('dataVariable.detail.fileVariable.extractMethod') }}</span>
                 </div>
@@ -326,7 +326,7 @@ const {
               </div>
 
               <div class="w-1/2 flex items-center">
-                <div class="w-16 flex-shrink-0">
+                <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                   <IconRequired />
                   <span>{{ t('dataVariable.detail.fileVariable.expression') }}</span>
                 </div>
@@ -340,7 +340,7 @@ const {
 
             <div class="flex items-center space-x-5 mb-3.5">
               <div class="w-1/2 flex items-center">
-                <div class="w-16 flex-shrink-0">
+                <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                   <IconRequired class="invisible" />
                   <span>{{ t('dataVariable.detail.fileVariable.matchItem') }}</span>
                 </div>
@@ -356,7 +356,7 @@ const {
               </div>
 
               <div class="w-1/2 flex items-center">
-                <div class="w-16 flex-shrink-0">
+                <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                   <IconRequired class="invisible" />
                   <span>{{ t('dataVariable.detail.fileVariable.defaultValue') }}</span>
                 </div>

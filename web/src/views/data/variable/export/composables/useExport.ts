@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { download, TESTER } from '@xcan-angus/infra';
+import { download, routerUtils } from '@xcan-angus/infra';
 import type { ExportFileFormat, ExportConfig } from '../types';
 
 /**
@@ -63,12 +63,10 @@ export function useExport () {
     format: ExportFileFormat,
     variableIds?: string[]
   ): string => {
-    let url = `${TESTER}/variable/export?projectId=${projectId}&format=${format}`;
-
+    let url = routerUtils.getTesterApiUrl(`/variable/export?projectId=${projectId}&format=${format}`);
     if (variableIds && variableIds.length > 0) {
       url += `&ids=${variableIds.join(',')}`;
     }
-
     return url;
   };
 
@@ -92,8 +90,8 @@ export function useExport () {
         variableIds
       );
 
-      // Trigger the download
-      download(exportUrl);
+      // Trigger the download      TODO 下载不成功，报401
+      await download(exportUrl);
 
       // Reset configuration after successful export
       resetExportConfig();

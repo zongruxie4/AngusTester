@@ -274,7 +274,7 @@ onMounted(() => {
                     <Icon
                       icon="icon-biyan"
                       class="flex-shrink-0 ml-1.5 text-4 cursor-pointer text-theme-text-hover"
-                      @click="showVariableValue(record)" />
+                      @click="showVariableValue(record)" /> <!-- TODO 提取变量预览不生效，触发请求后提取值回显到页面，接口报错：错误message也需要回显 -->
                   </template>
                 </div>
 

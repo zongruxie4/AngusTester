@@ -139,7 +139,6 @@
         "copyLink": "复制链接",
         "refresh": "刷新"
       },
-      
       "fileDataset": {
         "notifications": {
           "updateSuccess": "数据集修改成功",
@@ -199,6 +198,7 @@
           "hints": "每次执行测试前从数据库中查询结果中提取一个值作为数据集值。",
           "parameterName": "参数名称",
           "readConfig": "读取配置",
+          "dataSource": "数据源",
           "selectDataSource": "选择数据源",
           "databaseType": "数据库类型",
           "databaseTypePlaceholder": "数据库类型",
@@ -871,6 +871,7 @@
       },
       "previewData": {
         "title": "预览数据",
+        "tip": "实际变量值在执行采样前生成，并且会执行过程中保持不变。",
         "noData": "暂无数据",
         "refresh": "刷新"
       },

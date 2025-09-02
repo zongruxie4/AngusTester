@@ -89,7 +89,7 @@ const handleBlurValue = (targetText: string) => {
   <!-- Variable name input field -->
   <!-- Required field with validation -->
   <div class="flex items-start mb-3.5">
-    <div class="flex items-center flex-shrink-0 mr-2.5 leading-7">
+    <div class="flex justify-end items-center flex-shrink-0 mr-2.5 w-18 font-semibold leading-7">
       <IconRequired />
       <span>{{ t('dataVariable.detail.staticVariable.name') }}</span>
     </div>
@@ -115,7 +115,7 @@ const handleBlurValue = (targetText: string) => {
   <!-- Password value toggle -->
   <!-- Allows user to mark variable value as sensitive -->
   <div class="flex items-center mb-3.5">
-    <div class="flex items-center flex-shrink-0 mr-2.5">
+    <div class="flex justify-end items-center flex-shrink-0 mr-2.5 w-18 font-semibold">
       <IconRequired />
       <span>{{ t('dataVariable.detail.staticVariable.password') }}</span>
     </div>
@@ -133,7 +133,7 @@ const handleBlurValue = (targetText: string) => {
   <!-- Variable description textarea -->
   <!-- Optional field for variable documentation -->
   <div class="flex items-start">
-    <div class="flex items-center flex-shrink-0 mr-2.5 transform-gpu translate-y-1">
+    <div class="flex justify-end items-center flex-shrink-0 mr-2.5 w-18 font-semibold transform-gpu translate-y-1">
       <IconRequired class="invisible" />
       <span>{{ t('dataVariable.detail.staticVariable.description') }}</span>
     </div>

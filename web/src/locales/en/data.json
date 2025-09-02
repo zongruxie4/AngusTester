@@ -102,7 +102,7 @@
         },
         "jdbcExtract": {
           "title": "Jdbc Extraction",
-          "description": "Extract a set of values from a data source table as a dataset according to an SQL statement."
+          "description": "Extract a set of parameter values from a datasource as a dataset."
         }
       }
     },
@@ -158,10 +158,10 @@
           "filePathPlaceholder": "File local path or file URL, maximum 800 characters",
           "fileType": "File Type",
           "fileEncoding": "File Encoding",
-          "readStartRow": "Read Start Row",
+          "readStartRow": "Start Row",
           "readStartRowPlaceholder": "Read row index, default from 0",
           "readStartRowTooltip": "Read parameter value start row, default index based on 0, that is, read the first row. Note: When the first row is the parameter name title row, usually need to read data from index 1, that is, the second row.",
-          "readStartColumn": "Read Start Column",
+          "readStartColumn": "Start Column",
           "readStartColumnPlaceholder": "Read column index, default from 0",
           "readStartColumnTooltip": "Read parameter start column, default index based on 0, that is, read the first column.",
           "separator": "Separator",
@@ -199,6 +199,7 @@
           "hints": "Extract a value from the database query result before each test execution as a dataset value.",
           "parameterName": "Parameter Name",
           "readConfig": "Read Config",
+          "dataSource": "Datasource",
           "selectDataSource": "Select Datasource",
           "databaseType": "Database Type",
           "databaseTypePlaceholder": "Database Type",
@@ -208,12 +209,12 @@
           "usernamePlaceholder": "Username, maximum 200 characters",
           "password": "Password",
           "passwordPlaceholder": "Password, maximum 800 characters",
-          "selectStatement": "Select Statement",
+          "selectStatement": "Select SQL",
           "selectStatementPlaceholder": "Select statement to query table data, no need to specify paging parameters, default fetch 5000 rows each time, maximum 1024 characters",
-          "readStartRow": "Read Start Row",
+          "readStartRow": "Start Row",
           "readStartRowPlaceholder": "Read row index, default from 0",
           "readStartRowTooltip": "Read parameter value start row, default index based on 0, that is, read the first row.",
-          "readStartColumn": "Read Start Column",
+          "readStartColumn": "Start Column",
           "readStartColumnPlaceholder": "Read column index, default from 0",
           "readStartColumnTooltip": "Read parameter start column, default index based on 0, that is, read the first column.",
           "extractionConfig": "Extraction Config",
@@ -404,7 +405,7 @@
       "addedVariables": "Added Variables",
       "addedDataSets": "Added Datasets",
       "addedSpaces": "Added Spaces",
-      "addedDataSources": "Added Data Sources"
+      "addedDataSources": "Added Datasource"
     },
     "introduce": {
       "title": "AngusTester Parameterization Methods:",
@@ -684,9 +685,9 @@
     "title": "Variable",
     "addVariable": {
       "static": "Add Static Variable",
-      "file": "Add File Variable",
-      "http": "Add Http Variable",
-      "jdbc": "Add Jdbc Variable"
+      "file": "Add File Extraction Variable",
+      "http": "Add Http Extraction Variable",
+      "jdbc": "Add Jdbc Extraction Variable"
     },
     "list": {
       "title": "Added Variables",
@@ -714,9 +715,9 @@
         "delete": "Delete"
       },
       "dropdown": {
-        "fileExtract": "File Extract Variable",
-        "httpExtract": "Http Extract Variable",
-        "jdbcExtract": "Jdbc Extract Variable",
+        "fileExtract": "File Extraction Variable",
+        "httpExtract": "Http Extraction Variable",
+        "jdbcExtract": "Jdbc Extraction Variable",
         "export": "Export",
         "clone": "Clone"
       },
@@ -871,6 +872,7 @@
       },
       "previewData": {
         "title": "Preview Data",
+        "tip": "Variable values resolve before sampling and persist unchanged throughout execution.",
         "noData": "No data",
         "refresh": "Refresh"
       },
@@ -907,8 +909,8 @@
         "namePlaceholder": "Support numbers, letters and !$%^&*_-+=./, maximum 100 characters",
         "descriptionPlaceholder": "Variable description, maximum 200 characters",
         "hints": "Extract a value from Http before each test execution, commonly used to obtain a user access token, avoiding manual updates each time.",
-        "readConfig": "Read Config",
-        "extractConfig": "Extract Config",
+        "readConfig": "Read Configuration",
+        "extractConfig": "Extract Configuration",
         "selectApi": "Select Api",
         "interfaceConfig": "Configuration",
         "extractMethod": "Extract Method",
@@ -991,9 +993,9 @@
         "namePlaceholder": "Support numbers, letters and !$%^&*_-+=./, maximum 100 characters",
         "descriptionPlaceholder": "Variable description, maximum 200 characters",
         "hints": "Extract a value from the database query result before each test execution.",
-        "readConfig": "Read Config",
-        "extractConfig": "Extract Config",
-        "selectDataSource": "Select Data Source",
+        "readConfig": "Read Configuration",
+        "extractConfig": "Extract Configuration",
+        "selectDataSource": "Select Datasource",
         "databaseType": "Database Type",
         "databaseTypePlaceholder": "Database Type",
         "jdbcUrl": "Jdbc URL",
@@ -1002,12 +1004,12 @@
         "usernamePlaceholder": "Username, maximum 200 characters",
         "password": "Password",
         "passwordPlaceholder": "Password, maximum 800 characters",
-        "selectStatement": "Select Statement",
+        "selectStatement": "Select SQL",
         "selectStatementPlaceholder": "Query Table Data Select Statement, maximum 1024 characters",
-        "readStartRow": "Read Start Row",
+        "readStartRow": "Start Row",
         "readStartRowPlaceholder": "Read Row Index, default from 0",
         "readStartRowTooltip": "Read Parameter Value Start Row, default index based on 0, i.e. read the first row.",
-        "readStartColumn": "Read Start Column",
+        "readStartColumn": "Start Column",
         "readStartColumnPlaceholder": "Read Column Index, default from 0",
         "readStartColumnTooltip": "Read Parameter Start Column, default index based on 0, i.e. read the first column.",
         "extractMethod": "Extract Method",
@@ -1019,9 +1021,9 @@
         "defaultValue": "Default Value",
         "defaultValuePlaceholder": "Default Value, maximum 4096 characters",
         "selectDatasource": {
-          "title": "Select Data Source",
-          "searchPlaceholder": "Search Data Source Name",
-          "noData": "No Data Source"
+          "title": "Select Datasource",
+          "searchPlaceholder": "Search Datasource Name",
+          "noData": "No Datasource"
         }
       },
       "fileVariable": {
@@ -1039,16 +1041,16 @@
         "descriptionPlaceholder": "Variable description, maximum 200 characters",
         "hints": "Extract a value from the file before each test execution.",
         "extractHint": "Extract a value from the file before each test execution.",
-        "readConfig": "Read Config",
-        "extractConfig": "Extract Config",
+        "readConfig": "Read Configuration",
+        "extractConfig": "Extract Configuration",
         "filePath": "File Path",
         "filePathPlaceholder": "File Local Path or File URL, maximum 800 characters",
         "fileType": "File Type",
         "fileEncoding": "File Encoding",
-        "readStartRow": "Read Start Row",
+        "readStartRow": "Start Row",
         "readStartRowPlaceholder": "Read Row Index, default from 0",
         "readStartRowTooltip": "Read Parameter Value Start Row, default index based on 0, i.e. read the first row. Note: When the first row is the parameter name title row, usually data needs to be read from the second row starting from the index 1.",
-        "readStartColumn": "Read Start Column",
+        "readStartColumn": "Start Column",
         "readStartColumnPlaceholder": "Read Column Index, default from 0",
         "readStartColumnTooltip": "Read Parameter Start Column, default index based on 0, i.e. read the first column.",
         "separator": "Separator",

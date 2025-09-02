@@ -58,7 +58,7 @@ const apisAction = computed(() => {
 
 <template>
   <Modal
-    :title="t('dataVariable.detail.jdbcVariable.selectDatasource.title')"
+    :title="t('dataset.detail.jdbcDataset.form.selectDataSource')"
     :visible="props.visible"
     :okButtonProps="okButtonProps"
     @cancel="cancel"
@@ -66,11 +66,11 @@ const apisAction = computed(() => {
     <div class="flex items-center">
       <div class="flex-shrink-0 mr-2.5">
         <IconRequired class="invisible" />
-        <span>{{ t('dataVariable.detail.jdbcVariable.selectDatasource.title') }}</span>
+        <span>{{ t('dataset.detail.jdbcDataset.form.dataSource') }}</span>
       </div>
       <Select
         showSearch
-        :placeholder="t('dataVariable.detail.jdbcVariable.selectDatasource.title')"
+        :placeholder="t('dataset.detail.jdbcDataset.form.selectDataSource')"
         class="w-full"
         :action="apisAction"
         :fieldNames="{ label: 'name', value: 'id' }"

@@ -94,7 +94,7 @@ const hashChange = (hash:string) => {
       let name = t('dataVariable.addVariable.static');
       if (source === 'FILE') {
         name = t('dataVariable.addVariable.file');
-      } else if (source === 'http') {
+      } else if (source === 'HTTP') {
         name = t('dataVariable.addVariable.http');
       } else if (source === 'JDBC') {
         name = t('dataVariable.addVariable.jdbc');
@@ -132,7 +132,6 @@ const storageKey = computed(() => {
   if (!props.projectId) {
     return undefined;
   }
-
   return `variable${props.projectId}`;
 });
 

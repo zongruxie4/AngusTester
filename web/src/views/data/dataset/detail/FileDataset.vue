@@ -32,7 +32,7 @@ const emit = defineEmits<{
 
 const ButtonGroup = defineAsyncComponent(() => import('@/views/data/dataset/detail/ButtonGroup.vue'));
 const ParameterNameInput = defineAsyncComponent(() => import('@/views/data/dataset/detail/ParameterNameInput.vue'));
-const PreviewData = defineAsyncComponent(() => import('@/views/data/dataset/preview/index.vue'));
+const PreviewData = defineAsyncComponent(() => import('@/views/data/dataset/detail/PreviewData.vue'));
 const DataSetUseList = defineAsyncComponent(() => import('@/views/data/dataset/detail/UseList.vue'));
 const MatchItemPopover = defineAsyncComponent(() => import('@/views/data/dataset/detail/MatchItemPopover.vue'));
 const SelectEnum = defineAsyncComponent(() => import('@/components/selectEnum/index.vue'));

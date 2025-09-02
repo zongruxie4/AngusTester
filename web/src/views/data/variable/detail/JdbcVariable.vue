@@ -94,7 +94,7 @@ const {
 
   <!-- Variable name input -->
   <div class="flex items-start mb-3.5">
-    <div class="flex items-center flex-shrink-0 mr-2.5 leading-7">
+    <div class="flex justify-end items-center flex-shrink-0 mr-2.5 w-18 font-semibold leading-7">
       <IconRequired />
       <span>{{ t('dataVariable.detail.jdbcVariable.name') }}</span>
     </div>
@@ -119,7 +119,7 @@ const {
 
   <!-- Variable description textarea -->
   <div class="flex items-start">
-    <div class="mr-2.5 flex items-center flex-shrink-0 transform-gpu translate-y-1">
+    <div class="mr-2.5 w-18 font-semibold flex justify-end items-center flex-shrink-0 transform-gpu translate-y-1">
       <IconRequired class="invisible" />
       <span>{{ t('dataVariable.detail.jdbcVariable.description') }}</span>
     </div>
@@ -156,7 +156,7 @@ const {
         <Toggle :title="t('dataVariable.detail.jdbcVariable.readConfig')" class="text-3 leading-5 mb-3.5">
           <!-- Data source selection button -->
           <div class="flex items-center justify-start mb-3.5">
-            <div class="w-19.5 flex-shrink-0">
+            <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
             </div>
             <Button
               type="link"
@@ -171,7 +171,7 @@ const {
           <!-- Database type and JDBC URL -->
           <div class="flex items-center space-x-5 mb-3.5">
             <div class="w-1/2 flex items-center">
-              <div class="w-19.5 flex-shrink-0">
+              <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataVariable.detail.jdbcVariable.databaseType') }}</span>
               </div>
@@ -183,10 +183,11 @@ const {
             </div>
 
             <div class="flex items-center mb-3.5">
-              <div class="w-19.5 flex-shrink-0">
+              <div class="w-25 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataVariable.detail.jdbcVariable.jdbcUrl') }}</span>
               </div>
+              <!-- TODO jdbcUrl和password的input长度不一致 -->
               <Input
                 v-model:value="jdbcUrl"
                 :maxlength="2048"
@@ -199,7 +200,7 @@ const {
           <!-- Username and password -->
           <div class="flex items-center space-x-5 mb-3.5">
             <div class="w-1/2 flex items-center">
-              <div class="w-19.5 flex-shrink-0">
+              <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataVariable.detail.jdbcVariable.username') }}</span>
               </div>
@@ -212,14 +213,14 @@ const {
             </div>
 
             <div class="w-1/2 flex items-center">
-              <div class="w-16 flex-shrink-0">
+              <div class="w-25 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataVariable.detail.jdbcVariable.password') }}</span>
               </div>
               <Input
                 v-model:value="password"
                 :maxlength="800"
-                class="w-full-20.5"
+                class="w-full-24"
                 :placeholder="t('dataVariable.detail.jdbcVariable.passwordPlaceholder')"
                 trimAll />
             </div>
@@ -227,7 +228,7 @@ const {
 
           <!-- SQL select statement -->
           <div class="flex items-start mb-3.5">
-            <div class="w-19.5 flex-shrink-0 transform-gpu translate-y-1">
+            <div class="w-28 flex-shrink-0 transform-gpu translate-y-1 text-3 font-semibold flex justify-end items-center mr-2.5">
               <IconRequired />
               <span>{{ t('dataVariable.detail.jdbcVariable.selectStatement') }}</span>
             </div>
@@ -244,7 +245,7 @@ const {
           <!-- Row and column index inputs -->
           <div class="flex items-center space-x-5 mb-3.5">
             <div class="w-1/2 flex items-center">
-              <div class="w-19.5 flex-shrink-0">
+              <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataVariable.detail.jdbcVariable.readStartRow') }}</span>
               </div>
@@ -260,7 +261,7 @@ const {
             </div>
 
             <div class="w-1/2 flex items-center">
-              <div class="w-16 flex-shrink-0">
+              <div class="w-25 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataVariable.detail.jdbcVariable.readStartColumn') }}</span>
               </div>
@@ -283,7 +284,7 @@ const {
           <template v-if="method === 'EXACT_VALUE'">
             <div class="flex items-center space-x-5 mb-3.5">
               <div class="w-1/2 flex items-center">
-                <div class="w-19.5 flex-shrink-0">
+                <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                   <IconRequired />
                   <span>{{ t('dataVariable.detail.jdbcVariable.extractMethod') }}</span>
                 </div>
@@ -295,7 +296,7 @@ const {
               </div>
 
               <div class="w-1/2 flex items-center">
-                <div class="w-16 flex-shrink-0">
+                <div class="w-25 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                   <IconRequired class="invisible" />
                   <span>{{ t('dataVariable.detail.jdbcVariable.defaultValue') }}</span>
                 </div>
@@ -313,7 +314,7 @@ const {
           <template v-else>
             <div class="flex items-center space-x-5 mb-3.5">
               <div class="w-1/2 flex items-center">
-                <div class="w-19.5 flex-shrink-0">
+                <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                   <IconRequired />
                   <span>{{ t('dataVariable.detail.jdbcVariable.extractMethod') }}</span>
                 </div>
@@ -325,7 +326,7 @@ const {
               </div>
 
               <div class="w-1/2 flex items-center">
-                <div class="w-16 flex-shrink-0">
+                <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                   <IconRequired />
                   <span>{{ t('dataVariable.detail.jdbcVariable.expression') }}</span>
                 </div>
@@ -339,7 +340,7 @@ const {
 
             <div class="flex items-center space-x-5 mb-3.5">
               <div class="w-1/2 flex items-center">
-                <div class="w-19.5 flex-shrink-0">
+                <div class="w-28 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                   <IconRequired class="invisible" />
                   <span>{{ t('dataVariable.detail.jdbcVariable.matchItem') }}</span>
                 </div>
@@ -355,7 +356,7 @@ const {
               </div>
 
               <div class="w-1/2 flex items-center">
-                <div class="w-16 flex-shrink-0">
+                <div class="w-25 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                   <IconRequired class="invisible" />
                   <span>{{ t('dataVariable.detail.jdbcVariable.defaultValue') }}</span>
                 </div>

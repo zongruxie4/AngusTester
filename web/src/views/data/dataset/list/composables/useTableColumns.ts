@@ -13,20 +13,22 @@ export function useTableColumns () {
       title: t('dataset.list.columns.name'),
       dataIndex: 'name',
       ellipsis: true,
-      width: '20%'
+      width: '30%',
+      sorter: true
     },
     {
       key: 'description',
       title: t('dataset.list.columns.description'),
       dataIndex: 'description',
-      ellipsis: true
+      ellipsis: true,
+      width: '36%'
     },
     {
       key: 'dataSource',
       title: t('dataset.list.columns.valueSource'),
       dataIndex: 'dataSource',
       ellipsis: true,
-      width: '10%',
+      width: '14%',
       customRender: ({ text }: { text: any }) => text?.message
     },
     {
@@ -34,7 +36,7 @@ export function useTableColumns () {
       title: t('dataset.list.columns.createdBy'),
       dataIndex: 'createdBy',
       ellipsis: true,
-      width: '10%',
+      width: '15%',
       sorter: true,
       customRender: ({ record }: { record: any }) => record.createdByName,
       groupName: 'person'
@@ -44,7 +46,7 @@ export function useTableColumns () {
       title: t('dataset.list.columns.lastModifiedBy'),
       dataIndex: 'lastModifiedBy',
       ellipsis: true,
-      width: '10%',
+      width: '15%',
       sorter: true,
       customRender: ({ record }: { record: any }) => record.lastModifiedByName,
       groupName: 'person',
@@ -55,7 +57,7 @@ export function useTableColumns () {
       title: t('dataset.list.columns.createdDate'),
       dataIndex: 'createdDate',
       ellipsis: true,
-      width: '13%',
+      width: '15%',
       sorter: true,
       groupName: 'date'
     },
@@ -64,7 +66,7 @@ export function useTableColumns () {
       title: t('dataset.list.columns.lastModifiedDate'),
       dataIndex: 'lastModifiedDate',
       ellipsis: true,
-      width: '13%',
+      width: '15%',
       sorter: true,
       groupName: 'date',
       hide: true

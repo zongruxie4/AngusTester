@@ -11,7 +11,7 @@ const { t } = useI18n();
 // Define async components
 const ButtonGroup = defineAsyncComponent(() => import('@/views/data/dataset/detail/ButtonGroup.vue'));
 const ParameterInput = defineAsyncComponent(() => import('./ParameterInput.vue'));
-const PreviewData = defineAsyncComponent(() => import('@/views/data/dataset/preview/index.vue'));
+const PreviewData = defineAsyncComponent(() => import('@/views/data/dataset/detail/PreviewData.vue'));
 const DataSetUseList = defineAsyncComponent(() => import('@/views/data/dataset/detail/UseList.vue'));
 
 // Define component props

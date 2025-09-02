@@ -14,7 +14,7 @@ interface Props {
     value: string;
     id: string;
     projectId: string;
-    extraction: any; // TODO 可复用定义
+    extraction: any;
   };
 }
 
@@ -40,7 +40,7 @@ const {
   <Spin :spinning="loading" class="text-3 leading-5">
     <!-- Header with title and refresh button -->
     <div class="flex items-center justify-between mb-2.5">
-      <Hints :text="t('dataVariable.detail.previewData.title')" />
+      <Hints :text="t('dataVariable.detail.previewData.tip')" />
       <Button
         :disabled="loading"
         size="small"

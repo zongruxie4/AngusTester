@@ -21,7 +21,7 @@ const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
 }>();
 
-const PreviewData = defineAsyncComponent(() => import('@/views/data/dataset/preview/index.vue'));
+const PreviewData = defineAsyncComponent(() => import('@/views/data/dataset/detail/PreviewData.vue'));
 
 const cancel = () => {
   emit('update:visible', false);

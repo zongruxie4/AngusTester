@@ -43,12 +43,12 @@ export function useTableColumns () {
       title: t('dataVariable.list.columns.dataSource'),
       dataIndex: 'dataSource',
       ellipsis: true,
-      width: '10%',
+      width: '12%',
       customRender: ({ text }: { text: any }) => text?.message
     },
     {
       title: t('dataVariable.list.columns.createdBy'),
-      dataIndex: 'createdByName',
+      dataIndex: 'createdBy',
       ellipsis: true,
       width: '12%',
       sorter: true,
@@ -57,7 +57,7 @@ export function useTableColumns () {
     },
     {
       title: t('dataVariable.list.columns.lastModifiedBy'),
-      dataIndex: 'lastModifiedByName',
+      dataIndex: 'lastModifiedBy',
       ellipsis: true,
       width: '12%',
       sorter: true,

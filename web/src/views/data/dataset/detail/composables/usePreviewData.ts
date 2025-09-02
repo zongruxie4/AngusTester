@@ -3,7 +3,7 @@ import { debounce } from 'throttle-debounce';
 import { dataSet } from '@/api/tester';
 import { utils, duration } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-import { TableData, PreviewDataSource, PreviewPagination, PreviewColumn } from '../types';
+import { TableData, PreviewDataSource, PreviewPagination, PreviewColumn } from '../../preview/types';
 
 /**
  * Composable for managing preview data logic in dataset preview component
