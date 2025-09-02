@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Hints, Image, Table } from '@xcan-angus/vue-ui';
+import { Image, Table } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
 import { duration } from '@xcan-angus/infra';
 

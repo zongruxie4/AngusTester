@@ -142,23 +142,18 @@ onMounted(() => {
                   </Button>
                 </Tooltip>
 
-                <Popconfirm
-                  :title="$t('projectTrash.confirm.deleteAll')"
-                  :okText="$t('actions.confirm')"
-                  :cancelText="$t('actions.cancel')"
-                  @confirm="deleteAll">
-                  <Tooltip :title="$t('projectTrash.ui.deleteAll')">
-                    <Button
-                      :disabled="!canPerformActions"
-                      type="primary"
-                      danger
-                      size="small"
-                      class="action-button-danger">
-                      <Icon icon="icon-qingchu" class="mr-1 text-sm" />
-                      {{ $t('projectTrash.ui.deleteAll') }}
-                    </Button>
-                  </Tooltip>
-                </Popconfirm>
+                <Tooltip :title="$t('projectTrash.ui.deleteAll')">
+                  <Button
+                    :disabled="!canPerformActions"
+                    type="primary"
+                    danger
+                    size="small"
+                    class="action-button-danger"
+                    @click="deleteAll">
+                    <Icon icon="icon-qingchu" class="mr-1 text-sm" />
+                    {{ $t('projectTrash.ui.deleteAll') }}
+                  </Button>
+                </Tooltip>
               </div>
 
               <!-- Refresh button -->
@@ -240,22 +235,16 @@ onMounted(() => {
                   </Button>
                 </Tooltip>
 
-                <Popconfirm
-                  :title="$t('projectTrash.confirm.delete')"
-                  :okText="$t('actions.confirm')"
-                  :cancelText="$t('actions.cancel')"
-                  @confirm="deleteTrash(record)">
-                  <Tooltip :title="$t('actions.delete')">
-                    <Button
-                      :disabled="record.disabled"
-                      type="text"
-                      size="small"
-                      class="action-icon-button delete-button"
-                      @click="() => {}">
-                      <Icon icon="icon-qingchu" class="text-sm" />
-                    </Button>
-                  </Tooltip>
-                </Popconfirm>
+                <Tooltip :title="$t('actions.delete')">
+                  <Button
+                    :disabled="record.disabled"
+                    type="text"
+                    size="small"
+                    class="action-icon-button delete-button"
+                    @click="deleteTrash(record)">
+                    <Icon icon="icon-qingchu" class="text-sm" />
+                  </Button>
+                </Tooltip>
               </div>
 
               <!-- Enhanced target name cell -->
