@@ -35,8 +35,7 @@ const { isOptionSelected, handleCheckboxChange } = useCheckboxGroup(props, emit)
       :key="option.value"
       :disabled="props.disabled"
       :checked="isOptionSelected(option.value)"
-      @change="(event) => handleCheckboxChange(event, option.value)"
-    >
+      @change="(event) => handleCheckboxChange(event, option.value)">
       {{ option.label }}
     </Checkbox>
   </div>

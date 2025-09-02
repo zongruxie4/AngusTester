@@ -164,7 +164,7 @@ const timeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
 /**
  * Format date string for time-based filters
  * Converts relative time periods to absolute date ranges
- * 
+ *
  * @param key - Time period key
  * @returns Array of start and end date strings
  */
@@ -193,7 +193,7 @@ const formatDateString = (key: string) => {
 /**
  * Get search parameters
  * Combines all filter types into a single parameter object
- * 
+ *
  * @returns Search parameters object
  */
 const getParams = () => {
@@ -211,7 +211,7 @@ const getParams = () => {
 /**
  * Handle search panel changes
  * Updates filters and emits change event
- * 
+ *
  * @param data - Search filter data
  */
 const searchChange = (data: {key: string; op: string; value: string|string[]}[]) => {
@@ -253,7 +253,7 @@ const searchChange = (data: {key: string; op: string; value: string|string[]}[])
 /**
  * Handle sort changes
  * Updates sorting parameters and emits change event
- * 
+ *
  * @param sortData - Sorting data
  */
 const toSort = (sortData) => {
@@ -265,7 +265,7 @@ const toSort = (sortData) => {
 /**
  * Handle menu item clicks
  * Updates quick search filters based on selected menu items
- * 
+ *
  * @param data - Menu item data
  */
 const menuItemClick = (data) => {
@@ -349,7 +349,7 @@ const refresh = () => {
 /**
  * Handle button dropdown clicks
  * Navigates to dataset creation pages based on selection
- * 
+ *
  * @param param0 - Dropdown menu item
  */
 const buttonDropdownClick = ({ key }: { key: 'file' | 'jdbc' }) => {

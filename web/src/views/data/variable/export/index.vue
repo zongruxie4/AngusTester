@@ -63,17 +63,16 @@ const handleExportConfirm = async (): Promise<void> => {
     :title="t('dataVariable.exportModal.title')"
     @cancel="handleCancel"
     @ok="handleExportConfirm">
-    
     <!-- Export format selection section -->
     <div class="flex items-center">
       <div class="flex items-center mr-3.5">
         <span>{{ t('dataVariable.exportModal.format') }}</span>
         <Colon />
       </div>
-      
+
       <!-- File format radio buttons -->
-      <RadioGroup 
-        :value="exportConfig.fileType" 
+      <RadioGroup
+        :value="exportConfig.fileType"
         name="fileType"
         @update:value="updateFileFormat">
         <Radio value="JSON">JSON</Radio>

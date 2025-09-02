@@ -111,12 +111,12 @@ const drawerMenu = computed(() => {
         {{ t('fileSpace.title') }}
       </div>
       <Introduce />
-      
+
       <!-- Added spaces section -->
       <div class="text-3.5 font-semibold mb-2.5 mt-4">
         {{ t('fileSpace.addedTitle') }}
       </div>
-      
+
       <!-- Search and action bar -->
       <div class="flex justify-between pb-3">
         <!-- Search input -->
@@ -142,7 +142,7 @@ const drawerMenu = computed(() => {
             <Icon icon="icon-shengchengshuju" />
             {{ t('fileSpace.buttons.generateData') }}
           </Button>
-          
+
           <!-- Add space button -->
           <Button
             type="primary"
@@ -152,7 +152,7 @@ const drawerMenu = computed(() => {
             <Icon icon="icon-create-script" />
             {{ t('fileSpace.buttons.addSpace') }}
           </Button>
-          
+
           <!-- Space permission button -->
           <Button
             class="flex items-center"
@@ -162,7 +162,7 @@ const drawerMenu = computed(() => {
             <Icon icon="icon-quanxian1" class="mr-1" />
             <span>{{ t('fileSpace.buttons.spacePermission') }}</span>
           </Button>
-          
+
           <!-- Refresh button -->
           <Button
             :disabled="tableLoading"
@@ -186,7 +186,6 @@ const drawerMenu = computed(() => {
         :rowClassName="(record) => record.id === selectedRowKey ? 'ant-table-row-selected' : ''"
         :customRow="(record) => ({ onClick: () => handleRowSelect(record) })"
         @change="changePage">
-        
         <!-- Custom cell rendering -->
         <template #bodyCell="{ record, column }">
           <!-- Space name column -->
@@ -194,20 +193,20 @@ const drawerMenu = computed(() => {
             <div class="flex items-center">
               <Icon icon="icon-kongjian" class="flex-shrink-0 text-4 mr-2" />
               <div class="flex items-center w-75 space-name-wrapper">
-                <span 
-                  class="cursor-pointer text-theme-text-hover" 
+                <span
+                  class="cursor-pointer text-theme-text-hover"
                   @click.stop="openSpace(record)">
                   {{ record.name }}
                 </span>
               </div>
             </div>
           </template>
-          
+
           <!-- Quota size column -->
           <template v-if="column.dataIndex === 'quotaSize'">
             {{ record.quotaSize ? (record.quotaSize.value + record.quotaSize.unit.message) : '--' }}
           </template>
-          
+
           <!-- Action column -->
           <template v-if="column.dataIndex === 'action'">
             <div class="space-x-2.5 flex items-center leading-4">
@@ -224,7 +223,7 @@ const drawerMenu = computed(() => {
                   {{ t('actions.edit') }}
                 </span>
               </template>
-              
+
               <!-- Permission action -->
               <template v-if="getSafeAuth(record).includes('GRANT')">
                 <a class="whitespace-nowrap" @click.stop="editAuth(record)">
@@ -238,7 +237,7 @@ const drawerMenu = computed(() => {
                   {{ t('fileSpace.actions.permission') }}
                 </span>
               </template>
-              
+
               <!-- Delete action -->
               <template v-if="getSafeAuth(record).includes('DELETE')">
                 <a class="whitespace-nowrap" @click.stop="delConfirm(record, projectId, isAdmin)">
@@ -264,7 +263,6 @@ const drawerMenu = computed(() => {
       ref="drawerRef"
       v-model:activeKey="activeDrawerKey"
       :menuItems="drawerMenu">
-      
       <!-- Basic info tab -->
       <template #info>
         <SpaceInfo

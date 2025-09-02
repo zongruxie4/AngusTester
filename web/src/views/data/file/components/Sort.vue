@@ -13,7 +13,7 @@ const { sortMenuItems, handleSortSelection } = useSort();
 
 /**
  * Handle sort menu item selection
- * 
+ *
  * @param sortData - Selected sort data
  */
 const handleSelect = (sortData: { orderBy: string; orderSort: string }): void => {

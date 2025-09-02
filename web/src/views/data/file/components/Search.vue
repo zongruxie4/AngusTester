@@ -8,13 +8,13 @@ const emit = defineEmits<{(e: 'search', id: string):void}>();
 const { t } = useI18n();
 
 // Use the search composable
-const { 
-  isSearchVisible, 
-  searchParams, 
-  showSearch, 
-  handleSearchChange, 
+const {
+  isSearchVisible,
+  searchParams,
+  showSearch,
+  handleSearchChange,
   handleDropdownVisibility,
-  init 
+  init
 } = useSearch();
 
 // Initialize the composable
@@ -22,7 +22,7 @@ init();
 
 /**
  * Handle search execution
- * 
+ *
  * @param value - Selected value
  * @param valueObj - Selected value object
  */
@@ -35,7 +35,7 @@ const handleChange = (value: string, valueObj: any): void => {
 
 /**
  * Handle dropdown visibility change
- * 
+ *
  * @param visible - Dropdown visibility state
  */
 const handleVisible = (visible: boolean): void => {

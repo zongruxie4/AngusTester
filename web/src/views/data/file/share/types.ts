@@ -41,7 +41,6 @@ export interface ShareForm {
   id: string | undefined;
 }
 
-
 /**
  * Interface for share modal state
  */

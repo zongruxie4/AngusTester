@@ -4,18 +4,18 @@ import { DatabaseType } from '@xcan-angus/infra';
  * <p>Filter operation types for search functionality</p>
  * <p>Defines all possible comparison operations for filtering data</p>
  */
-export type FilterOp = 
-  | 'EQUAL' 
-  | 'NOT_EQUAL' 
-  | 'GREATER_THAN' 
-  | 'GREATER_THAN_EQUAL' 
-  | 'LESS_THAN' 
-  | 'LESS_THAN_EQUAL' 
-  | 'CONTAIN' 
-  | 'NOT_CONTAIN' 
-  | 'MATCH_END' 
-  | 'MATCH' 
-  | 'IN' 
+export type FilterOp =
+  | 'EQUAL'
+  | 'NOT_EQUAL'
+  | 'GREATER_THAN'
+  | 'GREATER_THAN_EQUAL'
+  | 'LESS_THAN'
+  | 'LESS_THAN_EQUAL'
+  | 'CONTAIN'
+  | 'NOT_CONTAIN'
+  | 'MATCH_END'
+  | 'MATCH'
+  | 'IN'
   | 'NOT_IN';
 
 /**

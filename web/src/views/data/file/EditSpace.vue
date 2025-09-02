@@ -92,14 +92,14 @@ const onSizeBlur = () => {
       form.quotaSize.value = '100';
     }
   }
-  
+
   // Validate Gigabytes (minimum 0.1 GB)
   if (form.quotaSize.unit === 'Gigabytes') {
     if (form.quotaSize.value && +form.quotaSize.value < 0.1) {
       form.quotaSize.value = '0.1';
     }
   }
-  
+
   // Validate Terabytes (minimum 0.0001 TB)
   if (form.quotaSize.unit === 'Terabytes') {
     if (form.quotaSize.value && +form.quotaSize.value < 0.0001) {
@@ -116,9 +116,9 @@ const confirm = () => {
   formRef.value.validateFields().then(() => {
     const quotaSize = form.quotaSize;
     // Emit form data, excluding quotaSize if no value is set
-    emits('ok', { 
-      ...form, 
-      quotaSize: quotaSize.value ? form.quotaSize : undefined 
+    emits('ok', {
+      ...form,
+      quotaSize: quotaSize.value ? form.quotaSize : undefined
     });
   });
 };
@@ -147,7 +147,7 @@ watch(() => props.visible, (newValue) => {
 /**
  * <p>Filter function for excluding certain data units from selection.</p>
  * <p>Prevents selection of Bytes and Kilobytes as they are too small for practical use.</p>
- * 
+ *
  * @param param - Object containing the value to check
  * @returns Boolean indicating whether the value should be excluded
  */
@@ -162,14 +162,12 @@ const excludes = ({ value }: { value: string }): boolean => {
     :visible="visible"
     @cancel="closeModal"
     @ok="confirm">
-    
     <!-- Space configuration form -->
     <Form
       ref="formRef"
       :model="form"
       size="small"
       layout="vertical">
-      
       <!-- Space name field -->
       <FormItem
         :label="t('fileSpace.spaceForm.form.spaceName')"
@@ -181,7 +179,7 @@ const excludes = ({ value }: { value: string }): boolean => {
           size="small"
           :maxlength="100" />
       </FormItem>
-      
+
       <!-- Quota size field -->
       <FormItem name="quotaSize">
         <template #label>
@@ -211,7 +209,7 @@ const excludes = ({ value }: { value: string }): boolean => {
           </template>
         </Input>
       </FormItem>
-      
+
       <!-- Remarks field -->
       <FormItem :label="t('fileSpace.spaceForm.form.remark')">
         <Input

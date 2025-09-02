@@ -65,7 +65,7 @@ watch(() => props.visible, (newValue) => {
   if (!newValue) {
     return;
   }
-  
+
   if (props.editData) {
     initializeFormWithEditData(props.editData);
   } else {
@@ -83,7 +83,6 @@ watch(() => props.visible, (newValue) => {
     :visible="visible"
     @cancel="handleClose"
     @ok="handleOk">
-    
     <div class="text-3 text-content flex">
       <!-- Form Labels -->
       <div class="space-y-5 pt-1.5 mr-5">
@@ -108,13 +107,12 @@ watch(() => props.visible, (newValue) => {
           </div>
         </template>
       </div>
-      
+
       <!-- Form Fields -->
       <Form
         ref="formRef"
         class="flex-1"
         :model="formState">
-        
         <!-- Database Type Selection -->
         <FormItem name="database" :rules="{required:true,message:t('datasource.form.rules.databaseType')}">
           <SelectEnum
@@ -124,7 +122,7 @@ watch(() => props.visible, (newValue) => {
             :placeholder="t('datasource.form.placeholders.databaseType')"
             @change="handleDatabaseChange" />
         </FormItem>
-        
+
         <!-- Data Source Name -->
         <FormItem name="name" :rules="{required:true,message:t('datasource.form.rules.name')}">
           <Input
@@ -132,21 +130,21 @@ watch(() => props.visible, (newValue) => {
             :maxlength="100"
             :placeholder="t('datasource.form.placeholders.name')" />
         </FormItem>
-        
+
         <!-- Driver Class Name -->
         <FormItem name="driverClassName">
-          <Input 
-            v-model:value="formState.driverClassName" 
+          <Input
+            v-model:value="formState.driverClassName"
             :placeholder="t('datasource.form.placeholders.driverClassName')" />
         </FormItem>
-        
+
         <!-- JDBC URL -->
         <FormItem name="jdbcUrl" :rules="{required:true,message:t('datasource.form.rules.jdbcUrl')}">
-          <Input 
-            v-model:value="formState.jdbcUrl" 
+          <Input
+            v-model:value="formState.jdbcUrl"
             :placeholder="t('datasource.form.placeholders.jdbcUrl')" />
         </FormItem>
-        
+
         <!-- Username and Password (conditional) -->
         <template v-if="shouldShowCredentials">
           <FormItem name="username">

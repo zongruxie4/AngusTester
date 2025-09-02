@@ -21,7 +21,7 @@ const { jumpToPath, processCrumbItems, shouldShowEllipsis } = useCrumb();
 
 /**
  * Handle breadcrumb item click
- * 
+ *
  * @param id - ID of the item clicked
  */
 const handleJump = (id?: string): void => {

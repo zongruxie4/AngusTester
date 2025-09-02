@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * Search Panel Component for Variable List
- * 
+ *
  * <p>Component that provides search, filter, and quick action functionality</p>
  * <p>Includes quick search options, advanced search panel, and action buttons</p>
  */
@@ -172,7 +172,7 @@ const menuItems = computed(() => [
 
 /**
  * Format date string based on time key
- * 
+ *
  * @param key - Time key identifier
  * @returns Array of start and end date strings
  */
@@ -203,7 +203,7 @@ const formatDateString = (key: string): [string, string] => {
 
 /**
  * Get current search parameters
- * 
+ *
  * @returns Object containing current search configuration
  */
 const getCurrentParams = () => {
@@ -220,7 +220,7 @@ const getCurrentParams = () => {
 
 /**
  * Handle search panel changes
- * 
+ *
  * @param data - Search panel data with filters
  */
 const handleSearchPanelChange = (data: { filters: SearchFilter[] }) => {
@@ -229,7 +229,7 @@ const handleSearchPanelChange = (data: { filters: SearchFilter[] }) => {
 
   // Update selected menu map based on filters
   updateSelectedMenuMap();
-  
+
   emits('change', getCurrentParams());
 };
 
@@ -249,29 +249,29 @@ const updateSelectedMenuMap = () => {
   } else {
     // Update selected menu map based on filters
     assocKeys.forEach(key => {
-        if (key === 'createdBy' || key === 'lastModifiedBy') {
-    const filterItem = assocFilters.value.find(item => item.key === key);
-    if (!filterItem || filterItem.value !== userInfo.value?.id) {
-      delete selectedMenuMap.value[key];
-    }
-  }
-  if (key === 'createdDate') {
-    const filterItem = assocFilters.value.filter(item => item.key === key);
-    const timeKey = timeKeys.find(t => selectedMenuMap.value[t]);
-    if (timeKey && filterItem.length > 0) {
-      const timeValue = formatDateString(timeKey);
-      if (timeValue[0] !== filterItem[0].value || timeValue[1] !== filterItem[1].value) {
-        delete selectedMenuMap.value[timeKey];
+      if (key === 'createdBy' || key === 'lastModifiedBy') {
+        const filterItem = assocFilters.value.find(item => item.key === key);
+        if (!filterItem || filterItem.value !== userInfo.value?.id) {
+          delete selectedMenuMap.value[key];
+        }
       }
-    }
-  }
+      if (key === 'createdDate') {
+        const filterItem = assocFilters.value.filter(item => item.key === key);
+        const timeKey = timeKeys.find(t => selectedMenuMap.value[t]);
+        if (timeKey && filterItem.length > 0) {
+          const timeValue = formatDateString(timeKey);
+          if (timeValue[0] !== filterItem[0].value || timeValue[1] !== filterItem[1].value) {
+            delete selectedMenuMap.value[timeKey];
+          }
+        }
+      }
     });
   }
 };
 
 /**
  * Handle sort changes
- * 
+ *
  * @param sortData - Sort configuration data
  */
 const handleSortChange = (sortData: SortConfig) => {
@@ -282,7 +282,7 @@ const handleSortChange = (sortData: SortConfig) => {
 
 /**
  * Handle menu item clicks for quick search
- * 
+ *
  * @param data - Menu item data
  */
 const handleMenuItemClick = (data: { key: string }) => {
@@ -292,7 +292,7 @@ const handleMenuItemClick = (data: { key: string }) => {
   if (selectedMenuMap.value[key]) {
     // Remove selection
     delete selectedMenuMap.value[key];
-    
+
     if (timeKeys.includes(key) && assocKeys.includes('createdDate')) {
       searchPanelRef.value.setConfigs([
         { valueKey: 'createdDate', value: undefined }
@@ -310,14 +310,14 @@ const handleMenuItemClick = (data: { key: string }) => {
       // Select "All" - clear other selections
       selectedMenuMap.value = { '': true };
       quickSearchFilters.value = [];
-      
+
       if (typeof searchPanelRef.value?.clear === 'function') {
         searchPanelRef.value.clear();
         searchChangeFlag = true;
       }
     } else {
       delete selectedMenuMap.value[''];
-      
+
       if (timeKeys.includes(key)) {
         // Time-based selection
         timeKeys.forEach(timeKey => delete selectedMenuMap.value[timeKey]);
@@ -334,7 +334,7 @@ const handleMenuItemClick = (data: { key: string }) => {
 
   // Update quick search filters
   updateQuickSearchFilters();
-  
+
   if (!searchChangeFlag) {
     emits('change', getCurrentParams());
   }
@@ -369,7 +369,7 @@ const updateQuickSearchFilters = () => {
   }).filter((item): item is SearchFilter => item !== undefined);
 
   quickSearchFilters.value.push(...timeFilters);
-  
+
   if (assocFiltersInQuick.length) {
     searchPanelRef.value.setConfigs(assocFiltersInQuick);
   }
@@ -384,7 +384,7 @@ const handleRefresh = () => {
 
 /**
  * Handle button dropdown clicks for different extraction types
- * 
+ *
  * @param key - Extraction type key
  */
 const handleButtonDropdownClick = ({ key }: { key: 'file' | 'http' | 'jdbc' }) => {
@@ -449,7 +449,7 @@ onMounted(() => {
         <span>{{ t('dataVariable.list.searchPanel.quickSearch') }}</span>
         <Colon />
       </div>
-      
+
       <div class="flex flex-wrap ml-2">
         <div
           v-for="item in menuItems"
@@ -508,8 +508,8 @@ onMounted(() => {
               <Icon icon="icon-jia" class="text-3.5" />
               <span class="ml-1">{{ t('dataVariable.list.searchPanel.buttons.addStaticVariable') }}</span>
             </div>
-            <Dropdown 
-              :menuItems="buttonDropdownMenuItems" 
+            <Dropdown
+              :menuItems="buttonDropdownMenuItems"
               @click="handleButtonDropdownClick">
               <div class="w-5 h-5 flex items-center justify-center">
                 <Icon icon="icon-more" />

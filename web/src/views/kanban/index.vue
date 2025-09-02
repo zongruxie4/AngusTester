@@ -1,127 +1,74 @@
 <script setup lang="ts">
-import { defineAsyncComponent, inject, onMounted, Ref, ref, watch } from 'vue';
+import { defineAsyncComponent, inject, Ref, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Colon, DatePicker, Icon, IconRefresh, Image, Select } from '@xcan-angus/vue-ui';
 import { Radio, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
 import DefaultAvatar from './images/default.png';
-import { ProjectInfo } from './PropsType';
+import type { ProjectInfo } from './types';
+import type { CreatorObjectType } from './types';
+import { useKanbanFilters } from './composables/useKanbanFilters';
+import { useKanbanView } from './composables/useKanbanView';
+import { useKanbanOptions } from './composables/useKanbanOptions';
 
 const { t } = useI18n();
 
-// const userInfo = inject<Ref<{ id: string; }>>('tenantInfo', ref({ id: '' }));
+// external contexts
 const projectInfo = inject<Ref<ProjectInfo | undefined>>('projectInfo', ref());
-
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showSprint: true }));
 
-const SelectCreatorModal = defineAsyncComponent(() => import('./selectCreatorModal.vue'));
-const DataView = defineAsyncComponent(() => import('@/views/kanban/dataAssets/index.vue'));
+// async components
+const SelectCreatorModal = defineAsyncComponent(() => import('./SelectCreatorModal.vue'));
+const DataView = defineAsyncComponent(() => import('@/views/kanban/assets/index.vue'));
 const EffectivenessView = defineAsyncComponent(() => import('@/views/kanban/effectiveness/index.vue'));
 const CtoView = defineAsyncComponent(() => import('@/views/kanban/cto/index.vue'));
-// const SelectApisCaseModal = defineAsyncComponent(() => import('@/components/SelectApisCaseModal/index.vue'));
 
-const dataViewRef = ref();
-const effectivenessRef = ref();
-const ctoRef = ref();
-const Maximizing = ref(false);
-const viewMode = ref<'data' | 'effectiveness' | 'cto'>('effectiveness');
+// view management
+const { isMaximized, viewMode, dataViewRef, effectivenessRef, ctoRef, refreshActive, toggleMaximize } = useKanbanView();
 
-const projectId = ref<string>();
-const dateRange = ref<[string, string] | undefined>([]);
-const creatorObjectType = ref<'GROUP' | 'USER' | 'DEPT'>();
-const creatorObjectId = ref<string>();
-const creatorObjectName = ref<string>();
-const avatar = ref<string>();
-const creatorModalVisible = ref(false);
+// filters and derived safe values
+const {
+  projectId,
+  avatar,
+  dateRange,
+  creatorObjectType,
+  creatorObjectId,
+  creatorObjectName,
+  countType,
+  selectedSprintId,
+  selectedPlanId,
+  projectIdSafe,
+  sprintIdSafe,
+  planIdSafe,
+  createdDateStartSafe,
+  createdDateEndSafe,
+  creatorObjectTypeSafe,
+  creatorObjectIdSafe,
+  clearCreator,
+  setCreator
+} = useKanbanFilters({ projectInfo });
 
-const countType = ref<'task' | 'useCase'>('task');
-const selectedSprintId = ref<string>();
-const selectedPlanId = ref<string>();
-
-const delCreator = () => {
-  creatorObjectType.value = undefined;
-  creatorObjectId.value = undefined;
-  creatorObjectName.value = undefined;
-};
-
-const setCreator = (creator: { creatorObjectType?: 'GROUP' | 'USER' | 'DEPT'; creatorObjectId?: string; creatorObjectName?: string; avatar?: string }) => {
-  creatorObjectType.value = creator.creatorObjectType;
-  creatorObjectId.value = creator.creatorObjectId;
-  creatorObjectName.value = creator.creatorObjectName;
-};
-
-const modifyCreator = () => {
-  creatorModalVisible.value = true;
-};
-
-const refrsh = () => {
-  if (typeof dataViewRef.value?.refresh === 'function' && viewMode.value === 'data') {
-    dataViewRef.value.refresh();
-  }
-  if (typeof effectivenessRef.value?.refresh === 'function' && viewMode.value === 'effectiveness') {
-    effectivenessRef.value.refresh();
-  }
-  if (typeof ctoRef.value?.refresh === 'function' && viewMode.value === 'cto') {
-    ctoRef.value.refresh();
-  }
-};
-
-const changeMax = () => {
-  Maximizing.value = !Maximizing.value;
-  if (typeof dataViewRef.value?.handleWindowResize === 'function' && viewMode.value === 'data') {
-    dataViewRef.value.handleWindowResize();
-  }
-  if (typeof effectivenessRef.value?.handleWindowResize === 'function' && viewMode.value === 'effectiveness') {
-    effectivenessRef.value.handleWindowResize();
-  }
-  if (typeof ctoRef.value?.handleWindowResize === 'function' && viewMode.value === 'cto') {
-    ctoRef.value.handleWindowResize();
-  }
-};
-
-onMounted(() => {
-  watch(() => projectInfo.value, (newValue) => {
-    if (newValue?.id) {
-      projectId.value = newValue.id;
-      avatar.value = newValue.avatar;
-      selectedSprintId.value = undefined;
-      selectedPlanId.value = undefined;
-    }
-  }, {
-    immediate: true
-  });
-
-  watch(() => proTypeShowMap.value, () => {
+// react to product type visibility
+watch(
+  () => proTypeShowMap.value,
+  () => {
     if (!proTypeShowMap.value.showTask) {
       countType.value = 'useCase';
     }
-  }, {
-    immediate: true
-  });
-});
-
-// const userId = computed(() => {
-//   return userInfo.value?.id;
-// });
-
-const viewTypeOpt = [
-  {
-    value: 'cto',
-    label: t('kanban.viewType.cto')
   },
-  {
-    value: 'effectiveness',
-    label: t('kanban.viewType.effectiveness')
-  },
-  {
-    value: 'data',
-    label: t('kanban.viewType.dataAssets')
-  }
-];
+  { immediate: true }
+);
+
+// ui state
+const creatorModalVisible = ref(false);
+const openCreatorModal = () => { creatorModalVisible.value = true; };
+
+// options
+const { viewTypeOptions } = useKanbanOptions();
 
 </script>
 <template>
-  <div class="px-5 pt-2 pb-5 h-full leading-5 text-3  overflow-y-auto bg-white" :class="{'fixed top-0 left-0 bottom-0 right-0 z-999': Maximizing}">
+  <div class="px-5 pt-2 pb-5 h-full leading-5 text-3  overflow-y-auto bg-white" :class="{'fixed top-0 left-0 bottom-0 right-0 z-999': isMaximized}">
     <div class="flex items-center border px-2 py-1 rounded">
       <Image
         :src="avatar"
@@ -141,12 +88,12 @@ const viewTypeOpt = [
             v-show="!!creatorObjectName"
             icon="icon-cuowu"
             class="cursor-pointer text-text-link text-3.5 flex-shrink-0"
-            @click="delCreator" />
+            @click="clearCreator" />
           <Icon
             v-show="!creatorObjectName"
             icon="icon-shuxie"
             class="cursor-pointer text-text-link text-3.5 flex-shrink-0"
-            @click="modifyCreator" />
+            @click="openCreatorModal" />
         </div>
 
         <template v-if="['effectiveness', 'cto'].includes(viewMode)">
@@ -203,12 +150,12 @@ const viewTypeOpt = [
           optionType="button"
           buttonStyle="solid"
           class="child-px-2.5"
-          :options="viewTypeOpt" />
-        <IconRefresh class="text-4" @click="refrsh" />
+          :options="viewTypeOptions" />
+        <IconRefresh class="text-4" @click="refreshActive" />
         <Icon
           class="text-4 cursor-pointer"
-          :icon=" Maximizing ? 'icon-tuichuzuida' : 'icon-zuidahua' "
-          @click="changeMax" />
+          :icon=" isMaximized ? 'icon-tuichuzuida' : 'icon-zuidahua' "
+          @click="toggleMaximize" />
       </div>
     </div>
 
@@ -217,39 +164,39 @@ const viewTypeOpt = [
         <DataView
           ref="dataViewRef"
           :onShow="viewMode === 'data'"
-          :projectId="projectId"
-          :createdDateStart="dateRange?.[0]"
-          :createdDateEnd="dateRange?.[1]"
-          :creatorObjectType="creatorObjectType"
-          :creatorObjectId="creatorObjectId" />
+          :projectId="projectIdSafe"
+          :createdDateStart="createdDateStartSafe"
+          :createdDateEnd="createdDateEndSafe"
+          :creatorObjectType="creatorObjectTypeSafe as CreatorObjectType"
+          :creatorObjectId="creatorObjectIdSafe" />
       </TabPane>
 
       <TabPane key="effectiveness">
         <EffectivenessView
           ref="effectivenessRef"
           :onShow="viewMode === 'effectiveness'"
-          :projectId="projectId"
+          :projectId="projectIdSafe"
           :countType="countType"
-          :sprintId="selectedSprintId"
-          :planId="selectedPlanId"
-          :createdDateStart="dateRange?.[0]"
-          :createdDateEnd="dateRange?.[1]"
-          :creatorObjectType="creatorObjectType"
-          :creatorObjectId="creatorObjectId" />
+          :sprintId="sprintIdSafe"
+          :planId="planIdSafe"
+          :createdDateStart="createdDateStartSafe"
+          :createdDateEnd="createdDateEndSafe"
+          :creatorObjectType="creatorObjectTypeSafe as CreatorObjectType"
+          :creatorObjectId="creatorObjectIdSafe" />
       </TabPane>
 
       <TabPane key="cto">
         <CtoView
           ref="ctoRef"
           :onShow="viewMode === 'cto'"
-          :projectId="projectId"
+          :projectId="projectIdSafe"
           :countType="countType"
-          :sprintId="selectedSprintId"
-          :planId="selectedPlanId"
-          :createdDateStart="dateRange?.[0]"
-          :createdDateEnd="dateRange?.[1]"
-          :creatorObjectType="creatorObjectType"
-          :creatorObjectId="creatorObjectId" />
+          :sprintId="sprintIdSafe"
+          :planId="planIdSafe"
+          :createdDateStart="createdDateStartSafe"
+          :createdDateEnd="createdDateEndSafe"
+          :creatorObjectType="creatorObjectTypeSafe as CreatorObjectType"
+          :creatorObjectId="creatorObjectIdSafe" />
       </TabPane>
     </Tabs>
 

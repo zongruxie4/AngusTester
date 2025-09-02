@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * Variable List Component
- * 
+ *
  * <p>Main component for displaying and managing variables in a project</p>
  * <p>Provides functionality for viewing, editing, deleting, and managing variables</p>
  */
@@ -177,18 +177,17 @@ onMounted(() => {
       :spinning="loading"
       style="height: calc(100% - 41px);"
       class="flex flex-col">
-      
       <template v-if="loaded">
         <!-- No Data State -->
-        <div 
-          v-if="!searchedFlag && tableData.length === 0" 
+        <div
+          v-if="!searchedFlag && tableData.length === 0"
           class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../assets/images/nodata.png" alt="No Data">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-7">
             <span>{{ t('dataVariable.list.noData') }}</span>
 
-            <Dropdown 
-              :menuItems="buttonDropdownMenuItems" 
+            <Dropdown
+              :menuItems="buttonDropdownMenuItems"
               @click="handleButtonDropdownClick">
               <Button
                 type="link"
@@ -237,7 +236,6 @@ onMounted(() => {
             rowKey="id"
             class="flex-1"
             @change="handleTableChangeEvent">
-            
             <!-- Custom Cell Renderers -->
             <template #bodyCell="{ column, record }">
               <!-- Name Column -->
@@ -326,8 +324,8 @@ onMounted(() => {
                   <span>{{ t('dataVariable.list.buttons.delete') }}</span>
                 </Button>
 
-                <Dropdown 
-                  :menuItems="tableDropdownMenuItems" 
+                <Dropdown
+                  :menuItems="tableDropdownMenuItems"
                   @click="handleTableDropdownClick($event, record)">
                   <Button
                     type="text"

@@ -99,7 +99,7 @@ const {
 /**
  * Handle dataset deletion
  * Shows confirmation dialog before deleting a dataset
- * 
+ *
  * @param data - Dataset item to delete
  */
 const toDelete = (data: DataSetItem) => {
@@ -114,7 +114,7 @@ const toDelete = (data: DataSetItem) => {
 /**
  * Handle dataset cloning
  * Clones a dataset and refreshes the list
- * 
+ *
  * @param data - Dataset item to clone
  */
 const toClone = async (data: DataSetItem) => {
@@ -156,7 +156,7 @@ const importOk = () => {
 /**
  * Handle table dropdown menu clicks
  * Routes actions to appropriate handlers based on menu item
- * 
+ *
  * @param menuItem - Selected menu item
  * @param data - Dataset item associated with the action
  */

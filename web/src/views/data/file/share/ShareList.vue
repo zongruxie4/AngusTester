@@ -48,7 +48,7 @@ useShareList().init(props);
 
 /**
  * Edit an existing share
- * 
+ *
  * @param item - Share item to edit
  */
 const edit = (item: ShareListItem) => {

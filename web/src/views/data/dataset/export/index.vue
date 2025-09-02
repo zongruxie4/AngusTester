@@ -92,8 +92,7 @@ const handleCancel = (): void => {
     :confirmLoading="isLoading"
     :title="t('dataset.exportModal.title')"
     @cancel="handleCancel"
-    @ok="handleConfirm"
-  >
+    @ok="handleConfirm">
     <!-- Export format selection section -->
     <div class="flex items-center">
       <!-- Format label with colon separator -->
@@ -101,13 +100,12 @@ const handleCancel = (): void => {
         <span>{{ t('dataset.exportModal.format') }}</span>
         <Colon />
       </div>
-      
+
       <!-- File format radio button group -->
-      <RadioGroup 
-        :value="selectedFileType" 
+      <RadioGroup
+        :value="selectedFileType"
         name="fileType"
-        @change="handleFileTypeChange"
-      >
+        @change="handleFileTypeChange">
         <Radio value="JSON">JSON</Radio>
         <Radio value="YAML">YAML</Radio>
       </RadioGroup>

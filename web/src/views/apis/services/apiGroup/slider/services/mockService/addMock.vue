@@ -7,7 +7,7 @@ import { TESTER, appContext } from '@xcan-angus/infra';
 import { mock, services } from '@/api/tester';
 import type { Rule } from 'ant-design-vue/es/form';
 
-import ApiList from '@/views/mock/add/apiList.vue';
+import ApiList from '@/views/apis/mock/add/ApiList.vue';
 
 interface Props {
   visible: boolean;

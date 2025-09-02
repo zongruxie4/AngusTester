@@ -7,11 +7,11 @@ const t = i18n.getI18n()?.global?.t || ((value: string) => value);
  * <p>Defines the structure and display properties for file table columns.</p>
  */
 export const columns = [
-  { 
-    title: t('fileSpace.columns.name'), 
-    dataIndex: 'name', 
-    width: '30%', 
-    ellipsis: true 
+  {
+    title: t('fileSpace.columns.name'),
+    dataIndex: 'name',
+    width: '30%',
+    ellipsis: true
   },
   {
     title: t('fileSpace.columns.fileCount'),
@@ -25,21 +25,21 @@ export const columns = [
     width: 80,
     ellipsis: true
   },
-  { 
-    title: t('fileSpace.columns.actualSize'), 
-    dataIndex: 'size', 
-    ellipsis: true, 
-    width: 80 
-  },
-  { 
-    title: t('fileSpace.columns.lastModifiedDate'), 
-    dataIndex: 'lastModifiedDate', 
-    ellipsis: true, 
-    width: 160 
+  {
+    title: t('fileSpace.columns.actualSize'),
+    dataIndex: 'size',
+    ellipsis: true,
+    width: 80
   },
   {
-    title: t('fileSpace.columns.action'), 
-    dataIndex: 'action', 
+    title: t('fileSpace.columns.lastModifiedDate'),
+    dataIndex: 'lastModifiedDate',
+    ellipsis: true,
+    width: 160
+  },
+  {
+    title: t('fileSpace.columns.action'),
+    dataIndex: 'action',
     width: 380
   }
 ];
@@ -49,13 +49,13 @@ export const columns = [
  * <p>Includes all available permissions for space management.</p>
  */
 export const SPACE_PERMISSIONS = [
-  'VIEW', 
-  'MODIFY', 
-  'DELETE', 
-  'SHARE', 
-  'GRANT', 
-  'OBJECT_READ', 
-  'OBJECT_WRITE', 
+  'VIEW',
+  'MODIFY',
+  'DELETE',
+  'SHARE',
+  'GRANT',
+  'OBJECT_READ',
+  'OBJECT_WRITE',
   'OBJECT_DELETE'
 ] as const;
 

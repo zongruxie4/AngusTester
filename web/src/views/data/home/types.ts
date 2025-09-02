@@ -261,8 +261,3 @@ export interface IntroductionTip {
  */
 export type ActivityType = 'VARIABLE' | 'DATASET' | 'DATASOURCE' | 'FILE';
 
-/**
- * <p>Refresh notification update function type</p>
- * <p>Function signature for updating refresh notifications</p>
- */
-export type UpdateRefreshNotify = (value: string) => void;

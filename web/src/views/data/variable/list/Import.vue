@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * Import Variables Modal Component
- * 
+ *
  * <p>Modal component for importing variables from various file formats</p>
  * <p>Supports ZIP, RAR, 7Z, GZ, TAR, BZ2, XZ, LZMA, JSON, YAML, and YML files</p>
  */
@@ -41,7 +41,7 @@ const uploadErrorMsg = ref<string>();
 
 /**
  * Handle file upload change events
- * 
+ *
  * @param file - Uploaded file information
  */
 const handleUploadChange = async ({ file }: { file: UploadFile }) => {
@@ -63,7 +63,7 @@ const handleUploadChange = async ({ file }: { file: UploadFile }) => {
 
 /**
  * Custom upload request handler (disabled for manual control)
- * 
+ *
  * @returns false to prevent automatic upload
  */
 const customRequest = () => {
@@ -95,16 +95,16 @@ const executeImport = async () => {
 
   const formData = new FormData();
   const file = originFile.value.originFileObj as File;
-  
+
   formData.append('file', file);
   formData.append('strategyWhenDuplicated', strategyWhenDuplicated.value);
   formData.append('projectId', props.projectId);
 
   loading.value = true;
-  
+
   try {
     const [error] = await variable.importVariables(formData, { silence: true });
-    
+
     if (error) {
       uploadErrorMsg.value = error.message;
       return;
@@ -163,7 +163,6 @@ const acceptedFileTypes = '.zip,.rar,.7z,.gz,.tar,.bz2,.xz,.lzma,.json,.yaml,.ym
     :title="t('dataVariable.importModal.title')"
     @cancel="cancelImport"
     @ok="executeImport">
-    
     <Spin :spinning="loading" class="mb-5">
       <!-- File Upload Area -->
       <UploadDragger
@@ -174,7 +173,6 @@ const acceptedFileTypes = '.zip,.rar,.7z,.gz,.tar,.bz2,.xz,.lzma,.json,.yaml,.ym
         :customRequest="customRequest"
         :accept="acceptedFileTypes"
         @change="handleUploadChange">
-        
         <div class="flex flex-col items-center justify-center text-3 leading-5">
           <Icon icon="icon-shangchuan" class="text-5 text-text-link" />
           <div class="mt-1 mb-1.5 text-text-link">
@@ -191,7 +189,6 @@ const acceptedFileTypes = '.zip,.rar,.7z,.gz,.tar,.bz2,.xz,.lzma,.json,.yaml,.ym
         v-show="!!originFile"
         :class="{ 'border-status-error': !!uploadErrorMsg }"
         class="px-3.5 border rounded">
-        
         <div class="flex py-2">
           <div :title="originFile?.name" class="flex-2 truncate">
             {{ originFile?.name }}

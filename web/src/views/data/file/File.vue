@@ -90,7 +90,7 @@ const shareIds = ref<string[]>([]);
 /**
  * <p>Show delete confirmation modal for files.</p>
  * <p>Displays confirmation dialog before deleting selected files.</p>
- * 
+ *
  * @param fileList - List of file IDs to delete
  */
 const showDeleteConfirm = (fileList = state.selectedRowKeys) => {
@@ -106,7 +106,7 @@ const showDeleteConfirm = (fileList = state.selectedRowKeys) => {
 /**
  * <p>Open side drawer for file information.</p>
  * <p>Sets target file and opens drawer with file details.</p>
- * 
+ *
  * @param record - File record to show details for
  */
 const openSide = (record: SourceType) => {
@@ -145,7 +145,7 @@ const removeTempRow = () => {
 
 /**
  * <p>Create directory from temporary row data.</p>
- * 
+ *
  * @param record - Temporary directory record
  */
 const createDirectory = async (record: SourceType) => {
@@ -154,12 +154,12 @@ const createDirectory = async (record: SourceType) => {
     parentDirectoryId: parentDirectoryId.value === '-1' ? undefined : parentDirectoryId.value,
     spaceId: spaceId.value
   };
-  
+
   const [error] = await space.addDirectory(params);
   if (error) {
     return;
   }
-  
+
   notification.success(t('fileSpace.fileManagement.messages.addDirectorySuccess'));
   getList();
 };
@@ -172,7 +172,7 @@ onMounted(() => {
   if (route.params.id) {
     spaceId.value = route.params.id as string || '-1';
     spaceName.value = route.query.spaceName as string;
-    
+
     // Restore parent directory ID from session storage
     const parentId = sessionStorage.getItem('parentDirectoryId');
     if (parentId && +parentId > -1) {
@@ -180,7 +180,7 @@ onMounted(() => {
     } else {
       state.crumb.push({ name: spaceName.value, id: '-1' });
     }
-    
+
     getList();
     getActionAuth();
   }
@@ -203,7 +203,7 @@ onBeforeUnmount(() => {
       <div class="flex justify-between items-center h-16.25">
         <!-- Breadcrumb navigation -->
         <FileCrumb :crumb="state.crumb" @jump="jumpPath" />
-        
+
         <!-- Action buttons -->
         <div class="flex items-center text-3">
           <!-- Create directory button -->
@@ -212,14 +212,14 @@ onBeforeUnmount(() => {
             :title="t('fileSpace.fileManagement.directory')"
             icon="icon-chuangjianwenjianjia"
             @click="create" />
-          
+
           <!-- Upload button -->
           <FileIcon
             v-if="editAuth"
             :title="t('actions.upload')"
             icon="icon-shangchuanxiao"
             @click="uploadFile" />
-          
+
           <!-- Delete button -->
           <FileIcon
             v-if="state.selectedRowKeys?.length > 0 && deleteAuth"
@@ -227,20 +227,20 @@ onBeforeUnmount(() => {
             icon="icon-qingchu"
             class="text-3.5"
             @click="showDeleteConfirm()" />
-          
+
           <!-- Move button -->
           <FileIcon
             v-if="state.selectedRowKeys?.length > 0 && editAuth"
             :title="t('actions.move')"
             icon="icon-yidong"
             @click="handleMultiMove" />
-          
+
           <!-- Search component -->
           <file-search :spaceId="spaceId" @search="search" />
-          
+
           <!-- Sort component -->
           <file-sort @sort="sort" />
-          
+
           <!-- Refresh button -->
           <FileIcon
             :title="t('actions.refresh')"
@@ -268,7 +268,6 @@ onBeforeUnmount(() => {
         :dataSource="state.dataSource"
         :rowSelection="rowSelection"
         @change="changePage">
-        
         <!-- Custom cell rendering -->
         <template #bodyCell="{ column, text, record }">
           <!-- Name column with icon and actions -->
@@ -276,20 +275,19 @@ onBeforeUnmount(() => {
             <div class="flex items-center">
               <div class="flex items-center flex-1 truncate">
                 <Icon :icon="getFileIcon(record)" class="mr-2.5 flex-shrink-0 text-3.5" />
-                
+
                 <!-- Existing file/directory name -->
                 <div
                   v-if="record.id !== '-1'"
                   :class="{flex: !!record.renameFlag}"
                   class="flex-1 items-center flex-shrink-0 truncate">
-                  
                   <template v-if="!record.renameFlag">
                     <span
                       class="cursor-pointer text-theme-text-hover"
                       :title="text"
                       @click.stop="getFileData(record)">{{ text }}</span>
                   </template>
-                  
+
                   <!-- Rename input field -->
                   <template v-else>
                     <Input
@@ -303,7 +301,7 @@ onBeforeUnmount(() => {
                       @blur="renameBlur(record)" />
                   </template>
                 </div>
-                
+
                 <!-- Directory creation input field -->
                 <Input
                   v-if="record.id === '-1'"
@@ -318,28 +316,27 @@ onBeforeUnmount(() => {
               </div>
             </div>
           </template>
-          
+
           <!-- File count column -->
           <template v-if="column.dataIndex === 'fileNum'">
             <span>{{ record.type.value === 'DIRECTORY' ? record.summary.subFileNum : '--' }}</span>
           </template>
-          
+
           <!-- Subdirectory count column -->
           <template v-if="column.dataIndex === 'subDirectoryNum'">
             <span>{{ record.type.value === 'DIRECTORY' ? record.summary.subDirectoryNum : '--' }}</span>
           </template>
-          
+
           <!-- Size column -->
           <template v-if="column.dataIndex == 'size'">
             <span>{{ record.summary.usedSize }}</span>
           </template>
-          
+
           <!-- Action column -->
           <template v-if="column.dataIndex === 'action'">
             <div
               v-show="record.id !== '-1'"
               class="text-3 whitespace-nowrap">
-              
               <!-- Delete action -->
               <Button
                 :disabled="!deleteAuth"
@@ -350,7 +347,7 @@ onBeforeUnmount(() => {
                 <Icon icon="icon-qingchu" class="align-text-bottom mr-0.5" />
                 {{ t('fileSpace.fileManagement.fileActions.delete') }}
               </Button>
-              
+
               <!-- Rename action -->
               <Button
                 :disabled="!editAuth"
@@ -361,7 +358,7 @@ onBeforeUnmount(() => {
                 <Icon icon="icon-bianji" class="align-text-bottom mr-0.5" />
                 {{ t('fileSpace.fileManagement.fileActions.rename') }}
               </Button>
-              
+
               <!-- Move action -->
               <Button
                 :disabled="!editAuth"
@@ -372,7 +369,7 @@ onBeforeUnmount(() => {
                 <Icon icon="icon-yidong" class="align-text-bottom mr-0.5" />
                 {{ t('fileSpace.fileManagement.fileActions.move') }}
               </Button>
-              
+
               <!-- Details action -->
               <Button
                 type="text"
@@ -382,7 +379,7 @@ onBeforeUnmount(() => {
                 <Icon icon="icon-fuwuxinxi" class="align-text-bottom mr-0.5" />
                 {{ t('fileSpace.fileManagement.fileActions.details') }}
               </Button>
-              
+
               <!-- Download action -->
               <Button
                 :disabled="!downloadAuth || record.type.value !== 'FILE'"
@@ -393,7 +390,7 @@ onBeforeUnmount(() => {
                 <Icon icon="icon-daochu" class="align-text-bottom mr-0.5" />
                 {{ t('fileSpace.fileManagement.fileActions.download') }}
               </Button>
-              
+
               <!-- Share link action -->
               <Button
                 :disabled="!downloadAuth || record.type.value !== 'FILE'"
@@ -432,7 +429,6 @@ onBeforeUnmount(() => {
       ref="drawerRef"
       v-model:activeKey="activeDrawerKey"
       :menuItems="fileDrawerMenu">
-      
       <!-- File information tab -->
       <template #info>
         <SpaceInfo :id="targetId" :type="targetType" />

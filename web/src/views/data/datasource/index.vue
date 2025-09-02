@@ -38,12 +38,12 @@ const {
   params,
   isModalVisible,
   editData,
-  
+
   // Search configuration
   searchOptions,
   generatePaginationTotalText,
   shouldShowPagination,
-  
+
   // Methods
   handleSearchChange,
   handlePaginationChange,
@@ -61,16 +61,15 @@ const {
   <Spin
     :spinning="loading"
     class="pl-5 py-5 w-full h-full flex flex-col">
-    
     <!-- Page Header -->
     <div class="text-3.5 font-semibold mb-2.5">{{ t('datasource.title') }}</div>
     <div class="mb-6 text-3">
       <div>{{ t('datasource.description') }}</div>
     </div>
-    
+
     <!-- Added Data Sources Section -->
     <div class="text-3.5 font-semibold mb-2.5">{{ t('datasource.addedTitle') }}</div>
-    
+
     <!-- Search and Action Bar -->
     <div class="flex pr-5">
       <SearchPanel
@@ -140,7 +139,7 @@ const {
                       <img src="../../../assets/database/DB2.png" class="w-full h-full" />
                     </template>
                   </div>
-                  
+
                   <!-- Data Source Info -->
                   <div class="flex items-center" style="width: calc(100% - 70px);">
                     <div class="mr-5 truncate flex-1 text-3.5 font-medium text-text-title" :title="record.name">
@@ -151,7 +150,7 @@ const {
                     </div>
                   </div>
                 </div>
-                
+
                 <!-- User Info -->
                 <div class="flex items-center text-text-sub-content">
                   <div class="flex-none">
@@ -171,7 +170,7 @@ const {
                   </div>
                 </div>
               </div>
-              
+
               <!-- Action Bar -->
               <div class="border-t border-border-divider my-2.5"></div>
               <div class="flex justify-between items-center leading-3">
@@ -186,7 +185,7 @@ const {
                     class="text-3.5 text-text-sub-content cursor-pointer hover:text-text-link-hover"
                     @click="handleDelete(record)" />
                 </div>
-                
+
                 <!-- Connection Test Status -->
                 <div class="flex items-center h-3">
                   <template v-if="dataMap[record.id]?.testLoading" class="text-text-sub-content">
@@ -231,7 +230,7 @@ const {
             </div>
           </template>
         </GridList>
-        
+
         <!-- Pagination -->
         <Pagination
           v-if="shouldShowPagination(total, params.pageSize)"
@@ -245,7 +244,7 @@ const {
           class="justify-end mr-5"
           @change="handlePaginationChange" />
       </template>
-      
+
       <!-- No Data State -->
       <template v-if="!loading && !dataList?.length">
         <div class="pt-45">
@@ -254,7 +253,7 @@ const {
       </template>
     </template>
   </Spin>
-  
+
   <!-- Add/Edit Modal -->
   <AsyncComponent :visible="isModalVisible">
     <AddModal

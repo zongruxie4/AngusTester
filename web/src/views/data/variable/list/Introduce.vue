@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * Variable Introduction Component
- * 
+ *
  * <p>Component that displays an introduction to variable functionality</p>
  * <p>Shows three main variable types: file extraction, HTTP extraction, and JDBC extraction</p>
  */
@@ -17,7 +17,7 @@ const { t } = useI18n();
     <div class="text-3.5 font-semibold mb-2.5">
       {{ t('dataVariable.introduce.title') }}
     </div>
-    
+
     <!-- Description -->
     <div class="mb-6">
       <div>{{ t('dataVariable.introduce.description') }}</div>
@@ -28,8 +28,8 @@ const { t } = useI18n();
     <div class="flex items-start justify-between">
       <!-- File Extraction Type -->
       <div class="flex items-start space-x-3 w-1/3">
-        <img 
-          src="./images/1.png" 
+        <img
+          src="./images/1.png"
           class="w-10 flex-shrink-0 transform-gpu translate-y-0.5"
           alt="File Extraction Icon">
         <div class="space-y-1 pr-10">
@@ -42,8 +42,8 @@ const { t } = useI18n();
 
       <!-- HTTP Extraction Type -->
       <div class="flex items-start space-x-3 w-1/3">
-        <img 
-          src="./images/2.png" 
+        <img
+          src="./images/2.png"
           class="w-10 flex-shrink-0 transform-gpu translate-y-0.5"
           alt="HTTP Extraction Icon">
         <div class="space-y-1 pr-10">
@@ -56,8 +56,8 @@ const { t } = useI18n();
 
       <!-- JDBC Extraction Type -->
       <div class="flex items-start space-x-3 w-1/3">
-        <img 
-          src="./images/3.png" 
+        <img
+          src="./images/3.png"
           class="w-10 flex-shrink-0 transform-gpu translate-y-0.5"
           alt="JDBC Extraction Icon">
         <div class="space-y-1 pr-10">

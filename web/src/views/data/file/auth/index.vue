@@ -41,7 +41,7 @@ const {
   checkedDeptId,
   permissions,
   loaded,
-  
+
   // Methods
   cancel,
   setupWatchers
@@ -69,18 +69,16 @@ const bodyStyle = {
     :bodyStyle="bodyStyle"
     style="width: 98%;height: 95%;"
     wrapClassName="authorize-modal-wrapper"
-    @cancel="cancel"
-  >
+    @cancel="cancel">
     <div class="h-full pt-2">
       <!-- Description Hints -->
       <Hints :text="text" />
-      
+
       <!-- Tab Navigation -->
       <Tabs
         v-model:activeKey="activeKey"
         size="small"
-        style="height: calc(100% - 18px);"
-      >
+        style="height: calc(100% - 18px);">
         <!-- User Tab -->
         <TabPane key="user" :tab="t('fileSpace.globalAuth.tabs.user')">
           <GroupSet
@@ -90,18 +88,16 @@ const bodyStyle = {
             type="user"
             class="flex-shrink-0 flex-grow-0 w-75 mr-4"
             :visible="props.visible"
-            :appId="props.appId"
-          />
+            :appId="props.appId" />
           <AuthSet
             v-if="loaded"
             key="user"
             type="user"
             class="flex-1"
             :authObjectId="checkedUserId"
-            :permissions="permissions"
-          />
+            :permissions="permissions" />
         </TabPane>
-        
+
         <!-- Department Tab -->
         <TabPane key="dept" :tab="t('fileSpace.globalAuth.tabs.dept')">
           <GroupSet
@@ -111,18 +107,16 @@ const bodyStyle = {
             type="dept"
             class="flex-shrink-0 flex-grow-0 w-75 mr-4"
             :visible="props.visible"
-            :appId="props.appId"
-          />
+            :appId="props.appId" />
           <AuthSet
             v-if="loaded"
             key="dept"
             type="dept"
             class="flex-1"
             :authObjectId="checkedDeptId"
-            :permissions="permissions"
-          />
+            :permissions="permissions" />
         </TabPane>
-        
+
         <!-- Group Tab -->
         <TabPane key="group" :tab="t('fileSpace.globalAuth.tabs.group')">
           <GroupSet
@@ -132,16 +126,14 @@ const bodyStyle = {
             type="group"
             class="flex-shrink-0 flex-grow-0 w-75 mr-4"
             :visible="props.visible"
-            :appId="props.appId"
-          />
+            :appId="props.appId" />
           <AuthSet
             v-if="loaded"
             key="group"
             type="group"
             class="flex-1"
             :authObjectId="checkedGroupId"
-            :permissions="permissions"
-          />
+            :permissions="permissions" />
         </TabPane>
       </Tabs>
     </div>

@@ -37,10 +37,10 @@ const {
   idKey,
   placeholder,
   apiPath,
-  
+
   // Computed
   params,
-  
+
   // Methods
   scrollChange,
   inputChange,
@@ -75,9 +75,8 @@ onMounted(() => {
       :placeholder="placeholder"
       size="small"
       class="mb-2"
-      @change="inputChange"
-    />
-    
+      @change="inputChange" />
+
     <!-- Scrollable List -->
     <Scroll
       :lineHeight="44"
@@ -85,42 +84,36 @@ onMounted(() => {
       :action="apiPath"
       :notify="notify"
       style="height: calc(100% - 36px);"
-      @change="scrollChange"
-    >
+      @change="scrollChange">
       <!-- List Items -->
       <div
         v-for="item in dataSource"
         :key="item[idKey]"
         :class="{ 'active-item': activeId === item[idKey] }"
         class="flex items-center justify-between h-11 py-1.5 px-3 rounded cursor-pointer hover:bg-gray-hover"
-        @click.stop="checkedHandler(item[idKey])"
-      >
+        @click.stop="checkedHandler(item[idKey])">
         <div class="flex items-center flex-nowrap">
           <!-- Department Icon -->
           <Icon
             v-if="type === 'group'"
             class="mr-3 text-7"
-            icon="icon-zu"
-          />
+            icon="icon-zu" />
           <!-- Group Icon -->
           <Icon
             v-else-if="type === 'dept'"
             class="mr-3 text-7"
-            icon="icon-bumen"
-          />
+            icon="icon-bumen" />
           <!-- User Avatar -->
           <Image
             v-else
             class="w-7 h-7 rounded-2xl mr-3"
             type="avatar"
-            :src="item.avatar"
-          />
-          
+            :src="item.avatar" />
+
           <!-- Item Name -->
-          <span 
-            :title="item[nameKey]" 
-            class="leading-5 truncate"
-          >
+          <span
+            :title="item[nameKey]"
+            class="leading-5 truncate">
             {{ item[nameKey] }}
           </span>
         </div>
