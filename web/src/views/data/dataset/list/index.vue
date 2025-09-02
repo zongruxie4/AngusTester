@@ -245,7 +245,7 @@ const tableDropdownClick = (menuItem: { key: 'preview' | 'export' | 'clone' }, d
                 <Button
                   type="text"
                   size="small"
-                  class="flex items-center px-0 mr-2.5"
+                  class="flex items-center px-0"
                   @click="() => toEditDataset(record.id)">
                   <Icon icon="icon-shuxie" class="mr-1 text-3.5" />
                   <span>{{ t('actions.edit') }}</span>
@@ -254,7 +254,7 @@ const tableDropdownClick = (menuItem: { key: 'preview' | 'export' | 'clone' }, d
                 <Button
                   type="text"
                   size="small"
-                  class="flex items-center px-0 mr-2.5"
+                  class="flex items-center px-0"
                   @click="() => toDelete(record)">
                   <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
                   <span>{{ t('actions.delete') }}</span>

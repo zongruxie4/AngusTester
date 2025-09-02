@@ -130,7 +130,7 @@ export type VariableItem = {
     projectId: string;
     value: string;
     description: string;
-    source?: string;
+    dataSource?: { value: string; message: string; };
     previewFlag?: boolean;
 }
 

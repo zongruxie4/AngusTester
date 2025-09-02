@@ -48,7 +48,7 @@ const activityTypes: ActivityType[] = ['VARIABLE'];
 
 <style scoped>
 .ant-tabs-small>:deep(.ant-tabs-nav) .ant-tabs-tab {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .ant-tabs {

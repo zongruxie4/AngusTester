@@ -1,11 +1,4 @@
 <script setup lang="ts">
-/**
- * Variable Introduction Component
- *
- * <p>Component that displays an introduction to variable functionality</p>
- * <p>Shows three main variable types: file extraction, HTTP extraction, and JDBC extraction</p>
- */
-
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -21,7 +14,6 @@ const { t } = useI18n();
     <!-- Description -->
     <div class="mb-6">
       <div>{{ t('dataVariable.introduce.description') }}</div>
-      <div>{{ t('dataVariable.introduce.note') }}</div>
     </div>
 
     <!-- Variable Types Overview -->

@@ -1,12 +1,5 @@
 <script setup lang="ts">
-/**
- * Variable List Component
- *
- * <p>Main component for displaying and managing variables in a project</p>
- * <p>Provides functionality for viewing, editing, deleting, and managing variables</p>
- */
-
-import { computed, defineAsyncComponent, inject, onMounted } from 'vue';
+import { defineAsyncComponent, inject, onMounted } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Dropdown, Icon, IconCopy, NoData, Spin, Table } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
@@ -20,7 +13,6 @@ import { useDropdownMenus } from './composables/useDropdownMenus';
 
 // Import types
 import type { VariableListProps } from './types';
-import type { VariableItem } from '../types';
 
 // Import components
 import SearchPanel from './SearchPanel.vue';
@@ -57,7 +49,6 @@ const {
   handleSearchPanelChange,
   refresh,
   initializeRowSelection,
-  handleTableSelect,
   cancelBatchDelete
 } = useData(props.projectId, props.notify);
 
@@ -90,16 +81,21 @@ const {
   handleImportSuccess,
   showExportModal,
   deleteVariable,
-  cloneVariable,
+  navigateToEdit,
   handleTableDropdownClick,
   executeBatchDelete
 } = useActions(
   props.projectId,
   deleteTabPane,
   loadData,
-  pagination,
-  visibilityIdSet,
-  errorMessageMap
+  {
+    current: pagination.value.current,
+    pageSize: pagination.value.pageSize,
+    total: pagination.value.total
+  },
+  rowSelection.value,
+  visibilityIdSet.value,
+  errorMessageMap.value
 );
 
 /**
@@ -249,6 +245,10 @@ onMounted(() => {
                 <IconCopy :copyText="`{${record.name}}`" class="ml-1.5" />
               </div>
 
+              <template v-if="column.dataIndex === 'description'">
+                <span v-if="!record.description" class="text-text-sub-content">{{ t('dataset.list.noDescription') }}</span>
+              </template>
+
               <!-- Value Column -->
               <template v-if="column.dataIndex === 'value'">
                 <div v-if="record.passwordValue" class="flex items-center">
@@ -309,7 +309,7 @@ onMounted(() => {
                 <Button
                   type="text"
                   size="small"
-                  class="flex items-center px-0 mr-2.5"
+                  class="flex items-center px-0"
                   @click="navigateToEdit(record)">
                   <Icon icon="icon-shuxie" class="mr-1 text-3.5" />
                   <span>{{ t('dataVariable.list.buttons.edit') }}</span>
@@ -318,7 +318,7 @@ onMounted(() => {
                 <Button
                   type="text"
                   size="small"
-                  class="flex items-center px-0 mr-2.5"
+                  class="flex items-center px-0"
                   @click="deleteVariable(record)">
                   <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
                   <span>{{ t('dataVariable.list.buttons.delete') }}</span>
@@ -352,7 +352,12 @@ onMounted(() => {
     <!-- Export Modal -->
     <AsyncComponent :visible="exportVariableModalVisible">
       <Export
-        :id="exportVariableId"
+        v-if="exportVariableId"
+        :id="[exportVariableId]"
+        v-model:visible="exportVariableModalVisible"
+        :projectId="props.projectId" />
+      <Export
+        v-else
         v-model:visible="exportVariableModalVisible"
         :projectId="props.projectId" />
     </AsyncComponent>

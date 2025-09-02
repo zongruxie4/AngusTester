@@ -7,19 +7,6 @@ import { useI18n } from 'vue-i18n';
 export function useTableColumns () {
   const { t } = useI18n();
 
-  /**
-   * Dataset list table columns configuration
-   * Each column definition includes:
-   * - key: Unique identifier for the column
-   * - title: Display name (internationalized)
-   * - dataIndex: Property name from data source
-   * - ellipsis: Whether to truncate long text
-   * - width: Column width (optional)
-   * - customRender: Custom rendering function (optional)
-   * - sorter: Whether the column is sortable (optional)
-   * - groupName: Group name for column management (optional)
-   * - hide: Whether to hide the column by default (optional)
-   */
   const columns = [
     {
       key: 'name',
@@ -43,16 +30,6 @@ export function useTableColumns () {
       customRender: ({ text }: { text: any }) => text?.message
     },
     {
-      key: 'lastModifiedBy',
-      title: t('dataset.list.columns.lastModifiedBy'),
-      dataIndex: 'lastModifiedBy',
-      ellipsis: true,
-      width: '10%',
-      sorter: true,
-      customRender: ({ record }: { record: any }) => record.lastModifiedByName,
-      groupName: 'person'
-    },
-    {
       key: 'createdBy',
       title: t('dataset.list.columns.createdBy'),
       dataIndex: 'createdBy',
@@ -60,22 +37,32 @@ export function useTableColumns () {
       width: '10%',
       sorter: true,
       customRender: ({ record }: { record: any }) => record.createdByName,
+      groupName: 'person'
+    },
+    {
+      key: 'lastModifiedBy',
+      title: t('dataset.list.columns.lastModifiedBy'),
+      dataIndex: 'lastModifiedBy',
+      ellipsis: true,
+      width: '10%',
+      sorter: true,
+      customRender: ({ record }: { record: any }) => record.lastModifiedByName,
       groupName: 'person',
       hide: true
     },
     {
-      key: 'lastModifiedDate',
-      title: t('dataset.list.columns.lastModifiedDate'),
-      dataIndex: 'lastModifiedDate',
+      key: 'createdDate',
+      title: t('dataset.list.columns.createdDate'),
+      dataIndex: 'createdDate',
       ellipsis: true,
       width: '13%',
       sorter: true,
       groupName: 'date'
     },
     {
-      key: 'createdDate',
-      title: t('dataset.list.columns.createdDate'),
-      dataIndex: 'createdDate',
+      key: 'lastModifiedDate',
+      title: t('dataset.list.columns.lastModifiedDate'),
+      dataIndex: 'lastModifiedDate',
       ellipsis: true,
       width: '13%',
       sorter: true,
@@ -86,7 +73,7 @@ export function useTableColumns () {
       key: 'action',
       title: t('dataset.list.columns.action'),
       dataIndex: 'action',
-      width: 140
+      width: '180px'
     }
   ];
 

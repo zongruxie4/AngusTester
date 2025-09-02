@@ -9,7 +9,6 @@ const { t } = useI18n();
     <div class="text-3.5 font-semibold mb-2.5">{{ t('dataset.introduce.title') }}</div>
     <div class="mb-6">
       <div>{{ t('dataset.introduce.description') }}</div>
-      <div>{{ t('dataset.introduce.note') }}</div>
     </div>
 
     <div class="flex items-start justify-between">
