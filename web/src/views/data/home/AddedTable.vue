@@ -48,7 +48,8 @@ const {
   loadData,
   handleTableChange,
   deleteItem,
-  navigateToCreate
+  navigateToCreate,
+  updateProjectId
 } = useAddedData(props.projectId, props.userId, props.type);
 
 const { columns } = useAddedTableColumns(props.type);
@@ -103,6 +104,7 @@ const handleDelete = (record: AddedItem) => {
 onMounted(() => {
   // Watch project ID changes
   watch(() => props.projectId, () => {
+    updateProjectId(props.projectId);
     loadData();
   }, { immediate: true });
 
