@@ -1,4 +1,4 @@
-export const TOOLBAR_MENUITEMS: {
+export const TOOLBAR_MENU_ITEMS: {
     name:string;
     key:string;
   }[] = [
@@ -16,7 +16,7 @@ export const TOOLBAR_MENUITEMS: {
     }
   ];
 
-export const TOOLBAR_EXTRA_MENUITEMS: {
+export const TOOLBAR_EXTRA_MENU_ITEMS: {
     name:string;
     key:string;
   }[] = [

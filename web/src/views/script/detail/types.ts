@@ -1,3 +1,50 @@
+/**
+ * Script information type
+ * Represents the structure of a script entity
+ */
+export interface ScriptInfo {
+  id?: string;
+  name?: string;
+  description?: string;
+  content?: string;
+  type?: {
+    value: string;
+    message: string;
+  };
+  plugin?: string;
+  source?: {
+    value: string;
+    message: string;
+  };
+  sourceId?: string;
+  sourceName?: string;
+  tags?: string[];
+  createdByName?: string;
+  lastModifiedByName?: string;
+  lastModifiedDate?: string;
+}
+
+/**
+ * Form state type
+ * Represents the structure of script form data
+ */
+export interface FormState {
+  name?: string;
+  type?: string;
+  typeName?: string;
+  description?: string;
+}
+
+/**
+ * Permission key type
+ * Represents available permission types for scripts
+ */
+export type PermissionKey = 'TEST' | 'VIEW' | 'MODIFY' | 'DELETE' | 'EXPORT' | 'COLON' | 'GRANT';
+
+/**
+ * Execution information type
+ * Represents the structure of execution data
+ */
 export type ExecInfo = {
     actualStartDate: string;
     assocApiCaseIds: string[];

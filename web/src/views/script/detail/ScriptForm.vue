@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { onMounted, reactive, ref, watch } from 'vue';
+import { onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Input } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
 
 import SelectEnum from '@/components/selectEnum/index.vue';
-import { ScriptInfo } from '../PropsType';
-import { FormState } from './PropsType';
+import { FormState, ScriptInfo } from '../types';
+import { useScriptForm } from './composables/useScriptForm';
 
 const { t } = useI18n();
 
@@ -18,50 +18,17 @@ const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined
 });
 
-const formRef = ref();
+// Use script form composable
+const {
+  formRef,
+  formData,
+  excludes,
+  handleTypeChange,
+  validate,
+  getFormData
+} = useScriptForm(props);
 
-const formData = reactive<FormState>({
-  name: undefined,
-  type: undefined,
-  typeName: undefined,
-  description: undefined
-});
-
-const excludes = (data: { value: string; message: string; }) => {
-  if (data.value === 'MOCK_APIS') {
-    return true;
-  }
-
-  return false;
-};
-
-const change = (_value, option) => {
-  formData.typeName = option.message;
-};
-
-const validate = () => {
-  return formRef.value.validate();
-};
-
-const getFormData = () => {
-  const { name, type, description, typeName } = formData;
-  return { name, type, description, typeName };
-};
-
-onMounted(() => {
-  watch(() => props.dataSource, (newValue) => {
-    if (!newValue) {
-      return;
-    }
-
-    const { name, description, type } = newValue;
-    formData.name = name;
-    formData.type = type?.value;
-    formData.typeName = type?.message;
-    formData.description = description;
-  }, { immediate: true });
-});
-
+// Expose methods to parent component
 defineExpose({ getFormData, validate });
 </script>
 <template>
@@ -80,7 +47,7 @@ defineExpose({ getFormData, validate });
           :excludes="excludes"
           enumKey="ScriptType"
           :placeholder="t('scriptDetail.form.selectScriptType')"
-          @change="change" />
+          @change="handleTypeChange" />
       </FormItem>
 
       <FormItem

@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
 import { NoData } from '@xcan-angus/vue-ui';
 // eslint-disable-next-line import/no-absolute-path
 import { DebugLog as JDBCDebugLog } from '@/plugins/jdbc/index';
@@ -11,6 +10,7 @@ import { DebugLog as SmtpDebugLog } from '@/plugins/smtp/index';
 
 // eslint-disable-next-line import/no-absolute-path
 import { DebugLog as MailDebugLog } from '@/plugins/mail/index';
+import { useDebugLog } from './composables/useDebugLog';
 
 interface Props {
   value: {
@@ -37,9 +37,10 @@ const props = withDefaults(defineProps<Props>(), {
   pluginType: undefined
 });
 
-const schedulingResult = computed(() => {
-  return props.value?.schedulingResult;
-});
+// Use debug log composable
+const {
+  schedulingResult
+} = useDebugLog(props);
 </script>
 <template>
   <template v-if="props.pluginType==='Http'">

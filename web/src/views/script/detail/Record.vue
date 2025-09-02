@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Colon, Scroll } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
-
-import { ExecInfo } from './PropsType';
+import { useExecutionRecord } from './composables/useExecutionRecord';
 
 const { t } = useI18n();
 
@@ -18,24 +16,17 @@ const props = withDefaults(defineProps<Props>(), {
   scriptId: undefined
 });
 
-const dataList = ref<ExecInfo[]>([]);
-
-const scrollChange = (list: ExecInfo[]) => {
-  dataList.value = list;
-};
+// Use execution record composable
+const {
+  dataList,
+  handleScrollChange,
+  BG_COLOR
+} = useExecutionRecord();
 
 const params = {
   pageSize: 5
 };
 
-const BG_COLOR = {
-  CREATED: 'bg-status-pending',
-  PENDING: 'bg-status-orange',
-  RUNNING: 'bg-status-process',
-  STOPPED: 'bg-status-close',
-  FAILED: 'bg-status-error',
-  COMPLETED: 'bg-status-success'
-};
 </script>
 
 <template>
@@ -44,7 +35,7 @@ const BG_COLOR = {
     :params="params"
     :action="`${TESTER}/exec?projectId=${props.projectId}&scriptId=${props.scriptId}&fullTextSearch=true`"
     class="scroll-container"
-    @change="scrollChange">
+    @change="handleScrollChange">
     <div class="group-container space-y-7.5">
       <div
         v-for="item in dataList"

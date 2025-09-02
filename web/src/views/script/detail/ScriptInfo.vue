@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Colon, ScriptTypeTag, Tooltip } from '@xcan-angus/vue-ui';
 import { Tag } from 'ant-design-vue';
-import { utils } from '@xcan-angus/infra';
 
-import { ScriptInfo } from '../PropsType';
+import { ScriptInfo } from '../types';
+import { useScriptInfo } from './composables/useScriptInfo';
 
 const { t } = useI18n();
 
@@ -17,34 +16,13 @@ const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined
 });
 
-const dataSource = computed(() => {
-  return props.dataSource || {};
-});
+// Use script info composable
+const {
+  dataSource,
+  tags,
+  sourceNameLinkUrl
+} = useScriptInfo(props);
 
-const tags = computed(() => {
-  return dataSource.value.tags?.map(item => {
-    return {
-      id: utils.uuid(),
-      name: item
-    };
-  }) || [];
-});
-
-const sourceNameLinkUrl = computed(() => {
-  const { source, name, plugin, sourceId } = dataSource.value;
-  const sourceValue = source?.value;
-  if (sourceValue === 'SERVICE_SMOKE') {
-    return `/apis#services?id=${sourceId}&name=${name}&value=group`;
-  } else if (sourceValue === 'SERVICE_SECURITY') {
-    return `/apis#services?id=${sourceId}&name=${name}&value=group`;
-  } else if (sourceValue === 'API') {
-    return `/apis#services?id=${sourceId}&name=${name}&value=API`;
-  } else if (sourceValue === 'SCENARIO') {
-    return `/scenario#scenario?id=${sourceId}&name=${name}&plugin=${plugin}`;
-  }
-
-  return '';
-});
 </script>
 <template>
   <div class="text-3 leading-5 space-y-3.5 overflow-auto">

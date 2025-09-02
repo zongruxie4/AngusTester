@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Colon, IconDownload, NoData, Spin } from '@xcan-angus/vue-ui';
-import { getDataByProxy } from '@/api/proxy/index';
+import { useExecLog } from './composables/useExecLog';
 
 const { t } = useI18n();
 
@@ -22,70 +21,16 @@ const props = withDefaults(defineProps<Props>(), {
   schedulingResult: undefined
 });
 
-const nodeId = ref<string>();
-const nodeIp = ref<string>();
-const nodePort = ref<string>('6807');
-
-const execLogContent = ref();
-const execLogPath = ref('');
-const execLogErr = ref(false);
-const errorText = ref();
-
-const loading = ref(!!props.execNode?.id);
-const loadExecLog = async () => {
-  // const url = `${PUB_TESTER}/proxy/actuator/runner/log/${props.execId}?targetAddr=http://${nodeIp.value}:${nodePort.value}`;
-  loading.value = true;
-  const [error, res] = await getDataByProxy(`http://${nodeIp.value}:${nodePort.value}/actuator/runner/log/${props.execId}`, {}, { timeout: 0 });
-  loading.value = false;
-  if (error) {
-    execLogErr.value = true;
-    if (error.response?.data) {
-      errorText.value = error.response.data;
-    } else {
-      errorText.value = undefined;
-    }
-    return;
-  }
-
-  execLogErr.value = false;
-  execLogPath.value = res.headers?.['xc-agent-log-path'];
-  execLogContent.value = res?.data || '';
-};
-
-watch(() => props.execNode, (newValue) => {
-  if (newValue && newValue?.id) {
-    nodeId.value = newValue.id;
-    nodeIp.value = newValue.publicIp || newValue.ip;
-    nodePort.value = newValue.agentPort || '6807';
-    loadExecLog();
-  }
-}, {
-  deep: true,
-  immediate: true
-});
-
-const downloadLog = () => {
-  const content = execLogContent.value;
-  if (!content) {
-    return;
-  }
-
-  const blob = new Blob([content], {
-    type: 'text/plain'
-  });
-
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement('a');
-  a.style.display = 'none';
-  a.href = url;
-  a.download = 'runner.log';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-
-  window.URL.revokeObjectURL(url);
-};
+// Use exec log composable
+const {
+  execLogContent,
+  execLogPath,
+  execLogErr,
+  errorText,
+  loading,
+  loadExecLog,
+  downloadLog
+} = useExecLog(props);
 
 </script>
 

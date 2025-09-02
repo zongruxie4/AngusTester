@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { Button, Form, FormItem, Upload } from 'ant-design-vue';
 import { Icon, Input, Modal, notification } from '@xcan-angus/vue-ui';
-import { script } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-
-import { formatBytes } from '@/utils/common';
+import { useScriptImport } from './composables/useScriptImport';
 
 interface Props {
   projectId: string;
@@ -24,145 +22,43 @@ const emit = defineEmits<{
   (e: 'ok'): void;
 }>();
 
-const formRef = ref();
-const emptyFlag = ref(false);
-const maximumLimitFlag = ref(false);
+// Use the import composable
+const {
+  formState,
+  emptyFlag,
+  maximumLimitFlag,
+  loading,
+  formRef,
+  handleCancel,
+  handleDropUpload,
+  customRequest,
+  handleDragover,
+  handlePaste,
+  clearContent,
+  deleteFile,
+  handleImport,
+  fileEmptyFlag,
+  errorFlag,
+  rules
+} = useScriptImport(props.projectId);
 
-const loading = ref(false);
-
-const formState = ref<{
-  name: string;
-  content?: string;
-  file?: File | undefined;
-  description?: string;
-}>({
-  name: '',
-  content: undefined,
-  file: undefined,
-  description: ''
-});
-
-const cancelHandler = () => {
-  emptyFlag.value = false;
-  maximumLimitFlag.value = false;
-  formState.value = {
-    name: '',
-    content: undefined,
-    file: undefined,
-    description: ''
-  };
-  formRef.value.clearValidate();
-  emit('update:visible', false);
-};
-
-const dropUploadHandler = (event) => {
-  event.preventDefault();
-  const file = event.dataTransfer.files[0];
-  customRequest({ file });
-};
-
-const customRequest = ({ file }) => {
-  if (file.size > 20 * 1024 * 1024) {
-    maximumLimitFlag.value = true;
-    emptyFlag.value = false;
-
-    return;
-  }
-
-  formState.value.file = file;
-  formState.value.content = undefined;
-  maximumLimitFlag.value = false;
-  emptyFlag.value = false;
-};
-
-const dragoverHandler = (event) => {
-  event.preventDefault();
-};
-
-const pasteHandler = (event) => {
-  const _text = event.clipboardData.getData('text');
-  const encoder = new TextEncoder();
-  const encodedString = encoder.encode(_text);
-  const byteSize = encodedString.byteLength;
-  const maxSizeInMB = 20;
-  const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
-
-  if (byteSize > maxSizeInBytes) {
-    maximumLimitFlag.value = true;
-    emptyFlag.value = false;
-  } else {
-    formState.value.content = _text;
-    formState.value.file = undefined;
-    emptyFlag.value = false;
-    maximumLimitFlag.value = false;
-  }
-};
-
-const clearContent = () => {
-  formState.value.content = '';
-  emptyFlag.value = true;
-};
-
-const deleteFile = () => {
-  formState.value.file = undefined;
-  emptyFlag.value = true;
-};
-
+/**
+ * Handle OK action
+ */
 const handleOk = async () => {
-  formRef.value.validate().then(async () => {
-    checkFile();
-    if (emptyFlag.value || maximumLimitFlag.value) {
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('name', formState.value.name);
-    formData.append('projectId', props.projectId);
-
-    if (formState.value.file) {
-      formData.append('file', formState.value.file);
-    }
-
-    if (formState.value.content) {
-      formData.append('content', formState.value.content.toString());
-    }
-
-    if (formState.value.description) {
-      formData.append('description', formState.value.description);
-    }
-
-    loading.value = true;
-    const [error] = await script.importScript(formData);
-    loading.value = false;
-    if (error) {
-      return;
-    }
-
-    notification.success(t('tips.importSuccess'));
-    cancelHandler();
+  await handleImport(() => {
     emit('ok');
-  }, () => {
-    checkFile();
   });
 };
 
-const checkFile = () => {
-  emptyFlag.value = !formState.value.file && !formState.value.content;
-};
-
-const fileEmptyFlag = computed(() => {
-  return !formState.value.file && !formState.value.content;
+/**
+ * Watch for visibility changes to reset form
+ */
+watch(() => props.visible, (newVisible) => {
+  if (!newVisible) {
+    handleCancel();
+  }
 });
-
-const errorFlag = computed(() => {
-  return emptyFlag.value || maximumLimitFlag.value;
-});
-
-const rules = {
-  name: [
-    { required: true, message: t('scriptHome.import.messages.nameRequired'), trigger: 'change' }
-  ]
-};
 </script>
 <template>
   <Modal
@@ -170,7 +66,7 @@ const rules = {
     :confirmLoading="loading"
     :width="800"
     :title="t('scriptHome.import.title')"
-    @cancel="cancelHandler"
+    @cancel="handleCancel"
     @ok="handleOk">
     <Form
       ref="formRef"
@@ -203,9 +99,9 @@ const rules = {
           <div
             v-if="fileEmptyFlag"
             class="flex flex-col items-center justify-center p-3.5"
-            @paste="pasteHandler"
-            @drop.prevent="dropUploadHandler"
-            @dragover="dragoverHandler">
+            @paste="handlePaste"
+            @drop.prevent="handleDropUpload"
+            @dragover="handleDragover">
             <Upload
               :multiple="false"
               :showUploadList="false"

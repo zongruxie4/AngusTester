@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, Ref } from 'vue';
+import { defineAsyncComponent, inject, nextTick, onMounted, ref, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import {
   ActivityTimeline, AsyncComponent, Drawer, Icon, Input, Modal, modal, notification, Select, Spin, Toolbar
@@ -8,22 +8,26 @@ import { useRoute, useRouter } from 'vue-router';
 import YAML from 'yaml';
 import { Button } from 'ant-design-vue';
 
-import { script } from '@/api/tester';
-import { exec } from 'src/api/ctrl';
-import { ai } from 'src/api/gm';
-import { LANG_OPTIONS, TOOLBAR_EXTRA_MENUITEMS, TOOLBAR_MENUITEMS } from './data';
-import { PermissionKey, ScriptInfo } from '../PropsType';
+import { LANG_OPTIONS, TOOLBAR_EXTRA_MENU_ITEMS, TOOLBAR_MENU_ITEMS } from './constant';
+import { PermissionKey, ScriptInfo } from '../types';
+import {
+  useScriptData,
+  useDebug,
+  useToolbar,
+  useAI,
+  useDrawer
+} from './composables';
 
 const { t } = useI18n();
 
-const ScriptDetail = defineAsyncComponent(() => import('./scriptInfo.vue'));
-const ScriptForm = defineAsyncComponent(() => import('./scriptForm.vue'));
-const ExecutionRecord = defineAsyncComponent(() => import('@/views/script/detail/record/index.vue'));
+const ScriptDetail = defineAsyncComponent(() => import('./ScriptInfo.vue'));
+const ScriptForm = defineAsyncComponent(() => import('./ScriptForm.vue'));
+const ExecutionRecord = defineAsyncComponent(() => import('@/views/script/detail/Record.vue'));
 const MonacoEditor = defineAsyncComponent(() => import('@/components/monacoEditor/index.vue'));
 const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/exportModal/index.vue'));
-const DebugResult = defineAsyncComponent(() => import('./debugResult.vue'));
-const DebugLog = defineAsyncComponent(() => import('./debugLog.vue'));
-const ExecLog = defineAsyncComponent(() => import('@/views/script/detail/log/index.vue'));
+const DebugResult = defineAsyncComponent(() => import('./DebugResult.vue'));
+const DebugLog = defineAsyncComponent(() => import('./DebugLog.vue'));
+const ExecLog = defineAsyncComponent(() => import('@/views/script/detail/ExecLog.vue'));
 
 const route = useRoute();
 const router = useRouter();
@@ -36,128 +40,68 @@ const formRef = ref();
 const toolbarRef = ref();
 const drawerRef = ref();
 
-const antDrawerVisible = ref(false);
-const aiScriptValue = ref('');
-const aiKeywords = ref('');
-const generating = ref(false);
+// Use composables
+const {
+  // Data refs
+  scriptInfo,
+  permissionList,
+  loading,
+  oldScriptValue,
+  scriptValue,
+  contentType,
+  scriptId,
+  pageNo,
+  pageSize,
+  viewMode,
+  pageType,
+  projectId,
+  
+  // Methods
+  loadScript,
+  addScript,
+  updateScript,
+  deleteScript,
+  cloneScript,
+  executeScript
+} = useScriptData(projectInfo, isAdmin);
 
-const scriptInfo = ref<ScriptInfo>();
-const permissionList = ref<PermissionKey[]>([]);
+const {
+  debugExecInfo,
+  pluginType,
+  startDebug,
+  loadDebugInfo
+} = useDebug(scriptId, scriptValue, toolbarRef);
 
-const loading = ref(false);
-const exportVisible = ref(false);
+const {
+  toolbarActiveKey,
+  height,
+  isFull,
+  isOpen,
+  isMoving,
+  closeToolbar,
+  toggleFullScreen
+} = useToolbar();
 
-const oldScriptValue = ref<string>('');
-const scriptValue = ref<string>('');
-const contentType = ref<'json' | 'yaml'>('yaml');
-const pluginType = ref<string>();
+const {
+  antDrawerVisible,
+  aiScriptValue,
+  aiKeywords,
+  generating,
+  openAIDrawer,
+  generateScript,
+  cancelGenerate,
+  confirmGenerate
+} = useAI(aiEnabled);
 
-const routeQuery = route.query;
-const routeParams = route.params;
+const {
+  activeDrawerKey,
+  isEditFlag,
+  drawerMenuItems,
+  handleEdit,
+  handleCancel
+} = useDrawer(pageType, viewMode);
 
-const scriptId = ref<string>(routeParams.id as string);
-const pageNo = routeQuery?.pageNo ? +routeQuery?.pageNo : 1;
-const pageSize = routeQuery?.pageSize ? +routeQuery?.pageSize : 10;
-
-const toolbarActiveKey = ref<'debugResult' | 'logs' | undefined>(undefined);
-const height = ref(34);
-const isFull = ref(false);
-const isOpen = ref(false);
-const isMoving = ref(false);
-
-const viewMode = ref<'view' | 'edit'>(routeQuery.type as 'view' | 'edit');
-const activeDrawerKey = ref('basicInfo');
-const isEditFlag = ref<boolean>(viewMode.value === 'edit');
-
-const debugExecInfo = ref<{
-  id: string;
-  execNode: { id: string, name: string, ip: string, agentPort: string, publicIp: string };
-  sampleContents: { [key: string]: any }[];
-  task: {
-    arguments: {
-      ignoreAssertions: boolean;
-    };
-    pipelines: {
-      name: string;
-    }[];
-  };
-  schedulingResult: {
-    console: string[];
-    success: boolean;
-    exitCode: string;
-  };
-}>();
-
-const toDebug = async () => {
-  try {
-    const scriptConfig = YAML.parse(scriptValue.value);
-    if (!scriptConfig) {
-      return;
-    }
-
-    const params: {
-      broadcast: true;
-      scriptId: string;
-      scriptType: string;
-    } = {
-      broadcast: true,
-      scriptId: scriptId.value,
-      scriptType: scriptConfig.type
-    };
-    loading.value = true;
-    const [error, { data }] = await exec.startDebug(params);
-    loading.value = false;
-    if (error || !data) {
-      return;
-    }
-
-    debugExecInfo.value = data;
-    pluginType.value = data.plugin;
-    if (typeof toolbarRef.value?.open === 'function') {
-      toolbarRef.value.open('debugResult');
-    }
-  } catch (error) {
-    notification.error(error.message);
-  }
-};
-
-const closeToolbar = () => {
-  if (typeof toolbarRef.value?.open === 'function') {
-    toolbarRef.value.open();
-  }
-};
-
-const fullScreen = () => {
-  if (typeof toolbarRef.value?.fullScreen === 'function') {
-    toolbarRef.value.fullScreen();
-  }
-};
-
-const handleCancel = () => {
-  isEditFlag.value = false;
-  if (viewMode.value === 'view') {
-    scriptValue.value = oldScriptValue.value;
-    return;
-  }
-
-  router.push(`/script?pageNo=${pageNo}&pageSize=${pageSize}`);
-};
-
-const handleEdit = () => {
-  if (typeof drawerRef.value?.open === 'function') {
-    drawerRef.value.open('basicInfo');
-  }
-  isEditFlag.value = true;
-};
-
-const contentTypeChange = (value: 'json' | 'yaml') => {
-  if (scriptValue.value) {
-    scriptValue.value = value === 'json'
-      ? JSON.stringify(YAML.parse(scriptValue.value), null, 2)
-      : YAML.stringify(YAML.parse(scriptValue.value));
-  }
-};
-
+// Handle save action
 const handleSave = () => {
   activeDrawerKey.value = 'basicInfo';
   drawerRef.value.open('basicInfo');
@@ -173,193 +117,30 @@ const handleSave = () => {
   });
 };
 
-const aiGenerate = () => {
-  antDrawerVisible.value = true;
-};
-
-const toGenerate = async () => {
-  if (!aiEnabled.value) {
-    return;
-  }
-
-  generating.value = true;
-  const [error, res] = await ai.getChartResult({ type: 'WRITE_ANGUS_SCRIPT', question: aiKeywords.value });
-  generating.value = false;
-  if (error) {
-    return;
-  }
-
-  const data = (res?.data || { normal: '', content: '' }) as {
-    normal:string;
-    content:string;
-  };
-  aiScriptValue.value = data.content;
-};
-
-const generateCancel = () => {
-  antDrawerVisible.value = false;
-};
-
-const generateOk = () => {
-  antDrawerVisible.value = false;
-  scriptValue.value = aiScriptValue.value;
-};
-
-// 添加脚本
-const addScript = async (formData) => {
-  const scriptYaml = contentType.value === 'json' ? YAML.stringify(YAML.parse(scriptValue.value)) : scriptValue.value;
-  loading.value = true;
-  const [error, res] = await script.addScript({ ...formData, content: scriptYaml, projectId: projectId.value });
-  loading.value = false;
-  if (error) {
-    return;
-  }
-
-  scriptId.value = res?.data?.id;
-  notification.success(t('scriptDetail.messages.addScriptSuccess'));
-  router.push('/script');
-};
-
-// 更新脚本
-const updateScript = async (formData) => {
-  const scriptYaml = contentType.value === 'json' ? YAML.stringify(YAML.parse(scriptValue.value)) : scriptValue.value;
-  loading.value = true;
-  const [error] = await script.updateScript({ ...formData, content: scriptYaml, id: scriptId.value, projectId: projectId.value });
-  loading.value = false;
-  if (error) {
-    return;
-  }
-
-  notification.success(t('scriptDetail.messages.saveSuccess'));
-  if (viewMode.value === 'view') {
-    isEditFlag.value = false;
-
-    if (scriptInfo.value) {
-      // 更新脚本信息
-      scriptInfo.value.name = formData.name;
-      scriptInfo.value.description = formData.description;
-      scriptInfo.value.type = {
-        value: formData.type,
-        message: formData.typeName
-      };
-
-      scriptInfo.value.content = scriptYaml;
-    }
-
-    return;
-  }
-
-  router.push(`/script?pageNo=${pageNo}&pageSize=${pageSize}`);
-};
-
-// 获取脚本详情
-const loadScript = async () => {
-  loading.value = true;
-  const [error, res] = await script.getScriptDetail(scriptId.value);
-  if (error) {
-    loading.value = false;
-    return;
-  }
-
-  const data = res?.data;
-  if (data) {
-    contentType.value = 'yaml';
-    scriptValue.value = data.content;
-    oldScriptValue.value = data.content;
-    scriptInfo.value = data;
-
-    await loadScriptListAuth(scriptId.value);
-  }
-};
-
-const loadScriptListAuth = async (id: string) => {
-  permissionList.value = [];
-
-  loading.value = true;
-  const [error, res] = await script.getScriptCurrentAuth([id]);
-  loading.value = false;
-  if (error) {
-    return;
-  }
-
-  const item = res?.data?.[id];
-  if (item) {
-    const { scriptAuth, permissions } = item;
-    let list: PermissionKey[] = [];
-    const values = permissions.map(item => item.value);
-    if (isAdmin.value || scriptAuth === false) {
-      list = ['TEST', 'VIEW', 'MODIFY', 'DELETE', 'EXPORT', 'COLON'];
-      if (values.includes('GRANT')) {
-        list.push('GRANT');
-      }
-    } else {
-      list = [...values];
-      if (values.includes('VIEW') || !values.includes('COLON')) {
-        list.push('COLON');
-      }
-    }
-
-    permissionList.value = list;
-  }
-};
-
+// Handle delete action
 const handleDelete = async () => {
   modal.confirm({
     centered: true,
     content: t('scriptDetail.messages.deleteConfirm'),
     async onOk () {
-      loading.value = true;
-      const [error] = await script.deleteScript([scriptId.value]);
-      loading.value = false;
-      if (error) {
-        return;
-      }
-
-      notification.success(t('scriptDetail.messages.deleteSuccess'));
-      router.push('/script');
+      await deleteScript();
     }
   });
 };
 
-const handleClone = async () => {
-  loading.value = true;
-  const [error] = await script.cloneScript(scriptId.value);
-  loading.value = false;
-  if (error) {
-    return;
-  }
-  notification.success(t('scriptDetail.messages.cloneSuccess'));
-};
-
+// Handle export action
+const exportVisible = ref(false);
 const handleExport = () => {
   exportVisible.value = true;
 };
 
-const handleExec = async () => {
-  if (!scriptId.value) {
-    return;
+// Content type change handler
+const contentTypeChange = (value: 'json' | 'yaml') => {
+  if (scriptValue.value) {
+    scriptValue.value = value === 'json'
+      ? JSON.stringify(YAML.parse(scriptValue.value), null, 2)
+      : YAML.stringify(YAML.parse(scriptValue.value));
   }
-
-  loading.value = true;
-  const [error] = await exec.addByScript({ scriptId: scriptId.value });
-  loading.value = false;
-  if (error) {
-    return;
-  }
-
-  notification.success(t('scriptDetail.messages.addExecutionSuccess'));
-};
-
-const loadDebugInfo = async () => {
-  loading.value = true;
-  const [error, { data }] = await exec.getDebugScriptInfo(scriptId.value);
-  loading.value = false;
-  if (error || !data) {
-    return;
-  }
-
-  debugExecInfo.value = data;
-  pluginType.value = data.plugin;
 };
 
 onMounted(() => {
@@ -436,7 +217,7 @@ const drawerMenuItems = computed(() => {
 
         <template v-if="isEditFlag">
           <div class="flex items-center space-x-2.5">
-            <Button size="small" @click="handleCancel">
+            <Button size="small" @click="() => handleCancel(oldScriptValue, scriptValue, viewMode, pageNo, pageSize, router)">
               {{ t('scriptDetail.actions.cancel') }}
             </Button>
 
@@ -445,7 +226,7 @@ const drawerMenuItems = computed(() => {
               size="small"
               type="primary"
               ghost
-              @click="aiGenerate">
+              @click="openAIDrawer">
               智能生成
             </Button>
 
@@ -463,7 +244,7 @@ const drawerMenuItems = computed(() => {
             <Button
               size="small"
               :disabled="!permissionList.includes('MODIFY')"
-              @click="handleEdit">
+              @click="() => handleEdit(drawerRef)">
               <Icon icon="icon-shuxie" class="mr-1" />
               <span>{{ t('scriptDetail.actions.edit') }}</span>
             </Button>
@@ -477,7 +258,7 @@ const drawerMenuItems = computed(() => {
             <Button
               size="small"
               :disabled="!permissionList.includes('VIEW')"
-              @click="handleClone">
+              @click="cloneScript">
               <Icon icon="icon-fuzhi" class="mr-1" />
               <span>{{ t('scriptDetail.actions.clone') }}</span>
             </Button>
@@ -491,14 +272,14 @@ const drawerMenuItems = computed(() => {
             <Button
               size="small"
               :disabled="!permissionList.includes('TEST')"
-              @click="toDebug">
+              @click="startDebug">
               <Icon icon="icon-tiaoshi" class="mr-1" />
               <span>{{ t('scriptDetail.actions.debug') }}</span>
             </Button>
             <Button
               size="small"
               :disabled="!permissionList.includes('TEST')"
-              @click="handleExec">
+              @click="executeScript">
               <Icon icon="icon-zhihangjiaoben" class="mr-1" />
               <span>{{ t('scriptDetail.actions.addExecution') }}</span>
             </Button>
@@ -531,21 +312,21 @@ const drawerMenuItems = computed(() => {
         v-model:isOpen="isOpen"
         v-model:isMoving="isMoving"
         v-model:activeKey="toolbarActiveKey"
-        :menuItems="TOOLBAR_MENUITEMS"
-        :extraMenuItems="TOOLBAR_EXTRA_MENUITEMS"
+        :menuItems="TOOLBAR_MENU_ITEMS"
+        :extraMenuItems="TOOLBAR_EXTRA_MENU_ITEMS"
         class="relative z-1 bg-white">
         <template #toggle>
           <Icon
             :icon="isOpen ? 'icon-shouqi' : 'icon-spread'"
             style="font-size: 14px;cursor: pointer;"
-            @click="closeToolbar" />
+            @click="() => closeToolbar(toolbarRef)" />
         </template>
 
         <template #screen>
           <Icon
             :icon="isFull ? 'icon-tuichuzuida' : 'icon-zuidahua'"
             style="font-size: 14px;cursor: pointer;"
-            @click="fullScreen" />
+            @click="() => toggleFullScreen(toolbarRef)" />
         </template>
 
         <template #debugResult>
@@ -614,8 +395,8 @@ const drawerMenuItems = computed(() => {
       :okButtonProps="{disabled:generating}"
       :width="1000"
       :title="t('scriptDetail.ai.title')"
-      @cancel="generateCancel"
-      @ok="generateOk">
+      @cancel="cancelGenerate"
+      @ok="() => confirmGenerate(scriptValue)">
       <div style="height: 400px;" class="w-full">
         <div class="flex flex-nowrap justify-between space-x-2.5 mb-3.5">
           <Input
@@ -631,7 +412,7 @@ const drawerMenuItems = computed(() => {
             :disabled="!aiKeywords"
             type="primary"
             size="small"
-            @click="toGenerate">
+            @click="generateScript">
             {{ t('scriptDetail.actions.generate') }}
           </Button>
         </div>
