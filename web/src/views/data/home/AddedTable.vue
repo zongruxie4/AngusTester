@@ -39,6 +39,7 @@ const emit = defineEmits<{
  * </p>
  */
 const {
+  projectId,
   tableData,
   loading,
   loaded,
@@ -48,8 +49,7 @@ const {
   loadData,
   handleTableChange,
   deleteItem,
-  navigateToCreate,
-  updateProjectId
+  navigateToCreate
 } = useAddedData(props.projectId, props.userId, props.type);
 
 const { columns } = useAddedTableColumns(props.type);
@@ -104,7 +104,7 @@ const handleDelete = (record: AddedItem) => {
 onMounted(() => {
   // Watch project ID changes
   watch(() => props.projectId, () => {
-    updateProjectId(props.projectId);
+    projectId.value = props.projectId;
     loadData();
   }, { immediate: true });
 
@@ -150,7 +150,7 @@ const emptyTextStyle = {
     <template v-if="loaded">
       <!-- Empty state display -->
       <template v-if="isEmpty">
-        <div class="flex-1 flex flex-col items-center justify-center">
+        <div class="flex-1 flex flex-col items-center justify-center h-full">
           <img class="w-27.5" src="../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3 leading-5">
             <span>{{ emptyStateConfig.message }}</span>

@@ -1,6 +1,7 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
+import { onMounted, watch } from 'vue';
 import { StatisticsProps } from './types';
 import { useStatistics } from './composables/useStatistics';
 
@@ -22,8 +23,10 @@ const props = withDefaults(defineProps<StatisticsProps>(), {
  * <p>Integrates all business logic, chart management, and data operations</p>
  */
 const {
+  // State
+  projectId,
+
   // Data state
-  userStatistics,
   projectStatistics,
 
   // Chart configuration
@@ -33,8 +36,25 @@ const {
   variableRef,
   dataSetRef,
   fileRef,
-  dataSourceRef
+  dataSourceRef,
+
+  // Refresh method
+  refreshStatistics
 } = useStatistics(props.projectId, props.userInfo?.id);
+
+/**
+ * <p>
+ * Watch for prop changes and trigger data reload
+ * </p>
+ */
+onMounted(() => {
+  // Watch project ID changes
+  watch(() => props.projectId, () => {
+    projectId.value = props.projectId;
+    // Refresh statistics when projectId changes
+    refreshStatistics();
+  }, { immediate: true });
+});
 </script>
 
 <template>

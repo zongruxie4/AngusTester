@@ -1,4 +1,4 @@
-import { reactive, ref } from 'vue';
+import { reactive, ref, watch } from 'vue';
 import { utils } from '@xcan-angus/infra';
 import { analysis } from '@/api/tester';
 import { UserCreationStatistics, ProjectCreationStatistics } from '../types';
@@ -7,9 +7,10 @@ import { UserCreationStatistics, ProjectCreationStatistics } from '../types';
  * <p>Composable for managing homepage data state and operations</p>
  * <p>Handles all data fetching, state management, and data transformations</p>
  */
-export function useData (projectId: string, userId: string) {
+export function useStatisticsData (_projectId: string, userId: string) {
   // Loading state
   const loading = ref(false);
+  const projectId = ref<string>(_projectId);
 
   // User-specific statistics state
   const userStatistics = reactive<UserCreationStatistics>({
@@ -66,7 +67,7 @@ export function useData (projectId: string, userId: string) {
       const params = {
         creatorObjectType: 'USER',
         creatorObjectId: userId,
-        projectId
+        projectId: projectId.value
       };
 
       const [error, res] = await analysis.getDataStatistics(params);
@@ -89,7 +90,7 @@ export function useData (projectId: string, userId: string) {
     loading.value = true;
 
     try {
-      const params = { projectId };
+      const params = { projectId: projectId.value };
       const [error, res] = await analysis.getDataStatistics(params);
 
       if (error || utils._typeof(res?.data) !== 'object') {
@@ -133,11 +134,10 @@ export function useData (projectId: string, userId: string) {
       // Update dataset usage statistics
       if (data.datasetByUse) {
         const { IN_USE = 0, NOT_IN_USE = 0 } = data.datasetByUse;
-        projectStatistics.datasetByUse.IN_USE = IN_USE;
-        projectStatistics.datasetByUse.NOT_IN_USE = NOT_IN_USE;
-      } else {
-        projectStatistics.datasetByUse.IN_USE = 0;
-        projectStatistics.datasetByUse.NOT_IN_USE = 0;
+        if (projectStatistics.datasetByUse) {
+          projectStatistics.datasetByUse.IN_USE = IN_USE;
+          projectStatistics.datasetByUse.NOT_IN_USE = NOT_IN_USE;
+        }
       }
     } finally {
       loading.value = false;
@@ -155,8 +155,14 @@ export function useData (projectId: string, userId: string) {
     ]);
   };
 
+  // Watch for projectId changes and reload data
+  watch(projectId, () => {
+    loadAllStatistics();
+  });
+
   return {
     // State
+    projectId,
     loading,
     userStatistics,
     projectStatistics,

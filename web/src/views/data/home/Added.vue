@@ -95,7 +95,7 @@ const dataSetTotal = ref(0);
 }
 
 :deep(.ant-tabs-content-holder) {
-  min-height: 166px;
+  min-height: 270px;
 }
 
 .ant-tabs-top>:deep(.ant-tabs-nav),

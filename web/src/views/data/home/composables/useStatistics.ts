@@ -1,5 +1,5 @@
 import { onMounted, watch } from 'vue';
-import { useData } from './useData';
+import { useStatisticsData } from './useStatisticsData';
 import { useChartConfig } from './useChartConfig';
 import { useECharts } from './useECharts';
 
@@ -9,7 +9,7 @@ import { useECharts } from './useECharts';
  */
 export function useStatistics (projectId: string, userId: string) {
   // Initialize all composables
-  const data = useData(projectId, userId);
+  const data = useStatisticsData(projectId, userId);
   const chartConfig = useChartConfig();
   const charts = useECharts();
 

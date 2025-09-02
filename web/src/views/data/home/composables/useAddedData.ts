@@ -7,7 +7,6 @@ import { space } from '@/api/storage';
 import { useI18n } from 'vue-i18n';
 
 import { AddedItem, DataType } from '@/views/data/home/types';
-import { update } from 'lodash-es';
 
 /**
  * <p>
@@ -20,8 +19,6 @@ import { update } from 'lodash-es';
 export function useAddedData (_projectId: string, userId: string, type: DataType) {
   const { t } = useI18n();
   const router = useRouter();
-
-  const projectId = ref(_projectId);
 
   // API configuration for different data types
   const loadDataApiConfig = {
@@ -39,6 +36,7 @@ export function useAddedData (_projectId: string, userId: string, type: DataType
   };
 
   // Reactive state
+  const projectId = ref<string>(_projectId);
   const tableData = ref<AddedItem[]>();
   const loading = ref(false);
   const loaded = ref(false);
@@ -63,10 +61,6 @@ export function useAddedData (_projectId: string, userId: string, type: DataType
 
   const appInfo = inject('appInfo', ref({ code: '' }));
   const updateRefreshNotify = inject<(value: string) => void>('updateRefreshNotify');
-
-  const updateProjectId = (_projectId: string) => {
-    projectId.value = _projectId;
-  };
 
   /**
    * <p>
@@ -116,7 +110,7 @@ export function useAddedData (_projectId: string, userId: string, type: DataType
    */
   const handleTableChange = ({
     current = 1,
-    pageSize = 10
+    pageSize = 5
   }, _filters, sorter: { orderBy: string; orderSort: 'ASC' | 'DESC'; }) => {
     orderBy.value = sorter.orderBy;
     orderSort.value = sorter.orderSort;
@@ -134,7 +128,13 @@ export function useAddedData (_projectId: string, userId: string, type: DataType
     modal.confirm({
       content: t('dataHome.summaryTable.messages.deleteConfirm', { name: data.name }),
       async onOk () {
-        const [error] = await delDataApiConfig[type]([data.id]);
+        let error: Error | null = null;
+        if (type === 'dataSource' || type === 'space') {
+          [error] = await delDataApiConfig[type](data.id);
+        } else {
+          [error] = await delDataApiConfig[type]([data.id]);
+        }
+
         if (error) {
           return;
         }
@@ -164,6 +164,7 @@ export function useAddedData (_projectId: string, userId: string, type: DataType
 
   return {
     // State
+    projectId,
     tableData,
     loading,
     loaded,
@@ -175,7 +176,6 @@ export function useAddedData (_projectId: string, userId: string, type: DataType
     loadData,
     handleTableChange,
     deleteItem,
-    navigateToCreate,
-    updateProjectId
+    navigateToCreate
   };
 }
