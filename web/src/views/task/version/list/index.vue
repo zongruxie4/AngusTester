@@ -279,7 +279,7 @@ const getMenus = (record) => {
 <template>
   <div class="flex flex-col h-full overflow-auto px-5 py-5 leading-5 text-3">
     <div class="flex space-x-2">
-      <Introduce class="mb-7 flex-1" :showFunc="props.showDetail" />
+      <Introduce class="flex-1" :class="{'mb-7': props.showDetail, 'mb-4': !props.showDetail}" :showFunc="props.showDetail" />
     </div>
 
     <div class="flex items-center space-x-2">
