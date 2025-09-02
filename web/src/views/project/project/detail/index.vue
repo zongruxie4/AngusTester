@@ -223,7 +223,7 @@ watch(() => props.projectId, newValue => {
           </div>
         </div>
       </TabPane>
-      <TabPane key="module" :tab="t('project.projectDetail.tabs.module')">
+      <!-- <TabPane key="module" :tab="t('project.projectDetail.tabs.module')">
         <Module
           :projectId="props.projectId"
           :disabled="true"
@@ -237,7 +237,7 @@ watch(() => props.projectId, newValue => {
       </TabPane>
       <TabPane key="biaoqian" :tab="t('project.projectDetail.tabs.tag')">
         <Tags :projectId="props.projectId" :disabled="true" />
-      </TabPane>
+      </TabPane> -->
     </Tabs>
   </div>
 </template>

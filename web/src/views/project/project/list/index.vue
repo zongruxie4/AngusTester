@@ -202,7 +202,7 @@ defineExpose({
             <div class="flex items-center mr-3.5">
               <Input
                 v-model:value="keyword"
-                class="w-75"
+                class="!w-70"
                 trim
                 :maxlength="100"
                 :allowClear="true"
