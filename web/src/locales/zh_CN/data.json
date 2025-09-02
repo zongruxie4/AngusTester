@@ -423,7 +423,7 @@
       },
       "samplingExtraction": {
         "title": "采样提取变量",
-        "content": "从上一个请求或响应中提取值，作为后续采样的参数，每次迭代重新提取。"
+        "content": "从上一个响应中提取值，作为后续采样的参数，每次迭代重新提取。"
       }
     },
     "summaryTable": {
@@ -772,20 +772,19 @@
     },
     "introduce": {
       "title": "关于变量",
-      "description": "用于定义一个可以被重复的使用的值，定义变量后可以使用变量占位符 {variableName} 来引用变量。变量使得测试和维护变得更加高效和灵活，同时能够提升测试的可重复性和可扩展性。",
-      "note": "注意：在执行采样前，变量占位符会被替换成对应的变量值，并且执行过程中值不会改变。AngusTester 变量除了支持定义静态变量外，还支持下面三种方式提取一个变量：",
+      "description": "定义可重复使用的值。使用 {variableName} 占位符引用变量，让测试更高效灵活。注意：执行前占位符会被替换为实际值，执行过程中值不会改变。",
       "types": {
         "fileExtract": {
           "title": "文件提取",
-          "description": "从文件中提取一个值作为变量值。如：读取秘钥。"
+          "description": "从文件中提取值作为变量。如：读取秘钥。"
         },
         "httpExtract": {
-          "title": "Http提取",
-          "description": "从Http请求中提取一个值作为变量值。如：动态获取一个令牌。"
+          "title": "HTTP提取",
+          "description": "从HTTP请求中提取值作为变量。如：动态获取令牌。"
         },
         "jdbcExtract": {
-          "title": "Jdbc提取",
-          "description": "根据SQL从数据源表中提取指定的变量值，如：商品当前报价。"
+          "title": "JDBC提取",
+          "description": "根据SQL从数据源表中提取变量值。如：商品当前报价。"
         }
       }
     },

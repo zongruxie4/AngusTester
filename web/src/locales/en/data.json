@@ -24,7 +24,7 @@
       "columns": {
         "name": "Name",
         "description": "Description",
-        "valueSource": "Value Source",
+        "valueSource": "Source",
         "lastModifiedBy": "Last Modified By",
         "createdBy": "Created By",
         "lastModifiedDate": "Last Modified Date",
@@ -97,11 +97,11 @@
           "description": "Use Mock functions and constant values to define a set of values as a dataset."
         },
         "fileExtract": {
-          "title": "File Extract",
+          "title": "File Extraction",
           "description": "Extract a set of parameter values from a file as a dataset."
         },
         "jdbcExtract": {
-          "title": "Jdbc Extract",
+          "title": "Jdbc Extraction",
           "description": "Extract a set of values from a data source table as a dataset according to an SQL statement."
         }
       }
@@ -199,7 +199,7 @@
           "hints": "Extract a value from the database query result before each test execution as a dataset value.",
           "parameterName": "Parameter Name",
           "readConfig": "Read Config",
-          "selectDataSource": "Select Data Source",
+          "selectDataSource": "Select Datasource",
           "databaseType": "Database Type",
           "databaseTypePlaceholder": "Database Type",
           "jdbcUrl": "JdbcUrl",
@@ -327,12 +327,12 @@
   },
   "datasource": {
     "name": "Data Source",
-    "title": "About Data Source",
-    "description": "Supports managing and connecting multiple data sources. After configuring data source information, you can quickly generate test data, project demonstration scenarios, and quickly reference data source configuration information in JDBC tests, parameterized variables, and datasets.",
-    "addedTitle": "Added Data Sources",
-    "addDataSource": "Add Data Source",
+    "title": "About Datasource",
+    "description": "Supports managing and connecting multiple datasource. After configuring datasource information, you can quickly generate test data, project demonstration scenarios, and quickly reference data source configuration information in JDBC tests, parameterized variables, and datasets.",
+    "addedTitle": "Added Datasource",
+    "addDataSource": "Add Datasource",
     "searchOptions": {
-      "namePlaceholder": "Search data source name",
+      "namePlaceholder": "Search Datasource name",
       "databasePlaceholder": "Select database type",
       "lastModifiedByPlaceholder": "Select modifier",
       "lastModifiedDatePlaceholder": [
@@ -356,14 +356,14 @@
     },
     "form": {
       "title": {
-        "add": "Add Data Source",
-        "edit": "Edit Data Source"
+        "add": "Add Datasource",
+        "edit": "Edit Datasource"
       },
       "labels": {
         "type": "Type",
         "name": "Name",
         "driverClassName": "Driver Class Name",
-        "jdbcUrl": "JBDC Url",
+        "jdbcUrl": "JDBC Url",
         "username": "Username",
         "password": "Password"
       },
@@ -371,7 +371,7 @@
         "databaseType": "Database Type",
         "name": "Name",
         "driverClassName": "Driver Class Name",
-        "jdbcUrl": "JBDC Url",
+        "jdbcUrl": "JDBC Url",
         "username": "Username",
         "password": "Password"
       },
@@ -385,8 +385,8 @@
   "dataHome": {
     "name": "Home",
     "activityTimeline": {
-      "myActivity": "My Activity",
-      "allActivity": "All Activity"
+      "myActivity": "My Activities",
+      "allActivity": "All Activities"
     },
     "statistics": {
       "resourceStatistics": "Total Resources",
@@ -423,7 +423,7 @@
       },
       "samplingExtraction": {
         "title": "Sampling Extraction Variable",
-        "content": "Extract values from previous requests or responses as parameters for subsequent sampling, re-extracting on each iteration."
+        "content": "Extract values from previous response as parameters for subsequent sampling, re-extracting on each iteration."
       }
     },
     "summaryTable": {
@@ -702,7 +702,7 @@
         "value": "Value",
         "description": "Description",
         "password": "Password",
-        "dataSource": "Data Source",
+        "dataSource": "Source",
         "lastModifiedBy": "Last Modified By",
         "createdBy": "Created By",
         "lastModifiedDate": "Last Modified Date",
@@ -772,20 +772,19 @@
     },
     "introduce": {
       "title": "About Variable",
-      "description": "Used to define a value that can be reused. After defining a variable, you can use the variable placeholder {variableName} to reference the variable. Variables make testing and maintenance more efficient and flexible, while improving the repeatability and scalability of tests.",
-      "note": "Note: Before executing sampling, variable placeholders will be replaced with corresponding variable values, and the values will not change during execution. AngusTester variables support defining static variables and also support the following three ways to extract a variable:",
+      "description": "Define reusable values. Use {variableName} placeholder to reference variables, making testing more efficient and flexible. Note: Placeholders will be replaced with actual values before execution, and values remain unchanged during execution.",
       "types": {
         "fileExtract": {
-          "title": "File Extract",
-          "description": "Extract a value from a file as a variable value. For example: reading a secret key."
+          "title": "File Extraction",
+          "description": "Extract values from files as variables. For example: reading a secret key."
         },
         "httpExtract": {
-          "title": "Http Extract",
-          "description": "Extract a value from an Http request as a variable value. For example: dynamically obtaining a token."
+          "title": "HTTP Extraction",
+          "description": "Extract values from HTTP requests as variables. For example: dynamically obtaining a token."
         },
         "jdbcExtract": {
-          "title": "Jdbc Extract",
-          "description": "Extract specified variable values from data source tables according to SQL, such as: current product price."
+          "title": "JDBC Extraction",
+          "description": "Extract variable values from data source tables according to SQL. For example: current product price."
         }
       }
     },
@@ -911,7 +910,7 @@
         "readConfig": "Read Config",
         "extractConfig": "Extract Config",
         "selectApi": "Select Api",
-        "interfaceConfig": "接口配置",
+        "interfaceConfig": "Configuration",
         "extractMethod": "Extract Method",
         "extractMethodPlaceholder": "Extract Method",
         "extractPosition": "Extract Position",

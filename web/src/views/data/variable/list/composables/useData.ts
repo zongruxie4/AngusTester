@@ -3,12 +3,7 @@ import { notification } from '@xcan-angus/vue-ui';
 import { variable } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { VariableItem } from '../../types';
-import type {
-  TablePagination,
-  SearchPanelParams,
-  RowSelection,
-  SearchFilter
-} from '../types';
+import type { TablePagination, SearchPanelParams, RowSelection, SearchFilter } from '../types';
 
 /**
  * Maximum number of items that can be deleted in batch

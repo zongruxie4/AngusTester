@@ -19,6 +19,7 @@ const props = withDefaults(defineProps<VariableDataProps>(), {
  * Component emit definition
  * Defines the events that this component can emit to its parent
  */
+// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   /** Emit when form is submitted successfully */
   (e: 'ok', data: VariableItem, isEdit: boolean): void;

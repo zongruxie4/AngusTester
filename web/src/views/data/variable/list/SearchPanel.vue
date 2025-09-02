@@ -114,7 +114,7 @@ const handleSearchPanelChangeWrapper = (data: { filters: SearchFilter[] }) => {
 const handleMenuItemClickWrapper = (data: { key: string }) => {
   handleMenuItemClick(
     data,
-    userInfo.value ? { ...userInfo.value, id: String(userInfo.value.id) } : undefined,
+    userInfo.value,
     [...quickSearchFilters.value, ...searchFilters.value, ...assocFilters.value]
   );
 
@@ -160,7 +160,7 @@ onMounted(() => {
       <!-- Action Buttons -->
       <div class="flex items-center space-x-3">
         <!-- Batch Delete Actions (when items are selected) -->
-        <template v-if="typeof props.selectedNum === 'number' && props.selectedNum > 0">
+        <template v-if="props.selectedNum && typeof props.selectedNum === 'number' && props.selectedNum > 0">
           <Button
             danger
             size="small"

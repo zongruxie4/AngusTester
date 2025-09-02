@@ -125,54 +125,6 @@ export interface DropdownMenuItem {
 }
 
 /**
- * Sort configuration
- */
-export interface SortConfig {
-  /** Field to order by */
-  orderBy: string;
-  /** Sort direction */
-  orderSort: 'ASC' | 'DESC';
-}
-
-/**
- * Search panel option configuration
- */
-export interface SearchPanelOption {
-  /** Value key */
-  valueKey: string;
-  /** Input type */
-  type: string;
-  /** Placeholder text */
-  placeholder?: string;
-  /** Whether to allow clear */
-  allowClear?: boolean;
-  /** Maximum length */
-  maxlength?: number;
-}
-
-/**
- * File upload configuration
- */
-export interface FileUploadConfig {
-  /** Maximum file size in MB */
-  maxSize: number;
-  /** Accepted file types */
-  acceptTypes: string[];
-  /** Whether to allow multiple files */
-  multiple: boolean;
-}
-
-/**
  * Import strategy options
  */
 export type ImportStrategy = 'COVER' | 'IGNORE';
-
-/**
- * Error message mapping
- */
-export type ErrorMessageMap = Map<string, string>;
-
-/**
- * Visibility state mapping
- */
-export type VisibilityIdSet = Set<string>;

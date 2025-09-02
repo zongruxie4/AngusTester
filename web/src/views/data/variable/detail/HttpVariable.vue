@@ -19,6 +19,7 @@ const props = withDefaults(defineProps<VariableDataProps>(), {
 /**
  * Component emit definition
  */
+// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   /** Emit when form is submitted successfully */
   (e: 'ok', data: VariableItem, isEdit: boolean): void;
@@ -149,11 +150,9 @@ const httpConfigsRef = ref();
         <Hints class="mb-2.5" :text="t('dataVariable.detail.httpVariable.hints')" />
 
         <!-- HTTP request configuration -->
-        <Toggle :title="t('dataVariable.detail.httpVariable.readConfig')" class="text-3 leading-5 mb-3.5">
+        <Toggle :title="t('dataVariable.detail.httpVariable.readConfig')" class="leading-5 mb-3.5">
           <!-- API selection button -->
           <div class="flex items-center justify-start mb-3.5">
-            <div class="w-16 flex-shrink-0">
-            </div>
             <Button
               type="link"
               size="small"
@@ -166,7 +165,7 @@ const httpConfigsRef = ref();
 
           <!-- HTTP interface configuration -->
           <div class="flex items-start mb-3.5">
-            <div class="w-16 flex-shrink-0 transform-gpu translate-y-1">
+            <div class="w-26 flex-shrink-0 transform-gpu translate-y-1 text-3">
               <IconRequired />
               <span>{{ t('dataVariable.detail.httpVariable.interfaceConfig') }}</span>
             </div>
@@ -185,7 +184,7 @@ const httpConfigsRef = ref();
             <template v-if="['REQUEST_RAW_BODY', 'RESPONSE_BODY'].includes(location)">
               <div class="flex items-center space-x-5 mb-3.5">
                 <div class="w-1/2 flex items-center">
-                  <div class="w-16 flex-shrink-0">
+                  <div class="w-26 flex-shrink-0 text-3">
                     <IconRequired />
                     <span>{{ t('dataVariable.detail.httpVariable.extractMethod') }}</span>
                   </div>
@@ -197,7 +196,7 @@ const httpConfigsRef = ref();
                 </div>
 
                 <div class="w-1/2 flex items-center">
-                  <div class="w-16 flex-shrink-0">
+                  <div class="w-26 flex-shrink-0 text-3">
                     <IconRequired />
                     <span>{{ t('dataVariable.detail.httpVariable.extractPosition') }}</span>
                   </div>
@@ -210,7 +209,7 @@ const httpConfigsRef = ref();
 
               <div class="flex items-center space-x-5 mb-3.5">
                 <div class="w-1/2 flex items-center">
-                  <div class="w-16 flex-shrink-0">
+                  <div class="w-26 flex-shrink-0 text-3">
                     <IconRequired class="invisible" />
                     <span>{{ t('dataVariable.detail.httpVariable.defaultValue') }}</span>
                   </div>
@@ -228,7 +227,7 @@ const httpConfigsRef = ref();
             <template v-else>
               <div class="flex items-center space-x-5 mb-3.5">
                 <div class="w-1/2 flex items-center">
-                  <div class="w-16 flex-shrink-0">
+                  <div class="w-26 flex-shrink-0 text-3">
                     <IconRequired />
                     <span>{{ t('dataVariable.detail.httpVariable.extractMethod') }}</span>
                   </div>
@@ -240,7 +239,7 @@ const httpConfigsRef = ref();
                 </div>
 
                 <div class="w-1/2 flex items-center">
-                  <div class="w-16 flex-shrink-0">
+                  <div class="w-26 flex-shrink-0 text-3">
                     <IconRequired />
                     <span>{{ t('dataVariable.detail.httpVariable.extractPosition') }}</span>
                   </div>
@@ -253,7 +252,7 @@ const httpConfigsRef = ref();
 
               <div class="flex items-center space-x-5 mb-3.5">
                 <div class="w-1/2 flex items-center">
-                  <div class="w-16 flex-shrink-0">
+                  <div class="w-26 flex-shrink-0 text-3">
                     <IconRequired />
                     <span>{{ t('dataVariable.detail.httpVariable.expression') }}</span>
                   </div>
@@ -266,7 +265,7 @@ const httpConfigsRef = ref();
                 </div>
 
                 <div class="w-1/2 flex items-center">
-                  <div class="w-16 flex-shrink-0">
+                  <div class="w-26 flex-shrink-0 text-3">
                     <IconRequired class="invisible" />
                     <span>{{ t('dataVariable.detail.httpVariable.defaultValue') }}</span>
                   </div>
@@ -287,7 +286,7 @@ const httpConfigsRef = ref();
             <template v-if="['REQUEST_RAW_BODY', 'RESPONSE_BODY'].includes(location)">
               <div class="flex items-center space-x-5 mb-3.5">
                 <div class="w-1/2 flex items-center">
-                  <div class="w-16 flex-shrink-0">
+                  <div class="w-26 flex-shrink-0 text-3">
                     <IconRequired />
                     <span>{{ t('dataVariable.detail.httpVariable.extractMethod') }}</span>
                   </div>
@@ -295,11 +294,11 @@ const httpConfigsRef = ref();
                     v-model:value="method"
                     enumKey="ExtractionMethod"
                     :placeholder="t('dataVariable.detail.httpVariable.extractMethodPlaceholder')"
-                    class="w-full-16" />
+                    class="w-full-20.5" />
                 </div>
 
                 <div class="w-1/2 flex items-center">
-                  <div class="w-16 flex-shrink-0">
+                  <div class="w-26 flex-shrink-0 text-3">
                     <IconRequired />
                     <span>{{ t('dataVariable.detail.httpVariable.extractPosition') }}</span>
                   </div>
@@ -312,7 +311,7 @@ const httpConfigsRef = ref();
 
               <div class="flex items-center space-x-5 mb-3.5">
                 <div class="w-1/2 flex items-center">
-                  <div class="w-16 flex-shrink-0">
+                  <div class="w-26 flex-shrink-0 text-3">
                     <IconRequired />
                     <span>{{ t('dataVariable.detail.httpVariable.expression') }}</span>
                   </div>
@@ -325,7 +324,7 @@ const httpConfigsRef = ref();
                 </div>
 
                 <div class="w-1/2 flex items-center">
-                  <div class="w-16 flex-shrink-0">
+                  <div class="w-26 flex-shrink-0 text-3">
                     <IconRequired class="invisible" />
                     <span>{{ t('dataVariable.detail.httpVariable.matchItem') }}</span>
                   </div>
@@ -343,7 +342,7 @@ const httpConfigsRef = ref();
 
               <div class="flex items-center space-x-5 mb-3.5">
                 <div class="w-1/2 flex items-center">
-                  <div class="w-16 flex-shrink-0">
+                  <div class="w-26 flex-shrink-0 text-3">
                     <IconRequired class="invisible" />
                     <span>{{ t('dataVariable.detail.httpVariable.defaultValue') }}</span>
                   </div>
@@ -361,7 +360,7 @@ const httpConfigsRef = ref();
             <template v-else>
               <div class="flex items-center space-x-5 mb-3.5">
                 <div class="w-1/2 flex items-center">
-                  <div class="w-16 flex-shrink-0">
+                  <div class="w-26 flex-shrink-0">
                     <IconRequired />
                     <span>{{ t('dataVariable.detail.httpVariable.extractMethod') }}</span>
                   </div>
@@ -373,7 +372,7 @@ const httpConfigsRef = ref();
                 </div>
 
                 <div class="w-1/2 flex items-center">
-                  <div class="w-16 flex-shrink-0">
+                  <div class="w-26 flex-shrink-0">
                     <IconRequired />
                     <span>{{ t('dataVariable.detail.httpVariable.extractPosition') }}</span>
                   </div>
@@ -386,7 +385,7 @@ const httpConfigsRef = ref();
 
               <div class="flex items-center space-x-5 mb-3.5">
                 <div class="w-1/2 flex items-center">
-                  <div class="w-16 flex-shrink-0">
+                  <div class="w-26 flex-shrink-0">
                     <IconRequired :class="{ invisible: ['REQUEST_RAW_BODY', 'RESPONSE_BODY'].includes(location) }" />
                     <span>{{ t('dataVariable.detail.httpVariable.parameterName') }}</span>
                   </div>
@@ -399,7 +398,7 @@ const httpConfigsRef = ref();
                 </div>
 
                 <div class="w-1/2 flex items-center">
-                  <div class="w-16 flex-shrink-0">
+                  <div class="w-26 flex-shrink-0">
                     <IconRequired />
                     <span>{{ t('dataVariable.detail.httpVariable.expression') }}</span>
                   </div>
@@ -414,7 +413,7 @@ const httpConfigsRef = ref();
 
               <div class="flex items-center space-x-5 mb-3.5">
                 <div class="w-1/2 flex items-center">
-                  <div class="w-16 flex-shrink-0">
+                  <div class="w-26 flex-shrink-0">
                     <IconRequired class="invisible" />
                     <span>{{ t('dataVariable.detail.httpVariable.matchItem') }}</span>
                   </div>
@@ -430,7 +429,7 @@ const httpConfigsRef = ref();
                 </div>
 
                 <div class="w-1/2 flex items-center">
-                  <div class="w-16 flex-shrink-0">
+                  <div class="w-26 flex-shrink-0">
                     <IconRequired class="invisible" />
                     <span>{{ t('dataVariable.detail.httpVariable.defaultValue') }}</span>
                   </div>
