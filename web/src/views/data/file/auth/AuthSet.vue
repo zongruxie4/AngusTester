@@ -11,17 +11,6 @@ import type { AuthSetProps } from './types';
 
 const { t } = useI18n();
 
-/**
- * <p>
- * AuthSet component for managing space permissions and authentication settings
- * </p>
- * <p>
- * This component provides a comprehensive interface for managing user, department,
- * and group permissions across different storage spaces with support for
- * infinite scrolling and dynamic page sizing
- * </p>
- */
-
 // Component props with default values
 const props = withDefaults(defineProps<AuthSetProps>(), {
   authObjectId: undefined,

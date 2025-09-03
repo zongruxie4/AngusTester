@@ -4,16 +4,6 @@ import { Icon, Image, Input, Scroll } from '@xcan-angus/vue-ui';
 import { useGroupSet } from './composables/useGroupSet';
 import type { GroupSetProps, GroupSetEmits } from './types';
 
-/**
- * <p>
- * GroupSet component for selecting users, departments, or groups
- * </p>
- * <p>
- * This component provides a searchable list interface for selecting different types
- * of entities with support for infinite scrolling and dynamic configuration
- * </p>
- */
-
 // Component props with default values
 const props = withDefaults(defineProps<GroupSetProps>(), {
   type: 'user',

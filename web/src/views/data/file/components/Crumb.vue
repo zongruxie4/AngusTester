@@ -35,7 +35,6 @@ const handleJump = (id?: string): void => {
 
 <template>
   <div class="flex items-center text-3.5">
-    <div class="mr-3">{{ t('fileSpace.crumb.currentPath') }}</div>
     <Breadcrumb separator=">">
       <BreadcrumbItem>
         <a @click="handleJump()">{{ t('fileSpace.crumb.home') }}</a>

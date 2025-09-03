@@ -3,17 +3,6 @@ import { Checkbox } from 'ant-design-vue';
 import { useCheckboxGroup } from './composables/useCheckboxGroup';
 import type { CheckboxGroupProps, CheckboxGroupEmits } from './types';
 
-/**
- * <p>
- * CheckboxGroup component for managing permission selections
- * </p>
- * <p>
- * This component renders a group of checkboxes with special logic for VIEW permission.
- * When any non-VIEW permission is selected, VIEW permission is automatically added.
- * When VIEW permission is deselected, all other permissions are removed.
- * </p>
- */
-
 // Component props with default values
 const props = withDefaults(defineProps<CheckboxGroupProps>(), {
   options: () => [],

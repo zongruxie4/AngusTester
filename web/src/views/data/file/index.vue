@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, onMounted, watch } from 'vue';
+import { computed, defineAsyncComponent, inject, onMounted, watch, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, AuthorizeModal, Drawer, Icon, IconRefresh, Input, Table } from '@xcan-angus/vue-ui';
 import { STORAGE, appContext } from '@xcan-angus/infra';
@@ -120,16 +120,17 @@ const drawerMenu = computed(() => {
       <!-- Search and action bar -->
       <div class="flex justify-between pb-3">
         <!-- Search input -->
-        <Input
-          v-model:value="keyword"
-          class="w-70"
-          :maxlength="100"
-          allowClear
-          :placeholder="t('fileSpace.searchPlaceholder')">
-          <template #suffix>
-            <Icon icon="icon-sousuo" class="text-theme-placeholder" />
-          </template>
-        </Input>
+        <div class="w-75 flex-shrink-0">
+          <Input
+            v-model:value="keyword"
+            :maxlength="100"
+            allowClear
+            :placeholder="t('fileSpace.searchPlaceholder')">
+            <template #suffix>
+              <Icon icon="icon-sousuo" class="text-theme-placeholder" />
+            </template>
+          </Input>
+        </div>
 
         <!-- Action buttons -->
         <div class="flex items-center space-x-2.5">
@@ -208,6 +209,7 @@ const drawerMenu = computed(() => {
           </template>
 
           <!-- Action column -->
+          <!--  TODO 按钮和图标不在一条线上 -->
           <template v-if="column.dataIndex === 'action'">
             <div class="space-x-2.5 flex items-center leading-4">
               <!-- Edit action -->
@@ -312,6 +314,8 @@ const drawerMenu = computed(() => {
         @change="(authData) => authFlagChange(authData, dataList)" />
     </AsyncComponent>
 
+    <!-- TODO 1、GlobalAuth弹窗组件第一次打开后，不能被再次打开；
+          2、打开后没有触发查询数据请求 -->
     <AsyncComponent :visible="globalAuthVisible">
       <GlobalAuth v-model:visible="globalAuthVisible" :appId="appInfo?.id" />
     </AsyncComponent>

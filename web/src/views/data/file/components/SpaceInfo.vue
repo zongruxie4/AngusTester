@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { Spin } from '@xcan-angus/vue-ui';
-import { useI18n } from 'vue-i18n';
+import { Grid, Spin } from '@xcan-angus/vue-ui';
 import { useSpaceInfo } from './composables/useSpaceInfo';
 
 interface Props {
@@ -13,8 +12,6 @@ const props = withDefaults(defineProps<Props>(), {
   type: 'space',
   pubapi: false
 });
-
-const { t } = useI18n();
 
 // Use the space info composable
 const { dataSource, loading, infoColumns, init } = useSpaceInfo(props);

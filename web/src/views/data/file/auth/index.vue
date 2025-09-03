@@ -9,16 +9,6 @@ import type { IndexProps, IndexEmits } from './types';
 
 const { t } = useI18n();
 
-/**
- * <p>
- * Main authentication modal component for managing user, department, and group permissions
- * </p>
- * <p>
- * This component provides a tabbed interface for managing different types of entity
- * permissions with integrated search and selection capabilities
- * </p>
- */
-
 // Async component imports
 const GroupSet = defineAsyncComponent(() => import('@/views/data/file/auth/GroupSet.vue'));
 const AuthSet = defineAsyncComponent(() => import('@/views/data/file/auth/AuthSet.vue'));

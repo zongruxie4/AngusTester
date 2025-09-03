@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent, onBeforeUnmount, onMounted } from 'vue';
+import { defineAsyncComponent, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Drawer, Icon, Input, modal, notification, Table } from '@xcan-angus/vue-ui';
@@ -116,27 +116,6 @@ const openSide = (record: SourceType) => {
 };
 
 /**
- * <p>Add temporary directory creation row to data source.</p>
- * <p>Inserts a temporary row for creating new directories.</p>
- */
-const addTempRow = () => {
-  state.dataSource.unshift({
-    id: '-1',
-    name: '',
-    spaceId: '',
-    summary: {
-      usedSize: 0,
-      subFileNum: 0
-    },
-    type: {
-      message: '文件夹',
-      value: 'DIRECTORY'
-    },
-    lastModifiedDate: '--'
-  } as SourceType);
-};
-
-/**
  * <p>Remove temporary directory creation row from data source.</p>
  */
 const removeTempRow = () => {
@@ -161,7 +140,7 @@ const createDirectory = async (record: SourceType) => {
   }
 
   notification.success(t('fileSpace.fileManagement.messages.addDirectorySuccess'));
-  getList();
+  await getList();
 };
 
 /**
@@ -337,6 +316,9 @@ onBeforeUnmount(() => {
             <div
               v-show="record.id !== '-1'"
               class="text-3 whitespace-nowrap">
+
+              <!--   TODO 英文时，点开右侧基本信息，按钮列会覆盖基本信息，没有自适应 -->
+
               <!-- Delete action -->
               <Button
                 :disabled="!deleteAuth"
@@ -371,14 +353,14 @@ onBeforeUnmount(() => {
               </Button>
 
               <!-- Details action -->
-              <Button
+              <!-- <Button
                 type="text"
                 size="small"
                 class="!h-6"
                 @click.stop="openSide(record)">
                 <Icon icon="icon-fuwuxinxi" class="align-text-bottom mr-0.5" />
                 {{ t('fileSpace.fileManagement.fileActions.details') }}
-              </Button>
+              </Button>-->
 
               <!-- Download action -->
               <Button

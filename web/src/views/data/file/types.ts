@@ -16,31 +16,31 @@ export const columns = [
   {
     title: t('fileSpace.columns.fileCount'),
     dataIndex: 'fileNum',
-    width: 60,
+    width: '10%',
     ellipsis: true
   },
   {
     title: t('fileSpace.columns.folderCount'),
     dataIndex: 'subDirectoryNum',
-    width: 80,
+    width: '10%',
     ellipsis: true
   },
   {
     title: t('fileSpace.columns.actualSize'),
     dataIndex: 'size',
     ellipsis: true,
-    width: 80
+    width: '10%'
   },
   {
     title: t('fileSpace.columns.lastModifiedDate'),
     dataIndex: 'lastModifiedDate',
     ellipsis: true,
-    width: 160
+    width: '15%'
   },
   {
     title: t('fileSpace.columns.action'),
     dataIndex: 'action',
-    width: 380
+    width: 260
   }
 ];
 

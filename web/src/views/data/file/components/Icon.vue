@@ -15,6 +15,6 @@ const props = withDefaults(defineProps<Props>(), {});
     <template #title>{{ props?.title }}</template>
     <Icon
       :icon="props?.icon"
-      class="ml-5 cursor-pointer text-4" />
+      class="ml-3 cursor-pointer text-4" />
   </Tooltip>
 </template>
