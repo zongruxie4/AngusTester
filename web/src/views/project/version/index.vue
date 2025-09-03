@@ -58,7 +58,7 @@ const initialize = () => {
         return {
           _id: 'versionList',
           value: 'versionList',
-          name: t('taskVersion.title'),
+          name: t('version.title'),
           closable: false // 是否允许关闭，true - 允许关闭，false - 禁止关闭
         };
       }
@@ -123,7 +123,7 @@ const hashChange = async (hash: string) => {
         const id = utils.uuid();
         return {
           _id: id,
-          name: t('taskVersion.form.addVersion'),
+          name: t('version.form.addVersion'),
           value: 'versionEdit',
           noCache: true,
           data: { _id: id }

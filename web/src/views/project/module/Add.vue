@@ -97,7 +97,7 @@ const handleCreateModule = async (): Promise<void> => {
     closeModal();
 
     // Show success notification
-    notification.success(t('project.projectEdit.module.addSuccess'));
+    notification.success(t('module.addSuccess'));
   } catch (error) {
     console.error('Unexpected error during module creation:', error);
   } finally {
@@ -161,7 +161,7 @@ const combinedOkButtonProps = computed<ButtonProps>(() => ({
 <template>
   <!-- Modal for adding new module -->
   <Modal
-    :title="t('project.projectEdit.module.addModuleTitle')"
+    :title="t('module.addModuleTitle')"
     width="500px"
     :visible="props.visible"
     :okButtonProps="combinedOkButtonProps"
@@ -170,7 +170,7 @@ const combinedOkButtonProps = computed<ButtonProps>(() => ({
     <!-- Input field for module name -->
     <Input
       v-model:value="inputValue"
-      :placeholder="t('project.projectEdit.module.moduleNamePlaceholder')"
+      :placeholder="t('module.moduleNamePlaceholder')"
       trim
       :allowClear="true"
       :maxlength="50"

@@ -104,7 +104,7 @@ const statusColorConfig = {
   <Spin :spinning="loading" class="h-full text-3 leading-5 px-5 py-5 overflow-auto">
     <div class="flex itesm-center space-x-3">
       <div class="text-theme-title text-5">
-        {{ t('taskVersion.detail.version') }} {{ dataSource.name }}
+        {{ t('version.detail.version') }} {{ dataSource.name }}
       </div>
       <Tag v-if="dataSource.status?.value" :color="statusColorConfig[dataSource.status?.value]">{{ dataSource.status?.message }}</Tag>
     </div>
@@ -112,18 +112,18 @@ const statusColorConfig = {
     <div class="flex itesm-center space-x-5 mt-2">
       <div class="inline-flex items-center space-x-1">
         <template v-if="dataSource.startDate">
-          {{ t('taskVersion.detail.startDate') }} {{ dataSource.startDate }}
+          {{ t('version.detail.startDate') }} {{ dataSource.startDate }}
         </template>
         <template v-else>
-          <Icon icon="icon-riqi" /> <span>{{ t('taskVersion.detail.noStartDate') }}</span>
+          <Icon icon="icon-riqi" /> <span>{{ t('version.detail.noStartDate') }}</span>
         </template>
       </div>
       <div class="inline-flex items-center space-x-1">
         <template v-if="dataSource.releaseDate">
-          {{ t('taskVersion.detail.releaseDate') }} {{ dataSource.releaseDate }}
+          {{ t('version.detail.releaseDate') }} {{ dataSource.releaseDate }}
         </template>
         <template v-else>
-          <Icon icon="icon-riqi" /> <span>{{ t('taskVersion.detail.noReleaseDate') }}</span>
+          <Icon icon="icon-riqi" /> <span>{{ t('version.detail.noReleaseDate') }}</span>
         </template>
       </div>
     </div>

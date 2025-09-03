@@ -210,7 +210,7 @@ onMounted(() => {
 <template>
   <!-- Modal for moving module to different parent -->
   <Modal
-    :title="t('project.projectEdit.module.moveModule')"
+    :title="t('module.moveModule')"
     :okButtonProps="okButtonConfig"
     :visible="props.visible"
     @cancel="handleCancel"
@@ -244,7 +244,7 @@ onMounted(() => {
           <span
             class="flex-1"
             :class="{ 'text-gray-400': disabled, 'text-gray-800': !disabled }"
-            :title="disabled ? t('project.projectEdit.module.cannotSelectAsParent') : name">
+            :title="disabled ? t('module.cannotSelectAsParent') : name">
             {{ name }}
           </span>
         </div>
@@ -252,7 +252,7 @@ onMounted(() => {
     </Tree>
 
     <div v-else class="text-center text-gray-500 py-8">
-      {{ t('project.projectEdit.module.noModulesAvailable') }}
+      {{ t('module.noModulesAvailable') }}
     </div>
   </Modal>
 </template>

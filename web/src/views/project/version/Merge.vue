@@ -56,7 +56,7 @@ const fieldNames = {
 </script>
 <template>
   <Modal
-    :title="t('taskVersion.merge.title')"
+    :title="t('version.merge.title')"
     :visible="props.visible"
     :okButtonProps="{
       loading: loading,
@@ -66,7 +66,7 @@ const fieldNames = {
     @ok="ok">
     <div class="border rounded border-status-warn py-5 px-2">
       <Icon icon="icon-jinggao" class="text-status-warn" />
-      {{ t('taskVersion.messages.mergeWarning') }}
+      {{ t('version.messages.mergeWarning') }}
     </div>
     <Form
       ref="formRef"
@@ -78,7 +78,7 @@ const fieldNames = {
       <FormItem
         required
         name="formId"
-        :label="t('taskVersion.merge.mergeVersion')">
+        :label="t('version.merge.mergeVersion')">
         <Select
           v-model:value="formState.formId"
           :fieldNames="fieldNames"
@@ -88,7 +88,7 @@ const fieldNames = {
       </FormItem>
       <FormItem
         required
-        :label="t('taskVersion.merge.mergeTo')"
+        :label="t('version.merge.mergeTo')"
         class="flex-1 !mb-5"
         name="toId">
         <Select

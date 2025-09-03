@@ -184,21 +184,15 @@ onMounted(() => {
       <div class="space-y-2">
         <div class="flex items-center space-x-2">
           <div class="w-1 h-4 bg-gradient-to-b from-green-500 to-green-600 rounded-full"></div>
-          <span class="text-xs font-semibold text-gray-600">{{ t('project.projectEdit.tag.about') }}</span>
+          <span class="text-3.5 font-semibold">{{ t('tag.about') }}</span>
         </div>
-        <div class="text-xs text-gray-700 ml-3">{{ t('project.projectEdit.tag.aboutDescription') }}</div>
+        <div class="text-xs text-gray-700 ml-3">{{ t('tag.aboutDescription') }}</div>
       </div>
 
       <div class="space-y-4">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center space-x-2">
-            <div class="w-1 h-4 bg-gradient-to-b from-purple-500 to-purple-600 rounded-full"></div>
-            <span class="text-xs font-semibold text-gray-600">{{ t('project.projectEdit.tag.addedTags') }}</span>
-          </div>
-          <Hints
-            v-if="!props.disabled"
-            :text="t('project.projectEdit.tag.addTagHint')"
-            class="text-xs text-gray-500" />
+        <div class="flex items-center space-x-2">
+          <div class="w-1 h-4 bg-gradient-to-b from-purple-500 to-purple-600 rounded-full"></div>
+          <span class="text-3.5 font-semibold">{{ t('tag.addedTags') }}</span>
         </div>
 
         <Spin
@@ -209,17 +203,17 @@ onMounted(() => {
             <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center py-12">
               <img src="../../../assets/images/nodata.png" class="w-32 h-32 mb-4">
               <div v-if="!props.disabled" class="flex items-center text-gray-500 text-xs">
-                <span>{{ t('project.projectEdit.tag.noTags') }}</span>
+                <span>{{ t('tag.noTags') }}</span>
                 <Button
                   type="link"
                   size="small"
                   class="text-xs py-0 px-1 text-blue-600"
                   @click="openCreateModal">
-                  {{ t('project.projectEdit.tag.addTag') }}
+                  {{ t('tag.addTag') }}
                 </Button>
               </div>
               <div v-else class="text-gray-500 text-xs">
-                {{ t('project.projectEdit.tag.noTagsDescription') }}
+                {{ t('tag.noTagsDescription') }}
               </div>
             </div>
 
@@ -229,8 +223,8 @@ onMounted(() => {
                 <div class="flex items-center">
                   <Input
                     v-model:value="searchValue"
-                    :placeholder="t('project.projectEdit.tag.tagNamePlaceholder')"
-                    class="w-64 mr-3"
+                    :placeholder="t('tag.tagNamePlaceholder')"
+                    class="!w-60 mr-3"
                     trimAll
                     :allowClear="true"
                     :maxlength="50"
@@ -239,6 +233,10 @@ onMounted(() => {
                       <Icon class="text-xs cursor-pointer text-gray-400" icon="icon-sousuo" />
                     </template>
                   </Input>
+                  <Hints
+                    v-if="!props.disabled"
+                    :text="t('tag.addTagHint')"
+                    class="text-xs text-gray-500" />
                 </div>
 
                 <div class="flex items-center space-x-3">
@@ -249,14 +247,14 @@ onMounted(() => {
                     class="flex items-center space-x-1 text-xs"
                     @click="openCreateModal">
                     <Icon icon="icon-jia" class="text-xs" />
-                    <span>{{ t('project.projectEdit.tag.addTag') }}</span>
+                    <span>{{ t('tag.addTag') }}</span>
                   </Button>
 
                   <IconRefresh @click="handleRefresh">
                     <template #default>
                       <div class="flex items-center cursor-pointer text-gray-600 space-x-1 hover:text-gray-800 text-xs">
                         <Icon icon="icon-shuaxin" class="text-xs" />
-                        <span>{{ t('project.projectEdit.tag.refresh') }}</span>
+                        <span>{{ t('tag.refresh') }}</span>
                       </div>
                     </template>
                   </IconRefresh>
@@ -275,7 +273,7 @@ onMounted(() => {
                   <!-- Inline edit mode -->
                   <div v-if="editId === item.id" class="flex items-center">
                     <Input
-                      :placeholder="t('project.projectEdit.tag.tagNamePlaceholder')"
+                      :placeholder="t('tag.tagNamePlaceholder')"
                       class="w-40 mr-2 text-xs"
                       trim
                       :value="item.name"

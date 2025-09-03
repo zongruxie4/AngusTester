@@ -72,14 +72,14 @@ const searchChange = (data) => {
 
 const toDelete = async (data: VersionInfo) => {
   modal.confirm({
-    content: t('taskVersion.messages.deleteConfirm', { name: data.name }),
+    content: t('version.messages.deleteConfirm', { name: data.name }),
     async onOk () {
       const id = data.id;
       const [error] = await software.deleteSoftwareVersion([id]);
       if (error) {
         return;
       }
-      notification.success(t('taskVersion.messages.deleteSuccess'));
+      notification.success(t('version.messages.deleteSuccess'));
       if (pagination.value.current > 1 && dataList.value.length === 1) {
         pagination.value.current -= 1;
       }
@@ -161,7 +161,7 @@ const toMerge = () => {
 
 const changeStatus = async (status, record) => {
   modal.confirm({
-    content: t('taskVersion.messages.changeStatusConfirm', { status: status.name }),
+    content: t('version.messages.changeStatusConfirm', { status: status.name }),
     async onOk () {
       const [error] = await software.updateSoftwareVersionStatus(record.id, {
         status: status.key
@@ -169,7 +169,7 @@ const changeStatus = async (status, record) => {
       if (error) {
         return;
       }
-      notification.success(t('taskVersion.messages.editSuccess'));
+      notification.success(t('version.messages.editSuccess'));
       loadData();
     }
   });
@@ -185,66 +185,67 @@ const handleMergeOk = (formId: string) => {
 
 const columns = [
   {
-    title: t('taskVersion.columns.version'),
+    title: t('version.columns.version'),
     dataIndex: 'name',
-    width: 80
+    width: 100
   },
   {
-    title: t('taskVersion.columns.status'),
+    title: t('version.columns.status'),
     dataIndex: 'status',
     width: 100
   },
   {
-    title: t('taskVersion.columns.progress'),
+    title: t('version.columns.progress'),
     dataIndex: 'progress',
-    width: 180
+    width: 200
   },
   {
-    title: t('taskVersion.columns.startDate'),
+    title: t('version.columns.startDate'),
     dataIndex: 'startDate',
-    customRender: ({ text }) => text || '--'
-
+    customRender: ({ text }) => text || '--',
+    width: 150
   },
   {
-    title: t('taskVersion.columns.releaseDate'),
+    title: t('version.columns.releaseDate'),
     dataIndex: 'releaseDate',
-    customRender: ({ text }) => text || '--'
-
+    customRender: ({ text }) => text || '--',
+    width: 150
   },
   {
-    title: t('taskVersion.columns.description'),
+    title: t('version.columns.description'),
     dataIndex: 'description',
-    width: '14%'
+    width: 200
   },
   {
-    title: t('taskVersion.columns.lastModifier'),
+    title: t('version.columns.lastModifier'),
     dataIndex: 'lastModifiedByName',
-    groupName: 'person'
-
+    groupName: 'person',
+    width: 100
   },
   {
-    title: t('taskVersion.columns.creator'),
+    title: t('version.columns.creator'),
     dataIndex: 'createdByName',
     groupName: 'person',
-    hide: true
+    hide: true,
+    width: 100
   },
   {
-    title: t('taskVersion.columns.lastModifyTime'),
+    title: t('version.columns.lastModifyTime'),
     dataIndex: 'lastModifiedDate',
-    groupName: 'date'
-
+    groupName: 'date',
+    width: 100
   },
   {
-    title: t('taskVersion.columns.createTime'),
+    title: t('version.columns.createTime'),
     dataIndex: 'createdDate',
     groupName: 'date',
-    hide: true
-
+    hide: true,
+    width: 100
   },
   {
-    title: t('taskVersion.columns.actions'),
+    title: t('version.columns.actions'),
     dataIndex: 'actions',
-    width: 180
+    width: 150
   }
 ];
 
@@ -258,17 +259,17 @@ const getMenus = (record) => {
   return [
     record.status?.value !== 'NOT_RELEASED' && {
       key: 'NOT_RELEASED',
-      name: t('taskVersion.status.notReleased'),
+      name: t('version.status.notReleased'),
       icon: 'icon-baocundaoweiguidang'
     },
     record.status?.value !== 'RELEASED' && {
       key: 'RELEASED',
-      name: t('taskVersion.status.released'),
+      name: t('version.status.released'),
       icon: 'icon-fabu'
     },
     record.status?.value !== 'ARCHIVED' && {
       key: 'ARCHIVED',
-      name: t('taskVersion.status.archived'),
+      name: t('version.status.archived'),
       icon: 'icon-weiguidang'
     }
   ].filter(Boolean);
@@ -279,20 +280,19 @@ const getMenus = (record) => {
 <template>
   <div class="flex flex-col h-full overflow-auto px-5 py-5 leading-5 text-3">
     <div class="flex space-x-2">
-      <Introduce class="flex-1" :class="{'mb-7': props.showDetail, 'mb-4': !props.showDetail}" :showFunc="props.showDetail" />
+      <Introduce class="flex-1" :class="{'mb-2': props.showDetail, 'mb-2': !props.showDetail}" :showFunc="props.showDetail" />
     </div>
 
     <div class="flex items-center space-x-2">
-      <div class="w-1 h-4 bg-gradient-to-b from-purple-500 to-purple-600 rounded-full"></div>
-      <span class="text-xs font-semibold text-gray-600">{{ t('taskVersion.list.addedVersions') }}</span>
+      <span class="text-3.5 font-semibold mb-1.5">{{ t('version.list.addedVersions') }}</span>
     </div>
     <Spin :spinning="loading" class="flex-1 flex flex-col">
       <template v-if="loaded">
         <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
-            <span>{{ t('taskVersion.list.noVersions') }}</span>
-            <Button type="link" @click="editVersion">{{ t('taskVersion.actions.addVersion') }}</Button>
+            <span>{{ t('version.list.noVersions') }}</span>
+            <Button type="link" @click="editVersion">{{ t('version.actions.addVersion') }}</Button>
           </div>
         </div>
 
@@ -326,7 +326,7 @@ const getMenus = (record) => {
                 </template>
                 <template v-if="column.dataIndex === 'description'">
                   <template v-if="record.description">{{ record.description }}</template>
-                  <span v-else class="text-text-sub-content">{{ t('taskVersion.list.noDescription') }}</span>
+                  <span v-else class="text-text-sub-content">{{ t('version.list.noDescription') }}</span>
                 </template>
                 <template v-if="column.dataIndex === 'actions'">
                   <Button

@@ -32,7 +32,7 @@ const searchPanelOptions = [
   {
     valueKey: 'name',
     type: 'input' as const,
-    placeholder: t('taskVersion.searchPanel.searchOptions.namePlaceholder'),
+    placeholder: t('version.searchPanel.searchOptions.namePlaceholder'),
     allowClear: true,
     maxlength: 100
   },
@@ -40,12 +40,11 @@ const searchPanelOptions = [
     valueKey: 'createdBy',
     type: 'select-user' as const,
     allowClear: true,
-    placeholder: t('taskVersion.searchPanel.searchOptions.creatorPlaceholder')
+    placeholder: t('version.searchPanel.searchOptions.creatorPlaceholder')
   },
   {
     type: 'date-range' as const,
     valueKey: 'createdDate',
-    placeholder: t('taskVersion.searchPanel.searchOptions.dateRangePlaceholder'),
     showTime: true
   }
 ];
@@ -53,19 +52,19 @@ const searchPanelOptions = [
 const menuItems = computed(() => [
   {
     key: '',
-    name: t('taskVersion.searchPanel.menuItems.all')
+    name: t('version.searchPanel.menuItems.all')
   },
   {
     key: 'NOT_RELEASED',
-    name: t('taskVersion.searchPanel.menuItems.notReleased')
+    name: t('version.searchPanel.menuItems.notReleased')
   },
   {
     key: 'RELEASED',
-    name: t('taskVersion.searchPanel.menuItems.released')
+    name: t('version.searchPanel.menuItems.released')
   },
   {
     key: 'ARCHIVED',
-    name: t('taskVersion.searchPanel.menuItems.archived')
+    name: t('version.searchPanel.menuItems.archived')
   }
 ]);
 
@@ -227,7 +226,7 @@ onMounted(() => {
   <div class="mt-2.5 mb-3.5">
     <div class="flex">
       <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-        <span>{{ t('taskVersion.searchPanel.quickSearch') }}</span>
+        <span>{{ t('version.searchPanel.quickSearch') }}</span>
         <Colon />
       </div>
       <div class="flex  flex-wrap ml-2">
@@ -254,14 +253,14 @@ onMounted(() => {
           size="small"
           @click="add">
           <Icon icon="icon-jia" class="text-3.5 mr-1" />
-          <span>{{ t('taskVersion.searchPanel.actions.addVersion') }}</span>
+          <span>{{ t('version.searchPanel.actions.addVersion') }}</span>
         </Button>
 
         <Button
           size="small"
           @click="toMerge">
           <Icon icon="icon-hebingbanben1" class="text-3.5 mr-1" />
-          <span>{{ t('taskVersion.searchPanel.actions.mergeVersion') }}</span>
+          <span>{{ t('version.searchPanel.actions.mergeVersion') }}</span>
         </Button>
 
         <IconRefresh
@@ -271,7 +270,7 @@ onMounted(() => {
           <template #default>
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-shuaxin" class="text-3.5" />
-              <span class="ml-1">{{ t('taskVersion.searchPanel.actions.refresh') }}</span>
+              <span class="ml-1">{{ t('version.searchPanel.actions.refresh') }}</span>
             </div>
           </template>
         </IconRefresh>

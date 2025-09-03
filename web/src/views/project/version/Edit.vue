@@ -117,7 +117,7 @@ onMounted(async () => {
 </script>
 <template>
   <Modal
-    :title="props.versionId ? t('taskVersion.form.editVersion') : t('taskVersion.form.addVersion')"
+    :title="props.versionId ? t('version.form.editVersion') : t('version.form.addVersion')"
     :visible="props.visible"
     :width="550"
     @cancel="cancel"
@@ -132,15 +132,15 @@ onMounted(async () => {
       <FormItem
         required
         name="name"
-        :label="t('taskVersion.form.versionName')">
+        :label="t('version.form.versionName')">
         <Input
           v-model:value="formState.name"
           :maxlength="40"
-          :placeholder="t('taskVersion.form.versionNamePlaceholder')" />
+          :placeholder="t('version.form.versionNamePlaceholder')" />
       </FormItem>
       <div class="flex space-x-2">
         <FormItem
-          :label="t('taskVersion.form.startDate')"
+          :label="t('version.form.startDate')"
           class="flex-1 min-w-0"
           name="date">
           <div class="flex items-center space-x-1">
@@ -152,7 +152,7 @@ onMounted(async () => {
           </div>
         </FormItem>
         <FormItem
-          :label="t('taskVersion.form.releaseDate')"
+          :label="t('version.form.releaseDate')"
           class="flex-1 min-w-0"
           name="time">
           <div class="w-full flex items-center space-x-1">
@@ -164,13 +164,13 @@ onMounted(async () => {
         </FormItem>
       </div>
       <FormItem
-        :label="t('taskVersion.form.description')"
+        :label="t('version.form.description')"
         class="flex-1 !mb-5"
         name="content">
         <Textarea
           v-model:value="formState.description"
           :maxlength="200"
-          :placeholder="t('taskVersion.form.descriptionPlaceholder')">
+          :placeholder="t('version.form.descriptionPlaceholder')">
           </Textarea>
       </FormItem>
     </Form>

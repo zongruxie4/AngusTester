@@ -177,15 +177,15 @@ onMounted(() => {
       <div class="space-y-2">
         <div class="flex items-center space-x-2">
           <div class="w-1 h-4 bg-gradient-to-b from-green-500 to-green-600 rounded-full"></div>
-          <span class="text-xs font-semibold text-gray-600">{{ t('project.projectEdit.module.about') }}</span>
+          <span class="text-3.5 font-semibold">{{ t('module.about') }}</span>
         </div>
-        <div class="text-xs text-gray-700 ml-3">{{ t('project.projectEdit.module.aboutDescription') }}</div>
+        <div class="text-xs text-gray-700 ml-3">{{ t('module.aboutDescription') }}</div>
       </div>
 
       <div class="space-y-4">
         <div class="flex items-center space-x-2">
           <div class="w-1 h-4 bg-gradient-to-b from-purple-500 to-purple-600 rounded-full"></div>
-          <span class="text-xs font-semibold text-gray-600">{{ t('project.projectEdit.module.addedModules') }}</span>
+          <span class="text-3.5 font-semibold text-gray-600">{{ t('module.addedModules') }}</span>
         </div>
 
         <Spin
@@ -196,16 +196,16 @@ onMounted(() => {
             <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center py-12">
               <img src="../../../assets/images/nodata.png" class="w-32 h-32 mb-4">
               <div v-if="!props.disabled" class="flex items-center text-gray-500 text-xs">
-                <span>{{ t('project.projectEdit.module.noModules') }}</span>
+                <span>{{ t('module.noModules') }}</span>
                 <Button
                   type="link"
                   size="small"
                   class="text-xs py-0 px-1 text-blue-600"
                   @click="openCreateModal()">
-                  {{ t('project.projectEdit.module.addModule') }}
+                  {{ t('module.addModule') }}
                 </Button>
               </div>
-              <div v-else class="text-gray-500 text-xs">{{ t('project.projectEdit.module.noModulesDescription') }}</div>
+              <div v-else class="text-gray-500 text-xs">{{ t('module.noModulesDescription') }}</div>
             </div>
 
             <!-- Modules list with search and actions -->
@@ -214,7 +214,7 @@ onMounted(() => {
                 <div class="flex items-center">
                   <Input
                     v-model:value="searchValue"
-                    :placeholder="t('project.projectEdit.module.moduleNamePlaceholder')"
+                    :placeholder="t('module.moduleNamePlaceholder')"
                     class="w-64 mr-3"
                     trimAll
                     :allowClear="true"
@@ -234,14 +234,14 @@ onMounted(() => {
                     class="flex items-center space-x-1 text-xs"
                     @click="openCreateModal()">
                     <Icon icon="icon-jia" class="text-xs" />
-                    <span>{{ t('project.projectEdit.module.addModule') }}</span>
+                    <span>{{ t('module.addModule') }}</span>
                   </Button>
 
                   <IconRefresh @click="handleRefresh">
                     <template #default>
                       <div class="flex items-center cursor-pointer text-gray-600 space-x-1 hover:text-gray-800 text-xs">
                         <Icon icon="icon-shuaxin" class="text-xs" />
-                        <span>{{ t('project.projectEdit.module.refresh') }}</span>
+                        <span>{{ t('module.refresh') }}</span>
                       </div>
                     </template>
                   </IconRefresh>
@@ -267,7 +267,7 @@ onMounted(() => {
                     <div v-if="editId === id" class="flex items-center">
                       <Input
                         ref="nameInputRef"
-                        :placeholder="t('project.projectEdit.module.moduleNamePlaceholder')"
+                        :placeholder="t('module.moduleNamePlaceholder')"
                         class="flex-1 mr-2 bg-white text-xs"
                         trim
                         :value="name"
@@ -280,7 +280,7 @@ onMounted(() => {
                         size="small"
                         class="px-0 py-0 mr-1 text-xs"
                         @click="cancelEdit">
-                        {{ t('project.projectEdit.module.cancel') }}
+                        {{ t('module.cancel') }}
                       </Button>
                     </div>
 
@@ -302,19 +302,19 @@ onMounted(() => {
                           <Menu class="text-xs" @click="handleDropdownClick($event, {name, id, index, ids, level, childLevels, pid})">
                             <MenuItem v-if="canAddSubModule({level})" key="add">
                               <Icon icon="icon-jia" class="text-xs" />
-                              {{ t('project.projectEdit.module.newSubModule') }}
+                              {{ t('module.newSubModule') }}
                             </MenuItem>
                             <MenuItem v-if="canMoveUp({index, pid})" key="up">
                               <Icon icon="icon-shangyi" class="text-xs" />
-                              {{ index < 1 ? t('project.projectEdit.module.moveUp') : t('project.projectEdit.module.moveUpOne') }}
+                              {{ index < 1 ? t('module.moveUp') : t('module.moveUpOne') }}
                             </MenuItem>
                             <MenuItem v-if="canMoveDown({isLast})" key="down">
                               <Icon icon="icon-xiayi" class="text-xs" />
-                              {{ t('project.projectEdit.module.moveDown') }}
+                              {{ t('module.moveDown') }}
                             </MenuItem>
                             <MenuItem key="move">
                               <Icon icon="icon-yidong" class="text-xs" />
-                              {{ t('project.projectEdit.module.move') }}
+                              {{ t('module.move') }}
                             </MenuItem>
                             <MenuItem key="edit">
                               <Icon icon="icon-bianji" class="text-xs" />

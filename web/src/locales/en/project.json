@@ -123,53 +123,6 @@
         "module": "Software Modules",
         "version": "Software Version",
         "tag": "Data Tags"
-      },
-      "module": {
-        "title": "Software Modules",
-        "about": "About Modules",
-        "aboutDescription": "Software modules organize independent functional sets within systems, enabling task division and improved maintainability.",
-        "addedModules": "Added Modules",
-        "noModules": "No modules added yet. ",
-        "addModule": "Add Module",
-        "noModulesDescription": "You haven't added any modules yet.",
-        "moduleNamePlaceholder": "Please enter module name",
-        "addModuleHint": "Press Enter or lose focus to save. Double-click existing modules to edit.",
-        "refresh": "Refresh",
-        "cancel": "Cancel",
-        "newSubModule": "New Sub-module",
-        "moveUp": "Move to Upper Level",
-        "moveUpOne": "Move Up",
-        "moveDown": "Move Down",
-        "move": "Move",
-        "edit": "Edit",
-        "delete": "Delete",
-        "loadMore": "Load More",
-        "moveModule": "Move Module",
-        "addModuleTitle": "Add Module",
-        "addSuccess": "Module added successfully",
-        "updateSuccess": "Updated successfully",
-        "deleteSuccess": "Module deleted successfully",
-        "moveSuccess": "Moved successfully",
-        "confirmDelete": "Are you sure you want to delete module 【{name}】?"
-      },
-      "tag": {
-        "title": "Data Tags",
-        "about": "About Tags",
-        "aboutDescription": "Data tags categorize tasks and use cases, improving search efficiency and team collaboration. Examples: boundary testing, business process testing, error handling, input validation, security testing, compatibility testing.",
-        "addedTags": "Added Tags",
-        "addTagHint": "Press Enter or lose focus to save. Double-click existing tags to edit.",
-        "noTags": "No tags added yet. ",
-        "addTag": "Add Tag",
-        "noTagsDescription": "You haven't added any tags yet.",
-        "tagNamePlaceholder": "Please enter tag name",
-        "refresh": "Refresh",
-        "cancel": "Cancel",
-        "loadMore": "Load More",
-        "addTagTitle": "Add Tag",
-        "addSuccess": "Tag added successfully",
-        "updateSuccess": "Updated successfully",
-        "deleteSuccess": "Tag deleted successfully",
-        "confirmDelete": "Are you sure you want to delete tag 【{name}】?"
       }
     },
     "projectDetail": {
@@ -273,6 +226,192 @@
         "clickToReplaceIcon": "Upload Icon"
       }
     }
+  },
+  "version": {
+    "name": "Version",
+    "title": "Version Management",
+    "placeholder": {
+      "searchKeyword": "Please enter search keyword"
+    },
+    "actions": {
+      "addVersion": "Add Version",
+      "edit": "Edit",
+      "delete": "Delete",
+      "merge": "Merge Versions",
+      "refresh": "Refresh"
+    },
+    "messages": {
+      "deleteConfirm": "Confirm deletion of version 【{name}】?",
+      "deleteSuccess": "Successfully deleted",
+      "editSuccess": "Successfully modified",
+      "mergeWarning": "Warning: Once versions are merged, they cannot be restored!",
+      "changeStatusConfirm": "Confirm to change version status to “{status}”?"
+    },
+    "status": {
+      "notReleased": "Not Released",
+      "released": "Released",
+      "archived": "Archived"
+    },
+    "columns": {
+      "version": "Version",
+      "status": "Status",
+      "progress": "Progress",
+      "startDate": "Start Date",
+      "releaseDate": "Release Date",
+      "description": "Description",
+      "lastModifier": "Last Modifier",
+      "creator": "Creator",
+      "lastModifyTime": "Last Modify Date",
+      "createTime": "Created Date",
+      "actions": "Actions"
+    },
+    "form": {
+      "editVersion": "Edit Version",
+      "addVersion": "Add Version",
+      "versionName": "Version Name",
+      "versionNamePlaceholder": "Enter version name, maximum 40 characters, e.g.: v1.0",
+      "startDate": "Start Date",
+      "releaseDate": "Release Date",
+      "description": "Description",
+      "descriptionPlaceholder": "Please enter version description, maximum 200 characters"
+    },
+    "merge": {
+      "title": "Version Merge",
+      "mergeVersion": "Merge Version",
+      "mergeTo": "Merge Version To"
+    },
+    "detail": {
+      "version": "Version",
+      "startDate": "Start Date: ",
+      "releaseDate": "Release Date: ",
+      "noStartDate": "No start date set",
+      "noReleaseDate": "No release date set",
+      "chart": {
+        "subtext": "Task Completion Progress",
+        "uncompleted": "Uncompleted",
+        "completed": "Completed",
+        "workload": "Workload Completion Progress"
+      }
+    },
+    "list": {
+      "addedVersions": "Added Versions",
+      "noVersions": "You haven't added any versions yet, ",
+      "noDescription": "No description~"
+    },
+    "taskTable": {
+      "tabs": {
+        "current": "Current Version",
+        "completed": "Completed",
+        "processing": "Processing",
+        "confirming": "Confirming",
+        "pending": "Pending",
+        "canceled": "Canceled"
+      },
+      "units": {
+        "tasks": "tasks",
+        "task": "task"
+      },
+      "columns": {
+        "code": "Code",
+        "name": "Name",
+        "sprint": "Sprint",
+        "priority": "Priority",
+        "assignee": "Assignee",
+        "confirmor": "Confirmor",
+        "deadline": "Deadline"
+      },
+      "messages": {
+        "noData": "No data",
+        "overdue": "Overdue"
+      }
+    },
+    "searchPanel": {
+      "quickSearch": "Quick Search",
+      "menuItems": {
+        "all": "All",
+        "notReleased": "Not Released",
+        "released": "Released",
+        "archived": "Archived"
+      },
+      "searchOptions": {
+        "namePlaceholder": "Search name, description",
+        "creatorPlaceholder": "Select creator"
+      },
+      "actions": {
+        "addVersion": "Add Version",
+        "mergeVersion": "Merge Version",
+        "refresh": "Refresh"
+      }
+    },
+    "introduce": {
+      "title": "About Version",
+      "description": "Version management helps teams precisely track task-to-software version relationships, supports flexible planning, and ensures focus on current version priorities. Visualize progress to quickly identify issues and treat versions as verifiable deliverables.",
+      "features": {
+        "versionTracking": {
+          "title": "Version Identification and Tracking",
+          "description": "Precisely identify which software version each task corresponds to, quickly locate feature implementations."
+        },
+        "versionPlanning": {
+          "title": "Version Planning and Goal Orientation",
+          "description": "Flexibly plan version goals and centrally manage key tasks and test cases for current versions."
+        },
+        "versionProgress": {
+          "title": "Version Progress Visualization",
+          "description": "Intuitively display version workload and completion progress, quickly identify potential issues."
+        },
+        "verifiableDeliverables": {
+          "title": "Verifiable Deliverables",
+          "description": "Manage versions as deliverables, ensuring each version is valuable and verifiable."
+        }
+      }
+    }
+  },
+  "module": {
+    "title": "Software Modules",
+    "about": "About Module",
+    "aboutDescription": "Software modules organize independent functional sets within systems, enabling task division and improved maintainability.",
+    "addedModules": "Added Modules",
+    "noModules": "No modules added yet. ",
+    "addModule": "Add Module",
+    "noModulesDescription": "You haven't added any modules yet.",
+    "moduleNamePlaceholder": "Please enter module name",
+    "addModuleHint": "Press Enter or lose focus to save. Double-click existing modules to edit.",
+    "refresh": "Refresh",
+    "cancel": "Cancel",
+    "newSubModule": "New Sub-module",
+    "moveUp": "Move to Upper Level",
+    "moveUpOne": "Move Up",
+    "moveDown": "Move Down",
+    "move": "Move",
+    "edit": "Edit",
+    "delete": "Delete",
+    "loadMore": "Load More",
+    "moveModule": "Move Module",
+    "addModuleTitle": "Add Module",
+    "addSuccess": "Module added successfully",
+    "updateSuccess": "Updated successfully",
+    "deleteSuccess": "Module deleted successfully",
+    "moveSuccess": "Moved successfully",
+    "confirmDelete": "Are you sure you want to delete module 【{name}】?"
+  },
+  "tag": {
+    "title": "Data Tags",
+    "about": "About Tag",
+    "aboutDescription": "Data tags categorize tasks and use cases, improving search efficiency and team collaboration. Examples: boundary testing, business process testing, error handling, input validation, security testing, compatibility testing.",
+    "addedTags": "Added Tags",
+    "addTagHint": "Press Enter or lose focus to save. Double-click existing tags to edit.",
+    "noTags": "No tags added yet. ",
+    "addTag": "Add Tag",
+    "noTagsDescription": "You haven't added any tags yet.",
+    "tagNamePlaceholder": "Please enter tag name",
+    "refresh": "Refresh",
+    "cancel": "Cancel",
+    "loadMore": "Load More",
+    "addTagTitle": "Add Tag",
+    "addSuccess": "Tag added successfully",
+    "updateSuccess": "Updated successfully",
+    "deleteSuccess": "Tag deleted successfully",
+    "confirmDelete": "Are you sure you want to delete tag 【{name}】?"
   },
   "projectActivity": {
     "name": "Activity",

@@ -45,7 +45,7 @@ export function useActions (
       const createdId = response?.data?.[0]?.id;
 
       // Show success notification
-      notification.success(t('project.projectEdit.tag.addSuccess'));
+      notification.success(t('tag.addSuccess'));
 
       // Update local data with the new tag
       if (createdId && params.names.length > 0) {
@@ -80,7 +80,7 @@ export function useActions (
       }
 
       // Show success notification
-      notification.success(t('project.projectEdit.tag.updateSuccess'));
+      notification.success(t('tag.updateSuccess'));
 
       // Update local data with the new tag information
       if (tagData.length > 0) {
@@ -106,7 +106,7 @@ export function useActions (
    */
   const deleteTag = (tagItem: TagItem, index: number): void => {
     modal.confirm({
-      content: t('project.projectEdit.tag.confirmDelete', { name: tagItem.name }),
+      content: t('tag.confirmDelete', { name: tagItem.name }),
       async onOk () {
         try {
           const [error] = await tag.deleteTag([tagItem.id]);
@@ -117,7 +117,7 @@ export function useActions (
           }
 
           // Show success notification
-          notification.success(t('project.projectEdit.tag.deleteSuccess'));
+          notification.success(t('tag.deleteSuccess'));
 
           // Update local data by removing the tag
           await onTagRemoved(index);
@@ -232,7 +232,7 @@ export function useActions (
 
       // Show success notification
       notification.success(
-        t('project.projectEdit.tag.bulkCreateSuccess', { count: createdIds.length })
+        t('tag.bulkCreateSuccess', { count: createdIds.length })
       );
 
       // Update local data for each created tag
@@ -274,7 +274,7 @@ export function useActions (
 
       // Show success notification
       notification.success(
-        t('project.projectEdit.tag.bulkDeleteSuccess', { count: tagIds.length })
+        t('tag.bulkDeleteSuccess', { count: tagIds.length })
       );
 
       // Update local data by removing tags (in reverse order to maintain indices)

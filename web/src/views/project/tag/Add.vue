@@ -28,6 +28,7 @@ const props = withDefaults(defineProps<AddTagProps>(), {
 });
 
 // Emit events for parent component communication
+// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   /** Updates modal visibility state */
   (e: 'update:visible', value: boolean): void;
@@ -93,7 +94,7 @@ const handleCreateTag = async (): Promise<void> => {
     closeModal();
 
     // Show success notification
-    notification.success(t('project.projectEdit.tag.addSuccess'));
+    notification.success(t('tag.addSuccess'));
   } catch (error) {
     console.error('Unexpected error during tag creation:', error);
   } finally {
@@ -171,7 +172,7 @@ const validateTagName = (name: string): boolean => {
 <template>
   <!-- Modal for adding new tag -->
   <Modal
-    :title="t('project.projectEdit.tag.addTagTitle')"
+    :title="t('tag.addTagTitle')"
     width="500px"
     :visible="props.visible"
     :okButtonProps="okButtonProps"
@@ -180,7 +181,7 @@ const validateTagName = (name: string): boolean => {
     <!-- Input field for tag name -->
     <Input
       v-model:value="inputValue"
-      :placeholder="t('project.projectEdit.tag.tagNamePlaceholder')"
+      :placeholder="t('tag.tagNamePlaceholder')"
       trim
       :allowClear="true"
       :maxlength="50"

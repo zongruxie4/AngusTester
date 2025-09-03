@@ -6,7 +6,7 @@
     "editProject": "编辑项目",
     "deleteProject": "删除项目",
     "projectList": "项目列表",
-    "addedProjects": "已添加的项目",
+    "addedProjects": "已添加项目",
     "projectDescription": "项目是管理和组织研发活动、工作流程、各类资源等基本单位。为团队提供了一个集中化方式来计划、跟踪、报告和验收工作进展。主要流程如下：",
     "confirmDelete": "确定删除项目【{name}】吗？",
     "deleteSuccess": "删除项目成功",
@@ -124,53 +124,6 @@
         "module": "软件模块",
         "version": "软件版本",
         "tag": "数据标签"
-      },
-      "module": {
-        "title": "软件模块",
-        "about": "关于软件模块",
-        "aboutDescription": "软件模块用于定义和组织软件系统中相对独立的功能集，通过模块可以划分任务和功能用例，从而提高可维护性。",
-        "addedModules": "已添加的软件模块",
-        "noModules": "您尚未添加任何模块，立即",
-        "addModule": "添加模块",
-        "noModulesDescription": "您尚未添加任何模块。",
-        "moduleNamePlaceholder": "请输入模块名称",
-        "addModuleHint": "回车或鼠标失焦时保存添加模块，双击已存在模块可进入编辑状态",
-        "refresh": "刷新",
-        "cancel": "取消",
-        "newSubModule": "新建子模块",
-        "moveUp": "移到上一层",
-        "moveUpOne": "上移",
-        "moveDown": "下移",
-        "move": "移动",
-        "edit": "编辑",
-        "delete": "删除",
-        "loadMore": "加载更多",
-        "moveModule": "移动模块",
-        "addModuleTitle": "添加模块",
-        "addSuccess": "模块添加成功",
-        "updateSuccess": "修改成功",
-        "deleteSuccess": "删除模块成功",
-        "moveSuccess": "移动成功",
-        "confirmDelete": "确定删除模块【{name}】吗？"
-      },
-      "tag": {
-        "title": "数据标签",
-        "about": "关于数据标签",
-        "aboutDescription": "数据标签可以方便对任务、功能用例等分类、提高检索和管理效率，促进团队高效协作。示例：边界测试、业务流程测试、错误处理、输入验证、输出验证、异常条件测试、安全性测试、兼容性测试等。",
-        "addedTags": "已添加的数据标签",
-        "addTagHint": "回车或鼠标失焦时保存添加标签，双击已存在标签可进入编辑状态。",
-        "noTags": "您尚未添加任何标签，立即",
-        "addTag": "添加标签",
-        "noTagsDescription": "您尚未添加任何标签。",
-        "tagNamePlaceholder": "请输入标签名称",
-        "refresh": "刷新",
-        "cancel": "取消",
-        "loadMore": "加载更多",
-        "addTagTitle": "添加标签",
-        "addSuccess": "标签添加成功",
-        "updateSuccess": "修改成功",
-        "deleteSuccess": "删除标签成功",
-        "confirmDelete": "确定删除标签【{name}】吗？"
       }
     },
     "projectDetail": {
@@ -274,6 +227,192 @@
         "clickToReplaceIcon": "点击上传图标"
       }
     }
+  },
+  "version": {
+    "name": "版本",
+    "title": "版本管理",
+    "placeholder": {
+      "searchKeyword": "请输入关键字搜索"
+    },
+    "actions": {
+      "addVersion": "添加版本",
+      "edit": "编辑",
+      "delete": "删除",
+      "merge": "版本合并",
+      "refresh": "刷新"
+    },
+    "messages": {
+      "deleteConfirm": "确定删除版本【{name}】吗？",
+      "deleteSuccess": "删除成功",
+      "editSuccess": "修改成功",
+      "mergeWarning": "警告：版本一旦合成后，将无法还原！",
+      "changeStatusConfirm": "确认修改版本状态为 “{status}” 吗？"
+    },
+    "status": {
+      "notReleased": "未发布",
+      "released": "发布",
+      "archived": "归档"
+    },
+    "columns": {
+      "version": "版本",
+      "status": "状态",
+      "progress": "进度",
+      "startDate": "开始日期",
+      "releaseDate": "发布日期",
+      "description": "描述",
+      "lastModifier": "最后修改人",
+      "creator": "添加人",
+      "lastModifyTime": "最后修改时间",
+      "createTime": "添加时间",
+      "actions": "操作"
+    },
+    "form": {
+      "editVersion": "编辑版本",
+      "addVersion": "添加版本",
+      "versionName": "版本名称",
+      "versionNamePlaceholder": "输入版本名称，最多可输入40字符，如：v1.0",
+      "startDate": "开始日期",
+      "releaseDate": "发布日期",
+      "description": "描述",
+      "descriptionPlaceholder": "请输入版本描述，最多支持200字符"
+    },
+    "merge": {
+      "title": "版本合并",
+      "mergeVersion": "合并版本",
+      "mergeTo": "合并版本至"
+    },
+    "detail": {
+      "version": "版本",
+      "startDate": "开始日期：",
+      "releaseDate": "发布日期：",
+      "noStartDate": "没有设置开始日期",
+      "noReleaseDate": "没有设置发布日期",
+      "chart": {
+        "subtext": "完成任务进度",
+        "uncompleted": "未完成",
+        "completed": "已完成",
+        "workload": "完成工作量进度"
+      }
+    },
+    "list": {
+      "addedVersions": "已添加版本",
+      "noVersions": "您尚未添加任何版本，立即",
+      "noDescription": "无描述~"
+    },
+    "taskTable": {
+      "tabs": {
+        "current": "当前版本",
+        "completed": "已完成",
+        "processing": "正在处理",
+        "confirming": "待确认",
+        "pending": "待处理",
+        "canceled": "已取消"
+      },
+      "units": {
+        "tasks": "个任务",
+        "task": "任务"
+      },
+      "columns": {
+        "code": "编码",
+        "name": "名称",
+        "sprint": "所属迭代",
+        "priority": "优先级",
+        "assignee": "经办人",
+        "confirmor": "确认人",
+        "deadline": "截止时间"
+      },
+      "messages": {
+        "noData": "暂无数据",
+        "overdue": "已逾期"
+      }
+    },
+    "searchPanel": {
+      "quickSearch": "快速查询",
+      "menuItems": {
+        "all": "全部",
+        "notReleased": "未发布",
+        "released": "已发布",
+        "archived": "已归档"
+      },
+      "searchOptions": {
+        "namePlaceholder": "查询名称、描述",
+        "creatorPlaceholder": "选择添加人"
+      },
+      "actions": {
+        "addVersion": "添加版本",
+        "mergeVersion": "合并版本",
+        "refresh": "刷新"
+      }
+    },
+    "introduce": {
+      "title": "关于版本",
+      "description": "版本管理帮助团队精确跟踪任务与软件版本的对应关系，支持灵活规划，确保团队聚焦当前版本的关键工作。通过可视化进展，快速识别问题，将版本作为可验证的交付物。",
+      "features": {
+        "versionTracking": {
+          "title": "版本标识和跟踪",
+          "description": "精确标识每个任务对应的软件版本，快速定位功能实现位置。"
+        },
+        "versionPlanning": {
+          "title": "版本规划和目标导向",
+          "description": "灵活规划版本目标，集中管理当前版本的关键任务和测试用例。"
+        },
+        "versionProgress": {
+          "title": "版本进展可视化",
+          "description": "直观展示版本工作量和完成进度，快速识别潜在问题。"
+        },
+        "verifiableDeliverables": {
+          "title": "可验证的交付物",
+          "description": "将版本作为交付物管理，确保每个版本都有价值且可验证。"
+        }
+      }
+    }
+  },
+  "module": {
+    "title": "软件模块",
+    "about": "关于模块",
+    "aboutDescription": "软件模块用于定义和组织软件系统中相对独立的功能集，通过模块可以划分任务和功能用例，从而提高可维护性。",
+    "addedModules": "已添加模块",
+    "noModules": "您尚未添加任何模块，立即",
+    "addModule": "添加模块",
+    "noModulesDescription": "您尚未添加任何模块。",
+    "moduleNamePlaceholder": "请输入模块名称",
+    "addModuleHint": "回车或鼠标失焦时保存添加模块，双击已存在模块可进入编辑状态",
+    "refresh": "刷新",
+    "cancel": "取消",
+    "newSubModule": "新建子模块",
+    "moveUp": "移到上一层",
+    "moveUpOne": "上移",
+    "moveDown": "下移",
+    "move": "移动",
+    "edit": "编辑",
+    "delete": "删除",
+    "loadMore": "加载更多",
+    "moveModule": "移动模块",
+    "addModuleTitle": "添加模块",
+    "addSuccess": "模块添加成功",
+    "updateSuccess": "修改成功",
+    "deleteSuccess": "删除模块成功",
+    "moveSuccess": "移动成功",
+    "confirmDelete": "确定删除模块【{name}】吗？"
+  },
+  "tag": {
+    "title": "数据标签",
+    "about": "关于标签",
+    "aboutDescription": "数据标签可以方便对任务、功能用例等分类、提高检索和管理效率，促进团队高效协作。示例：边界测试、业务流程测试、错误处理、输入验证、输出验证、异常条件测试、安全性测试、兼容性测试等。",
+    "addedTags": "已添加标签",
+    "addTagHint": "回车或鼠标失焦时保存添加标签，双击已存在标签可进入编辑状态。",
+    "noTags": "您尚未添加任何标签，立即",
+    "addTag": "添加标签",
+    "noTagsDescription": "您尚未添加任何标签。",
+    "tagNamePlaceholder": "请输入标签名称",
+    "refresh": "刷新",
+    "cancel": "取消",
+    "loadMore": "加载更多",
+    "addTagTitle": "添加标签",
+    "addSuccess": "标签添加成功",
+    "updateSuccess": "修改成功",
+    "deleteSuccess": "删除标签成功",
+    "confirmDelete": "确定删除标签【{name}】吗？"
   },
   "projectActivity": {
     "name": "活动",

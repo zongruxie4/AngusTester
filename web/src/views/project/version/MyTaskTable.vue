@@ -45,47 +45,47 @@ const columns = computed(() => {
   }[] = [
     {
       key: 'code',
-      title: t('taskVersion.taskTable.columns.code'),
+      title: t('version.taskTable.columns.code'),
       dataIndex: 'code',
       ellipsis: true,
       width: 100
     },
     {
       key: 'name',
-      title: t('taskVersion.taskTable.columns.name'),
+      title: t('version.taskTable.columns.name'),
       dataIndex: 'name',
       ellipsis: true,
       width: '25%'
     },
     {
       key: 'sprintName',
-      title: t('taskVersion.taskTable.columns.sprint'),
+      title: t('version.taskTable.columns.sprint'),
       dataIndex: 'sprintName',
       ellipsis: true,
       width: '25%'
     },
     {
       key: 'priority',
-      title: t('taskVersion.taskTable.columns.priority'),
+      title: t('version.taskTable.columns.priority'),
       dataIndex: 'priority',
       ellipsis: true,
       width: '9%'
     },
     {
       key: 'assigneeName',
-      title: t('taskVersion.taskTable.columns.assignee'),
+      title: t('version.taskTable.columns.assignee'),
       dataIndex: 'assigneeName',
       width: 120
     },
     {
       key: 'confirmorName',
-      title: t('taskVersion.taskTable.columns.confirmor'),
+      title: t('version.taskTable.columns.confirmor'),
       dataIndex: 'confirmorName',
       width: 120
     },
     {
       key: 'deadlineDate',
-      title: t('taskVersion.taskTable.columns.deadline'),
+      title: t('version.taskTable.columns.deadline'),
       dataIndex: 'deadlineDate',
       ellipsis: true,
       width: '17%'
@@ -107,7 +107,7 @@ const emptyTextStyle = {
       <div class="flex-1 flex flex-col items-center justify-center">
         <img class="w-27.5" src="../../../assets/images/nodata.png">
         <div class="flex items-center text-theme-sub-content text-3 leading-5">
-          {{ t('taskVersion.taskTable.messages.noData') }}
+          {{ t('version.taskTable.messages.noData') }}
         </div>
       </div>
     </template>
@@ -134,7 +134,7 @@ const emptyTextStyle = {
             v-if="record.overdue"
             class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
             style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-            <span class="inline-block transform-gpu scale-90">{{ t('taskVersion.taskTable.messages.overdue') }}</span>
+            <span class="inline-block transform-gpu scale-90">{{ t('version.taskTable.messages.overdue') }}</span>
           </span>
         </div>
 
