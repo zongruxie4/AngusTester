@@ -11,6 +11,38 @@ export function useToolbar() {
   const isOpen = ref(false);
   const isMoving = ref(false);
 
+  const TOOLBAR_MENU_ITEMS: {
+    name:string;
+    key:string;
+  }[] = [
+    {
+      key: 'debugResult',
+      name: '调试结果'
+    },
+    {
+      key: 'logs',
+      name: '调度日志'
+    },
+    {
+      key: 'execLog',
+      name: '执行日志'
+    }
+  ];
+
+  const TOOLBAR_EXTRA_MENU_ITEMS: {
+    name:string;
+    key:string;
+  }[] = [
+    {
+      key: 'toggle',
+      name: '展开收起'
+    },
+    {
+      key: 'screen',
+      name: '全屏'
+    }
+  ];
+
   /**
    * Close toolbar
    */
@@ -30,13 +62,16 @@ export function useToolbar() {
   };
 
   return {
+    TOOLBAR_MENU_ITEMS,
+    TOOLBAR_EXTRA_MENU_ITEMS,
+
     // Toolbar state
     toolbarActiveKey,
     height,
     isFull,
     isOpen,
     isMoving,
-    
+
     // Toolbar methods
     closeToolbar,
     toggleFullScreen

@@ -3,7 +3,7 @@ import { onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { ResourceInfo } from '../types';
-import { usePieChart } from '../composables/usePieChart';
+import { usePieChart } from './composables/usePieChart';
 
 const { t } = useI18n();
 
@@ -44,7 +44,7 @@ onMounted(() => {
       ref="containerRef"
       class="w-70 h-34">
     </div>
-    
+
     <!-- Center overlay with total count -->
     <div class="mark-container">
       <div class="text-center">{{ t('scriptHome.pieChart.title') }}</div>

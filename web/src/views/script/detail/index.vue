@@ -1,16 +1,16 @@
 <script lang="ts" setup>
-import { defineAsyncComponent, inject, nextTick, onMounted, ref, Ref } from 'vue';
+import { defineAsyncComponent, inject, nextTick, onMounted, ref, Ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import {
-  ActivityTimeline, AsyncComponent, Drawer, Icon, Input, Modal, modal, notification, Select, Spin, Toolbar
+  ActivityTimeline, AsyncComponent, Drawer, Icon, Input, Modal, modal, Select, Spin, Toolbar
 } from '@xcan-angus/vue-ui';
 import { useRoute, useRouter } from 'vue-router';
 import YAML from 'yaml';
 import { Button } from 'ant-design-vue';
 
-import { LANG_OPTIONS, TOOLBAR_EXTRA_MENU_ITEMS, TOOLBAR_MENU_ITEMS } from './constant';
-import { PermissionKey, ScriptInfo } from '../types';
 import {
+  TOOLBAR_EXTRA_MENU_ITEMS,
+  TOOLBAR_MENU_ITEMS,
   useScriptData,
   useDebug,
   useToolbar,
@@ -22,12 +22,12 @@ const { t } = useI18n();
 
 const ScriptDetail = defineAsyncComponent(() => import('./ScriptInfo.vue'));
 const ScriptForm = defineAsyncComponent(() => import('./ScriptForm.vue'));
-const ExecutionRecord = defineAsyncComponent(() => import('@/views/script/detail/Record.vue'));
 const MonacoEditor = defineAsyncComponent(() => import('@/components/monacoEditor/index.vue'));
 const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/exportModal/index.vue'));
 const DebugResult = defineAsyncComponent(() => import('./DebugResult.vue'));
 const DebugLog = defineAsyncComponent(() => import('./DebugLog.vue'));
 const ExecLog = defineAsyncComponent(() => import('@/views/script/detail/ExecLog.vue'));
+const ExecRecord = defineAsyncComponent(() => import('@/views/script/detail/ExecRecord.vue'));
 
 const route = useRoute();
 const router = useRouter();
@@ -39,6 +39,17 @@ const aiEnabled = inject('aiEnabled', ref(false));
 const formRef = ref();
 const toolbarRef = ref();
 const drawerRef = ref();
+
+const FORMAT_OPTIONS = [
+  {
+    value: 'yaml',
+    label: 'YAML'
+  },
+  {
+    value: 'json',
+    label: 'JSON'
+  }
+];
 
 // Use composables
 const {
@@ -55,7 +66,7 @@ const {
   viewMode,
   pageType,
   projectId,
-  
+
   // Methods
   loadScript,
   addScript,
@@ -151,55 +162,6 @@ onMounted(() => {
 
   drawerRef.value.open('basicInfo');
 });
-
-const projectId = computed(() => {
-  return projectInfo.value?.id;
-});
-
-const pageType = computed(() => {
-  if (viewMode.value === 'view') {
-    return 'detail';
-  }
-
-  if (viewMode.value === 'edit' && scriptId.value) {
-    return 'edit';
-  }
-
-  return 'create';
-});
-
-const drawerMenuItems = computed(() => {
-  if (pageType.value === 'create') {
-    return [
-      {
-        key: 'basicInfo',
-        name: t('scriptDetail.tabs.basicInfo'),
-        icon: 'icon-fuwuxinxi',
-        noAuth: true
-      }];
-  }
-
-  return [
-    {
-      key: 'basicInfo',
-      name: t('scriptDetail.tabs.basicInfo'),
-      icon: 'icon-fuwuxinxi',
-      noAuth: true
-    },
-    {
-      key: 'execRecord',
-      name: t('scriptDetail.tabs.executionRecord'),
-      icon: 'icon-zhihangceshi',
-      noAuth: true
-    },
-    {
-      key: 'activity',
-      icon: 'icon-lishijilu',
-      name: t('scriptDetail.tabs.activity'),
-      noAuth: true
-    }
-  ];
-});
 </script>
 <template>
   <Spin
@@ -212,7 +174,7 @@ const drawerMenuItems = computed(() => {
           v-model:value="contentType"
           class="w-40"
           :allowClear="false"
-          :options="LANG_OPTIONS"
+          :options="FORMAT_OPTIONS"
           @change="contentTypeChange" />
 
         <template v-if="isEditFlag">
@@ -367,7 +329,7 @@ const drawerMenuItems = computed(() => {
       </template>
 
       <template #execRecord>
-        <ExecutionRecord
+        <ExecRecord
           :projectId="projectId"
           :scriptId="scriptId"
           style="height:calc(100% - 30px);"

@@ -6,6 +6,6 @@ export * from './useDrawer';
 export * from './useScriptForm';
 export * from './useScriptInfo';
 export * from './useExecLog';
-export * from './useExecutionRecord';
+export * from './useExecRecord';
 export * from './useDebugLog';
 export * from './useDebugResult';

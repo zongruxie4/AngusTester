@@ -1,3 +1,10 @@
+import {PaginationProps} from "ant-design-vue";
+
+/**
+ * Permission keys for script operations
+ */
+export type PermissionKey = 'TEST' | 'VIEW' | 'MODIFY' | 'DELETE' | 'EXPORT' | 'COLON' | 'GRANT';
+
 /**
  * Select option for dropdown components
  */
@@ -47,10 +54,27 @@ export type ResourceInfo = {
     scenarioSourceNum: string;
 }
 
-/**
- * Permission keys for script operations
- */
-export type PermissionKey = 'TEST' | 'VIEW' | 'MODIFY' | 'DELETE' | 'EXPORT' | 'COLON' | 'GRANT';
+
+export type ScriptSearchProps = {
+  projectId: string;
+  userInfo: { id: string; };
+  appInfo: { id: string; };
+  notify: string;
+}
+
+export type ScriptTableProps = {
+  projectId: string;
+  appId: string;
+  userId: string;
+  dataSource: ScriptInfo[];
+  permissionsMap: { [key: string]: PermissionKey[] };
+  pagination: PaginationProps;
+  allowImportSamplesFlag: boolean;
+  loaded: boolean;
+  loading: boolean;
+  resetSelectedIdsNotify: string;
+}
+
 
 /**
  * Script information with metadata

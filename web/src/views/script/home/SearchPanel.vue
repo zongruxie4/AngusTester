@@ -1,23 +1,15 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Colon, Icon, IconText, SearchPanel, Select } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
-import { cloneDeep } from 'lodash-es';
 import { useScriptSearch } from './composables/useScriptSearch';
-import { MenuItem } from './types';
+import { ScriptSearchProps } from '@/views/script/home/types';
 
 const { t } = useI18n();
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  notify: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<ScriptSearchProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -98,10 +90,10 @@ watch(
     () => serviceIdFilter.value,
     () => sourceIdFilter.value,
     () => selectedMenuMap.value
-  ], 
+  ],
   () => {
     emit('change', getData());
-  }, 
+  },
   { immediate: false, deep: false }
 );
 
@@ -122,22 +114,9 @@ const dbBaseKey = computed(() => {
   return key;
 });
 
-const dbParamsKey = computed(() => {
-  return btoa(dbBaseKey.value + 'script');
-});
-
 const source = computed(() => {
   return filters.value.find(item => item.key === 'source')?.value;
 });
-
-const isAPISource = computed(() => {
-  return source.value === 'API';
-});
-
-const isScenarioSource = computed(() => {
-  return source.value === 'SCENARIO';
-});
-
 </script>
 <template>
   <div class="text-3 leading-5">

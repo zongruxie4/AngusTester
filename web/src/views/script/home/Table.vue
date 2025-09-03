@@ -1,27 +1,14 @@
 <script setup lang="ts">
 import { defineAsyncComponent, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { Button, PaginationProps, Tag } from 'ant-design-vue';
+import { Button, Tag } from 'ant-design-vue';
 import { AsyncComponent, AuthorizeModal, Dropdown, Icon, notification, Table, Tooltip } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { script } from '@/api/tester';
 import { useScriptTable } from './composables/useScriptTable';
-import { PermissionKey, ScriptInfo } from './types';
+import { ScriptInfo, ScriptTableProps } from './types';
 
-type Props = {
-  projectId: string;
-  appId: string;
-  userId: string;
-  dataSource: ScriptInfo[];
-  permissionsMap: { [key: string]: PermissionKey[] };
-  pagination: PaginationProps;
-  allowImportSamplesFlag: boolean;
-  loaded: boolean;
-  loading: boolean;
-  resetSelectedIdsNotify: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<ScriptTableProps>(), {
   projectId: undefined,
   appId: undefined,
   userId: undefined,
@@ -50,6 +37,8 @@ const router = useRouter();
 
 // Composable
 const {
+  columns,
+  actionItems,
   selectedDataMap,
   batchExecDisabled,
   batchDeleteDisabled,
@@ -77,7 +66,7 @@ const importDemo = async () => {
   emit('update:loading', true);
   const [error] = await script.importScriptDemo();
   emit('update:loading', false);
-  
+
   if (error) {
     return;
   }
@@ -89,7 +78,10 @@ const importDemo = async () => {
 /**
  * Handle table change events
  */
-const tableChange = (pagination: { current: number; pageSize: number; }, _filters: { [key: string]: any }[], sorter: { orderBy: string; orderSort: 'DESC' | 'ASC' }) => {
+const tableChange = (
+  pagination: { current: number; pageSize: number; },
+  _filters: { [key: string]: any }[],
+  sorter: { orderBy: string; orderSort: 'DESC' | 'ASC' }) => {
   emit('tableChange', pagination, sorter);
 };
 
@@ -152,160 +144,6 @@ rowSelection.value.onChange = (keys: string[]) => {
 
   rowSelection.value.selectedRowKeys = selectedRowKeys;
 };
-
-// Columns configuration
-const columns = [
-  {
-    title: 'ID',
-    dataIndex: 'id',
-    width: '12%',
-    key: 'id',
-    customCell: () => {
-      return { style: 'white-space:nowrap;' };
-    }
-  },
-  {
-    title: '名称',
-    dataIndex: 'name',
-    ellipsis: true,
-    sorter: true,
-    width: '15%',
-    key: 'name'
-  },
-  {
-    title: '插件',
-    dataIndex: 'plugin',
-    sorter: true,
-    width: '6%',
-    key: 'plugin',
-    customCell: () => {
-      return { style: 'white-space:nowrap;' };
-    }
-  },
-  {
-    title: '类型',
-    dataIndex: 'type',
-    sorter: true,
-    width: '6%',
-    key: 'type',
-    customCell: () => {
-      return { style: 'white-space:nowrap;' };
-    }
-  },
-  {
-    title: '来源',
-    dataIndex: 'source',
-    sorter: true,
-    width: '6%',
-    key: 'source',
-    customCell: () => {
-      return { style: 'white-space:nowrap;' };
-    }
-  },
-  {
-    title: '资源ID',
-    dataIndex: 'sourceId',
-    width: '12%',
-    groupName: 'sourceId',
-    hide: true,
-    key: 'sourceId',
-    customCell: () => {
-      return { style: 'white-space:nowrap;' };
-    }
-  },
-  {
-    title: '资源名称',
-    dataIndex: 'sourceName',
-    width: '15%',
-    groupName: 'sourceId',
-    hide: false,
-    key: 'sourceName',
-    customCell: () => {
-      return { style: 'white-space:nowrap;' };
-    }
-  },
-  {
-    title: '标签',
-    dataIndex: 'tags',
-    key: 'tags'
-  },
-  {
-    title: '添加人',
-    dataIndex: 'createdByName',
-    width: '7%',
-    groupName: 'createdByName',
-    key: 'createdByName',
-    customRender: ({ text }: { text: string }) => text || '--',
-    ellipsis: true
-  },
-  {
-    title: '最后修改人',
-    dataIndex: 'lastModifiedByName',
-    width: '8%',
-    groupName: 'createdByName',
-    hide: true,
-    key: 'lastModifiedByName',
-    customRender: ({ text }: { text: string }) => text || '--',
-    ellipsis: true
-  },
-  {
-    title: '添加时间',
-    dataIndex: 'createdDate',
-    width: '10%',
-    sorter: true,
-    groupName: 'createdDate',
-    key: 'createdDate',
-    customCell: () => {
-      return { style: 'white-space:nowrap;' };
-    }
-  },
-  {
-    title: '最后修改时间',
-    dataIndex: 'lastModifiedDate',
-    width: '10%',
-    sorter: true,
-    groupName: 'createdDate',
-    hide: true,
-    key: 'lastModifiedDate',
-    customCell: () => {
-      return { style: 'white-space:nowrap;' };
-    }
-  },
-  {
-    title: '操作',
-    dataIndex: 'action',
-    width: 138,
-    key: 'action'
-  }
-];
-
-// Menu items for dropdown
-const menuItems = [
-  {
-    key: 'auth',
-    icon: 'icon-quanxian1',
-    name: '权限',
-    permission: 'GRANT'
-  },
-  {
-    key: 'clone',
-    icon: 'icon-fuzhi',
-    name: '克隆',
-    permission: 'COLON'
-  },
-  {
-    key: 'delete',
-    icon: 'icon-qingchu',
-    name: '删除',
-    permission: 'DELETE'
-  },
-  {
-    key: 'export',
-    icon: 'icon-daochu',
-    name: '导出',
-    permission: 'EXPORT'
-  }
-];
 </script>
 
 <template>
@@ -434,7 +272,8 @@ const menuItems = [
             <span v-else>--</span>
           </div>
 
-          <div v-else-if="column.dataIndex === 'sourceId'"
+          <div
+            v-else-if="column.dataIndex === 'sourceId'"
             :title="record.sourceId"
             class="truncate">
             {{ record.sourceId || '--' }}
@@ -480,11 +319,11 @@ const menuItems = [
             </Button>
 
             <Dropdown
-              :menuItems="menuItems"
+              :menuItems="actionItems"
               :admin="false"
               :permissions="props.permissionsMap[record.id]"
               @click="(key) => handleActionClick(
-                key, 
+                key,
                 record,
                 (loading) => emit('update:loading', loading),
                 () => emit('refresh'),
@@ -524,8 +363,8 @@ const menuItems = [
   </AsyncComponent>
 
   <AsyncComponent :visible="exportVisible">
-    <ExportScriptModal 
-      v-model:visible="exportVisible" 
+    <ExportScriptModal
+      v-model:visible="exportVisible"
       :ids="exportIds" />
   </AsyncComponent>
 </template>

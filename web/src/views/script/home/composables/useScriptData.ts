@@ -1,35 +1,36 @@
-import { ref } from 'vue';
+import { ComputedRef, ref } from 'vue';
 import { script, analysis } from '@/api/tester';
 import { ScriptInfo, ResourceInfo } from '../types';
-import { utils } from '@xcan-angus/infra';
+import { utils, appContext } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 
 /**
  * Composable for managing script data including list, permissions and resource counts
- * @param projectId - The ID of the current project
- * @param isAdmin - Whether the current user is an admin
+ * @param _projectId - The ID of the current project
  */
-export function useScriptData(projectId: string, isAdmin: boolean) {
+export function useScriptData (_projectId: ComputedRef<string>) {
+  const projectId = _projectId.value;
+
   // Script list data
   const tableData = ref<ScriptInfo[]>([]);
   const permissionsMap = ref<{ [key: string]: string[] }>({});
   const loading = ref(false);
   const loaded = ref(false);
-  
+
   // Pagination state
-  const pagination = ref<{ current: number; pageSize: number; total: number; }>({ 
-    current: 1, 
-    pageSize: 10, 
-    total: 0 
+  const pagination = ref<{ current: number; pageSize: number; total: number; }>({
+    current: 1,
+    pageSize: 10,
+    total: 0
   });
-  
+
   // Sorting state
   const orderBy = ref<string>();
   const orderSort = ref<'DESC' | 'ASC'>();
-  
+
   // Filter state
   const filters = ref<{ key: string; op: string; value: boolean | string | string[]; }[]>([]);
-  
+
   // Resource count data
   const countData = ref<ResourceInfo>({
     totalScriptNum: '0',
@@ -45,11 +46,11 @@ export function useScriptData(projectId: string, isAdmin: boolean) {
     caseSourceNum: '0',
     scenarioSourceNum: '0'
   });
-  
+
   // Previous parameters for comparison
   const prevParams = ref<{ [key: string]: any }>();
   const resetSelectedIdsNotify = ref<string>();
-  
+
   // Import samples flag
   const allowImportSamplesFlag = ref(false);
 
@@ -91,7 +92,7 @@ export function useScriptData(projectId: string, isAdmin: boolean) {
     const [error, res] = await script.getScriptList(params);
     loaded.value = true;
     loading.value = false;
-    
+
     if (error) {
       return false;
     }
@@ -115,14 +116,14 @@ export function useScriptData(projectId: string, isAdmin: boolean) {
       list: ScriptInfo[];
       ext: { allowImportSamples: boolean; }
     };
-    
+
     pagination.value.total = +data.total;
     tableData.value = data.list.map(item => {
       let sourceNameLinkUrl = '';
       const source = item.source?.value;
       const sourceId = item.sourceId;
       const sourceName = item.sourceName;
-      
+
       if (sourceId && sourceName) {
         if (source === 'SERVICE_SMOKE') {
           sourceNameLinkUrl = `/apis#services?id=${sourceId}&name=${sourceName}&value=group`;
@@ -149,7 +150,7 @@ export function useScriptData(projectId: string, isAdmin: boolean) {
 
     const ids = data.list.map(item => item.id);
     await loadScriptListAuth(ids);
-    
+
     return true;
   };
 
@@ -169,14 +170,14 @@ export function useScriptData(projectId: string, isAdmin: boolean) {
     const map: {
       [key: string]: { permissions: { value: string; message: string }[]; scriptAuth: boolean; }
     } = res?.data;
-    
+
     if (map) {
       for (const key in map) {
         const { scriptAuth, permissions } = map[key];
         let list: string[] = [];
         const values = permissions.map(item => item.value);
-        
-        if (isAdmin || scriptAuth === false) {
+
+        if (appContext.isAdmin() || scriptAuth === false) {
           list = ['TEST', 'VIEW', 'MODIFY', 'DELETE', 'EXPORT', 'COLON'];
           if (values.includes('GRANT')) {
             list.push('GRANT');
@@ -217,7 +218,7 @@ export function useScriptData(projectId: string, isAdmin: boolean) {
       caseSourceNum: '0',
       scenarioSourceNum: '0'
     };
-    
+
     return true;
   };
 
@@ -225,7 +226,7 @@ export function useScriptData(projectId: string, isAdmin: boolean) {
    * Handle table change events (pagination, sorting)
    */
   const handleTableChange = (
-    { current, pageSize }: { current: number; pageSize: number; }, 
+    { current, pageSize }: { current: number; pageSize: number; },
     sorter: { orderBy: string; orderSort: 'DESC' | 'ASC' }
   ) => {
     pagination.value.current = current;
@@ -286,13 +287,13 @@ export function useScriptData(projectId: string, isAdmin: boolean) {
     countData,
     resetSelectedIdsNotify,
     allowImportSamplesFlag,
-    
+
     // Methods
     loadScriptList,
     loadResourcesData,
     handleTableChange,
     handleDelete,
-    
+
     // Computed
     filters
   };

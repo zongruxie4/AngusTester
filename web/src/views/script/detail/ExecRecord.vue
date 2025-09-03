@@ -2,7 +2,7 @@
 import { useI18n } from 'vue-i18n';
 import { Colon, Scroll } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
-import { useExecutionRecord } from './composables/useExecutionRecord';
+import { useExecRecord } from './composables/useExecRecord';
 
 const { t } = useI18n();
 
@@ -21,7 +21,7 @@ const {
   dataList,
   handleScrollChange,
   BG_COLOR
-} = useExecutionRecord();
+} = useExecRecord();
 
 const params = {
   pageSize: 5

@@ -1,16 +1,16 @@
-import { ref, computed } from 'vue';
+import { ref, computed, ComputedRef } from 'vue';
 import { script } from '@/api/tester';
 import { notification } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-import { formatBytes } from '@/utils/common';
 
 /**
  * Composable for managing script import functionality
- * @param projectId - The ID of the current project
+ * @param _projectId - The ID of the current project
  */
-export function useScriptImport(projectId: string) {
+export function useScriptImport (_projectId: ComputedRef<string>) {
   const { t } = useI18n();
-  
+  const projectId = _projectId.value;
+
   // Form state
   const formState = ref<{
     name: string;
@@ -23,15 +23,15 @@ export function useScriptImport(projectId: string) {
     file: undefined,
     description: ''
   });
-  
+
   // Validation flags
   const emptyFlag = ref(false);
   const maximumLimitFlag = ref(false);
   const loading = ref(false);
-  
+
   // Form reference
   const formRef = ref();
-  
+
   /**
    * Handle cancel action
    */
@@ -48,7 +48,7 @@ export function useScriptImport(projectId: string) {
       formRef.value.clearValidate();
     }
   };
-  
+
   /**
    * Handle file drop upload
    */
@@ -59,7 +59,7 @@ export function useScriptImport(projectId: string) {
       customRequest({ file });
     }
   };
-  
+
   /**
    * Custom file upload request
    */
@@ -75,14 +75,14 @@ export function useScriptImport(projectId: string) {
     maximumLimitFlag.value = false;
     emptyFlag.value = false;
   };
-  
+
   /**
    * Handle drag over event
    */
   const handleDragover = (event: DragEvent) => {
     event.preventDefault();
   };
-  
+
   /**
    * Handle paste event
    */
@@ -104,7 +104,7 @@ export function useScriptImport(projectId: string) {
       maximumLimitFlag.value = false;
     }
   };
-  
+
   /**
    * Clear content
    */
@@ -112,7 +112,7 @@ export function useScriptImport(projectId: string) {
     formState.value.content = '';
     emptyFlag.value = true;
   };
-  
+
   /**
    * Delete file
    */
@@ -120,24 +120,24 @@ export function useScriptImport(projectId: string) {
     formState.value.file = undefined;
     emptyFlag.value = true;
   };
-  
+
   /**
    * Check if file is provided
    */
   const checkFile = () => {
     emptyFlag.value = !formState.value.file && !formState.value.content;
   };
-  
+
   /**
    * Handle import submission
    */
   const handleImport = async (callback: () => void) => {
     if (!formRef.value) return;
-    
+
     try {
       await formRef.value.validate();
       checkFile();
-      
+
       if (emptyFlag.value || maximumLimitFlag.value) {
         return;
       }
@@ -161,7 +161,7 @@ export function useScriptImport(projectId: string) {
       loading.value = true;
       const [error] = await script.importScript(formData);
       loading.value = false;
-      
+
       if (error) {
         return;
       }
@@ -173,7 +173,7 @@ export function useScriptImport(projectId: string) {
       checkFile();
     }
   };
-  
+
   // Computed properties
   const fileEmptyFlag = computed(() => {
     return !formState.value.file && !formState.value.content;
@@ -182,13 +182,13 @@ export function useScriptImport(projectId: string) {
   const errorFlag = computed(() => {
     return emptyFlag.value || maximumLimitFlag.value;
   });
-  
+
   const rules = {
     name: [
       { required: true, message: t('scriptHome.import.messages.nameRequired'), trigger: 'change' }
     ]
   };
-  
+
   return {
     // Reactive data
     formState,
@@ -196,7 +196,7 @@ export function useScriptImport(projectId: string) {
     maximumLimitFlag,
     loading,
     formRef,
-    
+
     // Methods
     handleCancel,
     handleDropUpload,
@@ -207,7 +207,7 @@ export function useScriptImport(projectId: string) {
     deleteFile,
     checkFile,
     handleImport,
-    
+
     // Computed properties
     fileEmptyFlag,
     errorFlag,

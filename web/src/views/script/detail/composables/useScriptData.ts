@@ -54,7 +54,7 @@ export function useScriptData(projectInfo: Ref<{ id: string; avatar: string; nam
    */
   const loadScript = async () => {
     if (!scriptId.value) return;
-    
+
     loading.value = true;
     const [error, res] = await script.getScriptDetail(scriptId.value);
     if (error) {

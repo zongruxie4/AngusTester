@@ -5,7 +5,7 @@ import { ExecInfo } from '../types';
  * Execution record management composable
  * Handles execution record data and display
  */
-export function useExecutionRecord() {
+export function useExecRecord() {
   const dataList = ref<ExecInfo[]>([]);
 
   /**
@@ -30,7 +30,7 @@ export function useExecutionRecord() {
   return {
     // Record data
     dataList,
-    
+
     // Record methods
     handleScrollChange,
     BG_COLOR

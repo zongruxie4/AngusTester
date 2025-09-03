@@ -6,7 +6,7 @@ import { appContext } from '@xcan-angus/infra';
 
 import { useScriptData } from './composables/useScriptData';
 import { useScriptImport } from './composables/useScriptImport';
-import { PermissionKey } from './types';
+import type { PermissionKey } from './types';
 
 // Async components
 const Introduce = defineAsyncComponent(() => import('@/views/script/home/Introduce.vue'));
@@ -21,14 +21,21 @@ const route = useRoute();
 const router = useRouter();
 
 // Injected values
-const isAdmin = inject('isAdmin', ref(false));
 const userInfo = ref(appContext.getUser());
-const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({
-  id: '',
-  avatar: '',
-  name: ''
-}));
+const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
 const appInfo = inject<Ref<{ id: string; name: string; }>>('appInfo', ref({ id: '', name: '' }));
+
+const projectId = computed(() => projectInfo.value?.id);
+
+// Computed values with proper type conversion
+const userInfoForProps = computed(() => ({
+  id: String(userInfo.value?.id || '')
+}));
+
+const appInfoForProps = computed(() => ({
+  id: String(appInfo.value?.id || ''),
+  name: appInfo.value?.name || ''
+}));
 
 // Composables
 const {
@@ -44,11 +51,11 @@ const {
   loadResourcesData,
   handleTableChange,
   handleDelete
-} = useScriptData(projectInfo.value.id, isAdmin.value);
+} = useScriptData(projectId);
 
 const {
   handleImport
-} = useScriptImport(projectInfo.value.id);
+} = useScriptImport(projectId);
 
 // Modal visibility states
 const importVisible = ref(false);
@@ -71,7 +78,7 @@ const toAuth = () => {
 /**
  * Handle search panel changes
  */
-const searchPanelChange = (data: { key: string; op: string; value: boolean | string | string[]; }[]) => {
+const searchPanelChange = () => {
   const { pageNo, pageSize } = route.query;
   if (pageNo && pageSize) {
     pagination.value.current = +pageNo;
@@ -95,12 +102,19 @@ const toRefresh = () => {
   loadResourcesData();
 };
 
-// Computed projectId
-const projectId = computed(() => projectInfo.value?.id);
+// Convert permissionsMap to proper type
+const permissionsMapForProps = computed((): { [key: string]: PermissionKey[] } => {
+  const converted: { [key: string]: PermissionKey[] } = {};
+  Object.keys(permissionsMap.value).forEach(key => {
+    converted[key] = permissionsMap.value[key] as PermissionKey[];
+  });
+  return converted;
+});
 
-// Watch for project ID changes
-watch(() => projectInfo.value.id, (newId) => {
-  if (newId) {
+// Watch for project ID changes with better error handling
+watch(() => projectId, (newId, oldId) => {
+  // Only load data if we have a valid project ID and it's different from the previous one
+  if (newId && newId.value !== '' && (oldId === undefined || newId.value !== oldId.value)) {
     loadScriptList();
     loadResourcesData();
   }
@@ -119,8 +133,8 @@ watch(() => projectInfo.value.id, (newId) => {
     <SearchPanel
       v-if="projectId"
       :projectId="projectId"
-      :userInfo="userInfo"
-      :appInfo="appInfo"
+      :userInfo="userInfoForProps"
+      :appInfo="appInfoForProps"
       class="mb-3.5"
       @change="searchPanelChange"
       @auth="toAuth"
@@ -131,11 +145,11 @@ watch(() => projectInfo.value.id, (newId) => {
       :loaded="loaded"
       :resetSelectedIdsNotify="resetSelectedIdsNotify"
       :projectId="projectId"
-      :appId="appInfo?.id"
-      :userId="userInfo?.id"
+      :appId="appInfoForProps.id"
+      :userId="userInfoForProps.id"
       :pagination="pagination"
       :dataSource="tableData"
-      :permissionsMap="permissionsMap"
+      :permissionsMap="permissionsMapForProps"
       :allowImportSamplesFlag="allowImportSamplesFlag"
       @tableChange="handleTableChange"
       @delete="handleDelete"
@@ -153,6 +167,6 @@ watch(() => projectInfo.value.id, (newId) => {
     <GlobalAuthModal
       v-model:visible="globalAuthModalVisible"
       :projectId="projectId"
-      :appId="appInfo?.id" />
+      :appId="appInfoForProps.id" />
   </AsyncComponent>
 </template>
