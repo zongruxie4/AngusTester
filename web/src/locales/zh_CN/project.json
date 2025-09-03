@@ -34,6 +34,11 @@
     "configDataTag": "配置数据标签",
     "aboutProject": "关于项目",
     "projectProcess": "项目流程",
+    "noJoinedProjects": "没有添加或加入任何项目",
+    "projectNotExists": "项目不存在或未加入项目",
+    "searchProject": "查询项目",
+    "myJoinedProjects": "我参与的项目",
+    "projectNotFound": "不存在此项目",
     "addProjectStep": {
       "title": "添加项目",
       "text": "建立管理组织开发和测试活动的工作流程基本单元。为团队提供了一个集中化方式来计划、跟踪、报告和验收工作进展。"

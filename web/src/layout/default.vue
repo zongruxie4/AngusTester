@@ -21,6 +21,9 @@ import {
 import { appContext, duration, localStore } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { project } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 type ProjectInfo = {
   id: string;
@@ -70,7 +73,7 @@ const loadData = async () => {
   projectList.value = list;
   showProjectList.value = list;
   if (list.length < 1) {
-    notification.warning('没有添加或加入任何项目');
+    notification.warning(t('project.noJoinedProjects'));
     projectInfo.value = undefined;
     addProjectVisible.value = true;
     return;
@@ -84,7 +87,7 @@ const loadData = async () => {
       projectClick(targetProject);
       return;
     } else {
-      notification.error('项目不存在或未加入项目');
+      notification.error(t('project.projectNotExists'));
     }
   }
   const localTarget = list.find(item => item.id === localId);
@@ -125,7 +128,7 @@ const changeProjectInfo = async (projectId?: string, force = false) => {
 
   const [error, { data }] = await project.getProjectDetail(projectId);
   if (error) {
-    notification.warning('不存在此项目');
+    notification.warning(t('project.projectNotFound'));
     loadData();
     return;
   }
@@ -248,20 +251,20 @@ provide('getNewCurrentProject', loadData);
           class="header-menu-dropdown-content text-theme-content"
           @mouseenter="mouseenter"
           @mouseleave="mouseleave">
-          <div class="px-3.5 mb-1">
-            <div class="flex items-center mb-2.5">
-              <Input
-                placeholder="查询项目"
-                trim
-                allowClear
-                @change="dropdownInputChange" />
-              <IconRefresh
-                :loading="loading"
-                class="ml-2 text-3.5"
-                @click="loadData" />
+            <div class="px-3.5 mb-1">
+              <div class="flex items-center mb-2.5">
+                <Input
+                  :placeholder="t('project.searchProject')"
+                  trim
+                  allowClear
+                  @change="dropdownInputChange" />
+                <IconRefresh
+                  :loading="loading"
+                  class="ml-2 text-3.5"
+                  @click="loadData" />
+              </div>
+              <span class="text-theme-sub-content">{{ t('project.myJoinedProjects') }}</span>
             </div>
-            <span class="text-theme-sub-content">我参与的项目</span>
-          </div>
 
           <div style="height:248px;margin: 0 4px;overflow: auto;">
             <div

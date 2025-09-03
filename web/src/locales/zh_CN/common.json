@@ -6,6 +6,16 @@
     "creator": "添加人",
     "actions": "操作"
   },
+  "routes": {
+    "fileData": "文件数据",
+    "generateData": "生成数据",
+    "experienceExecution": "体验执行",
+    "modifyExecutionConfig": "修改执行配置",
+    "mock": "Mock",
+    "add": "添加",
+    "node": "节点",
+    "detail": "详情"
+  },
   "time": {
     "year": "年",
     "month": "月",

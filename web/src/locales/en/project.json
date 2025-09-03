@@ -33,6 +33,11 @@
     "configManagementSoftwareVersion": "Configure Version",
     "configDataTag": "Configure Tags",
     "aboutProject": "About Project",
+    "noJoinedProjects": "No projects added or joined",
+    "projectNotExists": "Project does not exist or not joined",
+    "searchProject": "Search Project",
+    "myJoinedProjects": "My Joined Projects",
+    "projectNotFound": "Project not found",
     "addProjectStep": {
       "title": "Add Project",
       "text": "Create the foundation for managing development and testing activities. Establish centralized planning, tracking, reporting, and acceptance workflows."

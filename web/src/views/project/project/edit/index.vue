@@ -65,9 +65,7 @@ const {
 /** Current active tab for edit mode */
 const activeKey = ref('basic');
 
-const Tags = defineAsyncComponent(() => import('@/views/project/tag/index.vue'));
-const Module = defineAsyncComponent(() => import('@/views/project/module/index.vue'));
-const Version = defineAsyncComponent(() => import('@/views/task/version/list/index.vue'));
+
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 
 /** Project type configuration for tips display */
@@ -677,7 +675,7 @@ onMounted(async () => {
           </Form>
         </div>
       </TabPane>
-      <TabPane key="module" :tab="t('project.projectEdit.tabs.module')">
+      <!-- <TabPane key="module" :tab="t('project.projectEdit.tabs.module')">
         <Module :projectId="props.projectId" :projectName="projectDetail.name || ''" />
       </TabPane>
       <TabPane key="version" :tab="t('project.projectEdit.tabs.version')">
@@ -688,7 +686,7 @@ onMounted(async () => {
       </TabPane>
       <TabPane key="biaoqian" :tab="t('project.projectEdit.tabs.tag')">
         <Tags :projectId="props.projectId" />
-      </TabPane>
+      </TabPane> -->
     </Tabs>
     <Cropper
       v-model:visible="uploadAvatarVisible"
