@@ -7,11 +7,6 @@ import { appContext } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import type { SearchPanelProps, SearchFilters, SearchParams, MenuItem } from './types';
 
-/**
- * Search panel component for version list
- * Provides quick search, filtering, and action buttons
- */
-
 // Component props with default values
 const props = withDefaults(defineProps<SearchPanelProps>(), {
   loading: false

@@ -9,11 +9,6 @@ import { useTableColumns } from './composables/useTableColumns';
 import type { VersionListProps } from './types';
 import SearchPanel from '@/views/project/version/SearchPanel.vue';
 
-/**
- * Version list component
- * Displays paginated version list with search, filtering, and CRUD operations
- */
-
 // Component props with default values
 const props = withDefaults(defineProps<VersionListProps>(), {
   projectId: undefined,
@@ -59,7 +54,10 @@ const { columns } = useTableColumns();
 <template>
   <div class="flex flex-col h-full overflow-auto px-5 py-5 leading-5 text-3">
     <div class="flex space-x-2">
-      <Introduce class="flex-1" :class="{'mb-2': props.showDetail, 'mb-2': !props.showDetail}" :showFunc="props.showDetail" />
+      <Introduce
+        class="flex-1"
+        :class="{'mb-2': props.showDetail, 'mb-2': !props.showDetail}"
+        :showFunc="props.showDetail" />
     </div>
 
     <div class="flex items-center space-x-2">
@@ -90,6 +88,7 @@ const { columns } = useTableColumns();
               @change="paginationChange">
               <template #bodyCell="{column, record}">
                 <template v-if="column.dataIndex === 'name'">
+                  <!--   TODO 移动目录后跳转不生效了   -->
                   <RouterLink
                     v-if="props.showDetail"
                     class="router-link"

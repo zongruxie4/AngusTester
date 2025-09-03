@@ -1,14 +1,9 @@
-/**
- * Version edit composable
- * Manages version creation and editing functionality
- */
-
 import { onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { software } from '@/api/tester';
 import type { VersionEditProps, VersionFormState } from '../types';
 
-export function useVersionEdit(props: VersionEditProps) {
+export function useVersionEdit (props: VersionEditProps) {
   const { t } = useI18n();
 
   // Reactive state

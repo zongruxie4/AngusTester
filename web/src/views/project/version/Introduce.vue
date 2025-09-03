@@ -4,11 +4,6 @@ import elementResizeDetector from 'element-resize-detector';
 import { useI18n } from 'vue-i18n';
 import type { IntroduceProps } from './types';
 
-/**
- * Version introduction component
- * Displays version management features with responsive layout
- */
-
 // Component props with default values
 const props = withDefaults(defineProps<IntroduceProps>(), {
   showFunc: true

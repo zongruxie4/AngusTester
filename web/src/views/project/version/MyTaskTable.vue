@@ -5,11 +5,6 @@ import { useI18n } from 'vue-i18n';
 import { IconTask, Table, TaskPriority, TaskStatus } from '@xcan-angus/vue-ui';
 import type { MyTaskTableProps, TaskInfo } from './types';
 
-/**
- * Task table component for version detail
- * Displays task list with navigation links and status indicators
- */
-
 // Component props with default values
 const props = withDefaults(defineProps<MyTaskTableProps>(), {
   taskList: () => ([])
@@ -32,7 +27,7 @@ const tableList = computed((): TaskInfo[] => {
 
     return {
       ...item,
-      linkUrl: '/task#task?' + http.getURLSearchParams(_params, true)
+      linkUrl: '/project#version?' + http.getURLSearchParams(_params, true)
     };
   });
 });

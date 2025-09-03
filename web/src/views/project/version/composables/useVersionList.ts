@@ -1,24 +1,19 @@
-/**
- * Version list composable
- * Manages version list data, pagination, and CRUD operations
- */
-
 import { inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { modal, notification } from '@xcan-angus/vue-ui';
 import { software } from '@/api/tester';
-import type { 
-  VersionListProps, 
-  VersionInfo, 
-  PaginationConfig, 
-  SearchParams, 
-  OrderByKey, 
+import type {
+  VersionListProps,
+  VersionInfo,
+  PaginationConfig,
+  SearchParams,
+  OrderByKey,
   OrderSortKey,
   MenuItem,
   StatusColorConfig
 } from '../types';
 
-export function useVersionList(props: VersionListProps) {
+export function useVersionList (props: VersionListProps) {
   const { t } = useI18n();
 
   // Injected dependencies
@@ -87,7 +82,7 @@ export function useVersionList(props: VersionListProps) {
    */
   const loadData = async (): Promise<void> => {
     loading.value = true;
-    
+
     const params = {
       projectId: props.projectId,
       pageNo: pagination.value.current,
@@ -127,7 +122,7 @@ export function useVersionList(props: VersionListProps) {
   const toDelete = async (data: VersionInfo): Promise<void> => {
     modal.confirm({
       content: t('version.messages.deleteConfirm', { name: data.name }),
-      async onOk() {
+      async onOk () {
         const id = data.id;
         const [error] = await software.deleteSoftwareVersion([id]);
         if (error) {
@@ -135,7 +130,7 @@ export function useVersionList(props: VersionListProps) {
         }
 
         notification.success(t('version.messages.deleteSuccess'));
-        
+
         // Adjust pagination if needed
         if (pagination.value.current > 1 && dataList.value.length === 1) {
           pagination.value.current -= 1;
@@ -172,7 +167,7 @@ export function useVersionList(props: VersionListProps) {
   const changeStatus = async (status: MenuItem, record: VersionInfo): Promise<void> => {
     modal.confirm({
       content: t('version.messages.changeStatusConfirm', { status: status.name }),
-      async onOk() {
+      async onOk () {
         const [error] = await software.updateSoftwareVersionStatus(record.id, {
           status: status.key
         });

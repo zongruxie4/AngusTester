@@ -7,11 +7,6 @@ import { useVersionDetail } from './composables/useVersionDetail';
 import type { VersionDetailProps, StatusColorConfig } from './types';
 import Chart from './Chart.vue';
 
-/**
- * Version detail component
- * Displays comprehensive version information including progress charts and task tables
- */
-
 // Component props with default values
 const props = withDefaults(defineProps<VersionDetailProps>(), {
   projectId: undefined,
@@ -47,7 +42,7 @@ const statusColorConfig: StatusColorConfig = {
       </div>
       <Tag v-if="dataSource.status?.value" :color="statusColorConfig[dataSource.status?.value]">{{ dataSource.status?.message }}</Tag>
     </div>
-
+<!-- TODO 存在未配置国际化message  -->
     <div class="flex itesm-center space-x-5 mt-2">
       <div class="inline-flex items-center space-x-1">
         <template v-if="dataSource.startDate">

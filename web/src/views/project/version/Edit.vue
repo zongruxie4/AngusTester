@@ -5,11 +5,6 @@ import { useI18n } from 'vue-i18n';
 import { useVersionEdit } from './composables/useVersionEdit';
 import type { VersionEditProps } from './types';
 
-/**
- * Version edit modal component
- * Handles version creation and editing with form validation
- */
-
 // Component props with default values
 const props = withDefaults(defineProps<VersionEditProps>(), {
   visible: false,

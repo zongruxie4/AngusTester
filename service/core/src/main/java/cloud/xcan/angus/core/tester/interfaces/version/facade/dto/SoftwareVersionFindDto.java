@@ -29,6 +29,9 @@ public class SoftwareVersionFindDto extends PageQuery {
   @Schema(description = "Version status for lifecycle filtering")
   private SoftwareVersionStatus status;
 
+  @Schema(description = "Version created by for audit filtering")
+  private Long createdBy;
+
   @Schema(description = "Version creation timestamp for timeline filtering")
   private LocalDateTime createdDate;
 

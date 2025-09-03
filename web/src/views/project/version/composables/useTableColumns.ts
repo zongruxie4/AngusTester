@@ -1,12 +1,7 @@
-/**
- * Table columns composable
- * Manages table column configurations for version list
- */
-
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-export function useTableColumns() {
+export function useTableColumns () {
   const { t } = useI18n();
 
   /**

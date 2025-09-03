@@ -2,11 +2,6 @@
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { useVersionManagement } from './composables/useVersionManagement';
 
-/**
- * Version management main component
- * Provides tab-based navigation for version list, detail, and edit views
- */
-
 // Component props interface
 interface Props {
   projectId: string;

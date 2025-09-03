@@ -3,11 +3,6 @@ import { defineExpose } from 'vue';
 import { useChart } from './composables/useChart';
 import type { ChartProps } from './types';
 
-/**
- * Version progress chart component
- * Displays completion rate and workload progress using ECharts
- */
-
 // Component props with default values
 const props = withDefaults(defineProps<ChartProps>(), {
   chart1Value: () => ({

@@ -1,14 +1,9 @@
-/**
- * Version detail composable
- * Manages version detail data loading and chart value calculations
- */
-
 import { inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { software } from '@/api/tester';
 import type { VersionDetailProps, VersionInfo, ChartValue } from '../types';
 
-export function useVersionDetail(props: VersionDetailProps) {
+export function useVersionDetail (props: VersionDetailProps) {
   const { t } = useI18n();
 
   // Reactive state

@@ -56,11 +56,11 @@ const ok = async (): Promise<void> => {
       ...formState.value
     });
     loading.value = false;
-    
+
     if (error) {
       return;
     }
-    
+
     emits('ok', formState.value.formId as string);
     emits('update:visible', false);
   });

@@ -1,8 +1,3 @@
-/**
- * Version management composable
- * Handles version routing, tab management, and navigation logic
- */
-
 import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
@@ -16,7 +11,7 @@ interface VersionManagementProps {
   appInfo: { id: string };
 }
 
-export function useVersionManagement(props: VersionManagementProps) {
+export function useVersionManagement (props: VersionManagementProps) {
   const { t } = useI18n();
   const route = useRoute();
   const router = useRouter();
@@ -131,7 +126,7 @@ export function useVersionManagement(props: VersionManagementProps) {
             projectId: props.projectId,
             name
           });
-          
+
           if (data?.list?.[0]) {
             browserTabRef.value.add(() => {
               return {
@@ -144,7 +139,7 @@ export function useVersionManagement(props: VersionManagementProps) {
           }
           return;
         }
-        
+
         // Add detail tab for specific version
         browserTabRef.value.add(() => {
           return {
@@ -169,7 +164,7 @@ export function useVersionManagement(props: VersionManagementProps) {
         });
       }
     }
-    
+
     router.replace('/project#version');
   };
 

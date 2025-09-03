@@ -1,7 +1,27 @@
-/**
- * Version module type definitions
- * Centralized type definitions for version management components
- */
+// Task information interface
+export interface TaskInfo {
+  id: string;
+  name: string;
+  code: string;
+  taskType?: {
+    value: string;
+    message: string;
+  };
+  priority?: {
+    value: string;
+    message: string;
+  };
+  status?: {
+    value: string;
+    message: string;
+  };
+  assigneeName?: string;
+  confirmorName?: string;
+  deadlineDate?: string;
+  sprintName?: string;
+  overdue?: boolean;
+  linkUrl?: string;
+}
 
 // Base version information interface
 export interface VersionInfo {
@@ -28,31 +48,6 @@ export interface VersionInfo {
   lastModifiedByName?: string;
   createdDate?: string;
   lastModifiedDate?: string;
-}
-
-// Task information interface
-export interface TaskInfo {
-    id: string;
-  name: string;
-  code: string;
-  taskType?: {
-    value: string;
-    message: string;
-  };
-  priority?: {
-    value: string;
-    message: string;
-  };
-  status?: {
-    value: string;
-    message: string;
-  };
-  assigneeName?: string;
-  confirmorName?: string;
-  deadlineDate?: string;
-  sprintName?: string;
-  overdue?: boolean;
-  linkUrl?: string;
 }
 
 // Chart data interfaces

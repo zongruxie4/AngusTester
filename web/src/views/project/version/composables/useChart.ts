@@ -1,14 +1,9 @@
-/**
- * Chart composable for version progress visualization
- * Handles ECharts configuration and data management for version progress charts
- */
-
 import { onMounted, ref, watch } from 'vue';
 import * as eCharts from 'echarts';
 import { useI18n } from 'vue-i18n';
-import type { ChartProps, ChartValue } from '../types';
+import { ChartProps, ChartValue } from '../types';
 
-export function useChart(props: ChartProps) {
+export function useChart (props: ChartProps) {
   const { t } = useI18n();
 
   // Chart DOM references

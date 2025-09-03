@@ -4,11 +4,6 @@ import { TabPane, Tabs } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import type { MyTaskProps, TaskInfo } from './types';
 
-/**
- * My task component for version detail
- * Displays tasks grouped by status with tabbed interface
- */
-
 // Component props with default values
 const props = withDefaults(defineProps<MyTaskProps>(), {
   projectId: undefined,
