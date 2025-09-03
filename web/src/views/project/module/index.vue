@@ -182,7 +182,7 @@ onMounted(() => {
         <div class="text-xs text-gray-700 ml-3">{{ t('module.aboutDescription') }}</div>
       </div>
 
-      <div class="space-y-4">
+      <div class="space-y-2">
         <div class="flex items-center space-x-2">
           <div class="w-1 h-4 bg-gradient-to-b from-purple-500 to-purple-600 rounded-full"></div>
           <span class="text-3.5 font-semibold text-gray-600">{{ t('module.addedModules') }}</span>
@@ -210,7 +210,7 @@ onMounted(() => {
 
             <!-- Modules list with search and actions -->
             <template v-else>
-              <div class="flex items-center justify-between mt-4 mb-4">
+              <div class="flex items-center justify-between mt-2 mb-2">
                 <div class="flex items-center">
                   <Input
                     v-model:value="searchValue"

@@ -22,6 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // Component emits
+// eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
   (e: 'change', value: {
     orderBy?: string;

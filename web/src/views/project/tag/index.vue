@@ -188,8 +188,7 @@ onMounted(() => {
         </div>
         <div class="text-xs text-gray-700 ml-3">{{ t('tag.aboutDescription') }}</div>
       </div>
-
-      <div class="space-y-4">
+      <div class="space-y-2">
         <div class="flex items-center space-x-2">
           <div class="w-1 h-4 bg-gradient-to-b from-purple-500 to-purple-600 rounded-full"></div>
           <span class="text-3.5 font-semibold">{{ t('tag.addedTags') }}</span>
@@ -200,7 +199,7 @@ onMounted(() => {
           class="flex flex-col min-h-96">
           <template v-if="loaded">
             <!-- Empty state when no tags exist -->
-            <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center py-12">
+            <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center py-16">
               <img src="../../../assets/images/nodata.png" class="w-32 h-32 mb-4">
               <div v-if="!props.disabled" class="flex items-center text-gray-500 text-xs">
                 <span>{{ t('tag.noTags') }}</span>
@@ -219,7 +218,7 @@ onMounted(() => {
 
             <!-- Tags list with search and actions -->
             <template v-else>
-              <div class="flex items-center justify-between mt-4 mb-4">
+              <div class="flex items-center justify-between mt-2 mb-2">
                 <div class="flex items-center">
                   <Input
                     v-model:value="searchValue"
