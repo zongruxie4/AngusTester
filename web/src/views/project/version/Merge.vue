@@ -5,22 +5,30 @@ import { Form, FormItem } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { TESTER } from '@xcan-angus/infra';
 import { software } from '@/api/tester';
+import type { VersionMergeProps, MergeFormState } from './types';
 
-interface Props {
-  visible: boolean;
-  projectId: string;
-}
+/**
+ * Version merge modal component
+ * Handles merging of two versions with validation and confirmation
+ */
 
-const props = withDefaults(defineProps<Props>(), {
+// Component props with default values
+const props = withDefaults(defineProps<VersionMergeProps>(), {
   visible: false,
   projectId: ''
 });
 
 const { t } = useI18n();
 
-const emits = defineEmits<{(e: 'cancel'):void; (e: 'ok', formId: string):void; (e: 'update:visible', value: boolean):void}>();
+// Component emits
+const emits = defineEmits<{
+  (e: 'cancel'): void;
+  (e: 'ok', formId: string): void;
+  (e: 'update:visible', value: boolean): void;
+}>();
 
-const formState = ref<{formId?: string; toId?: string}>({
+// Form state for merge operation
+const formState = ref<MergeFormState>({
   formId: undefined,
   toId: undefined
 });
@@ -28,31 +36,44 @@ const formState = ref<{formId?: string; toId?: string}>({
 const loading = ref(false);
 const formRef = ref();
 
-const cancel = () => {
+/**
+ * Handle modal cancellation
+ * Closes modal and emits cancel event
+ */
+const cancel = (): void => {
   emits('update:visible', false);
   emits('cancel');
 };
 
-const ok = async () => {
+/**
+ * Handle merge operation
+ * Validates form and performs version merge
+ */
+const ok = async (): Promise<void> => {
   formRef.value.validate().then(async () => {
     loading.value = true;
     const [error] = await software.mergeSoftwareVersion({
       ...formState.value
     });
     loading.value = false;
+    
     if (error) {
       return;
     }
+    
     emits('ok', formState.value.formId as string);
     emits('update:visible', false);
   });
 };
 
+/**
+ * Field names configuration for select components
+ * Maps API response fields to select component props
+ */
 const fieldNames = {
   value: 'id',
   label: 'name'
 };
-
 </script>
 <template>
   <Modal

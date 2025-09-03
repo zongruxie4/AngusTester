@@ -2,22 +2,30 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import elementResizeDetector from 'element-resize-detector';
 import { useI18n } from 'vue-i18n';
+import type { IntroduceProps } from './types';
 
-interface Props {
-  showFunc: boolean;
-}
+/**
+ * Version introduction component
+ * Displays version management features with responsive layout
+ */
 
-const props = withDefaults(defineProps<Props>(), {
+// Component props with default values
+const props = withDefaults(defineProps<IntroduceProps>(), {
   showFunc: true
 });
 
 const { t } = useI18n();
 
+// Element resize detector for responsive layout
 const erd = elementResizeDetector({ strategy: 'scroll' });
-const wrapperRef = ref();
+const wrapperRef = ref<HTMLElement>();
 
-const handleCol = () => {
-  const clientWidth = wrapperRef.value.clientWidth;
+/**
+ * Handle column layout changes based on container width
+ * Switches between single and multi-column layout for responsive design
+ */
+const handleCol = (): void => {
+  const clientWidth = wrapperRef.value?.clientWidth || 0;
   if (clientWidth > 800) {
     isCol2.value = false;
   } else {
@@ -25,17 +33,23 @@ const handleCol = () => {
   }
 };
 
+// Responsive layout state
 const isCol2 = ref(false);
 
+// Setup resize detection on mount
 onMounted(() => {
-  erd.listenTo(wrapperRef.value, handleCol);
-  isCol2.value = wrapperRef.value.clientWidth < 600;
+  if (wrapperRef.value) {
+    erd.listenTo(wrapperRef.value, handleCol);
+    isCol2.value = wrapperRef.value.clientWidth < 600;
+  }
 });
 
+// Cleanup resize detection on unmount
 onBeforeUnmount(() => {
-  erd.removeListener(wrapperRef.value, handleCol);
+  if (wrapperRef.value) {
+    erd.removeListener(wrapperRef.value, handleCol);
+  }
 });
-
 </script>
 <template>
   <div ref="wrapperRef" class="space-y-4">

@@ -1,24 +1,19 @@
 <script setup lang="ts">
-import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
+import { defineAsyncComponent } from 'vue';
 import { Icon, Spin } from '@xcan-angus/vue-ui';
 import { Tag } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
-import { software } from '@/api/tester';
-
-import { VersionInfo } from './types';
+import { useVersionDetail } from './composables/useVersionDetail';
+import type { VersionDetailProps, StatusColorConfig } from './types';
 import Chart from './Chart.vue';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  data: {
-    _id: string;
-    id: string | undefined;
-  }
-}
+/**
+ * Version detail component
+ * Displays comprehensive version information including progress charts and task tables
+ */
 
-const props = withDefaults(defineProps<Props>(), {
+// Component props with default values
+const props = withDefaults(defineProps<VersionDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -27,77 +22,21 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const refreshNotify = ref('');
-const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
+// Async component for task table
 const TaskTable = defineAsyncComponent(() => import('@/views/project/version/MyTask.vue'));
 
-const dataSource = ref<VersionInfo>({});
+// Use version detail composable for data management
+const { dataSource, loading, refreshNotify, chartValue } = useVersionDetail(props);
 
-const chartValue = ref({});
-
-const loading = ref(false);
-const loadVersionData = async (id: string) => {
-  if (loading.value) {
-    return;
-  }
-
-  loading.value = true;
-  const [error, res] = await software.getSoftwareVersionDetail(id);
-  loading.value = false;
-  if (error) {
-    return;
-  }
-
-  const data = res?.data as VersionInfo;
-  if (!data) {
-    return;
-  }
-
-  dataSource.value = {
-    ...data
-  };
-
-  const name = data.name;
-  if (name && typeof updateTabPane === 'function') {
-    updateTabPane({ name, _id: id + '-detail' });
-  }
-
-  const progress = data.progress || {};
-  const { completedNum = 0, completedRate = 0, completedWorkload = 0, evalWorkload = 0, totalNum = 0 } = progress;
-
-  chartValue.value = {
-    chart1Value: {
-      title: completedRate + '%',
-      value: [{ value: totalNum - completedNum }, { value: completedNum }]
-    },
-    chart2Value: {
-      title: +evalWorkload > 0 ? ((completedWorkload / evalWorkload).toFixed(2) + '%') : '0%',
-      value: [{ value: evalWorkload - completedWorkload }, { value: completedWorkload }]
-    }
-  };
-};
-
-onMounted(() => {
-  watch(() => props.data, async (newValue, oldValue) => {
-    const id = newValue?.id;
-    if (!id) {
-      return;
-    }
-
-    const oldId = oldValue?.id;
-    if (id === oldId) {
-      return;
-    }
-    await loadVersionData(id);
-  }, { immediate: true });
-});
-
-const statusColorConfig = {
+/**
+ * Status color configuration for version status tags
+ * Maps status values to Ant Design tag colors
+ */
+const statusColorConfig: StatusColorConfig = {
   ARCHIVED: 'default',
   NOT_RELEASED: 'processing',
   RELEASED: 'success'
 };
-
 </script>
 
 <template>

@@ -1,17 +1,17 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue';
 import { DatePicker, Input, Modal } from '@xcan-angus/vue-ui';
 import { Form, FormItem, Textarea } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
-import { software } from '@/api/tester';
+import { useVersionEdit } from './composables/useVersionEdit';
+import type { VersionEditProps } from './types';
 
-interface Props {
-  visible: boolean;
-  versionId?: string;
-  projectId: string;
-}
+/**
+ * Version edit modal component
+ * Handles version creation and editing with form validation
+ */
 
-const props = withDefaults(defineProps<Props>(), {
+// Component props with default values
+const props = withDefaults(defineProps<VersionEditProps>(), {
   visible: false,
   versionId: undefined,
   projectId: ''
@@ -19,109 +19,35 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const emits = defineEmits<{(e: 'cancel'):void; (e: 'ok'):void; (e: 'update:visible', value: boolean):void}>();
+// Component emits
+const emits = defineEmits<{
+  (e: 'cancel'): void;
+  (e: 'ok'): void;
+  (e: 'update:visible', value: boolean): void;
+}>();
 
-const formState = ref({
-  name: undefined,
-  startDate: undefined,
-  releaseDate: undefined,
-  description: undefined
-});
+// Use version edit composable for form management
+const { formState, loading, formRef, cancel, ok } = useVersionEdit(props);
 
-const loading = ref(false);
-const formRef = ref();
-
-const loadData = async (id: string) => {
-  if (loading.value) {
-    return;
-  }
-
-  loading.value = true;
-  const [error, res] = await software.getSoftwareVersionDetail(id);
-
-  loading.value = false;
-  if (error) {
-    return;
-  }
-
-  const data = res?.data || {};
-  if (!data) {
-    return;
-  }
-  const { name, startDate, releaseDate, description } = data;
-  formState.value = {
-    name, startDate, releaseDate, description
-  };
-};
-
-const cancel = () => {
+// Override emits in composable
+const handleCancel = () => {
   emits('update:visible', false);
   emits('cancel');
 };
 
-const ok = async () => {
-  formRef.value.validate().then(async () => {
-    if (!props.versionId) {
-      await addOk();
-    } else {
-      await editOk();
-    }
-  });
-};
-
-const addOk = async () => {
-  loading.value = true;
-  const [error] = await software.addSoftwareVersion({
-    ...formState.value,
-    projectId: props.projectId
-  });
-  loading.value = false;
-  if (error) {
-    return;
-  }
+const handleOk = async () => {
+  await ok();
   emits('ok');
   emits('update:visible', false);
 };
-
-const editOk = async () => {
-  loading.value = true;
-  const [error] = await software.updateSoftwareVersion({
-    ...formState.value,
-    id: props.versionId
-  });
-  loading.value = false;
-  if (error) {
-    return;
-  }
-  emits('ok');
-  emits('update:visible', false);
-};
-
-onMounted(async () => {
-  watch(() => props.visible, async (newValue) => {
-    if (newValue) {
-      if (props.versionId) {
-        loadData(props.versionId);
-      } else {
-        formState.value = {
-          name: undefined,
-          startDate: undefined,
-          releaseDate: undefined,
-          description: undefined
-        };
-      }
-    }
-  }, { immediate: true });
-});
-
 </script>
 <template>
   <Modal
     :title="props.versionId ? t('version.form.editVersion') : t('version.form.addVersion')"
     :visible="props.visible"
     :width="550"
-    @cancel="cancel"
-    @ok="ok">
+    @cancel="handleCancel"
+    @ok="handleOk">
     <Form
       ref="formRef"
       :model="formState"

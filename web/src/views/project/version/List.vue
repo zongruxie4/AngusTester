@@ -1,22 +1,21 @@
 <script setup lang="ts">
-import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
+import { defineAsyncComponent } from 'vue';
 import { Button, Progress, Tag } from 'ant-design-vue';
-import { AsyncComponent, Dropdown, Icon, modal, NoData, notification, Spin, Table } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Dropdown, Icon, NoData, Spin, Table } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-import { software } from '@/api/tester';
-
-import { VersionInfo } from './types';
+import { RouterLink } from 'vue-router';
+import { useVersionList } from './composables/useVersionList';
+import { useTableColumns } from './composables/useTableColumns';
+import type { VersionListProps } from './types';
 import SearchPanel from '@/views/project/version/SearchPanel.vue';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  notify: string;
-  showDetail: boolean;
-}
+/**
+ * Version list component
+ * Displays paginated version list with search, filtering, and CRUD operations
+ */
 
-const props = withDefaults(defineProps<Props>(), {
+// Component props with default values
+const props = withDefaults(defineProps<VersionListProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -26,255 +25,35 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-type OrderByKey = 'createdDate' | 'createdByName';
-type OrderSortKey = 'ASC' | 'DESC';
-
+// Async components
 const Introduce = defineAsyncComponent(() => import('@/views/project/version/Introduce.vue'));
 const Edit = defineAsyncComponent(() => import('@/views/project/version/Edit.vue'));
 const Merge = defineAsyncComponent(() => import('@/views/project/version/Merge.vue'));
 
-const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
+// Use version list composable for data management
+const {
+  loaded,
+  loading,
+  searchedFlag,
+  editVisible,
+  selectVersionId,
+  mergeVisible,
+  pagination,
+  dataList,
+  statusColorConfig,
+  refresh,
+  searchChange,
+  paginationChange,
+  toDelete,
+  editVersion,
+  toMerge,
+  changeStatus,
+  handleMergeOk,
+  getMenus
+} = useVersionList(props);
 
-const loaded = ref(false);
-const loading = ref(false);
-const searchedFlag = ref(false);
-const editVisible = ref(false);
-const selectVersionId = ref();
-const mergeVisible = ref(false);
-
-const searchPanelParams = ref({
-  orderBy: undefined,
-  orderSort: undefined,
-  filters: []
-});
-
-const pagination = ref({
-  current: 1,
-  pageSize: 10,
-  total: 0
-});
-const pageNo = ref(1);
-
-const dataList = ref<VersionInfo[]>([]);
-const permissionsMap = ref<Map<string, string[]>>(new Map());
-
-const refresh = () => {
-  pagination.value.current = 1;
-  permissionsMap.value.clear();
-  loadData();
-};
-
-const searchChange = (data) => {
-  pagination.value.current = 1;
-  searchPanelParams.value = data;
-  loadData();
-};
-
-const toDelete = async (data: VersionInfo) => {
-  modal.confirm({
-    content: t('version.messages.deleteConfirm', { name: data.name }),
-    async onOk () {
-      const id = data.id;
-      const [error] = await software.deleteSoftwareVersion([id]);
-      if (error) {
-        return;
-      }
-      notification.success(t('version.messages.deleteSuccess'));
-      if (pagination.value.current > 1 && dataList.value.length === 1) {
-        pagination.value.current -= 1;
-      }
-
-      await loadData();
-      deleteTabPane([id]);
-    }
-  });
-};
-
-const paginationChange = (page) => {
-  pagination.value.current = page.current;
-  pagination.value.pageSize = page.pageSize;
-  loadData();
-};
-
-const loadData = async () => {
-  loading.value = true;
-  const params: {
-    projectId: string;
-    pageNo: number;
-    pageSize: number;
-    orderBy?: OrderByKey;
-    orderSort?: OrderSortKey;
-    filters?: { key: string; op: string; value: string; }[];
-  } = {
-    projectId: props.projectId,
-    pageNo: pagination.value.current,
-    pageSize: pagination.value.pageSize,
-    ...searchPanelParams.value
-  };
-
-  const [error, res] = await software.getSoftwareVersionList({ ...params });
-  loaded.value = true;
-  loading.value = false;
-
-  if (params.filters?.length || params.orderBy) {
-    searchedFlag.value = true;
-  } else {
-    searchedFlag.value = false;
-  }
-
-  if (error) {
-    pagination.value.total = 0;
-    dataList.value = [];
-    return;
-  }
-
-  const data = res?.data || { total: 0, list: [] };
-  if (data) {
-    pagination.value.total = +data.total;
-    const _list = (data.list || [] as VersionInfo[]);
-    dataList.value = _list;
-  }
-};
-onMounted(() => {
-  watch(() => props.projectId, () => {
-    pageNo.value = 1;
-    loadData();
-  }, { immediate: true });
-
-  watch(() => props.notify, (newValue) => {
-    if (!newValue) {
-      return;
-    }
-
-    loadData();
-  }, { immediate: false });
-});
-
-const editVersion = (record = {}) => {
-  selectVersionId.value = record.id;
-  editVisible.value = true;
-};
-
-const toMerge = () => {
-  mergeVisible.value = true;
-};
-
-const changeStatus = async (status, record) => {
-  modal.confirm({
-    content: t('version.messages.changeStatusConfirm', { status: status.name }),
-    async onOk () {
-      const [error] = await software.updateSoftwareVersionStatus(record.id, {
-        status: status.key
-      });
-      if (error) {
-        return;
-      }
-      notification.success(t('version.messages.editSuccess'));
-      loadData();
-    }
-  });
-};
-
-const handleMergeOk = (formId: string) => {
-  if (pagination.value.current > 1 && dataList.value.length === 1) {
-    pagination.value.current -= 1;
-  }
-  deleteTabPane([formId + '-detail']);
-  loadData();
-};
-
-const columns = [
-  {
-    title: t('version.columns.version'),
-    dataIndex: 'name',
-    width: 100
-  },
-  {
-    title: t('version.columns.status'),
-    dataIndex: 'status',
-    width: 100
-  },
-  {
-    title: t('version.columns.progress'),
-    dataIndex: 'progress',
-    width: 200
-  },
-  {
-    title: t('version.columns.startDate'),
-    dataIndex: 'startDate',
-    customRender: ({ text }) => text || '--',
-    width: 150
-  },
-  {
-    title: t('version.columns.releaseDate'),
-    dataIndex: 'releaseDate',
-    customRender: ({ text }) => text || '--',
-    width: 150
-  },
-  {
-    title: t('version.columns.description'),
-    dataIndex: 'description',
-    width: 200
-  },
-  {
-    title: t('version.columns.lastModifier'),
-    dataIndex: 'lastModifiedByName',
-    groupName: 'person',
-    width: 100
-  },
-  {
-    title: t('version.columns.creator'),
-    dataIndex: 'createdByName',
-    groupName: 'person',
-    hide: true,
-    width: 100
-  },
-  {
-    title: t('version.columns.lastModifyTime'),
-    dataIndex: 'lastModifiedDate',
-    groupName: 'date',
-    width: 100
-  },
-  {
-    title: t('version.columns.createTime'),
-    dataIndex: 'createdDate',
-    groupName: 'date',
-    hide: true,
-    width: 100
-  },
-  {
-    title: t('version.columns.actions'),
-    dataIndex: 'actions',
-    width: 150
-  }
-];
-
-const statusColorConfig = {
-  ARCHIVED: 'default',
-  NOT_RELEASED: 'processing',
-  RELEASED: 'success'
-};
-
-const getMenus = (record) => {
-  return [
-    record.status?.value !== 'NOT_RELEASED' && {
-      key: 'NOT_RELEASED',
-      name: t('version.status.notReleased'),
-      icon: 'icon-baocundaoweiguidang'
-    },
-    record.status?.value !== 'RELEASED' && {
-      key: 'RELEASED',
-      name: t('version.status.released'),
-      icon: 'icon-fabu'
-    },
-    record.status?.value !== 'ARCHIVED' && {
-      key: 'ARCHIVED',
-      name: t('version.status.archived'),
-      icon: 'icon-weiguidang'
-    }
-  ].filter(Boolean);
-};
-
+// Use table columns composable for column configuration
+const { columns } = useTableColumns();
 </script>
 
 <template>
@@ -315,7 +94,7 @@ const getMenus = (record) => {
                     v-if="props.showDetail"
                     class="router-link"
                     :title="record.name"
-                    :to="`/task#version?id=${record.id}`">
+                    :to="`/project#version?id=${record.id}`">
                     {{ record.name }}
                   </RouterLink>
                 </template>

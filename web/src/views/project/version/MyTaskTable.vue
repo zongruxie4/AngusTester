@@ -2,21 +2,27 @@
 import { computed, ref } from 'vue';
 import { http } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-
 import { IconTask, Table, TaskPriority, TaskStatus } from '@xcan-angus/vue-ui';
+import type { MyTaskTableProps, TaskInfo } from './types';
 
-type Props = {
-  taskList: any[]
-}
+/**
+ * Task table component for version detail
+ * Displays task list with navigation links and status indicators
+ */
 
-const props = withDefaults(defineProps<Props>(), {
+// Component props with default values
+const props = withDefaults(defineProps<MyTaskTableProps>(), {
   taskList: () => ([])
 });
 
 const { t } = useI18n();
 
-const tableList = computed(() => {
-  return (props.taskList || []).map(item => {
+/**
+ * Compute table list with navigation URLs
+ * Adds link URLs to each task for navigation to task detail
+ */
+const tableList = computed((): TaskInfo[] => {
+  return (props.taskList || []).map((item: TaskInfo) => {
     const _params = {
       taskId: item.id,
       pageNo: 1,
@@ -33,6 +39,10 @@ const tableList = computed(() => {
 
 const loading = ref(false);
 
+/**
+ * Compute table columns configuration
+ * Defines column structure, widths, and display properties
+ */
 const columns = computed(() => {
   const _columns: {
     key: string;
@@ -95,6 +105,10 @@ const columns = computed(() => {
   return _columns;
 });
 
+/**
+ * Empty text style configuration
+ * Defines styling for empty state display
+ */
 const emptyTextStyle = {
   margin: '14px auto',
   height: 'auto'

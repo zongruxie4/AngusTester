@@ -2,57 +2,88 @@
 import { computed, defineAsyncComponent, ref } from 'vue';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
+import type { MyTaskProps, TaskInfo } from './types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  notify: string;
-  versionId: string;
-  versionInfo: any
-}
+/**
+ * My task component for version detail
+ * Displays tasks grouped by status with tabbed interface
+ */
 
-const { t } = useI18n();
-
-const props = withDefaults(defineProps<Props>(), {
+// Component props with default values
+const props = withDefaults(defineProps<MyTaskProps>(), {
   projectId: undefined,
   userInfo: undefined,
   notify: undefined,
   versionId: undefined
 });
 
+const { t } = useI18n();
+
+// Async component for task table
 const Table = defineAsyncComponent(() => import('./MyTaskTable.vue'));
 
+// Notification state for task deletion
 const deletedNotify = ref<string>();
 
-const allTasks = computed(() => {
+/**
+ * Compute all tasks from version info
+ * Flattens taskByStatus object into single array
+ */
+const allTasks = computed((): TaskInfo[] => {
   const dataSource = props.versionInfo?.taskByStatus || {};
-  return Object.keys(dataSource).reduce((pre, current) => {
-    pre.push(...dataSource[current]);
+  return Object.keys(dataSource).reduce((pre: TaskInfo[], current: string) => {
+    pre.push(...(dataSource[current] || []));
     return pre;
   }, []);
 });
 
-const currentTotal = computed(() => {
+/**
+ * Compute total count of all tasks
+ * Returns total number of tasks across all statuses
+ */
+const currentTotal = computed((): number => {
   return allTasks.value.length || 0;
 });
 
-const completedTotal = computed(() => {
+/**
+ * Compute completed tasks count
+ * Returns number of tasks with COMPLETED status
+ */
+const completedTotal = computed((): number => {
   return props.versionInfo?.taskByStatus?.COMPLETED?.length || 0;
 });
-const processingTotal = computed(() => {
+
+/**
+ * Compute processing tasks count
+ * Returns number of tasks with PROCESSING status
+ */
+const processingTotal = computed((): number => {
   return props.versionInfo?.taskByStatus?.PROCESSING?.length || 0;
 });
-const confirmingTotal = computed(() => {
+
+/**
+ * Compute confirming tasks count
+ * Returns number of tasks with CONFIRMING status
+ */
+const confirmingTotal = computed((): number => {
   return props.versionInfo?.taskByStatus?.CONFIRMING?.length || 0;
 });
-const pendingTotal = computed(() => {
+
+/**
+ * Compute pending tasks count
+ * Returns number of tasks with PENDING status
+ */
+const pendingTotal = computed((): number => {
   return props.versionInfo?.taskByStatus?.PENDING?.length || 0;
 });
 
-const cancelTotal = computed(() => {
+/**
+ * Compute canceled tasks count
+ * Returns number of tasks with CANCELED status
+ */
+const cancelTotal = computed((): number => {
   return props.versionInfo?.taskByStatus?.CANCELED?.length || 0;
 });
-
 </script>
 
 <template>

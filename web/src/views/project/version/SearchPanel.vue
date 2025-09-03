@@ -1,33 +1,45 @@
 <script lang="ts" setup>
-import { computed, inject, onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { Colon, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
 import { appContext } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
+import type { SearchPanelProps, SearchFilters, SearchParams, MenuItem } from './types';
 
-interface Props {
-  loading: boolean;
-}
+/**
+ * Search panel component for version list
+ * Provides quick search, filtering, and action buttons
+ */
 
-const props = withDefaults(defineProps<Props>(), {
+// Component props with default values
+const props = withDefaults(defineProps<SearchPanelProps>(), {
   loading: false
 });
 
 const { t } = useI18n();
 
-const emits = defineEmits<{(e: 'change', value: {
-  orderBy?: string;
-  orderSort?: 'ASC'|'DESC';
-  filters: {key: string; op: string; value: string|string[]}[];
-}):void,
- (e: 'refresh'):void;
- (e: 'toMerge'):void;(e: 'add'):void}>();
+// Component emits
+const emits = defineEmits<{
+  (e: 'change', value: SearchParams): void;
+  (e: 'refresh'): void;
+  (e: 'toMerge'): void;
+  (e: 'add'): void;
+}>();
+
+// User context
 const userInfo = ref(appContext.getUser());
 
+// Component references
 const searchPanelRef = ref();
-const selectedMenuMap = ref<{[key: string]: boolean}>({});
 
+// State management
+const selectedMenuMap = ref<{ [key: string]: boolean }>({});
+
+/**
+ * Search panel configuration options
+ * Defines available search fields and their properties
+ */
 const searchPanelOptions = [
   {
     valueKey: 'name',
@@ -49,7 +61,11 @@ const searchPanelOptions = [
   }
 ];
 
-const menuItems = computed(() => [
+/**
+ * Quick search menu items
+ * Provides predefined filter options for common searches
+ */
+const menuItems = computed((): MenuItem[] => [
   {
     key: '',
     name: t('version.searchPanel.menuItems.all')
@@ -68,16 +84,25 @@ const menuItems = computed(() => [
   }
 ]);
 
-const orderBy = ref();
-const orderSort = ref();
-const searchFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
-const quickSearchFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
-const assocFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
-const assocKeys = [];
+// Search state
+const orderBy = ref<string>();
+const orderSort = ref<'ASC' | 'DESC'>();
+const searchFilters = ref<SearchFilters[]>([]);
+const quickSearchFilters = ref<SearchFilters[]>([]);
+const assocFilters = ref<SearchFilters[]>([]);
+
+// Configuration constants
+const assocKeys: string[] = [];
 const timeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
 const statusKeys = ['NOT_RELEASED', 'RELEASED', 'ARCHIVED'];
 
-const formatDateString = (key: string) => {
+/**
+ * Format date string for time-based filters
+ * Converts time keys to date range strings
+ * @param key - Time key identifier
+ * @returns Array of start and end date strings
+ */
+const formatDateString = (key: string): [string, string] => {
   let startDate: Dayjs | undefined;
   let endDate: Dayjs | undefined;
 
@@ -96,10 +121,18 @@ const formatDateString = (key: string) => {
     endDate = dayjs();
   }
 
-  return [startDate ? startDate.format('YYYY-MM-DD HH:mm:ss') : '', endDate ? endDate.format('YYYY-MM-DD HH:mm:ss') : ''];
+  return [
+    startDate ? startDate.format('YYYY-MM-DD HH:mm:ss') : '',
+    endDate ? endDate.format('YYYY-MM-DD HH:mm:ss') : ''
+  ];
 };
 
-const getParams = () => {
+/**
+ * Get current search parameters
+ * Combines all filter types into single parameter object
+ * @returns Combined search parameters
+ */
+const getParams = (): SearchParams => {
   return {
     filters: [
       ...quickSearchFilters.value,
@@ -111,10 +144,16 @@ const getParams = () => {
   };
 };
 
-const searchChange = (data: {key: string; op: string; value: string|string[]}[]) => {
+/**
+ * Handle search panel changes
+ * Processes search filters and updates state
+ * @param data - Array of search filter objects
+ */
+const searchChange = (data: SearchFilters[]): void => {
   searchFilters.value = data.filter(item => !assocKeys.includes(item.key));
   assocFilters.value = data.filter(item => assocKeys.includes(item.key));
 
+  // Clear associated menu selections if no filters
   if (!assocFilters.value.length) {
     assocKeys.forEach(i => {
       if (i === 'createdDate') {
@@ -124,6 +163,7 @@ const searchChange = (data: {key: string; op: string; value: string|string[]}[])
       }
     });
   } else {
+    // Validate and sync menu selections with filters
     assocKeys.forEach(key => {
       if (['createdBy'].includes(key)) {
         const filterItem = assocFilters.value.find(i => i.key === key);
@@ -146,15 +186,17 @@ const searchChange = (data: {key: string; op: string; value: string|string[]}[])
   emits('change', getParams());
 };
 
-const toMerge = () => {
-  emits('toMerge');
-};
-
-const menuItemClick = (data) => {
+/**
+ * Handle menu item clicks for quick search
+ * Manages quick filter selection and search panel state
+ * @param data - Menu item data object
+ */
+const menuItemClick = (data: MenuItem): void => {
   const key = data.key;
-  // const timeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
   let searchChangeFlag = false;
+
   if (selectedMenuMap.value[key]) {
+    // Deselect item
     delete selectedMenuMap.value[key];
     if (timeKeys.includes(key) && assocKeys.includes('createdDate')) {
       searchPanelRef.value.setConfigs([
@@ -168,10 +210,11 @@ const menuItemClick = (data) => {
       searchChangeFlag = true;
     }
   } else {
+    // Select item
     if (key === '') {
       selectedMenuMap.value = { '': true };
       quickSearchFilters.value = [];
-      // 清空搜索面板
+      // Clear search panel
       if (typeof searchPanelRef.value?.clear === 'function') {
         searchPanelRef.value.clear();
         searchChangeFlag = true;
@@ -179,16 +222,18 @@ const menuItemClick = (data) => {
     } else {
       delete selectedMenuMap.value[''];
     }
+
     if (statusKeys.includes(key)) {
+      // Handle status selection (mutually exclusive)
       statusKeys.forEach(statusKey => delete selectedMenuMap.value[statusKey]);
       selectedMenuMap.value[key] = true;
     } else {
       selectedMenuMap.value[key] = true;
     }
   }
-  // const userId = userInfo.value?.id;
-  // let timeFilters: {key: string; op: string; value: string}[] = [];
-  const assocFiltersInQuick:{valueKey: string, value: string|string[]}[] = [];
+
+  // Update quick search filters
+  const assocFiltersInQuick: { valueKey: string; value: string | string[] }[] = [];
   quickSearchFilters.value = Object.keys(selectedMenuMap.value).map(key => {
     if (key === '') {
       return undefined;
@@ -199,27 +244,46 @@ const menuItemClick = (data) => {
         value: key
       };
     }
-  }).filter(Boolean);
+  }).filter(Boolean) as SearchFilters[];
+
   if (assocFiltersInQuick.length) {
     searchPanelRef.value.setConfigs([
       ...assocFiltersInQuick
     ]);
     searchChangeFlag = true;
   }
+
   if (!searchChangeFlag) {
     emits('change', getParams());
   }
 };
 
-const refresh = () => {
+/**
+ * Handle refresh action
+ * Emits refresh event to parent component
+ */
+const refresh = (): void => {
   emits('refresh');
 };
 
-const add = () => {
+/**
+ * Handle add action
+ * Emits add event to parent component
+ */
+const add = (): void => {
   emits('add');
 };
 
+/**
+ * Handle merge action
+ * Emits merge event to parent component
+ */
+const toMerge = (): void => {
+  emits('toMerge');
+};
+
 onMounted(() => {
+  // Component initialization logic if needed
 });
 </script>
 <template>
