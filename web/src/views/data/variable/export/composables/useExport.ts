@@ -90,7 +90,6 @@ export function useExport () {
         variableIds
       );
 
-      // Trigger the download      TODO 下载不成功，报401
       await download(exportUrl);
 
       // Reset configuration after successful export
