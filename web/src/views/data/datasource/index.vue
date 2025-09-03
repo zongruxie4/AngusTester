@@ -1,18 +1,8 @@
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, inject } from 'vue';
+import { computed, defineAsyncComponent, inject, ref } from 'vue';
 import { Button, Pagination } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
-import {
-  AsyncComponent,
-  GridList,
-  Icon,
-  IconRefresh,
-  Image,
-  NoData,
-  SearchPanel,
-  Spin,
-  Tooltip
-} from '@xcan-angus/vue-ui';
+import { AsyncComponent, GridList, Icon, IconRefresh, Image, NoData, SearchPanel, Spin, Tooltip } from '@xcan-angus/vue-ui';
 import { useDataSource } from './composables/useDataSource';
 
 const { t } = useI18n();

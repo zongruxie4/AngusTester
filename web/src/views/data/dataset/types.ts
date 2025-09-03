@@ -270,13 +270,17 @@ export type IPane = {
   data?: { [key: string]: any; };
 };
 
-/**
- * Table data structure for preview table
- * Each row contains an ID and dynamic key-value pairs
- */
-export type TableData = {
-  [key: string]: string;
-} & { id: string; };
+// Component props
+export type DatasetListProps = {
+  /** Project ID this dataset list belongs to */
+  projectId: string;
+  /** User information */
+  userInfo: { id: string; };
+  /** Application information */
+  appInfo: { id: string; };
+  /** Notification trigger */
+  notify: string;
+}
 
 /**
  * Data source structure for preview component

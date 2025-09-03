@@ -119,7 +119,6 @@ onMounted(() => {
     if (!route.hash.startsWith('#dataSet')) {
       return;
     }
-
     hashChange(route.hash);
   });
 });
@@ -128,18 +127,13 @@ const storageKey = computed(() => {
   if (!props.projectId) {
     return undefined;
   }
-
   return `dataSet${props.projectId}`;
 });
 
 provide('addTabPane', addTabPane);
-
 provide('getTabPane', getTabPane);
-
 provide('deleteTabPane', deleteTabPane);
-
 provide('updateTabPane', updateTabPane);
-
 provide('replaceTabPane', replaceTabPane);
 </script>
 <template>

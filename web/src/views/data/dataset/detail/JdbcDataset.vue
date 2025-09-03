@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { TabPane, Tabs } from 'ant-design-vue';
+import { Button } from 'ant-design-vue';
+import { IconRequired, Tooltip, Input, Icon, Hints, Toggle, SelectEnum } from '@xcan-angus/vue-ui';
 import { useJdbcDataset } from './composables/useJdbcDataset';
 import { DataSetItem } from '../types';
 
@@ -32,7 +35,7 @@ const emit = defineEmits<{
 
 const ButtonGroup = defineAsyncComponent(() => import('@/views/data/dataset/detail/ButtonGroup.vue'));
 const ParameterNameInput = defineAsyncComponent(() => import('@/views/data/dataset/detail/ParameterNameInput.vue'));
-const PreviewData = defineAsyncComponent(() => import('@/views/data/dataset/detail/PreviewData.vue'));
+const PreviewData = defineAsyncComponent(() => import('@/views/data/dataset/preview/index.vue'));
 const DataSetUseList = defineAsyncComponent(() => import('@/views/data/dataset/detail/UseList.vue'));
 const MatchItemPopover = defineAsyncComponent(() => import('@/views/data/dataset/detail/MatchItemPopover.vue'));
 const SelectDataSourceModal = defineAsyncComponent(() => import('@/views/data/variable/detail/jdbc/SelectDatasource.vue'));
@@ -87,7 +90,7 @@ defineExpose({
     @click="handleButtonClick" />
 
   <div class="flex items-center mb-3.5">
-    <div class="mr-2.5 flex-shrink-0">
+    <div class="mr-2.5 flex-shrink-0 font-semibold w-18 text-3 text-right">
       <IconRequired />
       <span>{{ t('dataset.detail.jdbcDataset.form.name') }}</span>
     </div>
@@ -100,7 +103,7 @@ defineExpose({
   </div>
 
   <div class="flex items-start">
-    <div class="mr-2.5 flex items-center flex-shrink-0 transform-gpu translate-y-1">
+    <div class="mr-2.5 flex items-center flex-shrink-0 transform-gpu translate-y-1 font-semibold w-18 text-3 text-right">
       <IconRequired class="invisible" />
       <span>{{ t('dataset.detail.jdbcDataset.form.description') }}</span>
     </div>
@@ -130,7 +133,7 @@ defineExpose({
       <div>
         <Hints class="mb-2.5" :text="t('dataset.detail.jdbcDataset.form.hints')" />
 
-        <Toggle :title="t('dataset.detail.jdbcDataset.form.parameterName')" class="text-3 leading-5 mb-3.5 params-container">
+        <Toggle :title="t('dataset.detail.jdbcDataset.form.parameter')" class="text-3 leading-5 mb-3.5 params-container">
           <ParameterNameInput
             ref="parametersRef"
             :columnIndex="columnIndex"
@@ -138,9 +141,11 @@ defineExpose({
             @change="handleParametersChange" />
         </Toggle>
 
+        <p/>
+
         <Toggle :title="t('dataset.detail.jdbcDataset.form.readConfig')" class="text-3 leading-5 mb-3.5">
           <div class="flex items-center justify-start mb-3.5">
-            <div class="w-19.5 flex-shrink-0">
+            <div class="w-28 flex-shrink-0 font-semibold text-3 text-right">
             </div>
             <Button
               type="link"
@@ -154,7 +159,7 @@ defineExpose({
 
           <div class="flex items-center space-x-5 mb-3.5">
             <div class="w-1/2 flex items-center">
-              <div class="w-19.5 flex-shrink-0">
+              <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataset.detail.jdbcDataset.form.databaseType') }}</span>
               </div>
@@ -167,13 +172,13 @@ defineExpose({
           </div>
 
           <div class="flex items-center mb-3.5">
-            <div class="w-19.5 flex-shrink-0">
+            <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
               <IconRequired />
-              <span>JdbcUrl</span>
+              <span>{{ t('dataset.detail.jdbcDataset.form.jdbcUrl') }}</span>
             </div>
             <Input
               v-model:value="jdbcUrl"
-              placeholder="Jdbc URL，最长2048个字符"
+              :placeholder="t('dataset.detail.jdbcDataset.form.jdbcUrlPlaceholder')"
               class="w-full-24"
               trimAll
               :maxlength="2048" />
@@ -181,7 +186,7 @@ defineExpose({
 
           <div class="flex items-center space-x-5 mb-3.5">
             <div class="w-1/2 flex items-center">
-              <div class="w-19.5 flex-shrink-0">
+              <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataset.detail.jdbcDataset.form.username') }}</span>
               </div>
@@ -194,7 +199,7 @@ defineExpose({
             </div>
 
             <div class="w-1/2 flex items-center">
-              <div class="w-16 flex-shrink-0">
+              <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataset.detail.jdbcDataset.form.password') }}</span>
               </div>
@@ -208,7 +213,7 @@ defineExpose({
           </div>
 
           <div class="flex items-start mb-3.5">
-            <div class="w-19.5 flex-shrink-0 transform-gpu translate-y-1">
+            <div class="w-28 flex-shrink-0 transform-gpu translate-y-1 font-semibold text-3 text-right mr-2.5">
               <IconRequired />
               <span>{{ t('dataset.detail.jdbcDataset.form.selectStatement') }}</span>
             </div>
@@ -224,7 +229,7 @@ defineExpose({
 
           <div class="flex items-center space-x-5 mb-3.5">
             <div class="w-1/2 flex items-center">
-              <div class="w-19.5 flex-shrink-0">
+              <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataset.detail.jdbcDataset.form.readStartRow') }}</span>
               </div>
@@ -240,7 +245,7 @@ defineExpose({
             </div>
 
             <div class="w-1/2 flex items-center">
-              <div class="w-16 flex-shrink-0">
+              <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataset.detail.jdbcDataset.form.readStartColumn') }}</span>
               </div>
@@ -261,7 +266,7 @@ defineExpose({
           <template v-if="method === 'EXACT_VALUE'">
             <div class="flex items-center space-x-5 mb-3.5">
               <div class="w-1/2 flex items-center">
-                <div class="w-19.5 flex-shrink-0">
+                <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                   <IconRequired />
                   <span>{{ t('dataset.detail.jdbcDataset.form.extractionMethod') }}</span>
                 </div>
@@ -273,7 +278,7 @@ defineExpose({
               </div>
 
               <div class="w-1/2 flex items-center">
-                <div class="w-16 flex-shrink-0">
+                <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                   <IconRequired class="invisible" />
                   <span>{{ t('dataset.detail.jdbcDataset.form.defaultValue') }}</span>
                 </div>
@@ -290,7 +295,7 @@ defineExpose({
           <template v-else>
             <div class="flex items-center space-x-5 mb-3.5">
               <div class="w-1/2 flex items-center">
-                <div class="w-19.5 flex-shrink-0">
+                <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                   <IconRequired />
                   <span>{{ t('dataset.detail.jdbcDataset.form.extractionMethod') }}</span>
                 </div>
@@ -302,7 +307,7 @@ defineExpose({
               </div>
 
               <div class="w-1/2 flex items-center">
-                <div class="w-16 flex-shrink-0">
+                <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                   <IconRequired />
                   <span>{{ t('dataset.detail.jdbcDataset.form.expression') }}</span>
                 </div>
@@ -317,7 +322,7 @@ defineExpose({
 
             <div class="flex items-center space-x-5 mb-3.5">
               <div class="w-1/2 flex items-center">
-                <div class="w-19.5 flex-shrink-0">
+                <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                   <IconRequired class="invisible" />
                   <span>{{ t('dataset.detail.jdbcDataset.form.matchItem') }}</span>
                 </div>
@@ -333,7 +338,7 @@ defineExpose({
               </div>
 
               <div class="w-1/2 flex items-center">
-                <div class="w-16 flex-shrink-0">
+                <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                   <IconRequired class="invisible" />
                   <span>{{ t('dataset.detail.jdbcDataset.form.defaultValue') }}</span>
                 </div>

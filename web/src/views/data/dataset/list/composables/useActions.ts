@@ -7,7 +7,7 @@ import { modal, notification } from '@xcan-angus/vue-ui';
  * Batch operations composable
  * Handles batch selection, deletion and other multi-item operations
  */
-export function useBatchOperations (
+export function useActions (
   tableData: Ref<DataSetItem[]>,
   pagination: Ref<{ current: number; pageSize: number; total: number; }>,
   loadData: () => Promise<void>,

@@ -58,11 +58,7 @@
       },
       "searchOptions": {
         "namePlaceholder": "查询名称、描述",
-        "createdByPlaceholder": "选择创建人",
-        "createdDatePlaceholder": [
-          "创建时间从",
-          "创建时间到"
-        ]
+        "createdByPlaceholder": "选择创建人"
       },
       "sortMenuItems": {
         "byName": "按名称",
@@ -196,7 +192,7 @@
           "descriptionPlaceholder": "数据集描述，最长200个字符",
           "extraction": "提取",
           "hints": "每次执行测试前从数据库中查询结果中提取一个值作为数据集值。",
-          "parameterName": "参数名称",
+          "parameter": "参数",
           "readConfig": "读取配置",
           "dataSource": "数据源",
           "selectDataSource": "选择数据源",
@@ -293,7 +289,7 @@
         "name": "名称",
         "readColumn": "读取列",
         "tooltip": "参数名顺序必须和文件列数据顺序一致，每个名称最长100个字符。",
-        "placeholder": "支持数字、字母和!$%^&*_-+=./，最长100个字符",
+        "placeholder": "输入参数名，最长100个字符",
         "errors": {
           "duplicate": "名称重复",
           "invalid": "名称支持数字、字母和!$%^&*_-+=./"
@@ -315,8 +311,8 @@
         "parameterInput": {
           "name": "名称",
           "value": "值",
-          "namePlaceholder": "支持数字、字母和!$%^&*_-+=./，最长100个字符",
-          "valuePlaceholder": "参数值，值可以是常量或Mock函数，最长4096个字符，值示例：123456、true、@String(5,10)",
+          "namePlaceholder": "输入参数名，最长100个字符",
+          "valuePlaceholder": "参数值，值可以是常量或Mock函数，最长4096个字符",
           "errors": {
             "duplicate": "名称重复",
             "invalid": "名称支持数字、字母和!$%^&*_-+=./"
@@ -334,11 +330,7 @@
     "searchOptions": {
       "namePlaceholder": "查询数据源名称",
       "databasePlaceholder": "选择数据库类型",
-      "lastModifiedByPlaceholder": "选择修改人",
-      "lastModifiedDatePlaceholder": [
-        "修改时间从",
-        "修改时间到"
-      ]
+      "createdByPlaceholder": "选择创建人"
     },
     "testConnection": {
       "testing": "测试中...",
@@ -739,11 +731,7 @@
         "lastWeek": "近7天",
         "searchOptions": {
           "namePlaceholder": "查询名称、描述",
-          "createdByPlaceholder": "选择创建人",
-          "createdDatePlaceholder": [
-            "创建时间从",
-            "创建时间到"
-          ]
+          "createdByPlaceholder": "选择创建人"
         },
         "sortOptions": {
           "byName": "按名称",
@@ -888,11 +876,11 @@
         "yes": "是",
         "preview": "预览",
         "use": "使用",
-        "namePlaceholder": "支持数字、字母和!$%^&*_-+=./，最长100个字符",
+        "namePlaceholder": "输入参数名，最长100个字符",
         "descriptionPlaceholder": "变量描述，最大支持200个字符",
-        "valuePlaceholder": "变量值，支持Mock函数，最大支持4096个字符。值示例：123456、true、@String(5,10)",
+        "valuePlaceholder": "变量值，支持Mock函数，最大支持4096个字符",
         "passwordHint": "如果是密码类型变量，变量值在界面上对用户不可见。",
-        "hints": "定义一个常量、Mock数据函数或包含Mock数据函数的文本作为变量值。如果变量值中包含Mock数据函数，默认每一次迭代前更新一次值，同一个迭代内采样请求变量值保持不变。"
+        "hints": "若变量值中含Mock函数，则 每次迭代前自动刷新（同一迭代内所有请求将复用该值）。"
       },
       "httpVariable": {
         "notifications": {
@@ -905,7 +893,7 @@
         "extract": "提取",
         "preview": "预览",
         "use": "使用",
-        "namePlaceholder": "支持数字、字母和!$%^&*_-+=./，最长100个字符",
+        "namePlaceholder": "输入参数名，最长100个字符",
         "descriptionPlaceholder": "变量描述，最长200个字符",
         "hints": "每次执行测试前从Http中提取一个值作为变量值，常用于获取一个用户访问令牌，避免每次手动更新。",
         "readConfig": "读取配置",
@@ -946,7 +934,9 @@
           "selectApi": "选择接口",
           "selectApiPlaceholder": "请选择接口",
           "serverConfig": "服务器配置",
+          "serverPlaceholder": "服务器地址，接口地址URL前缀",
           "serverConfigPlaceholder": "请选择服务器配置",
+          "serverVariableNotFound": "找不到该变量，请先定义变量或刷新再试",
           "formatRawContent": "格式化",
           "compressRawContent": "压缩",
           "uploadFile": "上传文件",
@@ -960,7 +950,7 @@
               "invalid": "参数名无效"
             }
           },
-          "requestBodyParamster": {
+          "requestBodyParameter": {
             "title": "请求体参数",
             "addParameter": "添加参数",
             "deleteParameter": "删除参数",
@@ -989,7 +979,7 @@
         "extract": "提取",
         "preview": "预览",
         "use": "使用",
-        "namePlaceholder": "支持数字、字母和!$%^&*_-+=./，最长100个字符",
+        "namePlaceholder": "输入参数名，最长100个字符",
         "descriptionPlaceholder": "变量描述，最长200个字符",
         "hints": "每次执行测试前从数据库中查询结果中提取一个值作为变量值。",
         "readConfig": "读取配置",
@@ -1036,7 +1026,7 @@
         "extract": "提取",
         "preview": "预览",
         "use": "使用",
-        "namePlaceholder": "支持数字、字母和!$%^&*_-+=./，最长100个字符",
+        "namePlaceholder": "输入参数名，最长100个字符",
         "descriptionPlaceholder": "变量描述，最长200个字符",
         "hints": "每次执行测试前从文件中提取一个值作为变量值。",
         "extractHint": "每次执行测试前从文件中提取一个值作为变量值。",

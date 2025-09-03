@@ -88,9 +88,8 @@ export function useParameterInput (props: { defaultValue: Option[] }, emit: (eve
   /**
    * Handle value change event
    */
-  const valueChange = (target: EventTarget | null, id: string) => {
-    const element = target as HTMLElement | null;
-    const value = element?.textContent?.trim().replace('\n', '') || '';
+  const valueChange = (event: { target: { value: string } }, id: string) => {
+    const value = event.target.value;
     dataMap.value[id].value = value;
     valueErrorSet.value.delete(id);
     emitChange();
@@ -227,6 +226,7 @@ export function useParameterInput (props: { defaultValue: Option[] }, emit: (eve
       }
     }
 
+    // Always add an empty item at the end
     addNewItem();
   };
 

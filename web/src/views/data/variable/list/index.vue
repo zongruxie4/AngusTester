@@ -5,7 +5,7 @@ import { AsyncComponent, Dropdown, Icon, IconCopy, NoData, Spin, Table } from '@
 import { useI18n } from 'vue-i18n';
 
 // Import composables
-import { useData } from './composables/useData';
+import { useVariableList } from './composables/useVariableList';
 import { useActions } from './composables/useActions';
 import { useValuePreview } from './composables/useValuePreview';
 import { useTableColumns } from './composables/useTableColumns';
@@ -32,8 +32,8 @@ const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({
 
 // Async components
 const Introduce = defineAsyncComponent(() => import('./Introduce.vue'));
-const Import = defineAsyncComponent(() => import('./Import.vue'));
-const Export = defineAsyncComponent(() => import('../export/index.vue'));
+const ImportModal = defineAsyncComponent(() => import('./Import.vue'));
+const ExportModal = defineAsyncComponent(() => import('../export/index.vue'));
 
 // Use composables
 const {
@@ -50,7 +50,7 @@ const {
   refresh,
   initializeRowSelection,
   cancelBatchDelete
-} = useData(props.projectId, props.notify);
+} = useVariableList(props.projectId, props.notify);
 
 const {
   visibilityIdSet,
@@ -343,7 +343,7 @@ onMounted(() => {
 
     <!-- Import Modal -->
     <AsyncComponent :visible="importVariableModalVisible">
-      <Import
+      <ImportModal
         v-model:visible="importVariableModalVisible"
         :projectId="props.projectId"
         @ok="handleImportSuccessEvent" />
@@ -351,12 +351,12 @@ onMounted(() => {
 
     <!-- Export Modal -->
     <AsyncComponent :visible="exportVariableModalVisible">
-      <Export
+      <ExportModal
         v-if="exportVariableId"
         :id="[exportVariableId]"
         v-model:visible="exportVariableModalVisible"
         :projectId="props.projectId" />
-      <Export
+      <ExportModal
         v-else
         v-model:visible="exportVariableModalVisible"
         :projectId="props.projectId" />

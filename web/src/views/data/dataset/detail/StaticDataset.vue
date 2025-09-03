@@ -11,7 +11,7 @@ const { t } = useI18n();
 // Define async components
 const ButtonGroup = defineAsyncComponent(() => import('@/views/data/dataset/detail/ButtonGroup.vue'));
 const ParameterInput = defineAsyncComponent(() => import('./ParameterInput.vue'));
-const PreviewData = defineAsyncComponent(() => import('@/views/data/dataset/detail/PreviewData.vue'));
+const PreviewData = defineAsyncComponent(() => import('@/views/data/dataset/preview/index.vue'));
 const DataSetUseList = defineAsyncComponent(() => import('@/views/data/dataset/detail/UseList.vue'));
 
 // Define component props
@@ -77,7 +77,7 @@ defineExpose({
     @click="handleButtonClick" />
 
   <div class="flex items-center mb-3.5">
-    <div class="flex items-center flex-shrink-0 mr-2.5">
+    <div class="flex items-center flex-shrink-0 mr-2.5 w-18 font-semibold text-right justify-end">
       <IconRequired />
       <span>{{ t('dataset.detail.staticDataset.name') }}</span>
     </div>
@@ -90,7 +90,7 @@ defineExpose({
   </div>
 
   <div class="flex items-start">
-    <div class="flex items-center flex-shrink-0 mr-2.5 transform-gpu translate-y-1">
+    <div class="flex items-center flex-shrink-0 mr-2.5 w-18 transform-gpu translate-y-1 font-semibold text-right justify-end">
       <IconRequired class="invisible" />
       <span>{{ t('dataset.detail.staticDataset.description') }}</span>
     </div>
@@ -135,6 +135,7 @@ defineExpose({
 
       <PreviewData :dataSource="previewData" />
     </TabPane>
+
 
     <TabPane v-if="dataSetId" key="use">
       <template #tab>

@@ -22,7 +22,7 @@ const DEFAULT_PAGE_SIZE = 10;
  * @param notify - Notification message for triggering refresh
  * @returns Object containing data management functions and state
  */
-export function useData (projectId: string, notify: string) {
+export function useVariableList (projectId: string, notify: string) {
   const { t } = useI18n();
 
   // Reactive state

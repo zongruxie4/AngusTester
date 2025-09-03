@@ -2,19 +2,10 @@
 <script lang="ts" setup>
 import { Checkbox } from 'ant-design-vue';
 import { Input } from '@xcan-angus/vue-ui';
-
-export interface OptionProps {
-  name: string;
-  enabled: boolean;
-  disabled: boolean;
-  id: string;
-  value: string;
-  type: 'string';
-  in: ParameterIn;
-}
+import { Parameter } from '@/views/data/variable/detail/http/types';
 
 export interface Props {
-  value: OptionProps[];
+  value: Parameter[];
 }
 
 const props = withDefaults(defineProps<Props>(), {

@@ -1154,7 +1154,7 @@
       "nameLabel": "Name",
       "nameTip": "The component name can only contain A-Z a-z 0-9 - . _ characters",
       "namePlaceholder": "Please enter the scheme name",
-      "typeLabel": "Authentication Type",
+      "typeLabel": "Type",
       "usernameLabel": "Username",
       "usernamePlaceholder": "Please enter the username",
       "passwordLabel": "Password",
@@ -1433,7 +1433,7 @@
       }
     },
     "apiAuthorization": {
-      "title": "Authentication Type",
+      "title": "Type",
       "types": {
         "noAuth": "No Authentication",
         "basicAuth": "Basic Auth",

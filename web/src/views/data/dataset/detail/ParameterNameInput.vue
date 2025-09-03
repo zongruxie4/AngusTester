@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
+import { IconRequired, Tooltip, Input, Icon, IconCopy } from '@xcan-angus/vue-ui';
+
 import { useParameterNameInput } from './composables/useParameterNameInput';
 
 const { t } = useI18n();
@@ -57,14 +59,14 @@ defineExpose({
 <template>
   <div>
     <div class="flex items-center space-x-2 mb-1 pr-9">
-      <div class="w-1/2 flex items-center">
+      <div class="w-1/2 flex items-center text-3">
         <IconRequired />
         <span>{{ t('dataset.detail.parameterNameInput.name') }}</span>
         <Tooltip :title="t('dataset.detail.parameterNameInput.tooltip')">
           <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5 cursor-pointer" />
         </Tooltip>
       </div>
-      <div class="flex items-center">
+      <div class="flex items-center text-3">
         <IconRequired />
         <span>{{ t('dataset.detail.parameterNameInput.readColumn') }}</span>
       </div>

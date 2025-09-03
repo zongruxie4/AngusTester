@@ -31,7 +31,7 @@ const emit = defineEmits<{
   (e: 'update:errorNum', value: number): void;
 }>();
 
-const RequestBodyParamster = defineAsyncComponent(() => import('./RequestBodyParamster/index.vue'));
+const requestBodyParameter = defineAsyncComponent(() => import('./requestBodyParameter/index.vue'));
 
 const ENCODED_TYPE = 'application/x-www-form-urlencoded';
 const STREAM_TYPE = 'application/octet-stream';
@@ -425,7 +425,7 @@ const language = computed(() => {
         </Button>
       </template>
     </div>
-    <RequestBodyParamster
+    <requestBodyParameter
       v-if="showEncodeedForm"
       key="encoded"
       ref="urlencodeFormRef"
@@ -435,7 +435,7 @@ const language = computed(() => {
       @add="addEncodeedList"
       @del="delEncodeedList"
       @errorNumChange="errorNumChange" />
-    <RequestBodyParamster
+    <requestBodyParameter
       v-else-if="showFormDataForm"
       ref="formDataFormRef"
       key="formData"

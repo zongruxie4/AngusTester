@@ -1,13 +1,3 @@
-/**
- * Composable for managing variable actions
- *
- * <p>This composable handles all variable-related actions including:</p>
- * <p>- Navigation to different variable creation modes</p>
- * <p>- Variable editing, deletion, and cloning</p>
- * <p>- Import and export operations</p>
- * <p>- Batch delete operations</p>
- */
-
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { modal, notification } from '@xcan-angus/vue-ui';
@@ -24,7 +14,7 @@ const MAX_BATCH_DELETE_NUM = 200;
 /**
  * Composable function for managing variable actions
  *
- * @param projectId - Project identifier
+ * @param _projectId - Project identifier
  * @param deleteTabPane - Function to delete tab panes
  * @param loadData - Function to reload data
  * @param pagination - Pagination state
@@ -34,7 +24,7 @@ const MAX_BATCH_DELETE_NUM = 200;
  * @returns Object containing action functions and state
  */
 export function useActions (
-  projectId: string,
+  _projectId: string,
   deleteTabPane: (keys: string[]) => void,
   loadData: () => void,
   pagination: { current: number; pageSize: number; total: number },

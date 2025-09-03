@@ -154,12 +154,10 @@ onMounted(() => {
     if (!id) {
       return;
     }
-
     const oldId = oldValue?.id;
     if (id === oldId) {
       return;
     }
-
     loadData(id);
   }, { immediate: true });
 });
@@ -179,16 +177,12 @@ const source = computed(() => {
         if (!extraction) {
           return 'STATIC';
         }
-
         return extraction.source;
       }
-
       return undefined;
     }
-
     return undefined;
   }
-
   return source;
 });
 </script>

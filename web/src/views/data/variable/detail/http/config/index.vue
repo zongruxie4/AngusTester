@@ -2,11 +2,11 @@
 import { computed, defineAsyncComponent, onMounted, ref, watch, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Badge, TabPane, Tabs } from 'ant-design-vue';
-import { Composite, HttpMethodText, Input, ExecAuthencation, ApiUtils as angusUtils } from '@xcan-angus/vue-ui';
-import { utils, HttpMethod, ParameterIn } from '@xcan-angus/infra';
+import { ApiUtils as angusUtils, Composite, ExecAuthencation, HttpMethodText, Input } from '@xcan-angus/vue-ui';
+import { HttpMethod, ParameterIn, utils } from '@xcan-angus/infra';
 
 import SelectEnum from '@/components/selectEnum/index.vue';
-import { HttpServer, RequestConfigs } from './types';
+import { OASServer, RequestConfigs } from '@/views/data/variable/detail/http/types';
 
 const { t } = useI18n();
 
@@ -50,6 +50,7 @@ const NO_BINARY_TYPES = [
   'text/plain',
   '*/*'
 ];
+
 const STREAM_TYPE = 'application/octet-stream';
 const ENCODED_TYPE = 'application/x-www-form-urlencoded';
 
@@ -81,8 +82,8 @@ const cookieErrorNum = ref(0);
 const bodyErrorNum = ref(0);
 
 const endpoint = ref<string>();
-const httpMethod = ref<HttpMethod>('GET');
-const server = ref<HttpServer>({ url: '', id: utils.uuid() });
+const httpMethod = ref<HttpMethod>(HttpMethod.GET);
+const server = ref<OASServer>({ url: '', id: utils.uuid() });
 const serverValue = ref<string>('');
 
 const handleServerBlur = () => {
@@ -105,7 +106,7 @@ const urlBlur = (event: { target: { value: string } }) => {
         tempList.push({
           name,
           value,
-          in: 'query',
+          in: ParameterIn.query,
           type: 'string',
           enabled: true,
           id: utils.uuid(),
@@ -115,7 +116,7 @@ const urlBlur = (event: { target: { value: string } }) => {
         queryPathParams.value.push({
           name,
           value,
-          in: 'query',
+          in: ParameterIn.query,
           type: 'string',
           enabled: true,
           id: utils.uuid(),
@@ -201,7 +202,7 @@ const authenticationToHeader = (data: {
   return result;
 };
 
-const chanegAuthentication = async (data: any) => {
+const changeAuthentication = async (data: any) => {
   authentication.value = data;
   authInHeader.value = authenticationToHeader(data);
 };
@@ -231,7 +232,6 @@ const pathChange = (pathList) => {
       serverValue.value = '/';
     }
   }
-
   serverValue.value = angusUtils.getUriByParams(serverValue.value, pathList);
 };
 
@@ -262,7 +262,7 @@ const reset = () => {
   server.value = { url: '', id: utils.uuid() };
   endpoint.value = undefined;
   serverValue.value = '';
-  httpMethod.value = 'GET';
+  httpMethod.value = HttpMethod.GET;
   queryPathErrorNum.value = 0;
   headerErrorNum.value = 0;
   cookieErrorNum.value = 0;
@@ -337,7 +337,7 @@ const initializedData = async () => {
         queryPathParams.value.splice(-1, 0, {
           name,
           type: 'string',
-          in: 'path',
+          in: ParameterIn.path,
           enabled: true,
           value: '',
           disabled: false,
@@ -415,7 +415,6 @@ const hasRequestBody = computed(() => {
   if (contentType.value) {
     return true;
   }
-
   return false;
 });
 
@@ -444,7 +443,7 @@ const pureHeaderParams = computed(() => {
       enabled: true,
       disabled: true,
       id: utils.uuid(),
-      in: 'header',
+      in: ParameterIn.header,
       type: 'string'
     });
   }
@@ -535,7 +534,7 @@ const getData = (): RequestConfigs => {
       name: 'Content-Type',
       value: contentType.value,
       enabled: true,
-      in: 'header',
+      in: ParameterIn.header,
       type: 'string'
     });
   }
@@ -577,7 +576,7 @@ defineExpose({
         v-model:value="httpMethod"
         class="w-25"
         enumKey="HttpMethod"
-        placeholder="请求方法">
+        :placeholder="t('dataVariable.detail.httpVariable.httpConfigs.requestMethodPlaceholder')">
         <template #option="record">
           <HttpMethodText :value="record.value" />
         </template>
@@ -593,7 +592,7 @@ defineExpose({
         :allowClear="false"
         style="flex:1 1 40%"
         class="input-container"
-        placeholder="t('dataVariable.detail.httpVariable.httpConfigs.requestUrlPlaceholder')"
+        :placeholder="t('dataVariable.detail.httpVariable.httpConfigs.requestUrlPlaceholder')"
         size="default"
         @change="urlChange"
         @blur="urlBlur" />
@@ -682,7 +681,7 @@ defineExpose({
         <ExecAuthencation
           :defaultValue="defaultAuthentication"
           class="mt-2.5"
-          @change="chanegAuthentication" />
+          @change="changeAuthentication" />
       </TabPane>
       <TabPane key="body">
         <template #tab>

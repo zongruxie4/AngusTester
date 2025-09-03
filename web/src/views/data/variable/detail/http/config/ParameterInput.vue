@@ -4,24 +4,15 @@ import { onMounted, ref, watch, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Checkbox } from 'ant-design-vue';
 import { Icon, Input, Select } from '@xcan-angus/vue-ui';
-import { utils, duration } from '@xcan-angus/infra';
+import { utils, duration, ParameterIn } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
+import { Parameter } from '@/views/data/variable/detail/http/types';
 
 const { t } = useI18n();
 
-export interface OptionProps {
-  name: string;
-  enabled: boolean;
-  disabled: boolean;
-  id: string;
-  value: string;
-  type: 'string';
-  in: ParameterIn;
-}
-
 export interface Props {
-  defaultValue: OptionProps[];
-  value: OptionProps[];
+  defaultValue: Parameter[];
+  value: Parameter[];
   errorNum:number;
   defaultIn?: ParameterIn;
   showInType?: boolean;
@@ -32,18 +23,18 @@ const props = withDefaults(defineProps<Props>(), {
   value: undefined,
   errorNum: 0,
   showInType: false,
-  defaultIn: 'query'
+  defaultIn: ParameterIn.query
 });
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
-  (e: 'change', value: OptionProps[]): void;
-  (e: 'changePath', value: OptionProps[]): void;
+  (e: 'change', value: Parameter[]): void;
+  (e: 'changePath', value: Parameter[]): void;
   (e: 'update:errorNum', value: number): void;
 }>();
 
 const idList = ref<string[]>([]);
-const dataMap = ref<{[key:string]:OptionProps}>({});
+const dataMap = ref<{[key:string]:Parameter}>({});
 const nameErrorSet = ref<Set<string>>(new Set());
 const checkedSet = ref<Set<string>>(new Set());
 
@@ -88,7 +79,7 @@ const emitChange = () => {
 
 const addNewItem = () => {
   const id = utils.uuid();
-  const data:OptionProps = {
+  const data:Parameter = {
     id,
     name: '',
     value: '',
@@ -120,7 +111,7 @@ const deleteHandler = (id:string, index: number): void => {
 };
 
 const changeInType = () => {
-  const dataList:OptionProps[] = [];
+  const dataList:Parameter[] = [];
   const ids = idList.value;
   for (let i = 0, len = ids.length; i < len; i++) {
     const { in: _in, enabled, name } = dataMap.value[ids[i]];
@@ -170,7 +161,7 @@ const isValid = (): boolean => {
 const getData = () => {
   const ids = idList.value;
   const _dataMap = dataMap.value;
-  const dataList:OptionProps[] = [];
+  const dataList:Parameter[] = [];
   // 最后一条是空数据
   for (let i = 0, len = ids.length - 1; i < len; i++) {
     dataList.push({ ..._dataMap[ids[i]] });
@@ -178,7 +169,7 @@ const getData = () => {
   return dataList;
 };
 
-const setData = (data:OptionProps[], resetFlag:boolean) => {
+const setData = (data:Parameter[], resetFlag:boolean) => {
   if (resetFlag) {
     reset();
   }

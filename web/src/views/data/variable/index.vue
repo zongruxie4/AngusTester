@@ -123,7 +123,6 @@ onMounted(() => {
     if (!route.hash.startsWith('#variables')) {
       return;
     }
-
     hashChange(route.hash);
   });
 });
@@ -136,13 +135,9 @@ const storageKey = computed(() => {
 });
 
 provide('addTabPane', addTabPane);
-
 provide('getTabPane', getTabPane);
-
 provide('deleteTabPane', deleteTabPane);
-
 provide('updateTabPane', updateTabPane);
-
 provide('replaceTabPane', replaceTabPane);
 </script>
 

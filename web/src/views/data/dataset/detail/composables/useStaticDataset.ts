@@ -182,7 +182,7 @@ export function useStaticDataset (
     dataSetName.value = data.name;
     description.value = data.description;
     parameters.value = data.parameters || [];
-    defaultParameters.value = cloneDeep(data.parameters);
+    defaultParameters.value = cloneDeep(data.parameters) || [];
   };
 
   /**

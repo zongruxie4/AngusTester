@@ -1,8 +1,12 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
+import { Button } from 'ant-design-vue';
+import { IconRequired, Tooltip, Input, Icon, FunctionsButton, IconCopy } from '@xcan-angus/vue-ui';
 import { useParameterInput } from './composables/useParameterInput';
 
 const { t } = useI18n();
+
+
 
 export interface Option {
   name: string;
@@ -99,22 +103,14 @@ defineExpose({
               </Input>
             </Tooltip>
           </div>
-          <ParamInput
-            :value="dataMap[item].value"
-            :maxlength="4096"
-            :error="valueErrorSet.has(item)"
-            class="flex-1"
-            trim
-            :placeholder="t('dataset.detail.staticDataset.parameterInput.valuePlaceholder')"
-            @blur="valueChange($event, item)" />
-          <!-- <Input
+          <Input
             v-model:value="dataMap[item].value"
             :maxlength="4096"
             :error="valueErrorSet.has(item)"
             class="flex-1"
             trim
-            placeholder="参数值，值可以是常量或Mock函数，最长4096个字符，值示例：123456、true、@String(5,10)"
-            @change="valueChange(item)" /> -->
+            :placeholder="t('dataset.detail.staticDataset.parameterInput.valuePlaceholder')"
+            @change="valueChange($event, item)" />
         </div>
         <Button
           class="w-7 p-0"

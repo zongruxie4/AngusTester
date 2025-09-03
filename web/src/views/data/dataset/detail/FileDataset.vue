@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { TabPane, Tabs } from 'ant-design-vue';
+import { IconRequired, Tooltip, Input, Icon, Hints, Toggle, SelectInput } from '@xcan-angus/vue-ui';
 import { useFileDataset } from './composables/useFileDataset';
 import { DataSetItem } from '../types';
 
@@ -32,7 +34,7 @@ const emit = defineEmits<{
 
 const ButtonGroup = defineAsyncComponent(() => import('@/views/data/dataset/detail/ButtonGroup.vue'));
 const ParameterNameInput = defineAsyncComponent(() => import('@/views/data/dataset/detail/ParameterNameInput.vue'));
-const PreviewData = defineAsyncComponent(() => import('@/views/data/dataset/detail/PreviewData.vue'));
+const PreviewData = defineAsyncComponent(() => import('@/views/data/dataset/preview/index.vue'));
 const DataSetUseList = defineAsyncComponent(() => import('@/views/data/dataset/detail/UseList.vue'));
 const MatchItemPopover = defineAsyncComponent(() => import('@/views/data/dataset/detail/MatchItemPopover.vue'));
 const SelectEnum = defineAsyncComponent(() => import('@/components/selectEnum/index.vue'));
@@ -117,7 +119,7 @@ const inputProps = {
     @click="handleButtonClick" />
 
   <div class="flex items-center mb-3.5">
-    <div class="mr-2.5 flex-shrink-0">
+    <div class="mr-2.5 flex-shrink-0 font-semibold w-18 text-3 text-right">
       <IconRequired />
       <span>{{ t('dataset.detail.fileDataset.form.name') }}</span>
     </div>
@@ -130,7 +132,7 @@ const inputProps = {
   </div>
 
   <div class="flex items-start">
-    <div class="mr-2.5 flex items-center flex-shrink-0 transform-gpu translate-y-1">
+    <div class="mr-2.5 flex items-center flex-shrink-0 transform-gpu translate-y-1 font-semibold w-18 text-3 text-right">
       <IconRequired class="invisible" />
       <span>{{ t('dataset.detail.fileDataset.form.description') }}</span>
     </div>
@@ -168,9 +170,11 @@ const inputProps = {
             @change="handleParametersChange" />
         </Toggle>
 
+        <p/>
+
         <Toggle :title="t('dataset.detail.fileDataset.form.readConfig')" class="text-3 leading-5 mb-3.5">
           <div class="flex items-center mb-3.5">
-            <div class="w-16 flex-shrink-0">
+            <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
               <IconRequired />
               <span>{{ t('dataset.detail.fileDataset.form.filePath') }}</span>
             </div>
@@ -184,7 +188,7 @@ const inputProps = {
 
           <div class="flex items-center space-x-5 mb-3.5">
             <div class="w-1/2 flex items-center">
-              <div class="w-16 flex-shrink-0">
+              <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataset.detail.fileDataset.form.fileType') }}</span>
               </div>
@@ -195,7 +199,7 @@ const inputProps = {
             </div>
 
             <div class="w-1/2 flex items-center">
-              <div class="w-16 flex-shrink-0">
+              <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataset.detail.fileDataset.form.fileEncoding') }}</span>
               </div>
@@ -209,7 +213,7 @@ const inputProps = {
 
           <div class="flex items-center space-x-5 mb-3.5">
             <div class="w-1/2 flex items-center">
-              <div class="w-16 flex-shrink-0">
+              <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataset.detail.fileDataset.form.readStartRow') }}</span>
               </div>
@@ -225,7 +229,7 @@ const inputProps = {
             </div>
 
             <div class="w-1/2 flex items-center">
-              <div class="w-16 flex-shrink-0">
+              <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataset.detail.fileDataset.form.readStartColumn') }}</span>
               </div>
@@ -243,7 +247,7 @@ const inputProps = {
 
           <div class="flex items-center space-x-5 mb-3.5">
             <div class="w-1/2 flex items-center">
-              <div class="w-16 flex-shrink-0">
+              <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataset.detail.fileDataset.form.separator') }}</span>
               </div>
@@ -257,7 +261,7 @@ const inputProps = {
             </div>
 
             <div class="w-1/2 flex items-center">
-              <div class="w-16 flex-shrink-0">
+              <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataset.detail.fileDataset.form.escapeChar') }}</span>
               </div>
@@ -273,7 +277,7 @@ const inputProps = {
 
           <div class="flex items-center space-x-5 mb-3.5">
             <div class="w-1/2 flex items-center">
-              <div class="w-16 flex-shrink-0">
+              <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataset.detail.fileDataset.form.quoteChar') }}</span>
               </div>
@@ -292,7 +296,7 @@ const inputProps = {
           <template v-if="method === 'EXACT_VALUE'">
             <div class="flex items-center space-x-5 mb-3.5">
               <div class="w-1/2 flex items-center">
-                <div class="w-16 flex-shrink-0">
+                <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                   <IconRequired />
                   <span>{{ t('dataset.detail.fileDataset.form.extractionMethod') }}</span>
                 </div>
@@ -304,7 +308,7 @@ const inputProps = {
               </div>
 
               <div class="w-1/2 flex items-center">
-                <div class="w-16 flex-shrink-0">
+                <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                   <IconRequired class="invisible" />
                   <span>{{ t('dataset.detail.fileDataset.form.defaultValue') }}</span>
                 </div>
@@ -321,7 +325,7 @@ const inputProps = {
           <template v-else>
             <div class="flex items-center space-x-5 mb-3.5">
               <div class="w-1/2 flex items-center">
-                <div class="w-16 flex-shrink-0">
+                <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                   <IconRequired />
                   <span>{{ t('dataset.detail.fileDataset.form.extractionMethod') }}</span>
                 </div>
@@ -333,7 +337,7 @@ const inputProps = {
               </div>
 
               <div class="w-1/2 flex items-center">
-                <div class="w-16 flex-shrink-0">
+                <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                   <IconRequired />
                   <span>{{ t('dataset.detail.fileDataset.form.expression') }}</span>
                 </div>
@@ -347,7 +351,7 @@ const inputProps = {
 
             <div class="flex items-center space-x-5 mb-3.5">
               <div class="w-1/2 flex items-center">
-                <div class="w-16 flex-shrink-0">
+                <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                   <IconRequired class="invisible" />
                   <span>{{ t('dataset.detail.fileDataset.form.matchItem') }}</span>
                 </div>
@@ -363,7 +367,7 @@ const inputProps = {
               </div>
 
               <div class="w-1/2 flex items-center">
-                <div class="w-16 flex-shrink-0">
+                <div class="w-28 flex-shrink-0 font-semibold text-3 text-right mr-2.5">
                   <IconRequired class="invisible" />
                   <span>{{ t('dataset.detail.fileDataset.form.defaultValue') }}</span>
                 </div>

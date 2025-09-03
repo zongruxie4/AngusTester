@@ -8,7 +8,7 @@ export * from './useDatasetList';
 export * from './useTableColumns';
 
 // Batch operations handling
-export * from './useBatchOperations';
+export * from './useActions';
 
 // Modal management
 export * from './useModals';

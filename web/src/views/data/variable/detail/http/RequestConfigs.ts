@@ -1,7 +1,7 @@
 import { uniq } from 'lodash-es';
 import qs from 'qs';
 import { ApiUtils as angusUtils } from '@xcan-angus/vue-ui';
-import { Authentication, AvailableServer, RequestBody, RequestConfig } from './types';
+import { Authentication, OASServer, RequestBody, RequestConfig } from './types';
 import { variable } from '@/api/tester';
 
 export const password = [
@@ -13,6 +13,7 @@ export const password = [
   'password',
   'scopes'
 ];
+
 export const clientCredentials = [
   'tokenUrl',
   'refreshUrl',
@@ -340,8 +341,8 @@ export const requestConfigs = async (data) => {
 
   let url = '';
   let server: RequestConfig['server'] = { url: '', variables: {} };
-  let availableServer: AvailableServer;
-  const _servers:AvailableServer[] = availableServers;
+  let availableServer: OASServer;
+  const _servers:OASServer[] = availableServers;
   if (_servers?.length) {
     availableServer = _servers.find(item => item['x-xc-serverSource'] === 'CURRENT_REQUEST') || _servers[0];
   }

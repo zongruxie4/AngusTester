@@ -8,7 +8,7 @@ import pretty from 'pretty';
 import jsBeautify from 'js-beautify';
 
 import { useI18n } from 'vue-i18n';
-import { ContentType, RequestBody } from '@/views/data/variable/detail/http/config/types';
+import { RequestBody, ContentType } from '@/views/data/variable/detail/http/types';
 
 const { t } = useI18n();
 
@@ -32,7 +32,7 @@ const emit = defineEmits<{
   (e: 'update:errorNum', value: number): void;
 }>();
 
-const RequestBodyParamster = defineAsyncComponent(() => import('./RequestBodyParameter.vue'));
+const requestBodyParameter = defineAsyncComponent(() => import('./RequestBodyParameter.vue'));
 
 const ENCODED_TYPE = 'application/x-www-form-urlencoded';
 const STREAM_TYPE = 'application/octet-stream';
@@ -426,7 +426,7 @@ const language = computed(() => {
         </Button>
       </template>
     </div>
-    <RequestBodyParamster
+    <requestBodyParameter
       v-if="showEncodeedForm"
       key="encoded"
       ref="urlencodeFormRef"
@@ -436,7 +436,7 @@ const language = computed(() => {
       @add="addEncodeedList"
       @del="delEncodeedList"
       @errorNumChange="errorNumChange" />
-    <RequestBodyParamster
+    <requestBodyParameter
       v-else-if="showFormDataForm"
       ref="formDataFormRef"
       key="formData"

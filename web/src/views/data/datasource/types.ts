@@ -1,47 +1,6 @@
 import { DatabaseType } from '@xcan-angus/infra';
 
 /**
- * <p>Filter operation types for search functionality</p>
- * <p>Defines all possible comparison operations for filtering data</p>
- */
-export type FilterOp =
-  | 'EQUAL'
-  | 'NOT_EQUAL'
-  | 'GREATER_THAN'
-  | 'GREATER_THAN_EQUAL'
-  | 'LESS_THAN'
-  | 'LESS_THAN_EQUAL'
-  | 'CONTAIN'
-  | 'NOT_CONTAIN'
-  | 'MATCH_END'
-  | 'MATCH'
-  | 'IN'
-  | 'NOT_IN';
-
-/**
- * <p>Filter configuration for search operations</p>
- * <p>Defines the structure of individual filter criteria</p>
- */
-export interface Filter {
-  key: string;
-  value: string | boolean | string[];
-  op: FilterOp;
-}
-
-/**
- * <p>Search parameters for data source queries</p>
- * <p>Contains pagination, filtering, and sorting information</p>
- */
-export interface SearchParams {
-  pageNo: number;
-  pageSize: number;
-  filters?: Filter[];
-  orderBy?: string;
-  orderSort?: 'ASC' | 'DESC';
-  [key: string]: any;
-}
-
-/**
  * <p>Data source form state for create/edit operations</p>
  * <p>Contains all form fields for data source configuration</p>
  */
@@ -97,7 +56,7 @@ export interface EnhancedDataSourceItem extends DataSourceItem {
 export interface SearchOption {
   valueKey: string;
   type: string;
-  placeholder: string;
+  placeholder?: string;
   allowClear?: boolean;
   maxlength?: number;
   enumKey?: any;
@@ -156,9 +115,3 @@ export interface DatabaseConfig {
   driverClassName: string;
   jdbcUrl: string;
 }
-
-/**
- * <p>Database configuration mapping</p>
- * <p>Maps database types to their default configurations</p>
- */
-export type DatabaseConfigMap = Record<DatabaseType, DatabaseConfig>;

@@ -10,27 +10,18 @@ import SearchPanel from '@/views/data/dataset/list/SearchPanel.vue';
 // Import composables
 import { useDatasetList } from './composables/useDatasetList';
 import { useTableColumns } from './composables/useTableColumns';
-import { useBatchOperations } from './composables/useBatchOperations';
+import { useActions } from './composables/useActions';
 import { useModals } from './composables/useModals';
 import { useNavigation } from './composables/useNavigation';
 import { useDropdownMenus } from './composables/useDropdownMenus';
 
+// Import types
+import type { DatasetListProps } from '../types';
+
 // Internationalization
 const { t } = useI18n();
 
-// Component props
-interface Props {
-  /** Project ID this dataset list belongs to */
-  projectId: string;
-  /** User information */
-  userInfo: { id: string; };
-  /** Application information */
-  appInfo: { id: string; };
-  /** Notification trigger */
-  notify: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<DatasetListProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -42,9 +33,9 @@ const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({
 
 // Async components
 const Introduce = defineAsyncComponent(() => import('@/views/data/dataset/list/Introduce.vue'));
-const ImportDataSetModal = defineAsyncComponent(() => import('@/views/data/dataset/list/Import.vue'));
-const ExportDataSetModal = defineAsyncComponent(() => import('@/views/data/dataset/export/index.vue'));
-const PreviewDataSetModal = defineAsyncComponent(() => import('@/views/data/dataset/list/PreviewData.vue'));
+const ImportModal = defineAsyncComponent(() => import('@/views/data/dataset/list/Import.vue'));
+const ExportModal = defineAsyncComponent(() => import('@/views/data/dataset/export/index.vue'));
+const PreviewModal = defineAsyncComponent(() => import('@/views/data/dataset/list/PreviewData.vue'));
 
 // Composables usage
 const {
@@ -69,7 +60,7 @@ const {
   initBatchDelete,
   cancelBatchDelete,
   executeBatchDelete
-} = useBatchOperations(tableData, pagination, loadData, deleteTabPane, t);
+} = useActions(tableData, pagination, loadData, deleteTabPane, t);
 
 const {
   previewDataSetModalVisible,
@@ -176,12 +167,16 @@ const tableDropdownClick = (menuItem: { key: 'preview' | 'export' | 'clone' }, d
       style="height: calc(100% - 41px);"
       class="flex flex-col">
       <template v-if="loaded">
-        <div v-if="!searchedFlag && tableData.length === 0" class="flex-1 flex flex-col items-center justify-center">
+        <div
+          v-if="!searchedFlag && tableData.length === 0"
+          class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../assets/images/nodata.png" :alt="t('dataset.list.noDataImageAlt')">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-7">
             <span>{{ t('dataset.list.noDataText') }}</span>
 
-            <Dropdown :menuItems="buttonDropdownMenuItems" @click="handleCreationDropdownClick">
+            <Dropdown
+              :menuItems="buttonDropdownMenuItems"
+              @click="handleCreationDropdownClick">
               <Button
                 type="link"
                 size="small"
@@ -276,21 +271,21 @@ const tableDropdownClick = (menuItem: { key: 'preview' | 'export' | 'clone' }, d
     </Spin>
 
     <AsyncComponent :visible="previewDataSetModalVisible">
-      <PreviewDataSetModal
+      <PreviewModal
         v-model:visible="previewDataSetModalVisible"
         :projectId="props.projectId"
         :dataSource="selectedData || undefined" />
     </AsyncComponent>
 
     <AsyncComponent :visible="importDataSetModalVisible">
-      <ImportDataSetModal
+      <ImportModal
         v-model:visible="importDataSetModalVisible"
         :projectId="props.projectId"
         @ok="importOk" />
     </AsyncComponent>
 
     <AsyncComponent :visible="exportDataSetModalVisible">
-      <ExportDataSetModal
+      <ExportModal
         :id="exportDataSetId"
         v-model:visible="exportDataSetModalVisible"
         :projectId="props.projectId" />

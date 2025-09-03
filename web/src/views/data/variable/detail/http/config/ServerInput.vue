@@ -3,11 +3,14 @@ import { nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { Popover, Radio } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
 
-import { HttpServer } from './types';
+import { OASServer } from '@/views/data/variable/detail/http/types';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface Props {
   value: string;
-  valueObj: HttpServer;
+  valueObj: OASServer;
   readonly?: boolean;
 }
 
@@ -160,8 +163,8 @@ onBeforeUnmount(() => {
   <div ref="inputWrapRef" class="relative overflow-auto">
     <div
       v-show="!value && !focused"
-      class="absolute left-2 top-0 h-full leading-5.5 py-1 text-theme-placeholder select-none pointer-events-none">
-      服务器地址，接口地址URL前缀
+      class="absolute left-2 top-0 h-full leading-5.5 py-1 text-3 text-theme-placeholder select-none pointer-events-none">
+      {{ t('dataVariable.detail.httpVariable.httpConfigs.serverPlaceholder') }}
     </div>
     <div
       ref="inputRef"
@@ -185,7 +188,7 @@ onBeforeUnmount(() => {
       <template #content>
         <div class="text-3">
           <div v-show="showErrorPopover" class="text-rule">
-            找不到该变量，请先定义变量或刷新再试
+            {{ t('dataVariable.detail.httpVariable.httpConfigs.serverVariableNotFound') }}
           </div>
           <div v-show="!showErrorPopover">
             <div class="font-bold text-text-title flex items-center">
@@ -213,7 +216,7 @@ onBeforeUnmount(() => {
                       {{ en }}
                     </div>
                     <div class="flex items-center">
-                      <span v-show="_value.defaultValue === en">默认</span>
+                      <span v-show="_value.defaultValue === en">Default</span>
                       <Radio
                         size="small"
                         :checked="_value.defaultValue === en"

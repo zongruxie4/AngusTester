@@ -7,7 +7,8 @@ import { utils, duration, codeUtils } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
 import { useI18n } from 'vue-i18n';
-import { RequestBodyFormItem } from '@/views/data/variable/detail/http/config/types';
+
+import { RequestBodyFormItem } from '@/views/data/variable/detail/http/types';
 
 const { t } = useI18n();
 
@@ -405,7 +406,7 @@ const selectOptions = computed(() => {
         @change="checkboxChange($event, index, item)" />
       <Input
         v-model:value="dataMap[item].name"
-        placeholder="t('dataVariable.detail.httpVariable.httpConfigs.requestBodyParamster.parameterNamePlaceholder')"
+        :placeholder="t('dataVariable.detail.httpVariable.httpConfigs.requestBodyParameter.parameterNamePlaceholder')"
         trim
         class="max-w-100 flex-1"
         :error="nameErrorSet.has(item)"
@@ -413,7 +414,7 @@ const selectOptions = computed(() => {
       <Select
         v-model:value="dataMap[item].type"
         class="w-25"
-        placeholder="t('dataVariable.detail.httpVariable.httpConfigs.requestBodyParamster.parameterTypePlaceholder')"
+        :placeholder="t('dataVariable.detail.httpVariable.httpConfigs.requestBodyParameter.parameterTypePlaceholder')"
         :options="selectOptions"
         @change="typeChange($event, index, item)" />
       <div
@@ -429,7 +430,7 @@ const selectOptions = computed(() => {
             size="small"
             class="mr-3 transform-gpu translate-y-0.25">
             <Icon icon="icon-xuanze" class="mr-1" />
-            <span>{{ t('dataVariable.detail.httpVariable.httpConfigs.requestBodyParamster.selectFile') }}</span>
+            <span>{{ t('dataVariable.detail.httpVariable.httpConfigs.requestBodyParameter.selectFile') }}</span>
           </Button>
         </Upload>
         <template v-if="!!fileMap[item]?.length">
@@ -452,7 +453,7 @@ const selectOptions = computed(() => {
       <Input
         v-else
         v-model:value="dataMap[item].value"
-        :placeholder="t('dataVariable.detail.httpVariable.httpConfigs.requestBodyParamster.parameterValuePlaceholder')"
+        :placeholder="t('dataVariable.detail.httpVariable.httpConfigs.requestBodyParameter.parameterValuePlaceholder')"
         trim
         class="flex-1"
         :maxlength="4096"
