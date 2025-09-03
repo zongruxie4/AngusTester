@@ -6,6 +6,16 @@
     "creator": "Creator",
     "actions": "Actions"
   },
+  "routes": {
+    "fileData": "File Data",
+    "generateData": "Generate Data",
+    "experienceExecution": "Experience Execution",
+    "modifyExecutionConfig": "Modify Execution Config",
+    "mock": "Mock",
+    "add": "Add",
+    "node": "Node",
+    "detail": "Detail"
+  },
   "time": {
     "year": "Year",
     "month": "Month",

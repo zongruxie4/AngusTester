@@ -6,6 +6,9 @@ import elementResizeDetector from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
 import { AuthAppFuncTree, duration, WebTagValue } from '@xcan-angus/infra';
 import { Icon } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface Props {
   menus: AuthAppFuncTree[];
@@ -147,7 +150,7 @@ onBeforeUnmount(() => {
         ref="moreRef"
         :class="{ hide: !dropdownMenuList?.length }"
         class="more-item">
-        <span>更多</span>
+        <span>{{ t('actions.more') }}</span>
         <Icon icon="icon-xiala" class="ml-2 text-theme-sub-content" />
       </li>
       <template #overlay>

@@ -1,6 +1,9 @@
 import { RouteRecordRaw } from 'vue-router';
-
 import Layout from '@/layout/default.vue';
+import { i18n } from '@xcan-angus/infra';
+
+const I18nInstance = i18n.getI18n();
+const t = I18nInstance?.global?.t || ((value: string): string => value);
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -69,11 +72,11 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           breadcrumb: [
             {
-              name: '文件数据',
+              name: t('routes.fileData'),
               path: '/data',
               query: []
             },
-            { name: '生成数据' }
+            { name: t('routes.generateData') }
           ],
           flexCol: true
         }
@@ -105,7 +108,7 @@ const routes: Array<RouteRecordRaw> = [
               name: 'execute.execute',
               path: '/execution'
             },
-            { name: '体验执行' }
+            { name: t('routes.experienceExecution') }
           ],
           className: 'my-tabs'
         }
@@ -119,7 +122,7 @@ const routes: Array<RouteRecordRaw> = [
               name: 'execute.execute',
               path: '/execution'
             },
-            { name: '修改执行配置' }
+            { name: t('routes.modifyExecutionConfig') }
           ],
           className: 'my-tabs'
         }
@@ -138,10 +141,10 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           breadcrumb: [
             {
-              name: 'Mock',
+              name: t('routes.mock'),
               path: '/apis#mock'
             },
-            { name: '添加' }
+            { name: t('routes.add') }
           ]
         }
       },
@@ -181,10 +184,10 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           breadcrumb: [
             {
-              name: '节点',
+              name: t('routes.node'),
               path: '/config#node'
             },
-            { name: '详情' }
+            { name: t('routes.detail') }
           ]
         }
       },
