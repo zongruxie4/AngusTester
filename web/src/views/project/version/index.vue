@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n';
 import { utils } from '@xcan-angus/infra';
 import { software } from '@/api/tester';
 
-import { IPane } from './PropsType';
+import { IPane } from './types';
 
 type Props = {
   projectId: string;
@@ -22,8 +22,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const List = defineAsyncComponent(() => import('@/views/task/version/list/index.vue'));
-const Detail = defineAsyncComponent(() => import('@/views/task/version/detail/index.vue'));
+const List = defineAsyncComponent(() => import('@/views/project/version/List.vue'));
+const Detail = defineAsyncComponent(() => import('@/views/project/version/Detail.vue'));
 
 const route = useRoute();
 const router = useRouter();
@@ -131,7 +131,6 @@ const hashChange = async (hash: string) => {
       });
     }
   }
-
   router.replace('/task#version');
 };
 
@@ -144,7 +143,6 @@ onMounted(() => {
     if (!route.hash.startsWith('#version')) {
       return;
     }
-
     hashChange(route.hash);
   });
 });

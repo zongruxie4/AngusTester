@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
   versionId: undefined
 });
 
-const Table = defineAsyncComponent(() => import('./table.vue'));
+const Table = defineAsyncComponent(() => import('./MyTaskTable.vue'));
 
 const deletedNotify = ref<string>();
 

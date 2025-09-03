@@ -27,8 +27,8 @@ const props = withDefaults(defineProps<ModuleProps>(), {
 });
 
 // Async component definitions for better code splitting
-const CreateModal = defineAsyncComponent(() => import('./add.vue'));
-const MoveModuleModal = defineAsyncComponent(() => import('./move.vue'));
+const CreateModal = defineAsyncComponent(() => import('./Add.vue'));
+const MoveModuleModal = defineAsyncComponent(() => import('./Move.vue'));
 
 // Convert props to reactive references for composables
 const projectIdRef = toRef(props, 'projectId');

@@ -5,8 +5,8 @@ import { Tag } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { software } from '@/api/tester';
 
-import { VersionInfo } from '../PropsType';
-import Chart from './chart.vue';
+import { VersionInfo } from './types';
+import Chart from './Chart.vue';
 
 type Props = {
   projectId: string;
@@ -29,7 +29,7 @@ const { t } = useI18n();
 
 const refreshNotify = ref('');
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
-const TaskTable = defineAsyncComponent(() => import('@/views/task/version/detail/myTasks/index.vue'));
+const TaskTable = defineAsyncComponent(() => import('@/views/project/version/MyTask.vue'));
 
 const dataSource = ref<VersionInfo>({});
 

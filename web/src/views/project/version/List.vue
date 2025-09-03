@@ -5,8 +5,8 @@ import { AsyncComponent, Dropdown, Icon, modal, NoData, notification, Spin, Tabl
 import { useI18n } from 'vue-i18n';
 import { software } from '@/api/tester';
 
-import { VersionInfo } from '../PropsType';
-import SearchPanel from '@/views/task/version/list/searchPanel/index.vue';
+import { VersionInfo } from './types';
+import SearchPanel from '@/views/project/version/SearchPanel.vue';
 
 type Props = {
   projectId: string;
@@ -29,9 +29,9 @@ const { t } = useI18n();
 type OrderByKey = 'createdDate' | 'createdByName';
 type OrderSortKey = 'ASC' | 'DESC';
 
-const Introduce = defineAsyncComponent(() => import('@/views/task/version/list/introduce/index.vue'));
-const Edit = defineAsyncComponent(() => import('@/views/task/version/edit/index.vue'));
-const Merge = defineAsyncComponent(() => import('@/views/task/version/merge/index.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/project/version/Introduce.vue'));
+const Edit = defineAsyncComponent(() => import('@/views/project/version/Edit.vue'));
+const Merge = defineAsyncComponent(() => import('@/views/project/version/Merge.vue'));
 
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 
@@ -84,7 +84,7 @@ const toDelete = async (data: VersionInfo) => {
         pagination.value.current -= 1;
       }
 
-      loadData();
+      await loadData();
       deleteTabPane([id]);
     }
   });
@@ -289,7 +289,7 @@ const getMenus = (record) => {
     <Spin :spinning="loading" class="flex-1 flex flex-col">
       <template v-if="loaded">
         <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
-          <img src="../../../../assets/images/nodata.png">
+          <img src="../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
             <span>{{ t('taskVersion.list.noVersions') }}</span>
             <Button type="link" @click="editVersion">{{ t('taskVersion.actions.addVersion') }}</Button>

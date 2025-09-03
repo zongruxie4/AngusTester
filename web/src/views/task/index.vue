@@ -4,13 +4,12 @@ import { utils, appContext } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
 
-type MenuKey = 'homepage' | 'sprint' | 'task' | 'backlog' | 'trash' | 'meeting' | 'analysis' | 'versions';
+type MenuKey = 'homepage' | 'sprint' | 'task' | 'backlog' | 'trash' | 'meeting' | 'analysis';
 
 const Homepage = defineAsyncComponent(() => import('@/views/task/homepage/index.vue'));
 const Backlog = defineAsyncComponent(() => import('@/views/task/backlog/index.vue'));
 const Sprint = defineAsyncComponent(() => import('@/views/task/sprint/index.vue'));
 const Task = defineAsyncComponent(() => import('@/views/task/task/index.vue'));
-const Version = defineAsyncComponent(() => import('@/views/task/version/index.vue'));
 const Meeting = defineAsyncComponent(() => import('@/views/task/meeting/index.vue'));
 const Analysis = defineAsyncComponent(() => import('@/views/task/analysis/index.vue'));
 const Trash = defineAsyncComponent(() => import('@/views/task/trash/index.vue'));
@@ -31,7 +30,6 @@ const menus = computed(() => {
     proTypeShowMap.value.showBackLog && { name: 'Backlog', icon: 'icon-backlog', key: 'backlog' },
     proTypeShowMap.value.showSprint && { name: t('taskSprint.name'), icon: 'icon-diedai', key: 'sprint' },
     { name: t('task.name'), icon: 'icon-renwu2', key: 'task' },
-    { name: t('taskVersion.name'), icon: 'icon-banben1', key: 'version' },
     proTypeShowMap.value.showMeeting && { name: t('taskMeeting.name'), icon: 'icon-RT', key: 'meeting' },
     editionType.value !== 'COMMUNITY' && { name: t('taskAnalysis.name'), icon: 'icon-fenxi', key: 'analysis' },
     { name: t('taskTrash.name'), icon: 'icon-qingchu', key: 'trash' }
@@ -122,12 +120,6 @@ onMounted(async () => {
         :userInfo="userInfo"
         :appInfo="appInfo"
         :refreshNotify="tasksRefreshNotify" />
-    </template>
-    <template #version>
-      <Version
-        :projectId="projectId"
-        :userInfo="userInfo"
-        :appInfo="appInfo" />
     </template>
     <template #meeting>
       <Meeting

@@ -10,6 +10,10 @@ export type { UseActionsReturn } from './useActions';
 export { useManagement } from './useManagement';
 export type { UseProjectReturn } from './useManagement';
 
+export { useForm } from './useForm';
+export { useMembers } from './useMembers';
+export { useAvatar } from './useAvatar';
+
 // Re-export types for convenience
 export type {
   Project,

@@ -34,8 +34,8 @@ const { t } = useI18n();
 
 const emits = defineEmits<{(e: 'loadData', value?: string); (e: 'update:moduleId', value: string): void }>();
 
-const CreateModal = defineAsyncComponent(() => import('@/views/project/module/add.vue'));
-const MoveModuleModal = defineAsyncComponent(() => import('@/views/project/module/move.vue'));
+const CreateModal = defineAsyncComponent(() => import('@/views/project/module/Add.vue'));
+const MoveModuleModal = defineAsyncComponent(() => import('@/views/project/module/Move.vue'));
 
 const nameInputRef = ref();
 

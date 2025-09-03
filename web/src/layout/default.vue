@@ -37,7 +37,7 @@ type ProjectInfo = {
   lastModifiedDate: string;
 }
 
-const AddProjectModal = defineAsyncComponent(() => import('@/views/project/project/addModal/index.vue'));
+const AddProjectModal = defineAsyncComponent(() => import('@/views/project/project/AddModal.vue'));
 const HeaderMenu = defineAsyncComponent(() => import('@/layout/headerMenu/index.vue'));
 const ProjectMenu = defineAsyncComponent(() => import('@/layout/projectMenu/index.vue'));
 

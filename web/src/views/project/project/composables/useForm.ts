@@ -3,8 +3,7 @@ import { useI18n } from 'vue-i18n';
 import { notification } from '@xcan-angus/vue-ui';
 import { project } from '@/api/tester';
 import { ProjectType } from '@/enums/enums';
-import type { Project } from '../../types';
-import type { UseProjectFormReturn, FormValidationResult } from '../types';
+import type { FormValidationResult, Project, UseProjectFormReturn } from '../types';
 
 /**
  * Project form management composable

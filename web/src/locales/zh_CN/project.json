@@ -199,9 +199,9 @@
       },
       "tabs": {
         "basicInfo": "基本信息",
-        "module": "软件模块",
-        "version": "软件版本",
-        "tag": "数据标签"
+        "module": "模块",
+        "version": "版本",
+        "tag": "标签"
       },
       "form": {
         "projectName": "项目名称",

@@ -17,8 +17,8 @@ import { PageQuery, User, appContext } from '@xcan-angus/infra';
 import DefaultProjectImage from '@/views/project/project/images/default.png';
 
 // Composables
-import { useData, useActions } from '../composables';
-import type { Project } from '../types';
+import { useData, useActions } from './composables';
+import type { Project } from './types';
 
 // Initialize i18n
 const { t } = useI18n();
@@ -42,7 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits<{(e: 'delOk', value: string[]);}>();
 
 // Async component definitions
-const Introduce = defineAsyncComponent(() => import('@/views/project/project/list/introduce.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/project/project/Introduce.vue'));
 const RichText = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
 
 // Initialize composables
@@ -437,7 +437,10 @@ defineExpose({
         </Spin>
       </div>
 
-      <Tabs size="small" class="w-right" :style="{ height: timelineHeight }">
+      <Tabs
+        size="small"
+        class="w-right"
+        :style="{ height: timelineHeight }">
         <TabPane key="my" :tab="t('project.myActivity')">
           <ActivityTimeline
             :types="activityType"

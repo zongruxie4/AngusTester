@@ -11,7 +11,7 @@ const Trash = defineAsyncComponent(() => import('@/views/project/trash/index.vue
 const Activity = defineAsyncComponent(() => import('@/views/project/activity/index.vue'));
 const Module = defineAsyncComponent(() => import('@/views/project/module/index.vue'));
 const Tags = defineAsyncComponent(() => import('@/views/project/tag/index.vue'));
-const Version = defineAsyncComponent(() => import('@/views/task/version/list/index.vue'));
+const Version = defineAsyncComponent(() => import('@/views/project/version/List.vue'));
 
 const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
@@ -37,12 +37,12 @@ const menuItems = computed(() => {
   return [
     { icon: 'icon-xiangmu', name: t('project.name'), key: 'project' },
     aiEnabled.value && { icon: 'icon-AIzhushou', name: t('AI.name'), key: 'AI' },
+    projectId.value && { icon: 'icon-mokuai1', name: t('project.projectDetail.tabs.module'), key: 'module' },
+    projectId.value && { icon: 'icon-banben1', name: t('project.projectDetail.tabs.version'), key: 'version' },
+    projectId.value && { icon: 'icon-biaoqian3', name: t('project.projectDetail.tabs.tag'), key: 'tags' },
     { icon: 'icon-fabu', name: t('projectActivity.name'), key: 'activity' },
-    projectId.value && { icon: 'icon-mokuai1', name: t('project.projectDetail.tabs.module'), key: 'module'},
-    projectId.value && { icon: 'icon-banben1', name: t('project.projectDetail.tabs.version'), key: 'version'},
-    projectId.value && { icon: 'icon-biaoqian3', name: t('project.projectDetail.tabs.tag'), key: 'tags'},
     { icon: 'icon-qingchu', name: t('projectTrash.name'), key: 'trash' }
-  ].filter(Boolean) as { icon: string; name: string; key: string; }[]
+  ].filter(Boolean) as { icon: string; name: string; key: string; }[];
 });
 
 </script>

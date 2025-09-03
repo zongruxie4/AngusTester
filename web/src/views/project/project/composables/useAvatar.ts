@@ -1,5 +1,6 @@
 import { ref } from 'vue';
-import type { UseProjectAvatarReturn } from '../types';
+
+import { UseProjectAvatarReturn } from '@/views/project/project/types';
 
 /**
  * Project avatar management composable

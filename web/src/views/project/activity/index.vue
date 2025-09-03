@@ -5,7 +5,7 @@ import { Image, Table } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
 import { duration } from '@xcan-angus/infra';
 
-import SearchPanel from '@/views/project/activity/searchPanel.vue';
+import SearchPanel from '@/views/project/activity/SearchPanel.vue';
 import Dashboard from '@/components/dashboard/Dashboard.vue';
 
 import { useActivityData } from './composables/useActivityData';

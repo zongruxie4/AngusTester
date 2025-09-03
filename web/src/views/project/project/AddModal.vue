@@ -13,8 +13,8 @@ import { Form, FormItem, RadioButton, RadioGroup, Upload, Popover } from 'ant-de
 import { GM, upload } from '@xcan-angus/infra';
 
 // Composables
-import { useManagement, useActions } from '../composables';
-import type { Project } from '../types';
+import { useManagement, useActions } from './composables';
+import type { Project } from './types';
 
 // Initialize i18n
 const { t } = useI18n();
@@ -32,6 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
   closable: true
 });
 
+// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
   (e: 'cancel', value: boolean): void;
@@ -240,7 +241,7 @@ watch(() => props.visible, (newValue) => {
                   :customRequest="uploadImg"
                   class="upload-component">
                   <div class="upload-area">
-                    <img src="../images/default.png" class="upload-icon" />
+                    <img src="./images/default.png" class="upload-icon" />
                     <div class="upload-text">{{ t('project.projectAddModal.form.clickToReplaceIcon') }}</div>
                   </div>
                 </Upload>
@@ -420,15 +421,15 @@ watch(() => props.visible, (newValue) => {
           <div class="preview-image">
             <img
               v-show="projectType==='AGILE'"
-              src="../images/agile.png"
+              src="./images/agile.png"
               class="preview-img agile" />
             <img
               v-show="projectType==='GENERAL'"
-              src="../images/general.png"
+              src="./images/general.png"
               class="preview-img general" />
             <img
               v-show="projectType==='TESTING'"
-              src="../images/testing.png"
+              src="./images/testing.png"
               class="preview-img testing" />
           </div>
           <div class="preview-features">

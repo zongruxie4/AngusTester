@@ -198,9 +198,9 @@
       },
       "tabs": {
         "basicInfo": "Basic Information",
-        "module": "Software Modules",
-        "version": "Software Version",
-        "tag": "Data Tags"
+        "module": "Module",
+        "version": "Version",
+        "tag": "Tag"
       },
       "form": {
         "projectName": "Name",

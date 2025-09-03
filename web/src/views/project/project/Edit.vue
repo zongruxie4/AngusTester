@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 // Vue composition API imports
-import { defineAsyncComponent, computed, onMounted, ref } from 'vue';
+import { defineAsyncComponent, computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 // Ant Design components
-import { Button, Form, FormItem, Popover, RadioButton, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
+import { Button, Form, FormItem, Popover, RadioButton, RadioGroup } from 'ant-design-vue';
 
 // Custom components
 import { Cropper, DatePicker, Icon, Image, Input, Select, SelectUser } from '@xcan-angus/vue-ui';
@@ -13,11 +13,11 @@ import { GM } from '@xcan-angus/infra';
 // Local imports
 import { ProjectType } from '@/enums/enums';
 import { cropperUploadOption } from '@/utils/constant';
-import { getProjectTypeTipConfig, toolbarOptions, uploadParams } from '../utils';
+import { getProjectTypeTipConfig, toolbarOptions, uploadParams } from './utils';
 
 // Composables
 import { useForm, useMembers, useAvatar } from './composables';
-import { ProjectEditEmits, ProjectEditProps } from '@/views/project/project/edit/types';
+import { ProjectEditEmits, ProjectEditProps } from '@/views/project/project/types';
 
 /** Component props definition */
 const props = withDefaults(defineProps<ProjectEditProps>(), {
@@ -62,10 +62,6 @@ const {
   deleteImage
 } = useAvatar(projectDetail);
 
-/** Current active tab for edit mode */
-const activeKey = ref('basic');
-
-
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 
 /** Project type configuration for tips display */
@@ -92,7 +88,6 @@ const handleFormSubmit = async (): Promise<void> => {
   try {
     // Submit form using form composable
     await submitForm();
-
     // Emit success event
     emit('ok');
   } catch (error) {
@@ -124,11 +119,6 @@ onMounted(async () => {
     // Initialize members after loading project detail
     if (projectDetail.value.members) {
       initializeMembers(projectDetail.value.members);
-    }
-
-    // Set active tab if specified
-    if (props.data?.tab) {
-      activeKey.value = props.data.tab;
     }
   }
 });
@@ -188,7 +178,6 @@ onMounted(async () => {
 
             <!-- Form fields area -->
             <div class="form-fields-section">
-              <h3 class="section-title">{{ t('project.projectEdit.tabs.basicInfo') }}</h3>
               <div class="form-fields-content">
                 <FormItem label=" " class="avatar-upload-item">
                   <div class="avatar-upload-container">
@@ -210,7 +199,7 @@ onMounted(async () => {
                       <div
                         class="upload-area"
                         @click="openCropper">
-                        <img src="../images/default.png" class="upload-icon" />
+                        <img src="./images/default.png" class="upload-icon" />
                         <div class="upload-text">{{ t('project.projectEdit.actions.clickToReplaceIcon') }}</div>
                       </div>
                     </div>
@@ -385,15 +374,15 @@ onMounted(async () => {
                 <div class="preview-image">
                   <img
                     v-show="projectDetail.type?.value === ProjectType.AGILE"
-                    src="../images/agile.png"
+                    src="./images/agile.png"
                     class="preview-img agile" />
                   <img
                     v-show="projectDetail.type?.value === ProjectType.GENERAL"
-                    src="../images/general.png"
+                    src="./images/general.png"
                     class="preview-img general" />
                   <img
                     v-show="projectDetail.type?.value === ProjectType.TESTING"
-                    src="../images/testing.png"
+                    src="./images/testing.png"
                     class="preview-img testing" />
                 </div>
                 <div class="preview-features">
@@ -434,260 +423,242 @@ onMounted(async () => {
     </div>
 
     <!-- Edit project section (when project ID is not empty) -->
-    <Tabs
-      v-if="props.projectId"
-      v-model:activeKey="activeKey"
-      size="small">
-      <TabPane key="basic" :tab="t('project.projectEdit.tabs.basicInfo')">
-        <div class="form-content-wrapper">
-          <Form
-            ref="formRef"
-            labelAlign="right"
-            :colon="false"
-            class="project-form"
-            :model="projectDetail"
-            :labelCol="{ style: {width: '80px'} }">
-            <div class="form-main-content edit-layout">
-              <!-- Form fields area -->
-              <div class="form-fields-section">
-                <div class="form-fields-content">
-                  <FormItem label=" " class="avatar-upload-item">
-                    <div class="avatar-upload-container">
-                      <div v-if="projectDetail.avatar" class="avatar-preview">
-                        <div class="avatar-wrapper">
-                          <Image
-                            :src="projectDetail.avatar || ''"
-                            class="avatar-image"
-                            alt="avatar" />
-                          <div class="avatar-overlay">
-                            <Icon
-                              icon="icon-qingchu"
-                              class="delete-icon"
-                              @click="deleteImage" />
-                          </div>
-                        </div>
-                      </div>
-                      <div v-else class="avatar-upload">
-                        <div
-                          class="upload-area"
-                          @click="openCropper">
-                          <img src="../images/default.png" class="upload-icon" />
-                          <div class="upload-text">{{ t('project.projectEdit.actions.clickToReplaceIcon') }}</div>
-                        </div>
+    <div class="form-content-wrapper">
+      <Form
+        ref="formRef"
+        labelAlign="right"
+        :colon="false"
+        class="project-form"
+        :model="projectDetail"
+        :labelCol="{ style: {width: '80px'} }">
+        <div class="form-main-content edit-layout">
+          <!-- Form fields area -->
+          <div class="form-fields-section">
+            <div class="form-fields-content">
+              <FormItem label=" " class="avatar-upload-item">
+                <div class="avatar-upload-container">
+                  <div v-if="projectDetail.avatar" class="avatar-preview">
+                    <div class="avatar-wrapper">
+                      <Image
+                        :src="projectDetail.avatar || ''"
+                        class="avatar-image"
+                        alt="avatar" />
+                      <div class="avatar-overlay">
+                        <Icon
+                          icon="icon-qingchu"
+                          class="delete-icon"
+                          @click="deleteImage" />
                       </div>
                     </div>
-                  </FormItem>
-                  <FormItem
-                    :label="t('project.projectEdit.form.projectName')"
-                    name="name"
-                    class="form-field"
-                    required>
-                    <Input
-                      v-model:value="projectDetail.name"
-                      :placeholder="t('project.projectEdit.form.projectNamePlaceholder')"
-                      :maxlength="100"
-                      class="enhanced-input">
-                    </Input>
-                  </FormItem>
-
-                  <div class="form-row">
-                    <FormItem
-                      :label="t('project.projectEdit.form.timePlan')"
-                      name="dateRange"
-                      class="form-field with-tooltip flex-1"
-                      required>
-                      <DatePicker
-                        v-model:value="projectDetail.dateRange"
-                        class="enhanced-date-picker"
-                        :allowClear="false"
-                        type="date-range">
-                      </DatePicker>
-                      <Popover placement="right" overlayClassName="form-tooltip">
-                        <template #content>
-                          <div class="tooltip-content">
-                            {{ t('project.projectEdit.form.timePlanDescription') }}
-                          </div>
-                        </template>
-                        <Icon icon="icon-tishi1" class="tooltip-icon" />
-                      </Popover>
-                    </FormItem>
-
-                    <FormItem
-                      :label="t('project.projectEdit.form.owner')"
-                      name="ownerId"
-                      required
-                      class="form-field with-tooltip flex-1">
-                      <SelectUser
-                        v-model:value="projectDetail.ownerId"
-                        size="small"
-                        :placeholder="t('project.projectEdit.form.ownerPlaceholder')"
-                        :allowClear="false"
-                        class="enhanced-select" />
-                      <Popover placement="right" overlayClassName="form-tooltip">
-                        <template #content>
-                          <div class="tooltip-content">
-                            {{ t('project.projectEdit.form.ownerDescription') }}
-                          </div>
-                        </template>
-                        <Icon icon="icon-tishi1" class="tooltip-icon" />
-                      </Popover>
-                    </FormItem>
                   </div>
-
-                  <FormItem
-                    :label="t('project.projectEdit.form.projectMembers')"
-                    class="form-field members-field"
-                    required>
-                    <div class="members-selector">
-                      <div class="member-type-tabs">
-                        <RadioGroup
-                          v-model:value="memberType"
-                          buttonStyle="solid"
-                          size="small"
-                          class="enhanced-radio-group">
-                          <RadioButton value="user">
-                            {{ t('project.projectEdit.form.user') }}
-                          </RadioButton>
-                          <RadioButton value="dept">
-                            {{ t('project.projectEdit.form.department') }}
-                          </RadioButton>
-                          <RadioButton value="group">
-                            {{ t('project.projectEdit.form.group') }}
-                          </RadioButton>
-                        </RadioGroup>
-                        <Popover placement="right" overlayClassName="form-tooltip">
-                          <template #content>
-                            <div class="tooltip-content">
-                              {{ t('project.projectEdit.form.membersDescription') }}
-                            </div>
-                          </template>
-                          <Icon icon="icon-tishi1" class="tooltip-icon" />
-                        </Popover>
-                      </div>
-                      <div class="member-select-container">
-                        <Select
-                          v-show="memberType === 'user'"
-                          v-model:value="members.USER"
-                          :showSearch="true"
-                          :placeholder="t('project.projectEdit.form.selectUser')"
-                          :action="`${GM}/user?fullTextSearch=true`"
-                          :defaultOptions="defaultOptionsUser"
-                          mode="multiple"
-                          :fieldNames="{ label: 'fullName', value: 'id' }"
-                          class="enhanced-select">
-                        </Select>
-
-                        <Select
-                          v-show="memberType === 'dept'"
-                          v-model:value="members.DEPT"
-                          :placeholder="t('project.projectEdit.form.selectDepartment')"
-                          :showSearch="true"
-                          :action="`${GM}/dept?fullTextSearch=true`"
-                          :defaultOptions="defaultOptionsDept"
-                          mode="multiple"
-                          :fieldNames="{ label: 'name', value: 'id' }"
-                          class="enhanced-select">
-                        </Select>
-
-                        <Select
-                          v-show="memberType === 'group'"
-                          v-model:value="members.GROUP"
-                          :placeholder="t('project.projectEdit.form.selectGroup')"
-                          :showSearch="true"
-                          :action="`${GM}/group?fullTextSearch=true`"
-                          :defaultOptions="defaultOptionsGroup"
-                          mode="multiple"
-                          :fieldNames="{ label: 'name', value: 'id' }"
-                          class="enhanced-select">
-                        </Select>
-                      </div>
+                  <div v-else class="avatar-upload">
+                    <div
+                      class="upload-area"
+                      @click="openCropper">
+                      <img src="./images/default.png" class="upload-icon" />
+                      <div class="upload-text">{{ t('project.projectEdit.actions.clickToReplaceIcon') }}</div>
                     </div>
-                  </FormItem>
-
-                  <FormItem
-                    :label="t('project.projectEdit.form.description')"
-                    name="description"
-                    :rules="[{validator: validateDescription}]"
-                    class="form-field description-field">
-                    <RichEditor
-                      ref="descRef"
-                      v-model:value="projectDetail.description"
-                      :toolbarOptions="toolbarOptions"
-                      :options="{placeholder: t('project.projectEdit.form.descriptionPlaceholder')}"
-                      class="enhanced-editor" />
-                  </FormItem>
+                  </div>
                 </div>
+              </FormItem>
+              <FormItem
+                :label="t('project.projectEdit.form.projectName')"
+                name="name"
+                class="form-field"
+                required>
+                <Input
+                  v-model:value="projectDetail.name"
+                  :placeholder="t('project.projectEdit.form.projectNamePlaceholder')"
+                  :maxlength="100"
+                  class="enhanced-input">
+                </Input>
+              </FormItem>
+
+              <div class="form-row">
+                <FormItem
+                  :label="t('project.projectEdit.form.timePlan')"
+                  name="dateRange"
+                  class="form-field with-tooltip flex-1"
+                  required>
+                  <DatePicker
+                    v-model:value="projectDetail.dateRange"
+                    class="enhanced-date-picker"
+                    :allowClear="false"
+                    type="date-range">
+                  </DatePicker>
+                  <Popover placement="right" overlayClassName="form-tooltip">
+                    <template #content>
+                      <div class="tooltip-content">
+                        {{ t('project.projectEdit.form.timePlanDescription') }}
+                      </div>
+                    </template>
+                    <Icon icon="icon-tishi1" class="tooltip-icon" />
+                  </Popover>
+                </FormItem>
+
+                <FormItem
+                  :label="t('project.projectEdit.form.owner')"
+                  name="ownerId"
+                  required
+                  class="form-field with-tooltip flex-1">
+                  <SelectUser
+                    v-model:value="projectDetail.ownerId"
+                    size="small"
+                    :placeholder="t('project.projectEdit.form.ownerPlaceholder')"
+                    :allowClear="false"
+                    class="enhanced-select" />
+                  <Popover placement="right" overlayClassName="form-tooltip">
+                    <template #content>
+                      <div class="tooltip-content">
+                        {{ t('project.projectEdit.form.ownerDescription') }}
+                      </div>
+                    </template>
+                    <Icon icon="icon-tishi1" class="tooltip-icon" />
+                  </Popover>
+                </FormItem>
               </div>
 
-              <!-- Project type preview area -->
-              <div class="project-preview-section">
-                <h3 class="section-title">
-                  {{ projectDetail.type?.value ? projectTypeName[projectDetail.type.value as keyof typeof projectTypeName] : '' }}
-                </h3>
-                <div class="preview-content">
-                  <div class="preview-image">
-                    <img
-                      v-show="projectDetail.type?.value === ProjectType.AGILE"
-                      src="../images/agile.png"
-                      class="preview-img agile" />
-                    <img
-                      v-show="projectDetail.type?.value === ProjectType.GENERAL"
-                      src="../images/general.png"
-                      class="preview-img general" />
-                    <img
-                      v-show="projectDetail.type?.value === ProjectType.TESTING"
-                      src="../images/testing.png"
-                      class="preview-img testing" />
+              <FormItem
+                :label="t('project.projectEdit.form.projectMembers')"
+                class="form-field members-field"
+                required>
+                <div class="members-selector">
+                  <div class="member-type-tabs">
+                    <RadioGroup
+                      v-model:value="memberType"
+                      buttonStyle="solid"
+                      size="small"
+                      class="enhanced-radio-group">
+                      <RadioButton value="user">
+                        {{ t('project.projectEdit.form.user') }}
+                      </RadioButton>
+                      <RadioButton value="dept">
+                        {{ t('project.projectEdit.form.department') }}
+                      </RadioButton>
+                      <RadioButton value="group">
+                        {{ t('project.projectEdit.form.group') }}
+                      </RadioButton>
+                    </RadioGroup>
+                    <Popover placement="right" overlayClassName="form-tooltip">
+                      <template #content>
+                        <div class="tooltip-content">
+                          {{ t('project.projectEdit.form.membersDescription') }}
+                        </div>
+                      </template>
+                      <Icon icon="icon-tishi1" class="tooltip-icon" />
+                    </Popover>
                   </div>
-                  <div class="preview-features">
-                    <div
-                      v-for="(item, index) in projectTypeTipConfig[projectDetail.type?.value || ProjectType.AGILE]"
-                      :key="index"
-                      class="feature-item">
-                      <Icon icon="icon-duihao-copy" class="feature-icon" />
-                      <p class="feature-text">{{ item }}</p>
-                    </div>
+                  <div class="member-select-container">
+                    <Select
+                      v-show="memberType === 'user'"
+                      v-model:value="members.USER"
+                      :showSearch="true"
+                      :placeholder="t('project.projectEdit.form.selectUser')"
+                      :action="`${GM}/user?fullTextSearch=true`"
+                      :defaultOptions="defaultOptionsUser"
+                      mode="multiple"
+                      :fieldNames="{ label: 'fullName', value: 'id' }"
+                      class="enhanced-select">
+                    </Select>
+
+                    <Select
+                      v-show="memberType === 'dept'"
+                      v-model:value="members.DEPT"
+                      :placeholder="t('project.projectEdit.form.selectDepartment')"
+                      :showSearch="true"
+                      :action="`${GM}/dept?fullTextSearch=true`"
+                      :defaultOptions="defaultOptionsDept"
+                      mode="multiple"
+                      :fieldNames="{ label: 'name', value: 'id' }"
+                      class="enhanced-select">
+                    </Select>
+
+                    <Select
+                      v-show="memberType === 'group'"
+                      v-model:value="members.GROUP"
+                      :placeholder="t('project.projectEdit.form.selectGroup')"
+                      :showSearch="true"
+                      :action="`${GM}/group?fullTextSearch=true`"
+                      :defaultOptions="defaultOptionsGroup"
+                      mode="multiple"
+                      :fieldNames="{ label: 'name', value: 'id' }"
+                      class="enhanced-select">
+                    </Select>
                   </div>
+                </div>
+              </FormItem>
+
+              <FormItem
+                :label="t('project.projectEdit.form.description')"
+                name="description"
+                :rules="[{validator: validateDescription}]"
+                class="form-field description-field">
+                <RichEditor
+                  ref="descRef"
+                  v-model:value="projectDetail.description"
+                  :toolbarOptions="toolbarOptions"
+                  :options="{placeholder: t('project.projectEdit.form.descriptionPlaceholder')}"
+                  class="enhanced-editor" />
+              </FormItem>
+            </div>
+          </div>
+
+          <!-- Project type preview area -->
+          <div class="project-preview-section">
+            <h3 class="section-title">
+              {{ projectDetail.type?.value ? projectTypeName[projectDetail.type.value as keyof typeof projectTypeName] : '' }}
+            </h3>
+            <div class="preview-content">
+              <div class="preview-image">
+                <img
+                  v-show="projectDetail.type?.value === ProjectType.AGILE"
+                  src="./images/agile.png"
+                  class="preview-img agile" />
+                <img
+                  v-show="projectDetail.type?.value === ProjectType.GENERAL"
+                  src="./images/general.png"
+                  class="preview-img general" />
+                <img
+                  v-show="projectDetail.type?.value === ProjectType.TESTING"
+                  src="./images/testing.png"
+                  class="preview-img testing" />
+              </div>
+              <div class="preview-features">
+                <div
+                  v-for="(item, index) in projectTypeTipConfig[projectDetail.type?.value || ProjectType.AGILE]"
+                  :key="index"
+                  class="feature-item">
+                  <Icon icon="icon-duihao-copy" class="feature-icon" />
+                  <p class="feature-text">{{ item }}</p>
                 </div>
               </div>
             </div>
-
-            <FormItem label="" class="form-actions">
-              <div class="action-buttons">
-                <Button
-                  type="primary"
-                  size="small"
-                  htmlType="submit"
-                  :loading="loading"
-                  class="primary-button"
-                  @click="handleFormSubmit">
-                  <Icon icon="icon-dangqianxuanzhong" class="button-icon" />
-                  {{ t('actions.save') }}
-                </Button>
-                <Button
-                  size="small"
-                  class="secondary-button"
-                  @click="handleFormCancel">
-                  {{ t('actions.cancel') }}
-                </Button>
-              </div>
-            </FormItem>
-          </Form>
+          </div>
         </div>
-      </TabPane>
-      <!-- <TabPane key="module" :tab="t('project.projectEdit.tabs.module')">
-        <Module :projectId="props.projectId" :projectName="projectDetail.name || ''" />
-      </TabPane>
-      <TabPane key="version" :tab="t('project.projectEdit.tabs.version')">
-        <Version
-          :projectId="props.projectId"
-          class="!p-0"
-          :showDetail="false" />
-      </TabPane>
-      <TabPane key="biaoqian" :tab="t('project.projectEdit.tabs.tag')">
-        <Tags :projectId="props.projectId" />
-      </TabPane> -->
-    </Tabs>
+
+        <FormItem label="" class="form-actions">
+          <div class="action-buttons">
+            <Button
+              type="primary"
+              size="small"
+              htmlType="submit"
+              :loading="loading"
+              class="primary-button"
+              @click="handleFormSubmit">
+              <Icon icon="icon-dangqianxuanzhong" class="button-icon" />
+              {{ t('actions.save') }}
+            </Button>
+            <Button
+              size="small"
+              class="secondary-button"
+              @click="handleFormCancel">
+              {{ t('actions.cancel') }}
+            </Button>
+          </div>
+        </FormItem>
+      </Form>
+    </div>
+
     <Cropper
       v-model:visible="uploadAvatarVisible"
       :title="t('project.projectEdit.actions.uploadIcon')"

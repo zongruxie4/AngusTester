@@ -18,9 +18,9 @@ const PROJECT_PAGE_TYPES = {
 } as const;
 
 // Async component definitions
-const ProjectHome = defineAsyncComponent(() => import('@/views/project/project/list/index.vue'));
-const EditProject = defineAsyncComponent(() => import('@/views/project/project/edit/index.vue'));
-const ProjectDetail = defineAsyncComponent(() => import('@/views/project/project/detail/index.vue'));
+const ProjectHome = defineAsyncComponent(() => import('@/views/project/project/List.vue'));
+const EditProject = defineAsyncComponent(() => import('@/views/project/project/Edit.vue'));
+const ProjectDetail = defineAsyncComponent(() => import('@/views/project/project/Detail.vue'));
 
 // Reactive data setup
 const userInfo = ref(appContext.getUser());

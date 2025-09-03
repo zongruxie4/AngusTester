@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<TagProps>(), {
 });
 
 // Async component definitions for better code splitting
-const CreateModal = defineAsyncComponent(() => import('./add.vue'));
+const CreateModal = defineAsyncComponent(() => import('./Add.vue'));
 
 // Convert props to reactive references for composables
 const projectIdRef = toRef(props, 'projectId');

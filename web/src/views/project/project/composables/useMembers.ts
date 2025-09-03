@@ -1,6 +1,5 @@
 import { ref } from 'vue';
-import type { ProjectMembers, ProjectMember } from '../../types';
-import type { UseProjectMembersReturn, MemberType, DefaultOptions } from '../types';
+import type { ProjectMembers, ProjectMember, UseProjectMembersReturn, DefaultOptions, MemberType } from '../types';
 
 /**
  * Project members management composable

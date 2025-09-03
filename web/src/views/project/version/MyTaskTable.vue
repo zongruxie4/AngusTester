@@ -105,7 +105,7 @@ const emptyTextStyle = {
   <div>
     <template v-if="!props.taskList?.length">
       <div class="flex-1 flex flex-col items-center justify-center">
-        <img class="w-27.5" src="../../../../../assets/images/nodata.png">
+        <img class="w-27.5" src="../../../assets/images/nodata.png">
         <div class="flex items-center text-theme-sub-content text-3 leading-5">
           {{ t('taskVersion.taskTable.messages.noData') }}
         </div>
