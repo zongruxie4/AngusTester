@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, watch } from 'vue';
+import { defineAsyncComponent, onMounted, provide, watch } from 'vue';
 import { Dropdown } from 'ant-design-vue';
 import {
   Breadcrumb,
@@ -64,14 +64,8 @@ const {
 const {
   appInfo,
   logoDefaultImg,
-  mainContentStyle,
-  provideLayoutContext
-} = useLayoutState(
-  currentProject,
-  projectTypeVisibility,
-  changeProjectInfo,
-  loadProjectData
-);
+  mainContentStyle
+} = useLayoutState();
 
 /**
  * Handle project dropdown input change
@@ -89,30 +83,36 @@ const handleProjectClick = (project: any): void => {
 };
 
 /**
- * Initialize component and watch for user changes
+ * Provide global application info
  */
+const provideAppContext = (): void => {
+  provide('proTypeShowMap', projectTypeVisibility.value);
+  provide('projectInfo', currentProject);
+  provide('changeProjectInfo', changeProjectInfo);
+  provide('getNewCurrentProject', loadProjectData);
+};
+
+// Watch for project type changes
+watch(() => currentProject.value?.type?.value, (newValue, oldValue) => {
+  if ((newValue === ProjectType.TESTING) && (oldValue !== ProjectType.TESTING)) {
+    handleProjectTypeChange();
+  }
+}, {
+  immediate: true,
+  deep: true
+});
+
+// Watch for user info changes and load project data
 onMounted(async () => {
-  watch(() => userInfo.value, () => {
+  watch(() => userInfo.value, async () => {
     if (!userInfo.value?.id) {
       return;
     }
-    loadProjectData();
+    await loadProjectData();
   }, { immediate: true });
-
-  // Watch for project type changes
-  watch(() => currentProject.value?.type?.value, (newValue, oldValue) => {
-    if ((newValue === ProjectType.TESTING) && (oldValue !== ProjectType.TESTING)) {
-      handleProjectTypeChange();
-    }
-  }, {
-    immediate: true,
-    deep: true
-  });
-
 });
 
- // Provide context to child components
-provideLayoutContext();
+provideAppContext();
 </script>
 <template>
   <div class="shadow relative z-99 flex items-center h-13.5 pr-3 header-nav-bg">

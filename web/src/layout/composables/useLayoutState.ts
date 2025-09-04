@@ -1,17 +1,11 @@
-import { computed, provide, ref, ComputedRef, Ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { appContext } from '@xcan-angus/infra';
-import type { ProjectDisplayInfo, ProjectTypeVisibility } from '../types';
 
 /**
  * Composable for managing layout state and context
  */
-export function useLayoutState (
-  currentProject: Ref<ProjectDisplayInfo | undefined>,
-  projectTypeVisibility: ComputedRef<ProjectTypeVisibility>,
-  changeProjectInfo: (projectId?: string, force?: boolean) => Promise<void>,
-  loadProjectData: () => Promise<void>
-) {
+export function useLayoutState () {
   const route = useRoute();
 
   // Application context
@@ -32,21 +26,10 @@ export function useLayoutState (
     return hasBreadcrumb.value ? 'height: calc(100% - 43px);' : 'height: 100%;';
   });
 
-  /**
-   * Provide context to child components
-   */
-  const provideLayoutContext = (): void => {
-    provide('proTypeShowMap', projectTypeVisibility.value);
-    provide('projectInfo', currentProject);
-    provide('changeProjectInfo', changeProjectInfo);
-    provide('getNewCurrentProject', loadProjectData);
-  };
-
   return {
     appInfo,
     logoDefaultImg,
     hasBreadcrumb,
-    mainContentStyle,
-    provideLayoutContext
+    mainContentStyle
   };
 }
