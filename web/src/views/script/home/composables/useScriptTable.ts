@@ -1,7 +1,7 @@
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { notification } from '@xcan-angus/vue-ui';
+import { notification, modal } from '@xcan-angus/vue-ui';
 import { script, exec } from '@/api/tester';
 
 import { ScriptInfo } from '@/views/script/types';
@@ -273,20 +273,27 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
       notification.error(t('scriptHome.table.messages.maxDeleteLimit', { maxNum: MAX_NUM, num }));
       return;
     }
+    modal.confirm({
+      title: t('scriptHome.table.actions.delete'),
+      content: t('scriptHome.table.messages.deleteConfirm', { num }),
+      onOk: async () => {
+        // Confirmation would be handled in the parent component
+        loadingSetter(true);
+        const ids = Object.values(selectedDataMap.value).map(item => item.id);
+        const [error] = await script.deleteScript(ids);
+        loadingSetter(false);
 
-    // Confirmation would be handled in the parent component
-    loadingSetter(true);
-    const ids = Object.values(selectedDataMap.value).map(item => item.id);
-    const [error] = await script.deleteScript(ids);
-    loadingSetter(false);
+        if (error) {
+          return;
+        }
+        notification.success(t('scriptHome.table.messages.deleteSuccess', { num }));
+        deleteCallback(ids);
+        rowSelection.value.selectedRowKeys = [];
+        selectedDataMap.value = {};
+      }
+    });
 
-    if (error) {
-      return;
-    }
-    notification.success(t('scriptHome.table.messages.deleteSuccess', { num }));
-    deleteCallback(ids);
-    rowSelection.value.selectedRowKeys = [];
-    selectedDataMap.value = {};
+    
   };
 
   /**
@@ -300,13 +307,20 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
    * Handle single script execution
    */
   const handleSingleExec = async (data: ScriptInfo, loadingSetter: (loading: boolean) => void) => {
-    loadingSetter(true);
-    const [error] = await exec.addExecByScript({ scriptId: data.id });
-    loadingSetter(false);
-    if (error) {
-      return;
-    }
-    notification.success(t('scriptHome.table.messages.addExecuteSuccess'));
+    modal.confirm({
+      title: t('scriptHome.table.actions.execute'),
+      content: t('scriptHome.table.messages.executeScriptConfirmSimple', { name: data.name }),
+      onOk: async () => {
+        loadingSetter(true);
+        const [error] = await exec.addExecByScript({ scriptId: data.id });
+        loadingSetter(false);
+        if (error) {
+          return;
+        }
+        notification.success(t('scriptHome.table.messages.addExecuteSuccess'))
+      }
+    });
+  ;
   };
 
   /**
@@ -335,16 +349,22 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
    */
   const handleDelete = async (data: ScriptInfo, loadingSetter: (loading: boolean) => void, deleteCallback: (ids: string[]) => void) => {
     // Confirmation would be handled in the parent component
-    const id = data.id;
-    loadingSetter(true);
-    const [error] = await script.deleteScript([id]);
-    loadingSetter(false);
+    modal.confirm({
+      title: t('scriptHome.table.actions.delete'),
+      content: t('scriptHome.table.messages.deleteScriptConfirmSimple', { name: data.name }),
+      onOk: async () => {
+        const id = data.id;
+        loadingSetter(true);
+        const [error] = await script.deleteScript([id]);
+        loadingSetter(false);
 
-    if (error) {
-      return;
-    }
-    notification.success(t('scriptHome.table.messages.deleteScriptSuccess'));
-    deleteCallback([id]);
+        if (error) {
+          return;
+        }
+        notification.success(t('scriptHome.table.messages.deleteScriptSuccess'));
+        deleteCallback([id]);
+      }
+    });
   };
 
   /**

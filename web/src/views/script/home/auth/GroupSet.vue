@@ -86,6 +86,8 @@ onMounted(() => {
     if (newValue && newValue !== activeId.value) {
       activeId.value = newValue;
     }
+  }, {
+    immediate: true
   });
 
   // Watch for apiPath changes to trigger data loading
@@ -94,6 +96,8 @@ onMounted(() => {
       // Trigger data loading by incrementing notify
       notify.value++;
     }
+  }, {
+    immediate: true
   });
 });
 </script>

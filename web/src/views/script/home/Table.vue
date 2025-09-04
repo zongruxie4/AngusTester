@@ -198,7 +198,6 @@ rowSelection.value.onChange = (keys: string[]) => {
 };
 </script>
 
-<!-- TODO 批量删除和删除添加确认提醒 -->
 <template>
   <template v-if="props.loaded">
     <div

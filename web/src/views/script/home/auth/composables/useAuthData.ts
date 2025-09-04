@@ -57,12 +57,12 @@ export function useAuthData (projectId: string, authObjectId: string | undefined
    */
   const loadAuths = async (ids: string[]) => {
     const params: {
-      authObjectId: string;
-      authObjectType: 'user' | 'dept' | 'group';
+      scriptId: string;
+      authObjectType: 'USER' | 'DEPT' | 'GROUP';
       filters?: [{ key: 'scriptId'; op: 'IN'; value: string[]; }]
     } = {
-      authObjectId: authObjectId!,
-      authObjectType: type,
+      scriptId: authObjectId!,
+      authObjectType: type.toUpperCase() as 'USER' | 'DEPT' | 'GROUP',
       filters: [{ key: 'scriptId', op: 'IN', value: ids }]
     };
 

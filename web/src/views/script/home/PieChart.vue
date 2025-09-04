@@ -42,7 +42,6 @@ onMounted(() => {
 
 <template>
   <div class="relative leading-5 text-3  ml-10">
-    <!-- TODO 切换顶部菜单、刷新页面会出现饼图图例数据不展示问题； 修改快速查询条件不生效 -->
     <!-- Chart container -->
     <div
       :id="domId"

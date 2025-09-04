@@ -45,7 +45,8 @@
         "authPlaceholder": "Auth Control",
         "auth": "Auth",
         "all": "All",
-        "loading": "Loading..."
+        "loading": "Loading...",
+        "name": "Name"
       },
       "groupSet": {
         "deptPlaceholder": "Search Department",
@@ -101,6 +102,7 @@
         "cloneSuccess": "Script cloned successfully",
         "deleteScriptConfirm": "Deleting script 【{name}】 will also delete associated scenarios, are you sure to delete?",
         "deleteScriptConfirmSimple": "Are you sure to delete script 【{name}】?",
+        "executeScriptConfirmSimple": "Are you sure to execute script 【{name}】?",
         "deleteScriptSuccess": "Script deleted successfully",
         "noScriptData": "No script data, ",
         "importExample": "Import Example",
