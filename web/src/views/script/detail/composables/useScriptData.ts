@@ -10,7 +10,7 @@ import { PermissionKey, ScriptInfo } from '../types';
  * Script data management composable
  * Handles script loading, saving, and permission management
  */
-export function useScriptData(projectInfo: Ref<{ id: string; avatar: string; name: string; }>, isAdmin: Ref<boolean>) {
+export function useScriptData (projectInfo: Ref<{ id: string; avatar: string; name: string; }>, isAdmin: Ref<boolean>) {
   const route = useRoute();
   const router = useRouter();
 

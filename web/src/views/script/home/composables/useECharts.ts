@@ -8,7 +8,7 @@ import { CanvasRenderer } from 'echarts/renderers';
  * Composable for managing ECharts library initialization and common operations
  * Provides centralized ECharts setup and utility functions
  */
-export function useECharts() {
+export function useECharts () {
   /**
    * Initialize ECharts library with required components
    * Registers all necessary components for pie charts and other chart types

@@ -29,6 +29,7 @@ const props = withDefaults(defineProps<IndexProps>(), {
  * Component emits definition for visibility control.
  * </p>
  */
+// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
 }>();
@@ -54,25 +55,18 @@ const cancel = () => {
 
 /**
  * <p>
- * Loads permission enums and converts them to the required format.
- * Maps enum values to permission objects with labels and values.
- * </p>
- */
-const loadEnums = () => {
-  const res = enumUtils.enumToMessages(ScriptPermission);
-  permissions.value = res.map(item => ({ 
-    label: item.message, 
-    value: item.value 
-  }));
-};
-
-/**
- * <p>
  * Component lifecycle: Initialize on mount.
  * Sets up watchers for visibility changes and loads permissions.
  * </p>
  */
 onMounted(() => {
+  // Load permission enums once on mount
+  const res = enumUtils.enumToMessages(ScriptPermission);
+  permissions.value = res.map(item => ({
+    label: item.message,
+    value: item.value
+  }));
+
   watch(() => props.visible, (newValue) => {
     if (!newValue) {
       return;
@@ -84,14 +78,8 @@ onMounted(() => {
     checkedGroupId.value = undefined;
     checkedDeptId.value = undefined;
     loaded.value = false;
-
-    // Load permission enums
-    loadEnums();
   }, { immediate: true });
 });
-
-// Internationalization text
-const text = t('scriptHome.globalAuth.description');
 
 // Modal body style configuration
 const bodyStyle = {
@@ -106,19 +94,18 @@ const bodyStyle = {
     :footer="false"
     :visible="props.visible"
     :bodyStyle="bodyStyle"
-    style="width: 98%;height: 95%;"
+    style="width: 80%;height: 80%;"
     wrapClassName="authorize-modal-wrapper"
     @cancel="cancel">
     <div class="h-full pt-2">
       <!-- Description hints -->
-      <Hints :text="text" />
-      
+      <Hints :text="t('scriptHome.globalAuth.description')" />
+
       <!-- Tab navigation -->
       <Tabs
         v-model:activeKey="activeKey"
         size="small"
         style="height: calc(100% - 18px);">
-        
         <!-- User tab -->
         <TabPane key="user" :tab="t('scriptHome.globalAuth.tabs.user')">
           <GroupSet
@@ -138,7 +125,7 @@ const bodyStyle = {
             :authObjectId="checkedUserId"
             :permissions="permissions" />
         </TabPane>
-        
+
         <!-- Department tab -->
         <TabPane key="dept" :tab="t('scriptHome.globalAuth.tabs.dept')">
           <GroupSet
@@ -158,7 +145,7 @@ const bodyStyle = {
             :authObjectId="checkedDeptId"
             :permissions="permissions" />
         </TabPane>
-        
+
         <!-- Group tab -->
         <TabPane key="group" :tab="t('scriptHome.globalAuth.tabs.group')">
           <GroupSet

@@ -5,7 +5,7 @@ import { ExecInfo } from '../types';
  * Execution record management composable
  * Handles execution record data and display
  */
-export function useExecRecord() {
+export function useExecRecord () {
   const dataList = ref<ExecInfo[]>([]);
 
   /**

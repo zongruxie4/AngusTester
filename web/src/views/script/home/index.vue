@@ -39,6 +39,7 @@ const appInfoForProps = computed(() => ({
 
 // Composables
 const {
+  dataProjectId,
   tableData,
   permissionsMap,
   loading,
@@ -50,12 +51,14 @@ const {
   loadScriptList,
   loadResourcesData,
   handleTableChange,
-  handleDelete
-} = useScriptData(projectId);
+  handleDelete,
+  updateFilters
+} = useScriptData();
 
 const {
+  importProjectId,
   handleImport
-} = useScriptImport(projectId);
+} = useScriptImport();
 
 // Modal visibility states
 const importVisible = ref(false);
@@ -77,8 +80,9 @@ const toAuth = () => {
 
 /**
  * Handle search panel changes
+ * @param searchFilters - Search filters from the search panel
  */
-const searchPanelChange = () => {
+const searchPanelChange = (searchFilters: { key: string; op: string; value: boolean | string | string[]; }[]) => {
   const { pageNo, pageSize } = route.query;
   if (pageNo && pageSize) {
     pagination.value.current = +pageNo;
@@ -88,8 +92,10 @@ const searchPanelChange = () => {
     pagination.value.current = 1;
   }
 
-  // Update filters and reload data
-  // This would need to be handled in the composable
+  // Update filters in useScriptData composable
+  updateFilters(searchFilters);
+
+  // Reload data with new filters
   loadScriptList();
   loadResourcesData();
 };
@@ -112,9 +118,11 @@ const permissionsMapForProps = computed((): { [key: string]: PermissionKey[] } =
 });
 
 // Watch for project ID changes with better error handling
-watch(() => projectId, (newId, oldId) => {
+watch(projectId, (newId, oldId) => {
   // Only load data if we have a valid project ID and it's different from the previous one
-  if (newId && newId.value !== '' && (oldId === undefined || newId.value !== oldId.value)) {
+  if (newId && newId !== '' && newId !== oldId) {
+    dataProjectId.value = newId;
+    importProjectId.value = newId;
     loadScriptList();
     loadResourcesData();
   }

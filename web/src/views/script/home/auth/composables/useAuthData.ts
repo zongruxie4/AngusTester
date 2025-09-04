@@ -13,9 +13,9 @@ import { SpaceItem } from '../types';
  * Handles data loading, searching, scrolling pagination, and permission updates.
  * </p>
  */
-export function useAuthData(projectId: string, authObjectId: string | undefined, type: 'user' | 'dept' | 'group') {
+export function useAuthData (projectId: string, authObjectId: string | undefined, type: 'user' | 'dept' | 'group') {
   const LINE_HEIGHT = 44;
-  
+
   // Data state
   const loading = ref(true);
   const pageNo = ref(1);
@@ -280,10 +280,12 @@ export function useAuthData(projectId: string, authObjectId: string | undefined,
   watch(() => authObjectId, (newValue) => {
     reset();
     if (!newValue) {
+      loading.value = false;
       return;
     }
+    // Ensure data is loaded when authObjectId changes
     loadData();
-  });
+  }, { immediate: true });
 
   return {
     // State

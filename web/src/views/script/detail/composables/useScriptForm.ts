@@ -4,7 +4,7 @@ import { reactive, ref, watch, onMounted } from 'vue';
  * Script form management composable
  * Handles form state and validation
  */
-export function useScriptForm(props: any) {
+export function useScriptForm (props: any) {
   const formRef = ref();
 
   const formData = reactive({
@@ -65,7 +65,7 @@ export function useScriptForm(props: any) {
     // Form refs
     formRef,
     formData,
-    
+
     // Form methods
     excludes,
     handleTypeChange,

@@ -1,9 +1,20 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { watch } from 'vue';
 import { Button, Form, FormItem, Upload } from 'ant-design-vue';
-import { Icon, Input, Modal, notification } from '@xcan-angus/vue-ui';
+import { Icon, Input, Modal } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { useScriptImport } from './composables/useScriptImport';
+
+/**
+ * Format bytes to human readable format
+ */
+const formatBytes = (bytes: number): string => {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+};
 
 interface Props {
   projectId: string;
@@ -40,7 +51,7 @@ const {
   fileEmptyFlag,
   errorFlag,
   rules
-} = useScriptImport(props.projectId);
+} = useScriptImport();
 
 /**
  * Handle OK action
@@ -49,6 +60,14 @@ const handleOk = async () => {
   await handleImport(() => {
     emit('ok');
   });
+};
+
+/**
+ * Handle cancel action
+ */
+const handleCancelClick = () => {
+  handleCancel();
+  emit('update:visible', false);
 };
 
 /**
@@ -66,7 +85,7 @@ watch(() => props.visible, (newVisible) => {
     :confirmLoading="loading"
     :width="800"
     :title="t('scriptHome.import.title')"
-    @cancel="handleCancel"
+    @cancel="handleCancelClick"
     @ok="handleOk">
     <Form
       ref="formRef"

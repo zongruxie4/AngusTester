@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue';
+import { onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
-import { Colon, Icon, IconText, SearchPanel, Select } from '@xcan-angus/vue-ui';
+import { Colon, Icon, IconRefresh, IconText, SearchPanel, Select } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { useScriptSearch } from './composables/useScriptSearch';
 import { ScriptSearchProps } from '@/views/script/home/types';
@@ -31,7 +31,6 @@ const {
   filters,
   serviceIdFilter,
   sourceIdFilter,
-  scriptTypeOpt,
   selectedMenuMap,
   loadEnum,
   handleMenuItemClick,
@@ -96,34 +95,14 @@ watch(
   },
   { immediate: false, deep: false }
 );
-
-const userId = computed(() => {
-  return props.userInfo?.id;
-});
-
-const dbBaseKey = computed(() => {
-  let key = '';
-  if (userId.value) {
-    key = userId.value;
-  }
-
-  if (props.projectId) {
-    key += props.projectId;
-  }
-
-  return key;
-});
-
-const source = computed(() => {
-  return filters.value.find(item => item.key === 'source')?.value;
-});
 </script>
 <template>
-  <div class="text-3 leading-5">
-    <div class="flex items-start justify-between mb-1.5">
+  <div class="mt-2.5 mb-3.5">
+    <div class="flex items-center mb-3">
       <div class="flex items-start transform-gpu translate-y-0.5">
-        <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-          <span>{{ t('scriptHome.searchPanel.quickSearch') }}</span>
+        <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 mt-1 rounded-full"></div>
+        <div class="whitespace-nowrap text-3 mt-0.5 text-text-sub-content">
+          <span>{{ t('projectActivity.searchPanel.ui.quickQuery') }}</span>
           <Colon />
         </div>
         <div class="flex flex-wrap ml-2">
@@ -131,7 +110,7 @@ const source = computed(() => {
             v-for="item in menuItems"
             :key="item.key"
             :class="{ 'active-key': selectedMenuMap.has(item.key) }"
-            class="px-2.5 h-6 leading-6 mr-3 mb-3 rounded bg-gray-light cursor-pointer"
+            class="px-2.5 h-6 leading-6 mr-3 rounded bg-gray-light cursor-pointer font-semibold text-3"
             @click="handleMenuItemClick(item)">
             {{ item.name }}
           </div>
@@ -237,10 +216,15 @@ const source = computed(() => {
           <span>{{ t('scriptHome.searchPanel.scriptAuth') }}</span>
         </Button>
 
-        <Button size="small" @click="toRefresh">
-          <Icon icon="icon-shuaxin" class="mr-1 text-3.5" />
-          <span>{{ t('actions.refresh') }}</span>
-        </Button>
+        <!-- Refresh Button -->
+        <IconRefresh
+          @click="toRefresh">
+          <template #default>
+            <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
+              <Icon icon="icon-shuaxin" class="text-3.5" />
+            </div>
+          </template>
+        </IconRefresh>
       </div>
     </div>
   </div>

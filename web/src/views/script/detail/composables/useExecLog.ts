@@ -5,7 +5,7 @@ import { getDataByProxy } from '@/api/proxy';
  * Execution log management composable
  * Handles loading and downloading of execution logs
  */
-export function useExecLog(props: any) {
+export function useExecLog (props: any) {
   const nodeId = ref<string>();
   const nodeIp = ref<string>();
   const nodePort = ref<string>('6807');
@@ -23,12 +23,12 @@ export function useExecLog(props: any) {
   const loadExecLog = async () => {
     loading.value = true;
     const [error, res] = await getDataByProxy(
-      `http://${nodeIp.value}:${nodePort.value}/actuator/runner/log/${props.execId}`, 
-      {}, 
+      `http://${nodeIp.value}:${nodePort.value}/actuator/runner/log/${props.execId}`,
+      {},
       { timeout: 0 }
     );
     loading.value = false;
-    
+
     if (error) {
       execLogErr.value = true;
       if (error.response?.data) {
@@ -90,7 +90,7 @@ export function useExecLog(props: any) {
     execLogErr,
     errorText,
     loading,
-    
+
     // Log methods
     loadExecLog,
     downloadLog

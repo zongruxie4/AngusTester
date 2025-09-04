@@ -7,7 +7,7 @@ import YAML from 'yaml';
  * Debug functionality management composable
  * Handles script debugging and debug info loading
  */
-export function useDebug(scriptId: any, scriptValue: any, toolbarRef: any) {
+export function useDebug (scriptId: any, scriptValue: any, toolbarRef: any) {
   const debugExecInfo = ref<{
     id: string;
     execNode: { id: string, name: string, ip: string, agentPort: string, publicIp: string };
@@ -26,7 +26,7 @@ export function useDebug(scriptId: any, scriptValue: any, toolbarRef: any) {
       exitCode: string;
     };
   }>();
-  
+
   const pluginType = ref<string>();
 
   /**
@@ -48,7 +48,7 @@ export function useDebug(scriptId: any, scriptValue: any, toolbarRef: any) {
         scriptId: scriptId.value,
         scriptType: scriptConfig.type
       };
-      
+
       const [error, { data }] = await exec.startDebug(params);
       if (error || !data) {
         return;

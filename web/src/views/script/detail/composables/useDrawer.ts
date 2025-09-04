@@ -5,9 +5,9 @@ import { useI18n } from 'vue-i18n';
  * Drawer management composable
  * Handles drawer state and menu items
  */
-export function useDrawer(pageType: any, viewMode: any) {
+export function useDrawer (pageType: any, viewMode: any) {
   const { t } = useI18n();
-  
+
   const activeDrawerKey = ref('basicInfo');
   const isEditFlag = ref<boolean>(viewMode.value === 'edit');
 
@@ -75,7 +75,7 @@ export function useDrawer(pageType: any, viewMode: any) {
     activeDrawerKey,
     isEditFlag,
     drawerMenuItems,
-    
+
     // Drawer methods
     handleEdit,
     handleCancel

@@ -1,5 +1,6 @@
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { notification } from '@xcan-angus/vue-ui';
 import { script, exec } from '@/api/tester';
 import { ScriptInfo } from '../types';
@@ -8,8 +9,9 @@ import { ScriptInfo } from '../types';
  * Composable for managing script table functionality
  * @param permissionsMap - Map of script permissions
  */
-export function useScriptTable(permissionsMap: { [key: string]: string[] }) {
+export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
   const router = useRouter();
+  const { t } = useI18n();
 
   // Constants
   const MAX_NUM = 200;
@@ -19,22 +21,22 @@ export function useScriptTable(permissionsMap: { [key: string]: string[] }) {
     {
       title: 'ID',
       dataIndex: 'id',
-      width: '12%',
+      width: '10%',
       key: 'id',
       customCell: () => {
         return { style: 'white-space:nowrap;' };
       }
     },
     {
-      title: '名称',
+      title: t('scriptHome.table.columns.name'),
       dataIndex: 'name',
       ellipsis: true,
       sorter: true,
-      width: '15%',
+      width: '20%',
       key: 'name'
     },
     {
-      title: '插件',
+      title: t('scriptHome.table.columns.plugin'),
       dataIndex: 'plugin',
       sorter: true,
       width: '6%',
@@ -44,30 +46,30 @@ export function useScriptTable(permissionsMap: { [key: string]: string[] }) {
       }
     },
     {
-      title: '类型',
+      title: t('scriptHome.table.columns.type'),
       dataIndex: 'type',
       sorter: true,
-      width: '6%',
+      width: '7%',
       key: 'type',
       customCell: () => {
         return { style: 'white-space:nowrap;' };
       }
     },
     {
-      title: '来源',
+      title: t('scriptHome.table.columns.source'),
       dataIndex: 'source',
       sorter: true,
-      width: '6%',
+      width: '7%',
       key: 'source',
       customCell: () => {
         return { style: 'white-space:nowrap;' };
       }
     },
     {
-      title: '资源ID',
+      title: t('scriptHome.table.columns.resourceId'),
       dataIndex: 'sourceId',
-      width: '12%',
-      groupName: 'sourceId',
+      width: '18%',
+      groupName: 'source',
       hide: true,
       key: 'sourceId',
       customCell: () => {
@@ -75,10 +77,10 @@ export function useScriptTable(permissionsMap: { [key: string]: string[] }) {
       }
     },
     {
-      title: '资源名称',
+      title: t('scriptHome.table.columns.resourceName'),
       dataIndex: 'sourceName',
-      width: '15%',
-      groupName: 'sourceId',
+      width: '18%',
+      groupName: 'source',
       hide: false,
       key: 'sourceName',
       customCell: () => {
@@ -86,21 +88,22 @@ export function useScriptTable(permissionsMap: { [key: string]: string[] }) {
       }
     },
     {
-      title: '标签',
+      title: t('scriptHome.table.columns.tags'),
       dataIndex: 'tags',
-      key: 'tags'
+      key: 'tags',
+      width: '14%'
     },
     {
-      title: '添加人',
+      title: t('scriptHome.table.columns.creator'),
       dataIndex: 'createdByName',
-      width: '7%',
+      width: '8%',
       groupName: 'createdByName',
       key: 'createdByName',
       customRender: ({ text }: { text: string }) => text || '--',
       ellipsis: true
     },
     {
-      title: '最后修改人',
+      title: t('scriptHome.table.columns.modifier'),
       dataIndex: 'lastModifiedByName',
       width: '8%',
       groupName: 'createdByName',
@@ -110,7 +113,7 @@ export function useScriptTable(permissionsMap: { [key: string]: string[] }) {
       ellipsis: true
     },
     {
-      title: '添加时间',
+      title: t('scriptHome.table.columns.addTime'),
       dataIndex: 'createdDate',
       width: '10%',
       sorter: true,
@@ -121,7 +124,7 @@ export function useScriptTable(permissionsMap: { [key: string]: string[] }) {
       }
     },
     {
-      title: '最后修改时间',
+      title: t('scriptHome.table.columns.modifyTime'),
       dataIndex: 'lastModifiedDate',
       width: '10%',
       sorter: true,
@@ -133,9 +136,9 @@ export function useScriptTable(permissionsMap: { [key: string]: string[] }) {
       }
     },
     {
-      title: '操作',
+      title: t('scriptHome.table.columns.operation'),
       dataIndex: 'action',
-      width: 138,
+      width: 180,
       key: 'action'
     }
   ];
@@ -145,25 +148,25 @@ export function useScriptTable(permissionsMap: { [key: string]: string[] }) {
     {
       key: 'auth',
       icon: 'icon-quanxian1',
-      name: '权限',
+      name: t('scriptHome.table.actions.auth'),
       permission: 'GRANT'
     },
     {
       key: 'clone',
       icon: 'icon-fuzhi',
-      name: '克隆',
+      name: t('scriptHome.table.actions.clone'),
       permission: 'COLON'
     },
     {
       key: 'delete',
       icon: 'icon-qingchu',
-      name: '删除',
+      name: t('scriptHome.table.actions.delete'),
       permission: 'DELETE'
     },
     {
       key: 'export',
       icon: 'icon-daochu',
-      name: '导出',
+      name: t('scriptHome.table.actions.export'),
       permission: 'EXPORT'
     }
   ];
@@ -185,10 +188,10 @@ export function useScriptTable(permissionsMap: { [key: string]: string[] }) {
   const rowSelection = ref<{
     onChange:(key: string[]) => void;
     selectedRowKeys: string[];
-  }>({
-    onChange: () => {},
-    selectedRowKeys: []
-  });
+      }>({
+        onChange: () => {},
+        selectedRowKeys: []
+      });
 
   /**
    * Cancel batch operations
@@ -208,7 +211,7 @@ export function useScriptTable(permissionsMap: { [key: string]: string[] }) {
       return;
     }
     if (num > MAX_NUM) {
-      notification.error(`最大支持批量执行 ${MAX_NUM} 个脚本，当前已选中 ${num} 个脚本。`);
+      notification.error(t('scriptHome.table.messages.maxBatchLimit', { maxNum: MAX_NUM, selectedNum: num }));
       return;
     }
 
@@ -233,19 +236,19 @@ export function useScriptTable(permissionsMap: { [key: string]: string[] }) {
       const errorNum = errorIds.length;
 
       if (errorNum === 0) {
-        notification.success(`选中的 ${num} 条脚本全部执行成功`);
+        notification.success(t('scriptHome.table.messages.executeSuccess', { num }));
         rowSelection.value.selectedRowKeys = [];
         selectedDataMap.value = {};
         return;
       }
 
       if (errorNum === num) {
-        notification.error(`选中的 ${num} 条脚本全部执行失败`);
+        notification.error(t('scriptHome.table.messages.executeFail', { num }));
         return;
       }
 
       const successIds = ids.filter(item => !errorIds.includes(item));
-      notification.warning(`选中的 ${num - errorNum} 条脚本执行成功，${errorNum} 条脚本执行失败`);
+      notification.warning(t('scriptHome.table.messages.executePartial', { successNum: num - errorNum, errorNum }));
 
       rowSelection.value.selectedRowKeys = rowSelection.value.selectedRowKeys.filter((item) => !successIds.includes(item));
 
@@ -266,7 +269,7 @@ export function useScriptTable(permissionsMap: { [key: string]: string[] }) {
       return;
     }
     if (num > MAX_NUM) {
-      notification.error(`最大支持批量删除 ${MAX_NUM} 个脚本，当前已选中 ${num} 个脚本。`);
+      notification.error(t('scriptHome.table.messages.maxDeleteLimit', { maxNum: MAX_NUM, num }));
       return;
     }
 
@@ -279,7 +282,7 @@ export function useScriptTable(permissionsMap: { [key: string]: string[] }) {
     if (error) {
       return;
     }
-    notification.success(`选中的 ${num} 条脚本删除成功`);
+    notification.success(t('scriptHome.table.messages.deleteSuccess', { num }));
     deleteCallback(ids);
     rowSelection.value.selectedRowKeys = [];
     selectedDataMap.value = {};
@@ -302,7 +305,7 @@ export function useScriptTable(permissionsMap: { [key: string]: string[] }) {
     if (error) {
       return;
     }
-    notification.success('脚本添加执行成功，请在"执行"中查看详情');
+    notification.success(t('scriptHome.table.messages.addExecuteSuccess'));
   };
 
   /**
@@ -315,7 +318,7 @@ export function useScriptTable(permissionsMap: { [key: string]: string[] }) {
     if (error) {
       return;
     }
-    notification.success('脚本克隆成功');
+    notification.success(t('scriptHome.table.messages.cloneSuccess'));
     refreshCallback();
   };
 
@@ -323,10 +326,6 @@ export function useScriptTable(permissionsMap: { [key: string]: string[] }) {
    * Handle script delete
    */
   const handleDelete = async (data: ScriptInfo, loadingSetter: (loading: boolean) => void, deleteCallback: (ids: string[]) => void) => {
-    const name = data.name;
-    const source = data.source?.value;
-    const content = source === 'SCENARIO' ? `删除脚本【${name}】同时也会删除关联场景，确定是否删除？` : `确定删除【${name}】脚本吗？`;
-
     // Confirmation would be handled in the parent component
     const id = data.id;
     loadingSetter(true);
@@ -336,8 +335,7 @@ export function useScriptTable(permissionsMap: { [key: string]: string[] }) {
     if (error) {
       return;
     }
-
-    notification.success('脚本删除成功');
+    notification.success(t('scriptHome.table.messages.deleteScriptSuccess'));
     deleteCallback([id]);
   };
 

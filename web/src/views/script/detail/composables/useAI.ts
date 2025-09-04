@@ -5,7 +5,7 @@ import { ai } from 'src/api/gm';
  * AI functionality management composable
  * Handles AI script generation features
  */
-export function useAI(aiEnabled: any) {
+export function useAI (aiEnabled: any) {
   const antDrawerVisible = ref(false);
   const aiScriptValue = ref('');
   const aiKeywords = ref('');
@@ -61,7 +61,7 @@ export function useAI(aiEnabled: any) {
     aiScriptValue,
     aiKeywords,
     generating,
-    
+
     // AI methods
     openAIDrawer,
     generateScript,

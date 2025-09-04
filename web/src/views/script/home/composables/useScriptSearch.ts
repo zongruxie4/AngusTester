@@ -10,42 +10,42 @@ import { MenuItem } from '../types';
  * @param projectId - The ID of the current project
  * @param userId - The ID of the current user
  */
-export function useScriptSearch(projectId: string, userId: string) {
+export function useScriptSearch (projectId: string, userId: string) {
   const { t } = useI18n();
-  
+
   // Search panel reference
   const searchPanelRef = ref();
-  
+
   // Quick date selection map
   const quickDateMap = ref<Map<'lastDay' | 'lastThreeDays' | 'lastWeek', string[]>>(new Map());
   const typeDataMap = ref<Map<string, string>>(new Map());
   const selectedMenuMap = ref(new Map<string, Omit<MenuItem, 'name'>>());
-  
+
   // Filters
   const filters = ref<{ key: string; op: string; value: string; }[]>([]);
-  const serviceIdFilter = ref<{ key: 'serviceId', op: 'EQUAL', value: string | undefined }>({ 
-    key: 'serviceId', 
-    op: 'EQUAL', 
-    value: undefined 
+  const serviceIdFilter = ref<{ key: 'serviceId', op: 'EQUAL', value: string | undefined }>({
+    key: 'serviceId',
+    op: 'EQUAL',
+    value: undefined
   });
-  const sourceIdFilter = ref<{ key: 'sourceId', op: 'EQUAL', value: string | undefined }>({ 
-    key: 'sourceId', 
-    op: 'EQUAL', 
-    value: undefined 
+  const sourceIdFilter = ref<{ key: 'sourceId', op: 'EQUAL', value: string | undefined }>({
+    key: 'sourceId',
+    op: 'EQUAL',
+    value: undefined
   });
-  
+
   // Script type options
   const scriptTypeOpt = ref<MenuItem[]>([]);
-  
+
   /**
    * Load script type enum options
    */
   const loadEnum = () => {
     const data = enumUtils.enumToMessages(ScriptType);
     scriptTypeOpt.value = data.map(i => ({ name: i.message, key: i.value }))
-                              .filter(i => i.key !== ScriptType.MOCK_APIS);
+      .filter(i => i.key !== ScriptType.MOCK_APIS);
   };
-  
+
   /**
    * Format date string for quick date selections
    */
@@ -69,11 +69,11 @@ export function useScriptSearch(projectId: string, userId: string) {
     }
 
     return [
-      startDate ? startDate.format('YYYY-MM-DD HH:mm:ss') : '', 
+      startDate ? startDate.format('YYYY-MM-DD HH:mm:ss') : '',
       endDate ? endDate.format('YYYY-MM-DD HH:mm:ss') : ''
     ];
   };
-  
+
   /**
    * Handle menu item click for quick search options
    */
@@ -81,14 +81,14 @@ export function useScriptSearch(projectId: string, userId: string) {
     const key = data.key;
     // Current operation is unselecting
     const typeKeys = scriptTypeOpt.value.map(i => i.key);
-    
+
     if (selectedMenuMap.value.has(key)) {
       // "All" button selected, clicking again does nothing
       if (key === 'none') {
         return;
       }
 
-      // Remove this selection
+      // Remove the key from selectedMenuMap when deselecting
       selectedMenuMap.value.delete(key);
 
       if (key === 'createdBy') {
@@ -151,6 +151,18 @@ export function useScriptSearch(projectId: string, userId: string) {
 
     // Other buttons will be automatically set through watchEffect
     if (key === 'createdBy') {
+      // Toggle selection: if already selected, deselect it
+      if (selectedMenuMap.value.has(key)) {
+        selectedMenuMap.value.delete(key);
+        if (typeof searchPanelRef.value?.setConfigs === 'function') {
+          searchPanelRef.value.setConfigs([{ valueKey: 'createdBy', value: undefined }]);
+        }
+        return;
+      }
+
+      // Clear 'all' selection when selecting other conditions
+      selectedMenuMap.value.delete('none');
+      selectedMenuMap.value.set(key, { key });
       if (typeof searchPanelRef.value?.setConfigs === 'function') {
         searchPanelRef.value.setConfigs([{ valueKey: 'createdBy', value: userId }]);
       }
@@ -158,6 +170,18 @@ export function useScriptSearch(projectId: string, userId: string) {
     }
 
     if (key === 'lastModifiedBy') {
+      // Toggle selection: if already selected, deselect it
+      if (selectedMenuMap.value.has(key)) {
+        selectedMenuMap.value.delete(key);
+        if (typeof searchPanelRef.value?.setConfigs === 'function') {
+          searchPanelRef.value.setConfigs([{ valueKey: 'lastModifiedBy', value: undefined }]);
+        }
+        return;
+      }
+
+      // Clear 'all' selection when selecting other conditions
+      selectedMenuMap.value.delete('none');
+      selectedMenuMap.value.set(key, { key });
       if (typeof searchPanelRef.value?.setConfigs === 'function') {
         searchPanelRef.value.setConfigs([
           { valueKey: 'lastModifiedBy', value: userId }
@@ -167,19 +191,55 @@ export function useScriptSearch(projectId: string, userId: string) {
     }
 
     if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(key)) {
+      // Toggle selection: if already selected, deselect it
+      if (selectedMenuMap.value.has(key)) {
+        selectedMenuMap.value.delete(key);
+        quickDateMap.value.clear();
+        if (typeof searchPanelRef.value?.setConfigs === 'function') {
+          searchPanelRef.value.setConfigs([{ valueKey: 'createdDate', value: undefined }]);
+        }
+        return;
+      }
+
+      // Clear 'all' selection when selecting other conditions
+      selectedMenuMap.value.delete('none');
+      // Clear other date selections (mutual exclusion within date group)
+      selectedMenuMap.value.delete('lastDay');
+      selectedMenuMap.value.delete('lastThreeDays');
+      selectedMenuMap.value.delete('lastWeek');
+
       quickDateMap.value.clear();
-      quickDateMap.value.set(key, formatDateString(key));
+      quickDateMap.value.set(key as 'lastDay' | 'lastThreeDays' | 'lastWeek', formatDateString(key));
+      selectedMenuMap.value.set(key, { key });
       if (typeof searchPanelRef.value?.setConfigs === 'function') {
         searchPanelRef.value.setConfigs([
-          { valueKey: 'createdDate', value: quickDateMap.value.get(key) }
+          { valueKey: 'createdDate', value: quickDateMap.value.get(key as 'lastDay' | 'lastThreeDays' | 'lastWeek') }
         ]);
       }
       return;
     }
 
     if (typeKeys.includes(key)) {
+      // Toggle selection: if already selected, deselect it
+      if (selectedMenuMap.value.has(key)) {
+        selectedMenuMap.value.delete(key);
+        typeDataMap.value.clear();
+        if (typeof searchPanelRef.value?.setConfigs === 'function') {
+          searchPanelRef.value.setConfigs([{ valueKey: 'type', value: undefined }]);
+        }
+        return;
+      }
+
+      // Clear 'all' selection when selecting other conditions
+      selectedMenuMap.value.delete('none');
+      // Clear other type selections (mutual exclusion within type group)
+      scriptTypeOpt.value.forEach(type => {
+        selectedMenuMap.value.delete(type.key);
+      });
+
       typeDataMap.value.clear();
-      typeDataMap.value.set(key, { key });
+      typeDataMap.value.set(key, key);
+      selectedMenuMap.value.set(key, { key });
       if (typeof searchPanelRef.value?.setConfigs === 'function') {
         searchPanelRef.value.setConfigs([
           { valueKey: 'type', value: key }
@@ -187,13 +247,13 @@ export function useScriptSearch(projectId: string, userId: string) {
       }
     }
   };
-  
+
   /**
    * Handle search panel change events
    */
   const handleSearchPanelChange = (
-    data: { key: string; op: string; value: string }[], 
-    _headers?: { [key: string]: string }, 
+    data: { key: string; op: string; value: string }[],
+    _headers?: { [key: string]: string },
     key?: string
   ) => {
     filters.value = data;
@@ -211,21 +271,21 @@ export function useScriptSearch(projectId: string, userId: string) {
       selectedMenuMap.value.delete('lastWeek');
     }
   };
-  
+
   /**
    * Handle source ID change
    */
   const handleSourceIdChange = (value: string) => {
     sourceIdFilter.value = { key: 'sourceId', op: 'EQUAL', value };
   };
-  
+
   /**
    * Handle service ID change
    */
   const handleServiceIdChange = (value: string) => {
     serviceIdFilter.value = { key: 'serviceId', op: 'EQUAL', value };
   };
-  
+
   /**
    * Get search data for API requests
    */
@@ -242,7 +302,7 @@ export function useScriptSearch(projectId: string, userId: string) {
 
     return _filters;
   };
-  
+
   /**
    * Reset search data
    */
@@ -254,7 +314,7 @@ export function useScriptSearch(projectId: string, userId: string) {
     serviceIdFilter.value = { key: 'serviceId', op: 'EQUAL', value: undefined };
     sourceIdFilter.value = { key: 'sourceId', op: 'EQUAL', value: undefined };
   };
-  
+
   /**
    * Reset search panel
    */
@@ -270,7 +330,7 @@ export function useScriptSearch(projectId: string, userId: string) {
       searchPanelRef.value.setConfigs(configs);
     }
   };
-  
+
   // Search options configuration
   const searchOptions = [
     {
@@ -320,7 +380,7 @@ export function useScriptSearch(projectId: string, userId: string) {
       type: 'date-range',
       valueKey: 'createdDate',
       placeholder: [
-        t('scriptHome.searchPanel.addTimePlaceholder.0'), 
+        t('scriptHome.searchPanel.addTimePlaceholder.0'),
         t('scriptHome.searchPanel.addTimePlaceholder.1')
       ],
       showTime: true
@@ -329,13 +389,13 @@ export function useScriptSearch(projectId: string, userId: string) {
       type: 'date-range',
       valueKey: 'lastModifiedDate',
       placeholder: [
-        t('scriptHome.searchPanel.modifyTimePlaceholder.0'), 
+        t('scriptHome.searchPanel.modifyTimePlaceholder.0'),
         t('scriptHome.searchPanel.modifyTimePlaceholder.1')
       ],
       showTime: true
     }
   ];
-  
+
   // Computed properties
   const menuItems = computed((): MenuItem[] => {
     return [
@@ -366,25 +426,25 @@ export function useScriptSearch(projectId: string, userId: string) {
       }
     ];
   });
-  
+
   const source = computed(() => {
     return filters.value.find(item => item.key === 'source')?.value;
   });
-  
+
   const isAPISource = computed(() => {
     return source.value === 'API';
   });
-  
+
   const isScenarioSource = computed(() => {
     return source.value === 'SCENARIO';
   });
-  
+
   const apiParams = computed(() => {
     return {
       serviceId: serviceIdFilter.value.value
     };
   });
-  
+
   return {
     // Reactive data
     searchPanelRef,
@@ -393,7 +453,7 @@ export function useScriptSearch(projectId: string, userId: string) {
     sourceIdFilter,
     scriptTypeOpt,
     selectedMenuMap,
-    
+
     // Methods
     loadEnum,
     handleMenuItemClick,
@@ -403,7 +463,7 @@ export function useScriptSearch(projectId: string, userId: string) {
     getData,
     resetData,
     resetSearchPanel,
-    
+
     // Computed properties
     menuItems,
     searchOptions,

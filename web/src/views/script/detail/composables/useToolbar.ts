@@ -4,7 +4,7 @@ import { ref } from 'vue';
  * Toolbar management composable
  * Handles toolbar state and actions
  */
-export function useToolbar() {
+export function useToolbar () {
   const toolbarActiveKey = ref<'debugResult' | 'logs' | undefined>(undefined);
   const height = ref(34);
   const isFull = ref(false);

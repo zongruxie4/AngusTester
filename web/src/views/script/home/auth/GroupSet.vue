@@ -1,12 +1,8 @@
 <script setup lang="ts">
 import { onMounted, watch } from 'vue';
-import { GM } from '@xcan-angus/infra';
 import { Icon, Image, Input, Scroll } from '@xcan-angus/vue-ui';
-import { useI18n } from 'vue-i18n';
 import { useGroupData } from './composables/useGroupData';
-import { GroupSetProps, AuthObjectType } from './types';
-
-const { t } = useI18n();
+import { GroupSetProps } from './types';
 
 /**
  * <p>
@@ -26,6 +22,7 @@ const props = withDefaults(defineProps<GroupSetProps>(), {
  * Component emits definition for two-way binding.
  * </p>
  */
+// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'update:checkedId', id: string | undefined): void;
   (e: 'update:loaded', value: boolean): void;
@@ -90,6 +87,14 @@ onMounted(() => {
       activeId.value = newValue;
     }
   });
+
+  // Watch for apiPath changes to trigger data loading
+  watch(() => apiPath.value, (newPath) => {
+    if (newPath) {
+      // Trigger data loading by incrementing notify
+      notify.value++;
+    }
+  });
 });
 </script>
 
@@ -102,8 +107,8 @@ onMounted(() => {
       :placeholder="placeholder"
       size="small"
       class="mb-2"
-      @change="inputChange" />
-    
+      @change="(e) => inputChange(e)" />
+
     <!-- Scrollable list container -->
     <Scroll
       :lineHeight="44"

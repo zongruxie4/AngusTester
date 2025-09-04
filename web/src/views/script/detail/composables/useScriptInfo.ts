@@ -5,7 +5,7 @@ import { utils } from '@xcan-angus/infra';
  * Script info display management composable
  * Handles script information formatting and display
  */
-export function useScriptInfo(props: any) {
+export function useScriptInfo (props: any) {
   /**
    * Computed data source
    */

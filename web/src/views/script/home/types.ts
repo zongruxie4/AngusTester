@@ -1,4 +1,4 @@
-import {PaginationProps} from "ant-design-vue";
+import { PaginationProps } from 'ant-design-vue';
 
 /**
  * Permission keys for script operations
@@ -54,27 +54,12 @@ export type ResourceInfo = {
     scenarioSourceNum: string;
 }
 
-
 export type ScriptSearchProps = {
   projectId: string;
   userInfo: { id: string; };
   appInfo: { id: string; };
   notify: string;
 }
-
-export type ScriptTableProps = {
-  projectId: string;
-  appId: string;
-  userId: string;
-  dataSource: ScriptInfo[];
-  permissionsMap: { [key: string]: PermissionKey[] };
-  pagination: PaginationProps;
-  allowImportSamplesFlag: boolean;
-  loaded: boolean;
-  loading: boolean;
-  resetSelectedIdsNotify: string;
-}
-
 
 /**
  * Script information with metadata
@@ -120,6 +105,19 @@ export type ScriptInfo = {
     pageNo?: number;
     /** Page size for pagination */
     pageSize?: number;
+}
+
+export type ScriptTableProps = {
+  projectId: string;
+  appId: string;
+  userId: string;
+  dataSource: ScriptInfo[];
+  permissionsMap: { [key: string]: PermissionKey[] };
+  pagination: PaginationProps;
+  allowImportSamplesFlag: boolean;
+  loaded: boolean;
+  loading: boolean;
+  resetSelectedIdsNotify: string;
 }
 
 /**

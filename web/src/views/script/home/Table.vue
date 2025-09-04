@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { Button, Tag } from 'ant-design-vue';
 import { AsyncComponent, AuthorizeModal, Dropdown, Icon, notification, Table, Tooltip } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
@@ -34,6 +35,7 @@ const ExportScriptModal = defineAsyncComponent(() => import('@/components/script
 
 // Router
 const router = useRouter();
+const { t } = useI18n();
 
 // Composable
 const {
@@ -71,7 +73,7 @@ const importDemo = async () => {
     return;
   }
 
-  notification.success('导入示例成功');
+  notification.success(t('scriptHome.table.messages.importExampleSuccess'));
   emit('refresh');
 };
 
@@ -86,17 +88,9 @@ const tableChange = (
 };
 
 /**
- * Handle auth action
- */
-const toAuth = (data: ScriptInfo) => {
-  selectedData.value = data;
-  authModalVisible.value = true;
-};
-
-/**
  * Handle auth flag change
  */
-const authFlagChange = ({ auth }: { auth: boolean }) => {
+const authFlagChange = () => {
   // This would update the table data in the parent component
   emit('refresh');
 };
@@ -139,7 +133,7 @@ rowSelection.value.onChange = (keys: string[]) => {
 
   const selectedNum = selectedRowKeys.length;
   if (selectedNum > 200) {
-    notification.info(`最大支持批量操作 200 个脚本，当前已选中 ${selectedNum} 个脚本。`);
+    notification.info(t('scriptHome.table.messages.maxBatchLimit', { maxNum: 200, selectedNum }));
   }
 
   rowSelection.value.selectedRowKeys = selectedRowKeys;
@@ -153,13 +147,13 @@ rowSelection.value.onChange = (keys: string[]) => {
       class="flex-1 flex flex-col items-center justify-center">
       <img class="w-27.5" src="../../../assets/images/nodata.png">
       <div class="flex items-center text-theme-sub-content text-3 leading-5">
-        <span>任何脚本数据，</span>
+        <span>{{ t('scriptHome.table.messages.noScriptData') }}</span>
         <Button
           type="link"
           size="small"
           class="px-0"
           @click="importDemo">
-          导入示例
+          {{ t('scriptHome.table.messages.importExample') }}
         </Button>
       </div>
     </div>
@@ -174,7 +168,7 @@ rowSelection.value.onChange = (keys: string[]) => {
           size="small"
           class="flex items-center px-0 h-5 leading-5"
           @click="() => handleBatchExec((loading) => emit('update:loading', loading))">
-          执行
+          {{ t('scriptHome.table.actions.execute') }}
         </Button>
 
         <Button
@@ -186,7 +180,7 @@ rowSelection.value.onChange = (keys: string[]) => {
             (loading) => emit('update:loading', loading),
             (ids) => emit('delete', ids)
           )">
-          删除
+          {{ t('scriptHome.table.actions.delete') }}
         </Button>
 
         <Button
@@ -195,10 +189,10 @@ rowSelection.value.onChange = (keys: string[]) => {
           size="small"
           class="flex items-center px-0 h-5 leading-5"
           @click="() => handleBatchExport((ids, visible) => {
-            exportIds.value = ids;
-            exportVisible.value = visible;
+            exportIds = ids;
+            exportVisible = visible;
           })">
-          导出
+          {{ t('scriptHome.table.actions.export') }}
         </Button>
 
         <Button
@@ -207,7 +201,7 @@ rowSelection.value.onChange = (keys: string[]) => {
           size="small"
           class="flex items-center px-0 h-5 leading-5"
           @click="cancelBatchOperation">
-          <span>取消批量操作</span>
+          <span>{{ t('scriptHome.table.messages.cancelBatchOperation') }}</span>
           <span class="ml-1">({{ selectedIds.length }})</span>
         </Button>
       </div>
@@ -220,6 +214,8 @@ rowSelection.value.onChange = (keys: string[]) => {
         :rowSelection="rowSelection"
         rowKey="id"
         class="flex-1"
+        noDataText=""
+        noDataSize="small"
         @change="tableChange">
         <template #bodyCell="{ column, text, record }">
           <RouterLink
@@ -302,20 +298,20 @@ rowSelection.value.onChange = (keys: string[]) => {
               :disabled="!props.permissionsMap[record.id]?.includes('TEST')"
               type="text"
               size="small"
-              class="flex items-center px-0 mr-2.5"
+              class="flex items-center px-0 mr-1"
               @click="() => handleSingleExec(record, (loading) => emit('update:loading', loading))">
               <Icon icon="icon-zhihangjiaoben" class="mr-1" />
-              <span>执行</span>
+              <span>{{ t('scriptHome.table.actions.execute') }}</span>
             </Button>
 
             <Button
               :disabled="!props.permissionsMap[record.id]?.includes('MODIFY')"
               type="text"
               size="small"
-              class="flex items-center px-0 mr-2.5"
+              class="flex items-center px-0 mr-1"
               @click="() => router.push(`/script/edit/${record.id}?type=edit&pageNo=${props.pagination.current}&pageSize=${props.pagination.pageSize}`)">
               <Icon icon="icon-shuxie" class="mr-1" />
-              <span>编辑</span>
+              <span>{{ t('scriptHome.table.actions.edit') }}</span>
             </Button>
 
             <Dropdown
@@ -329,8 +325,8 @@ rowSelection.value.onChange = (keys: string[]) => {
                 () => emit('refresh'),
                 (ids) => emit('delete', ids),
                 (ids, visible) => {
-                  exportIds.value = ids;
-                  exportVisible.value = visible;
+                  exportIds = ids;
+                  exportVisible = visible;
                 }
               )">
               <Button
@@ -356,9 +352,9 @@ rowSelection.value.onChange = (keys: string[]) => {
       :addUrl="`${TESTER}/script/${selectedData?.id}/auth`"
       :updateUrl="`${TESTER}/script/auth`"
       :enabledUrl="`${TESTER}/script/${selectedData?.id}/auth/enabled`"
-      onTips="开启权限控制后，需要手动授权后才会有相应操作权限。"
-      offTips="无权限限制，账号中的所有用户都可以查看、操作，默认不开启权限控制。"
-      title="脚本权限"
+      :onTips="t('scriptHome.table.tips.authOn')"
+      :offTips="t('scriptHome.table.tips.authOff')"
+      :title="t('scriptHome.table.tips.authTitle')"
       @change="authFlagChange" />
   </AsyncComponent>
 

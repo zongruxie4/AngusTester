@@ -35,8 +35,8 @@ const change = (event: { target: { checked: boolean; } }, value: string) => {
 
   if (checked && !props.value.includes(value)) {
     // Add permission and automatically include VIEW if not VIEW itself
-    const newValue = value !== 'VIEW' && !props.value.includes('VIEW') 
-      ? props.value.concat([value, 'VIEW']) 
+    const newValue = value !== 'VIEW' && !props.value.includes('VIEW')
+      ? props.value.concat([value, 'VIEW'])
       : props.value.concat([value]);
     emit('change', newValue);
     return;

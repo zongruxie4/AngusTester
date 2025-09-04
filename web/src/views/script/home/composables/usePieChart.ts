@@ -1,9 +1,8 @@
-import { inject, onMounted, ref, watch } from 'vue';
+import { inject, ref, watch } from 'vue';
 import { utils } from '@xcan-angus/infra';
 import * as echarts from 'echarts/core';
-import { useI18n } from 'vue-i18n';
 
-import { ResourceInfo, ChartDataItem, PieChartOption } from '../types';
+import { ResourceInfo, PieChartOption } from '../types';
 import { useChartConfig } from './useChartConfig';
 import { useECharts } from './useECharts';
 
@@ -11,34 +10,40 @@ import { useECharts } from './useECharts';
  * Composable for managing pie chart functionality
  * Handles chart initialization, data updates, and resize events
  */
-export function usePieChart(dataSource: ResourceInfo) {
-  const { t } = useI18n();
+export function usePieChart (dataSource: ResourceInfo) {
   const { createPieChartOption, transformResourceToChartData } = useChartConfig();
   const { initializeECharts, createChartInstance, setChartOptions, resizeChart } = useECharts();
-  
+
   // Window resize notification from parent component
   const windowResizeNotify = inject('windowResizeNotify', ref<string>());
-  
+
   // Chart container reference
   const containerRef = ref<HTMLElement>();
-  
+
   // Unique DOM ID for chart container
   const domId = utils.uuid('pie');
-  
+
   // ECharts instance
   let echartInstance: echarts.ECharts | null = null;
-  
-  // Chart configuration options
-  const chartOption: PieChartOption = createPieChartOption();
+
+  // Chart configuration options - will be updated with data
+  let chartOption: PieChartOption | undefined;
 
   /**
    * Initialize ECharts library and create chart instance
    */
   const initializeChart = () => {
     initializeECharts();
-    echartInstance = createChartInstance(document.getElementById(domId));
-    if (echartInstance) {
-      setChartOptions(echartInstance, chartOption);
+    const domElement = document.getElementById(domId);
+    if (domElement) {
+      echartInstance = createChartInstance(domElement);
+      if (echartInstance) {
+        // Initialize chart with empty data first
+        if (!chartOption) {
+          chartOption = createPieChartOption();
+        }
+        setChartOptions(echartInstance, chartOption);
+      }
     }
   };
 
@@ -51,6 +56,9 @@ export function usePieChart(dataSource: ResourceInfo) {
 
     // Transform resource data to chart data
     const chartData = transformResourceToChartData(resourceInfo);
+
+    // Create new chart option with data for legend formatter
+    chartOption = createPieChartOption(chartData);
     chartOption.series![0].data = chartData;
   };
 
@@ -62,9 +70,11 @@ export function usePieChart(dataSource: ResourceInfo) {
       initializeChart();
       return;
     }
-    
+
     // Update chart with new data
-    setChartOptions(echartInstance, chartOption);
+    if (chartOption) {
+      setChartOptions(echartInstance, chartOption);
+    }
   };
 
   /**
@@ -80,7 +90,7 @@ export function usePieChart(dataSource: ResourceInfo) {
   const watchDataSource = () => {
     watch(() => dataSource, (newValue) => {
       if (!newValue) return;
-      
+
       updateChartData(newValue);
       renderChart();
     }, { immediate: true });
@@ -92,7 +102,7 @@ export function usePieChart(dataSource: ResourceInfo) {
   const watchResizeEvents = () => {
     watch(() => windowResizeNotify.value, (newValue) => {
       if (!newValue) return;
-      
+
       handleResize();
     }, { immediate: true });
   };

@@ -1,4 +1,4 @@
-import { ComputedRef, ref } from 'vue';
+import { ref } from 'vue';
 import { script, analysis } from '@/api/tester';
 import { ScriptInfo, ResourceInfo } from '../types';
 import { utils, appContext } from '@xcan-angus/infra';
@@ -6,10 +6,9 @@ import { isEqual } from 'lodash-es';
 
 /**
  * Composable for managing script data including list, permissions and resource counts
- * @param _projectId - The ID of the current project
  */
-export function useScriptData (_projectId: ComputedRef<string>) {
-  const projectId = _projectId.value;
+export function useScriptData () {
+  const projectId = ref('');
 
   // Script list data
   const tableData = ref<ScriptInfo[]>([]);
@@ -66,7 +65,7 @@ export function useScriptData (_projectId: ComputedRef<string>) {
       orderBy?: string;
       orderSort?: 'DESC' | 'ASC';
     } = {
-      projectId: projectId,
+      projectId: projectId.value,
       pageNo: pagination.value.current,
       pageSize: pagination.value.pageSize
     };
@@ -99,10 +98,8 @@ export function useScriptData (_projectId: ComputedRef<string>) {
 
     // Check if search parameters have changed to reset selected items
     if (prevParams.value) {
-      const prevParamsCopy = { ...prevParams.value };
-      const paramsCopy = { ...params };
-      delete prevParamsCopy.pageNo;
-      delete paramsCopy.pageNo;
+      const { pageNo: prevPageNo, ...prevParamsCopy } = prevParams.value;
+      const { pageNo: currentPageNo, ...paramsCopy } = params;
       if (!isEqual(prevParamsCopy, paramsCopy)) {
         resetSelectedIdsNotify.value = utils.uuid();
         permissionsMap.value = {};
@@ -177,7 +174,7 @@ export function useScriptData (_projectId: ComputedRef<string>) {
         let list: string[] = [];
         const values = permissions.map(item => item.value);
 
-        if (appContext.isAdmin() || scriptAuth === false) {
+        if (appContext.isAdmin() || !scriptAuth) {
           list = ['TEST', 'VIEW', 'MODIFY', 'DELETE', 'EXPORT', 'COLON'];
           if (values.includes('GRANT')) {
             list.push('GRANT');
@@ -198,7 +195,7 @@ export function useScriptData (_projectId: ComputedRef<string>) {
    * Load resource count data
    */
   const loadResourcesData = async () => {
-    const params = { filters: filters.value, projectId: projectId };
+    const params = { filters: filters.value, projectId: projectId.value };
     const [error, res] = await analysis.getScriptCount(params);
     if (error) {
       return false;
@@ -218,7 +215,6 @@ export function useScriptData (_projectId: ComputedRef<string>) {
       caseSourceNum: '0',
       scenarioSourceNum: '0'
     };
-
     return true;
   };
 
@@ -237,6 +233,14 @@ export function useScriptData (_projectId: ComputedRef<string>) {
 
     loadScriptList();
     loadResourcesData();
+  };
+
+  /**
+   * Update search filters
+   * @param newFilters - New search filters from search panel
+   */
+  const updateFilters = (newFilters: { key: string; op: string; value: boolean | string | string[]; }[]) => {
+    filters.value = newFilters;
   };
 
   /**
@@ -278,6 +282,8 @@ export function useScriptData (_projectId: ComputedRef<string>) {
   };
 
   return {
+    dataProjectId: projectId,
+
     // Reactive data
     tableData,
     permissionsMap,
@@ -293,6 +299,7 @@ export function useScriptData (_projectId: ComputedRef<string>) {
     loadResourcesData,
     handleTableChange,
     handleDelete,
+    updateFilters,
 
     // Computed
     filters

@@ -1,15 +1,15 @@
-import { ref, computed, ComputedRef } from 'vue';
+import { ref, computed } from 'vue';
 import { script } from '@/api/tester';
 import { notification } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
 /**
  * Composable for managing script import functionality
- * @param _projectId - The ID of the current project
  */
-export function useScriptImport (_projectId: ComputedRef<string>) {
+export function useScriptImport () {
   const { t } = useI18n();
-  const projectId = _projectId.value;
+
+  const projectId = ref('');
 
   // Form state
   const formState = ref<{
@@ -63,7 +63,8 @@ export function useScriptImport (_projectId: ComputedRef<string>) {
   /**
    * Custom file upload request
    */
-  const customRequest = ({ file }: { file: File }) => {
+  const customRequest = (options: any) => {
+    const file = options.file as File;
     if (file.size > 20 * 1024 * 1024) {
       maximumLimitFlag.value = true;
       emptyFlag.value = false;
@@ -144,7 +145,7 @@ export function useScriptImport (_projectId: ComputedRef<string>) {
 
       const formData = new FormData();
       formData.append('name', formState.value.name);
-      formData.append('projectId', projectId);
+      formData.append('projectId', projectId.value);
 
       if (formState.value.file) {
         formData.append('file', formState.value.file);
@@ -185,11 +186,13 @@ export function useScriptImport (_projectId: ComputedRef<string>) {
 
   const rules = {
     name: [
-      { required: true, message: t('scriptHome.import.messages.nameRequired'), trigger: 'change' }
+      { required: true, message: t('scriptHome.import.messages.nameRequired'), trigger: 'change' as const, type: 'string' as const }
     ]
   };
 
   return {
+    importProjectId: projectId,
+
     // Reactive data
     formState,
     emptyFlag,

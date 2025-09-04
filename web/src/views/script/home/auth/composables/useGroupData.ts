@@ -3,8 +3,6 @@ import { debounce } from 'throttle-debounce';
 import { GM, duration } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 /**
  * <p>
  * Interface for list item information containing avatar and other properties.
@@ -21,7 +19,9 @@ interface ListInfo {
  * Handles data loading, searching, and selection logic for different entity types.
  * </p>
  */
-export function useGroupData(type: 'user' | 'dept' | 'group', appId: string | undefined, visible: boolean) {
+export function useGroupData (type: 'user' | 'dept' | 'group', appId: string | undefined, visible: boolean) {
+  const { t } = useI18n();
+
   // Data state
   const dataSource = ref<ListInfo[]>([]);
   const inputValue = ref<string>();
@@ -131,6 +131,9 @@ export function useGroupData(type: 'user' | 'dept' | 'group', appId: string | un
     inputValue.value = undefined;
     notify.value++;
   };
+
+  // Initialize configuration immediately
+  initializeConfig();
 
   // Watchers
   watch([() => appId, () => type], ([_appId, _type]) => {

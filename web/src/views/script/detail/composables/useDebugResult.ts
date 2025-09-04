@@ -4,7 +4,7 @@ import { Component, defineAsyncComponent, ref, watch, onMounted } from 'vue';
  * Debug result management composable
  * Handles dynamic loading of plugin-specific debug results
  */
-export function useDebugResult(props: any) {
+export function useDebugResult (props: any) {
   const Plugin = ref<Component>();
 
   /**

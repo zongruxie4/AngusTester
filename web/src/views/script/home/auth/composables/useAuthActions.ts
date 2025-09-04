@@ -10,7 +10,7 @@ import { script } from '@/api/tester';
  * Handles all CRUD operations for script authentication and permission management.
  * </p>
  */
-export function useAuthActions(
+export function useAuthActions (
   dataMap: any,
   permissionsMap: any,
   enabledLoadingMap: any,
@@ -39,7 +39,7 @@ export function useAuthActions(
     enabledLoadingMap.value[id] = true;
     const [error] = await script.enableScriptAuth(id, checked);
     enabledLoadingMap.value[id] = false;
-    
+
     if (error) {
       return;
     }
@@ -83,13 +83,13 @@ export function useAuthActions(
 
     // If permissionMap.value[id].id is undefined, it means not authorized, otherwise already authorized
     const authId = permissionsMap.value[id]?.id;
-    
+
     if (!permissions.length) {
       // Remove all permissions
       updatingMap[id] = true;
       const [error] = await script.deleteScriptAuth(authId!);
       updatingMap[id] = false;
-      
+
       if (error) {
         return;
       }
@@ -103,7 +103,7 @@ export function useAuthActions(
       updatingMap[id] = true;
       const [error] = await script.putScriptAuth(authId, { permissions });
       updatingMap[id] = false;
-      
+
       if (error) {
         return;
       }
@@ -114,14 +114,14 @@ export function useAuthActions(
 
     // Create new permissions (no previous authorization)
     updatingMap[id] = true;
-    const params = { 
-      permissions, 
-      authObjectId: authObjectId!, 
-      authObjectType: type 
+    const params = {
+      permissions,
+      authObjectId: authObjectId!,
+      authObjectType: type
     };
     const [error, { data = { id: '' } }] = await script.addScriptAuth(id, params);
     updatingMap[id] = false;
-    
+
     if (error) {
       return;
     }

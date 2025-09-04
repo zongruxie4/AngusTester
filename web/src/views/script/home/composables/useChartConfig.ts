@@ -5,7 +5,7 @@ import { ChartDataItem, PieChartOption } from '../types';
  * Composable for managing chart configuration and data transformation
  * Provides reusable chart options and data formatting utilities
  */
-export function useChartConfig() {
+export function useChartConfig () {
   const { t } = useI18n();
 
   /**
@@ -15,9 +15,10 @@ export function useChartConfig() {
 
   /**
    * Create pie chart configuration with default settings
+   * @param chartData - Optional chart data for legend formatter
    * @returns PieChartOption configuration object
    */
-  const createPieChartOption = (): PieChartOption => ({
+  const createPieChartOption = (chartData?: ChartDataItem[]): PieChartOption => ({
     tooltip: {
       trigger: 'item',
       axisPointer: { type: 'shadow' },
@@ -33,13 +34,12 @@ export function useChartConfig() {
       itemWidth: 14,
       itemGap: 5,
       formatter: function (name: string) {
-        const data = this.series?.[0]?.data as ChartDataItem[];
-        if (!data) return name;
-        
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].name === name) {
-            name += ' ' + data[i].value;
-            break;
+        // Use provided chart data or fallback to name only
+        if (!chartData) return name;
+
+        for (let i = 0; i < chartData.length; i++) {
+          if (chartData[i].name === name) {
+            return name + ' ' + chartData[i].value;
           }
         }
         return name;
@@ -85,13 +85,15 @@ export function useChartConfig() {
   const transformResourceToChartData = (resourceInfo: any): ChartDataItem[] => {
     if (!resourceInfo) return [];
 
-    return [
+    const chartData = [
       { name: t('scriptHome.pieChart.chartData.functionalTest'), value: +resourceInfo.functionalScriptNum },
       { name: t('scriptHome.pieChart.chartData.performanceTest'), value: +resourceInfo.perfScriptNum },
       { name: t('scriptHome.pieChart.chartData.stabilityTest'), value: +resourceInfo.stabilityScriptNum },
       { name: t('scriptHome.pieChart.chartData.customTest'), value: +resourceInfo.customizationScriptNum },
       { name: t('scriptHome.pieChart.chartData.mockData'), value: +resourceInfo.mockDataScriptNum }
     ];
+
+    return chartData;
   };
 
   return {
