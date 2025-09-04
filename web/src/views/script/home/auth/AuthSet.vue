@@ -132,6 +132,7 @@ onBeforeUnmount(() => {
       v-show="!loading && !idList?.length"
       style="height: calc(100% - 36px);"
       size="small" />
+     {{ permissionsMap }}
 
     <!-- Loading and data container -->
     <Spin

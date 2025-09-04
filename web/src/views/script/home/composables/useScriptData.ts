@@ -176,15 +176,12 @@ export function useScriptData () {
         const values = permissions.map(item => item.value);
 
         if (appContext.isAdmin() || !scriptAuth) {
-          list = ['TEST', 'VIEW', 'MODIFY', 'DELETE', 'EXPORT', 'COLON'];
+          list = ['TEST', 'VIEW', 'MODIFY', 'DELETE', 'EXPORT'];
           if (values.includes('GRANT')) {
             list.push('GRANT');
           }
         } else {
           list = [...values];
-          if (values.includes('VIEW') || !values.includes('COLON')) {
-            list.push('COLON');
-          }
         }
 
         permissionsMap.value[key] = list;

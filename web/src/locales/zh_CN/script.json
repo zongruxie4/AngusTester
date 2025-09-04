@@ -45,7 +45,8 @@
         "authPlaceholder": "权限控制",
         "auth": "权限",
         "all": "全部",
-        "loading": "加载中..."
+        "loading": "加载中...",
+        "name": "名称"
       },
       "groupSet": {
         "deptPlaceholder": "查询部门",
@@ -101,6 +102,7 @@
         "cloneSuccess": "脚本克隆成功",
         "deleteScriptConfirm": "删除脚本【{name}】同时也会删除关联场景，确定是否删除？",
         "deleteScriptConfirmSimple": "确定删除【{name}】脚本吗？",
+        "executeScriptConfirmSimple": "确定执行【{name}】脚本吗？",
         "deleteScriptSuccess": "脚本删除成功",
         "noScriptData": "任何脚本数据，",
         "importExample": "导入示例",
