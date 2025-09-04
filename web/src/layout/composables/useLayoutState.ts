@@ -1,4 +1,4 @@
-import { computed, provide, ref, ComputedRef } from 'vue';
+import { computed, provide, ref, ComputedRef, Ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { appContext } from '@xcan-angus/infra';
 import type { ProjectDisplayInfo, ProjectTypeVisibility } from '../types';
@@ -7,7 +7,7 @@ import type { ProjectDisplayInfo, ProjectTypeVisibility } from '../types';
  * Composable for managing layout state and context
  */
 export function useLayoutState (
-  currentProject: ProjectDisplayInfo | undefined,
+  currentProject: Ref<ProjectDisplayInfo | undefined>,
   projectTypeVisibility: ComputedRef<ProjectTypeVisibility>,
   changeProjectInfo: (projectId?: string, force?: boolean) => Promise<void>,
   loadProjectData: () => Promise<void>

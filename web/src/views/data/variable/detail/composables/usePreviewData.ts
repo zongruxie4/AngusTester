@@ -1,19 +1,14 @@
 import { useI18n } from 'vue-i18n';
 import { onMounted, ref, watch } from 'vue';
 import { variable } from '@/api/tester';
+import { VariableItem } from '../types';
 
 /**
  * Composable for managing variable preview data logic
  * Handles data fetching and refreshing for variable preview
  */
 export function usePreviewData (props: {
-  dataSource: {
-    name: string;
-    value: string;
-    id: string;
-    projectId: string;
-    extraction: any; // TODO 可复用定义
-  };
+  dataSource: VariableItem;
 }) {
   const { t } = useI18n();
 

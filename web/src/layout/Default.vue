@@ -67,7 +67,7 @@ const {
   mainContentStyle,
   provideLayoutContext
 } = useLayoutState(
-  currentProject.value,
+  currentProject,
   projectTypeVisibility,
   changeProjectInfo,
   loadProjectData
@@ -109,9 +109,10 @@ onMounted(async () => {
     deep: true
   });
 
-  // Provide context to child components
-  provideLayoutContext();
 });
+
+ // Provide context to child components
+provideLayoutContext();
 </script>
 <template>
   <div class="shadow relative z-99 flex items-center h-13.5 pr-3 header-nav-bg">
