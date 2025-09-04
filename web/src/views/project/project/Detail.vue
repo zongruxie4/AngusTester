@@ -16,7 +16,7 @@ import { TabPane, Tabs, Tag } from 'ant-design-vue';
 import { useData } from './composables/useData';
 
 // Static assets
-import DefaultProjectImage from '@/views/project/project/images/default.png';
+import DefaultProjectImage from '@/assets/images/default.png';
 import { ProjectType } from '@/enums/enums';
 import { DetailProps } from '@/views/project/project/types';
 // Initialize i18n

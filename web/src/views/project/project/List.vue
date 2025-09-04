@@ -14,7 +14,7 @@ import {
 
 // API and utilities
 import { PageQuery, User, appContext } from '@xcan-angus/infra';
-import DefaultProjectImage from '@/views/project/project/images/default.png';
+import DefaultProjectImage from '@/assets/images/default.png';
 
 // Composables
 import { useData, useActions } from './composables';

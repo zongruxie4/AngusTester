@@ -199,7 +199,7 @@ onMounted(async () => {
                       <div
                         class="upload-area"
                         @click="openCropper">
-                        <img src="./images/default.png" class="upload-icon" />
+                        <img src="../../../assets/images/default.png" class="upload-icon" />
                         <div class="upload-text">{{ t('project.projectEdit.actions.clickToReplaceIcon') }}</div>
                       </div>
                     </div>
@@ -455,7 +455,7 @@ onMounted(async () => {
                     <div
                       class="upload-area"
                       @click="openCropper">
-                      <img src="./images/default.png" class="upload-icon" />
+                      <img src="../../../assets/images/default.png" class="upload-icon" />
                       <div class="upload-text">{{ t('project.projectEdit.actions.clickToReplaceIcon') }}</div>
                     </div>
                   </div>

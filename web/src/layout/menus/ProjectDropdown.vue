@@ -13,7 +13,7 @@ interface Props {
   loading: boolean;
   projectSearchState: ProjectSearchState;
   currentProject?: ProjectDisplayInfo;
-  logoDefaultImg: string;
+  defaultProjectImg: string;
 }
 
 interface Emits {
@@ -75,15 +75,16 @@ const handleVisibleChange = (): void => {
 <template>
   <Dropdown
     :visible="props.dropdownState.visible"
+    :trigger="['click']"
     @visibleChange="handleVisibleChange">
     <div
-      class="flex items-center text-3.5 max-w-50 mr-3.5 cursor-pointer"
+      class="flex items-center text-3.5 max-w-50 mr-3.5 cursor-pointer project-dropdown-trigger"
       @click.stop.prevent="toggleDropdown"
       @mouseenter="handleMouseEnter"
       @mouseleave="handleMouseLeave">
-      <div :title="props.currentProject?.name" class="truncate">{{ props.currentProject?.name }}</div>
+      <div :title="props.currentProject?.name" class="truncate project-name">{{ props.currentProject?.name }}</div>
       <div
-        class="flex-shrink-0 flex items-center justify-center w-6 h-6 text-theme-text-hover">
+        class="flex-shrink-0 flex items-center justify-center w-6 h-6 text-theme-text-hover project-dropdown-icon">
         <Icon icon="icon-xiala" />
       </div>
     </div>
@@ -93,39 +94,40 @@ const handleVisibleChange = (): void => {
         class="header-menu-dropdown-content text-theme-content"
         @mouseenter="handleMouseEnter"
         @mouseleave="handleMouseLeave">
-        <div class="px-3.5 mb-1">
-          <div class="flex items-center mb-2.5">
+        <div class="px-4 py-3">
+          <div class="flex items-center mb-3 search-container">
             <Input
               :placeholder="t('project.searchProject')"
               trim
               allowClear
+              class="flex-1 search-input"
               @input="handleDropdownInputChange" />
             <IconRefresh
               :loading="props.loading"
-              class="ml-2 text-3.5"
+              class="ml-2 text-3.5 refresh-icon"
               @click="emit('refresh')" />
           </div>
-          <span class="text-theme-sub-content">{{ t('project.myJoinedProjects') }}</span>
+          <div class="section-title text-theme-sub-content mb-2">{{ t('project.myJoinedProjects') }}</div>
         </div>
 
-        <div style="height:248px;margin: 0 4px;overflow: auto;">
+        <div class="project-list-container">
           <div
             v-for="item in props.projectSearchState.filteredList"
             :key="item.id"
-            :class="{ checked: item.id === props.currentProject?.id }"
-            class="header-menu-dropdown-content-item flex items-center overflow-hidden px-3.5 py-1.5 cursor-pointer rounded mb-1 last:mb-0"
+            :class="{ 'checked': item.id === props.currentProject?.id }"
+            class="project-item flex items-center overflow-hidden px-4 py-2 cursor-pointer rounded mb-1 last:mb-0"
             @click="handleProjectClick(item)">
-            <div class="flex items-center flex-shrink-0 w-5 h-5 mr-2 rounded-sm overflow-hidden">
+            <div class="flex items-center flex-shrink-0 w-6 h-6 mr-3 rounded-sm overflow-hidden project-avatar">
               <Image
                 :src="item.avatar"
-                :defaultImg="props.logoDefaultImg"
-                class="w-full" />
+                :defaultImg="props.defaultProjectImg"
+                class="w-full h-full object-cover" />
             </div>
-            <div class="flex-1 truncate">{{ item.name }}</div>
+            <div class="flex-1 truncate project-name">{{ item.name }}</div>
             <Icon
               v-show="item.id === props.currentProject?.id"
               icon="icon-duihaolv"
-              class="text-3.5" />
+              class="text-3.5 text-success-icon" />
           </div>
         </div>
       </Spin>
@@ -134,21 +136,78 @@ const handleVisibleChange = (): void => {
 </template>
 
 <style scoped>
+.project-dropdown-trigger {
+  transition: all 0.2s ease;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: rgba(245, 245, 245, 0.8);
+  backdrop-filter: blur(8px);
+}
+
+.project-dropdown-trigger:hover {
+  background-color: rgba(232, 232, 232, 0.9);
+}
+
 .header-menu-dropdown-content {
-  width: 350px;
-  padding: 14px 0 8px;
-  border-radius: 2px;
+  width: 360px;
+  border-radius: 6px;
   background-color: #fff;
-  box-shadow: 0 3px 6px -4px #0000001f, 0 6px 16px #00000014, 0 9px 28px 8px #0000000d;
-  line-height: 20px;
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  line-height: 1.5;
+  overflow: hidden;
 }
 
-.header-menu-dropdown-content .header-menu-dropdown-content-item.checked {
-  background-color: var(--content-tabs-bg-hover);
-  color: var(--content-special-text-hover);
+.search-container {
+  padding: 0 4px;
 }
 
-.header-menu-dropdown-content .header-menu-dropdown-content-item:hover {
+.section-title {
+  font-size: 12px;
+  padding: 0 8px;
+  font-weight: 500;
+}
+
+.project-list-container {
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 0 4px 4px;
+  margin: 0 4px;
+}
+
+.project-item {
+  transition: all 0.2s ease;
+  border-radius: 6px;
+}
+
+.project-item:hover {
   background-color: #f5f5f5;
+}
+
+.project-item.checked {
+  background-color: var(--content-tabs-bg-hover);
+}
+
+.project-name {
+  color: var(--content-special-text-hover);
+  font-weight: 500;
+}
+
+.project-avatar {
+  border-radius: 4px;
+}
+
+.refresh-icon {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.refresh-icon:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.text-success-icon {
+  color: #52c41a;
 }
 </style>

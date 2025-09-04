@@ -10,7 +10,8 @@ export function useLayoutState () {
 
   // Application context
   const appInfo = ref(appContext.getContext().accessApp);
-  const logoDefaultImg = new URL('../assets/AngusTester.png', import.meta.url).href;
+  const defaultAppIcon = new URL('../../assets/images/AngusTester.png', import.meta.url).href;
+  const defaultProjectImg = new URL('../../assets/images/default.png', import.meta.url).href;
 
   /**
    * Check if breadcrumb should be displayed
@@ -28,7 +29,8 @@ export function useLayoutState () {
 
   return {
     appInfo,
-    logoDefaultImg,
+    defaultAppIcon,
+    defaultProjectImg,
     hasBreadcrumb,
     mainContentStyle
   };

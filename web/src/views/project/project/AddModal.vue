@@ -241,7 +241,7 @@ watch(() => props.visible, (newValue) => {
                   :customRequest="uploadImg"
                   class="upload-component">
                   <div class="upload-area">
-                    <img src="./images/default.png" class="upload-icon" />
+                    <img src="../../../assets/images/default.png" class="upload-icon" />
                     <div class="upload-text">{{ t('project.projectAddModal.form.clickToReplaceIcon') }}</div>
                   </div>
                 </Upload>

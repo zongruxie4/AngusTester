@@ -55,7 +55,8 @@ const {
 
 const {
   appInfo,
-  logoDefaultImg,
+  defaultAppIcon,
+  defaultProjectImg,
   mainContentStyle
 } = useLayoutState();
 
@@ -111,7 +112,7 @@ provideAppContext();
     <HeaderNavigator class="flex-shrink-0 !w-11" />
     <HeaderLogo
       :appId="appInfo?.id"
-      :defaultImg="logoDefaultImg"
+      :defaultImg="defaultAppIcon"
       class="mr-3.5" />
     <div class="w-0.5 h-3.5 mr-3.5 bg-slate-200 rounded"></div>
     <div v-if="!!projectMenus.length" class="flex items-center space-x-3.5 mr-3.5">
@@ -123,7 +124,7 @@ provideAppContext();
       :loading="loading"
       :projectSearchState="projectSearchState"
       :currentProject="currentProject"
-      :logoDefaultImg="logoDefaultImg"
+      :defaultProjectImg="defaultProjectImg"
       @mouseenter="handleMouseEnter"
       @mouseleave="handleMouseLeave"
       @toggle="toggleDropdown"
