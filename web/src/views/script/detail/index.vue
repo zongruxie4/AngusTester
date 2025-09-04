@@ -18,7 +18,7 @@ import {
 
 const { t } = useI18n();
 
-const ScriptDetail = defineAsyncComponent(() => import('./ScriptInfo.vue'));
+const ScriptInfo = defineAsyncComponent(() => import('./ScriptInfo.vue'));
 const ScriptForm = defineAsyncComponent(() => import('./ScriptForm.vue'));
 const MonacoEditor = defineAsyncComponent(() => import('@/components/monacoEditor/index.vue'));
 const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/exportModal/index.vue'));
@@ -312,11 +312,11 @@ onMounted(() => {
           style="height:calc(100% - 30px);"
           class="pr-3.5 mb-3.5 mt-4" />
 
-        <ScriptDetail
+        <ScriptInfo
           v-else
           :dataSource="scriptInfo"
           style="height:calc(100% - 30px);"
-          class="pr-3.5 mb-3.5 mt-4" />
+          class="pr-4 mb-4 mt-5" />
       </template>
 
       <template #execRecord>

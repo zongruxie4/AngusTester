@@ -25,104 +25,111 @@ const {
 
 </script>
 <template>
-  <div class="text-3 leading-5 space-y-3.5 overflow-auto">
-    <div class="relative flex items-start">
-      <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-        <span>ID</span>
-        <Colon class="w-1" />
+  <div class="text-3 leading-5 space-y-4 overflow-auto">
+    <!-- ID Information -->
+    <div class="relative flex items-start group">
+      <div class="w-21.75 flex items-center flex-shrink-0">
+        <span class="text-theme-sub-content font-medium">ID</span>
+        <Colon class="w-1 text-theme-sub-content" />
       </div>
-
-      <div class="whitespace-pre-wrap break-words break-all">{{ dataSource.id }}</div>
+      <div class="whitespace-pre-wrap break-words break-all text-theme-title font-mono bg-gray-50 px-2 py-1 rounded text-2.5">
+        {{ dataSource.id }}
+      </div>
     </div>
 
-    <div class="relative flex items-start">
-      <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-        <span>{{ t('scriptDetail.info.scriptName') }}</span>
-        <Colon class="w-1" />
+    <!-- Script Name -->
+    <div class="relative flex items-start group">
+      <div class="w-21.75 flex items-center flex-shrink-0">
+        <span class="text-theme-sub-content font-medium">{{ t('scriptDetail.info.scriptName') }}</span>
+        <Colon class="w-1 text-theme-sub-content" />
       </div>
-
-      <div class="flex items-start whitespace-pre-wrap break-words break-all">{{ dataSource.name }}</div>
+      <div class="flex items-start whitespace-pre-wrap break-words break-all text-theme-title font-medium">
+        {{ dataSource.name }}
+      </div>
     </div>
 
-    <div class="relative flex items-start">
-      <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-        <span>{{ t('scriptDetail.info.scriptType') }}</span>
-        <Colon class="w-1" />
+    <!-- Script Type -->
+    <div class="relative flex items-start group">
+      <div class="w-21.75 flex items-center flex-shrink-0">
+        <span class="text-theme-sub-content font-medium">{{ t('scriptDetail.info.scriptType') }}</span>
+        <Colon class="w-1 text-theme-sub-content" />
       </div>
-
       <div class="whitespace-pre-wrap break-words break-all">
         <ScriptTypeTag :value="dataSource.type" />
       </div>
     </div>
 
-    <div class="relative flex items-start">
-      <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-        <span>{{ t('scriptDetail.info.plugin') }}</span>
-        <Colon class="w-1" />
+    <!-- Plugin Information -->
+    <div class="relative flex items-start group">
+      <div class="w-21.75 flex items-center flex-shrink-0">
+        <span class="text-theme-sub-content font-medium">{{ t('scriptDetail.info.plugin') }}</span>
+        <Colon class="w-1 text-theme-sub-content" />
       </div>
-
       <div class="whitespace-pre-wrap break-words break-all">
         <span
           v-if="dataSource.plugin"
-          class="px-2 py-0.5 rounded"
-          style="background-color:rgba(0, 119, 255, 10%);color:rgba(0, 119, 255, 100%)">{{ dataSource.plugin
-          }}</span>
-
-        <span v-else>--</span>
+          class="inline-flex items-center px-2.5 py-1 rounded-full text-2.5 font-medium"
+          style="background-color:rgba(0, 119, 255, 8%);color:rgba(0, 119, 255, 100%);border: 1px solid rgba(0, 119, 255, 20%)">
+          {{ dataSource.plugin }}
+        </span>
+        <span v-else class="text-theme-sub-content">--</span>
       </div>
     </div>
 
-    <div class="relative flex items-start">
-      <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-        <span>{{ t('scriptDetail.info.source') }}</span>
-        <Colon class="w-1" />
+    <!-- Source Information -->
+    <div class="relative flex items-start group">
+      <div class="w-21.75 flex items-center flex-shrink-0">
+        <span class="text-theme-sub-content font-medium">{{ t('scriptDetail.info.source') }}</span>
+        <Colon class="w-1 text-theme-sub-content" />
       </div>
-
-      <div class="whitespace-pre-wrap break-words break-all">{{ dataSource.source?.message }}</div>
+      <div class="whitespace-pre-wrap break-words break-all text-theme-title">
+        {{ dataSource.source?.message || '--' }}
+      </div>
     </div>
 
-    <div class="relative flex items-start">
-      <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-        <span>{{ t('scriptDetail.info.resourceId') }}</span>
-        <Colon class="w-1" />
+    <!-- Resource ID -->
+    <div class="relative flex items-start group">
+      <div class="w-21.75 flex items-center flex-shrink-0">
+        <span class="text-theme-sub-content font-medium">{{ t('scriptDetail.info.resourceId') }}</span>
+        <Colon class="w-1 text-theme-sub-content" />
       </div>
-
-      <div class="whitespace-pre-wrap break-words break-all">{{ dataSource.sourceId || '--' }}</div>
+      <div class="whitespace-pre-wrap break-words break-all text-theme-title font-mono bg-gray-50 px-2 py-1 rounded text-2.5">
+        {{ dataSource.sourceId || '--' }}
+      </div>
     </div>
 
-    <div class="relative flex items-start">
-      <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-        <span>{{ t('scriptDetail.info.resourceName') }}</span>
-        <Colon class="w-1" />
+    <!-- Resource Name -->
+    <div class="relative flex items-start group">
+      <div class="w-21.75 flex items-center flex-shrink-0">
+        <span class="text-theme-sub-content font-medium">{{ t('scriptDetail.info.resourceName') }}</span>
+        <Colon class="w-1 text-theme-sub-content" />
       </div>
-
-      <div v-if="!sourceNameLinkUrl" class="whitespace-pre-wrap break-words break-all">
+      <div v-if="!sourceNameLinkUrl" class="whitespace-pre-wrap break-words break-all text-theme-title">
         {{ dataSource.sourceName || '--' }}
       </div>
       <RouterLink
         v-else
         :to="sourceNameLinkUrl"
         target="_blank"
-        class="text-text-link">
+        class="text-text-link hover:text-blue-600 transition-colors duration-200 underline decoration-dotted underline-offset-2">
         {{ dataSource.sourceName }}
       </RouterLink>
     </div>
 
-    <div class="relative flex items-start">
-      <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-        <span>{{ t('scriptDetail.info.tags') }}</span>
-        <Colon class="w-1" />
+    <!-- Tags Information -->
+    <div class="relative flex items-start group">
+      <div class="w-21.75 flex items-center flex-shrink-0">
+        <span class="text-theme-sub-content font-medium">{{ t('scriptDetail.info.tags') }}</span>
+        <Colon class="w-1 text-theme-sub-content" />
       </div>
-
-      <div v-if="tags.length" class="flex items-start flex-wrap">
+      <div v-if="tags.length" class="flex items-start flex-wrap gap-1.5">
         <Tag
           v-for="item in tags"
           :key="item.id"
-          class="mr-1.5 mb-1.5 h-5 leading-5 text-3 rounded text-text-content">
+          class="h-6 leading-6 text-2.5 rounded-full text-text-content bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100 transition-colors duration-200">
           <span v-if="item.name.length <= 15">
             {{ item.name }}
           </span>
-
           <Tooltip
             v-else
             :title="item.name"
@@ -131,43 +138,95 @@ const {
           </Tooltip>
         </Tag>
       </div>
-      <div v-else>--</div>
+      <div v-else class="text-theme-sub-content">--</div>
     </div>
 
-    <div class="relative flex items-start">
-      <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-        <span>{{ t('scriptDetail.info.creator') }}</span>
-        <Colon class="w-1" />
+    <!-- Creator -->
+    <div class="relative flex items-start group">
+      <div class="w-21.75 flex items-center flex-shrink-0">
+        <span class="text-theme-sub-content font-medium">{{ t('scriptDetail.info.creator') }}</span>
+        <Colon class="w-1 text-theme-sub-content" />
       </div>
-
-      <div class="whitespace-pre-wrap break-words break-all">{{ dataSource.createdByName }}</div>
+      <div class="whitespace-pre-wrap break-words break-all text-theme-title">
+        {{ dataSource.createdByName }}
+      </div>
     </div>
 
-    <div class="relative flex items-start">
-      <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-        <span>{{ t('scriptDetail.info.lastUpdater') }}</span>
-        <Colon class="w-1" />
+    <!-- Last Updater -->
+    <div class="relative flex items-start group">
+      <div class="w-21.75 flex items-center flex-shrink-0">
+        <span class="text-theme-sub-content font-medium">{{ t('scriptDetail.info.lastUpdater') }}</span>
+        <Colon class="w-1 text-theme-sub-content" />
       </div>
-
-      <div class="whitespace-pre-wrap break-words break-all">{{ dataSource.lastModifiedByName }}</div>
+      <div class="whitespace-pre-wrap break-words break-all text-theme-title">
+        {{ dataSource.lastModifiedByName }}
+      </div>
     </div>
 
-    <div class="relative flex items-start">
-      <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-        <span>{{ t('scriptDetail.info.lastModifyTime') }}</span>
-        <Colon class="w-1" />
+    <!-- Last Modified Time -->
+    <div class="relative flex items-start group">
+      <div class="w-21.75 flex items-center flex-shrink-0">
+        <span class="text-theme-sub-content font-medium">{{ t('scriptDetail.info.lastModifyTime') }}</span>
+        <Colon class="w-1 text-theme-sub-content" />
       </div>
-
-      <div class="whitespace-pre-wrap break-words break-all">{{ dataSource.lastModifiedDate }}</div>
+      <div class="whitespace-pre-wrap break-words break-all text-theme-title">
+        {{ dataSource.lastModifiedDate }}
+      </div>
     </div>
 
-    <div class="relative flex items-start">
-      <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
-        <span>{{ t('scriptDetail.info.description') }}</span>
-        <Colon class="w-1" />
+    <!-- Description Information -->
+    <div class="relative flex items-start group">
+      <div class="w-21.75 flex items-center flex-shrink-0">
+        <span class="text-theme-sub-content font-medium">{{ t('scriptDetail.info.description') }}</span>
+        <Colon class="w-1 text-theme-sub-content" />
       </div>
-
-      <div class="whitespace-pre-wrap break-words break-all">{{ dataSource.description || '--' }}</div>
+      <div class="whitespace-pre-wrap break-words break-all text-theme-title leading-relaxed">
+        {{ dataSource.description || '--' }}
+      </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+/* Decorative separator lines between information items */
+.group:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5rem;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.06) 20%, rgba(0, 0, 0, 0.06) 80%, transparent 100%);
+}
+
+/* Hover effects for labels */
+.group:hover .text-theme-sub-content {
+  color: rgba(0, 119, 255, 0.8);
+  transition: color 0.2s ease;
+}
+
+/* Enhanced tag hover effects */
+.group:hover .bg-blue-50 {
+  background-color: rgba(0, 119, 255, 0.12);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 119, 255, 0.1);
+}
+
+/* Styled code block appearance */
+.font-mono {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+/* Enhanced plugin tag hover effects */
+.group:hover .inline-flex {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 119, 255, 0.15);
+}
+
+/* Enhanced link hover effects */
+.group:hover .text-text-link {
+  text-decoration-color: rgba(0, 119, 255, 0.6);
+}
+</style>

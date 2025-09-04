@@ -75,7 +75,7 @@
         "creator": "Creator",
         "modifier": "Modifier",
         "addTime": "Created Time",
-        "modifyTime": "Modified Time",
+        "modifyTime": "Modified Date",
         "operation": "Action"
       },
       "actions": {
@@ -140,7 +140,7 @@
   },
   "scriptDetail": {
     "tabs": {
-      "basicInfo": "Basic Info",
+      "basicInfo": "Basic Information",
       "executionRecord": "Execution Record",
       "activity": "Activity"
     },
@@ -184,8 +184,8 @@
       "resourceName": "Resource Name",
       "tags": "Tags",
       "creator": "Creator",
-      "lastUpdater": "Last Modifier",
-      "lastModifyTime": "Last Modify Date"
+      "lastUpdater": "Modifier",
+      "lastModifyTime": "Modify Date"
     },
     "record": {
       "executionId": "Execution ID",

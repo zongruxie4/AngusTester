@@ -176,8 +176,8 @@
       "descriptionPlaceholder": "请输入脚本描述，最多800字符"
     },
     "info": {
-      "scriptName": "脚本名称",
-      "scriptType": "脚本类型",
+      "scriptName": "名称",
+      "scriptType": "类型",
       "plugin": "插件",
       "source": "来源",
       "resourceId": "资源ID",
