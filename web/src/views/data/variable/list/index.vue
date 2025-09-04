@@ -156,6 +156,10 @@ onMounted(() => {
     });
   }
 });
+
+defineExpose({
+  loadData
+});
 </script>
 
 <template>

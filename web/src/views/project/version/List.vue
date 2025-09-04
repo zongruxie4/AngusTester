@@ -88,7 +88,6 @@ const { columns } = useTableColumns();
               @change="paginationChange">
               <template #bodyCell="{column, record}">
                 <template v-if="column.dataIndex === 'name'">
-                  <!--   TODO 移动目录后跳转不生效了   -->
                   <RouterLink
                     v-if="props.showDetail"
                     class="router-link"

@@ -24,6 +24,7 @@ export function useVariableDetail (
     updateTabPane: (data: { [key: string]: any }) => void;
     deleteTabPane: (keys: string[]) => void;
     replaceTabPane: (id: string, data: { [key: string]: any }) => void;
+    refreshList: () => void;
   }
 ) {
   const { t } = useI18n();
@@ -92,6 +93,7 @@ export function useVariableDetail (
     Promise.resolve().then(() => {
       tabActions.updateTabPane({ _id: 'variableList', notify: utils.uuid() });
     });
+    tabActions.refreshList();
   };
 
   /**
@@ -118,7 +120,9 @@ export function useVariableDetail (
 
         Promise.resolve().then(() => {
           tabActions.updateTabPane({ _id: 'variableList', notify: utils.uuid() });
+          tabActions.refreshList();
         });
+        
       }
     });
   };
@@ -154,6 +158,7 @@ export function useVariableDetail (
     notification.success(t('dataVariable.detail.notifications.cloneSuccess'));
     Promise.resolve().then(() => {
       tabActions.updateTabPane({ _id: 'variableList', notify: utils.uuid() });
+      tabActions.refreshList();
     });
   };
 
