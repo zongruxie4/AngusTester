@@ -1,4 +1,5 @@
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 export const TOOLBAR_MENU_ITEMS: {
   name:string;
