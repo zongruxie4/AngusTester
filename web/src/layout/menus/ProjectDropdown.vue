@@ -94,7 +94,7 @@ const handleVisibleChange = (): void => {
         class="header-menu-dropdown-content text-theme-content"
         @mouseenter="handleMouseEnter"
         @mouseleave="handleMouseLeave">
-        <div class="px-4 py-3">
+        <div class="px-4 pt-3">
           <div class="flex items-center mb-3 search-container">
             <Input
               :placeholder="t('project.searchProject')"
@@ -107,9 +107,7 @@ const handleVisibleChange = (): void => {
               class="ml-2 text-3.5 refresh-icon"
               @click="emit('refresh')" />
           </div>
-          <div class="section-title text-theme-sub-content mb-2">{{ t('project.myJoinedProjects') }}</div>
         </div>
-
         <div class="project-list-container">
           <div
             v-for="item in props.projectSearchState.filteredList"

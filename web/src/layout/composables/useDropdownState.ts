@@ -43,14 +43,18 @@ export function useDropdownState () {
    * Handle mouse enter event
    */
   const handleMouseEnter = (): void => {
-    showDropdown();
+    clearTimeout(timer);
+    // Clear any pending hide timer and show immediately
+    dropdownState.value.visible = true;
   };
 
   /**
    * Handle mouse leave event
    */
   const handleMouseLeave = (): void => {
-    hideDropdown();
+    // Add delay when leaving to prevent flickering
+    // This allows user to move mouse from trigger to dropdown content
+    hideDropdown(150);
   };
 
   /**

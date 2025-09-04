@@ -36,8 +36,7 @@
     "projectProcess": "项目流程",
     "noJoinedProjects": "没有添加或加入任何项目",
     "projectNotExists": "项目不存在或未加入项目",
-    "searchProject": "查询项目",
-    "myJoinedProjects": "我参与的项目",
+    "searchProject": "搜索项目名称",
     "projectNotFound": "不存在此项目",
     "addProjectStep": {
       "title": "添加项目",
