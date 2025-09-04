@@ -3,7 +3,8 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { notification } from '@xcan-angus/vue-ui';
 import { script, exec } from '@/api/tester';
-import { ScriptInfo } from '../types';
+
+import { ScriptInfo } from '@/views/script/types';
 
 /**
  * Composable for managing script table functionality
@@ -155,7 +156,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
       key: 'clone',
       icon: 'icon-fuzhi',
       name: t('scriptHome.table.actions.clone'),
-      permission: 'COLON'
+      permission: 'VIEW'
     },
     {
       key: 'delete',
@@ -309,6 +310,13 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
   };
 
   /**
+   * Handle skip to editor
+   */
+  const handleToEditor = async (data: ScriptInfo) => {
+    router.push(`/script/edit/${data.id}?type=edit&pageNo=${data.pageNo}&pageSize=${data.pageSize}`);
+  };
+
+  /**
    * Handle script clone
    */
   const handleClone = async (data: ScriptInfo, loadingSetter: (loading: boolean) => void, refreshCallback: () => void) => {
@@ -362,7 +370,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
         handleSingleExec(data, loadingSetter);
         break;
       case 'edit':
-        router.push(`/script/edit/${data.id}?type=edit&pageNo=${data.pageNo}&pageSize=${data.pageSize}`);
+        handleToEditor(data);
         break;
       case 'auth':
         // Auth handling would be done in the parent component
@@ -434,6 +442,7 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
     handleBatchDelete,
     handleBatchExport,
     handleSingleExec,
+    handleToEditor,
     handleClone,
     handleDelete,
     handleExport,

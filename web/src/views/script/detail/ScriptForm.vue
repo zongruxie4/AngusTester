@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-import { onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Input } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
 
 import SelectEnum from '@/components/selectEnum/index.vue';
-import { FormState, ScriptInfo } from '../types';
+import { ScriptInfo } from '../types';
 import { useScriptForm } from './composables/useScriptForm';
 
 const { t } = useI18n();

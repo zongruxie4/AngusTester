@@ -1,5 +1,6 @@
 import { useI18n } from 'vue-i18n';
-import { ChartDataItem, PieChartOption } from '../types';
+
+import { ChartDataItem, PieChartOption } from '@/views/script/types';
 
 /**
  * Composable for managing chart configuration and data transformation

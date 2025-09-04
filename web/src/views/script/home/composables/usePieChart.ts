@@ -2,15 +2,16 @@ import { inject, ref, watch } from 'vue';
 import { utils } from '@xcan-angus/infra';
 import * as echarts from 'echarts/core';
 
-import { ResourceInfo, PieChartOption } from '../types';
+import { ResourceCount } from '../types';
 import { useChartConfig } from './useChartConfig';
 import { useECharts } from './useECharts';
+import { PieChartOption } from '@/views/script/types';
 
 /**
  * Composable for managing pie chart functionality
  * Handles chart initialization, data updates, and resize events
  */
-export function usePieChart (dataSource: ResourceInfo) {
+export function usePieChart (dataSource: ResourceCount) {
   const { createPieChartOption, transformResourceToChartData } = useChartConfig();
   const { initializeECharts, createChartInstance, setChartOptions, resizeChart } = useECharts();
 
@@ -51,7 +52,7 @@ export function usePieChart (dataSource: ResourceInfo) {
    * Update chart data based on resource information
    * @param resourceInfo - Resource information containing script counts
    */
-  const updateChartData = (resourceInfo: ResourceInfo) => {
+  const updateChartData = (resourceInfo: ResourceCount) => {
     if (!resourceInfo) return;
 
     // Transform resource data to chart data

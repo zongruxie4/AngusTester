@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { defineAsyncComponent, inject, nextTick, onMounted, ref, Ref, computed } from 'vue';
+import { defineAsyncComponent, inject, nextTick, onMounted, ref, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import {
   ActivityTimeline, AsyncComponent, Drawer, Icon, Input, Modal, modal, Select, Spin, Toolbar
@@ -9,14 +9,17 @@ import YAML from 'yaml';
 import { Button } from 'ant-design-vue';
 
 import {
-  TOOLBAR_EXTRA_MENU_ITEMS,
-  TOOLBAR_MENU_ITEMS,
   useScriptData,
   useDebug,
   useToolbar,
   useAI,
   useDrawer
 } from './composables';
+
+import {
+  TOOLBAR_EXTRA_MENU_ITEMS,
+  TOOLBAR_MENU_ITEMS
+} from './composables/useToolbar';
 
 const { t } = useI18n();
 
@@ -40,19 +43,10 @@ const formRef = ref();
 const toolbarRef = ref();
 const drawerRef = ref();
 
-const FORMAT_OPTIONS = [
-  {
-    value: 'yaml',
-    label: 'YAML'
-  },
-  {
-    value: 'json',
-    label: 'JSON'
-  }
-];
-
 // Use composables
 const {
+  FORMAT_OPTIONS,
+
   // Data refs
   scriptInfo,
   permissionList,

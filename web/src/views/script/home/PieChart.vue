@@ -2,7 +2,7 @@
 import { onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { ResourceInfo } from '../types';
+import { ResourceCount } from '../types';
 import { usePieChart } from './composables/usePieChart';
 
 const { t } = useI18n();
@@ -12,7 +12,7 @@ const { t } = useI18n();
  */
 type Props = {
   /** Resource information containing script statistics */
-  dataSource: ResourceInfo;
+  dataSource: ResourceCount;
 }
 
 const props = withDefaults(defineProps<Props>(), {

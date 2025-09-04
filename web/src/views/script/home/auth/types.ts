@@ -1,31 +1,5 @@
 /**
  * <p>
- * Type definitions for authentication components.
- * Contains interfaces for script items, permissions, and API parameters.
- * </p>
- */
-
-/**
- * <p>
- * Represents a script item with authentication information.
- * </p>
- */
-export type SpaceItem = {
-  id: string;
-  name: string;
-  auth: boolean;
-  remark: string;
-  bizKey: string;
-  size: string;
-  subDirectoryNum: string;
-  subFileNum: string;
-  createdBy: string;
-  createdByName: string;
-  createdDate: string;
-};
-
-/**
- * <p>
  * Represents permission information with value and label.
  * </p>
  */
@@ -36,38 +10,10 @@ export interface Permission {
 
 /**
  * <p>
- * Represents authentication object information stored in permissions map.
- * </p>
- */
-export interface AuthObjectInfo {
-  id: string;
-  creatorFlag: boolean;
-  permissions: string[];
-}
-
-/**
- * <p>
- * Represents list item information for users, departments, and groups.
- * </p>
- */
-export interface ListInfo {
-  [key: string]: string;
-  avatar: string;
-}
-
-/**
- * <p>
  * Type for authentication object types.
  * </p>
  */
 export type AuthObjectType = 'user' | 'dept' | 'group';
-
-/**
- * <p>
- * Type for name keys used in different entity types.
- * </p>
- */
-export type NameKey = 'deptName' | 'groupName' | 'fullName' | 'name';
 
 /**
  * <p>

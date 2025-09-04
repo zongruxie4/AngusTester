@@ -3,10 +3,10 @@ import { defineAsyncComponent, inject, Ref, ref, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { AsyncComponent, Spin } from '@xcan-angus/vue-ui';
 import { appContext } from '@xcan-angus/infra';
+import { ScriptPermission } from '@/enums/enums';
 
 import { useScriptData } from './composables/useScriptData';
 import { useScriptImport } from './composables/useScriptImport';
-import type { PermissionKey } from './types';
 
 // Async components
 const Introduce = defineAsyncComponent(() => import('@/views/script/home/Introduce.vue'));
@@ -109,10 +109,10 @@ const toRefresh = () => {
 };
 
 // Convert permissionsMap to proper type
-const permissionsMapForProps = computed((): { [key: string]: PermissionKey[] } => {
-  const converted: { [key: string]: PermissionKey[] } = {};
+const permissionsMapForProps = computed((): { [key: string]: ScriptPermission[] } => {
+  const converted: { [key: string]: ScriptPermission[] } = {};
   Object.keys(permissionsMap.value).forEach(key => {
-    converted[key] = permissionsMap.value[key] as PermissionKey[];
+    converted[key] = permissionsMap.value[key] as ScriptPermission[];
   });
   return converted;
 });

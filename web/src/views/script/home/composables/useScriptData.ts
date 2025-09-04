@@ -1,8 +1,9 @@
 import { ref } from 'vue';
 import { script, analysis } from '@/api/tester';
-import { ScriptInfo, ResourceInfo } from '../types';
+import { ResourceCount } from '../types';
 import { utils, appContext } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
+import { ScriptInfo } from '@/views/script/types';
 
 /**
  * Composable for managing script data including list, permissions and resource counts
@@ -31,7 +32,7 @@ export function useScriptData () {
   const filters = ref<{ key: string; op: string; value: boolean | string | string[]; }[]>([]);
 
   // Resource count data
-  const countData = ref<ResourceInfo>({
+  const countData = ref<ResourceCount>({
     totalScriptNum: '0',
     perfScriptNum: '0',
     functionalScriptNum: '0',

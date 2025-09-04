@@ -1,5 +1,37 @@
 import { ref } from 'vue';
 
+export const TOOLBAR_MENU_ITEMS: {
+  name:string;
+  key:string;
+}[] = [
+  {
+    key: 'debugResult',
+    name: '调试结果'
+  },
+  {
+    key: 'logs',
+    name: '调度日志'
+  },
+  {
+    key: 'execLog',
+    name: '执行日志'
+  }
+];
+
+export const TOOLBAR_EXTRA_MENU_ITEMS: {
+  name:string;
+  key:string;
+}[] = [
+  {
+    key: 'toggle',
+    name: '展开收起'
+  },
+  {
+    key: 'screen',
+    name: '全屏'
+  }
+];
+
 /**
  * Toolbar management composable
  * Handles toolbar state and actions
@@ -10,38 +42,6 @@ export function useToolbar () {
   const isFull = ref(false);
   const isOpen = ref(false);
   const isMoving = ref(false);
-
-  const TOOLBAR_MENU_ITEMS: {
-    name:string;
-    key:string;
-  }[] = [
-    {
-      key: 'debugResult',
-      name: '调试结果'
-    },
-    {
-      key: 'logs',
-      name: '调度日志'
-    },
-    {
-      key: 'execLog',
-      name: '执行日志'
-    }
-  ];
-
-  const TOOLBAR_EXTRA_MENU_ITEMS: {
-    name:string;
-    key:string;
-  }[] = [
-    {
-      key: 'toggle',
-      name: '展开收起'
-    },
-    {
-      key: 'screen',
-      name: '全屏'
-    }
-  ];
 
   /**
    * Close toolbar

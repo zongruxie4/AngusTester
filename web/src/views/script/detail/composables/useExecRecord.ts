@@ -1,5 +1,6 @@
 import { ref } from 'vue';
-import { ExecInfo } from '../types';
+
+import { ExecInfo } from '@/views/script/types';
 
 /**
  * Execution record management composable

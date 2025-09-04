@@ -4,7 +4,8 @@ import { notification } from '@xcan-angus/vue-ui';
 import { script } from '@/api/tester';
 import { exec } from 'src/api/ctrl';
 import YAML from 'yaml';
-import { PermissionKey, ScriptInfo } from '../types';
+import { ScriptInfo } from '../../types';
+import { ScriptPermission } from '@/enums/enums';
 
 /**
  * Script data management composable
@@ -14,9 +15,20 @@ export function useScriptData (projectInfo: Ref<{ id: string; avatar: string; na
   const route = useRoute();
   const router = useRouter();
 
+  const FORMAT_OPTIONS = [
+    {
+      value: 'yaml',
+      label: 'YAML'
+    },
+    {
+      value: 'json',
+      label: 'JSON'
+    }
+  ];
+
   // Script data refs
   const scriptInfo = ref<ScriptInfo>();
-  const permissionList = ref<PermissionKey[]>([]);
+  const permissionList = ref<ScriptPermission[]>([]);
   const loading = ref(false);
 
   // Script content refs
@@ -90,8 +102,10 @@ export function useScriptData (projectInfo: Ref<{ id: string; avatar: string; na
     const item = res?.data?.[id];
     if (item) {
       const { scriptAuth, permissions } = item;
-      let list: PermissionKey[] = [];
+      let list: ScriptPermission[] = [];
       const values = permissions.map(item => item.value);
+
+      // TODO 逻辑看不懂，将字符串替换成常量？后端没有定义：COLON，COLON 是啥意思？
       if (isAdmin.value || scriptAuth === false) {
         list = ['TEST', 'VIEW', 'MODIFY', 'DELETE', 'EXPORT', 'COLON'];
         if (values.includes('GRANT')) {
@@ -103,7 +117,6 @@ export function useScriptData (projectInfo: Ref<{ id: string; avatar: string; na
           list.push('COLON');
         }
       }
-
       permissionList.value = list;
     }
   };
@@ -153,7 +166,7 @@ export function useScriptData (projectInfo: Ref<{ id: string; avatar: string; na
       return;
     }
 
-    router.push(`/script?pageNo=${pageNo}&pageSize=${pageSize}`);
+    await router.push(`/script?pageNo=${pageNo}&pageSize=${pageSize}`);
   };
 
   /**
@@ -168,7 +181,7 @@ export function useScriptData (projectInfo: Ref<{ id: string; avatar: string; na
     }
 
     notification.success('删除成功');
-    router.push('/script');
+    await router.push('/script');
   };
 
   /**
@@ -198,11 +211,12 @@ export function useScriptData (projectInfo: Ref<{ id: string; avatar: string; na
     if (error) {
       return;
     }
-
     notification.success('添加执行成功');
   };
 
   return {
+    FORMAT_OPTIONS,
+
     // Data refs
     scriptInfo,
     permissionList,

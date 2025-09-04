@@ -3,7 +3,8 @@ import { useI18n } from 'vue-i18n';
 import { ScriptType, enumUtils } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep } from 'lodash-es';
-import { MenuItem } from '../types';
+
+import { MenuItem } from '@/views/script/types';
 
 /**
  * Composable for managing search functionality in script home

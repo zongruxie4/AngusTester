@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { defineAsyncComponent, ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { Button, Tag } from 'ant-design-vue';
 import { AsyncComponent, AuthorizeModal, Dropdown, Icon, notification, Table, Tooltip } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { script } from '@/api/tester';
 import { useScriptTable } from './composables/useScriptTable';
-import { ScriptInfo, ScriptTableProps } from './types';
+import { ScriptInfo, ScriptTableProps } from '@/views/script/types';
+import { ScriptPermission } from '@/enums/enums';
 
 const props = withDefaults(defineProps<ScriptTableProps>(), {
   projectId: undefined,
@@ -33,8 +33,7 @@ const emit = defineEmits<{
 // Async components
 const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/exportModal/index.vue'));
 
-// Router
-const router = useRouter();
+// I18n
 const { t } = useI18n();
 
 // Composable
@@ -51,6 +50,7 @@ const {
   handleBatchDelete,
   handleBatchExport,
   handleSingleExec,
+  handleToEditor,
   handleActionClick,
   selectedIds
 } = useScriptTable(props.permissionsMap);
@@ -58,8 +58,8 @@ const {
 // Export state
 const exportIds = ref<string[]>([]);
 const selectedData = ref<ScriptInfo>();
-const authModalVisible = ref(false);
-const exportVisible = ref(false);
+const authModalVisible = ref<boolean>(false);
+const exportVisible = ref<boolean>(false);
 
 /**
  * Import demo scripts
@@ -93,6 +93,64 @@ const tableChange = (
 const authFlagChange = () => {
   // This would update the table data in the parent component
   emit('refresh');
+};
+
+/**
+ * Handle batch execution
+ */
+const handleBatchExecClick = () => {
+  handleBatchExec((loading) => emit('update:loading', loading));
+};
+
+/**
+ * Handle batch delete
+ */
+const handleBatchDeleteClick = () => {
+  handleBatchDelete(
+    (loading) => emit('update:loading', loading),
+    (ids) => emit('delete', ids)
+  );
+};
+
+/**
+ * Handle batch export
+ */
+const handleBatchExportClick = () => {
+  handleBatchExport((ids: string[], visible: boolean) => {
+    exportIds.value = ids;
+    exportVisible.value = visible;
+  });
+};
+
+/**
+ * Handle single execution
+ */
+const handleSingleExecClick = (record: ScriptInfo) => {
+  handleSingleExec(record, (loading) => emit('update:loading', loading));
+};
+
+/**
+ * Handle edit click
+ */
+const handleEditClick = (record: ScriptInfo) => {
+  handleToEditor(record);
+};
+
+/**
+ * Handle dropdown action click
+ */
+const handleDropdownActionClick = (e: any, record: ScriptInfo) => {
+  handleActionClick(
+    e.key,
+    record,
+    (loading) => emit('update:loading', loading),
+    () => emit('refresh'),
+    (ids) => emit('delete', ids),
+    (ids: string[], visible: boolean) => {
+      exportIds.value = ids;
+      exportVisible.value = visible;
+    }
+  );
 };
 
 // Watch for reset notifications
@@ -140,6 +198,7 @@ rowSelection.value.onChange = (keys: string[]) => {
 };
 </script>
 
+<!-- TODO 批量删除和删除添加确认提醒 -->
 <template>
   <template v-if="props.loaded">
     <div
@@ -167,7 +226,7 @@ rowSelection.value.onChange = (keys: string[]) => {
           type="link"
           size="small"
           class="flex items-center px-0 h-5 leading-5"
-          @click="() => handleBatchExec((loading) => emit('update:loading', loading))">
+          @click="handleBatchExecClick">
           {{ t('scriptHome.table.actions.execute') }}
         </Button>
 
@@ -176,10 +235,7 @@ rowSelection.value.onChange = (keys: string[]) => {
           type="link"
           size="small"
           class="flex items-center px-0 h-5 leading-5"
-          @click="() => handleBatchDelete(
-            (loading) => emit('update:loading', loading),
-            (ids) => emit('delete', ids)
-          )">
+          @click="handleBatchDeleteClick">
           {{ t('scriptHome.table.actions.delete') }}
         </Button>
 
@@ -188,10 +244,7 @@ rowSelection.value.onChange = (keys: string[]) => {
           type="link"
           size="small"
           class="flex items-center px-0 h-5 leading-5"
-          @click="() => handleBatchExport((ids, visible) => {
-            exportIds = ids;
-            exportVisible = visible;
-          })">
+          @click="handleBatchExportClick">
           {{ t('scriptHome.table.actions.export') }}
         </Button>
 
@@ -295,21 +348,21 @@ rowSelection.value.onChange = (keys: string[]) => {
 
           <div v-else-if="column.dataIndex === 'action'" class="flex items-center">
             <Button
-              :disabled="!props.permissionsMap[record.id]?.includes('TEST')"
+              :disabled="!props.permissionsMap[record.id]?.includes(ScriptPermission.TEST)"
               type="text"
               size="small"
               class="flex items-center px-0 mr-1"
-              @click="() => handleSingleExec(record, (loading) => emit('update:loading', loading))">
+              @click="() => handleSingleExecClick(record)">
               <Icon icon="icon-zhihangjiaoben" class="mr-1" />
               <span>{{ t('scriptHome.table.actions.execute') }}</span>
             </Button>
 
             <Button
-              :disabled="!props.permissionsMap[record.id]?.includes('MODIFY')"
+              :disabled="!props.permissionsMap[record.id]?.includes(ScriptPermission.MODIFY)"
               type="text"
               size="small"
               class="flex items-center px-0 mr-1"
-              @click="() => router.push(`/script/edit/${record.id}?type=edit&pageNo=${props.pagination.current}&pageSize=${props.pagination.pageSize}`)">
+              @click="() => handleEditClick(record)">
               <Icon icon="icon-shuxie" class="mr-1" />
               <span>{{ t('scriptHome.table.actions.edit') }}</span>
             </Button>
@@ -318,17 +371,7 @@ rowSelection.value.onChange = (keys: string[]) => {
               :menuItems="actionItems"
               :admin="false"
               :permissions="props.permissionsMap[record.id]"
-              @click="(key) => handleActionClick(
-                key,
-                record,
-                (loading) => emit('update:loading', loading),
-                () => emit('refresh'),
-                (ids) => emit('delete', ids),
-                (ids, visible) => {
-                  exportIds = ids;
-                  exportVisible = visible;
-                }
-              )">
+              @click="(e) => handleDropdownActionClick(e, record)">
               <Button
                 type="text"
                 size="small"

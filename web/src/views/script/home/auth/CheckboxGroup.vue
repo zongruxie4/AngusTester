@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Checkbox } from 'ant-design-vue';
 import { CheckboxGroupProps } from './types';
+import { ScriptPermission } from '@/enums/enums';
 
 /**
  * <p>
@@ -35,15 +36,15 @@ const change = (event: { target: { checked: boolean; } }, value: string) => {
 
   if (checked && !props.value.includes(value)) {
     // Add permission and automatically include VIEW if not VIEW itself
-    const newValue = value !== 'VIEW' && !props.value.includes('VIEW')
-      ? props.value.concat([value, 'VIEW'])
+    const newValue = value !== ScriptPermission.VIEW && !props.value.includes(ScriptPermission.VIEW)
+      ? props.value.concat([value, ScriptPermission.VIEW])
       : props.value.concat([value]);
     emit('change', newValue);
     return;
   }
 
   // Remove permission and all dependent permissions
-  const temp = value !== 'VIEW' ? props.value.filter(item => item !== value) : [];
+  const temp = value !== ScriptPermission.VIEW ? props.value.filter(item => item !== value) : [];
   emit('change', temp);
 };
 </script>

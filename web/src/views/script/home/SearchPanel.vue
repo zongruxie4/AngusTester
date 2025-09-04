@@ -5,7 +5,8 @@ import { Button } from 'ant-design-vue';
 import { Colon, Icon, IconRefresh, IconText, SearchPanel, Select } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { useScriptSearch } from './composables/useScriptSearch';
-import { ScriptSearchProps } from '@/views/script/home/types';
+
+import { ScriptSearchProps } from '@/views/script/types';
 
 const { t } = useI18n();
 

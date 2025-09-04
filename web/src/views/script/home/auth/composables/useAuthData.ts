@@ -2,7 +2,6 @@ import { computed, ref, watch } from 'vue';
 import { debounce, throttle } from 'throttle-debounce';
 import { duration } from '@xcan-angus/infra';
 import { script } from '@/api/tester';
-import { SpaceItem } from '../types';
 
 /**
  * <p>
@@ -22,7 +21,7 @@ export function useAuthData (projectId: string, authObjectId: string | undefined
   const pageSize = ref(1);
   const total = ref(0);
   const idList = ref<string[]>([]);
-  const dataMap = ref<{ [key: string]: SpaceItem }>({});
+  const dataMap = ref<{ [key: string]: any }>({});
   const permissionsMap = ref<{ [key: string]: { id: string; creatorFlag: boolean; permissions: string[] } | undefined }>({});
   const enabledLoadingMap = ref<{ [key: string]: boolean }>({});
   const searchInputValue = ref<string>();
