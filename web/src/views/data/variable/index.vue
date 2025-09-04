@@ -27,6 +27,7 @@ const VariableDetail = defineAsyncComponent(() => import('@/views/data/variable/
 const route = useRoute();
 const router = useRouter();
 const browserTabRef = ref();
+const variableListRef = ref();
 
 const addTabPane = (data: IPane) => {
   browserTabRef.value.add(() => {
@@ -118,6 +119,10 @@ const storageKeyChange = () => {
   initialize();
 };
 
+const refreshList = () => {
+  variableListRef.value && variableListRef.value.loadData();
+};
+
 onMounted(() => {
   watch(() => route.hash, () => {
     if (!route.hash.startsWith('#variables')) {
@@ -139,6 +144,7 @@ provide('getTabPane', getTabPane);
 provide('deleteTabPane', deleteTabPane);
 provide('updateTabPane', updateTabPane);
 provide('replaceTabPane', replaceTabPane);
+provide('refreshList', refreshList);
 </script>
 
 <template>
@@ -153,6 +159,7 @@ provide('replaceTabPane', replaceTabPane);
       <template v-if="record.value === 'variableList'">
         <VariableList
           v-bind="record"
+          ref="variableListRef"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :projectId="props.projectId" />

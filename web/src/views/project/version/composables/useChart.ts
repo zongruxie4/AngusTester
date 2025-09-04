@@ -24,7 +24,7 @@ export function useChart (props: ChartProps) {
       left: '35%',
       bottom: '10%',
       padding: 2,
-      subtext: t('task.detail.chart.subtext'),
+      subtext: t('taskAnalysis.detail.progress.chartTitles.taskProgress'),
       itemGap: 50,
       textAlign: 'center',
       textStyle: {
@@ -74,14 +74,14 @@ export function useChart (props: ChartProps) {
         },
         data: [
           {
-            name: t('task.detail.chart.uncompleted'),
+            name: t('taskAnalysis.detail.progress.chartLabels.uncompleted'),
             value: 0,
             itemStyle: {
               color: 'rgba(217, 217, 217, 1)'
             }
           },
           {
-            name: t('task.detail.chart.completed'),
+            name: t('taskAnalysis.detail.progress.chartLabels.completed'),
             value: 0,
             itemStyle: {
               color: '#52C41A'
@@ -100,7 +100,7 @@ export function useChart (props: ChartProps) {
     ...completedEchartConfig,
     title: {
       ...completedEchartConfig.title,
-      subtext: t('task.detail.chart.workload')
+      subtext: t('taskAnalysis.detail.progress.chartTitles.workloadProgress')
     }
   }));
 

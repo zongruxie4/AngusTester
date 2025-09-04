@@ -182,12 +182,11 @@ const {
                 class="w-full-24" />
             </div>
 
-            <div class="flex items-center mb-3.5">
+            <div class="w-1/2 flex items-center mb-3.5">
               <div class="w-25 flex-shrink-0 text-3 font-semibold flex justify-end items-center mr-2.5">
                 <IconRequired />
                 <span>{{ t('dataVariable.detail.jdbcVariable.jdbcUrl') }}</span>
               </div>
-              <!-- TODO jdbcUrl和password的input长度不一致 -->
               <Input
                 v-model:value="jdbcUrl"
                 :maxlength="2048"

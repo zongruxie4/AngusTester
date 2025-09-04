@@ -11,7 +11,7 @@ const Trash = defineAsyncComponent(() => import('@/views/project/trash/index.vue
 const Activity = defineAsyncComponent(() => import('@/views/project/activity/index.vue'));
 const Module = defineAsyncComponent(() => import('@/views/project/module/index.vue'));
 const Tags = defineAsyncComponent(() => import('@/views/project/tag/index.vue'));
-const Version = defineAsyncComponent(() => import('@/views/project/version/List.vue'));
+const Version = defineAsyncComponent(() => import('@/views/project/version/index.vue'));
 
 const userInfo = ref(appContext.getUser());
 const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));

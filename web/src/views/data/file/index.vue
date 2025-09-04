@@ -6,10 +6,10 @@ import { STORAGE, appContext } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
 import { FileCapacity, SpaceInfo } from './components';
-import { useSpaceData } from './composables/useSpaceData';
-import { useTableColumns } from './composables/useTableColumns';
-import { useSpaceManagement } from './composables/useSpaceManagement';
-import { useDrawerMenu } from './composables/useDrawerMenu';
+import { useSpaceData } from './composables/useSpaceData.ts';
+import { useTableColumns } from './composables/useTableColumns.ts';
+import { useSpaceManagement } from './composables/useSpaceManagement.ts';
+import { useDrawerMenu } from './composables/useDrawerMenu.ts';
 
 const { t } = useI18n();
 
@@ -21,7 +21,7 @@ const GlobalAuth = defineAsyncComponent(() => import('@/views/data/file/auth/ind
 const Introduce = defineAsyncComponent(() => import('@/views/data/file/Introduce.vue'));
 
 // Dependency injection for app context
-const appInfo = inject('appInfo', ref());
+const appInfo = appContext.getAccessApp();
 const isAdmin = inject('isAdmin', ref(false));
 const projectInfo = inject('projectInfo', ref({ id: '' }));
 
@@ -209,47 +209,47 @@ const drawerMenu = computed(() => {
           </template>
 
           <!-- Action column -->
-          <!--  TODO 按钮和图标不在一条线上 -->
+
           <template v-if="column.dataIndex === 'action'">
             <div class="space-x-2.5 flex items-center leading-4">
               <!-- Edit action -->
               <template v-if="getSafeAuth(record).includes('MODIFY')">
-                <a class="whitespace-nowrap" @click.stop="editSpace(record.id)">
-                  <Icon icon="icon-bianji" class="align-text-bottom" />
+                <a class="whitespace-nowrap inline-flex items-center" @click.stop="editSpace(record.id)">
+                  <Icon icon="icon-bianji" class="mr-0.5" />
                   {{ t('actions.edit') }}
                 </a>
               </template>
               <template v-else>
-                <span class="text-text-disabled whitespace-nowrap">
-                  <Icon icon="icon-bianji" class="align-text-bottom" />
+                <span class="text-text-disabled whitespace-nowrap inline-flex items-center">
+                  <Icon icon="icon-bianji" class="mr-0.5" />
                   {{ t('actions.edit') }}
                 </span>
               </template>
 
               <!-- Permission action -->
               <template v-if="getSafeAuth(record).includes('GRANT')">
-                <a class="whitespace-nowrap" @click.stop="editAuth(record)">
-                  <Icon icon="icon-quanxian1" class="align-text-bottom" />
+                <a class="whitespace-nowrap inline-flex items-center" @click.stop="editAuth(record)">
+                  <Icon icon="icon-quanxian1" class="mr-0.5" />
                   {{ t('fileSpace.actions.permission') }}
                 </a>
               </template>
               <template v-else>
-                <span class="text-text-disabled whitespace-nowrap">
-                  <Icon icon="icon-quanxian1" class="align-text-bottom" />
+                <span class="text-text-disabled whitespace-nowrap inline-flex items-center">
+                  <Icon icon="icon-quanxian1" class="mr-0.5" />
                   {{ t('fileSpace.actions.permission') }}
                 </span>
               </template>
 
               <!-- Delete action -->
               <template v-if="getSafeAuth(record).includes('DELETE')">
-                <a class="whitespace-nowrap" @click.stop="delConfirm(record, projectId, isAdmin)">
-                  <Icon icon="icon-qingchu" class="align-text-bottom" />
+                <a class="whitespace-nowrap inline-flex items-center" @click.stop="delConfirm(record, projectId, isAdmin)">
+                  <Icon icon="icon-qingchu" class="mr-0.5" />
                   {{ t('actions.delete') }}
                 </a>
               </template>
               <template v-else>
-                <span class="text-text-disabled whitespace-nowrap">
-                  <Icon icon="icon-qingchu" class="align-text-bottom" />
+                <span class="text-text-disabled whitespace-nowrap inline-flex items-center">
+                  <Icon icon="icon-qingchu" class="mr-0.5" />
                   {{ t('actions.delete') }}
                 </span>
               </template>
@@ -314,8 +314,6 @@ const drawerMenu = computed(() => {
         @change="(authData) => authFlagChange(authData, dataList)" />
     </AsyncComponent>
 
-    <!-- TODO 1、GlobalAuth弹窗组件第一次打开后，不能被再次打开；
-          2、打开后没有触发查询数据请求 -->
     <AsyncComponent :visible="globalAuthVisible">
       <GlobalAuth v-model:visible="globalAuthVisible" :appId="appInfo?.id" />
     </AsyncComponent>

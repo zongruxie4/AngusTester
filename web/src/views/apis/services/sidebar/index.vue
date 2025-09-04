@@ -783,7 +783,7 @@ const foldActions = ref<{ name: string; key: FoldActionKey; icon: string; }[]>([
 
 // 搜索 props
 const searchInputProps = {
-  placeholder: '查询服务名称',
+  placeholder: t('service.sidebar.searchServicePlaceholder'),
   allowClear: true
 };
 const buttonProps = {

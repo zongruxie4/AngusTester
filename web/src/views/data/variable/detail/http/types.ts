@@ -131,25 +131,14 @@ export type auth = {
   };
 };
 
-// TODO 存在重复代码
 export type RequestConfig = {
   method: HttpMethod;
   url: string;
   server: Server;
   endpoint: string;
   parameters: Parameter[];
-  body: { [key: string]: { [key: string]: any } };
-  authentication: Authentication;
-}
-
-export type RequestConfigs = {
-  method: HttpMethod;
-  url: string;
-  server: Server;
-  endpoint: string;
-  parameters: Parameter[];
   body?: RequestBody;
-  authentication?: auth;
+  authentication: Authentication;
 }
 
 export const deepParseJson = (jsonStr: string) => {
