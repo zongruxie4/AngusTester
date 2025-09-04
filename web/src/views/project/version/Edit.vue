@@ -41,15 +41,15 @@ const handleOk = async () => {
   <Modal
     :title="props.versionId ? t('version.form.editVersion') : t('version.form.addVersion')"
     :visible="props.visible"
-    :width="550"
+    :width="650"
     @cancel="handleCancel"
     @ok="handleOk">
     <Form
       ref="formRef"
       :model="formState"
       size="small"
-      :labelCol="{ style: { width: '90px' } }"
-      class="max-w-242.5"
+      :labelCol="{ style: { width: '100px', textAlign: 'right', fontWeight: 'bold' } }"
+      class="max-w-262.5"
       layout="horizontal">
       <FormItem
         required

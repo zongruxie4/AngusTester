@@ -267,7 +267,7 @@
     "form": {
       "editVersion": "Edit Version",
       "addVersion": "Add Version",
-      "versionName": "Version Name",
+      "versionName": "Version",
       "versionNamePlaceholder": "Enter version name, maximum 40 characters, e.g.: v1.0",
       "startDate": "Start Date",
       "releaseDate": "Release Date",
@@ -275,9 +275,9 @@
       "descriptionPlaceholder": "Please enter version description, maximum 200 characters"
     },
     "merge": {
-      "title": "Version Merge",
+      "title": "Merge Version",
       "mergeVersion": "Merge Version",
-      "mergeTo": "Merge Version To"
+      "mergeTo": "Merge To"
     },
     "detail": {
       "version": "Version",

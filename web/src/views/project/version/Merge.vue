@@ -90,36 +90,38 @@ const fieldNames = {
       <Icon icon="icon-jinggao" class="text-status-warn" />
       {{ t('version.messages.mergeWarning') }}
     </div>
-    <Form
-      ref="formRef"
-      :model="formState"
-      size="small"
-      :labelCol="{ style: { width: '90px' } }"
-      class="max-w-242.5 mt-4"
-      layout="horizontal">
-      <FormItem
-        required
-        name="formId"
-        :label="t('version.merge.mergeVersion')">
-        <Select
-          v-model:value="formState.formId"
-          :fieldNames="fieldNames"
-          :lazy="false"
-          :defaultActiveFirstOption="true"
-          :action="`${TESTER}/software/version?projectId=${projectId}&fullTextSearch=true`" />
-      </FormItem>
-      <FormItem
-        required
-        :label="t('version.merge.mergeTo')"
-        class="flex-1 !mb-5"
-        name="toId">
-        <Select
-          v-model:value="formState.toId"
-          :fieldNames="fieldNames"
-          :lazy="false"
-          :defaultActiveFirstOption="true"
-          :action="`${TESTER}/software/version?projectId=${projectId}&fullTextSearch=true`" />
-      </FormItem>
-    </Form>
+    <div class="mt-5">
+      <Form
+        ref="formRef"
+        :model="formState"
+        size="small"
+        :labelCol="{ style: { width: '120px', textAlign: 'right', fontWeight: 'bold' } }"
+        class="max-w-242.5"
+        layout="horizontal">
+        <FormItem
+          required
+          name="formId"
+          :label="t('version.merge.mergeVersion')">
+          <Select
+            v-model:value="formState.formId"
+            :fieldNames="fieldNames"
+            :lazy="false"
+            :defaultActiveFirstOption="true"
+            :action="`${TESTER}/software/version?projectId=${projectId}&fullTextSearch=true`" />
+        </FormItem>
+        <FormItem
+          required
+          :label="t('version.merge.mergeTo')"
+          class="flex-1 !mb-5"
+          name="toId">
+          <Select
+            v-model:value="formState.toId"
+            :fieldNames="fieldNames"
+            :lazy="false"
+            :defaultActiveFirstOption="true"
+            :action="`${TESTER}/software/version?projectId=${projectId}&fullTextSearch=true`" />
+        </FormItem>
+      </Form>
+    </div>
   </Modal>
 </template>
