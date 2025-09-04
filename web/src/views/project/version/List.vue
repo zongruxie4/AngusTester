@@ -51,10 +51,8 @@ const {
 const { columns } = useTableColumns();
 </script>
 
-<!-- TODO
-1. 刷新浏览器，从版本会进入到项目，左侧菜单没有记住，项目左侧菜单都有这个问题
-2. 合并版本、添加版本、编辑版本列表没有刷新。
--->
+<!-- TODO 刷新浏览器，从版本会进入到项目，左侧菜单没有记住，项目左侧菜单都有这个问题 -->
+<!-- TODO 合并版本、添加版本、编辑版本列表没有刷新。-->
 <template>
   <div class="flex flex-col h-full overflow-auto px-5 py-5 leading-5 text-3">
     <div class="flex space-x-2">

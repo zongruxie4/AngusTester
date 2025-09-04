@@ -133,6 +133,7 @@ const emptyTextStyle = {
       <template #bodyCell="{ record, column }">
         <div v-if="column.dataIndex === 'name'" class="flex items-center">
           <IconTask :value="record.taskType?.value" class="text-4 flex-shrink-0" />
+          <!--  TODO 点击跳转任务详情没反应        -->
           <RouterLink
             class="link truncate ml-1"
             :title="record.name"
