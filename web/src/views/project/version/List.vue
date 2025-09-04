@@ -56,7 +56,7 @@ const { columns } = useTableColumns();
     <div class="flex space-x-2">
       <Introduce
         class="flex-1"
-        :class="{'mb-2': props.showDetail, 'mb-2': !props.showDetail}"
+        :class="{'mb-4': props.showDetail}"
         :showFunc="props.showDetail" />
     </div>
 
