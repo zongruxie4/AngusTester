@@ -9,14 +9,13 @@ import YAML from 'yaml';
 import { Button } from 'ant-design-vue';
 
 import {
-  TOOLBAR_EXTRA_MENU_ITEMS,
-  TOOLBAR_MENU_ITEMS,
+
   useScriptData,
   useDebug,
   useToolbar,
   useAI,
   useDrawer
-} from './composables';
+} from './composables/index.ts';
 
 const { t } = useI18n();
 
@@ -84,6 +83,8 @@ const {
 } = useDebug(scriptId, scriptValue, toolbarRef);
 
 const {
+  TOOLBAR_EXTRA_MENU_ITEMS,
+  TOOLBAR_MENU_ITEMS,
   toolbarActiveKey,
   height,
   isFull,
@@ -281,14 +282,14 @@ onMounted(() => {
           <Icon
             :icon="isOpen ? 'icon-shouqi' : 'icon-spread'"
             style="font-size: 14px;cursor: pointer;"
-            @click="() => closeToolbar(toolbarRef)" />
+            @click="closeToolbar(toolbarRef)" />
         </template>
 
         <template #screen>
           <Icon
             :icon="isFull ? 'icon-tuichuzuida' : 'icon-zuidahua'"
             style="font-size: 14px;cursor: pointer;"
-            @click="() => toggleFullScreen(toolbarRef)" />
+            @click="toggleFullScreen(toolbarRef)" />
         </template>
 
         <template #debugResult>

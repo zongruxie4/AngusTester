@@ -205,6 +205,13 @@
     "ai": {
       "title": "自动创建脚本",
       "placeholder": "给AI智能体描述您的需求，如：生成查询用户信息性能测试脚本。"
+    },
+    "toolbar": {
+      "debugResult": "调试结果",
+      "logs": "调度日志",
+      "execLog": "执行日志",
+      "toggle": "展开收起",
+      "screen": "全屏"
     }
   }
 }

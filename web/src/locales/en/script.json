@@ -204,6 +204,13 @@
     "ai": {
       "title": "Auto Create Script",
       "placeholder": "Describe your requirements to the AI agent, such as: Generate a performance test script for querying user information."
+    },
+    "toolbar": {
+      "debugResult": "Debug Result",
+      "logs": "Logs",
+      "execLog": "Execution Log",
+      "toggle": "Toggle",
+      "screen": "Full Screen"
     }
   }
 }

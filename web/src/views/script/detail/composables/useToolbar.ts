@@ -1,4 +1,5 @@
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 /**
  * Toolbar management composable
@@ -11,21 +12,23 @@ export function useToolbar () {
   const isOpen = ref(false);
   const isMoving = ref(false);
 
+  const { t } = useI18n();
+
   const TOOLBAR_MENU_ITEMS: {
     name:string;
     key:string;
   }[] = [
     {
       key: 'debugResult',
-      name: '调试结果'
+      name: t('scriptDetail.toolbar.debugResult')
     },
     {
       key: 'logs',
-      name: '调度日志'
+      name: t('scriptDetail.toolbar.logs')
     },
     {
       key: 'execLog',
-      name: '执行日志'
+      name: t('scriptDetail.toolbar.execLog')
     }
   ];
 
@@ -35,11 +38,11 @@ export function useToolbar () {
   }[] = [
     {
       key: 'toggle',
-      name: '展开收起'
+      name: t('scriptDetail.toolbar.toggle')
     },
     {
       key: 'screen',
-      name: '全屏'
+      name: t('scriptDetail.toolbar.screen')
     }
   ];
 
@@ -47,8 +50,8 @@ export function useToolbar () {
    * Close toolbar
    */
   const closeToolbar = (toolbarRef: any) => {
-    if (typeof toolbarRef.value?.open === 'function') {
-      toolbarRef.value.open();
+    if (typeof toolbarRef?.open === 'function') {
+      toolbarRef.open();
     }
   };
 
@@ -56,8 +59,8 @@ export function useToolbar () {
    * Toggle fullscreen mode
    */
   const toggleFullScreen = (toolbarRef: any) => {
-    if (typeof toolbarRef.value?.fullScreen === 'function') {
-      toolbarRef.value.fullScreen();
+    if (typeof toolbarRef?.fullScreen === 'function') {
+      toolbarRef.fullScreen();
     }
   };
 
