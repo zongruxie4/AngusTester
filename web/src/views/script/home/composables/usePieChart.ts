@@ -11,10 +11,11 @@ import { PieChartOption } from '@/views/script/types';
  * Composable for managing pie chart functionality
  * Handles chart initialization, data updates, and resize events
  */
-export function usePieChart (dataSource: ResourceCount) {
+export function usePieChart (_dataSource: ResourceCount) {
   const { createPieChartOption, transformResourceToChartData } = useChartConfig();
   const { initializeECharts, createChartInstance, setChartOptions, resizeChart } = useECharts();
 
+  const dataSource = ref(_dataSource);
   // Window resize notification from parent component
   const windowResizeNotify = inject('windowResizeNotify', ref<string>());
 
@@ -89,12 +90,12 @@ export function usePieChart (dataSource: ResourceCount) {
    * Watch for data source changes and update chart
    */
   const watchDataSource = () => {
-    watch(() => dataSource, (newValue) => {
+    watch(() => dataSource.value, (newValue) => {
       if (!newValue) return;
 
       updateChartData(newValue);
       renderChart();
-    }, { immediate: true });
+    }, { immediate: true, deep: true });
   };
 
   /**
@@ -122,6 +123,7 @@ export function usePieChart (dataSource: ResourceCount) {
     chartOption,
     initialize,
     renderChart,
-    handleResize
+    handleResize,
+    dataSource
   };
 }
