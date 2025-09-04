@@ -89,6 +89,7 @@ const bodyStyle = {
 </script>
 
 <template>
+  <!-- TODO 授权弹窗数据不展示、功能未测试 -->
   <Modal
     :title="t('scriptHome.globalAuth.title')"
     :footer="false"

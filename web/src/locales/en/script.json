@@ -4,20 +4,20 @@
       "quickSearch": "Quick Search",
       "addScript": "Add Script",
       "importScript": "Import Script",
-      "scriptAuth": "Script Auth",
+      "scriptAuth": "Permission",
       "refresh": "Refresh",
-      "searchPlaceholder": "Search ID, name, description, plugin",
+      "searchPlaceholder": "Search script ID, name, description or plugin",
       "scriptTypePlaceholder": "Select script type",
       "sourcePlaceholder": "Select source",
       "tagPlaceholder": "Search tags",
       "servicePlaceholder": "Select service",
       "apiPlaceholder": "Select API",
       "scenarioPlaceholder": "Select scenario",
-      "creatorPlaceholder": "Creator",
-      "modifierPlaceholder": "Last modifier",
+      "creatorPlaceholder": "Select Creator",
+      "modifierPlaceholder": "Select Modifier",
       "addTimePlaceholder": [
-        "Add time from",
-        "Add time to"
+        "Created from",
+        "Created to"
       ],
       "modifyTimePlaceholder": [
         "Modify time from",
@@ -25,7 +25,7 @@
       ],
       "quickSearchOptions": {
         "all": "All",
-        "myAdded": "My Added",
+        "myAdded": "My Created",
         "myModified": "My Modified",
         "last1Day": "Last 1 Day",
         "last3Days": "Last 3 Days",
@@ -73,13 +73,13 @@
         "resourceName": "Resource Name",
         "tags": "Tags",
         "creator": "Creator",
-        "modifier": "Last Modifier",
-        "addTime": "Add Time",
-        "modifyTime": "Last Modify Time",
-        "operation": "Operation"
+        "modifier": "Modifier",
+        "addTime": "Created Time",
+        "modifyTime": "Modified Time",
+        "operation": "Action"
       },
       "actions": {
-        "auth": "Auth",
+        "auth": "Permission",
         "clone": "Clone",
         "delete": "Delete",
         "export": "Export",
@@ -97,11 +97,14 @@
         "deleteConfirm": "Are you sure to delete the selected {num} scripts?",
         "deleteSuccess": "Selected {num} scripts deleted successfully",
         "importExampleSuccess": "Import example successfully",
-        "addExecuteSuccess": "Script added and executed successfully, please check details in \"Execute\"",
+        "addExecuteSuccess": "Script created and executed successfully, please check details in \"Execute\"",
         "cloneSuccess": "Script cloned successfully",
         "deleteScriptConfirm": "Deleting script 【{name}】 will also delete associated scenarios, are you sure to delete?",
         "deleteScriptConfirmSimple": "Are you sure to delete script 【{name}】?",
-        "deleteScriptSuccess": "Script deleted successfully"
+        "deleteScriptSuccess": "Script deleted successfully",
+        "noScriptData": "No script data, ",
+        "importExample": "Import Example",
+        "cancelBatchOperation": "Cancel Batch Operation"
       },
       "tips": {
         "authOn": "After enabling permission control, manual authorization is required to have corresponding operation permissions.",
@@ -128,11 +131,10 @@
       }
     },
     "introduce": {
-      "description": "Scripts are a series of automated testing steps and instructions used to verify software systems and applications. Through scripts, you can customize test scenarios and cases, ultimately achieving automated testing and repeatable continuous testing requirements, or customize Mock data rules through scripts to generate data that meets business or testing requirements.",
-      "workDescription": "Here you and your team can complete the following work:",
+      "description": "Scripts are the core tools for automated testing, used to verify software system functionality, performance, and stability. You can create test scripts to run various tests, or create Mock scripts to generate test data.",
       "workItems": {
-        "testScript": "Add test scripts and initiate functional testing, performance testing, stability testing, and custom testing based on scripts;",
-        "mockScript": "Add Mock scripts to generate Mock data and store data to: data space, data source, local execution node, third-party systems."
+        "testScript": "Create test scripts to run functional, performance, stability, and custom tests;",
+        "mockScript": "Create Mock scripts to generate test data and store it in data spaces, data sources, etc."
       }
     }
   },

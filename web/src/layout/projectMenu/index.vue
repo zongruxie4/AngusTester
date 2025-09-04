@@ -1,21 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-
-type IMenu = {
-  hasAuth: boolean;
-  tags: string[];
-  authCtrlFlag: boolean;
-  code: string;
-  icon: string;
-  name: string;
-  showName: string;
-  type: 'MENU';
-  url: string;
-}
+import { AuthAppFuncTree } from '@xcan-angus/infra';
 
 type Props = {
-  menus: IMenu[];
+  menus: AuthAppFuncTree[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -24,18 +13,17 @@ const props = withDefaults(defineProps<Props>(), {
 
 const route = useRoute();
 
-const menuList = ref<IMenu[]>([]);
+const menuList = ref<AuthAppFuncTree[]>([]);
 const selectedUrl = ref(location.pathname);
 
-const handleSelect = (menu: IMenu) => {
-  selectedUrl.value = menu.url;
+const handleSelect = (menu: AuthAppFuncTree) => {
+  selectedUrl.value = menu.url || '';
 };
 
 const isActive = (url: string): boolean => {
   if (!url) {
     return false;
   }
-
   return !!(selectedUrl.value && (url.startsWith(selectedUrl.value) || selectedUrl.value.startsWith(url)));
 };
 

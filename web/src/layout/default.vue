@@ -230,7 +230,6 @@ provide('proTypeShowMap', proTypeShowMap);
 provide('projectInfo', projectInfo);
 provide('changeProjectInfo', changeProjectInfo);
 provide('getNewCurrentProject', loadData);
-
 </script>
 <template>
   <div class="shadow relative z-99 flex items-center h-13.5 pr-3 header-nav-bg">
@@ -251,20 +250,20 @@ provide('getNewCurrentProject', loadData);
           class="header-menu-dropdown-content text-theme-content"
           @mouseenter="mouseenter"
           @mouseleave="mouseleave">
-            <div class="px-3.5 mb-1">
-              <div class="flex items-center mb-2.5">
-                <Input
-                  :placeholder="t('project.searchProject')"
-                  trim
-                  allowClear
-                  @change="dropdownInputChange" />
-                <IconRefresh
-                  :loading="loading"
-                  class="ml-2 text-3.5"
-                  @click="loadData" />
-              </div>
-              <span class="text-theme-sub-content">{{ t('project.myJoinedProjects') }}</span>
+          <div class="px-3.5 mb-1">
+            <div class="flex items-center mb-2.5">
+              <Input
+                :placeholder="t('project.searchProject')"
+                trim
+                allowClear
+                @change="dropdownInputChange" />
+              <IconRefresh
+                :loading="loading"
+                class="ml-2 text-3.5"
+                @click="loadData" />
             </div>
+            <span class="text-theme-sub-content">{{ t('project.myJoinedProjects') }}</span>
+          </div>
 
           <div style="height:248px;margin: 0 4px;overflow: auto;">
             <div
@@ -302,7 +301,7 @@ provide('getNewCurrentProject', loadData);
     </Dropdown>
     <HeaderMenu :menus="headerMenus" class="mr-3.5 flex-shrink flex-grow basis-0 layout-header-menu" />
     <HeaderSearch
-      v-if="codeMap.get('SearchBar')?.hasAuth"
+      v-if="codeMap.get('GlobalSearch')?.hasAuth"
       style="width:170px;"
       class="mr-5 flex-shrink-0 flex-grow-0 basis-auto" />
     <template v-if="codeMap.get('Expense')?.hasAuth">

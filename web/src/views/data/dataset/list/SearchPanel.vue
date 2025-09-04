@@ -26,6 +26,7 @@ type OrderByKey = string;
 type OrderSortKey = 'ASC' | 'DESC';
 
 // Component emits
+// eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
   (e: 'change', value: {
     orderBy?: string;
@@ -239,18 +240,6 @@ const searchChange = (data: {key: string; op: string; value: string|string[]}[])
     });
   }
 
-  emits('change', getParams());
-};
-
-/**
- * Handle sort changes
- * Updates sorting parameters and emits change event
- *
- * @param sortData - Sorting data
- */
-const toSort = (sortData) => {
-  orderBy.value = sortData.orderBy;
-  orderSort.value = sortData.orderSort;
   emits('change', getParams());
 };
 
