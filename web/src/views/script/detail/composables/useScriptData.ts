@@ -107,15 +107,12 @@ export function useScriptData (projectInfo: Ref<{ id: string; avatar: string; na
 
       // TODO 逻辑看不懂，将字符串替换成常量？后端没有定义：COLON，COLON 是啥意思？
       if (isAdmin.value || scriptAuth === false) {
-        list = ['TEST', 'VIEW', 'MODIFY', 'DELETE', 'EXPORT', 'COLON'];
+        list = ['TEST', 'VIEW', 'MODIFY', 'DELETE', 'EXPORT'];
         if (values.includes('GRANT')) {
           list.push('GRANT');
         }
       } else {
         list = [...values];
-        if (values.includes('VIEW') || !values.includes('COLON')) {
-          list.push('COLON');
-        }
       }
       permissionList.value = list;
     }

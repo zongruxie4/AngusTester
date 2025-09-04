@@ -7,6 +7,7 @@ import {
 import { useRoute, useRouter } from 'vue-router';
 import YAML from 'yaml';
 import { Button } from 'ant-design-vue';
+import { ScriptPermission } from '@/enums/enums';
 
 import {
   useScriptData,
@@ -196,42 +197,42 @@ onMounted(() => {
           <div class="flex-1 flex items-center justify-end space-x-2.5">
             <Button
               size="small"
-              :disabled="!permissionList.includes('MODIFY')"
+              :disabled="!permissionList.includes(ScriptPermission.MODIFY)"
               @click="() => handleEdit(drawerRef)">
               <Icon icon="icon-shuxie" class="mr-1" />
               <span>{{ t('scriptDetail.actions.edit') }}</span>
             </Button>
             <Button
               size="small"
-              :disabled="!permissionList.includes('EXPORT')"
+              :disabled="!permissionList.includes(ScriptPermission.EXPORT)"
               @click="handleExport">
               <Icon icon="icon-daochu" class="mr-1" />
               <span>{{ t('scriptDetail.actions.export') }}</span>
             </Button>
             <Button
               size="small"
-              :disabled="!permissionList.includes('VIEW')"
+              :disabled="!permissionList.includes(ScriptPermission.VIEW)"
               @click="cloneScript">
               <Icon icon="icon-fuzhi" class="mr-1" />
               <span>{{ t('scriptDetail.actions.clone') }}</span>
             </Button>
             <Button
               size="small"
-              :disabled="!permissionList.includes('DELETE')"
+              :disabled="!permissionList.includes(ScriptPermission.DELETE)"
               @click="handleDelete">
               <Icon icon="icon-qingchu" class="mr-1" />
               <span>{{ t('scriptDetail.actions.delete') }}</span>
             </Button>
             <Button
               size="small"
-              :disabled="!permissionList.includes('TEST')"
+              :disabled="!permissionList.includes(ScriptPermission.TEST)"
               @click="startDebug">
               <Icon icon="icon-tiaoshi" class="mr-1" />
               <span>{{ t('scriptDetail.actions.debug') }}</span>
             </Button>
             <Button
               size="small"
-              :disabled="!permissionList.includes('TEST')"
+              :disabled="!permissionList.includes(ScriptPermission.TEST)"
               @click="executeScript">
               <Icon icon="icon-zhihangjiaoben" class="mr-1" />
               <span>{{ t('scriptDetail.actions.addExecution') }}</span>
