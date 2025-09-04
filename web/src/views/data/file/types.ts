@@ -39,7 +39,7 @@ export const columns = [
   },
   {
     title: t('fileSpace.columns.action'),
-    dataIndex: 'action',
+    dataIndex: 'action'
   }
 ];
 

@@ -58,7 +58,7 @@ const initialize = () => {
           _id: 'dataSetList',
           value: 'dataSetList',
           name: t('dataset.name'),
-          closable: false // 是否允许关闭，true - 允许关闭，false - 禁止关闭
+          closable: false
         };
       }
     });

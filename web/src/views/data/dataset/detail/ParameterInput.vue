@@ -6,8 +6,6 @@ import { useParameterInput } from './composables/useParameterInput';
 
 const { t } = useI18n();
 
-
-
 export interface Option {
   name: string;
   value: string;

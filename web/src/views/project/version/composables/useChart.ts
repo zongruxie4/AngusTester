@@ -1,7 +1,7 @@
 import { onMounted, ref, watch } from 'vue';
 import * as eCharts from 'echarts';
 import { useI18n } from 'vue-i18n';
-import { ChartProps, ChartValue } from '../types';
+import { ChartProps } from '../types';
 
 export function useChart (props: ChartProps) {
   const { t } = useI18n();
@@ -132,11 +132,11 @@ export function useChart (props: ChartProps) {
     completedEchartConfig.series[0].data[0] = {
       ...completedEchartConfig.series[0].data[0],
       ...props.chart1Value.value[0]
-    };
+    } as any;
     completedEchartConfig.series[0].data[1] = {
       ...completedEchartConfig.series[0].data[1],
       ...props.chart1Value.value[1]
-    };
+    } as any;
     completedEchartConfig.title.text = props.chart1Value.title;
 
     // Update workload chart data

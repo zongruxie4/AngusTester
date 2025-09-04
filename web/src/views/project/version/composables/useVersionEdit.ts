@@ -1,11 +1,8 @@
 import { onMounted, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { software } from '@/api/tester';
 import type { VersionEditProps, VersionFormState } from '../types';
 
 export function useVersionEdit (props: VersionEditProps) {
-  const { t } = useI18n();
-
   // Reactive state
   const formState = ref<VersionFormState>({
     name: undefined,
@@ -19,8 +16,11 @@ export function useVersionEdit (props: VersionEditProps) {
 
   // Emit definitions
   const emits = {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     cancel: () => {},
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     ok: () => {},
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     updateVisible: (value: boolean) => {}
   };
 

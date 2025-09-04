@@ -4,7 +4,7 @@
       "quickSearch": "快速查询",
       "addScript": "添加脚本",
       "importScript": "导入脚本",
-      "scriptAuth": "脚本权限",
+      "scriptAuth": "权限",
       "refresh": "刷新",
       "searchPlaceholder": "搜索脚本ID、名称、描述或插件",
       "scriptTypePlaceholder": "选择脚本类型",

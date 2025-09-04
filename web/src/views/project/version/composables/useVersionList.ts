@@ -7,8 +7,6 @@ import type {
   VersionInfo,
   PaginationConfig,
   SearchParams,
-  OrderByKey,
-  OrderSortKey,
   MenuItem,
   StatusColorConfig
 } from '../types';

@@ -1,13 +1,10 @@
 import { inject, onMounted, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { software } from '@/api/tester';
 import type { VersionDetailProps, VersionInfo, ChartValue } from '../types';
 
 export function useVersionDetail (props: VersionDetailProps) {
-  const { t } = useI18n();
-
   // Reactive state
-  const dataSource = ref<VersionInfo>({});
+  const dataSource = ref<VersionInfo>({} as VersionInfo);
   const loading = ref(false);
   const refreshNotify = ref('');
 

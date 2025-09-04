@@ -15,6 +15,7 @@ const props = withDefaults(defineProps<VersionEditProps>(), {
 const { t } = useI18n();
 
 // Component emits
+// eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
   (e: 'cancel'): void;
   (e: 'ok'): void;

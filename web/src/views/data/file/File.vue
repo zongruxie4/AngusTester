@@ -316,7 +316,6 @@ onBeforeUnmount(() => {
             <div
               v-show="record.id !== '-1'"
               class="text-3 whitespace-nowrap">
-
               <!-- Delete action -->
               <Button
                 :disabled="!deleteAuth"

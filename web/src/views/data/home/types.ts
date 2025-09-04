@@ -260,4 +260,3 @@ export interface IntroductionTip {
  * <p>Defines the types of activities to display in timeline</p>
  */
 export type ActivityType = 'VARIABLE' | 'DATASET' | 'DATASOURCE' | 'FILE';
-

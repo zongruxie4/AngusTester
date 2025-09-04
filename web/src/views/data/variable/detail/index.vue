@@ -14,8 +14,7 @@ const props = withDefaults(defineProps<VariableProps>(), {
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const replaceTabPane = inject<(id: string, data: { [key: string]: any }) => void>('replaceTabPane', () => ({}));
-let refreshList = inject<() => void>('refreshList', () => ({}));
-
+const refreshList = inject<() => void>('refreshList', () => ({}));
 
 const StaticVariable = defineAsyncComponent(() => import('@/views/data/variable/detail/StaticVariable.vue'));
 const FileVariable = defineAsyncComponent(() => import('@/views/data/variable/detail/FileVariable.vue'));
@@ -88,7 +87,6 @@ const source = computed(() => {
 
 <template>
   <Spin :spinning="loading" class="h-full text-3 leading-5 px-5 py-5 overflow-auto">
- 
     <div class="max-w-242.5">
       {{ refreshList }}
       <AsyncComponent :visible="source === 'STATIC'">

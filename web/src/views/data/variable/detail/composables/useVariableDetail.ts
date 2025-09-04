@@ -122,7 +122,6 @@ export function useVariableDetail (
           tabActions.updateTabPane({ _id: 'variableList', notify: utils.uuid() });
           tabActions.refreshList();
         });
-        
       }
     });
   };

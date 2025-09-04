@@ -12,7 +12,7 @@
       "noData": "无数据"
     },
     "list": {
-      "title": "已添加的数据集",
+      "title": "已添加数据集",
       "noDataText": "您尚未添加任何数据集，立即",
       "or": "或",
       "uploadDataset": "上传数据集",
@@ -680,7 +680,7 @@
       "jdbc": "添加Jdbc变量"
     },
     "list": {
-      "title": "已添加的变量",
+      "title": "已添加变量",
       "noData": "您尚未添加任何变量，立即",
       "addStaticVariable": "添加静态变量",
       "uploadVariable": "上传变量",

@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { TabPane, Tabs } from 'ant-design-vue';
-import { Button } from 'ant-design-vue';
+import { TabPane, Tabs, Button } from 'ant-design-vue';
 import { IconRequired, Tooltip, Input, Icon, Hints, Toggle, SelectEnum } from '@xcan-angus/vue-ui';
 import { useJdbcDataset } from './composables/useJdbcDataset';
 import { DataSetItem } from '../types';
@@ -141,7 +140,7 @@ defineExpose({
             @change="handleParametersChange" />
         </Toggle>
 
-        <p/>
+        <p />
 
         <Toggle :title="t('dataset.detail.jdbcDataset.form.readConfig')" class="text-3 leading-5 mb-3.5">
           <div class="flex items-center justify-start mb-3.5">

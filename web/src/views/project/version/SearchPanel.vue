@@ -15,6 +15,7 @@ const props = withDefaults(defineProps<SearchPanelProps>(), {
 const { t } = useI18n();
 
 // Component emits
+// eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
   (e: 'change', value: SearchParams): void;
   (e: 'refresh'): void;

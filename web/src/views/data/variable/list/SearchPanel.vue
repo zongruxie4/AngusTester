@@ -130,18 +130,18 @@ onMounted(() => {
 <template>
   <div class="mt-2.5 mb-3.5">
     <!-- Quick Search Section -->
-    <div class="flex">
-      <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
+    <div class="flex items-center mb-3">
+      <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 rounded-full"></div>
+      <div class="whitespace-nowrap text-3 text-text-sub-content">
         <span>{{ t('dataVariable.list.searchPanel.quickSearch') }}</span>
         <Colon />
       </div>
-
-      <div class="flex flex-wrap ml-2">
+      <div class="flex flex-wrap items-center ml-2">
         <div
           v-for="item in menuItems"
           :key="item.key"
           :class="{ 'active-key': selectedMenuMap[item.key] }"
-          class="px-2.5 h-6 leading-6 mr-3 mb-3 rounded bg-gray-light cursor-pointer"
+          class="px-2.5 h-6 leading-6 mr-3 rounded bg-gray-light cursor-pointer font-semibold"
           @click="handleMenuItemClickWrapper(item)">
           {{ item.name }}
         </div>

@@ -21,6 +21,7 @@ const props = withDefaults(defineProps<VersionMergeProps>(), {
 const { t } = useI18n();
 
 // Component emits
+// eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
   (e: 'cancel'): void;
   (e: 'ok', formId: string): void;

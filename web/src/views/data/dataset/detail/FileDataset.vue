@@ -170,7 +170,7 @@ const inputProps = {
             @change="handleParametersChange" />
         </Toggle>
 
-        <p/>
+        <p />
 
         <Toggle :title="t('dataset.detail.fileDataset.form.readConfig')" class="text-3 leading-5 mb-3.5">
           <div class="flex items-center mb-3.5">
