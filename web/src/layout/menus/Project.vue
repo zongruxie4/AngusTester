@@ -1,9 +1,14 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { onMounted, watch } from 'vue';
 import { AuthAppFuncTree } from '@xcan-angus/infra';
 
-type Props = {
+// Composables
+import { useMenuState } from './composables/useMenuState';
+
+/**
+ * Component props interface
+ */
+interface Props {
   menus: AuthAppFuncTree[];
 }
 
@@ -11,41 +16,41 @@ const props = withDefaults(defineProps<Props>(), {
   menus: () => []
 });
 
-const route = useRoute();
+// Use composables
+const {
+  menuList,
+  selectedUrl,
+  handleMenuSelect,
+  isMenuActive,
+  watchRouteChanges,
+  initializeMenuList
+} = useMenuState(props.menus);
 
-const menuList = ref<AuthAppFuncTree[]>([]);
-const selectedUrl = ref(location.pathname);
-
-const handleSelect = (menu: AuthAppFuncTree) => {
-  selectedUrl.value = menu.url || '';
-};
-
-const isActive = (url: string): boolean => {
-  if (!url) {
-    return false;
-  }
-  return !!(selectedUrl.value && (url.startsWith(selectedUrl.value) || selectedUrl.value.startsWith(url)));
-};
-
+/**
+ * Initialize component
+ */
 onMounted(() => {
-  watch(() => route?.path, (newValue) => {
-    selectedUrl.value = newValue;
-  }, { immediate: true });
+  // Watch for route changes
+  watchRouteChanges();
 
+  // Watch for menu changes and initialize
   watch(() => props.menus, (newValue) => {
     if (!newValue?.length) {
       return;
     }
 
-    menuList.value = newValue;
-    if (menuList.value?.length) {
-      const currentMenu = menuList.value?.find(item => {
-        return selectedUrl.value && (item.url.startsWith(selectedUrl.value) || selectedUrl.value.startsWith(item.url));
-      });
+    initializeMenuList(newValue);
 
-      if (currentMenu) {
-        handleSelect(currentMenu);
-      }
+    // Find and select current menu
+    const currentMenu = newValue.find(item => {
+      return selectedUrl.value && item.url && (
+        item.url.startsWith(selectedUrl.value) ||
+        selectedUrl.value.startsWith(item.url)
+      );
+    });
+
+    if (currentMenu) {
+      handleMenuSelect(currentMenu);
     }
   }, { immediate: true });
 });
@@ -55,10 +60,10 @@ onMounted(() => {
     <li
       v-for="item in menuList"
       :key="item.code"
-      :class="{ 'menu-item-border-b link-active': isActive(item.url) }"
+      :class="{ 'menu-item-border-b link-active': isMenuActive(item.url || '') }"
       class="menu-item relative cursor-pointer whitespace-nowrap"
-      @click="handleSelect(item)">
-      <RouterLink :to="item.url" class="flex items-center header-item-text-normal text-theme-text-hover">
+      @click="handleMenuSelect(item)">
+      <RouterLink :to="item.url || ''" class="flex items-center header-item-text-normal text-theme-text-hover">
         <slot v-bind="item" :name="item.url?.split('/')?.[1]?.replace(/[^\da-z]/g, '')">
           <span class="flex-shrink-0">{{ item.showName }}</span>
         </slot>

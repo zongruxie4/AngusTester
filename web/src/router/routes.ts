@@ -1,5 +1,5 @@
 import { RouteRecordRaw } from 'vue-router';
-import Layout from '@/layout/default.vue';
+import Layout from '@/layout/Default.vue';
 import { i18n } from '@xcan-angus/infra';
 
 const I18nInstance = i18n.getI18n();
