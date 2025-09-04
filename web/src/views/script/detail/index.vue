@@ -16,11 +16,6 @@ import {
   useDrawer
 } from './composables';
 
-import {
-  TOOLBAR_EXTRA_MENU_ITEMS,
-  TOOLBAR_MENU_ITEMS
-} from './composables/useToolbar';
-
 const { t } = useI18n();
 
 const ScriptDetail = defineAsyncComponent(() => import('./ScriptInfo.vue'));
@@ -78,6 +73,8 @@ const {
 } = useDebug(scriptId, scriptValue, toolbarRef);
 
 const {
+  TOOLBAR_EXTRA_MENU_ITEMS,
+  TOOLBAR_MENU_ITEMS,
   toolbarActiveKey,
   height,
   isFull,
