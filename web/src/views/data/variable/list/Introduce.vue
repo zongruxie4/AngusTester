@@ -5,7 +5,7 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <div>
+  <div class="text-3.5">
     <!-- Section Title -->
     <div class="text-3.5 font-semibold mb-2.5">
       {{ t('dataVariable.introduce.title') }}
@@ -25,7 +25,7 @@ const { t } = useI18n();
           class="w-10 flex-shrink-0 transform-gpu translate-y-0.5"
           alt="File Extraction Icon">
         <div class="space-y-1 pr-10">
-          <div class="text-3.5 font-semibold">
+          <div class="font-semibold">
             {{ t('dataVariable.introduce.types.fileExtract.title') }}
           </div>
           <div>{{ t('dataVariable.introduce.types.fileExtract.description') }}</div>
@@ -39,7 +39,7 @@ const { t } = useI18n();
           class="w-10 flex-shrink-0 transform-gpu translate-y-0.5"
           alt="HTTP Extraction Icon">
         <div class="space-y-1 pr-10">
-          <div class="text-3.5 font-semibold">
+          <div class="tfont-semibold">
             {{ t('dataVariable.introduce.types.httpExtract.title') }}
           </div>
           <div>{{ t('dataVariable.introduce.types.httpExtract.description') }}</div>
@@ -53,7 +53,7 @@ const { t } = useI18n();
           class="w-10 flex-shrink-0 transform-gpu translate-y-0.5"
           alt="JDBC Extraction Icon">
         <div class="space-y-1 pr-10">
-          <div class="text-3.5 font-semibold">
+          <div class="font-semibold">
             {{ t('dataVariable.introduce.types.jdbcExtract.title') }}
           </div>
           <div>{{ t('dataVariable.introduce.types.jdbcExtract.description') }}</div>

@@ -69,7 +69,7 @@ onMounted(() => {
 <template>
   <Modal
     :visible="props.visible"
-    :title="t('notification.receiver.title')"
+    :title="t('event.receiver.title')"
     :centered="true"
     width="600px"
     @ok="handleOk"
@@ -78,7 +78,7 @@ onMounted(() => {
       ref="formRef"
       size="small"
       layout="vertical">
-      <FormItem :label="t('notification.receiver.receiveMethod')">
+      <FormItem :label="t('event.receiver.receiveMethod')">
         <CheckboxGroup v-model:value="receivingMethods" class="my-2">
           <Checkbox
             v-for="r in receiversType"
@@ -92,7 +92,7 @@ onMounted(() => {
           <SelectUser
             v-model:value="users"
             :allowClear="false"
-            :placeholder="t('notification.receiver.selectReceiver')"
+            :placeholder="t('event.receiver.selectReceiver')"
             class="flex-1"
             mode="multiple"
             size="small"
@@ -101,7 +101,7 @@ onMounted(() => {
             showSearch />
         </div>
       </FormItem>
-      <FormItem :label="t('notification.receiver.notificationMethod')">
+      <FormItem :label="t('event.receiver.notificationMethod')">
         <CheckboxGroup
           v-model:value="noticeType"
           :options="noticeTypeOpt"

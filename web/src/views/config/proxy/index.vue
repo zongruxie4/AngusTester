@@ -39,16 +39,16 @@ const addressInputRef = ref<HTMLInputElement | null>(null);
     <div class="border rounded p-5" style="border-color: #bcdcff;background-color: #f9fcff;">
       <div class="text-3 leading-3 flex">
         <Icon class="text-tips text-3.5 mt-0.5" icon="icon-tishi1" />
-        <p class="text-theme-title font-medium text-3 ml-1.5 leading-5 whitespace-pre-wrap">
-          {{ t('proxy.title') }}
+        <p class="font-semibold text-3.5 font-serif ml-1.5 leading-5 whitespace-pre-wrap">
+          {{ t('proxy.description') }}
         </p>
       </div>
 
       <!-- Proxy type descriptions -->
-      <div class="text-3 leading-3 flex space-x-10 mx-5 mt-5">
+      <div class="text-3.5 font-serif leading-3 flex space-x-10 mx-5 mt-3.5">
         <!-- No proxy description -->
         <div class="flex-1">
-          <div class="text-theme-title font-medium">
+          <div class="text-theme-title font-semibold">
             <Icon class="mr-1.5 -mt-0.5" icon="icon-wudaili" />
             {{ t('proxy.noProxy') }}
           </div>
@@ -59,7 +59,7 @@ const addressInputRef = ref<HTMLInputElement | null>(null);
 
         <!-- Client proxy description -->
         <div class="flex-1">
-          <div class="text-theme-title font-medium">
+          <div class="text-theme-title font-semibold">
             <Icon class="mr-1.5 -mt-0.5" icon="icon-jiekoudaili" />
             {{ t('proxy.clientProxy') }}
           </div>
@@ -70,7 +70,7 @@ const addressInputRef = ref<HTMLInputElement | null>(null);
 
         <!-- Server proxy description -->
         <div class="flex-1">
-          <div class="text-theme-title font-medium">
+          <div class="text-theme-title font-semibold">
             <Icon class="mr-1.5 -mt-0.5" icon="icon-host" />
             {{ t('proxy.serverProxy') }}
           </div>
@@ -81,7 +81,7 @@ const addressInputRef = ref<HTMLInputElement | null>(null);
 
         <!-- Cloud proxy description -->
         <div class="flex-1">
-          <div class="text-theme-title font-medium">
+          <div class="text-theme-title font-semibold">
             <Icon class="mr-1.5 -mt-0.5" icon="icon-host" />
             {{ t('proxy.cloudProxy') }}
           </div>

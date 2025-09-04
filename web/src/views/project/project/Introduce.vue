@@ -55,7 +55,7 @@ const stepData = [
 <template>
   <div>
     <div class="text-3.5 font-semibold mb-1.5">{{ t('project.aboutProject') }}</div>
-    <div class="mb-6">
+    <div class="mb-6 text-3.5">
       <div>{{ t('project.projectDescription') }}</div>
     </div>
 
@@ -71,8 +71,8 @@ const stepData = [
             </div>
             <div class="step-title">{{ item.title }}</div>
           </div>
-          <div class="step-content">
-            <div class="step-text">{{ item.text }}</div>
+          <div class="step-content pl-2">
+            <div class="step-text text-3.5">{{ item.text }}</div>
           </div>
         </div>
         <div v-else class="step-connector">

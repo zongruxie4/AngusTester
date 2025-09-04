@@ -13,15 +13,15 @@ export function useTableColumns () {
    */
   const configColumns = computed(() => [
     {
-      title: t('notification.columns.eventName'),
+      title: t('event.columns.eventName'),
       dataIndex: 'eventName'
     },
     {
-      title: t('notification.columns.category'),
+      title: t('event.columns.category'),
       dataIndex: 'targetType'
     },
     {
-      title: t('notification.columns.noticeType'),
+      title: t('event.columns.noticeType'),
       dataIndex: 'noticeType'
     }
   ]);
@@ -31,35 +31,35 @@ export function useTableColumns () {
    */
   const recordColumns = computed(() => [
     {
-      title: t('notification.columns.eventId'),
+      title: t('event.columns.eventId'),
       dataIndex: 'id',
       key: 'id',
       width: '12%'
     },
     {
-      title: t('notification.columns.eventName'),
+      title: t('event.columns.eventName'),
       dataIndex: 'name',
       width: '12%',
       ellipsis: true
     },
     {
-      title: t('notification.columns.content'),
+      title: t('event.columns.content'),
       dataIndex: 'description',
       ellipsis: true
     },
     {
-      title: t('notification.columns.receiver'),
+      title: t('event.columns.receiver'),
       dataIndex: 'fullName',
       width: '12%'
     },
     {
-      title: t('notification.columns.createdDate'),
+      title: t('event.columns.createdDate'),
       key: 'createdDate',
       dataIndex: 'createdDate',
       width: '12%'
     },
     {
-      title: t('notification.columns.pushStatus'),
+      title: t('event.columns.pushStatus'),
       dataIndex: 'pushStatus',
       key: 'pushStatus',
       width: '12%'

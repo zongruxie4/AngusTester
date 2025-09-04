@@ -22,7 +22,7 @@ const menuItems: {
 }[] = [
   { icon: 'icon-yingyongxinxi', name: t('app.name'), key: 'appInfo' },
   { icon: 'icon-zhibiao', name: t('indicator.name'), key: 'indicator' },
-  { icon: 'icon-tuisongtongzhi', name: t('notification.name'), key: 'event' },
+  { icon: 'icon-tuisongtongzhi', name: t('event.name'), key: 'event' },
   { icon: 'icon-guanlijiedian', name: t('node.name'), key: 'node' },
   { icon: 'icon-jiekoudaili', name: t('proxy.name'), key: 'proxy' }
 ];

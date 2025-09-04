@@ -137,16 +137,16 @@ export function useReceiveConfig () {
    */
   const getPlaceholder = (key: string) => {
     if (key === 'WEBHOOK') {
-      return t('notification.receiveConfig.selectWebhookAddress');
+      return t('event.receiveConfig.selectWebhookAddress');
     }
     if (key === 'EMAIL') {
-      return t('notification.receiveConfig.selectEmail');
+      return t('event.receiveConfig.selectEmail');
     }
     if (key === 'DINGTALK') {
-      return t('notification.receiveConfig.selectDingTalkBot');
+      return t('event.receiveConfig.selectDingTalkBot');
     }
     if (key === 'WECHAT') {
-      return t('notification.receiveConfig.selectWeChatBot');
+      return t('event.receiveConfig.selectWeChatBot');
     }
   };
 
@@ -163,7 +163,7 @@ export function useReceiveConfig () {
     if (error) {
       return false;
     }
-    notification.success(t('notification.receiveConfig.configSuccess'));
+    notification.success(t('event.receiveConfig.configSuccess'));
     return true;
   };
 

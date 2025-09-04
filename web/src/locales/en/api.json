@@ -180,6 +180,15 @@
     "refreshInstance_tip": "Refreshing the instance will forcibly synchronize service configuration, interface security, CORS settings and Mock interfaces to the running service instance.",
     "refreshInstance_success": "Instance Refreshed Successfully",
     "console": "Console",
+    "introduce": {
+      "description": "Mock can quickly simulate dependent APIs, enabling parallel development and testing, improving efficiency while avoiding production data pollution.",
+      "addMockService": "Add Mock Service",
+      "addMockService_desc": "Manually add interfaces after creating Mock service.",
+      "importService": "Import Existing Service",
+      "importService_desc": "Create Mock based on existing services, select interfaces to simulate, system automatically establishes associations.",
+      "importFile": "Import from File",
+      "importFile_desc": "Support Swagger2.0, OpenAPI3.x, Postman2.0/2.1, Angus format file import."
+    },
     "searchPanel": {
       "namePlaceholder": "Search service ID, name",
       "nodeIpPlaceholder": "Search service IP",
@@ -214,15 +223,6 @@
       "title": "Service Permissions",
       "onTips": "After enabling permission control, manual authorization is required to have corresponding operation permissions.",
       "offTips": "No permission restrictions, all users in the account can view and operate, permission control is not enabled by default."
-    },
-    "introduce": {
-      "description": "Mock can quickly generate and simulate dependent APIs, enabling development and testing to proceed in parallel, achieving faster development, more comprehensive testing, and earlier delivery of stable products or applications. Mock also avoids dirty data issues caused by direct integration with production systems.",
-      "addMockService": "Add Mock Service",
-      "addMockService_desc": "After adding Mock service, Mock interfaces need to be added manually",
-      "importService": "Import Associated Existing Service",
-      "importService_desc": "Add based on existing interface services, users can select interfaces that need Mock, after adding, the system will automatically establish association with interface services.",
-      "importFile": "Import Mock from File",
-      "importFile_desc": "Create Mock service and import interfaces based on Swagger2.0, OpenAPI3.x, Postman2.0, Postman2.1, Angus format data."
     },
     "addMock": {
       "validation": {

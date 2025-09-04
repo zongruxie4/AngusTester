@@ -54,7 +54,7 @@ const searchPanelRef = ref();
 
 /**
  * Handles search form changes and triggers data reload
- * 
+ *
  * @param filters - New search filters from search panel
  */
 const onSearchChange = (filters: any) => {
@@ -63,7 +63,7 @@ const onSearchChange = (filters: any) => {
 
 /**
  * Handles sort option changes and triggers data reload
- * 
+ *
  * @param sortEvent - Sort change event from dropdown sort
  */
 const onSortChange = (sortEvent: any) => {
@@ -88,7 +88,7 @@ const handleBuyNode = async () => {
 onMounted(async () => {
   // Handle route query parameters for pre-filled search
   handleRouteQuery(searchPanelRef);
-  
+
   // Load initial data if no route query
   if (!route.query.id) {
     await loadNodeList();

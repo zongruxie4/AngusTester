@@ -179,7 +179,7 @@ onMounted(() => {
           <div class="w-1 h-4 bg-gradient-to-b from-green-500 to-green-600 rounded-full"></div>
           <span class="text-3.5 font-semibold">{{ t('module.about') }}</span>
         </div>
-        <div class="text-xs text-gray-700 ml-3">{{ t('module.aboutDescription') }}</div>
+        <div class="text-3.5 text-gray-700 ml-3">{{ t('module.aboutDescription') }}</div>
       </div>
 
       <div class="space-y-2">

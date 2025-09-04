@@ -399,7 +399,7 @@
       "addedDataSources": "添加的数据源"
     },
     "introduce": {
-      "title": "AngusTester 参数化方式：",
+      "title": "AngusTester参数化方式：",
       "description": "定义可复用变量、动态数据、模拟函数及参数提取机制，支撑测试流程自动化。",
       "variable": {
         "title": "变量",

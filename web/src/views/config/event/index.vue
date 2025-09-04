@@ -53,34 +53,34 @@ onMountedInit();
 
 <template>
   <div class="py-3.5 px-5">
-    <Hints :text="t('notification.hints')" class="!leading-4.5" />
+    <Hints :text="t('event.hints')" class="!leading-4.5" />
     <div class="flex space-x-2 w-250 mt-2">
       <InfoCard
-        :name="t('notification.status.summary')"
+        :name="t('event.status.summary')"
         :value="state.count.total"
         icon="icon-zonglan" />
       <InfoCard
-        :name="t('notification.status.pending')"
+        :name="t('event.status.pending')"
         :value="state.count.pushSuccess"
         iconColor="rgba(255, 129, 0, 1)"
         icon="icon-tuisongchenggong" />
       <InfoCard
-        :name="t('notification.status.failure')"
+        :name="t('event.status.failure')"
         :value="state.count.pushFail"
         icon="icon-tuisongshibai" />
       <InfoCard
-        :name="t('notification.status.ignore')"
+        :name="t('event.status.ignore')"
         :value="state.count.ignore"
         icon="icon-yiquxiao" />
     </div>
     <ExpandHead v-model:visible="showConfigure" class="mt-5">
       <template #title>
         <div>
-          <span class="text-theme-title text-3.5 leading-3.5 font-medium">{{ t('notification.config.pushConfig') }}</span>
+          <span class="text-theme-title text-3.5 leading-3.5 font-medium">{{ t('event.config.pushConfig') }}</span>
           <Popover placement="right">
             <template #content>
               <div class="max-w-110">
-                {{ t('notification.config.push_config_tip') }}
+                {{ t('event.config.push_config_tip') }}
               </div>
             </template>
             <Icon icon="icon-tishi1" class="text-tips text-3.5 ml-2" />
@@ -116,11 +116,11 @@ onMountedInit();
           </template>
           <template v-if="column.dataIndex === 'operate'">
             <a class="text-theme-text-hover" @click="openReceiveChannel(record)">{{
-              t('notification.config.configReceiveChannel')
+              t('event.config.configReceiveChannel')
             }}</a>
             <Divider type="vertical" />
             <a class="text-theme-text-hover" @click="openReceiver(record)">{{
-              t('notification.config.configReceiver')
+              t('event.config.configReceiver')
             }}</a>
           </template>
         </template>
@@ -141,7 +141,7 @@ onMountedInit();
     </div>
     <expand-head v-model:visible="showRecord" class="mt-5">
       <template #title>
-        <span class="text-theme-title text-3.5 leading-3.5 font-medium">{{ t('notification.config.event_record') }}</span>
+        <span class="text-theme-title text-3.5 leading-3.5 font-medium">{{ t('event.config.event_record') }}</span>
       </template>
     </expand-head>
     <div :class="showRecord ? 'open-record' : 'stop-record'" class="transition-height duration-500 overflow-hidden">
@@ -175,7 +175,7 @@ onMountedInit();
                 icon="icon-shuoming"
                 class="text-3.5 text-theme-sub-content text-theme-text-hover ml-1" />
               <template #title>
-                {{ t('notification.errMsg') }}
+                {{ t('event.errMsg') }}
               </template>
               <template #content>
                 <div class="max-h-100 max-w-150 overflow-auto" v-html="record.pushMsg"></div>

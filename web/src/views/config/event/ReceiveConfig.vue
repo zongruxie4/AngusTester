@@ -65,14 +65,14 @@ watchVisible(props.visible);
 <template>
   <Modal
     :visible="visible"
-    :title="t('notification.receiveConfig.title')"
+    :title="t('event.receiveConfig.title')"
     :centered="true"
     width="800px"
     @ok="handleOk"
     @cancel="handleCancel">
     <Form size="small" :labelCol="{span: 6}">
       <FormItem
-        :label="t('notification.receiveConfig.receiveChannel')"
+        :label="t('event.receiveConfig.receiveChannel')"
         name="receiveSetting">
         <CheckboxGroup
           :options="eventTypes"

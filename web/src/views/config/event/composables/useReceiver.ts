@@ -78,7 +78,7 @@ export function useReceiver () {
     if (error) {
       return false;
     }
-    notification.success(t('notification.receiver.configSuccess'));
+    notification.success(t('event.receiver.configSuccess'));
     return true;
   };
 

@@ -32,8 +32,8 @@ const tipList = [
 
 </script>
 <template>
-  <div class="text-3">
-    <div class="mb-6 text-3">
+  <div class="text-3.5">
+    <div class="mb-6">
       <div>{{ t('fileSpace.introduce.description') }}</div>
     </div>
     <div class="flex items-start justify-between">
@@ -43,7 +43,7 @@ const tipList = [
         class="flex items-start space-x-3 w-1/3">
         <img :src="item.icon" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
         <div class="space-y-1 pr-10">
-          <div class="text-3.5 font-semibold">{{ item.title }}</div>
+          <div class="font-semibold">{{ item.title }}</div>
           <div>{{ item.content }}</div>
         </div>
       </div>

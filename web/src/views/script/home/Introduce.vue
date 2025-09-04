@@ -7,17 +7,17 @@ const { t } = useI18n();
 <template>
   <div class="flex content items-center flex-1">
     <img src="./images/logo.svg" class="w-45 h-45" />
-    <div class="ml-3.25 text-content flex-1">
-      <div>{{ t('scriptHome.introduce.description') }}</div>
+    <div class="ml-3.25 text-content flex-1 font-serif">
+      <div class="text-3.5 font-semibold">{{ t('scriptHome.introduce.description') }}</div>
 
       <div class="mt-3">
         <Icon icon="icon-duihaolv" class="mr-2.5" />
-        <span>{{ t('scriptHome.introduce.workItems.testScript') }}</span>
+        <span class="text-3.5">{{ t('scriptHome.introduce.workItems.testScript') }}</span>
       </div>
 
       <div class="mt-1">
         <Icon icon="icon-duihaolv" class="mr-2.5" />
-        <span>{{ t('scriptHome.introduce.workItems.mockScript') }}</span>
+        <span class="text-3.5">{{ t('scriptHome.introduce.workItems.mockScript') }}</span>
       </div>
     </div>
   </div>

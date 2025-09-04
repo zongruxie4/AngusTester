@@ -226,6 +226,15 @@
     "refreshInstance_tip": "刷新实例会强制同步服务配置、接口安全、跨域设置和Mock接口到运行的服务实例。",
     "refreshInstance_success": "刷新实例成功",
     "console": "控制台",
+    "introduce": {
+      "description": "Mock可快速模拟依赖的API，让开发和测试并行进行，提高开发效率，避免生产环境数据污染。",
+      "addMockService": "添加Mock服务",
+      "addMockService_desc": "创建Mock服务后需手动添加接口。",
+      "importService": "导入现有服务",
+      "importService_desc": "基于现有服务创建Mock，可选择需要模拟的接口，系统自动建立关联。",
+      "importFile": "文件导入",
+      "importFile_desc": "Swagger2.0、OpenAPI3.x、Postman2.0/2.1、Angus格式文件导入。"
+    },
     "searchPanel": {
       "namePlaceholder": "查询服务ID、名称",
       "nodeIpPlaceholder": "查询服务IP",
@@ -260,15 +269,6 @@
       "title": "服务权限",
       "onTips": "开启权限控制后，需要手动授权后才会有相应操作权限。",
       "offTips": "无权限限制，账号中的所有用户都可以查看、操作，默认不开启权限控制。"
-    },
-    "introduce": {
-      "description": "Mock可快速生成并模拟所依赖的 API，使开发和测试先行，以实现更快的开发、更全面的测试，更早地交付稳定的产品或应用。通过Mock也可避免直接与生产系统联调造成的脏数据问题。",
-      "addMockService": "添加Mock服务",
-      "addMockService_desc": "添加Mock服务后需要手动添加Mock接口",
-      "importService": "已有服务关联导入",
-      "importService_desc": "根据现有接口服务进行添加，用户可以选择需要Mock的接口，添加后系统将自动与接口服务建立关联。",
-      "importFile": "文件导入Mock",
-      "importFile_desc": "基于Swagger2.0、OpenAPI3.x、Postman2.0、Postman2.1、Angus格式数据创建Mock服务并导入接口。"
     },
     "addMock": {
       "validation": {

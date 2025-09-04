@@ -288,17 +288,17 @@ export function useEventData () {
   const configColumns = computed<TableColumn[]>(() => {
     return [
       {
-        title: t('notification.columns.eventName'),
+        title: t('event.columns.eventName'),
         dataIndex: 'eventName',
         key: 'eventName'
       },
       {
-        title: t('notification.columns.category'),
+        title: t('event.columns.category'),
         dataIndex: 'targetType',
         key: 'targetType'
       },
       {
-        title: t('notification.columns.noticeType'),
+        title: t('event.columns.noticeType'),
         dataIndex: 'noticeType',
         key: 'noticeType'
       }
@@ -311,35 +311,35 @@ export function useEventData () {
   const recordColumns = computed<TableColumn[]>(() => {
     return [
       {
-        title: t('notification.columns.eventId'),
+        title: t('event.columns.eventId'),
         dataIndex: 'id',
         key: 'id',
         width: '12%'
       },
       {
-        title: t('notification.columns.eventName'),
+        title: t('event.columns.eventName'),
         dataIndex: 'name',
         width: '12%',
         ellipsis: true
       },
       {
-        title: t('notification.columns.content'),
+        title: t('event.columns.content'),
         dataIndex: 'description',
         ellipsis: true
       },
       {
-        title: t('notification.columns.receiver'),
+        title: t('event.columns.receiver'),
         dataIndex: 'fullName',
         width: '12%'
       },
       {
-        title: t('notification.columns.createdDate'),
+        title: t('event.columns.createdDate'),
         key: 'createdDate',
         dataIndex: 'createdDate',
         width: '12%'
       },
       {
-        title: t('notification.columns.pushStatus'),
+        title: t('event.columns.pushStatus'),
         dataIndex: 'pushStatus',
         key: 'pushStatus',
         width: '12%'
@@ -365,20 +365,20 @@ export function useEventData () {
     {
       valueKey: 'code',
       type: 'input',
-      placeholder: t('notification.searchLogPlaceholder.code'),
+      placeholder: t('event.searchLogPlaceholder.code'),
       allowClear: true
     },
     {
       valueKey: 'pushStatus',
       type: 'select-enum',
       enumKey: EventPushStatus,
-      placeholder: t('notification.searchLogPlaceholder.pushStatus'),
+      placeholder: t('event.searchLogPlaceholder.pushStatus'),
       allowClear: true
     },
     {
       type: 'date-range',
       valueKey: 'createdDate',
-      placeholder: [t('notification.searchLogPlaceholder.startDate'), t('notification.searchLogPlaceholder.endDate')]
+      placeholder: [t('event.searchLogPlaceholder.startDate'), t('event.searchLogPlaceholder.endDate')]
     }
   ]);
 

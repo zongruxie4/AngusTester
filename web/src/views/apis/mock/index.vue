@@ -31,7 +31,7 @@ import { mock } from '@/api/tester';
 
 // Import components
 const ExportMock = defineAsyncComponent(() => import('@/views/apis/mock/export/index.vue'));
-const ViewType = defineAsyncComponent(() => import('@/views/apis/mock/introduce/index.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/apis/mock/introduce/index.vue'));
 
 // Use composables
 const { t } = useI18n();
@@ -126,7 +126,7 @@ const authFlagChange = ({ auth }: { auth: boolean }) => {
 
 <template>
   <Spin :spinning="loading" class="w-full h-full py-5 px-5 overflow-y-auto flex flex-col">
-    <ViewType class="mb-5" />
+    <Introduce class="mb-5" />
     <div class="flex items-start justify-between mb-3.5">
       <SearchPanel
         ref="searchPanelRef"

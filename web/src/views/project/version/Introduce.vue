@@ -47,8 +47,7 @@ onBeforeUnmount(() => {
 });
 </script>
 <template>
-  <div ref="wrapperRef" class="space-y-4">
-    <!-- 标题和描述 -->
+  <div ref="wrapperRef" class="space-y-4 text-3.5">
     <div class="space-y-2">
       <div class="flex items-center space-x-2">
         <span class="text-3.5 font-semibold mb-1.5">{{ t('version.introduce.title') }}</span>
@@ -58,63 +57,58 @@ onBeforeUnmount(() => {
       </div>
     </div>
 
-    <!-- 功能特性 -->
     <div v-if="props.showFunc">
       <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
-        <!-- 版本跟踪 -->
         <div class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200">
           <div class="flex items-start space-x-3">
             <img src="./images/1.png" class="w-8 h-8 flex-shrink-0 rounded-md">
             <div class="space-y-2">
-              <h3 class="text-xs font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
+              <h3 class="font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
                 {{ t('version.introduce.features.versionTracking.title') }}
               </h3>
-              <p class="text-xs text-gray-600 leading-relaxed">
+              <p class="text-gray-600 leading-relaxed">
                 {{ t('version.introduce.features.versionTracking.description') }}
               </p>
             </div>
           </div>
         </div>
 
-        <!-- 版本规划 -->
         <div class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200">
           <div class="flex items-start space-x-3">
             <img src="./images/2.png" class="w-8 h-8 flex-shrink-0 rounded-md">
             <div class="space-y-2">
-              <h3 class="text-xs font-semibold text-gray-800 group-hover:text-purple-600 transition-colors">
+              <h3 class="font-semibold text-gray-800 group-hover:text-purple-600 transition-colors">
                 {{ t('version.introduce.features.versionPlanning.title') }}
               </h3>
-              <p class="text-xs text-gray-600 leading-relaxed">
+              <p class="text-gray-600 leading-relaxed">
                 {{ t('version.introduce.features.versionPlanning.description') }}
               </p>
             </div>
           </div>
         </div>
 
-        <!-- 版本进度 -->
         <div class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200">
           <div class="flex items-start space-x-3">
             <img src="./images/3.png" class="w-8 h-8 flex-shrink-0 rounded-md">
             <div class="space-y-2">
-              <h3 class="text-xs font-semibold text-gray-800 group-hover:text-indigo-600 transition-colors">
+              <h3 class="font-semibold text-gray-800 group-hover:text-indigo-600 transition-colors">
                 {{ t('version.introduce.features.versionProgress.title') }}
               </h3>
-              <p class="text-xs text-gray-600 leading-relaxed">
+              <p class="text-gray-600 leading-relaxed">
                 {{ t('version.introduce.features.versionProgress.description') }}
               </p>
             </div>
           </div>
         </div>
 
-        <!-- 可验证交付物 -->
         <div class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200">
           <div class="flex items-start space-x-3">
             <img src="./images/4.png" class="w-8 h-8 flex-shrink-0 rounded-md">
             <div class="space-y-2">
-              <h3 class="text-xs font-semibold text-gray-800 group-hover:text-orange-600 transition-colors">
+              <h3 class="font-semibold text-gray-800 group-hover:text-orange-600 transition-colors">
                 {{ t('version.introduce.features.verifiableDeliverables.title') }}
               </h3>
-              <p class="text-xs text-gray-600 leading-relaxed">
+              <p class="text-gray-600 leading-relaxed">
                 {{ t('version.introduce.features.verifiableDeliverables.description') }}
               </p>
             </div>

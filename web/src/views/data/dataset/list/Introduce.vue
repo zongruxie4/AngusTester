@@ -5,8 +5,8 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <div>
-    <div class="text-3.5 font-semibold mb-2.5">{{ t('dataset.introduce.title') }}</div>
+  <div class="text-3.5">
+    <div class="font-semibold mb-2.5">{{ t('dataset.introduce.title') }}</div>
     <div class="mb-6">
       <div>{{ t('dataset.introduce.description') }}</div>
     </div>
@@ -15,7 +15,7 @@ const { t } = useI18n();
       <div class="flex items-start space-x-3 w-1/3">
         <img src="./images/1.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
         <div class="space-y-1 pr-10">
-          <div class="text-3.5 font-semibold">{{ t('dataset.introduce.types.staticDataset.title') }}</div>
+          <div class="font-semibold">{{ t('dataset.introduce.types.staticDataset.title') }}</div>
           <div>{{ t('dataset.introduce.types.staticDataset.description') }}</div>
         </div>
       </div>
@@ -23,7 +23,7 @@ const { t } = useI18n();
       <div class="flex items-start space-x-3 w-1/3">
         <img src="./images/2.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
         <div class="space-y-1 pr-10">
-          <div class="text-3.5 font-semibold">{{ t('dataset.introduce.types.fileExtract.title') }}</div>
+          <div class="font-semibold">{{ t('dataset.introduce.types.fileExtract.title') }}</div>
           <div>{{ t('dataset.introduce.types.fileExtract.description') }}</div>
         </div>
       </div>
@@ -31,7 +31,7 @@ const { t } = useI18n();
       <div class="flex items-start space-x-3 w-1/3">
         <img src="./images/3.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
         <div class="space-y-1 pr-10">
-          <div class="text-3.5 font-semibold">{{ t('dataset.introduce.types.jdbcExtract.title') }}</div>
+          <div class="font-semibold">{{ t('dataset.introduce.types.jdbcExtract.title') }}</div>
           <div>{{ t('dataset.introduce.types.jdbcExtract.description') }}</div>
         </div>
       </div>

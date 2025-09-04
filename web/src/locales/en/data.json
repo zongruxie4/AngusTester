@@ -128,9 +128,9 @@
         "all": "All",
         "createdByMe": "Created by Me",
         "modifiedByMe": "Modified by Me",
-        "lastDay": "Last Day",
+        "lastDay": "Last 1 Day",
         "lastThreeDays": "Last 3 Days",
-        "lastWeek": "Last Week",
+        "lastWeek": "Last 7 Days",
         "searchOptions": {
           "namePlaceholder": "Search name, description",
           "createdByPlaceholder": "Select creator"

@@ -1,7 +1,7 @@
 {
   "proxy": {
     "name": "Proxy",
-    "title": "By setting up request proxy, you can bypass cross-origin restrictions and successfully send requests to target servers. Using proxy can easily capture and view sent and received requests and responses. This is very useful for debugging API calls, checking request headers, request bodies and response data. You can choose a suitable proxy service according to your network environment.",
+    "description": "By setting up request proxy, you can bypass cross-origin restrictions and successfully send requests to target servers. Using proxy can easily capture and view sent and received requests and responses. This is very useful for debugging API calls, checking request headers, request bodies and response data. You can choose a suitable proxy service according to your network environment.",
     "noProxy": "No Proxy",
     "noProxyDescription": "Request interfaces directly through browser, cross-origin restrictions need to be removed to access non-same-origin server interfaces.",
     "clientProxy": "Client Proxy",
@@ -28,23 +28,28 @@
     "connectionSuccess": "Connection successful",
     "connectionFailed": "Connection failed"
   },
-  "notification": {
+  "event": {
     "name": "Event",
     "hints": "AngusTester event configuration provides real-time information updates and status feedback to help teams quickly respond and address potential issues.",
     "status": {
       "pending": "Pending",
       "success": "Success",
-      "failure": "Failure"
+      "failure": "Failure",
+      "ignore": "Ignore",
+      "summary": "Total"
     },
+    "errMsg": "Error Message",
     "config": {
       "pushConfig": "Push Configuration",
+      "push_config_tip": "Configuring notification methods ensures that relevant personnel receive information promptly when events occur, improving response speed.",
       "pushRecords": "Push Records",
       "configReceiveChannel": "Configure Receive Channel",
       "configReceiver": "Configure Receiver",
       "selectReceiveMethod": "Select Receive Method",
       "selectReceiver": "Select Receiver",
       "receiver": "Receiver",
-      "selectOtherUsers": "Select Other Users"
+      "selectOtherUsers": "Select Other Users",
+      "event_record": "Event Records"
     },
     "columns": {
       "notificationStatus": "Notification Status",
@@ -54,7 +59,15 @@
       "executionId": "Execution ID",
       "addTime": "Add Time",
       "pushTime": "Push Time",
-      "pushResult": "Push Result"
+      "pushResult": "Push Result",
+      "eventName": "Event Name",
+      "category": "Category",
+      "noticeType": "Notice Type",
+      "eventId": "Event ID",
+      "content": "Content",
+      "receiver": "Receiver",
+      "createdDate": "Trigger Time",
+      "pushStatus": "Push Status"
     },
     "placeholder": {
       "queryExecutionId": "Query execution ID",
@@ -67,8 +80,8 @@
     "searchLogPlaceholder": {
       "code": "Query event description or code",
       "pushStatus": "Select push status",
-      "startDate": "Start time",
-      "endDate": "End time"
+      "startDate": "Start date",
+      "endDate": "End date"
     },
     "receiveConfig": {
       "title": "Configure Receive Channel",
@@ -598,7 +611,7 @@
         "controllerNodeDesc": "Used for scheduling, managing, monitoring execution and agent services.",
         "execNodeDesc": "Used for executing functional tests, performance tests, data generation, etc.",
         "mockNodeDesc": "Runs Mock services and Mock interfaces.",
-        "appNodeDesc": "The node where the test application is located, used to observe the system load of the stressed application node during stress testing, helping to locate and analyze performance issues.",
+        "appNodeDesc": "Hosts the testing application and monitors target node load during stress tests for performance diagnostics.",
         "copySuccess": "Copied to clipboard"
       },
       "tips": {
@@ -616,7 +629,7 @@
         "controllerNode": "Controller Node: Used for scheduling, managing, monitoring execution and agent services.",
         "executionNode": "Execution Node: Used for executing functional tests, performance tests, data generation, etc.",
         "mockNode": "Mock Node: Runs Mock services and Mock interfaces.",
-        "applicationNode": "Application Node: The node where the test application is located, used to observe the system load of the stressed application node during stress testing, helping to locate and analyze performance issues."
+        "applicationNode": "Application Node: Hosts the testing application and monitors target node load during stress tests for performance diagnostics."
       },
       "confirm": {
         "deleteNode": "Are you sure to delete node [{name}]?"
