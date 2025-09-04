@@ -58,7 +58,7 @@ export function useValuePreview () {
     try {
       const [error, res] = await variable.previewVariableValue(
         { id: data.id },
-        { silence: true }
+        { silence: false }
       );
 
       if (error) {

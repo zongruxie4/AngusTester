@@ -30,6 +30,9 @@ export function useIndex (
    * </p>
    */
   const loadEnums = () => {
+    if (permissions.value.length > 0) {
+      return;
+    }
     const res = enumUtils.enumToMessages(SpacePermission);
     permissions.value = res.map(item => ({
       label: item.message,

@@ -6,7 +6,7 @@ import { ApiUtils as angusUtils, Composite, ExecAuthencation, HttpMethodText, In
 import { HttpMethod, ParameterIn, utils } from '@xcan-angus/infra';
 
 import SelectEnum from '@/components/selectEnum/index.vue';
-import { OASServer, RequestConfigs } from '@/views/data/variable/detail/http/types';
+import { OASServer, RequestConfig } from '@/views/data/variable/detail/http/types';
 
 const { t } = useI18n();
 
@@ -21,7 +21,7 @@ export type ParameterConfig = {
 }
 
 export interface Props {
-  value: RequestConfigs;
+  value: RequestConfig;
   errorNum?: number;
 }
 
@@ -60,10 +60,10 @@ const cookieRef = ref();
 const bodyRef = ref();
 
 const contentType = ref<string>();
-const requestBody = ref<RequestConfigs['body']>();
+const requestBody = ref<RequestConfig['body']>();
 
-const authentication = ref<RequestConfigs['authentication']>();
-const defaultAuthentication = ref<RequestConfigs['authentication']>();
+const authentication = ref<RequestConfig['authentication']>();
+const defaultAuthentication = ref<RequestConfig['authentication']>();
 const authInHeader = ref<{name:string;value:string;}[]>([]);
 
 const cookieParams = ref<ParameterConfig[]>([]);
@@ -207,7 +207,7 @@ const changeAuthentication = async (data: any) => {
   authInHeader.value = authenticationToHeader(data);
 };
 
-const requestBodyChange = (data: RequestConfigs['body']) => {
+const requestBodyChange = (data: RequestConfig['body']) => {
   if (!requestBody.value) {
     requestBody.value = JSON.parse(JSON.stringify(data));
     return;
@@ -499,8 +499,8 @@ const isValid = (): boolean => {
   return !errorNum;
 };
 
-const getData = (): RequestConfigs => {
-  const parameters: RequestConfigs['parameters'] = [];
+const getData = (): RequestConfig => {
+  const parameters: RequestConfig['parameters'] = [];
   if (queryPathParams.value.length) {
     const list = queryPathParams.value;
     for (let i = 0, len = list.length; i < len; i++) {

@@ -10,7 +10,7 @@ export const columns = [
   {
     title: t('fileSpace.columns.name'),
     dataIndex: 'name',
-    width: '30%',
+    width: '25%',
     ellipsis: true
   },
   {
@@ -40,7 +40,6 @@ export const columns = [
   {
     title: t('fileSpace.columns.action'),
     dataIndex: 'action',
-    width: 260
   }
 ];
 

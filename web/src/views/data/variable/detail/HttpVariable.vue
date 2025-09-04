@@ -4,9 +4,9 @@ import { useI18n } from 'vue-i18n';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { AsyncComponent, Hints, Icon, IconRequired, Input, Toggle, Validate, SelectApisByServiceModal } from '@xcan-angus/vue-ui';
 import SelectEnum from '@/components/selectEnum/index.vue';
-import { useHttpVariable } from './composables/useHttpVariable';
+import { useHttpVariable } from './composables/useHttpVariable.ts';
 import { VariableItem } from '../types';
-import { VariableDataProps } from '@/views/data/variable/detail/types';
+import { VariableDataProps } from '@/views/data/variable/detail/types.ts';
 
 const { t } = useI18n();
 

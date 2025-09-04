@@ -8,7 +8,6 @@ import {
   HttpExtractionLocation
 } from '@xcan-angus/infra';
 import { HttpVariableFormState, VariableItem, DetailTabKey, ButtonGroupAction } from '../types';
-import { requestConfigs } from '../http/RequestConfigs';
 
 /**
  * Composable for managing HTTP variable logic in variable detail components

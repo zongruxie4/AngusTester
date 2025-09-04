@@ -317,8 +317,6 @@ onBeforeUnmount(() => {
               v-show="record.id !== '-1'"
               class="text-3 whitespace-nowrap">
 
-              <!--   TODO 英文时，点开右侧基本信息，按钮列会覆盖基本信息，没有自适应 -->
-
               <!-- Delete action -->
               <Button
                 :disabled="!deleteAuth"

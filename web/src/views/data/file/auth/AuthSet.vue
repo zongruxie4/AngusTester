@@ -75,7 +75,7 @@ onBeforeUnmount(() => {
     <!-- Table Headers -->
     <div
       v-if="props.authObjectId"
-      class="flex items-center h-11 pr-1.75 rounded bg-gray-light text-theme-title">
+      class="flex items-center h-11 pr-1.75 rounded bg-gray-light">
       <div class="flex-1 px-2 truncate">
         {{ t('fileSpace.globalAuth.authSet.headers.name') }}
       </div>
@@ -158,9 +158,6 @@ onBeforeUnmount(() => {
  */
 
 /* Ensure proper spacing and layout */
-.text-3 {
-  font-size: 0.875rem;
-}
 
 .leading-4\.5 {
   line-height: 1.125rem;
