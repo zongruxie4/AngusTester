@@ -85,7 +85,7 @@
         "export": "Export",
         "execute": "Execute",
         "edit": "Edit",
-        "cancelBatch": "Cancel Batch Operation"
+        "cancelBatch": "Cancel"
       },
       "messages": {
         "maxBatchLimit": "Maximum support for batch operations of {maxNum} scripts, currently selected {selectedNum} scripts.",
@@ -147,7 +147,7 @@
     "actions": {
       "cancel": "Cancel",
       "smartGenerate": "Smart Generate",
-      "saveScript": "Save Script",
+      "saveScript": "Save",
       "edit": "Edit",
       "export": "Export",
       "clone": "Clone",
@@ -166,26 +166,26 @@
       "addExecutionSuccess": "Execution added successfully, please check details in \"Execute\"."
     },
     "form": {
-      "scriptType": "Script Type",
+      "scriptType": "Type",
       "selectScriptType": "Please select script type",
-      "scriptName": "Script Name",
+      "scriptName": "Name",
       "enterScriptName": "Please enter script name",
       "namePlaceholder": "Please enter script name, maximum 200 characters",
       "description": "Description",
       "descriptionPlaceholder": "Please enter script description, maximum 800 characters"
     },
     "info": {
-      "scriptName": "Script Name",
-      "scriptType": "Script Type",
+      "scriptName": "Name",
+      "scriptType": "Type",
+      "description": "Description",
       "plugin": "Plugin",
       "source": "Source",
       "resourceId": "Resource ID",
       "resourceName": "Resource Name",
       "tags": "Tags",
       "creator": "Creator",
-      "lastUpdater": "Last Updater",
-      "lastModifyTime": "Last Modify Time",
-      "description": "Description"
+      "lastUpdater": "Last Modifier",
+      "lastModifyTime": "Last Modify Date"
     },
     "record": {
       "executionId": "Execution ID",

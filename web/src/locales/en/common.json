@@ -272,12 +272,6 @@
           "selectScriptType": "Please select the script type to delete",
           "deleteSuccess": "Test script deleted successfully"
         },
-        "exportScriptModal": {
-          "title": "Export Script",
-          "format": "Format",
-          "json": "JSON",
-          "yaml": "YAML"
-        },
         "genTestScriptModal": {
           "title": "Generate Test Script",
           "functionalTest": "Functional Test",
@@ -433,6 +427,12 @@
       "name": "Name",
       "status": "Status",
       "type": "Type"
+    },
+    "exportScriptModal": {
+      "title": "Export Script",
+      "format": "Format",
+      "json": "JSON",
+      "yaml": "YAML"
     },
     "chart": {
       "cpu": {
