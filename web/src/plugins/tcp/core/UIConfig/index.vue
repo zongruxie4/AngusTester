@@ -6,6 +6,9 @@ import { debounce } from 'throttle-debounce';
 import { Icon, NoData, Input, Colon, Arrow, IconRequired, Tooltip, SelectInput, Select, ShortDuration } from '@xcan-angus/vue-ui';
 import { utils, duration } from '@xcan-angus/infra';
 import { cloneDeep } from 'lodash-es';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import { PipelineConfig } from '../PropsType';
 
@@ -382,7 +385,7 @@ const tcpClientClassOptions = [
 ];
 
 const codeOptions = [
-  { label: '无', value: 'none' },
+  { label: t('tcpPlugin.uiConfig.form.none'), value: 'none' },
   { label: 'base64', value: 'base64' },
   { label: 'gzip_base64', value: 'gzip_base64' }
 ];
@@ -400,13 +403,13 @@ const autosize = {
 const connectTimeoutInputProps = {
   maxlength: 8,
   dataType: 'integer',
-  placeholder: '连接超时，最大24小时'
+  placeholder: t('tcpPlugin.uiConfig.serverConfig.connectionTimeoutPlaceholder')
 };
 
 const readTimeoutInputProps = {
   maxlength: 8,
   dataType: 'integer',
-  placeholder: '读取超时，最大24小时'
+  placeholder: t('tcpPlugin.uiConfig.serverConfig.responseTimeoutPlaceholder')
 };
 
 const selectProps = {
@@ -424,15 +427,15 @@ const selectProps = {
         @click="insertData">
         <div class="flex items-center">
           <Icon icon="icon-chajianpeizhi" class="mr-1" />
-          <span>插入Tcp请求</span>
+          <span>{{ t('tcpPlugin.uiConfig.title') }}</span>
         </div>
       </Button>
-      <div class="flex-1 flex items-center overflow-hidden" title="支持同时编排多个Tcp接口，但每次只允许启用一个Tcp进行测试。">
+      <div class="flex-1 flex items-center overflow-hidden" :title="t('tcpPlugin.uiConfig.description')">
         <Icon
           icon="icon-tishi1"
           class="flex-shrink-0 text-3.5 mr-0.5"
           style="color:#a6ceff;" />
-        <span class="text-theme-sub-content truncate">支持同时编排多个Tcp接口，但每次只允许启用一个Tcp进行测试。</span>
+        <span class="text-theme-sub-content truncate">{{ t('tcpPlugin.uiConfig.description') }}</span>
       </div>
     </div>
     <template v-if="props.loaded">
@@ -470,7 +473,7 @@ const selectProps = {
                     <Icon class="flex-shrink-0 text-4 mr-3" icon="icon-chajianpeizhi" />
                     <div class="flex-1 flex items-center space-x-2 mr-5">
                       <Tooltip
-                        title="名称重复"
+                        :title="t('tcpPlugin.uiConfig.form.nameDuplicate')"
                         internal
                         placement="right"
                         destroyTooltipOnHide
@@ -482,7 +485,7 @@ const selectProps = {
                           :title="dataMap[id].name"
                           style="flex:1 1 40%;"
                           trim
-                          placeholder="名称，最大支持400个字符"
+                          :placeholder="t('tcpPlugin.uiConfig.form.namePlaceholder')"
                           @change="nameChange(id)" />
                       </Tooltip>
                       <Input
@@ -491,20 +494,20 @@ const selectProps = {
                         :title="dataMap[id].description"
                         trim
                         style="flex:1 1 60%;"
-                        placeholder="描述，最大支持800个字符" />
+                        :placeholder="t('tcpPlugin.uiConfig.form.descriptionPlaceholder')" />
                     </div>
                     <div class="flex items-center flex-shrink-0 space-x-3">
                       <Switch
                         :checked="dataMap[id].enabled"
                         size="small"
                         @change="enabledChange(id, $event)" />
-                      <div class="flex items-center cursor-pointer hover:text-text-link-hover" title="克隆">
+                      <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('tcpPlugin.uiConfig.actions.clone')">
                         <Icon
                           icon="icon-fuzhi"
                           class="text-3.5"
                           @click="toClone(id)" />
                       </div>
-                      <div class="flex items-center cursor-pointer hover:text-text-link-hover" title="删除">
+                      <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('tcpPlugin.uiConfig.actions.delete')">
                         <Icon
                           icon="icon-qingchu"
                           class="text-3.5"
@@ -518,13 +521,13 @@ const selectProps = {
                 <div class="space-y-3.5">
                   <div class="flex items-center text-theme-title">
                     <div class="w-1.25 h-3 rounded mr-1.5" style="background-color: #1e88e5;"></div>
-                    <span>服务器配置</span>
+                    <span>{{ t('tcpPlugin.uiConfig.serverConfig.title') }}</span>
                   </div>
                   <div class="space-y-3.5 ml-2.75">
                     <div class="flex items-center">
                       <div class="flex-shrink-0 w-26.5 flex items-center">
                         <IconRequired />
-                        <span>主机名或IP</span>
+                        <span>{{ t('tcpPlugin.uiConfig.serverConfig.hostnameOrIP') }}</span>
                         <Colon />
                       </div>
                       <div class="flex-1 flex items-center space-x-5 max-w-175">
@@ -534,13 +537,13 @@ const selectProps = {
                           :error="!!serverErrorSet.has(id)"
                           trimAll
                           style="flex: 1 1 75%;"
-                          placeholder="主机名或IP，最大支持4096个字符"
+                          :placeholder="t('tcpPlugin.uiConfig.serverConfig.hostnameOrIPPlaceholder')"
                           @change="serverChange(id)" />
 
                         <div style="flex: 1 1 25%;" class="flex items-center">
                           <div class="flex-shrink-0 w-11.5 flex items-center">
                             <IconRequired />
-                            <span>端口</span>
+                            <span>{{ t('tcpPlugin.uiConfig.serverConfig.port') }}</span>
                             <Colon />
                           </div>
                           <Input
@@ -552,7 +555,7 @@ const selectProps = {
                             trimALl
                             dataType="integer"
                             style="min-width: 75px;max-width: 200px;"
-                            placeholder="端口（1~65535）"
+                            :placeholder="t('tcpPlugin.uiConfig.serverConfig.portPlaceholder')"
                             @change="portChange(id)" />
                         </div>
                       </div>
@@ -560,7 +563,7 @@ const selectProps = {
 
                     <div class="flex items-center">
                       <div class="flex-shrink-0 w-26.5 flex items-center">
-                        <span>连接超时</span>
+                        <span>{{ t('tcpPlugin.uiConfig.serverConfig.connectionTimeout') }}</span>
                         <Colon />
                       </div>
                       <div class="flex-1 flex items-center space-x-5 max-w-175">
@@ -572,7 +575,7 @@ const selectProps = {
                           style="flex:none;width:calc((100% - 82px)/2);background-color: #fff;" />
                         <div class="flex-1 flex items-center">
                           <div class="flex-shrink-0 w-15.5 flex items-center">
-                            <span>响应超时</span>
+                            <span>{{ t('tcpPlugin.uiConfig.serverConfig.responseTimeout') }}</span>
                             <Colon />
                           </div>
                           <ShortDuration
@@ -590,13 +593,13 @@ const selectProps = {
                 <div class="space-y-3.5 mt-5">
                   <div class="flex items-center text-theme-title">
                     <div class="w-1.25 h-3 rounded mr-1.5" style="background-color: #1e88e5;"></div>
-                    <span>请求配置</span>
+                    <span>{{ t('tcpPlugin.uiConfig.requestConfig.title') }}</span>
                   </div>
                   <div class="space-y-3 ml-2.75">
                     <div class="flex items-center">
                       <div class="flex-shrink-0 w-26.5 flex items-center">
                         <IconRequired />
-                        <span>TCP客户端类名</span>
+                        <span>{{ t('tcpPlugin.uiConfig.requestConfig.tcpClientClassName') }}</span>
                         <Colon />
                       </div>
                       <SelectInput
@@ -605,14 +608,14 @@ const selectProps = {
                         :maxlength="4096"
                         :options="tcpClientClassOptions"
                         trimAll
-                        placeholder="TCP客户端类名，最大支持4096个字符"
+                        :placeholder="t('tcpPlugin.uiConfig.requestConfig.tcpClientClassNamePlaceholder')"
                         class="flex-1 max-w-175 bg-white"
                         @change="tcpClientImplClassChange(id,$event)" />
                     </div>
 
                     <div class="flex items-center">
                       <div class="flex-shrink-0 w-26.5 flex items-center">
-                        <span>Socket连接配置</span>
+                        <span>{{ t('tcpPlugin.uiConfig.requestConfig.socketConnectionConfig') }}</span>
                         <Colon />
                       </div>
                       <div class="flex-1 flex max-w-175 flex-wrap space-x-5">
@@ -620,14 +623,14 @@ const selectProps = {
                           v-model:checked="dataMap[id].setting.reUseConnection"
                           class="flex-shrink-0"
                           style="height:28px;line-height:28px;">
-                          重用连接
+                          {{ t('tcpPlugin.uiConfig.requestConfig.reuseConnection') }}
                         </Checkbox>
 
                         <Checkbox
                           v-model:checked="dataMap[id].setting.tcpNoDelay"
                           class="flex-shrink-0"
                           style="height:28px;line-height:28px;">
-                          设置无延迟
+                          {{ t('tcpPlugin.uiConfig.requestConfig.setNoDelay') }}
                         </Checkbox>
 
                         <div class="flex-shrink-0 flex items-center space-x-1.5">
@@ -649,20 +652,20 @@ const selectProps = {
 
                     <div class="flex items-center">
                       <div class="flex-shrink-0 w-26.5 flex items-center">
-                        <span>报文数据编码</span>
+                        <span>{{ t('tcpPlugin.uiConfig.requestConfig.messageDataEncoding') }}</span>
                         <Colon />
                       </div>
                       <Select
                         v-model:value="dataMap[id].dataEncoding"
                         :options="codeOptions"
-                        placeholder="报文数据编码"
+                        :placeholder="t('tcpPlugin.uiConfig.requestConfig.messageDataEncodingPlaceholder')"
                         style="width: 162px;"
                         class="bg-white" />
                     </div>
 
                     <div class="flex items-start">
                       <div class="leading-7 flex-shrink-0 w-26.5 flex items-center">
-                        <span>报文数据</span>
+                        <span>{{ t('tcpPlugin.uiConfig.requestConfig.messageData') }}</span>
                         <Colon />
                       </div>
                       <div class="flex-1 max-w-175">
@@ -672,10 +675,10 @@ const selectProps = {
                           :autoSize="autosize"
                           trim
                           type="textarea"
-                          :placeholder="`报文数据，最大支持${DATA_MAX_LENGTH}个字符`"
+                          :placeholder="t('tcpPlugin.uiConfig.requestConfig.messageDataPlaceholder', { maxLength: DATA_MAX_LENGTH })"
                           class="!bg-white"
                           @change="dataChange(id,$event)" />
-                        <div v-if="dataErrorSet.has(id)" style="margin-top:3px;color:rgba(245, 34, 45, 100%);">最大支持{{ DATA_MAX_LENGTH }}个字符，当前{{ dataMap[id].data.length }}个字符</div>
+                        <div v-if="dataErrorSet.has(id)" style="margin-top:3px;color:rgba(245, 34, 45, 100%);">{{ t('tcpPlugin.uiConfig.requestConfig.messageDataError', { maxLength: DATA_MAX_LENGTH, currentLength: dataMap[id].data.length }) }}</div>
                       </div>
                     </div>
 
@@ -684,7 +687,7 @@ const selectProps = {
                       <div class="flex-1 flex max-w-175 flex-wrap">
                         <div class="flex-shrink-0 flex items-center space-x-1.5 mr-5 mb-3">
                           <div class="flex-shrink-0 flex items-center">
-                            <span>字符集</span>
+                            <span>{{ t('tcpPlugin.uiConfig.requestConfig.charset') }}</span>
                           </div>
                           <Input
                             v-model:value="dataMap[id].setting.tcpCharset"
@@ -695,7 +698,7 @@ const selectProps = {
 
                         <div class="flex-shrink-0 flex items-center space-x-1.5 mr-5 mb-3">
                           <div class="flex-shrink-0 flex items-center">
-                            <span>EOL字节值</span>
+                            <span>{{ t('tcpPlugin.uiConfig.requestConfig.eolByteValue') }}</span>
                           </div>
                           <Input
                             v-model:value="dataMap[id].setting.eolByte"
@@ -708,7 +711,7 @@ const selectProps = {
 
                         <div class="flex-shrink-0 flex items-center space-x-1.5 mr-5 mb-3">
                           <div class="flex-shrink-0 flex items-center">
-                            <span>EOM字节值</span>
+                            <span>{{ t('tcpPlugin.uiConfig.requestConfig.eomByteValue') }}</span>
                           </div>
                           <Input
                             v-model:value="dataMap[id].setting.eomByte"
@@ -721,7 +724,7 @@ const selectProps = {
 
                         <div class="flex-shrink-0 flex items-center space-x-1.5 mb-3">
                           <div class="flex-shrink-0 flex items-center">
-                            <span>二进制数据长度前缀的字节个数</span>
+                            <span>{{ t('tcpPlugin.uiConfig.requestConfig.binaryDataLengthPrefix') }}</span>
                           </div>
                           <Select
                             v-model:value="dataMap[id].setting.binaryPrefixLength"
