@@ -656,6 +656,21 @@
       }
     },
     "uiConfig": {
+      "buttons": {
+        "insertApi": "Insert API",
+        "selectApi": "Select API",
+        "selectUseCase": "Select Use Case",
+        "insertTransStart": "Insert Start Transaction",
+        "insertTransEnd": "Insert End Transaction",
+        "insertWaitingTime": "Insert Waiting Time",
+        "insertThroughputLimiter": "Insert Throughput Limiter",
+        "insertRendezvous": "Insert Rendezvous"
+      },
+      "defaultNames": {
+        "waitingTime": "Waiting Time",
+        "throughputLimiter": "Throughput Limiter",
+        "rendezvous": "Rendezvous"
+      },
       "selectApiModal": {
         "title": "Select API",
         "searchPlaceholder": "Search API name",

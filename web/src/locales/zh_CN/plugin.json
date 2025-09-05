@@ -655,6 +655,21 @@
       }
     },
     "uiConfig": {
+      "buttons": {
+        "insertApi": "插入接口",
+        "selectApi": "选择接口",
+        "selectUseCase": "选择用例",
+        "insertTransStart": "插入开始事务",
+        "insertTransEnd": "插入结束事务",
+        "insertWaitingTime": "插入等待时间",
+        "insertThroughputLimiter": "插入吞吐量限制器",
+        "insertRendezvous": "插入集合点"
+      },
+      "defaultNames": {
+        "waitingTime": "等待时间",
+        "throughputLimiter": "吞吐量限制",
+        "rendezvous": "集合点"
+      },
       "selectApiModal": {
         "title": "选择API",
         "searchPlaceholder": "搜索API名称",
