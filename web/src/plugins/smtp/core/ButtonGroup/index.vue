@@ -21,10 +21,6 @@ const emit = defineEmits<{
   (e:'click', value:ButtonGroupMenuItem):void;
 }>();
 
-const { useMutations, useState } = VuexHelper;
-const { stepVisible, stepKey, stepContent } = useState(['stepVisible', 'stepKey', 'stepContent'], 'guideStore');
-const { updateGuideStep } = useMutations(['updateGuideStep'], 'guideStore');
-
 const click = (value:ButtonGroupMenuItem) => {
   emit('click', value);
 };
@@ -34,10 +30,6 @@ const buttonItems = computed(() => {
   return MENUITEMS.filter(item => !hideKeys.has(item.key));
 });
 
-const guideStep = (key:string) => {
-  updateGuideStep({ visible: true, key });
-  click(SAVE_ITEM);
-};
 
 const MENUITEMS:readonly ButtonGroupMenuItem[] = [
   { name: t('ftpPlugin.buttonGroup.export'), icon: 'icon-daochu', key: 'export' },

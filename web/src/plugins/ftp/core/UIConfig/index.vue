@@ -62,7 +62,7 @@ const insertData = () => {
     target: 'FTP',
     name: '',
     description: '',
-    enabled: !hasEnabled, // {{ t('tcpPlugin.uiConfig.comments.onlyOneEnabled') }}
+    enabled: !hasEnabled, // {{ t('ftpPlugin.uiConfig.comments.onlyOneEnabled') }}
     server: {
       server: '',
       port: '',
@@ -537,13 +537,13 @@ const codeOptions = [
 const connectTimeoutInputProps = {
   maxlength: 8,
   dataType: 'integer',
-  placeholder: t('tcpPlugin.uiConfig.serverConfig.connectionTimeoutPlaceholder')
+  placeholder: t('ftpPlugin.uiConfig.serverConfig.connectionTimeoutPlaceholder')
 };
 
 const readTimeoutInputProps = {
   maxlength: 8,
   dataType: 'integer',
-  placeholder: t('tcpPlugin.uiConfig.serverConfig.readTimeoutPlaceholder')
+  placeholder: t('ftpPlugin.uiConfig.serverConfig.readTimeoutPlaceholder')
 };
 
 const selectProps = {
@@ -561,15 +561,15 @@ const selectProps = {
         @click="insertData">
         <div class="flex items-center">
           <Icon icon="icon-chajianpeizhi" class="mr-1" />
-          <span>{{ t('tcpPlugin.uiConfig.title') }}</span>
+          <span>{{ t('ftpPlugin.uiConfig.title') }}</span>
         </div>
       </Button>
-      <div class="flex-1 flex items-center overflow-hidden" :title="t('tcpPlugin.uiConfig.description')">
+      <div class="flex-1 flex items-center overflow-hidden" :title="t('ftpPlugin.uiConfig.description')">
         <Icon
           icon="icon-tishi1"
           class="flex-shrink-0 text-3.5 mr-0.5"
           style="color:#a6ceff;" />
-        <span class="text-theme-sub-content truncate">{{ t('tcpPlugin.uiConfig.description') }}</span>
+        <span class="text-theme-sub-content truncate">{{ t('ftpPlugin.uiConfig.description') }}</span>
       </div>
     </div>
     <template v-if="props.loaded">
@@ -607,7 +607,7 @@ const selectProps = {
                     <Icon class="flex-shrink-0 text-4 mr-3" icon="icon-chajianpeizhi" />
                     <div class="flex-1 flex items-center space-x-2 mr-5">
                       <Tooltip
-                        :title="t('tcpPlugin.uiConfig.form.nameDuplicate')"
+                        :title="t('ftpPlugin.uiConfig.form.nameDuplicate')"
                         internal
                         placement="right"
                         destroyTooltipOnHide
@@ -619,7 +619,7 @@ const selectProps = {
                           :title="dataMap[id].name"
                           style="flex:1 1 40%;"
                           trim
-                          :placeholder="t('tcpPlugin.uiConfig.form.namePlaceholder')"
+                          :placeholder="t('ftpPlugin.uiConfig.form.namePlaceholder')"
                           @change="nameChange" />
                       </Tooltip>
                       <Input
@@ -628,20 +628,20 @@ const selectProps = {
                         :title="dataMap[id].description"
                         trim
                         style="flex:1 1 60%;"
-                        :placeholder="t('tcpPlugin.uiConfig.form.descriptionPlaceholder')" />
+                        :placeholder="t('ftpPlugin.uiConfig.form.descriptionPlaceholder')" />
                     </div>
                     <div class="flex items-center flex-shrink-0 space-x-3">
                       <Switch
                         :checked="dataMap[id].enabled"
                         size="small"
                         @change="enabledChange(id, $event)" />
-                      <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('tcpPlugin.uiConfig.actions.clone')">
+                      <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('ftpPlugin.uiConfig.actions.clone')">
                         <Icon
                           icon="icon-fuzhi"
                           class="text-3.5"
                           @click="toClone(id)" />
                       </div>
-                      <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('tcpPlugin.uiConfig.actions.delete')">
+                      <div class="flex items-center cursor-pointer hover:text-text-link-hover" :title="t('ftpPlugin.uiConfig.actions.delete')">
                         <Icon
                           icon="icon-qingchu"
                           class="text-3.5"
@@ -655,13 +655,13 @@ const selectProps = {
                 <div class="space-y-3.5">
                   <div class="flex items-center text-theme-title">
                     <div class="w-1.25 h-3 rounded mr-1.5" style="background-color: #1e88e5;"></div>
-                    <span>{{ t('tcpPlugin.uiConfig.serverConfig.title') }}</span>
+                    <span>{{ t('ftpPlugin.uiConfig.serverConfig.title') }}</span>
                   </div>
                   <div class="space-y-3.5 ml-2.75">
                     <div class="flex items-center">
                       <div class="flex-shrink-0 w-20.5 flex items-center">
                         <IconRequired />
-                        <span>{{ t('tcpPlugin.uiConfig.serverConfig.hostnameOrIP') }}</span>
+                        <span>{{ t('ftpPlugin.uiConfig.serverConfig.hostnameOrIP') }}</span>
                         <Colon />
                       </div>
                       <div class="flex-1 flex items-center space-x-5 max-w-175">
@@ -671,13 +671,13 @@ const selectProps = {
                           :error="!!serverErrorSet.has(id)"
                           trimAll
                           style="flex: 1 1 75%;"
-                          :placeholder="t('tcpPlugin.uiConfig.serverConfig.hostnameOrIPPlaceholder')"
+                          :placeholder="t('ftpPlugin.uiConfig.serverConfig.hostnameOrIPPlaceholder')"
                           @change="serverChange(id)" />
 
                         <div style="flex: 1 1 25%;" class="flex items-center">
                           <div class="flex-shrink-0 w-11.5 flex items-center">
                             <IconRequired />
-                            <span>{{ t('tcpPlugin.uiConfig.serverConfig.port') }}</span>
+                            <span>{{ t('ftpPlugin.uiConfig.serverConfig.port') }}</span>
                             <Colon />
                           </div>
                           <Input
@@ -689,7 +689,7 @@ const selectProps = {
                             trimALl
                             dataType="integer"
                             style="min-width: 75px;max-width: 200px;"
-                            :placeholder="t('tcpPlugin.uiConfig.serverConfig.portPlaceholder')"
+                            :placeholder="t('ftpPlugin.uiConfig.serverConfig.portPlaceholder')"
                             @change="portChange(id)" />
                         </div>
                       </div>
@@ -697,7 +697,7 @@ const selectProps = {
 
                     <div class="flex items-center">
                       <div class="flex-shrink-0 w-20.5 flex items-center">
-                        <span>{{ t('tcpPlugin.uiConfig.serverConfig.username') }}</span>
+                        <span>{{ t('ftpPlugin.uiConfig.serverConfig.username') }}</span>
                         <Colon />
                       </div>
                       <div class="flex-1 flex items-center space-x-5 max-w-175">
@@ -705,18 +705,18 @@ const selectProps = {
                           v-model:value="dataMap[id].server.username"
                           :maxlength="400"
                           trimAll
-                          :placeholder="t('tcpPlugin.uiConfig.serverConfig.usernamePlaceholder')"
+                          :placeholder="t('ftpPlugin.uiConfig.serverConfig.usernamePlaceholder')"
                           style="width:calc((100% - 82px)/2);" />
                         <div class="flex-1 flex items-center">
                           <div class="flex-shrink-0 w-15.5 flex items-center">
-                            <span>{{ t('tcpPlugin.uiConfig.serverConfig.password') }}</span>
+                            <span>{{ t('ftpPlugin.uiConfig.serverConfig.password') }}</span>
                             <Colon />
                           </div>
                           <Input
                             v-model:value="dataMap[id].server.password"
                             :maxlength="4096"
                             trimAll
-                            :placeholder="t('tcpPlugin.uiConfig.serverConfig.passwordPlaceholder')"
+                            :placeholder="t('ftpPlugin.uiConfig.serverConfig.passwordPlaceholder')"
                             type="password" />
                         </div>
                       </div>
@@ -724,7 +724,7 @@ const selectProps = {
 
                     <div class="flex items-center">
                       <div class="flex-shrink-0 w-20.5 flex items-center">
-                        <span>{{ t('tcpPlugin.uiConfig.serverConfig.connectionTimeout') }}</span>
+                        <span>{{ t('ftpPlugin.uiConfig.serverConfig.connectionTimeout') }}</span>
                         <Colon />
                       </div>
                       <div class="flex-1 flex items-center space-x-5 max-w-175">
@@ -736,7 +736,7 @@ const selectProps = {
                           style="flex:none;width:calc((100% - 82px)/2);background-color: #fff;" />
                         <div class="flex-1 flex items-center">
                           <div class="flex-shrink-0 w-15.5 flex items-center">
-                            <span>{{ t('tcpPlugin.uiConfig.serverConfig.readTimeout') }}</span>
+                            <span>{{ t('ftpPlugin.uiConfig.serverConfig.readTimeout') }}</span>
                             <Colon />
                           </div>
                           <ShortDuration
@@ -754,21 +754,21 @@ const selectProps = {
                 <div class="space-y-3.5 mt-5">
                   <div class="flex items-center text-theme-title">
                     <div class="w-1.25 h-3 rounded mr-1.5" style="background-color: #1e88e5;"></div>
-                    <span>{{ t('tcpPlugin.uiConfig.requestConfig.title') }}</span>
+                    <span>{{ t('ftpPlugin.uiConfig.requestConfig.title') }}</span>
                   </div>
                   <div class="space-y-3 ml-2.75">
                     <div class="flex items-center">
                       <div class="flex-shrink-0 w-24 flex items-center">
                         <IconRequired />
-                        <span>{{ t('tcpPlugin.uiConfig.requestConfig.uploadDownload') }}</span>
+                        <span>{{ t('ftpPlugin.uiConfig.requestConfig.uploadDownload') }}</span>
                         <Colon />
                       </div>
                       <RadioGroup
                         v-model:value="dataMap[id].uploadFile"
                         :name="id + 'uploadFile'"
                         @change="uploadDownloadChange(id)">
-                        <Radio :value="true">{{ t('tcpPlugin.uiConfig.requestConfig.upload') }}</Radio>
-                        <Radio :value="false">{{ t('tcpPlugin.uiConfig.requestConfig.download') }}</Radio>
+                        <Radio :value="true">{{ t('ftpPlugin.uiConfig.requestConfig.upload') }}</Radio>
+                        <Radio :value="false">{{ t('ftpPlugin.uiConfig.requestConfig.download') }}</Radio>
                       </RadioGroup>
                     </div>
 
@@ -776,7 +776,7 @@ const selectProps = {
                       <div class="flex items-center">
                         <div class="flex-shrink-0 w-24 flex items-center">
                           <IconRequired />
-                          <span>{{ t('tcpPlugin.uiConfig.requestConfig.uploadFileSource') }}</span>
+                          <span>{{ t('ftpPlugin.uiConfig.requestConfig.uploadFileSource') }}</span>
                           <Colon />
                         </div>
                         <RadioGroup
@@ -784,13 +784,13 @@ const selectProps = {
                           :name="id + 'uploadFileSource'"
                           @change="uploadFileSourceChange(id)">
                           <Radio value="LOCAL_FILE">
-                            <span>{{ t('tcpPlugin.uiConfig.requestConfig.localFile') }}</span>
+                            <span>{{ t('ftpPlugin.uiConfig.requestConfig.localFile') }}</span>
                           </Radio>
                           <Radio value="REMOTE_FILE">
                             <div class="flex items-center space-x-1">
-                              <span>{{ t('tcpPlugin.uiConfig.requestConfig.remoteFile') }}</span>
+                              <span>{{ t('ftpPlugin.uiConfig.requestConfig.remoteFile') }}</span>
                               <Tooltip
-                                :title="t('tcpPlugin.uiConfig.requestConfig.remoteFileTooltip')"
+                                :title="t('ftpPlugin.uiConfig.requestConfig.remoteFileTooltip')"
                                 internal
                                 destroyTooltipOnHide>
                                 <Icon icon="icon-tishi1" class="flex-shrink-0 text-3.5 text-text-tip cursor-pointer" />
@@ -799,9 +799,9 @@ const selectProps = {
                           </Radio>
                           <Radio value="REMOTE_URL">
                             <div class="flex items-center space-x-1">
-                              <span>{{ t('tcpPlugin.uiConfig.requestConfig.remoteUrl') }}</span>
+                              <span>{{ t('ftpPlugin.uiConfig.requestConfig.remoteUrl') }}</span>
                               <Tooltip
-                                :title="t('tcpPlugin.uiConfig.requestConfig.remoteFileUrlTooltip')"
+                                :title="t('ftpPlugin.uiConfig.requestConfig.remoteFileUrlTooltip')"
                                 internal
                                 destroyTooltipOnHide>
                                 <Icon icon="icon-tishi1" class="flex-shrink-0 text-3.5 text-text-tip cursor-pointer" />
@@ -815,7 +815,7 @@ const selectProps = {
                         <div class="flex items-center">
                           <div class="flex-shrink-0 w-24 flex items-center">
                             <IconRequired />
-                            <span>{{ t('tcpPlugin.uiConfig.requestConfig.remoteFileUrl') }}</span>
+                            <span>{{ t('ftpPlugin.uiConfig.requestConfig.remoteFileUrl') }}</span>
                             <Colon />
                           </div>
                           <div class="flex-1 flex items-center space-x-1 max-w-175">
@@ -824,7 +824,7 @@ const selectProps = {
                               :error="!!remoteFileUrlErrorSet.has(id)"
                               :maxlength="4096"
                               trim
-                              :placeholder="t('tcpPlugin.uiConfig.requestConfig.remoteFileUrlPlaceholder')"
+                              :placeholder="t('ftpPlugin.uiConfig.requestConfig.remoteFileUrlPlaceholder')"
                               class="flex-1"
                               @change="remoteFileUrlChange(id)" />
                           </div>
@@ -835,7 +835,7 @@ const selectProps = {
                         <div class="flex items-center">
                           <div class="flex-shrink-0 w-24 flex items-center">
                             <IconRequired />
-                            <span>{{ t('tcpPlugin.uiConfig.requestConfig.remoteFileName') }}</span>
+                            <span>{{ t('ftpPlugin.uiConfig.requestConfig.remoteFileName') }}</span>
                             <Colon />
                           </div>
                           <div class="flex-1 flex items-center space-x-1 max-w-175">
@@ -844,7 +844,7 @@ const selectProps = {
                               :error="!!remoteFileNameErrorSet.has(id)"
                               :maxlength="4096"
                               trim
-                              :placeholder="t('tcpPlugin.uiConfig.requestConfig.remoteFileNamePlaceholder')"
+                              :placeholder="t('ftpPlugin.uiConfig.requestConfig.remoteFileNamePlaceholder')"
                               class="flex-1"
                               @change="remoteFileNameChange(id)" />
                           </div>
@@ -854,7 +854,7 @@ const selectProps = {
                       <template v-else>
                         <div class="flex items-center">
                           <div class="flex-shrink-0 w-24 flex items-center">
-                            <span>{{ t('tcpPlugin.uiConfig.requestConfig.remoteFileName') }}</span>
+                            <span>{{ t('ftpPlugin.uiConfig.requestConfig.remoteFileName') }}</span>
                             <Colon />
                           </div>
                           <div class="flex-1 flex items-center space-x-1 max-w-175">
@@ -862,7 +862,7 @@ const selectProps = {
                               v-model:value="dataMap[id].remoteFileName"
                               :maxlength="4096"
                               trim
-                              :placeholder="t('tcpPlugin.uiConfig.requestConfig.remoteFileUrlHints')"
+                              :placeholder="t('ftpPlugin.uiConfig.requestConfig.remoteFileUrlHints')"
                               class="flex-1" />
                           </div>
                         </div>
@@ -872,7 +872,7 @@ const selectProps = {
                         <div class="flex items-center">
                           <div class="flex-shrink-0 w-24 flex items-center">
                             <IconRequired />
-                            <span>{{ t('tcpPlugin.uiConfig.fileConfig.localFilePath') }}</span>
+                            <span>{{ t('ftpPlugin.uiConfig.fileConfig.localFilePath') }}</span>
                             <Colon />
                           </div>
                           <RadioGroup
@@ -880,13 +880,13 @@ const selectProps = {
                             :name="id + 'localFile'"
                             @change="localFileTypeChange(id)">
                             <Radio value="file">
-                              <span>{{ t('tcpPlugin.uiConfig.requestConfig.localFileContent') }}</span><span class="text-theme-sub-content">（{{ t('tcpPlugin.uiConfig.requestConfig.localFileContentTooltip') }}）</span>
+                              <span>{{ t('ftpPlugin.uiConfig.requestConfig.localFileContent') }}</span><span class="text-theme-sub-content">（{{ t('ftpPlugin.uiConfig.requestConfig.localFileContentTooltip') }}）</span>
                             </Radio>
                             <Radio value="url">
                               <div class="flex items-center space-x-1">
-                                <span>{{ t('tcpPlugin.uiConfig.fileConfig.localFilePath') }}</span>
+                                <span>{{ t('ftpPlugin.uiConfig.fileConfig.localFilePath') }}</span>
                                 <Tooltip
-                                  :title="t('tcpPlugin.uiConfig.fileConfig.localFileNameTooltip')"
+                                  :title="t('ftpPlugin.uiConfig.fileConfig.localFileNameTooltip')"
                                   internal
                                   destroyTooltipOnHide>
                                   <Icon
@@ -915,20 +915,20 @@ const selectProps = {
                                     class="flex-shrink-0"
                                     size="small">
                                     <Icon icon="icon-xuanze" class="mr-1" />
-                                    <span>{{ t('tcpPlugin.uiConfig.upload.selectFile') }}</span>
+                                    <span>{{ t('ftpPlugin.uiConfig.upload.selectFile') }}</span>
                                   </Button>
                                 </Upload>
                                 <Alert
                                   v-if="fileMap[id]?.limitFlag"
                                   size="small"
-                                  :message="t('tcpPlugin.uiConfig.upload.fileSizeLimit')"
+                                  :message="t('ftpPlugin.uiConfig.upload.fileSizeLimit')"
                                   style="margin-left:10px;padding:0;border:none;background-color: transparent;font-size:12px;"
                                   type="error"
                                   closable />
                                 <Alert
                                   v-if="localFileContentErrorSet.has(id)"
                                   size="small"
-                                  :message="t('tcpPlugin.uiConfig.upload.selectFileTooltip')"
+                                  :message="t('ftpPlugin.uiConfig.upload.selectFileTooltip')"
                                   style="margin-left:10px;padding:0;border:none;background-color: transparent;font-size:12px;"
                                   type="error" />
                               </div>
@@ -943,13 +943,13 @@ const selectProps = {
 
                               <div class="flex-shrink-0 flex items-center space-x-2 whitespace-nowrap">
                                 <div>
-                                  <span>{{ t('tcpPlugin.uiConfig.upload.code') }}</span>
+                                  <span>{{ t('ftpPlugin.uiConfig.upload.code') }}</span>
                                   <Colon />
                                 </div>
                                 <Select
                                   v-model:value="dataMap[id].localFileContentEncoding"
                                   :options="codeOptions"
-                                  :placeholder="t('tcpPlugin.uiConfig.upload.fileEncoding')"
+                                  :placeholder="t('ftpPlugin.uiConfig.upload.fileEncoding')"
                                   class="w-27"
                                   @change="encodingChange(id, $event)" />
                               </div>
@@ -979,7 +979,7 @@ const selectProps = {
                                 :error="!!localFileNameErrorSet.has(id)"
                                 :maxlength="4096"
                                 trim
-                                :placeholder="t('tcpPlugin.uiConfig.fileConfig.localFilePathPlaceholder')"
+                                :placeholder="t('ftpPlugin.uiConfig.fileConfig.localFilePathPlaceholder')"
                                 class="flex-1"
                                 @change="localFileNameChange(id)" />
                             </div>
@@ -989,9 +989,9 @@ const selectProps = {
 
                       <div class="flex items-center">
                         <div class="flex-shrink-0 w-24 flex items-center">
-                          <span>{{ t('tcpPlugin.uiConfig.fileConfig.binaryFile') }}</span>
+                          <span>{{ t('ftpPlugin.uiConfig.fileConfig.binaryFile') }}</span>
                           <Tooltip
-                            :title="t('tcpPlugin.uiConfig.fileConfig.binaryFileTooltip')"
+                            :title="t('ftpPlugin.uiConfig.fileConfig.binaryFileTooltip')"
                             internal
                             destroyTooltipOnHide>
                             <Icon icon="icon-tishi1" class="flex-shrink-0 text-3.5 text-text-tip cursor-pointer" />
@@ -999,8 +999,8 @@ const selectProps = {
                           <Colon />
                         </div>
                         <RadioGroup v-model:value="dataMap[id].binaryMode" :name="id + 'binaryMode'">
-                          <Radio :value="true">{{ t('tcpPlugin.uiConfig.fileConfig.binaryMode.yes') }}</Radio>
-                          <Radio :value="false">{{ t('tcpPlugin.uiConfig.fileConfig.binaryMode.no') }}</Radio>
+                          <Radio :value="true">{{ t('ftpPlugin.uiConfig.fileConfig.binaryMode.yes') }}</Radio>
+                          <Radio :value="false">{{ t('ftpPlugin.uiConfig.fileConfig.binaryMode.no') }}</Radio>
                         </RadioGroup>
                       </div>
                     </template>
@@ -1009,7 +1009,7 @@ const selectProps = {
                       <div class="flex items-center">
                         <div class="flex-shrink-0 w-24 flex items-center">
                           <IconRequired />
-                          <span>{{ t('tcpPlugin.uiConfig.fileConfig.remoteFileName') }}</span>
+                          <span>{{ t('ftpPlugin.uiConfig.fileConfig.remoteFileName') }}</span>
                           <Colon />
                         </div>
                         <div class="flex-1 flex items-center space-x-1 max-w-175">
@@ -1018,7 +1018,7 @@ const selectProps = {
                             :error="!!remoteFileNameErrorSet.has(id)"
                             :maxlength="4096"
                             trim
-                            :placeholder="t('tcpPlugin.uiConfig.fileConfig.remoteFileNamePlaceholder')"
+                            :placeholder="t('ftpPlugin.uiConfig.fileConfig.remoteFileNamePlaceholder')"
                             class="flex-1"
                             @change="remoteFileNameChange(id)" />
                         </div>

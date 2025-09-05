@@ -306,6 +306,79 @@
           "byUploadDownload": "By Upload/Download"
         }
       }
+    },
+    "uiConfig": {
+      "title": "Insert FTP Request",
+      "description": "Supports orchestrating multiple FTP interfaces simultaneously, but only one FTP is allowed to be enabled for testing at a time.",
+      "comments": {
+        "onlyOneEnabled": "Only one can be enabled",
+        "cloneLocalFile": "Clone local file",
+        "checkCloneNameExists": "Check if clone name already exists"
+      },
+      "actions": {
+        "clone": "Clone",
+        "delete": "Delete"
+      },
+      "form": {
+        "nameDuplicate": "Name Duplicate",
+        "namePlaceholder": "Name, maximum 400 characters",
+        "descriptionPlaceholder": "Description, maximum 800 characters (optional)",
+        "none": "None"
+      },
+      "serverConfig": {
+        "title": "Server Configuration",
+        "hostnameOrIP": "Hostname or IP",
+        "hostnameOrIPPlaceholder": "Hostname or IP, maximum 4096 characters",
+        "port": "Port",
+        "portPlaceholder": "Port (1~65535)",
+        "username": "Username",
+        "usernamePlaceholder": "Username, maximum 400 characters",
+        "password": "Password",
+        "passwordPlaceholder": "Password, maximum 4096 characters",
+        "connectionTimeout": "Connection Timeout",
+        "connectionTimeoutPlaceholder": "Connection timeout, maximum 24 hours",
+        "readTimeout": "Read Timeout",
+        "readTimeoutPlaceholder": "Read timeout, maximum 24 hours"
+      },
+      "fileConfig": {
+        "localFilePath": "Local File Path",
+        "localFilePathPlaceholder": "Local file path, maximum 4096 characters",
+        "localFileNameTooltip": "Local file name, which is the name of the uploaded local file, can also be a complete local file path. Make sure the file has been uploaded to the corresponding execution node path.",
+        "remoteFileName": "Remote File Name",
+        "remoteFileNamePlaceholder": "Download remote FTP server file name, maximum 4096 characters",
+        "binaryFile": "Binary File",
+        "binaryFileTooltip": "Whether the uploaded file is a binary file",
+        "binaryMode": {
+          "yes": "Yes",
+          "no": "No"
+        }
+      },
+      "requestConfig": {
+        "title": "FTP Request Configuration",
+        "uploadDownload": "Upload/Download",
+        "upload": "Upload",
+        "download": "Download",
+        "uploadFileSource": "File Source",
+        "localFile": "Local File",
+        "remoteFile": "Remote File",
+        "remoteFileTooltip": "Download the corresponding file from the FTP service for upload",
+        "remoteUrl": "Remote URL",
+        "remoteFileUrlTooltip": "Download the file from the remote URL for upload",
+        "remoteFileUrl": "Remote File URL",
+        "remoteFileUrlPlaceholder": "Download the file from the remote URL for upload, maximum 4096 characters",
+        "remoteFileName": "Remote File Name",
+        "remoteFileNamePlaceholder": "Download remote FTP server file name, maximum 4096 characters",
+        "remoteFileUrlHints": "File name saved when uploading, if not specified, the original file name is used for storage, maximum 4096 characters",
+        "localFileContent": "Local File Content",
+        "localFileContentTooltip": "(File size limited to 1MB)"
+      },
+      "upload": {
+        "selectFile": "Select File",
+        "fileSizeLimit": "File size cannot exceed 1MB",
+        "selectFileTooltip": "Please select local file",
+        "code": "Code",
+        "fileEncoding": "File Encoding"
+      }
     }
   },
   "gendata": {
@@ -1894,11 +1967,10 @@
       "offTips": "After enabling 'No Permission Control', all users will be allowed to publicly view and operate the current scenario. Users viewing must also have parent directory permissions for the current scenario."
     },
     "uiConfig": {
-      "title": "Insert FTP Request",
-      "description": "Supports orchestrating multiple FTP interfaces simultaneously, but only one FTP is allowed to be enabled for testing at a time.",
+      "title": "Insert TCP Request",
+      "description": "Supports orchestrating multiple TCP interfaces simultaneously, but only one TCP is allowed to be enabled for testing at a time.",
       "comments": {
         "onlyOneEnabled": "Only one can be enabled",
-        "cloneLocalFile": "Clone local file",
         "checkCloneNameExists": "Check if clone name already exists"
       },
       "actions": {
@@ -1908,61 +1980,36 @@
       "form": {
         "nameDuplicate": "Name Duplicate",
         "namePlaceholder": "Name, maximum 400 characters",
-        "descriptionPlaceholder": "Description, maximum 800 characters (optional)",
+        "descriptionPlaceholder": "Description, maximum 800 characters",
         "none": "None"
       },
       "serverConfig": {
+        "title": "Server Configuration",
         "hostnameOrIP": "Hostname or IP",
         "hostnameOrIPPlaceholder": "Hostname or IP, maximum 4096 characters",
         "port": "Port",
         "portPlaceholder": "Port (1~65535)",
-        "username": "Username",
-        "usernamePlaceholder": "Username, maximum 400 characters",
-        "password": "Password",
-        "passwordPlaceholder": "Password, maximum 4096 characters",
         "connectionTimeout": "Connection Timeout",
         "connectionTimeoutPlaceholder": "Connection timeout, maximum 24 hours",
-        "readTimeout": "Read Timeout",
-        "readTimeoutPlaceholder": "Read timeout, maximum 24 hours"
-      },
-      "fileConfig": {
-        "localFilePath": "Local File Path",
-        "localFilePathPlaceholder": "Local file path, maximum 4096 characters",
-        "localFileNameTooltip": "Local file name, which is the name of the uploaded local file, can also be a complete local file path. Make sure the file has been uploaded to the corresponding execution node path.",
-        "remoteFileName": "Remote File Name",
-        "remoteFileNamePlaceholder": "Download remote FTP server file name, maximum 4096 characters",
-        "binaryFile": "Binary File",
-        "binaryFileTooltip": "Whether the uploaded file is a binary file",
-        "binaryMode": {
-          "yes": "Yes",
-          "no": "No"
-        }
+        "responseTimeout": "Response Timeout",
+        "responseTimeoutPlaceholder": "Read timeout, maximum 24 hours"
       },
       "requestConfig": {
-        "title": "FTP Request Configuration",
-        "uploadDownload": "Upload/Download",
-        "upload": "Upload",
-        "download": "Download",
-        "uploadFileSource": "File Source",
-        "localFile": "Local File",
-        "remoteFile": "Remote File",
-        "remoteFileTooltip": "Download the corresponding file from the FTP service for upload",
-        "remoteUrl": "Remote URL",
-        "remoteFileUrlTooltip": "Download the file from the remote URL for upload",
-        "remoteFileUrl": "Remote File URL",
-        "remoteFileUrlPlaceholder": "Download the file from the remote URL for upload, maximum 4096 characters",
-        "remoteFileName": "Remote File Name",
-        "remoteFileNamePlaceholder": "Download remote FTP server file name, maximum 4096 characters",
-        "remoteFileUrlHints": "File name saved when uploading, if not specified, the original file name is used for storage, maximum 4096 characters",
-        "localFileContent": "Local File Content",
-        "localFileContentTooltip": "(File size limited to 1MB)"
-      },
-      "upload": {
-        "selectFile": "Select File",
-        "fileSizeLimit": "File size cannot exceed 1MB",
-        "selectFileTooltip": "Please select local file",
-        "code": "Code",
-        "fileEncoding": "File Encoding"
+        "title": "Request Configuration",
+        "tcpClientClassName": "TCP Client Class Name",
+        "tcpClientClassNamePlaceholder": "TCP client class name, maximum 4096 characters",
+        "socketConnectionConfig": "Socket Connection Configuration",
+        "reuseConnection": "Reuse Connection",
+        "setNoDelay": "Set No Delay",
+        "messageDataEncoding": "Message Data Encoding",
+        "messageDataEncodingPlaceholder": "Message data encoding",
+        "messageData": "Message Data",
+        "messageDataPlaceholder": "Message data, maximum {maxLength} characters",
+        "messageDataError": "Maximum {maxLength} characters supported, currently {currentLength} characters",
+        "charset": "Charset",
+        "eolByteValue": "EOL Byte Value",
+        "eomByteValue": "EOM Byte Value",
+        "binaryDataLengthPrefix": "Number of bytes for binary data length prefix"
       }
     }
   },

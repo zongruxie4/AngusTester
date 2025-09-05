@@ -305,6 +305,80 @@
           "byUploadDownload": "按上传下载"
         }
       }
+    },
+    "uiConfig": {
+      "title": "插入Ftp请求",
+      "description": "支持同时编排多个Ftp接口，但每次只允许启用一个Ftp进行测试。",
+      "comments": {
+        "onlyOneEnabled": "只能启用一个",
+        "cloneLocalFile": "克隆本地文件",
+        "checkCloneNameExists": "判断克隆的名称是否已经存在"
+      },
+      "actions": {
+        "clone": "克隆",
+        "delete": "删除"
+      },
+      "form": {
+        "nameDuplicate": "名称重复",
+        "namePlaceholder": "名称，最大支持400个字符",
+        "descriptionPlaceholder": "描述，最大支持800字（可选）",
+        "none": "无"
+      },
+      "serverConfig": {
+        "title": "服务器配置",
+        "hostnameOrIP": "主机名或IP",
+        "hostnameOrIPPlaceholder": "主机名或IP，最大支持4096个字符",
+        "port": "端口",
+        "portPlaceholder": "端口（1~65535）",
+        "username": "用户名",
+        "usernamePlaceholder": "用户名，最大支持400个字符",
+        "password": "密码",
+        "passwordPlaceholder": "密码，最大支持4096个字符",
+        "connectionTimeout": "连接超时",
+        "connectionTimeoutPlaceholder": "连接超时，最大24小时",
+        "readTimeout": "读取超时",
+        "readTimeoutPlaceholder": "读取超时，最大24小时"
+      },
+      "fileConfig": {
+        "localFilePath": "本地文件路径",
+        "localFilePathPlaceholder": "本地文件路径，最大支持4096个字符",
+        "localFileNameTooltip": "本地文件名，即上传本地文件的名称，也可以是一个完整本地文件路径，需要确保文件已上传到对应执行节点路径。",
+        "remoteFileName": "远程文件名",
+        "remoteFileNamePlaceholder": "下载远程FTP服务器中的文件名称，最大支持4096个字符",
+        "binaryFile": "二进制文件",
+        "binaryFileTooltip": "上传文件是否是二进制文件",
+        "binaryMode": {
+          "yes": "是",
+          "no": "否"
+        }
+      },
+      "requestConfig": {
+        "title": "FTP请求配置",
+        "uploadDownload": "上传/下载",
+        "upload": "上传",
+        "download": "下载",
+        "uploadFileSource": "文件来源",
+        "localFile": "本地文件",
+        "remoteFile": "远程文件",
+        "remoteFileTooltip": "从FTP服务中下载对应文件用于上传",
+        "remoteUrl": "远程URL",
+        "remoteFileUrlTooltip": "从远程URL下载文件用于上传",
+        "remoteUrlPlaceholder": "远程URL，最大支持4096个字符",
+        "remoteFileUrl": "远程文件URL",
+        "remoteFileUrlPlaceholder": "上传时根据URL下载一个上传文件，最大支持4096个字符",
+        "remoteFileName": "远程文件名",
+        "remoteFileNamePlaceholder": "下载远程FTP服务器中的文件名称，最大支持4096个字符",
+        "remoteFileUrlHints": "上传时保存的文件名称，不指定时使用原文件名存储，最大支持4096个字符",
+        "localFileContent": "本地文件内容",
+        "localFileContentTooltip": "（限制文件大小1MB）"
+      },
+      "upload": {
+        "selectFile": "选择文件",
+        "fileSizeLimit": "文件大小不能超过1MB",
+        "selectFileTooltip": "请选择本地文件",
+        "code": "编码",
+        "fileEncoding": "文件编码"
+      }
     }
   },
   "gendata": {
@@ -509,6 +583,7 @@
       "title": "查看脚本"
     }
   },
+
   "httpPlugin": {
     "actions": {
       "save": "保存",
@@ -1893,11 +1968,10 @@
       "offTips": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前场景，查看用户同时需要有当前场景父级目录权限。"
     },
     "uiConfig": {
-      "title": "插入Ftp请求",
-      "description": "支持同时编排多个Ftp接口，但每次只允许启用一个Ftp进行测试。",
+      "title": "插入Tcp请求",
+      "description": "支持同时编排多个Tcp接口，但每次只允许启用一个Tcp进行测试。",
       "comments": {
         "onlyOneEnabled": "只能启用一个",
-        "cloneLocalFile": "克隆本地文件",
         "checkCloneNameExists": "判断克隆的名称是否已经存在"
       },
       "actions": {
@@ -1907,64 +1981,39 @@
       "form": {
         "nameDuplicate": "名称重复",
         "namePlaceholder": "名称，最大支持400个字符",
-        "descriptionPlaceholder": "描述，最大支持800字（可选）",
+        "descriptionPlaceholder": "描述，最大支持800个字符",
         "none": "无"
       },
       "serverConfig": {
+        "title": "服务器配置",
         "hostnameOrIP": "主机名或IP",
         "hostnameOrIPPlaceholder": "主机名或IP，最大支持4096个字符",
         "port": "端口",
         "portPlaceholder": "端口（1~65535）",
-        "username": "用户名",
-        "usernamePlaceholder": "用户名，最大支持400个字符",
-        "password": "密码",
-        "passwordPlaceholder": "密码，最大支持4096个字符",
         "connectionTimeout": "连接超时",
         "connectionTimeoutPlaceholder": "连接超时，最大24小时",
-        "readTimeout": "读取超时",
-        "readTimeoutPlaceholder": "读取超时，最大24小时"
-      },
-      "fileConfig": {
-        "localFilePath": "本地文件路径",
-        "localFilePathPlaceholder": "本地文件路径，最大支持4096个字符",
-        "localFileNameTooltip": "本地文件名，即上传本地文件的名称，也可以是一个完整本地文件路径，需要确保文件已上传到对应执行节点路径。",
-        "remoteFileName": "远程文件名",
-        "remoteFileNamePlaceholder": "下载远程FTP服务器中的文件名称，最大支持4096个字符",
-        "binaryFile": "二进制文件",
-        "binaryFileTooltip": "上传文件是否是二进制文件",
-        "binaryMode": {
-          "yes": "是",
-          "no": "否"
-        }
+        "responseTimeout": "响应超时",
+        "responseTimeoutPlaceholder": "读取超时，最大24小时"
       },
       "requestConfig": {
-        "title": "FTP请求配置",
-        "uploadDownload": "上传/下载",
-        "upload": "上传",
-        "download": "下载",
-        "uploadFileSource": "文件来源",
-        "localFile": "本地文件",
-        "remoteFile": "远程文件",
-        "remoteFileTooltip": "从FTP服务中下载对应文件用于上传",
-        "remoteUrl": "远程URL",
-        "remoteFileUrlTooltip": "从远程URL下载文件用于上传",
-        "remoteUrlPlaceholder": "远程URL，最大支持4096个字符",
-        "remoteFileUrl": "远程文件URL",
-        "remoteFileUrlPlaceholder": "上传时根据URL下载一个上传文件，最大支持4096个字符",
-        "remoteFileName": "远程文件名",
-        "remoteFileNamePlaceholder": "下载远程FTP服务器中的文件名称，最大支持4096个字符",
-        "remoteFileUrlHints": "上传时保存的文件名称，不指定时使用原文件名存储，最大支持4096个字符",
-        "localFileContent": "本地文件内容",
-        "localFileContentTooltip": "（限制文件大小1MB）"
-      },
-      "upload": {
-        "selectFile": "选择文件",
-        "fileSizeLimit": "文件大小不能超过1MB",
-        "selectFileTooltip": "请选择本地文件",
-        "code": "编码",
-        "fileEncoding": "文件编码"
+        "title": "请求配置",
+        "tcpClientClassName": "TCP客户端类名",
+        "tcpClientClassNamePlaceholder": "TCP客户端类名，最大支持4096个字符",
+        "socketConnectionConfig": "Socket连接配置",
+        "reuseConnection": "重用连接",
+        "setNoDelay": "设置无延迟",
+        "messageDataEncoding": "报文数据编码",
+        "messageDataEncodingPlaceholder": "报文数据编码",
+        "messageData": "报文数据",
+        "messageDataPlaceholder": "报文数据，最大支持{maxLength}个字符",
+        "messageDataError": "最大支持{maxLength}个字符，当前{currentLength}个字符",
+        "charset": "字符集",
+        "eolByteValue": "EOL字节值",
+        "eomByteValue": "EOM字节值",
+        "binaryDataLengthPrefix": "二进制数据长度前缀的字节个数"
       }
     }
+    
   },
   "websocketPlugin": {
     "notifications": {
