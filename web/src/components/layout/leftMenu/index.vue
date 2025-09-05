@@ -57,8 +57,7 @@ const routerPush = (hash: string) => {
 
 onMounted(() => {
   localKey.value = btoa(route.path);
-
-  watch(() => route.hash, (newValue) => {
+  watch([() => route.hash, () => route.path], ([newValue, newpath], [oldRoute, oldPath]) => {
     const hash = newValue?.split('?')?.[0]?.slice(1);
     const defaultKey = menuList.value[0]?.key;
     if (!hash) {
@@ -69,7 +68,6 @@ onMounted(() => {
       } else {
         routerPush(defaultKey);
       }
-
       return;
     }
 
@@ -78,6 +76,9 @@ onMounted(() => {
       activeKey.value = id;
       localStore.set(localKey.value, hash);
     } else {
+      if (newpath !== oldPath) {
+        return;
+      }
       routerPush(defaultKey);
     }
 
@@ -108,7 +109,7 @@ onMounted(() => {
 
 defineExpose({
   changeMenu: (key: string) => {
-    const targetMenu = menuList.value.find(i => i.key === key);
+    const targetMenu = props.menuItems.find(i => i.key === key);
     targetMenu && click(targetMenu);
   }
 });

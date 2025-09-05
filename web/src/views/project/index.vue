@@ -47,7 +47,7 @@ const menuItems = computed(() => {
 
 </script>
 <template>
-  <LeftMenu :menuItems="menuItems">
+  <LeftMenu v-if="projectId" :menuItems="menuItems">
     <template #project>
       <Projects
         :projectId="projectId"

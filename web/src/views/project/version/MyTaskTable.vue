@@ -27,7 +27,7 @@ const tableList = computed((): TaskInfo[] => {
 
     return {
       ...item,
-      linkUrl: '/project#version?' + http.getURLSearchParams(_params, true)
+      linkUrl: '/task#task?' + http.getURLSearchParams(_params, true)
     };
   });
 });

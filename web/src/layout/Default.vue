@@ -79,7 +79,7 @@ const handleProjectClick = (project: any): void => {
  * Provide global application info
  */
 const provideAppContext = (): void => {
-  provide('proTypeShowMap', projectTypeVisibility.value);
+  provide('proTypeShowMap', projectTypeVisibility);
   provide('projectInfo', currentProject);
   provide('changeProjectInfo', changeProjectInfo);
   provide('getNewCurrentProject', loadProjectData);
