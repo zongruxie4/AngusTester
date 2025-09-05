@@ -3,7 +3,7 @@ import { onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Composite, Icon, Input, notification, Popover } from '@xcan-angus/vue-ui';
 
-import SelectEnum from '@/components/SelectEnum/index.vue'
+import SelectEnum from '@/components/SelectEnum/index.vue';
 import { StringMatchCondition } from './types';
 import { utils } from '@xcan-angus/infra';
 

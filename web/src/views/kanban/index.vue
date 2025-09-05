@@ -5,8 +5,7 @@ import { AsyncComponent, Colon, DatePicker, Icon, IconRefresh, Image, Select } f
 import { Radio, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
 import DefaultAvatar from './images/default.png';
-import type { ProjectInfo } from './types';
-import type { CreatorObjectType } from './types';
+import type { ProjectInfo, CreatorObjectType } from './types';
 import { useKanbanFilters } from './composables/useKanbanFilters';
 import { useKanbanView } from './composables/useKanbanView';
 import { useKanbanOptions } from './composables/useKanbanOptions';

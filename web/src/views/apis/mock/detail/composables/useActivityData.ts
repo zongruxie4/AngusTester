@@ -40,11 +40,11 @@ export function useActivityData (initialTargetId?: string) {
   const loadActivities = async () => {
     if (loading.value) return;
     loading.value = true;
-    
+
     try {
       const [error, { data = { list: [], total: 0 } }] = await activity.getActivityList(params.value);
       loading.value = false;
-      
+
       if (error) {
         console.error('Failed to load activities:', error);
         activities.value = [];
@@ -54,7 +54,7 @@ export function useActivityData (initialTargetId?: string) {
 
       // Ensure data.list is an array before processing
       const listData = Array.isArray(data.list) ? data.list : [];
-      
+
       // Normalize to satisfy ActivityInfo's ActiveObj typing
       activities.value = listData.map((item: any) => ({
         id: String(item.id ?? ''),

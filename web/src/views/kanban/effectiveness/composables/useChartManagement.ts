@@ -20,43 +20,43 @@ import {
  * <p>
  * Chart management composable for effectiveness dashboard
  * </p>
- * 
+ *
  * @returns Object containing chart instances and management methods
  */
-export function useChartManagement() {
+export function useChartManagement () {
   /** Task type chart instance */
   let taskTypeChart: eCharts.ECharts;
-  
+
   /** Burn down chart instance */
   let burnDownChart: eCharts.ECharts;
-  
+
   /** Target count chart instance */
   let targetCountChart: eCharts.ECharts;
-  
+
   /** Target rate chart instance */
   let targetRateChart: eCharts.ECharts;
-  
+
   /** Workload chart instance */
   let workloadChart: eCharts.ECharts;
-  
+
   /** Workload rate chart instance */
   let workloadRateChart: eCharts.ECharts;
-  
+
   /** Overdue chart instance */
   let overdueChart: eCharts.ECharts;
-  
+
   /** Overdue rate chart instance */
   let overdueRateChart: eCharts.ECharts;
-  
+
   /** One time passed test chart instance */
   let oneTimePassedTestChart: eCharts.ECharts;
-  
+
   /** One time passed test rate chart instance */
   let oneTimePassedTestRateChart: eCharts.ECharts;
-  
+
   /** One time unpassed test chart instance */
   let oneTimeUnpassedTestChart: eCharts.ECharts;
-  
+
   /** One time unpassed test rate chart instance */
   let oneTimeUnpassedTestRateChart: eCharts.ECharts;
 
@@ -78,7 +78,7 @@ export function useChartManagement() {
    * <p>
    * Initializes all charts with their configurations
    * </p>
-   * 
+   *
    * @param chartRefs - Object containing DOM references for chart containers
    */
   const initializeCharts = (chartRefs: Record<string, HTMLElement>) => {
@@ -187,7 +187,7 @@ export function useChartManagement() {
    * <p>
    * Updates task type chart with new data
    * </p>
-   * 
+   *
    * @param totalTypeCount - Total type count data
    */
   const updateTaskTypeChart = (totalTypeCount: TotalTypeCount) => {
@@ -195,11 +195,11 @@ export function useChartManagement() {
 
     const { STORY = 0, REQUIREMENT = 0, TASK = 0, BUG = 0, API_TEST = 0, SCENARIO_TEST = 0 } = totalTypeCount;
     const typeData = [STORY, REQUIREMENT, TASK, BUG, API_TEST, SCENARIO_TEST];
-    
+
     taskTypeConfig.value.series[0].data.forEach((item, idx) => {
       item.value = typeData[idx];
     });
-    
+
     taskTypeChart.setOption(taskTypeConfig.value);
   };
 
@@ -207,7 +207,7 @@ export function useChartManagement() {
    * <p>
    * Updates burn down chart with new data
    * </p>
-   * 
+   *
    * @param burnDownData - Burn down chart data
    * @param targetType - Target type (NUM or WORKLOAD)
    */
@@ -232,7 +232,7 @@ export function useChartManagement() {
    * <p>
    * Updates ranking charts with new data
    * </p>
-   * 
+   *
    * @param rankingData - Ranking data
    * @param assignees - Assignee information
    * @param countType - Count type (task or useCase)
@@ -244,19 +244,19 @@ export function useChartManagement() {
   ) => {
     // Update target count chart
     updateTargetCountChart(rankingData, assignees, countType);
-    
+
     // Update workload chart
     updateWorkloadChart(rankingData, assignees);
-    
+
     // Update overdue chart
     updateOverdueChart(rankingData, assignees, countType);
-    
+
     // Update one time passed test chart
     updateOneTimePassedTestChart(rankingData, assignees, countType);
-    
+
     // Update one time unpassed test chart
     updateOneTimeUnpassedTestChart(rankingData, assignees, countType);
-    
+
     // Update rate charts
     updateRateCharts(rankingData, assignees, countType);
   };
@@ -283,9 +283,9 @@ export function useChartManagement() {
       const totalXData = userIds.map((userId) => validRanking.find(i => i.assigneeId === userId)?.score || 0);
       const completeXData = rankData.map(i => i.score);
 
-      targetCountConfig.value.yAxis.data = yData.map(i => ({ 
-        value: i, 
-        textStyle: { width: 50, overflow: 'breakAll' } 
+      targetCountConfig.value.yAxis.data = yData.map(i => ({
+        value: i,
+        textStyle: { width: 50, overflow: 'breakAll' }
       }));
       targetCountConfig.value.series[0].data = totalXData;
       targetCountConfig.value.series[1].data = completeXData;
@@ -330,9 +330,9 @@ export function useChartManagement() {
       const totalXData = userIds.map((userId) => actualRanking.find(i => i.assigneeId === userId)?.score || 0);
       const completeXData = rankData.map(i => i.score);
 
-      workloadConfig.value.yAxis.data = yData.map(i => ({ 
-        value: i, 
-        textStyle: { width: 50, overflow: 'breakAll' } 
+      workloadConfig.value.yAxis.data = yData.map(i => ({
+        value: i,
+        textStyle: { width: 50, overflow: 'breakAll' }
       }));
       workloadConfig.value.series[0].data = totalXData;
       workloadConfig.value.series[1].data = completeXData;
@@ -370,9 +370,9 @@ export function useChartManagement() {
       const totalXData = userIds.map((userId) => validRanking.find(i => i.assigneeId === userId)?.score || 0);
       const overdueXData = rankData.map(i => i.score);
 
-      overdueConfig.value.yAxis.data = yData.map(i => ({ 
-        value: i, 
-        textStyle: { width: 50, overflow: 'breakAll' } 
+      overdueConfig.value.yAxis.data = yData.map(i => ({
+        value: i,
+        textStyle: { width: 50, overflow: 'breakAll' }
       }));
       overdueConfig.value.series[0].data = totalXData;
       overdueConfig.value.series[1].data = overdueXData;
@@ -410,9 +410,9 @@ export function useChartManagement() {
       const totalXData = userIds.map((userId) => validRanking.find(i => i.assigneeId === userId)?.score || 0);
       const passedXData = rankData.map(i => i.score);
 
-      oneTimePassedTestConfig.value.yAxis.data = yData.map(i => ({ 
-        value: i, 
-        textStyle: { width: 50, overflow: 'breakAll' } 
+      oneTimePassedTestConfig.value.yAxis.data = yData.map(i => ({
+        value: i,
+        textStyle: { width: 50, overflow: 'breakAll' }
       }));
       oneTimePassedTestConfig.value.series[0].data = totalXData;
       oneTimePassedTestConfig.value.series[1].data = passedXData;
@@ -450,9 +450,9 @@ export function useChartManagement() {
       const totalXData = userIds.map((userId) => validRanking.find(i => i.assigneeId === userId)?.score || 0);
       const unpassedXData = rankData.map(i => i.score);
 
-      oneTimeUnpassedTestConfig.value.yAxis.data = yData.map(i => ({ 
-        value: i, 
-        textStyle: { width: 50, overflow: 'breakAll' } 
+      oneTimeUnpassedTestConfig.value.yAxis.data = yData.map(i => ({
+        value: i,
+        textStyle: { width: 50, overflow: 'breakAll' }
       }));
       oneTimeUnpassedTestConfig.value.series[0].data = totalXData;
       oneTimeUnpassedTestConfig.value.series[1].data = unpassedXData;
@@ -489,16 +489,16 @@ export function useChartManagement() {
   ) => {
     // Update target rate chart
     updateTargetRateChart(rankingData, assignees, countType);
-    
+
     // Update workload rate chart
     updateWorkloadRateChart(rankingData, assignees);
-    
+
     // Update overdue rate chart
     updateOverdueRateChart(rankingData, assignees);
-    
+
     // Update one time passed test rate chart
     updateOneTimePassedTestRateChart(rankingData, assignees, countType);
-    
+
     // Update one time unpassed test rate chart
     updateOneTimeUnpassedTestRateChart(rankingData, assignees, countType);
   };
@@ -523,9 +523,9 @@ export function useChartManagement() {
       const yData = userIds.map(i => assignees[i]?.fullName || '');
       const rateData = rankData.map(i => i.score);
 
-      targetRateConfig.value.yAxis.data = yData.map(i => ({ 
-        value: i, 
-        textStyle: { width: 50, overflow: 'breakAll' } 
+      targetRateConfig.value.yAxis.data = yData.map(i => ({
+        value: i,
+        textStyle: { width: 50, overflow: 'breakAll' }
       }));
       targetRateConfig.value.series[0].data = rateData;
 
@@ -558,9 +558,9 @@ export function useChartManagement() {
       const yData = userIds.map(i => assignees[i]?.fullName || '');
       const rateData = rankData.map(i => i.score);
 
-      workloadRateConfig.value.yAxis.data = yData.map(i => ({ 
-        value: i, 
-        textStyle: { width: 50, overflow: 'breakAll' } 
+      workloadRateConfig.value.yAxis.data = yData.map(i => ({
+        value: i,
+        textStyle: { width: 50, overflow: 'breakAll' }
       }));
       workloadRateConfig.value.series[0].data = rateData;
 
@@ -593,9 +593,9 @@ export function useChartManagement() {
       const yData = userIds.map(i => assignees[i]?.fullName || '');
       const rateData = rankData.map(i => i.score);
 
-      overdueRateConfig.value.yAxis.data = yData.map(i => ({ 
-        value: i, 
-        textStyle: { width: 50, overflow: 'breakAll' } 
+      overdueRateConfig.value.yAxis.data = yData.map(i => ({
+        value: i,
+        textStyle: { width: 50, overflow: 'breakAll' }
       }));
       overdueRateConfig.value.series[0].data = rateData;
 
@@ -629,9 +629,9 @@ export function useChartManagement() {
       const yData = userIds.map(i => assignees[i]?.fullName || '');
       const rateData = rankData.map(i => i.score);
 
-      oneTimePassedTestRateConfig.value.yAxis.data = yData.map(i => ({ 
-        value: i, 
-        textStyle: { width: 50, overflow: 'breakAll' } 
+      oneTimePassedTestRateConfig.value.yAxis.data = yData.map(i => ({
+        value: i,
+        textStyle: { width: 50, overflow: 'breakAll' }
       }));
       oneTimePassedTestRateConfig.value.series[0].data = rateData;
 
@@ -665,9 +665,9 @@ export function useChartManagement() {
       const yData = userIds.map(i => assignees[i]?.fullName || '');
       const rateData = rankData.map(i => i.score);
 
-      oneTimeUnpassedTestRateConfig.value.yAxis.data = yData.map(i => ({ 
-        value: i, 
-        textStyle: { width: 50, overflow: 'breakAll' } 
+      oneTimeUnpassedTestRateConfig.value.yAxis.data = yData.map(i => ({
+        value: i,
+        textStyle: { width: 50, overflow: 'breakAll' }
       }));
       oneTimeUnpassedTestRateConfig.value.series[0].data = rateData;
 

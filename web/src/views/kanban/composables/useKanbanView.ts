@@ -6,7 +6,7 @@ import { ref } from 'vue';
  * Provides helpers to refresh and resize active tab content.
  * </p>
  */
-export function useKanbanView() {
+export function useKanbanView () {
   const isMaximized = ref(false);
   const viewMode = ref<'data' | 'effectiveness' | 'cto'>('effectiveness');
 
@@ -15,7 +15,7 @@ export function useKanbanView() {
   const effectivenessRef = ref<any>();
   const ctoRef = ref<any>();
 
-  function refreshActive() {
+  function refreshActive () {
     if (typeof dataViewRef.value?.refresh === 'function' && viewMode.value === 'data') {
       dataViewRef.value.refresh();
     }
@@ -27,7 +27,7 @@ export function useKanbanView() {
     }
   }
 
-  function toggleMaximize() {
+  function toggleMaximize () {
     isMaximized.value = !isMaximized.value;
     if (typeof dataViewRef.value?.handleWindowResize === 'function' && viewMode.value === 'data') {
       dataViewRef.value.handleWindowResize();
@@ -47,8 +47,6 @@ export function useKanbanView() {
     effectivenessRef,
     ctoRef,
     refreshActive,
-    toggleMaximize,
+    toggleMaximize
   } as const;
 }
-
-

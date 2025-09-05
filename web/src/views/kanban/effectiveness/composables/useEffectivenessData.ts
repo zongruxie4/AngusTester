@@ -6,29 +6,29 @@ import { EffectivenessProps, OverviewData, BurnDownDataByType, TotalTypeCount, R
  * <p>
  * Effectiveness data management composable
  * </p>
- * 
+ *
  * @param props - Component props containing filter parameters
  * @returns Object containing reactive data and methods
  */
-export function useEffectivenessData(props: EffectivenessProps) {
+export function useEffectivenessData (props: EffectivenessProps) {
   /** Overview data for display */
   const overviewData = ref<OverviewData>({} as OverviewData);
-  
+
   /** Burn down chart data */
   const burnDownData = ref<BurnDownDataByType | null>(null);
-  
+
   /** Total type count data */
   const totalTypeData = ref<TotalTypeCount>({} as TotalTypeCount);
-  
+
   /** Assignee ranking data */
   const assigneeRanking = ref<RankingData | null>(null);
-  
+
   /** Tester ranking data */
   const testerRanking = ref<RankingData | null>(null);
-  
+
   /** Assignee information */
   const assignees = ref<Record<string, AssigneeInfo>>({});
-  
+
   /** Tester information */
   const testers = ref<Record<string, AssigneeInfo>>({});
 
@@ -64,11 +64,11 @@ export function useEffectivenessData(props: EffectivenessProps) {
    */
   const loadEffectivenessData = async () => {
     const [error, { data = {} }] = await (
-      props.countType === 'task' 
-        ? kanban.getTaskOverView({ ...apiParams.value }) 
+      props.countType === 'task'
+        ? kanban.getTaskOverView({ ...apiParams.value })
         : kanban.getTestingOverView({ ...apiParams.value })
     );
-    
+
     if (error) {
       return;
     }
@@ -97,7 +97,7 @@ export function useEffectivenessData(props: EffectivenessProps) {
       if (assigneeRankingData) {
         assigneeRanking.value = assigneeRankingData;
       }
-      
+
       const assigneesData = data.assignees;
       if (assigneesData) {
         assignees.value = assigneesData;
@@ -107,7 +107,7 @@ export function useEffectivenessData(props: EffectivenessProps) {
       if (testerRankingData) {
         testerRanking.value = testerRankingData;
       }
-      
+
       const testersData = data.testers;
       if (testersData) {
         testers.value = testersData;
@@ -139,10 +139,10 @@ export function useEffectivenessData(props: EffectivenessProps) {
     testerRanking,
     assignees,
     testers,
-    
+
     // Computed properties
     apiParams,
-    
+
     // Methods
     loadEffectivenessData,
     resetData

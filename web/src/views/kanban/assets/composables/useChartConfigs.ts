@@ -10,10 +10,10 @@ const { t } = useI18n();
  * <p>
  * Provides factory functions for creating various chart configurations
  * </p>
- * 
+ *
  * @returns Object containing chart configuration factory functions
  */
-export function useChartConfigs() {
+export function useChartConfigs () {
   /** Chart series color configuration */
   const chartSeriesColorConfig: ChartSeriesColorConfig = {
     0: '84,112,198',
@@ -942,7 +942,7 @@ export function useChartConfigs() {
     methodColorConfig,
     targetDataCategory,
     rankIconConfig,
-    
+
     // Factory functions
     createGrowthTrendConfig,
     createCaseBarConfig,

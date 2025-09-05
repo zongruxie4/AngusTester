@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Input, notification } from '@xcan-angus/vue-ui';
 
-import SelectEnum from '@/components/SelectEnum/index.vue'
+import SelectEnum from '@/components/SelectEnum/index.vue';
 import { FullMatchCondition, ResponseMatchConfig } from './types';
 import { utils } from '@xcan-angus/infra';
 

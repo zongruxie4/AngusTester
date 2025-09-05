@@ -8,7 +8,7 @@ import type { CreatorObjectType, ProjectInfo } from '../types';
  * comply with child component prop typing (strings instead of undefined).
  * </p>
  */
-export function useKanbanFilters(options: {
+export function useKanbanFilters (options: {
   projectInfo: Ref<ProjectInfo | undefined>;
 }) {
   // project base
@@ -51,13 +51,13 @@ export function useKanbanFilters(options: {
   const creatorObjectTypeSafe = computed<CreatorObjectType | ''>(() => creatorObjectType.value ?? '');
   const creatorObjectIdSafe = computed(() => creatorObjectId.value ?? '');
 
-  function clearCreator() {
+  function clearCreator () {
     creatorObjectType.value = undefined;
     creatorObjectId.value = undefined;
     creatorObjectName.value = undefined;
   }
 
-  function setCreator(creator: { creatorObjectType?: CreatorObjectType; creatorObjectId?: string; creatorObjectName?: string; avatar?: string }) {
+  function setCreator (creator: { creatorObjectType?: CreatorObjectType; creatorObjectId?: string; creatorObjectName?: string; avatar?: string }) {
     creatorObjectType.value = creator.creatorObjectType;
     creatorObjectId.value = creator.creatorObjectId;
     creatorObjectName.value = creator.creatorObjectName;
@@ -89,8 +89,6 @@ export function useKanbanFilters(options: {
 
     // actions
     clearCreator,
-    setCreator,
+    setCreator
   } as const;
 }
-
-

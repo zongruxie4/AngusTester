@@ -38,4 +38,3 @@ export interface SelectFieldNames {
 export interface SelectCreatorModalProps {
   visible: boolean;
 }
-

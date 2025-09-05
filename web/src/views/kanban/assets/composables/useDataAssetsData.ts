@@ -1,16 +1,16 @@
 import { ref, computed, reactive } from 'vue';
 import { kanban } from '@/api/tester';
-import { 
-  DataAssetsProps, 
-  RankingItem, 
-  GrowthTrendData, 
-  CaseData, 
-  ApiData, 
-  TaskData, 
-  ScenarioData, 
-  ScriptData, 
-  MockData, 
-  DataAssetsData 
+import {
+  DataAssetsProps,
+  RankingItem,
+  GrowthTrendData,
+  CaseData,
+  ApiData,
+  TaskData,
+  ScenarioData,
+  ScriptData,
+  MockData,
+  DataAssetsData
 } from '../types';
 
 /**
@@ -20,32 +20,32 @@ import {
  * <p>
  * Manages all data fetching and state for the data assets dashboard
  * </p>
- * 
+ *
  * @param props - Component props containing filter parameters
  * @returns Object containing reactive data and data loading methods
  */
-export function useDataAssetsData(props: DataAssetsProps) {
+export function useDataAssetsData (props: DataAssetsProps) {
   /** Ranking data for contribution ranking */
   const rankingData = ref<RankingItem[]>([]);
-  
+
   /** Growth trend data for charts */
   const growthTrendData = ref<GrowthTrendData>({});
-  
+
   /** Case-related data */
   const caseData = ref<CaseData>({});
-  
+
   /** API-related data */
   const apiData = ref<ApiData>({});
-  
+
   /** Task and sprint data */
   const taskData = ref<TaskData>({});
-  
+
   /** Scenario data */
   const scenarioData = ref<ScenarioData>({});
-  
+
   /** Script data */
   const scriptData = ref<ScriptData>({});
-  
+
   /** Mock data */
   const mockData = reactive<MockData>({
     allApi: 0,
@@ -53,7 +53,7 @@ export function useDataAssetsData(props: DataAssetsProps) {
     allResponse: 0,
     allPushback: 0
   });
-  
+
   /** Data assets data */
   const dataAssetsData = reactive<DataAssetsData>({
     allDataset: 0,
@@ -97,15 +97,15 @@ export function useDataAssetsData(props: DataAssetsProps) {
    * <p>
    * Fetches growth trend data for the specified target type
    * </p>
-   * 
+   *
    * @param targetType - Target type for growth trend (e.g., TASK, FUNC)
    */
   const loadGrowthTrendData = async (targetType: string) => {
-    const [error, { data = {} }] = await kanban.getGrowthTrend({ 
-      ...apiParams.value, 
-      category: targetType 
+    const [error, { data = {} }] = await kanban.getGrowthTrend({
+      ...apiParams.value,
+      category: targetType
     });
-    
+
     if (error) {
       return;
     }
@@ -288,10 +288,10 @@ export function useDataAssetsData(props: DataAssetsProps) {
     scriptData,
     mockData,
     dataAssetsData,
-    
+
     // Computed properties
     apiParams,
-    
+
     // Methods
     loadRankData,
     loadGrowthTrendData,

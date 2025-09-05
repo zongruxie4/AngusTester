@@ -10,7 +10,7 @@ import { DataAssetsProps, ProTypeShowMap } from '../types';
  * <p>
  * Manages component lifecycle, window resize events, and responsive behavior
  * </p>
- * 
+ *
  * @param props - Component props
  * @param loadGrowthTrendData - Function to load growth trend data
  * @param loadAllData - Function to load all data
@@ -19,7 +19,7 @@ import { DataAssetsProps, ProTypeShowMap } from '../types';
  * @param handleRightSideResize - Function to handle right side chart resizing
  * @returns Object containing lifecycle management methods and state
  */
-export function useDataAssetsLifecycle(
+export function useDataAssetsLifecycle (
   props: DataAssetsProps,
   loadGrowthTrendData: (targetType: string) => Promise<void>,
   loadAllData: () => Promise<void>,
@@ -35,19 +35,19 @@ export function useDataAssetsLifecycle(
 
   /** Target type for growth trend */
   const targetType = ref('TASK');
-  
+
   /** Chart column count for responsive layout */
   const echartsCol = ref(2);
-  
+
   /** Right side container width percentage */
   const rightPercent = ref('calc(25% - 24px)');
-  
+
   /** Resize notification flag */
   const resizeNotify = ref(false);
-  
+
   /** Should notify flag for data loading */
   const shouldNotify = ref(false);
-  
+
   /** Right side container reference */
   const rightWrapRef = ref<HTMLElement>();
 
@@ -67,13 +67,13 @@ export function useDataAssetsLifecycle(
       resizeNotify.value = true;
       return;
     }
-    
+
     if (window.document.body.clientWidth < 1560) {
       echartsCol.value = 2;
     } else {
       echartsCol.value = 3;
     }
-    
+
     resizeAllCharts();
   });
 
@@ -135,7 +135,7 @@ export function useDataAssetsLifecycle(
         shouldNotify.value = true;
         return;
       }
-      
+
       if (props.projectId) {
         loadAllData();
       }
@@ -149,7 +149,7 @@ export function useDataAssetsLifecycle(
         refresh();
         shouldNotify.value = false;
       }
-      
+
       if (newValue && resizeNotify.value && props.projectId) {
         handleWindowResize();
         resizeNotify.value = false;
@@ -193,7 +193,7 @@ export function useDataAssetsLifecycle(
    */
   const cleanup = () => {
     window.removeEventListener('resize', handleWindowResize);
-    
+
     if (rightWrapRef.value) {
       erd.removeListener(rightWrapRef.value, handleRightContainerResize);
     }
@@ -208,7 +208,7 @@ export function useDataAssetsLifecycle(
     resizeNotify,
     shouldNotify,
     rightWrapRef,
-    
+
     // Methods
     handleWindowResize,
     handleRightContainerResize,

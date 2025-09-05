@@ -7,7 +7,7 @@ import type { CreatorObjectType, SelectFieldNames } from '../types';
  * <p>Provides computed configuration for the Select component based on the current type.</p>
  * <p>Centralizes endpoint, placeholder, and field mapping logic.</p>
  */
-export function useCreatorSelectConfig(currentType: { value: CreatorObjectType }) {
+export function useCreatorSelectConfig (currentType: { value: CreatorObjectType }) {
   const { t } = useI18n();
 
   const action = computed<string>(() => {
@@ -29,5 +29,3 @@ export function useCreatorSelectConfig(currentType: { value: CreatorObjectType }
 
   return { action, placeholder, fieldNames };
 }
-
-

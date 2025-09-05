@@ -5,7 +5,7 @@ import type { CreatorObjectType, CreatorSelectOption, CreatorSelectionPayload } 
  * <p>Encapsulates selection state and handlers for choosing a creator entity.</p>
  * <p>Exposes reactive state and strongly typed callbacks for the modal.</p>
  */
-export function useCreatorSelection() {
+export function useCreatorSelection () {
   const creatorObjectType = ref<CreatorObjectType>('USER');
   const creatorObjectId = ref<string | undefined>();
   const creatorObjectName = ref<string | undefined>();
@@ -52,5 +52,3 @@ export function useCreatorSelection() {
     buildPayload
   };
 }
-
-

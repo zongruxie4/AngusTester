@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, nextTick, computed, watch } from 'vue';
+import { ref, onMounted, onBeforeUnmount, nextTick, computed, watch, withDefaults } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { withDefaults } from 'vue';
-import { EffectivenessProps } from './types';
+import { EffectivenessProps, BurnDownDataByType } from './types';
 import { useEffectivenessData } from './composables/useEffectivenessData';
 import { useEffectivenessConfig } from './composables/useEffectivenessConfig';
 import { useChartManagement } from './composables/useChartManagement';
 import { useEffectivenessLifecycle } from './composables/useEffectivenessLifecycle';
-import { BurnDownDataByType } from './types';
 
 // Component props with defaults
 const props = withDefaults(defineProps<EffectivenessProps>(), {
@@ -71,7 +69,7 @@ const handleBurnDownOptionChange = () => {
 // Lifecycle hooks
 onMounted(async () => {
   setupLifecycle();
-  
+
   if (props.projectId) {
     await loadEffectivenessData();
     await nextTick();
@@ -87,7 +85,7 @@ onBeforeUnmount(() => {
 watch([overviewData, burnDownData, totalTypeData, assigneeRanking, testerRanking], async () => {
   if (props.onShow) {
     await nextTick();
-    
+
     // Update available charts with new data
     if (totalTypeData.value) {
       updateTaskTypeChart(totalTypeData.value);
@@ -118,13 +116,11 @@ watch(() => props.countType, async () => {
         <div
           v-for="(row, rowIndex) in currentOverviewConfig"
           :key="rowIndex"
-          class="overview-row"
-        >
+          class="overview-row">
           <div
             v-for="(item, itemIndex) in row"
             :key="itemIndex"
-            class="overview-item"
-          >
+            class="overview-item">
             <div class="overview-icon">
               <i :class="item.icon"></i>
             </div>
@@ -158,8 +154,7 @@ watch(() => props.countType, async () => {
             <a-radio-group
               v-model:value="burnDownOption"
               size="small"
-              @change="handleBurnDownOptionChange"
-            >
+              @change="handleBurnDownOptionChange">
               <a-radio-button value="NUM">{{ $t('kanban.effectiveness.count') }}</a-radio-button>
               <a-radio-button value="WORKLOAD">{{ $t('kanban.effectiveness.workload') }}</a-radio-button>
             </a-radio-group>
@@ -327,7 +322,7 @@ watch(() => props.countType, async () => {
   .charts-section {
     grid-template-columns: 1fr;
   }
-  
+
   .ranking-charts {
     grid-template-columns: 1fr;
   }

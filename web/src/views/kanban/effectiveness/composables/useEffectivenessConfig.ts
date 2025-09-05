@@ -8,11 +8,11 @@ import { OverviewConfig } from '../types';
  * <p>
  * Provides configuration data for overview sections and chart displays
  * </p>
- * 
+ *
  * @param countType - Current count type (task or useCase)
  * @returns Object containing configuration data and computed properties
  */
-export function useEffectivenessConfig(countType: 'task' | 'useCase') {
+export function useEffectivenessConfig (countType: 'task' | 'useCase') {
   /**
    * <p>
    * Task overview configuration for effectiveness dashboard
@@ -195,7 +195,7 @@ export function useEffectivenessConfig(countType: 'task' | 'useCase') {
     // Configuration data
     taskOverViewConfig,
     caseOverViewConfig,
-    
+
     // Computed properties
     currentOverviewConfig
   };
