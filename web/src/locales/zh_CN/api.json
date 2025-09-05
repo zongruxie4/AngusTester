@@ -318,7 +318,7 @@
         "selectAll": "全选"
       }
     },
-    "mockDetail": {
+    "detail": {
       "menu": {
         "apis": "接口",
         "request": "请求",
@@ -327,7 +327,186 @@
         "monitor": "监控",
         "setting": "设置"
       },
-      "control": {
+      "buttons": {
+        "cancel": "取消",
+        "confirm": "确定"
+      },
+      "notifications": {
+        "modifySuccess": "修改成功"
+      },
+      "validation": {
+        "enterParamName": "请输入参数名",
+        "paramNameDuplicate": "参数名称重复",
+        "enterName": "请输入名称",
+        "enterDomain": "请输入域名"
+      },
+      "basicInfo": {
+        "title": "基本信息",
+        "name": "名称",
+        "nameTooltip": "服务名称，最多100个字符。",
+        "domain": "域名",
+        "domainTooltip": "设置域名后可通过域名访问Mock接口，域名需解析到节点IP。",
+        "port": "端口",
+        "portTooltip": "服务监听端口，添加后不可修改。",
+        "node": "节点",
+        "nodeTooltip": "服务运行节点，添加后不可修改。",
+        "serviceConfig": "服务配置",
+        "serviceConfigTooltip": "服务运行参数配置，修改后需重启生效。",
+        "useSsl": "开启SSL",
+        "useSslTooltip": "启用HTTPS安全连接，默认关闭。",
+        "workThreadNum": "线程数",
+        "workThreadNumTooltip": "服务处理线程数，默认100。",
+        "logLevel": "文件日志级别",
+        "logLevelTooltip": "日志记录级别：NONE、BASIC、HEADERS、FULL。",
+        "logFileLevel": {
+          "none": "不记录日志。",
+          "basic": "记录请求方法、URL、状态码和执行时间（默认）。",
+          "headers": "记录基本信息和请求响应头。",
+          "full": "记录完整的请求响应信息。"
+        },
+        "sendRequestLog": "记录请求日志",
+        "sendRequestLogTooltip": "是否记录Mock请求日志。",
+        "maxContentLength": "最大请求大小",
+        "maxContentLengthTooltip": "最大请求大小，默认1000MB。",
+        "pushbackThreadNum": "回推线程数",
+        "pushbackThreadNumTooltip": "回推处理线程数，默认8。",
+        "pushbackConnectTimeout": "回推连接超时",
+        "pushbackConnectTimeoutTooltip": "回推连接超时时间（毫秒），默认5000。",
+        "pushbackRequestTimeout": "回推请求超时",
+        "pushbackRequestTimeoutTooltip": "回推请求超时时间（毫秒），默认-1不超时。",
+        "security": "接口安全",
+        "securityHints": "修改后需重启服务生效。",
+        "securityTooltip": "配置接口访问授权，开启后需携带授权参数访问。最多10个。" ,
+        "in": "位置",
+        "paramsName": "参数名",
+        "paramsValue": "参数值",
+        "paramsValueRule": "请输入value"
+      },
+      "apis": {
+        "hints": "当某个接口尚未实现或无法访问时，可以通过Mock接口模仿真实接口的行为和数据返回，以便进行开发和测试工作，从而提高开发和测试效率。注意：Mock接口保存后才生效。",
+        "searchPlaceholder": "查询名称",
+        "addApi": "添加接口",
+        "save": "保存",
+        "clone": "克隆",
+        "export": "导出",
+        "delete": "删除",
+        "refreshInstance": "刷新实例接口",
+        "refresh": "刷新",
+        "back": "返回",
+        "request": "请求",
+        "name": "名称",
+        "namePlaceholder": "最大支持400个字符",
+        "description": "描述",
+        "descriptionPlaceholder": "最大支持20000个字符",
+        "response": "响应",
+        "maxResponseTip": "最大支持配置50个响应",
+        "addResponse": "添加响应",
+        "deleteResponse": "删除响应",
+        "match": "匹配",
+        "matchTooltip": "指定返回当前响应所需满足的匹配请求条件。注意：当存在满足匹配的多个响应时，将返回优先级最高的响应，如果没有配置匹配条件或优先级相同，则返回第一个条件或最先配置的条件。",
+        "priority": "优先级",
+        "priorityTooltip": "值越大优先级越高，值范围：0~2147483647。注意：仅当存在满足匹配的多个响应时，才会返回优先级最高的响应。",
+        "content": "内容",
+        "pushback": "回推",
+        "pushbackTooltip": "回推可以用于在接收到 Mock 请求后，自动向指定地址推送一个 Http 请求，如：支付回调。",
+        "enable": "启用",
+        "disable": "关闭",
+        "copyApiTitle": "复制接口添加",
+        "linkApiTitle": "关联接口添加",
+        "testRequest": "测试请求",
+        "proxy": "代理",
+        "terminate": "终止",
+        "send": "发送",
+        "responseTitle": "响应",
+        "notifications": {
+          "copyApiSuccess": "复制接口添加成功",
+          "linkApiSuccess": "关联接口添加成功",
+          "importDemoSuccess": "导入示例成功",
+          "cloneSuccess": "克隆成功",
+          "deleteSuccess": "删除成功",
+          "refreshInstanceSuccess": "刷新实例接口成功",
+          "saveSuccess": "保存成功",
+          "nameDuplicate": "名称重复",
+          "dataError": "数据有误，请检查并更正后再保存。",
+          "proxyNotConnected": "代理未链接， 请检查代理配置",
+          "yamlFormatError": "yaml内容格式错误，请检查并更正"
+        },
+        "confirmations": {
+          "deleteApi": "确认要删除接口【{summary}】吗？",
+          "refreshInstance": "刷新实例接口会强制同步当前Mock接口信息到运行的服务实例。"
+        },
+        "menuItems": {
+          "clone": "克隆",
+          "delete": "删除",
+          "export": "导出",
+          "copyApi": "复制接口添加",
+          "linkApi": "关联接口添加",
+          "import": "导入接口",
+          "importDemo": "导入示例"
+        },
+        "sortOptions": {
+          "byCreatedDate": "按添加时间",
+          "byId": "按ID"
+        }
+      },
+      "cors": {
+        "title": "跨域设置",
+        "description": "解决浏览器跨域访问限制，配置跨域访问策略。修改后需重启服务生效。",
+        "enabled": "是否开启",
+        "enabledTooltip": "启用跨域访问配置，默认关闭。",
+        "allowOrigin": "允许的域",
+        "allowOriginTooltip": "允许跨域访问的域名，默认*（所有域名）。",
+        "allowCredentials": "允许访问凭证",
+        "allowCredentialsTooltip": "允许跨域请求携带凭证（如Cookie），默认开启。",
+        "allowRequestMethods": "允许的请求方法",
+        "allowRequestMethodsTooltip": "允许的HTTP请求方法，默认支持所有常用方法。",
+        "allowRequestHeaders": "允许的请求头",
+        "allowRequestHeadersTooltip": "允许的请求头字段，默认不限制。",
+        "allowExposeHeaders": "可访问的响应头",
+        "allowExposeHeadersTooltip": "允许客户端访问的响应头字段，默认不限制。"
+      },
+      "requestRecord": {
+        "apiName": "接口名称",
+        "requestId": "请求ID",
+        "requestTime": "请求时间",
+        "requestUrl": "请求地址",
+        "requestMethod": "请求方法",
+        "statusCode": "状态码",
+        "formatOptions": {
+          "beautify": "美化格式",
+          "raw": "原生格式",
+          "preview": "预览"
+        },
+        "basicInfo": "基本",
+        "requestInfo": "请求",
+        "requestHeader": "请求头",
+        "requestBody": "请求体",
+        "responseInfo": "响应",
+        "responseHeader": "响应头",
+        "responseBody": "响应体",
+        "hints": "Mock接口调用日志，每秒最多3条，每接口保留最近100条。开启/关闭日志收集请到\"设置\"->\"记录请求日志\"，开启后会影响性能。"
+      },
+      "log": {
+        "lineOptions": {
+          "last500": "最近500行",
+          "last1000": "最近1000行",
+          "last10000": "最近10000行"
+        },
+        "notifications": {
+          "noDownloadContent": "无可下载内容"
+        },
+        "errorInfo": "连接失败，地址：",
+        "logFile": "日志文件：",
+        "browseLog": "浏览日志：",
+        "download": "下载",
+        "refresh": "刷新",
+        "autoRefresh": "自动刷新："
+      },
+      "activity": {
+        "pageInfo": "共{total}条记录，第{current} / {totalPage}页",
+        "searchPlaceholder": "查询活动详情"
+      },
+      "monitor": {
         "apiName": "接口名称",
         "apiInfo": "接口信息",
         "requestCount": "请求数",
@@ -345,343 +524,11 @@
           "exceptionCount": "Mock接口配置错误或程序自身导致的错误。"
         }
       },
-      "mockSet": {
-        "notifications": {
-          "modifySuccess": "修改成功"
-        },
-        "validation": {
-          "enterParamName": "请输入参数名",
-          "paramNameDuplicate": "参数名称重复",
-          "enterName": "请输入名称",
-          "enterDomain": "请输入域名"
-        },
-        "basicInfo": {
-          "title": "基本信息",
-          "name": "名称",
-          "nameTooltip": "服务标识命名信息，最多允许100个字符。",
-          "domain": "域名",
-          "domainTooltip": "为服务设置域名后，可以通过域名访问Mock接口，设置的域名需要被解析到所在节点的IP。",
-          "port": "端口",
-          "portTooltip": "服务所监听的端口，服务添加后不允许修改。",
-          "node": "节点",
-          "nodeTooltip": "服务所运行的节点，服务添加后不允许修改。",
-          "serviceConfig": "服务配置",
-          "serviceConfigTooltip": "服务运行时主要参数配置，更多参数配置请查看官网相关文档。修改后需要重启服务生效。",
-          "useSsl": "开启SSL",
-          "useSslTooltip": "在Netty Http服务器上启用SSL选项，默认为不开启。",
-          "workThreadNum": "线程数",
-          "workThreadNumTooltip": "服务运行时线程数，默认为100。",
-          "logLevel": "文件日志级别",
-          "logLevelTooltip": "配置请求日志信息级别，包括四个选项：NONE、BASIC、HEADERS和FULL。",
-          "logFileLevel": {
-            "none": "无日志记录。",
-            "basic": "只记录请求方法和URL以及响应状态代码和执行时间，默认。",
-            "headers": "记录基本信息以及请求和响应头。",
-            "full": "记录请求和响应头、正文和元数据。"
-          },
-          "sendRequestLog": "记录请求日志",
-          "sendRequestLogTooltip": "是否发送Mock请求日志到服务端。",
-          "maxContentLength": "最大请求大小",
-          "maxContentLengthTooltip": "允许的最大请求大小，默认为1000*1024*1024（1000MB）。",
-          "pushbackThreadNum": "回推线程数",
-          "pushbackThreadNumTooltip": "处理回推请求的线程数，默认为8。",
-          "pushbackConnectTimeout": "回推连接超时",
-          "pushbackConnectTimeoutTooltip": "回推时最大连接超时，单位毫秒，默认5000。",
-          "pushbackRequestTimeout": "回推请求超时",
-          "pushbackRequestTimeoutTooltip": "回推时最大请求超时，单位毫秒，默认-1不超时。",
-          "surety": "接口安全",
-          "suretyHints": "修改后需要重启服务或刷新实例后生效。",
-          "suretyTooltip": "用于配置访问接口所需的授权信息，开启配置后访问接口必须携带授权参数才可以访问接口。最多允许添加10个。" ,
-          "in": "位置",
-          "paramsName": "参数名",
-          "paramsValue": "参数值",
-          "paramsValueRule": "请输入value"
-        },
-        "buttons": {
-          "cancel": "取消",
-          "confirm": "确定"
-        },
-        "settings": {
-          "logTooltip": "记录基本信息以及请求和响应头。",
-          "corsTooltip": "当通过浏览器访问Mock接口站点域名和访问Mock接口地址不一致时，会触发浏览器同源访问策略（CORS）限制导致接口无法访问，通过当前\"跨域配置\"可以自由制定跨域访问策略。修改后需要重启服务或刷新实例后生效。",
-          "enableNettyLog": "开启Netty日志",
-          "enableNettyLogTooltip": "建议仅在调试模式下打开，默认为不开启。"
-        },
-        "cors": {
-          "title": "跨域设置",
-          "description": "当通过浏览器访问Mock接口站点域名和访问Mock接口地址不一致时，会触发浏览器同源访问策略（CORS）限制导致接口无法访问，通过当前\"跨域配置\"可以自由制定跨域访问策略。修改后需要重启服务或刷新实例后生效。",
-          "enabled": "是否开启",
-          "enabledTooltip": "启用跨域访问限制配置，默认为不启用。",
-          "allowOrigin": "允许的域",
-          "allowOriginTooltip": "指定哪些网站可以参与跨来源资源共享，默认设置*，通过响应头Access-Control-Allow-Origin返回。",
-          "allowCredentials": "允许访问凭证",
-          "allowCredentialsTooltip": "指定第三方站点可能能够执行特权操作并检索敏感信息，默认为true，通过响应头Access-Control-Allow-Credentials返回。",
-          "allowRequestMethods": "允许的请求方法",
-          "allowRequestMethodsTooltip": "指定允许的HTTP方法，默认为GET、POST、PUT、PATCH、DELETE、OPTIONS、HEAD，通过响应头Access-Control-Allow-Methods返回。",
-          "allowRequestHeaders": "允许的请求头",
-          "allowRequestHeadersTooltip": "指定允许客户端使用的HTTP请求标头，默认不指定，通过响应头Access-Control-Allow-Headers返回。",
-          "allowExposeHeaders": "可访问的响应头",
-          "allowExposeHeadersTooltip": "指定允许访问响应中的那些标头字段，这些字段不包括浏览器可以访问的默认头，默认不指定，通过响应头Access-Control-Expose-Headers返回。"
-        },
-        "requestRecord": {
-          "apiName": "接口名称",
-          "requestId": "请求ID",
-          "requestTime": "请求时间",
-          "requestUrl": "请求地址",
-          "requestMethod": "请求方法",
-          "statusCode": "状态码",
-          "formatOptions": {
-            "beautify": "美化格式",
-            "raw": "原生格式",
-            "preview": "预览"
-          },
-          "requestInfo": "请求信息",
-          "requestHeader": "请求头",
-          "requestBody": "请求体",
-          "responseInfo": "响应信息",
-          "responseHeader": "响应头",
-          "responseBody": "响应体",
-          "hints": "当前请求记录是Mock服务收集的Mock接口调用日志，系统1秒内最大采集3条请求日志。每个Mock接口只保留最近100条请求记录。注意：如需要开启或关闭请求日志收集，请在\"设置\"->\"记录请求日志\"配置，开启后会降低Mock接口性能。"
-        },
-        "log": {
-          "lineOptions": {
-            "last500": "末尾500行",
-            "last1000": "末尾1000行",
-            "last10000": "末尾10000行"
-          },
-          "notifications": {
-            "noDownloadContent": "无可下载内容"
-          },
-          "errorInfo": "无访问代理信息，连接失败地址：",
-          "logFile": "日志文件:",
-          "browseLog": "浏览日志:",
-          "download": "下载",
-          "refresh": "刷新",
-          "autoRefresh": "自动刷新："
-        },
-         "activity": {
-          "pageInfo": "共{total}条记录，第{current} / {totalPage}页",
-          "searchPlaceholder": "查询活动详情"
-        }
-      }
-    },
-    "mockApis": {
-      "debugApis": {
-        "testRequest": "测试请求",
-        "proxy": "代理",
-        "stop": "终止",
-        "send": "发送",
-        "response": "响应",
-        "notifications": {
-          "proxyNotConnected": "代理未链接， 请检查代理配置"
-        }
-      },
-      "codeForm": {
-        "notifications": {
-          "yamlFormatError": "yaml内容格式错误，请检查并更正"
-        }
-      },
-      "notifications": {
-        "copyApiSuccess": "复制接口添加成功",
-        "linkApiSuccess": "关联接口添加成功",
-        "importDemoSuccess": "导入示例成功",
-        "cloneSuccess": "克隆成功",
-        "deleteSuccess": "删除成功",
-        "refreshInstanceSuccess": "刷新实例接口成功",
-        "saveSuccess": "保存成功",
-        "dataError": "数据有误，请检查并更正后再保存。"
-      },
-      "validation": {
-        "nameDuplicate": "名称重复"
-      },
-      "confirmations": {
-        "deleteApi": "确认要删除接口【{name}】吗？",
-        "refreshInstance": "刷新实例接口会强制同步当前Mock接口信息到运行的服务实例。"
-      },
-      "hints": {
-        "mockDescription": "当某个接口尚未实现或无法访问时，可以通过Mock接口模仿真实接口的行为和数据返回，以便进行开发和测试工作，从而提高开发和测试效率。注意：Mock接口保存后才生效。"
-      },
-      "search": {
-        "placeholder": "查询名称"
-      },
-      "buttons": {
-        "addApi": "添加接口",
-        "save": "保存",
-        "clone": "克隆",
-        "export": "导出",
-        "delete": "删除",
-        "refreshInstance": "刷新实例接口",
-        "refresh": "刷新",
-        "back": "返回",
-        "addResponse": "添加响应",
-        "deleteResponse": "删除响应"
-      },
-      "menuItems": {
-        "clone": "克隆",
-        "delete": "删除",
-        "export": "导出",
-        "copyApi": "复制接口添加",
-        "linkApi": "关联接口添加",
-        "import": "导入接口",
-        "importDemo": "导入示例"
-      },
-      "sortMenuItems": {
-        "createdDate": "按添加时间",
-        "id": "按ID"
-      },
-      "form": {
-        "request": "请求",
-        "name": "名称",
-        "namePlaceholder": "最大支持400个字符",
-        "description": "描述",
-        "descriptionPlaceholder": "最大支持20000个字符",
-        "response": "响应",
-        "responseTooltip": "最大支持配置50个响应",
-        "namePlaceholderShort": "最大支持200个字符"
-      },
-      "response": {
-        "match": "匹配",
-        "matchTooltip": "指定返回当前响应所需满足的匹配请求条件。注意：当存在满足匹配的多个响应时，将返回优先级最高的响应，如果没有配置匹配条件或优先级相同，则返回第一个条件或最先配置的条件。",
-        "priority": "优先级",
-        "priorityTooltip": "值越大优先级越高，值范围：0~2147483647。注意：仅当存在满足匹配的多个响应时，才会返回优先级最高的响应。",
-        "content": "内容",
-        "pushback": "回推",
-        "pushbackTooltip": "回推可以用于在接收到 Mock 请求后，自动向指定地址推送一个 Http 请求，如：支付回调。",
-        "enable": "启用",
-        "disable": "关闭"
-      },
-      "modals": {
-        "copyApi": "复制接口添加",
-        "linkApi": "关联接口添加"
-      }
-    },
-    "mockApisComp": {
-      "textareaEditor": {
-        "maxLengthSupport": "最大支持字符数",
-        "showCount": "是否显示已输入字符串数量",
-        "maxLengthMessage": "最大支持{maxlength}个字符",
-        "errorMessage": "最大支持{maxlength}字符，已输入{length}字符",
-        "format": "格式化",
-        "clear": "清空"
-      },
-      "codeEditor": {
-        "maxLengthSupport": "最大支持字符数",
-        "showCount": "是否显示已输入字符串数量",
-        "errorMessage": "最大支持{maxlength}字符，已输入{length}字符",
-        "format": "格式化",
-        "clear": "清空"
-      },
-      "agent": {
-        "noProxy": "无代理",
-        "clientProxy": "客户端代理",
-        "serverProxy": "服务端代理",
-        "cloudProxy": "云代理",
-        "proxyConfig": "代理配置",
-        "notConnected": "未连接",
-        "connected": "已连接",
-        "notifications": {
-          "onlyOnePath": "只能添加一个路径",
-          "notConfigured": "未配置或启用服务端代理，请检查\"应用管理->代理配置\"",
-          "connectionFailed": "代理连接失败，请检查代理服务是否已运行。"
-        },
-        "descriptions": {
-          "noProxy": "通过浏览器直接请求接口，对非同源访问接口服务器端需要取消跨域限制。",
-          "clientProxy": "需要在访问浏览器所在电脑中安装\"<a href='https://www.xcan.cloud/help' target=\"_blank\"  class=\"text-text-link\">代理程序<a>\"，配置后将使用客户端代理发送请求。",
-          "serverProxy": "需要将\"代理程序\"单独安装在共享网络的服务器主机，使用服务端代理无需用户在各自电脑中安装代理程序，配置后将使用服务端代理发送请求。推荐方式",
-          "cloudProxy": "通过AngusTester云服务器节点请求接口，注意：不能访问到客户内网服务地址。"
-        }
-      },
-      "urlForm": {
-        "methodPath": "方法/路径",
-        "requestMethod": "请求方法",
-        "maxLengthPlaceholder": "最大支持800个字符"
-      },
-      "matchForm": {
-        "pathForm": {
-          "path": "路径",
-          "operationCondition": "运算条件",
-          "notifications": {
-            "onlyOnePath": "只能添加一个路径"
-          },
-          "descriptions": {
-            "equal": "以斜杠 / 开始；路径段之间使用斜杠 / 分隔，且不包含特殊字符（如?、#等）",
-            "notEqual": "以斜杠 / 开始；路径段之间使用斜杠 / 分隔，且不包含特殊字符（如?、#等）",
-            "contain": "以斜杠 / 开始；路径段之间使用斜杠 / 分隔，且不包含特殊字符（如?、#等）",
-            "notContain": "以斜杠 / 开始；路径段之间使用斜杠 / 分隔，且不包含特殊字符（如?、#等）"
-          },
-          "rules": {
-            "rootPath": "路径以斜杠 / 开始，表示根路径。",
-            "pathSegments": "路径由多个路径段组成，路径段之间使用斜杠 / 分隔。",
-            "segmentChars": "每个路径段可以是字母、数字、减号、下划线等字符组成，且不包含特殊字符（如?、#等）。",
-            "segmentNotEmpty": "路径段不可以为空字符串。"
-          }
-        },
-        "selectInputForm": {
-          "requestHeader": "请求头",
-          "parameterName": "参数名称，最大支持400个字符",
-          "parameterValue": "参数值，最大支持4096个字符",
-          "operator": "运算符"
-        },
-         "parameterForm": {
-          "regMatch": "正则表达式",
-          "queryParameters": "查询参数",
-          "parameterName": "参数名称，最大支持400个字符",
-          "parameterValue": "参数值，最大支持4096个字符"
-        },
-         "requestBody": {
-            "requestBody": "请求体",
-            "format": "格式化",
-            "clear": "清空",
-            "value": "值",
-            "xpathMatch": "XPath表达式",
-            "jsonPathMatch": "JSONPath表达式",
-            "notifications": {
-              "onlyOneBody": "只能添加一个请求体"
-            }
-        }
-      },
-      "contentForm": {
-        "statusCode": "状态码",
-        "responseDelay": "响应延时",
-        "responseHeaders": "响应头",
-        "responseBody": "响应体",
-        "mockFunctionHelper": "Mock函数助手",
-        "insertFile": "插入文件",
-        "maxHeaderNum": "最大支持{{ MAX_HEADER_NUM }}个响应头",
-        "maxHeaderNumError": "最大支持 {maxHeaderNum} 个响应头",
-        "notifications": {
-          "maxHeaderError": "最大支持 {maxHeaderNum} 个响应头"
-        },
-        "importFileModal": {
-          "title": "编码文件",
-          "maxFileSize": "最大支持编码10M文件",
-          "encoding": "编码"
-        },
-        "selectInputForm": {
-          "parameterName": "参数名称，最大支持400个字符",
-          "parameterValue": "参数值，最大支持4096个字符"
-        },
-        "requestBody": "请求体",
-        "pushBack": {
-          "urlFormatError": "回推地址格式错误",
-          "proxyNotConnected": "代理未链接， 请检查代理配置",
-          "requestError": "请求错误",
-          "autoPushAfterRequest": "请求触发后自动推送",
-          "requestMethod": "请求方法",
-          "maxLengthPlaceholder": "最大支持800个字符"
-        },
-        "delayParameter": {
-          "maxLessThanMin": "最大值小于最小值",
-          "delayOptions": {
-            "none": "无延迟",
-            "fixed": "固定延迟",
-            "random": "随机延迟"
-          }
-        },
-        "inputGroup": {
-          "queryParameters": "查询参数",
-          "requestHeaders": "请求头"
-        }
+      "settings": {
+        "logTooltip": "记录基本信息和请求响应头。",
+        "corsTooltip": "解决浏览器跨域访问限制，配置跨域访问策略。修改后需重启服务生效。",
+        "enableNettyLog": "开启Netty日志",
+        "enableNettyLogTooltip": "建议仅在调试时开启，默认关闭。"
       }
     },
     "exportModal": {

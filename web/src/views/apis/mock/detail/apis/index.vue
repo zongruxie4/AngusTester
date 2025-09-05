@@ -28,21 +28,10 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 import { Button, Collapse, CollapsePanel, Switch } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
 
-// Import composables
-import { useMockApiData } from './composables/useMockApiData';
-import { useMockApiForm } from './composables/useMockApiForm';
-import { useMockApiResponse } from './composables/useMockApiResponse';
-import { useWebSocketConnection } from './composables/useWebSocketConnection';
-import { useMockApiOperations } from './composables/useMockApiOperations';
-import { useMockServiceInfo } from './composables/useMockServiceInfo';
-import { useMockApiUI } from './composables/useMockApiUI';
-import { useMockApiMenus } from './composables/useMockApiMenus';
-
-import { mock } from '@/api/tester';
-import { setting } from '@/api/gm';
+import { type AgentValue } from '@/views/apis/services/components/agent/PropsTypes';
+import { mock } from 'src/api/tester';
+import { setting } from 'src/api/gm';
 import { HttpMethod, MockAPIConfig, MockAPIInfo, ResponseConfig, ResponseInfo } from './types';
-
-const { t } = useI18n();
 
 interface Props {
   id: string;// mock service Id
@@ -52,172 +41,163 @@ const props = withDefaults(defineProps<Props>(), {
   id: undefined
 });
 
-// Initialize composables
-const {
-  apiIds,
-  apiDataMap,
-  permissionMap,
-  inputValue,
-  orderBy,
-  orderSort,
-  getParams,
-  addMockApi,
-  updateApiList,
-  removeApi,
-  updateSearchValue,
-  updateSorting
-} = useMockApiData();
-
-// Computed params for API requests
-const params = computed(() => getParams(props.id));
-
-const {
-  mockAPIConfig,
-  mockAPIId,
-  readonly,
-  summary,
-  summaryError,
-  method,
-  endpoint,
-  description,
-  tempMockApiMap,
-  isSavedMockApi,
-  setApiForm,
-  storeTempMockApiData,
-  restoreTempMockApiData,
-  resetMockApi,
-  isValid,
-  getAPIParams,
-  summaryChange,
-  descriptionChange
-} = useMockApiForm();
-
-const {
-  responseIdList,
-  responseMap,
-  nameMap,
-  nameErrorSet,
-  nameErrorMessage,
-  openKeys,
-  priorityMap,
-  priorityErrorSet,
-  enablePushbackSet,
-  responseNotify,
-  addResponse,
-  deleteResponse,
-  resetMockApiResponse,
-  validateRepeatName,
-  validateResponse,
-  getResponseParams,
-  nameChange,
-  priorityChange,
-  priorityBlur,
-  enableChange,
-  collapseChange,
-  arrowChange
-} = useMockApiResponse();
-
-const {
-  WS,
-  uuid,
-  wsResponse,
-  readyState,
-  currentProxy,
-  currentProxyUrl,
-  proxyOptObj,
-  loadProxyUrl,
-  createWS,
-  updateWs,
-  closeWebSocket
-} = useWebSocketConnection();
-
-const {
-  loading,
-  createMockApi,
-  updateMockApi,
-  deleteMockApi,
-  cloneMockApi,
-  copyApiToMock,
-  associateApiToMock,
-  importDemoMockApi,
-  getMockApiDetail,
-  getMockApiResponse,
-  addMockApiResponse,
-  updateMockApiResponse,
-  syncApiInstanceConfig
-} = useMockApiOperations();
-
-const {
-  serviceUrlOptions,
-  loadServiceInfo
-} = useMockServiceInfo();
-
-const {
-  apiCopyModalVisible,
-  apiLinkModalVisible,
-  importApiModalVisible,
-  apiCopyConfirmLoading,
-  apiLinkConfirmLoading,
-  goback,
-  showDeleteConfirmation,
-  showRefreshInstanceConfirmation,
-  exportMockApi,
-  showErrorNotification,
-  showSuccessNotification
-} = useMockApiUI();
-
-const {
-  trigger,
-  menuItems,
-  dropdownMenuItems,
-  sortMenuItems
-} = useMockApiMenus();
-
-// Component imports
 const DebugApis = defineAsyncComponent(() => import('./DebugApis.vue'));
-const SelectApiModal = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/selectApiModal/index.vue'));
-const MatchForm = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/matchForm/index.vue'));
-const ContentForm = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/contentForm/index.vue'));
-const PushBack = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/contentForm/pushBack.vue'));
-const UrlForm = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/urlForm/index.vue'));
-const ImportApiModal = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/importApiModal/index.vue'));
+const SelectApiModal = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/SelectApiModal.vue'));
+const MatchForm = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/match/index.vue'));
+const ContentForm = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/content/index.vue'));
+const PushBack = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/content/PushBack.vue'));
+const UrlForm = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/UrlForm.vue'));
+const ImportApiModal = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/ImportApiModal.vue'));
 
-// Component references
+const router = useRouter();
+const { t } = useI18n();
+
+const WS = ref();
+const uuid = ref();
+const wsResponse = ref();
+const currentProxy = ref<AgentValue>(); // CLIENT_PROXY|NO_PROXY|SERVER_PROXY|CLOUD_PROXY
+const currentProxyUrl = ref();
+const proxyOptObj = ref();
+
+const serviceUrlOptions = ref<{ label: string; value: string; }[]>([]);
+
+// ---- ScrollList start ----
+
 const scrollRef = ref();
 const urlFormRef = ref();
 const matchFormRefs = ref<any[]>([]);
 const contentFormRefs = ref<any[]>([]);
 const pushbackFormRefs = ref<any[]>([]);
 
-// UI state
 const domId = utils.uuid();
 const notify = ref(0);
+const responseNotify = ref(0);
+const loading = ref(true);
+const apiCopyModalVisible = ref(false);
+const apiLinkModalVisible = ref(false);
+const apiCopyConfirmLoading = ref(false);
+const apiLinkConfirmLoading = ref(false);
+const importApiModalVisible = ref(false);
+
+const inputValue = ref<string>();
+const orderBy = ref<'createdDate' | 'id'>('createdDate');
+const orderSort = ref<'ASC' | 'DESC'>('DESC');
 const action = `${TESTER}/mock/apis`;
 
-/**
- * Add a new temporary Mock API to the list
- */
-const addMockApiHandler = () => {
+const apiIds = ref<string[]>([]);
+const apiDataMap = ref<{ [key: string]: MockAPIConfig }>({});
+const permissionMap = ref<Map<string, string[]>>(new Map());
+
+const tempMockApiMap = ref<{
+  [key: string]: {
+    api: {
+      isTempFlag: boolean;
+      summary: string;
+      method: HttpMethod;
+      endpoint: string;
+      description: string;
+    };
+    response: {
+      responseIdList: string[];
+      responseMap: { [key: string]: ResponseConfig };
+      nameMap: { [key: string]: string | undefined };
+      openKeys: string[];
+      priorityMap: { [key: string]: string };
+      enablePushbackSet: Set<string>;
+    }
+  }
+}>({});
+const mockAPIConfig = ref<MockAPIConfig>();
+const mockAPIId = ref<string>();
+const readonly = ref(false);
+
+const summary = ref<string>('');
+const summaryError = ref(false);
+const method = ref<HttpMethod>('GET');
+const endpoint = ref<string>('');
+const description = ref<string>('');
+
+const responseIdList = ref<string[]>([]);// 响应id集合
+const responseMap = ref<{ [key: string]: ResponseConfig }>({});
+const nameMap = ref<{ [key: string]: string | undefined }>({});
+const nameErrorSet = ref<Set<string>>(new Set());
+const nameErrorMessage = ref<{ [key: string]: string | undefined }>({});
+const openKeys = ref<string[]>([]);// 打开的折叠面板
+const priorityMap = ref<{ [key: string]: string }>({});// 优先级
+const priorityErrorSet = ref<Set<string>>(new Set());
+const enablePushbackSet = ref<Set<string>>(new Set());
+
+const isSavedMockApi = computed(() => {
+  return mockAPIConfig.value?.id && !mockAPIConfig.value?.isTempFlag;
+});
+
+const params = computed(() => {
+  const _params: {
+    mockServiceId: string;
+    filters?: [{ key: 'summary'; op: 'MATCH_END', value: string }];
+    orderBy?: string;
+    orderSort?: 'ASC' | 'DESC';
+  } = {
+    mockServiceId: props.id
+  };
+
+  if (inputValue.value) {
+    _params.filters = [{ key: 'summary', op: 'MATCH_END', value: inputValue.value }];
+  }
+
+  if (orderBy.value) {
+    _params.orderBy = orderBy.value;
+  }
+
+  if (orderSort.value) {
+    _params.orderSort = orderSort.value;
+  }
+
+  return _params;
+});
+
+const addMockApi = () => {
   if (typeof scrollRef.value?.pureAdd === 'function') {
-    const id = addMockApi(props.id);
-    scrollRef.value.pureAdd(apiDataMap.value[id]);
-    setApiForm(apiDataMap.value[id]);
+    const id = utils.uuid();
+    const data: MockAPIConfig = {
+      id,
+      summary: 'MockAPI-' + Date.now(),
+      isTempFlag: true,
+      mockServiceId: props.id,
+      method: 'GET',
+      endpoint: '',
+      description: ''
+    };
+
+    scrollRef.value.pureAdd(data);
+    apiIds.value.unshift(id);
+    apiDataMap.value[id] = data;
+    permissionMap.value.set(id, ['DELETE']);
+    setApiForm(data);
   }
 };
 
-/**
- * Handle scroll list data change
- * @param dataList - Array of API info from server
- */
 const scrollChange = (dataList: MockAPIInfo[]) => {
-  updateApiList(dataList);
+  apiIds.value = [];
+  apiDataMap.value = {};
+  for (let i = 0, len = dataList.length; i < len; i++) {
+    const data = dataList[i];
+    const { id, method, isTempFlag } = data;
+    apiIds.value.push(id);
+    apiDataMap.value[id] = {
+      ...data,
+      isTempFlag,
+      method: method.value
+    };
+    permissionMap.value.set(id, ['CLONE', 'DELETE', 'EXPORT']);
+  }
 
   if (!dataList.length) {
     mockAPIId.value = undefined;
     mockAPIConfig.value = undefined;
     resetMockApi();
     resetMockApiResponse();
-    addMockApiHandler();
+    addMockApi();
     addResponse();
     return;
   }
@@ -233,40 +213,59 @@ const scrollChange = (dataList: MockAPIInfo[]) => {
   }
 };
 
-/**
- * Select API by ID with temporary data storage
- * @param id - API ID to select
- */
+const setApiForm = (data: MockAPIConfig) => {
+  const {
+    id,
+    summary: _summary,
+    method: _method,
+    endpoint: _endpoint,
+    description: _description
+  } = data;
+  summary.value = _summary;
+  method.value = _method;
+  endpoint.value = _endpoint;
+  description.value = _description;
+  mockAPIId.value = id;
+  mockAPIConfig.value = data;
+  summaryError.value = false;
+};
+
 const select = (id: string) => {
   if (id === mockAPIId.value) {
     return;
   }
 
-  storeTempMockApiData({
-    responseIdList: responseIdList.value,
-    responseMap: responseMap.value,
-    nameMap: nameMap.value,
-    openKeys: openKeys.value,
-    priorityMap: priorityMap.value,
-    enablePushbackSet: enablePushbackSet.value
-  });
+  storeTempMockApiData();
   selectHandler(id);
 };
 
-/**
- * Handle API selection with data restoration
- * @param id - API ID to select
- */
 const selectHandler = (id: string) => {
-  const restoredData = restoreTempMockApiData(id);
-  if (restoredData) {
-    const { response } = restoredData;
+  const prevMockApiData = tempMockApiMap.value[id];
+  if (prevMockApiData) {
+    resetMockApi();
+    resetMockApiResponse();
+
+    const { api, response } = tempMockApiMap.value[id];
+    summary.value = api.summary;
+    method.value = api.method;
+    endpoint.value = api.endpoint;
+    description.value = api.description;
     enablePushbackSet.value = response.enablePushbackSet;
     nameMap.value = response.nameMap;
     openKeys.value = response.openKeys;
     priorityMap.value = response.priorityMap;
     responseIdList.value = response.responseIdList;
     responseMap.value = response.responseMap;
+    mockAPIId.value = id;
+    mockAPIConfig.value = {
+      id,
+      isTempFlag: api.isTempFlag,
+      summary: api.summary,
+      method: method.value,
+      endpoint: api.endpoint,
+      description: api.description,
+      mockServiceId: props.id
+    };
 
     loading.value = false;
     nextTick(() => {
@@ -280,83 +279,135 @@ const selectHandler = (id: string) => {
   loadApiResponse();
 };
 
-/**
- * Handle dropdown sort change
- * @param data - Sort configuration data
- */
-const dropdownSortChange = (data: { orderBy: 'createdDate' | 'id', orderSort: 'ASC' | 'DESC' }) => {
-  updateSorting(data.orderBy, data.orderSort);
+const storeTempMockApiData = () => {
+  const prevApiId = mockAPIId.value;
+  if (!prevApiId || !apiIds.value.includes(prevApiId)) {
+    return;
+  }
+
+  const responseMap: { [key: string]: ResponseConfig } = {};
+  const ids = responseIdList.value;
+  const matchRefs = matchFormRefs.value;
+  const contentRefs = contentFormRefs.value;
+  const pushbackRefs = pushbackFormRefs.value;
+  const enableSet = enablePushbackSet.value;
+  for (let i = 0, len = ids.length; i < len; i++) {
+    const id = ids[i];
+    responseMap[id] = {
+      name: '',
+      pushback: undefined,
+      match: {
+        body: undefined,
+        parameters: undefined,
+        path: undefined,
+        priority: '1000'
+      },
+      content: {
+        content: '',
+        headers: [],
+        contentEncoding: undefined,
+        delay: {
+          mode: 'NONE',
+          fixedTime: undefined,
+          maxRandomTime: undefined,
+          minRandomTime: undefined
+        },
+        status: '200'
+      }
+    };
+
+    responseMap[id].match = { priority: priorityMap.value[id], body: undefined, parameters: undefined, path: undefined };
+    if (typeof matchRefs[i]?.getData === 'function') {
+      const tempData = matchRefs[i].getData();
+      responseMap[id].match = tempData;
+    }
+
+    if (typeof contentRefs[i]?.getData === 'function') {
+      responseMap[id].content = contentRefs[i].getData();
+    }
+
+    if (enableSet.has(id)) {
+      if (typeof pushbackRefs[i]?.getData === 'function') {
+        responseMap[id].pushback = pushbackRefs[i].getData();
+      }
+    }
+  }
+
+  tempMockApiMap.value[prevApiId] =
+  {
+    api: {
+      isTempFlag: !!apiDataMap.value[prevApiId]?.isTempFlag,
+      summary: summary.value,
+      method: method.value,
+      endpoint: endpoint.value,
+      description: description.value
+    },
+    response: {
+      responseMap,
+      enablePushbackSet: new Set(enablePushbackSet.value),
+      nameMap: JSON.parse(JSON.stringify(nameMap.value)),
+      openKeys: JSON.parse(JSON.stringify(openKeys.value)),
+      priorityMap: JSON.parse(JSON.stringify(priorityMap.value)),
+      responseIdList: JSON.parse(JSON.stringify(responseIdList.value))
+    }
+  };
 };
 
-/**
- * Trigger refresh of API list
- */
+const dropdownSortChange = (data: { orderBy: 'createdDate' | 'id', orderSort: 'ASC' | 'DESC' }) => {
+  orderBy.value = data.orderBy;
+  orderSort.value = data.orderSort;
+};
+
 const toRefresh = () => {
   notify.value++;
   loading.value = true;
 };
 
-/**
- * Handle dropdown menu click for API operations
- * @param param - Menu click event data
- * @param id - API ID for the operation
- */
 const dropdownClick = async ({ key }: { key: 'clone' | 'delete' | 'export' }, id: string) => {
   if (key === 'clone') {
-    const { error } = await cloneMockApi(id);
-    if (!error) {
-      toRefresh();
-    }
+    clone(id);
     return;
   }
 
   if (key === 'delete') {
-    const { summary: apiName } = apiDataMap.value[id];
-    showDeleteConfirmation(apiName, async () => {
-      await handleDelete(id);
-    });
+    del(id);
     return;
   }
 
   if (key === 'export') {
-    exportMockApi(id, props.id);
+    toExport(id);
   }
 };
 
-/**
- * Handle button dropdown click for main actions
- * @param param - Menu click event data
- */
 const buttonDropdownClick = ({ key }: { key: 'copyApi' | 'linkApi' | 'import' | 'importDemo' }) => {
+  // 选择接口添加
   if (key === 'copyApi') {
     apiCopyModalVisible.value = true;
     return;
   }
 
+  // 关联接口添加
   if (key === 'linkApi') {
     apiLinkModalVisible.value = true;
     return;
   }
 
+  // 导入接口
   if (key === 'import') {
     importApiModalVisible.value = true;
     return;
   }
 
+  // 导入示例
   if (key === 'importDemo') {
-    handleImportDemo();
+    importDemo();
   }
 };
 
-/**
- * Handle copy API confirmation
- * @param param - API selection data
- */
-const copyApiOk = async ({ id }: { id: string }) => {
+const copyApiOk = async ({ id }) => {
   apiCopyConfirmLoading.value = true;
-  const { error, data } = await copyApiToMock(props.id, id);
+  const [error, { data }] = await mock.copyApiToMock(props.id, id);
   apiCopyConfirmLoading.value = false;
-
   if (error) {
     return;
   }
@@ -364,21 +415,17 @@ const copyApiOk = async ({ id }: { id: string }) => {
   apiCopyModalVisible.value = false;
   mockAPIId.value = data.id;
   mockAPIConfig.value = undefined;
+  notification.success(t('mock.detail.apis.notifications.copyApiSuccess'));
   toRefresh();
   nextTick(() => {
     scrollToTop();
   });
 };
 
-/**
- * Handle link API confirmation
- * @param param - API selection data
- */
-const linkApiOk = async ({ id }: { id: string }) => {
+const linkApiOk = async ({ id }) => {
   apiLinkConfirmLoading.value = true;
-  const { error, data } = await associateApiToMock(props.id, id);
+  const [error, { data }] = await mock.assocApiToMock(props.id, id);
   apiLinkConfirmLoading.value = false;
-
   if (error) {
     return;
   }
@@ -386,16 +433,13 @@ const linkApiOk = async ({ id }: { id: string }) => {
   apiLinkModalVisible.value = false;
   mockAPIId.value = data.id;
   mockAPIConfig.value = undefined;
-  notification.success(t('mock.mockApis.notifications.linkApiSuccess'));
+  notification.success(t('mock.detail.apis.notifications.linkApiSuccess'));
   toRefresh();
   nextTick(() => {
     scrollToTop();
   });
 };
 
-/**
- * Handle import API completion
- */
 const importApiOk = () => {
   toRefresh();
   nextTick(() => {
@@ -403,21 +447,23 @@ const importApiOk = () => {
   });
 };
 
-/**
- * Handle import demo APIs
- */
-const handleImportDemo = async () => {
+// 导入示例
+const importDemo = async () => {
   if (loading.value) {
     return;
   }
-
-  const { error } = await importDemoMockApi(props.id);
-  if (!error) {
-    toRefresh();
-    nextTick(() => {
-      scrollToTop();
-    });
+  loading.value = true;
+  const [error] = await mock.importDemoMockApi(props.id);
+  loading.value = false;
+  if (error) {
+    return;
   }
+
+  notification.success(t('mock.detail.apis.notifications.importDemoSuccess'));
+  toRefresh();
+  nextTick(() => {
+    scrollToTop();
+  });
 };
 
 const clone = async (id: string) => {
@@ -429,7 +475,7 @@ const clone = async (id: string) => {
   }
 
   toRefresh();
-  notification.success(t('mock.mockApis.notifications.cloneSuccess'));
+  notification.success(t('mock.detail.apis.notifications.cloneSuccess'));
 };
 
 const toExport = (id: string) => {
@@ -441,7 +487,7 @@ const del = async (id: string) => {
   const { summary: _summary, isTempFlag } = apiDataMap.value[id];
   modal.confirm({
     centered: true,
-    content: t('mock.mockApis.confirmations.deleteApi', { name: _summary }),
+    content: t('mock.detail.apis.confirmations.deleteApi', { summary: _summary }),
     async onOk () {
       const checkedId = mockAPIConfig.value?.id;
       const checkedIndex = apiIds.value.findIndex(item => item === checkedId);
@@ -453,7 +499,7 @@ const del = async (id: string) => {
           return;
         }
 
-        notification.success(t('mock.mockApis.notifications.deleteSuccess'));
+        notification.success(t('mock.detail.apis.notifications.deleteSuccess'));
 
         if (typeof scrollRef.value?.delete === 'function') {
           if (apiIds.value.length === 1) {
@@ -496,49 +542,37 @@ const del = async (id: string) => {
   });
 };
 
-/**
- * Refresh API information and response data
- */
 const refreshInfo = () => {
   loadApiInfo();
   loadApiResponse();
 };
 
-/**
- * Refresh API instance configuration with confirmation
- */
 const refreshInstance = () => {
-  showRefreshInstanceConfirmation(async () => {
-    const { error } = await syncApiInstanceConfig(mockAPIId.value!);
-    if (!error) {
-      // Success notification is handled in the composable
+  modal.confirm({
+    content: t('mock.detail.apis.confirmations.refreshInstance'),
+    async onOk () {
+      loading.value = true;
+      const [error] = await mock.syncApiInstanceConfig(mockAPIId.value!);
+      loading.value = false;
+      if (error) {
+        return;
+      }
+
+      notification.success(t('mock.detail.apis.notifications.refreshInstanceSuccess'));
     }
   });
 };
 
-/**
- * Handle input change with debounce
- * @param event - Input change event
- */
 const inputChange = debounce(duration.search, (event: { target: { value: string } }) => {
-  updateSearchValue(event.target.value);
+  const value = event.target.value.trim();
+  inputValue.value = value;
 });
 
-/**
- * Create new Mock API
- */
 const create = () => {
   readonly.value = false;
-  storeTempMockApiData({
-    responseIdList: responseIdList.value,
-    responseMap: responseMap.value,
-    nameMap: nameMap.value,
-    openKeys: openKeys.value,
-    priorityMap: priorityMap.value,
-    enablePushbackSet: enablePushbackSet.value
-  });
+  storeTempMockApiData();
   resetMockApi();
-  addMockApiHandler();
+  addMockApi();
   resetMockApiResponse();
   addResponse();
   nextTick(() => {
@@ -547,6 +581,170 @@ const create = () => {
 };
 
 // ---- ScrollList end ----
+
+// ---- CreateForm start ----
+const enableChange = (checked: boolean, id: string) => {
+  const key = id + '-3';
+
+  if (checked) {
+    openKeys.value.push(key);
+    enablePushbackSet.value.add(id);
+    return;
+  }
+
+  openKeys.value = openKeys.value.filter(item => item !== key);
+  enablePushbackSet.value.delete(id);
+
+  // @TODO 禁用后是否清空回推数据？？？
+  if (responseMap.value[id]) {
+    responseMap.value[id]!.pushback = undefined;
+  }
+};
+
+const summaryChange = (event: { target: { value: string } }) => {
+  summary.value = event.target.value;
+  summaryError.value = false;
+};
+
+const descriptionChange = (event: { target: { value: string } }) => {
+  description.value = event.target.value;
+};
+
+const isValid = (): boolean => {
+  let errorNum = 0;
+
+  if (!summary.value) {
+    summaryError.value = true;
+    errorNum++;
+  }
+
+  if (typeof urlFormRef.value?.isValid === 'function') {
+    if (!urlFormRef.value.isValid()) {
+      errorNum++;
+    }
+  }
+
+  return !errorNum;
+};
+
+const validateResponse = (): boolean => {
+  if (!responseIdList.value?.length) {
+    return false;
+  }
+
+  priorityErrorSet.value.clear();
+  let errorNum = 0;
+  const matchRefs = matchFormRefs.value;
+  const contentRefs = contentFormRefs.value;
+  const pushbackRefs = pushbackFormRefs.value;
+  const enableSet = enablePushbackSet.value;
+  if (!validateRepeatName()) {
+    errorNum++;
+  }
+
+  const ids = responseIdList.value;
+  for (let i = 0, len = ids.length; i < len; i++) {
+    const id = ids[i];
+
+    if (utils.isEmpty(nameMap.value[id])) {
+      nameErrorSet.value.add(id);
+      errorNum++;
+    }
+
+    if (utils.isEmpty(priorityMap.value[id])) {
+      priorityErrorSet.value.add(id);
+      errorNum++;
+    }
+
+    if (typeof matchRefs[i]?.isValid === 'function') {
+      const validFlag = matchRefs[i].isValid();
+      if (!validFlag) {
+        errorNum++;
+      }
+    }
+
+    if (typeof contentRefs[i]?.isValid === 'function') {
+      const validFlag = contentRefs[i].isValid();
+      if (!validFlag) {
+        errorNum++;
+      }
+    }
+
+    // 启用回推
+    if (enableSet.has(id)) {
+      if (typeof pushbackRefs[i]?.isValid === 'function') {
+        const validFlag = pushbackRefs[i].isValid();
+        if (!validFlag) {
+          errorNum++;
+        }
+      }
+    }
+  }
+
+  return !errorNum;
+};
+
+const getAPIParams = () => {
+  const _params: {
+    description: string;
+    endpoint: string;
+    method: HttpMethod;
+    mockServiceId: string;
+    summary: string;
+    id?: string;
+  } = {
+    description: description.value,
+    endpoint: endpoint.value,
+    method: method.value,
+    mockServiceId: props.id,
+    summary: summary.value
+  };
+
+  if (mockAPIId.value) {
+    _params.id = mockAPIId.value;
+  }
+
+  return [_params];
+};
+
+const getResponseParams = (): ResponseConfig[] => {
+  const params: ResponseConfig[] = [];
+  const ids = responseIdList.value;
+  const matchRefs = matchFormRefs.value;
+  const contentRefs = contentFormRefs.value;
+  const pushbackRefs = pushbackFormRefs.value;
+  const enableSet = enablePushbackSet.value;
+  for (let i = 0, len = ids.length; i < len; i++) {
+    const id = ids[i];
+    params[i] = {
+      name: nameMap.value[id],
+      match: {
+        priority: priorityMap.value[id],
+        body: undefined,
+        parameters: undefined,
+        path: undefined
+      },
+      content: undefined,
+      pushback: undefined
+    };
+    if (typeof matchRefs[i]?.getData === 'function') {
+      params[i].match = matchRefs[i].getData();
+    }
+
+    if (typeof contentRefs[i]?.getData === 'function') {
+      params[i].content = contentRefs[i].getData();
+    }
+
+    if (enableSet.has(id)) {
+      if (typeof pushbackRefs[i]?.getData === 'function') {
+        params[i].pushback = pushbackRefs[i].getData();
+      }
+    }
+  }
+
+  return params;
+};
+
 const save = async (): Promise<void> => {
   let errorNum = 0;
   if (!isValid()) {
@@ -558,7 +756,7 @@ const save = async (): Promise<void> => {
   }
 
   if (errorNum) {
-    notification.error(t('mock.mockApis.notifications.dataError'));
+    notification.error(t('mock.detail.apis.notifications.dataError'));
     return;
   }
 
@@ -608,7 +806,7 @@ const save = async (): Promise<void> => {
       };
       apiDataMap.value[targetId] = newData;
       mockAPIConfig.value = newData;
-      permissionMap.value.set(targetId, ['CLONE', MockServicePermission.DELETE, MockServicePermission.EXPORT]);
+      permissionMap.value.set(targetId, ['CLONE', 'DELETE', 'EXPORT']);
       if (!isUpdateFlag) {
         if (typeof scrollRef.value?.pureDel === 'function') {
           scrollRef.value.pureDel(prevTargetId);
@@ -634,7 +832,7 @@ const saveResponse = async (id: string, isUpdateFlag: boolean) => {
     return;
   }
 
-  notification.success(t('mock.mockApis.notifications.saveSuccess'));
+  notification.success(t('mock.detail.apis.notifications.saveSuccess'));
   loading.value = false;
 };
 
@@ -687,10 +885,10 @@ const validateRepeatName = (id?: string): boolean => {
     if (repeatNameSet.has(data[key])) {
       if (id) {
         nameErrorSet.value.add(id);
-        nameErrorMessage.value[id] = t('mock.mockApis.validation.nameDuplicate');
+        nameErrorMessage.value[id] = t('mock.detail.apis.notifications.nameDuplicate');
       } else {
         nameErrorSet.value.add(key);
-        nameErrorMessage.value[key] = t('mock.mockApis.validation.nameDuplicate');
+        nameErrorMessage.value[key] = t('mock.detail.apis.notifications.nameDuplicate');
       }
 
       errorNum++;
@@ -939,6 +1137,31 @@ const loadProxyUrl = async () => {
   });
 };
 
+const resetMockApi = () => {
+  mockAPIConfig.value = undefined;
+  mockAPIId.value = '';
+  readonly.value = false;
+  summary.value = '';
+  summaryError.value = false;
+  method.value = 'GET';
+  endpoint.value = '';
+  description.value = '';
+};
+
+const resetMockApiResponse = () => {
+  responseIdList.value = [];
+  responseMap.value = {};
+  nameMap.value = {};
+  nameErrorSet.value.clear();
+  nameErrorMessage.value = {};
+  openKeys.value = [];
+  priorityMap.value = {};
+  priorityErrorSet.value.clear();
+  enablePushbackSet.value.clear();
+
+  responseNotify.value++;
+};
+
 const updateWs = () => {
   if (navigator.onLine) {
     if (WS.value?.close) {
@@ -1020,55 +1243,55 @@ const menuItems = ref([
   {
     key: 'clone',
     icon: 'icon-fuzhizujian2',
-    name: t('mock.mockApis.menuItems.clone'),
+    name: t('mock.detail.apis.menuItems.clone'),
     permission: 'ADD'
   },
   {
     key: 'delete',
     icon: 'icon-fz',
-    name: t('mock.mockApis.menuItems.delete'),
-    permission: MockServicePermission.DELETE
+    name: t('mock.detail.apis.menuItems.delete'),
+    permission: 'DELETE'
   },
   {
     key: 'export',
     icon: 'icon-daochu1',
-    name: t('mock.mockApis.menuItems.export'),
-    permission: MockServicePermission.EXPORT
+    name: t('mock.detail.apis.menuItems.export'),
+    permission: 'EXPORT'
   }
 ]);
 const dropdownMenuItems = ref([
   {
     key: 'copyApi',
     icon: 'icon-fuzhizujian2',
-    name: t('mock.mockApis.menuItems.copyApi'),
+    name: t('mock.detail.apis.menuItems.copyApi'),
     noAuth: true
   },
   {
     key: 'linkApi',
     icon: 'icon-yinyong',
-    name: t('mock.mockApis.menuItems.linkApi'),
+    name: t('mock.detail.apis.menuItems.linkApi'),
     noAuth: true
   },
   {
     key: 'import',
     icon: 'icon-daoru',
-    name: t('mock.mockApis.menuItems.import'),
+    name: t('mock.detail.apis.menuItems.import'),
     noAuth: true
   },
   {
     key: 'importDemo',
     icon: 'icon-daoru',
-    name: t('mock.mockApis.menuItems.importDemo'),
+    name: t('mock.detail.apis.menuItems.importDemo'),
     noAuth: true
   }
 ]);
 
 const sortMenuItems = [{
-  name: t('mock.mockApis.sortMenuItems.createdDate'),
+  name: t('mock.detail.apis.sortOptions.byCreatedDate'),
   key: 'createdDate',
   orderSort: 'DESC'
 }, {
-  name: t('mock.mockApis.sortMenuItems.id'),
+  name: t('mock.detail.apis.sortOptions.byId'),
   key: 'id',
   orderSort: 'ASC'
 }];
@@ -1082,7 +1305,7 @@ provide('currentProxy', currentProxy);
 provide('proxyOptObj', proxyOptObj);
 </script>
 <template>
-  <Hints class="mb-1.5" :text="t('mock.mockApis.hints.mockDescription')" />
+  <Hints class="mb-1.5" :text="$t('mock.detail.apis.hints')" />
   <PureCard style="height: calc(100% - 24px);" class="flex-1 flex flex-nowrap pl-3.5 py-3.5 relative">
     <Spin
       :delay="0"
@@ -1090,7 +1313,7 @@ provide('proxyOptObj', proxyOptObj);
       class="flex flex-col w-80 h-full">
       <div class="flex flex-nowrap space-x-2 mb-2">
         <Input
-          :placeholder="t('mock.mockApis.search.placeholder')"
+          :placeholder="$t('mock.detail.apis.searchPlaceholder')"
           class="flex-1"
           :allowClear="true"
           :value="inputValue"
@@ -1106,7 +1329,7 @@ provide('proxyOptObj', proxyOptObj);
           size="small"
           style="padding-right: 0;"
           @click="create">
-          <span>{{ t('mock.mockApis.buttons.addApi') }}</span>
+          <span>{{ $t('mock.detail.apis.addApi') }}</span>
           <Dropdown :menuItems="dropdownMenuItems" @click="buttonDropdownClick">
             <span class="inline-block w-5 h-5">
               <Icon class="text-white" icon="icon-more" />
@@ -1182,7 +1405,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="save">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-baocun" />
-            <span>{{ t('actions.save') }}</span>
+            <span>{{ $t('mock.detail.apis.save') }}</span>
           </div>
         </Button>
         <Button
@@ -1192,7 +1415,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="clone(mockAPIId!)">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-fuzhizujian2" />
-            <span>{{ t('actions.clone') }}</span>
+            <span>{{ $t('mock.detail.apis.clone') }}</span>
           </div>
         </Button>
         <Button
@@ -1202,7 +1425,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="toExport(mockAPIId!)">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-fuzhizujian2" />
-            <span>{{ t('actions.export') }}</span>
+            <span>{{ $t('mock.detail.apis.export') }}</span>
           </div>
         </Button>
         <Button
@@ -1213,7 +1436,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="del(mockAPIId!)">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-qingchu" />
-            <span>{{ t('actions.delete') }}</span>
+            <span>{{ $t('mock.detail.apis.delete') }}</span>
           </div>
         </Button>
         <Button
@@ -1224,7 +1447,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="refreshInstance">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-peizhifuwutongbu" />
-            <span>{{ t('mock.mockApis.buttons.refreshInstance') }}</span>
+            <span>{{ $t('mock.detail.apis.refreshInstance') }}</span>
           </div>
         </Button>
         <Button
@@ -1235,7 +1458,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="refreshInfo">
           <div class="flex items-center space-x-1">
             <IconRefresh />
-            <span>{{ t('actions.refresh') }}</span>
+            <span>{{ $t('mock.detail.apis.refresh') }}</span>
           </div>
         </Button>
         <Button
@@ -1244,14 +1467,14 @@ provide('proxyOptObj', proxyOptObj);
           @click="goback">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-fanhui" />
-            <span>{{ t('mock.mockApis.buttons.back') }}</span>
+            <span>{{ $t('mock.detail.apis.back') }}</span>
           </div>
         </Button>
       </div>
       <div :id="domId" class="w-full flex-1 overflow-auto space-y-6 scroll-smooth">
         <div class="space-y-2">
           <div class="flex items-center text-3.5 space-x-1 text-text-title">
-            <div>{{ t('mock.mockApis.form.request') }}</div>
+            <div>{{ $t('mock.detail.apis.request') }}</div>
             <div v-if="isSavedMockApi" class="flex items-center text-3 text-theme-sub-content">
               <span class="mx-0.5">(</span>
               <div class="flex items-center translate-y-0.25">
@@ -1270,14 +1493,14 @@ provide('proxyOptObj', proxyOptObj);
               <div class="flex items-center justify-between">
                 <div class="flex items-center mb-0.5">
                   <IconRequired />
-                  <span>{{ t('mock.mockApis.form.name') }}</span>
+                  <span>{{ $t('mock.detail.apis.name') }}</span>
                 </div>
               </div>
               <Input
                 :maxlength="400"
                 :value="summary"
                 :error="summaryError"
-                :placeholder="t('mock.mockApis.form.namePlaceholder')"
+                :placeholder="$t('mock.detail.apis.namePlaceholder')"
                 trim
                 @change="summaryChange" />
             </div>
@@ -1291,14 +1514,14 @@ provide('proxyOptObj', proxyOptObj);
               :options="serviceUrlOptions" />
 
             <div class="pr-5.25">
-              <div class="mb-0.5">{{ t('mock.mockApis.form.description') }}</div>
+              <div class="mb-0.5">{{ $t('mock.detail.apis.description') }}</div>
               <Input
                 :maxlength="20000"
                 :value="description"
                 :autoSize="{ minRows: 5, maxRows: 5 }"
                 showCount
                 type="textarea"
-                :placeholder="t('mock.mockApis.form.descriptionPlaceholder')"
+                :placeholder="$t('mock.detail.apis.descriptionPlaceholder')"
                 trim
                 @change="descriptionChange" />
             </div>
@@ -1307,9 +1530,9 @@ provide('proxyOptObj', proxyOptObj);
         <div class="pr-5.25 space-y-2">
           <div class="flex items-center justify-between leading-5 pr-3.25 text-3.5 text-text-title">
             <div>
-              <span>{{ t('mock.mockApis.form.response') }}</span>
+              <span>{{ $t('mock.detail.apis.response') }}</span>
               <Tooltip>
-                <template #title>{{ t('mock.mockApis.form.responseTooltip') }}</template>
+                <template #title>{{ $t('mock.detail.apis.maxResponseTip') }}</template>
                 <Icon icon="icon-shuoming" class="text-tips cursor-pointer text-3.5 ml-1" />
               </Tooltip>
             </div>
@@ -1319,7 +1542,7 @@ provide('proxyOptObj', proxyOptObj);
               @click="addResponse">
               <div class="flex items-center space-x-1">
                 <Icon icon="icon-jia" />
-                <span>{{ t('mock.mockApis.buttons.addResponse') }}</span>
+                <span>{{ $t('mock.detail.apis.addResponse') }}</span>
               </div>
             </Button>
           </div>
@@ -1342,7 +1565,7 @@ provide('proxyOptObj', proxyOptObj);
                     <div class="flex items-center flex-1 space-x-2">
                       <div class="flex items-center flex-shrink-0 flex-nowrap whitespace-nowrap mb-0.5">
                         <IconRequired />
-                        <span>{{ t('mock.mockApis.form.name') }}</span>
+                        <span>{{ $t('mock.detail.apis.name') }}</span>
                       </div>
 
                       <Validate
@@ -1353,7 +1576,7 @@ provide('proxyOptObj', proxyOptObj);
                           :maxlength="200"
                           :value="nameMap[item]"
                           :error="nameErrorSet.has(item)"
-                          :placeholder="t('mock.mockApis.form.namePlaceholder')"
+                          :placeholder="$t('mock.detail.apis.namePlaceholder')"
                           trim
                           @change="nameChange($event, item)" />
                       </Validate>
@@ -1369,7 +1592,7 @@ provide('proxyOptObj', proxyOptObj);
                       @click="deleteResponse(index, item)">
                       <div class="flex items-center space-x-1">
                         <Icon icon="icon-qingchu" />
-                        <span>{{ t('mock.mockApis.buttons.deleteResponse') }}</span>
+                        <span>{{ $t('mock.detail.apis.deleteResponse') }}</span>
                       </div>
                     </Button>
                   </template>
@@ -1384,10 +1607,10 @@ provide('proxyOptObj', proxyOptObj);
                     <div class="flex items-center py-3">
                       <Arrow :open="openKeys.includes(item + '-1')" @change="arrowChange(item + '-1')" />
                       <div class="flex items-center ml-1">
-                        <span>{{ t('mock.mockApis.response.match') }}</span>
+                        <span>{{ $t('mock.detail.apis.match') }}</span>
                         <Tooltip>
                           <template #title>
-                            {{ t('mock.mockApis.response.matchTooltip') }}
+                            {{ $t('mock.detail.apis.matchTooltip') }}
                           </template>
                           <Icon icon="icon-shuoming" class="text-tips cursor-pointer text-3.5 ml-1" />
                         </Tooltip>
@@ -1398,9 +1621,9 @@ provide('proxyOptObj', proxyOptObj);
                   <div class="flex items-center leading-5 mb-5 space-x-2">
                     <div class="flex items-center">
                       <IconRequired />
-                      <span>{{ t('mock.mockApis.response.priority') }}</span>
+                      <span>{{ $t('mock.detail.apis.priority') }}</span>
                       <Tooltip>
-                        <template #title>{{ t('mock.mockApis.response.priorityTooltip') }}</template>
+                        <template #title>{{ $t('mock.detail.apis.priorityTooltip') }}</template>
                         <Icon icon="icon-shuoming" class="text-tips cursor-pointer text-3.5 ml-0.75" />
                       </Tooltip>
                     </div>
@@ -1434,7 +1657,7 @@ provide('proxyOptObj', proxyOptObj);
                       <Arrow :open="openKeys.includes(item + '-2')" @change="arrowChange(item + '-2')" />
                       <div class="flex items-center ml-1">
                         <IconRequired />
-                        <span>{{ t('mock.mockApis.response.content') }}</span>
+                        <span>{{ $t('mock.detail.apis.content') }}</span>
                       </div>
                     </div>
                   </template>
@@ -1457,9 +1680,9 @@ provide('proxyOptObj', proxyOptObj);
                         :open="openKeys.includes(item + '-3')"
                         @change="arrowChange(item + '-3')" />
                       <div class="flex items-center ml-1">
-                        <span>{{ t('mock.mockApis.response.pushback') }}</span>
+                        <span>{{ $t('mock.detail.apis.pushback') }}</span>
                         <Tooltip>
-                          <template #title>{{ t('mock.mockApis.response.pushbackTooltip') }}</template>
+                          <template #title>{{ $t('mock.detail.apis.pushbackTooltip') }}</template>
                           <Icon icon="icon-shuoming" class="text-tips cursor-pointer text-3.5 ml-1" />
                         </Tooltip>
                       </div>
@@ -1468,8 +1691,8 @@ provide('proxyOptObj', proxyOptObj);
                         :checked="enablePushbackSet.has(item)"
                         size="small"
                         class="ml-1.5"
-                        checkedChildren="t('mock.mockApis.response.enable')"
-                        unCheckedChildren="t('mock.mockApis.response.disable')"
+                        :checkedChildren="$t('mock.detail.apis.enable')"
+                        :unCheckedChildren="$t('mock.detail.apis.disable')"
                         @change="enableChange($event, item)" />
                     </div>
                   </template>
@@ -1491,7 +1714,7 @@ provide('proxyOptObj', proxyOptObj);
     <SelectApiModal
       v-model:visible="apiCopyModalVisible"
       v-model:confirmLoading="apiCopyConfirmLoading"
-      title="复制接口添加"
+      :title="$t('mock.detail.apis.copyApiTitle')"
       type="copy"
       @ok="copyApiOk" />
   </AsyncComponent>
@@ -1499,7 +1722,7 @@ provide('proxyOptObj', proxyOptObj);
     <SelectApiModal
       v-model:visible="apiLinkModalVisible"
       v-model:confirmLoading="apiLinkConfirmLoading"
-      title="关联接口添加"
+      :title="$t('mock.detail.apis.linkApiTitle')"
       type="link"
       @ok="linkApiOk" />
   </AsyncComponent>

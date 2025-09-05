@@ -44,15 +44,15 @@ export function useMockLog (id: string) {
   const linesOpt = [
     {
       value: '500',
-      label: t('mock.mockDetail.log.lineOptions.last500')
+      label: t('mock.detail.log.lineOptions.last500')
     },
     {
       value: '1000',
-      label: t('mock.mockDetail.log.lineOptions.last1000')
+      label: t('mock.detail.log.lineOptions.last1000')
     },
     {
       value: '10000',
-      label: t('mock.mockDetail.log.lineOptions.last10000')
+      label: t('mock.detail.log.lineOptions.last10000')
     }
   ];
 
@@ -156,7 +156,7 @@ export function useMockLog (id: string) {
    */
   const downloadLog = () => {
     if (!content.value) {
-      notification.warning(t('mock.mockDetail.log.notifications.noDownloadContent'));
+      notification.warning(t('mock.detail.log.notifications.noDownloadContent'));
       return;
     }
 

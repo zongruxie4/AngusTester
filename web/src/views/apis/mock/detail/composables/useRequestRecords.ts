@@ -1,9 +1,9 @@
 import { onMounted, ref } from 'vue';
 import { debounce } from 'throttle-debounce';
-import { duration } from '@xcan-angus/infra';
+import { duration, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { mock } from '@/api/tester';
 
-import { RequestRecordDetail, RequestRecordItem, SearchParams } from '@/views/apis/mock/detail/types';
+import { RequestRecordItem } from '@/views/apis/mock/detail/types';
 
 /**
  * Composable for managing request records data and interactions.
@@ -11,7 +11,7 @@ import { RequestRecordDetail, RequestRecordItem, SearchParams } from '@/views/ap
  * Handles fetching, pagination, search, and selection of API request logs.
  */
 export function useRequestRecords (serviceId: string) {
-  const params = ref<SearchParams>({
+  const params = ref<PageQuery>({
     pageNo: 1,
     pageSize: 10,
     filters: []
@@ -29,7 +29,8 @@ export function useRequestRecords (serviceId: string) {
     if (!serviceId) return;
 
     loading.value = true;
-    const [error, { data = { list: [], total: 0 } }] = await mock.loadMockApiLogList(serviceId, params.value);
+    const [error, { data = { list: [], total: 0 } }] =
+      await mock.loadMockApiLogList(serviceId, params.value);
     loading.value = false;
 
     if (error) return;
@@ -49,7 +50,7 @@ export function useRequestRecords (serviceId: string) {
   const handleSearch = debounce(duration.search, (value: string) => {
     params.value.pageNo = 1;
     if (value) {
-      params.value.filters = [{ key: 'summary', value, op: 'MATCH_END' }];
+      params.value.filters = [{ key: 'summary', value, op: SearchCriteria.OpEnum.MatchEnd }];
     } else {
       params.value.filters = [];
     }

@@ -38,6 +38,12 @@ export interface MockService {
   /** Name of the node where the service is deployed */
   nodeName: string;
 
+  servicePort: string;
+
+  nodeIp: string;
+
+  nodePublicIp?: string;
+
   /** Domain URL of the service */
   serviceDomainUrl: string;
 

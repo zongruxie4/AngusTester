@@ -1,7 +1,7 @@
 import { computed, ref, watch } from 'vue';
 import { mock } from '@/api/tester';
 
-import { GridColumn, HeaderItem, RequestRecordDetail } from '@/views/apis/mock/detail/types';
+import { GridColumn, HttpHeaderItem, RequestRecordDetail } from '@/views/apis/mock/detail/types';
 
 /**
  * Composable for managing detailed request/response information.
@@ -19,7 +19,7 @@ export function useRecordDetail () {
   /**
    * Transform header array into grid column format and info object.
    */
-  const transformHeaders = (headers: HeaderItem[] = []) => {
+  const transformHeaders = (headers: HttpHeaderItem[] = []) => {
     const columns: GridColumn[] = [];
     const info: Record<string, string> = {};
 

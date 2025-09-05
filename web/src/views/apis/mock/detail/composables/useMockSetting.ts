@@ -5,7 +5,7 @@ import { appContext } from '@xcan-angus/infra';
 import type { Rule } from 'ant-design-vue/es/form';
 
 import { mock } from '@/api/tester';
-import type { MockServiceInfo, ServiceSettings, CorsConfig, ApiSecurityItem } from '../types';
+import type { MockServiceDetail, ServerSettings, CorsSetting, ApiSecurityItem } from '../types';
 
 /**
  * Composable for managing mock service settings
@@ -20,11 +20,11 @@ export function useMockSetting (id: string) {
     name: ''
   });
 
-  const suretyFormState = ref<{ apisSecurity: ApiSecurityItem[] }>({
+  const securityFormState = ref<{ apisSecurity: ApiSecurityItem[] }>({
     apisSecurity: []
   });
 
-  const apisCors = ref<CorsConfig>({
+  const apisCors = ref<CorsSetting>({
     allowCorsCredentials: true,
     allowCorsOrigin: '*',
     allowCorsRequestHeaders: '',
@@ -33,7 +33,7 @@ export function useMockSetting (id: string) {
     enabled: true
   });
 
-  const setting = ref<ServiceSettings>({
+  const setting = ref<ServerSettings>({
     useSsl: false,
     workThreadNum: '256',
     enableNettyLog: false,
@@ -46,7 +46,7 @@ export function useMockSetting (id: string) {
   });
 
   // UI state management
-  const mockServiceInfo = ref<MockServiceInfo>();
+  const mockServiceInfo = ref<MockServiceDetail>();
   const loading = ref(false);
   const editionType = ref<string>();
 
@@ -93,7 +93,7 @@ export function useMockSetting (id: string) {
     infoFormState.value.serviceDomainUrl = data.serviceDomainUrl;
 
     // Initialize security settings
-    suretyFormState.value.apisSecurity = data.apisSecurity?.length
+    securityFormState.value.apisSecurity = data.apisSecurity?.length
       ? data.apisSecurity.map(item => ({ ...item, in: item.in.value }))
       : [];
     isOpenSurety.value = !!data.apisSecurity?.length;
@@ -112,13 +112,13 @@ export function useMockSetting (id: string) {
     isOpenSurety.value = value;
 
     if (value) {
-      suretyFormState.value.apisSecurity.push({
+      securityFormState.value.apisSecurity.push({
         keyName: '',
         value: '',
         in: 'header'
       });
     } else {
-      suretyFormState.value.apisSecurity = [];
+      securityFormState.value.apisSecurity = [];
 
       if (!mockServiceInfo.value?.apisSecurity?.length) return;
 
@@ -128,7 +128,7 @@ export function useMockSetting (id: string) {
       loading.value = false;
 
       if (error) {
-        suretyFormState.value.apisSecurity = mockServiceInfo.value.apisSecurity?.length
+        securityFormState.value.apisSecurity = mockServiceInfo.value.apisSecurity?.length
           ? mockServiceInfo.value.apisSecurity
           : [];
         isOpenSurety.value = !!mockServiceInfo.value.apisSecurity?.length;
@@ -136,7 +136,7 @@ export function useMockSetting (id: string) {
       }
 
       await loadInfo();
-      notification.success(t('mock.mockDetail.mockSet.notifications.modifySuccess'));
+      notification.success(t('mock.detail.notifications.modifySuccess'));
     }
   };
 
@@ -293,7 +293,7 @@ export function useMockSetting (id: string) {
       mockServiceInfo.value[keyPath[0]][keyPath[1]] = params[keyPath[0]][keyPath[1]];
     }
 
-    notification.success(t('mock.mockDetail.mockSet.notifications.modifySuccess'));
+    notification.success(t('mock.detail.notifications.modifySuccess'));
     editValue.value = false;
   };
 
@@ -327,7 +327,7 @@ export function useMockSetting (id: string) {
 
     mockServiceInfo.value.setting[key] = _params.setting[key];
     setting.value[key] = _params.setting[key];
-    notification.success(t('mock.mockDetail.mockSet.notifications.modifySuccess'));
+    notification.success(t('mock.detail.notifications.modifySuccess'));
   };
 
   /**
@@ -356,7 +356,7 @@ export function useMockSetting (id: string) {
 
     mockServiceInfo.value.apisCors[key] = _params.apisCors[key];
     apisCors.value[key] = _params.apisCors[key];
-    notification.success(t('mock.mockDetail.mockSet.notifications.modifySuccess'));
+    notification.success(t('mock.detail.notifications.modifySuccess'));
   };
 
   /**
@@ -367,8 +367,8 @@ export function useMockSetting (id: string) {
 
     const _params = {
       id: mockServiceInfo.value.id,
-      apisSecurity: suretyFormState.value.apisSecurity.length
-        ? suretyFormState.value.apisSecurity
+      apisSecurity: securityFormState.value.apisSecurity.length
+        ? securityFormState.value.apisSecurity
         : []
     };
 
@@ -377,23 +377,23 @@ export function useMockSetting (id: string) {
     loading.value = false;
 
     if (error) {
-      suretyFormState.value.apisSecurity = mockServiceInfo.value.apisSecurity?.length
+      securityFormState.value.apisSecurity = mockServiceInfo.value.apisSecurity?.length
         ? mockServiceInfo.value.apisSecurity
         : [];
       isOpenSurety.value = !!mockServiceInfo.value.apisSecurity?.length;
       return;
     }
 
-    notification.success(t('mock.mockDetail.mockSet.notifications.modifySuccess'));
+    notification.success(t('mock.detail.notifications.modifySuccess'));
   };
 
   /**
    * Add new security item
    */
   const addApisSecurityItem = () => {
-    if (suretyFormState.value.apisSecurity.length === 10) return;
+    if (securityFormState.value.apisSecurity.length === 10) return;
 
-    suretyFormState.value.apisSecurity.push({
+    securityFormState.value.apisSecurity.push({
       keyName: '',
       value: '',
       in: 'header'
@@ -404,8 +404,8 @@ export function useMockSetting (id: string) {
    * Delete security item by index
    */
   const delApisSecurityItem = (index: number) => {
-    suretyFormState.value.apisSecurity.splice(index, 1);
-    if (!suretyFormState.value.apisSecurity.length) {
+    securityFormState.value.apisSecurity.splice(index, 1);
+    if (!securityFormState.value.apisSecurity.length) {
       isOpenSurety.value = false;
     }
   };
@@ -415,11 +415,11 @@ export function useMockSetting (id: string) {
    */
   const keNameValidator = async (_rule: Rule, value: string) => {
     if (!value) {
-      return Promise.reject(new Error(t('mock.mockDetail.mockSet.validation.enterParamName')));
+      return Promise.reject(new Error(t('mock.detail.validation.enterParamName')));
     }
 
     const keyNames = new Set();
-    const hasDuplicates = suretyFormState.value.apisSecurity.some(obj => {
+    const hasDuplicates = securityFormState.value.apisSecurity.some(obj => {
       if (keyNames.has(obj.keyName)) {
         return true;
       }
@@ -428,7 +428,7 @@ export function useMockSetting (id: string) {
     });
 
     if (hasDuplicates) {
-      return Promise.reject(new Error(t('mock.mockDetail.mockSet.validation.paramNameDuplicate')));
+      return Promise.reject(new Error(t('mock.detail.validation.paramNameDuplicate')));
     }
 
     return Promise.resolve();
@@ -452,7 +452,7 @@ export function useMockSetting (id: string) {
   return {
     // State
     infoFormState,
-    suretyFormState,
+    securityFormState,
     apisCors,
     setting,
     mockServiceInfo,

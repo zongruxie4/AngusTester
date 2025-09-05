@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Divider, Form, FormItem, Radio, RadioGroup, Switch, Tooltip } from 'ant-design-vue';
 import { Card, Hints, Icon, IconCopy, Input, Select } from '@xcan-angus/vue-ui';
-import type { Rule } from 'ant-design-vue/es/form';
+import { EditionType } from '@xcan-angus/infra';
 
 import { useMockSetting } from './composables/useMockSetting';
 
@@ -21,7 +21,7 @@ const { t } = useI18n();
 const {
   // State
   infoFormState,
-  suretyFormState,
+  securityFormState,
   apisCors,
   setting,
   mockServiceInfo,
@@ -63,17 +63,17 @@ const {
 const infoFormRef = ref();
 const settingFormRef = ref();
 const apisCorsFormRef = ref();
-const suretyFormRef = ref();
+const securityFormRef = ref();
 </script>
 <template>
   <Card>
     <template #title>
-      <span class="text-3 font-medium">{{ t('mock.mockDetail.mockSet.basicInfo.title') }}</span>
+      <span class="text-3.5 font-semibold">{{ t('mock.detail.basicInfo.title') }}</span>
     </template>
     <Form
       ref="infoFormRef"
       :model="infoFormState"
-      :labelCol="{ style: { width: '140px' } }"
+      :labelCol="{ style: { width: '200px', fontWeight: 'bold' } }"
       :colon="false"
       size="small"
       layout="horizontal">
@@ -87,14 +87,14 @@ const suretyFormRef = ref();
         <Input :value="mockServiceInfo?.id" disabled />
       </FormItem>
       <FormItem
-        :rules="{ required: true, message: t('mock.mockDetail.mockSet.validation.enterName'), trigger: 'change' }"
+        :rules="{ required: true, message: t('mock.detail.validation.enterName'), trigger: 'change' }"
         name="name"
         class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('mock.mockDetail.mockSet.basicInfo.name') }}</span>
+            <span>{{ t('mock.detail.basicInfo.name') }}</span>
             <Tooltip
-              :title="t('mock.mockDetail.mockSet.basicInfo.nameTooltip')"
+              :title="t('mock.detail.basicInfo.nameTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '600px'}">
@@ -112,9 +112,13 @@ const suretyFormRef = ref();
           :disabled="!editName">
           <template v-if="hasEditAuth" #suffix>
             <template v-if="editName">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('name','cancel','infoForm')">{{ t('mock.mockDetail.mockSet.buttons.cancel') }}</a>
+              <a
+                class="text-text-link text-3 leading-3"
+                @click="handleEdit('name','cancel','infoForm')">{{ t('mock.detail.buttons.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('name','save','infoForm')">{{ t('mock.mockDetail.mockSet.buttons.confirm') }}</a>
+              <a
+                class="text-text-link text-3 leading-3"
+                @click="handleEdit('name','save','infoForm')">{{ t('mock.detail.buttons.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -126,14 +130,14 @@ const suretyFormRef = ref();
         </Input>
       </FormItem>
       <FormItem
-        :rules="{ required: true, message: t('mock.mockDetail.mockSet.validation.enterDomain'), trigger: 'change' }"
+        :rules="{ required: true, message: t('mock.detail.validation.enterDomain'), trigger: 'change' }"
         name="serviceDomainUrl"
         class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('mock.mockDetail.mockSet.basicInfo.domain') }}</span>
+            <span>{{ t('mock.detail.basicInfo.domain') }}</span>
             <Tooltip
-              :title="t('mock.mockDetail.mockSet.basicInfo.domainTooltip')"
+              :title="t('mock.detail.basicInfo.domainTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '600px'}">
@@ -145,11 +149,11 @@ const suretyFormRef = ref();
           v-model:value="infoFormState.serviceDomainUrl"
           allowClear
           :disabled="!editServiceDomain">
-          <template v-if="editionType !== 'CLOUD_SERVICE' && hasEditAuth" #suffix>
+          <template v-if="editionType !== EditionType.CLOUD_SERVICE && hasEditAuth" #suffix>
             <template v-if="editServiceDomain">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('serviceDomainUrl','cancel','infoForm')">{{ t('mock.mockDetail.mockSet.buttons.cancel') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('serviceDomainUrl','cancel','infoForm')">{{ t('mock.detail.buttons.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('serviceDomainUrl','save','infoForm')">{{ t('mock.mockDetail.mockSet.buttons.confirm') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('serviceDomainUrl','save','infoForm')">{{ t('mock.detail.buttons.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -164,9 +168,9 @@ const suretyFormRef = ref();
       <FormItem class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('api.mockDetail.mockSet.basicInfo.port') }}</span>
+            <span>{{ t('mock.detail.basicInfo.port') }}</span>
             <Tooltip
-              :title="t('api.mockDetail.mockSet.basicInfo.portTooltip')"
+              :title="t('mock.detail.basicInfo.portTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '600px'}">
@@ -179,9 +183,9 @@ const suretyFormRef = ref();
       <FormItem class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('api.mockDetail.mockSet.basicInfo.node') }}</span>
+            <span>{{ t('mock.detail.basicInfo.node') }}</span>
             <Tooltip
-              :title="t('api.mockDetail.mockSet.basicInfo.nodeTooltip')"
+              :title="t('mock.detail.basicInfo.nodeTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '600px'}">
@@ -196,23 +200,23 @@ const suretyFormRef = ref();
   <Card class="mt-2">
     <template #title>
       <div class="flex items-start">
-        <span class="text-3 flex-none  font-medium">{{ t('api.mockDetail.mockSet.basicInfo.serviceConfig') }}</span>
-        <Hints class="mt-2.75 ml-2" :text="t('api.mockDetail.mockSet.basicInfo.serviceConfigTooltip')" />
+        <span class="text-3.5 flex-none font-semibold">{{ t('mock.detail.basicInfo.serviceConfig') }}</span>
+        <Hints class="mt-2.75 ml-2" :text="t('mock.detail.basicInfo.serviceConfigTooltip')" />
       </div>
     </template>
     <Form
       ref="settingFormRef"
       :model="setting"
-      :labelCol="{ style: { width: '140px' } }"
+      :labelCol="{ style: { width: '200px', fontWeight: 'bold' } }"
       :colon="false"
       size="small"
       layout="horizontal">
       <FormItem name="useSsl" class="w-150 hidden">
         <template #label>
           <div class="flex items-center" @click.prevent>
-            <span>{{ t('api.mockDetail.mockSet.basicInfo.useSsl') }}</span>
+            <span>{{ t('mock.detail.basicInfo.useSsl') }}</span>
             <Tooltip
-              :title="t('api.mockDetail.mockSet.basicInfo.useSslTooltip')"
+              :title="t('mock.detail.basicInfo.useSslTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '600px'}">
@@ -230,9 +234,9 @@ const suretyFormRef = ref();
       <FormItem name="workThreadNum" class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('api.mockDetail.mockSet.basicInfo.workThreadNum') }}</span>
+            <span>{{ t('mock.detail.basicInfo.workThreadNum') }}</span>
             <Tooltip
-              :title="t('api.mockDetail.mockSet.basicInfo.workThreadNumTooltip')"
+              :title="t('mock.detail.basicInfo.workThreadNumTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '600px'}">
@@ -264,9 +268,9 @@ const suretyFormRef = ref();
       <FormItem name="logFileLevel" class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('api.mockDetail.mockSet.basicInfo.logLevel') }}</span>
+            <span>{{ t('mock.detail.basicInfo.logLevel') }}</span>
             <Tooltip
-              :title="t('api.mockDetail.mockSet.basicInfo.logLevelTooltip')"
+              :title="t('mock.detail.basicInfo.logLevelTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '600px'}">
@@ -282,7 +286,7 @@ const suretyFormRef = ref();
           <Radio value="NONE">
             None
             <Tooltip
-              :title="t('api.mockDetail.mockSet.basicInfo.logFileLevel.none')"
+              :title="t('mock.detail.basicInfo.logFileLevel.none')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '400px'}">
@@ -292,7 +296,7 @@ const suretyFormRef = ref();
           <Radio value="BASIC">
             Basic
             <Tooltip
-              :title="t('api.mockDetail.mockSet.basicInfo.logFileLevel.basic')"
+              :title="t('mock.detail.basicInfo.logFileLevel.basic')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '400px'}">
@@ -302,7 +306,7 @@ const suretyFormRef = ref();
           <Radio value="HEADERS">
             Headers
             <Tooltip
-              :title="t('api.mockDetail.mockSet.basicInfo.logFileLevel.headers')"
+              :title="t('mock.detail.basicInfo.logFileLevel.headers')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '400px'}">
@@ -312,7 +316,7 @@ const suretyFormRef = ref();
           <Radio value="FULL">
             Full
             <Tooltip
-              :title="t('api.mockDetail.mockSet.basicInfo.logFileLevel.full')"
+              :title="t('mock.detail.basicInfo.logFileLevel.full')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '400px'}">
@@ -324,9 +328,9 @@ const suretyFormRef = ref();
       <FormItem name="sendRequestLog" class="w-150">
         <template #label>
           <div class="flex items-center" @click.prevent>
-            <span>{{ t('api.mockDetail.mockSet.basicInfo.sendRequestLog') }}</span>
+            <span>{{ t('mock.detail.basicInfo.sendRequestLog') }}</span>
             <Tooltip
-              :title="t('api.mockDetail.mockSet.basicInfo.sendRequestLogTooltip')"
+              :title="t('mock.detail.basicInfo.sendRequestLogTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '600px'}">
@@ -344,9 +348,9 @@ const suretyFormRef = ref();
       <FormItem name="maxContentLength" class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('api.mockDetail.mockSet.basicInfo.maxContentLength') }}</span>
+            <span>{{ t('mock.detail.basicInfo.maxContentLength') }}</span>
             <Tooltip
-              :title="t('api.mockDetail.mockSet.basicInfo.maxContentLengthTooltip')"
+              :title="t('mock.detail.basicInfo.maxContentLengthTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '600px'}">
@@ -377,9 +381,9 @@ const suretyFormRef = ref();
       <FormItem name="workPushbackThreadNum" class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('api.mockDetail.mockSet.basicInfo.pushbackThreadNum') }}</span>
+            <span>{{ t('mock.detail.basicInfo.pushbackThreadNum') }}</span>
             <Tooltip
-              :title="t('api.mockDetail.mockSet.basicInfo.pushbackThreadNumTooltip')"
+              :title="t('mock.detail.basicInfo.pushbackThreadNumTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '1000px'}">
@@ -410,9 +414,9 @@ const suretyFormRef = ref();
       <FormItem name="maxPushbackConnectTimeout" class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('api.mockDetail.mockSet.basicInfo.pushbackConnectTimeout') }}</span>
+            <span>{{ t('mock.detail.basicInfo.pushbackConnectTimeout') }}</span>
             <Tooltip
-              :title="t('api.mockDetail.mockSet.basicInfo.pushbackConnectTimeoutTooltip')"
+              :title="t('mock.detail.basicInfo.pushbackConnectTimeoutTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '1000px'}">
@@ -444,9 +448,9 @@ const suretyFormRef = ref();
       <FormItem name="maxPushbackRequestTimeout" class="w-150">
         <template #label>
           <div class="flex items-center">
-            <span>{{ t('api.mockDetail.mockSet.basicInfo.pushbackRequestTimeout') }}</span>
+            <span>{{ t('mock.detail.basicInfo.pushbackRequestTimeout') }}</span>
             <Tooltip
-              :title="t('api.mockDetail.mockSet.basicInfo.pushbackRequestTimeoutTooltip')"
+              :title="t('mock.detail.basicInfo.pushbackRequestTimeoutTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '1000px'}">
@@ -480,23 +484,23 @@ const suretyFormRef = ref();
   <Card class="mt-2">
     <template #title>
       <div class="flex items-start">
-        <span class="text-3 flex-none font-medium">{{ t('api.mockDetail.mockSet.basicInfo.surety') }}</span>
-        <Hints class="mt-2.75 ml-2" :text="t('api.mockDetail.mockSet.basicInfo.suretyHints')" />
+        <span class="text-3.5 flex-none font-semibold">{{ t('mock.detail.basicInfo.security') }}</span>
+        <Hints class="mt-2.75 ml-2" :text="t('mock.detail.basicInfo.securityHints')" />
       </div>
     </template>
     <Form
-      ref="suretyFormRef"
-      :model="suretyFormState"
-      :labelCol="{ style: { width: '140px' } }"
+      ref="securityFormRef"
+      :model="securityFormState"
+      :labelCol="{ style: { width: '200px', fontWeight: 'bold' } }"
       :colon="false"
       size="small"
       layout="horizontal">
       <FormItem class="w-150">
         <template #label>
           <div class="flex items-center" @click.prevent>
-            <span>{{ t('api.mockDetail.mockSet.basicInfo.surety') }}</span>
+            <span>{{ t('mock.detail.basicInfo.security') }}</span>
             <Tooltip
-              :title="t('api.mockDetail.mockSet.basicInfo.suretyTooltip')"
+              :title="t('mock.detail.basicInfo.securityTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '1000px'}">
@@ -511,9 +515,9 @@ const suretyFormRef = ref();
           :checked="isOpenSurety"
           @change="(value: boolean) => apiSuretyChange(value)" />
       </FormItem>
-      <div v-if="isOpenSurety" class="flex flex-col items-end -mt-1 w-150">
+      <div v-if="isOpenSurety" class="flex flex-col items-end ml-10 w-150">
         <div
-          v-for="(item,index) in suretyFormState.apisSecurity"
+          v-for="(item,index) in securityFormState.apisSecurity"
           :key="index"
           style="width: 460px;"
           class="flex relative space-x-1 flex-1">
@@ -521,29 +525,29 @@ const suretyFormRef = ref();
             class="flex-1"
             :name="['apisSecurity', index, 'keyName']"
             :rules="{required: true, validator: keNameValidator}">
-            <Input v-model:value="item.keyName" :placeholder="t('api.mockDetail.mockSet.basicInfo.paramsName')" />
+            <Input v-model:value="item.keyName" :placeholder="t('mock.detail.basicInfo.paramsName')" />
           </FormItem>
           <FormItem class="w-20">
             <Select
               v-model:value="item.in"
               :options="inOptions"
               size="small"
-              :placeholder="t('api.mockDetail.mockSet.basicInfo.in')" />
+              :placeholder="t('mock.detail.basicInfo.in')" />
           </FormItem>
           <FormItem
             class="flex-1"
             :name="['apisSecurity', index, 'value']"
-            :rules="{required: true, message: t('api.mockDetail.mockSet.basicInfo.paramsValueRule')}">
-            <Input v-model:value="item.value" :placeholder="t('api.mockDetail.mockSet.basicInfo.paramsValue')" />
+            :rules="{required: true, message: t('mock.detail.basicInfo.paramsValueRule')}">
+            <Input v-model:value="item.value" :placeholder="t('mock.detail.basicInfo.paramsValue')" />
           </FormItem>
           <div
             class="flex items-center text-4 absolute top-1.5"
-            :class="suretyFormState.apisSecurity.length-1 === index && suretyFormState.apisSecurity.length !== 10?'-right-11':'-right-7'">
+            :class="securityFormState.apisSecurity.length-1 === index && securityFormState.apisSecurity.length !== 10?'-right-11':'-right-7'">
             <Icon
               icon="icon-jianshao"
               class="cursor-pointer mr-1"
               @click="delApisSecurityItem(index)" />
-            <template v-if="suretyFormState.apisSecurity.length-1 === index && suretyFormState.apisSecurity.length !== 10">
+            <template v-if="securityFormState.apisSecurity.length-1 === index && securityFormState.apisSecurity.length !== 10">
               <Icon
                 icon="icon-tianjia"
                 class="cursor-pointer"
@@ -565,23 +569,23 @@ const suretyFormRef = ref();
   <Card class="mt-2">
     <template #title>
       <div class="flex items-start">
-        <span class="text-3 flex-none font-medium">{{ t('mock.mockDetail.mockSet.cors.title') }}</span>
-        <Hints class="mt-2.75 ml-2" :text="t('mock.mockDetail.mockSet.cors.description')" />
+        <span class="text-3.5 flex-none font-semibold">{{ t('mock.detail.cors.title') }}</span>
+        <Hints class="mt-2.75 ml-2" :text="t('mock.detail.cors.description')" />
       </div>
     </template>
     <Form
       ref="apisCorsFormRef"
       :model="apisCors"
-      :labelCol="{ style: { width: '140px' } }"
+      :labelCol="{ style: { width: '200px', fontWeight: 'bold' } }"
       :colon="false"
       size="small"
       layout="horizontal">
       <FormItem name="enabled" class="w-150">
         <template #label>
           <div class="flex items-center" @click.prevent>
-            <span>{{ t('mock.mockDetail.mockSet.cors.enabled') }}</span>
+            <span>{{ t('mock.detail.cors.enabled') }}</span>
             <Tooltip
-              :title="t('mock.mockDetail.mockSet.cors.enabledTooltip')"
+              :title="t('mock.detail.cors.enabledTooltip')"
               placement="topLeft"
               arrowPointAtCenter
               :overlayStyle="{'max-width': '1000px'}">
@@ -603,9 +607,9 @@ const suretyFormRef = ref();
         <FormItem name="allowCorsOrigin" class="w-150">
           <template #label>
             <div class="flex items-center">
-              <span>{{ t('mock.mockDetail.mockSet.cors.allowOrigin') }}</span>
+              <span>{{ t('mock.detail.cors.allowOrigin') }}</span>
               <Tooltip
-                :title="t('mock.mockDetail.mockSet.cors.allowOriginTooltip')"
+                :title="t('mock.detail.cors.allowOriginTooltip')"
                 placement="topLeft"
                 arrowPointAtCenter
                 :overlayStyle="{'max-width': '1000px'}">
@@ -618,9 +622,9 @@ const suretyFormRef = ref();
             :disabled="!editOrigin">
             <template v-if="hasEditAuth" #suffix>
               <template v-if="editOrigin">
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsOrigin','cancel','apisCorsForm')">{{ t('mock.mockDetail.mockSet.buttons.cancel') }}</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsOrigin','cancel','apisCorsForm')">{{ t('mock.detail.buttons.cancel') }}</a>
                 <Divider type="vertical" />
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsOrigin','save','apisCorsForm')">{{ t('mock.mockDetail.mockSet.buttons.confirm') }}</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsOrigin','save','apisCorsForm')">{{ t('mock.detail.buttons.confirm') }}</a>
               </template>
               <template v-else>
                 <Icon
@@ -634,9 +638,9 @@ const suretyFormRef = ref();
         <FormItem name="allowCorsCredentials" class="relative w-150">
           <template #label>
             <div class="flex items-center">
-              <span>{{ t('mock.mockDetail.mockSet.cors.allowCredentials') }}</span>
+              <span>{{ t('mock.detail.cors.allowCredentials') }}</span>
               <Tooltip
-                :title="t('mock.mockDetail.mockSet.cors.allowCredentialsTooltip')"
+                :title="t('mock.detail.cors.allowCredentialsTooltip')"
                 placement="topLeft"
                 arrowPointAtCenter
                 :overlayStyle="{'max-width': '1000px'}">
@@ -651,9 +655,9 @@ const suretyFormRef = ref();
             :disabled="!editCredentials" />
           <div class="absolute right-2 top-0.75">
             <template v-if="editCredentials">
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsCredentials','cancel','apisCorsForm')">{{ t('mock.mockDetail.mockSet.buttons.cancel') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsCredentials','cancel','apisCorsForm')">{{ t('mock.detail.buttons.cancel') }}</a>
               <Divider type="vertical" />
-              <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsCredentials','save','apisCorsForm')">{{ t('mock.mockDetail.mockSet.buttons.confirm') }}</a>
+              <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsCredentials','save','apisCorsForm')">{{ t('mock.detail.buttons.confirm') }}</a>
             </template>
             <template v-else>
               <Icon
@@ -666,9 +670,9 @@ const suretyFormRef = ref();
         <FormItem name="allowCorsRequestMethods" class="relative w-150">
           <template #label>
             <div class="flex items-center">
-              <span>{{ t('mock.mockDetail.mockSet.cors.allowRequestMethods') }}</span>
+              <span>{{ t('mock.detail.cors.allowRequestMethods') }}</span>
               <Tooltip
-                :title="t('mock.mockDetail.mockSet.cors.allowRequestMethodsTooltip')"
+                :title="t('mock.detail.cors.allowRequestMethodsTooltip')"
                 placement="topLeft"
                 arrowPointAtCenter
                 :overlayStyle="{'max-width': '1000px'}">
@@ -683,9 +687,9 @@ const suretyFormRef = ref();
             :class="editRequestMethods?'api-cors-allow-cors-request-methods-edit':'api-cors-allow-cors-request-methods'">
             <template v-if="hasEditAuth" #suffix>
               <template v-if="editRequestMethods">
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsRequestMethods','cancel','apisCorsForm')">{{ t('mock.mockDetail.mockSet.buttons.cancel') }}</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsRequestMethods','cancel','apisCorsForm')">{{ t('mock.detail.buttons.cancel') }}</a>
                 <Divider type="vertical" />
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsRequestMethods','save','apisCorsForm')">{{ t('mock.mockDetail.mockSet.buttons.confirm') }}</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsRequestMethods','save','apisCorsForm')">{{ t('mock.detail.buttons.confirm') }}</a>
               </template>
               <template v-else>
                 <Icon
@@ -699,9 +703,9 @@ const suretyFormRef = ref();
         <FormItem name="allowCorsRequestHeaders" class="relative w-150">
           <template #label>
             <div class="flex items-center">
-              <span>{{ t('mock.mockDetail.mockSet.cors.allowRequestHeaders') }}</span>
+              <span>{{ t('mock.detail.cors.allowRequestHeaders') }}</span>
               <Tooltip
-                :title="t('mock.mockDetail.mockSet.cors.allowRequestHeadersTooltip')"
+                :title="t('mock.detail.cors.allowRequestHeadersTooltip')"
                 placement="topLeft"
                 arrowPointAtCenter
                 :overlayStyle="{'max-width': '1000px'}">
@@ -712,9 +716,9 @@ const suretyFormRef = ref();
           <Input v-model:value="apisCors.allowCorsRequestHeaders" :disabled="!editRequestHeaders">
             <template v-if="hasEditAuth" #suffix>
               <template v-if="editRequestHeaders">
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsRequestHeaders','cancel','apisCorsForm')">{{ t('mock.mockDetail.mockSet.buttons.cancel') }}</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsRequestHeaders','cancel','apisCorsForm')">{{ t('mock.detail.buttons.cancel') }}</a>
                 <Divider type="vertical" />
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsRequestHeaders','save','apisCorsForm')">{{ t('mock.mockDetail.mockSet.buttons.confirm') }}</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowCorsRequestHeaders','save','apisCorsForm')">{{ t('mock.detail.buttons.confirm') }}</a>
               </template>
               <template v-else>
                 <Icon
@@ -728,9 +732,9 @@ const suretyFormRef = ref();
         <FormItem name="allowExposeHeaders" class="relative w-150">
           <template #label>
             <div class="flex items-center">
-              <span>{{ t('mock.mockDetail.mockSet.cors.allowExposeHeaders') }}</span>
+              <span>{{ t('mock.detail.cors.allowExposeHeaders') }}</span>
               <Tooltip
-                :title="t('mock.mockDetail.mockSet.cors.allowExposeHeadersTooltip')"
+                :title="t('mock.detail.cors.allowExposeHeadersTooltip')"
                 placement="topLeft"
                 arrowPointAtCenter
                 :overlayStyle="{'max-width': '1000px'}">
@@ -741,9 +745,9 @@ const suretyFormRef = ref();
           <Input v-model:value="apisCors.allowExposeHeaders" :disabled="!editExposeHeaders">
             <template v-if="hasEditAuth" #suffix>
               <template v-if="editExposeHeaders">
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowExposeHeaders','cancel','apisCorsForm')">{{ t('mock.mockDetail.mockSet.buttons.cancel') }}</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowExposeHeaders','cancel','apisCorsForm')">{{ t('mock.detail.buttons.cancel') }}</a>
                 <Divider type="vertical" />
-                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowExposeHeaders','save','apisCorsForm')">{{ t('mock.mockDetail.mockSet.buttons.confirm') }}</a>
+                <a class="text-text-link text-3 leading-3" @click="handleEdit('allowExposeHeaders','save','apisCorsForm')">{{ t('mock.detail.buttons.confirm') }}</a>
               </template>
               <template v-else>
                 <Icon

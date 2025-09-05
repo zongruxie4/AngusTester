@@ -35,6 +35,7 @@ const {
 
   // Methods
   closeErrInfo,
+  loadLogContent,
   downloadLog,
   handleZoom
 } = useMockLog(props.id);
@@ -43,22 +44,20 @@ const {
   <PureCard class="text-3 px-5 h-full flex flex-col pb-5 pt-3">
     <div v-if="showErr" class="border border-border-error rounded-xl px-2 py-1 flex items-center text-3 space-x-1 my-4 bg-bg-red">
       <Icon icon="icon-tishi1" class="text-blue-icon text-3.5" />
-      <span class="text-rule flex-1">{{ errorInfo || t('mock.mockDetail.log.errorInfo') + `http://${ip}:${port}` }}</span>
+      <span class="text-rule flex-1">{{ errorInfo || t('mock.detail.log.errorInfo') + `http://${ip}:${port}` }}</span>
       <Icon
         icon="icon-cuowu"
         class="text-3.5 cursor-pointer"
         @click="closeErrInfo" />
     </div>
-    <div>
-      <span>{{ t('mock.mockDetail.log.logFile') }}</span>
+    <div class="flex items-center space-x-4 my-2">
+      <span class="inline-block text-3.5 text-right font-semibold mr-2">{{ t('mock.detail.log.logFile') }}</span>
       <Select
         v-model:value="logTextParam.logName"
         class="w-70 ml-2"
         :options="fileList">
       </Select>
-    </div>
-    <div class="flex items-center space-x-2 my-2">
-      <span>{{ t('mock.mockDetail.log.browseLog') }}</span>
+      <span class="inline-block w-30  text-3.5 text-right font-semibold mr-2">{{ t('mock.detail.log.browseLog') }}</span>
       <RadioGroup
         v-model:value="logTextParam.linesNum"
         :options="linesOpt"
@@ -68,13 +67,14 @@ const {
           class="py-0 h-5"
           size="small"
           @click="downloadLog">
-          {{ t('mock.mockDetail.log.download') }}
+          {{ t('mock.detail.log.download') }}
         </Button>
         <Button
           class="py-0 h-5 ml-2"
           size="small"
-          :disabled="!logTextParam.logName || loadingLog">
-          {{ t('mock.mockDetail.log.refresh') }}
+          :disabled="!logTextParam.logName || loadingLog"
+          @click="loadLogContent">
+          {{ t('mock.detail.log.refresh') }}
         </Button>
         <Icon
           class="text-3.5 ml-2 cursor-pointer"

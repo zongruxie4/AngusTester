@@ -10,9 +10,9 @@ import { useI18n } from 'vue-i18n';
  * <p>Async chart components for better performance</p>
  * <p>Lazy loads chart components to reduce initial bundle size</p>
  */
-const CacheChart = defineAsyncComponent(() => import('@/components/chart/mock/cacheChart.vue'));
-const RamChart = defineAsyncComponent(() => import('@/components/chart/mock/ramChart.vue'));
-const CpuChart = defineAsyncComponent(() => import('@/components/chart/mock/cpuChart.vue'));
+const CacheChart = defineAsyncComponent(() => import('@/components/chart/mock/CacheChart.vue'));
+const RamChart = defineAsyncComponent(() => import('@/components/chart/mock/RamChart.vue'));
+const CpuChart = defineAsyncComponent(() => import('@/components/chart/mock/CpuChart.vue'));
 
 /**
  * <p>Component props with default values</p>

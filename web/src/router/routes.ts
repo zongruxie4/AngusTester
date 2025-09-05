@@ -170,7 +170,7 @@ const routes: Array<RouteRecordRaw> = [
           },
           {
             path: '/mockservice/:id/monitor',
-            component: () => import('@/views/apis/mock/detail/Control.vue')
+            component: () => import('@/views/apis/mock/detail/Monitor.vue')
           },
           {
             path: '/mockservice/:id/setting',

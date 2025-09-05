@@ -1,9 +1,8 @@
 import { computed, onMounted, ref } from 'vue';
 import { debounce } from 'throttle-debounce';
-import { duration } from '@xcan-angus/infra';
+import { duration, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { mock as mock0 } from '@/api/tester';
-
-import { MockApiItem, SearchParams } from '@/views/apis/mock/detail/types';
+import { MockApiItem } from '@/views/apis/mock/detail/types';
 
 /**
  * Composable for managing the mock API table data and interactions.
@@ -11,7 +10,7 @@ import { MockApiItem, SearchParams } from '@/views/apis/mock/detail/types';
  * Handles pagination, search, sorting, and data loading for the API list table.
  */
 export function useApiTable (serviceId: string) {
-  const tableParams = ref<SearchParams>({
+  const tableParams = ref<PageQuery>({
     pageNo: 1,
     pageSize: 10,
     mockServiceId: serviceId,
@@ -44,7 +43,7 @@ export function useApiTable (serviceId: string) {
   const handleSearch = debounce(duration.search, (value: string) => {
     tableParams.value.pageNo = 1;
     if (value) {
-      tableParams.value.filters = [{ key: 'summary', op: 'MATCH_END', value }];
+      tableParams.value.filters = [{ key: 'summary', op: SearchCriteria.OpEnum.MatchEnd, value }];
     } else {
       tableParams.value.filters = [];
     }
