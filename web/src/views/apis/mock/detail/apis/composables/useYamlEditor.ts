@@ -7,7 +7,7 @@ import { notification } from '@xcan-angus/vue-ui';
  * Composable for YAML editor functionality
  * Handles YAML parsing, validation, and data conversion
  */
-export function useYamlEditor() {
+export function useYamlEditor () {
   const { t } = useI18n();
   const content = ref('');
   const loading = ref(true);

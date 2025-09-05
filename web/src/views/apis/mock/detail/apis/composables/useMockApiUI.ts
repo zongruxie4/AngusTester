@@ -7,7 +7,7 @@ import { TESTER, download } from '@xcan-angus/infra';
  * Composable for managing UI state and modal operations
  * Handles modal visibility, confirmations, and navigation
  */
-export function useMockApiUI() {
+export function useMockApiUI () {
   const router = useRouter();
 
   // Modal visibility states

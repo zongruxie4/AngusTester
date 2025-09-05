@@ -1,7 +1,7 @@
 import { computed, ref, watch } from 'vue';
 import { mock } from '@/api/tester';
 
-import {GridColumn, HeaderItem, RequestRecordDetail} from "@/views/apis/mock/detail/types";
+import { GridColumn, HeaderItem, RequestRecordDetail } from '@/views/apis/mock/detail/types';
 
 /**
  * Composable for managing detailed request/response information.
@@ -9,7 +9,7 @@ import {GridColumn, HeaderItem, RequestRecordDetail} from "@/views/apis/mock/det
  * Handles fetching and formatting of request/response headers and body data
  * for the selected record.
  */
-export function useRecordDetail() {
+export function useRecordDetail () {
   const detail = ref<RequestRecordDetail>();
   const requestColumns = ref<GridColumn[][]>([[]]);
   const requestInfo = ref<Record<string, string>>({});

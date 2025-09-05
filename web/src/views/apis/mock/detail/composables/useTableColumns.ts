@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n';
  * Centralizes table structure, HTTP method colors, and icon mappings
  * for consistent UI presentation across the control panel.
  */
-export function useTableColumns() {
+export function useTableColumns () {
   const { t } = useI18n();
 
   /**

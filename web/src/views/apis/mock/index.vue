@@ -1,24 +1,12 @@
 <script setup lang='ts'>
 import { defineAsyncComponent, nextTick, onBeforeUnmount, onMounted, ref, watch, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Button, Spin as ASpin, Tooltip } from 'ant-design-vue';
-import {
-  AsyncComponent,
-  AuthorizeModal,
-  ButtonAuth,
-  Colon,
-  Dropdown,
-  Icon,
-  IconCopy,
-  modal,
-  notification,
-  SearchPanel,
-  Spin,
-  Table
-} from '@xcan-angus/vue-ui';
+import { Spin as ASpin, Tooltip } from 'ant-design-vue';
+import { AsyncComponent, AuthorizeModal, Dropdown, Colon, Icon, IconCopy, modal, notification, Spin, Table } from '@xcan-angus/vue-ui';
 import { useRoute } from 'vue-router';
 import router from '@/router';
 import { TESTER } from '@xcan-angus/infra';
+import { MockServicePermission, MockServiceStatus } from '@/enums/enums';
 
 // Import composables
 import { useMockData } from './composables/useMockData';
@@ -26,12 +14,13 @@ import { useMockActions } from './composables/useMockActions';
 import { useMockUI } from './composables/useMockUI';
 
 // Import types
-import type { MockServiceObj } from './types';
+import type { MockService } from './types';
 import { mock } from '@/api/tester';
 
 // Import components
-const ExportMock = defineAsyncComponent(() => import('@/views/apis/mock/export/index.vue'));
-const Introduce = defineAsyncComponent(() => import('@/views/apis/mock/introduce/index.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/apis/mock/Introduce.vue'));
+const Export = defineAsyncComponent(() => import('@/views/apis/mock/Export.vue'));
+const SearchPanel = defineAsyncComponent(() => import('@/views/apis/mock/SearchPanel.vue'));
 
 // Use composables
 const { t } = useI18n();
@@ -45,7 +34,7 @@ const {
   tableData,
   pagination,
   projectId,
-  fetchMockServiceList,
+  fetchList,
   handleSearchChange,
   handleTableChange
 } = mockData;
@@ -67,12 +56,12 @@ const {
 const mockUI = useMockUI();
 const {
   exportVisible,
-  exprotData,
+  exportData,
   authVisible,
   authData,
   searchOptions,
   columns,
-  menus,
+  actionMenus,
   statusStyleMap,
   indicator,
   handleMenuClick,
@@ -95,7 +84,7 @@ onMounted(() => {
         });
         router.replace('/apis#mock');
       } else {
-        fetchMockServiceList();
+        fetchList();
       }
     }
   }, {
@@ -108,7 +97,7 @@ onBeforeUnmount(() => {
 });
 
 // Event handlers
-const handleClick = (key: string, record: MockServiceObj) => {
+const handleClick = (key: string, record: MockService) => {
   handleMenuClick(
     key,
     record,
@@ -127,48 +116,16 @@ const authFlagChange = ({ auth }: { auth: boolean }) => {
 <template>
   <Spin :spinning="loading" class="w-full h-full py-5 px-5 overflow-y-auto flex flex-col">
     <Introduce class="mb-5" />
-    <div class="flex items-start justify-between mb-3.5">
-      <SearchPanel
-        ref="searchPanelRef"
-        :options="searchOptions"
-        :width="284"
-        class="flex-1 mr-2"
-        @change="handleSearchChange" />
-      <div class="space-x-2.5">
-        <Button
-          type="primary"
-          size="small"
-          href="/mockservice/add"
-          class="inline-flex space-x-1">
-          <Icon icon="icon-jia" class="text-3.5" />
-          {{ t('mock.actions.addMock') }}
-        </Button>
-        <Button
-          size="small"
-          @click="batchStart">
-          <Icon icon="icon-qidong" class="mr-1 text-3.5" />
-          <span>{{ t('mock.actions.start') }}</span>
-        </Button>
-        <Button
-          size="small"
-          @click="batchDelete">
-          <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
-          <span>{{ t('actions.delete') }}</span>
-        </Button>
-        <ButtonAuth
-          code="MockServiceExport"
-          icon="icon-daochu1"
-          iconStyle="font-size:14px;"
-          @click="handleExport(undefined)" />
-        <Button
-          size="small"
-          :disabled="loading"
-          @click="handleRefresh">
-          <Icon icon="icon-shuaxin" class="text-3.5 mr-1" />
-          <span>{{ t('actions.refresh') }}</span>
-        </Button>
-      </div>
-    </div>
+    <SearchPanel
+      ref="searchPanelRef"
+      :options="searchOptions"
+      :width="284"
+      :loading="loading"
+      @change="handleSearchChange"
+      @batch-start="batchStart"
+      @batch-delete="batchDelete"
+      @export="handleExport"
+      @refresh="handleRefresh" />
     <Table
       rowKey="id"
       :columns="columns"
@@ -178,7 +135,7 @@ const authFlagChange = ({ auth }: { auth: boolean }) => {
       @change="handleTableChange">
       <template #bodyCell="{ column, text, record }">
         <template v-if="column.dataIndex === 'name'">
-          <template v-if="(!record.auth || record.currentAuthsValue.includes('VIEW'))">
+          <template v-if="(!record.auth || record.currentAuthsValue.includes(MockServicePermission.VIEW))">
             <RouterLink
               :to="`/mockservice/${record.id}/apis`"
               class="text-text-link hover:text-text-link-hover cursor-pointer break-all">
@@ -233,7 +190,7 @@ const authFlagChange = ({ auth }: { auth: boolean }) => {
                       <span
                         v-if="record.failTips?.exitCode !== null || record.failTips?.exitCode !== ''"
                         class="ml-2">
-                        (退出码<Colon class="mr-1" />{{ record.failTips.exitCode }})
+                        ({{ t('mock.exitCode') }}<Colon class="mr-1" />{{ record.failTips.exitCode }})
                       </span>
                     </span>
                   </div>
@@ -258,25 +215,27 @@ const authFlagChange = ({ auth }: { auth: boolean }) => {
         <template v-if="column.dataIndex === 'action'">
           <div class="flex items-center">
             <a
-              v-if="(!record.auth || record.currentAuthsValue.includes('RUN')) && record.status?.value !== 'STARTING'"
+              v-if="(!record.auth || record.currentAuthsValue.includes(MockServicePermission.RUN)) &&
+                record.status?.value !== 'STARTING'"
               class="ml-2 cursor-pointer flex items-center text-3"
               @click="handleUpdateStatus(record)">
               <Icon
-                :icon="record.status?.value !== 'RUNNING' ? 'icon-qidong' : 'icon-zhongzhi2'"
+                :icon="record.status?.value !== MockServiceStatus.RUNNING ? 'icon-qidong' : 'icon-zhongzhi2'"
                 class="mr-1" />
-              {{ record.status?.value !== 'RUNNING' ? t('mock.actions.start') : t('mock.actions.stop') }}
+              {{ record.status?.value !== MockServiceStatus.RUNNING ? t('mock.actions.start') : t('mock.actions.stop') }}
             </a>
             <a
               v-else
               class="ml-2 flex items-center text-3"
               disabled>
               <Icon
-                :icon="record.status?.value !== 'RUNNING' ? 'icon-qidong' : 'icon-zhongzhi2'"
+                :icon="record.status?.value !== MockServiceStatus.RUNNING ? 'icon-qidong' : 'icon-zhongzhi2'"
                 class="mr-1" />
-              {{ record.status?.value !== 'RUNNING' ? t('mock.actions.start') : t('mock.actions.stop') }}
+              {{ record.status?.value !== MockServiceStatus.RUNNING ? t('mock.actions.start') : t('mock.actions.stop') }}
             </a>
             <a
-              v-if="(!record.auth || record.currentAuthsValue.includes('DELETE')) && record.status?.value === 'NOT_STARTED'"
+              v-if="(!record.auth || record.currentAuthsValue.includes(MockServicePermission.DELETE)) &&
+                record.status?.value === MockServiceStatus.NOT_STARTED"
               class="mx-2 cursor-pointer flex items-center"
               @click="handleDelete([record.id])">
               <Icon icon="icon-qingchu" class="mr-1 text-3.5" />{{ t('actions.delete') }}
@@ -287,9 +246,11 @@ const authFlagChange = ({ auth }: { auth: boolean }) => {
               disabled>
               <Icon icon="icon-qingchu" class="mr-1 text-3.5" />{{ t('actions.delete') }}
             </a>
+            <!-- TODO 调通Mock服务 '权限' 页面  -->
+            <!-- TODO 下拉操作中强制删除按钮是禁用状态，后台接口返回权限有删除授权  -->
             <Dropdown
               :admin="false"
-              :menuItems="menus"
+              :menuItems="actionMenus"
               :permissions="record.currentAuthsValue"
               @click="handleClick($event.key, record)">
               <Icon icon="icon-gengduo" class="cursor-pointer outline-none items-center" />
@@ -300,9 +261,9 @@ const authFlagChange = ({ auth }: { auth: boolean }) => {
     </Table>
   </Spin>
   <AsyncComponent :visible="exportVisible">
-    <ExportMock
+    <Export
       v-model:visible="exportVisible"
-      :mockService="exprotData"
+      :mockService="exportData"
       type="APIS" />
   </AsyncComponent>
   <AsyncComponent :visible="authVisible">

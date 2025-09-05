@@ -6,7 +6,7 @@ import { utils } from '@xcan-angus/infra';
  * Composable for managing Mock API form state and operations
  * Handles form data, validation, and temporary data storage
  */
-export function useMockApiForm() {
+export function useMockApiForm () {
   // Form state
   const mockAPIConfig = ref<MockAPIConfig>();
   const mockAPIId = ref<string>();
@@ -57,7 +57,7 @@ export function useMockApiForm() {
       endpoint: _endpoint,
       description: _description
     } = data;
-    
+
     summary.value = _summary;
     method.value = _method;
     endpoint.value = _endpoint;
@@ -114,12 +114,12 @@ export function useMockApiForm() {
     }
 
     const { api, response } = prevMockApiData;
-    
+
     summary.value = api.summary;
     method.value = api.method;
     endpoint.value = api.endpoint;
     description.value = api.description;
-    
+
     mockAPIId.value = id;
     mockAPIConfig.value = {
       id,

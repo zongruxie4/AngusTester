@@ -4,10 +4,10 @@ import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Validate } from '@xcan-angus/vue-ui';
 
-const { t } = useI18n();
-
 import MonacoEditor from '@/components/monacoEditor/index.vue';
 import { isHtml, isJSON, isXML, isYAML } from './utils';
+
+const { t } = useI18n();
 
 interface Props {
   value: string;

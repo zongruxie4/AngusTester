@@ -42,7 +42,6 @@ const {
   httpMethodColors
 } = useTableColumns();
 
-
 </script>
 <template>
   <PureCard class="py-3.5">

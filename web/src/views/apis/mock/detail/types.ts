@@ -1,5 +1,4 @@
 
-
 // Keep view-model consistent with ActivityInfo expected fields.
 // Ensure avatar is always a non-empty string to satisfy library prop typing.
 export interface ActivityItem {
@@ -171,7 +170,7 @@ export type FormatType = 'pretty' | 'raw' | 'preview';
 /**
  * HTTP method color mapping keys
  */
-export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTIONS' | 'HEAD' | 'TRACE';
+export type HttpMethod = 'GET' | 'POST' | 'PUT' | MockServicePermission.DELETE | 'PATCH' | 'OPTIONS' | 'HEAD' | 'TRACE';
 
 /**
  * Basic service information form state

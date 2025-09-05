@@ -180,14 +180,15 @@
     "refreshInstance_tip": "Refreshing the instance will forcibly synchronize service configuration, interface security, CORS settings and Mock interfaces to the running service instance.",
     "refreshInstance_success": "Instance Refreshed Successfully",
     "console": "Console",
+    "exitCode": "Exit code",
     "introduce": {
       "description": "Mock can quickly simulate dependent APIs, enabling parallel development and testing, improving efficiency while avoiding production data pollution.",
       "addMockService": "Add Mock Service",
-      "addMockService_desc": "Manually add interfaces after creating Mock service.",
-      "importService": "Import Existing Service",
-      "importService_desc": "Create Mock based on existing services, select interfaces to simulate, system automatically establishes associations.",
+      "addMockServiceDesc": "Manually add interfaces after creating Mock service.",
+      "importService": "Associate Existing Service",
+      "importServiceDesc": "Create Mock based on existing services and apis, system automatically establishes associations.",
       "importFile": "Import from File",
-      "importFile_desc": "Support Swagger2.0, OpenAPI3.x, Postman2.0/2.1, Angus format file import."
+      "importFileDesc": "Support Swagger, OpenAPI3.x, Postman2.0/2.1, Angus format file import."
     },
     "searchPanel": {
       "namePlaceholder": "Search service ID, name",
@@ -195,25 +196,25 @@
       "sourcePlaceholder": "Select source",
       "nodeIdPlaceholder": "Select or search node",
       "createdByPlaceholder": "Select creator",
-      "createdDatePlaceholder1": "Created time from",
-      "createdDatePlaceholder2": "Created time to"
+      "createdDatePlaceholder1": "Created date from",
+      "createdDatePlaceholder2": "Created date to"
     },
     "columns": {
-      "id": "Service ID",
-      "name": "Service Name",
+      "id": "ID",
+      "name": "Name",
       "node": "Node",
-      "address": "Service Address",
+      "address": "Address",
       "status": "Status",
       "source": "Source",
       "createdBy": "Creator",
-      "lastModifiedBy": "Last Updated By",
       "createdDate": "Created Date",
-      "lastModifiedDate": "Updated Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date",
       "action": "Actions"
     },
     "actions": {
-      "delete": "Force Delete",
-      "authority": "Permissions",
+      "forceDelete": "Force Delete",
+      "authority": "Permission",
       "refresh": "Refresh Instance",
       "addMock": "Add Mock Service",
       "start": "Start",
@@ -2516,7 +2517,7 @@
         "viewCount": "View Count",
         "remark": "Remark",
         "lastModifiedBy": "Last Modified By",
-        "lastModifiedTime": "Last Modified Time",
+        "lastModifiedTime": "Last Modified Date",
         "actions": "Actions"
       }
     },

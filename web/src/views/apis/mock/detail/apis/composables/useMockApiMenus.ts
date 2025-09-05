@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n';
  * Composable for managing menu items and dropdown operations
  * Handles context menu and dropdown menu configurations
  */
-export function useMockApiMenus() {
+export function useMockApiMenus () {
   const { t } = useI18n();
 
   // Context menu trigger
@@ -23,13 +23,13 @@ export function useMockApiMenus() {
       key: 'delete',
       icon: 'icon-fz',
       name: t('mock.mockApis.menuItems.delete'),
-      permission: 'DELETE'
+      permission: MockServicePermission.DELETE
     },
     {
       key: 'export',
       icon: 'icon-daochu1',
       name: t('mock.mockApis.menuItems.export'),
-      permission: 'EXPORT'
+      permission: MockServicePermission.EXPORT
     }
   ]);
 

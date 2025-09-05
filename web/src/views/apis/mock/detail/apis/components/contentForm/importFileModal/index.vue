@@ -5,9 +5,9 @@ import { Radio, RadioGroup } from 'ant-design-vue';
 import { Modal, SingleUpload } from '@xcan-angus/vue-ui';
 import { codeUtils } from '@xcan-angus/infra';
 
-const { t } = useI18n();
-
 import { ContentEncoding } from '../PropsType';
+
+const { t } = useI18n();
 
 interface Props {
   visible:boolean;

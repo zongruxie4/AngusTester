@@ -10,7 +10,7 @@ import { dataURLtoBlob, getFileSuffixByContentType } from '@/utils/blob';
  * Composable for API debugging functionality
  * Handles request sending, response processing, and WebSocket communication
  */
-export function useApiDebug() {
+export function useApiDebug () {
   const { t } = useI18n();
   const { valueKey } = API_EXTENSION_KEY;
 
@@ -20,11 +20,11 @@ export function useApiDebug() {
   const wsResponse = inject('wsResponse', ref());
 
   // HTTP client
-  const myRequest = new axiosClient({ 
-    timeout: 0, 
-    intervalMs: 500, 
-    maxRedirects: 0, 
-    maxRetries: 5 
+  const myRequest = new axiosClient({
+    timeout: 0,
+    intervalMs: 500,
+    maxRedirects: 0,
+    maxRetries: 5
   });
 
   // State management
@@ -109,7 +109,7 @@ export function useApiDebug() {
       const { contentType, forms, rawContent } = bodyObj;
       if (contentType) {
         headerData.push({ in: 'header', name: 'Content-Type', [valueKey]: contentType });
-        
+
         if (contentType === 'application/x-www-form-urlencode') {
           const formUrlEncodeParam = (forms || []).map(i => ({ ...i, [valueKey]: i.value }));
           const formJson = {};
@@ -198,7 +198,7 @@ export function useApiDebug() {
   const onHttpResponse = async (resp: any) => {
     const status = resp.request.status;
     debugging.value = false;
-    
+
     if (status === 0) {
       const responseHeader = [];
       const responseBody = resp.message;
@@ -229,7 +229,7 @@ export function useApiDebug() {
     try {
       const respJson = JSON.parse(wsResponse.value);
       const status = +respJson.response.status;
-      
+
       if (status === 0) {
         const responseHeader = [];
         const responseBody = respJson.response?.rawContent;
@@ -243,11 +243,11 @@ export function useApiDebug() {
         });
         const responseHeader = header;
         let responseBody = respJson.response?.rawContent;
-        
+
         if (respJson.response?.contentEncoding === 'base64') {
           responseBody = dataURLtoBlob(responseBody) || responseBody;
         }
-        
+
         responseContent.value = { status, responseHeader, responseBody };
         if (Object.prototype.toString.call(responseBody) === '[object Blob]') {
           downloadResponseBody();
@@ -265,16 +265,16 @@ export function useApiDebug() {
   const getDownloadFilename = () => {
     const disposition = responseContent.value.responseHeader.find((item: any) => item.key === 'content-Disposition');
     let filename = '';
-    
+
     if (disposition) {
       filename = disposition?.split(';')[1]?.split('=')[1];
     }
-    
+
     if (!filename) {
       const paths = responseContent.value.endpoint?.split('/');
       filename = paths?.length ? paths[paths.length - 1] : 'response';
     }
-    
+
     if (!filename.includes('.')) {
       const respContentType = (responseContent.value?.responseHeader || []).find((item: any) => item.key === 'Content-Type')?.value;
       if (respContentType) {
@@ -282,7 +282,7 @@ export function useApiDebug() {
         suffix && (filename = filename + `.${suffix}`);
       }
     }
-    
+
     return filename;
   };
 

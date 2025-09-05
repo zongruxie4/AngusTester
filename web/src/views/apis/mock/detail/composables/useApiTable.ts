@@ -3,14 +3,14 @@ import { debounce } from 'throttle-debounce';
 import { duration } from '@xcan-angus/infra';
 import { mock as mock0 } from '@/api/tester';
 
-import {MockApiItem, SearchParams} from "@/views/apis/mock/detail/types";
+import { MockApiItem, SearchParams } from '@/views/apis/mock/detail/types';
 
 /**
  * Composable for managing the mock API table data and interactions.
  * <p>
  * Handles pagination, search, sorting, and data loading for the API list table.
  */
-export function useApiTable(serviceId: string) {
+export function useApiTable (serviceId: string) {
   const tableParams = ref<SearchParams>({
     pageNo: 1,
     pageSize: 10,

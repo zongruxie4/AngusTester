@@ -4,7 +4,7 @@ import { ref } from 'vue';
  * Composable for debug UI state management
  * Handles UI state like spread/collapse and debug mode toggle
  */
-export function useDebugUI() {
+export function useDebugUI () {
   // UI state
   const spread = ref(false);
   const showDebug = ref(true);

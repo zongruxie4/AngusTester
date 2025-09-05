@@ -1,21 +1,22 @@
 import { ref, h } from 'vue';
 import { LoadingOutlined } from '@ant-design/icons-vue';
-import { MockServiceObj } from '../types';
-import { MockServiceSource } from '@/enums/enums';
+import { MockService } from '../types';
 import { TESTER } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+import { MockServicePermission, MockServiceSource } from '@/enums/enums';
 
 /**
  * Composable for managing mock service UI state and configurations
  * Handles search options, table columns, menus and other UI-related data
  */
 export function useMockUI () {
-  const t = (key: string) => key; // Mock i18n function
+  const { t } = useI18n();
 
   // Reactive state for UI elements
   const exportVisible = ref(false);
-  const exprotData = ref<MockServiceObj>();
+  const exportData = ref<MockService>();
   const authVisible = ref(false);
-  const authData = ref<MockServiceObj>();
+  const authData = ref<MockService>();
 
   // Search panel configuration
   const searchOptions = [
@@ -71,7 +72,7 @@ export function useMockUI () {
     {
       title: t('mock.columns.id'),
       dataIndex: 'id',
-      width: '10%',
+      width: '8%',
       customCell: () => {
         return { style: 'white-space:nowrap;' };
       }
@@ -95,7 +96,7 @@ export function useMockUI () {
     {
       title: t('mock.columns.status'),
       dataIndex: 'status',
-      width: '7%',
+      width: '8%',
       customCell: () => {
         return { style: 'white-space:nowrap;' };
       }
@@ -103,7 +104,7 @@ export function useMockUI () {
     {
       title: t('mock.columns.source'),
       dataIndex: 'source',
-      width: '7%',
+      width: '8%',
       customCell: () => {
         return { style: 'white-space:nowrap;' };
       }
@@ -111,7 +112,7 @@ export function useMockUI () {
     {
       title: t('mock.columns.createdBy'),
       dataIndex: 'createdByName',
-      width: '8%',
+      width: '10%',
       groupName: 'createdByName',
       customRender: ({ text }: { text: string }) => text || '--',
       ellipsis: true
@@ -119,7 +120,7 @@ export function useMockUI () {
     {
       title: t('mock.columns.lastModifiedBy'),
       dataIndex: 'lastModifiedByName',
-      width: '8%',
+      width: '10%',
       groupName: 'createdByName',
       hide: true,
       customRender: ({ text }: { text: string }) => text || '--',
@@ -149,36 +150,36 @@ export function useMockUI () {
     {
       title: t('mock.columns.action'),
       dataIndex: 'action',
-      width: 140
+      width: 160
     }
   ];
 
   // Dropdown menu items
-  const menus = [
+  const actionMenus = [
     {
       key: 'del',
       icon: 'icon-qingchu',
-      name: t('mock.actions.delete'),
-      permission: 'DELETE',
+      name: t('mock.actions.forceDelete'),
+      permission: MockServicePermission.DELETE,
       disabled: true
     },
     {
       key: 'auth',
       icon: 'icon-quanxian1',
       name: t('mock.actions.authority'),
-      permission: 'GRANT'
+      permission: MockServicePermission.GRANT
     },
     {
       key: 'export',
       icon: 'icon-daochu',
       name: t('actions.export'),
-      permission: 'EXPORT'
+      permission: MockServicePermission.EXPORT
     },
     {
       key: 'reset',
       icon: 'icon-shuaxin',
       name: t('mock.actions.refresh'),
-      permission: 'MODIFY'
+      permission: MockServicePermission.VIEW
     }
   ];
 
@@ -203,11 +204,11 @@ export function useMockUI () {
    */
   const handleMenuClick = (
     key: string,
-    record: MockServiceObj,
-    openAuth: (item?: MockServiceObj) => void,
-    handleExport: (item?: MockServiceObj) => void,
-    handleResetInstance: (item: MockServiceObj) => void,
-    forceDelete: (record: MockServiceObj) => void
+    record: MockService,
+    openAuth: (item?: MockService) => void,
+    handleExport: (item?: MockService) => void,
+    handleResetInstance: (item: MockService) => void,
+    forceDelete: (record: MockService) => void
   ) => {
     switch (key) {
       case 'del':
@@ -229,7 +230,7 @@ export function useMockUI () {
    * Handle reset instance
    */
   const handleResetInstance = async (
-    item: MockServiceObj,
+    item: MockService,
     loading: any,
     modal: any,
     mock: any,
@@ -250,7 +251,6 @@ export function useMockUI () {
         if (error) {
           return;
         }
-
         notification.success(t('mock.refreshInstance_success'));
       }
     });
@@ -259,15 +259,15 @@ export function useMockUI () {
   /**
    * Handle export action
    */
-  const handleExport = (item?: MockServiceObj) => {
-    exprotData.value = item;
+  const handleExport = (item?: MockService) => {
+    exportData.value = item;
     exportVisible.value = true;
   };
 
   /**
    * Handle authorization action
    */
-  const openAuth = (item?: MockServiceObj) => {
+  const openAuth = (item?: MockService) => {
     authData.value = item;
     authVisible.value = true;
   };
@@ -294,14 +294,14 @@ export function useMockUI () {
   return {
     // State
     exportVisible,
-    exprotData,
+    exportData,
     authVisible,
     authData,
 
     // UI Configurations
     searchOptions,
     columns,
-    menus,
+    actionMenus,
     statusStyleMap,
     indicator,
 

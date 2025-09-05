@@ -22,7 +22,7 @@ interface Props {
   loading: boolean;
   enabledGroup: EnabledGroup;
   caseAcitonAuth: Record<string, string[]>;
-  menus: Record<string, any[]>;
+  actionMenus: Record<string, any[]>;
   caseList: CaseListObj[];
   groupCaseList: GroupCaseListObj[];
   selectedRowKeys: string[];
@@ -34,7 +34,7 @@ const props = withDefaults(defineProps<Props>(), {
   loading: false,
   enabledGroup: false,
   caseAcitonAuth: () => ({}),
-  menus: () => ({}),
+  actionMenus: () => ({}),
   caseList: () => [],
   groupCaseList: () => [],
   selectedRowKeys: () => []
@@ -269,7 +269,7 @@ defineExpose({
         </Button>
 
         <Dropdown
-          :menuItems="props.menus[record.id]"
+          :menuItems="props.actionMenus[record.id]"
           :permissions="caseAcitonAuth[record.id] || []"
           @click="handleClick($event.key, record)">
           <Button

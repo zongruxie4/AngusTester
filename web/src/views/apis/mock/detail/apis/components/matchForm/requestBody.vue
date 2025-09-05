@@ -4,11 +4,11 @@ import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Input, notification } from '@xcan-angus/vue-ui';
 
-const { t } = useI18n();
-
 import SelectEnum from '@/components/selectEnum/index.vue';
 import { Condition, ResponseMatchConfig } from './PropsType';
 import { utils } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 interface Props {
   value: ResponseMatchConfig['body']&{condition:{message:string;value:Condition;}};

@@ -28,7 +28,7 @@ const {
   loading,
   editionType,
   isOpenSurety,
-  
+
   // Edit flags
   editServiceDomain,
   editName,
@@ -42,11 +42,11 @@ const {
   editWorkPushbackThreadNum,
   editMaxPushbackConnectTimeout,
   editMaxPushbackRequestTimeout,
-  
+
   // Options
   corsCookieOptions,
   inOptions,
-  
+
   // Methods
   apiSuretyChange,
   handleEdit,
@@ -528,7 +528,7 @@ const suretyFormRef = ref();
               v-model:value="item.in"
               :options="inOptions"
               size="small"
-              :placeholder="t('api.mockDetail.mockSet.basicInfo.in')"/>
+              :placeholder="t('api.mockDetail.mockSet.basicInfo.in')" />
           </FormItem>
           <FormItem
             class="flex-1"

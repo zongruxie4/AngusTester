@@ -4,9 +4,9 @@ import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Input, Validate } from '@xcan-angus/vue-ui';
 
-const { t } = useI18n();
-
 import { isHtml, isJSON, isXML, isYAML } from './utils';
+
+const { t } = useI18n();
 
 interface Props {
   value: string;

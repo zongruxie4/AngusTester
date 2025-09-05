@@ -6,7 +6,7 @@ import { ResponseConfig } from '../types';
  * Composable for managing Mock API response configuration
  * Handles response list, validation, and form management
  */
-export function useMockApiResponse() {
+export function useMockApiResponse () {
   // Response list management
   const responseIdList = ref<string[]>([]);
   const responseMap = ref<{ [key: string]: ResponseConfig }>({});
@@ -62,10 +62,10 @@ export function useMockApiResponse() {
     priorityErrorSet.value.delete(id);
     nameErrorSet.value.delete(id);
     delete nameErrorMessage.value[id];
-    
+
     const _keys = [id + '-1', id + '-2', id + '-3'];
     openKeys.value = openKeys.value.filter(item => !_keys.includes(item));
-    
+
     // Auto-add empty response if list is empty
     if (!responseIdList.value.length) {
       addResponse();
@@ -105,7 +105,7 @@ export function useMockApiResponse() {
 
     let errorNum = 0;
     const data = nameMap.value;
-    
+
     for (const key in data) {
       if (repeatNameSet.has(data[key])) {
         if (id) {
@@ -202,7 +202,7 @@ export function useMockApiResponse() {
     const params: ResponseConfig[] = [];
     const ids = responseIdList.value;
     const { matchRefs, contentRefs, pushbackRefs } = formRefs;
-    
+
     for (let i = 0, len = ids.length; i < len; i++) {
       const id = ids[i];
       params[i] = {
@@ -216,7 +216,7 @@ export function useMockApiResponse() {
         content: undefined,
         pushback: undefined
       };
-      
+
       if (typeof matchRefs[i]?.getData === 'function') {
         params[i].match = matchRefs[i].getData();
       }

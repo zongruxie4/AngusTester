@@ -6,7 +6,7 @@ import { utils } from '@xcan-angus/infra';
  * Composable for managing Mock API data operations
  * Handles API list, data mapping, permissions and CRUD operations
  */
-export function useMockApiData() {
+export function useMockApiData () {
   // API list management
   const apiIds = ref<string[]>([]);
   const apiDataMap = ref<{ [key: string]: MockAPIConfig }>({});
@@ -66,8 +66,8 @@ export function useMockApiData() {
 
     apiIds.value.unshift(id);
     apiDataMap.value[id] = data;
-    permissionMap.value.set(id, ['DELETE']);
-    
+    permissionMap.value.set(id, [MockServicePermission.DELETE]);
+
     return id;
   };
 
@@ -78,18 +78,18 @@ export function useMockApiData() {
   const updateApiList = (dataList: MockAPIInfo[]) => {
     apiIds.value = [];
     apiDataMap.value = {};
-    
+
     for (let i = 0, len = dataList.length; i < len; i++) {
       const data = dataList[i];
       const { id, method, isTempFlag } = data;
-      
+
       apiIds.value.push(id);
       apiDataMap.value[id] = {
         ...data,
         isTempFlag,
         method: method.value
       };
-      permissionMap.value.set(id, ['CLONE', 'DELETE', 'EXPORT']);
+      permissionMap.value.set(id, ['CLONE', MockServicePermission.DELETE, MockServicePermission.EXPORT]);
     }
   };
 
@@ -132,7 +132,7 @@ export function useMockApiData() {
     inputValue,
     orderBy,
     orderSort,
-    
+
     // Methods
     getParams,
     addMockApi,

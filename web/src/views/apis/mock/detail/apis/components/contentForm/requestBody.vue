@@ -4,9 +4,9 @@ import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Colon, Select } from '@xcan-angus/vue-ui';
 import { Radio, RadioGroup } from 'ant-design-vue';
 
-const { t } = useI18n();
-
 import { ContentType, Languge, PushbackBody, RadioType } from './PropsType';
+
+const { t } = useI18n();
 
 interface Props {
   value?:PushbackBody;

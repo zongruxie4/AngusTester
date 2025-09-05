@@ -5,8 +5,6 @@ import { Button, Switch } from 'ant-design-vue';
 import { Composite, Icon, IconRequired, Input, notification, Validate } from '@xcan-angus/vue-ui';
 import { regexpUtils, utils, axiosClient } from '@xcan-angus/infra';
 
-const { t } = useI18n();
-
 import SelectEnum from '@/components/selectEnum/index.vue';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
 import { convertBlob } from '@/views/apis/services/apiHttp/utils';
@@ -15,6 +13,8 @@ import { ContentType, DelayData, HttpMethod, ParametersType, PushbackBody, Respo
 import DelayParameter from './delayParameter.vue';
 import RequestBody from './requestBody.vue';
 import InputGroup from './InputGroup.vue';
+
+const { t } = useI18n();
 
 interface Props {
   value:ResponsePushbackConfig|undefined;

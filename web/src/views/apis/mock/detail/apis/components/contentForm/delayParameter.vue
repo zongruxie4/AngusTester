@@ -4,9 +4,9 @@ import { useI18n } from 'vue-i18n';
 import { utils } from '@xcan-angus/infra';
 import { Input, Select, Validate } from '@xcan-angus/vue-ui';
 
-const { t } = useI18n();
-
 import { DelayData, DelayMode } from './PropsType';
+
+const { t } = useI18n();
 
 interface Props {
   value: DelayData;

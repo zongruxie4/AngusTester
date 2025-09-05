@@ -26,13 +26,13 @@ const {
   loadingLog,
   logTextParam,
   fileList,
-  
+
   // Options
   linesOpt,
-  
+
   // Computed
   fullScreenIcon,
-  
+
   // Methods
   closeErrInfo,
   downloadLog,

@@ -8,17 +8,17 @@ const textList = [
   {
     icon: 'icon-shoudongchuangjianMockfuwu',
     name: t('mock.introduce.addMockService'),
-    description: t('mock.introduce.addMockService_desc')
+    description: t('mock.introduce.addMockServiceDesc')
   },
   {
     icon: 'icon-daoruyiyoufuwujixitongyangli1',
     name: t('mock.introduce.importService'),
-    description: t('mock.introduce.importService_desc')
+    description: t('mock.introduce.importServiceDesc')
   },
   {
     icon: 'icon-daoruxiangmufuwu',
     name: t('mock.introduce.importFile'),
-    description: t('mock.introduce.importFile_desc')
+    description: t('mock.introduce.importFileDesc')
   }
 ];
 </script>
@@ -26,7 +26,7 @@ const textList = [
 <template>
   <div class="bg-gray-2 flex items-center text-3 pl-7.5 rounded h-45">
     <img
-      src="../../../../assets/home/mock.svg"
+      src="../../../assets/home/mock.svg"
       class="mr-7.75 w-45 h-45" />
     <div class="p-8 flex-1 h-full flex flex-col justify-between font-serif">
       <div class="text-3.5 font-semibold">{{ t('mock.introduce.description') }}</div>

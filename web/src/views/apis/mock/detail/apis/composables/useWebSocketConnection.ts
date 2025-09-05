@@ -7,7 +7,7 @@ import { setting } from '@/api/gm';
  * Composable for managing WebSocket connection and proxy configuration
  * Handles WebSocket lifecycle, proxy settings, and connection state
  */
-export function useWebSocketConnection() {
+export function useWebSocketConnection () {
   // WebSocket state
   const WS = ref<ReconnectingWebSocket>();
   const uuid = ref<string>();
@@ -27,10 +27,10 @@ export function useWebSocketConnection() {
     if (error) {
       return;
     }
-    
+
     const { data } = resp;
     proxyOptObj.value = data;
-    
+
     Object.keys(data).forEach(key => {
       if (data[key].enabled) {
         currentProxyUrl.value = data[key].url;
@@ -92,7 +92,7 @@ export function useWebSocketConnection() {
         WS.value?.close(1000);
       }
       WS.value = undefined;
-      
+
       if (currentProxyUrl.value) {
         createWS();
       } else if (currentProxy.value === 'NO_PROXY') {
@@ -119,7 +119,7 @@ export function useWebSocketConnection() {
   watch([() => currentProxyUrl.value, () => currentProxy.value], () => {
     closeWebSocket();
     WS.value = undefined;
-    
+
     if (currentProxy.value === 'NO_PROXY') {
       readyState.value = -1;
     } else if (currentProxyUrl.value) {
@@ -134,7 +134,7 @@ export function useWebSocketConnection() {
 
   onMounted(() => {
     loadProxyUrl();
-    
+
     // Add network change listener
     if (navigator.connection) {
       navigator.connection.addEventListener('change', handleNetworkChange);
@@ -143,7 +143,7 @@ export function useWebSocketConnection() {
 
   onBeforeUnmount(() => {
     closeWebSocket();
-    
+
     // Remove network change listener
     if (navigator.connection) {
       navigator.connection.removeEventListener('change', handleNetworkChange);

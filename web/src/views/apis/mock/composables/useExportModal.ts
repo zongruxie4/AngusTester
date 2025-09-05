@@ -5,8 +5,9 @@
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { notification } from '@xcan-angus/vue-ui';
-import { TESTER, download } from '@xcan-angus/infra';
-import { ExportFormatOption, ApiSelectionData, TreeProps, ScrollProps } from '../types';
+import { TESTER, download, routerUtils } from '@xcan-angus/infra';
+
+import { ApiSelectionData, ExportFormatOption, ScrollProps, TreeProps } from '@/views/apis/mock/types';
 
 /**
  * Composable for managing export modal functionality
@@ -133,13 +134,13 @@ export function useExportModal (projectId: string, mockService: any) {
 
     try {
       // Construct export URL based on selected APIs
+      const serviceId = mockService ? mockService.id : mockServiceId;
       const exportUrl = apiIds.value
-        ? `${TESTER}/mock/service/export?mockServiceId=${mockService ? mockService.id : mockServiceId}&format=${format.value}&mockApiIds=${apiIds.value}&exportScope=PROJECT`
-        : `${TESTER}/mock/service/export?mockServiceId=${mockService ? mockService.id : mockServiceId}&format=${format.value}&exportScope=PROJECT`;
+        ? `mock/service/export?mockServiceId=${serviceId}&format=${format.value}&mockApiIds=${apiIds.value}&exportScope=PROJECT`
+        : `/mock/service/export?mockServiceId=${serviceId}&format=${format.value}&exportScope=PROJECT`;
 
       // Download the export file
-      const [error] = await download(exportUrl);
-
+      const [error] = await download(routerUtils.getTesterApiUrl(exportUrl));
       if (error) {
         return;
       }

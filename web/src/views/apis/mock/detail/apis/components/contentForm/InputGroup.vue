@@ -4,11 +4,11 @@ import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
 
-const { t } = useI18n();
-
 import { ContentType, ParametersType } from './PropsType';
 import PureFormInput from '@/views/apis/mock/detail/apis/components/pureFormInput/index.vue';
 import SelectInputForm from '@/views/apis/mock/detail/apis/components/contentForm/selectInputForm/index.vue';
+
+const { t } = useI18n();
 
 interface Props {
   value?: ParametersType[] | undefined;

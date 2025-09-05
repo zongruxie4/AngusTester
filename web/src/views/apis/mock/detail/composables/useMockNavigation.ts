@@ -21,7 +21,7 @@ export interface MenuItem {
  * Composable for managing mock service navigation menu
  * Handles menu configuration and current menu tracking
  */
-export function useMockNavigation(id: string) {
+export function useMockNavigation (id: string) {
   const { t } = useI18n();
   const route = useRoute();
 

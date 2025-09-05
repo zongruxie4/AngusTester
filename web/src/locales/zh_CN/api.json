@@ -226,14 +226,15 @@
     "refreshInstance_tip": "刷新实例会强制同步服务配置、接口安全、跨域设置和Mock接口到运行的服务实例。",
     "refreshInstance_success": "刷新实例成功",
     "console": "控制台",
+    "exitCode": "退出码",
     "introduce": {
       "description": "Mock可快速模拟依赖的API，让开发和测试并行进行，提高开发效率，避免生产环境数据污染。",
       "addMockService": "添加Mock服务",
-      "addMockService_desc": "创建Mock服务后需手动添加接口。",
-      "importService": "导入现有服务",
-      "importService_desc": "基于现有服务创建Mock，可选择需要模拟的接口，系统自动建立关联。",
+      "addMockServiceDesc": "创建Mock服务后需手动添加接口。",
+      "importService": "关联服务接口",
+      "importServiceDesc": "基于现有服务与接口创建Mock，系统自动建立关联。",
       "importFile": "文件导入",
-      "importFile_desc": "Swagger2.0、OpenAPI3.x、Postman2.0/2.1、Angus格式文件导入。"
+      "importFileDesc": "Swagger、OpenAPI3.x、Postman2.0/2.1、Angus格式文件导入。"
     },
     "searchPanel": {
       "namePlaceholder": "查询服务ID、名称",
@@ -245,20 +246,20 @@
       "createdDatePlaceholder2": "添加时间到"
     },
     "columns": {
-      "id": "服务ID",
-      "name": "服务名称",
+      "id": "ID",
+      "name": "名称",
       "node": "所在节点",
-      "address": "服务地址",
+      "address": "地址",
       "status": "状态",
       "source": "来源",
       "createdBy": "添加人",
-      "lastModifiedBy": "最后更新人",
       "createdDate": "添加时间",
-      "lastModifiedDate": "更新时间",
+      "lastModifiedBy": "最后更新人",
+      "lastModifiedDate": "最后更新时间",
       "action": "操作"
     },
     "actions": {
-      "delete": "强制删除",
+      "forceDelete": "强制删除",
       "authority": "权限",
       "refresh": "刷新实例",
       "addMock": "添加Mock服务",

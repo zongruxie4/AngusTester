@@ -7,7 +7,7 @@ import {
   SecurityForm,
   ServiceInfoForm,
   ServiceSettings
-} from "@/views/apis/mock/detail/types";
+} from '@/views/apis/mock/detail/types';
 
 /**
  * Composable for managing mock service data loading and state.
@@ -15,7 +15,7 @@ import {
  * Handles fetching service details and initializing form states
  * for different configuration sections.
  */
-export function useServiceData(serviceId: string) {
+export function useServiceData (serviceId: string) {
   const mockServiceInfo = ref<MockServiceInfo>();
   const loading = ref(false);
 

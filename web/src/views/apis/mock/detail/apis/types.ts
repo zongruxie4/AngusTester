@@ -9,7 +9,7 @@ import { ResponseMatchConfig, ResponseMatchInfo } from '@/views/apis/mock/detail
 /**
  * HTTP methods supported by the Mock API system
  */
-export type HttpMethod = 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE';
+export type HttpMethod = MockServicePermission.DELETE | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE';
 
 /**
  * Response information structure from server

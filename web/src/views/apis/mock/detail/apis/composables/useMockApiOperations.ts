@@ -8,7 +8,7 @@ import { MockAPIConfig, ResponseConfig } from '../types';
  * Composable for Mock API CRUD operations
  * Handles create, read, update, delete operations for Mock APIs
  */
-export function useMockApiOperations() {
+export function useMockApiOperations () {
   const { t } = useI18n();
   const loading = ref(false);
 
@@ -21,11 +21,11 @@ export function useMockApiOperations() {
     loading.value = true;
     const [error, { data }] = await mock.addMockApi(params);
     loading.value = false;
-    
+
     if (error) {
       return { error, data: null };
     }
-    
+
     return { error: null, data };
   };
 
@@ -38,7 +38,7 @@ export function useMockApiOperations() {
     loading.value = true;
     const [error] = await mock.updateMockApi(params);
     loading.value = false;
-    
+
     return { error };
   };
 
@@ -51,11 +51,11 @@ export function useMockApiOperations() {
     loading.value = true;
     const [error] = await mock.deleteMockApi({ ids: [id] });
     loading.value = false;
-    
+
     if (error) {
       return { error };
     }
-    
+
     notification.success(t('mock.mockApis.notifications.deleteSuccess'));
     return { error: null };
   };
@@ -69,11 +69,11 @@ export function useMockApiOperations() {
     loading.value = true;
     const [error] = await mock.cloneMockApi(id);
     loading.value = false;
-    
+
     if (error) {
       return { error };
     }
-    
+
     notification.success(t('mock.mockApis.notifications.cloneSuccess'));
     return { error: null };
   };
@@ -88,11 +88,11 @@ export function useMockApiOperations() {
     loading.value = true;
     const [error, { data }] = await mock.copyApiToMock(mockServiceId, apiId);
     loading.value = false;
-    
+
     if (error) {
       return { error, data: null };
     }
-    
+
     notification.success(t('mock.mockApis.notifications.copyApiSuccess'));
     return { error: null, data };
   };
@@ -107,11 +107,11 @@ export function useMockApiOperations() {
     loading.value = true;
     const [error, { data }] = await mock.assocApiToMock(mockServiceId, apiId);
     loading.value = false;
-    
+
     if (error) {
       return { error, data: null };
     }
-    
+
     notification.success(t('mock.mockApis.notifications.linkApiSuccess'));
     return { error: null, data };
   };
@@ -125,11 +125,11 @@ export function useMockApiOperations() {
     loading.value = true;
     const [error] = await mock.importDemoMockApi(mockServiceId);
     loading.value = false;
-    
+
     if (error) {
       return { error };
     }
-    
+
     notification.success(t('mock.mockApis.notifications.importDemoSuccess'));
     return { error: null };
   };
@@ -143,7 +143,7 @@ export function useMockApiOperations() {
     loading.value = true;
     const [error, { data }] = await mock.getMockApiDetail(id);
     loading.value = false;
-    
+
     return { error, data };
   };
 
@@ -156,7 +156,7 @@ export function useMockApiOperations() {
     loading.value = true;
     const [error, { data }] = await mock.getMockApiResponse(id);
     loading.value = false;
-    
+
     return { error, data };
   };
 
@@ -170,7 +170,7 @@ export function useMockApiOperations() {
     loading.value = true;
     const [error] = await mock.addMockApiResponse(id, params);
     loading.value = false;
-    
+
     return { error };
   };
 
@@ -184,7 +184,7 @@ export function useMockApiOperations() {
     loading.value = true;
     const [error] = await mock.updateMockApiResponse(id, params);
     loading.value = false;
-    
+
     return { error };
   };
 
@@ -197,11 +197,11 @@ export function useMockApiOperations() {
     loading.value = true;
     const [error] = await mock.syncApiInstanceConfig(id);
     loading.value = false;
-    
+
     if (error) {
       return { error };
     }
-    
+
     notification.success(t('mock.mockApis.notifications.refreshInstanceSuccess'));
     return { error: null };
   };

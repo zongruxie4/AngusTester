@@ -1,4 +1,4 @@
-export type HttpMethod = 'DELETE' | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE';
+export type HttpMethod = MockServicePermission.DELETE | 'GET' | 'HEAD' | 'OPTIONS' | 'PATCH' | 'POST' | 'PUT' | 'TRACE';
 export type DelayMode = 'FIXED' | 'NONE' | 'RANDOM';
 export type ParametersInType = 'cookie' | 'header' | 'query';
 export type RadioType = 'none' | 'application/x-www-form-urlencode' | 'multipart/form-data' | 'raw'

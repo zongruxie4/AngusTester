@@ -9,7 +9,7 @@ import type { ActivityItem, SearchParams } from '../types';
  * <p>
  * Provide a stable view-model aligned with `ActivityInfo` component typing.
  */
-export function useActivityData(initialTargetId?: string) {
+export function useActivityData (initialTargetId?: string) {
   // Pagination and filter parameters sent to the backend
   const params = ref<SearchParams>({
     pageNo: 1,
@@ -104,5 +104,3 @@ export function useActivityData(initialTargetId?: string) {
     onPageChange
   };
 }
-
-

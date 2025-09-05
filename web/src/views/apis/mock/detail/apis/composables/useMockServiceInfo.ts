@@ -5,7 +5,7 @@ import { mock } from '@/api/tester';
  * Composable for managing Mock service information
  * Handles service details and URL options
  */
-export function useMockServiceInfo() {
+export function useMockServiceInfo () {
   // Service URL options for dropdown
   const serviceUrlOptions = ref<{ label: string; value: string; }[]>([]);
 
@@ -21,7 +21,7 @@ export function useMockServiceInfo() {
 
     const { serviceDomainUrl, serviceHostUrl } = res.data;
     const options: { label: string; value: string; }[] = [];
-    
+
     if (serviceDomainUrl) {
       options.push({ label: serviceDomainUrl, value: serviceDomainUrl });
     }

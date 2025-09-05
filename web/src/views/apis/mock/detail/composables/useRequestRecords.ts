@@ -3,14 +3,14 @@ import { debounce } from 'throttle-debounce';
 import { duration } from '@xcan-angus/infra';
 import { mock } from '@/api/tester';
 
-import {RequestRecordDetail, RequestRecordItem, SearchParams} from "@/views/apis/mock/detail/types";
+import { RequestRecordDetail, RequestRecordItem, SearchParams } from '@/views/apis/mock/detail/types';
 
 /**
  * Composable for managing request records data and interactions.
  * <p>
  * Handles fetching, pagination, search, and selection of API request logs.
  */
-export function useRequestRecords(serviceId: string) {
+export function useRequestRecords (serviceId: string) {
   const params = ref<SearchParams>({
     pageNo: 1,
     pageSize: 10,

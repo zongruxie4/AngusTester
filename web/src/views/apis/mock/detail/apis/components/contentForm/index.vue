@@ -4,11 +4,11 @@ import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Icon, IconRequired, notification, SelectInput, Tooltip, FunctionsButton } from '@xcan-angus/vue-ui';
 
-const { t } = useI18n();
-
 import { ContentEncoding, DelayData, ResponseContentConfig, ResponseHeader } from './PropsType';
 import DelayParameter from './delayParameter.vue';
 import SelectInputForm from '@/views/apis/mock/detail/apis/components/contentForm/selectInputForm/index.vue';
+
+const { t } = useI18n();
 
 interface Props {
   value:ResponseContentConfig;

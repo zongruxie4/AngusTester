@@ -1,6 +1,6 @@
 import { useI18n } from 'vue-i18n';
 
-import {HttpMethod} from "@/views/apis/mock/detail/types";
+import { HttpMethod } from '@/views/apis/mock/detail/types';
 
 /**
  * Composable for grid column definitions and HTTP method styling.
@@ -8,7 +8,7 @@ import {HttpMethod} from "@/views/apis/mock/detail/types";
  * Provides consistent configuration for data grid display and
  * HTTP method color coding across the request record interface.
  */
-export function useGridColumns() {
+export function useGridColumns () {
   const { t } = useI18n();
 
   /**

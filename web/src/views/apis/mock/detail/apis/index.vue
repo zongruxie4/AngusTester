@@ -38,7 +38,6 @@ import { useMockServiceInfo } from './composables/useMockServiceInfo';
 import { useMockApiUI } from './composables/useMockApiUI';
 import { useMockApiMenus } from './composables/useMockApiMenus';
 
-import { type AgentValue } from '@/views/apis/services/components/agent/PropsTypes';
 import { mock } from '@/api/tester';
 import { setting } from '@/api/gm';
 import { HttpMethod, MockAPIConfig, MockAPIInfo, ResponseConfig, ResponseInfo } from './types';
@@ -357,7 +356,7 @@ const copyApiOk = async ({ id }: { id: string }) => {
   apiCopyConfirmLoading.value = true;
   const { error, data } = await copyApiToMock(props.id, id);
   apiCopyConfirmLoading.value = false;
-  
+
   if (error) {
     return;
   }
@@ -379,7 +378,7 @@ const linkApiOk = async ({ id }: { id: string }) => {
   apiLinkConfirmLoading.value = true;
   const { error, data } = await associateApiToMock(props.id, id);
   apiLinkConfirmLoading.value = false;
-  
+
   if (error) {
     return;
   }
@@ -411,7 +410,7 @@ const handleImportDemo = async () => {
   if (loading.value) {
     return;
   }
-  
+
   const { error } = await importDemoMockApi(props.id);
   if (!error) {
     toRefresh();
@@ -548,109 +547,6 @@ const create = () => {
 };
 
 // ---- ScrollList end ----
-
-// ---- CreateForm start ----
-const enableChange = (checked: boolean, id: string) => {
-  const key = id + '-3';
-
-  if (checked) {
-    openKeys.value.push(key);
-    enablePushbackSet.value.add(id);
-    return;
-  }
-
-  openKeys.value = openKeys.value.filter(item => item !== key);
-  enablePushbackSet.value.delete(id);
-
-  // @TODO 禁用后是否清空回推数据？？？
-  if (responseMap.value[id]) {
-    responseMap.value[id]!.pushback = undefined;
-  }
-};
-
-const summaryChange = (event: { target: { value: string } }) => {
-  summary.value = event.target.value;
-  summaryError.value = false;
-};
-
-const descriptionChange = (event: { target: { value: string } }) => {
-  description.value = event.target.value;
-};
-
-const isValid = (): boolean => {
-  let errorNum = 0;
-
-  if (!summary.value) {
-    summaryError.value = true;
-    errorNum++;
-  }
-
-  if (typeof urlFormRef.value?.isValid === 'function') {
-    if (!urlFormRef.value.isValid()) {
-      errorNum++;
-    }
-  }
-
-  return !errorNum;
-};
-
-const validateResponse = (): boolean => {
-  if (!responseIdList.value?.length) {
-    return false;
-  }
-
-  priorityErrorSet.value.clear();
-  let errorNum = 0;
-  const matchRefs = matchFormRefs.value;
-  const contentRefs = contentFormRefs.value;
-  const pushbackRefs = pushbackFormRefs.value;
-  const enableSet = enablePushbackSet.value;
-  if (!validateRepeatName()) {
-    errorNum++;
-  }
-
-  const ids = responseIdList.value;
-  for (let i = 0, len = ids.length; i < len; i++) {
-    const id = ids[i];
-
-    if (utils.isEmpty(nameMap.value[id])) {
-      nameErrorSet.value.add(id);
-      errorNum++;
-    }
-
-    if (utils.isEmpty(priorityMap.value[id])) {
-      priorityErrorSet.value.add(id);
-      errorNum++;
-    }
-
-    if (typeof matchRefs[i]?.isValid === 'function') {
-      const validFlag = matchRefs[i].isValid();
-      if (!validFlag) {
-        errorNum++;
-      }
-    }
-
-    if (typeof contentRefs[i]?.isValid === 'function') {
-      const validFlag = contentRefs[i].isValid();
-      if (!validFlag) {
-        errorNum++;
-      }
-    }
-
-    // 启用回推
-    if (enableSet.has(id)) {
-      if (typeof pushbackRefs[i]?.isValid === 'function') {
-        const validFlag = pushbackRefs[i].isValid();
-        if (!validFlag) {
-          errorNum++;
-        }
-      }
-    }
-  }
-
-  return !errorNum;
-};
-
 const save = async (): Promise<void> => {
   let errorNum = 0;
   if (!isValid()) {
@@ -712,7 +608,7 @@ const save = async (): Promise<void> => {
       };
       apiDataMap.value[targetId] = newData;
       mockAPIConfig.value = newData;
-      permissionMap.value.set(targetId, ['CLONE', 'DELETE', 'EXPORT']);
+      permissionMap.value.set(targetId, ['CLONE', MockServicePermission.DELETE, MockServicePermission.EXPORT]);
       if (!isUpdateFlag) {
         if (typeof scrollRef.value?.pureDel === 'function') {
           scrollRef.value.pureDel(prevTargetId);
@@ -794,7 +690,7 @@ const validateRepeatName = (id?: string): boolean => {
         nameErrorMessage.value[id] = t('mock.mockApis.validation.nameDuplicate');
       } else {
         nameErrorSet.value.add(key);
-                  nameErrorMessage.value[key] = t('mock.mockApis.validation.nameDuplicate');
+        nameErrorMessage.value[key] = t('mock.mockApis.validation.nameDuplicate');
       }
 
       errorNum++;
@@ -1131,13 +1027,13 @@ const menuItems = ref([
     key: 'delete',
     icon: 'icon-fz',
     name: t('mock.mockApis.menuItems.delete'),
-    permission: 'DELETE'
+    permission: MockServicePermission.DELETE
   },
   {
     key: 'export',
     icon: 'icon-daochu1',
     name: t('mock.mockApis.menuItems.export'),
-    permission: 'EXPORT'
+    permission: MockServicePermission.EXPORT
   }
 ]);
 const dropdownMenuItems = ref([
@@ -1317,7 +1213,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="del(mockAPIId!)">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-qingchu" />
-            <span>{{t('actions.delete')}}</span>
+            <span>{{ t('actions.delete') }}</span>
           </div>
         </Button>
         <Button
@@ -1348,7 +1244,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="goback">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-fanhui" />
-            <span>{{t('mock.mockApis.buttons.back')}}</span>
+            <span>{{ t('mock.mockApis.buttons.back') }}</span>
           </div>
         </Button>
       </div>

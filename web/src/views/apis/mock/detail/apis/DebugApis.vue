@@ -77,28 +77,28 @@ const sendRequest = async () => {
   if (!urlRef.value?.isValid()) {
     return;
   }
-  
+
   debugging.value = true;
-  
+
   // Get parameters from form
   const parameters: any[] = [];
   if (typeof inputGroupRef.value?.getData === 'function') {
     parameters.push(...inputGroupRef.value.getData());
   }
-  
+
   // Process form data
   const { queryData, headerData, cookieData } = processFormData(parameters);
-  
+
   // Build request URL
   const apiHref = buildRequestUrl(server.value, endpoint.value, queryData);
-  
+
   // Process request body
   let bodyObj;
   if (typeof requestBodyRef.value?.getData === 'function') {
     bodyObj = requestBodyRef.value.getData();
   }
   const { bodyContent, bodyOpenApi } = processRequestBody(bodyObj, headerData);
-  
+
   // Send request via WebSocket or HTTP
   const WS = inject('WS', ref());
   if (WS.value && WS.value.readyState === 1) {
@@ -133,7 +133,7 @@ const sendRequest = async () => {
     if (contentType.value) {
       header['Content-Type'] = contentType.value;
     }
-    
+
     // Send HTTP request
     const config = {
       responseType: 'blob' as const,
@@ -145,7 +145,7 @@ const sendRequest = async () => {
         ...header
       }
     };
-    
+
     const resp = await sendHttpRequest(config);
     await onHttpResponse(resp);
   }

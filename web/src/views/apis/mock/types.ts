@@ -1,7 +1,10 @@
+import { EnumMessage, SearchCriteria } from '@xcan-angus/infra';
+import { MockServiceSource, MockServicePermission } from '@/enums/enums';
+
 /**
  * Mock service object representing a mock service entity
  */
-export interface MockServiceObj {
+export interface MockService {
   /** Unique identifier for the mock service */
   id: string;
 
@@ -9,13 +12,7 @@ export interface MockServiceObj {
   name: string;
 
   /** Source information of the mock service */
-  source: {
-    /** Source type value */
-    value: string;
-
-    /** Display message for the source */
-    message: string;
-  };
+  source: EnumMessage<MockServiceSource>;
 
   /** Status information of the mock service */
   status: {
@@ -29,7 +26,7 @@ export interface MockServiceObj {
   /** Current authorization permissions */
   currentAuths: {
     /** Permission value */
-    value: string;
+    value: MockServicePermission;
 
     /** Display message for the permission */
     message: string;
@@ -54,7 +51,7 @@ export interface MockServiceObj {
   hasAuth: boolean;
 
   /** Association with project flag */
-  assocProjectFlag: boolean;
+  assocProject: boolean;
 
   /** Tenant identifier */
   tenantId: string;
@@ -67,6 +64,12 @@ export interface MockServiceObj {
 
   /** Creation date */
   createdDate: string;
+
+  /** Last modifier user name */
+  lastModifiedByName?: string;
+
+  /** Last modification date */
+  lastModifiedDate?: string;
 
   /** Failure tips information */
   failTips?: {
@@ -87,79 +90,69 @@ export interface MockServiceObj {
   };
 
   /** Current authorization values */
-  currentAuthsValue: string[];
-
-  /** Last modifier user name */
-  lastModifiedByName?: string;
-
-  /** Last modification date */
-  lastModifiedDate?: string;
+  currentAuthsValue: MockServicePermission[];
 }
 
 /**
- * Table selection configuration for row selection in tables
+ * Interface for export format options
+ * Represents the available export format options
  */
-export interface TableSelection {
-  /** Selected row keys */
-  selectedRowKeys?: string[];
-
-  /** Change event handler for selection */
-  onChange?: (selectedRowKeys: string[]) => void;
-
-  /** Function to get checkbox properties for each row */
-  getCheckboxProps?: (record: MockServiceObj) => object;
+export interface ExportFormatOption {
+  /** Display label for the format */
+  label: string;
+  /** Value of the format */
+  value: 'json' | 'yaml';
 }
 
 /**
- * Filter operation types for search functionality
+ * Interface for API selection data
+ * Represents the data structure when APIs are selected
  */
-export type FilterOp =
-  | 'EQUAL'
-  | 'NOT_EQUAL'
-  | 'GREATER_THAN'
-  | 'GREATER_THAN_EQUAL'
-  | 'LESS_THAN'
-  | 'LESS_THAN_EQUAL'
-  | 'CONTAIN'
-  | 'NOT_CONTAIN'
-  | 'MATCH_END'
-  | 'MATCH'
-  | 'IN'
-  | 'NOT_IN';
-
-/**
- * Filter configuration for search parameters
- */
-export interface Filter {
-  /** Filter key */
-  key: string;
-
-  /** Filter value */
-  value: string | boolean | string[];
-
-  /** Filter operation */
-  op: FilterOp;
+export interface ApiSelectionData {
+  /** Project ID */
+  projectId: string;
+  /** Selected API IDs */
+  apiIds: string[];
+  /** API options */
+  _apiOptions: any;
+  /** Whether all APIs are checked */
+  checkedAll: boolean;
 }
 
 /**
- * Search parameters for API requests
+ * Interface for tree properties
+ * Represents the configuration for the service tree selection
  */
-export interface SearchParam {
-  /** Page number */
-  pageNo: number;
+export interface TreeProps {
+  /** API endpoint for fetching services */
+  action: string;
+  /** Whether the selection is disabled */
+  disabled: boolean;
+  /** Additional parameters for the API request */
+  params: {
+    /** Admin flag */
+    admin: boolean;
+    /** Project ID */
+    projectId: string;
+  };
+  /** Default selected value */
+  defaultValue?: {
+    /** Service name */
+    name: string;
+    /** Service ID */
+    id: string;
+  };
+}
 
-  /** Page size */
-  pageSize: number;
-
-  /** Filter configurations */
-  filters?: Filter[];
-
-  /** Order by field */
-  orderBy?: string;
-
-  /** Order sort direction */
-  orderSort?: 'ASC' | 'DESC';
-
-  /** Additional properties */
-  [key: string]: any;
+/**
+ * Interface for scroll properties
+ * Represents the configuration for the API scroll list
+ */
+export interface ScrollProps {
+  /** API endpoint for fetching APIs */
+  action: string;
+  /** Additional parameters for the API request */
+  params: {
+    filters: SearchCriteria[];
+  } | undefined;
 }

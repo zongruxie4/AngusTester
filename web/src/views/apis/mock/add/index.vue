@@ -182,7 +182,7 @@ const handleSubmit = () => {
 
 onMounted(async () => {
   isPrivateEdition.value = appContext.isPrivateEdition();
-  loadNodes();
+  await loadNodes();
 });
 </script>
 

@@ -28,7 +28,6 @@ const projectId = computed(() => {
 const {
   format,
   loading,
-  mockServiceId,
   treeProps,
   scrollProps,
   formatTypes,
@@ -44,7 +43,7 @@ const { t } = useI18n();
  * Execute the export operation
  */
 const handleOk = async () => {
-  await executeExport(mockServiceId.value);
+  await executeExport(props.mockService?.id);
   emit('update:visible', false);
 };
 
