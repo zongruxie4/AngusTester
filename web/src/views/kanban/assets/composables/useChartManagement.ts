@@ -10,40 +10,40 @@ import { getDateArr, getDateArrWithTime } from '@/utils/utils';
  * <p>
  * Manages ECharts instances, chart updates, and responsive behavior
  * </p>
- * 
+ *
  * @returns Object containing chart instances and management methods
  */
-export function useChartManagement() {
+export function useChartManagement () {
   /** Growth trend chart instance */
   let growthTrendChart: eCharts.ECharts;
-  
+
   /** Case bar chart instance */
   let caseBarChart: eCharts.ECharts;
-  
+
   /** Case pie chart instance */
   let casePieChart: eCharts.ECharts;
-  
+
   /** API bar chart instance */
   let apiBarChart: eCharts.ECharts;
-  
+
   /** API pie chart instance */
   let apiPieChart: eCharts.ECharts;
-  
+
   /** Task bar chart instance */
   let taskBarChart: eCharts.ECharts;
-  
+
   /** Task pie chart instance */
   let taskPieChart: eCharts.ECharts;
-  
+
   /** Plan pie chart instance */
   let planPieChart: eCharts.ECharts;
-  
+
   /** Sprint pie chart instance */
   let sprintPieChart: eCharts.ECharts;
-  
+
   /** Scenario pie chart instance */
   let scenarioPieChart: eCharts.ECharts;
-  
+
   /** Script bar chart instance */
   let scriptBarChart: eCharts.ECharts;
 
@@ -80,7 +80,7 @@ export function useChartManagement() {
    * <p>
    * Updates chart DOM references for chart initialization and management
    * </p>
-   * 
+   *
    * @param refs - Object containing DOM references for chart containers
    */
   const setChartRefs = (refs: Record<string, HTMLElement>) => {
@@ -169,7 +169,7 @@ export function useChartManagement() {
    * <p>
    * Processes growth trend data and updates chart series and axis
    * </p>
-   * 
+   *
    * @param data - Growth trend data from API
    * @param targetType - Target type for growth trend
    * @param chartSeriesColorConfig - Color configuration for chart series
@@ -195,7 +195,7 @@ export function useChartManagement() {
           }
         });
       });
-      
+
       xData.sort((a, b) => {
         return a > b ? 1 : a < b ? -1 : 0;
       });
@@ -233,7 +233,7 @@ export function useChartManagement() {
       } else {
         growthTrendConfig.value.xAxis.data = getDateArr();
       }
-      
+
       if (growthTrendConfig.value.series.length) {
         growthTrendConfig.value.series[0].data = Array.from(
           new Array(growthTrendConfig.value.xAxis.data.length)
@@ -253,7 +253,7 @@ export function useChartManagement() {
    * <p>
    * Updates both case bar chart and case pie chart with case statistics
    * </p>
-   * 
+   *
    * @param data - Case data from API
    */
   const updateCaseCharts = (data: CaseData) => {
@@ -261,7 +261,7 @@ export function useChartManagement() {
     if (data.caseByTestResult) {
       const { PENDING = 0, PASSED = 0, NOT_PASSED = 0, BLOCKED = 0, CANCELED = 0 } = data.caseByTestResult;
       const barData = [CANCELED, BLOCKED, NOT_PASSED, PASSED, PENDING];
-      
+
       if (caseBarConfig.value.series[0]) {
         caseBarConfig.value.series[0].data.forEach((item, idx) => {
           item.value = barData[idx];
@@ -277,7 +277,7 @@ export function useChartManagement() {
     if (data.caseByReviewStatus) {
       const { PEDING = 0, PASSED = 0, FAILED = 0 } = data.caseByReviewStatus;
       const pieData = [PEDING, PASSED, FAILED];
-      
+
       if (casePieConfig.value.series[0]) {
         casePieConfig.value.series[0].data.forEach((item, idx) => {
           item.value = pieData[idx];
@@ -304,7 +304,7 @@ export function useChartManagement() {
     if (data.planByStatus) {
       const { PENDING, IN_PROGRESS, COMPLETED, BLOCKED } = data.planByStatus;
       const statusData = [PENDING, IN_PROGRESS, COMPLETED, BLOCKED];
-      
+
       if (planPieConfig.value.series[0]) {
         planPieConfig.value.series[0].data.forEach((item, idx) => {
           item.value = statusData[idx] || 0;
@@ -331,7 +331,7 @@ export function useChartManagement() {
    * <p>
    * Updates both API bar chart and API pie chart with API statistics
    * </p>
-   * 
+   *
    * @param data - API data from API
    */
   const updateApiCharts = (data: ApiData) => {
@@ -343,7 +343,7 @@ export function useChartManagement() {
     if (data.apisByMethod) {
       const { PUT = 0, POST = 0, DELETE = 0, GET = 0, HEAD = 0, PATCH = 0, OPTIONS = 0, TRACE = 0 } = data.apisByMethod;
       const methodData = [PUT, POST, HEAD, GET, DELETE, PATCH, OPTIONS, TRACE];
-      
+
       if (apiPieConfig.value.series[0]) {
         apiPieConfig.value.series[0].data.forEach((item, idx) => {
           item.value = methodData[idx] || 0;
@@ -368,7 +368,7 @@ export function useChartManagement() {
     if (data.apisByStatus) {
       const { UNKNOWN = 0, IN_DESIGN = 0, IN_DEV = 0, DEV_COMPLETED = 0, RELEASED = 0 } = data.apisByStatus;
       const statusData = [UNKNOWN, IN_DESIGN, IN_DEV, DEV_COMPLETED, RELEASED];
-      
+
       if (apiBarConfig.value.series?.[0]) {
         apiBarConfig.value.series[0].data.forEach((item, idx) => {
           item.value = statusData[idx] || 0;
@@ -394,7 +394,7 @@ export function useChartManagement() {
    * <p>
    * Updates both task bar chart and task pie chart with task statistics
    * </p>
-   * 
+   *
    * @param data - Task data from API
    */
   const updateTaskCharts = (data: TaskData) => {
@@ -406,7 +406,7 @@ export function useChartManagement() {
     if (data.taskByType) {
       const { STORY = 0, TASK = 0, BUG = 0, API_TEST = 0, SCENARIO_TEST = 0, REQUIREMENT = 0 } = data.taskByType;
       const typeData = [STORY, REQUIREMENT, TASK, BUG, API_TEST, SCENARIO_TEST];
-      
+
       if (taskPieConfig.value.series[0]) {
         taskPieConfig.value.series[0].data.forEach((item, idx) => {
           item.value = typeData[idx] || 0;
@@ -431,7 +431,7 @@ export function useChartManagement() {
     if (data.taskByStatus) {
       const { PENDING = 0, IN_PROGRESS = 0, CONFIRMING = 0, COMPLETED = 0, CANCELED = 0 } = data.taskByStatus;
       const statusData = [CANCELED, COMPLETED, CONFIRMING, IN_PROGRESS, PENDING];
-      
+
       if (taskBarConfig.value.series[0]) {
         taskBarConfig.value.series[0].data.forEach((item, idx) => {
           item.value = statusData[idx] || 0;
@@ -457,7 +457,7 @@ export function useChartManagement() {
     if (data.sprintByStatus) {
       const { PENDING, IN_PROGRESS, COMPLETED, BLOCKED } = data.sprintByStatus;
       const statusData = [PENDING, IN_PROGRESS, COMPLETED, BLOCKED];
-      
+
       if (sprintPieConfig.value.series[0]) {
         sprintPieConfig.value.series[0].data.forEach((item, idx) => {
           item.value = statusData[idx] || 0;
@@ -484,7 +484,7 @@ export function useChartManagement() {
    * <p>
    * Updates scenario pie chart with scenario statistics
    * </p>
-   * 
+   *
    * @param data - Scenario data from API
    */
   const updateScenarioChart = (data: ScenarioData) => {
@@ -495,7 +495,7 @@ export function useChartManagement() {
     if (data.sceByScriptType) {
       const { TEST_PERFORMANCE, TEST_STABILITY, TEST_FUNCTIONALITY, TEST_CUSTOMIZATION } = data.sceByScriptType;
       const typeData = [TEST_PERFORMANCE, TEST_STABILITY, TEST_FUNCTIONALITY, TEST_CUSTOMIZATION];
-      
+
       if (scenarioPieConfig.value.series[0]) {
         scenarioPieConfig.value.series[0].data.forEach((item, idx) => {
           item.value = typeData[idx] || 0;
@@ -522,14 +522,14 @@ export function useChartManagement() {
    * <p>
    * Updates script bar chart with script statistics
    * </p>
-   * 
+   *
    * @param data - Script data from API
    */
   const updateScriptChart = (data: ScriptData) => {
     if (data.scriptByPluginName) {
       const names = Object.keys(data.scriptByPluginName);
       const values = Object.values(data.scriptByPluginName);
-      
+
       if (names.length) {
         if (scriptBarConfig.value.series[0]) {
           scriptBarConfig.value.series[0].data = values;
@@ -537,7 +537,7 @@ export function useChartManagement() {
         if (scriptBarConfig.value.xAxis) {
           scriptBarConfig.value.xAxis.data = names;
         }
-        
+
         if (names.length > 5) {
           if (scriptBarConfig.value.xAxis?.axisLabel) {
             scriptBarConfig.value.xAxis.axisLabel.rotate = -45;
@@ -625,12 +625,12 @@ export function useChartManagement() {
    * <p>
    * Adjusts chart configurations based on container width
    * </p>
-   * 
+   *
    * @param containerWidth - Width of the right side container
    */
   const handleRightSideResize = (containerWidth: number) => {
     const isSmallContainer = containerWidth < 350;
-    
+
     [scenarioPieConfig, planPieConfig, sprintPieConfig].forEach(config => {
       if (config.value.series[0]) {
         if (isSmallContainer) {
@@ -676,7 +676,7 @@ export function useChartManagement() {
     sprintPieConfig,
     scenarioPieConfig,
     scriptBarConfig,
-    
+
     // Chart DOM references
     growthTrendRef,
     caseStatusRef,
@@ -689,7 +689,7 @@ export function useChartManagement() {
     sprintReviewRef,
     scenarioRef,
     scriptRef,
-    
+
     // Methods
     setChartRefs,
     initializeCharts,

@@ -68,13 +68,14 @@ watch(selectedRecord, (newRecord) => {
 }, { immediate: true });
 </script>
 <template>
-  <Hints :text="t('mock.mockDetail.mockSet.requestRecord.hints')" class="mb-2" />
+  <!-- TODO 请求记录分页不生效 -->
+  <Hints :text="t('mock.detail.requestRecord.hints')" class="mb-2 text-3.5" />
   <PureCard class="p-3.5 flex" style="height: calc(100% - 28px);">
     <Spin
       :spinning="loading"
-      class="w-80 border-r border-border-divider h-full flex flex-col">
+      class="w-80 border-r border-border-divider h-full flex flex-col mr-3">
       <div class="pr-3.5 mb-2 flex items-center">
-        <Input :placeholder="t('mock.mockDetail.control.searchApiNamePath')" @change="(e) => handleSearch(e.target.value)">
+        <Input :placeholder="t('mock.detail.monitor.searchApiNamePath')" @change="(e) => handleSearch(e.target.value)">
           <template #suffix>
             <Icon icon="icon-sousuo" class="text-4 text-theme-sub-content" />
           </template>
@@ -143,8 +144,8 @@ watch(selectedRecord, (newRecord) => {
       class="flex-1 ml-3.5 h-full -mr-3.5">
       <TabPane
         :key="0"
-        :tab="t('mock.mockDetail.mockSet.basicInfo.title')"
-        class="h-full">
+        :tab="t('mock.detail.requestRecord.basicInfo')"
+        class="h-full font-semibold">
         <template v-if="detail">
           <Grid
             :columns="gridColumns"
@@ -161,11 +162,11 @@ watch(selectedRecord, (newRecord) => {
       </TabPane>
       <TabPane
         :key="1"
-        :tab="t('请求信息')"
-        class="flex-1 flex flex-col"
+        :tab="t('mock.detail.requestRecord.requestInfo')"
+        class="flex-1 flex flex-col font-semibold"
         forceRender>
         <template v-if="detail">
-          <div class="text-3 text-text-title pl-1.25 mb-1">{{ t('mock.mockDetail.mockSet.requestRecord.requestHeader') }}</div>
+          <div class="text-3 text-text-title pl-1.25 mb-1">{{ t('mock.detail.requestRecord.requestHeader') }}</div>
           <Grid
             :columns="requestColumns"
             :dataSource="requestInfo"
@@ -174,7 +175,7 @@ watch(selectedRecord, (newRecord) => {
             labelSpacing="80px"
             marginBottom="0px"
             class="-ml-2 grid-row" />
-          <div class="text-3 text-text-title pl-1.25 mt-5 mb-1">{{ t('mock.mockDetail.mockSet.requestRecord.requestBody') }}</div>
+          <div class="text-3 text-text-title pl-1.25 mt-5 mb-1">{{ t('mock.detail.requestRecord.requestBody') }}</div>
           <template v-if="detail?.requestBody">
             <div class="bg-bg-table-head text-3 text-text-content p-2 rounded-sm" style="min-height: 34px;">
               {{ detail.requestBody }}
@@ -192,11 +193,11 @@ watch(selectedRecord, (newRecord) => {
       </TabPane>
       <TabPane
         :key="2"
-        :tab="t('响应信息')"
-        class="flex-1 flex flex-col"
+        :tab="t('mock.detail.requestRecord.responseInfo')"
+        class="flex-1 flex flex-col font-semibold"
         forceRender>
         <template v-if="detail">
-          <div class="text-3 text-text-title pl-1.25 mb-1">{{ t('mock.mockDetail.mockSet.requestRecord.responseHeader') }}</div>
+          <div class="text-3 text-text-title pl-1.25 mb-1">{{ t('mock.detail.requestRecord.responseHeader') }}</div>
           <Grid
             :columns="responseColumns"
             :dataSource="responseInfo"
@@ -205,7 +206,7 @@ watch(selectedRecord, (newRecord) => {
             labelSpacing="80px"
             marginBottom="0px"
             class="-ml-2 grid-row" />
-          <div class="text-3 text-text-title pl-1.25 mt-5 mb-2">{{ t('mock.mockDetail.mockSet.requestRecord.responseBody') }}</div>
+          <div class="text-3 text-text-title pl-1.25 mt-5 mb-2">{{ t('mock.detail.requestRecord.responseBody') }}</div>
           <template v-if="detail?.responseBody">
             <div class="flex mb-3 flex-freeze-auto items-center rounded text-3 text-text-sub-content">
               <div

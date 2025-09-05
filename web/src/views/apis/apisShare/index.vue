@@ -10,7 +10,7 @@ import { shareApis } from '@/api/tester';
 
 const { t } = useI18n();
 const route = useRoute();
-const Agent = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/agent/index.vue'));
+const Agent = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/Agent.vue'));
 const id = ref();
 const pat = ref();
 

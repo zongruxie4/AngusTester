@@ -6,14 +6,14 @@ import { CtoProps } from '../types';
  * <p>
  * CTO lifecycle management composable
  * </p>
- * 
+ *
  * @param props - Component props
  * @param loadData - Function to load dashboard data
  * @param resizeCharts - Function to resize charts
  * @param resizeChartsByType - Function to resize charts by type
  * @returns Object containing lifecycle management methods and state
  */
-export function useCtoLifecycle(
+export function useCtoLifecycle (
   props: CtoProps,
   loadData: () => Promise<void>,
   resizeCharts: () => void,
@@ -21,7 +21,7 @@ export function useCtoLifecycle(
 ) {
   /** Flag to indicate if data should be loaded when component becomes visible */
   const shouldNotify = ref(false);
-  
+
   /** Flag to indicate if charts should be resized when component becomes visible */
   const resizeNotify = ref(false);
 
@@ -80,7 +80,7 @@ export function useCtoLifecycle(
         shouldNotify.value = true;
         return;
       }
-      
+
       if (props.projectId) {
         loadData();
       }
@@ -101,7 +101,7 @@ export function useCtoLifecycle(
         refresh();
         shouldNotify.value = false;
       }
-      
+
       if (newValue && resizeNotify.value && props.projectId) {
         handleWindowResize();
         resizeNotify.value = false;
@@ -119,7 +119,7 @@ export function useCtoLifecycle(
    */
   const setupLifecycle = () => {
     setupWatchers();
-    
+
     // Add window resize event listener
     window.addEventListener('resize', handleWindowResize);
   };
@@ -142,7 +142,7 @@ export function useCtoLifecycle(
     // State
     shouldNotify,
     resizeNotify,
-    
+
     // Methods
     handleWindowResize,
     refresh,

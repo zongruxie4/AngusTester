@@ -428,8 +428,6 @@ const dropdownPermissionsMap = computed(() => {
   return map;
 });
 
-
-
 const dropdownMenuItems = [
   {
     key: 'block',

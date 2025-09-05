@@ -6,50 +6,50 @@ import { CtoProps, CtoData, TotalProgressOverview, BackloggedCount, RecentDelive
  * <p>
  * CTO data management composable
  * </p>
- * 
+ *
  * @param props - Component props containing filter parameters
  * @returns Object containing reactive data and methods
  */
-export function useCtoData(props: CtoProps) {
+export function useCtoData (props: CtoProps) {
   /** Member count for the project */
   const memberNum = ref(0);
-  
+
   /** Total progress overview data */
   const progressData = ref<TotalProgressOverview>({} as TotalProgressOverview);
-  
+
   /** Backlogged count data */
   const backloggedData = ref<BackloggedCount>({} as BackloggedCount);
-  
+
   /** Recent delivery count data */
   const recentDeliveryData = ref<RecentDeliveryCount>({} as RecentDeliveryCount);
-  
+
   /** Overdue assessment count data */
   const overdueAssessmentData = ref<OverdueAssessmentCount>({} as OverdueAssessmentCount);
-  
+
   /** Unplanned work count data */
   const unplannedWorkData = ref<UnplannedWorkCount>({} as UnplannedWorkCount);
-  
+
   /** Failure assessment count data */
   const failureAssessmentData = ref<FailureAssessmentCount>({} as FailureAssessmentCount);
-  
+
   /** APIs test count data */
   const apiTestData = ref<ApisTestCount>({} as ApisTestCount);
-  
+
   /** Scenario test count data */
   const scenarioTestData = ref<ScenarioTestCount>({} as ScenarioTestCount);
-  
+
   /** Total type count data */
   const totalTypeData = ref<TotalTypeCount>({} as TotalTypeCount);
-  
+
   /** Total status count data */
   const totalStatusData = ref<TotalStatusCount>({} as TotalStatusCount);
-  
+
   /** Lead time count data */
   const leadTimeData = ref<LeadTimeCount>({} as LeadTimeCount);
-  
+
   /** Total test result count data */
   const totalTestResultData = ref<TotalTestResultCount>({} as TotalTestResultCount);
-  
+
   /** Total review status count data */
   const totalReviewStatusData = ref<TotalReviewStatusCount>({} as TotalReviewStatusCount);
 
@@ -85,11 +85,11 @@ export function useCtoData(props: CtoProps) {
    */
   const loadCtoData = async () => {
     const [error, { data = {} }] = await (
-      props.countType === 'task' 
-        ? kanban.getTaskCto({ ...apiParams.value }) 
+      props.countType === 'task'
+        ? kanban.getTaskCto({ ...apiParams.value })
         : kanban.getTestingCto({ ...apiParams.value })
     );
-    
+
     if (error) {
       return;
     }
@@ -224,10 +224,10 @@ export function useCtoData(props: CtoProps) {
     leadTimeData,
     totalTestResultData,
     totalReviewStatusData,
-    
+
     // Computed properties
     apiParams,
-    
+
     // Methods
     loadCtoData,
     resetData

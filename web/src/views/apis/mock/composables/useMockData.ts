@@ -1,7 +1,9 @@
 import { ref, computed, inject } from 'vue';
-import { MockServiceObj, Filter } from '../types';
+import { SearchCriteria } from '@xcan-angus/infra';
+import { MockService } from '../types';
 import { mock } from '@/api/tester';
 import { getCurrentPage } from '@/utils/utils';
+import { MockServicePermission, MockServiceStatus } from '@/enums/enums';
 
 /**
  * Composable for managing mock service data and related operations
@@ -10,12 +12,12 @@ import { getCurrentPage } from '@/utils/utils';
 export function useMockData () {
   // Reactive state for mock service data
   const loading = ref(false);
-  const tableData = ref<MockServiceObj[]>([]);
+  const tableData = ref<MockService[]>([]);
   const total = ref(0);
   const params = ref({
     pageNo: 1,
     pageSize: 10,
-    filters: [] as Filter[],
+    filters: [] as SearchCriteria[],
     orderBy: undefined as string | undefined,
     orderSort: undefined as 'ASC' | 'DESC' | undefined
   });
@@ -34,7 +36,7 @@ export function useMockData () {
   /**
    * Fetch mock service list from API
    */
-  const fetchMockServiceList = async () => {
+  const fetchList = async () => {
     if (loading.value) {
       return;
     }
@@ -56,28 +58,9 @@ export function useMockData () {
 
     // Process the data to add currentAuthsValue field
     tableData.value = data.list.map(item => {
-      let currentAuthsValue: string[] = [];
-
-      if (!item.auth) {
-        if (item.currentAuths?.some(m => m.value === 'GRANT')) {
-          currentAuthsValue = ['EXPORT', 'GRANT'];
-        } else {
-          currentAuthsValue = ['EXPORT'];
-        }
-
-        if (item.status?.value === 'NOT_STARTED') {
-          currentAuthsValue = [...currentAuthsValue, 'DELETE'];
-        }
-      } else {
-        currentAuthsValue = item.currentAuths?.map(m => m.value) || [];
-        if (item.status?.value !== 'NOT_STARTED') {
-          currentAuthsValue = currentAuthsValue.filter(f => f !== 'DELETE');
-        }
-      }
-
       return {
         ...item,
-        currentAuthsValue
+        currentAuthsValue: item.currentAuths.map(i => i.value)
       };
     });
 
@@ -87,10 +70,10 @@ export function useMockData () {
   /**
    * Handle search parameter changes
    */
-  const handleSearchChange = (data: Filter[]) => {
+  const handleSearchChange = (data: SearchCriteria[]) => {
     params.value.pageNo = 1;
     params.value.filters = data;
-    fetchMockServiceList();
+    fetchList();
   };
 
   /**
@@ -102,31 +85,32 @@ export function useMockData () {
     params.value.pageSize = pageSize;
     params.value.orderBy = sorter.orderBy;
     params.value.orderSort = sorter.orderSort;
-    fetchMockServiceList();
+    fetchList();
   };
 
   /**
    * Update table data with new service data
    */
-  const updateTableData = (newData: MockServiceObj) => {
+  const updateTableData = (newData: MockService) => {
     for (let i = 0; i < tableData.value.length; i++) {
       const item = tableData.value[i];
 
       if (item.id === newData.id) {
-        let currentAuthsValue: string[] = [];
+        let currentAuthsValue: MockServicePermission[] = [];
 
         if (!newData.auth) {
-          if (newData.currentAuths?.some(m => m.value === 'GRANT')) {
-            currentAuthsValue = ['EXPORT', 'GRANT'];
+          if (newData.currentAuths?.some(m => m.value === MockServicePermission.GRANT)) {
+            currentAuthsValue = [MockServicePermission.EXPORT, MockServicePermission.GRANT];
           } else {
-            currentAuthsValue = ['EXPORT'];
+            currentAuthsValue = [MockServicePermission.EXPORT];
           }
         } else {
-          currentAuthsValue = newData.currentAuths?.map(m => m.value).filter(f => f !== 'DELETE') || [];
+          currentAuthsValue = newData.currentAuths?.map(m => m.value)
+            .filter(f => f !== MockServicePermission.DELETE) || [];
         }
 
-        if (newData.status?.value === 'NOT_STARTED') {
-          currentAuthsValue = [...currentAuthsValue, 'DELETE'];
+        if (newData.status?.value === MockServiceStatus.NOT_STARTED) {
+          currentAuthsValue = [...currentAuthsValue, MockServicePermission.DELETE];
         }
 
         tableData.value[i] = {
@@ -161,7 +145,7 @@ export function useMockData () {
     pagination,
 
     // Methods
-    fetchMockServiceList,
+    fetchList,
     handleSearchChange,
     handleTableChange,
     updateTableData,

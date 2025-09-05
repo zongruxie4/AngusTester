@@ -636,7 +636,7 @@ const loadCaseList = async (): Promise<void> => {
 };
 
 const tableAction = computed(() => {
-  const action = { auth: {}, menus: {} };
+  const action = { auth: {}, actionMenus: {} };
   for (let i = 0; i < caseList.value.length; i++) {
     const _case = caseList.value[i];
     if (userInfo?.id === _case.testerId && (planAuthMap.value[_case.planId]?.permissions || []).includes('TEST')) {
@@ -653,11 +653,11 @@ const tableAction = computed(() => {
         action.auth[_case.id] = action.auth[_case.id].filter(i => i !== 'retestResult');
       }
     }
-    action.menus[_case.id] = [];
+    action.actionMenus[_case.id] = [];
 
     // 测试次数大于0才允许重置测试结果
     if (+_case.testNum > 0) {
-      action.menus[_case.id].push({
+      action.actionMenus[_case.id].push({
         key: 'resetTestResult',
         icon: 'icon-zhongzhiceshijieguo',
         name: t('functionCase.mainView.resetTestResult'),
@@ -666,7 +666,7 @@ const tableAction = computed(() => {
     }
 
     if (!_case?.review || (_case?.review && _case?.reviewStatus.value === 'PASSED')) {
-      action.menus[_case.id].push({
+      action.actionMenus[_case.id].push({
         key: 'updateTestResult_canceled',
         icon: 'icon-xiugaiceshijieguo',
         name: t('functionCase.mainView.cancel'),
@@ -674,7 +674,7 @@ const tableAction = computed(() => {
       });
 
       if (!['PASSED', 'NOT_PASSED', 'CANCELED'].includes(_case?.testResult?.value)) {
-        action.menus[_case.id].push({
+        action.actionMenus[_case.id].push({
           key: 'updateTestResult_passed',
           icon: 'icon-xiugaiceshijieguo',
           name: t('functionCase.mainView.testPassed'),
@@ -691,7 +691,7 @@ const tableAction = computed(() => {
           permission: 'updateTestResult'
         });
       } else {
-        action.menus[_case.id].push({
+        action.actionMenus[_case.id].push({
           key: 'retestResult',
           icon: 'icon-xiugaiceshijieguo',
           name: t('functionCase.mainView.retest'),
@@ -701,7 +701,7 @@ const tableAction = computed(() => {
     }
 
     if (action.auth[_case.id].includes('move')) {
-      action.menus[_case.id].push({
+      action.actionMenus[_case.id].push({
         key: 'move',
         icon: 'icon-yidong',
         name: t('functionCase.mainView.move'),
@@ -709,7 +709,7 @@ const tableAction = computed(() => {
       });
     }
 
-    action.menus[_case.id].push(
+    action.actionMenus[_case.id].push(
       {
         key: 'clone',
         icon: 'icon-fuzhi',
@@ -2011,7 +2011,7 @@ defineExpose({
               :params="params"
               :total="total"
               :caseAcitonAuth="tableAction.auth"
-              :menus="tableAction.menus"
+              :menus="tableAction.actionMenus"
               :caseList="caseList"
               class="flex-1 pb-3.5"
               @onClick="handleDetailAction"

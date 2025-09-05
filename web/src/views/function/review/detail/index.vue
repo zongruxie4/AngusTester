@@ -617,8 +617,8 @@ const menuItems = [
 
             <template v-if="selectCaseIds.length">
               <div class="font-semibold text-3.5 mt-5">
-                              {{ t('caseReview.detail.reviewInfoSelected') }}
-              <span class="text-sub-content">{{ t('caseReview.detail.selectedCount', { count: selectCaseIds.length }) }}</span>
+                {{ t('caseReview.detail.reviewInfoSelected') }}
+                <span class="text-sub-content">{{ t('caseReview.detail.selectedCount', { count: selectCaseIds.length }) }}</span>
               </div>
               <ReviewForm
                 class="mt-5 w-100"

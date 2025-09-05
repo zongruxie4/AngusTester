@@ -1,7 +1,7 @@
 import { onMounted, ref } from 'vue';
 import { analysis } from '@/api/tester';
 
-import {MockServiceStats} from "@/views/apis/mock/detail/types";
+import { MockServiceCount } from '@/views/apis/mock/detail/types';
 
 /**
  * Composable for managing mock service statistics.
@@ -9,8 +9,8 @@ import {MockServiceStats} from "@/views/apis/mock/detail/types";
  * Handles fetching and state management for API count, request count,
  * and various response type statistics.
  */
-export function useApiStats(serviceId: string) {
-  const stats = ref<MockServiceStats>({
+export function useApiStats (serviceId: string) {
+  const stats = ref<MockServiceCount>({
     apisNum: '0',
     requestNum: '0',
     pushbackNum: '0',

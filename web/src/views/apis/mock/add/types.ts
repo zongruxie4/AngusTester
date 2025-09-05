@@ -95,7 +95,7 @@ export enum ImportSourceType {
  */
 export enum HttpMethod {
   /** DELETE method */
-  DELETE = 'DELETE',
+  DELETE = MockServicePermission.DELETE,
   /** GET method */
   GET = 'GET',
   /** HEAD method */

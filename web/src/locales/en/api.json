@@ -180,14 +180,15 @@
     "refreshInstance_tip": "Refreshing the instance will forcibly synchronize service configuration, interface security, CORS settings and Mock interfaces to the running service instance.",
     "refreshInstance_success": "Instance Refreshed Successfully",
     "console": "Console",
+    "exitCode": "Exit code",
     "introduce": {
       "description": "Mock can quickly simulate dependent APIs, enabling parallel development and testing, improving efficiency while avoiding production data pollution.",
       "addMockService": "Add Mock Service",
-      "addMockService_desc": "Manually add interfaces after creating Mock service.",
-      "importService": "Import Existing Service",
-      "importService_desc": "Create Mock based on existing services, select interfaces to simulate, system automatically establishes associations.",
+      "addMockServiceDesc": "Manually add interfaces after creating Mock service.",
+      "importService": "Associate Existing Service",
+      "importServiceDesc": "Create Mock based on existing services and apis, system automatically establishes associations.",
       "importFile": "Import from File",
-      "importFile_desc": "Support Swagger2.0, OpenAPI3.x, Postman2.0/2.1, Angus format file import."
+      "importFileDesc": "Support Swagger, OpenAPI3.x, Postman2.0/2.1, Angus format file import."
     },
     "searchPanel": {
       "namePlaceholder": "Search service ID, name",
@@ -195,25 +196,25 @@
       "sourcePlaceholder": "Select source",
       "nodeIdPlaceholder": "Select or search node",
       "createdByPlaceholder": "Select creator",
-      "createdDatePlaceholder1": "Created time from",
-      "createdDatePlaceholder2": "Created time to"
+      "createdDatePlaceholder1": "Created date from",
+      "createdDatePlaceholder2": "Created date to"
     },
     "columns": {
-      "id": "Service ID",
-      "name": "Service Name",
+      "id": "ID",
+      "name": "Name",
       "node": "Node",
-      "address": "Service Address",
+      "address": "Address",
       "status": "Status",
       "source": "Source",
       "createdBy": "Creator",
-      "lastModifiedBy": "Last Updated By",
       "createdDate": "Created Date",
-      "lastModifiedDate": "Updated Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date",
       "action": "Actions"
     },
     "actions": {
-      "delete": "Force Delete",
-      "authority": "Permissions",
+      "forceDelete": "Force Delete",
+      "authority": "Permission",
       "refresh": "Refresh Instance",
       "addMock": "Add Mock Service",
       "start": "Start",
@@ -237,404 +238,251 @@
         "addSuccess": "add successfully"
       },
       "form": {
-        "name": "name",
-        "namePlaceholder": "service identifier naming information, up to 100 characters",
-        "domain": "domain",
-        "domainPlaceholder": "after setting the domain name for the service, the mock interface can be accessed through the domain name",
-        "domainTooltip": "domain name resolution is expected to take effect within 60 seconds.",
-        "port": "port",
-        "portPlaceholder": "the port listened by the service, the service cannot be modified after adding (1~65535)",
-        "node": "node",
-        "nodePlaceholder": "the node where the service is running, the service cannot be modified after adding",
-        "service": "service",
-        "servicePlaceholder": "select or search service",
-        "api": "api",
-        "importSource": "import source",
-        "associated": "(associated)"
+        "name": "Name",
+        "namePlaceholder": "Service identifier naming information, up to 100 characters",
+        "domain": "Domain",
+        "domainPlaceholder": "After setting the domain name for the service, the mock interface can be accessed through the domain name",
+        "domainTooltip": "Domain name resolution is expected to take effect within 60 seconds.",
+        "port": "Port",
+        "portPlaceholder": "The port listened by the service, the service cannot be modified after adding (1~65535)",
+        "node": "Node",
+        "nodePlaceholder": "The node where the service is running, the service cannot be modified after adding",
+        "service": "Service",
+        "servicePlaceholder": "Select or search service",
+        "api": "Api",
+        "importSource": "Import Source",
+        "associated": "(Associated)"
       },
       "upload": {
-        "uploadFile": "upload file",
-        "uploadDescription": "directly paste content or drag and drop files or click to upload files, the file size does not exceed 20M",
-        "clear": "clear",
-        "fileRequired": "please upload the file first",
-        "fileSizeExceeded": "the file or text size exceeds 20M, please re-upload",
-        "postmanVersionError": "please check if the file is a Postman Collection V2/V2.1 version JSON file"
+        "uploadFile": "Upload File",
+        "uploadDescription": "Directly paste content or drag and drop files or click to upload files, the file size does not exceed 20M",
+        "clear": "Clear",
+        "fileRequired": "Please upload the file first",
+        "fileSizeExceeded": "The file or text size exceeds 20M, please re-upload",
+        "postmanVersionError": "Please check if the file is a Postman Collection V2/V2.1 version JSON file"
       },
       "buttons": {
-        "cancel": "cancel",
-        "confirm": "confirm"
+        "cancel": "Cancel",
+        "confirm": "Confirm"
       },
       "apiList": {
-        "searchApiName": "search api name",
-        "requestMethod": "request method",
-        "apiName": "api name",
-        "selectAll": "select all"
+        "searchApiName": "Search api name",
+        "requestMethod": "Request method",
+        "apiName": "Api Name",
+        "selectAll": "Select All"
       }
     },
-    "mockDetail": {
+    "detail": {
       "menu": {
-        "apis": "api",
-        "request": "request",
-        "log": "log",
-        "activity": "activity",
-        "monitor": "monitor",
-        "setting": "setting"
-      },
-      "control": {
-        "apiName": "api name",
-        "apiInfo": "api info",
-        "requestCount": "request count",
-        "mockExceptionCount": "mock exception count",
-        "pushbackCount": "pushback count",
-        "successCount": "success count",
-        "exceptionCount": "exception count",
-        "apiCount": "api count",
-        "searchApiNamePath": "search api name, path",
-        "tooltips": {
-          "requestCount": "the number of times the mock interface is called.",
-          "mockExceptionCount": "the number of times the mock interface returns an Http status code of 4xx and 5xx response.",
-          "pushbackCount": "the number of times the mock service pushes a request to the user's configured pushback interface.",
-          "successCount": "the number of times the request returns a status code of 2xx.",
-          "exceptionCount": "the number of times the mock interface configuration errors or the program itself causes errors."
-        }
-      },
-      "mockSet": {
-        "notifications": {
-          "modifySuccess": "modify successfully"
-        },
-        "validation": {
-          "enterParamName": "please enter parameter name",
-          "paramNameDuplicate": "parameter name duplicate",
-          "enterName": "please enter name",
-          "enterDomain": "please enter domain"
-        },
-        "basicInfo": {
-          "title": "basic information",
-          "name": "name",
-          "nameTooltip": "service identifier naming information, up to 100 characters.",
-          "domain": "domain",
-          "domainTooltip": "after setting the domain name for the service, the mock interface can be accessed through the domain name, the domain name set needs to be resolved to the IP of the node where it is located.",
-          "port": "port",
-          "portTooltip": "the port listened by the service, the service cannot be modified after adding.",
-          "node": "node",
-          "nodeTooltip": "the node where the service is running, the service cannot be modified after adding.",
-          "serviceConfig": "service config",
-          "serviceConfigTooltip": "the main parameters of the service running, more parameter configuration please refer to the official website related documents. The modification needs to be restarted after the service takes effect.",
-          "useSsl": "enable SSL",
-          "useSslTooltip": "enable SSL option on Netty Http server, the default is not enabled.",
-          "workThreadNum": "work thread num",
-          "workThreadNumTooltip": "the number of threads of the service running, the default is 100.",
-          "logLevel": "log level",
-          "logLevelTooltip": "configure request log information level, including four options: NONE, BASIC, HEADERS and FULL.",
-          "logFileLevel": {
-            "none": "no log record.",
-            "basic": "only record request method and URL as well as response status code and execution time, the default.",
-            "headers": "record basic information as well as request and response headers.",
-            "full": "record request and response headers, body and metadata."
-          },
-          "sendRequestLog": "send request log",
-          "sendRequestLogTooltip": "whether to send Mock request log to the service side.",
-          "maxContentLength": "max request size",
-          "maxContentLengthTooltip": "the maximum allowed request size, the default is 1000*1024*1024 (1000MB).",
-          "pushbackThreadNum": "pushback thread num",
-          "pushbackThreadNumTooltip": "the number of threads for processing pushback requests, the default is 8.",
-          "pushbackConnectTimeout": "pushback connect timeout",
-          "pushbackConnectTimeoutTooltip": "the maximum connection timeout when pushing, in milliseconds, the default is 5000.",
-          "pushbackRequestTimeout": "pushback request timeout",
-          "pushbackRequestTimeoutTooltip": "the maximum request timeout when pushing, in milliseconds, the default is -1 not timeout.",
-          "surety": "interface security",
-          "suretyHints": "the modification needs to be restarted after the service takes effect.",
-          "suretyTooltip": "used to configure the authorization information required for accessing the interface, after enabling the configuration, the interface must carry the authorization parameter to access the interface. Up to 10 can be added.",
-          "in": "location",
-          "paramsName": "parameter name",
-          "paramsValue": "parameter value",
-          "paramsValueRule": "please enter value"
-        },
-        "buttons": {
-          "cancel": "cancel",
-          "confirm": "confirm"
-        },
-        "settings": {
-          "logTooltip": "record basic information and request and response headers.",
-          "corsTooltip": "when the domain name of the mock interface site accessed through the browser and the address of the mock interface are inconsistent, the browser's same-origin access policy (CORS) restriction will be triggered, causing the interface to be inaccessible. The current \"cross-origin configuration\" can freely制定跨域访问策略。修改后需要重启服务或刷新实例后生效。",
-          "enableNettyLog": "enable Netty log",
-          "enableNettyLogTooltip": "it is recommended to open only in debug mode, the default is not enabled."
-        },
-        "cors": {
-          "title": "cross-origin setting",
-          "description": "when the domain name of the mock interface site accessed through the browser and the address of the mock interface are inconsistent, the browser's same-origin access policy (CORS) restriction will be triggered, causing the interface to be inaccessible. The current \"cross-origin configuration\" can freely制定跨域访问策略。修改后需要重启服务或刷新实例后生效。",
-          "enabled": "enable",
-          "enabledTooltip": "enable cross-origin access restriction configuration, the default is not enabled.",
-          "allowOrigin": "allow origin",
-          "allowOriginTooltip": "specify which websites can participate in cross-origin resource sharing, the default is *, returned by the response header Access-Control-Allow-Origin.",
-          "allowCredentials": "allow access credentials",
-          "allowCredentialsTooltip": "specify that third-party sites may be able to perform privileged operations and retrieve sensitive information, the default is true, returned by the response header Access-Control-Allow-Credentials.",
-          "allowRequestMethods": "allow request methods",
-          "allowRequestMethodsTooltip": "specify allowed HTTP methods, the default is GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD, returned by the response header Access-Control-Allow-Methods.",
-          "allowRequestHeaders": "allow request headers",
-          "allowRequestHeadersTooltip": "specify allowed HTTP request headers, the default is not specified, returned by the response header Access-Control-Allow-Headers.",
-          "allowExposeHeaders": "allow expose headers",
-          "allowExposeHeadersTooltip": "specify which header fields in the response can be accessed, these fields do not include the default headers that browsers can access, the default is not specified, returned by the response header Access-Control-Expose-Headers."
-        },
-        "requestRecord": {
-          "apiName": "api name",
-          "requestId": "request ID",
-          "requestTime": "request time",
-          "requestUrl": "request address",
-          "requestMethod": "request method",
-          "statusCode": "status code",
-          "formatOptions": {
-            "beautify": "beautify",
-            "raw": "raw",
-            "preview": "preview"
-          },
-          "requestInfo": "request info",
-          "requestHeader": "request header",
-          "requestBody": "request body",
-          "responseInfo": "response info",
-          "responseHeader": "response header",
-          "responseBody": "response body",
-          "hints": "the current request record is a mock service collection mock interface call log, the system collects up to 3 request logs per second. Each mock interface only retains the last 100 request records. Note: if you need to enable or disable request log collection, please configure \"settings\"->\"record request log\", after enabling, the mock interface performance will be reduced."
-        },
-        "log": {
-          "lineOptions": {
-            "last500": "last 500 lines",
-            "last1000": "last 1000 lines",
-            "last10000": "last 10000 lines"
-          },
-          "notifications": {
-            "noDownloadContent": "no downloadable content"
-          },
-          "errorInfo": "no access proxy information, connection failed address:",
-          "logFile": "log file:",
-          "browseLog": "browse log:",
-          "download": "download",
-          "refresh": "refresh",
-          "autoRefresh": "auto refresh:"
-        },
-        "activity": {
-          "pageInfo": "total {total} records, page {current} / {totalPage}",
-          "searchPlaceholder": "search activity details"
-        }
-      }
-    },
-    "mockApis": {
-      "debugApis": {
-        "testRequest": "test request",
-        "proxy": "proxy",
-        "stop": "stop",
-        "send": "send",
-        "response": "response",
-        "notifications": {
-          "proxyNotConnected": "proxy not connected, please check the proxy configuration"
-        }
-      },
-      "codeForm": {
-        "notifications": {
-          "yamlFormatError": "yaml content format error, please check and correct"
-        }
-      },
-      "notifications": {
-        "copyApiSuccess": "copy api add successfully",
-        "linkApiSuccess": "link api add successfully",
-        "importDemoSuccess": "import demo successfully",
-        "cloneSuccess": "clone successfully",
-        "deleteSuccess": "delete successfully",
-        "refreshInstanceSuccess": "refresh instance api successfully",
-        "saveSuccess": "save successfully",
-        "dataError": "data error, please check and correct before saving."
-      },
-      "validation": {
-        "nameDuplicate": "name duplicate"
-      },
-      "confirmations": {
-        "deleteApi": "confirm to delete api【{name}】?",
-        "refreshInstance": "refresh instance api will force synchronize the current mock interface information to the running service instance."
-      },
-      "hints": {
-        "mockDescription": "when an interface is not implemented or cannot be accessed, the mock interface can be used to imitate the behavior and data return of the real interface, so as to improve the efficiency of development and testing. Note: the mock interface takes effect after saving."
-      },
-      "search": {
-        "placeholder": "search name"
+        "apis": "Api",
+        "request": "Request",
+        "log": "Log",
+        "activity": "Activity",
+        "monitor": "Monitor",
+        "setting": "Setting"
       },
       "buttons": {
-        "addApi": "add api",
-        "save": "save",
-        "clone": "clone",
-        "export": "export",
-        "delete": "delete",
-        "refreshInstance": "refresh instance api",
-        "refresh": "refresh",
-        "back": "back",
-        "addResponse": "add response",
-        "deleteResponse": "delete response"
+        "cancel": "Cancel",
+        "confirm": "Confirm"
       },
-      "menuItems": {
-        "clone": "clone",
-        "delete": "delete",
-        "export": "export",
-        "copyApi": "copy api add",
-        "linkApi": "link api add",
-        "import": "import api",
-        "importDemo": "import demo"
+      "notifications": {
+        "modifySuccess": "Modify successfully"
       },
-      "sortMenuItems": {
-        "createdDate": "by added time",
-        "id": "by id"
+      "validation": {
+        "enterParamName": "Please enter parameter name",
+        "paramNameDuplicate": "Parameter name duplicate",
+        "enterName": "Please enter name",
+        "enterDomain": "Please enter domain"
       },
-      "form": {
-        "request": "request",
-        "name": "name",
-        "namePlaceholder": "maximum support 400 characters",
-        "description": "description",
-        "descriptionPlaceholder": "maximum support 20000 characters",
-        "response": "response",
-        "responseTooltip": "maximum support 50 responses",
-        "namePlaceholderShort": "maximum support 200 characters"
+      "basicInfo": {
+        "title": "Basic Information",
+        "name": "Name",
+        "nameTooltip": "Service identifier naming information, up to 100 characters.",
+        "domain": "Domain",
+        "domainTooltip": "After setting the domain name for the service, the mock interface can be accessed through the domain name, the domain name set needs to be resolved to the IP of the node where it is located.",
+        "port": "Port",
+        "portTooltip": "The port listened by the service, the service cannot be modified after adding.",
+        "node": "Node",
+        "nodeTooltip": "The node where the service is running, the service cannot be modified after adding.",
+        "serviceConfig": "Service Configuration",
+        "serviceConfigTooltip": "The main parameters of the service running, more parameter configuration please refer to the official website related documents. The modification needs to be restarted after the service takes effect.",
+        "useSsl": "Enable SSL",
+        "useSslTooltip": "Enable SSL option on Netty Http server, the default is not enabled.",
+        "workThreadNum": "Work thread num",
+        "workThreadNumTooltip": "The number of threads of the service running, the default is 100.",
+        "logLevel": "Log level",
+        "logLevelTooltip": "Configure request log information level, including four options: NONE, BASIC, HEADERS and FULL.",
+        "logFileLevel": {
+          "none": "No log record.",
+          "basic": "Only record request method and URL as well as response status code and execution time, the default.",
+          "headers": "Record basic information as well as request and response headers.",
+          "full": "Record request and response headers, body and metadata."
+        },
+        "sendRequestLog": "Send request log",
+        "sendRequestLogTooltip": "Whether to send Mock request log to the service side.",
+        "maxContentLength": "Max request size",
+        "maxContentLengthTooltip": "The maximum allowed request size, the default is 1000*1024*1024 (1000MB).",
+        "pushbackThreadNum": "Pushback thread num",
+        "pushbackThreadNumTooltip": "The number of threads for processing pushback requests, the default is 8.",
+        "pushbackConnectTimeout": "Pushback connect timeout",
+        "pushbackConnectTimeoutTooltip": "The maximum connection timeout when pushing, in milliseconds, the default is 5000.",
+        "pushbackRequestTimeout": "Pushback request timeout",
+        "pushbackRequestTimeoutTooltip": "The maximum request timeout when pushing, in milliseconds, the default is -1 not timeout.",
+        "security": "Api Security",
+        "securityHints": "The modification needs to be restarted after the service takes effect.",
+        "securityTooltip": "Used to configure the authorization information required for accessing the interface, after enabling the configuration, the interface must carry the authorization parameter to access the interface. Up to 10 can be added.",
+        "in": "Location",
+        "paramsName": "Parameter Name",
+        "paramsValue": "Parameter Value",
+        "paramsValueRule": "Please enter value"
       },
-      "response": {
-        "match": "match",
-        "matchTooltip": "specify the matching request conditions that need to be satisfied for the current response. Note: when there are multiple responses that meet the matching conditions, the response with the highest priority will be returned. If no matching conditions are configured or the priority is the same, the first condition or the first configured condition will be returned.",
-        "priority": "priority",
-        "priorityTooltip": "the higher the value, the higher the priority, the value range is 0~2147483647. Note: only when there are multiple responses that meet the matching conditions will the response with the highest priority be returned.",
-        "content": "content",
-        "pushback": "pushback",
-        "pushbackTooltip": "pushback can be used to automatically push an Http request to a specified address after receiving a mock request, such as payment callback.",
-        "enable": "enable",
-        "disable": "disable"
-      },
-      "modals": {
-        "copyApi": "copy api add",
-        "linkApi": "link api add"
-      }
-    },
-    "mockApisComp": {
-      "textareaEditor": {
-        "maxLengthSupport": "maximum support characters",
-        "showCount": "whether to display the number of input strings",
-        "maxLengthMessage": "maximum support {maxlength} characters",
-        "errorMessage": "maximum support {maxlength} characters, already input {length} characters",
-        "format": "format",
-        "clear": "clear"
-      },
-      "codeEditor": {
-        "maxLengthSupport": "maximum support characters",
-        "showCount": "whether to display the number of input strings",
-        "errorMessage": "maximum support {maxlength} characters, already input {length} characters",
-        "format": "format",
-        "clear": "clear"
-      },
-      "agent": {
-        "noProxy": "no proxy",
-        "clientProxy": "client proxy",
-        "serverProxy": "server proxy",
-        "cloudProxy": "cloud proxy",
-        "proxyConfig": "proxy config",
-        "notConnected": "not connected",
-        "connected": "connected",
+      "apis": {
+        "hints": "When an interface is not yet implemented or inaccessible, Mock interfaces can be used to simulate the behavior and data return of real interfaces for development and testing work, thereby improving development and testing efficiency. Note: Mock interfaces take effect only after being saved.",
+        "searchPlaceholder": "Search name",
+        "addApi": "Add API",
+        "save": "Save",
+        "clone": "Clone",
+        "export": "Export",
+        "delete": "Delete",
+        "refreshInstance": "Refresh Instance API",
+        "refresh": "Refresh",
+        "back": "Back",
+        "request": "Request",
+        "name": "Name",
+        "namePlaceholder": "Maximum 400 characters",
+        "description": "Description",
+        "descriptionPlaceholder": "Maximum 20000 characters",
+        "response": "Response",
+        "maxResponseTip": "Maximum 50 responses can be configured",
+        "addResponse": "Add Response",
+        "deleteResponse": "Delete Response",
+        "match": "Match",
+        "matchTooltip": "Specify the matching request conditions that need to be met to return the current response. Note: When there are multiple responses that meet the matching conditions, the response with the highest priority will be returned. If no matching conditions are configured or the priorities are the same, the first condition or the first configured condition will be returned.",
+        "priority": "Priority",
+        "priorityTooltip": "The higher the value, the higher the priority. Value range: 0~2147483647. Note: The response with the highest priority will only be returned when there are multiple responses that meet the matching conditions.",
+        "content": "Content",
+        "pushback": "Pushback",
+        "pushbackTooltip": "Pushback can be used to automatically push an Http request to a specified address after receiving a Mock request, such as: payment callback.",
+        "enable": "Enable",
+        "disable": "Disable",
+        "copyApiTitle": "Copy API Add",
+        "linkApiTitle": "Link API Add",
+        "testRequest": "Test Request",
+        "proxy": "Proxy",
+        "terminate": "Terminate",
+        "send": "Send",
+        "responseTitle": "Response",
         "notifications": {
-          "onlyOnePath": "only one path can be added",
-          "notConfigured": "not configured or enabled server proxy, please check \"application management->proxy config\"",
-          "connectionFailed": "proxy connection failed, please check if the proxy service is running."
+          "copyApiSuccess": "Copy API added successfully",
+          "linkApiSuccess": "Link API added successfully",
+          "importDemoSuccess": "Import demo successfully",
+          "cloneSuccess": "Clone successfully",
+          "deleteSuccess": "Delete successfully",
+          "refreshInstanceSuccess": "Refresh instance API successfully",
+          "saveSuccess": "Save successfully",
+          "nameDuplicate": "Name duplicate",
+          "dataError": "Data error, please check and correct before saving.",
+          "proxyNotConnected": "Proxy not connected, please check proxy configuration",
+          "yamlFormatError": "YAML content format error, please check and correct"
         },
-        "descriptions": {
-          "noProxy": "request interfaces directly through the browser, and the server-side access to non-same-origin interfaces needs to cancel the cross-origin restriction.",
-          "clientProxy": "an \"<a href='https://www.xcan.cloud/help' target=\"_blank\"  class=\"text-text-link\">proxy program<a>\" needs to be installed on the computer where the browser is accessed, and after configuration, the request will be sent using the client proxy.",
-          "serverProxy": "the \"proxy program\" needs to be installed separately on the server host of the shared network, and the server proxy does not require the user to install the proxy program on their own computer, and after configuration, the request will be sent using the server proxy. Recommended method",
-          "cloudProxy": "request interfaces through AngusTester cloud server nodes, note: cannot access customer intranet service addresses."
+        "confirmations": {
+          "deleteApi": "Are you sure to delete the API 【{summary}】?",
+          "refreshInstance": "Refreshing the instance API will force synchronization of current Mock API information to the running service instance."
+        },
+        "menuItems": {
+          "clone": "Clone",
+          "delete": "Delete",
+          "export": "Export",
+          "copyApi": "Copy API Add",
+          "linkApi": "Link API Add",
+          "import": "Import API",
+          "importDemo": "Import Demo"
+        },
+        "sortOptions": {
+          "byCreatedDate": "By Created Date",
+          "byId": "By ID"
         }
       },
-      "urlForm": {
-        "methodPath": "method/path",
-        "requestMethod": "request method",
-        "maxLengthPlaceholder": "maximum support 800 characters"
+      "cors": {
+        "title": "Cross-Origin Setting",
+        "description": "Resolve browser cross-origin access restrictions and configure cross-origin access policies. Restart service after changes.",
+        "enabled": "Enable",
+        "enabledTooltip": "Enable cross-origin access configuration, disabled by default.",
+        "allowOrigin": "Allow Origin",
+        "allowOriginTooltip": "Allowed cross-origin domains, default * (all domains).",
+        "allowCredentials": "Allow access credentials",
+        "allowCredentialsTooltip": "Allow cross-origin requests to carry credentials (like cookies), enabled by default.",
+        "allowRequestMethods": "Allow request methods",
+        "allowRequestMethodsTooltip": "Allowed HTTP request methods, supports all common methods by default.",
+        "allowRequestHeaders": "Allow request headers",
+        "allowRequestHeadersTooltip": "Allowed request header fields, no restrictions by default.",
+        "allowExposeHeaders": "Allow expose headers",
+        "allowExposeHeadersTooltip": "Response header fields accessible to clients, no restrictions by default."
       },
-      "matchForm": {
-        "pathForm": {
-          "path": "path",
-          "operationCondition": "operation condition",
-          "notifications": {
-            "onlyOnePath": "only one path can be added"
-          },
-          "descriptions": {
-            "equal": "start with /; path segments are separated by /, and do not contain special characters (such as ? and #)",
-            "notEqual": "start with /; path segments are separated by /, and do not contain special characters (such as ? and #)",
-            "contain": "start with /; path segments are separated by /, and do not contain special characters (such as ? and #)",
-            "notContain": "start with /; path segments are separated by /, and do not contain special characters (such as ? and #)"
-          },
-          "rules": {
-            "rootPath": "the path starts with /, indicating the root path.",
-            "pathSegments": "the path consists of multiple path segments, and the path segments are separated by /.",
-            "segmentChars": "each path segment can be composed of letters, numbers, hyphens, underscores, etc., and does not contain special characters (such as ? and #).",
-            "segmentNotEmpty": "the path segment cannot be an empty string."
-          }
+      "requestRecord": {
+        "apiName": "Api Name",
+        "requestId": "Request ID",
+        "requestTime": "Request Time",
+        "requestUrl": "Request Address",
+        "requestMethod": "Request Method",
+        "statusCode": "Status Code",
+        "formatOptions": {
+          "beautify": "Beautify",
+          "raw": "Raw",
+          "preview": "Preview"
         },
-        "selectInputForm": {
-          "requestHeader": "request header",
-          "parameterName": "parameter name, maximum support 400 characters",
-          "parameterValue": "parameter value, maximum support 4096 characters",
-          "operator": "operator"
-        },
-         "parameterForm": {
-          "regMatch": "regular expression",
-          "queryParameters": "query parameters",
-          "parameterName": "parameter name, maximum support 400 characters",
-          "parameterValue": "parameter value, maximum support 4096 characters"
-        },
-         "requestBody": {
-            "requestBody": "request body",
-            "format": "format",
-            "clear": "clear",
-            "value": "value",
-            "xpathMatch": "XPath expression",
-            "jsonPathMatch": "JSONPath expression",
-            "notifications": {
-              "onlyOneBody": "only one request body can be added"
-            }
-        }
+        "basicInfo": "Basic",
+        "requestInfo": "Request",
+        "requestHeader": "Request Headers",
+        "requestBody": "Request Body",
+        "responseInfo": "Response",
+        "responseHeader": "Response Headers",
+        "responseBody": "Response Body",
+        "hints": "Mock interface call logs, max 3 per second, 100 records per interface. Enable/disable logging in \"Settings\"->\"Send request log\". Enabling may affect performance."
       },
-      "contentForm": {
-        "statusCode": "status code",
-        "responseDelay": "response delay",
-        "responseHeaders": "response headers",
-        "responseBody": "response body",
-        "mockFunctionHelper": "mock function helper",
-        "insertFile": "insert file",
-        "maxHeaderNum": "maximum support {{ MAX_HEADER_NUM }} response headers",
-        "maxHeaderNumError": "maximum support {maxHeaderNum} response headers",
+      "log": {
+        "lineOptions": {
+          "last500": "Recent 500 lines",
+          "last1000": "Recent 1000 lines",
+          "last10000": "Recent 10000 lines"
+        },
         "notifications": {
-          "maxHeaderError": "maximum support {maxHeaderNum} response headers"
+          "noDownloadContent": "No downloadable content"
         },
-        "importFileModal": {
-          "title": "encode file",
-          "maxFileSize": "maximum support encode 10M file",
-          "encoding": "encoding"
-        },
-        "selectInputForm": {
-          "parameterName": "parameter name, maximum support 400 characters",
-          "parameterValue": "parameter value, maximum support 4096 characters"
-        },
-        "requestBody": "request body",
-        "pushBack": {
-          "urlFormatError": "pushback address format error",
-          "proxyNotConnected": "proxy not connected, please check the proxy configuration",
-          "requestError": "request error",
-          "autoPushAfterRequest": "request trigger after automatic push",
-          "requestMethod": "request method",
-          "maxLengthPlaceholder": "maximum support 800 characters"
-        },
-        "delayParameter": {
-          "maxLessThanMin": "maximum value is less than the minimum value",
-          "delayOptions": {
-            "none": "no delay",
-            "fixed": "fixed delay",
-            "random": "random delay"
-          }
-        },
-        "inputGroup": {
-          "queryParameters": "query parameters",
-          "requestHeaders": "request headers"
+        "errorInfo": "Connection failed, address:",
+        "logFile": "Log File:",
+        "browseLog": "Browse Log:",
+        "download": "Download",
+        "refresh": "Refresh",
+        "autoRefresh": "Auto Refresh:"
+      },
+      "activity": {
+        "pageInfo": "Total {total} records, page {current} / {totalPage}",
+        "searchPlaceholder": "Search activity details"
+      },
+      "monitor": {
+        "apiName": "Api Name",
+        "apiInfo": "Api Information",
+        "requestCount": "Request Count",
+        "mockExceptionCount": "Mock Exception Count",
+        "pushbackCount": "Pushback Count",
+        "successCount": "Success Count",
+        "exceptionCount": "Exception count",
+        "apiCount": "Api Count",
+        "searchApiNamePath": "Search api name, path",
+        "tooltips": {
+          "requestCount": "The number of times the mock interface is called.",
+          "mockExceptionCount": "The number of times the mock interface returns an Http status code of 4xx and 5xx response.",
+          "pushbackCount": "The number of times the mock service pushes a request to the user's configured pushback interface.",
+          "successCount": "The number of times the request returns a status code of 2xx.",
+          "exceptionCount": "The number of times the mock interface configuration errors or the program itself causes errors."
         }
+      },
+      "settings": {
+        "logTooltip": "Record basic information and request/response headers.",
+        "corsTooltip": "Resolve browser cross-origin access restrictions and configure cross-origin access policies. Restart service after changes.",
+        "enableNettyLog": "Enable Netty log",
+        "enableNettyLogTooltip": "Recommended for debug mode only, disabled by default."
       }
     },
     "exportModal": {
@@ -2516,7 +2364,7 @@
         "viewCount": "View Count",
         "remark": "Remark",
         "lastModifiedBy": "Last Modified By",
-        "lastModifiedTime": "Last Modified Time",
+        "lastModifiedTime": "Last Modified Date",
         "actions": "Actions"
       }
     },

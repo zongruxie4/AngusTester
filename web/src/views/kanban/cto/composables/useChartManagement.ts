@@ -25,76 +25,76 @@ import {
  * <p>
  * Chart management composable
  * </p>
- * 
+ *
  * @returns Object containing chart instances and management methods
  */
-export function useChartManagement() {
+export function useChartManagement () {
   /** Progress chart instance */
   let progressChart: eCharts.ECharts;
-  
+
   /** Recent completion rate chart instance */
   let recentCompletionRateChart: eCharts.ECharts;
-  
+
   /** Recent overdue rate chart instance */
   let recentOverdueRateChart: eCharts.ECharts;
-  
+
   /** Recent completed workload chart instance */
   let recentCompletedWorkloadChart: eCharts.ECharts;
-  
+
   /** Recent saving rate chart instance */
   let recentSavingRateChart: eCharts.ECharts;
-  
+
   /** Backlog task chart instance */
   let backlogTaskChart: eCharts.ECharts;
-  
+
   /** Backlog workload chart instance */
   let backlogWorkloadChart: eCharts.ECharts;
-  
+
   /** Overdue task chart instance */
   let overdueTaskChart: eCharts.ECharts;
-  
+
   /** Unplanned task number chart instance */
   let unplannedTaskNumberChart: eCharts.ECharts;
-  
+
   /** Unplanned workload chart instance */
   let unplannedWorkloadChart: eCharts.ECharts;
-  
+
   /** Task type chart instance */
   let taskTypeChart: eCharts.ECharts;
-  
+
   /** Task status chart instance */
   let taskStatusChart: eCharts.ECharts;
-  
+
   /** Lead time chart instance */
   let leadTimeChart: eCharts.ECharts;
-  
+
   /** Critical failure chart instance */
   let criticalFailureChart: eCharts.ECharts;
-  
+
   /** Major failure chart instance */
   let majorFailureChart: eCharts.ECharts;
-  
+
   /** Minor failure chart instance */
   let minorFailureChart: eCharts.ECharts;
-  
+
   /** Trivial failure chart instance */
   let trivialFailureChart: eCharts.ECharts;
-  
+
   /** API open test chart instance */
   let apiOpenTestChart: eCharts.ECharts;
-  
+
   /** API success test chart instance */
   let apiSuccessTestChart: eCharts.ECharts;
-  
+
   /** Scenario open test chart instance */
   let scenarioOpenTestChart: eCharts.ECharts;
-  
+
   /** Scenario success test chart instance */
   let scenarioSuccessTestChart: eCharts.ECharts;
-  
+
   /** Test status chart instance */
   let testStatusChart: eCharts.ECharts;
-  
+
   /** Review status chart instance */
   let reviewStatusChart: eCharts.ECharts;
 
@@ -127,7 +127,7 @@ export function useChartManagement() {
    * <p>
    * Initializes all charts with their configurations
    * </p>
-   * 
+   *
    * @param chartRefs - Object containing DOM references for chart containers
    */
   const initializeCharts = (chartRefs: Record<string, HTMLElement>) => {
@@ -313,7 +313,7 @@ export function useChartManagement() {
    * <p>
    * Resizes charts based on count type
    * </p>
-   * 
+   *
    * @param countType - Type of items being displayed
    */
   const resizeChartsByType = (countType: 'task' | 'useCase') => {
@@ -334,7 +334,7 @@ export function useChartManagement() {
    * <p>
    * Updates chart data and refreshes visualizations
    * </p>
-   * 
+   *
    * @param data - Data object containing all chart data
    * @param countType - Type of items being displayed
    */
@@ -353,7 +353,7 @@ export function useChartManagement() {
     // Update backlog charts
     if (data.backloggedCount && backlogTaskChart && backlogWorkloadChart) {
       const { backloggedNum, backloggedRate, backloggedWorkload, backloggedWorkloadRate, totalNum, totalWorkload } = data.backloggedCount;
-      
+
       // Update backlog task chart
       const blockNumData = [backloggedNum, totalNum - backloggedNum];
       backlogTaskConfig.value.title.text = backloggedRate + '%';
@@ -385,7 +385,7 @@ export function useChartManagement() {
     // Update unplanned work charts
     if (data.unplannedWorkCount && unplannedTaskNumberChart && unplannedWorkloadChart) {
       const { unplannedNum, unplannedRate, unplannedWorkload, unplannedWorkloadCompletedRate, totalNum, totalWorkload } = data.unplannedWorkCount;
-      
+
       // Update unplanned task number chart
       const unplannedNumData = [unplannedNum, totalNum - unplannedNum];
       unplannedTaskNumberConfig.value.title.text = unplannedRate + '%';
@@ -406,7 +406,7 @@ export function useChartManagement() {
     // Update failure assessment charts (only for tasks)
     if (countType === 'task' && data.failureAssessmentCount) {
       const { failureLevelCount = { CRITICAL: 0, MAJOR: 0, MINOR: 0, TRIVIAL: 0 }, failureNum = 0 } = data.failureAssessmentCount;
-      
+
       // Update critical failure chart
       if (criticalFailureChart) {
         const criticalData = [failureLevelCount.CRITICAL, failureNum - failureLevelCount.CRITICAL];
@@ -451,7 +451,7 @@ export function useChartManagement() {
     // Update API test charts (only for use cases)
     if (countType === 'useCase' && data.apisTestCount) {
       const { enabledTestApiNum, enabledTestApiRate, passedTestApiNum, passedTestNum, totalApiNum } = data.apisTestCount;
-      
+
       // Update API open test chart
       if (apiOpenTestChart) {
         const apisTestData = [enabledTestApiNum, totalApiNum - enabledTestApiNum];
@@ -476,7 +476,7 @@ export function useChartManagement() {
     // Update scenario test charts (only for use cases)
     if (countType === 'useCase' && data.scenarioTestCount) {
       const { enabledTestScenarioNum, enabledTestScenarioRate, passedTestScenarioNum, totalScenarioNum } = data.scenarioTestCount;
-      
+
       // Update scenario open test chart
       if (scenarioOpenTestChart) {
         const scenarioTestData = [enabledTestScenarioNum, totalScenarioNum - enabledTestScenarioNum];
@@ -551,7 +551,7 @@ export function useChartManagement() {
    * <p>
    * Updates recent date charts based on selected time period
    * </p>
-   * 
+   *
    * @param recentDate - Selected recent date period
    * @param recentDeliveryData - Recent delivery data for the period
    */

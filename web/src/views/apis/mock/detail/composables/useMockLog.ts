@@ -10,7 +10,7 @@ import { mock } from '@/api/tester';
  * Composable for managing mock service log functionality
  * Handles log file loading, content display, and download operations
  */
-export function useMockLog(id: string) {
+export function useMockLog (id: string) {
   const { t } = useI18n();
 
   // Service connection info
@@ -44,15 +44,15 @@ export function useMockLog(id: string) {
   const linesOpt = [
     {
       value: '500',
-      label: t('mock.mockDetail.log.lineOptions.last500')
+      label: t('mock.detail.log.lineOptions.last500')
     },
     {
       value: '1000',
-      label: t('mock.mockDetail.log.lineOptions.last1000')
+      label: t('mock.detail.log.lineOptions.last1000')
     },
     {
       value: '10000',
-      label: t('mock.mockDetail.log.lineOptions.last10000')
+      label: t('mock.detail.log.lineOptions.last10000')
     }
   ];
 
@@ -69,7 +69,7 @@ export function useMockLog(id: string) {
   const loadIp = async () => {
     const [error, { data }] = await mock.getServiceDetail(id);
     if (error) return;
-    
+
     ip.value = data.nodePublicIp || data.nodeIp;
     port.value = data.agentPort || '6807';
   };
@@ -80,14 +80,14 @@ export function useMockLog(id: string) {
   const loadFileList = async () => {
     const routeConfig = routerUtils.getTesterApiRouteConfig(ApiType.PUB_API);
     const url = ApiUrlBuilder.buildApiUrl(
-      routeConfig, 
+      routeConfig,
       `/proxy/actuator/log/names?filePrefix=mockservice&targetAddr=http://${ip.value}:${port.value}`
     );
-    
+
     try {
       const resp = await axios.get(url, {});
       const { data } = resp;
-      
+
       fileList.value = (data || []).map(i => ({ label: i, value: i }));
       if (data.length) {
         logTextParam.logName = data[0];
@@ -121,10 +121,10 @@ export function useMockLog(id: string) {
     try {
       const resp = await axios.get(url, {});
       const { data } = resp;
-      
+
       content.value = data;
       showErr.value = false;
-      
+
       // Setup auto-refresh timer if enabled
       if (refresh.value) {
         timer = setTimeout(() => {
@@ -156,10 +156,10 @@ export function useMockLog(id: string) {
    */
   const downloadLog = () => {
     if (!content.value) {
-      notification.warning(t('mock.mockDetail.log.notifications.noDownloadContent'));
+      notification.warning(t('mock.detail.log.notifications.noDownloadContent'));
       return;
     }
-    
+
     const blob = new Blob([content.value], {
       type: 'text/plain'
     });
@@ -231,13 +231,13 @@ export function useMockLog(id: string) {
     loadingLog,
     logTextParam,
     fileList,
-    
+
     // Options
     linesOpt,
-    
+
     // Computed
     fullScreenIcon,
-    
+
     // Methods
     loadIp,
     loadFileList,

@@ -89,7 +89,7 @@ const reviewStatusRef = ref<HTMLElement>();
  * Initialize composables
  * </p>
  */
-const { 
+const {
   memberNum,
   progressData,
   backloggedData,
@@ -149,7 +149,7 @@ const handleRecentDateChange = () => {
  */
 const loadData = async () => {
   await loadCtoData();
-  
+
   // Update all charts with new data
   const chartData = {
     totalProgressOverview: progressData.value,
@@ -166,7 +166,7 @@ const loadData = async () => {
     totalTestResultCount: totalTestResultData.value,
     totalReviewStatusCount: totalReviewStatusData.value
   };
-  
+
   updateCharts(chartData, props.countType);
 };
 
@@ -181,7 +181,7 @@ const loadData = async () => {
 onMounted(async () => {
   // Setup lifecycle management
   setupLifecycle();
-  
+
   // Initialize charts with DOM references
   const chartRefs = {
     progressRef: progressRef.value,
@@ -208,7 +208,7 @@ onMounted(async () => {
     testStatusRef: testStatusRef.value,
     reviewStatusRef: reviewStatusRef.value
   };
-  
+
   initializeCharts(chartRefs);
 });
 
@@ -268,7 +268,7 @@ defineExpose({
             </div>
           </div>
         </div>
-        
+
         <!-- Backlog Section -->
         <div class="flex-1/2 border rounded p-2 space-y-2">
           <div class="font-semibold">{{ props.countType === 'task' ? t('kanban.cto.backlog.backlogTask') : t('kanban.cto.backlog.backlogUseCase') }}</div>
@@ -292,7 +292,7 @@ defineExpose({
           </div>
         </div>
       </div>
-      
+
       <!-- Recent Delivery Section -->
       <div class="border rounded h-full flex-1/2  p-2 space-y-2">
         <div class="flex justify-between">
@@ -369,7 +369,7 @@ defineExpose({
             </div>
           </div>
         </div>
-        
+
         <!-- Unplanned Work -->
         <div class="flex-1/2 border rounded p-2">
           <div class="font-semibold">{{ t('kanban.cto.unplanned.unplannedWork') }}</div>
@@ -393,7 +393,7 @@ defineExpose({
           </div>
         </div>
       </div>
-      
+
       <!-- Failure Assessment (Task) or API/Scenario Test (Use Case) -->
       <div v-show="props.countType === 'task'" class="border rounded h-full flex-1/2  p-2 space-y-2">
         <div class="flex justify-between">
@@ -424,7 +424,7 @@ defineExpose({
           <div ref="trivialFailureRef" class="h-full flex-1"></div>
         </div>
       </div>
-      
+
       <!-- API and Scenario Test (Use Case) -->
       <div v-show="props.countType === 'useCase'" class="h-full flex-1/2 space-x-2 flex">
         <div class="flex-1/2 border rounded p-2">

@@ -1,15 +1,19 @@
 import { ref } from 'vue';
 import { modal, notification } from '@xcan-angus/vue-ui';
-import { MockServiceObj } from '../types';
+import { MockService } from '../types';
 import { mock } from '@/api/tester';
 import { useMockData } from './useMockData';
+import { useI18n } from 'vue-i18n';
+import { MockServicePermission, MockServiceStatus } from '@/enums/enums';
 
 /**
  * Composable for managing mock service actions and operations
  * Handles start, stop, delete, export and other service operations
  */
 export function useMockActions (mockData: ReturnType<typeof useMockData>, projectId: any) {
-  const { loading, tableData, fetchMockServiceList, updateTableData, getCurrentPageAfterDeletion } = mockData;
+  const { t } = useI18n();
+
+  const { loading, tableData, fetchList, updateTableData, getCurrentPageAfterDeletion } = mockData;
 
   // Reactive state for actions
   const rouSelection = ref<any | null>(null);
@@ -57,15 +61,15 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
     const newData = data.list[0];
     const id = Array.isArray(ids) ? ids[0] : ids;
 
-    if (newData.status.value === 'RUNNING' || timersMap.value[id].count === 16) {
+    if (newData.status.value === MockServiceStatus.RUNNING || timersMap.value[id].count === 16) {
       clearTimeout(timersMap.value[newData.id].timer);
       delete timersMap.value[newData.id];
       updateTableData(newData);
 
-      if (newData.status.value === 'RUNNING') {
-        notification.success('mock.startSuccess');
+      if (newData.status.value === MockServiceStatus.RUNNING) {
+        notification.success(t('mock.startSuccess'));
       } else {
-        notification.warning('mock.startFail');
+        notification.warning(t('mock.startFail'));
       }
       return;
     }
@@ -80,8 +84,9 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
     if (!rouSelection.value) {
       rouSelection.value = {
         onChange: handleSelectChange,
-        getCheckboxProps: (record: MockServiceObj) => ({
-          disabled: (record.auth && !record.currentAuthsValue.includes('RUN')) || record.status?.value !== 'NOT_STARTED'
+        getCheckboxProps: (record: MockService) => ({
+          disabled: (record.auth && !record.currentAuthsValue.includes(MockServicePermission.RUN)) ||
+            record.status?.value !== MockServiceStatus.NOT_STARTED
         })
       };
       lastBatchType.value = 'start';
@@ -94,8 +99,9 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
       } else {
         rouSelection.value = {
           onChange: handleSelectChange,
-          getCheckboxProps: (record: MockServiceObj) => ({
-            disabled: (record.auth && !record.currentAuthsValue.includes('RUN')) || record.status?.value !== 'NOT_STARTED'
+          getCheckboxProps: (record: MockService) => ({
+            disabled: (record.auth && !record.currentAuthsValue.includes(MockServicePermission.RUN)) ||
+              record.status?.value !== MockServiceStatus.NOT_STARTED
           })
         };
         lastBatchType.value = 'start';
@@ -136,17 +142,17 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
           rouSelection.value.selectedRowKeys = rouSelection.value.selectedRowKeys.filter((f: string) => !_failIds.includes(f));
         }
       } else {
-        notification.success('mock.batchStartFail');
+        notification.success(t('mock.batchStartFail'));
         return;
       }
     }
 
-    notification.success('mock.starting');
+    notification.success(t('mock.starting'));
     for (let i = 0; i < tableData.value.length; i++) {
       const _data = tableData.value[i];
       if (rouSelection.value?.selectedRowKeys?.includes(_data.id)) {
-        _data.status = { value: 'STARTING', message: 'mock.startPending' };
-        _data.currentAuthsValue = ['VIEW'];
+        _data.status = { value: 'STARTING', message: t('mock.startPending') };
+        _data.currentAuthsValue = [MockServicePermission.VIEW];
       }
     }
 
@@ -193,8 +199,8 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
       const newData = newDataList[i];
       updateTableData(newData);
 
-      if (newData.status.value === 'RUNNING') {
-        notification.success('mock.serviceStartSuccess');
+      if (newData.status.value === MockServiceStatus.RUNNING) {
+        notification.success(t('mock.serviceStartSuccess'));
         _ids = _ids.filter((id: string) => id !== newData.id);
         const key = ids.join('');
 
@@ -216,7 +222,7 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
           updateTableData(newData);
         }
 
-        notification.warning('mock.startFail');
+        notification.warning(t('mock.startFail'));
       } else {
         updateStatusByIds(_ids);
       }
@@ -229,7 +235,7 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
   const handleDelete = async (ids: string[]) => {
     modal.confirm({
       centered: true,
-      content: 'mock.deleteTip',
+      content: t('mock.deleteTip'),
       async onOk () {
         loading.value = true;
         const [error] = await mock.deleteService(ids);
@@ -239,9 +245,9 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
           return;
         }
 
-        notification.success('mock.deleteSuccess');
+        notification.success(t('mock.deleteSuccess'));
         getCurrentPageAfterDeletion();
-        fetchMockServiceList();
+        fetchList();
       }
     });
   };
@@ -249,10 +255,10 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
   /**
    * Force delete a service
    */
-  const forceDelete = (record: MockServiceObj) => {
+  const forceDelete = (record: MockService) => {
     modal.confirm({
       centered: true,
-      content: 'mock.deleteTip',
+      content: t('mock.deleteTip'),
       async onOk () {
         loading.value = true;
         const [error] = await mock.deleteServiceByForce([record.id]);
@@ -262,9 +268,9 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
           return;
         }
 
-        notification.success('mock.deleteSuccess');
+        notification.success(t('mock.deleteSuccess'));
         getCurrentPageAfterDeletion();
-        fetchMockServiceList();
+        fetchList();
       }
     });
   };
@@ -276,8 +282,10 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
     if (!rouSelection.value) {
       rouSelection.value = {
         onChange: handleSelectChange,
-        getCheckboxProps: (record: MockServiceObj) => ({
-          disabled: (record.auth && !record.currentAuthsValue.includes('DELETE')) || record.status?.value !== 'NOT_STARTED'
+        getCheckboxProps: (record: MockService) => ({
+          disabled: (record.auth &&
+            !record.currentAuthsValue.includes(MockServicePermission.DELETE)) ||
+            record.status?.value !== MockServiceStatus.NOT_STARTED
         })
       };
       lastBatchType.value = 'del';
@@ -290,8 +298,10 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
       } else {
         rouSelection.value = {
           onChange: handleSelectChange,
-          getCheckboxProps: (record: MockServiceObj) => ({
-            disabled: (record.auth && !record.currentAuthsValue.includes('DELETE')) || record.status?.value !== 'NOT_STARTED'
+          getCheckboxProps: (record: MockService) => ({
+            disabled: (record.auth &&
+              !record.currentAuthsValue.includes(MockServicePermission.DELETE)) ||
+              record.status?.value !== MockServiceStatus.NOT_STARTED
           })
         };
         lastBatchType.value = 'del';
@@ -309,7 +319,7 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
 
     modal.confirm({
       centered: true,
-      content: 'mock.deleteTip',
+      content: t('mock.deleteTip'),
       async onOk () {
         loading.value = true;
         const [error] = await mock.deleteService(_selectKey);
@@ -319,9 +329,9 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
           return;
         }
 
-        notification.success('mock.batchDelSuccess');
+        notification.success(t('mock.batchDelSuccess'));
         getCurrentPageAfterDeletion();
-        fetchMockServiceList();
+        fetchList();
 
         if (!rouSelection.value) {
           return;
@@ -338,19 +348,19 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
    * Handle refresh service status
    */
   const handleRefresh = () => {
-    fetchMockServiceList();
+    fetchList();
   };
 
   /**
    * Handle update service status (start/stop)
    */
-  const handleUpdateStatus = async (item: MockServiceObj) => {
+  const handleUpdateStatus = async (item: MockService) => {
     if (loading.value) {
       return;
     }
 
     loading.value = true;
-    const [error, { data }] = item.status?.value === 'RUNNING'
+    const [error, { data }] = item.status?.value === MockServiceStatus.RUNNING
       ? await mock.stopService([item.id])
       : await mock.startService([item.id]);
 
@@ -363,20 +373,20 @@ export function useMockActions (mockData: ReturnType<typeof useMockData>, projec
 
     if (!data[0].success) {
       item.failTips = data[0];
-      item.status?.value === 'RUNNING'
-        ? notification.success('mock.stop_fail')
-        : notification.success('mock.start_fail');
+      item.status?.value === MockServiceStatus.RUNNING
+        ? notification.success(t('mock.stop_fail'))
+        : notification.success(t('mock.start_fail'));
       return;
     }
 
-    if (item.status?.value === 'RUNNING') {
-      notification.success('mock.stop_success');
+    if (item.status?.value === MockServiceStatus.RUNNING) {
+      notification.success(t('mock.stop_success'));
       getStopResById(item.id);
     } else {
-      notification.warning('mock.in_starting');
-      if (item.status?.value === 'NOT_STARTED') {
-        item.status = { value: 'STARTING', message: 'mock.startPending' };
-        item.currentAuthsValue = ['VIEW'];
+      notification.warning(t('mock.in_starting'));
+      if (item.status?.value === MockServiceStatus.NOT_STARTED) {
+        item.status = { value: 'STARTING', message: t('mock.startPending') };
+        item.currentAuthsValue = [MockServicePermission.VIEW];
       }
       updateStatusById(item.id);
     }

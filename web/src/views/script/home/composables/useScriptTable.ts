@@ -292,8 +292,6 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
         selectedDataMap.value = {};
       }
     });
-
-    
   };
 
   /**
@@ -317,10 +315,9 @@ export function useScriptTable (permissionsMap: { [key: string]: string[] }) {
         if (error) {
           return;
         }
-        notification.success(t('scriptHome.table.messages.addExecuteSuccess'))
+        notification.success(t('scriptHome.table.messages.addExecuteSuccess'));
       }
     });
-  ;
   };
 
   /**

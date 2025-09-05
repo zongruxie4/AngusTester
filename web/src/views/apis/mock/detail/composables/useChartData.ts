@@ -6,7 +6,7 @@ import {
   CpuChartData,
   MetricsDataItem,
   RamChartData
-} from "@/views/apis/mock/detail/types";
+} from '@/views/apis/mock/detail/types';
 
 /**
  * Composable for managing chart data transformation and state.
@@ -14,7 +14,7 @@ import {
  * Handles the conversion of raw metrics data into chart-ready format
  * for cache, RAM, and CPU visualization components.
  */
-export function useChartData() {
+export function useChartData () {
   const cacheChartData = ref<CacheChartData>({
     xData: [],
     numData: [],

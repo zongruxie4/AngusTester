@@ -1,6 +1,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
+import { AuthAppFuncTree, WebTagValue } from '@xcan-angus/infra';
 
 /**
  * Menu item interface for navigation
@@ -21,7 +22,7 @@ export interface MenuItem {
  * Composable for managing mock service navigation menu
  * Handles menu configuration and current menu tracking
  */
-export function useMockNavigation(id: string) {
+export function useMockNavigation (id: string) {
   const { t } = useI18n();
   const route = useRoute();
 
@@ -31,71 +32,84 @@ export function useMockNavigation(id: string) {
   /**
    * Menu configuration for mock service pages
    */
-  const menuItems: MenuItem[] = [
+  const menuItems: AuthAppFuncTree[] = [
     {
       code: 'apis',
       icon: 'icon-jiekou',
-      showName: t('mock.mockDetail.menu.apis'),
+      showName: t('mock.detail.menu.apis'),
       url: `/mockservice/${id}/apis`,
       show: true,
+      enabled: true,
+      authCtrl: false,
+      tags: [{ id: '', name: WebTagValue.DYNAMIC_POSITION }],
       breadcrumb: [
         { name: 'Mock', path: '/apis#mock', id: '1001' },
-        { name: t('mock.mockDetail.menu.apis'), id: '1002' }
+        { name: t('mock.detail.menu.apis'), id: '1002' }
       ]
     },
     {
       code: 'request',
       icon: 'icon-qingqiushu',
-      showName: t('mock.mockDetail.menu.request'),
+      showName: t('mock.detail.menu.request'),
       url: `/mockservice/${id}/request`,
-      show: true,
+      enabled: true,
+      authCtrl: false,
+      tags: [{ id: '', name: WebTagValue.DYNAMIC_POSITION }],
       breadcrumb: [
         { name: 'Mock', path: '/apis#mock', id: '2001' },
-        { name: t('mock.mockDetail.menu.request'), id: '2002' }
+        { name: t('mock.detail.menu.request'), id: '2002' }
       ]
     },
     {
       code: 'log',
       icon: 'icon-zidingyizhibiao1',
-      showName: t('mock.mockDetail.menu.log'),
+      showName: t('mock.detail.menu.log'),
       url: `/mockservice/${id}/log`,
-      show: true,
+      enabled: true,
+      authCtrl: false,
+      tags: [{ id: '', name: WebTagValue.DYNAMIC_POSITION }],
       breadcrumb: [
         { name: 'Mock', path: '/apis#mock', id: '2001' },
-        { name: t('mock.mockDetail.menu.log'), id: '6002' }
+        { name: t('mock.detail.menu.log'), id: '6002' }
       ]
     },
     {
       code: 'activity',
       icon: 'icon-lishijilu',
-      showName: t('mock.mockDetail.menu.activity'),
+      showName: t('mock.detail.menu.activity'),
       url: `/mockservice/${id}/activity`,
-      show: true,
+      enabled: true,
+      authCtrl: false,
+      tags: [{ id: '', name: WebTagValue.DYNAMIC_POSITION }],
       breadcrumb: [
         { name: 'Mock', path: '/apis#mock', id: '3001' },
-        { name: t('mock.mockDetail.menu.activity'), id: '3002' }
+        { name: t('mock.detail.menu.activity'), id: '3002' }
       ]
     },
     {
       code: 'monitor',
       icon: 'icon-jiankong',
-      showName: t('mock.mockDetail.menu.monitor'),
+      showName: t('mock.detail.menu.monitor'),
       url: `/mockservice/${id}/monitor`,
-      show: true,
+      enabled: true,
+      authCtrl: false,
+      tags: [{ id: '', name: WebTagValue.DYNAMIC_POSITION }],
       breadcrumb: [
         { name: 'Mock', path: '/apis#mock', id: '4001' },
-        { name: t('mock.mockDetail.menu.monitor'), id: '4002' }
+        { name: t('mock.detail.menu.monitor'), id: '4002' }
       ]
     },
     {
-      code: 'set',
+      code: 'setting',
       icon: 'icon-shezhi1',
-      showName: t('mock.mockDetail.menu.setting'),
+      showName: t('mock.detail.menu.setting'),
       url: `/mockservice/${id}/setting`,
-      show: true,
+      enabled: true,
+      authCtrl: false,
+      tags: [{ id: '', name: WebTagValue.DYNAMIC_POSITION }],
       breadcrumb: [
         { name: 'Mock', path: '/apis#mock', id: '5001' },
-        { name: t('mock.mockDetail.menu.setting'), id: '5002' }
+        { name: t('mock.detail.menu.setting'), id: '5002' }
       ]
     }
   ];

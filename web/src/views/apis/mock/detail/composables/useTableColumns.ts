@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n';
  * Centralizes table structure, HTTP method colors, and icon mappings
  * for consistent UI presentation across the control panel.
  */
-export function useTableColumns() {
+export function useTableColumns () {
   const { t } = useI18n();
 
   /**
@@ -15,46 +15,46 @@ export function useTableColumns() {
   const columns = [
     {
       key: 'summary',
-      title: t('mock.mockDetail.control.apiName'),
+      title: t('mock.detail.monitor.apiName'),
       dataIndex: 'summary',
       width: '15%',
       ellipsis: true
     },
     {
       key: 'method',
-      title: t('mock.mockDetail.control.apiInfo'),
+      title: t('mock.detail.monitor.apiInfo'),
       dataIndex: 'method',
       width: '35%'
     },
     {
       key: 'requestNum',
-      title: t('mock.mockDetail.control.requestCount'),
+      title: t('mock.detail.monitor.requestCount'),
       dataIndex: 'requestNum',
       customRender: ({ text }: { text: string }): string => text || '--',
       width: '10%'
     },
     {
       key: 'simulateErrorNum',
-      title: t('mock.mockDetail.control.mockExceptionCount'),
+      title: t('mock.detail.monitor.mockExceptionCount'),
       dataIndex: 'simulateErrorNum',
       width: '10%'
     },
     {
       key: 'pushbackNum',
-      title: t('mock.mockDetail.control.pushbackCount'),
+      title: t('mock.detail.monitor.pushbackCount'),
       dataIndex: 'pushbackNum',
       width: '10%'
     },
     {
       key: 'successNum',
-      title: t('mock.mockDetail.control.successCount'),
+      title: t('mock.detail.monitor.successCount'),
       dataIndex: 'successNum',
       customRender: ({ text }: { text: string }): string => text || '--',
       width: '10%'
     },
     {
       key: 'exceptionNum',
-      title: t('mock.mockDetail.control.exceptionCount'),
+      title: t('mock.detail.monitor.exceptionCount'),
       dataIndex: 'exceptionNum',
       width: '10%'
     }
@@ -65,32 +65,32 @@ export function useTableColumns() {
    */
   const mockServiceCountConfig = [
     {
-      name: t('mock.mockDetail.control.apiCount'),
+      name: t('mock.detail.monitor.apiCount'),
       key: 'apisNum' as const,
       icon: 'icon-jiekoushu'
     },
     {
-      name: t('mock.mockDetail.control.requestCount'),
+      name: t('mock.detail.monitor.requestCount'),
       key: 'requestNum' as const,
       icon: 'icon-qingqiushu'
     },
     {
-      name: t('mock.mockDetail.control.mockExceptionCount'),
+      name: t('mock.detail.monitor.mockExceptionCount'),
       key: 'simulateErrorNum' as const,
       icon: 'icon-moniyichangshu'
     },
     {
-      name: t('mock.mockDetail.control.pushbackCount'),
+      name: t('mock.detail.monitor.pushbackCount'),
       key: 'pushbackNum' as const,
       icon: 'icon-huituishu'
     },
     {
-      name: t('mock.mockDetail.control.successCount'),
+      name: t('mock.detail.monitor.successCount'),
       key: 'successNum' as const,
       icon: 'icon-chenggongshu1'
     },
     {
-      name: t('mock.mockDetail.control.exceptionCount'),
+      name: t('mock.detail.monitor.exceptionCount'),
       key: 'exceptionNum' as const,
       icon: 'icon-yichangshu1'
     }

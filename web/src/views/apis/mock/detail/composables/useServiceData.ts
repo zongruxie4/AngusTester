@@ -2,12 +2,12 @@ import { onMounted, ref } from 'vue';
 import { mock } from '@/api/tester';
 
 import {
-  CorsConfig,
-  MockServiceInfo,
-  SecurityForm,
+  CorsSetting,
+  MockServiceDetail,
+  ApiSecurityForm,
   ServiceInfoForm,
-  ServiceSettings
-} from "@/views/apis/mock/detail/types";
+  ServerSettings
+} from '@/views/apis/mock/detail/types';
 
 /**
  * Composable for managing mock service data loading and state.
@@ -15,8 +15,8 @@ import {
  * Handles fetching service details and initializing form states
  * for different configuration sections.
  */
-export function useServiceData(serviceId: string) {
-  const mockServiceInfo = ref<MockServiceInfo>();
+export function useServiceData (serviceId: string) {
+  const mockServiceInfo = ref<MockServiceDetail>();
   const loading = ref(false);
 
   // Form states for different sections
@@ -25,11 +25,11 @@ export function useServiceData(serviceId: string) {
     name: ''
   });
 
-  const securityFormState = ref<SecurityForm>({
+  const securityFormState = ref<ApiSecurityForm>({
     apisSecurity: []
   });
 
-  const corsConfig = ref<CorsConfig>({
+  const corsConfig = ref<CorsSetting>({
     allowCorsCredentials: true,
     allowCorsOrigin: '*',
     allowCorsRequestHeaders: '',
@@ -38,7 +38,7 @@ export function useServiceData(serviceId: string) {
     enabled: true
   });
 
-  const settings = ref<ServiceSettings>({
+  const settings = ref<ServerSettings>({
     useSsl: false,
     workThreadNum: '256',
     enableNettyLog: false,

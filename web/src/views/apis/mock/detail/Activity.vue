@@ -31,15 +31,29 @@ const {
 
 // Render total text for Pagination
 const showTotal = (totalNum: number) => {
-  const totalPage = Math.ceil(totalNum / params.value.pageSize);
-  return t('mock.mockDetail.activity.pageInfo', { total: totalNum, current: params.value.pageNo, totalPage });
+  const pageSize = params.value.pageSize || 20;
+  const totalPage = Math.ceil(totalNum / pageSize);
+  return t('mock.detail.activity.pageInfo', { total: totalNum, current: params.value.pageNo, totalPage });
 };
 
-// Narrow the type for UI component to ensure `avatar` is a required string
+// Transform activities to match ActivityInfo's ActiveObj interface
 // <p>
-// This avoids TS mismatch against ActivityInfo's prop typing (expects non-optional avatar)
-interface ActiveObjMinimal { avatar: string; [key: string]: any }
-const activitiesForUI = computed<ActiveObjMinimal[]>(() => activities as unknown as ActiveObjMinimal[]);
+// Ensures all required fields are present and properly typed
+const activitiesForUI = computed(() => {
+  if (!Array.isArray(activities.value)) {
+    return [];
+  }
+
+  return activities.value.map(item => ({
+    id: item.id || '',
+    optDate: item.optDate || '',
+    avatar: item.avatar || '',
+    fullName: item.fullName || '',
+    detail: item.detail || '',
+    description: item.description || '',
+    details: item.details || []
+  }));
+});
 </script>
 <template>
   <PureCard class="p-3.5 flex flex-col h-full justify-between space-y-3.5">
@@ -47,13 +61,13 @@ const activitiesForUI = computed<ActiveObjMinimal[]>(() => activities as unknown
       <Input
         v-model:value="detailKeyword"
         :allowClear="true"
-        class="w-100"
-        :placeholder="t('mock.mockDetail.activity.searchPlaceholder')"
+        class="flex-1 max-w-xs"
+        :placeholder="t('mock.detail.activity.searchPlaceholder')"
         size="small"
         @change="onSearchChange($event.target.value)" />
       <IconRefresh
         :loading="loading"
-        class="text-4.5"
+        class="text-4.5 ml-3"
         @click="loadActivities" />
     </div>
     <Spin :spinning="loading" class="flex-1 overflow-y-auto -mr-3.5 pr-2">

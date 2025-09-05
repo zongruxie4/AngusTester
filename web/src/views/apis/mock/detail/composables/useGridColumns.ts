@@ -1,6 +1,5 @@
 import { useI18n } from 'vue-i18n';
-
-import {HttpMethod} from "@/views/apis/mock/detail/types";
+import { HttpMethod } from '@xcan-angus/infra';
 
 /**
  * Composable for grid column definitions and HTTP method styling.
@@ -8,7 +7,7 @@ import {HttpMethod} from "@/views/apis/mock/detail/types";
  * Provides consistent configuration for data grid display and
  * HTTP method color coding across the request record interface.
  */
-export function useGridColumns() {
+export function useGridColumns () {
   const { t } = useI18n();
 
   /**
@@ -17,27 +16,27 @@ export function useGridColumns() {
   const gridColumns = [
     [
       {
-        label: t('mock.mockDetail.requestRecord.apiName'),
+        label: t('mock.detail.requestRecord.apiName'),
         dataIndex: 'summary'
       },
       {
-        label: t('mock.mockDetail.requestRecord.requestId'),
+        label: t('mock.detail.requestRecord.requestId'),
         dataIndex: 'requestId'
       },
       {
-        label: t('mock.mockDetail.requestRecord.requestTime'),
+        label: t('mock.detail.requestRecord.requestTime'),
         dataIndex: 'requestDate'
       },
       {
-        label: t('mock.mockDetail.requestRecord.requestUrl'),
+        label: t('mock.detail.requestRecord.requestUrl'),
         dataIndex: 'endpoint'
       },
       {
-        label: t('mock.mockDetail.requestRecord.requestMethod'),
+        label: t('mock.detail.requestRecord.requestMethod'),
         dataIndex: 'method'
       },
       {
-        label: t('mock.mockDetail.requestRecord.statusCode'),
+        label: t('mock.detail.requestRecord.statusCode'),
         dataIndex: 'responseStatus'
       }
     ]
@@ -48,15 +47,15 @@ export function useGridColumns() {
    */
   const formatTabs = [
     {
-      name: t('mock.mockDetail.requestRecord.formatOptions.beautify'),
+      name: t('mock.detail.requestRecord.formatOptions.beautify'),
       value: 'pretty'
     },
     {
-      name: t('mock.mockDetail.requestRecord.formatOptions.raw'),
+      name: t('mock.detail.requestRecord.formatOptions.raw'),
       value: 'raw'
     },
     {
-      name: t('mock.mockDetail.requestRecord.formatOptions.preview'),
+      name: t('mock.detail.requestRecord.formatOptions.preview'),
       value: 'preview'
     }
   ];
