@@ -144,7 +144,8 @@ const { columns } = useTableColumns();
       <Edit
         v-model:visible="editVisible"
         :versionId="selectVersionId"
-        :projectId="props.projectId" />
+        :projectId="props.projectId"
+        @ok="refresh" />
     </AsyncComponent>
     <AsyncComponent :visible="mergeVisible">
       <Merge
