@@ -94,28 +94,28 @@ watch(() => assertions.value, (newValue) => {
               class="flex items-center"
               style="color:rgba(255, 129, 0, 100%);">
               <Icon icon="icon-chahao" class="mr-1.5 text-3.5" />
-              <span>{{ t('httPlugin.functionTestDetail.statusTag.fail') }}</span>
+              <span>{{ t('httpPlugin.functionTestDetail.statusTag.fail') }}</span>
             </div>
             <div
               v-else-if="statusMap[item.id]==='Success'"
               class="flex items-center"
               style="color:#52c41a;">
               <Icon icon="icon-duihao" class="mr-1.5 text-3.5" />
-              <span>{{ t('httPlugin.functionTestDetail.statusTag.success') }}</span>
+              <span>{{ t('httpPlugin.functionTestDetail.statusTag.success') }}</span>
             </div>
             <div
               v-else-if="statusMap[item.id]==='Ignored'"
               class="flex items-center"
               style="color:rgba(217, 217, 217, 100%);">
               <span class="inline-block w-2 h-2 mr-1.5 rounded-md" style="background-color:rgba(217, 217, 217, 100%);"></span>
-              <span>{{ t('httPlugin.functionTestDetail.statusTag.ignore') }}</span>
+              <span>{{ t('httpPlugin.functionTestDetail.statusTag.ignore') }}</span>
             </div>
             <div
               v-else-if="statusMap[item.id]==='Disabled'"
               class="flex items-center"
               style="color:rgba(217, 217, 217, 100%);">
               <span class="inline-block w-2 h-2 mr-1.5 rounded-md" style="background-color:rgba(217, 217, 217, 100%);"></span>
-              <span>{{ t('httPlugin.functionTestDetail.statusTag.block') }}</span>
+              <span>{{ t('httpPlugin.functionTestDetail.statusTag.block') }}</span>
             </div>
           </div>
         </template>

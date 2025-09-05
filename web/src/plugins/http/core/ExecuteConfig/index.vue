@@ -76,7 +76,7 @@ defineExpose({ isValid, getData });
     <div class="flex items-center pl-12 pr-5 mt-5 space-y-0.5">
       <div class="flex items-center w-35 mr-2.5">
         <IconRequired />
-        <span>{{ t('httPlugin.executeConfig.scriptType') }}</span>
+        <span>{{ t('httpPlugin.executeConfig.scriptType') }}</span>
       </div>
       <SelectEnum
         :value="scriptType"

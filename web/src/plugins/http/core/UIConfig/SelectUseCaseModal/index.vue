@@ -63,7 +63,7 @@ const ok = async (key:'link'|'copy') => {
   } else {
     const hasLinkIdFlag = checkedUseCaseIds.value.some(item => props.linkIds.has(item));
     if (hasLinkIdFlag) {
-      notification.info(t('httPlugin.uiConfig.selectUseCaseModal.alreadyReferenced'));
+      notification.info(t('httpPlugin.uiConfig.selectUseCaseModal.alreadyReferenced'));
       return;
     }
 
@@ -174,7 +174,7 @@ watch(() => props.visible, () => {
 </script>
 <template>
   <Modal
-    :title="t('httPlugin.uiConfig.selectUseCaseModal.title')"
+    :title="t('httpPlugin.uiConfig.selectUseCaseModal.title')"
     :visible="props.visible"
     :centered="true"
     :width="1000"
@@ -202,7 +202,7 @@ watch(() => props.visible, () => {
           size="small"
           type="primary"
           @click="ok('copy')">
-          <span>{{ t('httPlugin.uiConfig.selectUseCaseModal.copy') }}</span>
+          <span>{{ t('httpPlugin.uiConfig.selectUseCaseModal.copy') }}</span>
         </Button>
         <Button
           :loading="linking"
@@ -211,11 +211,11 @@ watch(() => props.visible, () => {
           type="primary"
           @click="ok('link')">
           <div v-if="hasLinkId" class="flex items-center justify-center w-2.5 h-2.5 rounded-lg bg-white mr-1">
-            <Tooltip :title="t('httPlugin.uiConfig.selectUseCaseModal.alreadyReferenced')">
+            <Tooltip :title="t('httpPlugin.uiConfig.selectUseCaseModal.alreadyReferenced')">
               <Icon icon="icon-tishi1" class="flex-shrink-0 text-3.5 text-status-warn" />
             </Tooltip>
           </div>
-          <span>{{ t('httPlugin.uiConfig.selectUseCaseModal.reference') }}</span>
+          <span>{{ t('httpPlugin.uiConfig.selectUseCaseModal.reference') }}</span>
         </Button>
       </div>
     </template>

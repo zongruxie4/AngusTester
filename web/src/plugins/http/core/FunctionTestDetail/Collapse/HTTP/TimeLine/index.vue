@@ -41,37 +41,37 @@ const getWidth = (time: number): Record<string, string> => {
 
 const columns = computed(() => [
   {
-    name: t('httPlugin.functionTestDetail.http.timeline.dnsLookup'),
+    name: t('httpPlugin.functionTestDetail.http.timeline.dnsLookup'),
     key: 'domainLookupEnd-domainLookupStart',
     time: 0,
     delay: 0
   },
   {
-    name: t('httPlugin.functionTestDetail.http.timeline.tcpConnection'),
+    name: t('httpPlugin.functionTestDetail.http.timeline.tcpConnection'),
     key: 'connectEnd-connectStart',
     time: 0,
     delay: 0
   },
   {
-    name: t('httPlugin.functionTestDetail.http.timeline.ssl'),
+    name: t('httpPlugin.functionTestDetail.http.timeline.ssl'),
     key: 'secureConnectionEnd-secureConnectionStart',
     time: 0,
     delay: 0
   },
   {
-    name: t('httPlugin.functionTestDetail.http.timeline.requestSent'),
+    name: t('httpPlugin.functionTestDetail.http.timeline.requestSent'),
     key: 'responseEnd-requestStart',
     time: 0,
     delay: 0
   },
   {
-    name: t('httPlugin.functionTestDetail.http.timeline.waiting'),
+    name: t('httpPlugin.functionTestDetail.http.timeline.waiting'),
     key: 'responseStart-requestStart',
     time: 0,
     delay: 0
   },
   {
-    name: t('httPlugin.functionTestDetail.http.timeline.contentDownload'),
+    name: t('httpPlugin.functionTestDetail.http.timeline.contentDownload'),
     key: 'responseEnd-responseStart',
     time: 0,
     delay: 0
@@ -127,7 +127,7 @@ onMounted(() => {
   <template v-else>
     <div class="h-full overflow-auto relative flex flex-nowrap whitespace-nowrap px-5 py-4">
       <div class="flex flex-col items-start text-3 leading-3 text-theme-content mr-6">
-        <div class="mb-4 text-theme-sub-content">{{ t('httPlugin.functionTestDetail.http.timeline.timeItem') }}</div>
+        <div class="mb-4 text-theme-sub-content">{{ t('httpPlugin.functionTestDetail.http.timeline.timeItem') }}</div>
         <div
           v-for="(item, index) in timelineData"
           :key="index"
@@ -136,11 +136,11 @@ onMounted(() => {
           {{ item.name }}
         </div>
         <div class="title-item-container">
-          {{ t('httPlugin.functionTestDetail.http.timeline.totalTime') }}
+          {{ t('httpPlugin.functionTestDetail.http.timeline.totalTime') }}
         </div>
       </div>
       <div class="flex flex-col flex-1 items-start text-3 leading-3 text-theme-content pr-6">
-        <div class="mb-4 text-theme-sub-content">{{ t('httPlugin.functionTestDetail.http.timeline.time') }}</div>
+        <div class="mb-4 text-theme-sub-content">{{ t('httpPlugin.functionTestDetail.http.timeline.time') }}</div>
         <div
           v-for="(item, index) in timelineData"
           :key="index"

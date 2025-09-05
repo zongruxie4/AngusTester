@@ -238,30 +238,30 @@ const okButtonProps = computed(() => {
 
 const columns = [
   {
-    title: t('httPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.name'),
+    title: t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: t('httPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.descriptionColumn'),
+    title: t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.descriptionColumn'),
     dataIndex: 'description',
     ellipsis: true
   },
   {
-    title: t('httPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.valueSource'),
+    title: t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.valueSource'),
     dataIndex: 'source',
     ellipsis: true,
     width: '10%'
   },
   {
-    title: t('httPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.lastModifiedBy'),
+    title: t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.lastModifiedBy'),
     dataIndex: 'lastModifiedByName',
     ellipsis: true,
     width: '11%',
     sort: true
   },
   {
-    title: t('httPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.lastModifiedDate'),
+    title: t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.lastModifiedDate'),
     dataIndex: 'lastModifiedDate',
     ellipsis: true,
     width: '15%',
@@ -272,7 +272,7 @@ const columns = [
 
 <template>
   <Modal
-    :title="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.title')"
+    :title="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.title')"
     :visible="props.visible"
     :width="1100"
     :okButtonProps="okButtonProps"
@@ -287,7 +287,7 @@ const columns = [
             allowClear
             trim
             class="w-75 flex-grow-0 flex-shrink"
-            :placeholder="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.searchPlaceholder')"
+            :placeholder="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.searchPlaceholder')"
             @change="searchInputChange" />
           <Button
             type="default"
@@ -295,7 +295,7 @@ const columns = [
             class="flex items-center"
             @click="toRefresh">
             <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-shuaxin" />
-            <span>{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.refresh') }}</span>
+            <span>{{ t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.datasetModal.refresh') }}</span>
           </Button>
         </div>
 

@@ -509,7 +509,7 @@
       "title": "查看脚本"
     }
   },
-  "httPlugin": {
+  "httpPlugin": {
     "actions": {
       "save": "保存",
       "cancel": "取消",
@@ -727,6 +727,77 @@
         "parameters": "参数",
         "serverEndpoint": "服务器端点",
         "default": "默认",
+        "docInfo": {
+          "pathParams": {
+            "title": "Path参数",
+            "rules": [
+              "Primitive id = 5 -> /users/5",
+              "Array id = [3, 4, 5] -> /users/3,4,5",
+              "Object id = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> /users/role=admin,firstName=Alex",
+              "> 只支持基本类型、基本类型数组、对象类型，其他复杂类型数据模型不解析。"
+            ]
+          },
+          "queryFormParams": {
+            "title": "Query 和 Form 参数",
+            "rules": [
+              "Primitive id = 5 -> id=5",
+              "Array id = [3, 4, 5] -> id[0]=3&id[1]=4&id[2]=5",
+              "Object id = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> id.role=admin&id.firstName=Alex",
+              "> 支持所有类型，及对象和数组类型嵌套。"
+            ]
+          },
+          "headerParams": {
+            "title": "Header 参数",
+            "rules": [
+              "Primitive X-MyHeader = 5 ->  X-MyHeader: 5",
+              "Array X-MyHeader = [3, 4, 5] -> X-MyHeader: 3,4,5",
+              "Object X-MyHeader = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> X-MyHeader: role=admin,firstName=Alex",
+              "> 只支持基本类型、基本类型数组、对象类型，其他复杂类型数据模型不解析。"
+            ]
+          },
+          "cookieParams": {
+            "title": "Cookie 参数",
+            "rules": [
+              "Primitive id = 5 ->  Cookie: id=5",
+              "Array id = [3, 4, 5] -> Cookie: id=3,4,5",
+              "Object id = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> Cookie: id=role,admin,firstName,Alex",
+              "> 只支持基本类型、基本类型数组、对象类型，其他复杂类型数据模型不解析。"
+            ]
+          }
+        },
+        "debugTip": [
+          "组件调试值修改与同步：修改Query、Path、Header和Form类型参数引用组件的调试值会同步修改到组件，同时引用组件的其他接口也会被同步修改；而Raw请求体内容引用组件时修改调试值不会同步到组件，即Raw请求体引用组件调试值修改不会影响其他接口。",
+          "接口中支持变量的位置：安全方案(Authorization)、Path参数、Query参数、Header参数、请求体Form参数、请求体Raw、断言条件表达式和断言期望值。",
+          "接口中支持函数的位置：Path参数、Query参数、Header参数、请求体Form参数和请求体Raw。"
+        ],
+        "form": {
+          "namePlaceholder": "名称，最长400个字符",
+          "requestMethodPlaceholder": "请求方法",
+          "serverPlaceholder": "server，最长400个字符",
+          "pathPlaceholder": "path，最长800个字符"
+        },
+        "tooltips": {
+          "nameRepeat": "名称重复",
+          "serverFormatError": "server格式错误",
+          "pathFormatError": "path格式错误"
+        },
+        "tabs": {
+          "requestParams": "请求参数",
+          "requestHeaders": "请求头",
+          "cookie": "Cookie",
+          "authorization": "Authorization",
+          "requestBody": "请求体",
+          "parameterization": "参数化",
+          "assertion": "断言"
+        },
+        "popover": {
+          "notes": "注意事项",
+          "parameterSerialization": "参数序列化",
+          "serializationDescription": "AngusTester 序列化规则基于 RFC6570 定义的UR模板的子集。支持OAS3 Schema数据类型包括：string、boolean、integer、number、object、array。"
+        },
+        "labels": {
+          "default": "默认"
+        },
         "serverEndpointConfig": {
           "title": "服务器端点配置",
           "serverEndpoint": "服务器端点",

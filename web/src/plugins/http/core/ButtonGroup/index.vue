@@ -31,22 +31,22 @@ const buttonItems = computed(() => {
 });
 
 const MENUITEMS:readonly ButtonGroupMenuItem[] = [
-  { name: t('httPlugin.actions.export'), icon: 'icon-daochu', key: 'export' },
-  { name: t('httPlugin.actions.select'), icon: 'icon-shengchengceshijiaoben', key: 'select' },
-  { name: t('httPlugin.actions.import'), icon: 'icon-daoru', key: 'import' },
-  { name: t('httPlugin.actions.codeView'), icon: 'icon-daimashitu', key: 'codeView' },
-  { name: t('httPlugin.actions.pageView'), icon: 'icon-yemianshitu', key: 'UIView' },
-  { name: t('httPlugin.actions.authority'), icon: 'icon-quanxian1', key: 'authority' },
-  { name: t('httPlugin.actions.follow'), icon: 'icon-yiguanzhu', key: 'followFlag' },
-  { name: t('httPlugin.actions.cancelFollow'), icon: 'icon-quxiaoguanzhu', key: 'cancelFollowFlag' },
-  { name: t('httPlugin.actions.favourite'), icon: 'icon-yishoucang', key: 'favouriteFlag' },
-  { name: t('httPlugin.actions.cancelFavourite'), icon: 'icon-quxiaoshoucang', key: 'cancelFavouriteFlag' },
-  { name: t('httPlugin.actions.refresh'), icon: 'icon-shuaxin', key: 'refresh' },
-  { name: t('httPlugin.actions.createExecution'), icon: 'icon-tiaoshi', key: 'test' },
-  { name: t('httPlugin.actions.debug'), icon: 'icon-tiaoshi', key: 'debug' }
+  { name: t('httpPlugin.actions.export'), icon: 'icon-daochu', key: 'export' },
+  { name: t('httpPlugin.actions.select'), icon: 'icon-shengchengceshijiaoben', key: 'select' },
+  { name: t('httpPlugin.actions.import'), icon: 'icon-daoru', key: 'import' },
+  { name: t('httpPlugin.actions.codeView'), icon: 'icon-daimashitu', key: 'codeView' },
+  { name: t('httpPlugin.actions.pageView'), icon: 'icon-yemianshitu', key: 'UIView' },
+  { name: t('httpPlugin.actions.authority'), icon: 'icon-quanxian1', key: 'authority' },
+  { name: t('httpPlugin.actions.follow'), icon: 'icon-yiguanzhu', key: 'followFlag' },
+  { name: t('httpPlugin.actions.cancelFollow'), icon: 'icon-quxiaoguanzhu', key: 'cancelFollowFlag' },
+  { name: t('httpPlugin.actions.favourite'), icon: 'icon-yishoucang', key: 'favouriteFlag' },
+  { name: t('httpPlugin.actions.cancelFavourite'), icon: 'icon-quxiaoshoucang', key: 'cancelFavouriteFlag' },
+  { name: t('httpPlugin.actions.refresh'), icon: 'icon-shuaxin', key: 'refresh' },
+  { name: t('httpPlugin.actions.createExecution'), icon: 'icon-tiaoshi', key: 'test' },
+  { name: t('httpPlugin.actions.debug'), icon: 'icon-tiaoshi', key: 'debug' }
 ];
 
-const SAVE_ITEM = { name: t('httPlugin.actions.save'), icon: 'icon-baocun', key: 'save' };
+const SAVE_ITEM = { name: t('httpPlugin.actions.save'), icon: 'icon-baocun', key: 'save' };
 </script>
 
 <template>
@@ -69,7 +69,7 @@ const SAVE_ITEM = { name: t('httPlugin.actions.save'), icon: 'icon-baocun', key:
       @click="click(SAVE_ITEM)">
       <div class="flex items-center space-x-1">
         <Icon icon="icon-baocun" class="text-3.5" />
-        <span>{{ t('httPlugin.actions.save') }}</span>
+        <span>{{ t('httpPlugin.actions.save') }}</span>
       </div>
     </Button>
   </div>

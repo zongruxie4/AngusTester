@@ -138,19 +138,19 @@ onMounted(() => {
             :class="{'res-tab-active':currentTabId==='pretty'}"
             class="res-tab flex justify-center items-center min-w-20 h-7 px-3 cursor-pointer"
             @click="handleSelect('pretty')">
-            {{ t('httPlugin.functionTestDetail.http.responseBody.prettyFormat') }}
+            {{ t('httpPlugin.functionTestDetail.http.responseBody.prettyFormat') }}
           </div>
           <div
             :class="{'res-tab-active':currentTabId==='raw'}"
             class="res-tab flex justify-center items-center min-w-20 h-7 px-3 cursor-pointer"
             @click="handleSelect('raw')">
-            {{ t('httPlugin.functionTestDetail.http.responseBody.rawFormat') }}
+            {{ t('httpPlugin.functionTestDetail.http.responseBody.rawFormat') }}
           </div>
           <div
             :class="{'res-tab-active':currentTabId==='preview'}"
             class="res-tab flex justify-center items-center min-w-20 h-7 px-3 cursor-pointer"
             @click="handleSelect('preview')">
-            {{ t('httPlugin.functionTestDetail.http.responseBody.preview') }}
+            {{ t('httpPlugin.functionTestDetail.http.responseBody.preview') }}
           </div>
         </div>
         <div class="res-tab flex flex-freeze-auto items-center h-7 px-3 ml-3 text-3 rounded text-theme-sub-content">

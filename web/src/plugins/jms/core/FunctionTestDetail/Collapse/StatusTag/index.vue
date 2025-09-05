@@ -14,18 +14,18 @@ const props = withDefaults(defineProps<Props>(), {
 
 const text = computed(() => {
   if (props.value === 'fail') {
-    return t('httPlugin.functionTestDetail.statusTag.fail');
+    return t('httpPlugin.functionTestDetail.statusTag.fail');
   }
 
   if (props.value === 'success') {
-    return t('httPlugin.functionTestDetail.statusTag.success');
+    return t('httpPlugin.functionTestDetail.statusTag.success');
   }
 
   if (props.value === 'block') {
-    return t('httPlugin.functionTestDetail.statusTag.block');
+    return t('httpPlugin.functionTestDetail.statusTag.block');
   }
 
-  return t('httPlugin.functionTestDetail.statusTag.ignore');
+  return t('httpPlugin.functionTestDetail.statusTag.ignore');
 });
 
 const style = computed(() => {

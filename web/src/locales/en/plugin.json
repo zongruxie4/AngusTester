@@ -1,4 +1,5 @@
 {
+
   "ftpPlugin": {
     "tabs": {
       "taskConfig": "Task Configuration",
@@ -519,7 +520,7 @@
       "title": "View Script"
     }
   },
-  "httPlugin": {
+  "httpPlugin": {
     "actions": {
       "save": "Save",
       "cancel": "Cancel",
@@ -727,6 +728,77 @@
         "parameters": "Parameters",
         "serverEndpoint": "Server Endpoint",
         "default": "Default",
+        "docInfo": {
+          "pathParams": {
+            "title": "Path Parameters",
+            "rules": [
+              "Primitive id = 5 -> /users/5",
+              "Array id = [3, 4, 5] -> /users/3,4,5",
+              "Object id = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> /users/role=admin,firstName=Alex",
+              "> Only supports primitive types, primitive type arrays, and object types. Other complex type data models are not parsed."
+            ]
+          },
+          "queryFormParams": {
+            "title": "Query and Form Parameters",
+            "rules": [
+              "Primitive id = 5 -> id=5",
+              "Array id = [3, 4, 5] -> id[0]=3&id[1]=4&id[2]=5",
+              "Object id = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> id.role=admin&id.firstName=Alex",
+              "> Supports all types, including object and array type nesting."
+            ]
+          },
+          "headerParams": {
+            "title": "Header Parameters",
+            "rules": [
+              "Primitive X-MyHeader = 5 ->  X-MyHeader: 5",
+              "Array X-MyHeader = [3, 4, 5] -> X-MyHeader: 3,4,5",
+              "Object X-MyHeader = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> X-MyHeader: role=admin,firstName=Alex",
+              "> Only supports primitive types, primitive type arrays, and object types. Other complex type data models are not parsed."
+            ]
+          },
+          "cookieParams": {
+            "title": "Cookie Parameters",
+            "rules": [
+              "Primitive id = 5 ->  Cookie: id=5",
+              "Array id = [3, 4, 5] -> Cookie: id=3,4,5",
+              "Object id = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> Cookie: id=role,admin,firstName,Alex",
+              "> Only supports primitive types, primitive type arrays, and object types. Other complex type data models are not parsed."
+            ]
+          }
+        },
+        "debugTip": [
+          "Component debug value modification and synchronization: Modifying debug values for Query, Path, Header, and Form type parameters that reference components will synchronize modifications to the component, and other interfaces that reference the component will also be synchronized; while Raw request body content that references components will not synchronize modifications to the component when debug values are modified, meaning Raw request body component debug value modifications will not affect other interfaces.",
+          "Locations where variables are supported in interfaces: Security schemes (Authorization), Path parameters, Query parameters, Header parameters, request body Form parameters, request body Raw, assertion condition expressions, and assertion expected values.",
+          "Locations where functions are supported in interfaces: Path parameters, Query parameters, Header parameters, request body Form parameters, and request body Raw."
+        ],
+        "form": {
+          "namePlaceholder": "Name, maximum 400 characters",
+          "requestMethodPlaceholder": "Request Method",
+          "serverPlaceholder": "server, maximum 400 characters",
+          "pathPlaceholder": "path, maximum 800 characters"
+        },
+        "tooltips": {
+          "nameRepeat": "Name Duplicate",
+          "serverFormatError": "server format error",
+          "pathFormatError": "path format error"
+        },
+        "tabs": {
+          "requestParams": "Request Parameters",
+          "requestHeaders": "Request Headers",
+          "cookie": "Cookie",
+          "authorization": "Authorization",
+          "requestBody": "Request Body",
+          "parameterization": "Parameterization",
+          "assertion": "Assertion"
+        },
+        "popover": {
+          "notes": "Notes",
+          "parameterSerialization": "Parameter Serialization",
+          "serializationDescription": "AngusTester serialization rules are based on a subset of UR templates defined by RFC6570. Supports OAS3 Schema data types including: string, boolean, integer, number, object, array."
+        },
+        "labels": {
+          "default": "Default"
+        },
         "serverEndpointConfig": {
           "title": "Server Endpoint Configuration",
           "serverEndpoint": "Server Endpoint",

@@ -117,8 +117,8 @@ const selectedNames = computed(() => {
 });
 
 const hintTextMap = {
-  FILE: t('httPlugin.uiConfig.httpConfigs.parametric.dataset.hintTextMap.file'),
-  JDBC: t('httPlugin.uiConfig.httpConfigs.parametric.dataset.hintTextMap.jdbc')
+  FILE: t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.hintTextMap.file'),
+  JDBC: t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.hintTextMap.jdbc')
 };
 </script>
 
@@ -126,17 +126,17 @@ const hintTextMap = {
   <div class="text-3 leading-5">
     <div class="flex items-center flex-nowrap mb-2.5">
       <div class="flex-shrink-0 w-1 h-3.5 rounded bg-blue-400 mr-1.5"></div>
-      <div class="flex-shrink-0 text-theme-title mr-2.5">{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.title') }}</div>
+      <div class="flex-shrink-0 text-theme-title mr-2.5">{{ t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.title') }}</div>
       <Icon icon="icon-tishi1" class="flex-shrink-0 text-tips text-3.5 mr-1" />
       <div class="flex-shrink-0 break-all whitespace-pre-wrap">
-        {{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.description') }}
+        {{ t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.description') }}
       </div>
     </div>
 
     <div class="flex items-center space-x-15 mb-2">
       <div class="flex-shrink-0 flex items-center">
         <div class="flex-shrink-0 flex items-center mr-2.5">
-          <span>{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.actionOnEOF') }}</span>
+          <span>{{ t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.actionOnEOF') }}</span>
           <Colon />
         </div>
         <RadioGroup
@@ -149,10 +149,10 @@ const hintTextMap = {
             :value="item.value">
             <div class="flex items-center space-x-1">
               <span>{{ item.message }}</span>
-              <Tooltip v-if="item.value === 'RECYCLE'" :title="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.recycleTooltip')">
+              <Tooltip v-if="item.value === 'RECYCLE'" :title="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.recycleTooltip')">
                 <Icon icon="icon-tishi1" class="text-3.5 text-tips cursor-pointer" />
               </Tooltip>
-              <Tooltip v-else-if="item.value === 'STOP_THREAD'" :title="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.stopThreadTooltip')">
+              <Tooltip v-else-if="item.value === 'STOP_THREAD'" :title="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.stopThreadTooltip')">
                 <Icon icon="icon-tishi1" class="text-3.5 text-tips cursor-pointer" />
               </Tooltip>
             </div>
@@ -162,7 +162,7 @@ const hintTextMap = {
 
       <div class="flex-shrink-0 flex items-center">
         <div class="flex-shrink-0 flex items-center mr-2.5">
-          <span>{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.sharingMode') }}</span>
+          <span>{{ t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.sharingMode') }}</span>
           <Colon />
         </div>
         <RadioGroup
@@ -175,10 +175,10 @@ const hintTextMap = {
             :value="item.value">
             <div class="flex items-center space-x-1">
               <span>{{ item.message }}</span>
-              <Tooltip v-if="item.value === 'ALL_THREAD'" :title="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.allThreadTooltip')">
+              <Tooltip v-if="item.value === 'ALL_THREAD'" :title="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.allThreadTooltip')">
                 <Icon icon="icon-tishi1" class="text-3.5 text-tips cursor-pointer" />
               </Tooltip>
-              <Tooltip v-else-if="item.value === 'CURRENT_THREAD'" :title="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.currentThreadTooltip')">
+              <Tooltip v-else-if="item.value === 'CURRENT_THREAD'" :title="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.currentThreadTooltip')">
                 <Icon icon="icon-tishi1" class="text-3.5 text-tips cursor-pointer" />
               </Tooltip>
             </div>
@@ -194,14 +194,14 @@ const hintTextMap = {
         class="flex items-center h-5 leading-5 p-0 space-x-1"
         @click="toUse">
         <Icon icon="icon-jia" class="text-3.5" />
-        <span>{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.addDataset') }}</span>
+        <span>{{ t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.addDataset') }}</span>
       </Button>
     </div>
 
     <div v-if="tableData.length === 0" class="flex-1 flex flex-col items-center justify-center">
       <img style="width:100px;" src="./images/nodata.png">
       <div class="flex items-center text-theme-sub-content text-3">
-        <span>{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.noDatasetsDefined') }}</span>
+        <span>{{ t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.noDatasetsDefined') }}</span>
       </div>
     </div>
 
@@ -237,9 +237,9 @@ const hintTextMap = {
                 <div class="flex-1 truncate">{{ item['x-createdByName'] }}</div>
               </div>
               <div class="table-tbody-td flex items-center space-x-2.5">
-                <Popconfirm :title="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.confirmUnlinkDataset', { name: item.name })" @confirm="toDelete(item)">
+                <Popconfirm :title="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.confirmUnlinkDataset', { name: item.name })" @confirm="toDelete(item)">
                   <Button
-                    :title="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.unlinkDataset')"
+                    :title="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.unlinkDataset')"
                     type="text"
                     size="small"
                     class="flex items-center p-0 h-5 leading-5 space-x-1">
@@ -248,7 +248,7 @@ const hintTextMap = {
                 </Popconfirm>
 
                 <Button
-                  :title="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.viewDefinition')"
+                  :title="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.viewDefinition')"
                   type="text"
                   size="small"
                   class="p-0 h-5 leading-5">
@@ -265,13 +265,13 @@ const hintTextMap = {
 
           <Tabs size="small" class="ant-tabs-nav-mb-2.5 normal-tabs">
             <template v-if="!item.extraction">
-              <TabPane key="value" :tab="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.parameters')">
+              <TabPane key="value" :tab="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.parameters')">
                 <StaticParameters :dataSource="item.parameters" class="mb-5" />
               </TabPane>
             </template>
 
             <template v-else>
-              <TabPane key="value" :tab="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.extractParameters')">
+              <TabPane key="value" :tab="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.extractParameters')">
                 <ExtractParameters
                   :dataSource="item.parameters"
                   :columnIndex="+item.extraction.columnIndex"
@@ -280,11 +280,11 @@ const hintTextMap = {
               </TabPane>
             </template>
 
-            <TabPane key="preview" :tab="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.previewData')">
+            <TabPane key="preview" :tab="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.previewData')">
               <PreviewData :dataSource="item" />
             </TabPane>
 
-            <TabPane key="use" :tab="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.datasetUseList')">
+            <TabPane key="use" :tab="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.datasetUseList')">
               <DatasetUseList :id="item['x-id']" />
             </TabPane>
           </Tabs>

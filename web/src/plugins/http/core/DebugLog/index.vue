@@ -37,14 +37,14 @@ const downloadLog = () => {
     return;
   }
 
-  const file = new File([content], t('httPlugin.debugLog.downloadFileName'), {
+  const file = new File([content], t('httpPlugin.debugLog.downloadFileName'), {
     type: 'text/plain'
   });
   const url = URL.createObjectURL(file);
   const a = document.createElement('a');
   a.style.display = 'none';
   a.href = url;
-  a.download = t('httPlugin.debugLog.downloadFileName');
+  a.download = t('httpPlugin.debugLog.downloadFileName');
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -57,7 +57,7 @@ const downloadLog = () => {
     <template v-if="!!props.value">
       <div class="flex items-center leading-5 mb-2.5">
         <div class="flex items-center mr-15">
-          <span class="text-theme-sub-content">{{ t('httPlugin.debugLog.schedulingResult') }}</span>
+          <span class="text-theme-sub-content">{{ t('httpPlugin.debugLog.schedulingResult') }}</span>
           <Colon class="mr-2" />
           <template v-if="props.value?.success">
             <span class="inline-block w-1.5 h-1.5 mr-1 rounded bg-status-success"></span>
@@ -69,7 +69,7 @@ const downloadLog = () => {
           </template>
         </div>
         <div class="flex items-center mr-15">
-          <span class="text-theme-sub-content">{{ t('httPlugin.debugLog.processExitCode') }}</span>
+          <span class="text-theme-sub-content">{{ t('httpPlugin.debugLog.processExitCode') }}</span>
           <Colon class="mr-2" />
           <span>{{ props.value?.exitCode }}</span>
         </div>

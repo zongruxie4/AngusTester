@@ -117,7 +117,7 @@ const action = `${TESTER}/script`;
 </script>
 <template>
   <Modal
-    :title="t('httPlugin.selectScriptModal.title')"
+    :title="t('httpPlugin.selectScriptModal.title')"
     :visible="props.visible"
     :centered="true"
     :width="700"
@@ -129,7 +129,7 @@ const action = `${TESTER}/script`;
       <Input
         :value="inputValue"
         :allowClear="true"
-        :placeholder="t('httPlugin.selectScriptModal.searchPlaceholder')"
+        :placeholder="t('httpPlugin.selectScriptModal.searchPlaceholder')"
         trim
         @change="inputChange">
         <template #suffix>
@@ -140,9 +140,9 @@ const action = `${TESTER}/script`;
       <div style="height: calc(100% - 38px);">
         <div class="bg-table-header flex items-center pl-2 h-8 leading-5 rounded">
           <div class="w-4 h-5 flex items-center justify-center flex-shrink-0"></div>
-          <div class="flex-1 px-2">{{ t('httPlugin.selectScriptModal.tableHeaders.name') }}</div>
-          <div class="flex-shrink-0 px-2 w-25">{{ t('httPlugin.selectScriptModal.tableHeaders.plugin') }}</div>
-          <div class="flex-shrink-0 px-2 w-28">{{ t('httPlugin.selectScriptModal.tableHeaders.type') }}</div>
+          <div class="flex-1 px-2">{{ t('httpPlugin.selectScriptModal.tableHeaders.name') }}</div>
+          <div class="flex-shrink-0 px-2 w-25">{{ t('httpPlugin.selectScriptModal.tableHeaders.plugin') }}</div>
+          <div class="flex-shrink-0 px-2 w-28">{{ t('httpPlugin.selectScriptModal.tableHeaders.type') }}</div>
         </div>
 
         <Scroll

@@ -38,7 +38,7 @@ const isValid = ():boolean => {
     YAML.parse(content.value);
     return true;
   } catch (error) {
-    notification.error(t('httPlugin.scriptConfig.yamlFormatError'));
+    notification.error(t('httpPlugin.scriptConfig.yamlFormatError'));
     return false;
   }
 };

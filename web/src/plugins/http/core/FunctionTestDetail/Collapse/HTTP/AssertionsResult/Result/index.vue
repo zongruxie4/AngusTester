@@ -71,7 +71,7 @@ const conditionMessage = computed(() => {
   }
 
   if (actualCondition === condition) {
-    return t('httPlugin.functionTestDetail.http.assertions.noVariableDefined', {
+    return t('httpPlugin.functionTestDetail.http.assertions.noVariableDefined', {
       variable: conditionName.value
     });
   }
@@ -117,7 +117,7 @@ const splitCondition = (condition: string, replaceFlag = true): [string, string,
 };
 
 const conditionName = computed(() => {
-  return splitCondition(props.value?.condition)?.[0] || t('httPlugin.functionTestDetail.http.assertions.variable');
+  return splitCondition(props.value?.condition)?.[0] || t('httpPlugin.functionTestDetail.http.assertions.variable');
 });
 
 const conditionValue = computed(() => {
@@ -142,14 +142,14 @@ const conditionResultMessage = computed(() => {
   }
 
   if (!props.value.condition) {
-    return t('httPlugin.functionTestDetail.http.assertions.expressionEmpty');
+    return t('httpPlugin.functionTestDetail.http.assertions.expressionEmpty');
   }
 
   if (props.value?.ignore) {
-    return t('httPlugin.functionTestDetail.http.assertions.operationResultNotEstablished');
+    return t('httpPlugin.functionTestDetail.http.assertions.operationResultNotEstablished');
   }
 
-  return t('httPlugin.functionTestDetail.http.assertions.operationResultEstablished');
+  return t('httpPlugin.functionTestDetail.http.assertions.operationResultEstablished');
 });
 
 const assertLabel = computed(() => {
@@ -288,7 +288,7 @@ const assertionCondition = computed(() => {
 });
 
 const expectedLabel = computed(() => {
-  return props.value?.extraction ? t('httPlugin.functionTestDetail.http.assertions.extractedValue') : t('httPlugin.functionTestDetail.http.assertions.expectedValue');
+  return props.value?.extraction ? t('httpPlugin.functionTestDetail.http.assertions.extractedValue') : t('httpPlugin.functionTestDetail.http.assertions.expectedValue');
 });
 
 const expectedValue = computed(() => {
@@ -337,31 +337,31 @@ const onEllipsis = () => { };// 删除该方法不会触发省略
 const ellipsis = { rows: 1, expandable: false, onEllipsis };
 
 const TYPE_MAP = computed(() => ({
-  STATUS: t('httPlugin.functionTestDetail.http.typeMap.status'),
-  HEADER: t('httPlugin.functionTestDetail.http.typeMap.header'),
-  BODY: t('httPlugin.functionTestDetail.http.typeMap.body'),
-  BODY_SIZE: t('httPlugin.functionTestDetail.http.typeMap.bodySize'),
-  SIZE: t('httPlugin.functionTestDetail.http.typeMap.size'),
-  DURATION: t('httPlugin.functionTestDetail.http.typeMap.duration')
+  STATUS: t('httpPlugin.functionTestDetail.http.typeMap.status'),
+  HEADER: t('httpPlugin.functionTestDetail.http.typeMap.header'),
+  BODY: t('httpPlugin.functionTestDetail.http.typeMap.body'),
+  BODY_SIZE: t('httpPlugin.functionTestDetail.http.typeMap.bodySize'),
+  SIZE: t('httpPlugin.functionTestDetail.http.typeMap.size'),
+  DURATION: t('httpPlugin.functionTestDetail.http.typeMap.duration')
 }));
 
 // 断言条件
 const CONDITION_MAP = computed(() => ({
-  CONTAIN: t('httPlugin.functionTestDetail.http.conditionMap.contain'),
-  EQUAL: t('httPlugin.functionTestDetail.http.conditionMap.equal'),
-  GREATER_THAN: t('httPlugin.functionTestDetail.http.conditionMap.greaterThan'),
-  GREATER_THAN_EQUAL: t('httPlugin.functionTestDetail.http.conditionMap.greaterThanEqual'),
-  IS_EMPTY: t('httPlugin.functionTestDetail.http.conditionMap.isEmpty'),
-  IS_NULL: t('httPlugin.functionTestDetail.http.conditionMap.isNull'),
-  LESS_THAN: t('httPlugin.functionTestDetail.http.conditionMap.lessThan'),
-  LESS_THAN_EQUAL: t('httPlugin.functionTestDetail.http.conditionMap.lessThanEqual'),
-  NOT_CONTAIN: t('httPlugin.functionTestDetail.http.conditionMap.notContain'),
-  NOT_EMPTY: t('httPlugin.functionTestDetail.http.conditionMap.notEmpty'),
-  NOT_EQUAL: t('httPlugin.functionTestDetail.http.conditionMap.notEqual'),
-  NOT_NULL: t('httPlugin.functionTestDetail.http.conditionMap.notNull'),
-  REG_MATCH: t('httPlugin.functionTestDetail.http.conditionMap.regMatch'),
-  XPATH_MATCH: t('httPlugin.functionTestDetail.http.conditionMap.xpathMatch'),
-  JSON_PATH_MATCH: t('httPlugin.functionTestDetail.http.conditionMap.jsonPathMatch')
+  CONTAIN: t('httpPlugin.functionTestDetail.http.conditionMap.contain'),
+  EQUAL: t('httpPlugin.functionTestDetail.http.conditionMap.equal'),
+  GREATER_THAN: t('httpPlugin.functionTestDetail.http.conditionMap.greaterThan'),
+  GREATER_THAN_EQUAL: t('httpPlugin.functionTestDetail.http.conditionMap.greaterThanEqual'),
+  IS_EMPTY: t('httpPlugin.functionTestDetail.http.conditionMap.isEmpty'),
+  IS_NULL: t('httpPlugin.functionTestDetail.http.conditionMap.isNull'),
+  LESS_THAN: t('httpPlugin.functionTestDetail.http.conditionMap.lessThan'),
+  LESS_THAN_EQUAL: t('httpPlugin.functionTestDetail.http.conditionMap.lessThanEqual'),
+  NOT_CONTAIN: t('httpPlugin.functionTestDetail.http.conditionMap.notContain'),
+  NOT_EMPTY: t('httpPlugin.functionTestDetail.http.conditionMap.notEmpty'),
+  NOT_EQUAL: t('httpPlugin.functionTestDetail.http.conditionMap.notEqual'),
+  NOT_NULL: t('httpPlugin.functionTestDetail.http.conditionMap.notNull'),
+  REG_MATCH: t('httpPlugin.functionTestDetail.http.conditionMap.regMatch'),
+  XPATH_MATCH: t('httpPlugin.functionTestDetail.http.conditionMap.xpathMatch'),
+  JSON_PATH_MATCH: t('httpPlugin.functionTestDetail.http.conditionMap.jsonPathMatch')
 }));
 
 const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
@@ -374,7 +374,7 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
     <DescriptionsItem>
       <template #label>
         <div class="flex items-center">
-          <div class="mr-1.5">{{ t('httPlugin.functionTestDetail.http.assertions.executionCondition') }}</div>
+          <div class="mr-1.5">{{ t('httpPlugin.functionTestDetail.http.assertions.executionCondition') }}</div>
           <template v-if="conditionMessage">
             <Tooltip>
               <template #title>{{ conditionMessage }}</template>
@@ -395,9 +395,9 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
       <div :title="conditionValue">{{ conditionValue }}</div>
     </DescriptionsItem>
 
-    <DescriptionsItem :label="t('httPlugin.functionTestDetail.http.assertions.executionConditionResult')">
+    <DescriptionsItem :label="t('httpPlugin.functionTestDetail.http.assertions.executionConditionResult')">
       <template v-if="props.ignoreAssertions||!props.value?.enabled">
-        <Badge status="default" :text="t('httPlugin.functionTestDetail.statusTag.ignore')" />
+        <Badge status="default" :text="t('httpPlugin.functionTestDetail.statusTag.ignore')" />
       </template>
       <template v-else-if="conditionFailure">
         <Badge status="error" :text="conditionResultMessage" />
@@ -414,7 +414,7 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
             style="word-wrap: unset;word-break: break-all;white-space: break-spaces;"
             :ellipsis="ellipsis"
             :content="showRealValue" />
-          <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal('real')">{{ t('httPlugin.functionTestDetail.http.assertions.view') }}</div>
+          <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal('real')">{{ t('httpPlugin.functionTestDetail.http.assertions.view') }}</div>
         </div>
       </template>
 
@@ -423,7 +423,7 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
       </template>
     </DescriptionsItem>
 
-    <DescriptionsItem :label="t('httPlugin.functionTestDetail.http.assertions.assertionCondition')">
+    <DescriptionsItem :label="t('httpPlugin.functionTestDetail.http.assertions.assertionCondition')">
       {{ CONDITION_MAP[assertionCondition] }}
     </DescriptionsItem>
 
@@ -440,7 +440,7 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
             style="word-wrap: unset;word-break: break-all;white-space: break-spaces;"
             :ellipsis="ellipsis"
             :content="showExpectedValue" />
-          <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal('expected')">{{ t('httPlugin.functionTestDetail.http.assertions.view') }}</div>
+          <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal('expected')">{{ t('httpPlugin.functionTestDetail.http.assertions.view') }}</div>
         </div>
       </template>
 
@@ -450,31 +450,31 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
     </DescriptionsItem>
 
     <template v-if="assertionIgnored">
-      <DescriptionsItem :label="t('httPlugin.functionTestDetail.http.assertions.assertionResult')" :span="3">
-        <Badge status="default" :text="t('httPlugin.functionTestDetail.statusTag.ignore')" />
+      <DescriptionsItem :label="t('httpPlugin.functionTestDetail.http.assertions.assertionResult')" :span="3">
+        <Badge status="default" :text="t('httpPlugin.functionTestDetail.statusTag.ignore')" />
       </DescriptionsItem>
     </template>
 
     <template v-else>
       <template v-if="resultFailure">
-        <DescriptionsItem :label="t('httPlugin.functionTestDetail.http.assertions.assertionResult')" :span="!!resultMessage ? 1 : 3">
+        <DescriptionsItem :label="t('httpPlugin.functionTestDetail.http.assertions.assertionResult')" :span="!!resultMessage ? 1 : 3">
           <Badge
             class="flex-shrink-0"
             status="error"
-            :text="t('httPlugin.functionTestDetail.statusTag.fail')" />
+            :text="t('httpPlugin.functionTestDetail.statusTag.fail')" />
         </DescriptionsItem>
 
         <DescriptionsItem
           v-if="!!resultMessage"
-          :label="t('httPlugin.functionTestDetail.http.assertions.failureReason')"
+          :label="t('httpPlugin.functionTestDetail.http.assertions.failureReason')"
           :span="2">
           <div :title="resultMessage">{{ resultMessage }}</div>
         </DescriptionsItem>
       </template>
 
       <template v-else>
-        <DescriptionsItem :label="t('httPlugin.functionTestDetail.http.assertions.assertionResult')" :span="3">
-          <Badge status="success" :text="t('httPlugin.functionTestDetail.statusTag.success')" />
+        <DescriptionsItem :label="t('httpPlugin.functionTestDetail.http.assertions.assertionResult')" :span="3">
+          <Badge status="success" :text="t('httpPlugin.functionTestDetail.statusTag.success')" />
         </DescriptionsItem>
       </template>
     </template>

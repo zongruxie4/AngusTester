@@ -175,16 +175,16 @@ const pending = computed(() => {
 });
 
 const texts = computed(() => [
-  t('httPlugin.functionTestDetail.texts.success'),
-  t('httPlugin.functionTestDetail.texts.ignore'),
-  t('httPlugin.functionTestDetail.texts.block'),
-  t('httPlugin.functionTestDetail.texts.total')
+  t('httpPlugin.functionTestDetail.texts.success'),
+  t('httpPlugin.functionTestDetail.texts.ignore'),
+  t('httpPlugin.functionTestDetail.texts.block'),
+  t('httpPlugin.functionTestDetail.texts.total')
 ]);
 
 const timeTexts = computed(() => [
-  t('httPlugin.functionTestDetail.timeTexts.minimum'),
-  t('httPlugin.functionTestDetail.timeTexts.average'),
-  t('httPlugin.functionTestDetail.timeTexts.maximum')
+  t('httpPlugin.functionTestDetail.timeTexts.minimum'),
+  t('httpPlugin.functionTestDetail.timeTexts.average'),
+  t('httpPlugin.functionTestDetail.timeTexts.maximum')
 ]);
 </script>
 <template>
@@ -201,7 +201,7 @@ const timeTexts = computed(() => [
         <div class="text-text-title text-4 font-semibold" style="color:rgba(129, 154, 218, 100%);">
           {{ duration?.[1] }}<span class="text-3.25 ml-0.5">{{ duration?.[2] }}</span>
         </div>
-        <div>{{ t('httPlugin.functionTestDetail.basicInfo.duration') }}</div>
+        <div>{{ t('httpPlugin.functionTestDetail.basicInfo.duration') }}</div>
       </div>
 
       <div
@@ -212,7 +212,7 @@ const timeTexts = computed(() => [
           <em class="not-italic inline-block w-0.5 h-3.5 mx-1.5 rounded" style="transform: rotate(25deg);background-color: rgba(3, 185, 208, 100%);"></em>
           <span>{{ planIterationNum }}</span>
         </div>
-        <div>{{ t('httPlugin.functionTestDetail.basicInfo.iteration') }}</div>
+        <div>{{ t('httpPlugin.functionTestDetail.basicInfo.iteration') }}</div>
       </div>
 
       <div
@@ -221,7 +221,7 @@ const timeTexts = computed(() => [
         <div class="flex items-center text-text-title text-4 font-semibold" style="color:rgba(3, 206, 92, 100%);">
           <span>{{ updateCount }}</span>
         </div>
-        <div>{{ t('httPlugin.functionTestDetail.basicInfo.request') }}</div>
+        <div>{{ t('httpPlugin.functionTestDetail.basicInfo.request') }}</div>
       </div>
 
       <div
@@ -237,7 +237,7 @@ const timeTexts = computed(() => [
           <span>{{ totalAssertionNum }}</span>
         </div>
         <div class="whitespace-nowrap overflow-hidden">
-          {{ t('httPlugin.functionTestDetail.basicInfo.assertion') }}（<GroupText :texts="texts" class="text-theme-sub-content" />）
+          {{ t('httpPlugin.functionTestDetail.basicInfo.assertion') }}（<GroupText :texts="texts" class="text-theme-sub-content" />）
         </div>
       </div>
 
@@ -252,7 +252,7 @@ const timeTexts = computed(() => [
           <span>{{ tranMax }}</span>
         </div>
         <div class="whitespace-nowrap overflow-hidden">
-          {{ t('httPlugin.functionTestDetail.basicInfo.responseTime') }}（<GroupText :texts="timeTexts" class="text-theme-sub-content" />）
+          {{ t('httpPlugin.functionTestDetail.basicInfo.responseTime') }}（<GroupText :texts="timeTexts" class="text-theme-sub-content" />）
         </div>
       </div>
     </div>

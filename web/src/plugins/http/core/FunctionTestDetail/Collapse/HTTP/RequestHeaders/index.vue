@@ -20,17 +20,17 @@ const props = withDefaults(defineProps<Props>(), {
 const panels = computed(() => [
   {
     id: utils.uuid(),
-    name: t('httPlugin.functionTestDetail.http.headers.general'),
+    name: t('httpPlugin.functionTestDetail.http.headers.general'),
     key: 'general'
   },
   {
     id: utils.uuid(),
-    name: t('httPlugin.functionTestDetail.http.headers.request'),
+    name: t('httpPlugin.functionTestDetail.http.headers.request'),
     key: 'request'
   },
   {
     id: utils.uuid(),
-    name: t('httPlugin.functionTestDetail.http.headers.response'),
+    name: t('httpPlugin.functionTestDetail.http.headers.response'),
     key: 'response'
   }
 ]);

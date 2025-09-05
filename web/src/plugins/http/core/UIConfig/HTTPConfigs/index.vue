@@ -2,36 +2,35 @@
 import { ref, onMounted, watch, computed, defineAsyncComponent, watchEffect, onBeforeUnmount } from 'vue';
 import { Collapse, CollapsePanel, Tabs, TabPane, Badge, Radio } from 'ant-design-vue';
 import { Composite, Input, Icon, Tooltip, Popover, ExecAuthencation, FunctionsButton } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/infra';
+import { utils, i18n } from '@xcan-angus/infra';
 import { cloneDeep } from 'lodash-es';
 import SelectEnum from '@/components/selectEnum/index.vue'
 
 import { HTTPConfig, HttpMethod } from './PropsType';
 
-const docInfo = [
-  {
-    title: 'Path参数',
-    rules: ['Primitive id = 5 -> /users/5', 'Array id = [3, 4, 5] -> /users/3,4,5', 'Object id = {"role": "admin", "firstName": "Alex"} -> /users/role=admin,firstName=Alex', '> 只支持基本类型、基本类型数组、对象类型，其他复杂类型数据模型不解析。']
-  },
-  {
-    title: 'Query 和 Form 参数',
-    rules: ['Primitive id = 5 -> id=5', 'Array id = [3, 4, 5] -> id[0]=3&id[1]=4&id[2]=5', 'Object id = {"role": "admin", "firstName": "Alex"} -> id.role=admin&id.firstName=Alex', '> 支持所有类型，及对象和数组类型嵌套。']
-  },
-  {
-    title: 'Header 参数',
-    rules: ['Primitive X-MyHeader = 5 ->  X-MyHeader: 5', 'Array X-MyHeader = [3, 4, 5] -> X-MyHeader: 3,4,5', 'Object X-MyHeader = {"role": "admin", "firstName": "Alex"} -> X-MyHeader: role=admin,firstName=Alex', '> 只支持基本类型、基本类型数组、对象类型，其他复杂类型数据模型不解析。']
-  },
-  {
-    title: 'Cookie 参数',
-    rules: ['Primitive id = 5 ->  Cookie: id=5', 'Array id = [3, 4, 5] -> Cookie: id=3,4,5', 'Object id = {"role": "admin", "firstName": "Alex"} -> Cookie: id=role,admin,firstName,Alex', '> 只支持基本类型、基本类型数组、对象类型，其他复杂类型数据模型不解析。']
-  }
-];
+const I18nInstance = i18n.getI18n();
+const t = I18nInstance?.global?.t || ((value: string): string => value);
 
-const debugTip = [
-  '组件调试值修改与同步：修改Query、Path、Header和Form类型参数引用组件的调试值会同步修改到组件，同时引用组件的其他接口也会被同步修改；而Raw请求体内容引用组件时修改调试值不会同步到组件，即Raw请求体引用组件调试值修改不会影响其他接口。',
-  '接口中支持变量的位置：安全方案(Authorization)、Path参数、Query参数、Header参数、请求体Form参数、请求体Raw、断言条件表达式和断言期望值。',
-  '接口中支持函数的位置：Path参数、Query参数、Header参数、请求体Form参数和请求体Raw。'
-];
+const docInfo = computed(() => [
+  {
+    title: t('httpPlugin.uiConfig.httpConfigs.docInfo.pathParams.title'),
+    rules: t('httpPlugin.uiConfig.httpConfigs.docInfo.pathParams.rules')
+  },
+  {
+    title: t('httpPlugin.uiConfig.httpConfigs.docInfo.queryFormParams.title'),
+    rules: t('httpPlugin.uiConfig.httpConfigs.docInfo.queryFormParams.rules')
+  },
+  {
+    title: t('httpPlugin.uiConfig.httpConfigs.docInfo.headerParams.title'),
+    rules: t('httpPlugin.uiConfig.httpConfigs.docInfo.headerParams.rules')
+  },
+  {
+    title: t('httpPlugin.uiConfig.httpConfigs.docInfo.cookieParams.title'),
+    rules: t('httpPlugin.uiConfig.httpConfigs.docInfo.cookieParams.rules')
+  }
+]);
+
+const debugTip = computed(() => t('httpPlugin.uiConfig.httpConfigs.debugTip'));
 
 export type ParameterConfig = {
   name: string;
@@ -1161,7 +1160,7 @@ const overlayStyle = {
           </template>
           <div class="flex-1 flex items-center space-x-5 mr-5">
             <Tooltip
-              title="名称重复"
+              :title="t('httpPlugin.uiConfig.httpConfigs.tooltips.nameRepeat')"
               internal
               placement="right"
               destroyTooltipOnHide
@@ -1173,7 +1172,7 @@ const overlayStyle = {
                 :title="name"
                 trim
                 class="http-name-input"
-                placeholder="名称，最长400个字符"
+                :placeholder="t('httpPlugin.uiConfig.httpConfigs.form.namePlaceholder')"
                 @change="nameChange" />
             </Tooltip>
             <SelectEnum
@@ -1186,7 +1185,7 @@ const overlayStyle = {
               optionLabelProp="label"
               class="w-19 flex-shrink-0 http-method-select"
               enumKey="HttpMethod"
-              placeholder="请求方法" />
+              :placeholder="t('httpPlugin.uiConfig.httpConfigs.form.requestMethodPlaceholder')" />
             <ServerEndpoint
               v-if="readonly"
               :server="server"
@@ -1220,7 +1219,7 @@ const overlayStyle = {
                             <div
                               v-if="server.variables?.[_variable._name]?.defaultValue === _value"
                               class="text-theme-sub-content">
-                              <span>默认</span>
+                              <span>{{ t('httpPlugin.uiConfig.httpConfigs.labels.default') }}</span>
                             </div>
                             <Radio
                               :checked="server.variables?.[_variable._name]?.defaultValue === _value"
@@ -1238,7 +1237,7 @@ const overlayStyle = {
                   </div>
                 </template>
                 <Tooltip
-                  title="server格式错误"
+                  :title="t('httpPlugin.uiConfig.httpConfigs.tooltips.serverFormatError')"
                   internal
                   placement="topLeft"
                   destroyTooltipOnHide
@@ -1250,13 +1249,13 @@ const overlayStyle = {
                     :title="server.url"
                     trimAll
                     style="flex:1 1 40%;"
-                    placeholder="server，最长400个字符"
+                    :placeholder="t('httpPlugin.uiConfig.httpConfigs.form.serverPlaceholder')"
                     @change="serverUrlChange"
                     @blur="serverUrlBlur" />
                 </Tooltip>
               </Popover>
               <Tooltip
-                title="path格式错误"
+                :title="t('httpPlugin.uiConfig.httpConfigs.tooltips.pathFormatError')"
                 internal
                 placement="topLeft"
                 destroyTooltipOnHide
@@ -1268,7 +1267,7 @@ const overlayStyle = {
                   :title="endpoint"
                   trimAll
                   style="flex:1 1 60%;"
-                  placeholder="path，最长800个字符"
+                  :placeholder="t('httpPlugin.uiConfig.httpConfigs.form.pathPlaceholder')"
                   @change="endpointChange"
                   @blur="endpointBlur" />
               </Tooltip>
@@ -1295,7 +1294,7 @@ const overlayStyle = {
               size="small"
               :count="queryPathErrorNum">
               <div class="flex items-center space-x-0.5">
-                <div>请求参数</div>
+                <div>{{ t('httpPlugin.uiConfig.httpConfigs.tabs.requestParams') }}</div>
                 <div class="flex items-center space-x-0.5">
                   <em>(</em>
                   <span>{{ queryPathNum }}</span>
@@ -1322,7 +1321,7 @@ const overlayStyle = {
               size="small"
               :count="headerErrorNum">
               <div class="flex items-center space-x-0.5">
-                <div>请求头</div>
+                <div>{{ t('httpPlugin.uiConfig.httpConfigs.tabs.requestHeaders') }}</div>
                 <div class="flex items-center space-x-0.5">
                   <em>(</em>
                   <span>{{ headerNum }}</span>
@@ -1347,7 +1346,7 @@ const overlayStyle = {
               size="small"
               :count="cookieErrorNum">
               <div class="flex items-center space-x-0.5">
-                <div>Cookie</div>
+                <div>{{ t('httpPlugin.uiConfig.httpConfigs.tabs.cookie') }}</div>
                 <div class="flex items-center space-x-0.5">
                   <em>(</em>
                   <span>{{ cookieNum }}</span>
@@ -1367,14 +1366,14 @@ const overlayStyle = {
         <TabPane key="Authorization">
           <template #tab>
             <Badge v-if="!!authentication?.type" color="green" />
-            <span>Authorization</span>
+            <span>{{ t('httpPlugin.uiConfig.httpConfigs.tabs.authorization') }}</span>
           </template>
           <ExecAuthencation :defaultValue="defaultAuthentication" @change="chanegAuthentication" />
         </TabPane>
         <TabPane key="body">
           <template #tab>
             <Badge v-if="hasRequestBody" color="green" />
-            <Badge size="small" :count="bodyErrorNum">请求体</Badge>
+            <Badge size="small" :count="bodyErrorNum">{{ t('httpPlugin.uiConfig.httpConfigs.tabs.requestBody') }}</Badge>
           </template>
           <RequestBody
             ref="bodyRef"
@@ -1391,7 +1390,7 @@ const overlayStyle = {
               size="small"
               :count="parametricErrorNum">
               <div class="flex items-center space-x-0.5">
-                <div>参数化</div>
+                <div>{{ t('httpPlugin.uiConfig.httpConfigs.tabs.parameterization') }}</div>
               </div>
             </Badge>
           </template>
@@ -1412,7 +1411,7 @@ const overlayStyle = {
               size="small"
               :count="assertionErrorNum">
               <div class="flex items-center space-x-0.5">
-                <div>断言</div>
+                <div>{{ t('httpPlugin.uiConfig.httpConfigs.tabs.assertion') }}</div>
                 <div class="flex items-center space-x-0.5">
                   <em>(</em>
                   <span>{{ assertionNum }}</span>
@@ -1434,7 +1433,7 @@ const overlayStyle = {
             <Icon icon="icon-jieshaoshuoming" class="cursor-pointer mr-2 text-4 text-theme-text-hover" />
             <template #content>
               <div class="w-100 text-3">
-                <Hints text="注意事项" class="font-semibold !text-text-title" />
+                <Hints :text="t('httpPlugin.uiConfig.httpConfigs.popover.notes')" class="font-semibold !text-text-title" />
                 <ul class="mt-2 pl-4 list-disc">
                   <li
                     v-for="item in debugTip"
@@ -1450,14 +1449,9 @@ const overlayStyle = {
             <Icon icon="icon-tiaoshijiaoben" class="cursor-pointer mr-2 text-3.5 text-theme-text-hover" />
             <template #content>
               <div class="w-150 text-3">
-                <Hints text="参数序列化" class="font-semibold !text-text-title" />
+                <Hints :text="t('httpPlugin.uiConfig.httpConfigs.popover.parameterSerialization')" class="font-semibold !text-text-title" />
                 <div class="mt-2">
-                  AngusTester 序列化规则基于
-                  <a
-                    class="text-theme-special"
-                    href="https://datatracker.ietf.org/doc/html/rfc6570"
-                    target="_blank">RFC6570</a>
-                  定义的UR模板的子集。支持OAS3 Schema数据类型包括：string、boolean、integer、number、object、array。
+                  {{ t('httpPlugin.uiConfig.httpConfigs.popover.serializationDescription') }}
                 </div>
                 <ul class="pl-4 list-disc">
                   <li

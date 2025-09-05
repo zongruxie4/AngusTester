@@ -233,9 +233,9 @@ defineExpose({
   <div class="text-3 leading-5">
     <div class="flex items-center flex-nowrap mb-1.5">
       <div class="flex-shrink-0 w-1 h-3.5 rounded bg-blue-400 mr-1.5"></div>
-      <div class="flex-shrink-0 text-theme-title mr-2.5">{{ t('httPlugin.uiConfig.httpConfigs.parametric.variables.title') }}</div>
+      <div class="flex-shrink-0 text-theme-title mr-2.5">{{ t('httpPlugin.uiConfig.httpConfigs.parametric.variables.title') }}</div>
       <Icon icon="icon-tishi1" class="flex-shrink-0 text-tips text-3.5 mr-1" />
-      <div class="flex-shrink-0 break-all whitespace-pre-wrap">{{ t('httPlugin.uiConfig.httpConfigs.parametric.variables.description') }}</div>
+      <div class="flex-shrink-0 break-all whitespace-pre-wrap">{{ t('httpPlugin.uiConfig.httpConfigs.parametric.variables.description') }}</div>
     </div>
     <div class="mb-2">
       <Button
@@ -244,14 +244,14 @@ defineExpose({
         class="flex items-center h-5 leading-5 p-0 space-x-1"
         @click="toAdd">
         <Icon icon="icon-jia" class="text-3.5" />
-        <span class="ml-1">{{ t('httPlugin.uiConfig.httpConfigs.parametric.variables.addVariable') }}</span>
+        <span class="ml-1">{{ t('httpPlugin.uiConfig.httpConfigs.parametric.variables.addVariable') }}</span>
       </Button>
     </div>
 
     <div v-if="idList.length === 0" class="flex-1 flex flex-col items-center justify-center">
       <img style="width:96px;" src="./images/nodata.png">
       <div class="flex items-center text-theme-sub-content text-3">
-        <span>{{ t('httPlugin.uiConfig.httpConfigs.parametric.variables.noVariablesDefined') }}</span>
+        <span>{{ t('httpPlugin.uiConfig.httpConfigs.parametric.variables.noVariablesDefined') }}</span>
       </div>
     </div>
 
@@ -261,7 +261,7 @@ defineExpose({
         :key="item"
         class="flex items-center space-x-2">
         <Tooltip
-          :title="t('httPlugin.uiConfig.httpConfigs.parametric.variables.duplicateName')"
+          :title="t('httpPlugin.uiConfig.httpConfigs.parametric.variables.duplicateName')"
           internal
           placement="right"
           destroyTooltipOnHide
@@ -272,7 +272,7 @@ defineExpose({
             :error="nameErrorSet.has(item)"
             style="width:calc((100% - 96px)/10*2);"
             excludes="{}"
-            :placeholder="t('httPlugin.uiConfig.httpConfigs.parametric.variables.namePlaceholder')"
+            :placeholder="t('httpPlugin.uiConfig.httpConfigs.parametric.variables.namePlaceholder')"
             size="small"
             tirmAll
             class="flex-shrink-0 has-suffix"
@@ -294,7 +294,7 @@ defineExpose({
           v-model:value="dataMap[item].method"
           :error="methodErrorSet.has(item)"
           enumKey="ExtractionMethod"
-          :placeholder="t('httPlugin.uiConfig.httpConfigs.parametric.variables.extractionMethodPlaceholder')"
+          :placeholder="t('httpPlugin.uiConfig.httpConfigs.parametric.variables.extractionMethodPlaceholder')"
           class="flex-shrink-0"
           style="width:calc((100% - 96px)/10*1);"
           @change="methodChange(item)" />
@@ -303,7 +303,7 @@ defineExpose({
           v-model:value="dataMap[item].location"
           :error="locationErrorSet.has(item)"
           enumKey="HttpExtractionLocation"
-          :placeholder="t('httPlugin.uiConfig.httpConfigs.parametric.variables.locationPlaceholder')"
+          :placeholder="t('httpPlugin.uiConfig.httpConfigs.parametric.variables.locationPlaceholder')"
           class="flex-shrink-0"
           style="width:calc((100% - 96px)/10*1);"
           @change="locationChange(item)" />
@@ -315,7 +315,7 @@ defineExpose({
           :disabled="['REQUEST_RAW_BODY', 'RESPONSE_BODY'].includes(dataMap[item].location)"
           class="flex-shrink-0"
           trim
-          :placeholder="t('httPlugin.uiConfig.httpConfigs.parametric.variables.parameterNamePlaceholder')"
+          :placeholder="t('httpPlugin.uiConfig.httpConfigs.parametric.variables.parameterNamePlaceholder')"
           style="width:calc((100% - 96px)/10*1.5);"
           @change="parameterNameChange(item)" />
 
@@ -323,7 +323,7 @@ defineExpose({
           v-model:value="dataMap[item].defaultValue"
           :maxlength="4096"
           trim
-          :placeholder="t('httPlugin.uiConfig.httpConfigs.parametric.variables.defaultValuePlaceholder')"
+          :placeholder="t('httpPlugin.uiConfig.httpConfigs.parametric.variables.defaultValuePlaceholder')"
           class="flex-shrink-0"
           style="width:calc((100% - 96px)/10*2);"
           @change="defaultValueChange" />
@@ -335,14 +335,14 @@ defineExpose({
           :maxlength="1024"
           :disabled="dataMap[item].method === 'EXACT_VALUE'"
           class="flex-shrink-0"
-          :placeholder="t('httPlugin.uiConfig.httpConfigs.parametric.variables.expressionPlaceholder')"
+          :placeholder="t('httpPlugin.uiConfig.httpConfigs.parametric.variables.expressionPlaceholder')"
           style="width:calc((100% - 96px)/10*1.5);"
           @change="expressionChange(item)" />
 
         <div class="flex-shrink-0 flex items-center" style="width:calc((100% - 96px)/10*1);">
           <Input
             v-model:value="dataMap[item].matchItem"
-            :placeholder="t('httPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPlaceholder')"
+            :placeholder="t('httpPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPlaceholder')"
             dataType="number"
             trimAll
             :max="2000"

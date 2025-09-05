@@ -33,14 +33,14 @@ const dataList = computed(() => {
 </script>
 <template>
   <div>
-    <Hints class="mb-1.5" :text="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.staticParametersDescription')" />
+    <Hints class="mb-1.5" :text="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.staticParametersDescription')" />
 
     <div class="flex items-center space-x-2 mb-1">
       <div class="w-90 flex items-center">
-        <span>{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.name') }}</span>
+        <span>{{ t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.name') }}</span>
       </div>
       <div class="flex-1 flex items-center">
-        <span>{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.value') }}</span>
+        <span>{{ t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.value') }}</span>
       </div>
     </div>
 

@@ -58,7 +58,7 @@ const ok = async (key:'link'|'copy') => {
   } else {
     const hasLinkIdFlag = checkedApiIds.value.some(item => props.linkIds.has(item));
     if (hasLinkIdFlag) {
-      notification.info(t('httPlugin.uiConfig.selectApiModal.alreadyReferenced'));
+      notification.info(t('httpPlugin.uiConfig.selectApiModal.alreadyReferenced'));
       return;
     }
 
@@ -159,7 +159,7 @@ const hasLinkId = computed(() => {
 </script>
 <template>
   <Modal
-    :title="t('httPlugin.uiConfig.selectApiModal.title')"
+    :title="t('httpPlugin.uiConfig.selectApiModal.title')"
     :visible="props.visible"
     :centered="true"
     :width="1000"
@@ -185,7 +185,7 @@ const hasLinkId = computed(() => {
           size="small"
           type="primary"
           @click="ok('copy')">
-          <span>{{ t('httPlugin.uiConfig.selectApiModal.copy') }}</span>
+          <span>{{ t('httpPlugin.uiConfig.selectApiModal.copy') }}</span>
         </Button>
         <Button
           :loading="linking"
@@ -194,11 +194,11 @@ const hasLinkId = computed(() => {
           type="primary"
           @click="ok('link')">
           <div v-if="hasLinkId" class="flex items-center justify-center w-2.5 h-2.5 rounded-lg bg-white mr-1">
-            <Tooltip :title="t('httPlugin.uiConfig.selectApiModal.alreadyReferenced')">
+            <Tooltip :title="t('httpPlugin.uiConfig.selectApiModal.alreadyReferenced')">
               <Icon icon="icon-tishi1" class="flex-shrink-0 text-3.5 text-status-warn" />
             </Tooltip>
           </div>
-          <span>{{ t('httPlugin.uiConfig.selectApiModal.reference') }}</span>
+          <span>{{ t('httpPlugin.uiConfig.selectApiModal.reference') }}</span>
         </Button>
       </div>
     </template>

@@ -16,20 +16,20 @@ const { t } = useI18n();
     <template #content>
       <div style="max-height: 60vh; overflow: auto;" class="leading-4.5 text-3 text-theme-content">
         <div class="mb-4">
-          <Hints :text="t('httPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.title')" class="mb-2 !font-semibold !text-theme-content" />
-          <div class="mb-3">{{ t('httPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.description') }}</div>
+          <Hints :text="t('httpPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.title')" class="mb-2 !font-semibold !text-theme-content" />
+          <div class="mb-3">{{ t('httpPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.description') }}</div>
         </div>
         <ol class="pl-4 space-y-3">
           <li style="list-style-type: circle;" class="space-y-2 text-theme-sub-content">
-            <div class="text-theme-content font-semibold">{{ t('httPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.formatTitle') }}</div>
-            <div>{{ t('httPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.formatExample') }}</div>
+            <div class="text-theme-content font-semibold">{{ t('httpPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.formatTitle') }}</div>
+            <div>{{ t('httpPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.formatExample') }}</div>
           </li>
           <li style="list-style-type: circle;" class="space-y-2">
-            <div class="font-semibold">{{ t('httPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.parameterTitle') }}</div>
+            <div class="font-semibold">{{ t('httpPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.parameterTitle') }}</div>
             <ul style="padding-left: 16px;list-style-type: disc;" class="space-y-2 text-theme-sub-content">
-              <li>{{ t('httPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.variableDescription') }}</li>
-              <li>{{ t('httPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.operatorDescription') }}</li>
-              <li>{{ t('httPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.valueDescription') }}</li>
+              <li>{{ t('httpPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.variableDescription') }}</li>
+              <li>{{ t('httpPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.operatorDescription') }}</li>
+              <li>{{ t('httpPlugin.uiConfig.httpConfigs.assertionForm.conditionPopover.valueDescription') }}</li>
             </ul>
           </li>
         </ol>
