@@ -5,6 +5,7 @@ import { Composite, HttpMethodText, IconCopy, IconRequired, Input, Select } from
 
 import SelectEnum from '@/components/selectEnum/index.vue';
 
+// ==================== Props & Emits ====================
 interface Props {
   method:string;
   options: { label: string; value: string; }[]
@@ -30,60 +31,15 @@ const emit = defineEmits<{
   (e: 'update:server', value: string): void;
 }>();
 
+// ==================== Reactive State ====================
 const domain = ref();
 const pathname = ref();
 const error = ref(false);
 
-const selectChange = (value: string) => {
-  emit('update:method', value);
-};
-
-const serverChange = (value: string) => {
-  domain.value = value;
-  emit('update:server', value);
-};
-
-const inputChange = (event: { target: { value: string } }) => {
-  const value = event.target.value;
-  pathname.value = value;
-  emit('update:endpoint', value);
-  error.value = false;
-};
-
-const inputBlur = (event: { target: { value: string } }) => {
-  const value = event.target.value;
-  pathname.value = value;
-  emit('update:endpoint', value);
-  error.value = !isValidPath(value);
-};
-
-const isValidPath = (_pathname: string): boolean => {
-  if (!_pathname) {
-    return false;
-  }
-
-  return true;
-};
-
-onMounted(() => {
-  watch(() => props.endpoint, (newValue) => {
-    error.value = false;
-    pathname.value = newValue;
-  }, { immediate: true });
-});
-
-defineExpose({
-  isValid: ():boolean => {
-    let errorNum = 0;
-    if (!isValidPath(pathname.value)) {
-      errorNum++;
-    }
-
-    error.value = !!errorNum;
-    return !errorNum;
-  }
-});
-
+// ==================== Computed Properties ====================
+/**
+ * Copy text for URL construction
+ */
 const copyText = computed(() => {
   let url = '';
   if (domain.value) {
@@ -95,6 +51,86 @@ const copyText = computed(() => {
   }
 
   return url;
+});
+
+// ==================== Methods ====================
+/**
+ * Handle HTTP method selection change
+ * @param value - Selected method value
+ */
+const handleMethodChange = (value: string) => {
+  emit('update:method', value);
+};
+
+/**
+ * Handle server/domain selection change
+ * @param value - Selected server value
+ */
+const handleServerChange = (value: any) => {
+  domain.value = value;
+  emit('update:server', value);
+};
+
+/**
+ * Handle endpoint input change
+ * @param event - Input change event
+ */
+const handleEndpointChange = (event: any) => {
+  const value = event.target.value;
+  pathname.value = value;
+  emit('update:endpoint', value);
+  error.value = false;
+};
+
+/**
+ * Handle endpoint input blur validation
+ * @param event - Input blur event
+ */
+const handleEndpointBlur = (event: any) => {
+  const value = event.target.value;
+  pathname.value = value;
+  emit('update:endpoint', value);
+  error.value = !isValidPath(value);
+};
+
+/**
+ * Validate pathname format
+ * @param _pathname - Pathname to validate
+ * @returns Whether pathname is valid
+ */
+const isValidPath = (_pathname: string): boolean => {
+  if (!_pathname) {
+    return false;
+  }
+
+  return true;
+};
+
+/**
+ * Validate the entire form
+ * @returns Whether form is valid
+ */
+const isValid = ():boolean => {
+  let errorNum = 0;
+  if (!isValidPath(pathname.value)) {
+    errorNum++;
+  }
+
+  error.value = !!errorNum;
+  return !errorNum;
+};
+
+// ==================== Watchers ====================
+onMounted(() => {
+  watch(() => props.endpoint, (newValue) => {
+    error.value = false;
+    pathname.value = newValue;
+  }, { immediate: true });
+});
+
+// ==================== Expose Methods ====================
+defineExpose({
+  isValid
 });
 </script>
 <template>
@@ -111,7 +147,7 @@ const copyText = computed(() => {
           class="w-25 flex-shrink-0"
           enumKey="HttpMethod"
           :placeholder="t('mock.detail.apis.components.urlForm.requestMethod')"
-          @change="selectChange">
+          @change="handleMethodChange">
           <template #option="record">
             <HttpMethodText :value="record.value" />
           </template>
@@ -122,7 +158,7 @@ const copyText = computed(() => {
           defaultActiveFirstOption
           class="w-70 flex-shrink-0"
           :placeholder="t('mock.detail.apis.components.urlForm.domain')"
-          @change="serverChange" />
+          @change="handleServerChange" />
         <Input
           :value="pathname"
           :error="error"
@@ -131,8 +167,8 @@ const copyText = computed(() => {
           trim
           class="flex-1"
           :placeholder="t('mock.detail.apis.components.urlForm.maxLengthPlaceholder')"
-          @blur="inputBlur"
-          @change="inputChange" />
+          @blur="handleEndpointBlur"
+          @change="handleEndpointChange" />
       </Composite>
       <span class="text-theme-sub-content">
         <IconCopy class="flex-shrink-0 ml-1.5" :copyText="copyText" />

@@ -1,4 +1,4 @@
-import { FullMatchCondition, StringMatchCondition } from '@xcan-angus/infra';
+import { ParameterIn, FullMatchCondition, StringMatchCondition } from '@xcan-angus/infra';
 
 export type ResponseMatchInfo = {
     priority: string | undefined;
@@ -18,7 +18,7 @@ export type ResponseMatchInfo = {
         condition: { value: FullMatchCondition; message: string; };
         expected: string | undefined;
         expression: string | undefined;
-        in: 'query' | 'header';
+        in: ParameterIn.header | ParameterIn.query;
         name: string;
     }[] | undefined;
 }
@@ -41,7 +41,7 @@ export type ResponseMatchConfig = {
         condition: FullMatchCondition;
         expected: string | undefined;
         expression: string | undefined;
-        in: 'query' | 'header';
+        in: ParameterIn.header | ParameterIn.query;
         name: string;
     }[] | undefined;
 }

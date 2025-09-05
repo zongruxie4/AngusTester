@@ -7,13 +7,14 @@ import { Validate } from '@xcan-angus/vue-ui';
 import MonacoEditor from '@/components/monacoEditor/index.vue';
 import { isHtml, isJSON, isXML, isYAML } from '@/utils/dataFormat';
 
+// ==================== Props & Emits ====================
 interface Props {
   value: string;
   readonly?:boolean;
   showAction?:boolean;
   language?:'json' | 'html' | 'typescript' | 'text' | 'yaml';
-  maxlength?:number;// 最大支持字符数
-  showCount?:boolean;// 是否显示已输入字符串数量
+  maxlength?:number;
+  showCount?:boolean;
   notify?:number;
 }
 
@@ -35,13 +36,27 @@ const emit = defineEmits<{
   (e: 'change', value:string): void;
 }>();
 
+// ==================== Reactive State ====================
 const editorRef = ref();
 const editorLanguage = ref<'json' | 'html' | 'typescript' | 'text' | 'yaml'>('text');
 const content = ref('');
 const error = ref(false);
 const errorMessage = ref<string>();
 
-const change = (value:string) => {
+// ==================== Computed Properties ====================
+/**
+ * Get the current editor language
+ */
+const currentLanguage = computed(() => {
+  return props.language || editorLanguage.value;
+});
+
+// ==================== Methods ====================
+/**
+ * Handle content change event
+ * @param value - New content value
+ */
+const handleContentChange = (value:string) => {
   error.value = false;
   if (value.length <= props.maxlength) {
     errorMessage.value = undefined;
@@ -49,7 +64,12 @@ const change = (value:string) => {
   emit('change', value);
 };
 
-const detectType = (value:string) => {
+/**
+ * Detect content type and set appropriate language
+ * @param value - Content to analyze
+ * @returns Detected language type
+ */
+const detectContentType = (value:string) => {
   if (isJSON(value)) {
     editorLanguage.value = 'json';
   } else if (isXML(value) || isHtml(value)) {
@@ -63,8 +83,11 @@ const detectType = (value:string) => {
   return editorLanguage.value;
 };
 
-const format = () => {
-  const _lang = props.language || detectType(content.value);
+/**
+ * Format the current content
+ */
+const formatContent = () => {
+  const _lang = props.language || detectContentType(content.value);
   if (_lang === 'json') {
     content.value = JSON.stringify(JSON.parse(content.value), null, 2);
     return;
@@ -75,7 +98,10 @@ const format = () => {
   }
 };
 
-const clear = () => {
+/**
+ * Clear the editor content
+ */
+const clearContent = () => {
   content.value = '';
   editorLanguage.value = 'text';
   error.value = false;
@@ -83,28 +109,18 @@ const clear = () => {
   emit('clear');
 };
 
-const _language = computed(() => {
-  return props.language || editorLanguage.value;
-});
-
-onMounted(() => {
-  watch(() => props.notify, () => {
-    content.value = '';
-    editorLanguage.value = 'text';
-    error.value = false;
-    errorMessage.value = undefined;
-  });
-
-  watch(() => props.value, (newValue) => {
-    content.value = newValue;
-    detectType(newValue);
-  }, { immediate: true });
-});
-
+/**
+ * Get current editor data
+ * @returns Current content value
+ */
 const getData = () => {
   return content.value;
 };
 
+/**
+ * Validate the current content
+ * @returns Whether content is valid
+ */
 const isValid = ():boolean => {
   error.value = false;
   errorMessage.value = undefined;
@@ -123,11 +139,27 @@ const isValid = ():boolean => {
   return true;
 };
 
+// ==================== Watchers ====================
+onMounted(() => {
+  watch(() => props.notify, () => {
+    content.value = '';
+    editorLanguage.value = 'text';
+    error.value = false;
+    errorMessage.value = undefined;
+  });
+
+  watch(() => props.value, (newValue) => {
+    content.value = newValue;
+    detectContentType(newValue);
+  }, { immediate: true });
+});
+
+// ==================== Expose Methods ====================
 defineExpose({
-  format,
+  format: formatContent,
   getData,
   isValid,
-  clear
+  clear: clearContent
 });
 </script>
 
@@ -141,14 +173,14 @@ defineExpose({
           style="padding: 0;"
           type="link"
           size="small"
-          @click="format">
+          @click="formatContent">
           <span>{{ t('mock.detail.apis.components.codeEditor.format') }}</span>
         </Button>
         <Button
           style="padding: 0;"
           type="link"
           size="small"
-          @click="clear">
+          @click="clearContent">
           <span>{{ t('mock.detail.apis.components.codeEditor.clear') }}</span>
         </Button>
       </div>
@@ -162,9 +194,9 @@ defineExpose({
         ref="editorRef"
         v-model:value="content"
         :readOnly="props.readonly"
-        :language="_language"
+        :language="currentLanguage"
         class="w-full h-full"
-        @change="change" />
+        @change="handleContentChange" />
     </Validate>
   </div>
 </template>

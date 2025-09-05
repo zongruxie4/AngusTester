@@ -5,6 +5,7 @@ import { Button } from 'ant-design-vue';
 import { Composite, Icon, Input } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
+// ==================== Props & Emits ====================
 interface Props {
   value?: { [key: string]: string; }[];
   fielaNames?: { label: string; value: string; };
@@ -28,73 +29,82 @@ const emit = defineEmits<{
   (e: 'change', value: string[]): void;
 }>();
 
+// ==================== Reactive State ====================
 const idList = ref<string[]>([]);
 const dataMap = ref<{ [key: string]: { name: string; value: string; } }>({});
 const nameErrorSet = ref<Set<string>>(new Set<string>());
 const valueErrorSet = ref<Set<string>>(new Set<string>());
 
+// ==================== Computed Properties ====================
+/**
+ * Get the label key from field names configuration
+ */
 const labelKey = computed(() => props.fielaNames.label);
+
+/**
+ * Get the value key from field names configuration
+ */
 const valueKey = computed(() => props.fielaNames.value);
 
-const nameChange = (event: { target: { value: string } }, id: string) => {
+// ==================== Methods ====================
+/**
+ * Handle name field change event
+ * @param event - Input change event
+ * @param id - Field ID
+ */
+const handleNameChange = (event: { target: { value: string } }, id: string) => {
   nameErrorSet.value.delete(id);
   dataMap.value[id].name = event.target.value;
 };
 
-const valueChange = (event: { target: { value: string } }, id: string) => {
+/**
+ * Handle value field change event
+ * @param event - Input change event
+ * @param id - Field ID
+ */
+const handleValueChange = (event: { target: { value: string } }, id: string) => {
   valueErrorSet.value.delete(id);
   dataMap.value[id].value = event.target.value;
 };
 
-const deleteHandler = (index: number, id: string) => {
+/**
+ * Handle field deletion
+ * @param index - Field index
+ * @param id - Field ID
+ */
+const handleFieldDelete = (index: number, id: string) => {
   idList.value.splice(index, 1);
   delete dataMap.value[id];
   nameErrorSet.value.delete(id);
   valueErrorSet.value.delete(id);
 };
 
-const reset = () => {
+/**
+ * Reset all form data and error states
+ */
+const resetFormData = () => {
   idList.value = [];
   dataMap.value = {};
   nameErrorSet.value.clear();
   valueErrorSet.value.clear();
 };
 
-onMounted(() => {
-  watch(() => props.notify, () => {
-    reset();
-  });
-
-  watch(() => props.value, (newValue) => {
-    reset();
-    if (!newValue?.length) {
-      return;
-    }
-
-    for (let i = 0, len = newValue.length; i < len; i++) {
-      const id = utils.uuid();
-      idList.value.push(id);
-      dataMap.value[id] = {
-        name: newValue[i][labelKey.value],
-        value: newValue[i][valueKey.value]
-      };
-    }
-  }, { immediate: true });
-
-  watch(() => idList.value, (newValue) => {
-    emit('change', newValue);
-  }, { immediate: true, deep: true });
-});
-
-const create = (index: number) => {
+/**
+ * Handle field creation at specific index
+ * @param index - Field index
+ */
+const handleFieldCreate = (index: number) => {
   if (index < (idList.value.length - 1)) {
     return;
   }
 
-  add();
+  addNewField();
 };
 
-const add = () => {
+/**
+ * Add a new field to the form
+ */
+const addNewField = () => {
   const id = utils.uuid();
   idList.value.push(id);
   dataMap.value[id] = {
@@ -103,6 +113,10 @@ const add = () => {
   };
 };
 
+/**
+ * Validate all form fields
+ * @returns Whether all fields are valid
+ */
 const isValid = (): boolean => {
   nameErrorSet.value.clear();
   valueErrorSet.value.clear();
@@ -124,6 +138,10 @@ const isValid = (): boolean => {
   return !nameErrorSet.value.size && !valueErrorSet.value.size;
 };
 
+/**
+ * Get all form data
+ * @returns Array of form field data
+ */
 const getData = (): { [key: string]: string }[] => {
   const _labelKey = labelKey.value;
   const _valueKey = valueKey.value;
@@ -138,13 +156,39 @@ const getData = (): { [key: string]: string }[] => {
   });
 };
 
+// ==================== Watchers ====================
+onMounted(() => {
+  watch(() => props.notify, () => {
+    resetFormData();
+  });
+
+  watch(() => props.value, (newValue) => {
+    resetFormData();
+    if (!newValue?.length) {
+      return;
+    }
+
+    for (let i = 0, len = newValue.length; i < len; i++) {
+      const id = utils.uuid();
+      idList.value.push(id);
+      dataMap.value[id] = {
+        name: newValue[i][labelKey.value],
+        value: newValue[i][valueKey.value]
+      };
+    }
+  }, { immediate: true });
+
+  watch(() => idList.value, (newValue) => {
+    emit('change', newValue);
+  }, { immediate: true, deep: true });
+});
+
+// ==================== Expose Methods ====================
 defineExpose({
   getData,
   isValid,
-  add,
-  clear: () => {
-    reset();
-  }
+  add: addNewField,
+  clear: resetFormData
 });
 </script>
 <template>
@@ -164,7 +208,7 @@ defineExpose({
             style="flex: 1 1 40%;"
             trim
             :placeholder="t('mock.detail.apis.components.pureFormInput.parameterNamePlaceholder')"
-            @change="nameChange($event, item)" />
+            @change="handleNameChange($event, item)" />
           <Input
             :value="dataMap[item].value"
             :maxlength="4096"
@@ -172,20 +216,20 @@ defineExpose({
             trim
             style="flex: 1 1 60%;"
             :placeholder="t('mock.detail.apis.components.pureFormInput.parameterValuePlaceholder')"
-            @change="valueChange($event, item)" />
+            @change="handleValueChange($event, item)" />
         </Composite>
         <div class="flex-shrink-0 space-x-1">
           <Button type="text" size="small">
             <Icon
               icon="icon-qingchu"
               class="text-3.5"
-              @click="deleteHandler(index, item)" />
+              @click="handleFieldDelete(index, item)" />
           </Button>
           <Button
             :class="{ invisible: index < (idList.length - 1) }"
             type="text"
             size="small"
-            @click="create(index)">
+            @click="handleFieldCreate(index)">
             <Icon icon="icon-jia" class="text-3.5" />
           </Button>
         </div>

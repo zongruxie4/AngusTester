@@ -5,8 +5,16 @@ import { Button } from 'ant-design-vue';
 import { Composite, Icon, Input, SelectInput } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
+/**
+ * <p>Parameter type definition</p>
+ * <p>Defines the structure of parameter objects</p>
+ */
 type ParametersType = { name: string; value: string; disabled: boolean }
 
+/**
+ * <p>Props interface for SelectInputForm component</p>
+ * <p>Defines the structure of props passed to the component</p>
+ */
 interface Props {
   enumKey: string;
   value: ParametersType[];
@@ -23,50 +31,123 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-// eslint-disable-next-line func-call-spacing
+/**
+ * <p>Component events interface</p>
+ * <p>Defines the events that this component can emit</p>
+ */
 const emit = defineEmits<{
   (e: 'change', value: string[]): void;
 }>();
 
+// ==================== Reactive State ====================
+/**
+ * <p>List of parameter IDs for tracking</p>
+ * <p>Used to manage form state and order</p>
+ */
 const idList = ref<string[]>([]);
+
+/**
+ * <p>Data map for parameter values</p>
+ * <p>Stores parameter data indexed by ID</p>
+ */
 const dataMap = ref<{ [key: string]: ParametersType }>({});
+
+/**
+ * <p>Set of parameter IDs with name validation errors</p>
+ * <p>Used to track which parameters have invalid names</p>
+ */
 const nameErrorSet = ref<Set<string>>(new Set<string>());
+
+/**
+ * <p>Set of parameter IDs with value validation errors</p>
+ * <p>Used to track which parameters have invalid values</p>
+ */
 const valueErrorSet = ref<Set<string>>(new Set<string>());
 
+// ==================== Computed Properties ====================
+/**
+ * <p>Label key for field mapping</p>
+ * <p>Returns the label field name from props</p>
+ */
 const labelKey = computed(() => props.fielaNames.label);
+
+/**
+ * <p>Value key for field mapping</p>
+ * <p>Returns the value field name from props</p>
+ */
 const valueKey = computed(() => props.fielaNames.value);
 
-const nameChange = (value: string, id: string) => {
+// ==================== Event Handlers ====================
+/**
+ * <p>Handles parameter name change event</p>
+ * <p>Updates parameter name and clears validation errors</p>
+ *
+ * @param value - New parameter name
+ * @param id - Parameter ID
+ */
+const handleNameChange = (value: string, id: string) => {
   nameErrorSet.value.delete(id);
   dataMap.value[id].name = value;
 };
 
-const nameSearch = (value: string, options: { _value: string; message: string }[]) => {
-  return options.filter(item => item._value.includes(value) || item.message.includes(value));
+/**
+ * <p>Handles parameter name search</p>
+ * <p>Filters options based on search value</p>
+ *
+ * @param value - Search value
+ * @param options - Available options
+ * @returns Filtered options
+ */
+const handleNameSearch = (value: string, options: Record<string, any>[]) => {
+  return options.filter(item => item._value?.includes(value) || item.message?.includes(value));
 };
 
-const valueChange = (event: { target: { value: string } }, id: string) => {
+/**
+ * <p>Handles parameter value change event</p>
+ * <p>Updates parameter value and clears validation errors</p>
+ *
+ * @param event - Input change event
+ * @param id - Parameter ID
+ */
+const handleValueChange = (event: { target: { value: string } }, id: string) => {
   valueErrorSet.value.delete(id);
   dataMap.value[id].value = event.target.value;
 };
 
-const deleteHandler = (index: number, id: string) => {
+/**
+ * <p>Handles parameter deletion</p>
+ * <p>Removes parameter from form and clears related data</p>
+ *
+ * @param index - Parameter index
+ * @param id - Parameter ID
+ */
+const handleDelete = (index: number, id: string) => {
   idList.value.splice(index, 1);
   delete dataMap.value[id];
   nameErrorSet.value.delete(id);
   valueErrorSet.value.delete(id);
 };
 
-const reset = () => {
+// ==================== Utility Methods ====================
+/**
+ * <p>Resets component to initial state</p>
+ * <p>Clears all form data and error states</p>
+ */
+const resetComponent = () => {
   idList.value = [];
   dataMap.value = {};
   nameErrorSet.value.clear();
   valueErrorSet.value.clear();
 };
 
+// ==================== Lifecycle Hooks ====================
+/**
+ * <p>Component mounted lifecycle hook</p>
+ * <p>Sets up watchers and initializes component state</p>
+ */
 onMounted(() => {
   watch(() => props.value, (newValue) => {
-    reset();
+    resetComponent();
     if (!newValue?.length) {
       return;
     }
@@ -88,15 +169,26 @@ onMounted(() => {
   }, { immediate: true, deep: true });
 });
 
-const create = (index: number) => {
+// ==================== Form Management Methods ====================
+/**
+ * <p>Creates a new parameter field</p>
+ * <p>Adds a new parameter if it's the last item in the list</p>
+ *
+ * @param index - Current parameter index
+ */
+const createParameter = (index: number) => {
   if (index < idList.value.length - 1) {
     return;
   }
 
-  add();
+  addParameter();
 };
 
-const add = () => {
+/**
+ * <p>Adds a new parameter to the form</p>
+ * <p>Creates a new parameter with default values</p>
+ */
+const addParameter = () => {
   const id = utils.uuid();
   idList.value.push(id);
   dataMap.value[id] = {
@@ -106,6 +198,13 @@ const add = () => {
   };
 };
 
+// ==================== Validation Methods ====================
+/**
+ * <p>Validates all form fields</p>
+ * <p>Checks if all required fields are filled</p>
+ *
+ * @returns true if form is valid, false otherwise
+ */
 const isValid = (): boolean => {
   nameErrorSet.value.clear();
   valueErrorSet.value.clear();
@@ -125,6 +224,13 @@ const isValid = (): boolean => {
   return !nameErrorSet.value.size && !valueErrorSet.value.size;
 };
 
+// ==================== Data Methods ====================
+/**
+ * <p>Gets current form data</p>
+ * <p>Returns formatted data from all parameters</p>
+ *
+ * @returns Array of parameter data objects
+ */
 const getData = (): { [key: string]: string }[] => {
   const _labelKey = labelKey.value;
   const _valueKey = valueKey.value;
@@ -138,9 +244,34 @@ const getData = (): { [key: string]: string }[] => {
   });
 };
 
+// ==================== Public API ====================
+/**
+ * <p>Exposes component methods and data to parent components</p>
+ * <p>Provides methods for managing parameters and validation</p>
+ */
 defineExpose({
+  /**
+   * <p>Gets current form data</p>
+   * <p>Returns formatted data from all parameters</p>
+   *
+   * @returns Array of parameter data objects
+   */
   getData,
+
+  /**
+   * <p>Validates all form fields</p>
+   * <p>Checks if all required fields are filled</p>
+   *
+   * @returns true if form is valid, false otherwise
+   */
   isValid,
+
+  /**
+   * <p>Adds a parameter to the form</p>
+   * <p>Can add with specific data or create a new empty parameter</p>
+   *
+   * @param data - Optional parameter data to add
+   */
   add: (data?: { value: string; name: string; disabled: boolean, prevValue: string }) => {
     const id = utils.uuid();
     if (data) {
@@ -171,6 +302,13 @@ defineExpose({
       value: ''
     };
   },
+
+  /**
+   * <p>Removes a parameter from the form</p>
+   * <p>Finds and removes parameter by name and previous value</p>
+   *
+   * @param param - Parameter data to remove
+   */
   del: ({ name, prevValue }: { prevValue: string, value: string; name: string; }) => {
     const ids = idList.value;
     for (let i = 0, len = ids.length; i < len; i++) {
@@ -183,12 +321,27 @@ defineExpose({
       }
     }
   },
+
+  /**
+   * <p>Clears all form data</p>
+   * <p>Resets component to initial state</p>
+   */
   clear: () => {
-    reset();
+    resetComponent();
   }
 });
 
+// ==================== Configuration ====================
+/**
+ * <p>Field name mapping for select components</p>
+ * <p>Defines how select options map to data properties</p>
+ */
 const fieldNames = { label: '_value', value: 'id' };
+
+/**
+ * <p>Input properties configuration</p>
+ * <p>Common properties applied to input components</p>
+ */
 const inputProps = {
   maxlength: 400
 };
@@ -209,13 +362,13 @@ const inputProps = {
             :fieldNames="fieldNames"
             :error="nameErrorSet.has(item)"
             :disabled="dataMap[item].disabled"
-            :search="nameSearch"
+            :search="handleNameSearch as any"
             showSearch
             mode="combination"
             style="flex: 1 1 40%;"
             trim
             :placeholder="t('mock.detail.apis.components.selectInputForm.parameterNamePlaceholder')"
-            @change="nameChange($event, item)">
+            @change="handleNameChange($event, item)">
             <template #option="record">
               <div class="truncate" :title="record._value + '-' + record.message">
                 {{ record._value }} - {{ record.message }}
@@ -230,7 +383,7 @@ const inputProps = {
             trim
             style="flex: 1 1 60%;"
             :placeholder="t('mock.detail.apis.components.selectInputForm.parameterValuePlaceholder')"
-            @change="valueChange($event, item)" />
+            @change="handleValueChange($event, item)" />
         </Composite>
         <div class="flex-shrink-0 space-x-1">
           <Button
@@ -240,13 +393,13 @@ const inputProps = {
             <Icon
               icon="icon-qingchu"
               class="text-3.5"
-              @click="deleteHandler(index, item)" />
+              @click="handleDelete(index, item)" />
           </Button>
           <Button
             :class="{ invisible: index < (idList.length - 1) }"
             type="text"
             size="small"
-            @click="create(index)">
+            @click="createParameter(index)">
             <Icon icon="icon-jia" class="text-3.5" />
           </Button>
         </div>

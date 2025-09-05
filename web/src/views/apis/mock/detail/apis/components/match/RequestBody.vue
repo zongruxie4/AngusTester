@@ -4,12 +4,16 @@ import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Input, notification } from '@xcan-angus/vue-ui';
 
-import SelectEnum from '@/components/SelectEnum/index.vue';
+import SelectEnum from '@/components/selectEnum/index.vue';
 import { ResponseMatchConfig } from './types';
 import { FullMatchCondition, utils } from '@xcan-angus/infra';
 
+/**
+ * <p>Props interface for RequestBody component</p>
+ * <p>Defines the structure of props passed to the component</p>
+ */
 interface Props {
-  value: ResponseMatchConfig['body']&{condition:{message:string;value:FullMatchCondition;}};
+  value: ResponseMatchConfig['body'];
   notify?: number;
 }
 
@@ -20,80 +24,104 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
+// ==================== Async Components ====================
 const CodeEditor = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/CodeEditor.vue'));
 
+// ==================== Template Refs ====================
 const editorRef = ref();
+
+// ==================== Reactive State ====================
+/**
+ * <p>List of request body IDs for tracking</p>
+ * <p>Used to manage form state (only one request body allowed)</p>
+ */
 const idList = ref<string[]>([]);
+
+/**
+ * <p>Input value for request body matching</p>
+ * <p>Contains the actual content or expression to match</p>
+ */
 const inputValue = ref<string>();
-const selectValue = ref<FullMatchCondition>(ResponseMatchConfig.EQUAL);
+
+/**
+ * <p>Selected matching condition</p>
+ * <p>Determines how the request body will be matched</p>
+ */
+const selectValue = ref<FullMatchCondition>(FullMatchCondition.EQUAL);
+
+/**
+ * <p>Error flag for validation</p>
+ * <p>Indicates if there are validation errors</p>
+ */
 const errorFlag = ref(false);
 
-const conditionChange = () => {
+// ==================== Event Handlers ====================
+/**
+ * <p>Handles condition change event</p>
+ * <p>Clears error flag and resets input value</p>
+ */
+const handleConditionChange = () => {
   errorFlag.value = false;
   inputValue.value = undefined;
 };
 
-const inputChange = () => {
+/**
+ * <p>Handles input value change event</p>
+ * <p>Clears error flag when user starts typing</p>
+ */
+const handleInputChange = () => {
   errorFlag.value = false;
 };
 
-const deleteHandler = () => {
-  reset();
+/**
+ * <p>Handles delete button click</p>
+ * <p>Resets the form to initial state</p>
+ */
+const handleDelete = () => {
+  resetComponent();
 };
 
-const format = () => {
+/**
+ * <p>Handles format button click</p>
+ * <p>Formats the code editor content</p>
+ */
+const handleFormat = () => {
   if (typeof editorRef.value?.format === 'function') {
     editorRef.value.format();
   }
 };
 
-const clear = () => {
+/**
+ * <p>Handles clear button click</p>
+ * <p>Clears the input value and code editor</p>
+ */
+const handleClear = () => {
   inputValue.value = '';
   if (typeof editorRef.value?.clear === 'function') {
     editorRef.value.clear();
   }
 };
 
-const reset = () => {
+// ==================== Utility Methods ====================
+/**
+ * <p>Resets component to initial state</p>
+ * <p>Clears all form data and error states</p>
+ */
+const resetComponent = () => {
   idList.value = [];
   inputValue.value = undefined;
-  selectValue.value = ResponseMatchConfig.EQUAL;
+  selectValue.value = FullMatchCondition.EQUAL;
   errorFlag.value = false;
   if (typeof editorRef.value?.clear === 'function') {
     editorRef.value.clear();
   }
 };
 
-onMounted(() => {
-  watch(() => props.notify, () => {
-    reset();
-  });
-
-  watch(() => props.value, (newValue) => {
-    reset();
-    if (!newValue) {
-      return;
-    }
-
-    const { condition, expected, expression } = newValue;
-    let value:string|undefined;
-    if ([ResponseMatchConfig.EQUAL, ResponseMatchConfig.NOT_EQUAL, ResponseMatchConfig.CONTAIN, ResponseMatchConfig.NOT_CONTAIN].includes(condition)) {
-      value = expected;
-    } else if ([ResponseMatchConfig.REG_MATCH, ResponseMatchConfig.XPATH_MATCH, ResponseMatchConfig.JSON_PATH_MATCH].includes(condition)) {
-      value = expression;
-    }
-
-    idList.value = [utils.uuid()];
-    selectValue.value = condition;
-
-    // @TODO 编辑器内容改变没有同步到父级，父级数据一直是原始数据，刷新时由于父级数据没有变化，所以编辑器的watch不会触发
-    setTimeout(() => {
-      inputValue.value = value;
-    }, 0);
-  }, { immediate: true });
-});
-
-const add = () => {
+/**
+ * <p>Adds a new request body matching condition</p>
+ * <p>Only allows one request body condition at a time</p>
+ */
+const addRequestBody = () => {
   if (idList.value.length) {
     notification.info(t('mock.detail.apis.components.match.onlyOneRequestBody'));
     return;
@@ -101,10 +129,17 @@ const add = () => {
 
   idList.value = [utils.uuid()];
   inputValue.value = undefined;
-  selectValue.value = ResponseMatchConfig.EQUAL;
+  selectValue.value = FullMatchCondition.EQUAL;
   errorFlag.value = false;
 };
 
+// ==================== Validation Methods ====================
+/**
+ * <p>Validates the current form state</p>
+ * <p>Checks if all required fields are filled and valid</p>
+ *
+ * @returns true if form is valid, false otherwise
+ */
 const isValid = (): boolean => {
   errorFlag.value = false;
   if (!idList.value.length) {
@@ -126,7 +161,14 @@ const isValid = (): boolean => {
   return true;
 };
 
-const getData = (): ResponseMatchConfig['body']|undefined => {
+// ==================== Data Methods ====================
+/**
+ * <p>Gets current form data</p>
+ * <p>Returns formatted request body matching data</p>
+ *
+ * @returns ResponseMatchConfig body object with current configuration
+ */
+const getData = (): ResponseMatchConfig['body'] | undefined => {
   if (!idList.value.length) {
     return undefined;
   }
@@ -140,7 +182,7 @@ const getData = (): ResponseMatchConfig['body']|undefined => {
     }
   }
 
-  if ([ResponseMatchConfig.REG_MATCH, ResponseMatchConfig.XPATH_MATCH, ResponseMatchConfig.JSON_PATH_MATCH].includes(condition)) {
+  if ([FullMatchCondition.REG_MATCH, FullMatchCondition.XPATH_MATCH, FullMatchCondition.JSON_PATH_MATCH].includes(condition)) {
     data.expression = value;
   } else {
     data.expected = value;
@@ -148,30 +190,72 @@ const getData = (): ResponseMatchConfig['body']|undefined => {
   return data;
 };
 
-defineExpose({
-  getData,
-  isValid,
-  add
+// ==================== Lifecycle Hooks ====================
+/**
+ * <p>Component mounted lifecycle hook</p>
+ * <p>Sets up watchers and initializes component state</p>
+ */
+onMounted(() => {
+  watch(() => props.notify, () => {
+    resetComponent();
+  });
+
+  watch(() => props.value, (newValue) => {
+    resetComponent();
+    if (!newValue) {
+      return;
+    }
+
+    const { condition, expected, expression } = newValue;
+    let value: string | undefined;
+    if ([FullMatchCondition.EQUAL, FullMatchCondition.NOT_EQUAL, FullMatchCondition.CONTAIN, FullMatchCondition.NOT_CONTAIN].includes(condition)) {
+      value = expected;
+    } else if ([FullMatchCondition.REG_MATCH, FullMatchCondition.XPATH_MATCH, FullMatchCondition.JSON_PATH_MATCH].includes(condition)) {
+      value = expression;
+    }
+
+    idList.value = [utils.uuid()];
+    selectValue.value = condition;
+
+    // @TODO 编辑器内容改变没有同步到父级，父级数据一直是原始数据，刷新时由于父级数据没有变化，所以编辑器的watch不会触发
+    setTimeout(() => {
+      inputValue.value = value;
+    }, 0);
+  }, { immediate: true });
 });
 
+// ==================== Computed Properties ====================
+/**
+ * <p>Determines if input is not required</p>
+ * <p>Returns true for conditions that don't need input values</p>
+ */
 const isNoInput = computed(() => {
   const condition = selectValue.value;
   if (!condition) {
     return false;
   }
-  return [ResponseMatchConfig.IS_EMPTY, ResponseMatchConfig.NOT_EMPTY,
-    ResponseMatchConfig.IS_NULL, ResponseMatchConfig.NOT_NULL].includes(condition);
+  return [FullMatchCondition.IS_EMPTY, FullMatchCondition.NOT_EMPTY,
+    FullMatchCondition.IS_NULL, FullMatchCondition.NOT_NULL].includes(condition);
 });
 
+/**
+ * <p>Determines if code editor should be shown</p>
+ * <p>Returns true for conditions that require content editing</p>
+ */
 const showEditor = computed(() => {
   const condition = selectValue.value;
   if (!condition) {
     return false;
   }
-  return [ResponseMatchConfig.EQUAL, ResponseMatchConfig.NOT_EQUAL,
-    ResponseMatchConfig.CONTAIN, ResponseMatchConfig.NOT_CONTAIN].includes(condition);
+  return [FullMatchCondition.EQUAL, FullMatchCondition.NOT_EQUAL,
+    FullMatchCondition.CONTAIN, FullMatchCondition.NOT_CONTAIN].includes(condition);
 });
 
+// ==================== Configuration ====================
+/**
+ * <p>Placeholder text map for different conditions</p>
+ * <p>Returns appropriate placeholder based on condition type</p>
+ */
 const placeholderMap = {
   GREATER_THAN: t('mock.detail.apis.components.match.value'),
   GREATER_THAN_EQUAL: t('mock.detail.apis.components.match.value'),
@@ -181,6 +265,17 @@ const placeholderMap = {
   XPATH_MATCH: t('mock.detail.apis.components.match.xpathExpression'),
   JSON_PATH_MATCH: t('mock.detail.apis.components.match.jsonPathExpression')
 };
+
+// ==================== Public API ====================
+/**
+ * <p>Exposes component methods and data to parent components</p>
+ * <p>Provides methods for managing request body matching and validation</p>
+ */
+defineExpose({
+  getData,
+  isValid,
+  add: addRequestBody
+});
 </script>
 <template>
   <div v-if="!!idList.length" class="leading-5">
@@ -190,13 +285,13 @@ const placeholderMap = {
         v-model:value="selectValue"
         class="w-48.5"
         enumKey="FullMatchCondition"
-        @change="conditionChange" />
+        @change="handleConditionChange" />
       <div v-if="!isNoInput" class="flex-1 flex items-center justify-end space-x-2">
         <Button
           style="padding: 0;"
           type="link"
           size="small"
-          @click="deleteHandler">
+          @click="handleDelete">
           <span>{{ t('mock.detail.apis.components.match.delete') }}</span>
         </Button>
         <template v-if="showEditor">
@@ -204,14 +299,14 @@ const placeholderMap = {
             style="padding: 0;"
             type="link"
             size="small"
-            @click="format">
+            @click="handleFormat">
             <span>{{ t('mock.detail.apis.components.match.format') }}</span>
           </Button>
           <Button
             style="padding: 0;"
             type="link"
             size="small"
-            @click="clear">
+            @click="handleClear">
             <span>{{ t('mock.detail.apis.components.match.clear') }}</span>
           </Button>
         </template>
@@ -233,7 +328,7 @@ const placeholderMap = {
           :placeholder="placeholderMap[selectValue]"
           trim
           class="w-full mt-2"
-          @change="inputChange" />
+          @change="handleInputChange" />
       </template>
     </template>
   </div>

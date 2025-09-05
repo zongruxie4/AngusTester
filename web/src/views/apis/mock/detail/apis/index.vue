@@ -23,11 +23,12 @@ import {
   Validate
 } from '@xcan-angus/vue-ui';
 import { useRouter } from 'vue-router';
-import { HttpMethod, utils, TESTER, duration, download } from '@xcan-angus/infra';
+import { SearchCriteria, PageQuery, HttpMethod, ResponseDelayMode, utils, TESTER, duration, download } from '@xcan-angus/infra';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { Button, Collapse, CollapsePanel, Switch } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
 
+import { MockServicePermission } from '@/enums/enums';
 import { type AgentValue } from '@/views/apis/services/components/agent/PropsTypes';
 import { mock } from 'src/api/tester';
 import { setting } from 'src/api/gm';
@@ -81,7 +82,7 @@ const importApiModalVisible = ref(false);
 
 const inputValue = ref<string>();
 const orderBy = ref<'createdDate' | 'id'>('createdDate');
-const orderSort = ref<'ASC' | 'DESC'>('DESC');
+const orderSort = ref<PageQuery.OrderSort>(PageQuery.OrderSort.Desc);
 const action = `${TESTER}/mock/apis`;
 
 const apiIds = ref<string[]>([]);
@@ -113,7 +114,7 @@ const readonly = ref(false);
 
 const summary = ref<string>('');
 const summaryError = ref(false);
-const method = ref<HttpMethod>('GET');
+const method = ref<HttpMethod>(HttpMethod.GET);
 const endpoint = ref<string>('');
 const description = ref<string>('');
 
@@ -134,15 +135,15 @@ const isSavedMockApi = computed(() => {
 const params = computed(() => {
   const _params: {
     mockServiceId: string;
-    filters?: [{ key: 'summary'; op: 'MATCH_END', value: string }];
+    filters?: [{ key: 'summary'; op: SearchCriteria.OpEnum.MatchEnd, value: string }];
     orderBy?: string;
-    orderSort?: 'ASC' | 'DESC';
+    orderSort?: PageQuery.OrderSort;
   } = {
     mockServiceId: props.id
   };
 
   if (inputValue.value) {
-    _params.filters = [{ key: 'summary', op: 'MATCH_END', value: inputValue.value }];
+    _params.filters = [{ key: 'summary', op: SearchCriteria.OpEnum.MatchEnd as any, value: inputValue.value }];
   }
 
   if (orderBy.value) {
@@ -156,7 +157,10 @@ const params = computed(() => {
   return _params;
 });
 
-const addMockApi = () => {
+/**
+ * Add a new mock API
+ */
+const handleAddMockApi = () => {
   if (typeof scrollRef.value?.pureAdd === 'function') {
     const id = utils.uuid();
     const data: MockAPIConfig = {
@@ -164,7 +168,7 @@ const addMockApi = () => {
       summary: 'MockAPI-' + Date.now(),
       isTempFlag: true,
       mockServiceId: props.id,
-      method: 'GET',
+      method: HttpMethod.GET,
       endpoint: '',
       description: ''
     };
@@ -172,12 +176,16 @@ const addMockApi = () => {
     scrollRef.value.pureAdd(data);
     apiIds.value.unshift(id);
     apiDataMap.value[id] = data;
-    permissionMap.value.set(id, ['DELETE']);
+    permissionMap.value.set(id, [MockServicePermission.DELETE]);
     setApiForm(data);
   }
 };
 
-const scrollChange = (dataList: MockAPIInfo[]) => {
+/**
+ * Handle scroll list data change
+ * @param dataList - List of mock API info
+ */
+const handleScrollChange = (dataList: MockAPIInfo[]) => {
   apiIds.value = [];
   apiDataMap.value = {};
   for (let i = 0, len = dataList.length; i < len; i++) {
@@ -189,7 +197,7 @@ const scrollChange = (dataList: MockAPIInfo[]) => {
       isTempFlag,
       method: method.value
     };
-    permissionMap.value.set(id, ['CLONE', 'DELETE', 'EXPORT']);
+    permissionMap.value.set(id, [MockServicePermission.DELETE, MockServicePermission.EXPORT]);
   }
 
   if (!dataList.length) {
@@ -197,7 +205,7 @@ const scrollChange = (dataList: MockAPIInfo[]) => {
     mockAPIConfig.value = undefined;
     resetMockApi();
     resetMockApiResponse();
-    addMockApi();
+    handleAddMockApi();
     addResponse();
     return;
   }
@@ -213,6 +221,10 @@ const scrollChange = (dataList: MockAPIInfo[]) => {
   }
 };
 
+/**
+ * Set API form data
+ * @param data - Mock API configuration data
+ */
 const setApiForm = (data: MockAPIConfig) => {
   const {
     id,
@@ -230,7 +242,11 @@ const setApiForm = (data: MockAPIConfig) => {
   summaryError.value = false;
 };
 
-const select = (id: string) => {
+/**
+ * Select a mock API
+ * @param id - API ID to select
+ */
+const handleSelect = (id: string) => {
   if (id === mockAPIId.value) {
     return;
   }
@@ -307,7 +323,7 @@ const storeTempMockApiData = () => {
         headers: [],
         contentEncoding: undefined,
         delay: {
-          mode: 'NONE',
+          mode: ResponseDelayMode.NONE,
           fixedTime: undefined,
           maxRandomTime: undefined,
           minRandomTime: undefined
@@ -353,29 +369,41 @@ const storeTempMockApiData = () => {
   };
 };
 
-const dropdownSortChange = (data: { orderBy: 'createdDate' | 'id', orderSort: 'ASC' | 'DESC' }) => {
+/**
+ * Handle dropdown sort change
+ * @param data - Sort configuration data
+ */
+const handleDropdownSortChange = (data: { orderBy: 'createdDate' | 'id', orderSort: 'ASC' | 'DESC' }) => {
   orderBy.value = data.orderBy;
-  orderSort.value = data.orderSort;
+  orderSort.value = data.orderSort as any;
 };
 
-const toRefresh = () => {
+/**
+ * Trigger refresh
+ */
+const handleRefresh = () => {
   notify.value++;
   loading.value = true;
 };
 
-const dropdownClick = async ({ key }: { key: 'clone' | 'delete' | 'export' }, id: string) => {
+/**
+ * Handle dropdown menu click
+ * @param param0 - Click event data
+ * @param id - API ID
+ */
+const handleDropdownClick = async ({ key }: { key: 'clone' | 'delete' | 'export' }, id: string) => {
   if (key === 'clone') {
-    clone(id);
+    handleClone(id);
     return;
   }
 
   if (key === 'delete') {
-    del(id);
+    handleDelete(id);
     return;
   }
 
   if (key === 'export') {
-    toExport(id);
+    handleExport(id);
   }
 };
 
@@ -416,7 +444,7 @@ const copyApiOk = async ({ id }) => {
   mockAPIId.value = data.id;
   mockAPIConfig.value = undefined;
   notification.success(t('mock.detail.apis.notifications.copyApiSuccess'));
-  toRefresh();
+  handleRefresh();
   nextTick(() => {
     scrollToTop();
   });
@@ -434,14 +462,14 @@ const linkApiOk = async ({ id }) => {
   mockAPIId.value = data.id;
   mockAPIConfig.value = undefined;
   notification.success(t('mock.detail.apis.notifications.linkApiSuccess'));
-  toRefresh();
+  handleRefresh();
   nextTick(() => {
     scrollToTop();
   });
 };
 
 const importApiOk = () => {
-  toRefresh();
+  handleRefresh();
   nextTick(() => {
     scrollToTop();
   });
@@ -460,13 +488,17 @@ const importDemo = async () => {
   }
 
   notification.success(t('mock.detail.apis.notifications.importDemoSuccess'));
-  toRefresh();
+  handleRefresh();
   nextTick(() => {
     scrollToTop();
   });
 };
 
-const clone = async (id: string) => {
+/**
+ * Clone a mock API
+ * @param id - API ID to clone
+ */
+const handleClone = async (id: string) => {
   loading.value = true;
   const [error] = await mock.cloneMockApi(id);
   if (error) {
@@ -474,16 +506,24 @@ const clone = async (id: string) => {
     return;
   }
 
-  toRefresh();
+  handleRefresh();
   notification.success(t('mock.detail.apis.notifications.cloneSuccess'));
 };
 
-const toExport = (id: string) => {
+/**
+ * Export a mock API
+ * @param id - API ID to export
+ */
+const handleExport = (id: string) => {
   const url = `${TESTER}/mock/service/export?mockApiIds=${id}&mockServiceId=${props.id}`;
   download(url);
 };
 
-const del = async (id: string) => {
+/**
+ * Delete a mock API
+ * @param id - API ID to delete
+ */
+const handleDelete = async (id: string) => {
   const { summary: _summary, isTempFlag } = apiDataMap.value[id];
   modal.confirm({
     centered: true,
@@ -563,7 +603,7 @@ const refreshInstance = () => {
   });
 };
 
-const inputChange = debounce(duration.search, (event: { target: { value: string } }) => {
+const inputChange = debounce(duration.search, (event: any) => {
   const value = event.target.value.trim();
   inputValue.value = value;
 });
@@ -572,7 +612,7 @@ const create = () => {
   readonly.value = false;
   storeTempMockApiData();
   resetMockApi();
-  addMockApi();
+  handleAddMockApi();
   resetMockApiResponse();
   addResponse();
   nextTick(() => {
@@ -583,7 +623,7 @@ const create = () => {
 // ---- ScrollList end ----
 
 // ---- CreateForm start ----
-const enableChange = (checked: boolean, id: string) => {
+const enableChange = (checked: any, id: string) => {
   const key = id + '-3';
 
   if (checked) {
@@ -601,12 +641,12 @@ const enableChange = (checked: boolean, id: string) => {
   }
 };
 
-const summaryChange = (event: { target: { value: string } }) => {
+const summaryChange = (event: any) => {
   summary.value = event.target.value;
   summaryError.value = false;
 };
 
-const descriptionChange = (event: { target: { value: string } }) => {
+const descriptionChange = (event: any) => {
   description.value = event.target.value;
 };
 
@@ -806,7 +846,7 @@ const save = async (): Promise<void> => {
       };
       apiDataMap.value[targetId] = newData;
       mockAPIConfig.value = newData;
-      permissionMap.value.set(targetId, ['CLONE', 'DELETE', 'EXPORT']);
+      permissionMap.value.set(targetId, [MockServicePermission.DELETE, MockServicePermission.EXPORT]);
       if (!isUpdateFlag) {
         if (typeof scrollRef.value?.pureDel === 'function') {
           scrollRef.value.pureDel(prevTargetId);
@@ -901,7 +941,7 @@ const validateRepeatName = (id?: string): boolean => {
   return !errorNum;
 };
 
-const collapseChange = (keys: string[]) => {
+const collapseChange = (keys: any) => {
   openKeys.value = keys;
 };
 
@@ -1002,7 +1042,7 @@ const addResponse = () => {
     content: {
       content: '',
       headers: [],
-      delay: { mode: 'NONE' },
+      delay: { mode: ResponseDelayMode.NONE },
       status: '200',
       contentEncoding: undefined
     }
@@ -1074,7 +1114,7 @@ const setResponseData = (data: ResponseInfo[]) => {
         autoPush,
         body,
         delay: undefined,
-        method: method.value || 'GET',
+        method: method.value || HttpMethod.GET,
         parameters,
         url
       };
@@ -1143,7 +1183,7 @@ const resetMockApi = () => {
   readonly.value = false;
   summary.value = '';
   summaryError.value = false;
-  method.value = 'GET';
+  method.value = HttpMethod.GET;
   endpoint.value = '';
   description.value = '';
 };
@@ -1226,37 +1266,37 @@ onMounted(() => {
     }
   }, { immediate: true });
 
-  if (navigator.connection) {
-    navigator.connection.addEventListener('change', updateWs);
+  if ((navigator as any).connection) {
+    (navigator as any).connection.addEventListener('change', updateWs);
   }
 });
 
 onBeforeUnmount(() => {
   WS.value && WS.value.close(1000);
-  if (navigator.connection) {
-    navigator.connection.removeEventListener('change', updateWs);
+  if ((navigator as any).connection) {
+    (navigator as any).connection.removeEventListener('change', updateWs);
   }
 });
 
-const trigger = ['contextmenu'];
+const trigger = ['contextmenu'] as ('contextmenu' | 'click' | 'hover')[];
 const menuItems = ref([
   {
     key: 'clone',
     icon: 'icon-fuzhizujian2',
     name: t('mock.detail.apis.menuItems.clone'),
-    permission: 'ADD'
+    permission: MockServicePermission.ADD
   },
   {
     key: 'delete',
     icon: 'icon-fz',
     name: t('mock.detail.apis.menuItems.delete'),
-    permission: 'DELETE'
+    permission: MockServicePermission.DELETE
   },
   {
     key: 'export',
     icon: 'icon-daochu1',
     name: t('mock.detail.apis.menuItems.export'),
-    permission: 'EXPORT'
+    permission: MockServicePermission.EXPORT
   }
 ]);
 const dropdownMenuItems = ref([
@@ -1289,11 +1329,11 @@ const dropdownMenuItems = ref([
 const sortMenuItems = [{
   name: t('mock.detail.apis.sortOptions.byCreatedDate'),
   key: 'createdDate',
-  orderSort: 'DESC'
+  orderSort: 'DESC' as any
 }, {
   name: t('mock.detail.apis.sortOptions.byId'),
   key: 'id',
-  orderSort: 'ASC'
+  orderSort: 'ASC' as any
 }];
 
 provide('WS', WS);
@@ -1342,11 +1382,11 @@ provide('proxyOptObj', proxyOptObj);
           v-model:orderSort="orderSort"
           class="flex-shrink-0"
           :menuItems="sortMenuItems"
-          @click="dropdownSortChange" />
+          @click="handleDropdownSortChange" />
 
         <div
           class="flex-shrink-0 flex-grow-0 leading-7 text-3.75 cursor-pointer text-theme-text-hover flex items-center"
-          @click="toRefresh">
+          @click="handleRefresh">
           <IconRefresh />
         </div>
       </div>
@@ -1361,7 +1401,7 @@ provide('proxyOptObj', proxyOptObj);
         :transition="false"
         :delay="0"
         class="flex-1"
-        @change="scrollChange">
+        @change="handleScrollChange">
         <div>
           <Dropdown
             v-for="item in apiIds"
@@ -1369,13 +1409,13 @@ provide('proxyOptObj', proxyOptObj);
             :trigger="trigger"
             :menuItems="menuItems"
             :permissions="permissionMap.get(item)"
-            @click="dropdownClick($event, item)">
+            @click="handleDropdownClick($event, item)">
             <div class="list-item-container">
               <div
                 :key="item"
                 :class="{ 'active-item': mockAPIId === item }"
                 class="relative cursor-pointer rounded px-2 pt-2 pb-3 space-y-2 hover:bg-bg-hover text-theme-text-hover"
-                @click="select(item)">
+                @click="handleSelect(item)">
                 <div :title="apiDataMap[item].summary" class="truncate font-bold">
                   {{ apiDataMap[item].summary }}
                 </div>
@@ -1412,7 +1452,7 @@ provide('proxyOptObj', proxyOptObj);
           v-if="isSavedMockApi"
           type="default"
           size="small"
-          @click="clone(mockAPIId!)">
+          @click="handleClone(mockAPIId!)">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-fuzhizujian2" />
             <span>{{ t('mock.detail.apis.clone') }}</span>
@@ -1422,7 +1462,7 @@ provide('proxyOptObj', proxyOptObj);
           v-if="isSavedMockApi"
           type="default"
           size="small"
-          @click="toExport(mockAPIId!)">
+          @click="handleExport(mockAPIId!)">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-fuzhizujian2" />
             <span>{{ t('mock.detail.apis.export') }}</span>
@@ -1433,7 +1473,7 @@ provide('proxyOptObj', proxyOptObj);
           type="default"
           size="small"
           :danger="false"
-          @click="del(mockAPIId!)">
+          @click="handleDelete(mockAPIId!)">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-qingchu" />
             <span>{{ t('mock.detail.apis.delete') }}</span>

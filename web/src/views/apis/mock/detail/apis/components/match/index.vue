@@ -3,16 +3,21 @@ import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon, notification } from '@xcan-angus/vue-ui';
+import { FullMatchCondition, ParameterIn } from '@xcan-angus/infra';
 
-import { FullMatchCondition, ResponseMatchConfig } from './types';
+import { ResponseMatchConfig } from './types';
 import PathForm from './PathForm.vue';
 import ParameterForm from './ParameterForm.vue';
 import SelectInputForm from './SelectInputForm.vue';
 import RequestBody from './RequestBody.vue';
 
+/**
+ * <p>Props interface for MatchConfig component</p>
+ * <p>Defines the structure of props passed to the component</p>
+ */
 interface Props {
-  value:ResponseMatchConfig;
-  notify:number;
+  value: ResponseMatchConfig;
+  notify: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -22,33 +27,49 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const MAX_PARAMETERS_NUM = 20;// 限制最大匹配参数数量
+// ==================== Constants ====================
+/**
+ * <p>Maximum number of parameters allowed for matching</p>
+ * <p>Prevents excessive parameter configuration</p>
+ */
+const MAX_PARAMETERS_NUM = 20;
 
+// ==================== Template Refs ====================
 const pathFormRef = ref();
 const queryFormRef = ref();
 const headerFormRef = ref();
 const requestBodyRef = ref();
 
+// ==================== Reactive State ====================
+/**
+ * <p>List of query parameter IDs for tracking</p>
+ * <p>Used to manage query form state</p>
+ */
 const queryIds = ref<string[]>([]);
+
+/**
+ * <p>List of header parameter IDs for tracking</p>
+ * <p>Used to manage header form state</p>
+ */
 const headerIds = ref<string[]>([]);
 
-const canAdd = ():boolean => {
-  if (totalIdsNum.value >= MAX_PARAMETERS_NUM) {
-    notification.warning(t('mock.detail.apis.components.match.maxParametersTip', { max: MAX_PARAMETERS_NUM }));
-    return false;
-  }
-
-  return true;
-};
-
-const addPathHandler = () => {
+// ==================== Event Handlers ====================
+/**
+ * <p>Handles add path button click</p>
+ * <p>Adds a new path matching condition</p>
+ */
+const handleAddPath = () => {
   if (typeof pathFormRef.value?.add === 'function') {
     pathFormRef.value.add();
   }
 };
 
-const addQueryHandler = () => {
-  if (!canAdd()) {
+/**
+ * <p>Handles add query parameter button click</p>
+ * <p>Adds a new query parameter if under the maximum limit</p>
+ */
+const handleAddQuery = () => {
+  if (!canAddParameters()) {
     return;
   }
 
@@ -57,8 +78,12 @@ const addQueryHandler = () => {
   }
 };
 
-const addHeaderHandler = () => {
-  if (!canAdd()) {
+/**
+ * <p>Handles add header parameter button click</p>
+ * <p>Adds a new header parameter if under the maximum limit</p>
+ */
+const handleAddHeader = () => {
+  if (!canAddParameters()) {
     return;
   }
 
@@ -67,20 +92,57 @@ const addHeaderHandler = () => {
   }
 };
 
-const addRequestBodyHandler = () => {
+/**
+ * <p>Handles add request body button click</p>
+ * <p>Adds a new request body matching condition</p>
+ */
+const handleAddRequestBody = () => {
   if (typeof requestBodyRef.value?.add === 'function') {
     requestBodyRef.value.add();
   }
 };
 
-const queryFormChange = (ids:string[]) => {
+/**
+ * <p>Handles query form change event</p>
+ * <p>Updates the list of query parameter IDs</p>
+ *
+ * @param ids - Array of query parameter IDs
+ */
+const handleQueryFormChange = (ids: string[]) => {
   queryIds.value = ids;
 };
 
-const headerFormChange = (ids:string[]) => {
+/**
+ * <p>Handles header form change event</p>
+ * <p>Updates the list of header parameter IDs</p>
+ *
+ * @param ids - Array of header parameter IDs
+ */
+const handleHeaderFormChange = (ids: string[]) => {
   headerIds.value = ids;
 };
 
+// ==================== Utility Methods ====================
+/**
+ * <p>Checks if more parameters can be added</p>
+ * <p>Validates against maximum parameter limit</p>
+ *
+ * @returns true if parameters can be added, false otherwise
+ */
+const canAddParameters = (): boolean => {
+  if (totalIdsNum.value >= MAX_PARAMETERS_NUM) {
+    notification.warning(t('mock.detail.apis.components.match.maxParametersTip', { max: MAX_PARAMETERS_NUM }));
+    return false;
+  }
+
+  return true;
+};
+
+// ==================== Computed Properties ====================
+/**
+ * <p>Total number of parameter IDs across all forms</p>
+ * <p>Calculates the sum of query and header parameter counts</p>
+ */
 const totalIdsNum = computed(() => {
   let num = 0;
   if (queryIds.value?.length) {
@@ -94,33 +156,64 @@ const totalIdsNum = computed(() => {
   return num;
 });
 
+/**
+ * <p>All parameters from props value</p>
+ * <p>Returns the complete parameters array</p>
+ */
 const parameters = computed(() => {
   return props.value?.parameters;
 });
 
+/**
+ * <p>Header parameters filtered from props value</p>
+ * <p>Returns only parameters with 'header' type</p>
+ */
 const headerParameters = computed(() => {
-  return parameters.value?.filter((item) => item.in === 'header');
+  return parameters.value?.filter((item) => item.in === ParameterIn.header);
 });
 
+/**
+ * <p>Query parameters filtered from props value</p>
+ * <p>Returns only parameters with 'query' type</p>
+ */
 const queryParameters = computed(() => {
-  return parameters.value?.filter((item) => item.in === 'query');
+  return parameters.value?.filter((item) => item.in === ParameterIn.query);
 });
 
+/**
+ * <p>Path matching configuration from props value</p>
+ * <p>Returns the path matching condition</p>
+ */
 const path = computed(() => {
   return props.value?.path;
 });
 
+/**
+ * <p>Request body matching configuration from props value</p>
+ * <p>Returns the body matching condition</p>
+ */
 const body = computed(() => {
   return props.value?.body;
 });
 
+// ==================== Public API ====================
+/**
+ * <p>Exposes component methods and data to parent components</p>
+ * <p>Provides getData and isValid methods for external access</p>
+ */
 defineExpose({
+  /**
+   * <p>Gets the current match configuration data</p>
+   * <p>Collects data from all child components and returns complete config</p>
+   *
+   * @returns ResponseMatchConfig object with current configuration
+   */
   getData: () => {
     let path: {
       condition: string;
       expected: string | undefined;
       expression: string | undefined;
-    }|undefined;
+    } | undefined;
     if (typeof pathFormRef.value?.getData === 'function') {
       path = pathFormRef.value.getData();
     }
@@ -129,7 +222,7 @@ defineExpose({
       condition: string;
       expected: string | undefined;
       expression: string | undefined;
-    }|undefined;
+    } | undefined;
     if (typeof requestBodyRef.value?.getData === 'function') {
       body = requestBodyRef.value.getData();
     }
@@ -138,9 +231,9 @@ defineExpose({
       condition: FullMatchCondition;
       expected: string | undefined;
       expression: string | undefined;
-      in: 'header' | 'query';
+      in: ParameterIn.header | ParameterIn.query;
       name: string;
-    }[]|undefined = [];
+    }[] | undefined = [];
     if (typeof queryFormRef.value?.getData === 'function') {
       const _parameters = queryFormRef.value.getData();
       if (_parameters?.length) {
@@ -162,6 +255,13 @@ defineExpose({
       parameters
     };
   },
+
+  /**
+   * <p>Validates the current form state</p>
+   * <p>Checks if all child components are valid</p>
+   *
+   * @returns true if all forms are valid, false otherwise
+   */
   isValid: () => {
     let errorNum = 0;
     if (typeof pathFormRef.value?.isValid === 'function') {
@@ -202,7 +302,7 @@ defineExpose({
       <Button
         type="default"
         size="small"
-        @click="addPathHandler">
+        @click="handleAddPath">
         <div class="flex items-center">
           <Icon icon="icon-jia" class="mr-1" /><span>{{ t('mock.detail.apis.components.match.path') }}</span>
         </div>
@@ -210,7 +310,7 @@ defineExpose({
       <Button
         type="default"
         size="small"
-        @click="addQueryHandler">
+        @click="handleAddQuery">
         <div class="flex items-center">
           <Icon icon="icon-jia" class="mr-1" /><span>{{ t('mock.detail.apis.components.match.queryParams') }}</span>
         </div>
@@ -218,7 +318,7 @@ defineExpose({
       <Button
         type="default"
         size="small"
-        @click="addHeaderHandler">
+        @click="handleAddHeader">
         <div class="flex items-center">
           <Icon icon="icon-jia" class="mr-1" /><span>{{ t('mock.detail.apis.components.match.header') }}</span>
         </div>
@@ -226,7 +326,7 @@ defineExpose({
       <Button
         type="default"
         size="small"
-        @click="addRequestBodyHandler">
+        @click="handleAddRequestBody">
         <div class="flex items-center">
           <Icon icon="icon-jia" class="mr-1" /><span>{{ t('mock.detail.apis.components.match.requestBody') }}</span>
         </div>
@@ -241,11 +341,11 @@ defineExpose({
     <ParameterForm
       ref="queryFormRef"
       key="query"
-      in="query"
+      :in="ParameterIn.query"
       class="mt-4"
-      :value="queryParameters"
+      :value="queryParameters as any"
       :notify="props.notify"
-      @change="queryFormChange" />
+      @change="handleQueryFormChange" />
     <SelectInputForm
       ref="headerFormRef"
       key="header"
@@ -253,12 +353,12 @@ defineExpose({
       class="mt-4"
       :value="headerParameters"
       :notify="props.notify"
-      @change="headerFormChange" />
+      @change="handleHeaderFormChange" />
     <RequestBody
       ref="requestBodyRef"
       key="body"
       class="mt-4"
-      :value="body"
+      :value="body as any"
       :notify="props.notify" />
   </div>
 </template>

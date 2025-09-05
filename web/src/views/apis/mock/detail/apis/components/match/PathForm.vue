@@ -4,15 +4,23 @@ import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Composite, Icon, Input, notification, Popover } from '@xcan-angus/vue-ui';
 
-import SelectEnum from '@/components/SelectEnum/index.vue';
+import SelectEnum from '@/components/selectEnum/index.vue';
 import { StringMatchCondition, utils } from '@xcan-angus/infra';
 
+/**
+ * <p>Path information type definition</p>
+ * <p>Defines the structure of path matching conditions</p>
+ */
 type PathInfo = {
   condition: StringMatchCondition;
   expected: string | undefined;
   expression: string | undefined
 }
 
+/**
+ * <p>Props interface for PathForm component</p>
+ * <p>Defines the structure of props passed to the component</p>
+ */
 interface Props {
   value: { [key: string]: any };
   notify: number;
@@ -25,50 +33,78 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
+// ==================== Reactive State ====================
+/**
+ * <p>List of path IDs for tracking</p>
+ * <p>Used to manage form state (only one path allowed)</p>
+ */
 const idList = ref<string[]>([]);
+
+/**
+ * <p>Selected matching condition</p>
+ * <p>Determines how the path will be matched</p>
+ */
 const selectValue = ref<StringMatchCondition>(StringMatchCondition.EQUAL);
+
+/**
+ * <p>Input value for path matching</p>
+ * <p>Contains the actual path or expression to match</p>
+ */
 const inputValue = ref<string>();
+
+/**
+ * <p>Error flag for validation</p>
+ * <p>Indicates if there are validation errors</p>
+ */
 const errorFlag = ref(false);
 
-const inputChange = () => {
+// ==================== Constants ====================
+/**
+ * <p>Supported string match conditions</p>
+ * <p>Defines which conditions are available for path matching</p>
+ */
+const ENUMS: readonly StringMatchCondition[] = [
+  StringMatchCondition.EQUAL,
+  StringMatchCondition.NOT_EQUAL,
+  StringMatchCondition.CONTAIN,
+  StringMatchCondition.NOT_CONTAIN,
+  StringMatchCondition.REG_MATCH
+];
+
+// ==================== Event Handlers ====================
+/**
+ * <p>Handles input value change event</p>
+ * <p>Clears error flag when user starts typing</p>
+ */
+const handleInputChange = () => {
   errorFlag.value = false;
 };
 
-const deleteHandler = () => {
-  reset();
+/**
+ * <p>Handles delete button click</p>
+ * <p>Resets the form to initial state</p>
+ */
+const handleDelete = () => {
+  resetComponent();
 };
 
-const reset = () => {
+// ==================== Utility Methods ====================
+/**
+ * <p>Resets component to initial state</p>
+ * <p>Clears all form data and error states</p>
+ */
+const resetComponent = () => {
   idList.value = [];
   selectValue.value = StringMatchCondition.EQUAL;
   inputValue.value = undefined;
   errorFlag.value = false;
 };
 
-onMounted(() => {
-  watch(() => props.notify, () => {
-    reset();
-  });
-
-  watch(() => props.value, (newValue) => {
-    reset();
-    if (!newValue) {
-      return;
-    }
-
-    const { condition, expected, expression } = newValue;
-    selectValue.value = condition;
-    if (condition === StringMatchCondition.REG_MATCH) {
-      inputValue.value = expression;
-    } else {
-      inputValue.value = expected;
-    }
-
-    idList.value = [utils.uuid()];
-  }, { immediate: true });
-});
-
-const add = () => {
+/**
+ * <p>Adds a new path matching condition</p>
+ * <p>Only allows one path condition at a time</p>
+ */
+const addPath = () => {
   if (idList.value.length) {
     notification.info(t('mock.detail.apis.components.match.onlyOnePath'));
     return;
@@ -80,7 +116,14 @@ const add = () => {
   errorFlag.value = false;
 };
 
-// @TODO 暂不校验
+// ==================== Validation Methods ====================
+/**
+ * <p>Validates path format (placeholder for future implementation)</p>
+ * <p>Currently only checks if path is not empty</p>
+ *
+ * @param _pathname - Path to validate
+ * @returns true if path is valid, false otherwise
+ */
 const isValidPath = (_pathname: string): boolean => {
   if (!_pathname) {
     return false;
@@ -89,6 +132,12 @@ const isValidPath = (_pathname: string): boolean => {
   return true;
 };
 
+/**
+ * <p>Validates the current form state</p>
+ * <p>Checks if all required fields are filled and valid</p>
+ *
+ * @returns true if form is valid, false otherwise
+ */
 const isValid = (): boolean => {
   errorFlag.value = false;
   if (!idList.value.length) {
@@ -113,7 +162,14 @@ const isValid = (): boolean => {
   return true;
 };
 
-const getData = (): PathInfo|undefined => {
+// ==================== Data Methods ====================
+/**
+ * <p>Gets current form data</p>
+ * <p>Returns formatted path matching data</p>
+ *
+ * @returns PathInfo object with current configuration
+ */
+const getData = (): PathInfo | undefined => {
   if (!idList.value.length) {
     return undefined;
   }
@@ -130,19 +186,47 @@ const getData = (): PathInfo|undefined => {
   return data;
 };
 
-defineExpose({
-  getData,
-  isValid,
-  add
+// ==================== Lifecycle Hooks ====================
+/**
+ * <p>Component mounted lifecycle hook</p>
+ * <p>Sets up watchers and initializes component state</p>
+ */
+onMounted(() => {
+  watch(() => props.notify, () => {
+    resetComponent();
+  });
+
+  watch(() => props.value, (newValue) => {
+    resetComponent();
+    if (!newValue) {
+      return;
+    }
+
+    const { condition, expected, expression } = newValue;
+    selectValue.value = condition;
+    if (condition === StringMatchCondition.REG_MATCH) {
+      inputValue.value = expression;
+    } else {
+      inputValue.value = expected;
+    }
+
+    idList.value = [utils.uuid()];
+  }, { immediate: true });
 });
 
-const ENUMS: readonly StringMatchCondition[] =
-  [StringMatchCondition.EQUAL, StringMatchCondition.NOT_EQUAL,
-    StringMatchCondition.CONTAIN, StringMatchCondition.NOT_CONTAIN, StringMatchCondition.REG_MATCH];
-const excludes = ({ value }: { value: StringMatchCondition }) => {
+// ==================== Configuration ====================
+/**
+ * <p>Excludes function for condition selection</p>
+ * <p>Filters out conditions that are not supported</p>
+ */
+const excludes = ({ value }: { value: any }) => {
   return !ENUMS.includes(value);
 };
 
+/**
+ * <p>Placeholder text map for different conditions</p>
+ * <p>Returns appropriate placeholder based on condition type</p>
+ */
 const placeholderMap = {
   REG_MATCH: t('mock.detail.apis.components.match.regexPlaceholder'),
   EQUAL: t('mock.detail.apis.components.match.pathPlaceholder'),
@@ -150,6 +234,17 @@ const placeholderMap = {
   CONTAIN: t('mock.detail.apis.components.match.pathPlaceholder'),
   NOT_CONTAIN: t('mock.detail.apis.components.match.pathPlaceholder')
 };
+
+// ==================== Public API ====================
+/**
+ * <p>Exposes component methods and data to parent components</p>
+ * <p>Provides methods for managing path matching and validation</p>
+ */
+defineExpose({
+  getData,
+  isValid,
+  add: addPath
+});
 </script>
 <template>
   <div v-if="idList.length" class="leading-5">
@@ -179,14 +274,14 @@ const placeholderMap = {
           :error="errorFlag"
           trim
           class="flex-1"
-          @change="inputChange" />
+          @change="handleInputChange" />
       </Composite>
       <div class="flex-shrink-0 space-x-1">
         <Button type="text" size="small">
           <Icon
             icon="icon-qingchu"
             class="text-3.5"
-            @click="deleteHandler" />
+            @click="handleDelete" />
         </Button>
         <Button
           class="invisible"

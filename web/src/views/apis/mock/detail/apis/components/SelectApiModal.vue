@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue';
 import { Modal, SelectApi } from '@xcan-angus/vue-ui';
 
+// ==================== Types ====================
 type APIInfo = {
   id: string;
   summary: string;
@@ -12,6 +13,7 @@ type APIInfo = {
   mockApisId: string|undefined;
 }
 
+// ==================== Props & Emits ====================
 interface Props {
   visible:boolean;
   title:string;
@@ -33,22 +35,30 @@ const emit = defineEmits<{
   (e:'cancel'):void;
 }>();
 
+// ==================== Reactive State ====================
 const apiInfo = ref<APIInfo>();
 
-const ok = () => {
-  if (!apiInfo.value) {
-    return;
-  }
+// ==================== Computed Properties ====================
+/**
+ * OK button properties based on selected API
+ */
+const okButtonProps = computed(() => {
+  return {
+    disabled: !apiInfo.value
+  };
+});
 
-  emit('ok', apiInfo.value);
+/**
+ * Modal body style configuration
+ */
+const bodyStyle = {
+  height: 'calc(100% - 84px)',
+  paddingTop: '4px'
 };
 
-const cancel = () => {
-  apiInfo.value = undefined;
-  emit('update:visible', false);
-  emit('cancel');
-};
-
+/**
+ * Scroll properties for SelectApi component
+ */
 const scrollProps = {
   params: {
     filters: [{ key: 'protocol', op: 'IN', value: ['http', 'https'] }]
@@ -61,19 +71,33 @@ const scrollProps = {
   }
 };
 
-const change = ({ apiOptions }) => {
+// ==================== Methods ====================
+/**
+ * Handle API selection change
+ * @param param0 - Selection change event with apiOptions
+ */
+const handleApiChange = ({ apiOptions }) => {
   apiInfo.value = apiOptions[0];
 };
 
-const okButtonProps = computed(() => {
-  return {
-    disabled: !apiInfo.value
-  };
-});
+/**
+ * Handle modal confirmation
+ */
+const handleModalConfirm = () => {
+  if (!apiInfo.value) {
+    return;
+  }
 
-const bodyStyle = {
-  height: 'calc(100% - 84px)',
-  paddingTop: '4px'
+  emit('ok', apiInfo.value);
+};
+
+/**
+ * Handle modal cancellation
+ */
+const handleModalCancel = () => {
+  apiInfo.value = undefined;
+  emit('update:visible', false);
+  emit('cancel');
 };
 </script>
 <template>
@@ -85,14 +109,14 @@ const bodyStyle = {
     :bodyStyle="bodyStyle"
     :okButtonProps="okButtonProps"
     class="select-api-modal-wrap"
-    @ok="ok"
-    @cancel="cancel">
+    @ok="handleModalConfirm"
+    @cancel="handleModalCancel">
     <SelectApi
       v-if="props.visible"
       mode="single"
       :showLinkText="true"
       :scrollProps="scrollProps"
-      @change="change" />
+      @change="handleApiChange" />
   </Modal>
 </template>
 

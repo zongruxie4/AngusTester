@@ -6,11 +6,12 @@ import { Input, Validate } from '@xcan-angus/vue-ui';
 
 import { isHtml, isJSON, isXML, isYAML } from '@/utils/dataFormat';
 
+// ==================== Props ====================
 interface Props {
   value: string;
   showAction?:boolean;
-  maxlength?:number;// 最大支持字符数
-  showCount?:boolean;// 是否显示已输入字符串数量
+  maxlength?:number;
+  showCount?:boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -22,12 +23,34 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
+// ==================== Reactive State ====================
 const content = ref('');
-
 const error = ref(false);
 const errorMessage = ref('');
 
-const detectType = (value:string) => {
+// ==================== Computed Properties ====================
+/**
+ * Textarea auto size configuration
+ */
+const autoSize = {
+  minRows: 10,
+  maxRows: 10
+};
+
+/**
+ * Placeholder text with max length information
+ */
+const placeholder = computed(() => {
+  return t('mock.detail.apis.components.textareaEditor.maxLengthPlaceholder', { max: props.maxlength });
+});
+
+// ==================== Methods ====================
+/**
+ * Detect content type and return appropriate language
+ * @param value - Content to analyze
+ * @returns Detected language type
+ */
+const detectContentType = (value:string) => {
   if (isJSON(value)) {
     return 'json';
   }
@@ -43,32 +66,27 @@ const detectType = (value:string) => {
   return 'text';
 };
 
-const format = () => {
-  const _lang = detectType(content.value);
+/**
+ * Format the current content
+ */
+const formatContent = () => {
+  const _lang = detectContentType(content.value);
   if (_lang === 'json') {
     content.value = JSON.stringify(JSON.parse(content.value), null, 2);
   }
 };
 
-const clear = () => {
+/**
+ * Clear the textarea content
+ */
+const clearContent = () => {
   content.value = '';
 };
 
-const autoSize = {
-  minRows: 10,
-  maxRows: 10
-};
-
-const placeholder = computed(() => {
-  return t('mock.detail.apis.components.textareaEditor.maxLengthPlaceholder', { max: props.maxlength });
-});
-
-onMounted(() => {
-  watch(() => props.value, (newValue) => {
-    content.value = newValue;
-  }, { immediate: true });
-});
-
+/**
+ * Validate the current content
+ * @returns Whether content is valid
+ */
 const isValid = ():boolean => {
   const length = content.value.length;
   error.value = length >= props.maxlength;
@@ -81,12 +99,24 @@ const isValid = ():boolean => {
   return !error.value;
 };
 
+/**
+ * Get current textarea data
+ * @returns Current content value
+ */
 const getData = ():string => {
   return content.value;
 };
 
+// ==================== Watchers ====================
+onMounted(() => {
+  watch(() => props.value, (newValue) => {
+    content.value = newValue;
+  }, { immediate: true });
+});
+
+// ==================== Expose Methods ====================
 defineExpose({
-  format,
+  format: formatContent,
   isValid,
   getData
 });
@@ -101,7 +131,7 @@ defineExpose({
           style="padding: 0;"
           type="link"
           size="small"
-          @click="format">
+          @click="formatContent">
           <!-- <Icon icon="icon-geshihua" class="mr-0.5 text-3.25" /> -->
           <span>{{ t('mock.detail.apis.components.textareaEditor.format') }}</span>
         </Button>
@@ -109,7 +139,7 @@ defineExpose({
           style="padding: 0;"
           type="link"
           size="small"
-          @click="clear">
+          @click="clearContent">
           <!-- <Icon icon="icon-qingchu" class="mr-0.5 text-3.25" /> -->
           <span>{{ t('mock.detail.apis.components.textareaEditor.clear') }}</span>
         </Button>

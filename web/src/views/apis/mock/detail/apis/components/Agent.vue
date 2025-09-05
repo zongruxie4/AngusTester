@@ -6,12 +6,19 @@ import { Icon, Select } from '@xcan-angus/vue-ui';
 
 const { t } = useI18n();
 
+// ==================== Props & Injections ====================
 const readyState = inject('readyState', ref(-1));
 const currentProxyUrl = inject('currentProxyUrl', ref(''));
 const currentProxy = inject('currentProxy', ref(''));
 const proxyOptObj = inject('proxyOptObj', ref());
 
+// ==================== Reactive State ====================
 const status = ref('fail');
+const agent = ref('NO_PROXY');
+
+/**
+ * Proxy agent options configuration
+ */
 const agentOptions = ref([{
   label: t('mock.detail.apis.components.agent.noProxy'),
   value: 'NO_PROXY',
@@ -32,14 +39,22 @@ const agentOptions = ref([{
   url: ''
 }]);
 
+/**
+ * Tips mapping for different proxy types
+ */
 const tipsMap = {
   NO_PROXY: t('mock.detail.apis.components.agent.tips.noProxy'),
   CLIENT_PROXY: t('mock.detail.apis.components.agent.tips.clientProxy'),
   SERVER_PROXY: t('mock.detail.apis.components.agent.tips.serverProxy'),
   CLOUD_PROXY: t('mock.detail.apis.components.agent.tips.cloudProxy')
 };
-const agent = ref('NO_PROXY');
 
+// ==================== Computed Properties ====================
+
+// ==================== Methods ====================
+/**
+ * Load proxy configuration from API or injected data
+ */
 const loadProxy = async () => {
   if (proxyOptObj.value) {
     agentOptions.value = Object.keys(proxyOptObj.value).map(i => {
@@ -69,7 +84,11 @@ const loadProxy = async () => {
   agent.value = agentOptions.value.find(item => item.enabled)?.value as string || 'NO_PROXY';
 };
 
-const changeProxy = async (value) => {
+/**
+ * Handle proxy change event
+ * @param value - Selected proxy value
+ */
+const handleProxyChange = async (value) => {
   const [error] = await setting.enabledUserApiProxy({ name: value });
   if (error) {
     return;
@@ -82,6 +101,7 @@ const changeProxy = async (value) => {
   loadProxy();
 };
 
+// ==================== Watchers ====================
 watch(() => readyState, (newValue) => {
   if (newValue.value === 1) {
     status.value = 'success';
@@ -93,6 +113,7 @@ watch(() => readyState, (newValue) => {
   immediate: true
 });
 
+// ==================== Lifecycle Hooks ====================
 onMounted(() => {
   loadProxy();
 });
@@ -119,7 +140,7 @@ onMounted(() => {
         class="w-25"
         size="small"
         :options="agentOptions"
-        @change="changeProxy" />
+        @change="handleProxyChange" />
       <div class="whitespace-normal text-gray-text" v-html="tipsMap[currentProxy]"></div>
     </div>
     <template v-if="agent !== 'NO_PROXY'">

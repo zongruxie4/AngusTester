@@ -2,9 +2,11 @@
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Radio, RadioGroup } from 'ant-design-vue';
+import { StrategyWhenDuplicated } from '@xcan-angus/infra';
 import { Hints, Modal, notification, SingleUpload } from '@xcan-angus/vue-ui';
 import { mock } from '@/api/tester';
 
+// ==================== Props & Emits ====================
 interface Props {
   id:string;// mock service Id
   visible:boolean;
@@ -24,17 +26,42 @@ const emit = defineEmits<{
   (e: 'cancel'): void;
 }>();
 
+// ==================== Reactive State ====================
 const uploadFile = ref<File|string>();
-const duplicatedValue = ref<'COVER'|'IGNORE'>('COVER');
+const duplicatedValue = ref<StrategyWhenDuplicated>(StrategyWhenDuplicated.COVER);
 const notExistedValue = ref<'true'|'false'>('false');
-
 const loading = ref(false);
 
-const change = (value:File|string|undefined) => {
+// ==================== Computed Properties ====================
+/**
+ * OK button properties based on upload file state
+ */
+const okButtonProps = computed(() => {
+  return {
+    disabled: !uploadFile.value
+  };
+});
+
+/**
+ * Modal body style configuration
+ */
+const bodyStyle = {
+  lineHeight: '20px'
+};
+
+// ==================== Methods ====================
+/**
+ * Handle file upload change event
+ * @param value - Uploaded file or string content
+ */
+const handleFileChange = (value:File|string|undefined) => {
   uploadFile.value = value;
 };
 
-const ok = async () => {
+/**
+ * Handle import confirmation
+ */
+const handleImportConfirm = async () => {
   if (loading.value || !uploadFile.value) {
     return;
   }
@@ -60,27 +87,23 @@ const ok = async () => {
 
   notification.success(t('mock.detail.apis.components.importApiModal.success'));
   emit('ok');
-  close();
+  handleModalClose();
 };
 
-const cancel = () => {
+/**
+ * Handle import cancellation
+ */
+const handleImportCancel = () => {
   emit('cancel');
-  close();
+  handleModalClose();
 };
 
-const close = () => {
+/**
+ * Close the modal and reset state
+ */
+const handleModalClose = () => {
   uploadFile.value = undefined;
   emit('update:visible', false);
-};
-
-const okButtonProps = computed(() => {
-  return {
-    disabled: !uploadFile.value
-  };
-});
-
-const bodyStyle = {
-  lineHeight: '20px'
 };
 </script>
 <template>
@@ -90,15 +113,15 @@ const bodyStyle = {
     :okButtonProps="okButtonProps"
     :bodyStyle="bodyStyle"
     :confirmLoading="loading"
-    @ok="ok"
-    @cancel="cancel">
+    @ok="handleImportConfirm"
+    @cancel="handleImportCancel">
     <Hints :text="t('mock.detail.apis.components.importApiModal.hints')" />
     <SingleUpload
       v-if="props.visible"
       allorPaste
       class="mb-5"
       accept=".zip,.rar,.7z,.gz,.tar,.bz2,.xz,.lzma,.json,.yaml,.yml"
-      @change="change" />
+      @change="handleFileChange" />
 
     <div class="space-y-0.5 mb-5">
       <div>{{ t('mock.detail.apis.components.importApiModal.duplicateStrategy') }}</div>

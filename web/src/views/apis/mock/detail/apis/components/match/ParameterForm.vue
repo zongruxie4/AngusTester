@@ -5,20 +5,28 @@ import { Button } from 'ant-design-vue';
 import { Composite, Icon, Input, Validate } from '@xcan-angus/vue-ui';
 import { FullMatchCondition, ParameterIn, utils } from '@xcan-angus/infra';
 
-import SelectEnum from '@/components/SelectEnum/index.vue';
+import SelectEnum from '@/components/selectEnum/index.vue';
 
+/**
+ * <p>Parameter type definition for matching conditions</p>
+ * <p>Defines the structure of parameter objects with matching conditions</p>
+ */
 type Parameter = {
   condition: FullMatchCondition;
-  expected: string|undefined;
-  expression: string|undefined;
-  in: ParameterIn.header|ParameterIn.query;
+  expected: string | undefined;
+  expression: string | undefined;
+  in: ParameterIn.header | ParameterIn.query;
   name: string;
 }
 
+/**
+ * <p>Props interface for ParameterForm component</p>
+ * <p>Defines the structure of props passed to the component</p>
+ */
 interface Props {
-  in:ParameterIn.header|ParameterIn.query;
+  in: ParameterIn.header | ParameterIn.query;
   value: Parameter[];
-  notify:number;
+  notify: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -29,28 +37,74 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-// eslint-disable-next-line func-call-spacing
+/**
+ * <p>Component events interface</p>
+ * <p>Defines the events that this component can emit</p>
+ */
 const emit = defineEmits<{
-  (e:'change', value:string[]):void;
+  (e: 'change', value: string[]): void;
 }>();
 
+// ==================== Reactive State ====================
+/**
+ * <p>List of parameter IDs for tracking</p>
+ * <p>Used to manage form state and order</p>
+ */
 const idList = ref<string[]>([]);
-const dataMap = ref<{ [key: string]: Parameter&{value:string|undefined} }>({});
+
+/**
+ * <p>Data map for parameter values</p>
+ * <p>Stores parameter data indexed by ID with additional value field</p>
+ */
+const dataMap = ref<{ [key: string]: Parameter & { value: string | undefined } }>({});
+
+/**
+ * <p>Set of parameter IDs with name validation errors</p>
+ * <p>Used to track which parameters have invalid names</p>
+ */
 const nameErrorSet = ref<Set<string>>(new Set());
+
+/**
+ * <p>Set of parameter IDs with value validation errors</p>
+ * <p>Used to track which parameters have invalid values</p>
+ */
 const valueErrorSet = ref<Set<string>>(new Set());
+
+/**
+ * <p>Map of error messages for parameters</p>
+ * <p>Stores specific error messages for each parameter</p>
+ */
 const errorMessageMap = ref<Map<string, string>>(new Map());
 
-const excludes = ({ value }) => {
-  return [FullMatchCondition.XPATH_MATCH, FullMatchCondition.JSON_PATH_MATCH].includes(value);
-};
+// ==================== Constants ====================
+/**
+ * <p>Enum values that require expression input</p>
+ * <p>These conditions use expression field instead of expected field</p>
+ */
+const EXPRESSION_ENUMS = [FullMatchCondition.REG_MATCH, FullMatchCondition.XPATH_MATCH, FullMatchCondition.JSON_PATH_MATCH];
 
-const nameChange = (event:{target:{value:string;}}, id:string) => {
+// ==================== Event Handlers ====================
+/**
+ * <p>Handles parameter name change event</p>
+ * <p>Updates parameter name and clears validation errors</p>
+ *
+ * @param event - Input change event
+ * @param id - Parameter ID
+ */
+const handleNameChange = (event: { target: { value: string } }, id: string) => {
   const value = event.target.value;
   dataMap.value[id].name = value;
   nameErrorSet.value.delete(id);
 };
 
-const conditionChange = (value:FullMatchCondition, id:string) => {
+/**
+ * <p>Handles parameter condition change event</p>
+ * <p>Updates parameter condition and clears value for empty conditions</p>
+ *
+ * @param value - New condition value
+ * @param id - Parameter ID
+ */
+const handleConditionChange = (value: FullMatchCondition, id: string) => {
   dataMap.value[id].condition = value;
   if ([FullMatchCondition.IS_EMPTY, FullMatchCondition.IS_NULL, FullMatchCondition.NOT_EMPTY,
     FullMatchCondition.NOT_NULL].includes(value)) {
@@ -59,14 +113,28 @@ const conditionChange = (value:FullMatchCondition, id:string) => {
   }
 };
 
-const valueChange = (event:{target:{value:string;}}, id:string) => {
+/**
+ * <p>Handles parameter value change event</p>
+ * <p>Updates parameter value and clears validation errors</p>
+ *
+ * @param event - Input change event
+ * @param id - Parameter ID
+ */
+const handleValueChange = (event: { target: { value: string } }, id: string) => {
   const value = event.target.value;
   dataMap.value[id].value = value;
   valueErrorSet.value.delete(id);
   errorMessageMap.value.delete(id);
 };
 
-const deleteHandler = (index:number, id: string) => {
+/**
+ * <p>Handles parameter deletion</p>
+ * <p>Removes parameter from form and clears related data</p>
+ *
+ * @param index - Parameter index
+ * @param id - Parameter ID
+ */
+const handleDelete = (index: number, id: string) => {
   idList.value.splice(index, 1);
   delete dataMap.value[id];
   nameErrorSet.value.delete(id);
@@ -74,7 +142,58 @@ const deleteHandler = (index:number, id: string) => {
   errorMessageMap.value.delete(id);
 };
 
-const isValid = ():boolean => {
+// ==================== Utility Methods ====================
+/**
+ * <p>Resets component to initial state</p>
+ * <p>Clears all form data and error states</p>
+ */
+const resetComponent = () => {
+  idList.value = [];
+  dataMap.value = {};
+  nameErrorSet.value.clear();
+  valueErrorSet.value.clear();
+  errorMessageMap.value.clear();
+};
+
+/**
+ * <p>Creates a new parameter field</p>
+ * <p>Adds a new parameter if it's the last item in the list</p>
+ *
+ * @param index - Current parameter index
+ */
+const createParameter = (index: number) => {
+  if (index < idList.value.length - 1) {
+    return;
+  }
+
+  addParameter();
+};
+
+/**
+ * <p>Adds a new parameter to the form</p>
+ * <p>Creates a new parameter with default values</p>
+ */
+const addParameter = () => {
+  const id = utils.uuid();
+  idList.value.push(id);
+  dataMap.value[id] = {
+    condition: FullMatchCondition.EQUAL,
+    expected: undefined,
+    expression: undefined,
+    in: props.in,
+    name: '',
+    value: undefined
+  };
+};
+
+// ==================== Validation Methods ====================
+/**
+ * <p>Validates all form fields</p>
+ * <p>Checks if all required fields are filled</p>
+ *
+ * @returns true if form is valid, false otherwise
+ */
+const isValid = (): boolean => {
   nameErrorSet.value.clear();
   valueErrorSet.value.clear();
   errorMessageMap.value.clear();
@@ -101,21 +220,52 @@ const isValid = ():boolean => {
   return !nameErrorSet.value.size && !valueErrorSet.value.size;
 };
 
-const reset = () => {
-  idList.value = [];
-  dataMap.value = {};
-  nameErrorSet.value.clear();
-  valueErrorSet.value.clear();
-  errorMessageMap.value.clear();
+// ==================== Data Methods ====================
+/**
+ * <p>Gets current form data</p>
+ * <p>Returns formatted data from all parameters</p>
+ *
+ * @returns Array of parameter data objects
+ */
+const getData = (): Parameter[] | undefined => {
+  if (!idList.value.length) {
+    return undefined;
+  }
+
+  const map = dataMap.value;
+  const _in = props.in;
+  return idList.value.map(item => {
+    const data = map[item];
+    const _data: Parameter = {
+      in: _in,
+      name: data.name,
+      condition: data.condition,
+      expected: undefined,
+      expression: undefined
+    };
+
+    if (EXPRESSION_ENUMS.includes(data.condition)) {
+      _data.expression = data.value;
+    } else {
+      _data.expected = data.value;
+    }
+
+    return _data;
+  });
 };
 
+// ==================== Lifecycle Hooks ====================
+/**
+ * <p>Component mounted lifecycle hook</p>
+ * <p>Sets up watchers and initializes component state</p>
+ */
 onMounted(() => {
   watch(() => props.notify, () => {
-    reset();
+    resetComponent();
   });
 
   watch(() => props.value, (newValue) => {
-    reset();
+    resetComponent();
     if (!newValue?.length) {
       return;
     }
@@ -141,67 +291,17 @@ onMounted(() => {
   }, { immediate: true });
 });
 
-const create = (index:number) => {
-  if (index < idList.value.length - 1) {
-    return;
-  }
-
-  add();
-};
-
-const add = () => {
-  const id = utils.uuid();
-  idList.value.push(id);
-  dataMap.value[id] = {
-    condition: FullMatchCondition.EQUAL,
-    expected: undefined,
-    expression: undefined,
-    in: props.in,
-    name: '',
-    value: undefined
-  };
-};
-
-const getData = ():Parameter[]|undefined => {
-  if (!idList.value.length) {
-    return undefined;
-  }
-
-  const map = dataMap.value;
-  const _in = props.in;
-  return idList.value.map(item => {
-    const data = map[item];
-    const _data:Parameter = {
-      in: _in,
-      name: data.name,
-      condition: data.condition,
-      expected: undefined,
-      expression: undefined
-    };
-
-    if (EXPRESSION_ENUMS.includes(data.condition)) {
-      _data.expression = data.value;
-    } else {
-      _data.expected = data.value;
-    }
-
-    return _data;
-  });
-};
-
-defineExpose({
-  getData,
-  isValid,
-  add
-});
-
-const EXPRESSION_ENUMS = [FullMatchCondition.REG_MATCH, FullMatchCondition.XPATH_MATCH, FullMatchCondition.JSON_PATH_MATCH];
+// ==================== Computed Properties ====================
+/**
+ * <p>Placeholder text map for parameter values</p>
+ * <p>Returns appropriate placeholder based on condition type</p>
+ */
 const placeholderMap = computed(() => {
   const ids = idList.value;
   const data = dataMap.value;
   const emptyConditions = [FullMatchCondition.IS_EMPTY, FullMatchCondition.IS_NULL, FullMatchCondition.NOT_EMPTY,
     FullMatchCondition.NOT_NULL];
-  const map:{[key:string]:string} = {};
+  const map: { [key: string]: string } = {};
   for (let i = 0, len = ids.length; i < len; i++) {
     const id = ids[i];
     const condition = data[id].condition;
@@ -216,11 +316,16 @@ const placeholderMap = computed(() => {
 
   return map;
 });
+
+/**
+ * <p>Disabled state map for parameter values</p>
+ * <p>Returns true for conditions that don't require input</p>
+ */
 const disabledMap = computed(() => {
   const ids = idList.value;
   const data = dataMap.value;
   const disabledConditions = [FullMatchCondition.IS_EMPTY, FullMatchCondition.IS_NULL, FullMatchCondition.NOT_EMPTY, FullMatchCondition.NOT_NULL];
-  const map:{[key:string]:boolean} = {};
+  const map: { [key: string]: boolean } = {};
   for (let i = 0, len = ids.length; i < len; i++) {
     const id = ids[i];
     const condition = data[id].condition;
@@ -229,6 +334,26 @@ const disabledMap = computed(() => {
     }
   }
   return map;
+});
+
+// ==================== Configuration ====================
+/**
+ * <p>Excludes function for condition selection</p>
+ * <p>Filters out conditions that are not supported</p>
+ */
+const excludes = ({ value }: { value: any }) => {
+  return [FullMatchCondition.XPATH_MATCH, FullMatchCondition.JSON_PATH_MATCH].includes(value);
+};
+
+// ==================== Public API ====================
+/**
+ * <p>Exposes component methods and data to parent components</p>
+ * <p>Provides methods for managing parameters and validation</p>
+ */
+defineExpose({
+  getData,
+  isValid,
+  add: addParameter
 });
 </script>
 <template>
@@ -247,14 +372,14 @@ const disabledMap = computed(() => {
             style="flex: 0 0 calc((100% - 200px) * 2/5);"
             trim
             :placeholder="t('mock.detail.apis.components.match.parameterNamePlaceholder')"
-            @change="nameChange($event,item)" />
+            @change="handleNameChange($event,item)" />
           <SelectEnum
             :value="dataMap[item].condition"
             :excludes="excludes"
             enumKey="FullMatchCondition"
             class="flex-shrink-0 w-48"
             :placeholder="t('mock.detail.apis.components.match.operatorPlaceholder')"
-            @change="conditionChange($event,item)" />
+            @change="(value: any) => handleConditionChange(value, item)" />
           <Validate
             class="flex-1"
             :fixed="true"
@@ -266,7 +391,7 @@ const disabledMap = computed(() => {
               :error="valueErrorSet.has(item)"
               :placeholder="placeholderMap[item]"
               trim
-              @change="valueChange($event,item)" />
+              @change="handleValueChange($event,item)" />
           </Validate>
         </Composite>
         <div class="flex-shrink-0 space-x-1">
@@ -274,13 +399,13 @@ const disabledMap = computed(() => {
             <Icon
               icon="icon-qingchu"
               class="text-3.5"
-              @click="deleteHandler(index,item)" />
+              @click="handleDelete(index,item)" />
           </Button>
           <Button
             :class="{invisible:index<(idList.length-1)}"
             type="text"
             size="small"
-            @click="create(index)">
+            @click="createParameter(index)">
             <Icon icon="icon-jia" class="text-3.5" />
           </Button>
         </div>

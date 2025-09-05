@@ -5,7 +5,7 @@ import { Button, Switch } from 'ant-design-vue';
 import { Composite, Icon, IconRequired, Input, notification, Validate } from '@xcan-angus/vue-ui';
 import { HttpMethod, regexpUtils, utils, axiosClient } from '@xcan-angus/infra';
 
-import SelectEnum from '@/components/SelectEnum/index.vue';
+import SelectEnum from '@/components/selectEnum/index.vue';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
 import { convertBlob } from '@/views/apis/services/apiHttp/utils';
 
@@ -13,10 +13,15 @@ import { ContentType, DelayData, ParametersType, PushbackBody, ResponsePushbackC
 import DelayParameter from './DelayParameter.vue';
 import RequestBody from './RequestBody.vue';
 import InputGroup from './InputGroup.vue';
+import { CONTENT_TYPE, HTTP_HEADERS } from '@/utils/constant';
 
+/**
+ * <p>Props interface for PushBack component</p>
+ * <p>Defines the structure of props passed to the component</p>
+ */
 interface Props {
-  value:ResponsePushbackConfig|undefined;
-  notify:number;
+  value: ResponsePushbackConfig | undefined;
+  notify: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -26,32 +31,109 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-let apiUuid;
+// ==================== Global Variables ====================
+/**
+ * <p>API UUID for request tracking</p>
+ * <p>Used to identify specific API requests</p>
+ */
+let apiUuid: string;
+
+/**
+ * <p>Axios client instance for HTTP requests</p>
+ * <p>Configured with specific timeout and retry settings</p>
+ */
 const myRequest = new axiosClient({ timeout: 0, intervalMs: 500, maxRedirects: 0, maxRetries: 5 });
+
+/**
+ * <p>WebSocket connection for proxy requests</p>
+ * <p>Injected from parent component</p>
+ */
 const WS = inject('WS', ref());
+
+/**
+ * <p>UUID for request identification</p>
+ * <p>Injected from parent component</p>
+ */
 const uuid = inject('uuid', ref());
+
+/**
+ * <p>WebSocket response data</p>
+ * <p>Injected from parent component</p>
+ */
 const wsResponse = inject('wsResponse', ref());
 
-// @TODO 切换接口之后是否需要终止上个接口的请求？？？
-let controller;
+/**
+ * <p>AbortController for canceling requests</p>
+ * <p>TODO: Consider if we need to abort previous requests when switching APIs</p>
+ */
+let controller: AbortController;
+
+/**
+ * <p>API extension key configuration</p>
+ * <p>Used for mapping API data properties</p>
+ */
 const { valueKey } = API_EXTENSION_KEY;
 
+// ==================== Template Refs ====================
 const delayRef = ref();
 const inputGroupRef = ref();
 const requestBodyRef = ref();
 
+// ==================== Reactive State ====================
+/**
+ * <p>Auto push toggle state</p>
+ * <p>Determines if requests should be sent automatically</p>
+ */
 const autoPush = ref(false);
-const method = ref<HttpMethod>('GET');
+
+/**
+ * <p>HTTP method for the request</p>
+ * <p>Default value is GET</p>
+ */
+const method = ref<HttpMethod>(HttpMethod.GET);
+
+/**
+ * <p>Request URL</p>
+ * <p>Target URL for the HTTP request</p>
+ */
 const url = ref<string>();
+
+/**
+ * <p>URL input validation error state</p>
+ * <p>Indicates if URL input is invalid</p>
+ */
 const urlError = ref(false);
+
+/**
+ * <p>URL validation error message</p>
+ * <p>Displays specific validation error messages</p>
+ */
 const urlErrorMessage = ref<string>();
+
+/**
+ * <p>Request body content type</p>
+ * <p>Determines the format of the request body</p>
+ */
 const requestBodyContentType = ref<ContentType>();
 
-const httpMethodChange = (value: HttpMethod) => {
+// ==================== Event Handlers ====================
+/**
+ * <p>Handles HTTP method change event</p>
+ * <p>Updates the selected HTTP method</p>
+ *
+ * @param value - The selected HTTP method
+ */
+const handleHttpMethodChange = (value: HttpMethod) => {
   method.value = value;
 };
 
-const contentTypeChange = (value:{value:string;name:string, prevValue:string}) => {
+/**
+ * <p>Handles content type change event</p>
+ * <p>Manages Content-Type header based on request body type</p>
+ *
+ * @param value - Content type change data
+ */
+const handleContentTypeChange = (value: { value: string; name: string, prevValue: string }) => {
   if (value.value === 'none') {
     inputGroupRef.value?.delHeader(value);
     return;
@@ -60,13 +142,27 @@ const contentTypeChange = (value:{value:string;name:string, prevValue:string}) =
   inputGroupRef.value?.addHeader({ ...value, disabled: true });
 };
 
-const urlChange = (event: { target: { value: string } }) => {
+/**
+ * <p>Handles URL input change event</p>
+ * <p>Updates URL value and clears validation errors</p>
+ *
+ * @param event - Input change event
+ */
+const handleUrlChange = (event: { target: { value: string } }) => {
   url.value = event.target.value;
   urlError.value = false;
   urlErrorMessage.value = undefined;
 };
 
-const validateUrl = (value:string|undefined):boolean => {
+// ==================== Validation Methods ====================
+/**
+ * <p>Validates URL format</p>
+ * <p>Checks if URL is provided and has valid format</p>
+ *
+ * @param value - URL string to validate
+ * @returns true if URL is valid, false otherwise
+ */
+const validateUrl = (value: string | undefined): boolean => {
   if (!value) {
     urlError.value = true;
     return false;
@@ -81,6 +177,11 @@ const validateUrl = (value:string|undefined):boolean => {
   return true;
 };
 
+// ==================== Request Methods ====================
+/**
+ * <p>Sends HTTP request with current configuration</p>
+ * <p>Handles both WebSocket proxy and direct HTTP requests</p>
+ */
 const sendRequest = async () => {
   if (!validateUrl(url.value)) {
     return;
@@ -95,9 +196,9 @@ const sendRequest = async () => {
   let bodyOpenApi = {};
   const { forms, rawContent } = body || {};
 
-  const contentType = headerData.find(item => item.name === 'Content-Type')?.value;
+  const contentType = headerData.find(item => item.name === HTTP_HEADERS.CONTENT_TYPE)?.value;
   if (contentType) {
-    if (contentType === 'application/x-www-form-urlencode') {
+    if (contentType === CONTENT_TYPE.FORM_URLENCODED) {
       const formUrlEncodeParam = forms || [];
       const formJson = {};
       const formUrl = formUrlEncodeParam.map(item => {
@@ -112,7 +213,7 @@ const sendRequest = async () => {
           }
         }
       };
-    } else if (contentType === 'multipart/form-data') {
+    } else if (contentType === CONTENT_TYPE.MULTIPART_FORM_DATA) {
       const formUrlEncodeParam = forms || [];
       const formData = new FormData();
       const formJson = {};
@@ -183,7 +284,7 @@ const sendRequest = async () => {
       });
     }
     if (contentType) {
-      header['Content-Type'] = contentType;
+      header[HTTP_HEADERS.CONTENT_TYPE] = contentType;
     }
     controller = new AbortController();
     const signal = controller.signal;
@@ -202,12 +303,17 @@ const sendRequest = async () => {
       maxRetries: 1
     };
     const resp = await myRequest.request(axiosConfig);
-    await onHttpResponse(resp);
+    await handleHttpResponse(resp);
   }
 };
 
-// 本地发送响应
-const onHttpResponse = async (resp) => {
+/**
+ * <p>Handles local HTTP response</p>
+ * <p>Processes direct HTTP request responses and shows appropriate notifications</p>
+ *
+ * @param resp - HTTP response object
+ */
+const handleHttpResponse = async (resp: any) => {
   const status = resp.request?.status;
   if (status === undefined) {
     notification.warning(t('mock.detail.apis.components.pushBack.requestError'));
@@ -223,8 +329,11 @@ const onHttpResponse = async (resp) => {
   }
 };
 
-// 代理响应
-const onWsResponse = () => {
+/**
+ * <p>Handles WebSocket proxy response</p>
+ * <p>Processes WebSocket responses and shows appropriate notifications</p>
+ */
+const handleWsResponse = () => {
   try {
     const respJson = JSON.parse(wsResponse.value);
     const status = +respJson.response.status;
@@ -235,25 +344,37 @@ const onWsResponse = () => {
     } else {
       notification.success(t('mock.detail.apis.components.pushBack.sendSuccess'));
     }
-  } catch {}
+  } catch (error) {
+    // Silently handle JSON parse errors
+  }
 };
 
-const reset = () => {
+// ==================== Utility Methods ====================
+/**
+ * <p>Resets component to initial state</p>
+ * <p>Clears all form data and resets to default values</p>
+ */
+const resetComponent = () => {
   autoPush.value = false;
-  method.value = 'GET';
+  method.value = HttpMethod.GET;
   url.value = undefined;
   urlError.value = false;
   urlErrorMessage.value = undefined;
   requestBodyContentType.value = undefined;
 };
 
+// ==================== Lifecycle Hooks ====================
+/**
+ * <p>Component mounted lifecycle hook</p>
+ * <p>Sets up watchers and initializes component state</p>
+ */
 onMounted(() => {
   watch(() => props.notify, () => {
-    reset();
+    resetComponent();
   });
 
   watch(() => props.value, (newValue) => {
-    reset();
+    resetComponent();
     if (!newValue) {
       return;
     }
@@ -267,7 +388,7 @@ onMounted(() => {
     autoPush.value = _autoPush;
     method.value = _method;
     url.value = _url;
-    const contentType = parameters?.find(item => item.name === 'Content-Type')?.value;
+    const contentType = parameters?.find(item => item.name === HTTP_HEADERS.CONTENT_TYPE)?.value;
     if (contentType && CONTENTTYPES.includes(contentType as ContentType)) {
       requestBodyContentType.value = contentType as ContentType;
     }
@@ -275,13 +396,20 @@ onMounted(() => {
 
   watch(() => uuid.value, (newValue) => {
     if (newValue === apiUuid) {
-      onWsResponse();
+      handleWsResponse();
     }
   }, { immediate: true });
 });
 
+// ==================== Data Methods ====================
+/**
+ * <p>Gets current component data</p>
+ * <p>Collects data from all child components and returns complete configuration</p>
+ *
+ * @returns Complete pushback configuration object
+ */
 const getData = () => {
-  let delay:DelayData|undefined;
+  let delay: DelayData | undefined;
   if (typeof delayRef.value?.getData === 'function') {
     delay = delayRef.value.getData();
   }
@@ -291,7 +419,7 @@ const getData = () => {
     parameters.push(...inputGroupRef.value.getData());
   }
 
-  let body:PushbackBody|undefined;
+  let body: PushbackBody | undefined;
   if (typeof requestBodyRef.value?.getData === 'function') {
     body = requestBodyRef.value.getData();
   }
@@ -306,9 +434,27 @@ const getData = () => {
   };
 };
 
+// ==================== Public API ====================
+/**
+ * <p>Exposes component methods and data to parent components</p>
+ * <p>Provides getData and isValid methods for external access</p>
+ */
 defineExpose({
+  /**
+   * <p>Gets the current pushback configuration data</p>
+   * <p>Collects data from all child components and returns complete config</p>
+   *
+   * @returns ResponsePushbackConfig object with current configuration
+   */
   getData,
-  isValid: ():boolean => {
+
+  /**
+   * <p>Validates the current form state</p>
+   * <p>Checks if all required fields and child components are valid</p>
+   *
+   * @returns true if form is valid, false otherwise
+   */
+  isValid: (): boolean => {
     let errorNum = 0;
     if (!validateUrl(url.value)) {
       errorNum++;
@@ -336,7 +482,26 @@ defineExpose({
   }
 });
 
-const CONTENTTYPES:ContentType[] = ['application/x-www-form-urlencode', 'multipart/form-data', 'application/json', 'text/html', 'application/xml', 'application/javascript', 'text/plain', '*/*'];
+// ==================== Configuration ====================
+/**
+ * <p>Supported content types for request body</p>
+ * <p>Defines valid content types for request body configuration</p>
+ */
+const CONTENTTYPES: ContentType[] = [
+  'application/x-www-form-urlencode',
+  'multipart/form-data',
+  'application/json',
+  'text/html',
+  'application/xml',
+  'application/javascript',
+  'text/plain',
+  '*/*'
+];
+
+/**
+ * <p>HTTP method color styles</p>
+ * <p>Defines color styling for different HTTP methods in the UI</p>
+ */
 const optionStyle = {
   GET: 'color:rgba(30, 136, 229, 1);',
   HEAD: 'color:rgba(255, 82, 82, 1);',
@@ -376,7 +541,7 @@ const optionStyle = {
           class="w-25 flex-shrink-0"
           enumKey="HttpMethod"
           :placeholder="t('mock.detail.apis.components.pushBack.method')"
-          @change="httpMethodChange" />
+          @change="handleHttpMethodChange" />
         <Validate
           fixed
           class="flex-1"
@@ -387,7 +552,7 @@ const optionStyle = {
             :maxlength="800"
             trim
             :placeholder="t('mock.detail.apis.components.pushBack.urlPlaceholder')"
-            @change="urlChange" />
+            @change="handleUrlChange" />
         </Validate>
       </Composite>
     </div>
@@ -406,6 +571,6 @@ const optionStyle = {
       :value="props.value?.body"
       :contentType="requestBodyContentType"
       :notify="props.notify"
-      @contentTypeChange="contentTypeChange" />
+      @contentTypeChange="handleContentTypeChange" />
   </div>
 </template>

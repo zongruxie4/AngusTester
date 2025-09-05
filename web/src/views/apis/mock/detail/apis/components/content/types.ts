@@ -1,16 +1,10 @@
-import { HttpMethod, ResponseDelayMode, ParameterIn, ContentEncoding } from '@xcan-angus/infra';
+import { ContentEncoding, HttpMethod, ParameterIn, ResponseDelayMode } from '@xcan-angus/infra';
+import { CONTENT_TYPE, LANGUAGE, RADIO_TYPE } from '@/utils/constant';
 
-export type RadioType = 'none' | 'application/x-www-form-urlencode' | 'multipart/form-data' | 'raw'
-export type ContentType =
-  'application/x-www-form-urlencode'
-  | 'multipart/form-data'
-  | 'application/json'
-  | 'text/html'
-  | 'application/xml'
-  | 'application/javascript'
-  | 'text/plain'
-  | '*/*'
-export type Language = 'json' | 'html' | 'typescript' | 'text'
+// ==================== Types ====================
+export type RadioType = typeof RADIO_TYPE[keyof typeof RADIO_TYPE];
+export type ContentType = typeof CONTENT_TYPE[keyof typeof CONTENT_TYPE];
+export type Language = typeof LANGUAGE[keyof typeof LANGUAGE];
 
 export type DelayData = {
   fixedTime?: string;
