@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Composite, Icon, Input } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
@@ -19,6 +20,8 @@ const props = withDefaults(defineProps<Props>(), {
   notify: 0,
   valueRequired: false
 });
+
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -160,7 +163,7 @@ defineExpose({
             :error="nameErrorSet.has(item)"
             style="flex: 1 1 40%;"
             trim
-            placeholder="参数名称，最大支持400个字符"
+            :placeholder="t('mock.detail.apis.components.pureFormInput.parameterNamePlaceholder')"
             @change="nameChange($event, item)" />
           <Input
             :value="dataMap[item].value"
@@ -168,7 +171,7 @@ defineExpose({
             :error="valueErrorSet.has(item)"
             trim
             style="flex: 1 1 60%;"
-            placeholder="参数值，最大支持4096个字符"
+            :placeholder="t('mock.detail.apis.components.pureFormInput.parameterValuePlaceholder')"
             @change="valueChange($event, item)" />
         </Composite>
         <div class="flex-shrink-0 space-x-1">

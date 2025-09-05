@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Composite, HttpMethodText, IconCopy, IconRequired, Input, Select } from '@xcan-angus/vue-ui';
 
 import SelectEnum from '@/components/selectEnum/index.vue';
@@ -19,6 +20,8 @@ const props = withDefaults(defineProps<Props>(), {
   options: () => [],
   readonly: false
 });
+
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -98,7 +101,7 @@ const copyText = computed(() => {
   <div class="leading-5">
     <div class="mb-0.5">
       <IconRequired />
-      <span>方法/路径</span>
+      <span>{{ t('mock.detail.apis.components.urlForm.methodPath') }}</span>
     </div>
     <div class="flex items-center">
       <Composite>
@@ -107,7 +110,7 @@ const copyText = computed(() => {
           :disabled="props.readonly"
           class="w-25 flex-shrink-0"
           enumKey="HttpMethod"
-          placeholder="请求方法"
+          :placeholder="t('mock.detail.apis.components.urlForm.requestMethod')"
           @change="selectChange">
           <template #option="record">
             <HttpMethodText :value="record.value" />
@@ -118,7 +121,7 @@ const copyText = computed(() => {
           :options="props.options"
           defaultActiveFirstOption
           class="w-70 flex-shrink-0"
-          placeholder="域名"
+          :placeholder="t('mock.detail.apis.components.urlForm.domain')"
           @change="serverChange" />
         <Input
           :value="pathname"
@@ -127,7 +130,7 @@ const copyText = computed(() => {
           :disabled="props.readonly"
           trim
           class="flex-1"
-          placeholder="最大支持800个字符"
+          :placeholder="t('mock.detail.apis.components.urlForm.maxLengthPlaceholder')"
           @blur="inputBlur"
           @change="inputChange" />
       </Composite>

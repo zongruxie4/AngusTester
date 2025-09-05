@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Radio, RadioGroup } from 'ant-design-vue';
 import { Modal, SingleUpload } from '@xcan-angus/vue-ui';
 import { ContentEncoding, codeUtils } from '@xcan-angus/infra';
@@ -12,6 +13,8 @@ const props = withDefaults(defineProps<Props>(), {
   visible: false
 });
 
+const { t } = useI18n();
+
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
@@ -20,7 +23,7 @@ const emit = defineEmits<{
 }>();
 
 const uploadFile = ref<File>();
-const contentEncoding = ref<ContentEncoding>('gzip_base64');
+const contentEncoding = ref<ContentEncoding>(ContentEncoding.gzip_base64);
 const loading = ref(false);
 
 const change = (value:File) => {
@@ -36,7 +39,7 @@ const ok = async () => {
   loading.value = true;
   let base64Content:string;
   const coding = contentEncoding.value;
-  if (contentEncoding.value === 'gzip_base64') {
+  if (contentEncoding.value === ContentEncoding.gzip_base64) {
     base64Content = await codeUtils.gzip(file);
     emit('ok', base64Content, file, coding);
     close();
@@ -59,7 +62,7 @@ const cancel = () => {
 
 const close = () => {
   loading.value = false;
-  contentEncoding.value = 'gzip_base64';
+  contentEncoding.value = ContentEncoding.gzip_base64;
   uploadFile.value = undefined;
   emit('update:visible', false);
 };
@@ -76,7 +79,7 @@ const bodyStyle = {
 </script>
 <template>
   <Modal
-    title="编码文件"
+    :title="t('mock.detail.apis.components.importFileModal.title')"
     :visible="props.visible"
     :okButtonProps="okButtonProps"
     :bodyStyle="bodyStyle"
@@ -89,11 +92,11 @@ const bodyStyle = {
       :maxSize="10485760"
       class="mb-5"
       accept="*"
-      tipText="最大支持编码10M文件"
+      :tipText="t('mock.detail.apis.components.importFileModal.maxFileSize')"
       @change="change" />
 
     <div class="flex items-center space-x-6">
-      <div>编码</div>
+      <div>{{ t('mock.detail.apis.components.importFileModal.encoding') }}</div>
       <RadioGroup v-model:value="contentEncoding">
         <Radio value="gzip_base64">gzip_base64</Radio>
         <Radio value="base64">base64</Radio>

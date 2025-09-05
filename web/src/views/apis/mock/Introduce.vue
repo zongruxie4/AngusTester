@@ -1,26 +1,11 @@
 <script setup lang='ts'>
 import { Icon } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
+import { useMockUI } from './composables/useMockUI';
 
 const { t } = useI18n();
 
-const textList = [
-  {
-    icon: 'icon-shoudongchuangjianMockfuwu',
-    name: t('mock.introduce.addMockService'),
-    description: t('mock.introduce.addMockServiceDesc')
-  },
-  {
-    icon: 'icon-daoruyiyoufuwujixitongyangli1',
-    name: t('mock.introduce.importService'),
-    description: t('mock.introduce.importServiceDesc')
-  },
-  {
-    icon: 'icon-daoruxiangmufuwu',
-    name: t('mock.introduce.importFile'),
-    description: t('mock.introduce.importFileDesc')
-  }
-];
+const { textList } = useMockUI();
 </script>
 
 <template>

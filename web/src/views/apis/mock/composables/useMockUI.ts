@@ -18,20 +18,30 @@ export function useMockUI () {
   const authVisible = ref(false);
   const authData = ref<MockService>();
 
+  const textList = [
+    {
+      icon: 'icon-shoudongchuangjianMockfuwu',
+      name: t('mock.introduce.addMockService'),
+      description: t('mock.introduce.addMockServiceDesc')
+    },
+    {
+      icon: 'icon-daoruyiyoufuwujixitongyangli1',
+      name: t('mock.introduce.importService'),
+      description: t('mock.introduce.importServiceDesc')
+    },
+    {
+      icon: 'icon-daoruxiangmufuwu',
+      name: t('mock.introduce.importFile'),
+      description: t('mock.introduce.importFileDesc')
+    }
+  ];
+
   // Search panel configuration
   const searchOptions = [
     {
       valueKey: 'name',
       type: 'input',
       placeholder: t('mock.searchPanel.namePlaceholder'),
-      allowClear: true,
-      maxlength: 100
-    },
-    {
-      valueKey: 'nodeIp',
-      type: 'input',
-      op: 'EQUAL',
-      placeholder: t('mock.searchPanel.nodeIpPlaceholder'),
       allowClear: true,
       maxlength: 100
     },
@@ -57,13 +67,6 @@ export function useMockUI () {
       type: 'select-user',
       placeholder: t('mock.searchPanel.createdByPlaceholder'),
       maxlength: 100
-    },
-    {
-      valueKey: 'createdDate',
-      type: 'date-range',
-      placeholder: [t('mock.searchPanel.createdDatePlaceholder1'), t('mock.searchPanel.createdDatePlaceholder2')],
-      allowClear: true,
-      showTime: true
     }
   ];
 
@@ -299,6 +302,7 @@ export function useMockUI () {
     authData,
 
     // UI Configurations
+    textList,
     searchOptions,
     columns,
     actionMenus,

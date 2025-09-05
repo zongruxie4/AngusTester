@@ -2,7 +2,7 @@
 import { defineProps, defineEmits } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
-import { ButtonAuth, Icon, SearchPanel } from '@xcan-angus/vue-ui';
+import { Icon, SearchPanel } from '@xcan-angus/vue-ui';
 
 // Define props
 interface Props {

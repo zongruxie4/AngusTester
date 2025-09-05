@@ -9,10 +9,14 @@ import SelectEnum from '@/components/selectEnum/index.vue';
 import { formatBytes } from '@/utils/common';
 import { mock } from '@/api/tester';
 import ApiList from './ApiList.vue';
-import { textList } from '../data';
+import { useMockUI } from '../composables/useMockUI';
 import { useMockForm, useNodeData, useFileUpload, useTabs } from './composables';
 
 const { t } = useI18n();
+
+const {
+  textList
+} = useMockUI();
 
 const projectInfo = inject('projectInfo', ref({ id: '' }));
 const projectId = computed(() => {
@@ -174,7 +178,7 @@ const handleSubmit = () => {
     }
 
     notification.success(t('mock.addMock.notifications.addSuccess'));
-    router.push('/apis#mock');
+    await router.push('/apis#mock');
   }, () => {
     // Validation failed
   });
@@ -188,7 +192,7 @@ onMounted(async () => {
 
 <template>
   <div class="px-5 py-5 flex h-full space-x-3.5">
-    <div class="flex flex-col space-y-3.5 w-80">
+    <div class="flex flex-col space-y-3.5 w-80 text-3.5 font-semibold">
       <Card
         v-for="(item,index) in textList"
         :key="index"
@@ -199,13 +203,13 @@ onMounted(async () => {
         @click="handleChangeActiveTab(index)">
         <div class="flex items-center mb-2">
           <Icon :icon="item.icon" class="text-7 mr-2 flex-none" />
-          <p class="text-3.5 leading-3.5 text-theme-title font-semibold">{{ item.name }}</p>
+          <p class="text-3.5 leading-3.5 text-theme-title font-semibold mt-3">{{ item.name }}</p>
         </div>
         <p class="text-3 leading-5 text-theme-sub-content whitespace-break-spaces break-all">{{ item.description }}</p>
         <div class="absolute right-0 bottom-0 corner z-99"></div>
       </Card>
     </div>
-    <PureCard class="flex-1 h-full py-8 px-8 overflow-auto">
+    <PureCard class="flex-1 h-full py-8 px-8 overflow-auto font-semibold">
       <Form
         ref="formRef"
         size="small"

@@ -1,7 +1,3 @@
-/**
- * Composable for managing API list functionality
- * Handles loading and searching APIs for service association
- */
 import { computed, ref, watch } from 'vue';
 import { apis } from '@/api/tester';
 import { ApiItem } from '../types';

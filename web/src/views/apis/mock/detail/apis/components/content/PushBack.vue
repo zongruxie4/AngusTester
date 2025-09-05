@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { inject, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button, Switch } from 'ant-design-vue';
 import { Composite, Icon, IconRequired, Input, notification, Validate } from '@xcan-angus/vue-ui';
 import { HttpMethod, regexpUtils, utils, axiosClient } from '@xcan-angus/infra';
@@ -22,6 +23,8 @@ const props = withDefaults(defineProps<Props>(), {
   value: undefined,
   notify: 0
 });
+
+const { t } = useI18n();
 
 let apiUuid;
 const myRequest = new axiosClient({ timeout: 0, intervalMs: 500, maxRedirects: 0, maxRetries: 5 });
@@ -71,7 +74,7 @@ const validateUrl = (value:string|undefined):boolean => {
 
   if (!regexpUtils.isUrl(value)) {
     urlError.value = true;
-    urlErrorMessage.value = '回推地址格式错误';
+    urlErrorMessage.value = t('mock.detail.apis.components.pushBack.urlError');
     return false;
   }
 
@@ -158,7 +161,7 @@ const sendRequest = async () => {
     });
     WS.value.send(api);
   } else if (WS.value && WS.value.readyState !== 1) {
-    notification.error('代理未链接， 请检查代理配置');
+    notification.error(t('mock.detail.apis.components.pushBack.proxyNotConnected'));
   } else {
     const header: Record<string, string> = {};
     if (headerData.length) {
@@ -207,7 +210,7 @@ const sendRequest = async () => {
 const onHttpResponse = async (resp) => {
   const status = resp.request?.status;
   if (status === undefined) {
-    notification.warning('请求错误');
+    notification.warning(t('mock.detail.apis.components.pushBack.requestError'));
     return;
   }
   if (status === 0) {
@@ -216,7 +219,7 @@ const onHttpResponse = async (resp) => {
   } else if (status < 200 || status >= 400) {
     notification.warning(resp.message);
   } else {
-    notification.success('发送成功');
+    notification.success(t('mock.detail.apis.components.pushBack.sendSuccess'));
   }
 };
 
@@ -230,7 +233,7 @@ const onWsResponse = () => {
     } else if (status < 200 || status >= 400) {
       notification.warning(respJson.response.rawContent);
     } else {
-      notification.success('发送成功');
+      notification.success(t('mock.detail.apis.components.pushBack.sendSuccess'));
     }
   } catch {}
 };
@@ -349,7 +352,7 @@ const optionStyle = {
   <div class="leading-5">
     <div class="flex items-center justify-between">
       <div class="flex items-center">
-        <div class="mr-1.5">请求触发后自动推送</div>
+        <div class="mr-1.5">{{ t('mock.detail.apis.components.pushBack.autoPush') }}</div>
         <Switch v-model:checked="autoPush" size="small" />
       </div>
       <Button
@@ -358,13 +361,13 @@ const optionStyle = {
         @click="sendRequest">
         <div class="flex items-center">
           <Icon icon="icon-fasong" class="mr-1" />
-          <span>手动发送</span>
+          <span>{{ t('mock.detail.apis.components.pushBack.manualSend') }}</span>
         </div>
       </Button>
     </div>
     <div class="mt-2">
       <div class="mb-0.5">
-        <IconRequired /><span>回推地址</span>
+        <IconRequired /><span>{{ t('mock.detail.apis.components.pushBack.url') }}</span>
       </div>
       <Composite>
         <SelectEnum
@@ -372,7 +375,7 @@ const optionStyle = {
           :optionStyle="optionStyle"
           class="w-25 flex-shrink-0"
           enumKey="HttpMethod"
-          placeholder="请求方法"
+          :placeholder="t('mock.detail.apis.components.pushBack.method')"
           @change="httpMethodChange" />
         <Validate
           fixed
@@ -383,13 +386,13 @@ const optionStyle = {
             :error="urlError"
             :maxlength="800"
             trim
-            placeholder="最大支持800个字符"
+            :placeholder="t('mock.detail.apis.components.pushBack.urlPlaceholder')"
             @change="urlChange" />
         </Validate>
       </Composite>
     </div>
     <div class="mt-4">
-      <div class="mb-0.5">回推延迟</div>
+      <div class="mb-0.5">{{ t('mock.detail.apis.components.pushBack.delay') }}</div>
       <DelayParameter ref="delayRef" :value="props.value?.delay" />
     </div>
     <InputGroup

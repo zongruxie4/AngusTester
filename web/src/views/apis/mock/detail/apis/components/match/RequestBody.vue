@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Input, notification } from '@xcan-angus/vue-ui';
 
 import SelectEnum from '@/components/SelectEnum/index.vue';
-import { FullMatchCondition, ResponseMatchConfig } from './types';
-import { utils } from '@xcan-angus/infra';
+import { ResponseMatchConfig } from './types';
+import { FullMatchCondition, utils } from '@xcan-angus/infra';
 
 interface Props {
   value: ResponseMatchConfig['body']&{condition:{message:string;value:FullMatchCondition;}};
@@ -17,12 +18,14 @@ const props = withDefaults(defineProps<Props>(), {
   notify: 0
 });
 
+const { t } = useI18n();
+
 const CodeEditor = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/CodeEditor.vue'));
 
 const editorRef = ref();
 const idList = ref<string[]>([]);
 const inputValue = ref<string>();
-const selectValue = ref<FullMatchCondition>('EQUAL');
+const selectValue = ref<FullMatchCondition>(ResponseMatchConfig.EQUAL);
 const errorFlag = ref(false);
 
 const conditionChange = () => {
@@ -54,7 +57,7 @@ const clear = () => {
 const reset = () => {
   idList.value = [];
   inputValue.value = undefined;
-  selectValue.value = 'EQUAL';
+  selectValue.value = ResponseMatchConfig.EQUAL;
   errorFlag.value = false;
   if (typeof editorRef.value?.clear === 'function') {
     editorRef.value.clear();
@@ -74,9 +77,9 @@ onMounted(() => {
 
     const { condition, expected, expression } = newValue;
     let value:string|undefined;
-    if (['EQUAL', 'NOT_EQUAL', 'CONTAIN', 'NOT_CONTAIN'].includes(condition)) {
+    if ([ResponseMatchConfig.EQUAL, ResponseMatchConfig.NOT_EQUAL, ResponseMatchConfig.CONTAIN, ResponseMatchConfig.NOT_CONTAIN].includes(condition)) {
       value = expected;
-    } else if (['REG_MATCH', 'XPATH_MATCH', 'JSON_PATH_MATCH'].includes(condition)) {
+    } else if ([ResponseMatchConfig.REG_MATCH, ResponseMatchConfig.XPATH_MATCH, ResponseMatchConfig.JSON_PATH_MATCH].includes(condition)) {
       value = expression;
     }
 
@@ -92,13 +95,13 @@ onMounted(() => {
 
 const add = () => {
   if (idList.value.length) {
-    notification.info('只能添加一个请求体');
+    notification.info(t('mock.detail.apis.components.match.onlyOneRequestBody'));
     return;
   }
 
   idList.value = [utils.uuid()];
   inputValue.value = undefined;
-  selectValue.value = 'EQUAL';
+  selectValue.value = ResponseMatchConfig.EQUAL;
   errorFlag.value = false;
 };
 
@@ -112,7 +115,6 @@ const isValid = (): boolean => {
     if (typeof editorRef.value?.isValid === 'function') {
       errorFlag.value = !editorRef.value.isValid();
     }
-
     return !errorFlag.value;
   }
 
@@ -138,12 +140,11 @@ const getData = (): ResponseMatchConfig['body']|undefined => {
     }
   }
 
-  if (['REG_MATCH', 'XPATH_MATCH', 'JSON_PATH_MATCH'].includes(condition)) {
+  if ([ResponseMatchConfig.REG_MATCH, ResponseMatchConfig.XPATH_MATCH, ResponseMatchConfig.JSON_PATH_MATCH].includes(condition)) {
     data.expression = value;
   } else {
     data.expected = value;
   }
-
   return data;
 };
 
@@ -158,8 +159,8 @@ const isNoInput = computed(() => {
   if (!condition) {
     return false;
   }
-
-  return ['IS_EMPTY', 'NOT_EMPTY', 'IS_NULL', 'NOT_NULL'].includes(condition);
+  return [ResponseMatchConfig.IS_EMPTY, ResponseMatchConfig.NOT_EMPTY,
+    ResponseMatchConfig.IS_NULL, ResponseMatchConfig.NOT_NULL].includes(condition);
 });
 
 const showEditor = computed(() => {
@@ -167,23 +168,23 @@ const showEditor = computed(() => {
   if (!condition) {
     return false;
   }
-
-  return ['EQUAL', 'NOT_EQUAL', 'CONTAIN', 'NOT_CONTAIN'].includes(condition);
+  return [ResponseMatchConfig.EQUAL, ResponseMatchConfig.NOT_EQUAL,
+    ResponseMatchConfig.CONTAIN, ResponseMatchConfig.NOT_CONTAIN].includes(condition);
 });
 
 const placeholderMap = {
-  GREATER_THAN: '值',
-  GREATER_THAN_EQUAL: '值',
-  LESS_THAN: '值',
-  LESS_THAN_EQUAL: '值',
-  REG_MATCH: '正则表达式',
-  XPATH_MATCH: 'XPath表达式',
-  JSON_PATH_MATCH: 'JSONPath表达式'
+  GREATER_THAN: t('mock.detail.apis.components.match.value'),
+  GREATER_THAN_EQUAL: t('mock.detail.apis.components.match.value'),
+  LESS_THAN: t('mock.detail.apis.components.match.value'),
+  LESS_THAN_EQUAL: t('mock.detail.apis.components.match.value'),
+  REG_MATCH: t('mock.detail.apis.components.match.regexExpression'),
+  XPATH_MATCH: t('mock.detail.apis.components.match.xpathExpression'),
+  JSON_PATH_MATCH: t('mock.detail.apis.components.match.jsonPathExpression')
 };
 </script>
 <template>
   <div v-if="!!idList.length" class="leading-5">
-    <div class="flex items-center mb-0.5">请求体</div>
+    <div class="flex items-center mb-0.5">{{ t('mock.detail.apis.components.match.requestBody') }}</div>
     <div class="flex items-center justify-between space-x-2">
       <SelectEnum
         v-model:value="selectValue"
@@ -196,7 +197,7 @@ const placeholderMap = {
           type="link"
           size="small"
           @click="deleteHandler">
-          <span>删除</span>
+          <span>{{ t('mock.detail.apis.components.match.delete') }}</span>
         </Button>
         <template v-if="showEditor">
           <Button
@@ -204,14 +205,14 @@ const placeholderMap = {
             type="link"
             size="small"
             @click="format">
-            <span>格式化</span>
+            <span>{{ t('mock.detail.apis.components.match.format') }}</span>
           </Button>
           <Button
             style="padding: 0;"
             type="link"
             size="small"
             @click="clear">
-            <span>清空</span>
+            <span>{{ t('mock.detail.apis.components.match.clear') }}</span>
           </Button>
         </template>
       </div>

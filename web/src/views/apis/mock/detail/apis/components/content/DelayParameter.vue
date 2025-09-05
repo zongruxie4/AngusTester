@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Input, Select, Validate } from '@xcan-angus/vue-ui';
 import { ResponseDelayMode, utils } from '@xcan-angus/infra';
 
@@ -13,7 +14,9 @@ const props = withDefaults(defineProps<Props>(), {
   value: undefined
 });
 
-const delayMode = ref<ResponseDelayMode>('NONE');
+const { t } = useI18n();
+
+const delayMode = ref<ResponseDelayMode>(ResponseDelayMode.NONE);
 const fixedTime = ref<string>();
 const fixedTimeError = ref(false);
 const maxRandomTime = ref<string>();
@@ -58,13 +61,13 @@ const validateMaxRandomTime = () => {
   if (!utils.isEmpty(maxRandomTime.value) && !utils.isEmpty(minRandomTime.value)) {
     if (+maxRandomTime.value! < +minRandomTime.value!) {
       maxRandomTimeError.value = true;
-      maxRandomTimeErrorMessage.value = '最大值小于最小值';
+      maxRandomTimeErrorMessage.value = t('mock.detail.apis.components.delayParameter.maxLessThanMin');
     }
   }
 };
 
 const reset = () => {
-  delayMode.value = 'NONE';
+  delayMode.value = ResponseDelayMode.NONE;
   fixedTime.value = undefined;
   fixedTimeError.value = false;
   maxRandomTime.value = undefined;
@@ -88,19 +91,17 @@ onMounted(() => {
       minRandomTime: _minRandomTime
     } = newValue;
     delayMode.value = mode;
-    if (mode === 'NONE') {
+    if (mode === ResponseDelayMode.NONE) {
       return;
     }
 
-    if (mode === 'RANDOM') {
+    if (mode === ResponseDelayMode.RANDOM) {
       if (_minRandomTime) {
         minRandomTime.value = _minRandomTime.replace(/ms/g, '');
       }
-
       if (_maxRandomTime) {
         maxRandomTime.value = _maxRandomTime.replace(/ms/g, '');
       }
-
       return;
     }
 
@@ -111,27 +112,27 @@ onMounted(() => {
 });
 
 const showFixedTimeInput = computed(() => {
-  return delayMode.value === 'FIXED';
+  return delayMode.value === ResponseDelayMode.FIXED;
 });
 
 const showRandomTimeInput = computed(() => {
-  return delayMode.value === 'RANDOM';
+  return delayMode.value === ResponseDelayMode.RANDOM;
 });
 
 const delayModeOptions: { label: string; value: ResponseDelayMode }[] = [
-  { label: '无延迟', value: 'NONE' },
-  { label: '固定延迟', value: 'FIXED' },
-  { label: '随机延迟', value: 'RANDOM' }
+  { label: t('mock.detail.apis.components.delayParameter.noDelay'), value: ResponseDelayMode.NONE },
+  { label: t('mock.detail.apis.components.delayParameter.fixedDelay'), value: ResponseDelayMode.FIXED },
+  { label: t('mock.detail.apis.components.delayParameter.randomDelay'), value: ResponseDelayMode.RANDOM }
 ];
 
 defineExpose({
   getData: (): DelayData => {
     const mode = delayMode.value;
-    if (mode === 'NONE') {
+    if (mode === ResponseDelayMode.NONE) {
       return { mode };
     }
 
-    if (mode === 'FIXED') {
+    if (mode === ResponseDelayMode.FIXED) {
       return {
         mode,
         fixedTime: (fixedTime.value || '') + 'ms'
@@ -145,15 +146,14 @@ defineExpose({
     };
   },
   isValid: (): boolean => {
-    if (delayMode.value === 'NONE') {
+    if (delayMode.value === ResponseDelayMode.NONE) {
       return true;
     }
 
-    if (delayMode.value === 'FIXED') {
+    if (delayMode.value === ResponseDelayMode.FIXED) {
       if (!fixedTimeError.value) {
         fixedTimeError.value = !fixedTime.value;
       }
-
       return !fixedTimeError.value;
     }
 
@@ -161,11 +161,9 @@ defineExpose({
       maxRandomTimeError.value = !maxRandomTime.value;
       validateMaxRandomTime();
     }
-
     if (!minRandomTimeError.value) {
       minRandomTimeError.value = !minRandomTime.value;
     }
-
     return !minRandomTimeError.value && !maxRandomTimeError.value;
   }
 });
@@ -204,7 +202,7 @@ defineExpose({
         dataType="number"
         placeholder="0 ~ 7200000"
         @change="minRandomTimeChange" />
-      <div>至</div>
+      <div>{{ t('mock.detail.apis.components.delayParameter.to') }}</div>
       <Validate
         :text="maxRandomTimeErrorMessage"
         fixed

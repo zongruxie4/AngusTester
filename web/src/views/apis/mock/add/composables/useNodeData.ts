@@ -1,7 +1,3 @@
-/**
- * Composable for managing node data and loading logic
- * Handles loading available nodes for service deployment
- */
 import { reactive } from 'vue';
 import { node } from '@/api/tester';
 import store from '@/store';

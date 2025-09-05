@@ -23,7 +23,7 @@ import {
   Validate
 } from '@xcan-angus/vue-ui';
 import { useRouter } from 'vue-router';
-import { utils, TESTER, duration, download } from '@xcan-angus/infra';
+import { HttpMethod, utils, TESTER, duration, download } from '@xcan-angus/infra';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { Button, Collapse, CollapsePanel, Switch } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
@@ -31,7 +31,7 @@ import { debounce } from 'throttle-debounce';
 import { type AgentValue } from '@/views/apis/services/components/agent/PropsTypes';
 import { mock } from 'src/api/tester';
 import { setting } from 'src/api/gm';
-import { HttpMethod, MockAPIConfig, MockAPIInfo, ResponseConfig, ResponseInfo } from './types';
+import { MockAPIConfig, MockAPIInfo, ResponseConfig, ResponseInfo } from './types';
 
 interface Props {
   id: string;// mock service Id
@@ -1305,7 +1305,7 @@ provide('currentProxy', currentProxy);
 provide('proxyOptObj', proxyOptObj);
 </script>
 <template>
-  <Hints class="mb-1.5" :text="$t('mock.detail.apis.hints')" />
+  <Hints class="mb-1.5" :text="t('mock.detail.apis.hints')" />
   <PureCard style="height: calc(100% - 24px);" class="flex-1 flex flex-nowrap pl-3.5 py-3.5 relative">
     <Spin
       :delay="0"
@@ -1313,7 +1313,7 @@ provide('proxyOptObj', proxyOptObj);
       class="flex flex-col w-80 h-full">
       <div class="flex flex-nowrap space-x-2 mb-2">
         <Input
-          :placeholder="$t('mock.detail.apis.searchPlaceholder')"
+          :placeholder="t('mock.detail.apis.searchPlaceholder')"
           class="flex-1"
           :allowClear="true"
           :value="inputValue"
@@ -1329,7 +1329,7 @@ provide('proxyOptObj', proxyOptObj);
           size="small"
           style="padding-right: 0;"
           @click="create">
-          <span>{{ $t('mock.detail.apis.addApi') }}</span>
+          <span>{{ t('mock.detail.apis.addApi') }}</span>
           <Dropdown :menuItems="dropdownMenuItems" @click="buttonDropdownClick">
             <span class="inline-block w-5 h-5">
               <Icon class="text-white" icon="icon-more" />
@@ -1405,7 +1405,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="save">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-baocun" />
-            <span>{{ $t('mock.detail.apis.save') }}</span>
+            <span>{{ t('mock.detail.apis.save') }}</span>
           </div>
         </Button>
         <Button
@@ -1415,7 +1415,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="clone(mockAPIId!)">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-fuzhizujian2" />
-            <span>{{ $t('mock.detail.apis.clone') }}</span>
+            <span>{{ t('mock.detail.apis.clone') }}</span>
           </div>
         </Button>
         <Button
@@ -1425,7 +1425,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="toExport(mockAPIId!)">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-fuzhizujian2" />
-            <span>{{ $t('mock.detail.apis.export') }}</span>
+            <span>{{ t('mock.detail.apis.export') }}</span>
           </div>
         </Button>
         <Button
@@ -1436,7 +1436,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="del(mockAPIId!)">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-qingchu" />
-            <span>{{ $t('mock.detail.apis.delete') }}</span>
+            <span>{{ t('mock.detail.apis.delete') }}</span>
           </div>
         </Button>
         <Button
@@ -1447,7 +1447,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="refreshInstance">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-peizhifuwutongbu" />
-            <span>{{ $t('mock.detail.apis.refreshInstance') }}</span>
+            <span>{{ t('mock.detail.apis.refreshInstance') }}</span>
           </div>
         </Button>
         <Button
@@ -1458,7 +1458,7 @@ provide('proxyOptObj', proxyOptObj);
           @click="refreshInfo">
           <div class="flex items-center space-x-1">
             <IconRefresh />
-            <span>{{ $t('mock.detail.apis.refresh') }}</span>
+            <span>{{ t('mock.detail.apis.refresh') }}</span>
           </div>
         </Button>
         <Button
@@ -1467,14 +1467,14 @@ provide('proxyOptObj', proxyOptObj);
           @click="goback">
           <div class="flex items-center space-x-1">
             <Icon icon="icon-fanhui" />
-            <span>{{ $t('mock.detail.apis.back') }}</span>
+            <span>{{ t('mock.detail.apis.back') }}</span>
           </div>
         </Button>
       </div>
       <div :id="domId" class="w-full flex-1 overflow-auto space-y-6 scroll-smooth">
         <div class="space-y-2">
           <div class="flex items-center text-3.5 space-x-1 text-text-title">
-            <div>{{ $t('mock.detail.apis.request') }}</div>
+            <div>{{ t('mock.detail.apis.request') }}</div>
             <div v-if="isSavedMockApi" class="flex items-center text-3 text-theme-sub-content">
               <span class="mx-0.5">(</span>
               <div class="flex items-center translate-y-0.25">
@@ -1493,14 +1493,14 @@ provide('proxyOptObj', proxyOptObj);
               <div class="flex items-center justify-between">
                 <div class="flex items-center mb-0.5">
                   <IconRequired />
-                  <span>{{ $t('mock.detail.apis.name') }}</span>
+                  <span>{{ t('mock.detail.apis.name') }}</span>
                 </div>
               </div>
               <Input
                 :maxlength="400"
                 :value="summary"
                 :error="summaryError"
-                :placeholder="$t('mock.detail.apis.namePlaceholder')"
+                :placeholder="t('mock.detail.apis.namePlaceholder')"
                 trim
                 @change="summaryChange" />
             </div>
@@ -1514,14 +1514,14 @@ provide('proxyOptObj', proxyOptObj);
               :options="serviceUrlOptions" />
 
             <div class="pr-5.25">
-              <div class="mb-0.5">{{ $t('mock.detail.apis.description') }}</div>
+              <div class="mb-0.5">{{ t('mock.detail.apis.description') }}</div>
               <Input
                 :maxlength="20000"
                 :value="description"
                 :autoSize="{ minRows: 5, maxRows: 5 }"
                 showCount
                 type="textarea"
-                :placeholder="$t('mock.detail.apis.descriptionPlaceholder')"
+                :placeholder="t('mock.detail.apis.descriptionPlaceholder')"
                 trim
                 @change="descriptionChange" />
             </div>
@@ -1530,9 +1530,9 @@ provide('proxyOptObj', proxyOptObj);
         <div class="pr-5.25 space-y-2">
           <div class="flex items-center justify-between leading-5 pr-3.25 text-3.5 text-text-title">
             <div>
-              <span>{{ $t('mock.detail.apis.response') }}</span>
+              <span>{{ t('mock.detail.apis.response') }}</span>
               <Tooltip>
-                <template #title>{{ $t('mock.detail.apis.maxResponseTip') }}</template>
+                <template #title>{{ t('mock.detail.apis.maxResponseTip') }}</template>
                 <Icon icon="icon-shuoming" class="text-tips cursor-pointer text-3.5 ml-1" />
               </Tooltip>
             </div>
@@ -1542,7 +1542,7 @@ provide('proxyOptObj', proxyOptObj);
               @click="addResponse">
               <div class="flex items-center space-x-1">
                 <Icon icon="icon-jia" />
-                <span>{{ $t('mock.detail.apis.addResponse') }}</span>
+                <span>{{ t('mock.detail.apis.addResponse') }}</span>
               </div>
             </Button>
           </div>
@@ -1565,7 +1565,7 @@ provide('proxyOptObj', proxyOptObj);
                     <div class="flex items-center flex-1 space-x-2">
                       <div class="flex items-center flex-shrink-0 flex-nowrap whitespace-nowrap mb-0.5">
                         <IconRequired />
-                        <span>{{ $t('mock.detail.apis.name') }}</span>
+                        <span>{{ t('mock.detail.apis.name') }}</span>
                       </div>
 
                       <Validate
@@ -1576,7 +1576,7 @@ provide('proxyOptObj', proxyOptObj);
                           :maxlength="200"
                           :value="nameMap[item]"
                           :error="nameErrorSet.has(item)"
-                          :placeholder="$t('mock.detail.apis.namePlaceholder')"
+                          :placeholder="t('mock.detail.apis.namePlaceholder')"
                           trim
                           @change="nameChange($event, item)" />
                       </Validate>
@@ -1592,7 +1592,7 @@ provide('proxyOptObj', proxyOptObj);
                       @click="deleteResponse(index, item)">
                       <div class="flex items-center space-x-1">
                         <Icon icon="icon-qingchu" />
-                        <span>{{ $t('mock.detail.apis.deleteResponse') }}</span>
+                        <span>{{ t('mock.detail.apis.deleteResponse') }}</span>
                       </div>
                     </Button>
                   </template>
@@ -1607,10 +1607,10 @@ provide('proxyOptObj', proxyOptObj);
                     <div class="flex items-center py-3">
                       <Arrow :open="openKeys.includes(item + '-1')" @change="arrowChange(item + '-1')" />
                       <div class="flex items-center ml-1">
-                        <span>{{ $t('mock.detail.apis.match') }}</span>
+                        <span>{{ t('mock.detail.apis.match') }}</span>
                         <Tooltip>
                           <template #title>
-                            {{ $t('mock.detail.apis.matchTooltip') }}
+                            {{ t('mock.detail.apis.matchTooltip') }}
                           </template>
                           <Icon icon="icon-shuoming" class="text-tips cursor-pointer text-3.5 ml-1" />
                         </Tooltip>
@@ -1621,9 +1621,9 @@ provide('proxyOptObj', proxyOptObj);
                   <div class="flex items-center leading-5 mb-5 space-x-2">
                     <div class="flex items-center">
                       <IconRequired />
-                      <span>{{ $t('mock.detail.apis.priority') }}</span>
+                      <span>{{ t('mock.detail.apis.priority') }}</span>
                       <Tooltip>
-                        <template #title>{{ $t('mock.detail.apis.priorityTooltip') }}</template>
+                        <template #title>{{ t('mock.detail.apis.priorityTooltip') }}</template>
                         <Icon icon="icon-shuoming" class="text-tips cursor-pointer text-3.5 ml-0.75" />
                       </Tooltip>
                     </div>
@@ -1657,7 +1657,7 @@ provide('proxyOptObj', proxyOptObj);
                       <Arrow :open="openKeys.includes(item + '-2')" @change="arrowChange(item + '-2')" />
                       <div class="flex items-center ml-1">
                         <IconRequired />
-                        <span>{{ $t('mock.detail.apis.content') }}</span>
+                        <span>{{ t('mock.detail.apis.content') }}</span>
                       </div>
                     </div>
                   </template>
@@ -1680,9 +1680,9 @@ provide('proxyOptObj', proxyOptObj);
                         :open="openKeys.includes(item + '-3')"
                         @change="arrowChange(item + '-3')" />
                       <div class="flex items-center ml-1">
-                        <span>{{ $t('mock.detail.apis.pushback') }}</span>
+                        <span>{{ t('mock.detail.apis.pushback') }}</span>
                         <Tooltip>
-                          <template #title>{{ $t('mock.detail.apis.pushbackTooltip') }}</template>
+                          <template #title>{{ t('mock.detail.apis.pushbackTooltip') }}</template>
                           <Icon icon="icon-shuoming" class="text-tips cursor-pointer text-3.5 ml-1" />
                         </Tooltip>
                       </div>
@@ -1691,8 +1691,8 @@ provide('proxyOptObj', proxyOptObj);
                         :checked="enablePushbackSet.has(item)"
                         size="small"
                         class="ml-1.5"
-                        :checkedChildren="$t('mock.detail.apis.enable')"
-                        :unCheckedChildren="$t('mock.detail.apis.disable')"
+                        :checkedChildren="t('mock.detail.apis.enable')"
+                        :unCheckedChildren="t('mock.detail.apis.disable')"
                         @change="enableChange($event, item)" />
                     </div>
                   </template>
@@ -1714,7 +1714,7 @@ provide('proxyOptObj', proxyOptObj);
     <SelectApiModal
       v-model:visible="apiCopyModalVisible"
       v-model:confirmLoading="apiCopyConfirmLoading"
-      :title="$t('mock.detail.apis.copyApiTitle')"
+      :title="t('mock.detail.apis.copyApiTitle')"
       type="copy"
       @ok="copyApiOk" />
   </AsyncComponent>
@@ -1722,7 +1722,7 @@ provide('proxyOptObj', proxyOptObj);
     <SelectApiModal
       v-model:visible="apiLinkModalVisible"
       v-model:confirmLoading="apiLinkConfirmLoading"
-      :title="$t('mock.detail.apis.linkApiTitle')"
+      :title="t('mock.detail.apis.linkApiTitle')"
       type="link"
       @ok="linkApiOk" />
   </AsyncComponent>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon, notification } from '@xcan-angus/vue-ui';
 
@@ -19,6 +20,8 @@ const props = withDefaults(defineProps<Props>(), {
   notify: 0
 });
 
+const { t } = useI18n();
+
 const MAX_PARAMETERS_NUM = 20;// 限制最大匹配参数数量
 
 const pathFormRef = ref();
@@ -31,7 +34,7 @@ const headerIds = ref<string[]>([]);
 
 const canAdd = ():boolean => {
   if (totalIdsNum.value >= MAX_PARAMETERS_NUM) {
-    notification.warning(`匹配参数限制最大 ${MAX_PARAMETERS_NUM} 个`);
+    notification.warning(t('mock.detail.apis.components.match.maxParametersTip', { max: MAX_PARAMETERS_NUM }));
     return false;
   }
 
@@ -201,7 +204,7 @@ defineExpose({
         size="small"
         @click="addPathHandler">
         <div class="flex items-center">
-          <Icon icon="icon-jia" class="mr-1" /><span>路径</span>
+          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('mock.detail.apis.components.match.path') }}</span>
         </div>
       </Button>
       <Button
@@ -209,7 +212,7 @@ defineExpose({
         size="small"
         @click="addQueryHandler">
         <div class="flex items-center">
-          <Icon icon="icon-jia" class="mr-1" /><span>查询参数</span>
+          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('mock.detail.apis.components.match.queryParams') }}</span>
         </div>
       </Button>
       <Button
@@ -217,7 +220,7 @@ defineExpose({
         size="small"
         @click="addHeaderHandler">
         <div class="flex items-center">
-          <Icon icon="icon-jia" class="mr-1" /><span>请求头</span>
+          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('mock.detail.apis.components.match.header') }}</span>
         </div>
       </Button>
       <Button
@@ -225,7 +228,7 @@ defineExpose({
         size="small"
         @click="addRequestBodyHandler">
         <div class="flex items-center">
-          <Icon icon="icon-jia" class="mr-1" /><span>请求体</span>
+          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('mock.detail.apis.components.match.requestBody') }}</span>
         </div>
       </Button>
     </div>

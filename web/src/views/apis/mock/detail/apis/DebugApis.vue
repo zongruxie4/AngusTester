@@ -270,7 +270,7 @@ const onWsResponse = () => {
       const responseHeader = header;
       let responseBody = respJson.response?.rawContent;
       if (respJson.response?.contentEncoding) {
-        if (respJson.response?.contentEncoding === 'base64') {
+        if (respJson.response?.contentEncoding === ContentEncoding.base64) {
           responseBody = dataURLtoBlob(responseBody) || responseBody;
         }
       }
@@ -358,21 +358,21 @@ onMounted(() => {
         class="bg-status-success text-white flex flex-col items-center rounded-l-xl py-2 h-max cursor-pointer"
         @click="changeShowDebug(true)">
         <Icon icon="icon-zhihangceshi" class="text-3.5 leading-3.5" />
-        <span style="writing-mode: vertical-lr;" class="mt-1">{{ $t('mock.detail.apis.testRequest') }}</span>
+        <span style="writing-mode: vertical-lr;" class="mt-1">{{ t('mock.detail.apis.testRequest') }}</span>
       </div>
       <div
         v-show="!spread || !showDebug"
         class="bg-orange-bg text-white flex flex-col items-center rounded-l-xl py-2 h-max cursor-pointer"
         @click="changeShowDebug(false)">
         <Icon icon="icon-jiekoudaili" class="text-3.5 leading-3.5" />
-        <span style="writing-mode: vertical-lr;" class="mt-1">{{ $t('mock.detail.apis.proxy') }}</span>
+        <span style="writing-mode: vertical-lr;" class="mt-1">{{ t('mock.detail.apis.proxy') }}</span>
       </div>
     </div>
     <div
       class="bg-white border-status-success rounded transition-all duration-500 box-border overflow-x-hidden overflow-y-auto space-y-5"
       :class="[spread && showDebug ? 'w-200 border p-3' : 'w-0 border-0']"
       style="height: 70vh;">
-      <span class="font-semibold">{{ $t('mock.detail.apis.testRequest') }}</span>
+      <span class="font-semibold">{{ t('mock.detail.apis.testRequest') }}</span>
       <UrlForm
         ref="urlRef"
         v-model:method="method"
@@ -387,7 +387,7 @@ onMounted(() => {
             size="small"
             @click="stopDebug">
             <LoadingOutlined />
-            {{ $t('mock.detail.apis.terminate') }}
+            {{ t('mock.detail.apis.terminate') }}
           </Button>
         </template>
         <template v-else>
@@ -395,13 +395,13 @@ onMounted(() => {
             size="small"
             type="primary"
             @click="sendRequest">
-            {{ $t('mock.detail.apis.send') }}
+            {{ t('mock.detail.apis.send') }}
           </Button>
         </template>
       </div>
       <div>
         <div class="space-x-2 mb-1.5">
-          <span class="font-semibold">{{ $t('mock.detail.apis.responseTitle') }}</span>
+          <span class="font-semibold">{{ t('mock.detail.apis.responseTitle') }}</span>
           <ResponseStatus v-if="responseContent?.status > 0" :status="responseContent?.status" />
         </div>
         <div class="min-h-50 bg-gray-light rounded whitespace-break-spaces space-y-2 p-2">

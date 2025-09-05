@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Composite, Icon, Input, SelectInput, Validate } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/infra';
+import { FullMatchCondition, utils } from '@xcan-angus/infra';
 
 import SelectEnum from '@/components/SelectEnum/index.vue';
-import { FullMatchCondition } from './types';
 
 type Parameter = {
   condition: FullMatchCondition;
@@ -27,6 +27,8 @@ const props = withDefaults(defineProps<Props>(), {
   notify: 0
 });
 
+const { t } = useI18n();
+
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e:'change', value:string[]):void;
@@ -39,7 +41,7 @@ const valueErrorSet = ref<Set<string>>(new Set());
 const errorMessageMap = ref<Map<string, string>>(new Map());
 
 const excludes = ({ value }) => {
-  return ['XPATH_MATCH', 'JSON_PATH_MATCH'].includes(value);
+  return [FullMatchCondition.XPATH_MATCH, FullMatchCondition.JSON_PATH_MATCH].includes(value);
 };
 
 const nameChange = (value:string, id:string) => {
@@ -53,7 +55,8 @@ const nameSearch = (value:string, options:{_value:string;message:string}[]) => {
 
 const conditionChange = (value:FullMatchCondition, id:string) => {
   dataMap.value[id].condition = value;
-  if (['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'].includes(value)) {
+  if ([FullMatchCondition.IS_EMPTY, FullMatchCondition.IS_NULL, FullMatchCondition.NOT_EMPTY,
+    FullMatchCondition.NOT_NULL].includes(value)) {
     dataMap.value[id].value = undefined;
     valueErrorSet.value.delete(id);
   }
@@ -90,7 +93,8 @@ const isValid = ():boolean => {
       nameErrorSet.value.add(id);
     }
 
-    if (!['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'].includes(condition)) {
+    if (![FullMatchCondition.IS_EMPTY, FullMatchCondition.IS_NULL, FullMatchCondition.NOT_EMPTY,
+      FullMatchCondition.NOT_NULL].includes(condition)) {
       if (!value) {
         valueErrorSet.value.add(id);
       }
@@ -153,7 +157,7 @@ const add = () => {
   const id = utils.uuid();
   idList.value.push(id);
   dataMap.value[id] = {
-    condition: 'EQUAL',
+    condition: FullMatchCondition.EQUAL,
     expected: undefined,
     expression: undefined,
     in: props.in,
@@ -198,17 +202,18 @@ defineExpose({
 const placeholderMap = computed(() => {
   const ids = idList.value;
   const data = dataMap.value;
-  const emptyConditions = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
+  const emptyConditions = [FullMatchCondition.IS_EMPTY, FullMatchCondition.IS_NULL,
+    FullMatchCondition.NOT_EMPTY,FullMatchCondition.NOT_NULL];
   const map:{[key:string]:string} = {};
   for (let i = 0, len = ids.length; i < len; i++) {
     const id = ids[i];
     const condition = data[id].condition;
     if (emptyConditions.includes(condition)) {
       map[id] = '';
-    } else if (condition === 'REG_MATCH') {
-      map[id] = '正则表达式';
+    } else if (condition === FullMatchCondition.REG_MATCH) {
+      map[id] = t('mock.detail.apis.components.match.regexExpression');
     } else {
-      map[id] = '参数值，最大支持4096个字符';
+      map[id] = t('mock.detail.apis.components.match.parameterValuePlaceholder');
     }
   }
 
@@ -218,7 +223,8 @@ const placeholderMap = computed(() => {
 const disabledMap = computed(() => {
   const ids = idList.value;
   const data = dataMap.value;
-  const disabledConditions = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
+  const disabledConditions = [FullMatchCondition.IS_EMPTY, FullMatchCondition.IS_NULL,
+    FullMatchCondition.NOT_EMPTY, FullMatchCondition.NOT_NULL];
   const map:{[key:string]:boolean} = {};
   for (let i = 0, len = ids.length; i < len; i++) {
     const id = ids[i];
@@ -231,7 +237,7 @@ const disabledMap = computed(() => {
   return map;
 });
 
-const EXPRESSION_ENUMS = ['REG_MATCH', 'XPATH_MATCH', 'JSON_PATH_MATCH'];
+const EXPRESSION_ENUMS = [FullMatchCondition.REG_MATCH, FullMatchCondition.XPATH_MATCH, FullMatchCondition.JSON_PATH_MATCH];
 const fieldNames = { label: '_value', value: 'id' };
 const inputProps = {
   maxlength: 400
@@ -239,7 +245,7 @@ const inputProps = {
 </script>
 <template>
   <div v-if="!!idList.length" class="leading-5">
-    <div class="flex items-center mb-0.5">请求头</div>
+    <div class="flex items-center mb-0.5">{{ t('mock.detail.apis.components.match.header') }}</div>
     <div class="space-y-2">
       <div
         v-for="(item,index) in idList"
@@ -258,7 +264,7 @@ const inputProps = {
             mode="combination"
             style="flex: 0 0 calc((100% - 200px) * 2/5);"
             trim
-            placeholder="参数名称，最大支持400个字符"
+            :placeholder="t('mock.detail.apis.components.match.parameterNamePlaceholder')"
             @change="nameChange($event,item)">
             <template #option="record">
               <div class="truncate" :title="record._value+'-'+record.message">{{ record._value }} - {{ record.message }}</div>
@@ -269,7 +275,7 @@ const inputProps = {
             :excludes="excludes"
             enumKey="FullMatchCondition"
             class="flex-shrink-0 w-48"
-            placeholder="运算符"
+            :placeholder="t('mock.detail.apis.components.match.operatorPlaceholder')"
             @change="conditionChange($event,item)" />
           <Validate
             class="flex-1"

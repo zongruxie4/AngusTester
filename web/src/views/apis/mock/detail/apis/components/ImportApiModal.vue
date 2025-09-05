@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Radio, RadioGroup } from 'ant-design-vue';
 import { Hints, Modal, notification, SingleUpload } from '@xcan-angus/vue-ui';
 import { mock } from '@/api/tester';
@@ -13,6 +14,8 @@ const props = withDefaults(defineProps<Props>(), {
   id: undefined,
   visible: false
 });
+
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -55,7 +58,7 @@ const ok = async () => {
     return;
   }
 
-  notification.success('导入接口成功');
+  notification.success(t('mock.detail.apis.components.importApiModal.success'));
   emit('ok');
   close();
 };
@@ -82,14 +85,14 @@ const bodyStyle = {
 </script>
 <template>
   <Modal
-    title="导入接口"
+    :title="t('mock.detail.apis.components.importApiModal.title')"
     :visible="props.visible"
     :okButtonProps="okButtonProps"
     :bodyStyle="bodyStyle"
     :confirmLoading="loading"
     @ok="ok"
     @cancel="cancel">
-    <Hints text="支持Swagger2.0、OpenAPI3.x、Angus格式接口文件导入。" />
+    <Hints :text="t('mock.detail.apis.components.importApiModal.hints')" />
     <SingleUpload
       v-if="props.visible"
       allorPaste
@@ -98,18 +101,18 @@ const bodyStyle = {
       @change="change" />
 
     <div class="space-y-0.5 mb-5">
-      <div>遇到重复时的处理策略</div>
+      <div>{{ t('mock.detail.apis.components.importApiModal.duplicateStrategy') }}</div>
       <RadioGroup v-model:value="duplicatedValue">
-        <Radio value="COVER">覆盖</Radio>
-        <Radio value="IGNORE">忽略</Radio>
+        <Radio value="COVER">{{ t('mock.detail.apis.components.importApiModal.cover') }}</Radio>
+        <Radio value="IGNORE">{{ t('mock.detail.apis.components.importApiModal.ignore') }}</Radio>
       </RadioGroup>
     </div>
 
     <div class="space-y-0.5">
-      <div>当前接口在导入数据中不存在时是否删除</div>
+      <div>{{ t('mock.detail.apis.components.importApiModal.deleteNotExisted') }}</div>
       <RadioGroup v-model:value="notExistedValue">
-        <Radio value="true">是</Radio>
-        <Radio value="false">否</Radio>
+        <Radio value="true">{{ t('mock.detail.apis.components.importApiModal.yes') }}</Radio>
+        <Radio value="false">{{ t('mock.detail.apis.components.importApiModal.no') }}</Radio>
       </RadioGroup>
     </div>
   </Modal>

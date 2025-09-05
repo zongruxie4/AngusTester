@@ -1,7 +1,3 @@
-/**
- * Composable for managing mock service form state and validation
- * Handles form data, validation rules, and form submission logic
- */
 import { computed, ref } from 'vue';
 import type { RuleObject } from 'ant-design-vue/es/form';
 import { useI18n } from 'vue-i18n';

@@ -1,7 +1,3 @@
-/**
- * Composable for managing tab navigation and state
- * Handles active tab changes and related logic
- */
 import { ref } from 'vue';
 
 /**

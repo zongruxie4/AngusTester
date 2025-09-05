@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Validate } from '@xcan-angus/vue-ui';
 
@@ -25,6 +26,8 @@ const props = withDefaults(defineProps<Props>(), {
   showCount: false,
   notify: 0
 });
+
+const { t } = useI18n();
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -113,7 +116,7 @@ const isValid = ():boolean => {
 
   if (value.length >= props.maxlength) {
     error.value = true;
-    errorMessage.value = `最大支持${props.maxlength}字符，已输入${length}字符`;
+    errorMessage.value = t('mock.detail.apis.components.codeEditor.maxLengthError', { max: props.maxlength, current: value.length });
     return false;
   }
 
@@ -139,14 +142,14 @@ defineExpose({
           type="link"
           size="small"
           @click="format">
-          <span>格式化</span>
+          <span>{{ t('mock.detail.apis.components.codeEditor.format') }}</span>
         </Button>
         <Button
           style="padding: 0;"
           type="link"
           size="small"
           @click="clear">
-          <span>清空</span>
+          <span>{{ t('mock.detail.apis.components.codeEditor.clear') }}</span>
         </Button>
       </div>
     </div>

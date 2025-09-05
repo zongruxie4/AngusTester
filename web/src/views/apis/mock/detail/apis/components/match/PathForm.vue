@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Composite, Icon, Input, notification, Popover } from '@xcan-angus/vue-ui';
 
 import SelectEnum from '@/components/SelectEnum/index.vue';
-import { StringMatchCondition } from './types';
-import { utils } from '@xcan-angus/infra';
+import { StringMatchCondition, utils } from '@xcan-angus/infra';
 
 type PathInfo = {
   condition: StringMatchCondition;
@@ -23,8 +23,10 @@ const props = withDefaults(defineProps<Props>(), {
   notify: 0
 });
 
+const { t } = useI18n();
+
 const idList = ref<string[]>([]);
-const selectValue = ref<StringMatchCondition>('EQUAL');
+const selectValue = ref<StringMatchCondition>(StringMatchCondition.EQUAL);
 const inputValue = ref<string>();
 const errorFlag = ref(false);
 
@@ -38,7 +40,7 @@ const deleteHandler = () => {
 
 const reset = () => {
   idList.value = [];
-  selectValue.value = 'EQUAL';
+  selectValue.value = StringMatchCondition.EQUAL;
   inputValue.value = undefined;
   errorFlag.value = false;
 };
@@ -56,7 +58,7 @@ onMounted(() => {
 
     const { condition, expected, expression } = newValue;
     selectValue.value = condition;
-    if (condition === 'REG_MATCH') {
+    if (condition === StringMatchCondition.REG_MATCH) {
       inputValue.value = expression;
     } else {
       inputValue.value = expected;
@@ -68,12 +70,12 @@ onMounted(() => {
 
 const add = () => {
   if (idList.value.length) {
-    notification.info('只能添加一个路径');
+    notification.info(t('mock.detail.apis.components.match.onlyOnePath'));
     return;
   }
 
   idList.value = [utils.uuid()];
-  selectValue.value = 'EQUAL';
+  selectValue.value = StringMatchCondition.EQUAL;
   inputValue.value = undefined;
   errorFlag.value = false;
 };
@@ -99,7 +101,7 @@ const isValid = (): boolean => {
     return false;
   }
 
-  if (selectValue.value === 'REG_MATCH') {
+  if (selectValue.value === StringMatchCondition.REG_MATCH) {
     return true;
   }
 
@@ -119,7 +121,7 @@ const getData = (): PathInfo|undefined => {
   const condition = selectValue.value;
   const value = inputValue.value;
   const data: PathInfo = { condition, expected: undefined, expression: undefined };
-  if (condition === 'REG_MATCH') {
+  if (condition === StringMatchCondition.REG_MATCH) {
     data.expression = value;
   } else {
     data.expected = value;
@@ -134,30 +136,29 @@ defineExpose({
   add
 });
 
-const ENUMS: readonly StringMatchCondition[] = ['EQUAL', 'NOT_EQUAL', 'CONTAIN', 'NOT_CONTAIN', 'REG_MATCH'];
+const ENUMS: readonly StringMatchCondition[] =
+  [StringMatchCondition.EQUAL, StringMatchCondition.NOT_EQUAL,
+    StringMatchCondition.CONTAIN, StringMatchCondition.NOT_CONTAIN, StringMatchCondition.REG_MATCH];
 const excludes = ({ value }: { value: StringMatchCondition }) => {
   return !ENUMS.includes(value);
 };
 
 const placeholderMap = {
-  REG_MATCH: '正则表达式',
-  EQUAL: '以斜杠 / 开始；路径段之间使用斜杠 / 分隔，且不包含特殊字符（如?、#等）',
-  NOT_EQUAL: '以斜杠 / 开始；路径段之间使用斜杠 / 分隔，且不包含特殊字符（如?、#等）',
-  CONTAIN: '以斜杠 / 开始；路径段之间使用斜杠 / 分隔，且不包含特殊字符（如?、#等）',
-  NOT_CONTAIN: '以斜杠 / 开始；路径段之间使用斜杠 / 分隔，且不包含特殊字符（如?、#等）'
+  REG_MATCH: t('mock.detail.apis.components.match.regexPlaceholder'),
+  EQUAL: t('mock.detail.apis.components.match.pathPlaceholder'),
+  NOT_EQUAL: t('mock.detail.apis.components.match.pathPlaceholder'),
+  CONTAIN: t('mock.detail.apis.components.match.pathPlaceholder'),
+  NOT_CONTAIN: t('mock.detail.apis.components.match.pathPlaceholder')
 };
 </script>
 <template>
   <div v-if="idList.length" class="leading-5">
     <div class="flex items-center">
-      <span class="mr-1 mb-0.5">路径</span>
+      <span class="mr-1 mb-0.5">{{ t('mock.detail.apis.components.match.path') }}</span>
       <Popover destroyTooltipOnHide>
         <template #content>
           <ul style="max-width: 520px;" class="pl-4 list-disc whitespace-pre-line break-all space-y-1">
-            <li>路径以斜杠 / 开始，表示根路径。</li>
-            <li>路径由多个路径段组成，路径段之间使用斜杠 / 分隔。</li>
-            <li>每个路径段可以是字母、数字、减号、下划线等字符组成，且不包含特殊字符（如?、#等）。</li>
-            <li>路径段不可以为空字符串。</li>
+            <li>{{ t('mock.detail.apis.components.match.pathTooltip') }}</li>
           </ul>
         </template>
         <Icon icon="icon-shuoming" class="text-tips cursor-pointer text-3.5" />
@@ -170,7 +171,7 @@ const placeholderMap = {
           :excludes="excludes"
           enumKey="FullMatchCondition"
           class="w-48"
-          placeholder="运算条件" />
+          :placeholder="t('mock.detail.apis.components.match.operatorPlaceholder')" />
         <Input
           v-model:value="inputValue"
           :maxlength="4096"

@@ -1,7 +1,3 @@
-/**
- * Composable for managing file upload functionality
- * Handles file validation, drag and drop, paste events, and Postman to OpenAPI conversion
- */
 import { ref } from 'vue';
 import postmanToOpenApi from '@xcan-angus/postman-to-openapi';
 

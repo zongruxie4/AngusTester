@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
 import YAML from 'yaml';
-import { notification } from '@xcan-angus/vue-ui';
+import { isYAML } from '@/utils/dataFormat';
 
 import MonacoEditor from '@/components/monacoEditor/index.vue';
 
@@ -13,8 +12,6 @@ export interface Props {
 const props = withDefaults(defineProps<Props>(), {
   value: undefined
 });
-
-const { t } = useI18n();
 
 const content = ref('');
 const loading = ref(true);
@@ -33,13 +30,7 @@ onMounted(() => {
 });
 
 const isValid = ():boolean => {
-  try {
-    YAML.parse(content.value);
-    return true;
-  } catch (error) {
-    notification.error(t('mock.detail.apis.notifications.yamlFormatError'));
-    return false;
-  }
+  return isYAML(content.value);
 };
 
 const getData = ():{[key:string]:any} => {

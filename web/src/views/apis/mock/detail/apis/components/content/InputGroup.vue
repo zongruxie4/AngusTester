@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
 
@@ -16,6 +17,8 @@ const props = withDefaults(defineProps<Props>(), {
   value: undefined,
   notify: 0
 });
+
+const { t } = useI18n();
 
 const queryFormRef = ref();
 const headerFormRef = ref();
@@ -132,7 +135,7 @@ const fielaNames = { label: 'name', value: 'value' };
         size="small"
         @click="addQueryHandler">
         <div class="flex items-center">
-          <Icon icon="icon-jia" class="mr-1" /><span>查询参数</span>
+          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('mock.detail.apis.components.inputGroup.queryParams') }}</span>
         </div>
       </Button>
       <Button
@@ -140,7 +143,7 @@ const fielaNames = { label: 'name', value: 'value' };
         size="small"
         @click="addHeaderHandler">
         <div class="flex items-center">
-          <Icon icon="icon-jia" class="mr-1" /><span>请求头</span>
+          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('mock.detail.apis.components.inputGroup.requestHeader') }}</span>
         </div>
       </Button>
       <Button
@@ -148,14 +151,14 @@ const fielaNames = { label: 'name', value: 'value' };
         size="small"
         @click="addCookieHandler">
         <div class="flex items-center">
-          <Icon icon="icon-jia" class="mr-1" /><span>Cookie</span>
+          <Icon icon="icon-jia" class="mr-1" /><span>{{ t('mock.detail.apis.components.inputGroup.cookie') }}</span>
         </div>
       </Button>
     </div>
 
     <PureFormInput
       ref="queryFormRef"
-      label="查询参数"
+      :label="t('mock.detail.apis.components.inputGroup.queryParams')"
       class="mt-4"
       :fielaNames="fielaNames"
       :value="queryParameters"
@@ -163,7 +166,7 @@ const fielaNames = { label: 'name', value: 'value' };
 
     <SelectInputForm
       ref="headerFormRef"
-      label="请求头"
+      :label="t('mock.detail.apis.components.inputGroup.requestHeader')"
       class="mt-4"
       enumKey="HttpRequestHeader"
       :fielaNames="fielaNames"
@@ -172,7 +175,7 @@ const fielaNames = { label: 'name', value: 'value' };
 
     <PureFormInput
       ref="cookieFormRef"
-      label="Cookie"
+      :label="t('mock.detail.apis.components.inputGroup.cookie')"
       class="mt-4"
       valueRequired
       :fielaNames="fielaNames"

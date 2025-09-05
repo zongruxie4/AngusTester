@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Icon, IconRequired, notification, SelectInput, Tooltip, FunctionsButton } from '@xcan-angus/vue-ui';
-import { ContentEncoding } from '@xcan-angus/infra';
+import { ResponseDelayMode, ContentEncoding } from '@xcan-angus/infra';
 
 import { DelayData, ResponseContentConfig, ResponseHeader } from './types';
 import DelayParameter from './DelayParameter.vue';
@@ -18,10 +19,12 @@ const props = withDefaults(defineProps<Props>(), {
   notify: 0
 });
 
+const { t } = useI18n();
+
 const CodeEditor = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/CodeEditor.vue'));
 const ImportFileModal = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/content/ImportFileModal.vue'));
 
-const MAX_HEADER_NUM = 200;// 最大支持的响应头数量
+const MAX_HEADER_NUM = 200;
 
 const pureInputRef = ref();
 const delayRef = ref();
@@ -45,7 +48,7 @@ const httpStatusChange = (value:string) => {
 const addResponseHeader = () => {
   if (typeof pureInputRef.value?.add === 'function') {
     if (headerIds.value.length >= MAX_HEADER_NUM) {
-      notification.error(`最大支持 ${MAX_HEADER_NUM} 个响应头`);
+      notification.error(t('mock.detail.apis.components.content.maxHeadersTip', { max: MAX_HEADER_NUM }));
       return;
     }
 
@@ -106,7 +109,7 @@ onMounted(() => {
         const data = { ...headers[i], disabled: false };
         if (data.name === 'Content-Type') {
           contentType.value = data.value;
-          if (encoding && ['base64', 'gzip_base64'].includes(encoding)) {
+          if (encoding && [ContentEncoding.base64, ContentEncoding.gzip_base64].includes(encoding)) {
             codeEditorReadonly.value = true;
             data.disabled = true;
             headerParameters.value.push(data);
@@ -138,7 +141,7 @@ defineExpose({
     }
 
     let delay:DelayData = {
-      mode: 'NONE',
+      mode: ResponseDelayMode.NONE,
       fixedTime: undefined,
       maxRandomTime: undefined,
       minRandomTime: undefined
@@ -194,10 +197,10 @@ const inputProps = {
       <div class="space-y-2">
         <div class="flex items-center h-7">
           <IconRequired />
-          <span>状态码</span>
+          <span>{{ t('mock.detail.apis.components.content.statusCode') }}</span>
         </div>
         <div class="flex items-center h-7">
-          <span>响应延时</span>
+          <span>{{ t('mock.detail.apis.components.content.responseDelay') }}</span>
         </div>
       </div>
       <div class="space-y-2">
@@ -230,10 +233,10 @@ const inputProps = {
         :disabled="addHeaderDisabled"
         @click="addResponseHeader">
         <Icon icon="icon-jia" class="mr-1" />
-        <span>响应头</span>
+        <span>{{ t('mock.detail.apis.components.content.responseHeader') }}</span>
       </Button>
       <Tooltip>
-        <template #title>最大支持{{ MAX_HEADER_NUM }}个响应头</template>
+        <template #title>{{ t('mock.detail.apis.components.content.maxHeadersTooltip', { max: MAX_HEADER_NUM }) }}</template>
         <Icon icon="icon-shuoming" class="text-tips cursor-pointer text-3.5 ml-1" />
       </Tooltip>
     </div>
@@ -252,14 +255,14 @@ const inputProps = {
       :readonly="codeEditorReadonly"
       class="mt-4.5"
       @clear="codeEditorClear">
-      <template #leftextra><div>响应体</div></template>
+      <template #leftextra><div>{{ t('mock.detail.apis.components.content.responseBody') }}</div></template>
       <template #rightextra>
         <FunctionsButton>
           <Button
             style="padding: 0;"
             type="link"
             size="small">
-            Mock函数助手
+            {{ t('mock.detail.apis.components.content.mockFunctionHelper') }}
           </Button>
         </FunctionsButton>
         <Button
@@ -267,7 +270,7 @@ const inputProps = {
           type="link"
           size="small"
           @click="insertFile">
-          <span>插入文件</span>
+          <span>{{ t('mock.detail.apis.components.content.insertFile') }}</span>
         </Button>
       </template>
     </CodeEditor>
