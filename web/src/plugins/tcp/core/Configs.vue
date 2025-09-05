@@ -1180,7 +1180,7 @@ const scriptId = computed((): string => {
 });
 
 const tabText = computed(() => {
-  return isUIViewMode.value ? { task: '任务配置', execute: '执行配置' } : { task: '', execute: '' };
+  return isUIViewMode.value ? { task: t('ftpPlugin.tabs.taskConfig'), execute: t('ftpPlugin.tabs.executeConfig') } : { task: '', execute: '' };
 });
 
 const drawerMenuItems = computed(() => {
