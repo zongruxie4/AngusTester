@@ -21,7 +21,7 @@ const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('
 const appInfo = ref(appContext.getAccessApp());
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
 
-const activeKey = ref<MenuKey>('');
+const activeKey = ref<MenuKey>();
 const editionType = ref();
 
 const menus = computed(() => {
@@ -80,7 +80,7 @@ onMounted(async () => {
       return;
     }
 
-    if (newValue === 'tasks') {
+    if (newValue === 'task') {
       if (tasksRefreshNotifyFlag) {
         tasksRefreshNotify.value = utils.uuid();
       }
