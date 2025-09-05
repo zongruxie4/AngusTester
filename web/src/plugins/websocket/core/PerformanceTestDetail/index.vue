@@ -93,61 +93,61 @@ const countCard = computed(() => {
   return [
     {
       key: 'currentDuration',
-      name: t('httPlugin.performanceTestDetail.countCards.currentDuration'),
+      name: t('httpPlugin.performanceTestDetail.countCards.currentDuration'),
       icon: 'icon-yizhihangshijian',
       color: '129, 154, 218'
     },
     {
       key: 'vu',
-      name: t('httPlugin.performanceTestDetail.countCards.vu'),
+      name: t('httpPlugin.performanceTestDetail.countCards.vu'),
       icon: 'icon-bingfashu',
       color: '255, 177, 59'
     },
     {
       key: 'qps',
-      name: t('httPlugin.performanceTestDetail.countCards.qps'),
+      name: t('httpPlugin.performanceTestDetail.countCards.qps'),
       icon: 'icon-meimiaochaxunshu',
       color: '3, 206, 92'
     },
     {
       key: 'tps',
-      name: t('httPlugin.performanceTestDetail.countCards.tps'),
+      name: t('httpPlugin.performanceTestDetail.countCards.tps'),
       icon: 'icon-meimiaoshiwushu',
       color: '45, 142, 255'
     },
     {
       key: 'err',
-      name: t('httPlugin.performanceTestDetail.countCards.err'),
+      name: t('httpPlugin.performanceTestDetail.countCards.err'),
       icon: 'icon-cuowushuai',
       color: '245, 34, 45'
     },
     {
       key: 'currentIterations',
-      name: t('httPlugin.performanceTestDetail.countCards.currentIterations'),
+      name: t('httpPlugin.performanceTestDetail.countCards.currentIterations'),
       icon: 'icon-yidiedaicishu',
       color: '3, 185, 208'
     },
     {
       key: 'rt',
-      name: t('httPlugin.performanceTestDetail.countCards.rt'),
+      name: t('httpPlugin.performanceTestDetail.countCards.rt'),
       icon: 'icon-pingjunxiangyingshijian',
       color: '255, 129, 0'
     },
     {
       key: 'p50',
-      name: t('httPlugin.performanceTestDetail.countCards.p50'),
+      name: t('httpPlugin.performanceTestDetail.countCards.p50'),
       icon: 'icon-baifenwei',
       color: '201, 119, 255'
     },
     {
       key: 'export',
-      name: t('httPlugin.performanceTestDetail.countCards.export'),
+      name: t('httpPlugin.performanceTestDetail.countCards.export'),
       icon: 'icon-xiazaida',
       color: '111, 198, 191'
     },
     {
       key: 'upload',
-      name: t('httPlugin.performanceTestDetail.countCards.upload'),
+      name: t('httpPlugin.performanceTestDetail.countCards.upload'),
       icon: 'icon-shangchuanda',
       color: '175, 196, 32'
     }
@@ -237,7 +237,7 @@ defineExpose({
             <span> {{ props.execInfo?.sampleSummaryInfo?.tranMean ||"--" }}</span>
             <em class="not-italic inline-block w-0.5 h-3.5 mx-2 rounded" :style="{ 'background-color': 'rgb(' + item.color + ')'}" />
             <span> {{ props.execInfo?.sampleSummaryInfo?.tranMax ||"--" }}</span>
-            <span>&nbsp;{{ t('httPlugin.performanceTestDetail.units.ms') }}</span>
+            <span>&nbsp;{{ t('httpPlugin.performanceTestDetail.units.ms') }}</span>
           </template>
           <template v-if="item.key === 'err'">
             <span>{{ props.execInfo?.sampleSummaryInfo?.errors ||"--" }}</span>
@@ -270,12 +270,12 @@ defineExpose({
             <span>{{ props.execInfo?.sampleSummaryInfo?.tranP99 || "--" }}</span>
           </template>
           <template v-if="item.key === 'upload'">
-            <span>{{ formatBytes(props.execInfo?.sampleSummaryInfo?.bwps)? `${formatBytes(props.execInfo?.sampleSummaryInfo?.bwps)}${t('httPlugin.performanceTestDetail.units.perSecond')}`:'--' }}</span>
+            <span>{{ formatBytes(props.execInfo?.sampleSummaryInfo?.bwps)? `${formatBytes(props.execInfo?.sampleSummaryInfo?.bwps)}${t('httpPlugin.performanceTestDetail.units.perSecond')}`:'--' }}</span>
             <em class="not-italic inline-block w-0.5 h-3.5 mx-2 rounded" :style="{ 'background-color': 'rgb(' + item.color + ')'}" />
             <span>{{ formatBytes(props.execInfo?.sampleSummaryInfo?.writeBytes) || '--' }}</span>
           </template>
           <template v-if="item.key === 'export'">
-            <span>{{ formatBytes(props.execInfo?.sampleSummaryInfo?.brps)? `${formatBytes(props.execInfo?.sampleSummaryInfo?.brps)}${t('httPlugin.performanceTestDetail.units.perSecond')}`:'--' }}</span>
+            <span>{{ formatBytes(props.execInfo?.sampleSummaryInfo?.brps)? `${formatBytes(props.execInfo?.sampleSummaryInfo?.brps)}${t('httpPlugin.performanceTestDetail.units.perSecond')}`:'--' }}</span>
             <em class="not-italic inline-block w-0.5 h-3.5 mx-2 rounded" :style="{ 'background-color': 'rgb(' + item.color + ')'}" />
             <span>{{ formatBytes(props.execInfo?.sampleSummaryInfo?.readBytes) || '--' }}</span>
           </template>
@@ -305,7 +305,7 @@ defineExpose({
         @change="handleLeftTab">
         <TabPane
           key="aggregation"
-          :tab="t('httPlugin.performanceTestDetail.tabs.aggregation')">
+          :tab="t('httpPlugin.performanceTestDetail.tabs.aggregation')">
           <template v-if="isLoaded">
             <template v-if="timestampData.length > 0">
               <AggregateVue
@@ -331,7 +331,7 @@ defineExpose({
             </template>
           </template>
         </TabPane>
-        <TabPane key="throughput" :tab="t('httPlugin.performanceTestDetail.tabs.throughput')">
+        <TabPane key="throughput" :tab="t('httpPlugin.performanceTestDetail.tabs.throughput')">
           <template v-if="isLoaded">
             <template v-if="timestampData.length > 0">
               <CountTemplate
@@ -355,7 +355,7 @@ defineExpose({
             </template>
           </template>
         </TabPane>
-        <TabPane key="vu" :tab="t('httPlugin.performanceTestDetail.tabs.vu')">
+        <TabPane key="vu" :tab="t('httpPlugin.performanceTestDetail.tabs.vu')">
           <template v-if="isLoaded">
             <template v-if="timestampData.length > 0">
               <CountTemplate
@@ -375,7 +375,7 @@ defineExpose({
             </template>
           </template>
         </TabPane>
-        <TabPane key="responseTime" :tab="t('httPlugin.performanceTestDetail.tabs.responseTime')">
+        <TabPane key="responseTime" :tab="t('httpPlugin.performanceTestDetail.tabs.responseTime')">
           <template v-if="isLoaded">
             <template v-if="timestampData.length > 0">
               <CountTemplate
@@ -395,7 +395,7 @@ defineExpose({
             </template>
           </template>
         </TabPane>
-        <TabPane key="error" :tab="t('httPlugin.performanceTestDetail.tabs.error')">
+        <TabPane key="error" :tab="t('httpPlugin.performanceTestDetail.tabs.error')">
           <template v-if="isLoaded">
             <template v-if="timestampData.length > 0">
               <div class="min-h-full">
@@ -424,14 +424,14 @@ defineExpose({
             </template>
           </template>
         </TabPane>
-        <TabPane key="httpCode" :tab="t('httPlugin.performanceTestDetail.tabs.httpCode')">
+        <TabPane key="httpCode" :tab="t('httpPlugin.performanceTestDetail.tabs.httpCode')">
           <template v-if="isLoaded">
             <StatusCode
               :isSingleInterface="props.execInfo?.singleTargetPipeline"
               :stutasCodeData="props.stutasCodeData" />
           </template>
         </TabPane>
-        <TabPane key="node" :tab="t('httPlugin.performanceTestDetail.tabs.node')">
+        <TabPane key="node" :tab="t('httpPlugin.performanceTestDetail.tabs.node')">
           <NodeData
             ref="nodeDataRef"
             :activeChart="counTabKey"
@@ -443,7 +443,7 @@ defineExpose({
             :execNodes="props.execInfo?.execNodes"
             :status="props.execInfo?.status.value" />
         </TabPane>
-        <TabPane key="analyze" :tab="t('httPlugin.performanceTestDetail.tabs.analyze')">
+        <TabPane key="analyze" :tab="t('httpPlugin.performanceTestDetail.tabs.analyze')">
           <template v-if="isLoaded">
             <template v-if="timestampData.length > 0">
               <SuperimposeAnalysis

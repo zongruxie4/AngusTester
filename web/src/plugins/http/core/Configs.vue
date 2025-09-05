@@ -267,7 +267,7 @@ const buttonGroupClick = async (data: ButtonGroupMenuItem) => {
     }
 
     if (!sceneConfigData.value?.id) {
-              notification.info(t('httPlugin.messages.debugNeedSave'));
+      notification.info(t('httpPlugin.messages.debugNeedSave'));
       drawerRef.value.open('save');
       return;
     }
@@ -283,7 +283,7 @@ const buttonGroupClick = async (data: ButtonGroupMenuItem) => {
 
     notification.success({
       duration: 1.3,
-              description: t('httPlugin.messages.autoSaveAndDebug')
+      description: t('httpPlugin.messages.autoSaveAndDebug')
     });
     toDebug();
     return;
@@ -342,7 +342,7 @@ const createTest = async () => {
   if (error) {
     return;
   }
-  notification.success(t('httPlugin.messages.createExecutionSuccess'));
+  notification.success(t('httpPlugin.messages.createExecutionSuccess'));
 };
 
 const selectScriptOk = (data: SceneConfig['script']) => {
@@ -566,7 +566,7 @@ const fullScreen = () => {
 const isValid = async (): Promise<boolean> => {
   if (typeof uiConfigRef.value?.isValid === 'function') {
     if (!uiConfigRef.value.isValid()) {
-      notification.error(t('httPlugin.messages.taskConfigError'));
+      notification.error(t('httpPlugin.messages.taskConfigError'));
       return false;
     }
   }
@@ -574,7 +574,7 @@ const isValid = async (): Promise<boolean> => {
   if (typeof executeConfigRef.value?.isValid === 'function') {
     const validFlag = await executeConfigRef.value.isValid();
     if (!validFlag) {
-      notification.error(t('httPlugin.messages.executeConfigError'));
+      notification.error(t('httpPlugin.messages.executeConfigError'));
       return false;
     }
   }
@@ -644,7 +644,7 @@ const toFollow = async (id: string) => {
   hideButtonSet.value.delete('cancelFollowFlag');
   hideButtonSet.value.add('followFlag');
   sceneConfigData.value.followFlag = true;
-        notification.success(t('httPlugin.messages.followSuccess'));
+        notification.success(t('httpPlugin.messages.followSuccess'));
 };
 
 const cancelFollow = async (id: string) => {
@@ -662,7 +662,7 @@ const cancelFollow = async (id: string) => {
   hideButtonSet.value.delete('followFlag');
   hideButtonSet.value.add('cancelFollowFlag');
   sceneConfigData.value.followFlag = false;
-      notification.success(t('httPlugin.messages.cancelFollowSuccess'));
+      notification.success(t('httpPlugin.messages.cancelFollowSuccess'));
 };
 
 const favouriteHandler = (value: boolean) => {
@@ -690,7 +690,7 @@ const toFavourite = async (id: string) => {
   hideButtonSet.value.delete('cancelFavouriteFlag');
   hideButtonSet.value.add('favouriteFlag');
   sceneConfigData.value.favouriteFlag = true;
-      notification.success(t('httPlugin.messages.favouriteSuccess'));
+      notification.success(t('httpPlugin.messages.favouriteSuccess'));
 };
 
 const cancelFavourite = async (id: string) => {
@@ -708,7 +708,7 @@ const cancelFavourite = async (id: string) => {
   hideButtonSet.value.delete('favouriteFlag');
   hideButtonSet.value.add('cancelFavouriteFlag');
   sceneConfigData.value.favouriteFlag = false;
-      notification.success(t('httPlugin.messages.cancelFavouriteSuccess'));
+      notification.success(t('httpPlugin.messages.cancelFavouriteSuccess'));
 };
 
 const save = async (data?: {
@@ -718,7 +718,7 @@ const save = async (data?: {
 }, notificationFlag = true) => {
   const validFlag = await isValid();
   if (!validFlag) {
-    return new Error(t('httPlugin.messages.paramError'));
+    return new Error(t('httpPlugin.messages.paramError'));
   }
 
   if (controller) {
@@ -819,7 +819,7 @@ const save = async (data?: {
   }
 
   if (notificationFlag) {
-    notification.success(t('httPlugin.messages.saveSuccess'));
+    notification.success(t('httpPlugin.messages.saveSuccess'));
   }
 
   if (typeof drawerRef.value?.open === 'function') {
@@ -1447,7 +1447,7 @@ const scriptId = computed((): string => {
 });
 
 const tabText = computed(() => {
-      return isUIViewMode.value ? { task: t('httPlugin.tabs.taskConfig'), execute: t('httPlugin.tabs.executeConfig') } : { task: '', execute: '' };
+      return isUIViewMode.value ? { task: t('httpPlugin.tabs.taskConfig'), execute: t('httpPlugin.tabs.executeConfig') } : { task: '', execute: '' };
 });
 
 const drawerMenuItems = computed(() => {
@@ -1624,9 +1624,9 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
         :updateUrl="`${TESTER}/scenario/auth`"
         :enabledUrl="`${TESTER}/scenario/${sceneConfigData?.id}/auth/enabled`"
         :initStatusUrl="`${TESTER}/scenario/${sceneConfigData?.id}/auth/status`"
-        :onTips="t('httPlugin.authority.onTips')"
-        :offTips="t('httPlugin.authority.offTips')"
-        :title="t('httPlugin.authority.title')" />
+        :onTips="t('httpPlugin.authority.onTips')"
+        :offTips="t('httpPlugin.authority.offTips')"
+        :title="t('httpPlugin.authority.title')" />
     </AsyncComponent>
 
     <AsyncComponent :visible="exportModalVisible">

@@ -18,79 +18,79 @@ const prettyXml = (data: string) => {
 const matchItemList = [
   {
     key: 'regexp',
-    name: t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.regexpMatch'),
+    name: t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.regexpMatch'),
     columns: [[
       {
         dataIndex: 'data',
-        label: t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.matchValue')
+        label: t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.matchValue')
       },
       {
         dataIndex: 'expression',
-        label: t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.expression')
+        label: t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.expression')
       },
       {
         dataIndex: 'result',
-        label: t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.matchResult')
+        label: t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.matchResult')
       },
       {
         dataIndex: 'item',
-        label: t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.matchItem')
+        label: t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.matchItem')
       }
     ]],
     data: {
       data: 'hello, RegexExtraction! my phone number is 18888888888 and 13999999999.',
       expression: '(1\\d{10})',
       result: '["1888888888813999999999","18888888888","13999999999"]',
-      item: t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.regexpItemDescription')
+      item: t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.regexpItemDescription')
     }
   },
   {
     key: 'jsonpath',
-    name: t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.jsonpathMatch'),
+    name: t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.jsonpathMatch'),
     columns: [[
       {
         dataIndex: 'data',
-        label: t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.matchValue')
+        label: t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.matchValue')
       },
       {
         dataIndex: 'expression',
-        label: t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.expression')
+        label: t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.expression')
       },
       {
         dataIndex: 'result',
-        label: t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.matchResult')
+        label: t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.matchResult')
       },
       {
         dataIndex: 'item',
-        label: t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.matchItem')
+        label: t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.matchItem')
       }
     ]],
     data: {
       data: { store: { book: [{ title: 'Sayings of the Century', price: 100 }, { title: 'Confucianism', price: 200 }] } },
       expression: '$.store.book[*]',
       result: '[{"title":"Sayings of the Century","price":100},{"title":"confucianism","price":200}]',
-      item: t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.jsonpathItemDescription')
+      item: t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.jsonpathItemDescription')
     }
   },
   {
     key: 'xpath',
-    name: t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.xpathMatch'),
+    name: t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.xpathMatch'),
     columns: [[
       {
         dataIndex: 'data',
-        label: t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.matchValue')
+        label: t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.matchValue')
       },
       {
         dataIndex: 'expression',
-        label: t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.expression')
+        label: t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.expression')
       },
       {
         dataIndex: 'result',
-        label: t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.matchResult')
+        label: t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.matchResult')
       },
       {
         dataIndex: 'item',
-        label: t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.matchItem')
+        label: t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.matchItem')
       }
     ]],
     data: {
@@ -98,7 +98,7 @@ const matchItemList = [
                 '<interests>basketball</interests><name>Angus1</name></person><person><age>32</age><interests>coding</interests><name>Angus2</name></person></persons>'),
       expression: '/persons/person[age >= 30]',
       result: '["30codingbasketballAngus1", "32codingAngus2"]',
-      item: t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.xpathItemDescription')
+      item: t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.xpathItemDescription')
     }
   }
 ];
@@ -114,24 +114,24 @@ const matchItemList = [
     <template #content>
       <div style="max-height: 60vh; overflow: auto;" class="w-196 leading-4.5 space-y-5 text-3 text-theme-content">
         <div>
-          <Hints :text="t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.title')" class="mb-2 !font-semibold !text-theme-content" />
-          <div class="mb-3">{{ t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.description') }}</div>
+          <Hints :text="t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.title')" class="mb-2 !font-semibold !text-theme-content" />
+          <div class="mb-3">{{ t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.description') }}</div>
           <ol class="pl-4 space-y-3">
             <li style="list-style-type: circle;" class="space-y-2">
-              <div class="font-semibold">{{ t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.emptyExpected') }}</div>
-              <div class="text-theme-sub-content">{{ t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.emptyExpectedDescription') }}</div>
+              <div class="font-semibold">{{ t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.emptyExpected') }}</div>
+              <div class="text-theme-sub-content">{{ t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.emptyExpectedDescription') }}</div>
             </li>
             <li style="list-style-type: circle;" class="space-y-2">
-              <div class="font-semibold">{{ t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.nonEmptyExpected') }}</div>
-              <div class="text-theme-sub-content">{{ t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.nonEmptyExpectedDescription') }}</div>
+              <div class="font-semibold">{{ t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.nonEmptyExpected') }}</div>
+              <div class="text-theme-sub-content">{{ t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.nonEmptyExpectedDescription') }}</div>
             </li>
           </ol>
         </div>
 
         <div>
-          <Hints :text="t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.matchItemTitle')" class="mb-2 !font-semibold !text-theme-content" />
+          <Hints :text="t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.matchItemTitle')" class="mb-2 !font-semibold !text-theme-content" />
           <div class="mb-3">
-            {{ t('httPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.matchItemDescription') }}
+            {{ t('httpPlugin.uiConfig.httpConfigs.assertionForm.expectedPopover.matchItemDescription') }}
           </div>
           <ol class="pl-4 space-y-3">
             <li

@@ -56,19 +56,19 @@ onMounted(() => {
 
 const columns = [
   {
-    title: t('httPlugin.uiConfig.httpConfigs.parametric.dataset.datasetUseListField.resourceType'),
+    title: t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.datasetUseListField.resourceType'),
     dataIndex: 'targetType',
     width: '10%',
     ellipsis: true
   },
   {
-    title: t('httPlugin.uiConfig.httpConfigs.parametric.dataset.datasetUseListField.resourceId'),
+    title: t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.datasetUseListField.resourceId'),
     dataIndex: 'targetId',
     width: '25%',
     ellipsis: true
   },
   {
-    title: t('httPlugin.uiConfig.httpConfigs.parametric.dataset.datasetUseListField.resourceName'),
+    title: t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.datasetUseListField.resourceName'),
     dataIndex: 'targetName',
     ellipsis: true
   }
@@ -78,7 +78,7 @@ const columns = [
 <template>
   <Spin :spinning="loading" class="text-3 leading-5">
     <div class="flex items-center justify-between mb-2">
-      <Hints :text="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.datasetUseListField.description')" />
+      <Hints :text="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.datasetUseListField.description')" />
       <Button
         :disabled="loading"
         size="small"
@@ -86,7 +86,7 @@ const columns = [
         class="flex items-center px-0 h-5 leading-5 border-0 text-theme-text-hover"
         @click="refresh">
         <Icon icon="icon-shuaxin" class="text-3.5" />
-        <span class="ml-1">{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.datasetUseListField.refresh') }}</span>
+        <span class="ml-1">{{ t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.datasetUseListField.refresh') }}</span>
       </Button>
     </div>
 

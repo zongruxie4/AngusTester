@@ -278,7 +278,7 @@ const buttonGroupClick = async (data: ButtonGroupMenuItem) => {
 
     notification.success({
       duration: 1.3,
-      description: '自动保存成功，正在执行调试...'
+      description: t('httpPlugin.messages.autoSaveAndDebug')
     });
     toDebug();
     return;
@@ -337,7 +337,7 @@ const createTest = async () => {
   if (error) {
     return;
   }
-  notification.success('创建“执行测试”成功，请在“执行”中查看详情和结果');
+  notification.success(t('httpPlugin.messages.createExecutionSuccess'));
 };
 
 const selectScriptOk = (data: SceneConfig['script']) => {
@@ -571,7 +571,7 @@ const fullScreen = () => {
 const isValid = async (): Promise<boolean> => {
   if (typeof uiConfigRef.value?.isValid === 'function') {
     if (!uiConfigRef.value.isValid()) {
-      notification.error('任务配置数据错误，请检查更正后再保存。');
+      notification.error(t('httpPlugin.messages.taskConfigError'));
       return false;
     }
   }
@@ -579,7 +579,7 @@ const isValid = async (): Promise<boolean> => {
   if (typeof executeConfigRef.value?.isValid === 'function') {
     const validFlag = await executeConfigRef.value.isValid();
     if (!validFlag) {
-      notification.error('执行配置数据错误，请检查更正后再保存。');
+      notification.error(t('httpPlugin.messages.executeConfigError'));
       return false;
     }
   }
@@ -649,7 +649,7 @@ const toFollow = async (id: string) => {
   hideButtonSet.value.delete('cancelFollowFlag');
   hideButtonSet.value.add('followFlag');
   sceneConfigData.value.followFlag = true;
-  notification.success('关注成功');
+        notification.success(t('httpPlugin.messages.followSuccess'));
 };
 
 const cancelFollow = async (id: string) => {
@@ -667,7 +667,7 @@ const cancelFollow = async (id: string) => {
   hideButtonSet.value.delete('followFlag');
   hideButtonSet.value.add('cancelFollowFlag');
   sceneConfigData.value.followFlag = false;
-  notification.success('取消关注成功');
+      notification.success(t('httpPlugin.messages.cancelFollowSuccess'));
 };
 
 const favouriteHandler = (value: boolean) => {
@@ -695,7 +695,7 @@ const toFavourite = async (id: string) => {
   hideButtonSet.value.delete('cancelFavouriteFlag');
   hideButtonSet.value.add('favouriteFlag');
   sceneConfigData.value.favouriteFlag = true;
-  notification.success('收藏成功');
+      notification.success(t('httpPlugin.messages.favouriteSuccess'));
 };
 
 const cancelFavourite = async (id: string) => {
@@ -713,7 +713,7 @@ const cancelFavourite = async (id: string) => {
   hideButtonSet.value.delete('favouriteFlag');
   hideButtonSet.value.add('cancelFavouriteFlag');
   sceneConfigData.value.favouriteFlag = false;
-  notification.success('取消收藏成功');
+      notification.success(t('httpPlugin.messages.cancelFavouriteSuccess'));
 };
 
 const save = async (data?: {
@@ -723,7 +723,7 @@ const save = async (data?: {
 }, notificationFlag = true) => {
   const validFlag = await isValid();
   if (!validFlag) {
-    return new Error('参数错误');
+    return new Error(t('httpPlugin.messages.paramError'));
   }
 
   if (controller) {
@@ -822,7 +822,7 @@ const save = async (data?: {
   }
 
   if (notificationFlag) {
-    notification.success('保存成功');
+    notification.success(t('httpPlugin.messages.saveSuccess'));
   }
 
   if (typeof drawerRef.value?.open === 'function') {

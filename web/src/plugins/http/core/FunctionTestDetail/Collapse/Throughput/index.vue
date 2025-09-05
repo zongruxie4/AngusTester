@@ -31,11 +31,11 @@ const props = withDefaults(defineProps<Props>(), {
     <div class="flex-1 flex items-center mr-3">
       <div :title="props.value?.name" class="truncate min-w-55 max-w-100 mr-5 name">{{ props.value?.name }}</div>
       <div class="flex items-center mr-5">
-        <span class="mr-0.5">{{ t('httPlugin.functionTestDetail.throughput.requestsPerSecond') }}</span>
+        <span class="mr-0.5">{{ t('httpPlugin.functionTestDetail.throughput.requestsPerSecond') }}</span>
         <span>{{ props.value?.permitsPerSecond }}</span>
       </div>
       <div class="flex items-center mr-5">
-        <span class="mr-0.5">{{ t('httPlugin.functionTestDetail.throughput.waitTimeout') }}</span>
+        <span class="mr-0.5">{{ t('httpPlugin.functionTestDetail.throughput.waitTimeout') }}</span>
         <span>{{ props.value?.timeoutInMs }}</span>
         <span>ms</span>
       </div>

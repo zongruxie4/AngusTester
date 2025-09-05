@@ -109,7 +109,7 @@ const errorNumChange = (value: number) => {
 
 const customRequest = async ({ file }) => {
   if (file.size > props.maxFileSize) {
-    notification.error(t('httPlugin.uiConfig.httpConfigs.requestBodyConfig.maxFileSize', { size: utils.formatBytes(props.maxFileSize) }));
+    notification.error(t('httpPlugin.uiConfig.httpConfigs.requestBodyConfig.maxFileSize', { size: utils.formatBytes(props.maxFileSize) }));
     return;
   }
 
@@ -415,13 +415,13 @@ const language = computed(() => {
           size="small"
           class="ml-2"
           @click="formatRawContent">
-          {{ t('httPlugin.uiConfig.httpConfigs.requestBodyConfig.formatRawContent') }}
+          {{ t('httpPlugin.uiConfig.httpConfigs.requestBodyConfig.formatRawContent') }}
         </Button>
         <Button
           type="link"
           size="small"
           @click="compressRawContent">
-          {{ t('httPlugin.uiConfig.httpConfigs.requestBodyConfig.compressRawContent') }}
+          {{ t('httpPlugin.uiConfig.httpConfigs.requestBodyConfig.compressRawContent') }}
         </Button>
       </template>
     </div>

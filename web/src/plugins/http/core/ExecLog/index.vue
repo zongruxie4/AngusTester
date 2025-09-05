@@ -78,7 +78,7 @@ const downloadLog = () => {
   const a = document.createElement('a');
   a.style.display = 'none';
   a.href = url;
-  a.download = t('httPlugin.execLog.downloadFileName');
+  a.download = t('httpPlugin.execLog.downloadFileName');
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -96,12 +96,12 @@ const downloadLog = () => {
     <div v-if="!!props.execNode?.id" class="h-full text-3">
       <div class="flex items-center leading-5 mb-2.5">
         <div class="flex items-center mr-15">
-          <span class="text-theme-sub-content">{{ t('httPlugin.execLog.node') }}</span>
+          <span class="text-theme-sub-content">{{ t('httpPlugin.execLog.node') }}</span>
           <Colon class="mr-2" />
           <span>{{ props.execNode.name }}({{ props.execNode.publicIp || props.execNode.ip }})</span>
         </div>
         <div class="flex items-center mr-15">
-          <span class="text-theme-sub-content">{{ t('httPlugin.execLog.schedulingResult') }}</span>
+          <span class="text-theme-sub-content">{{ t('httpPlugin.execLog.schedulingResult') }}</span>
           <Colon class="mr-2" />
           <template v-if="props.schedulingResult?.success">
             <span class="inline-block w-1.5 h-1.5 mr-1 rounded bg-status-success"></span>
@@ -113,7 +113,7 @@ const downloadLog = () => {
           </template>
         </div>
         <div class="flex items-center mr-15">
-          <span class="text-theme-sub-content">{{ t('httPlugin.execLog.processExitCode') }}</span>
+          <span class="text-theme-sub-content">{{ t('httpPlugin.execLog.processExitCode') }}</span>
           <Colon class="mr-2" />
           <span>{{ props.schedulingResult?.exitCode }}</span>
         </div>

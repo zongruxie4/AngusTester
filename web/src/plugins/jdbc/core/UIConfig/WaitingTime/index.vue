@@ -236,8 +236,8 @@ defineExpose({
 });
 
 const waitTypeoptions = computed(() => [
-  { label: t('httPlugin.uiConfig.waitingTime.fixedWait'), value: 'fixed' },
-  { label: t('httPlugin.uiConfig.waitingTime.randomWait'), value: 'random' }
+  { label: t('httpPlugin.uiConfig.waitingTime.fixedWait'), value: 'fixed' },
+  { label: t('httpPlugin.uiConfig.waitingTime.randomWait'), value: 'random' }
 ]);
 </script>
 
@@ -246,7 +246,7 @@ const waitTypeoptions = computed(() => [
     <Icon class="flex-shrink-0 text-4 mr-3" icon="icon-dengdaishijian" />
     <div class="flex-1 flex items-center space-x-5 mr-5">
       <Tooltip
-        :title="t('httPlugin.uiConfig.waitingTime.duplicateName')"
+        :title="t('httpPlugin.uiConfig.waitingTime.duplicateName')"
         internal
         placement="right"
         destroyTooltipOnHide
@@ -258,7 +258,7 @@ const waitTypeoptions = computed(() => [
           :error="nameError"
           trim
           class="time-name-input"
-          :placeholder="t('httPlugin.uiConfig.waitingTime.namePlaceholder')"
+          :placeholder="t('httpPlugin.uiConfig.waitingTime.namePlaceholder')"
           @change="nameChange" />
       </Tooltip>
       <Select
@@ -298,7 +298,7 @@ const waitTypeoptions = computed(() => [
             placeholder="0 ~ 7200000"
             @change="minWaitTimeInMsChange"
             @blur="minWaitTimeInMsBlur" />
-          <div>{{ t('httPlugin.uiConfig.waitingTime.to') }}</div>
+          <div>{{ t('httpPlugin.uiConfig.waitingTime.to') }}</div>
           <Input
             :value="maxWaitTimeInMs"
             :maxlength="7"

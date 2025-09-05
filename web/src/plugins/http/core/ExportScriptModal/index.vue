@@ -58,11 +58,11 @@ const formatTypes = [{
   <Modal
     :visible="props.visible"
     :confirmLoading="exportLoading"
-    :title="t('httPlugin.exportScriptModal.title')"
+    :title="t('httpPlugin.exportScriptModal.title')"
     @cancel="handleCancel"
     @ok="handleOk">
     <div class="mt-1.5">
-      <span class="mr-3.5">{{ t('httPlugin.exportScriptModal.format') }}<Colon class="ml-1" /></span>
+      <span class="mr-3.5">{{ t('httpPlugin.exportScriptModal.format') }}<Colon class="ml-1" /></span>
       <RadioGroup v-model:value="format" :options="formatTypes" />
     </div>
   </Modal>

@@ -27,7 +27,7 @@ onMounted(() => {
 
 const showName = computed(() => {
   const _name = props.name?.replace(/(.+)_end$/, '$1');
-  return _name ? (_name + t('httPlugin.uiConfig.transEnd.suffix')) : '';
+  return _name ? (_name + t('httpPlugin.uiConfig.transEnd.suffix')) : '';
 });
 
 const getData = ():Omit<TransEndConfig, 'id'> => {

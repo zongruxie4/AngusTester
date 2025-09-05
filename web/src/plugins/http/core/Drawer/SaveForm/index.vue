@@ -113,7 +113,7 @@ defineExpose({ isValid, getData });
   <div class="space-y-4 leading-5">
     <div v-if="id" class="space-y-0">
       <div class="flex items-center">
-        <span>{{ t('httPlugin.drawerItem.id') }}</span>
+        <span>{{ t('httpPlugin.drawerItem.id') }}</span>
       </div>
       <div class="flex-1 flex items-center space-x-2">
         <span :title="id" class="truncate">{{ id }}</span>
@@ -123,20 +123,20 @@ defineExpose({ isValid, getData });
     <div class="space-y-0.5">
       <div class="flex items-center">
         <IconRequired />
-        <span>{{ t('httPlugin.drawerItem.name') }}</span>
+        <span>{{ t('httpPlugin.drawerItem.name') }}</span>
       </div>
       <Input
         :maxlength="200"
         :value="name"
         :error="nameError"
-        :placeholder="t('httPlugin.drawerItem.namePlaceholder')"
+        :placeholder="t('httpPlugin.drawerItem.namePlaceholder')"
         trim
         @change="nameChange" />
     </div>
 
     <div v-if="scriptName" class="space-y-0">
       <div class="flex items-center">
-        <span>{{ t('httPlugin.drawerItem.scriptName') }}</span>
+        <span>{{ t('httpPlugin.drawerItem.scriptName') }}</span>
       </div>
       <div class="flex-1 flex items-center space-x-2">
         <span :title="scriptName" class="truncate">{{ scriptName }}</span>
@@ -146,7 +146,7 @@ defineExpose({ isValid, getData });
 
     <div v-if="scriptId" class="space-y-0">
       <div class="flex items-center">
-        <span>{{ t('httPlugin.drawerItem.scriptId') }}</span>
+        <span>{{ t('httpPlugin.drawerItem.scriptId') }}</span>
       </div>
       <div class="flex-1 flex items-center space-x-2">
         <span :title="scriptId" class="truncate">{{ scriptId }}</span>
@@ -154,14 +154,14 @@ defineExpose({ isValid, getData });
       </div>
     </div>
     <div class="space-y-0.5">
-      <div class="flex items-center">{{ t('httPlugin.drawerItem.description') }}</div>
+      <div class="flex items-center">{{ t('httpPlugin.drawerItem.description') }}</div>
       <Input
         :maxlength="800"
         :value="description"
         :autoSize="{ minRows: 5, maxRows: 5 }"
         showCount
         type="textarea"
-        :placeholder="t('httPlugin.drawerItem.descriptionPlaceholder')"
+        :placeholder="t('httpPlugin.drawerItem.descriptionPlaceholder')"
         trim
         @change="descriptionChange" />
     </div>
@@ -171,13 +171,13 @@ defineExpose({ isValid, getData });
         size="small"
         :loading="props.loading"
         @click="save">
-        {{ t('httPlugin.drawerItem.confirm') }}
+        {{ t('httpPlugin.drawerItem.confirm') }}
       </Button>
       <Button
         type="default"
         size="small"
         @click="cancel">
-        {{ t('httPlugin.drawerItem.cancel') }}
+        {{ t('httpPlugin.drawerItem.cancel') }}
       </Button>
     </div>
   </div>

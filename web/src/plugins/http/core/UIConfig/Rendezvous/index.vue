@@ -174,7 +174,7 @@ defineExpose({
     <Icon class="flex-shrink-0 mr-3 text-4" icon="icon-jihedian1" />
     <div class="flex-1 flex items-center space-x-5 mr-5">
       <Tooltip
-        :title="t('httPlugin.uiConfig.rendezvous.duplicateName')"
+        :title="t('httpPlugin.uiConfig.rendezvous.duplicateName')"
         internal
         placement="right"
         destroyTooltipOnHide
@@ -186,11 +186,11 @@ defineExpose({
           :error="nameError"
           trim
           class="point-name-input"
-          :placeholder="t('httPlugin.uiConfig.rendezvous.namePlaceholder')"
+          :placeholder="t('httpPlugin.uiConfig.rendezvous.namePlaceholder')"
           @change="nameChange" />
       </Tooltip>
       <div class="flex items-center space-x-2 text-theme-content">
-        <div>{{ t('httPlugin.uiConfig.rendezvous.userCount') }}</div>
+        <div>{{ t('httpPlugin.uiConfig.rendezvous.userCount') }}</div>
         <Input
           :value="threads"
           :maxlength="7"
@@ -204,7 +204,7 @@ defineExpose({
           @change="threadsChange" />
       </div>
       <div class="flex items-center space-x-2">
-        <div>{{ t('httPlugin.uiConfig.rendezvous.waitTimeout') }}</div>
+        <div>{{ t('httpPlugin.uiConfig.rendezvous.waitTimeout') }}</div>
         <Input
           :value="timeoutInMs"
           :maxlength="7"

@@ -38,8 +38,8 @@ const waitType = computed(() => {
 });
 
 const waitTypeMap = computed(() => ({
-  fixed: t('httPlugin.functionTestDetail.waitingTime.fixedWait'),
-  random: t('httPlugin.functionTestDetail.waitingTime.randomWait')
+  fixed: t('httpPlugin.functionTestDetail.waitingTime.fixedWait'),
+  random: t('httpPlugin.functionTestDetail.waitingTime.randomWait')
 }));
 </script>
 
@@ -60,7 +60,7 @@ const waitTypeMap = computed(() => ({
           <span>{{ props.value?.minWaitTimeInMs }}</span>
           <span>ms</span>
         </div>
-        <div class="mr-1">{{ t('httPlugin.functionTestDetail.waitingTime.to') }}</div>
+        <div class="mr-1">{{ t('httpPlugin.functionTestDetail.waitingTime.to') }}</div>
         <div>
           <span>{{ props.value?.maxWaitTimeInMs }}</span>
           <span>ms</span>

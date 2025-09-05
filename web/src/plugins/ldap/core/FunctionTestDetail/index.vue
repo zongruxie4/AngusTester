@@ -159,13 +159,13 @@ const tranMax = computed(() => {
 });
 
 const pending = computed(() => {
-  return props.execInfo?.status?.value === 'RUNNING' ? t('httPlugin.functionTestDetail.pending') : false;
+  return props.execInfo?.status?.value === 'RUNNING' ? t('httpPlugin.functionTestDetail.pending') : false;
 });
 
 const timeTexts = computed(() => [
-  t('httPlugin.functionTestDetail.timeTexts.minimum'),
-  t('httPlugin.functionTestDetail.timeTexts.average'),
-  t('httPlugin.functionTestDetail.timeTexts.maximum')
+  t('httpPlugin.functionTestDetail.timeTexts.minimum'),
+  t('httpPlugin.functionTestDetail.timeTexts.average'),
+  t('httpPlugin.functionTestDetail.timeTexts.maximum')
 ]);
 </script>
 <template>
@@ -183,7 +183,7 @@ const timeTexts = computed(() => [
         <div class="text-text-title text-4 font-semibold" style="color:rgba(129, 154, 218, 100%);">
           {{ duration?.[1] }}<span class="text-3.25 ml-0.5">{{ duration?.[2] }}</span>
         </div>
-        <div>{{ t('httPlugin.functionTestDetail.basicInfo.duration') }}</div>
+        <div>{{ t('httpPlugin.functionTestDetail.basicInfo.duration') }}</div>
       </div>
 
       <div
@@ -194,7 +194,7 @@ const timeTexts = computed(() => [
           <em class="not-italic inline-block w-0.5 h-3.5 mx-1.5 rounded" style="transform: rotate(25deg);background-color: rgba(3, 185, 208, 100%);"></em>
           <span>{{ planIterationNum }}</span>
         </div>
-        <div>{{ t('httPlugin.functionTestDetail.basicInfo.iteration') }}</div>
+        <div>{{ t('httpPlugin.functionTestDetail.basicInfo.iteration') }}</div>
       </div>
 
       <div
@@ -219,7 +219,7 @@ const timeTexts = computed(() => [
           <span>{{ tranMax }}</span>
         </div>
         <div class="whitespace-nowrap overflow-hidden">
-          {{ t('httPlugin.functionTestDetail.basicInfo.responseTime') }}（<GroupText :texts="timeTexts" class="text-theme-sub-content" />）
+          {{ t('httpPlugin.functionTestDetail.basicInfo.responseTime') }}（<GroupText :texts="timeTexts" class="text-theme-sub-content" />）
         </div>
       </div>
     </div>

@@ -797,16 +797,16 @@ const expressionPlaceholder = computed(() => {
     const id = ids[i];
     switch (_dataMap[id].assertionCondition) {
       case 'REG_MATCH':
-        map[id] = t('httPlugin.uiConfig.httpConfigs.assertionForm.expressionPlaceholder.regMatch');
+        map[id] = t('httpPlugin.uiConfig.httpConfigs.assertionForm.expressionPlaceholder.regMatch');
         break;
       case 'XPATH_MATCH':
-        map[id] = t('httPlugin.uiConfig.httpConfigs.assertionForm.expressionPlaceholder.xpathMatch');
+        map[id] = t('httpPlugin.uiConfig.httpConfigs.assertionForm.expressionPlaceholder.xpathMatch');
         break;
       case 'JSON_PATH_MATCH':
-        map[id] = t('httPlugin.uiConfig.httpConfigs.assertionForm.expressionPlaceholder.jsonpathMatch');
+        map[id] = t('httpPlugin.uiConfig.httpConfigs.assertionForm.expressionPlaceholder.jsonpathMatch');
         break;
       default:
-        map[id] = t('httPlugin.uiConfig.httpConfigs.assertionForm.expressionPlaceholder.regMatch');
+        map[id] = t('httpPlugin.uiConfig.httpConfigs.assertionForm.expressionPlaceholder.regMatch');
     }
   }
 
@@ -828,7 +828,7 @@ const enumFieldNames = { label: 'message', value: 'value' };
       <div class="flex-1 mr-3">
         <div class="flex items-start space-x-2">
           <Tooltip
-            :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.name.duplicate')"
+            :title="t('httpPlugin.uiConfig.httpConfigs.assertionForm.name.duplicate')"
             internal
             placement="right"
             destroyTooltipOnHide
@@ -836,8 +836,8 @@ const enumFieldNames = { label: 'message', value: 'value' };
             <Input
               :ref="el => { nameRefs[index] = el }"
               v-model:value="dataMap[item].name"
-              :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.name.placeholder')"
-              :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.name.title')"
+              :placeholder="t('httpPlugin.uiConfig.httpConfigs.assertionForm.name.placeholder')"
+              :title="t('httpPlugin.uiConfig.httpConfigs.assertionForm.name.title')"
               trim
               style="flex: 0 0 calc((100% - 40px)/6*2 + 8px);"
               :maxlength="200"
@@ -845,7 +845,7 @@ const enumFieldNames = { label: 'message', value: 'value' };
               @change="nameChange($event, item, index)" />
           </Tooltip>
           <Tooltip
-            :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.expression.error')"
+            :title="t('httpPlugin.uiConfig.httpConfigs.assertionForm.expression.error')"
             internal
             placement="right"
             destroyTooltipOnHide
@@ -854,8 +854,8 @@ const enumFieldNames = { label: 'message', value: 'value' };
               <Input
                 :ref="el => { conditionRefs[index] = el }"
                 v-model:value="dataMap[item].condition"
-                :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.condition.expression.placeholder')"
-                :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.condition.expression.title')"
+                :placeholder="t('httpPlugin.uiConfig.httpConfigs.assertionForm.condition.expression.placeholder')"
+                :title="t('httpPlugin.uiConfig.httpConfigs.assertionForm.condition.expression.title')"
                 class="flex-1"
                 trim
                 :error="conditionErrorSet.has(item)"
@@ -868,8 +868,8 @@ const enumFieldNames = { label: 'message', value: 'value' };
             v-model:value="dataMap[item].type"
             style="flex: 0 0 calc((100% - 40px)/6);"
             enumKey="AssertionType"
-            :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.type.placeholder')"
-            :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.type.title')"
+            :placeholder="t('httpPlugin.uiConfig.httpConfigs.assertionForm.type.placeholder')"
+            :title="t('httpPlugin.uiConfig.httpConfigs.assertionForm.type.title')"
             :error="typeErrorSet.has(item)"
             @change="typeChange($event, item)" />
           <Input
@@ -879,14 +879,14 @@ const enumFieldNames = { label: 'message', value: 'value' };
             :maxlength="400"
             trim
             style="flex: 0 0 calc((100% - 40px)/6);"
-            :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.header.name.placeholder')"
-            :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.header.name.title')"
+            :placeholder="t('httpPlugin.uiConfig.httpConfigs.assertionForm.header.name.placeholder')"
+            :title="t('httpPlugin.uiConfig.httpConfigs.assertionForm.header.name.title')"
             @change="headerNameChange(item)" />
           <div class="flex items-center flex-nowrap space-x-2" style="flex: 1;min-width: 100px;">
             <Select
               v-model:value="dataMap[item].assertionCondition"
-              :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.condition.placeholder')"
-              :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.condition.title')"
+              :placeholder="t('httpPlugin.uiConfig.httpConfigs.assertionForm.condition.placeholder')"
+              :title="t('httpPlugin.uiConfig.httpConfigs.assertionForm.condition.title')"
               class="flex-1 min-w-0"
               :disabled="!dataMap[item].type"
               :options="optionsMap[item]"
@@ -896,8 +896,8 @@ const enumFieldNames = { label: 'message', value: 'value' };
             <Switch
               :disabled="extractDisabledSet.has(item)"
               :checked="extractSet.has(item)"
-              :checkedChildren="t('httPlugin.uiConfig.httpConfigs.assertionForm.show.expected.checked')"
-              :unCheckedChildren="t('httPlugin.uiConfig.httpConfigs.assertionForm.show.expected.unchecked')"
+              :checkedChildren="t('httpPlugin.uiConfig.httpConfigs.assertionForm.show.expected.checked')"
+              :unCheckedChildren="t('httpPlugin.uiConfig.httpConfigs.assertionForm.show.expected.unchecked')"
               @change="switchChange($event, item)" />
           </div>
         </div>
@@ -909,16 +909,16 @@ const enumFieldNames = { label: 'message', value: 'value' };
                   :value="dataMap[item].extraction?.method"
                   style="flex: 0 0 calc((100% - 40px)/6);"
                   enumKey="ExtractionMethod"
-                  :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.method.placeholder')"
-                  :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.method.title')"
+                  :placeholder="t('httpPlugin.uiConfig.httpConfigs.assertionForm.extraction.method.placeholder')"
+                  :title="t('httpPlugin.uiConfig.httpConfigs.assertionForm.extraction.method.title')"
                   trim
                   :error="methodErrorSet.has(item)"
                   @change="methodChange($event,item)" />
                 <Select
                   :value="dataMap[item].extraction?.location"
                   style="flex: 0 0 calc((100% - 40px)/6);"
-                  :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.location.placeholder')"
-                  :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.location.title')"
+                  :placeholder="t('httpPlugin.uiConfig.httpConfigs.assertionForm.extraction.location.placeholder')"
+                  :title="t('httpPlugin.uiConfig.httpConfigs.assertionForm.extraction.location.title')"
                   trim
                   :fieldNames="enumFieldNames"
                   :options="locationOptionsMap[item]"
@@ -927,8 +927,8 @@ const enumFieldNames = { label: 'message', value: 'value' };
                 <Input
                   :value="dataMap[item].extraction?.parameterName"
                   style="flex: 0 0 calc((100% - 40px)/6);"
-                  :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.parameter.name.placeholder')"
-                  :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.parameter.name.title')"
+                  :placeholder="t('httpPlugin.uiConfig.httpConfigs.assertionForm.extraction.parameter.name.placeholder')"
+                  :title="t('httpPlugin.uiConfig.httpConfigs.assertionForm.extraction.parameter.name.title')"
                   trim
                   :maxlength="400"
                   :disabled="NOT_PARAMETER_NAME.includes(dataMap[item].extraction?.location)"
@@ -937,12 +937,12 @@ const enumFieldNames = { label: 'message', value: 'value' };
                 <Input
                   :value="dataMap[item].extraction?.defaultValue"
                   style="flex: 0 0 calc((100% - 40px)/6);"
-                  :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.default.value.placeholder')"
-                  :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.default.value.title')"
+                  :placeholder="t('httpPlugin.uiConfig.httpConfigs.assertionForm.extraction.default.value.placeholder')"
+                  :title="t('httpPlugin.uiConfig.httpConfigs.assertionForm.extraction.default.value.title')"
                   trim
                   @change="defaultValueChange($event,item)" />
                 <Tooltip
-                  :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.expression.error')"
+                  :title="t('httpPlugin.uiConfig.httpConfigs.assertionForm.extraction.expression.error')"
                   internal
                   placement="right"
                   destroyTooltipOnHide
@@ -950,8 +950,8 @@ const enumFieldNames = { label: 'message', value: 'value' };
                   <Input
                     :ref="el => { extractionExpressionRefs[index] = el }"
                     :value="dataMap[item].extraction?.expression"
-                    :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.expression.placeholder')"
-                    :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.expression.title')"
+                    :placeholder="t('httpPlugin.uiConfig.httpConfigs.assertionForm.extraction.expression.placeholder')"
+                    :title="t('httpPlugin.uiConfig.httpConfigs.assertionForm.extraction.expression.title')"
                     trim
                     style="flex: 0 0 calc((100% - 40px)/6);"
                     :disabled="dataMap[item].extraction?.method === 'EXACT_VALUE'"
@@ -962,8 +962,8 @@ const enumFieldNames = { label: 'message', value: 'value' };
                 <div class="flex items-center space-x-2" style="flex: 0 0 calc((100% - 40px)/6);">
                   <Input
                     :value="dataMap[item].extraction?.matchItem"
-                    :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.match.item.placeholder')"
-                    :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.extraction.match.item.title')"
+                    :placeholder="t('httpPlugin.uiConfig.httpConfigs.assertionForm.extraction.match.item.placeholder')"
+                    :title="t('httpPlugin.uiConfig.httpConfigs.assertionForm.extraction.match.item.title')"
                     trim
                     :disabled="dataMap[item].extraction?.method === 'EXACT_VALUE'"
                     :max="2000"
@@ -978,7 +978,7 @@ const enumFieldNames = { label: 'message', value: 'value' };
               <div class="flex items-start space-x-2">
                 <template v-if="expressionShowSet.has(item)">
                   <Tooltip
-                    :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.expression.error')"
+                    :title="t('httpPlugin.uiConfig.httpConfigs.assertionForm.expression.error')"
                     internal
                     placement="right"
                     destroyTooltipOnHide
@@ -995,8 +995,8 @@ const enumFieldNames = { label: 'message', value: 'value' };
                   </Tooltip>
                   <Input
                     v-model:value="dataMap[item].matchItem"
-                    :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.match.item.placeholder')"
-                    :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.match.item.title')"
+                    :placeholder="t('httpPlugin.uiConfig.httpConfigs.assertionForm.match.item.placeholder')"
+                    :title="t('httpPlugin.uiConfig.httpConfigs.assertionForm.match.item.title')"
                     style="flex: 0 0 calc((100% - 40px)/6);"
                     trim
                     :max="2000"
@@ -1006,8 +1006,8 @@ const enumFieldNames = { label: 'message', value: 'value' };
                   <div class="flex items-center space-x-2" style="flex: 1;">
                     <Input
                       v-model:value="dataMap[item].expected"
-                      :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.expected.placeholder')"
-                      :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.expected.title')"
+                      :placeholder="t('httpPlugin.uiConfig.httpConfigs.assertionForm.expected.placeholder')"
+                      :title="t('httpPlugin.uiConfig.httpConfigs.assertionForm.expected.title')"
                       trim
                       :error="expectedErrorSet.has(item)"
                       @change="expectedChange($event,item)" />
@@ -1018,8 +1018,8 @@ const enumFieldNames = { label: 'message', value: 'value' };
                   <Input
                     v-model:value="dataMap[item].expected"
                     type="textarea"
-                    :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.expected.placeholder')"
-                    :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.expected.title')"
+                    :placeholder="t('httpPlugin.uiConfig.httpConfigs.assertionForm.expected.placeholder')"
+                    :title="t('httpPlugin.uiConfig.httpConfigs.assertionForm.expected.title')"
                     trim
                     :autoSize="textAreaAutoSize"
                     :error="expectedErrorSet.has(item)"
@@ -1030,8 +1030,8 @@ const enumFieldNames = { label: 'message', value: 'value' };
           </template>
           <Input
             v-model:value="dataMap[item].description"
-            :placeholder="t('httPlugin.uiConfig.httpConfigs.assertionForm.description.placeholder')"
-            :title="t('httPlugin.uiConfig.httpConfigs.assertionForm.description.title')"
+            :placeholder="t('httpPlugin.uiConfig.httpConfigs.assertionForm.description.placeholder')"
+            :title="t('httpPlugin.uiConfig.httpConfigs.assertionForm.description.title')"
             type="textarea"
             trim
             @change="descriptionChange($event,item)" />

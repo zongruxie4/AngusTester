@@ -161,21 +161,21 @@ onMounted(() => {
 });
 
 const noDataText = computed(() => {
-  return errorMessage.value ? errorMessage.value : t('httPlugin.uiConfig.httpConfigs.parametric.dataset.previewDataModal.noData');
+  return errorMessage.value ? errorMessage.value : t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.previewDataModal.noData');
 });
 </script>
 
 <template>
   <Spin :spinning="loading" class="text-3 leading-5">
     <div class="flex items-center justify-between transform-gpu -translate-y-1">
-      <Hints :text="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.previewDataModal.description')" />
+      <Hints :text="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.previewDataModal.description')" />
 
       <div class="flex items-center flex-nowrap space-x-2.5">
         <div class="flex items-center">
-          <div class="flex-shrink-0 mr-2">{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.previewDataModal.previewRows') }}</div>
+          <div class="flex-shrink-0 mr-2">{{ t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.previewDataModal.previewRows') }}</div>
           <Input
             v-model:value="rowNum"
-            :placeholder="t('httPlugin.uiConfig.httpConfigs.parametric.dataset.previewDataModal.previewRowsPlaceholder')"
+            :placeholder="t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.previewDataModal.previewRowsPlaceholder')"
             :maxlength="5"
             :min="1"
             :max="10000"
@@ -191,7 +191,7 @@ const noDataText = computed(() => {
           class="px-0 h-5 leading-5 border-0 text-theme-content text-theme-text-hover"
           @click="refresh">
           <Icon icon="icon-shuaxin" class="text-3.5" />
-          <span class="ml-1">{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.previewDataModal.refresh') }}</span>
+          <span class="ml-1">{{ t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.previewDataModal.refresh') }}</span>
         </Button>
       </div>
     </div>

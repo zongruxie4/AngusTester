@@ -5,6 +5,7 @@ import { Icon, AsyncComponent, ApiUtils as angusUtils } from '@xcan-angus/vue-ui
 import { utils } from '@xcan-angus/infra';
 import qs from 'qs';
 import { paramTarget } from '@/api/tester';
+import { useI18n } from 'vue-i18n';
 
 import { PipelineConfig, TargetKey } from './PropsType';
 import { HTTPConfig } from './HTTPConfigs/PropsType';
@@ -19,6 +20,8 @@ export interface Props {
   value: PipelineConfig[];
   loaded: boolean;
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   value: undefined,
@@ -720,7 +723,7 @@ const insertTime = () => {
     id: utils.uuid(),
     beforeName: '',
     target: 'WAITING_TIME',
-    name: '等待时间-' + waitingTimeNum++,
+    name: t('httpPlugin.uiConfig.defaultNames.waitingTime') + '-' + waitingTimeNum++,
     description: '',
     enabled: true,
     minWaitTimeInMs: '',
@@ -740,7 +743,7 @@ const insertQBS = () => {
   const data: ThroughputConfig = {
     id: utils.uuid(),
     target: 'THROUGHPUT',
-    name: '吞吐量限制-' + qbsNum++,
+    name: t('httpPlugin.uiConfig.defaultNames.throughputLimiter') + '-' + qbsNum++,
     description: '',
     enabled: true,
     beforeName: '',
@@ -761,7 +764,7 @@ const insertRendezvous = () => {
   const data: RendezvousConfig = {
     id: utils.uuid(),
     target: 'RENDEZVOUS',
-    name: '集合点-' + rendezvousNum++,
+    name: t('httpPlugin.uiConfig.defaultNames.rendezvous') + '-' + rendezvousNum++,
     description: '',
     enabled: true,
     beforeName: '',
@@ -887,7 +890,7 @@ defineExpose({
         @click="insertHTTP">
         <div class="flex items-center">
           <Icon icon="icon-httpcanshu" class="mr-1" />
-          <span>插入接口</span>
+          <span>{{ t('httpPlugin.uiConfig.buttons.insertApi') }}</span>
         </div>
       </Button>
       <Button
@@ -896,7 +899,7 @@ defineExpose({
         @click="selectHTTP">
         <div class="flex items-center">
           <Icon icon="icon-xuanzejiekou" class="mr-1" />
-          <span>选择接口</span>
+          <span>{{ t('httpPlugin.uiConfig.buttons.selectApi') }}</span>
         </div>
       </Button>
       <Button
@@ -905,7 +908,7 @@ defineExpose({
         @click="selectUseCase">
         <div class="flex items-center">
           <Icon icon="icon-xuanzeyongli" class="mr-1" />
-          <span>选择用例</span>
+          <span>{{ t('httpPlugin.uiConfig.buttons.selectUseCase') }}</span>
         </div>
       </Button>
       <Button
@@ -915,7 +918,7 @@ defineExpose({
         @click="insertTransStart">
         <div class="flex items-center">
           <Icon icon="icon-shiwu" class="mr-1" />
-          <span>插入开始事务</span>
+          <span>{{ t('httpPlugin.uiConfig.buttons.insertTransStart') }}</span>
         </div>
       </Button>
       <Button
@@ -925,7 +928,7 @@ defineExpose({
         @click="insertTransEnd">
         <div class="flex items-center">
           <Icon icon="icon-shiwu" class="mr-1" />
-          <span>插入结束事务</span>
+          <span>{{ t('httpPlugin.uiConfig.buttons.insertTransEnd') }}</span>
         </div>
       </Button>
       <Button
@@ -934,7 +937,7 @@ defineExpose({
         @click="insertTime">
         <div class="flex items-center">
           <Icon icon="icon-dengdaishijian" class="mr-1" />
-          <span>插入等待时间</span>
+          <span>{{ t('httpPlugin.uiConfig.buttons.insertWaitingTime') }}</span>
         </div>
       </Button>
       <Button
@@ -943,7 +946,7 @@ defineExpose({
         @click="insertQBS">
         <div class="flex items-center">
           <Icon icon="icon-zusai" class="mr-1" />
-          <span>插入吞吐量限制器</span>
+          <span>{{ t('httpPlugin.uiConfig.buttons.insertThroughputLimiter') }}</span>
         </div>
       </Button>
       <Button
@@ -952,7 +955,7 @@ defineExpose({
         @click="insertRendezvous">
         <div class="flex items-center">
           <Icon icon="icon-jihedian1" class="mr-1" />
-          <span>插入集合点</span>
+          <span>{{ t('httpPlugin.uiConfig.buttons.insertRendezvous') }}</span>
         </div>
       </Button>
     </div>

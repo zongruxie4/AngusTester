@@ -18,79 +18,79 @@ const prettyXml = (data: string) => {
 const matchItemList = [
   {
     key: 'regexp',
-    name: t('httPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.regexp.title'),
+    name: t('httpPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.regexp.title'),
     columns: [[
       {
         dataIndex: 'data',
-        label: t('httPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.dataColumn')
+        label: t('httpPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.dataColumn')
       },
       {
         dataIndex: 'expression',
-        label: t('httPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.expressionColumn')
+        label: t('httpPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.expressionColumn')
       },
       {
         dataIndex: 'result',
-        label: t('httPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.resultColumn')
+        label: t('httpPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.resultColumn')
       },
       {
         dataIndex: 'item',
-        label: t('httPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.itemColumn')
+        label: t('httpPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.itemColumn')
       }
     ]],
     data: {
       data: 'hello, RegexExtraction! my phone number is 18888888888 and 13999999999.',
       expression: '(1\\d{10})',
       result: '["18888888888","13999999999"]',
-      item: t('httPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.regexp.data')
+      item: t('httpPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.regexp.data')
     }
   },
   {
     key: 'jsonpath',
-    name: t('httPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.jsonpath.title'),
+    name: t('httpPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.jsonpath.title'),
     columns: [[
       {
         dataIndex: 'data',
-        label: t('httPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.dataColumn')
+        label: t('httpPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.dataColumn')
       },
       {
         dataIndex: 'expression',
-        label: t('httPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.expressionColumn')
+        label: t('httpPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.expressionColumn')
       },
       {
         dataIndex: 'result',
-        label: t('httPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.resultColumn')
+        label: t('httpPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.resultColumn')
       },
       {
         dataIndex: 'item',
-        label: t('httPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.itemColumn')
+        label: t('httpPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.itemColumn')
       }
     ]],
     data: {
       data: { store: { book: [{ title: 'Sayings of the Century', price: 100 }, { title: 'Confucianism', price: 200 }] } },
       expression: '$.store.book[*]',
       result: '[{"title":"Sayings of the Century","price":100},{"title":"confucianism","price":200}]',
-      item: t('httPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.jsonpath.data')
+      item: t('httpPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.jsonpath.data')
     }
   },
   {
     key: 'xpath',
-    name: t('httPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.xpath.title'),
+    name: t('httpPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.xpath.title'),
     columns: [[
       {
         dataIndex: 'data',
-        label: t('httPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.dataColumn')
+        label: t('httpPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.dataColumn')
       },
       {
         dataIndex: 'expression',
-        label: t('httPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.expressionColumn')
+        label: t('httpPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.expressionColumn')
       },
       {
         dataIndex: 'result',
-        label: t('httPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.resultColumn')
+        label: t('httpPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.resultColumn')
       },
       {
         dataIndex: 'item',
-        label: t('httPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.itemColumn')
+        label: t('httpPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.itemColumn')
       }
     ]],
     data: {
@@ -98,7 +98,7 @@ const matchItemList = [
         '<interests>basketball</interests><name>Angus1</name></person><person><age>32</age><interests>coding</interests><name>Angus2</name></person></persons>'),
       expression: '/persons/person[age >= 30]',
       result: '["30codingbasketballAngus1", "32codingAngus2"]',
-      item: t('httPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.xpath.data')
+      item: t('httpPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.xpath.data')
     }
   }
 ];
@@ -110,9 +110,9 @@ const matchItemList = [
     </div>
     <template #content>
       <div class="w-196 space-y-2 text-3 text-theme-content">
-        <Hints :text="t('httPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.hints')" class="!font-semibold !text-theme-content" />
+        <Hints :text="t('httpPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.hints')" class="!font-semibold !text-theme-content" />
         <div>
-          {{ t('httPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.description') }}
+          {{ t('httpPlugin.uiConfig.httpConfigs.parametric.variables.matchItemPopover.description') }}
         </div>
         <ol class="pl-4 space-y-2">
           <li

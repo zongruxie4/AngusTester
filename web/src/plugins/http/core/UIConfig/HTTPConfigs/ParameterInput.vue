@@ -224,7 +224,7 @@ const options = [{ label: 'query', value: 'query' }, { label: 'path', value: 'pa
         :disabled="dataMap[item].disabled"
         :maxLength="400"
         :error="nameErrorSet.has(item)"
-        :placeholder="t('httPlugin.uiConfig.httpConfigs.parameterInput.namePlaceholder')"
+        :placeholder="t('httpPlugin.uiConfig.httpConfigs.parameterInput.namePlaceholder')"
         size="small"
         tirmAll
         style="flex:0 0 calc((100% - 84px)*3.5/10);max-width: 400px;"
@@ -241,7 +241,7 @@ const options = [{ label: 'query', value: 'query' }, { label: 'path', value: 'pa
         :value="dataMap[item].value"
         :maxLength="4096"
         class="flex-1 bg-white"
-        :placeholder="t('httPlugin.uiConfig.httpConfigs.parameterInput.valuePlaceholder')"
+        :placeholder="t('httpPlugin.uiConfig.httpConfigs.parameterInput.valuePlaceholder')"
         @blur="valueChange($event, item)" />
       <!-- <Input
         v-model:value="dataMap[item].value"

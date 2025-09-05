@@ -45,10 +45,10 @@ const _columnIndex = computed(() => {
 
     <div class="flex items-center space-x-2 mb-1">
       <div class="w-90 flex items-center">
-        <span>{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.extractParametersField.name') }}</span>
+        <span>{{ t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.extractParametersField.name') }}</span>
       </div>
       <div class="flex-1 flex items-center">
-        <span>{{ t('httPlugin.uiConfig.httpConfigs.parametric.dataset.extractParametersField.readColumn') }}</span>
+        <span>{{ t('httpPlugin.uiConfig.httpConfigs.parametric.dataset.extractParametersField.readColumn') }}</span>
       </div>
     </div>
 

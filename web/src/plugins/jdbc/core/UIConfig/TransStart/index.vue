@@ -158,7 +158,7 @@ defineExpose({
           <Icon class="flex-shrink-0 mr-3 text-4" icon="icon-shiwu" />
           <div class="flex-1 flex items-center">
             <Tooltip
-              :title="t('httPlugin.uiConfig.transStart.duplicateName')"
+              :title="t('httpPlugin.uiConfig.transStart.duplicateName')"
               internal
               placement="right"
               destroyTooltipOnHide
@@ -170,7 +170,7 @@ defineExpose({
                 :error="nameError"
                 trim
                 style="width: calc((100% - (144px))*2/5);"
-                :placeholder="t('httPlugin.uiConfig.transStart.namePlaceholder')"
+                :placeholder="t('httpPlugin.uiConfig.transStart.namePlaceholder')"
                 @change="nameChange" />
             </Tooltip>
           </div>
