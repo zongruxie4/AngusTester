@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Colon, Hints } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
 import { exec, task, funcPlan, funcCase, apis, services, scenario } from '@/api/tester';
-import { user, dept, group } from 'src/api/gm';
+import { user, dept, group } from '@/api/gm';
 
 import { treeData } from './config';
 

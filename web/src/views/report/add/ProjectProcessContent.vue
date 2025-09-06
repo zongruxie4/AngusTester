@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Colon, DatePicker, Hints, Select } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
 import { GM } from '@xcan-angus/infra';
-import { contentTreeData } from './config';
+import { contentTreeData } from './ProjectProcessContentConfig';
 
 const { t } = useI18n();
 

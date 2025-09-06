@@ -8,8 +8,8 @@ import { duration } from '@xcan-angus/infra';
 import { Icon, Input, NoData, Spin } from '@xcan-angus/vue-ui';
 import { report } from '@/api/tester';
 
-import CheckboxGroup from './checkboxGroup.vue';
-import { SpaceItem } from './PropsType';
+import CheckboxGroup from './CheckboxGroup.vue';
+import { SpaceItem } from './types';
 
 const { t } = useI18n();
 

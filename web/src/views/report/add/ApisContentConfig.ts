@@ -8,8 +8,8 @@ export const contentTreeData = [
     key: 'apisBasic'
   },
   {
-    title: t('reportAdd.apisContent.contentTree.apisTestt'),
-    key: 'apisTestt'
+    title: t('reportAdd.apisContent.contentTree.apisTest'),
+    key: 'apisTest'
   },
   {
     title: t('reportAdd.apisContent.contentTree.apisDetail'),

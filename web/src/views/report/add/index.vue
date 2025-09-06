@@ -38,18 +38,18 @@ const contentRef = ref();
 const activeTab = ref('createdDate');
 const isChangeDescription = ref(false); // 是否手动修改描述
 
-const CreatedDate = defineAsyncComponent(() => import('@/views/report/add/createdDate/index.vue'));
-const Basic = defineAsyncComponent(() => import('@/views/report/add/basic/index.vue'));
-const ProjectProcessContent = defineAsyncComponent(() => import('@/views/report/add/projectProcessContent/index.vue'));
-const ServiceContent = defineAsyncComponent(() => import('@/views/report/add/servicesContent/index.vue'));
-const ApisContent = defineAsyncComponent(() => import('@/views/report/add/apisContent/index.vue'));
-const ScenarioContent = defineAsyncComponent(() => import('@/views/report/add/scenarioContent/index.vue'));
-const SprintContent = defineAsyncComponent(() => import('@/views/report/add/sprintContent/index.vue'));
-const TaskContent = defineAsyncComponent(() => import('@/views/report/add/taskContent/index.vue'));
-const PlanContent = defineAsyncComponent(() => import('@/views/report/add/planContent/index.vue'));
-const CasesContent = defineAsyncComponent(() => import('@/views/report/add/caseContent/index.vue'));
-const ExecFuncContent = defineAsyncComponent(() => import('@/views/report/add/execFuncContent/index.vue'));
-const ExecPerfStabilityCustomContent = defineAsyncComponent(() => import('@/views/report/add/execPerfContent/index.vue'));
+const CreatedDate = defineAsyncComponent(() => import('@/views/report/add/CreatedDate.vue'));
+const Basic = defineAsyncComponent(() => import('@/views/report/add/Basic.vue'));
+const ProjectProcessContent = defineAsyncComponent(() => import('@/views/report/add/ProjectProcessContent.vue'));
+const ServiceContent = defineAsyncComponent(() => import('@/views/report/add/ServicesContent.vue'));
+const ApisContent = defineAsyncComponent(() => import('@/views/report/add/ApisContent.vue'));
+const ScenarioContent = defineAsyncComponent(() => import('@/views/report/add/ScenarioContent.vue'));
+const SprintContent = defineAsyncComponent(() => import('@/views/report/add/SprintContent.vue'));
+const TaskContent = defineAsyncComponent(() => import('@/views/report/add/TaskContent.vue'));
+const PlanContent = defineAsyncComponent(() => import('@/views/report/add/PlanContent.vue'));
+const CasesContent = defineAsyncComponent(() => import('@/views/report/add/CaseContent.vue'));
+const ExecFuncContent = defineAsyncComponent(() => import('@/views/report/add/ExecFuncContent.vue'));
+const ExecPerfStabilityCustomContent = defineAsyncComponent(() => import('@/views/report/add/ExecPerfContent.vue'));
 const formState = ref({
   name: '',
   version: '1.0',
@@ -315,7 +315,7 @@ onMounted(() => {
         </div>
         <div class="flex-1 min-w-0 overflow-y-auto p-4">
           <div class="border-blue-border border rounded bg-blue-bg4  px-6 py-4 flex items-center space-x-7">
-            <img src="./image/default.png" class="rounded-full w-15 h-15" />
+            <img src="../../../assets/images/default.png" class="rounded-full w-15 h-15" />
             <div class="space-y-2 flex-1 min-w-0">
               <div class="font-semibold text-3.5">{{ report?.label }}</div>
               <div class="flex justify-between">

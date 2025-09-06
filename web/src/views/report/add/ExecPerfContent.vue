@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Colon, Hints, IconRequired, Select } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
-import { contentTreeData } from './config';
+import { contentTreeData } from './ExecPerfContentConfig';
 
 const { t } = useI18n();
 
@@ -13,7 +13,8 @@ interface Props {
   contentSetting: {
     targetId: string;
   };
-  disabled: boolean
+  execType: 'TEST_CUSTOMIZATION'| 'TEST_PERFORMANCE'| 'TEST_STABILITY';
+  disabled: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -21,7 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false
 });
 
-const scenarioId = ref();
+const execId = ref();
 const fieldNames = {
   label: 'name',
   value: 'id'
@@ -34,20 +35,34 @@ contentTreeData.forEach(item => {
   }
 });
 
+const execParams = {
+  filters: [
+    {
+      key: 'plugin',
+      value: ['Http', 'Jdbc', 'WebSocket', 'Tcp', 'Ldap', 'Mail', 'Smtp', 'Ftp'],
+      op: 'IN'
+    },
+    {
+      key: 'status',
+      value: 'COMPLETED',
+      op: 'EQUAL'
+    }
+  ]
+};
+
 onMounted(() => {
   watch(() => props.contentSetting, newValue => {
     if (newValue?.targetId) {
-      scenarioId.value = newValue.targetId;
+      execId.value = newValue.targetId;
     }
   }, {
     immediate: true
   });
 });
-
 const valid = ref(false);
 const validate = () => {
   valid.value = true;
-  if (scenarioId.value) {
+  if (execId.value) {
     return true;
   }
   return false;
@@ -58,8 +73,8 @@ defineExpose({
   getData: () => {
     valid.value = false;
     return {
-      targetId: scenarioId.value,
-      targetType: 'SCENARIO'
+      targetId: execId.value,
+      targetType: 'EXECUTION'
     };
   }
 });
@@ -67,19 +82,20 @@ defineExpose({
 <template>
   <div class="flex items-center space-x-1">
     <span class="h-4 w-1.5 bg-blue-border1"></span>
-    <span>{{ t('reportAdd.scenarioContent.filter') }}</span>
+    <span>{{ t('reportAdd.execPerfContent.filter') }}</span>
   </div>
   <div class="flex mt-2 pl-2">
     <div class="inline-flex flex-1 items-center space-x-2">
-      <div class="w-10 text-right"><IconRequired class="mr-1" />{{ t('reportAdd.scenarioContent.scenario') }}</div>
+      <div class="w-10 text-right"><IconRequired class="mr-1" />{{ t('reportAdd.execPerfContent.execution') }}</div>
       <Colon />
       <Select
-        v-model:value="scenarioId"
-        :placeholder="t('reportAdd.scenarioContent.scenarioPlaceholder')"
+        v-model:value="execId"
+        :placeholder="t('reportAdd.execPerfContent.executionPlaceholder')"
         :showSearch="true"
-        :error="valid && !scenarioId"
+        :error="valid && !execId"
         :disabled="!props.projectId || props.disabled"
-        :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
+        :action="`${TESTER}/exec?projectId=${props.projectId}&scriptType=${props.execType || ''}&fullTextSearch=true`"
+        :params="execParams"
         :lazy="false"
         :defaultActiveFirstOption="true"
         :fieldNames="fieldNames"
@@ -88,8 +104,8 @@ defineExpose({
   </div>
   <div class="flex items-center space-x-1 mt-4">
     <span class="h-4 w-1.5 bg-blue-border1"></span>
-    <span>{{ t('reportAdd.scenarioContent.content') }}</span>
-    <Hints :text="t('reportAdd.scenarioContent.contentHints')" />
+    <span>{{ t('reportAdd.execPerfContent.content') }}</span>
+    <Hints :text="t('reportAdd.execPerfContent.contentHints')" />
   </div>
   <Tree
     v-model:checkedKeys="checked"
@@ -99,8 +115,14 @@ defineExpose({
     :defaultExpandAll="true"
     :selectable="false"
     :checkable="true">
-    <template #title="{title}">
-      <span style="color: rgb(82, 90, 101);">{{ title }}</span>
+    <template #title="{title, tips}">
+      <div class="flex items-start space-x-2">
+        <span style="color: rgb(82, 90, 101);">{{ title }}</span>
+        <Hints
+          v-if="tips"
+          :text="tips"
+          class="leading-6 items-center" />
+      </div>
     </template>
   </Tree>
 </template>

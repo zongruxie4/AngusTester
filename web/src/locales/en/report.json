@@ -370,7 +370,7 @@
       "contentHints": "The following is the report output content directory information.",
       "contentTree": {
         "apisBasic": "API basic information",
-        "apisTestt": "API test summary results",
+        "apisTest": "API test summary results",
         "apisDetail": "API test result detailed information",
         "funcTest": "Functional test result",
         "perfTest": "Performance test result",

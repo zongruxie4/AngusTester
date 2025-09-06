@@ -193,7 +193,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: '/report',
-        component: () => import('@/views/report/homepage/index.vue')
+        component: () => import('@/views/report/home/index.vue')
       }
     ]
   },

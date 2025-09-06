@@ -7,7 +7,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { XCanDexie, TESTER, CombinedTargetType } from '@xcan-angus/infra';
 
-import { MenuItem } from './PropsType';
+import { MenuItem } from './types';
 
 const { t } = useI18n();
 

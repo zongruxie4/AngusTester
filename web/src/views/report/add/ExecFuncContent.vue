@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Colon, Hints, IconRequired, Select } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
-import { contentTreeData } from './config';
+import { contentTreeData } from './ExecFuncContentConfig';
 
 const { t } = useI18n();
 

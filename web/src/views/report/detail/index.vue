@@ -22,10 +22,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void}>();
 
-const GenerateTime = defineAsyncComponent(() => import('@/views/report/detail/generateTime/index.vue'));
-const GenerateRecord = defineAsyncComponent(() => import('@/views/report/detail/generateRecord/index.vue'));
-const Basic = defineAsyncComponent(() => import('@/views/report/add/basic/index.vue'));
-const Content = defineAsyncComponent(() => import('@/views/report/detail/content/index.vue'));
+const GenerateTime = defineAsyncComponent(() => import('@/views/report/detail/GenerateTime.vue'));
+const GenerateRecord = defineAsyncComponent(() => import('@/views/report/detail/GenerateRecord.vue'));
+const Basic = defineAsyncComponent(() => import('@/views/report/add/Basic.vue'));
+const Content = defineAsyncComponent(() => import('@/views/report/detail/Content.vue'));
 
 // const route = useRoute();
 
@@ -72,7 +72,7 @@ const activityType = ['REPORT'];
     @cancel="cancel">
     <div class="text-3 h-full flex flex-col" style="height: 80vh">
       <div class="border-blue-border border rounded bg-blue-bg4  px-6 py-4 flex items-center space-x-7">
-        <img src="../add/image/default.png" class="rounded-full w-15 h-15" />
+        <img src="../../../assets/images/default.png" class="rounded-full w-15 h-15" />
         <div class="space-y-2 flex-1 min-w-0">
           <div class="font-semibold text-3.5">{{ report?.template?.message }}</div>
           <div class="flex justify-between">

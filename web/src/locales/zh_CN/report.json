@@ -370,7 +370,7 @@
       "contentHints": "以下是报告输出内容目录信息。",
       "contentTree": {
         "apisBasic": "接口基本信息",
-        "apisTestt": "接口测试汇总结果",
+        "apisTest": "接口测试汇总结果",
         "apisDetail": "接口测试结果详细信息",
         "funcTest": "功能测试结果",
         "perfTest": "性能测试结果",

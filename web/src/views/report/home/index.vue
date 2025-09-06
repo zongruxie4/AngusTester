@@ -10,13 +10,13 @@ import { getCurrentPage } from '@/utils/utils';
 
 const { t } = useI18n();
 
-const Summary = defineAsyncComponent(() => import('@/views/report/homepage/summary/index.vue'));
-const SearchPanel = defineAsyncComponent(() => import('@/views/report/homepage/searchPanel/index.vue'));
-const PieChart = defineAsyncComponent(() => import('@/views/report/homepage/pieChart/index.vue'));
+const Summary = defineAsyncComponent(() => import('@/views/report/home/Introduce.vue'));
+const SearchPanel = defineAsyncComponent(() => import('@/views/report/home/SearchPanel.vue'));
+const PieChart = defineAsyncComponent(() => import('@/views/report/home/PieChart.vue'));
 const AddReportModal = defineAsyncComponent(() => import('@/views/report/add/index.vue'));
 const ViewReportModal = defineAsyncComponent(() => import('@/views/report/detail/index.vue'));
-const GlobalAuthorizeModal = defineAsyncComponent(() => import('@/views/report/homepage/globalAuth/index.vue'));
-const CategorySelectList = defineAsyncComponent(() => import('@/views/report/homepage/categorySelect/index.vue'));
+const GlobalAuthorizeModal = defineAsyncComponent(() => import('@/views/report/home/auth/index.vue'));
+const CategorySelectList = defineAsyncComponent(() => import('@/views/report/home/CategorySelect.vue'));
 
 type OrderByKey = 'createdDate' | 'createdByName';
 type OrderSortKey = 'ASC' | 'DESC';

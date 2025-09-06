@@ -8,8 +8,8 @@ import { Hints, Modal } from '@xcan-angus/vue-ui';
 
 const { t } = useI18n();
 
-const GroupSet = defineAsyncComponent(() => import('@/views/report/homepage/globalAuth/groupSet/index.vue'));
-const AuthSet = defineAsyncComponent(() => import('@/views/report/homepage/globalAuth/authSet/index.vue'));
+const GroupSet = defineAsyncComponent(() => import('@/views/report/home/auth/GroupSet.vue'));
+const AuthSet = defineAsyncComponent(() => import('@/views/report/home/auth/AuthSet.vue'));
 
 interface Props {
   projectId: string;

@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Colon, DatePicker, Hints, IconRequired, Select } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
 import { TESTER, GM } from '@xcan-angus/infra';
-import { contentTreeData } from './config';
+import { contentTreeData } from './PlanContentConfig';
 
 const { t } = useI18n();
 
@@ -17,7 +17,7 @@ interface Props {
     createdDateEnd?: string;
     targetId?: string;
   };
-  disabled: boolean
+  disabled: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -28,15 +28,15 @@ const props = withDefaults(defineProps<Props>(), {
 const targetTypeOpt = [
   {
     value: 'USER',
-    label: t('reportAdd.sprintContent.user')
+    label: t('reportAdd.planContent.user')
   },
   {
     value: 'DEPT',
-    label: t('reportAdd.sprintContent.dept')
+    label: t('reportAdd.planContent.dept')
   },
   {
     value: 'GROUP',
-    label: t('reportAdd.sprintContent.group')
+    label: t('reportAdd.planContent.group')
   }
 ];
 
@@ -44,7 +44,7 @@ const creatorObjectType = ref('USER');
 const creatorObjectId = ref();
 
 const dateRange = ref();
-const sprintId = ref();
+const planId = ref();
 
 const handleTypeChange = () => {
   creatorObjectId.value = undefined;
@@ -73,18 +73,16 @@ onMounted(() => {
         dateRange.value = [createdDateStart, createdDateEnd];
       }
       if (targetId) {
-        sprintId.value = targetId;
+        planId.value = targetId;
       }
     }
-  }, {
-    immediate: true
   });
 });
 
 const isValid = ref(false);
 const validate = () => {
   isValid.value = true;
-  if (!sprintId.value) {
+  if (!planId.value) {
     return false;
   }
   return true;
@@ -95,9 +93,9 @@ defineExpose({
   getData: () => {
     isValid.value = false;
     return {
-      targetId: sprintId.value,
-      targetType: 'TASK_SPRINT',
-      planOrSprintId: sprintId.value,
+      targetId: planId.value,
+      targetType: 'FUNC_PLAN',
+      planOrSprintId: planId.value,
       creatorObjectType: creatorObjectId.value ? creatorObjectType.value : undefined,
       creatorObjectId: creatorObjectId.value,
       createdDateStart: dateRange.value?.[0] || undefined,
@@ -109,31 +107,31 @@ defineExpose({
 <template>
   <div class="flex items-center space-x-1">
     <span class="h-4 w-1.5 bg-blue-border1"></span>
-    <span>{{ t('reportAdd.sprintContent.filter') }}</span>
+    <span>{{ t('reportAdd.planContent.filter') }}</span>
   </div>
   <div class="mt-2  pl-2 space-y-2">
     <div class="flex flex-1 items-center space-x-2">
-      <div class="w-12 text-right">
-        <IconRequired />
-        {{ t('reportAdd.sprintContent.sprint') }}
+      <div class="w-16 text-right">
+        <IconRequired class="mr-1" />
+        {{ t('reportAdd.planContent.testPlan') }}
       </div>
       <Colon />
       <Select
-        v-model:value="sprintId"
+        v-model:value="planId"
         :showSearch="true"
-        :error="isValid && !sprintId"
+        :error="isValid && !planId"
         :disabled="!props.projectId || props.disabled"
+        :defaultActiveFirstOption="true"
         allowClear
         class="w-72"
         :lazy="false"
-        :defaultActiveFirstOption="true"
-        :placeholder="t('reportAdd.sprintContent.sprintPlaceholder')"
-        :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
+        :placeholder="t('reportAdd.planContent.testPlanPlaceholder')"
+        :action="`${TESTER}/func/plan?projectId=${props.projectId}&fullTextSearch=true`"
         :fieldNames="{ label: 'name', value: 'id' }">
       </Select>
     </div>
     <div class="flex flex-1 items-center space-x-2">
-      <span class="w-12 text-right">{{ t('reportAdd.sprintContent.organization') }}</span><Colon />
+      <span class="w-16 text-right">{{ t('reportAdd.planContent.organization') }}</span><Colon />
       <Select
         v-model:value="creatorObjectType"
         :options="targetTypeOpt"
@@ -145,7 +143,7 @@ defineExpose({
         :showSearch="true"
         allowClear
         class="w-50"
-        :placeholder="t('reportAdd.sprintContent.userPlaceholder')"
+        :placeholder="t('reportAdd.planContent.userPlaceholder')"
         :action="`${GM}/user?fullTextSearch=true`"
         :fieldNames="{ label: 'fullName', value: 'id' }">
       </Select>
@@ -153,7 +151,7 @@ defineExpose({
       <Select
         v-if="creatorObjectType === 'DEPT'"
         v-model:value="creatorObjectId"
-        :placeholder="t('reportAdd.sprintContent.deptPlaceholder')"
+        :placeholder="t('reportAdd.planContent.deptPlaceholder')"
         class="w-50"
         allowClear
         :showSearch="true"
@@ -164,31 +162,31 @@ defineExpose({
       <Select
         v-if="creatorObjectType === 'GROUP'"
         v-model:value="creatorObjectId"
-        :placeholder="t('reportAdd.sprintContent.groupPlaceholder')"
+        :placeholder="t('reportAdd.planContent.groupPlaceholder')"
         class="w-50"
         allowClear
         :showSearch="true"
         :action="`${GM}/group?fullTextSearch=true`"
         :fieldNames="{ label: 'name', value: 'id' }">
       </Select>
-      <Hints :text="t('reportAdd.sprintContent.organizationHints')" />
+      <Hints :text="t('reportAdd.planContent.organizationHints')" />
     </div>
     <div class="flex flex-1 items-center space-x-2">
-      <span class="w-12 text-right">{{ t('reportAdd.sprintContent.time') }}</span><Colon />
+      <span class="w-16 text-right">{{ t('reportAdd.planContent.time') }}</span><Colon />
       <DatePicker
         v-model:value="dateRange"
         showTime
         class="w-72 flex-shrink-0"
         type="date-range" />
-      <Hints :text="t('reportAdd.sprintContent.timeHints')" />
+      <Hints :text="t('reportAdd.planContent.timeHints')" />
     </div>
   </div>
   <div class="flex items-center space-x-2">
   </div>
   <div class="flex items-center space-x-1 mt-4">
     <span class="h-4 w-1.5 bg-blue-border1"></span>
-    <span>{{ t('reportAdd.sprintContent.content') }}</span>
-    <Hints :text="t('reportAdd.sprintContent.contentHints')" />
+    <span>{{ t('reportAdd.planContent.content') }}</span>
+    <Hints :text="t('reportAdd.planContent.contentHints')" />
   </div>
   <Tree
     v-model:checkedKeys="checked"
