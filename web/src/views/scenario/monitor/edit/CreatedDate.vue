@@ -2,6 +2,7 @@
 import { onMounted, watch, toRefs } from 'vue';
 import { DatePicker, FormItem, Radio, RadioGroup } from 'ant-design-vue';
 import { Select } from '@xcan-angus/vue-ui';
+import { CreatedAt, PeriodicUnit } from '@xcan-angus/infra';
 
 // Import types and composables
 import type { CreatedDateProps } from './types';
@@ -12,7 +13,7 @@ import { useTimeOptions } from './composables/useTimeOptions';
 // Component props with default values
 const props = withDefaults(defineProps<CreatedDateProps>(), {
   createTimeSetting: () => ({
-    createdAt: 'NOW' as any,
+    createdAt: CreatedAt.NOW,
     timeOfDay: '07:00:00'
   }),
   showPeriodically: true
@@ -82,12 +83,12 @@ const initializeComponent = async () => {
       const { periodicCreationUnit, createdAt, dayOfWeek } = newValue;
 
       if (periodicCreationUnit) {
-        createTimeSettingData.value.periodicCreationUnit = 
+        createTimeSettingData.value.periodicCreationUnit =
           (periodicCreationUnit as any)?.value || periodicCreationUnit;
       }
 
       if (createdAt) {
-        createTimeSettingData.value.createdAt = 
+        createTimeSettingData.value.createdAt =
           (createdAt as any)?.value || createdAt;
       }
 
@@ -143,26 +144,26 @@ defineExpose({
         {{ item.message }}
       </Radio>
     </RadioGroup>
-    
+
     <!-- Time configuration panel -->
     <div class="">
       <div class="h-10"></div>
-      
+
       <!-- Specific date selection -->
       <div class="h-10">
         <FormItem :class="{'ant-form-item-has-error': isDateInPast}">
           <DatePicker
-            v-show="createTimeSettingData.createdAt === 'AT_SOME_DATE'"
+            v-show="createTimeSettingData.createdAt === CreatedAt.AT_SOME_DATE"
             v-model:value="createdAtSomeDate"
             showTime
             :allowClear="false"
             @change="updateCreatedAtSomeDate" />
         </FormItem>
       </div>
-      
+
       <!-- Periodic configuration options -->
       <div class="h-7 flex items-center space-x-2">
-        <template v-if="createTimeSettingData.createdAt === 'PERIODICALLY'">
+        <template v-if="createTimeSettingData.createdAt === CreatedAt.PERIODICALLY">
           <!-- Periodic unit selection -->
           <Select
             v-model:value="createTimeSettingData.periodicCreationUnit"
@@ -170,25 +171,25 @@ defineExpose({
             :options="periodicCreationUnitOpt"
             :fieldNames="enumFieldNames"
             class="w-40" />
-          
+
           <!-- Weekly day selection -->
           <Select
-            v-show="shouldShowPeriodicOption('WEEKLY', createTimeSettingData.periodicCreationUnit)"
+            v-show="shouldShowPeriodicOption(PeriodicUnit.WEEKLY, createTimeSettingData.periodicCreationUnit)"
             v-model:value="createTimeSettingData.dayOfWeek"
             :options="dayOfWeekOpt"
             :defaultActiveFirstOption="true"
             :fieldNames="enumFieldNames"
             class="w-40" />
-          
+
           <!-- Monthly day selection -->
           <Select
-            v-show="shouldShowPeriodicOption('MONTHLY', createTimeSettingData.periodicCreationUnit)"
+            v-show="shouldShowPeriodicOption(PeriodicUnit.MONTHLY, createTimeSettingData.periodicCreationUnit)"
             v-model:value="createTimeSettingData.dayOfMonth"
             :options="dayOfMonthOpt"
             :defaultActiveFirstOption="true"
             :fieldNames="enumFieldNames"
             class="w-40" />
-          
+
           <!-- Time picker for weekly, monthly, and daily -->
           <DatePicker
             v-if="shouldShowTimePicker(createTimeSettingData.periodicCreationUnit)"
@@ -197,17 +198,17 @@ defineExpose({
             picker="time"
             :allowClear="false"
             @change="updateTimeOfDay" />
-          
+
           <!-- Hourly interval selection -->
           <Select
-            v-if="shouldShowPeriodicOption('HOURLY', createTimeSettingData.periodicCreationUnit)"
+            v-if="shouldShowPeriodicOption(PeriodicUnit.HOURLY, createTimeSettingData.periodicCreationUnit)"
             v-model:value="createTimeSettingData.hourOfDay"
             class="inline-block min-w-15"
             :options="hoursOpt" />
-          
+
           <!-- Every minute interval selection -->
           <Select
-            v-if="shouldShowPeriodicOption('EVERY_MINUTE', createTimeSettingData.periodicCreationUnit)"
+            v-if="shouldShowPeriodicOption(PeriodicUnit.EVERY_MINUTE, createTimeSettingData.periodicCreationUnit)"
             v-model:value="createTimeSettingData.minuteOfHour"
             class="inline-block min-w-15"
             :options="minutesOpt" />

@@ -5,7 +5,7 @@ import type { CreateTimeSetting, TimeValidationResult } from '../types';
 /**
  * Composable for time validation logic
  */
-export function useTimeValidation(
+export function useTimeValidation (
   createTimeSettingData: Ref<CreateTimeSetting>,
   timeOfDay: Ref<dayjs.Dayjs | undefined>,
   createdAtSomeDate: Ref<dayjs.Dayjs | undefined>,

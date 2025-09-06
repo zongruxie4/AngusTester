@@ -1,4 +1,4 @@
-import { ref, watch, computed } from 'vue';
+import { ref, computed } from 'vue';
 import { CreatedAt, PeriodicUnit, DayOfWeek, enumUtils, EnumMessage } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import type { CreateTimeSetting, EnumFieldNames, DayOfMonthOption, OptionItem } from '../types';
@@ -6,7 +6,7 @@ import type { CreateTimeSetting, EnumFieldNames, DayOfMonthOption, OptionItem } 
 /**
  * Composable for managing time-related data and state
  */
-export function useTimeData() {
+export function useTimeData () {
   // Reactive data state
   const createTimeSettingData = ref<CreateTimeSetting>({ createdAt: 'NOW' as any });
   const timeOfDay = ref<dayjs.Dayjs>();
@@ -129,7 +129,7 @@ export function useTimeData() {
     timeOfDay,
     createdAtSomeDate,
     isValid,
-    
+
     // Options
     createdAtAllOpt,
     createdAtOpt,
@@ -139,7 +139,7 @@ export function useTimeData() {
     minutesOpt,
     hoursOpt,
     enumFieldNames,
-    
+
     // Methods
     loadEnum,
     updateTimeOfDay,

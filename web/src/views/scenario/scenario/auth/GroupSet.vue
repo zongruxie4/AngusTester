@@ -1,63 +1,48 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { debounce } from 'throttle-debounce';
-import { GM, duration } from '@xcan-angus/infra';
+import { onMounted } from 'vue';
 import { Icon, Image, Input, Scroll } from '@xcan-angus/vue-ui';
 
-const { t } = useI18n();
+import { useGroupData } from './composables/useGroupData';
+import type { GroupSetProps } from './types';
 
-interface ListInfo {
-  [key: string]: string;
-  avatar: string;
-}
 
-interface Props {
-  type: 'user' | 'dept' | 'group', // 策略id
-  loaded: boolean;
-  checkedId?: string, // 选中的id
-  appId?: string,
-}
-
-const props = withDefaults(defineProps<Props>(), {
+// Component props with proper typing
+const props = withDefaults(defineProps<GroupSetProps>(), {
   type: 'user',
   loaded: false,
   checkedId: undefined,
   appId: undefined
 });
 
-// eslint-disable-next-line func-call-spacing
+// Define emits with proper typing
 const emit = defineEmits<{
   (e: 'update:checkedId', id: string | undefined): void;
-  (e: 'update:loaded', value:boolean): void;
+  (e: 'update:loaded', value: boolean): void;
 }>();
 
-const dataSource = ref<ListInfo[]>([]);
-const inputValue = ref<string>();
-const activeId = ref<string>();
+// Use composable for group data management
+const {
+  dataSource,
+  inputValue,
+  activeId,
+  nameKey,
+  idKey,
+  placeholder,
+  apiPath,
+  searchParams,
+  handleScrollChange,
+  handleInputChange,
+  handleItemSelect,
+  initializeConfig
+} = useGroupData(props);
 
-const nameKey = ref<'deptName' | 'groupName' | 'fullName' | 'name'>('name');
-const idKey = ref<'deptId' | 'groupId' | 'userId' | 'id'>('id');
-const placeholder = ref<string>();
-const apiPath = ref<string>();
-
-const params = computed<{ filters?: [{ key: 'fullName' | 'name'; op: 'MATCH_END'; value: string }] }>(() => {
-  const value = inputValue.value?.trim();
-  if (value) {
-    return {
-      filters: [{ key: props.type === 'user' ? 'fullName' : 'name', op: 'MATCH_END', value }]
-    };
-  }
-
-  return {};
-});
-
-const scrollChange = (data:ListInfo[]) => {
-  dataSource.value = data;
-  if (!activeId.value) {
-    const id = data[0]?.id;
-    activeId.value = id;
-    emit('update:checkedId', id);
+/**
+ * Handle scroll data change and emit events
+ */
+const handleScrollDataChange = (data: any[]) => {
+  const selectedId = handleScrollChange(data);
+  if (selectedId) {
+    emit('update:checkedId', selectedId);
   }
 
   if (!props.loaded) {
@@ -65,41 +50,17 @@ const scrollChange = (data:ListInfo[]) => {
   }
 };
 
-const inputChange = debounce(duration.search, (event: {target:{value:string}}) => {
-  inputValue.value = event.target.value?.trim();
-});
-
-const checkedHandler = (id: string) => {
-  activeId.value = id;
-  emit('update:checkedId', id);
+/**
+ * Handle item selection and emit event
+ */
+const handleItemSelection = (id: string) => {
+  const selectedId = handleItemSelect(id);
+  emit('update:checkedId', selectedId);
 };
 
+// Lifecycle hooks
 onMounted(() => {
-  watch([() => props.appId, () => props.type], ([_appId, _type]) => {
-    if (!_appId) {
-      return;
-    }
-
-    switch (_type) {
-      case 'dept':
-        nameKey.value = 'name';
-        idKey.value = 'id';
-        placeholder.value = t('scenario.auth.groupSet.searchPlaceholders.dept');
-        apiPath.value = `${GM}/app/${_appId}/auth/dept`;
-        break;
-      case 'group':
-        nameKey.value = 'name';
-        idKey.value = 'id';
-        placeholder.value = t('scenario.auth.groupSet.searchPlaceholders.group');
-        apiPath.value = `${GM}/app/${_appId}/auth/group`;
-        break;
-      case 'user':
-        nameKey.value = 'fullName';
-        idKey.value = 'id';
-        placeholder.value = t('scenario.auth.groupSet.searchPlaceholders.user');
-        apiPath.value = `${GM}/app/${_appId}/auth/user`;
-    }
-  }, { immediate: true });
+  initializeConfig();
 });
 </script>
 <template>
@@ -110,7 +71,7 @@ onMounted(() => {
       :placeholder="placeholder"
       size="small"
       class="mb-3.5"
-      @change="inputChange">
+      @change="(event: any) => handleInputChange(event)">
       <template #suffix>
         <Icon class="text-3.5 cursor-pointer text-theme-content" icon="icon-sousuo" />
       </template>
@@ -118,16 +79,16 @@ onMounted(() => {
 
     <Scroll
       :lineHeight="44"
-      :params="params"
+      :params="searchParams"
       :action="apiPath"
       style="height: calc(100% - 36px);"
-      @change="scrollChange">
+      @change="handleScrollDataChange">
       <div
         v-for="item in dataSource"
         :key="item[idKey]"
         :class="{ 'active-item': activeId === item[idKey] }"
         class="flex items-center justify-between h-11 py-1.5 px-3 rounded cursor-pointer hover:bg-gray-hover"
-        @click.stop="checkedHandler(item[idKey])">
+        @click.stop="handleItemSelection(item[idKey])">
         <div class="flex items-center flex-nowrap">
           <Icon
             v-if="type === 'group'"

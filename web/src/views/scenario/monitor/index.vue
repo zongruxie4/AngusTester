@@ -141,7 +141,7 @@ const processHashChange = (hash: string) => {
   }, {} as { [key: string]: string });
 
   const { id, type } = queryParameters;
-  
+
   // Handle tab creation based on query parameters
   if (id) {
     createTabForExistingMonitor(id, type);
@@ -255,4 +255,3 @@ provide('replaceTabPane', replaceTabPane);
     </template>
   </BrowserTab>
 </template>
-

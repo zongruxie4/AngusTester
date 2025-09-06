@@ -6,13 +6,17 @@ import { ScenarioPermission } from '@/enums/enums';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { Hints } from '@xcan-angus/vue-ui';
 
+import type { AuthObjectType, Permission } from './types';
+
 const { t } = useI18n();
 
+// Lazy load components for better performance
 const GroupSet = defineAsyncComponent(() => import('@/views/scenario/scenario/auth/GroupSet.vue'));
 const AuthSet = defineAsyncComponent(() => import('@/views/scenario/scenario/auth/AuthSet.vue'));
 
+// Component props interface
 interface Props {
-  projectId:string;
+  projectId: string;
   appId: string;
 }
 
@@ -21,29 +25,37 @@ const props = withDefaults(defineProps<Props>(), {
   appId: undefined
 });
 
-const activeKey = ref<'user'|'dept'|'group'>('user');
+// Reactive state
+const activeKey = ref<AuthObjectType>('user');
 const checkedUserId = ref<string>();
 const checkedGroupId = ref<string>();
 const checkedDeptId = ref<string>();
-
-const permissions = ref<{value:string, label:string}[]>([]);
+const permissions = ref<Permission[]>([]);
 const loaded = ref(false);
 
-const loadEnums = () => {
-  const res = enumUtils.enumToMessages(ScenarioPermission);
-  permissions.value = res.map(item => ({ label: item.message, value: item.value }));
+/**
+ * Load permission enums and convert to permission array
+ */
+const loadPermissionEnums = () => {
+  const enumMessages = enumUtils.enumToMessages(ScenarioPermission);
+  permissions.value = enumMessages.map(item => ({ 
+    label: item.message, 
+    value: item.value 
+  }));
 };
 
+// Lifecycle hooks
 onMounted(() => {
-  loadEnums();
+  loadPermissionEnums();
 });
 
-const text = t('scenario.auth.description');
+// Computed properties
+const descriptionText = t('scenario.auth.description');
 </script>
 
 <template>
   <div class="h-full px-5 py-5">
-    <Hints :text="text" />
+    <Hints :text="descriptionText" />
     <Tabs
       v-model:activeKey="activeKey"
       size="small"

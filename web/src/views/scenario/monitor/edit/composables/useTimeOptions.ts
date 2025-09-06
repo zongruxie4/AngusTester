@@ -1,11 +1,11 @@
 import { Ref, watch } from 'vue';
-import type { CreateTimeSetting, EnumMessage } from '../types';
-import { CreatedAt } from '@xcan-angus/infra';
+import type { CreateTimeSetting } from '../types';
+import { CreatedAt, EnumMessage } from '@xcan-angus/infra';
 
 /**
  * Composable for managing time option visibility and filtering
  */
-export function useTimeOptions(
+export function useTimeOptions (
   showPeriodically: Ref<boolean>,
   createdAtAllOpt: Ref<EnumMessage<CreatedAt>[]>,
   createdAtOpt: Ref<EnumMessage<CreatedAt>[]>,
