@@ -5,7 +5,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
-import { IPane } from './PropsType';
+import { IPane } from './types';
 
 const { t } = useI18n();
 

@@ -6,8 +6,7 @@ import { Button, Form, FormItem, Textarea, Tabs, TabPane, RadioGroup, Radio } fr
 import { utils, TESTER, GM } from '@xcan-angus/infra';
 import { scenario } from '@/api/tester';
 
-import { FormState } from './PropsType';
-import { MonitorInfo } from '../PropsType';
+import {FormState, MonitorInfo} from '../types';
 
 const { t } = useI18n();
 
@@ -35,7 +34,7 @@ const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({
 const activeTabKey = ref('time');
 const formRef = ref();
 const createdDateRef = ref();
-const CreatedDate = defineAsyncComponent(() => import('@/views/scenario/monitor/edit/createdDate/index.vue'));
+const CreatedDate = defineAsyncComponent(() => import('@/views/scenario/monitor/edit/CreatedDate.vue'));
 const isHttpPlugin = ref(false);
 
 const formState = ref<FormState>({

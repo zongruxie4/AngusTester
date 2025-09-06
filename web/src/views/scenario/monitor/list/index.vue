@@ -7,8 +7,8 @@ import { debounce, throttle } from 'throttle-debounce';
 import { useRouter } from 'vue-router';
 
 import { scenario } from '@/api/tester';
-import { MonitorInfo } from '../PropsType';
-import SearchPanel from '@/views/scenario/monitor/list/searchPanel/index.vue';
+import { MonitorInfo } from '../types';
+import SearchPanel from '@/views/scenario/monitor/list/SearchPanel.vue';
 
 const { t } = useI18n();
 
@@ -33,7 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
 type OrderByKey = 'createdDate' | 'createdByName';
 type OrderSortKey = 'ASC' | 'DESC';
 
-const Introduce = defineAsyncComponent(() => import('@/views/scenario/monitor/list/introduce/index.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/scenario/monitor/list/Introduce.vue'));
 
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const addTabPane = inject<(keys: string[]) => void>('addTabPane', () => ({}));

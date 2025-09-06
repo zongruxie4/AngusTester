@@ -6,7 +6,7 @@ import { utils, appContext } from '@xcan-angus/infra';
 
 type MenuKey = 'homepage' | 'scenario' | 'trash' | 'monitor';
 
-const Homepage = defineAsyncComponent(() => import('@/views/scenario/homepage/index.vue'));
+const Homepage = defineAsyncComponent(() => import('@/views/scenario/home/index.vue'));
 const Trash = defineAsyncComponent(() => import('@/views/scenario/trash/index.vue'));
 const Scenario = defineAsyncComponent(() => import('@/views/scenario/scenario/index.vue'));
 const Monitor = defineAsyncComponent(() => import('@/views/scenario/monitor/index.vue'));

@@ -8,8 +8,8 @@ import { Hints } from '@xcan-angus/vue-ui';
 
 const { t } = useI18n();
 
-const GroupSet = defineAsyncComponent(() => import('@/views/scenario/scenario/auth/groupSet/index.vue'));
-const AuthSet = defineAsyncComponent(() => import('@/views/scenario/scenario/auth/authSet/index.vue'));
+const GroupSet = defineAsyncComponent(() => import('@/views/scenario/scenario/auth/GroupSet.vue'));
+const AuthSet = defineAsyncComponent(() => import('@/views/scenario/scenario/auth/AuthSet.vue'));
 
 interface Props {
   projectId:string;

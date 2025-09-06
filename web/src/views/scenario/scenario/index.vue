@@ -3,9 +3,9 @@ import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from '
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
-import { utils, appContext } from '@xcan-angus/infra';
+import { utils } from '@xcan-angus/infra';
 
-import { IPane } from './PropsType';
+import { IPane } from './types';
 
 const { t } = useI18n();
 
@@ -23,15 +23,16 @@ const props = withDefaults(defineProps<Props>(), {
 
 const Auth = defineAsyncComponent(() => import('@/views/scenario/scenario/auth/index.vue'));
 const List = defineAsyncComponent(() => import('@/views/scenario/scenario/list/index.vue'));
-const HttpConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/httpConfig/index.vue'));
-const WebSocketConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/webSocketConfig/index.vue'));
-const JdbcConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/jdbcConfig/index.vue'));
-const FtpConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/ftpConfig/index.vue'));
-const LdapConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/ldapConfig/index.vue'));
-const MailConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/mailConfig/index.vue'));
-const SmtpConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/smtpConfig/index.vue'));
-const TcpConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/tcpConfig/index.vue'));
 const Detail = defineAsyncComponent(() => import('@/views/scenario/scenario/detail/index.vue'));
+
+const HttpConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/Http.vue'));
+const WebSocketConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/WebSocket.vue'));
+const JdbcConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/Jdbc.vue'));
+const FtpConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/Ftp.vue'));
+const LdapConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/Ldap.vue'));
+const MailConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/Mail.vue'));
+const SmtpConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/Smtp.vue'));
+const TcpConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/Tcp.vue'));
 
 const route = useRoute();
 const router = useRouter();

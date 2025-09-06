@@ -6,7 +6,7 @@ import { AsyncComponent, Dropdown, DropdownGroup, DropdownSort, Icon, NoData, Se
 import { utils, ScriptType } from '@xcan-angus/infra';
 import { scenario } from '@/api/tester';
 
-import { GroupedKey, SceneInfo } from './PropsType';
+import { GroupedKey, SceneInfo } from './types';
 
 const { t } = useI18n();
 
@@ -28,9 +28,9 @@ type SortKey = 'createdDate' | 'name' | 'createdByName';
 type OrderSortKey = 'ASC' | 'DESC';
 type FilterItem = { key: string; op: string; value: string; };
 
-const Drawer = defineAsyncComponent(() => import('@/views/scenario/scenario/list/drawer/index.vue'));
-const SceneList = defineAsyncComponent(() => import('./list.vue'));
-const SceneGroup = defineAsyncComponent(() => import('./group.vue'));
+const Drawer = defineAsyncComponent(() => import('@/views/scenario/scenario/list/Drawer.vue'));
+const SceneList = defineAsyncComponent(() => import('./List.vue'));
+const SceneGroup = defineAsyncComponent(() => import('./Group.vue'));
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const addTabPane = inject<(data: any) => void>('addTabPane', () => { });

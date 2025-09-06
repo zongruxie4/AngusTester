@@ -4,18 +4,10 @@ import { useI18n } from 'vue-i18n';
 import { Hints, Icon, modal, NoData, Spin, DebugLog, ExecLog, ScenarioHttpDebugResult, ScenarioJdbcDebugResult, ScenarioFtpDebugResult, ScenarioWebsocketDebugResult, ScenarioLdapDebugResult, ScenarioMailDebugResult, ScenarioTcpDebugResult, ScearioSmtpDebugResult } from '@xcan-angus/vue-ui';
 import { Button, TabPane, Tabs, Tag } from 'ant-design-vue';
 import { scenario } from '@/api/tester';
-import { MonitorInfo } from '../PropsType';
-import Chart from '@/views/scenario/monitor/detail/chart/index.vue';
+import { MonitorInfo } from '../types';
+import Chart from '@/views/scenario/monitor/detail/Chart.vue';
 
 const { t } = useI18n();
-// export { default as ScearioSmtpDebugResult } from "./ScearioSmtpDebugResult/index";
-// export { default as ScenarioFtpDebugResult } from "./ScenarioFtpDebugResult/index";
-// export { default as ScenarioHttpDebugResult } from "./ScenarioHttpDebugResult/index";
-// export { default as ScenarioJdbcDebugResult } from "./ScenarioJdbcDebugResult/index";
-// export { default as ScenarioLdapDebugResult } from "./ScenarioLdapDebugResult/index";
-// export { default as ScenarioMailDebugResult } from "./ScenarioMailDebugResult/index";
-// export { default as ScenarioTcpDebugResult } from "./ScenarioTcpDebugResult/index";
-// export { default as ScenarioWebsocketDebugResult } from "./ScenarioWebsocketDebugResult/index";
 
 type Props = {
   projectId: string;
