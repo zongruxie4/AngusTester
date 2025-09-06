@@ -9,8 +9,8 @@ import { ScriptType, XCanDexie, TESTER, duration, enumUtils, appContext, ScriptS
 import { debounce } from 'throttle-debounce';
 import { setting } from '@/api/gm';
 import SelectEnum from '@/components/selectEnum/index.vue';
-import { MenuItem } from './PropsType';
 import { ExecStatus } from '@/enums/enums';
+import {MenuItem} from "@/views/execution/types";
 
 type OrderByKey = 'createdDate' | 'createdByName';
 type OrderSortKey = 'ASC' | 'DESC';

@@ -8,8 +8,8 @@ interface Props {
   dataSource: { apisName: string; method: string; uri: string, passed: boolean; apisId: string, open: boolean }[];
   scriptType: 'TEST_PERFORMANCE'|'TEST_STABILITY'
 }
-const PerfResult = defineAsyncComponent(() => import('./perfResult.vue'));
-const StabilityResult = defineAsyncComponent(() => import('./stabilityResult.vue'));
+const PerfResult = defineAsyncComponent(() => import('./PerfResult.vue'));
+const StabilityResult = defineAsyncComponent(() => import('./StabilityResult.vue'));
 const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   dataSource: () => ([

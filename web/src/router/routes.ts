@@ -87,7 +87,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: '/execution/add',
-        component: () => import('@/views/execution/add/index.vue'),
+        component: () => import('@/views/execution/Add.vue'),
         meta: {
           breadcrumb: [
             {
@@ -101,7 +101,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: '/execution/experience',
-        component: () => import('@/views/execution/add/index.vue'),
+        component: () => import('@/views/execution/Add.vue'),
         meta: {
           breadcrumb: [
             {
@@ -115,7 +115,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: '/execution/edit/:id',
-        component: () => import('@/views/execution/add/index.vue'),
+        component: () => import('@/views/execution/Add.vue'),
         meta: {
           breadcrumb: [
             {
@@ -129,7 +129,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: '/execution/info/:id',
-        component: () => import('@/views/execution/info/index.vue')
+        component: () => import('@/views/execution/detail/index.vue')
       },
       {
         path: '/apis#mock',

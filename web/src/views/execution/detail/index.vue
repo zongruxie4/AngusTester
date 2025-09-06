@@ -6,16 +6,17 @@ import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { Icon, modal, notification, Select, Spin } from '@xcan-angus/vue-ui';
 import YAML from 'yaml';
 
-import { Exception, ExecObj } from './PropsType';
+import { ExecutionInfo } from '../types';
 import { exec } from 'src/api/ctrl';
+import { Exception } from '@/views/execution/types';
 
-const ExecSetting = defineAsyncComponent(() => import('@/views/execution/info/setting/index.vue'));
-const ExecLog = defineAsyncComponent(() => import('@/views/execution/info/log/index.vue'));
+const ExecSetting = defineAsyncComponent(() => import('@/views/execution/detail/Configuration.vue'));
+const ExecLog = defineAsyncComponent(() => import('@/views/execution/detail/Log.vue'));
 const MonacoEditor = defineAsyncComponent(() => import('@/components/monacoEditor/index.vue'));
-const Performance = defineAsyncComponent(() => import('@/views/execution/info/perf/index.vue'));
-const FuncTest = defineAsyncComponent(() => import('@/views/execution/info/funcTest/index.vue'));
-const TestResult = defineAsyncComponent(() => import('@/views/execution/info/testResult/index.vue'));
-const ServiceConfig = defineAsyncComponent(() => import('@/views/execution/info/server/index.vue'));
+const Performance = defineAsyncComponent(() => import('@/views/execution/detail/performance/index.vue'));
+const FuncTest = defineAsyncComponent(() => import('@/views/execution/detail/functional/index.vue'));
+const TestResult = defineAsyncComponent(() => import('@/views/execution/detail/result/index.vue'));
+const ServiceConfig = defineAsyncComponent(() => import('@/views/execution/detail/Server.vue'));
 
 interface Props {
   execId?: string;
@@ -47,7 +48,7 @@ const pageNo = route.query.pageNo;
 const topActiveKey = ref(route.query?.tab === 'log' ? '4' : '1');
 
 const loading = ref(false);
-const detail = ref<ExecObj>();
+const detail = ref<ExecutionInfo>();
 const scriptInfo = ref();
 const scriptYamlStr = ref('');
 
@@ -127,7 +128,7 @@ onMounted(async () => {
   setException();
 });
 
-const handleRestart = async (item:ExecObj) => {
+const handleRestart = async (item:ExecutionInfo) => {
   if (['TEST_PERFORMANCE', 'TEST_STABILITY'].includes(detail.value?.scriptType.value) && performanceRef.value) {
     performanceRef.value.resetData();
   }
@@ -168,7 +169,7 @@ const handleRestart = async (item:ExecObj) => {
   setException();
 };
 
-const handleStop = async (item:ExecObj) => {
+const handleStop = async (item:ExecutionInfo) => {
   exception.value = undefined;
   const _params = {
     broadcast: true,
@@ -200,7 +201,7 @@ const handleStop = async (item:ExecObj) => {
   setException();
 };
 
-const handleDelete = async (item:ExecObj) => {
+const handleDelete = async (item:ExecutionInfo) => {
   modal.confirm({
     centered: true,
     content: t('execution.info.deleteConfirm', { name: item.name }),

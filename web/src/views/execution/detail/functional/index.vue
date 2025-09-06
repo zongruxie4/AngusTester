@@ -29,14 +29,14 @@ const emit = defineEmits<{
   (e: 'update:loading', value:boolean): void;
 }>();
 
-const Http = defineAsyncComponent(() => import('./http.vue'));
-const Jdbc = defineAsyncComponent(() => import('./jdbc.vue'));
-const Mail = defineAsyncComponent(() => import('./mail.vue'));
-const Smtp = defineAsyncComponent(() => import('./smtp.vue'));
-const Tcp = defineAsyncComponent(() => import('./tcp.vue'));
-const Ftp = defineAsyncComponent(() => import('./ftp.vue'));
-const Ldap = defineAsyncComponent(() => import('./ldap.vue'));
-const WebSocket = defineAsyncComponent(() => import('./websocket.vue'));
+const Http = defineAsyncComponent(() => import('./Http.vue'));
+const Jdbc = defineAsyncComponent(() => import('./Jdbc.vue'));
+const Mail = defineAsyncComponent(() => import('./Mail.vue'));
+const Smtp = defineAsyncComponent(() => import('./Smtp.vue'));
+const Tcp = defineAsyncComponent(() => import('./Tcp.vue'));
+const Ftp = defineAsyncComponent(() => import('./Ftp.vue'));
+const Ldap = defineAsyncComponent(() => import('./Ldap.vue'));
+const WebSocket = defineAsyncComponent(() => import('./WebSocket.vue'));
 
 let timer:NodeJS.Timeout | null = null;
 let delayInSeconds = 0;

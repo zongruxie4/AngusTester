@@ -2,14 +2,19 @@
 import { computed, defineAsyncComponent, onBeforeUnmount, ref, watch } from 'vue';
 import dayjs from 'dayjs';
 
-import { ListData, useExecCount } from '../useExecCount';
+import { ListData, useExecCount } from '../composables/useExecCount';
 import { allCvsKeys } from '../ChartConfig';
 
-import { Exception } from '../PropsType';
 import { exec } from 'src/api/ctrl';
 import { exec as testerExec } from '@/api/tester';
+import { Exception } from '@/views/execution/types';
 
-const PerformanceInfo = defineAsyncComponent(() => props.detail?.scriptType?.value === 'MOCK_DATA' ? import('@/views/execution/info/perf/mock/index.vue') : props.detail?.plugin === 'Http' ? import('./http.vue') : import('./jdbc.vue'));
+const PerformanceInfo = defineAsyncComponent(() =>
+  props.detail?.scriptType?.value === 'MOCK_DATA'
+    ? import('@/views/execution/detail/performance/mock/index.vue')
+    : props.detail?.plugin === 'Http'
+      ? import('./Http.vue')
+      : import('./Jdbc.vue'));
 
 interface Props {
   detail?:Record<string, any>;
@@ -55,14 +60,10 @@ const hasStartDate = computed(() => {
   const givenTime = dayjs(startAtDate);
   const currentTime = dayjs();
 
-  if (givenTime.isBefore(currentTime) || givenTime.isSame(currentTime)) {
-    return false;
-  } else {
-    return true;
-  }
+  return !(givenTime.isBefore(currentTime) || givenTime.isSame(currentTime));
 });
 
-const counTabKey = ref('aggregation');
+const countTabKey = ref('aggregation');
 const setCountTabKey = async (value:string) => {
   if (value === 'error') {
     isLoaded.value = false;
@@ -77,7 +78,7 @@ const setCountTabKey = async (value:string) => {
     isLoaded.value = true;
   }
 
-  counTabKey.value = value;
+  countTabKey.value = value;
 };
 
 let firstOpenTimer = false;
@@ -121,7 +122,7 @@ const loadInfo = async () => {
   emit('loaded', data);
 
   if (props.detail?.scriptType?.value !== 'MOCK_DATA') {
-    if (['aggregation', 'throughput', 'vu', 'responseTime', 'analyze', 'error'].includes(counTabKey.value)) {
+    if (['aggregation', 'throughput', 'vu', 'responseTime', 'analyze', 'error'].includes(countTabKey.value)) {
       if (isFirstUpdatePerfList) {
         const _filters = [{ key: 'timestamp', op: 'GREATER_THAN_EQUAL', value: dayjs(perfListLastTimestamp.value).format('YYYY-MM-DD HH:mm:ss') }];
         await perfLoadList(1, firstOpenTimer ? _filters : []);
@@ -131,7 +132,7 @@ const loadInfo = async () => {
         await perfLoadList(1);
       }
 
-      if (counTabKey.value === 'error') {
+      if (countTabKey.value === 'error') {
         await loadErrorCount();
         if (isFirstUpdatePerfErrList) {
           await loadSampleErrorContent();
@@ -143,7 +144,7 @@ const loadInfo = async () => {
       }
     }
 
-    if (counTabKey.value === 'httpCode' && props.detail?.plugin === 'Http') {
+    if (countTabKey.value === 'httpCode' && props.detail?.plugin === 'Http') {
       loadStatusCodeData();
     }
   } else {

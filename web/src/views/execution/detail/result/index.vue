@@ -13,8 +13,8 @@ const props = withDefaults(defineProps<Props>(), {
   execInfo: () => ({}),
   execId: ''
 });
-const ApiTestResult = defineAsyncComponent(() => import('./apiResult.vue'));
-const ScenarioResult = defineAsyncComponent(() => import('./scenarioResult.vue'));
+const ApiTestResult = defineAsyncComponent(() => import('./ApiResult.vue'));
+const ScenarioResult = defineAsyncComponent(() => import('./ScenarioResult.vue'));
 
 const testResult = ref({});
 const loadApiTestResult = async () => {

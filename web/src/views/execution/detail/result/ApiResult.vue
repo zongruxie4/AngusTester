@@ -14,16 +14,9 @@ const props = withDefaults(defineProps<Props>(), {
   largePageLayout: true
 });
 
-const PerfResult = defineAsyncComponent(() => import('./perfResult.vue'));
-const StabilityResult = defineAsyncComponent(() => import('./stabilityResult.vue'));
-
-const configInfo = [
-  [{ label: t('execution.testResult.total'), dataIndex: 'totalNum' },
-    { label: t('execution.testResult.success'), dataIndex: 'successNum' },
-    { label: t('execution.testResult.failure'), dataIndex: 'failNum' },
-    { label: t('execution.testResult.notEnabled'), dataIndex: 'disabledNum' }
-  ]
-];
+const PerfResult = defineAsyncComponent(() => import('./PerfResult.vue'));
+const StabilityResult = defineAsyncComponent(() => import('./StabilityResult.vue'));
+const ApiFuncResult = defineAsyncComponent(() => import('./ApiFuncResult.vue'));
 
 const dataSource = computed(() => {
   return props.value;
@@ -50,7 +43,7 @@ const onePassText = computed(() => {
       <div class="flex items-start space-x-5">
         <div class="relative w-1/2 flex items-start">
           <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('execution.testResult.scenarioId') }}</span>
+            <span>{{ t('execution.testResult.apiId') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -59,7 +52,7 @@ const onePassText = computed(() => {
 
         <div class="relative w-1/2 flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('execution.testResult.scenarioName') }}</span>
+            <span>{{ t('execution.testResult.apiName') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -93,7 +86,7 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
 
-          <div class="whitespace-pre-wrap break-words break-all">{{ failureMessage }}</div>
+          <div class="whitespace-pre-wrap break-words break-all">{{ failureMessage || '--' }}</div>
         </div>
       </div>
 
@@ -133,7 +126,7 @@ const onePassText = computed(() => {
       <div class="flex items-start space-x-5">
         <div class="relative w-1/3 flex items-start">
           <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('execution.testResult.scenarioId') }}</span>
+            <span>{{ t('execution.testResult.apiId') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -172,7 +165,7 @@ const onePassText = computed(() => {
       <div class="flex items-start space-x-5">
         <div class="relative w-1/3 flex items-start">
           <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('execution.testResult.scenarioName') }}</span>
+            <span>{{ t('execution.testResult.apiName') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -210,38 +203,19 @@ const onePassText = computed(() => {
       </div>
     </div>
 
-    <div class="mt-5 mb-2 font-semibold">
-      {{ t('execution.testResult.testScenario') }}
-    </div>
-
-    <div class="space-y-2">
-      <li
-        v-for="(line, idx) in configInfo"
-        :key="idx"
-        class="flex space-x-2">
-        <div
-          v-for="item in line"
-          :key="item.dataIndex"
-          class="flex h-7 leading-7  w-30">
-          <span v-if="item.label" class="flex-1 text-white bg-blue-6 px-2 rounded">{{ item.label }}</span>
-          <span v-if="item.dataIndex" class="flex-1 bg-gray-light px-2 rounded-r">{{
-            dataSource.targetSummary?.[item.dataIndex] }}</span>
-        </div>
-      </li>
-    </div>
-
     <template v-if="dataSource.scriptType?.value === 'TEST_PERFORMANCE'">
       <div class="font-semibold mt-5 mb-2">{{ t('execution.testResult.resultInfo') }}</div>
       <PerfResult :indicatorPerf="dataSource.indicatorPerf" :result="dataSource.sampleSummary" />
     </template>
-
     <template v-if="dataSource.scriptType?.value === 'TEST_STABILITY'">
       <div class="font-semibold mt-5 mb-2">{{ t('execution.testResult.resultInfo') }}</div>
       <StabilityResult :indicatorStability="dataSource.indicatorStability" :result="dataSource.sampleSummary" />
     </template>
+    <template v-if="dataSource.scriptType?.value === 'TEST_FUNCTIONALITY'">
+      <ApiFuncResult :dataSource="dataSource" />
+    </template>
   </div>
 </template>
-
 <style scoped>
 .w-1\/2 {
   width: calc((100% - 20px)/2);

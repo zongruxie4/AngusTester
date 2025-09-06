@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, ref } from 'vue';
 
-const CSV = defineAsyncComponent(() => import('./csv.vue'));
-const Custom = defineAsyncComponent(() => import('./custom.vue'));
-const Json = defineAsyncComponent(() => import('./json.vue'));
-const Excel = defineAsyncComponent(() => import('./excel.vue'));
-const Sql = defineAsyncComponent(() => import('./sql.vue'));
-const Tab = defineAsyncComponent(() => import('./tab.vue'));
-const Xml = defineAsyncComponent(() => import('./xml.vue'));
+const Csv = defineAsyncComponent(() => import('./Csv.vue'));
+const Custom = defineAsyncComponent(() => import('./Custom.vue'));
+const Json = defineAsyncComponent(() => import('./Json.vue'));
+const Excel = defineAsyncComponent(() => import('./Excel.vue'));
+const Sql = defineAsyncComponent(() => import('./Sql.vue'));
+const Tab = defineAsyncComponent(() => import('./Tab.vue'));
+const Xml = defineAsyncComponent(() => import('./Xml.vue'));
 
 interface Props {
   dataSource: Record<string, any>
@@ -28,7 +28,7 @@ defineExpose({
 });
 </script>
 <template>
-  <CSV
+  <Csv
     v-if="pluginType==='MockCsv'"
     ref="mockExecDetailRef"
     :execInfo="props.dataSource" />

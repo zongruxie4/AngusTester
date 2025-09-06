@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
 const deleteTabPane = inject<(data: string[]) => void>('deleteTabPane', () => { });
 
 const TestSummary = defineAsyncComponent(() => import('./TestSummary.vue'));
-const Execdetail = defineAsyncComponent(() => import('@/views/execution/info/index.vue'));
+const Execdetail = defineAsyncComponent(() => import('@/views/execution/detail/index.vue'));
 const Task = defineAsyncComponent(() => import('./Task.vue'));
 const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/exportModal/index.vue'));
 

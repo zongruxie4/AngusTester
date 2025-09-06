@@ -15,20 +15,19 @@ import {
   Spin,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { appContext } from '@xcan-angus/infra';
+import { PageQuery, appContext } from '@xcan-angus/infra';
 import { Pagination, Progress, Switch } from 'ant-design-vue';
 import dayjs from 'dayjs';
 import { exec } from '@/api/tester';
 
 import { getCurrentPage } from '@/utils/utils';
 import { getCurrentDuration } from '@/utils';
-import { ExecuteListObj } from './PropsType';
+import { ExecutionInfo } from './types';
 
 type OrderByKey = 'createdDate' | 'createdByName';
-type OrderSortKey = 'ASC' | 'DESC';
 
-const NavigationHeader = defineAsyncComponent(() => import('./components/navigationHeader.vue'));
-const SearchPanel = defineAsyncComponent(() => import('@/views/execution/searchPanel/index.vue'));
+const Introduce = defineAsyncComponent(() => import('./Introduce.vue'));
+const SearchPanel = defineAsyncComponent(() => import('@/views/execution/SearchPanel.vue'));
 
 const { t } = useI18n();
 const userInfo = ref(appContext.getUser());
@@ -48,16 +47,16 @@ const isPrivate = ref(false);
 
 const loaded = ref(false);
 const loading = ref(false);
-const refinshLoading = ref(false);
+const refinishLoading = ref(false);
 const orderBy = ref<OrderByKey>();
-const orderSort = ref<OrderSortKey>();
+const orderSort = ref<PageQuery.OrderSort>();
 const pagination = ref({
   current: 1,
   pageSize: 5,
   total: 0
 });
 const filters = ref<{ key: string; op: string; value: boolean | string | string[]; }[]>([]);
-const dataList = ref<ExecuteListObj[]>([]);
+const dataList = ref<ExecutionInfo[]>([]);
 
 const total = ref(0);
 const execIds = ref<string[]>([]);
@@ -65,7 +64,7 @@ const reportInterval = ref(3);
 
 let timer: NodeJS.Timeout | null = null;
 
-const toSort = (data: { orderBy: OrderByKey; orderSort: OrderSortKey; }) => {
+const toSort = (data: { orderBy: OrderByKey; orderSort: PageQuery.OrderSort; }) => {
   orderBy.value = data.orderBy;
   orderSort.value = data.orderSort;
   pagination.value.current = 1;
@@ -86,11 +85,7 @@ const hasStartDate = (startAtDate: string) => {
   const givenTime = dayjs(startAtDate);
   const currentTime = dayjs();
 
-  if (givenTime.isBefore(currentTime) || givenTime.isSame(currentTime)) {
-    return false;
-  } else {
-    return true;
-  }
+  return !(givenTime.isBefore(currentTime) || givenTime.isSame(currentTime));
 };
 
 const splitTime = (str: string): [string, string] => {
@@ -99,7 +94,7 @@ const splitTime = (str: string): [string, string] => {
   return [number, letterMap[unit]];
 };
 
-const setTimeoutTimes = (item: ExecuteListObj) => {
+const setTimeoutTimes = (item: ExecutionInfo) => {
   if (item.reportInterval) {
     const time = +splitTime(item.reportInterval)[0];
     if (reportInterval.value === 3) {
@@ -114,24 +109,38 @@ const setTimeoutTimes = (item: ExecuteListObj) => {
   }
 };
 
-const getMessage = (item: ExecuteListObj): { code: string, message: string, codeName: string, messageName: string } | undefined => {
+const getMessage = (item: ExecutionInfo):
+  { code: string, message: string, codeName: string, messageName: string } | undefined => {
   if (item?.lastSchedulingResult?.length) {
     const foundItem = item.lastSchedulingResult.find(f => !f.success);
     if (foundItem) {
-      return { code: foundItem.exitCode, message: foundItem.message, codeName: t('execution.messages.exitCode'), messageName: t('execution.messages.failureReason') };
+      return {
+        code: foundItem.exitCode,
+        message: foundItem.message,
+        codeName: t('execution.messages.exitCode'),
+        messageName: t('execution.messages.failureReason')
+      };
     }
 
     if (item?.meterMessage) {
-      return { code: item.meterStatus, message: item.meterMessage, codeName: t('execution.messages.samplingStatus'), messageName: t('execution.messages.failureReason') };
+      return {
+        code: item.meterStatus,
+        message: item.meterMessage,
+        codeName: t('execution.messages.samplingStatus'),
+        messageName: t('execution.messages.failureReason')
+      };
     }
-
     return undefined;
   }
 
   if (item?.meterMessage) {
-    return { code: item.meterStatus, message: item.meterMessage, codeName: t('execution.messages.samplingStatus'), messageName: t('execution.messages.failureReason') };
+    return {
+      code: item.meterStatus,
+      message: item.meterMessage,
+      codeName: t('execution.messages.samplingStatus'),
+      messageName: t('execution.messages.failureReason')
+    };
   }
-
   return undefined;
 };
 
@@ -160,7 +169,7 @@ const getStrokeColor = (value: string, status: string) => {
 };
 
 const loadDataListByIds = async (isRefinsh: boolean): Promise<void> => {
-  if (refinshLoading.value && !isRefinsh) {
+  if (refinishLoading.value && !isRefinsh) {
     return;
   }
 
@@ -173,9 +182,9 @@ const loadDataListByIds = async (isRefinsh: boolean): Promise<void> => {
   if (isRefinsh) {
     loading.value = true;
   }
-  refinshLoading.value = true;
+  refinishLoading.value = true;
   const [error, { data = { list: [], total: 0 } }] = await exec.getExecList(params);
-  refinshLoading.value = false;
+  refinishLoading.value = false;
   if (isRefinsh) {
     loading.value = false;
   }
@@ -227,7 +236,7 @@ const loadDataList = async (): Promise<void> => {
       value: boolean | string | string[];
     }[];
     orderBy?: OrderByKey;
-    orderSort?: OrderSortKey;
+    orderSort?: PageQuery.OrderSort;
   } = {
     pageNo: current,
     pageSize,
@@ -262,13 +271,13 @@ const loadDataList = async (): Promise<void> => {
     const others = {
       ...item,
       errMessage,
-      editname: false,
-      editpriority: false,
-      editreportInterval: false,
-      editstartDate: false,
+      editName: false,
+      editPriority: false,
+      editReportInterval: false,
+      editStartDate: false,
       editstartAtDate: false,
-      edititerations: false,
-      editduration: false
+      editIterations: false,
+      editDuration: false
     };
     const _actionPermission: string[] = [];
     if (item.hasOperationPermission) {
@@ -311,16 +320,16 @@ const showTotal = (total: number) => {
   });
 };
 
-const updateName = (item: ExecuteListObj) => {
-  item.editname = true;
+const updateName = (item: ExecutionInfo) => {
+  item.editName = true;
   nextTick(() => {
     nameInputRefs.value?.[item.id].focus();
   });
 };
 
-const editName = async (name: string, item: ExecuteListObj) => {
+const editName = async (name: string, item: ExecutionInfo) => {
   if (name === item.name || loading.value) {
-    item.editname = false;
+    item.editName = false;
     return;
   }
 
@@ -331,23 +340,23 @@ const editName = async (name: string, item: ExecuteListObj) => {
     return;
   }
 
-  item.editname = false;
+  item.editName = false;
   item.name = name;
   notification.success(t('execution.messages.modifySuccess'));
 };
 
-const updateThread = (item: ExecuteListObj) => {
+const updateThread = (item: ExecutionInfo) => {
   item.editThread = true;
   nextTick(() => {
     threadInputRefs.value?.[item.id].focus();
   });
 };
 
-const threadsMax = (item: ExecuteListObj) => {
+const threadsMax = (item: ExecutionInfo) => {
   return ['MOCK_DATA', 'MOCK_APIS'].includes(item?.scriptType?.value) ? 1000 : 10000;
 };
 
-const editThread = async (value: string, item: ExecuteListObj) => {
+const editThread = async (value: string, item: ExecutionInfo) => {
   if ((!item?.thread && !value) || item.thread === value || loading.value) {
     item.editThread = false;
     return;
@@ -365,16 +374,16 @@ const editThread = async (value: string, item: ExecuteListObj) => {
   notification.success(t('tips.modifySuccess'));
 };
 
-const updateDuration = (item: ExecuteListObj) => {
-  item.editduration = true;
+const updateDuration = (item: ExecutionInfo) => {
+  item.editDuration = true;
   nextTick(() => {
     durationInputRefs.value?.[item.id].inputRef?.focus();
   });
 };
 
-const editDuration = async (value: string, item: ExecuteListObj) => {
+const editDuration = async (value: string, item: ExecutionInfo) => {
   if ((!item?.duration && !value) || item.duration === value || loading.value) {
-    item.editduration = false;
+    item.editDuration = false;
     return;
   }
 
@@ -386,20 +395,20 @@ const editDuration = async (value: string, item: ExecuteListObj) => {
   }
 
   item.duration = value;
-  item.editduration = false;
+  item.editDuration = false;
   notification.success(t('tips.modifySuccess'));
 };
 
-const updateIterations = (item: ExecuteListObj) => {
-  item.edititerations = true;
+const updateIterations = (item: ExecutionInfo) => {
+  item.editIterations = true;
   nextTick(() => {
     iterationsInputRefs.value?.[item.id].focus();
   });
 };
 
-const editIterations = async (value: string, item: ExecuteListObj) => {
+const editIterations = async (value: string, item: ExecutionInfo) => {
   if ((!item?.iterations && !value) || item.iterations === value || loading.value) {
-    item.edititerations = false;
+    item.editIterations = false;
     return;
   }
 
@@ -410,7 +419,7 @@ const editIterations = async (value: string, item: ExecuteListObj) => {
     return;
   }
   item.iterations = value;
-  item.edititerations = false;
+  item.editIterations = false;
   notification.success(t('tips.modifySuccess'));
 };
 
@@ -418,16 +427,16 @@ const getNumFixed = (str: string) => {
   return str ? Number(str).toFixed(2) : '0';
 };
 
-const updatePriority = (item: ExecuteListObj) => {
-  item.editpriority = true;
+const updatePriority = (item: ExecutionInfo) => {
+  item.editPriority = true;
   nextTick(() => {
     priorityInputRefs.value?.[item.id].focus();
   });
 };
 
-const editPriority = async (value: string, item: ExecuteListObj) => {
+const editPriority = async (value: string, item: ExecutionInfo) => {
   if ((item?.priority && item.priority === value) || loading.value) {
-    item.editpriority = false;
+    item.editPriority = false;
     return;
   }
 
@@ -438,21 +447,21 @@ const editPriority = async (value: string, item: ExecuteListObj) => {
     return;
   }
 
-  item.editpriority = false;
+  item.editPriority = false;
   item.priority = value;
   notification.success(t('tips.modifySuccess'));
 };
 
-const updateReportInterval = (item: ExecuteListObj) => {
-  item.editreportInterval = true;
+const updateReportInterval = (item: ExecutionInfo) => {
+  item.editReportInterval = true;
   nextTick(() => {
     reportIntervalInputRefs.value?.[item.id].inputRef?.focus();
   });
 };
 
-const editReportInterval = async (value: string, item: ExecuteListObj) => {
+const editReportInterval = async (value: string, item: ExecutionInfo) => {
   if ((!item?.reportInterval && !value) || item.reportInterval === value || loading.value) {
-    item.editreportInterval = false;
+    item.editReportInterval = false;
     return;
   }
 
@@ -463,12 +472,12 @@ const editReportInterval = async (value: string, item: ExecuteListObj) => {
     return;
   }
 
-  item.editreportInterval = false;
+  item.editReportInterval = false;
   item.reportInterval = value;
   notification.success(t('tips.modifySuccess'));
 };
 
-const handleIgnoreAssertions = async (value, item: ExecuteListObj) => {
+const handleIgnoreAssertions = async (value, item: ExecutionInfo) => {
   if (loading.value) {
     return;
   }
@@ -480,12 +489,12 @@ const handleIgnoreAssertions = async (value, item: ExecuteListObj) => {
     return;
   }
 
-  item.editstartDate = false;
+  item.editStartDate = false;
   item.ignoreAssertions = value;
   notification.success(t('tips.modifySuccess'));
 };
 
-const handleUpdateTestResult = async (value, item: ExecuteListObj) => {
+const handleUpdateTestResult = async (value, item: ExecutionInfo) => {
   if (loading.value) {
     return;
   }
@@ -497,23 +506,23 @@ const handleUpdateTestResult = async (value, item: ExecuteListObj) => {
     return;
   }
 
-  item.editstartDate = false;
+  item.editStartDate = false;
   item.updateTestResult = value;
   notification.success(t('tips.modifySuccess'));
 };
 
-const handleRestart = async (item: ExecuteListObj) => {
+const handleRestart = async (item: ExecutionInfo) => {
   if (loading.value) {
     return;
   }
 
   item.errMessage = undefined;
-  item.editname = false;
-  item.editpriority = false;
-  item.editstartDate = false;
-  item.editduration = false;
-  item.editreportInterval = false;
-  item.edititerations = false;
+  item.editName = false;
+  item.editPriority = false;
+  item.editStartDate = false;
+  item.editDuration = false;
+  item.editReportInterval = false;
+  item.editIterations = false;
   const params = {
     broadcast: true,
     id: item.id
@@ -550,7 +559,7 @@ const handleRestart = async (item: ExecuteListObj) => {
   await loadDataListByIds(true);
 };
 
-const handleStop = async (item: ExecuteListObj) => {
+const handleStop = async (item: ExecutionInfo) => {
   if (loading.value) {
     return;
   }
@@ -590,7 +599,7 @@ const handleStop = async (item: ExecuteListObj) => {
   await loadDataListByIds(true);
 };
 
-const handleDelete = async (item: ExecuteListObj) => {
+const handleDelete = async (item: ExecutionInfo) => {
   if (loading.value) {
     return;
   }
@@ -612,7 +621,7 @@ const handleDelete = async (item: ExecuteListObj) => {
   });
 };
 
-const dropdownClick = (key: string, item: ExecuteListObj) => {
+const dropdownClick = (key: string, item: ExecutionInfo) => {
   switch (key) {
     case 'edit':
       router.push(`/execution/edit/${item.id}`);
@@ -759,7 +768,7 @@ const reportIntervalSelectProps = {
     :delay="0"
     class="w-full h-full py-5 px-5 text-3 overflow-y-auto"
     style="scrollbar-gutter: stable;">
-    <NavigationHeader class="mb-3" />
+    <Introduce class="mb-3" />
     <SearchPanel
       v-if="projectId"
       :projectId="projectId"
@@ -782,7 +791,7 @@ const reportIntervalSelectProps = {
             <div class="flex-none flex space-x-2" style="width: calc(100% - 562px)">
               <div class="flex items-center h-7 justify-between  pr-4" style="width:30%">
                 <div class="flex items-center mr-2" style="width:calc(100% - 32px)">
-                  <template v-if="!item?.editname">
+                  <template v-if="!item?.editName">
                     <RouterLink
                       :to="`/execution/info/${item.id}?pageNo=${pagination.current}`"
                       class="text-3 font-medium truncate"
@@ -918,7 +927,7 @@ const reportIntervalSelectProps = {
                     <div>{{ getCurrentDuration(item?.currentDuration, item?.duration) }}</div>
                     <div class="mx-1">/</div>
                     <div class="truncate flex items-center relative z-0 h-7">
-                      <template v-if="!item?.editduration">
+                      <template v-if="!item?.editDuration">
                         {{ splitTime(item?.duration)[0] + splitTime(item?.duration)[1] }}
                         <template
                           v-if="!['CREATED', 'PENDING', 'RUNNING'].includes(item?.status?.value) && item?.hasOperationPermission">
@@ -953,8 +962,8 @@ const reportIntervalSelectProps = {
                   <div class="flex justify-center items-center -mb-1">
                     <div>{{ +item?.currentIterations || "0" }}</div>
                     <div class="mx-1">/</div>
-                    <div class="truncate flex items-center relative z-0 h-7" :class="item?.edititerations ? 'w-30 ' : ''">
-                      <template v-if="!item?.edititerations">
+                    <div class="truncate flex items-center relative z-0 h-7" :class="item?.editIterations ? 'w-30 ' : ''">
+                      <template v-if="!item?.editIterations">
                         {{ +item?.iterations || "--" }}
                         <template
                           v-if="!['CREATED', 'PENDING', 'RUNNING'].includes(item?.status?.value) && item?.hasOperationPermission">
@@ -1063,8 +1072,8 @@ const reportIntervalSelectProps = {
                       </template>
                       <template v-else>--</template>
                     </div>
-                    <div class="flex items-center relative z-0 h-7" :class="item?.editpriority ? 'w-30' : ''">
-                      <template v-if="!item?.editpriority">
+                    <div class="flex items-center relative z-0 h-7" :class="item?.editPriority ? 'w-30' : ''">
+                      <template v-if="!item?.editPriority">
                         {{ item?.priority || "--" }}
                         <template
                           v-if="!['CREATED', 'PENDING', 'RUNNING'].includes(item?.status?.value) && item?.hasOperationPermission">
@@ -1112,8 +1121,8 @@ const reportIntervalSelectProps = {
                   <div class="ml-2 space-y-1 2xl:min-w-35">
                     <div
                       class="truncate flex items-center relative z-0 h-7"
-                      :class="item?.editreportInterval ? 'w-25 2xl:w-30' : ''">
-                      <template v-if="!item?.editreportInterval">
+                      :class="item?.editReportInterval ? 'w-25 2xl:w-30' : ''">
+                      <template v-if="!item?.editReportInterval">
                         <template v-if="item?.reportInterval">
                           {{ splitTime(item.reportInterval)[0] + splitTime(item.reportInterval)[1] }}
                         </template>
@@ -1141,7 +1150,7 @@ const reportIntervalSelectProps = {
                     </div>
                     <div
                       class="truncate flex items-center relative z-0 h-7"
-                      :class="item?.editreportInterval ? 'w-25' : ''">
+                      :class="item?.editReportInterval ? 'w-25' : ''">
                       <Switch
                         :checked="!!item?.ignoreAssertions"
                         :disabled="['CREATED', 'PENDING', 'RUNNING'].includes(item?.status?.value) || !item?.hasOperationPermission"
@@ -1151,7 +1160,7 @@ const reportIntervalSelectProps = {
                     </div>
                     <div
                       class="truncate flex items-center relative z-0 h-7"
-                      :class="item?.editreportInterval ? 'w-25' : ''">
+                      :class="item?.editReportInterval ? 'w-25' : ''">
                       <Switch
                         :checked="item?.updateTestResult"
                         :disabled="['CREATED', 'PENDING', 'RUNNING'].includes(item?.status?.value) || !item?.hasOperationPermission || !item.canUpdateTestResult"

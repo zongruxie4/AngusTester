@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
 const { t } = useI18n();
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
 const TestSummary = defineAsyncComponent(() => import('./testSummary/index.vue'));
-const Execdetail = defineAsyncComponent(() => import('@/views/execution/info/index.vue'));
+const Execdetail = defineAsyncComponent(() => import('@/views/execution/detail/index.vue'));
 const Task = defineAsyncComponent(() => import('./task/index.vue'));
 
 const activeTab = ref('func');

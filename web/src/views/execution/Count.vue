@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, Ref, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { PieData, PieSetting } from './PropsType';
+import { PieData, PieSetting } from './types';
 import { ScriptType, enumUtils } from '@xcan-angus/infra';
 import { ExecStatus } from '@/enums/enums';
 import { analysis } from '@/api/tester';
-import Charts from './charts.vue';
+import Charts from './PieChart.vue';
 
 const { t } = useI18n();
 
@@ -25,71 +25,70 @@ const scriptTypeColor = ref<string[]>([]);
 const statusData = ref<{name:string, value:number}[]>([]);
 const statusColor = ref<string[]>([]);
 
+// 在 setup 函数顶层初始化枚举数据
+const scriptTypeEnums = enumUtils.enumToMessages(ScriptType).filter(item => item.value !== ScriptType.MOCK_APIS);
+const execStatusEnums = enumUtils.enumToMessages(ExecStatus);
+
+// 初始化分组配置
+groupByGroup.value[0].type = scriptTypeEnums;
+groupByGroup.value[1].type = execStatusEnums;
+
+// 初始化脚本类型数据和颜色
+scriptTypeData.value = scriptTypeEnums.map(item => {
+  let color = '';
+  switch (item.value) {
+    case 'TEST_PERFORMANCE':
+      color = 'rgba(45,142,255, 1)';
+      break;
+    case 'TEST_FUNCTIONALITY':
+      color = 'rgba(82,196,26, 1)';
+      break;
+    case 'TEST_STABILITY':
+      color = 'rgba(255, 185, 37, 1)';
+      break;
+    case 'TEST_CUSTOMIZATION':
+      color = 'rgba(251, 129, 255, 1)';
+      break;
+    case 'MOCK_DATA':
+      color = 'rgba(191, 199, 255, 1)';
+      break;
+  }
+  scriptTypeColor.value.push(color);
+  return { name: item.message, value: 0 };
+});
+
+// 初始化执行状态数据和颜色
+statusData.value = execStatusEnums.map(item => {
+  let color = '';
+  switch (item.value) {
+    case 'CREATED':
+      color = 'rgba(45,142,255, 1)';
+      break;
+    case 'PENDING':
+      color = 'rgba(255,165,43, 1)';
+      break;
+    case 'RUNNING':
+      color = 'rgba(103,215,255, 1)';
+      break;
+    case 'STOPPED':
+      color = 'rgba(217, 217, 217, 1)';
+      break;
+    case 'FAILED':
+      color = 'rgba(245,34,45, 1)';
+      break;
+    case 'COMPLETED':
+      color = 'rgba(82,196,26, 1)';
+      break;
+    case 'TIMEOUT':
+      color = 'rgba(201,119,255, 1)';
+      break;
+  }
+  statusColor.value.push(color);
+  return { name: item.message, value: 0 };
+});
+
 const init = async () => {
-  await loadScriptType();
-  await loadExecStatus();
   await loadCount();
-};
-
-const loadScriptType = async () => {
-  const data = enumUtils.enumToMessages(ScriptType);
-  const enums = data.filter(item => item.value !== ScriptType.MOCK_APIS);
-  groupByGroup.value[0].type = enums;
-  scriptTypeData.value = enums.map(item => {
-    let color = '';
-    switch (item.value) {
-      case 'TEST_PERFORMANCE':
-        color = 'rgba(45,142,255, 1)';
-        break;
-      case 'TEST_FUNCTIONALITY':
-        color = 'rgba(82,196,26, 1)';
-        break;
-      case 'TEST_STABILITY':
-        color = 'rgba(255, 185, 37, 1)';
-        break;
-      case 'TEST_CUSTOMIZATION':
-        color = 'rgba(251, 129, 255, 1)';
-        break;
-      case 'MOCK_DATA':
-        color = 'rgba(191, 199, 255, 1)';
-        break;
-    }
-    scriptTypeColor.value.push(color);
-    return { name: item.message, value: 0 };
-  });
-};
-
-const loadExecStatus = () => {
-  const data = enumUtils.enumToMessages(ExecStatus);
-  groupByGroup.value[1].type = data;
-  statusData.value = data.map(item => {
-    let color = '';
-    switch (item.value) {
-      case 'CREATED':
-        color = 'rgba(45,142,255, 1)';
-        break;
-      case 'PENDING':
-        color = 'rgba(255,165,43, 1)';
-        break;
-      case 'RUNNING':
-        color = 'rgba(103,215,255, 1)';
-        break;
-      case 'STOPPED':
-        color = 'rgba(217, 217, 217, 1)';
-        break;
-      case 'FAILED':
-        color = 'rgba(245,34,45, 1)';
-        break;
-      case 'COMPLETED':
-        color = 'rgba(82,196,26, 1)';
-        break;
-      case 'TIMEOUT':
-        color = 'rgba(201,119,255, 1)';
-        break;
-    }
-    statusColor.value.push(color);
-    return { name: item.message, value: 0 };
-  });
 };
 
 const publicParams = {
@@ -134,6 +133,7 @@ const getCountData = (group, data) => {
         key: cloum.key,
         title: cloum.value,
         total: 0,
+        color: [],
         legend: cloum.type,
         data: []
       };
@@ -146,6 +146,7 @@ const getCountData = (group, data) => {
         key: cloum.key,
         title: cloum.value,
         total: 0,
+        color: [],
         legend: cloum.type,
         data: []
       };
@@ -185,6 +186,7 @@ const setEnumDatasource = (cloum, res, dataSource) => {
     key: cloum.key,
     title: cloum.value,
     total: _total,
+    color: [],
     legend: cloum.type,
     data: _data.length ? _data : []
   };

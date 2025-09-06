@@ -6,8 +6,8 @@ import { useI18n } from 'vue-i18n';
 import { TaskInfo } from '../../../../../../../PropsType';
 import { TestInfo } from '../PropsType';
 
-const ApiTestResult = defineAsyncComponent(() => import('@/views/execution/info/testResult/apiResult.vue'));
-const ScenarioResult = defineAsyncComponent(() => import('@/views/execution/info/testResult/scenarioResult.vue'));
+const ApiTestResult = defineAsyncComponent(() => import('@/views/execution/detail/result/ApiResult.vue'));
+const ScenarioResult = defineAsyncComponent(() => import('@/views/execution/detail/result/ScenarioResult.vue'));
 
 type Props = {
   dataSource: TaskInfo;

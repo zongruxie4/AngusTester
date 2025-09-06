@@ -61,30 +61,6 @@ const chartsOption:EChartsOption = {
       fontSize: 12
     }
   },
-  // legend: props.type === 'script_type'
-  //   ? [{
-  //       orient: 'vertical',
-  //       left: 135,
-  //       top: '50',
-  //       itemHeight: 12,
-  //       itemWidth: 12,
-  //       data: props.dataSource
-  //     }]
-  //   : [{
-  //       orient: 'vertical',
-  //       left: 135,
-  //       top: '50',
-  //       itemHeight: 12,
-  //       itemWidth: 12,
-  //       data: props.dataSource.slice(0, 4)
-  //     }, {
-  //       orient: 'vertical',
-  //       left: 200,
-  //       top: '50',
-  //       itemHeight: 12,
-  //       itemWidth: 12,
-  //       data: props.dataSource.slice(4, 7)
-  //     }],
   series: [
     {
       center: [65, '50%'],
