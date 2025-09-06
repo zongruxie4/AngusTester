@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import { defineAsyncComponent, ref, computed } from 'vue';
+import { defineAsyncComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { TabPane, Tabs } from 'ant-design-vue';
-import type { MyScenariosProps, TabConfig, ScenarioQueryParams } from './types';
+import type { MyScenariosProps, ScenarioQueryParams } from './types';
 
 const { t } = useI18n();
 
 // Component props with proper typing
 const props = withDefaults(defineProps<MyScenariosProps>(), {
   projectId: undefined,
-  userInfo: undefined,
   notify: undefined
 });
 
@@ -18,7 +17,7 @@ const Table = defineAsyncComponent(() => import('./MyScenariosTable.vue'));
 
 // Reactive state for notifications and totals
 const deletedNotify = ref<string>();
-const createByMeTotal = ref(0);
+const createdTotal = ref(0);
 const followTotal = ref(0);
 const favoriteTotal = ref(0);
 
@@ -27,7 +26,7 @@ const favoriteTotal = ref(0);
  */
 const createQueryParams = (type: 'createdBy' | 'followBy' | 'favouriteBy'): ScenarioQueryParams => {
   const baseParams: ScenarioQueryParams = {};
-  
+
   switch (type) {
     case 'createdBy':
       return { createdBy: props.userInfo?.id };
@@ -39,76 +38,56 @@ const createQueryParams = (type: 'createdBy' | 'followBy' | 'favouriteBy'): Scen
       return baseParams;
   }
 };
-
-/**
- * Tab configuration with computed properties
- */
-const tabConfigs = computed((): TabConfig[] => [
-  {
-    key: 'create',
-    label: t('scenarioHome.myScenarios.added'),
-    params: createQueryParams('createdBy'),
-    total: createByMeTotal.value
-  },
-  {
-    key: 'follow',
-    label: t('scenarioHome.myScenarios.followed'),
-    params: createQueryParams('followBy'),
-    total: followTotal.value
-  },
-  {
-    key: 'favorite',
-    label: t('scenarioHome.myScenarios.favorited'),
-    params: createQueryParams('favouriteBy'),
-    total: favoriteTotal.value
-  }
-]);
-
-/**
- * Get the appropriate total ref based on tab key
- */
-const getTotalRef = (key: string) => {
-  switch (key) {
-    case 'create':
-      return createByMeTotal;
-    case 'follow':
-      return followTotal;
-    case 'favorite':
-      return favoriteTotal;
-    default:
-      return createByMeTotal;
-  }
-};
 </script>
 
 <template>
   <div>
-    <!-- Page title -->
     <div class="text-3.5 font-semibold mb-1">{{ t('scenarioHome.myScenarios.title') }}</div>
-    
-    <!-- Tab navigation -->
     <Tabs size="small">
-      <TabPane 
-        v-for="tab in tabConfigs" 
-        :key="tab.key" 
-        forceRender>
+      <TabPane key="create" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
-            <span class="mr-1">{{ tab.label }}</span>
+            <span class="mr-1">{{ t('scenarioHome.myScenarios.added') }}</span>
             <span>(</span>
-            <span>{{ tab.total }}</span>
+            <span>{{ createdTotal }}</span>
             <span>)</span>
           </div>
         </template>
-        
-        <!-- Table component with dynamic props -->
         <Table
-          :total="getTotalRef(tab.key).value"
-          @update:total="(value) => getTotalRef(tab.key).value = value"
+          v-model:total="createdTotal"
           v-model:deletedNotify="deletedNotify"
           :notify="props.notify"
-          :projectId="props.projectId"
-          :params="tab.params" />
+          :params="createQueryParams('createdBy')" />
+      </TabPane>
+      <TabPane key="follow" forceRender>
+        <template #tab>
+          <div class="flex items-center flex-nowrap">
+            <span class="mr-1">{{ t('scenarioHome.myScenarios.followed') }}</span>
+            <span>(</span>
+            <span>{{ followTotal }}</span>
+            <span>)</span>
+          </div>
+        </template>
+        <Table
+          v-model:total="followTotal"
+          v-model:deletedNotify="deletedNotify"
+          :notify="props.notify"
+          :params="createQueryParams('followBy')" />
+      </TabPane>
+      <TabPane key="favorite" forceRender>
+        <template #tab>
+          <div class="flex items-center flex-nowrap">
+            <span class="mr-1">{{ t('scenarioHome.myScenarios.favorited') }}</span>
+            <span>(</span>
+            <span>{{ favoriteTotal }}</span>
+            <span>)</span>
+          </div>
+        </template>
+        <Table
+          v-model:total="favoriteTotal"
+          v-model:deletedNotify="deletedNotify"
+          :notify="props.notify"
+          :params="createQueryParams('favouriteBy')" />
       </TabPane>
     </Tabs>
   </div>

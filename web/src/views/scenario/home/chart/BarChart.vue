@@ -31,7 +31,20 @@ type EChartsOption = echarts.ComposeOption<TooltipComponentOption | GridComponen
 const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
-  dataSource: undefined,
+  dataSource: () => ({
+    allSce: '0',
+    sceByLastWeek: '0',
+    sceByLastMonth: '0',
+    sceByScriptType: {
+      TEST_FUNCTIONALITY: '0',
+      TEST_PERFORMANCE: '0',
+      TEST_STABILITY: '0',
+      TEST_CUSTOMIZATION: '0',
+      MOCK_DATA: '0',
+      MOCK_APIS: '0'
+    },
+    sceByPluginName: {}
+  }),
   resizeNotify: undefined
 });
 
@@ -109,7 +122,7 @@ const renderBarChart = (): void => {
   if (!chartInstance) {
     // Register required ECharts components
     echarts.use([TooltipComponent, GridComponent, BarChart, CanvasRenderer]);
-    
+
     // Initialize chart instance with DOM element
     chartInstance = echarts.init(document.getElementById(chartDomId));
     chartInstance.setOption(chartConfiguration);
@@ -136,7 +149,7 @@ const handleChartResize = (): void => {
  * <p>Processes scenario data by plugin name and updates chart configuration.</p>
  * <p>Extracts plugin names and their corresponding scenario counts.</p>
  * <p>Provides fallback data when no plugin data is available.</p>
- * 
+ *
  * @param dataSource - Resource information containing scenario counts by plugin
  */
 const processPluginData = (dataSource: ResourceInfo): void => {
@@ -154,7 +167,7 @@ const processPluginData = (dataSource: ResourceInfo): void => {
   const pluginData = dataSource.sceByPluginName;
   if (pluginData) {
     const pluginNames = Object.keys(pluginData);
-    
+
     if (pluginNames.length > 0) {
       // Process available plugin data
       pluginNames.forEach(pluginName => {

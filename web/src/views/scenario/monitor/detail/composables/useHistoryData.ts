@@ -5,7 +5,7 @@ import type { HistoryRecord, HistoryExecData } from '../types';
 /**
  * Composable for managing execution history data
  */
-export function useHistoryData() {
+export function useHistoryData () {
   // History data state
   const historyList = ref<HistoryRecord[]>([]);
   const waitingHistory = ref<number[]>([]);
@@ -32,7 +32,7 @@ export function useHistoryData() {
       }
 
       historyList.value = data?.list || [];
-      
+
       // Set default current history if none selected
       if (!currentHistoryId.value && historyList.value.length > 0) {
         currentHistoryId.value = historyList.value[0].id;
@@ -70,20 +70,20 @@ export function useHistoryData() {
     }
 
     loadHistoryContent.value = true;
-    
+
     try {
       const [error, { data }] = await scenario.getMonitorHistoryDetail(currentHistoryId.value);
-      
+
       if (error) {
         console.error('Failed to load execution data:', error);
         return;
       }
 
       historyExecData.value = data;
-      
+
       // Process sample log content
       if (historyExecData.value?.sampleLogContent) {
-        historyExecData.value.sampleLogContent = 
+        historyExecData.value.sampleLogContent =
           historyExecData.value.sampleLogContent.replaceAll('\\n', '\n');
       }
     } catch (error) {
@@ -122,7 +122,7 @@ export function useHistoryData() {
     currentExecId,
     historyExecData,
     loadHistoryContent,
-    
+
     // Methods
     loadHistoryList,
     changeHistory,

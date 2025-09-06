@@ -5,7 +5,7 @@ import type { MonitorInfo } from '../types';
 /**
  * Composable for managing monitor data and scenario information
  */
-export function useMonitorData() {
+export function useMonitorData () {
   // Monitor data state
   const dataSource = ref<MonitorInfo>();
   const scenarioData = ref({});
@@ -24,7 +24,7 @@ export function useMonitorData() {
     loading.value = true;
     try {
       const [error, res] = await scenario.getMonitorDetail(id);
-      
+
       if (error) {
         console.error('Failed to load monitor data:', error);
         return;
@@ -37,7 +37,7 @@ export function useMonitorData() {
       }
 
       dataSource.value = data;
-      
+
       // Load scenario plugin if scenarioId exists
       if (data.scenarioId) {
         await loadScenarioPlugin(data.scenarioId);
@@ -54,7 +54,7 @@ export function useMonitorData() {
   const loadScenarioPlugin = async (scenarioId: string): Promise<void> => {
     try {
       const [error, { data }] = await scenario.getScenarioDetail(scenarioId);
-      
+
       if (error) {
         console.error('Failed to load scenario data:', error);
         return;
@@ -93,7 +93,7 @@ export function useMonitorData() {
     scenarioData,
     scenarioPlugin,
     loading,
-    
+
     // Methods
     loadData,
     loadScenarioPlugin,

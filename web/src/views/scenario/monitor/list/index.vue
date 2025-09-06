@@ -1,27 +1,28 @@
 <script setup lang="ts">
-import { defineAsyncComponent, inject, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { defineAsyncComponent, inject, toRefs } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Popover } from 'ant-design-vue';
-import { Icon, modal, NoData, Spin } from '@xcan-angus/vue-ui';
-import { debounce, throttle } from 'throttle-debounce';
-import { useRouter } from 'vue-router';
+import { Icon, NoData, Spin } from '@xcan-angus/vue-ui';
 
-import { scenario } from '@/api/tester';
-import { MonitorInfo } from '../types';
+// Import types and composables
+import type { TabPaneInjection } from './types';
+import { useMonitorData } from './composables/useMonitorData';
+import { useMonitorActions } from './composables/useMonitorActions';
+import { useMonitorUI } from './composables/useMonitorUI';
+
 import SearchPanel from '@/views/scenario/monitor/list/SearchPanel.vue';
 
+// Component setup
 const { t } = useI18n();
-
-const router = useRouter();
 
 type Props = {
   projectId: string;
   userInfo: { id: string; };
   appInfo: { id: string; };
   notify: string;
-  onShow: boolean;
 }
 
+// Props definition
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -30,211 +31,42 @@ const props = withDefaults(defineProps<Props>(), {
   onShow: false
 });
 
-type OrderByKey = 'createdDate' | 'createdByName';
-type OrderSortKey = 'ASC' | 'DESC';
+// Extract reactive props
+const { projectId, notify, onShow } = toRefs(props);
 
+// Inject tab pane functions
+const deleteTabPane = inject<TabPaneInjection['deleteTabPane']>('deleteTabPane', () => ({}));
+const addTabPane = inject<TabPaneInjection['addTabPane']>('addTabPane', () => ({}));
+
+// Async component
 const Introduce = defineAsyncComponent(() => import('@/views/scenario/monitor/list/Introduce.vue'));
 
-const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
-const addTabPane = inject<(keys: string[]) => void>('addTabPane', () => ({}));
+// Use composables
+const {
+  loaded,
+  loading,
+  searchedFlag,
+  dataList,
+  total,
+  pageNo,
+  pageSize,
+  loadData,
+  refresh,
+  searchChange
+} = useMonitorData(projectId, notify);
 
-const loaded = ref(false);
-const loading = ref(false);
-const searchedFlag = ref(false);
-const dataListWrapRef = ref();
+const {
+  toDelete,
+  editMonitor,
+  handleDetail,
+  run,
+  getScenarioDetail
+} = useMonitorActions(addTabPane, deleteTabPane, refresh);
 
-// const orderBy = ref<OrderByKey>();
-// const orderSort = ref<OrderSortKey>();
-
-const searchPanelParams = ref({
-  orderBy: undefined,
-  orderSort: undefined,
-  filters: []
-});
-const pageNo = ref(1);
-const pageSize = ref(16);
-const total = ref(0);
-const dataList = ref<MonitorInfo[]>([]);
-const permissionsMap = ref<Map<string, string[]>>(new Map());
-
-const refresh = () => {
-  pageNo.value = 1;
-  permissionsMap.value.clear();
-  loadData();
-};
-
-const searchChange = (data) => {
-  pageNo.value = 1;
-  searchPanelParams.value = data;
-  loadData();
-};
-
-// 删除
-const toDelete = async (data: MonitorInfo) => {
-  modal.confirm({
-    content: t('scenarioMonitor.list.deleteConfirm', { name: data.name }),
-    async onOk () {
-      const id = data.id;
-      const [error] = await scenario.deleteMonitor({
-        ids: [id]
-      });
-      if (error) {
-        return;
-      }
-      pageNo.value = 1;
-      loadData();
-      deleteTabPane([id, id + '-case']);
-    }
-  });
-};
-
-// 打开编辑
-const editMonitor = (data: MonitorInfo) => {
-  addTabPane({
-    value: 'monitorEdit',
-    _id: data.id,
-    id: data.id,
-    data,
-    name: data.name
-  });
-};
-
-// 打开详情
-const handleDetail = (data: MonitorInfo) => {
-  addTabPane({
-    value: 'monitorDetails',
-    _id: data.id + '-case',
-    id: data.id,
-    data,
-    name: data.name
-  });
-};
-
-const run = async (data: MonitorInfo) => {
-  modal.confirm({
-    content: t('scenarioMonitor.list.executeConfirm', { name: data.name }),
-    async onOk () {
-      const id = data.id;
-      const [error] = await scenario.runMonitor(id);
-      if (error) {
-        return;
-      }
-      pageNo.value = 1;
-      loadData();
-    }
-  });
-};
-
-// 监控列表
-const loadData = async () => {
-  loading.value = true;
-  const params: {
-    projectId: string;
-    pageNo: number;
-    pageSize: number;
-    orderBy?: OrderByKey;
-    orderSort?: OrderSortKey;
-    filters?: { key: string; op: string; value: string; }[];
-  } = {
-    projectId: props.projectId,
-    pageNo: pageNo.value,
-    pageSize: pageSize.value,
-    ...searchPanelParams.value
-  };
-
-  const [error, res] = await scenario.getMonitorList(params);
-  loaded.value = true;
-  loading.value = false;
-
-  if (params.filters?.length || params.orderBy) {
-    searchedFlag.value = true;
-  } else {
-    searchedFlag.value = false;
-  }
-
-  if (error) {
-    total.value = 0;
-    dataList.value = [];
-    return;
-  }
-
-  const data = res?.data || { total: 0, list: [] };
-  if (data) {
-    total.value = +data.total;
-
-    const _list = (data.list || [] as MonitorInfo[]);
-    dataList.value = _list;
-  }
-};
-
-const getScenarioDetail = async (scenarioId) => {
-  const [error, { data }] = await scenario.getScenarioDetail(scenarioId);
-  if (error) {
-    return;
-  }
-  const { id, name, plugin } = data;
-  router.push(`/scenario#scenario?id=${id}&name=${name}&plugin=${plugin}&type=detail`);
-};
-
-const handleScrollList = throttle(500, (event) => {
-  if (dataList.value.length === total.value || loading.value) {
-    return;
-  }
-  const clientHeight = event.currentTarget.clientHeight;
-  const scrollHeight = event.currentTarget.scrollHeight;
-  const scrollTop = event.currentTarget.scrollTop;
-  if (clientHeight + scrollTop + 100 > scrollHeight) {
-    pageNo.value += 1;
-    loadData();
-  }
-});
-
-let wrapperHeight = 0;
-const handleWindowResize = debounce(300, () => {
-  if (!props.onShow) {
-    return;
-  }
-  const height = dataListWrapRef.value?.clientHeight || 0;
-  if (height <= wrapperHeight) {
-    return;
-  }
-  wrapperHeight = height;
-
-  if (!dataList.value.length) {
-    return;
-  }
-  if ((height / 160) > 4) {
-    const rows = Math.floor(height / 160) + 2;
-    pageSize.value = rows * 4;
-  } else {
-    pageSize.value = 16;
-  }
-  if (dataList.value.length < pageSize.value) {
-    pageNo.value = 1;
-    loadData();
-  }
-});
-
-onMounted(() => {
-  watch(() => props.projectId, () => {
-    pageNo.value = 1;
-    loadData();
-  }, { immediate: true });
-
-  watch(() => props.notify, (newValue) => {
-    if (!newValue) {
-      return;
-    }
-
-    loadData();
-  }, { immediate: false });
-
-  window.addEventListener('resize', handleWindowResize);
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener('resize', handleWindowResize);
-});
+const {
+  dataListWrapRef,
+  handleScrollList
+} = useMonitorUI(dataList, total, loading, pageNo, pageSize, onShow, loadData);
 
 </script>
 
@@ -260,7 +92,7 @@ onBeforeUnmount(() => {
         <template v-else>
           <SearchPanel
             :projectId="props.projectId"
-            @change="searchChange"
+            @change="(data) => searchChange(data)"
             @refresh="refresh" />
 
           <NoData v-if="dataList.length === 0" class="flex-1" />

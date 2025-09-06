@@ -40,7 +40,20 @@ type MarkContainerStyle = {
 const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
-  dataSource: undefined,
+  dataSource: () => ({
+    allSce: '0',
+    sceByLastWeek: '0',
+    sceByLastMonth: '0',
+    sceByScriptType: {
+      TEST_FUNCTIONALITY: '0',
+      TEST_PERFORMANCE: '0',
+      TEST_STABILITY: '0',
+      TEST_CUSTOMIZATION: '0',
+      MOCK_DATA: '0',
+      MOCK_APIS: '0'
+    },
+    sceByPluginName: {}
+  }),
   resizeNotify: undefined
 });
 
@@ -141,7 +154,7 @@ const renderPieChart = (): void => {
   if (!chartInstance) {
     // Register required ECharts components
     echarts.use([TooltipComponent, LegendComponent, PieChart, CanvasRenderer, LabelLayout]);
-    
+
     // Initialize chart instance with DOM element
     chartInstance = echarts.init(document.getElementById(chartDomId));
     chartInstance.setOption(chartConfiguration);
@@ -163,7 +176,7 @@ const adjustChartLayout = (): void => {
   }
 
   const containerWidth = chartContainerRef.value.offsetWidth;
-  
+
   if (containerWidth > 428) {
     // Large screens: center the chart
     chartConfiguration.series![0].center[0] = '50%';
@@ -198,7 +211,7 @@ const handleChartResize = (): void => {
  * <p>Processes test type data and updates chart configuration.</p>
  * <p>Extracts scenario counts by test type and calculates total count.</p>
  * <p>Updates both chart data and center mark display.</p>
- * 
+ *
  * @param dataSource - Resource information containing scenario counts by test type
  */
 const processTestTypeData = (dataSource: ResourceInfo): void => {
@@ -212,13 +225,13 @@ const processTestTypeData = (dataSource: ResourceInfo): void => {
 
   if (dataSource?.sceByScriptType) {
     const testTypeData = dataSource.sceByScriptType;
-    
+
     if (testTypeData) {
       // Calculate total scenarios count
-      totalTestScenariosCount.value = 
-        (+testTypeData.TEST_PERFORMANCE) + 
-        (+testTypeData.TEST_STABILITY) + 
-        (+testTypeData.TEST_FUNCTIONALITY) + 
+      totalTestScenariosCount.value =
+        (+testTypeData.TEST_PERFORMANCE) +
+        (+testTypeData.TEST_STABILITY) +
+        (+testTypeData.TEST_FUNCTIONALITY) +
         (+testTypeData.TEST_CUSTOMIZATION);
 
       // Update chart data with actual values

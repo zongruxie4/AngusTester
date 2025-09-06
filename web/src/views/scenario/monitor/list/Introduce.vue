@@ -10,11 +10,7 @@ const wrapperRef = ref();
 
 const handleCol = () => {
   const clientWidth = wrapperRef.value.clientWidth;
-  if (clientWidth > 800) {
-    isCol2.value = false;
-  } else {
-    isCol2.value = true;
-  }
+  isCol2.value = clientWidth <= 800;
 };
 
 const isCol2 = ref(false);

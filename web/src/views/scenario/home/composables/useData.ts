@@ -3,25 +3,26 @@ import { useI18n } from 'vue-i18n';
 import { PageQuery } from '@xcan-angus/infra';
 import { scenario } from '@/api/tester';
 import { getCurrentPage } from '@/utils/utils';
-import type { 
-  SceneItem, 
-  ScenarioQueryParams, 
-  ScenarioListParams, 
-  TablePagination 
+import type {
+  SceneItem,
+  ScenarioQueryParams,
+  ScenarioListParams,
+  TablePagination
 } from '../types';
 
 /**
  * Composable for managing scenario data operations
  * Handles data loading, pagination, and state management
  */
-export function useData(
-  projectId: string,
+export function useData (
+  projectIdRef: any,
   params: ScenarioQueryParams,
   notify: string,
-  deletedNotify: string
+  deletedNotify: string,
+  updateTotal
 ) {
   const { t } = useI18n();
-  
+
   // Reactive data state
   const tableData = ref<SceneItem[]>();
   const loading = ref(false);
@@ -38,9 +39,9 @@ export function useData(
     size: 'small',
     showTotal: (total: number) => {
       const totalPage = Math.ceil(total / pagination.value.pageSize);
-      return t('scenarioHome.myScenarios.table.messages.pageInfo', { 
-        current: pagination.value.current, 
-        total: totalPage 
+      return t('scenarioHome.myScenarios.table.messages.pageInfo', {
+        current: pagination.value.current,
+        total: totalPage
       });
     }
   });
@@ -51,7 +52,7 @@ export function useData(
   const buildRequestParams = (): ScenarioListParams => {
     const { current, pageSize } = pagination.value;
     const requestParams: ScenarioListParams = {
-      projectId,
+      projectId: projectIdRef.value,
       pageNo: current,
       pageSize
     };
@@ -81,11 +82,11 @@ export function useData(
    */
   const loadData = async (): Promise<void> => {
     loading.value = true;
-    
+
     try {
       const requestParams = buildRequestParams();
       const [error, res] = await scenario.getScenarioList(requestParams);
-      
+
       if (error) {
         console.error('Failed to load scenario data:', error);
         return;
@@ -95,7 +96,9 @@ export function useData(
       tableData.value = data?.list || [];
       const total = +(data?.total || 0);
       pagination.value.total = total;
-      
+
+      // Emit total update after data is loaded
+      updateTotal(total);
     } catch (error) {
       console.error('Error loading scenario data:', error);
     } finally {
@@ -123,7 +126,7 @@ export function useData(
    * Refresh data when project changes
    */
   const refreshOnProjectChange = (): void => {
-    watch(() => projectId, () => {
+    watch(() => projectIdRef.value, () => {
       loadData();
     }, { immediate: true });
   };
@@ -150,8 +153,8 @@ export function useData(
       }
 
       pagination.value.current = getCurrentPage(
-        pagination.value.current, 
-        pagination.value.pageSize, 
+        pagination.value.current,
+        pagination.value.pageSize,
         pagination.value.total
       );
       loadData();
@@ -167,16 +170,18 @@ export function useData(
     refreshOnDeletedNotifyChange();
   };
 
+  // Initialize watchers immediately
+  initializeWatchers();
+
   return {
     // State
     tableData,
     loading,
     loaded,
     pagination,
-    
+
     // Methods
     loadData,
-    handleTableChange,
-    initializeWatchers
+    handleTableChange
   };
 }

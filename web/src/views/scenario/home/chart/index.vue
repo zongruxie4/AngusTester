@@ -63,7 +63,7 @@ const chartDataSource = ref<ResourceInfo>();
 const fetchScenarioResourceData = async (): Promise<void> => {
   const requestParams = { projectId: props.projectId };
   const [error, response] = await analysis.getScenarioResourceCount(requestParams);
-  
+
   if (error) {
     // Log error or handle gracefully - API call failed
     return;
@@ -97,13 +97,16 @@ const resetChartDataSource = (): void => {
 // ==================== Lifecycle Hooks ====================
 
 onMounted(() => {
+  // Initialize with empty data
+  resetChartDataSource();
+
   // Watch for project ID changes and reload data accordingly
   watch(() => props.projectId, (newProjectId) => {
     if (!newProjectId) {
+      resetChartDataSource();
       return;
     }
 
-    resetChartDataSource();
     fetchScenarioResourceData();
   }, { immediate: true });
 

@@ -70,10 +70,10 @@ provide('updateRefreshNotify', updateRefreshNotification);
         :userInfo="props.userInfo"
         :projectId="props.projectId"
         class="mb-4" />
-      
+
       <!-- Project charts and analytics -->
-      <Chart 
-        :notify="refreshNotification" 
+      <Chart
+        :notify="refreshNotification"
         :projectId="props.projectId" />
     </div>
 
@@ -81,7 +81,7 @@ provide('updateRefreshNotify', updateRefreshNotification);
     <div class="flex-shrink-0 pt-8 h-full w-right">
       <!-- Product introduction and capabilities -->
       <Introduce class="mb-5" />
-      
+
       <!-- Activity timeline (only shown when project is selected) -->
       <ActivityTimeline
         v-if="projectId"

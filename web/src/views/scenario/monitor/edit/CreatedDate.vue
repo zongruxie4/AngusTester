@@ -1,188 +1,139 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue';
-import { CreatedAt, PeriodicUnit, DayOfWeek, enumUtils, EnumMessage } from '@xcan-angus/infra';
+import { onMounted, watch, toRefs } from 'vue';
 import { DatePicker, FormItem, Radio, RadioGroup } from 'ant-design-vue';
 import { Select } from '@xcan-angus/vue-ui';
-import dayjs from 'dayjs';
 
-type CreateTimeSetting = {
-  createdAt: CreatedAt,
-  periodicCreationUnit?: PeriodicUnit,
-  dayOfWeek?: DayOfWeek;
-  createdAtSomeDate?: string;
-  dayOfMonth?: string;
-  timeOfDay?: string;
-  minuteOfHour?: string;
-  hourOfDay?: string;
-}
+// Import types and composables
+import type { CreatedDateProps } from './types';
+import { useTimeData } from './composables/useTimeData';
+import { useTimeValidation } from './composables/useTimeValidation';
+import { useTimeOptions } from './composables/useTimeOptions';
 
-interface Props {
-  createTimeSetting: CreateTimeSetting;
-  showPeriodically: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+// Component props with default values
+const props = withDefaults(defineProps<CreatedDateProps>(), {
   createTimeSetting: () => ({
-    createdAt: 'NOW',
+    createdAt: 'NOW' as any,
     timeOfDay: '07:00:00'
   }),
   showPeriodically: true
 });
 
-const enumFieldNames = {
-  label: 'message',
-  value: 'value'
-};
+// Destructure props to reactive refs
+const { createTimeSetting, showPeriodically } = toRefs(props);
 
-const createTimeSettingData = ref<CreateTimeSetting>({ createdAt: 'NOW' });
+// Initialize composables
+const {
+  createTimeSettingData,
+  timeOfDay,
+  createdAtSomeDate,
+  isValid,
+  createdAtAllOpt,
+  createdAtOpt,
+  periodicCreationUnitOpt,
+  dayOfWeekOpt,
+  dayOfMonthOpt,
+  minutesOpt,
+  hoursOpt,
+  enumFieldNames,
+  loadEnum,
+  updateTimeOfDay,
+  updateCreatedAtSomeDate,
+  initializeTimeValues,
+  setDefaultPeriodicValues,
+  isDateInPast
+} = useTimeData();
 
-const createdAtAllOpt = ref<EnumMessage<CreatedAt>[]>([]);
-const createdAtOpt = ref<EnumMessage<CreatedAt>[]>([]);
-const periodicCreationUnitOpt = ref<EnumMessage<PeriodicUnit>>([]);
-const dayOfWeekOpt = ref<EnumMessage<DayOfWeek>[]>([]);
-const dayOfMonthOpt = ref<EnumMessage<DayOfWeek>[]>(Array.from(new Array(31)).map((_i, idx) => {
-  return {
-    message: idx + 1 + '',
-    value: idx + 1 + ''
-  };
-}));
+// Initialize validation composable
+const { getTimeSettingData, validateTimeSetting } = useTimeValidation(
+  createTimeSettingData,
+  timeOfDay,
+  createdAtSomeDate,
+  isDateInPast
+);
 
-const minutesOpt = ref<{label: string; value: string}[]>(Array.from(new Array(59)).map((_i, idx) => {
-  return {
-    label: idx + 1 + '',
-    value: idx + 1 + ''
-  };
-}));
+// Initialize options composable
+const { watchPeriodicallyOption, shouldShowTimePicker, shouldShowPeriodicOption } = useTimeOptions(
+  showPeriodically,
+  createdAtAllOpt,
+  createdAtOpt,
+  createTimeSettingData
+);
 
-const hoursOpt = ref<{label: string; value: string}[]>(Array.from(new Array(23)).map((_i, idx) => {
-  return {
-    label: idx + 1 + '',
-    value: idx + 1 + ''
-  };
-}));
-
-const timeOfDay = ref();
-const createdAtSomeDate = ref();
-const loadEnum = async () => {
-  createdAtAllOpt.value = enumUtils.enumToMessages(CreatedAt);
-  periodicCreationUnitOpt.value = enumUtils.enumToMessages(PeriodicUnit);
-  dayOfWeekOpt.value = enumUtils.enumToMessages(DayOfWeek);
-};
-
-watch([() => props.showPeriodically, () => createdAtAllOpt.value], ([newValue]) => {
-  if (newValue) {
-    createdAtOpt.value = createdAtAllOpt.value;
-  } else {
-    createTimeSettingData.value.createdAt = 'NOW';
-    createdAtOpt.value = createdAtAllOpt.value.filter(i => i.value !== 'PERIODICALLY');
-  }
-}, {
-  immediate: true
-});
-
-const getTimeOfDay = () => {
-  createTimeSettingData.value.timeOfDay = dayjs(timeOfDay.value).format('HH:mm:ss');
-};
-
-const getCreatedAtSomeDate = () => {
-  createTimeSettingData.value.createdAtSomeDate = dayjs(createdAtSomeDate.value).format('YYYY-MM-DD HH:mm:ss');
-};
-
-onMounted(async () => {
+/**
+ * Initialize component data and watch for prop changes
+ */
+const initializeComponent = async () => {
+  // Load enum data
   await loadEnum();
 
-  watch(() => props.createTimeSetting, () => {
-    createTimeSettingData.value = JSON.parse(JSON.stringify(props.createTimeSetting));
-    if (createTimeSettingData.value.timeOfDay) {
-      const [hour, minute, second] = createTimeSettingData.value.timeOfDay.split(':');
-      timeOfDay.value = dayjs().set('hour', +hour).set('minute', +minute).set('second', +second);
-    } else {
-      timeOfDay.value = dayjs().set('hour', 7).set('minute', 0).set('second', 0);
-      getTimeOfDay();
-    }
-    if (createTimeSettingData.value.createdAtSomeDate) {
-      createdAtSomeDate.value = dayjs(createTimeSettingData.value.createdAtSomeDate);
-    } else {
-      createdAtSomeDate.value = dayjs().add(1, 'hours');
-      getCreatedAtSomeDate();
-    }
+  // Watch for prop changes and update internal state
+  watch(
+    () => createTimeSetting.value,
+    (newValue) => {
+      if (!newValue) return;
 
-    const { periodicCreationUnit, createdAt, dayOfWeek } = props.createTimeSetting;
+      // Deep clone the prop data
+      createTimeSettingData.value = JSON.parse(JSON.stringify(newValue));
 
-    if (periodicCreationUnit) {
-      createTimeSettingData.value.periodicCreationUnit = periodicCreationUnit?.value || periodicCreationUnit;
-    }
-    if (createdAt) {
-      createTimeSettingData.value.createdAt = createdAt?.value || createdAt;
-    }
+      // Initialize time values
+      initializeTimeValues();
 
-    if (dayOfWeek) {
-      createTimeSettingData.value.dayOfWeek = dayOfWeek?.value;
-    }
+      // Handle enum value extraction
+      const { periodicCreationUnit, createdAt, dayOfWeek } = newValue;
 
-    if (!createTimeSettingData.value.hourOfDay) {
-      createTimeSettingData.value.hourOfDay = '1';
-    }
+      if (periodicCreationUnit) {
+        createTimeSettingData.value.periodicCreationUnit = 
+          (periodicCreationUnit as any)?.value || periodicCreationUnit;
+      }
 
-    if (!createTimeSettingData.value.minuteOfHour) {
-      createTimeSettingData.value.minuteOfHour = '1';
-    }
-  }, {
-    deep: true,
-    immediate: true
-  });
+      if (createdAt) {
+        createTimeSettingData.value.createdAt = 
+          (createdAt as any)?.value || createdAt;
+      }
+
+      if (dayOfWeek) {
+        createTimeSettingData.value.dayOfWeek = (dayOfWeek as any)?.value;
+      }
+
+      // Set default periodic values
+      setDefaultPeriodicValues();
+    },
+    { deep: true, immediate: true }
+  );
+};
+
+/**
+ * Validate the current time setting
+ */
+const validate = () => {
+  const result = validateTimeSetting();
+  isValid.value = result.isValid;
+  return result;
+};
+
+/**
+ * Get the current time setting data
+ */
+const getData = () => {
+  return getTimeSettingData();
+};
+
+// Initialize component
+onMounted(async () => {
+  await initializeComponent();
+  watchPeriodicallyOption();
 });
 
-const getData = () => {
-  if (createTimeSettingData.value.createdAt === 'NOW') {
-    return {
-      createdAt: 'NOW'
-    };
-  }
-  if (createTimeSettingData.value.createdAt === 'AT_SOME_DATE') {
-    return {
-      createdAt: 'AT_SOME_DATE',
-      createdAtSomeDate: dayjs(createdAtSomeDate.value).format('YYYY-MM-DD HH:mm:ss')
-    };
-  }
-  const { periodicCreationUnit, dayOfWeek, dayOfMonth, timeOfDay, hourOfDay, minuteOfHour } = createTimeSettingData.value;
-  if (createTimeSettingData.value.createdAt === 'PERIODICALLY') {
-    return {
-      createdAt: 'PERIODICALLY',
-      periodicCreationUnit,
-      dayOfWeek: periodicCreationUnit === 'WEEKLY' ? dayOfWeek : undefined,
-      dayOfMonth: periodicCreationUnit === 'MONTHLY' ? dayOfMonth : undefined,
-      hourOfDay: periodicCreationUnit === 'HOURLY' ? hourOfDay : undefined,
-      minuteOfHour: periodicCreationUnit === 'EVERY_MINUTE' ? minuteOfHour : undefined,
-      timeOfDay: ['WEEKLY', 'MONTHLY', 'DAILY'].includes(periodicCreationUnit) ? timeOfDay : undefined
-    };
-  }
-};
-
-const getValidCreatedAtSomeData = () => {
-  if (!isValid.value) {
-    return false;
-  }
-  return dayjs().isAfter(createdAtSomeDate.value);
-};
-const isValid = ref(false);
-const validate = () => {
-  isValid.value = true;
-  if (getValidCreatedAtSomeData()) {
-    return false;
-  }
-  isValid.value = false;
-  return getData();
-};
-
+// Expose methods to parent component
 defineExpose({
   validate,
   getData
 });
-
 </script>
+
 <template>
   <div class="flex">
+    <!-- Time creation mode selection -->
     <RadioGroup v-model:value="createTimeSettingData.createdAt">
       <Radio
         v-for="item in createdAtOpt"
@@ -192,54 +143,71 @@ defineExpose({
         {{ item.message }}
       </Radio>
     </RadioGroup>
+    
+    <!-- Time configuration panel -->
     <div class="">
       <div class="h-10"></div>
+      
+      <!-- Specific date selection -->
       <div class="h-10">
-        <FormItem :class="{'ant-form-item-has-error': getValidCreatedAtSomeData()}">
+        <FormItem :class="{'ant-form-item-has-error': isDateInPast}">
           <DatePicker
-            v-show="createTimeSettingData.createdAt == 'AT_SOME_DATE'"
+            v-show="createTimeSettingData.createdAt === 'AT_SOME_DATE'"
             v-model:value="createdAtSomeDate"
             showTime
             :allowClear="false"
-            @change="getCreatedAtSomeDate" />
+            @change="updateCreatedAtSomeDate" />
         </FormItem>
       </div>
+      
+      <!-- Periodic configuration options -->
       <div class="h-7 flex items-center space-x-2">
         <template v-if="createTimeSettingData.createdAt === 'PERIODICALLY'">
+          <!-- Periodic unit selection -->
           <Select
             v-model:value="createTimeSettingData.periodicCreationUnit"
             :defaultActiveFirstOption="true"
             :options="periodicCreationUnitOpt"
             :fieldNames="enumFieldNames"
             class="w-40" />
+          
+          <!-- Weekly day selection -->
           <Select
-            v-show="createTimeSettingData.periodicCreationUnit === 'WEEKLY'"
+            v-show="shouldShowPeriodicOption('WEEKLY', createTimeSettingData.periodicCreationUnit)"
             v-model:value="createTimeSettingData.dayOfWeek"
             :options="dayOfWeekOpt"
             :defaultActiveFirstOption="true"
             :fieldNames="enumFieldNames"
             class="w-40" />
+          
+          <!-- Monthly day selection -->
           <Select
-            v-show="createTimeSettingData.periodicCreationUnit === 'MONTHLY'"
+            v-show="shouldShowPeriodicOption('MONTHLY', createTimeSettingData.periodicCreationUnit)"
             v-model:value="createTimeSettingData.dayOfMonth"
             :options="dayOfMonthOpt"
             :defaultActiveFirstOption="true"
             :fieldNames="enumFieldNames"
             class="w-40" />
+          
+          <!-- Time picker for weekly, monthly, and daily -->
           <DatePicker
-            v-if="['WEEKLY', 'MONTHLY', 'DAILY'].includes(createTimeSettingData.periodicCreationUnit)"
+            v-if="shouldShowTimePicker(createTimeSettingData.periodicCreationUnit)"
             v-model:value="timeOfDay"
             mode="time"
             picker="time"
             :allowClear="false"
-            @change="getTimeOfDay" />
+            @change="updateTimeOfDay" />
+          
+          <!-- Hourly interval selection -->
           <Select
-            v-if="createTimeSettingData.periodicCreationUnit === 'HOURLY'"
+            v-if="shouldShowPeriodicOption('HOURLY', createTimeSettingData.periodicCreationUnit)"
             v-model:value="createTimeSettingData.hourOfDay"
             class="inline-block min-w-15"
             :options="hoursOpt" />
+          
+          <!-- Every minute interval selection -->
           <Select
-            v-if="createTimeSettingData.periodicCreationUnit === 'EVERY_MINUTE'"
+            v-if="shouldShowPeriodicOption('EVERY_MINUTE', createTimeSettingData.periodicCreationUnit)"
             v-model:value="createTimeSettingData.minuteOfHour"
             class="inline-block min-w-15"
             :options="minutesOpt" />

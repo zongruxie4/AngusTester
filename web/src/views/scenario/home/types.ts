@@ -7,25 +7,24 @@ export interface UserInfo {
 
 // Component props for MyScenarios
 export interface MyScenariosProps {
-  projectId: string;
   userInfo: UserInfo;
   notify: string;
 }
 
+// Scenario query parameters
+export interface ScenarioQueryParams {
+  projectId: string;
+  createdBy?: string;
+  favouriteBy?: string;
+  followBy?: string;
+}
+
 // Component props for MyScenariosTable
 export interface MyScenariosTableProps {
-  projectId: string;
   params: ScenarioQueryParams;
   total: number;
   notify: string;
   deletedNotify: string;
-}
-
-// Scenario query parameters
-export interface ScenarioQueryParams {
-  createdBy?: string;
-  favouriteBy?: string;
-  followBy?: string;
 }
 
 // Scenario item data structure

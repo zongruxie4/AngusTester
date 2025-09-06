@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, watch, inject, computed, ref, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon, Table } from '@xcan-angus/vue-ui';
@@ -7,12 +7,12 @@ import type { MyScenariosTableProps, TableChangeParams } from './types';
 import { useData } from './composables/useData';
 import { useTableColumns } from './composables/useTableColumns';
 import { useTableActions } from './composables/useTableActions';
+import { getCurrentPage } from '@/utils/utils';
 
 const { t } = useI18n();
 
 // Component props with proper typing
 const props = withDefaults(defineProps<MyScenariosTableProps>(), {
-  projectId: undefined,
   params: undefined,
   total: 0,
   notify: undefined,
@@ -25,6 +25,15 @@ const emit = defineEmits<{
   (e: 'update:deletedNotify', value: string): void;
 }>();
 
+const updateTotal = (total: number) => {
+  emit('update:total', total);
+};
+
+const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
+const projectId = computed(() => {
+  return projectInfo.value?.id;
+});
+
 // Use composables for different concerns
 const {
   tableData,
@@ -33,7 +42,7 @@ const {
   pagination,
   loadData,
   handleTableChange
-} = useData(props.projectId, props.params, props.notify, props.deletedNotify);
+} = useData(projectId, props.params, props.notify, props.deletedNotify, updateTotal);
 
 const { columns, emptyTextStyle } = useTableColumns(props.params);
 
@@ -46,7 +55,28 @@ const {
 
 // Initialize watchers on component mount
 onMounted(() => {
-  // The watchers are already initialized in useData composable
+  watch(() => props.projectId, () => {
+    loadData();
+  }, { immediate: true });
+
+  watch(() => props.notify, (newValue) => {
+    if (newValue === undefined || newValue === null || newValue === '') {
+      return;
+    }
+
+    loadData();
+  }, { immediate: true });
+
+  watch(() => props.deletedNotify, (newValue) => {
+    if (newValue === undefined || newValue === null || newValue === '') {
+      return;
+    }
+
+    pagination.value.current = getCurrentPage(pagination.value.current,
+      pagination.value.pageSize, pagination.value.total);
+
+    loadData();
+  }, { immediate: true });
 });
 
 /**
@@ -104,7 +134,12 @@ const getActionIcon = (actionKey: string | undefined) => {
 <template>
   <div>
     <!-- Loading state -->
-    <template v-if="loaded">
+    <div v-if="loading && !loaded" class="flex justify-center items-center h-32">
+      <div class="text-theme-sub-content">{{ t('common.loading') }}</div>
+    </div>
+
+    <!-- Data content -->
+    <template v-else-if="loaded">
       <!-- Empty state -->
       <template v-if="!tableData?.length">
         <div class="flex-1 flex flex-col items-center justify-center">
@@ -139,8 +174,9 @@ const getActionIcon = (actionKey: string | undefined) => {
         :minSize="5"
         rowKey="id"
         size="small"
+        noDataSize="small"
+        :noDataText="t('common.noData')"
         @change="onTableChange">
-        
         <!-- Custom cell renderers -->
         <template #bodyCell="{ record, column }">
           <!-- Scenario name with link -->
@@ -151,12 +187,12 @@ const getActionIcon = (actionKey: string | undefined) => {
             :to="`/scenario#scenario?id=${record.id}&name=${record.name}&plugin=${record.plugin}`">
             {{ record.name }}
           </RouterLink>
-          
+
           <!-- Script type display -->
           <div v-else-if="column.dataIndex === 'scriptType'" class="truncate">
             {{ record.scriptType?.message }}
           </div>
-          
+
           <!-- Action buttons -->
           <div v-else-if="column.dataIndex === 'action'">
             <Button
@@ -165,8 +201,8 @@ const getActionIcon = (actionKey: string | undefined) => {
               type="text"
               class="space-x-1 flex items-center py-0 px-1"
               @click="getActionHandler(column.actionKey, record)()">
-              <Icon 
-                :icon="getActionIcon(column.actionKey)" 
+              <Icon
+                :icon="getActionIcon(column.actionKey)"
                 class="text-3.5 cursor-pointer text-theme-text-hover" />
             </Button>
           </div>

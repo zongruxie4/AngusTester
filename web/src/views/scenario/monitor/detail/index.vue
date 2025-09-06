@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { 
-  Hints, 
-  Icon, 
-  NoData, 
-  Spin, 
-  DebugLog, 
-  ExecLog, 
-  ScenarioHttpDebugResult, 
-  ScenarioJdbcDebugResult, 
-  ScenarioFtpDebugResult, 
-  ScenarioWebsocketDebugResult, 
-  ScenarioLdapDebugResult, 
-  ScenarioMailDebugResult, 
-  ScenarioTcpDebugResult, 
-  ScearioSmtpDebugResult 
+import {
+  Hints,
+  Icon,
+  NoData,
+  Spin,
+  DebugLog,
+  ExecLog,
+  ScenarioHttpDebugResult,
+  ScenarioJdbcDebugResult,
+  ScenarioFtpDebugResult,
+  ScenarioWebsocketDebugResult,
+  ScenarioLdapDebugResult,
+  ScenarioMailDebugResult,
+  ScenarioTcpDebugResult,
+  ScearioSmtpDebugResult
 } from '@xcan-angus/vue-ui';
 import { Button, TabPane, Tabs, Tag } from 'ant-design-vue';
 import Chart from '@/views/scenario/monitor/detail/Chart.vue';
@@ -77,10 +77,10 @@ const handleRunMonitor = async (data: any) => {
 onMounted(() => {
   // Watch for data changes and load monitor data
   watchDataChanges(() => props.data);
-  
+
   // Watch for current history changes and load execution data
   watchCurrentHistory();
-  
+
   // Load initial data if available
   if (props.data?.id) {
     loadData(props.data.id);

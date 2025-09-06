@@ -35,11 +35,11 @@ const ACTIVITY_TYPES = ['SCENARIO', 'SCENARIO_MONITOR'] as const;
         :projectId="props.projectId"
         :showUserName="false" />
     </TabPane>
-    
+
     <!-- All activities tab - shows all users' activities in the project -->
     <TabPane key="total" :tab="t('scenarioHome.activityTimeline.allActivity')">
-      <ActivityTimeline 
-        :types="ACTIVITY_TYPES" 
+      <ActivityTimeline
+        :types="ACTIVITY_TYPES"
         :projectId="props.projectId" />
     </TabPane>
   </Tabs>

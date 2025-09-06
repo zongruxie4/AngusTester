@@ -7,9 +7,9 @@ import type { MonitorInfo, AddTabPaneFunction } from '../types';
 /**
  * Composable for managing monitor actions (edit, run, etc.)
  */
-export function useMonitorActions() {
+export function useMonitorActions () {
   const { t } = useI18n();
-  
+
   // Inject addTabPane function from parent component
   const addTabPane = inject<AddTabPaneFunction>('addTabPane', () => ({}));
 
@@ -33,15 +33,15 @@ export function useMonitorActions() {
    * @param onSuccess - Callback function to call after successful execution
    */
   const runMonitor = async (
-    data: MonitorInfo, 
+    data: MonitorInfo,
     onSuccess?: () => void
   ): Promise<void> => {
     modal.confirm({
       content: t('scenarioMonitor.list.executeConfirm', { name: data.name }),
-      async onOk() {
+      async onOk () {
         try {
           const [error] = await scenario.runMonitor(data.id);
-          
+
           if (error) {
             console.error('Failed to run monitor:', error);
             return;

@@ -9,7 +9,7 @@ import type { SceneItem } from '../types';
  * Composable for managing table actions
  * Handles delete, unfavorite, and unfollow operations
  */
-export function useTableActions(
+export function useTableActions (
   loadData: () => Promise<void>,
   emit: {
     (e: 'update:deletedNotify', value: string): void;
@@ -17,7 +17,7 @@ export function useTableActions(
 ) {
   const { t } = useI18n();
   const loading = ref(false);
-  
+
   // Inject refresh notification function from parent
   const updateRefreshNotify = inject<(value: string) => void>('updateRefreshNotify');
 
@@ -27,7 +27,7 @@ export function useTableActions(
   const handleDelete = (data: SceneItem): void => {
     modal.confirm({
       content: t('scenarioHome.myScenarios.table.messages.deleteConfirm', { name: data.name }),
-      async onOk() {
+      async onOk () {
         try {
           const [error] = await scenario.deleteScenario(data.id);
           if (error) {
@@ -54,7 +54,7 @@ export function useTableActions(
    */
   const handleUnfavorite = async (data: SceneItem): Promise<void> => {
     loading.value = true;
-    
+
     try {
       const [error] = await scenario.deleteScenarioFavorite(data.id);
       if (error) {
@@ -81,7 +81,7 @@ export function useTableActions(
    */
   const handleUnfollow = async (data: SceneItem): Promise<void> => {
     loading.value = true;
-    
+
     try {
       const [error] = await scenario.deleteScenarioFollow(data.id);
       if (error) {

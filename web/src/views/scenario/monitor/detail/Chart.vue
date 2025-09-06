@@ -104,11 +104,11 @@ const updateChartData = () => {
   }
 
   const { failureNum = 0, successNum = 0, successRate = '0' } = props.count;
-  
+
   // Convert string values to numbers for chart display
   const successValue = typeof successNum === 'string' ? parseInt(successNum) || 0 : successNum;
   const failureValue = typeof failureNum === 'string' ? parseInt(failureNum) || 0 : failureNum;
-  
+
   const option = {
     title: {
       text: `${successRate}%`
