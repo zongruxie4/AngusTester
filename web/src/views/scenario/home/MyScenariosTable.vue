@@ -3,7 +3,7 @@ import { computed, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon, modal, notification, Table } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/infra';
+import { PageQuery, utils } from '@xcan-angus/infra';
 import { scenario } from '@/api/tester';
 
 import { getCurrentPage } from '@/utils/utils';
@@ -39,7 +39,7 @@ const tableData = ref<SceneItem[]>();
 const loading = ref(false);
 const loaded = ref(false);
 const orderBy = ref<string>();
-const orderSort = ref<'ASC' | 'DESC'>();
+const orderSort = ref<PageQuery.OrderSort>();
 const pagination = ref<{
   total: number;
   current: number;
@@ -61,7 +61,7 @@ const pagination = ref<{
       }
     });
 
-const tableChange = ({ current = 1, pageSize = 10 }, _filters, sorter: { orderBy: string; orderSort: 'ASC' | 'DESC'; }) => {
+const tableChange = ({ current = 1, pageSize = 10 }, _filters, sorter: { orderBy: string; orderSort: PageQuery.OrderSort; }) => {
   orderBy.value = sorter.orderBy;
   orderSort.value = sorter.orderSort;
   pagination.value.current = current;
@@ -147,7 +147,7 @@ const cancelFavourite = async (data: SceneItem) => {
   }
 
   notification.success(t('scenarioHome.myScenarios.table.messages.unfavoriteSuccess'));
-  loadData();
+  await loadData();
 
   if (typeof updateRefreshNotify === 'function') {
     updateRefreshNotify(utils.uuid());
@@ -163,7 +163,7 @@ const cancelFollow = async (data: SceneItem) => {
   }
 
   notification.success(t('scenarioHome.myScenarios.table.messages.unfollowSuccess'));
-  loadData();
+  await loadData();
 
   if (typeof updateRefreshNotify === 'function') {
     updateRefreshNotify(utils.uuid());

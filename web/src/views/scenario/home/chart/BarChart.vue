@@ -9,25 +9,59 @@ import { CanvasRenderer } from 'echarts/renderers';
 
 import { ResourceInfo } from './types';
 
-const { t } = useI18n();
+// ==================== Types and Interfaces ====================
 
+/**
+ * <p>Component props interface for BarChart component.</p>
+ * <p>Defines the data source and resize notification properties.</p>
+ */
 type Props = {
   dataSource: ResourceInfo;
   resizeNotify: string;
 }
+
+/**
+ * <p>ECharts configuration option type.</p>
+ * <p>Combines tooltip, grid, and bar series options for type safety.</p>
+ */
+type EChartsOption = echarts.ComposeOption<TooltipComponentOption | GridComponentOption | BarSeriesOption>;
+
+// ==================== Component Setup ====================
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined,
   resizeNotify: undefined
 });
 
-type EChartsOption = echarts.ComposeOption<TooltipComponentOption | GridComponentOption | BarSeriesOption>;
+// ==================== Reactive State ====================
 
-const domId = utils.uuid('bar');
-const total = ref<number>(0);
+/**
+ * <p>Unique DOM element identifier for the chart container.</p>
+ * <p>Generated using UUID to ensure uniqueness across component instances.</p>
+ */
+const chartDomId = utils.uuid('bar');
 
-let echartInstance:echarts.ECharts;
-const echartOption :EChartsOption = {
+/**
+ * <p>Total number of scenarios displayed in the chart header.</p>
+ * <p>Reactive value that updates when data source changes.</p>
+ */
+const totalScenariosCount = ref<number>(0);
+
+// ==================== Chart Configuration ====================
+
+/**
+ * <p>ECharts instance for managing chart lifecycle and operations.</p>
+ * <p>Initialized lazily when first render is called.</p>
+ */
+let chartInstance: echarts.ECharts;
+
+/**
+ * <p>Default chart configuration with styling and behavior settings.</p>
+ * <p>Includes tooltip, grid layout, axes, and series configuration.</p>
+ */
+const chartConfiguration: EChartsOption = {
   tooltip: {
     trigger: 'axis',
     axisPointer: { type: 'shadow' },
@@ -58,62 +92,99 @@ const echartOption :EChartsOption = {
       borderRadius: [4, 4, 0, 0]
     },
     label: {
-      show: true, // 显示数值
-      position: 'top' // 数值显示在柱形的顶部
+      show: true, // Display value labels on top of bars
+      position: 'top' // Position labels at the top of each bar
     }
   }]
 };
 
-const renderChart = () => {
-  if (!echartInstance) {
+// ==================== Chart Methods ====================
+
+/**
+ * <p>Initializes and renders the ECharts bar chart.</p>
+ * <p>Registers required ECharts components and creates chart instance if not exists.</p>
+ * <p>Updates chart with current configuration data.</p>
+ */
+const renderBarChart = (): void => {
+  if (!chartInstance) {
+    // Register required ECharts components
     echarts.use([TooltipComponent, GridComponent, BarChart, CanvasRenderer]);
-    echartInstance = echarts.init(document.getElementById(domId));
-    echartInstance.setOption(echartOption);
+    
+    // Initialize chart instance with DOM element
+    chartInstance = echarts.init(document.getElementById(chartDomId));
+    chartInstance.setOption(chartConfiguration);
     return;
   }
 
-  // 重新绘制图表
-  echartInstance.setOption(echartOption);
+  // Update existing chart with new data
+  chartInstance.setOption(chartConfiguration);
 };
 
-const resizeHandler = () => {
-  if (echartInstance) {
-    echartInstance.resize();
+/**
+ * <p>Handles chart resize when container dimensions change.</p>
+ * <p>Ensures chart maintains proper aspect ratio and visibility.</p>
+ */
+const handleChartResize = (): void => {
+  if (chartInstance) {
+    chartInstance.resize();
   }
 };
 
-onMounted(() => {
-  watch(() => props.dataSource, (newValue) => {
-    // 重置数据
-    echartOption.xAxis![0].data = [];
-    echartOption.series![0].data = [];
+// ==================== Data Processing Methods ====================
 
-    if (props.dataSource) {
-      total.value = +newValue.allSce;
-      const _data = newValue.sceByPluginName;
-      if (_data) {
-        const keys = Object.keys(_data);
-        if (keys.length) {
-          keys.forEach(key => {
-            echartOption.xAxis![0].data.push(key);
-            echartOption.series![0].data.push(_data[key]);
-          });
-        } else {
-          echartOption.xAxis![0].data = ['Http', 'WebSocket', 'Jdbc', 'Tcp'];
-          echartOption.series![0].data = [0, 0, 0, 0];
-        }
-      }
+/**
+ * <p>Processes scenario data by plugin name and updates chart configuration.</p>
+ * <p>Extracts plugin names and their corresponding scenario counts.</p>
+ * <p>Provides fallback data when no plugin data is available.</p>
+ * 
+ * @param dataSource - Resource information containing scenario counts by plugin
+ */
+const processPluginData = (dataSource: ResourceInfo): void => {
+  // Reset chart data
+  chartConfiguration.xAxis![0].data = [];
+  chartConfiguration.series![0].data = [];
+
+  if (!dataSource) {
+    return;
+  }
+
+  // Update total scenarios count
+  totalScenariosCount.value = +dataSource.allSce;
+
+  const pluginData = dataSource.sceByPluginName;
+  if (pluginData) {
+    const pluginNames = Object.keys(pluginData);
+    
+    if (pluginNames.length > 0) {
+      // Process available plugin data
+      pluginNames.forEach(pluginName => {
+        chartConfiguration.xAxis![0].data.push(pluginName);
+        chartConfiguration.series![0].data.push(pluginData[pluginName]);
+      });
+    } else {
+      // Provide fallback data when no plugins are available
+      chartConfiguration.xAxis![0].data = ['Http', 'WebSocket', 'Jdbc', 'Tcp'];
+      chartConfiguration.series![0].data = [0, 0, 0, 0];
     }
+  }
+};
 
-    renderChart();
+// ==================== Lifecycle Hooks ====================
+
+onMounted(() => {
+  // Watch for data source changes and update chart accordingly
+  watch(() => props.dataSource, (newDataSource) => {
+    processPluginData(newDataSource);
+    renderBarChart();
   }, { immediate: true });
 
-  watch(() => props.resizeNotify, (newValue) => {
-    if (newValue === undefined || newValue === null || newValue === '') {
+  // Watch for resize notifications and handle chart resizing
+  watch(() => props.resizeNotify, (resizeNotification) => {
+    if (resizeNotification === undefined || resizeNotification === null || resizeNotification === '') {
       return;
     }
 
-    resizeHandler();
+    handleChartResize();
   }, { immediate: true });
 });
 </script>
@@ -122,8 +193,8 @@ onMounted(() => {
   <div class="rounded border border-solid border-theme-text-box px-4 py-3.5">
     <div class="font-semibold">
       <span class="mr-2">{{ t('scenarioHome.chart.totalScenarios') }}</span>
-      <span class="text-4">{{ total }}</span>
+      <span class="text-4">{{ totalScenariosCount }}</span>
     </div>
-    <div :id="domId" class="w-full h-50"></div>
+    <div :id="chartDomId" class="w-full h-50"></div>
   </div>
 </template>

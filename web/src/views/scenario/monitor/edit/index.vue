@@ -6,7 +6,7 @@ import { Button, Form, FormItem, Textarea, Tabs, TabPane, RadioGroup, Radio } fr
 import { utils, TESTER, GM } from '@xcan-angus/infra';
 import { scenario } from '@/api/tester';
 
-import {FormState, MonitorInfo} from '../types';
+import { FormState, MonitorInfo } from '../types';
 
 const { t } = useI18n();
 
