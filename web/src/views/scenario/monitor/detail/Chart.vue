@@ -1,18 +1,13 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import * as echarts from 'echarts';
+import type { ChartProps } from './types';
 
 const { t } = useI18n();
 
-interface Props {
-  count?: {
-    failureNum: number;
-    successNum: number;
-    successRate: string;
-  }
-}
-const props = withDefaults(defineProps<Props>(), {
+// Component props with proper typing
+const props = withDefaults(defineProps<ChartProps>(), {
   count: () => ({
     failureNum: 0,
     successNum: 0,
@@ -20,22 +15,24 @@ const props = withDefaults(defineProps<Props>(), {
   })
 });
 
-const successRateRef = ref();
+// Chart reference and instance
+const chartRef = ref<HTMLDivElement>();
+let chartInstance: echarts.ECharts | null = null;
 
-let successRateChart;
-const successRateConfig = {
+/**
+ * Initialize chart configuration
+ */
+const createChartConfig = () => ({
   title: {
     text: '0%',
     left: '35%',
     top: '38%',
     padding: 2,
-    // left: '25%',
-    // top: '40%',
     itemGap: 47,
-    textAlign: 'center',
+    textAlign: 'center' as const,
     textStyle: {
       fontSize: 12,
-      fontWeight: 'bolder'
+      fontWeight: 'bolder' as const
     },
     subtextStyle: {
       fontSize: 12,
@@ -43,12 +40,12 @@ const successRateConfig = {
     }
   },
   tooltip: {
-    trigger: 'item'
+    trigger: 'item' as const
   },
   legend: {
     top: 'middle',
     right: '10',
-    orient: 'vertical',
+    orient: 'vertical' as const,
     itemHeight: 14,
     itemWidth: 14,
     itemGap: 2
@@ -56,7 +53,7 @@ const successRateConfig = {
   series: [
     {
       name: '',
-      type: 'pie',
+      type: 'pie' as const,
       radius: ['50%', '70%'],
       center: ['35%', '45%'],
       avoidLabelOverlap: true,
@@ -96,21 +93,72 @@ const successRateConfig = {
       ]
     }
   ]
+});
+
+/**
+ * Update chart data based on props
+ */
+const updateChartData = () => {
+  if (!chartInstance || !props.count) {
+    return;
+  }
+
+  const { failureNum = 0, successNum = 0, successRate = '0' } = props.count;
+  
+  // Convert string values to numbers for chart display
+  const successValue = typeof successNum === 'string' ? parseInt(successNum) || 0 : successNum;
+  const failureValue = typeof failureNum === 'string' ? parseInt(failureNum) || 0 : failureNum;
+  
+  const option = {
+    title: {
+      text: `${successRate}%`
+    },
+    series: [{
+      data: [
+        {
+          name: t('scenarioMonitor.chart.successCount'),
+          value: successValue,
+          itemStyle: { color: '#52C41A' }
+        },
+        {
+          name: t('scenarioMonitor.chart.failureCount'),
+          value: failureValue,
+          itemStyle: { color: 'rgba(245, 34, 45, 1)' }
+        }
+      ]
+    }]
+  };
+
+  chartInstance.setOption(option);
 };
 
+/**
+ * Initialize chart on component mount
+ */
 onMounted(() => {
-  successRateChart = echarts.init(successRateRef.value);
-  successRateChart.setOption(successRateConfig);
-  watch(() => props.count, () => {
-    const { failureNum = 0, successNum = 0, successRate = '0' } = props.count;
-    successRateConfig.title.text = successRate + '%';
-    successRateConfig.series[0].data[0].value = successNum;
-    successRateConfig.series[0].data[1].value = failureNum;
-    successRateChart.setOption(successRateConfig);
-  });
+  if (!chartRef.value) {
+    return;
+  }
+
+  chartInstance = echarts.init(chartRef.value);
+  const config = createChartConfig();
+  chartInstance.setOption(config);
+
+  // Watch for count changes and update chart
+  watch(() => props.count, updateChartData, { deep: true });
+});
+
+/**
+ * Cleanup chart instance on component unmount
+ */
+onUnmounted(() => {
+  if (chartInstance) {
+    chartInstance.dispose();
+    chartInstance = null;
+  }
 });
 </script>
 <template>
-  <div ref="successRateRef" class="h-25">
+  <div ref="chartRef" class="h-25">
   </div>
 </template>
