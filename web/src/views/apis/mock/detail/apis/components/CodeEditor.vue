@@ -7,7 +7,7 @@ import { Validate } from '@xcan-angus/vue-ui';
 import MonacoEditor from '@/components/monacoEditor/index.vue';
 import { isHtml, isJSON, isXML, isYAML } from '@/utils/dataFormat';
 
-// ==================== Props & Emits ====================
+// Props & Emits
 interface Props {
   value: string;
   readonly?:boolean;

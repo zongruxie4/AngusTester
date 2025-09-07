@@ -10,8 +10,6 @@ import { CanvasRenderer } from 'echarts/renderers';
 
 import { ResourceInfo } from './types';
 
-// ==================== Types and Interfaces ====================
-
 /**
  * <p>Component props interface for PieChart component.</p>
  * <p>Defines the data source and resize notification properties.</p>
@@ -35,8 +33,6 @@ type MarkContainerStyle = {
   left: string;
 }
 
-// ==================== Component Setup ====================
-
 const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
@@ -56,8 +52,6 @@ const props = withDefaults(defineProps<Props>(), {
   }),
   resizeNotify: undefined
 });
-
-// ==================== Reactive State ====================
 
 /**
  * <p>Reference to the chart container element for responsive calculations.</p>
@@ -82,8 +76,6 @@ const chartDomId = utils.uuid('pie');
  * <p>Calculated from the sum of all test type counts.</p>
  */
 const totalTestScenariosCount = ref<number>(0);
-
-// ==================== Chart Configuration ====================
 
 /**
  * <p>ECharts instance for managing chart lifecycle and operations.</p>
@@ -142,8 +134,6 @@ const chartConfiguration: EChartsOption = {
     }
   ]
 };
-
-// ==================== Chart Methods ====================
 
 /**
  * <p>Initializes and renders the ECharts pie chart.</p>
@@ -205,8 +195,6 @@ const handleChartResize = (): void => {
   }
 };
 
-// ==================== Data Processing Methods ====================
-
 /**
  * <p>Processes test type data and updates chart configuration.</p>
  * <p>Extracts scenario counts by test type and calculates total count.</p>
@@ -242,8 +230,6 @@ const processTestTypeData = (dataSource: ResourceInfo): void => {
     }
   }
 };
-
-// ==================== Lifecycle Hooks ====================
 
 onMounted(() => {
   // Watch for data source changes and update chart accordingly

@@ -238,7 +238,6 @@ const handleChartResize = () => {
   }
 };
 
-// ==================== DATA LOADING FUNCTIONS ====================
 /**
  * Loads chart data from API and updates chart configurations
  * Fetches test summary data grouped by category and status

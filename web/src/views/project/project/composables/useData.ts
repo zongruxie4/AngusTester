@@ -14,10 +14,6 @@ import type {
  * @returns {Object} Project data management utilities and state
  */
 export function useData () {
-  // ============================================================================
-  // State Management
-  // ============================================================================
-
   /** Loading state for API requests */
   const loading = ref(false);
 
@@ -44,11 +40,6 @@ export function useData () {
     pageSizeOptions: [4],
     hideOnSinglePage: true
   });
-
-  // ============================================================================
-  // Computed Properties
-  // ============================================================================
-
   /**
    * Check if there are any projects in the current view
    * @returns {boolean} True if no projects are available
@@ -71,10 +62,6 @@ export function useData () {
     const end = Math.min(current * pageSize, total);
     return `${start}-${end} of ${total}`;
   });
-
-  // ============================================================================
-  // API Functions
-  // ============================================================================
 
   /**
    * Build API query parameters from current state
@@ -233,10 +220,6 @@ export function useData () {
     }
   };
 
-  // ============================================================================
-  // Search and Filter Functions
-  // ============================================================================
-
   /**
    * Debounced search handler to avoid excessive API calls
    */
@@ -263,10 +246,6 @@ export function useData () {
     fetchProjectList();
   };
 
-  // ============================================================================
-  // Sorting Functions
-  // ============================================================================
-
   /**
    * Update sorting configuration and refresh data
    * @param {Object} sortConfig - Sort configuration
@@ -282,10 +261,6 @@ export function useData () {
     pagination.current = 1; // Reset to first page
     fetchProjectList();
   };
-
-  // ============================================================================
-  // Pagination Functions
-  // ============================================================================
 
   /**
    * Handle page change
@@ -306,10 +281,6 @@ export function useData () {
     pagination.pageSize = size;
     fetchProjectList();
   };
-
-  // ============================================================================
-  // Utility Functions
-  // ============================================================================
 
   /**
    * Refresh current page data
@@ -361,10 +332,6 @@ export function useData () {
       pagination.total = Math.max(0, pagination.total - 1);
     }
   };
-
-  // ============================================================================
-  // Return Interface
-  // ============================================================================
 
   return {
     // State

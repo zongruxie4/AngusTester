@@ -22,12 +22,10 @@ import UrlForm from '@/views/apis/mock/detail/apis/components/UrlForm.vue';
 
 import { CONTENT_TYPE, HTTP_HEADERS } from '@/utils/constant';
 
-// ==================== Async Components ====================
 const Agent = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/Agent.vue'));
 const InputGroup = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/content/InputGroup.vue'));
 const RequestBody = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/content/RequestBody.vue'));
 
-// ==================== Props ====================
 interface Props {
   serviceOptions: {label: string, value: string}[];
   mockAPIInfo?: {
@@ -44,12 +42,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-// ==================== Injections ====================
 const WS = inject('WS', ref());
 const uuid = inject('uuid', ref());
 const wsResponse = inject('wsResponse', ref());
 
-// ==================== Reactive State ====================
 const urlRef = ref();
 const inputGroupRef = ref();
 const requestBodyRef = ref();
@@ -66,7 +62,6 @@ const server = ref();
 const endpoint = ref();
 const contentType = ref<string|undefined>(undefined);
 
-// ==================== Constants & Variables ====================
 const myRequest = new axiosClient({ timeout: 0, intervalMs: 500, maxRedirects: 0, maxRetries: 5 });
 const { valueKey } = API_EXTENSION_KEY;
 let apiUuid: string;
@@ -87,7 +82,6 @@ const OTHER_CONSTANTS = {
   DEFAULT_FILENAME: 'response'
 } as const;
 
-// ==================== Methods ====================
 /**
  * Toggle debug panel spread state
  */

@@ -9,8 +9,6 @@ import { CanvasRenderer } from 'echarts/renderers';
 
 import { ResourceInfo } from './types';
 
-// ==================== Types and Interfaces ====================
-
 /**
  * <p>Component props interface for BarChart component.</p>
  * <p>Defines the data source and resize notification properties.</p>
@@ -25,8 +23,6 @@ type Props = {
  * <p>Combines tooltip, grid, and bar series options for type safety.</p>
  */
 type EChartsOption = echarts.ComposeOption<TooltipComponentOption | GridComponentOption | BarSeriesOption>;
-
-// ==================== Component Setup ====================
 
 const { t } = useI18n();
 
@@ -48,8 +44,6 @@ const props = withDefaults(defineProps<Props>(), {
   resizeNotify: undefined
 });
 
-// ==================== Reactive State ====================
-
 /**
  * <p>Unique DOM element identifier for the chart container.</p>
  * <p>Generated using UUID to ensure uniqueness across component instances.</p>
@@ -61,8 +55,6 @@ const chartDomId = utils.uuid('bar');
  * <p>Reactive value that updates when data source changes.</p>
  */
 const totalScenariosCount = ref<number>(0);
-
-// ==================== Chart Configuration ====================
 
 /**
  * <p>ECharts instance for managing chart lifecycle and operations.</p>
@@ -111,8 +103,6 @@ const chartConfiguration: EChartsOption = {
   }]
 };
 
-// ==================== Chart Methods ====================
-
 /**
  * <p>Initializes and renders the ECharts bar chart.</p>
  * <p>Registers required ECharts components and creates chart instance if not exists.</p>
@@ -142,8 +132,6 @@ const handleChartResize = (): void => {
     chartInstance.resize();
   }
 };
-
-// ==================== Data Processing Methods ====================
 
 /**
  * <p>Processes scenario data by plugin name and updates chart configuration.</p>
@@ -181,8 +169,6 @@ const processPluginData = (dataSource: ResourceInfo): void => {
     }
   }
 };
-
-// ==================== Lifecycle Hooks ====================
 
 onMounted(() => {
   // Watch for data source changes and update chart accordingly

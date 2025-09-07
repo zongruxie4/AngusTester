@@ -17,9 +17,6 @@ export function useForm (
     GROUP: string[];
   }>
 ): UseProjectFormReturn {
-  // ============================================================================
-  // Dependencies
-  // ============================================================================
 
   const { t } = useI18n();
 
@@ -32,9 +29,6 @@ export function useForm (
   const delTabPane = inject('delTabPane',
     (tabKey: string) => { console.log('delTabPane not provided:', tabKey); }
   );
-  // ============================================================================
-  // State Management
-  // ============================================================================
 
   /** Form loading state */
   const loading = ref(false);
@@ -50,9 +44,6 @@ export function useForm (
     type: { value: ProjectType.AGILE, message: '' },
     importExample: false
   });
-  // ============================================================================
-  // Form Validation
-  // ============================================================================
 
   /**
    * Validate description field length
@@ -84,9 +75,6 @@ export function useForm (
       };
     }
   };
-  // ============================================================================
-  // Data Loading
-  // ============================================================================
 
   /**
    * Load project detail data for editing
@@ -137,9 +125,6 @@ export function useForm (
       loading.value = false;
     }
   };
-  // ============================================================================
-  // Form Actions
-  // ============================================================================
   /**
    * Select project type
    * @param type - Project type to select
@@ -232,10 +217,6 @@ export function useForm (
     delTabPane(`${projectId}_project`);
     delTabPane('addProject');
   };
-
-  // ============================================================================
-  // Return Interface
-  // ============================================================================
 
   return {
     // State

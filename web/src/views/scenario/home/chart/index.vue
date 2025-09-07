@@ -5,8 +5,6 @@ import { analysis } from '@/api/tester';
 
 import { ResourceInfo } from './types';
 
-// ==================== Types and Interfaces ====================
-
 /**
  * <p>Component props interface for ChartContainer component.</p>
  * <p>Defines the project ID and refresh notification properties.</p>
@@ -16,16 +14,12 @@ type Props = {
   notify: string;
 }
 
-// ==================== Component Setup ====================
-
 const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   notify: undefined
 });
-
-// ==================== Async Components ====================
 
 /**
  * <p>Lazy-loaded bar chart component for displaying scenario counts by plugin.</p>
@@ -39,8 +33,6 @@ const BarChartComponent = defineAsyncComponent(() => import('./BarChart.vue'));
  */
 const PieChartComponent = defineAsyncComponent(() => import('./PieChart.vue'));
 
-// ==================== Reactive State ====================
-
 /**
  * <p>Injected window resize notification for responsive chart updates.</p>
  * <p>Used to trigger chart resize when window dimensions change.</p>
@@ -52,8 +44,6 @@ const windowResizeNotification = inject('windowResizeNotify', ref<string>());
  * <p>Contains scenario counts by various dimensions (plugin, test type, time periods).</p>
  */
 const chartDataSource = ref<ResourceInfo>();
-
-// ==================== Data Management Methods ====================
 
 /**
  * <p>Fetches scenario resource count data from the API.</p>
@@ -93,8 +83,6 @@ const resetChartDataSource = (): void => {
     sceByPluginName: {}
   };
 };
-
-// ==================== Lifecycle Hooks ====================
 
 onMounted(() => {
   // Initialize with empty data

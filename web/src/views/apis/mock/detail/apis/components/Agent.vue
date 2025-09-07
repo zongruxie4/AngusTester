@@ -6,7 +6,7 @@ import { Icon, Select } from '@xcan-angus/vue-ui';
 
 const { t } = useI18n();
 
-// ==================== Props & Injections ====================
+//  Props & Injections
 const readyState = inject('readyState', ref(-1));
 const currentProxyUrl = inject('currentProxyUrl', ref(''));
 const currentProxy = inject('currentProxy', ref(''));

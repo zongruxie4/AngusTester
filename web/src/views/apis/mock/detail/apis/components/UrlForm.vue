@@ -5,7 +5,7 @@ import { Composite, HttpMethodText, IconCopy, IconRequired, Input, Select } from
 
 import SelectEnum from '@/components/selectEnum/index.vue';
 
-// ==================== Props & Emits ====================
+// Props & Emits
 interface Props {
   method:string;
   options: { label: string; value: string; }[]
