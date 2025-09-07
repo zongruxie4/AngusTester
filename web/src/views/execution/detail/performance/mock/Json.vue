@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 // eslint-disable-next-line import/no-absolute-path
 import { ExecInfo } from '@/plugins/gendata/jsonIndex';
+
 // eslint-disable-next-line import/no-absolute-path
 
 interface Props {

@@ -1,32 +1,37 @@
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, ref } from 'vue';
+import { defineAsyncComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
-import { Icon, modal, notification, Select, Spin } from '@xcan-angus/vue-ui';
-import YAML from 'yaml';
+import { Icon, Select, Spin } from '@xcan-angus/vue-ui';
+import { useExecutionDetail } from './composables/useExecutionDetail';
 
-import { ExecutionInfo } from '../types';
-import { exec } from 'src/api/ctrl';
-import { Exception } from '@/views/execution/types';
-
-const ExecSetting = defineAsyncComponent(() => import('@/views/execution/detail/Configuration.vue'));
-const ExecLog = defineAsyncComponent(() => import('@/views/execution/detail/Log.vue'));
+// Async component imports
+const ExecSetting = defineAsyncComponent(() => import('./Configuration.vue'));
+const ExecLog = defineAsyncComponent(() => import('./Log.vue'));
 const MonacoEditor = defineAsyncComponent(() => import('@/components/monacoEditor/index.vue'));
-const Performance = defineAsyncComponent(() => import('@/views/execution/detail/performance/index.vue'));
-const FuncTest = defineAsyncComponent(() => import('@/views/execution/detail/functional/index.vue'));
-const TestResult = defineAsyncComponent(() => import('@/views/execution/detail/result/index.vue'));
-const ServiceConfig = defineAsyncComponent(() => import('@/views/execution/detail/Server.vue'));
+const Performance = defineAsyncComponent(() => import('./performance/index.vue'));
+const FuncTest = defineAsyncComponent(() => import('./functional/index.vue'));
+const TestResult = defineAsyncComponent(() => import('./result/index.vue'));
+const ServiceConfig = defineAsyncComponent(() => import('./Server.vue'));
 
+/**
+ * Props for the Execution Detail component
+ */
 interface Props {
+  /** Execution ID */
   execId?: string;
+  /** Whether to show back button */
   showBackBtn: boolean;
+  /** Monaco editor style */
   monicaEditorStyle: {[key: string]:string};
+  /** Script type */
   scriptType?: string;
+  /** Plugin type */
   plugin?: string;
-
 }
-const { t } = useI18n();
+
+// Define component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   execId: undefined,
   showBackBtn: true,
@@ -34,200 +39,36 @@ const props = withDefaults(defineProps<Props>(), {
   scriptType: undefined,
   plugin: undefined
 });
+
+// Define component events
 const emit = defineEmits<{(e: 'del'):void}>();
 
+// Initialize internationalization and route
+const { t } = useI18n();
 const route = useRoute();
-const router = useRouter();
 
-const performanceRef = ref();
-const funcRef = ref();
+// Use execution detail composable for logic
+const {
+  loading,
+  detail,
+  scriptInfo,
+  scriptYamlStr,
+  topActiveKey,
+  exception,
+  performanceRef,
+  funcRef,
+  loadscriptContent,
+  getDetail,
+  getInfo,
+  handleRestart,
+  handleStop,
+  handleDelete,
+  topTabsChange,
+  scriptTypeChange,
+  setException
+} = useExecutionDetail(props, emit);
 
-const id = props.execId || route.params.id as string;
-const pageNo = route.query.pageNo;
-
-const topActiveKey = ref(route.query?.tab === 'log' ? '4' : '1');
-
-const loading = ref(false);
-const detail = ref<ExecutionInfo>();
-const scriptInfo = ref();
-const scriptYamlStr = ref('');
-
-const loadscriptContent = async () => {
-  const [error, { data }] = await exec.getScriptByExecId(id);
-  if (error) {
-    return;
-  }
-  scriptYamlStr.value = data;
-};
-
-const getDetail = async () => {
-  loading.value = true;
-  const [error, { data }] = await exec.getDetail(id);
-
-  if (error) {
-    loading.value = false;
-    return;
-  }
-
-  detail.value = data;
-
-  if (detail.value?.scriptType.value === 'MOCK_DATA') {
-    detail.value.batchRows = detail.value.task?.mockData?.settings.batchRows || '1';
-  }
-
-  const { configuration, plugin, task, scriptId, scriptType } = data;
-  scriptInfo.value = {
-    id: scriptId,
-    type: scriptType.value,
-    plugin,
-    configuration,
-    task
-  };
-};
-
-const getInfo = (data) => {
-  if (!data) {
-    return;
-  }
-  const keys = Object.keys(data);
-  if (!keys.length || !detail.value) {
-    return;
-  }
-
-  for (const key in data) {
-    detail.value[key] = data[key];
-  }
-
-  setException();
-};
-
-onMounted(async () => {
-  if (!id) {
-    const scriptTypeMsgConfig = {
-      TEST_PERFORMANCE: t('execution.info.performanceTest'),
-      TEST_STABILITY: t('execution.info.stabilityTest'),
-      TEST_FUNCTIONALITY: t('execution.info.functionalityTest'),
-      TEST_CUSTOMIZATION: t('execution.info.customizationTest')
-    };
-    if (props.scriptType) {
-      detail.value = {
-        scriptType: {
-          value: props.scriptType,
-          message: scriptTypeMsgConfig[props.scriptType] || ''
-        }
-      };
-      if (props.plugin) {
-        detail.value.plugin = props.plugin;
-      }
-      console.log(detail.value);
-    }
-
-    return;
-  }
-  await getDetail();
-  setException();
-});
-
-const handleRestart = async (item:ExecutionInfo) => {
-  if (['TEST_PERFORMANCE', 'TEST_STABILITY'].includes(detail.value?.scriptType.value) && performanceRef.value) {
-    performanceRef.value.resetData();
-  }
-
-  if (detail.value?.scriptType.value === 'MOCK_DATA') {
-    performanceRef.value.restartMock();
-  }
-
-  exception.value = undefined;
-  const _params = {
-    broadcast: true,
-    id: item.id
-  };
-  loading.value = true;
-  const [error, { data }] = await exec.restart(_params);
-
-  if (error) {
-    loading.value = false;
-    if (error?.message) {
-      exception.value = { code: error?.code, message: error.message, codeName: t('execution.info.exitCode'), messageName: t('execution.info.failureReason') };
-    }
-    return;
-  }
-
-  const currItemDataList = data.filter(f => f.execId === item.id);
-  if (currItemDataList.length) {
-    const successFalseItem = currItemDataList.find(f => f.success);
-    if (successFalseItem) {
-      notification.success(t('execution.info.startSuccess'));
-      exception.value = undefined;
-    } else {
-      notification.error(currItemDataList[0].message);
-      exception.value = { code: currItemDataList[0]?.exitCode, message: currItemDataList[0]?.message, codeName: t('execution.info.exitCode'), messageName: t('execution.info.failureReason') };
-    }
-  }
-
-  await getDetail();
-  setException();
-};
-
-const handleStop = async (item:ExecutionInfo) => {
-  exception.value = undefined;
-  const _params = {
-    broadcast: true,
-    id: item.id
-  };
-  loading.value = true;
-  const [error, { data }] = await exec.stop(_params);
-  loading.value = false;
-  if (error) {
-    if (error?.message) {
-      exception.value = { code: error?.code || '', message: error.message, codeName: t('execution.info.exitCode'), messageName: t('execution.info.failureReason') };
-    }
-    return;
-  }
-
-  const currItemDataList = data.filter(f => f.execId === item.id);
-  if (currItemDataList.length) {
-    const successFalseItem = currItemDataList.find(f => f.success);
-    if (successFalseItem) {
-      notification.success(t('execution.info.stopSuccess'));
-      exception.value = undefined;
-    } else {
-      notification.error(currItemDataList[0].message);
-      exception.value = { code: currItemDataList[0]?.exitCode, message: currItemDataList[0]?.message, codeName: t('execution.info.exitCode'), messageName: t('execution.info.failureReason') };
-    }
-  }
-
-  await getDetail();
-  setException();
-};
-
-const handleDelete = async (item:ExecutionInfo) => {
-  modal.confirm({
-    centered: true,
-    content: t('execution.info.deleteConfirm', { name: item.name }),
-    async onOk () {
-      loading.value = true;
-      const [error] = await exec.delete([item.id]);
-      loading.value = false;
-      if (error) {
-        return;
-      }
-      notification.success(t('execution.info.deleteSuccess'));
-      if (props.showBackBtn) {
-        router.push('/execution');
-      } else {
-        emit('del');
-      }
-    }
-  });
-};
-
-const topTabsChange = (value:string) => {
-  if (value === '3' && !scriptYamlStr.value) {
-    loadscriptContent();
-  }
-};
-
+// Language options for script editor
 const languageOpt = [
   {
     value: 'yaml',
@@ -239,41 +80,14 @@ const languageOpt = [
   }
 ];
 
+// Reactive state for script language type
 const scriptLanguageType = ref('yaml');
-const scriptTypeChange = (value:'json' | 'yaml') => {
-  scriptLanguageType.value = value;
-  if (scriptYamlStr.value) {
-    scriptYamlStr.value = value === 'json'
-      ? JSON.stringify(YAML.parse(scriptYamlStr.value), null, 4)
-      : YAML.stringify(YAML.parse(scriptYamlStr.value));
-  }
-};
 
-const exception = ref<Exception>();
+// Execution ID from props or route
+const id = props.execId || route.params.id as string;
 
-const setException = () => {
-  const lastSchedulingResult = detail.value?.lastSchedulingResult;
-  const meterMessage = detail.value?.meterMessage;
-  if (lastSchedulingResult?.length) {
-    const foundItem = lastSchedulingResult.find(f => !f.success);
-    if (foundItem) {
-      exception.value = { code: foundItem.exitCode, message: foundItem.message, codeName: t('execution.info.exitCode'), messageName: t('execution.info.failureReason') };
-      return;
-    }
-
-    if (meterMessage) {
-      exception.value = { code: detail.value?.meterStatus || '', message: meterMessage, codeName: t('execution.info.samplingStatus'), messageName: t('execution.info.failureReason') };
-      return;
-    }
-  }
-
-  if (meterMessage) {
-    exception.value = { code: detail.value?.meterStatus || '', message: meterMessage, codeName: t('execution.info.samplingStatus'), messageName: t('execution.info.failureReason') };
-    return;
-  }
-
-  exception.value = undefined;
-};
+// Page number from route query
+const pageNo = route.query.pageNo;
 </script>
 <template>
   <Spin class="h-full pb-3.5" :spinning="loading">
@@ -281,7 +95,7 @@ const setException = () => {
       v-model:activeKey="topActiveKey"
       class="h-full flex flex-col header-tabs"
       size="small"
-      @change="topTabsChange">
+      @change="(value) => topTabsChange(value as string)">
       <template #rightExtra>
         <template v-if="topActiveKey === '1'">
           <template v-if="detail && ['CREATED','STOPPED','FAILED','COMPLETED','TIMEOUT'].includes(detail?.status?.value) && detail?.hasOperationPermission">
@@ -371,7 +185,7 @@ const setException = () => {
           class="w-40 mb-2"
           :allowClear="false"
           :options="languageOpt"
-          @change="scriptTypeChange" />
+          @change="(value) => scriptTypeChange(value as 'json' | 'yaml')" />
         <MonacoEditor
           :value="scriptYamlStr"
           class="w-full"
@@ -379,24 +193,24 @@ const setException = () => {
           :style="props.monicaEditorStyle"
           :isFormat="true"
           :readOnly="true"
-          :language="scriptLanguageType" />
+          :language="scriptLanguageType as 'text' | 'json' | 'html' | 'typescript' | 'yaml' | undefined" />
       </TabPane>
       <TabPane key="4" :tab="t('execution.info.log')">
         <ExecLog
           v-model:loading="loading"
           :execId="detail?.id"
           :execNodes="detail?.execNodes || []"
-          :schedulingNum="detail?.schedulingNum"
-          :lastSchedulingDate="detail?.lastSchedulingDate"
+          :schedulingNum="detail?.schedulingNum || ''"
+          :lastSchedulingDate="detail?.lastSchedulingDate || ''"
           :lastSchedulingResult="detail?.lastSchedulingResult || []" />
       </TabPane>
       <TabPane
-        v-if="detail?.plugin === 'Http' && ['API', 'SCENARIO'].includes(detail.scriptSource?.value) && detail.status.value === 'COMPLETED'"
+        v-if="detail?.plugin === 'Http' && detail.scriptSource && ['API', 'SCENARIO'].includes(detail.scriptSource.value) && detail.status.value === 'COMPLETED'"
         key="5"
         :tab="t('execution.info.testResult')">
         <TestResult
           :execId="detail?.id"
-          :execInfo="detail" />
+          :execInfo="detail as any" />
       </TabPane>
     </Tabs>
   </Spin>

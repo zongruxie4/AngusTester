@@ -1,90 +1,49 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Button } from 'ant-design-vue';
-import { notification, Spin, ExecSettingForm } from '@xcan-angus/vue-ui';
+import { ExecSettingForm, Spin } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
+import { useConfigData } from './composables/useConfigData';
 
-import { exec } from '@/api/ctrl';
-
+/**
+ * Props for the Configuration component
+ */
 interface Props {
+  /** Execution name */
   execName: string;
+  /** Execution ID */
   execId: string;
+  /** Script information */
   scriptInfo: Record<string, any>;
-  loading:boolean;
+  /** Loading state */
+  loading: boolean;
 }
 
+// Define component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   execName: '',
   execId: '',
   scriptInfo: undefined,
   loading: false
 });
+
+// Initialize internationalization
 const { t } = useI18n();
 
-const emit = defineEmits<{(e: 'update:loading', value: boolean): void
-}>();
+// Define component events
+const emit = defineEmits<{(e: 'update:loading', value: boolean): void}>();
 
-const execSettingFormRef = ref();
+// Use configuration data composable for logic
+const { execSettingFormRef, saveSetting } = useConfigData(
+  props.execId,
+  props.execName,
+  props.scriptInfo,
+  () => props.loading,
+  emit
+);
 
-const scrollToErrorElement = (formName, errors) => {
-  const formElement = document.querySelector(`.${formName}`);
-  if (!formElement || !errors[formName]?.errorFields?.length) {
-    return;
-  }
-  const errEleClass = errors[formName].errorFields[0].name.join('-');
-  const errorElement = formElement.querySelector(`.${errEleClass}`);
-  if (!errorElement) {
-    return;
-  }
-  errorElement.scrollIntoView({
-    block: 'center',
-    inline: 'start'
-  });
-};
-
-const saveSetting = async () => {
-  let hasErr = true;
-  const data = await execSettingFormRef.value.isValid();
-  hasErr = data.valid;
-  const errors = data.errors;
-  const formNames = ['execut-form', 'global-form', 'http-form', 'websocket-form', 'jdbc-form'];
-  for (const formName of formNames) {
-    if (errors[formName]?.errorFields?.length) {
-      if (formName === 'execut-form') {
-        execSettingFormRef.value.openExecutParames();
-      }
-
-      if (formName === 'global-form') {
-        execSettingFormRef.value.openGlobalParames();
-      }
-
-      if (formName === 'http-form' || formName === 'websocket-form' || formName === 'jdbc-form') {
-        execSettingFormRef.value.openPulginParames();
-      }
-
-      scrollToErrorElement(formName, errors);
-      break;
-    }
-  }
-
-  if (!hasErr) {
-    return;
-  }
-
-  const params:any = {
-    name: props.execName,
-    scriptType: props.scriptInfo.type,
-    ...execSettingFormRef.value.getData()
-  };
-
-  emit('update:loading', true);
-  const [error] = await exec.putScriptConfig(props.execId, params);
-  emit('update:loading', false);
-  if (error) {
-    return;
-  }
-  notification.success('修改成功');
-};
+// Reference to the execution form
+const execFormRef = ref();
 </script>
 <template>
   <Spin

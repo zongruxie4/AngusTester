@@ -4,11 +4,19 @@ import { useI18n } from 'vue-i18n';
 import { Icon } from '@xcan-angus/vue-ui';
 
 const { t } = useI18n();
+
+// Lazy load pie chart component
 const PieChart = defineAsyncComponent(() => import('@/views/execution/Count.vue'));
 
+// Chart reference for external control
 const countRef = ref();
-const updateCount = () => {
-  countRef.value.loadCount();
+
+/**
+ * Update chart data
+ * Exposed method for parent components to refresh chart
+ */
+const updateCount = (): void => {
+  countRef.value?.loadCount();
 };
 
 defineExpose({
