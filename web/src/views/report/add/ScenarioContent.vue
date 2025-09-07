@@ -4,10 +4,13 @@ import { useI18n } from 'vue-i18n';
 import { Colon, Hints, IconRequired, Select } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
+import { CombinedTargetType } from '@/enums/enums';
+
 import { contentTreeData } from './ScenarioContentConfig';
 
 const { t } = useI18n();
 
+// Component props definition
 interface Props {
   projectId: string;
   contentSetting: {
@@ -21,11 +24,16 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false
 });
 
+// Reactive variable for scenario ID
 const scenarioId = ref();
+
+// Field names for select component
 const fieldNames = {
   label: 'name',
   value: 'id'
 };
+
+// Checked keys for tree component
 const checked = ref<string[]>([]);
 contentTreeData.forEach(item => {
   checked.value.push(item.key);
@@ -34,6 +42,10 @@ contentTreeData.forEach(item => {
   }
 });
 
+/**
+ * Lifecycle hook - Initialize component
+ * Watch for content setting changes and update scenario ID
+ */
 onMounted(() => {
   watch(() => props.contentSetting, newValue => {
     if (newValue?.targetId) {
@@ -44,24 +56,34 @@ onMounted(() => {
   });
 });
 
+// Validation state
 const valid = ref(false);
+
+/**
+ * Validate if scenario ID is selected
+ * @returns Boolean indicating if validation passes
+ */
 const validate = () => {
   valid.value = true;
-  if (scenarioId.value) {
-    return true;
-  }
-  return false;
+  return !!scenarioId.value;
 };
 
+/**
+ * Get scenario data for report
+ * @returns Object containing scenario target ID and type
+ */
+const getData = () => {
+  valid.value = false;
+  return {
+    targetId: scenarioId.value,
+    targetType: CombinedTargetType.SCENARIO
+  };
+};
+
+// Expose methods to parent component
 defineExpose({
   validate,
-  getData: () => {
-    valid.value = false;
-    return {
-      targetId: scenarioId.value,
-      targetType: 'SCENARIO'
-    };
-  }
+  getData
 });
 </script>
 <template>

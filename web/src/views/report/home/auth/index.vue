@@ -1,16 +1,19 @@
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { defineAsyncComponent, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { enumUtils } from '@xcan-angus/infra';
-import { ReportPermission } from '@/enums/enums';
 import { TabPane, Tabs } from 'ant-design-vue';
 import { Hints, Modal } from '@xcan-angus/vue-ui';
+import { useAuthPermissions } from './composables/useAuthPermissions';
 
 const { t } = useI18n();
 
+// Async components
 const GroupSet = defineAsyncComponent(() => import('@/views/report/home/auth/GroupSet.vue'));
 const AuthSet = defineAsyncComponent(() => import('@/views/report/home/auth/AuthSet.vue'));
 
+/**
+ * Props interface for authorization management component
+ */
 interface Props {
   projectId: string;
   appId: string;
@@ -23,52 +26,48 @@ const props = withDefaults(defineProps<Props>(), {
   visible: false
 });
 
-// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e:'update:visible', value:boolean):void;
 }>();
 
+// Reactive references
 const activeKey = ref<'user'|'dept'|'group'>('user');
 const checkedUserId = ref<string>();
 const checkedGroupId = ref<string>();
 const checkedDeptId = ref<string>();
 
-const permissions = ref<{value:string, label:string}[]>([]);
-const loaded = ref(false);
+// Use composable for permission management
+const { permissions, loaded, init } = useAuthPermissions();
 
+/**
+ * Handle cancel action
+ */
 const cancel = () => {
   emit('update:visible', false);
 };
 
-const loadEnums = () => {
-  const res = enumUtils.enumToMessages(ReportPermission);
-  permissions.value = res.map(item => ({ label: item.message, value: item.value }));
-};
+// Initialize permissions
+init(props.visible);
 
-onMounted(() => {
-  watch(() => props.visible, (newValue) => {
-    if (!newValue) {
-      return;
-    }
+// Watch for visibility changes
+watch(() => props.visible, (newValue) => {
+  if (!newValue) {
+    return;
+  }
 
-    activeKey.value = 'user';
-    checkedUserId.value = undefined;
-    checkedGroupId.value = undefined;
-    checkedDeptId.value = undefined;
+  activeKey.value = 'user';
+  checkedUserId.value = undefined;
+  checkedGroupId.value = undefined;
+  checkedDeptId.value = undefined;
+}, { immediate: true });
 
-    loaded.value = false;
-    // permissions.value = [];
-
-    loadEnums();
-  }, { immediate: true });
-});
-
+// Modal body style
 const bodyStyle = {
   padding: '0 20px',
   height: 'calc(100% - 70px)'
 };
 </script>
-
+<!-- TODO 权限页面不展示、调试权限页面与功能 -->
 <template>
   <Modal
     :title="t('reportHome.globalAuth.title')"

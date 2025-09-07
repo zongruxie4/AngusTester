@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { PrinterOutlined } from '@ant-design/icons-vue';
 import { useRoute } from 'vue-router';
 import { IconDownload, Spin } from '@xcan-angus/vue-ui';
-import { utils, appContext } from '@xcan-angus/infra';
+import { appContext, utils } from '@xcan-angus/infra';
 import { Button } from 'ant-design-vue';
 import { Watermark } from 'watermark-js-plus';
 import html2pdf from 'html3pdf';

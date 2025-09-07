@@ -3,11 +3,14 @@ import { onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Colon, DatePicker, Hints, IconRequired, Select } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
-import { TESTER, GM } from '@xcan-angus/infra';
+import { AuthObjectType, enumOptionUtils, GM, TESTER } from '@xcan-angus/infra';
+import { CombinedTargetType } from '@/enums/enums';
+
 import { contentTreeData } from './SprintContentConfig';
 
 const { t } = useI18n();
 
+// Component props definition
 interface Props {
   projectId: string;
   contentSetting: {
@@ -25,31 +28,26 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false
 });
 
-const targetTypeOpt = [
-  {
-    value: 'USER',
-    label: t('reportAdd.sprintContent.user')
-  },
-  {
-    value: 'DEPT',
-    label: t('reportAdd.sprintContent.dept')
-  },
-  {
-    value: 'GROUP',
-    label: t('reportAdd.sprintContent.group')
-  }
-];
+// Target type options for select component
+const authObjectTypeOpt = enumOptionUtils.loadEnumAsOptions(AuthObjectType);
 
-const creatorObjectType = ref('USER');
+// Reactive variables for creator object type and ID
+const creatorObjectType = ref(AuthObjectType.USER);
 const creatorObjectId = ref();
 
+// Date range and sprint ID
 const dateRange = ref();
 const sprintId = ref();
 
+/**
+ * Handle creator object type change
+ * Reset creator object ID when type changes
+ */
 const handleTypeChange = () => {
   creatorObjectId.value = undefined;
 };
 
+// Checked keys for tree component
 const checked = ref<string[]>([]);
 contentTreeData.forEach(item => {
   checked.value.push(item.key);
@@ -58,6 +56,10 @@ contentTreeData.forEach(item => {
   }
 });
 
+/**
+ * Lifecycle hook - Initialize component
+ * Watch for content setting changes and update creator object type/ID, date range, and sprint ID
+ */
 onMounted(() => {
   watch(() => props.contentSetting, newValue => {
     if (newValue) {
@@ -81,29 +83,39 @@ onMounted(() => {
   });
 });
 
+// Validation state
 const isValid = ref(false);
+
+/**
+ * Validate if sprint ID is selected
+ * @returns Boolean indicating if validation passes
+ */
 const validate = () => {
   isValid.value = true;
-  if (!sprintId.value) {
-    return false;
-  }
-  return true;
+  return sprintId.value;
 };
 
+/**
+ * Get sprint data for report
+ * @returns Object containing sprint settings
+ */
+const getData = () => {
+  isValid.value = false;
+  return {
+    targetId: sprintId.value,
+    targetType: CombinedTargetType.TASK_SPRINT,
+    planOrSprintId: sprintId.value,
+    creatorObjectType: creatorObjectId.value ? creatorObjectType.value : undefined,
+    creatorObjectId: creatorObjectId.value,
+    createdDateStart: dateRange.value?.[0] || undefined,
+    createdDateEnd: dateRange.value?.[1] || undefined
+  };
+};
+
+// Expose methods to parent component
 defineExpose({
   validate,
-  getData: () => {
-    isValid.value = false;
-    return {
-      targetId: sprintId.value,
-      targetType: 'TASK_SPRINT',
-      planOrSprintId: sprintId.value,
-      creatorObjectType: creatorObjectId.value ? creatorObjectType.value : undefined,
-      creatorObjectId: creatorObjectId.value,
-      createdDateStart: dateRange.value?.[0] || undefined,
-      createdDateEnd: dateRange.value?.[1] || undefined
-    };
-  }
+  getData
 });
 </script>
 <template>
@@ -136,7 +148,7 @@ defineExpose({
       <span class="w-12 text-right">{{ t('reportAdd.sprintContent.organization') }}</span><Colon />
       <Select
         v-model:value="creatorObjectType"
-        :options="targetTypeOpt"
+        :options="authObjectTypeOpt"
         class="w-20"
         @change="handleTypeChange" />
       <Select

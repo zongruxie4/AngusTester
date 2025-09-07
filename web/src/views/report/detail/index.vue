@@ -9,6 +9,7 @@ import { reportMenus } from '@/views/report/add/config';
 
 const { t } = useI18n();
 
+// Component props definition
 interface Props {
   visible: boolean;
   reportId: string;
@@ -22,38 +23,52 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void}>();
 
+// Async components
 const GenerateTime = defineAsyncComponent(() => import('@/views/report/detail/GenerateTime.vue'));
 const GenerateRecord = defineAsyncComponent(() => import('@/views/report/detail/GenerateRecord.vue'));
 const Basic = defineAsyncComponent(() => import('@/views/report/add/Basic.vue'));
 const Content = defineAsyncComponent(() => import('@/views/report/detail/Content.vue'));
 
-// const route = useRoute();
-
+// Reactive variables
 const report = ref<{[key: string]: any}>({});
-const reportId = ref();
+const reportIdRef = ref(); // Renamed from reportId to avoid conflict with prop
 
+/**
+ * Compute report type object based on report category and template
+ * @returns Report type object
+ */
 const reportTypeObj = computed(() => {
   const targetGroup = reportMenus.find(group => group.label === report.value?.category?.message);
   return targetGroup?.children.find(menu => menu.key === report.value?.template?.value);
 });
 
+/**
+ * Load report detail information
+ * Fetches report data based on report ID
+ */
 const loadReportDetail = async () => {
-  const [error, { data }] = await reportApi.getReportDetail(reportId.value);
+  const [error, { data }] = await reportApi.getReportDetail(reportIdRef.value);
   if (error) {
     return;
   }
   report.value = data;
 };
 
+/**
+ * Cancel and close the modal
+ */
 const cancel = () => {
   emits('update:visible', false);
 };
 
+/**
+ * Lifecycle hook - Initialize component
+ * Watch for visibility changes and load report detail
+ */
 onMounted(() => {
-  // const id = route.params.id;
   watch(() => props.visible, () => {
     if (props.reportId) {
-      reportId.value = props.reportId;
+      reportIdRef.value = props.reportId;
       loadReportDetail();
     }
   }, {
@@ -61,6 +76,7 @@ onMounted(() => {
   });
 });
 
+// Activity type configuration
 const activityType = ['REPORT'];
 </script>
 <template>
@@ -135,12 +151,12 @@ const activityType = ['REPORT'];
           <GenerateRecord
             class="overflow-y-auto h-full"
             :projectId="report.projectId"
-            :reportId="reportId"
+            :reportId="reportIdRef"
             :permissions="props.permissions" />
         </TabPane>
         <TabPane key="activity" :tab="t('reportHome.reportDetail.tabs.activity')">
           <ActivityTimeline
-            :id="reportId"
+            :id="reportIdRef"
             class="w-120"
             :types="activityType"
             :showUserName="false" />

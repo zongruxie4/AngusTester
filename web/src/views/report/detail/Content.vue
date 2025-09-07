@@ -3,15 +3,18 @@ import { onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Colon, Hints } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
-import { exec, task, funcPlan, funcCase, apis, services, scenario } from '@/api/tester';
-import { user, dept, group } from '@/api/gm';
+import { apis, exec, funcCase, funcPlan, scenario, services, task } from '@/api/tester';
+import { dept, group, user } from '@/api/gm';
+import { ReportTemplate } from '@/enums/enums';
+import { AuthObjectType, enumOptionUtils } from '@xcan-angus/infra';
 
 import { treeData } from './config';
 
 const { t } = useI18n();
 
+// Component props definition
 interface Props {
-  template?: 'PROJECT_PROGRESS'|'TASK_SPRINT'|'TASK'|'FUNC_TESTING_PLAN'|'FUNC_TESTING_CASE'|'SERVICES_TESTING_RESULT'|'APIS_TESTING_RESULT'|'SCENARIO_TESTING_RESULT'|'EXEC_FUNCTIONAL_RESULT'|'EXEC_PERFORMANCE_RESULT'|'EXEC_STABILITY_RESULT'|'EXEC_CUSTOMIZATION_RESULT';
+  template?: ReportTemplate;
   projectId: string;
   contentSetting: {
     targetId: string;
@@ -32,15 +35,22 @@ const props = withDefaults(defineProps<Props>(), {
   })
 });
 
+// Checked keys for tree component
 const checked = ref<string[]>([]);
-const creatorTypeConfig = {
-  USER: t('reportHome.reportDetail.content.memberTypes.user'),
-  DEPT: t('reportHome.reportDetail.content.memberTypes.dept'),
-  GROUP: t('reportHome.reportDetail.content.memberTypes.group')
-};
+
+// Creator type configuration mapping
+const authObjectTypeOpt = enumOptionUtils.loadEnumAsOptions(AuthObjectType);
+
+// Creator object name
 const creatorObjectName = ref();
+
+/**
+ * Load creator object name based on object type and ID
+ * @param creatorObjectId - ID of the creator object
+ * @param creatorObjectType - Type of the creator object (USER, DEPT, GROUP)
+ */
 const loadCreatorObj = async (creatorObjectId, creatorObjectType) => {
-  if (creatorObjectType === 'USER') {
+  if (creatorObjectType === AuthObjectType.USER) {
     const [error, { data }] = await user.getUserList({ id: creatorObjectId });
     if (error) {
       return;
@@ -49,7 +59,7 @@ const loadCreatorObj = async (creatorObjectId, creatorObjectType) => {
     creatorObjectName.value = target.fullName;
     return;
   }
-  if (creatorObjectType === 'dept') {
+  if (creatorObjectType === AuthObjectType.DEPT) {
     const [error, { data }] = await dept.getDeptList({ id: creatorObjectId });
     if (error) {
       return;
@@ -58,7 +68,7 @@ const loadCreatorObj = async (creatorObjectId, creatorObjectType) => {
     creatorObjectName.value = target.name;
     return;
   }
-  if (creatorObjectType === 'GROUP') {
+  if (creatorObjectType === AuthObjectType.GROUP) {
     const [error, { data }] = await group.getGroupList({ id: creatorObjectId });
     if (error) {
       return;
@@ -68,6 +78,7 @@ const loadCreatorObj = async (creatorObjectId, creatorObjectType) => {
   }
 };
 
+// Reactive variables for storing names of various entities
 const sprintName = ref();
 const planName = ref();
 const taskName = ref();
@@ -77,6 +88,10 @@ const apisName = ref();
 const scenarioName = ref();
 const execName = ref();
 
+/**
+ * Load sprint name by ID
+ * @param sprintId - ID of the sprint
+ */
 const loadSprintName = async (sprintId) => {
   const [error, { data }] = await task.getSprintDetail(sprintId);
   if (error) {
@@ -85,6 +100,10 @@ const loadSprintName = async (sprintId) => {
   sprintName.value = data.name;
 };
 
+/**
+ * Load task name by ID
+ * @param taskId - ID of the task
+ */
 const loadTaskName = async (taskId) => {
   const [error, { data }] = await task.getTaskDetail(taskId);
   if (error) {
@@ -93,6 +112,10 @@ const loadTaskName = async (taskId) => {
   taskName.value = data.name;
 };
 
+/**
+ * Load plan name by ID
+ * @param planId - ID of the plan
+ */
 const loadPlanName = async (planId) => {
   const [error, { data }] = await funcPlan.getPlanDetail(planId);
   if (error) {
@@ -101,6 +124,10 @@ const loadPlanName = async (planId) => {
   planName.value = data.name;
 };
 
+/**
+ * Load case name by ID
+ * @param caseId - ID of the case
+ */
 const loadCaseName = async (caseId) => {
   const [error, { data }] = await funcCase.getCaseDetail(caseId);
   if (error) {
@@ -109,6 +136,10 @@ const loadCaseName = async (caseId) => {
   caseName.value = data.name;
 };
 
+/**
+ * Load service and API names by API ID
+ * @param apisId - ID of the API
+ */
 const loadServiceAndApisName = async (apisId) => {
   const [error, { data }] = await apis.getApiDetail(apisId);
   if (error) {
@@ -118,6 +149,10 @@ const loadServiceAndApisName = async (apisId) => {
   serviceName.value = data.serviceName;
 };
 
+/**
+ * Load service name by ID
+ * @param serviceId - ID of the service
+ */
 const loadServiceName = async (serviceId) => {
   const [error, { data }] = await services.loadInfo(serviceId);
   if (error) {
@@ -126,6 +161,10 @@ const loadServiceName = async (serviceId) => {
   serviceName.value = data.name;
 };
 
+/**
+ * Load scenario name by ID
+ * @param scenarioId - ID of the scenario
+ */
 const loadScenarioName = async (scenarioId) => {
   const [error, { data }] = await scenario.getScenarioDetail(scenarioId);
   if (error) {
@@ -134,6 +173,10 @@ const loadScenarioName = async (scenarioId) => {
   scenarioName.value = data.name;
 };
 
+/**
+ * Load execution name by ID
+ * @param execId - ID of the execution
+ */
 const loadExecName = async (execId) => {
   const [error, { data }] = await exec.getExecDetail(execId);
   if (error) {
@@ -142,40 +185,44 @@ const loadExecName = async (execId) => {
   execName.value = data.name;
 };
 
+/**
+ * Lifecycle hook - Initialize component
+ * Watch for content setting changes and load corresponding data
+ */
 onMounted(() => {
   watch(() => props.contentSetting, () => {
     const { creatorObjectType, creatorObjectId, planOrSprintId, targetId } = props.contentSetting;
     if (creatorObjectId && creatorObjectType) {
       loadCreatorObj(creatorObjectId, creatorObjectType);
     }
-    if (props.template === 'TASK_SPRINT') {
+    if (props.template === ReportTemplate.TASK_SPRINT) {
       loadSprintName(targetId);
       return;
     }
-    if (props.template === 'TASK') {
+    if (props.template === ReportTemplate.TASK) {
       loadSprintName(planOrSprintId);
       loadTaskName(targetId);
       return;
     }
 
-    if (props.template === 'FUNC_TESTING_PLAN') {
+    if (props.template === ReportTemplate.FUNC_TESTING_PLAN) {
       loadPlanName(targetId);
       return;
     }
-    if (props.template === 'FUNC_TESTING_CASE') {
+    if (props.template === ReportTemplate.FUNC_TESTING_CASE) {
       loadPlanName(planOrSprintId);
       loadCaseName(targetId);
       return;
     }
-    if (props.template === 'APIS_TESTING_RESULT') {
+    if (props.template === ReportTemplate.APIS_TESTING_RESULT) {
       loadServiceAndApisName(targetId);
       return;
     }
-    if (props.template === 'SERVICES_TESTING_RESULT') {
+    if (props.template === ReportTemplate.SERVICES_TESTING_RESULT) {
       loadServiceName(targetId);
       return;
     }
-    if (props.template === 'SCENARIO_TESTING_RESULT') {
+    if (props.template === ReportTemplate.SCENARIO_TESTING_RESULT) {
       loadScenarioName(targetId);
       return;
     }
@@ -185,6 +232,10 @@ onMounted(() => {
     deep: true,
     immediate: true
   });
+
+  /**
+   * Watch for template changes and update checked tree nodes
+   */
   watch(() => props.template, newValue => {
     if (newValue) {
       (treeData[newValue] || []).forEach(item => {
@@ -202,11 +253,13 @@ onMounted(() => {
 <template>
   <div>
     <div
-      v-if="props.template && ['PROJECT_PROGRESS', 'TASK_SPRINT', 'FUNC_TESTING_PLAN'].includes(props.template)"
+      v-if="props.template && [ReportTemplate.PROJECT_PROGRESS, ReportTemplate.TASK_SPRINT, ReportTemplate.FUNC_TESTING_PLAN].includes(props.template)"
       class="spacey-2">
       <div class="leading-7 flex items-center space-x-2">
         <span class="w-12">{{ t('reportHome.reportDetail.content.organizationPersonnel') }}</span>
-        <span v-if="props.contentSetting.creatorObjectType">（{{ creatorTypeConfig[props.contentSetting.creatorObjectType] }}）</span>
+        <span v-if="props.contentSetting.creatorObjectType">（{{
+          authObjectTypeOpt[props.contentSetting.creatorObjectType]
+        }}）</span>
         <Colon />
         <span>{{ creatorObjectName || '--' }}</span>
       </div>
@@ -222,7 +275,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <div v-if="props.template === 'PROJECT_PROGRESS'" class="leading-7 flex items-center space-x-2">
+    <div v-if="props.template === ReportTemplate.PROJECT_PROGRESS" class="leading-7 flex items-center space-x-2">
       <span class="w-12">{{ t('reportHome.reportDetail.content.project') }}</span>
       <Colon />
       <div>
@@ -230,7 +283,9 @@ onMounted(() => {
       </div>
     </div>
 
-    <div v-if="props.template && ['TASK_SPRINT', 'TASK'].includes(props.template)" class="leading-7 flex items-center space-x-2">
+    <div
+      v-if="props.template && [ReportTemplate.TASK_SPRINT, ReportTemplate.TASK].includes(props.template)"
+      class="leading-7 flex items-center space-x-2">
       <span class="w-12">{{ t('reportHome.reportDetail.content.sprint') }}</span>
       <Colon />
       <div>
@@ -238,7 +293,9 @@ onMounted(() => {
       </div>
     </div>
 
-    <div v-if="props.template && ['TASK'].includes(props.template)" class="leading-7 flex items-center space-x-2">
+    <div
+      v-if="props.template && [ReportTemplate.TASK].includes(props.template)"
+      class="leading-7 flex items-center space-x-2">
       <span class="w-12">{{ t('reportHome.reportDetail.content.task') }}</span>
       <Colon />
       <div>
@@ -246,7 +303,9 @@ onMounted(() => {
       </div>
     </div>
 
-    <div v-if="props.template && ['FUNC_TESTING_PLAN', 'FUNC_TESTING_CASE'].includes(props.template)" class="leading-7 flex items-center space-x-2">
+    <div
+      v-if="props.template && [ReportTemplate.FUNC_TESTING_PLAN, ReportTemplate.FUNC_TESTING_CASE].includes(props.template)"
+      class="leading-7 flex items-center space-x-2">
       <span class="w-12">{{ t('reportHome.reportDetail.content.plan') }}</span>
       <Colon />
       <div>
@@ -254,7 +313,9 @@ onMounted(() => {
       </div>
     </div>
 
-    <div v-if="props.template && ['FUNC_TESTING_CASE'].includes(props.template)" class="leading-7 flex items-center space-x-2">
+    <div
+      v-if="props.template && [ReportTemplate.FUNC_TESTING_CASE].includes(props.template)"
+      class="leading-7 flex items-center space-x-2">
       <span class="w-12">{{ t('reportHome.reportDetail.content.case') }}</span>
       <Colon />
       <div>
@@ -262,7 +323,9 @@ onMounted(() => {
       </div>
     </div>
 
-    <div v-if="props.template && ['SERVICES_TESTING_RESULT', 'APIS_TESTING_RESULT'].includes(props.template)" class="leading-7 flex items-center space-x-2">
+    <div
+      v-if="props.template && [ReportTemplate.SERVICES_TESTING_RESULT, ReportTemplate.APIS_TESTING_RESULT].includes(props.template)"
+      class="leading-7 flex items-center space-x-2">
       <span class="w-12">{{ t('reportHome.reportDetail.content.service') }}</span>
       <Colon />
       <div>
@@ -270,7 +333,9 @@ onMounted(() => {
       </div>
     </div>
 
-    <div v-if="props.template && ['APIS_TESTING_RESULT'].includes(props.template)" class="leading-7 flex items-center space-x-2">
+    <div
+      v-if="props.template && [ReportTemplate.APIS_TESTING_RESULT].includes(props.template)"
+      class="leading-7 flex items-center space-x-2">
       <span class="w-12">{{ t('reportHome.reportDetail.content.api') }}</span>
       <Colon />
       <div>
@@ -278,7 +343,9 @@ onMounted(() => {
       </div>
     </div>
 
-    <div v-if="props.template && ['SCENARIO_TESTING_RESULT'].includes(props.template)" class="leading-7 flex items-center space-x-2">
+    <div
+      v-if="props.template && [ReportTemplate.SCENARIO_TESTING_RESULT].includes(props.template)"
+      class="leading-7 flex items-center space-x-2">
       <span class="w-12">{{ t('reportHome.reportDetail.content.scenario') }}</span>
       <Colon />
       <div>
@@ -286,7 +353,9 @@ onMounted(() => {
       </div>
     </div>
 
-    <div v-if="props.template && props.template.includes('EXEC')" class="leading-7 flex items-center space-x-2">
+    <div
+      v-if="props.template && props.template.includes('EXEC')"
+      class="leading-7 flex items-center space-x-2">
       <span class="w-12">{{ t('reportHome.reportDetail.content.execution') }}</span>
       <Colon />
       <div>

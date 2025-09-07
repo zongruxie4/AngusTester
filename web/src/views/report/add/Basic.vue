@@ -5,6 +5,7 @@ import { Checkbox, CheckboxGroup, Textarea } from 'ant-design-vue';
 
 const { t } = useI18n();
 
+// Define component props for basic information settings
 interface Props {
   basicInfoSetting: {
     reportContacts: string,
@@ -25,6 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
   viewType: false
 });
 
+// Configuration options for basic information settings
 const options = [
   {
     value: 'name',
@@ -64,7 +66,10 @@ const options = [
   }
 ];
 
+// Extract values from options
 const value = options.map(i => i.value);
+
+// Reactive reference for basic information settings
 const basicInfoSetting = ref({
   reportContacts: '',
   reportCopyright: '',
@@ -72,6 +77,7 @@ const basicInfoSetting = ref({
   watermark: ''
 });
 
+// Configuration for placeholder texts
 const placeholderConfig = {
   reportContacts: t('reportAdd.basic.placeholders.reportContacts'),
   reportCopyright: t('reportAdd.basic.placeholders.reportCopyright'),
@@ -79,6 +85,7 @@ const placeholderConfig = {
   watermark: t('reportAdd.basic.placeholders.watermark')
 };
 
+// Configuration for maximum length of inputs
 const maxlengthConfig = {
   reportContacts: 200,
   reportCopyright: 200,
@@ -86,6 +93,7 @@ const maxlengthConfig = {
   watermark: 100
 };
 
+// Initialize component and watch for prop changes
 onMounted(() => {
   watch(() => props.basicInfoSetting, () => {
     basicInfoSetting.value = JSON.parse(JSON.stringify(props.basicInfoSetting));
@@ -94,6 +102,7 @@ onMounted(() => {
   });
 });
 
+// Expose methods for parent components
 defineExpose({
   getData: () => {
     return basicInfoSetting.value;
@@ -101,8 +110,10 @@ defineExpose({
 });
 
 </script>
+
 <template>
   <div>
+    <!-- Checkbox group for basic information settings -->
     <CheckboxGroup
       slot="label"
       :value="value"
@@ -114,6 +125,7 @@ defineExpose({
         :key="option.value"
         class="!ml-0 items-start"
         :value="option.value">
+        <!-- Render textareas for specific options -->
         <div v-if="['reportContacts', 'reportCopyright', 'otherInformation', 'watermark'].includes(option.value)" class="w-100 space-y-1">
           <span style="color: rgb(82, 90, 101);">{{ option.label }}</span>
           <Textarea
@@ -126,6 +138,7 @@ defineExpose({
             {{ basicInfoSetting[option.value] }}
           </div>
         </div>
+        <!-- Render simple labels for other options -->
         <template v-else>
           <span style="color: rgb(82, 90, 101);">{{ option.label }}</span>
         </template>

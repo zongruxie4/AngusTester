@@ -1,53 +1,26 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
 import { Tree } from 'ant-design-vue';
-import { enumUtils } from '@xcan-angus/infra';
-import { ReportCategory } from '@/enums/enums';
 import { Icon } from '@xcan-angus/vue-ui';
-import { useI18n } from 'vue-i18n';
+import { useCategorySelect } from './composables/useCategorySelect';
+import type { CategorySelectEmits, CategorySelectProps } from './types';
 
-const { t } = useI18n();
-
-interface Props {
-  category: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+// Props and emits definition
+const props = withDefaults(defineProps<CategorySelectProps>(), {
   category: undefined
 });
 
-const emits = defineEmits<{(e: 'update:category', value: string):void}>();
-const moduleTreeData = ref<{name: string; value: string}[]>([{ name: t('reportHome.chart.categories.allReports'), value: '' }]);
+const emits = defineEmits<CategorySelectEmits>();
 
-const loadOpt = () => {
-  const data = enumUtils.enumToMessages(ReportCategory);
-  moduleTreeData.value.push(...(data || []).map(item => ({ ...item, name: item.message })));
-};
-
-const handleSelectKeysChange = (value) => {
-  emits('update:category', value[0]);
-};
-
-const categoryIcon = {
-  PROJECT: 'icon-xiangmu',
-  TASK: 'icon-renwuceshibaogao',
-  FUNCTIONAL: 'icon-gongnengceshibaogao',
-  APIS: 'icon-jiekou',
-  SCENARIO: 'icon-changjingguanli',
-  EXECUTION: 'icon-zhihang',
-  '': 'icon-liebiaoshitu'
-};
-
-onMounted(() => {
-  loadOpt();
-});
+// Use category select composable
+const { moduleTreeData, categoryIcon, handleSelectKeysChange } = useCategorySelect(props, emits);
 
 </script>
+
 <template>
   <div>
     <Tree
       :treeData="moduleTreeData"
-      :selectedKeys="[props.category]"
+      :selectedKeys="props.category ? [props.category] : []"
       class="flex-1 overflow-auto"
       blockNode
       defaultExpandAll
@@ -56,14 +29,15 @@ onMounted(() => {
         title: 'name',
         key: 'value'
       }"
-      @select="handleSelectKeysChange">
-      <template #title="{key, title, name, value, index, level, isLast, pid, ids, sequence, childLevels, hasEditPermission}">
+      @select="(selectedKeys: any[]) => handleSelectKeysChange(selectedKeys.map(key => String(key)))">
+      <template #title="{name, value}">
         <Icon :icon="categoryIcon[value]" class="text-3.5 mr-1" />
         <span class="flex-1">{{ name }}</span>
       </template>
     </Tree>
   </div>
 </template>
+
 <style scoped>
 .tree-title:hover .gengduo {
   display: inline-block;
@@ -125,5 +99,4 @@ onMounted(() => {
 :deep(.ant-tree .ant-tree-indent-unit) {
   width: 18px;
 }
-
 </style>

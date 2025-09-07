@@ -4,6 +4,8 @@ import { useI18n } from 'vue-i18n';
 import { Colon, Hints, IconRequired, Select } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
+import { CombinedTargetType } from '@/enums/enums';
+
 import { contentTreeData } from './ServicesContentConfig';
 
 const { t } = useI18n();
@@ -46,10 +48,7 @@ onMounted(() => {
 const valid = ref(false);
 const validate = () => {
   valid.value = true;
-  if (serviceId.value) {
-    return true;
-  }
-  return false;
+  return !!serviceId.value;
 };
 
 defineExpose({
@@ -58,7 +57,7 @@ defineExpose({
     valid.value = false;
     return {
       targetId: serviceId.value,
-      targetType: 'SERVICE'
+      targetType: CombinedTargetType.SERVICE
     };
   }
 });

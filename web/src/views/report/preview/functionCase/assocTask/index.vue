@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ReportContent } from '../PropsType';
+
 const { t } = useI18n();
 
 type Props = {

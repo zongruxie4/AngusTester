@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { Checkbox } from 'ant-design-vue';
 
+/**
+ * Props interface for CheckboxGroup component
+ */
 interface Props {
     options: { label: string; value: string }[];
     disabled: boolean;
@@ -15,7 +18,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{(e: 'change', value: string[]) }>();
 
-const change = (event: { target: { checked: boolean; } }, value: string) => {
+/**
+ * Handle checkbox change event
+ * @param event - Change event object
+ * @param value - Checkbox value
+ */
+const handleChange = (event: { target: { checked: boolean; } }, value: string) => {
   const checked = event.target.checked;
 
   if (checked && !props.value.includes(value)) {
@@ -36,7 +44,7 @@ const change = (event: { target: { checked: boolean; } }, value: string) => {
       :key="item.value"
       :disabled="props.disabled"
       :checked="props.value.includes(item.value)"
-      @change="change($event, item.value)">
+      @change="handleChange($event, item.value)">
       {{ item.label }}
     </Checkbox>
   </div>

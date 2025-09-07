@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onBeforeUnmount, ref, watch } from 'vue';
 import dayjs from 'dayjs';
-import { http, TESTER } from '@xcan-angus/infra';
 
 import { ListData, useExecCount } from '../useExecCount';
 import { allCvsKeys } from '../chartConfig';

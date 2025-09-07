@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const Progress = defineAsyncComponent(() => import('@/views/report/preview/components/progress/index.vue'));
-const SceneTestGrouped = defineAsyncComponent(() => import('@/views/report/preview/projectProgress/scenarioTestSummary/group/index.vue'));
+const ScenarioTestGrouped = defineAsyncComponent(() => import('@/views/report/preview/projectProgress/scenarioTestSummary/group/index.vue'));
 
 const testScenarios = computed(() => {
   return props.dataSource?.content?.scenarios?.testScenarios;
@@ -147,7 +147,7 @@ const percent = computed(() => {
   <h2 class="flex items-center space-x-2.5 text-3.5 mb-3.5 text-theme-title">
     <span id="a16">{{ props.sequence.small[1] }}<em class="inline-block w-3.5"></em> {{ t('reportPreview.projectProgress.scenarioTestSummary.groupStats.title') }}</span>
   </h2>
-  <SceneTestGrouped
+  <ScenarioTestGrouped
     :projectInfo="props.projectInfo"
     :userInfo="props.userInfo"
     :appInfo="props.appInfo"

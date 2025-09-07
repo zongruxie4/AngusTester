@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, inject, onMounted, ref, watch, Ref } from 'vue';
+import { computed, defineAsyncComponent, inject, onMounted, ref, Ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Icon, Input, Modal, notification } from '@xcan-angus/vue-ui';
 import { Form, FormItem, Menu, MenuItem, MenuItemGroup, TabPane, Tabs, Textarea } from 'ant-design-vue';
-import { appContext } from '@xcan-angus/infra';
+import { appContext, CreatedAt, ScriptType } from '@xcan-angus/infra';
+import { ReportTemplate, ReportCategory } from '@/enums/enums';
 
 import { reportMenus } from './config';
 import dayjs from 'dayjs';
@@ -11,6 +12,7 @@ import { report as reportApi } from '@/api/tester';
 
 const { t } = useI18n();
 
+// Component props definition
 interface Props {
   reportId?: string;
   visible: boolean;
@@ -23,21 +25,22 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'ok'):void}>();
 
-// const router = useRouter();
-// const route = useRoute();
+// Injected dependencies
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
 const projectInfo = inject('projectInfo', ref<{[key: string]: string}>({}));
 const tenantInfo = ref(appContext.getUser());
+
+// Reactive variables
 const projectId = ref();
 const loading = ref(false);
-
-const reportId = ref();
+const reportIdRef = ref(); // Renamed from reportId to avoid conflict with prop
 const createdDateRef = ref();
 const basicDateRef = ref();
 const contentRef = ref();
 const activeTab = ref('createdDate');
-const isChangeDescription = ref(false); // 是否手动修改描述
+const isChangeDescription = ref(false); // Whether description was manually changed
 
+// Async components
 const CreatedDate = defineAsyncComponent(() => import('@/views/report/add/CreatedDate.vue'));
 const Basic = defineAsyncComponent(() => import('@/views/report/add/Basic.vue'));
 const ProjectProcessContent = defineAsyncComponent(() => import('@/views/report/add/ProjectProcessContent.vue'));
@@ -50,27 +53,34 @@ const PlanContent = defineAsyncComponent(() => import('@/views/report/add/PlanCo
 const CasesContent = defineAsyncComponent(() => import('@/views/report/add/CaseContent.vue'));
 const ExecFuncContent = defineAsyncComponent(() => import('@/views/report/add/ExecFuncContent.vue'));
 const ExecPerfStabilityCustomContent = defineAsyncComponent(() => import('@/views/report/add/ExecPerfContent.vue'));
+
+// Form state
 const formState = ref({
   name: '',
   version: '1.0',
   description: ''
 });
 
+// Textarea autosize configuration
 const autoSize = {
   minRows: 4,
   maxRows: 10
 };
 
+/**
+ * Compute report menus based on project type visibility settings
+ * @returns Filtered report menus based on project type settings
+ */
 const showReportMenus = computed(() => {
   if (!proTypeShowMap.value.showTask) {
-    return reportMenus.filter(item => !['TASK'].includes(item.key));
+    return reportMenus.filter(item => ![ReportTemplate.TASK].includes(item.key));
   }
   if (!proTypeShowMap.value.showSprint) {
     return reportMenus.map(item => {
-      if (item.key === 'TASK') {
+      if (item.key === ReportTemplate.TASK) {
         return {
           ...item,
-          children: item.children.filter(i => i.key !== 'TASK_SPRINT')
+          children: item.children.filter(i => i.key !== ReportTemplate.TASK_SPRINT)
         };
       }
       return item;
@@ -79,44 +89,63 @@ const showReportMenus = computed(() => {
   return reportMenus;
 });
 
+/**
+ * Mark description as manually changed
+ */
 const descriptionChangeMark = () => {
   isChangeDescription.value = true;
 };
 
-const reportType = ref(['PROJECT_PROGRESS']);
+// Report type selection
+const reportTemplate = ref([ReportTemplate.PROJECT_PROGRESS]);
 
+/**
+ * Compute report category based on selected report type
+ * @returns Report category object
+ */
 const category = computed(() => {
-  let type = reportType.value[0].split('_')[0];
+  let type = reportTemplate.value[0].split('_')[0];
   if (type === 'SERVICES') {
-    type = 'APIS';
+    type = ReportCategory.APIS;
   }
   if (type === 'FUNC') {
-    type = 'FUNCTIONAL';
+    type = ReportCategory.FUNCTIONAL;
   }
 
   if (type === 'EXEC') {
-    type = 'EXECUTION';
+    type = ReportCategory.EXECUTION;
   }
   return reportMenus.find(i => i.key === type);
 });
 
+/**
+ * Compute report type name
+ * @returns Report type name
+ */
 const reportTypeName = computed(() => {
   return category.value?.label;
 });
 
+/**
+ * Compute selected report details
+ * @returns Selected report object
+ */
 const report = computed(() => {
   const targetGroup = reportMenus.find(group => group.label === reportTypeName.value);
-  return targetGroup?.children.find(menu => menu.key === reportType.value[0]);
+  return targetGroup?.children.find(menu => menu.key === reportTemplate.value[0]);
 });
 
+// Creation time settings
 const createTimeSetting = ref({
-  createdAt: 'NOW'
+  createdAt: CreatedAt.NOW
 });
 
+// Content settings
 const contentSetting = ref({
   filter: {}
 });
 
+// Basic info settings
 const basicInfoSetting = ref({
   reportContacts: '',
   reportCopyright: '',
@@ -124,9 +153,16 @@ const basicInfoSetting = ref({
   watermark: ''
 });
 
+// Creator name
 const createdByName = ref();
 
+// Validation state
 const isValid = ref(false);
+
+/**
+ * Validate form data
+ * @returns Promise resolving if validation passes, rejecting if it fails
+ */
 const validate = async () => {
   isValid.value = true;
   const validCreatedDate = createdDateRef.value.validate();
@@ -143,18 +179,21 @@ const validate = async () => {
   return Promise.resolve();
 };
 
+/**
+ * Reset form data to initial state
+ */
 const resetData = () => {
   isChangeDescription.value = false;
-  reportId.value = undefined;
+  reportIdRef.value = undefined;
   createdByName.value = undefined;
-  reportType.value = ['PROJECT_PROGRESS'];
+  reportTemplate.value = [ReportTemplate.PROJECT_PROGRESS];
   formState.value = {
     name: '',
     description: '',
     version: '1.0'
   };
   createTimeSetting.value = {
-    createdAt: 'NOW'
+    createdAt: CreatedAt.NOW
   };
   basicInfoSetting.value = {
     reportContacts: tenantInfo?.value?.fullName + (tenantInfo?.value?.email ? `  ${tenantInfo?.value?.email}` : ''),
@@ -167,19 +206,22 @@ const resetData = () => {
   };
 };
 
-// 回显数据
+/**
+ * Load report data by ID for editing
+ * @returns Promise resolving when data is loaded
+ */
 const loadReportById = async () => {
-  const [error, { data }] = await reportApi.getReportDetail(reportId.value);
+  const [error, { data }] = await reportApi.getReportDetail(reportIdRef.value);
   if (error) {
     return;
   }
   const { template, name, version, description } = data;
   projectId.value = data.projectId;
-  reportType.value = [template.value];
+  reportTemplate.value = [template.value];
 
   createTimeSetting.value = {
     ...data.createTimeSetting || {},
-    createdAt: data.createTimeSetting?.createdAt?.value || 'NOW'
+    createdAt: data.createTimeSetting?.createdAt?.value || CreatedAt.NOW
   };
   basicInfoSetting.value = {
     ...data.basicInfoSetting || {}
@@ -193,15 +235,20 @@ const loadReportById = async () => {
   createdByName.value = data.createdByName;
 };
 
-// 取消
+/**
+ * Cancel report creation/editing
+ */
 const cancel = () => {
   emits('update:visible', false);
 };
 
-// 确认
+/**
+ * Confirm and save report
+ * Handles both creation and updating of reports
+ */
 const ok = () => {
   validate().then(async () => {
-    const params = reportId.value
+    const params = reportIdRef.value
       ? {
           basicInfoSetting: basicDateRef.value ? basicDateRef.value.getData() : basicInfoSetting.value,
           createTimeSetting: createdDateRef.value ? createdDateRef.value.getData() : createTimeSetting,
@@ -226,17 +273,17 @@ const ok = () => {
           }
         };
     loading.value = true;
-    const [error] = reportId.value
+    const [error] = reportIdRef.value
       ? await reportApi.updateReport({
         ...params,
-        id: reportId.value
+        id: reportIdRef.value
       })
       : await reportApi.addReport(params);
     loading.value = false;
     if (error) {
       return;
     }
-    if (reportId.value) {
+    if (reportIdRef.value) {
       notification.success(t('reportAdd.notification.updateSuccess'));
     } else {
       notification.success(t('reportAdd.notification.addSuccess'));
@@ -247,10 +294,14 @@ const ok = () => {
   });
 };
 
+/**
+ * Lifecycle hook - Initialize component
+ * Watch for visibility changes and handle report loading/reset
+ */
 onMounted(() => {
   watch(() => props.visible, newValue => {
     if (newValue && props.reportId) {
-      reportId.value = props.reportId;
+      reportIdRef.value = props.reportId;
       loadReportById();
     } else {
       resetData();
@@ -275,7 +326,6 @@ onMounted(() => {
     immediate: true
   });
 });
-
 </script>
 <template>
   <Modal
@@ -292,7 +342,7 @@ onMounted(() => {
       <div class="flex flex-1 min-h-0">
         <div v-show="!reportId" class="w-50 h-full border-r overflow-y-auto overflow-x-hidden py-5">
           <Menu
-            v-model:selectedKeys="reportType"
+            v-model:selectedKeys="reportTemplate"
             :items="showReportMenus"
             :disabled="!!reportId"
             class="border-r-0 h-full"
@@ -307,7 +357,7 @@ onMounted(() => {
               <MenuItem v-for="item in group.children" :key="item.key">
                 <div class="flex justify-between items-center">
                   <span class="pl-3 flex-1 min-w-0 text-3">{{ item.label }}</span>
-                  <Icon v-show="reportType[0] === item.key" icon="icon-duihaolv" />
+                  <Icon v-show="reportTemplate[0] === item.key" icon="icon-duihaolv" />
                 </div>
               </MenuItem>
             </MenuItemGroup>
@@ -365,7 +415,7 @@ onMounted(() => {
               <CreatedDate
                 ref="createdDateRef"
                 :createTimeSetting="createTimeSetting"
-                :showPeriodically="!reportType[0].includes('EXEC')" />
+                :showPeriodically="!reportTemplate[0].includes('EXEC')" />
             </TabPane>
             <TabPane key="basic" :tab="t('reportAdd.tabs.basic')">
               <Basic ref="basicDateRef" :basicInfoSetting="basicInfoSetting" />
@@ -374,89 +424,89 @@ onMounted(() => {
               key="content"
               :tab="t('reportAdd.tabs.content')"
               forceRender>
-              <template v-if="reportType[0] === 'PROJECT_PROGRESS'">
+              <template v-if="reportTemplate[0] === ReportTemplate.PROJECT_PROGRESS">
                 <ProjectProcessContent
                   ref="contentRef"
                   :disabled="!!reportId"
                   :projectId="projectId"
                   :contentSetting="contentSetting.filter" />
               </template>
-              <template v-if="reportType[0] === 'SERVICES_TESTING_RESULT'">
+              <template v-if="reportTemplate[0] === ReportTemplate.SERVICES_TESTING_RESULT">
                 <ServiceContent
                   ref="contentRef"
                   :disabled="!!reportId"
                   :projectId="projectId"
                   :contentSetting="contentSetting.filter" />
               </template>
-              <template v-if="reportType[0] === 'APIS_TESTING_RESULT'">
+              <template v-if="reportTemplate[0] === ReportTemplate.APIS_TESTING_RESULT">
                 <ApisContent
                   ref="contentRef"
                   :disabled="!!reportId"
                   :projectId="projectId"
                   :contentSetting="contentSetting.filter" />
               </template>
-              <template v-if="reportType[0] === 'SCENARIO_TESTING_RESULT'">
+              <template v-if="reportTemplate[0] === ReportTemplate.SCENARIO_TESTING_RESULT">
                 <ScenarioContent
                   ref="contentRef"
                   :disabled="!!reportId"
                   :projectId="projectId"
                   :contentSetting="contentSetting.filter" />
               </template>
-              <template v-if="reportType[0] === 'TASK_SPRINT'">
+              <template v-if="reportTemplate[0] === ReportTemplate.TASK_SPRINT">
                 <SprintContent
                   ref="contentRef"
                   :disabled="!!reportId"
                   :projectId="projectId"
                   :contentSetting="contentSetting.filter" />
               </template>
-              <template v-if="reportType[0] === 'TASK'">
+              <template v-if="reportTemplate[0] === ReportTemplate.TASK">
                 <TaskContent
                   ref="contentRef"
                   :disabled="!!reportId"
                   :projectId="projectId"
                   :contentSetting="contentSetting.filter" />
               </template>
-              <template v-if="reportType[0] === 'FUNC_TESTING_PLAN'">
+              <template v-if="reportTemplate[0] === ReportTemplate.FUNC_TESTING_PLAN">
                 <PlanContent
                   ref="contentRef"
                   :disabled="!!reportId"
                   :projectId="projectId"
                   :contentSetting="contentSetting.filter" />
               </template>
-              <template v-if="reportType[0] === 'FUNC_TESTING_CASE'">
+              <template v-if="reportTemplate[0] === ReportTemplate.FUNC_TESTING_CASE">
                 <CasesContent
                   ref="contentRef"
                   :disabled="!!reportId"
                   :projectId="projectId"
                   :contentSetting="contentSetting.filter" />
               </template>
-              <template v-if="reportType[0] === 'EXEC_FUNCTIONAL_RESULT'">
+              <template v-if="reportTemplate[0] === ReportTemplate.EXEC_FUNCTIONAL_RESULT">
                 <ExecFuncContent
                   ref="contentRef"
                   :disabled="!!reportId"
                   :projectId="projectId"
                   :contentSetting="contentSetting.filter" />
               </template>
-              <template v-if="reportType[0] === 'EXEC_PERFORMANCE_RESULT'">
+              <template v-if="reportTemplate[0] === ReportTemplate.EXEC_PERFORMANCE_RESULT">
                 <ExecPerfStabilityCustomContent
                   ref="contentRef"
-                  :disabled="!!reportId"
-                  :projectId="projectId"
-                  :contentSetting="contentSetting.filter"
-                  execType="TEST_PERFORMANCE" />
-              </template>
-              <template v-if="reportType[0] === 'EXEC_STABILITY_RESULT'">
-                <ExecPerfStabilityCustomContent
-                  ref="contentRef"
-                  execType="TEST_STABILITY"
+                  :execType="ScriptType.TEST_PERFORMANCE"
                   :disabled="!!reportId"
                   :projectId="projectId"
                   :contentSetting="contentSetting.filter" />
               </template>
-              <template v-if="reportType[0] === 'EXEC_CUSTOMIZATION_RESULT'">
+              <template v-if="reportTemplate[0] === ReportTemplate.EXEC_STABILITY_RESULT">
                 <ExecPerfStabilityCustomContent
                   ref="contentRef"
-                  execType="TEST_CUSTOMIZATION"
+                  :execType="ScriptType.TEST_STABILITY"
+                  :disabled="!!reportId"
+                  :projectId="projectId"
+                  :contentSetting="contentSetting.filter" />
+              </template>
+              <template v-if="reportTemplate[0] === ReportTemplate.EXEC_CUSTOMIZATION_RESULT">
+                <ExecPerfStabilityCustomContent
+                  ref="contentRef"
+                  :execType="ScriptType.TEST_CUSTOMIZATION"
                   :disabled="!!reportId"
                   :projectId="projectId"
                   :contentSetting="contentSetting.filter" />
@@ -465,19 +515,6 @@ onMounted(() => {
           </Tabs>
         </div>
       </div>
-      <!-- <div class="h-15 text-center border-t pt-4 space-x-2">
-        <Button
-          type="primary"
-          size="small"
-          @click="ok">
-          确认
-        </Button>
-        <Button
-          href="/report"
-          size="small">
-          取消
-        </Button>
-      </div> -->
     </div>
   </Modal>
 </template>
