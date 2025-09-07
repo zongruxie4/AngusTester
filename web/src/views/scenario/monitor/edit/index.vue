@@ -13,7 +13,7 @@ import { useNotificationConfig } from './composables/useNotificationConfig';
 import { useFormValidation } from './composables/useFormValidation';
 
 // Import types
-import type { MonitorEditProps } from './types';
+import type { MonitorEditProps } from '../types';
 
 const { t } = useI18n();
 
@@ -54,7 +54,7 @@ const {
 } = useServerConfig();
 
 const {
-  orgs: notificationOrgs,
+  notificationOrgs,
   initializeOrgs,
   validateOrgs,
   handleOrgTypeChange,
@@ -182,6 +182,7 @@ onMounted(() => {
   });
 });
 </script>
+<!-- TODO 从详情页面进入后，点击页面编辑，编辑成功后详情页面没有刷新 -->
 <template>
   <Spin :spinning="loading" class="h-full text-3 leading-5 px-5 py-5 overflow-auto">
     <!-- Action buttons -->

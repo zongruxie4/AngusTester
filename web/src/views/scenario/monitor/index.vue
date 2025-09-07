@@ -5,16 +5,14 @@ import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
-import { IPane } from './types';
+import { DataIPane } from '@/types/types';
 
-// ==================== TYPES & INTERFACES ====================
 type Props = {
   projectId: string;
   userInfo: { id: string; };
   appInfo: { id: string; };
 }
 
-// ==================== PROPS & REACTIVE DATA ====================
 const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
@@ -23,18 +21,15 @@ const props = withDefaults(defineProps<Props>(), {
   appInfo: undefined
 });
 
-// ==================== ASYNC COMPONENTS ====================
 const MonitorList = defineAsyncComponent(() => import('@/views/scenario/monitor/list/index.vue'));
 const MonitorDetail = defineAsyncComponent(() => import('@/views/scenario/monitor/detail/index.vue'));
 const MonitorEdit = defineAsyncComponent(() => import('@/views/scenario/monitor/edit/index.vue'));
 
-// ==================== ROUTER & REFS ====================
 const route = useRoute();
 const router = useRouter();
 const browserTabRef = ref();
 const activeTabKey = ref();
 
-// ==================== COMPUTED PROPERTIES ====================
 /**
  * Generate storage key for browser tab persistence based on project ID
  * @returns Storage key string or undefined if no project ID
@@ -46,12 +41,11 @@ const storageKey = computed(() => {
   return `monitor${props.projectId}`;
 });
 
-// ==================== TAB MANAGEMENT FUNCTIONS ====================
 /**
  * Add a new tab pane to the browser tab component
  * @param tabData - Tab pane data to add
  */
-const addTabPane = (tabData: IPane) => {
+const addTabPane = (tabData: DataIPane) => {
   browserTabRef.value.add(() => {
     return tabData;
   });
@@ -62,7 +56,7 @@ const addTabPane = (tabData: IPane) => {
  * @param key - Tab key to retrieve
  * @returns Tab pane data or undefined
  */
-const getTabPane = (key: string): IPane[] | undefined => {
+const getTabPane = (key: string): DataIPane[] | undefined => {
   return browserTabRef.value.getData(key);
 };
 
@@ -78,7 +72,7 @@ const deleteTabPane = (keys: string[]) => {
  * Update existing tab pane data
  * @param tabData - Updated tab pane data
  */
-const updateTabPane = (tabData: IPane) => {
+const updateTabPane = (tabData: DataIPane) => {
   browserTabRef.value.update(tabData);
 };
 
@@ -91,7 +85,6 @@ const replaceTabPane = (key: string, newData: { key: string }) => {
   browserTabRef.value.replace(key, newData);
 };
 
-// ==================== INITIALIZATION FUNCTIONS ====================
 /**
  * Initialize the monitor component by adding default tab and processing hash
  */
@@ -121,7 +114,6 @@ const handleStorageKeyChange = () => {
   initializeComponent();
 };
 
-// ==================== HASH PROCESSING FUNCTIONS ====================
 /**
  * Process hash change to determine which tab to open
  * @param hash - URL hash string containing query parameters
@@ -196,7 +188,6 @@ const createTabForNewMonitor = () => {
   });
 };
 
-// ==================== LIFECYCLE HOOKS ====================
 onMounted(() => {
   // Watch for hash changes to handle tab navigation
   watch(() => route.hash, (newHash) => {
@@ -207,7 +198,6 @@ onMounted(() => {
   });
 });
 
-// ==================== PROVIDE INJECTION ====================
 // Provide tab management functions to child components
 provide('addTabPane', addTabPane);
 provide('getTabPane', getTabPane);

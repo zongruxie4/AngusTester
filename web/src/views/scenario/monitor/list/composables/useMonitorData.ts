@@ -1,7 +1,7 @@
 import type { Ref } from 'vue';
 import { ref, watch } from 'vue';
 import { scenario } from '@/api/tester';
-import type { MonitorInfo, MonitorListParams, SearchPanelParams, UseMonitorDataReturn } from '../types';
+import type { MonitorInfo, MonitorListParams, SearchPanelParams, UseMonitorDataReturn } from '../../types';
 
 export function useMonitorData (projectId: Ref<string>, notify: Ref<string>): UseMonitorDataReturn {
   // Data state

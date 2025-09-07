@@ -1,5 +1,5 @@
 import { Ref, watch } from 'vue';
-import type { CreateTimeSetting } from '../types';
+import type { CreateTimeSetting } from '../../types';
 import { CreatedAt, EnumMessage } from '@xcan-angus/infra';
 
 /**

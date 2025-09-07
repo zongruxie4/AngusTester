@@ -5,7 +5,7 @@ import { Select } from '@xcan-angus/vue-ui';
 import { CreatedAt, PeriodicUnit } from '@xcan-angus/infra';
 
 // Import types and composables
-import type { CreatedDateProps } from './types';
+import type { CreatedDateProps } from '../types';
 import { useTimeData } from './composables/useTimeData';
 import { useTimeValidation } from './composables/useTimeValidation';
 import { useTimeOptions } from './composables/useTimeOptions';

@@ -19,7 +19,7 @@ import {
 } from '@xcan-angus/vue-ui';
 import { Button, TabPane, Tabs, Tag } from 'ant-design-vue';
 import Chart from '@/views/scenario/monitor/detail/Chart.vue';
-import type { MonitorDetailProps } from './types';
+import type { MonitorDetailProps } from '../types';
 import { useMonitorData } from './composables/useMonitorData';
 import { useHistoryData } from './composables/useHistoryData';
 import { useMonitorActions } from './composables/useMonitorActions';

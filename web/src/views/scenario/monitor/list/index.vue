@@ -3,9 +3,10 @@ import { defineAsyncComponent, inject, toRefs } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Popover } from 'ant-design-vue';
 import { Icon, NoData, Spin } from '@xcan-angus/vue-ui';
+import { ScenarioMonitorStatus } from '@/enums/enums';
 
 // Import types and composables
-import type { TabPaneInjection } from './types';
+import type { TabPaneInjection } from '../types';
 import { useMonitorData } from './composables/useMonitorData';
 import { useMonitorActions } from './composables/useMonitorActions';
 import { useMonitorUI } from './composables/useMonitorUI';
@@ -119,7 +120,7 @@ const {
                         <div class="max-w-80">{{ item.failureMessage }}</div>
                       </template>
                       <Icon
-                        v-if="item.status?.value === 'FAILURE'"
+                        v-if="item.status?.value === ScenarioMonitorStatus.FAILURE"
                         icon="icon-tishi1"
                         class="text-status-warn ml-1" />
                     </Popover>
@@ -135,22 +136,32 @@ const {
                   </div>
                 </div>
                 <div class="mt-2 inline-flex max-w-full">
-                  <template v-if="item.status?.value === 'PENDING'">
-                    <span>将运行“</span><a
+                  <template v-if="item.status?.value === ScenarioMonitorStatus.PENDING">
+                    <span>将运行“</span>
+                    <a
                       class="text-blue-1 truncate min-w-0 flex-1"
                       :title="item.scenarioName"
-                      @click="getScenarioDetail(item.scenarioId)">{{ item.scenarioName }}</a><span>”在 {{ item.nextExecDate }}</span>
+                      @click="getScenarioDetail(item.scenarioId)">{{ item.scenarioName || '--' }}
+                    </a>
+                    <span>”在 {{ item.nextExecDate }}</span>
                   </template>
                   <template v-else>
-                    <span>最后运行“</span><a
+                    <span>最后运行“</span>
+                    <a
                       class="text-blue-1 truncate min-w-0 flex-1"
                       :title="item.scenarioName"
-                      @click="getScenarioDetail(item.scenarioId)">{{ item.scenarioName }}</a><span>”在 {{ item.lastMonitorDate }}</span>
+                      @click="getScenarioDetail(item.scenarioId)">{{ item.scenarioName || '--' }}
+                    </a>
+                    <span>”在 {{ item.lastMonitorDate }}</span>
                   </template>
                 </div>
 
                 <div class="flex justify-between items-center mt-2">
-                  <span class="flex-1 min-w-0 truncate" :title="`${item.createdByName} 创建于 ${ item.createdDate }`">{{ item.createdByName }} 创建于 {{ item.createdDate }}</span>
+                  <span
+                    class="flex-1 min-w-0 truncate"
+                    :title="`${item.createdByName} 创建于 ${ item.createdDate }`">
+                    {{ item.createdByName }} 创建于 {{ item.createdDate }}
+                  </span>
                   <div>
                     <Popover>
                       <template #content>

@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue';
 import { CreatedAt, DayOfWeek, EnumMessage, enumUtils, PeriodicUnit } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
-import type { CreateTimeSetting, DayOfMonthOption, EnumFieldNames, OptionItem } from '../types';
+import type { CreateTimeSetting, DayOfMonthOption, OptionItem } from '../../types';
 
 /**
  * Composable for managing time-related data and state
@@ -44,7 +44,7 @@ export function useTimeData () {
   );
 
   // Enum field names configuration
-  const enumFieldNames: EnumFieldNames = {
+  const enumFieldNames: OptionItem = {
     label: 'message',
     value: 'value'
   };

@@ -9,7 +9,7 @@ import type {
   SearchPanelParams,
   SortMenuItem,
   UseSearchPanelDataReturn
-} from '../types';
+} from '../../types';
 
 export function useSearchPanelData (projectId: string): UseSearchPanelDataReturn {
   const { t } = useI18n();

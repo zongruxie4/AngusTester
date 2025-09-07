@@ -1,6 +1,6 @@
 import { ref, watch } from 'vue';
 import { scenario } from '@/api/tester';
-import type { MonitorInfo } from '../types';
+import type { MonitorInfo } from '../../types';
 
 /**
  * Composable for managing monitor data and scenario information

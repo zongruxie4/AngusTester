@@ -2,7 +2,7 @@
 import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import * as echarts from 'echarts';
-import type { ChartProps } from './types';
+import type { ChartProps } from '../types';
 
 const { t } = useI18n();
 

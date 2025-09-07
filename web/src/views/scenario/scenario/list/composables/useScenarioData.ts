@@ -1,7 +1,7 @@
 import { onMounted, Ref, ref, watch } from 'vue';
 import { PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { scenario } from '@/api/tester';
-import { ProjectPageQuery } from '@/utils/types';
+import { ProjectPageQuery } from '@/types/types';
 import { ScenarioInfo } from '../types';
 
 /**

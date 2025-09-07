@@ -3,7 +3,7 @@ import { appContext, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { ScenarioMonitorStatus } from '@/enums/enums';
 import dayjs from 'dayjs';
 
-import type { MenuItem, OrderByKey } from '../types';
+import type { MenuItem, OrderByKey } from '../../types';
 
 type FilterItem = SearchCriteria;
 type SearchPanelParams = PageQuery;

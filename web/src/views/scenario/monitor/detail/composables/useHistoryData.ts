@@ -1,6 +1,6 @@
 import { ref, watch } from 'vue';
 import { scenario } from '@/api/tester';
-import type { HistoryExecData, HistoryRecord } from '../types';
+import type { HistoryExecData, HistoryRecord } from '../../types';
 
 /**
  * Composable for managing execution history data
