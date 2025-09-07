@@ -1,200 +1,32 @@
 <script lang="ts" setup>
-import { ref, computed, onMounted } from 'vue';
-import { useI18n } from 'vue-i18n';
-import * as echarts from 'echarts';
-import elementResizeDetectorMaker from 'element-resize-detector';
+import { computed } from 'vue';
 import { Icon } from '@xcan-angus/vue-ui';
 import { Popover } from 'ant-design-vue';
+import {} from '@/enums/enums';
+
+import { useTestSummary } from './composables/useTestSummary';
+import type { TestSummaryProps } from './types';
+import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-interface Props {
-
-  appInfo:{[key:string]:any};
-  userInfo:{[key:string]:any};
-  projectId:string;
-  dataSource: {
-    enabledTestTypes: 'MOCK_APIS'|'MOCK_DATA'|'TEST_CUSTOMIZATION'|'TEST_FUNCTIONALITY'|'TEST_PERFORMANCE'|'TEST_STABILITY';
-    passed: boolean;
-    resultSummary: {
-      resultStatus: 'FULLY_FAILED'|'FULLY_PASSED'|'NOT_ENABLED'|'PARTIALLY_PASSED'|'UNTESTED';
-      testFailureNum: string;
-      testNum: string;
-      testSuccessRate: string;
-      testSuccessNum: string;
-    };
-    resultDetailVoMap: {
-      [key: string]: {[key: string]: any}
-    }
-  }
-}
-const resizeDetector = elementResizeDetectorMaker();
-
-let testChart;
-const testChartRef = ref();
-
-const echartConfig = {
-  title: {
-    text: '0%',
-    left: '30%',
-    bottom: '0%',
-    padding: 2,
-    subtext: t('scenario.detail.testSummary.successRate'),
-    itemGap: 35,
-    textAlign: 'center',
-    textStyle: {
-      fontSize: 12,
-      fontWeight: 'bolder'
-    },
-    subtextStyle: {
-      fontSize: 12,
-      color: '#000'
-    }
-  },
-  tooltip: {
-    trigger: 'item'
-  },
-  legend: {
-    top: 'middle',
-    right: '10%',
-    orient: 'vertical',
-    itemHeight: 14,
-    itemWidth: 14,
-    itemGap: 2
-  },
-  series: [
-    {
-      name: '',
-      type: 'pie',
-      radius: ['45%', '65%'],
-      // radius: '60%',
-      center: ['30%', '40%'],
-      avoidLabelOverlap: true,
-      label: {
-        show: true,
-        formatter: '{c}'
-      },
-      itemStyle: {
-        borderRadius: 2,
-        borderColor: '#fff',
-        borderWidth: 1
-      },
-      emphasis: {
-        label: {
-          show: true
-        }
-      },
-      labelLine: {
-        show: true,
-        length: 5
-      },
-      data: [
-        {
-          name: t('scenario.detail.testSummary.successCount'),
-          value: 0,
-          itemStyle: {
-            color: '#52C41A'
-          }
-        },
-        {
-          name: t('scenario.detail.testSummary.failCount'),
-          value: 0,
-          itemStyle: {
-            color: 'rgba(245, 34, 45, 0.7)'
-          }
-        }
-      ]
-    }
-  ]
-};
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TestSummaryProps>(), {
   dataSource: undefined
 });
 
-const resultSummary = computed(() => {
-  return props.dataSource?.resultSummary;
-});
-
-const TEST_PERFORMANCE = computed(() => {
-  return props.dataSource?.resultDetailVoMap?.TEST_PERFORMANCE;
-});
-
-const TEST_CUSTOMIZATION = computed(() => {
-  return props.dataSource?.resultDetailVoMap?.TEST_CUSTOMIZATION;
-});
-
-const TEST_FUNCTIONALITY = computed(() => {
-  return props.dataSource?.resultDetailVoMap?.TEST_FUNCTIONALITY;
-});
-
-const TEST_STABILITY = computed(() => {
-  return props.dataSource?.resultDetailVoMap?.TEST_STABILITY;
-});
-
-const getTpsIconName = (testData) => {
-  const indicatorTps = testData?.indicatorPerf?.tps || testData?.indicatorStability?.tps;
-  if (!indicatorTps) {
-    return undefined;
-  }
-  const sampleTps = +testData?.sampleSummary?.tps;
-  if (sampleTps > +indicatorTps) {
-    return 'icon-shangjiantou1';
-  }
-  if (sampleTps < +indicatorTps) {
-    return 'icon-xiajiantou1';
-  }
-  return undefined;
-};
-
-const getTranIconName = (testData) => {
-  const indicatorArt = testData?.indicatorPerf?.art || testData?.indicatorStability?.art;
-  if (!indicatorArt) {
-    return undefined;
-  }
-  const tranP90 = +testData?.sampleSummary?.tranP90;
-  if (tranP90 > +indicatorArt) {
-    return 'icon-shangjiantou';
-  }
-  if (tranP90 < +indicatorArt) {
-    return 'icon-xiajiantou2';
-  }
-  return undefined;
-};
-
-const getErrIconName = (testData) => {
-  const indicatorErrorRate = testData?.indicatorPerf?.errorRate || testData?.indicatorStability?.errorRate;
-  if (!indicatorErrorRate) {
-    return undefined;
-  }
-  const sampleTps = +testData?.sampleSummary?.errorRate;
-  if (sampleTps > +indicatorErrorRate) {
-    return 'icon-shangjiantou';
-  }
-  if (sampleTps < +indicatorErrorRate) {
-    return 'icon-xiajiantou2';
-  }
-  return undefined;
-};
-
-const configInfo = [
-  [{ label: t('scenario.detail.testSummary.table.labels.total'), dataIndex: 'totalNum', bgColor: 'bg-blue-1' }, { label: t('scenario.detail.testSummary.table.labels.success'), dataIndex: 'successNum', bgColor: 'bg-status-success' }],
-  [{ label: t('scenario.detail.testSummary.table.labels.fail'), dataIndex: 'failNum', bgColor: 'bg-status-error' }, { label: t('scenario.detail.testSummary.table.labels.disabled'), dataIndex: 'disabledNum', bgColor: 'bg-gray-icon' }]
-];
-
-const resize = () => {
-  testChart.resize();
-};
-
-onMounted(() => {
-  echartConfig.series[0].data[0].value = +resultSummary.value?.testSuccessNum || 0;
-  echartConfig.series[0].data[1].value = +resultSummary.value?.testFailureNum || 0;
-  echartConfig.title.text = (resultSummary.value?.testSuccessRate || '--') + '%';
-  testChart = echarts.init(testChartRef.value);
-  testChart.setOption(echartConfig);
-  resizeDetector.listenTo(testChartRef.value, resize);
-});
-
+// Use test summary composable
+const {
+  testChartRef,
+  resultSummary,
+  TEST_PERFORMANCE,
+  TEST_CUSTOMIZATION,
+  TEST_FUNCTIONALITY,
+  TEST_STABILITY,
+  configInfo,
+  getTpsIconName,
+  getTranIconName,
+  getErrIconName
+} = useTestSummary(computed(() => props.dataSource));
 </script>
 <template>
   <div class="flex space-x-2">
@@ -211,7 +43,10 @@ onMounted(() => {
     <div class="flex-1 border rounded p-1 space-y-3">
       <div class="font-semibold text-text-title">{{ t('scenario.detail.testSummary.sections.functionality') }}</div>
       <div class="font-semibold text-6 text-center">
-        <span :class="[!TEST_FUNCTIONALITY ? '' : TEST_FUNCTIONALITY.passed ? 'PASSED': 'NOT_PASSED']">{{ !TEST_FUNCTIONALITY ? t('scenario.detail.testSummary.status.notTested') : TEST_FUNCTIONALITY.passed ? t('scenario.detail.testSummary.status.passed') : t('scenario.detail.testSummary.status.notPassed') }}</span>
+        <span :class="[!TEST_FUNCTIONALITY ? '' : TEST_FUNCTIONALITY.passed ? 'PASSED': 'NOT_PASSED']">
+          {{ !TEST_FUNCTIONALITY ? t('scenario.detail.testSummary.status.notTested')
+            : TEST_FUNCTIONALITY.passed ? t('scenario.detail.testSummary.status.passed')
+              : t('scenario.detail.testSummary.status.notPassed') }}</span>
         <Popover>
           <template #content>
             <div class="max-w-80">
@@ -238,18 +73,26 @@ onMounted(() => {
               v-if="item.label"
               class="flex-1 text-white px-2 rounded"
               :class="item.bgColor">{{ item.label }}</span>
-            <span v-if="item.dataIndex" class="flex-1 bg-gray-light px-2 rounded-r">{{ TEST_FUNCTIONALITY?.targetSummary?.[item.dataIndex] || '--' }}</span>
+            <span v-if="item.dataIndex" class="flex-1 bg-gray-light px-2 rounded-r">
+              {{ TEST_FUNCTIONALITY?.targetSummary?.[item.dataIndex] || '--' }}
+            </span>
           </div>
         </li>
       </div>
 
-      <div class="text-center font-semibold text-text-title">{{ t('scenario.detail.testSummary.sections.testInterfaces') }}</div>
+      <div class="text-center font-semibold text-text-title">
+        {{ t('scenario.detail.testSummary.sections.testInterfaces') }}
+      </div>
     </div>
 
     <div class="flex-1 border rounded p-1 space-y-2 flex flex-col justify-between">
       <div class="font-semibold text-text-title">{{ t('scenario.detail.testSummary.sections.performance') }}</div>
       <div class="font-semibold text-6 text-center">
-        <span :class="[!TEST_PERFORMANCE ? '' : TEST_PERFORMANCE.passed ? 'PASSED': 'NOT_PASSED']">{{ !TEST_PERFORMANCE ? t('scenario.detail.testSummary.status.notTested') : TEST_PERFORMANCE.passed ? t('scenario.detail.testSummary.status.passed') : t('scenario.detail.testSummary.status.notPassed') }}</span>
+        <span :class="[!TEST_PERFORMANCE ? '' : TEST_PERFORMANCE.passed ? 'PASSED' : 'NOT_PASSED']">
+          {{ !TEST_PERFORMANCE ? t('scenario.detail.testSummary.status.notTested')
+            : TEST_PERFORMANCE.passed ? t('scenario.detail.testSummary.status.passed')
+              : t('scenario.detail.testSummary.status.notPassed') }}
+        </span>
         <Popover>
           <template #content>
             <div class="max-w-80">
@@ -293,7 +136,11 @@ onMounted(() => {
     <div v-show="TEST_STABILITY" class="flex-1 border rounded p-1 space-y-2 flex flex-col justify-between">
       <div class="font-semibold text-text-title">{{ t('scenario.detail.testSummary.sections.stability') }}</div>
       <div class="font-semibold text-6 text-center">
-        <span :class="[!TEST_STABILITY ? '' : TEST_STABILITY.passed ? 'PASSED': 'NOT_PASSED']">{{ !TEST_STABILITY ? t('scenario.detail.testSummary.status.notTested') : TEST_STABILITY.passed ? t('scenario.detail.testSummary.status.passed') : t('scenario.detail.testSummary.status.notPassed') }}</span>
+        <span :class="[!TEST_STABILITY ? '' : TEST_STABILITY.passed ? 'PASSED': 'NOT_PASSED']">
+          {{ !TEST_STABILITY ? t('scenario.detail.testSummary.status.notTested')
+            : TEST_STABILITY.passed ? t('scenario.detail.testSummary.status.passed')
+              : t('scenario.detail.testSummary.status.notPassed') }}
+        </span>
         <Popover>
           <template #content>
             <div class="max-w-80">
@@ -331,7 +178,9 @@ onMounted(() => {
         </div>
       </div>
 
-      <div class="text-center font-semibold text-text-title">{{ t('scenario.detail.testSummary.sections.resultMetrics') }}</div>
+      <div class="text-center font-semibold text-text-title">
+        {{ t('scenario.detail.testSummary.sections.resultMetrics') }}
+      </div>
     </div>
 
     <div class="flex-1 border rounded p-1 space-y-2 flex flex-col justify-between">
@@ -353,7 +202,9 @@ onMounted(() => {
         </div>
       </div>
 
-      <div class="text-center font-semibold text-text-title">{{ t('scenario.detail.testSummary.sections.resultMetrics') }}</div>
+      <div class="text-center font-semibold text-text-title">
+        {{ t('scenario.detail.testSummary.sections.resultMetrics') }}
+      </div>
     </div>
   </div>
 </template>

@@ -1,4 +1,4 @@
-import { CreatedAt, AuthObjectType } from '@xcan-angus/infra';
+import { AuthObjectType, CreatedAt } from '@xcan-angus/infra';
 
 // Form state interface for monitor editing
 export interface FormState {

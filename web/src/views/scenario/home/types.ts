@@ -28,7 +28,7 @@ export interface MyScenariosTableProps {
 }
 
 // Scenario item data structure
-export interface SceneItem {
+export interface ScenarioItem {
   id: string;
   name: string;
   plugin: string;

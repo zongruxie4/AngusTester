@@ -38,9 +38,9 @@ const loaded = ref(false);
  */
 const loadPermissionEnums = () => {
   const enumMessages = enumUtils.enumToMessages(ScenarioPermission);
-  permissions.value = enumMessages.map(item => ({ 
-    label: item.message, 
-    value: item.value 
+  permissions.value = enumMessages.map(item => ({
+    label: item.message,
+    value: item.value
   }));
 };
 

@@ -2,20 +2,20 @@
 import { onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import {
+  DebugLog,
+  ExecLog,
   Hints,
   Icon,
   NoData,
-  Spin,
-  DebugLog,
-  ExecLog,
+  ScearioSmtpDebugResult,
+  ScenarioFtpDebugResult,
   ScenarioHttpDebugResult,
   ScenarioJdbcDebugResult,
-  ScenarioFtpDebugResult,
-  ScenarioWebsocketDebugResult,
   ScenarioLdapDebugResult,
   ScenarioMailDebugResult,
   ScenarioTcpDebugResult,
-  ScearioSmtpDebugResult
+  ScenarioWebsocketDebugResult,
+  Spin
 } from '@xcan-angus/vue-ui';
 import { Button, TabPane, Tabs, Tag } from 'ant-design-vue';
 import Chart from '@/views/scenario/monitor/detail/Chart.vue';

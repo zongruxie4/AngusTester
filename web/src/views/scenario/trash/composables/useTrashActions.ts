@@ -1,5 +1,5 @@
-import { ref, unref } from 'vue';
 import type { Ref } from 'vue';
+import { ref, unref } from 'vue';
 import { notification } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { scenario } from '@/api/tester';

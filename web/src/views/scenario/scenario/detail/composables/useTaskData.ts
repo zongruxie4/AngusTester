@@ -1,0 +1,124 @@
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { task } from '@/api/tester';
+import type { PaginationConfig, TableColumn, TaskItem } from '../types';
+
+/**
+ * Composable for managing task data and table configuration
+ */
+export function useTaskData (scenarioId: string, projectId: string) {
+  const { t } = useI18n();
+
+  const pagination = ref<PaginationConfig>({
+    current: 1,
+    pageSize: 10,
+    total: 0
+  });
+
+  const loading = ref(false);
+  const taskList = ref<TaskItem[]>([]);
+
+  /**
+   * Load tasks from API
+   */
+  const loadTasks = async () => {
+    const { current, pageSize } = pagination.value;
+    loading.value = true;
+
+    const [error, { data }] = await task.getTaskList({
+      projectId,
+      taskType: 'SCENARIO_TEST',
+      filters: [{ value: scenarioId, op: 'EQUAL', key: 'targetId' }],
+      pageNo: current,
+      pageSize
+    });
+
+    loading.value = false;
+    if (error) {
+      return;
+    }
+
+    taskList.value = data.list || [];
+    pagination.value.total = +data.total || 0;
+  };
+
+  /**
+   * Handle pagination change
+   */
+  const handlePaginationChange = (page: { current: number; pageSize: number }) => {
+    pagination.value.current = page.current;
+    pagination.value.pageSize = page.pageSize;
+    loadTasks();
+  };
+
+  /**
+   * Generate table columns configuration
+   */
+  const columns = computed((): TableColumn[] => [
+    {
+      key: 'code',
+      title: t('scenario.detail.task.table.columns.code'),
+      dataIndex: 'code',
+      ellipsis: true,
+      width: 100
+    },
+    {
+      key: 'name',
+      title: t('scenario.detail.task.table.columns.name'),
+      dataIndex: 'name',
+      ellipsis: true,
+      width: '25%'
+    },
+    {
+      key: 'sprintName',
+      title: t('scenario.detail.task.table.columns.iteration'),
+      dataIndex: 'sprintName',
+      ellipsis: true,
+      width: '25%'
+    },
+    {
+      key: 'priority',
+      title: t('scenario.detail.task.table.columns.priority'),
+      dataIndex: 'priority',
+      ellipsis: true,
+      width: '9%'
+    },
+    {
+      key: 'assigneeName',
+      title: t('scenario.detail.task.table.columns.assignee'),
+      dataIndex: 'assigneeName',
+      width: 120
+    },
+    {
+      key: 'confirmorName',
+      title: t('scenario.detail.task.table.columns.confirmer'),
+      dataIndex: 'confirmorName',
+      width: 120
+    },
+    {
+      key: 'deadlineDate',
+      title: t('scenario.detail.task.table.columns.deadline'),
+      dataIndex: 'deadlineDate',
+      ellipsis: true,
+      width: '17%'
+    }
+  ]);
+
+  /**
+   * Empty text style configuration
+   */
+  const emptyTextStyle = {
+    margin: '14px auto',
+    height: 'auto'
+  };
+
+  return {
+    pagination,
+    loading,
+    taskList,
+    columns,
+    emptyTextStyle,
+    loadTasks,
+    handlePaginationChange
+  };
+}

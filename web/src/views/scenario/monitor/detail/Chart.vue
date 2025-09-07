@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch, onUnmounted } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import * as echarts from 'echarts';
 import type { ChartProps } from './types';

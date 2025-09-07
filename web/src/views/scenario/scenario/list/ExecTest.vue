@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Radio, RadioGroup, TypographyParagraph } from 'ant-design-vue';
 import { Colon, Icon, Modal, Select } from '@xcan-angus/vue-ui';
-import { TESTER, http, utils } from '@xcan-angus/infra';
-import { cloneDeep } from 'lodash-es';
+import { http, TESTER } from '@xcan-angus/infra';
+
+// Import composable
+import { useExecTest } from './composables/useExecTest';
 
 const { t } = useI18n();
 
@@ -17,6 +19,7 @@ type Props = {
   scriptId: string;
   tips: string;
   okAction: string;
+  title?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -38,117 +41,23 @@ const emit = defineEmits<{
   (e: 'ok'): void;
 }>();
 
-const checkedType = ref<'none' | 'checked'>('none');
-const confirmLoading = ref(false);
-const selectedIds = ref<string[]>([]);
-const selectedServers = ref<{
-  url: string;
-  description: string;
-  variables: {
-    id: string;
-    name: string;
-    description: string;
-    default: string;
-    enum: { id: string; value: string }[];
-  }[];
-}[]>([]);
+// Initialize composable
+const {
+  checkedType,
+  confirmLoading,
+  selectedIds,
+  selectedServers,
+  radioChange,
+  selectChange,
+  reset,
+  getParams
+} = useExecTest();
 
-const radioChange = (event: any) => {
-  const value = event.target.value;
-  if (value === 'none') {
-    selectedIds.value = [];
-    selectedServers.value = [];
-  }
-};
-
-const selectChange = (value: any, option: any) => {
-  selectedIds.value = value;
-  selectedServers.value = option.map(item => {
-    const variables: {
-      id: string;
-      name: string;
-      description: string;
-      default: string;
-      enum: { id: string; value: string }[];
-    }[] = [];
-    if (item.variables) {
-      const names = Object.keys(item.variables);
-      for (let i = 0, len = names.length; i < len; i++) {
-        const _name = names[i];
-        const enumList = item.variables[_name]?.enum?.map(_value => {
-          return {
-            id: utils.uuid(),
-            value: _value
-          };
-        });
-        variables.push({
-          ...item.variables[_name],
-          enum: enumList,
-          name: _name,
-          id: utils.uuid()
-        });
-      }
-    }
-
-    return {
-      ...item,
-      variables
-    };
-  });
-};
-
-const reset = () => {
-  checkedType.value = 'none';
-  confirmLoading.value = false;
-  selectedIds.value = [];
-  selectedServers.value = [];
-};
-
+// Event handlers
 const cancel = () => {
   reset();
   emit('update:visible', false);
   emit('update:id', undefined);
-};
-
-const getSaveParams = (data) => {
-  const variables = data.variables.reduce((prev, cur) => {
-    prev[cur.name] = {
-      default: cur.default,
-      description: cur.description,
-      enum: cur.enum?.map(item => item.value) || []
-    };
-
-    return prev;
-  }, {} as {
-      [key:string]:{
-        default:string;
-        description:string;
-        enum:string[];
-      }
-    });
-  const params:{
-    description?:string;
-    url:string;
-    variables:{
-      [key:string]:{
-        default:string;
-        description:string;
-        enum:string[];
-      }
-    };
-  } = {
-    description: data.description,
-    url: data.url,
-    variables
-  };
-
-  return params;
-};
-
-const getParams = () => {
-  return selectedServers.value.map(item => {
-    return getSaveParams(item);
-  });
 };
 
 const ok = async () => {
@@ -160,34 +69,17 @@ const ok = async () => {
     return;
   }
 
-  const ids = cloneDeep(selectedIds.value);
-
   reset();
   emit('update:visible', false);
   emit('update:id', undefined);
-
-  for (let i = 0, len = ids.length; i < len; i++) {
-    // await toUpdate(ids[i]);
-  }
 };
 
-// const toUpdate = async (id:string) => {
-// await http.put(`${TESTER}/services/${props.scenarioId}/schema/server/${id}/apis/sync`);
-// const [error] = await http.put(`${TESTER}/services/${props.scenarioId}/schema/server/${id}/apis/sync`);
-// if (error) {
-//   return;
-// }
-// notification.success(t('scenario.list.execTest.messages.updateSuccess'));
-// };
+// Computed properties
+const okButtonProps = computed(() => ({
+  disabled: false
+}));
 
-const okButtonProps = computed(() => {
-  return {
-    disabled: false
-  };
-});
-const modalTitle = computed(() => {
-  return props.title || t('scenario.list.execTest.title');
-});
+const modalTitle = computed(() => props.title || t('scenario.list.execTest.title'));
 </script>
 
 <template>
@@ -216,7 +108,7 @@ const modalTitle = computed(() => {
         </RadioGroup>
       </div>
 
-      <template v-if="checkedType==='checked'">
+      <template v-if="checkedType === 'checked'">
         <Select
           v-model:value="selectedIds"
           :action="`${TESTER}/scenario/${props.scenarioId}/test/schema/server`"
@@ -230,7 +122,7 @@ const modalTitle = computed(() => {
             <div class="flex items-center overflow-hidden">
               <div class="truncate" :title="record.url">{{ record.url }}</div>
               <div
-                v-if="!record.variables||!Object.keys(record.variables).length"
+                v-if="!record.variables || !Object.keys(record.variables).length"
                 class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 -translate-y-0.25"
                 style="color: rgba(245, 34, 45, 100%);line-height: 15px;">
                 <span class="inline-block transform-gpu scale-90">{{ t('scenario.list.execTest.noVariables') }}</span>
@@ -265,7 +157,7 @@ const modalTitle = computed(() => {
 
             <div class="flex items-start leading-4.5 mb-2.5">
               <div v-if="false" class="flex-shrink-0 text-theme-sub-content mr-2">
-                <span>描述</span>
+                <span>{{ t('scenario.list.execTest.labels.description') }}</span>
                 <Colon />
               </div>
               <TypographyParagraph
@@ -306,14 +198,15 @@ const modalTitle = computed(() => {
                         class="flex items-center justify-between">
                         <div :title="_enum.value" class="truncate flex-1">{{ _enum.value }}</div>
                         <div class="flex items-center leading-5">
-                          <div v-if="_enum.value === _variable.default" class="mr-1 text-text-sub-content text-3">{{ t('scenario.list.execTest.labels.default') }}</div>
+                          <div v-if="_enum.value === _variable.default" class="mr-1 text-text-sub-content text-3">
+                            {{ t('scenario.list.execTest.labels.default') }}
+                          </div>
                           <Radio
                             size="small"
                             :checked="_enum.value === _variable.default"
                             style="transform: translateY(-4px);"
-                            @change="_variable.default=_enum.value" />
+                            @change="_variable.default = _enum.value" />
                         </div>
-                        <!-- <div :class="{ invisible: _enum.value !== _variable.default }" class="flex-shrink-0">默认</div> -->
                       </div>
                     </div>
                   </div>
@@ -345,7 +238,7 @@ const modalTitle = computed(() => {
   display: block;
   position: absolute;
   bottom: -11px;
-  left:0;
+  left: 0;
   width: 100%;
   height: 0;
   border-top: 1px dashed var(--border-text-box);

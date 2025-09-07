@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, watch, inject, computed, ref, Ref } from 'vue';
+import { computed, inject, onMounted, ref, Ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon, Table } from '@xcan-angus/vue-ui';

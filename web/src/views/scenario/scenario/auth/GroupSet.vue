@@ -5,7 +5,6 @@ import { Icon, Image, Input, Scroll } from '@xcan-angus/vue-ui';
 import { useGroupData } from './composables/useGroupData';
 import type { GroupSetProps } from './types';
 
-
 // Component props with proper typing
 const props = withDefaults(defineProps<GroupSetProps>(), {
   type: 'user',

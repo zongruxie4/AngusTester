@@ -2,7 +2,7 @@ import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { modal } from '@xcan-angus/vue-ui';
 import { scenario } from '@/api/tester';
-import type { MonitorInfo, UseMonitorActionsReturn, TabPaneInjection } from '../types';
+import type { MonitorInfo, TabPaneInjection, UseMonitorActionsReturn } from '../types';
 
 export function useMonitorActions (
   addTabPane: TabPaneInjection['addTabPane'],

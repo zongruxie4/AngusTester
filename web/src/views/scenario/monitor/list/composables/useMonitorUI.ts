@@ -1,7 +1,7 @@
-import { ref, onMounted, onBeforeUnmount } from 'vue';
 import type { Ref } from 'vue';
-import { throttle, debounce } from 'throttle-debounce';
-import type { UseMonitorUIReturn, MonitorInfo } from '../types';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { debounce, throttle } from 'throttle-debounce';
+import type { MonitorInfo, UseMonitorUIReturn } from '../types';
 
 export function useMonitorUI (
   dataList: Ref<MonitorInfo[]>,

@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import { inject, onMounted, ref, watch, computed, toRef } from 'vue';
+import { computed, inject, onMounted, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Button, Tooltip, Badge } from 'ant-design-vue';
+import { Badge, Button, Tooltip } from 'ant-design-vue';
 import { Icon, Image, Input, Spin, Table } from '@xcan-angus/vue-ui';
 import { useTrashData } from './composables/useTrashData';
 import { useTableColumns } from './composables/useTableColumns';
 import { useTrashActions } from './composables/useTrashActions';
 import { useSearch } from './composables/useSearch';
-import type { TrashProps, TrashItem } from './types';
+import type { TrashItem, TrashProps } from './types';
 
 /**
  * Scenario trash component for managing deleted scenario items

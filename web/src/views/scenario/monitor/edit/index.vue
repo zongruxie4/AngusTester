@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { onMounted, watch, defineAsyncComponent, inject, computed } from 'vue';
+import { computed, defineAsyncComponent, inject, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Input, Select, Icon, Spin, Hints, IconRequired } from '@xcan-angus/vue-ui';
-import { Button, Form, FormItem, Textarea, Tabs, TabPane, RadioGroup, Radio } from 'ant-design-vue';
-import { AuthObjectType, TESTER, GM } from '@xcan-angus/infra';
+import { Hints, Icon, IconRequired, Input, Select, Spin } from '@xcan-angus/vue-ui';
+import { Button, Form, FormItem, Radio, RadioGroup, TabPane, Tabs, Textarea } from 'ant-design-vue';
+import { AuthObjectType, GM, TESTER } from '@xcan-angus/infra';
 
 // Import composables
 import { useFormData } from './composables/useFormData';
@@ -143,7 +143,7 @@ const handleCancel = () => {
  * @param value - Selected scenario ID
  * @param option - Scenario option data
  */
-const handleSceneSelectionChange = (value: any, option: any) => {
+const handleScenarioSelectionChange = (value: any, option: any) => {
   if (typeof value === 'string') {
     handleScenarioChange(value, option);
   }
@@ -214,14 +214,14 @@ onMounted(() => {
       <FormItem
         required
         name="scenarioId"
-        :label="t('scenarioMonitor.edit.monitorScene')">
+        :label="t('scenarioMonitor.edit.monitorScenario')">
         <Select
           v-model:value="formState.scenarioId"
           :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
           :fieldNames="{label: 'name', value: 'id'}"
           :disabled="!!props?.data?.id"
-          :placeholder="t('scenarioMonitor.edit.selectScene')"
-          @change="handleSceneSelectionChange" />
+          :placeholder="t('scenarioMonitor.edit.selectScenario')"
+          @change="handleScenarioSelectionChange" />
       </FormItem>
 
       <!-- Monitor name -->

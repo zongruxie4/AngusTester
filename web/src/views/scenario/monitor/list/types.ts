@@ -1,5 +1,5 @@
 import { ComputedRef, Ref } from 'vue';
-import { PageQuery, SearchCriteria, EnumMessage } from '@xcan-angus/infra';
+import { EnumMessage, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { ScenarioMonitorStatus } from '@/enums/enums';
 
 export interface MonitorInfo {

@@ -2,7 +2,7 @@ import { inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { modal } from '@xcan-angus/vue-ui';
 import { scenario } from '@/api/tester';
-import type { MonitorInfo, AddTabPaneFunction } from '../types';
+import type { AddTabPaneFunction, MonitorInfo } from '../types';
 
 /**
  * Composable for managing monitor actions (edit, run, etc.)

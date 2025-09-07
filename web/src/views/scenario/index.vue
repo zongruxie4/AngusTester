@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, onMounted, ref, Ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import LeftMenu from '@/components/layout/leftMenu/index.vue';
-import { utils, appContext } from '@xcan-angus/infra';
+import { appContext, utils } from '@xcan-angus/infra';
 
 type MenuKey = 'homepage' | 'scenario' | 'trash' | 'monitor';
 
@@ -30,13 +30,13 @@ const menuItems: {
   { icon: 'icon-qingchu', name: t('scenarioTrash.name'), key: 'trash' }
 ];
 
-const homepageRefreshNotify = ref<string>('');
+const homeRefreshNotify = ref<string>('');
 const trashRefreshNotify = ref<string>('');
-const scenesRefreshNotify = ref<string>('');
+const scenarioRefreshNotify = ref<string>('');
 
-let homepageRefreshNotifyFlag = false;
+let homeRefreshNotifyFlag = false;
 let trashRefreshNotifyFlag = false;
-let scenesRefreshNotifyFlag = false;
+let scenarioRefreshNotifyFlag = false;
 
 const projectId = computed(() => {
   return projectInfo.value?.id;
@@ -45,11 +45,11 @@ const projectId = computed(() => {
 onMounted(() => {
   watch(() => activeKey.value, (newValue) => {
     if (newValue === 'homepage') {
-      if (homepageRefreshNotifyFlag) {
-        homepageRefreshNotify.value = utils.uuid();
+      if (homeRefreshNotifyFlag) {
+        homeRefreshNotify.value = utils.uuid();
       }
 
-      homepageRefreshNotifyFlag = true;
+      homeRefreshNotifyFlag = true;
       return;
     }
 
@@ -63,11 +63,11 @@ onMounted(() => {
     }
 
     if (newValue === 'scenario') {
-      if (scenesRefreshNotifyFlag) {
-        scenesRefreshNotify.value = utils.uuid();
+      if (scenarioRefreshNotifyFlag) {
+        scenarioRefreshNotify.value = utils.uuid();
       }
 
-      scenesRefreshNotifyFlag = true;
+      scenarioRefreshNotifyFlag = true;
     }
   }, { immediate: true });
 });
@@ -79,14 +79,14 @@ onMounted(() => {
         :projectId="projectId"
         :userInfo="userInfo"
         :appInfo="appInfo"
-        :refreshNotify="homepageRefreshNotify" />
+        :refreshNotify="homeRefreshNotify" />
     </template>
     <template #scenario>
       <Scenario
         :projectId="projectId"
         :userInfo="userInfo"
         :appInfo="appInfo"
-        :refreshNotify="scenesRefreshNotify" />
+        :refreshNotify="scenarioRefreshNotify" />
     </template>
     <template #trash>
       <Trash

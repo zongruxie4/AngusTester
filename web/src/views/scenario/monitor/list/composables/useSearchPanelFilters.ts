@@ -1,6 +1,6 @@
 import { useI18n } from 'vue-i18n';
 import dayjs, { Dayjs } from 'dayjs';
-import type { UseSearchPanelFiltersReturn, MenuItem } from '../types';
+import type { MenuItem, UseSearchPanelFiltersReturn } from '../types';
 import { ScenarioMonitorStatus } from '@/enums/enums';
 
 export function useSearchPanelFilters (): UseSearchPanelFiltersReturn {

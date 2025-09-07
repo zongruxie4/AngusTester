@@ -1,14 +1,14 @@
-import { ref, computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { PageQuery, TESTER } from '@xcan-angus/infra';
 import type {
-  UseSearchPanelDataReturn,
-  SearchPanelOption,
-  SortMenuItem,
-  MenuItem,
-  SearchPanelParams,
   FilterItem,
-  OrderByKey
+  MenuItem,
+  OrderByKey,
+  SearchPanelOption,
+  SearchPanelParams,
+  SortMenuItem,
+  UseSearchPanelDataReturn
 } from '../types';
 
 export function useSearchPanelData (projectId: string): UseSearchPanelDataReturn {
@@ -27,7 +27,7 @@ export function useSearchPanelData (projectId: string): UseSearchPanelDataReturn
       valueKey: 'scenarioId',
       type: 'select',
       allowClear: true,
-      placeholder: t('scenarioMonitor.searchPanel.selectScenePlaceholder'),
+      placeholder: t('scenarioMonitor.searchPanel.selectScenarioPlaceholder'),
       action: `${TESTER}/scenario?projectId=${projectId}&fullTextSearch=true`,
       fieldNames: { value: 'id', label: 'name' }
     },

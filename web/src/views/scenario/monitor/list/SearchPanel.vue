@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { Icon, SearchPanel, IconRefresh, Colon, DropdownSort } from '@xcan-angus/vue-ui';
+import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { PageQuery } from '@xcan-angus/infra';
 

@@ -3,12 +3,7 @@ import { useI18n } from 'vue-i18n';
 import { PageQuery } from '@xcan-angus/infra';
 import { scenario } from '@/api/tester';
 import { getCurrentPage } from '@/utils/utils';
-import type {
-  SceneItem,
-  ScenarioQueryParams,
-  ScenarioListParams,
-  TablePagination
-} from '../types';
+import type { ScenarioListParams, ScenarioQueryParams, ScenarioItem, TablePagination } from '../types';
 
 /**
  * Composable for managing scenario data operations
@@ -24,7 +19,7 @@ export function useData (
   const { t } = useI18n();
 
   // Reactive data state
-  const tableData = ref<SceneItem[]>();
+  const tableData = ref<ScenarioItem[]>();
   const loading = ref(false);
   const loaded = ref(false);
   const orderBy = ref<string>();

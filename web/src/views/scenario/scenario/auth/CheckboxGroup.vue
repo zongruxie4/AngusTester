@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Checkbox } from 'ant-design-vue';
-import type { CheckboxGroupProps, CheckboxChangeEvent } from './types';
+import type { CheckboxChangeEvent, CheckboxGroupProps } from './types';
 
 // Component props with proper typing
 const props = withDefaults(defineProps<CheckboxGroupProps>(), {
@@ -20,19 +20,19 @@ const emit = defineEmits<{
  */
 const handleCheckboxChange = (event: CheckboxChangeEvent, value: string) => {
   const checked = event.target.checked;
-  
+
   if (checked && !props.value.includes(value)) {
     // If selecting a non-VIEW permission and VIEW is not already included, add both
-    const newValue = value !== 'VIEW' && !props.value.includes('VIEW') 
-      ? props.value.concat([value, 'VIEW']) 
+    const newValue = value !== 'VIEW' && !props.value.includes('VIEW')
+      ? props.value.concat([value, 'VIEW'])
       : props.value.concat([value]);
     emit('change', newValue);
     return;
   }
 
   // If unchecking, remove the permission (and VIEW if it's not VIEW being unchecked)
-  const filteredValue = value !== 'VIEW' 
-    ? props.value.filter(item => item !== value) 
+  const filteredValue = value !== 'VIEW'
+    ? props.value.filter(item => item !== value)
     : [];
   emit('change', filteredValue);
 };

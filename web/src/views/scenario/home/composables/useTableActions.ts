@@ -1,9 +1,9 @@
-import { ref, inject } from 'vue';
+import { inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { modal, notification } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 import { scenario } from '@/api/tester';
-import type { SceneItem } from '../types';
+import type { ScenarioItem } from '../types';
 
 /**
  * Composable for managing table actions
@@ -24,7 +24,7 @@ export function useTableActions (
   /**
    * Handle scenario deletion with confirmation
    */
-  const handleDelete = (data: SceneItem): void => {
+  const handleDelete = (data: ScenarioItem): void => {
     modal.confirm({
       content: t('scenarioHome.myScenarios.table.messages.deleteConfirm', { name: data.name }),
       async onOk () {
@@ -52,7 +52,7 @@ export function useTableActions (
   /**
    * Handle unfavorite action
    */
-  const handleUnfavorite = async (data: SceneItem): Promise<void> => {
+  const handleUnfavorite = async (data: ScenarioItem): Promise<void> => {
     loading.value = true;
 
     try {
@@ -79,7 +79,7 @@ export function useTableActions (
   /**
    * Handle unfollow action
    */
-  const handleUnfollow = async (data: SceneItem): Promise<void> => {
+  const handleUnfollow = async (data: ScenarioItem): Promise<void> => {
     loading.value = true;
 
     try {
