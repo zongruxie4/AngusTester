@@ -51,7 +51,6 @@ const ok = (data: DataSetItem, isEdit = false) => {
   } else {
     updateTabPane({ _id: id, name, data: { id } });
 
-    // 更新数据名称
     if (dataSource.value) {
       dataSource.value.name = data.name;
     }
