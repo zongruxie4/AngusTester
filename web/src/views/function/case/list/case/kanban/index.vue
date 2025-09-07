@@ -825,7 +825,7 @@ const toFavourite = async (data: CaseInfo, index: number, testResult: CaseTestRe
   }
 
   notification.success(t('functionCase.kanbanView.caseFavouriteSuccess'));
-  caseDataMap.value[testResult][index].favouriteFlag = true;
+  caseDataMap.value[testResult][index].favourite = true;
 };
 
 const toDeleteFavourite = async (data: CaseInfo, index: number, testResult: CaseTestResult) => {
@@ -837,7 +837,7 @@ const toDeleteFavourite = async (data: CaseInfo, index: number, testResult: Case
   }
 
   notification.success(t('functionCase.kanbanView.caseUnfavouriteSuccess'));
-  caseDataMap.value[testResult][index].favouriteFlag = false;
+  caseDataMap.value[testResult][index].favourite = false;
 };
 
 const toFollow = async (data: CaseInfo, index: number, testResult: CaseTestResult) => {
@@ -849,7 +849,7 @@ const toFollow = async (data: CaseInfo, index: number, testResult: CaseTestResul
   }
 
   notification.success(t('functionCase.kanbanView.caseFollowSuccess'));
-  caseDataMap.value[testResult][index].followFlag = true;
+  caseDataMap.value[testResult][index].follow = true;
 };
 
 const toDeleteFollow = async (data: CaseInfo, index: number, testResult: CaseTestResult) => {
@@ -861,7 +861,7 @@ const toDeleteFollow = async (data: CaseInfo, index: number, testResult: CaseTes
   }
 
   notification.success(t('functionCase.kanbanView.caseUnfollowSuccess'));
-  caseDataMap.value[testResult][index].followFlag = false;
+  caseDataMap.value[testResult][index].follow = false;
 };
 
 const toClone = async (data: CaseInfo) => {
@@ -1179,7 +1179,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
       if (props.userInfo?.id === item.testerId && !permissions.includes('TEST')) {
         permissions.push('TEST');
       }
-      const { favouriteFlag, followFlag, testNum, review, reviewStatus: { value: reviewStatus }, testResult: { value: testResult } } = item;
+      const { favourite, follow, testNum, review, reviewStatus: { value: reviewStatus }, testResult: { value: testResult } } = item;
 
       const menuItems: ActionMenuItem[] = [
         {
@@ -1284,7 +1284,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         hide: false
       });
 
-      if (favouriteFlag) {
+      if (favourite) {
         menuItems.push({
           name: t('functionCase.kanbanView.unfavourite'),
           key: 'cancelFavourite',
@@ -1302,7 +1302,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         });
       }
 
-      if (followFlag) {
+      if (follow) {
         menuItems.push({
           name: t('functionCase.kanbanView.unfollow'),
           key: 'cancelFollow',

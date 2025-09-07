@@ -383,7 +383,7 @@ defineExpose({
         class="my-4 pl-5 pr-4 space-y-3 overflow-y-auto overflow-x-hidden scroll-smooth"
         :list="dataList"
         :animation="300"
-        group="scene"
+        group="scenario"
         itemKey="id"
         tag="ul"
         handle=".drag-handle">

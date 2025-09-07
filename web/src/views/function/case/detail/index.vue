@@ -455,15 +455,15 @@ defineExpose({
           class="mt-2 mr-2"
           size="small"
           @click="handleClick('favourite')">
-          <Icon class="mr-1 text-3" :icon="caseDetail?.favouriteFlag?'icon-quxiaoshoucang':'icon-yishoucang'" />
-          <span>{{ caseDetail?.favouriteFlag ? t('functionCase.detail.unfavourite') : t('functionCase.detail.favourite') }}</span>
+          <Icon class="mr-1 text-3" :icon="caseDetail?.favourite?'icon-quxiaoshoucang':'icon-yishoucang'" />
+          <span>{{ caseDetail?.favourite ? t('functionCase.detail.unfavourite') : t('functionCase.detail.favourite') }}</span>
         </Button>
         <Button
           class="mt-2 mr-2"
           size="small"
           @click="handleClick('follow')">
-          <Icon class="mr-1 text-3" :icon="caseDetail?.followFlag?'icon-quxiaoguanzhu':'icon-yiguanzhu'" />
-          <span>{{ caseDetail?.followFlag ? t('functionCase.detail.unfollow') : t('functionCase.detail.follow') }}</span>
+          <Icon class="mr-1 text-3" :icon="caseDetail?.follow?'icon-quxiaoguanzhu':'icon-yiguanzhu'" />
+          <span>{{ caseDetail?.follow ? t('functionCase.detail.unfollow') : t('functionCase.detail.follow') }}</span>
         </Button>
         <Button
           :disabled="!actionAuth.includes('delete')"

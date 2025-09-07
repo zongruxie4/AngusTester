@@ -4,10 +4,10 @@ import { IconRequired, ExecSettingForm } from '@xcan-angus/vue-ui';
 import SelectEnum from '@/components/selectEnum/index.vue';
 import { useI18n } from 'vue-i18n';
 
-import { SceneConfig } from '../PropsType';
+import { ScenarioConfig } from '../PropsType';
 
 export interface Props {
-  value:SceneConfig['script'];
+  value:ScenarioConfig['script'];
   excludes: (data: { label: string; value: string; }) => boolean;
 }
 

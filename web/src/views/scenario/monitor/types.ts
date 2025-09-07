@@ -1,40 +1,17 @@
 import { ComputedRef, Ref } from 'vue';
 import {
   AuthObjectType,
-  CreatedAt,
   EnumMessage,
   PageQuery,
-  PeriodicCreationUnit,
   SearchCriteria
 } from '@xcan-angus/infra';
 import { ScenarioMonitorStatus } from '@/enums/enums';
+import { CreateTimeSetting } from '@/types/types';
 
 export type OrderByKey = 'createdDate' | 'createdByName';
 
 export interface MonitorListParams extends PageQuery{
   projectId: string;
-}
-
-// Time setting configuration
-export interface TimeSetting {
-  createdAt: CreatedAt;
-  createdAtSomeDate?: string;
-  dayOfMonth?: string;
-  dayOfWeek?: string;
-  periodicCreationUnit?: PeriodicCreationUnit;
-  timeOfDay?: string;
-}
-
-// Time setting interface for CreatedDate component
-export interface CreateTimeSetting {
-  createdAt: CreatedAt;
-  createdAtSomeDate?: string;
-  dayOfMonth?: string;
-  dayOfWeek?: string;
-  periodicCreationUnit?: PeriodicCreationUnit;
-  timeOfDay?: string;
-  hourOfDay?: string;
-  minuteOfHour?: string;
 }
 
 // Notice setting configuration
@@ -92,7 +69,7 @@ export type MonitorInfo = {
   failureMessage?: string;
   noticeSetting: NoticeSetting
   serverSetting?: ServerSetting[];
-  timeSetting: TimeSetting;
+  timeSetting: CreateTimeSetting;
   count?: MonitorCount,
   createdByName: string;
   createdDate: string;
@@ -126,7 +103,7 @@ export interface MonitorParams {
   name: string;
   id?: string;
   projectId: string;
-  timeSetting: TimeSetting;
+  timeSetting: CreateTimeSetting;
   noticeSetting: NoticeSetting;
   serverSetting: ServerSetting[];
 }

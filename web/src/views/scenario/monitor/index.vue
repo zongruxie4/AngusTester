@@ -5,7 +5,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
-import { DataIPane } from '@/types/types';
+import { IPane } from '@/types/types';
 
 type Props = {
   projectId: string;
@@ -45,7 +45,7 @@ const storageKey = computed(() => {
  * Add a new tab pane to the browser tab component
  * @param tabData - Tab pane data to add
  */
-const addTabPane = (tabData: DataIPane) => {
+const addTabPane = (tabData: IPane) => {
   browserTabRef.value.add(() => {
     return tabData;
   });
@@ -56,7 +56,7 @@ const addTabPane = (tabData: DataIPane) => {
  * @param key - Tab key to retrieve
  * @returns Tab pane data or undefined
  */
-const getTabPane = (key: string): DataIPane[] | undefined => {
+const getTabPane = (key: string): IPane[] | undefined => {
   return browserTabRef.value.getData(key);
 };
 
@@ -72,7 +72,7 @@ const deleteTabPane = (keys: string[]) => {
  * Update existing tab pane data
  * @param tabData - Updated tab pane data
  */
-const updateTabPane = (tabData: DataIPane) => {
+const updateTabPane = (tabData: IPane) => {
   browserTabRef.value.update(tabData);
 };
 

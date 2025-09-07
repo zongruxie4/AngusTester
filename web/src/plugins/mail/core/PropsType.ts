@@ -37,10 +37,10 @@ export type PipelineConfig = {
 
 }
 
-export type SceneInfo = {
+export type ScenarioInfo = {
     description: string;
-    favouriteFlag: boolean;
-    followFlag: boolean;
+    favourite: boolean;
+    follow: boolean;
     id: string;
     name: string;
     plugin: 'Mail';
@@ -116,10 +116,10 @@ export type SceneInfo = {
     scriptName: string;
 }
 
-export type SceneConfig = {
+export type ScenarioConfig = {
     description: string;
-    favouriteFlag: boolean;
-    followFlag: boolean;
+    favourite: boolean;
+    follow: boolean;
     id: string;
     name: string;
     plugin: 'Mail';

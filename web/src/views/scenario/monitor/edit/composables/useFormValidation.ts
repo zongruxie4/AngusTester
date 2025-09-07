@@ -1,5 +1,6 @@
 import { computed, ref } from 'vue';
-import { NoticeSetting, ServerSetting, TimeSetting, EditFormState } from '@/views/scenario/monitor/types';
+import { NoticeSetting, ServerSetting, EditFormState } from '@/views/scenario/monitor/types';
+import { CreateTimeSetting } from '@/types/types';
 
 /**
  * Composable for form validation and parameter building
@@ -29,7 +30,7 @@ export function useFormValidation () {
    */
   const buildMonitorParams = (
     formState: EditFormState,
-    timeSetting: TimeSetting,
+    timeSetting: CreateTimeSetting,
     noticeSetting: NoticeSetting,
     serverSetting: ServerSetting[],
     projectId: string,

@@ -234,13 +234,13 @@ const handleFavourite = async (rowData: CaseListObj) => {
     return;
   }
   favouriteLoading.value = true;
-  const [error] = rowData.favouriteFlag ? await funcCase.cancelFavouriteCase(rowData.id) : await funcCase.AddFavouriteCase(rowData.id);
+  const [error] = rowData.favourite ? await funcCase.cancelFavouriteCase(rowData.id) : await funcCase.AddFavouriteCase(rowData.id);
   favouriteLoading.value = false;
   if (error) {
     return;
   }
-  notification.success(rowData.favouriteFlag ? t('functionCase.cancelFavouriteSuccess') : t('functionCase.favouriteSuccess'));
-  rowData.favouriteFlag = !rowData.favouriteFlag;
+  notification.success(rowData.favourite ? t('functionCase.cancelFavouriteSuccess') : t('functionCase.favouriteSuccess'));
+  rowData.favourite = !rowData.favourite;
   updateFollowFavourite('favourit');
 };
 
@@ -251,14 +251,14 @@ const handleFollow = async (rowData: CaseListObj) => {
     return;
   }
   followLoading.value = true;
-  const [error] = rowData.followFlag ? await funcCase.cancelFollowCase(rowData.id) : await funcCase.addFollowCase(rowData.id);
+  const [error] = rowData.follow ? await funcCase.cancelFollowCase(rowData.id) : await funcCase.addFollowCase(rowData.id);
   favouriteLoading.value = false;
   followLoading.value = false;
   if (error) {
     return;
   }
-  notification.success(rowData.followFlag ? t('functionCase.cancelFollowSuccess') : t('functionCase.followSuccess'));
-  rowData.followFlag = !rowData.followFlag;
+  notification.success(rowData.follow ? t('functionCase.cancelFollowSuccess') : t('functionCase.followSuccess'));
+  rowData.follow = !rowData.follow;
   updateFollowFavourite('follow');
 };
 

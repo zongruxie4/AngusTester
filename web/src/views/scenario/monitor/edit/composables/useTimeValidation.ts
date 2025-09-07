@@ -1,6 +1,7 @@
 import { Ref } from 'vue';
 import dayjs from 'dayjs';
-import type { CreateTimeSetting, TimeValidationResult } from '../../types';
+import type { TimeValidationResult } from '../../types';
+import {CreateTimeSetting} from "@/types/types";
 
 /**
  * Composable for time validation logic

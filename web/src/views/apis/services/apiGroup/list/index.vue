@@ -380,7 +380,7 @@ const addFavourite = async (id:string) => {
   }
   listData.value.forEach(item => {
     if (item.id === id) {
-      item.favouriteFlag = true;
+      item.favourite = true;
     }
   });
   notification.success(t('service.apiList.messages.favouriteSuccess'));
@@ -396,7 +396,7 @@ const cancelFavourite = async (id:string) => {
   }
   listData.value.forEach(item => {
     if (item.id === id) {
-      item.favouriteFlag = false;
+      item.favourite = false;
     }
   });
   notification.success(t('service.apiList.messages.unfavouriteSuccess'));
@@ -412,7 +412,7 @@ const addWatch = async (id:string) => {
   }
   listData.value.forEach(item => {
     if (item.id === id) {
-      item.followFlag = true;
+      item.follow = true;
     }
   });
   notification.success(t('service.apiList.messages.followSuccess'));
@@ -428,7 +428,7 @@ const cancelWatch = async (id:string) => {
   }
   listData.value.forEach(item => {
     if (item.id === id) {
-      item.followFlag = false;
+      item.follow = false;
     }
   });
   notification.success(t('service.apiList.messages.unfollowSuccess'));

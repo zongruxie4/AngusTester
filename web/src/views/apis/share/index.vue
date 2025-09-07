@@ -6,7 +6,7 @@ import { utils } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-import { IPane } from './PropsType';
+import { IPane } from '@/types/types';
 
 const { t } = useI18n();
 

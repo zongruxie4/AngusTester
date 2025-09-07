@@ -15,7 +15,7 @@ export interface DataSourceType {
   endpoint: string,
   method: Method,
   summary: string,
-  favouriteFlag: boolean,
+  favourite: boolean,
   id: string,
   show: boolean,
   auth:boolean,

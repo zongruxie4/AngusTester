@@ -69,8 +69,8 @@ export type TaskInfo = {
     execTestFailureNum: string;
     execTestNum: string;
     failNum: string;
-    favouriteFlag: boolean;
-    followFlag: boolean;
+    favourite: boolean;
+    follow: boolean;
     id: string;
     lastModifiedBy: string;
     lastModifiedByName: string;

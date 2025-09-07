@@ -247,29 +247,6 @@ export type SourceItem = {
   createdDate: string;
 }
 
-/**
- * Tab pane interface for dataset detail views
- * Represents a tab in the dataset detail interface
- */
-export type IPane = {
-  /** Internal ID for the tab */
-  _id: string;
-  /** Display name of the tab */
-  name: string;
-  /** Value associated with the tab */
-  value: string;
-  /** Whether the tab can be closed */
-  closable?: boolean;
-  /** Whether to force render the tab */
-  forceRender?: boolean;
-  /** Icon to display with the tab */
-  icon?: string;
-  /** Whether this tab is active */
-  active?: boolean;
-  /** Additional data associated with the tab */
-  data?: { [key: string]: any; };
-};
-
 // Component props
 export type DatasetListProps = {
   /** Project ID this dataset list belongs to */

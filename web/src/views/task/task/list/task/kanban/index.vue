@@ -597,7 +597,7 @@ const toFavourite = async (data: TaskInfo, index: number, status: TaskInfo['stat
   }
 
   notification.success(t('task.table.messages.favouriteSuccess'));
-  taskDataMap.value[status][index].favouriteFlag = true;
+  taskDataMap.value[status][index].favourite = true;
 };
 
 const toDeleteFavourite = async (data: TaskInfo, index: number, status: TaskInfo['status']['value']) => {
@@ -609,7 +609,7 @@ const toDeleteFavourite = async (data: TaskInfo, index: number, status: TaskInfo
   }
 
   notification.success(t('task.table.messages.cancelFavouriteSuccess'));
-  taskDataMap.value[status][index].favouriteFlag = false;
+  taskDataMap.value[status][index].favourite = false;
 };
 
 const toFollow = async (data: TaskInfo, index: number, status: TaskInfo['status']['value']) => {
@@ -621,7 +621,7 @@ const toFollow = async (data: TaskInfo, index: number, status: TaskInfo['status'
   }
 
   notification.success(t('task.table.messages.followSuccess'));
-  taskDataMap.value[status][index].followFlag = true;
+  taskDataMap.value[status][index].follow = true;
 };
 
 const toDeleteFollow = async (data: TaskInfo, index: number, status: TaskInfo['status']['value']) => {
@@ -633,7 +633,7 @@ const toDeleteFollow = async (data: TaskInfo, index: number, status: TaskInfo['s
   }
 
   notification.success(t('task.table.messages.cancelFollowSuccess'));
-  taskDataMap.value[status][index].followFlag = false;
+  taskDataMap.value[status][index].follow = false;
 };
 
 const toStart = async (data: TaskInfo, notificationFlag = true, errorCallback?: () => void) => {
@@ -1344,8 +1344,8 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         });
       }
 
-      const { favouriteFlag, followFlag } = item;
-      if (favouriteFlag) {
+      const { favourite, follow } = item;
+      if (favourite) {
         menuItems.push({
           name: t('actions.unFavourite'),
           key: 'cancelFavourite',
@@ -1363,7 +1363,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         });
       }
 
-      if (followFlag) {
+      if (follow) {
         menuItems.push({
           name: t('actions.unFollow'),
           key: 'cancelFollow',

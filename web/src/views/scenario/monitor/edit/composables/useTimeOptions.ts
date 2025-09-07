@@ -1,6 +1,6 @@
 import { Ref, watch } from 'vue';
-import type { CreateTimeSetting } from '../../types';
 import { CreatedAt, EnumMessage } from '@xcan-angus/infra';
+import {CreateTimeSetting} from "@/types/types";
 
 /**
  * Composable for managing time option visibility and filtering

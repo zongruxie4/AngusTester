@@ -433,7 +433,7 @@ defineExpose({
     <Draggable
       :list="dataList"
       :animation="300"
-      group="scene"
+      group="scenario"
       itemKey="id"
       tag="ul"
       handle=".drag-handle">
@@ -494,7 +494,7 @@ defineExpose({
                 <Draggable
                   :list="children"
                   :animation="300"
-                  group="scene"
+                  group="scenario"
                   itemKey="id"
                   tag="ul"
                   class="child-drag-container space-y-3 pt-3"

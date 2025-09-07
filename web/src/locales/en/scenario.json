@@ -65,8 +65,8 @@
     "edit": {
       "save": "Save",
       "cancel": "Cancel",
-      "monitorScene": "Monitor Scene",
-      "selectScene": "Select Scene",
+      "monitorScenario": "Monitor Scenario",
+      "selectScenario": "Select Scenario",
       "monitorName": "Monitor Name",
       "monitorNamePlaceholder": "Enter monitor name, up to 100 characters",
       "description": "Description",
@@ -94,6 +94,7 @@
       "selectOrgsRule": "Please select"
     },
     "detail": {
+      "totalExecutions": "Total",
       "successRate": "Success Rate",
       "responseDelay": "Response Delay",
       "executionRecords": "Execution Records",
@@ -139,7 +140,7 @@
         "failure": "Failure"
       },
       "searchNamePlaceholder": "Search name, description",
-      "selectScenePlaceholder": "Select scene name",
+      "selectScenarioPlaceholder": "Select scenario name",
       "selectCreatorPlaceholder": "Select creator",
       "dateRangePlaceholder": [
         "Add time from",

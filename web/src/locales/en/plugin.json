@@ -34,10 +34,10 @@
       "codeView": "Code View",
       "uiView": "Page View",
       "authority": "Permissions",
-      "followFlag": "Follow",
-      "cancelFollowFlag": "Unfollow",
-      "favouriteFlag": "Favourite",
-      "cancelFavouriteFlag": "Unfavourite",
+      "follow": "Follow",
+      "cancelFollow": "Unfollow",
+      "favourite": "Favourite",
+      "cancelFavourite": "Unfavourite",
       "refresh": "Refresh",
       "test": "Create Execution",
       "debug": "Debug",
@@ -646,9 +646,9 @@
       "executeConfig": "Execute Config"
     },
     "authority": {
-      "title": "Scene Authority",
-      "onTips": "After enabling 'Permission Control', you need to manually authorize service permissions to have scene operation permissions, 'Permission Control' is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically granted.",
-      "offTips": "After enabling 'No Permission Control', all users will be allowed to publicly view and operate the current scene, and viewing users also need to have parent directory permissions for the current scene."
+      "title": "Scenario Authority",
+      "onTips": "After enabling 'Permission Control', you need to manually authorize service permissions to have scenario operation permissions, 'Permission Control' is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically granted.",
+      "offTips": "After enabling 'No Permission Control', all users will be allowed to publicly view and operate the current scenario, and viewing users also need to have parent directory permissions for the current scenario."
     },
     "debugLog": {
       "schedulingResult": "Scheduling Result",
@@ -1617,7 +1617,7 @@
       "authorizeModal": "Show Permission Modal",
       "abortController": "Abort Controller for terminating requests",
       "defaultViewDescription": "Default page view, new scenarios don't show [Execute Test], [Export Script], [Follow], [Cancel Follow], [Favorite], [Cancel Favorite], [Permission], [Refresh] buttons before saving",
-      "sceneConfigData": "Scene configuration data",
+      "scenarioConfigData": "Scenario configuration data",
       "rampUpInterval": "Ramp Up Interval",
       "rampUpThreads": "Ramp Up Threads"
     },
@@ -1704,7 +1704,7 @@
       "authorizeModal": "Show Permission Modal",
       "abortController": "Abort Controller for terminating requests",
       "defaultViewDescription": "Default page view, new scenarios don't show [Execute Test], [Export Script], [Follow], [Cancel Follow], [Favorite], [Cancel Favorite], [Permission], [Refresh] buttons before saving",
-      "sceneConfigData": "Scene configuration data",
+      "scenarioConfigData": "Scenario configuration data",
       "rampUpInterval": "Ramp Up Interval",
       "rampUpThreads": "Ramp Up Threads"
     },
@@ -1785,7 +1785,7 @@
       "authorizeModal": "Show permission modal",
       "abortController": "Instance for terminating requests",
       "defaultViewDescription": "Default display page view, new scenarios do not show [Execute Test], [Export Script], [Follow], [Cancel Follow], [Favorite], [Cancel Favorite], [Permission], [Refresh] buttons before saving",
-      "sceneConfigData": "Scenario detail information",
+      "scenarioConfigData": "Scenario detail information",
       "rampUpInterval": "Ramp Up Interval",
       "rampUpThreads": "Ramp Up Threads"
     },
@@ -1957,7 +1957,7 @@
       "authVisible": "Show permission modal",
       "controller": "Instance for terminating requests",
       "defaultViewMode": "Default display page view, new scenarios do not show [Execute Test] [Export Script], [Follow], [Cancel Follow], [Favorite], [Cancel Favorite], [Permission], [Refresh] buttons before saving",
-      "sceneConfigData": "Scenario detail information",
+      "scenarioConfigData": "Scenario detail information",
       "rampUpInterval": "Ramp up interval",
       "rampUpThreads": "Ramp up threads"
     },
@@ -2034,7 +2034,7 @@
       "authVisible": "Show permission modal",
       "controller": "Instance for terminating requests",
       "defaultViewMode": "Default display page view, new scenarios do not show [Execute Test] [Export Script], [Follow], [Cancel Follow], [Favorite], [Cancel Favorite], [Permission], [Refresh] buttons before saving",
-      "sceneConfigData": "Scenario detail information",
+      "scenarioConfigData": "Scenario detail information",
       "rampUpInterval": "Ramp up interval",
       "rampUpThreads": "Ramp up threads"
     },

@@ -2,10 +2,10 @@ import { PipelineConfig, PipelineInfo } from './UIConfig/PropsType';
 
 export type ScriptType = 'TEST_FUNCTIONALITY'|'TEST_PERFORMANCE'|'TEST_STABILITY'
 
-export type SceneInfo = {
+export type ScenarioInfo = {
     description: string;
-    favouriteFlag: boolean;
-    followFlag: boolean;
+    favourite: boolean;
+    follow: boolean;
     id: string;
     name: string;
     plugin: 'Jdbc';
@@ -81,10 +81,10 @@ export type SceneInfo = {
     scriptName: string;
 }
 
-export type SceneConfig = {
+export type ScenarioConfig = {
     description: string;
-    favouriteFlag: boolean;
-    followFlag: boolean;
+    favourite: boolean;
+    follow: boolean;
     id: string;
     name: string;
     plugin: 'Jdbc';

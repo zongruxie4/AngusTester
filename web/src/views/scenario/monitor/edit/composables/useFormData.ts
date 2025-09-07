@@ -1,6 +1,7 @@
 import { ref } from 'vue';
 import { AuthObjectType, CreatedAt } from '@xcan-angus/infra';
-import { MonitorInfo, NoticeSetting, ServerSetting, TimeSetting, EditFormState } from '@/views/scenario/monitor/types';
+import { MonitorInfo, NoticeSetting, ServerSetting, EditFormState } from '@/views/scenario/monitor/types';
+import { CreateTimeSetting } from '@/types/types';
 
 /**
  * Composable for managing form data state
@@ -14,7 +15,7 @@ export function useFormData () {
   });
 
   // Time setting configuration
-  const timeSetting = ref<TimeSetting>({
+  const timeSetting = ref<CreateTimeSetting>({
     createdAt: CreatedAt.NOW
   });
 

@@ -608,8 +608,8 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
       });
     }
 
-    const { favouriteFlag, followFlag } = item;
-    if (favouriteFlag) {
+    const { favourite, follow } = item;
+    if (favourite) {
       menuItems.push({
         name: t('task.actions.unfavorite'),
         key: 'cancelFavourite',
@@ -627,7 +627,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
       });
     }
 
-    if (followFlag) {
+    if (follow) {
       menuItems.push({
         name: t('task.actions.unfollow'),
         key: 'cancelFollow',

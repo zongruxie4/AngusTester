@@ -54,16 +54,16 @@ const myButtonGroup = computed(() => {
     if (props.item.protocol?.value?.includes('ws') && ['mock'].includes(btn.key)) {
       return null;
     }
-    if (btn.key === 'addFavourite' && props.item.favouriteFlag === true) {
+    if (btn.key === 'addFavourite' && props.item.favourite === true) {
       return null;
     }
-    if (btn.key === 'cancelFavourite' && !props.item.favouriteFlag) {
+    if (btn.key === 'cancelFavourite' && !props.item.favourite) {
       return null;
     }
-    if (btn.key === 'addWatch' && props.item.followFlag === true) {
+    if (btn.key === 'addWatch' && props.item.follow === true) {
       return null;
     }
-    if (btn.key === 'cancelWatch' && !props.item.followFlag) {
+    if (btn.key === 'cancelWatch' && !props.item.follow) {
       return null;
     }
     if (btn.key === 'testTask' && !proTypeShowMap.value.showTask) {

@@ -62,8 +62,8 @@ export type CaseInfo = {
     testNum: string;
     description: string;
     precondition: string;
-    favouriteFlag: boolean;
-    followFlag: boolean;
+    favourite: boolean;
+    follow: boolean;
     refMap:{
         TASK: string[];
         CASE: string[];

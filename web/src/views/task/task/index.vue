@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 
-import { IPane } from './PropsType';
+import { IPane } from '@/types/types';
 
 type Props = {
   projectId: string;
