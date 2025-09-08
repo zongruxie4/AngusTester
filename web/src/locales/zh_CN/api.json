@@ -71,6 +71,7 @@
       "projectConfig": "项目配置"
     },
     "configuration": {
+      "type_service": "服务",
       "sync": "同步配置",
       "action": "配置",
       "security": "安全方案配置",
@@ -155,6 +156,7 @@
       "importSuccess": "导入成功",
       "released": "已发布",
       "unreleased": "草稿",
+      "generated": "已生成服务",
       "searchPanel": {
         "name_placeholder": "查询名称、描述",
         "created_placeholder": "选择添加人",
@@ -172,6 +174,9 @@
         "lastModifiedBy": "最后修改人",
         "lastModifiedDate": "最后修改时间",
         "actions": "操作"
+      },
+      "deleteFirm": {
+        "title": "确定删除设计【{name}】吗？"
       }
     },
     "importServiceModal": {
@@ -1167,6 +1172,108 @@
       }
     },
     "apis": {
+      "tabs": {
+        "debug": "调试",
+        "case": "用例",
+        "test": "测试",
+        "mock": "Mock",
+        "doc": "文档"
+      },
+      "actions": {
+        "share": "分享"
+      },
+      "requestTabs": {
+        "parameters": "请求参数",
+        "header": "请求头",
+        "cookie": "Cookie",
+        "authentication": "Authorization",
+        "requestBody": "请求体",
+        "parametric": "参数化",
+        "assert": "断言",
+        "setting": "设置"
+      },
+      "toolbar": {
+        "statusCode": "状态码:",
+        "duration": "耗时:",
+        "size": "大小:"
+      },
+      "errors": {
+        "invalidUrl": "出错了！",
+        "invalidUrlDescription": "接口地址无效，请重新填写！",
+        "parameterValidationFailed": "参数校验不通过",
+        "headerValidationFailed": "请求头参数校验不通过",
+        "cookieValidationFailed": "Coookie参数校验不通过",
+        "bodyValidationFailed": "请求体数据校验不通过",
+        "assertionValidationFailed": "断言数据校验不通过",
+        "proxyNotConnected": "代理未链接， 请检查代理配置",
+        "requestErrorWithProxy": "发送请求出现错误（请检查请求参数或代理连接状态）",
+        "requestErrorWithCors": "发送请求出现错误（请检查请求参数或是否触发浏览器\"CORS-跨源资源共享\"限制，若触发跨域限制请使用代理或配置接口服务允许跨域访问）"
+      },
+      "notifications": {
+        "saveSuccess": "保存接口成功",
+        "copyUrlSuccess": "复制Url成功",
+        "apiPublishedWarning": "接口已发布，不允许修改"
+      },
+      "hints": {
+        "notes": "注意事项",
+        "parameterSerialization": "参数序列化",
+        "serializationDescription": "AngusTester 序列化规则基于 RFC6570 定义的UR模板的子集。支持OAS3 Schema数据类型包括：string、boolean、integer、number、object、array。",
+        "serializationDescription_pre": "AngusTester 序列化规则基于",
+        "serializationDescription_later": "定义的UR模板的子集。支持OAS3 Schema数据类型包括：string、boolean、integer、number、object、array。"
+    
+      },
+      "menus": {
+        "request": "基本",
+        "response": "响应",
+        "time": "耗时分析",
+        "cookie": "Cookie",
+        "assert": "断言结果",
+        "define": "定义",
+        "generateCode": "代码"
+      },
+      "docInfo": {
+        "pathParams": {
+          "title": "Path参数",
+          "rules": {
+            "primitive": "Primitive id = 5 -> /users/5",
+            "array": "Array id = [3, 4, 5] -> /users/3,4,5",
+            "object": "Object id = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> /users/role=admin,firstName=Alex",
+            "limit": "> 只支持基本类型、基本类型数组、对象类型，其他复杂类型数据模型不解析。"
+          }
+        },
+        "queryFormParams": {
+          "title": "Query 和 Form 参数",
+          "rules": {
+            "primitive": "Primitive id = 5 -> id=5",
+            "array": "Array id = [3, 4, 5] -> id[0]=3&id[1]=4&id[2]=5",
+            "object": "Object id = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> id.role=admin&id.firstName=Alex",
+            "support": "> 支持所有类型，及对象和数组类型嵌套。"
+          }
+        },
+        "headerParams": {
+          "title": "header 参数",
+          "rules": {
+            "primitive": "Primitive X-MyHeader = 5 ->  X-MyHeader: 5",
+            "array": "Array X-MyHeader = [3, 4, 5] -> X-MyHeader: 3,4,5",
+            "object": "Object X-MyHeader = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> X-MyHeader: role=admin,firstName=Alex",
+            "limit": "> 只支持基本类型、基本类型数组、对象类型，其他复杂类型数据模型不解析。"
+          }
+        },
+        "cookieParams": {
+          "title": "Cookie 参数",
+          "rules": {
+            "primitive": "Primitive id = 5 ->  Cookie: id=5",
+            "array": "Array id = [3, 4, 5] -> Cookie: id=3,4,5",
+            "object": "Object id = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> Cookie: id=role,admin,firstName,Alex",
+            "limit": "> 只支持基本类型、基本类型数组、对象类型，其他复杂类型数据模型不解析。"
+          }
+        }
+      },
+      "debugTip": {
+        "componentSync": "组件调试值修改与同步：修改Query、Path、Header和Form类型参数引用组件的调试值会同步修改到组件，同时引用组件的其他接口也会被同步修改；而Raw请求体内容引用组件时修改调试值不会同步到组件，即Raw请求体引用组件调试值修改不会影响其他接口。",
+        "variableSupport": "接口中支持变量的位置：安全方案(Authorization)、Path参数、Query参数、Header参数、请求体Form参数、请求体Raw、断言条件表达式和断言期望值。",
+        "functionSupport": "接口中支持函数的位置：Path参数、Query参数、Header参数、请求体Form参数和请求体Raw。"
+      },
       "collapseButtonGroup": {
         "edit": "编辑",
         "clone": "克隆",
@@ -1214,7 +1321,12 @@
           "activity": "活动",
           "agent": "接口代理",
           "code": "代码",
-          "apiMock": "Mock接口"
+          "apiMock": "Mock接口",
+          "saveUnarchived": "保存到未归档",
+          "save": "归档到服务",
+          "indicator": "接口指标",
+          "test": "测试结果",
+          "variable": "变量"
       },
       "serviceNav": {
         "projectInfo": "服务信息",

@@ -636,7 +636,7 @@ defineExpose({
 
     <div class="flex items-center justify-between mb-1.5">
       <div class="flex">
-        <div class="font-semibold mr-1">变量</div>
+        <div class="font-semibold mr-1">{{ t('server.detail.variableTitle') }}</div>
         <Tooltip :title="t('server.detail.variableTip')">
           <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer" />
         </Tooltip>
@@ -662,7 +662,7 @@ defineExpose({
           <div class="flex items-center justify-between mb-0.5">
             <div class="flex items-center">
               <IconRequired />
-              <span class="mr-1">名称</span>
+              <span class="mr-1">{{ t('server.detail.variableLabel') }}</span>
               <Tooltip :title="t('server.detail.variableNameTip1')">
                 <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer" />
               </Tooltip>
@@ -691,7 +691,7 @@ defineExpose({
         <div class="mb-3.5">
           <div class="flex items-center mb-0.5">
             <IconRequired />
-            <span class="mr-1">值</span>
+            <span class="mr-1">{{ t('server.detail.variableValueLabel') }}</span>
             <Tooltip :title="t('server.detail.variableValueTip1')">
               <Icon icon="icon-tishi1" class="text-text-tip text-3.5 cursor-pointer" />
             </Tooltip>

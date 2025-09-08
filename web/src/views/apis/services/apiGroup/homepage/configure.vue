@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits<{(e: 'openDrawer', key: string): void }>();
 
 const projectType = computed(() => {
-  return '服务';
+  return t('apis.configuration.type_service');
 });
 
 const { t } = useI18n();
@@ -27,7 +27,7 @@ const dataSource = computed(() => [[{
   key: 'syncConfig',
   icon: 'icon-peizhifuwutongbu',
   title: t('apis.configuration.sync'),
-  content: `将外部OpenAPI自动导入到当前${projectType.value}`,
+  content: t('apis.configuration.syncDescription', { type: projectType.value }),
   linkText: t('apis.configuration.action'),
   disabled: !props.projectAuths.includes('MODIFY')
 },
@@ -36,7 +36,7 @@ const dataSource = computed(() => [[{
   key: 'security',
   icon: 'icon-renzhengtou',
   title: t('apis.configuration.security'),
-  content: `定义当前${projectType.value}下所有接口可以使用的安全方案(Authorization)`,
+  content: t('apis.configuration.securityDescription', { type: projectType.value }),
   linkText: t('apis.configuration.action'),
   disabled: !props.projectAuths.includes('MODIFY')
 },
@@ -45,7 +45,7 @@ const dataSource = computed(() => [[{
   key: 'serverConfig',
   icon: 'icon-host',
   title: t('apis.configuration.server'),
-  content: `定义当前${projectType.value}下所有接口可以使用的服务器(Server URL)`,
+  content: t('apis.configuration.serverDescription'),
   linkText: t('apis.configuration.action'),
   disabled: !props.projectAuths.includes('MODIFY')
 }

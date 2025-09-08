@@ -13,6 +13,7 @@ import SwaggerUI from '@xcan-angus/swagger-ui';
 import XML from 'xml';
 import useClipboard from 'vue-clipboard3';
 import { debounce } from 'throttle-debounce';
+import { useI18n } from 'vue-i18n';
 import SelectEnum from '@/components/selectEnum/index.vue';
 
 import { apis, services } from '@/api/tester';
@@ -53,6 +54,8 @@ interface Props {
   appInfo: {[key: string]: string};
   userInfo: {[key: string]: string};
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   id: undefined,
@@ -118,7 +121,7 @@ const myNavs = computed(() => {
         ...i,
         key: i.value,
         disabled: !auths.value?.includes(i.auth as string),
-        name: '保存'
+        name: t('actions.save')
       };
     }
     return {
@@ -697,7 +700,7 @@ const sendRequest = async () => {
   // 校验 url
   if (!currentServer.value.url && !apiUri.value) {
     loading.value = false;
-    notification.error({ message: '出错了！', description: '接口地址无效，请重新填写！' });
+    notification.error({ message: t('service.apis.errors.invalidUrl'), description: t('service.apis.errors.invalidUrlDescription') });
     return;
   }
   // 准备 body 数据
@@ -771,26 +774,26 @@ const sendRequest = async () => {
     const validatedQuery = validateQueryParameter(funcValues[0]);
     if (!validatedQuery) {
       requestParamsRef.value.validate();
-      notification.error('参数校验不通过');
+      notification.error(t('service.apis.errors.parameterValidationFailed'));
     }
     const validatedHeader = validateQueryParameter(funcValues[2].filter(i => i.in === 'header'));
     if (!validatedHeader) {
       requestHeaderRef.value.validate();
-      notification.error('请求头参数校验不通过');
+      notification.error(t('service.apis.errors.headerValidationFailed'));
     }
     const validatedCookie = validateQueryParameter(funcValues[2].filter(i => i.in === 'cookie'));
     if (!validatedCookie) {
       requestCookieRef.value.validate();
-      notification.error('Coookie参数校验不通过');
+      notification.error(t('service.apis.errors.cookieValidationFailed'));
     }
     const validatedFom = validateBodyForm(funcValues[1].filter(item => item.format !== 'binary' && item.name));
     if (!validatedFom) {
       activeKey.value = 'request-body';
       requestBodyRef.value.validate();
-      notification.error('请求体数据校验不通过');
+      notification.error(t('service.apis.errors.bodyValidationFailed'));
     }
     if (!validateAssertData) {
-      notification.error('断言数据校验不通过');
+      notification.error(t('service.apis.errors.assertionValidationFailed'));
     }
     if (!validatedQuery || !validatedFom || !validatedCookie || !validatedHeader || !validateAssertData) {
       loading.value = false;
@@ -807,7 +810,7 @@ const sendRequest = async () => {
     requestBodyRef.value.validate(false);
     if (!validateAssertData) {
       loading.value = false;
-      notification.error('断言数据校验不通过');
+      notification.error(t('service.apis.errors.assertionValidationFailed'));
       return;
     }
   }
@@ -979,7 +982,7 @@ const sendRequest = async () => {
     openToolBar();
   } else if (ws.readyState !== 1) {
     loading.value = false;
-    notification.error('代理未链接， 请检查代理配置');
+    notification.error(t('service.apis.errors.proxyNotConnected'));
   } else if (ws) {
     const { currentServer, requestBody, ...params } = await getParameter(true);
     if (!params?.authentication.type && !params?.authentication.$ref) {
@@ -1229,14 +1232,14 @@ const toolbarMenus = computed(() => {
   return menus.filter(i => i.value !== 'time');
 });
 
-const errorTitle = ref('发送请求出现错误（请检查请求参数或代理连接状态）');
+const errorTitle = ref(t('service.apis.errors.requestErrorWithProxy'));
 
 const setErrTitle = () => {
   if (ws) {
-    errorTitle.value = '发送请求出现错误（请检查请求参数或代理连接状态）';
+    errorTitle.value = t('service.apis.errors.requestErrorWithProxy');
     return;
   }
-  errorTitle.value = '发送请求出现错误（请检查请求参数或是否触发浏览器“CORS-跨源资源共享”限制，若触发跨域限制请使用代理或配置接口服务允许跨域访问）';
+  errorTitle.value = t('service.apis.errors.requestErrorWithCors');
 };
 
 const getHeaderParams = (data: string[], name: string): string => {
@@ -1358,7 +1361,7 @@ const setAssertResult = async (responseData) => {
       failureMessage: '', // 提取失败的原因
       value: '', // 提取变量的值
       ignored: false, // 是否忽略该条断言
-      message: '表达式为空，执行该条断言'
+      message: t('service.case.debugModal.conditionMessageEmpty')
     };
 
     let ignored = true;
@@ -1375,7 +1378,7 @@ const setAssertResult = async (responseData) => {
           failureMessage: '', // 提取失败的原因
           value: '', // 提取变量的值
           ignored: false, // 是否忽略该条断言
-          message: '表达式为空，执行该条断言'
+          message: t('service.case.debugModal.conditionMessageEmpty')
         };
       } else {
         const matchsMap = assertVariableExtra.value?.matchs || {};
@@ -1385,11 +1388,11 @@ const setAssertResult = async (responseData) => {
           _condition = {
             failure: false, // 执行结果
             name: '', // 提取的变量名
-            conditionMessage: '表达式格式错误，仅支持运算符["=", "!=", ">=", "<=", ">", "<"]', // 断言表达式错误的原因
-            failureMessage: '表达式格式错误，无法提取变量名', // 提取失败的原因
+            conditionMessage: t('service.case.debugModal.conditionMsgFormat'), // 断言表达式错误的原因
+            failureMessage: t('service.case.debugModal.conditionMsgFormatFail'), // 提取失败的原因
             value: '', // 提取变量的值
             ignored: true, // 是否忽略该条断言
-            message: '表达式格式错误，忽略该条断言'
+            message: t('service.case.debugModal.conditionMsgFormatErr')
           };
         } else {
           const [leftOperand] = matchs;
@@ -1400,7 +1403,7 @@ const setAssertResult = async (responseData) => {
             value = varValue.value;
             failureMessage = varValue.failureMessage;
           } else {
-            failureMessage = '没有定义该变量，该变量的值按变量名处理';
+            failureMessage = t('service.case.debugModal.conditionMsgDefineFail');
             value = leftOperand;
           }
 
@@ -1412,7 +1415,7 @@ const setAssertResult = async (responseData) => {
               failureMessage, // 提取失败的原因
               value, // 提取变量的值
               ignored: true, // 是否忽略该条断言
-              message: '运算结果不成立，忽略该条断言'
+              message: t('service.case.debugModal.conditionMsgIgnore')
             };
           } else {
             _condition = {
@@ -1422,7 +1425,7 @@ const setAssertResult = async (responseData) => {
               failureMessage, // 提取失败的原因
               value, // 提取变量的值
               ignored: false, // 是否忽略该条断言
-              message: '运算结果成立，执行该条断言'
+              message: t('service.case.debugModal.conditionMsgExec')
             };
           }
         }
@@ -1532,7 +1535,7 @@ const archivedApi = () => {
 // 保存已归档 api
 const autoSave = async () => {
   if (state.publishFlag) {
-    notification.warning('接口已发布，不允许修改');
+    notification.warning(t('service.apis.notifications.apiPublishedWarning'));
   }
   if (!validateParam()) {
     return;
@@ -1559,7 +1562,7 @@ const autoSave = async () => {
     if (error) {
       return;
     }
-    notification.success('保存接口成功');
+    notification.success(t('service.apis.notifications.saveSuccess'));
   }
 };
 
@@ -1596,7 +1599,7 @@ const copyUrl = async () => {
     apiHref = serverUrl + apiPathQuery;
   }
   await toClipboard(apiHref);
-  notification.success('复制Url成功');
+  notification.success(t('service.apis.notifications.copyUrlSuccess'));
 };
 
 watch(() => props.id, () => {
@@ -1678,11 +1681,11 @@ provide('selectHandle', closeDrawer);
             v-model:value="activeTabKey"
             buttonStyle="solid"
             size="small">
-            <RadioButton value="debug">调试</RadioButton>
-            <RadioButton value="case">用例</RadioButton>
-            <RadioButton value="test">测试</RadioButton>
-            <RadioButton value="mock">Mock</RadioButton>
-            <RadioButton value="doc">文档</RadioButton>
+            <RadioButton value="debug">{{ t('service.apis.tabs.debug') }}</RadioButton>
+            <RadioButton value="case">{{ t('service.apis.tabs.case') }}</RadioButton>
+            <RadioButton value="test">{{ t('service.apis.tabs.test') }}</RadioButton>
+            <RadioButton value="mock">{{ t('service.apis.tabs.mock') }}</RadioButton>
+            <RadioButton value="doc">{{ t('service.apis.tabs.doc') }}</RadioButton>
           </RadioGroup>
 
           <div class="inline-flex items-center space-x-3">
@@ -1692,7 +1695,7 @@ provide('selectHandle', closeDrawer);
               class="hover:text-status-orange  text-status-orange !bg-board-orange"
               @click="handleShare">
               <Icon icon="icon-fenxiang" class="mr-2" />
-              分享
+              {{ t('service.apis.actions.share') }}
             </Button>
             <SelectEnum
               v-model:value="apisStatus"
@@ -1735,7 +1738,7 @@ provide('selectHandle', closeDrawer);
               class="inner-container mt-2.5"
               size="small"
               centered>
-              <TabPane key="parameters" :tab="`请求参数(${parametersNum})`">
+              <TabPane key="parameters" :tab="`${t('service.apis.requestTabs.parameters')}(${parametersNum})`">
                 <div class="flex">
                   <RequestParams
                     ref="requestParamsRef"
@@ -1752,7 +1755,7 @@ provide('selectHandle', closeDrawer);
               </TabPane>
               <TabPane
                 key="header"
-                :tab="`请求头(${headerCount || 0})`"
+                :tab="`${t('service.apis.requestTabs.header')}(${headerCount || 0})`"
                 :forceRender="true">
                 <div class="flex">
                   <RequestHeader
@@ -1771,7 +1774,7 @@ provide('selectHandle', closeDrawer);
               </TabPane>
               <TabPane
                 key="cookie"
-                :tab="`Cookie(${cookieCount || 0})`"
+                :tab="`${t('service.apis.requestTabs.cookie')}(${cookieCount || 0})`"
                 :forceRender="true">
                 <div class="flex">
                   <RequestCookie
@@ -1796,7 +1799,7 @@ provide('selectHandle', closeDrawer);
               <TabPane key="request-body" :forceRender="true">
                 <template #tab>
                   <div :class="{ 'has-content': hasBodyContent }"></div>
-                  <span>请求体</span>
+                  <span>{{ t('service.apis.requestTabs.requestBody') }}</span>
                 </template>
                 <RequestBody
                   ref="requestBodyRef"
@@ -1808,7 +1811,7 @@ provide('selectHandle', closeDrawer);
               <TabPane
                 v-if="!!props.id"
                 key="parametric"
-                tab="参数化">
+                :tab="t('service.apis.requestTabs.parametric')">
                 <APICaseParametric
                   :datasetActionOnEOF="datasetActionOnEOF"
                   :datasetSharingMode="datasetSharingMode"
@@ -1819,7 +1822,7 @@ provide('selectHandle', closeDrawer);
               </TabPane>
               <TabPane
                 key="assert"
-                :tab="`断言(${assertNum})`"
+                :tab="`${t('service.apis.requestTabs.assert')}(${assertNum})`"
                 :forceRender="true">
                 <AssertForm
                   :id="props.id"
@@ -1828,7 +1831,7 @@ provide('selectHandle', closeDrawer);
                   class="px-5"
                   :value="state.assertions" />
               </TabPane>
-              <TabPane key="setting" tab="设置">
+              <TabPane key="setting" :tab="t('service.apis.requestTabs.setting')">
                 <ApiSetting
                   class="px-5"
                   :value="setting"
@@ -1840,7 +1843,7 @@ provide('selectHandle', closeDrawer);
                   <Icon icon="icon-jieshaoshuoming" class="cursor-pointer mr-2 text-4 text-theme-text-hover" />
                   <template #content>
                     <div class="w-100 text-3">
-                      <Hints text="注意事项" class="font-semibold !text-text-title" />
+                      <Hints :text="t('service.apis.hints.notes')" class="font-semibold !text-text-title" />
                       <ul class="mt-2 pl-4 list-disc">
                         <li
                           v-for="item in debugTip"
@@ -1856,14 +1859,14 @@ provide('selectHandle', closeDrawer);
                   <Icon icon="icon-tiaoshijiaoben" class="cursor-pointer mr-2 text-3.5 text-theme-text-hover" />
                   <template #content>
                     <div class="w-150 text-3">
-                      <Hints text="参数序列化" class="font-semibold !text-text-title" />
+                      <Hints :text="t('service.apis.hints.parameterSerialization')" class="font-semibold !text-text-title" />
                       <div class="mt-2">
-                        AngusTester 序列化规则基于
+                        {{ t('service.apis.hints.serializationDescription_pre') }}
                         <a
                           class="text-theme-special"
                           href="https://datatracker.ietf.org/doc/html/rfc6570"
                           target="_blank">RFC6570</a>
-                        定义的UR模板的子集。支持OAS3 Schema数据类型包括：string、boolean、integer、number、object、array。
+                        {{ t('service.apis.hints.serializationDescription_later') }}
                       </div>
                       <ul class="pl-4 list-disc">
                         <li
@@ -1956,18 +1959,18 @@ provide('selectHandle', closeDrawer);
                 <div
                   class="flex items-center flex-nowrap whitespace-nowrap mr-7.5 text-3 leading-3 text-text-sub-content">
                   <div class="flex items-center flex-nowrap whitespace-nowrap mr-7.5">
-                    <span class="mr-1">状态码:</span>
+                    <span class="mr-1">{{ t('service.apis.toolbar.statusCode') }}:</span>
                     <span :class="getStatusColor(responseState?.status)">{{ getStatusText(responseState?.status)
                     }}</span>
                   </div>
                   <div class="flex items-center flex-nowrap whitespace-nowrap mr-7.5">
-                    <span class="mr-1">耗时:</span>
+                    <span class="mr-1">{{ t('service.apis.toolbar.duration') }}:</span>
                     <span class>{{ responseState?.performance?.duration &&
                       (responseState?.performance?.duration.toFixed(0)
                         + 'ms') }}</span>
                   </div>
                   <div class="flex items-center flex-nowrap whitespace-nowrap">
-                    <span class="mr-1">大小:</span>
+                    <span class="mr-1">{{ t('service.apis.toolbar.size') }}:</span>
                     <span class>{{ isNaN(Number(responseState?.size)) ? responseState?.size :
                       formatBytes(Number(responseState?.size)) }}</span>
                   </div>

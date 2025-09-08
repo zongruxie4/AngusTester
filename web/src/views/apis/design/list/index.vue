@@ -73,14 +73,14 @@ const searchChange = (data) => {
 
 const toDelete = async (data: DesignInfo) => {
   modal.confirm({
-    content: `确定删除设计【${data.name}】吗？`,
+    content: t('design.home.deleteFirm.title', { name: data.name }),
     async onOk () {
       const id = data.id;
       const [error] = await apis.deleteDesign([id]);
       if (error) {
         return;
       }
-      notification.success('删除成功');
+      notification.success(t('tips.deleteSuccess'));
       if (pagination.value.current > 1 && dataList.value.length === 1) {
         pagination.value.current -= 1;
       }
@@ -177,7 +177,7 @@ const cloneDesign = async (record: {id: string; name: string; url?: string}) => 
   if (error) {
     return;
   }
-  notification.success('克隆成功');
+  notification.success(t('tips.cloneSuccess'));
   loadData();
 };
 
@@ -186,7 +186,7 @@ const releaseDesign = async (record: {id: string; name: string; url?: string}) =
   if (error) {
     return;
   }
-  notification.success('发布成功');
+  notification.success(t('design.detail.publishSuccess'));
   loadData();
 };
 
@@ -195,7 +195,7 @@ const generateService = async (record: {id: string; name: string; url?: string})
   if (error) {
     return;
   }
-  notification.success('已生成服务');
+  notification.success(t('design.home.generated'));
   loadData();
 };
 
@@ -313,7 +313,7 @@ const moreButton = (record) => {
     },
     {
       key: 'generate',
-      name: '生成服务',
+      name: t('design.home.generateService_action'),
       icon: 'icon-fuwu',
       disabled: !!record.designSourceId
     },
