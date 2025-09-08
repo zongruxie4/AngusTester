@@ -99,11 +99,11 @@
       "refresh": "Refresh"
     },
     "info": {
-      "executionDetails": "Execution Details",
-      "executionConfig": "Execution Configuration",
+      "executionDetails": "Detail",
+      "executionConfig": "Configuration",
       "serverConfig": "Test Server",
-      "executionScript": "Execution Script",
-      "log": "Execution Log",
+      "executionScript": "Script",
+      "log": "Log",
       "testResult": "Test Result",
       "start": "Start",
       "stop": "Stop",

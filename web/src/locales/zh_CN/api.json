@@ -1147,7 +1147,7 @@
       "execCaseAction": "执行测试",
       "nameLabel": "名称",
       "statusLabel": "状态",
-      "status_unTested": "未测试",
+      "statusNotTested": "未测试",
       "enabled": "已启用",
       "disabled": "未启用",
       "columns": {

@@ -1101,7 +1101,7 @@
       "execCaseAction": "Execute Test",
       "nameLabel": "Name",
       "statusLabel": "Status",
-      "status_unTested": "UnTested",
+      "statusNotTested": "Not Tested",
       "enabled": "Enabled",
       "disabled": "Disabled",
       "columns": {
@@ -1775,7 +1775,7 @@
         "nonStandard": "Non-Standard"
       },
       "testStatus": {
-        "untested": "Untested",
+        "untested": "Not Tested",
         "passed": "Passed",
         "notPassed": "Not Passed"
       },
@@ -2547,7 +2547,7 @@
         "testApiStats": "Test API Statistics",
         "testTypeStats": "API Test Type Statistics",
         "tested": "Tested",
-        "unTested": "Untested",
+        "unTested": "Not Tested",
         "testPassed": "Test Passed",
         "unPassed": "Failed",
         "totalTestNum": "Total Tests",
@@ -2564,7 +2564,7 @@
         "passed": "Passed",
         "passed_": "Passed",
         "unpassed": "Failed",
-        "unTested": "Untested",
+        "unTested": "Not Tested",
         "notEnabled": "Not Enabled",
         "notTested": "Not Tested",
         "partiallyPassed": "Partially Passed"

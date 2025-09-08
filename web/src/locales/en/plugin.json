@@ -91,7 +91,7 @@
         "iteration": "Iterations",
         "request": "Requests",
         "responseTime": "Response Time",
-        "assertion": "Assertion"
+        "assertion": "Assertions"
       },
       "collapse": {
         "iteration": "Iteration {iteration}"
@@ -106,7 +106,7 @@
       "statusTag": {
         "success": "Passed",
         "fail": "Failed",
-        "block": "Not Executed",
+        "block": "Not Tested",
         "ignore": "Disabled"
       }
     },
@@ -189,9 +189,9 @@
           "activeThreadCount": "Active Thread Count"
         },
         "responseTimeOptions": {
-          "average": "Average",
-          "minimum": "Minimum",
-          "maximum": "Maximum",
+          "average": "Avg",
+          "minimum": "Min",
+          "maximum": "Max",
           "p50": "P50",
           "p75": "P75",
           "p90": "P90",
@@ -1182,7 +1182,8 @@
         "duration": "Duration",
         "iteration": "Iterations",
         "request": "Requests",
-        "responseTime": "Response Time"
+        "responseTime": "Response Time",
+        "assertion": "Assertions"
       },
       "collapse": {
         "iteration": "Iteration {iteration}"
@@ -1190,13 +1191,13 @@
       "texts": {
         "success": "Passed",
         "ignore": "Disabled",
-        "block": "Not Executed",
+        "block": "Not Tested",
         "total": "Total"
       },
       "timeTexts": {
-        "minimum": "Minimum",
-        "average": "Average",
-        "maximum": "Maximum"
+        "minimum": "Min",
+        "average": "Avg",
+        "maximum": "Max"
       },
       "ftp": {
         "upload": "Upload",
@@ -1208,7 +1209,7 @@
       "statusTag": {
         "success": "Passed",
         "fail": "Failed",
-        "block": "Not Executed",
+        "block": "Not Tested",
         "ignore": "Disabled"
       },
       "http": {

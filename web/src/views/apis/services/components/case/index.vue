@@ -254,7 +254,7 @@ watch(() => props.id, newValue => {
           <div class="flex items-center justify-between">
             <div class="inline-flex items-center truncate flex-1">
               <span class="text-gray-text">{{ t('service.case.statusLabel') }} <Colon /></span>
-              <div class="pl-1" :class="getStatusColor(item.execResult?.value)">{{ item.execResult?.message || t('service.case.status_unTested') }}</div>
+              <div class="pl-1" :class="getStatusColor(item.execResult?.value)">{{ item.execResult?.message || t('service.case.statusNotTested') }}</div>
               <div class="pl-1">{{ item.execFailureMessage }}</div>
             </div>
             <div class="px-1">

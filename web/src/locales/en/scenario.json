@@ -187,8 +187,8 @@
       }
     },
     "chart": {
-      "successCount": "Success Count",
-      "failureCount": "Failure Count"
+      "successCount": "Success",
+      "failureCount": "Failure"
     }
   },
   "scenario": {
@@ -224,7 +224,7 @@
       },
       "actions": {
         "addHttpScenario": "Add Http Scenario",
-        "scenarioAuth": "Scenario Auth",
+        "scenarioAuth": "Permission",
         "sort": "Sort",
         "group": "Group",
         "refresh": "Refresh",
@@ -232,7 +232,7 @@
         "cancelFollow": "Cancel Follow",
         "favourite": "Favourite",
         "cancelFavourite": "Cancel Favourite",
-        "auth": "Auth",
+        "auth": "Permission",
         "export": "Export Script",
         "delete": "Delete",
         "createTestTask": "Create Test Task",
@@ -344,7 +344,7 @@
         "edit": "Edit",
         "delete": "Delete",
         "export": "Export Script",
-        "auth": "Auth",
+        "auth": "Permission",
         "follow": "Follow",
         "cancelFollow": "Cancel Follow",
         "favourite": "Favourite",
@@ -355,9 +355,9 @@
         "perf": "Performance Test",
         "stability": "Stability Test",
         "custom": "Custom Test",
-        "task": "Test Task",
-        "activity": "Activity Record",
-        "comment": "Comment"
+        "task": "Test Tasks",
+        "activity": "Activity Records",
+        "comment": "Comments"
       },
       "tips": {
         "authOn": "After enabling \"Permission Control\", you need to manually authorize service permissions to have corresponding operation permissions for scenarios. \"Permission Control\" is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically authorized.",
@@ -381,20 +381,20 @@
       },
       "testSummary": {
         "successRate": "Success Rate",
-        "successCount": "Success Count",
-        "failCount": "Fail Count",
+        "successCount": "Success",
+        "failCount": "Failure",
         "table": {
           "labels": {
             "total": "Total",
             "success": "Success",
-            "fail": "Fail",
+            "fail": "Failed",
             "disabled": "Disabled"
           }
         },
         "sections": {
           "allTests": "All Tests",
           "functionality": "Functionality",
-          "testInterfaces": "Test Interfaces",
+          "testCases": "Test Cases",
           "performance": "Performance",
           "stability": "Stability",
           "custom": "Custom",
@@ -407,8 +407,8 @@
           "notPassed": "Not Passed"
         },
         "metrics": {
-          "tps": "Transactions Per Second (TPS)",
-          "responseTime": "Response Time (P90)",
+          "tps": "TPS",
+          "responseTime": "RT (P90)",
           "errorRate": "Error Rate"
         }
       }

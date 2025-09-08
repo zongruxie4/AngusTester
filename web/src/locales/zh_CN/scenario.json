@@ -394,7 +394,7 @@
         "sections": {
           "allTests": "全部测试",
           "functionality": "功能",
-          "testInterfaces": "测试接口",
+          "testCases": "测试用例",
           "performance": "性能",
           "stability": "稳定性",
           "custom": "自定义",
