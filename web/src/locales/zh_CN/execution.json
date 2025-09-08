@@ -324,6 +324,13 @@
         "activeThreadCount": "活跃线程数",
         "maxThreadCount": "最大线程数"
       }
+    },
+    "letterMap": {
+      "ms": "毫秒",
+      "s": "秒",
+      "min": "分钟",
+      "h": "小时",
+      "d": "天"
     }
   }
 } 
