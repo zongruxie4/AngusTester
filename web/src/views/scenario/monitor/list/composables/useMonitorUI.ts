@@ -23,11 +23,20 @@ export function useMonitorUI (
    * @param event - Scroll event
    */
   const handleScrollList = throttle(500, (event: Event) => {
+    // Safety checks for refs
+    if (!dataList || !dataList.value || !total || !loading) {
+      return;
+    }
+
     if (dataList.value.length === total.value || loading.value) {
       return;
     }
 
     const target = event.currentTarget as HTMLElement;
+    if (!target) {
+      return;
+    }
+
     const clientHeight = target.clientHeight;
     const scrollHeight = target.scrollHeight;
     const scrollTop = target.scrollTop;
@@ -44,7 +53,8 @@ export function useMonitorUI (
    * Adjusts page size based on container height
    */
   const handleWindowResize = debounce(300, () => {
-    if (!onShow.value) {
+    // Safety check for onShow ref
+    if (!onShow || !onShow.value) {
       return;
     }
 
@@ -55,7 +65,8 @@ export function useMonitorUI (
 
     wrapperHeight = height;
 
-    if (!dataList.value.length) {
+    // Safety check for dataList
+    if (!dataList || !dataList.value || !dataList.value.length) {
       return;
     }
 

@@ -88,7 +88,6 @@ const source = computed(() => {
 <template>
   <Spin :spinning="loading" class="h-full text-3 leading-5 px-5 py-5 overflow-auto">
     <div class="max-w-242.5">
-      {{ refreshList }}
       <AsyncComponent :visible="source === 'STATIC'">
         <StaticVariable
           :projectId="props.projectId"
