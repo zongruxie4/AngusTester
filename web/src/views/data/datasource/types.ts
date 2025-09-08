@@ -5,14 +5,14 @@ import { DatabaseType } from '@xcan-angus/infra';
  * <p>Contains all form fields for data source configuration</p>
  */
 export interface DataSourceFormState {
+  id?: string;
   name: string;
   database: DatabaseType;
-  driverClassName: string;
+  driverClassName?: string;
   jdbcUrl: string;
-  username: string;
-  password: string;
+  username?: string;
+  password?: string;
   projectId?: string;
-  id?: string;
 }
 
 /**

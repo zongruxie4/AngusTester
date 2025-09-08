@@ -41,7 +41,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative leading-5 text-3  ml-10">
+  <div class="relative leading-5 text-3  mr-10">
     <!-- Chart container -->
     <div
       :id="domId"

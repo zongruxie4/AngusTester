@@ -1,5 +1,5 @@
-import {EnumMessage, ScriptType, StartMode} from '@xcan-angus/infra';
-import {ExecStatus} from '@/enums/enums';
+import { EnumMessage, ScriptType, ScriptSource, StartMode } from '@xcan-angus/infra';
+import { ExecStatus } from '@/enums/enums';
 
 export type MenuItem = {
   key: 'none' | 'createdBy' | 'lastModifiedBy' | 'execBy' | 'lastDay' | 'lastThreeDays' | 'lastWeek';
@@ -25,6 +25,7 @@ export type ExecutionInfo = {
   scriptType: EnumMessage<ScriptType>,
   scriptId: string;
   scriptName: string;
+  scriptSource: EnumMessage<ScriptSource>
   status: EnumMessage<ExecStatus>,
   startMode: EnumMessage<StartMode>,
   iterations: string;
@@ -73,6 +74,8 @@ export type ExecutionInfo = {
   sampleSummaryInfo:Record<string, any>;
   hasOperationPermission: boolean;
   lastSchedulingResult?:any[];
+  schedulingNum?: string;
+  lastSchedulingDate?: string;
   actionPermission: string[];
 
   appNodes: NodeItem[];
@@ -90,21 +93,6 @@ export type ExecutionInfo = {
   editReportInterval: boolean;
   editIterations: boolean;
   errMessage?: Exception;
-}
-
-export interface PieSetting {
-  key: string;
-  value: string;
-  type: { message: string; value: string; }[]
-}
-
-export interface PieData {
-  key: string;
-  title: string;
-  total: number;
-  color: string[];
-  legend: { value: string; message: string }[];
-  data: { name: string; value: number; codes?: number }[];
 }
 
 // Chart data interfaces

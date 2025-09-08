@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onBeforeUnmount, ref, watch } from 'vue';
 import dayjs from 'dayjs';
+import { ScriptType } from '@xcan-angus/infra';
 
 import { ListData, useExecCount } from '../composables/useExecCount';
 import { allCvsKeys } from '../ChartConfig';
@@ -8,13 +9,7 @@ import { allCvsKeys } from '../ChartConfig';
 import { exec } from 'src/api/ctrl';
 import { exec as testerExec } from '@/api/tester';
 import { Exception } from '@/views/execution/types';
-
-const PerformanceInfo = defineAsyncComponent(() =>
-  props.detail?.scriptType?.value === 'MOCK_DATA'
-    ? import('@/views/execution/detail/performance/mock/index.vue')
-    : props.detail?.plugin === 'Http'
-      ? import('./Http.vue')
-      : import('./Jdbc.vue'));
+import { ExecStatus } from '@/enums/enums';
 
 interface Props {
   detail?:Record<string, any>;
@@ -26,12 +21,29 @@ const props = withDefaults(defineProps<Props>(), {
   exception: undefined
 });
 
+/**
+ * Select performance detail component by plugin type or script type.
+ * <p>
+ * - MOCK_DATA -> mock performance detail
+ * - Http -> HTTP performance detail
+ * - Otherwise -> JDBC performance detail
+ */
+const PerformanceInfo = (defineAsyncComponent(() =>
+  props.detail?.scriptType?.value === ScriptType.MOCK_DATA
+    ? import('@/views/execution/detail/performance/mock/index.vue')
+    : props.detail?.plugin === 'Http'
+      ? import('./Http.vue')
+      : import('./Jdbc.vue'))) as any;
+
 const emit = defineEmits<{(e: 'loaded', data: Record<string, any>): void;(e: 'update:loading', value:boolean): void;}>();
 
 const httpExecDetailRef = ref();
 
 let timer:NodeJS.Timeout | null = null;
 
+/**
+ * Compute polling delay (ms) based on `reportInterval` with a minimum of 3 seconds.
+ */
 const delayInSeconds = computed(() => {
   let seconds = 3;
   if (!props.detail) {
@@ -44,6 +56,9 @@ const delayInSeconds = computed(() => {
   return seconds * 1000;
 });
 
+/**
+ * Whether a future start time is configured. If true, we should not poll yet.
+ */
 const hasStartDate = computed(() => {
   if (!props.detail) {
     return false;
@@ -64,6 +79,9 @@ const hasStartDate = computed(() => {
 });
 
 const countTabKey = ref('aggregation');
+/**
+ * Handle switching of metric tabs and lazy-load corresponding data when needed.
+ */
 const setCountTabKey = async (value:string) => {
   if (value === 'error') {
     isLoaded.value = false;
@@ -81,16 +99,22 @@ const setCountTabKey = async (value:string) => {
   countTabKey.value = value;
 };
 
-let firstOpenTimer = false;
+/**
+ * Whether the first data pull has completed at least once.
+ */
+let hasFetchedOnce = false;
+/**
+ * Schedule next data update with the computed delay, or stop when execution finished.
+ */
 const updateData = () => {
   if (timer) {
     clearTimeout(timer);
   }
 
   timer = setTimeout(() => {
-    if (props.detail && !['CREATED', 'PENDING', 'RUNNING'].includes(props.detail.status?.value) && !hasStartDate.value) {
+    if (props.detail && ![ExecStatus.CREATED, ExecStatus.PENDING, ExecStatus.RUNNING].includes(props.detail.status?.value) && !hasStartDate.value) {
       if (timer) {
-        if (firstOpenTimer) {
+        if (hasFetchedOnce) {
           computedPageLoadList(perfListParams.value, perfListTotal.value, perfLoadList);
         }
         clearTimeout(timer);
@@ -98,19 +122,22 @@ const updateData = () => {
       return;
     }
 
-    firstOpenTimer = true;
+    hasFetchedOnce = true;
     loadInfo();
   }, delayInSeconds.value);
 };
 
-// 第一次加载是否完成
+// Whether the first full load has completed
 const isLoaded = ref(false);
-// 是否第一次请求List
+// Whether it's the first fetch for the list
 let isFirstLoadList = true;
-// 是否第一次更新List
+// Whether it's the first incremental update for the list
 let isFirstUpdatePerfList = true;
-// 是否第一次更新错误List
+// Whether it's the first incremental update for the error list
 let isFirstUpdatePerfErrList = true;
+/**
+ * Load execution info and refresh related metrics depending on current tab.
+ */
 const loadInfo = async () => {
   const [error, { data }] = await exec.getInfo(props.detail?.id);
   if (error) {
@@ -125,8 +152,8 @@ const loadInfo = async () => {
     if (['aggregation', 'throughput', 'vu', 'responseTime', 'analyze', 'error'].includes(countTabKey.value)) {
       if (isFirstUpdatePerfList) {
         const _filters = [{ key: 'timestamp', op: 'GREATER_THAN_EQUAL', value: dayjs(perfListLastTimestamp.value).format('YYYY-MM-DD HH:mm:ss') }];
-        await perfLoadList(1, firstOpenTimer ? _filters : []);
-        computedPageLoadList(perfListParams.value, perfListTotal.value, perfLoadList);
+        await perfLoadList(1, hasFetchedOnce ? _filters : []);
+        await computedPageLoadList(perfListParams.value, perfListTotal.value, perfLoadList);
         isFirstUpdatePerfList = false;
       } else {
         await perfLoadList(1);
@@ -136,7 +163,7 @@ const loadInfo = async () => {
         await loadErrorCount();
         if (isFirstUpdatePerfErrList) {
           await loadSampleErrorContent();
-          computedPageLoadList(errParams.value, errTotal.value, loadSampleErrorContent);
+          await computedPageLoadList(errParams.value, errTotal.value, loadSampleErrorContent);
           isFirstUpdatePerfErrList = false;
         } else {
           await loadSampleErrorContent(1);
@@ -145,7 +172,7 @@ const loadInfo = async () => {
     }
 
     if (countTabKey.value === 'httpCode' && props.detail?.plugin === 'Http') {
-      loadStatusCodeData();
+      await loadStatusCodeData();
     }
   } else {
     emit('update:loading', false);
@@ -158,7 +185,7 @@ const perfListParams = ref<{pageNo: number, pageSize: number, filters:{key:'time
 const perfListTotal = ref(0);
 const perfListLastTimestamp = ref('');
 
-// 接口维度展示对应指标
+// API dimension: metrics per API name
 const apiDimensionObj = ref<{[key:string]:{
   duration: number[],
   errors: number[],
@@ -239,7 +266,7 @@ const apiDimensionObj = ref<{[key:string]:{
   }
 });
 
-// 指标维度对应接口
+// Index dimension: API names per metric
 const indexDimensionObj = ref<{
   duration: {[key:string]:number[] },
   errors: {[key:string]:number[] },
@@ -349,7 +376,7 @@ const pipelineKeys = computed(() => {
   if (!keys.length) {
     return [];
   }
-  const _pipelineKeys = [];
+  const _pipelineKeys: string[] = [];
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i];
     if (!_pipelineKeys.includes(key)) {
@@ -369,7 +396,10 @@ const pipelineKeys = computed(() => {
   return _pipelineKeys;
 });
 
-const perfLoadList = async (_pageNo?:number, filters?:{ key: string; op: string; value: string; }[]) => {
+/**
+ * Fetch paginated performance summary list.
+ */
+const perfLoadList = async (_pageNo?:number, filters?:{ key: 'timestamp'; op: 'GREATER_THAN_EQUAL'; value: string; }[]) => {
   if (_pageNo) {
     perfListParams.value.pageNo = _pageNo;
   }
@@ -393,6 +423,13 @@ const perfLoadList = async (_pageNo?:number, filters?:{ key: string; op: string;
   saveData(data.list);
 };
 
+/**
+ * Normalize and push incoming list data into chart-ready structures.
+ * <p>
+ * - De-duplicate last timestamp when new batch overlaps
+ * - Maintain both API-dimension and index-dimension structures
+ * - Convert BRPS/BWPS units from bytes to KB/MB dynamically
+ */
 const saveData = (_list:ListData[]) => {
   if (!_list?.length) {
     return;
@@ -401,7 +438,7 @@ const saveData = (_list:ListData[]) => {
   let list = _list;
   let lastTimestamp = '';
 
-  if (perfListData.value.length && firstOpenTimer) {
+  if (perfListData.value.length && hasFetchedOnce) {
     lastTimestamp = perfListData.value[perfListData.value.length - 1].timestamp;
     list = _list.filter(item => dayjs(item.timestamp).startOf('millisecond').isAfter(dayjs(lastTimestamp).startOf('millisecond')) || dayjs(item.timestamp).startOf('millisecond').isSame(dayjs(lastTimestamp).startOf('millisecond')));
     if (perfListData.value[perfListData.value.length - 1]?.timestamp === list[0]?.timestamp) {
@@ -460,10 +497,10 @@ const saveData = (_list:ListData[]) => {
   perfListData.value.push(...list);
   perfListLastTimestamp.value = perfListData.value[perfListData.value.length - 1].timestamp;
 
-  newList.value = convertCvsValue(list, allCvsKeys, pipelineKeys.value);
+  newList.value = convertCvsValue(list, allCvsKeys, pipelineKeys.value) as unknown as ListData[];
 
   allList.value.push(...newList.value);
-  const othersValue = computedOhtersValue();
+  const othersValue = computedOthersValue();
   infoMaxQps.value = othersValue.maxOps;
   infoMaxTps.value = othersValue.maxTps;
   const times:string[] = [];
@@ -708,7 +745,7 @@ const saveData = (_list:ListData[]) => {
       apiDimensionObj.value[name].operations.push(+value.operations || 0);
       apiDimensionObj.value[name].transactions.push(+value.transactions || 0);
       apiDimensionObj.value[name].readBytes.push(+value.readBytes || 0);
-      apiDimensionObj.value[name].writeBytes.push(+value.tranMewriteBytesan || 0);
+      apiDimensionObj.value[name].writeBytes.push(+value.writeBytes || 0);
       apiDimensionObj.value[name].ops.push(+value.ops || 0);
       apiDimensionObj.value[name].minOps.push(+value.minOps || 0);
       apiDimensionObj.value[name].maxOps.push(+value.maxOps || 0);
@@ -745,7 +782,7 @@ const saveData = (_list:ListData[]) => {
       indexDimensionObj.value.operations[name].push(+value.operations || 0);
       indexDimensionObj.value.transactions[name].push(+value.transactions || 0);
       indexDimensionObj.value.readBytes[name].push(+value.readBytes || 0);
-      indexDimensionObj.value.writeBytes[name].push(+value.tranMewriteBytesan || 0);
+      indexDimensionObj.value.writeBytes[name].push(+value.writeBytes || 0);
       indexDimensionObj.value.ops[name].push(+value.ops || 0);
       indexDimensionObj.value.minOps[name].push(+value.minOps || 0);
       indexDimensionObj.value.maxOps[name].push(+value.maxOps || 0);
@@ -784,19 +821,21 @@ const saveData = (_list:ListData[]) => {
   if (isFirstLoadList) {
     apiNames.value = apiNames.value.sort((a, b) => {
       if (a.includes('Total') && !b.includes('Total')) {
-        return -1; // a在b前面
+        return -1; // ensure 'Total' appears first
       } else if (!a.includes('Total') && !b.includes('Total')) {
-        return 1; // a在b后面
+        return 1; // keep non-Total after
       } else {
-        return 0; // 保持原有顺序
+        return 0; // preserve original order otherwise
       }
     });
     isFirstLoadList = false;
   }
 };
 
-// 计算其他值
-const computedOhtersValue = () => {
+/**
+ * Compute aggregate values for Ops/Tps/Brps/Bwps across all data points of `Total`.
+ */
+const computedOthersValue = () => {
   let maxOps = 0;
   let minOps = 0;
   let meanOps = 0;
@@ -813,19 +852,19 @@ const computedOhtersValue = () => {
   for (let i = 0; i < allList.value.length; i++) {
     const totalItem = allList.value[i].values.find(f => f.name === 'Total');
 
-    // 获取每一项中的 ops、tps、brps 和 bwps 值
+    // Retrieve ops/tps/brps/bwps from the 'Total' item
     const ops = totalItem?.ops;
     const tps = totalItem?.tps;
     const brps = totalItem?.brps;
     const bwps = totalItem?.bwps;
 
-    // 将 ops、tps、brps 和 bwps 值转换为数字
+    // Convert them to numbers
     let numOps = Number(ops);
     let numTps = Number(tps);
     let numBrps = Number(brps);
     let numBwps = Number(bwps);
 
-    // 如果转换失败，则将值设置为 0
+    // Fallback to 0 if conversion fails
     if (isNaN(numOps)) {
       numOps = 0;
     }
@@ -846,7 +885,7 @@ const computedOhtersValue = () => {
       minBwps = numBwps;
     }
 
-    // 更新最大值、最小值和平均值
+    // Update min/max and accumulate for averages
     maxOps = Math.max(maxOps, numOps);
     minOps = Math.min(minOps, numOps);
 
@@ -862,7 +901,7 @@ const computedOhtersValue = () => {
     meanBwps += numBwps;
   }
 
-  // 计算平均值
+  // Compute final averages
   meanOps /= allList.value.length;
   meanTps /= allList.value.length;
   meanBrps /= allList.value.length;
@@ -887,6 +926,9 @@ const computedOhtersValue = () => {
   };
 };
 
+/**
+ * Load latest error counters and compute error rates based on last sample summary.
+ */
 const loadErrorCount = async () => {
   const [counterErr, counterRes] = await testerExec.getSampleErrorCounterLatest(props.detail?.id);
   if (counterErr) {
@@ -903,6 +945,9 @@ const loadErrorCount = async () => {
   errCountList.value = getErrCountList(errorCounterData, newList.value[newList.value.length - 1]);
 };
 
+/**
+ * Transform raw error counters to a view model with totals and per-type breakdown.
+ */
 const getErrCountList = (counterData, lastData) => {
   const result:Record<string, any>[] = [];
   for (const key in counterData) {
@@ -949,7 +994,9 @@ const sampleList = ref<Record<string, any>[]>([]);
 const errParams = ref<{pageNo: number, pageSize: number, filters:{key:'timestamp', op:'GREATER_THAN_EQUAL', value:string}[], nodeId?:string, }>({ pageNo: 1, pageSize: 200, filters: [] });
 const errTotal = ref(0);
 const errTimestamp = ref('');
-// 请求采样错误
+/**
+ * Load paginated sample error contents incrementally using timestamp cursor.
+ */
 const loadSampleErrorContent = async (_pageNo?:number) => {
   if (_pageNo) {
     errParams.value.pageNo = _pageNo;
@@ -977,8 +1024,11 @@ const loadSampleErrorContent = async (_pageNo?:number) => {
   }
 };
 
+// NOTE: `stutasCodeData` kept for backward-compat with downstream components (typo in name).
 const stutasCodeData = ref({});
-// 请求状态码 状态码不展示历史
+/**
+ * Load latest HTTP status code counters (no history kept).
+ */
 const loadStatusCodeData = async () => {
   const [error, { data }] = await testerExec.getSampleExtensionCountMapLatest(props.detail?.id);
   if (error) {
@@ -994,6 +1044,9 @@ const loadStatusCodeData = async () => {
   setStutasCodeData(data, props.detail.pipelineTargetMappings);
 };
 
+/**
+ * Organize status code counters by pipeline hierarchy or default to `Total`.
+ */
 const setStutasCodeData = (data: Record<string, any>, pipeline: Record<string, any>) => {
   if (props.detail?.isSingleInterface) {
     if (!data?.Total) {
@@ -1076,14 +1129,20 @@ const setStutasCodeData = (data: Record<string, any>, pipeline: Record<string, a
   }
 };
 
+/**
+ * React to execution detail changes:
+ * <p>
+ * - When running/scheduled: start polling and live updates
+ * - Otherwise: load all pages once and stop
+ */
 watch(() => props.detail, async (newValue) => {
   if (!newValue) {
     isLoaded.value = true;
     return;
   }
 
-  if (['CREATED', 'PENDING', 'RUNNING'].includes(newValue?.status?.value) && !hasStartDate.value) {
-    // 执行和调度中 更新数据
+  if ([ExecStatus.CREATED, ExecStatus.PENDING, ExecStatus.RUNNING].includes(newValue?.status?.value) && !hasStartDate.value) {
+    // When executing or scheduling, keep updating data
     emit('update:loading', true);
     isLoaded.value = false;
     await loadInfo();
@@ -1094,7 +1153,7 @@ watch(() => props.detail, async (newValue) => {
     return;
   }
 
-  // 非执行中
+  // Not executing: load once and paginate to the end
   await perfLoadList();
   emit('update:loading', false);
   isLoaded.value = true;
@@ -1104,9 +1163,7 @@ watch(() => props.detail, async (newValue) => {
 });
 
 /**
- * 非执行和调度状态下，拉取第二页到最后一条的数据
- * @param params 执行函数的参数
- * @param func 需要执行的函数
+ * Load remaining pages (2..N) when not in running/scheduling status.
  */
 const computedPageLoadList = async (params, total, func) => {
   const { pageSize } = params;
@@ -1120,6 +1177,9 @@ const computedPageLoadList = async (params, total, func) => {
   }
 };
 
+/**
+ * Reset all reactive state and stop the polling timer.
+ */
 const resetData = () => {
   apiDimensionObj.value = {
     Total: {
@@ -1219,7 +1279,7 @@ const resetData = () => {
   errTimestamp.value = '';
   sampleList.value = [];
   stutasCodeData.value = undefined;
-  firstOpenTimer = false;
+  hasFetchedOnce = false;
   clearTimer();
 };
 
@@ -1227,6 +1287,9 @@ onBeforeUnmount(() => {
   clearTimer();
 });
 
+/**
+ * Safely clear the polling timer.
+ */
 const clearTimer = () => {
   if (timer) {
     clearTimeout(timer);
@@ -1236,29 +1299,30 @@ const clearTimer = () => {
 
 const exception = ref<Exception>();
 
+/**
+ * Derive exception info from scheduling or meter status/messages.
+ */
 const setException = () => {
   const lastSchedulingResult = props.detail?.lastSchedulingResult;
   const meterMessage = props.detail?.meterMessage;
   if (lastSchedulingResult?.length) {
     const foundItem = lastSchedulingResult.find(f => !f.success);
     if (foundItem) {
-      exception.value = { code: foundItem.exitCode, message: foundItem.message, codeName: '退出码', messageName: '失败原因' };
+      exception.value = { code: foundItem.exitCode, message: foundItem.message, codeName: 'Exit Code', messageName: 'Failure Reason' };
       return;
     }
 
     if (meterMessage) {
-      exception.value = { code: props.detail?.meterStatus || '', message: meterMessage, codeName: '采样状态', messageName: '失败原因' };
+      exception.value = { code: props.detail?.meterStatus || '', message: meterMessage, codeName: 'Sampling Status', messageName: 'Failure Reason' };
       return;
     }
-
     return;
   }
 
   if (meterMessage) {
-    exception.value = { code: props.detail?.meterStatus || '', message: meterMessage, codeName: '采样状态', messageName: '失败原因' };
+    exception.value = { code: props.detail?.meterStatus || '', message: meterMessage, codeName: 'Sampling Status', messageName: 'Failure Reason' };
     return;
   }
-
   exception.value = undefined;
 };
 

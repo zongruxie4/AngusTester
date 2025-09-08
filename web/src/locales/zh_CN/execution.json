@@ -24,7 +24,12 @@
       "retry": "重新执行",
       "viewReport": "查看报告",
       "immediately": "立即执行",
-      "timing": "定时执行"
+      "timing": "定时执行",
+      "start": "启动",
+      "stop": "停止",
+      "editExecutionConfig": "编辑执行配置",
+      "viewScheduleLog": "查看调度日志",
+      "clear": "清空"
     },
     "search": {
       "executionName": "查询执行名称",
@@ -37,7 +42,7 @@
       "qps": "每秒查询数 (QPS)",
       "tps": "每秒事务数 (TPS)",
       "avgResponseTime": "平均响应时间(AVG RT)",
-      "errorRate": "错误率",
+      "errorRate": "错误率 (Error)",
       "executedTime": "已执行时间",
       "iterations": "已迭代次数",
       "percentileP90": "百分位P90"
@@ -96,9 +101,9 @@
     "info": {
       "executionDetails": "执行详情",
       "executionConfig": "执行配置",
-      "serverConfig": "服务器配置",
+      "serverConfig": "测试服务器",
       "executionScript": "执行脚本",
-      "log": "日志",
+      "log": "执行日志",
       "testResult": "测试结果",
       "start": "启动",
       "stop": "停止",
@@ -111,10 +116,27 @@
       "startSuccess": "启动成功",
       "stopSuccess": "停止成功",
       "deleteSuccess": "删除成功",
-      "deleteConfirm": "确定删除【{name}】吗？",
+      "deleteConfirm": "确定删除[{name}]吗？",
       "exitCode": "退出码",
       "failureReason": "失败原因",
       "samplingStatus": "采样状态"
+    },
+    "messages": {
+      "exitCode": "退出码",
+      "failureReason": "失败原因",
+      "samplingStatus": "采样状态",
+      "modifySuccess": "修改成功",
+      "startSuccess": "启动成功",
+      "stopSuccess": "停止成功",
+      "deleteConfirm": "确定删除[{name}]吗？",
+      "totalRecords": "共 {total} 条记录，第 {current} / {totalPage} 页",
+      "executionDuration": "执行时长",
+      "reportInterval": "报告间隔",
+      "ignoreAssertions": "忽略断言",
+      "updateTestResult": "更新测试结果",
+      "trial": "试用",
+      "id": "ID",
+      "modifiedBy": "最后修改"
     },
     "testResult": {
       "basicInfo": "基本信息",
@@ -198,7 +220,7 @@
       "enterScriptDescription": "请输入脚本描述，最多800字符"
     },
     "header": {
-      "title": "您可以直接运行测试脚本或Mock数据脚本，并选择是否更新测试结果至相关资源；执行配置优先级高于脚本配置，且仅允许执行、脚本添加人、应用管理员和系统管理员修改或运行，其他用户仅可查看。使用场景如下：",
+      "title": "您可以直接运行测试脚本或Mock数据脚本，并选择是否更新测试结果至相关资源；执行配置优先级高于脚本配置；仅执行人、脚本添加人、管理员修改或运行，其他用户仅可查看。",
       "contentList1": "运行测试脚本发起测试，或执行Mock脚本生成测试数据。",
       "contentList2": "实时查看执行指标并分析测试结果。"
     },

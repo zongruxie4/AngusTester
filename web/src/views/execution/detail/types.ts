@@ -1,4 +1,5 @@
-import { Exception, ExecutionInfo } from '@/views/execution/types';
+import { EnumMessage } from '@xcan-angus/infra';
+import { ExecStatus } from '@/enums/enums';
 
 export interface ServerVariable {
   enum: string[];
@@ -23,42 +24,19 @@ export interface UseConfigData {
   scrollToErrorElement: (formName: string, errors: any) => void;
 }
 
-export interface UseLogData {
-  nodeId: string | undefined;
-  nodeIp: string | undefined;
-  nodePort: string;
-  execLogContent: string | undefined;
-  execLogPath: string | undefined;
-  execLogErr: boolean;
-  errorText: string | undefined;
-  showSchedulingLog: string;
-  showExecLog: string;
-  schedulingLogItem: any; // Scheduling log item type - could be improved with specific interface
-  loadExecLog: () => Promise<void>;
-  nodeSelectChange: (nodeId: string, options: any) => void;
-  handleDoubleClick: (type: 'scheduling' | 'exec') => void;
-  openSchedulingLog: () => void;
-  openExecLog: () => void;
-  downloadLog: (type: 'scheduling' | 'exec') => void;
-  refreshExecLog: (event: Event) => void;
+export interface FunctionalTestProps {
+  loading?:boolean;
+  plugin?: string;
+  execInfo:{
+    id:string;
+    plugin?: string;
+    reportInterval:string;
+    status: EnumMessage<ExecStatus>
+  };
+  execContent:{[key:string]:any}[];
+  exception?: { codeName: string; messageName: string; code: string; message: string;};
 }
 
-export interface UseExecutionDetail {
-  loading: boolean;
-  detail: ExecutionInfo | undefined;
-  scriptInfo: any; // Script information object - could be improved with specific interface
-  scriptYamlStr: string;
-  topActiveKey: string;
-  exception: Exception | undefined;
-  performanceRef: any; // Reference to Performance component
-  funcRef: any; // Reference to FuncTest component
-  loadscriptContent: () => Promise<void>;
-  getDetail: () => Promise<void>;
-  getInfo: (data: any) => void;
-  handleRestart: (item: ExecutionInfo) => Promise<void>;
-  handleStop: (item: ExecutionInfo) => Promise<void>;
-  handleDelete: (item: ExecutionInfo) => Promise<void>;
-  topTabsChange: (value: string) => void;
-  scriptTypeChange: (value: 'json' | 'yaml') => void;
-  setException: () => void;
+export interface MockDataProps {
+  dataSource: Record<string, any>
 }

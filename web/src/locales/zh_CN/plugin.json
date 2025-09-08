@@ -118,12 +118,12 @@
       "basicInfo": {
         "executionDuration": "执行时长",
         "concurrency": "并发数",
-        "queriesPerSecond": "每秒查询数(当前 | 最大)",
-        "transactionsPerSecond": "每秒事务数(当前 | 最大)",
+        "queriesPerSecond": "每秒查询数(当前 / 最大)",
+        "transactionsPerSecond": "每秒事务数(当前 / 最大)",
         "errors": "错误(Error)",
         "iterations": "迭代次数",
-        "responseTime": "响应时间(最小 | 平均 | 最大)",
-        "percentile": "响应百分位(P50 | P90 | P99)",
+        "responseTime": "响应时间(最小 / 平均 / 最大)",
+        "percentile": "响应百分位(P50 / P90 / P99)",
         "download": "下载",
         "upload": "上传"
       },
@@ -171,7 +171,7 @@
       },
       "superimposeAnalysis": {
         "toggleTitles": {
-          "throughput": "吞吐量（TPS/QPS）",
+          "throughput": "吞吐量（TPS / QPS）",
           "concurrency": "并发数（VU）",
           "responseTime": "响应时间（RT、毫秒）",
           "error": "错误（ERROR）"
@@ -354,7 +354,7 @@
       },
       "requestConfig": {
         "title": "FTP请求配置",
-        "uploadDownload": "上传/下载",
+        "uploadDownload": "上传 / 下载",
         "upload": "上传",
         "download": "下载",
         "uploadFileSource": "文件来源",
@@ -705,12 +705,12 @@
       "countCards": {
         "currentDuration": "执行时长",
         "vu": "并发数",
-        "qps": "每秒查询数(当前 | 最大)",
-        "tps": "每秒事务数(当前 | 最大)",
+        "qps": "每秒查询数(当前/最大)",
+        "tps": "每秒事务数(当前/最大)",
         "err": "错误(Error)",
         "currentIterations": "迭代次数",
-        "rt": "响应时间(最小 | 平均 | 最大)",
-        "p50": "响应百分位(P50 | P90 | P99)",
+        "rt": "响应时间(最小/平均/最大)",
+        "p50": "响应百分位(P50/P90/P99)",
         "export": "下载",
         "upload": "上传"
       },
@@ -2196,10 +2196,10 @@
           "current": "当前",
           "downloadPerSecond": "下载/秒",
           "uploadPerSecond": "上传/秒",
-          "downloadPerSecondWithStats": "下载/秒(当前 | 最小 | 最大 | 平均)",
-          "uploadPerSecondWithStats": "上传/秒(当前 | 最小 | 最大 | 平均)",
-          "opsWithStats": "每秒查询数(当前 | 最小 | 最大 | 平均)",
-          "tpsWithStats": "每秒事务数(当前 | 最小 | 最大 | 平均)"
+          "downloadPerSecondWithStats": "下载/秒(当前/最小/最大/平均)",
+          "uploadPerSecondWithStats": "上传/秒(当前/最小/最大/平均)",
+          "opsWithStats": "每秒查询数(当前/最小/最大/平均)",
+          "tpsWithStats": "每秒事务数(当前/最小/最大/平均)"
         }
       },
       "menuData": {

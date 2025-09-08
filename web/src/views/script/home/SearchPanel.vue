@@ -73,7 +73,7 @@ const toRefresh = () => {
  * Initialize component
  */
 const initialize = async () => {
-  await loadEnum();
+  loadEnum();
   // Additional initialization logic would go here
   resetData();
   resetSearchPanel();

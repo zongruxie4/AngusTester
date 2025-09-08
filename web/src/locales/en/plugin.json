@@ -117,14 +117,14 @@
     },
     "performanceTestDetail": {
       "basicInfo": {
-        "executionDuration": "Execution Duration",
+        "executionDuration": "Execution",
         "concurrency": "Concurrency",
-        "queriesPerSecond": "Queries/Second (Current | Max)",
-        "transactionsPerSecond": "Transactions/Second (Current | Max)",
+        "queriesPerSecond": "Queries/Second (Current / Max)",
+        "transactionsPerSecond": "Transactions/Second (Current / Max)",
         "errors": "Errors (Error)",
         "iterations": "Iterations",
-        "responseTime": "Response Time (Min | Avg | Max)",
-        "percentile": "Response Percentile (P50 | P90 | P99)",
+        "responseTime": "Response Time (Min /Avg / Max)",
+        "percentile": "Response Percentile (P50 / P90 / P99)",
         "download": "Download",
         "upload": "Upload"
       },
@@ -172,7 +172,7 @@
       },
       "superimposeAnalysis": {
         "toggleTitles": {
-          "throughput": "Throughput (TPS/QPS)",
+          "throughput": "Throughput (TPS / QPS)",
           "concurrency": "Concurrency (VU)",
           "responseTime": "Response Time (RT, ms)",
           "error": "Errors (ERROR)"
@@ -303,7 +303,7 @@
           "byResponseTime": "By Response Time",
           "byErrorCount": "By Error Count",
           "byErrorRate": "By Error Rate",
-          "byUploadDownload": "By Upload/Download"
+          "byUploadDownload": "By Upload / Download"
         }
       }
     },
@@ -702,14 +702,14 @@
     },
     "performanceTestDetail": {
       "countCards": {
-        "currentDuration": "Execution Duration",
+        "currentDuration": "Duration",
         "vu": "Concurrency",
-        "qps": "Queries Per Second (Current | Max)",
-        "tps": "Transactions Per Second (Current | Max)",
+        "qps": "QPS (Current / Max)",
+        "tps": "TPS (Current / Max)",
         "err": "Error",
         "currentIterations": "Iterations",
-        "rt": "Response Time (Min | Avg | Max)",
-        "p50": "Response Percentile (P50 | P90 | P99)",
+        "rt": "Response Time (Min / Avg / Max)",
+        "p50": "Response Percentile (P50 / P90 / P99)",
         "export": "Download",
         "upload": "Upload"
       },
@@ -2194,10 +2194,10 @@
         "current": "Current",
         "downloadPerSecond": "Download/Second",
         "uploadPerSecond": "Upload/Second",
-        "downloadPerSecondWithStats": "Download/Second (Current | Min | Max | Average)",
-        "uploadPerSecondWithStats": "Upload/Second (Current | Min | Max | Average)",
-        "opsWithStats": "Operations Per Second (Current | Min | Max | Average)",
-        "tpsWithStats": "Transactions Per Second (Current | Min | Max | Average)"
+        "downloadPerSecondWithStats": "Download/Second (Current/Min/Max/Average)",
+        "uploadPerSecondWithStats": "Upload/Second (Current/Min/Max/Average)",
+        "opsWithStats": "Operations Per Second (Current/Min/Max/Average)",
+        "tpsWithStats": "Transactions Per Second (Current/Min/Max/Average)"
       }
     },
     "menuData": {

@@ -83,16 +83,17 @@ const handleSearchPanelChange = (data: any): void => {
 
 // Initialize component
 onMounted(async () => {
-  await loadScriptTypeEnum();
+  loadScriptTypeEnum();
   await loadNodeQuota();
   await initialize(emit);
 });
 </script>
 <template>
-  <div class="text-3 leading-5">
-    <div class="flex items-start justify-between mb-1.5">
+  <div class="mt-2.5 mb-3.5">
+    <div class="flex items-center mb-3">
       <div class="flex items-start transform-gpu translate-y-0.5">
-        <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
+        <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 mt-1 rounded-full"></div>
+        <div class="whitespace-nowrap text-3 mt-0.5 text-text-sub-content">
           <span>{{ t('execution.searchPanel.quickSearch') }}</span>
           <Colon />
         </div>
@@ -101,7 +102,7 @@ onMounted(async () => {
             v-for="item in menuItems"
             :key="item.key"
             :class="{ 'active-key': selectedMenuMap.has(item.key) }"
-            class="px-2.5 h-6 leading-6 mr-3 mb-3 rounded bg-gray-light cursor-pointer"
+            class="px-2.5 h-6 leading-6 mr-3 rounded bg-gray-light cursor-pointer font-semibold text-3"
             @click="handleMenuItemClick(item)">
             {{ item.name }}
           </div>

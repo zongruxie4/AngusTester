@@ -3,7 +3,7 @@ import { defineAsyncComponent, onBeforeUnmount, onMounted, ref, watch } from 'vu
 import { useI18n } from 'vue-i18n';
 import { Colon, Dropdown, Icon, Input, NoData, ScriptTypeTag, ShortDuration, Spin, Tooltip } from '@xcan-angus/vue-ui';
 import { appContext, ScriptType } from '@xcan-angus/infra';
-import { Pagination, Progress, Switch } from 'ant-design-vue';
+import { Button, Pagination, Progress, Switch } from 'ant-design-vue';
 import { ExecStatus } from '@/enums/enums';
 import { getCurrentDuration } from '@/utils';
 import { useExecutionList } from './composables/useExecutionList';
@@ -215,7 +215,7 @@ onBeforeUnmount(() => {
               {{ scriptTypes[item?.scriptType?.value]?.text }}
             </div>
             <div class="flex-none flex space-x-2" style="width: calc(100% - 562px)">
-              <div class="flex items-center h-7 justify-between  pr-4" style="width:30%">
+              <div class="flex items-center h-7 justify-between pr-4" style="width:30%">
                 <div class="flex items-center mr-2" style="width:calc(100% - 32px)">
                   <template v-if="!item?.editName">
                     <RouterLink
@@ -324,21 +324,16 @@ onBeforeUnmount(() => {
             </div>
             <div class="flex items-center text-text-sub-content font-medium flex-none space-x-2 justify-end">
               <div style="width:150px">
-                <span>{{ t('execution.messages.id') }}
-                  <Colon class="mr-1.5" />
-                </span>
+                <span>{{ t('execution.messages.id') }}:</span>
                 <span class="text-text-content"> {{ item?.id || "--" }}</span>
               </div>
               <div style="width:180px">
-                <span class="whitespace-nowrap">{{ t('execution.basic.startTime') }}
-                  <Colon class="mr-1.5" />
-                </span>
+                <span class="whitespace-nowrap">{{ t('execution.basic.startTime') }}:</span>
                 <span class="text-text-content  whitespace-nowrap">{{ item?.actualStartDate || "--" }}</span>
               </div>
+              <!-- TODO 中文时，截止时间出现了换行，直接加宽度会出现左右滚动条 -->
               <div style="width:180px">
-                <span class="whitespace-nowrap">{{ t('execution.basic.endTime') }}
-                  <Colon class="mr-1.5" />
-                </span>
+                <span class="whitespace-nowrap">{{ t('execution.basic.endTime') }}:</span>
                 <span class="text-text-content">{{ item?.endDate || "--" }}</span>
               </div>
             </div>
@@ -462,7 +457,7 @@ onBeforeUnmount(() => {
                       <div
                         class="px-2.25 py-1.5 rounded-l text-text-sub-content flex items-center"
                         style="min-width: 90px;">
-                        <Icon class="mr-1 text-4.5 text-status-error" icon="icon-cuowushuai1" /><span>{{ t('execution.basic.errorRate') }}</span>
+                        <Icon class="mr-1 text-4.5 text-status-error" icon="icon-cuowushuai1" /><span>{{ t('execution.infoCard.errorRate') }}</span>
                       </div>
                       <div class="px-3.75 w-28.5 text-right rounded-r">
                         {{
@@ -472,33 +467,21 @@ onBeforeUnmount(() => {
                   </div>
                 </div>
               </div>
-              <div class="flex leading-7 justify-center mx-5 flex-none" style="width:40%">
+              <div class="flex leading-7 justify-center mx-3 flex-none" style="width:40%">
                 <div class="flex w-1/2">
                   <div class="text-text-sub-content space-y-1 flex-none w-15">
-                    <div class="whitespace-nowrap h-7">
-                      {{ t('execution.basic.scriptName') }}
-                      <Colon />
+                    <!--  TODO 优先级列英文时文本右对齐不生效，而reportInterval列文本右对齐  -->
+                    <div class="whitespace-nowrap h-7 text-right">
+                      {{ t('execution.basic.priority') }}:
                     </div>
-                    <div class="whitespace-nowrap h-7">
-                      {{ t('execution.basic.priority') }}
-                      <Colon />
+                    <div class="whitespace-nowrap h-7 text-right">
+                      {{ t('execution.basic.scriptName') }}:
                     </div>
-                    <div class="whitespace-nowrap h-7">
-                      {{ t('execution.messages.modifiedBy') }}
-                      <Colon />
+                    <div class="whitespace-nowrap h-7 text-right">
+                      {{ t('execution.messages.modifiedBy') }}:
                     </div>
                   </div>
                   <div class="ml-2 space-y-1" style="width: calc(100% - 68px);min-width:160px">
-                    <div class="truncate h-7" :title="item?.scriptName">
-                      <template v-if="item?.scriptName">
-                        <RouterLink
-                          :to="`/script/detail/${item?.scriptId}?type=view`"
-                          class="text-text-link hover:text-text-link-hover cursor-pointer break-all">
-                          {{ item?.scriptName }}
-                        </RouterLink>
-                      </template>
-                      <template v-else>--</template>
-                    </div>
                     <div class="flex items-center relative z-0 h-7" :class="item?.editPriority ? 'w-30' : ''">
                       <template v-if="!item?.editPriority">
                         {{ item?.priority || "--" }}
@@ -522,27 +505,34 @@ onBeforeUnmount(() => {
                           @blur="editPriority($event.target.value, item)" />
                       </template>
                     </div>
+                    <div class="truncate h-7" :title="item?.scriptName">
+                      <template v-if="item?.scriptName">
+                        <RouterLink
+                          :to="`/script/detail/${item?.scriptId}?type=view`"
+                          class="text-text-link hover:text-text-link-hover cursor-pointer break-all">
+                          {{ item?.scriptName }}
+                        </RouterLink>
+                      </template>
+                      <template v-else>--</template>
+                    </div>
                     <div class="h-7 flex items-center">
                       <div class="truncate cursor-pointer" :title="item?.lastModifiedByName">
                         {{ item?.lastModifiedByName || "--" }}
                       </div>
-                      <span class="ml-2 flex-none">{{ item?.lastModifiedDate || "--" }}{{ t('execution.messages.modified') }}</span>
+                      <!--  <span class="ml-2 flex-none">{{ item?.lastModifiedDate || "&#45;&#45;" }}</span>-->
                     </div>
                   </div>
                 </div>
-                <div class="flex ml-5 flex-1 ">
+                <div class="flex ml-3 flex-1 ">
                   <div class="text-text-sub-content leading-7 space-y-1">
-                    <div class="whitespace-nowrap h-7">
-                      {{ t('execution.messages.reportInterval') }}
-                      <Colon />
+                    <div class="whitespace-nowrap h-7 text-right">
+                      {{ t('execution.messages.reportInterval') }}:
                     </div>
-                    <div class="whitespace-nowrap h-7">
-                      {{ t('execution.messages.ignoreAssertions') }}
-                      <Colon />
+                    <div class="whitespace-nowrap h-7 text-right">
+                      {{ t('execution.messages.ignoreAssertions') }}:
                     </div>
-                    <div class="whitespace-nowrap h-7">
-                      {{ t('execution.messages.updateTestResult') }}
-                      <Colon />
+                    <div class="whitespace-nowrap h-7 text-right">
+                      {{ t('execution.messages.updateTestResult') }}:
                     </div>
                   </div>
                   <div class="ml-2 space-y-1 2xl:min-w-35">
@@ -622,20 +612,34 @@ onBeforeUnmount(() => {
                   <Icon icon="icon-jinyong" class="mr-2 transform -rotate-45" /><span>{{ t('execution.actions.stop') }}</span>
                 </span>
               </template>
-              <Dropdown
-                v-if="item.scriptType?.value === ScriptType.MOCK_APIS"
-                :menuItems="dropdownMockMenuItems"
-                :permissions="item.actionPermission"
-                @click="handleDropdownClick($event.key, item)">
-                <Icon icon="icon-gengduo" class="cursor-pointer outline-none items-center" />
-              </Dropdown>
-              <Dropdown
-                v-else
-                :menuItems="dropdownMenuItems"
-                :permissions="item.actionPermission"
-                @click="handleDropdownClick($event.key, item)">
-                <Icon icon="icon-gengduo" class="cursor-pointer outline-none items-center" />
-              </Dropdown>
+              <div class="dropdown-row">
+                <Dropdown
+                  v-if="item.scriptType?.value === ScriptType.MOCK_APIS"
+                  :menuItems="dropdownMockMenuItems"
+                  :permissions="item.actionPermission"
+                  @click="handleDropdownClick($event.key, item)">
+                  <Button
+                    size="small"
+                    type="text"
+                    class="action-button more-action">
+                    <Icon icon="icon-gengduo" class="more-options-icon" />
+                    {{ t('actions.more') }}
+                  </Button>
+                </Dropdown>
+                <Dropdown
+                  v-else
+                  :menuItems="dropdownMenuItems"
+                  :permissions="item.actionPermission"
+                  @click="handleDropdownClick($event.key, item)">
+                  <Button
+                    size="small"
+                    type="text"
+                    class="action-button more-action">
+                    <Icon icon="icon-gengduo" class="more-options-icon mr-1" />
+                    {{ t('actions.more') }}
+                  </Button>
+                </Dropdown>
+              </div>
             </div>
           </div>
         </div>

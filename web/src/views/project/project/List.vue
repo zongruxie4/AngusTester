@@ -472,7 +472,6 @@ defineExpose({
   }
 }
 
-/* 添加活动线组件的样式 */
 .ant-tabs {
   height: 100%;
   display: flex;

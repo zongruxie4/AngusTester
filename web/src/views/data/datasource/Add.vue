@@ -33,7 +33,6 @@ const {
   loading,
   formRef,
   formState,
-  shouldShowCredentials,
   initializeFormWithEditData,
   resetFormState,
   handleDatabaseChange,
@@ -98,14 +97,12 @@ watch(() => props.visible, (newValue) => {
         <div class="h-7">
           <IconRequired />{{ t('datasource.form.labels.jdbcUrl') }}
         </div>
-        <template v-if="shouldShowCredentials">
-          <div class="h-7 pl-1.75">
-            {{ t('datasource.form.labels.username') }}
-          </div>
-          <div class="h-7 pl-1.75">
-            {{ t('datasource.form.labels.password') }}
-          </div>
-        </template>
+        <div class="h-7 pl-1.75">
+          {{ t('datasource.form.labels.username') }}
+        </div>
+        <div class="h-7 pl-1.75">
+          {{ t('datasource.form.labels.password') }}
+        </div>
       </div>
 
       <!-- Form Fields -->
@@ -146,22 +143,20 @@ watch(() => props.visible, (newValue) => {
         </FormItem>
 
         <!-- Username and Password (conditional) -->
-        <template v-if="shouldShowCredentials">
-          <FormItem name="username">
-            <Input
-              v-model:value="formState.username"
-              :placeholder="t('datasource.form.placeholders.username')"
-              :disabled="formState.database === 'SQLITE' && !!props.editData"
-              :maxlength="50" />
-          </FormItem>
-          <FormItem name="password">
-            <Input
-              v-model:value="formState.password"
-              :placeholder="t('datasource.form.placeholders.password')"
-              :maxlength="50"
-              type="password" />
-          </FormItem>
-        </template>
+        <FormItem name="username">
+          <Input
+            v-model:value="formState.username"
+            :placeholder="t('datasource.form.placeholders.username')"
+            :disabled="!!props.editData"
+            :maxlength="50" />
+        </FormItem>
+        <FormItem name="password">
+          <Input
+            v-model:value="formState.password"
+            :placeholder="t('datasource.form.placeholders.password')"
+            :maxlength="50"
+            type="password" />
+        </FormItem>
       </Form>
     </div>
   </Modal>
