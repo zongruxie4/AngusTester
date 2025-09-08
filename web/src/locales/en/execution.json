@@ -38,11 +38,11 @@
       "selectProject": "Select project/service"
     },
     "infoCard": {
-      "concurrency": "Concurrency (VU)",
-      "qps": "Queries Per Second (QPS)",
-      "tps": "Transactions Per Second (TPS)",
-      "avgResponseTime": "Average Response Time (AVG RT)",
-      "errorRate": "Error Rate",
+      "concurrency": "Concurrency",
+      "qps": "PQS",
+      "tps": "TPS",
+      "avgResponseTime": "AVG RT",
+      "errorRate": "Error",
       "executedTime": "Executed Time",
       "iterations": "Executed Iterations",
       "percentileP90": "Percentile P90"
@@ -60,40 +60,15 @@
     "maxIterations": "Current maximum iterations support 100,000,000,000",
     "priorityRange": "Higher priority is executed first, value range: 0~2147483647, higher value means higher priority",
     "concurrencyNodes": "1 test node required for every 10,000 concurrency",
-    "messages": {
-      "exitCode": "Exit Code",
-      "failureReason": "Failure Reason",
-      "samplingStatus": "Sampling Status",
-      "modifySuccess": "Modified successfully",
-      "startSuccess": "Started successfully",
-      "stopSuccess": "Stopped successfully",
-      "deleteConfirm": "Are you sure to delete 【{name}】?",
-      "totalRecords": "Total {total} records, page {current} / {totalPage}",
-      "executionDuration": "Execution Duration",
-      "reportInterval": "Report Interval",
-      "ignoreAssertions": "Ignore Assertions",
-      "updateTestResult": "Update Test Result",
-      "trial": "Trial",
-      "id": "ID",
-      "modifiedBy": "Modified by",
-      "modified": "modified"
-    },
-    "units": {
-      "millisecond": "millisecond",
-      "second": "second",
-      "minute": "minute",
-      "hour": "hour",
-      "day": "day"
-    },
     "searchPanel": {
       "quickSearch": "Quick Search",
       "all": "All",
-      "createdByMe": "Created by Me",
-      "modifiedByMe": "Modified by Me",
-      "executedByMe": "Executed by Me",
-      "lastDay": "Past 1 Day",
-      "lastThreeDays": "Past 3 Days",
-      "lastWeek": "Past 7 Days",
+      "createdByMe": "My Created",
+      "modifiedByMe": "My Modified",
+      "executedByMe": "My Executed",
+      "lastDay": "Last 1 Day",
+      "lastThreeDays": "Last 3 Days",
+      "lastWeek": "Last 7 Days",
       "searchNameDesc": "Search name, description",
       "selectStatus": "Select status",
       "selectScript": "Select script",
@@ -125,10 +100,10 @@
     },
     "info": {
       "executionDetails": "Execution Details",
-      "executionConfig": "Execution Config",
-      "serverConfig": "Server Config",
+      "executionConfig": "Execution Configuration",
+      "serverConfig": "Test Server",
       "executionScript": "Execution Script",
-      "log": "Log",
+      "log": "Execution Log",
       "testResult": "Test Result",
       "start": "Start",
       "stop": "Stop",
@@ -136,15 +111,39 @@
       "back": "Back",
       "performanceTest": "Performance Test",
       "stabilityTest": "Stability Test",
-      "functionalityTest": "Functionality Test",
+      "functionalityTest": "Functional Test",
       "customizationTest": "Customization Test",
       "startSuccess": "Started successfully",
       "stopSuccess": "Stopped successfully",
       "deleteSuccess": "Deleted successfully",
-      "deleteConfirm": "Are you sure to delete 【{name}】?",
+      "deleteConfirm": "Are you sure to delete [{name}]?",
       "exitCode": "Exit Code",
       "failureReason": "Failure Reason",
       "samplingStatus": "Sampling Status"
+    },
+    "messages": {
+      "exitCode": "Exit Code",
+      "failureReason": "Failure Reason",
+      "samplingStatus": "Sampling Status",
+      "modifySuccess": "Modified successfully",
+      "startSuccess": "Started successfully",
+      "stopSuccess": "Stopped successfully",
+      "deleteConfirm": "Are you sure to delete [{name}]?",
+      "totalRecords": "Total {total} records, page {current} / {totalPage}",
+      "executionDuration": "Duration",
+      "reportInterval": "Report Interval",
+      "ignoreAssertions": "Ignore Assertions",
+      "updateTestResult": "Update Result",
+      "trial": "Trial",
+      "id": "ID",
+      "modifiedBy": "Modified by"
+    },
+    "units": {
+      "millisecond": "millisecond",
+      "second": "second",
+      "minute": "minute",
+      "hour": "hour",
+      "day": "day"
     },
     "testResult": {
       "basicInfo": "Basic Info",
@@ -228,9 +227,9 @@
       "enterScriptDescription": "Please enter script description, max 800 characters"
     },
     "header": {
-      "title": "You can directly execute test scripts or Mock data scripts, with the option to update test results to relevant resources. Execution configurations take precedence over script configurations, and only script creators, execution creators, application admins, and system admins can modify or run them—other users have view-only access. Usage scenarios include:",
-      "contentList1": "Launch tests by running test scripts, or generate test data using Mock scripts.",
-      "contentList2": "Monitor execution metrics in real-time and analyze test results."
+      "title": "You can run test or mock data, and update test results to related resources; execution configuration priority over script configuration; only executors, creators, and admins can modify or run, while other users can only view.",
+      "contentList1": "Launch tests by running test script or generate test data using mock script.",
+      "contentList2": "Monitor execution metrics in real-time and analyze test result."
     },
     "count": {
       "byInterface": "By Interface",
@@ -239,7 +238,7 @@
     },
     "chartInfo": {
       "scriptType": "Script Type",
-      "executionStatus": "Status"
+      "executionStatus": "Exec Status"
     },
     "add": {
       "name": "Name",

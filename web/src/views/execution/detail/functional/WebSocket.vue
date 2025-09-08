@@ -2,22 +2,10 @@
 // eslint-disable-next-line import/no-absolute-path
 import Plugin from '@/plugins/websocket/index';
 
+import { FunctionalTestProps } from '@/views/execution/detail/types';
+
 // eslint-disable-next-line import/no-absolute-path
-
-interface Props {
-  execInfo:{
-    id:string;
-    reportInterval:string;
-    status:{
-      message:string;
-      value:'PENDING'|'RUNNING'|'COMPLETED';
-    }
-  };
-  execContent:{[key:string]:any}[];
-  exception?: { codeName: string; messageName: string; code: string; message: string;};
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<FunctionalTestProps>(), {
   execInfo: undefined,
   execContent: undefined,
   exception: undefined

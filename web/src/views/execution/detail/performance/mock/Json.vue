@@ -3,13 +3,9 @@ import { ref } from 'vue';
 // eslint-disable-next-line import/no-absolute-path
 import { ExecInfo } from '@/plugins/gendata/jsonIndex';
 
-// eslint-disable-next-line import/no-absolute-path
+import { MockDataProps } from '@/views/execution/detail/types';
 
-interface Props {
-  dataSource: Record<string, any>
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<MockDataProps>(), {
   dataSource: undefined
 });
 const execInfo = ref();

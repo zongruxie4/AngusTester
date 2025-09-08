@@ -1,10 +1,12 @@
 import { inject, ref, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-import { PageQuery } from '@xcan-angus/infra';
+import { PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { exec } from '@/api/tester';
+import { ExecStatus } from '@/enums/enums';
 import type { ExecutionInfo } from '../types';
+import { ProjectPageQuery } from '@/types/types';
 
 export type OrderByKey = 'createdDate' | 'createdByName';
 
@@ -31,7 +33,7 @@ export function useExecutionList () {
     pageSize: 5,
     total: 0
   });
-  const filters = ref<{ key: string; op: string; value: boolean | string | string[]; }[]>([]);
+  const filters = ref<SearchCriteria[]>([]);
   const dataList = ref<ExecutionInfo[]>([]);
   const total = ref(0);
   const execIds = ref<string[]>([]);
@@ -202,7 +204,7 @@ export function useExecutionList () {
           dataList.value[executeItemIndex] = { ...dataItem, errMessage };
         }
 
-        if (['CREATED', 'PENDING', 'RUNNING'].includes(dataItem?.status.value) && !_hasStartDate) {
+        if ([ExecStatus.CREATED, ExecStatus.PENDING, ExecStatus.RUNNING].includes(dataItem?.status.value) && !_hasStartDate) {
           execIds.value.push(dataItem.id);
         }
       }
@@ -228,14 +230,7 @@ export function useExecutionList () {
     }
 
     const { current, pageSize } = pagination.value;
-    const params: {
-      pageNo: number;
-      pageSize: number;
-      projectId: string;
-      filters?: { key: string; op: string; value: boolean | string | string[]; }[];
-      orderBy?: OrderByKey;
-      orderSort?: PageQuery.OrderSort;
-    } = {
+    const params: ProjectPageQuery = {
       pageNo: current,
       pageSize,
       projectId: projectId.value
@@ -262,7 +257,7 @@ export function useExecutionList () {
     execIds.value = [];
     dataList.value = data.list.map(item => {
       const _hasStartDate = hasStartDate(item?.startAtDate);
-      if (['CREATED', 'PENDING', 'RUNNING'].includes(item?.status.value) && !_hasStartDate) {
+      if ([ExecStatus.CREATED, ExecStatus.PENDING, ExecStatus.RUNNING].includes(item?.status.value) && !_hasStartDate) {
         execIds.value.push(item.id);
       }
       setTimeoutTimes(item);
@@ -282,13 +277,13 @@ export function useExecutionList () {
 
       const _actionPermission: string[] = [];
       if (item.hasOperationPermission) {
-        if (['CREATED', 'PENDING', 'RUNNING'].includes(item?.status.value) && !_hasStartDate) {
+        if ([ExecStatus.CREATED, ExecStatus.PENDING, ExecStatus.RUNNING].includes(item?.status.value) && !_hasStartDate) {
           _actionPermission.push('stopNow');
         } else {
           _actionPermission.push('edit');
         }
 
-        if (!['PENDING'].includes(item?.status.value)) {
+        if (![ExecStatus.PENDING].includes(item?.status.value)) {
           _actionPermission.push('delete');
         }
       }
@@ -330,8 +325,8 @@ export function useExecutionList () {
   /**
    * Handle search panel changes
    */
-  const searchPanelChange = (data: { key: string; op: string; value: boolean | string | string[]; }[]): void => {
-    filters.value = data;
+  const searchPanelChange = (filters_: SearchCriteria[]): void => {
+    filters.value = filters_;
     pagination.value.current = 1;
     loadDataList();
   };

@@ -3,7 +3,9 @@
 import ExecJdbcPerfExecDetail from '@/plugins/jdbc/index';
 
 // eslint-disable-next-line import/no-absolute-path
-
+/**
+ * Props for JDBC performance detail wrapper.
+ */
 interface Props {
   execInfo: Record<string, any>;
   exception:{
@@ -29,8 +31,11 @@ const props = withDefaults(defineProps<Props>(), {
   delayInSeconds: 3000
 });
 
+/**
+ * Relay child tab change event upward.
+ */
 const emit = defineEmits<{(e:'setCountTabKey', value:string):void;}>();
-const setCountTabKey = (value:string) => {
+const onSetCountTabKey = (value:string) => {
   emit('setCountTabKey', value);
 };
 </script>
@@ -49,7 +54,7 @@ const setCountTabKey = (value:string) => {
     :brpsUnit="props.brpsUnit"
     :bwpsUnit="props.bwpsUnit"
     :exception="props.exception"
-    @setCountTabKey="setCountTabKey" />
+    @setCountTabKey="onSetCountTabKey" />
 </template>
 <style scoped>
 .header-tabs > :deep(.ant-tabs-content-holder) {

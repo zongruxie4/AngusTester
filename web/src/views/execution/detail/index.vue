@@ -4,14 +4,17 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { Icon, Select, Spin } from '@xcan-angus/vue-ui';
+import { ScriptType, ScriptSource } from '@xcan-angus/infra';
+import { ExecStatus } from '@/enums/enums';
+
 import { useExecutionDetail } from './composables/useExecutionDetail';
 
 // Async component imports
-const ExecSetting = defineAsyncComponent(() => import('./Configuration.vue'));
-const ExecLog = defineAsyncComponent(() => import('./Log.vue'));
 const MonacoEditor = defineAsyncComponent(() => import('@/components/monacoEditor/index.vue'));
-const Performance = defineAsyncComponent(() => import('./performance/index.vue'));
-const FuncTest = defineAsyncComponent(() => import('./functional/index.vue'));
+const ExecSetting = defineAsyncComponent(() => import('./Configuration.vue'));
+const ExecLog = defineAsyncComponent(() => import('./ExecLog.vue'));
+const PerformanceTest = defineAsyncComponent(() => import('./performance/index.vue'));
+const FunctionalTest = defineAsyncComponent(() => import('./functional/index.vue'));
 const TestResult = defineAsyncComponent(() => import('./result/index.vue'));
 const ServiceConfig = defineAsyncComponent(() => import('./Server.vue'));
 
@@ -57,15 +60,12 @@ const {
   exception,
   performanceRef,
   funcRef,
-  loadscriptContent,
-  getDetail,
   getInfo,
   handleRestart,
   handleStop,
   handleDelete,
   topTabsChange,
-  scriptTypeChange,
-  setException
+  scriptTypeChange
 } = useExecutionDetail(props, emit);
 
 // Language options for script editor
@@ -98,7 +98,10 @@ const pageNo = route.query.pageNo;
       @change="(value) => topTabsChange(value as string)">
       <template #rightExtra>
         <template v-if="topActiveKey === '1'">
-          <template v-if="detail && ['CREATED','STOPPED','FAILED','COMPLETED','TIMEOUT'].includes(detail?.status?.value) && detail?.hasOperationPermission">
+          <template
+            v-if="detail
+              && [ExecStatus.CREATED,ExecStatus.STOPPED,ExecStatus.FAILED,ExecStatus.COMPLETED,ExecStatus.TIMEOUT].includes(detail?.status?.value)
+              && detail?.hasOperationPermission">
             <Button
               size="small"
               type="link"
@@ -110,7 +113,10 @@ const pageNo = route.query.pageNo;
               {{ t('execution.info.start') }}
             </Button>
           </template>
-          <template v-if="detail && ['PENDING','RUNNING'].includes(detail?.status?.value) && detail?.hasOperationPermission">
+          <template
+            v-if="detail
+              && [ExecStatus.PENDING,ExecStatus.RUNNING].includes(detail?.status?.value)
+              && detail?.hasOperationPermission">
             <Button
               type="link"
               size="small"
@@ -151,15 +157,17 @@ const pageNo = route.query.pageNo;
       <TabPane
         key="1"
         :tab="t('execution.info.executionDetails')">
-        <Performance
-          v-if="detail && ['TEST_PERFORMANCE','TEST_STABILITY', 'MOCK_DATA', 'TEST_CUSTOMIZATION'].includes(detail.scriptType.value)"
+        <!--    TODO 基本信息中“创建”字段正下方添加“修改”，格式：修改人 修改时间，和创建一样    -->
+        <PerformanceTest
+          v-if="detail
+            && [ScriptType.TEST_PERFORMANCE,ScriptType.TEST_STABILITY, ScriptType.MOCK_DATA, ScriptType.TEST_CUSTOMIZATION].includes(detail.scriptType.value)"
           ref="performanceRef"
           v-model:loading="loading"
           :detail="detail"
           :exception="exception"
           @loaded="getInfo" />
-        <FuncTest
-          v-else-if="detail && detail.scriptType.value==='TEST_FUNCTIONALITY'"
+        <FunctionalTest
+          v-else-if="detail && detail.scriptType.value===ScriptType.TEST_FUNCTIONALITY"
           ref="funcRef"
           v-model:loading="loading"
           :execInfo="detail"
@@ -205,7 +213,10 @@ const pageNo = route.query.pageNo;
           :lastSchedulingResult="detail?.lastSchedulingResult || []" />
       </TabPane>
       <TabPane
-        v-if="detail?.plugin === 'Http' && detail.scriptSource && ['API', 'SCENARIO'].includes(detail.scriptSource.value) && detail.status.value === 'COMPLETED'"
+        v-if="detail?.plugin === 'Http'
+          && detail.scriptSource
+          && [ScriptSource.API, ScriptSource.SCENARIO].includes(detail.scriptSource.value)
+          && detail.status.value === ExecStatus.COMPLETED"
         key="5"
         :tab="t('execution.info.testResult')">
         <TestResult

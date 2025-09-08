@@ -9,9 +9,6 @@ import { ExecStatus } from '@/enums/enums';
 import type { MenuItem } from '../types';
 
 export type OrderByKey = 'createdDate' | 'createdByName';
-export type OrderSortKey = 'ASC' | 'DESC';
-
-// TODO 替换成Dashboard组件
 
 export interface SearchPanelProps {
   projectId: string;
@@ -62,10 +59,8 @@ export function useSearchPanel (props: SearchPanelProps) {
    * Load script type enum options
    */
   const loadScriptTypeEnum = (): void => {
-    const data = enumUtils.enumToMessages(ScriptType);
-    scriptTypeOpt.value = (data || [])
-      .map(i => ({ name: i.message, key: i.value }))
-      .filter(i => i.key !== 'API_MOCK');
+    const data = enumUtils.enumToMessages(ScriptType, [ScriptType.MOCK_APIS]);
+    scriptTypeOpt.value = (data || []).map(i => ({ name: i.message, key: i.value }));
     scriptTypeKeys = scriptTypeOpt.value.map(i => i.key);
   };
 
@@ -171,6 +166,7 @@ export function useSearchPanel (props: SearchPanelProps) {
       // Clear other user-related filters
       ['createdBy', 'lastModifiedBy', 'execBy'].forEach(i => selectedMenuMap.value.delete(i));
       selectedMenuMap.value.set(key, { key });
+      selectedMenuMap.value.delete('none');
 
       if (typeof searchPanelRef.value?.setConfigs === 'function') {
         searchPanelRef.value.setConfigs([{ valueKey: key, value: userId.value }]);
@@ -183,6 +179,7 @@ export function useSearchPanel (props: SearchPanelProps) {
       // Clear other date filters
       ['lastDay', 'lastThreeDays', 'lastWeek'].forEach(i => selectedMenuMap.value.delete(i));
       selectedMenuMap.value.set(key, { key });
+      selectedMenuMap.value.delete('none');
 
       const dateKey = key as 'lastDay' | 'lastThreeDays' | 'lastWeek';
       if (typeof searchPanelRef.value?.setConfigs === 'function') {
@@ -195,6 +192,7 @@ export function useSearchPanel (props: SearchPanelProps) {
     if (scriptTypeKeys.includes(key)) {
       scriptTypeKeys.forEach(i => selectedMenuMap.value.delete(i));
       selectedMenuMap.value.set(key, { key });
+      selectedMenuMap.value.delete('none');
       if (typeof searchPanelRef.value?.setConfigs === 'function') {
         searchPanelRef.value.setConfigs([{ valueKey: 'scriptType', value: key }]);
       }

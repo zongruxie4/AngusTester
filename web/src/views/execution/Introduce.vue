@@ -21,11 +21,11 @@ const { dashboardConfig, dashboardConstants } = useDashboardConfig();
       <img src="../../assets/home/exec.svg" class="w-43 h-35" />
       <div class="ml-3.25 text-content flex-1 font-serif">
         <div class="text-3.5 font-semibold">{{ t('execution.header.title') }}</div>
-        <div class="mt-2">
+        <div class="mt-3">
           <Icon icon="icon-duihaolv" class="mr-2.5" />
           <span class="text-3.5">{{ t('execution.header.contentList1') }}</span>
         </div>
-        <div class="mt-1">
+        <div class="mt-1 md-2">
           <Icon icon="icon-duihaolv" class="mr-2.5" />
           <span class="text-3.5">{{ t('execution.header.contentList2') }}</span>
         </div>

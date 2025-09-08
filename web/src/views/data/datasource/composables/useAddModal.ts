@@ -1,4 +1,4 @@
-import { ref, watch, computed } from 'vue';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { notification } from '@xcan-angus/vue-ui';
 import { dataSource } from '@/api/tester';
@@ -169,9 +169,9 @@ export function useAddModal (projectId: string) {
    * <p>Update existing data source</p>
    * <p>Sends API request to update existing data source</p>
    */
-  const updateDataSource = async (): Promise<void> => {
+  const updateDataSource = async (): Promise<boolean> => {
     if (loading.value) {
-      return;
+      return false;
     }
 
     const params: DataSourceFormState = {
@@ -188,9 +188,8 @@ export function useAddModal (projectId: string) {
 
     try {
       const [error] = await dataSource.putDataSource(params);
-
       if (error) {
-        return;
+        return false;
       }
 
       notification.success(t('tips.modifySuccess'));
@@ -200,22 +199,11 @@ export function useAddModal (projectId: string) {
     }
   };
 
-  /**
-   * <p>Check if username and password fields should be shown</p>
-   * <p>SQLITE database doesn't require username/password</p>
-   */
-  const shouldShowCredentials = computed(() => {
-    return formState.value.database !== 'SQLITE';
-  });
-
   return {
     // State
     loading,
     formRef,
     formState,
-
-    // Computed
-    shouldShowCredentials,
 
     // Methods
     initializeFormWithEditData,
