@@ -1,47 +1,45 @@
 <script lang="ts" setup>
-import { defineAsyncComponent, ref } from 'vue';
+import { inject, Ref, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Icon } from '@xcan-angus/vue-ui';
 
+import { useDashboardConfig } from '@/views/execution/composables/useDashboardConfig';
+import Dashboard from '@/components/dashboard/Dashboard.vue';
+
 const { t } = useI18n();
 
-// Lazy load pie chart component
-const PieChart = defineAsyncComponent(() => import('@/views/execution/Count.vue'));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
-// Chart reference for external control
-const countRef = ref();
-
-/**
- * Update chart data
- * Exposed method for parent components to refresh chart
- */
-const updateCount = (): void => {
-  countRef.value?.loadCount();
-};
-
-defineExpose({
-  updateCount
-});
+// Use dashboard config
+const { dashboardConfig, dashboardConstants } = useDashboardConfig();
 </script>
 <template>
-  <div class="bg-gray-2 px-7.5 flex items-center rounded text-3 justify-between">
-    <div class="flex content items-center">
-      <img
-        class="mr-7.75"
-        src="../../assets/home/exec.svg"
-        style="width: 180px;height: 180px;" />
-      <div class="ml-3.25 text-content">
-        <div>{{ t('execution.header.title') }}</div>
-        <div>{{ t('execution.header.subTitle') }}</div>
-        <div class="mt-2">{{ t('execution.header.contentTitle') }}</div>
-        <div class="mt-1">
-          <Icon icon="icon-duihaolv" class="mr-2.5" />{{ t('execution.header.contentList1') }}
+  <div class="flex content items-center">
+    <!-- Left content area - flexible width -->
+    <div class="flex content items-center flex-1 pr-20">
+      <img src="../../assets/home/exec.svg" class="w-43 h-35" />
+      <div class="ml-3.25 text-content flex-1 font-serif">
+        <div class="text-3.5 font-semibold">{{ t('execution.header.title') }}</div>
+        <div class="mt-2">
+          <Icon icon="icon-duihaolv" class="mr-2.5" />
+          <span class="text-3.5">{{ t('execution.header.contentList1') }}</span>
         </div>
         <div class="mt-1">
-          <Icon icon="icon-duihaolv" class="mr-2.5" />{{ t('execution.header.contentList2') }}
+          <Icon icon="icon-duihaolv" class="mr-2.5" />
+          <span class="text-3.5">{{ t('execution.header.contentList2') }}</span>
         </div>
       </div>
     </div>
-    <PieChart ref="countRef" class="ml-10" />
+    <!-- Statistics dashboard panel - fixed width 680px -->
+    <div class="w-170">
+      <Dashboard
+        :config="dashboardConfig"
+        :apiRouter="dashboardConstants.apiRouter"
+        :resource="dashboardConstants.resource"
+        :barTitle="dashboardConstants.barTitle.value"
+        :projectId="projectId"
+        :showChartParam="dashboardConstants.showChartParam" />
+    </div>
   </div>
 </template>

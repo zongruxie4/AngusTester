@@ -1,10 +1,10 @@
-import { computed, inject, ref, Ref } from 'vue';
+import { inject, ref, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { PageQuery } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { exec } from '@/api/tester';
-import type { ExecutionInfo, ProjectInfo } from '../types';
+import type { ExecutionInfo } from '../types';
 
 export type OrderByKey = 'createdDate' | 'createdByName';
 
@@ -18,8 +18,7 @@ export function useExecutionList () {
   const route = useRoute();
 
   // Inject project information
-  const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
-  const projectId = computed(() => projectInfo.value?.id);
+  const projectId = inject<Ref<string>>('projectId', ref(''));
 
   // State management
   const loaded = ref(false);

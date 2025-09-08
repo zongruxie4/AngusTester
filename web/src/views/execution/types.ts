@@ -1,5 +1,5 @@
-import { EnumMessage, ScriptType, StartMode } from '@xcan-angus/infra';
-import { ExecStatus } from '@/enums/enums';
+import {EnumMessage, ScriptType, StartMode} from '@xcan-angus/infra';
+import {ExecStatus} from '@/enums/enums';
 
 export type MenuItem = {
   key: 'none' | 'createdBy' | 'lastModifiedBy' | 'execBy' | 'lastDay' | 'lastThreeDays' | 'lastWeek';
@@ -112,13 +112,6 @@ export interface ChartDataItem {
   name: string;
   value: number;
   codes?: number;
-}
-
-// Form interfaces
-export interface ProjectInfo {
-  id: string;
-  avatar: string;
-  name: string;
 }
 
 // Pie chart component props

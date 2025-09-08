@@ -3,7 +3,8 @@ import { computed, inject, onMounted, Ref, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useChartData } from './composables/useChartData';
 import Charts from './PieChart.vue';
-import type { ProjectInfo } from './types';
+
+import {ProjectInfo} from "@/types/types";
 
 const { t } = useI18n();
 

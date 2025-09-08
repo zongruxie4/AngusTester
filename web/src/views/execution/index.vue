@@ -194,7 +194,7 @@ onBeforeUnmount(() => {
     :delay="0"
     class="w-full h-full py-5 px-5 text-3 overflow-y-auto"
     style="scrollbar-gutter: stable;">
-    <Introduce class="mb-3" />
+    <Introduce class="bg-gray-2 flex items-center rounded mb-5" />
     <SearchPanel
       v-if="projectId"
       :projectId="projectId"
