@@ -43,7 +43,7 @@ const noData = computed(() => {
 });
 
 const chartsOption = computed(() => {
-  // 确保 chartData 存在
+  // Ensure chartData exists
   if (!props.chartData) {
     return {};
   }
@@ -121,7 +121,7 @@ const chartsOption = computed(() => {
   };
 });
 
-// 监听数据变化，更新图表
+// Watch data changes and update chart
 watch(() => props.chartData, () => {
   if (myChart) {
     myChart.setOption(chartsOption.value, true);

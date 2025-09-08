@@ -22,13 +22,13 @@ const emit = defineEmits<{(e: 'selectDate', type:DateRangeType): void,
 const { t } = useI18n();
 
 const customDateChange = (value:string[] | undefined) => {
-  dataType.value = '' as DateRangeType; // 清空界面时间类型选择
+  dataType.value = '' as DateRangeType; // Clear the selected date type on the interface
   emit('dateChange', value);
 };
 
 const dateTypeChange = (e) => {
   dataType.value = e.target.value;
-  // 清空DatePicker已选择时间
+  // Clear the selected time in DatePicker
   emit('dateChange', undefined);
   emit('selectDate', e.target.value);
 };
@@ -50,7 +50,7 @@ const dataType = ref(props.dateType);
       <RadioButton :value="DateRangeType.YEAR">{{ t('chart.lastYear') }}</RadioButton>
     </RadioGroup>
     <DatePicker
-      :value="props.datePicker"
+      :value="props.datePicker as [string, string] | undefined"
       type="date-range"
       size="small"
       class="w-52"

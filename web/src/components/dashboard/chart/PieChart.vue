@@ -38,7 +38,7 @@ const initCharts = () => {
   if (!chartsRef.value || !props.chartData) {
     return;
   }
-  // 确保在重新初始化前销毁之前的实例
+  // Ensure to dispose the previous instance before reinitializing
   if (myChart) {
     myChart.dispose();
   }
@@ -47,7 +47,7 @@ const initCharts = () => {
 };
 
 const chartsOption = computed(() => {
-  // 确保 chartData 和 data 存在
+  // Ensure chartData and data exist
   if (!props.chartData || !props.chartData.data || props.chartData.data.length === 0) {
     return {
       title: {
@@ -65,7 +65,7 @@ const chartsOption = computed(() => {
     };
   }
 
-  // 计算legend分组，每组最多5个
+  // Calculate legend groups, maximum 5 items per group
   const legendGroups: any[] = [];
   for (let i = 0; i < props.chartData.data.length; i += 5) {
     legendGroups.push(props.chartData.data.slice(i, i + 5));
@@ -73,7 +73,7 @@ const chartsOption = computed(() => {
 
   const legendConfig: LegendComponentOption[] = legendGroups.map((group, index) => ({
     orient: 'vertical',
-    left: 135 + index * 105, // 每组间隔105px
+    left: 135 + index * 105, // 105px spacing between each group
     top: '25%',
     itemHeight: 12,
     itemWidth: 12,
@@ -136,7 +136,7 @@ watch(() => props.chartData, () => {
   if (myChart && chartsRef.value) {
     myChart.setOption(chartsOption.value, true);
   } else {
-    // 如果图表尚未初始化，则进行初始化
+    // If chart is not initialized yet, initialize it
     initCharts();
   }
 }, { deep: true });
@@ -146,7 +146,7 @@ const resizeHandler = debounce(duration.resize, () => {
 });
 
 onMounted(() => {
-  // 使用nextTick确保DOM已经渲染完成
+  // Use nextTick to ensure DOM is fully rendered
   nextTick(() => {
     initCharts();
   });

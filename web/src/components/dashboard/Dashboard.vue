@@ -28,18 +28,18 @@ const props = withDefaults(defineProps<Props>(), {
   dateType: DateRangeType.MONTH,
   userId: '',
   searchParams: () => [],
-  showChartParam: false // 默认不显示图表参数控制组件
+  showChartParam: false // Default to not showing chart parameter control component
 });
 
-// 添加datepicker相关数据
+// Add datepicker related data
 const datePicker = ref<string[] | undefined>(undefined);
 const dateRangeType = ref<DateRangeType>(props.dateType || DateRangeType.MONTH);
 
-// 图表数据
+// Chart data
 const lineChartData = ref<any>(null);
 const pieChartData = ref<any[]>([]);
 
-// 计算网格布局样式
+// Calculate grid layout style
 const gridStyle = computed(() => {
   const cols = props.config.layout?.cols || 2;
   const gap = props.config.layout?.gap || 16;
@@ -50,13 +50,13 @@ const gridStyle = computed(() => {
   };
 });
 
-// 获取统计数据
+// Fetch statistical data
 const fetchChartData = async () => {
   if (!props.config || !props.config.charts || !props.config.charts.length) {
     return;
   }
 
-  // 如果showChartParam为false，则不设置日期过滤，查询所有数据
+  // If showChartParam is false, do not set date filtering, query all data
   let nextValue: DateRangeType | undefined;
   if (props.showChartParam) {
     switch (dateRangeType.value) {
@@ -80,29 +80,29 @@ const fetchChartData = async () => {
   }
 
   try {
-    // 构建过滤条件
+    // Build filter conditions
     let filters = [...(props.searchParams || [])];
 
-    // 只有当showChartParam为true时才添加日期过滤条件
+    // Only add date filter conditions when showChartParam is true
     if (props.showChartParam) {
-      // 如果有datepicker值，则添加日期过滤条件
+      // If there are datepicker values, add date filter conditions
       if (datePicker.value && datePicker.value.length === 2) {
         const dateFilters = getDateFiltersAndUnit(datePicker.value[0], datePicker.value[1]);
         filters = [...filters, ...dateFilters.filters];
       } else {
-        // 使用默认日期过滤条件
+        // Use default date filter conditions
         const defaultDateFilters = getDefaultDateFilters(dateRangeType.value);
         filters = [...filters, ...defaultDateFilters];
       }
     }
 
-    // 逐个获取每个图表的数据
+    // Get data for each chart one by one
     const promises: Promise<void>[] = [];
 
-    // 处理折线图数据
+    // Process line chart data
     const lineChart = props.config.charts.find((chart: ChartConfig) => chart.type === ChartType.LINE);
     if (lineChart) {
-      // 注意：折线图时不适用aggregates参数
+      // Note: aggregates parameter is not applicable for line charts
       const linePromise = fetchSummaryData(props.apiRouter, {
         name: props.resource,
         groupBy: GroupBy.DATE,
@@ -113,18 +113,18 @@ const fetchChartData = async () => {
         lineChartData.value = convertToLineChartData(
           data,
           lineChart.title,
-          nextValue || DateRangeType.DAY // 如果nextValue为undefined，使用默认值
+          nextValue || DateRangeType.DAY // If nextValue is undefined, use default value
         );
       });
       promises.push(linePromise);
     }
 
-    // 处理饼图数据
+    // Process pie chart data
     const pieCharts = props.config.charts.filter((chart: ChartConfig) => chart.type === ChartType.PIE);
     if (pieCharts.length > 0) {
       const piePromises = pieCharts.map((chart: ChartConfig) => {
-        // 注意：饼图时需要使用aggregates参数，由业务在dashboardConfig中配置
-        // 如果dashboardConfig中配置了aggregates，则使用配置的值，否则使用默认值
+        // Note: aggregates parameter is required for pie charts, configured by business in dashboardConfig
+        // If aggregates is configured in dashboardConfig, use the configured value, otherwise use default value
         const aggregates = chart.aggregates || [
           {
             column: 'id',
@@ -132,7 +132,7 @@ const fetchChartData = async () => {
           }
         ];
 
-        // 处理字段，支持单个或多个字段
+        // Process fields, support single or multiple fields
         const groupByColumns = Array.isArray(chart.field) ? chart.field : [chart.field];
         return fetchSummaryData(props.apiRouter, {
           name: props.resource,
@@ -141,14 +141,14 @@ const fetchChartData = async () => {
           aggregates: aggregates,
           filters: filters
         }).then(data => {
-          // 处理饼图数据，支持多个字段
+          // Process pie chart data, support multiple fields
           const pieDataArray: any[] = [];
 
-          // 遍历每个字段的数据
+          // Iterate through data for each field
           groupByColumns.forEach((field, index) => {
             if (data && data[field]) {
               const fieldData = data[field];
-              // 计算总数，使用TOTAL_COUNT_id（如果存在）或者通过累加各部分得到
+              // Calculate total, use TOTAL_COUNT_id (if exists) or sum up all parts
               let total = 0;
               const fieldDataValues = Object.values(fieldData);
               if (fieldDataValues.length > 0) {
@@ -161,14 +161,14 @@ const fetchChartData = async () => {
                   }, 0);
                 }
 
-                // 只有当有数据时才创建饼图数据
+                // Only create pie chart data when there is data
                 let fieldEnumMessages: EnumMessage<string>[] = [];
                 if (chart.enumKey) {
                   if (Array.isArray(chart.enumKey[0])) {
-                    // enumKey是数组的数组
+                    // enumKey is array of arrays
                     fieldEnumMessages = (chart.enumKey as EnumMessage<string>[][])[index] || [];
                   } else {
-                    // enumKey是单个数组
+                    // enumKey is single array
                     fieldEnumMessages = chart.enumKey as EnumMessage<string>[];
                   }
                 }
@@ -197,42 +197,42 @@ const fetchChartData = async () => {
                 }
               }
             }
-            // 如果没有数据，不添加任何内容到pieDataArray
+            // If no data, do not add anything to pieDataArray
           });
 
           return pieDataArray;
         });
       });
 
-      // 等待所有饼图数据获取完成
+      // Wait for all pie chart data to be fetched
       const pieResults = await Promise.all(piePromises);
-      // 展平数组，因为每个饼图可能返回多个数据项（当有多个字段时）
+      // Flatten array because each pie chart may return multiple data items (when there are multiple fields)
       pieChartData.value = pieResults.flat();
     }
 
-    // 等待所有数据获取完成
+    // Wait for all data to be fetched
     await Promise.all(promises);
   } catch (error) {
     console.error('Failed to fetch chart data:', error);
   }
 };
 
-// 添加处理ChartParam事件的方法
+// Add methods to handle ChartParam events
 const selectDate = (type: DateRangeType) => {
   dateRangeType.value = type;
 };
 
 const dateChange = (dates: string[] | undefined) => {
   datePicker.value = dates;
-  // 当用户选择自定义日期范围时，我们需要构建相应的过滤条件
-  // 这会通过watch监听器自动触发fetchChartData
+  // When user selects custom date range, we need to build corresponding filter conditions
+  // This will automatically trigger fetchChartData through watch listener
 };
 
-// 修改watch监听器以包含datepicker的变化
+// Modify watch listener to include datepicker changes
 watch(
   () => {
     const baseDeps = [props.resource, props.dateType, props.searchParams];
-    // 只有当showChartParam为true时才监听日期相关的变化
+    // Only listen to date-related changes when showChartParam is true
     if (props.showChartParam) {
       return [...baseDeps, datePicker.value, dateRangeType.value];
     }
@@ -244,7 +244,7 @@ watch(
   { deep: true }
 );
 
-// 组件挂载时获取数据
+// Fetch data when component is mounted
 onMounted(() => {
   fetchChartData();
 });
@@ -252,7 +252,7 @@ onMounted(() => {
 
 <template>
   <div class="statistics-container">
-    <!-- 可配置的ChartParam组件 -->
+    <!-- Configurable ChartParam component -->
     <ChartParam
       v-if="props.showChartParam"
       :datePicker="datePicker"
@@ -261,9 +261,9 @@ onMounted(() => {
       @selectDate="selectDate"
       @dateChange="dateChange" />
 
-    <!-- 图表网格容器 -->
+    <!-- Chart grid container -->
     <div class="statistics-dashboard" :style="gridStyle">
-      <!-- 渲染折线图 -->
+      <!-- Render line charts -->
       <div
         v-for="chart in config.charts"
         :key="JSON.stringify(chart.field)"
@@ -272,7 +272,7 @@ onMounted(() => {
           v-if="chart.type === ChartType.LINE && lineChartData"
           :chartData="lineChartData" />
         <template v-else-if="chart.type === ChartType.PIE">
-          <!-- 如果是饼图，可能有多个字段需要渲染多个饼图 -->
+          <!-- If it's a pie chart, there may be multiple fields requiring multiple pie charts -->
           <PieChart
             v-for="pieData in pieChartData.filter(item =>
               Array.isArray(chart.field)
