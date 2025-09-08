@@ -323,18 +323,17 @@ onBeforeUnmount(() => {
               </div>
             </div>
             <div class="flex items-center text-text-sub-content font-medium flex-none space-x-2 justify-end">
-              <div style="width:150px">
+              <div>
                 <span>{{ t('execution.messages.id') }}:</span>
                 <span class="text-text-content"> {{ item?.id || "--" }}</span>
               </div>
-              <div style="width:180px">
+              <div>
                 <span class="whitespace-nowrap">{{ t('execution.basic.startTime') }}:</span>
                 <span class="text-text-content  whitespace-nowrap">{{ item?.actualStartDate || "--" }}</span>
               </div>
-              <!-- TODO 中文时，截止时间出现了换行，直接加宽度会出现左右滚动条 -->
-              <div style="width:180px">
+              <div>
                 <span class="whitespace-nowrap">{{ t('execution.basic.endTime') }}:</span>
-                <span class="text-text-content">{{ item?.endDate || "--" }}</span>
+                <span class="text-text-content whitespace-nowrap">{{ item?.endDate || "--" }}</span>
               </div>
             </div>
           </div>
@@ -469,8 +468,7 @@ onBeforeUnmount(() => {
               </div>
               <div class="flex leading-7 justify-center mx-3 flex-none" style="width:40%">
                 <div class="flex w-1/2">
-                  <div class="text-text-sub-content space-y-1 flex-none w-15">
-                    <!--  TODO 优先级列英文时文本右对齐不生效，而reportInterval列文本右对齐  -->
+                  <div class="text-text-sub-content space-y-1 flex-none w-20">
                     <div class="whitespace-nowrap h-7 text-right">
                       {{ t('execution.basic.priority') }}:
                     </div>
