@@ -184,11 +184,11 @@ const format = (data) => {
               <div>
                 <div v-if="mockApiInfo?.mockServiceDomainUrl">
                   <span>{{ mockApiInfo.mockServiceDomainUrl }}</span>
-                  <span title="复制"><IconCopy class="ml-2 -mt-0.5 text-3.5" :copyText="mockApiInfo.mockServiceDomainUrl" /></span>
+                  <span :title="t('actions.copy')"><IconCopy class="ml-2 -mt-0.5 text-3.5" :copyText="mockApiInfo.mockServiceDomainUrl" /></span>
                 </div>
                 <div v-if="text" class="flex items-start">
                   <span>{{ text }}</span>
-                  <span title="复制"><IconCopy class="ml-2 -mt-0.5 text-3.5" :copyText="text" /></span>
+                  <span :title="t('actions.copy')"><IconCopy class="ml-2 -mt-0.5 text-3.5" :copyText="text" /></span>
                 </div>
               </div>
             </template>
@@ -210,7 +210,7 @@ const format = (data) => {
       </template>
       <template v-if="!mockApiInfo && !loading">
         <div class="p-2 border border-blue-border rounded bg-blue-bg-light">
-          <Hints text="Mock接口可快速生成并模拟您所依赖的API，使开发和测试能够并行进行，从而加快开发速度，实现更全面的测试，并更早地交付稳定的产品或应用。您可以通过“生成Mock接口”或“关联Mock接口”两种方式，为当前接口创建对应的模拟接口。模拟接口将提供模拟数据，便于进行接口调试和测试。" />
+          <Hints :text="t('service.mockApi.description')" />
         </div>
         <div class=" mt-4">
           <RadioGroup

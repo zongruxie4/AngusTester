@@ -1,8 +1,10 @@
 import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
+import { i18n } from '@xcan-angus/infra';
 
 export const { API_EXTENSION_KEY } = apiUtils;
 
 const { valueKey, enabledKey } = API_EXTENSION_KEY;
+const t = i18n.getI18n()?.global?.t || ((value: string): string => value);
 
 export type FormState = {
   attachments: {
@@ -43,23 +45,23 @@ export type FormState = {
 
 export const ToolBarMenus = [
   {
-    name: '基本',
+    name: t('service.case.addModal.toolbarMenus.request'),
     value: 'request'
   },
   {
-    name: '响应',
+    name: t('service.case.addModal.toolbarMenus.response'),
     value: 'response'
   },
   {
-    name: '耗时分析',
+    name: t('service.case.addModal.toolbarMenus.time'),
     value: 'time'
   },
   {
-    name: 'Cookie',
+    name: t('service.case.addModal.toolbarMenus.cookie'),
     value: 'cookie'
   },
   {
-    name: '断言结果',
+    name: t('service.case.addModal.toolbarMenus.assert'),
     value: 'assert'
   }
 ];

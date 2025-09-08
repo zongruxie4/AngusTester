@@ -75,9 +75,9 @@ const loadServiceApiIds = async () => {
 const domainRegex = /^(?=.{1,253}$)([a-z0-9]|[a-z0-9][a-z0-9\\-]{0,61}[a-z0-9])\.angusmock\.cloud$/;
 const serviceDomainValidate = async (_rule: Rule, value: string) => {
   if (!value) {
-    return Promise.reject(new Error('请输入域名'));
+    return Promise.reject(new Error(t('service.mockService.validation.domainRequired')));
   } else if (!domainRegex.test(value + '.angusmock.cloud')) {
-    return Promise.reject(new Error('请输入正确的域名'));
+    return Promise.reject(new Error(t('service.mockService.validation.domainInvalid')));
   } else {
     return Promise.resolve();
   }

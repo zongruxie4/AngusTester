@@ -270,7 +270,7 @@ watch([() => apiDebugRef.value], () => {
 <template>
   <Modal
     :visible="props.visible"
-    :title="props.caseId ? '编辑接口用例' : '生成接口用例'"
+    :title="props.caseId ? t('service.case.addModal.editTitle') : t('service.case.addModal.title')"
     :width="isZoom ? '100%' : '1260px'"
     class="addApiCaseModal"
     :wrapClassName="isZoom ? 'full-modal' : ''"
@@ -302,7 +302,7 @@ watch([() => apiDebugRef.value], () => {
         </Button>
       </div>
     </template>
-    <Tooltip :title="isZoom?'恢复':'全屏'">
+    <Tooltip :title="isZoom?t('service.case.addModal.restore'):t('service.case.addModal.fullScreen')">
       <Icon
         :icon="isZoom?'icon-tuichuzuida':'icon-zuidahua'"
         class="absolute right-10 top-3.5 text-3.5 cursor-pointer"
@@ -321,19 +321,19 @@ watch([() => apiDebugRef.value], () => {
           <div class="flex flex-col min-w-0 h-full">
             <div class="flex w-full">
               <FormItem
-                label="名称"
+                :label="t('service.case.addModal.nameLabel')"
                 name="name"
                 class="pr-2 flex-1"
                 v-bind="validateInfos.name">
                 <div>
                   <Input
                     v-model:value="formState.name"
-                    placeholder="输入用例名称，最多可输入400个字符"
+                    :placeholder="t('service.case.addModal.namePlaceholder')"
                     :maxlength="400" />
                 </div>
               </FormItem>
               <FormItem
-                label="类型"
+                :label="t('service.case.addModal.typeLabel')"
                 name="name"
                 class="pr-2"
                 required
@@ -342,7 +342,7 @@ watch([() => apiDebugRef.value], () => {
                   <SelectEnum
                     v-model:value="formState.type"
                     enumKey="ApisCaseType"
-                    placeholder="选择用例类型"
+                    :placeholder="t('service.case.addModal.typePlaceholder')"
                     :defaultActiveFirstOption="true"
                     :lazy="false"
                     class="!w-50">

@@ -852,6 +852,61 @@
       "searchServicePlaceholder": "查询服务名称",
       "deleteAllSuccess": "全部删除成功",
       "deleteAllAction": "全部删除",
+      "actions": {
+        "addApi": "添加接口",
+        "httpApi": "Http接口",
+        "webSocketApi": "WebSocket接口",
+        "syncConfig": "同步配置",
+        "securityConfig": "安全方案配置",
+        "serverConfig": "服务器配置",
+        "localImport": "本地导入",
+        "exportApi": "导出接口",
+        "mockService": "Mock服务",
+        "rename": "重命名",
+        "delete": "删除",
+        "translate": "翻译",
+        "clone": "克隆",
+        "permission": "权限",
+        "modifyStatus": "修改状态",
+        "batchModifyParams": "批量修改参数",
+        "batchAddParams": "批量添加参数",
+        "batchDelParams": "批量删除参数",
+        "batchEnabledParams": "批量启用参数",
+        "batchDisabledParams": "批量禁用参数",
+        "batchModifyAuth": "批量修改认证",
+        "batchModifyServer": "批量修改服务器",
+        "batchLinkVariable": "批量引用变量",
+        "batchDelVariable": "批量取消变量引用",
+        "batchLinkDataSet": "批量引用数据集",
+        "batchDelDataSet": "批量取消数据集引用",
+        "apiTestScript": "接口测试脚本",
+        "generateTestScript": "生成测试脚本",
+        "generateTestScriptTip": "自动生成接口功能、性能和稳定性测试脚本。",
+        "deleteTestScript": "删除测试脚本",
+        "deleteTestScriptTip": "删除接口功能、性能和稳定性测试脚本。",
+        "enableDisableTest": "启用或禁用测试",
+        "execServiceTest": "执行服务测试",
+        "execSmokeTest": "执行冒烟测试",
+        "execSecurityTest": "执行安全测试",
+        "execApiTest": "执行接口测试",
+        "execFuncTest": "执行功能测试",
+        "execPerfTest": "执行性能测试",
+        "execStabilityTest": "执行稳定性测试",
+        "apiTestTask": "接口测试任务",
+        "generateTestTask": "生成测试任务",
+        "generateTestTaskTip": "生成功能、性能和稳定性测试任务。",
+        "restartTestTask": "重新开始测试任务",
+        "restartTestTaskTip": "将任务更新为`待处理`，相关统计计数和状态会被清除。",
+        "reopenTestTask": "重新打开测试任务",
+        "reopenTestTaskTip": "将任务状态更新为`待处理`、 不清理统计计数和状态。",
+        "deleteTestTask": "删除测试任务",
+        "deleteTestTaskTip": "删除接口对应功能、性能和稳定性测试任务，包括测试脚本。"
+      },
+      "sortMenu": {
+        "sortByTime": "按时间排序",
+        "sortByName": "按名称排序",
+        "sortByAdd": "按添加人排序"
+      },
       "localImportModal": {
         "title": "本地导入"
       },
@@ -867,7 +922,9 @@
         "exportType_service": "按服务",
         "exportType_api": "按接口",
         "compType_all": "服务所有组件",
-        "compType_api": "仅接口关联组件"
+        "compType_api": "仅接口关联组件",
+        "serviceTip": "请先选择服务",
+        "apiTip": "请先选择接口"
       },
       "batchModifyModal": {
         "title": "批量修改",
@@ -1022,6 +1079,22 @@
       "requestTab": "请求体",
       "responseTab": "响应",
       "selectBodyCompPlaceholder": "选择使用body模型",
+      "navItems": {
+        "projectInfo": "服务信息",
+        "openapi": "文档信息",
+        "syncConfig": "同步配置",
+        "security": "安全方案配置",
+        "serverConfig": "服务器配置",
+        "performance": "测试指标",
+        "testInfo": "测试信息",
+        "activity": "活动",
+        "variable": "变量",
+        "shareList": "分享记录",
+        "agent": "代理",
+        "tag": "标签",
+        "component": "组件",
+        "serviceMock": "Mock服务"
+      },
       "form": {
         "name": "名称",
         "required": "必填",
@@ -1089,6 +1162,23 @@
         "action": "操作"
       },
       "execModalTitle": "执行用例",
+      "addModal": {
+        "title": "生成接口用例",
+        "editTitle": "编辑接口用例",
+        "restore": "恢复",
+        "fullScreen": "全屏",
+        "nameLabel": "名称",
+        "namePlaceholder": "输入用例名称，最多可输入400个字符",
+        "typeLabel": "类型",
+        "typePlaceholder": "选择类型",
+        "toolbarMenus": {
+          "request": "基本",
+          "response": "响应",
+          "time": "耗时分析",
+          "cookie": "Cookie",
+          "assert": "断言结果"
+        }
+      },
       "debugModal": {
         "proxyError": "发送请求出现错误（请检查请求参数或代理连接状态）",
         "wsProxyErr": "发送请求出现错误（请检查请求参数或是否触发浏览器“CORS-跨源资源共享”限制，若触发跨域限制请使用代理或配置接口服务允许跨域访问）",
@@ -2704,7 +2794,8 @@
       "addSuccess": "分享成功",
       "editSuccess": "分享成功",
       "deleteSuccess": "删除成功",
-      "copyToClipboardSuccess": "成功复制到剪贴板"
+      "copyToClipboardSuccess": "成功复制到剪贴板",
+      "copyLinkSuccess": "分享“{name}”，访问地址：{url}"
     },
     "list": {
       "title": "已添加的分享",
