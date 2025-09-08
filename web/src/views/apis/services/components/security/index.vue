@@ -96,7 +96,7 @@ const getRepeatedKeys = () => {
 // 保存安全需求
 const saveSecurity = async () => {
   if (!validate()) {
-    notification.warning('定义名称重复');
+    notification.warning(t('service.security.nameRule'));
     return;
   }
 

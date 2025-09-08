@@ -453,6 +453,14 @@
     "title": "关于文件",
     "addedTitle": "已添加空间",
     "searchPlaceholder": "查询空间名称",
+    "type": {
+      "directory": "文件夹",
+      "file": "文件",
+      "space": "空间"
+    },
+    "compressFile": {
+      "name": "压缩文件"
+    },
     "buttons": {
       "generateData": "生成数据",
       "addSpace": "添加空间",
@@ -958,7 +966,8 @@
             "parameterNamePlaceholder": "请输入参数名",
             "parameterValuePlaceholder": "请输入参数值，最多可输入4096个字符",
             "parameterTypePlaceholder": "请选择参数类型",
-            "selectFile": "选择文件"
+            "selectFile": "选择文件",
+            "summaryFileSize": "总上传文件大小不能超过{maxSize}"
           }
         },
         "selectApiModal": {

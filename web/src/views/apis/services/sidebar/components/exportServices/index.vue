@@ -166,17 +166,17 @@ const handleOk = async () => {
   }
 
   if (exportType.value === 'SERVICE' && !serviceIds.value.length) {
-    notification.warning('请先选择服务');
+    notification.warning(t('service.sidebar.exportServiceModal.serviceTip'));
     return;
   }
 
   if (exportType.value === 'APIS') {
     if (!serviceId.value || !serviceId.value.length) {
-      notification.warning('请先选择服务');
+      notification.warning(t('service.sidebar.exportServiceModal.serviceTip'));
       return;
     }
     if (!apiIds.value.length) {
-      notification.warning('请先选择接口');
+      notification.warning(t('service.sidebar.exportServiceModal.apiTip'));
       return;
     }
   }

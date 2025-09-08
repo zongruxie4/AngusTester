@@ -1,20 +1,24 @@
+import { i18n } from '@xcan-angus/infra';
+
+const t = i18n.getI18n()?.global?.t || ((value: string): string => value);
+
 export const actions = [
   {
-    name: '添加接口',
+    name: t('service.sidebar.actions.addApi'),
     icon: 'icon-tianjiajiekou',
     key: 'add',
     permission: 'ADD',
     disabled: false,
     children: [
       {
-        name: 'Http接口',
+        name: t('service.sidebar.actions.httpApi'),
         // icon: 'icon-tianjiajiekou',
         key: 'addApi',
         permission: 'ADD',
         disabled: false
       },
       {
-        name: 'WebSocket接口',
+        name: t('service.sidebar.actions.webSocketApi'),
         // icon: 'icon-tianjiajiekou',
         key: 'addSocket',
         permission: 'ADD',
@@ -30,49 +34,49 @@ export const actions = [
   //   disabled: false
   // },
   {
-    name: '同步配置',
+    name: t('service.sidebar.actions.syncConfig'),
     icon: 'icon-peizhifuwutongbu',
     key: 'sync-config',
     permission: 'MODIFY',
     disabled: false
   },
   {
-    name: '安全方案配置',
+    name: t('service.sidebar.actions.securityConfig'),
     icon: 'icon-renzhengtou',
     key: 'authentication-config',
     permission: 'MODIFY',
     disabled: false
   },
   {
-    name: '服务器配置',
+    name: t('service.sidebar.actions.serverConfig'),
     icon: 'icon-host',
     key: 'server-config',
     permission: 'MODIFY',
     disabled: false
   },
   {
-    name: '本地导入',
+    name: t('service.sidebar.actions.localImport'),
     icon: 'icon-daoru',
     key: 'local-import',
     permission: 'ADD',
     disabled: false
   },
   {
-    name: '导出接口',
+    name: t('service.sidebar.actions.exportApi'),
     icon: 'icon-daochujiekou',
     key: 'export-apis',
     permission: 'EXPORT',
     disabled: false
   },
   {
-    name: 'Mock服务',
+    name: t('service.sidebar.actions.mockService'),
     permission: 'VIEW',
     key: 'mock',
     icon: 'icon-mockjiedian',
     disabled: false
   },
   {
-    name: '重命名',
+    name: t('service.sidebar.actions.rename'),
     icon: 'icon-bianji',
     key: 'rename',
     permission: 'RENAME',
@@ -86,20 +90,20 @@ export const actions = [
   //   disabled: false
   // },
   {
-    name: '删除',
+    name: t('service.sidebar.actions.delete'),
     icon: 'icon-qingchu',
     key: 'delete',
     permission: 'DELETE',
     disabled: false
   },
   {
-    name: '翻译',
+    name: t('service.sidebar.actions.translate'),
     icon: 'icon-yuyan',
     key: 'translate',
     disabled: false
   },
   {
-    name: '克隆',
+    name: t('service.sidebar.actions.clone'),
     icon: 'icon-fuzhi',
     key: 'clone',
     permission: 'CLONE',
@@ -113,88 +117,88 @@ export const actions = [
   //   disabled: false
   // },
   {
-    name: '权限',
+    name: t('service.sidebar.actions.permission'),
     icon: 'icon-quanxian1',
     key: 'auth',
     permission: 'GRANT',
     disabled: false
   },
   {
-    name: '修改状态',
+    name: t('service.sidebar.actions.modifyStatus'),
     key: 'setStatus',
     icon: 'icon-fabu',
     permission: 'MODIFY',
     disabled: false
   },
   {
-    name: '批量修改参数',
+    name: t('service.sidebar.actions.batchModifyParams'),
     key: 'batchModify',
     icon: 'icon-xiugai',
     permission: 'MODIFY',
     disabled: false,
     children: [
       {
-        name: '批量添加参数',
+        name: t('service.sidebar.actions.batchAddParams'),
         key: 'batchAddParams',
         icon: 'icon-piliangtianjiacanshu',
         permission: 'MODIFY'
       },
       {
-        name: '批量修改参数',
+        name: t('service.sidebar.actions.batchModifyParams'),
         key: 'batchModifyParams',
         icon: 'icon-piliangxiugaicanshu',
         permission: 'MODIFY'
       },
       {
-        name: '批量删除参数',
+        name: t('service.sidebar.actions.batchDelParams'),
         key: 'batchDelParams',
         icon: 'icon-piliangshanchucanshu',
         permission: 'MODIFY'
       },
       {
-        name: '批量启用参数',
+        name: t('service.sidebar.actions.batchEnabledParams'),
         key: 'batchEnabledParams',
         icon: 'icon-piliangqiyongcanshu',
         permission: 'MODIFY'
       },
       {
-        name: '批量禁用参数',
+        name: t('service.sidebar.actions.batchDisabledParams'),
         key: 'batchDisabledParams',
         icon: 'icon-piliangjinyongcanshu',
         permission: 'MODIFY'
       },
       {
-        name: '批量修改认证',
+        name: t('service.sidebar.actions.batchModifyAuth'),
         key: 'batchModifyAuth',
         icon: 'icon-piliangxiugairenzheng',
         permission: 'MODIFY'
       },
       {
-        name: '批量修改服务器',
+        name: t('service.sidebar.actions.batchModifyServer'),
         key: 'batchModifyServer',
         icon: 'icon-piliangxiugaifuwuqi',
         permission: 'MODIFY'
       },
       {
-        name: '批量引用变量',
+        name: t('service.sidebar.actions.batchLinkVariable'),
         key: 'batchLinkVariable',
         icon: 'icon-piliangyinyongbianliang',
         permission: 'MODIFY'
       },
       {
-        name: '批量取消变量引用',
+        name: t('service.sidebar.actions.batchDelVariable'),
         key: 'batchDelVariable',
         icon: 'icon-piliangquxiaoyinyongbianliang',
         permission: 'MODIFY'
       },
       {
-        name: '批量引用数据集',
+        name: t('service.sidebar.actions.batchLinkDataSet'),
         key: 'batchLinkDataSet',
         icon: 'icon-piliangyinyongshujuji',
         permission: 'MODIFY'
       },
       {
-        name: '批量取消数据集引用',
+        name: t('service.sidebar.actions.batchDelDataSet'),
         key: 'batchDelDataSet',
         icon: 'icon-piliangquxiaoyinyongshujuji',
         permission: 'MODIFY'
@@ -202,38 +206,38 @@ export const actions = [
     ]
   },
   {
-    name: '接口测试脚本',
+    name: t('service.sidebar.actions.apiTestScript'),
     key: 'testScript',
     disabled: false,
     permission: 'TEST',
     icon: 'icon-ceshijiaoben',
     children: [
       {
-        name: '生成测试脚本',
+        name: t('service.sidebar.actions.generateTestScript'),
         key: 'setTestScript',
         permission: 'TEST',
         icon: 'icon-shengchengceshijiaoben',
-        tip: '自动生成接口功能、性能和稳定性测试脚本。'
+        tip: t('service.sidebar.actions.generateTestScriptTip')
       },
       // {
-      //   name: '更新测试脚本',
+      //   name: t('service.sidebar.actions.updateTestScript'),
       //   key: 'updateTestScript',
       //   permission: 'TEST',
       //   icon: 'icon-gengxinceshijiaoben',
-      //   tip: '更新接口对应性能和稳定性测试脚本'
+      //   tip: t('service.sidebar.actions.updateTestScriptTip')
       // },
       {
-        name: '删除测试脚本',
+        name: t('service.sidebar.actions.deleteTestScript'),
         key: 'delTestScript',
         permission: 'TEST',
         icon: 'icon-shanchuceshijiaoben',
-        tip: '删除接口功能、性能和稳定性测试脚本。'
+        tip: t('service.sidebar.actions.deleteTestScriptTip')
       }
     ]
   },
   {
 
-    name: '启用或禁用测试',
+    name: t('service.sidebar.actions.enableDisableTest'),
     key: 'enabledTest',
     disabled: false,
     permission: 'MODIFY',
@@ -278,20 +282,20 @@ export const actions = [
     // ]
   },
   {
-    name: '执行服务测试',
+    name: t('service.sidebar.actions.execServiceTest'),
     key: 'execService',
     disabled: false,
     permission: 'TEST',
     icon: 'icon-ceshijiaoben',
     children: [
       {
-        name: '执行冒烟测试',
+        name: t('service.sidebar.actions.execSmokeTest'),
         key: 'funcTestExecSmoke',
         permission: 'TEST',
         icon: 'icon-gengxinceshijiaoben'
       },
       {
-        name: '执行安全测试',
+        name: t('service.sidebar.actions.execSecurityTest'),
         key: 'funcTestExecSecurity',
         permission: 'TEST',
         icon: 'icon-shanchuceshijiaoben'
@@ -299,26 +303,26 @@ export const actions = [
     ]
   },
   {
-    name: '执行接口测试',
+    name: t('service.sidebar.actions.execApiTest'),
     key: 'exec',
     disabled: false,
     permission: 'TEST',
     icon: 'icon-ceshijiaoben',
     children: [
       {
-        name: '执行功能测试',
+        name: t('service.sidebar.actions.execFuncTest'),
         key: 'funcTestExec',
         permission: 'TEST',
         icon: 'icon-shengchengceshijiaoben'
       },
       {
-        name: '执行性能测试',
+        name: t('service.sidebar.actions.execPerfTest'),
         key: 'perfTestExec',
         permission: 'TEST',
         icon: 'icon-shanchuceshijiaoben'
       },
       {
-        name: '执行稳定性测试',
+        name: t('service.sidebar.actions.execStabilityTest'),
         key: 'stabilityTestExec',
         permission: 'TEST',
         icon: 'icon-shanchuceshijiaoben'
@@ -326,43 +330,43 @@ export const actions = [
     ]
   },
   {
-    name: '接口测试任务',
+    name: t('service.sidebar.actions.apiTestTask'),
     key: 'testTask',
     disabled: false,
     permission: 'TEST',
     icon: 'icon-ceshirenwu',
     children: [
       {
-        name: '生成测试任务',
+        name: t('service.sidebar.actions.generateTestTask'),
         key: 'setTest',
         icon: 'icon-shengchengceshirenwu1',
         permission: 'TEST',
         disabled: false,
-        tip: '生成功能、性能和稳定性测试任务。'
+        tip: t('service.sidebar.actions.generateTestTaskTip')
       },
       {
-        name: '重新开始测试任务',
+        name: t('service.sidebar.actions.restartTestTask'),
         key: 'reTest',
         icon: 'icon-zhongxinkaishiceshi',
         permission: 'TEST',
         disabled: false,
-        tip: '将任务更新为`待处理`，相关统计计数和状态会被清除。'
+        tip: t('service.sidebar.actions.restartTestTaskTip')
       },
       {
-        name: '重新打开测试任务',
+        name: t('service.sidebar.actions.reopenTestTask'),
         key: 'reopen',
         icon: 'icon-zhongxindakaiceshirenwu',
         permission: 'TEST',
         disabled: false,
-        tip: '将任务状态更新为`待处理`、 不清理统计计数和状态。'
+        tip: t('service.sidebar.actions.reopenTestTaskTip')
       },
       {
-        name: '删除测试任务',
+        name: t('service.sidebar.actions.deleteTestTask'),
         key: 'deleteTask',
         icon: 'icon-shanchuceshirenwu1',
         permission: 'TEST',
         disabled: false,
-        tip: '删除接口对应功能、性能和稳定性测试任务，包括测试脚本。'
+        tip: t('service.sidebar.actions.deleteTestTaskTip')
       }
     ]
   }

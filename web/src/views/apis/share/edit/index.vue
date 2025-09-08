@@ -157,7 +157,7 @@ const addOk = async () => {
   const [_error1, resp] = await apis.getShareDetail(data.id);
   loading.value = false;
   if (resp.data) {
-    toClipboard(`分享“${resp.data.name}”，访问地址：${resp.data.url}`).then(() => {
+    toClipboard(t('apiShare.messages.copyLinkSuccess', { name: resp.data.name, url: resp.data.url })).then(() => {
       notification.success(t('apiShare.messages.copySuccess'));
     });
   } else {

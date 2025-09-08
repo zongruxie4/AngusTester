@@ -168,7 +168,7 @@ export function useParameterNameInput (props: { defaultValue: { name: string }[]
       } else {
         if (duplicates.includes(name)) {
           nameErrorSet.value.add(id);
-          errorMessage.value.set(id, '名称重复');
+          errorMessage.value.set(id, t('dataset.detail.parameterNameInput.errors.duplicate'));
         }
 
         // Validate name format

@@ -1,100 +1,103 @@
-import { type NavItem } from '../services/apiGroup/PropsType';
+import { type NavItem } from '../../services/apiGroup/PropsType';
+import { i18n } from '@xcan-angus/infra';
+
+const t = i18n.getI18n()?.global?.t || ((value: string): string => value);
 
 export const serviceNavItem: NavItem[] = [
   {
     icon: 'icon-fuwuxinxi',
-    name: '服务信息',
+    name: t('service.dataModel.navItems.projectInfo'),
     value: 'projectInfo', // 1
     auth: 'GRANT',
     disabled: true
   },
   {
     icon: 'icon-wendangxinxi',
-    name: '文档信息',
+    name: t('service.dataModel.navItems.openapi'),
     value: 'openapi',
     auth: 'GRANT',
     disabled: true
   },
   {
     icon: 'icon-peizhifuwutongbu',
-    name: '同步配置',
+    name: t('service.dataModel.navItems.syncConfig'),
     value: 'syncConfig', // 6
     auth: 'MODIFY',
     disabled: true
   },
   {
     icon: 'icon-renzhengtou',
-    name: '安全方案配置',
+    name: t('service.dataModel.navItems.security'),
     value: 'security', // 7
     auth: 'MODIFY',
     disabled: true
   },
   {
     icon: 'icon-host',
-    name: '服务器配置',
+    name: t('service.dataModel.navItems.serverConfig'),
     value: 'serverConfig', // 8
     auth: 'MODIFY',
     disabled: true
   },
   {
     icon: 'icon-zhibiao',
-    name: '测试指标',
+    name: t('service.dataModel.navItems.performance'),
     value: 'performance', // 2
     auth: 'MODIFY',
     disabled: true
   },
   {
     icon: 'icon-zhihangceshi',
-    name: '测试信息',
+    name: t('service.dataModel.navItems.testInfo'),
     value: 'testInfo', // 3
     auth: 'VIEW',
     disabled: true
   },
   {
     icon: 'icon-lishijilu',
-    name: '活动',
+    name: t('service.dataModel.navItems.activity'),
     auth: 'VIEW',
     value: 'activity',
     disabled: true
   },
   {
     icon: 'icon-bianliang',
-    name: '变量',
+    name: t('service.dataModel.navItems.variable'),
     value: 'variable', // 4
     auth: 'MODIFY',
     disabled: true
   },
   // {
   //   icon: 'icon-fenxiang',
-  //   name: '分享记录',
+  //   name: t('service.dataModel.navItems.shareList'),
   //   value: 'shareList', // 5
   //   auth: 'MODIFY',
   //   disabled: true
   // },
   {
     icon: 'icon-jiekoudaili',
-    name: '代理',
+    name: t('service.dataModel.navItems.agent'),
     value: 'agent',
     auth: 'MODIFY',
     disabled: true
   },
   {
     icon: 'icon-biaoqian',
-    name: '标签',
+    name: t('service.dataModel.navItems.tag'),
     value: 'tag', // 9
     auth: 'MODIFY',
     disabled: true
   },
   {
     icon: 'icon-zujian',
-    name: '组件',
+    name: t('service.dataModel.navItems.component'),
     value: 'componnet', // componnet 10
     auth: 'MODIFY',
     disabled: true
   },
   {
     icon: 'icon-mockjiedian',
-    name: 'Mock服务',
+    name: t('service.dataModel.navItems.serviceMock'),
     value: 'serviceMock', // 11
     auth: 'VIEW',
     disabled: true

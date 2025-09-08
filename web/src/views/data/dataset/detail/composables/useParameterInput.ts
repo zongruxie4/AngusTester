@@ -176,7 +176,7 @@ export function useParameterInput (props: { defaultValue: Option[] }, emit: (eve
       } else {
         if (duplicates.includes(name)) {
           nameErrorSet.value.add(id);
-          errorMessage.value.set(id, '名称重复');
+          errorMessage.value.set(id, t('dataset.detail.parameterInput.errors.duplicate'));
         }
 
         // Validate name format

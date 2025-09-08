@@ -806,6 +806,61 @@
       "searchServicePlaceholder": "Search service name",
       "deleteAllSuccess": "All deleted successfully",
       "deleteAllAction": "Delete All",
+      "actions": {
+        "addApi": "Add API",
+        "httpApi": "HTTP API",
+        "webSocketApi": "WebSocket API",
+        "syncConfig": "Sync Configuration",
+        "securityConfig": "Security Scheme Configuration",
+        "serverConfig": "Server Configuration",
+        "localImport": "Local Import",
+        "exportApi": "Export API",
+        "mockService": "Mock Service",
+        "rename": "Rename",
+        "delete": "Delete",
+        "translate": "Translate",
+        "clone": "Clone",
+        "permission": "Permission",
+        "modifyStatus": "Modify Status",
+        "batchModifyParams": "Batch Modify Parameters",
+        "batchAddParams": "Batch Add Parameters",
+        "batchDelParams": "Batch Delete Parameters",
+        "batchEnabledParams": "Batch Enable Parameters",
+        "batchDisabledParams": "Batch Disable Parameters",
+        "batchModifyAuth": "Batch Modify Authentication",
+        "batchModifyServer": "Batch Modify Server",
+        "batchLinkVariable": "Batch Link Variables",
+        "batchDelVariable": "Batch Unlink Variables",
+        "batchLinkDataSet": "Batch Link Dataset",
+        "batchDelDataSet": "Batch Unlink Dataset",
+        "apiTestScript": "API Test Script",
+        "generateTestScript": "Generate Test Script",
+        "generateTestScriptTip": "Automatically generate functional, performance and stability test scripts for APIs.",
+        "deleteTestScript": "Delete Test Script",
+        "deleteTestScriptTip": "Delete functional, performance and stability test scripts for APIs.",
+        "enableDisableTest": "Enable or Disable Test",
+        "execServiceTest": "Execute Service Test",
+        "execSmokeTest": "Execute Smoke Test",
+        "execSecurityTest": "Execute Security Test",
+        "execApiTest": "Execute API Test",
+        "execFuncTest": "Execute Functional Test",
+        "execPerfTest": "Execute Performance Test",
+        "execStabilityTest": "Execute Stability Test",
+        "apiTestTask": "API Test Task",
+        "generateTestTask": "Generate Test Task",
+        "generateTestTaskTip": "Generate functional, performance and stability test tasks.",
+        "restartTestTask": "Restart Test Task",
+        "restartTestTaskTip": "Update task to 'Pending' status, related statistics and status will be cleared.",
+        "reopenTestTask": "Reopen Test Task",
+        "reopenTestTaskTip": "Update task status to 'Pending', without clearing statistics and status.",
+        "deleteTestTask": "Delete Test Task",
+        "deleteTestTaskTip": "Delete functional, performance and stability test tasks for APIs, including test scripts."
+      },
+      "sortMenu": {
+        "sortByTime": "Sort by time",
+        "sortByName": "Sort by name",
+        "sortByAdd": "Sort by add"
+      },
       "localImportModal": {
         "title": "Local Import"
       },
@@ -821,7 +876,9 @@
         "exportType_service": "By Service",
         "exportType_api": "By API",
         "compType_all": "All components of the service",
-        "compType_api": "Only interface-related components"
+        "compType_api": "Only interface-related components",
+        "serviceTip": "Please select service first",
+        "apiTip": "Please select API first"
       },
       "batchModifyModal": {
         "title": "Batch Modify",
@@ -976,6 +1033,22 @@
       "requestTab": "Request Body",
       "responseTab": "Response",
       "selectBodyCompPlaceholder": "Select to use body model",
+      "navItems": {
+        "projectInfo": "Service Information",
+        "openapi": "Document Information",
+        "syncConfig": "Sync Configuration",
+        "security": "Security Scheme Configuration",
+        "serverConfig": "Server Configuration",
+        "performance": "Test Metrics",
+        "testInfo": "Test Information",
+        "activity": "Activity",
+        "variable": "Variables",
+        "shareList": "Share Records",
+        "agent": "Agent",
+        "tag": "Tags",
+        "component": "Components",
+        "serviceMock": "Mock Service"
+      },
       "form": {
         "name": "Name",
         "required": "Required",
@@ -1043,6 +1116,23 @@
         "action": "Action"
       },
       "execModalTitle": "Execute Case",
+      "addModal": {
+        "title": "Generate API Case",
+        "editTitle": "Edit API Case",
+        "restore": "Restore",
+        "fullScreen": "Full Screen",
+        "nameLabel": "Name",
+        "namePlaceholder": "Enter case name, up to 400 characters",
+        "typeLabel": "Type",
+        "typePlaceholder": "Select type",
+        "toolbarMenus": {
+          "request": "Basic",
+          "response": "Response",
+          "time": "Duration Analysis",
+          "cookie": "Cookie",
+          "assert": "Assertion Results"
+        }
+      },
       "debugModal": {
         "proxyError": "Request error (please check request parameters or proxy connection status)",
         "wsProxyErr": "Request error (please check request parameters or whether the browser triggers the \"CORS-Cross-Origin Resource Sharing\" limit, if the cross-domain limit is triggered, please use a proxy or configure the interface service to allow cross-domain access)",
@@ -2656,7 +2746,8 @@
       "addSuccess": "Share successful",
       "editSuccess": "Share successful",
       "deleteSuccess": "Delete successful",
-      "copyToClipboardSuccess": "Successfully copied to clipboard"
+      "copyToClipboardSuccess": "Successfully copied to clipboard",
+      "copyLinkSuccess": "Share \"{name}\", access address: {url}"
     },
     "list": {
       "title": "Added Shares",

@@ -39,7 +39,7 @@ onMounted(() => {
 
 <template>
   <div class="h-full py-3.5">
-    <Hints class="mx-3" text="授权给指定的“项目、服务、接口”操作权限给用户、部门、组，授予权限时”查看”权限是必须的。用户只能授权自己有授权权限的项目/服务/接口。" />
+    <Hints class="mx-3" :text="t('service.authSetting.hints.authDescription')" />
     <Tabs
       v-model:activeKey="activeKey"
       size="small"

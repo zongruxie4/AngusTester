@@ -726,15 +726,15 @@ const listProps = ref({
 // 排序 选项
 const sortProps = {
   menuItems: [{
-    name: '按时间排序',
+    name: t('service.sidebar.sortMenu.sortByTime'),
     key: 'createdDate',
     orderSort: 'DESC'
   }, {
-    name: '按名称排序',
+    name: t('service.sidebar.sortMenu.sortByName'),
     key: 'name',
     orderSort: 'ASC'
   }, {
-    name: '按添加人排序',
+    name: t('service.sidebar.sortMenu.sortByAdd'),
     key: 'createdBy',
     orderSort: 'ASC'
   }]

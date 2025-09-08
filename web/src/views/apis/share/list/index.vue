@@ -158,7 +158,7 @@ const editVersion = (record = {}) => {
 
 const copyLink = async (record: {id: string; name: string; url?: string} = { name: '', id: '' }) => {
   if (record.url) {
-    toClipboard(`分享“${record.name}”，访问地址：${record.url}`).then(() => {
+    toClipboard(t('apiShare.messages.copyLinkSuccess', { name: record.name, url: record.url })).then(() => {
       notification.success(t('apiShare.messages.copyToClipboardSuccess'));
     });
     return;
@@ -168,7 +168,7 @@ const copyLink = async (record: {id: string; name: string; url?: string} = { nam
     return;
   }
   record.url = data?.url;
-  toClipboard(`分享“${record.name}”，访问地址：${record.url}`).then(() => {
+  toClipboard(t('apiShare.messages.copyLinkSuccess', { name: record.name, url: record.url })).then(() => {
     notification.success(t('apiShare.messages.copyToClipboardSuccess'));
   });
 };
