@@ -287,7 +287,7 @@ export function useNodeData () {
    */
   const deleteNode = (nodeId: string, nodeName: string) => {
     modal.confirm({
-      content: `确定删除节点【${nodeName}】吗?`,
+      content: t('node.nodeDetail.confirm.deleteNode', { name: nodeName }),
       onOk: async () => {
         try {
           const [error] = await node.deleteNode({ ids: [nodeId] });
