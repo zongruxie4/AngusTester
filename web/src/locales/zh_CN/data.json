@@ -966,7 +966,8 @@
             "parameterNamePlaceholder": "请输入参数名",
             "parameterValuePlaceholder": "请输入参数值，最多可输入4096个字符",
             "parameterTypePlaceholder": "请选择参数类型",
-            "selectFile": "选择文件"
+            "selectFile": "选择文件",
+            "summaryFileSize": "总上传文件大小不能超过{maxSize}"
           }
         },
         "selectApiModal": {

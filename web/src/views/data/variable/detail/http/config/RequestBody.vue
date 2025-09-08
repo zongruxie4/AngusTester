@@ -110,7 +110,7 @@ const errorNumChange = (value: number) => {
 
 const customRequest = async ({ file }) => {
   if (file.size > props.maxFileSize) {
-    notification.error(`总上传文件大小不能超过${utils.formatBytes(props.maxFileSize)}`);
+    notification.error(t('dataVariable.detail.httpVariable.httpConfigs.requestBodyParameter.summaryFileSize', { maxSize: utils.formatBytes(props.maxFileSize) }));
     return;
   }
 
