@@ -330,8 +330,8 @@ export enum ExecStatus {
   RUNNING = 'RUNNING',
   STOPPED = 'STOPPED',
   FAILED = 'FAILED',
-  COMPLETED = 'COMPLETED',
-  TIMEOUT = 'TIMEOUT'
+  TIMEOUT = 'TIMEOUT',
+  COMPLETED = 'COMPLETED'
 }
 
 export enum ScenarioMonitorStatus {

@@ -228,11 +228,9 @@
       "enterScriptDescription": "Please enter script description, max 800 characters"
     },
     "header": {
-      "title": "Through \"Execution\" you can directly run a test script or Mock data script. When running a test script, you can specify whether to update the execution test results to test resources (scenarios, interfaces, or test cases) through the \"Update Test Results\" option in the execution configuration.",
-      "subTitle": "Note: \"Execution\" configuration has higher priority than \"Script\" configuration; after execution is added, only the execution creator, execution script creator, application administrator and system administrator can modify and run, other users are only allowed to view.",
-      "contentTitle": "Here you and your team can complete the following work:",
-      "contentList1": "Initiate testing based on a test script or generate test data based on a Mock data script;",
-      "contentList2": "View execution sampling indicators in real-time and analyze test results."
+      "title": "You can directly execute test scripts or Mock data scripts, with the option to update test results to relevant resources. Execution configurations take precedence over script configurations, and only script creators, execution creators, application admins, and system admins can modify or run them—other users have view-only access. Usage scenarios include:",
+      "contentList1": "Launch tests by running test scripts, or generate test data using Mock scripts.",
+      "contentList2": "Monitor execution metrics in real-time and analyze test results."
     },
     "count": {
       "byInterface": "By Interface",
@@ -241,7 +239,7 @@
     },
     "chartInfo": {
       "scriptType": "Script Type",
-      "executionStatus": "Execution Status"
+      "executionStatus": "Status"
     },
     "add": {
       "name": "Name",

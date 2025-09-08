@@ -83,7 +83,7 @@ onMounted(() => {
         :config="dashboardConfig"
         :apiRouter="dashboardConstants.apiRouter"
         :resource="dashboardConstants.resource"
-        :barTitle="dashboardConstants.barTitle"
+        :barTitle="dashboardConstants.barTitle.value"
         :dateType="dashboardConstants.dateType"
         :showChartParam="dashboardConstants.showChartParam" />
     </div>

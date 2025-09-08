@@ -4,12 +4,12 @@ import { useI18n } from 'vue-i18n';
 import { useChartData } from './composables/useChartData';
 import Charts from './PieChart.vue';
 
-import {ProjectInfo} from "@/types/types";
+import { ProjectDisplayInfo } from '@/layout/types';
 
 const { t } = useI18n();
 
 // Inject project information
-const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
+const projectInfo = inject<Ref<ProjectDisplayInfo>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
 const projectId = computed(() => projectInfo.value?.id);
 
 // Use chart data composable

@@ -29,6 +29,7 @@ const {
   loading,
   projectSearchState,
   currentProject,
+  currentProjectId,
   addProjectVisible,
   userInfo,
   loadProjectData,
@@ -81,6 +82,7 @@ const handleProjectClick = (project: any): void => {
 const provideAppContext = (): void => {
   provide('proTypeShowMap', projectTypeVisibility);
   provide('projectInfo', currentProject);
+  provide('projectId', currentProjectId);
   provide('changeProjectInfo', changeProjectInfo);
   provide('getNewCurrentProject', loadProjectData);
 };
@@ -105,6 +107,7 @@ onMounted(async () => {
   }, { immediate: true });
 });
 
+// Provide app context immediately - Vue 3 provide/inject is reactive
 provideAppContext();
 </script>
 <template>

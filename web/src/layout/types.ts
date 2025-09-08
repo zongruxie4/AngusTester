@@ -22,11 +22,11 @@ export interface ProjectInfo {
  */
 export interface ProjectDisplayInfo {
   id: string;
-  avatar: string;
+  avatar?: string;
   name: string;
-  createdBy: string;
-  ownerId: string;
-  type: EnumMessage<ProjectType>;
+  createdBy?: string;
+  ownerId?: string;
+  type?: EnumMessage<ProjectType>;
 }
 
 /**
