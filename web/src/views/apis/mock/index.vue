@@ -5,7 +5,7 @@ import { Spin as ASpin, Tooltip } from 'ant-design-vue';
 import { AsyncComponent, AuthorizeModal, Dropdown, Colon, Icon, IconCopy, modal, notification, Spin, Table } from '@xcan-angus/vue-ui';
 import { useRoute } from 'vue-router';
 import router from '@/router';
-import { TESTER } from '@xcan-angus/infra';
+import { TESTER, appContext } from '@xcan-angus/infra';
 import { MockServicePermission, MockServiceStatus } from '@/enums/enums';
 
 // Import composables
@@ -25,7 +25,7 @@ const SearchPanel = defineAsyncComponent(() => import('@/views/apis/mock/SearchP
 // Use composables
 const { t } = useI18n();
 const route = useRoute();
-const appInfo = inject('appInfo') as any;
+const appInfo = appContext.getAccessApp();
 
 // Use mock data composable
 const mockData = useMockData();
@@ -246,8 +246,6 @@ const authFlagChange = ({ auth }: { auth: boolean }) => {
               disabled>
               <Icon icon="icon-qingchu" class="mr-1 text-3.5" />{{ t('actions.delete') }}
             </a>
-            <!-- TODO 调通Mock服务 '权限' 页面  -->
-            <!-- TODO 下拉操作中强制删除按钮是禁用状态，后台接口返回权限有删除授权  -->
             <Dropdown
               :admin="false"
               :menuItems="actionMenus"
@@ -269,7 +267,7 @@ const authFlagChange = ({ auth }: { auth: boolean }) => {
   <AsyncComponent :visible="authVisible">
     <AuthorizeModal
       v-model:visible="authVisible"
-      enumKey="MockServicePermission"
+      :enumKey="MockServicePermission"
       :appId="appInfo?.id"
       :listUrl="`${TESTER}/mock/service/${authData?.id}/auth`"
       :delUrl="`${TESTER}/mock/service/auth`"
@@ -277,7 +275,7 @@ const authFlagChange = ({ auth }: { auth: boolean }) => {
       :updateUrl="`${TESTER}/mock/service/auth`"
       :enabledUrl="`${TESTER}/mock/service/${authData?.id}/auth/enabled`"
       :initStatusUrl="`${TESTER}/mock/service/${authData?.id}/auth/status`"
-      :onTips="t('mock.auth.onTip')"
+      :onTips="t('mock.auth.onTips')"
       :offTips="t('mock.auth.offTips')"
       :title="t('mock.auth.title')"
       @change="authFlagChange" />
