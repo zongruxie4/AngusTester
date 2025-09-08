@@ -24,9 +24,11 @@ const {
   loading,
   selectedRecord,
   handleSearch,
+  params,
   handlePaginationChange,
   handleRecordSelect,
-  refreshRecords
+  refreshRecords,
+  
 } = useRequestRecords(props.id);
 
 const {
@@ -68,7 +70,6 @@ watch(selectedRecord, (newRecord) => {
 }, { immediate: true });
 </script>
 <template>
-  <!-- TODO 请求记录分页不生效 -->
   <Hints :text="t('mock.detail.requestRecord.hints')" class="mb-2 text-3.5" />
   <PureCard class="p-3.5 flex" style="height: calc(100% - 28px);">
     <Spin
@@ -124,7 +125,7 @@ watch(selectedRecord, (newRecord) => {
           </div>
         </div>
         <Pagination
-          :current="1"
+          :current="params.pageNo"
           :pageSize="10"
           :total="total"
           :hideOnSinglePage="false"

@@ -163,8 +163,7 @@ export function useMockUI () {
       key: 'del',
       icon: 'icon-qingchu',
       name: t('mock.actions.forceDelete'),
-      permission: MockServicePermission.DELETE,
-      disabled: true
+      permission: MockServicePermission.DELETE
     },
     {
       key: 'auth',
