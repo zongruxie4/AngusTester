@@ -356,7 +356,7 @@ onMounted(async () => {
     const [error] = await services.loadInfo(props.info?.id);
     if (error) {
       showQuckEbtrace.value = true;
-      notification.warning(t('service.apiGroup.messages.serviceNotExist'));
+      notification.warning(t('service.sidebar.apiGroup.messages.serviceNotExist'));
     }
   }
   accessToken.value = cookieUtils.getTokenInfo().access_token;
@@ -401,7 +401,7 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
                 @click="viewModeChange">
                 <div class="flex items-center space-x-1">
                   <Icon icon="icon-daimashitu" class="text-3.5" />
-                  <span>{{ t('service.apiGroup.viewMode.codeView') }}</span>
+                  <span>{{ t('service.sidebar.apiGroup.viewMode.codeView') }}</span>
                 </div>
               </Button>
               <Button
@@ -411,7 +411,7 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
                 @click="viewModeChange">
                 <div class="flex items-center space-x-1">
                   <Icon icon="icon-yemianshitu" class="text-3.5" />
-                  <span>{{ t('service.apiGroup.viewMode.pageView') }}</span>
+                  <span>{{ t('service.sidebar.apiGroup.viewMode.pageView') }}</span>
                 </div>
               </Button>
               <Button
@@ -420,14 +420,14 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
                 @click="refreshDoc">
                 <div class="flex items-center space-x-1">
                   <Icon icon="icon-shuaxin" class="text-3.5" />
-                  <span>{{ t('service.apiGroup.viewMode.refresh') }}</span>
+                  <span>{{ t('service.sidebar.apiGroup.viewMode.refresh') }}</span>
                 </div>
               </Button>
             </div>
           </template>
           <TabPane
             key="api"
-            :tab="t('service.apiGroup.tabs.api')"
+            :tab="t('service.sidebar.apiGroup.tabs.api')"
             class="flex flex-col">
             <InterfaceHeader
               v-model:name="state.name"
@@ -463,11 +463,11 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
               @loadApis="refresh"
               @openMock="openMock" />
           </TabPane>
-          <TabPane key="testResult" :tab="t('service.apiGroup.tabs.testResult')">
+          <TabPane key="testResult" :tab="t('service.sidebar.apiGroup.tabs.testResult')">
             <ServiceTestInfo
               :serviceId="state.serviceId" />
           </TabPane>
-          <TabPane key="mock" :tab="t('service.apiGroup.tabs.mock')">
+          <TabPane key="mock" :tab="t('service.sidebar.apiGroup.tabs.mock')">
             <ServiceMockVue
               :id="state.serviceId"
               class="pt-2 pr-5"
@@ -475,7 +475,7 @@ provide('apiBaseInfo', ref({ serviceId: props.serviceId }));
           </TabPane>
           <TabPane
             key="doc"
-            :tab="t('service.apiGroup.tabs.doc')"
+            :tab="t('service.sidebar.apiGroup.tabs.doc')"
             style="width: 100%; height: 100%">
             <OpenApiDocument
               ref="openapiRef"

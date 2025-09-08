@@ -2,6 +2,9 @@
 import { inject, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { Popover, Radio } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import { services } from '@/api/tester';
 import { HttpServer } from './PropsType';

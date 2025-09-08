@@ -52,6 +52,7 @@
       "projectConfig": "Project Configuration"
     },
     "configuration": {
+      "type_service": "Service",
       "sync": "Sync Configuration",
       "security": "Security Scheme Configuration",
       "server": "Server Configuration",
@@ -109,6 +110,7 @@
       "importSuccess": "Import Successful",
       "released": "Released",
       "unreleased": "Draft",
+      "generated": "Generated Service",
       "searchPanel": {
         "name_placeholder": "Search name, description",
         "created_placeholder": "Select creator",
@@ -126,6 +128,9 @@
         "lastModifiedBy": "Last Modified By",
         "lastModifiedDate": "Last Modified Date",
         "actions": "Actions"
+      },
+      "deleteFirm": {
+        "title": "Are you sure to delete design【{name}】?"
       }
     },
     "importServiceModal": {
@@ -1121,6 +1126,107 @@
       }
     },
     "apis": {
+      "tabs": {
+        "debug": "Debug",
+        "case": "Case",
+        "test": "Test",
+        "mock": "Mock",
+        "doc": "Document"
+      },
+      "actions": {
+        "share": "Share"
+      },
+      "requestTabs": {
+        "parameters": "Request Parameters",
+        "header": "Request Headers",
+        "cookie": "Cookie",
+        "authentication": "Authorization",
+        "requestBody": "Request Body",
+        "parametric": "Parameterization",
+        "assert": "Assertion",
+        "setting": "Settings"
+      },
+      "toolbar": {
+        "statusCode": "Status Code:",
+        "duration": "Duration:",
+        "size": "Size:"
+      },
+      "errors": {
+        "invalidUrl": "Error!",
+        "invalidUrlDescription": "Invalid API address, please re-enter!",
+        "parameterValidationFailed": "Parameter validation failed",
+        "headerValidationFailed": "Request header parameter validation failed",
+        "cookieValidationFailed": "Cookie parameter validation failed",
+        "bodyValidationFailed": "Request body data validation failed",
+        "assertionValidationFailed": "Assertion data validation failed",
+        "proxyNotConnected": "Proxy not connected, please check proxy configuration",
+        "requestErrorWithProxy": "Request error occurred (please check request parameters or proxy connection status)",
+        "requestErrorWithCors": "Request error occurred (please check request parameters or whether browser 'CORS-Cross-Origin Resource Sharing' restrictions are triggered. If cross-origin restrictions are triggered, please use proxy or configure API service to allow cross-origin access)"
+      },
+      "notifications": {
+        "saveSuccess": "API saved successfully",
+        "copyUrlSuccess": "URL copied successfully",
+        "apiPublishedWarning": "API is published and cannot be modified"
+      },
+      "hints": {
+        "notes": "Notes",
+        "parameterSerialization": "Parameter Serialization",
+        "serializationDescription": "AngusTester serialization rules are based on a subset of UR templates defined by RFC6570. Supports OAS3 Schema data types including: string, boolean, integer, number, object, array.",
+        "serializationDescription_pre": "AngusTester serialization rules are based on a subset of UR templates defined by",
+        "serializationDescription_later": ". Supports OAS3 Schema data types including: string, boolean, integer, number, object, array."
+      },
+      "menus": {
+        "request": "Basic",
+        "response": "Response",
+        "time": "Duration Analysis",
+        "cookie": "Cookie",
+        "assert": "Assertion Results",
+        "define": "Definition",
+        "generateCode": "Code"
+      },
+      "docInfo": {
+        "pathParams": {
+          "title": "Path Parameters",
+          "rules": {
+            "primitive": "Primitive id = 5 -> /users/5",
+            "array": "Array id = [3, 4, 5] -> /users/3,4,5",
+            "object": "Object id = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> /users/role=admin,firstName=Alex",
+            "limit": "> Only supports primitive types, primitive type arrays, and object types. Other complex type data models are not parsed."
+          }
+        },
+        "queryFormParams": {
+          "title": "Query and Form Parameters",
+          "rules": {
+            "primitive": "Primitive id = 5 -> id=5",
+            "array": "Array id = [3, 4, 5] -> id[0]=3&id[1]=4&id[2]=5",
+            "object": "Object id = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> id.role=admin&id.firstName=Alex",
+            "support": "> Supports all types, including object and array type nesting."
+          }
+        },
+        "headerParams": {
+          "title": "Header Parameters",
+          "rules": {
+            "primitive": "Primitive X-MyHeader = 5 ->  X-MyHeader: 5",
+            "array": "Array X-MyHeader = [3, 4, 5] -> X-MyHeader: 3,4,5",
+            "object": "Object X-MyHeader = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> X-MyHeader: role=admin,firstName=Alex",
+            "limit": "> Only supports primitive types, primitive type arrays, and object types. Other complex type data models are not parsed."
+          }
+        },
+        "cookieParams": {
+          "title": "Cookie Parameters",
+          "rules": {
+            "primitive": "Primitive id = 5 ->  Cookie: id=5",
+            "array": "Array id = [3, 4, 5] -> Cookie: id=3,4,5",
+            "object": "Object id = {\"role\": \"admin\", \"firstName\": \"Alex\"} -> Cookie: id=role,admin,firstName,Alex",
+            "limit": "> Only supports primitive types, primitive type arrays, and object types. Other complex type data models are not parsed."
+          }
+        }
+      },
+      "debugTip": {
+        "componentSync": "Component debug value modification and synchronization: Modifying debug values for Query, Path, Header, and Form type parameters that reference components will synchronize modifications to the component, and other interfaces that reference the component will also be synchronized; while Raw request body content that references components will not synchronize modifications to the component when debug values are modified, meaning Raw request body component debug value modifications will not affect other interfaces.",
+        "variableSupport": "Locations where variables are supported in interfaces: Security schemes (Authorization), Path parameters, Query parameters, Header parameters, request body Form parameters, request body Raw, assertion condition expressions, and assertion expected values.",
+        "functionSupport": "Locations where functions are supported in interfaces: Path parameters, Query parameters, Header parameters, request body Form parameters, and request body Raw."
+      },
       "collapseButtonGroup": {
         "edit": "Edit",
         "clone": "Clone",
@@ -1164,11 +1270,16 @@
         "apiInfo": "API Info",
         "performance": "Performance",
         "testInfo": "Test Result",
-        "case": "Case",
         "activity": "Activity",
         "agent": "Agent",
         "code": "Code",
-        "apiMock": "Mock API"
+        "apiMock": "Mock API",
+        "saveUnarchived": "Save to Unarchived",
+        "save": "Archive to Service",
+        "indicator": "API Metrics",
+        "test": "Test Results",
+        "case": "API Cases",
+        "variable": "Variables"
       },
       "serviceNav": {
         "projectInfo": "Service Info",

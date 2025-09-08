@@ -249,7 +249,7 @@ onMounted(() => {
   <div class="mt-2.5 mb-3.5">
     <div class="flex">
       <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-        <span>快速查询</span>
+        <span>{{ t('quickSearch') }}</span>
         <Colon />
       </div>
       <div class="flex  flex-wrap ml-2">
