@@ -44,11 +44,11 @@ export function useExecutionList () {
 
   // Letter map for time unit conversion
   const letterMap = {
-    ms: '毫秒',
-    s: '秒',
-    min: '分钟',
-    h: '小时',
-    d: '天'
+    ms: t('execution.letterMap.ms'),
+    s: t('execution.letterMap.s'),
+    min: t('execution.letterMap.min'),
+    h: t('execution.letterMap.h'),
+    d: t('execution.letterMap.d')
   };
 
   // Input refs for inline editing

@@ -2,6 +2,7 @@ import { ref } from 'vue';
 import { notification } from '@xcan-angus/vue-ui';
 import { exec } from '@/api/ctrl';
 import type { UseConfigData } from '../types';
+import { useI18n } from 'vue-i18n';
 
 /**
  * Composable for managing configuration data in execution detail
@@ -15,6 +16,7 @@ import type { UseConfigData } from '../types';
  * @returns Configuration data management functions and reactive state
  */
 export const useConfigData = (execId: string, execName: string, scriptInfo: any, loading: any, emit: any) => {
+  const { t } = useI18n();
   // Reference to the execution setting form component
   const execSettingFormRef = ref();
 
@@ -106,7 +108,7 @@ export const useConfigData = (execId: string, execName: string, scriptInfo: any,
     }
 
     // Show success notification
-    notification.success('修改成功');
+    notification.success(t('tips.modifySuccess'));
   };
 
   // Return reactive state and functions
