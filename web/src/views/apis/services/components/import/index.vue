@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { inject, onMounted, ref } from 'vue';
+import { inject, onMounted, ref, Ref } from 'vue';
 import { Button, Popover, Radio, RadioGroup, UploadDragger } from 'ant-design-vue';
 import { Icon, Input, notification, Spin, Validate } from '@xcan-angus/vue-ui';
 import postmanToOpenApi from '@xcan-angus/postman-to-openapi';
@@ -28,7 +28,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 const { t } = useI18n();
 
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 // eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
@@ -83,7 +84,7 @@ const saveModalData = async () => {
   obj.append('strategyWhenDuplicated', strategyWhenDuplicated.value);
   obj.append('deleteWhenNotExisted', deleteWhenNotExisted.value.toString());
   obj.append('importSource', importSource.value);
-  obj.append('projectId', projectInfo.value.id);
+  obj.append('projectId', projectId.value);
   if (props.serviceId) {
     obj.append('serviceId', props.serviceId);
   } else {

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 // Vue composition API imports
-import { computed, defineAsyncComponent, inject, onMounted, provide, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, inject, onMounted, provide, ref, Ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 // UI component imports
@@ -24,7 +24,8 @@ const ProjectDetail = defineAsyncComponent(() => import('@/views/project/project
 
 // Reactive data setup
 const userInfo = ref(appContext.getUser());
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 const browserTabRef = ref();
 const projectHomeRef = ref();
 
@@ -113,7 +114,7 @@ provide('delTabPane', delTabPane);
         <ProjectHome
           ref="projectHomeRef"
           :userInfo="transformedUserInfo"
-          :projectId="projectInfo?.id"
+          :projectId="projectId"
           @delOk="delTabPane" />
       </template>
 

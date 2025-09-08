@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, inject } from 'vue';
+import { ref, Ref, onMounted, inject } from 'vue';
 import { STORAGE, routerUtils } from '@xcan-angus/infra';
 import { Select, Input, Hints } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
@@ -18,7 +18,8 @@ const formState = ref({
 const { t } = useI18n();
 
 const formRef = ref();
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 const appInfo = inject('appInfo', ref({ code: '' }));
 
 onMounted(async () => {
@@ -90,13 +91,13 @@ defineExpose({
       :label="t('gendata.spaceStoreConfig.selectSpace')"
       :rules="{required: true, message: t('gendata.spaceStoreConfig.validation.selectSpace')}">
       <Select
-        v-if="projectInfo?.id"
+        v-if="projectId"
         :value="formState.spaceId"
         defaultActiveFirstOption
         showSearch
         :defaultOptions="defaultSpace"
         :lazy="false"
-        :action="`${STORAGE}/space?projectId=${projectInfo?.id}&appCode=${appInfo.code}&hasPermission=OBJECT_WRITE`"
+        :action="`${STORAGE}/space?projectId=${projectId}&appCode=${appInfo.code}&hasPermission=OBJECT_WRITE`"
         :params="selectParams"
         :fieldNames="{label: 'name', value: 'id'}"
         @change="onSpaceChaneg" />

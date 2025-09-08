@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { inject, reactive, ref, watch } from 'vue';
+import { inject, reactive, ref, Ref, watch } from 'vue';
 import { Icon, Input, Modal, notification, Spin } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Tooltip } from 'ant-design-vue';
 import { LoadingOutlined } from '@ant-design/icons-vue';
@@ -32,14 +32,15 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const userInfo: any = ref(appContext.getUser());
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void;
   (e: 'update', id?:string):void;
   (e: 'ok'):void;
 }>();
 
-const addCaseSizeKey = `${userInfo.value?.id}${projectInfo.value.id}addApiCaseSize`;
+const addCaseSizeKey = `${userInfo.value?.id}${projectId.value}addApiCaseSize`;
 
 const formState = ref({
   description: '',

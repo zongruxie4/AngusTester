@@ -1,7 +1,5 @@
-<!-- eslint-disable @typescript-eslint/no-empty-function -->
-<!-- eslint-disable @typescript-eslint/ban-types -->
 <script lang="ts" setup>
-import { inject, onMounted, reactive, ref } from 'vue';
+import { inject, onMounted, reactive, ref, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Form, FormItem } from 'ant-design-vue';
 import { Input, notification, Select, SelectUser, TreeSelect, IconText } from '@xcan-angus/vue-ui';
@@ -30,7 +28,8 @@ const close = inject('close', () => ({}));
 const auths = inject('auths', ref<string[]>([]));
 const userInfo = ref(appContext.getUser());
 const isUnarchived = inject('isUnarchived', { value: false });
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 // 更新左侧未归档列表
 // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -202,7 +201,7 @@ onMounted(async () => {
     <FormItem :label="t('service.webSocketSave.form.serviceId.label')" name="serviceId">
       <TreeSelect
         v-model:defaultValue="defaultProject"
-        :action="`${TESTER}/services?projectId=${projectInfo.id}&hasPermission=ADD&fullTextSearch=true`"
+        :action="`${TESTER}/services?projectId=${projectId}&hasPermission=ADD&fullTextSearch=true`"
         :allowClear="false"
         :disabled="!auths.includes('MODIFY')||!isUnarchived"
         :fieldNames="{children:'children', label:'name', value: 'id'}"

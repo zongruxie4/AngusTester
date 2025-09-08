@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, inject, nextTick, onBeforeUnmount, onMounted, ref, Ref, watch } from 'vue';
 import { ActivityInfo, AsyncComponent, Icon, notification, Scroll, SmartComment } from '@xcan-angus/vue-ui';
 import { Button, Popover, TabPane, Tabs } from 'ant-design-vue';
 import { XCanDexie, TESTER, duration, toClipboard, appContext } from '@xcan-angus/infra';
@@ -61,12 +61,10 @@ const emits = defineEmits<{(e: 'onClick', type: CaseActionAuth, value: CaseListO
 }>();
 
 const isAdmin = inject('isAdmin', ref(false));
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 const userInfo = ref(appContext.getUser());
 const appInfo = ref(appContext.getAccessApp());
-const projectId = computed(() => {
-  return projectInfo.value?.id;
-});
 
 const { getActionAuth } = useCaseActionAuth();
 
@@ -133,7 +131,7 @@ const getData = async (value: 'before' | 'after') => {
 
   value === 'before' ? pageNo.value-- : pageNo.value++;
 
-  const params = { pageNo: pageNo.value, pageSize: 1, enabledGroup: false, filters: filters.value, projectId: projectInfo.value?.id };
+  const params = { pageNo: pageNo.value, pageSize: 1, enabledGroup: false, filters: filters.value, projectId: projectId.value };
   const [listError, listRes] = await funcCase.getCaseList({ infoScope: 'DETAIL', ...params });
   if (listError) {
     return;
@@ -242,7 +240,7 @@ const handleClick = (type: CaseActionAuth) => {
 
 // 复制Url
 const handleCopy = async () => {
-  const message = `${window.location.origin}/function#cases?&id=${caseDetail.value.id}&projectId=${projectInfo.value.id}&name=${caseDetail.value.name}&currIndex=${props.currIndex}&total=${props.queryParams.total}&pageNo=${props.queryParams.pageNo}&pageSize=${props.queryParams.pageSize}`;
+  const message = `${window.location.origin}/function#cases?&id=${caseDetail.value.id}&projectId=${projectId.value}&name=${caseDetail.value.name}&currIndex=${props.currIndex}&total=${props.queryParams.total}&pageNo=${props.queryParams.pageNo}&pageSize=${props.queryParams.pageSize}`;
   toClipboard(message).then(() => {
     notification.success(t('functionCase.detail.copySuccess'));
   }).catch(() => {

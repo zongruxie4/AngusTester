@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { inject, nextTick, onMounted, ref, watch } from 'vue';
+import { inject, nextTick, onMounted, ref, watch, Ref } from 'vue';
 import {
   DatePicker,
   Hints,
@@ -45,7 +45,8 @@ const { stepVisible, stepKey } = useState(['stepVisible', 'stepKey', 'stepConten
 const { updateGuideStep } = useMutations(['updateGuideStep'], 'guideStore');
 
 const userInfo: any = inject('userInfo');
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 // 生成的用例列表
 const caseList = ref<FormState[]>([]);
@@ -316,7 +317,7 @@ const setTesterForMe = () => {
 const members = ref([]);
 
 const loadMembers = async () => {
-  const [error, { data }] = await project.getProjectMember(projectInfo.value?.id);
+  const [error, { data }] = await project.getProjectMember(projectId.value);
   if (error) {
     return;
   }
@@ -368,11 +369,11 @@ const planChange = (_value, options) => {
 
 const moduleTreeData = ref([]);
 const getModuleTreeData = async () => {
-  if (!projectInfo.value?.id) {
+  if (!projectId.value) {
     return;
   }
   const [error, { data }] = await modules.getModuleTree({
-    projectId: projectInfo.value.id
+    projectId: projectId.value
   });
   if (error) {
     return;
@@ -580,7 +581,7 @@ const delCase = (caseItem, idx) => {
                 :rules="{required:true,message:t('functionCase.addCaseModal.pleaseSelectPlan')}">
                 <Select
                   v-model:value="formState.planId"
-                  :action="`${TESTER}/func/plan?projectId=${projectInfo.id}&fullTextSearch=true`"
+                  :action="`${TESTER}/func/plan?projectId=${projectId}&fullTextSearch=true`"
                   :fieldNames="{ value: 'id', label: 'name' }"
                   :lazy="false"
                   defaultActiveFirstOption
@@ -700,7 +701,7 @@ const delCase = (caseItem, idx) => {
                   v-model:value="formState.softwareVersion"
                   allowClear
                   :placeholder="t('functionCase.addCaseModal.pleaseSelectVersion')"
-                  :action="`${TESTER}/software/version?projectId=${projectInfo.id}`"
+                  :action="`${TESTER}/software/version?projectId=${projectId}`"
                   :params="{filters: [{value: ['NOT_RELEASED', 'RELEASED'], key: 'status', op: 'IN'}]}"
                   :fieldNames="{value:'name', label: 'name'}">
                 </Select>
@@ -752,7 +753,7 @@ const delCase = (caseItem, idx) => {
                   :maxTagTextLength="15"
                   :maxTags="5"
                   :allowClear="false"
-                  :action="`${TESTER}/tag?projectId=${projectInfo.id}&fullTextSearch=true`"
+                  :action="`${TESTER}/tag?projectId=${projectId}&fullTextSearch=true`"
                   :placeholder="t('functionCase.addCaseModal.selectOrQueryTags')"
                   mode="multiple">
                   <template #option="item">
@@ -777,7 +778,7 @@ const delCase = (caseItem, idx) => {
                   :maxTagCount="10"
                   :maxTagTextLength="15"
                   :maxTags="20"
-                  :action="`${TESTER}/task?projectId=${projectInfo.id}&fullTextSearch=true`"
+                  :action="`${TESTER}/task?projectId=${projectId}&fullTextSearch=true`"
                   :placeholder="t('functionCase.addCaseModal.maxRelatedTasks')"
                   mode="multiple">
                   <template #option="record">
@@ -810,7 +811,7 @@ const delCase = (caseItem, idx) => {
                   :maxTagCount="10"
                   :maxTagTextLength="15"
                   :maxTags="20"
-                  :action="`${TESTER}/func/case?projectId=${projectInfo.id}&fullTextSearch=true`"
+                  :action="`${TESTER}/func/case?projectId=${projectId}&fullTextSearch=true`"
                   :placeholder="t('functionCase.addCaseModal.maxRelatedCases')"
                   mode="multiple">
                   <template #option="record">

@@ -39,7 +39,8 @@ const ExecTestModal = defineAsyncComponent(() => import('@/views/apis/services/s
 const { t } = useI18n();
 const userInfo = ref(appContext.getUser());
 const isAdmin = inject('isAdmin', ref(false));
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 const appInfo = inject('appInfo') as Ref<Record<string, any>>;
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
 
@@ -211,7 +212,7 @@ const importOk = () => {
 const params = computed(() => {
   return {
     filters: inputValue.value ? [{ key: 'name', op: 'MATCH_END', value: inputValue.value }] : [],
-    projectId: projectInfo.value?.id
+    projectId: projectId.value
   };
 });
 
@@ -641,7 +642,7 @@ const searchChange = debounce(duration.search, (key: 'trash'|'unarchived', value
 });
 
 const loadUnarchivedCount = async () => {
-  const [error, res] = await apis.getUnarchivedApiCount({ projectId: projectInfo?.value?.id });
+  const [error, res] = await apis.getUnarchivedApiCount({ projectId: projectId.value });
   if (error) {
     return;
   }
@@ -649,7 +650,7 @@ const loadUnarchivedCount = async () => {
   collapseOptions.value[0].total = +res.data;
 };
 
-watch(() => projectInfo?.value?.id, newValue => {
+watch(() => projectId.value, newValue => {
   if (newValue) {
     loadUnarchivedCount();
   }
@@ -743,7 +744,7 @@ const sortProps = {
 // 添加项目
 const editInputProps = computed(() => ({
   createAction: `${TESTER}/services`, // 添加目录url
-  createParams: { projectId: projectInfo.value?.id }, // 添加目录需要传递的参数
+  createParams: { projectId: projectId.value }, // 添加目录需要传递的参数
   allowClear: true,
   placeholder: t('service.sidebar.serviceNamePlaceholder'),
   maxlength: 100

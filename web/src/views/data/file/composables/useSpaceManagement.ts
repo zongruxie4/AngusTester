@@ -1,5 +1,4 @@
-import { ref, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { computed, ref } from 'vue';
 import { space } from '@/api/storage';
 import { SpaceInfoType } from '../types';
 
@@ -10,8 +9,6 @@ import { SpaceInfoType } from '../types';
  * @returns Object containing state and methods for space management
  */
 export function useSpaceManagement () {
-  const { t } = useI18n();
-
   // Modal visibility states
   const editVisible = ref(false);
   const authModalVisible = ref(false);

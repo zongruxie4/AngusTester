@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, ref } from 'vue';
+import { computed, inject, ref, Ref } from 'vue';
 import { Input, Modal, notification } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
@@ -26,7 +26,8 @@ const emit = defineEmits<{
 const addTabPane = inject('addTabPane', (_data:{[key:string]:any}) => { });
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const refreshSidebar = inject('refreshSidebar', () => { });
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const inputValue = ref<string>();
 const confirmLoading = ref(false);
@@ -37,7 +38,7 @@ const ok = async () => {
 
   const params = {
     name: inputValue.value,
-    projectId: projectInfo.value?.id
+    projectId: projectId.value
   };
 
   confirmLoading.value = true;

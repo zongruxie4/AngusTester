@@ -25,24 +25,26 @@ const ACTIVITY_TYPES = ['SCENARIO', 'SCENARIO_MONITOR'] as const;
 </script>
 
 <template>
-  <!-- Activity timeline with two tabs: personal and all activities -->
-  <Tabs size="small">
-    <!-- Personal activity tab - shows only current user's activities -->
-    <TabPane key="my" :tab="t('scenarioHome.activityTimeline.myActivity')">
-      <ActivityTimeline
-        :types="ACTIVITY_TYPES"
-        :userId="props.userInfo?.id"
-        :projectId="props.projectId"
-        :showUserName="false" />
-    </TabPane>
+  <div class="bg-white rounded px-5" style="height: 340px">
+    <!-- Activity timeline with two tabs: personal and all activities -->
+    <Tabs size="small">
+      <!-- Personal activity tab - shows only current user's activities -->
+      <TabPane key="my" :tab="t('scenarioHome.activityTimeline.myActivity')">
+        <ActivityTimeline
+          :types="ACTIVITY_TYPES"
+          :userId="props.userInfo?.id"
+          :projectId="props.projectId"
+          :showUserName="false" />
+      </TabPane>
 
-    <!-- All activities tab - shows all users' activities in the project -->
-    <TabPane key="total" :tab="t('scenarioHome.activityTimeline.allActivity')">
-      <ActivityTimeline
-        :types="ACTIVITY_TYPES"
-        :projectId="props.projectId" />
-    </TabPane>
-  </Tabs>
+      <!-- All activities tab - shows all users' activities in the project -->
+      <TabPane key="total" :tab="t('scenarioHome.activityTimeline.allActivity')">
+        <ActivityTimeline
+          :types="ACTIVITY_TYPES"
+          :projectId="props.projectId" />
+      </TabPane>
+    </Tabs>
+  </div>
 </template>
 
 <style scoped>
@@ -56,6 +58,6 @@ const ACTIVITY_TYPES = ['SCENARIO', 'SCENARIO_MONITOR'] as const;
 /* Responsive height calculation with minimum height constraint */
 .ant-tabs {
   height: calc(100% - 240px);
-  min-height: 375px;
+  min-height: 390px;
 }
 </style>

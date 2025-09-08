@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, ref, watch } from 'vue';
+import { Ref, inject, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { HttpMethodText, Icon, Input } from '@xcan-angus/vue-ui';
 import { Checkbox, CheckboxGroup, Divider, FormItemRest } from 'ant-design-vue';
@@ -10,10 +10,8 @@ interface ApiListProps {
   apiIds: string[];
 }
 
-const projectInfo = inject('projectInfo', ref({ id: '' }));
-const projectId = computed(() => {
-  return projectInfo?.value?.id;
-});
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const props = withDefaults(defineProps<ApiListProps>(), {
   serviceId: '',

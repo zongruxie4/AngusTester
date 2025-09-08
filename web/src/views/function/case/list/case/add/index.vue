@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, inject, onMounted, ref, watch } from 'vue';
+import { computed, inject, onMounted, ref, watch, Ref } from 'vue';
 import {
   DatePicker,
   Hints,
@@ -43,8 +43,9 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'update', id?:string):void}>();
 
 const userInfo: any = inject('userInfo');
-const projectInfo = inject('projectInfo', ref({ id: '' }));
-const addCaseSizeKey = `${userInfo.id}${projectInfo.value.id}addFuncCaseSize`;
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
+const addCaseSizeKey = `${userInfo.id}${projectId.value}addFuncCaseSize`;
 
 const formRef = ref();
 const formState = ref<FormState>({
@@ -305,7 +306,7 @@ const setTesterForMe = () => {
 const members = ref([]);
 
 const loadMembers = async () => {
-  const [error, { data }] = await project.getProjectMember(projectInfo.value?.id);
+  const [error, { data }] = await project.getProjectMember(projectId.value);
   if (error) {
     return;
   }
@@ -331,7 +332,7 @@ onMounted(() => {
   }, {
     immediate: true
   });
-  watch(() => projectInfo.value, (newValue) => {
+  watch(() => projectId.value, (newValue) => {
     if (newValue.id) {
       loadMembers();
       getModuleTreeData();
@@ -344,7 +345,7 @@ onMounted(() => {
 });
 
 const planParams = computed(() => {
-  return { projectId: projectInfo.value?.id };
+  return { projectId: projectId.value };
 });
 
 const evalWorkloadMethod = ref<{value: string, message: string}>();
@@ -363,11 +364,11 @@ const planChange = (_value, options) => {
 
 const moduleTreeData = ref([]);
 const getModuleTreeData = async () => {
-  if (!projectInfo.value?.id) {
+  if (!projectId.value) {
     return;
   }
   const [error, { data }] = await modules.getModuleTree({
-    projectId: projectInfo.value.id
+    projectId: projectId.value
   });
   if (error) {
     return;
@@ -542,7 +543,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
               <Select
                 v-model:value="formState.planId"
                 :disabled="!!props.editCase"
-                :action="`${TESTER}/func/plan?projectId=${projectInfo.id}&fullTextSearch=true`"
+                :action="`${TESTER}/func/plan?projectId=${projectId}&fullTextSearch=true`"
                 :fieldNames="{ value: 'id', label: 'name' }"
                 :params="planParams"
                 :lazy="false"
@@ -691,7 +692,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
                 v-model:value="formState.softwareVersion"
                 allowClear
                 :placeholder="t('functionCase.addCaseModal.pleaseSelectVersion')"
-                :action="`${TESTER}/software/version?projectId=${projectInfo.id}`"
+                :action="`${TESTER}/software/version?projectId=${projectId}`"
                 :params="{filters: [{value: ['NOT_RELEASED', 'RELEASED'], key: 'status', op: 'IN'}]}"
                 :fieldNames="{value:'name', label: 'name'}">
               </Select>
@@ -743,7 +744,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
                 :maxTagTextLength="15"
                 :maxTags="5"
                 :allowClear="false"
-                :action="`${TESTER}/tag?projectId=${projectInfo.id}&fullTextSearch=true`"
+                :action="`${TESTER}/tag?projectId=${projectId}&fullTextSearch=true`"
                 :placeholder="t('functionCase.addCaseModal.selectOrQueryTags')"
                 mode="multiple">
                 <template #option="item">
@@ -768,7 +769,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
                 :maxTagCount="10"
                 :maxTagTextLength="15"
                 :maxTags="20"
-                :action="`${TESTER}/task?projectId=${projectInfo.id}&fullTextSearch=true`"
+                :action="`${TESTER}/task?projectId=${projectId}&fullTextSearch=true`"
                 :placeholder="t('functionCase.addCaseModal.maxRelatedTasks')"
                 mode="multiple">
                 <template #option="record">
@@ -801,7 +802,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
                 :maxTagCount="10"
                 :maxTagTextLength="15"
                 :maxTags="20"
-                :action="`${TESTER}/func/case?projectId=${projectInfo.id}&fullTextSearch=true`"
+                :action="`${TESTER}/func/case?projectId=${projectId}&fullTextSearch=true`"
                 :placeholder="t('functionCase.addCaseModal.maxRelatedCases')"
                 mode="multiple">
                 <template #option="record">

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, onMounted, reactive, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, inject, onMounted, reactive, ref, watch, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { http, TESTER } from '@xcan-angus/infra';
 import { CheckboxGroup, Form, FormItem } from 'ant-design-vue';
@@ -32,7 +32,8 @@ const emit = defineEmits<{
   (e: 'update:id', val: string | undefined): void,
 }>();
 
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 const members = ref([]);
 
 const sprintFormRef = ref();
@@ -96,7 +97,7 @@ const formData = computed(() => {
 });
 
 const loadMembers = async () => {
-  const [error, { data }] = await project.getProjectMember(projectInfo.value.id);
+  const [error, { data }] = await project.getProjectMember(projectId.value);
   if (error) {
     return;
   }

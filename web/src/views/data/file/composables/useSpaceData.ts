@@ -1,7 +1,7 @@
-import { reactive, ref, computed, watch } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { modal, notification } from '@xcan-angus/vue-ui';
-import { duration, STORAGE, appContext } from '@xcan-angus/infra';
+import { modal } from '@xcan-angus/vue-ui';
+import { duration } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
 
@@ -158,6 +158,7 @@ export function useSpaceData () {
         return new Promise<void>((resolve, reject) => {
           space.deleteSpace(record.id).then(([error]) => {
             if (error) {
+              // eslint-disable-next-line prefer-promise-reject-errors
               reject();
               return;
             }

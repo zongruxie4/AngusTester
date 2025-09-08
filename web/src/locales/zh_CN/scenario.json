@@ -50,12 +50,11 @@
       }
     },
     "introduce": {
-      "welcome": "欢迎进入Augus场景！",
-      "description": "场景可以帮助您编排更加复杂的需求或用户故事，相比单个步骤的测试用例，场景可以包含更多步骤和流程。",
-      "capabilities": "在这里您和您的团队可以完成以下工作：",
-      "capability1": "在线编辑、调试场景；",
-      "capability2": "添加并管理场景资源；",
-      "capability3": "快速生成场景测试脚本和任务。"
+      "welcome": "关于AngusTester场景",
+      "description": "场景是API和UI自动化测试的核心工具，能够编排复杂的业务流程和用户故事。相比单一测试用例，场景支持多步骤、多流程的完整测试链路。",
+      "capability1": "在线编辑和调试场景",
+      "capability2": "管理场景相关资源",
+      "capability3": "快速生成测试脚本和任务"
     }
   },
   "scenarioMonitor": {
@@ -167,23 +166,23 @@
     },
     "introduce": {
       "aboutMonitor": "关于监控",
-      "description": "场景监控可以帮助我们从接口维度掌握系统或者业务状态，及时发现并解决潜在问题，从而提高系统的可靠性和用户满意度，为业务的稳定运营提供有力支持。主要应用场景如下：",
+      "description": "场景监控帮助您实时掌握系统状态，快速发现并解决问题，提升系统可靠性和用户体验。主要应用场景：",
       "scenarios": {
         "apiDelay": {
-          "title": "API延迟监测",
-          "description": "跟踪API的响应时间，确保访问体验。例如：监控支付API的平均响应时间，确保不超过500ms。"
+          "title": "API延迟监控",
+          "description": "监控API响应时间，确保良好的访问体验。如：监控支付API响应时间不超过500ms。"
         },
         "healthCheck": {
-          "title": "检查系统健康状态",
-          "description": "以快速、简单的方式来确定系统是否正常运行。 例如：验证系统或服务健康检查端点(/health)中组件的运行状态。"
+          "title": "系统健康检查",
+          "description": "快速检测系统运行状态。如：检查健康检查端点(/health)的组件状态。"
         },
         "apiFunctionality": {
-          "title": "API功能正确性检查",
-          "description": "定期测试API的功能正确性，确保预期行为。 例如：自动化测试用户注册API，验证账户创建流程。"
+          "title": "API功能验证",
+          "description": "定期测试API功能正确性。如：自动验证用户注册API的账户创建流程。"
         },
         "businessProcess": {
-          "title": "关键业务流程监控",
-          "description": "监控核心业务流程的完整性和正确性。 例如：截止到当前时间支付订单和支付金额在业务上是否一致。"
+          "title": "业务流程监控",
+          "description": "监控核心业务流程的完整性。如：验证支付订单与金额的一致性。"
         }
       }
     },

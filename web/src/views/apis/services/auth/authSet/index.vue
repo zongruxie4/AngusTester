@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, inject, nextTick, onBeforeUnmount, onMounted, ref, watch, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Checkbox, Switch } from 'ant-design-vue';
 import { debounce, throttle } from 'throttle-debounce';
@@ -27,7 +27,8 @@ const props = withDefaults(defineProps<Props>(), {
   projectPermissions: () => []
 });
 
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const TEXT_COLOR = {
   GET: 'color:rgba(30, 136, 229, 1);',
@@ -408,7 +409,7 @@ const getProjectTreeParams = () => {
     queryHasApisFlag: true,
     pageNo: pageNo.value,
     pageSize: pageSize.value,
-    projectId: projectInfo.value?.id
+    projectId: projectId.value
   };
 
   if (searchInputValue.value) {

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, inject, onMounted, reactive, ref, watch } from 'vue';
+import { computed, inject, onMounted, reactive, ref, Ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import {
   Hints,
@@ -40,7 +40,8 @@ const handleCloseDrawer = inject('selectHandle', () => {});
 const isUnarchivedApi = inject('isUnarchivedApi', { value: false }); // 当前 api 是否为未存档
 const setApiInfo = inject('setApiInfo', (info) => (info));
 const userInfo = ref(appContext.getUser());
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const getParameter = inject('getParameter', () => ({} as any));
 const globalConfigs = inject('globalConfigs', { VITE_API_SUMMARY_MAX_LENGTH: 400, VITE_API_CODE_MAX_LENGTH: 400, VITE_API_DESC_MAX_LENGTH: 20000 });
@@ -304,7 +305,7 @@ onMounted(() => {
       <FormItem :label="t('service.apiSliderSave.labels.service')" name="serviceId">
         <TreeSelect
           v-model:defaultValue="defaultProject"
-          :action="`${TESTER}/services?projectId=${projectInfo.id}&hasPermission=ADD&fullTextSearch=true`"
+          :action="`${TESTER}/services?projectId=${projectId}&hasPermission=ADD&fullTextSearch=true`"
           :allowClear="false"
           :disabled="disabled || !isUnarchivedApi"
           :fieldNames="{children:'children', label:'name', value: 'id'}"

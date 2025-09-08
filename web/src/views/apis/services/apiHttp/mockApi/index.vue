@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, inject, ref, watch } from 'vue';
+import { computed, inject, ref, Ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Grid, Hints, Icon, IconCopy, Input, notification, Select, Spin, Modal } from '@xcan-angus/vue-ui';
-import { Button, Divider, Radio, RadioGroup } from 'ant-design-vue';
+import { Divider, Radio, RadioGroup } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
 
 import { apis, mock } from '@/api/tester';
@@ -19,7 +19,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const createType = ref();
 const mockApisId = ref();
@@ -135,9 +136,7 @@ watch(() => props.id, async (newValue) => {
   mockApiInfo.value = undefined;
   if (newValue) {
     await loadMockApiInfo(newValue);
-    if (!mockApiInfo.value) {
-      loadApiInfo(newValue);
-    }
+    loadApiInfo(newValue);
   }
 }, {
   immediate: true
@@ -234,7 +233,7 @@ const format = (data) => {
             @cancel="cancel">
             <Select
               v-model:value="mockServiceId"
-              :action="`${TESTER}/mock/service?projectId=${projectInfo?.id}&fullTextSearch=true`"
+              :action="`${TESTER}/mock/service?projectId=${projectId}&fullTextSearch=true`"
               :fieldNames="{label:'name',value:'id'}"
               :maxlength="100"
               class="w-full mb-4"

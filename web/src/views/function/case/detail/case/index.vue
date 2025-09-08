@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, inject, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, inject, nextTick, onBeforeUnmount, onMounted, ref, watch, Ref } from 'vue';
 import {
   DatePicker,
   Grid,
@@ -58,11 +58,10 @@ const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/c
 
 const { t } = useI18n();
 
-const projectInfo = inject('projectInfo', ref({ id: '' }));
 const userInfo = inject('userInfo');
-const projectId = computed(() => {
-  return projectInfo.value?.id;
-});
+
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const bigLayout = ref(true); // 是否大屏显示
 const detailRef = ref();

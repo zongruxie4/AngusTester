@@ -26,12 +26,14 @@ export function useTableColumns (params: ScenarioQueryParams) {
         key: 'plugin',
         title: t('scenarioHome.myScenarios.table.columns.plugin'),
         dataIndex: 'plugin',
+        width: '15%',
         ellipsis: true
       },
       {
         key: 'scriptType',
         title: t('scenarioHome.myScenarios.table.columns.testType'),
         dataIndex: 'scriptType',
+        width: '20%',
         ellipsis: true
       },
       {
@@ -39,6 +41,7 @@ export function useTableColumns (params: ScenarioQueryParams) {
         title: t('scenarioHome.myScenarios.table.columns.addTime'),
         dataIndex: 'createdDate',
         ellipsis: true,
+        width: '20%',
         sorter: true
       }
     ];
@@ -48,7 +51,7 @@ export function useTableColumns (params: ScenarioQueryParams) {
       key: 'action',
       title: t('scenarioHome.myScenarios.table.columns.operation'),
       dataIndex: 'action',
-      width: 50
+      width: 80
     };
 
     // Determine action type based on query parameters

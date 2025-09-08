@@ -1,4 +1,4 @@
-import { computed, inject, ref } from 'vue';
+import { computed, inject, ref, Ref } from 'vue';
 import { debounce, throttle } from 'throttle-debounce';
 import { duration } from '@xcan-angus/infra';
 import { space } from '@/api/storage';
@@ -6,7 +6,8 @@ import type { SpaceItem, AuthSetProps } from '../types';
 
 export function useAuthSet (props: AuthSetProps) {
   const LINE_HEIGHT = 44;
-  const projectInfo = inject('projectInfo', ref({ id: '' }));
+  // Inject project information
+  const projectId = inject<Ref<string>>('projectId', ref(''));
 
   // Controllers for aborting requests
   let controller: AbortController; // For terminating space tree requests
@@ -245,7 +246,7 @@ export function useAuthSet (props: AuthSetProps) {
       pageNo: pageNo.value,
       pageSize: pageSize.value,
       appCode: 'AngusTester',
-      projectId: projectInfo.value?.id
+      projectId: projectId.value
     };
 
     if (searchInputValue.value) {

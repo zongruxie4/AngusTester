@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { computed, inject, onMounted, ref } from 'vue';
+import { Ref, inject, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Icon, Input, notification, PureCard, Select, Tooltip } from '@xcan-angus/vue-ui';
 import { Button, Card, Form, FormItem, Popover, Upload } from 'ant-design-vue';
@@ -18,10 +18,8 @@ const {
   textList
 } = useMockUI();
 
-const projectInfo = inject('projectInfo', ref({ id: '' }));
-const projectId = computed(() => {
-  return projectInfo?.value?.id;
-});
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const formRef = ref();
 const router = useRouter();

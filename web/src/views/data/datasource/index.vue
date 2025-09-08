@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, inject, ref } from 'vue';
+import { Ref, defineAsyncComponent, inject, ref } from 'vue';
 import { Button, Pagination } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { AsyncComponent, GridList, Icon, IconRefresh, Image, NoData, SearchPanel, Spin, Tooltip } from '@xcan-angus/vue-ui';
@@ -11,8 +11,7 @@ const { t } = useI18n();
 const AddModal = defineAsyncComponent(() => import('./Add.vue'));
 
 // Inject project information
-const projectInfo = inject('projectInfo', ref({ id: '' }));
-const projectId = computed(() => projectInfo.value?.id);
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 /**
  * <p>Main composable for component logic</p>

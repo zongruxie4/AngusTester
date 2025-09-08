@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, inject, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, inject, onBeforeUnmount, onMounted, ref, Ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import * as echarts from 'echarts';
 import { RadioGroup } from 'ant-design-vue';
@@ -16,10 +16,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
-const projectInfo = inject('projectInfo', ref({ id: '' }));
-const projectId = computed(() => {
-  return projectInfo.value?.id;
-});
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 const burnDownOpt = computed(() => [
   {
     value: 'NUM',

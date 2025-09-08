@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, ref, watch } from 'vue';
+import { Ref, inject, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Colon, Modal, Spin, SelectApi } from '@xcan-angus/vue-ui';
 import { RadioGroup } from 'ant-design-vue';
@@ -19,10 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{(e: 'update:visible', value: boolean): void }>();
 
 // Inject project information
-const projectInfo = inject('projectInfo', ref({ id: '' }));
-const projectId = computed(() => {
-  return projectInfo?.value?.id;
-});
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 // Use export modal composable
 const {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, nextTick, inject, computed } from 'vue';
+import { ref, watch, nextTick, inject, Ref } from 'vue';
 import { PureCard, notification } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
@@ -25,10 +25,8 @@ const props = withDefaults(defineProps<Props>(), {
 const { t } = useI18n();
 
 const emits = defineEmits<{(e: 'formatChange', value: { [key: string]: any })}>();
-const projectInfo = inject('projectInfo', ref({ id: '' }));
-const projectId = computed(() => {
-  return projectInfo.value?.id;
-});
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const dataConfigRef = ref();
 const dataFieldRef = ref();

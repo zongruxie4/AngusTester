@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, onMounted, provide, ref } from 'vue';
+import { computed, defineAsyncComponent, inject, onMounted, provide, ref, Ref } from 'vue';
 import { Spin } from '@xcan-angus/vue-ui';
 import elementResizeDetectorMaker from 'element-resize-detector';
 import { localStore } from '@xcan-angus/infra';
@@ -41,17 +41,18 @@ const emits = defineEmits<{(e: 'cacheParams', value: SearchParam): void;
   (e: 'openInfo', value): void;
 }>();
 
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const userInfo: any = inject('userInfo');
 
 // 存储展示模式的key
 const cacheModeKey = computed(() => {
-  return `${userInfo.id}${projectInfo.value.id}caseMode`;
+  return `${userInfo.id}${projectId.value}caseMode`;
 });
 // 存储展开收起的key
 const cacheCountKey = computed(() => {
-  return `${userInfo.id}${projectInfo.value.id}caseCount`;
+  return `${userInfo.id}${projectId.value}caseCount`;
 });
 
 const queryParams = ref<SearchParam>();

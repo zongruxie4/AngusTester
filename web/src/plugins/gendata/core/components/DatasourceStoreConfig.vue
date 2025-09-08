@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref, inject } from 'vue';
+import { ref, Ref, inject } from 'vue';
 import { TESTER } from '@xcan-angus/infra';
 import { Input, Icon, SelectEnum, Select, Hints } from '@xcan-angus/vue-ui';
 import { Checkbox, FormItem, Tooltip, Form } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const { t } = useI18n();
 
@@ -158,7 +159,7 @@ defineExpose({
         defaultActiveFirstOption
         :defaultOptions="defaultSource"
         :lazy="false"
-        :action="`${TESTER}/data/datasource?projectId=${projectInfo.id}`"
+        :action="`${TESTER}/data/datasource?projectId=${projectId}`"
         :fieldNames="{value: 'id', label: 'name'}"
         @change="changeDatasource" />
     </FormItem>
