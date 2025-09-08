@@ -52,7 +52,7 @@ export function useMatchItemPopover () {
         data: 'hello, RegexExtraction! my phone number is 18888888888 and 13999999999.',
         expression: '(1\\d{10})',
         result: '["18888888888","13999999999"]',
-        item: '不指定位置默认取合并结果合并匹配值："1888888888813999999999"，指定位置0取值："18888888888"，指定位置1取值："13999999999"。'
+        item: t('dataVariable.detail.matchItemPopover.regexp.item')
       }
     },
     {
@@ -80,7 +80,7 @@ export function useMatchItemPopover () {
         data: { store: { book: [{ title: 'Sayings of the Century', price: 100 }, { title: 'Confucianism', price: 200 }] } },
         expression: '$.store.book[*]',
         result: '[{"title":"Sayings of the Century","price":100},{"title":"confucianism","price":200}]',
-        item: '不指定位置默认取合并结果：[{"title":"Sayings of the Century","price":100},{"title":"confucianism","price":200}]，指定位置0取值：{"title":"Sayings of the Century","price":100}，指定位置1取值：{"title":"confucianism","price":200}。'
+        item: t('dataVariable.detail.matchItemPopover.jsonpath.item')
       }
     },
     {
@@ -109,7 +109,7 @@ export function useMatchItemPopover () {
           '<interests>basketball</interests><name>Angus1</name></person><person><age>32</age><interests>coding</interests><name>Angus2</name></person></persons>'),
         expression: '/persons/person[age >= 30]',
         result: '["30codingbasketballAngus1", "32codingAngus2"]',
-        item: '不指定位置默认取合并结果："30codingbasketballAngus132codingAngus2"，指定位置0取值："30codingbasketballAngus1"，指定位置1取值："30codingbasketballAngus2"。'
+        item: t('dataVariable.detail.matchItemPopover.xpath.item')
       }
     }
   ];

@@ -190,7 +190,7 @@ export function useFileManagement () {
           subFileNum: 0
         },
         type: {
-          message: '文件夹',
+          message: t('fileSpace.type.directory'),
           value: 'DIRECTORY'
         },
         lastModifiedDate: '--'
@@ -359,7 +359,7 @@ export function useFileManagement () {
   const compressFile = async (ids: string[]) => {
     fileApi.compressFile({
       ids,
-      name: '压缩文件',
+      name: t('fileSpace.compressFile.name'),
       parentDirectoryId: +parentDirectoryId.value > -1 ? parentDirectoryId.value : undefined
     });
   };

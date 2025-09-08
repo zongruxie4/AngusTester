@@ -361,7 +361,8 @@
             "parameterNamePlaceholder": "Please enter the parameter name",
             "parameterValuePlaceholder": "Please enter the parameter value, maximum 4096 characters",
             "parameterTypePlaceholder": "Please select the parameter type",
-            "selectFile": "Select File"
+            "selectFile": "Select File",
+            "summaryFileSize": "The total uploaded file size cannot exceed {maxSize}"
           }
         },
         "selectApiModal": {
@@ -842,6 +843,14 @@
     "title": "About Files",
     "addedTitle": "Added Spaces",
     "searchPlaceholder": "Search space name",
+    "type": {
+      "directory": "Directory",
+      "file": "File",
+      "space": "Space"
+    },
+    "compressFile": {
+      "name": "Compress File"
+    },
     "buttons": {
       "generateData": "Generate Data",
       "addSpace": "Add Space",

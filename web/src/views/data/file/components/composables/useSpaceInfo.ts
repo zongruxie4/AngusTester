@@ -43,7 +43,7 @@ export function useSpaceInfo (props: Props) {
       {
         dataIndex: 'type',
         label: t('fileSpace.spaceDetail.columns.format'),
-        customRender: ({ text }: { text: any }) => text?.message || '空间'
+        customRender: ({ text }: { text: any }) => text?.message || t('fileSpace.type.space')
       },
       { dataIndex: 'createdByName', label: t('fileSpace.spaceDetail.columns.createdBy') },
       { dataIndex: 'createdDate', label: t('fileSpace.spaceDetail.columns.createdDate') },

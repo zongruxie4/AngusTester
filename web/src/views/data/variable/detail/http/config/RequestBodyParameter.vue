@@ -54,7 +54,7 @@ const urlMap = ref<{ [key: string]: { [key: string]: {name:string;url:string} } 
 
 const customRequest = async ({ file }: { file: UploadFile }, id: string, index:number) => {
   if (totalSize.value + file.size > +props.maxFileSize) {
-    notification.warning(`总上传文件大小不能超过${utils.formatBytes(props.maxFileSize)}`);
+    notification.warning(t('dataVariable.detail.httpVariable.httpConfigs.requestBodyParameter.summaryFileSize', { maxSize: utils.formatBytes(props.maxFileSize) }));
     return;
   }
 
