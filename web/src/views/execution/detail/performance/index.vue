@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onBeforeUnmount, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, onBeforeUnmount, ref } from 'vue';
 import dayjs from 'dayjs';
 import { ScriptType } from '@xcan-angus/infra';
 
-import { ListData, useExecCount } from '../composables/useExecCount';
-import { allCvsKeys } from '../ChartConfig';
+import { useExecCount } from '../composables/useExecCount';
 
 import { exec } from 'src/api/ctrl';
 import { exec as testerExec } from '@/api/tester';
-import { Exception } from '@/views/execution/types';
-import { ExecStatus } from '@/enums/enums';
 
-interface Props {
-  detail?:Record<string, any>;
-  exception?:{ codeName: string; messageName: string; code: string; message: string;};
-}
+// Import types and composables
+import { PerformanceDetailProps, PerformanceDetailEmits } from './types';
+import { usePerformanceData } from './composables/usePerformanceData';
+import { usePerformancePolling } from './composables/usePerformancePolling';
+import { useErrorManagement } from './composables/useErrorManagement';
+import { useExceptionHandling } from './composables/useExceptionHandling';
 
-const props = withDefaults(defineProps<Props>(), {
+// Component Props and Emits
+const props = withDefaults(defineProps<PerformanceDetailProps>(), {
   detail: undefined,
   exception: undefined
 });
@@ -28,115 +28,65 @@ const props = withDefaults(defineProps<Props>(), {
  * - Http -> HTTP performance detail
  * - Otherwise -> JDBC performance detail
  */
-const PerformanceInfo = (defineAsyncComponent(() =>
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+const PerformanceInfo = defineAsyncComponent(() =>
   props.detail?.scriptType?.value === ScriptType.MOCK_DATA
     ? import('@/views/execution/detail/performance/mock/index.vue')
     : props.detail?.plugin === 'Http'
       ? import('./Http.vue')
-      : import('./Jdbc.vue'))) as any;
+      : import('./Jdbc.vue')) as any;
 
-const emit = defineEmits<{(e: 'loaded', data: Record<string, any>): void;(e: 'update:loading', value:boolean): void;}>();
+const emit = defineEmits<PerformanceDetailEmits>();
 
+// Component References
 const httpExecDetailRef = ref();
 
-let timer:NodeJS.Timeout | null = null;
+// Performance Data Management
+const {
+  apiDimensionObj,
+  indexDimensionObj,
+  apiNames,
+  timestampData,
+  newList,
+  perfListParams,
+  perfListTotal,
+  perfListLastTimestamp,
+  errCountList,
+  sampleList,
+  errParams,
+  errTotal,
+  statusCodeData,
+  infoMaxQps,
+  infoMaxTps,
+  brpsUnit,
+  minBrpsUnit,
+  maxBrpsUnit,
+  meanBrpsUnit,
+  bwpsUnit,
+  minBwpsUnit,
+  maxBwpsUnit,
+  meanBwpsUnit,
+  saveData,
+  resetData
+} = usePerformanceData();
+
+// Error Management
+const {
+  loadErrorCount: loadErrorCountData,
+  loadSampleErrorContent: loadSampleErrorContentData,
+  loadStatusCodeData: loadStatusCodeDataData
+} = useErrorManagement();
+
+// Exception Handling
+const { setException: setExceptionInfo } = useExceptionHandling();
+
+// Data Loading Methods
+const { convertCvsValue } = useExecCount();
 
 /**
- * Compute polling delay (ms) based on `reportInterval` with a minimum of 3 seconds.
- */
-const delayInSeconds = computed(() => {
-  let seconds = 3;
-  if (!props.detail) {
-    return seconds * 1000;
-  }
-  const { reportInterval } = props.detail;
-  if (reportInterval) {
-    seconds = parseInt(reportInterval) < seconds ? 3 : parseInt(reportInterval);
-  }
-  return seconds * 1000;
-});
-
-/**
- * Whether a future start time is configured. If true, we should not poll yet.
- */
-const hasStartDate = computed(() => {
-  if (!props.detail) {
-    return false;
-  }
-  const { configuration } = props.detail;
-  if (!configuration) {
-    return false;
-  }
-  const { startAtDate } = configuration;
-  if (!startAtDate) {
-    return false;
-  }
-
-  const givenTime = dayjs(startAtDate);
-  const currentTime = dayjs();
-
-  return !(givenTime.isBefore(currentTime) || givenTime.isSame(currentTime));
-});
-
-const countTabKey = ref('aggregation');
-/**
- * Handle switching of metric tabs and lazy-load corresponding data when needed.
- */
-const setCountTabKey = async (value:string) => {
-  if (value === 'error') {
-    isLoaded.value = false;
-    await loadErrorCount();
-    await loadSampleErrorContent();
-    isLoaded.value = true;
-  }
-
-  if (value === 'httpCode') {
-    isLoaded.value = false;
-    await loadStatusCodeData();
-    isLoaded.value = true;
-  }
-
-  countTabKey.value = value;
-};
-
-/**
- * Whether the first data pull has completed at least once.
- */
-let hasFetchedOnce = false;
-/**
- * Schedule next data update with the computed delay, or stop when execution finished.
- */
-const updateData = () => {
-  if (timer) {
-    clearTimeout(timer);
-  }
-
-  timer = setTimeout(() => {
-    if (props.detail && ![ExecStatus.CREATED, ExecStatus.PENDING, ExecStatus.RUNNING].includes(props.detail.status?.value) && !hasStartDate.value) {
-      if (timer) {
-        if (hasFetchedOnce) {
-          computedPageLoadList(perfListParams.value, perfListTotal.value, perfLoadList);
-        }
-        clearTimeout(timer);
-      }
-      return;
-    }
-
-    hasFetchedOnce = true;
-    loadInfo();
-  }, delayInSeconds.value);
-};
-
-// Whether the first full load has completed
-const isLoaded = ref(false);
-// Whether it's the first fetch for the list
-let isFirstLoadList = true;
-// Whether it's the first incremental update for the list
-let isFirstUpdatePerfList = true;
-// Whether it's the first incremental update for the error list
-let isFirstUpdatePerfErrList = true;
-/**
- * Load execution info and refresh related metrics depending on current tab.
+ * Load execution info and refresh related metrics depending on current tab
+ * <p>
+ * Coordinates data loading based on execution status and current tab selection
  */
 const loadInfo = async () => {
   const [error, { data }] = await exec.getInfo(props.detail?.id);
@@ -150,21 +100,21 @@ const loadInfo = async () => {
 
   if (props.detail?.scriptType?.value !== 'MOCK_DATA') {
     if (['aggregation', 'throughput', 'vu', 'responseTime', 'analyze', 'error'].includes(countTabKey.value)) {
-      if (isFirstUpdatePerfList) {
-        const _filters = [{ key: 'timestamp', op: 'GREATER_THAN_EQUAL', value: dayjs(perfListLastTimestamp.value).format('YYYY-MM-DD HH:mm:ss') }];
+      if (isFirstUpdatePerfList.value) {
+        const _filters = [{ key: 'timestamp' as const, op: 'GREATER_THAN_EQUAL' as const, value: dayjs(perfListLastTimestamp.value).format('YYYY-MM-DD HH:mm:ss') }];
         await perfLoadList(1, hasFetchedOnce ? _filters : []);
         await computedPageLoadList(perfListParams.value, perfListTotal.value, perfLoadList);
-        isFirstUpdatePerfList = false;
+        isFirstUpdatePerfList.value = false;
       } else {
         await perfLoadList(1);
       }
 
       if (countTabKey.value === 'error') {
         await loadErrorCount();
-        if (isFirstUpdatePerfErrList) {
+        if (isFirstUpdatePerfErrList.value) {
           await loadSampleErrorContent();
           await computedPageLoadList(errParams.value, errTotal.value, loadSampleErrorContent);
-          isFirstUpdatePerfErrList = false;
+          isFirstUpdatePerfErrList.value = false;
         } else {
           await loadSampleErrorContent(1);
         }
@@ -181,191 +131,126 @@ const loadInfo = async () => {
   updateData();
 };
 
-const perfListParams = ref<{pageNo: number, pageSize: number, filters:{key:'timestamp', op:'GREATER_THAN_EQUAL', value:string}[], nodeId?:string, }>({ pageNo: 1, pageSize: 500, filters: [] });
-const perfListTotal = ref(0);
-const perfListLastTimestamp = ref('');
-
-// API dimension: metrics per API name
-const apiDimensionObj = ref<{[key:string]:{
-  duration: number[],
-  errors: number[],
-  iterations: number[],
-  n: number[],
-  operations: number[],
-  transactions: number[],
-  readBytes: number[],
-  writeBytes: number[],
-  ops: number[],
-  minOps: number[],
-  maxOps: number[],
-  meanOps: number[],
-  tps: number[],
-  minTps: number[],
-  maxTps: number[],
-  meanTps: number[],
-  brps: number[],
-  minBrps: number[],
-  maxBrps: number[],
-  meanBrps: number[],
-  bwps: number[],
-  minBwps: number[],
-  maxBwps: number[],
-  meanBwps: number[],
-  tranMean: number[],
-  tranMin: number[],
-  tranMax: number[],
-  tranP50: number[],
-  tranP75: number[],
-  tranP90: number[],
-  tranP95: number[],
-  tranP99: number[],
-  tranP999: number[],
-  errorRate: number[],
-  threadPoolSize: number[],
-  threadPoolActiveSize: number[],
-  threadMaxPoolSize: number[],
-}}>({
-  Total: {
-    duration: [],
-    errors: [],
-    iterations: [],
-    n: [],
-    operations: [],
-    transactions: [],
-    readBytes: [],
-    writeBytes: [],
-    ops: [],
-    minOps: [],
-    maxOps: [],
-    meanOps: [],
-    tps: [],
-    minTps: [],
-    maxTps: [],
-    meanTps: [],
-    brps: [],
-    minBrps: [],
-    maxBrps: [],
-    meanBrps: [],
-    bwps: [],
-    minBwps: [],
-    maxBwps: [],
-    meanBwps: [],
-    tranMean: [],
-    tranMin: [],
-    tranMax: [],
-    tranP50: [],
-    tranP75: [],
-    tranP90: [],
-    tranP95: [],
-    tranP99: [],
-    tranP999: [],
-    errorRate: [],
-    threadPoolSize: [],
-    threadPoolActiveSize: [],
-    threadMaxPoolSize: []
+/**
+ * Fetch paginated performance summary list
+ * <p>
+ * Loads performance data with pagination support and error handling
+ */
+const perfLoadList = async (_pageNo?: number, filters?: { key: 'timestamp'; op: 'GREATER_THAN_EQUAL'; value: string; }[]) => {
+  if (_pageNo) {
+    perfListParams.value.pageNo = _pageNo;
   }
-});
 
-// Index dimension: API names per metric
-const indexDimensionObj = ref<{
-  duration: {[key:string]:number[] },
-  errors: {[key:string]:number[] },
-  iterations: {[key:string]:number[] },
-  n: {[key:string]:number[] },
-  operations: {[key:string]:number[] },
-  transactions: {[key:string]:number[] },
-  readBytes: {[key:string]:number[] },
-  writeBytes: {[key:string]:number[] },
-  ops: {[key:string]:number[] },
-  minOps: {[key:string]:number[] },
-  maxOps: {[key:string]:number[] },
-  meanOps: {[key:string]:number[] },
-  tps: {[key:string]:number[] },
-  minTps: {[key:string]:number[] },
-  maxTps: {[key:string]:number[] },
-  meanTps: {[key:string]:number[] },
-  brps: {[key:string]:number[] },
-  minBrps: {[key:string]:number[] },
-  maxBrps: {[key:string]:number[] },
-  meanBrps: {[key:string]:number[] },
-  bwps: {[key:string]:number[] },
-  minBwps: {[key:string]:number[] },
-  maxBwps: {[key:string]:number[] },
-  meanBwps: {[key:string]:number[] },
-  tranMean: {[key:string]:number[] },
-  tranMin: {[key:string]:number[] },
-  tranMax: {[key:string]:number[] },
-  tranP50: {[key:string]:number[] },
-  tranP75: {[key:string]:number[] },
-  tranP90: {[key:string]:number[] },
-  tranP95: {[key:string]:number[] },
-  tranP99: {[key:string]:number[] },
-  tranP999: {[key:string]:number[] },
-  errorRate: {[key:string]:number[] },
-  threadPoolSize: {[key:string]:number[] },
-  threadPoolActiveSize: {[key:string]:number[] },
-  threadMaxPoolSize: {[key:string]:number[] }
-}>({
-  duration: { Total: [] },
-  errors: { Total: [] },
-  iterations: { Total: [] },
-  n: { Total: [] },
-  operations: { Total: [] },
-  transactions: { Total: [] },
-  readBytes: { Total: [] },
-  writeBytes: { Total: [] },
-  ops: { Total: [] },
-  minOps: { Total: [] },
-  maxOps: { Total: [] },
-  meanOps: { Total: [] },
-  tps: { Total: [] },
-  minTps: { Total: [] },
-  maxTps: { Total: [] },
-  meanTps: { Total: [] },
-  brps: { Total: [] },
-  minBrps: { Total: [] },
-  maxBrps: { Total: [] },
-  meanBrps: { Total: [] },
-  bwps: { Total: [] },
-  minBwps: { Total: [] },
-  maxBwps: { Total: [] },
-  meanBwps: { Total: [] },
-  tranMean: { Total: [] },
-  tranMin: { Total: [] },
-  tranMax: { Total: [] },
-  tranP50: { Total: [] },
-  tranP75: { Total: [] },
-  tranP90: { Total: [] },
-  tranP95: { Total: [] },
-  tranP99: { Total: [] },
-  tranP999: { Total: [] },
-  errorRate: { Total: [] },
-  threadPoolSize: { Total: [] },
-  threadPoolActiveSize: { Total: [] },
-  threadMaxPoolSize: { Total: [] }
-});
+  if (filters?.length) {
+    perfListParams.value.filters = filters;
+  }
 
-const apiNames = ref<string[]>([]);
-const timestampData = ref<string[]>([]);
-const newList = ref<ListData[]>([]);
-const allList = ref<ListData[]>([]);
-const infoMaxQps = ref<string | number>('');
-const infoMaxTps = ref<string | number>('');
+  const [error, { data = { list: [], total: 0 } }] = await testerExec.getSampleSummaryList(props.detail?.id, perfListParams.value);
+  if (error) {
+    emit('update:loading', false);
+    clearTimer();
+    return;
+  }
 
-const errCountList = ref<Record<string, any>[]>([]);
+  if (data.list?.length) {
+    emit('update:loading', false);
+  }
 
-const brpsUnit = ref<'KB' | 'MB'>('KB');
-const minBrpsUnit = ref<'KB' | 'MB'>('KB');
-const maxBrpsUnit = ref<'KB' | 'MB'>('KB');
-const meanBrpsUnit = ref<'KB' | 'MB'>('KB');
-const bwpsUnit = ref<'KB' | 'MB'>('KB');
-const minBwpsUnit = ref<'KB' | 'MB'>('KB');
-const maxBwpsUnit = ref<'KB' | 'MB'>('KB');
-const meanBwpsUnit = ref<'KB' | 'MB'>('KB');
+  perfListTotal.value = +data.total;
+  saveData(data.list, convertCvsValue, pipelineKeys.value);
+};
 
-const perfListData = ref<ListData[]>([]);
-const { convertCvsValue } = useExecCount();
+/**
+ * Load latest error counters and compute error rates based on last sample summary
+ * <p>
+ * Fetches error counter data and calculates error rates for display
+ */
+const loadErrorCount = async () => {
+  await loadErrorCountData(props.detail?.id, testerExec.getSampleErrorCounterLatest, newList.value, emit);
+};
 
+/**
+ * Load paginated sample error contents incrementally using timestamp cursor
+ * <p>
+ * Fetches error sample data with pagination support for large datasets
+ */
+const loadSampleErrorContent = async (_pageNo?: number) => {
+  await loadSampleErrorContentData(props.detail?.id, testerExec.getSampleErrContent, _pageNo, emit);
+};
+
+/**
+ * Load latest HTTP status code counters (no history kept)
+ * <p>
+ * Fetches current status code distribution for HTTP requests
+ */
+const loadStatusCodeData = async () => {
+  await loadStatusCodeDataData(props.detail?.id, testerExec.getSampleExtensionCountMapLatest, props.detail, emit);
+};
+
+/**
+ * Load remaining pages (2..N) when not in running/scheduling status
+ * <p>
+ * Handles pagination for complete data loading when execution is finished
+ */
+// eslint-disable-next-line @typescript-eslint/ban-types
+const computedPageLoadList = async (params: any, total: number, func: Function) => {
+  const { pageSize } = params;
+  if (total < pageSize) {
+    return;
+  }
+
+  const totalPage = Math.ceil(total / pageSize);
+  for (let i = 2; i <= totalPage; i++) {
+    await func(i);
+  }
+};
+
+/**
+ * Set exception information from execution detail
+ * <p>
+ * Processes execution detail to extract meaningful error information
+ */
+const setException = () => {
+  if (props.detail) {
+    setExceptionInfo(props.detail);
+  }
+};
+
+// Performance Polling
+const {
+  isLoaded,
+  countTabKey,
+  hasFetchedOnce,
+  isFirstUpdatePerfList,
+  isFirstUpdatePerfErrList,
+  delayInSeconds,
+  updateData,
+  clearTimer,
+  setCountTabKey,
+  initializePolling,
+  cleanupPolling
+} = usePerformancePolling(
+  props,
+  emit,
+  loadInfo,
+  loadErrorCount,
+  loadSampleErrorContent,
+  loadStatusCodeData,
+  computedPageLoadList,
+  perfLoadList,
+  perfListParams,
+  perfListTotal,
+  perfListLastTimestamp,
+  errParams,
+  errTotal,
+  perfLoadList
+);
+
+/**
+ * Pipeline keys computed from detail configuration
+ * <p>
+ * Extracts unique pipeline target mapping keys for data processing
+ */
 const pipelineKeys = computed(() => {
   const data = props.detail?.pipelineTargetMappings;
   if (!data) {
@@ -397,934 +282,24 @@ const pipelineKeys = computed(() => {
 });
 
 /**
- * Fetch paginated performance summary list.
+ * Initialize polling and start monitoring execution status
  */
-const perfLoadList = async (_pageNo?:number, filters?:{ key: 'timestamp'; op: 'GREATER_THAN_EQUAL'; value: string; }[]) => {
-  if (_pageNo) {
-    perfListParams.value.pageNo = _pageNo;
-  }
-
-  if (filters?.length) {
-    perfListParams.value.filters = filters;
-  }
-
-  const [error, { data = { list: [], total: 0 } }] = await testerExec.getSampleSummaryList(props.detail?.id, perfListParams.value);
-  if (error) {
-    emit('update:loading', false);
-    clearTimer();
-    return;
-  }
-
-  if (data.list?.length) {
-    emit('update:loading', false);
-  }
-
-  perfListTotal.value = +data.total;
-  saveData(data.list);
+const initialize = () => {
+  initializePolling();
 };
 
 /**
- * Normalize and push incoming list data into chart-ready structures.
- * <p>
- * - De-duplicate last timestamp when new batch overlaps
- * - Maintain both API-dimension and index-dimension structures
- * - Convert BRPS/BWPS units from bytes to KB/MB dynamically
+ * Cleanup polling resources
  */
-const saveData = (_list:ListData[]) => {
-  if (!_list?.length) {
-    return;
-  }
-
-  let list = _list;
-  let lastTimestamp = '';
-
-  if (perfListData.value.length && hasFetchedOnce) {
-    lastTimestamp = perfListData.value[perfListData.value.length - 1].timestamp;
-    list = _list.filter(item => dayjs(item.timestamp).startOf('millisecond').isAfter(dayjs(lastTimestamp).startOf('millisecond')) || dayjs(item.timestamp).startOf('millisecond').isSame(dayjs(lastTimestamp).startOf('millisecond')));
-    if (perfListData.value[perfListData.value.length - 1]?.timestamp === list[0]?.timestamp) {
-      perfListData.value.pop();
-      timestampData.value.pop();
-      for (const key in apiDimensionObj.value) {
-        apiDimensionObj.value[key].duration.pop();
-        apiDimensionObj.value[key].errors.pop();
-        apiDimensionObj.value[key].iterations.pop();
-        apiDimensionObj.value[key].n.pop();
-        apiDimensionObj.value[key].operations.pop();
-        apiDimensionObj.value[key].transactions.pop();
-        apiDimensionObj.value[key].readBytes.pop();
-        apiDimensionObj.value[key].writeBytes.pop();
-        apiDimensionObj.value[key].ops.pop();
-        apiDimensionObj.value[key].minOps.pop();
-        apiDimensionObj.value[key].maxOps.pop();
-        apiDimensionObj.value[key].meanOps.pop();
-        apiDimensionObj.value[key].tps.pop();
-        apiDimensionObj.value[key].minTps.pop();
-        apiDimensionObj.value[key].maxTps.pop();
-        apiDimensionObj.value[key].meanTps.pop();
-        apiDimensionObj.value[key].brps.pop();
-        apiDimensionObj.value[key].minBrps.pop();
-        apiDimensionObj.value[key].maxBrps.pop();
-        apiDimensionObj.value[key].meanBrps.pop();
-        apiDimensionObj.value[key].bwps.pop();
-        apiDimensionObj.value[key].minBwps.pop();
-        apiDimensionObj.value[key].maxBwps.pop();
-        apiDimensionObj.value[key].meanBwps.pop();
-        apiDimensionObj.value[key].tranMean.pop();
-        apiDimensionObj.value[key].tranMin.pop();
-        apiDimensionObj.value[key].tranMax.pop();
-        apiDimensionObj.value[key].tranP50.pop();
-        apiDimensionObj.value[key].tranP75.pop();
-        apiDimensionObj.value[key].tranP90.pop();
-        apiDimensionObj.value[key].tranP95.pop();
-        apiDimensionObj.value[key].tranP99.pop();
-        apiDimensionObj.value[key].tranP999.pop();
-        apiDimensionObj.value[key].errorRate.pop();
-        apiDimensionObj.value[key].threadPoolSize.pop();
-        apiDimensionObj.value[key].threadPoolActiveSize.pop();
-        apiDimensionObj.value[key].threadMaxPoolSize.pop();
-      }
-
-      for (const key in indexDimensionObj.value) {
-        const innerObj = indexDimensionObj.value[key];
-        for (const innerKey in innerObj) {
-          const innerArray = innerObj[innerKey];
-          innerArray.pop();
-        }
-      }
-    }
-  }
-
-  perfListData.value.push(...list);
-  perfListLastTimestamp.value = perfListData.value[perfListData.value.length - 1].timestamp;
-
-  newList.value = convertCvsValue(list, allCvsKeys, pipelineKeys.value) as unknown as ListData[];
-
-  allList.value.push(...newList.value);
-  const othersValue = computedOthersValue();
-  infoMaxQps.value = othersValue.maxOps;
-  infoMaxTps.value = othersValue.maxTps;
-  const times:string[] = [];
-  for (let i = 0; i < newList.value.length; i++) {
-    times.push(newList.value[i].timestamp);
-    const values = newList.value[i].values;
-
-    for (let j = 0; j < values.length; j++) {
-      const value = values[j];
-      value.maxOps = othersValue.maxOps;
-      value.minOps = othersValue.minOps;
-      value.meanOps = othersValue.meanOps;
-      value.minTps = othersValue.minTps;
-      value.maxTps = othersValue.maxTps;
-      value.meanTps = othersValue.meanTps;
-      value.minBrps = othersValue.minBrps;
-      value.maxBrps = othersValue.maxBrps;
-      value.meanBrps = othersValue.meanBrps;
-      value.minBwps = othersValue.minBwps;
-      value.maxBwps = othersValue.maxBwps;
-      value.meanBwps = othersValue.meanBwps;
-      const name = value.name;
-
-      if (!apiNames.value.includes(name)) {
-        apiNames.value.push(name);
-      }
-
-      let brpsInKB = 0;
-      if (value.brps && +value.brps > 0) {
-        if (brpsUnit.value === 'KB') {
-          brpsInKB = +(+value.brps / 1024).toFixed(2);
-          if (brpsInKB > 1000) {
-            brpsInKB = +(+value.brps / 1024 / 1024).toFixed(2);
-            brpsUnit.value = 'MB';
-            if (indexDimensionObj.value.brps[name]?.length > 0) {
-              indexDimensionObj.value.brps[name] = indexDimensionObj.value.brps[name].map(brpsData => +(brpsData / 1024).toFixed(2));
-            }
-          }
-        } else {
-          brpsInKB = +(+value.brps / 1024 / 1024).toFixed(2);
-        }
-      }
-
-      let minBrpsInKB = 0;
-      if (value.minBrps && +value.minBrps > 0) {
-        if (minBrpsUnit.value === 'KB') {
-          minBrpsInKB = +(+value.minBrps / 1024).toFixed(2);
-          if (minBrpsInKB > 1000) {
-            minBrpsInKB = +(+value.minBrps / 1024 / 1024).toFixed(2);
-            minBrpsUnit.value = 'MB';
-            if (indexDimensionObj.value.minBrps[name]?.length > 0) {
-              indexDimensionObj.value.minBrps[name] = indexDimensionObj.value.minBrps[name].map(minBrpsData => +(minBrpsData / 1024).toFixed(2));
-            }
-          }
-        } else {
-          minBrpsInKB = +(+value.minBrps / 1024 / 1024).toFixed(2);
-        }
-      }
-
-      let maxBrpsInKB = 0;
-      if (value.maxBrps && +value.maxBrps > 0) {
-        if (maxBrpsUnit.value === 'KB') {
-          maxBrpsInKB = +(+value.maxBrps / 1024).toFixed(2);
-          if (maxBrpsInKB > 1000) {
-            maxBrpsInKB = +(+value.maxBrps / 1024 / 1024).toFixed(2);
-            maxBrpsUnit.value = 'MB';
-            if (indexDimensionObj.value.maxBrps[name]?.length > 0) {
-              indexDimensionObj.value.maxBrps[name] = indexDimensionObj.value.maxBrps[name].map(maxBrpsData => +(maxBrpsData / 1024).toFixed(2));
-            }
-          }
-        } else {
-          maxBrpsInKB = +(+value.maxBrps / 1024 / 1024).toFixed(2);
-        }
-      }
-
-      let meanBrpsInKB = 0;
-      if (value.meanBrps && +value.meanBrps > 0) {
-        if (meanBrpsUnit.value === 'KB') {
-          meanBrpsInKB = +(+value.meanBrps / 1024).toFixed(2);
-          if (meanBrpsInKB > 1000) {
-            meanBrpsInKB = +(+value.meanBrps / 1024 / 1024).toFixed(2);
-            meanBrpsUnit.value = 'MB';
-            if (indexDimensionObj.value.meanBrps[name]?.length > 0) {
-              indexDimensionObj.value.meanBrps[name] = indexDimensionObj.value.meanBrps[name].map(meanBrpsData => +(meanBrpsData / 1024).toFixed(2));
-            }
-          }
-        } else {
-          meanBrpsInKB = +(+value.meanBrps / 1024 / 1024).toFixed(2);
-        }
-      }
-
-      let bwpsInKB = 0;
-      if (value.bwps && +value.bwps > 0) {
-        if (bwpsUnit.value === 'KB') {
-          bwpsInKB = +(+value.bwps / 1024).toFixed(2);
-          if (bwpsInKB > 1000) {
-            bwpsInKB = +(+value.bwps / 1024 / 1024).toFixed(2);
-            bwpsUnit.value = 'MB';
-            if (indexDimensionObj.value.bwps[name]?.length > 0) {
-              indexDimensionObj.value.bwps[name] = indexDimensionObj.value.bwps[name].map(bwpsData => +(bwpsData / 1024).toFixed(2));
-            }
-          }
-        } else {
-          bwpsInKB = +(+value.bwps / 1024 / 1024).toFixed(2);
-        }
-      }
-
-      let minBwpsInKB = 0;
-      if (value.minBwps && +value.minBwps > 0) {
-        if (minBwpsUnit.value === 'KB') {
-          minBwpsInKB = +(+value.minBwps / 1024).toFixed(2);
-          if (minBwpsInKB > 1000) {
-            minBwpsInKB = +(+value.minBwps / 1024 / 1024).toFixed(2);
-            minBwpsUnit.value = 'MB';
-            if (indexDimensionObj.value.minBwps[name]?.length > 0) {
-              indexDimensionObj.value.minBwps[name] = indexDimensionObj.value.minBwps[name].map(minBwpsData => +(minBwpsData / 1024).toFixed(2));
-            }
-          }
-        } else {
-          minBwpsInKB = +(+value.minBwps / 1024 / 1024).toFixed(2);
-        }
-      }
-
-      let maxBwpsInKB = 0;
-      if (value.maxBwps && +value.maxBwps > 0) {
-        if (maxBwpsUnit.value === 'KB') {
-          maxBwpsInKB = +(+value.maxBwps / 1024).toFixed(2);
-          if (maxBwpsInKB > 1000) {
-            maxBwpsInKB = +(+value.maxBwps / 1024 / 1024).toFixed(2);
-            maxBwpsUnit.value = 'MB';
-            if (indexDimensionObj.value.maxBwps[name]?.length > 0) {
-              indexDimensionObj.value.maxBwps[name] = indexDimensionObj.value.maxBwps[name].map(maxBwpsData => +(maxBwpsData / 1024).toFixed(2));
-            }
-          }
-        } else {
-          maxBwpsInKB = +(+value.maxBwps / 1024 / 1024).toFixed(2);
-        }
-      }
-
-      let meanBwpsInKB = 0;
-      if (value.meanBwps && +value.meanBwps > 0) {
-        if (meanBwpsUnit.value === 'KB') {
-          meanBwpsInKB = +(+value.meanBwps / 1024).toFixed(2);
-          if (meanBwpsInKB > 1000) {
-            meanBwpsInKB = +(+value.meanBwps / 1024 / 1024).toFixed(2);
-            meanBwpsUnit.value = 'MB';
-            if (indexDimensionObj.value.meanBwps[name]?.length > 0) {
-              indexDimensionObj.value.meanBwps[name] = indexDimensionObj.value.meanBwps[name].map(meanBwpsData => +(meanBwpsData / 1024).toFixed(2));
-            }
-          }
-        } else {
-          meanBwpsInKB = +(+value.meanBwps / 1024 / 1024).toFixed(2);
-        }
-      }
-
-      if (!(name in apiDimensionObj.value)) {
-        apiDimensionObj.value[name] = {
-          duration: [],
-          errors: [],
-          iterations: [],
-          n: [],
-          operations: [],
-          transactions: [],
-          readBytes: [],
-          writeBytes: [],
-          ops: [],
-          minOps: [],
-          maxOps: [],
-          meanOps: [],
-          tps: [],
-          minTps: [],
-          maxTps: [],
-          meanTps: [],
-          brps: [],
-          minBrps: [],
-          maxBrps: [],
-          meanBrps: [],
-          bwps: [],
-          minBwps: [],
-          maxBwps: [],
-          meanBwps: [],
-          tranMean: [],
-          tranMin: [],
-          tranMax: [],
-          tranP50: [],
-          tranP75: [],
-          tranP90: [],
-          tranP95: [],
-          tranP99: [],
-          tranP999: [],
-          errorRate: [],
-          threadPoolSize: [],
-          threadPoolActiveSize: [],
-          threadMaxPoolSize: []
-        };
-      }
-
-      if (!(name in indexDimensionObj.value.duration)) {
-        indexDimensionObj.value.duration[name] = [];
-        indexDimensionObj.value.errors[name] = [];
-        indexDimensionObj.value.iterations[name] = [];
-        indexDimensionObj.value.n[name] = [];
-        indexDimensionObj.value.operations[name] = [];
-        indexDimensionObj.value.transactions[name] = [];
-        indexDimensionObj.value.readBytes[name] = [];
-        indexDimensionObj.value.writeBytes[name] = [];
-        indexDimensionObj.value.ops[name] = [];
-        indexDimensionObj.value.minOps[name] = [];
-        indexDimensionObj.value.maxOps[name] = [];
-        indexDimensionObj.value.meanOps[name] = [];
-        indexDimensionObj.value.tps[name] = [];
-        indexDimensionObj.value.minTps[name] = [];
-        indexDimensionObj.value.maxTps[name] = [];
-        indexDimensionObj.value.meanTps[name] = [];
-        indexDimensionObj.value.brps[name] = [];
-        indexDimensionObj.value.minBrps[name] = [];
-        indexDimensionObj.value.maxBrps[name] = [];
-        indexDimensionObj.value.meanBrps[name] = [];
-        indexDimensionObj.value.bwps[name] = [];
-        indexDimensionObj.value.minBwps[name] = [];
-        indexDimensionObj.value.maxBwps[name] = [];
-        indexDimensionObj.value.meanBwps[name] = [];
-        indexDimensionObj.value.tranMean[name] = [];
-        indexDimensionObj.value.tranMin[name] = [];
-        indexDimensionObj.value.tranMax[name] = [];
-        indexDimensionObj.value.tranP50[name] = [];
-        indexDimensionObj.value.tranP75[name] = [];
-        indexDimensionObj.value.tranP90[name] = [];
-        indexDimensionObj.value.tranP95[name] = [];
-        indexDimensionObj.value.tranP99[name] = [];
-        indexDimensionObj.value.tranP999[name] = [];
-        indexDimensionObj.value.errorRate[name] = [];
-        indexDimensionObj.value.threadPoolSize[name] = [];
-        indexDimensionObj.value.threadPoolActiveSize[name] = [];
-        indexDimensionObj.value.threadMaxPoolSize[name] = [];
-      }
-
-      apiDimensionObj.value[name].duration.push(+value.duration || 0);
-      apiDimensionObj.value[name].errors.push(+value.errors || 0);
-      apiDimensionObj.value[name].iterations.push(+value.iterations || 0);
-      apiDimensionObj.value[name].n.push(+value.n || 0);
-      apiDimensionObj.value[name].operations.push(+value.operations || 0);
-      apiDimensionObj.value[name].transactions.push(+value.transactions || 0);
-      apiDimensionObj.value[name].readBytes.push(+value.readBytes || 0);
-      apiDimensionObj.value[name].writeBytes.push(+value.writeBytes || 0);
-      apiDimensionObj.value[name].ops.push(+value.ops || 0);
-      apiDimensionObj.value[name].minOps.push(+value.minOps || 0);
-      apiDimensionObj.value[name].maxOps.push(+value.maxOps || 0);
-      apiDimensionObj.value[name].meanOps.push(+value.meanOps || 0);
-      apiDimensionObj.value[name].tps.push(+value.tps || 0);
-      apiDimensionObj.value[name].minTps.push(+value.minTps || 0);
-      apiDimensionObj.value[name].maxTps.push(+value.maxTps || 0);
-      apiDimensionObj.value[name].meanTps.push(+value.meanTps || 0);
-      apiDimensionObj.value[name].brps.push(brpsInKB);
-      apiDimensionObj.value[name].minBrps.push(minBrpsInKB);
-      apiDimensionObj.value[name].maxBrps.push(maxBrpsInKB);
-      apiDimensionObj.value[name].meanBrps.push(meanBrpsInKB);
-      apiDimensionObj.value[name].bwps.push(bwpsInKB);
-      apiDimensionObj.value[name].minBwps.push(minBwpsInKB);
-      apiDimensionObj.value[name].maxBwps.push(maxBwpsInKB);
-      apiDimensionObj.value[name].meanBwps.push(meanBwpsInKB);
-      apiDimensionObj.value[name].tranMean.push(+value.tranMean || 0);
-      apiDimensionObj.value[name].tranMin.push(+value.tranMin || 0);
-      apiDimensionObj.value[name].tranMax.push(+value.tranMax || 0);
-      apiDimensionObj.value[name].tranP50.push(+value.tranP50 || 0);
-      apiDimensionObj.value[name].tranP75.push(+value.tranP75 || 0);
-      apiDimensionObj.value[name].tranP90.push(+value.tranP90 || 0);
-      apiDimensionObj.value[name].tranP95.push(+value.tranP95 || 0);
-      apiDimensionObj.value[name].tranP99.push(+value.tranP99 || 0);
-      apiDimensionObj.value[name].tranP999.push(+value.tranP999 || 0);
-      apiDimensionObj.value[name].errorRate.push(+value.errorRate || 0);
-      apiDimensionObj.value[name].threadPoolSize.push(+value.threadPoolSize || 0);
-      apiDimensionObj.value[name].threadPoolActiveSize.push(+value.threadPoolActiveSize || 0);
-      apiDimensionObj.value[name].threadMaxPoolSize.push(+value.threadMaxPoolSize || 0);
-      indexDimensionObj.value.duration[name].push(+value.duration || 0);
-      indexDimensionObj.value.errors[name].push(+value.errors || 0);
-      indexDimensionObj.value.iterations[name].push(+value.iterations || 0);
-      indexDimensionObj.value.n[name].push(+value.n || 0);
-      indexDimensionObj.value.operations[name].push(+value.operations || 0);
-      indexDimensionObj.value.transactions[name].push(+value.transactions || 0);
-      indexDimensionObj.value.readBytes[name].push(+value.readBytes || 0);
-      indexDimensionObj.value.writeBytes[name].push(+value.writeBytes || 0);
-      indexDimensionObj.value.ops[name].push(+value.ops || 0);
-      indexDimensionObj.value.minOps[name].push(+value.minOps || 0);
-      indexDimensionObj.value.maxOps[name].push(+value.maxOps || 0);
-      indexDimensionObj.value.meanOps[name].push(+value.meanOps || 0);
-      indexDimensionObj.value.tps[name].push(+value.tps || 0);
-      indexDimensionObj.value.minTps[name].push(+value.minTps || 0);
-      indexDimensionObj.value.maxTps[name].push(+value.maxTps || 0);
-      indexDimensionObj.value.meanTps[name].push(+value.meanTps || 0);
-      indexDimensionObj.value.brps[name].push(brpsInKB);
-      indexDimensionObj.value.minBrps[name].push(minBrpsInKB);
-      indexDimensionObj.value.maxBrps[name].push(maxBrpsInKB);
-      indexDimensionObj.value.meanBrps[name].push(meanBrpsInKB);
-      indexDimensionObj.value.bwps[name].push(bwpsInKB);
-      indexDimensionObj.value.minBwps[name].push(minBwpsInKB);
-      indexDimensionObj.value.maxBwps[name].push(maxBwpsInKB);
-      indexDimensionObj.value.meanBwps[name].push(meanBwpsInKB);
-      indexDimensionObj.value.tranMean[name].push(+value.tranMean || 0);
-      indexDimensionObj.value.tranMin[name].push(+value.tranMin || 0);
-      indexDimensionObj.value.tranMax[name].push(+value.tranMax || 0);
-      indexDimensionObj.value.tranP50[name].push(+value.tranP50 || 0);
-      indexDimensionObj.value.tranP75[name].push(+value.tranP75 || 0);
-      indexDimensionObj.value.tranP90[name].push(+value.tranP90 || 0);
-      indexDimensionObj.value.tranP95[name].push(+value.tranP95 || 0);
-      indexDimensionObj.value.tranP99[name].push(+value.tranP99 || 0);
-      indexDimensionObj.value.tranP999[name].push(+value.tranP999 || 0);
-      indexDimensionObj.value.errorRate[name].push(+value.errorRate || 0);
-      indexDimensionObj.value.threadPoolSize[name].push(+value.threadPoolSize || 0);
-      indexDimensionObj.value.threadPoolActiveSize[name].push(+value.threadPoolActiveSize || 0);
-      indexDimensionObj.value.threadMaxPoolSize[name].push(+value.threadMaxPoolSize || 0);
-    }
-  }
-  timestampData.value = [...timestampData.value, ...times].map(item => {
-    return dayjs(item).format('YYYY-MM-DD HH:mm:ss');
-  });
-
-  if (isFirstLoadList) {
-    apiNames.value = apiNames.value.sort((a, b) => {
-      if (a.includes('Total') && !b.includes('Total')) {
-        return -1; // ensure 'Total' appears first
-      } else if (!a.includes('Total') && !b.includes('Total')) {
-        return 1; // keep non-Total after
-      } else {
-        return 0; // preserve original order otherwise
-      }
-    });
-    isFirstLoadList = false;
-  }
-};
-
-/**
- * Compute aggregate values for Ops/Tps/Brps/Bwps across all data points of `Total`.
- */
-const computedOthersValue = () => {
-  let maxOps = 0;
-  let minOps = 0;
-  let meanOps = 0;
-  let maxTps = 0;
-  let minTps = 0;
-  let meanTps = 0;
-  let maxBrps = 0;
-  let minBrps = 0;
-  let meanBrps = 0;
-  let maxBwps = 0;
-  let minBwps = 0;
-  let meanBwps = 0;
-
-  for (let i = 0; i < allList.value.length; i++) {
-    const totalItem = allList.value[i].values.find(f => f.name === 'Total');
-
-    // Retrieve ops/tps/brps/bwps from the 'Total' item
-    const ops = totalItem?.ops;
-    const tps = totalItem?.tps;
-    const brps = totalItem?.brps;
-    const bwps = totalItem?.bwps;
-
-    // Convert them to numbers
-    let numOps = Number(ops);
-    let numTps = Number(tps);
-    let numBrps = Number(brps);
-    let numBwps = Number(bwps);
-
-    // Fallback to 0 if conversion fails
-    if (isNaN(numOps)) {
-      numOps = 0;
-    }
-    if (isNaN(numTps)) {
-      numTps = 0;
-    }
-    if (isNaN(numBrps)) {
-      numBrps = 0;
-    }
-    if (isNaN(numBwps)) {
-      numBwps = 0;
-    }
-
-    if (i === 0) {
-      minOps = numOps;
-      minTps = numTps;
-      minBrps = numBrps;
-      minBwps = numBwps;
-    }
-
-    // Update min/max and accumulate for averages
-    maxOps = Math.max(maxOps, numOps);
-    minOps = Math.min(minOps, numOps);
-
-    meanOps += numOps;
-    maxTps = Math.max(maxTps, numTps);
-    minTps = Math.min(minTps, numTps);
-    meanTps += numTps;
-    maxBrps = Math.max(maxBrps, numBrps);
-    minBrps = Math.min(minBrps, numBrps);
-    meanBrps += numBrps;
-    maxBwps = Math.max(maxBwps, numBwps);
-    minBwps = Math.min(minBwps, numBwps);
-    meanBwps += numBwps;
-  }
-
-  // Compute final averages
-  meanOps /= allList.value.length;
-  meanTps /= allList.value.length;
-  meanBrps /= allList.value.length;
-  meanBwps /= allList.value.length;
-  meanOps = +meanOps.toFixed(2);
-  meanTps = +meanTps.toFixed(2);
-  meanBrps = +meanBrps.toFixed(2);
-  meanBwps = +meanBwps.toFixed(2);
-  return {
-    maxOps,
-    minOps,
-    meanOps,
-    maxTps,
-    minTps,
-    meanTps,
-    maxBrps,
-    minBrps,
-    meanBrps,
-    maxBwps,
-    minBwps,
-    meanBwps
-  };
-};
-
-/**
- * Load latest error counters and compute error rates based on last sample summary.
- */
-const loadErrorCount = async () => {
-  const [counterErr, counterRes] = await testerExec.getSampleErrorCounterLatest(props.detail?.id);
-  if (counterErr) {
-    emit('update:loading', false);
-    clearTimer();
-    return;
-  }
-
-  if (counterRes?.data) {
-    emit('update:loading', false);
-  }
-
-  const errorCounterData = counterRes.data;
-  errCountList.value = getErrCountList(errorCounterData, newList.value[newList.value.length - 1]);
-};
-
-/**
- * Transform raw error counters to a view model with totals and per-type breakdown.
- */
-const getErrCountList = (counterData, lastData) => {
-  const result:Record<string, any>[] = [];
-  for (const key in counterData) {
-    const counter = counterData[key];
-    let errorNum = 0;
-    for (const prop in counter) {
-      const value = parseInt(counter[prop]);
-      if (!isNaN(value)) {
-        errorNum += value;
-      }
-    }
-    const matchingValue = lastData.values.find((value) => value.name === key);
-    let errorRate = '0';
-    if (matchingValue && !isNaN(errorNum) && !isNaN(matchingValue.n)) {
-      if (typeof matchingValue.n === 'number' && matchingValue.n !== 0) {
-        errorRate = (errorNum / matchingValue.n * 100).toFixed(2) + '%';
-      } else {
-        errorRate = '0%';
-      }
-    }
-    const list:Record<string, any>[] = [];
-    for (const prop in counter) {
-      const value = parseInt(counter[prop]);
-      const errorNumValue = !isNaN(value) ? value : '--';
-      list.push({
-        name: prop,
-        errorNum: errorNumValue
-      });
-    }
-    result.push({
-      name: key,
-      errorNum: !isNaN(errorNum) ? errorNum : '--',
-      errorRate: errorRate,
-      list: list
-    });
-  }
-  const totalElement = result.filter((element) => element.name === 'Total');
-  const otherElements = result.filter((element) => element.name !== 'Total');
-  const finalResult = [...otherElements, ...totalElement];
-  return finalResult;
-};
-
-const sampleList = ref<Record<string, any>[]>([]);
-const errParams = ref<{pageNo: number, pageSize: number, filters:{key:'timestamp', op:'GREATER_THAN_EQUAL', value:string}[], nodeId?:string, }>({ pageNo: 1, pageSize: 200, filters: [] });
-const errTotal = ref(0);
-const errTimestamp = ref('');
-/**
- * Load paginated sample error contents incrementally using timestamp cursor.
- */
-const loadSampleErrorContent = async (_pageNo?:number) => {
-  if (_pageNo) {
-    errParams.value.pageNo = _pageNo;
-  }
-
-  if (errTimestamp.value) {
-    errParams.value.filters = [{ key: 'timestamp', op: 'GREATER_THAN_EQUAL', value: dayjs(errTimestamp.value).format('YYYY-MM-DD HH:mm:ss') }];
-  }
-
-  const [error, { data = { list: [], total: 0 } }] = await testerExec.getSampleErrContent(props.detail?.id, errParams.value);
-  if (error) {
-    emit('update:loading', false);
-    clearTimer();
-    return;
-  }
-
-  if (data?.list?.length) {
-    emit('update:loading', false);
-  }
-
-  errTotal.value = +data.total;
-  if (data.list.length) {
-    errTimestamp.value = data.list[data.list.length - 1].timestamp;
-    sampleList.value = [...sampleList.value, ...data.list];
-  }
-};
-
-// NOTE: `stutasCodeData` kept for backward-compat with downstream components (typo in name).
-const stutasCodeData = ref({});
-/**
- * Load latest HTTP status code counters (no history kept).
- */
-const loadStatusCodeData = async () => {
-  const [error, { data }] = await testerExec.getSampleExtensionCountMapLatest(props.detail?.id);
-  if (error) {
-    emit('update:loading', false);
-    clearTimer();
-    return;
-  }
-
-  if (data) {
-    emit('update:loading', false);
-  }
-
-  setStutasCodeData(data, props.detail.pipelineTargetMappings);
-};
-
-/**
- * Organize status code counters by pipeline hierarchy or default to `Total`.
- */
-const setStutasCodeData = (data: Record<string, any>, pipeline: Record<string, any>) => {
-  if (props.detail?.isSingleInterface) {
-    if (!data?.Total) {
-      stutasCodeData.value = {
-        Total: {
-          '2xx': 0,
-          '3xx': 0,
-          '4xx': 0,
-          '5xx': 0,
-          Exception: 0
-        }
-      };
-      return;
-    }
-    stutasCodeData.value = {
-      Total: {
-        '2xx': data?.total?.['2xx'] || 0,
-        '3xx': data?.total?.['3xx'] || 0,
-        '4xx': data?.total?.['4xx'] || 0,
-        '5xx': data?.total?.['5xx'] || 0,
-        Exception: data?.total?.Exception || 0
-      }
-    };
-    return;
-  }
-
-  stutasCodeData.value = {};
-
-  const processData = (obj) => {
-    for (const [key, value] of Object.entries(obj)) {
-      stutasCodeData.value[key] = {
-        '2xx': value?.['2xx'] ? parseInt(value['2xx']) : 0,
-        '3xx': value?.['3xx'] ? parseInt(value['3xx']) : 0,
-        '4xx': value?.['4xx'] ? parseInt(value['4xx']) : 0,
-        '5xx': value?.['5xx'] ? parseInt(value['5xx']) : 0,
-        Exception: value?.Exception ? parseInt(value.Exception) : 0
-      };
-    }
-  };
-
-  if (!pipeline || !Object.keys(pipeline).length || !data || !Object.keys(data).length) {
-    stutasCodeData.value = {
-      Total: {
-        '2xx': 0,
-        '3xx': 0,
-        '4xx': 0,
-        '5xx': 0,
-        Exception: 0
-      }
-    };
-    return;
-  }
-
-  if (!pipeline) {
-    processData(data);
-    return;
-  }
-
-  for (const key in pipeline) {
-    stutasCodeData.value[key] = {
-      '2xx': data[key]?.['2xx'] ? parseInt(data[key]?.['2xx']) : 0,
-      '3xx': data[key]?.['3xx'] ? parseInt(data[key]?.['3xx']) : 0,
-      '4xx': data[key]?.['4xx'] ? parseInt(data[key]?.['4xx']) : 0,
-      '5xx': data[key]?.['5xx'] ? parseInt(data[key]?.['5xx']) : 0,
-      Exception: data[key]?.Exception ? parseInt(data[key]?.Exception) : 0
-    };
-
-    if (pipeline[key]?.length) {
-      for (let i = 0; i < pipeline[key].length; i++) {
-        const cKey = pipeline[key][i];
-        stutasCodeData.value[cKey] = {
-          '2xx': data[cKey]?.['2xx'] ? parseInt(data[cKey]?.['2xx']) : 0,
-          '3xx': data[cKey]?.['3xx'] ? parseInt(data[cKey]?.['3xx']) : 0,
-          '4xx': data[cKey]?.['4xx'] ? parseInt(data[cKey]?.['4xx']) : 0,
-          '5xx': data[cKey]?.['5xx'] ? parseInt(data[cKey]?.['5xx']) : 0,
-          Exception: data[cKey]?.Exception ? parseInt(data[cKey]?.Exception) : 0
-        };
-      }
-    }
-  }
-};
-
-/**
- * React to execution detail changes:
- * <p>
- * - When running/scheduled: start polling and live updates
- * - Otherwise: load all pages once and stop
- */
-watch(() => props.detail, async (newValue) => {
-  if (!newValue) {
-    isLoaded.value = true;
-    return;
-  }
-
-  if ([ExecStatus.CREATED, ExecStatus.PENDING, ExecStatus.RUNNING].includes(newValue?.status?.value) && !hasStartDate.value) {
-    // When executing or scheduling, keep updating data
-    emit('update:loading', true);
-    isLoaded.value = false;
-    await loadInfo();
-    isLoaded.value = true;
-    if (typeof httpExecDetailRef.value?.restartNode === 'function') {
-      httpExecDetailRef.value?.restartNode();
-    }
-    return;
-  }
-
-  // Not executing: load once and paginate to the end
-  await perfLoadList();
-  emit('update:loading', false);
-  isLoaded.value = true;
-  computedPageLoadList(perfListParams.value, perfListTotal.value, perfLoadList);
-}, {
-  immediate: true
-});
-
-/**
- * Load remaining pages (2..N) when not in running/scheduling status.
- */
-const computedPageLoadList = async (params, total, func) => {
-  const { pageSize } = params;
-  if (total < pageSize) {
-    return;
-  }
-
-  const totalPage = Math.ceil(total / pageSize);
-  for (let i = 2; i <= totalPage; i++) {
-    await func(i);
-  }
-};
-
-/**
- * Reset all reactive state and stop the polling timer.
- */
-const resetData = () => {
-  apiDimensionObj.value = {
-    Total: {
-      duration: [],
-      errors: [],
-      iterations: [],
-      n: [],
-      operations: [],
-      transactions: [],
-      readBytes: [],
-      writeBytes: [],
-      ops: [],
-      minOps: [],
-      maxOps: [],
-      meanOps: [],
-      tps: [],
-      minTps: [],
-      maxTps: [],
-      meanTps: [],
-      brps: [],
-      minBrps: [],
-      maxBrps: [],
-      meanBrps: [],
-      bwps: [],
-      minBwps: [],
-      maxBwps: [],
-      meanBwps: [],
-      tranMean: [],
-      tranMin: [],
-      tranMax: [],
-      tranP50: [],
-      tranP75: [],
-      tranP90: [],
-      tranP95: [],
-      tranP99: [],
-      tranP999: [],
-      errorRate: [],
-      threadPoolSize: [],
-      threadPoolActiveSize: [],
-      threadMaxPoolSize: []
-    }
-  };
-
-  indexDimensionObj.value = {
-    duration: { Total: [] },
-    errors: { Total: [] },
-    iterations: { Total: [] },
-    n: { Total: [] },
-    operations: { Total: [] },
-    transactions: { Total: [] },
-    readBytes: { Total: [] },
-    writeBytes: { Total: [] },
-    ops: { Total: [] },
-    minOps: { Total: [] },
-    maxOps: { Total: [] },
-    meanOps: { Total: [] },
-    tps: { Total: [] },
-    minTps: { Total: [] },
-    maxTps: { Total: [] },
-    meanTps: { Total: [] },
-    brps: { Total: [] },
-    minBrps: { Total: [] },
-    maxBrps: { Total: [] },
-    meanBrps: { Total: [] },
-    bwps: { Total: [] },
-    minBwps: { Total: [] },
-    maxBwps: { Total: [] },
-    meanBwps: { Total: [] },
-    tranMean: { Total: [] },
-    tranMin: { Total: [] },
-    tranMax: { Total: [] },
-    tranP50: { Total: [] },
-    tranP75: { Total: [] },
-    tranP90: { Total: [] },
-    tranP95: { Total: [] },
-    tranP99: { Total: [] },
-    tranP999: { Total: [] },
-    errorRate: { Total: [] },
-    threadPoolSize: { Total: [] },
-    threadPoolActiveSize: { Total: [] },
-    threadMaxPoolSize: { Total: [] }
-  };
-  perfListParams.value.pageNo = 1;
-  perfListParams.value.filters = [];
-  perfListTotal.value = 0;
-  perfListLastTimestamp.value = '';
-  perfListData.value = [];
-  apiNames.value = [];
-  timestampData.value = [];
-  newList.value = [];
-  errCountList.value = [];
-  brpsUnit.value = 'KB';
-  bwpsUnit.value = 'KB';
-  errParams.value.pageNo = 1;
-  errParams.value.filters = [];
-  errTotal.value = 0;
-  errTimestamp.value = '';
-  sampleList.value = [];
-  stutasCodeData.value = undefined;
-  hasFetchedOnce = false;
-  clearTimer();
+const cleanup = () => {
+  cleanupPolling();
 };
 
 onBeforeUnmount(() => {
-  clearTimer();
+  cleanup();
 });
 
-/**
- * Safely clear the polling timer.
- */
-const clearTimer = () => {
-  if (timer) {
-    clearTimeout(timer);
-    timer = null;
-  }
-};
-
-const exception = ref<Exception>();
-
-/**
- * Derive exception info from scheduling or meter status/messages.
- */
-const setException = () => {
-  const lastSchedulingResult = props.detail?.lastSchedulingResult;
-  const meterMessage = props.detail?.meterMessage;
-  if (lastSchedulingResult?.length) {
-    const foundItem = lastSchedulingResult.find(f => !f.success);
-    if (foundItem) {
-      exception.value = { code: foundItem.exitCode, message: foundItem.message, codeName: 'Exit Code', messageName: 'Failure Reason' };
-      return;
-    }
-
-    if (meterMessage) {
-      exception.value = { code: props.detail?.meterStatus || '', message: meterMessage, codeName: 'Sampling Status', messageName: 'Failure Reason' };
-      return;
-    }
-    return;
-  }
-
-  if (meterMessage) {
-    exception.value = { code: props.detail?.meterStatus || '', message: meterMessage, codeName: 'Sampling Status', messageName: 'Failure Reason' };
-    return;
-  }
-  exception.value = undefined;
-};
+initialize();
 
 defineExpose({
   resetData,
@@ -1344,7 +319,7 @@ defineExpose({
     :timestampData="timestampData"
     :errCountList="errCountList"
     :sampleList="sampleList"
-    :stutasCodeData="stutasCodeData"
+    :statusCodeData="statusCodeData"
     :isLoaded="isLoaded"
     :brpsUnit="brpsUnit"
     :minBrpsUnit="minBrpsUnit"
