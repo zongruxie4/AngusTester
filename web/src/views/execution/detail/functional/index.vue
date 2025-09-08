@@ -5,9 +5,6 @@ import { exec } from 'src/api/ctrl';
 
 import { FunctionalTestProps } from '@/views/execution/detail/types';
 
-// =============================
-// Props & Emits
-// =============================
 // Define input props for functional test detail view
 // eslint-disable-next-line import/no-absolute-path
 const props = withDefaults(defineProps<FunctionalTestProps>(), {
@@ -25,9 +22,7 @@ const emit = defineEmits<{
   (e: 'update:loading', value: boolean): void;
 }>();
 
-// =============================
 // Async Child Components (by plugin type)
-// =============================
 const Http = defineAsyncComponent(() => import('./Http.vue'));
 const Jdbc = defineAsyncComponent(() => import('./Jdbc.vue'));
 const Mail = defineAsyncComponent(() => import('./Mail.vue'));
@@ -37,18 +32,13 @@ const Ftp = defineAsyncComponent(() => import('./Ftp.vue'));
 const Ldap = defineAsyncComponent(() => import('./Ldap.vue'));
 const WebSocket = defineAsyncComponent(() => import('./WebSocket.vue'));
 
-// =============================
 // State & Timers
-// =============================
 let refreshTimer: NodeJS.Timeout | null = null;
 let refreshDelayMs = 0;
 
 // Collected execution content (aggregated paginated results)
 const executionContent = ref<{ [key: string]: any }[]>([]);
 
-// =============================
-// Data Loaders
-// =============================
 /**
  * Load execution metadata and content once.
  * <p>
@@ -119,9 +109,7 @@ const scheduleNextRefresh = async () => {
   }, refreshDelayMs);
 };
 
-// =============================
 // Lifecycle
-// =============================
 onMounted(() => {
   // React to execution info changes and kick off initial load
   watch(() => props.execInfo, async (newValue) => {
