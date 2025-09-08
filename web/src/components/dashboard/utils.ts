@@ -4,34 +4,34 @@ import { GroupBy, DateRangeType } from './enums';
 import dayjs from 'dayjs';
 
 /**
- * 统计数据查询工具方法
- * @param apiRouter API路由前缀
- * @param params 查询参数
+ * Statistical data query utility method
+ * @param apiRouter API route prefix
+ * @param params Query parameters
  * @returns Promise<SummaryData>
  */
 export const fetchSummaryData = async (
   apiRouter: string,
   params: SummaryQueryParams
 ): Promise<SummaryData> => {
-  // 构造参数对象
+  // Construct parameter object
   const requestParams: any = {
     name: params.name,
     groupBy: params.groupBy
   };
 
-  // 添加分组列参数，支持多个字段
+  // Add group by column parameters, support multiple fields
   if (params.groupByColumns && params.groupByColumns.length > 0) {
     params.groupByColumns.forEach((column, index) => {
       requestParams[`groupByColumns[${index}]`] = column;
     });
   }
 
-  // 只有在groupBy为DATE时才添加dateRangeType参数
+  // Only add dateRangeType parameter when groupBy is DATE
   if (params.groupBy === GroupBy.DATE && params.dateRangeType) {
     requestParams.dateRangeType = params.dateRangeType;
   }
 
-  // 添加聚合参数
+  // Add aggregation parameters
   if (params.aggregates) {
     params.aggregates.forEach((aggregate, index) => {
       requestParams[`aggregates[${index}].column`] = aggregate.column;
@@ -39,7 +39,7 @@ export const fetchSummaryData = async (
     });
   }
 
-  // 添加过滤参数
+  // Add filter parameters
   if (params.filters) {
     params.filters.forEach((filter, index) => {
       requestParams[`filters[${index}].key`] = filter.key;
@@ -48,7 +48,7 @@ export const fetchSummaryData = async (
     });
   }
 
-  // 添加其他可选参数
+  // Add other optional parameters
   if (params.closeMultiTenantCtrl !== undefined) {
     requestParams.closeMultiTenantCtrl = params.closeMultiTenantCtrl;
   }
@@ -69,45 +69,26 @@ export const fetchSummaryData = async (
 };
 
 /**
- * 批量统计数据查询工具方法
- * @param apiRouter API路由前缀
- * @param params 查询参数数组
- * @returns Promise<Record<string, SummaryData>>
- */
-export const fetchBatchSummaryData = async (
-  apiRouter: string,
-  params: SummaryQueryParams[]
-): Promise<Record<string, SummaryData>> => {
-  const [error, { data }] = await http.get(
-    `${apiRouter}/analysis/customization/summary/batch`,
-    { dto: params }
-  );
-
-  if (error) {
-    throw new Error('Failed to fetch batch summary data');
-  }
-
-  return data;
-};
-
-/**
- * 将统计数据转换为折线图数据
- * @param data 统计数据
- * @param title 图表标题
- * @param unit 单位
+ * Convert statistical data to line chart data
+ * @param data Statistical data
+ * @param title Chart title
+ * @param unit Unit
+ * @param color Chart color configuration
  * @returns LineChartData
  */
 export const convertToLineChartData = (
   data: Record<string, any>,
   title: string,
-  unit: string
+  unit: DateRangeType,
+  color?: string | string[]
 ): LineChartData => {
   if (!data) {
     return {
       title,
       unit,
       xData: [],
-      yData: []
+      yData: [],
+      color
     };
   }
 
@@ -117,7 +98,8 @@ export const convertToLineChartData = (
       title,
       unit,
       xData: [],
-      yData: []
+      yData: [],
+      color
     };
   }
 
@@ -125,14 +107,15 @@ export const convertToLineChartData = (
     title,
     unit,
     xData: keys,
-    yData: Object.values(data).map(item => (item.COUNT_id ? +item.COUNT_id : 0))
+    yData: Object.values(data).map(item => (item.COUNT_id ? +item.COUNT_id : 0)),
+    color
   };
 };
 
 /**
- * 将统计数据转换为饼图数据
- * @param group 分组配置
- * @param data 统计数据
+ * Convert statistical data to pie chart data
+ * @param group Group configuration
+ * @param data Statistical data
  * @returns PieChartData[]
  */
 export const convertToPieChartData = (
@@ -177,13 +160,13 @@ export const convertToPieChartData = (
       continue;
     }
 
-    // 判断每一组下是否是空对象
+    // Determine whether each group contains an empty object.
     const _group = Object.keys(res);
     if (!_group.length) {
       continue;
     }
 
-    // 枚举类型数据处理
+    // Enum type data processing
     if (['target_type'].includes(column.key)) {
       const _data: { name: string; value: number; codes?: number }[] = [];
       let _total = 0;
@@ -213,7 +196,7 @@ export const convertToPieChartData = (
       dataSource.push(_dataSource);
     }
 
-    // 布尔类型数据处理
+    // Boolean type data processing
     if (['sys_admin_flag'].includes(column.key)) {
       const _data: { name: string; value: number }[] = [];
 
@@ -242,9 +225,9 @@ export const convertToPieChartData = (
 };
 
 /**
- * 根据日期范围类型生成默认日期过滤条件
- * @param dateType 日期类型
- * @returns 默认日期过滤条件
+ * Generate default date filter conditions based on date range type
+ * @param dateType Date type
+ * @returns Default date filter conditions
  */
 export const getDefaultDateFilters = (dateType: DateRangeType) => {
   const now = dayjs();
@@ -318,10 +301,10 @@ export const getDefaultDateFilters = (dateType: DateRangeType) => {
 };
 
 /**
- * 根据自定义日期范围生成过滤条件
- * @param startDate 开始日期
- * @param endDate 结束日期
- * @returns 日期过滤条件和单位
+ * Generate filter conditions based on custom date range
+ * @param startDate Start date
+ * @param endDate End date
+ * @returns Date filter conditions and unit
  */
 export const getDateFiltersAndUnit = (startDate: string, endDate: string) => {
   const start = dayjs(startDate);
@@ -352,9 +335,9 @@ export const getDateFiltersAndUnit = (startDate: string, endDate: string) => {
 };
 
 /**
- * 构造过滤条件的工具方法
- * @param filters 过滤条件数组
- * @returns 构造好的过滤条件
+ * Utility method for constructing filter conditions
+ * @param filters Filter conditions array
+ * @returns Constructed filter conditions
  */
 export const buildFilters = (filters: Array<{key: string; op: string; value: string}> = []) => {
   return filters.map((filter, index) => ({

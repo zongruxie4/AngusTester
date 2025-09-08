@@ -1,12 +1,12 @@
 import { EnumMessage } from '@xcan-angus/infra';
 import { GroupBy, AggregateFunction, DateRangeType, ChartType } from './enums';
 
-// 统计查询参数类型
+// Statistical query parameters type
 export interface SummaryQueryParams {
-  name: string; // 资源名称
-  groupBy?: GroupBy; // 分组方式
-  groupByColumns?: string[]; // 分组列
-  dateRangeType?: DateRangeType; // 日期范围类型
+  name: string; // Resource name
+  groupBy?: GroupBy; // Grouping method
+  groupByColumns?: string[]; // Grouping columns
+  dateRangeType?: DateRangeType; // Date range type
   aggregates?: Array<{
     column: string;
     function: AggregateFunction;
@@ -16,25 +16,26 @@ export interface SummaryQueryParams {
     op: string;
     value: string;
   }>;
-  closeMultiTenantCtrl?: boolean; // 是否关闭多租户控制
-  projectId?: number; // 项目ID
+  closeMultiTenantCtrl?: boolean; // Whether to disable multi-tenant control
+  projectId?: number; // Project ID
 }
 
-// 统计返回数据类型
+// Statistical return data type
 export interface SummaryData {
   [key: string]: any;
 }
 
-// 折线图数据类型
+// Line chart data type
 export interface LineChartData {
   title: string;
   unit: DateRangeType;
   total?: number;
   xData: string[];
   yData: (number | null)[];
+  color?: string | string[]; // Line chart color configuration
 }
 
-// 饼图数据类型
+// Pie chart data type
 export interface PieChartData {
   key: string;
   title: string;
@@ -44,22 +45,23 @@ export interface PieChartData {
   data: { name: string; value: number; codes?: number }[];
 }
 
-// 图表配置类型
+// Chart configuration type
 export interface ChartConfig {
   type: ChartType;
   title: string;
-  field: string | string[]; // 统计字段，支持单个或多个字段
+  field: string | string[]; // Statistical field, supports single or multiple fields
   enumKey: EnumMessage<string>[] | EnumMessage<string>[][];
-  // 饼图特有配置
+  // Pie chart specific configuration
   pieConfig?: {
     color: string[];
     legend: { value: string | number; message: string }[];
   };
-  // 折线图特有配置
+  // Line chart specific configuration
   lineConfig?: {
     unit: string;
+    color?: string | string[]; // Line chart color configuration
   };
-  // 聚合配置
+  // Aggregation configuration
   aggregates?: Array<{
     column: string;
     function: AggregateFunction;

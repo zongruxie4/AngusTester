@@ -16,17 +16,19 @@ interface Props {
   barTitle: string;
   dateType?: DateRangeType;
   userId?: string;
+  projectId?: string;
   searchParams?: {
     key: string;
     op: string;
     value: string;
   }[];
-  showChartParam?: boolean; // 是否显示图表参数控制组件
+  showChartParam?: boolean;
 }
 const props = withDefaults(defineProps<Props>(), {
   apiRouter: TESTER,
   dateType: DateRangeType.MONTH,
   userId: '',
+  projectId: '',
   searchParams: () => [],
   showChartParam: false // Default to not showing chart parameter control component
 });
@@ -83,6 +85,15 @@ const fetchChartData = async () => {
     // Build filter conditions
     let filters = [...(props.searchParams || [])];
 
+    // Add projectId filter condition if provided
+    if (props.projectId) {
+      filters.push({
+        key: 'project_id',
+        op: 'EQUAL',
+        value: props.projectId
+      });
+    }
+
     // Only add date filter conditions when showChartParam is true
     if (props.showChartParam) {
       // If there are datepicker values, add date filter conditions
@@ -113,7 +124,8 @@ const fetchChartData = async () => {
         lineChartData.value = convertToLineChartData(
           data,
           lineChart.title,
-          nextValue || DateRangeType.DAY // If nextValue is undefined, use default value
+          nextValue || DateRangeType.DAY, // If nextValue is undefined, use default value
+          lineChart.lineConfig?.color // Pass color configuration
         );
       });
       promises.push(linePromise);
@@ -122,92 +134,99 @@ const fetchChartData = async () => {
     // Process pie chart data
     const pieCharts = props.config.charts.filter((chart: ChartConfig) => chart.type === ChartType.PIE);
     if (pieCharts.length > 0) {
-      const piePromises = pieCharts.map((chart: ChartConfig) => {
-        // Note: aggregates parameter is required for pie charts, configured by business in dashboardConfig
-        // If aggregates is configured in dashboardConfig, use the configured value, otherwise use default value
-        const aggregates = chart.aggregates || [
-          {
-            column: 'id',
-            function: AggregateFunction.COUNT
+      // Collect all fields from all pie charts into a single groupByColumns array
+      const allPieFields: string[] = [];
+      const chartFieldMap = new Map<string, ChartConfig>(); // Map field to its chart config
+
+      pieCharts.forEach(chart => {
+        const fields = Array.isArray(chart.field) ? chart.field : [chart.field];
+        fields.forEach(field => {
+          if (!allPieFields.includes(field)) {
+            allPieFields.push(field);
+            chartFieldMap.set(field, chart);
           }
-        ];
-
-        // Process fields, support single or multiple fields
-        const groupByColumns = Array.isArray(chart.field) ? chart.field : [chart.field];
-        return fetchSummaryData(props.apiRouter, {
-          name: props.resource,
-          groupBy: GroupBy.STATUS,
-          groupByColumns: groupByColumns,
-          aggregates: aggregates,
-          filters: filters
-        }).then(data => {
-          // Process pie chart data, support multiple fields
-          const pieDataArray: any[] = [];
-
-          // Iterate through data for each field
-          groupByColumns.forEach((field, index) => {
-            if (data && data[field]) {
-              const fieldData = data[field];
-              // Calculate total, use TOTAL_COUNT_id (if exists) or sum up all parts
-              let total = 0;
-              const fieldDataValues = Object.values(fieldData);
-              if (fieldDataValues.length > 0) {
-                const firstItem: any = fieldDataValues[0];
-                if (firstItem.TOTAL_COUNT_id) {
-                  total = parseFloat(firstItem.TOTAL_COUNT_id);
-                } else {
-                  total = fieldDataValues.reduce((sum: number, item: any) => {
-                    return sum + (item.COUNT_id ? parseFloat(item.COUNT_id) : 0);
-                  }, 0);
-                }
-
-                // Only create pie chart data when there is data
-                let fieldEnumMessages: EnumMessage<string>[] = [];
-                if (chart.enumKey) {
-                  if (Array.isArray(chart.enumKey[0])) {
-                    // enumKey is array of arrays
-                    fieldEnumMessages = (chart.enumKey as EnumMessage<string>[][])[index] || [];
-                  } else {
-                    // enumKey is single array
-                    fieldEnumMessages = chart.enumKey as EnumMessage<string>[];
-                  }
-                }
-                if (fieldDataValues.length > 0) {
-                  const pieData = {
-                    key: field,
-                    title: chart.title + (groupByColumns.length > 1 ? ` - ${field}` : ''),
-                    total: total,
-                    color: chart.pieConfig?.color || [
-                      '#67D7FF', '#FFB925', '#F5222D', '#2acab8', '#2D8EFF', '#52C41A',
-                      '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD',
-                      '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9', '#F8C471', '#82E0AA',
-                      '#F1948A', '#85C1E9', '#D7BDE2', '#A9CCE3', '#F9E79F', '#D5A6BD'
-                    ],
-                    legend: chart.pieConfig?.legend || fieldEnumMessages.map(message => ({
-                      value: message.value,
-                      message: message.message
-                    })),
-                    data: fieldEnumMessages.map(message => ({
-                      name: message.message,
-                      value: fieldData[message.value]?.COUNT_id ? parseFloat(fieldData[message.value].COUNT_id) : 0
-                    }))
-                  };
-
-                  pieDataArray.push(pieData);
-                }
-              }
-            }
-            // If no data, do not add anything to pieDataArray
-          });
-
-          return pieDataArray;
         });
       });
 
-      // Wait for all pie chart data to be fetched
-      const pieResults = await Promise.all(piePromises);
-      // Flatten array because each pie chart may return multiple data items (when there are multiple fields)
-      pieChartData.value = pieResults.flat();
+      // Use default aggregates for the combined request
+      const aggregates = [
+        {
+          column: 'id',
+          function: AggregateFunction.COUNT
+        }
+      ];
+
+      // Single request for all pie chart fields
+      const pieData = await fetchSummaryData(props.apiRouter, {
+        name: props.resource,
+        groupBy: GroupBy.STATUS,
+        groupByColumns: allPieFields,
+        aggregates: aggregates,
+        filters: filters
+      });
+
+      // Process the combined response data for each chart
+      const pieDataArray: any[] = [];
+
+      pieCharts.forEach(chart => {
+        const chartFields = Array.isArray(chart.field) ? chart.field : [chart.field];
+
+        chartFields.forEach((field, fieldIndex) => {
+          // Get field data from API response, or use empty object if no data
+          const fieldData = (pieData && pieData[field]) ? pieData[field] : {};
+          
+          // Calculate total, use TOTAL_COUNT_id (if exists) or sum up all parts
+          let total = 0;
+          const fieldDataValues = Object.values(fieldData);
+          if (fieldDataValues.length > 0) {
+            const firstItem: any = fieldDataValues[0];
+            if (firstItem.TOTAL_COUNT_id) {
+              total = parseFloat(firstItem.TOTAL_COUNT_id);
+            } else {
+              total = fieldDataValues.reduce((sum: number, item: any) => {
+                return sum + (item.COUNT_id ? parseFloat(item.COUNT_id) : 0);
+              }, 0);
+            }
+          }
+
+          // Get enum messages for this field
+          let fieldEnumMessages: EnumMessage<string>[] = [];
+          if (chart.enumKey) {
+            if (Array.isArray(chart.enumKey[0])) {
+              // enumKey is array of arrays
+              fieldEnumMessages = (chart.enumKey as EnumMessage<string>[][])[fieldIndex] || [];
+            } else {
+              // enumKey is single array
+              fieldEnumMessages = chart.enumKey as EnumMessage<string>[];
+            }
+          }
+
+          // Always create pie chart data, even when there's no data (use 0 values)
+          const pieDataItem = {
+            key: field,
+            title: chart.title + (chartFields.length > 1 ? ` - ${field}` : ''),
+            total: total,
+            color: chart.pieConfig?.color || [
+              '#67D7FF', '#FFB925', '#F5222D', '#2acab8', '#2D8EFF', '#52C41A',
+              '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD',
+              '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9', '#F8C471', '#82E0AA',
+              '#F1948A', '#85C1E9', '#D7BDE2', '#A9CCE3', '#F9E79F', '#D5A6BD'
+            ],
+            legend: chart.pieConfig?.legend || fieldEnumMessages.map(message => ({
+              value: message.value,
+              message: message.message
+            })),
+            data: fieldEnumMessages.map(message => ({
+              name: message.message,
+              value: fieldData[message.value]?.COUNT_id ? parseFloat(fieldData[message.value].COUNT_id) : 0
+            }))
+          };
+
+          pieDataArray.push(pieDataItem);
+        });
+      });
+
+      pieChartData.value = pieDataArray;
     }
 
     // Wait for all data to be fetched
@@ -228,10 +247,10 @@ const dateChange = (dates: string[] | undefined) => {
   // This will automatically trigger fetchChartData through watch listener
 };
 
-// Modify watch listener to include datepicker changes
+// Modify watch listener to include datepicker changes and projectId
 watch(
   () => {
-    const baseDeps = [props.resource, props.dateType, props.searchParams];
+    const baseDeps = [props.resource, props.dateType, props.searchParams, props.projectId];
     // Only listen to date-related changes when showChartParam is true
     if (props.showChartParam) {
       return [...baseDeps, datePicker.value, dateRangeType.value];
@@ -290,6 +309,8 @@ onMounted(() => {
 <style scoped>
 .statistics-container {
   width: 100%;
+  margin-top: -15px;
+  margin-bottom: -15px;
 }
 
 .chart-item {
