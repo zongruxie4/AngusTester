@@ -2,10 +2,6 @@ import * as echarts from 'echarts';
 import { reactive, Ref, ref } from 'vue';
 import { formatBytesToUnit } from '@/utils/common';
 
-// ============================================================================
-// Type Definitions
-// ============================================================================
-
 /**
  * Chart data item interface
  * <p>
@@ -92,10 +88,6 @@ export interface ResourceUsage {
   rxBytes: string;
 }
 
-// ============================================================================
-// Constants and Default Configurations
-// ============================================================================
-
 /**
  * Default ECharts configuration options
  * <p>
@@ -171,10 +163,6 @@ export const createSeriesData = (name: string): SeriesData => ({
   ...getDefaultLineConfig(),
   name
 });
-
-// ============================================================================
-// Chart Data Processing Utilities
-// ============================================================================
 
 /**
  * Utility class for processing chart data
@@ -672,10 +660,6 @@ class ChartDataProcessor {
     };
   }
 }
-
-// ============================================================================
-// ECharts Manager Class
-// ============================================================================
 
 /**
  * ECharts Manager for handling chart operations

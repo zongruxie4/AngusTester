@@ -2,39 +2,41 @@
 import { defineAsyncComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { TabPane, Tabs } from 'ant-design-vue';
+import type { MyScenariosProps, ScenarioQueryParams } from './types';
 
 const { t } = useI18n();
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  notify: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+// Component props with proper typing
+const props = withDefaults(defineProps<MyScenariosProps>(), {
   projectId: undefined,
-  userInfo: undefined,
   notify: undefined
 });
 
+// Async component loading
 const Table = defineAsyncComponent(() => import('./MyScenariosTable.vue'));
 
+// Reactive state for notifications and totals
 const deletedNotify = ref<string>();
-
-const createByMeTotal = ref(0);
+const createdTotal = ref(0);
 const followTotal = ref(0);
 const favoriteTotal = ref(0);
 
-const createByParams = {
-  createdBy: props.userInfo?.id
-};
+/**
+ * Generate query parameters for different tab types
+ */
+const createQueryParams = (type: 'createdBy' | 'followBy' | 'favouriteBy'): ScenarioQueryParams => {
+  const baseParams: ScenarioQueryParams = {};
 
-const followByParams = {
-  followBy: props.userInfo?.id
-};
-
-const favouriteByParams = {
-  favouriteBy: props.userInfo?.id
+  switch (type) {
+    case 'createdBy':
+      return { createdBy: props.userInfo?.id };
+    case 'followBy':
+      return { followBy: props.userInfo?.id };
+    case 'favouriteBy':
+      return { favouriteBy: props.userInfo?.id };
+    default:
+      return baseParams;
+  }
 };
 </script>
 
@@ -47,16 +49,15 @@ const favouriteByParams = {
           <div class="flex items-center flex-nowrap">
             <span class="mr-1">{{ t('scenarioHome.myScenarios.added') }}</span>
             <span>(</span>
-            <span>{{ createByMeTotal }}</span>
+            <span>{{ createdTotal }}</span>
             <span>)</span>
           </div>
         </template>
         <Table
-          v-model:total="createByMeTotal"
+          v-model:total="createdTotal"
           v-model:deletedNotify="deletedNotify"
           :notify="props.notify"
-          :projectId="props.projectId"
-          :params="createByParams" />
+          :params="createQueryParams('createdBy')" />
       </TabPane>
       <TabPane key="follow" forceRender>
         <template #tab>
@@ -71,8 +72,7 @@ const favouriteByParams = {
           v-model:total="followTotal"
           v-model:deletedNotify="deletedNotify"
           :notify="props.notify"
-          :projectId="props.projectId"
-          :params="followByParams" />
+          :params="createQueryParams('followBy')" />
       </TabPane>
       <TabPane key="favorite" forceRender>
         <template #tab>
@@ -87,8 +87,7 @@ const favouriteByParams = {
           v-model:total="favoriteTotal"
           v-model:deletedNotify="deletedNotify"
           :notify="props.notify"
-          :projectId="props.projectId"
-          :params="favouriteByParams" />
+          :params="createQueryParams('favouriteBy')" />
       </TabPane>
     </Tabs>
   </div>

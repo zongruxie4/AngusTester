@@ -13,27 +13,3 @@ export type ServerInfo = {
         };
     }
 }
-
-export type SourceItem = {
-    targetId: string;
-    targetName: string;
-    targetType: {
-        value: 'API' | 'SCENARIO';
-        message: string;
-    };
-    createdBy: string;
-    createdByName: string;
-    createdDate: string;
-}
-
-export type IPane = { // TODO 重复定义了很多个
-    _id: string;
-    name: string;
-    value: string;
-    closable?: boolean;
-    forceRender?: boolean;
-    icon?: string;
-    active?: boolean;
-
-    data?: { [key: string]: any; };
-};

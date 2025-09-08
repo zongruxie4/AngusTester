@@ -1,12 +1,22 @@
 <script setup lang="ts">
-import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
-import { AsyncComponent, Dropdown, DropdownGroup, DropdownSort, Icon, NoData, SearchPanel, Spin } from '@xcan-angus/vue-ui';
-import { utils, ScriptType } from '@xcan-angus/infra';
-import { scenario } from '@/api/tester';
+import {
+  AsyncComponent,
+  Dropdown,
+  DropdownGroup,
+  DropdownSort,
+  Icon,
+  NoData,
+  SearchPanel,
+  Spin
+} from '@xcan-angus/vue-ui';
 
-import { GroupedKey, SceneInfo } from './types';
+// Import composables
+import { useScenarioActions, useScenarioData, useScenarioSearch } from './composables';
+
+import { GroupedKey } from './types';
 
 const { t } = useI18n();
 
@@ -24,291 +34,78 @@ const props = withDefaults(defineProps<Props>(), {
   notify: undefined
 });
 
-type SortKey = 'createdDate' | 'name' | 'createdByName';
-type OrderSortKey = 'ASC' | 'DESC';
-type FilterItem = { key: string; op: string; value: string; };
-
-const Drawer = defineAsyncComponent(() => import('@/views/scenario/scenario/list/Drawer.vue'));
-const SceneList = defineAsyncComponent(() => import('./List.vue'));
-const SceneGroup = defineAsyncComponent(() => import('./Group.vue'));
-
+// Inject tab management functions
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const addTabPane = inject<(data: any) => void>('addTabPane', () => { });
 const deleteTabPane = inject<(data: string[]) => void>('deleteTabPane', () => { });
 
-const loaded = ref(false);
-const loading = ref(false);
-const errorMessage = ref<string>();
+// Initialize composables
+const {
+  loaded,
+  loading,
+  errorMessage,
+  dataList,
+  loadData
+} = useScenarioData(
+  computed(() => props.projectId),
+  computed(() => props.notify)
+);
 
-const groupedKey = ref<GroupedKey>('none');
-const orderBy = ref<string>('createdDate');
-const orderSort = ref<OrderSortKey>('DESC');
-const filters = ref<FilterItem[]>();
+const {
+  createHttpScenario,
+  buttonDropdownClick,
+  addScenarioAuthorize
+} = useScenarioActions(
+  computed(() => props.projectId),
+  addTabPane,
+  deleteTabPane
+);
 
-const dataList = ref<SceneInfo[]>([]);
+const {
+  groupedKey,
+  orderBy,
+  orderSort,
+  filters,
+  searchOptions,
+  buttonDropdownMenuItems,
+  sortMenuItems,
+  groupingMenuItems,
+  handleSearchChange,
+  handleSortChange,
+  handleGroupingChange
+} = useScenarioSearch();
 
-const searchChange = (value: FilterItem[]): void => {
-  filters.value = value;
-  loadData();
+// Async components
+const Drawer = defineAsyncComponent(() => import('@/views/scenario/scenario/list/Drawer.vue'));
+const ScenarioList = defineAsyncComponent(() => import('./List.vue'));
+const ScenarioGroup = defineAsyncComponent(() => import('./Group.vue'));
+
+// Event handlers
+const searchChange = (value: any[]): void => {
+  handleSearchChange(value);
+  loadData(value, orderBy.value, orderSort.value);
 };
 
-const createHttpScene = () => {
-  const name = 'scene' + new Date().getTime();
-  addTabPane({ name, _id: utils.uuid(), value: 'Http', sceneInfo: { name, projectId: props.projectId } });
-};
-
-const buttonDropdownClick = ({ key }: { key: 'Jdbc' | 'WebSocket' | 'Ftp' | 'Ldap' | 'Mail' | 'Smtp' | 'Tcp' }) => {
-  const name = 'scene' + new Date().getTime();
-  const id = utils.uuid();
-  const sceneInfo = { name, projectId: props.projectId };
-
-  if (key === 'Jdbc') {
-    addTabPane({ name, _id: id, value: 'Jdbc', sceneInfo });
-    return;
-  }
-
-  if (key === 'Ftp') {
-    addTabPane({ name, _id: id, value: 'Ftp', sceneInfo });
-    return;
-  }
-
-  if (key === 'Ldap') {
-    addTabPane({ name, _id: id, value: 'Ldap', sceneInfo });
-    return;
-  }
-
-  if (key === 'Mail') {
-    addTabPane({ name, _id: id, value: 'Mail', sceneInfo });
-    return;
-  }
-
-  if (key === 'Smtp') {
-    addTabPane({ name, _id: id, value: 'Smtp', sceneInfo });
-    return;
-  }
-
-  if (key === 'Tcp') {
-    addTabPane({ name, _id: id, value: 'Tcp', sceneInfo });
-    return;
-  }
-
-  if (key === 'WebSocket') {
-    addTabPane({ name, _id: id, value: 'WebSocket', sceneInfo });
-  }
-};
-
-const addSceneAuthorize = () => {
-  addTabPane({ name: t('scenario.list.actions.scenarioAuth'), _id: utils.uuid(), value: 'authorization' });
-};
-
-const sortHandler = (value: {
-  orderBy: SortKey;
-  orderSort: 'DESC' | 'ASC';
-}): void => {
-  orderBy.value = value.orderBy;
-  orderSort.value = value.orderSort;
-  loadData();
+const sortHandler = (value: any): void => {
+  handleSortChange(value);
+  loadData(filters.value, value.orderBy, value.orderSort);
 };
 
 const groupingHandler = (value: GroupedKey): void => {
-  groupedKey.value = value;
+  handleGroupingChange(value);
 };
 
 const refreshHandler = (): void => {
-  loadData();
+  loadData(filters.value, orderBy.value, orderSort.value);
 };
 
 const cloneHandler = (): void => {
-  loadData();
+  loadData(filters.value, orderBy.value, orderSort.value);
 };
 
-const deleteScenario = (scenaridId: string):void => {
+const deleteScenarioHandler = (scenaridId: string):void => {
   deleteTabPane([scenaridId, scenaridId + '-detail']);
 };
-
-const loadData = async (): Promise<void> => {
-  const params: {
-    pageNo: number;
-    pageSize: number;
-    projectId: string;
-    infoScope: 'DETAIL';
-    filters?: FilterItem[];
-    orderSort?: string;
-    orderBy?: string;
-  } = {
-    projectId: props.projectId,
-    pageNo: 1,
-    pageSize: 2000,
-    infoScope: 'DETAIL'
-  };
-
-  if (filters.value?.length) {
-    params.filters = filters.value;
-  }
-
-  if (orderBy.value) {
-    params.orderBy = orderBy.value;
-  }
-
-  if (orderSort.value) {
-    params.orderSort = orderSort.value;
-  }
-
-  loading.value = true;
-  const [error, res] = await scenario.getScenarioList(params);
-  loaded.value = true;
-  loading.value = false;
-  errorMessage.value = undefined;
-  if (error) {
-    dataList.value = [];
-    errorMessage.value = error.message;
-    return;
-  }
-
-  const data = res?.data || { total: 0, list: [] };
-  dataList.value = data.list.map((item) => {
-    return {
-      ...item,
-      nameLinkUrl: `/scenario#scenario?id=${item.id}&name=${item.name}&plugin=${item.plugin}`,
-      detailLink: `/scenario#scenario?id=${item.id}&name=${item.name}&plugin=${item.plugin}&type=detail`
-    };
-  });
-};
-
-onMounted(() => {
-  watch(() => props.projectId, (newValue) => {
-    if (!newValue) {
-      return;
-    }
-
-    loadData();
-  }, { immediate: true });
-
-  watch(() => props.notify, (newValue) => {
-    if (!newValue) {
-      return;
-    }
-
-    loadData();
-  });
-});
-
-const searchOptions = [
-  {
-    type: 'input',
-    placeholder: t('scenario.list.searchPlaceholder'),
-    valueKey: 'name',
-    allowClear: true,
-    maxlength: 100,
-    trim: true
-  },
-  {
-    type: 'input',
-    placeholder: t('scenario.list.pluginTypePlaceholder'),
-    valueKey: 'plugin',
-    allowClear: true,
-    trim: true,
-    op: '  EQUAL',
-    maxlength: 100,
-    trimAll: true
-  },
-  {
-    type: 'select-enum',
-    placeholder: t('scenario.list.scriptTypePlaceholder'),
-    valueKey: 'scriptType',
-    allowClear: true,
-    enumKey: ScriptType,
-    excludes: ({ value }) => ['MOCK_DATA', 'MOCK_APIS'].includes(value)
-  },
-  {
-    type: 'date-range',
-    showTime: true,
-    placeholder: t('scenario.list.dateRangePlaceholder'),
-    valueKey: 'createdDate',
-    valueType: 'multiple',
-    allowClear: true
-  }
-];
-
-const buttonDropdownMenuItems = [
-  {
-    name: t('scenario.list.pluginTypes.jdbc'),
-    key: 'Jdbc',
-    noAuth: true
-  },
-  {
-    name: t('scenario.list.pluginTypes.webSocket'),
-    key: 'WebSocket',
-    noAuth: true
-  },
-  {
-    name: t('scenario.list.pluginTypes.ftp'),
-    key: 'Ftp',
-    noAuth: true
-  },
-  {
-    name: t('scenario.list.pluginTypes.ldap'),
-    key: 'Ldap',
-    noAuth: true
-  },
-  {
-    name: t('scenario.list.pluginTypes.mail'),
-    key: 'Mail',
-    noAuth: true
-  },
-  {
-    name: t('scenario.list.pluginTypes.smtp'),
-    key: 'Smtp',
-    noAuth: true
-  },
-  {
-    name: t('scenario.list.pluginTypes.tcp'),
-    key: 'Tcp',
-    noAuth: true
-  }
-];
-
-const sortMenuItems: {
-  name: string;
-  key: SortKey;
-  orderSort: 'DESC' | 'ASC';
-}[] = [
-  {
-    name: t('scenario.list.sortOptions.byAddTime'),
-    key: 'createdDate',
-    orderSort: 'DESC'
-  }, {
-    name: t('scenario.list.sortOptions.byName'),
-    key: 'name',
-    orderSort: 'ASC'
-  }, {
-    name: t('scenario.list.sortOptions.byCreator'),
-    key: 'createdByName',
-    orderSort: 'ASC'
-  }
-];
-
-const groupingMenuItems: {
-  key: GroupedKey;
-  name: string;
-}[] = [
-  {
-    key: 'none',
-    name: t('scenario.list.groupOptions.noGroup')
-  },
-  {
-    key: 'createdBy',
-    name: t('scenario.list.groupOptions.byCreator')
-  },
-  {
-    key: 'plugin',
-    name: t('scenario.list.groupOptions.byPlugin')
-  },
-  {
-    key: 'scriptType',
-    name: t('scenario.list.groupOptions.byScriptType')
-  }
-];
 </script>
 
 <template>
@@ -325,7 +122,7 @@ const groupingMenuItems: {
             class="flex-shrink-0 flex items-center pr-0"
             type="primary"
             size="small"
-            @click="createHttpScene">
+            @click="createHttpScenario">
             <div class="flex items-center">
               <Icon icon="icon-jia" class="text-3.5" />
               <span class="ml-1">{{ t('scenario.list.actions.addHttpScenario') }}</span>
@@ -339,7 +136,7 @@ const groupingMenuItems: {
 
           <div
             class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover"
-            @click="addSceneAuthorize">
+            @click="addScenarioAuthorize">
             <Icon icon="icon-quanxian1" />
             <span>{{ t('scenario.list.actions.scenarioAuth') }}</span>
           </div>
@@ -382,7 +179,7 @@ const groupingMenuItems: {
 
         <template v-else>
           <AsyncComponent :visible="groupedKey !== 'none'">
-            <SceneGroup
+            <ScenarioGroup
               v-show="groupedKey !== 'none'"
               :dataSource="dataList"
               :notify="props.notify"
@@ -393,7 +190,7 @@ const groupingMenuItems: {
           </AsyncComponent>
 
           <AsyncComponent :visible="groupedKey === 'none'">
-            <SceneList
+            <ScenarioList
               v-show="groupedKey === 'none'"
               :dataSource="dataList"
               :notify="props.notify"
@@ -402,7 +199,7 @@ const groupingMenuItems: {
               :projectId="props.projectId"
               class="px-5 flex-1 overflow-auto"
               @clone="cloneHandler"
-              @delete="deleteScenario" />
+              @delete="deleteScenarioHandler" />
           </AsyncComponent>
         </template>
       </template>

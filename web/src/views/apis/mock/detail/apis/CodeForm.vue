@@ -5,7 +5,6 @@ import { isYAML } from '@/utils/dataFormat';
 
 import MonacoEditor from '@/components/monacoEditor/index.vue';
 
-// ==================== Props ====================
 export interface Props {
   value:{[key:string]:any}|undefined;
 }
@@ -14,11 +13,9 @@ const props = withDefaults(defineProps<Props>(), {
   value: undefined
 });
 
-// ==================== Reactive State ====================
 const content = ref('');
 const loading = ref(true);
 
-// ==================== Methods ====================
 /**
  * Convert object to YAML string with fallback to JSON
  * @param data - Object to convert
@@ -48,7 +45,6 @@ const getData = ():{[key:string]:any} => {
   return YAML.parse(content.value);
 };
 
-// ==================== Watchers ====================
 onMounted(() => {
   watch(() => props.value, (newValue) => {
     if (!newValue) {
@@ -58,7 +54,6 @@ onMounted(() => {
   }, { immediate: true, deep: true });
 });
 
-// ==================== Expose Methods ====================
 defineExpose({
   isValid,
   getData

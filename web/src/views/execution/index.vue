@@ -1,688 +1,78 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, nextTick, onBeforeUnmount, onMounted, Ref, ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { defineAsyncComponent, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import {
-  Colon,
-  Dropdown,
-  Icon,
-  Input,
-  modal,
-  NoData,
-  notification,
-  ScriptTypeTag,
-  ShortDuration,
-  Spin,
-  Tooltip
-} from '@xcan-angus/vue-ui';
-import { PageQuery, appContext } from '@xcan-angus/infra';
+import { Colon, Dropdown, Icon, Input, NoData, ScriptTypeTag, ShortDuration, Spin, Tooltip } from '@xcan-angus/vue-ui';
+import { appContext, ScriptType } from '@xcan-angus/infra';
 import { Pagination, Progress, Switch } from 'ant-design-vue';
-import dayjs from 'dayjs';
-import { exec } from '@/api/tester';
-
-import { getCurrentPage } from '@/utils/utils';
+import { ExecStatus } from '@/enums/enums';
 import { getCurrentDuration } from '@/utils';
-import { ExecutionInfo } from './types';
+import { useExecutionList } from './composables/useExecutionList';
+import { useExecutionAction } from './composables/useExecutionAction';
+import type { DropdownMenuItem, ExecutionInfo, ScriptTypeConfig, StatusColorMap } from './types';
 
-type OrderByKey = 'createdDate' | 'createdByName';
-
+// Lazy load components
 const Introduce = defineAsyncComponent(() => import('./Introduce.vue'));
 const SearchPanel = defineAsyncComponent(() => import('@/views/execution/SearchPanel.vue'));
 
 const { t } = useI18n();
+
 const userInfo = ref(appContext.getUser());
-const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
 
-const nameInputRefs = ref<{ [key: string]: any }>({});
-const priorityInputRefs = ref<{ [key: string]: any }>({});
-const reportIntervalInputRefs = ref<{ [key: string]: any }>({});
-const durationInputRefs = ref<{ [key: string]: any }>({});
-const threadInputRefs = ref<{ [key: string]: any }>({});
-const iterationsInputRefs = ref<{ [key: string]: any }>({});
+// Use execution list composable
+const {
+  loaded,
+  loading,
+  pagination,
+  dataList,
+  total,
+  projectId,
+  nameInputRefs,
+  priorityInputRefs,
+  reportIntervalInputRefs,
+  durationInputRefs,
+  threadInputRefs,
+  iterationsInputRefs,
+  toSort,
+  searchPanelChange,
+  loadDataList,
+  loadDataListByIds,
+  showTotal,
+  paginationChange,
+  initialize,
+  cleanup,
+  splitTime
+} = useExecutionList();
 
-const router = useRouter();
-const route = useRoute();
+// Use execution actions composable
+const {
+  updateName,
+  editName,
+  updateThread,
+  threadsMax,
+  editThread,
+  updateDuration,
+  editDuration,
+  updateIterations,
+  editIterations,
+  updatePriority,
+  editPriority,
+  updateReportInterval,
+  editReportInterval,
+  handleIgnoreAssertions,
+  handleUpdateTestResult,
+  handleRestart,
+  handleStop,
+  dropdownClick
+} = useExecutionAction();
 
-const isPrivate = ref(false);
-
-const loaded = ref(false);
-const loading = ref(false);
-const refinishLoading = ref(false);
-const orderBy = ref<OrderByKey>();
-const orderSort = ref<PageQuery.OrderSort>();
-const pagination = ref({
-  current: 1,
-  pageSize: 5,
-  total: 0
-});
-const filters = ref<{ key: string; op: string; value: boolean | string | string[]; }[]>([]);
-const dataList = ref<ExecutionInfo[]>([]);
-
-const total = ref(0);
-const execIds = ref<string[]>([]);
-const reportInterval = ref(3);
-
-let timer: NodeJS.Timeout | null = null;
-
-const toSort = (data: { orderBy: OrderByKey; orderSort: PageQuery.OrderSort; }) => {
-  orderBy.value = data.orderBy;
-  orderSort.value = data.orderSort;
-  pagination.value.current = 1;
-  loadDataList();
-};
-
-const searchPanelChange = (data: { key: string; op: string; value: boolean | string | string[]; }[]) => {
-  filters.value = data;
-  pagination.value.current = 1;
-  loadDataList();
-};
-
-const hasStartDate = (startAtDate: string) => {
-  if (!startAtDate) {
-    return false;
-  }
-
-  const givenTime = dayjs(startAtDate);
-  const currentTime = dayjs();
-
-  return !(givenTime.isBefore(currentTime) || givenTime.isSame(currentTime));
-};
-
-const splitTime = (str: string): [string, string] => {
-  const number = str.replace(/\D/g, '');
-  const unit = str.replace(/\d/g, '');
-  return [number, letterMap[unit]];
-};
-
-const setTimeoutTimes = (item: ExecutionInfo) => {
-  if (item.reportInterval) {
-    const time = +splitTime(item.reportInterval)[0];
-    if (reportInterval.value === 3) {
-      if (time > 3) {
-        reportInterval.value = time;
-      }
-    } else if (reportInterval.value > 3) {
-      if (time < reportInterval.value) {
-        reportInterval.value = time;
-      }
-    }
-  }
-};
-
-const getMessage = (item: ExecutionInfo):
-  { code: string, message: string, codeName: string, messageName: string } | undefined => {
-  if (item?.lastSchedulingResult?.length) {
-    const foundItem = item.lastSchedulingResult.find(f => !f.success);
-    if (foundItem) {
-      return {
-        code: foundItem.exitCode,
-        message: foundItem.message,
-        codeName: t('execution.messages.exitCode'),
-        messageName: t('execution.messages.failureReason')
-      };
-    }
-
-    if (item?.meterMessage) {
-      return {
-        code: item.meterStatus,
-        message: item.meterMessage,
-        codeName: t('execution.messages.samplingStatus'),
-        messageName: t('execution.messages.failureReason')
-      };
-    }
-    return undefined;
-  }
-
-  if (item?.meterMessage) {
-    return {
-      code: item.meterStatus,
-      message: item.meterMessage,
-      codeName: t('execution.messages.samplingStatus'),
-      messageName: t('execution.messages.failureReason')
-    };
-  }
-  return undefined;
-};
-
-const getStrokeColor = (value: string, status: string) => {
-  const num = Number(value?.slice(-1) === '%' ? value.slice(0, -1) : value);
-  if (num === 100) {
-    return 'rgba(82, 196, 26, 1)';
-  }
-
-  switch (status) {
-    case 'CREATED': // Created
-      return 'rgba(45, 142, 255, 1)';
-    case 'PENDING': // Pending
-      return 'rgba(45, 142, 255, 1)';
-    case 'RUNNING': // Running
-      return 'rgba(45, 142, 255, 1)';
-    case 'STOPPED': // Stopped
-      return 'rgba(255, 77, 79, 1)';
-    case 'FAILED': // Failed
-      return 'rgba(255, 77, 79, 1)';
-    case 'COMPLETED': // Completed
-      return 'rgba(45, 142, 255, 1)';
-    case 'TIMEOUT': // Failed
-      return 'rgba(255, 77, 79, 1)';
-  }
-};
-
-const loadDataListByIds = async (isRefinsh: boolean): Promise<void> => {
-  if (refinishLoading.value && !isRefinsh) {
-    return;
-  }
-
-  if (!execIds.value.length && timer) {
-    clearTimeout(timer);
-    return;
-  }
-
-  const params = { filters: [{ key: 'id', op: 'IN', value: execIds.value }], projectId: projectInfo.value?.id };
-  if (isRefinsh) {
-    loading.value = true;
-  }
-  refinishLoading.value = true;
-  const [error, { data = { list: [], total: 0 } }] = await exec.getExecList(params);
-  refinishLoading.value = false;
-  if (isRefinsh) {
-    loading.value = false;
-  }
-  if (error) {
-    return;
-  }
-
-  if (data.list?.length) {
-    execIds.value = [];
-    for (let i = 0; i < data.list.length; i++) {
-      const dataItem = data.list[i];
-      const errMessage = getMessage(dataItem);
-      const _hasStartDate = hasStartDate(dataItem?.startAtDate);
-      setTimeoutTimes(dataItem);
-      const executeItemIndex = dataList.value.findIndex(item => item.id === dataItem.id);
-      if (executeItemIndex !== -1) {
-        dataList.value[executeItemIndex] = { ...dataItem, errMessage };
-      }
-
-      if (['CREATED', 'PENDING', 'RUNNING'].includes(dataItem?.status.value) && !_hasStartDate) {
-        execIds.value.push(dataItem.id);
-      }
-    }
-  }
-
-  if (timer) {
-    clearTimeout(timer);
-  }
-  if (execIds.value.length) {
-    timer = setTimeout(async () => {
-      await loadDataListByIds(false);
-    }, reportInterval.value * 1000);
-  }
-};
-
-const loadDataList = async (): Promise<void> => {
-  if (loading.value) {
-    return;
-  }
-
-  const { current, pageSize } = pagination.value;
-  const params: {
-    pageNo: number;
-    pageSize: number;
-    projectId: string;
-    filters?: {
-      key: string;
-      op: string;
-      value: boolean | string | string[];
-    }[];
-    orderBy?: OrderByKey;
-    orderSort?: PageQuery.OrderSort;
-  } = {
-    pageNo: current,
-    pageSize,
-    projectId: projectId.value
-  };
-
-  if (filters.value?.length) {
-    params.filters = filters.value;
-  }
-
-  if (orderSort.value) {
-    params.orderBy = orderBy.value;
-    params.orderSort = orderSort.value;
-  }
-
-  loading.value = true;
-  const [error, { data = { list: [], total: 0 } }] = await exec.getExecList(params);
-  loading.value = false;
-  loaded.value = true;
-  if (error) {
-    return;
-  }
-
-  execIds.value = [];
-  dataList.value = data.list.map(item => {
-    const _hasStartDate = hasStartDate(item?.startAtDate);
-    if (['CREATED', 'PENDING', 'RUNNING'].includes(item?.status.value) && !_hasStartDate) {
-      execIds.value.push(item.id);
-    }
-    setTimeoutTimes(item);
-    const errMessage = getMessage(item);
-    const others = {
-      ...item,
-      errMessage,
-      editName: false,
-      editPriority: false,
-      editReportInterval: false,
-      editStartDate: false,
-      editstartAtDate: false,
-      editIterations: false,
-      editDuration: false
-    };
-    const _actionPermission: string[] = [];
-    if (item.hasOperationPermission) {
-      if (['CREATED', 'PENDING', 'RUNNING'].includes(item?.status.value) && !_hasStartDate) {
-        _actionPermission.push('stopNow');
-      } else {
-        _actionPermission.push('edit');
-      }
-
-      if (!['PENDING'].includes(item?.status.value)) {
-        _actionPermission.push('delete');
-      }
-    }
-
-    const durationStrokeColor = getStrokeColor(item.currentDurationProgress, item.status?.value);
-    const iterationStrokeColor = getStrokeColor(item.currentIterationsProgress, item.status?.value);
-
-    return { ...others, actionPermission: _actionPermission, durationStrokeColor, iterationStrokeColor };
-  });
-
-  total.value = +data.total;
-
-  if (timer) {
-    clearTimeout(timer);
-  }
-
-  if (execIds.value.length) {
-    timer = setTimeout(async () => {
-      await loadDataListByIds(false);
-    }, reportInterval.value * 1000);
-  }
-};
-
-const showTotal = (total: number) => {
-  const totalPage = Math.ceil(total / pagination.value.pageSize);
-  return t('execution.messages.totalRecords', {
-    total,
-    current: pagination.value.current,
-    totalPage
-  });
-};
-
-const updateName = (item: ExecutionInfo) => {
-  item.editName = true;
-  nextTick(() => {
-    nameInputRefs.value?.[item.id].focus();
-  });
-};
-
-const editName = async (name: string, item: ExecutionInfo) => {
-  if (name === item.name || loading.value) {
-    item.editName = false;
-    return;
-  }
-
-  loading.value = true;
-  const [error] = await exec.putExecConfig(item.id, { name });
-  loading.value = false;
-  if (error) {
-    return;
-  }
-
-  item.editName = false;
-  item.name = name;
-  notification.success(t('execution.messages.modifySuccess'));
-};
-
-const updateThread = (item: ExecutionInfo) => {
-  item.editThread = true;
-  nextTick(() => {
-    threadInputRefs.value?.[item.id].focus();
-  });
-};
-
-const threadsMax = (item: ExecutionInfo) => {
-  return ['MOCK_DATA', 'MOCK_APIS'].includes(item?.scriptType?.value) ? 1000 : 10000;
-};
-
-const editThread = async (value: string, item: ExecutionInfo) => {
-  if ((!item?.thread && !value) || item.thread === value || loading.value) {
-    item.editThread = false;
-    return;
-  }
-
-  loading.value = true;
-  const [error] = await exec.putExecConfig(item.id, { thread: value });
-  loading.value = false;
-  if (error) {
-    return;
-  }
-
-  item.thread = value;
-  item.editThread = false;
-  notification.success(t('tips.modifySuccess'));
-};
-
-const updateDuration = (item: ExecutionInfo) => {
-  item.editDuration = true;
-  nextTick(() => {
-    durationInputRefs.value?.[item.id].inputRef?.focus();
-  });
-};
-
-const editDuration = async (value: string, item: ExecutionInfo) => {
-  if ((!item?.duration && !value) || item.duration === value || loading.value) {
-    item.editDuration = false;
-    return;
-  }
-
-  loading.value = true;
-  const [error] = await exec.putExecConfig(item.id, { duration: value });
-  loading.value = false;
-  if (error) {
-    return;
-  }
-
-  item.duration = value;
-  item.editDuration = false;
-  notification.success(t('tips.modifySuccess'));
-};
-
-const updateIterations = (item: ExecutionInfo) => {
-  item.editIterations = true;
-  nextTick(() => {
-    iterationsInputRefs.value?.[item.id].focus();
-  });
-};
-
-const editIterations = async (value: string, item: ExecutionInfo) => {
-  if ((!item?.iterations && !value) || item.iterations === value || loading.value) {
-    item.editIterations = false;
-    return;
-  }
-
-  loading.value = true;
-  const [error] = await exec.putExecConfig(item.id, { iterations: value });
-  loading.value = false;
-  if (error) {
-    return;
-  }
-  item.iterations = value;
-  item.editIterations = false;
-  notification.success(t('tips.modifySuccess'));
-};
-
-const getNumFixed = (str: string) => {
+const getNumFixed = (str: string): string => {
   return str ? Number(str).toFixed(2) : '0';
 };
 
-const updatePriority = (item: ExecutionInfo) => {
-  item.editPriority = true;
-  nextTick(() => {
-    priorityInputRefs.value?.[item.id].focus();
-  });
-};
+// UI configuration constants
+const isPrivate = ref(false);
 
-const editPriority = async (value: string, item: ExecutionInfo) => {
-  if ((item?.priority && item.priority === value) || loading.value) {
-    item.editPriority = false;
-    return;
-  }
-
-  loading.value = true;
-  const [error] = await exec.putExecConfig(item.id, { priority: value });
-  loading.value = false;
-  if (error) {
-    return;
-  }
-
-  item.editPriority = false;
-  item.priority = value;
-  notification.success(t('tips.modifySuccess'));
-};
-
-const updateReportInterval = (item: ExecutionInfo) => {
-  item.editReportInterval = true;
-  nextTick(() => {
-    reportIntervalInputRefs.value?.[item.id].inputRef?.focus();
-  });
-};
-
-const editReportInterval = async (value: string, item: ExecutionInfo) => {
-  if ((!item?.reportInterval && !value) || item.reportInterval === value || loading.value) {
-    item.editReportInterval = false;
-    return;
-  }
-
-  loading.value = true;
-  const [error] = await exec.putExecConfig(item.id, { reportInterval: value });
-  loading.value = false;
-  if (error) {
-    return;
-  }
-
-  item.editReportInterval = false;
-  item.reportInterval = value;
-  notification.success(t('tips.modifySuccess'));
-};
-
-const handleIgnoreAssertions = async (value, item: ExecutionInfo) => {
-  if (loading.value) {
-    return;
-  }
-
-  loading.value = true;
-  const [error] = await exec.putExecConfig(item.id, { ignoreAssertions: value });
-  loading.value = false;
-  if (error) {
-    return;
-  }
-
-  item.editStartDate = false;
-  item.ignoreAssertions = value;
-  notification.success(t('tips.modifySuccess'));
-};
-
-const handleUpdateTestResult = async (value, item: ExecutionInfo) => {
-  if (loading.value) {
-    return;
-  }
-
-  loading.value = true;
-  const [error] = await exec.putExecConfig(item.id, { updateTestResult: value });
-  loading.value = false;
-  if (error) {
-    return;
-  }
-
-  item.editStartDate = false;
-  item.updateTestResult = value;
-  notification.success(t('tips.modifySuccess'));
-};
-
-const handleRestart = async (item: ExecutionInfo) => {
-  if (loading.value) {
-    return;
-  }
-
-  item.errMessage = undefined;
-  item.editName = false;
-  item.editPriority = false;
-  item.editStartDate = false;
-  item.editDuration = false;
-  item.editReportInterval = false;
-  item.editIterations = false;
-  const params = {
-    broadcast: true,
-    id: item.id
-  };
-
-  loading.value = true;
-  const [error, { data }] = await exec.startExec(params);
-  loading.value = false;
-  if (error) {
-    let errMessage;
-    if (error?.code || error?.message) {
-      errMessage = { code: error.code, message: error.message, codeName: t('execution.messages.exitCode'), messageName: t('execution.messages.failureReason') };
-    }
-    item.errMessage = errMessage;
-
-    return;
-  }
-
-  const currItemDataList = data.filter(f => f.execId === item.id);
-  if (currItemDataList.length) {
-    const successFalseItem = currItemDataList.find(f => f.success);
-    if (successFalseItem) {
-      notification.success(t('execution.messages.startSuccess'));
-    } else {
-      notification.error(currItemDataList[0].message);
-      item.errMessage = { code: currItemDataList[0]?.exitCode, message: currItemDataList[0]?.message, codeName: t('execution.messages.exitCode'), messageName: t('execution.messages.failureReason') };
-    }
-  }
-
-  if (!execIds.value.includes(item.id)) {
-    execIds.value.push(item.id);
-  }
-
-  await loadDataListByIds(true);
-};
-
-const handleStop = async (item: ExecutionInfo) => {
-  if (loading.value) {
-    return;
-  }
-
-  item.errMessage = undefined;
-  const params = {
-    broadcast: true,
-    id: item.id
-  };
-  loading.value = true;
-  const [error, { data }] = await exec.stopExec(params);
-  loading.value = false;
-  if (error) {
-    let errMessage;
-    if (error?.code || error?.message) {
-      errMessage = { code: error.code, message: error.message, codeName: t('execution.messages.exitCode'), messageName: t('execution.messages.failureReason') };
-    }
-    item.errMessage = errMessage;
-    return;
-  }
-
-  const currItemDataList = data.filter(f => f.execId === item.id);
-  if (currItemDataList.length) {
-    const successFalseItem = currItemDataList.find(f => f.success);
-    if (successFalseItem) {
-      notification.success(t('execution.messages.stopSuccess'));
-    } else {
-      notification.error(currItemDataList[0].message);
-      item.errMessage = { code: currItemDataList[0]?.exitCode, message: currItemDataList[0]?.message, codeName: t('execution.messages.exitCode'), messageName: t('execution.messages.failureReason') };
-    }
-  }
-
-  if (!execIds.value.includes(item.id)) {
-    execIds.value.push(item.id);
-  }
-
-  await loadDataListByIds(true);
-};
-
-const handleDelete = async (item: ExecutionInfo) => {
-  if (loading.value) {
-    return;
-  }
-
-  modal.confirm({
-    centered: true,
-    content: t('execution.messages.deleteConfirm', { name: item.name }),
-    async onOk () {
-      loading.value = true;
-      const [error] = await exec.deleteExec([item.id], { dataType: true });
-      loading.value = false;
-      if (error) {
-        return;
-      }
-      notification.success(t('tips.deleteSuccess'));
-      pagination.value.current = getCurrentPage(pagination.value.current, pagination.value.pageSize, total.value);
-      loadDataList();
-    }
-  });
-};
-
-const dropdownClick = (key: string, item: ExecutionInfo) => {
-  switch (key) {
-    case 'edit':
-      router.push(`/execution/edit/${item.id}`);
-      break;
-    case 'viewLog':
-      router.push(`/execution/info/${item.id}?&pageNo=${pagination.value.current}&tab=log`);
-      break;
-    case 'delete':
-      handleDelete(item);
-      break;
-  }
-};
-
-const paginationChange = (pageNo: number, pageSize: number) => {
-  pagination.value.current = pageNo;
-  pagination.value.pageSize = pageSize;
-  loadDataList();
-};
-
-const initialize = () => {
-  const query = route.query;
-  if (query) {
-    const { pageNo } = query;
-    if (pageNo) {
-      pagination.value.current = +pageNo as number;
-      router.replace('/execution');
-    }
-  }
-};
-
-onMounted(async () => {
-  isPrivate.value = appContext.isPrivateEdition();
-  watch(() => projectId.value, (newValue) => {
-    if (!newValue) {
-      return;
-    }
-
-    initialize();
-  }, { immediate: true });
-});
-
-onBeforeUnmount(() => {
-  if (timer) {
-    clearTimeout(timer);
-    timer = null;
-  }
-});
-
-const projectId = computed(() => {
-  return projectInfo.value?.id;
-});
-
-const letterMap = {
-  ms: t('execution.units.millisecond'),
-  s: t('execution.units.second'),
-  min: t('execution.units.minute'),
-  h: t('execution.units.hour'),
-  d: t('execution.units.day')
-};
-
-const scriptTypes = {
+const scriptTypes: Record<string, ScriptTypeConfig> = {
   TEST_PERFORMANCE: {
     text: 'P',
     color: 'bg-bg-performance'
@@ -705,7 +95,7 @@ const scriptTypes = {
   }
 };
 
-const resBgColorMap = {
+const resBgColorMap: StatusColorMap = {
   CREATED: 'bg-status-pending',
   PENDING: 'bg-status-pending',
   RUNNING: 'bg-status-process',
@@ -715,7 +105,7 @@ const resBgColorMap = {
   COMPLETED: 'bg-status-success'
 };
 
-const dropdownMockMenuItems = [
+const dropdownMockMenuItems: DropdownMenuItem[] = [
   {
     key: 'viewLog',
     icon: 'icon-zhihangcanshu',
@@ -730,7 +120,7 @@ const dropdownMockMenuItems = [
   }
 ];
 
-const dropdownMenuItems = [
+const dropdownMenuItems: DropdownMenuItem[] = [
   {
     key: 'edit',
     icon: 'icon-shuxie',
@@ -757,10 +147,46 @@ const selectProps = {
 
 const reportIntervalSelectProps = {
   ...selectProps,
-  excludes: ({ message }): boolean => {
+  excludes: ({ message }: { message: string }): boolean => {
     return ['ms', 'min', 'h', 'd'].includes(message);
   }
 };
+
+/**
+ * Handle restart with proper context
+ */
+const handleRestartWithContext = async (item: ExecutionInfo): Promise<void> => {
+  await handleRestart(item, loadDataListByIds);
+};
+
+/**
+ * Handle stop with proper context
+ */
+const handleStopWithContext = async (item: ExecutionInfo): Promise<void> => {
+  await handleStop(item, loadDataListByIds);
+};
+
+/**
+ * Handle dropdown click with proper context
+ */
+const handleDropdownClick = (key: string, item: ExecutionInfo): void => {
+  dropdownClick(key, item, pagination, loadDataList);
+};
+
+// Initialize component
+onMounted(async () => {
+  isPrivate.value = appContext.isPrivateEdition();
+  watch(() => projectId.value, (newValue) => {
+    if (!newValue) {
+      return;
+    }
+    initialize();
+  }, { immediate: true });
+});
+
+onBeforeUnmount(() => {
+  cleanup();
+});
 </script>
 <template>
   <Spin
@@ -772,9 +198,9 @@ const reportIntervalSelectProps = {
     <SearchPanel
       v-if="projectId"
       :projectId="projectId"
-      :userInfo="userInfo"
+      :userInfo="{ id: userInfo?.id?.toString() || '' }"
       class="mb-3.5"
-      @sort="toSort"
+      @sort="(data: any) => toSort(data)"
       @change="searchPanelChange" />
     <template v-if="loaded">
       <div v-if="dataList?.length" class="flex-1 overflow-y-auto space-y-3.5">
@@ -799,7 +225,7 @@ const reportIntervalSelectProps = {
                       {{ item?.name }}
                     </RouterLink>
                     <template
-                      v-if="!['CREATED', 'PENDING', 'RUNNING'].includes(item?.status?.value) && item?.hasOperationPermission">
+                      v-if="![ExecStatus.CREATED, ExecStatus.PENDING, ExecStatus.RUNNING].includes(item?.status?.value) && item?.hasOperationPermission">
                       <Icon
                         icon="icon-shuxie"
                         class="text-text-link ml-2 cursor-pointer -mt-0.25 flex-none"
@@ -828,9 +254,9 @@ const reportIntervalSelectProps = {
                 <span
                   class="px-3 py-0.25 rounded-2xl text-center truncate cursor-pointer"
                   :title="item?.plugin"
-                  style="min-width:60px;background-color:rgba(0, 119, 255, 10%);color:rgba(0, 119, 255, 100%)">{{
-                    item?.plugin
-                  }}</span>
+                  style="min-width:60px;background-color:rgba(0, 119, 255, 10%);color:rgba(0, 119, 255, 100%)">
+                  {{ item?.plugin }}
+                </span>
               </div>
               <div class="flex items-center" style="width:13%">
                 <ScriptTypeTag :value="item?.scriptType" class="transform-gpu -translate-y-0.25" />
@@ -838,7 +264,7 @@ const reportIntervalSelectProps = {
               <div class="flex items-center whitespace-nowrap" style="width:13%">
                 <div class="w-1.5 h-1.5 mr-1 rounded" :class="resBgColorMap[item.status?.value]"></div>
                 <span>{{ item?.status?.message }}</span>
-                <template v-if="item?.status?.value !== 'COMPLETED' && item?.errMessage">
+                <template v-if="item?.status?.value !== ExecStatus.COMPLETED && item?.errMessage">
                   <Tooltip
                     placement="topLeft"
                     arrowPointAtCenter
@@ -874,7 +300,8 @@ const reportIntervalSelectProps = {
                   <template v-if="!item?.editThread">
                     {{ item?.thread }}
                     <template
-                      v-if="!['CREATED', 'PENDING', 'RUNNING'].includes(item?.status?.value) && item?.hasOperationPermission && item?.scriptType?.value !== 'TEST_FUNCTIONALITY'">
+                      v-if="![ExecStatus.CREATED, ExecStatus.PENDING, ExecStatus.RUNNING].includes(item?.status?.value)
+                        && item?.hasOperationPermission && item?.scriptType?.value !== ScriptType.TEST_FUNCTIONALITY">
                       <Icon
                         icon="icon-shuxie"
                         class="text-text-link ml-2 cursor-pointer -mt-0.25 flex-none"
@@ -930,7 +357,7 @@ const reportIntervalSelectProps = {
                       <template v-if="!item?.editDuration">
                         {{ splitTime(item?.duration)[0] + splitTime(item?.duration)[1] }}
                         <template
-                          v-if="!['CREATED', 'PENDING', 'RUNNING'].includes(item?.status?.value) && item?.hasOperationPermission">
+                          v-if="![ExecStatus.CREATED, ExecStatus.PENDING, ExecStatus.RUNNING].includes(item?.status?.value) && item?.hasOperationPermission">
                           <Icon
                             icon="icon-shuxie"
                             class="text-text-link ml-2 cursor-pointer -mt-0.25"
@@ -954,7 +381,7 @@ const reportIntervalSelectProps = {
                     :showInfo="false"
                     :width="90"
                     :strokeWidth="10"
-                    :strokeColor="item.durationStrokeColor"
+                    :strokeColor="(item as any).durationStrokeColor || 'rgba(45, 142, 255, 1)'"
                     :percent="item?.currentDurationProgress ? +item.currentDurationProgress : 0">
                   </Progress>
                 </div>
@@ -966,7 +393,7 @@ const reportIntervalSelectProps = {
                       <template v-if="!item?.editIterations">
                         {{ +item?.iterations || "--" }}
                         <template
-                          v-if="!['CREATED', 'PENDING', 'RUNNING'].includes(item?.status?.value) && item?.hasOperationPermission">
+                          v-if="![ExecStatus.CREATED, ExecStatus.PENDING, ExecStatus.RUNNING].includes(item?.status?.value) && item?.hasOperationPermission">
                           <Icon
                             icon="icon-shuxie"
                             class="text-text-link ml-2 cursor-pointer -mt-0.25"
@@ -978,7 +405,7 @@ const reportIntervalSelectProps = {
                           :ref="el => { iterationsInputRefs[item.id] = el }"
                           :value="item.iterations"
                           :min="1"
-                          :max="item?.scriptType?.value === 'TEST_FUNCTIONALITY' ? 10 : 100000000"
+                          :max="item?.scriptType?.value === ScriptType.TEST_FUNCTIONALITY ? 10 : 100000000"
                           dataType="number"
                           size="small"
                           class="absolute top-0 h-5 z-9"
@@ -990,7 +417,7 @@ const reportIntervalSelectProps = {
                     :showInfo="false"
                     :width="90"
                     :strokeWidth="10"
-                    :strokeColor="item.iterationStrokeColor"
+                    :strokeColor="(item as any).iterationStrokeColor || 'rgba(45, 142, 255, 1)'"
                     :percent="item?.currentIterationsProgress ? +item.currentIterationsProgress : 0">
                   </Progress>
                 </div>
@@ -1005,7 +432,7 @@ const reportIntervalSelectProps = {
                         <Icon class="mr-1 text-4.5 text-status-pending" icon="icon-QPS" /><span>{{ t('execution.infoCard.qps') }}</span>
                       </div>
                       <div class="px-3.75 w-28.5 text-right rounded-r">
-                        {{ getNumFixed(item?.sampleSummaryInfo?.ops) }}
+                        {{ getNumFixed(item?.sampleSummaryInfo?.ops || '0') }}
                       </div>
                     </div>
                     <div class="flex items-center border border-border-divider rounded mt-2">
@@ -1016,7 +443,7 @@ const reportIntervalSelectProps = {
                       </div>
                       <div class="px-3.75 w-28.5 text-right rounded-r">
                         {{
-                          getNumFixed(item?.sampleSummaryInfo?.tranMean)+'ms' }}
+                          getNumFixed(item?.sampleSummaryInfo?.tranMean || '0')+'ms' }}
                       </div>
                     </div>
                   </div>
@@ -1028,7 +455,7 @@ const reportIntervalSelectProps = {
                         <Icon class="mr-1 text-4.5 text-status-warn" icon="icon-TPS" /><span>{{ t('execution.infoCard.tps') }}</span>
                       </div>
                       <div class="px-3.75 w-28.5 text-right rounded-r">
-                        {{ getNumFixed(item?.sampleSummaryInfo?.tps) }}
+                        {{ getNumFixed(item?.sampleSummaryInfo?.tps || '0') }}
                       </div>
                     </div>
                     <div class="flex items-center border border-border-divider rounded mt-2">
@@ -1076,7 +503,7 @@ const reportIntervalSelectProps = {
                       <template v-if="!item?.editPriority">
                         {{ item?.priority || "--" }}
                         <template
-                          v-if="!['CREATED', 'PENDING', 'RUNNING'].includes(item?.status?.value) && item?.hasOperationPermission">
+                          v-if="![ExecStatus.CREATED, ExecStatus.PENDING, ExecStatus.RUNNING].includes(item?.status?.value) && item?.hasOperationPermission">
                           <Icon
                             icon="icon-shuxie"
                             class="text-text-link ml-2 cursor-pointer -mt-0.25"
@@ -1130,7 +557,7 @@ const reportIntervalSelectProps = {
                           --
                         </template>
                         <template
-                          v-if="!['CREATED', 'PENDING', 'RUNNING'].includes(item?.status?.value) && item?.hasOperationPermission">
+                          v-if="![ExecStatus.CREATED, ExecStatus.PENDING, ExecStatus.RUNNING].includes(item?.status?.value) && item?.hasOperationPermission">
                           <Icon
                             icon="icon-shuxie"
                             class="text-text-link ml-2 cursor-pointer -mt-0.25"
@@ -1153,20 +580,20 @@ const reportIntervalSelectProps = {
                       :class="item?.editReportInterval ? 'w-25' : ''">
                       <Switch
                         :checked="!!item?.ignoreAssertions"
-                        :disabled="['CREATED', 'PENDING', 'RUNNING'].includes(item?.status?.value) || !item?.hasOperationPermission"
+                        :disabled="[ExecStatus.CREATED, ExecStatus.PENDING, ExecStatus.RUNNING].includes(item?.status?.value) || !item?.hasOperationPermission"
                         size="small"
                         class="w-8"
-                        @change="handleIgnoreAssertions($event, item)" />
+                        @change="handleIgnoreAssertions(!!$event, item)" />
                     </div>
                     <div
                       class="truncate flex items-center relative z-0 h-7"
                       :class="item?.editReportInterval ? 'w-25' : ''">
                       <Switch
                         :checked="item?.updateTestResult"
-                        :disabled="['CREATED', 'PENDING', 'RUNNING'].includes(item?.status?.value) || !item?.hasOperationPermission || !item.canUpdateTestResult"
+                        :disabled="[ExecStatus.CREATED, ExecStatus.PENDING, ExecStatus.RUNNING].includes(item?.status?.value) || !item?.hasOperationPermission || !item.canUpdateTestResult"
                         size="small"
                         class="w-8"
-                        @change="handleUpdateTestResult($event, item)" />
+                        @change="handleUpdateTestResult(!!$event, item)" />
                     </div>
                   </div>
                 </div>
@@ -1174,8 +601,9 @@ const reportIntervalSelectProps = {
             </div>
             <div class="w-15 flex-none flex flex-col items-center justify-center space-y-2">
               <template
-                v-if="['CREATED', 'STOPPED', 'FAILED', 'COMPLETED', 'TIMEOUT'].includes(item?.status.value) && item?.hasOperationPermission">
-                <a class="flex items-center" @click="handleRestart(item)">
+                v-if="[ExecStatus.CREATED, ExecStatus.STOPPED, ExecStatus.FAILED, ExecStatus.COMPLETED, ExecStatus.TIMEOUT].includes(item?.status.value)
+                  && item?.hasOperationPermission">
+                <a class="flex items-center" @click="handleRestartWithContext(item)">
                   <Icon icon="icon-huifu" class="mr-2" /><span>{{ t('execution.actions.start') }}</span>
                 </a>
               </template>
@@ -1184,8 +612,8 @@ const reportIntervalSelectProps = {
                   <Icon icon="icon-huifu" class="mr-2" /><span>{{ t('execution.actions.start') }}</span>
                 </span>
               </template>
-              <template v-if="['PENDING', 'RUNNING'].includes(item?.status.value) && item?.hasOperationPermission">
-                <a class="flex items-center" @click="handleStop(item)">
+              <template v-if="[ExecStatus.PENDING, ExecStatus.RUNNING].includes(item?.status.value) && item?.hasOperationPermission">
+                <a class="flex items-center" @click="handleStopWithContext(item)">
                   <Icon icon="icon-jinyong" class="mr-2 transform -rotate-45" /><span>{{ t('execution.actions.stop') }}</span>
                 </a>
               </template>
@@ -1195,17 +623,17 @@ const reportIntervalSelectProps = {
                 </span>
               </template>
               <Dropdown
-                v-if="item.scriptType?.value === 'MOCK_APIS'"
+                v-if="item.scriptType?.value === ScriptType.MOCK_APIS"
                 :menuItems="dropdownMockMenuItems"
                 :permissions="item.actionPermission"
-                @click="dropdownClick($event.key, item)">
+                @click="handleDropdownClick($event.key, item)">
                 <Icon icon="icon-gengduo" class="cursor-pointer outline-none items-center" />
               </Dropdown>
               <Dropdown
                 v-else
                 :menuItems="dropdownMenuItems"
                 :permissions="item.actionPermission"
-                @click="dropdownClick($event.key, item)">
+                @click="handleDropdownClick($event.key, item)">
                 <Icon icon="icon-gengduo" class="cursor-pointer outline-none items-center" />
               </Dropdown>
             </div>
@@ -1219,7 +647,7 @@ const reportIntervalSelectProps = {
           :hideOnSinglePage="false"
           :showTotal="showTotal"
           :showSizeChanger="false"
-          size="middle"
+          size="default"
           class="justify-end"
           @change="paginationChange" />
       </div>

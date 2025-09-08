@@ -1,39 +1,33 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Icon } from '@xcan-angus/vue-ui';
 import { Radio } from 'ant-design-vue';
-import { exec } from '@/api/tester';
+import { useServerData } from './composables/useServerData';
 
+/**
+ * Props for the Server component
+ */
 interface Props {
+  /** Execution ID for loading server data */
   execId: string
 }
 
+// Initialize internationalization
 const { t } = useI18n();
+
+// Define component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   execId: ''
 });
 
-const serverList = ref([]);
+// Use server data composable for logic
+const { serverList, loadServers, hasVariable } = useServerData(props.execId);
 
-const loadServers = async () => {
-  const [error, { data = [] }] = await exec.getTestServer(props.execId);
-  if (error) {
-    return;
-  }
-  serverList.value = data || [];
-};
+// Default empty variable object
+const defaultVariable = {};
 
-const hasVariable = (variables = {}) => {
-  if (!variables) {
-    return false;
-  }
-  return !!Object.keys(variables || {}).length;
-};
-
-const defaultVariable = {
-};
-
+// Load servers when component is mounted
 onMounted(() => {
   if (props.execId) {
     loadServers();
@@ -42,7 +36,10 @@ onMounted(() => {
 </script>
 <template>
   <div class="w-100 space-y-3">
-    <div v-for="serverObj in serverList" class="border rounded p-2">
+    <div
+      v-for="(serverObj, index) in serverList"
+      :key="index"
+      class="border rounded p-2">
       <div class="font-bold text-text-title flex items-center">
         <Icon icon="icon-fuwuqi" class="mr-1" />{{ serverObj.url }}
       </div>

@@ -2,6 +2,9 @@
 import { ActivityTimeline, Drawer } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
+// Composable for drawer functionality
+import { useDrawer } from './composables/useDrawer';
+
 const { t } = useI18n();
 
 type Props = {
@@ -14,15 +17,8 @@ const props = withDefaults(defineProps<Props>(), {
   userInfo: undefined
 });
 
-const menuItems = [
-  {
-    icon: 'icon-lishijilu',
-    name: t('scenario.list.drawer.menuItems.activity'),
-    key: 'activity'
-  }
-];
-
-const types = ['SCENARIO' as const];
+// Initialize drawer composable
+const { menuItems, types } = useDrawer(t);
 </script>
 
 <template>

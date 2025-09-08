@@ -20,7 +20,7 @@ import { useI18n } from 'vue-i18n';
 
 import Sidebar from '@/views/apis/services/sidebar/index.vue';
 import { setting } from '@/api/gm';
-import { IPane } from './PropsType';
+import { IPane } from '@/types/types';
 
 type MenuKey = 'homepage' | 'services' | 'trash';
 const { t } = useI18n();

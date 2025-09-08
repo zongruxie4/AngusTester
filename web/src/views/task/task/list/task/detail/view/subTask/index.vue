@@ -253,9 +253,9 @@ const menuItemsMap = computed(() => {
   }
 
   for (let i = 0, len = subTaskInfos.value.length; i < len; i++) {
-    const { favouriteFlag, followFlag, id } = subTaskInfos.value[i];
+    const { favourite, follow, id } = subTaskInfos.value[i];
     const items:any[] = [];
-    if (favouriteFlag) {
+    if (favourite) {
       items.push({
         name: t('task.subTask.dropdown.cancelFavourite'),
         key: 'cancelFavourite',
@@ -273,7 +273,7 @@ const menuItemsMap = computed(() => {
       });
     }
 
-    if (followFlag) {
+    if (follow) {
       items.push({
         name: t('task.subTask.dropdown.cancelFollow'),
         key: 'cancelFollow',

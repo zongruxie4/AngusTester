@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent, computed, inject, Ref, ref } from 'vue';
+import { computed, defineAsyncComponent, inject, Ref, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { ReportContent } from './PropsType';
@@ -31,7 +31,7 @@ const Catalog = defineAsyncComponent(() => import('@/views/report/preview/projec
 const TaskSummary = defineAsyncComponent(() => import('@/views/report/preview/projectProgress/taskSummary/index.vue'));
 const CaseSummary = defineAsyncComponent(() => import('@/views/report/preview/projectProgress/funcCaseSummary/index.vue'));
 const ApiTestSummary = defineAsyncComponent(() => import('@/views/report/preview/projectProgress/apiSummary/index.vue'));
-const SceneTestSummary = defineAsyncComponent(() => import('@/views/report/preview/projectProgress/scenarioTestSummary/index.vue'));
+const ScenarioTestSummary = defineAsyncComponent(() => import('@/views/report/preview/projectProgress/scenarioTestSummary/index.vue'));
 
 const catalogSequence = computed(() => {
   if (!proTypeShowMap.value.showTask) {
@@ -117,7 +117,7 @@ const catalogSequence = computed(() => {
     :appInfo="props.appInfo"
     :dataSource="props.dataSource"
     class="mb-8" />
-  <SceneTestSummary
+  <ScenarioTestSummary
     :sequence="{
       big: bigSequence[catalogSequence['scenario']],
       small: smallSequnce[catalogSequence['scenario']]

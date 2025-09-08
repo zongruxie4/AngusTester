@@ -3,7 +3,9 @@ import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from '
 import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+
 import { useI18n } from 'vue-i18n';
+import { IPane } from '@/types/types';
 
 const { t } = useI18n();
 
@@ -11,10 +13,6 @@ type Props = {
   projectId: string;
   userInfo: { id: string; };
   appInfo: { id: string; };
-}
-
-interface IPane {
-
 }
 
 const props = withDefaults(defineProps<Props>(), {

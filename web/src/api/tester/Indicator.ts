@@ -70,11 +70,11 @@ export default class API {
     return http.put(`${baseUrl}/${targetType}/${id}/perf/cancel`);
   }
 
-  cancelSceneStability (id: string): Promise<[Error | null, any]> {
+  cancelScenarioStability (id: string): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/SCENARIO/${id}/stability/cancel`);
   }
 
-  cancelScenePerf (id: string): Promise<[Error | null, any]> {
+  cancelScenarioPerf (id: string): Promise<[Error | null, any]> {
     return http.put(`${baseUrl}/SCENARIO/${id}/perf/cancel`);
   }
 }

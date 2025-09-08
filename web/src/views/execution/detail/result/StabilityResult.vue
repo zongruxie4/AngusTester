@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Icon, ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
+import { ApiUtils as apiUtils, Icon } from '@xcan-angus/vue-ui';
 
+// Define component props
 interface Props {
   indicatorStability: {
     duration: string;
@@ -62,6 +63,7 @@ const props = withDefaults(defineProps<Props>(), {
   })
 });
 
+// Compute indicator items for display
 const indicatorItem = computed(() => {
   const percentile = props.indicatorStability.percentile.value;
   let percentitleKey;
@@ -124,6 +126,7 @@ const indicatorItem = computed(() => {
   ];
 });
 
+// System indicator items configuration
 const sysIndicatorItem = [
   {
     label: t('execution.testResult.cpuUsage'),
@@ -151,6 +154,7 @@ const sysIndicatorItem = [
   }
 ];
 
+// Get icon configuration based on value key and comparison result
 const getIcon = (valueKey) => {
   if (valueKey.includes('tran')) {
     if (!props.result[valueKey] && props.indicatorStability.art) {
@@ -223,6 +227,7 @@ const getIcon = (valueKey) => {
   return {};
 };
 
+// Format duration value for display
 const getDuration = (mseconds) => {
   const [, unit] = apiUtils.splitDuration(props.indicatorStability.duration || '');
   if (!mseconds) {
@@ -232,13 +237,17 @@ const getDuration = (mseconds) => {
 };
 
 </script>
+
 <template>
   <div class="border rounded bg-white">
+    <!-- Stability test header -->
     <div class="flex py-1 px-2">
       <span class="w-30">{{ t('execution.testResult.testParameters') }}</span>
       <span class="flex-1">{{ t('execution.testResult.testIndicators') }}</span>
       <span class="flex-1">{{ t('execution.testResult.testResults') }}</span>
     </div>
+
+    <!-- Stability indicators and results -->
     <div
       v-for="item in indicatorItem"
       :key="item.dataIndex"

@@ -6,7 +6,7 @@ import { StrategyWhenDuplicated } from '@xcan-angus/infra';
 import { Hints, Modal, notification, SingleUpload } from '@xcan-angus/vue-ui';
 import { mock } from '@/api/tester';
 
-// ==================== Props & Emits ====================
+// Props & Emits
 interface Props {
   id:string;// mock service Id
   visible:boolean;

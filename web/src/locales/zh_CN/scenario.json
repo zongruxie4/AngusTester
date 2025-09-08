@@ -65,8 +65,8 @@
     "edit": {
       "save": "保存",
       "cancel": "取消",
-      "monitorScene": "监控场景",
-      "selectScene": "选择场景",
+      "monitorScenario": "监控场景",
+      "selectScenario": "选择场景",
       "monitorName": "监控名称",
       "monitorNamePlaceholder": "输入监控名称，最多可输入100字符",
       "description": "描述",
@@ -94,6 +94,7 @@
       "selectOrgsRule": "请选择"
     },
     "detail": {
+      "totalExecutions": "总执行数",
       "successRate": "成功率",
       "responseDelay": "响应延迟",
       "executionRecords": "执行记录",
@@ -139,7 +140,7 @@
         "failure": "失败"
       },
       "searchNamePlaceholder": "查询名称，描述",
-      "selectScenePlaceholder": "选择场景名称",
+      "selectScenarioPlaceholder": "选择场景名称",
       "selectCreatorPlaceholder": "选择创建人",
       "dateRangePlaceholder": [
         "添加时间从",

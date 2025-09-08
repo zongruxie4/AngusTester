@@ -28,7 +28,7 @@ const emit = defineEmits<{
 }>();
 
 const APIBasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/info/apis/index.vue'));
-const SceneBasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/info/scenario/index.vue'));
+const ScenarioBasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/info/scenario/index.vue'));
 const BasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/info/basic/index.vue'));
 const Description = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/info/description/index.vue'));
 const PersonnelInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/info/personnel/index.vue'));
@@ -78,7 +78,7 @@ const className = computed(() => {
         :taskId="taskId"
         @change="change"
         @loadingChange="loadingChange" />
-      <SceneBasicInfo
+      <ScenarioBasicInfo
         v-else-if="taskType === 'SCENARIO_TEST'"
         :dataSource="props.dataSource"
         :projectId="props.projectId"

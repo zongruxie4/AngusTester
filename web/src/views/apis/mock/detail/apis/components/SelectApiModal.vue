@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue';
 import { Modal, SelectApi } from '@xcan-angus/vue-ui';
 
-// ==================== Types ====================
+// Types
 type APIInfo = {
   id: string;
   summary: string;
@@ -13,7 +13,7 @@ type APIInfo = {
   mockApisId: string|undefined;
 }
 
-// ==================== Props & Emits ====================
+// Props & Emits
 interface Props {
   visible:boolean;
   title:string;

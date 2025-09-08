@@ -24,10 +24,10 @@ export type PipelineConfig = {
     id: string;// 前端自动生成，用于给每条记录添加id
 }
 
-export type SceneInfo = {
+export type ScenarioInfo = {
     description: string;
-    favouriteFlag: boolean;
-    followFlag: boolean;
+    favourite: boolean;
+    follow: boolean;
     id: string;
     name: string;
     plugin: 'Ftp';
@@ -103,10 +103,10 @@ export type SceneInfo = {
     scriptName: string;
 }
 
-export type SceneConfig = {
+export type ScenarioConfig = {
     description: string;
-    favouriteFlag: boolean;
-    followFlag: boolean;
+    favourite: boolean;
+    follow: boolean;
     id: string;
     name: string;
     plugin: 'Ftp';

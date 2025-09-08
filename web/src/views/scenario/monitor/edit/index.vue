@@ -1,188 +1,97 @@
 <script lang="ts" setup>
-import { onMounted, ref, computed, watch, inject, nextTick, defineAsyncComponent } from 'vue';
+import { computed, defineAsyncComponent, inject, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Input, Select, notification, Icon, Spin, Hints, IconRequired } from '@xcan-angus/vue-ui';
-import { Button, Form, FormItem, Textarea, Tabs, TabPane, RadioGroup, Radio } from 'ant-design-vue';
-import { utils, TESTER, GM } from '@xcan-angus/infra';
-import { scenario } from '@/api/tester';
+import { Hints, Icon, IconRequired, Input, Select, Spin } from '@xcan-angus/vue-ui';
+import { Button, Form, FormItem, Radio, RadioGroup, TabPane, Tabs, Textarea } from 'ant-design-vue';
+import { AuthObjectType, GM, TESTER } from '@xcan-angus/infra';
 
-import {FormState, MonitorInfo} from '../types';
+// Import composables
+import { useFormData } from './composables/useFormData';
+import { useMonitorActions } from './composables/useMonitorActions';
+import { useServerConfig } from './composables/useServerConfig';
+import { useNotificationConfig } from './composables/useNotificationConfig';
+import { useFormValidation } from './composables/useFormValidation';
+
+// Import types
+import type { MonitorEditProps } from '../types';
 
 const { t } = useI18n();
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; fullName: string};
-  appInfo: { id: string; };
-  _id: string;
-  data: {
-    _id: string;
-    id: string | undefined;
-  }
-}
+// Component props
+const props = defineProps<MonitorEditProps>();
 
-const props = withDefaults(defineProps<Props>(), {
-  projectId: undefined,
-  userInfo: undefined,
-  appInfo: undefined,
-  data: undefined
-});
-
-const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
-const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
-
-const activeTabKey = ref('time');
-const formRef = ref();
-const createdDateRef = ref();
+// Async component
 const CreatedDate = defineAsyncComponent(() => import('@/views/scenario/monitor/edit/CreatedDate.vue'));
-const isHttpPlugin = ref(false);
 
-const formState = ref<FormState>({
-  scenarioId: undefined,
-  description: '',
-  name: ''
+// Initialize composables
+const {
+  formState,
+  timeSetting,
+  noticeSetting,
+  setFormData
+} = useFormData();
+
+const {
+  loading,
+  loadMonitorDetail,
+  updateMonitor,
+  createMonitor,
+  refreshMonitorList,
+  closeTabPane
+} = useMonitorActions();
+
+// Inject tab pane functions
+const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
+
+const {
+  serverSetting: serverConfig,
+  isHttpPlugin,
+  loadServerSetting,
+  loadScenarioPlugin,
+  hasVariables,
+  changeVariableDefaultValue,
+  handleScenarioChange
+} = useServerConfig();
+
+const {
+  notificationOrgs,
+  initializeOrgs,
+  validateOrgs,
+  handleOrgTypeChange,
+  handleOrgSelectionChange,
+  getNotificationSettingWithOrgs
+} = useNotificationConfig();
+
+const {
+  formRef,
+  createdDateRef,
+  activeTabKey,
+  buildMonitorParams,
+  validateAndSubmit
+} = useFormValidation();
+
+// Check if form is in edit mode
+const isEditMode = computed(() => {
+  return !!props.data?.id;
 });
 
-// 创建时间
-const createTimeSetting = ref<MonitorInfo['timeSetting']>({
-  createdAt: 'NOW'
+// Computed property for organization selection values (for Select component)
+const orgSelectionValues = computed({
+  get: () => noticeSetting.value.orgs.map(org => org.id),
+  set: (_values: string[]) => {
+    // This will be handled by the change event
+  }
 });
 
-// 通知配置
-const noticeSetting = ref<MonitorInfo['noticeSetting']>({
-  enabled: true,
-  orgType: 'USER',
-  orgs: [props.userInfo.id]
-});
+// Initialize organization list with user info
+initializeOrgs(props.userInfo);
 
-// 服务器配置
-const serverSetting = ref<{url: string; description?: string; variables?: {[key: string]: {[key: string]: string}}}[]>([]);
-const loadServerSetting = async () => {
-  const [error, { data = [] }] = await scenario.getTestSchemaServer(formState.value.scenarioId);
-  if (error) {
-    return;
-  }
-  serverSetting.value = data;
-};
-
-const changeVaribleDefaultValue = (idx: number, key: string, en: string) => {
-  if (serverSetting.value?.[idx]?.variables?.[key]) {
-    serverSetting.value[idx].variables[key].default = en;
-  }
-};
-
-// 场景选择
-const handleSceneChange = (_id: string, option) => {
-  isHttpPlugin.value = option.plugin === 'Http';
-};
-
-// 组织部门数组
-const orgs = ref<{name: string; id: string}[]>([{ id: props.userInfo?.id, name: props.userInfo?.fullName }]);
-const validateOrgs = () => {
-  if (!orgs.value.length) {
-    return Promise.reject(t('scenarioMonitor.edit.selectOrgsRule'));
-  }
-  return Promise.resolve();
-};
-
-// 组织类型变更
-const handleChangeOrgType = () => {
-  noticeSetting.value.orgs = [];
-  orgs.value = [];
-};
-
-// 组织变更
-const handleChangeOrgs = (_value: string[], valueObjs: {name: string; id: string; fullName}[]) => {
-  orgs.value = (valueObjs || []).map(i => ({ name: i.fullName || i.name, id: i.id }));
-};
-
-const hasVariable = (variables = {}) => {
-  if (!variables) {
-    return false;
-  }
-  return !!Object.keys(variables || {}).length;
-};
-
-const loading = ref(false);
-
-const getParams = () => {
-  const { scenarioId, description, name } = formState.value;
-  return {
-    scenarioId,
-    description,
-    name,
-    id: props.data?.id || undefined,
-    projectId: props.projectId,
-    timeSetting: createdDateRef.value.getData(),
-    noticeSetting: {
-      ...noticeSetting.value,
-      orgs: noticeSetting.value.enabled ? orgs.value : []
-    },
-    serverSetting: serverSetting.value
-  };
-};
-
-const refreshList = () => {
-  nextTick(() => {
-    updateTabPane({ _id: 'monitorList', notify: utils.uuid() });
-  });
-};
-
-const editOk = async () => {
-  const params = getParams();
-  loading.value = true;
-  const [error] = await scenario.updateMonitor(params);
-  loading.value = false;
-  if (error) {
-    return;
-  }
-  notification.success(t('tips.modifySuccess'));
-  deleteTabPane([props._id]);
-};
-
-const addOk = async () => {
-  const params = getParams();
-  loading.value = true;
-  const [error] = await scenario.addMonitor(params);
-  loading.value = false;
-  if (error) {
-    return;
-  }
-  notification.success(t('tips.addSuccess'));
-  deleteTabPane([props._id]);
-};
-
-const ok = async () => {
-  if (!orgs.value.length && noticeSetting.value?.enabled) {
-    activeTabKey.value = 'notice';
-  }
-  formRef.value.validate().then(async () => {
-    if (!editFlag.value) {
-      await addOk();
-    } else {
-      await editOk();
-    }
-    refreshList();
-  });
-};
-
-const cancel = () => {
-  deleteTabPane([props._id]);
-};
-
+/**
+ * Load monitor data and populate form
+ * @param id - Monitor ID
+ */
 const loadData = async (id: string) => {
-  if (loading.value) {
-    return;
-  }
-
-  loading.value = true;
-  const [error, res] = await scenario.getMonitorDetail(id);
-  loading.value = false;
-  if (error) {
-    return;
-  }
-
-  const data = res?.data as MonitorInfo;
+  const data = await loadMonitorDetail(id);
   if (!data) {
     return;
   }
@@ -190,128 +99,111 @@ const loadData = async (id: string) => {
   setFormData(data);
 
   if (data.scenarioId) {
-    loadScenarioPlugin(data.scenarioId);
+    await loadScenarioPlugin(data.scenarioId);
   }
-  const name = data.name;
-  if (name && typeof updateTabPane === 'function') {
-    updateTabPane({ name, _id: id });
+
+  // Update tab pane title
+  if (data.name) {
+    updateTabPane({ name: data.name, _id: id });
   }
 };
 
-const setFormData = (data: MonitorInfo) => {
-  if (!data) {
-    formState.value = {
-      scenarioId: '',
-      description: '',
-      name: ''
-    };
-    createTimeSetting.value = {
-      createdAt: 'NOW'
-    };
-    noticeSetting.value = {
-      enabled: true,
-      orgType: 'DEPT',
-      orgs: []
-    };
-    serverSetting.value = [];
-    return;
-  }
+/**
+ * Handle form submission
+ */
+const handleSubmit = async () => {
+  const params = buildMonitorParams(
+    formState.value,
+    timeSetting.value,
+    getNotificationSettingWithOrgs(noticeSetting.value),
+    serverConfig.value,
+    props.projectId,
+    props.data?.id
+  );
 
-  const {
-    scenarioId,
-    description,
-    name
-  } = data;
-  formState.value = {
-    scenarioId,
-    description,
-    name
-  };
-  createTimeSetting.value = data.timeSetting || {
-    createdAt: 'NOW'
-  };
-  noticeSetting.value = data.noticeSetting
-    ? {
-        ...data.noticeSetting,
-        orgType: data.noticeSetting.orgType?.value || 'USER',
-        orgs: (data.noticeSetting.orgs || []).map(i => i.id)
-      }
-    : {
-        enabled: true,
-        orgType: 'DEPT',
-        orgs: []
-      };
-  serverSetting.value = data.serverSetting || [];
+  const success = isEditMode.value
+    ? await updateMonitor(params)
+    : await createMonitor(params);
+
+  if (success) {
+    refreshMonitorList();
+    closeTabPane(props._id);
+  }
 };
 
-// 获取场景详情
-const loadScenarioPlugin = async (scenarioId: string) => {
-  const [error, { data }] = await scenario.getScenarioDetail(scenarioId);
-  if (error) {
-    return;
-  }
-  isHttpPlugin.value = data.plugin === 'Http';
+/**
+ * Handle form cancellation
+ */
+const handleCancel = () => {
+  closeTabPane(props._id);
 };
 
-// const members = ref<{ fullName: string, id: string; }[]>([]);
+/**
+ * Handle scenario selection change
+ * @param value - Selected scenario ID
+ * @param option - Scenario option data
+ */
+const handleScenarioSelectionChange = (value: any, option: any) => {
+  if (typeof value === 'string') {
+    handleScenarioChange(value, option);
+  }
+};
 
-// const loadMembers = async () => {
-//   const [error, { data }] = await http.get(`${TESTER}/project/${props.projectId}/member/user`);
-//   if (error) {
-//     return;
-//   }
-//   members.value = (data || []).map(i => {
-//     return {
-//       ...i
-//     };
-//   });
-// };
+/**
+ * Handle organization type change
+ */
+const handleOrgTypeChangeWrapper = () => {
+  handleOrgTypeChange(noticeSetting.value);
+};
 
-onMounted(async () => {
+/**
+ * Handle organization selection change
+ * @param value - Selected organization values
+ * @param option - Organization option data
+ */
+const handleOrgSelectionChangeWrapper = (value: any, option: any) => {
+  if (Array.isArray(value) && Array.isArray(option)) {
+    handleOrgSelectionChange(value, option);
+  }
+};
+
+// Watch for data changes
+onMounted(() => {
   watch(() => props.data, async (newValue, oldValue) => {
     const id = newValue?.id;
-    if (!id) {
+    if (!id || id === oldValue?.id) {
       return;
     }
-
-    const oldId = oldValue?.id;
-    if (id === oldId) {
-      return;
-    }
-
     await loadData(id);
   }, { immediate: true });
 
   watch(() => formState.value.scenarioId, (newValue) => {
-    if (newValue) {
-      loadServerSetting();
-    }
+    loadServerSetting(newValue);
   });
 });
-
-const editFlag = computed(() => {
-  return !!props.data?.id;
-});
-
 </script>
+<!-- TODO 从详情页面进入后，点击页面编辑，编辑成功后详情页面没有刷新 -->
 <template>
   <Spin :spinning="loading" class="h-full text-3 leading-5 px-5 py-5 overflow-auto">
+    <!-- Action buttons -->
     <div class="flex items-center space-x-2.5 mb-5">
       <Button
         type="primary"
         size="small"
         class="flex items-center space-x-1"
-        @click="ok">
+        @click="validateAndSubmit(handleSubmit, noticeSetting, notificationOrgs)">
         <Icon icon="icon-dangqianxuanzhong" class="text-3.5" />
         <span>{{ t('scenarioMonitor.edit.save') }}</span>
       </Button>
       <Button
         size="small"
         class="flex items-center space-x-1"
-        @click="cancel">
+        @click="handleCancel">
         <span>{{ t('scenarioMonitor.edit.cancel') }}</span>
       </Button>
     </div>
+
+    <!-- Main form -->
     <Form
       ref="formRef"
       :model="formState"
@@ -319,18 +211,21 @@ const editFlag = computed(() => {
       :labelCol="{ style: { width: '75px' } }"
       class="max-w-242.5"
       layout="horizontal">
+      <!-- Scenario selection -->
       <FormItem
         required
         name="scenarioId"
-        :label="t('scenarioMonitor.edit.monitorScene')">
+        :label="t('scenarioMonitor.edit.monitorScenario')">
         <Select
           v-model:value="formState.scenarioId"
           :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
           :fieldNames="{label: 'name', value: 'id'}"
           :disabled="!!props?.data?.id"
-          :placeholder="t('scenarioMonitor.edit.selectScene')"
-          @change="handleSceneChange" />
+          :placeholder="t('scenarioMonitor.edit.selectScenario')"
+          @change="handleScenarioSelectionChange" />
       </FormItem>
+
+      <!-- Monitor name -->
       <FormItem
         required
         :label="t('scenarioMonitor.edit.monitorName')"
@@ -341,6 +236,8 @@ const editFlag = computed(() => {
           :maxlength="100"
           :placeholder="t('scenarioMonitor.edit.monitorNamePlaceholder')" />
       </FormItem>
+
+      <!-- Description -->
       <FormItem
         :label="t('scenarioMonitor.edit.description')"
         name="description"
@@ -350,52 +247,61 @@ const editFlag = computed(() => {
           :maxlength="200"
           :placeholder="t('scenarioMonitor.edit.descriptionPlaceholder')" />
       </FormItem>
+
+      <!-- Tab panels -->
       <Tabs v-model:activeKey="activeTabKey" size="small">
+        <!-- Time configuration tab -->
         <TabPane key="time">
           <template #tab>
             <div><IconRequired />{{ t('scenarioMonitor.edit.monitorTime') }}</div>
           </template>
           <CreatedDate
             ref="createdDateRef"
-            :createTimeSetting="createTimeSetting" />
+            :createTimeSetting="timeSetting as any" />
         </TabPane>
 
+        <!-- Server configuration tab (only for HTTP plugins) -->
         <TabPane
           v-if="isHttpPlugin"
           key="server"
           :tab="t('scenarioMonitor.edit.serverConfig')">
           <div class="w-100 space-y-3">
-            <div v-for="(serverObj, idx) in serverSetting" class="border rounded p-2">
+            <div
+              v-for="(serverObj, idx) in serverConfig"
+              :key="idx"
+              class="border rounded p-2">
               <div class="font-bold text-text-title flex items-center">
                 <Icon icon="icon-fuwuqi" class="mr-1" />{{ serverObj.url }}
               </div>
-              <div class="my-3 ">{{ serverObj.description || t('scenarioMonitor.edit.noDescription') }}</div>
-              <ul v-if="hasVariable(serverObj.variables)" class="list-disc space-y-1 pl-4">
-                <li v-for="(_value, key) in (serverObj.variables || {})" :key="key">
+              <div class="my-3">{{ serverObj.description || t('scenarioMonitor.edit.noDescription') }}</div>
+
+              <!-- Variables section -->
+              <ul v-if="hasVariables(serverObj.variables)" class="list-disc space-y-1 pl-4">
+                <li v-for="(variableValue, key) in (serverObj.variables || {})" :key="key">
                   <div
                     class="text-3 text-text-title rounded-sm leading-5 truncate cursor-pointer inline font-bold"
-                    :title="key + ''"
+                    :title="String(key)"
                     style="max-width: 400px;">
                     {{ key }}
                   </div>
                   <div class="space-y-1">
                     <div
-                      v-for="en in _value.enum"
-                      :key="en"
+                      v-for="enumValue in variableValue.enum"
+                      :key="enumValue"
                       class="flex items-center justify-between">
                       <div
                         class="truncate cursor-pointer"
                         style="max-width: 400px;"
-                        :title="en">
-                        {{ en }}
+                        :title="String(enumValue)">
+                        {{ enumValue }}
                       </div>
                       <div class="inline-flex items-center space-x-1">
-                        <span v-show="_value.default === en">{{ t('scenarioMonitor.edit.default') }}</span>
+                        <span v-show="variableValue.default === enumValue">{{ t('scenarioMonitor.edit.default') }}</span>
                         <Radio
                           size="small"
-                          :checked="_value.default === en"
+                          :checked="variableValue.default === enumValue"
                           class="-mt-1.5"
-                          @click="changeVaribleDefaultValue(idx,key,en)" />
+                          @click="changeVariableDefaultValue(idx, String(key), String(enumValue))" />
                       </div>
                     </div>
                   </div>
@@ -408,33 +314,46 @@ const editFlag = computed(() => {
           </div>
         </TabPane>
 
+        <!-- Notification configuration tab -->
         <TabPane
           key="notice"
           forceRender>
           <template #tab>
             <div><IconRequired />{{ t('scenarioMonitor.edit.notificationConfig') }}</div>
           </template>
+
+          <!-- Notification enable/disable -->
           <RadioGroup
             v-model:value="noticeSetting.enabled"
-            :options="[{value: false, label: t('scenarioMonitor.edit.notificationOptions.noNotify')}, { value: true, label: t('scenarioMonitor.edit.notificationOptions.notify') }]">
+            :options="[
+              {value: false, label: t('scenarioMonitor.edit.notificationOptions.noNotify')},
+              { value: true, label: t('scenarioMonitor.edit.notificationOptions.notify') }]">
           </RadioGroup>
           <Hints :text="t('scenarioMonitor.edit.notificationHint')" class="mt-3" />
+
+          <!-- Notification recipients configuration -->
           <template v-if="noticeSetting.enabled">
             <div class="flex space-x-3 mt-3">
               <span>{{ t('scenarioMonitor.edit.recipient') }}</span>
 
+              <!-- Organization type selection -->
               <RadioGroup
                 v-model:value="noticeSetting.orgType"
-                :options="[{value: 'USER', label: t('scenarioMonitor.edit.recipientOptions.user')}, {value: 'DEPT', label: t('scenarioMonitor.edit.recipientOptions.dept')}, {value: 'GROUP', label: t('scenarioMonitor.edit.recipientOptions.group')}]"
-                @change="handleChangeOrgType">
+                @change="handleOrgTypeChangeWrapper">
+                <Radio :value="AuthObjectType.USER">{{ t('scenarioMonitor.edit.recipientOptions.user') }}</Radio>
+                <Radio :value="AuthObjectType.DEPT">{{ t('scenarioMonitor.edit.recipientOptions.dept') }}</Radio>
+                <Radio :value="AuthObjectType.GROUP">{{ t('scenarioMonitor.edit.recipientOptions.group') }}</Radio>
               </RadioGroup>
+
+              <!-- Organization selection -->
               <FormItem
                 name="orgs"
                 class="w-50"
                 :rules="[{validator: validateOrgs}]">
+                <!-- User selection -->
                 <Select
-                  v-if="noticeSetting.orgType === 'USER'"
-                  v-model:value="noticeSetting.orgs"
+                  v-if="noticeSetting.orgType === AuthObjectType.USER"
+                  v-model:value="orgSelectionValues"
                   :showSearch="true"
                   defaultActiveFirstOption
                   :lazy="false"
@@ -444,12 +363,13 @@ const editFlag = computed(() => {
                   :placeholder="t('scenarioMonitor.edit.selectUser')"
                   :action="`${GM}/user?fullTextSearch=true`"
                   :fieldNames="{ label: 'fullName', value: 'id' }"
-                  @change="handleChangeOrgs">
+                  @change="handleOrgSelectionChangeWrapper">
                 </Select>
 
+                <!-- Department selection -->
                 <Select
-                  v-if="noticeSetting.orgType === 'DEPT'"
-                  v-model:value="noticeSetting.orgs"
+                  v-if="noticeSetting.orgType === AuthObjectType.DEPT"
+                  v-model:value="orgSelectionValues"
                   defaultActiveFirstOption
                   :placeholder="t('scenarioMonitor.edit.selectDept')"
                   class="w-50"
@@ -459,12 +379,13 @@ const editFlag = computed(() => {
                   :showSearch="true"
                   :action="`${GM}/dept?fullTextSearch=true`"
                   :fieldNames="{ label: 'name', value: 'id' }"
-                  @change="handleChangeOrgs">
+                  @change="handleOrgSelectionChangeWrapper">
                 </Select>
 
+                <!-- Group selection -->
                 <Select
-                  v-if="noticeSetting.orgType === 'GROUP'"
-                  v-model:value="noticeSetting.orgs"
+                  v-if="noticeSetting.orgType === AuthObjectType.GROUP"
+                  v-model:value="orgSelectionValues"
                   defaultActiveFirstOption
                   :placeholder="t('scenarioMonitor.edit.selectGroup')"
                   class="w-50"
@@ -474,7 +395,7 @@ const editFlag = computed(() => {
                   :showSearch="true"
                   :action="`${GM}/group?fullTextSearch=true`"
                   :fieldNames="{ label: 'name', value: 'id' }"
-                  @change="handleChangeOrgs">
+                  @change="handleOrgSelectionChangeWrapper">
                 </Select>
               </FormItem>
             </div>

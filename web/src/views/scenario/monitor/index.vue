@@ -5,15 +5,15 @@ import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
-import { IPane } from './types';
-
-const { t } = useI18n();
+import { IPane } from '@/types/types';
 
 type Props = {
   projectId: string;
   userInfo: { id: string; };
   appInfo: { id: string; };
 }
+
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
@@ -28,165 +28,216 @@ const MonitorEdit = defineAsyncComponent(() => import('@/views/scenario/monitor/
 const route = useRoute();
 const router = useRouter();
 const browserTabRef = ref();
-const activeKey = ref();
+const activeTabKey = ref();
 
-const addTabPane = (data: IPane) => {
+/**
+ * Generate storage key for browser tab persistence based on project ID
+ * @returns Storage key string or undefined if no project ID
+ */
+const storageKey = computed(() => {
+  if (!props.projectId) {
+    return undefined;
+  }
+  return `monitor${props.projectId}`;
+});
+
+/**
+ * Add a new tab pane to the browser tab component
+ * @param tabData - Tab pane data to add
+ */
+const addTabPane = (tabData: IPane) => {
   browserTabRef.value.add(() => {
-    return data;
+    return tabData;
   });
 };
 
+/**
+ * Get tab pane data by key
+ * @param key - Tab key to retrieve
+ * @returns Tab pane data or undefined
+ */
 const getTabPane = (key: string): IPane[] | undefined => {
   return browserTabRef.value.getData(key);
 };
 
+/**
+ * Delete tab panes by keys
+ * @param keys - Array of tab keys to delete
+ */
 const deleteTabPane = (keys: string[]) => {
   browserTabRef.value.remove(keys);
 };
 
-const updateTabPane = (data: IPane) => {
-  browserTabRef.value.update(data);
+/**
+ * Update existing tab pane data
+ * @param tabData - Updated tab pane data
+ */
+const updateTabPane = (tabData: IPane) => {
+  browserTabRef.value.update(tabData);
 };
 
-const replaceTabPane = (key: string, data: { key: string }) => {
-  browserTabRef.value.replace(key, data);
+/**
+ * Replace tab pane with new data
+ * @param key - Tab key to replace
+ * @param newData - New tab data with key property
+ */
+const replaceTabPane = (key: string, newData: { key: string }) => {
+  browserTabRef.value.replace(key, newData);
 };
 
-const initialize = () => {
+/**
+ * Initialize the monitor component by adding default tab and processing hash
+ */
+const initializeComponent = () => {
+  // Add default monitor list tab if not already present
   if (typeof browserTabRef.value?.add === 'function') {
-    browserTabRef.value.add((ids: string[]) => {
-      if (!ids.includes('monitorList')) {
+    browserTabRef.value.add((existingTabIds: string[]) => {
+      if (!existingTabIds.includes('monitorList')) {
         return {
           _id: 'monitorList',
           value: 'monitorList',
           name: t('scenarioMonitor.monitor'),
-          closable: false // 是否允许关闭，true - 允许关闭，false - 禁止关闭
+          closable: false
         };
       }
     });
   }
 
-  hashChange(route.hash);
+  // Process current hash for tab navigation
+  processHashChange(route.hash);
 };
 
-const hashChange = (hash: string) => {
+/**
+ * Handle storage key change by reinitializing component
+ */
+const handleStorageKeyChange = () => {
+  initializeComponent();
+};
+
+/**
+ * Process hash change to determine which tab to open
+ * @param hash - URL hash string containing query parameters
+ */
+const processHashChange = (hash: string) => {
+  // Extract query string from hash
   const queryString = hash.split('?')[1];
   if (!queryString) {
     return;
   }
 
-  const queryParameters = queryString.split('&').reduce((prev, cur) => {
-    const [key, value] = cur.split('=');
-    prev[key] = value;
-    return prev;
+  // Parse query parameters into object
+  const queryParameters = queryString.split('&').reduce((accumulator, current) => {
+    const [key, value] = current.split('=');
+    accumulator[key] = value;
+    return accumulator;
   }, {} as { [key: string]: string });
 
   const { id, type } = queryParameters;
+
+  // Handle tab creation based on query parameters
   if (id) {
-    if (type === 'edit') {
-      browserTabRef.value.add(() => {
-        return {
-          _id: id,
-          value: 'monitorEdit',
-          noCache: true,
-          data: { _id: id, id }
-        };
-      });
-    } else {
-      browserTabRef.value.add(() => {
-        return {
-          _id: id + '-case',
-          id: id,
-          value: 'monitorDetails',
-          data: { _id: id, id }
-        };
-      });
-    }
-  } else {
-    if (type) {
-      browserTabRef.value.add(() => {
-        const id = utils.uuid();
-        return {
-          _id: id,
-          name: t('scenarioMonitor.addMonitor'),
-          value: 'monitorEdit',
-          noCache: true,
-          data: { _id: id }
-        };
-      });
-    }
+    createTabForExistingMonitor(id, type);
+  } else if (type) {
+    createTabForNewMonitor();
   }
 
+  // Update router to clean URL
   router.replace('/scenario#monitor');
 };
 
-const storageKeyChange = () => {
-  initialize();
+/**
+ * Create tab for existing monitor (edit or detail view)
+ * @param monitorId - ID of the monitor
+ * @param tabType - Type of tab ('edit' or 'detail')
+ */
+const createTabForExistingMonitor = (monitorId: string, tabType: string) => {
+  if (tabType === 'edit') {
+    browserTabRef.value.add(() => {
+      return {
+        _id: monitorId,
+        value: 'monitorEdit',
+        noCache: true,
+        data: { _id: monitorId, id: monitorId }
+      };
+    });
+  } else {
+    browserTabRef.value.add(() => {
+      return {
+        _id: `${monitorId}-case`,
+        id: monitorId,
+        value: 'monitorDetails',
+        data: { _id: monitorId, id: monitorId }
+      };
+    });
+  }
+};
+
+/**
+ * Create tab for new monitor (edit view)
+ */
+const createTabForNewMonitor = () => {
+  browserTabRef.value.add(() => {
+    const newMonitorId = utils.uuid();
+    return {
+      _id: newMonitorId,
+      name: t('scenarioMonitor.addMonitor'),
+      value: 'monitorEdit',
+      noCache: true,
+      data: { _id: newMonitorId }
+    };
+  });
 };
 
 onMounted(() => {
-  watch(() => route.hash, () => {
-    if (!route.hash.startsWith('#monitor')) {
+  // Watch for hash changes to handle tab navigation
+  watch(() => route.hash, (newHash) => {
+    if (!newHash.startsWith('#monitor')) {
       return;
     }
-
-    hashChange(route.hash);
+    processHashChange(newHash);
   });
 });
 
-const storageKey = computed(() => {
-  if (!props.projectId) {
-    return undefined;
-  }
-
-  return `monitor${props.projectId}`;
-});
-
-// 添加指定的tabPane
+// Provide tab management functions to child components
 provide('addTabPane', addTabPane);
-
-// 获取tabPane
 provide('getTabPane', getTabPane);
-
-// 删除指定的tabPane
 provide('deleteTabPane', deleteTabPane);
-
-// 更新指定的tabPane
 provide('updateTabPane', updateTabPane);
-
-// 替换指定tabPane
 provide('replaceTabPane', replaceTabPane);
 </script>
 <template>
   <BrowserTab
     ref="browserTabRef"
-    v-model:activeKey="activeKey"
+    v-model:activeKey="activeTabKey"
     hideAdd
     class="h-full"
     :userId="props.userInfo.id"
     :storageKey="storageKey"
-    @storageKeyChange="storageKeyChange">
-    <template #default="record">
-      <template v-if="record.value === 'monitorList'">
+    @storageKeyChange="handleStorageKeyChange">
+    <template #default="tabRecord">
+      <!-- Monitor List Tab -->
+      <template v-if="tabRecord.value === 'monitorList'">
         <MonitorList
-          v-bind="record"
+          v-bind="tabRecord"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :projectId="props.projectId"
-          :onShow="activeKey === 'monitorList'" />
+          :onShow="activeTabKey === 'monitorList'" />
       </template>
 
-      <template v-else-if="record.value === 'monitorDetails'">
+      <!-- Monitor Detail Tab -->
+      <template v-else-if="tabRecord.value === 'monitorDetails'">
         <MonitorDetail
-          v-bind="record"
+          v-bind="tabRecord"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :projectId="props.projectId" />
       </template>
 
-      <template v-else-if="record.value === 'monitorEdit'">
+      <!-- Monitor Edit Tab -->
+      <template v-else-if="tabRecord.value === 'monitorEdit'">
         <MonitorEdit
-          v-bind="record"
+          v-bind="tabRecord"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :projectId="props.projectId" />

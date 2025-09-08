@@ -12,10 +12,6 @@ import store from './store';
 // Import global styles
 import '@/assets/styles/global.css';
 
-// ============================================================================
-// Type Definitions
-// ============================================================================
-
 /** AI Agent configuration interface */
 interface AIAgentConfig {
   agentId: string;
@@ -35,10 +31,6 @@ interface FunctionItem {
 /** Global configuration type */
 type GlobalConfig = Record<string, string | number | boolean | object>;
 
-// ============================================================================
-// State Management
-// ============================================================================
-
 /** Window resize notification UUID for triggering reactive updates */
 const windowResizeNotify = ref<string>();
 
@@ -54,28 +46,16 @@ const globalConfigs = ref<GlobalConfig>();
 /** Function loading promise to prevent duplicate requests */
 let functionPromise: Promise<FunctionItem[]> | null = null;
 
-// ============================================================================
-// Computed Properties
-// ============================================================================
-
 /** Current application status code */
 const status = computed(() => store.state.statusCode);
 
 /** Whether AI features are enabled */
 const aiEnabled = computed(() => Boolean(aiAgent.value?.enabled));
 
-// ============================================================================
-// Event Handlers
-// ============================================================================
-
 /** Debounced window resize handler */
 const resizeHandler = debounce(duration.resize, () => {
   windowResizeNotify.value = utils.uuid();
 });
-
-// ============================================================================
-// API Functions
-// ============================================================================
 
 /**
  * Get all available functions with caching
@@ -119,10 +99,6 @@ const initializeApp = async (): Promise<void> => {
   }
 };
 
-// ============================================================================
-// Lifecycle Hooks
-// ============================================================================
-
 onMounted(() => {
   initializeApp();
 });
@@ -130,10 +106,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('resize', resizeHandler);
 });
-
-// ============================================================================
-// Dependency Injection
-// ============================================================================
 
 // Provide reactive dependencies to child components
 provide('windowResizeNotify', windowResizeNotify);

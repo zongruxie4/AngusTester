@@ -1,19 +1,12 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
-import { EnumMessage, CreatedAt, PeriodicCreationUnit, DayOfWeek, enumUtils } from '@xcan-angus/infra';
+import { CreatedAt, DayOfWeek, EnumMessage, enumUtils, PeriodicCreationUnit } from '@xcan-angus/infra';
 import { DatePicker, FormItem, Radio, RadioGroup } from 'ant-design-vue';
 import { Select } from '@xcan-angus/vue-ui';
 import dayjs from 'dayjs';
+import { CreateTimeSetting } from '@/types/types';
 
-type CreateTimeSetting = {
-  createdAt: CreatedAt,
-  periodicCreationUnit?: PeriodicCreationUnit,
-  dayOfWeek?: DayOfWeek;
-  createdAtSomeDate?: string;
-  dayOfMonth?: string;
-  timeOfDay?: string;
-}
-
+// Component props definition
 interface Props {
   createTimeSetting: CreateTimeSetting;
   showPeriodically: boolean;
@@ -27,17 +20,22 @@ const props = withDefaults(defineProps<Props>(), {
   showPeriodically: true
 });
 
+// Field names for enum select components
 const enumFieldNames = {
   label: 'message',
   value: 'value'
 };
 
+// Reactive data for creation time settings
 const createTimeSettingData = ref<CreateTimeSetting>({ createdAt: 'NOW' });
 
+// Enum options for select components
 const createdAtAllOpt = ref<EnumMessage<CreatedAt>[]>([]);
 const createdAtOpt = ref<EnumMessage<CreatedAt>[]>([]);
 const periodicCreationUnitOpt = ref<EnumMessage<PeriodicCreationUnit>[]>([]);
 const dayOfWeekOpt = ref<EnumMessage<DayOfWeek>[]>([]);
+
+// Options for day of month (1-31)
 const dayOfMonthOpt = ref<EnumMessage<DayOfWeek>[]>(Array.from(new Array(31)).map((_i, idx) => {
   return {
     message: idx + 1 + '',
@@ -45,14 +43,24 @@ const dayOfMonthOpt = ref<EnumMessage<DayOfWeek>[]>(Array.from(new Array(31)).ma
   };
 }));
 
+// Time and date values
 const timeOfDay = ref();
 const createdAtSomeDate = ref();
+
+/**
+ * Load enum values for select options
+ * Fetches enum messages for CreatedAt, PeriodicCreationUnit, and DayOfWeek
+ */
 const loadEnum = async () => {
   createdAtAllOpt.value = enumUtils.enumToMessages(CreatedAt);
   periodicCreationUnitOpt.value = enumUtils.enumToMessages(PeriodicCreationUnit);
   dayOfWeekOpt.value = enumUtils.enumToMessages(DayOfWeek);
 };
 
+/**
+ * Watch for changes in showPeriodically prop and update createdAt options accordingly
+ * If showPeriodically is false, filter out 'PERIODICALLY' option
+ */
 watch([() => props.showPeriodically, () => createdAtAllOpt.value], ([newValue]) => {
   if (newValue) {
     createdAtOpt.value = createdAtAllOpt.value;
@@ -64,14 +72,26 @@ watch([() => props.showPeriodically, () => createdAtAllOpt.value], ([newValue]) 
   immediate: true
 });
 
+/**
+ * Format and set time of day value
+ * Extracts hours, minutes, and seconds from timeOfDay and formats as HH:mm:ss
+ */
 const getTimeOfDay = () => {
   createTimeSettingData.value.timeOfDay = dayjs(timeOfDay.value).format('HH:mm:ss');
 };
 
+/**
+ * Format and set specific creation date
+ * Formats createdAtSomeDate as YYYY-MM-DD HH:mm:ss
+ */
 const getCreatedAtSomeDate = () => {
   createTimeSettingData.value.createdAtSomeDate = dayjs(createdAtSomeDate.value).format('YYYY-MM-DD HH:mm:ss');
 };
 
+/**
+ * Lifecycle hook - Initialize component
+ * Loads enum values and sets up watchers for props
+ */
 onMounted(async () => {
   await loadEnum();
 
@@ -109,6 +129,11 @@ onMounted(async () => {
   });
 });
 
+/**
+ * Get creation time data based on selected options
+ * Returns formatted data according to the selected creation time type
+ * @returns Object containing creation time settings
+ */
 const getData = () => {
   if (createTimeSettingData.value.createdAt === 'NOW') {
     return {
@@ -133,13 +158,24 @@ const getData = () => {
   }
 };
 
+/**
+ * Validate if the selected date is after current time
+ * @returns Boolean indicating if the validation failed
+ */
 const getValidCreatedAtSomeData = () => {
   if (!isValid.value) {
     return false;
   }
   return dayjs().isAfter(createdAtSomeDate.value);
 };
+
+// Validation state
 const isValid = ref(false);
+
+/**
+ * Validate creation time settings
+ * @returns Formatted data if validation passes, false otherwise
+ */
 const validate = () => {
   isValid.value = true;
   if (getValidCreatedAtSomeData()) {
@@ -149,11 +185,11 @@ const validate = () => {
   return getData();
 };
 
+// Expose methods to parent component
 defineExpose({
   validate,
   getData
 });
-
 </script>
 <template>
   <div class="flex">

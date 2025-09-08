@@ -1,5 +1,11 @@
 import type { Dayjs } from 'dayjs';
 
+export type DisplayOptions = {
+  includeServiceInfo: boolean;
+  allowDebug: boolean;
+  schemaStyle: 'TREE' | 'TABLE';
+}
+
 export type ShareInfo = {
   id: string;
   name: string;
@@ -17,21 +23,3 @@ export type ShareInfo = {
   lastModifiedByName: string;
   lastModifiedDate: Dayjs;
 }
-
-export type DisplayOptions = {
-  includeServiceInfo: boolean;
-  allowDebug: boolean;
-  schemaStyle: 'TREE' | 'TABLE';
-}
-
-export type IPane = {
-  _id: string;
-  name: string;
-  value: string;
-  closable?: boolean;
-  forceRender?: boolean;
-  icon?: string;
-  active?: boolean;
-
-  data?: { [key: string]: any; };
-};

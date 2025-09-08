@@ -1,30 +1,40 @@
 <script setup lang="ts">
 import { Checkbox } from 'ant-design-vue';
+import type { CheckboxChangeEvent, CheckboxGroupProps } from './types';
 
-interface Props {
-    options: { label: string; value: string }[];
-    disabled: boolean;
-    value: string[];
-}
-
-const props = withDefaults(defineProps<Props>(), {
+// Component props with proper typing
+const props = withDefaults(defineProps<CheckboxGroupProps>(), {
   options: () => [],
   disabled: false,
   value: () => []
 });
 
-const emit = defineEmits<{(e: 'change', value: string[]) }>();
+// Define emits with proper typing
+const emit = defineEmits<{
+  (e: 'change', value: string[]): void;
+}>();
 
-const change = (event: { target: { checked: boolean; } }, value: string) => {
+/**
+ * Handle individual checkbox change
+ * Automatically includes 'VIEW' permission when other permissions are selected
+ */
+const handleCheckboxChange = (event: CheckboxChangeEvent, value: string) => {
   const checked = event.target.checked;
+
   if (checked && !props.value.includes(value)) {
-    const newValue = value !== 'VIEW' && !props.value.includes('VIEW') ? props.value.concat([value, 'VIEW']) : props.value.concat([value]);
+    // If selecting a non-VIEW permission and VIEW is not already included, add both
+    const newValue = value !== 'VIEW' && !props.value.includes('VIEW')
+      ? props.value.concat([value, 'VIEW'])
+      : props.value.concat([value]);
     emit('change', newValue);
     return;
   }
 
-  const temp = value !== 'VIEW' ? props.value.filter(item => item !== value) : [];
-  emit('change', temp);
+  // If unchecking, remove the permission (and VIEW if it's not VIEW being unchecked)
+  const filteredValue = value !== 'VIEW'
+    ? props.value.filter(item => item !== value)
+    : [];
+  emit('change', filteredValue);
 };
 </script>
 <template>
@@ -34,7 +44,7 @@ const change = (event: { target: { checked: boolean; } }, value: string) => {
       :key="item.value"
       :disabled="props.disabled"
       :checked="props.value.includes(item.value)"
-      @change="change($event, item.value)">
+      @change="handleCheckboxChange($event, item.value)">
       {{ item.label }}
     </Checkbox>
   </div>

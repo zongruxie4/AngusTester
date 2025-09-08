@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Icon, ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
+import { ApiUtils as apiUtils, Icon } from '@xcan-angus/vue-ui';
 
+// Define component props
 interface Props {
   indicatorPerf: {
     duration: string;
@@ -63,6 +64,7 @@ const props = withDefaults(defineProps<Props>(), {
   })
 });
 
+// Compute indicator items for display
 const indicatorItem = computed(() => {
   const percentile = props.indicatorPerf.percentile.value;
   let percentitleKey;
@@ -134,6 +136,7 @@ const indicatorItem = computed(() => {
   ];
 });
 
+// Get icon configuration based on value key and comparison result
 const getIcon = (valueKey) => {
   if (valueKey.includes('tran')) {
     if (!props.result[valueKey] && props.indicatorPerf.art) {
@@ -193,6 +196,7 @@ const getIcon = (valueKey) => {
   return {};
 };
 
+// Format duration value for display
 const getDuration = (mseconds) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [value, unit] = apiUtils.splitDuration(props.indicatorPerf.duration || '');
@@ -203,24 +207,17 @@ const getDuration = (mseconds) => {
 };
 
 </script>
+
 <template>
   <div class="border rounded p-2 bg-white">
-    <!-- <div
-      class="flex py-1 items-center"
-      :class="{'text-status-error': !props.passedInfo.passed, 'text-status-success': props.passedInfo.passed }">
-      <template v-if="props.passedInfo.passed">
-        <Icon icon="icon-duihao" class="text-status-success mr-1" />
-      </template>
-      <template v-else>
-        <Icon icon="icon-chahao" class="text-status-error mr-1" />
-      </template>
-      {{ props.passedInfo.passed ? '通过' : '未通过：' }} {{ props.passedInfo?.failureMessage || '' }}
-    </div> -->
+    <!-- Performance test header -->
     <div class="flex py-1 ">
       <span class="w-50">{{ t('execution.testResult.performanceTest') }}</span>
       <span class="flex-1">{{ t('execution.testResult.testIndicators') }}</span>
       <span class="flex-1">{{ t('execution.testResult.testResults') }}</span>
     </div>
+
+    <!-- Performance indicators and results -->
     <div
       v-for="item in indicatorItem"
       :key="item.dataIndex"

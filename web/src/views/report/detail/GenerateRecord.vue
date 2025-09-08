@@ -3,41 +3,41 @@ import { onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Icon, modal, notification, Table } from '@xcan-angus/vue-ui';
 import { Badge, Button } from 'ant-design-vue';
+import { EnumMessage } from '@xcan-angus/infra';
+import { ReportCategory, ReportStatus } from '@/enums/enums';
 import { report } from '@/api/tester';
 
 const { t } = useI18n();
 
+// Component props definition
 interface Props {
   reportId: string;
   projectId: string;
   permissions: string[];
-
-}
-type EnumFieldNames = {
-  message: string,
-  value: string
 }
 
 type Record = {
   reportName: string;
   id: string;
-  status: EnumFieldNames;
+  status: EnumMessage<ReportStatus>;
   failureMessage?: string;
   createdByName: string;
-  category: EnumFieldNames;
-}
+  category: EnumMessage<ReportCategory>;
+};
 
 const props = withDefaults(defineProps<Props>(), {
   reportId: '',
   permissions: () => []
 });
 
+// Pagination configuration
 const pagination = ref({
   current: 1,
   pageSize: 10,
   total: 0
 });
 
+// Table columns configuration
 const columns = [
   {
     key: 'id',
@@ -82,8 +82,13 @@ const columns = [
   }
 ];
 
+// Record data
 const recordData = ref<Record[]>([]);
 
+/**
+ * Load report generation records
+ * Fetches records based on project ID and report ID
+ */
 const loadRecord = async () => {
   const [error, { data }] = await report.getReportRecord({
     projectId: props.projectId,
@@ -96,13 +101,21 @@ const loadRecord = async () => {
   pagination.value.total = data.total || 0;
 };
 
+/**
+ * Handle pagination change
+ * @param page - Pagination information
+ */
 const changePage = (page) => {
   pagination.value.current = page.current;
   pagination.value.pageSize = page.pageSize;
   loadRecord();
 };
 
-// 删除记录
+/**
+ * Delete a report generation record
+ * Shows confirmation dialog before deletion
+ * @param record - Record to be deleted
+ */
 const delRecord = (record: Record) => {
   modal.confirm({
     title: t('reportHome.reportDetail.generateRecord.deleteRecord'),
@@ -114,6 +127,7 @@ const delRecord = (record: Record) => {
           if (error) {
             return;
           }
+          // Adjust current page if needed
           if (pagination.value.current !== 1 && recordData.value.length === 1) {
             pagination.value.current -= 1;
           }
@@ -124,6 +138,10 @@ const delRecord = (record: Record) => {
   });
 };
 
+/**
+ * Lifecycle hook - Initialize component
+ * Watch for report ID changes and load records
+ */
 onMounted(() => {
   watch(() => props.reportId, (newValue) => {
     newValue && loadRecord();
@@ -151,9 +169,9 @@ onMounted(() => {
         </RouterLink>
       </template>
       <template v-if="column.dataIndex === 'status'">
-        <Badge v-if="record.status?.value === 'PENDING'" status="processing" />
-        <Badge v-if="record.status?.value === 'SUCCESS'" status="success" />
-        <Badge v-if="record.status?.value === 'FAILURE'" status="error" />
+        <Badge v-if="record.status?.value === ReportStatus.PENDING" status="processing" />
+        <Badge v-if="record.status?.value === ReportStatus.SUCCESS" status="success" />
+        <Badge v-if="record.status?.value === ReportStatus.FAILURE" status="error" />
         {{ record.status?.message }}
         <template v-if="record.failureMessage">
           ({{ record.failureMessage }})

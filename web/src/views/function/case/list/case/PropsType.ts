@@ -102,8 +102,8 @@ export type CaseInfoObj = {
   assertions: any;
   tags: TagType[];
   refMap: any;
-  favouriteFlag: boolean;
-  followFlag: boolean;
+  favourite: boolean;
+  follow: boolean;
   apisDeletedFlag: boolean;
   commentNum: string;
   tenantId: string;
@@ -120,9 +120,9 @@ export type CaseListObj = CaseInfoObj & {
   actualWorkload: string | null;
   apisId: string | null;
   avatar: string;
-  favouriteFlag: boolean | null;
+  favourite: boolean | null;
   testFailNum: string;
-  followFlag: boolean | null;
+  follow: boolean | null;
   checked: boolean;
   id: string
 };

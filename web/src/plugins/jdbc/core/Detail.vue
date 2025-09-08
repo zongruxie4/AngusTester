@@ -7,7 +7,7 @@ interface Props {
   execInfo: { [key: string]: any };
   updateTabPane: (data: any) => void;
   getTabPane: (data: any) => any;
-  replaceTabPane: (key:string, data: {_id:string;name:string;value:'Jdbc', sceneInfo:{id:string;}}) => any;
+  replaceTabPane: (key:string, data: {_id:string;name:string;value:'Jdbc', scenarioInfo:{id:string;}}) => any;
 }
 
 const props = withDefaults(defineProps<Props>(), {

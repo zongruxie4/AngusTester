@@ -1,204 +1,39 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, Ref, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { PieData, PieSetting } from './types';
-import { ScriptType, enumUtils } from '@xcan-angus/infra';
-import { ExecStatus } from '@/enums/enums';
-import { analysis } from '@/api/tester';
+import { useChartData } from './composables/useChartData';
 import Charts from './PieChart.vue';
+import type { ProjectInfo } from './types';
 
 const { t } = useI18n();
 
-const groupByGroup = ref<PieSetting[]>([
-  { key: 'script_type', value: t('execution.chartInfo.scriptType'), type: [] },
-  { key: 'status', value: t('execution.chartInfo.executionStatus'), type: [] }
-]);
+// Inject project information
+const projectInfo = inject<Ref<ProjectInfo>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
+const projectId = computed(() => projectInfo.value?.id);
 
-const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
-const projectId = computed(() => {
-  return projectInfo.value?.id;
-});
+// Use chart data composable
+const {
+  pieChartData,
+  scriptTypeData,
+  scriptTypeColors,
+  statusData,
+  statusColors,
+  loadChartData
+} = useChartData(projectId.value || '');
 
-const scriptTypeData = ref<{name:string, value:number}[]>([]);
-const scriptTypeColor = ref<string[]>([]);
-
-const statusData = ref<{name:string, value:number}[]>([]);
-const statusColor = ref<string[]>([]);
-
-// 在 setup 函数顶层初始化枚举数据
-const scriptTypeEnums = enumUtils.enumToMessages(ScriptType).filter(item => item.value !== ScriptType.MOCK_APIS);
-const execStatusEnums = enumUtils.enumToMessages(ExecStatus);
-
-// 初始化分组配置
-groupByGroup.value[0].type = scriptTypeEnums;
-groupByGroup.value[1].type = execStatusEnums;
-
-// 初始化脚本类型数据和颜色
-scriptTypeData.value = scriptTypeEnums.map(item => {
-  let color = '';
-  switch (item.value) {
-    case 'TEST_PERFORMANCE':
-      color = 'rgba(45,142,255, 1)';
-      break;
-    case 'TEST_FUNCTIONALITY':
-      color = 'rgba(82,196,26, 1)';
-      break;
-    case 'TEST_STABILITY':
-      color = 'rgba(255, 185, 37, 1)';
-      break;
-    case 'TEST_CUSTOMIZATION':
-      color = 'rgba(251, 129, 255, 1)';
-      break;
-    case 'MOCK_DATA':
-      color = 'rgba(191, 199, 255, 1)';
-      break;
-  }
-  scriptTypeColor.value.push(color);
-  return { name: item.message, value: 0 };
-});
-
-// 初始化执行状态数据和颜色
-statusData.value = execStatusEnums.map(item => {
-  let color = '';
-  switch (item.value) {
-    case 'CREATED':
-      color = 'rgba(45,142,255, 1)';
-      break;
-    case 'PENDING':
-      color = 'rgba(255,165,43, 1)';
-      break;
-    case 'RUNNING':
-      color = 'rgba(103,215,255, 1)';
-      break;
-    case 'STOPPED':
-      color = 'rgba(217, 217, 217, 1)';
-      break;
-    case 'FAILED':
-      color = 'rgba(245,34,45, 1)';
-      break;
-    case 'COMPLETED':
-      color = 'rgba(82,196,26, 1)';
-      break;
-    case 'TIMEOUT':
-      color = 'rgba(201,119,255, 1)';
-      break;
-  }
-  statusColor.value.push(color);
-  return { name: item.message, value: 0 };
-});
-
-const init = async () => {
-  await loadCount();
-};
-
-const publicParams = {
-  'aggregates[0].column': 'id',
-  'aggregates[0].function': 'COUNT',
-  groupBy: 'STATUS',
-  name: 'Exec'
-};
-const pieloading = ref(true); // 饼图统计是否加载完成
-const pieChartData = ref<PieData[]>([]);
-const loadCount = async () => {
-  const params = { ...publicParams, groupByColumns: groupByGroup.value.map(item => item.key), projectId: projectId.value };
-  const [error, { data }] = await analysis.getCustomizationSummary(params);
-  pieloading.value = false;
-  if (error) {
-    return;
-  }
-
-  pieChartData.value = getCountData(groupByGroup.value, data);
-  const _scriptTypeData = pieChartData.value[0].data;
-  if (_scriptTypeData?.length) {
-    for (let i = 0; i < scriptTypeData.value.length; i++) {
-      scriptTypeData.value[i].value = _scriptTypeData[i].value ? _scriptTypeData[i].value : 0;
-    }
-  }
-
-  const _statusData = pieChartData.value[1].data;
-  if (_statusData?.length) {
-    for (let i = 0; i < statusData.value.length; i++) {
-      statusData.value[i].value = _statusData[i].value ? _statusData[i].value : 0;
-    }
-  }
-};
-
-const getCountData = (group, data) => {
-  const dataSource:PieData[] = [];
-  for (let i = 0; i < group.length; i++) {
-    const cloum = group[i];
-    const res = data[cloum.key];
-    if (!res) {
-      const _dataSource = {
-        key: cloum.key,
-        title: cloum.value,
-        total: 0,
-        color: [],
-        legend: cloum.type,
-        data: []
-      };
-      dataSource.push(_dataSource);
-      continue;
-    }
-    const arr = Object.entries(res);
-    if (!arr.length) {
-      const _dataSource = {
-        key: cloum.key,
-        title: cloum.value,
-        total: 0,
-        color: [],
-        legend: cloum.type,
-        data: []
-      };
-      dataSource.push(_dataSource);
-      continue;
-    }
-
-    // 判断每一组下是否是空对象,每一组对象里后台不会反回只有key的情况，有key肯定有值
-    const _group = Object.keys(res);
-    if (!_group.length) {
-      continue;
-    }
-
-    // 所有来源只有枚举类型数据
-    if (['script_type', 'status'].includes(cloum.key)) {
-      setEnumDatasource(cloum, res, dataSource);
-    }
-  }
-  return dataSource;
-};
-
-// 设置枚举型数据
-const setEnumDatasource = (cloum, res, dataSource) => {
-  const _data:{name:string, value:number | null, codes?:number | null}[] = [];
-  let _total = 0;
-  for (let j = 0; j < cloum.type.length; j++) {
-    const _key = cloum.type[j].value;
-    if (res[_key]) {
-      const _item:{name:string, value:number | null, codes?:number | null} = { name: cloum.type[j]?.message, value: +res[_key]?.COUNT_id };
-      _data.push(_item);
-      _total = +res[_key]?.TOTAL_COUNT_id;
-    } else {
-      _data.push({ name: cloum.type[j]?.message, value: null });
-    }
-  }
-  const _dataSource = {
-    key: cloum.key,
-    title: cloum.value,
-    total: _total,
-    color: [],
-    legend: cloum.type,
-    data: _data.length ? _data : []
-  };
-  dataSource.push(_dataSource);
+/**
+ * Initialize chart data on component mount
+ */
+const initializeChart = async () => {
+  await loadChartData();
 };
 
 onMounted(() => {
-  init();
+  initializeChart();
 });
 
 defineExpose({
-  loadCount
+  loadCount: loadChartData
 });
 </script>
 <template>
@@ -209,7 +44,7 @@ defineExpose({
       class="chart-item"
       :title="t('execution.chartInfo.scriptType')"
       type="script_type"
-      :color="scriptTypeColor"
+      :color="scriptTypeColors"
       :total="pieChartData[0]?.total"
       :data-source="scriptTypeData" />
     <Charts
@@ -218,7 +53,7 @@ defineExpose({
       class="chart-item"
       :title="t('execution.chartInfo.executionStatus')"
       type="status"
-      :color="statusColor"
+      :color="statusColors"
       :total="pieChartData[1]?.total"
       :data-source="statusData" />
   </div>

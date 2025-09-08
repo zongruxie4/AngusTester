@@ -4,12 +4,12 @@ import { useI18n } from 'vue-i18n';
 import YAML from 'yaml';
 import { notification, MonacoEditor } from '@xcan-angus/vue-ui';
 
-import { SceneConfig } from '../PropsType';
+import { ScenarioConfig } from '../PropsType';
 
 const { t } = useI18n();
 
 export interface Props {
-  value: SceneConfig['script'];
+  value: ScenarioConfig['script'];
 }
 
 const props = withDefaults(defineProps<Props>(), {

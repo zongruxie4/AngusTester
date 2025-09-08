@@ -1,13 +1,16 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch, inject, Ref, computed } from 'vue';
+import { computed, inject, onMounted, Ref, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Colon, DatePicker, Hints, Select } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
-import { GM } from '@xcan-angus/infra';
+import { GM, AuthObjectType, enumOptionUtils } from '@xcan-angus/infra';
+import { CombinedTargetType } from '@/enums/enums';
+
 import { contentTreeData } from './ProjectProcessContentConfig';
 
 const { t } = useI18n();
 
+// Component props definition
 interface Props {
   projectId: string;
   contentSetting: {
@@ -23,32 +26,29 @@ const props = withDefaults(defineProps<Props>(), {
   projectId: '',
   disabled: false
 });
+
+// Injected project type visibility map
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
 
-const targetTypeOpt = [
-  {
-    value: 'USER',
-    label: t('reportAdd.projectProcessContent.user')
-  },
-  {
-    value: 'DEPT',
-    label: t('reportAdd.projectProcessContent.dept')
-  },
-  {
-    value: 'GROUP',
-    label: t('reportAdd.projectProcessContent.group')
-  }
-];
+// Target type options for select component
+const authObjectTypeOpt = enumOptionUtils.loadEnumAsOptions(AuthObjectType);
 
-const creatorObjectType = ref('USER');
+// Reactive variables for creator object type and ID
+const creatorObjectType = ref(AuthObjectType.USER);
 const creatorObjectId = ref();
 
+// Date range for filtering
 const dateRange = ref();
 
+/**
+ * Handle creator object type change
+ * Reset creator object ID when type changes
+ */
 const handleTypeChange = () => {
   creatorObjectId.value = undefined;
 };
 
+// Checked keys for tree component
 const checked = ref<string[]>([]);
 contentTreeData.forEach(item => {
   checked.value.push(item.key);
@@ -57,6 +57,10 @@ contentTreeData.forEach(item => {
   }
 });
 
+/**
+ * Compute tree data based on project type visibility settings
+ * @returns Filtered tree data
+ */
 const showTree = computed(() => {
   if (!proTypeShowMap.value.showTask) {
     return contentTreeData.filter(i => i.key !== 'task');
@@ -64,6 +68,10 @@ const showTree = computed(() => {
   return contentTreeData;
 });
 
+/**
+ * Lifecycle hook - Initialize component
+ * Watch for content setting changes and update creator object type/ID and date range
+ */
 onMounted(() => {
   watch(() => props.contentSetting, newValue => {
     if (newValue) {
@@ -83,22 +91,34 @@ onMounted(() => {
     immediate: true
   });
 });
+
+/**
+ * Validate form data
+ * @returns Boolean indicating validation always passes for this component
+ */
 const validate = () => {
   return true;
 };
 
+/**
+ * Get project process data for report
+ * @returns Object containing project process settings
+ */
+const getData = () => {
+  return {
+    targetId: props.projectId,
+    targetType: CombinedTargetType.PROJECT,
+    creatorObjectType: creatorObjectId.value ? creatorObjectType.value : undefined,
+    creatorObjectId: creatorObjectId.value,
+    createdDateStart: dateRange.value?.[0] || undefined,
+    createdDateEnd: dateRange.value?.[1] || undefined
+  };
+};
+
+// Expose methods to parent component
 defineExpose({
   validate,
-  getData: () => {
-    return {
-      targetId: props.projectId,
-      targetType: 'PROJECT',
-      creatorObjectType: creatorObjectId.value ? creatorObjectType.value : undefined,
-      creatorObjectId: creatorObjectId.value,
-      createdDateStart: dateRange.value?.[0] || undefined,
-      createdDateEnd: dateRange.value?.[1] || undefined
-    };
-  }
+  getData
 });
 </script>
 <template>
@@ -111,7 +131,7 @@ defineExpose({
       <span class="w-14 text-right">{{ t('reportAdd.projectProcessContent.organization') }}</span><Colon />
       <Select
         v-model:value="creatorObjectType"
-        :options="targetTypeOpt"
+        :options="authObjectTypeOpt"
         class="w-20"
         @change="handleTypeChange" />
 

@@ -102,7 +102,62 @@ export interface PieData {
   key: string;
   title: string;
   total: number;
-  color: string [];
-  legend:{value:string, message:string}[];
-  data: { name: string, value: number, codes?:number }[];
+  color: string[];
+  legend: { value: string; message: string }[];
+  data: { name: string; value: number; codes?: number }[];
+}
+
+// Chart data interfaces
+export interface ChartDataItem {
+  name: string;
+  value: number;
+  codes?: number;
+}
+
+// Form interfaces
+export interface ProjectInfo {
+  id: string;
+  avatar: string;
+  name: string;
+}
+
+// Pie chart component props
+export interface PieChartProps {
+  color: string[];
+  type: string;
+  title: string;
+  total: number;
+  dataSource: ChartDataItem[];
+}
+
+// Search panel interfaces
+export interface SearchPanelProps {
+  projectId: string;
+  userInfo: { id: string; };
+  appInfo: { id: string; };
+  notify: string;
+}
+
+export interface FilterItem {
+  key: string;
+  op: string;
+  value: boolean | string | string[];
+}
+
+// UI configuration interfaces
+export interface ScriptTypeConfig {
+  text: string;
+  color: string;
+}
+
+export interface StatusColorMap {
+  [key: string]: string;
+}
+
+export interface DropdownMenuItem {
+  key: string;
+  icon: string;
+  name: string;
+  permission?: string;
+  noAuth?: boolean;
 }

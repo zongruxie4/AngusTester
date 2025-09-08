@@ -3,12 +3,12 @@ import { ref, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { IconRequired, SelectEnum, ExecSettingForm } from '@xcan-angus/vue-ui';
 
-import { SceneConfig } from '../PropsType';
+import { ScenarioConfig } from '../PropsType';
 
 const { t } = useI18n();
 
 export interface Props {
-  value:SceneConfig['script'];
+  value:ScenarioConfig['script'];
   excludes: (data: { label: string; value: string; }) => boolean;
 }
 

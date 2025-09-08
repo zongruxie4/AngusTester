@@ -5,7 +5,7 @@ import { Button } from 'ant-design-vue';
 import { Composite, Icon, Input } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
-// ==================== Props & Emits ====================
+// Props & Emits
 interface Props {
   value?: { [key: string]: string; }[];
   fielaNames?: { label: string; value: string; };

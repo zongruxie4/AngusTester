@@ -4,10 +4,13 @@ import { useI18n } from 'vue-i18n';
 import { Colon, Hints, IconRequired, Select } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
+import { CombinedTargetType } from '@/enums/enums';
+
 import { contentTreeData } from './TaskContentConfig';
 
 const { t } = useI18n();
 
+// Component props definition
 interface Props {
   projectId: string;
   contentSetting: {
@@ -22,9 +25,11 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false
 });
 
+// Reactive variables for sprint ID and task ID
 const sprintId = ref();
 const taskId = ref();
 
+// Checked keys for tree component
 const checked = ref<string[]>([]);
 contentTreeData.forEach(item => {
   checked.value.push(item.key);
@@ -33,10 +38,18 @@ contentTreeData.forEach(item => {
   }
 });
 
+/**
+ * Handle sprint change event
+ * Reset task ID when sprint changes
+ */
 const handleSprintChange = () => {
   taskId.value = undefined;
 };
 
+/**
+ * Lifecycle hook - Initialize component
+ * Watch for content setting changes and update sprint ID and task ID
+ */
 onMounted(() => {
   watch(() => props.contentSetting, newValue => {
     if (newValue) {
@@ -52,25 +65,36 @@ onMounted(() => {
     immediate: true
   });
 });
+
+// Validation state
 const isValid = ref(false);
+
+/**
+ * Validate if both sprint ID and task ID are selected
+ * @returns Boolean indicating if validation passes
+ */
 const validate = () => {
   isValid.value = true;
-  if (!taskId.value || !sprintId.value) {
-    return false;
-  }
-  return true;
+  return !(!taskId.value || !sprintId.value);
 };
 
+/**
+ * Get task data for report
+ * @returns Object containing task settings
+ */
+const getData = () => {
+  isValid.value = false;
+  return {
+    targetId: taskId.value,
+    targetType: CombinedTargetType.TASK,
+    planOrSprintId: sprintId.value
+  };
+};
+
+// Expose methods to parent component
 defineExpose({
   validate,
-  getData: () => {
-    isValid.value = false;
-    return {
-      targetId: taskId.value,
-      targetType: 'TASK',
-      planOrSprintId: sprintId.value
-    };
-  }
+  getData
 });
 </script>
 <template>

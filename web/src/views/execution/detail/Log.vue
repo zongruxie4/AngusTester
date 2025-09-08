@@ -1,20 +1,31 @@
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Arrow, Colon, Icon, Select, Tooltip } from '@xcan-angus/vue-ui';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
-import { getDataByProxy } from '@/api/proxy';
+import { useLogData } from './composables/useLogData';
 
+/**
+ * Props for the Log component
+ */
 interface Props {
+  /** Execution ID */
   execId: string;
+  /** Loading state */
   loading: boolean;
-  execNodes:{id:string, name:string, ip:string, agentPort: string; publicIp?:string}[];
+  /** Execution nodes */
+  execNodes: {id:string, name:string, ip:string, agentPort: string; publicIp?:string}[];
+  /** Last scheduling date */
   lastSchedulingDate: string;
+  /** Scheduling number */
   schedulingNum: string;
-  lastSchedulingResult:{console:string[], deviceId:string, success:boolean, exitCode:string}[];
+  /** Last scheduling result */
+  lastSchedulingResult: {console:string[], deviceId:string, success:boolean, exitCode:string}[];
 }
 
+// Initialize internationalization
 const { t } = useI18n();
+
+// Define component props with defaults
 const props = withDefaults(defineProps<Props>(), {
   execId: '',
   loading: false,
@@ -24,120 +35,33 @@ const props = withDefaults(defineProps<Props>(), {
   lastSchedulingResult: () => []
 });
 
+// Define component events
 const emit = defineEmits<{(e: 'update:loading', value: boolean): void}>();
 
-const nodeId = ref<string>();
-const nodeIp = ref<string>();
-const nodePort = ref<string>('6807');
-
-const execLogContent = ref();
-const execLogPath = ref('');
-const execLogErr = ref(false);
-const errorText = ref();
-const loadExecLog = async () => {
-  emit('update:loading', true);
-  const [error, res] = await getDataByProxy(`http://${nodeIp.value}:${nodePort.value}/actuator/runner/log/${props.execId}`, {}, { timeout: 0 });
-  emit('update:loading', false);
-  if (error) {
-    execLogErr.value = true;
-    if (error.response?.data) {
-      errorText.value = error.response.data;
-    } else {
-      errorText.value = undefined;
-    }
-    return;
-  }
-
-  execLogErr.value = false;
-  execLogPath.value = res.headers?.['xc-agent-log-path'];
-  execLogContent.value = res?.data || '';
-};
-
-const schedulingLogItem = computed(() => {
-  if (props.lastSchedulingResult.length) {
-    const foundItem = props.lastSchedulingResult.find(item => item.deviceId === nodeId.value);
-    if (foundItem) {
-      return foundItem;
-    } else {
-      const emptyItem = props.lastSchedulingResult.find(item => !item?.deviceId);
-      if (emptyItem) {
-        return emptyItem;
-      }
-
-      return undefined;
-    }
-  }
-
-  return undefined;
-});
-
-const nodeSelectChange = (_nodeId, options) => {
-  nodeId.value = _nodeId;
-  nodeIp.value = options?.publicIp || options.ip;
-  loadExecLog();
-};
-
-watch(() => props.execId, (newValue) => {
-  if (newValue && props.execNodes?.length) {
-    nodeId.value = props.execNodes[0]?.id;
-    nodeIp.value = props.execNodes[0]?.publicIp || props.execNodes[0]?.ip;
-    nodePort.value = props.execNodes[0]?.agentPort || '6807';
-    if (!nodeId.value) {
-      return;
-    }
-    loadExecLog();
-  }
-}, {
-  immediate: true
-});
-
-const showSchedulingLog = ref<string>('1');
-const showExecLog = ref<string>('1');
-
-const handleDoubleClick = (type:'scheduling' | 'exec') => {
-  if (type === 'exec') {
-    showExecLog.value = showExecLog.value === '1' ? '2' : '1';
-    return;
-  }
-  showSchedulingLog.value = showSchedulingLog.value === '1' ? '2' : '1';
-};
-
-const openSchedulingLog = () => {
-  showSchedulingLog.value = showSchedulingLog.value === '1' ? '2' : '1';
-};
-
-const openExecLog = () => {
-  showExecLog.value = showExecLog.value === '1' ? '2' : '1';
-};
-
-const downloadLog = (type:'scheduling' | 'exec') => {
-  const content = type === 'exec' ? execLogContent.value : schedulingLogItem.value?.console.join('\n');
-  if (!content) {
-    return;
-  }
-
-  const blob = new Blob([content], {
-    type: 'text/plain'
-  });
-
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement('a');
-  a.style.display = 'none';
-  a.href = url;
-  a.download = type === 'exec' ? t('execution.infoLog.runnerLog') : t('execution.infoLog.schedulingLogFile');
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-
-  window.URL.revokeObjectURL(url);
-};
-
-const refreshExecLog = (event) => {
-  event.preventDefault();
-  loadExecLog();
-};
-
+// Use log data composable for logic
+const {
+  nodeId,
+  nodeIp,
+  execLogContent,
+  execLogPath,
+  execLogErr,
+  errorText,
+  showSchedulingLog,
+  showExecLog,
+  schedulingLogItem,
+  nodeSelectChange,
+  handleDoubleClick,
+  openSchedulingLog,
+  openExecLog,
+  downloadLog,
+  refreshExecLog
+} = useLogData(
+  props.execId,
+  () => props.loading,
+  props.execNodes,
+  props.lastSchedulingResult,
+  emit
+);
 </script>
 <template>
   <div class="h-full flex text-3 py-2 pl-2">
@@ -149,7 +73,7 @@ const refreshExecLog = (event) => {
         class="w-full"
         placeholder="{{ t('execution.infoLog.selectNode') }}"
         size="small"
-        @change="nodeSelectChange">
+        @change="(value, option) => nodeSelectChange(value as string, option)">
         <template #option="item">
           {{ `${item.name} ( ${item?.publicIp || item.ip} )` }}
         </template>
@@ -275,7 +199,6 @@ const refreshExecLog = (event) => {
   </div>
 </template>
 <style scoped>
-
 .open-info {
   min-height: calc(100vh - 358px);
 }

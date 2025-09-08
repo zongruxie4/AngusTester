@@ -13,12 +13,12 @@ const { t } = useI18n();
 import ButtonGroup from './ButtonGroup/index.vue';
 import { ButtonGroupMenuItem, ButtonGroupMenuKey } from './ButtonGroup/PropsType';
 import { TOOLBAR_MENUITEMS, TOOLBAR_EXTRA_MENUITEMS, DRAWER_MENUITEMS } from './data';
-import { SceneInfo, SceneConfig, SaveFormData, ScriptType, PipelineConfig } from './PropsType';
+import { ScenarioInfo, ScenarioConfig, SaveFormData, ScriptType, PipelineConfig } from './PropsType';
 import { ExecContent } from './FunctionTestDetail/PropsType';
 
 export interface Props {
   tabKey: string;
-  sceneInfo: {
+  scenarioInfo: {
     name: string;
     dirId: string;
     dirName: string;
@@ -28,12 +28,12 @@ export interface Props {
   appInfo: { [key: string]: any };
   updateTabPane: (data: any) => void;
   getTabPane: (data: any) => any;
-  replaceTabPane: (key: string, data: { _id: string; name: string; value: 'Ftp', sceneInfo: { id: string; } }) => any;
+  replaceTabPane: (key: string, data: { _id: string; name: string; value: 'Ftp', scenarioInfo: { id: string; } }) => any;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   tabKey: undefined,
-  sceneInfo: undefined,
+  scenarioInfo: undefined,
   userInfo: undefined,
   appInfo: undefined,
   updateTabPane: undefined,
@@ -82,8 +82,8 @@ const loading = ref(false);
 const loaded = ref(false);
 const rendered = ref(false);
 // 默认显示页面视图，新建场景没有保存之前不显示【执行测试】【导出脚本】、【关注】、【取消关注】、【收藏】、【取消收藏】、【权限】、【刷新】按钮
-const hideButtonSet = ref<Set<ButtonGroupMenuKey>>(new Set<ButtonGroupMenuKey>(['test', 'UIView', 'export', 'followFlag', 'cancelFollowFlag', 'favouriteFlag', 'cancelFavouriteFlag', 'authority', 'refresh']));
-const sceneConfigData = ref<SceneConfig>();// 场景详情信息
+const hideButtonSet = ref<Set<ButtonGroupMenuKey>>(new Set<ButtonGroupMenuKey>(['test', 'UIView', 'export', 'follow', 'cancelFollow', 'favourite', 'cancelFavourite', 'authority', 'refresh']));
+const scenarioConfigData = ref<ScenarioConfig>();// 场景详情信息
 const saveFormConfigData = ref<{
   id: string;
   name: string;
@@ -96,9 +96,9 @@ const saveFormConfigData = ref<{
 
 const scriptConfig = ref<{
   type: ScriptType;
-  configuration: SceneConfig['script']['configuration'];
+  configuration: ScenarioConfig['script']['configuration'];
   task: {
-    arguments: SceneConfig['script']['task']['arguments'];
+    arguments: ScenarioConfig['script']['task']['arguments'];
   };
   plugin: 'Ftp';
 }>({
@@ -146,28 +146,28 @@ const buttonGroupClick = async (data: ButtonGroupMenuItem) => {
   }
 
   if (key === 'refresh') {
-    const data = await loadSceneInfo(sceneConfigData.value?.id);
-    setSceneConfigData(data);
+    const data = await loadScenarioInfo(scenarioConfigData.value?.id);
+    setScenarioConfigData(data);
     setSaveFormData(data);
     return;
   }
 
-  if (key === 'followFlag') {
+  if (key === 'follow') {
     followHandler(true);
     return;
   }
 
-  if (key === 'cancelFollowFlag') {
+  if (key === 'cancelFollow') {
     followHandler(false);
     return;
   }
 
-  if (key === 'favouriteFlag') {
+  if (key === 'favourite') {
     favouriteHandler(true);
     return;
   }
 
-  if (key === 'cancelFavouriteFlag') {
+  if (key === 'cancelFavourite') {
     favouriteHandler(false);
     return;
   }
@@ -194,9 +194,9 @@ const buttonGroupClick = async (data: ButtonGroupMenuItem) => {
 
           setScriptConfig(_configuration, _arguments, _scriptData.type);
 
-          sceneConfigData.value.script = _scriptData;
+          scenarioConfigData.value.script = _scriptData;
           if (_scriptData.task?.pipelines) {
-            sceneConfigData.value.script.task.pipelines = _scriptData.task.pipelines.map(item => {
+            scenarioConfigData.value.script.task.pipelines = _scriptData.task.pipelines.map(item => {
               return {
                 ...item,
                 id: utils.uuid()
@@ -216,7 +216,7 @@ const buttonGroupClick = async (data: ButtonGroupMenuItem) => {
   if (key === 'codeView') {
     if (typeof uiConfigRef.value?.getData === 'function') {
       const pipelines: PipelineConfig[] = uiConfigRef.value.getData();
-      sceneConfigData.value.script.task.pipelines = pipelines;
+      scenarioConfigData.value.script.task.pipelines = pipelines;
       if (typeof executeConfigRef.value?.getData === 'function') {
         const configData = executeConfigRef.value?.getData();
         let _configuration = JSON.parse(JSON.stringify(configData.configuration));
@@ -230,13 +230,13 @@ const buttonGroupClick = async (data: ButtonGroupMenuItem) => {
           _arguments = defaultConfig.arguments;
         }
 
-        sceneConfigData.value.script.configuration = _configuration;
-        sceneConfigData.value.script.task.arguments = _arguments;
+        scenarioConfigData.value.script.configuration = _configuration;
+        scenarioConfigData.value.script.task.arguments = _arguments;
       }
     }
 
-    toOpenapiObject(sceneConfigData.value.script);
-    cleanupVariables(sceneConfigData.value.script?.configuration?.variables);
+    toOpenapiObject(scenarioConfigData.value.script);
+    cleanupVariables(scenarioConfigData.value.script?.configuration?.variables);
     hideButtonSet.value.delete('UIView');
     hideButtonSet.value.add('codeView');
     isUIViewMode.value = false;
@@ -265,7 +265,7 @@ const buttonGroupClick = async (data: ButtonGroupMenuItem) => {
       }
     }
 
-    if (!sceneConfigData.value?.id) {
+    if (!scenarioConfigData.value?.id) {
       notification.info(t('jmsPlugin.notifications.debugSaveFirst'));
       drawerRef.value.open('save');
       return;
@@ -300,7 +300,7 @@ const buttonGroupClick = async (data: ButtonGroupMenuItem) => {
 
 const toDebug = async () => {
   loading.value = true;
-  const { id, script: _scriptInfo, scriptId } = sceneConfigData.value;
+  const { id, script: _scriptInfo, scriptId } = scenarioConfigData.value;
   const { type } = _scriptInfo;
   const params: {
     broadcast: true;
@@ -344,7 +344,7 @@ const createTest = async () => {
   notification.success(t('jmsPlugin.notifications.createTestSuccess'));
 };
 
-const selectScriptOk = (data: SceneConfig['script']) => {
+const selectScriptOk = (data: ScenarioConfig['script']) => {
   const scriptType = data.type;
   const newPipelines: PipelineConfig[] = data?.task?.pipelines || [];
   if (hideButtonSet.value.has('UIView')) {
@@ -358,7 +358,7 @@ const selectScriptOk = (data: SceneConfig['script']) => {
       };
     });
 
-    sceneConfigData.value.script.task.pipelines = JSON.parse(JSON.stringify(pipelines));
+    scenarioConfigData.value.script.task.pipelines = JSON.parse(JSON.stringify(pipelines));
 
     // 只有新建场景且初始配置没有修改才替换配置
     if (!scriptId.value) {
@@ -376,15 +376,15 @@ const selectScriptOk = (data: SceneConfig['script']) => {
       if (typeof executeConfigRef.value?.getData === 'function') {
         const configData = executeConfigRef.value?.getData();
         if (isEqual(defaultConfig, { configuration: configData.configuration, arguments: configData.arguments })) {
-          sceneConfigData.value.script.configuration = _configuration;
-          sceneConfigData.value.script.task.arguments = _arguments;
-          sceneConfigData.value.script.type = scriptType;
+          scenarioConfigData.value.script.configuration = _configuration;
+          scenarioConfigData.value.script.task.arguments = _arguments;
+          scenarioConfigData.value.script.type = scriptType;
           setScriptConfig(_configuration, _arguments, scriptType);
         }
       } else {
-        sceneConfigData.value.script.configuration = _configuration;
-        sceneConfigData.value.script.task.arguments = _arguments;
-        sceneConfigData.value.script.type = scriptType;
+        scenarioConfigData.value.script.configuration = _configuration;
+        scenarioConfigData.value.script.task.arguments = _arguments;
+        scenarioConfigData.value.script.type = scriptType;
         setScriptConfig(_configuration, _arguments, scriptType);
       }
     }
@@ -393,42 +393,42 @@ const selectScriptOk = (data: SceneConfig['script']) => {
     if (codeConfigRef.value) {
       if (!codeConfigRef.value?.isValid()) {
         // 替换为新脚本
-        sceneConfigData.value.script = JSON.parse(JSON.stringify(data));
+        scenarioConfigData.value.script = JSON.parse(JSON.stringify(data));
         return;
       }
 
-      const scriptInfo: SceneConfig['script'] = codeConfigRef.value.getData();
+      const scriptInfo: ScenarioConfig['script'] = codeConfigRef.value.getData();
       if (!scriptInfo) {
-        sceneConfigData.value.script = JSON.parse(JSON.stringify(data));
+        scenarioConfigData.value.script = JSON.parse(JSON.stringify(data));
       } else {
-        sceneConfigData.value.script = JSON.parse(JSON.stringify(scriptInfo));
+        scenarioConfigData.value.script = JSON.parse(JSON.stringify(scriptInfo));
       }
 
       const oldPipelines = scriptInfo.task?.pipelines || [];
       const pipelines = JSON.parse(JSON.stringify([...oldPipelines, ...newPipelines]));
 
-      if (!Object.prototype.hasOwnProperty.call(sceneConfigData.value.script, 'configuration')) {
-        sceneConfigData.value.script.configuration = JSON.parse(JSON.stringify(data.configuration));
+      if (!Object.prototype.hasOwnProperty.call(scenarioConfigData.value.script, 'configuration')) {
+        scenarioConfigData.value.script.configuration = JSON.parse(JSON.stringify(data.configuration));
       }
 
-      if (!Object.prototype.hasOwnProperty.call(sceneConfigData.value.script, 'plugin')) {
-        sceneConfigData.value.script.plugin = data.plugin;
+      if (!Object.prototype.hasOwnProperty.call(scenarioConfigData.value.script, 'plugin')) {
+        scenarioConfigData.value.script.plugin = data.plugin;
       }
 
-      if (!Object.prototype.hasOwnProperty.call(sceneConfigData.value.script, 'type')) {
-        sceneConfigData.value.script.type = data.type;
+      if (!Object.prototype.hasOwnProperty.call(scenarioConfigData.value.script, 'type')) {
+        scenarioConfigData.value.script.type = data.type;
       }
 
-      if (!Object.prototype.hasOwnProperty.call(sceneConfigData.value.script, 'task')) {
-        sceneConfigData.value.script.task = {
+      if (!Object.prototype.hasOwnProperty.call(scenarioConfigData.value.script, 'task')) {
+        scenarioConfigData.value.script.task = {
           pipelines
         };
       } else {
-        if (!Object.prototype.hasOwnProperty.call(sceneConfigData.value.script.task, 'arguments') && data.task?.arguments) {
-          sceneConfigData.value.script.task.arguments = data.task.arguments;
+        if (!Object.prototype.hasOwnProperty.call(scenarioConfigData.value.script.task, 'arguments') && data.task?.arguments) {
+          scenarioConfigData.value.script.task.arguments = data.task.arguments;
         }
 
-        sceneConfigData.value.script.task.pipelines = pipelines;
+        scenarioConfigData.value.script.task.pipelines = pipelines;
       }
 
       // 只有新建场景且初始配置没有修改才替换配置
@@ -438,15 +438,15 @@ const selectScriptOk = (data: SceneConfig['script']) => {
           arguments: undefined
         };
 
-        if (sceneConfigData.value.script?.configuration) {
-          configData.configuration = sceneConfigData.value.script.configuration;
+        if (scenarioConfigData.value.script?.configuration) {
+          configData.configuration = scenarioConfigData.value.script.configuration;
         }
 
-        if (sceneConfigData.value.script?.task?.arguments) {
-          configData.arguments = sceneConfigData.value.script.task.arguments;
+        if (scenarioConfigData.value.script?.task?.arguments) {
+          configData.arguments = scenarioConfigData.value.script.task.arguments;
         }
 
-        const defaultConfig = generateDefaultConfig(sceneConfigData.value.script?.type);
+        const defaultConfig = generateDefaultConfig(scenarioConfigData.value.script?.type);
         if (isEqual(defaultConfig, configData)) {
           let _configuration = data.configuration;
           let _arguments = data.task.arguments;
@@ -458,9 +458,9 @@ const selectScriptOk = (data: SceneConfig['script']) => {
             _arguments = defaultConfig.arguments;
           }
 
-          sceneConfigData.value.script.configuration = _configuration;
-          sceneConfigData.value.script.task.arguments = _arguments;
-          sceneConfigData.value.script.type = scriptType;
+          scenarioConfigData.value.script.configuration = _configuration;
+          scenarioConfigData.value.script.task.arguments = _arguments;
+          scenarioConfigData.value.script.type = scriptType;
           setScriptConfig(_configuration, _arguments, scriptType);
         }
       }
@@ -487,38 +487,38 @@ const cancel = () => {
 };
 
 const scriptTypeChange = (value: ScriptType) => {
-  sceneConfigData.value.script.type = value;
+  scenarioConfigData.value.script.type = value;
   if (typeof executeConfigRef.value?.getData === 'function') {
     const configData = executeConfigRef.value.getData();
-    sceneConfigData.value.script.configuration = JSON.parse(JSON.stringify(configData.configuration));
-    sceneConfigData.value.script.task.arguments = JSON.parse(JSON.stringify(configData.arguments));
+    scenarioConfigData.value.script.configuration = JSON.parse(JSON.stringify(configData.configuration));
+    scenarioConfigData.value.script.task.arguments = JSON.parse(JSON.stringify(configData.arguments));
   }
 
   if (value === 'TEST_FUNCTIONALITY') {
-    sceneConfigData.value.script.configuration.thread.threads = '1';
-    sceneConfigData.value.script.configuration.iterations = '1';
-    sceneConfigData.value.script.task.arguments.ignoreAssertions = false;
+    scenarioConfigData.value.script.configuration.thread.threads = '1';
+    scenarioConfigData.value.script.configuration.iterations = '1';
+    scenarioConfigData.value.script.task.arguments.ignoreAssertions = false;
   } else if (value === 'TEST_PERFORMANCE') {
-    sceneConfigData.value.script.configuration.duration = '50min';
-    if (sceneConfigData.value.script.configuration.thread) {
-      sceneConfigData.value.script.configuration.thread.threads = '5000';
-      sceneConfigData.value.script.configuration.thread.rampUpInterval = '1min';
-      sceneConfigData.value.script.configuration.thread.rampUpThreads = '100';
+    scenarioConfigData.value.script.configuration.duration = '50min';
+    if (scenarioConfigData.value.script.configuration.thread) {
+      scenarioConfigData.value.script.configuration.thread.threads = '5000';
+      scenarioConfigData.value.script.configuration.thread.rampUpInterval = '1min';
+      scenarioConfigData.value.script.configuration.thread.rampUpThreads = '100';
     } else {
-      sceneConfigData.value.script.configuration.thread = {
+      scenarioConfigData.value.script.configuration.thread = {
         threads: '5000',
         rampUpInterval: '1min', // 增压间隔
         rampUpThreads: '100' // 增压线程数
       };
     }
   } else if (value === 'TEST_STABILITY') {
-    sceneConfigData.value.script.configuration.duration = '30min';
-    sceneConfigData.value.script.configuration.thread.threads = '200';
+    scenarioConfigData.value.script.configuration.duration = '30min';
+    scenarioConfigData.value.script.configuration.thread.threads = '200';
   }
 
   scriptConfig.value.type = value;
-  scriptConfig.value.configuration = JSON.parse(JSON.stringify(sceneConfigData.value.script.configuration));
-  scriptConfig.value.task.arguments = JSON.parse(JSON.stringify(sceneConfigData.value.script.task.arguments));
+  scriptConfig.value.configuration = JSON.parse(JSON.stringify(scenarioConfigData.value.script.configuration));
+  scriptConfig.value.task.arguments = JSON.parse(JSON.stringify(scenarioConfigData.value.script.task.arguments));
 };
 
 const scriptTypeExcludes = ({ value }): boolean => {
@@ -557,13 +557,13 @@ const isValid = async (): Promise<boolean> => {
 };
 
 const getData = (): {
-  configuration: SceneConfig['script']['configuration'];
-  arguments: SceneConfig['script']['task']['arguments'];
+  configuration: ScenarioConfig['script']['configuration'];
+  arguments: ScenarioConfig['script']['task']['arguments'];
   pipelines: PipelineConfig[];
 } => {
   const data: {
-    configuration: SceneConfig['script']['configuration'];
-    arguments: SceneConfig['script']['task']['arguments'];
+    configuration: ScenarioConfig['script']['configuration'];
+    arguments: ScenarioConfig['script']['task']['arguments'];
     pipelines: PipelineConfig[];
   } = {
     configuration: undefined,
@@ -594,7 +594,7 @@ const getData = (): {
 };
 
 const followHandler = (value: boolean) => {
-  const id = sceneConfigData.value?.id;
+  const id = scenarioConfigData.value?.id;
   if (value) {
     toFollow(id);
     return;
@@ -615,9 +615,9 @@ const toFollow = async (id: string) => {
     return;
   }
 
-  hideButtonSet.value.delete('cancelFollowFlag');
-  hideButtonSet.value.add('followFlag');
-  sceneConfigData.value.followFlag = true;
+  hideButtonSet.value.delete('cancelFollow');
+  hideButtonSet.value.add('follow');
+  scenarioConfigData.value.follow = true;
   notification.success(t('jmsPlugin.notifications.followSuccess'));
 };
 
@@ -633,14 +633,14 @@ const cancelFollow = async (id: string) => {
     return;
   }
 
-  hideButtonSet.value.delete('followFlag');
-  hideButtonSet.value.add('cancelFollowFlag');
-  sceneConfigData.value.followFlag = false;
+  hideButtonSet.value.delete('follow');
+  hideButtonSet.value.add('cancelFollow');
+  scenarioConfigData.value.follow = false;
   notification.success(t('jmsPlugin.notifications.cancelFollowSuccess'));
 };
 
 const favouriteHandler = (value: boolean) => {
-  const id = sceneConfigData.value?.id;
+  const id = scenarioConfigData.value?.id;
   if (value) {
     toFavourite(id);
     return;
@@ -661,9 +661,9 @@ const toFavourite = async (id: string) => {
     return;
   }
 
-  hideButtonSet.value.delete('cancelFavouriteFlag');
-  hideButtonSet.value.add('favouriteFlag');
-  sceneConfigData.value.favouriteFlag = true;
+  hideButtonSet.value.delete('cancelFavourite');
+  hideButtonSet.value.add('favourite');
+  scenarioConfigData.value.favourite = true;
   notification.success(t('jmsPlugin.notifications.favouriteSuccess'));
 };
 
@@ -679,9 +679,9 @@ const cancelFavourite = async (id: string) => {
     return;
   }
 
-  hideButtonSet.value.delete('favouriteFlag');
-  hideButtonSet.value.add('cancelFavouriteFlag');
-  sceneConfigData.value.favouriteFlag = false;
+  hideButtonSet.value.delete('favourite');
+  hideButtonSet.value.add('cancelFavourite');
+  scenarioConfigData.value.favourite = false;
   notification.success(t('jmsPlugin.notifications.cancelFavouriteSuccess'));
 };
 
@@ -713,7 +713,7 @@ const save = async (data?: {
     dirId,
     dirName,
     name
-  } = JSON.parse(JSON.stringify(sceneConfigData.value));
+  } = JSON.parse(JSON.stringify(scenarioConfigData.value));
 
   const params: SaveFormData = {
     authFlag: authFlag.value,
@@ -768,17 +768,17 @@ const save = async (data?: {
       return error;
     }
 
-    const sceneId = res.data.id;
-    sceneConfigData.value.id = sceneId;
+    const scenarioId = res.data.id;
+    scenarioConfigData.value.id = scenarioId;
     initBtn();
 
     if (typeof props.replaceTabPane === 'function') {
-      props.replaceTabPane(props.tabKey, { _id: sceneId, name: params.name, value: 'Ftp', sceneInfo: { id: sceneId } });
+      props.replaceTabPane(props.tabKey, { _id: scenarioId, name: params.name, value: 'Ftp', scenarioInfo: { id: scenarioId } });
     }
 
-    const sceneInfoData = await loadSceneInfo(sceneId);
-    setSceneConfigData(sceneInfoData);
-    setSaveFormData(sceneInfoData);
+    const scenarioInfoData = await loadScenarioInfo(scenarioId);
+    setScenarioConfigData(scenarioInfoData);
+    setSaveFormData(scenarioInfoData);
   } else {
     const [error] = await scenario.putScenario(params, axiosConfig);
     loading.value = false;
@@ -809,11 +809,11 @@ const save = async (data?: {
 
   // 新建、编辑名称、目录、描述刷新场景列表
   let refreshFlag = !params.id;
-  if (params.name !== sceneConfigData.value.name) {
+  if (params.name !== scenarioConfigData.value.name) {
     refreshFlag = true;
-  } else if (params.description !== sceneConfigData.value.description) {
+  } else if (params.description !== scenarioConfigData.value.description) {
     refreshFlag = true;
-  } else if (params.dirId !== sceneConfigData.value.dirId) {
+  } else if (params.dirId !== scenarioConfigData.value.dirId) {
     refreshFlag = true;
   }
   if (refreshFlag) {
@@ -829,7 +829,7 @@ const save = async (data?: {
   }
 };
 
-const setSaveFormData = (data: SceneInfo) => {
+const setSaveFormData = (data: ScenarioInfo) => {
   if (!data) {
     return;
   }
@@ -846,7 +846,7 @@ const setSaveFormData = (data: SceneInfo) => {
   };
 };
 
-const setSceneConfigData = (data: SceneInfo) => {
+const setScenarioConfigData = (data: ScenarioInfo) => {
   if (!data) {
     return;
   }
@@ -858,7 +858,7 @@ const setSceneConfigData = (data: SceneInfo) => {
     scriptName
   } = data;
   authFlag.value = _authFlag;
-  sceneConfigData.value = {
+  scenarioConfigData.value = {
     ...data,
     scriptId,
     scriptName,
@@ -873,7 +873,7 @@ const setSceneConfigData = (data: SceneInfo) => {
       _arguments = defaultConfig.arguments;
     }
     const _configuration = script.configuration || defaultConfig.configuration;
-    sceneConfigData.value.script = {
+    scenarioConfigData.value.script = {
       ...script,
       configuration: _configuration,
       type: scriptType,
@@ -884,14 +884,14 @@ const setSceneConfigData = (data: SceneInfo) => {
     };
 
     if (script.task) {
-      sceneConfigData.value.script.task = {
+      scenarioConfigData.value.script.task = {
         ...script.task,
         arguments: _arguments,
         pipelines: []
       };
 
       if (script.task.pipelines?.length) {
-        sceneConfigData.value.script.task.pipelines = script.task.pipelines.map(item => {
+        scenarioConfigData.value.script.task.pipelines = script.task.pipelines.map(item => {
           return {
             id: utils.uuid(),
             ...item
@@ -906,13 +906,13 @@ const setSceneConfigData = (data: SceneInfo) => {
   initBtn();
 };
 
-const loadSceneInfo = async (id: string) => {
+const loadScenarioInfo = async (id: string) => {
   if (!id) {
     return;
   }
 
   loading.value = true;
-  const [error, { data }]: [Error, { data: SceneInfo }] = await scenario.getScenarioDetail(id, { silence: false });
+  const [error, { data }]: [Error, { data: ScenarioInfo }] = await scenario.getScenarioDetail(id, { silence: false });
   loading.value = false;
   loaded.value = true;
   if (error || !data) {
@@ -928,7 +928,7 @@ const loadSceneInfo = async (id: string) => {
 };
 
 const loadDebugInfo = async () => {
-  const id = props.sceneInfo?.id;
+  const id = props.scenarioInfo?.id;
   if (!id) {
     return;
   }
@@ -948,21 +948,21 @@ const initBtn = () => {
   hideButtonSet.value.delete('test');
 
   // 已经关注的场景显示【取消关注】按钮
-  if (sceneConfigData.value.followFlag) {
-    hideButtonSet.value.delete('cancelFollowFlag');
-    hideButtonSet.value.add('followFlag');
+  if (scenarioConfigData.value.follow) {
+    hideButtonSet.value.delete('cancelFollow');
+    hideButtonSet.value.add('follow');
   } else {
-    hideButtonSet.value.delete('followFlag');
-    hideButtonSet.value.add('cancelFollowFlag');
+    hideButtonSet.value.delete('follow');
+    hideButtonSet.value.add('cancelFollow');
   }
 
   // 已经收藏的场景显示【取消收藏】按钮
-  if (sceneConfigData.value.favouriteFlag) {
-    hideButtonSet.value.delete('cancelFavouriteFlag');
-    hideButtonSet.value.add('favouriteFlag');
+  if (scenarioConfigData.value.favourite) {
+    hideButtonSet.value.delete('cancelFavourite');
+    hideButtonSet.value.add('favourite');
   } else {
-    hideButtonSet.value.delete('favouriteFlag');
-    hideButtonSet.value.add('cancelFavouriteFlag');
+    hideButtonSet.value.delete('favourite');
+    hideButtonSet.value.add('cancelFavourite');
   }
 };
 
@@ -1056,7 +1056,7 @@ const cleanupVariables = (data: { [key: string]: any }[]) => {
 onMounted(() => {
   loadDebugInfo();
 
-  watch(() => props.sceneInfo, async (newValue) => {
+  watch(() => props.scenarioInfo, async (newValue) => {
     if (!newValue) {
       return;
     }
@@ -1065,14 +1065,14 @@ onMounted(() => {
     const { dirId, dirName, name } = newValue;
     const type = 'TEST_PERFORMANCE';
     const { arguments: _arguments, configuration } = generateDefaultConfig(type);
-    sceneConfigData.value = {
+    scenarioConfigData.value = {
       dirId,
       dirName,
       name,
       authFlag: true,
       description: '',
-      favouriteFlag: false,
-      followFlag: false,
+      favourite: false,
+      follow: false,
       id: undefined,
       plugin: 'Ftp',
       scriptId: undefined,
@@ -1088,7 +1088,7 @@ onMounted(() => {
       }
     };
 
-    setScriptConfig(configuration, _arguments, sceneConfigData.value.script.type);
+    setScriptConfig(configuration, _arguments, scenarioConfigData.value.script.type);
 
     saveFormConfigData.value = {
       id,
@@ -1105,8 +1105,8 @@ onMounted(() => {
       return;
     }
 
-    const data = await loadSceneInfo(id);
-    setSceneConfigData(data);
+    const data = await loadScenarioInfo(id);
+    setScenarioConfigData(data);
     setSaveFormData(data);
   }, { immediate: true });
 });
@@ -1179,8 +1179,8 @@ const tabText = computed(() => {
 });
 
 const drawerMenuItems = computed(() => {
-  if (sceneConfigData.value?.id) {
-    if (sceneConfigData.value.plugin === 'Ftp') {
+  if (scenarioConfigData.value?.id) {
+    if (scenarioConfigData.value.plugin === 'Ftp') {
       return DRAWER_MENUITEMS;
     }
     return DRAWER_MENUITEMS.filter(item => !['indicator', 'testInfo'].includes(item.key));
@@ -1240,14 +1240,14 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
             <ScriptConfig
               v-show="!isUIViewMode"
               ref="codeConfigRef"
-              :value="sceneConfigData?.script" />
+              :value="scenarioConfigData?.script" />
           </AsyncComponent>
           <AsyncComponent :visible="activeKey === 'taskConfig'">
             <UIConfig
               v-show="isUIViewMode && activeKey === 'taskConfig'"
               ref="uiConfigRef"
               :loaded="loaded"
-              :value="sceneConfigData?.script?.task?.pipelines"
+              :value="scenarioConfigData?.script?.task?.pipelines"
               @errorNumChange="taskErrorNumChange"
               @renderChange="renderChange" />
           </AsyncComponent>
@@ -1313,23 +1313,23 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
             @canecel="cancel" />
         </template>
         <template #indicator>
-          <Indicator :id="sceneConfigData?.id" type="SCENE" />
+          <Indicator :id="scenarioConfigData?.id" type="SCENARIO" />
         </template>
 
         <template #testInfo>
           <HttpTestInfo
-            :id="sceneConfigData?.id"
+            :id="scenarioConfigData?.id"
             class="mt-2"
-            type="SCENE" />
+            type="SCENARIO" />
         </template>
 
         <template #activity>
-          <ActivityTimeline :id="sceneConfigData?.id" class="pt-4.75 pr-3.5" />
+          <ActivityTimeline :id="scenarioConfigData?.id" class="pt-4.75 pr-3.5" />
         </template>
 
         <template #comment>
           <SmartComment
-            :id="sceneConfigData?.id"
+            :id="scenarioConfigData?.id"
             :userId="props.userInfo?.id"
             class="h-full pt-4.75 pr-3.5" />
         </template>
@@ -1341,12 +1341,12 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
         v-model:visible="authVisible"
         enumKey="ScenarioPermission"
         :appId="props.appInfo?.id"
-        :listUrl="`${TESTER}/scenario/auth?scenarioId=${sceneConfigData?.id}`"
+        :listUrl="`${TESTER}/scenario/auth?scenarioId=${scenarioConfigData?.id}`"
         :delUrl="`${TESTER}/scenario/auth`"
-        :addUrl="`${TESTER}/scenario/${sceneConfigData?.id}/auth`"
+        :addUrl="`${TESTER}/scenario/${scenarioConfigData?.id}/auth`"
         :updateUrl="`${TESTER}/scenario/auth`"
-        :enabledUrl="`${TESTER}/scenario/${sceneConfigData?.id}/auth/enabled`"
-        :initStatusUrl="`${TESTER}/scenario/${sceneConfigData?.id}/auth/status`"
+        :enabledUrl="`${TESTER}/scenario/${scenarioConfigData?.id}/auth/enabled`"
+        :initStatusUrl="`${TESTER}/scenario/${scenarioConfigData?.id}/auth/status`"
         :onTips="t('jmsPlugin.authorizeModal.onTips')"
         :offTips="t('jmsPlugin.authorizeModal.offTips')"
         :title="t('jmsPlugin.authorizeModal.title')"

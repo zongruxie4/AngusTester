@@ -3,6 +3,8 @@ import { defineAsyncComponent } from 'vue';
 import { Modal } from '@xcan-angus/vue-ui';
 
 import { DataSetItem } from '../types';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -30,7 +32,7 @@ const cancel = () => {
 
 <template>
   <Modal
-    title="预览数据"
+    :title="t('dataset.list.tableDropdown.previewData')"
     :visible="props.visible"
     :width="900"
     destroyOnClose

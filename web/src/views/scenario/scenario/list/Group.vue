@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, ref } from 'vue';
+import { defineAsyncComponent } from 'vue';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { Arrow, Image, ScriptTypeTag } from '@xcan-angus/vue-ui';
 
-import { GroupedKey, SceneInfo } from './types';
+// Import composables
+import { useScenarioGrouping } from './composables';
+
+import { GroupedKey, ScenarioInfo } from './types';
 
 type Props = {
-  dataSource: SceneInfo[];
-  groupedKey:GroupedKey;
+  dataSource: ScenarioInfo[];
+  groupedKey: GroupedKey;
   projectId: string;
   userInfo: { id: string; };
   appInfo: { id: string; };
@@ -23,45 +26,19 @@ const props = withDefaults(defineProps<Props>(), {
   notify: undefined
 });
 
-const SceneList = defineAsyncComponent(() => import('./List.vue'));
-const openKeys = ref<string[]>([]);
+// Initialize composables
+const {
+  openKeys,
+  handleCollapseChange,
+  handleArrowChange,
+  getGroupedList
+} = useScenarioGrouping();
 
-const collapseChange = (value:string[]) => {
-  openKeys.value = value;
-};
+// Async component
+const ScenarioList = defineAsyncComponent(() => import('./List.vue'));
 
-const arrowChange = (open:boolean, key:string) => {
-  if (open) {
-    openKeys.value.push(key);
-    return;
-  }
-
-  openKeys.value = openKeys.value.filter(item => item !== key);
-};
-
-const groupedList = computed(() => {
-  if (!props.dataSource?.length) {
-    return [];
-  }
-
-  const key = props.groupedKey;
-  const temp = props.dataSource.reduce((prev, cur) => {
-    let _key = cur[key];
-    if (Object.prototype.toString.call(_key) === '[object Object]') {
-      _key = _key.value;
-    }
-
-    if (prev[_key]) {
-      prev[_key].push(cur);
-    } else {
-      prev[_key] = [cur];
-    }
-
-    return prev;
-  }, {} as {[key:string]:SceneInfo[]});
-
-  return Object.entries(temp);
-});
+// Computed grouped list
+const groupedList = getGroupedList(props.dataSource, props.groupedKey);
 </script>
 
 <template>
@@ -71,14 +48,14 @@ const groupedList = computed(() => {
       :bordered="false"
       style="background-color: #fff;"
       class="space-y-3.5"
-      @change="collapseChange">
+      @change="handleCollapseChange">
       <CollapsePanel
-        v-for="([key,dataList]) in groupedList"
+        v-for="([key, dataList]) in groupedList"
         :key="key"
         :showArrow="false">
         <template #header>
           <div class="w-full flex justify-between items-center leading-5 text-3">
-            <div v-if="props.groupedKey==='createdBy'" class="flex-1 flex items-center space-x-3">
+            <div v-if="props.groupedKey === 'createdBy'" class="flex-1 flex items-center space-x-3">
               <Image
                 :src="dataList[0].avatar"
                 type="avatar"
@@ -86,22 +63,22 @@ const groupedList = computed(() => {
               <div class="text-theme-content pt-0.5 font-bold">{{ dataList[0].createdByName }}</div>
             </div>
 
-            <div v-else-if="props.groupedKey==='plugin'" class="flex-1 flex items-center">
+            <div v-else-if="props.groupedKey === 'plugin'" class="flex-1 flex items-center">
               <div class="flex-shrink-0 leading-5 rounded px-2 text-white bg-tag">{{ dataList[0].plugin }}</div>
             </div>
 
-            <div v-else-if="props.groupedKey==='scriptType'" class="flex-1 flex items-center">
-              <ScriptTypeTag :value=" dataList[0].scriptType" />
+            <div v-else-if="props.groupedKey === 'scriptType'" class="flex-1 flex items-center">
+              <ScriptTypeTag :value="dataList[0].scriptType" />
             </div>
 
             <Arrow
               class="flex-shrink-0"
               :open="openKeys.includes(key)"
-              @change="arrowChange($event,key)" />
+              @change="handleArrowChange($event, key)" />
           </div>
         </template>
 
-        <SceneList
+        <ScenarioList
           :dataSource="dataList"
           :notify="props.notify"
           :userInfo="props.userInfo"
@@ -134,5 +111,4 @@ const groupedList = computed(() => {
 .bg-tag{
   background-color: rgba(15 ,159, 255, 75%);
 }
-
 </style>

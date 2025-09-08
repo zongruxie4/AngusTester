@@ -72,8 +72,8 @@ const selectedDataMap = ref<{// 批量操作选中的任务
   [key: string]: {
     id: string;
     status: TaskInfo['status']['value'];
-    favouriteFlag: boolean;
-    followFlag: boolean;
+    favourite: boolean;
+    follow: boolean;
     sprintId?: string;
   }
 }>({});
@@ -117,8 +117,8 @@ const toSelect = (ids: string[]) => {
       selectedDataMap.value[id] = {
         id,
         status: cur.status.value,
-        favouriteFlag: cur.favouriteFlag,
-        followFlag: cur.followFlag
+        favourite: cur.favourite,
+        follow: cur.follow
       };
     }
 
@@ -452,25 +452,25 @@ onMounted(() => {
     batchCancelFollowDisabled.value = false;
 
     const values = (Object.values(newValue) || []) as {
-      favouriteFlag: boolean;
-      followFlag: boolean;
+      favourite: boolean;
+      follow: boolean;
       id: string;
       status: string;
     }[];
     for (let i = 0, len = values.length; i < len; i++) {
-      const { favouriteFlag, followFlag, status, id } = values[i];
+      const { favourite, follow, status, id } = values[i];
       const menuItems = props.menuItemsMap.get(id) || [];
       const cancelItem = menuItems.find(item => item.key === 'cancel');
       const deleteItem = menuItems.find(item => item.key === 'delete');
       const moveItem = menuItems.find(item => item.key === 'move');
 
-      if (favouriteFlag) {
+      if (favourite) {
         batchFavouriteDisabled.value = true;
       } else {
         batchCancelFavouriteDisabled.value = true;
       }
 
-      if (followFlag) {
+      if (follow) {
         batchFollowDisabled.value = true;
       } else {
         batchCancelFollowDisabled.value = true;

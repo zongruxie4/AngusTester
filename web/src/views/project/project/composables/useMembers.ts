@@ -6,9 +6,6 @@ import type { ProjectMembers, ProjectMember, UseProjectMembersReturn, DefaultOpt
  * Handles member selection, type switching, and data preparation for form submission
  */
 export function useMembers (): UseProjectMembersReturn {
-  // ============================================================================
-  // State Management
-  // ============================================================================
 
   /** Current selected member type for UI tabs */
   const memberType = ref<MemberType>('user');
@@ -32,10 +29,6 @@ export function useMembers (): UseProjectMembersReturn {
 
   /** Default options cache for group selector */
   const defaultOptionsGroup = ref<DefaultOptions>({});
-
-  // ============================================================================
-  // Data Processing Methods
-  // ============================================================================
 
   /**
    * Initialize members data from project details
@@ -185,10 +178,6 @@ export function useMembers (): UseProjectMembersReturn {
   const switchMemberType = (type: MemberType): void => {
     memberType.value = type;
   };
-
-  // ============================================================================
-  // Return Interface
-  // ============================================================================
 
   return {
     // State

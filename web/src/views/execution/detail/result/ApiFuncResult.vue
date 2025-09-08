@@ -12,18 +12,28 @@ const props = withDefaults(defineProps<Props>(), {
   dataSource: () => ({})
 });
 
+// Configuration for test case statistics display
 const configInfo = [
-  [{ label: t('execution.testResult.total'), dataIndex: 'totalNum', bgColor: 'bg-blue-1' }, { label: t('execution.testResult.passed'), dataIndex: 'successNum', bgColor: 'bg-status-success' }, { label: t('execution.testResult.notPassed'), dataIndex: 'failNum', bgColor: 'bg-status-error' }, { label: t('execution.testResult.notEnabled'), dataIndex: 'disabledNum', bgColor: 'bg-gray-icon' }]
-//   [],
+  [{ label: t('execution.testResult.total'), dataIndex: 'totalNum', bgColor: 'bg-blue-1' },
+    { label: t('execution.testResult.passed'), dataIndex: 'successNum', bgColor: 'bg-status-success' },
+    { label: t('execution.testResult.notPassed'), dataIndex: 'failNum', bgColor: 'bg-status-error' },
+    { label: t('execution.testResult.notEnabled'), dataIndex: 'disabledNum', bgColor: 'bg-gray-icon' }]
 ];
+
+// Configuration for test case type icons
 const CaseTypeIconConfig = {
   SMOKE: 'icon-maoyanceshi',
   SECURITY: 'icon-anquanceshi',
   USER_DEFINED: 'icon-zidingyiceshi'
 };
 
+// Test case statistics data
 const statisticsData = ref({});
+
+// Test case results list
 const caseResult = ref([]);
+
+// Initialize component and watch for data changes
 onMounted(() => {
   watch(() => props.dataSource, newValue => {
     statisticsData.value = newValue.caseSummary || {};
@@ -37,6 +47,7 @@ onMounted(() => {
 <template>
   <div class="font-semibold mt-5 mb-2">{{ t('execution.testResult.testCases') }}</div>
   <div class="space-y-2 text-3">
+    <!-- Display test case statistics -->
     <div
       v-for="(line, idx) in configInfo"
       :key="idx"
@@ -49,23 +60,24 @@ onMounted(() => {
         <span class="flex-1 bg-gray-light px-2 rounded-r">{{ statisticsData[item.dataIndex] }}</span>
       </div>
     </div>
+
+    <!-- Display individual test case results -->
     <div class="font-semibold mt-5 mb-2">{{ t('execution.testResult.testedCases') }}</div>
     <div class="text-3 space-y-1">
       <div
         v-for="item in caseResult"
         :key="item.id"
         class="border border-gray-light rounded bg-gray-light">
-        <!-- <Tooltip placement="rightTop"> -->
-        <!-- <template #title>
-            <div class="max-w-100 overflow-y-auto">
-              <Grid
-                :dataSource="item.samplingSummary || item"
-                :columns="columns" />
-            </div>
-          </template> -->
         <div class="px-1 flex h-6 items-center">
+          <!-- Display case type icon -->
           <Icon :icon="CaseTypeIconConfig[item.caseType?.value] || 'icon-jiekouyongli2'" class="mr-1 text-4" />
-          <span class="min-w-10 truncate flex-1" :title="item.apisName || item.caseName || item.summary">{{ item.apisName || item.caseName || item.summary }}</span>
+
+          <!-- Display case name or summary -->
+          <span class="min-w-10 truncate flex-1" :title="item.apisName || item.caseName || item.summary">
+            {{ item.apisName || item.caseName || item.summary }}
+          </span>
+
+          <!-- Display case status -->
           <span
             v-if="!item.enabled"
             class="px-2 rounded">{{ t('execution.testResult.notEnabled') }}</span>
@@ -76,7 +88,6 @@ onMounted(() => {
             {{ t('execution.testResult.notPassedWithReason') }}{{ item.failureMessage }}
           </span>
         </div>
-        <!-- </Tooltip> -->
       </div>
     </div>
   </div>

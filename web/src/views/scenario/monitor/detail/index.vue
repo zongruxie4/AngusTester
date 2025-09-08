@@ -1,184 +1,95 @@
 <script setup lang="ts">
-import { inject, onMounted, ref, watch } from 'vue';
+import { onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Hints, Icon, modal, NoData, Spin, DebugLog, ExecLog, ScenarioHttpDebugResult, ScenarioJdbcDebugResult, ScenarioFtpDebugResult, ScenarioWebsocketDebugResult, ScenarioLdapDebugResult, ScenarioMailDebugResult, ScenarioTcpDebugResult, ScearioSmtpDebugResult } from '@xcan-angus/vue-ui';
+import {
+  DebugLog,
+  ExecLog,
+  Hints,
+  Icon,
+  NoData,
+  ScearioSmtpDebugResult,
+  ScenarioFtpDebugResult,
+  ScenarioHttpDebugResult,
+  ScenarioJdbcDebugResult,
+  ScenarioLdapDebugResult,
+  ScenarioMailDebugResult,
+  ScenarioTcpDebugResult,
+  ScenarioWebsocketDebugResult,
+  Spin
+} from '@xcan-angus/vue-ui';
 import { Button, TabPane, Tabs, Tag } from 'ant-design-vue';
-import { scenario } from '@/api/tester';
-import { MonitorInfo } from '../types';
 import Chart from '@/views/scenario/monitor/detail/Chart.vue';
+import type { MonitorDetailProps } from '../types';
+import { useMonitorData } from './composables/useMonitorData';
+import { useHistoryData } from './composables/useHistoryData';
+import { useMonitorActions } from './composables/useMonitorActions';
 
 const { t } = useI18n();
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  data: {
-    _id: string;
-    id: string | undefined;
-  }
-}
-
-const props = withDefaults(defineProps<Props>(), {
+// Component props with proper typing
+const props = withDefaults(defineProps<MonitorDetailProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
   data: undefined
 });
-const addTabPane = inject<(keys: string[]) => void>('addTabPane', () => ({}));
 
-const dataSource = ref<MonitorInfo>();
-const historyList = ref<{
-  createdBy: string;
-  createdByName: string;
-  createdDate: string;
-  execEndDate: string;
-  execId: string;
-  execStartDate: string;
-  failureMessage: string;
-  id: string;
-  monitorId: string;
-  projectId: string;
-  responseDelay: string;
-  status: {message: string; value: string};
-}[]>([]);
+// Use composables for separated logic
+const {
+  dataSource,
+  scenarioData,
+  scenarioPlugin,
+  loading,
+  loadData,
+  watchDataChanges
+} = useMonitorData();
 
-const waitingHistory = ref<number[]>([]);
+const {
+  historyList,
+  waitingHistory,
+  currentHistoryId,
+  historyExecData,
+  loadHistoryContent,
+  loadHistoryList,
+  changeHistory,
+  watchCurrentHistory
+} = useHistoryData();
 
-const currentHistoyId = ref();
-const currentExecId = ref();
-const historyExecData = ref();
-const debugExecInfo = ref();
-const scenarioPlugin = ref();
+const {
+  editMonitor,
+  runMonitor,
+  getStatusColorConfig
+} = useMonitorActions();
 
-const loadHIstoryContent = ref(false);
-
-const loading = ref(false);
-const loadData = async (id: string) => {
-  if (loading.value) {
-    return;
-  }
-
-  loading.value = true;
-  const [error, res] = await scenario.getMonitorDetail(id);
-  loading.value = false;
-  if (error) {
-    return;
-  }
-
-  const data = res?.data as MonitorInfo;
-  if (!data) {
-    return;
-  }
-  dataSource.value = res.data;
-  if (dataSource.value?.scenarioId) {
-    loadScenarioPlugin(dataSource.value?.scenarioId);
-  }
-};
-
-const scenarioData = ref({});
-// 获取场景详情
-const loadScenarioPlugin = async (scenarioId: string) => {
-  const [error, { data }] = await scenario.getScenarioDetail(scenarioId);
-  if (error) {
-    return;
-  }
-  scenarioData.value = data;
-  scenarioPlugin.value = data.plugin;
-};
-
-// 历史执行记录
-const loadHistoryList = async (id) => {
-  const [error, { data }] = await scenario.getMonitorHistoryList({
-    monitorId: id,
-    pageSize: 100,
-    pageNo: 1
-  });
-  if (error) {
-    return;
-  }
-  historyList.value = data?.list || [];
-  if (!currentHistoyId.value) {
-    currentHistoyId.value = historyList.value[0]?.id;
-    currentExecId.value = historyList.value[0]?.execId;
-  }
-  waitingHistory.value = Array.from(new Array(100 - historyList.value.length).fill(0));
-};
-const changeHistory = (history: {id: string; execId: string}) => {
-  if (loadHIstoryContent.value) {
-    return;
-  }
-  currentHistoyId.value = history.id;
-  currentExecId.value = history.execId;
-};
-
-// 执行记录内容
-const loadExecData = async () => {
-  loadHIstoryContent.value = true;
-  const [error, { data }] = await scenario.getMonitorHistoryDetail(currentHistoyId.value);
-  loadHIstoryContent.value = false;
-  if (error) {
-    return;
-  }
-  historyExecData.value = data;
-  if (historyExecData.value?.sampleLogContent) {
-    historyExecData.value.sampleLogContent = historyExecData.value.sampleLogContent.replaceAll('\\n', '\n');
-  }
-};
-
-// 打开编辑
-const editMonitor = (data: MonitorInfo) => {
-  addTabPane({
-    value: 'monitorEdit',
-    _id: data.id,
-    id: data.id,
-    data,
-    name: data.name
+/**
+ * Handle monitor execution with data refresh
+ */
+const handleRunMonitor = async (data: any) => {
+  await runMonitor(data, async () => {
+    await loadData(data?.id);
+    await loadHistoryList(data?.id);
   });
 };
 
-// 执行
-const run = async (data: MonitorInfo) => {
-  modal.confirm({
-    content: t('scenarioMonitor.list.executeConfirm', { name: data.name }),
-    async onOk () {
-      const id = data.id;
-      const [error] = await scenario.runMonitor(id);
-      if (error) {
-        return;
-      }
-      loadData(data?.id);
-      loadHistoryList(data?.id);
-    }
-  });
-};
-
+/**
+ * Initialize component on mount
+ */
 onMounted(() => {
-  watch(() => props.data, async (newValue, oldValue) => {
-    const id = newValue?.id;
-    if (!id) {
-      return;
-    }
+  // Watch for data changes and load monitor data
+  watchDataChanges(() => props.data);
 
-    const oldId = oldValue?.id;
-    if (id === oldId) {
-      return;
-    }
-    await loadData(id);
-    await loadHistoryList(id);
-  }, { immediate: true });
+  // Watch for current history changes and load execution data
+  watchCurrentHistory();
 
-  watch(() => currentHistoyId.value, () => {
-    loadExecData();
-  });
+  // Load initial data if available
+  if (props.data?.id) {
+    loadData(props.data.id);
+    loadHistoryList(props.data.id);
+  }
 });
 
-const statusColorConfig = {
-  SUCCESS: 'success',
-  PENDING: 'processing',
-  FAILURE: 'default'
-};
-
+// Status color configuration
+const statusColorConfig = getStatusColorConfig();
 </script>
 
 <template>
@@ -204,12 +115,12 @@ const statusColorConfig = {
           <span class="font-semibold">{{ dataSource?.lastModifiedByName }}</span><span class="ml-1">最后修改于{{ dataSource?.lastModifiedDate }}</span>
           <div class="ml-10">
             <Button size="small" type="text">
-              <Icon icon="icon-zhihang" @click="run(dataSource as MonitorInfo)" />
+              <Icon icon="icon-zhihang" @click="handleRunMonitor(dataSource)" />
             </Button>
             <Button
               size="small"
               type="text"
-              @click="editMonitor(dataSource as MonitorInfo)">
+              @click="editMonitor(dataSource as any)">
               <Icon icon="icon-xiugai" />
             </Button>
           </div>
@@ -289,10 +200,10 @@ const statusColorConfig = {
           v-for="history in historyList"
           :key="history.id"
           class="w-4 h-6 border mb-2  text-center mr-2"
-          :class="[history.status.value, currentHistoyId === history.id ? 'border-blue-1 shadow-lg' : 'border-transparent', loadHIstoryContent ? 'cursor-not-allowed' : 'cursor-pointer' ]"
+          :class="[history.status.value, currentHistoryId === history.id ? 'border-blue-1 shadow-lg' : 'border-transparent', loadHistoryContent ? 'cursor-not-allowed' : 'cursor-pointer' ]"
           @click="changeHistory(history)">
           <Icon
-            v-show="currentHistoyId === history.id"
+            v-show="currentHistoryId === history.id"
             icon="icon-dangqianxuanzhong"
             class="text-3.5 text-status-pending" />
         </div>

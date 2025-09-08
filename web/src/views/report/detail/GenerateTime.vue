@@ -1,21 +1,13 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { EnumMessage, CreatedAt, PeriodicCreationUnit, DayOfWeek, enumUtils } from '@xcan-angus/infra';
+import { CreatedAt, DayOfWeek, EnumMessage, enumUtils, PeriodicCreationUnit } from '@xcan-angus/infra';
 import { Colon } from '@xcan-angus/vue-ui';
+import { CreateTimeSetting } from '@/types/types';
 
 const { t } = useI18n();
 
-type CreateTimeSetting = {
-  createdAt: {value: CreatedAt, message: string},
-  periodicCreationUnit?: PeriodicCreationUnit,
-  dayOfWeek?: DayOfWeek;
-  createdAtSomeDate?: string;
-  dayOfMonth?: string;
-  timeOfDay?: string;
-  nextGenerationDate?: string;
-}
-
+// Component props definition
 interface Props {
   createTimeSetting: CreateTimeSetting;
 }
@@ -29,41 +21,57 @@ const props = withDefaults(defineProps<Props>(), {
   })
 });
 
+// Enum options for select components
 const createdAtAllOpt = ref<EnumMessage<CreatedAt>[]>([]);
 const periodicCreationUnitOpt = ref<EnumMessage<PeriodicCreationUnit>[]>([]);
 const dayOfWeekOpt = ref<EnumMessage<DayOfWeek>[]>([]);
 
+/**
+ * Load enum values for select options
+ * Fetches enum messages for CreatedAt, PeriodicCreationUnit, and DayOfWeek
+ */
 const loadEnum = async () => {
   createdAtAllOpt.value = enumUtils.enumToMessages(CreatedAt);
   periodicCreationUnitOpt.value = enumUtils.enumToMessages(PeriodicCreationUnit);
   dayOfWeekOpt.value = enumUtils.enumToMessages(DayOfWeek);
 };
 
+/**
+ * Get week name based on day of week value
+ * @returns Week name message
+ */
 const getWeekName = () => {
   const value = props.createTimeSetting.dayOfWeek?.value;
   return dayOfWeekOpt.value.find(i => i.value === value)?.message;
 };
 
+/**
+ * Lifecycle hook - Initialize component
+ * Load enum values when component is mounted
+ */
 onMounted(() => {
   loadEnum();
 });
 </script>
 <template>
   <div>
-    <tmplate v-if="props.createTimeSetting.createdAt?.value === 'NOW'">
+    <!-- Display creation time setting for NOW type -->
+    <template v-if="props.createTimeSetting.createdAt?.value === CreatedAt.NOW">
       <div class="flex items-center space-x-2">
         <span>{{ props.createTimeSetting.createdAt?.message }}</span>
       </div>
-    </tmplate>
+    </template>
 
-    <tmplate v-if="props.createTimeSetting.createdAt?.value === 'AT_SOME_DATE'">
+    <!-- Display creation time setting for AT_SOME_DATE type -->
+    <template v-if="props.createTimeSetting.createdAt?.value === CreatedAt.AT_SOME_DATE">
       <div class="flex items-center space-x-2">
         <span>{{ props.createTimeSetting.createdAt?.message }}</span><Colon />
         <div>{{ props.createTimeSetting?.createdAtSomeDate }}</div>
       </div>
-    </tmplate>
+    </template>
 
-    <tmplate v-if="props.createTimeSetting.createdAt?.value === 'PERIODICALLY'">
+    <!-- Display creation time setting for PERIODICALLY type -->
+    <template v-if="props.createTimeSetting.createdAt?.value === CreatedAt.PERIODICALLY">
       <div class="flex items-center space-x-2">
         <span>{{ props.createTimeSetting.createdAt?.message }}</span><Colon />
         <div>{{ props.createTimeSetting?.periodicCreationUnit?.message }}</div>
@@ -75,6 +83,6 @@ onMounted(() => {
         <span>{{ t('reportHome.reportDetail.generateTime.nextGenerateTime') }}</span><Colon />
         <div>{{ props.createTimeSetting?.nextGenerationDate }}</div>
       </div>
-    </tmplate>
+    </template>
   </div>
 </template>

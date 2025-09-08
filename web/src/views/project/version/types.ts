@@ -114,19 +114,6 @@ export interface IntroduceProps {
   showFunc: boolean;
 }
 
-// Browser tab pane interface
-export interface IPane {
-  _id: string;
-  value: string;
-  name?: string;
-  closable?: boolean;
-  noCache?: boolean;
-  data?: {
-    _id: string;
-    id?: string;
-  };
-}
-
 // Search and filter interfaces
 export interface SearchFilters {
   key: string;

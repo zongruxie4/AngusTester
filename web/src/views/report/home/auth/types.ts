@@ -1,3 +1,6 @@
+/**
+ * Type definition for space item in authorization management
+ */
 export type SpaceItem = {
     id: string;
     name: string;

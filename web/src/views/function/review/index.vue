@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
-import { IPane } from './PropsType';
+import { IPane } from '@/types/types';
 
 type Props = {
   projectId: string;

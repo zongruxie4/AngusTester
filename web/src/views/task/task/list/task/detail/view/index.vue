@@ -148,7 +148,7 @@ const toFavourite = async () => {
   }
 
   notification.success(t('task.detail.messages.favouriteSuccess'));
-  emitDataChange({ id: id, favouriteFlag: true });
+  emitDataChange({ id: id, favourite: true });
 };
 
 const toDeleteFavourite = async () => {
@@ -163,7 +163,7 @@ const toDeleteFavourite = async () => {
   }
 
   notification.success(t('task.detail.messages.cancelFavouriteSuccess'));
-  emitDataChange({ id: id, favouriteFlag: false });
+  emitDataChange({ id: id, favourite: false });
 };
 
 const toFollow = async () => {
@@ -178,7 +178,7 @@ const toFollow = async () => {
   }
 
   notification.success(t('task.detail.messages.followSuccess'));
-  emitDataChange({ id: id, followFlag: true });
+  emitDataChange({ id: id, follow: true });
 };
 
 const toDeleteFollow = async () => {
@@ -193,7 +193,7 @@ const toDeleteFollow = async () => {
   }
 
   notification.success(t('task.detail.messages.cancelFollowSuccess'));
-  emitDataChange({ id: id, followFlag: false });
+  emitDataChange({ id: id, follow: false });
 };
 
 const toStart = async () => {
@@ -603,7 +603,7 @@ const menuItemsMap = computed(() => {
   const data = taskInfo.value;
   if (data) {
     const status = data.status?.value;
-    const { currentAssociateType, confirmorId, assigneeId, favouriteFlag, followFlag, sprintAuth } = data;
+    const { currentAssociateType, confirmorId, assigneeId, favourite, follow, sprintAuth } = data;
 
     const userId = props.userInfo?.id;
     const isAdministrator = !!currentAssociateType?.map(item => item.value).includes('SYS_ADMIN' || 'APP_ADMIN');
@@ -708,7 +708,7 @@ const menuItemsMap = computed(() => {
       });
     }
 
-    if (favouriteFlag) {
+    if (favourite) {
       menuItems.push({
         name: t('task.actions.unfavorite'),
         key: 'cancelFavourite',
@@ -726,7 +726,7 @@ const menuItemsMap = computed(() => {
       });
     }
 
-    if (followFlag) {
+    if (follow) {
       menuItems.push({
         name: t('task.actions.unfollow'),
         key: 'cancelFollow',

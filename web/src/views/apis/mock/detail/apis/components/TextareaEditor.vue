@@ -6,7 +6,7 @@ import { Input, Validate } from '@xcan-angus/vue-ui';
 
 import { isHtml, isJSON, isXML, isYAML } from '@/utils/dataFormat';
 
-// ==================== Props ====================
+// Props & Emits
 interface Props {
   value: string;
   showAction?:boolean;

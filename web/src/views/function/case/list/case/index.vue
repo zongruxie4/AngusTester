@@ -718,15 +718,15 @@ const tableAction = computed(() => {
       },
       {
         key: 'favourite',
-        icon: _case.favouriteFlag ? 'icon-quxiaoshoucang' : 'icon-yishoucang',
-        name: _case.favouriteFlag ? '取消收藏' : '收藏',
+        icon: _case.favourite ? 'icon-quxiaoshoucang' : 'icon-yishoucang',
+        name: _case.favourite ? '取消收藏' : '收藏',
         permission: 'edit',
         noAuth: true
       },
       {
         key: 'follow',
-        icon: _case.followFlag ? 'icon-quxiaoguanzhu' : 'icon-yiguanzhu',
-        name: _case.followFlag ? '取消关注' : '关注',
+        icon: _case.follow ? 'icon-quxiaoguanzhu' : 'icon-yiguanzhu',
+        name: _case.follow ? '取消关注' : '关注',
         permission: 'edit',
         noAuth: true
       },
@@ -1320,25 +1320,25 @@ const handleUploadOk = () => {
 // 收藏
 const handleFavourite = async (rowData: CaseListObj) => {
   updateLoading(true);
-  const [error] = rowData.favouriteFlag ? await funcCase.cancelFavouriteCase(rowData.id) : await funcCase.AddFavouriteCase(rowData.id);
+  const [error] = rowData.favourite ? await funcCase.cancelFavouriteCase(rowData.id) : await funcCase.AddFavouriteCase(rowData.id);
   updateLoading(false);
   if (error) {
     return;
   }
-  notification.success(rowData.favouriteFlag ? t('functionCase.mainView.cancelFavouriteSuccess') : t('functionCase.mainView.favouriteSuccess'));
-  rowData.favouriteFlag = !rowData.favouriteFlag;
+  notification.success(rowData.favourite ? t('functionCase.mainView.cancelFavouriteSuccess') : t('functionCase.mainView.favouriteSuccess'));
+  rowData.favourite = !rowData.favourite;
   emits('updateFollowFavourite', 'favourite');
 };
 
 const handleFollow = async (rowData: CaseListObj) => {
   updateLoading(true);
-  const [error] = rowData.followFlag ? await funcCase.cancelFollowCase(rowData.id) : await funcCase.addFollowCase(rowData.id);
+  const [error] = rowData.follow ? await funcCase.cancelFollowCase(rowData.id) : await funcCase.addFollowCase(rowData.id);
   updateLoading(false);
   if (error) {
     return;
   }
-  notification.success(rowData.followFlag ? t('functionCase.mainView.cancelFollowSuccess') : t('functionCase.mainView.followSuccess'));
-  rowData.followFlag = !rowData.followFlag;
+  notification.success(rowData.follow ? t('functionCase.mainView.cancelFollowSuccess') : t('functionCase.mainView.followSuccess'));
+  rowData.follow = !rowData.follow;
   emits('updateFollowFavourite', 'follow');
 };
 

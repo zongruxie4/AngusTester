@@ -509,7 +509,7 @@ defineExpose({
         :id="domId"
         :list="idList"
         :animation="300"
-        group="scene"
+        group="scenario"
         itemKey="id"
         tag="ul"
         handle=".drag-handle"

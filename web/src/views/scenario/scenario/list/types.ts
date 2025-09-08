@@ -1,49 +1,76 @@
-export type GroupedKey = 'createdBy' | 'plugin' | 'scriptType' |'none';
+/**
+ * Grouping keys for scenarios
+ */
+export type GroupedKey = 'createdBy' | 'plugin' | 'scriptType' | 'none';
 
-export type SceneInfo = {
-    description:string;
-    id: string;
-    name: string;
-    dirId: string;
-    dirName: string;
-    plugin: 'WebSocket'|'Jdbc'|'Http';
-    auth: boolean;
-    createdBy: string;
-    createdByName: string;
-    avatar: string;
-    createdDate: string;
-    lastModifiedBy: string;
-    lastModifiedByName: string;
-    lastModifiedDate: string;
-    favouriteFlag: boolean;
-    followFlag: boolean;
-    scriptType:{
-      message:string;
-      value:string;
-    };
-    scriptId:string;
+/**
+ * Script type structure
+ */
+export interface ScriptType {
+  message: string;
+  value: string;
 }
 
+/**
+ * Scenario information structure
+ */
+export interface ScenarioInfo {
+  description: string;
+  id: string;
+  name: string;
+  dirId: string;
+  dirName: string;
+  plugin: 'WebSocket' | 'Jdbc' | 'Http';
+  auth: boolean;
+  createdBy: string;
+  createdByName: string;
+  avatar: string;
+  createdDate: string;
+  lastModifiedBy: string;
+  lastModifiedByName: string;
+  lastModifiedDate: string;
+  favourite: boolean;
+  follow: boolean;
+  scriptType: ScriptType;
+  scriptId: string;
+  lastExecStatus?: {
+    message: string;
+    value: string;
+  };
+  lastExecFailureMessage?: string;
+  nameLinkUrl?: string;
+  detailLink?: string;
+}
+
+/**
+ * Menu item keys
+ */
 export type MenuItemKey =
   'edit' |
   'clone' |
   'delete' |
   'performTesting' |
-  'followFlag' |
-  'cancelFollowFlag' |
-  'favouriteFlag' |
-  'cancelFavouriteFlag' |
+  'follow' |
+  'cancelFollow' |
+  'favourite' |
+  'cancelFavourite' |
   'auth' |
   'export' |
   'move' |
-  'restartTestTask'|
+  'restartTestTask' |
   'createTestTask' |
   'reopenTestTask' |
-  'deleteTestTask'
+  'deleteTestTask';
 
-export type MenuItemPermission = 'MODIFY' | 'EXECUTE' | 'VIEW' | 'GRANT'|'TEST'|'EXPORT'|'DELETE';
+/**
+ * Menu item permissions
+ */
+export type MenuItemPermission = 'MODIFY' | 'EXECUTE' | 'VIEW' | 'GRANT' | 'TEST' | 'EXPORT' | 'DELETE';
 
-export type MenuItem = {
+/**
+ * Menu item structure
+ */
+export interface MenuItem {
   key: MenuItemKey;
   name: string;
   icon: string;

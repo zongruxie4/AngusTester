@@ -1,5 +1,5 @@
-import { ref, computed, unref } from 'vue';
 import type { Ref } from 'vue';
+import { computed, ref, unref } from 'vue';
 import { scenario } from '@/api/tester';
 import { getCurrentPage } from '@/utils/utils';
 import type { TrashItem, TrashParams } from '../types';

@@ -3,12 +3,14 @@ import { onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Colon, Hints, IconRequired, Select } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
-import { TESTER, http } from '@xcan-angus/infra';
+import { TESTER } from '@xcan-angus/infra';
 import { contentTreeData } from './ApisContentConfig';
 import { apis } from '@/api/tester';
+import { CombinedTargetType } from '@/enums/enums';
 
 const { t } = useI18n();
 
+// Component props definition
 interface Props {
   projectId: string;
   contentSetting: {
@@ -22,8 +24,11 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false
 });
 
+// Reactive variables for service ID and API ID
 const serviceId = ref();
 const apisId = ref();
+
+// Field names for select components
 const fieldNames = {
   label: 'name',
   value: 'id'
@@ -33,6 +38,8 @@ const apisFieldNames = {
   label: 'summary',
   value: 'id'
 };
+
+// Checked keys for tree component
 const checked = ref<string[]>([]);
 contentTreeData.forEach(item => {
   checked.value.push(item.key);
@@ -41,6 +48,10 @@ contentTreeData.forEach(item => {
   }
 });
 
+/**
+ * Load service ID based on API ID
+ * Fetches API details and sets the corresponding service ID
+ */
 const loadServiceId = async () => {
   const [error, { data }] = await apis.getApiDetail(apisId.value);
   if (error) {
@@ -49,6 +60,10 @@ const loadServiceId = async () => {
   serviceId.value = data?.serviceId;
 };
 
+/**
+ * Lifecycle hook - Initialize component
+ * Watch for content setting changes and update API ID and service ID
+ */
 onMounted(() => {
   watch(() => props.contentSetting, newValue => {
     if (newValue?.targetId) {
@@ -59,24 +74,35 @@ onMounted(() => {
     immediate: true
   });
 });
+
+// Validation state
 const valid = ref(false);
+
+/**
+ * Validate if API ID is selected
+ * @returns Boolean indicating if validation passes
+ */
 const validate = () => {
   valid.value = true;
-  if (apisId.value) {
-    return true;
-  }
-  return false;
+  return !!apisId.value;
 };
 
+/**
+ * Get API data for report
+ * @returns Object containing API settings
+ */
+const getData = () => {
+  valid.value = false;
+  return {
+    targetId: apisId.value,
+    targetType: CombinedTargetType.API
+  };
+};
+
+// Expose methods to parent component
 defineExpose({
   validate,
-  getData: () => {
-    valid.value = false;
-    return {
-      targetId: apisId.value,
-      targetType: 'API'
-    };
-  }
+  getData
 });
 </script>
 <template>

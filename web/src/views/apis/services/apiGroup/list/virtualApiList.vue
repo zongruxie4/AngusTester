@@ -49,16 +49,16 @@ const myButtonGroup = (item) => {
     if (item.protocol?.value?.includes('ws') && ['mock'].includes(btn.key)) {
       return null;
     }
-    if (btn.key === 'addFavourite' && item.favouriteFlag === true) {
+    if (btn.key === 'addFavourite' && item.favourite === true) {
       return null;
     }
-    if (btn.key === 'cancelFavourite' && !item.favouriteFlag) {
+    if (btn.key === 'cancelFavourite' && !item.favourite) {
       return null;
     }
-    if (btn.key === 'addWatch' && item.followFlag === true) {
+    if (btn.key === 'addWatch' && item.follow === true) {
       return null;
     }
-    if (btn.key === 'cancelWatch' && !item.followFlag) {
+    if (btn.key === 'cancelWatch' && !item.follow) {
       return null;
     }
     if (btn.key === 'testTask' && !proTypeShowMap.value.showTask) {

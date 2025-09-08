@@ -5,8 +5,9 @@ import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
-import { IPane } from './types';
+import { IPane } from '@/types/types';
 
+// Types and Props Definition
 const { t } = useI18n();
 
 type Props = {
@@ -21,10 +22,22 @@ const props = withDefaults(defineProps<Props>(), {
   appInfo: undefined
 });
 
+interface ScenarioIPane extends IPane{
+  /** Scenario information required for opening scenario plugins */
+  scenarioInfo?: {
+    /** Scenario ID */
+    id: string;
+    /** Scenario name */
+    name: string;
+  };
+}
+
+// Core scenario components
 const Auth = defineAsyncComponent(() => import('@/views/scenario/scenario/auth/index.vue'));
 const List = defineAsyncComponent(() => import('@/views/scenario/scenario/list/index.vue'));
 const Detail = defineAsyncComponent(() => import('@/views/scenario/scenario/detail/index.vue'));
 
+// Plugin configuration components
 const HttpConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/Http.vue'));
 const WebSocketConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/WebSocket.vue'));
 const JdbcConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/Jdbc.vue'));
@@ -34,68 +47,116 @@ const MailConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/
 const SmtpConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/Smtp.vue'));
 const TcpConfig = defineAsyncComponent(() => import('@/views/scenario/scenario/plugins/Tcp.vue'));
 
+// Router and State Management
 const route = useRoute();
 const router = useRouter();
 const browserTabRef = ref();
 
-const refreshNotify = ref<string>();
+// Refresh notification state for triggering child component updates
+const refreshNotificationId = ref<string>();
 
-const updateRefreshNotify = () => {
-  refreshNotify.value = utils.uuid();
+/**
+ * Generate storage key for browser tab persistence based on project ID
+ */
+const storageKey = computed(() => {
+  if (!props.projectId) {
+    return undefined;
+  }
+  return `scenario${props.projectId}`;
+});
+
+/**
+ * Trigger refresh notification to update child components
+ */
+const triggerRefreshNotification = () => {
+  refreshNotificationId.value = utils.uuid();
 };
 
-const addTabPane = (data: IPane) => {
+/**
+ * Add a new tab pane to the browser tab component
+ * @param tabData - Tab pane data to add
+ */
+const addTabPane = (tabData: ScenarioIPane) => {
   browserTabRef.value.add(() => {
-    return data;
+    return tabData;
   });
 };
 
-const getTabPane = (key: string): IPane[] | undefined => {
-  return browserTabRef.value.getData(key);
+/**
+ * Get tab pane data by key
+ * @param tabKey - Key to identify the tab pane
+ * @returns Tab pane data or undefined if not found
+ */
+const getTabPane = (tabKey: string): ScenarioIPane[] | undefined => {
+  return browserTabRef.value.getData(tabKey);
 };
 
-const deleteTabPane = (keys: string[]) => {
-  browserTabRef.value.remove(keys);
+/**
+ * Delete tab panes by their keys
+ * @param tabKeys - Array of tab keys to delete
+ */
+const deleteTabPane = (tabKeys: string[]) => {
+  browserTabRef.value.remove(tabKeys);
 };
 
-const updateTabPane = (data: IPane) => {
-  browserTabRef.value.update(data);
+/**
+ * Update existing tab pane data
+ * @param tabData - Updated tab pane data
+ */
+const updateTabPane = (tabData: ScenarioIPane) => {
+  browserTabRef.value.update(tabData);
 };
 
-const replaceTabPane = (key: string, data: { key: string }) => {
-  browserTabRef.value.replace(key, data);
+/**
+ * Replace tab pane with new data
+ * @param tabKey - Key of tab to replace
+ * @param newTabData - New tab data with key property
+ */
+const replaceTabPane = (tabKey: string, newTabData: { key: string }) => {
+  browserTabRef.value.replace(tabKey, newTabData);
 };
 
-const initialize = () => {
+/**
+ * Initialize the browser tab component with default scenario list tab
+ */
+const initializeBrowserTabs = () => {
   if (typeof browserTabRef.value?.add === 'function') {
-    browserTabRef.value.add((ids: string[]) => {
-      if (!ids.includes('sceneList')) {
+    browserTabRef.value.add((existingTabIds: string[]) => {
+      // Add default scenario list tab if it doesn't exist
+      if (!existingTabIds.includes('scenarioList')) {
         return {
-          _id: 'sceneList',
-          value: 'sceneList',
+          _id: 'scenarioList',
+          value: 'scenarioList',
           name: t('scenario.title'),
-          closable: false // 是否允许关闭，true - 允许关闭，false - 禁止关闭
+          closable: false // Prevent closing the main scenario list tab
         };
       }
     });
   }
 
-  hashChange(route.hash);
+  handleHashChange(route.hash);
 };
 
-const hashChange = (hash:string) => {
+/**
+ * Handle URL hash changes to open specific tabs
+ * @param hash - URL hash string containing query parameters
+ */
+const handleHashChange = (hash: string) => {
   const queryString = hash.split('?')[1];
   if (!queryString) {
     return;
   }
 
-  const queryParameters = queryString.split('&').reduce((prev, cur) => {
-    const [key, value] = cur.split('=');
-    prev[key] = value;
-    return prev;
+  // Parse query parameters from hash
+  const queryParameters = queryString.split('&').reduce((accumulator, current) => {
+    const [key, value] = current.split('=');
+    accumulator[key] = value;
+    return accumulator;
   }, {} as { [key: string]: string });
 
   const { id, name, plugin, type } = queryParameters;
+
+  // Handle detail tab opening
   if (id && name && plugin && type === 'detail') {
     browserTabRef.value.add(() => {
       return {
@@ -106,59 +167,46 @@ const hashChange = (hash:string) => {
       };
     });
   } else if (id && name && plugin) {
+    // Handle plugin configuration tab opening
     browserTabRef.value.add(() => {
       return {
         _id: id,
         name,
         value: plugin,
-        sceneInfo: { id, name }
+        scenarioInfo: { id, name }
       };
     });
   }
 
+  // Clean up URL by removing hash parameters
   router.replace('/scenario#scenario');
 };
 
-const storageKeyChange = () => {
-  initialize();
+/**
+ * Handle storage key changes and reinitialize tabs
+ */
+const handleStorageKeyChange = () => {
+  initializeBrowserTabs();
 };
 
 onMounted(() => {
+  // Watch for hash changes to handle tab navigation
   watch(() => route.hash, () => {
     if (!route.hash.startsWith('#scenario')) {
       return;
     }
-
-    hashChange(route.hash);
+    handleHashChange(route.hash);
   }, {
     immediate: true
   });
 });
 
-const storageKey = computed(() => {
-  if (!props.projectId) {
-    return undefined;
-  }
-
-  return `scene${props.projectId}`;
-});
-
-// 更新指定的tabPane
-provide('updateRefreshNotify', updateRefreshNotify);
-
-// 添加指定的tabPane
+// Provide Functions for Child Components
+provide('updateRefreshNotify', triggerRefreshNotification);
 provide('addTabPane', addTabPane);
-
-// 获取tabPane
 provide('getTabPane', getTabPane);
-
-// 删除指定的tabPane
 provide('deleteTabPane', deleteTabPane);
-
-// 更新指定的tabPane
 provide('updateTabPane', updateTabPane);
-
-// 替换指定tabPane
 provide('replaceTabPane', replaceTabPane);
 </script>
 <template>
@@ -168,11 +216,11 @@ provide('replaceTabPane', replaceTabPane);
     class="h-full"
     :userId="props.userInfo.id"
     :storageKey="storageKey"
-    @storageKeyChange="storageKeyChange">
+    @storageKeyChange="handleStorageKeyChange">
     <template #default="record">
-      <template v-if="record.value === 'sceneList'">
+      <template v-if="record.value === 'scenarioList'">
         <List
-          :notify="refreshNotify"
+          :notify="refreshNotificationId"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :projectId="props.projectId" />
@@ -180,7 +228,7 @@ provide('replaceTabPane', replaceTabPane);
       <template v-if="record.value === 'Http'">
         <HttpConfig
           :tabKey="record._id"
-          :sceneInfo="record.sceneInfo"
+          :scenarioInfo="record.scenarioInfo"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :projectId="props.projectId" />
@@ -188,7 +236,7 @@ provide('replaceTabPane', replaceTabPane);
       <template v-if="record.value === 'WebSocket'">
         <WebSocketConfig
           :tabKey="record._id"
-          :sceneInfo="record.sceneInfo"
+          :scenarioInfo="record.scenarioInfo"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :projectId="props.projectId" />
@@ -196,7 +244,7 @@ provide('replaceTabPane', replaceTabPane);
       <template v-if="record.value === 'Jdbc'">
         <JdbcConfig
           :tabKey="record._id"
-          :sceneInfo="record.sceneInfo"
+          :scenarioInfo="record.scenarioInfo"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :projectId="props.projectId" />
@@ -204,7 +252,7 @@ provide('replaceTabPane', replaceTabPane);
       <template v-if="record.value === 'Ftp'">
         <FtpConfig
           :tabKey="record._id"
-          :sceneInfo="record.sceneInfo"
+          :scenarioInfo="record.scenarioInfo"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :projectId="props.projectId" />
@@ -212,7 +260,7 @@ provide('replaceTabPane', replaceTabPane);
       <template v-if="record.value === 'Ldap'">
         <LdapConfig
           :tabKey="record._id"
-          :sceneInfo="record.sceneInfo"
+          :scenarioInfo="record.scenarioInfo"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :projectId="props.projectId" />
@@ -220,7 +268,7 @@ provide('replaceTabPane', replaceTabPane);
       <template v-if="record.value === 'Mail'">
         <MailConfig
           :tabKey="record._id"
-          :sceneInfo="record.sceneInfo"
+          :scenarioInfo="record.scenarioInfo"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :projectId="props.projectId" />
@@ -228,7 +276,7 @@ provide('replaceTabPane', replaceTabPane);
       <template v-if="record.value === 'Smtp'">
         <SmtpConfig
           :tabKey="record._id"
-          :sceneInfo="record.sceneInfo"
+          :scenarioInfo="record.scenarioInfo"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :projectId="props.projectId" />
@@ -236,7 +284,7 @@ provide('replaceTabPane', replaceTabPane);
       <template v-if="record.value === 'Tcp'">
         <TcpConfig
           :tabKey="record._id"
-          :sceneInfo="record.sceneInfo"
+          :scenarioInfo="record.scenarioInfo"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :projectId="props.projectId" />

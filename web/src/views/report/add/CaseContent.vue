@@ -5,14 +5,16 @@ import { Colon, Hints, IconRequired, Select } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
 import { contentTreeData } from './CaseContentConfig';
+import { CombinedTargetType } from '@/enums/enums';
 
 const { t } = useI18n();
 
+// Component props definition
 interface Props {
   projectId: string;
   contentSetting: {
     targetId?: string;
-    planOrplanId?: string;
+      planOrPlanId?: string;
   };
   disabled: boolean;
 }
@@ -22,9 +24,11 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false
 });
 
+// Reactive variables for plan ID and case ID
 const planId = ref();
 const caseId = ref();
 
+// Checked keys for tree component
 const checked = ref<string[]>([]);
 contentTreeData.forEach(item => {
   checked.value.push(item.key);
@@ -33,44 +37,63 @@ contentTreeData.forEach(item => {
   }
 });
 
-const handleSprintChange = () => {
+/**
+ * Handle plan change event
+ * Reset case ID when plan changes
+ */
+const handlePlanChange = () => {
   caseId.value = undefined;
 };
 
+/**
+ * Lifecycle hook - Initialize component
+ * Watch for content setting changes and update plan/case IDs
+ */
 onMounted(() => {
   watch(() => props.contentSetting, newValue => {
     if (newValue) {
-      const { targetId, planOrplanId } = newValue;
+      const { targetId, planOrPlanId } = newValue;
       if (targetId) {
         caseId.value = targetId;
       }
-      if (planOrplanId) {
-        planId.value = planOrplanId;
+      if (planOrPlanId) {
+        planId.value = planOrPlanId;
       }
     }
   }, {
     immediate: true
   });
 });
+
+// Validation state
 const isValid = ref(false);
+
+/**
+ * Validate if both plan ID and case ID are selected
+ * @returns Boolean indicating if validation passes
+ */
 const validate = () => {
   isValid.value = true;
-  if (!caseId.value || !planId.value) {
-    return false;
-  }
-  return true;
+  return !(!caseId.value || !planId.value);
 };
 
+/**
+ * Get case data for report
+ * @returns Object containing case target ID, type, and plan ID
+ */
+const getData = () => {
+  isValid.value = false;
+  return {
+    targetId: caseId.value,
+    targetType: CombinedTargetType.FUNC_CASE,
+    planOrPlanId: planId.value
+  };
+};
+
+// Expose methods to parent component
 defineExpose({
   validate,
-  getData: () => {
-    isValid.value = false;
-    return {
-      targetId: caseId.value,
-      targetType: 'FUNC_CASE',
-      planOrplanId: planId.value
-    };
-  }
+  getData
 });
 </script>
 <template>
@@ -94,7 +117,7 @@ defineExpose({
         :placeholder="t('reportAdd.caseContent.testPlanPlaceholder')"
         :action="`${TESTER}/func/plan?projectId=${props.projectId || ''}&fullTextSearch=true`"
         :fieldNames="{ label: 'name', value: 'id' }"
-        @change="handleSprintChange">
+        @change="handlePlanChange">
       </Select>
     </div>
     <div class="flex flex-1 items-center space-x-2">

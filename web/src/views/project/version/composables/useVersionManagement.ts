@@ -3,7 +3,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { utils } from '@xcan-angus/infra';
 import { software } from '@/api/tester';
-import type { IPane } from '../types';
+import { IPane } from '@/types/types';
 
 interface VersionManagementProps {
   projectId: string;

@@ -7,17 +7,6 @@ import type { ExportModalProps, ExportModalEmits } from './types';
 import { useExport } from './composables/useExport';
 import { useModal } from './composables/useModal';
 
-/**
- * Dataset Export Modal Component
- * <p>
- * A modal component that allows users to export datasets in different formats (JSON/YAML)
- * </p>
- * <p>
- * The component provides a clean interface for selecting export format and initiating
- * the download process for selected datasets
- * </p>
- */
-
 // Component props definition with default values
 const props = withDefaults(defineProps<ExportModalProps>(), {
   visible: false,

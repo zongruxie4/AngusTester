@@ -1,92 +1,304 @@
-export type MonitorInfo = {
-    id: string;
-    scenarioId: string;
-    description?: string;
-    noticeSetting: {
-        enabled: boolean;
-        orgType: 'DEPT'|'GROUP'|'USER',
-        orgs: string[] | {id: string; name: string}[]
-    };
-    serverSetting?: {url: string; description?: string; variables?: {[key: string]: {[key: string]: string}}}[];
-    timeSetting: {
-        createdAt: 'AT_SOME_DATE'| 'NOW'|'PERIODICALLY';
-        createdAtSomeDate?: string;
-        dayOfMonth?: string;
-        dayOfWeek?: string;
-        periodicCreationUnit?: 'DAILY'| 'MONTHLY'| 'WEEKLY';
-        timeOfDay?: string;
-    };
-    name: string;
-    createdByName: string;
-    createdDate: string;
-    lastModifiedByName: string;
-    lastModifiedDate: string;
-    lastMonitorDate?: string;
-    lastMonitorHistoryId?: string;
-    nextExecDate: string;
-    projectId: string;
-    scenarioName: string;
-    status: {
-        value: string;
-        message: string;
-    };
-    failureMessage?: string;
-    count?: {
-        avgDelayTime: string;
-        failureNum: string;
-        last7DayNum: string;
-        last7DaySuccessNum: string;
-        last7DaySuccessRate: string;
-        last24HoursNum: string;
-        last24HoursSuccessNum: string;
-        last24HoursSuccessRate: string;
-        last30DayNum: string;
-        last30DaySuccessNum: string;
-        last30DaySuccessRate: string;
-        maxDelayTime: string;
-        minDelayTime: string;
-        p50DelayTime: string;
-        p75DelayTime: string;
-        p90DelayTime: string;
-        successNum: string;
-        totalNum: string;
-        successRate: string;
-    }
+import { ComputedRef, Ref } from 'vue';
+import {
+  AuthObjectType,
+  EnumMessage,
+  PageQuery,
+  SearchCriteria
+} from '@xcan-angus/infra';
+import { ScenarioMonitorStatus } from '@/enums/enums';
+import { CreateTimeSetting } from '@/types/types';
 
+export type OrderByKey = 'createdDate' | 'createdByName';
+
+export interface MonitorListParams extends PageQuery{
+  projectId: string;
 }
 
-export type IPane = {
-    _id: string;// pane唯一标识
-    name: string; // pane的tab文案
-    value: string;// pane内部的组件标识
-    closable?: boolean;// 是否允许关闭，true - 允许关闭，false - 禁止关闭
-    forceRender?: boolean;// 被隐藏时是否渲染 DOM 结构，可选
-    icon?: string;// tab文案前面的icon，可选
-    active?: boolean; // 是否选中，添加不用设置，缓存时用于记录上次激活的tab pane，可选
+// Notice setting configuration
+export interface NoticeSetting {
+  enabled: boolean;
+  orgType: AuthObjectType;
+  orgs: { id: string; name: string }[];
+}
 
-    // 组件需要的属性
-    data?: { [key: string]: any; };
-};
+// Server setting configuration
+export interface ServerSetting {
+  url: string;
+  description?: string;
+  variables?: {
+    [key: string]: {
+      enum: string[];
+      default: string;
+    };
+  };
+}
 
-export type FormState = {
-  id?: string;
-  scenarioId: string;
+// Monitor related types
+export interface MonitorCount {
+  avgDelayTime: string;
+  failureNum: number;
+  last7DayNum: string;
+  last7DaySuccessNum: string;
+  last7DaySuccessRate: string;
+  last24HoursNum: string;
+  last24HoursSuccessNum: string;
+  last24HoursSuccessRate: string;
+  last30DayNum: string;
+  last30DaySuccessNum: string;
+  last30DaySuccessRate: string;
+  maxDelayTime: string;
+  minDelayTime: string;
+  p50DelayTime: string;
+  p75DelayTime: string;
+  p90DelayTime: string;
+  successNum: number;
+  successRate: string;
+  totalNum: string;
+}
+
+export type MonitorInfo = {
+  _id: string;
+  id: string;
   name: string;
   description?: string;
-  noticeSetting?: {
-    enabled: boolean;
-    orgType: 'DEPT' | 'GROUP' | 'USER',
-    orgs: string[]
+  projectId: string;
+  scenarioId: string;
+  scenarioName: string;
+  nextExecDate: string;
+  status: EnumMessage<ScenarioMonitorStatus>;
+  failureMessage?: string;
+  noticeSetting: NoticeSetting
+  serverSetting?: ServerSetting[];
+  timeSetting: CreateTimeSetting;
+  count?: MonitorCount,
+  createdByName: string;
+  createdDate: string;
+  lastModifiedByName: string;
+  lastModifiedDate: string;
+  lastMonitorDate?: string;
+  lastMonitorHistoryId?: string;
+}
+
+// Component props interface
+export interface MonitorEditProps {
+  projectId: string;
+  userInfo: {
+    id: string;
+    fullName: string;
   };
-  serverSetting?: { url: string; description?: string; variables?: { [key: string]: { [key: string]: string } } }[];
-  timeSetting?: {
-    createdAt: 'AT_SOME_DATE' | 'NOW' | 'PERIODICALLY';
-    createdAtSomeDate?: string;
-    dayOfMonth?: string;
-    dayOfWeek?: string;
-    periodicCreationUnit: 'DAILY' | 'MONTHLY' | 'WEEKLY';
-    timeOfDay?: string;
-    minuteOfHour?: string;
-    hourOfDay?: string;
+  appInfo: {
+    id: string;
   };
-};
+  _id: string;
+  data: {
+    _id: string;
+    id: string | undefined;
+  };
+}
+
+// Monitor parameters interface
+export interface MonitorParams {
+  scenarioId: string | undefined;
+  description: string;
+  name: string;
+  id?: string;
+  projectId: string;
+  timeSetting: CreateTimeSetting;
+  noticeSetting: NoticeSetting;
+  serverSetting: ServerSetting[];
+}
+
+// CreatedDate component props interface
+export interface CreatedDateProps {
+  createTimeSetting: CreateTimeSetting;
+  showPeriodically?: boolean;
+}
+
+// Day of month option interface
+export interface DayOfMonthOption {
+  message: string;
+  value: string;
+}
+
+// Generic option item interface
+export interface OptionItem {
+  label: string;
+  value: string;
+}
+
+// Time validation result interface
+export interface TimeValidationResult {
+  isValid: boolean;
+  message?: string;
+}
+
+export interface TabPaneData {
+  value: string;
+  _id: string;
+  id: string;
+  data: MonitorInfo;
+  name: string;
+}
+
+export interface TabPaneInjection {
+  addTabPane: (data: TabPaneData) => void;
+  deleteTabPane: (keys: string[]) => void;
+}
+
+// History execution record types
+export interface HistoryRecord {
+  createdBy: string;
+  createdByName: string;
+  createdDate: string;
+  execEndDate: string;
+  execId: string;
+  execStartDate: string;
+  failureMessage: string;
+  id: string;
+  monitorId: string;
+  projectId: string;
+  responseDelay: string;
+  status: MonitorStatus;
+}
+
+export interface HistoryExecData {
+  execId: string;
+  execNode: string | {
+    id: string;
+    name: string;
+    ip: string;
+    agentPort: string;
+    publicIp: string;
+  };
+  execStartDate: string;
+  failureMessage?: string;
+  sampleContents?: any[];
+  sampleLogContent?: string;
+  schedulingResult?: any;
+  status: MonitorStatus;
+}
+
+// Component props types
+export interface MonitorDetailProps {
+  projectId: string;
+  userInfo: { id: string };
+  appInfo: { id: string };
+  data: {
+    _id: string;
+    id: string | undefined;
+  };
+}
+
+// Chart component props
+export interface ChartProps {
+  count?: {
+    failureNum: number | string;
+    successNum: number | string;
+    successRate: string;
+  };
+}
+
+// Tab pane injection type
+export type AddTabPaneFunction = (params: {
+  value: string;
+  _id: string;
+  id: string;
+  data: any;
+  name: string;
+}) => void;
+
+export interface UseMonitorDataReturn {
+  // Data state
+  loaded: Ref<boolean>;
+  loading: Ref<boolean>;
+  searchedFlag: Ref<boolean>;
+  dataList: Ref<MonitorInfo[]>;
+  total: Ref<number>;
+  pageNo: Ref<number>;
+  pageSize: Ref<number>;
+  searchPanelParams: Ref<PageQuery>;
+
+  // Methods
+  loadData: () => Promise<void>;
+  refresh: () => void;
+  searchChange: (data: PageQuery) => void;
+}
+
+export interface UseMonitorActionsReturn {
+  // Methods
+  toDelete: (data: MonitorInfo) => Promise<void>;
+  editMonitor: (data: MonitorInfo) => void;
+  handleDetail: (data: MonitorInfo) => void;
+  run: (data: MonitorInfo) => Promise<void>;
+  getScenarioDetail: (scenarioId: string) => Promise<void>;
+}
+
+export interface UseMonitorUIReturn {
+  // Refs
+  dataListWrapRef: Ref<HTMLElement | undefined>;
+
+  // Methods
+  handleScrollList: (event: Event) => void;
+  handleWindowResize: () => void;
+}
+
+// SearchPanel related types
+export interface SearchPanelOption {
+  valueKey: string;
+  type: 'input' | 'select' | 'select-user' | 'date-range';
+  placeholder: string;
+  allowClear?: boolean;
+  maxlength?: number;
+  action?: string;
+  fieldNames?: { value: string; label: string };
+  showTime?: boolean;
+}
+
+// Form state interface for monitor editing
+export interface EditFormState {
+  scenarioId: string | undefined;
+  description: string;
+  name: string;
+}
+
+export interface SortMenuItem {
+  name: string;
+  key: OrderByKey;
+  orderSort: PageQuery.OrderSort;
+}
+
+export interface MenuItem {
+  key: string;
+  name: string;
+}
+
+export interface UseSearchPanelDataReturn {
+  // Data state
+  searchPanelOptions: SearchPanelOption[];
+  sortMenuItems: SortMenuItem[];
+  menuItems: ComputedRef<MenuItem[]>;
+  selectedMenuMap: Ref<{[key: string]: boolean}>;
+  orderBy: Ref<OrderByKey | undefined>;
+  orderSort: Ref<PageQuery.OrderSort | undefined>;
+  searchFilters: Ref<SearchCriteria[]>;
+  quickSearchFilters: Ref<SearchCriteria[]>;
+  assocFilters: Ref<SearchCriteria[]>;
+
+  // Methods
+  getParams: () => PageQuery;
+  searchChange: (data: SearchCriteria[]) => void;
+  toSort: (sortData: { orderBy: OrderByKey; orderSort: PageQuery.OrderSort }) => void;
+  menuItemClick: (data: MenuItem) => void;
+  refresh: () => void;
+}
+
+export interface UseSearchPanelFiltersReturn {
+  // Data state
+  statusOpt: MenuItem[];
+  statusKeys: string[];
+  assocKeys: string[];
+  timeKeys: string[];
+
+  // Methods
+  formatDateString: (key: string) => [string, string];
+}

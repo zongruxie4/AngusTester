@@ -3,11 +3,12 @@ import { inject } from 'vue';
 
 // eslint-disable-next-line import/no-absolute-path
 import Plugin from '@/plugins/jdbc';
+
 // eslint-disable-next-line import/no-absolute-path
 
 interface Props {
     tabKey:string;
-    sceneInfo:{[key:string]:any};
+    scenarioInfo:{[key:string]:any};
     appInfo:{[key:string]:any};
     userInfo:{[key:string]:any};
     projectId:string;
@@ -15,7 +16,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   tabKey: undefined,
-  sceneInfo: undefined,
+  scenarioInfo: undefined,
   appInfo: undefined,
   userInfo: undefined,
   projectId: undefined
@@ -30,7 +31,7 @@ const replaceTabPane = inject('replaceTabPane');
   <Plugin
     :tabKey="props.tabKey"
     :projectId="props.projectId"
-    :sceneInfo="props.sceneInfo"
+    :scenarioInfo="props.scenarioInfo"
     :userInfo="props.userInfo"
     :appInfo="props.appInfo"
     :updateRefreshNotify="updateRefreshNotify"

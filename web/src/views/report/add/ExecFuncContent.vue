@@ -5,9 +5,11 @@ import { Colon, Hints, IconRequired, Select } from '@xcan-angus/vue-ui';
 import { Tree } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
 import { contentTreeData } from './ExecFuncContentConfig';
+import { CombinedTargetType } from '@/enums/enums';
 
 const { t } = useI18n();
 
+// Component props definition
 interface Props {
   projectId: string;
   contentSetting: {
@@ -21,11 +23,16 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false
 });
 
+// Reactive variable for execution ID
 const execId = ref();
+
+// Field names for select component
 const fieldNames = {
   label: 'name',
   value: 'id'
 };
+
+// Checked keys for tree component
 const checked = ref<string[]>([]);
 contentTreeData.forEach(item => {
   checked.value.push(item.key);
@@ -34,6 +41,7 @@ contentTreeData.forEach(item => {
   }
 });
 
+// Execution parameters for filtering
 const execParams = {
   filters: [
     {
@@ -49,6 +57,10 @@ const execParams = {
   ]
 };
 
+/**
+ * Lifecycle hook - Initialize component
+ * Watch for content setting changes and update execution ID
+ */
 onMounted(() => {
   watch(() => props.contentSetting, newValue => {
     if (newValue?.targetId) {
@@ -58,24 +70,35 @@ onMounted(() => {
     immediate: true
   });
 });
+
+// Validation state
 const valid = ref(false);
+
+/**
+ * Validate if execution ID is selected
+ * @returns Boolean indicating if validation passes
+ */
 const validate = () => {
   valid.value = true;
-  if (execId.value) {
-    return true;
-  }
-  return false;
+  return !!execId.value;
 };
 
+/**
+ * Get execution data for report
+ * @returns Object containing execution target ID and type
+ */
+const getData = () => {
+  valid.value = false;
+  return {
+    targetId: execId.value,
+    targetType: CombinedTargetType.EXECUTION
+  };
+};
+
+// Expose methods to parent component
 defineExpose({
   validate,
-  getData: () => {
-    valid.value = false;
-    return {
-      targetId: execId.value,
-      targetType: 'EXECUTION'
-    };
-  }
+  getData
 });
 </script>
 <template>
