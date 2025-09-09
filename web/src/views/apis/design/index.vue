@@ -3,8 +3,7 @@ import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from '
 import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-
-import { IPane } from '@/types/types';
+import { IPane } from '@xcan-angus/infra';
 
 type Props = {
   projectId: string;

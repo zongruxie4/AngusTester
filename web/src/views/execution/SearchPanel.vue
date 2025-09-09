@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Colon, DropdownSort, Icon, Input, SearchPanel, Select } from '@xcan-angus/vue-ui';
 import { TESTER, PageQuery } from '@xcan-angus/infra';
-import SelectEnum from '@/components/selectEnum/index.vue';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { useSearchPanel } from './composables/useSearchPanel';
 import type { FilterItem, SearchPanelProps } from './types';
 

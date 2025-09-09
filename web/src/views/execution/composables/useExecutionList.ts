@@ -1,12 +1,11 @@
 import { inject, ref, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-import { PageQuery, SearchCriteria } from '@xcan-angus/infra';
+import { PageQuery, ProjectPageQuery, SearchCriteria } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { exec } from '@/api/tester';
 import { ExecStatus } from '@/enums/enums';
 import type { ExecutionInfo } from '../types';
-import { ProjectPageQuery } from '@/types/types';
 
 export type OrderByKey = 'createdDate' | 'createdByName';
 

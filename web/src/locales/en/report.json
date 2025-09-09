@@ -383,7 +383,7 @@
     },
     "modal": {
       "deleteReport": "Delete Report",
-      "confirmDelete": "Are you sure you want to delete report 【{name}】?",
+      "confirmDelete": "Are you sure you want to delete report [{name}]?",
       "reportPermission": "Report Permission"
     },
     "actions": {
@@ -554,7 +554,7 @@
         "actions": "Actions",
         "delete": "Delete",
         "deleteRecord": "Delete Report Record",
-        "confirmDelete": "Confirm delete report record【{name}】?",
+        "confirmDelete": "Confirm delete report record[{name}]?",
         "deleteSuccess": "Delete successful"
       }
     }

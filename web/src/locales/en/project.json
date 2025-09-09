@@ -8,7 +8,7 @@
     "projectList": "Project List",
     "addedProjects": "Added Projects",
     "projectDescription": "Projects are fundamental units for organizing R&D activities, workflows, and resources. They provide teams with centralized planning, tracking, reporting, and acceptance capabilities. The key workflow is as follows:",
-    "confirmDelete": "Are you sure you want to delete project 【{name}】?",
+    "confirmDelete": "Are you sure you want to delete project [{name}]?",
     "deleteSuccess": "Project deleted successfully",
     "searchPlaceholder": "Enter search keywords",
     "adminHint": "Only admin, creator, and owner can modify or delete projects.",
@@ -240,7 +240,7 @@
       "refresh": "Refresh"
     },
     "messages": {
-      "deleteConfirm": "Confirm deletion of version 【{name}】?",
+      "deleteConfirm": "Confirm deletion of version [{name}]?",
       "deleteSuccess": "Successfully deleted",
       "editSuccess": "Successfully modified",
       "mergeWarning": "Warning: Once versions are merged, they cannot be restored!",
@@ -391,7 +391,7 @@
     "updateSuccess": "Updated successfully",
     "deleteSuccess": "Module deleted successfully",
     "moveSuccess": "Moved successfully",
-    "confirmDelete": "Are you sure you want to delete module 【{name}】?"
+    "confirmDelete": "Are you sure you want to delete module [{name}]?"
   },
   "tag": {
     "title": "Data Tags",
@@ -410,7 +410,7 @@
     "addSuccess": "Tag added successfully",
     "updateSuccess": "Updated successfully",
     "deleteSuccess": "Tag deleted successfully",
-    "confirmDelete": "Are you sure you want to delete tag 【{name}】?"
+    "confirmDelete": "Are you sure you want to delete tag [{name}]?"
   },
   "projectActivity": {
     "name": "Activity",

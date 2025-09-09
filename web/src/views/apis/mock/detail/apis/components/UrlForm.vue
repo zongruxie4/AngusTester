@@ -3,7 +3,7 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Composite, HttpMethodText, IconCopy, IconRequired, Input, Select } from '@xcan-angus/vue-ui';
 
-import SelectEnum from '@/components/selectEnum/index.vue';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 // Props & Emits
 interface Props {

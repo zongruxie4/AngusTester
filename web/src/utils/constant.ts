@@ -1,5 +1,4 @@
 export const SETTING_KEYS = {
-  // 活动相关配置
   MAX_RESOURCE_ACTIVITIES: 'MAX_RESOURCE_ACTIVITIES'
 
   // Other configuration keys can be added here

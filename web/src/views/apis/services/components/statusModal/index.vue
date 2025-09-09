@@ -3,7 +3,7 @@ import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Hints, Modal, notification } from '@xcan-angus/vue-ui';
 import { apis, services } from '@/api/tester';
-import SelectEnum from '@/components/selectEnum/index.vue';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 interface Props {
   visible: boolean;

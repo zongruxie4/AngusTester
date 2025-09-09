@@ -10,8 +10,8 @@ export function useScenarioSearch () {
   const { t } = useI18n();
 
   const groupedKey = ref<'createdBy' | 'plugin' | 'scriptType' | 'none'>('none');
-  const orderBy = ref<string>('createdDate');
-  const orderSort = ref<OrderSortKey>(PageQuery.OrderSort.Desc);
+  const orderBy = ref<SortKey>('createdDate');
+  const orderSort = ref<PageQuery.OrderSort>(PageQuery.OrderSort.Desc);
   const filters = ref<SearchCriteria[]>();
 
   /**
@@ -19,7 +19,7 @@ export function useScenarioSearch () {
    */
   const searchOptions = computed(() => [
     {
-      type: 'input',
+      type: 'input' as const,
       placeholder: t('scenario.list.searchPlaceholder'),
       valueKey: 'name',
       allowClear: true,
@@ -27,27 +27,26 @@ export function useScenarioSearch () {
       trim: true
     },
     {
-      type: 'input',
+      type: 'input' as const,
       placeholder: t('scenario.list.pluginTypePlaceholder'),
       valueKey: 'plugin',
       allowClear: true,
       trim: true,
-      op: '  EQUAL',
+      op: 'EQUAL' as const,
       maxlength: 100,
       trimAll: true
     },
     {
-      type: 'select-enum',
+      type: 'select-enum' as const,
       placeholder: t('scenario.list.scriptTypePlaceholder'),
       valueKey: 'scriptType',
       allowClear: true,
       enumKey: ScriptType,
-      excludes: ({ value }: { value: string }) => [ScriptType.MOCK_DATA, ScriptType.MOCK_APIS].includes(value)
+      excludes: ({ value }: { value: ScriptType }) => [ScriptType.MOCK_DATA, ScriptType.MOCK_APIS].includes(value)
     },
     {
-      type: 'date-range',
+      type: 'date-range' as const,
       showTime: true,
-      placeholder: t('scenario.list.dateRangePlaceholder'),
       valueKey: 'createdDate',
       valueType: 'multiple',
       allowClear: true
@@ -102,15 +101,15 @@ export function useScenarioSearch () {
     {
       name: t('scenario.list.sortOptions.byAddTime'),
       key: 'createdDate' as SortKey,
-      orderSort: 'DESC' as const
+      orderSort: PageQuery.OrderSort.Desc
     }, {
       name: t('scenario.list.sortOptions.byName'),
       key: 'name' as SortKey,
-      orderSort: 'ASC' as const
+      orderSort: PageQuery.OrderSort.Asc
     }, {
       name: t('scenario.list.sortOptions.byCreator'),
       key: 'createdByName' as SortKey,
-      orderSort: 'ASC' as const
+      orderSort: PageQuery.OrderSort.Asc
     }
   ]);
 

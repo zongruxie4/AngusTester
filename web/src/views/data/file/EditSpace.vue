@@ -3,7 +3,7 @@ import { reactive, ref, watch } from 'vue';
 import { Input, Modal } from '@xcan-angus/vue-ui';
 import { space } from '@/api/storage';
 import { Form, FormItem } from 'ant-design-vue';
-import SelectEnum from '@/components/selectEnum/index.vue';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { useI18n } from 'vue-i18n';
 
 import { SpaceFormState, EditSpaceProps, EditSpaceEmits } from './types';

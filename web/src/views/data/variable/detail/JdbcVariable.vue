@@ -3,7 +3,7 @@ import { defineAsyncComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { Hints, Icon, IconRequired, Input, Toggle, Tooltip, Validate } from '@xcan-angus/vue-ui';
-import SelectEnum from '@/components/selectEnum/index.vue';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { useJdbcVariable } from './composables/useJdbcVariable';
 import { VariableItem } from '../types';
 import { VariableDataProps } from '@/views/data/variable/detail/types';

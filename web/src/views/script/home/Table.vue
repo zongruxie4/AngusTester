@@ -31,7 +31,7 @@ const emit = defineEmits<{
 }>();
 
 // Async components
-const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/exportModal/index.vue'));
+const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/ExportScriptModal.vue'));
 
 // I18n
 const { t } = useI18n();

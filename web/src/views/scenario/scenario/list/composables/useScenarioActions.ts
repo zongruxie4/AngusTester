@@ -1,20 +1,28 @@
-import { Ref } from 'vue';
+import { Ref, ComputedRef } from 'vue';
 import { utils } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { scenario } from '@/api/tester';
 import { modal, notification } from '@xcan-angus/vue-ui';
-import { ScenarioInfo } from '../types';
+import { ScenarioInfo, MenuItem } from '../types';
 
 /**
  * Composable for managing scenario actions
  * @param projectId - The project ID
  * @param addTabPane - Function to add a tab pane
  * @param deleteTabPane - Function to delete a tab pane
+ * @param scenarioList - Reactive reference to scenario list
+ * @param dropdownMenuItemsMap - Reactive reference to dropdown menu items map
+ * @param dropdownMenuItems - Computed dropdown menu items
+ * @param selectedId - Reactive reference to selected scenario ID
  */
 export function useScenarioActions (
   projectId: Ref<string | undefined>,
   addTabPane: (data: any) => void,
-  deleteTabPane: (data: string[]) => void
+  deleteTabPane: (data: string[]) => void,
+  scenarioList: Ref<ScenarioInfo[]>,
+  dropdownMenuItemsMap: Ref<{ [key: string]: MenuItem[] }>,
+  dropdownMenuItems: ComputedRef<readonly MenuItem[]>,
+  selectedId: Ref<string | undefined>
 ) {
   const { t } = useI18n();
 
@@ -106,12 +114,20 @@ export function useScenarioActions (
       if (error) {
         return;
       }
+
+      const index = dropdownMenuItemsMap.value[id].findIndex(item => item.key === 'cancelFavourite');
+      const data = dropdownMenuItems.value.find(item => item.key === 'favourite');
+      dropdownMenuItemsMap.value[id].splice(index, 1, data!);
       notification.success(t('scenario.list.messages.cancelFavouriteSuccess'));
     } else {
       const [error] = await scenario.addScenarioFavorite(id);
       if (error) {
         return;
       }
+
+      const index = dropdownMenuItemsMap.value[id].findIndex(item => item.key === 'favourite');
+      const data = dropdownMenuItems.value.find(item => item.key === 'cancelFavourite');
+      dropdownMenuItemsMap.value[id].splice(index, 1, data!);
       notification.success(t('scenario.list.messages.favouriteSuccess'));
     }
   };
@@ -125,13 +141,49 @@ export function useScenarioActions (
       if (error) {
         return;
       }
+
+      const index = dropdownMenuItemsMap.value[id].findIndex(item => item.key === 'cancelFollow');
+      const data = dropdownMenuItems.value.find(item => item.key === 'follow');
+      dropdownMenuItemsMap.value[id].splice(index, 1, data!);
       notification.success(t('scenario.list.messages.cancelFollowSuccess'));
     } else {
       const [error] = await scenario.addScenarioFollow(id);
       if (error) {
         return;
       }
+
+      const index = dropdownMenuItemsMap.value[id].findIndex(item => item.key === 'follow');
+      const data = dropdownMenuItems.value.find(item => item.key === 'cancelFollow');
+      dropdownMenuItemsMap.value[id].splice(index, 1, data!);
       notification.success(t('scenario.list.messages.followSuccess'));
+    }
+  };
+
+  /**
+   * Handle scenario cloning with emit callback
+   */
+  const toClone = async (value: ScenarioInfo, emit: (e: 'clone', value: ScenarioInfo) => void) => {
+    const [error] = await scenario.cloneScenario(value.id);
+    if (error) {
+      return;
+    }
+
+    emit('clone', value);
+  };
+
+  /**
+   * Handle auth flag change
+   */
+  const authFlagChange = ({ auth: authFlag }: { auth: boolean }) => {
+    const data = scenarioList.value;
+    const targetId = selectedId.value;
+    if (!targetId) return;
+
+    for (let i = 0, len = data.length; i < len; i++) {
+      if (data[i].id === targetId) {
+        data[i].auth = authFlag;
+        break;
+      }
     }
   };
 
@@ -143,6 +195,8 @@ export function useScenarioActions (
     cloneScenario,
     deleteScenario,
     toggleScenarioFavorite,
-    toggleScenarioFollow
+    toggleScenarioFollow,
+    toClone,
+    authFlagChange
   };
 }

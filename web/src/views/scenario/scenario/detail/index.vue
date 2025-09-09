@@ -24,7 +24,7 @@ const deleteTabPane = inject<(data: string[]) => void>('deleteTabPane', () => {}
 
 // Async components
 const ExecDetail = defineAsyncComponent(() => import('@/views/execution/detail/index.vue'));
-const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/exportModal/index.vue'));
+const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/ExportScriptModal.vue'));
 const TestSummary = defineAsyncComponent(() => import('./TestSummary.vue'));
 const Task = defineAsyncComponent(() => import('./Task.vue'));
 
@@ -123,7 +123,7 @@ onMounted(() => {
     </div>
     <TestSummary
       v-if="isHttpPlugin"
-      class="mb-4"
+      class="mb-4 mt-2"
       :projectId="props.projectId"
       :appInfo="props.appInfo"
       :userInfo="props.userInfo"

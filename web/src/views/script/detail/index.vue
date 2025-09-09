@@ -22,7 +22,7 @@ const { t } = useI18n();
 const ScriptInfo = defineAsyncComponent(() => import('./ScriptInfo.vue'));
 const ScriptForm = defineAsyncComponent(() => import('./ScriptForm.vue'));
 const MonacoEditor = defineAsyncComponent(() => import('@/components/monacoEditor/index.vue'));
-const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/exportModal/index.vue'));
+const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/ExportScriptModal.vue'));
 const DebugResult = defineAsyncComponent(() => import('./DebugResult.vue'));
 const DebugLog = defineAsyncComponent(() => import('./DebugLog.vue'));
 const ExecLog = defineAsyncComponent(() => import('@/views/script/detail/ExecLog.vue'));

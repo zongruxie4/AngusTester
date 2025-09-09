@@ -21,7 +21,7 @@ import dayjs from 'dayjs';
 import elementResizeDetector, { Erd } from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
 import { CaseInfoObj, Priority } from '../PropsType';
-import SelectEnum from '@/components/selectEnum/index.vue';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 import {
   bigApisInfoColumns,
   bigDateInfoColumns,

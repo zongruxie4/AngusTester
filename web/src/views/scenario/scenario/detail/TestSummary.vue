@@ -2,7 +2,6 @@
 import { computed } from 'vue';
 import { Icon } from '@xcan-angus/vue-ui';
 import { Popover } from 'ant-design-vue';
-import {} from '@/enums/enums';
 
 import { useTestSummary } from './composables/useTestSummary';
 import type { TestSummaryProps } from './types';
@@ -88,12 +87,13 @@ const getTestStatusIcon = (testData: any) => {
       </div>
 
       <div class="status-display">
-        <div class="status-badge"
+        <div
+          class="status-badge"
           :class="[!functionalityTestData ? '' : functionalityTestData.passed ? 'PASSED': 'NOT_PASSED']">
           <Icon :icon="getTestStatusIcon(functionalityTestData)" class="status-icon" />
           {{ !functionalityTestData ? t('scenario.detail.testSummary.status.notTested')
-          : functionalityTestData.passed ? t('scenario.detail.testSummary.status.passed')
-          : t('scenario.detail.testSummary.status.notPassed') }}
+            : functionalityTestData.passed ? t('scenario.detail.testSummary.status.passed')
+              : t('scenario.detail.testSummary.status.notPassed') }}
         </div>
         <Popover>
           <template #content>
@@ -101,15 +101,27 @@ const getTestStatusIcon = (testData: any) => {
               {{ functionalityTestData?.failureMessage }}
             </div>
           </template>
-          <Icon v-if="functionalityTestData && !functionalityTestData.passed" icon="icon-tishi1" class="warning-icon" />
+          <Icon
+            v-if="functionalityTestData && !functionalityTestData.passed"
+            icon="icon-tishi1"
+            class="warning-icon" />
         </Popover>
       </div>
 
       <div class="config-section">
         <div class="config-grid">
-          <div v-for="(line, idx) in configInfo" :key="idx" class="config-row">
-            <div v-for="item in line" :key="item.dataIndex" class="config-item">
-              <span v-if="item.label" class="config-label" :class="item.bgColor">{{ item.label }}</span>
+          <div
+            v-for="(line, idx) in configInfo"
+            :key="idx"
+            class="config-row">
+            <div
+              v-for="item in line"
+              :key="item.dataIndex"
+              class="config-item">
+              <span
+                v-if="item.label"
+                class="config-label"
+                :class="item.bgColor">{{ item.label }}</span>
               <span v-if="item.dataIndex" class="config-value">
                 {{ functionalityTestData?.targetSummary?.[item.dataIndex] || '--' }}
               </span>
@@ -137,8 +149,8 @@ const getTestStatusIcon = (testData: any) => {
         <div class="status-badge" :class="[!performanceTestData ? '' : performanceTestData.passed ? 'PASSED' : 'NOT_PASSED']">
           <Icon :icon="getTestStatusIcon(performanceTestData)" class="status-icon" />
           {{ !performanceTestData ? t('scenario.detail.testSummary.status.notTested')
-          : performanceTestData.passed ? t('scenario.detail.testSummary.status.passed')
-          : t('scenario.detail.testSummary.status.notPassed') }}
+            : performanceTestData.passed ? t('scenario.detail.testSummary.status.passed')
+              : t('scenario.detail.testSummary.status.notPassed') }}
         </div>
         <Popover>
           <template #content>
@@ -146,7 +158,10 @@ const getTestStatusIcon = (testData: any) => {
               {{ performanceTestData?.failureMessage }}
             </div>
           </template>
-          <Icon v-if="performanceTestData && !performanceTestData.passed" icon="icon-tishi1" class="warning-icon" />
+          <Icon
+            v-if="performanceTestData && !performanceTestData.passed"
+            icon="icon-tishi1"
+            class="warning-icon" />
         </Popover>
       </div>
 
@@ -160,7 +175,10 @@ const getTestStatusIcon = (testData: any) => {
             <div class="metric-value-container">
               <div class="metric-value">
                 <span class="metric-number">{{ performanceTestData?.sampleSummary?.tps || '--' }}</span>
-                <Icon v-if="performanceTestData" :icon="getTpsTrendIcon(performanceTestData as any)" class="trend-icon" />
+                <Icon
+                  v-if="performanceTestData"
+                  :icon="getTpsTrendIcon(performanceTestData as any)"
+                  class="trend-icon" />
               </div>
             </div>
           </div>
@@ -172,7 +190,10 @@ const getTestStatusIcon = (testData: any) => {
             <div class="metric-value-container">
               <div class="metric-value">
                 <span class="metric-number">{{ performanceTestData?.sampleSummary?.tranP90 || '--' }}</span>
-                <Icon v-if="performanceTestData" :icon="getResponseTimeTrendIcon(performanceTestData as any)" class="trend-icon" />
+                <Icon
+                  v-if="performanceTestData"
+                  :icon="getResponseTimeTrendIcon(performanceTestData as any)"
+                  class="trend-icon" />
               </div>
             </div>
           </div>
@@ -184,7 +205,10 @@ const getTestStatusIcon = (testData: any) => {
             <div class="metric-value-container">
               <div class="metric-value">
                 <span class="metric-number">{{ performanceTestData?.sampleSummary?.errorRate || '--' }}%</span>
-                <Icon v-if="performanceTestData" :icon="getErrorRateTrendIcon(performanceTestData as any)" class="trend-icon" />
+                <Icon
+                  v-if="performanceTestData"
+                  :icon="getErrorRateTrendIcon(performanceTestData as any)"
+                  class="trend-icon" />
               </div>
             </div>
           </div>
@@ -210,8 +234,8 @@ const getTestStatusIcon = (testData: any) => {
         <div class="status-badge" :class="[!stabilityTestData ? '' : stabilityTestData.passed ? 'PASSED': 'NOT_PASSED']">
           <Icon :icon="getTestStatusIcon(stabilityTestData)" class="status-icon" />
           {{ !stabilityTestData ? t('scenario.detail.testSummary.status.notTested')
-          : stabilityTestData.passed ? t('scenario.detail.testSummary.status.passed')
-          : t('scenario.detail.testSummary.status.notPassed') }}
+            : stabilityTestData.passed ? t('scenario.detail.testSummary.status.passed')
+              : t('scenario.detail.testSummary.status.notPassed') }}
         </div>
         <Popover>
           <template #content>
@@ -219,7 +243,10 @@ const getTestStatusIcon = (testData: any) => {
               {{ stabilityTestData?.failureMessage }}
             </div>
           </template>
-          <Icon v-if="stabilityTestData && !stabilityTestData.passed" icon="icon-tishi1" class="warning-icon" />
+          <Icon
+            v-if="stabilityTestData && !stabilityTestData.passed"
+            icon="icon-tishi1"
+            class="warning-icon" />
         </Popover>
       </div>
 
@@ -233,7 +260,10 @@ const getTestStatusIcon = (testData: any) => {
             <div class="metric-value-container">
               <div class="metric-value">
                 <span class="metric-number">{{ stabilityTestData?.sampleSummary?.tps || '--' }}</span>
-                <Icon v-if="stabilityTestData" :icon="getTpsTrendIcon(stabilityTestData as any)" class="trend-icon" />
+                <Icon
+                  v-if="stabilityTestData"
+                  :icon="getTpsTrendIcon(stabilityTestData as any)"
+                  class="trend-icon" />
               </div>
             </div>
           </div>
@@ -245,7 +275,10 @@ const getTestStatusIcon = (testData: any) => {
             <div class="metric-value-container">
               <div class="metric-value">
                 <span class="metric-number">{{ stabilityTestData?.sampleSummary?.tranP90 || '--' }}</span>
-                <Icon v-if="stabilityTestData" :icon="getResponseTimeTrendIcon(stabilityTestData as any)" class="trend-icon" />
+                <Icon
+                  v-if="stabilityTestData"
+                  :icon="getResponseTimeTrendIcon(stabilityTestData as any)"
+                  class="trend-icon" />
               </div>
             </div>
           </div>
@@ -257,7 +290,10 @@ const getTestStatusIcon = (testData: any) => {
             <div class="metric-value-container">
               <div class="metric-value">
                 <span class="metric-number">{{ stabilityTestData?.sampleSummary?.errorRate || '--' }}%</span>
-                <Icon v-if="stabilityTestData" :icon="getErrorRateTrendIcon(stabilityTestData as any)" class="trend-icon" />
+                <Icon
+                  v-if="stabilityTestData"
+                  :icon="getErrorRateTrendIcon(stabilityTestData as any)"
+                  class="trend-icon" />
               </div>
             </div>
           </div>
@@ -571,19 +607,19 @@ const getTestStatusIcon = (testData: any) => {
     grid-template-columns: repeat(5, 1fr);
     @apply gap-2;
   }
-  
+
   .summary-card {
     @apply min-h-[180px];
   }
-  
+
   .card-title {
     font-size: 12px;
   }
-  
+
   .status-badge {
     font-size: 10px;
   }
-  
+
   .metric-title,
   .metric-number,
   .config-label,
@@ -598,24 +634,24 @@ const getTestStatusIcon = (testData: any) => {
     grid-template-columns: repeat(5, 1fr);
     @apply gap-1;
   }
-  
+
   .summary-card {
     @apply min-h-[160px];
   }
-  
+
   .card-header {
     @apply px-2 py-1;
   }
-  
+
   .status-display {
     @apply px-2 py-1;
   }
-  
+
   .config-section,
   .metrics-section {
     @apply px-1 py-1;
   }
-  
+
   .card-footer {
     @apply px-1 py-1;
   }
@@ -680,4 +716,3 @@ const getTestStatusIcon = (testData: any) => {
   @apply rotate-12;
 }
 </style>
-

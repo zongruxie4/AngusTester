@@ -57,7 +57,7 @@
         "pageInfo": "Page {current}/{totalPage}"
       },
       "messages": {
-        "deleteConfirm": "Are you sure to delete 【{name}】?",
+        "deleteConfirm": "Are you sure to delete [{name}]?",
         "deleteSuccess": "Delete successful"
       },
       "emptyData": {
@@ -115,7 +115,7 @@
         "clone": "Clone"
       },
       "messages": {
-        "deleteConfirm": "Are you sure to delete variable 【{name}】?",
+        "deleteConfirm": "Are you sure to delete variable [{name}]?",
         "deleteSuccess": "Variable deleted successfully",
         "cloneSuccess": "Variable cloned successfully",
         "batchDeleteConfirm": "Are you sure to delete the selected {num} variables?",
@@ -197,7 +197,7 @@
     },
     "detail": {
       "notifications": {
-        "deleteConfirm": "Are you sure to delete variable 【{name}】?",
+        "deleteConfirm": "Are you sure to delete variable [{name}]?",
         "deleteSuccess": "Variable deleted successfully",
         "cloneSuccess": "Variable cloned successfully",
         "copyLinkSuccess": "Link copied successfully",

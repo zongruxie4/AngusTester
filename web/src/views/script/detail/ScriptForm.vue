@@ -3,7 +3,7 @@ import { useI18n } from 'vue-i18n';
 import { Input } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
 
-import SelectEnum from '@/components/selectEnum/index.vue';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { ScriptInfo } from '../types';
 import { useScriptForm } from './composables/useScriptForm';
 

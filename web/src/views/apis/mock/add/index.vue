@@ -5,7 +5,7 @@ import { Icon, Input, notification, PureCard, Select, Tooltip } from '@xcan-angu
 import { Button, Card, Form, FormItem, Popover, Upload } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 import { TESTER, appContext } from '@xcan-angus/infra';
-import SelectEnum from '@/components/selectEnum/index.vue';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { formatBytes } from '@/utils/common';
 import { mock } from '@/api/tester';
 import ApiList from './ApiList.vue';

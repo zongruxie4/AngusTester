@@ -1,8 +1,8 @@
 import { onMounted, Ref, ref, watch } from 'vue';
-import { PageQuery, SearchCriteria } from '@xcan-angus/infra';
+import { PageQuery, ProjectPageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { scenario } from '@/api/tester';
-import { ProjectPageQuery } from '@/types/types';
-import { ScenarioInfo } from '../types';
+import { ScenarioInfo, MenuItem } from '../types';
+import { ScenarioPermission } from '@/enums/enums';
 
 /**
  * Sort keys for scenarios
@@ -15,6 +15,7 @@ export type SortKey = 'createdDate' | 'name' | 'createdByName';
  * @param notify - Notification trigger
  */
 export function useScenarioData (projectId: Ref<string | undefined>, notify: Ref<string | undefined>) {
+
   const loaded = ref(false);
   const loading = ref(false);
   const errorMessage = ref<string>();
@@ -104,6 +105,6 @@ export function useScenarioData (projectId: Ref<string | undefined>, notify: Ref
     dataList,
 
     // Methods
-    loadData
+    loadData,
   };
 }

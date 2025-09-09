@@ -1,14 +1,13 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, inject, onMounted, Ref, ref, watch } from 'vue';
 import { Badge, Button, Tooltip, TypographyParagraph } from 'ant-design-vue';
-import { AsyncComponent, AuthorizeModal, Dropdown, GridList, Icon, Image, ScriptTypeTag, notification, modal } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/infra';
+import { AsyncComponent, AuthorizeModal, Dropdown, GridList, Icon, Image, ScriptTypeTag } from '@xcan-angus/vue-ui';
+import { CombinedTargetType, TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-import { scenario } from '@/api/tester';
 import { ScenarioPermission, ExecStatus } from '@/enums/enums';
 
 // Import composables
-import { useScenarioModals, useScenarioPermissions } from './composables';
+import { useScenarioModals, useScenarioPermissions, useScenarioActions, useScenarioMenuItems } from './composables';
 
 import { MenuItem, MenuItemKey, ScenarioInfo } from './types';
 
@@ -37,17 +36,21 @@ const emit = defineEmits<{
 }>();
 
 // Async components
-const CreateTestTaskModal = defineAsyncComponent(() => import('@/components/task/createTestModal/index.vue'));
-const RestartTestTaskModal = defineAsyncComponent(() => import('@/components/task/restartTestModal/index.vue'));
-const ReOpenTestTaskModal = defineAsyncComponent(() => import('@/components/task/reopenTestModal/index.vue'));
-const DelTestTask = defineAsyncComponent(() => import('@/components/task/delTestModal/index.vue'));
-const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/exportModal/index.vue'));
+const CreateTestTaskModal = defineAsyncComponent(() => import('@/components/task/CreateTestModal.vue'));
+const RestartTestTaskModal = defineAsyncComponent(() => import('@/components/task/RestartTestModal.vue'));
+const ReOpenTestTaskModal = defineAsyncComponent(() => import('@/components/task/ReopenTestModal.vue'));
+const DelTestTask = defineAsyncComponent(() => import('@/components/task/DeleteTestModal.vue'));
+const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/ExportScriptModal.vue'));
 const ExecTestModal = defineAsyncComponent(() => import('@/views/scenario/scenario/list/ExecTest.vue'));
 
 // Inject dependencies
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const deleteTabPane = inject<(data: any) => void>('deleteTabPane', () => { });
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
+
+// Component state
+const scenarioList = ref<ScenarioInfo[]>([]);
+const dropdownMenuItemsMap = ref<{ [key: string]: MenuItem[] }>({});
 
 // Initialize composables
 const {
@@ -79,49 +82,26 @@ const {
   openRestartTestTaskModal
 } = useScenarioModals();
 
-// Component state
-const loading = ref(false);
-const scenarioList = ref<ScenarioInfo[]>([]);
-const dropdownMenuItemsMap = ref<{ [key: string]: MenuItem[] }>({});
+const {
+  dropdownMenuItems
+} = useScenarioMenuItems();
 
-// Dropdown menu items
-const dropdownMenuItems: readonly MenuItem[] = [
-  { key: 'follow', name: t('scenario.list.actions.follow'), permission: 'VIEW', icon: 'icon-yiguanzhu' },
-  { key: 'cancelFollow', name: t('scenario.list.actions.cancelFollow'), permission: 'VIEW', icon: 'icon-quxiaoguanzhu' },
-  { key: 'favourite', name: t('scenario.list.actions.favourite'), permission: 'VIEW', icon: 'icon-yishoucang' },
-  { key: 'cancelFavourite', name: t('scenario.list.actions.cancelFavourite'), permission: 'VIEW', icon: 'icon-quxiaoshoucang' },
-  { key: 'auth', name: t('scenario.list.actions.auth'), permission: 'GRANT', icon: 'icon-quanxian1' },
-  { key: 'export', name: t('scenario.list.actions.export'), permission: 'EXPORT', icon: 'icon-daochu' },
-  { key: 'delete', name: t('scenario.list.actions.delete'), permission: 'DELETE', icon: 'icon-qingchu' },
-  {
-    key: 'createTestTask',
-    name: t('scenario.list.actions.createTestTask'),
-    permission: 'TEST',
-    icon: 'icon-shengchengceshirenwu1',
-    tip: '生成功能、性能和稳定性测试任务。'
-  },
-  {
-    key: 'restartTestTask',
-    name: t('scenario.list.actions.restartTestTask'),
-    permission: 'TEST',
-    icon: 'icon-zhongxinkaishiceshi',
-    tip: '将任务更新为`待处理`，相关统计计数和状态会被清除。'
-  },
-  {
-    key: 'reopenTestTask',
-    name: t('scenario.list.actions.reopenTestTask'),
-    permission: 'TEST',
-    icon: 'icon-zhongxindakaiceshirenwu',
-    tip: '将任务状态更新为`待处理`、 不清理统计计数和状态。'
-  },
-  {
-    key: 'deleteTestTask',
-    name: t('scenario.list.actions.deleteTestTask'),
-    permission: 'TEST',
-    icon: 'icon-shanchuceshirenwu1',
-    tip: '删除接口对应功能、性能和稳定性测试任务。'
-  }
-];
+const {
+  toggleScenarioFavorite,
+  toggleScenarioFollow,
+  toClone,
+  deleteScenario,
+  authFlagChange
+} = useScenarioActions(
+  ref(props.projectId),
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  () => {}, // addTabPane - not used in this component
+  deleteTabPane,
+  scenarioList,
+  dropdownMenuItemsMap,
+  dropdownMenuItems,
+  selectedId
+);
 
 // Execution status color mapping
 const resBgColorMap = {
@@ -144,8 +124,8 @@ onMounted(() => {
     }
 
     for (let i = 0, len = newValue.length; i < len; i++) {
-      const { id, follow, favourite } = newValue[i];
-      dropdownMenuItemsMap.value[id] = filterMenuItems(dropdownMenuItems, newValue[i], proTypeShowMap.value);
+      const { id } = newValue[i];
+      dropdownMenuItemsMap.value[id] = filterMenuItems(dropdownMenuItems.value, newValue[i], proTypeShowMap.value);
     }
 
     scenarioList.value = newValue;
@@ -153,16 +133,6 @@ onMounted(() => {
 });
 
 // Event handlers
-const authFlagChange = ({ auth: authFlag }: { auth: boolean }) => {
-  const data = scenarioList.value;
-  const targetId = selectedId.value;
-  for (let i = 0, len = data.length; i < len; i++) {
-    if (data[i].id === targetId) {
-      data[i].auth = authFlag;
-      break;
-    }
-  }
-};
 
 const menuItemClick = (key: MenuItemKey, data: ScenarioInfo): void => {
   switch (key) {
@@ -205,106 +175,7 @@ const menuItemClick = (key: MenuItemKey, data: ScenarioInfo): void => {
   }
 };
 
-// Scenario actions
-const toggleScenarioFavorite = async (id: string, isFavorite: boolean) => {
-  loading.value = true;
-  if (isFavorite) {
-    const [error] = await scenario.deleteScenarioFavorite(id);
-    if (error) {
-      loading.value = false;
-      return;
-    }
-
-    const index = dropdownMenuItemsMap.value[id].findIndex(item => item.key === 'cancelFavourite');
-    const data = dropdownMenuItems.find(item => item.key === 'favourite');
-    dropdownMenuItemsMap.value[id].splice(index, 1, data!);
-  } else {
-    const [error] = await scenario.addScenarioFavorite(id);
-    if (error) {
-      loading.value = false;
-      return;
-    }
-
-    const index = dropdownMenuItemsMap.value[id].findIndex(item => item.key === 'favourite');
-    const data = dropdownMenuItems.find(item => item.key === 'cancelFavourite');
-    dropdownMenuItemsMap.value[id].splice(index, 1, data!);
-  }
-  loading.value = false;
-
-  const message = isFavorite
-    ? t('scenario.list.messages.cancelFavouriteSuccess')
-    : t('scenario.list.messages.favouriteSuccess');
-
-  // Assuming notification is available globally or imported
-  notification.success(message);
-};
-
-const toggleScenarioFollow = async (id: string, isFollowing: boolean) => {
-  loading.value = true;
-  if (isFollowing) {
-    const [error] = await scenario.deleteScenarioFollow(id);
-    if (error) {
-      loading.value = false;
-      return;
-    }
-
-    const index = dropdownMenuItemsMap.value[id].findIndex(item => item.key === 'cancelFollow');
-    const data = dropdownMenuItems.find(item => item.key === 'follow');
-    dropdownMenuItemsMap.value[id].splice(index, 1, data!);
-  } else {
-    const [error] = await scenario.addScenarioFollow(id);
-    if (error) {
-      loading.value = false;
-      return;
-    }
-
-    const index = dropdownMenuItemsMap.value[id].findIndex(item => item.key === 'follow');
-    const data = dropdownMenuItems.find(item => item.key === 'cancelFollow');
-    dropdownMenuItemsMap.value[id].splice(index, 1, data!);
-  }
-  loading.value = false;
-
-  const message = isFollowing
-    ? t('scenario.list.messages.cancelFollowSuccess')
-    : t('scenario.list.messages.followSuccess');
-
-  // Assuming notification is available globally or imported
-  notification.success(message);
-};
-
-const toClone = async (value: ScenarioInfo) => {
-  const [error] = await scenario.cloneScenario(value.id);
-  if (error) {
-    return;
-  }
-
-  // Assuming notification is available globally or imported
-  // notification.success(t('tips.cloneSuccess'));
-  emit('clone', value);
-};
-
-const deleteScenario = async (name: string, id: string) => {
-  // Assuming modal is available globally or imported
-  modal.confirm({
-    centered: true,
-    content: t('scenario.list.messages.deleteConfirm', { name }),
-    async onOk () {
-      loading.value = true;
-      const [error] = await scenario.deleteScenario(id);
-      loading.value = false;
-      if (error) {
-        return;
-      }
-
-      deleteTabPane([id]);
-      const delIdx = scenarioList.value.findIndex(i => i.id === id);
-      scenarioList.value.splice(delIdx, 1);
-
-      emit('delete', id);
-      // notification.success(t('scenario.list.messages.deleteSuccess'));
-    }
-  });
-};
+// Scenario actions - now handled by useScenarioActions composable
 </script>
 
 <template>
@@ -375,7 +246,7 @@ const deleteScenario = async (name: string, id: string) => {
                   type="text"
                   size="small"
                   class="flex items-center justify-center p-0 leading-5 w-5 h-5 !border-0"
-                  title="执行测试"
+                  :title="t('scenario.list.tooltips.executeTest')"
                   @click="openExecTestModal(record.id, record.scriptId)">
                   <Icon icon="icon-zhihangceshi" class="text-3.5" />
                 </Button>
@@ -387,7 +258,7 @@ const deleteScenario = async (name: string, id: string) => {
                   type="text"
                   size="small"
                   class="flex items-center justify-center p-0 leading-5 w-5 h-5 !border-0"
-                  title="编辑">
+                  :title="t('scenario.list.tooltips.edit')">
                   <RouterLink :to="record.nameLinkUrl" class="w-full h-full flex items-center justify-center">
                     <Icon icon="icon-shuxie" class="text-3.5" />
                   </RouterLink>
@@ -400,8 +271,8 @@ const deleteScenario = async (name: string, id: string) => {
                   type="text"
                   size="small"
                   class="flex items-center justify-center p-0 leading-5 w-5 h-5 !border-0"
-                  title="克隆"
-                  @click="toClone(record)">
+                  :title="t('scenario.list.tooltips.clone')"
+                  @click="toClone(record, emit)">
                   <Icon icon="icon-fuzhi" class="text-3.5" />
                 </Button>
 
@@ -430,12 +301,12 @@ const deleteScenario = async (name: string, id: string) => {
         v-model:visible="toAuthVisible"
         enumKey="ScenarioPermission"
         :appId="props.appInfo?.id"
-        :listUrl="`${TESTER}/scenario/auth?scenarioId=${selectedId}`"
+        :listUrl="`${TESTER}/scenario/auth?scenarioId=${selectedId || ''}`"
         :delUrl="`${TESTER}/scenario/auth`"
-        :addUrl="`${TESTER}/scenario/${selectedId}/auth`"
+        :addUrl="`${TESTER}/scenario/${selectedId || ''}/auth`"
         :updateUrl="`${TESTER}/scenario/auth`"
-        :enabledUrl="`${TESTER}/scenario/${selectedId}/auth/enabled`"
-        :initStatusUrl="`${TESTER}/scenario/${selectedId}/auth/status`"
+        :enabledUrl="`${TESTER}/scenario/${selectedId || ''}/auth/enabled`"
+        :initStatusUrl="`${TESTER}/scenario/${selectedId || ''}/auth/status`"
         :onTips="t('scenario.list.tips.authOn')"
         :offTips="t('scenario.list.tips.authOff')"
         :title="t('scenario.list.tips.authTitle')"
@@ -447,7 +318,7 @@ const deleteScenario = async (name: string, id: string) => {
         v-model:id="selectedId"
         v-model:visible="createTestTaskVisible"
         :infoText="t('scenario.list.tips.testTaskInfo')"
-        type="SCENARIO" />
+        :type="CombinedTargetType.SCENARIO" />
     </AsyncComponent>
 
     <AsyncComponent :visible="restartTestTaskVisible">
@@ -455,7 +326,7 @@ const deleteScenario = async (name: string, id: string) => {
         v-model:visible="restartTestTaskVisible"
         v-model:id="selectedId"
         :content="restartContent"
-        type="SCENARIO" />
+        :type="CombinedTargetType.SCENARIO" />
     </AsyncComponent>
 
     <AsyncComponent :visible="reopenTestTaskVisible">
@@ -463,25 +334,25 @@ const deleteScenario = async (name: string, id: string) => {
         v-model:visible="reopenTestTaskVisible"
         v-model:id="selectedId"
         :content="reopenContent"
-        type="SCENARIO" />
+        :type="CombinedTargetType.SCENARIO" />
     </AsyncComponent>
 
     <AsyncComponent :visible="deleteTaskVisible">
       <DelTestTask
         :id="selectedId"
         v-model:visible="deleteTaskVisible"
-        type="SCENARIO" />
+        :type="CombinedTargetType.SCENARIO" />
     </AsyncComponent>
 
     <AsyncComponent :visible="exportVisible">
-      <ExportScriptModal v-model:visible="exportVisible" :ids="[selectedId]" />
+      <ExportScriptModal v-model:visible="exportVisible" :ids="selectedId ? [selectedId] : []" />
     </AsyncComponent>
 
     <AsyncComponent :visible="execTestVisible">
       <ExecTestModal
         v-model:scenarioId="selectedId"
         v-model:visible="execTestVisible"
-        :okAction="`${TESTER}/scenario/${selectedId}/exec`"
+        :okAction="`${TESTER}/scenario/${selectedId || ''}/exec`"
         :scriptId="selectedScriptId" />
     </AsyncComponent>
   </div>

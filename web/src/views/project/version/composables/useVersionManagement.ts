@@ -1,9 +1,8 @@
 import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { utils } from '@xcan-angus/infra';
+import { utils, IPane } from '@xcan-angus/infra';
 import { software } from '@/api/tester';
-import { IPane } from '@/types/types';
 
 interface VersionManagementProps {
   projectId: string;

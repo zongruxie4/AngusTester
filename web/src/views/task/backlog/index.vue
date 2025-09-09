@@ -25,7 +25,7 @@ import { debounce } from 'throttle-debounce';
 import dayjs, { Dayjs } from 'dayjs';
 import { task, analysis } from '@/api/tester';
 
-import SelectEnum from '@/components/selectEnum/index.vue';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { MemberCount, SprintInfo } from './PropsType';
 import { TaskInfo } from '../PropsType';
 

@@ -20,7 +20,7 @@ import { CaseStepView } from '@/enums/enums';
 import dayjs from 'dayjs';
 import RichEditor from '@/components/richEditor/index.vue';
 import { funcCase, modules, project } from '@/api/tester';
-import SelectEnum from '@/components/selectEnum/index.vue';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 import { useI18n } from 'vue-i18n';
 import { FormState } from './PropsType';

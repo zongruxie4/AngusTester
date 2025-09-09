@@ -19,7 +19,7 @@ import { TESTER } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-import SelectEnum from '@/components/selectEnum/index.vue';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfo } from '@/views/task/PropsType';
 
 type Props = {
@@ -51,7 +51,7 @@ const emit = defineEmits<{
 
 const EditTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/edit/index.vue'));
 // const refTasks = defineAsyncComponent(() => import('./refTasks/index.vue'));
-const SelectTaskByModuleModal = defineAsyncComponent(() => import('@/components/task/selectByModuleModal/index.vue'));
+const SelectTaskByModuleModal = defineAsyncComponent(() => import('@/components/task/SelectByModuleModal.vue'));
 
 const loading = ref(false);
 const selectedTaskId = ref<string>();
