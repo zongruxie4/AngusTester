@@ -322,9 +322,7 @@
         },
         "exportScriptModal": {
           "title": "Export Script",
-          "format": "Format",
-          "json": "JSON",
-          "yaml": "YAML"
+          "format": "Format"
         },
         "chart": {
           "cpu": {

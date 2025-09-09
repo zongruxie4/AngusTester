@@ -323,9 +323,7 @@
         },
         "exportScriptModal": {
           "title": "导出脚本",
-          "format": "格式",
-          "json": "JSON",
-          "yaml": "YAML"
+          "format": "格式"
         },
         "chart": {
           "cpu": {

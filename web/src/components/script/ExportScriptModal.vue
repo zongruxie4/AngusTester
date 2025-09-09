@@ -10,11 +10,13 @@ const { t } = useI18n();
 // ===== Component Props and Emits =====
 interface Props {
   visible: boolean;
-  ids: string[];
+  id?: string;
+  ids?: string[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
   visible: false,
+  id: undefined,
   ids: () => []
 });
 
@@ -33,10 +35,10 @@ const format = ref('JSON');
  * @returns Array of format type options
  */
 const formatTypes = [{
-  label: t('commonComp.exportScriptModal.json'),
+  label: 'JSON',
   value: 'JSON'
 }, {
-  label: t('commonComp.exportScriptModal.yaml'),
+  label: 'YAML',
   value: 'YAML'
 }];
 
@@ -59,26 +61,28 @@ const handleCancel = () => {
  * Closes the modal after completion.
  */
 const handleOk = async () => {
-  if (exportLoading.value || !props.ids?.length) {
+  const exportIds = props.ids?.length ? props.ids : (props.id ? [props.id] : []);
+
+  if (exportLoading.value || !exportIds.length) {
+    notification.error('The script ID is empty');
     return;
   }
 
   exportLoading.value = true;
   const routeConfig = routerUtils.getTesterApiRouteConfig(ApiType.API);
-  const urls: string[] = props.ids.map((item) => {
+  const urls: string[] = exportIds.map((item) => {
     return ApiUrlBuilder.buildApiUrl(routeConfig, `/script/${item}/export?format=${format.value}`);
   });
   const res = await download(urls);
   exportLoading.value = false;
-  const totalNum = props.ids.length;
-  if (totalNum > 1) {
-    // Multiple files exported successfully
-  } else {
+  const totalNum = exportIds.length;
+  if (totalNum < 1) {
     const _error = res[0];
     if (_error) {
       notification.error(_error?.message);
     }
   }
+
   handleCancel();
 };
 </script>
@@ -95,12 +99,14 @@ const handleOk = async () => {
     <div class="modal-content">
       <!-- Format selection section -->
       <div class="format-section">
-        <h3 class="section-title">{{ t('commonComp.exportScriptModal.format') }}</h3>
-        <div class="radio-container">
-          <RadioGroup
-            v-model:value="format"
-            :options="formatTypes"
-            class="format-radio-group" />
+        <div class="section-header">
+          <h3 class="section-title">{{ t('commonComp.exportScriptModal.format') }}:</h3>
+          <div class="radio-container">
+            <RadioGroup
+              v-model:value="format"
+              :options="formatTypes"
+              class="format-radio-group" />
+          </div>
         </div>
       </div>
     </div>
@@ -118,17 +124,23 @@ const handleOk = async () => {
   padding: 5px 16px;
 }
 
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .section-title {
   font-size: 14px;
   font-weight: 600;
   color: #262626;
-  margin: 0 0 12px 0;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #e8e8e8;
+  margin: 0;
+  white-space: nowrap;
+  margin-right: 32px;
 }
 
 .radio-container {
-  margin-top: 8px;
+  flex: 1;
 }
 
 .format-radio-group {
@@ -175,17 +187,5 @@ const handleOk = async () => {
 :deep(.ant-modal-footer) {
   border-top: 1px solid #f0f0f0;
   padding: 12px 24px;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  .format-section {
-    padding: 12px;
-  }
-
-  .format-radio-group {
-    flex-direction: column;
-    gap: 12px;
-  }
 }
 </style>
