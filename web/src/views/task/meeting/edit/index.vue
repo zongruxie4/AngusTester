@@ -10,8 +10,7 @@ import { task, project } from '@/api/tester';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import RichEditor from '@/components/richEditor/index.vue';
 
-import { FormState } from './PropsType';
-import { MeetingInfo } from '../PropsType';
+import {EditFormState, MeetingInfo} from '../types';
 
 type Props = {
   projectId: string;
@@ -39,7 +38,7 @@ const formRef = ref();
 
 const evalWorkloadMethodOptions = ref<EnumMessage<EvalWorkloadMethod>[]>([]);
 const dataSource = ref<MeetingInfo>();
-const formState = ref<FormState>({
+const formState = ref<EditFormState>({
   content: '',
   date: '',
   location: '',

@@ -6,8 +6,8 @@ import { UserOutlined } from '@ant-design/icons-vue';
 import { Colon, Icon, Image, modal, NoData, notification, Popover, Spin } from '@xcan-angus/vue-ui';
 import { task } from '@/api/tester';
 
-import { MeetingInfo } from '../PropsType';
-import SearchPanel from '@/views/task/meeting/list/searchPanel/index.vue';
+import { MeetingInfo } from '../types';
+import SearchPanel from '@/views/task/meeting/list/SearchPanel.vue';
 
 type Props = {
   projectId: string;
@@ -27,7 +27,7 @@ type OrderByKey = 'createdDate' | 'createdByName';
 type OrderSortKey = 'ASC' | 'DESC';
 
 const { t } = useI18n();
-const Introduce = defineAsyncComponent(() => import('@/views/task/meeting/list/introduce/index.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/task/meeting/list/Introduce.vue'));
 
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 

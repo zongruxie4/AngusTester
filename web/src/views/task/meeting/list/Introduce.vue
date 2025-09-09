@@ -38,7 +38,7 @@ onBeforeUnmount(() => {
     <div class="space-y-6">
       <div class="flex items-start justify-between">
         <div class="flex items-start space-x-3 flex-1">
-          <img src="./images/1.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
+          <img src="images/1.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
             <div class="text-3.5 font-semibold">{{ t('taskMeeting.meetingTypes.productGrooming') }}</div>
             <div>{{ t('taskMeeting.meetingTypes.productGroomingDesc') }}</div>
@@ -46,7 +46,7 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="flex items-start space-x-3 flex-1">
-          <img src="./images/2.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
+          <img src="images/2.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
             <div class="text-3.5 font-semibold">{{ t('taskMeeting.meetingTypes.sprintPlanning') }}</div>
             <div>{{ t('taskMeeting.meetingTypes.sprintPlanningDesc') }}</div>
@@ -54,7 +54,7 @@ onBeforeUnmount(() => {
         </div>
 
         <div v-show="!isCol2" class="flex items-start space-x-3 flex-1">
-          <img src="./images/3.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
+          <img src="images/3.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
             <div class="text-3.5 font-semibold">{{ t('taskMeeting.meetingTypes.dailyStandup') }}</div>
             <div>{{ t('taskMeeting.meetingTypes.dailyStandupDesc') }}</div>
@@ -63,14 +63,14 @@ onBeforeUnmount(() => {
       </div>
       <div v-show="isCol2" class="flex items-start justify-between">
         <div class="flex items-start space-x-3 flex-1">
-          <img src="./images/3.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
+          <img src="images/3.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
             <div class="text-3.5 font-semibold">{{ t('taskMeeting.meetingTypes.dailyStandup') }}</div>
             <div>{{ t('taskMeeting.meetingTypes.dailyStandupDesc') }}</div>
           </div>
         </div>
         <div class="flex items-start space-x-3 flex-1">
-          <img src="./images/4.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
+          <img src="images/4.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
             <div class="text-3.5 font-semibold">{{ t('taskMeeting.meetingTypes.sprintReview') }}</div>
             <div>{{ t('taskMeeting.meetingTypes.sprintReviewDesc') }}</div>
@@ -80,7 +80,7 @@ onBeforeUnmount(() => {
 
       <div class="flex items-start justify-between">
         <div v-show="!isCol2" class="flex items-start space-x-3 flex-1">
-          <img src="./images/4.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
+          <img src="images/4.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
             <div class="text-3.5 font-semibold">{{ t('taskMeeting.meetingTypes.sprintReview') }}</div>
             <div>{{ t('taskMeeting.meetingTypes.sprintReviewDesc') }}</div>
@@ -88,7 +88,7 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="flex items-start space-x-3 flex-1">
-          <img src="./images/5.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
+          <img src="images/5.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
             <div class="text-3.5 font-semibold">{{ t('taskMeeting.meetingTypes.sprintRetrospective') }}</div>
             <div>{{ t('taskMeeting.meetingTypes.sprintRetrospectiveDesc') }}</div>
@@ -96,7 +96,7 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="flex items-start space-x-3 flex-1">
-          <img src="./images/6.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
+          <img src="images/6.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
             <div class="text-3.5 font-semibold">{{ t('taskMeeting.meetingTypes.other') }}</div>
             <div>{{ t('taskMeeting.meetingTypes.otherDesc') }}</div>

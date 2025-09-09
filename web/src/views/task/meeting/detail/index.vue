@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import RichEditor from '@/components/richEditor/index.vue';
 import { task } from '@/api/tester';
 
-import { MeetingInfo } from '../PropsType';
+import { MeetingInfo } from '../types';
 
 type Props = {
   projectId: string;
