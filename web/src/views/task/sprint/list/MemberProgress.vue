@@ -5,7 +5,7 @@ import { Image, Modal, Table } from '@xcan-angus/vue-ui';
 import { Progress } from 'ant-design-vue';
 import { analysis } from '@/api/tester';
 
-import { TableDataObj } from './PropsType';
+import {MemberProgressData} from "@/views/task/sprint/types";
 
 const { t } = useI18n();
 
@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{(e: 'update:visible', value: boolean): void; }>();
 
 const loading = ref(false);
-const tableData = ref<TableDataObj[]>([]);
+const tableData = ref<MemberProgressData[]>([]);
 
 const loadData = async () => {
   const params = {

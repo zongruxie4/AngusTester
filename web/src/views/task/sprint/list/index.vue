@@ -20,8 +20,8 @@ import { utils, TESTER, download } from '@xcan-angus/infra';
 import ProcessPng from './images/process.png';
 import { task } from '@/api/tester';
 
-import { SprintInfo } from '../PropsType';
-import SearchPanel from '@/views/task/sprint/list/searchPanel/index.vue';
+import { SprintInfo } from '../types';
+import SearchPanel from '@/views/task/sprint/list/SearchPanel.vue';
 
 type Props = {
   projectId: string;
@@ -41,10 +41,10 @@ type OrderByKey = 'createdDate' | 'createdByName';
 type OrderSortKey = 'ASC' | 'DESC';
 
 const { t } = useI18n();
-const Introduce = defineAsyncComponent(() => import('@/views/task/sprint/list/introduce/index.vue'));
-const Burndown = defineAsyncComponent(() => import('@/views/task/sprint/list/burndown/index.vue'));
-const ProgressModal = defineAsyncComponent(() => import('@/views/task/sprint/list/progress/index.vue'));
-const WorkCalendar = defineAsyncComponent(() => import('@/views/task/sprint/list/workCalendar/index.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/task/sprint/list/Introduce.vue'));
+const Burndown = defineAsyncComponent(() => import('@/views/task/sprint/list/BurndownChart.vue'));
+const ProgressModal = defineAsyncComponent(() => import('@/views/task/sprint/list/MemberProgress.vue'));
+const WorkCalendar = defineAsyncComponent(() => import('@/views/task/sprint/list/WorkCalendar.vue'));
 const RichText = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
 
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));

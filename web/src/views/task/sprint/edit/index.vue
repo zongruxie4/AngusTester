@@ -18,8 +18,7 @@ import { EnumMessage, EvalWorkloadMethod, toClipboard, utils, TESTER, enumUtils,
 import type { Rule } from 'ant-design-vue/es/form';
 import dayjs from 'dayjs';
 import { task } from '@/api/tester';
-import { FormState } from './PropsType';
-import { SprintInfo } from '../PropsType';
+import {EditFormState, SprintInfo} from '../types';
 
 type Props = {
   projectId: string;
@@ -56,7 +55,7 @@ const permissions = ref<string[]>([]);
 // const oldFormState = ref<FormState>();
 const _startDate = dayjs().format('YYYY-MM-DD HH:mm:ss');
 const _deadlineDate = dayjs().add(1, 'month').format('YYYY-MM-DD HH:mm:ss');
-const formState = ref<FormState>({
+const formState = ref<EditFormState>({
   taskPrefix: '',
   otherInformation: '',
   acceptanceCriteria: '',
@@ -77,7 +76,7 @@ const loading = ref(false);
 const authorizeModalVisible = ref(false);
 
 const getParams = () => {
-  const params: FormState = { ...formState.value };
+  const params: EditFormState = { ...formState.value };
   const id = dataSource.value?.id;
   if (id) {
     params.id = id;

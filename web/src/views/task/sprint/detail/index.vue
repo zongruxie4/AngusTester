@@ -6,7 +6,7 @@ import { Colon, Icon, NoData, notification, Spin } from '@xcan-angus/vue-ui';
 import { TESTER, toClipboard, utils, download } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { task } from '@/api/tester';
-import { SprintInfo } from '../PropsType';
+import { SprintInfo } from '../types';
 
 type Props = {
   projectId: string;
@@ -26,8 +26,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
-const BurnDownChart = defineAsyncComponent(() => import('@/views/task/sprint/detail/burndownChart/index.vue'));
-const MembersProgress = defineAsyncComponent(() => import('@/views/task/sprint/detail/memberProgress/index.vue'));
+const BurnDownChart = defineAsyncComponent(() => import('@/views/task/sprint/detail/BurndownChart.vue'));
+const MembersProgress = defineAsyncComponent(() => import('@/views/task/sprint/detail/MemberProgress.vue'));
 const WorkCalendar = defineAsyncComponent(() => import('@/views/task/home/WorkCalendar.vue'));
 
 const { t } = useI18n();
