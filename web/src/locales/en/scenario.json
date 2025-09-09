@@ -255,7 +255,7 @@
         },
         "noDescription": "No description~",
         "createdBy": "Created by",
-        "noExecute": "Not Executed"
+        "noExecute": "Not Tested"
       },
       "messages": {
         "cancelFavouriteSuccess": "Cancel favourite successfully",

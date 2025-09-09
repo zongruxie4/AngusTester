@@ -123,7 +123,7 @@ onMounted(() => {
     </div>
     <TestSummary
       v-if="isHttpPlugin"
-      class="mb-4"
+      class="mb-4 mt-2"
       :projectId="props.projectId"
       :appInfo="props.appInfo"
       :userInfo="props.userInfo"
