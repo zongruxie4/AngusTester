@@ -130,7 +130,7 @@
         "actions": "Actions"
       },
       "deleteFirm": {
-        "title": "Are you sure to delete design【{name}】?"
+        "title": "Are you sure to delete design[{name}]?"
       }
     },
     "importServiceModal": {
@@ -391,7 +391,7 @@
           "yamlFormatError": "YAML content format error, please check and correct"
         },
         "confirmations": {
-          "deleteApi": "Are you sure to delete the API 【{summary}】?",
+          "deleteApi": "Are you sure to delete the API [{summary}]?",
           "refreshInstance": "Refreshing the instance API will force synchronization of current Mock API information to the running service instance."
         },
         "menuItems": {
@@ -2654,8 +2654,8 @@
         "deleteTestTask": "Delete functional, performance and stability test tasks for the API, including test scripts."
       },
       "confirm": {
-        "restartTestTask": "Update the API test task to \"Pending\", related statistics and status will be cleared. Do you confirm to restart the test task 【{summary}】?",
-        "reopenTestTask": "Update the API test task to \"Pending\", without clearing statistics and status. Do you confirm to reopen the test task 【{summary}】?"
+        "restartTestTask": "Update the API test task to \"Pending\", related statistics and status will be cleared. Do you confirm to restart the test task [{summary}]?",
+        "reopenTestTask": "Update the API test task to \"Pending\", without clearing statistics and status. Do you confirm to reopen the test task [{summary}]?"
       },
       "execTest": {
         "tips": {
@@ -2759,7 +2759,7 @@
       "copy": "Copy",
       "edit": "Edit",
       "delete": "Delete",
-      "confirmDelete": "Are you sure to delete share 【{name}】?",
+      "confirmDelete": "Are you sure to delete share [{name}]?",
       "columns": {
         "name": "Name",
         "status": "Status",

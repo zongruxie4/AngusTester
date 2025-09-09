@@ -383,7 +383,7 @@
     },
     "modal": {
       "deleteReport": "删除报告",
-      "confirmDelete": "确认删除报告【{name}】吗？",
+      "confirmDelete": "确认删除报告[{name}]吗？",
       "reportPermission": "报告权限"
     },
     "actions": {
@@ -554,7 +554,7 @@
         "actions": "操作",
         "delete": "删除",
         "deleteRecord": "删除报告记录",
-        "confirmDelete": "确认删除报告记录【{name}】吗？",
+        "confirmDelete": "确认删除报告记录[{name}]吗？",
         "deleteSuccess": "删除成功"
       }
     }

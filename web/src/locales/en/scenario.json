@@ -41,7 +41,7 @@
           "addScenario": "Add Scenario",
           "noFavoritedScenarios": "You don't have any favorited scenarios",
           "noFollowedScenarios": "You don't have any followed scenarios",
-          "deleteConfirm": "Are you sure you want to delete scenario 【{name}】?",
+          "deleteConfirm": "Are you sure you want to delete scenario [{name}]?",
           "deleteSuccess": "Scenario deleted successfully",
           "unfavoriteSuccess": "Scenario unfavorited successfully",
           "unfollowSuccess": "Scenario unfollowed successfully",
@@ -129,8 +129,8 @@
       "lastRun": "Last run",
       "createdBy": "Created by",
       "executeNow": "Execute Now",
-      "deleteConfirm": "Are you sure you want to delete monitor 【{name}】?",
-      "executeConfirm": "Execute monitor 【{name}】 immediately"
+      "deleteConfirm": "Are you sure you want to delete monitor [{name}]?",
+      "executeConfirm": "Execute monitor [{name}] immediately"
     },
     "searchPanel": {
       "statusOptions": {
@@ -243,6 +243,15 @@
         "edit": "Edit",
         "clone": "Clone"
       },
+      "tooltips": {
+        "createTestTask": "Generate functional, performance and stability test tasks.",
+        "restartTestTask": "Update task status to 'Pending', related statistical counts and status will be cleared.",
+        "reopenTestTask": "Update task status to 'Pending', without clearing statistical counts and status.",
+        "deleteTestTask": "Delete functional, performance and stability test tasks corresponding to the interface.",
+        "executeTest": "Execute Test",
+        "edit": "Edit",
+        "clone": "Clone"
+      },
       "table": {
         "columns": {
           "name": "Name",
@@ -261,18 +270,18 @@
         "cancelFavouriteSuccess": "Cancel favourite successfully",
         "cancelFollowSuccess": "Cancel follow successfully",
         "cloneSuccess": "Clone successfully",
-        "deleteConfirm": "Deleting the scenario will synchronously delete associated follows, favourites, metrics, variables and other information. Please confirm whether to delete 【{name}】?",
+        "deleteConfirm": "Deleting the scenario will synchronously delete associated follows, favourites, metrics, variables and other information. Please confirm whether to delete [{name}]?",
         "deleteSuccess": "Delete successfully, you can view the deleted scenario in the trash.",
         "favouriteSuccess": "Favourite successfully",
         "followSuccess": "Follow successfully",
-        "reopenConfirm": "Update all completed task statuses under the scenario to \"Pending Test\", without clearing statistical counts and status. Do you confirm to reopen the test task 【{name}】?",
-        "restartConfirm": "Update all completed task statuses under the scenario to \"Pending Test\", related statistical counts and status will be cleared. Do you confirm to restart the test 【{name}】?"
+        "reopenConfirm": "Reset all completed task statuses under the scenario to \"Pending Test\", preserving historical statistical data and status records. Confirm to reopen test task [{name}]?",
+        "restartConfirm": "Reset all completed task statuses under the scenario to \"Pending Test\", clearing all statistical counts and status records. Confirm to restart test [{name}]?"
       },
       "tips": {
         "authOn": "After enabling \"Permission Control\", you need to manually authorize service permissions to have corresponding operation permissions for scenarios. \"Permission Control\" is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically authorized.",
         "authOff": "After enabling \"No Permission Control\", all users will be allowed to publicly view and operate the current scenario. Users viewing need to have current scenario parent directory permissions.",
         "authTitle": "Scenario Permission",
-        "testTaskInfo": "Generate corresponding tasks when scenario test tasks do not exist. If tasks already exist, current test information will be overwritten."
+        "testTaskInfo": "Automatically generate corresponding tasks when scenario test tasks do not exist. If tasks already exist, current test information will be overwritten."
       },
       "execTest": {
         "title": "Execute Test",
@@ -333,7 +342,7 @@
     },
     "detail": {
       "messages": {
-        "deleteConfirm": "Deleting the scenario will synchronously delete associated follows, favourites, metrics, variables and other information. Please confirm whether to delete 【{name}】?",
+        "deleteConfirm": "Deleting the scenario will synchronously delete associated follows, favourites, metrics, variables and other information. Please confirm whether to delete [{name}]?",
         "deleteSuccess": "Delete successfully, you can view the deleted scenario in the trash.",
         "cancelFollowSuccess": "Cancel follow",
         "followSuccess": "Follow successfully",

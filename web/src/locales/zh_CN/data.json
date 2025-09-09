@@ -37,7 +37,7 @@
         "clone": "克隆"
       },
       "messages": {
-        "deleteConfirm": "确定删除数据集【{name}】吗？",
+        "deleteConfirm": "确定删除数据集[{name}]吗？",
         "deleteSuccess": "数据集删除成功",
         "cloneSuccess": "数据集克隆成功",
         "batchDeleteMaxError": "最大支持批量删除 {maxNum} 个数据集，当前已选中 {num} 个数据集。",
@@ -121,7 +121,7 @@
     },
     "detail": {
       "notifications": {
-        "deleteConfirm": "确定删除数据集【{name}】吗？",
+        "deleteConfirm": "确定删除数据集[{name}]吗？",
         "deleteSuccess": "数据集删除成功",
         "cloneSuccess": "数据集克隆成功",
         "copyLinkSuccess": "复制链接成功",
@@ -229,7 +229,7 @@
       },
       "useList": {
         "notifications": {
-          "deleteConfirm": "确定删除资源【{name}】吗？",
+          "deleteConfirm": "确定删除资源[{name}]吗？",
           "deleteSuccess": "删除资源成功",
           "batchDeleteLimit": "最大支持批量删除 {max} 个资源，当前已选中 {current} 个资源。",
           "batchDeleteConfirm": "确定删除选中的 {num} 条资源吗？",
@@ -341,7 +341,7 @@
     },
     "lastModifiedBy": "最后修改于",
     "messages": {
-      "deleteConfirm": "确定【{name}】吗？",
+      "deleteConfirm": "确定[{name}]吗？",
       "deleteSuccess": "删除成功",
       "addSuccess": "添加成功",
       "editSuccess": "修改成功"
@@ -432,7 +432,7 @@
         "pageInfo": "第{current}/{totalPage}页"
       },
       "messages": {
-        "deleteConfirm": "确定删除【{name}】吗？",
+        "deleteConfirm": "确定删除[{name}]吗？",
         "deleteSuccess": "删除成功"
       },
       "emptyData": {
@@ -485,7 +485,7 @@
       "delete": "删除"
     },
     "messages": {
-      "deleteConfirm": "确认删除【{name}】？",
+      "deleteConfirm": "确认删除[{name}]？",
       "deleteSuccess": "删除成功"
     },
     "drawer": {
@@ -720,7 +720,7 @@
         "clone": "克隆"
       },
       "messages": {
-        "deleteConfirm": "确定删除变量【{name}】吗？",
+        "deleteConfirm": "确定删除变量[{name}]吗？",
         "deleteSuccess": "变量删除成功",
         "cloneSuccess": "变量克隆成功",
         "batchDeleteConfirm": "确定删除选中的 {num} 条变量吗？",
@@ -802,7 +802,7 @@
     },
     "detail": {
       "notifications": {
-        "deleteConfirm": "确定删除变量【{name}】吗？",
+        "deleteConfirm": "确定删除变量[{name}]吗？",
         "deleteSuccess": "变量删除成功",
         "cloneSuccess": "变量克隆成功",
         "copyLinkSuccess": "复制链接成功",

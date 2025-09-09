@@ -413,7 +413,7 @@
       "operationSuccess": "操作成功",
       "operationFailed": "操作失败",
       "generateDataSuccess": "创建生成数据成功，请在\"执行\"中查看进度和结果。",
-      "generateDataSuccessWithName": "创建生成数据【{name}】成功，请在\"执行\"中查看进度和结果。",
+      "generateDataSuccessWithName": "创建生成数据[{name}]成功，请在\"执行\"中查看进度和结果。",
       "confirmDelete": "确认删除",
       "noData": "暂无数据",
       "loading": "加载中...",
@@ -983,7 +983,7 @@
             "stopThreadTooltip": "数据集中所有数据行都被使用后，停止当前采样线程执行，所有线程都读完所有行时整个执行退出并结束。",
             "allThreadTooltip": "所有线程共享同一份数据集数据。",
             "currentThreadTooltip": "每个线程各自复制一份数据集数据。",
-            "confirmUnlinkDataset": "确定取消引用数据集【{name}】吗？",
+            "confirmUnlinkDataset": "确定取消引用数据集[{name}]吗？",
             "unlinkDataset": "取消引用",
             "viewDefinition": "查看定义",
             "parameters": "参数",
@@ -1618,7 +1618,7 @@
       "exportScriptModal": "导出脚本弹窗",
       "authorizeModal": "显示权限弹窗",
       "abortController": "用于终止请求的实例",
-      "defaultViewDescription": "默认显示页面视图，新建场景没有保存之前不显示【执行测试】【导出脚本】、【关注】、【取消关注】、【收藏】、【取消收藏】、【权限】、【刷新】按钮",
+      "defaultViewDescription": "默认显示页面视图，新建场景没有保存之前不显示[执行测试][导出脚本]、[关注]、[取消关注]、[收藏]、[取消收藏]、[权限]、[刷新]按钮",
       "scenarioConfigData": "场景详情信息",
       "rampUpInterval": "增压间隔",
       "rampUpThreads": "增压线程数"
@@ -1705,7 +1705,7 @@
       "exportScriptModal": "导出脚本弹窗",
       "authorizeModal": "显示权限弹窗",
       "abortController": "用于终止请求的实例",
-      "defaultViewDescription": "默认显示页面视图，新建场景没有保存之前不显示【执行测试】【导出脚本】、【关注】、【取消关注】、【收藏】、【取消收藏】、【权限】、【刷新】按钮",
+      "defaultViewDescription": "默认显示页面视图，新建场景没有保存之前不显示[执行测试][导出脚本]、[关注]、[取消关注]、[收藏]、[取消收藏]、[权限]、[刷新]按钮",
       "scenarioConfigData": "场景详情信息",
       "rampUpInterval": "增压间隔",
       "rampUpThreads": "增压线程数"
@@ -1786,7 +1786,7 @@
       "exportScriptModal": "导出脚本弹窗",
       "authorizeModal": "显示权限弹窗",
       "abortController": "用于终止请求的实例",
-      "defaultViewDescription": "默认显示页面视图，新建场景没有保存之前不显示【执行测试】【导出脚本】、【关注】、【取消关注】、【收藏】、【取消收藏】、【权限】、【刷新】按钮",
+      "defaultViewDescription": "默认显示页面视图，新建场景没有保存之前不显示[执行测试][导出脚本]、[关注]、[取消关注]、[收藏]、[取消收藏]、[权限]、[刷新]按钮",
       "scenarioConfigData": "场景详情信息",
       "rampUpInterval": "增压间隔",
       "rampUpThreads": "增压线程数"
@@ -1958,7 +1958,7 @@
       "exportModalVisible": "导出脚本弹窗",
       "authVisible": "显示权限弹窗",
       "controller": "用于终止请求的实例",
-      "defaultViewMode": "默认显示页面视图，新建场景没有保存之前不显示【执行测试】【导出脚本】、【关注】、【取消关注】、【收藏】、【取消收藏】、【权限】、【刷新】按钮",
+      "defaultViewMode": "默认显示页面视图，新建场景没有保存之前不显示[执行测试][导出脚本]、[关注]、[取消关注]、[收藏]、[取消收藏]、[权限]、[刷新]按钮",
       "scenarioConfigData": "场景详情信息",
       "rampUpInterval": "增压间隔",
       "rampUpThreads": "增压线程数"
@@ -2036,7 +2036,7 @@
       "exportModalVisible": "导出脚本弹窗",
       "authVisible": "显示权限弹窗",
       "controller": "用于终止请求的实例",
-      "defaultViewMode": "默认显示页面视图，新建场景没有保存之前不显示【执行测试】【导出脚本】、【关注】、【取消关注】、【收藏】、【取消收藏】、【权限】、【刷新】按钮",
+      "defaultViewMode": "默认显示页面视图，新建场景没有保存之前不显示[执行测试][导出脚本]、[关注]、[取消关注]、[收藏]、[取消收藏]、[权限]、[刷新]按钮",
       "scenarioConfigData": "场景详情信息",
       "rampUpInterval": "增压间隔",
       "rampUpThreads": "增压线程数"

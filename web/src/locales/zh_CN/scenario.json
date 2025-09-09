@@ -41,7 +41,7 @@
           "addScenario": "添加场景",
           "noFavoritedScenarios": "您没有收藏的场景",
           "noFollowedScenarios": "您没有关注的场景",
-          "deleteConfirm": "确定删除场景【{name}】吗？",
+          "deleteConfirm": "确定删除场景[{name}]吗？",
           "deleteSuccess": "删除场景成功",
           "unfavoriteSuccess": "场景取消收藏成功",
           "unfollowSuccess": "场景取消关注成功",
@@ -129,8 +129,8 @@
       "lastRun": "最后运行",
       "createdBy": "创建于",
       "executeNow": "立即执行",
-      "deleteConfirm": "确定删除监控【{name}】吗？",
-      "executeConfirm": "立即执行监控【{name}】"
+      "deleteConfirm": "确定删除监控[{name}]吗？",
+      "executeConfirm": "立即执行监控[{name}]"
     },
     "searchPanel": {
       "statusOptions": {
@@ -243,6 +243,15 @@
         "edit": "编辑",
         "clone": "克隆"
       },
+      "tooltips": {
+        "createTestTask": "生成功能、性能和稳定性测试任务。",
+        "restartTestTask": "将任务更新为`待处理`，相关统计计数和状态会被清除。",
+        "reopenTestTask": "将任务状态更新为`待处理`、 不清理统计计数和状态。",
+        "deleteTestTask": "删除接口对应功能、性能和稳定性测试任务。",
+        "executeTest": "执行测试",
+        "edit": "编辑",
+        "clone": "克隆"
+      },
       "table": {
         "columns": {
           "name": "名称",
@@ -261,18 +270,18 @@
         "cancelFavouriteSuccess": "取消收藏成功",
         "cancelFollowSuccess": "取消关注成功",
         "cloneSuccess": "克隆成功",
-        "deleteConfirm": "删除场景会同步删除关联关注、收藏、指标、变量等信息，请确认是否删除【{name}】？",
+        "deleteConfirm": "删除场景将同步删除关联的关注、收藏、指标、变量等信息，请确认是否删除[{name}]？",
         "deleteSuccess": "删除成功，您可以在回收站查看删除后的场景。",
         "favouriteSuccess": "收藏成功",
         "followSuccess": "关注成功",
-        "reopenConfirm": "将场景下所有已结束的任务状态更新为\"待测试\"， 不清理统计计数和状态，您确认重新打开测试任务【{name}】吗？",
-        "restartConfirm": "将场景下所有已结束的任务状态更新为\"待测试\"， 相关统计计数和状态会被清除，您确认重新开始测试【{name}】吗？"
+        "reopenConfirm": "将场景下所有已完成的任务状态重置为\"待测试\"，保留历史统计数据和状态记录。确认重新打开测试任务[{name}]吗？",
+        "restartConfirm": "将场景下所有已完成的任务状态重置为\"待测试\"，清除所有统计计数和状态记录。确认重新开始测试[{name}]吗？"
       },
       "tips": {
         "authOn": "开启\"有权限控制\"后，需要手动授权服务权限后才会有场景相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级目录权限将自动授权查看权限。",
         "authOff": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前场景，查看用户同时需要有当前场景父级目录权限。",
         "authTitle": "场景权限",
-        "testTaskInfo": "场景测试任务不存在时生成对应任务，如果任务已存在则覆盖当前测试信息。"
+        "testTaskInfo": "当场景测试任务不存在时自动生成对应任务，如果任务已存在则覆盖当前测试信息。"
       },
       "execTest": {
         "title": "执行测试",
@@ -333,7 +342,7 @@
     },
     "detail": {
       "messages": {
-        "deleteConfirm": "删除场景会同步删除关联关注、收藏、指标、变量等信息，请确认是否删除【{name}】？",
+        "deleteConfirm": "删除场景会同步删除关联关注、收藏、指标、变量等信息，请确认是否删除[{name}]？",
         "deleteSuccess": "删除成功，您可以在回收站查看删除后的场景。",
         "cancelFollowSuccess": "取消关注",
         "followSuccess": "关注成功",

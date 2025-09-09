@@ -121,7 +121,7 @@
       "addApiTabName": "添加API",
       "followEmptyTip": "没有收藏的接口",
       "favoriteEmptyTip": "没有关注的接口",
-      "deleteTip": "确定删除接口【{name}】吗？",
+      "deleteTip": "确定删除接口[{name}]吗？",
       "deleteSuccess": "删除接口成功",
       "cancelFavoriteSuccess": "接口取消收藏成功",
       "cancelFollowSuccess": "接口取消关注成功",
@@ -176,7 +176,7 @@
         "actions": "操作"
       },
       "deleteFirm": {
-        "title": "确定删除设计【{name}】吗？"
+        "title": "确定删除设计[{name}]吗？"
       }
     },
     "importServiceModal": {
@@ -437,7 +437,7 @@
           "yamlFormatError": "yaml内容格式错误，请检查并更正"
         },
         "confirmations": {
-          "deleteApi": "确认要删除接口【{summary}】吗？",
+          "deleteApi": "确认要删除接口[{summary}]吗？",
           "refreshInstance": "刷新实例接口会强制同步当前Mock接口信息到运行的服务实例。"
         },
         "menuItems": {
@@ -839,8 +839,8 @@
     "sidebar": {
       "deleteService": "删除服务",
       "deleteServiceTip": "删除服务会删除服务下接口，以及关联关注、收藏、指标、变量等信息，请确认是否删除？",
-      "restartServiceTip": "将服务下所有已结束的任务状态更新为\"待测试\"， 相关统计计数和状态会被清除，您确认重新开始测试任务【{name}】吗？",
-      "reopenServiceTip": "将服务下所有已结束的任务状态更新为\"待测试\"， 不清理统计计数和状态。您确认重新打开测试任务【{name}】吗？",
+      "restartServiceTip": "将服务下所有已结束的任务状态更新为\"待测试\"， 相关统计计数和状态会被清除，您确认重新开始测试任务[{name}]吗？",
+      "reopenServiceTip": "将服务下所有已结束的任务状态更新为\"待测试\"， 不清理统计计数和状态。您确认重新打开测试任务[{name}]吗？",
       "funcTestExecSmokeTip": "执行当前服务下所有接口的冒烟测试用例，如果测试服务冒烟测试脚本不存在，将根据接口冒烟测试用例自动生成测试脚本，如果存在则启动对应测试脚本。",
       "funcTestExecSecurityTip": "执行当前服务下所有接口的安全测试用例，如果测试服务安全测试脚本不存在，将根据接口安全测试用例自动生成测试脚本，如果存在则启动对应测试脚本。",
       "funcTestExecTip": "执行当前服务下所有开启功能测试的接口测试，如果测试脚本不存在，将根据接口自动生成功能测试脚本，如果存在则启动对应功能测试脚本。",
@@ -2702,8 +2702,8 @@
         "deleteTestTask": "删除接口对应功能、性能和稳定性测试任务，包括测试脚本。"
       },
       "confirm": {
-        "restartTestTask": "将接口下测试任务更新为\"待测试\"，相关统计计数和状态会被清除，您确认重新开始测试任务【{summary}】吗？",
-        "reopenTestTask": "将接口下测试任务更新为\"待测试\"，不清理统计计数和状态， 您确认重新打开测试任务【{summary}】吗？"
+        "restartTestTask": "将接口下测试任务更新为\"待测试\"，相关统计计数和状态会被清除，您确认重新开始测试任务[{summary}]吗？",
+        "reopenTestTask": "将接口下测试任务更新为\"待测试\"，不清理统计计数和状态， 您确认重新打开测试任务[{summary}]吗？"
       },
       "execTest": {
         "tips": {
@@ -2807,7 +2807,7 @@
       "copy": "复制",
       "edit": "编辑",
       "delete": "删除",
-      "confirmDelete": "确定删除分享【{name}】吗？",
+      "confirmDelete": "确定删除分享[{name}]吗？",
       "columns": {
         "name": "名称",
         "status": "状态",

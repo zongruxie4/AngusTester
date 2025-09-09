@@ -44,8 +44,8 @@
       "selectGroup": "Select group"
     },
     "messages": {
-      "confirmDelete": "Confirm delete analysis 【{name}】?",
-      "confirmUpdateSnapshot": "Confirm update snapshot content for analysis 【{name}】?",
+      "confirmDelete": "Confirm delete analysis [{name}]?",
+      "confirmUpdateSnapshot": "Confirm update snapshot content for analysis [{name}]?",
       "deleteSuccess": "Delete successful",
       "updateSuccess": "Update successful",
       "addSuccess": "Add analysis successful",
@@ -470,7 +470,7 @@
       "taskName": "Task name, maximum 200 characters"
     },
     "messages": {
-      "confirmDelete": "Confirm delete task 【{name}】?",
+      "confirmDelete": "Confirm delete task [{name}]?",
       "deleteSuccess": "Delete successful",
       "addSuccess": "Add successful",
       "editSuccess": "Edit successful",
@@ -542,7 +542,7 @@
     "aboutMeetingDesc": "Meetings play a key role in agile frameworks, helping teams continuously improve, increase work efficiency, and ensure projects can flexibly respond to changes through regular communication, feedback, and reflection. Supported meeting types are as follows:",
     "addedMeetings": "Added Meetings",
     "notAddedYet": "You haven't added any meetings yet, immediately",
-    "confirmDelete": "Confirm delete meeting 【{name}】?",
+    "confirmDelete": "Confirm delete meeting [{name}]?",
     "deleteSuccess": "Meeting deleted successfully, you can view the deleted meeting in the recycle bin",
     "addSuccess": "Add successful",
     "editSuccess": "Edit successful",
@@ -715,7 +715,7 @@
       "expand": "Expand"
     },
     "messages": {
-      "confirmDelete": "Confirm delete task 【{name}】?",
+      "confirmDelete": "Confirm delete task [{name}]?",
       "deleteSuccess": "Delete successful",
       "addSuccess": "Add successful",
       "editSuccess": "Edit successful",
@@ -897,7 +897,7 @@
         "batchExport": "Batch Export"
       },
       "messages": {
-        "confirmDelete": "Confirm delete task 【{name}】?",
+        "confirmDelete": "Confirm delete task [{name}]?",
         "confirmBatchDelete": "Confirm delete {count} selected tasks?",
         "deleteSuccess": "Delete successful",
         "batchDeleteSuccess": "Batch delete successful",
@@ -1167,7 +1167,7 @@
         "editFailed": "Task edit failed",
         "refreshSuccess": "Refresh successful",
         "refreshFailed": "Refresh failed",
-        "confirmDelete": "Confirm delete task 【{name}】?",
+        "confirmDelete": "Confirm delete task [{name}]?",
         "favouriteSuccess": "Task favourited successfully",
         "cancelFavouriteSuccess": "Task unfavourited successfully",
         "followSuccess": "Task followed successfully",
@@ -1342,7 +1342,7 @@
         "cancelFollowNumSuccess": "All {num} selected tasks cancelled follow successfully",
         "cancelFollowFail": "All {num} selected tasks failed to cancel follow",
         "cancelFollowPartial": "{successNum} selected tasks cancelled follow successfully, {errorNum} tasks failed to cancel follow",
-        "deleteTaskConfirm": "Are you sure to delete task 【{name}】?",
+        "deleteTaskConfirm": "Are you sure to delete task [{name}]?",
         "deleteTaskSuccess": "Task deleted successfully, you can view the deleted task in the recycle bin",
         "favouriteSuccess": "Task favourited successfully",
         "cancelFavouriteSuccess": "Task cancelled favourite successfully",
@@ -1558,7 +1558,7 @@
         "cancel": "Cancel"
       },
       "messages": {
-        "confirmCancelCase": "Confirm to cancel association with case 【{name}】?"
+        "confirmCancelCase": "Confirm to cancel association with case [{name}]?"
       },
       "columns": {
         "code": "Code",
@@ -1580,7 +1580,7 @@
         "cancel": "Cancel"
       },
       "messages": {
-        "confirmCancelTask": "Confirm to cancel association with task 【{name}】?"
+        "confirmCancelTask": "Confirm to cancel association with task [{name}]?"
       },
       "columns": {
         "code": "Code",
@@ -1622,7 +1622,7 @@
         "add": "Add"
       },
       "messages": {
-        "confirmCancelSubTask": "Confirm to cancel sub task 【{name}】?",
+        "confirmCancelSubTask": "Confirm to cancel sub task [{name}]?",
         "associateSubTaskSuccess": "Sub task association successful",
         "cancelSubTaskSuccess": "Sub task cancellation successful",
         "favouriteSuccess": "Task favorited successfully",
@@ -1961,7 +1961,7 @@
       "attachmentTip": "Supports uploading relevant documents, designs, requirement specifications, etc. for team reference"
     },
     "messages": {
-      "confirmDelete": "Confirm deletion of sprint 【{name}】?",
+      "confirmDelete": "Confirm deletion of sprint [{name}]?",
       "deleteSuccess": "Successfully deleted",
       "addSuccess": "Successfully added",
       "editSuccess": "Successfully edited",
