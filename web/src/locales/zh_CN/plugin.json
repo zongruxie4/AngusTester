@@ -1,589 +1,79 @@
 {
-  "ftpPlugin": {
-    "tabs": {
-      "taskConfig": "任务配置",
-      "executeConfig": "执行配置"
-    },
-    "toolbar": {
-      "debugResult": "调试结果",
-      "logs": "调度日志",
-      "execLog": "执行日志",
-      "toggle": "展开收起",
-      "screen": "全屏"
-    },
-    "drawer": {
-      "save": "保存",
-      "indicator": "性能指标",
-      "testInfo": "测试结果",
-      "activity": "活动",
-      "comment": "评论"
-    },
-    "messages": {
-      "debugSaveRequired": "调试需要先保存当前数据，请保存后再执行调试"
-    },
-    "auth": {
-      "title": "场景权限",
-      "onTips": "开启\"有权限控制\"后，需要手动授权服务权限后才会有场景相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级目录权限将自动授权查看权限。",
-      "offTips": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前场景，查看用户同时需要有当前场景父级目录权限。"
-    },
-    "buttonGroup": {
-      "export": "导出脚本",
-      "select": "选择脚本",
-      "import": "导入脚本",
-      "codeView": "代码视图",
-      "uiView": "页面视图",
-      "authority": "权限",
-      "follow": "关注",
-      "cancelFollow": "取消关注",
-      "favourite": "收藏",
-      "cancelFavourite": "取消收藏",
-      "refresh": "刷新",
-      "test": "创建执行",
-      "debug": "调试",
-      "save": "保存"
-    },
-    "debugLog": {
-      "schedulingResult": "调度结果",
-      "success": "成功",
-      "fail": "失败",
-      "processExitCode": "进程退出码",
-      "downloadFileName": "scheduling.log"
-    },
-    "debugResult": {
-      "debugResult": "调试结果",
-      "fail": "失败",
-      "exitCode": "退出码",
-      "failureReason": "失败原因",
-      "samplingStatus": "采样状态"
-    },
-    "drawerMenu": {
-      "saveForm": {
-        "id": "ID",
+  "commonPlugin": {
+    "chartConfig": {
+      "names": {
+        "duration": "时长",
+        "errors": "错误数",
+        "iterations": "迭代数",
+        "n": "采样数",
+        "operations": "请求数",
+        "transactions": "事务数",
+        "readBytes": "读数据大小",
+        "writeBytes": "写数据大小",
+        "ops": "每秒查询数",
+        "tps": "每秒事务数",
+        "brps": "下载/秒",
+        "bwps": "上传/秒",
+        "tranMean": "平均",
+        "tranMin": "最小",
+        "tranMax": "最大",
+        "tranP50": "P50",
+        "tranP75": "P75",
+        "tranP90": "P90",
+        "tranP95": "P95",
+        "tranP99": "P99",
+        "tranP999": "P999",
+        "errorRate": "错误率",
+        "threadPoolSize": "线程数",
+        "threadPoolActiveSize": "活跃线程数",
+        "threadMaxPoolSize": "最大线程数"
+      },
+      "columns": {
         "name": "名称",
-        "scriptName": "脚本名称",
-        "scriptId": "脚本ID",
-        "description": "描述",
-        "namePlaceholder": "最大支持200个字符",
-        "descriptionPlaceholder": "最大支持800个字符",
-        "confirm": "确定",
-        "cancel": "取消"
+        "current": "当前",
+        "downloadPerSecond": "下载/秒",
+        "uploadPerSecond": "上传/秒",
+        "downloadPerSecondWithStats": "下载/秒(当前/最小/最大/平均)",
+        "uploadPerSecondWithStats": "上传/秒(当前/最小/最大/平均)",
+        "opsWithStats": "每秒查询数(当前/最小/最大/平均)",
+        "tpsWithStats": "每秒事务数(当前/最小/最大/平均)"
       }
     },
-    "execLog": {
-      "node": "节点",
-      "schedulingResult": "调度结果",
-      "success": "成功",
-      "fail": "失败",
-      "processExitCode": "进程退出码",
-      "downloadFileName": "runner.log"
-    },
-    "executeConfig": {
-      "scriptType": "脚本类型"
-    },
-    "exportScriptModal": {
-      "title": "导出脚本",
-      "format": "格式"
-    },
-    "functionTestDetail": {
-      "basicInfo": {
-        "duration": "运行时间",
-        "iteration": "迭代数",
-        "request": "请求数",
-        "responseTime": "响应时间",
-        "assertion": "断言"
-      },
-      "collapse": {
-        "iteration": "第{iteration}次迭代"
-      },
-      "ftp": {
-        "upload": "上传",
-        "download": "下载",
+    "menuData": {
+      "toolbar": {
+        "debugResult": "调试结果",
+        "logs": "调度日志",
+        "execLog": "执行日志",
+        "toggle": "展开收起",
+        "screen": "全屏",
         "duration": "耗时",
-        "request": "请求",
-        "response": "响应"
+        "size": "大小"
       },
-      "statusTag": {
-        "success": "通过",
-        "fail": "未通过",
-        "block": "未测试",
-        "ignore": "未启用"
+      "drawer": {
+        "save": "保存",
+        "indicator": "测试指标",
+        "testInfo": "测试结果",
+        "activity": "活动",
+        "comment": "评论"
       }
     },
-    "scriptConfig": {
-      "messages": {
-        "yamlFormatError": "yaml内容格式错误，请检查并更正"
-      }
-    },
-    "performanceTestDetail": {
-      "basicInfo": {
-        "executionDuration": "执行时长",
-        "concurrency": "并发数",
-        "queriesPerSecond": "每秒查询数(当前 / 最大)",
-        "transactionsPerSecond": "每秒事务数(当前 / 最大)",
-        "errors": "错误(Error)",
-        "iterations": "迭代次数",
-        "responseTime": "响应时间(最小 / 平均 / 最大)",
-        "percentile": "响应百分位(P50 / P90 / P99)",
-        "download": "下载",
-        "upload": "上传"
+    "utils": {
+      "timeUnits": {
+        "ms": "毫秒",
+        "s": "秒",
+        "min": "分钟",
+        "h": "小时",
+        "d": "天"
       },
-      "tabs": {
-        "aggregation": "汇总结果",
-        "throughput": "吞吐量",
-        "concurrency": "并发数",
-        "responseTime": "响应时间",
-        "error": "错误",
-        "statusCode": "状态码",
-        "node": "节点资源",
-        "analyze": "叠加分析"
+      "formatTime": {
+        "milliseconds": "毫秒",
+        "seconds": "秒",
+        "minutes": "分",
+        "hours": "小时"
       },
-      "scriptInfo": {
-        "scriptName": "脚本名称",
-        "scriptType": "脚本类型",
-        "plugin": "插件",
-        "source": "来源",
-        "creator": "创建人",
-        "createTime": "创建时间",
-        "lastModifier": "最后更新人",
-        "lastModifyTime": "最后更新时间",
-        "description": "描述",
-        "form": {
-          "scriptTypeRequired": "请选择脚本类型",
-          "scriptTypePlaceholder": "请选择脚本类型",
-          "scriptNameRequired": "请填写脚本名称",
-          "scriptNamePlaceholder": "请输入脚本名称,最多200字符",
-          "descriptionRequired": "请输入脚本描述，最多800字符",
-          "descriptionPlaceholder": "请输入脚本描述，最多800字符"
-        }
-      },
-      "sampling": {
-        "title": "错误采样",
-        "time": "时间",
-        "samplingId": "采样ID",
-        "name": "名称"
-      },
-      "countTemplate": {
-        "radioButtons": {
-          "byApi": "按接口",
-          "byMetric": "按指标",
-          "overlayAnalysis": "叠加分析"
-        }
-      },
-      "superimposeAnalysis": {
-        "toggleTitles": {
-          "throughput": "吞吐量（TPS / QPS）",
-          "concurrency": "并发数（VU）",
-          "responseTime": "响应时间（RT、毫秒）",
-          "error": "错误（ERROR）"
-        },
-        "throughputOptions": {
-          "queriesPerSecond": "每秒查询数",
-          "transactionsPerSecond": "每秒事务数",
-          "downloadPerSecond": "下载/秒",
-          "uploadPerSecond": "上传/秒"
-        },
-        "threadOptions": {
-          "threadCount": "线程数",
-          "maxThreadCount": "最大线程数",
-          "activeThreadCount": "活跃线程数"
-        },
-        "responseTimeOptions": {
-          "average": "平均",
-          "minimum": "最小",
-          "maximum": "最大",
-          "p50": "P50",
-          "p75": "P75",
-          "p90": "P90",
-          "p95": "P95",
-          "p99": "P99",
-          "p999": "P999"
-        },
-        "errorOptions": {
-          "errorCount": "错误数",
-          "errorRate": "错误率"
-        }
-      },
-      "nodeData": {
-        "tabs": {
-          "cpu": "CPU",
-          "memory": "内存",
-          "fileSystem": "文件系统",
-          "network": "网络"
-        },
-        "nodeTypes": {
-          "execNode": "执行节点",
-          "appNode": "应用节点"
-        },
-        "diskDataOptions": {
-          "iops": "IOPS",
-          "mbPerSecond": "每秒MB数"
-        },
-        "cpuMetrics": {
-          "idlePercentage": "CPU 空闲百分比(%)",
-          "systemSpacePercentage": "系统空间占用 CPU 百分比(%)",
-          "userSpacePercentage": "用户空间占 CPU 百分比(%)",
-          "ioWaitPercentage": "等待 IO 操作的 CPU 百分比(%)",
-          "otherPercentage": "其他占用 CPU 百分比(%)",
-          "totalPercentage": "当前占用的总 CPU 百分比(%)"
-        },
-        "memoryMetrics": {
-          "physicalMemoryFree": "物理内存剩余量(GB)",
-          "physicalMemoryUsed": "物理内存使用量(GB)",
-          "actualFreePercentage": "实际空闲物理内存百分比(%)",
-          "actualUsedPercentage": "实际使用物理内存的百分比(%)",
-          "actualFreeMemory": "实际空闲内存(GB)",
-          "actualUsedMemory": "实际使用内存(GB)",
-          "freeMemoryPercentage": "空闲内存占用的百分比(%)",
-          "usedMemoryPercentage": "使用内存占用的百分比(%)",
-          "swapUsed": "交换区使用量(GB)",
-          "swapFree": "交换区剩余量(GB)"
-        },
-        "diskMetrics": {
-          "totalSize": "磁盘总大小(GB)",
-          "fileSystemFree": "本地文件系统剩余大小(GB)",
-          "fileSystemUsed": "本地文件系统已用大小(GB)",
-          "fileSystemAvailable": "本地文件系统可用大小(GB)",
-          "fileSystemUsage": "本地文件系统使用率(%)",
-          "diskReadsPerSecond": "每秒磁盘读次数(IO/s)",
-          "diskWritesPerSecond": "每秒磁盘写次数(IO/s)",
-          "diskReadMBPerSecond": "每秒磁盘读取 MB 数(MB/s)",
-          "diskWriteMBPerSecond": "每秒磁盘写入 MB 数(MB/s)"
-        },
-        "networkMetrics": {
-          "totalBytesReceived": "接收到的总字节(GB)",
-          "mbReceivedPerSecond": "每秒接收的 MB 数(MB/s)",
-          "errorPacketsReceived": "接收到的错误包数(packets)",
-          "totalBytesSent": "发送的总字节(GB)",
-          "mbSentPerSecond": "每秒发送的 MB 数(MB/s)"
-        }
-      },
-      "execSetting": {
-        "messages": {
-          "modifySuccess": "修改成功"
-        },
-        "actions": {
-          "save": "保存",
-          "cancel": "取消"
-        }
-      },
-      "execLog": {
-        "selectNode": "选择节点",
-        "schedulingLog": {
-          "title": "调度日志",
-          "lastSchedulingTime": "最后调度时间",
-          "result": "结果",
-          "success": "成功",
-          "fail": "失败",
-          "exitCode": "退出码",
-          "noData": "--"
-        },
-        "execLog": {
-          "title": "执行日志",
-          "file": "文件",
-          "noProxyInfo": "无访问代理信息，连接失败地址：",
-          "downloadFileName": "runner.log"
-        },
-        "tooltips": {
-          "export": "导出",
-          "refresh": "刷新"
-        },
-        "downloadFileName": {
-          "scheduling": "scheduling.log"
-        }
-      },
-      "conterList": {
-        "errorStatistics": "错误统计",
-        "errorCount": "错误数",
-        "errorRate": "错误率"
-      },
-      "aggregate": {
-        "radioButtons": {
-          "byThroughput": "按吞吐量",
-          "byResponseTime": "按响应时间",
-          "byErrorCount": "按错误数",
-          "byErrorRate": "按错误率",
-          "byUploadDownload": "按上传下载"
-        }
-      }
-    },
-    "uiConfig": {
-      "title": "插入Ftp请求",
-      "description": "支持同时编排多个Ftp接口，但每次只允许启用一个Ftp进行测试。",
-      "comments": {
-        "onlyOneEnabled": "只能启用一个",
-        "cloneLocalFile": "克隆本地文件",
-        "checkCloneNameExists": "判断克隆的名称是否已经存在"
-      },
-      "actions": {
-        "clone": "克隆",
-        "delete": "删除"
-      },
-      "form": {
-        "nameDuplicate": "名称重复",
-        "namePlaceholder": "名称，最大支持400个字符",
-        "descriptionPlaceholder": "描述，最大支持800字（可选）",
-        "none": "无"
-      },
-      "serverConfig": {
-        "title": "服务器配置",
-        "hostnameOrIP": "主机名或IP",
-        "hostnameOrIPPlaceholder": "主机名或IP，最大支持4096个字符",
-        "port": "端口",
-        "portPlaceholder": "端口（1~65535）",
-        "username": "用户名",
-        "usernamePlaceholder": "用户名，最大支持400个字符",
-        "password": "密码",
-        "passwordPlaceholder": "密码，最大支持4096个字符",
-        "connectionTimeout": "连接超时",
-        "connectionTimeoutPlaceholder": "连接超时，最大24小时",
-        "readTimeout": "读取超时",
-        "readTimeoutPlaceholder": "读取超时，最大24小时"
-      },
-      "fileConfig": {
-        "localFilePath": "本地文件路径",
-        "localFilePathPlaceholder": "本地文件路径，最大支持4096个字符",
-        "localFileNameTooltip": "本地文件名，即上传本地文件的名称，也可以是一个完整本地文件路径，需要确保文件已上传到对应执行节点路径。",
-        "remoteFileName": "远程文件名",
-        "remoteFileNamePlaceholder": "下载远程FTP服务器中的文件名称，最大支持4096个字符",
-        "binaryFile": "二进制文件",
-        "binaryFileTooltip": "上传文件是否是二进制文件",
-        "binaryMode": {
-          "yes": "是",
-          "no": "否"
-        }
-      },
-      "requestConfig": {
-        "title": "FTP请求配置",
-        "uploadDownload": "上传 / 下载",
-        "upload": "上传",
-        "download": "下载",
-        "uploadFileSource": "文件来源",
-        "localFile": "本地文件",
-        "remoteFile": "远程文件",
-        "remoteFileTooltip": "从FTP服务中下载对应文件用于上传",
-        "remoteUrl": "远程URL",
-        "remoteFileUrlTooltip": "从远程URL下载文件用于上传",
-        "remoteUrlPlaceholder": "远程URL，最大支持4096个字符",
-        "remoteFileUrl": "远程文件URL",
-        "remoteFileUrlPlaceholder": "上传时根据URL下载一个上传文件，最大支持4096个字符",
-        "remoteFileName": "远程文件名",
-        "remoteFileNamePlaceholder": "下载远程FTP服务器中的文件名称，最大支持4096个字符",
-        "remoteFileUrlHints": "上传时保存的文件名称，不指定时使用原文件名存储，最大支持4096个字符",
-        "localFileContent": "本地文件内容",
-        "localFileContentTooltip": "（限制文件大小1MB）"
-      },
-      "upload": {
-        "selectFile": "选择文件",
-        "fileSizeLimit": "文件大小不能超过1MB",
-        "selectFileTooltip": "请选择本地文件",
-        "code": "编码",
-        "fileEncoding": "文件编码"
-      }
+      "defaultValue": "--"
     }
   },
-  "gendata": {
-    "tabs": {
-      "csv": "CSV",
-      "json": "JSON",
-      "sql": "SQL",
-      "xml": "XML",
-      "excel": "Excel",
-      "custom": "自定义",
-      "tab": "Tab"
-    },
-    "actions": {
-      "save": "保存",
-      "cancel": "取消",
-      "confirm": "确定",
-      "refresh": "刷新",
-      "export": "导出",
-      "import": "导入",
-      "add": "添加",
-      "edit": "编辑",
-      "delete": "删除",
-      "view": "查看",
-      "download": "下载",
-      "upload": "上传"
-    },
-    "messages": {
-      "saveSuccess": "保存成功",
-      "deleteSuccess": "删除成功",
-      "importSuccess": "导入成功",
-      "exportSuccess": "导出成功",
-      "operationSuccess": "操作成功",
-      "operationFailed": "操作失败",
-      "generateDataSuccess": "创建生成数据成功，请在\"执行\"中查看进度和结果。",
-      "generateDataSuccessWithName": "创建生成数据[{name}]成功，请在\"执行\"中查看进度和结果。",
-      "confirmDelete": "确认删除",
-      "noData": "暂无数据",
-      "loading": "加载中...",
-      "pleaseSelect": "请选择",
-      "pleaseInput": "请输入"
-    },
-    "form": {
-      "name": "名称",
-      "description": "描述",
-      "type": "类型",
-      "format": "格式",
-      "size": "大小",
-      "count": "数量",
-      "status": "状态",
-      "createTime": "创建时间",
-      "updateTime": "更新时间",
-      "creator": "创建人",
-      "updater": "更新人"
-    },
-    "dataConfig": {
-      "title": "数据配置",
-      "fieldName": "字段名称",
-      "fieldType": "字段类型",
-      "fieldValue": "字段值",
-      "fieldLength": "字段长度",
-      "fieldFormat": "字段格式",
-      "fieldRequired": "是否必填",
-      "fieldDefault": "默认值",
-      "fieldRule": "字段规则"
-    },
-    "execConfig": {
-      "title": "执行配置",
-      "execMode": "执行模式",
-      "execCount": "执行次数",
-      "execInterval": "执行间隔",
-      "execTimeout": "执行超时",
-      "execRetry": "重试次数",
-      "execParallel": "并行执行"
-    },
-    "storeConfig": {
-      "title": "存储配置",
-      "storeType": "存储类型",
-      "storePath": "存储路径",
-      "storeFormat": "存储格式",
-      "storeCompress": "是否压缩",
-      "storeEncrypt": "是否加密"
-    },
-    "dataSet": {
-      "format": "格式",
-      "lineEnding": "行尾",
-      "includeHeader": "包含头",
-      "escapeChar": "转义符",
-      "quoteChar": "引用符",
-      "separatorChar": "分隔符",
-      "includeNull": "包含空值字段",
-      "rowsToArray": "转成数组",
-      "tableName": "存储数据表名",
-      "batchInsert": "是否生成批量 INSERT",
-      "rootElement": "根元素名称",
-      "recordElement": "记录元素名称",
-      "validation": {
-        "singleChar": "请输入单字符",
-        "tableNameRequired": "请输入存储数据表名"
-      }
-    },
-    "DatasourceStoreConfig": {
-      "batchRows": "批量行数",
-      "batchInsert": "是否批量插入",
-      "selectDatasource": "选择数据源",
-      "databaseType": "数据库类型",
-      "driverClassName": "驱动完整类名",
-      "hints": {
-        "batchRows": "每次批量生成、存储或发送行数，默认 1，最大10000。",
-        "batchInsert": "设置成 true 时会将{batchRows}条数据合并成一条 INSERT 数据",
-        "driverClassName": "不指定时将使用默认驱动类名"
-      },
-      "validation": {
-        "selectDatasource": "请选择数据源",
-        "selectDatabaseType": "请选择数据库类型"
-      }
-    },
-    "excuteConfig": {
-      "scriptName": "脚本名称",
-      "execThreads": "执行线程数",
-      "selectMockNode": "选择Mock节点",
-      "execPriority": "执行优先级",
-      "onError": "遇到错误",
-      "storageMethod": "存储方式",
-      "rows": "行数",
-      "hints": {
-        "execThreads": "默认1个线程，最大1000。",
-        "execPriority": "优先级高的最先被执行，值范围：0~2147483647,值越大优先级越高。",
-        "rows": "生成数据总行数，最大 100000000000。"
-      },
-      "errorActions": {
-        "continue": "继续",
-        "stop": "停止",
-        "stopNow": "立即终止"
-      },
-      "storageTips": {
-        "datasource": "数据源存储，将生成数据写入到数据库。",
-        "dataspace": "数据空间存储，将数据存储到 AngusTester 应用\"数据\"->\"空间\"。",
-        "local": "本地存储，生成数据会以文件形式存储在执行节点，您可以进入执行详情页面点击下载数据文件。默认存储路径：${AGENT_HOME}/data/exec/[执行ID]/data.[数据格式]。",
-        "pushThird": "推送三方接口，支持将生成数据以文本或文件形式发送到一个 Http 接口。"
-      },
-      "validation": {
-        "scriptNameRequired": "请输入数据脚本名称",
-        "selectNode": "请选择节点"
-      },
-      "placeholders": {
-        "scriptName": "输入数据脚本的名称，限制200字符内"
-      }
-    },
-    "FuncModal": {
-      "title": "选择Mock函数"
-    },
-    "localStoreConfig": {
-      "batchRows": "批量行数",
-      "defaultStoragePath": "默认储存路径",
-      "hints": {
-        "batchRows": "每次批量生成、存储或发送行数，默认 1，最大10000。",
-        "defaultStoragePath": "生成数据文件在执行节点存储路径。"
-      }
-    },
-    "pushThirdStoreConfig": {
-      "batchRows": "批量行数",
-      "requestParams": "请求参数",
-      "requestBody": "请求体",
-      "authentication": "认证",
-      "contentType": "Content-Type",
-      "username": "用户名",
-      "password": "密码",
-      "token": "令牌",
-      "basicAuth": "Basic Auth",
-      "bearerToken": "Bearer Token",
-      "hints": {
-        "batchRows": "每次批量生成、存储或发送行数，默认 1，最大10000。"
-      },
-      "form": {
-        "paramName": "参数名",
-        "paramValue": "参数值",
-        "position": "位置",
-        "paramNamePlaceholder": "参数名称",
-        "filePosition": "文件位置"
-      },
-      "validation": {
-        "enterParamName": "请输入参数名",
-        "paramNameDuplicate": "keyName存在重复",
-        "enterParamValue": "请输入参数值",
-        "enterApiAddress": "请输入接口地址"
-      },
-      "placeholders": {
-        "apiAddress": "接口地址"
-      }
-    },
-    "spaceStoreConfig": {
-      "selectSpace": "选择空间",
-      "batchRows": "批量行数",
-      "hints": {
-        "batchRows": "每次批量生成、存储或发送行数，默认 1，最大10000。"
-      },
-      "validation": {
-        "selectSpace": "请选择空间"
-      }
-    },
-    "viewScriptModal": {
-      "title": "查看脚本"
-    }
-  },
-
   "httpPlugin": {
     "actions": {
       "save": "保存",
@@ -1430,6 +920,388 @@
       "offTips": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前场景，查看用户同时需要有当前场景父级目录权限。"
     }
   },
+  "ftpPlugin": {
+    "tabs": {
+      "taskConfig": "任务配置",
+      "executeConfig": "执行配置"
+    },
+    "toolbar": {
+      "debugResult": "调试结果",
+      "logs": "调度日志",
+      "execLog": "执行日志",
+      "toggle": "展开收起",
+      "screen": "全屏"
+    },
+    "drawer": {
+      "save": "保存",
+      "indicator": "性能指标",
+      "testInfo": "测试结果",
+      "activity": "活动",
+      "comment": "评论"
+    },
+    "messages": {
+      "debugSaveRequired": "调试需要先保存当前数据，请保存后再执行调试"
+    },
+    "auth": {
+      "title": "场景权限",
+      "onTips": "开启\"有权限控制\"后，需要手动授权服务权限后才会有场景相应操作权限，默认开启\"有权限控制\"。注意：如果授权对象没有父级目录权限将自动授权查看权限。",
+      "offTips": "开启\"无权限控制\"后，将允许所有用户公开查看和操作当前场景，查看用户同时需要有当前场景父级目录权限。"
+    },
+    "buttonGroup": {
+      "export": "导出脚本",
+      "select": "选择脚本",
+      "import": "导入脚本",
+      "codeView": "代码视图",
+      "uiView": "页面视图",
+      "authority": "权限",
+      "follow": "关注",
+      "cancelFollow": "取消关注",
+      "favourite": "收藏",
+      "cancelFavourite": "取消收藏",
+      "refresh": "刷新",
+      "test": "创建执行",
+      "debug": "调试",
+      "save": "保存"
+    },
+    "debugLog": {
+      "schedulingResult": "调度结果",
+      "success": "成功",
+      "fail": "失败",
+      "processExitCode": "进程退出码",
+      "downloadFileName": "scheduling.log"
+    },
+    "debugResult": {
+      "debugResult": "调试结果",
+      "fail": "失败",
+      "exitCode": "退出码",
+      "failureReason": "失败原因",
+      "samplingStatus": "采样状态"
+    },
+    "drawerMenu": {
+      "saveForm": {
+        "id": "ID",
+        "name": "名称",
+        "scriptName": "脚本名称",
+        "scriptId": "脚本ID",
+        "description": "描述",
+        "namePlaceholder": "最大支持200个字符",
+        "descriptionPlaceholder": "最大支持800个字符",
+        "confirm": "确定",
+        "cancel": "取消"
+      }
+    },
+    "execLog": {
+      "node": "节点",
+      "schedulingResult": "调度结果",
+      "success": "成功",
+      "fail": "失败",
+      "processExitCode": "进程退出码",
+      "downloadFileName": "runner.log"
+    },
+    "executeConfig": {
+      "scriptType": "脚本类型"
+    },
+    "exportScriptModal": {
+      "title": "导出脚本",
+      "format": "格式"
+    },
+    "functionTestDetail": {
+      "basicInfo": {
+        "duration": "运行时间",
+        "iteration": "迭代数",
+        "request": "请求数",
+        "responseTime": "响应时间",
+        "assertion": "断言"
+      },
+      "collapse": {
+        "iteration": "第{iteration}次迭代"
+      },
+      "ftp": {
+        "upload": "上传",
+        "download": "下载",
+        "duration": "耗时",
+        "request": "请求",
+        "response": "响应"
+      },
+      "statusTag": {
+        "success": "通过",
+        "fail": "未通过",
+        "block": "未测试",
+        "ignore": "未启用"
+      }
+    },
+    "scriptConfig": {
+      "messages": {
+        "yamlFormatError": "yaml内容格式错误，请检查并更正"
+      }
+    },
+    "performanceTestDetail": {
+      "basicInfo": {
+        "executionDuration": "执行时长",
+        "concurrency": "并发数",
+        "queriesPerSecond": "每秒查询数(当前 / 最大)",
+        "transactionsPerSecond": "每秒事务数(当前 / 最大)",
+        "errors": "错误(Error)",
+        "iterations": "迭代次数",
+        "responseTime": "响应时间(最小 / 平均 / 最大)",
+        "percentile": "响应百分位(P50 / P90 / P99)",
+        "download": "下载",
+        "upload": "上传"
+      },
+      "tabs": {
+        "aggregation": "汇总结果",
+        "throughput": "吞吐量",
+        "concurrency": "并发数",
+        "responseTime": "响应时间",
+        "error": "错误",
+        "statusCode": "状态码",
+        "node": "节点资源",
+        "analyze": "叠加分析"
+      },
+      "scriptInfo": {
+        "scriptName": "脚本名称",
+        "scriptType": "脚本类型",
+        "plugin": "插件",
+        "source": "来源",
+        "creator": "创建人",
+        "createTime": "创建时间",
+        "lastModifier": "最后更新人",
+        "lastModifyTime": "最后更新时间",
+        "description": "描述",
+        "form": {
+          "scriptTypeRequired": "请选择脚本类型",
+          "scriptTypePlaceholder": "请选择脚本类型",
+          "scriptNameRequired": "请填写脚本名称",
+          "scriptNamePlaceholder": "请输入脚本名称,最多200字符",
+          "descriptionRequired": "请输入脚本描述，最多800字符",
+          "descriptionPlaceholder": "请输入脚本描述，最多800字符"
+        }
+      },
+      "sampling": {
+        "title": "错误采样",
+        "time": "时间",
+        "samplingId": "采样ID",
+        "name": "名称"
+      },
+      "countTemplate": {
+        "radioButtons": {
+          "byApi": "按接口",
+          "byMetric": "按指标",
+          "overlayAnalysis": "叠加分析"
+        }
+      },
+      "superimposeAnalysis": {
+        "toggleTitles": {
+          "throughput": "吞吐量（TPS / QPS）",
+          "concurrency": "并发数（VU）",
+          "responseTime": "响应时间（RT、毫秒）",
+          "error": "错误（ERROR）"
+        },
+        "throughputOptions": {
+          "queriesPerSecond": "每秒查询数",
+          "transactionsPerSecond": "每秒事务数",
+          "downloadPerSecond": "下载/秒",
+          "uploadPerSecond": "上传/秒"
+        },
+        "threadOptions": {
+          "threadCount": "线程数",
+          "maxThreadCount": "最大线程数",
+          "activeThreadCount": "活跃线程数"
+        },
+        "responseTimeOptions": {
+          "average": "平均",
+          "minimum": "最小",
+          "maximum": "最大",
+          "p50": "P50",
+          "p75": "P75",
+          "p90": "P90",
+          "p95": "P95",
+          "p99": "P99",
+          "p999": "P999"
+        },
+        "errorOptions": {
+          "errorCount": "错误数",
+          "errorRate": "错误率"
+        }
+      },
+      "nodeData": {
+        "tabs": {
+          "cpu": "CPU",
+          "memory": "内存",
+          "fileSystem": "文件系统",
+          "network": "网络"
+        },
+        "nodeTypes": {
+          "execNode": "执行节点",
+          "appNode": "应用节点"
+        },
+        "diskDataOptions": {
+          "iops": "IOPS",
+          "mbPerSecond": "每秒MB数"
+        },
+        "cpuMetrics": {
+          "idlePercentage": "CPU 空闲百分比(%)",
+          "systemSpacePercentage": "系统空间占用 CPU 百分比(%)",
+          "userSpacePercentage": "用户空间占 CPU 百分比(%)",
+          "ioWaitPercentage": "等待 IO 操作的 CPU 百分比(%)",
+          "otherPercentage": "其他占用 CPU 百分比(%)",
+          "totalPercentage": "当前占用的总 CPU 百分比(%)"
+        },
+        "memoryMetrics": {
+          "physicalMemoryFree": "物理内存剩余量(GB)",
+          "physicalMemoryUsed": "物理内存使用量(GB)",
+          "actualFreePercentage": "实际空闲物理内存百分比(%)",
+          "actualUsedPercentage": "实际使用物理内存的百分比(%)",
+          "actualFreeMemory": "实际空闲内存(GB)",
+          "actualUsedMemory": "实际使用内存(GB)",
+          "freeMemoryPercentage": "空闲内存占用的百分比(%)",
+          "usedMemoryPercentage": "使用内存占用的百分比(%)",
+          "swapUsed": "交换区使用量(GB)",
+          "swapFree": "交换区剩余量(GB)"
+        },
+        "diskMetrics": {
+          "totalSize": "磁盘总大小(GB)",
+          "fileSystemFree": "本地文件系统剩余大小(GB)",
+          "fileSystemUsed": "本地文件系统已用大小(GB)",
+          "fileSystemAvailable": "本地文件系统可用大小(GB)",
+          "fileSystemUsage": "本地文件系统使用率(%)",
+          "diskReadsPerSecond": "每秒磁盘读次数(IO/s)",
+          "diskWritesPerSecond": "每秒磁盘写次数(IO/s)",
+          "diskReadMBPerSecond": "每秒磁盘读取 MB 数(MB/s)",
+          "diskWriteMBPerSecond": "每秒磁盘写入 MB 数(MB/s)"
+        },
+        "networkMetrics": {
+          "totalBytesReceived": "接收到的总字节(GB)",
+          "mbReceivedPerSecond": "每秒接收的 MB 数(MB/s)",
+          "errorPacketsReceived": "接收到的错误包数(packets)",
+          "totalBytesSent": "发送的总字节(GB)",
+          "mbSentPerSecond": "每秒发送的 MB 数(MB/s)"
+        }
+      },
+      "execSetting": {
+        "messages": {
+          "modifySuccess": "修改成功"
+        },
+        "actions": {
+          "save": "保存",
+          "cancel": "取消"
+        }
+      },
+      "execLog": {
+        "selectNode": "选择节点",
+        "schedulingLog": {
+          "title": "调度日志",
+          "lastSchedulingTime": "最后调度时间",
+          "result": "结果",
+          "success": "成功",
+          "fail": "失败",
+          "exitCode": "退出码",
+          "noData": "--"
+        },
+        "execLog": {
+          "title": "执行日志",
+          "file": "文件",
+          "noProxyInfo": "无访问代理信息，连接失败地址：",
+          "downloadFileName": "runner.log"
+        },
+        "tooltips": {
+          "export": "导出",
+          "refresh": "刷新"
+        },
+        "downloadFileName": {
+          "scheduling": "scheduling.log"
+        }
+      },
+      "conterList": {
+        "errorStatistics": "错误统计",
+        "errorCount": "错误数",
+        "errorRate": "错误率"
+      },
+      "aggregate": {
+        "radioButtons": {
+          "byThroughput": "按吞吐量",
+          "byResponseTime": "按响应时间",
+          "byErrorCount": "按错误数",
+          "byErrorRate": "按错误率",
+          "byUploadDownload": "按上传下载"
+        }
+      }
+    },
+    "uiConfig": {
+      "title": "插入Ftp请求",
+      "description": "支持同时编排多个Ftp接口，但每次只允许启用一个Ftp进行测试。",
+      "comments": {
+        "onlyOneEnabled": "只能启用一个",
+        "cloneLocalFile": "克隆本地文件",
+        "checkCloneNameExists": "判断克隆的名称是否已经存在"
+      },
+      "actions": {
+        "clone": "克隆",
+        "delete": "删除"
+      },
+      "form": {
+        "nameDuplicate": "名称重复",
+        "namePlaceholder": "名称，最大支持400个字符",
+        "descriptionPlaceholder": "描述，最大支持800字（可选）",
+        "none": "无"
+      },
+      "serverConfig": {
+        "title": "服务器配置",
+        "hostnameOrIP": "主机名或IP",
+        "hostnameOrIPPlaceholder": "主机名或IP，最大支持4096个字符",
+        "port": "端口",
+        "portPlaceholder": "端口（1~65535）",
+        "username": "用户名",
+        "usernamePlaceholder": "用户名，最大支持400个字符",
+        "password": "密码",
+        "passwordPlaceholder": "密码，最大支持4096个字符",
+        "connectionTimeout": "连接超时",
+        "connectionTimeoutPlaceholder": "连接超时，最大24小时",
+        "readTimeout": "读取超时",
+        "readTimeoutPlaceholder": "读取超时，最大24小时"
+      },
+      "fileConfig": {
+        "localFilePath": "本地文件路径",
+        "localFilePathPlaceholder": "本地文件路径，最大支持4096个字符",
+        "localFileNameTooltip": "本地文件名，即上传本地文件的名称，也可以是一个完整本地文件路径，需要确保文件已上传到对应执行节点路径。",
+        "remoteFileName": "远程文件名",
+        "remoteFileNamePlaceholder": "下载远程FTP服务器中的文件名称，最大支持4096个字符",
+        "binaryFile": "二进制文件",
+        "binaryFileTooltip": "上传文件是否是二进制文件",
+        "binaryMode": {
+          "yes": "是",
+          "no": "否"
+        }
+      },
+      "requestConfig": {
+        "title": "FTP请求配置",
+        "uploadDownload": "上传 / 下载",
+        "upload": "上传",
+        "download": "下载",
+        "uploadFileSource": "文件来源",
+        "localFile": "本地文件",
+        "remoteFile": "远程文件",
+        "remoteFileTooltip": "从FTP服务中下载对应文件用于上传",
+        "remoteUrl": "远程URL",
+        "remoteFileUrlTooltip": "从远程URL下载文件用于上传",
+        "remoteUrlPlaceholder": "远程URL，最大支持4096个字符",
+        "remoteFileUrl": "远程文件URL",
+        "remoteFileUrlPlaceholder": "上传时根据URL下载一个上传文件，最大支持4096个字符",
+        "remoteFileName": "远程文件名",
+        "remoteFileNamePlaceholder": "下载远程FTP服务器中的文件名称，最大支持4096个字符",
+        "remoteFileUrlHints": "上传时保存的文件名称，不指定时使用原文件名存储，最大支持4096个字符",
+        "localFileContent": "本地文件内容",
+        "localFileContentTooltip": "（限制文件大小1MB）"
+      },
+      "upload": {
+        "selectFile": "选择文件",
+        "fileSizeLimit": "文件大小不能超过1MB",
+        "selectFileTooltip": "请选择本地文件",
+        "code": "编码",
+        "fileEncoding": "文件编码"
+      }
+    }
+  },
   "jmsPlugin": {
     "title": "JMS插件",
     "taskConfig": "任务配置",
@@ -2014,7 +1886,6 @@
         "binaryDataLengthPrefix": "二进制数据长度前缀的字节个数"
       }
     }
-    
   },
   "websocketPlugin": {
     "notifications": {
@@ -2068,174 +1939,311 @@
         "response": "响应"
       }
     },
+    "actions": {
+      "clone": "克隆",
+      "delete": "删除"
+    },
+    "form": {
+      "nameDuplicate": "名称重复",
+      "namePlaceholder": "名称，最大支持400个字符",
+      "descriptionPlaceholder": "描述，最大支持800个字符",
+      "none": "无"
+    },
+    "connectionInfo": {
+      "title": "连接信息",
+      "urlFormatError": "URL格式错误",
+      "urlPlaceholder": "URL，最大支持2000个字符。例如 ws://dev-apis.xcan.cloud/wpush/ws/mcenterReceive"
+    },
+    "parameters": {
+      "requestParameters": "请求参数",
+      "requestHeaders": "请求头",
+      "parameterNamePlaceholder": "参数名称，最大支持400个字符",
+      "parameterValuePlaceholder": "参数值，最大支持4096个字符"
+    },
+    "messageMode": {
+      "title": "消息模式",
+      "placeholder": "消息模式"
+    },
+    "sendData": {
+      "encodingTitle": "发送数据编码",
+      "encodingPlaceholder": "发送数据编码",
+      "title": "发送数据"
+    },
+    "parametric": {
+      "title": "参数化"
+    },
+    "assertion": {
+      "title": "断言",
+      "tooltip": "断言接收消息"
+    },
+    "selectApiModal": {
+      "title": "选择接口",
+      "treeSelect": {
+        "label": "项目/服务",
+        "placeholder": "请选择项目/服务"
+      },
+      "input": {
+        "placeholder": "查询接口名称"
+      },
+      "fields": {
+        "url": "URL",
+        "name": "名称"
+      },
+      "referenced": "（已引用）",
+      "buttons": {
+        "cancel": "取消",
+        "copy": "复制",
+        "link": "引用"
+      }
+    },
+    "serverUri": {
+      "default": "默认"
+    },
+    "websocketConfigs": {
+      "urlFormatError": "url格式错误",
+      "form": {
+        "none": "无",
+        "nameDuplicate": "名称重复",
+        "namePlaceholder": "名称，最大支持400个字符",
+        "descriptionPlaceholder": "描述，最大支持800个字符"
+      },
       "actions": {
         "clone": "克隆",
         "delete": "删除"
       },
-      "form": {
-        "nameDuplicate": "名称重复",
-        "namePlaceholder": "名称，最大支持400个字符",
-        "descriptionPlaceholder": "描述，最大支持800个字符",
-        "none": "无"
-      },
       "connectionInfo": {
         "title": "连接信息",
-        "urlFormatError": "URL格式错误",
-        "urlPlaceholder": "URL，最大支持2000个字符。例如 ws://dev-apis.xcan.cloud/wpush/ws/mcenterReceive"
+        "urlPlaceholder": "请输入URL，例如 ws://dev-apis.xcan.cloud/wpush/ws/mcenterReceive",
+        "messageModePlaceholder": "消息模式"
       },
       "parameters": {
         "requestParameters": "请求参数",
-        "requestHeaders": "请求头",
-        "parameterNamePlaceholder": "参数名称，最大支持400个字符",
-        "parameterValuePlaceholder": "参数值，最大支持4096个字符"
+        "requestHeaders": "请求头"
       },
-      "messageMode": {
-        "title": "消息模式",
-        "placeholder": "消息模式"
-      },
-      "sendData": {
-        "encodingTitle": "发送数据编码",
-        "encodingPlaceholder": "发送数据编码",
-        "title": "发送数据"
-      },
-      "parametric": {
-        "title": "参数化"
+      "sendInfo": {
+        "title": "发送信息",
+        "encodingPlaceholder": "发送信息编码"
       },
       "assertion": {
         "title": "断言",
         "tooltip": "断言接收消息"
       },
-      "selectApiModal": {
-        "title": "选择接口",
-        "treeSelect": {
-          "label": "项目/服务",
-          "placeholder": "请选择项目/服务"
-        },
-        "input": {
-          "placeholder": "查询接口名称"
-        },
-        "fields": {
-          "url": "URL",
-          "name": "名称"
-        },
-        "referenced": "（已引用）",
-        "buttons": {
-          "cancel": "取消",
-          "copy": "复制",
-          "link": "引用"
-        }
-      },
-      "serverUri": {
-        "default": "默认"
-      },
-      "websocketConfigs": {
-        "urlFormatError": "url格式错误",
-        "form": {
-          "none": "无",
-          "nameDuplicate": "名称重复",
-          "namePlaceholder": "名称，最大支持400个字符",
-          "descriptionPlaceholder": "描述，最大支持800个字符"
-        },
-        "actions": {
-          "clone": "克隆",
-          "delete": "删除"
-        },
-        "connectionInfo": {
-          "title": "连接信息",
-          "urlPlaceholder": "请输入URL，例如 ws://dev-apis.xcan.cloud/wpush/ws/mcenterReceive",
-          "messageModePlaceholder": "消息模式"
-        },
-        "parameters": {
-          "requestParameters": "请求参数",
-          "requestHeaders": "请求头"
-        },
-        "sendInfo": {
-          "title": "发送信息",
-          "encodingPlaceholder": "发送信息编码"
-        },
-        "assertion": {
-          "title": "断言",
-          "tooltip": "断言接收消息"
-        },
-        "paramsInput": {
-          "parameterNamePlaceholder": "参数名称，最大支持400个字符",
-          "parameterValuePlaceholder": "参数值，最大支持4096个字符"
-        }
-      }
-    },
-    "commonPlugin": {
-      "chartConfig": {
-        "names": {
-          "duration": "时长",
-          "errors": "错误数",
-          "iterations": "迭代数",
-          "n": "采样数",
-          "operations": "请求数",
-          "transactions": "事务数",
-          "readBytes": "读数据大小",
-          "writeBytes": "写数据大小",
-          "ops": "每秒查询数",
-          "tps": "每秒事务数",
-          "brps": "下载/秒",
-          "bwps": "上传/秒",
-          "tranMean": "平均",
-          "tranMin": "最小",
-          "tranMax": "最大",
-          "tranP50": "P50",
-          "tranP75": "P75",
-          "tranP90": "P90",
-          "tranP95": "P95",
-          "tranP99": "P99",
-          "tranP999": "P999",
-          "errorRate": "错误率",
-          "threadPoolSize": "线程数",
-          "threadPoolActiveSize": "活跃线程数",
-          "threadMaxPoolSize": "最大线程数"
-        },
-        "columns": {
-          "name": "名称",
-          "current": "当前",
-          "downloadPerSecond": "下载/秒",
-          "uploadPerSecond": "上传/秒",
-          "downloadPerSecondWithStats": "下载/秒(当前/最小/最大/平均)",
-          "uploadPerSecondWithStats": "上传/秒(当前/最小/最大/平均)",
-          "opsWithStats": "每秒查询数(当前/最小/最大/平均)",
-          "tpsWithStats": "每秒事务数(当前/最小/最大/平均)"
-        }
-      },
-      "menuData": {
-        "toolbar": {
-          "debugResult": "调试结果",
-          "logs": "调度日志",
-          "execLog": "执行日志",
-          "toggle": "展开收起",
-          "screen": "全屏",
-          "duration": "耗时",
-          "size": "大小"
-        },
-        "drawer": {
-          "save": "保存",
-          "indicator": "测试指标",
-          "testInfo": "测试结果",
-          "activity": "活动",
-          "comment": "评论"
-        }
-      },
-      "utils": {
-        "timeUnits": {
-          "ms": "毫秒",
-          "s": "秒",
-          "min": "分钟",
-          "h": "小时",
-          "d": "天"
-        },
-        "formatTime": {
-          "milliseconds": "毫秒",
-          "seconds": "秒",
-          "minutes": "分",
-          "hours": "小时"
-        },
-        "defaultValue": "--"
+      "paramsInput": {
+        "parameterNamePlaceholder": "参数名称，最大支持400个字符",
+        "parameterValuePlaceholder": "参数值，最大支持4096个字符"
       }
     }
+  },
+  "genDataPlugin": {
+    "tabs": {
+      "csv": "CSV",
+      "json": "JSON",
+      "sql": "SQL",
+      "xml": "XML",
+      "excel": "Excel",
+      "custom": "自定义",
+      "tab": "Tab"
+    },
+    "actions": {
+      "save": "保存",
+      "cancel": "取消",
+      "confirm": "确定",
+      "refresh": "刷新",
+      "export": "导出",
+      "import": "导入",
+      "add": "添加",
+      "edit": "编辑",
+      "delete": "删除",
+      "view": "查看",
+      "download": "下载",
+      "upload": "上传",
+      "select": "选择脚本",
+      "codeView": "代码视图",
+      "pageView": "页面视图",
+      "authority": "权限",
+      "follow": "关注",
+      "cancelFollow": "取消关注",
+      "favourite": "收藏",
+      "cancelFavourite": "取消收藏",
+      "createExecution": "创建执行",
+      "debug": "调试"
+    },
+    "messages": {
+      "saveSuccess": "保存成功",
+      "deleteSuccess": "删除成功",
+      "importSuccess": "导入成功",
+      "exportSuccess": "导出成功",
+      "operationSuccess": "操作成功",
+      "operationFailed": "操作失败",
+      "generateDataSuccess": "创建生成数据成功，请在\"执行\"中查看进度和结果。",
+      "generateDataSuccessWithName": "创建生成数据[{name}]成功，请在\"执行\"中查看进度和结果。",
+      "confirmDelete": "确认删除",
+      "noData": "暂无数据",
+      "loading": "加载中...",
+      "pleaseSelect": "请选择",
+      "pleaseInput": "请输入"
+    },
+    "form": {
+      "name": "名称",
+      "description": "描述",
+      "type": "类型",
+      "format": "格式",
+      "size": "大小",
+      "count": "数量",
+      "status": "状态",
+      "createTime": "创建时间",
+      "updateTime": "更新时间",
+      "creator": "创建人",
+      "updater": "更新人"
+    },
+    "dataConfig": {
+      "title": "数据配置",
+      "fieldName": "字段名称",
+      "fieldType": "字段类型",
+      "fieldValue": "字段值",
+      "fieldLength": "字段长度",
+      "fieldFormat": "字段格式",
+      "fieldRequired": "是否必填",
+      "fieldDefault": "默认值",
+      "fieldRule": "字段规则"
+    },
+    "execConfig": {
+      "title": "执行配置",
+      "execMode": "执行模式",
+      "execCount": "执行次数",
+      "execInterval": "执行间隔",
+      "execTimeout": "执行超时",
+      "execRetry": "重试次数",
+      "execParallel": "并行执行"
+    },
+    "storeConfig": {
+      "title": "存储配置",
+      "storeType": "存储类型",
+      "storePath": "存储路径",
+      "storeFormat": "存储格式",
+      "storeCompress": "是否压缩",
+      "storeEncrypt": "是否加密"
+    },
+    "dataSet": {
+      "format": "格式",
+      "lineEnding": "行尾",
+      "includeHeader": "包含头",
+      "escapeChar": "转义符",
+      "quoteChar": "引用符",
+      "separatorChar": "分隔符",
+      "includeNull": "包含空值字段",
+      "rowsToArray": "转成数组",
+      "tableName": "存储数据表名",
+      "batchInsert": "是否生成批量 INSERT",
+      "rootElement": "根元素名称",
+      "recordElement": "记录元素名称",
+      "validation": {
+        "singleChar": "请输入单字符",
+        "tableNameRequired": "请输入存储数据表名"
+      }
+    },
+    "DatasourceStoreConfig": {
+      "batchRows": "批量行数",
+      "batchInsert": "是否批量插入",
+      "selectDatasource": "选择数据源",
+      "databaseType": "数据库类型",
+      "driverClassName": "驱动完整类名",
+      "hints": {
+        "batchRows": "每次批量生成、存储或发送行数，默认 1，最大10000。",
+        "batchInsert": "设置成 true 时会将{batchRows}条数据合并成一条 INSERT 数据",
+        "driverClassName": "不指定时将使用默认驱动类名"
+      },
+      "validation": {
+        "selectDatasource": "请选择数据源",
+        "selectDatabaseType": "请选择数据库类型"
+      }
+    },
+    "excuteConfig": {
+      "scriptName": "脚本名称",
+      "execThreads": "执行线程数",
+      "selectMockNode": "选择Mock节点",
+      "execPriority": "执行优先级",
+      "onError": "遇到错误",
+      "storageMethod": "存储方式",
+      "rows": "行数",
+      "hints": {
+        "execThreads": "默认1个线程，最大1000。",
+        "execPriority": "优先级高的最先被执行，值范围：0~2147483647,值越大优先级越高。",
+        "rows": "生成数据总行数，最大 100000000000。"
+      },
+      "errorActions": {
+        "continue": "继续",
+        "stop": "停止",
+        "stopNow": "立即终止"
+      },
+      "storageTips": {
+        "datasource": "数据源存储，将生成数据写入到数据库。",
+        "dataspace": "数据空间存储，将数据存储到 AngusTester 应用\"数据\"->\"空间\"。",
+        "local": "本地存储，生成数据会以文件形式存储在执行节点，您可以进入执行详情页面点击下载数据文件。默认存储路径：${AGENT_HOME}/data/exec/[执行ID]/data.[数据格式]。",
+        "pushThird": "推送三方接口，支持将生成数据以文本或文件形式发送到一个 Http 接口。"
+      },
+      "validation": {
+        "scriptNameRequired": "请输入数据脚本名称",
+        "selectNode": "请选择节点"
+      },
+      "placeholders": {
+        "scriptName": "输入数据脚本的名称，限制200字符内"
+      }
+    },
+    "FuncModal": {
+      "title": "选择Mock函数"
+    },
+    "localStoreConfig": {
+      "batchRows": "批量行数",
+      "defaultStoragePath": "默认储存路径",
+      "hints": {
+        "batchRows": "每次批量生成、存储或发送行数，默认 1，最大10000。",
+        "defaultStoragePath": "生成数据文件在执行节点存储路径。"
+      }
+    },
+    "pushThirdStoreConfig": {
+      "batchRows": "批量行数",
+      "requestParams": "请求参数",
+      "requestBody": "请求体",
+      "authentication": "认证",
+      "contentType": "Content-Type",
+      "username": "用户名",
+      "password": "密码",
+      "token": "令牌",
+      "basicAuth": "Basic Auth",
+      "bearerToken": "Bearer Token",
+      "hints": {
+        "batchRows": "每次批量生成、存储或发送行数，默认 1，最大10000。"
+      },
+      "form": {
+        "paramName": "参数名",
+        "paramValue": "参数值",
+        "position": "位置",
+        "paramNamePlaceholder": "参数名称",
+        "filePosition": "文件位置"
+      },
+      "validation": {
+        "enterParamName": "请输入参数名",
+        "paramNameDuplicate": "keyName存在重复",
+        "enterParamValue": "请输入参数值",
+        "enterApiAddress": "请输入接口地址"
+      },
+      "placeholders": {
+        "apiAddress": "接口地址"
+      }
+    },
+    "spaceStoreConfig": {
+      "selectSpace": "选择空间",
+      "batchRows": "批量行数",
+      "hints": {
+        "batchRows": "每次批量生成、存储或发送行数，默认 1，最大10000。"
+      },
+      "validation": {
+        "selectSpace": "请选择空间"
+      }
+    },
+    "viewScriptModal": {
+      "title": "查看脚本"
+    }
+  }
 }

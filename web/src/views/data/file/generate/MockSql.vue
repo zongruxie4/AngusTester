@@ -5,7 +5,7 @@ import { appContext } from '@xcan-angus/infra';
 
 // eslint-disable-next-line import/no-absolute-path
 // eslint-disable-next-line import/no-absolute-path
-import { MockSql } from '@/plugins/gendata/sqlIndex';
+import { MockSql } from '@/plugins/data/sqlIndex';
 
 interface Props {
     params:{[key:string]:any};

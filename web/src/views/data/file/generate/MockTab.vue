@@ -4,8 +4,7 @@ import { useRouter } from 'vue-router';
 import { appContext } from '@xcan-angus/infra';
 
 // eslint-disable-next-line import/no-absolute-path
-// eslint-disable-next-line import/no-absolute-path
-import { MockTab } from '@/plugins/gendata/tabIndex';
+import { MockTab } from '@/plugins/data/tabIndex';
 
 interface Props {
     params:{[key:string]:any};

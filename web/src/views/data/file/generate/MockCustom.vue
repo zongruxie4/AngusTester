@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router';
 import { appContext } from '@xcan-angus/infra';
 
 // eslint-disable-next-line import/no-absolute-path
-import { MockCustom } from '@/plugins/gendata/customIndex';
+import { MockCustom } from '@/plugins/data/customIndex';
 // eslint-disable-next-line import/no-absolute-path
 
 interface Props {

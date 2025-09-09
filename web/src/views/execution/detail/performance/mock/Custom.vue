@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 // eslint-disable-next-line import/no-absolute-path
-import { ExecInfo } from '@/plugins/gendata/customIndex';
+import { ExecInfo } from '@/plugins/data/customIndex';
 
 import { MockDataProps } from '@/views/execution/detail/types';
 

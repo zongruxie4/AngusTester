@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // eslint-disable-next-line import/no-absolute-path
-import { ExecInfo } from '@/plugins/gendata/excelIndex';
+import { ExecInfo } from '@/plugins/data/excelIndex';
 
 // eslint-disable-next-line import/no-absolute-path
 

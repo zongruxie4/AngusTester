@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // eslint-disable-next-line import/no-absolute-path
-import { ExecInfo } from '@/plugins/gendata/jsonIndex';
+import { ExecInfo } from '@/plugins/data/jsonIndex';
 
 // eslint-disable-next-line import/no-absolute-path
 

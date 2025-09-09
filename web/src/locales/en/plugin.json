@@ -1,396 +1,80 @@
 {
-
-  "ftpPlugin": {
-    "tabs": {
-      "taskConfig": "Task Configuration",
-      "executeConfig": "Execution Configuration"
-    },
-    "toolbar": {
-      "debugResult": "Debug Result",
-      "logs": "Scheduling Log",
-      "execLog": "Execution Log",
-      "toggle": "Expand/Collapse",
-      "screen": "Full Screen"
-    },
-    "drawer": {
-      "save": "Save",
-      "indicator": "Performance Indicators",
-      "testInfo": "Test Results",
-      "activity": "Activity",
-      "comment": "Comments"
-    },
-    "messages": {
-      "debugSaveRequired": "Debug requires saving current data first, please save before executing debug"
-    },
-    "auth": {
-      "title": "Scenario Permissions",
-      "onTips": "After enabling \"Permission Control\", manual authorization of service permissions is required to have corresponding operation permissions for scenarios. \"Permission Control\" is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically granted.",
-      "offTips": "After enabling \"No Permission Control\", all users will be allowed to publicly view and operate the current scenario. Users viewing the scenario must also have parent directory permissions for the current scenario."
-    },
-    "buttonGroup": {
-      "export": "Export Script",
-      "select": "Select Script",
-      "import": "Import Script",
-      "codeView": "Code View",
-      "uiView": "Page View",
-      "authority": "Permissions",
-      "follow": "Follow",
-      "cancelFollow": "Unfollow",
-      "favourite": "Favourite",
-      "cancelFavourite": "Unfavourite",
-      "refresh": "Refresh",
-      "test": "Create Execution",
-      "debug": "Debug",
-      "save": "Save"
-    },
-    "debugLog": {
-      "schedulingResult": "Scheduling Result",
-      "success": "Success",
-      "fail": "Failed",
-      "processExitCode": "Process Exit Code",
-      "downloadFileName": "scheduling.log"
-    },
-    "debugResult": {
-      "debugResult": "Debug Result",
-      "fail": "Failed",
-      "exitCode": "Exit Code",
-      "failureReason": "Failure Reason",
-      "samplingStatus": "Sampling Status"
-    },
-    "drawerMenu": {
-      "saveForm": {
-        "id": "ID",
-        "name": "Name",
-        "scriptName": "Script Name",
-        "scriptId": "Script ID",
-        "description": "Description",
-        "namePlaceholder": "Maximum 200 characters",
-        "descriptionPlaceholder": "Maximum 800 characters",
-        "confirm": "Confirm",
-        "cancel": "Cancel"
-      }
-    },
-    "execLog": {
-      "node": "Node",
-      "schedulingResult": "Scheduling Result",
-      "success": "Success",
-      "fail": "Failed",
-      "processExitCode": "Process Exit Code",
-      "downloadFileName": "runner.log"
-    },
-    "executeConfig": {
-      "scriptType": "Script Type"
-    },
-    "exportScriptModal": {
-      "title": "Export Script",
-      "format": "Format"
-    },
-    "functionTestDetail": {
-      "basicInfo": {
+  "commonPlugin": {
+    "chartConfig": {
+      "names": {
         "duration": "Duration",
-        "iteration": "Iterations",
-        "request": "Requests",
-        "responseTime": "Response Time",
-        "assertion": "Assertions"
-      },
-      "collapse": {
-        "iteration": "Iteration {iteration}"
-      },
-      "ftp": {
-        "upload": "Upload",
-        "download": "Download",
-        "duration": "Duration",
-        "request": "Request",
-        "response": "Response"
-      },
-      "statusTag": {
-        "success": "Passed",
-        "fail": "Failed",
-        "block": "Not Tested",
-        "ignore": "Disabled"
-      }
-    },
-    "scriptConfig": {
-      "messages": {
-        "yamlFormatError": "YAML content format error, please check and correct"
-      }
-    },
-    "performanceTestDetail": {
-      "basicInfo": {
-        "executionDuration": "Execution",
-        "concurrency": "Concurrency",
-        "queriesPerSecond": "Queries/Second (Current / Max)",
-        "transactionsPerSecond": "Transactions/Second (Current / Max)",
-        "errors": "Errors (Error)",
+        "errors": "Errors",
         "iterations": "Iterations",
-        "responseTime": "Response Time (Min /Avg / Max)",
-        "percentile": "Response Percentile (P50 / P90 / P99)",
-        "download": "Download",
-        "upload": "Upload"
+        "n": "Samples",
+        "operations": "Operations",
+        "transactions": "Transactions",
+        "readBytes": "Read Bytes",
+        "writeBytes": "Write Bytes",
+        "ops": "Operations Per Second",
+        "tps": "Transactions Per Second",
+        "brps": "Download/Second",
+        "bwps": "Upload/Second",
+        "tranMean": "Average",
+        "tranMin": "Min",
+        "tranMax": "Max",
+        "tranP50": "P50",
+        "tranP75": "P75",
+        "tranP90": "P90",
+        "tranP95": "P95",
+        "tranP99": "P99",
+        "tranP999": "P999",
+        "errorRate": "Error Rate",
+        "threadPoolSize": "Thread Count",
+        "threadPoolActiveSize": "Active Threads",
+        "threadMaxPoolSize": "Max Threads"
       },
-      "tabs": {
-        "aggregation": "Aggregation Results",
-        "throughput": "Throughput",
-        "concurrency": "Concurrency",
-        "responseTime": "Response Time",
-        "error": "Errors",
-        "statusCode": "Status Code",
-        "node": "Node Resources",
-        "analyze": "Superimpose Analysis"
-      },
-      "scriptInfo": {
-        "scriptName": "Script Name",
-        "scriptType": "Script Type",
-        "plugin": "Plugin",
-        "source": "Source",
-        "creator": "Creator",
-        "createTime": "Create Time",
-        "lastModifier": "Last Modifier",
-        "lastModifyTime": "Last Modify Time",
-        "description": "Description",
-        "form": {
-          "scriptTypeRequired": "Please select script type",
-          "scriptTypePlaceholder": "Please select script type",
-          "scriptNameRequired": "Please enter script name, maximum 200 characters",
-          "scriptNamePlaceholder": "Please enter script name, maximum 200 characters",
-          "descriptionRequired": "Please enter script description, maximum 800 characters",
-          "descriptionPlaceholder": "Please enter script description, maximum 800 characters"
-        }
-      },
-      "sampling": {
-        "title": "Error Sampling",
-        "time": "Time",
-        "samplingId": "Sampling ID",
-        "name": "Name"
-      },
-      "countTemplate": {
-        "radioButtons": {
-          "byApi": "By API",
-          "byMetric": "By Metric",
-          "overlayAnalysis": "Overlay Analysis"
-        }
-      },
-      "superimposeAnalysis": {
-        "toggleTitles": {
-          "throughput": "Throughput (TPS / QPS)",
-          "concurrency": "Concurrency (VU)",
-          "responseTime": "Response Time (RT, ms)",
-          "error": "Errors (ERROR)"
-        },
-        "throughputOptions": {
-          "queriesPerSecond": "Queries/Second",
-          "transactionsPerSecond": "Transactions/Second",
-          "downloadPerSecond": "Download/Second",
-          "uploadPerSecond": "Upload/Second"
-        },
-        "threadOptions": {
-          "threadCount": "Thread Count",
-          "maxThreadCount": "Max Thread Count",
-          "activeThreadCount": "Active Thread Count"
-        },
-        "responseTimeOptions": {
-          "average": "Avg",
-          "minimum": "Min",
-          "maximum": "Max",
-          "p50": "P50",
-          "p75": "P75",
-          "p90": "P90",
-          "p95": "P95",
-          "p99": "P99",
-          "p999": "P999"
-        },
-        "errorOptions": {
-          "errorCount": "Error Count",
-          "errorRate": "Error Rate"
-        }
-      },
-      "nodeData": {
-        "tabs": {
-          "cpu": "CPU",
-          "memory": "Memory",
-          "fileSystem": "File System",
-          "network": "Network"
-        },
-        "nodeTypes": {
-          "execNode": "Execution Node",
-          "appNode": "Application Node"
-        },
-        "diskDataOptions": {
-          "iops": "IOPS",
-          "mbPerSecond": "MB/Second"
-        },
-        "cpuMetrics": {
-          "idlePercentage": "CPU Idle Percentage (%)",
-          "systemSpacePercentage": "System Space CPU Usage (%)",
-          "userSpacePercentage": "User Space CPU Usage (%)",
-          "ioWaitPercentage": "IO Wait CPU Percentage (%)",
-          "otherPercentage": "Other CPU Usage (%)",
-          "totalPercentage": "Total CPU Usage (%)"
-        },
-        "memoryMetrics": {
-          "physicalMemoryFree": "Physical Memory Free (GB)",
-          "physicalMemoryUsed": "Physical Memory Used (GB)",
-          "actualFreePercentage": "Actual Free Memory Percentage (%)",
-          "actualUsedPercentage": "Actual Used Memory Percentage (%)",
-          "actualFreeMemory": "Actual Free Memory (GB)",
-          "actualUsedMemory": "Actual Used Memory (GB)",
-          "freeMemoryPercentage": "Free Memory Percentage (%)",
-          "usedMemoryPercentage": "Used Memory Percentage (%)",
-          "swapUsed": "Swap Used (GB)",
-          "swapFree": "Swap Free (GB)"
-        },
-        "diskMetrics": {
-          "totalSize": "Total Disk Size (GB)",
-          "fileSystemFree": "File System Free (GB)",
-          "fileSystemUsed": "File System Used (GB)",
-          "fileSystemAvailable": "File System Available (GB)",
-          "fileSystemUsage": "File System Usage (%)",
-          "diskReadsPerSecond": "Disk Reads/Second (IO/s)",
-          "diskWritesPerSecond": "Disk Writes/Second (IO/s)",
-          "diskReadMBPerSecond": "Disk Read MB/Second (MB/s)",
-          "diskWriteMBPerSecond": "Disk Write MB/Second (MB/s)"
-        },
-        "networkMetrics": {
-          "totalBytesReceived": "Total Bytes Received (GB)",
-          "mbReceivedPerSecond": "MB Received/Second (MB/s)",
-          "errorPacketsReceived": "Error Packets Received (packets)",
-          "totalBytesSent": "Total Bytes Sent (GB)",
-          "mbSentPerSecond": "MB Sent/Second (MB/s)"
-        }
-      },
-      "execSetting": {
-        "messages": {
-          "modifySuccess": "Modified Successfully"
-        },
-        "actions": {
-          "save": "Save",
-          "cancel": "Cancel"
-        }
-      },
-      "execLog": {
-        "selectNode": "Select Node",
-        "schedulingLog": {
-          "title": "Scheduling Log",
-          "lastSchedulingTime": "Last Scheduling Time",
-          "result": "Result",
-          "success": "Success",
-          "fail": "Failed",
-          "exitCode": "Exit Code",
-          "noData": "--"
-        },
-        "execLog": {
-          "title": "Execution Log",
-          "file": "File",
-          "noProxyInfo": "No proxy access information, connection failed at: ",
-          "downloadFileName": "runner.log"
-        },
-        "tooltips": {
-          "export": "Export",
-          "refresh": "Refresh"
-        },
-        "downloadFileName": {
-          "scheduling": "scheduling.log"
-        }
-      },
-      "conterList": {
-        "errorStatistics": "Error Statistics",
-        "errorCount": "Error Count",
-        "errorRate": "Error Rate"
-      },
-      "aggregate": {
-        "radioButtons": {
-          "byThroughput": "By Throughput",
-          "byResponseTime": "By Response Time",
-          "byErrorCount": "By Error Count",
-          "byErrorRate": "By Error Rate",
-          "byUploadDownload": "By Upload / Download"
-        }
+      "columns": {
+        "name": "Name",
+        "current": "Current",
+        "downloadPerSecond": "Download/Second",
+        "uploadPerSecond": "Upload/Second",
+        "downloadPerSecondWithStats": "Download/Second (Current/Min/Max/Average)",
+        "uploadPerSecondWithStats": "Upload/Second (Current/Min/Max/Average)",
+        "opsWithStats": "Operations Per Second (Current/Min/Max/Average)",
+        "tpsWithStats": "Transactions Per Second (Current/Min/Max/Average)"
       }
     },
-    "uiConfig": {
-      "title": "Insert FTP Request",
-      "description": "Supports orchestrating multiple FTP interfaces simultaneously, but only one FTP is allowed to be enabled for testing at a time.",
-      "comments": {
-        "onlyOneEnabled": "Only one can be enabled",
-        "cloneLocalFile": "Clone local file",
-        "checkCloneNameExists": "Check if clone name already exists"
+    "menuData": {
+      "toolbar": {
+        "debugResult": "Debug Result",
+        "logs": "Schedule Logs",
+        "execLog": "Execution Log",
+        "toggle": "Expand/Collapse",
+        "screen": "Full Screen",
+        "duration": "Duration",
+        "size": "Size"
       },
-      "actions": {
-        "clone": "Clone",
-        "delete": "Delete"
-      },
-      "form": {
-        "nameDuplicate": "Name Duplicate",
-        "namePlaceholder": "Name, maximum 400 characters",
-        "descriptionPlaceholder": "Description, maximum 800 characters (optional)",
-        "none": "None"
-      },
-      "serverConfig": {
-        "title": "Server Configuration",
-        "hostnameOrIP": "Hostname or IP",
-        "hostnameOrIPPlaceholder": "Hostname or IP, maximum 4096 characters",
-        "port": "Port",
-        "portPlaceholder": "Port (1~65535)",
-        "username": "Username",
-        "usernamePlaceholder": "Username, maximum 400 characters",
-        "password": "Password",
-        "passwordPlaceholder": "Password, maximum 4096 characters",
-        "connectionTimeout": "Connection Timeout",
-        "connectionTimeoutPlaceholder": "Connection timeout, maximum 24 hours",
-        "readTimeout": "Read Timeout",
-        "readTimeoutPlaceholder": "Read timeout, maximum 24 hours"
-      },
-      "fileConfig": {
-        "localFilePath": "Local File Path",
-        "localFilePathPlaceholder": "Local file path, maximum 4096 characters",
-        "localFileNameTooltip": "Local file name, which is the name of the uploaded local file, can also be a complete local file path. Make sure the file has been uploaded to the corresponding execution node path.",
-        "remoteFileName": "Remote File Name",
-        "remoteFileNamePlaceholder": "Download remote FTP server file name, maximum 4096 characters",
-        "binaryFile": "Binary File",
-        "binaryFileTooltip": "Whether the uploaded file is a binary file",
-        "binaryMode": {
-          "yes": "Yes",
-          "no": "No"
-        }
-      },
-      "requestConfig": {
-        "title": "FTP Request Configuration",
-        "uploadDownload": "Upload/Download",
-        "upload": "Upload",
-        "download": "Download",
-        "uploadFileSource": "File Source",
-        "localFile": "Local File",
-        "remoteFile": "Remote File",
-        "remoteFileTooltip": "Download the corresponding file from the FTP service for upload",
-        "remoteUrl": "Remote URL",
-        "remoteFileUrlTooltip": "Download the file from the remote URL for upload",
-        "remoteFileUrl": "Remote File URL",
-        "remoteFileUrlPlaceholder": "Download the file from the remote URL for upload, maximum 4096 characters",
-        "remoteFileName": "Remote File Name",
-        "remoteFileNamePlaceholder": "Download remote FTP server file name, maximum 4096 characters",
-        "remoteFileUrlHints": "File name saved when uploading, if not specified, the original file name is used for storage, maximum 4096 characters",
-        "localFileContent": "Local File Content",
-        "localFileContentTooltip": "(File size limited to 1MB)"
-      },
-      "upload": {
-        "selectFile": "Select File",
-        "fileSizeLimit": "File size cannot exceed 1MB",
-        "selectFileTooltip": "Please select local file",
-        "code": "Code",
-        "fileEncoding": "File Encoding"
+      "drawer": {
+        "save": "Save",
+        "indicator": "Test Indicators",
+        "testInfo": "Test Results",
+        "activity": "Activity",
+        "comment": "Comments"
       }
+    },
+    "utils": {
+      "timeUnits": {
+        "ms": "ms",
+        "s": "s",
+        "min": "min",
+        "h": "h",
+        "d": "d"
+      },
+      "formatTime": {
+        "milliseconds": "ms",
+        "seconds": "s",
+        "minutes": "min",
+        "hours": "h"
+      },
+      "defaultValue": "--"
     }
   },
-  "gendata": {
-    "tabs": {
-      "csv": "CSV",
-      "json": "JSON",
-      "sql": "SQL",
-      "xml": "XML",
-      "excel": "Excel",
-      "custom": "Custom",
-      "tab": "Tab"
-    },
+  "httpPlugin": {
     "actions": {
       "save": "Save",
       "cancel": "Cancel",
@@ -414,199 +98,6 @@
       "cancelFavourite": "Cancel Favourite",
       "createExecution": "Create Execution",
       "debug": "Debug"
-    },
-    "messages": {
-      "saveSuccess": "Saved Successfully",
-      "deleteSuccess": "Deleted Successfully",
-      "importSuccess": "Imported Successfully",
-      "exportSuccess": "Exported Successfully",
-      "operationSuccess": "Operation Successful",
-      "operationFailed": "Operation Failed",
-      "generateDataSuccess": "Data generation created successfully, please check progress and results in 'Execution'.",
-      "generateDataSuccessWithName": "Data generation [{name}] created successfully, please check progress and results in 'Execution'.",
-      "confirmDelete": "Confirm Delete",
-      "noData": "No Data",
-      "loading": "Loading...",
-      "pleaseSelect": "Please Select",
-      "pleaseInput": "Please Input"
-    },
-    "form": {
-      "name": "Name",
-      "description": "Description",
-      "type": "Type",
-      "format": "Format",
-      "size": "Size",
-      "count": "Count",
-      "status": "Status",
-      "createTime": "Create Time",
-      "updateTime": "Update Time",
-      "creator": "Creator",
-      "updater": "Updater"
-    },
-    "dataConfig": {
-      "title": "Data Configuration",
-      "fieldName": "Field Name",
-      "fieldType": "Field Type",
-      "fieldValue": "Field Value",
-      "fieldLength": "Field Length",
-      "fieldFormat": "Field Format",
-      "fieldRequired": "Required",
-      "fieldDefault": "Default Value",
-      "fieldRule": "Field Rule"
-    },
-    "execConfig": {
-      "title": "Execution Configuration",
-      "execMode": "Execution Mode",
-      "execCount": "Execution Count",
-      "execInterval": "Execution Interval",
-      "execTimeout": "Execution Timeout",
-      "execRetry": "Retry Count",
-      "execParallel": "Parallel Execution"
-    },
-    "storeConfig": {
-      "title": "Storage Configuration",
-      "storeType": "Storage Type",
-      "storePath": "Storage Path",
-      "storeFormat": "Storage Format",
-      "storeCompress": "Compress",
-      "storeEncrypt": "Encrypt"
-    },
-    "dataSet": {
-      "format": "Format",
-      "lineEnding": "Line Ending",
-      "includeHeader": "Include Header",
-      "escapeChar": "Escape Character",
-      "quoteChar": "Quote Character",
-      "separatorChar": "Separator Character",
-      "includeNull": "Include Null Fields",
-      "rowsToArray": "Convert to Array",
-      "tableName": "Storage Table Name",
-      "batchInsert": "Generate Batch INSERT",
-      "rootElement": "Root Element Name",
-      "recordElement": "Record Element Name",
-      "validation": {
-        "singleChar": "Please enter a single character",
-        "tableNameRequired": "Please enter storage table name"
-      }
-    },
-    "DatasourceStoreConfig": {
-      "batchRows": "Batch Rows",
-      "batchInsert": "Batch Insert",
-      "selectDatasource": "Select Datasource",
-      "databaseType": "Database Type",
-      "driverClassName": "Driver Class Name",
-      "hints": {
-        "batchRows": "Number of rows to generate, store or send in each batch, default 1, maximum 10000.",
-        "batchInsert": "When set to true, {batchRows} rows will be merged into one INSERT statement",
-        "driverClassName": "Default driver class name will be used if not specified"
-      },
-      "validation": {
-        "selectDatasource": "Please select datasource",
-        "selectDatabaseType": "Please select database type"
-      }
-    },
-    "excuteConfig": {
-      "scriptName": "Script Name",
-      "execThreads": "Execution Threads",
-      "selectMockNode": "Select Mock Node",
-      "execPriority": "Execution Priority",
-      "onError": "On Error",
-      "storageMethod": "Storage Method",
-      "rows": "Rows",
-      "hints": {
-        "execThreads": "Default 1 thread, maximum 1000.",
-        "execPriority": "Higher priority executes first, range: 0~2147483647, higher value means higher priority.",
-        "rows": "Total number of data rows to generate, maximum 100000000000."
-      },
-      "errorActions": {
-        "continue": "Continue",
-        "stop": "Stop",
-        "stopNow": "Stop Now"
-      },
-      "storageTips": {
-        "datasource": "Datasource storage, writes generated data to database.",
-        "dataspace": "Data space storage, stores data in AngusTester application 'Data' -> 'Space'.",
-        "local": "Local storage, generated data will be stored as files on execution nodes, you can enter execution details page to download data files. Default storage path: ${AGENT_HOME}/data/exec/[ExecutionID]/data.[DataFormat].",
-        "pushThird": "Push to third-party interface, supports sending generated data as text or file to an Http interface."
-      },
-      "validation": {
-        "scriptNameRequired": "Please enter data script name",
-        "selectNode": "Please select node"
-      },
-      "placeholders": {
-        "scriptName": "Enter data script name, limited to 200 characters"
-      }
-    },
-    "FuncModal": {
-      "title": "Select Mock Function"
-    },
-    "localStoreConfig": {
-      "batchRows": "Batch Rows",
-      "defaultStoragePath": "Default Storage Path",
-      "hints": {
-        "batchRows": "Number of rows to generate, store or send in each batch, default 1, maximum 10000.",
-        "defaultStoragePath": "Storage path for generated data files on execution nodes."
-      }
-    },
-    "pushThirdStoreConfig": {
-      "batchRows": "Batch Rows",
-      "requestParams": "Request Parameters",
-      "requestBody": "Request Body",
-      "authentication": "Authentication",
-      "contentType": "Content-Type",
-      "username": "Username",
-      "password": "Password",
-      "token": "Token",
-      "basicAuth": "Basic Auth",
-      "bearerToken": "Bearer Token",
-      "hints": {
-        "batchRows": "Number of rows to generate, store or send in each batch, default 1, maximum 10000."
-      },
-      "form": {
-        "paramName": "Parameter Name",
-        "paramValue": "Parameter Value",
-        "position": "Position",
-        "paramNamePlaceholder": "Parameter Name",
-        "filePosition": "File Position"
-      },
-      "validation": {
-        "enterParamName": "Please enter parameter name",
-        "paramNameDuplicate": "Parameter name already exists",
-        "enterParamValue": "Please enter parameter value",
-        "enterApiAddress": "Please enter API address"
-      },
-      "placeholders": {
-        "apiAddress": "API Address"
-      }
-    },
-    "spaceStoreConfig": {
-      "selectSpace": "Select Space",
-      "batchRows": "Batch Rows",
-      "hints": {
-        "batchRows": "Number of rows to generate, store or send in each batch, default 1, maximum 10000."
-      },
-      "validation": {
-        "selectSpace": "Please select space"
-      }
-    },
-    "viewScriptModal": {
-      "title": "View Script"
-    }
-  },
-  "httpPlugin": {
-    "actions": {
-      "save": "Save",
-      "cancel": "Cancel",
-      "confirm": "Confirm",
-      "refresh": "Refresh",
-      "export": "Export",
-      "import": "Import",
-      "add": "Add",
-      "edit": "Edit",
-      "delete": "Delete",
-      "view": "View",
-      "download": "Download",
-      "upload": "Upload"
     },
     "messages": {
       "saveSuccess": "Save successful",
@@ -642,8 +133,8 @@
       "updater": "Updater"
     },
     "tabs": {
-      "taskConfig": "Task Config",
-      "executeConfig": "Execute Config"
+      "taskConfig": "Task Configuration",
+      "executeConfig": "Execute Configuration"
     },
     "authority": {
       "title": "Scenario Authority",
@@ -1256,8 +747,8 @@
           "operationResultNotEstablished": "Operation result not established, ignore this assertion",
           "operationResultEstablished": "Operation result established, execute this assertion",
           "noVariableDefined": "No {variable} variable defined, execute this condition expression directly",
-          "executionConfig": "Execution Config",
-          "pluginConfig": "Plugin Config",
+          "executionConfig": "Execution Configuration",
+          "pluginConfig": "Plugin Configuration",
           "ignoreAssertionsTip": "You have enabled ignore assertions, assertions will not be executed this time. If you need to enable assertions, please turn off the ignore assertions option in {executionConfig} > {pluginConfig}."
         },
         "typeMap": {
@@ -1427,6 +918,387 @@
       "title": "Scenario Permission",
       "onTips": "After enabling 'Permission Control', manual authorization of service permissions is required to have corresponding operation permissions for scenarios. 'Permission Control' is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically granted.",
       "offTips": "After enabling 'No Permission Control', all users will be allowed to publicly view and operate the current scenario. Users viewing need to have parent directory permissions for the current scenario."
+    }
+  },
+  "ftpPlugin": {
+    "tabs": {
+      "taskConfig": "Task Configuration",
+      "executeConfig": "Execution Configuration"
+    },
+    "toolbar": {
+      "debugResult": "Debug Result",
+      "logs": "Scheduling Log",
+      "execLog": "Execution Log",
+      "toggle": "Expand/Collapse",
+      "screen": "Full Screen"
+    },
+    "drawer": {
+      "save": "Save",
+      "indicator": "Performance Indicators",
+      "testInfo": "Test Results",
+      "activity": "Activity",
+      "comment": "Comments"
+    },
+    "messages": {
+      "debugSaveRequired": "Debug requires saving current data first, please save before executing debug"
+    },
+    "auth": {
+      "title": "Scenario Permissions",
+      "onTips": "After enabling \"Permission Control\", manual authorization of service permissions is required to have corresponding operation permissions for scenarios. \"Permission Control\" is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically granted.",
+      "offTips": "After enabling \"No Permission Control\", all users will be allowed to publicly view and operate the current scenario. Users viewing the scenario must also have parent directory permissions for the current scenario."
+    },
+    "buttonGroup": {
+      "export": "Export Script",
+      "select": "Select Script",
+      "import": "Import Script",
+      "codeView": "Code View",
+      "uiView": "Page View",
+      "authority": "Permissions",
+      "follow": "Follow",
+      "cancelFollow": "Unfollow",
+      "favourite": "Favourite",
+      "cancelFavourite": "Unfavourite",
+      "refresh": "Refresh",
+      "test": "Create Execution",
+      "debug": "Debug",
+      "save": "Save"
+    },
+    "debugLog": {
+      "schedulingResult": "Scheduling Result",
+      "success": "Success",
+      "fail": "Failed",
+      "processExitCode": "Process Exit Code",
+      "downloadFileName": "scheduling.log"
+    },
+    "debugResult": {
+      "debugResult": "Debug Result",
+      "fail": "Failed",
+      "exitCode": "Exit Code",
+      "failureReason": "Failure Reason",
+      "samplingStatus": "Sampling Status"
+    },
+    "drawerMenu": {
+      "saveForm": {
+        "id": "ID",
+        "name": "Name",
+        "scriptName": "Script Name",
+        "scriptId": "Script ID",
+        "description": "Description",
+        "namePlaceholder": "Maximum 200 characters",
+        "descriptionPlaceholder": "Maximum 800 characters",
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+      }
+    },
+    "execLog": {
+      "node": "Node",
+      "schedulingResult": "Scheduling Result",
+      "success": "Success",
+      "fail": "Failed",
+      "processExitCode": "Process Exit Code",
+      "downloadFileName": "runner.log"
+    },
+    "executeConfig": {
+      "scriptType": "Script Type"
+    },
+    "exportScriptModal": {
+      "title": "Export Script",
+      "format": "Format"
+    },
+    "functionTestDetail": {
+      "basicInfo": {
+        "duration": "Duration",
+        "iteration": "Iterations",
+        "request": "Requests",
+        "responseTime": "Response Time",
+        "assertion": "Assertions"
+      },
+      "collapse": {
+        "iteration": "Iteration {iteration}"
+      },
+      "ftp": {
+        "upload": "Upload",
+        "download": "Download",
+        "duration": "Duration",
+        "request": "Request",
+        "response": "Response"
+      },
+      "statusTag": {
+        "success": "Passed",
+        "fail": "Failed",
+        "block": "Not Tested",
+        "ignore": "Disabled"
+      }
+    },
+    "scriptConfig": {
+      "messages": {
+        "yamlFormatError": "YAML content format error, please check and correct"
+      }
+    },
+    "performanceTestDetail": {
+      "basicInfo": {
+        "executionDuration": "Execution",
+        "concurrency": "Concurrency",
+        "queriesPerSecond": "Queries/Second (Current / Max)",
+        "transactionsPerSecond": "Transactions/Second (Current / Max)",
+        "errors": "Errors (Error)",
+        "iterations": "Iterations",
+        "responseTime": "Response Time (Min /Avg / Max)",
+        "percentile": "Response Percentile (P50 / P90 / P99)",
+        "download": "Download",
+        "upload": "Upload"
+      },
+      "tabs": {
+        "aggregation": "Aggregation Results",
+        "throughput": "Throughput",
+        "concurrency": "Concurrency",
+        "responseTime": "Response Time",
+        "error": "Errors",
+        "statusCode": "Status Code",
+        "node": "Node Resources",
+        "analyze": "Superimpose Analysis"
+      },
+      "scriptInfo": {
+        "scriptName": "Script Name",
+        "scriptType": "Script Type",
+        "plugin": "Plugin",
+        "source": "Source",
+        "creator": "Creator",
+        "createTime": "Create Time",
+        "lastModifier": "Last Modifier",
+        "lastModifyTime": "Last Modify Time",
+        "description": "Description",
+        "form": {
+          "scriptTypeRequired": "Please select script type",
+          "scriptTypePlaceholder": "Please select script type",
+          "scriptNameRequired": "Please enter script name, maximum 200 characters",
+          "scriptNamePlaceholder": "Please enter script name, maximum 200 characters",
+          "descriptionRequired": "Please enter script description, maximum 800 characters",
+          "descriptionPlaceholder": "Please enter script description, maximum 800 characters"
+        }
+      },
+      "sampling": {
+        "title": "Error Sampling",
+        "time": "Time",
+        "samplingId": "Sampling ID",
+        "name": "Name"
+      },
+      "countTemplate": {
+        "radioButtons": {
+          "byApi": "By API",
+          "byMetric": "By Metric",
+          "overlayAnalysis": "Overlay Analysis"
+        }
+      },
+      "superimposeAnalysis": {
+        "toggleTitles": {
+          "throughput": "Throughput (TPS / QPS)",
+          "concurrency": "Concurrency (VU)",
+          "responseTime": "Response Time (RT, ms)",
+          "error": "Errors (ERROR)"
+        },
+        "throughputOptions": {
+          "queriesPerSecond": "Queries/Second",
+          "transactionsPerSecond": "Transactions/Second",
+          "downloadPerSecond": "Download/Second",
+          "uploadPerSecond": "Upload/Second"
+        },
+        "threadOptions": {
+          "threadCount": "Thread Count",
+          "maxThreadCount": "Max Thread Count",
+          "activeThreadCount": "Active Thread Count"
+        },
+        "responseTimeOptions": {
+          "average": "Avg",
+          "minimum": "Min",
+          "maximum": "Max",
+          "p50": "P50",
+          "p75": "P75",
+          "p90": "P90",
+          "p95": "P95",
+          "p99": "P99",
+          "p999": "P999"
+        },
+        "errorOptions": {
+          "errorCount": "Error Count",
+          "errorRate": "Error Rate"
+        }
+      },
+      "nodeData": {
+        "tabs": {
+          "cpu": "CPU",
+          "memory": "Memory",
+          "fileSystem": "File System",
+          "network": "Network"
+        },
+        "nodeTypes": {
+          "execNode": "Execution Node",
+          "appNode": "Application Node"
+        },
+        "diskDataOptions": {
+          "iops": "IOPS",
+          "mbPerSecond": "MB/Second"
+        },
+        "cpuMetrics": {
+          "idlePercentage": "CPU Idle Percentage (%)",
+          "systemSpacePercentage": "System Space CPU Usage (%)",
+          "userSpacePercentage": "User Space CPU Usage (%)",
+          "ioWaitPercentage": "IO Wait CPU Percentage (%)",
+          "otherPercentage": "Other CPU Usage (%)",
+          "totalPercentage": "Total CPU Usage (%)"
+        },
+        "memoryMetrics": {
+          "physicalMemoryFree": "Physical Memory Free (GB)",
+          "physicalMemoryUsed": "Physical Memory Used (GB)",
+          "actualFreePercentage": "Actual Free Memory Percentage (%)",
+          "actualUsedPercentage": "Actual Used Memory Percentage (%)",
+          "actualFreeMemory": "Actual Free Memory (GB)",
+          "actualUsedMemory": "Actual Used Memory (GB)",
+          "freeMemoryPercentage": "Free Memory Percentage (%)",
+          "usedMemoryPercentage": "Used Memory Percentage (%)",
+          "swapUsed": "Swap Used (GB)",
+          "swapFree": "Swap Free (GB)"
+        },
+        "diskMetrics": {
+          "totalSize": "Total Disk Size (GB)",
+          "fileSystemFree": "File System Free (GB)",
+          "fileSystemUsed": "File System Used (GB)",
+          "fileSystemAvailable": "File System Available (GB)",
+          "fileSystemUsage": "File System Usage (%)",
+          "diskReadsPerSecond": "Disk Reads/Second (IO/s)",
+          "diskWritesPerSecond": "Disk Writes/Second (IO/s)",
+          "diskReadMBPerSecond": "Disk Read MB/Second (MB/s)",
+          "diskWriteMBPerSecond": "Disk Write MB/Second (MB/s)"
+        },
+        "networkMetrics": {
+          "totalBytesReceived": "Total Bytes Received (GB)",
+          "mbReceivedPerSecond": "MB Received/Second (MB/s)",
+          "errorPacketsReceived": "Error Packets Received (packets)",
+          "totalBytesSent": "Total Bytes Sent (GB)",
+          "mbSentPerSecond": "MB Sent/Second (MB/s)"
+        }
+      },
+      "execSetting": {
+        "messages": {
+          "modifySuccess": "Modified Successfully"
+        },
+        "actions": {
+          "save": "Save",
+          "cancel": "Cancel"
+        }
+      },
+      "execLog": {
+        "selectNode": "Select Node",
+        "schedulingLog": {
+          "title": "Scheduling Log",
+          "lastSchedulingTime": "Last Scheduling Time",
+          "result": "Result",
+          "success": "Success",
+          "fail": "Failed",
+          "exitCode": "Exit Code",
+          "noData": "--"
+        },
+        "execLog": {
+          "title": "Execution Log",
+          "file": "File",
+          "noProxyInfo": "No proxy access information, connection failed at: ",
+          "downloadFileName": "runner.log"
+        },
+        "tooltips": {
+          "export": "Export",
+          "refresh": "Refresh"
+        },
+        "downloadFileName": {
+          "scheduling": "scheduling.log"
+        }
+      },
+      "conterList": {
+        "errorStatistics": "Error Statistics",
+        "errorCount": "Error Count",
+        "errorRate": "Error Rate"
+      },
+      "aggregate": {
+        "radioButtons": {
+          "byThroughput": "By Throughput",
+          "byResponseTime": "By Response Time",
+          "byErrorCount": "By Error Count",
+          "byErrorRate": "By Error Rate",
+          "byUploadDownload": "By Upload / Download"
+        }
+      }
+    },
+    "uiConfig": {
+      "title": "Insert FTP Request",
+      "description": "Supports orchestrating multiple FTP interfaces simultaneously, but only one FTP is allowed to be enabled for testing at a time.",
+      "comments": {
+        "onlyOneEnabled": "Only one can be enabled",
+        "cloneLocalFile": "Clone local file",
+        "checkCloneNameExists": "Check if clone name already exists"
+      },
+      "actions": {
+        "clone": "Clone",
+        "delete": "Delete"
+      },
+      "form": {
+        "nameDuplicate": "Name Duplicate",
+        "namePlaceholder": "Name, maximum 400 characters",
+        "descriptionPlaceholder": "Description, maximum 800 characters (optional)",
+        "none": "None"
+      },
+      "serverConfig": {
+        "title": "Server Configuration",
+        "hostnameOrIP": "Hostname or IP",
+        "hostnameOrIPPlaceholder": "Hostname or IP, maximum 4096 characters",
+        "port": "Port",
+        "portPlaceholder": "Port (1~65535)",
+        "username": "Username",
+        "usernamePlaceholder": "Username, maximum 400 characters",
+        "password": "Password",
+        "passwordPlaceholder": "Password, maximum 4096 characters",
+        "connectionTimeout": "Connection Timeout",
+        "connectionTimeoutPlaceholder": "Connection timeout, maximum 24 hours",
+        "readTimeout": "Read Timeout",
+        "readTimeoutPlaceholder": "Read timeout, maximum 24 hours"
+      },
+      "fileConfig": {
+        "localFilePath": "Local File Path",
+        "localFilePathPlaceholder": "Local file path, maximum 4096 characters",
+        "localFileNameTooltip": "Local file name, which is the name of the uploaded local file, can also be a complete local file path. Make sure the file has been uploaded to the corresponding execution node path.",
+        "remoteFileName": "Remote File Name",
+        "remoteFileNamePlaceholder": "Download remote FTP server file name, maximum 4096 characters",
+        "binaryFile": "Binary File",
+        "binaryFileTooltip": "Whether the uploaded file is a binary file",
+        "binaryMode": {
+          "yes": "Yes",
+          "no": "No"
+        }
+      },
+      "requestConfig": {
+        "title": "FTP Request Configuration",
+        "uploadDownload": "Upload/Download",
+        "upload": "Upload",
+        "download": "Download",
+        "uploadFileSource": "File Source",
+        "localFile": "Local File",
+        "remoteFile": "Remote File",
+        "remoteFileTooltip": "Download the corresponding file from the FTP service for upload",
+        "remoteUrl": "Remote URL",
+        "remoteFileUrlTooltip": "Download the file from the remote URL for upload",
+        "remoteFileUrl": "Remote File URL",
+        "remoteFileUrlPlaceholder": "Download the file from the remote URL for upload, maximum 4096 characters",
+        "remoteFileName": "Remote File Name",
+        "remoteFileNamePlaceholder": "Download remote FTP server file name, maximum 4096 characters",
+        "remoteFileUrlHints": "File name saved when uploading, if not specified, the original file name is used for storage, maximum 4096 characters",
+        "localFileContent": "Local File Content",
+        "localFileContentTooltip": "(File size limited to 1MB)"
+      },
+      "upload": {
+        "selectFile": "Select File",
+        "fileSizeLimit": "File size cannot exceed 1MB",
+        "selectFileTooltip": "Please select local file",
+        "code": "Code",
+        "fileEncoding": "File Encoding"
+      }
     }
   },
   "jmsPlugin": {
@@ -2161,79 +2033,216 @@
       }
     }
   },
-  "commonPlugin": {
-    "chartConfig": {
-      "names": {
-        "duration": "Duration",
-        "errors": "Errors",
-        "iterations": "Iterations",
-        "n": "Samples",
-        "operations": "Operations",
-        "transactions": "Transactions",
-        "readBytes": "Read Bytes",
-        "writeBytes": "Write Bytes",
-        "ops": "Operations Per Second",
-        "tps": "Transactions Per Second",
-        "brps": "Download/Second",
-        "bwps": "Upload/Second",
-        "tranMean": "Average",
-        "tranMin": "Min",
-        "tranMax": "Max",
-        "tranP50": "P50",
-        "tranP75": "P75",
-        "tranP90": "P90",
-        "tranP95": "P95",
-        "tranP99": "P99",
-        "tranP999": "P999",
-        "errorRate": "Error Rate",
-        "threadPoolSize": "Thread Count",
-        "threadPoolActiveSize": "Active Threads",
-        "threadMaxPoolSize": "Max Threads"
-      },
-      "columns": {
-        "name": "Name",
-        "current": "Current",
-        "downloadPerSecond": "Download/Second",
-        "uploadPerSecond": "Upload/Second",
-        "downloadPerSecondWithStats": "Download/Second (Current/Min/Max/Average)",
-        "uploadPerSecondWithStats": "Upload/Second (Current/Min/Max/Average)",
-        "opsWithStats": "Operations Per Second (Current/Min/Max/Average)",
-        "tpsWithStats": "Transactions Per Second (Current/Min/Max/Average)"
+  "genDataPlugin": {
+    "tabs": {
+      "csv": "CSV",
+      "json": "JSON",
+      "sql": "SQL",
+      "xml": "XML",
+      "excel": "Excel",
+      "custom": "Custom",
+      "tab": "Tab"
+    },
+    "actions": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "refresh": "Refresh",
+      "export": "Export Script",
+      "import": "Import Script",
+      "add": "Add",
+      "edit": "Edit",
+      "delete": "Delete",
+      "view": "View",
+      "download": "Download",
+      "upload": "Upload",
+      "select": "Select Script",
+      "codeView": "Code View",
+      "pageView": "Page View",
+      "authority": "Authority",
+      "follow": "Follow",
+      "cancelFollow": "Cancel Follow",
+      "favourite": "Favourite",
+      "cancelFavourite": "Cancel Favourite",
+      "createExecution": "Create Execution",
+      "debug": "Debug"
+    },
+    "messages": {
+      "saveSuccess": "Saved Successfully",
+      "deleteSuccess": "Deleted Successfully",
+      "importSuccess": "Imported Successfully",
+      "exportSuccess": "Exported Successfully",
+      "operationSuccess": "Operation Successful",
+      "operationFailed": "Operation Failed",
+      "generateDataSuccess": "Data generation created successfully, please check progress and results in 'Execution'.",
+      "generateDataSuccessWithName": "Data generation [{name}] created successfully, please check progress and results in 'Execution'.",
+      "confirmDelete": "Confirm Delete",
+      "noData": "No Data",
+      "loading": "Loading...",
+      "pleaseSelect": "Please Select",
+      "pleaseInput": "Please Input"
+    },
+    "form": {
+      "name": "Name",
+      "description": "Description",
+      "type": "Type",
+      "format": "Format",
+      "size": "Size",
+      "count": "Count",
+      "status": "Status",
+      "createTime": "Create Time",
+      "updateTime": "Update Time",
+      "creator": "Creator",
+      "updater": "Updater"
+    },
+    "dataConfig": {
+      "title": "Data Configuration",
+      "fieldName": "Field Name",
+      "fieldType": "Field Type",
+      "fieldValue": "Field Value",
+      "fieldLength": "Field Length",
+      "fieldFormat": "Field Format",
+      "fieldRequired": "Required",
+      "fieldDefault": "Default Value",
+      "fieldRule": "Field Rule"
+    },
+    "execConfig": {
+      "title": "Execution Configuration",
+      "execMode": "Execution Mode",
+      "execCount": "Execution Count",
+      "execInterval": "Execution Interval",
+      "execTimeout": "Execution Timeout",
+      "execRetry": "Retry Count",
+      "execParallel": "Parallel Execution"
+    },
+    "storeConfig": {
+      "title": "Storage Configuration",
+      "storeType": "Storage Type",
+      "storePath": "Storage Path",
+      "storeFormat": "Storage Format",
+      "storeCompress": "Compress",
+      "storeEncrypt": "Encrypt"
+    },
+    "dataSet": {
+      "format": "Format",
+      "lineEnding": "Line Ending",
+      "includeHeader": "Include Header",
+      "escapeChar": "Escape Character",
+      "quoteChar": "Quote Character",
+      "separatorChar": "Separator Character",
+      "includeNull": "Include Null Fields",
+      "rowsToArray": "Convert to Array",
+      "tableName": "Storage Table Name",
+      "batchInsert": "Generate Batch INSERT",
+      "rootElement": "Root Element Name",
+      "recordElement": "Record Element Name",
+      "validation": {
+        "singleChar": "Please enter a single character",
+        "tableNameRequired": "Please enter storage table name"
       }
     },
-    "menuData": {
-      "toolbar": {
-        "debugResult": "Debug Result",
-        "logs": "Schedule Logs",
-        "execLog": "Execution Log",
-        "toggle": "Expand/Collapse",
-        "screen": "Full Screen",
-        "duration": "Duration",
-        "size": "Size"
+    "DatasourceStoreConfig": {
+      "batchRows": "Batch Rows",
+      "batchInsert": "Batch Insert",
+      "selectDatasource": "Select Datasource",
+      "databaseType": "Database Type",
+      "driverClassName": "Driver Class Name",
+      "hints": {
+        "batchRows": "Number of rows to generate, store or send in each batch, default 1, maximum 10000.",
+        "batchInsert": "When set to true, {batchRows} rows will be merged into one INSERT statement",
+        "driverClassName": "Default driver class name will be used if not specified"
       },
-      "drawer": {
-        "save": "Save",
-        "indicator": "Test Indicators",
-        "testInfo": "Test Results",
-        "activity": "Activity",
-        "comment": "Comments"
+      "validation": {
+        "selectDatasource": "Please select datasource",
+        "selectDatabaseType": "Please select database type"
       }
     },
-    "utils": {
-      "timeUnits": {
-        "ms": "ms",
-        "s": "s",
-        "min": "min",
-        "h": "h",
-        "d": "d"
+    "excuteConfig": {
+      "scriptName": "Script Name",
+      "execThreads": "Execution Threads",
+      "selectMockNode": "Select Mock Node",
+      "execPriority": "Execution Priority",
+      "onError": "On Error",
+      "storageMethod": "Storage Method",
+      "rows": "Rows",
+      "hints": {
+        "execThreads": "Default 1 thread, maximum 1000.",
+        "execPriority": "Higher priority executes first, range: 0~2147483647, higher value means higher priority.",
+        "rows": "Total number of data rows to generate, maximum 100000000000."
       },
-      "formatTime": {
-        "milliseconds": "ms",
-        "seconds": "s",
-        "minutes": "min",
-        "hours": "h"
+      "errorActions": {
+        "continue": "Continue",
+        "stop": "Stop",
+        "stopNow": "Stop Now"
       },
-      "defaultValue": "--"
+      "storageTips": {
+        "datasource": "Datasource storage, writes generated data to database.",
+        "dataspace": "Data space storage, stores data in AngusTester application 'Data' -> 'Space'.",
+        "local": "Local storage, generated data will be stored as files on execution nodes, you can enter execution details page to download data files. Default storage path: ${AGENT_HOME}/data/exec/[ExecutionID]/data.[DataFormat].",
+        "pushThird": "Push to third-party interface, supports sending generated data as text or file to an Http interface."
+      },
+      "validation": {
+        "scriptNameRequired": "Please enter data script name",
+        "selectNode": "Please select node"
+      },
+      "placeholders": {
+        "scriptName": "Enter data script name, limited to 200 characters"
+      }
+    },
+    "FuncModal": {
+      "title": "Select Mock Function"
+    },
+    "localStoreConfig": {
+      "batchRows": "Batch Rows",
+      "defaultStoragePath": "Default Storage Path",
+      "hints": {
+        "batchRows": "Number of rows to generate, store or send in each batch, default 1, maximum 10000.",
+        "defaultStoragePath": "Storage path for generated data files on execution nodes."
+      }
+    },
+    "pushThirdStoreConfig": {
+      "batchRows": "Batch Rows",
+      "requestParams": "Request Parameters",
+      "requestBody": "Request Body",
+      "authentication": "Authentication",
+      "contentType": "Content-Type",
+      "username": "Username",
+      "password": "Password",
+      "token": "Token",
+      "basicAuth": "Basic Auth",
+      "bearerToken": "Bearer Token",
+      "hints": {
+        "batchRows": "Number of rows to generate, store or send in each batch, default 1, maximum 10000."
+      },
+      "form": {
+        "paramName": "Parameter Name",
+        "paramValue": "Parameter Value",
+        "position": "Position",
+        "paramNamePlaceholder": "Parameter Name",
+        "filePosition": "File Position"
+      },
+      "validation": {
+        "enterParamName": "Please enter parameter name",
+        "paramNameDuplicate": "Parameter name already exists",
+        "enterParamValue": "Please enter parameter value",
+        "enterApiAddress": "Please enter API address"
+      },
+      "placeholders": {
+        "apiAddress": "API Address"
+      }
+    },
+    "spaceStoreConfig": {
+      "selectSpace": "Select Space",
+      "batchRows": "Batch Rows",
+      "hints": {
+        "batchRows": "Number of rows to generate, store or send in each batch, default 1, maximum 10000."
+      },
+      "validation": {
+        "selectSpace": "Please select space"
+      }
+    },
+    "viewScriptModal": {
+      "title": "View Script"
     }
   }
 }

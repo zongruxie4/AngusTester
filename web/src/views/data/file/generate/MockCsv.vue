@@ -5,7 +5,7 @@ import { appContext } from '@xcan-angus/infra';
 
 // eslint-disable-next-line import/no-absolute-path
 // eslint-disable-next-line import/no-absolute-path
-import { MockCsv } from '@/plugins/gendata/csvIndex';
+import { MockCsv } from '@/plugins/data/csvIndex';
 
 interface Props {
     params:{[key:string]:any};

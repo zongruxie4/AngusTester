@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // eslint-disable-next-line import/no-absolute-path
-import { ExecInfo } from '@/plugins/gendata/csvIndex';
+import { ExecInfo } from '@/plugins/data/csvIndex';
 
 // eslint-disable-next-line import/no-absolute-path
 

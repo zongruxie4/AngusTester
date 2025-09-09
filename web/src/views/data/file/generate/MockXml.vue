@@ -5,7 +5,7 @@ import { appContext } from '@xcan-angus/infra';
 
 // eslint-disable-next-line import/no-absolute-path
 // eslint-disable-next-line import/no-absolute-path
-import { MockXml } from '@/plugins/gendata/xmlIndex';
+import { MockXml } from '@/plugins/data/xmlIndex';
 
 interface Props {
     params:{[key:string]:any};

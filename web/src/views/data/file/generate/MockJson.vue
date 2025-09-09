@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router';
 import { appContext } from '@xcan-angus/infra';
 
 // eslint-disable-next-line import/no-absolute-path
-import { MockJson } from '@/plugins/gendata/jsonIndex';
+import { MockJson } from '@/plugins/data/jsonIndex';
 
 interface Props {
     params:{[key:string]:any};

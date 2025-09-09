@@ -5,7 +5,7 @@ import { appContext } from '@xcan-angus/infra';
 
 // eslint-disable-next-line import/no-absolute-path
 // eslint-disable-next-line import/no-absolute-path
-import { MockExcel } from '@/plugins/gendata/excelIndex';
+import { MockExcel } from '@/plugins/data/excelIndex';
 
 interface Props {
     params:{[key:string]:any};
