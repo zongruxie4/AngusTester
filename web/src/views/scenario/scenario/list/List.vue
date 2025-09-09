@@ -38,8 +38,8 @@ const emit = defineEmits<{
 // Async components
 const CreateTestTaskModal = defineAsyncComponent(() => import('@/components/task/CreateTestModal.vue'));
 const RestartTestTaskModal = defineAsyncComponent(() => import('@/components/task/RestartTestModal.vue'));
-const ReOpenTestTaskModal = defineAsyncComponent(() => import('@/components/task/ReopenTestModal.vue'));
-const DelTestTask = defineAsyncComponent(() => import('@/components/task/DeleteTestModal.vue'));
+const ReopenTestTaskModal = defineAsyncComponent(() => import('@/components/task/ReopenTestModal.vue'));
+const DeleteTestTask = defineAsyncComponent(() => import('@/components/task/DeleteTestModal.vue'));
 const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/ExportScriptModal.vue'));
 const ExecTestModal = defineAsyncComponent(() => import('@/views/scenario/scenario/list/ExecTest.vue'));
 
@@ -186,7 +186,7 @@ const menuItemClick = (key: MenuItemKey, data: ScenarioInfo): void => {
           <div class="h-38.5 px-3 py-2.5 border rounded border-theme-text-box">
             <div class="flex">
               <RouterLink
-                :to="record.detailLink"
+                :to="record.detailLinkUrl"
                 :title="record.name"
                 class="block mb-2 truncate text-3.5 font-bold text-theme-special text-theme-text-hover flex-1 min-w-0">
                 {{ record.name }}
@@ -259,7 +259,7 @@ const menuItemClick = (key: MenuItemKey, data: ScenarioInfo): void => {
                   size="small"
                   class="flex items-center justify-center p-0 leading-5 w-5 h-5 !border-0"
                   :title="t('scenario.list.tooltips.edit')">
-                  <RouterLink :to="record.nameLinkUrl" class="w-full h-full flex items-center justify-center">
+                  <RouterLink :to="record.editLinkUrl" class="w-full h-full flex items-center justify-center">
                     <Icon icon="icon-shuxie" class="text-3.5" />
                   </RouterLink>
                 </Button>
@@ -330,7 +330,7 @@ const menuItemClick = (key: MenuItemKey, data: ScenarioInfo): void => {
     </AsyncComponent>
 
     <AsyncComponent :visible="reopenTestTaskVisible">
-      <ReOpenTestTaskModal
+      <ReopenTestTaskModal
         v-model:visible="reopenTestTaskVisible"
         v-model:id="selectedId"
         :content="reopenContent"
@@ -338,7 +338,7 @@ const menuItemClick = (key: MenuItemKey, data: ScenarioInfo): void => {
     </AsyncComponent>
 
     <AsyncComponent :visible="deleteTaskVisible">
-      <DelTestTask
+      <DeleteTestTask
         :id="selectedId"
         v-model:visible="deleteTaskVisible"
         :type="CombinedTargetType.SCENARIO" />

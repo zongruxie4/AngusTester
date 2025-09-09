@@ -1,5 +1,15 @@
 {
   "commonPlugin": {
+    "selectScriptModal": {
+      "title": "Select Script",
+      "selectScriptTip": "Please select a script",
+      "searchPlaceholder": "Search script name",
+      "tableHeaders": {
+        "name": "Name",
+        "plugin": "Plugin",
+        "type": "Type"
+      }
+    },
     "chartConfig": {
       "names": {
         "duration": "Duration",
@@ -181,15 +191,6 @@
     },
     "scriptConfig": {
       "yamlFormatError": "YAML content format error, please check and correct"
-    },
-    "selectScriptModal": {
-      "title": "Select Script",
-      "searchPlaceholder": "Search script name",
-      "tableHeaders": {
-        "name": "Name",
-        "plugin": "Plugin",
-        "type": "Type"
-      }
     },
     "performanceTestDetail": {
       "countCards": {

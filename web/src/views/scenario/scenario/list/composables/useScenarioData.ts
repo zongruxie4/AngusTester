@@ -1,8 +1,7 @@
 import { onMounted, Ref, ref, watch } from 'vue';
 import { PageQuery, ProjectPageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { scenario } from '@/api/tester';
-import { ScenarioInfo, MenuItem } from '../types';
-import { ScenarioPermission } from '@/enums/enums';
+import { ScenarioInfo } from '../types';
 
 /**
  * Sort keys for scenarios
@@ -15,7 +14,6 @@ export type SortKey = 'createdDate' | 'name' | 'createdByName';
  * @param notify - Notification trigger
  */
 export function useScenarioData (projectId: Ref<string | undefined>, notify: Ref<string | undefined>) {
-
   const loaded = ref(false);
   const loading = ref(false);
   const errorMessage = ref<string>();
@@ -74,8 +72,8 @@ export function useScenarioData (projectId: Ref<string | undefined>, notify: Ref
     dataList.value = data.list.map((item) => {
       return {
         ...item,
-        nameLinkUrl: `/scenario#scenario?id=${item.id}&name=${item.name}&plugin=${item.plugin}`,
-        detailLink: `/scenario#scenario?id=${item.id}&name=${item.name}&plugin=${item.plugin}&type=detail`
+        editLinkUrl: `/scenario#scenario?id=${item.id}&name=${item.name}&plugin=${item.plugin}`,
+        detailLinkUrl: `/scenario#scenario?id=${item.id}&name=${item.name}&plugin=${item.plugin}&type=detail`
       };
     });
   };
@@ -105,6 +103,6 @@ export function useScenarioData (projectId: Ref<string | undefined>, notify: Ref
     dataList,
 
     // Methods
-    loadData,
+    loadData
   };
 }

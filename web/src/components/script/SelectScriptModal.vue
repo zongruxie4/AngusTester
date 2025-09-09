@@ -69,7 +69,7 @@ const getQueryParams = computed(() => {
 });
 
 // API endpoint for script data
-const scrollAction = `${TESTER}/script`;
+const queryAction = `${TESTER}/script`;
 
 /**
  * Handle search input changes with debouncing
@@ -138,7 +138,7 @@ onMounted(() => {
  */
 const handleConfirm = async () => {
   if (!selectedScriptId.value) {
-    notification.warning('Please select a script');
+    notification.warning(t('commonPlugin.selectScriptModal.selectScriptTip'));
     return;
   }
 
@@ -174,7 +174,7 @@ const handleCancel = () => {
 </script>
 <template>
   <Modal
-    :title="t('httpPlugin.selectScriptModal.title')"
+    :title="t('commonPlugin.selectScriptModal.title')"
     :visible="props.visible"
     :centered="true"
     :width="800"
@@ -188,7 +188,7 @@ const handleCancel = () => {
         <Input
           :value="searchInputValue"
           :allowClear="true"
-          :placeholder="t('httpPlugin.selectScriptModal.searchPlaceholder')"
+          :placeholder="t('commonPlugin.selectScriptModal.searchPlaceholder')"
           trim
           class="search-input"
           @change="handleSearchInputChange">
@@ -202,14 +202,14 @@ const handleCancel = () => {
       <div class="table-section">
         <div class="table-header">
           <div class="table-cell checkbox-cell"></div>
-          <div class="table-cell name-cell">{{ t('httpPlugin.selectScriptModal.tableHeaders.name') }}</div>
-          <div class="table-cell plugin-cell">{{ t('httpPlugin.selectScriptModal.tableHeaders.plugin') }}</div>
-          <div class="table-cell type-cell">{{ t('httpPlugin.selectScriptModal.tableHeaders.type') }}</div>
+          <div class="table-cell name-cell">{{ t('commonPlugin.selectScriptModal.tableHeaders.name') }}</div>
+          <div class="table-cell plugin-cell">{{ t('commonPlugin.selectScriptModal.tableHeaders.plugin') }}</div>
+          <div class="table-cell type-cell">{{ t('commonPlugin.selectScriptModal.tableHeaders.type') }}</div>
         </div>
 
         <Scroll
           v-if="props.visible"
-          :action="scrollAction"
+          :action="queryAction"
           :lineHeight="40"
           :params="getQueryParams"
           class="table-body"
@@ -360,7 +360,6 @@ const handleCancel = () => {
 }
 
 .script-name {
-  font-weight: bold;
   font-size: 12px;
   color: #333;
 }

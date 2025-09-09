@@ -1,5 +1,15 @@
 {
   "commonPlugin": {
+    "selectScriptModal": {
+      "title": "选择脚本",
+      "selectScriptTip": "请选择一个脚本",
+      "searchPlaceholder": "查询脚本名称",
+      "tableHeaders": {
+        "name": "名称",
+        "plugin": "插件",
+        "type": "类型"
+      }
+    },
     "chartConfig": {
       "names": {
         "duration": "时长",
@@ -181,15 +191,6 @@
     },
     "scriptConfig": {
       "yamlFormatError": "yaml内容格式错误，请检查并更正"
-    },
-    "selectScriptModal": {
-      "title": "选择脚本",
-      "searchPlaceholder": "查询脚本名称",
-      "tableHeaders": {
-        "name": "名称",
-        "plugin": "插件",
-        "type": "类型"
-      }
     },
     "performanceTestDetail": {
       "countCards": {

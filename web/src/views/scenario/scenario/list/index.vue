@@ -80,7 +80,7 @@ const {
 } = useScenarioSearch();
 
 // Async components
-const Drawer = defineAsyncComponent(() => import('@/views/scenario/scenario/list/Drawer.vue'));
+const ScenarioDrawer = defineAsyncComponent(() => import('./Drawer.vue'));
 const ScenarioList = defineAsyncComponent(() => import('./List.vue'));
 const ScenarioGroup = defineAsyncComponent(() => import('./Group.vue'));
 
@@ -209,6 +209,6 @@ const deleteScenarioHandler = (scenaridId: string):void => {
       </template>
     </Spin>
 
-    <Drawer :projectId="props.projectId" :userInfo="props.userInfo" />
+    <ScenarioDrawer :projectId="props.projectId" :userInfo="props.userInfo" />
   </div>
 </template>

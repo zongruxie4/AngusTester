@@ -30,8 +30,8 @@ export interface ScenarioInfo {
   scriptId: string;
   lastExecStatus?: EnumMessage<ExecStatus>;
   lastExecFailureMessage?: string;
-  nameLinkUrl?: string;
-  detailLink?: string;
+  editLinkUrl?: string;
+  detailLinkUrl?: string;
 }
 
 /**

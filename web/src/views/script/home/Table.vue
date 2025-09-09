@@ -272,7 +272,7 @@ rowSelection.value.onChange = (keys: string[]) => {
         <template #bodyCell="{ column, text, record }">
           <RouterLink
             v-if="column.dataIndex === 'name'"
-            :to="record.nameLinkUrl"
+            :to="record.editLinkUrl"
             :title="record.name"
             class="block truncate text-text-link">
             {{ record.name }}

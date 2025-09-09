@@ -48,10 +48,11 @@ const SaveForm = defineAsyncComponent(() => import('./Drawer/SaveForm/index.vue'
 const ActivityTimeline = defineAsyncComponent(() => import('./Drawer/ActivityTimeline/index.vue'));
 const SmartComment = defineAsyncComponent(() => import('./Drawer/SmartComment/index.vue'));
 
+const SelectScriptModal = defineAsyncComponent(() => import('@/components/script/SelectScriptModal.vue'));
+
 const ScriptConfig = defineAsyncComponent(() => import('./ScriptConfig/index.vue'));
 const UIConfig = defineAsyncComponent(() => import('./UIConfig/index.vue'));
 const ExportScriptModal = defineAsyncComponent(() => import('./ExportScriptModal/index.vue'));
-const SelectScriptModal = defineAsyncComponent(() => import('./SelectScriptModal/index.vue'));
 const ImportScript = defineAsyncComponent(() => import('./ImportScript/index.vue'));
 const ExecuteConfig = defineAsyncComponent(() => import('./ExecuteConfig/index.vue'));
 const DebugResult = defineAsyncComponent(() => import('./DebugResult/index.vue'));
@@ -644,7 +645,7 @@ const toFollow = async (id: string) => {
   hideButtonSet.value.delete('cancelFollow');
   hideButtonSet.value.add('follow');
   scenarioConfigData.value.follow = true;
-        notification.success(t('httpPlugin.messages.followSuccess'));
+  notification.success(t('httpPlugin.messages.followSuccess'));
 };
 
 const cancelFollow = async (id: string) => {
@@ -662,7 +663,7 @@ const cancelFollow = async (id: string) => {
   hideButtonSet.value.delete('follow');
   hideButtonSet.value.add('cancelFollow');
   scenarioConfigData.value.follow = false;
-      notification.success(t('httpPlugin.messages.cancelFollowSuccess'));
+  notification.success(t('httpPlugin.messages.cancelFollowSuccess'));
 };
 
 const favouriteHandler = (value: boolean) => {
@@ -690,7 +691,7 @@ const toFavourite = async (id: string) => {
   hideButtonSet.value.delete('cancelFavourite');
   hideButtonSet.value.add('favourite');
   scenarioConfigData.value.favourite = true;
-      notification.success(t('httpPlugin.messages.favouriteSuccess'));
+  notification.success(t('httpPlugin.messages.favouriteSuccess'));
 };
 
 const cancelFavourite = async (id: string) => {
@@ -708,7 +709,7 @@ const cancelFavourite = async (id: string) => {
   hideButtonSet.value.delete('favourite');
   hideButtonSet.value.add('cancelFavourite');
   scenarioConfigData.value.favourite = false;
-      notification.success(t('httpPlugin.messages.cancelFavouriteSuccess'));
+  notification.success(t('httpPlugin.messages.cancelFavouriteSuccess'));
 };
 
 const save = async (data?: {
@@ -1447,7 +1448,7 @@ const scriptId = computed((): string => {
 });
 
 const tabText = computed(() => {
-      return isUIViewMode.value ? { task: t('httpPlugin.tabs.taskConfig'), execute: t('httpPlugin.tabs.executeConfig') } : { task: '', execute: '' };
+  return isUIViewMode.value ? { task: t('httpPlugin.tabs.taskConfig'), execute: t('httpPlugin.tabs.executeConfig') } : { task: '', execute: '' };
 });
 
 const drawerMenuItems = computed(() => {
@@ -1471,7 +1472,7 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
 <template>
   <Spin :spinning="loading || !rendered" class="h-full overflow-hidden text-3 pt-1.5">
     <Tabs
-      v-model:activeKey="activeKey"
+      :activeKey="activeKey"
       class="pure-tab-wrap h-full leading-5"
       size="small">
       <template #rightExtra>
@@ -1537,11 +1538,11 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
 
         <Toolbar
           ref="toolbarRef"
-          v-model:clientHeight="height"
-          v-model:isFull="isFull"
-          v-model:isOpen="isOpen"
-          v-model:isMoving="isMoving"
-          v-model:activeKey="toolbarActiveKey"
+          :clientHeight="height"
+          :isFull="isFull"
+          :isOpen="isOpen"
+          :isMoving="isMoving"
+          :activeKey="toolbarActiveKey"
           :menuItems="TOOLBAR_MENUITEMS"
           :extraMenuItems="TOOLBAR_EXTRA_MENUITEMS"
           :destroyInactiveTabPane="false"
@@ -1615,7 +1616,7 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
 
     <AsyncComponent :visible="authVisible">
       <AuthorizeModal
-        v-model:visible="authVisible"
+        :visible="authVisible"
         enumKey="ScenarioPermission"
         :appId="props.appInfo?.id"
         :listUrl="`${TESTER}/scenario/auth?scenarioId=${scenarioConfigData?.id}`"
@@ -1626,19 +1627,30 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
         :initStatusUrl="`${TESTER}/scenario/${scenarioConfigData?.id}/auth/status`"
         :onTips="t('httpPlugin.authority.onTips')"
         :offTips="t('httpPlugin.authority.offTips')"
-        :title="t('httpPlugin.authority.title')" />
+        :title="t('httpPlugin.authority.title')"
+        @update:visible="authVisible = $event" />
     </AsyncComponent>
 
     <AsyncComponent :visible="exportModalVisible">
-      <ExportScriptModal :id="scriptId" v-model:visible="exportModalVisible" />
+      <ExportScriptModal 
+        :id="scriptId" 
+        :visible="exportModalVisible"
+        @update:visible="exportModalVisible = $event" />
     </AsyncComponent>
 
     <AsyncComponent :visible="selectModalVisible">
-      <SelectScriptModal v-model:visible="selectModalVisible" @ok="selectScriptOk" />
+      <SelectScriptModal
+        :visible="selectModalVisible"
+        plugin="Http"
+        @ok="selectScriptOk"
+        @update:visible="selectModalVisible = $event" />
     </AsyncComponent>
 
     <AsyncComponent :visible="uploadVisible">
-      <ImportScript v-model:visible="uploadVisible" @ok="selectScriptOk" />
+      <ImportScript 
+        :visible="uploadVisible" 
+        @ok="selectScriptOk"
+        @update:visible="uploadVisible = $event" />
     </AsyncComponent>
   </Spin>
 </template>
