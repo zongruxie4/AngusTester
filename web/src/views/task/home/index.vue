@@ -14,13 +14,13 @@ const props = withDefaults(defineProps<Props>(), {
 });
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTaskStatistics: true }));
 
-const MyTasks = defineAsyncComponent(() => import('@/views/task/homepage/myTasks/index.vue'));
-const MyCreationSummary = defineAsyncComponent(() => import('@/views/task/homepage/myCreationSummary/index.vue'));
-const Summary = defineAsyncComponent(() => import('@/views/task/homepage/summary/index.vue'));
-const WorkCalendar = defineAsyncComponent(() => import('@/views/task/homepage/workCalendar/index.vue'));
-const BurnDownCharts = defineAsyncComponent(() => import('@/views/task/homepage/burndownChart/index.vue'));
-const Introduction = defineAsyncComponent(() => import('@/views/task/homepage/introduce/index.vue'));
-const ActivityTimeline = defineAsyncComponent(() => import('./activityTimeline.vue'));
+const MyTasks = defineAsyncComponent(() => import('@/views/task/home/Added.vue'));
+const MyCreationSummary = defineAsyncComponent(() => import('@/views/task/home/summary/CreationSummary.vue'));
+const Summary = defineAsyncComponent(() => import('@/views/task/home/summary/StatusSummary.vue'));
+const WorkCalendar = defineAsyncComponent(() => import('@/views/task/home/WorkCalendar.vue'));
+const BurnDownCharts = defineAsyncComponent(() => import('@/views/task/home/BurndownChart.vue'));
+const Introduction = defineAsyncComponent(() => import('@/views/task/home/Introduce.vue'));
+const ActivityTimeline = defineAsyncComponent(() => import('./ActivityTimeline.vue'));
 
 const notify = ref<string>();
 

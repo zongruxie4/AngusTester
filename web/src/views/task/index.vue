@@ -6,7 +6,7 @@ import LeftMenu from '@/components/layout/leftMenu/index.vue';
 
 type MenuKey = 'homepage' | 'sprint' | 'task' | 'backlog' | 'trash' | 'meeting' | 'analysis';
 
-const Homepage = defineAsyncComponent(() => import('@/views/task/homepage/index.vue'));
+const Homepage = defineAsyncComponent(() => import('@/views/task/home/index.vue'));
 const Backlog = defineAsyncComponent(() => import('@/views/task/backlog/index.vue'));
 const Sprint = defineAsyncComponent(() => import('@/views/task/sprint/index.vue'));
 const Task = defineAsyncComponent(() => import('@/views/task/task/index.vue'));

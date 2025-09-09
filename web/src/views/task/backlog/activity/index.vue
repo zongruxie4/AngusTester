@@ -5,7 +5,7 @@ import { ActivityInfo, Scroll } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 
 import { ActivityItem } from './PropsType';
-import { TaskInfo } from '../../PropsType';
+import { TaskInfo } from '../../types';
 
 type Props = {
   projectId: string;

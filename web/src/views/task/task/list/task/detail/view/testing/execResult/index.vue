@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import { Colon, Toggle, NoData } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
-import { TaskInfo } from '@/views/task/PropsType';
+import { TaskInfo } from '@/views/task/types';
 
 type Props = {
   dataSource: TaskInfo;

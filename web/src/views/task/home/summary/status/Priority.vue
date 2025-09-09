@@ -7,7 +7,8 @@ import { PieChart, PieSeriesOption } from 'echarts/charts';
 import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 
-import { ResourceInfo } from '../../PropsType';
+
+import {ResourceInfo} from "@/views/task/home/types";
 
 type Props = {
   dataSource: ResourceInfo;

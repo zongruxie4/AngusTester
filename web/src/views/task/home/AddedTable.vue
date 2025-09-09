@@ -6,7 +6,7 @@ import { http, utils } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 
 import { getCurrentPage } from '@/utils/utils';
-import { TaskInfo } from '../../PropsType';
+import { TaskInfo } from '../types';
 
 type Props = {
   projectId: string;
@@ -366,7 +366,7 @@ const emptyTextStyle = {
     <template v-if="loaded">
       <template v-if="!tableData?.length">
         <div class="flex-1 flex flex-col items-center justify-center">
-          <img class="w-27.5" src="../../../../assets/images/nodata.png">
+          <img class="w-27.5" src="../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3 leading-5">
             <template v-if="!!props.params?.createdBy">
               <span>您尚未添加任何任务，立即</span>

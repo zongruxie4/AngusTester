@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue';
 
-import { TaskInfo } from '../../../../../../PropsType';
+import { TaskInfo } from '../../../../../../types';
 
 type Props = {
   projectId: string;

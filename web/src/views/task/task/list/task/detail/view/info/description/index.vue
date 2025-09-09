@@ -5,7 +5,7 @@ import { AsyncComponent, Icon, NoData, Toggle } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { task } from '@/api/tester';
 
-import { TaskInfo } from '../../../../../../../PropsType';
+import { TaskInfo } from '../../../../../../../types';
 
 type Props = {
   taskId: string;

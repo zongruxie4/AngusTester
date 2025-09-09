@@ -27,7 +27,7 @@ import { task, analysis } from '@/api/tester';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { MemberCount, SprintInfo } from './PropsType';
-import { TaskInfo } from '../PropsType';
+import { TaskInfo } from '../types';
 
 type SprintPermissionKey = 'MODIFY_SPRINT' | 'DELETE_SPRINT' | 'ADD_TASK' | 'MODIFY_TASK' | 'DELETE_TASK' | 'EXPORT_TASK' | 'RESTART_TASK' | 'REOPEN_TASK' | 'GRANT'
 

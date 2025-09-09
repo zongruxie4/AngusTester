@@ -7,7 +7,8 @@ import { TESTER } from '@xcan-angus/infra';
 import { Dayjs } from 'dayjs';
 import { analysis } from '@/api/tester';
 
-import { DataItem } from './PropsTyps';
+
+import {DataItem} from "@/views/task/home/types";
 
 type Props = {
   projectId: string;

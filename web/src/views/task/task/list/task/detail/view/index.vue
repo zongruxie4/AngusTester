@@ -8,7 +8,7 @@ import { debounce } from 'throttle-debounce';
 import { cloneDeep } from 'lodash-es';
 import { task } from '@/api/tester';
 
-import { TaskInfo } from '../../../../../PropsType';
+import { TaskInfo } from '../../../../../types';
 import { ActionMenuItem } from '../../../PropsType';
 
 type TabPaneKey = 'basicInfo' | 'remark' | 'testInfo' | 'comments' | 'activity';

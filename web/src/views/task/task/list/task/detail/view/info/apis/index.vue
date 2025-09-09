@@ -19,7 +19,7 @@ import { isEqual } from 'lodash-es';
 import { task } from '@/api/tester';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { TaskInfo } from '@/views/task/PropsType';
+import { TaskInfo } from '@/views/task/types';
 
 type Props = {
   projectId: string;

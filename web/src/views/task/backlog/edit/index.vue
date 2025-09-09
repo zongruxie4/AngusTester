@@ -24,7 +24,7 @@ import { modules, task } from '@/api/tester';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { FormState } from './PropsType';
-import { TaskInfo } from '../../PropsType';
+import { TaskInfo } from '../../types';
 
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 

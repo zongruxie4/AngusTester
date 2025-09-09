@@ -6,7 +6,7 @@ import { TESTER } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-import { TaskInfo } from '@/views/task/PropsType';
+import { TaskInfo } from '@/views/task/types';
 
 type Props = {
   projectId: string;

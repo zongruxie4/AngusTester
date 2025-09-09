@@ -4,7 +4,7 @@ import { Button } from 'ant-design-vue';
 import { AsyncComponent, Icon, NoData } from '@xcan-angus/vue-ui';
 import { task } from '@/api/tester';
 
-import { TaskInfo } from '../../../PropsType';
+import { TaskInfo } from '../../../types';
 
 type Props = {
   projectId: string;

@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void}>();
 const userInfo = ref(appContext.getUser());
 
-const WorkCalendar = defineAsyncComponent(() => import('@/views/task/homepage/workCalendar/index.vue'));
+const WorkCalendar = defineAsyncComponent(() => import('@/views/task/home/WorkCalendar.vue'));
 
 const cancel = () => {
   emits('update:visible', false);

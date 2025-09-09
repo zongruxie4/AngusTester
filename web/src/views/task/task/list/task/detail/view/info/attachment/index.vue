@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n';
 import { utils, upload } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 
-import { TaskInfo } from '../../../../../../../PropsType';
+import { TaskInfo } from '../../../../../../../types';
 
 type AttachmentItem = {
   id: string;

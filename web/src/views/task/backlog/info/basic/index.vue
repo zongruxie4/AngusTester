@@ -7,7 +7,7 @@ import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { task, modules } from '@/api/tester';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { TaskInfo } from '../../../PropsType';
+import { TaskInfo } from '../../../types';
 
 type Props = {
   projectId: string;

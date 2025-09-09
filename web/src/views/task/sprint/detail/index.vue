@@ -28,7 +28,7 @@ const props = withDefaults(defineProps<Props>(), {
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 const BurnDownChart = defineAsyncComponent(() => import('@/views/task/sprint/detail/burndownChart/index.vue'));
 const MembersProgress = defineAsyncComponent(() => import('@/views/task/sprint/detail/memberProgress/index.vue'));
-const WorkCalendar = defineAsyncComponent(() => import('@/views/task/homepage/workCalendar/index.vue'));
+const WorkCalendar = defineAsyncComponent(() => import('@/views/task/home/WorkCalendar.vue'));
 
 const { t } = useI18n();
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));

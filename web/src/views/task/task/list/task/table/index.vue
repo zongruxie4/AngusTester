@@ -16,7 +16,7 @@ import {
 import { toClipboard } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 
-import { TaskInfo } from '../../../../PropsType';
+import { TaskInfo } from '../../../../types';
 import { ActionMenuItem } from '../../PropsType';
 
 const { t } = useI18n();

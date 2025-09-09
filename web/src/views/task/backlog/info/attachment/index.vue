@@ -5,7 +5,7 @@ import { Icon, notification, Spin } from '@xcan-angus/vue-ui';
 import { utils, upload } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 
-import { TaskInfo } from '../../../PropsType';
+import { TaskInfo } from '../../../types';
 
 type AttachmentItem = {
   id: string;

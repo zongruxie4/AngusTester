@@ -3,7 +3,7 @@ import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { NoData, Toggle } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
-import { TaskInfo } from '../../../../../../../PropsType';
+import { TaskInfo } from '../../../../../../../types';
 import { TestInfo } from '../PropsType';
 
 const ApiTestResult = defineAsyncComponent(() => import('@/views/execution/detail/result/ApiResult.vue'));

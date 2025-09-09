@@ -8,7 +8,7 @@ import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 
 import { getCurrentPage } from '@/utils/utils';
-import { TaskInfo } from '../../PropsType';
+import { TaskInfo } from '../../types';
 import { ActionMenuItem, travelTreeData } from './PropsType';
 // eslint-disable-next-line import/no-absolute-path
 import Template from '/file/Import_Task_Template.xlsx?url';

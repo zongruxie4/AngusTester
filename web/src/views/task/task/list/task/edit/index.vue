@@ -24,7 +24,7 @@ import { modules, task } from '@/api/tester';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { FormState } from './PropsType';
-import { TaskInfo } from '../../../../PropsType';
+import { TaskInfo } from '../../../../types';
 
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));

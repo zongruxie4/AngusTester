@@ -22,7 +22,7 @@ import Draggable from 'vuedraggable';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-import { TaskInfo } from '../../../../PropsType';
+import { TaskInfo } from '../../../../types';
 import { ActionMenuItem, SprintPermissionKey } from './PropsType';
 
 type Props = {

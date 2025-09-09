@@ -3,7 +3,8 @@ import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { analysis } from '@/api/tester';
 
-import { ResourceInfo } from '../PropsType';
+
+import {ResourceInfo} from "@/views/task/home/types";
 
 type Props = {
   projectId: string;
@@ -19,10 +20,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const Sprint = defineAsyncComponent(() => import('@/views/task/homepage/summary/sprint/index.vue'));
-const Task = defineAsyncComponent(() => import('@/views/task/homepage/summary/task/index.vue'));
-const Priority = defineAsyncComponent(() => import('@/views/task/homepage/summary/priority/index.vue'));
-const Backlog = defineAsyncComponent(() => import('@/views/task/homepage/summary/backlog/index.vue'));
+const Sprint = defineAsyncComponent(() => import('@/views/task/home/summary/status/Sprint.vue'));
+const Task = defineAsyncComponent(() => import('@/views/task/home/summary/status/Task.vue'));
+const Priority = defineAsyncComponent(() => import('@/views/task/home/summary/status/Priority.vue'));
+const Backlog = defineAsyncComponent(() => import('@/views/task/home/summary/status/Backlog.vue'));
 
 const loading = ref(false);
 const dataSource = ref<ResourceInfo>();

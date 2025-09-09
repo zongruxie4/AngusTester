@@ -7,7 +7,8 @@ import { PieChart, PieSeriesOption } from 'echarts/charts';
 import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 
-import { ResourceInfo } from '../../PropsType';
+
+import {ResourceInfo} from "@/views/task/home/types";
 
 type Props = {
   dataSource: ResourceInfo;
@@ -22,6 +23,9 @@ type EChartsOption = echarts.ComposeOption<TooltipComponentOption | LegendCompon
 const windowResizeNotify = inject('windowResizeNotify', ref<string>());
 
 const containerRef = ref<HTMLElement>();
+
+const total = ref(0);
+
 const domId = utils.uuid('pie');
 
 let echartInstance: echarts.ECharts;
@@ -39,7 +43,10 @@ const echartOption: EChartsOption = {
     orient: 'vertical',
     itemHeight: 14,
     itemWidth: 14,
-    itemGap: 10
+    itemGap: 10,
+    formatter: function (name) {
+      return name;
+    }
   },
   color: ['#67D7FF', '#FFB925', '#F5222D', '#2acab8', '#2D8EFF', '#52C41A'],
   series: [
@@ -88,7 +95,7 @@ const renderChart = () => {
 const setEchartOption = () => {
   if (containerRef.value) {
     const width = containerRef.value.offsetWidth;
-    if (width > 428) {
+    if (width > 418) {
       echartOption.series![0].center = ['50%', '50%'];
       echartOption.series![0].radius = ['45%', '63%'];
       echartOption.legend = {
@@ -99,7 +106,7 @@ const setEchartOption = () => {
         itemWidth: 14,
         itemGap: 10
       };
-    } else if (width > 350 && width <= 428) {
+    } else if (width > 340 && width <= 418) {
       echartOption.series![0].center = ['45%', '50%'];
       echartOption.series![0].radius = ['45%', '63%'];
       echartOption.legend = {
@@ -110,7 +117,7 @@ const setEchartOption = () => {
         itemWidth: 14,
         itemGap: 10
       };
-    } else if (width > 300 && width <= 350) {
+    } else if (width > 290 && width <= 340) {
       echartOption.series![0].center = ['40%', '50%'];
       echartOption.series![0].radius = ['45%', '63%'];
       echartOption.legend = {
@@ -122,7 +129,7 @@ const setEchartOption = () => {
         itemGap: 10
       };
     } else {
-      echartOption.series![0].center = ['50%', '40%'];
+      echartOption.series![0].center = ['50%', '34%'];
       echartOption.series![0].radius = ['38%', '55%'];
       echartOption.legend = {
         bottom: '-7px',
@@ -143,10 +150,11 @@ const setEchartOption = () => {
 
 const resizeHandler = () => {
   setEchartOption();
-  if (echartInstance) {
-    echartInstance.setOption(echartOption);
-    echartInstance.resize();
+  if (!echartInstance) {
+    return;
   }
+  echartInstance.setOption(echartOption);
+  echartInstance.resize();
 };
 
 onMounted(() => {
@@ -154,11 +162,12 @@ onMounted(() => {
     if (props.dataSource === undefined) {
       return;
     }
+    total.value = newValue.allBacklog;
 
     // 重置数据
     echartOption.series![0].data = [];
 
-    const data = newValue.taskByType;
+    const data = newValue.backlogByType || {};
     echartOption.series?.[0].data.push({ name: '故事', value: +data.STORY });
     echartOption.series?.[0].data.push({ name: '任务', value: +data.TASK });
     echartOption.series?.[0].data.push({ name: '缺陷', value: +data.BUG });
@@ -168,7 +177,7 @@ onMounted(() => {
 
     setEchartOption();
     renderChart();
-  }, { immediate: true });
+  });
 
   watch(() => windowResizeNotify.value, (newValue) => {
     if (newValue === undefined || newValue === null || newValue === '') {
@@ -181,8 +190,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <div
-    :id="domId"
-    ref="containerRef"
-    class="h-44"></div>
+  <div class="flex flex-col rounded border border-solid border-theme-text-box pt-2 pb-2">
+    <div class="font-semibold px-4">总Backlog <span class="text-4">{{ total }}</span></div>
+    <div class="flex-1 flex items-center justify-center pr-2">
+      <div
+        :id="domId"
+        ref="containerRef"
+        class="w-full h-44"></div>
+    </div>
+  </div>
 </template>

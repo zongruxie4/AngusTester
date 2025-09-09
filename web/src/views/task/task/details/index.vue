@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'v
 import { AsyncComponent } from '@xcan-angus/vue-ui';
 import { useRoute, useRouter } from 'vue-router';
 
-import { TaskInfo } from '../../PropsType';
+import { TaskInfo } from '../../types';
 
 type Props = {
   sprintId: string;

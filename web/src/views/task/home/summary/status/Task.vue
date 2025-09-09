@@ -2,7 +2,8 @@
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Icon } from '@xcan-angus/vue-ui';
 
-import { ResourceInfo } from '../../PropsType';
+
+import {ResourceInfo} from "@/views/task/home/types";
 
 type Props = {
   dataSource: ResourceInfo;
@@ -12,7 +13,7 @@ const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined
 });
 
-const ChartPie = defineAsyncComponent(() => import('./chartPie.vue'));
+const ChartPie = defineAsyncComponent(() => import('./TaskChartPie.vue'));
 
 const total = ref<string>('0');
 const overduetTtal = ref<string>('0');

@@ -5,7 +5,7 @@ import { Icon, NoData, Select } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-import { TaskInfo } from '../../../../../../PropsType';
+import { TaskInfo } from '../../../../../../types';
 
 type Props = {
   projectId: string;

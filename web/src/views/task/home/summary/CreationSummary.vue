@@ -3,7 +3,8 @@ import { onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { analysis } from '@/api/tester';
 
-import { ResourceInfo } from '../PropsType';
+
+import {ResourceInfo} from "@/views/task/home/types";
 
 type Props = {
   projectId: string;

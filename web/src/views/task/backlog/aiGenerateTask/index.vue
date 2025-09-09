@@ -21,7 +21,7 @@ import { task } from '@/api/tester';
 import { ai } from 'src/api/gm';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
-import { TaskInfo } from '../../PropsType';
+import { TaskInfo } from '../../types';
 
 interface Props {
   visible: boolean;

@@ -3,7 +3,7 @@ import { useI18n } from 'vue-i18n';
 import { Checkbox, Pagination } from 'ant-design-vue';
 import { IconTask, TaskStatus } from '@xcan-angus/vue-ui';
 
-import { TaskInfo } from '../../../../PropsType';
+import { TaskInfo } from '../../../../types';
 
 type Props = {
   projectId: string;
