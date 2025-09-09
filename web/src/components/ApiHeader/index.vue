@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { reactive, watch, computed, ref, inject, onMounted, nextTick } from 'vue';
 import { Button, Checkbox, Tooltip } from 'ant-design-vue';
-import { Icon, Input, SelectSchema, Select, JsonContent, SimpleEditableSelect } from '@xcan-angus/vue-ui';
+import { Icon, Input, SelectSchema, Select, SimpleEditableSelect } from '@xcan-angus/vue-ui';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import { http, TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 const { t }  = useI18n();
 
 import ParamsInput from '@/components/ParamInput/index.vue';
+import JsonContent from '@/components/JsonContent/index.vue';
 import { ParamsItem, getDefaultParams, API_EXTENSION_KEY, deconstruct, validateType, deepDelAttrFromObj, getModelDataByRef } from '@/utils/ApiUtils';
 
 
