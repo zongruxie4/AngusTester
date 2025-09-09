@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, computed, defineAsyncComponent, watchEffect, onBeforeUnmount } from 'vue';
 import { Collapse, CollapsePanel, Tabs, TabPane, Badge, Radio } from 'ant-design-vue';
-import { Composite, Input, Icon, Tooltip, Popover, ExecAuthencation, FunctionsButton } from '@xcan-angus/vue-ui';
+import { Composite, Input, Icon, Tooltip, Popover, FunctionsButton } from '@xcan-angus/vue-ui';
 import { utils, i18n } from '@xcan-angus/infra';
 import { cloneDeep } from 'lodash-es';
 import SelectEnum from '@/components/enum/SelectEnum.vue'
@@ -63,6 +63,7 @@ const emit = defineEmits<{
   (e: 'renderChange'): void;
 }>();
 
+const ExecAuthencation = defineAsyncComponent(() => import('@/components/ExecAuthencation/index.vue'));
 const ServerEndpoint = defineAsyncComponent(() => import('./ServerEndpoint/index.vue'));
 const ActionsGroup = defineAsyncComponent(() => import('../ActionsGroup/index.vue'));
 const AssertionForm = defineAsyncComponent(() => import('./AssertionForm/index.vue'));
