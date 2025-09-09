@@ -39,7 +39,7 @@ const props = withDefaults(defineProps<Props>(), {
   tips: ''
 });
 
-const SelectTaskByModuleModal = defineAsyncComponent(() => import('@/components/task/selectByModuleModal/index.vue'));
+const SelectTaskByModuleModal = defineAsyncComponent(() => import('@/components/task/SelectByModuleModal.vue'));
 
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{

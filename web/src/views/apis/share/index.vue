@@ -2,11 +2,9 @@
 import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
-import { utils } from '@xcan-angus/infra';
+import { utils, IPane } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-
-import { IPane } from '@/types/types';
 
 const { t } = useI18n();
 

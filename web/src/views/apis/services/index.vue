@@ -13,14 +13,13 @@ import {
   watch
 } from 'vue';
 import ReconnectingWebSocket from 'reconnecting-websocket';
-import { utils, appContext } from '@xcan-angus/infra';
+import { utils, appContext, IPane } from '@xcan-angus/infra';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
 import Sidebar from '@/views/apis/services/sidebar/index.vue';
 import { setting } from '@/api/gm';
-import { IPane } from '@/types/types';
 
 type MenuKey = 'homepage' | 'services' | 'trash';
 const { t } = useI18n();

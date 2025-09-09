@@ -51,10 +51,10 @@ const emits = defineEmits<{
 
 const MovePop = defineAsyncComponent(() => import('@/views/apis/services/components/moveModal/index.vue'));
 const Share = defineAsyncComponent(() => import('@/components/share/index.vue'));
-const CreateTestTaskModal = defineAsyncComponent(() => import('@/components/task/createTestModal/index.vue'));
-const RestartTestTaskModal = defineAsyncComponent(() => import('@/components/task/restartTestModal/index.vue'));
-const ReOpenTestTaskModal = defineAsyncComponent(() => import('@/components/task/reopenTestModal/index.vue'));
-const DelTestTask = defineAsyncComponent(() => import('@/components/task/delTestModal/index.vue'));
+const CreateTestTaskModal = defineAsyncComponent(() => import('@/components/task/CreateTestModal.vue'));
+const RestartTestTaskModal = defineAsyncComponent(() => import('@/components/task/RestartTestModal.vue'));
+const ReOpenTestTaskModal = defineAsyncComponent(() => import('@/components/task/ReopenTestModal.vue'));
+const DelTestTask = defineAsyncComponent(() => import('@/components/task/DeleteTestModal.vue'));
 const StatusModal = defineAsyncComponent(() => import('@/views/apis/services/components/statusModal/index.vue'));
 const ExportApiModal = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/exportServices/index.vue'));
 const GenTestScript = defineAsyncComponent(() => import('@/components/script/genTestScriptModal/index.vue'));

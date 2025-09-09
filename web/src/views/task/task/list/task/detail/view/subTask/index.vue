@@ -51,7 +51,7 @@ const emit = defineEmits<{
 
 const EditTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/edit/index.vue'));
 // const refTasks = defineAsyncComponent(() => import('./refTasks/index.vue'));
-const SelectTaskByModuleModal = defineAsyncComponent(() => import('@/components/task/selectByModuleModal/index.vue'));
+const SelectTaskByModuleModal = defineAsyncComponent(() => import('@/components/task/SelectByModuleModal.vue'));
 
 const loading = ref(false);
 const selectedTaskId = ref<string>();

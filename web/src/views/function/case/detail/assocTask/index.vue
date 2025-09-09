@@ -46,7 +46,7 @@ const emit = defineEmits<{
   (event: 'editSuccess'): void;
 }>();
 
-const SelectTaskByModuleModal = defineAsyncComponent(() => import('@/components/task/selectByModuleModal/index.vue'));
+const SelectTaskByModuleModal = defineAsyncComponent(() => import('@/components/task/SelectByModuleModal.vue'));
 
 const submitLoading = ref(false);
 const selectTaskVisible = ref(false);

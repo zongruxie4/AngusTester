@@ -13,10 +13,10 @@ type FoldActionKey = 'creatProejct' | 'creatService' | 'import' | 'export'|'auth
 type SuffixActionKey = 'creatService' | 'export' | 'import' | 'authorization';
 
 const Share = defineAsyncComponent(() => import('@/components/share/index.vue'));
-const CreateTestTask = defineAsyncComponent(() => import('@/components/task/createTestModal/index.vue'));
-const RestartTestTask = defineAsyncComponent(() => import('@/components/task/restartTestModal/index.vue'));
-const ReopenTestTask = defineAsyncComponent(() => import('@/components/task/reopenTestModal/index.vue'));
-const DelTestTask = defineAsyncComponent(() => import('@/components/task/delTestModal/index.vue'));
+const CreateTestTask = defineAsyncComponent(() => import('@/components/task/CreateTestModal.vue'));
+const RestartTestTask = defineAsyncComponent(() => import('@/components/task/RestartTestModal.vue'));
+const ReopenTestTask = defineAsyncComponent(() => import('@/components/task/ReopenTestModal.vue'));
+const DelTestTask = defineAsyncComponent(() => import('@/components/task/DeleteTestModal.vue'));
 const SyncConfig = defineAsyncComponent(() => import('@/views/apis/services/components/syncConfig/modal.vue'));
 const ServerUrl = defineAsyncComponent(() => import('@/views/apis/services/components/serverConfig/modal.vue'));
 const SecurityConfig = defineAsyncComponent(() => import('@/views/apis/services/components/securityConfig/modal.vue'));
