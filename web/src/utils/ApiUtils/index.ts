@@ -5,10 +5,10 @@ import { uniq } from 'lodash-es';
 import { decode as dt, encode as et } from 'js-base64';
 import { http, utils, TESTER, codeUtils, AssertionCondition, AssertionType } from '@xcan-angus/infra';
 import SwaggerUI from '@xcan-angus/swagger-ui';
-import notification from '@/packages/notification';
+import {notification} from '@xcan-angus/vue-ui';
 
-import { Extraction } from '../ApiAssert/utils/extract/PropsType';
-import { getExecShowAuthData } from '../ExecAuthencation/interface';
+import { Extraction } from '@/components/ApiAssert/utils/extract/PropsType';
+import { getExecShowAuthData } from '@/components/ExecAuthencation/interface';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 

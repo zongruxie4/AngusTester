@@ -3,8 +3,7 @@ import { ref, onMounted, computed, defineAsyncComponent, watch, watchEffect } fr
 import { Tabs, TabPane, Badge } from 'ant-design-vue';
 import { Composite, Input, SelectEnum } from '@xcan-angus/vue-ui';
 import { utils, HttpMethod as HttpMethodEnum } from '@xcan-angus/infra';
-import { ExecAuthencation } from '@xcan-angus/vue-ui';
-import { getUriByParams} from '@/packages/ApiUtils/index';
+import { getUriByParams} from '@/utils/ApiUtils/index';
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
@@ -35,6 +34,7 @@ const emit = defineEmits<{
   (e: 'update:errorNum', value: number): void;
 }>();
 
+const ExecAuthencation = defineAsyncComponent(() => import('@/components/ExecAuthencation/index.vue'));
 const RequestBody = defineAsyncComponent(() => import('./RequestBody/index.vue'));
 const ParameterInput = defineAsyncComponent(() => import('./ParameterInput.vue'));
 const ParameterPure = defineAsyncComponent(() => import('./ParameterPure.vue'));
