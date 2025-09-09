@@ -2,7 +2,7 @@
 import { defineAsyncComponent, nextTick, ref, onMounted, watch, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Checkbox, Button, Badge, Collapse, CollapsePanel, Tabs, TabPane, Switch } from 'ant-design-vue';
-import { Icon, AsyncComponent, NoData, Input, SelectEnum, Tooltip, Validate, Select, Arrow, IconRequired, Colon, ApiUtils as angusUtils, FunctionsButton, ParamInput } from '@xcan-angus/vue-ui';
+import { Icon, AsyncComponent, NoData, Input, SelectEnum, Tooltip, Validate, Select, Arrow, IconRequired, Colon, ApiUtils as angusUtils, FunctionsButton } from '@xcan-angus/vue-ui';
 import { utils, duration } from '@xcan-angus/infra';
 import { uniq } from 'lodash-es';
 import qs from 'qs';
@@ -31,6 +31,7 @@ const emit = defineEmits<{
   (e: 'renderChange', value: boolean): void;
 }>();
 
+const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
 const SelectApiModal = defineAsyncComponent(() => import('./SelectApiModal/index.vue'));
 const AssertionForm = defineAsyncComponent(() => import('./AssertionForm/index.vue'));
 const Parametric = defineAsyncComponent(() => import('./Parametric/index.vue'));

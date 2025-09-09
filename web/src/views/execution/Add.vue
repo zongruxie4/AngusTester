@@ -3,10 +3,11 @@ import { computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { Button, Form, FormItem } from 'ant-design-vue';
-import { ExecSettingForm, IconRequired, Input, Select, Spin } from '@xcan-angus/vue-ui';
+import { IconRequired, Input, Select, Spin } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { useExecutionForm } from './composables/useExecutionForm';
 import SelectEnum from '@/components/selectEnum/index.vue';
+import ExecSettingForm from '@/components/ExecSettingForm/index.vue';
 
 const { t } = useI18n();
 const route = useRoute();

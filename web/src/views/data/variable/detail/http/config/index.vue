@@ -2,10 +2,11 @@
 import { computed, defineAsyncComponent, onMounted, ref, watch, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Badge, TabPane, Tabs } from 'ant-design-vue';
-import { ApiUtils as angusUtils, Composite, ExecAuthencation, HttpMethodText, Input } from '@xcan-angus/vue-ui';
+import { ApiUtils as angusUtils, Composite, HttpMethodText, Input } from '@xcan-angus/vue-ui';
 import { HttpMethod, ParameterIn, utils } from '@xcan-angus/infra';
 
 import SelectEnum from '@/components/selectEnum/index.vue';
+import ExecAuthencation from '@/components/ExecAuthencation/index.vue';
 import { OASServer, RequestConfig } from '@/views/data/variable/detail/http/types';
 
 const { t } = useI18n();

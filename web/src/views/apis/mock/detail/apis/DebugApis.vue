@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { ApiUtils as apiUtils, AsyncComponent, Icon, notification, ResponseStatus, Toggle } from '@xcan-angus/vue-ui';
+import { ApiUtils as apiUtils, AsyncComponent, Icon, notification, Toggle } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { LoadingOutlined } from '@ant-design/icons-vue';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
@@ -25,6 +25,7 @@ import { CONTENT_TYPE, HTTP_HEADERS } from '@/utils/constant';
 const Agent = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/Agent.vue'));
 const InputGroup = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/content/InputGroup.vue'));
 const RequestBody = defineAsyncComponent(() => import('@/views/apis/mock/detail/apis/components/content/RequestBody.vue'));
+const ResponseStatus = defineAsyncComponent(() => import('@/components/ResponseStatus/index.vue'));
 
 interface Props {
   serviceOptions: {label: string, value: string}[];

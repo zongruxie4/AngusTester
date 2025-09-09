@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, inject, reactive, ref, watch } from 'vue';
+import { computed, inject, reactive, ref, watch, defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Checkbox, Tooltip } from 'ant-design-vue';
-import { Icon, Input, notification, Select, SelectSchema, ParamInput } from '@xcan-angus/vue-ui';
+import { Icon, Input, notification, Select, SelectSchema } from '@xcan-angus/vue-ui';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 
 import { ParamsItem } from '@/views/apis/services/apiHttp/requestParam/interface';
@@ -17,6 +17,7 @@ import JsonContent from '../requestBody/json/index.vue';
 import SimpleEditableSelect from '@/components/apis/editableSelector/index.vue';
 import { toClipboard } from '@xcan-angus/infra';
 
+const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
 const { t } = useI18n();
 const valueKey = API_EXTENSION_KEY.valueKey;
 const enabledKey = API_EXTENSION_KEY.enabledKey;

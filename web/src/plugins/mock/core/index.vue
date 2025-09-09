@@ -2,7 +2,6 @@
 import { defineAsyncComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Progress } from 'ant-design-vue';
-import { TestBasicInfo } from '@xcan-angus/vue-ui';
 
 const { t } = useI18n();
 
@@ -23,7 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const ChartInfo = defineAsyncComponent(() => import('./ChartInfo.vue'));
-
+const TestBasicInfo = defineAsyncComponent(() => import('@/components/TestBasicInfo/index.vue'));
 const chartInfoRef = ref();
 const countCard = [
   {

@@ -852,9 +852,9 @@ const importSamples = async () => {
 </script>
 <template>
   <LeftDrawer
-    v-if="projectInfo?.id"
+    v-if="projectId"
     ref="leftDrawerRef"
-    :key="`api_left_drawer_${projectInfo.id}`"
+    :key="`api_left_drawer_${projectId}`"
     v-model:fold="leftDrawerFoldFlag"
     v-model:collapseActiveKey="leftDrawerCollapseActiveKey"
     :foldActions="foldActions"
@@ -978,7 +978,7 @@ const importSamples = async () => {
       :visible="moveVisible"
       :pid="movePid"
       :parentName="moveParentName"
-      :projectId="projectInfo.id"
+      :projectId="projectId"
       type="service"
       @ok="moveHandle"
       @cancel="moveCancel" />
@@ -1087,7 +1087,7 @@ const importSamples = async () => {
       v-model:visible="batchVisible"
       v-bind="activeAction"
       :serviceId="modalsConfig.activeId"
-      :projectId="projectInfo?.id" />
+      :projectId="projectId" />
   </AsyncComponent>
 
   <AsyncComponent :visible="execTestVisible">
@@ -1103,6 +1103,6 @@ const importSamples = async () => {
     <TranslateModal
       v-model:visible="translateVisible"
       :service="selectedService"
-      :projectId="projectInfo?.id" />
+      :projectId="projectId" />
   </AsyncComponent>
 </template>

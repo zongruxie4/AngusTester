@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, provide, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
-import { Drawer, Icon, Input, notification, Select, ApiUtils as apiUtils, HttpTestInfo, Indicator } from '@xcan-angus/vue-ui';
+import { Drawer, Icon, Input, notification, Select, ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { utils, duration } from '@xcan-angus/infra';
 import qs from 'qs';
@@ -39,6 +39,8 @@ const props = withDefaults(defineProps<Props>(), {
   responseCount: undefined
 });
 
+const Indicator = defineAsyncComponent(() => import('@/components/Indicator/index.vue'));
+const HttpTestInfo = defineAsyncComponent(() => import('@/components/HttpTestInfo/index.vue'));
 const SocketForm = defineAsyncComponent(() => import('./components/socketForm.vue'));
 const MonacoEditor = defineAsyncComponent(() => import('@/components/monacoEditor/index.vue'));
 const Toolbar = defineAsyncComponent(() => import('@/components/layout/toolbar/index.vue'));

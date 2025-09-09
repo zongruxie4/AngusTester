@@ -11,8 +11,8 @@ import { navs, serviceNav, socketNavs, StateType } from './PropsType';
 
 const { t } = useI18n();
 
-const HttpTestInfo = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(resp => resp.HttpTestInfo));
-const Indicator = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(resp => resp.Indicator));
+const HttpTestInfo = defineAsyncComponent(() => import('@/components/HttpTestInfo/index.vue'));
+const Indicator = defineAsyncComponent(() => import('@/components/Indicator/index.vue'));
 const InterfaceHeader = defineAsyncComponent(() => import('@/views/apis/services/apiGroup/header/index.vue'));
 const InterfaceList = defineAsyncComponent(() => import('@/views/apis/services/apiGroup/list/index.vue'));
 const HomePage = defineAsyncComponent(() => import('@/views/apis/services/apiGroup/homepage/index.vue'));

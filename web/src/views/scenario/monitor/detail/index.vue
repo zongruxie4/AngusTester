@@ -2,19 +2,9 @@
 import { onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import {
-  DebugLog,
-  ExecLog,
   Hints,
   Icon,
   NoData,
-  ScearioSmtpDebugResult,
-  ScenarioFtpDebugResult,
-  ScenarioHttpDebugResult,
-  ScenarioJdbcDebugResult,
-  ScenarioLdapDebugResult,
-  ScenarioMailDebugResult,
-  ScenarioTcpDebugResult,
-  ScenarioWebsocketDebugResult,
   Spin
 } from '@xcan-angus/vue-ui';
 import { Button, TabPane, Tabs, Tag } from 'ant-design-vue';
@@ -23,6 +13,16 @@ import type { MonitorDetailProps } from '../types';
 import { useMonitorData } from './composables/useMonitorData';
 import { useHistoryData } from './composables/useHistoryData';
 import { useMonitorActions } from './composables/useMonitorActions';
+import DebugLog from '@/components/DebugLog/index.vue';
+import ExecLog from '@/components/ExecLog/index.vue';
+import ScenarioHttpDebugResult from '@/components/ScenarioHttpDebugResult/index.vue';
+import ScenarioJdbcDebugResult from '@/components/ScenarioJdbcDebugResult/index.vue';
+import ScenarioFtpDebugResult from '@/components/ScenarioFtpDebugResult/index.vue';
+import ScenarioWebsocketDebugResult from '@/components/ScenarioWebsocketDebugResult/index.vue';
+import ScenarioLdapDebugResult from '@/components/ScenarioLdapDebugResult/index.vue';
+import ScenarioMailDebugResult from '@/components/ScenarioMailDebugResult/index.vue';
+import ScenarioTcpDebugResult from '@/components/ScenarioTcpDebugResult/index.vue';
+import ScearioSmtpDebugResult from '@/components/ScearioSmtpDebugResult/index.vue';
 
 const { t } = useI18n();
 
