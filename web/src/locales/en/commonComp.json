@@ -1,376 +1,379 @@
 {
-    "commonComp": {
-        "apis": {
-          "editableSelector": {
-            "placeholder": "Please enter debug value"
-          },
-          "enabledTestModal": {
-            "title": "Enable or Disable API Testing",
-            "hint": "Enable or disable the corresponding test types for all APIs under the service.",
-            "functionalTest": "Functional Test",
-            "performanceTest": "Performance Test",
-            "stabilityTest": "Stability Test",
-            "enabled": "Enabled",
-            "disabled": "Disabled",
-            "successMessage": "Successfully enabled or disabled testing"
-          },
-          "selectCaseModal": {
-            "title": "Select API",
-            "selectService": "Please select service",
-            "searchApi": "Search API",
-            "search": "Search",
-            "group": "Group",
-            "noGroup": "No Group",
-            "groupByCreator": "Group by Creator",
-            "groupByMethod": "Group by Method",
-            "groupByOwner": "Group by Owner",
-            "groupByTag": "Group by Tag",
-            "caseName": "Case Name",
-            "method": "Method",
-            "path": "Path",
-            "caseType": "Case Type"
-          },
-          "parameterizationDataset": {
-            "title": "Dataset",
-            "description": "Import predefined datasets that can be used as parameters in the current request. Note: Dataset parameters only take effect after being referenced. When dataset parameter names conflict with variable names, dataset parameter values have higher priority than variable values.",
-            "readToEnd": "When reading to end",
-            "sharingMode": "Sharing Mode",
-            "recycleTooltip": "After all data rows in the dataset have been used, data will be reused from the beginning.",
-            "stopThreadTooltip": "After all data rows in the dataset have been used, stop the current sampling thread execution. When all threads have read all rows, the entire execution exits and ends.",
-            "allThreadTooltip": "All threads share the same dataset data.",
-            "currentThreadTooltip": "Each thread copies its own dataset data.",
-            "addDataset": "Import Dataset",
-            "noDataMessage": "You have not referenced any datasets yet",
-            "name": "Name",
-            "creator": "Creator",
-            "actions": "Actions",
-            "cancelReference": "Cancel Reference",
-            "cancelReferenceConfirm": "Are you sure you want to cancel referencing dataset [{name}]?",
-            "viewDefinition": "View Definition",
-            "parameters": "Parameters",
-            "extract": "Extract",
-            "preview": "Preview",
-            "use": "Use",
-            "fileHint": "Read datasets from files. Each dataset can create up to 200 parameters, each parameter file cannot exceed 500MB, and the total number of rows cannot exceed 1 million.",
-            "jdbcHint": "Extract a value from the database query results as the dataset value before each test execution.",
-            "listModal": {
-              "title": "Reference Variables",
-              "searchPlaceholder": "Search name, description",
-              "refresh": "Refresh",
-              "name": "Name",
-              "description": "Description",
-              "valueSource": "Value Source",
-              "lastModifiedBy": "Last Modified By",
-              "lastModifiedTime": "Last Modified Time",
-              "staticValue": "Static Value",
-              "exactValue": "Exact Value",
-              "extractedValue": "Extracted Value",
-              "file": "(File)",
-              "http": "(Http)",
-              "jdbc": "(Jdbc)"
-            },
-            "extractParameter": {
-              "name": "Name",
-              "readColumn": "Read Column"
-            },
-            "previewData": {
-              "hintText": "Each time, at most 10,000 data can be previewed, and the actual parameter values of the Mock function are generated during sampling.",
-              "rowNum": "Preview Row Number",
-              "refresh": "Refresh",
-              "noData": "No Data"
-            },
-            "useList": {
-              "targetType": "Resource Type",
-              "targetId": "Resource ID",
-              "targetName": "Resource Name",
-              "hintText": "View the resource information used by the variable.",
-              "refresh": "Refresh"
-            },
-                      "staticParameter": {
-                "hintText": "Generate parameter values dynamically during sampling, each dataset can create up to 200 parameters, and the maximum number of rows supported is 100 billion.",
-                "name": "Name",
-                "value": "Value"
-              }
-            },
-          "parameterizationVariable": {
-              "title": "Variables",
-              "hints": "Import predefined variables that can be used as parameters in the current request. Note: Variables only take effect after being referenced.",
-              "addVariable": "Reference Variables",
-              "noDataMessage": "You have not referenced any variables yet",
-              "name": "Name",
-              "value": "Value",
-              "description": "Description",
-              "reference": "Reference",
-              "creator": "Creator",
-              "actions": "Actions",
-              "cancelReference": "Cancel Reference",
-              "cancelReferenceConfirm": "Are you sure you want to cancel referencing variable [{name}]?",
-              "viewDefinition": "View Definition",
-              "listModal": {
-                "title": "Reference Variables",
-                "searchPlaceholder": "Search name, description",
-                "refresh": "Refresh",
-                "name": "Name",
-                "description": "Description",
-                "value": "Value",
-                "reference": "Reference",
-                "lastModifiedBy": "Last Modified By",
-                "lastModifiedTime": "Last Modified Time",
-                "password": "Password",
-                "staticValue": "Static Value",
-                "exactValue": "Exact Value",
-                "extractedValue": "Extracted Value",
-                "file": "(File)",
-                "http": "(Http)",
-                "jdbc": "(Jdbc)",
-                "ynOption": {
-                  "yes": "Yes",
-                  "no": "No"
-                }
-              }
-            },
-            "selectCaseByModule": {
-              "title": "Select Cases",
-              "searchPlaceholder": "Search name, code",
-              "code": "Code",
-              "name": "Name",
-              "reviewStatus": "Review Status",
-              "testResult": "Test Result",
-              "tester": "Tester"
-            },
-            "moduleTreeSelector": {
-              "title": "Cases",
-              "noModule": "No Module",
-              "allCases": "All",
-              "searchModule": "Search Module",
-              "addModule": "Add Module",
-              "editModule": "Edit Module",
-              "deleteModule": "Delete Module",
-              "moveModule": "Move Module",
-              "moduleName": "Module Name",
-              "inputModuleName": "Please enter module name",
-              "cancel": "Cancel",
-              "confirmDelete": "Are you sure you want to delete module [{name}]?",
-              "updateSuccess": "Update successful",
-              "deleteSuccess": "Module deleted successfully",
-              "moveSuccess": "Move successful"
-            },
-            "delScriptModal": {
-              "title": "Delete Test Script",
-              "scriptType": "Script Type",
-              "functionalTest": "Functional Test",
-              "performanceTest": "Performance Test",
-              "stabilityTest": "Stability Test",
-              "selectScriptType": "Please select the script type to delete",
-              "deleteSuccess": "Test script deleted successfully"
-            },
-            "genTestScriptModal": {
-              "title": "Generate Test Script",
-              "functionalTest": "Functional Test",
-              "performanceTest": "Performance Test",
-              "stabilityTest": "Stability Test",
-              "functionalTestConfig": "Functional Test Script Configuration",
-              "performanceTestConfig": "Performance Test Script Configuration",
-              "stabilityTestConfig": "Stability Test Script Configuration",
-              "note": "Note: If a test script of the corresponding type already exists, it will be automatically ignored. If you need to regenerate a new test script based on current interface parameters, please delete the corresponding test type script first.",
-              "noteHighlight": "Only one script of each test type is allowed per interface.",
-              "generateSuccess": "Test script generated successfully, please check details in 'Scripts'",
-              "updateSuccess": "Test script updated successfully, please check details in 'Scripts'",
-              "testForm": {
-                "concurrentThreads": "Concurrent Threads",
-                "iterations": "Iterations",
-                "executionTime": "Execution Time",
-                "rampUpThreads": "Ramp-up Threads",
-                "rampUpDuration": "Ramp-up Duration",
-                "rampUpTooltip": "Used to increase concurrent threads during testing to increase system pressure. Through gradual pressure increase, you can observe system performance and stability under different pressures.",
-                "ignoreAssertions": "Ignore Assertions",
-                "ignoreAssertionsTooltip": "If not ignored, assertion failures will be treated as sampling errors.",
-                "updateTestResult": "Update Test Result",
-                "updateTestResultTooltip": "Whether to update test results to associated resources (API, test cases, or scenarios).",
-                "priority": "Priority",
-                "authControl": "Authorization Control",
-                "authControlTooltip": "Whether the generated script is subject to permission control. When under permission control, only the creator is visible by default and has full permissions. Other users need to manually authorize through 'Scripts' -> 'Authorization'. When not under permission control, all users are visible and can operate."
-              }
-            },
-            "shareModal": {
-              "title": "Share Management",
-              "addShare": "Add Share",
-              "shareName": "Share Name",
-              "shareUrl": "Share URL",
-              "sharePassword": "Share Password",
-              "expirationDate": "Expiration Date",
-              "publicShare": "Public Share",
-              "privateShare": "Private Share",
-              "allApis": "All APIs",
-              "selectApis": "Select APIs",
-              "copySuccess": "Copy successful",
-              "copyFailed": "Copy failed",
-              "deleteSuccess": "Share record deleted successfully",
-              "passwordRequired": "Password cannot be empty",
-              "passwordUpdateSuccess": "Password updated successfully",
-              "shareCreateSuccess": "Share created successfully",
-              "shareUpdateSuccess": "Share updated successfully",
-              "shareDeleteSuccess": "Share deleted successfully",
-              "expired": "Expired",
-              "notExpired": "Not Expired",
-              "expiredDate": "Expiration Date",
-              "createdBy": "Created By",
-              "createdDate": "Created Date",
-              "actions": "Actions",
-              "edit": "Edit",
-              "delete": "Delete",
-              "copy": "Copy",
-              "cancel": "Cancel",
-              "confirm": "Confirm",
-              "save": "Save",
-              "close": "Close",
-              "search": "Search",
-              "refresh": "Refresh",
-              "noData": "No Data",
-              "loading": "Loading...",
-              "form": {
-                "namePlaceholder": "Please enter share name",
-                "urlPlaceholder": "Please enter share URL",
-                "passwordPlaceholder": "Please enter share password",
-                "expiredDatePlaceholder": "Please select expiration date",
-                "apiSearchPlaceholder": "Search API name or description",
-                "selectAllApis": "Select All APIs",
-                "clearSelection": "Clear Selection"
-              },
-              "validation": {
-                "nameRequired": "Share name cannot be empty",
-                "urlRequired": "Share URL cannot be empty",
-                "passwordRequired": "Share password cannot be empty",
-                "expiredDateRequired": "Expiration date cannot be empty"
-              },
-              "tooltip": {
-                "copyUrl": "Copy share URL",
-                "copyPassword": "Copy share password",
-                "editPassword": "Edit password",
-                "deleteShare": "Delete share",
-                "publicShareDesc": "Public share, accessible to anyone",
-                "privateShareDesc": "Private share, requires password to access"
-              },
-              "publicFlagOptions": {
-                "public": "Public (accessible to all)",
-                "private": "Private (requires password)"
-              },
-              "expirationTimeOptions": {
-                "permanent": "Permanent",
-                "expired": "Set expiration time"
-              },
-              "expiredTimeTip": "Expiration time is less than 24 hours, please select a new date",
-              "noShareApis": "No shareable APIs",
-              "noSelectedApis": "Please select APIs",
-              "shareApis": "Share APIs",
-              "copyLabel": {
-                "name": "Name",
-                "link": "Link",
-                "password": "Password"
-              },
-                         "selectAll": "Select All",
-               "saveAndCopy": "Save and Copy"
-             }
-        },
-        "createTaskTestModal": {
-          "title": "Generate Test Task",
-          "functionalTest": "Functional Test",
-          "performanceTest": "Performance Test",
-          "stabilityTest": "Stability Test",
-          "basicConfig": "Basic Configuration",
-          "testTaskConfig": "Test Task Configuration",
-          "functionalTestConfig": "Functional Test",
-          "performanceTestConfig": "Performance Test",
-          "stabilityTestConfig": "Stability Test",
-          "taskSprint": "Task Sprint",
-          "testType": "Test Type",
-          "selectSprint": "Please select sprint",
-          "selectTestType": "Please select test type",
-          "assignee": "Assignee",
-          "selectAssignee": "Please select assignee",
-          "deadlineDate": "Test Deadline",
-          "priority": "Priority",
-          "generateSuccess": "Task generated successfully",
-          "validation": {
-            "testTypeRequired": "Please select test type"
-          }
-        },
-        "delTaskTestModal": {
-          "title": "Delete Test Task",
-          "functionalTest": "Functional Test",
-          "performanceTest": "Performance Test",
-          "stabilityTest": "Stability Test",
-          "selectDeleteTestType": "Select Test Type to Delete",
-          "selectTestType": "Please select test type",
-          "confirmMessage": "This operation will permanently delete the task. Are you sure you want to continue?",
-          "deleteSuccess": "Test task deleted successfully"
-        },
-        "reopenTaskTestModal": {
-          "title": "Reopen Test Task",
-          "reopenSuccess": "Test task reopened successfully"
-        },
-        "restartTaskTestModal": {
-          "title": "Restart Test",
-          "restartSuccess": "Test restarted successfully"
-        },
-        "selectTaskByModuleModal": {
-          "title": "Select Task",
-          "task": "Task",
-          "searchPlaceholder": "Search by name or code",
-          "code": "Code",
+  "commonComp": {
+    "apis": {
+      "editableSelector": {
+        "placeholder": "Please enter debug value"
+      },
+      "enabledTestModal": {
+        "title": "Enable or Disable API Testing",
+        "hint": "Enable or disable the corresponding test types for all APIs under the service.",
+        "functionalTest": "Functional Test",
+        "performanceTest": "Performance Test",
+        "stabilityTest": "Stability Test",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "successMessage": "Successfully enabled or disabled testing"
+      },
+      "selectCaseModal": {
+        "title": "Select API",
+        "selectService": "Please select service",
+        "searchApi": "Search API",
+        "search": "Search",
+        "group": "Group",
+        "noGroup": "No Group",
+        "groupByCreator": "Group by Creator",
+        "groupByMethod": "Group by Method",
+        "groupByOwner": "Group by Owner",
+        "groupByTag": "Group by Tag",
+        "caseName": "Case Name",
+        "method": "Method",
+        "path": "Path",
+        "caseType": "Case Type"
+      },
+      "parameterizationDataset": {
+        "title": "Dataset",
+        "description": "Import predefined datasets that can be used as parameters in the current request. Note: Dataset parameters only take effect after being referenced. When dataset parameter names conflict with variable names, dataset parameter values have higher priority than variable values.",
+        "readToEnd": "When reading to end",
+        "sharingMode": "Sharing Mode",
+        "recycleTooltip": "After all data rows in the dataset have been used, data will be reused from the beginning.",
+        "stopThreadTooltip": "After all data rows in the dataset have been used, stop the current sampling thread execution. When all threads have read all rows, the entire execution exits and ends.",
+        "allThreadTooltip": "All threads share the same dataset data.",
+        "currentThreadTooltip": "Each thread copies its own dataset data.",
+        "addDataset": "Import Dataset",
+        "noDataMessage": "You have not referenced any datasets yet",
+        "name": "Name",
+        "creator": "Creator",
+        "actions": "Actions",
+        "cancelReference": "Cancel Reference",
+        "cancelReferenceConfirm": "Are you sure you want to cancel referencing dataset [{name}]?",
+        "viewDefinition": "View Definition",
+        "parameters": "Parameters",
+        "extract": "Extract",
+        "preview": "Preview",
+        "use": "Use",
+        "fileHint": "Read datasets from files. Each dataset can create up to 200 parameters, each parameter file cannot exceed 500MB, and the total number of rows cannot exceed 1 million.",
+        "jdbcHint": "Extract a value from the database query results as the dataset value before each test execution.",
+        "listModal": {
+          "title": "Reference Variables",
+          "searchPlaceholder": "Search name, description",
+          "refresh": "Refresh",
           "name": "Name",
-          "status": "Status",
-          "type": "Type"
+          "description": "Description",
+          "valueSource": "Value Source",
+          "lastModifiedBy": "Last Modified By",
+          "lastModifiedTime": "Last Modified Time",
+          "staticValue": "Static Value",
+          "exactValue": "Exact Value",
+          "extractedValue": "Extracted Value",
+          "file": "(File)",
+          "http": "(Http)",
+          "jdbc": "(Jdbc)"
         },
-        "exportScriptModal": {
-          "title": "Export Script",
-          "format": "Format",
-          "json": "JSON",
-          "yaml": "YAML"
+        "extractParameter": {
+          "name": "Name",
+          "readColumn": "Read Column"
         },
-        "chart": {
-          "cpu": {
-            "title": "Processor",
-            "titleWithCores": "Processor ({cores} cores)",
-            "legend": {
-              "cpuCount": "CPU Count",
-              "systemCpuUsage": "System CPU Usage",
-              "processCpuUsage": "Process CPU Usage"
-            },
-            "series": {
-              "systemCpuUsage": "System CPU Usage",
-              "processCpuUsage": "Process CPU Usage"
-            }
-          },
-          "ram": {
-            "title": "Memory (JVM, GB)",
-            "legend": {
-              "maxAvailableMemory": "Max Available Memory",
-              "usedMemory": "Used Memory",
-              "committedMemory": "Committed Memory"
-            },
-            "series": {
-              "maxAvailableMemory": "Max Available Memory",
-              "usedMemory": "Used Memory",
-              "committedMemory": "Committed Memory"
-            }
-          },
-          "cache": {
-            "title": "Cache (JVM, GB)",
-            "legend": {
-              "totalCacheSize": "Total Cache Size",
-              "usedCacheSize": "Used Cache Size",
-              "cacheCount": "Cache Count"
-            },
-            "series": {
-              "totalCacheSize": "Total Cache Size",
-              "usedCacheSize": "Used Cache Size",
-              "cacheCount": "Cache Count"
-            }
-          },
-          "bar": {
-            "titleFormat": "{title} ( {unit} , Total: {total})"
+        "previewData": {
+          "hintText": "Each time, at most 10,000 data can be previewed, and the actual parameter values of the Mock function are generated during sampling.",
+          "rowNum": "Preview Row Number",
+          "refresh": "Refresh",
+          "noData": "No Data"
+        },
+        "useList": {
+          "targetType": "Resource Type",
+          "targetId": "Resource ID",
+          "targetName": "Resource Name",
+          "hintText": "View the resource information used by the variable.",
+          "refresh": "Refresh"
+        },
+        "staticParameter": {
+          "hintText": "Generate parameter values dynamically during sampling, each dataset can create up to 200 parameters, and the maximum number of rows supported is 100 billion.",
+          "name": "Name",
+          "value": "Value"
+        }
+      },
+      "parameterizationVariable": {
+        "title": "Variables",
+        "hints": "Import predefined variables that can be used as parameters in the current request. Note: Variables only take effect after being referenced.",
+        "addVariable": "Reference Variables",
+        "noDataMessage": "You have not referenced any variables yet",
+        "name": "Name",
+        "value": "Value",
+        "description": "Description",
+        "reference": "Reference",
+        "creator": "Creator",
+        "actions": "Actions",
+        "cancelReference": "Cancel Reference",
+        "cancelReferenceConfirm": "Are you sure you want to cancel referencing variable [{name}]?",
+        "viewDefinition": "View Definition",
+        "listModal": {
+          "title": "Reference Variables",
+          "searchPlaceholder": "Search name, description",
+          "refresh": "Refresh",
+          "name": "Name",
+          "description": "Description",
+          "value": "Value",
+          "reference": "Reference",
+          "lastModifiedBy": "Last Modified By",
+          "lastModifiedTime": "Last Modified Time",
+          "password": "Password",
+          "staticValue": "Static Value",
+          "exactValue": "Exact Value",
+          "extractedValue": "Extracted Value",
+          "file": "(File)",
+          "http": "(Http)",
+          "jdbc": "(Jdbc)",
+          "ynOption": {
+            "yes": "Yes",
+            "no": "No"
           }
         }
+      },
+      "selectCaseByModule": {
+        "title": "Select Cases",
+        "searchPlaceholder": "Search name, code",
+        "code": "Code",
+        "name": "Name",
+        "reviewStatus": "Review Status",
+        "testResult": "Test Result",
+        "tester": "Tester"
+      },
+      "moduleTreeSelector": {
+        "title": "Cases",
+        "noModule": "No Module",
+        "allCases": "All",
+        "searchModule": "Search Module",
+        "addModule": "Add Module",
+        "editModule": "Edit Module",
+        "deleteModule": "Delete Module",
+        "moveModule": "Move Module",
+        "moduleName": "Module Name",
+        "inputModuleName": "Please enter module name",
+        "cancel": "Cancel",
+        "confirmDelete": "Are you sure you want to delete module [{name}]?",
+        "updateSuccess": "Update successful",
+        "deleteSuccess": "Module deleted successfully",
+        "moveSuccess": "Move successful"
+      },
+      "shareModal": {
+        "title": "Share Management",
+        "addShare": "Add Share",
+        "shareName": "Share Name",
+        "shareUrl": "Share URL",
+        "sharePassword": "Share Password",
+        "expirationDate": "Expiration Date",
+        "publicShare": "Public Share",
+        "privateShare": "Private Share",
+        "allApis": "All APIs",
+        "selectApis": "Select APIs",
+        "copySuccess": "Copy successful",
+        "copyFailed": "Copy failed",
+        "deleteSuccess": "Share record deleted successfully",
+        "passwordRequired": "Password cannot be empty",
+        "passwordUpdateSuccess": "Password updated successfully",
+        "shareCreateSuccess": "Share created successfully",
+        "shareUpdateSuccess": "Share updated successfully",
+        "shareDeleteSuccess": "Share deleted successfully",
+        "expired": "Expired",
+        "notExpired": "Not Expired",
+        "expiredDate": "Expiration Date",
+        "createdBy": "Created By",
+        "createdDate": "Created Date",
+        "actions": "Actions",
+        "edit": "Edit",
+        "delete": "Delete",
+        "copy": "Copy",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "save": "Save",
+        "close": "Close",
+        "search": "Search",
+        "refresh": "Refresh",
+        "noData": "No Data",
+        "loading": "Loading...",
+        "form": {
+          "namePlaceholder": "Please enter share name",
+          "urlPlaceholder": "Please enter share URL",
+          "passwordPlaceholder": "Please enter share password",
+          "expiredDatePlaceholder": "Please select expiration date",
+          "apiSearchPlaceholder": "Search API name or description",
+          "selectAllApis": "Select All APIs",
+          "clearSelection": "Clear Selection"
+        },
+        "validation": {
+          "nameRequired": "Share name cannot be empty",
+          "urlRequired": "Share URL cannot be empty",
+          "passwordRequired": "Share password cannot be empty",
+          "expiredDateRequired": "Expiration date cannot be empty"
+        },
+        "tooltip": {
+          "copyUrl": "Copy share URL",
+          "copyPassword": "Copy share password",
+          "editPassword": "Edit password",
+          "deleteShare": "Delete share",
+          "publicShareDesc": "Public share, accessible to anyone",
+          "privateShareDesc": "Private share, requires password to access"
+        },
+        "publicFlagOptions": {
+          "public": "Public (accessible to all)",
+          "private": "Private (requires password)"
+        },
+        "expirationTimeOptions": {
+          "permanent": "Permanent",
+          "expired": "Set expiration time"
+        },
+        "expiredTimeTip": "Expiration time is less than 24 hours, please select a new date",
+        "noShareApis": "No shareable APIs",
+        "noSelectedApis": "Please select APIs",
+        "shareApis": "Share APIs",
+        "copyLabel": {
+          "name": "Name",
+          "link": "Link",
+          "password": "Password"
+        },
+        "selectAll": "Select All",
+        "saveAndCopy": "Save and Copy"
       }
+    },
+    "genTestScriptModal": {
+      "title": "Generate Test Script",
+      "functionalTest": "Functional Test",
+      "performanceTest": "Performance Test",
+      "stabilityTest": "Stability Test",
+      "functionalTestConfig": "Functional Test Script",
+      "performanceTestConfig": "Performance Test Script",
+      "stabilityTestConfig": "Stability Test Script",
+      "note": "Note: If a test script of the corresponding type already exists, it will be automatically ignored. If you need to regenerate a new test script based on current interface parameters, please delete the corresponding test type script first.",
+      "noteHighlight": "Only one script of each test type is allowed per interface.",
+      "generateSuccess": "Test script generated successfully, please check details in 'Scripts'",
+      "updateSuccess": "Test script updated successfully, please check details in 'Scripts'",
+      "testForm": {
+        "basicConfig": "Basic Configuration",
+        "advancedConfig": "Advanced Configuration",
+        "performanceConfig": "Performance Configuration",
+        "concurrentThreads": "Concurrent Threads",
+        "iterations": "Iterations",
+        "executionTime": "Execution Time",
+        "rampUpThreads": "Ramp-up Threads",
+        "rampUpDuration": "Ramp-up Duration",
+        "rampUpTooltip": "Used to increase concurrent threads during testing to increase system pressure. Through gradual pressure increase, you can observe system performance and stability under different pressures.",
+        "ignoreAssertions": "Ignore Assertions",
+        "ignoreAssertionsTooltip": "If not ignored, assertion failures will be treated as sampling errors.",
+        "updateTestResult": "Update Test Result",
+        "updateTestResultTooltip": "Whether to update test results to associated resources (API, test cases, or scenarios).",
+        "priority": "Priority",
+        "authControl": "Authorization Control",
+        "authControlTooltip": "Whether the generated script is subject to permission control. When under permission control, only the creator is visible by default and has full permissions. Other users need to manually authorize through 'Scripts' -> 'Authorization'. When not under permission control, all users are visible and can operate."
+      }
+    },
+    "delScriptModal": {
+      "title": "Delete Test Script",
+      "scriptType": "Script Type",
+      "functionalTest": "Functional Test",
+      "performanceTest": "Performance Test",
+      "stabilityTest": "Stability Test",
+      "selectScriptType": "Please select the script type to delete",
+      "deleteSuccess": "Test script deleted successfully"
+    },
+    "createTaskTestModal": {
+      "title": "Generate Test Task",
+      "functionalTest": "Functional Test",
+      "performanceTest": "Performance Test",
+      "stabilityTest": "Stability Test",
+      "basicConfig": "Basic Configuration",
+      "testTaskConfig": "Test Task Configuration",
+      "functionalTestConfig": "Functional Test",
+      "performanceTestConfig": "Performance Test",
+      "stabilityTestConfig": "Stability Test",
+      "taskSprint": "Task Sprint",
+      "testType": "Test Type",
+      "selectSprint": "Please select sprint",
+      "selectTestType": "Please select test type",
+      "assignee": "Assignee",
+      "selectAssignee": "Please select assignee",
+      "deadlineDate": "Test Deadline",
+      "priority": "Priority",
+      "generateSuccess": "Task generated successfully",
+      "validation": {
+        "testTypeRequired": "Please select test type"
+      }
+    },
+    "delTaskTestModal": {
+      "title": "Delete Test Task",
+      "functionalTest": "Functional Test",
+      "performanceTest": "Performance Test",
+      "stabilityTest": "Stability Test",
+      "selectDeleteTestType": "Select Test Type to Delete",
+      "selectTestType": "Please select test type",
+      "confirmMessage": "This operation will permanently delete the task. Are you sure you want to continue?",
+      "deleteSuccess": "Test task deleted successfully"
+    },
+    "reopenTaskTestModal": {
+      "title": "Reopen Test Task",
+      "reopenSuccess": "Test task reopened successfully"
+    },
+    "restartTaskTestModal": {
+      "title": "Restart Test",
+      "restartSuccess": "Test restarted successfully"
+    },
+    "selectTaskByModuleModal": {
+      "title": "Select Task",
+      "task": "Task",
+      "searchPlaceholder": "Search by name or code",
+      "code": "Code",
+      "name": "Name",
+      "status": "Status",
+      "type": "Type"
+    },
+    "exportScriptModal": {
+      "title": "Export Script",
+      "format": "Format",
+      "json": "JSON",
+      "yaml": "YAML"
+    },
+    "chart": {
+      "cpu": {
+        "title": "Processor",
+        "titleWithCores": "Processor ({cores} cores)",
+        "legend": {
+          "cpuCount": "CPU Count",
+          "systemCpuUsage": "System CPU Usage",
+          "processCpuUsage": "Process CPU Usage"
+        },
+        "series": {
+          "systemCpuUsage": "System CPU Usage",
+          "processCpuUsage": "Process CPU Usage"
+        }
+      },
+      "ram": {
+        "title": "Memory (JVM, GB)",
+        "legend": {
+          "maxAvailableMemory": "Max Available Memory",
+          "usedMemory": "Used Memory",
+          "committedMemory": "Committed Memory"
+        },
+        "series": {
+          "maxAvailableMemory": "Max Available Memory",
+          "usedMemory": "Used Memory",
+          "committedMemory": "Committed Memory"
+        }
+      },
+      "cache": {
+        "title": "Cache (JVM, GB)",
+        "legend": {
+          "totalCacheSize": "Total Cache Size",
+          "usedCacheSize": "Used Cache Size",
+          "cacheCount": "Cache Count"
+        },
+        "series": {
+          "totalCacheSize": "Total Cache Size",
+          "usedCacheSize": "Used Cache Size",
+          "cacheCount": "Cache Count"
+        }
+      },
+      "bar": {
+        "titleFormat": "{title} ( {unit} , Total: {total})"
+      }
+    }
+  }
 }

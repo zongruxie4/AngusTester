@@ -716,7 +716,7 @@ const save = async (data?: {
   } = JSON.parse(JSON.stringify(scenarioConfigData.value));
 
   const params: SaveFormData = {
-    authFlag: authFlag.value,
+    auth: authFlag.value,
     description,
     dirId,
     dirName,
@@ -1069,7 +1069,7 @@ onMounted(() => {
       dirId,
       dirName,
       name,
-      authFlag: true,
+      auth: true,
       description: '',
       favourite: false,
       follow: false,
