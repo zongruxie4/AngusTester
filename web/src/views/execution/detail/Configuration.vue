@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Button } from 'ant-design-vue';
-import { ExecSettingForm, Spin } from '@xcan-angus/vue-ui';
+import { Spin } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { useConfigData } from './composables/useConfigData';
+import ExecSettingForm from '@/components/ExecSettingForm/index.vue';
 
 /**
  * Props for the Configuration component

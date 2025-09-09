@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { inject, reactive, ref, watch } from 'vue';
+import { inject, reactive, ref, watch, defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Checkbox } from 'ant-design-vue';
-import { Icon, Input, notification, Select, SelectSchema, ParamInput } from '@xcan-angus/vue-ui';
+import { Icon, Input, notification, Select, SelectSchema } from '@xcan-angus/vue-ui';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 
 import ApiUpload from '@/views/apis/services/apiHttp/upload/index.vue';
@@ -21,6 +21,9 @@ const apiBaseInfo = inject('apiBaseInfo', ref());
 const archivedId = inject('archivedId', ref());
 const globalConfigs = inject('globalConfigs', { VITE_API_PARAMETER_NAME_LENGTH: 400, VITE_API_PARAMETER_VALUE_LENGTH: 4096 });
 const jsContentRef = ref<any[]>([]);
+
+const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
+
 interface Props {
   value: ParamsItem[],
   useModel: boolean;

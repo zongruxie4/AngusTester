@@ -51,20 +51,20 @@ const emits = defineEmits<{
   (e: 'apiChange', value?: string): void
 }>();
 
-const ApiParameter = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ApiParameter));
-const ApiHeader = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ApiHeader));
-const ApiCookie = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ApiCookie));
-const ApiBody = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ApiBody));
-const ApiAssert = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ApiAssert));
+const ApiParameter = defineAsyncComponent(() => import('@/components/ApiParameter/index.vue'));
+const ApiHeader = defineAsyncComponent(() => import('@/components/ApiHeader/index.vue'));
+const ApiCookie = defineAsyncComponent(() => import('@/components/ApiCookie/index.vue'));
+const ApiBody = defineAsyncComponent(() => import('@/components/ApiBody/index.vue'));
+const ApiAssert = defineAsyncComponent(() => import('@/components/ApiAssert/index.vue'));
 const DebugToolbar = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.DebugToolbar));
-const ResponseBase = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ResponseBase));
-const ResponseBody = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ResponseBody));
-const ResponseCookie = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ResponseCookie));
-const ApiAuthencation = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ApiAuthencation));
-const ResponseError = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ResponseError));
-const ResponseTimeAnalysis = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ResponseTimeAnalysis));
-const ResponseAssert = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ResponseAssert));
-const ResponseStatus = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(design => design.ResponseStatus));
+const ResponseBase = defineAsyncComponent(() => import('@/components/ResponseBase/index.vue'));
+const ResponseBody = defineAsyncComponent(() => import('@/components/ResponseBody/index.vue'));
+const ResponseCookie = defineAsyncComponent(() => import('@/components/ResponseCookie/index.vue'));
+const ApiAuthencation = defineAsyncComponent(() => import('@/components/ApiAuthencation/index.vue'));
+const ResponseError = defineAsyncComponent(() => import('@/components/ResponseError/index.vue'));
+const ResponseTimeAnalysis = defineAsyncComponent(() => import('@/components/ResponseTimeAnalysis/index.vue'));
+const ResponseAssert = defineAsyncComponent(() => import('@/components/ResponseAssert/index.vue'));
+const ResponseStatus = defineAsyncComponent(() => import('@/components/ResponseStatus/index.vue'));
 // const parameterization = defineAsyncComponent(() => import('@/components/parameterization/index.vue'));
 
 const allFunction = inject('allFunction', ref([]));

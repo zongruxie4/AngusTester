@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, inject, ref, watch } from 'vue';
+import { computed, inject, ref, watch, defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { toClipboard, utils } from '@xcan-angus/infra';
-import { Icon, Input, Select, SelectSchema, ParamInput, notification } from '@xcan-angus/vue-ui';
+import { Icon, Input, Select, SelectSchema, notification } from '@xcan-angus/vue-ui';
 import { Button, Checkbox } from 'ant-design-vue';
 import { API_EXTENSION_KEY, getModelDataByRef } from '@/views/apis/utils';
 import SwaggerUI from '@xcan-angus/swagger-ui';
@@ -16,6 +16,7 @@ import { services } from '@/api/tester';
 import { inOptions, itemTypes, transJsonToList, transListToJson, transListToschema } from './util';
 import { ParamsItem } from '@/views/apis/services/apiHttp/requestParam/interface';
 
+const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
 const { t } = useI18n();
 const ajv = new Ajv();
 addFormats(ajv);

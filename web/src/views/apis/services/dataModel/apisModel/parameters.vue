@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
-import { Icon, ApiCookie, ApiHeader, ApiParameter } from '@xcan-angus/vue-ui';
+import { Icon } from '@xcan-angus/vue-ui';
+import ApiCookie from '@/components/ApiCookie/index.vue';
+import ApiParameter from '@/components/ApiParameter/index.vue';
+import ApiHeader from '@/components/ApiHeader/index.vue';
 
 interface Props {
     dataSource: {[key: string]: any}[]

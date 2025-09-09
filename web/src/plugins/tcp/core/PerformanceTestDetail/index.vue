@@ -3,7 +3,7 @@ import { ref, defineAsyncComponent, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Tabs, TabPane } from 'ant-design-vue';
 
-import { NoData, TestBasicInfo } from '@xcan-angus/vue-ui';
+import { NoData } from '@xcan-angus/vue-ui';
 
 import {
   allCvsKeys,
@@ -61,7 +61,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{(e:'setCountTabKey', value:string):void;}>();
-
+const TestBasicInfo = defineAsyncComponent(() => import('@/components/TestBasicInfo/index.vue'));
 const AggregateVue = defineAsyncComponent(() => import('./components/Aggregate/index.vue'));
 const StatusCode = defineAsyncComponent(() => import('./components/StatusCode/index.vue'));
 const CountTemplate = defineAsyncComponent(() => import('./components/CountTemplate.vue'));

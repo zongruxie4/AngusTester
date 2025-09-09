@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue';
 import { Progress } from 'ant-design-vue';
-import { TestBasicInfo } from '@xcan-angus/vue-ui';
 
 import { formatBytes } from './useExecCount';
 
@@ -18,7 +17,7 @@ const props = withDefaults(defineProps<Props>(), {
   execInfo: () => ({}),
   exception: undefined
 });
-
+const TestBasicInfo = defineAsyncComponent(() => import('@/components/TestBasicInfo/index.vue'));
 const ChartInfo = defineAsyncComponent(() => import('./ChartInfo.vue'));
 
 const chartInfoRef = ref();

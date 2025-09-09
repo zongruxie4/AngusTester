@@ -36,8 +36,8 @@ import { rawTypeOptions, RequestBodyParam } from '@/views/apis/services/apiHttp/
 import { AssertResult, ConditionResult, Parameter } from './PropsType';
 import { encode } from '@/utils/secure';
 
-const Indicator = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(resp => resp.Indicator));
-const HttpTestInfo = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(resp => resp.HttpTestInfo));
+const Indicator = defineAsyncComponent(() => import('@/components/Indicator/index.vue'));
+const HttpTestInfo = defineAsyncComponent(() => import('@/components/HttpTestInfo/index.vue'));
 const FunctionsButton = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(resp => resp.FunctionsButton));
 const APICaseParametric = defineAsyncComponent(() => import('@/components/apis/parameterization/index.vue'));
 const ExecDetail = defineAsyncComponent(() => import('@/views/apis/services/apiHttp/execDetail/index.vue'));

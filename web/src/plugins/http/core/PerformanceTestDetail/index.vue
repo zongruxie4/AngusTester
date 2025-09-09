@@ -3,7 +3,7 @@ import { ref, defineAsyncComponent, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Tabs, TabPane } from 'ant-design-vue';
 
-import { NoData, TestBasicInfo } from '@xcan-angus/vue-ui';
+import { NoData } from '@xcan-angus/vue-ui';
 import { allCvsKeys, allColumns, oneThroughputColumns, throughputColumns, throughputOptions, threadCvsKeys, threadOptions, threadColumns, responseTimeCvsKeys, responseTimeOptions, responseTimeColumns, errorOptions, errorCvsKeys, errorColumns, oneApiErrorColumns } from './ChartConfig';
 import { getCurrentDuration, splitTime } from '../utils';
 
@@ -44,7 +44,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const AggregateVue = defineAsyncComponent(() => import('./components/Aggregate/index.vue'));
-
+const TestBasicInfo = defineAsyncComponent(() => import('@/components/TestBasicInfo/index.vue'));
 const StatusCode = defineAsyncComponent(() => import('./components/StatusCode/index.vue'));
 const CountTemplate = defineAsyncComponent(() => import('./components/CountTemplate.vue'));
 const ConterList = defineAsyncComponent(() => import('./components/ConterList/index.vue'));

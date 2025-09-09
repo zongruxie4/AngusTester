@@ -1,11 +1,13 @@
 
 <script lang="ts" setup>
-import { ref, onMounted, watchEffect, watch } from 'vue';
+import { ref, onMounted, watchEffect, watch, defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Checkbox, Button } from 'ant-design-vue';
-import { Input, Select, Icon, ParamInput } from '@xcan-angus/vue-ui';
+import { Input, Select, Icon } from '@xcan-angus/vue-ui';
 import { utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
+
+const ParamInput = defineAsyncComponent(() => import('@/components/ParamInput/index.vue'));
 
 const { t } = useI18n();
 

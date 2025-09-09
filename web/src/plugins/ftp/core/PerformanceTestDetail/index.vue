@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, defineAsyncComponent, computed } from 'vue';
 import { Tabs, TabPane } from 'ant-design-vue';
-import { NoData, TestBasicInfo } from '@xcan-angus/vue-ui';
+import { NoData } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
 import {
@@ -22,7 +22,7 @@ import {
   oneApiErrorColumns
 } from './ChartConfig';
 import { getCurrentDuration, splitTime } from '../utils';
-
+const TestBasicInfo = defineAsyncComponent(() => import('@/components/TestBasicInfo/index.vue'));
 interface Props {
   execInfo: Record<string, any>;
   delayInSeconds:number;
