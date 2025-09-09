@@ -5,7 +5,7 @@ import { AsyncComponent, Colon, Icon, SelectUser } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 
-import { TaskInfo } from '../../../types';
+import { TaskInfo } from '../../types';
 
 type Props = {
   projectId: string;

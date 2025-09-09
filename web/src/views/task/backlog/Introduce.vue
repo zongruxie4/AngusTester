@@ -14,7 +14,7 @@ const { t } = useI18n();
     <div class="space-y-6">
       <div class="flex items-start justify-between">
         <div class="flex items-start space-x-3 w-1/2">
-          <img src="./images/1.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
+          <img src="images/1.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
             <div class="text-3.5 font-semibold">{{ t('backlog.productBacklog') }}</div>
             <div>{{ t('backlog.productBacklogDesc') }}</div>
@@ -22,7 +22,7 @@ const { t } = useI18n();
         </div>
 
         <div class="flex items-start space-x-3 w-1/2">
-          <img src="./images/2.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
+          <img src="images/2.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
             <div class="text-3.5 font-semibold">{{ t('backlog.sprintBacklog') }}</div>
             <div>{{ t('backlog.sprintBacklogDesc') }}</div>

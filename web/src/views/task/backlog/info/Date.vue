@@ -5,7 +5,7 @@ import { AsyncComponent, Colon, DatePicker, Icon, Tooltip } from '@xcan-angus/vu
 import dayjs, { Dayjs } from 'dayjs';
 import { task } from '@/api/tester';
 
-import { TaskInfo } from '../../../types';
+import { TaskInfo } from '../../types';
 
 type Props = {
   projectId: string;

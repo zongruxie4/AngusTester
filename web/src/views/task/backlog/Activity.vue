@@ -4,8 +4,8 @@ import { useI18n } from 'vue-i18n';
 import { ActivityInfo, Scroll } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 
-import { ActivityItem } from './PropsType';
-import { TaskInfo } from '../../types';
+import { TaskInfo } from '../types';
+import {ActivityItem} from "@/views/task/backlog/types";
 
 type Props = {
   projectId: string;

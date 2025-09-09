@@ -23,8 +23,8 @@ import { cloneDeep, isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { FormState } from './PropsType';
-import { TaskInfo } from '../../types';
+import { TaskInfo } from '../types';
+import {EditFormState} from "@/views/task/backlog/types";
 
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 
@@ -93,8 +93,8 @@ const getModuleTreeData = async () => {
   moduleTreeData.value = data || [];
 };
 
-let oldFormState: FormState | undefined;
-const formState = reactive<FormState>({
+let oldFormState: EditFormState | undefined;
+const formState = reactive<EditFormState>({
   projectId: undefined,
   assigneeId: undefined,
   attachments: undefined,
@@ -273,7 +273,7 @@ const isValid = async () => {
 };
 
 const getParams = () => {
-  const params: FormState = {
+  const params: EditFormState = {
     projectId: props.projectId,
     sprintId: formState.sprintId,
     name: formState.name,

@@ -54,7 +54,7 @@ const Remark = defineAsyncComponent(() => import('@/views/task/task/list/task/de
 const Activity = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/activity/index.vue'));
 const Comment = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/comment/index.vue'));
 const SubTask = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/subTask/index.vue'));
-const SplitTask = defineAsyncComponent(() => import('@/views/task/backlog/splitTask/index.vue'));
+const SplitTask = defineAsyncComponent(() => import('@/views/task/backlog/SplitTask.vue'));
 const AssocCaseTab = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/assocCase/index.vue'));
 const AssocTaskTab = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/assocTask/index.vue'));
 

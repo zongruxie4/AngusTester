@@ -26,7 +26,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { task, analysis } from '@/api/tester';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { MemberCount, SprintInfo } from './PropsType';
+import { MemberCount, SprintInfo } from './types';
 import { TaskInfo } from '../types';
 
 type SprintPermissionKey = 'MODIFY_SPRINT' | 'DELETE_SPRINT' | 'ADD_TASK' | 'MODIFY_TASK' | 'DELETE_TASK' | 'EXPORT_TASK' | 'RESTART_TASK' | 'REOPEN_TASK' | 'GRANT'
@@ -47,21 +47,21 @@ const { t } = useI18n();
 const aiEnabled = inject('aiEnabled', ref(false));
 const isAdmin = inject('isAdmin', ref(false));
 
-const Introduce = defineAsyncComponent(() => import('@/views/task/backlog/introduce/index.vue'));
-const ApiInfo = defineAsyncComponent(() => import('@/views/task/backlog/info/apis/index.vue'));
-const BasicInfo = defineAsyncComponent(() => import('@/views/task/backlog/info/basic/index.vue'));
-const ScenarioInfo = defineAsyncComponent(() => import('@/views/task/backlog/info/scenario/index.vue'));
-const PersonnelInfo = defineAsyncComponent(() => import('@/views/task/backlog/info/personnel/index.vue'));
-const DateInfo = defineAsyncComponent(() => import('@/views/task/backlog/info/date/index.vue'));
-const Comment = defineAsyncComponent(() => import('@/views/task/backlog/comment/index.vue'));
-const Activity = defineAsyncComponent(() => import('@/views/task/backlog/activity/index.vue'));
-const RefTasks = defineAsyncComponent(() => import('@/views/task/backlog/assocTask/index.vue'));
-const RefCases = defineAsyncComponent(() => import('@/views/task/backlog/assocCase/index.vue'));
-const AttachmentInfo = defineAsyncComponent(() => import('@/views/task/backlog/info/attachment/index.vue'));
-const Remarks = defineAsyncComponent(() => import('@/views/task/backlog/remark/index.vue'));
-const EditTaskModal = defineAsyncComponent(() => import('@/views/task/backlog/edit/index.vue'));
-const SplitTask = defineAsyncComponent(() => import('@/views/task/backlog/splitTask/index.vue'));
-const AIGenerateTask = defineAsyncComponent(() => import('@/views/task/backlog/aiGenerateTask/index.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/task/backlog/Introduce.vue'));
+const ApiInfo = defineAsyncComponent(() => import('@/views/task/backlog/info/Apis.vue'));
+const BasicInfo = defineAsyncComponent(() => import('@/views/task/backlog/info/Basic.vue'));
+const ScenarioInfo = defineAsyncComponent(() => import('@/views/task/backlog/info/Scenario.vue'));
+const PersonnelInfo = defineAsyncComponent(() => import('@/views/task/backlog/info/Personnel.vue'));
+const DateInfo = defineAsyncComponent(() => import('@/views/task/backlog/info/Date.vue'));
+const Comment = defineAsyncComponent(() => import('@/views/task/backlog/Comment.vue'));
+const Activity = defineAsyncComponent(() => import('@/views/task/backlog/Activity.vue'));
+const RefTasks = defineAsyncComponent(() => import('@/views/task/backlog/AssocTask.vue'));
+const RefCases = defineAsyncComponent(() => import('@/views/task/backlog/AssocCase.vue'));
+const AttachmentInfo = defineAsyncComponent(() => import('@/views/task/backlog/info/Attachment.vue'));
+const Remarks = defineAsyncComponent(() => import('@/views/task/backlog/Remark.vue'));
+const EditTaskModal = defineAsyncComponent(() => import('@/views/task/backlog/Edit.vue'));
+const SplitTask = defineAsyncComponent(() => import('@/views/task/backlog/SplitTask.vue'));
+const AIGenerateTask = defineAsyncComponent(() => import('@/views/task/backlog/AiGenerateTask.vue'));
 
 const deleteTabPane = inject<(value: string[]) => void>('deleteTabPane');
 

@@ -18,10 +18,10 @@ import { TESTER, utils, duration } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
 import { task } from '@/api/tester';
-import { ai } from 'src/api/gm';
+import { ai } from '@/api/gm';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
-import { TaskInfo } from '../../types';
+import { TaskInfo } from '../types';
 
 interface Props {
   visible: boolean;

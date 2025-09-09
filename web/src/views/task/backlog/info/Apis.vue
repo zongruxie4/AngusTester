@@ -15,8 +15,9 @@ import {
 import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { task, modules } from '@/api/tester';
+
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { TaskInfo } from '../../../types';
+import { TaskInfo } from '../../types';
 
 type Props = {
   projectId: string;
@@ -39,7 +40,7 @@ const emit = defineEmits<{
   (event: 'refresh'): void;
 }>();
 
-const Description = defineAsyncComponent(() => import('@/views/task/backlog/info/description/index.vue'));
+const Description = defineAsyncComponent(() => import('@/views/task/backlog/info/Description.vue'));
 
 const nameRef = ref();
 const nameEditFlag = ref(false);
@@ -60,7 +61,7 @@ const priorityValue = ref<TaskInfo['priority']['value']>();
 
 const tagRef = ref();
 const tagEditFlag = ref(false);
-const tagList = ref<{id:string;name:string;}[]>([]);
+const tagList = ref<{ id: string; name: string; }[]>([]);
 const tagIdList = ref<string[]>([]);
 
 const moduleRef = ref();
@@ -367,6 +368,14 @@ const tagBlur = async () => {
   emit('change', { id: taskId.value, tags: tagList.value });
 };
 
+const loadingChange = (value:boolean) => {
+  emit('loadingChange', value);
+};
+
+const taskInfoChange = (data: Partial<TaskInfo>) => {
+  emit('change', data);
+};
+
 const toEditVersion = () => {
   versionEditFlag.value = true;
   versionValue.value = props.dataSource?.softwareVersion;
@@ -399,14 +408,6 @@ const versionBlur = async () => {
   }
 
   emit('change', { id: taskId.value, softwareVersion: versionValue.value });
-};
-
-const loadingChange = (value:boolean) => {
-  emit('loadingChange', value);
-};
-
-const taskInfoChange = (data: Partial<TaskInfo>) => {
-  emit('change', data);
 };
 
 const sprintId = computed(() => props.dataSource?.sprintId);
@@ -614,7 +615,16 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>场景</span>
+            <span>所属服务</span>
+            <Colon class="w-1" />
+          </div>
+
+          <div class="whitespace-pre-wrap break-words break-all">{{ props.dataSource?.targetParentName }}</div>
+        </div>
+
+        <div class="flex items-start">
+          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
+            <span>接口</span>
             <Colon class="w-1" />
           </div>
 
@@ -781,8 +791,8 @@ const onePassText = computed(() => {
               :maxTagTextLength="15"
               :maxTags="5"
               :action="`${TESTER}/task/tag?projectId=${props.projectId}&fullTextSearch=true`"
-              allowClear
               showSearch
+              allowClear
               placeholder="最多可添加5个标签"
               mode="multiple"
               class="edit-container"
@@ -800,58 +810,59 @@ const onePassText = computed(() => {
 
           <div class="whitespace-pre-wrap break-words break-all">{{ onePassText }}</div>
         </div>
+      </div>
 
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>软件版本</span>
-            <Colon class="w-1" />
-          </div>
-          <div class="truncate flex-1" :title="props.dataSource?.softwareVersion">
-            <template v-if="versionEditFlag">
-              <Select
-                ref="versionRef"
-                v-model:value="versionValue"
-                allowClear
-                placeholder="请选择所属版本"
-                lazy
-                class="w-full"
-                :action="`${TESTER}/software/version?projectId=${props.projectId}`"
-                :params="{filters: [{value: ['NOT_RELEASED', 'RELEASED'], key: 'status', op: 'IN'}]}"
-                :fieldNames="{value:'name', label: 'name'}"
-                @blur="versionBlur"
-                @change="versionChange">
-              </Select>
-            </template>
-            <template v-else>
-              <div class="flex space-x-1">
-                <RouterLink
-                  v-if="props.dataSource?.softwareVersion"
-                  class="text-theme-special"
-                  :to="`/task#version?name=${props.dataSource?.softwareVersion}`">
-                  {{ props.dataSource?.softwareVersion }}
-                </RouterLink>
-                <template v-else>
-                  --
-                </template>
-                <Button
-                  type="link"
-                  class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-                  @click="toEditVersion">
-                  <Icon icon="icon-shuxie" class="text-3.5" />
-                </Button>
-              </div>
-            </template>
-          </div>
+      <div class="flex items-start">
+        <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
+          <span>软件版本</span>
+          <Colon class="w-1" />
         </div>
+        <div class="flex-1">
+          <template v-if="versionEditFlag">
+            <Select
+              ref="versionRef"
+              v-model:value="versionValue"
+              allowClear
+              placeholder="请选择所属版本"
+              lazy
+              class="w-full"
+              :action="`${TESTER}/software/version?projectId=${props.projectId}`"
+              :params="{filters: [{value: ['NOT_RELEASED', 'RELEASED'], key: 'status', op: 'IN'}]}"
+              :fieldNames="{value:'name', label: 'name'}"
+              @blur="versionBlur"
+              @change="versionChange">
+            </Select>
+          </template>
+          <template v-else>
+            <div class="flex space-x-1">
+              <RouterLink
+                v-if="props.dataSource?.softwareVersion"
+                class="text-theme-special"
+                :to="`/task#version?name=${props.dataSource?.softwareVersion}`">
+                {{ props.dataSource?.softwareVersion }}
+              </RouterLink>
+              <template v-else>
+                --
+              </template>
 
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>计划外任务</span>
-            <Colon class="w-1" />
-          </div>
-          <div>
-            {{ props.dataSource?.unplannedFlag ? t('status.yes') : t('status.no') }}
-          </div>
+              <Button
+                type="link"
+                class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
+                @click="toEditVersion">
+                <Icon icon="icon-shuxie" class="text-3.5" />
+              </Button>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <div class="flex items-start">
+        <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
+          <span>计划外任务</span>
+          <Colon class="w-1" />
+        </div>
+        <div>
+          {{ props.dataSource?.unplannedFlag ? t('status.yes') : t('status.no') }}
         </div>
       </div>
     </div>

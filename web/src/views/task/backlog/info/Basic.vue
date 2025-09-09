@@ -7,7 +7,7 @@ import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { task, modules } from '@/api/tester';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { TaskInfo } from '../../../types';
+import { TaskInfo } from '../../types';
 
 type Props = {
   projectId: string;
@@ -32,7 +32,7 @@ const emit = defineEmits<{
   (event: 'refresh'): void;
 }>();
 
-const Description = defineAsyncComponent(() => import('@/views/task/backlog/info/description/index.vue'));
+const Description = defineAsyncComponent(() => import('@/views/task/backlog/info/Description.vue'));
 
 const nameRef = ref();
 const nameEditFlag = ref(false);
