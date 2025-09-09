@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { cloneDeep } from 'lodash-es';
 import { duration, enumUtils, ScriptSource, ScriptType, TESTER, XCanDexie } from '@xcan-angus/infra';
@@ -261,6 +261,7 @@ export function useSearchPanel (props: SearchPanelProps) {
    * Initialize search panel data from database
    */
   const initialize = async (emit: any): Promise<void> => {
+    initWatch(emit);
     if (!db) {
       db = new XCanDexie<{ id: string; data: any; }>('parameter');
     }
@@ -418,6 +419,110 @@ export function useSearchPanel (props: SearchPanelProps) {
     return scriptSource.value === 'SCENARIO';
   });
 
+
+  const initWatch = (emit: any): void => {
+    watch(
+      [
+        () => filters.value,
+        () => scriptSourceIdFilter.value,
+        () => priorityFilter.value,
+        () => selectedMenuMap.value
+      ], () => {
+        const _filters = filters.value;
+        if (!(_filters.length || !!scriptSourceIdFilter.value.value)) {
+          selectedMenuMap.value.clear();
+          selectedMenuMap.value.set('none', { key: 'none' });
+  
+          emit('change', []);
+        } else {
+          // 删除快速查询选中的【所有】选项
+          selectedMenuMap.value.delete('none');
+  
+          // 设置快速搜索
+          const createdBy = _filters.find(item => item.key === 'createdBy')?.value;
+          if (createdBy && createdBy === userId.value) {
+            selectedMenuMap.value.set('createdBy', { key: 'createdBy' });
+          } else {
+            selectedMenuMap.value.delete('createdBy');
+          }
+  
+          const lastModifiedBy = _filters.find(item => item.key === 'lastModifiedBy')?.value;
+          if (lastModifiedBy && lastModifiedBy === userId.value) {
+            selectedMenuMap.value.set('lastModifiedBy', { key: 'lastModifiedBy' });
+          } else {
+            selectedMenuMap.value.delete('lastModifiedBy');
+          }
+  
+          const execBy = _filters.find(item => item.key === 'execBy')?.value;
+          if (execBy && execBy === userId.value) {
+            selectedMenuMap.value.set('execBy', { key: 'execBy' });
+          } else {
+            selectedMenuMap.value.delete('execBy');
+          }
+  
+          const scriptType = _filters.find(item => item.key === 'scriptType')?.value;
+          if (!scriptType) {
+            selectedMenuMap.value.delete(scriptType as string);
+          } else {
+            selectedMenuMap.value.set(scriptType as string, { key: scriptType as string });
+          }
+  
+          // if (quickDateMap.value.size > 0) {
+          //   selectedMenuMap.value.delete('lastDay');
+          //   selectedMenuMap.value.delete('lastThreeDays');
+          //   selectedMenuMap.value.delete('lastWeek');
+  
+          //   const createdDateStart = _filters.find(item => item.key === 'createdDate' && item.op === 'GREATER_THAN_EQUAL')?.value;
+          //   const createdDateEnd = _filters.find(item => item.key === 'createdDate' && item.op === 'LESS_THAN_EQUAL')?.value;
+          //   const dateString = [createdDateStart, createdDateEnd];
+          //   const entries = quickDateMap.value.entries();
+          //   for (const [key, value] of entries) {
+          //     if (isEqual(value, dateString)) {
+          //       selectedMenuMap.value.set(key, { key });
+          //     }
+          //   }
+  
+          //   quickDateMap.value.clear();
+          // }
+  
+          emit('change', getData());
+        }
+  
+        // 保存到db
+        if (db) {
+          const dbData: {
+            a?: {
+              key: string;
+              op: string;
+              value: string;
+            }[];
+            b?: { key: 'scriptSourceId'; op: string; value: string | undefined; };
+            c?: { key: 'priority', op: 'EQUAL'|'GREATER_THAN'|'GREATER_THAN_EQUAL'|'LESS_THAN'|'LESS_THAN_EQUAL', value: string | undefined };
+          } = {};
+          if (_filters.length) {
+            dbData.a = cloneDeep(_filters);
+          }
+  
+          if (scriptSourceIdFilter.value.value) {
+            dbData.b = cloneDeep(scriptSourceIdFilter.value);
+          }
+  
+          if (priorityFilter.value.value) {
+            dbData.c = cloneDeep(priorityFilter.value);
+          }
+  
+          if (Object.keys(dbData).length) {
+            db.add({
+              id: dbParamsKey.value,
+              data: dbData
+            });
+          } else {
+            db.delete(dbParamsKey.value);
+          }
+        }
+      }, { immediate: false, deep: false });
+  };
+
   const menuItems = computed(() => [
     {
       key: 'none',
@@ -450,8 +555,6 @@ export function useSearchPanel (props: SearchPanelProps) {
     }
   ]);
 
-  // TODO 搜索面版中priority对应表单长度没限制住，独占了一行
-  // TODO scriptSource和scriptSourceId条件不生效
   const searchOptions = computed(() => [
     {
       valueKey: 'name',

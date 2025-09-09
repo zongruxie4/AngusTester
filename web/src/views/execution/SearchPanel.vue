@@ -123,7 +123,7 @@ onMounted(async () => {
             size="small"
             allowClear
             :placeholder="t('execution.searchPanel.priority')"
-            class="w-72 ml-2"
+            class="!w-72 ml-2"
             :min="0"
             @change="priorityInputChange">
             <template #prefix>
