@@ -71,7 +71,7 @@ const {
         :options="props.execNodes"
         :fieldNames="{label:'name',value:'id'}"
         class="w-full"
-        placeholder="{{ t('execution.infoLog.selectNode') }}"
+        :placeholder="t('execution.infoLog.selectNode')"
         size="small"
         @change="(value, option) => nodeSelectChange(value as string, option)">
         <template #option="item">

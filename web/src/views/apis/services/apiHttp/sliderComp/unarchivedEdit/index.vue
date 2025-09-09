@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, inject, reactive, ref, watch } from 'vue';
+import { computed, inject, reactive, ref, watch, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Hints, Input, notification } from '@xcan-angus/vue-ui';
 import { apis } from '@/api/tester';
@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<Props>(), {
 // 更新左侧未归档列表
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const refreshUnarchived = inject('refreshUnarchived', () => {});
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const closeFunCallBack = (_params: unknown) => ({ _params });
 const isLoading = ref(false); // 提交中。。。
@@ -62,7 +62,7 @@ const setUnarchivedApiInfo = inject('setUnarchivedApiInfo', (info) => (info));
 const userInfo = ref(appContext.getUser());
 
 const loadInfo = async () => {
-  const [error, res] = await unarchived.getUnarchivedApiDetail(state.id);
+  const [error, res] = await apis.getUnarchivedApiDetail(state.id);
   if (error) {
     return;
   }
@@ -105,7 +105,7 @@ const save = async () => {
   formRef.value.validate().then(async () => {
     const formParams = await getParameter();
     const { summary, description } = form;
-    const params = { ...formParams, summary, description, projectId: projectInfo.value?.id };
+    const params = { ...formParams, summary, description, projectId: projectId.value };
     isLoading.value = true;
     const [error, res] = isUnarchivedApi.value && state.id
       ? await apis.updateUnarchivedApi({ dto: [{ ...params }] })

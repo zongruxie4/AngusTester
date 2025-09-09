@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, onMounted, watch, ref } from 'vue';
+import { computed, defineAsyncComponent, inject, onMounted, watch, ref, Ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, AuthorizeModal, Drawer, Icon, IconRefresh, Input, Table } from '@xcan-angus/vue-ui';
 import { STORAGE, appContext } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
 import { FileCapacity, SpaceInfo } from './components';
-import { useSpaceData } from './composables/useSpaceData.ts';
-import { useTableColumns } from './composables/useTableColumns.ts';
-import { useSpaceManagement } from './composables/useSpaceManagement.ts';
-import { useDrawerMenu } from './composables/useDrawerMenu.ts';
+import { useSpaceData } from './composables/useSpaceData';
+import { useTableColumns } from './composables/useTableColumns';
+import { useSpaceManagement } from './composables/useSpaceManagement';
+import { useDrawerMenu } from './composables/useDrawerMenu';
 
 const { t } = useI18n();
 
@@ -23,13 +23,11 @@ const Introduce = defineAsyncComponent(() => import('@/views/data/file/Introduce
 // Dependency injection for app context
 const appInfo = appContext.getAccessApp();
 const isAdmin = inject('isAdmin', ref(false));
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 // Application state
 const isPrivate = ref(false);
-
-// Computed project ID
-const projectId = computed(() => projectInfo.value?.id);
 
 // Composable usage for different concerns
 const {
@@ -55,8 +53,6 @@ const {
   authModalVisible,
   globalAuthVisible,
   selectId,
-  auth,
-  defaultIds,
   editSpace,
   createSpace,
   openAuthorizeModal,
@@ -68,7 +64,6 @@ const {
 const {
   drawerRef,
   activeDrawerKey,
-  spaceDrawerMenu,
   dynamicDrawerMenu
 } = useDrawerMenu();
 
@@ -185,7 +180,7 @@ const drawerMenu = computed(() => {
         :dataSource="dataList"
         :loading="tableLoading"
         :rowClassName="(record) => record.id === selectedRowKey ? 'ant-table-row-selected' : ''"
-        :customRow="(record) => ({ onClick: () => handleRowSelect(record) })"
+        :customRow="(record) => ({ onClick: () => handleRowSelect(record as any) })"
         @change="changePage">
         <!-- Custom cell rendering -->
         <template #bodyCell="{ record, column }">

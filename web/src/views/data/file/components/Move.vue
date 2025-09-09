@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { computed, inject, ref } from 'vue';
-import type { TreeProps } from 'ant-design-vue';
+import { inject, ref, Ref } from 'vue';
 import { Tree } from 'ant-design-vue';
 import { Icon, Modal } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
@@ -21,10 +20,7 @@ const emit = defineEmits<{(e: 'ok', target: {targetSpaceId: string, targetDirect
 const { t } = useI18n();
 
 // Inject project information
-const projectInfo = inject('projectInfo', ref({ id: '' }));
-const projectId = computed(() => {
-  return projectInfo.value?.id;
-});
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 // Use the move composable
 const { expandedKeys, selectedKeys, target, treeData, loadNodeData, handleSelect, resetTreeState, init } = useMove(props, projectId.value);

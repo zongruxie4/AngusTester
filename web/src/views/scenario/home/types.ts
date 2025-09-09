@@ -13,7 +13,7 @@ export interface MyScenariosProps {
 
 // Scenario query parameters
 export interface ScenarioQueryParams {
-  projectId: string;
+  projectId?: string;
   createdBy?: string;
   favouriteBy?: string;
   followBy?: string;

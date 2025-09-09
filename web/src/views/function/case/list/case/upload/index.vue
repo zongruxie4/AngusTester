@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, inject, ref, watch } from 'vue';
+import { Ref, inject, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Icon, Modal, Select, Spin } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, RadioGroup, UploadDragger } from 'ant-design-vue';
@@ -20,11 +20,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'ok'):void;}>();
-const projectInfo = inject('projectInfo', ref({ id: '' }));
-
-const projectId = computed(() => {
-  return projectInfo.value?.id;
-});
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const loading = ref(false);
 const strategyWhenDuplicatedOpt = ref<{value: string; label: string}[]>([]);

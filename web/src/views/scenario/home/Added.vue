@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<MyScenariosProps>(), {
 });
 
 // Async component loading
-const Table = defineAsyncComponent(() => import('./MyScenariosTable.vue'));
+const Table = defineAsyncComponent(() => import('./AddedTable.vue'));
 
 // Reactive state for notifications and totals
 const deletedNotify = ref<string>();
@@ -29,11 +29,11 @@ const createQueryParams = (type: 'createdBy' | 'followBy' | 'favouriteBy'): Scen
 
   switch (type) {
     case 'createdBy':
-      return { createdBy: props.userInfo?.id };
+      return { createdBy: props.userInfo?.id } as ScenarioQueryParams;
     case 'followBy':
-      return { followBy: props.userInfo?.id };
+      return { followBy: props.userInfo?.id } as ScenarioQueryParams;
     case 'favouriteBy':
-      return { favouriteBy: props.userInfo?.id };
+      return { favouriteBy: props.userInfo?.id } as ScenarioQueryParams;
     default:
       return baseParams;
   }
@@ -42,7 +42,10 @@ const createQueryParams = (type: 'createdBy' | 'followBy' | 'favouriteBy'): Scen
 
 <template>
   <div>
-    <div class="text-3.5 font-semibold mb-1">{{ t('scenarioHome.myScenarios.title') }}</div>
+    <div class="text-3.5 font-semibold mb-1">
+      {{ t('scenarioHome.myScenarios.title') }}
+    </div>
+
     <Tabs size="small">
       <TabPane key="create" forceRender>
         <template #tab>
@@ -99,7 +102,7 @@ const createQueryParams = (type: 'createdBy' | 'followBy' | 'favouriteBy'): Scen
 }
 
 :deep(.ant-tabs-content-holder) {
-  min-height: 166px;
+  min-height: 225px;
 }
 
 .ant-tabs-top>:deep(.ant-tabs-nav),

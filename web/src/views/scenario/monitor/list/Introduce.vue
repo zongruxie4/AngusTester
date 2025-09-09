@@ -26,46 +26,69 @@ onBeforeUnmount(() => {
 
 </script>
 <template>
-  <div ref="wrapperRef">
-    <!-- {{ tip }} -->
-    <div class="text-3.5 font-semibold mb-2.5">{{ t('scenarioMonitor.introduce.aboutMonitor') }}</div>
-    <div class="mb-6">
-      <div>
+  <div ref="wrapperRef" class="space-y-2 text-3.5">
+    <div class="space-y-1">
+      <div class="flex items-center space-x-2">
+        <span class="text-3.5 font-semibold mb-1.5">{{ t('scenarioMonitor.introduce.aboutMonitor') }}</span>
+      </div>
+      <div class="mb-4">
         {{ t('scenarioMonitor.introduce.description') }}
       </div>
     </div>
 
-    <div class="space-y-6">
-      <div class="flex items-start justify-between">
-        <div class="flex items-start space-x-3 flex-1">
-          <img src="./images/1.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
-          <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('scenarioMonitor.introduce.scenarios.apiDelay.title') }}</div>
-            <div>{{ t('scenarioMonitor.introduce.scenarios.apiDelay.description') }}</div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
+      <div class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200">
+        <div class="flex items-start space-x-3">
+          <img src="./images/1.png" class="w-12 h-12 flex-shrink-0 rounded-md" alt="API Delay Icon">
+          <div class="space-y-1">
+            <h3 class="font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
+              {{ t('scenarioMonitor.introduce.scenarios.apiDelay.title') }}
+            </h3>
+            <p class="text-gray-600 leading-relaxed">
+              {{ t('scenarioMonitor.introduce.scenarios.apiDelay.description') }}
+            </p>
           </div>
         </div>
+      </div>
 
-        <div class="flex items-start space-x-3 flex-1">
-          <img src="./images/2.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
-          <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('scenarioMonitor.introduce.scenarios.healthCheck.title') }}</div>
-            <div>{{ t('scenarioMonitor.introduce.scenarios.healthCheck.description') }}</div>
+      <div class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200">
+        <div class="flex items-start space-x-3">
+          <img src="./images/2.png" class="w-12 h-12 flex-shrink-0 rounded-md" alt="Health Check Icon">
+          <div class="space-y-1">
+            <h3 class="font-semibold text-gray-800 group-hover:text-purple-600 transition-colors">
+              {{ t('scenarioMonitor.introduce.scenarios.healthCheck.title') }}
+            </h3>
+            <p class="text-gray-600 leading-relaxed">
+              {{ t('scenarioMonitor.introduce.scenarios.healthCheck.description') }}
+            </p>
           </div>
         </div>
+      </div>
 
-        <div class="flex items-start space-x-3 flex-1">
-          <img src="./images/3.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
-          <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('scenarioMonitor.introduce.scenarios.apiFunctionality.title') }}</div>
-            <div>{{ t('scenarioMonitor.introduce.scenarios.apiFunctionality.description') }}</div>
+      <div class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200">
+        <div class="flex items-start space-x-3">
+          <img src="./images/3.png" class="w-12 h-12 flex-shrink-0 rounded-md" alt="API Functionality Icon">
+          <div class="space-y-1">
+            <h3 class="font-semibold text-gray-800 group-hover:text-indigo-600 transition-colors">
+              {{ t('scenarioMonitor.introduce.scenarios.apiFunctionality.title') }}
+            </h3>
+            <p class="text-gray-600 leading-relaxed">
+              {{ t('scenarioMonitor.introduce.scenarios.apiFunctionality.description') }}
+            </p>
           </div>
         </div>
+      </div>
 
-        <div class="flex items-start space-x-3 flex-1">
-          <img src="./images/4.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
-          <div class="space-y-1 pr-10">
-            <div class="text-3.5 font-semibold">{{ t('scenarioMonitor.introduce.scenarios.businessProcess.title') }}</div>
-            <div>{{ t('scenarioMonitor.introduce.scenarios.businessProcess.description') }}</div>
+      <div class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200">
+        <div class="flex items-start space-x-3">
+          <img src="./images/4.png" class="w-12 h-12 flex-shrink-0 rounded-md" alt="Business Process Icon">
+          <div class="space-y-1">
+            <h3 class="font-semibold text-gray-800 group-hover:text-orange-600 transition-colors">
+              {{ t('scenarioMonitor.introduce.scenarios.businessProcess.title') }}
+            </h3>
+            <p class="text-gray-600 leading-relaxed">
+              {{ t('scenarioMonitor.introduce.scenarios.businessProcess.description') }}
+            </p>
           </div>
         </div>
       </div>

@@ -1,3 +1,6 @@
+import { ScriptType, EnumMessage } from '@xcan-angus/infra';
+import { TestResultStatus, TaskType } from '@/enums/enums';
+
 // Scenario detail component types
 export interface ScenarioDetailProps {
   id: string;
@@ -20,10 +23,10 @@ export interface ScenarioData {
 }
 
 export interface ScenarioResult {
-  enabledTestTypes: 'MOCK_APIS' | 'MOCK_DATA' | 'TEST_CUSTOMIZATION' | 'TEST_FUNCTIONALITY' | 'TEST_PERFORMANCE' | 'TEST_STABILITY';
+  enabledTestTypes: ScriptType;
   passed: boolean;
   resultSummary: {
-    resultStatus: 'FULLY_FAILED' | 'FULLY_PASSED' | 'NOT_ENABLED' | 'PARTIALLY_PASSED' | 'UNTESTED';
+    resultStatus: EnumMessage<TestResultStatus>;
     testFailureNum: string;
     testNum: string;
     testSuccessRate: string;
@@ -55,11 +58,11 @@ export interface TaskItem {
   assigneeName: string;
   confirmorName: string;
   deadlineDate: string;
-  taskType: { value: string };
+  taskType: EnumMessage<TaskType>;
   linkUrl: string;
   overdue: boolean;
   status: any;
-  scriptType: { message: string };
+  scriptType: EnumMessage<ScriptType>;
 }
 
 export interface PaginationConfig {

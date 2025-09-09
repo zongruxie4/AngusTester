@@ -146,7 +146,7 @@
       },
       "TestResultStatus": {
         "NOT_ENABLED": "Not Enabled",
-        "UNTESTED": "Untested",
+        "UNTESTED": "Not Tested",
         "PARTIALLY_PASSED": "Partially Passed",
         "FULLY_PASSED": "Fully Passed",
         "FULLY_FAILED": "Fully Failed"

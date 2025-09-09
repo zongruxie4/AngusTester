@@ -21,7 +21,8 @@ const props = withDefaults(defineProps<Props>(), {
   id: ''
 });
 
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 const router = useRouter();
 const appInfo = ref(appContext.getAccessApp()) as Ref<Record<string, any>>;
 const mockServiceInfo = ref();
@@ -251,7 +252,7 @@ const statusStyleMap = {
             <Hints :text="t('service.mockService.hints.associateMockService')" />
             <Select
               v-model:value="selectedMockServiceId"
-              :action="`${TESTER}/mock/service?projectId=${projectInfo?.id}&fullTextSearch=true`"
+              :action="`${TESTER}/mock/service?projectId=${projectId}&fullTextSearch=true`"
               :fieldNames="{ label: 'name', value: 'id' }"
               :maxlength="100"
               :placeholder="t('service.mockService.placeholder.selectMockService')"

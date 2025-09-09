@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { inject, ref, watch, onMounted, computed } from 'vue';
+import { inject, ref, watch, onMounted, computed, Ref } from 'vue';
 import { Colon, Icon, IconText, Input, Modal, NoData, notification, Spin, TreeSelect, SelectApisTable } from '@xcan-angus/vue-ui';
 import { Checkbox, RadioGroup, Tree } from 'ant-design-vue';
 import { services } from '@/api/tester';
@@ -49,7 +49,8 @@ const importCreatPdf = () => {
   });
 };
 
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 const emit = defineEmits<{(e: 'update:visible', value: boolean): void }>();
 
 const params = ref<{pageNo: number; pageSize: number; filters?:{key:string, op:string, value:string}[] }>({ pageNo: 1, pageSize: 30 });
@@ -78,7 +79,7 @@ const total = ref(0);
 const loadService = async () => {
   loading.value = true;
   const _params = props.type === 'SERVICE' ? { ...params.value, exportFlag: true, admin: true } : { ...params.value, exportFlag: true };
-  const [error, { data }] = await services.getList({ ..._params, projectId: projectInfo.value.id });
+  const [error, { data }] = await services.getList({ ..._params, projectId: projectId.value });
   loading.value = false;
   if (error) { return; }
 
@@ -436,7 +437,7 @@ onMounted(async () => {
             <TreeSelect
               ref="treeRef"
               :allowClear="true"
-              :action="`${TESTER}/services?projectId=${projectInfo.id}&fullTextSearch=true`"
+              :action="`${TESTER}/services?projectId=${projectId}&fullTextSearch=true`"
               :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
               :placeholder="t('service.sidebar.exportServiceModal.servicePlaceholder')"
               showSearch
@@ -505,7 +506,7 @@ onMounted(async () => {
         <SelectApisTable
           v-if="props.visible"
           class="mt-2"
-          :projectId="projectInfo?.id"
+          :projectId="projectId"
           :serviceId="serviceId"
           @change="selectApis" />
       </template>

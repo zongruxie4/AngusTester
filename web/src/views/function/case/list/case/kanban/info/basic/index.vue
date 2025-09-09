@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, nextTick, ref } from 'vue';
+import { defineAsyncComponent, inject, nextTick, ref, Ref } from 'vue';
 import { Tag } from 'ant-design-vue';
 import { Grid, Icon, Input, Popover, ReviewStatus, Select, TaskPriority, TestResult } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
@@ -39,10 +39,8 @@ const Description = defineAsyncComponent(() => import('@/views/function/case/lis
 const Precondition = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/precondition/index.vue'));
 const TestStep = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/testSteps/index.vue'));
 
-const projectInfo = inject('projectInfo', ref({ id: '' }));
-const projectId = computed(() => {
-  return projectInfo.value?.id;
-});
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const nameInputRef = ref();
 const tagsSelectRef = ref();

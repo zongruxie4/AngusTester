@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Button, Tag, Tooltip } from 'ant-design-vue';
-import { inject, ref, watch } from 'vue';
+import { inject, ref, watch, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { TESTER } from '@xcan-angus/infra';
 import { Icon, Select } from '@xcan-angus/vue-ui';
@@ -22,7 +22,8 @@ const emit = defineEmits<{
   (e: 'change', value:string|undefined): void
 }>();
 
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 const planInfo = ref<{ id: string, name: string }>();
 const checkedId = ref<string>();
 
@@ -115,7 +116,7 @@ defineExpose({
         :placeholder="t('functionCase.selectPlanModal.selectPlan')"
         showSearch
         :fieldNames="{ label: 'name', value: 'id' }"
-        :action="`${TESTER}/func/plan?projectId=${projectInfo.id}&fullTextSearch=true`"
+        :action="`${TESTER}/func/plan?projectId=${projectId}&fullTextSearch=true`"
         @change="selectChange"
         @blur="handleBlur" />
     </template>

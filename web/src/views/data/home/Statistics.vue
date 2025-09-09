@@ -43,9 +43,7 @@ const {
 } = useStatistics(props.projectId, props.userInfo?.id);
 
 /**
- * <p>
  * Watch for prop changes and trigger data reload
- * </p>
  */
 onMounted(() => {
   // Watch project ID changes

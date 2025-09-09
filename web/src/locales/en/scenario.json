@@ -50,12 +50,11 @@
       }
     },
     "introduce": {
-      "welcome": "Welcome to Augus Scenarios!",
-      "description": "Scenarios help you orchestrate more complex requirements or user stories. Compared to single-step test cases, scenarios can contain more steps and processes.",
-      "capabilities": "Here you and your team can complete the following work:",
-      "capability1": "Online editing and debugging scenarios;",
-      "capability2": "Add and manage scenario resources;",
-      "capability3": "Quickly generate scenario test scripts and tasks."
+      "welcome": "About AngusTester Scenarios",
+      "description": "Scenarios are core tools for API and UI automation testing, enabling orchestration of complex business processes and user stories. Compared to single test cases, scenarios support multi-step, multi-process complete testing workflows.",
+      "capability1": "Online editing and debugging scenarios",
+      "capability2": "Manage scenario-related resources",
+      "capability3": "Quickly generate test scripts and tasks"
     }
   },
   "scenarioMonitor": {
@@ -167,29 +166,29 @@
     },
     "introduce": {
       "aboutMonitor": "About Monitor",
-      "description": "Scenario monitoring helps us understand system or business status from an interface perspective, identify and resolve potential issues in a timely manner, thereby improving system reliability and user satisfaction, and providing strong support for stable business operations. Main application scenarios are as follows:",
+      "description": "Scenario monitoring helps you track system status in real-time, quickly identify and resolve issues, improving system reliability and user experience. Main application scenarios:",
       "scenarios": {
         "apiDelay": {
           "title": "API Delay Monitoring",
-          "description": "Track API response times to ensure access experience. For example: Monitor the average response time of payment APIs to ensure it doesn't exceed 500ms."
+          "description": "Monitor API response times to ensure good user experience. E.g.: Monitor payment API response time under 500ms."
         },
         "healthCheck": {
-          "title": "Check System Health Status",
-          "description": "Determine if the system is running normally in a quick and simple way. For example: Verify the running status of components in system or service health check endpoints (/health)."
+          "title": "System Health Check",
+          "description": "Quickly detect system running status. E.g.: Check component status in health check endpoints (/health)."
         },
         "apiFunctionality": {
-          "title": "API Functionality Correctness Check",
-          "description": "Regularly test the functional correctness of APIs to ensure expected behavior. For example: Automatically test user registration APIs to verify account creation processes."
+          "title": "API Function Validation",
+          "description": "Regularly test API functionality correctness. E.g.: Automatically verify user registration API account creation process."
         },
         "businessProcess": {
-          "title": "Critical Business Process Monitoring",
-          "description": "Monitor the integrity and correctness of core business processes. For example: Whether payment orders and payment amounts are consistent in business up to the current time."
+          "title": "Business Process Monitoring",
+          "description": "Monitor core business process integrity. E.g.: Verify consistency between payment orders and amounts."
         }
       }
     },
     "chart": {
-      "successCount": "Success Count",
-      "failureCount": "Failure Count"
+      "successCount": "Success",
+      "failureCount": "Failure"
     }
   },
   "scenario": {
@@ -225,7 +224,7 @@
       },
       "actions": {
         "addHttpScenario": "Add Http Scenario",
-        "scenarioAuth": "Scenario Auth",
+        "scenarioAuth": "Permission",
         "sort": "Sort",
         "group": "Group",
         "refresh": "Refresh",
@@ -233,7 +232,7 @@
         "cancelFollow": "Cancel Follow",
         "favourite": "Favourite",
         "cancelFavourite": "Cancel Favourite",
-        "auth": "Auth",
+        "auth": "Permission",
         "export": "Export Script",
         "delete": "Delete",
         "createTestTask": "Create Test Task",
@@ -345,7 +344,7 @@
         "edit": "Edit",
         "delete": "Delete",
         "export": "Export Script",
-        "auth": "Auth",
+        "auth": "Permission",
         "follow": "Follow",
         "cancelFollow": "Cancel Follow",
         "favourite": "Favourite",
@@ -356,9 +355,9 @@
         "perf": "Performance Test",
         "stability": "Stability Test",
         "custom": "Custom Test",
-        "task": "Test Task",
-        "activity": "Activity Record",
-        "comment": "Comment"
+        "task": "Test Tasks",
+        "activity": "Activity Records",
+        "comment": "Comments"
       },
       "tips": {
         "authOn": "After enabling \"Permission Control\", you need to manually authorize service permissions to have corresponding operation permissions for scenarios. \"Permission Control\" is enabled by default. Note: If the authorized object does not have parent directory permissions, view permissions will be automatically authorized.",
@@ -382,20 +381,20 @@
       },
       "testSummary": {
         "successRate": "Success Rate",
-        "successCount": "Success Count",
-        "failCount": "Fail Count",
+        "successCount": "Success",
+        "failCount": "Failure",
         "table": {
           "labels": {
             "total": "Total",
             "success": "Success",
-            "fail": "Fail",
+            "fail": "Failed",
             "disabled": "Disabled"
           }
         },
         "sections": {
           "allTests": "All Tests",
           "functionality": "Functionality",
-          "testInterfaces": "Test Interfaces",
+          "testCases": "Test Cases",
           "performance": "Performance",
           "stability": "Stability",
           "custom": "Custom",
@@ -408,8 +407,8 @@
           "notPassed": "Not Passed"
         },
         "metrics": {
-          "tps": "Transactions Per Second (TPS)",
-          "responseTime": "Response Time (P90)",
+          "tps": "TPS",
+          "responseTime": "RT (P90)",
           "errorRate": "Error Rate"
         }
       }

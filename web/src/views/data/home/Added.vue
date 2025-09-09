@@ -8,27 +8,21 @@ import { AddedProps } from '@/views/data/home/types';
 const { t } = useI18n();
 
 /**
- * <p>
  * Component props with default values
- * </p>
  */
 const props = withDefaults(defineProps<AddedProps>(), {
   projectId: undefined,
-  userInfo: undefined,
+  userInfo: {} as any,
   notify: undefined
 });
 
 /**
- * <p>
  * Async component for data table
- * </p>
  */
 const Table = defineAsyncComponent(() => import('./AddedTable.vue'));
 
 /**
- * <p>
  * Reactive state for tracking deleted notifications and totals
- * </p>
  */
 const deletedNotify = ref<string>();
 const variableTotal = ref(0);
@@ -95,7 +89,7 @@ const dataSetTotal = ref(0);
 }
 
 :deep(.ant-tabs-content-holder) {
-  min-height: 270px;
+  min-height: 225px;
 }
 
 .ant-tabs-top>:deep(.ant-tabs-nav),

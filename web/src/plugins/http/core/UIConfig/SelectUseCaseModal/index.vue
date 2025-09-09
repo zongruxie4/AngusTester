@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, inject, watch } from 'vue';
+import { ref, computed, inject, watch, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
-import { TESTER } from '@xcan-angus/infra';
 import { Icon, Modal, Tooltip, notification, SelectApisCase } from '@xcan-angus/vue-ui';
 import { paramTarget, apis } from '@/api/tester';
 
@@ -24,7 +23,8 @@ export interface Props {
   linkIds:Set<string>;
 }
 
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 const props = withDefaults(defineProps<Props>(), {
   visible: false,
   linkIds: () => new Set()
@@ -140,8 +140,6 @@ const reset = () => {
   }
 };
 
-
-
 const cancelButtonDisabled = computed(() => {
   return coping.value || linking.value;
 });
@@ -185,7 +183,7 @@ watch(() => props.visible, () => {
       v-if="props.visible"
       ref="selectApisCaseRef"
       :visible="props.visible"
-      :projectId="projectInfo.id"
+      :projectId="projectId"
       @change="changeSelectCase" />
     <template #footer>
       <div class="flex items-center justify-end">

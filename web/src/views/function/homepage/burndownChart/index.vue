@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, inject, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, inject, onBeforeUnmount, onMounted, ref, watch, Ref } from 'vue';
 import * as echarts from 'echarts';
 import { RadioGroup } from 'ant-design-vue';
 import elementResizeDetector from 'element-resize-detector';
@@ -16,10 +16,8 @@ const erd = elementResizeDetector({ strategy: 'scroll' });
 const props = withDefaults(defineProps<Props>(), {
   userInfo: undefined
 });
-const projectInfo = inject('projectInfo', ref({ id: '' }));
-const projectId = computed(() => {
-  return projectInfo.value?.id;
-});
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 const burnDownOpt = computed(() => [
   {
     value: 'NUM',

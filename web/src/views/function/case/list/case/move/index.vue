@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { inject, ref } from 'vue';
+import { inject, ref, Ref } from 'vue';
 import { Icon, Modal, notification, Select } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
@@ -27,7 +27,8 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'update'):void}>();
 
 const formState = ref<{ targetPlanId?: string }>({ targetPlanId: undefined });
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const close = () => {
   emits('update:visible', false);
@@ -72,7 +73,7 @@ const format = (data) => {
         class="flex-1">
         <Select
           v-model:value="formState.targetPlanId"
-          :action="`${TESTER}/func/plan?projectId=${projectInfo.id}&fullTextSearch=true`"
+          :action="`${TESTER}/func/plan?projectId=${projectId}&fullTextSearch=true`"
           :fieldNames="{ value: 'id', label: 'name' }"
           :format="format"
           showSearch

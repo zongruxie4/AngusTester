@@ -21,7 +21,8 @@ const props = withDefaults(defineProps<Props>(), {
   id: ''
 });
 
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 const router = useRouter();
 const appInfo = ref(appContext.getAccessApp()) as Ref<Record<string, any>>;
 const mockServiceInfo = ref();
@@ -45,13 +46,13 @@ const createType = ref();
 
 const selectedMockServiceId = ref();
 const createVisible = ref(false);
-const createMockSeviceById = async () => {
+const createMockServiceById = async () => {
   createVisible.value = true;
 };
 
 watch(() => createType.value, () => {
   if (createType.value === '1') {
-    createMockSeviceById();
+    createMockServiceById();
   }
 });
 
@@ -61,7 +62,7 @@ watch(() => createVisible.value, () => {
   }
 });
 
-const handelRoload = () => {
+const handelReload = () => {
   loadProjectMockService();
 };
 const relatedLoading = ref(false);
@@ -138,7 +139,7 @@ const authFlagChange = ({ auth }: { auth: boolean }) => {
   mockServiceInfo.value.auth = auth;
 };
 
-const cencelProjcetMock = async () => {
+const cancelProjectMock = async () => {
   loading.value = true;
   const [error] = await mock.cancelMockServiceAssoc(mockServiceInfo.value.id);
   loading.value = false;
@@ -198,7 +199,7 @@ const statusStyleMap = {
                 <a class="whitespace-nowrap text-text-disabled cursor-not-allowed ml-2">{{ t('service.mockService.actions.cancelAssociate') }}</a>
               </template>
               <template v-else>
-                <a class="whitespace-nowrap text-text-link ml-2" @click="cencelProjcetMock">{{ t('service.mockService.actions.cancelAssociate') }}</a>
+                <a class="whitespace-nowrap text-text-link ml-2" @click="cancelProjectMock">{{ t('service.mockService.actions.cancelAssociate') }}</a>
               </template>
             </div>
           </template>
@@ -289,7 +290,7 @@ const statusStyleMap = {
             <Select
               v-model:value="selectedMockServiceId"
               class="w-full mt-2"
-              :action="`${TESTER}/mock/service?projectId=${projectInfo?.id}&fullTextSearch=true`"
+              :action="`${TESTER}/mock/service?projectId=${projectId}&fullTextSearch=true`"
               :fieldNames="{ label: 'name', value: 'id' }"
               :maxlength="100"
               :placeholder="t('service.mockService.placeholder.selectMockService')"
@@ -302,7 +303,7 @@ const statusStyleMap = {
       <CreateMock
         v-model:visible="createVisible"
         :serviceId="props.id"
-        @reload="handelRoload" />
+        @reload="handelReload" />
     </AsyncComponent>
     <AsyncComponent :visible="authVisible">
       <AuthorizeModal

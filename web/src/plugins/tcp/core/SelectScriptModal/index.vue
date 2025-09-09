@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, onMounted, watch, inject } from 'vue';
+import { computed, ref, onMounted, watch, inject, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Checkbox } from 'ant-design-vue';
 import { Modal, Scroll, Input, Icon, notification } from '@xcan-angus/vue-ui';
@@ -32,7 +32,8 @@ const emit = defineEmits<{
   (e:'cancel'):void;
 }>();
 
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const inputValue = ref<string>();
 const checkedId = ref<string>();
@@ -101,7 +102,7 @@ onMounted(() => {
 });
 
 const scrollParams = computed(() => {
-  const params = { filters: undefined, plugin: 'Tcp', projectId: projectInfo.value?.id };
+  const params = { filters: undefined, plugin: 'Tcp', projectId: projectId.value };
   if (inputValue.value) {
     params.filters = [{
       key: 'name',

@@ -105,7 +105,7 @@
       "statusTag": {
         "success": "通过",
         "fail": "未通过",
-        "block": "未执行",
+        "block": "未测试",
         "ignore": "未启用"
       }
     },
@@ -1183,7 +1183,8 @@
         "duration": "运行时间",
         "iteration": "迭代数",
         "request": "请求数",
-        "responseTime": "响应时间"
+        "responseTime": "响应时间",
+        "assertion": "断言"
       },
       "collapse": {
         "iteration": "第{iteration}次迭代"
@@ -1191,7 +1192,7 @@
       "texts": {
         "success": "通过",
         "ignore": "忽略",
-        "block": "未执行",
+        "block": "未测试",
         "total": "总数"
       },
       "timeTexts": {
@@ -1209,7 +1210,7 @@
       "statusTag": {
         "success": "通过",
         "fail": "未通过",
-        "block": "未执行",
+        "block": "未测试",
         "ignore": "未启用"
       },
       "http": {

@@ -28,11 +28,8 @@ const props = withDefaults(defineProps<Props>(), {
   loaded: false
 });
 
-const projectInfo = inject('projectInfo', ref({ id: '' }));
-
-const projectId = computed(() => {
-  return projectInfo.value?.id || '';
-});
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const password = [
   'tokenUrl',
@@ -130,16 +127,6 @@ const insertHTTP = () => {
 const selectHTTP = () => {
   apiModalVisible.value = true;
 };
-
-// const getServerUrl = (data: HTTPConfig['request']['server']): string => {
-//   const { url, variables } = data;
-//   const variableReg = /\{[a-zA-Z0-9_]+\}/g;
-//   const replaced = url?.replace(variableReg, match => {
-//     const key = match.replace('{', '').replace('}', '');
-//     return variables?.[key]?.defaultValue || '';
-//   });
-//   return replaced;
-// };
 
 const extractVar = (str: string): string => {
   const regex = /{([^}]+)}/;

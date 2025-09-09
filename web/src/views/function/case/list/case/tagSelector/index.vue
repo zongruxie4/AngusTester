@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { inject, ref, watch } from 'vue';
+import { inject, ref, watch, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Tag, Tooltip } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
@@ -17,7 +17,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{(e: 'change', _val:string[]): void
 }>();
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 const tagList = ref<{ id: string, name: string, closeFlag: boolean }[]>([]);
 const checkedIds = ref<string[]>([]);
 const selectTag = (tagId: string) => {
@@ -55,7 +56,7 @@ const handleBlur = () => {
 };
 
 const getCacheTagList = async () => {
-  const [error, { data }] = await tag.getTagList({ projectId: projectInfo.value.id, filters: [{ key: 'id', op: 'IN', value: props.tagIds }] });
+  const [error, { data }] = await tag.getTagList({ projectId: projectId.value, filters: [{ key: 'id', op: 'IN', value: props.tagIds }] });
   if (error) {
     return;
   }
@@ -116,7 +117,7 @@ defineExpose({
           showSearch
           internal
           :fieldNames="{ label: 'name', value: 'id' }"
-          :action="`${TESTER}/tag?projectId=${projectInfo.id}`"
+          :action="`${TESTER}/tag?projectId=${projectId}`"
           @change="selectChange"
           @blur="handleBlur" />
       </template>

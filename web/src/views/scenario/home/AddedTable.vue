@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, onMounted, ref, Ref, watch } from 'vue';
+import { inject, onMounted, ref, Ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon, Table } from '@xcan-angus/vue-ui';
@@ -20,6 +20,7 @@ const props = withDefaults(defineProps<MyScenariosTableProps>(), {
 });
 
 // Event emissions
+// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'update:total', value: number): void;
   (e: 'update:deletedNotify', value: string): void;
@@ -29,10 +30,8 @@ const updateTotal = (total: number) => {
   emit('update:total', total);
 };
 
-const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
-const projectId = computed(() => {
-  return projectInfo.value?.id;
-});
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 // Use composables for different concerns
 const {
@@ -55,7 +54,7 @@ const {
 
 // Initialize watchers on component mount
 onMounted(() => {
-  watch(() => props.projectId, () => {
+  watch(() => projectId, () => {
     loadData();
   }, { immediate: true });
 

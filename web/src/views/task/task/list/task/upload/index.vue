@@ -20,12 +20,9 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'ok'):void;}>();
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
-
-const projectId = computed(() => {
-  return projectInfo.value?.id;
-});
 
 const loading = ref(false);
 const strategyWhenDuplicatedOpt = ref<{value: string; label: string}[]>([]);

@@ -5,34 +5,56 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <div class="text-3.5">
-    <div class="font-semibold mb-2.5">{{ t('dataset.introduce.title') }}</div>
-    <div class="mb-6">
-      <div>{{ t('dataset.introduce.description') }}</div>
+  <div class="space-y-2 text-3.5">
+    <div class="space-y-1">
+      <div class="flex items-center space-x-2">
+        <span class="text-3.5 font-semibold mb-1.5">{{ t('dataset.introduce.title') }}</span>
+      </div>
+      <div class="mb-4">
+        {{ t('dataset.introduce.description') }}
+      </div>
     </div>
 
-    <div class="flex items-start justify-between">
-      <div class="flex items-start space-x-3 w-1/3">
-        <img src="./images/1.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
-        <div class="space-y-1 pr-10">
-          <div class="font-semibold">{{ t('dataset.introduce.types.staticDataset.title') }}</div>
-          <div>{{ t('dataset.introduce.types.staticDataset.description') }}</div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200">
+        <div class="flex items-start space-x-3">
+          <img src="./images/1.png" class="w-12 h-12 flex-shrink-0 rounded-md">
+          <div class="space-y-1">
+            <h3 class="font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
+              {{ t('dataset.introduce.types.staticDataset.title') }}
+            </h3>
+            <p class="text-gray-600 leading-relaxed">
+              {{ t('dataset.introduce.types.staticDataset.description') }}
+            </p>
+          </div>
         </div>
       </div>
 
-      <div class="flex items-start space-x-3 w-1/3">
-        <img src="./images/2.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
-        <div class="space-y-1 pr-10">
-          <div class="font-semibold">{{ t('dataset.introduce.types.fileExtract.title') }}</div>
-          <div>{{ t('dataset.introduce.types.fileExtract.description') }}</div>
+      <div class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200">
+        <div class="flex items-start space-x-3">
+          <img src="./images/2.png" class="w-12 h-12 flex-shrink-0 rounded-md">
+          <div class="space-y-1">
+            <h3 class="font-semibold text-gray-800 group-hover:text-purple-600 transition-colors">
+              {{ t('dataset.introduce.types.fileExtract.title') }}
+            </h3>
+            <p class="text-gray-600 leading-relaxed">
+              {{ t('dataset.introduce.types.fileExtract.description') }}
+            </p>
+          </div>
         </div>
       </div>
 
-      <div class="flex items-start space-x-3 w-1/3">
-        <img src="./images/3.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
-        <div class="space-y-1 pr-10">
-          <div class="font-semibold">{{ t('dataset.introduce.types.jdbcExtract.title') }}</div>
-          <div>{{ t('dataset.introduce.types.jdbcExtract.description') }}</div>
+      <div class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200">
+        <div class="flex items-start space-x-3">
+          <img src="./images/3.png" class="w-12 h-12 flex-shrink-0 rounded-md">
+          <div class="space-y-1">
+            <h3 class="font-semibold text-gray-800 group-hover:text-indigo-600 transition-colors">
+              {{ t('dataset.introduce.types.jdbcExtract.title') }}
+            </h3>
+            <p class="text-gray-600 leading-relaxed">
+              {{ t('dataset.introduce.types.jdbcExtract.description') }}
+            </p>
+          </div>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, ref, watch } from 'vue';
+import { computed, inject, ref, Ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Grid, Hints, Icon, IconCopy, Input, notification, Select, Spin } from '@xcan-angus/vue-ui';
 import { Button, Divider, Radio, RadioGroup } from 'ant-design-vue';
@@ -18,7 +18,8 @@ const props = withDefaults(defineProps<Props>(), {
   id: ''
 });
 
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const createType = ref('1');
 const mockApisId = ref();
@@ -121,9 +122,7 @@ watch(() => props.id, async (newValue) => {
   mockApiInfo.value = undefined;
   if (newValue) {
     await loadMockApiInfo(newValue);
-    if (!mockApiInfo.value) {
-      loadApiInfo(newValue);
-    }
+    loadApiInfo(newValue);
   }
 }, {
   immediate: true
@@ -200,7 +199,7 @@ const format = (data) => {
           </RadioGroup>
           <Select
             v-model:value="mockServiceId"
-            :action="`${TESTER}/mock/service?projectId=${projectInfo?.id}&fullTextSearch=true`"
+            :action="`${TESTER}/mock/service?projectId=${projectId}&fullTextSearch=true`"
             :fieldNames="{label:'name',value:'id'}"
             :maxlength="100"
             :placeholder="t('service.ApiMock.placeholder.selectMockService')"

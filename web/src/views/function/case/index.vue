@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent, inject, onMounted, provide, ref, watch } from 'vue';
+import { defineAsyncComponent, inject, onMounted, provide, ref, watch, Ref } from 'vue';
 import { Tooltip } from 'ant-design-vue';
 import { AsyncComponent, BrowserTab, Icon, modal, notification, Spin, VuexHelper } from '@xcan-angus/vue-ui';
 import { appContext } from '@xcan-angus/infra';
@@ -20,7 +20,8 @@ const MoveCaseModal = defineAsyncComponent(() => import('@/views/function/case/l
 const UpdateTestResultModal = defineAsyncComponent(() => import('@/views/function/case/list/case/updateResult/index.vue'));
 
 const userInfo = ref(appContext.getUser());
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 const appInfo = ref(appContext.getAccessApp());
 
 const route = useRoute();
@@ -488,10 +489,10 @@ defineExpose({
 <template>
   <div class="flex flex-1 h-full">
     <BrowserTab
-      v-if="projectInfo?.id"
+      v-if="projectId"
       ref="browserTabRef"
-      :key="`func-browser-tab_${projectInfo?.id}`"
-      :storageKey="`func-browser-tab_${projectInfo?.id}`"
+      :key="`func-browser-tab_${projectId}`"
+      :storageKey="`func-browser-tab_${projectId}`"
       hideAdd
       :stepVisible="stepVisible"
       :stepKey="stepKey"

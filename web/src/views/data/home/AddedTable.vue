@@ -10,9 +10,7 @@ import { AddedItem, AddedTableProps } from '@/views/data/home/types';
 const { t } = useI18n();
 
 /**
- * <p>
  * Component props with default values
- * </p>
  */
 const props = withDefaults(defineProps<AddedTableProps>(), {
   projectId: undefined,
@@ -23,9 +21,7 @@ const props = withDefaults(defineProps<AddedTableProps>(), {
 });
 
 /**
- * <p>
  * Component emits for parent communication
- * </p>
  */
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
@@ -34,9 +30,7 @@ const emit = defineEmits<{
 }>();
 
 /**
- * <p>
  * Initialize composables for data management, table columns, and empty state
- * </p>
  */
 const {
   projectId,
@@ -56,9 +50,7 @@ const { columns } = useAddedTableColumns(props.type);
 const { emptyStateConfig, hasCreateAction } = useAddedEmptyState(props.type);
 
 /**
- * <p>
  * Handle create button click based on data type
- * </p>
  */
 const handleCreateClick = () => {
   if (props.type === 'variable') {
@@ -69,27 +61,21 @@ const handleCreateClick = () => {
 };
 
 /**
- * <p>
  * Emit total count updates to parent component
- * </p>
  */
 const emitTotalUpdate = () => {
   emit('update:total', total.value);
 };
 
 /**
- * <p>
  * Emit deleted notification to parent component
- * </p>
  */
 const emitDeletedNotify = () => {
   emit('update:deletedNotify', 'deleted');
 };
 
 /**
- * <p>
  * Enhanced delete handler with emit updates
- * </p>
  */
 const handleDelete = (record: AddedItem) => {
   deleteItem(record);
@@ -97,9 +83,7 @@ const handleDelete = (record: AddedItem) => {
 };
 
 /**
- * <p>
  * Watch for prop changes and trigger data reload
- * </p>
  */
 onMounted(() => {
   // Watch project ID changes
@@ -135,9 +119,7 @@ onMounted(() => {
 });
 
 /**
- * <p>
  * Table empty text style configuration
- * </p>
  */
 const emptyTextStyle = {
   margin: '14px auto',

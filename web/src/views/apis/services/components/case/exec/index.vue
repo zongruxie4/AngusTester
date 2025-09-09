@@ -1,15 +1,13 @@
 <script lang="ts" setup>
-import { inject, ref, watch } from 'vue';
+import { inject, ref, Ref, watch } from 'vue';
 import { Modal, NoData, notification } from '@xcan-angus/vue-ui';
 import { apis } from '@/api/tester';
 import { CheckboxGroup } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
-// import http from '@/utils/http';
-
 export interface Props {
     visible: boolean;
-    apisId: string; // 用例所属接口
+    apisId: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -18,14 +16,15 @@ const props = withDefaults(defineProps<Props>(), {
 });
 const { t } = useI18n();
 
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void}>();
 
 const caseData = ref([]);
-const checkeCaseIds = ref<string[]>([]);
+const checkedCaseIds = ref<string[]>([]);
 const loadCaseData = async () => {
-  const [error, { data }] = await apis.loadApiCases({ apisId: props.apisId, projectId: projectInfo.value?.id, pageSize: 100, pageNo: 1 });
+  const [error, { data }] = await apis.loadApiCases({ apisId: props.apisId, projectId: projectId.value, pageSize: 100, pageNo: 1 });
   if (error) {
     return;
   }
@@ -39,8 +38,8 @@ const loadCaseData = async () => {
 };
 
 const ok = async () => {
-  if (checkeCaseIds.value.length) {
-    const [error] = await apis.execCase(checkeCaseIds.value, props.apisId);
+  if (checkedCaseIds.value.length) {
+    const [error] = await apis.execCase(checkedCaseIds.value, props.apisId);
     if (error) {
       return;
     }
@@ -70,7 +69,7 @@ watch(() => props.visible, newValue => {
     @cancel="cancel">
     <div v-if="!!caseData.length">
       <CheckboxGroup
-        v-model:value="checkeCaseIds"
+        v-model:value="checkedCaseIds"
         :options="caseData" />
     </div>
     <NoData

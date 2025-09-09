@@ -1,4 +1,4 @@
-import { ref, computed, inject } from 'vue';
+import { ref, computed, inject, Ref } from 'vue';
 import { SearchCriteria } from '@xcan-angus/infra';
 import { MockService } from '../types';
 import { mock } from '@/api/tester';
@@ -22,11 +22,9 @@ export function useMockData () {
     orderSort: undefined as 'ASC' | 'DESC' | undefined
   });
 
-  // Project info injection
-  const projectInfo = inject('projectInfo', ref({ id: '' }));
+  // Inject project information
+  const projectId = inject<Ref<string>>('projectId', ref(''));
 
-  // Computed properties
-  const projectId = computed(() => projectInfo?.value?.id);
   const pagination = computed(() => ({
     current: params.value.pageNo,
     pageSize: params.value.pageSize,

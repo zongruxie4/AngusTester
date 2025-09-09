@@ -1,8 +1,6 @@
 <script setup lang="ts">
-// ===== IMPORTS =====
 import { defineAsyncComponent, onMounted, provide, ref, watch } from 'vue';
 
-// ===== TYPES =====
 interface ComponentProps {
   projectId: string;
   userInfo: { id: string; };
@@ -10,7 +8,6 @@ interface ComponentProps {
   refreshNotify: string;
 }
 
-// ===== PROPS =====
 const props = withDefaults(defineProps<ComponentProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -18,18 +15,15 @@ const props = withDefaults(defineProps<ComponentProps>(), {
   refreshNotify: undefined
 });
 
-// ===== ASYNC COMPONENTS =====
 // Lazy load components for better performance
-const MyScenarios = defineAsyncComponent(() => import('@/views/scenario/home/MyScenarios.vue'));
+const Added = defineAsyncComponent(() => import('@/views/scenario/home/Added.vue'));
 const Chart = defineAsyncComponent(() => import('@/views/scenario/home/chart/index.vue'));
 const Introduce = defineAsyncComponent(() => import('@/views/scenario/home/Introduce.vue'));
-const ActivityTimeline = defineAsyncComponent(() => import('./ActivityTimeline.vue'));
+const ActivityTimeline = defineAsyncComponent(() => import('@/views/scenario/home/ActivityTimeline.vue'));
 
-// ===== REACTIVE STATE =====
 // Notification state for refreshing child components
 const refreshNotification = ref<string>();
 
-// ===== METHODS =====
 /**
  * Updates the refresh notification state
  * This method is provided to child components for triggering refreshes
@@ -39,7 +33,6 @@ const updateRefreshNotification = (value: string) => {
   refreshNotification.value = value;
 };
 
-// ===== LIFECYCLE HOOKS =====
 onMounted(() => {
   // Watch for external refresh notifications and propagate to child components
   watch(() => props.refreshNotify, (newNotificationValue) => {
@@ -53,7 +46,6 @@ onMounted(() => {
   }, { immediate: true });
 });
 
-// ===== PROVIDE/INJECT =====
 // Provide refresh notification method to child components
 provide('updateRefreshNotify', updateRefreshNotification);
 </script>
@@ -64,7 +56,7 @@ provide('updateRefreshNotify', updateRefreshNotification);
     <!-- Left content area - main scenarios and charts -->
     <div class="flex-1 min-h-full">
       <!-- User's personal scenarios (only shown when project is selected) -->
-      <MyScenarios
+      <Added
         v-if="projectId"
         :notify="refreshNotification"
         :userInfo="props.userInfo"
@@ -79,12 +71,11 @@ provide('updateRefreshNotify', updateRefreshNotification);
 
     <!-- Right sidebar - introduction and activity timeline -->
     <div class="flex-shrink-0 pt-8 h-full w-right">
-      <!-- Product introduction and capabilities -->
+      <!-- Introduction Section -->
       <Introduce class="mb-5" />
 
-      <!-- Activity timeline (only shown when project is selected) -->
+      <!-- Activity Timeline Section -->
       <ActivityTimeline
-        v-if="projectId"
         :userInfo="props.userInfo"
         :projectId="props.projectId" />
     </div>

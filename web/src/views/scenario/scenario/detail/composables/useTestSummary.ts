@@ -21,37 +21,42 @@ export function useTestSummary (dataSource: Ref<ScenarioResult>) {
   });
 
   /**
-   * Get performance test data
+   * <p>Get performance test data from the scenario result.</p>
+   * <p>Contains metrics like TPS, response time, and error rate for performance testing.</p>
    */
-  const TEST_PERFORMANCE = computed(() => {
+  const performanceTestData = computed(() => {
     return dataSource.value?.resultDetailVoMap?.TEST_PERFORMANCE;
   });
 
   /**
-   * Get customization test data
+   * <p>Get custom test data from the scenario result.</p>
+   * <p>Contains metrics for non-standard custom testing scenarios.</p>
    */
-  const TEST_CUSTOMIZATION = computed(() => {
+  const customTestData = computed(() => {
     return dataSource.value?.resultDetailVoMap?.TEST_CUSTOMIZATION;
   });
 
   /**
-   * Get functionality test data
+   * <p>Get functionality test data from the scenario result.</p>
+   * <p>Contains test case execution results and configuration information.</p>
    */
-  const TEST_FUNCTIONALITY = computed(() => {
+  const functionalityTestData = computed(() => {
     return dataSource.value?.resultDetailVoMap?.TEST_FUNCTIONALITY;
   });
 
   /**
-   * Get stability test data
+   * <p>Get stability test data from the scenario result.</p>
+   * <p>Contains metrics for long-running stability testing scenarios.</p>
    */
-  const TEST_STABILITY = computed(() => {
+  const stabilityTestData = computed(() => {
     return dataSource.value?.resultDetailVoMap?.TEST_STABILITY;
   });
 
   /**
-   * Get TPS icon name based on performance comparison
+   * <p>Get TPS trend icon name based on performance comparison.</p>
+   * <p>Returns up arrow for better performance, down arrow for worse performance, or undefined if no comparison data.</p>
    */
-  const getTpsIconName = (testData: TestData) => {
+  const getTpsTrendIcon = (testData: TestData) => {
     const indicatorTps = testData?.indicatorPerf?.tps || testData?.indicatorStability?.tps;
     if (!indicatorTps || !testData?.sampleSummary?.tps) {
       return undefined;
@@ -67,9 +72,10 @@ export function useTestSummary (dataSource: Ref<ScenarioResult>) {
   };
 
   /**
-   * Get transaction icon name based on response time comparison
+   * <p>Get response time trend icon name based on performance comparison.</p>
+   * <p>Returns up arrow for worse response time, down arrow for better response time, or undefined if no comparison data.</p>
    */
-  const getTranIconName = (testData: TestData) => {
+  const getResponseTimeTrendIcon = (testData: TestData) => {
     const indicatorArt = testData?.indicatorPerf?.art || testData?.indicatorStability?.art;
     if (!indicatorArt || !testData?.sampleSummary?.tranP90) {
       return undefined;
@@ -85,9 +91,10 @@ export function useTestSummary (dataSource: Ref<ScenarioResult>) {
   };
 
   /**
-   * Get error rate icon name based on error rate comparison
+   * <p>Get error rate trend icon name based on performance comparison.</p>
+   * <p>Returns up arrow for higher error rate, down arrow for lower error rate, or undefined if no comparison data.</p>
    */
-  const getErrIconName = (testData: TestData) => {
+  const getErrorRateTrendIcon = (testData: TestData) => {
     const indicatorErrorRate = testData?.indicatorPerf?.errorRate || testData?.indicatorStability?.errorRate;
     if (!indicatorErrorRate || !testData?.sampleSummary?.errorRate) {
       return undefined;
@@ -221,13 +228,13 @@ export function useTestSummary (dataSource: Ref<ScenarioResult>) {
   return {
     testChartRef,
     resultSummary,
-    TEST_PERFORMANCE,
-    TEST_CUSTOMIZATION,
-    TEST_FUNCTIONALITY,
-    TEST_STABILITY,
+    performanceTestData,
+    customTestData,
+    functionalityTestData,
+    stabilityTestData,
     configInfo,
-    getTpsIconName,
-    getTranIconName,
-    getErrIconName
+    getTpsTrendIcon,
+    getResponseTimeTrendIcon,
+    getErrorRateTrendIcon
   };
 }

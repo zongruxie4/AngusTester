@@ -1,6 +1,7 @@
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { task } from '@/api/tester';
+import { TaskType } from '@/enums/enums';
 import type { PaginationConfig, TableColumn, TaskItem } from '../types';
 
 /**
@@ -27,7 +28,7 @@ export function useTaskData (scenarioId: string, projectId: string) {
 
     const [error, { data }] = await task.getTaskList({
       projectId,
-      taskType: 'SCENARIO_TEST',
+      taskType: TaskType.SCENARIO_TEST,
       filters: [{ value: scenarioId, op: 'EQUAL', key: 'targetId' }],
       pageNo: current,
       pageSize

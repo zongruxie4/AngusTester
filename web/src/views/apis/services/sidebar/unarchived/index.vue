@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, ref } from 'vue';
+import { computed, inject, ref, Ref } from 'vue';
 import { Dropdown, HttpMethodText, Icon, IconRefresh, notification, Scroll } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
@@ -28,7 +28,7 @@ const emit = defineEmits<{
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const addTabPane = inject<(data: any) => void>('addTabPane', () => { });
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const deleteTabPane = inject<(data: any) => void>('deleteTabPane', () => { });
@@ -115,11 +115,10 @@ const params = computed(() => {
   if (props.keywords) {
     filters.push({ key: 'summary', op: 'MATCH_END', value: props.keywords });
   }
-
   return {
     filters,
     targetType: 'API',
-    projectId: projectInfo.value?.id
+    projectId: projectId.value
   };
 });
 

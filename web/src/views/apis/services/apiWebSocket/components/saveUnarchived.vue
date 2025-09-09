@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { inject, onMounted, reactive, ref } from 'vue';
+import { inject, onMounted, reactive, ref, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Form, FormItem } from 'ant-design-vue';
 import { Hints, Input, notification } from '@xcan-angus/vue-ui';
@@ -29,7 +29,8 @@ const updateTabPane = inject<(data: any) => void>('updateTabPane', () => { });
 // 更新左侧未归档列表
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const refreshUnarchived = inject('refreshUnarchived', () => {});
-const projectInfo = inject('projectInfo', ref({ id: '' }));
+// Inject project information
+const projectId = inject<Ref<string>>('projectId', ref(''));
 
 const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
@@ -63,8 +64,8 @@ const save = () => {
 
     const { currentServer, method, parameters, protocol, requestBody, endpoint } = apiInfo;
     const [error, resp] = props.id
-      ? await apis.updateUnarchivedApi({ dto: [{ currentServer, method, parameters, protocol, requestBody, endpoint, ...params, id: props.id, projectId: projectInfo.value?.id }] })
-      : await apis.addUnarchivedApi({ dto: [{ currentServer, method, parameters, protocol, requestBody, endpoint, ...params, projectId: projectInfo.value?.id }] });
+      ? await apis.updateUnarchivedApi({ dto: [{ currentServer, method, parameters, protocol, requestBody, endpoint, ...params, id: props.id, projectId: projectId.value?.id }] })
+      : await apis.addUnarchivedApi({ dto: [{ currentServer, method, parameters, protocol, requestBody, endpoint, ...params, projectId: projectId.value?.id }] });
     if (error) {
       return;
     }
