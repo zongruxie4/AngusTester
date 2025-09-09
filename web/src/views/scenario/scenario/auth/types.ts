@@ -42,23 +42,6 @@ export interface GroupSetProps {
   appId?: string;
 }
 
-// API response interfaces
-export interface ScenarioListResponse {
-  total: number;
-  list: DataItem[];
-}
-
-export interface ScenarioAuthResponse {
-  id: string;
-  scenarioId: string;
-  permissions: Permission[];
-  creatorFlag: boolean;
-}
-
-export interface ScenarioAuthListResponse {
-  list: ScenarioAuthResponse[];
-}
-
 // Search and pagination interfaces
 export interface SearchParams {
   pageNo: number;
@@ -86,18 +69,6 @@ export interface AuthSearchParams {
 
 // Event handler types
 export interface CheckboxChangeEvent {
-  target: {
-    checked: boolean;
-  };
-}
-
-export interface InputChangeEvent {
-  target: {
-    value: string;
-  };
-}
-
-export interface SwitchChangeEvent {
   target: {
     checked: boolean;
   };

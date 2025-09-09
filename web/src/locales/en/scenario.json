@@ -141,10 +141,6 @@
       "searchNamePlaceholder": "Search name, description",
       "selectScenarioPlaceholder": "Select scenario name",
       "selectCreatorPlaceholder": "Select creator",
-      "dateRangePlaceholder": [
-        "Add time from",
-        "Add time to"
-      ],
       "sortOptions": {
         "byAddTime": "By Add Time",
         "byCreator": "By Creator"
@@ -198,10 +194,6 @@
       "searchPlaceholder": "Search scenario ID, name, description",
       "pluginTypePlaceholder": "Plugin type",
       "scriptTypePlaceholder": "Select script type",
-      "dateRangePlaceholder": [
-        "Add time start",
-        "Add time end"
-      ],
       "pluginTypes": {
         "jdbc": "Jdbc Scenario",
         "webSocket": "WebSocket Scenario",

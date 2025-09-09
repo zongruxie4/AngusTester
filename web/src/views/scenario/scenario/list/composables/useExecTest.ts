@@ -1,5 +1,5 @@
-import { ref } from 'vue';
-import { utils } from '@xcan-angus/infra';
+import {ref} from 'vue';
+import {utils} from '@xcan-angus/infra';
 
 /**
  * Server variable structure
@@ -104,13 +104,11 @@ export function useExecTest () {
       }
     });
 
-    const params = {
+    return {
       description: data.description,
       url: data.url,
       variables
     };
-
-    return params;
   };
 
   /**

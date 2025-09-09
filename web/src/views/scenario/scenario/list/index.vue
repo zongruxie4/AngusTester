@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject } from 'vue';
+import { computed, defineAsyncComponent, inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import {
@@ -58,7 +58,11 @@ const {
 } = useScenarioActions(
   computed(() => props.projectId),
   addTabPane,
-  deleteTabPane
+  deleteTabPane,
+  ref([]), // scenarioList - not used in this component
+  ref({}), // dropdownMenuItemsMap - not used in this component
+  [], // dropdownMenuItems - not used in this component
+  ref() // selectedId - not used in this component
 );
 
 const {

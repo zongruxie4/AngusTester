@@ -148,7 +148,7 @@ watch(() => props.visible, () => {
     <!-- Confirmation information area -->
     <div class="confirm-section">
       <div class="confirm-icon">
-        <Icon icon="icon-warning" />
+        <Icon class="info-icon" icon="icon-tishi1" />
       </div>
       <div class="confirm-content">
         <p class="confirm-message">{{ t('commonComp.delTaskTestModal.confirmMessage') }}</p>
@@ -181,7 +181,7 @@ watch(() => props.visible, () => {
 .confirm-section {
   display: flex;
   align-items: flex-start;
-  padding: 16px;
+  padding: 12px;
   margin-bottom: 24px;
   background-color: #fff2f0;
   border: 1px solid #ffccc7;
@@ -192,7 +192,6 @@ watch(() => props.visible, () => {
   color: #ff4d4f;
   font-size: 20px;
   margin-right: 12px;
-  margin-top: 2px;
   flex-shrink: 0;
 }
 

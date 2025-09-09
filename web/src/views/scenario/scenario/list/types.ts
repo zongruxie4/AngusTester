@@ -1,15 +1,10 @@
+import { EnumMessage, ScriptType } from '@xcan-angus/infra';
+import { ExecStatus, ScenarioPermission } from '@/enums/enums';
+
 /**
  * Grouping keys for scenarios
  */
 export type GroupedKey = 'createdBy' | 'plugin' | 'scriptType' | 'none';
-
-/**
- * Script type structure
- */
-export interface ScriptType {
-  message: string;
-  value: string;
-}
 
 /**
  * Scenario information structure
@@ -31,12 +26,9 @@ export interface ScenarioInfo {
   lastModifiedDate: string;
   favourite: boolean;
   follow: boolean;
-  scriptType: ScriptType;
+  scriptType: EnumMessage<ScriptType>;
   scriptId: string;
-  lastExecStatus?: {
-    message: string;
-    value: string;
-  };
+  lastExecStatus?: EnumMessage<ExecStatus>;
   lastExecFailureMessage?: string;
   nameLinkUrl?: string;
   detailLink?: string;
@@ -63,17 +55,12 @@ export type MenuItemKey =
   'deleteTestTask';
 
 /**
- * Menu item permissions
- */
-export type MenuItemPermission = 'MODIFY' | 'EXECUTE' | 'VIEW' | 'GRANT' | 'TEST' | 'EXPORT' | 'DELETE';
-
-/**
  * Menu item structure
  */
 export interface MenuItem {
   key: MenuItemKey;
   name: string;
   icon: string;
-  permission: MenuItemPermission;
+  permission: ScenarioPermission;
   tip?: string;
 }

@@ -1,7 +1,8 @@
 import { ref } from 'vue';
 import { appContext } from '@xcan-angus/infra';
 import { scenario } from '@/api/tester';
-import { MenuItem, MenuItemPermission, ScenarioInfo } from '../types';
+import { ScenarioPermission } from '@/enums/enums';
+import { MenuItem, ScenarioInfo } from '../types';
 
 /**
  * Composable for managing scenario permissions and authorization
@@ -12,7 +13,7 @@ export function useScenarioPermissions () {
   const permissionMap = ref<{
     [key: string]: {
       scenarioAuth: boolean;
-      permissions: MenuItemPermission[];
+      permissions: ScenarioPermission[];
     }
   }>({});
 
@@ -56,7 +57,7 @@ export function useScenarioPermissions () {
   /**
    * Check if a user has permission for a menu item
    */
-  const hasPermission = (scenarioId: string, permission: MenuItemPermission): boolean => {
+  const hasPermission = (scenarioId: string, permission: ScenarioPermission): boolean => {
     // Admins have all permissions
     if (appContext.isAdmin()) {
       return true;
@@ -75,7 +76,7 @@ export function useScenarioPermissions () {
    * Filter dropdown menu items based on permissions and flags
    */
   const filterMenuItems = (
-    menuItems: MenuItem[],
+    menuItems: readonly MenuItem[],
     scenarioInfo: ScenarioInfo,
     proTypeShowMap: { [key: string]: boolean }
   ): MenuItem[] => {

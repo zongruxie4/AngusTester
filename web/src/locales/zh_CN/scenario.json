@@ -141,10 +141,6 @@
       "searchNamePlaceholder": "查询名称，描述",
       "selectScenarioPlaceholder": "选择场景名称",
       "selectCreatorPlaceholder": "选择创建人",
-      "dateRangePlaceholder": [
-        "添加时间从",
-        "添加时间到"
-      ],
       "sortOptions": {
         "byAddTime": "按添加时间",
         "byCreator": "按添加人"
@@ -198,10 +194,6 @@
       "searchPlaceholder": "查询场景ID、名称、描述",
       "pluginTypePlaceholder": "插件类型",
       "scriptTypePlaceholder": "选择脚本类型",
-      "dateRangePlaceholder": [
-        "添加时间开始",
-        "添加时间结束"
-      ],
       "pluginTypes": {
         "jdbc": "Jdbc场景",
         "webSocket": "WebSocket场景",

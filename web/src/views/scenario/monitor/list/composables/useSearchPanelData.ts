@@ -40,7 +40,6 @@ export function useSearchPanelData (projectId: string): UseSearchPanelDataReturn
     {
       type: 'date-range',
       valueKey: 'createdDate',
-      placeholder: t('scenarioMonitor.searchPanel.dateRangePlaceholder'),
       showTime: true
     }
   ];

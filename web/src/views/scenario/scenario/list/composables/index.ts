@@ -5,3 +5,4 @@ export * from './useScenarioModals';
 export * from './useScenarioSearch';
 export * from './useScenarioGrouping';
 export * from './useScenarioPermissions';
+export * from './useScenarioMenuItems';
