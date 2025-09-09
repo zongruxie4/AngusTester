@@ -57,7 +57,7 @@ const emit = defineEmits<{
 const EditTaskModal = defineAsyncComponent(() => import('@/views/function/case/list/case/add/index.vue'));
 const MoveModal = defineAsyncComponent(() => import('@/views/function/case/list/case/move/index.vue'));
 const UpdateResultModal = defineAsyncComponent(() => import('@/views/function/case/list/case/updateResult/index.vue'));
-const AddTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/edit/index.vue'));
+const AddTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/Edit.vue'));
 const BasicInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/basic/index.vue'));
 const TestSteps = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/testSteps/index.vue'));
 const PersonnelInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/personnel/index.vue'));

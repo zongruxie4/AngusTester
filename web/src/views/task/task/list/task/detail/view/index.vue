@@ -9,7 +9,7 @@ import { cloneDeep } from 'lodash-es';
 import { task } from '@/api/tester';
 
 import { TaskInfo } from '../../../../../types';
-import { ActionMenuItem } from '../../../PropsType';
+import { ActionMenuItem } from '../../../../types';
 
 type TabPaneKey = 'basicInfo' | 'remark' | 'testInfo' | 'comments' | 'activity';
 type SprintPermissionKey = 'MODIFY_SPRINT' | 'DELETE_SPRINT' | 'ADD_TASK' | 'MODIFY_TASK' | 'DELETE_TASK' | 'EXPORT_TASK' | 'RESTART_TASK' | 'REOPEN_TASK' | 'GRANT'
@@ -50,13 +50,13 @@ const emit = defineEmits<{
 
 const BasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/info/index.vue'));
 const TestInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/testing/index.vue'));
-const Remark = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/remark/index.vue'));
-const Activity = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/activity/index.vue'));
-const Comment = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/comment/index.vue'));
-const SubTask = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/subTask/index.vue'));
+const Remark = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/Remark.vue'));
+const Activity = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/Activity.vue'));
+const Comment = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/Comment.vue'));
+const SubTask = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/SubTask.vue'));
 const SplitTask = defineAsyncComponent(() => import('@/views/task/backlog/SplitTask.vue'));
-const AssocCaseTab = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/assocCase/index.vue'));
-const AssocTaskTab = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/assocTask/index.vue'));
+const AssocCaseTab = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/AssocCase.vue'));
+const AssocTaskTab = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/AssocTask.vue'));
 
 const { t } = useI18n();
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));

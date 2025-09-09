@@ -7,7 +7,7 @@ import { TESTER } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 
 import { TaskInfo } from '../../../../types';
-import { ActionMenuItem } from '../../PropsType';
+import { ActionMenuItem } from '../../../types';
 
 type Props = {
   projectId: string;
@@ -49,9 +49,9 @@ const emit = defineEmits<{
   (event: 'batchAction', type: 'cancel' | 'delete' | 'follow' | 'cancelFollow' | 'favourite' | 'cancelFavourite' | 'move', value: string[]): void;
 }>();
 
-const List = defineAsyncComponent(() => import('./list.vue'));
+const List = defineAsyncComponent(() => import('./List.vue'));
 const Details = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/index.vue'));
-const MoveTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/move/index.vue'));
+const MoveTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/Move.vue'));
 
 const { t } = useI18n();
 const MAX_NUM = 200;

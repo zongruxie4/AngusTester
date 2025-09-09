@@ -30,8 +30,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const Details = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/index.vue'));
-const EditTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/edit/index.vue'));
-const MoveTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/move/index.vue'));
+const EditTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/Edit.vue'));
+const MoveTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/Move.vue'));
 
 const getTabPane = inject<(key: string) => ({ data: { query: string; } }[])>('getTabPane', () => []);
 const deleteTabPane = inject<(value: string[]) => void>('deleteTabPane');

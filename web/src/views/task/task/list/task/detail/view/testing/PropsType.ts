@@ -1,3 +1,5 @@
+// TODO 和执行中type复用一个
+
 export type TestInfo = {
     caseResults: {
         apisId: string;

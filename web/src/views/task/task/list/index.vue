@@ -9,9 +9,11 @@ import { modules, task } from '@/api/tester';
 
 import { getCurrentPage } from '@/utils/utils';
 import { TaskInfo } from '../../types';
-import { ActionMenuItem, travelTreeData } from './PropsType';
+import { ActionMenuItem, travelTreeData } from '../types';
 // eslint-disable-next-line import/no-absolute-path
 import Template from '/file/Import_Task_Template.xlsx?url';
+
+// TODO 按列表、平铺、看板、甘特图视图划分目录
 
 type SprintPermissionKey = 'MODIFY_SPRINT' | 'DELETE_SPRINT' | 'ADD_TASK' | 'MODIFY_TASK' | 'DELETE_TASK' | 'EXPORT_TASK' | 'RESTART_TASK' | 'REOPEN_TASK' | 'GRANT'
 
@@ -34,17 +36,17 @@ const props = withDefaults(defineProps<Props>(), {
   notify: undefined
 });
 
-const StatisticsPanel = defineAsyncComponent(() => import('@/views/task/task/list/statisticsPanel/index.vue'));
-const SearchPanel = defineAsyncComponent(() => import('@/views/task/task/list/searchPanel/index.vue'));
-const Edit = defineAsyncComponent(() => import('@/views/task/task/list/task/edit/index.vue'));
-const Move = defineAsyncComponent(() => import('@/views/task/task/list/task/move/index.vue'));
-const FlowChart = defineAsyncComponent(() => import('@/views/task/task/list/task/flowChart/index.vue'));
-const Table = defineAsyncComponent(() => import('@/views/task/task/list/task/table/index.vue'));
+const StatisticsPanel = defineAsyncComponent(() => import('@/views/task/task/list/statistics/index.vue'));
+const SearchPanel = defineAsyncComponent(() => import('@/views/task/task/list/SearchPanel.vue'));
+const Edit = defineAsyncComponent(() => import('@/views/task/task/list/task/Edit.vue'));
+const Move = defineAsyncComponent(() => import('@/views/task/task/list/task/Move.vue'));
+const FlowChart = defineAsyncComponent(() => import('@/views/task/task/list/task/FlowChart.vue'));
+const Table = defineAsyncComponent(() => import('@/views/task/task/list/task/Table.vue'));
 const DetailView = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/index.vue'));
 const KanbanView = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/index.vue'));
-const GanttView = defineAsyncComponent(() => import('@/views/task/task/list/task/gantt/index.vue'));
-const Upload = defineAsyncComponent(() => import('@/views/task/task/list/task/upload/index.vue'));
-const ModuleTree = defineAsyncComponent(() => import('./moduleTree.vue'));
+const GanttView = defineAsyncComponent(() => import('@/views/task/task/list/task/GanttChart.vue'));
+const Upload = defineAsyncComponent(() => import('@/views/task/task/list/task/Upload.vue'));
+const ModuleTree = defineAsyncComponent(() => import('./ModuleTree.vue'));
 
 const { t } = useI18n();
 const deleteTabPane = inject<(value: string[]) => void>('deleteTabPane');

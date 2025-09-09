@@ -27,13 +27,13 @@ const emit = defineEmits<{
   (event: 'change', value: Partial<TaskInfo>): void;
 }>();
 
-const APIBasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/info/apis/index.vue'));
-const ScenarioBasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/info/scenario/index.vue'));
-const BasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/info/basic/index.vue'));
-const Description = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/info/description/index.vue'));
-const PersonnelInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/info/personnel/index.vue'));
-const DateInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/info/date/index.vue'));
-const AttachmentInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/info/attachment/index.vue'));
+const APIBasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/info/Apis.vue'));
+const ScenarioBasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/info/Scenario.vue'));
+const BasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/info/Basic.vue'));
+const Description = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/info/Description.vue'));
+const PersonnelInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/info/Personnel.vue'));
+const DateInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/info/Date.vue'));
+const AttachmentInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/info/Attachment.vue'));
 // const refTasks = defineAsyncComponent(() => import('./refTasks/index.vue'));
 // const refCases = defineAsyncComponent(() => import('./refCases/index.vue'));
 

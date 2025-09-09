@@ -15,7 +15,7 @@ export type TabKey = 'info' | 'activty' | 'comments' | 'asscoTask' | 'asscoCase'
 export interface Attachments { id?: string, name: string, url: string }
 
 const CaseDetailTab = defineAsyncComponent(() => import('@/views/function/case/detail/case/index.vue'));
-const AddTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/edit/index.vue'));
+const AddTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/Edit.vue'));
 const ReviewTab = defineAsyncComponent(() => import('@/views/function/case/detail/review/index.vue'));
 const AssocTaskTab = defineAsyncComponent(() => import('@/views/function/case/detail/assocTask/index.vue'));
 const AssocCaseTab = defineAsyncComponent(() => import('@/views/function/case/detail/assocCase/index.vue'));
