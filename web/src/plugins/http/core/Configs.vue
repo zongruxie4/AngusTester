@@ -50,10 +50,10 @@ const SmartComment = defineAsyncComponent(() => import('./Drawer/SmartComment/in
 
 const SelectScriptModal = defineAsyncComponent(() => import('@/components/script/SelectScriptModal.vue'));
 const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/ExportScriptModal.vue'));
+const ImportScriptSelector = defineAsyncComponent(() => import('@/components/script/ImportScriptSelector.vue'));
 
 const ScriptConfig = defineAsyncComponent(() => import('./ScriptConfig/index.vue'));
 const UIConfig = defineAsyncComponent(() => import('./UIConfig/index.vue'));
-const ImportScript = defineAsyncComponent(() => import('./ImportScript/index.vue'));
 const ExecuteConfig = defineAsyncComponent(() => import('./ExecuteConfig/index.vue'));
 const DebugResult = defineAsyncComponent(() => import('./DebugResult/index.vue'));
 const DebugLog = defineAsyncComponent(() => import('./DebugLog/index.vue'));
@@ -1647,7 +1647,7 @@ provide('setGlobalTabActiveKey', setGlobalTabActiveKey);
     </AsyncComponent>
 
     <AsyncComponent :visible="uploadVisible">
-      <ImportScript
+      <ImportScriptSelector
         :visible="uploadVisible"
         @ok="selectScriptOk"
         @update:visible="uploadVisible = $event" />
