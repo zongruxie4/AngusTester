@@ -184,7 +184,7 @@ const timeTexts = computed(() => [
         <div class="text-text-title text-4 font-semibold" style="color:rgba(129, 154, 218, 100%);">
           {{ duration?.[1] }}<span class="text-3.25 ml-0.5">{{ duration?.[2] }}</span>
         </div>
-        <div>{{ t('httpPlugin.functionTestDetail.basicInfo.duration') }}</div>
+        <div class="exec-basic-data-card-title">{{ t('httpPlugin.functionTestDetail.basicInfo.duration') }}</div>
       </div>
 
       <div
@@ -195,7 +195,7 @@ const timeTexts = computed(() => [
           <em class="not-italic inline-block w-0.5 h-3.5 mx-1.5 rounded" style="transform: rotate(25deg);background-color: rgba(3, 185, 208, 100%);"></em>
           <span>{{ planIterationNum }}</span>
         </div>
-        <div>{{ t('httpPlugin.functionTestDetail.basicInfo.iteration') }}</div>
+        <div class="exec-basic-data-card-title">{{ t('httpPlugin.functionTestDetail.basicInfo.iteration') }}</div>
       </div>
 
       <div
@@ -206,7 +206,7 @@ const timeTexts = computed(() => [
           <em class="not-italic inline-block w-0.5 h-3.5 mx-1.5 rounded" style="transform: rotate(25deg);background-color: rgba(3, 206, 92, 100%);"></em>
           <span>{{ planRequestNum }}</span>
         </div>
-        <div>{{ t('httpPlugin.functionTestDetail.basicInfo.request') }}</div>
+        <div class="exec-basic-data-card-title">{{ t('httpPlugin.functionTestDetail.basicInfo.request') }}</div>
       </div>
 
       <div
@@ -219,7 +219,7 @@ const timeTexts = computed(() => [
           <em class="not-italic inline-block w-0.5 h-3.5 mx-2 rounded" style="background-color: rgba(255, 129, 0, 100%);"></em>
           <span>{{ tranMax }}</span>
         </div>
-        <div class="whitespace-nowrap overflow-hidden">
+        <div class="whitespace-nowrap overflow-hidden exec-basic-data-card-title">
           {{ t('httpPlugin.functionTestDetail.basicInfo.responseTime') }}（<GroupText :texts="timeTexts" class="text-theme-sub-content" />）
         </div>
       </div>
@@ -281,4 +281,7 @@ const timeTexts = computed(() => [
   display: none;
 }
 
+.exec-basic-data-card-title {
+  @apply text-3.5 font-semibold;
+}
 </style>

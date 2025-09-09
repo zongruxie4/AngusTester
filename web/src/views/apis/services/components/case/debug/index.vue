@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, onMounted, reactive, ref, watch } from 'vue';
-import { Input, NoData, notification, Select, SelectInput, ApiUtils as apiUtils, AssertUtils as assertUtils, AuthUtils as authUtils } from '@xcan-angus/vue-ui';
+import { Input, NoData, notification, Select, SelectInput, ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
 import { Badge, TabPane, Tabs } from 'ant-design-vue';
 import qs from 'qs';
 import XML from 'xml';
@@ -9,6 +9,8 @@ import { useI18n } from 'vue-i18n';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import { type AssertResult, type ConditionResult } from '@xcan-angus/vue-ui/types';
 import { apis, services } from '@/api/tester';
+import  { getShowAuthData } from '@/components/ApiAuthencation/interface';
+import assertUtils from '@/utils/assertutils';
 
 import {
   ApiInfo,
@@ -1259,7 +1261,7 @@ watch(() => requestId.value, newValue => {
 
 // 显示认证信息在请求头
 watch(() => authenticationParam.value, async newValue => {
-  const data = await authUtils.getShowAuthData(newValue);
+  const data = await getShowAuthData(newValue);
   authInHeader.value = data?.[0] || {};
 }, {
   deep: true,

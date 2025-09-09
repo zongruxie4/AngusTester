@@ -3,7 +3,7 @@ import {
   computed, defineAsyncComponent, inject, nextTick, onBeforeUnmount, onMounted, provide, reactive, ref, watch
 } from 'vue';
 import { Popover, TabPane, Tabs, RadioGroup, RadioButton, Button, Badge } from 'ant-design-vue';
-import { ActivityTimeline, Drawer, Hints, Icon, NoData, notification, Spin, AsyncComponent, AssertUtils as assertUtils, ApiUtils as apiUtils, AuthUtils as authUtil } from '@xcan-angus/vue-ui';
+import { ActivityTimeline, Drawer, Hints, Icon, NoData, notification, Spin, AsyncComponent, ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
 import elementResizeDetector from 'element-resize-detector';
 import { AssertionCondition, AssertionType, utils, axiosClient, duration } from '@xcan-angus/infra';
 import { dataURLtoBlob } from '@/utils/blob';
@@ -15,6 +15,7 @@ import useClipboard from 'vue-clipboard3';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
+import assertUtils from '@/utils/assertutils';
 
 import { apis, services } from '@/api/tester';
 import { getStatusText } from '@/views/apis/services/components/request/interface';
@@ -35,12 +36,14 @@ import { getServerData } from '@/views/apis/services/apiHttp/serverPath/utils';
 import { rawTypeOptions, RequestBodyParam } from '@/views/apis/services/apiHttp/requestBody/interface';
 import { AssertResult, ConditionResult, Parameter } from './PropsType';
 import { encode } from '@/utils/secure';
+import  { getShowAuthData } from '@/components/ApiAuthencation/interface';
 
 const Indicator = defineAsyncComponent(() => import('@/components/Indicator/index.vue'));
 const HttpTestInfo = defineAsyncComponent(() => import('@/components/HttpTestInfo/index.vue'));
 const FunctionsButton = defineAsyncComponent(() => import('@xcan-angus/vue-ui').then(resp => resp.FunctionsButton));
 const APICaseParametric = defineAsyncComponent(() => import('@/components/apis/parameterization/index.vue'));
 const ExecDetail = defineAsyncComponent(() => import('@/views/apis/services/apiHttp/execDetail/index.vue'));
+
 
 interface Props {
   pid: string,
@@ -527,7 +530,7 @@ const hasBodyContent = computed(() => {
 
 // 显示认证信息在请求头
 watch(() => state.authentication, async newValue => {
-  const data = await authUtil.getShowAuthData(newValue);
+  const data = await getShowAuthData(newValue);
   authInHeader.value = data?.[0] || {};
 }, {
   deep: true
