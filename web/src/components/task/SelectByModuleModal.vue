@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { IconTask, Input, Modal, Table } from '@xcan-angus/vue-ui';
+import { Icon, IconTask, Input, Modal, Table } from '@xcan-angus/vue-ui';
 import { duration, http } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
@@ -188,47 +188,246 @@ watch(() => selectedModuleId.value, () => {
 </script>
 <template>
   <Modal
+    class="select-module-modal-container"
     :title="computedModalTitle"
     :visible="props.visible"
-    :width="1000"
+    :width="1200"
     :loading="isLoading"
     @cancel="handleModalCancel"
     @ok="handleModalConfirm">
-    <div v-if="props.visible" class="flex">
-      <div class="w-50 h-144.5 overflow-y-auto">
-        <ModuleTree
-          v-model:moduleId="selectedModuleId"
-          :title="t('commonComp.selectTaskByModuleModal.task')"
-          :projectId="props.projectId"
-          :projectName="''" />
+    <div v-if="props.visible" class="modal-content">
+      <!-- Left module tree area -->
+      <div class="module-tree-section">
+        <h4 class="section-title">{{ t('commonComp.selectTaskByModuleModal.moduleTree') }}</h4>
+        <div class="module-tree-container">
+          <ModuleTree
+            v-model:moduleId="selectedModuleId"
+            :title="t('commonComp.selectTaskByModuleModal.task')"
+            :projectId="props.projectId"
+            :projectName="''" />
+        </div>
       </div>
-      <div class="flex-1 ml-2">
-        <Input
-          v-model:value="searchKeywords"
-          :placeholder="t('commonComp.selectTaskByModuleModal.searchPlaceholder')"
-          class="w-100"
-          @change="handleSearchFilter" />
-        <Table
-          :columns="tableColumns"
-          :dataSource="filteredTaskData"
-          :rowSelection="tableRowSelection"
-          :pagination="false"
-          :scroll="{x: true, y: 500, scrollToFirstRowOnChange: true}"
-          class="mt-2"
-          rowKey="id"
-          noDataText="No data"
-          noDataSize="small">
-          <template #bodyCell="{record, column}">
-            <template v-if="column.dataIndex === 'status'">
-              {{ record.status?.message }}
+
+      <!-- Right task list area -->
+      <div class="task-list-section">
+        <h4 class="section-title">{{ t('commonComp.selectTaskByModuleModal.taskList') }}</h4>
+
+        <!-- Search area -->
+        <div class="search-section">
+          <Input
+            v-model:value="searchKeywords"
+            :placeholder="t('commonComp.selectTaskByModuleModal.searchPlaceholder')"
+            class="search-input"
+            @change="handleSearchFilter">
+            <template #prefix>
+              <Icon icon="icon-search" class="search-icon" />
             </template>
-            <template v-if="column.dataIndex === 'taskType'">
-              <IconTask :value="record.taskType?.value" />
-              {{ record.taskType?.message }}
+          </Input>
+        </div>
+
+        <!-- Task table area -->
+        <div class="table-section">
+          <Table
+            :columns="tableColumns"
+            :dataSource="filteredTaskData"
+            :rowSelection="tableRowSelection"
+            :pagination="false"
+            :scroll="{x: true, y: 500, scrollToFirstRowOnChange: true}"
+            class="task-table"
+            rowKey="id"
+            noDataText="No data"
+            noDataSize="small">
+            <template #bodyCell="{record, column}">
+              <template v-if="column.dataIndex === 'status'">
+                <span class="status-text">{{ record.status?.message }}</span>
+              </template>
+              <template v-if="column.dataIndex === 'taskType'">
+                <div class="task-type-cell">
+                  <IconTask :value="record.taskType?.value" class="task-type-icon" />
+                  <span class="task-type-text">{{ record.taskType?.message }}</span>
+                </div>
+              </template>
             </template>
-          </template>
-        </Table>
+          </Table>
+        </div>
       </div>
     </div>
   </Modal>
 </template>
+
+<style scoped>
+/* Modal content area */
+.modal-content {
+  display: flex;
+  gap: 20px;
+  height: 600px;
+}
+
+/* Left module tree area */
+.module-tree-section {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  background-color: #fafafa;
+  border: 1px solid #f0f0f0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.section-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0;
+  padding: 12px 16px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.module-tree-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+/* Right task list area */
+.task-list-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #fafafa;
+  border: 1px solid #f0f0f0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* Search area */
+.search-section {
+  padding: 16px;
+  border-bottom: 1px solid #f0f0f0;
+  background-color: #fff;
+}
+
+.search-input {
+  width: 100%;
+}
+
+.search-icon {
+  color: #bfbfbf;
+  font-size: 14px;
+}
+
+/* Table area */
+.table-section {
+  flex: 1;
+  padding: 16px;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.task-table {
+  height: 100%;
+}
+
+/* Table content styles */
+.status-text {
+  font-size: 12px;
+  color: #595959;
+}
+
+.task-type-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.task-type-icon {
+  font-size: 14px;
+}
+
+.task-type-text {
+  font-size: 12px;
+  color: #262626;
+}
+
+/* Deep style overrides */
+:deep(.ant-input) {
+  font-size: 12px;
+  border-radius: 4px;
+}
+
+:deep(.ant-input:focus) {
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+:deep(.ant-table-thead > tr > th) {
+  background-color: #fafafa;
+  font-size: 12px;
+  font-weight: 600;
+  color: #262626;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 12px 8px;
+}
+
+:deep(.ant-table-tbody > tr > td) {
+  font-size: 12px;
+  color: #262626;
+  padding: 12px 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+:deep(.ant-table-tbody > tr:hover > td) {
+  background-color: #f5f5f5;
+}
+
+:deep(.ant-table-tbody > tr.ant-table-row-selected > td) {
+  background-color: #e6f7ff;
+}
+
+:deep(.ant-checkbox-wrapper) {
+  font-size: 12px;
+}
+
+:deep(.ant-checkbox-inner) {
+  width: 16px;
+  height: 16px;
+}
+
+:deep(.ant-checkbox-checked .ant-checkbox-inner) {
+  background-color: #1890ff;
+  border-color: #1890ff;
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+  .modal-content {
+    flex-direction: column;
+    height: auto;
+    max-height: 600px;
+  }
+
+  .module-tree-section {
+    width: 100%;
+    height: 200px;
+  }
+
+  .task-list-section {
+    height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-section {
+    padding: 12px;
+  }
+
+  .table-section {
+    padding: 12px;
+  }
+
+  .module-tree-container {
+    padding: 6px;
+  }
+}
+</style>

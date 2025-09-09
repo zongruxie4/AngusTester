@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Modal, notification } from '@xcan-angus/vue-ui';
+import { Icon, Modal, notification } from '@xcan-angus/vue-ui';
 import { CheckboxGroup, Form, FormItem } from 'ant-design-vue';
 import { TestType } from '@/enums/enums';
 
@@ -138,23 +138,155 @@ watch(() => props.visible, () => {
 </script>
 <template>
   <Modal
+    class="delete-test-modal-container"
     :title="t('commonComp.delTaskTestModal.title')"
-    :width="580"
+    :width="600"
     :confirmLoading="isDeleting"
     :visible="props.visible"
     @cancel="handleModalClose"
     @ok="handleDeleteConfirm">
-    <div class="mb-2">
-      {{ t('commonComp.delTaskTestModal.confirmMessage') }}
+    <!-- Confirmation information area -->
+    <div class="confirm-section">
+      <div class="confirm-icon">
+        <Icon icon="icon-warning" />
+      </div>
+      <div class="confirm-content">
+        <p class="confirm-message">{{ t('commonComp.delTaskTestModal.confirmMessage') }}</p>
+      </div>
     </div>
-    <Form ref="deleteFormRef" :model="deleteFormData">
-      <FormItem
-        :rules="{ validator: validateTestTypeSelection, message: t('commonComp.delTaskTestModal.selectTestType'), required: true }"
-        :label="t('commonComp.delTaskTestModal.selectDeleteTestType')"
-        class="w-full"
-        name="selectedTestTypes">
-        <CheckboxGroup v-model:value="deleteFormData.selectedTestTypes" :options="testTypeOptions()"></CheckboxGroup>
-      </FormItem>
-    </Form>
+
+    <!-- Selection area -->
+    <div class="selection-section">
+      <h4 class="section-title">{{ t('commonComp.delTaskTestModal.selectDeleteTestType') }}</h4>
+      <Form
+        ref="deleteFormRef"
+        :model="deleteFormData"
+        class="selection-form">
+        <FormItem
+          :rules="{ validator: validateTestTypeSelection, message: t('commonComp.delTaskTestModal.selectTestType'), required: true }"
+          name="selectedTestTypes">
+          <CheckboxGroup
+            v-model:value="deleteFormData.selectedTestTypes"
+            :options="testTypeOptions()"
+            class="test-type-checkboxes">
+          </CheckboxGroup>
+        </FormItem>
+      </Form>
+    </div>
   </Modal>
 </template>
+
+<style scoped>
+/* Confirmation information area */
+.confirm-section {
+  display: flex;
+  align-items: flex-start;
+  padding: 16px;
+  margin-bottom: 24px;
+  background-color: #fff2f0;
+  border: 1px solid #ffccc7;
+  border-radius: 6px;
+}
+
+.confirm-icon {
+  color: #ff4d4f;
+  font-size: 20px;
+  margin-right: 12px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.confirm-content {
+  flex: 1;
+}
+
+.confirm-message {
+  font-size: 14px;
+  color: #595959;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Selection area */
+.selection-section {
+  margin-top: 24px;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0 0 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.selection-form {
+  background-color: #fafafa;
+  padding: 16px;
+  border-radius: 6px;
+  border: 1px solid #f0f0f0;
+}
+
+.test-type-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Deep style overrides */
+:deep(.ant-checkbox-wrapper) {
+  font-size: 12px;
+  color: #262626;
+  margin-right: 0;
+  margin-bottom: 8px;
+  padding: 4px 0;
+}
+
+:deep(.ant-checkbox-wrapper:hover) {
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin: 0 -8px 8px -8px;
+}
+
+:deep(.ant-checkbox) {
+  margin-right: 8px;
+}
+
+:deep(.ant-checkbox-inner) {
+  width: 16px;
+  height: 16px;
+}
+
+:deep(.ant-checkbox-checked .ant-checkbox-inner) {
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+:deep(.ant-form-item-label > label) {
+  font-size: 12px;
+  font-weight: 500;
+  color: #262626;
+}
+
+:deep(.ant-form-item-label > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before) {
+  color: #ff4d4f;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .confirm-section {
+    padding: 12px;
+  }
+
+  .selection-form {
+    padding: 12px;
+  }
+
+  .confirm-icon {
+    font-size: 18px;
+    margin-right: 10px;
+  }
+}
+</style>

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Modal, notification } from '@xcan-angus/vue-ui';
+import { Icon, Modal, notification } from '@xcan-angus/vue-ui';
 import { apis, scenario, services } from '@/api/tester';
 import { CombinedTargetType } from '@xcan-angus/infra';
 
@@ -78,12 +78,65 @@ const handleRestartConfirm = async () => {
 </script>
 <template>
   <Modal
+    class="restart-test-modal-container"
     :title="t('commonComp.restartTaskTestModal.title')"
-    :width="580"
+    :width="600"
     :visible="props.visible"
     :confirmLoading="isRestarting"
     @ok="handleRestartConfirm"
     @cancel="handleModalClose">
-    <div class="mb-5">{{ props.content }}</div>
+    <!-- Confirmation information area -->
+    <div class="confirm-section">
+      <div class="confirm-icon">
+        <Icon icon="icon-restart" />
+      </div>
+      <div class="confirm-content">
+        <p class="confirm-message">{{ props.content }}</p>
+      </div>
+    </div>
   </Modal>
 </template>
+
+<style scoped>
+/* Confirmation information area */
+.confirm-section {
+  display: flex;
+  align-items: flex-start;
+  padding: 20px;
+  background-color: #e6f7ff;
+  border: 1px solid #91d5ff;
+  border-radius: 6px;
+}
+
+.confirm-icon {
+  color: #1890ff;
+  font-size: 24px;
+  margin-right: 16px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.confirm-content {
+  flex: 1;
+}
+
+.confirm-message {
+  font-size: 14px;
+  color: #595959;
+  line-height: 1.6;
+  margin: 0;
+  white-space: pre-line;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .confirm-section {
+    padding: 16px;
+  }
+
+  .confirm-icon {
+    font-size: 20px;
+    margin-right: 12px;
+  }
+}
+</style>

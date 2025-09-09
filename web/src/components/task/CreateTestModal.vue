@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import {computed, defineAsyncComponent, inject, onMounted, reactive, ref, Ref, watch} from 'vue';
-import {useI18n} from 'vue-i18n';
-import {CombinedTargetType, http, Priority, TESTER} from '@xcan-angus/infra';
-import {CheckboxGroup, Form, FormItem} from 'ant-design-vue';
-import {Icon, Modal, notification, Select, Toggle} from '@xcan-angus/vue-ui';
-import {project} from '@/api/tester';
-import {TestType} from '@/enums/enums';
-import {FormData} from './types';
+import { computed, defineAsyncComponent, inject, onMounted, reactive, ref, Ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { CombinedTargetType, EnumMessage, http, Priority, TESTER } from '@xcan-angus/infra';
+import { CheckboxGroup, Form, FormItem } from 'ant-design-vue';
+import { Icon, Modal, notification, Select, Toggle } from '@xcan-angus/vue-ui';
+import { project } from '@/api/tester';
+import { ProjectType, TestType } from '@/enums/enums';
+import { FormData } from './types';
+import { ProjectDisplayInfo } from '@/layout/types';
 
 const { t } = useI18n();
 
@@ -36,7 +37,7 @@ const emit = defineEmits<{
 
 // ===== Reactive Data and State =====
 // Inject project information from parent component
-const projectId = inject<Ref<string>>('projectId', ref(''));
+const projectInfo = inject<Ref<ProjectDisplayInfo>>('projectInfo', ref({ id: '', name: '', type: {} as EnumMessage<ProjectType> }));
 const projectMembers = ref([]);
 
 // Form references for validation
@@ -47,7 +48,7 @@ const functionalFormRef = ref();
 const stabilityFormRef = ref();
 
 // Sprint configuration data
-const sprintConfiguration = reactive({
+const taskConfiguration = reactive({
   id: undefined,
   activeKey: [TestType.FUNCTIONAL]
 });
@@ -100,15 +101,15 @@ const isConfirmLoading = ref<boolean>(false);
  */
 const computedFormData = computed(() => {
   const result: FormData[] = [];
-  if (sprintConfiguration.activeKey.includes(TestType.PERFORMANCE)) {
+  if (taskConfiguration.activeKey.includes(TestType.PERFORMANCE)) {
     result.push(performanceTestForm.value);
   }
 
-  if (sprintConfiguration.activeKey.includes(TestType.FUNCTIONAL)) {
+  if (taskConfiguration.activeKey.includes(TestType.FUNCTIONAL)) {
     result.push(functionalTestForm.value);
   }
 
-  if (sprintConfiguration.activeKey.includes(TestType.STABILITY)) {
+  if (taskConfiguration.activeKey.includes(TestType.STABILITY)) {
     result.push(stabilityTestForm.value);
   }
   return result;
@@ -124,11 +125,11 @@ const computedFormData = computed(() => {
 const apiEndpointUrl = computed(() => {
   switch (props.type) {
     case CombinedTargetType.API:
-      return `${TESTER}/apis/${props.id}/test/task/generate?taskSprintId=${sprintConfiguration.id}`;
+      return `${TESTER}/apis/${props.id}/test/task/generate?taskSprintId=${taskConfiguration.id}`;
     case CombinedTargetType.SERVICE:
-      return `${TESTER}/services/${props.id}/test/task/generate?taskSprintId=${sprintConfiguration.id}`;
+      return `${TESTER}/services/${props.id}/test/task/generate?taskSprintId=${taskConfiguration.id}`;
     case CombinedTargetType.SCENARIO:
-      return `${TESTER}/scenario/${props.id}/test/task/generate?taskSprintId=${sprintConfiguration.id}`;
+      return `${TESTER}/scenario/${props.id}/test/task/generate?taskSprintId=${taskConfiguration.id}`;
     default:
       return '';
   }
@@ -142,7 +143,7 @@ const apiEndpointUrl = computed(() => {
  * Fetches the list of project members and updates the local state.
  */
 const loadProjectMembers = async () => {
-  const [error, { data }] = await project.getProjectMember(projectId.value);
+  const [error, { data }] = await project.getProjectMember(projectInfo.value.id);
   if (error) {
     return;
   }
@@ -158,7 +159,7 @@ const loadProjectMembers = async () => {
  * @returns Promise that resolves if validation passes, rejects otherwise
  */
 const validateTestTypeSelection = () => {
-  if (!sprintConfiguration.activeKey.length) {
+  if (!taskConfiguration.activeKey.length) {
     // eslint-disable-next-line prefer-promise-reject-errors
     return Promise.reject(t('commonComp.createTaskTestModal.validation.testTypeRequired'));
   }
@@ -214,7 +215,7 @@ const handleConfirm = async () => {
     return;
   }
 
-  if (!sprintConfiguration.id) {
+  if (!taskConfiguration.id) {
     return;
   }
 
@@ -236,8 +237,8 @@ const handleConfirm = async () => {
  * Resets all form data to initial state and closes the modal.
  */
 const handleCancel = () => {
-  sprintConfiguration.id = undefined;
-  sprintConfiguration.activeKey = [TestType.FUNCTIONAL];
+  taskConfiguration.id = undefined;
+  taskConfiguration.activeKey = [TestType.FUNCTIONAL];
   projectSelectRef.value?.clearAll();
   isConfirmLoading.value = false;
 
@@ -295,8 +296,8 @@ onMounted(() => {
   }, { immediate: true });
 
   // Watch for project ID changes and load members
-  watch(() => projectId.value, () => {
-    if (!projectMembers.value.length && projectId.value) {
+  watch(() => projectInfo.value, () => {
+    if (!projectMembers.value.length && projectInfo.value.id) {
       loadProjectMembers();
     }
   }, { immediate: true });
@@ -306,113 +307,288 @@ onMounted(() => {
   <Modal
     class="create-task-modal-container"
     :title="t('commonComp.createTaskTestModal.title')"
-    :width="1000"
+    :width="1200"
     :visible="visible"
     :confirmLoading="isConfirmLoading"
     @ok="handleConfirm"
     @cancel="handleCancel">
-    <div v-if="!!infoText" class="mt-3 mb-5 text-3 text-theme-content leading-5">
-      <Icon class="text-status-warn text-3.5 -mt-1 mr-1" icon="icon-tishi1" />
-      <span>{{ props.infoText }}</span>
+    <!-- Information prompt area -->
+    <div v-if="!!infoText" class="info-section">
+      <Icon class="info-icon" icon="icon-tishi1" />
+      <span class="info-text">{{ props.infoText }}</span>
     </div>
 
-    <Form
-      ref="sprintFormRef"
-      :model="sprintConfiguration"
-      class="my-5">
-      <FormItem
-        required
-        :label="t('commonComp.createTaskTestModal.taskSprint')"
-        name="id"
-        :labelCol="{ style: { lineHeight: '28px' } }"
-        class="flex-1">
-        <Select
-          v-model:value="sprintConfiguration.id"
-          :disabled="!projectId"
-          :action="`${TESTER}/task/sprint?projectId=${projectId}`"
-          :fieldNames="{ value: 'id', label: 'name' }"
-          :placeholder="t('commonComp.createTaskTestModal.selectSprint')">
-          <template #option="record">
-            <div class="flex items-center truncate">
-              <Icon icon="icon-jihua" class="text-4" />
-              <span class="ml-1">{{ record.name }}</span>
-            </div>
-          </template>
-        </Select>
-      </FormItem>
-      <FormItem
-        :label="t('commonComp.createTaskTestModal.testType')"
-        name="activeKey"
-        :rules="{ required: true, validator: validateTestTypeSelection, message: t('commonComp.createTaskTestModal.validation.testTypeRequired') }">
-        <CheckboxGroup v-model:value="sprintConfiguration.activeKey" :options="testTypeOptions" />
-      </FormItem>
-    </Form>
+    <!-- Basic configuration area -->
+    <div class="config-section">
+      <h3 class="section-title">{{ t('commonComp.createTaskTestModal.basicConfig') }}</h3>
+      <Form
+        ref="sprintFormRef"
+        :model="taskConfiguration"
+        class="config-form">
+        <div v-if="projectInfo.type?.value === ProjectType.AGILE" class="form-row">
+          <FormItem
+            :required="projectInfo.type?.value === ProjectType.AGILE"
+            :label="t('commonComp.createTaskTestModal.taskSprint')"
+            name="id"
+            class="form-item-sprint">
+            <Select
+              v-model:value="taskConfiguration.id"
+              :disabled="!projectInfo.id"
+              :action="`${TESTER}/task/sprint?projectId=${projectInfo.id}`"
+              :fieldNames="{ value: 'id', label: 'name' }"
+              :placeholder="t('commonComp.createTaskTestModal.selectSprint')">
+              <template #option="record">
+                <div class="sprint-option">
+                  <Icon icon="icon-jihua" class="sprint-icon" />
+                  <span class="sprint-name">{{ record.name }}</span>
+                </div>
+              </template>
+            </Select>
+          </FormItem>
+        </div>
+        <div class="form-row">
+          <FormItem
+            :label="t('commonComp.createTaskTestModal.testType')"
+            name="activeKey"
+            :rules="{ required: true, validator: validateTestTypeSelection, message: t('commonComp.createTaskTestModal.validation.testTypeRequired') }"
+            class="form-item-test-type">
+            <CheckboxGroup v-model:value="taskConfiguration.activeKey" :options="testTypeOptions" />
+          </FormItem>
+        </div>
+      </Form>
+    </div>
 
-    <div class="space-x-5 flex">
-      <Toggle
-        v-if="sprintConfiguration.activeKey.includes(TestType.FUNCTIONAL)"
-        v-model:open="formSectionToggleConfig.functional"
-        class="w-1/3"
-        :title="t('commonComp.createTaskTestModal.functionalTestConfig')">
-        <TestForm
-          ref="functionalFormRef"
-          :key="TestType.FUNCTIONAL"
-          v-model:value="functionalTestForm"
-          :type="props.type"
-          :users="projectMembers"
-          class="flex-1 mt-2" />
-      </Toggle>
+    <!-- Test configuration area -->
+    <div v-if="taskConfiguration.activeKey.length" class="test-config-section">
+      <h3 class="section-title">{{ t('commonComp.createTaskTestModal.testTaskConfig') }}</h3>
+      <div class="test-forms-container">
+        <Toggle
+          v-if="taskConfiguration.activeKey.includes(TestType.FUNCTIONAL)"
+          v-model:open="formSectionToggleConfig.functional"
+          class="test-form-toggle"
+          :title="t('commonComp.createTaskTestModal.functionalTestConfig')">
+          <TestForm
+            ref="functionalFormRef"
+            :key="TestType.FUNCTIONAL"
+            v-model:value="functionalTestForm"
+            :type="props.type"
+            :users="projectMembers"
+            class="test-form-content" />
+        </Toggle>
 
-      <Toggle
-        v-if="sprintConfiguration.activeKey.includes(TestType.PERFORMANCE)"
-        v-model:open="formSectionToggleConfig.performance"
-        class="w-1/3"
-        :title="t('commonComp.createTaskTestModal.performanceTestConfig')">
-        <TestForm
-          ref="performanceFormRef"
-          :key="TestType.PERFORMANCE"
-          v-model:value="performanceTestForm"
-          :type="props.type"
-          :users="projectMembers"
-          class="flex-1 mt-2" />
-      </Toggle>
+        <Toggle
+          v-if="taskConfiguration.activeKey.includes(TestType.PERFORMANCE)"
+          v-model:open="formSectionToggleConfig.performance"
+          class="test-form-toggle"
+          :title="t('commonComp.createTaskTestModal.performanceTestConfig')">
+          <TestForm
+            ref="performanceFormRef"
+            :key="TestType.PERFORMANCE"
+            v-model:value="performanceTestForm"
+            :type="props.type"
+            :users="projectMembers"
+            class="test-form-content" />
+        </Toggle>
 
-      <Toggle
-        v-if="sprintConfiguration.activeKey.includes(TestType.STABILITY)"
-        v-model:open="formSectionToggleConfig.stability"
-        class="w-1/3"
-        :title="t('commonComp.createTaskTestModal.stabilityTestConfig')">
-        <TestForm
-          ref="stabilityFormRef"
-          :key="TestType.STABILITY"
-          v-model:value="stabilityTestForm"
-          :type="props.type"
-          :users="projectMembers"
-          class="flex-1 mt-2" />
-      </Toggle>
+        <Toggle
+          v-if="taskConfiguration.activeKey.includes(TestType.STABILITY)"
+          v-model:open="formSectionToggleConfig.stability"
+          class="test-form-toggle"
+          :title="t('commonComp.createTaskTestModal.stabilityTestConfig')">
+          <TestForm
+            ref="stabilityFormRef"
+            :key="TestType.STABILITY"
+            v-model:value="stabilityTestForm"
+            :type="props.type"
+            :users="projectMembers"
+            class="test-form-content" />
+        </Toggle>
+      </div>
     </div>
   </Modal>
 </template>
 
 <style>
 .ant-modal-wrap .ant-modal.create-task-modal-container .ant-modal-content .ant-modal-body {
-  max-height: 80vh;
-  padding-top: 0;
-  padding-bottom: 20px;
+  max-height: 85vh;
+  padding: 24px;
   overflow-y: auto;
 }
 </style>
 
 <style scoped>
+/* Information prompt area */
+.info-section {
+  display: flex;
+  align-items: flex-start;
+  padding: 12px 16px;
+  margin-bottom: 24px;
+  background-color: #fff7e6;
+  border: 1px solid #ffd591;
+  border-radius: 6px;
+}
+
+.info-icon {
+  color: #fa8c16;
+  font-size: 16px;
+  margin-right: 8px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.info-text {
+  font-size: 12px;
+  color: #d46b08;
+  line-height: 1.5;
+}
+
+/* Configuration area */
+.config-section {
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0 0 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.config-form {
+  background-color: #fafafa;
+  padding: 16px;
+  border-radius: 6px;
+  border: 1px solid #f0f0f0;
+}
+
+.form-row {
+  margin-bottom: 16px;
+}
+
+.form-row:last-child {
+  margin-bottom: 0;
+}
+
+.form-item-sprint {
+  margin-bottom: 0;
+}
+
+.form-item-test-type {
+  margin-bottom: 0;
+}
+
+.sprint-option {
+  display: flex;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.sprint-icon {
+  font-size: 14px;
+  color: #1890ff;
+  margin-right: 8px;
+}
+
+.sprint-name {
+  font-size: 12px;
+  color: #262626;
+}
+
+/* Test configuration area */
+.test-config-section {
+  margin-top: 24px;
+}
+
+.test-forms-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.test-form-toggle {
+  background-color: #fafafa;
+  border: 1px solid #f0f0f0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.test-form-content {
+  padding: 16px;
+  background-color: #fff;
+}
+
+/* Deep style overrides */
 :deep(.toggle-title) {
   font-size: 12px;
+  font-weight: 600;
+  color: #262626;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  margin: 0;
 }
 
 :deep(.ant-radio-wrapper) {
-  margin-right: 0;
+  margin-right: 16px;
+  font-size: 12px;
 }
 
-:deep(span.ant-radio + *) {
-  padding-right: 0;
+:deep(.ant-checkbox-wrapper) {
+  margin-right: 16px;
+  font-size: 12px;
+}
+
+:deep(.ant-form-item-label > label) {
+  font-size: 12px;
+  font-weight: 500;
+  color: #262626;
+}
+
+:deep(.ant-form-item-label > label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before) {
+  color: #ff4d4f;
+}
+
+:deep(.ant-select-selector) {
+  font-size: 12px;
+}
+
+:deep(.ant-select-selection-placeholder) {
+  font-size: 12px;
+  color: #bfbfbf;
+}
+
+:deep(.ant-input) {
+  font-size: 12px;
+}
+
+:deep(.ant-picker) {
+  font-size: 12px;
+}
+
+:deep(.ant-select-dropdown) {
+  font-size: 12px;
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+  .test-forms-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .config-form {
+    padding: 12px;
+  }
+
+  .test-form-content {
+    padding: 12px;
+  }
+
+  .info-section {
+    padding: 8px 12px;
+  }
 }
 </style>
