@@ -53,19 +53,6 @@ const countCard = [
     color: '45, 142, 255'
   }
 ];
-// const letterMap = {
-//   ms: '毫秒',
-//   s: '秒',
-//   min: '分钟',
-//   h: '小时',
-//   d: '天'
-// };
-
-// const splitTime = (str: string): [string, string] => {
-//   const number = str.replace(/\D/g, '');
-//   const unit = str.replace(/\d/g, '');
-//   return [number, letterMap[unit]];
-// };
 
 const getNumFixed = (str:string) => {
   return str ? Number(str).toFixed(2) : '0';

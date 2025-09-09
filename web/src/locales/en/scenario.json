@@ -127,7 +127,7 @@
       "averageDelay": "Average Delay",
       "willRun": "Will run",
       "lastRun": "Last run",
-      "createdBy": "Created by",
+      "createdBy": "Created At",
       "executeNow": "Execute Now",
       "deleteConfirm": "Are you sure you want to delete monitor [{name}]?",
       "executeConfirm": "Execute monitor [{name}] immediately"
@@ -255,7 +255,7 @@
           "operation": "Operation"
         },
         "noDescription": "No description~",
-        "createdBy": "Created by",
+        "createdBy": "Created At",
         "noExecute": "Not Tested"
       },
       "messages": {

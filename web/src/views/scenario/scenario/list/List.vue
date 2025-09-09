@@ -188,7 +188,7 @@ const menuItemClick = (key: MenuItemKey, data: ScenarioInfo): void => {
               <RouterLink
                 :to="record.detailLink"
                 :title="record.name"
-                class="block mb-2 truncate text-3 font-bold text-theme-special text-theme-text-hover flex-1 min-w-0">
+                class="block mb-2 truncate text-3.5 font-bold text-theme-special text-theme-text-hover flex-1 min-w-0">
                 {{ record.name }}
               </RouterLink>
               <div>
@@ -226,7 +226,7 @@ const menuItemClick = (key: MenuItemKey, data: ScenarioInfo): void => {
                 class="flex-shrink-0 w-6 h-6 rounded-xl" />
               <div class="flex items-center space-x-3">
                 <span>{{ record.createdByName }}</span>
-                <span>{{ t('scenario.list.table.createdBy') }}{{ record.createdDate }}</span>
+                <span>{{ t('scenario.list.table.createdBy') }}&nbsp;{{ record.createdDate }}</span>
               </div>
             </div>
 
