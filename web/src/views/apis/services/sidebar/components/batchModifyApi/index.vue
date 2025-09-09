@@ -6,7 +6,7 @@ import { TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import qs from 'qs';
 import { services } from '@/api/tester';
-import SelectEnum from '@/components/selectEnum/index.vue';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 interface Props {
   visible: boolean;

@@ -3,7 +3,7 @@ import { inject, onMounted, ref, Ref } from 'vue';
 import { Button, Popover, Radio, RadioGroup, UploadDragger } from 'ant-design-vue';
 import { Icon, Input, notification, Spin, Validate } from '@xcan-angus/vue-ui';
 import postmanToOpenApi from '@xcan-angus/postman-to-openapi';
-import SelectEnum from '@/components/selectEnum/index.vue';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { useI18n } from 'vue-i18n';
 
 import { services } from '@/api/tester';

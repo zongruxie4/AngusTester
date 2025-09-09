@@ -6,7 +6,7 @@ import { LoadingOutlined } from '@ant-design/icons-vue';
 import { isEqual } from 'lodash-es';
 import { localStore, appContext } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
-import SelectEnum from '@/components/selectEnum/index.vue';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 import { useI18n } from 'vue-i18n';
 

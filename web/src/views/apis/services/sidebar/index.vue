@@ -24,7 +24,7 @@ const MovePop = defineAsyncComponent(() => import('@/views/apis/services/compone
 const Status = defineAsyncComponent(() => import('@/views/apis/services/components/statusModal/index.vue'));
 const ExportApis = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/exportServices/index.vue'));
 const GenTestScript = defineAsyncComponent(() => import('@/components/script/GenTestScriptModal.vue'));
-const DelTestScript = defineAsyncComponent(() => import('@/components/script/DeleteModal.vue'));
+const DelTestScript = defineAsyncComponent(() => import('@/components/script/DeleteScriptModal.vue'));
 const EnabledApiTest = defineAsyncComponent(() => import('@/components/apis/enabledTestModal/index.vue'));
 const BatchModify = defineAsyncComponent(() => import('@/views/apis/services/sidebar/components/batchModifyApi/index.vue'));
 const TranslateModal = defineAsyncComponent(() => import('@/views/apis/services/components/translateService/index.vue'));

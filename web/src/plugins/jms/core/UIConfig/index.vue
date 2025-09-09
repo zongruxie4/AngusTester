@@ -6,7 +6,7 @@ import Draggable from 'vuedraggable';
 import { debounce } from 'throttle-debounce';
 import { Icon, NoData, Input, Tooltip, Colon, Arrow } from '@xcan-angus/vue-ui';
 import { utils, duration } from '@xcan-angus/infra';
-import SelectEnum from '@/components/selectEnum/index.vue'
+import SelectEnum from '@/components/enum/SelectEnum.vue'
 
 const { t } = useI18n();
 

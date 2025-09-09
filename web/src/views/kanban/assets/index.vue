@@ -10,7 +10,7 @@ import { kanban } from '@/api/tester';
 import { getDateArr, getDateArrWithTime } from '@/utils/utils';
 import { EnumMessage, enumUtils } from '@xcan-angus/infra';
 import { ReportCategory } from '@/enums/enums';
-import SelectEnum from '@/components/selectEnum/index.vue';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { DataAssetsProps } from './types';
 import { useDataAssetsData } from './composables/useDataAssetsData';
 import { useChartConfigs } from './composables/useChartConfigs';

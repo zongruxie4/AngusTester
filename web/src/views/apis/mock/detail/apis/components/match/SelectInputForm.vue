@@ -5,7 +5,7 @@ import { Button } from 'ant-design-vue';
 import { Composite, Icon, Input, SelectInput, Validate } from '@xcan-angus/vue-ui';
 import { ParameterIn, FullMatchCondition, utils } from '@xcan-angus/infra';
 
-import SelectEnum from '@/components/selectEnum/index.vue';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 /**
  * <p>Parameter type definition for matching conditions</p>

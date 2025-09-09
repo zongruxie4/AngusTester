@@ -3,7 +3,7 @@ import { watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { IconRequired, Input, Modal } from '@xcan-angus/vue-ui';
 import { Form, FormItem } from 'ant-design-vue';
-import SelectEnum from '@/components/selectEnum/index.vue';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { AddModalProps, AddModalEmits } from './types';
 import { useAddModal } from './composables/useAddModal';
 

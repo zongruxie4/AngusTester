@@ -6,7 +6,7 @@ import { Button, Form, FormItem } from 'ant-design-vue';
 import { ExecSettingForm, IconRequired, Input, Select, Spin } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { useExecutionForm } from './composables/useExecutionForm';
-import SelectEnum from '@/components/selectEnum/index.vue';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 const { t } = useI18n();
 const route = useRoute();

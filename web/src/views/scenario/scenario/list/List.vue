@@ -40,7 +40,7 @@ const CreateTestTaskModal = defineAsyncComponent(() => import('@/components/task
 const RestartTestTaskModal = defineAsyncComponent(() => import('@/components/task/RestartTestModal.vue'));
 const ReOpenTestTaskModal = defineAsyncComponent(() => import('@/components/task/ReopenTestModal.vue'));
 const DelTestTask = defineAsyncComponent(() => import('@/components/task/DeleteTestModal.vue'));
-const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/ExportModal.vue'));
+const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/ExportScriptModal.vue'));
 const ExecTestModal = defineAsyncComponent(() => import('@/views/scenario/scenario/list/ExecTest.vue'));
 
 // Inject dependencies

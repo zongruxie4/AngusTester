@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
 import { IconRequired, ExecSettingForm } from '@xcan-angus/vue-ui';
-import SelectEnum from '@/components/selectEnum/index.vue';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { useI18n } from 'vue-i18n';
 
 import { ScenarioConfig } from '../PropsType';
