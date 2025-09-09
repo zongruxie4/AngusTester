@@ -5,7 +5,7 @@ import { Button, Checkbox, Form, FormItem, RadioButton, RadioGroup, Textarea } f
 import { DatePicker, Input, notification, Select } from '@xcan-angus/vue-ui';
 import { TESTER, GM, enumUtils, EnumMessage } from '@xcan-angus/infra';
 import { AnalysisTaskTemplateDesc, AnalysisCaseObject, AnalysisTimeRange } from '@/enums/enums';
-import { Analysis } from '../PropType';
+import { Analysis } from '../types';
 import { analysis } from '@/api/tester';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 

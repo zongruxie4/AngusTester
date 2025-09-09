@@ -4,9 +4,9 @@ import { useI18n } from 'vue-i18n';
 import { TESTER, download } from '@xcan-angus/infra';
 import { Icon } from '@xcan-angus/vue-ui';
 import { Button, Table, Tag } from 'ant-design-vue';
-import { TemplateIconConfig } from '@/views/task/analysis/list/PropTypes';
+import { TemplateIconConfig } from '@/views/task/analysis/list/types';
 import { debounce } from 'throttle-debounce';
-import { Analysis } from '../PropType';
+import { Analysis } from '../types';
 import { analysis } from '@/api/tester';
 
 interface Props {
@@ -34,7 +34,7 @@ const Bugs = defineAsyncComponent(() => import('./bugs/index.vue'));
 const HandlingEfficiency = defineAsyncComponent(() => import('./handlingEfficiency/index.vue'));
 const CoreKpi = defineAsyncComponent(() => import('./coreKpi/index.vue'));
 const Failures = defineAsyncComponent(() => import('./failures/index.vue'));
-const BascklogTasks = defineAsyncComponent(() => import('./backlogTasks/index.vue'));
+const BascklogTasks = defineAsyncComponent(() => import('@/views/task/analysis/detail/backlogTasks/index.vue'));
 const RecentDelivery = defineAsyncComponent(() => import('./recentDelivery/index.vue'));
 const LeadTime = defineAsyncComponent(() => import('./leadTime/index.vue'));
 const UnplannedTasks = defineAsyncComponent(() => import('./unplannedTasks/index.vue'));

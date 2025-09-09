@@ -4,7 +4,7 @@ import { Tree } from 'ant-design-vue';
 import { enumUtils } from '@xcan-angus/infra';
 import { AnalysisTaskTemplate, AnalysisTaskTemplateDesc } from '@/enums/enums';
 import { Icon } from '@xcan-angus/vue-ui';
-import { TemplateIconConfig } from '../PropTypes';
+import { TemplateIconConfig } from './types';
 import { useI18n } from 'vue-i18n';
 
 interface Props {
