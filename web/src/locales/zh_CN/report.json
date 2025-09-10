@@ -1067,7 +1067,10 @@
           "threadPoolSize": "线程数",
           "threadPoolActiveSize": "活跃线程数",
           "threadMaxPoolSize": "最大线程数",
-          "name": "名称"
+          "name": "名称",
+          "current": "当前",
+          "brpsAll": "下载/秒(当前 | 最小 | 最大 | 平均)",
+          "bwpsAll": "上传/秒(当前 | 最小 | 最大 | 平均)"
         }
       },
       "log": {

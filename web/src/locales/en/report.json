@@ -1067,7 +1067,10 @@
           "threadPoolSize": "Thread Count",
           "threadPoolActiveSize": "Active Thread Count",
           "threadMaxPoolSize": "Max Thread Count",
-          "name": "Name"
+          "name": "Name",
+          "current": "Current",
+          "brpsAll": "Download/Second (Current | Min | Max | Average)",
+          "bwpsAll": "Upload/Second (Current | Min | Max | Average)"
         }
       },
       "log": {
