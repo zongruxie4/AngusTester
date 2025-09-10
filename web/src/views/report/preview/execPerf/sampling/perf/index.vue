@@ -7,6 +7,7 @@ import { allCvsKeys } from '../chartConfig';
 
 import { Exception } from '../PropsType';
 import { exec } from 'src/api/ctrl';
+import {DATE_TIME_FORMAT} from "@/utils/constant";
 
 interface Props {
   detail?: Record<string, any>;
@@ -107,7 +108,7 @@ const loadInfo = async () => {
 
   if (props.detail?.scriptType?.value !== 'MOCK_DATA') {
     if (isFirstUpdatePerfList) {
-      const _filters = [{ key: 'timestamp', op: 'GREATER_THAN_EQUAL', value: dayjs(perfListLastTimestamp.value).format('YYYY-MM-DD HH:mm:ss') }];
+      const _filters = [{ key: 'timestamp', op: 'GREATER_THAN_EQUAL', value: dayjs(perfListLastTimestamp.value).format(DATE_TIME_FORMAT) }];
       await perfLoadList(1, firstOpenTimer ? _filters : []);
       computedPageLoadList(perfListParams.value, perfListTotal.value, perfLoadList);
       isFirstUpdatePerfList = false;
@@ -762,7 +763,7 @@ const saveData = (_list: ListData[]) => {
     }
   }
   timestampData.value = [...timestampData.value, ...times].map(item => {
-    // return dayjs(item).format('YYYY-MM-DD HH:mm:ss');
+    // return dayjs(item).format(DATE_TIME_FORMAT);
     return dayjs(item).format('MM-DD HH:mm:ss');
   });
 
@@ -941,7 +942,7 @@ const loadSampleErrorContent = async (_pageNo?: number) => {
   }
 
   if (errTimestamp.value) {
-    errParams.value.filters = [{ key: 'timestamp', op: 'GREATER_THAN_EQUAL', value: dayjs(errTimestamp.value).format('YYYY-MM-DD HH:mm:ss') }];
+    errParams.value.filters = [{ key: 'timestamp', op: 'GREATER_THAN_EQUAL', value: dayjs(errTimestamp.value).format(DATE_TIME_FORMAT) }];
   }
 
   const [error, { data = { list: [], total: 0 } }] = await exec.getErrorContent(props.detail?.id, errParams.value);

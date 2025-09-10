@@ -6,6 +6,7 @@ import { FuncPlanStatus } from '@/enums/enums';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 interface Props {
   loading: boolean;
@@ -168,14 +169,14 @@ const formatDateString = (key: string) => {
   return [
     startDate
       ? {
-          value: startDate.format('YYYY-MM-DD HH:mm:ss'),
+          value: startDate.format(DATE_TIME_FORMAT),
           op: 'GREATER_THAN_EQUAL',
           key: 'createdDate'
         }
       : '',
     endDate
       ? {
-          value: endDate.format('YYYY-MM-DD HH:mm:ss'),
+          value: endDate.format(DATE_TIME_FORMAT),
           op: 'LESS_THAN_EQUAL',
           key: 'createdDate'
         }

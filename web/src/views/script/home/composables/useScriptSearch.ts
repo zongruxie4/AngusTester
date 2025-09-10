@@ -3,6 +3,7 @@ import { useI18n } from 'vue-i18n';
 import { ScriptType, enumUtils } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep } from 'lodash-es';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import { MenuItem } from '@/views/script/types';
 
@@ -70,8 +71,8 @@ export function useScriptSearch (projectId: string, userId: string) {
     }
 
     return [
-      startDate ? startDate.format('YYYY-MM-DD HH:mm:ss') : '',
-      endDate ? endDate.format('YYYY-MM-DD HH:mm:ss') : ''
+      startDate ? startDate.format(DATE_TIME_FORMAT) : '',
+      endDate ? endDate.format(DATE_TIME_FORMAT) : ''
     ];
   };
 

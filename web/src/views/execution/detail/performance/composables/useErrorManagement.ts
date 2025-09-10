@@ -1,5 +1,7 @@
 import { ref } from 'vue';
 import dayjs from 'dayjs';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
+
 import { ErrorCountListItem, SampleErrorContent, StatusCodeData } from '../types';
 
 /**
@@ -158,7 +160,7 @@ export function useErrorManagement () {
       errParams.value.filters = [{
         key: 'timestamp',
         op: 'GREATER_THAN_EQUAL',
-        value: dayjs(errTimestamp.value).format('YYYY-MM-DD HH:mm:ss')
+        value: dayjs(errTimestamp.value).format(DATE_TIME_FORMAT)
       }];
     }
 

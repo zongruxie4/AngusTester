@@ -24,6 +24,7 @@ import { cloneDeep } from 'lodash-es';
 import { debounce } from 'throttle-debounce';
 import dayjs, { Dayjs } from 'dayjs';
 import { task, analysis } from '@/api/tester';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { MemberCount, SprintInfo } from './types';
@@ -702,8 +703,8 @@ const getTaskParams = () => {
       endDate = dayjs();
     }
 
-    params.filters.push({ key: 'createdDate', op: 'GREATER_THAN_EQUAL', value: startDate.format('YYYY-MM-DD HH:mm:ss') });
-    params.filters.push({ key: 'createdDate', op: 'LESS_THAN_EQUAL', value: endDate.format('YYYY-MM-DD HH:mm:ss') });
+    params.filters.push({ key: 'createdDate', op: 'GREATER_THAN_EQUAL', value: startDate.format(DATE_TIME_FORMAT) });
+    params.filters.push({ key: 'createdDate', op: 'LESS_THAN_EQUAL', value: endDate.format(DATE_TIME_FORMAT) });
   }
 
   return params;

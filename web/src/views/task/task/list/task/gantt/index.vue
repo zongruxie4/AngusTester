@@ -6,6 +6,7 @@ import Gantt from '@xcan-angus/frappe-gantt';
 import dayjs from 'dayjs';
 import { AsyncComponent, Icon } from '@xcan-angus/vue-ui';
 import { task } from '@/api/tester';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import { TaskInfo } from '../../../../types';
 
@@ -122,7 +123,7 @@ const loadData = async () => {
     return {
       ...i,
       start: i.startDate || i.createdDate,
-      end: i.completedDate || dayjs().format('YYYY-MM-DD HH:mm:ss'),
+      end: i.completedDate || dayjs().format(DATE_TIME_FORMAT),
       progress: i.completedDate ? 100 : (+i.progress?.completedRate || 0),
       description: '',
       dependencies: i.parentTaskId ? [i.parentTaskId] : []

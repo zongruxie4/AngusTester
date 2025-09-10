@@ -25,12 +25,13 @@ import {
   Spin,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { EvalWorkloadMethod, toClipboard, utils, TESTER, enumUtils, upload } from '@xcan-angus/infra';
+import { EvalWorkloadMethod, EnumMessage, toClipboard, utils, TESTER, enumUtils, upload } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { isEqual } from 'lodash-es';
 import type { Rule } from 'ant-design-vue/es/form';
 import { funcPlan, project } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import {EditFormState, PlanInfo} from '../types';
 
@@ -75,8 +76,8 @@ const reviewFlagVisible = ref(false);
 
 const permissions = ref<string[]>([]);
 const oldFormState = ref<EditFormState>();
-const _startDate = dayjs().format('YYYY-MM-DD HH:mm:ss');
-const _deadlineDate = dayjs().add(1, 'month').format('YYYY-MM-DD HH:mm:ss');
+const _startDate = dayjs().format(DATE_TIME_FORMAT);
+const _deadlineDate = dayjs().add(1, 'month').format(DATE_TIME_FORMAT);
 const formState = ref<EditFormState>({
   projectId: props.projectId,
   casePrefix: '',
@@ -503,8 +504,8 @@ const loadData = async (id: string) => {
 const setFormData = (data: PlanInfo) => {
   reviewFlagVisible.value = false;
   if (!data) {
-    const startDate = dayjs().format('YYYY-MM-DD HH:mm:ss');
-    const deadlineDate = dayjs().add(1, 'month').format('YYYY-MM-DD HH:mm:ss');
+    const startDate = dayjs().format(DATE_TIME_FORMAT);
+    const deadlineDate = dayjs().add(1, 'month').format(DATE_TIME_FORMAT);
     formState.value = {
       casePrefix: '',
       description: '',

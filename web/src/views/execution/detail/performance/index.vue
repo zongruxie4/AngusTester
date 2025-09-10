@@ -2,6 +2,7 @@
 import { computed, defineAsyncComponent, onBeforeUnmount, ref } from 'vue';
 import dayjs from 'dayjs';
 import { ScriptType } from '@xcan-angus/infra';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import { useExecCount } from '../composables/useExecCount';
 
@@ -101,7 +102,7 @@ const loadInfo = async () => {
   if (props.detail?.scriptType?.value !== 'MOCK_DATA') {
     if (['aggregation', 'throughput', 'vu', 'responseTime', 'analyze', 'error'].includes(countTabKey.value)) {
       if (isFirstUpdatePerfList.value) {
-        const _filters = [{ key: 'timestamp' as const, op: 'GREATER_THAN_EQUAL' as const, value: dayjs(perfListLastTimestamp.value).format('YYYY-MM-DD HH:mm:ss') }];
+        const _filters = [{ key: 'timestamp' as const, op: 'GREATER_THAN_EQUAL' as const, value: dayjs(perfListLastTimestamp.value).format(DATE_TIME_FORMAT) }];
         await perfLoadList(1, hasFetchedOnce ? _filters : []);
         await computedPageLoadList(perfListParams.value, perfListTotal.value, perfLoadList);
         isFirstUpdatePerfList.value = false;

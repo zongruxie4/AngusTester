@@ -4,6 +4,7 @@ import { RadioGroup, RadioButton, Slider } from 'ant-design-vue';
 import { Spin, NoData} from '@xcan-angus/vue-ui';
 import dayjs from 'dayjs';
 import { exec } from '@/api/tester';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import apiUtils from '@/utils/ApiUtils/index';
 import { ListData, useExecCount } from './useExecCount';
@@ -202,7 +203,7 @@ const setChartData = () => {
 const loadChartDataInDuration = async () => {
   const { id } = props.dataSource;
   const startDate = times.value[times.value.length - 1] || props.dataSource.actualStartDate;
-  const startTime = dayjs(startDate).format('YYYY-MM-DD HH:mm:ss');
+  const startTime = dayjs(startDate).format(DATE_TIME_FORMAT);
   const [error, { data }] = await exec.getSampleSummaryList(id, {
     pageNo: 1,
     pageSize: 100,

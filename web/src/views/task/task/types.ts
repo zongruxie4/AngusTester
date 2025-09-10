@@ -1,4 +1,41 @@
-export type ResourceInfo = {
+import { EnumMessage, Priority, EvalWorkloadMethod } from '@xcan-angus/infra';
+import { TaskStatus, TaskType, TestType, ExecStatus, ExecResult } from '@/enums/enums';
+
+export type TaskInfo = {
+  id: string;
+  name: string;
+  code: string;
+  projectId: string;
+  sprintId: string;
+  sprintName: string;
+  targetId: string;
+  targetParentId: string;
+  taskType: EnumMessage<TaskType>;
+  testType: EnumMessage<TestType>;
+  deadlineDate: string;
+  assigneeId: string;
+  assigneeName: string;
+  priority: EnumMessage<Priority>;
+  evalWorkloadMethod: EnumMessage<EvalWorkloadMethod>;
+  status: EnumMessage<TaskStatus>;
+  execResult: EnumMessage<ExecResult>;
+  execFailureMessage: string;
+  execTestNum: string;
+  execTestFailureNum: string;
+  execId: string;
+  execName: string;
+  execBy: string;
+  execByName: string;
+  execDate: string;
+  failNum: string;
+  totalNum: string;
+  overdue: false;
+  createdBy: string;
+  createdByName: string;
+  createdDate: string;
+}
+
+export type StatisticsInfo = {
     actualWorkload: string;
     apiTestNum: string;
     bugNum: string;
@@ -40,7 +77,7 @@ export type ActionMenuItem = {
     tip?: string;
 }
 
-type TreeData = {
+export type TreeData = {
     name: string;
     sequece: string;
     level: number;
@@ -60,6 +97,7 @@ export const travelTreeData = (treeData, callback = (item) => item) => {
       item.index = idx;
       item.ids = [...ids, item.id];
       item.isLast = idx === (treeData.length - 1);
+      // eslint-disable-next-line no-unused-expressions
       travel(item.children || [], level + 1, item.ids),
       item.childLevels = (item.children?.length ? Math.max(...item.children.map(i => i.childLevels)) : 0) + 1;
       item = callback(item);
@@ -68,12 +106,14 @@ export const travelTreeData = (treeData, callback = (item) => item) => {
   travel(treeData);
   return treeData;
 };
+
 export type searchPanelOption = {
   id: string;
   name: string;
   showTitle: string;
   showName: string;
 }
+
 export type SearchPanelMenuItem = {
   key: 'none' | 'createdBy' | 'assigneeId' | 'progress' | 'confirmorId' | 'lastDay' | 'lastThreeDays' | 'lastWeek' | string;
   name: string;

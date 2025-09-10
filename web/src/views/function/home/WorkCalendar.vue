@@ -6,6 +6,7 @@ import { TESTER } from '@xcan-angus/infra';
 import { Dayjs } from 'dayjs';
 import { analysis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 
 import {DataItem} from "@/views/function/home/types";
@@ -46,7 +47,7 @@ const loadData = async () => {
 };
 
 const getList = (current: Dayjs) => {
-  const dateString = current.format('YYYY-MM-DD HH:mm:ss').split(' ')[0];
+  const dateString = current.format(DATE_TIME_FORMAT).split(' ')[0];
   if (dataMap.value[dateString]) {
     return dataMap.value[dateString].filter(item => !item.overdue);
   }
@@ -55,7 +56,7 @@ const getList = (current: Dayjs) => {
 };
 
 const getOverdueList = (current: Dayjs) => {
-  const dateString = current.format('YYYY-MM-DD HH:mm:ss').split(' ')[0];
+  const dateString = current.format(DATE_TIME_FORMAT).split(' ')[0];
   if (dataMap.value[dateString]) {
     return dataMap.value[dateString].filter(item => item.overdue);
   }

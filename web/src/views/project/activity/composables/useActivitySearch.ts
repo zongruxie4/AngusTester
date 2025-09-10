@@ -3,6 +3,7 @@ import { useI18n } from 'vue-i18n';
 import dayjs, { Dayjs } from 'dayjs';
 import { TESTER, appContext, CombinedTargetType } from '@xcan-angus/infra';
 import type { SearchFilter, QuickSearchItem } from '../types';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 /**
  * Composable for managing activity search functionality
@@ -122,8 +123,8 @@ export function useActivitySearch () {
     }
 
     return [
-      startDate ? startDate.format('YYYY-MM-DD HH:mm:ss') : '',
-      endDate ? endDate.format('YYYY-MM-DD HH:mm:ss') : ''
+      startDate ? startDate.format(DATE_TIME_FORMAT) : '',
+      endDate ? endDate.format(DATE_TIME_FORMAT) : ''
     ];
   };
 

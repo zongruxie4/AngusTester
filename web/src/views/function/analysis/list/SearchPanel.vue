@@ -7,6 +7,7 @@ import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { XCanDexie } from '@xcan-angus/infra';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import {MenuItem, SelectOption} from "@/views/function/analysis/list/types";
 
@@ -265,7 +266,7 @@ const formatDateString = (key: MenuItem['key']) => {
     endDate = dayjs();
   }
 
-  return [startDate ? startDate.format('YYYY-MM-DD HH:mm:ss') : '', endDate ? endDate.format('YYYY-MM-DD HH:mm:ss') : ''];
+  return [startDate ? startDate.format(DATE_TIME_FORMAT) : '', endDate ? endDate.format(DATE_TIME_FORMAT) : ''];
 };
 
 const formatData = ({ id, name }: { id: string; name: string; }) => {

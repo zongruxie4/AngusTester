@@ -4,7 +4,7 @@ import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { utils } from '@xcan-angus/infra';
 import { analysis } from '@/api/tester';
 
-import { ResourceInfo } from '../../types';
+import { StatisticsInfo } from '../../types';
 
 type Props = {
   collapse: boolean;// 展开、折叠
@@ -36,7 +36,7 @@ const Chart = defineAsyncComponent(() => import('@/views/task/task/list/statisti
 
 const UUID = utils.uuid();
 
-const dataSource = ref<ResourceInfo>({
+const dataSource = ref<StatisticsInfo>({
   actualWorkload: '0',
   apiTestNum: '0',
   bugNum: '0',

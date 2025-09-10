@@ -2,13 +2,21 @@
 import { onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Badge, Calendar } from 'ant-design-vue';
-import { AsyncComponent, Icon, IconTask, Popover, Select, TaskStatus } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Icon, IconTask, Popover, Select, TaskStatus as TaskStatusV } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { Dayjs } from 'dayjs';
 import { analysis } from '@/api/tester';
+import { TaskStatus } from '@/enums/enums';
 
-import { DataItem } from '@/views/task/home/types';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
+import { TaskInfo } from '@/views/task/task/types';
 
+/**
+ * Props interface for WorkCalendar component.
+ * <p>
+ * Defines the required properties for displaying work calendar with task information.
+ * </p>
+ */
 type Props = {
   projectId: string;
   userInfo: { id: string; };
@@ -25,97 +33,139 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const loaded = ref(false);
-const dataMap = ref<{ [key: string]: DataItem[] }>({});
-const userId = ref();
+// Component state management
+const isDataLoaded = ref(false);
+const taskDataByDate = ref<{ [key: string]: TaskInfo[] }>({});
+const selectedUserId = ref();
 
-const loadData = async () => {
-  const params = {
+/**
+ * Loads work summary data from the API.
+ * <p>
+ * Fetches task work summary data grouped by day for the selected user and project.
+ * </p>
+ */
+const loadWorkSummaryData = async () => {
+  const queryParams = {
     projectId: props.projectId,
-    userId: userId.value,
+    userId: selectedUserId.value,
     sprintId: props.sprintId || undefined
   };
-  const [error, res] = await analysis.getTaskWorkSummary(params);
-  loaded.value = true;
+  const [error, response] = await analysis.getTaskWorkSummary(queryParams);
+  isDataLoaded.value = true;
   if (error) {
     return;
   }
 
-  dataMap.value = res?.data?.groupByDay;
+  taskDataByDate.value = response?.data?.groupByDay;
 };
 
-const getList = (current: Dayjs) => {
-  const dateString = current.format('YYYY-MM-DD HH:mm:ss').split(' ')[0];
-  if (dataMap.value[dateString]) {
-    return dataMap.value[dateString].filter(item => !item.overdue);
+/**
+ * Gets non-overdue tasks for a specific date.
+ * <p>
+ * Filters tasks for the given date that are not overdue.
+ * </p>
+ */
+const getNonOverdueTasks = (current: Dayjs) => {
+  const dateString = current.format(DATE_TIME_FORMAT).split(' ')[0];
+  if (taskDataByDate.value[dateString]) {
+    return taskDataByDate.value[dateString].filter(item => !item.overdue);
+  }
+  return [];
+};
+
+/**
+ * Gets overdue tasks for a specific date.
+ * <p>
+ * Filters tasks for the given date that are overdue.
+ * </p>
+ */
+const getOverdueTasks = (current: Dayjs) => {
+  const dateString = current.format(DATE_TIME_FORMAT).split(' ')[0];
+  if (taskDataByDate.value[dateString]) {
+    return taskDataByDate.value[dateString].filter(item => item.overdue);
   }
 
   return [];
 };
 
-const getOverdueList = (current: Dayjs) => {
-  const dateString = current.format('YYYY-MM-DD HH:mm:ss').split(' ')[0];
-  if (dataMap.value[dateString]) {
-    return dataMap.value[dateString].filter(item => item.overdue);
-  }
-
-  return [];
+/**
+ * Calculates total number of active tasks.
+ * <p>
+ * Counts tasks that are not canceled.
+ * </p>
+ */
+const calculateTotalTaskCount = (taskList: any[]) => {
+  return (taskList || []).filter(item => item.status?.value !== TaskStatus.CANCELED).length;
 };
 
-const getTotalNum = (list:any[]) => {
-  return (list || []).filter(item => item.status?.value !== 'CANCELED').length;
+/**
+ * Calculates number of completed tasks.
+ * <p>
+ * Counts tasks with completed status.
+ * </p>
+ */
+const calculateCompletedTaskCount = (taskList: any[]) => {
+  return (taskList || []).filter(item => item.status?.value === TaskStatus.COMPLETED).length;
 };
 
-const geCompletedNum = (list:any[]) => {
-  return (list || []).filter(item => item.status?.value === 'COMPLETED').length;
-};
-
-const geRemainNum = (list:any[]) => {
-  const totalNum = (list || []).filter(item => item.status?.value !== 'CANCELED').length;
-  const completedNum = (list || []).filter(item => item.status?.value === 'COMPLETED').length;
-  return totalNum - completedNum;
+/**
+ * Calculates number of remaining tasks.
+ * <p>
+ * Calculates the difference between total and completed tasks.
+ * </p>
+ */
+const calculateRemainingTaskCount = (taskList: any[]) => {
+  const totalCount = (taskList || []).filter(item => item.status?.value !== TaskStatus.CANCELED).length;
+  const completedCount = (taskList || []).filter(item => item.status?.value === TaskStatus.COMPLETED).length;
+  return totalCount - completedCount;
 };
 
 onMounted(() => {
+  // Watch for project and sprint changes
   watch([() => props.projectId, () => props.sprintId], ([newValue]) => {
     if (!newValue) {
       return;
     }
-    if (!userId.value) {
-      userId.value = props.userInfo?.id;
+    if (!selectedUserId.value) {
+      selectedUserId.value = props.userInfo?.id;
     }
 
-    loadData();
+    loadWorkSummaryData();
   }, { immediate: true });
 
+  // Watch for refresh notifications
   watch(() => props.notify, (newValue) => {
     if (newValue === undefined || newValue === null || newValue === '') {
       return;
     }
 
-    loadData();
+    loadWorkSummaryData();
   }, { immediate: true });
 
-  watch(() => userId.value, () => {
-    loadData();
+  // Watch for user selection changes
+  watch(() => selectedUserId.value, () => {
+    loadWorkSummaryData();
   });
 });
 </script>
 
 <template>
   <div class="relative">
+    <!-- User selection dropdown -->
     <div class="absolute top-1.5 left-0 text-3.5 font-semibold">
-      <!-- 我的工作日历 -->
       <Select
-        v-model:value="userId"
+        v-model:value="selectedUserId"
         class="w-30"
         :action="`${TESTER}/project/${props.projectId}/member/user`"
         :fieldNames="{value: 'id', label: 'fullName'}" />
     </div>
-    <AsyncComponent :visible="loaded">
+
+    <!-- Calendar component with async loading -->
+    <AsyncComponent :visible="isDataLoaded">
       <Calendar size="small">
         <template #dateCellRender="{ current }: { current: Dayjs }">
-          <template v-if="getList(current).length">
+          <!-- Non-overdue tasks display -->
+          <template v-if="getNonOverdueTasks(current).length">
             <div class="flex items-center text-3">
               <Icon icon="icon-xiaoqi" class="text-status-success text-3.5 mr-1" />
               <Popover
@@ -124,24 +174,26 @@ onMounted(() => {
                 <Badge
                   class="text-3"
                   :overflowCount="99"
-                  :count="getList(current).length" />
+                  :count="getNonOverdueTasks(current).length" />
                 <template #content>
+                  <!-- Task statistics summary -->
                   <div class="flex items-center flex-nowrap space-x-5 mb-1.5">
                     <div class="flex-shrink-0 space-x-1">
                       <span>{{ t('taskHome.workloadLabel') }}</span>
-                      <span>{{ getTotalNum(getList(current)) }}</span>
+                      <span>{{ calculateTotalTaskCount(getNonOverdueTasks(current)) }}</span>
                     </div>
                     <div class="flex-shrink-0 space-x-1">
                       <span>{{ t('taskHome.completed') }}</span>
-                      <span>{{ geCompletedNum(getList(current)) }}</span>
+                      <span>{{ calculateCompletedTaskCount(getNonOverdueTasks(current)) }}</span>
                     </div>
                     <div class="flex-shrink-0 space-x-1">
                       <span>{{ t('taskHome.remainingLabel') }}</span>
-                      <span>{{ geRemainNum(getList(current)) }}</span>
+                      <span>{{ calculateRemainingTaskCount(getNonOverdueTasks(current)) }}</span>
                     </div>
                   </div>
+                  <!-- Task list -->
                   <div
-                    v-for="item in getList(current)"
+                    v-for="item in getNonOverdueTasks(current)"
                     :key="item.id"
                     class="flex items-center mb-1 last:mb-0">
                     <IconTask :value="item.taskType?.value" class="text-4 flex-shrink-0 mr-1.5" />
@@ -153,38 +205,41 @@ onMounted(() => {
             </div>
           </template>
 
-          <template v-if="getOverdueList(current).length">
+          <!-- Overdue tasks display -->
+          <template v-if="getOverdueTasks(current).length">
             <div class="flex items-center text-3">
               <Icon icon="icon-xiaoqi" class="text-status-error text-3.5 mr-1" />
               <Popover placement="right" overlayClassName="calendar-popover-container">
                 <Badge
                   class="text-3"
                   :overflowCount="99"
-                  :count="getOverdueList(current).length" />
+                  :count="getOverdueTasks(current).length" />
                 <template #content>
+                  <!-- Overdue task statistics summary -->
                   <div class="flex items-center flex-nowrap space-x-5 mb-1.5">
                     <div class="flex-shrink-0 space-x-1">
                       <span>{{ t('taskHome.workloadLabel') }}</span>
-                      <span>{{ getTotalNum(getOverdueList(current)) }}</span>
+                      <span>{{ calculateTotalTaskCount(getOverdueTasks(current)) }}</span>
                     </div>
                     <div class="flex-shrink-0 space-x-1">
                       <span>{{ t('taskHome.completed') }}</span>
-                      <span>{{ geCompletedNum(getOverdueList(current)) }}</span>
+                      <span>{{ calculateCompletedTaskCount(getOverdueTasks(current)) }}</span>
                     </div>
                     <div class="flex-shrink-0 space-x-1">
                       <span>{{ t('taskHome.remainingLabel') }}</span>
-                      <span>{{ geRemainNum(getOverdueList(current)) }}</span>
+                      <span>{{ calculateRemainingTaskCount(getOverdueTasks(current)) }}</span>
                     </div>
                   </div>
 
+                  <!-- Overdue task list -->
                   <div
-                    v-for="item in getOverdueList(current)"
+                    v-for="item in getOverdueTasks(current)"
                     :key="item.id"
                     class="flex items-center mb-1 last:mb-0">
                     <IconTask :value="item.taskType?.value" class="text-4 flex-shrink-0 mr-1.5" />
                     <div class="flex-1 min-w-25 max-w-80 truncate mr-2.5">{{ item.name }}</div>
                     <div class="flex items-center">
-                      <TaskStatus :value="item.status" />
+                      <TaskStatusV :value="item.status" />
                       <span
                         class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2"
                         style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
@@ -202,6 +257,7 @@ onMounted(() => {
   </div>
 </template>
 <style>
+/* Popover container styling for calendar task details */
 .calendar-popover-container .ant-popover-content .ant-popover-inner {
   max-height: 264px;
   padding: 12px 0;
@@ -217,6 +273,7 @@ onMounted(() => {
 </style>
 
 <style scoped>
+/* Badge count styling */
 .ant-badge :deep(.ant-badge-count) {
   height: 16px;
   padding: 0 6px;
@@ -226,20 +283,24 @@ onMounted(() => {
   line-height: 16px;
 }
 
+/* Calendar header styling */
 :deep(.ant-picker-calendar-full) .ant-picker-calendar-header {
-padding-top:0;
+  padding-top: 0;
 }
 
+/* Hide calendar mode switch */
 :deep(.ant-picker-calendar-full) .ant-picker-calendar-mode-switch {
   display: none;
 }
 
+/* Radio button styling */
 :deep(.ant-picker-calendar-full) .ant-radio-button-wrapper {
   height: 28px;
   font-size: 12px;
   line-height: 26px;
 }
 
+/* Select component styling */
 :deep(.ant-picker-calendar-full) .ant-select-single .ant-select-selector {
   height: 28px;
 }
@@ -248,6 +309,7 @@ padding-top:0;
   line-height: 26px;
 }
 
+/* Calendar panel styling */
 :deep(.ant-picker-calendar-full) .ant-picker-panel {
   border: 1px solid var(--border-text-box);
   border-radius: 4px;
@@ -257,6 +319,7 @@ padding-top:0;
   padding: 0;
 }
 
+/* Calendar header row styling */
 :deep(.ant-picker-calendar-full) .ant-picker-panel .ant-picker-body .ant-picker-content thead {
   height: 40px;
   background-color: rgba(247, 248, 251, 100%);
@@ -272,6 +335,7 @@ padding-top:0;
   border-right: none;
 }
 
+/* Calendar cell styling */
 :deep(.ant-picker-calendar-full) .ant-picker-cell {
   border-right: 1px solid var(--border-text-box);
 }
@@ -280,6 +344,7 @@ padding-top:0;
   border-right: none;
 }
 
+/* Calendar date styling */
 :deep(.ant-picker-calendar-full) .ant-picker-panel .ant-picker-calendar-date {
   margin: 0;
   padding: 0;

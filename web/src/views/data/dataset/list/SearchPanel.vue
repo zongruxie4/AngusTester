@@ -6,6 +6,7 @@ import { useRouter } from 'vue-router';
 import { Button, Tooltip } from 'ant-design-vue';
 import { appContext } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 const { t } = useI18n();
 
@@ -145,7 +146,7 @@ const formatDateString = (key: string) => {
     endDate = dayjs();
   }
 
-  return [startDate ? startDate.format('YYYY-MM-DD HH:mm:ss') : '', endDate ? endDate.format('YYYY-MM-DD HH:mm:ss') : ''];
+  return [startDate ? startDate.format(DATE_TIME_FORMAT) : '', endDate ? endDate.format(DATE_TIME_FORMAT) : ''];
 };
 
 /**

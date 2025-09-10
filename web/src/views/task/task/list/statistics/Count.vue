@@ -2,10 +2,10 @@
 import { useI18n } from 'vue-i18n';
 import { Icon } from '@xcan-angus/vue-ui';
 
-import { ResourceInfo } from '../../types';
+import { StatisticsInfo } from '../../types';
 
 type Props = {
-    dataSource: ResourceInfo;
+    dataSource: StatisticsInfo;
 }
 
 const { t } = useI18n();

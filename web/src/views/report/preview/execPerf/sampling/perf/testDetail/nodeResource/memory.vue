@@ -2,6 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import * as echarts from 'echarts';
 import dayjs from 'dayjs';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import { chartSeriesColorConfig } from '@/views/report/preview/PropsType';
 import { nodeCtrl } from '@/api/ctrl';
@@ -240,11 +241,11 @@ const pagination = { // 数据分页获取
 };
 
 const getChartParam = (params = {}) => {
-  const startTime = dayjs(props.startTime).format('YYYY-MM-DD HH:mm:ss');
+  const startTime = dayjs(props.startTime).format(DATE_TIME_FORMAT);
   const [interval, unit] = splitDuration(props.reportInterval);
   const endTime = props.endTime
-    ? dayjs(props.endTime).add(+interval, unit).format('YYYY-MM-DD HH:mm:ss')
-    : dayjs(props.startTime).add(+interval, unit).add(1, 'day').format('YYYY-MM-DD HH:mm:ss');
+    ? dayjs(props.endTime).add(+interval, unit).format(DATE_TIME_FORMAT)
+    : dayjs(props.startTime).add(+interval, unit).add(1, 'day').format(DATE_TIME_FORMAT);
   const filters = [
     { key: 'timestamp', op: 'GREATER_THAN_EQUAL', value: startTime },
     { key: 'timestamp', op: 'LESS_THAN_EQUAL', value: endTime },
@@ -868,8 +869,8 @@ const getChartTimerParam = (params = {}) => {
   if (activeTab.value === 'network') {
     startDate = networkChartData[networkChartData.length - 1].timestamp;
   }
-  const startTime = dayjs(startDate).format('YYYY-MM-DD HH:mm:ss');
-  const nowTime = dayjs().format('YYYY-MM-DD HH:mm:ss');
+  const startTime = dayjs(startDate).format(DATE_TIME_FORMAT);
+  const nowTime = dayjs().format(DATE_TIME_FORMAT);
   const filters = [
     { key: 'timestamp', op: 'GREATER_THAN_EQUAL', value: startTime },
     { key: 'timestamp', op: 'LESS_THAN_EQUAL', value: nowTime },

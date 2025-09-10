@@ -5,6 +5,8 @@ import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
 import { appContext } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
+
 import type { SearchPanelProps, SearchFilters, SearchParams, MenuItem } from './types';
 
 // Component props with default values
@@ -118,8 +120,8 @@ const formatDateString = (key: string): [string, string] => {
   }
 
   return [
-    startDate ? startDate.format('YYYY-MM-DD HH:mm:ss') : '',
-    endDate ? endDate.format('YYYY-MM-DD HH:mm:ss') : ''
+    startDate ? startDate.format(DATE_TIME_FORMAT) : '',
+    endDate ? endDate.format(DATE_TIME_FORMAT) : ''
   ];
 };
 

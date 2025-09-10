@@ -6,6 +6,7 @@ import { debounce } from 'throttle-debounce';
 import dayjs, { Dayjs } from 'dayjs';
 import { setting } from '@/api/gm';
 import { ExecStatus } from '@/enums/enums';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 import type { MenuItem } from '../types';
 
 export type OrderByKey = 'createdDate' | 'createdByName';
@@ -98,8 +99,8 @@ export function useSearchPanel (props: SearchPanelProps) {
     }
 
     return [
-      startDate ? startDate.format('YYYY-MM-DD HH:mm:ss') : '',
-      endDate ? endDate.format('YYYY-MM-DD HH:mm:ss') : ''
+      startDate ? startDate.format(DATE_TIME_FORMAT) : '',
+      endDate ? endDate.format(DATE_TIME_FORMAT) : ''
     ];
   };
 
@@ -432,12 +433,12 @@ export function useSearchPanel (props: SearchPanelProps) {
         if (!(_filters.length || !!scriptSourceIdFilter.value.value)) {
           selectedMenuMap.value.clear();
           selectedMenuMap.value.set('none', { key: 'none' });
-  
+
           emit('change', []);
         } else {
           // 删除快速查询选中的【所有】选项
           selectedMenuMap.value.delete('none');
-  
+
           // 设置快速搜索
           const createdBy = _filters.find(item => item.key === 'createdBy')?.value;
           if (createdBy && createdBy === userId.value) {
@@ -445,33 +446,33 @@ export function useSearchPanel (props: SearchPanelProps) {
           } else {
             selectedMenuMap.value.delete('createdBy');
           }
-  
+
           const lastModifiedBy = _filters.find(item => item.key === 'lastModifiedBy')?.value;
           if (lastModifiedBy && lastModifiedBy === userId.value) {
             selectedMenuMap.value.set('lastModifiedBy', { key: 'lastModifiedBy' });
           } else {
             selectedMenuMap.value.delete('lastModifiedBy');
           }
-  
+
           const execBy = _filters.find(item => item.key === 'execBy')?.value;
           if (execBy && execBy === userId.value) {
             selectedMenuMap.value.set('execBy', { key: 'execBy' });
           } else {
             selectedMenuMap.value.delete('execBy');
           }
-  
+
           const scriptType = _filters.find(item => item.key === 'scriptType')?.value;
           if (!scriptType) {
             selectedMenuMap.value.delete(scriptType as string);
           } else {
             selectedMenuMap.value.set(scriptType as string, { key: scriptType as string });
           }
-  
+
           // if (quickDateMap.value.size > 0) {
           //   selectedMenuMap.value.delete('lastDay');
           //   selectedMenuMap.value.delete('lastThreeDays');
           //   selectedMenuMap.value.delete('lastWeek');
-  
+
           //   const createdDateStart = _filters.find(item => item.key === 'createdDate' && item.op === 'GREATER_THAN_EQUAL')?.value;
           //   const createdDateEnd = _filters.find(item => item.key === 'createdDate' && item.op === 'LESS_THAN_EQUAL')?.value;
           //   const dateString = [createdDateStart, createdDateEnd];
@@ -481,13 +482,13 @@ export function useSearchPanel (props: SearchPanelProps) {
           //       selectedMenuMap.value.set(key, { key });
           //     }
           //   }
-  
+
           //   quickDateMap.value.clear();
           // }
-  
+
           emit('change', getData());
         }
-  
+
         // 保存到db
         if (db) {
           const dbData: {
@@ -502,15 +503,15 @@ export function useSearchPanel (props: SearchPanelProps) {
           if (_filters.length) {
             dbData.a = cloneDeep(_filters);
           }
-  
+
           if (scriptSourceIdFilter.value.value) {
             dbData.b = cloneDeep(scriptSourceIdFilter.value);
           }
-  
+
           if (priorityFilter.value.value) {
             dbData.c = cloneDeep(priorityFilter.value);
           }
-  
+
           if (Object.keys(dbData).length) {
             db.add({
               id: dbParamsKey.value,

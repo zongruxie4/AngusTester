@@ -18,6 +18,7 @@ import type { Rule } from 'ant-design-vue/es/form';
 import dayjs from 'dayjs';
 import { task } from '@/api/tester';
 import { EditFormState, SprintInfo } from '../types';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 type Props = {
   projectId: string;
@@ -53,8 +54,8 @@ const dataSource = ref<SprintInfo>();
 
 const permissions = ref<string[]>([]);
 // const oldFormState = ref<FormState>();
-const _startDate = dayjs().format('YYYY-MM-DD HH:mm:ss');
-const _deadlineDate = dayjs().add(1, 'month').format('YYYY-MM-DD HH:mm:ss');
+const _startDate = dayjs().format(DATE_TIME_FORMAT);
+const _deadlineDate = dayjs().add(1, 'month').format(DATE_TIME_FORMAT);
 const formState = ref<EditFormState>({
   taskPrefix: '',
   otherInformation: '',
@@ -385,8 +386,8 @@ const loadData = async (id: string) => {
 
 const setFormData = (data: SprintInfo) => {
   if (!data) {
-    const startDate = dayjs().format('YYYY-MM-DD HH:mm:ss');
-    const deadlineDate = dayjs().add(1, 'month').format('YYYY-MM-DD HH:mm:ss');
+    const startDate = dayjs().format(DATE_TIME_FORMAT);
+    const deadlineDate = dayjs().add(1, 'month').format(DATE_TIME_FORMAT);
     formState.value = {
       startDate,
       deadlineDate,

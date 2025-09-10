@@ -5,6 +5,7 @@ import { DatePicker, FormItem, Radio, RadioGroup } from 'ant-design-vue';
 import { Select } from '@xcan-angus/vue-ui';
 import dayjs from 'dayjs';
 import { CreateTimeSetting } from '@/types/types';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 // Component props definition
 interface Props {
@@ -85,7 +86,7 @@ const getTimeOfDay = () => {
  * Formats createdAtSomeDate as YYYY-MM-DD HH:mm:ss
  */
 const getCreatedAtSomeDate = () => {
-  createTimeSettingData.value.createdAtSomeDate = dayjs(createdAtSomeDate.value).format('YYYY-MM-DD HH:mm:ss');
+  createTimeSettingData.value.createdAtSomeDate = dayjs(createdAtSomeDate.value).format(DATE_TIME_FORMAT);
 };
 
 /**
@@ -143,7 +144,7 @@ const getData = () => {
   if (createTimeSettingData.value.createdAt === 'AT_SOME_DATE') {
     return {
       createdAt: 'AT_SOME_DATE',
-      createdAtSomeDate: dayjs(createdAtSomeDate.value).format('YYYY-MM-DD HH:mm:ss')
+      createdAtSomeDate: dayjs(createdAtSomeDate.value).format(DATE_TIME_FORMAT)
     };
   }
   const { periodicCreationUnit, dayOfWeek, dayOfMonth, timeOfDay } = createTimeSettingData.value;

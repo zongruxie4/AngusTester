@@ -27,6 +27,7 @@ import { EnumMessage, NumberCompareCondition, toClipboard, http, duration, downl
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
 import { funcCase, modules, funcPlan, analysis } from '@/api/tester';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import { CaseActionAuth, CaseInfoObj, CaseListObj, CountObj, EnabledGroup, travelTreeData } from './types';
 import { PlanObj } from '../../types';
@@ -277,7 +278,7 @@ const getQuickDate = (type) => {
     _endDate = dayjs();
   }
 
-  return [_startDate ? _startDate.format('YYYY-MM-DD HH:mm:ss') : '', _endDate ? _endDate.format('YYYY-MM-DD HH:mm:ss') : ''];
+  return [_startDate ? _startDate.format(DATE_TIME_FORMAT) : '', _endDate ? _endDate.format(DATE_TIME_FORMAT) : ''];
 };
 
 // 比较快速选中的时间和搜索框时间是否一致

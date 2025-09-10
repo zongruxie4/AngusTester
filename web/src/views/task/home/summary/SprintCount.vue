@@ -1,22 +1,24 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
-import { Icon } from '@xcan-angus/vue-ui';
+import {onMounted, ref, watch} from 'vue';
+import {Icon} from '@xcan-angus/vue-ui';
 
-import { ResourceInfo } from '@/views/task/home/types';
+import {SummaryInfo} from '@/views/task/home/types';
 
+// Props definition
 type Props = {
-  dataSource: ResourceInfo;
+  dataSource: SummaryInfo;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined
 });
 
-const total = ref<string>('0');
-const pendingTotal = ref<string>('0');
-const progressingTotal = ref<string>('0');
-const completedTotal = ref<string>('0');
-const blockedTotal = ref<string>('0');
+// Reactive counters
+const totalSprintCount = ref<string>('0');
+const pendingSprintCount = ref<string>('0');
+const inProgressSprintCount = ref<string>('0');
+const completedSprintCount = ref<string>('0');
+const blockedSprintCount = ref<string>('0');
 
 onMounted(() => {
   watch(() => props.dataSource, (newValue) => {
@@ -24,11 +26,12 @@ onMounted(() => {
       return;
     }
 
-    total.value = newValue.allSprint;
-    pendingTotal.value = newValue.sprintByStatus?.PENDING;
-    progressingTotal.value = newValue.sprintByStatus?.IN_PROGRESS;
-    completedTotal.value = newValue.sprintByStatus?.COMPLETED;
-    blockedTotal.value = newValue.sprintByStatus?.BLOCKED;
+    // Map props to local refs for rendering
+    totalSprintCount.value = newValue.allSprint;
+    pendingSprintCount.value = newValue.sprintByStatus?.PENDING;
+    inProgressSprintCount.value = newValue.sprintByStatus?.IN_PROGRESS;
+    completedSprintCount.value = newValue.sprintByStatus?.COMPLETED;
+    blockedSprintCount.value = newValue.sprintByStatus?.BLOCKED;
   }, { immediate: true });
 });
 </script>
@@ -37,7 +40,7 @@ onMounted(() => {
   <div class="flex flex-col rounded border border-solid border-theme-text-box pt-2 pb-2">
     <div class="font-semibold px-4">
       <span class="mr-2">总迭代</span>
-      <span class="text-4">{{ total }}</span>
+      <span class="text-4">{{ totalSprintCount }}</span>
     </div>
 
     <div class="flex-1 flex items-center justify-center flex-wrap content-center transform-gpu translate-y-2">
@@ -45,7 +48,7 @@ onMounted(() => {
         <Icon icon="icon-daiceshi" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
           <div class="text-theme-sub-content">待开始</div>
-          <div class="text-4">{{ pendingTotal }}</div>
+          <div class="text-4">{{ pendingSprintCount }}</div>
         </div>
       </div>
 
@@ -53,7 +56,7 @@ onMounted(() => {
         <Icon icon="icon-renwuceshizhong" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
           <div class="text-theme-sub-content">进行中</div>
-          <div class="text-4">{{ progressingTotal }}</div>
+          <div class="text-4">{{ inProgressSprintCount }}</div>
         </div>
       </div>
 
@@ -61,7 +64,7 @@ onMounted(() => {
         <Icon icon="icon-zusaizhong" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
           <div class="text-theme-sub-content">阻塞中</div>
-          <div class="text-4">{{ blockedTotal }}</div>
+          <div class="text-4">{{ blockedSprintCount }}</div>
         </div>
       </div>
 
@@ -69,7 +72,7 @@ onMounted(() => {
         <Icon icon="icon-jiaobenzhuyezhihang" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
           <div class="text-theme-sub-content">已完成</div>
-          <div class="text-4">{{ completedTotal }}</div>
+          <div class="text-4">{{ completedSprintCount }}</div>
         </div>
       </div>
     </div>

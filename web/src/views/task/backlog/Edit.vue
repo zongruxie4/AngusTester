@@ -21,6 +21,7 @@ import { localStore, upload, TESTER } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfo } from '../types';
@@ -429,9 +430,9 @@ const resetDefault = () => {
 
   oldFormState = undefined;
   formState.attachments = [];
-  formState.deadlineDate = dayjs().add(1, 'day').format('YYYY-MM-DD HH:mm:ss');
+  formState.deadlineDate = dayjs().add(1, 'day').format(DATE_TIME_FORMAT);
   if (dayjs(formState.deadlineDate).hour() > 19 || dayjs(formState.deadlineDate).hour() < 8) {
-    formState.deadlineDate = dayjs(formState.deadlineDate).add(12, 'hour').format('YYYY-MM-DD HH:mm:ss');
+    formState.deadlineDate = dayjs(formState.deadlineDate).add(12, 'hour').format(DATE_TIME_FORMAT);
   }
   formState.description = props.description || '';
   formState.evalWorkload = '';

@@ -6,6 +6,7 @@ import { Spin, NoData } from '@xcan-angus/vue-ui';
 import dayjs from 'dayjs';
 import { exec } from '@/api/tester';
 import apiUtils from '@/utils/ApiUtils/index';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 const { t } = useI18n();
 
@@ -205,7 +206,7 @@ const setChartData = () => {
 const loadChartDataInDuration = async () => {
   const { id } = props.dataSource;
   const startDate = times.value[times.value.length - 1] || props.dataSource.actualStartDate;
-  const startTime = dayjs(startDate).format('YYYY-MM-DD HH:mm:ss');
+  const startTime = dayjs(startDate).format(DATE_TIME_FORMAT);
   const [error, { data }] = await exec.getSampleSummaryList(id, {
     pageNo: 1,
     pageSize: 100,

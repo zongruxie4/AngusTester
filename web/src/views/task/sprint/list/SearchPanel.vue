@@ -2,10 +2,11 @@
 import { computed, inject, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
-import { enumUtils, appContext } from '@xcan-angus/infra';
+import { enumUtils, appContext, EnumMessage } from '@xcan-angus/infra';
 import { TaskSprintStatus } from '@/enums/enums';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 const { t } = useI18n();
 
@@ -155,14 +156,14 @@ const formatDateString = (key: string) => {
   return [
     startDate
       ? {
-          value: startDate.format('YYYY-MM-DD HH:mm:ss'),
+          value: startDate.format(DATE_TIME_FORMAT),
           op: 'GREATER_THAN_EQUAL',
           key: 'createdDate'
         }
       : '',
     endDate
       ? {
-          value: endDate.format('YYYY-MM-DD HH:mm:ss'),
+          value: endDate.format(DATE_TIME_FORMAT),
           op: 'LESS_THAN_EQUAL',
           key: 'createdDate'
         }

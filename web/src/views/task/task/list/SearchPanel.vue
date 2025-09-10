@@ -25,6 +25,7 @@ import { TaskType, TaskStatus as TaskStatusEnum, TestType } from '@/enums/enums'
 import { debounce } from 'throttle-debounce';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { SearchPanelMenuItem, searchPanelOption } from '@/views/task/task/types';
@@ -300,7 +301,7 @@ const formatDateString = (key: SearchPanelMenuItem['key']) => {
     endDate = dayjs();
   }
 
-  return [startDate ? startDate.format('YYYY-MM-DD HH:mm:ss') : '', endDate ? endDate.format('YYYY-MM-DD HH:mm:ss') : ''];
+  return [startDate ? startDate.format(DATE_TIME_FORMAT) : '', endDate ? endDate.format(DATE_TIME_FORMAT) : ''];
 };
 
 const overdueChange = () => {

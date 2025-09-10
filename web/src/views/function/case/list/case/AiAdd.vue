@@ -23,6 +23,7 @@ import RichEditor from '@/components/richEditor/index.vue';
 import { funcCase, project, modules } from '@/api/tester';
 import { ai } from '@/api/gm';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import { useI18n } from 'vue-i18n';
 import CaseSteps from './CaseSteps.vue';
@@ -360,10 +361,10 @@ const planChange = (_value, options) => {
   formState.value.deadlineDate = _value ? options.deadlineDate : '';
   evalWorkloadMethod.value = options?.evalWorkloadMethod;
   if (formState.value.deadlineDate && dayjs(formState.value.deadlineDate).isBefore(dayjs())) {
-    formState.value.deadlineDate = dayjs().add(2, 'hour').format('YYYY-MM-DD HH:mm:ss');
+    formState.value.deadlineDate = dayjs().add(2, 'hour').format(DATE_TIME_FORMAT);
   }
   if (formState.value.deadlineDate && (dayjs(formState.value.deadlineDate).hour() > 19 || dayjs(formState.value.deadlineDate).hour() < 8)) {
-    formState.value.deadlineDate = dayjs(formState.value.deadlineDate).add(12, 'hour').format('YYYY-MM-DD HH:mm:ss');
+    formState.value.deadlineDate = dayjs(formState.value.deadlineDate).add(12, 'hour').format(DATE_TIME_FORMAT);
   }
 };
 

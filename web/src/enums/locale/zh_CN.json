@@ -144,6 +144,10 @@
         "COMPLETED": "已完成",
         "TIMEOUT": "超时"
       },
+      "ExecResult": {
+        "SUCCESS": "成功",
+        "FAIL": "失败"
+      },
       "TestResultStatus": {
         "NOT_ENABLED": "未开启",
         "UNTESTED": "未测试",

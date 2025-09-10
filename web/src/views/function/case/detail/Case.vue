@@ -35,6 +35,7 @@ import {
   minTestInfoColumns
 } from './config';
 import { funcCase } from '@/api/tester';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import { useI18n } from 'vue-i18n';
 
@@ -303,7 +304,7 @@ const editTag = async () => {
 // 修改时间
 const datePickertRef = ref();
 const isEditDisabledDate = ref(false);
-const deadlineDate = ref(dayjs().add(1, 'day').format('YYYY-MM-DD HH:mm:ss'));
+const deadlineDate = ref(dayjs().add(1, 'day').format(DATE_TIME_FORMAT));
 const loading = ref(false);
 const openEditDeadlineDate = () => {
   deadlineDate.value = props.caseDetail?.deadlineDate;
