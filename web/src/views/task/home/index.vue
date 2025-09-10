@@ -2,9 +2,7 @@
 import { defineAsyncComponent, inject, onMounted, provide, ref, Ref, watch } from 'vue';
 
 /**
- * <p>
  * Props interface for TaskHome component.
- * </p>
  * <p>
  * Defines the required properties for the main task home page.
  * </p>
@@ -43,9 +41,7 @@ const ActivityTimeline = defineAsyncComponent(() => import('@/views/task/home/Ac
 const internalNotification = ref<string>();
 
 /**
- * <p>
  * Updates the internal notification state.
- * </p>
  * <p>
  * This function is provided to child components for triggering data refresh.
  * </p>

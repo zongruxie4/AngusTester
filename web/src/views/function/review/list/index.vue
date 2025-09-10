@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'v
 import { Avatar, Button, Pagination, Popover, Progress } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { Colon, Dropdown, Icon, Image, modal, NoData, notification, Spin } from '@xcan-angus/vue-ui';
-import { utils, download } from '@xcan-angus/infra';
+import { utils, download, appContext } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { func } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
@@ -35,7 +35,7 @@ const Introduce = defineAsyncComponent(() => import('@/views/function/review/lis
 const RichContent = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
 
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
-const isAdmin = inject('isAdmin', ref(false));
+const isAdmin = computed(() => appContext.isAdmin());
 
 const loaded = ref(false);
 const loading = ref(false);

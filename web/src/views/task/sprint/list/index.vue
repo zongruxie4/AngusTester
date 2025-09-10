@@ -15,7 +15,7 @@ import {
   Popover,
   Spin
 } from '@xcan-angus/vue-ui';
-import { utils, TESTER, download } from '@xcan-angus/infra';
+import {utils, TESTER, download, appContext} from '@xcan-angus/infra';
 import ProcessPng from './images/process.png';
 import { task } from '@/api/tester';
 
@@ -48,7 +48,7 @@ const WorkCalendar = defineAsyncComponent(() => import('@/views/task/sprint/list
 const RichText = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
 
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
-const isAdmin = inject('isAdmin', ref(false));
+const isAdmin = computed(() => appContext.isAdmin());
 
 const loaded = ref(false);
 const loading = ref(false);

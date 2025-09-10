@@ -13,9 +13,19 @@ import {
   Tooltip
 } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Radio, RadioGroup, TabPane, Tabs, Upload } from 'ant-design-vue';
-import { EnumMessage, EvalWorkloadMethod, toClipboard, utils, TESTER, enumUtils, upload } from '@xcan-angus/infra';
+import {
+  EnumMessage,
+  EvalWorkloadMethod,
+  toClipboard,
+  utils,
+  TESTER,
+  enumUtils,
+  upload,
+  appContext
+} from '@xcan-angus/infra';
 import type { Rule } from 'ant-design-vue/es/form';
 import dayjs from 'dayjs';
+import { TaskSprintPermission, TaskSprintStatus } from '@/enums/enums';
 import { task } from '@/api/tester';
 import { EditFormState, SprintInfo } from '../types';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
@@ -44,8 +54,7 @@ const { t } = useI18n();
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const replaceTabPane = inject<(id: string, data: { [key: string]: any }) => void>('replaceTabPane', () => ({}));
-const isAdmin = inject('isAdmin', ref(false));
-
+const isAdmin = computed(() => appContext.isAdmin());
 // const meetingsRef = ref();
 const formRef = ref();
 
@@ -61,7 +70,7 @@ const formState = ref<EditFormState>({
   otherInformation: '',
   acceptanceCriteria: '',
   projectId: props.projectId,
-  evalWorkloadMethod: 'STORY_POINT',
+  evalWorkloadMethod: EvalWorkloadMethod.STORY_POINT,
   name: '',
   ownerId: props.userInfo?.id,
   startDate: _startDate,
@@ -71,7 +80,7 @@ const formState = ref<EditFormState>({
   // meetings: []
 });
 
-const ownerDefaultOptions = ref<{[key:string]:{fullName:string;id:string;}}>();
+const ownerDefaultOptions = ref<{ [key: string]: { fullName: string; id: string; } }>();
 
 const loading = ref(false);
 const authorizeModalVisible = ref(false);
@@ -104,15 +113,7 @@ const getParams = () => {
   if (!params.taskPrefix) {
     delete params.taskPrefix;
   }
-  // const meetings = meetingsRef.value.getData();
-  // if (meetings.length) {
-  //   params.meetings = meetings;
-  // } else {
-  //   delete params.meetings;
-  // }
-
   delete params.date;
-
   return params;
 };
 
@@ -123,10 +124,6 @@ const refreshList = () => {
 };
 
 const editOk = async () => {
-  // const equalFlag = isEqual(oldFormState.value, formState.value);
-  // if (equalFlag) {
-  //   return;
-  // }
   const params = getParams();
 
   loading.value = true;
@@ -135,13 +132,11 @@ const editOk = async () => {
   if (error) {
     return;
   }
-
   notification.success(t('taskSprint.messages.editSuccess'));
 
   const id = params.id;
   const name = params.name;
   updateTabPane({ _id: id, name });
-  // 更新数据名称
   if (dataSource.value) {
     dataSource.value.name = name;
   }
@@ -206,7 +201,7 @@ const toStart = async () => {
   }
 
   notification.success(t('taskSprint.messages.startSuccess'));
-  loadData(id);
+  await loadData(id);
   refreshList();
 };
 
@@ -224,7 +219,7 @@ const toCompleted = async () => {
   }
 
   notification.success(t('taskSprint.messages.completeSuccess'));
-  loadData(id);
+  await loadData(id);
   refreshList();
 };
 
@@ -262,7 +257,7 @@ const authFlagChange = async () => {
     return;
   }
 
-  loadData(id);
+  await loadData(id);
   refreshList();
 };
 
@@ -315,19 +310,7 @@ const loadEnums = () => {
 
 const loadPermissions = async (id: string) => {
   if (isAdmin.value) {
-    permissions.value = [
-      'MODIFY_SPRINT',
-      'DELETE_SPRINT',
-      'ADD_TASK',
-      'MODIFY_TASK',
-      'DELETE_TASK',
-      'EXPORT_TASK',
-      'REVIEW',
-      'TEST',
-      'GRANT',
-      'VIEW'
-    ];
-
+    permissions.value = enumUtils.getEnumValues(TaskSprintPermission);
     return;
   }
 
@@ -341,21 +324,11 @@ const loadPermissions = async (id: string) => {
     return;
   }
 
-  const { taskSprintAuthFlag, permissions: _permissions } = res?.data || { taskSprintAuthFlag: true, permissions: [] };
-  if (!taskSprintAuthFlag) {
-    permissions.value = [
-      'MODIFY_SPRINT',
-      'DELETE_SPRINT',
-      'ADD_TASK',
-      'MODIFY_TASK',
-      'DELETE_TASK',
-      'EXPORT_TASK',
-      'REVIEW',
-      'TEST',
-      'VIEW'];
-
-    if (_permissions.includes('GRANT')) {
-      permissions.value.push('GRANT');
+  const { taskSprintAuth, permissions: _permissions } = res?.data || { taskSprintAuth: true, permissions: [] };
+  if (!taskSprintAuth) {
+    permissions.value = enumUtils.getEnumValues(TaskSprintPermission);
+    if (_permissions.includes(TaskSprintPermission.GRANT)) {
+      permissions.value.push(TaskSprintPermission.GRANT);
     }
   } else {
     permissions.value = (_permissions || []).map(item => item.value);
@@ -395,14 +368,13 @@ const setFormData = (data: SprintInfo) => {
       otherInformation: '',
       acceptanceCriteria: '',
       projectId: props.projectId,
-      evalWorkloadMethod: 'STORY_POINT',
+      evalWorkloadMethod: EvalWorkloadMethod.STORY_POINT,
       name: '',
       ownerId: props.userInfo?.id,
       attachments: [],
       date: [startDate, deadlineDate]
       // meetings: []
     };
-
     return;
   }
 
@@ -418,7 +390,6 @@ const setFormData = (data: SprintInfo) => {
     attachments = '',
     startDate = '',
     deadlineDate = ''
-    // meetings = []
   } = data;
 
   formState.value.taskPrefix = taskPrefix;
@@ -433,9 +404,6 @@ const setFormData = (data: SprintInfo) => {
   formState.value.deadlineDate = deadlineDate;
   formState.value.attachments = attachments || [];
   formState.value.date = [startDate, deadlineDate];
-  // formState.value.meetings = meetings;
-
-  // oldFormState.value = cloneDeep(formState.value);
 };
 
 onMounted(() => {
@@ -447,8 +415,8 @@ onMounted(() => {
       return;
     }
 
-    loadPermissions(id);
-    loadData(id);
+    await loadPermissions(id);
+    await loadData(id);
   }, { immediate: true });
 });
 
@@ -500,22 +468,15 @@ const editFlag = computed(() => {
 });
 
 const editDisabled = computed(() => {
-  if (dataSource.value && ['IN_PROGRESS', 'COMPLETED'].includes(dataSource.value?.status?.value)) {
-    return true;
-  }
-
-  return false;
+  return !!(dataSource.value && [TaskSprintStatus.IN_PROGRESS, TaskSprintStatus.COMPLETED].includes(dataSource.value?.status?.value));
 });
-const autoSize = {
-  minRows: 12,
-  maxRows: 20
-};
+
 </script>
 <template>
   <Spin :spinning="loading" class="h-full text-3 leading-5 px-5 py-5 overflow-auto">
     <div class="flex items-center space-x-2.5 mb-5">
       <Button
-        :disabled="!isAdmin && !permissions.includes('MODIFY_SPRINT')"
+        :disabled="!isAdmin && !permissions.includes(TaskSprintPermission.MODIFY_SPRINT)"
         type="primary"
         size="small"
         class="flex items-center space-x-1"
@@ -527,7 +488,7 @@ const autoSize = {
       <template v-if="editFlag">
         <Button
           v-if="status === 'COMPLETED'"
-          :disabled="!isAdmin && !permissions.includes('MODIFY_SPRINT')"
+          :disabled="!isAdmin && !permissions.includes(TaskSprintPermission.MODIFY_SPRINT)"
           size="small"
           type="default"
           class="flex items-center space-x-1"
@@ -538,7 +499,7 @@ const autoSize = {
 
         <Button
           v-else-if="['PENDING', 'BLOCKED'].includes(status)"
-          :disabled="!isAdmin && !permissions.includes('MODIFY_SPRINT')"
+          :disabled="!isAdmin && !permissions.includes(TaskSprintPermission.MODIFY_SPRINT)"
           size="small"
           type="default"
           class="flex items-center space-x-1"
@@ -549,7 +510,7 @@ const autoSize = {
 
         <template v-if="status === 'IN_PROGRESS'">
           <Button
-            :disabled="!isAdmin && !permissions.includes('MODIFY_SPRINT')"
+            :disabled="!isAdmin && !permissions.includes(TaskSprintPermission.MODIFY_SPRINT)"
             size="small"
             type="default"
             class="flex items-center space-x-1"
@@ -559,7 +520,7 @@ const autoSize = {
           </Button>
 
           <Button
-            :disabled="!isAdmin && !permissions.includes('MODIFY_SPRINT')"
+            :disabled="!isAdmin && !permissions.includes(TaskSprintPermission.MODIFY_SPRINT)"
             size="small"
             type="default"
             class="flex items-center space-x-1"
@@ -570,7 +531,7 @@ const autoSize = {
         </template>
 
         <Button
-          :disabled="!isAdmin && !permissions.includes('DELETE_SPRINT')"
+          :disabled="!isAdmin && !permissions.includes(TaskSprintPermission.DELETE_SPRINT)"
           type="default"
           size="small"
           class="flex items-center space-x-1"
@@ -580,7 +541,7 @@ const autoSize = {
         </Button>
 
         <Button
-          :disabled="!isAdmin && !permissions.includes('GRANT')"
+          :disabled="!isAdmin && !permissions.includes(TaskSprintPermission.GRANT)"
           type="default"
           size="small"
           class="flex items-center space-x-1"
@@ -730,7 +691,8 @@ const autoSize = {
             :customRequest="() => { }"
             @change="upLoadFile">
             <a class="text-theme-special text-theme-text-hover text-3 flex items-center leading-5 h-5 mt-0.5">
-              <Icon icon="icon-lianjie1" class="mr-1" /> <span class="whitespace-nowrap">{{ t('taskSprint.form.uploadAttachment') }}</span>
+              <Icon icon="icon-lianjie1" class="mr-1" />
+              <span class="whitespace-nowrap">{{ t('taskSprint.form.uploadAttachment') }}</span>
             </a>
           </Upload>
           <Tooltip :overlayStyle="{ 'max-width': '400px' }">
@@ -775,13 +737,6 @@ const autoSize = {
               ref="criteriaRichRef"
               v-model:value="formState.acceptanceCriteria"
               :options="{placeholder: t('taskSprint.placeholder.inputAcceptanceCriteria')}" />
-            <!-- <Textarea
-              v-model:value="formState.acceptanceCriteria"
-              size="small"
-              showCount
-              :autoSize="autoSize"
-              :maxlength="2000"
-              placeholder="明确计软件产品交付的具体条件和标准。" /> -->
           </FormItem>
         </TabPane>
         <TabPane key="otherInformation" :tab="t('taskSprint.form.otherInformation')">
@@ -793,13 +748,6 @@ const autoSize = {
               ref="infoRichRef"
               v-model:value="formState.otherInformation"
               :options="{placeholder: t('taskSprint.placeholder.inputOtherInformation')}" />
-            <!-- <Textarea
-              v-model:value="formState.otherInformation"
-              size="small"
-              showCount
-              :autoSize="autoSize"
-              :maxlength="2000"
-              placeholder="其他说明，如迭代策略、风险评估和管理等。" /> -->
           </FormItem>
         </TabPane>
       </Tabs>
@@ -829,7 +777,7 @@ const autoSize = {
   margin-right: 10px;
 }
 
-.ant-tabs-small>:deep(.ant-tabs-nav) .ant-tabs-tab {
+.ant-tabs-small > :deep(.ant-tabs-nav) .ant-tabs-tab {
   padding-top: 0;
 }
 </style>

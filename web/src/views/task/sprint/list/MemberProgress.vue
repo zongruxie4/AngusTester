@@ -45,7 +45,7 @@ const cancel = () => {
 
 onMounted(() => {
   watch(() => props.visible, () => {
-    if (props.visible === false || props.sprintId === undefined || props.sprintId === null || props.sprintId === '') {
+    if (!props.visible || props.sprintId === undefined || props.sprintId === null || props.sprintId === '') {
       return;
     }
 

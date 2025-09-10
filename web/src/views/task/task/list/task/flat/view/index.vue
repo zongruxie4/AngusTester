@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'v
 import { useI18n } from 'vue-i18n';
 import { Button, Popover, TabPane, Tabs } from 'ant-design-vue';
 import { Icon, modal, notification, Spin } from '@xcan-angus/vue-ui';
-import { toClipboard, http, utils, duration } from '@xcan-angus/infra';
+import {toClipboard, http, utils, duration, appContext} from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { cloneDeep } from 'lodash-es';
 import { task } from '@/api/tester';
@@ -63,7 +63,7 @@ const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabP
 const replaceTabPane = inject<(id: string, data: { [key: string]: any }) => void>('replaceTabPane', () => ({}));
 const deleteTabPane = inject<(value: string[]) => void>('deleteTabPane');
 const windowResizeNotify = inject('windowResizeNotify', ref<string>());
-const isAdmin = inject('isAdmin', ref(false));
+const isAdmin = computed(() => appContext.isAdmin());
 
 const domId = utils.uuid('a');
 let containerDom: HTMLElement | null;

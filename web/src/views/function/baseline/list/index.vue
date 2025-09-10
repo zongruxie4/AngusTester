@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
+import { defineAsyncComponent, inject, onMounted, ref, watch, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Pagination } from 'ant-design-vue';
 import { Colon, Icon, modal, NoData, notification, Spin } from '@xcan-angus/vue-ui';
@@ -8,7 +8,7 @@ import { func } from '@/api/tester';
 
 import SearchPanel from '@/views/function/baseline/list/SearchPanel.vue';
 import RichText from '@/components/richEditor/textContent/index.vue';
-import {BaselineInfo} from "@/views/function/baseline/types";
+import { BaselineInfo } from '@/views/function/baseline/types';
 
 const { t } = useI18n();
 
@@ -32,7 +32,6 @@ type OrderSortKey = 'ASC' | 'DESC';
 const Introduce = defineAsyncComponent(() => import('@/views/function/baseline/list/Introduce.vue'));
 
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
-const isAdmin = inject('isAdmin', ref(false));
 
 const loaded = ref(false);
 const loading = ref(false);
@@ -289,7 +288,11 @@ const sortMenuItems: {
                       v-if="item.established"
                       icon="icon-duihao-copy"
                       class="mr-1" />
-                    <div>{{ item.established ? t('functionBaseline.list.established') : t('functionBaseline.list.notEstablished') }}</div>
+                    <div>
+                      {{
+                        item.established ? t('functionBaseline.list.established') : t('functionBaseline.list.notEstablished')
+                      }}
+                    </div>
                   </div>
                 </div>
               </div>

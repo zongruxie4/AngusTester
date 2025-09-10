@@ -40,7 +40,7 @@ const ExecTestModal = defineAsyncComponent(() => import('@/views/apis/services/s
 
 const { t } = useI18n();
 const userInfo = ref(appContext.getUser());
-const isAdmin = inject('isAdmin', ref(false));
+const isAdmin = computed(() => appContext.isAdmin());
 // Inject project information
 const projectId = inject<Ref<string>>('projectId', ref(''));
 const appInfo = inject('appInfo') as Ref<Record<string, any>>;

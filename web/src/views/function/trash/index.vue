@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, inject, ref, watch } from 'vue';
 import { Button, TabPane, Tabs, Tooltip, Popconfirm, Badge } from 'ant-design-vue';
 import { Icon, Input, Spin } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-import { utils } from '@xcan-angus/infra';
+import {appContext, utils} from '@xcan-angus/infra';
 import { useTrashActions } from './composables/useTrashActions';
 import { useSearch } from './composables/useSearch';
 import type { TrashProps, TrashItem } from './types';
@@ -24,7 +24,7 @@ const Table = defineAsyncComponent(() => import('./table.vue'));
 const { t } = useI18n();
 
 // Inject admin status from parent component
-const isAdmin = inject('isAdmin', ref(false));
+const isAdmin = computed(() => appContext.isAdmin());
 
 // State management
 const activeKey = ref<'PLAN' | 'CASE'>('PLAN');

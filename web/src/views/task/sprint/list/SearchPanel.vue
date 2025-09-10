@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { computed, inject, onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
-import { enumUtils, appContext, EnumMessage } from '@xcan-angus/infra';
+import { PageQuery, enumUtils, appContext, EnumMessage } from '@xcan-angus/infra';
 import { TaskSprintStatus } from '@/enums/enums';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
@@ -19,11 +19,10 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 type OrderByKey = string;
-type OrderSortKey = 'ASC' | 'DESC';
 
 const emits = defineEmits<{(e: 'change', value: {
   orderBy?: string;
-  orderSort?: 'ASC'|'DESC';
+  orderSort?: PageQuery.OrderSort;
   filters: {key: string; op: string; value: string|string[]}[];
 }):void,
  (e: 'refresh'):void}>();
@@ -76,22 +75,22 @@ const searchPanelOptions = [
 const sortMenuItems: {
   name: string;
   key: OrderByKey;
-  orderSort: OrderSortKey;
+  orderSort: PageQuery.OrderSort;
 }[] = [
   {
     name: t('taskSprint.searchPanel.sortByCreateTime'),
     key: 'createdDate',
-    orderSort: 'DESC'
+    orderSort: PageQuery.OrderSort.Desc
   },
   {
     name: t('taskSprint.searchPanel.sortByCreator'),
     key: 'createdBy',
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   },
   {
     name: t('taskSprint.searchPanel.sortByOwner'),
     key: 'ownerId',
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   }
 ];
 
@@ -229,7 +228,6 @@ const menuItemClick = (data) => {
     if (key === '') {
       selectedMenuMap.value = { '': true };
       quickSearchFilters.value = [];
-      // 清空搜索面板
       if (typeof searchPanelRef.value?.clear === 'function') {
         searchPanelRef.value.clear();
         searchChangeFlag = true;

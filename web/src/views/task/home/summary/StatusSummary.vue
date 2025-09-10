@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {defineAsyncComponent, onMounted, ref, watch} from 'vue';
-import {useI18n} from 'vue-i18n';
-import {analysis} from '@/api/tester';
+import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { analysis } from '@/api/tester';
 
-import {SummaryInfo} from '@/views/task/home/types';
+import { SummaryInfo } from '@/views/task/home/types';
 
 // Props definition
 type Props = {
@@ -34,6 +34,7 @@ const loadData = async (): Promise<void> => {
   const params = {
     projectId: props.projectId
   };
+
   const [error, res] = await analysis.getTaskResourceCount(params);
   loading.value = false;
   if (error) {

@@ -23,7 +23,7 @@ const AuthorizeModal = defineAsyncComponent(() => import('@/components/Authorize
 
 // Dependency injection for app context
 const appInfo = appContext.getAccessApp();
-const isAdmin = inject('isAdmin', ref(false));
+const isAdmin = computed(() => appContext.isAdmin());
 // Inject project information
 const projectId = inject<Ref<string>>('projectId', ref(''));
 

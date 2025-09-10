@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent, inject, ref } from 'vue';
+import {computed, defineAsyncComponent, inject, ref} from 'vue';
 import { duration, appContext } from '@xcan-angus/infra';
 import { AsyncComponent, Icon, Input, modal, notification } from '@xcan-angus/vue-ui';
 import { Button, Dropdown, Menu, MenuItem, Tree } from 'ant-design-vue';
@@ -41,7 +41,7 @@ const MoveModuleModal = defineAsyncComponent(() => import('@/views/project/modul
 const { t } = useI18n();
 
 const projectInfo = inject('projectInfo', ref({}));
-const isAdmin = inject('isAdmin', ref(false));
+const isAdmin = computed(() => appContext.isAdmin());
 const userInfo = ref(appContext.getUser());
 
 const nameInputRef = ref();

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed, inject, onMounted, ref, toRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { appContext } from '@xcan-angus/infra';
 import { Badge, Button, Tooltip } from 'ant-design-vue';
 import { Icon, Image, Input, Spin, Table } from '@xcan-angus/vue-ui';
 import { useTrashData } from './composables/useTrashData';
@@ -22,7 +23,7 @@ const props = withDefaults(defineProps<TrashProps>(), {
 const { t } = useI18n();
 
 // Inject admin status from parent component
-const isAdmin = inject('isAdmin', ref(false));
+const isAdmin = computed(() => appContext.isAdmin());
 
 // Use composables for separation of concerns
 const {

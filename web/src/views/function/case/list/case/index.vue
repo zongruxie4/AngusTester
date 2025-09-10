@@ -23,7 +23,20 @@ import {
   TestResult,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { EnumMessage, NumberCompareCondition, toClipboard, http, duration, download, TESTER, enumUtils, XCanDexie, Priority, ReviewStatus as ReviewStatusEnum } from '@xcan-angus/infra';
+import {
+  EnumMessage,
+  NumberCompareCondition,
+  toClipboard,
+  http,
+  duration,
+  download,
+  TESTER,
+  enumUtils,
+  XCanDexie,
+  Priority,
+  ReviewStatus as ReviewStatusEnum,
+  appContext
+} from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
 import { funcCase, modules, funcPlan, analysis } from '@/api/tester';
@@ -97,7 +110,7 @@ const userInfo = inject<{ id: string, fullName: string }>('userInfo');
 const appInfo = inject<{ id: string, name: string }>('appInfo');
 const aiEnabled = inject('aiEnabled', ref(false));
 const updateLoading = inject<((value: boolean) => void)>('updateLoading', () => undefined);
-const isAdmin = inject('isAdmin', ref(false));
+const isAdmin = computed(() => appContext.isAdmin());
 const defaultUser = { [userInfo?.id]: { fullName: userInfo?.fullName, id: userInfo?.id } };
 const { getActionAuth } = useCaseActionAuth();
 

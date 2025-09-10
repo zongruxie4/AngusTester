@@ -13,7 +13,16 @@ import {
   Spin,
   Table
 } from '@xcan-angus/vue-ui';
-import { EnumMessage, EvalWorkloadMethod, utils, TESTER, enumUtils, upload, duration } from '@xcan-angus/infra';
+import {
+  EnumMessage,
+  EvalWorkloadMethod,
+  utils,
+  TESTER,
+  enumUtils,
+  upload,
+  duration,
+  appContext
+} from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { isEqual } from 'lodash-es';
 import { debounce } from 'throttle-debounce';
@@ -48,7 +57,7 @@ const SelectCaseModal = defineAsyncComponent(() => import('./SelectCaseModal.vue
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const replaceTabPane = inject<(id: string, data: { [key: string]: any }) => void>('replaceTabPane', () => ({}));
-const isAdmin = inject('isAdmin', ref(false));
+const isAdmin = computed(() => appContext.isAdmin());
 const reviewId = ref();
 const formRef = ref();
 const selectModalVisible = ref(false);

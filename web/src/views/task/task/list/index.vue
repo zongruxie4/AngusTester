@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, watch, Ref } fr
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { AsyncComponent, NoData, notification, Spin } from '@xcan-angus/vue-ui';
-import { http, utils, TESTER, download } from '@xcan-angus/infra';
+import {http, utils, TESTER, download, appContext} from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 
@@ -50,7 +50,7 @@ const ModuleTree = defineAsyncComponent(() => import('./ModuleTree.vue'));
 
 const { t } = useI18n();
 const deleteTabPane = inject<(value: string[]) => void>('deleteTabPane');
-const isAdmin = inject('isAdmin', ref(false));
+const isAdmin = computed(() => appContext.isAdmin());
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
 
 const router = useRouter();

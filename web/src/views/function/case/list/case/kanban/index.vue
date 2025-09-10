@@ -14,7 +14,7 @@ import {
   TaskPriority,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { enumUtils } from '@xcan-angus/infra';
+import {appContext, enumUtils} from '@xcan-angus/infra';
 import { CaseTestResult } from '@/enums/enums';
 import Draggable from 'vuedraggable';
 import dayjs from 'dayjs';
@@ -73,7 +73,7 @@ const Activity = defineAsyncComponent(() => import('@/views/function/case/list/c
 
 const { t } = useI18n();
 
-const isAdmin = inject('isAdmin', ref(false));
+const isAdmin = computed(() => appContext.isAdmin());
 
 const drawerActiveKey = ref<'basic' | 'testStep' | 'person' | 'date' | 'comment' | 'activity' | 'refTasks' | 'refCases' | 'attachments' | 'remarks'>('basic');
 

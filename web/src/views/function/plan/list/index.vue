@@ -14,7 +14,7 @@ import {
   Popover,
   Spin
 } from '@xcan-angus/vue-ui';
-import { utils, TESTER, download } from '@xcan-angus/infra';
+import {utils, TESTER, download, appContext} from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import ProcessPng from './images/process.png';
 import { funcPlan } from '@/api/tester';
@@ -54,7 +54,7 @@ const RichText = defineAsyncComponent(() => import('@/components/richEditor/text
 
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const setCaseListPlanParam = inject<(value: any) => void>('setCaseListPlanParam');
-const isAdmin = inject('isAdmin', ref(false));
+const isAdmin = computed(() => appContext.isAdmin());
 
 const loaded = ref(false);
 const loading = ref(false);

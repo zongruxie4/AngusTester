@@ -3,8 +3,9 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'v
 import { useI18n } from 'vue-i18n';
 import { Button, Progress, TabPane, Tabs } from 'ant-design-vue';
 import { Colon, Icon, NoData, notification, Spin } from '@xcan-angus/vue-ui';
-import { TESTER, toClipboard, utils, download } from '@xcan-angus/infra';
+import {TESTER, toClipboard, utils, download, enumUtils, appContext} from '@xcan-angus/infra';
 import dayjs from 'dayjs';
+import { TaskSprintPermission } from '@/enums/enums';
 import { task } from '@/api/tester';
 import { SprintInfo } from '../types';
 
@@ -34,10 +35,10 @@ const { t } = useI18n();
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 const replaceTabPane = inject<(key:string, data: { [key: string]: any }) => void>('replaceTabPane', () => ({}));
 const deleteTabPane = inject<(key:string, data: { [key: string]: any }) => void>('deleteTabPane', () => ({}));
-const isAdmin = inject('isAdmin', ref(false));
+const isAdmin = computed(() => appContext.isAdmin());
 
 const dataSource = ref<SprintInfo>();
-const permissions = ref<string[]>([]);
+const permissions = ref<TaskSprintPermission[]>([]);
 const completedRate = ref(0);
 
 const loading = ref(false);
@@ -45,19 +46,7 @@ const exportLoading = ref(false);
 
 const loadPermissions = async (id: string) => {
   if (isAdmin.value) {
-    permissions.value = [
-      'MODIFY_SPRINT',
-      'DELETE_SPRINT',
-      'ADD_TASK',
-      'MODIFY_TASK',
-      'DELETE_TASK',
-      'EXPORT_TASK',
-      'REVIEW',
-      'TEST',
-      'GRANT',
-      'VIEW'
-    ];
-
+    permissions.value = enumUtils.getEnumValues(TaskSprintPermission);
     return;
   }
 
@@ -71,21 +60,11 @@ const loadPermissions = async (id: string) => {
     return;
   }
 
-  const { taskSprintAuthFlag, permissions: _permissions } = res?.data || { taskSprintAuthFlag: true, permissions: [] };
-  if (!taskSprintAuthFlag) {
-    permissions.value = [
-      'MODIFY_SPRINT',
-      'DELETE_SPRINT',
-      'ADD_TASK',
-      'MODIFY_TASK',
-      'DELETE_TASK',
-      'EXPORT_TASK',
-      'REVIEW',
-      'TEST',
-      'VIEW'];
-
-    if (_permissions.includes('GRANT')) {
-      permissions.value.push('GRANT');
+  const { taskSprintAuth, permissions: _permissions } = res?.data || { taskSprintAuth: true, permissions: [] };
+  if (!taskSprintAuth) {
+    permissions.value = enumUtils.getEnumValues(TaskSprintPermission);
+    if (_permissions.includes(TaskSprintPermission.GRANT)) {
+      permissions.value.push(TaskSprintPermission.GRANT);
     }
   } else {
     permissions.value = (_permissions || []).map(item => item.value);
@@ -164,8 +143,8 @@ onMounted(() => {
       return;
     }
 
-    loadPermissions(id);
-    loadData(id);
+    await loadPermissions(id);
+    await loadData(id);
   }, { immediate: true });
 });
 

@@ -14,7 +14,7 @@ import {
   TaskPriority,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { enumUtils } from '@xcan-angus/infra';
+import {appContext, enumUtils} from '@xcan-angus/infra';
 import { TaskStatus } from '@/enums/enums';
 import dayjs from 'dayjs';
 import { reverse, sortBy } from 'lodash-es';
@@ -73,7 +73,7 @@ const AssocCases = defineAsyncComponent(() => import('@/views/task/task/list/tas
 const AttachmentInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/info/Attachment.vue'));
 const Remarks = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/Remark.vue'));
 
-const isAdmin = inject('isAdmin', ref(false));
+const isAdmin = computed(() => appContext.isAdmin());
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
 
 const drawerActiveKey = ref<'basic' | 'person' | 'date' | 'comment' | 'activity' | 'tasks' | 'cases' | 'attachments' | 'remarks'>('basic');

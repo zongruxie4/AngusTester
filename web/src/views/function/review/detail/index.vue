@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
+import {computed, defineAsyncComponent, inject, onMounted, ref, watch} from 'vue';
 import { Button, Checkbox, Popover, TabPane, Tabs, Tag } from 'ant-design-vue';
 import {
   AsyncComponent,
@@ -13,7 +13,7 @@ import {
   Table,
   TaskPriority
 } from '@xcan-angus/vue-ui';
-import { download, duration } from '@xcan-angus/infra';
+import {appContext, download, duration} from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
 import RichEditor from '@/components/richEditor/index.vue';
@@ -52,7 +52,7 @@ const Description = defineAsyncComponent(() => import('@/views/function/review/c
 
 const { t } = useI18n();
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
-const isAdmin = inject('isAdmin', ref(false));
+const isAdmin = computed(() => appContext.isAdmin());
 const selectModalVisible = ref(false);
 const loading = ref(false);
 const pagination = ref({

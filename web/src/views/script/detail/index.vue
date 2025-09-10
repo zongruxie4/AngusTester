@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { defineAsyncComponent, inject, nextTick, onMounted, ref, Ref } from 'vue';
+import {computed, defineAsyncComponent, inject, nextTick, onMounted, ref, Ref} from 'vue';
 import { useI18n } from 'vue-i18n';
 import {
   ActivityTimeline, AsyncComponent, Drawer, Icon, Input, Modal, modal, Select, Spin, Toolbar
@@ -16,6 +16,7 @@ import {
   useAI,
   useDrawer
 } from './composables';
+import {appContext} from "@xcan-angus/infra";
 
 const { t } = useI18n();
 
@@ -31,7 +32,7 @@ const ExecRecord = defineAsyncComponent(() => import('@/views/script/detail/Exec
 const route = useRoute();
 const router = useRouter();
 
-const isAdmin = inject('isAdmin', ref(false));
+const isAdmin = computed(() => appContext.isAdmin());
 const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; }>>('projectInfo', ref({ id: '', avatar: '', name: '' }));
 const aiEnabled = inject('aiEnabled', ref(false));
 

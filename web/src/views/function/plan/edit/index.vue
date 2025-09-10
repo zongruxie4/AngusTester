@@ -25,7 +25,16 @@ import {
   Spin,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { EvalWorkloadMethod, EnumMessage, toClipboard, utils, TESTER, enumUtils, upload } from '@xcan-angus/infra';
+import {
+  EvalWorkloadMethod,
+  EnumMessage,
+  toClipboard,
+  utils,
+  TESTER,
+  enumUtils,
+  upload,
+  appContext
+} from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { isEqual } from 'lodash-es';
 import type { Rule } from 'ant-design-vue/es/form';
@@ -61,7 +70,7 @@ const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/in
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const replaceTabPane = inject<(id: string, data: { [key: string]: any }) => void>('replaceTabPane', () => ({}));
-const isAdmin = inject('isAdmin', ref(false));
+const isAdmin = computed(() => appContext.isAdmin());
 
 const formRef = ref();
 

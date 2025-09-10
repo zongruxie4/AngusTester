@@ -37,10 +37,6 @@ const emits = defineEmits<{(e: 'loadData', value?: string); (e: 'update:moduleId
 const CreateModal = defineAsyncComponent(() => import('@/views/project/module/Add.vue'));
 const MoveModuleModal = defineAsyncComponent(() => import('@/views/project/module/Move.vue'));
 
-// const projectInfo = inject('projectInfo', ref({}));
-// const isAdmin = inject('isAdmin', ref(false));
-// const tenantInfo = inject('tenantInfo', ref({}));
-
 const nameInputRef = ref();
 
 const loading = ref(false);

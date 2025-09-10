@@ -86,7 +86,7 @@ const updateInterface = inject('updateInterface', {
 });
 
 const updateHosts = inject('updateHosts', { reloadKey: 0, reloadId: '' });
-const isAdmin = inject('isAdmin', ref(false));
+const isAdmin = computed(() => appContext.isAdmin());
 
 const apiListRef = ref();
 const openapiRef = ref();

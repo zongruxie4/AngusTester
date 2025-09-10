@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Progress, TabPane, Tabs } from 'ant-design-vue';
 import { Colon, Icon, Image, notification, Spin, Table } from '@xcan-angus/vue-ui';
-import { TESTER, toClipboard, download } from '@xcan-angus/infra';
+import {TESTER, toClipboard, download, appContext} from '@xcan-angus/infra';
 import { funcPlan } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
@@ -34,7 +34,7 @@ const WorkCalendar = defineAsyncComponent(() => import('@/views/function/home/Wo
 
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 const setCaseListPlanParam = inject<(value: any) => void>('setCaseListPlanParam');
-const isAdmin = inject('isAdmin', ref(false));
+const isAdmin = computed(() => appContext.isAdmin());
 
 const loading = ref(false);
 const exportLoading = ref(false);

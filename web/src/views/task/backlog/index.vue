@@ -18,7 +18,7 @@ import {
   TaskPriority,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { duration } from '@xcan-angus/infra';
+import {appContext, duration} from '@xcan-angus/infra';
 import Draggable from 'vuedraggable';
 import { cloneDeep } from 'lodash-es';
 import { debounce } from 'throttle-debounce';
@@ -46,7 +46,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 const aiEnabled = inject('aiEnabled', ref(false));
-const isAdmin = inject('isAdmin', ref(false));
+const isAdmin = computed(() => appContext.isAdmin());
 
 const Introduce = defineAsyncComponent(() => import('@/views/task/backlog/Introduce.vue'));
 const ApiInfo = defineAsyncComponent(() => import('@/views/task/backlog/info/Apis.vue'));
