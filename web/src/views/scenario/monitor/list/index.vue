@@ -137,30 +137,30 @@ const {
                 </div>
                 <div class="mt-2 inline-flex max-w-full">
                   <template v-if="item.status?.value === ScenarioMonitorStatus.PENDING">
-                    <span>将运行“</span>
+                    <span>{{ t('scenarioMonitor.list.willRun') }}“</span>
                     <a
                       class="text-blue-1 truncate min-w-0 flex-1"
                       :title="item.scenarioName"
                       @click="getScenarioDetail(item.scenarioId)">{{ item.scenarioName || '--' }}
                     </a>
-                    <span>”在 {{ item.nextExecDate }}</span>
+                    <span>”{{ t('scenarioMonitor.list.in') }} {{ item.nextExecDate }}</span>
                   </template>
                   <template v-else>
-                    <span>最后运行“</span>
+                    <span>{{ t('scenarioMonitor.list.lastRun') }}“</span>
                     <a
                       class="text-blue-1 truncate min-w-0 flex-1"
                       :title="item.scenarioName"
                       @click="getScenarioDetail(item.scenarioId)">{{ item.scenarioName || '--' }}
                     </a>
-                    <span>”在 {{ item.lastMonitorDate }}</span>
+                    <span>”{{ t('scenarioMonitor.list.in') }} {{ item.lastMonitorDate }}</span>
                   </template>
                 </div>
 
                 <div class="flex justify-between items-center mt-2">
                   <span
                     class="flex-1 min-w-0 truncate"
-                    :title="`${item.createdByName} 创建于 ${ item.createdDate }`">
-                    {{ item.createdByName }} 创建于 {{ item.createdDate }}
+                    :title="`${item.createdByName} ${t('scenarioMonitor.list.createdBy')} ${ item.createdDate }`">
+                    {{ item.createdByName }} {{ t('scenarioMonitor.list.createdBy') }} {{ item.createdDate }}
                   </span>
                   <div>
                     <Popover>

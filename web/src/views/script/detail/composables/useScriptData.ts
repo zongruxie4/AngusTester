@@ -6,12 +6,14 @@ import { exec } from 'src/api/ctrl';
 import YAML from 'yaml';
 import { ScriptInfo } from '../../types';
 import { ScriptPermission } from '@/enums/enums';
+import { useI18n } from 'vue-i18n';
 
 /**
  * Script data management composable
  * Handles script loading, saving, and permission management
  */
 export function useScriptData (projectInfo: Ref<{ id: string; avatar: string; name: string; }>, isAdmin: Ref<boolean>) {
+  const { t } = useI18n();
   const route = useRoute();
   const router = useRouter();
 
@@ -131,7 +133,7 @@ export function useScriptData (projectInfo: Ref<{ id: string; avatar: string; na
     }
 
     scriptId.value = res?.data?.id;
-    notification.success('添加脚本成功');
+    notification.success(t('scriptDetail.notification.addScriptSuccess'));
     router.push('/script');
   };
 
@@ -147,7 +149,7 @@ export function useScriptData (projectInfo: Ref<{ id: string; avatar: string; na
       return;
     }
 
-    notification.success('保存成功');
+    notification.success(t('tips.saveSuccess'));
     if (viewMode.value === 'view') {
       if (scriptInfo.value) {
         // Update script info
@@ -177,7 +179,7 @@ export function useScriptData (projectInfo: Ref<{ id: string; avatar: string; na
       return;
     }
 
-    notification.success('删除成功');
+    notification.success(t('tips.deleteSuccess'));
     await router.push('/script');
   };
 
@@ -191,7 +193,7 @@ export function useScriptData (projectInfo: Ref<{ id: string; avatar: string; na
     if (error) {
       return;
     }
-    notification.success('克隆成功');
+    notification.success(t('tips.cloneSuccess'));
   };
 
   /**
@@ -208,7 +210,7 @@ export function useScriptData (projectInfo: Ref<{ id: string; avatar: string; na
     if (error) {
       return;
     }
-    notification.success('添加执行成功');
+    notification.success(t('scriptDetail.notification.addExecutionSuccess'));
   };
 
   return {

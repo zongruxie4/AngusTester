@@ -112,7 +112,7 @@ const statusColorConfig = getStatusColorConfig();
         </div>
 
         <div class="flex items-center">
-          <span class="font-semibold">{{ dataSource?.lastModifiedByName }}</span><span class="ml-1">最后修改于{{ dataSource?.lastModifiedDate }}</span>
+          <span class="font-semibold">{{ dataSource?.lastModifiedByName }}</span><span class="ml-1">{{ t('scenarioMonitor.detail.lastModified') }} {{ dataSource?.lastModifiedDate }}</span>
           <div class="ml-10">
             <Button size="small" type="text">
               <Icon icon="icon-zhihang" @click="handleRunMonitor(dataSource)" />
@@ -216,10 +216,10 @@ const statusColorConfig = getStatusColorConfig();
 
       <div class="text-text-title font-medium">
         <template v-if="historyExecData?.status?.value === 'SUCCESS'">
-          在 {{ historyExecData?.execStartDate }} {{ t('scenarioMonitor.detail.executionStatus.success') }}
+          {{ t('scenarioMonitor.detail.in') }} {{ historyExecData?.execStartDate }} {{ t('scenarioMonitor.detail.executionStatus.success') }}
         </template>
         <template v-if="historyExecData?.status?.value === 'FAILURE'">
-          在 {{ historyExecData?.execStartDate }} {{ t('scenarioMonitor.detail.executionStatus.failure') }}，{{ t('scenarioMonitor.detail.executionStatus.reason') }}：{{ historyExecData?.failureMessage || '--' }}
+          {{ t('scenarioMonitor.detail.in') }} {{ historyExecData?.execStartDate }} {{ t('scenarioMonitor.detail.executionStatus.failure') }}，{{ t('scenarioMonitor.detail.executionStatus.reason') }}：{{ historyExecData?.failureMessage || '--' }}
         </template>
       </div>
 

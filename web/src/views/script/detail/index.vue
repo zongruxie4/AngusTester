@@ -182,7 +182,7 @@ onMounted(() => {
               type="primary"
               ghost
               @click="openAIDrawer">
-              智能生成
+              {{ t('scriptDetail.actions.smartGenerate') }}
             </Button>
 
             <Button

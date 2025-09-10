@@ -98,6 +98,8 @@
       "responseDelay": "Response Delay",
       "executionRecords": "Execution Records",
       "executionRecordsHint": "Note: Only shows the last 100 monitoring records.",
+      "lastModified": "Last modified at",
+      "in": "In",
       "timeRanges": {
         "last24Hours": "Last 24 Hours",
         "last7Days": "Last 7 Days",
@@ -128,6 +130,7 @@
       "willRun": "Will run",
       "lastRun": "Last run",
       "createdBy": "Created At",
+      "in": "In",
       "executeNow": "Execute Now",
       "deleteConfirm": "Are you sure you want to delete monitor [{name}]?",
       "executeConfirm": "Execute monitor [{name}] immediately"
