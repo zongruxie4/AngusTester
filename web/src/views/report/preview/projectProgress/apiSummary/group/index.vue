@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import * as echarts from 'echarts';
+import { useI18n } from 'vue-i18n';
 
 import { ReportContent } from '../../PropsType';
 
@@ -17,6 +18,8 @@ const props = withDefaults(defineProps<Props>(), {
   appInfo: undefined,
   dataSource: undefined
 });
+
+const { t } = useI18n();
 
 const statusColorSet = {
   4: 'rgba(200, 202, 208, 1)',
@@ -70,7 +73,12 @@ const taskStatusOption = {
     axisTick: { show: false },
     splitLine: { show: false },
     axisLine: { show: false },
-    data: ['已发布', '开发完成', '开发中', '设计中', '未知']
+    data: [t('reportPreview.projectProgress.apiSummary.groupStats.statuses.released'),
+    t('reportPreview.projectProgress.apiSummary.groupStats.statuses.devCompleted'),
+    t('reportPreview.projectProgress.apiSummary.groupStats.statuses.devInProgress'),
+    t('reportPreview.projectProgress.apiSummary.groupStats.statuses.designing'),
+    t('reportPreview.projectProgress.apiSummary.groupStats.statuses.unknown')
+    ]
   },
   series: [
     {

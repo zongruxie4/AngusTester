@@ -728,6 +728,13 @@
           "memoryUsage": "Memory Usage",
           "diskUsage": "Disk Usage",
           "networkUsage": "Network Usage"
+        },
+        "status": {
+          "passed": "Passed",
+          "failed": "Failed",
+          "notTested": "Not Tested",
+          "enabled": "Enabled",
+          "disabled": "Disabled"
         }
       }
     },
@@ -1100,7 +1107,11 @@
           "name": "Name",
           "current": "Current",
           "brpsAll": "Download/Second (Current | Min | Max | Average)",
-          "bwpsAll": "Upload/Second (Current | Min | Max | Average)"
+          "bwpsAll": "Upload/Second (Current | Min | Max | Average)",
+          "average": "Average",
+          "high": "High",
+          "low": "Low",
+          "latest": "Latest"
         }
       },
       "log": {
@@ -1955,6 +1966,53 @@
             "maximum": "Maximum"
           },
           "noData": "None"
+        },
+        "performanceTest": {
+          "title": "Performance Test",
+          "basicInfo": "Test Basic Information",
+          "indicatorsAndResults": "Test Indicators and Results",
+          "performanceIndicators": "Performance Indicators",
+          "results": "Results",
+          "indicators": {
+            "concurrency": "Concurrency",
+            "testDuration": "Test Duration",
+            "pressureConcurrency": "Pressure Concurrency",
+            "pressureTestDuration": "Pressure Test Duration",
+            "responseTime": "Response Time",
+            "tps": "TPS",
+            "errorRate": "Error Rate"
+          }
+        },
+        "fields": {
+          "testResult": "Test Result",
+          "testFailureReason": "Test Failure Reason",
+          "testCount": "Test Count",
+          "failureCount": "Failure Count",
+          "testScriptId": "Test Script ID",
+          "testScriptName": "Test Script Name",
+          "executionId": "Execution ID",
+          "executionName": "Execution Name",
+          "lastExecutor": "Last Executor",
+          "lastExecutionTime": "Last Execution Time",
+          "totalCases": "Total Cases",
+          "passedCount": "Passed Count",
+          "failedCount": "Failed Count",
+          "disabledCount": "Disabled Count",
+          "type": "Type",
+          "isEnabled": "Is Enabled",
+          "isTestPassed": "Is Test Passed",
+          "testFailureCount": "Test Failure Count",
+          "cpuUsage": "CPU Usage",
+          "memoryUsage": "Memory Usage",
+          "diskUsage": "Disk Usage",
+          "networkUsage": "Network Usage"
+        },
+        "status": {
+          "passed": "Passed",
+          "failed": "Failed",
+          "notTested": "Not Tested",
+          "enabled": "Enabled",
+          "disabled": "Disabled"
         }
       }
     },

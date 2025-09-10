@@ -1,26 +1,29 @@
+import { i18n } from '@xcan-angus/infra';
+const t = i18n.getI18n()?.global?.t || ((val: string) => val);
+
 export const columns = [
   {
-    title: '名称',
+    title: t('reportPreview.execPerf.sampling.chartConfig.name'),
     dataIndex: 'name',
     key: 'name'
   },
   {
-    title: '平均值',
+    title: t('reportPreview.execPerf.sampling.chartConfig.average'),
     dataIndex: 'average',
     key: 'average'
   },
   {
-    title: '最高',
+    title: t('reportPreview.execPerf.sampling.chartConfig.high'),
     dataIndex: 'high',
     key: 'high'
   },
   {
-    title: '最低',
+    title: t('reportPreview.execPerf.sampling.chartConfig.low'),
     dataIndex: 'low',
     key: 'low'
   },
   {
-    title: '最新值',
+    title: t('reportPreview.execPerf.sampling.chartConfig.latest'),
     dataIndex: 'latest',
     key: 'latest'
   }
