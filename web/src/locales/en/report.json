@@ -1335,6 +1335,7 @@
       },
       "detail": {
         "title": "Plan Detailed Information",
+        "to": "To",
         "basicInfo": {
           "title": "Basic Information",
           "fields": {

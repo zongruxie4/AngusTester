@@ -1332,6 +1332,7 @@
       },
       "detail": {
         "title": "计划详细信息",
+        "to": "至",
         "basicInfo": {
           "title": "基本信息",
           "fields": {

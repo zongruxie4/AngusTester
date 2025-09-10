@@ -43,7 +43,7 @@ const testerResponsibilities = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-5">
-      <span id="a1" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25"></em>计划详细信息</span>
+      <span id="a1" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.1') }}<em class="inline-block w-0.25"></em>{{ t('reportPreview.functionPlan.detail.title') }}</span>
     </h1>
 
     <div class="mb-7">
@@ -98,7 +98,7 @@ const testerResponsibilities = computed(() => {
             {{ t('reportPreview.functionPlan.detail.basicInfo.fields.timePlan') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
-            {{ plan?.startDate }} 至 {{ plan?.deadlineDate }}
+            {{ plan?.startDate }} {{ t('reportPreview.functionPlan.detail.to') }} {{ plan?.deadlineDate }}
           </div>
         </div>
 
