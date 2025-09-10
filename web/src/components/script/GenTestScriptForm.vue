@@ -2,9 +2,11 @@
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Form, FormItem, Switch, Tooltip } from 'ant-design-vue';
-import { Icon, Input, SelectEnum, ShortDuration, TaskPriority, ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
+import { Icon, Input, SelectEnum, ShortDuration, TaskPriority } from '@xcan-angus/vue-ui';
 import { CombinedTargetType, Priority } from '@xcan-angus/infra';
 import { TestType } from '@/enums/enums';
+
+import apiUtils from '@/utils/ApiUtils/index';
 
 import { splitDuration } from '@/utils/utils';
 

@@ -2,7 +2,7 @@
 import Oas from 'oas';
 import qs from 'qs';
 import { inject, ref, watch } from 'vue';
-import { notification, FormatHighlight, ApiUtils } from '@xcan-angus/vue-ui';
+import { notification, FormatHighlight } from '@xcan-angus/vue-ui';
 import XML from 'xml';
 import { Button, RadioGroup } from 'ant-design-vue';
 // import { supportedLanguages, oasToSnippet } from '@readme/oas-to-snippet';
@@ -12,6 +12,8 @@ import { toClipboard } from '@xcan-angus/infra';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import JSONToSchema from 'json-to-schema';
 import { useI18n } from 'vue-i18n';
+
+import ApiUtils from '@/utils/ApiUtils/index';
 
 import { apis } from '@/api/tester';
 import cIcon from './image/c.png';

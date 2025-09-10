@@ -2,13 +2,14 @@
 import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, provide, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
-import { Drawer, Icon, Input, notification, Select, ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
+import { Drawer, Icon, Input, notification, Select } from '@xcan-angus/vue-ui';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { utils, duration } from '@xcan-angus/infra';
 import qs from 'qs';
 import elementResizeDetector from 'element-resize-detector';
 import useClipboard from 'vue-clipboard3';
 import ReconnectingWebSocket from 'reconnecting-websocket';
+import apiUtils from '@/utils/ApiUtils/index';
 
 import { apis } from '@/api/tester';
 import { API_AUTH_CODE } from '@/views/apis/PropsType';

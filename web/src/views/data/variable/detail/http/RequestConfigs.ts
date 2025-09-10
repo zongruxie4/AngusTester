@@ -1,8 +1,9 @@
 import { uniq } from 'lodash-es';
 import qs from 'qs';
-import { ApiUtils as angusUtils } from '@xcan-angus/vue-ui';
 import { Authentication, OASServer, RequestBody, RequestConfig } from './types';
 import { variable } from '@/api/tester';
+
+import angusUtils from '@/utils/ApiUtils/index';
 
 export const password = [
   'tokenUrl',

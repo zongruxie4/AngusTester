@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onBeforeUnmount, onMounted, reactive, ref, Ref, watch } from 'vue';
-import { AsyncComponent, AuthorizeModal, modal, notification, Scroll, VuexHelper } from '@xcan-angus/vue-ui';
+import { AsyncComponent, modal, notification, Scroll, VuexHelper } from '@xcan-angus/vue-ui';
 import elementResizeDetector from 'element-resize-detector';
 import { TESTER, duration, appContext } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
@@ -49,6 +49,7 @@ const emits = defineEmits<{
   (e:'scrollChange', value: any[]):void;
 }>();
 
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 const MovePop = defineAsyncComponent(() => import('@/views/apis/services/components/moveModal/index.vue'));
 const Share = defineAsyncComponent(() => import('@/components/share/index.vue'));
 const CreateTestTaskModal = defineAsyncComponent(() => import('@/components/task/CreateTestModal.vue'));

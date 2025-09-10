@@ -1,6 +1,7 @@
-import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
 import { codeUtils } from '@xcan-angus/infra';
 import SwaggerUI from '@xcan-angus/swagger-ui';
+
+import apiUtils from '@/utils/ApiUtils/index';
 
 const { ungzip } = codeUtils;
 const loadAsync = async (base64Text, name) => {

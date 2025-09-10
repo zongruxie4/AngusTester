@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { ApiUtils as apiUtils, Icon } from '@xcan-angus/vue-ui';
+import { Icon } from '@xcan-angus/vue-ui';
 
+import apiUtils from '@/utils/ApiUtils/index';
 // Define component props
 interface Props {
   indicatorPerf: {

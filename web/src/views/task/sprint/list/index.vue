@@ -5,7 +5,6 @@ import { Avatar, Button, Pagination, Progress } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import {
   AsyncComponent,
-  AuthorizeModal,
   Colon,
   Dropdown,
   Icon,
@@ -41,6 +40,7 @@ type OrderByKey = 'createdDate' | 'createdByName';
 type OrderSortKey = 'ASC' | 'DESC';
 
 const { t } = useI18n();
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 const Introduce = defineAsyncComponent(() => import('@/views/task/sprint/list/Introduce.vue'));
 const Burndown = defineAsyncComponent(() => import('@/views/task/sprint/list/BurndownChart.vue'));
 const ProgressModal = defineAsyncComponent(() => import('@/views/task/sprint/list/MemberProgress.vue'));

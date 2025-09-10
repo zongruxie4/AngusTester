@@ -2,7 +2,7 @@
 import { defineAsyncComponent, nextTick, onBeforeUnmount, onMounted, ref, watch, inject } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Spin as ASpin, Tooltip } from 'ant-design-vue';
-import { AsyncComponent, AuthorizeModal, Dropdown, Colon, Icon, IconCopy, modal, notification, Spin, Table } from '@xcan-angus/vue-ui';
+import { AsyncComponent,, Dropdown, Colon, Icon, IconCopy, modal, notification, Spin, Table } from '@xcan-angus/vue-ui';
 import { useRoute } from 'vue-router';
 import router from '@/router';
 import { TESTER, appContext } from '@xcan-angus/infra';
@@ -18,6 +18,7 @@ import type { MockService } from './types';
 import { mock } from '@/api/tester';
 
 // Import components
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 const Introduce = defineAsyncComponent(() => import('@/views/apis/mock/Introduce.vue'));
 const Export = defineAsyncComponent(() => import('@/views/apis/mock/Export.vue'));
 const SearchPanel = defineAsyncComponent(() => import('@/views/apis/mock/SearchPanel.vue'));

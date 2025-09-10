@@ -1,6 +1,7 @@
-import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
+
 import { i18n } from '@xcan-angus/infra';
 
+import apiUtils from '@/utils/ApiUtils/index';
 export const { API_EXTENSION_KEY } = apiUtils;
 
 const { valueKey, enabledKey } = API_EXTENSION_KEY;

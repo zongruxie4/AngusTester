@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { ApiUtils as apiUtils, AsyncComponent, Icon, notification, Toggle } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Icon, notification, Toggle } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { LoadingOutlined } from '@ant-design/icons-vue';
 import { API_EXTENSION_KEY } from '@/views/apis/utils';
@@ -17,6 +17,7 @@ import {
   utils
 } from '@xcan-angus/infra';
 
+import apiUtils from '@/utils/ApiUtils/index';
 import { dataURLtoBlob, getFileSuffixByContentType } from '@/utils/blob';
 import UrlForm from '@/views/apis/mock/detail/apis/components/UrlForm.vue';
 

@@ -1,5 +1,6 @@
 import { decode as dt, encode as et } from 'js-base64';
-import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
+
+import apiUtils from '@/utils/ApiUtils/index';
 
 export const { API_EXTENSION_KEY } = apiUtils;
 const { valueKey, enabledKey } = API_EXTENSION_KEY;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, reactive, ref, Ref, watch } from 'vue';
-import { AsyncComponent, AuthorizeModal, LeftDrawer, notification, IconText, VuexHelper } from '@xcan-angus/vue-ui';
+import { AsyncComponent, LeftDrawer, notification, IconText, VuexHelper } from '@xcan-angus/vue-ui';
 import { TESTER, localStore, utils, duration, appContext } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { Button } from 'ant-design-vue';
@@ -12,6 +12,8 @@ import { actions, ModalsConfig, ServiceProject } from './PropsType';
 type FoldActionKey = 'creatProejct' | 'creatService' | 'import' | 'export'|'authorization';
 type SuffixActionKey = 'creatService' | 'export' | 'import' | 'authorization';
 
+
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 const Share = defineAsyncComponent(() => import('@/components/share/index.vue'));
 const CreateTestTask = defineAsyncComponent(() => import('@/components/task/CreateTestModal.vue'));
 const RestartTestTask = defineAsyncComponent(() => import('@/components/task/RestartTestModal.vue'));

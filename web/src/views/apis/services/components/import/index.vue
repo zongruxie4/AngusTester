@@ -175,14 +175,14 @@ onMounted(() => {
   <div class="text-text-content text-3 flex flex-col w-full">
     <Spin :spinning="isLoading">
       <div v-if="!props.serviceId && props.source !== 'introduce'" class="mb-5 text-3">
-        <div class="mb-2 text-black-active leading-3">{{ t('service.importForm.name') }}</div>
+        <div class="mb-2 text-black-active leading-3">{{ t('service.importForm.nameLabel') }}</div>
         <Validate :text="nameErrorMsg">
           <Input
             v-model:value="projectServiceName"
             allowClear
             :error="!!nameErrorMsg"
             :maxlength="100"
-            :placeholder="t('service.namePlaceholder')"
+            :placeholder="t('service.importForm.namePlaceholder')"
             @change="serviceNameChange" />
         </Validate>
       </div>

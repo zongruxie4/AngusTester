@@ -2,7 +2,7 @@
 import { defineAsyncComponent, ref, provide, watch, onMounted, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Badge, Tabs, TabPane } from 'ant-design-vue';
-import { Spin, notification, AsyncComponent, Drawer, Toolbar, Icon, AuthorizeModal, Indicator, HttpTestInfo } from '@xcan-angus/vue-ui';
+import { Spin, notification, AsyncComponent, Drawer, Toolbar, Icon } from '@xcan-angus/vue-ui';
 import { utils, TESTER } from '@xcan-angus/infra';
 import { AxiosRequestConfig } from 'axios';
 import { isEqual } from 'lodash-es';
@@ -42,6 +42,9 @@ const props = withDefaults(defineProps<Props>(), {
   replaceTabPane: undefined
 });
 
+const HttpTestInfo = defineAsyncComponent(() => import('@/components/HttpTestInfo/index.vue'));
+const Indicator = defineAsyncComponent(() => import('@/components/Indicator/index.vue'));
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 const SaveForm = defineAsyncComponent(() => import('./Drawer/SaveForm/index.vue'));
 const ActivityTimeline = defineAsyncComponent(() => import('./Drawer/ActivityTimeline/index.vue'));
 const SmartComment = defineAsyncComponent(() => import('./Drawer/SmartComment/index.vue'));

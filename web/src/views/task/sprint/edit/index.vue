@@ -3,7 +3,6 @@ import { computed, inject, nextTick, onMounted, ref, watch, defineAsyncComponent
 import { useI18n } from 'vue-i18n';
 import {
   AsyncComponent,
-  AuthorizeModal,
   DatePicker,
   Icon,
   Input,
@@ -37,6 +36,7 @@ const props = withDefaults(defineProps<Props>(), {
   data: undefined
 });
 
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 
 const { t } = useI18n();

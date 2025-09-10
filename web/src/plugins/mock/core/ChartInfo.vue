@@ -2,9 +2,10 @@
 import { ref, onMounted, defineAsyncComponent, onBeforeUnmount, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { RadioGroup, RadioButton, Slider } from 'ant-design-vue';
-import { Spin, NoData, ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
+import { Spin, NoData } from '@xcan-angus/vue-ui';
 import dayjs from 'dayjs';
 import { exec } from '@/api/tester';
+import apiUtils from '@/utils/ApiUtils/index';
 
 const { t } = useI18n();
 

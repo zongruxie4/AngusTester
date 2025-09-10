@@ -2,7 +2,7 @@
 import { defineAsyncComponent, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Tag } from 'ant-design-vue';
-import { AsyncComponent, AuthorizeModal, Dropdown, Icon, notification, Table, Tooltip } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Dropdown, Icon, notification, Table, Tooltip } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { script } from '@/api/tester';
 import { useScriptTable } from './composables/useScriptTable';
@@ -31,6 +31,7 @@ const emit = defineEmits<{
 }>();
 
 // Async components
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/ExportScriptModal.vue'));
 
 // I18n

@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, onMounted, Ref, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { AsyncComponent, AuthorizeModal, Grid, Hints, Icon, IconCopy, notification, Select, Spin } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Grid, Hints, Icon, IconCopy, notification, Select, Spin } from '@xcan-angus/vue-ui';
 import { Button, Divider, Radio, RadioGroup } from 'ant-design-vue';
 import { TESTER, appContext } from '@xcan-angus/infra';
 import { useRouter } from 'vue-router';
 
 import { analysis, mock, services } from '@/api/tester';
 
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 const CreateMock = defineAsyncComponent(() => import('./addMock.vue'));
 
 interface Props {

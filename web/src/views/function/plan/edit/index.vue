@@ -14,7 +14,6 @@ import {
 } from 'ant-design-vue';
 import {
   AsyncComponent,
-  AuthorizeModal,
   DatePicker,
   Icon,
   IconRequired,
@@ -55,6 +54,7 @@ const props = withDefaults(defineProps<Props>(), {
   data: undefined
 });
 
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 const TesterSelect = defineAsyncComponent(() => import('./testerSelect.vue'));
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 

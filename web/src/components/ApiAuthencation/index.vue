@@ -9,7 +9,7 @@ const { t }  = useI18n();
 
 import { AuthItem, authTypeOptions as _authTypeOptions, flowAuthType, authLabels, flowAuthKeys, encryptionTypeOpt, inOpt, getAuthItem, getApiKeyData, getShowApiKeyData } from './interface';
 
-import { ApiUtils } from '@xcan-angus/vue-ui';
+import ApiUtils from '@/utils/ApiUtils/index';
 const { API_EXTENSION_KEY, encode, getModelDataByRef } = ApiUtils;
 
 export interface Props {

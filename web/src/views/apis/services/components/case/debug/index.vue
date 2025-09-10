@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, onMounted, reactive, ref, watch } from 'vue';
-import { Input, NoData, notification, Select, SelectInput, ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
+import { Input, NoData, notification, Select, SelectInput } from '@xcan-angus/vue-ui';
 import { Badge, TabPane, Tabs } from 'ant-design-vue';
 import qs from 'qs';
 import XML from 'xml';
@@ -11,6 +11,8 @@ import { type AssertResult, type ConditionResult } from '@xcan-angus/vue-ui/type
 import { apis, services } from '@/api/tester';
 import  { getShowAuthData } from '@/components/ApiAuthencation/interface';
 import assertUtils from '@/utils/assertutils';
+
+import apiUtils from '@/utils/ApiUtils/index';
 
 import {
   ApiInfo,

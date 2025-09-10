@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { Button } from 'ant-design-vue';
-import { ApiUtils as apiUtils, Icon, Input, notification, Select, ShortDuration } from '@xcan-angus/vue-ui';
+import { Icon, Input, notification, Select, ShortDuration } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import ExpandGrid from './ExpandGrid.vue';
 import { usePerformanceData } from './composables';
-
+import apiUtils from '@/utils/ApiUtils/index';
 // Initialize composables
 const { t } = useI18n();
 const {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, watch, ref, Ref } from 'vue';
 import { Button } from 'ant-design-vue';
-import { AsyncComponent, AuthorizeModal, Drawer, Icon, IconRefresh, Input, Table } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Drawer, Icon, IconRefresh, Input, Table } from '@xcan-angus/vue-ui';
 import { STORAGE, appContext } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
@@ -19,6 +19,7 @@ const EditSpaceModal = defineAsyncComponent(() => import('@/views/data/file/Edit
 const Shared = defineAsyncComponent(() => import('@/views/data/file/share/ShareList.vue'));
 const GlobalAuth = defineAsyncComponent(() => import('@/views/data/file/auth/index.vue'));
 const Introduce = defineAsyncComponent(() => import('@/views/data/file/Introduce.vue'));
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 
 // Dependency injection for app context
 const appInfo = appContext.getAccessApp();

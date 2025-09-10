@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, nextTick, ref, Ref, watch, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { AsyncComponent, AuthorizeModal, Grid, Hints, Icon, Input, Select } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Grid, Hints, Icon, Input, Select } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { TESTER, appContext, enumUtils } from '@xcan-angus/infra';
 import { ApiStatus } from '@/enums/enums';
@@ -22,6 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false
 });
 
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 const Security = defineAsyncComponent(() => import('@/views/apis/services/components/security/index.vue'));
 
 const appInfo = ref(appContext.getAccessApp()) as Ref<Record<string, any>>;

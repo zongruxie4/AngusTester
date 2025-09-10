@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 // import { NoData } from '@xcan-angus/vue-ui';
-import { ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { ReportContent } from '../PropsType';
+import apiUtils from '@/utils/ApiUtils/index';
 
 import deletePng from './Image/delete.png';
 import shanghongPng from './Image/shanghong.png';

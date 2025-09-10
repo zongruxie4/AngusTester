@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { defineAsyncComponent, nextTick, ref, onMounted, watch, inject, computed } from 'vue';
 import { Button } from 'ant-design-vue';
-import { Icon, AsyncComponent, ApiUtils as angusUtils } from '@xcan-angus/vue-ui';
+import { Icon, AsyncComponent } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 import qs from 'qs';
 import { paramTarget } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
+import angusUtils from '@/utils/ApiUtils/index'
 import { PipelineConfig, TargetKey } from './PropsType';
 import { HTTPConfig } from './HTTPConfigs/PropsType';
 import { WaitingTimeConfig } from './WaitingTime/PropsType';

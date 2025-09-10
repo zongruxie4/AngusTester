@@ -12,6 +12,7 @@
     },
     "quickAccess": {
       "title": "Quick Access",
+      "addApiTabName": "Add API",
       "debug": {
         "title": "Debug API",
         "description": "Edit and debug APIs online quickly.",

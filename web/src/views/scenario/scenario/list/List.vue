@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, inject, onMounted, Ref, ref, watch } from 'vue';
 import { Badge, Button, Tooltip, TypographyParagraph } from 'ant-design-vue';
-import { AsyncComponent, AuthorizeModal, Dropdown, GridList, Icon, Image, ScriptTypeTag } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Dropdown, GridList, Icon, Image, ScriptTypeTag } from '@xcan-angus/vue-ui';
 import { CombinedTargetType, TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { ScenarioPermission, ExecStatus } from '@/enums/enums';
@@ -36,6 +36,7 @@ const emit = defineEmits<{
 }>();
 
 // Async components
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 const CreateTestTaskModal = defineAsyncComponent(() => import('@/components/task/CreateTestModal.vue'));
 const RestartTestTaskModal = defineAsyncComponent(() => import('@/components/task/RestartTestModal.vue'));
 const ReopenTestTaskModal = defineAsyncComponent(() => import('@/components/task/ReopenTestModal.vue'));

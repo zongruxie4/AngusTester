@@ -4,7 +4,6 @@ import { Avatar, Button, Pagination, Progress } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import {
   AsyncComponent,
-  AuthorizeModal,
   Colon,
   Dropdown,
   Icon,
@@ -24,6 +23,8 @@ import { useI18n } from 'vue-i18n';
 import { FuncPlanStatus } from '@/enums/enums';
 import { PlanInfo } from '../PropsType';
 
+
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 import SearchPanel from '@/views/function/plan/list/searchPanel/index.vue';
 
 const { t } = useI18n();

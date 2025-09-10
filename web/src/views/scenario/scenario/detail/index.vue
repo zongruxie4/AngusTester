@@ -3,7 +3,7 @@ import { defineAsyncComponent, inject, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ScriptType, TESTER } from '@xcan-angus/infra';
 import { Button, TabPane, Tabs } from 'ant-design-vue';
-import { ActivityTimeline, AsyncComponent, AuthorizeModal, Icon, SmartComment } from '@xcan-angus/vue-ui';
+import { ActivityTimeline, AsyncComponent, Icon, SmartComment } from '@xcan-angus/vue-ui';
 import { ScenarioPermission } from '@/enums/enums';
 
 // Import composables
@@ -23,6 +23,7 @@ const props = withDefaults(defineProps<ScenarioDetailProps>(), {
 const deleteTabPane = inject<(data: string[]) => void>('deleteTabPane', () => {});
 
 // Async components
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 const ExecDetail = defineAsyncComponent(() => import('@/views/execution/detail/index.vue'));
 const ExportScriptModal = defineAsyncComponent(() => import('@/components/script/ExportScriptModal.vue'));
 const TestSummary = defineAsyncComponent(() => import('./TestSummary.vue'));

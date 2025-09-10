@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted, defineAsyncComponent, onBeforeUnmount, computed } from 'vue';
 import { RadioGroup, RadioButton, Slider } from 'ant-design-vue';
-import { Spin, NoData, ApiUtils as apiUtils } from '@xcan-angus/vue-ui';
+import { Spin, NoData} from '@xcan-angus/vue-ui';
 import dayjs from 'dayjs';
 import { exec } from '@/api/tester';
 
+import apiUtils from '@/utils/ApiUtils/index';
 import { ListData, useExecCount } from './useExecCount';
 import { allCvsKeys, allResponseTimeColumns, allErrorsColumns, allErrorRateColumns, allRowsColumns } from './ChartConfig';
 // allColumns, throughputCvsKeys, throughputOptions, throughputColumns, threadCvsKeys, threadOptions, threadColumns, responseTimeCvsKeys, responseTimeOptions, responseTimeColumns, errorOptions, errorCvsKeys, errorColumns

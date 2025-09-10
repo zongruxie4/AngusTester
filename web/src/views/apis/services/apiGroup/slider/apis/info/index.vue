@@ -3,7 +3,6 @@ import { computed, defineAsyncComponent, inject, nextTick, onMounted, provide, r
 import { useI18n } from 'vue-i18n';
 import {
   AsyncComponent,
-  AuthorizeModal,
   Grid,
   Icon,
   Input,
@@ -18,6 +17,7 @@ import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { apis } from '@/api/tester';
 import DescriptionModal from '@/views/apis/services/components/markdownDescModal/index.vue';
 
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 const Security = defineAsyncComponent(() => import('@/views/apis/services/components/security/index.vue'));
 const ExternalDocs = defineAsyncComponent(() => import('@/views/apis/services/components/externalDoc/index.vue'));
 

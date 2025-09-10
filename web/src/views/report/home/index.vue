@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, nextTick, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { AsyncComponent, AuthorizeModal, Dropdown, Icon, Table } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Dropdown, Icon, Table } from '@xcan-angus/vue-ui';
 import { Badge, Button, Popover } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
 import { ReportPermission, ReportStatus } from '@/enums/enums';
@@ -11,6 +11,7 @@ import { useReportData } from './composables/useReportData';
 import { useTableColumns } from './composables/useTableColumns';
 
 // Async components
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 const Summary = defineAsyncComponent(() => import('@/views/report/home/Introduce.vue'));
 const SearchPanel = defineAsyncComponent(() => import('@/views/report/home/SearchPanel.vue'));
 const PieChart = defineAsyncComponent(() => import('@/views/report/home/PieChart.vue'));
