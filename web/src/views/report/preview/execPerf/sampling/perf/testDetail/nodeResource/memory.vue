@@ -5,6 +5,9 @@ import dayjs from 'dayjs';
 
 import { chartSeriesColorConfig } from '@/views/report/preview/PropsType';
 import { nodeCtrl } from '@/api/ctrl';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface NodeItem {
   agentPort: string; domain: string; id: string; ip: string; name: string
@@ -1085,10 +1088,10 @@ defineExpose({
 });
 </script>
 <template>
-  <div v-if="!props.startTime || !props.execNodes.length || props.status === 'CREATED'">无</div>
+      <div v-if="!props.startTime || !props.execNodes.length || props.status === 'CREATED'">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
   <div v-else class="flex flex-col justify-between">
     <div class="mt-2.5">
-      <div v-if="!times.length && memoryloaded">无</div>
+      <div v-if="!times.length && memoryloaded">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
       <div
         v-show="times.length || !memoryloaded"
         ref="echartRef"

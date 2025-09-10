@@ -917,6 +917,83 @@
           "exitCode": "Exit Code",
           "samplingStatus": "Sampling Status",
           "failureReason": "Failure Reason"
+        },
+        "testDetail": {
+          "throughputTitle": "Throughput",
+          "concurrencyTitle": "Concurrency",
+          "responseTimeTitle": "Response Time",
+          "errorTitle": "Error",
+          "statusCode": "Status Code",
+          "nodeResourceTitle": "Node Resource",
+          "overlayAnalysisTitle": "Overlay Analysis",
+          "none": "None",
+          "throughput": {
+            "name": "Name",
+            "queriesPerSecond": "Queries Per Second",
+            "transactionsPerSecond": "Transactions Per Second",
+            "queriesPerSecondWithStats": "Queries Per Second (Current | Min | Max | Average)",
+            "transactionsPerSecondWithStats": "Transactions Per Second (Current | Min | Max | Average)"
+          },
+          "error": {
+            "name": "Name",
+            "sampleCount": "Sample Count",
+            "requestCount": "Request Count",
+            "transactionCount": "Transaction Count",
+            "errorCount": "Error Count",
+            "errorRate": "Error Rate"
+          },
+          "responseTime": {
+            "name": "Name",
+            "average": "Average",
+            "minimum": "Minimum",
+            "maximum": "Maximum"
+          },
+          "concurrency": {
+            "name": "Name",
+            "threadCount": "Thread Count",
+            "activeThreadCount": "Active Thread Count",
+            "maxThreadCount": "Max Thread Count"
+          },
+          "overlayAnalysis": {
+            "throughputTotalTps": "Throughput - Total - Transactions Per Second",
+            "concurrencyTotalActiveThreads": "Concurrency - Total - Active Threads",
+            "responseTimeTotalP90": "Response Time - Total - P90",
+            "errorTotalErrorRate": "Error - Total - Error Rate"
+          },
+          "nodeResource": {
+            "cpu": "CPU",
+            "memory": "Memory",
+            "disk": "Disk",
+            "network": "Network"
+          }
+        },
+        "chartConfig": {
+          "duration": "Duration",
+          "errors": "Error Count",
+          "iterations": "Iterations",
+          "n": "Sample Count",
+          "operations": "Request Count",
+          "transactions": "Transaction Count",
+          "readBytes": "Read Data Size",
+          "writeBytes": "Write Data Size",
+          "ops": "Queries Per Second",
+          "tps": "Transactions Per Second",
+          "brps": "Download/Second",
+          "bwps": "Upload/Second",
+          "tranMean": "Average",
+          "tranMin": "Minimum",
+          "tranMax": "Maximum",
+          "tranP50": "P50",
+          "tranP75": "P75",
+          "tranP90": "P90",
+          "tranP95": "P95",
+          "tranP99": "P99",
+          "tranP999": "P999",
+          "errorRate": "Error Rate",
+          "threadPoolSize": "Thread Count",
+          "threadPoolActiveSize": "Active Thread Count",
+          "threadMaxPoolSize": "Max Thread Count",
+          "name": "Name"
         }
       },
       "log": {

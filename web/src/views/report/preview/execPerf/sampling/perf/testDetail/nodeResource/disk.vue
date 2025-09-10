@@ -5,6 +5,9 @@ import dayjs from 'dayjs';
 
 import { chartSeriesColorConfig } from '@/views/report/preview/PropsType';
 import { nodeCtrl } from '@/api/ctrl';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface NodeItem {
   agentPort: string; domain: string; id: string; ip: string; name: string
@@ -1084,11 +1087,11 @@ defineExpose({
 });
 </script>
 <template>
-  <div v-if="!props.startTime || !props.execNodes.length || props.status === 'CREATED'">无</div>
+      <div v-if="!props.startTime || !props.execNodes.length || props.status === 'CREATED'">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
   <template v-else>
     <div class="flex flex-col justify-between">
       <div class="mt-2.5">
-        <div v-if="!times.length && diskloaded">无</div>
+        <div v-if="!times.length && diskloaded">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
         <div
           v-show="times.length || !diskloaded"
           ref="echartRefIops"
@@ -1105,7 +1108,7 @@ defineExpose({
 
     <div class="flex flex-col justify-between">
       <div class="mt-2.5">
-        <div v-if="!times.length && cpuloaded">无</div>
+        <div v-if="!times.length && cpuloaded">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
         <div
           v-show="times.length || !cpuloaded"
           ref="echartRefMb"

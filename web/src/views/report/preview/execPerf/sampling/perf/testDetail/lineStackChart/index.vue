@@ -6,6 +6,9 @@ import { LineChart } from 'echarts/charts';
 import { UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 import { chartSeriesColorConfig } from '@/views/report/preview/PropsType';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 type Props = {
   series: { name: string; data: string[] }[];
@@ -42,7 +45,7 @@ const tooltipFormatter = (data:{[key:string]:string}[]) => {
   let str = '<div style="font-size:12px;line-height:20px"><div>' + name + '</div>';
   for (let i = 0, len = data.length; i < len; i++) {
     const item = data[i];
-    const value = item.seriesName.endsWith('错误率') ? (item.value + '%') : item.value;
+    const value = item.seriesName.endsWith(t('reportPreview.execPerf.sampling.testDetail.error.errorRate')) ? (item.value + '%') : item.value;
     str += '<div style="display:flex;align-items:center;justify-content:space-between">' + '<div>' + item.marker + '<span>' + item.seriesName + '</span></div>' + '<div style="margin-left:20px;">' + value + '</div>' + '</div>';
   }
   return str + '</div>';

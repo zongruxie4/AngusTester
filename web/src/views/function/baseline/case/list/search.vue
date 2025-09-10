@@ -105,7 +105,7 @@ const searchOptions = computed(() => [
     allowClear: true
   },
   {
-    placeholder: ['评审时间从', '评审时间到'],
+    placeholder: [t('functionBaseline.case.searchPanel.reviewDateFrom'), t('functionBaseline.case.searchPanel.reviewDateTo')],
     valueKey: 'reviewDate',
     type: 'date-range',
     allowClear: true,

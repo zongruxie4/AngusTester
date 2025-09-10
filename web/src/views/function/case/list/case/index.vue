@@ -713,27 +713,27 @@ const tableAction = computed(() => {
       {
         key: 'clone',
         icon: 'icon-fuzhi',
-        name: '克隆',
+        name: t('actions.clone'),
         permission: 'clone'
       },
       {
         key: 'favourite',
         icon: _case.favourite ? 'icon-quxiaoshoucang' : 'icon-yishoucang',
-        name: _case.favourite ? '取消收藏' : '收藏',
+        name: _case.favourite ? t('actions.unfavorite') : t('actions.favorite'),
         permission: 'edit',
         noAuth: true
       },
       {
         key: 'follow',
         icon: _case.follow ? 'icon-quxiaoguanzhu' : 'icon-yiguanzhu',
-        name: _case.follow ? '取消关注' : '关注',
+        name: _case.follow ? t('actions.unfollow') : t('actions.follow'),
         permission: 'edit',
         noAuth: true
       },
       {
         key: 'copyUrl',
         icon: 'icon-fuzhi',
-        name: '复制连接',
+        name: t('functionCase.detail.copyLink'),
         noAuth: true
       }
     );
