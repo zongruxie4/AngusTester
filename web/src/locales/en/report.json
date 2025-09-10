@@ -824,6 +824,46 @@
             "noProxyInfo": "No proxy access information, connection failed address: "
           }
         }
+      },
+      "sampling": {
+        "collapse": {
+          "iteration": "Iteration {count}",
+          "http": {
+            "statusCode": "Status Code",
+            "duration": "Duration",
+            "size": "Size"
+          },
+          "throughput": {
+            "requestsPerSecond": "Requests Per Second",
+            "waitTimeout": "Wait Timeout"
+          },
+          "waitingTime": {
+            "fixedWait": "Fixed Wait",
+            "randomWait": "Random Wait",
+            "to": "to"
+          },
+          "transEnd": {
+            "end": "End"
+          },
+          "rendezvous": {
+            "userCount": "User Count",
+            "waitTimeout": "Wait Timeout"
+          },
+          "statusTag": {
+            "failed": "Failed",
+            "passed": "Passed",
+            "notExecuted": "Not Executed",
+            "notEnabled": "Not Enabled"
+          },
+          "assertionResult": {
+            "title": "Assertion Results",
+            "none": "None",
+            "failed": "Failed",
+            "passed": "Passed",
+            "ignored": "Ignored",
+            "notEnabled": "Not Enabled"
+          }
+        }
       }
     },
     "execPerf": {

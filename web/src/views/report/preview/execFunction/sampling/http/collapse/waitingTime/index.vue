@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import StatusTag from '@/views/report/preview/execFunction/sampling/http/collapse/statusTag/index.vue';
+
+const { t } = useI18n();
 
 export interface Props {
   value: {
@@ -34,8 +37,8 @@ const waitType = computed(() => {
 });
 
 const waitTypeMap = {
-  fixed: '固定等待',
-  random: '随机等待'
+  fixed: t('reportPreview.execFunction.sampling.collapse.waitingTime.fixedWait'),
+  random: t('reportPreview.execFunction.sampling.collapse.waitingTime.randomWait')
 };
 </script>
 
@@ -66,7 +69,7 @@ const waitTypeMap = {
           <span>{{ props.value?.minWaitTimeInMs }}</span>
           <span>ms</span>
         </div>
-        <div class="mr-1">至</div>
+        <div class="mr-1">{{ t('reportPreview.execFunction.sampling.collapse.waitingTime.to') }}</div>
         <div>
           <span>{{ props.value?.maxWaitTimeInMs }}</span>
           <span>ms</span>

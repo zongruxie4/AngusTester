@@ -824,6 +824,46 @@
             "noProxyInfo": "无访问代理信息，连接失败地址："
           }
         }
+      },
+      "sampling": {
+        "collapse": {
+          "iteration": "第{count}次迭代",
+          "http": {
+            "statusCode": "状态码",
+            "duration": "耗时",
+            "size": "大小"
+          },
+          "throughput": {
+            "requestsPerSecond": "每秒请求数",
+            "waitTimeout": "等待超时"
+          },
+          "waitingTime": {
+            "fixedWait": "固定等待",
+            "randomWait": "随机等待",
+            "to": "至"
+          },
+          "transEnd": {
+            "end": "结束"
+          },
+          "rendezvous": {
+            "userCount": "集合用户数",
+            "waitTimeout": "等待超时"
+          },
+          "statusTag": {
+            "failed": "未通过",
+            "passed": "通过",
+            "notExecuted": "未执行",
+            "notEnabled": "未启用"
+          },
+          "assertionResult": {
+            "title": "断言结果",
+            "none": "无",
+            "failed": "未通过",
+            "passed": "通过",
+            "ignored": "忽略",
+            "notEnabled": "未启用"
+          }
+        }
       }
     },
     "execPerf": {

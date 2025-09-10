@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { utils } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import { ExecContent } from '../../../PropsType';
 
@@ -43,8 +46,8 @@ const statusMap = computed((): { [key: string]: 'Disabled' | 'Ignored' | 'Succes
 </script>
 <template>
   <div class="px-2.5 pt-2">
-    <div class="font-semibold mb-2">断言结果</div>
-    <div v-if="!assertions.length" class="leading-5 mb-3.5">无</div>
+    <div class="font-semibold mb-2">{{ t('reportPreview.execFunction.sampling.collapse.assertionResult.title') }}</div>
+    <div v-if="!assertions.length" class="leading-5 mb-3.5">{{ t('reportPreview.execFunction.sampling.collapse.assertionResult.none') }}</div>
     <template v-else>
       <div
         v-for="item in assertions"
@@ -73,7 +76,7 @@ const statusMap = computed((): { [key: string]: 'Disabled' | 'Ignored' | 'Succes
                   fill="#ff8100"
                   p-id="14097"></path></svg>
             </span>
-            <span>未通过</span>
+            <span>{{ t('reportPreview.execFunction.sampling.collapse.assertionResult.failed') }}</span>
           </div>
           <div
             v-else-if="statusMap[item.id] === 'Success'"
@@ -93,19 +96,19 @@ const statusMap = computed((): { [key: string]: 'Disabled' | 'Ignored' | 'Succes
                   fill="#52c41a"
                   p-id="14129"></path></svg>
             </span>
-            <span>通过</span>
+            <span>{{ t('reportPreview.execFunction.sampling.collapse.assertionResult.passed') }}</span>
           </div>
           <div v-else-if="statusMap[item.id] === 'Ignored'" class="flex items-center flex-shrink-0">
             <span
               class="inline-block w-2 h-2 mr-1.5 rounded-md"
               style="background-color:rgba(170, 170, 170, 100%);"></span>
-            <span>忽略</span>
+            <span>{{ t('reportPreview.execFunction.sampling.collapse.assertionResult.ignored') }}</span>
           </div>
           <div v-else-if="statusMap[item.id] === 'Disabled'" class="flex items-center flex-shrink-0">
             <span
               class="inline-block w-2 h-2 mr-1.5 rounded-md"
               style="background-color:rgba(170, 170, 170, 100%);"></span>
-            <span>未启用</span>
+            <span>{{ t('reportPreview.execFunction.sampling.collapse.assertionResult.notEnabled') }}</span>
           </div>
         </div>
       </div>

@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 export interface Props {
   value: {
@@ -20,7 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const showName = computed(() => {
   const _name = props.value?.name?.replace(/(.+)_end$/, '$1');
-  return _name ? (_name + '结束') : '';
+  return _name ? (_name + t('reportPreview.execFunction.sampling.collapse.transEnd.end')) : '';
 });
 </script>
 
