@@ -141,6 +141,10 @@
     }
   },
   "scriptDetail": {
+    "notification": {
+      "addScriptSuccess": "Script added successfully",
+      "addExecutionSuccess": "Execution added successfully"
+    },
     "tabs": {
       "basicInfo": "Basic Information",
       "executionRecord": "Execution Record",
