@@ -144,6 +144,10 @@
         "COMPLETED": "Completed",
         "TIMEOUT": "Timeout"
       },
+      "ExecResult": {
+        "SUCCESS": "Success",
+        "FAIL": "Failure"
+      },
       "TestResultStatus": {
         "NOT_ENABLED": "Not Enabled",
         "UNTESTED": "Not Tested",

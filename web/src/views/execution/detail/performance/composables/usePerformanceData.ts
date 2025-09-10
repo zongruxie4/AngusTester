@@ -1,5 +1,6 @@
 import { ref, computed, Ref } from 'vue';
 import dayjs from 'dayjs';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 import { ListData } from '../../composables/useExecCount';
 import { allCvsKeys } from '../../ChartConfig';
 import {
@@ -241,7 +242,7 @@ export function usePerformanceData () {
     }
 
     timestampData.value = [...timestampData.value, ...times].map(item => {
-      return dayjs(item).format('YYYY-MM-DD HH:mm:ss');
+      return dayjs(item).format(DATE_TIME_FORMAT);
     });
   };
 

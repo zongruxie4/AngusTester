@@ -20,6 +20,7 @@ import { debounce } from 'throttle-debounce';
 import RichEditor from '@/components/richEditor/index.vue';
 import { func, funcPlan, project } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import {EditFormState, ReviewCaseInfo, ReviewInfo} from '../types';
 
@@ -62,7 +63,7 @@ const reviewFlagVisible = ref(false);
 
 const permissions = ref<string[]>([]);
 const oldFormState = ref<EditFormState>();
-const _deadlineDate = dayjs().add(1, 'month').format('YYYY-MM-DD HH:mm:ss');
+const _deadlineDate = dayjs().add(1, 'month').format(DATE_TIME_FORMAT);
 const formState = ref<EditFormState>({
   planId: undefined,
   description: '',

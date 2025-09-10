@@ -2,6 +2,7 @@ import { ref } from 'vue';
 import { appContext, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { ScenarioMonitorStatus } from '@/enums/enums';
 import dayjs from 'dayjs';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import type { MenuItem, OrderByKey } from '../../types';
 
@@ -51,8 +52,8 @@ export function useSearchPanelAction (
     }
 
     return [
-      startDate ? startDate.format('YYYY-MM-DD HH:mm:ss') : '',
-      endDate ? endDate.format('YYYY-MM-DD HH:mm:ss') : ''
+      startDate ? startDate.format(DATE_TIME_FORMAT) : '',
+      endDate ? endDate.format(DATE_TIME_FORMAT) : ''
     ];
   };
 

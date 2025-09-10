@@ -7,18 +7,34 @@ import elementResizeDetector from 'element-resize-detector';
 import { getDateArr } from '@/utils/utils';
 import { analysis } from '@/api/tester';
 
+/**
+ * Props interface for BurndownChart component.
+ * <p>
+ * Defines the required properties for displaying burndown chart data.
+ * </p>
+ */
 interface Props {
   userInfo?: {[key: string]: string}
 }
-const erd = elementResizeDetector({ strategy: 'scroll' });
+
+// Element resize detector for chart responsiveness
+const resizeDetector = elementResizeDetector({ strategy: 'scroll' });
 const props = withDefaults(defineProps<Props>(), {
   userInfo: undefined
 });
 
 const { t } = useI18n();
-// Inject project information
+
+// Inject project information from parent component
 const projectId = inject<Ref<string>>('projectId', ref(''));
-const burnDownOpt = computed(() => [
+
+/**
+ * Chart display options for different metrics.
+ * <p>
+ * Provides options to switch between task count and workload views.
+ * </p>
+ */
+const chartDisplayOptions = computed(() => [
   {
     value: 'NUM',
     label: t('taskHome.taskCount')
@@ -28,11 +44,19 @@ const burnDownOpt = computed(() => [
     label: t('taskHome.workload')
   }
 ]);
-const burnDownData = ref();
-const burnDownTarget = ref('NUM');
-const chartRef = ref();
-let burnDownEcharts;
-const burnDownEchartsConfig = {
+
+// Chart data and state management
+const chartData = ref();
+const selectedMetric = ref('NUM');
+const chartElementRef = ref();
+let chartInstance;
+/**
+ * ECharts configuration for the burndown chart.
+ * <p>
+ * Defines the visual configuration including grid, legend, tooltip, axes, and series.
+ * </p>
+ */
+const chartConfiguration = {
   grid: {
     left: '30',
     right: '20',
@@ -77,6 +101,12 @@ const burnDownEchartsConfig = {
   ]
 };
 
+/**
+ * Loads burndown chart data from the API.
+ * <p>
+ * Fetches task assignee burndown data for the current project and user.
+ * </p>
+ */
 const loadChartData = async () => {
   const [error, { data }] = await analysis.getTaskAssigneeBurndown({
     projectId: projectId.value,
@@ -85,17 +115,26 @@ const loadChartData = async () => {
   if (error) {
     return;
   }
-  burnDownData.value = data;
+  chartData.value = data;
 };
 
-const resizeHandler = () => {
-  burnDownEcharts.setOption(burnDownEchartsConfig);
-  burnDownEcharts.resize();
+/**
+ * Handles chart resize events.
+ * <p>
+ * Updates chart configuration and triggers resize when container size changes.
+ * </p>
+ */
+const handleChartResize = () => {
+  chartInstance.setOption(chartConfiguration);
+  chartInstance.resize();
 };
+
 onMounted(() => {
-  burnDownEcharts = echarts.init(chartRef.value);
-  burnDownEcharts.setOption(burnDownEchartsConfig);
+  // Initialize ECharts instance
+  chartInstance = echarts.init(chartElementRef.value);
+  chartInstance.setOption(chartConfiguration);
 
+  // Watch for project ID changes and reload data
   watch(() => projectId.value, (newValue) => {
     if (newValue) {
       loadChartData();
@@ -103,40 +142,54 @@ onMounted(() => {
   }, {
     immediate: true
   });
-  watch([() => burnDownTarget.value, () => burnDownData.value], () => {
-    if (burnDownData.value) {
-      const xData = (burnDownData.value[burnDownTarget.value]?.expected || []).map(i => i.timeSeries);
-      const expectedYData = (burnDownData.value[burnDownTarget.value]?.expected || []).map(i => i.value);
-      const remainingYData = (burnDownData.value[burnDownTarget.value]?.remaining || []).map(i => i.value);
-      burnDownEchartsConfig.xAxis.data = xData;
-      burnDownEchartsConfig.series[0].data = remainingYData;
-      burnDownEchartsConfig.series[1].data = expectedYData;
+
+  // Watch for metric selection and data changes to update chart
+  watch([() => selectedMetric.value, () => chartData.value], () => {
+    if (chartData.value) {
+      const currentMetricData = chartData.value[selectedMetric.value];
+      const xAxisData = (currentMetricData?.expected || []).map(item => item.timeSeries);
+      const expectedData = (currentMetricData?.expected || []).map(item => item.value);
+      const remainingData = (currentMetricData?.remaining || []).map(item => item.value);
+
+      chartConfiguration.xAxis.data = xAxisData;
+      (chartConfiguration.series[0] as any).data = remainingData;
+      (chartConfiguration.series[1] as any).data = expectedData;
     } else {
-      burnDownEchartsConfig.xAxis.data = [];
-      burnDownEchartsConfig.series[0].data = [];
-      burnDownEchartsConfig.series[1].data = [];
+      // Clear chart data when no data is available
+      chartConfiguration.xAxis.data = [];
+      (chartConfiguration.series[0] as any).data = [];
+      (chartConfiguration.series[1] as any).data = [];
     }
-    if (burnDownEchartsConfig.xAxis.data.length === 0) {
-      burnDownEchartsConfig.xAxis.data = getDateArr();
-      burnDownEchartsConfig.series[0].data = [0, 0, 0, 0, 0, 0, 0];
+
+    // Set default data if no data is available
+    if (chartConfiguration.xAxis.data.length === 0) {
+      (chartConfiguration.xAxis as any).data = getDateArr();
+      (chartConfiguration.series[0] as any).data = [0, 0, 0, 0, 0, 0, 0];
     }
-    burnDownEcharts.setOption(burnDownEchartsConfig);
+
+    chartInstance.setOption(chartConfiguration);
   });
-  erd.listenTo(chartRef.value, resizeHandler);
+
+  // Listen for chart container resize events
+  resizeDetector.listenTo(chartElementRef.value, handleChartResize);
 });
 
 onBeforeUnmount(() => {
-  erd.removeListener(chartRef.value, resizeHandler);
+  // Clean up resize listener when component is unmounted
+  resizeDetector.removeListener(chartElementRef.value, handleChartResize);
 });
 </script>
 <template>
   <div class="pt-1.5 flex flex-col">
+    <!-- Chart header with title and metric selection -->
     <div class="text-3.5 font-semibold flex justify-between">
       {{ t('taskHome.myBurndownChart') }}
-      <RadioGroup v-model:value="burnDownTarget" :options="burnDownOpt">
+      <RadioGroup v-model:value="selectedMetric" :options="chartDisplayOptions">
       </RadioGroup>
     </div>
-    <div ref="chartRef" class="border rounded p-2 flex-1 mt-3">
+
+    <!-- Chart container -->
+    <div ref="chartElementRef" class="border rounded p-2 flex-1 mt-3">
     </div>
   </div>
 </template>

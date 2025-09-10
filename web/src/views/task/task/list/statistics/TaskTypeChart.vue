@@ -8,12 +8,12 @@ import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 import { useI18n } from 'vue-i18n';
 
-import { ResourceInfo } from '../../types';
+import { StatisticsInfo } from '../../types';
 
 const { t } = useI18n();
 
 type Props = {
-  dataSource: ResourceInfo;
+  dataSource: StatisticsInfo;
 }
 
 const props = withDefaults(defineProps<Props>(), {

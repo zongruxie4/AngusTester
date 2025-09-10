@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import { ExecStatus } from '@/enums/enums';
 import { PerformanceDetailProps, PerformanceDetailEmits } from '../types';
 import { exec } from '@/api/ctrl';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 /**
  * Composable for managing performance data polling and execution state
@@ -192,7 +193,7 @@ export function usePerformancePolling (
     if (props.detail?.scriptType?.value !== 'MOCK_DATA') {
       if (['aggregation', 'throughput', 'vu', 'responseTime', 'analyze', 'error'].includes(countTabKey.value)) {
         if (isFirstUpdatePerfList.value) {
-          const _filters = [{ key: 'timestamp', op: 'GREATER_THAN_EQUAL', value: dayjs(perfListLastTimestamp.value).format('YYYY-MM-DD HH:mm:ss') }];
+          const _filters = [{ key: 'timestamp', op: 'GREATER_THAN_EQUAL', value: dayjs(perfListLastTimestamp.value).format(DATE_TIME_FORMAT) }];
           await perfLoadList(1, hasFetchedOnce ? _filters : []);
           await computedPageLoadList(perfListParams.value, perfListTotal.value, perfLoadListFunc);
           isFirstUpdatePerfList.value = false;

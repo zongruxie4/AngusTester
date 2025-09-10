@@ -7,6 +7,7 @@ import { Button, Switch } from 'ant-design-vue';
 import { duration, appContext, Priority, ReviewStatus as ReviewStatusEnum } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { CaseTestResult } from '@/enums/enums';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 const { t } = useI18n();
 
@@ -304,7 +305,7 @@ const getQuickDate = (type) => {
     _endDate = dayjs();
   }
 
-  return [_startDate ? _startDate.format('YYYY-MM-DD HH:mm:ss') : '', _endDate ? _endDate.format('YYYY-MM-DD HH:mm:ss') : ''];
+  return [_startDate ? _startDate.format(DATE_TIME_FORMAT) : '', _endDate ? _endDate.format(DATE_TIME_FORMAT) : ''];
 };
 
 const overdueChange = (_val) => {

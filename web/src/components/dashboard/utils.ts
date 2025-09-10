@@ -2,6 +2,7 @@ import { http } from '@xcan-angus/infra';
 import { SummaryQueryParams, SummaryData, LineChartData, PieChartData } from './types';
 import { GroupBy, DateRangeType } from './enums';
 import dayjs from 'dayjs';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 /**
  * Statistical data query utility method
@@ -237,12 +238,12 @@ export const getDefaultDateFilters = (dateType: DateRangeType) => {
         {
           key: 'opt_date',
           op: 'GREATER_THAN_EQUAL',
-          value: `"${now.startOf('date').format('YYYY-MM-DD HH:mm:ss')}"`
+          value: `"${now.startOf('date').format(DATE_TIME_FORMAT)}"`
         },
         {
           key: 'opt_date',
           op: 'LESS_THAN_EQUAL',
-          value: `"${now.endOf('date').format('YYYY-MM-DD HH:mm:ss')}"`
+          value: `"${now.endOf('date').format(DATE_TIME_FORMAT)}"`
         }
       ];
     case DateRangeType.WEEK:
@@ -250,12 +251,12 @@ export const getDefaultDateFilters = (dateType: DateRangeType) => {
         {
           key: 'opt_date',
           op: 'GREATER_THAN_EQUAL',
-          value: `"${now.startOf('date').subtract(1, 'week').add(1, 'day').format('YYYY-MM-DD HH:mm:ss')}"`
+          value: `"${now.startOf('date').subtract(1, 'week').add(1, 'day').format(DATE_TIME_FORMAT)}"`
         },
         {
           key: 'opt_date',
           op: 'LESS_THAN_EQUAL',
-          value: `"${now.format('YYYY-MM-DD HH:mm:ss')}"`
+          value: `"${now.format(DATE_TIME_FORMAT)}"`
         }
       ];
     case DateRangeType.MONTH:
@@ -263,12 +264,12 @@ export const getDefaultDateFilters = (dateType: DateRangeType) => {
         {
           key: 'opt_date',
           op: 'GREATER_THAN_EQUAL',
-          value: `"${now.startOf('date').subtract(1, 'month').add(1, 'day').format('YYYY-MM-DD HH:mm:ss')}"`
+          value: `"${now.startOf('date').subtract(1, 'month').add(1, 'day').format(DATE_TIME_FORMAT)}"`
         },
         {
           key: 'opt_date',
           op: 'LESS_THAN_EQUAL',
-          value: `"${now.format('YYYY-MM-DD HH:mm:ss')}"`
+          value: `"${now.format(DATE_TIME_FORMAT)}"`
         }
       ];
     case DateRangeType.YEAR:
@@ -276,12 +277,12 @@ export const getDefaultDateFilters = (dateType: DateRangeType) => {
         {
           key: 'opt_date',
           op: 'GREATER_THAN_EQUAL',
-          value: `"${now.startOf('date').subtract(1, 'year').add(1, 'day').format('YYYY-MM-DD HH:mm:ss')}"`
+          value: `"${now.startOf('date').subtract(1, 'year').add(1, 'day').format(DATE_TIME_FORMAT)}"`
         },
         {
           key: 'opt_date',
           op: 'LESS_THAN_EQUAL',
-          value: `"${now.format('YYYY-MM-DD HH:mm:ss')}"`
+          value: `"${now.format(DATE_TIME_FORMAT)}"`
         }
       ];
     default:
@@ -289,12 +290,12 @@ export const getDefaultDateFilters = (dateType: DateRangeType) => {
         {
           key: 'opt_date',
           op: 'GREATER_THAN_EQUAL',
-          value: `"${now.subtract(1, 'month').format('YYYY-MM-DD HH:mm:ss')}"`
+          value: `"${now.subtract(1, 'month').format(DATE_TIME_FORMAT)}"`
         },
         {
           key: 'opt_date',
           op: 'LESS_THAN_EQUAL',
-          value: `"${now.format('YYYY-MM-DD HH:mm:ss')}"`
+          value: `"${now.format(DATE_TIME_FORMAT)}"`
         }
       ];
   }

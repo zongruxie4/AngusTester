@@ -16,6 +16,7 @@ import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
 import { apis, services } from '@/api/tester';
 import dayjs from 'dayjs';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import { randomString } from '@/utils/utils';
 import { ShareObj, TargetType } from './PropsType';
@@ -71,7 +72,7 @@ const shareList = ref<ShareObj[]>([{
   apiList: []
 }]);
 
-const expiredDate = ref<string>(dayjs().add(1, 'day').format('YYYY-MM-DD HH:mm:ss'));
+const expiredDate = ref<string>(dayjs().add(1, 'day').format(DATE_TIME_FORMAT));
 
 // 设置添加数据的默认URL
 const getDefaultShareUrl = async () => {
@@ -523,7 +524,7 @@ const initData = () => {
     apiList: []
   }];
 
-  expiredDate.value = dayjs().add(24.1, 'hour').format('YYYY-MM-DD HH:mm:ss');
+  expiredDate.value = dayjs().add(24.1, 'hour').format(DATE_TIME_FORMAT);
   allAipIds.value = [];
   apiIds.value = [];
   apiList.value = [];

@@ -1,13 +1,20 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
-import { Icon, IconTask, modal, notification, Table, TaskPriority, TaskStatus } from '@xcan-angus/vue-ui';
-import { http, utils } from '@xcan-angus/infra';
+import { Icon, IconTask, modal, notification, Table, TaskPriority, TaskStatus as TaskStatusV } from '@xcan-angus/vue-ui';
+import { http, PageQuery, utils } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
+import { TaskStatus } from '@/enums/enums';
 
 import { getCurrentPage } from '@/utils/utils';
 import { TaskInfo } from '../types';
 
+/**
+ * Props interface for AddedTable component.
+ * <p>
+ * Defines the required properties for displaying task data in a table format.
+ * </p>
+ */
 type Props = {
   projectId: string;
   params: {
@@ -17,7 +24,7 @@ type Props = {
     confirmorId?: string;
     assigneeId?: string;
     commentBy?: string;
-    status?: 'CONFIRMING' | 'PENDING' | 'COMPLETED';
+    status?: TaskStatus;
   };
   total: number;
   notify: string;
@@ -38,14 +45,23 @@ const emit = defineEmits<{
   (e: 'update:deletedNotify', value: string): void;
 }>();
 
+// Inject refresh notification function from parent component
 const updateRefreshNotify = inject<(value: string) => void>('updateRefreshNotify');
 
+// Table data and state management
 const tableData = ref<TaskInfo[]>();
-const loading = ref(false);
-const loaded = ref(false);
-const orderBy = ref<string>();
-const orderSort = ref<'ASC' | 'DESC'>();
-const pagination = ref<{
+const isLoading = ref(false);
+const isDataLoaded = ref(false);
+const currentOrderBy = ref<string>();
+const currentOrderSort = ref<PageQuery.OrderSort>();
+
+/**
+ * Pagination configuration for the table.
+ * <p>
+ * Defines pagination settings including page size, current page, and display options.
+ * </p>
+ */
+const paginationConfig = ref<{
   total: number;
   current: number;
   pageSize: number;
@@ -59,24 +75,36 @@ const pagination = ref<{
       showSizeChanger: false,
       size: 'small',
       showTotal: (total: number) => {
-        if (typeof pagination.value === 'object') {
-          const totalPage = Math.ceil(total / pagination.value.pageSize);
-          return `第${pagination.value.current}/${totalPage}页`;
+        if (typeof paginationConfig.value === 'object') {
+          const totalPage = Math.ceil(total / paginationConfig.value.pageSize);
+          return `第${paginationConfig.value.current}/${totalPage}页`;
         }
       }
     });
 
-const tableChange = ({ current = 1, pageSize = 10 }, _filters, sorter: { orderBy: string; orderSort: 'ASC' | 'DESC'; }) => {
-  orderBy.value = sorter.orderBy;
-  orderSort.value = sorter.orderSort;
-  pagination.value.current = current;
-  pagination.value.pageSize = pageSize;
-  loadData();
+/**
+ * Handles table changes including pagination, sorting, and filtering.
+ * <p>
+ * Updates the current page, page size, and sorting parameters, then reloads data.
+ * </p>
+ */
+const handleTableChange = ({ current = 1, pageSize = 10 }, _filters, sorter: { orderBy: string; orderSort: PageQuery.OrderSort; }) => {
+  currentOrderBy.value = sorter.orderBy;
+  currentOrderSort.value = sorter.orderSort;
+  paginationConfig.value.current = current;
+  paginationConfig.value.pageSize = pageSize;
+  loadTaskData();
 };
 
-const getParams = () => {
-  const { current, pageSize } = pagination.value;
-  const params: {
+/**
+ * Builds query parameters for task list API call.
+ * <p>
+ * Combines pagination, sorting, and filtering parameters based on component props.
+ * </p>
+ */
+const buildQueryParams = () => {
+  const { current, pageSize } = paginationConfig.value;
+  const queryParams: {
     backlog: false;
     projectId: string;
     pageNo: number;
@@ -86,7 +114,7 @@ const getParams = () => {
     followBy?: boolean;
     confirmorId?: string;
     assigneeId?: string;
-    status?: 'CONFIRMING' | 'PENDING' | 'COMPLETED';
+    status?: TaskStatus;
     orderBy?: string;
     orderSort?: string;
     commentBy?: string;
@@ -97,82 +125,98 @@ const getParams = () => {
     pageSize
   };
 
-  if (orderSort.value) {
-    params.orderBy = orderBy.value;
-    params.orderSort = orderSort.value;
+  // Add sorting parameters if available
+  if (currentOrderSort.value) {
+    queryParams.orderBy = currentOrderBy.value;
+    queryParams.orderSort = currentOrderSort.value as unknown as string;
   }
 
+  // Add filtering parameters from props
   if (props.params) {
     if (props.params.createdBy) {
-      params.createdBy = props.params.createdBy;
+      queryParams.createdBy = props.params.createdBy;
     }
 
     if (props.params.favouriteBy) {
-      params.favouriteBy = props.params.favouriteBy;
+      queryParams.favouriteBy = props.params.favouriteBy;
     }
 
     if (props.params.followBy) {
-      params.followBy = props.params.followBy;
+      queryParams.followBy = props.params.followBy;
     }
 
     if (props.params.commentBy) {
-      params.commentBy = props.params.commentBy;
+      queryParams.commentBy = props.params.commentBy;
     }
 
     if (props.params.assigneeId) {
-      params.assigneeId = props.params.assigneeId;
+      queryParams.assigneeId = props.params.assigneeId;
     }
 
     if (props.params.confirmorId) {
-      params.confirmorId = props.params.confirmorId;
+      queryParams.confirmorId = props.params.confirmorId;
     }
 
     if (props.params.status) {
-      params.status = props.params.status;
+      queryParams.status = props.params.status;
     }
   }
-
-  return params;
+  return queryParams;
 };
 
-const loadData = async () => {
-  const params = getParams();
-  loading.value = true;
-  const [error, res] = await task.getTaskList(params);
-  loading.value = false;
-  loaded.value = true;
+/**
+ * Loads task data from the API and updates the table.
+ * <p>
+ * Fetches task list based on current query parameters and updates pagination and table data.
+ * </p>
+ */
+const loadTaskData = async () => {
+  const queryParams = buildQueryParams();
+  isLoading.value = true;
+  const [error, response] = await task.getTaskList(queryParams);
+  isLoading.value = false;
+  isDataLoaded.value = true;
+
   if (error) {
     return;
   }
 
-  const data = (res?.data || { total: 0, list: [] }) as { total: string; list: TaskInfo[] };
-  const total = +data.total;
-  pagination.value.total = total;
-  emit('update:total', total);
+  const responseData = (response?.data || { total: 0, list: [] }) as { total: string; list: TaskInfo[] };
+  const totalCount = +responseData.total;
+  paginationConfig.value.total = totalCount;
+  emit('update:total', totalCount);
 
-  const pageNo = +params.pageNo;
-  const pageSize = +params.pageSize;
-  tableData.value = (data.list || []).map((item, index) => {
-    const _params = {
-      ...params,
-      taskId: item.id,
+  const pageNo = +queryParams.pageNo;
+  const pageSize = +queryParams.pageSize;
+
+  // Generate task data with link URLs for navigation
+  tableData.value = (responseData.list || []).map((taskItem, index) => {
+    const linkParams = {
+      ...queryParams,
+      taskId: taskItem.id,
       pageNo: (pageNo - 1) * pageSize + index + 1,
       pageSize: 1,
-      total
+      total: totalCount
     };
 
     return {
-      ...item,
-      linkUrl: '/task#task?' + http.getURLSearchParams(_params, true)
+      ...taskItem,
+      linkUrl: '/task#task?' + http.getURLSearchParams(linkParams, true)
     };
   });
 };
 
-const deleteHandler = (data: TaskInfo) => {
+/**
+ * Handles task deletion with confirmation dialog.
+ * <p>
+ * Shows confirmation modal and deletes the task if confirmed.
+ * </p>
+ */
+const handleTaskDeletion = (taskData: TaskInfo) => {
   modal.confirm({
-    content: `确定删除任务【${data.name}】吗？`,
+    content: `确定删除任务【${taskData.name}】吗？`,
     async onOk () {
-      const [error] = await task.deleteTask([data.id]);
+      const [error] = await task.deleteTask([taskData.id]);
       if (error) {
         return;
       }
@@ -187,32 +231,46 @@ const deleteHandler = (data: TaskInfo) => {
   });
 };
 
-const cancelFavourite = async (data: TaskInfo) => {
-  loading.value = true;
-  const [error] = await task.cancelFavouriteTask(data.id);
-  loading.value = false;
+/**
+ * Handles removing task from favorites.
+ * <p>
+ * Calls API to unfavorite the task and refreshes the data.
+ * </p>
+ */
+const handleUnfavoriteTask = async (taskData: TaskInfo) => {
+  isLoading.value = true;
+  const [error] = await task.cancelFavouriteTask(taskData.id);
+  isLoading.value = false;
+
   if (error) {
     return;
   }
 
   notification.success('任务取消收藏成功');
-  loadData();
+  await loadTaskData();
 
   if (typeof updateRefreshNotify === 'function') {
     updateRefreshNotify(utils.uuid());
   }
 };
 
-const cancelFollow = async (data: TaskInfo) => {
-  loading.value = true;
-  const [error] = await task.cancelFollowTask(data.id);
-  loading.value = false;
+/**
+ * Handles removing task from followed tasks.
+ * <p>
+ * Calls API to unfollow the task and refreshes the data.
+ * </p>
+ */
+const handleUnfollowTask = async (taskData: TaskInfo) => {
+  isLoading.value = true;
+  const [error] = await task.cancelFollowTask(taskData.id);
+  isLoading.value = false;
+
   if (error) {
     return;
   }
 
   notification.success('任务取消关注成功');
-  loadData();
+  await loadTaskData();
 
   if (typeof updateRefreshNotify === 'function') {
     updateRefreshNotify(utils.uuid());
@@ -220,30 +278,46 @@ const cancelFollow = async (data: TaskInfo) => {
 };
 
 onMounted(() => {
+  // Watch for project ID changes and reload data
   watch(() => props.projectId, () => {
-    loadData();
+    loadTaskData();
   }, { immediate: true });
 
+  // Watch for refresh notifications and reload data
   watch(() => props.notify, (newValue) => {
     if (newValue === undefined || newValue === null || newValue === '') {
       return;
     }
 
-    loadData();
+    loadTaskData();
   }, { immediate: true });
 
+  // Watch for deletion notifications and adjust pagination
   watch(() => props.deletedNotify, (newValue) => {
     if (newValue === undefined || newValue === null || newValue === '') {
       return;
     }
 
-    pagination.value.current = getCurrentPage(pagination.value.current, pagination.value.pageSize, pagination.value.total);
-    loadData();
+    paginationConfig.value.current = getCurrentPage(
+      paginationConfig.value.current,
+      paginationConfig.value.pageSize,
+      paginationConfig.value.total
+    );
+    loadTaskData();
   }, { immediate: true });
 });
 
-const columns = computed(() => {
-  const _columns: {
+/**
+ * <p>
+ * Computed property for table columns configuration.
+ * </p>
+ * <p>
+ * Returns different column configurations based on whether status filtering is applied.
+ * </p>
+ */
+const tableColumns = computed(() => {
+  const baseColumns: {
+    key: string;
     title: string;
     dataIndex: string;
     ellipsis?: boolean;
@@ -252,13 +326,16 @@ const columns = computed(() => {
     actionKey?: 'createdBy' | 'favouriteBy' | 'followBy';
   }[] = Object.prototype.hasOwnProperty.call(props.params, 'status')
     ? [
+        // Columns for status-filtered view (without status column)
         {
+          key: 'code',
           title: '编码',
           dataIndex: 'code',
           ellipsis: true,
           width: '12%'
         },
         {
+          key: 'name',
           title: '名称',
           dataIndex: 'name',
           ellipsis: true,
@@ -266,12 +343,14 @@ const columns = computed(() => {
           width: '37%'
         },
         {
+          key: 'sprintName',
           title: '所属迭代',
           dataIndex: 'sprintName',
           ellipsis: true,
           width: '25%'
         },
         {
+          key: 'priority',
           title: '优先级',
           dataIndex: 'priority',
           ellipsis: true,
@@ -279,6 +358,7 @@ const columns = computed(() => {
           width: '9%'
         },
         {
+          key: 'deadlineDate',
           title: '截止时间',
           dataIndex: 'deadlineDate',
           ellipsis: true,
@@ -287,13 +367,16 @@ const columns = computed(() => {
         }
       ]
     : [
+        // Columns for general view (with status column)
         {
+          key: 'code',
           title: '编码',
           dataIndex: 'code',
           ellipsis: true,
           width: '12%'
         },
         {
+          key: 'name',
           title: '名称',
           dataIndex: 'name',
           ellipsis: true,
@@ -301,12 +384,14 @@ const columns = computed(() => {
           width: '32%'
         },
         {
+          key: 'sprintName',
           title: '所属迭代',
           dataIndex: 'sprintName',
           ellipsis: true,
           width: '21%'
         },
         {
+          key: 'priority',
           title: '优先级',
           dataIndex: 'priority',
           ellipsis: true,
@@ -314,12 +399,14 @@ const columns = computed(() => {
           width: '9%'
         },
         {
+          key: 'status',
           title: '状态',
           dataIndex: 'status',
           ellipsis: true,
           width: '9%'
         },
         {
+          key: 'deadlineDate',
           title: '截止时间',
           dataIndex: 'deadlineDate',
           ellipsis: true,
@@ -328,7 +415,9 @@ const columns = computed(() => {
         }
       ];
 
+  // Add action column based on current filter type
   const actionColumn: {
+    key: string;
     title: string;
     dataIndex: string;
     ellipsis?: boolean;
@@ -336,26 +425,27 @@ const columns = computed(() => {
     width?: string | number;
     actionKey?: 'favouriteBy' | 'followBy';
   } = {
+    key: 'action',
     title: '操作',
     dataIndex: 'action',
     width: 50
   };
 
-  const _params = props.params;
-  if (_params) {
-    if (_params.favouriteBy) {
+  const currentParams = props.params;
+  if (currentParams) {
+    if (currentParams.favouriteBy) {
       actionColumn.actionKey = 'favouriteBy';
-    } else if (_params.followBy) {
+    } else if (currentParams.followBy) {
       actionColumn.actionKey = 'followBy';
     }
   }
 
-  _columns.push(actionColumn);
-
-  return _columns;
+  baseColumns.push(actionColumn);
+  return baseColumns;
 });
 
-const emptyTextStyle = {
+// Empty state styling configuration
+const emptyStateStyle = {
   margin: '14px auto',
   height: 'auto'
 };
@@ -363,7 +453,8 @@ const emptyTextStyle = {
 
 <template>
   <div>
-    <template v-if="loaded">
+    <template v-if="isDataLoaded">
+      <!-- Empty state display when no data is available -->
       <template v-if="!tableData?.length">
         <div class="flex-1 flex flex-col items-center justify-center">
           <img class="w-27.5" src="../../../assets/images/nodata.png">
@@ -396,17 +487,20 @@ const emptyTextStyle = {
         </div>
       </template>
 
+      <!-- Task table display when data is available -->
       <Table
         v-else
         :dataSource="tableData"
-        :columns="columns"
-        :pagination="pagination"
-        :loading="loading"
-        :emptyTextStyle="emptyTextStyle"
+        :columns="tableColumns"
+        :pagination="paginationConfig"
+        :loading="isLoading"
+        :emptyTextStyle="emptyStateStyle"
         :minSize="5"
+        :noDataSize="'small'"
+        :noDataText="'暂无数据'"
         rowKey="id"
         size="small"
-        @change="tableChange">
+        @change="handleTableChange">
         <template #bodyCell="{ record, column }">
           <div v-if="column.dataIndex === 'name'" class="flex items-center">
             <IconTask :value="record.taskType?.value" class="text-4 flex-shrink-0" />
@@ -426,7 +520,7 @@ const emptyTextStyle = {
 
           <TaskPriority v-else-if="column.dataIndex === 'priority'" :value="record.priority" />
 
-          <TaskStatus v-else-if="column.dataIndex === 'status'" :value="record.status" />
+          <TaskStatusV v-else-if="column.dataIndex === 'status'" :value="record.status" />
 
           <div v-else-if="column.dataIndex === 'scriptType'" class="truncate">
             {{ record.scriptType?.message }}
@@ -439,7 +533,7 @@ const emptyTextStyle = {
                 size="small"
                 type="text"
                 class="space-x-1 flex items-center py-0 px-1"
-                @click="cancelFavourite(record)">
+                @click="handleUnfavoriteTask(record)">
                 <Icon icon="icon-quxiaoshoucang" class="text-3.5 cursor-pointer text-theme-text-hover" />
               </Button>
             </template>
@@ -450,7 +544,7 @@ const emptyTextStyle = {
                 size="small"
                 type="text"
                 class="space-x-1 flex items-center py-0 px-1"
-                @click="cancelFollow(record)">
+                @click="handleUnfollowTask(record)">
                 <Icon icon="icon-quxiaoguanzhu" class="text-3.5 cursor-pointer text-theme-text-hover" />
               </Button>
             </template>
@@ -461,7 +555,7 @@ const emptyTextStyle = {
                 size="small"
                 type="text"
                 class="space-x-1 flex items-center py-0 px-1"
-                @click="deleteHandler(record)">
+                @click="handleTaskDeletion(record)">
                 <Icon icon="icon-qingchu" class="text-3.5 cursor-pointer text-theme-text-hover" />
               </Button>
             </template>
@@ -473,11 +567,13 @@ const emptyTextStyle = {
 </template>
 
 <style scoped>
+/* Link styling for task navigation */
 .link {
   color: #1890ff;
   cursor: pointer;
 }
 
+/* Pagination margin adjustment */
 :deep(.ant-pagination) {
   margin-bottom: 0;
 }

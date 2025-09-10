@@ -18,6 +18,7 @@ import ApiServer from '@/views/apis/services/apiWebSocket/server/index.vue';
 import { getNameValue } from '@/views/apis/services/apiHttp/utils';
 import { FormData, Message } from './PropsType';
 import { debounce } from 'throttle-debounce';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 interface Props {
   id: string;
@@ -79,7 +80,7 @@ const msgType = ref();
 
 let currentConnectUrl;
 const connect = async () => {
-  connectedDate.value = dayjs().format('YYYY-MM-DD HH:mm:ss');
+  connectedDate.value = dayjs().format(DATE_TIME_FORMAT);
   const params = await packageParams();
   try {
     // eslint-disable-next-line no-new
@@ -118,7 +119,7 @@ const closeConnect = (changeProxy = false) => {
     if (changeProxy) {
       isClosing.value = false;
       isConnected.value = false;
-      msgList.value.push({ type: 'close', content: 'closed', size: calculateStringSize('closed'), date: dayjs().format('YYYY-MM-DD HH:mm:ss'), showContent: false, key: utils.uuid('key') });
+      msgList.value.push({ type: 'close', content: 'closed', size: calculateStringSize('closed'), date: dayjs().format(DATE_TIME_FORMAT), showContent: false, key: utils.uuid('key') });
     }
     return;
   }
@@ -224,7 +225,7 @@ const loadWs = async () => {
     connecting.value = false;
     isClosing.value = false;
     const content = 'WebSocket connection success, address:' + currentConnectUrl;
-    msgList.value.push({ type: 'connect', content: content, size: calculateStringSize(content), date: dayjs().format('YYYY-MM-DD HH:mm:ss'), showContent: false, key: utils.uuid('key') });
+    msgList.value.push({ type: 'connect', content: content, size: calculateStringSize(content), date: dayjs().format(DATE_TIME_FORMAT), showContent: false, key: utils.uuid('key') });
   });
   socketTarget.value.addEventListener('message', (evt) => {
     const response = evt.data;
@@ -241,7 +242,7 @@ const loadWs = async () => {
     isClosing.value = false;
     connecting.value = false;
     const content = `WebSocket connection closed, code: ${data.code}, reason: ${data.reason || 'None'}`;
-    msgList.value.push({ type: 'close', content: content, size: calculateStringSize(content), date: dayjs().format('YYYY-MM-DD HH:mm:ss'), showContent: false, key: utils.uuid('key') });
+    msgList.value.push({ type: 'close', content: content, size: calculateStringSize(content), date: dayjs().format(DATE_TIME_FORMAT), showContent: false, key: utils.uuid('key') });
   });
 };
 
@@ -352,12 +353,12 @@ const postMessage = () => {
     socketTarget.value.send(content.value);
   }
   toolbarRef.value.handleSelected(barMenus.value[0]);
-  msgList.value.push({ type: 'send', content: content.value, size: calculateStringSize(content.value), date: dayjs().format('YYYY-MM-DD HH:mm:ss'), showContent: false, key: utils.uuid('key') });
+  msgList.value.push({ type: 'send', content: content.value, size: calculateStringSize(content.value), date: dayjs().format(DATE_TIME_FORMAT), showContent: false, key: utils.uuid('key') });
 };
 
 const receiveMessage = (data: string) => {
   toolbarRef.value.handleSelected(barMenus.value[0]);
-  msgList.value.push({ type: 'receive', content: data, size: calculateStringSize(data), date: dayjs().format('YYYY-MM-DD HH:mm:ss'), showContent: false, key: utils.uuid('key') });
+  msgList.value.push({ type: 'receive', content: data, size: calculateStringSize(data), date: dayjs().format(DATE_TIME_FORMAT), showContent: false, key: utils.uuid('key') });
 };
 
 const onResponse = async () => {
@@ -370,10 +371,10 @@ const onResponse = async () => {
       const content = JSON.stringify({
         url: currentConnectUrl
       });
-      msgList.value.push({ type: 'connect', content: content, size: calculateStringSize(content), date: dayjs().format('YYYY-MM-DD HH:mm:ss'), showContent: false, key: utils.uuid('key') });
+      msgList.value.push({ type: 'connect', content: content, size: calculateStringSize(content), date: dayjs().format(DATE_TIME_FORMAT), showContent: false, key: utils.uuid('key') });
     } else {
       notification.warning(t('service.apiWebSocket.messages.connectionFailed') + ': ' + (response.rawContent || ''));
-      msgList.value.push({ type: 'connectErr', content: response.rawContent, size: calculateStringSize(response.rawContent), date: dayjs().format('YYYY-MM-DD HH:mm:ss'), showContent: false, key: utils.uuid('key') });
+      msgList.value.push({ type: 'connectErr', content: response.rawContent, size: calculateStringSize(response.rawContent), date: dayjs().format(DATE_TIME_FORMAT), showContent: false, key: utils.uuid('key') });
     }
   }
 
@@ -381,10 +382,10 @@ const onResponse = async () => {
     // 发送结果
     if (response.success === true) {
       toolbarRef.value.handleSelected(barMenus.value[0]);
-      msgList.value.push({ type: 'send', content: content.value, size: calculateStringSize(content.value), date: dayjs().format('YYYY-MM-DD HH:mm:ss'), showContent: false, key: utils.uuid('key') });
+      msgList.value.push({ type: 'send', content: content.value, size: calculateStringSize(content.value), date: dayjs().format(DATE_TIME_FORMAT), showContent: false, key: utils.uuid('key') });
     } else {
       notification.warning(t('service.apiWebSocket.messages.sendFailed') + ' ' + (response.rawContent || ''));
-      msgList.value.push({ type: 'sendErr', content: response.rawContent, size: calculateStringSize(response.rawContent), date: dayjs().format('YYYY-MM-DD HH:mm:ss'), showContent: false, key: utils.uuid('key') });
+      msgList.value.push({ type: 'sendErr', content: response.rawContent, size: calculateStringSize(response.rawContent), date: dayjs().format(DATE_TIME_FORMAT), showContent: false, key: utils.uuid('key') });
     }
   }
 
@@ -398,10 +399,10 @@ const onResponse = async () => {
       isClosing.value = false;
       connecting.value = false;
       toolbarRef.value.handleSelected(barMenus.value[0]);
-      msgList.value.push({ type: 'close', content: response.rawContent, size: calculateStringSize(response.rawContent), date: dayjs().format('YYYY-MM-DD HH:mm:ss'), showContent: false, key: utils.uuid('key') });
+      msgList.value.push({ type: 'close', content: response.rawContent, size: calculateStringSize(response.rawContent), date: dayjs().format(DATE_TIME_FORMAT), showContent: false, key: utils.uuid('key') });
     } else {
       notification.warning(t('service.apiWebSocket.messages.closeFailed') + '：' + (response.rawContent || ''));
-      msgList.value.push({ type: 'closeErr', content: response.rawContent, size: calculateStringSize(response.rawContent), date: dayjs().format('YYYY-MM-DD HH:mm:ss'), showContent: false, key: utils.uuid('key') });
+      msgList.value.push({ type: 'closeErr', content: response.rawContent, size: calculateStringSize(response.rawContent), date: dayjs().format(DATE_TIME_FORMAT), showContent: false, key: utils.uuid('key') });
     }
   }
 };

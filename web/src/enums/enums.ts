@@ -334,6 +334,11 @@ export enum ExecStatus {
   COMPLETED = 'COMPLETED'
 }
 
+export enum ExecResult {
+  SUCCESS = 'SUCCESS',
+  FAIL = 'FAIL'
+}
+
 export enum ScenarioMonitorStatus {
   PENDING = 'PENDING',
   SUCCESS = 'SUCCESS',
@@ -639,6 +644,7 @@ export const enumNamespaceMap = new Map<any, string>([
   [ScriptPermission, 'xcm.enum.ScriptPermission'],
   [MockServiceStartStatus, 'xcm.enum.MockServiceStartStatus'],
   [ExecStatus, 'xcm.enum.ExecStatus'],
+  [ExecResult, 'xcm.enum.ExecResult'],
   [TestResultStatus, 'xcm.enum.TestResultStatus'],
   [ProjectType, 'xcm.enum.ProjectType'],
   [ServicesExportScope, 'xcm.enum.ServicesExportScope'],

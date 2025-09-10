@@ -1,5 +1,7 @@
 import { useI18n } from 'vue-i18n';
 import dayjs, { Dayjs } from 'dayjs';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
+
 import type { MenuItem, UseSearchPanelFiltersReturn } from '../../types';
 import { ScenarioMonitorStatus } from '@/enums/enums';
 
@@ -44,8 +46,8 @@ export function useSearchPanelFilters (): UseSearchPanelFiltersReturn {
     }
 
     return [
-      startDate ? startDate.format('YYYY-MM-DD HH:mm:ss') : '',
-      endDate ? endDate.format('YYYY-MM-DD HH:mm:ss') : ''
+      startDate ? startDate.format(DATE_TIME_FORMAT) : '',
+      endDate ? endDate.format(DATE_TIME_FORMAT) : ''
     ];
   };
 

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue';
 
-import { ResourceInfo } from '../../types';
+import { StatisticsInfo } from '../../types';
 
 type Props = {
-  dataSource: ResourceInfo;
+  dataSource: StatisticsInfo;
 }
 
 const props = withDefaults(defineProps<Props>(), {

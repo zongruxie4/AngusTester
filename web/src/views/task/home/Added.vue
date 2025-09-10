@@ -2,7 +2,14 @@
 import { defineAsyncComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { TabPane, Tabs } from 'ant-design-vue';
+import { TaskStatus } from '@/enums/enums';
 
+/**
+ * Props interface for Added component.
+ * <p>
+ * Defines the required properties for displaying user's task-related data.
+ * </p>
+ */
 type Props = {
   projectId: string;
   userInfo: { id: string; };
@@ -17,47 +24,67 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const Table = defineAsyncComponent(() => import('./AddedTable.vue'));
+// Lazy load the table component for better performance
+const TaskTable = defineAsyncComponent(() => import('./AddedTable.vue'));
 
+// Notification state for deleted tasks
 const deletedNotify = ref<string>();
 
-const pendingTotal = ref(0);
-const confirmingTotal = ref(0);
-const completedTotal = ref(0);
-const createByTotal = ref(0);
-const followTotal = ref(0);
-const favoriteTotal = ref(0);
-const commentTotal = ref(0);
-
-const processingByParams = {
-  assigneeId: props.userInfo?.id,
-  status: 'PENDING'
+// Task count totals for each tab
+const taskCountTotals = {
+  pending: ref(0),
+  confirming: ref(0),
+  completed: ref(0),
+  createdBy: ref(0),
+  followed: ref(0),
+  favorited: ref(0),
+  commented: ref(0)
 };
 
-const confirmingByParams = {
-  confirmorId: props.userInfo?.id,
-  status: 'CONFIRMING'
-};
+/**
+ * Query parameters for different task filtering scenarios.
+ * <p>
+ * Each parameter object defines the criteria for filtering tasks in different tabs.
+ * </p>
+ */
+const taskQueryParams = {
+  // Tasks assigned to current user that are pending
+  pending: {
+    assigneeId: props.userInfo?.id,
+    status: TaskStatus.PENDING
+  },
 
-const completedByParams = {
-  assigneeId: props.userInfo?.id,
-  status: 'COMPLETED'
-};
+  // Tasks that need confirmation by current user
+  confirming: {
+    confirmorId: props.userInfo?.id,
+    status: TaskStatus.CONFIRMING
+  },
 
-const createByParams = {
-  createdBy: props.userInfo?.id
-};
+  // Tasks assigned to current user that are completed
+  completed: {
+    assigneeId: props.userInfo?.id,
+    status: TaskStatus.COMPLETED
+  },
 
-const followByParams = {
-  followBy: props.userInfo?.id
-};
+  // Tasks created by current user
+  createdBy: {
+    createdBy: props.userInfo?.id
+  },
 
-const favouriteByParams = {
-  favouriteBy: props.userInfo?.id
-};
+  // Tasks followed by current user
+  followed: {
+    followBy: true
+  },
 
-const commentByParams = {
-  commentBy: props.userInfo?.id
+  // Tasks favorited by current user
+  favorited: {
+    favouriteBy: true
+  },
+
+  // Tasks commented by current user
+  commented: {
+    commentBy: props.userInfo?.id
+  }
 };
 </script>
 
@@ -65,137 +92,147 @@ const commentByParams = {
   <div>
     <div class="text-3.5 font-semibold mb-1">{{ t('taskHome.myTasks') }}</div>
     <Tabs size="small">
+      <!-- Created Tasks Tab: Shows tasks created by current user -->
       <TabPane key="createBy" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
             <span class="mr-1">{{ t('taskHome.added') }}</span>
             <span>(</span>
-            <span>{{ createByTotal }}</span>
+            <span>{{ taskCountTotals.createdBy }}</span>
             <span>)</span>
           </div>
         </template>
-        <Table
-          v-model:total="createByTotal"
+        <TaskTable
+          v-model:total="taskCountTotals.createdBy.value"
           v-model:deletedNotify="deletedNotify"
           :notify="props.notify"
           :projectId="props.projectId"
-          :params="createByParams" />
+          :params="taskQueryParams.createdBy" />
       </TabPane>
 
+      <!-- Pending Tasks Tab: Shows tasks assigned to current user that are pending -->
       <TabPane key="pending" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
             <span class="mr-1">{{ t('taskHome.pending') }}</span>
             <span>(</span>
-            <span>{{ pendingTotal }}</span>
+            <span>{{ taskCountTotals.pending }}</span>
             <span>)</span>
           </div>
         </template>
-        <Table
-          v-model:total="pendingTotal"
+        <TaskTable
+          v-model:total="taskCountTotals.pending.value"
           v-model:deletedNotify="deletedNotify"
           :notify="props.notify"
           :projectId="props.projectId"
-          :params="processingByParams" />
+          :params="taskQueryParams.pending" />
       </TabPane>
 
+      <!-- Confirming Tasks Tab: Shows tasks that need confirmation by current user -->
       <TabPane key="confirming" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
             <span class="mr-1">{{ t('taskHome.confirming') }}</span>
             <span>(</span>
-            <span>{{ confirmingTotal }}</span>
+            <span>{{ taskCountTotals.confirming }}</span>
             <span>)</span>
           </div>
         </template>
-        <Table
-          v-model:total="confirmingTotal"
+        <TaskTable
+          v-model:total="taskCountTotals.confirming.value"
           v-model:deletedNotify="deletedNotify"
           :notify="props.notify"
           :projectId="props.projectId"
-          :params="confirmingByParams" />
+          :params="taskQueryParams.confirming" />
       </TabPane>
 
+      <!-- Completed Tasks Tab: Shows completed tasks assigned to current user -->
       <TabPane key="completed" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
             <span class="mr-1">{{ t('taskHome.completedStatus') }}</span>
             <span>(</span>
-            <span>{{ completedTotal }}</span>
+            <span>{{ taskCountTotals.completed }}</span>
             <span>)</span>
           </div>
         </template>
-        <Table
-          v-model:total="completedTotal"
+        <TaskTable
+          v-model:total="taskCountTotals.completed.value"
           v-model:deletedNotify="deletedNotify"
           :notify="props.notify"
           :projectId="props.projectId"
-          :params="completedByParams" />
+          :params="taskQueryParams.completed" />
       </TabPane>
 
+      <!-- Followed Tasks Tab: Shows tasks followed by current user -->
       <TabPane key="follow" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
             <span class="mr-1">{{ t('taskHome.followed') }}</span>
             <span>(</span>
-            <span>{{ followTotal }}</span>
+            <span>{{ taskCountTotals.followed }}</span>
             <span>)</span>
           </div>
         </template>
-        <Table
-          v-model:total="followTotal"
+        <TaskTable
+          v-model:total="taskCountTotals.followed.value"
           v-model:deletedNotify="deletedNotify"
           :notify="props.notify"
           :projectId="props.projectId"
-          :params="followByParams" />
+          :params="taskQueryParams.followed" />
       </TabPane>
 
+      <!-- Favorited Tasks Tab: Shows tasks favorited by current user -->
       <TabPane key="favorite" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
             <span class="mr-1">{{ t('taskHome.favorited') }}</span>
             <span>(</span>
-            <span>{{ favoriteTotal }}</span>
+            <span>{{ taskCountTotals.favorited }}</span>
             <span>)</span>
           </div>
         </template>
-        <Table
-          v-model:total="favoriteTotal"
+        <TaskTable
+          v-model:total="taskCountTotals.favorited.value"
           v-model:deletedNotify="deletedNotify"
           :notify="props.notify"
           :projectId="props.projectId"
-          :params="favouriteByParams" />
+          :params="taskQueryParams.favorited" />
       </TabPane>
 
+      <!-- Commented Tasks Tab: Shows tasks commented by current user -->
       <TabPane key="commentBy" forceRender>
         <template #tab>
           <div class="flex items-center flex-nowrap">
             <span class="mr-1">{{ t('taskHome.commented') }}</span>
             <span>(</span>
-            <span>{{ commentTotal }}</span>
+            <span>{{ taskCountTotals.commented }}</span>
             <span>)</span>
           </div>
         </template>
-        <Table
-          v-model:total="commentTotal"
+        <TaskTable
+          v-model:total="taskCountTotals.commented.value"
           v-model:deletedNotify="deletedNotify"
           :notify="props.notify"
           :projectId="props.projectId"
-          :params="commentByParams" />
+          :params="taskQueryParams.commented" />
       </TabPane>
     </Tabs>
   </div>
 </template>
 
 <style scoped>
+/* Tab container styling */
 .ant-tabs {
   line-height: 20px;
 }
 
+/* Content area minimum height */
 :deep(.ant-tabs-content-holder) {
   min-height: 166px;
 }
 
+/* Tab navigation margin adjustments */
 .ant-tabs-top>:deep(.ant-tabs-nav),
 .ant-tabs-bottom>:deep(.ant-tabs-nav),
 .ant-tabs-top>:deep(div)>.ant-tabs-nav,

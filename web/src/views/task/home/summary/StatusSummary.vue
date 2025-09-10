@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { analysis } from '@/api/tester';
+import {defineAsyncComponent, onMounted, ref, watch} from 'vue';
+import {useI18n} from 'vue-i18n';
+import {analysis} from '@/api/tester';
 
-import { ResourceInfo } from '@/views/task/home/types';
+import {SummaryInfo} from '@/views/task/home/types';
 
+// Props definition
 type Props = {
   projectId: string;
   userInfo: { id: string; };
@@ -19,13 +20,14 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const Sprint = defineAsyncComponent(() => import('@/views/task/home/summary/status/Sprint.vue'));
-const Task = defineAsyncComponent(() => import('@/views/task/home/summary/status/Task.vue'));
-const Priority = defineAsyncComponent(() => import('@/views/task/home/summary/status/Priority.vue'));
-const Backlog = defineAsyncComponent(() => import('@/views/task/home/summary/status/Backlog.vue'));
+// Lazy-loaded child components
+const SprintCount = defineAsyncComponent(() => import('@/views/task/home/summary/SprintCount.vue'));
+const TaskCount = defineAsyncComponent(() => import('@/views/task/home/summary/TaskCount.vue'));
+const BacklogPie = defineAsyncComponent(() => import('@/views/task/home/summary/BacklogPie.vue'));
 
 const loading = ref(false);
-const dataSource = ref<ResourceInfo>();
+// Data source for all summary widgets
+const summaryData = ref<SummaryInfo>();
 
 const loadData = async (): Promise<void> => {
   loading.value = true;
@@ -40,14 +42,14 @@ const loadData = async (): Promise<void> => {
   }
 
   if (res?.data) {
-    dataSource.value = res.data;
+    summaryData.value = res.data;
   } else {
     reset();
   }
 };
 
 const reset = () => {
-  dataSource.value = {
+  summaryData.value = {
     allSprint: '0',
     sprintByLastWeek: '0',
     sprintByLastMonth: '0',
@@ -58,6 +60,15 @@ const reset = () => {
     allTag: '0',
     tagByLastWeek: '0',
     tagByLastMonth: '0',
+    allBacklog: '0',
+    backlogByType: {
+      STORY: '0',
+      REQUIREMENT: '0',
+      TASK: '0',
+      BUG: '0',
+      API_TEST: '0',
+      SCENARIO_TEST: '0'
+    },
     sprintByStatus: {
       PENDING: '0',
       IN_PROGRESS: '0',
@@ -108,10 +119,9 @@ onMounted(() => {
   <div>
     <div class="text-3.5 font-semibold mb-3">{{ t('taskHome.resourceStatistics') }}</div>
     <div class="flex">
-      <Backlog :dataSource="dataSource" class="w-1/4-media mr-media" />
-      <Sprint :dataSource="dataSource" class="w-1/4-media mr-media" />
-      <Task :dataSource="dataSource" class="w-1/2-media " />
-      <!-- <priority :dataSource="dataSource" class="w-1/4-media" /> -->
+      <BacklogPie :dataSource="summaryData" class="w-1/4-media mr-media" />
+      <SprintCount :dataSource="summaryData" class="w-1/4-media mr-media" />
+      <TaskCount :dataSource="summaryData" class="w-1/2-media " />
     </div>
   </div>
 </template>
@@ -128,18 +138,4 @@ onMounted(() => {
 .mr-media {
   margin-right: 15px;
 }
-
-/* @media screen and (max-width: 1480px) {
-  .w-1\/4-media {
-    width: calc(25% - 10px);
-  }
-
-  .w-1\/2-media {
-    width: calc(50% - 10px);
-  }
-
-  .mr-media {
-    margin-right: 15px;
-  }
-} */
 </style>

@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
 import { appContext } from '@xcan-angus/infra';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 interface Props {
   loading: boolean;
@@ -109,7 +110,7 @@ const formatDateString = (key: string) => { // TODO 可以提到公共工具方�
     endDate = dayjs();
   }
 
-  return [startDate ? startDate.format('YYYY-MM-DD HH:mm:ss') : '', endDate ? endDate.format('YYYY-MM-DD HH:mm:ss') : ''];
+  return [startDate ? startDate.format(DATE_TIME_FORMAT) : '', endDate ? endDate.format(DATE_TIME_FORMAT) : ''];
 };
 
 const getParams = () => {

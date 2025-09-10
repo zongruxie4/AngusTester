@@ -1,5 +1,7 @@
 import { Ref } from 'vue';
 import dayjs from 'dayjs';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
+
 import type { TimeValidationResult } from '../../types';
 import {CreateTimeSetting} from "@/types/types";
 
@@ -30,7 +32,7 @@ export function useTimeValidation (
       }
       return {
         createdAt: 'AT_SOME_DATE',
-        createdAtSomeDate: createdAtSomeDate.value.format('YYYY-MM-DD HH:mm:ss')
+        createdAtSomeDate: createdAtSomeDate.value.format(DATE_TIME_FORMAT)
       };
     }
 

@@ -1,34 +1,41 @@
 <script setup lang="ts">
-import { inject, onMounted, ref, watch } from 'vue';
-import { utils } from '@xcan-angus/infra';
+import {inject, onMounted, ref, watch} from 'vue';
+import {utils} from '@xcan-angus/infra';
 import * as echarts from 'echarts/core';
-import { LegendComponent, LegendComponentOption, TooltipComponent, TooltipComponentOption } from 'echarts/components';
-import { PieChart, PieSeriesOption } from 'echarts/charts';
-import { LabelLayout } from 'echarts/features';
-import { CanvasRenderer } from 'echarts/renderers';
+import {LegendComponent, LegendComponentOption, TooltipComponent, TooltipComponentOption} from 'echarts/components';
+import {PieChart, PieSeriesOption} from 'echarts/charts';
+import {LabelLayout} from 'echarts/features';
+import {CanvasRenderer} from 'echarts/renderers';
 
-import { ResourceInfo } from '@/views/task/home/types';
+import {SummaryInfo} from '@/views/task/home/types';
 
+// Props definition
 type Props = {
-  dataSource: ResourceInfo;
+  dataSource: SummaryInfo;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined
 });
 
+// ECharts option type
 type EChartsOption = echarts.ComposeOption<TooltipComponentOption | LegendComponentOption | PieSeriesOption>;
 
+// Global resize notification from parent layout
 const windowResizeNotify = inject('windowResizeNotify', ref<string>());
 
+// DOM references
 const containerRef = ref<HTMLElement>();
 
+// Summary total number displayed in title
 const total = ref(0);
 
+// Unique DOM id for ECharts instance
 const domId = utils.uuid('pie');
 
-let echartInstance: echarts.ECharts;
-const echartOption: EChartsOption = {
+// ECharts runtime
+let chartInstance: echarts.ECharts;
+const chartOptions: EChartsOption = {
   tooltip: {
     trigger: 'item',
     axisPointer: { type: 'shadow' },
@@ -79,25 +86,27 @@ const echartOption: EChartsOption = {
   ]
 };
 
+// Initialize or update chart instance with latest options
 const renderChart = () => {
-  if (!echartInstance) {
+  if (!chartInstance) {
     echarts.use([TooltipComponent, LegendComponent, PieChart, CanvasRenderer, LabelLayout]);
-    echartInstance = echarts.init(document.getElementById(domId));
-    echartInstance.setOption(echartOption);
+    chartInstance = echarts.init(document.getElementById(domId));
+    chartInstance.setOption(chartOptions);
     return;
   }
 
-  // 重新绘制图表
-  echartInstance.setOption(echartOption);
+  // Redraw with updated options
+  chartInstance.setOption(chartOptions);
 };
 
-const setEchartOption = () => {
+// Adjust chart layout responsively according to container width
+const updateChartOptions = () => {
   if (containerRef.value) {
     const width = containerRef.value.offsetWidth;
     if (width > 418) {
-      echartOption.series![0].center = ['50%', '50%'];
-      echartOption.series![0].radius = ['45%', '63%'];
-      echartOption.legend = {
+      chartOptions.series![0].center = ['50%', '50%'];
+      chartOptions.series![0].radius = ['45%', '63%'];
+      chartOptions.legend = {
         top: 'middle',
         right: 0,
         orient: 'vertical',
@@ -106,9 +115,9 @@ const setEchartOption = () => {
         itemGap: 10
       };
     } else if (width > 340 && width <= 418) {
-      echartOption.series![0].center = ['45%', '50%'];
-      echartOption.series![0].radius = ['45%', '63%'];
-      echartOption.legend = {
+      chartOptions.series![0].center = ['45%', '50%'];
+      chartOptions.series![0].radius = ['45%', '63%'];
+      chartOptions.legend = {
         top: 'middle',
         right: 0,
         orient: 'vertical',
@@ -117,9 +126,9 @@ const setEchartOption = () => {
         itemGap: 10
       };
     } else if (width > 290 && width <= 340) {
-      echartOption.series![0].center = ['40%', '50%'];
-      echartOption.series![0].radius = ['45%', '63%'];
-      echartOption.legend = {
+      chartOptions.series![0].center = ['40%', '50%'];
+      chartOptions.series![0].radius = ['45%', '63%'];
+      chartOptions.legend = {
         top: 'middle',
         right: 0,
         orient: 'vertical',
@@ -128,9 +137,9 @@ const setEchartOption = () => {
         itemGap: 10
       };
     } else {
-      echartOption.series![0].center = ['50%', '34%'];
-      echartOption.series![0].radius = ['38%', '55%'];
-      echartOption.legend = {
+      chartOptions.series![0].center = ['50%', '34%'];
+      chartOptions.series![0].radius = ['38%', '55%'];
+      chartOptions.legend = {
         bottom: '-7px',
         left: 'center',
         orient: 'horizontal',
@@ -144,46 +153,50 @@ const setEchartOption = () => {
     }
   }
 
-  return echartOption;
+  return chartOptions;
 };
 
-const resizeHandler = () => {
-  setEchartOption();
-  if (!echartInstance) {
+// Handle container resize and re-render chart
+const handleResize = () => {
+  updateChartOptions();
+  if (!chartInstance) {
     return;
   }
-  echartInstance.setOption(echartOption);
-  echartInstance.resize();
+  chartInstance.setOption(chartOptions);
+  chartInstance.resize();
 };
 
 onMounted(() => {
+  // Watch data changes and feed series data
   watch(() => props.dataSource, (newValue) => {
     if (props.dataSource === undefined) {
       return;
     }
-    total.value = newValue.allBacklog;
+    // Read total backlog; fallback to 0 when missing
+    total.value = +((newValue as any).allBacklog ?? 0);
 
-    // 重置数据
-    echartOption.series![0].data = [];
+    // Reset and map series data
+    chartOptions.series![0].data = [];
 
-    const data = newValue.backlogByType || {};
-    echartOption.series?.[0].data.push({ name: '故事', value: +data.STORY });
-    echartOption.series?.[0].data.push({ name: '任务', value: +data.TASK });
-    echartOption.series?.[0].data.push({ name: '缺陷', value: +data.BUG });
-    echartOption.series?.[0].data.push({ name: '需求', value: +data.REQUIREMENT });
-    echartOption.series?.[0].data.push({ name: '接口测试', value: +data.API_TEST });
-    echartOption.series?.[0].data.push({ name: '场景测试', value: +data.SCENARIO_TEST });
+    const data = (newValue as any).backlogByType || {};
+    chartOptions.series?.[0].data.push({ name: '故事', value: +data.STORY });
+    chartOptions.series?.[0].data.push({ name: '任务', value: +data.TASK });
+    chartOptions.series?.[0].data.push({ name: '缺陷', value: +data.BUG });
+    chartOptions.series?.[0].data.push({ name: '需求', value: +data.REQUIREMENT });
+    chartOptions.series?.[0].data.push({ name: '接口测试', value: +data.API_TEST });
+    chartOptions.series?.[0].data.push({ name: '场景测试', value: +data.SCENARIO_TEST });
 
-    setEchartOption();
+    updateChartOptions();
     renderChart();
   });
 
+  // React to global window resize notifications
   watch(() => windowResizeNotify.value, (newValue) => {
     if (newValue === undefined || newValue === null || newValue === '') {
       return;
     }
 
-    resizeHandler();
+    handleResize();
   }, { immediate: true });
 });
 </script>

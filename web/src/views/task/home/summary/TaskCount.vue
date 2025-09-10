@@ -1,26 +1,28 @@
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
-import { Icon } from '@xcan-angus/vue-ui';
+import {defineAsyncComponent, onMounted, ref, watch} from 'vue';
+import {Icon} from '@xcan-angus/vue-ui';
 
-import { ResourceInfo } from '@/views/task/home/types';
+import {SummaryInfo} from '@/views/task/home/types';
 
+// Props definition
 type Props = {
-  dataSource: ResourceInfo;
+  dataSource: SummaryInfo;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined
 });
 
-const ChartPie = defineAsyncComponent(() => import('./TaskChartPie.vue'));
+const ChartPie = defineAsyncComponent(() => import('./TaskPie.vue'));
 
-const total = ref<string>('0');
-const overduetTtal = ref<string>('0');
-const pendingTotal = ref<string>('0');
-const progressingTotal = ref<string>('0');
-const completedTotal = ref<string>('0');
-const canceledTotal = ref<string>('0');
-const confirmingTotal = ref<string>('0');
+// Reactive counters
+const totalTaskCount = ref<string>('0');
+const overdueTaskCount = ref<string>('0');
+const pendingTaskCount = ref<string>('0');
+const inProgressTaskCount = ref<string>('0');
+const completedTaskCount = ref<string>('0');
+const canceledTaskCount = ref<string>('0');
+const confirmingTaskCount = ref<string>('0');
 
 onMounted(() => {
   watch(() => props.dataSource, (newValue) => {
@@ -28,13 +30,14 @@ onMounted(() => {
       return;
     }
 
-    total.value = newValue.allTask;
-    overduetTtal.value = newValue.taskByOverdue;
-    pendingTotal.value = newValue.taskByStatus?.PENDING;
-    progressingTotal.value = newValue.taskByStatus?.IN_PROGRESS;
-    completedTotal.value = newValue.taskByStatus?.COMPLETED;
-    canceledTotal.value = newValue.taskByStatus?.CANCELED;
-    confirmingTotal.value = newValue.taskByStatus?.CONFIRMING;
+    // Map props to local refs for rendering
+    totalTaskCount.value = newValue.allTask;
+    overdueTaskCount.value = newValue.taskByOverdue;
+    pendingTaskCount.value = newValue.taskByStatus?.PENDING;
+    inProgressTaskCount.value = newValue.taskByStatus?.IN_PROGRESS;
+    completedTaskCount.value = newValue.taskByStatus?.COMPLETED;
+    canceledTaskCount.value = newValue.taskByStatus?.CANCELED;
+    confirmingTaskCount.value = newValue.taskByStatus?.CONFIRMING;
   }, { immediate: true });
 });
 </script>
@@ -43,7 +46,7 @@ onMounted(() => {
   <div class="rounded border border-solid border-theme-text-box pt-2">
     <div class="font-semibold px-4">
       <span class="mr-2">总任务</span>
-      <span class="text-4">{{ total }}</span>
+      <span class="text-4">{{ totalTaskCount }}</span>
     </div>
     <div class="flex items-center pr-2">
       <div class="flex-1 flex items-center justify-center flex-wrap content-center transform-gpu translate-y-2">
@@ -51,7 +54,7 @@ onMounted(() => {
           <Icon icon="icon-daiceshi" class="text-10 flex-shrink-0" />
           <div class="whitespace-nowrap space-y-1">
             <div class="text-theme-sub-content">待处理</div>
-            <div class="text-4">{{ pendingTotal }}</div>
+            <div class="text-4">{{ pendingTaskCount }}</div>
           </div>
         </div>
 
@@ -59,7 +62,7 @@ onMounted(() => {
           <Icon icon="icon-daiqueren" class="text-10 flex-shrink-0" />
           <div class="whitespace-nowrap space-y-1">
             <div class="text-theme-sub-content">待确认</div>
-            <div class="text-4">{{ confirmingTotal }}</div>
+            <div class="text-4">{{ confirmingTaskCount }}</div>
           </div>
         </div>
 
@@ -67,7 +70,7 @@ onMounted(() => {
           <Icon icon="icon-yiyuqi1" class="text-10 flex-shrink-0" />
           <div class="whitespace-nowrap space-y-1">
             <div class="text-theme-sub-content">逾期<span class="inline-block" style="width:1em;"></span></div>
-            <div class="text-4">{{ overduetTtal }}</div>
+            <div class="text-4">{{ overdueTaskCount }}</div>
           </div>
         </div>
 
@@ -75,7 +78,7 @@ onMounted(() => {
           <Icon icon="icon-renwuceshizhong" class="text-10 flex-shrink-0" />
           <div class="whitespace-nowrap space-y-1">
             <div class="text-theme-sub-content">处理中</div>
-            <div class="text-4">{{ progressingTotal }}</div>
+            <div class="text-4">{{ inProgressTaskCount }}</div>
           </div>
         </div>
 
@@ -83,7 +86,7 @@ onMounted(() => {
           <Icon icon="icon-jiaobenzhuyezhihang" class="text-10 flex-shrink-0" />
           <div class="whitespace-nowrap space-y-1">
             <div class="text-theme-sub-content">已完成</div>
-            <div class="text-4">{{ completedTotal }}</div>
+            <div class="text-4">{{ completedTaskCount }}</div>
           </div>
         </div>
 
@@ -91,7 +94,7 @@ onMounted(() => {
           <Icon icon="icon-yiquxiao" class="text-10 flex-shrink-0" />
           <div class="whitespace-nowrap space-y-1">
             <div class="text-theme-sub-content">已取消</div>
-            <div class="text-4">{{ canceledTotal }}</div>
+            <div class="text-4">{{ canceledTaskCount }}</div>
           </div>
         </div>
       </div>

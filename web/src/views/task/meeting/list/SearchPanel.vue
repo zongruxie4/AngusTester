@@ -5,6 +5,7 @@ import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
 import { appContext } from '@xcan-angus/infra';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import { TaskMeetingType } from '@/enums/enums';
 
@@ -146,16 +147,16 @@ const formatDateString = (key: string) => {
     endDate = dayjs();
   }
 
-  return [startDate ? startDate.format('YYYY-MM-DD HH:mm:ss') : '', endDate ? endDate.format('YYYY-MM-DD HH:mm:ss') : ''];
+  return [startDate ? startDate.format(DATE_TIME_FORMAT) : '', endDate ? endDate.format(DATE_TIME_FORMAT) : ''];
 
   // return [
   //   startDate ? {
-  //     value: startDate.format('YYYY-MM-DD HH:mm:ss'),
+  //     value: startDate.format(DATE_TIME_FORMAT),
   //     op: 'GREATER_THAN_EQUAL',
   //     key: 'createdDate'
   //   } : '',
   //   endDate ? {
-  //     value: endDate.format('YYYY-MM-DD HH:mm:ss'),
+  //     value: endDate.format(DATE_TIME_FORMAT),
   //     op: 'LESS_THAN_EQUAL',
   //     key: 'createdDate'
   //   }  : ''].filter(Boolean);

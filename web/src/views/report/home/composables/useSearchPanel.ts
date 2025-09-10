@@ -3,6 +3,8 @@ import { useI18n } from 'vue-i18n';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { PageQuery, SearchCriteria, CombinedTargetType, XCanDexie } from '@xcan-angus/infra';
+import { DATE_TIME_FORMAT } from '@/utils/constant';
+
 import type {
   MenuItem,
   MenuItemKey,
@@ -183,8 +185,8 @@ export function useSearchPanel (
     }
 
     return [
-      startDate ? startDate.format('YYYY-MM-DD HH:mm:ss') : '',
-      endDate ? endDate.format('YYYY-MM-DD HH:mm:ss') : ''
+      startDate ? startDate.format(DATE_TIME_FORMAT) : '',
+      endDate ? endDate.format(DATE_TIME_FORMAT) : ''
     ];
   };
 
