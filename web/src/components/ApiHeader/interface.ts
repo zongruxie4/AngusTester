@@ -1,4 +1,4 @@
-import { API_EXTENSION_KEY } from '@xcan-angus/vue-ui/ApiUtils/index';
+import { API_EXTENSION_KEY } from '@/utils/ApiUtils/index';
 
 const { valueKey } = API_EXTENSION_KEY;
 export const getHeaderData = (dataSource:any[] = []) => {

@@ -13,7 +13,7 @@ import { itemTypes, formDataTypes } from './interface';
 // import { deepDelAttrFromObj, validateType } from '@/views/apis/components/api-item/utils';
 import SimpleEditableSelect from '../../SimpleEditableSelect/index.vue';
 
-import { ParamsItem, API_EXTENSION_KEY, deepDelAttrFromObj, validateType } from '@xcan-angus/vue-ui/ApiUtils/index';
+import { ParamsItem, API_EXTENSION_KEY, deepDelAttrFromObj, validateType } from '@/utils/ApiUtils/index';
 
 export interface Props {
   value: ParamsItem[],

@@ -4,7 +4,7 @@ import { Modal, Spin, NoData } from '@xcan-angus/vue-ui';
 import { Checkbox, Input } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 const { t }  = useI18n();
-import { deconstruct } from '@xcan-angus/vue-ui/ApiUtils/index';
+import { deconstruct } from '@/utils/ApiUtils/index';
 import { http, TESTER } from '@xcan-angus/infra';
 
 interface Props {

@@ -1,4 +1,4 @@
-import uitlAssert from '@/component/ApiAssert/utils/assert';
+import uitlAssert from '@/components/ApiAssert/utils/assert';
 
 import uitlExpression from '@/components/ApiAssert/utils/expression';
 import extract from '@/components/ApiAssert/utils/extract';

@@ -1674,7 +1674,6 @@ provide('selectHandle', closeDrawer);
 </script>
 <template>
   <div
-
     class="z-9 h-full"
     :class="{ 'select-none': moving }">
     <div class="flex flex-nowrap h-full w-full">
@@ -2171,4 +2170,3 @@ provide('selectHandle', closeDrawer);
   @apply w-1.5 h-1.5 inline-block bg-status-success rounded-full mr-1;
 }
 </style>
-@/views/apis/Service/commonComp/ApiRequest/interface./RequestBody/interface./RequestParams/interface

@@ -1832,4 +1832,3 @@ provide('proxyOptObj', proxyOptObj);
   flex: 1;
 }
 </style>
-@/views/apis/Service/commonComp/Agent/PropsTypes

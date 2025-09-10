@@ -1,6 +1,6 @@
-import { API_EXTENSION_KEY, encode } from '@xcan-angus/vue-ui/ApiUtils/index';
-import { useI18n } from 'vue-i18n';
-const { t }  = useI18n();
+import { API_EXTENSION_KEY, encode } from '@/utils/ApiUtils/index';
+import { i18n } from '@xcan-angus/infra';
+const t = i18n.getI18n()?.global?.t || ((value: string) => value);
 
 // const { valueKey, securityApiKeyPerfix } = API_EXTENSION_KEY;
 const { valueKey, securityApiKeyPerfix, oAuth2Key, oAuth2Token, newTokenKey, basicAuthKey } = API_EXTENSION_KEY;

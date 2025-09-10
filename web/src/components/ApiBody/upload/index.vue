@@ -5,7 +5,7 @@ import { Upload } from 'ant-design-vue';
 import { Icon, notification } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 const { t }  = useI18n();
-import { API_EXTENSION_KEY } from '@xcan-angus/vue-ui/ApiUtils/index';
+import { API_EXTENSION_KEY } from '@/utils/ApiUtils/index';
 import { codeUtils } from '@xcan-angus/infra';
 
 const { valueKey, fileNameKey, formContentTypeKey } = API_EXTENSION_KEY;

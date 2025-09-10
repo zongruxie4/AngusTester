@@ -1,5 +1,5 @@
 import qs from 'qs';
-import { API_EXTENSION_KEY } from '@xcan-angus/vue-ui/ApiUtils/index';
+import { API_EXTENSION_KEY } from '@/utils/ApiUtils/index';
 
 const valueKey = API_EXTENSION_KEY.valueKey;
 const enabledKey = API_EXTENSION_KEY.enabledKey;
