@@ -51,11 +51,11 @@ const testType = computed(() => {
 });
 
 const idText = computed(() => {
-  return taskType.value === 'API_TEST' ? '接口ID' : '场景ID';
+  return taskType.value === 'API_TEST' ? t('reportPreview.task.info.testingInfo.testResource.fields.apiId') : t('reportPreview.task.info.testingInfo.testResource.fields.scenarioId');
 });
 
 const nameText = computed(() => {
-  return taskType.value === 'API_TEST' ? '接口名称' : '场景名称';
+  return taskType.value === 'API_TEST' ? t('reportPreview.task.info.testingInfo.testResource.fields.apiName') : t('reportPreview.task.info.testingInfo.testResource.fields.scenarioName');
 });
 </script>
 

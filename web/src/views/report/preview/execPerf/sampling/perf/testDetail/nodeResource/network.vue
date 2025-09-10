@@ -293,7 +293,12 @@ const setCpuChartData = () => {
     return idx >= sliderValueCpu.value[0] && idx <= sliderValueCpu.value[1];
   });
   // 'CPU 空闲百分比', '系统空间占用 CPU 百分比', '用户空间占 CPU 百分比', '等待 IO 操作的 CPU 百分比', '其他占用 CPU 百分比', '当前占用的总 CPU 百分比'
-  const dataType = ['CPU 空闲百分比(%)', '系统空间占用 CPU 百分比(%)', '用户空间占 CPU 百分比(%)', '等待 IO 操作的 CPU 百分比(%)', '其他占用 CPU 百分比(%)', '当前占用的总 CPU 百分比(%)'];
+  const dataType = [t('reportPreview.execPerf.sampling.testDetail.nodeResource.cpuIdle'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.cpuSystem'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.cpuUser'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.cpuIo'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.cpuOther'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.cpuTotal')];
   const seriesData = dataType.map((type, idx) => {
     return {
       ...getDefaultLineConfig(idx),
@@ -394,7 +399,11 @@ const setNetworkChartData = () => {
   });
   // '接收到的总字节数', '每秒接收的 MB 数', '接收到的错误包数', '发送的总字节数', '每秒发送的 MB 数'
   const dataTypeKey = ['rxBytes', 'rxBytesRate', 'rxErrors', 'txBytes', 'txBytesRate'];
-  const dataType = ['接收到的总字节(GB)', '每秒接收的 MB 数(MB/s)', '接收到的错误包数(packets)', '发送的总字节(GB)', '每秒发送的 MB 数(MB/s)'];
+  const dataType = [t('reportPreview.execPerf.sampling.testDetail.nodeResource.rxBytes'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.rxBytesRate'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.rxErrors'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.txBytes'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.txBytesRate')];
   const seriesData = dataType.map((type, idx) => {
     return {
       ...getDefaultLineConfig(idx),
@@ -511,7 +520,16 @@ const setMemoryChartData = () => {
     return idx >= sliderValueMemory.value[0] && idx <= sliderValueMemory.value[1];
   });
   // // '物理内存剩余量', '物理内存使用量', '实际空闲物理内存百分比', '实际使用物理内存的百分比', '实际空闲内存', '实际使用内存', '空闲内存占用的百分比', '使用内存占用的百分比', '交换区使用量', '交换区剩余量'
-  const dataType = ['物理内存剩余量(GB)', '物理内存使用量(GB)', '实际空闲物理内存百分比(%)', '实际使用物理内存的百分比(%)', '实际空闲内存(GB)', '实际使用内存(GB)', '空闲内存占用的百分比(%)', '使用内存占用的百分比(%)', '交换区使用量(GB)', '交换区剩余量(GB)'];
+  const dataType = [t('reportPreview.execPerf.sampling.testDetail.nodeResource.free'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.used'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.freePercent'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.usedPercent'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.actualFree'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.actualUsed'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.actualFreePercent'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.actualUsedPercent'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.swapFree'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.swapUsed')];
   const dataTypeKey = ['free', 'used', 'freePercent', 'usedPercent', 'actualFree', 'actualUsed', 'actualFreePercent', 'actualUsedPercent', 'swapFree', 'swapUsed'];
   const seriesData = dataType.map((type, idx) => {
     return {
@@ -627,7 +645,7 @@ const setDiskEchartData = () => {
   });
   // '磁盘总大小', '本地文件系统剩余大小', '本地文件系统已用大小', '本地文件系统可用大小', '本地文件系统使用率', '每秒磁盘读次数', '每秒磁盘写次数', '每秒磁盘读取 MB 数', '每秒磁盘写入 MB 数'
   const dataTypeKey = ['total', 'free', 'used', 'avail', 'usePercent', 'readsRate', 'writesRate', 'readBytesRate', 'writeBytesRate'];
-  const dataType = ['磁盘总大小(GB)', '本地文件系统剩余大小(GB)', '本地文件系统已用大小(GB)', '本地文件系统可用大小(GB)', '本地文件系统使用率(%)', '每秒磁盘读次数(IO/s)', '每秒磁盘写次数(IO/s)', '每秒磁盘读取 MB 数(MB/s)', '每秒磁盘写入 MB 数(MB/s)'];
+  const dataType = [t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskTotal'), t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskFree'), t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskUsed'), t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskAvail'), t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskUsePercent'), t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskReadsRate'), t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskWritesRate'), t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskReadBytesRate'), t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskWriteBytesRate')];
   const seriesData = dataType.map((type, idx) => {
     return {
       ...getDefaultLineConfig(idx),

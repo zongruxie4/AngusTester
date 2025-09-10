@@ -71,7 +71,7 @@ const len = computed(() => {
       </div>
     </div>
 
-    <div v-else class="content-text-container">无</div>
+    <div v-else class="content-text-container">{{ t('reportPreview.functionCase.info.testSteps.noData') }}</div>
   </div>
 </template>
 

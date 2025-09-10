@@ -197,7 +197,10 @@ const resetData = () => {
   };
   basicInfoSetting.value = {
     reportContacts: tenantInfo?.value?.fullName + (tenantInfo?.value?.email ? `  ${tenantInfo?.value?.email}` : ''),
-    reportCopyright: `©  ${tenantInfo?.value?.tenantName} ${dayjs().year()}。 保留一切权利。\n非经本公司书面许可，任何单位和个人不得擅自摘抄、复制本文档内容的部分或全部，并不得以任何形式传播。`,
+    reportCopyright: t('reportAdd.reportCopyright', {
+      tenantName: tenantInfo?.value?.tenantName,
+      year: dayjs().year()
+    }),
     otherInformation: '',
     watermark: tenantInfo?.value?.tenantName
   };

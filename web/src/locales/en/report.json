@@ -728,6 +728,13 @@
           "memoryUsage": "Memory Usage",
           "diskUsage": "Disk Usage",
           "networkUsage": "Network Usage"
+        },
+        "status": {
+          "passed": "Passed",
+          "failed": "Failed",
+          "notTested": "Not Tested",
+          "enabled": "Enabled",
+          "disabled": "Disabled"
         }
       }
     },
@@ -1053,7 +1060,22 @@
             "diskReadsRate": "Disk Read Count Per Second(IO/s)",
             "diskWritesRate": "Disk Write Count Per Second(IO/s)",
             "diskReadBytesRate": "Disk Read MB Per Second(MB/s)",
-            "diskWriteBytesRate": "Disk Write MB Per Second(MB/s)"
+            "diskWriteBytesRate": "Disk Write MB Per Second(MB/s)",
+            "rxBytes": "Received Total Bytes(GB)",
+            "rxBytesRate": "Per Second(MB/s)",
+            "rxErrors": "Received Error Packets(packets)",
+            "txBytes": "Sent Total Bytes(GB)",
+            "txBytesRate": "Sent MB Per Second(MB/s)",
+            "free": "Physical Memory Remaining Size(GB)",
+            "used": "Physical Memory Used Size(GB)",
+            "freePercent": "Actual Free Physical Memory Percentage(%)",
+            "usedPercent": "Actual Used Physical Memory Percentage(%)",
+            "actualFree": "Actual Free Memory(GB)",
+            "actualUsed": "Actual Used Memory(GB)",
+            "actualFreePercent": "Actual Free Memory Percentage(%)",
+            "actualUsedPercent": "Actual Used Memory Percentage(%)",
+            "swapFree": "Swap Remaining Size(GB)",
+            "swapUsed": "Swap Used Size(GB)"
           }
         },
         "chartConfig": {
@@ -1085,7 +1107,11 @@
           "name": "Name",
           "current": "Current",
           "brpsAll": "Download/Second (Current | Min | Max | Average)",
-          "bwpsAll": "Upload/Second (Current | Min | Max | Average)"
+          "bwpsAll": "Upload/Second (Current | Min | Max | Average)",
+          "average": "Average",
+          "high": "High",
+          "low": "Low",
+          "latest": "Latest"
         }
       },
       "log": {
@@ -1309,6 +1335,7 @@
       },
       "detail": {
         "title": "Plan Detailed Information",
+        "to": "To",
         "basicInfo": {
           "title": "Basic Information",
           "fields": {
@@ -1940,6 +1967,53 @@
             "maximum": "Maximum"
           },
           "noData": "None"
+        },
+        "performanceTest": {
+          "title": "Performance Test",
+          "basicInfo": "Test Basic Information",
+          "indicatorsAndResults": "Test Indicators and Results",
+          "performanceIndicators": "Performance Indicators",
+          "results": "Results",
+          "indicators": {
+            "concurrency": "Concurrency",
+            "testDuration": "Test Duration",
+            "pressureConcurrency": "Pressure Concurrency",
+            "pressureTestDuration": "Pressure Test Duration",
+            "responseTime": "Response Time",
+            "tps": "TPS",
+            "errorRate": "Error Rate"
+          }
+        },
+        "fields": {
+          "testResult": "Test Result",
+          "testFailureReason": "Test Failure Reason",
+          "testCount": "Test Count",
+          "failureCount": "Failure Count",
+          "testScriptId": "Test Script ID",
+          "testScriptName": "Test Script Name",
+          "executionId": "Execution ID",
+          "executionName": "Execution Name",
+          "lastExecutor": "Last Executor",
+          "lastExecutionTime": "Last Execution Time",
+          "totalCases": "Total Cases",
+          "passedCount": "Passed Count",
+          "failedCount": "Failed Count",
+          "disabledCount": "Disabled Count",
+          "type": "Type",
+          "isEnabled": "Is Enabled",
+          "isTestPassed": "Is Test Passed",
+          "testFailureCount": "Test Failure Count",
+          "cpuUsage": "CPU Usage",
+          "memoryUsage": "Memory Usage",
+          "diskUsage": "Disk Usage",
+          "networkUsage": "Network Usage"
+        },
+        "status": {
+          "passed": "Passed",
+          "failed": "Failed",
+          "notTested": "Not Tested",
+          "enabled": "Enabled",
+          "disabled": "Disabled"
         }
       }
     },

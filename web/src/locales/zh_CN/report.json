@@ -173,7 +173,8 @@
         "reportCopyright": "报告版权说明，申明版权所有、使用范围限制等，最长200个字符",
         "otherInformation": "其他信扩展息，用于对报告补充说明，最长200个字符",
         "watermark": "水印文案，默认为当前租户名，最长100个字符"
-      }
+      },
+      "reportCopyright": "© {tenantName} {year}。 保留一切权利。\n非经本公司书面许可，任何单位和个人不得擅自摘抄、复制本文档内容的部分或全部，并不得以任何形式传播。"
     },
     "taskContent": {
       "filter": "过滤",
@@ -728,6 +729,13 @@
           "memoryUsage": "内存使用率",
           "diskUsage": "磁盘使用率",
           "networkUsage": "网络使用量"
+        },
+        "status": {
+          "passed": "通过",
+          "failed": "未通过",
+          "notTested": "未测试",
+          "enabled": "开启",
+          "disabled": "未开启"
         }
       }
     },
@@ -1053,7 +1061,22 @@
             "diskReadsRate": "每秒磁盘读次数(IO/s)",
             "diskWritesRate": "每秒磁盘写次数(IO/s)",
             "diskReadBytesRate": "每秒磁盘读取 MB 数(MB/s)",
-            "diskWriteBytesRate": "每秒磁盘写入 MB 数(MB/s)"
+            "diskWriteBytesRate": "每秒磁盘写入 MB 数(MB/s)",
+            "rxBytes": "接收到的总字节(GB)",
+            "rxBytesRate": "每秒接收的 MB 数(MB/s)",
+            "rxErrors": "接收到的错误包数(packets)",
+            "txBytes": "发送的总字节(GB)",
+            "txBytesRate": "每秒发送的 MB 数(MB/s)",
+            "free": "物理内存剩余量(GB)",
+            "used": "物理内存使用量(GB)",
+            "freePercent": "实际空闲物理内存百分比(%)",
+            "usedPercent": "实际使用物理内存的百分比(%)",
+            "actualFree": "实际空闲内存(GB)",
+            "actualUsed": "实际使用内存(GB)",
+            "actualFreePercent": "空闲内存占用的百分比(%)",
+            "actualUsedPercent": "使用内存占用的百分比(%)",
+            "swapFree": "交换区剩余量(GB)",
+            "swapUsed": "交换区使用量(GB)"
           }
         },
         "chartConfig": {
@@ -1309,6 +1332,7 @@
       },
       "detail": {
         "title": "计划详细信息",
+        "to": "至",
         "basicInfo": {
           "title": "基本信息",
           "fields": {
@@ -1942,6 +1966,53 @@
             "maximum": "最大"
           },
           "noData": "无"
+        },
+        "performanceTest": {
+          "title": "性能测试",
+          "basicInfo": "测试基本信息",
+          "indicatorsAndResults": "测试指标和结果",
+          "performanceIndicators": "性能指标",
+          "results": "结果",
+          "indicators": {
+            "concurrency": "并发数",
+            "testDuration": "测试时长",
+            "pressureConcurrency": "增压并发数",
+            "pressureTestDuration": "增压测试时长",
+            "responseTime": "响应时间",
+            "tps": "每秒事务数",
+            "errorRate": "错误率"
+          }
+        },
+        "fields": {
+          "testResult": "测试结果",
+          "testFailureReason": "测试失败原因",
+          "testCount": "测试次数",
+          "failureCount": "失败次数",
+          "testScriptId": "测试脚本ID",
+          "testScriptName": "测试脚本名称",
+          "executionId": "执行ID",
+          "executionName": "执行名称",
+          "lastExecutor": "最后执行人",
+          "lastExecutionTime": "最后执行时间",
+          "totalCases": "用例总数",
+          "passedCount": "通过数",
+          "failedCount": "未通过数",
+          "disabledCount": "未启用数",
+          "type": "类型",
+          "isEnabled": "是否启用",
+          "isTestPassed": "是否测试通过",
+          "testFailureCount": "测试失败次数",
+          "cpuUsage": "cpu使用率",
+          "memoryUsage": "内存使用率",
+          "diskUsage": "磁盘使用率",
+          "networkUsage": "网络使用量"
+        },
+        "status": {
+          "passed": "通过",
+          "failed": "未通过",
+          "notTested": "未测试",
+          "enabled": "开启",
+          "disabled": "未开启"
         }
       }
     },

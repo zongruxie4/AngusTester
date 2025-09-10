@@ -108,7 +108,7 @@ const meetings = computed(() => {
             {{ t('reportPreview.sprint.sprintDetail.basicInfo.fields.sprintTime') }}
           </div>
           <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
-            {{ sprint?.startDate }} 至 {{ sprint?.deadlineDate }}
+            {{ sprint?.startDate }} {{ t('reportPreview.sprint.sprintDetail.meetingRecord.fields.to') }} {{ sprint?.deadlineDate }}
           </div>
         </div>
 

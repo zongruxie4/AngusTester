@@ -66,7 +66,7 @@ const percent = computed(() => {
   <div class="flex items-center space-x-7 mb-7">
     <Progress
       :percent="percent"
-      text="进度"
+      :text="t('reportPreview.projectProgress.apiSummary.testSummary.fields.progress')"
       class="ml-4" />
     <div class="flex-1 border border-solid border-border-input">
       <div class="flex border-b border-solid border-border-input">

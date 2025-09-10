@@ -35,7 +35,7 @@ const len = computed(() => {
 <template>
   <div>
     <h1 class="text-theme-title font-medium mb-3.5">
-      <span id="a7" class="text-4 text-theme-title font-medium">七、<em class="inline-block w-0.25"></em>{{ t('reportPreview.task.assocCase.title') }}</span>
+      <span id="a7" class="text-4 text-theme-title font-medium">{{ t('reportPreview.serial.7') }}、<em class="inline-block w-0.25"></em>{{ t('reportPreview.task.assocCase.title') }}</span>
     </h1>
 
     <div v-if="len>0" class="border border-solid border-border-input">

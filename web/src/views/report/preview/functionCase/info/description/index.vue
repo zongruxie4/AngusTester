@@ -37,7 +37,7 @@ const description = computed(() => {
       :value="description"
       mode="view" />
 
-    <div v-else class="content-text-container">无</div>
+    <div v-else class="content-text-container">{{ t('reportPreview.functionCase.info.description.noData') }}</div>
   </div>
 </template>
 
