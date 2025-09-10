@@ -37,17 +37,17 @@ const emit = defineEmits<{
   (event: 'refreshChange'): void;
 }>();
 
-const APIInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/view/info/Apis.vue'));
-const BasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/view/info/Basic.vue'));
-const ScenarioInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/view/info/Scenario.vue'));
-const PersonnelInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/view/info/Personnel.vue'));
-const DateInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/view/info/Date.vue'));
-const Comment = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/view/Comment.vue'));
-const Activity = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/view/Activity.vue'));
-const AssocTasks = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/view/AssocTask.vue'));
-const AssocCases = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/view/AssocCase.vue'));
-const AttachmentInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/view/info/Attachment.vue'));
-const Remarks = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/view/Remark.vue'));
+const APIInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/info/Apis.vue'));
+const BasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/info/Basic.vue'));
+const ScenarioInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/info/Scenario.vue'));
+const PersonnelInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/info/Personnel.vue'));
+const DateInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/info/Date.vue'));
+const Comment = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/Comment.vue'));
+const Activity = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/Activity.vue'));
+const AssocTasks = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/AssocTask.vue'));
+const AssocCases = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/AssocCase.vue'));
+const AttachmentInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/info/Attachment.vue'));
+const Remarks = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/Remark.vue'));
 
 const getParams = () => {
   const params: {

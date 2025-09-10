@@ -33,7 +33,7 @@ const emit = defineEmits<{
   (event: 'refresh'): void;
 }>();
 
-const Description = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/view/info/Description.vue'));
+const Description = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/info/Description.vue'));
 
 const nameRef = ref();
 const nameEditFlag = ref(false);

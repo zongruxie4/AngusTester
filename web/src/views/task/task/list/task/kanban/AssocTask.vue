@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { Button } from 'ant-design-vue';
-import { Icon, NoData, Select } from '@xcan-angus/vue-ui';
+import { Icon, IconTask, NoData, Select } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-import { TaskInfo } from '../../../../../types';
+
+import { TaskInfo } from '../../../../types';
 
 type Props = {
   projectId: string;
@@ -30,7 +31,7 @@ const emit = defineEmits<{
 }>();
 
 const editFlag = ref(false);
-const caseIds = ref<string[]>([]);
+const taskIds = ref<string[]>([]);
 
 const toEdit = () => {
   editFlag.value = true;
@@ -42,7 +43,7 @@ const cancel = () => {
 
 const ok = async () => {
   const params = {
-    refCaseIds: caseIds.value
+    refTaskIds: taskIds.value
   };
   editFlag.value = false;
   const [error] = await task.updateTask(taskId.value, params);
@@ -54,42 +55,31 @@ const ok = async () => {
 };
 
 const selectChange = (ids:string[]) => {
-  caseIds.value = ids;
-};
-
-const loadData = async (): Promise<Partial<TaskInfo>> => {
-  emit('loadingChange', true);
-  const [error, res] = await task.getTaskDetail(taskId.value);
-  emit('loadingChange', false);
-  if (error || !res?.data) {
-    return { id: taskId.value };
-  }
-
-  return res.data;
+  taskIds.value = ids;
 };
 
 const taskId = computed(() => {
   return props.dataSource?.id;
 });
 
-const refCaseList = computed(() => {
-  return props.dataSource?.refCaseInfos?.map(item => {
+const refTaskList = computed(() => {
+  return props.dataSource?.refTaskInfos?.map(item => {
     return {
       ...item,
-      linkUrl: `/function#cases?id=${item.id}&projectId=${props.projectId}`
+      linkUrl: `/task#task?taskId=${item.id}`
     };
   }) || [];
 });
 
-const refCaseIds = computed(() => {
-  return refCaseList.value.map(item => item.id);
+const refTaskIds = computed(() => {
+  return refTaskList.value.map(item => item.id);
 });
 </script>
 
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-y-auto">
     <div class="flex items-center text-theme-title mb-2.5">
-      <span class="font-semibold">{{ t('task.assocCase.title') }}</span>
+      <span class="font-semibold">{{ t('task.assocTask.title') }}</span>
       <Button
         v-show="!editFlag"
         type="link"
@@ -100,14 +90,14 @@ const refCaseIds = computed(() => {
     </div>
 
     <template v-if="!editFlag">
-      <div v-if="refCaseList.length" class="w-full space-y-1.5 truncate">
+      <div v-if="refTaskList.length" class="w-full space-y-1.5 truncate">
         <RouterLink
-          v-for="item in refCaseList"
+          v-for="item in refTaskList"
           :key="item.id"
           :to="item.linkUrl"
           target="_blank"
           class="flex items-center overflow-hidden">
-          <Icon icon="icon-gongnengyongli" class="text-4 flex-shrink-0" />
+          <IconTask :value="item.taskType?.value" />
           <span class="truncate ml-1">{{ item.name }}</span>
         </RouterLink>
       </div>
@@ -120,7 +110,7 @@ const refCaseIds = computed(() => {
 
     <template v-else>
       <Select
-        :value="refCaseIds"
+        :value="refTaskIds"
         showSearch
         internal
         allowClear
@@ -128,14 +118,14 @@ const refCaseIds = computed(() => {
         :maxTagCount="10"
         :maxTagTextLength="15"
         :maxTags="20"
-        :action="`${TESTER}/func/case?projectId=${props.projectId}&fullTextSearch=true`"
+        :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`"
         class="w-full"
-        :placeholder="t('task.assocCase.selectCasePlaceholder')"
+        :placeholder="t('task.assocTask.selectTaskPlaceholder')"
         mode="multiple"
         @change="selectChange">
         <template #option="record">
           <div class="flex items-center leading-4.5 overflow-hidden">
-            <Icon icon="icon-gongnengyongli" class="text-4 flex-shrink-0" />
+            <IconTask :value="record.taskType?.value" class="text-4 flex-shrink-0" />
             <div class="link truncate ml-1" :title="record.name">
               {{ record.name }}
             </div>
@@ -143,7 +133,7 @@ const refCaseIds = computed(() => {
               v-if="record.overdue"
               class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2"
               style="transform: scale(0.9);color: rgba(245, 34, 45, 100%);line-height: 16px;">
-              <span class="inline-block transform-gpu">{{ t('task.assocCase.overdue') }}</span>
+              <span class="inline-block transform-gpu">{{ t('task.assocTask.overdue') }}</span>
             </div>
           </div>
         </template>
