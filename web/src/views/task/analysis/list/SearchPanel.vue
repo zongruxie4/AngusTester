@@ -8,7 +8,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { XCanDexie } from '@xcan-angus/infra';
 
-import {MenuItem, SelectOption} from "@/views/task/analysis/list/types";
+import { MenuItem, SelectOption } from '@/views/task/analysis/list/types';
 
 type Props = {
   collapse: boolean;// 展开、折叠统计

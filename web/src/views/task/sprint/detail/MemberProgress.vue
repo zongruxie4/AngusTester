@@ -5,8 +5,7 @@ import { Image, Table } from '@xcan-angus/vue-ui';
 import { Progress } from 'ant-design-vue';
 import { analysis } from '@/api/tester';
 
-
-import {MemberProgressData} from "@/views/task/sprint/types";
+import { MemberProgressData } from '@/views/task/sprint/types';
 
 const { t } = useI18n();
 

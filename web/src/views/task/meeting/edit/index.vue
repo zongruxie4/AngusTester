@@ -10,7 +10,7 @@ import { task, project } from '@/api/tester';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import RichEditor from '@/components/richEditor/index.vue';
 
-import {EditFormState, MeetingInfo} from '../types';
+import { EditFormState, MeetingInfo } from '../types';
 
 type Props = {
   projectId: string;
