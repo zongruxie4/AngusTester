@@ -17,7 +17,7 @@ import { EnumMessage, EvalWorkloadMethod, toClipboard, utils, TESTER, enumUtils,
 import type { Rule } from 'ant-design-vue/es/form';
 import dayjs from 'dayjs';
 import { task } from '@/api/tester';
-import {EditFormState, SprintInfo} from '../types';
+import { EditFormState, SprintInfo } from '../types';
 
 type Props = {
   projectId: string;

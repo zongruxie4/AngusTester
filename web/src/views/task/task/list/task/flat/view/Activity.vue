@@ -3,8 +3,7 @@ import { computed, ref } from 'vue';
 import { ActivityInfo, Scroll } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 
-
-import {ActivityItem} from "@/views/task/task/list/task/flat/types";
+import { ActivityItem } from '@/views/task/task/list/task/flat/types';
 
 type Props = {
   id: string;

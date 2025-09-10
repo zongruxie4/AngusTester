@@ -27,7 +27,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import {SearchPanelMenuItem, searchPanelOption} from "@/views/task/task/types";
+import { SearchPanelMenuItem, searchPanelOption } from '@/views/task/task/types';
 
 type Props = {
   collapse: boolean;// 展开、折叠统计

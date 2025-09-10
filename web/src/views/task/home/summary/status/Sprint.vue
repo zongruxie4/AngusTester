@@ -2,8 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { Icon } from '@xcan-angus/vue-ui';
 
-
-import {ResourceInfo} from "@/views/task/home/types";
+import { ResourceInfo } from '@/views/task/home/types';
 
 type Props = {
   dataSource: ResourceInfo;
