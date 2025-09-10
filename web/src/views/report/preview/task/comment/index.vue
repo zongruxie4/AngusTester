@@ -33,10 +33,10 @@ const index = computed(() => {
 
 const indexText = computed(() => {
   if (index.value === 10) {
-    return '十';
+    return t('reportPreview.serial.10');
   }
 
-  return '十';
+  return t('reportPreview.serial.11');
 });
 
 const treeToList = (result:ReportContent['content']['comments'], list:ReportContent['content']['comments'], userName?:string) => {

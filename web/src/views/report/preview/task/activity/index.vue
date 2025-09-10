@@ -33,10 +33,10 @@ const index = computed(() => {
 
 const indexText = computed(() => {
   if (index.value === 9) {
-    return '九';
+    return t('reportPreview.serial.9');
   }
 
-  return '九';
+  return t('reportPreview.serial.9');
 });
 
 const activities = computed(() => {

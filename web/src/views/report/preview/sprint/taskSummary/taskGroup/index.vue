@@ -129,7 +129,7 @@ const taskStatusOption = {
 const priorityOptions = {
   title: {
     text: 0,
-    subtext: '总数',
+    subtext: t('reportPreview.sprint.taskSummary.groupStats.total'),
     left: '29.5%',
     top: '35%',
     padding: 2,
