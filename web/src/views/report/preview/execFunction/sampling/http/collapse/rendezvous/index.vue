@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import StatusTag from '@/views/report/preview/execFunction/sampling/http/collapse/statusTag/index.vue';
+
+const { t } = useI18n();
 
 export interface Props {
   value: {
@@ -35,11 +38,11 @@ const props = withDefaults(defineProps<Props>(), {
     <div class="flex-1 flex items-center mr-3">
       <div :title="props.value?.name" class="truncate min-w-55 max-w-100 mr-5 name">{{ props.value?.name }}</div>
       <div class="flex items-center mr-5">
-        <span class="mr-0.5">集合用户数</span>
+        <span class="mr-0.5">{{ t('reportPreview.execFunction.sampling.collapse.rendezvous.userCount') }}</span>
         <span>{{ props.value?.threads }}</span>
       </div>
       <div class="flex items-center">
-        <span class="mr-0.5">等待超时</span>
+        <span class="mr-0.5">{{ t('reportPreview.execFunction.sampling.collapse.rendezvous.waitTimeout') }}</span>
         <span>{{ props.value?.timeoutInMs }}</span>
         <span>ms</span>
       </div>

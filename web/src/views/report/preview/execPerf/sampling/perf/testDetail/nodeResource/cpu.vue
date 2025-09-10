@@ -4,6 +4,9 @@ import * as echarts from 'echarts';
 import dayjs from 'dayjs';
 import { chartSeriesColorConfig } from '@/views/report/preview/PropsType';
 import { nodeCtrl } from '@/api/ctrl';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface NodeItem {
   agentPort: string; domain: string; id: string; ip: string; name: string
@@ -221,7 +224,12 @@ const setCpuChartData = () => {
     return idx >= sliderValueCpu.value[0] && idx <= sliderValueCpu.value[1];
   });
   // 'CPU 空闲百分比', '系统空间占用 CPU 百分比', '用户空间占 CPU 百分比', '等待 IO 操作的 CPU 百分比', '其他占用 CPU 百分比', '当前占用的总 CPU 百分比'
-  const dataType = ['CPU 空闲百分比(%)', '系统空间占用 CPU 百分比(%)', '用户空间占 CPU 百分比(%)', '等待 IO 操作的 CPU 百分比(%)', '其他占用 CPU 百分比(%)', '当前占用的总 CPU 百分比(%)'];
+  const dataType = [t('reportPreview.execPerf.sampling.testDetail.nodeResource.cpuIdle'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.cpuSystem'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.cpuUser'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.cpuIo'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.cpuOther'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.cpuTotal')];
   const seriesData = dataType.map((type, idx) => {
     return {
       ...getDefaultLineConfig(idx),
@@ -439,10 +447,10 @@ defineExpose({
 });
 </script>
 <template>
-  <div v-if="!props.startTime || !props.execNodes.length || props.status === 'CREATED'">无</div>
+      <div v-if="!props.startTime || !props.execNodes.length || props.status === 'CREATED'">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
   <div v-else class="flex flex-col justify-between">
     <div class="mt-2.5">
-      <div v-if="!times.length && cpuloaded">无</div>
+      <div v-if="!times.length && cpuloaded">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
       <div
         v-show="times.length || !cpuloaded"
         ref="echartRef"

@@ -2,6 +2,9 @@
 import { computed } from 'vue';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import { ExecResult } from '../../../PropsType';
 
@@ -93,19 +96,19 @@ const artResult = computed(() => {
   <div class="border border-solid border-border-input">
     <div class="flex border-b border-solid border-border-input">
       <div class="w-37 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-        测试指标
+        {{ t('reportPreview.execPerf.detail.apiPerf.testIndicator') }}
       </div>
       <div class="flex-1 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-        目标值
+        {{ t('reportPreview.execPerf.detail.apiPerf.targetValue') }}
       </div>
       <div class="flex-1 flex items-center bg-blue-table px-1.5 py-1.5">
-        结果值
+        {{ t('reportPreview.execPerf.detail.apiPerf.resultValue') }}
       </div>
     </div>
 
     <div class="flex border-b border-solid border-border-input">
       <div class="w-37 px-1.5 py-1.5 flex-shrink-0 flex items-center break-all whitespace-pre-wrap border-r border-solid border-border-input">
-        并发数
+        {{ t('reportPreview.execPerf.detail.apiPerf.concurrency') }}
       </div>
       <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
         {{ indicatorPerf?.threads }}
@@ -117,7 +120,7 @@ const artResult = computed(() => {
 
     <div class="flex border-b border-solid border-border-input">
       <div class="w-37 px-1.5 py-1.5 flex-shrink-0 flex items-center break-all whitespace-pre-wrap border-r border-solid border-border-input">
-        测试时长
+        {{ t('reportPreview.execPerf.detail.apiPerf.testDuration') }}
       </div>
       <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
         {{ indicatorPerf?.duration }}
@@ -129,7 +132,7 @@ const artResult = computed(() => {
 
     <div class="flex border-b border-solid border-border-input">
       <div class="w-37 px-1.5 py-1.5 flex-shrink-0 flex items-center break-all whitespace-pre-wrap border-r border-solid border-border-input">
-        增压并发时数
+        {{ t('reportPreview.execPerf.detail.apiPerf.rampUpThreads') }}
       </div>
       <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
         {{ indicatorPerf?.rampUpThreads }}
@@ -141,7 +144,7 @@ const artResult = computed(() => {
 
     <div class="flex border-b border-solid border-border-input">
       <div class="w-37 px-1.5 py-1.5 flex-shrink-0 flex items-center break-all whitespace-pre-wrap border-r border-solid border-border-input">
-        增压并发时长
+        {{ t('reportPreview.execPerf.detail.apiPerf.rampUpInterval') }}
       </div>
       <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
         {{ indicatorPerf?.rampUpInterval }}
@@ -153,7 +156,7 @@ const artResult = computed(() => {
 
     <div class="flex border-b border-solid border-border-input">
       <div class="w-37 px-1.5 py-1.5 flex-shrink-0 flex items-center break-all whitespace-pre-wrap border-r border-solid border-border-input">
-        响应时间(RT)
+        {{ t('reportPreview.execPerf.detail.apiPerf.responseTime') }}
       </div>
       <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
         {{ indicatorPerf?.percentile?.value + '<=' + indicatorPerf?.art }}
@@ -193,7 +196,7 @@ const artResult = computed(() => {
 
     <div class="flex border-b border-solid border-border-input">
       <div class="w-37 px-1.5 py-1.5 flex-shrink-0 flex items-center break-all whitespace-pre-wrap border-r border-solid border-border-input">
-        每秒事务数(TPS)
+        {{ t('reportPreview.execPerf.detail.apiPerf.tps') }}
       </div>
       <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
         {{ indicatorPerf?.tps }}
@@ -233,7 +236,7 @@ const artResult = computed(() => {
 
     <div class="flex border-b border-solid border-border-input">
       <div class="w-37 px-1.5 py-1.5 flex-shrink-0 flex items-center break-all whitespace-pre-wrap border-r border-solid border-border-input">
-        错误率
+        {{ t('reportPreview.execPerf.detail.apiPerf.errorRate') }}
       </div>
       <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
         {{ indicatorPerf?.errorRate }}
@@ -273,29 +276,29 @@ const artResult = computed(() => {
 
     <div class="flex">
       <div class="w-37 px-1.5 py-1.5 flex-shrink-0 flex items-center break-all whitespace-pre-wrap border-r border-solid border-border-input">
-        应用系统平均负载
+        {{ t('reportPreview.execPerf.detail.apiPerf.systemLoad') }}
       </div>
       <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input space-y-1">
         <div class="flex-1 flex items-center space-x-1">
-          <span>CPU使用率</span>
+          <span>{{ t('reportPreview.execPerf.detail.apiPerf.cpuUsage') }}</span>
           <span>{{ '<=' }}</span>
           <span>{{ indicatorPerf?.cpu }}%</span>
         </div>
 
         <div class="flex-1 flex items-center space-x-1">
-          <span>内存使用率</span>
+          <span>{{ t('reportPreview.execPerf.detail.apiPerf.memoryUsage') }}</span>
           <span>{{ '<=' }}</span>
           <span>{{ indicatorPerf?.memory }}%</span>
         </div>
 
         <div class="flex-1 flex items-center space-x-1">
-          <span>磁盘使用率</span>
+          <span>{{ t('reportPreview.execPerf.detail.apiPerf.diskUsage') }}</span>
           <span>{{ '<=' }}</span>
           <span>{{ indicatorPerf?.disk }}%</span>
         </div>
 
         <div class="flex-1 flex items-center space-x-1">
-          <span>网络使用量</span>
+          <span>{{ t('reportPreview.execPerf.detail.apiPerf.networkUsage') }}</span>
           <span>{{ '<=' }}</span>
           <span>{{ indicatorPerf?.network }}MB</span>
         </div>
@@ -303,44 +306,44 @@ const artResult = computed(() => {
       <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap space-y-1">
         <div class="flex items-center">
           <div class="flex-1 flex items-center space-x-1">
-            <span>CPU使用率</span>
+            <span>{{ t('reportPreview.execPerf.detail.apiPerf.cpuUsage') }}</span>
             <span>{{ nodeUsageSummary?.meanCpu ? `${nodeUsageSummary?.meanCpu}%` : '--' }}</span>
           </div>
           <div class="flex-1 flex items-center space-x-1">
-            <span>最大</span>
+            <span>{{ t('reportPreview.execPerf.detail.apiPerf.maximum') }}</span>
             <span>{{ nodeUsageSummary?.maxCpu ? `${nodeUsageSummary?.maxCpu}%` : '--' }}</span>
           </div>
         </div>
 
         <div class="flex items-center">
           <div class="flex-1 flex items-center space-x-1">
-            <span>内存使用率</span>
+            <span>{{ t('reportPreview.execPerf.detail.apiPerf.memoryUsage') }}</span>
             <span>{{ nodeUsageSummary?.meanMemory ? `${nodeUsageSummary?.meanMemory}%` : '--' }}</span>
           </div>
           <div class="flex-1 flex items-center space-x-1">
-            <span>最大</span>
+            <span>{{ t('reportPreview.execPerf.detail.apiPerf.maximum') }}</span>
             <span>{{ nodeUsageSummary?.maxMemory ? `${nodeUsageSummary?.maxMemory}%` : '--' }}</span>
           </div>
         </div>
 
         <div class="flex items-center">
           <div class="flex-1 flex items-center space-x-1">
-            <span>磁盘使用率</span>
+            <span>{{ t('reportPreview.execPerf.detail.apiPerf.diskUsage') }}</span>
             <span>{{ nodeUsageSummary?.meanFilesystem ? `${nodeUsageSummary?.meanFilesystem}%` : '--' }}</span>
           </div>
           <div class="flex-1 flex items-center space-x-1">
-            <span>最大</span>
+            <span>{{ t('reportPreview.execPerf.detail.apiPerf.maximum') }}</span>
             <span>{{ nodeUsageSummary?.maxFilesystem ? `${nodeUsageSummary?.maxFilesystem}%` : '--' }}</span>
           </div>
         </div>
 
         <div class="flex items-center">
           <div class="flex-1 flex items-center space-x-1">
-            <span>网络使用量</span>
+            <span>{{ t('reportPreview.execPerf.detail.apiPerf.networkUsage') }}</span>
             <span>{{ nodeUsageSummary?.meanNetwork ? `${nodeUsageSummary?.meanNetwork}MB` : '--' }}</span>
           </div>
           <div class="flex-1 flex items-center space-x-1">
-            <span>最大</span>
+            <span>{{ t('reportPreview.execPerf.detail.apiPerf.maximum') }}</span>
             <span>{{ nodeUsageSummary?.maxNetwork ? `${nodeUsageSummary?.maxNetwork}MB` : '--' }}</span>
           </div>
         </div>

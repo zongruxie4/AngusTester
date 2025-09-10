@@ -2,6 +2,9 @@
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { cloneDeep } from 'lodash-es';
 import { utils } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const LineStackChart = defineAsyncComponent(() => import('@/views/report/preview/execPerf/sampling/perf/testDetail/lineStackChart/index.vue'));
 
@@ -30,11 +33,11 @@ const setSeries = (data: { [key: string]: { ops: string[]; tps: string[] } }, na
   for (let i = 0, len = names.length; i < len; i++) {
     const name = names[i];
     result.push({
-      name: name + ' - 每秒查询数',
+      name: name + ' - ' + t('reportPreview.execPerf.sampling.testDetail.throughput.queriesPerSecond'),
       data: data[name].ops
     });
     result.push({
-      name: name + ' - 每秒事务数',
+      name: name + ' - ' + t('reportPreview.execPerf.sampling.testDetail.throughput.transactionsPerSecond'),
       data: data[name].tps
     });
   }
@@ -95,14 +98,14 @@ const tableData = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="flex-1 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>名称</span>
+          <span>{{ t('reportPreview.execPerf.sampling.testDetail.throughput.name') }}</span>
         </div>
         <div
           class="w-80 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>每秒查询数(当前 | 最小 | 最大 | 平均)</span>
+          <span>{{ t('reportPreview.execPerf.sampling.testDetail.throughput.queriesPerSecondWithStats') }}</span>
         </div>
         <div class="w-80 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap">
-          <span>每秒事务数(当前 | 最小 | 最大 | 平均)</span>
+          <span>{{ t('reportPreview.execPerf.sampling.testDetail.throughput.transactionsPerSecondWithStats') }}</span>
         </div>
       </div>
 

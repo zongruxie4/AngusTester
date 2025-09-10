@@ -170,7 +170,7 @@ const columns = [
         <span class="font-semibold text-3.5">{{ caseProgress?.completedRate || 0 }}%</span>
       </div> -->
       <div class="flex-1 truncate min-w-0 px-1">
-        <Hints text="“关联用例”用于建立不同用例之间的关联关系，方便管理和追溯用例。可以建立关联关系用例包括：依赖用例、扩展用例、同一功能用例、关键功能用例等。" />
+        <Hints :text="t('functionCase.kanbanView.assocCase.associateCaseTip')" />
       </div>
       <Button
         :disabled="props.dataSource?.length > 19"

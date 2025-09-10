@@ -744,7 +744,7 @@ onBeforeUnmount(() => {
                   :autofocus="isEditEvalWorkload"
                   :min="0.1"
                   :max="1000"
-                  :placeholder="t('最小0.1，最大1000，最多支持2位小数')"
+                  :placeholder="t('functionCase.kanbanView.infoBasic.evalWorkloadPlaceholder')"
                   dataType="float"
                   size="small"
                   class="w-65 absolute -top-1.25"
@@ -778,7 +778,7 @@ onBeforeUnmount(() => {
                   :autofocus="isEditActualWorkload"
                   :min="0.1"
                   :max="1000"
-                  :placeholder="t('最小0.1，最大1000，最多支持2位小数')"
+                  :placeholder="t('functionCase.kanbanView.infoBasic.actualWorkloadPlaceholder')"
                   dataType="float"
                   size="small"
                   class="w-65 absolute -top-1.25"
@@ -1026,7 +1026,7 @@ onBeforeUnmount(() => {
             <RichEditor
               ref="preconditionRichRef"
               v-model:value="preconditionContent"
-              :options="{ placeholder: t('输入前置条件')}" />
+              :options="{ placeholder: t('functionCase.detail.caseDetail.inputPrecondition')}" />
             <div v-show="preconditionError" class="text-status-error">{{ t('functionCase.detail.caseDetail.descCharLimit') }}</div>
           </template>
           <template v-else>

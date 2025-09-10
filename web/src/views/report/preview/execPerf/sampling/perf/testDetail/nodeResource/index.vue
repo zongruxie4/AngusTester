@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import { defineAsyncComponent } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const Cpu = defineAsyncComponent(() => import('./cpu.vue'));
 const Disk = defineAsyncComponent(() => import('./disk.vue'));
@@ -47,7 +50,7 @@ const loadingChange = (value:boolean) => {
     <div>
       <div class="flex items-center space-x-1.5">
         <em class="inline-block w-1.25 h-1.25 rounded bg-gray-500"></em>
-        <span>CPU</span>
+        <span>{{ t('reportPreview.execPerf.sampling.testDetail.nodeResource.cpu') }}</span>
       </div>
       <Cpu v-bind="props" @loadingChange="loadingChange" />
     </div>
@@ -55,7 +58,7 @@ const loadingChange = (value:boolean) => {
     <div>
       <div class="flex items-center space-x-1.5">
         <em class="inline-block w-1.25 h-1.25 rounded bg-gray-500"></em>
-        <span>内存</span>
+        <span>{{ t('reportPreview.execPerf.sampling.testDetail.nodeResource.memory') }}</span>
       </div>
       <Memory v-bind="props" @loadingChange="loadingChange" />
     </div>
@@ -63,7 +66,7 @@ const loadingChange = (value:boolean) => {
     <div>
       <div class="flex items-center space-x-1.5">
         <em class="inline-block w-1.25 h-1.25 rounded bg-gray-500"></em>
-        <span>磁盘</span>
+        <span>{{ t('reportPreview.execPerf.sampling.testDetail.nodeResource.disk') }}</span>
       </div>
       <Disk v-bind="props" @loadingChange="loadingChange" />
     </div>
@@ -71,7 +74,7 @@ const loadingChange = (value:boolean) => {
     <div>
       <div class="flex items-center space-x-1.5">
         <em class="inline-block w-1.25 h-1.25 rounded bg-gray-500"></em>
-        <span>网络</span>
+        <span>{{ t('reportPreview.execPerf.sampling.testDetail.nodeResource.network') }}</span>
       </div>
       <Network v-bind="props" @loadingChange="loadingChange" />
     </div>

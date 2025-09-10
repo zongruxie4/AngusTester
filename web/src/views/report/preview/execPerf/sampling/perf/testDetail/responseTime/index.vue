@@ -2,6 +2,9 @@
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { cloneDeep } from 'lodash-es';
 import { utils } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const LineStackChart = defineAsyncComponent(() => import('@/views/report/preview/execPerf/sampling/perf/testDetail/lineStackChart/index.vue'));
 
@@ -49,15 +52,15 @@ const setSeries = (data: {
   for (let i = 0, len = names.length; i < len; i++) {
     const name = names[i];
     result.push({
-      name: name + ' - 平均',
+      name: name + ' - ' + t('reportPreview.execPerf.sampling.testDetail.responseTime.average'),
       data: data[name].tranMean
     });
     result.push({
-      name: name + ' - 最小',
+      name: name + ' - ' + t('reportPreview.execPerf.sampling.testDetail.responseTime.minimum'),
       data: data[name].tranMin
     });
     result.push({
-      name: name + ' - 最大',
+      name: name + ' - ' + t('reportPreview.execPerf.sampling.testDetail.responseTime.maximum'),
       data: data[name].tranMax
     });
     result.push({
@@ -140,19 +143,19 @@ const tableData = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="flex-1 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>名称</span>
+          <span>{{ t('reportPreview.execPerf.sampling.testDetail.responseTime.name') }}</span>
         </div>
         <div
           class="w-16 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>平均</span>
+          <span>{{ t('reportPreview.execPerf.sampling.testDetail.responseTime.average') }}</span>
         </div>
         <div
           class="w-16 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>最小</span>
+          <span>{{ t('reportPreview.execPerf.sampling.testDetail.responseTime.minimum') }}</span>
         </div>
         <div
           class="w-16 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>最大</span>
+          <span>{{ t('reportPreview.execPerf.sampling.testDetail.responseTime.maximum') }}</span>
         </div>
         <div
           class="w-16 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">

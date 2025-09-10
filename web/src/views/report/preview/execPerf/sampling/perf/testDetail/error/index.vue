@@ -2,6 +2,9 @@
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { cloneDeep } from 'lodash-es';
 import { utils } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const LineStackChart = defineAsyncComponent(() => import('@/views/report/preview/execPerf/sampling/perf/testDetail/lineStackChart/index.vue'));
 
@@ -43,25 +46,25 @@ const setSeries = (data: {
   for (let i = 0, len = names.length; i < len; i++) {
     const name = names[i];
     result.push({
-      name: name + ' - 采样数',
+      name: name + ' - ' + t('reportPreview.execPerf.sampling.testDetail.error.sampleCount'),
       data: data[name].n
     });
     if (!props.singleHttp) {
       result.push({
-        name: name + ' - 请求数',
+        name: name + ' - ' + t('reportPreview.execPerf.sampling.testDetail.error.requestCount'),
         data: data[name].operations
       });
     }
     result.push({
-      name: name + ' - 事务数',
+      name: name + ' - ' + t('reportPreview.execPerf.sampling.testDetail.error.transactionCount'),
       data: data[name].transactions
     });
     result.push({
-      name: name + ' - 错误数',
+      name: name + ' - ' + t('reportPreview.execPerf.sampling.testDetail.error.errorCount'),
       data: data[name].errors
     });
     result.push({
-      name: name + ' - 错误率',
+      name: name + ' - ' + t('reportPreview.execPerf.sampling.testDetail.error.errorRate'),
       data: data[name].errorRate
     });
   }
@@ -124,33 +127,33 @@ const style = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="flex-1 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>名称</span>
+          <span>{{ t('reportPreview.execPerf.sampling.testDetail.error.name') }}</span>
         </div>
         <div
           :style="style"
           class="flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>采样数</span>
+          <span>{{ t('reportPreview.execPerf.sampling.testDetail.error.sampleCount') }}</span>
         </div>
         <div
           v-if="!props.singleHttp"
           :style="style"
           class="flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>请求数</span>
+          <span>{{ t('reportPreview.execPerf.sampling.testDetail.error.requestCount') }}</span>
         </div>
         <div
           :style="style"
           class="flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>事务数</span>
+          <span>{{ t('reportPreview.execPerf.sampling.testDetail.error.transactionCount') }}</span>
         </div>
         <div
           :style="style"
           class="flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>错误数</span>
+          <span>{{ t('reportPreview.execPerf.sampling.testDetail.error.errorCount') }}</span>
         </div>
         <div
           :style="style"
           class="flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap">
-          <span>错误率</span>
+          <span>{{ t('reportPreview.execPerf.sampling.testDetail.error.errorRate') }}</span>
         </div>
       </div>
 

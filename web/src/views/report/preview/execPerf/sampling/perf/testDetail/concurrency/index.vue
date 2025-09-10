@@ -2,6 +2,9 @@
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { cloneDeep } from 'lodash-es';
 import { utils } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const LineStackChart = defineAsyncComponent(() => import('@/views/report/preview/execPerf/sampling/perf/testDetail/lineStackChart/index.vue'));
 
@@ -31,15 +34,15 @@ const setSeries = (data: { [key: string]: { threadPoolSize: string[]; threadPool
   for (let i = 0, len = names.length; i < len; i++) {
     const name = names[i];
     result.push({
-      name: name + ' - 线程数',
+      name: name + ' - ' + t('reportPreview.execPerf.sampling.testDetail.concurrency.threadCount'),
       data: data[name].threadPoolSize
     });
     result.push({
-      name: name + ' - 活跃线程数',
+      name: name + ' - ' + t('reportPreview.execPerf.sampling.testDetail.concurrency.activeThreadCount'),
       data: data[name].threadPoolActiveSize
     });
     result.push({
-      name: name + ' - 最大线程数',
+      name: name + ' - ' + t('reportPreview.execPerf.sampling.testDetail.concurrency.maxThreadCount'),
       data: data[name].threadMaxPoolSize
     });
   }
@@ -88,19 +91,19 @@ const tableData = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="flex-1 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>名称</span>
+          <span>{{ t('reportPreview.execPerf.sampling.testDetail.concurrency.name') }}</span>
         </div>
         <div
           class="w-40 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>线程数</span>
+          <span>{{ t('reportPreview.execPerf.sampling.testDetail.concurrency.threadCount') }}</span>
         </div>
         <div
           class="w-40 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap border-r border-solid border-border-input">
-          <span>活跃线程数</span>
+          <span>{{ t('reportPreview.execPerf.sampling.testDetail.concurrency.activeThreadCount') }}</span>
         </div>
         <div
           class="w-40 flex-shrink-0 bg-blue-table px-1.5 py-1.5 break-all whitespace-pre-wrap">
-          <span>最大线程数</span>
+          <span>{{ t('reportPreview.execPerf.sampling.testDetail.concurrency.maxThreadCount') }}</span>
         </div>
       </div>
 

@@ -824,6 +824,46 @@
             "noProxyInfo": "无访问代理信息，连接失败地址："
           }
         }
+      },
+      "sampling": {
+        "collapse": {
+          "iteration": "第{count}次迭代",
+          "http": {
+            "statusCode": "状态码",
+            "duration": "耗时",
+            "size": "大小"
+          },
+          "throughput": {
+            "requestsPerSecond": "每秒请求数",
+            "waitTimeout": "等待超时"
+          },
+          "waitingTime": {
+            "fixedWait": "固定等待",
+            "randomWait": "随机等待",
+            "to": "至"
+          },
+          "transEnd": {
+            "end": "结束"
+          },
+          "rendezvous": {
+            "userCount": "集合用户数",
+            "waitTimeout": "等待超时"
+          },
+          "statusTag": {
+            "failed": "未通过",
+            "passed": "通过",
+            "notExecuted": "未执行",
+            "notEnabled": "未启用"
+          },
+          "assertionResult": {
+            "title": "断言结果",
+            "none": "无",
+            "failed": "未通过",
+            "passed": "通过",
+            "ignored": "忽略",
+            "notEnabled": "未启用"
+          }
+        }
       }
     },
     "execPerf": {
@@ -896,6 +936,40 @@
           "fields": {
             "failureReason": "失败原因"
           }
+        },
+        "apiPerf": {
+          "testIndicator": "测试指标",
+          "targetValue": "目标值",
+          "resultValue": "结果值",
+          "concurrency": "并发数",
+          "testDuration": "测试时长",
+          "rampUpThreads": "增压并发时数",
+          "rampUpInterval": "增压并发时长",
+          "responseTime": "响应时间(RT)",
+          "tps": "每秒事务数(TPS)",
+          "errorRate": "错误率",
+          "systemLoad": "应用系统平均负载",
+          "cpuUsage": "CPU使用率",
+          "memoryUsage": "内存使用率",
+          "diskUsage": "磁盘使用率",
+          "networkUsage": "网络使用量",
+          "maximum": "最大"
+        },
+        "apiStability": {
+          "testIndicator": "测试指标",
+          "targetValue": "目标值",
+          "resultValue": "结果值",
+          "concurrency": "并发数",
+          "testDuration": "测试时长",
+          "responseTime": "响应时间(art)",
+          "tps": "每秒事务数(TPS)",
+          "errorRate": "错误率",
+          "systemLoad": "应用系统平均负载",
+          "cpuUsage": "CPU使用率",
+          "memoryUsage": "内存使用率",
+          "diskUsage": "磁盘使用率",
+          "networkUsage": "网络使用量",
+          "maximum": "最大"
         }
       },
       "samplingSummary": {
@@ -917,6 +991,101 @@
           "exitCode": "退出码",
           "samplingStatus": "采样状态",
           "failureReason": "失败原因"
+        },
+        "testDetail": {
+          "throughputTitle": "吞吐量",
+          "concurrencyTitle": "并发数",
+          "responseTimeTitle": "响应时间",
+          "errorTitle": "错误",
+          "statusCode": "状态码",
+          "nodeResourceTitle": "节点资源",
+          "overlayAnalysisTitle": "叠加分析",
+          "none": "无",
+          "throughput": {
+            "name": "名称",
+            "queriesPerSecond": "每秒查询数",
+            "transactionsPerSecond": "每秒事务数",
+            "queriesPerSecondWithStats": "每秒查询数(当前 | 最小 | 最大 | 平均)",
+            "transactionsPerSecondWithStats": "每秒事务数(当前 | 最小 | 最大 | 平均)"
+          },
+          "error": {
+            "name": "名称",
+            "sampleCount": "采样数",
+            "requestCount": "请求数",
+            "transactionCount": "事务数",
+            "errorCount": "错误数",
+            "errorRate": "错误率"
+          },
+          "responseTime": {
+            "name": "名称",
+            "average": "平均",
+            "minimum": "最小",
+            "maximum": "最大"
+          },
+          "concurrency": {
+            "name": "名称",
+            "threadCount": "线程数",
+            "activeThreadCount": "活跃线程数",
+            "maxThreadCount": "最大线程数"
+          },
+          "overlayAnalysis": {
+            "throughputTotalTps": "吞吐量 - Total - 每秒事务数",
+            "concurrencyTotalActiveThreads": "并发数 - Total - 活跃线程数",
+            "responseTimeTotalP90": "响应时间 - Total - P90",
+            "errorTotalErrorRate": "错误 - Total - 错误率"
+          },
+          "nodeResource": {
+            "cpu": "CPU",
+            "memory": "内存",
+            "disk": "磁盘",
+            "network": "网络",
+            "cpuIdle": "CPU 空闲百分比(%)",
+            "cpuSystem": "系统空间占用 CPU 百分比(%)",
+            "cpuUser": "用户空间占 CPU 百分比(%)",
+            "cpuIo": "等待 IO 操作的 CPU 百分比(%)",
+            "cpuOther": "其他占用 CPU 百分比(%)",
+            "cpuTotal": "当前占用的总 CPU 百分比(%)",
+            "diskTotal": "磁盘总大小(GB)",
+            "diskFree": "本地文件系统剩余大小(GB)",
+            "diskUsed": "本地文件系统已用大小(GB)",
+            "diskAvail": "本地文件系统可用大小(GB)",
+            "diskUsePercent": "本地文件系统使用率(%)",
+            "diskReadsRate": "每秒磁盘读次数(IO/s)",
+            "diskWritesRate": "每秒磁盘写次数(IO/s)",
+            "diskReadBytesRate": "每秒磁盘读取 MB 数(MB/s)",
+            "diskWriteBytesRate": "每秒磁盘写入 MB 数(MB/s)"
+          }
+        },
+        "chartConfig": {
+          "duration": "时长",
+          "errors": "错误数",
+          "iterations": "迭代数",
+          "n": "采样数",
+          "operations": "请求数",
+          "transactions": "事务数",
+          "readBytes": "读数据大小",
+          "writeBytes": "写数据大小",
+          "ops": "每秒查询数",
+          "tps": "每秒事务数",
+          "brps": "下载/秒",
+          "bwps": "上传/秒",
+          "tranMean": "平均",
+          "tranMin": "最小",
+          "tranMax": "最大",
+          "tranP50": "P50",
+          "tranP75": "P75",
+          "tranP90": "P90",
+          "tranP95": "P95",
+          "tranP99": "P99",
+          "tranP999": "P999",
+          "errorRate": "错误率",
+          "threadPoolSize": "线程数",
+          "threadPoolActiveSize": "活跃线程数",
+          "threadMaxPoolSize": "最大线程数",
+          "name": "名称",
+          "current": "当前",
+          "brpsAll": "下载/秒(当前 | 最小 | 最大 | 平均)",
+          "bwpsAll": "上传/秒(当前 | 最小 | 最大 | 平均)"
         }
       },
       "log": {

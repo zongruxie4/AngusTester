@@ -3,11 +3,14 @@ import { computed, defineAsyncComponent } from 'vue';
 import { Alert } from 'ant-design-vue';
 import { Colon, HttpMethodText } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 
 import StatusTag from '@/views/report/preview/execFunction/sampling/http/collapse/statusTag/index.vue';
 import { HTTPInfo } from './PropsType';
 import { ExecContent } from '../../PropsType';
 import { formatTime } from '../../../utils';
+
+const { t } = useI18n();
 
 export interface Props {
   value: HTTPInfo;
@@ -130,15 +133,15 @@ const showBasicInfo = computed(() => {
       <div class="flex-shrink-0 flex-1 justify-end flex items-center">
         <template v-if="showBasicInfo">
           <div class="mr-3.5 flex-shrink-0">
-            <span class="mr-0.5">状态码<Colon /></span>
+            <span class="mr-0.5">{{ t('reportPreview.execFunction.sampling.collapse.http.statusCode') }}<Colon /></span>
             <span class="text-theme-sub-content">{{ httpStatus }}</span>
           </div>
           <div class="mr-3.5 flex-shrink-0">
-            <span class="mr-0.5">耗时<Colon /></span>
+            <span class="mr-0.5">{{ t('reportPreview.execFunction.sampling.collapse.http.duration') }}<Colon /></span>
             <span class="text-theme-sub-content"> {{ runtime }}</span>
           </div>
           <div class="mr-3.5 flex-shrink-0">
-            <span class="mr-0.5">大小<Colon /></span>
+            <span class="mr-0.5">{{ t('reportPreview.execFunction.sampling.collapse.http.size') }}<Colon /></span>
             <span class="text-theme-sub-content"> {{ bodySize }}</span>
           </div>
         </template>

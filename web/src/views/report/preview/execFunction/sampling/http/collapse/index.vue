@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import StatusTag from '@/views/report/preview/execFunction/sampling/http/collapse/statusTag/index.vue';
 import { ExecContent, ExecInfo } from '../PropsType';
+
+const { t } = useI18n();
 
 interface Props {
   iterations:string;
@@ -38,7 +41,7 @@ const status = computed(() => {
 <template>
   <div class="mb-7 last:mb-0">
     <div class="flex items-center mb-2">
-      <div class="min-w-20 mr-3 font-semibold">第{{ props.iterations }}次迭代</div>
+      <div class="min-w-20 mr-3 font-semibold">{{ t('reportPreview.execFunction.sampling.collapse.iteration', { count: props.iterations }) }}</div>
       <StatusTag :value="status" />
     </div>
 

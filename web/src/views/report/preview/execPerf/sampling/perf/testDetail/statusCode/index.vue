@@ -176,7 +176,7 @@ onMounted(() => {
           rotate: 90,
           fontSize: 12,
           formatter: (params) => {
-            return params.seriesName + '     ' + params.value[params.seriesName]; // 显示系列名和数值
+            return params.seriesName + '     ' + params.value[params.seriesName]; // Display series name and value
           }
         }
       });

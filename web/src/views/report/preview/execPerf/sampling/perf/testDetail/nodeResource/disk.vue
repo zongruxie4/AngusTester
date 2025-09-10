@@ -5,6 +5,9 @@ import dayjs from 'dayjs';
 
 import { chartSeriesColorConfig } from '@/views/report/preview/PropsType';
 import { nodeCtrl } from '@/api/ctrl';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 interface NodeItem {
   agentPort: string; domain: string; id: string; ip: string; name: string
@@ -635,7 +638,15 @@ const setDiskEchartData = () => {
   });
   // '磁盘总大小', '本地文件系统剩余大小', '本地文件系统已用大小', '本地文件系统可用大小', '本地文件系统使用率', '每秒磁盘读次数', '每秒磁盘写次数', '每秒磁盘读取 MB 数', '每秒磁盘写入 MB 数'
   const dataTypeKey = ['total', 'free', 'used', 'avail', 'usePercent', 'readsRate', 'writesRate', 'readBytesRate', 'writeBytesRate'];
-  const dataType = ['磁盘总大小(GB)', '本地文件系统剩余大小(GB)', '本地文件系统已用大小(GB)', '本地文件系统可用大小(GB)', '本地文件系统使用率(%)', '每秒磁盘读次数(IO/s)', '每秒磁盘写次数(IO/s)', '每秒磁盘读取 MB 数(MB/s)', '每秒磁盘写入 MB 数(MB/s)'];
+  const dataType = [t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskTotal'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskFree'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskUsed'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskAvail'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskUsePercent'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskReadsRate'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskWritesRate'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskReadBytesRate'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskWriteBytesRate')];
   const seriesData = dataType.map((type, idx) => {
     return {
       ...getDefaultLineConfig(idx),
@@ -1084,11 +1095,11 @@ defineExpose({
 });
 </script>
 <template>
-  <div v-if="!props.startTime || !props.execNodes.length || props.status === 'CREATED'">无</div>
+      <div v-if="!props.startTime || !props.execNodes.length || props.status === 'CREATED'">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
   <template v-else>
     <div class="flex flex-col justify-between">
       <div class="mt-2.5">
-        <div v-if="!times.length && diskloaded">无</div>
+        <div v-if="!times.length && diskloaded">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
         <div
           v-show="times.length || !diskloaded"
           ref="echartRefIops"
@@ -1105,7 +1116,7 @@ defineExpose({
 
     <div class="flex flex-col justify-between">
       <div class="mt-2.5">
-        <div v-if="!times.length && cpuloaded">无</div>
+        <div v-if="!times.length && cpuloaded">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
         <div
           v-show="times.length || !cpuloaded"
           ref="echartRefMb"

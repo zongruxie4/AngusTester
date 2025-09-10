@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import { defineAsyncComponent } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 type Props = {
   execInfo: Record<string, any>;
@@ -56,43 +59,43 @@ const loadingChange = (value:boolean) => {
   <div>
     <div class="mb-7">
       <h2 class="text-3.5 mb-3.5 text-theme-title">
-        <span id="a6">3.1<em class="inline-block w-3.5"></em>吞吐量</span>
+        <span id="a6">3.1<em class="inline-block w-3.5"></em>{{ t('reportPreview.execPerf.sampling.testDetail.throughputTitle') }}</span>
       </h2>
       <Throughput
         v-if="timestampData.length > 0"
         :dataMap="apiDimensionObj"
         :timestampList="timestampData"
         :names="apiNames" />
-      <div v-else class="content-text-container">无</div>
+      <div v-else class="content-text-container">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
     </div>
 
     <div class="mb-7">
       <h2 class="text-3.5 mb-3.5 text-theme-title">
-        <span id="a7">3.2<em class="inline-block w-3.5"></em>并发数</span>
+        <span id="a7">3.2<em class="inline-block w-3.5"></em>{{ t('reportPreview.execPerf.sampling.testDetail.concurrencyTitle') }}</span>
       </h2>
       <Concurrency
         v-if="timestampData.length > 0"
         :dataMap="apiDimensionObj"
         :timestampList="timestampData"
         :names="apiNames" />
-      <div v-else class="content-text-container">无</div>
+      <div v-else class="content-text-container">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
     </div>
 
     <div class="mb-7">
       <h2 class="text-3.5 mb-3.5 text-theme-title">
-        <span id="a8">3.3<em class="inline-block w-3.5"></em>响应时间</span>
+        <span id="a8">3.3<em class="inline-block w-3.5"></em>{{ t('reportPreview.execPerf.sampling.testDetail.responseTimeTitle') }}</span>
       </h2>
       <ResponseTime
         v-if="timestampData.length > 0"
         :dataMap="apiDimensionObj"
         :timestampList="timestampData"
         :names="apiNames" />
-      <div v-else class="content-text-container">无</div>
+      <div v-else class="content-text-container">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
     </div>
 
     <div class="mb-7">
       <h2 class="text-3.5 mb-3.5 text-theme-title">
-        <span id="a9">3.4<em class="inline-block w-3.5"></em>错误</span>
+        <span id="a9">3.4<em class="inline-block w-3.5"></em>{{ t('reportPreview.execPerf.sampling.testDetail.errorTitle') }}</span>
       </h2>
       <Error
         v-if="timestampData.length > 0"
@@ -100,22 +103,22 @@ const loadingChange = (value:boolean) => {
         :dataMap="apiDimensionObj"
         :timestampList="timestampData"
         :names="apiNames" />
-      <div v-else class="content-text-container">无</div>
+      <div v-else class="content-text-container">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
     </div>
     <template v-if="props.execInfo?.plugin === 'Http'">
       <div class="mb-7">
         <h2 class="text-3.5 mb-3.5 text-theme-title">
-          <span id="a10">3.5<em class="inline-block w-3.5"></em>状态码</span>
+          <span id="a10">3.5<em class="inline-block w-3.5"></em>{{ t('reportPreview.execPerf.sampling.testDetail.statusCode') }}</span>
         </h2>
         <StatusCode
           v-if="timestampData.length > 0"
           :statusCodeData="props.statusCodeData" />
-        <div v-else class="content-text-container">无</div>
+        <div v-else class="content-text-container">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
       </div>
 
       <div class="mb-7">
         <h2 class="text-3.5 mb-3.5 text-theme-title">
-          <span id="a11">3.6<em class="inline-block w-3.5"></em>节点资源</span>
+          <span id="a11">3.6<em class="inline-block w-3.5"></em>{{ t('reportPreview.execPerf.sampling.testDetail.nodeResourceTitle') }}</span>
         </h2>
         <NodeResource
           :delayInSeconds="props.delayInSeconds"
@@ -130,14 +133,14 @@ const loadingChange = (value:boolean) => {
 
       <div>
         <h2 class="text-3.5 mb-3.5 text-theme-title">
-          <span id="a12">3.7<em class="inline-block w-3.5"></em>叠加分析</span>
+          <span id="a12">3.7<em class="inline-block w-3.5"></em>{{ t('reportPreview.execPerf.sampling.testDetail.overlayAnalysisTitle') }}</span>
         </h2>
         <OverlayAnalysis
           v-if="timestampData.length > 0"
           :dataMap="apiDimensionObj"
           :timestampList="timestampData"
           :names="apiNames" />
-        <div v-else class="content-text-container">无</div>
+        <div v-else class="content-text-container">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
       </div>
     </template>
 
@@ -154,7 +157,7 @@ const loadingChange = (value:boolean) => {
     <template v-else>
       <div class="mb-7">
         <h2 class="text-3.5 mb-3.5 text-theme-title">
-          <span id="a11">3.5<em class="inline-block w-3.5"></em>节点资源</span>
+          <span id="a11">3.5<em class="inline-block w-3.5"></em>{{ t('reportPreview.execPerf.sampling.testDetail.nodeResourceTitle') }}</span>
         </h2>
         <NodeResource
           :delayInSeconds="props.delayInSeconds"
@@ -169,14 +172,14 @@ const loadingChange = (value:boolean) => {
 
       <div>
         <h2 class="text-3.5 mb-3.5 text-theme-title">
-          <span id="a12">3.6<em class="inline-block w-3.5"></em>叠加分析</span>
+          <span id="a12">3.6<em class="inline-block w-3.5"></em>{{ t('reportPreview.execPerf.sampling.testDetail.overlayAnalysisTitle') }}</span>
         </h2>
         <OverlayAnalysis
           v-if="timestampData.length > 0"
           :dataMap="apiDimensionObj"
           :timestampList="timestampData"
           :names="apiNames" />
-        <div v-else class="content-text-container">无</div>
+        <div v-else class="content-text-container">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
       </div>
     </template>
   </div>
