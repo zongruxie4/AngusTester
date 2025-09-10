@@ -224,7 +224,12 @@ const setCpuChartData = () => {
     return idx >= sliderValueCpu.value[0] && idx <= sliderValueCpu.value[1];
   });
   // 'CPU 空闲百分比', '系统空间占用 CPU 百分比', '用户空间占 CPU 百分比', '等待 IO 操作的 CPU 百分比', '其他占用 CPU 百分比', '当前占用的总 CPU 百分比'
-  const dataType = ['CPU 空闲百分比(%)', '系统空间占用 CPU 百分比(%)', '用户空间占 CPU 百分比(%)', '等待 IO 操作的 CPU 百分比(%)', '其他占用 CPU 百分比(%)', '当前占用的总 CPU 百分比(%)'];
+  const dataType = [t('reportPreview.execPerf.sampling.testDetail.nodeResource.cpuIdle'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.cpuSystem'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.cpuUser'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.cpuIo'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.cpuOther'),
+  t('reportPreview.execPerf.sampling.testDetail.nodeResource.cpuTotal')];
   const seriesData = dataType.map((type, idx) => {
     return {
       ...getDefaultLineConfig(idx),

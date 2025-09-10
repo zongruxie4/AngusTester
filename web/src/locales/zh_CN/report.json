@@ -1038,7 +1038,22 @@
             "cpu": "CPU",
             "memory": "内存",
             "disk": "磁盘",
-            "network": "网络"
+            "network": "网络",
+            "cpuIdle": "CPU 空闲百分比(%)",
+            "cpuSystem": "系统空间占用 CPU 百分比(%)",
+            "cpuUser": "用户空间占 CPU 百分比(%)",
+            "cpuIo": "等待 IO 操作的 CPU 百分比(%)",
+            "cpuOther": "其他占用 CPU 百分比(%)",
+            "cpuTotal": "当前占用的总 CPU 百分比(%)",
+            "diskTotal": "磁盘总大小(GB)",
+            "diskFree": "本地文件系统剩余大小(GB)",
+            "diskUsed": "本地文件系统已用大小(GB)",
+            "diskAvail": "本地文件系统可用大小(GB)",
+            "diskUsePercent": "本地文件系统使用率(%)",
+            "diskReadsRate": "每秒磁盘读次数(IO/s)",
+            "diskWritesRate": "每秒磁盘写次数(IO/s)",
+            "diskReadBytesRate": "每秒磁盘读取 MB 数(MB/s)",
+            "diskWriteBytesRate": "每秒磁盘写入 MB 数(MB/s)"
           }
         },
         "chartConfig": {

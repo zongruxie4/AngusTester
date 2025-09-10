@@ -1038,7 +1038,22 @@
             "cpu": "CPU",
             "memory": "Memory",
             "disk": "Disk",
-            "network": "Network"
+            "network": "Network",
+            "cpuIdle": "CPU Idle Percentage(%)",
+            "cpuSystem": "System Space Occupied CPU Percentage(%)",
+            "cpuUser": "User Space Occupied CPU Percentage(%)",
+            "cpuIo": "CPU Percentage Waiting for IO Operations(%)",
+            "cpuOther": "Other CPU Percentage(%)",
+            "cpuTotal": "Total CPU Percentage(%)",
+            "diskTotal": "Disk Total Size(GB)",
+            "diskFree": "Local File System Remaining Size(GB)",
+            "diskUsed": "Local File System Used Size(GB)",
+            "diskAvail": "Local File System Available Size(GB)",
+            "diskUsePercent": "Local File System Usage Percentage(%)",
+            "diskReadsRate": "Disk Read Count Per Second(IO/s)",
+            "diskWritesRate": "Disk Write Count Per Second(IO/s)",
+            "diskReadBytesRate": "Disk Read MB Per Second(MB/s)",
+            "diskWriteBytesRate": "Disk Write MB Per Second(MB/s)"
           }
         },
         "chartConfig": {
