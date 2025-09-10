@@ -936,6 +936,40 @@
           "fields": {
             "failureReason": "失败原因"
           }
+        },
+        "apiPerf": {
+          "testIndicator": "测试指标",
+          "targetValue": "目标值",
+          "resultValue": "结果值",
+          "concurrency": "并发数",
+          "testDuration": "测试时长",
+          "rampUpThreads": "增压并发时数",
+          "rampUpInterval": "增压并发时长",
+          "responseTime": "响应时间(RT)",
+          "tps": "每秒事务数(TPS)",
+          "errorRate": "错误率",
+          "systemLoad": "应用系统平均负载",
+          "cpuUsage": "CPU使用率",
+          "memoryUsage": "内存使用率",
+          "diskUsage": "磁盘使用率",
+          "networkUsage": "网络使用量",
+          "maximum": "最大"
+        },
+        "apiStability": {
+          "testIndicator": "测试指标",
+          "targetValue": "目标值",
+          "resultValue": "结果值",
+          "concurrency": "并发数",
+          "testDuration": "测试时长",
+          "responseTime": "响应时间(art)",
+          "tps": "每秒事务数(TPS)",
+          "errorRate": "错误率",
+          "systemLoad": "应用系统平均负载",
+          "cpuUsage": "CPU使用率",
+          "memoryUsage": "内存使用率",
+          "diskUsage": "磁盘使用率",
+          "networkUsage": "网络使用量",
+          "maximum": "最大"
         }
       },
       "samplingSummary": {

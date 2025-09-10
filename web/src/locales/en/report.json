@@ -936,6 +936,40 @@
           "fields": {
             "failureReason": "Failure Reason"
           }
+        },
+        "apiPerf": {
+          "testIndicator": "Test Indicator",
+          "targetValue": "Target Value",
+          "resultValue": "Result Value",
+          "concurrency": "Concurrency",
+          "testDuration": "Test Duration",
+          "rampUpThreads": "Ramp Up Threads",
+          "rampUpInterval": "Ramp Up Interval",
+          "responseTime": "Response Time (RT)",
+          "tps": "Transactions Per Second (TPS)",
+          "errorRate": "Error Rate",
+          "systemLoad": "Application System Average Load",
+          "cpuUsage": "CPU Usage",
+          "memoryUsage": "Memory Usage",
+          "diskUsage": "Disk Usage",
+          "networkUsage": "Network Usage",
+          "maximum": "Maximum"
+        },
+        "apiStability": {
+          "testIndicator": "Test Indicator",
+          "targetValue": "Target Value",
+          "resultValue": "Result Value",
+          "concurrency": "Concurrency",
+          "testDuration": "Test Duration",
+          "responseTime": "Response Time (art)",
+          "tps": "Transactions Per Second (TPS)",
+          "errorRate": "Error Rate",
+          "systemLoad": "Application System Average Load",
+          "cpuUsage": "CPU Usage",
+          "memoryUsage": "Memory Usage",
+          "diskUsage": "Disk Usage",
+          "networkUsage": "Network Usage",
+          "maximum": "Maximum"
         }
       },
       "samplingSummary": {
