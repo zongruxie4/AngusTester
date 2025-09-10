@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
   data: undefined
 });
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
-const BaseLineCaseList = defineAsyncComponent(() => import('@/views/function/baseline/case/list/index.vue'));
+const BaseLineCaseList = defineAsyncComponent(() => import('@/views/function/baseline/case/list/List.vue'));
 const BaselineCompare = defineAsyncComponent(() => import('@/views/function/baseline/case/compare/index.vue'));
 
 const planId = ref();

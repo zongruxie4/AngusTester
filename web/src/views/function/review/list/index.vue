@@ -8,9 +8,9 @@ import dayjs from 'dayjs';
 import { func } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-import { ReviewInfo } from '../PropsType';
+import { ReviewInfo } from '../types';
 
-import SearchPanel from '@/views/function/review/list/searchPanel/index.vue';
+import SearchPanel from '@/views/function/review/list/SearchPanel.vue';
 
 type Props = {
   projectId: string;
@@ -31,7 +31,7 @@ const { t } = useI18n();
 type OrderByKey = 'createdDate' | 'createdByName';
 type OrderSortKey = 'ASC' | 'DESC';
 
-const Introduce = defineAsyncComponent(() => import('@/views/function/review/list/introduce/index.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/function/review/list/Introduce.vue'));
 const RichContent = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
 
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));

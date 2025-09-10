@@ -37,18 +37,18 @@ const props = withDefaults(defineProps<Props>(), {
   data: undefined
 });
 
-const SelectCaseModal = defineAsyncComponent(() => import('@/views/function/review/edit/selectCaseModal.vue'));
-const ReviewForm = defineAsyncComponent(() => import('@/views/function/review/detail/reviewForm.vue'));
-const CaseReviewResult = defineAsyncComponent(() => import('@/views/function/review/components/caseReviewResult/index.vue'));
-const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/case/add/caseSteps.vue'));
-const CaseBasicInfo = defineAsyncComponent(() => import('@/views/function/review/components/caseBasicInfo/index.vue'));
-const Precondition = defineAsyncComponent(() => import('@/views/function/review/components/precondition/index.vue'));
-const Members = defineAsyncComponent(() => import('@/views/function/review/components/member/index.vue'));
-const TestInfo = defineAsyncComponent(() => import('@/views/function/review/components/testInfo/index.vue'));
-const Attachment = defineAsyncComponent(() => import('@/views/function/review/components/attachment/index.vue'));
-const AssocTasks = defineAsyncComponent(() => import('@/views/function/review/components/assocTask/index.vue'));
-const AssocCases = defineAsyncComponent(() => import('@/views/function/review/components/assocCase/index.vue'));
-const Description = defineAsyncComponent(() => import('@/views/function/review/components/description/index.vue'));
+const SelectCaseModal = defineAsyncComponent(() => import('@/views/function/review/edit/SelectCaseModal.vue'));
+const ReviewForm = defineAsyncComponent(() => import('@/views/function/review/detail/ReviewForm.vue'));
+const CaseReviewResult = defineAsyncComponent(() => import('@/views/function/review/components/CaseReviewResult.vue'));
+const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/case/CaseSteps.vue'));
+const CaseBasicInfo = defineAsyncComponent(() => import('@/views/function/review/components/CaseBasicInfo.vue'));
+const Precondition = defineAsyncComponent(() => import('@/views/function/review/components/Precondition.vue'));
+const Members = defineAsyncComponent(() => import('@/views/function/review/components/Member.vue'));
+const TestInfo = defineAsyncComponent(() => import('@/views/function/review/components/TestInfo.vue'));
+const Attachment = defineAsyncComponent(() => import('@/views/function/review/components/Attachment.vue'));
+const AssocTasks = defineAsyncComponent(() => import('@/views/function/review/components/AssocTask.vue'));
+const AssocCases = defineAsyncComponent(() => import('@/views/function/review/components/AssocCase.vue'));
+const Description = defineAsyncComponent(() => import('@/views/function/review/components/Description.vue'));
 
 const { t } = useI18n();
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));

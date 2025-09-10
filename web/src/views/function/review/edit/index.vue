@@ -21,8 +21,7 @@ import RichEditor from '@/components/richEditor/index.vue';
 import { func, funcPlan, project } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-import { ReviewInfo } from '../PropsType';
-import { FormState, ReviewCaseInfo } from './PropsType';
+import {EditFormState, ReviewCaseInfo, ReviewInfo} from '../types';
 
 type Props = {
   projectId: string;
@@ -43,7 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const SelectCaseModal = defineAsyncComponent(() => import('./selectCaseModal.vue'));
+const SelectCaseModal = defineAsyncComponent(() => import('./SelectCaseModal.vue'));
 
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
@@ -62,9 +61,9 @@ const evalWorkloadMethodOptions = ref<EnumMessage<EvalWorkloadMethod>[]>([]);
 const reviewFlagVisible = ref(false);
 
 const permissions = ref<string[]>([]);
-const oldFormState = ref<FormState>();
+const oldFormState = ref<EditFormState>();
 const _deadlineDate = dayjs().add(1, 'month').format('YYYY-MM-DD HH:mm:ss');
-const formState = ref<FormState>({
+const formState = ref<EditFormState>({
   planId: undefined,
   description: '',
   name: '',
@@ -107,7 +106,7 @@ const delFile = (index: number) => {
 };
 
 const getParams = () => {
-  const params: FormState = { ...formState.value, caseIds: caseList.value.map(i => i.id) };
+  const params: EditFormState = { ...formState.value, caseIds: caseList.value.map(i => i.id) };
   if (dataSource.value?.id) {
     params.id = dataSource.value.id;
   }

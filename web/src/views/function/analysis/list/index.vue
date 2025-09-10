@@ -2,13 +2,13 @@
 import { computed, defineAsyncComponent, inject, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Icon, modal, notification } from '@xcan-angus/vue-ui';
-import { TemplateIconConfig } from './PropTypes';
+import { TemplateIconConfig } from './types';
 import { Button, Tag } from 'ant-design-vue';
 import { debounce, throttle } from 'throttle-debounce';
 import { analysis } from '@/api/tester';
 
-import Introduce from '@/views/function/analysis/list/introduce/index.vue';
-import SearchPanel from '@/views/function/analysis/list/searchPanel/index.vue';
+import Introduce from '@/views/function/analysis/list/Introduce.vue';
+import SearchPanel from '@/views/function/analysis/list/SearchPanel.vue';
 
 const { t } = useI18n();
 
@@ -28,7 +28,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const dataListWrapRef = ref();
 
-const TemplateSelectList = defineAsyncComponent(() => import('@/views/function/analysis/list/templateSelectList/index.vue'));
+const TemplateSelectList = defineAsyncComponent(() => import('@/views/function/analysis/list/TemplateSelect.vue'));
 const addTabPane = inject('addTabPane', (value) => value);
 
 const pagination = {

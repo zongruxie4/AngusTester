@@ -8,8 +8,7 @@ import { isEqual } from 'lodash-es';
 import { debounce } from 'throttle-debounce';
 import { func, project } from '@/api/tester';
 
-import { BaselineInfo } from '../PropsType';
-import { BaselineCaseInfo, FormState } from './PropsType';
+import {BaselineCaseInfo, BaselineInfo, FormState} from "@/views/function/baseline/types";
 
 const { t } = useI18n();
 
@@ -31,7 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
-const SelectCaseModal = defineAsyncComponent(() => import('./selectCaseModal.vue'));
+const SelectCaseModal = defineAsyncComponent(() => import('./SelectCaseModal.vue'));
 
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));

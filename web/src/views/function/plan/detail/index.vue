@@ -6,7 +6,7 @@ import { TESTER, toClipboard, download } from '@xcan-angus/infra';
 import { funcPlan } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-import { PlanInfo } from '../PropsType';
+import { PlanInfo } from '../types';
 
 const { t } = useI18n();
 
@@ -28,9 +28,9 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
-const BurnDownChart = defineAsyncComponent(() => import('@/views/function/plan/detail/burndownChart/index.vue'));
-const MemberProgress = defineAsyncComponent(() => import('@/views/function/plan/detail/memberProgress/index.vue'));
-const WorkCalendar = defineAsyncComponent(() => import('@/views/function/homepage/workCalendar/index.vue'));
+const BurnDownChart = defineAsyncComponent(() => import('@/views/function/plan/detail/BurndownChart.vue'));
+const MemberProgress = defineAsyncComponent(() => import('@/views/function/plan/detail/MemberProgress.vue'));
+const WorkCalendar = defineAsyncComponent(() => import('@/views/function/home/WorkCalendar.vue'));
 
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 const setCaseListPlanParam = inject<(value: any) => void>('setCaseListPlanParam');

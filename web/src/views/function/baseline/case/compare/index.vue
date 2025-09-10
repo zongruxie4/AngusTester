@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
   planId: undefined
 });
 
-const CompareModal = defineAsyncComponent(() => import('./compareModal.vue'));
+const CompareModal = defineAsyncComponent(() => import('./CompareModal.vue'));
 
 const caselineList = ref([]);
 const allCaseIds = ref<string[]>([]);

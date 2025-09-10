@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, onMounted, r
 import { TESTER, download } from '@xcan-angus/infra';
 import { Icon } from '@xcan-angus/vue-ui';
 import { Button, Table, Tag } from 'ant-design-vue';
-import { TemplateIconConfig } from '@/views/function/analysis/list/PropTypes';
+import { TemplateIconConfig } from '@/views/function/analysis/list/types';
 import { debounce } from 'throttle-debounce';
 import { analysis } from '@/api/tester';
 
@@ -26,17 +26,17 @@ const chartRef = ref();
 const Process = defineAsyncComponent(() => import('./progress/index.vue'));
 const Burndown = defineAsyncComponent(() => import('./burndown/index.vue'));
 const Workload = defineAsyncComponent(() => import('./workload/index.vue'));
-const OverdueAssessment = defineAsyncComponent(() => import('./overdueAssessment/index.vue'));
+const OverdueAssessment = defineAsyncComponent(() => import('@/views/function/analysis/detail/overdue/index.vue'));
 const Bugs = defineAsyncComponent(() => import('./bugs/index.vue'));
-const HandlingEfficiency = defineAsyncComponent(() => import('./handlingEfficiency/index.vue'));
+const HandlingEfficiency = defineAsyncComponent(() => import('@/views/function/analysis/detail/efficiency/index.vue'));
 const ReviewEfficiency = defineAsyncComponent(() => import('./reviewEfficiency/index.vue'));
 const CoreKpi = defineAsyncComponent(() => import('./coreKpi/index.vue'));
 const Failures = defineAsyncComponent(() => import('./failures/index.vue'));
-const BascklogTasks = defineAsyncComponent(() => import('./backlogTasks/index.vue'));
+const BascklogTasks = defineAsyncComponent(() => import('@/views/function/analysis/detail/backlog/index.vue'));
 const RecentDelivery = defineAsyncComponent(() => import('./recentDelivery/index.vue'));
 const LeadTime = defineAsyncComponent(() => import('./leadTime/index.vue'));
-const UnplannedTasks = defineAsyncComponent(() => import('./unplannedTasks/index.vue'));
-const TaskGrowthTread = defineAsyncComponent(() => import('./taskGrowthTread/index.vue'));
+const UnplannedTasks = defineAsyncComponent(() => import('@/views/function/analysis/detail/unplanned/index.vue'));
+const TaskGrowthTread = defineAsyncComponent(() => import('@/views/function/analysis/detail/growthTread/index.vue'));
 const ResourceCreation = defineAsyncComponent(() => import('./resourceCreation/index.vue'));
 
 const dataSource = ref({});

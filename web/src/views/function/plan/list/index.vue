@@ -21,11 +21,11 @@ import { funcPlan } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
 import { FuncPlanStatus } from '@/enums/enums';
-import { PlanInfo } from '../PropsType';
+import { PlanInfo } from '../types';
 
 
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
-import SearchPanel from '@/views/function/plan/list/searchPanel/index.vue';
+import SearchPanel from '@/views/function/plan/list/SearchPanel.vue';
 
 const { t } = useI18n();
 
@@ -46,10 +46,10 @@ const props = withDefaults(defineProps<Props>(), {
 type OrderByKey = 'createdDate' | 'createdByName';
 type OrderSortKey = 'ASC' | 'DESC';
 
-const Introduce = defineAsyncComponent(() => import('@/views/function/plan/list/introduce/index.vue'));
-const ProgressModal = defineAsyncComponent(() => import('@/views/function/plan/components/progress/index.vue'));
-const BurnDownModal = defineAsyncComponent(() => import('@/views/function/plan/components/burndownChart/index.vue'));
-const WorkCalendarModal = defineAsyncComponent(() => import('@/views/function/plan/components/workCalendar/index.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/function/plan/list/Introduce.vue'));
+const ProgressModal = defineAsyncComponent(() => import('@/views/function/plan/list/MemberProgress.vue'));
+const BurnDownModal = defineAsyncComponent(() => import('@/views/function/plan/list/BurndownChart.vue'));
+const WorkCalendarModal = defineAsyncComponent(() => import('@/views/function/plan/list/WorkCalendar.vue'));
 const RichText = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
 
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));

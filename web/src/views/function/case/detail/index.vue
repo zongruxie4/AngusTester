@@ -7,18 +7,18 @@ import elementResizeDetector, { Erd } from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
 
-import { CASE_PROJECT_PERMISSIONS, CaseActionAuth, useCaseActionAuth } from './PropsType';
-import type { CaseInfoObj, CaseListObj } from '../PropsType';
+import { CASE_PROJECT_PERMISSIONS, CaseActionAuth, useCaseActionAuth } from './types';
+import type { CaseInfoObj, CaseListObj } from '../types';
 import { funcCase, funcPlan } from '@/api/tester';
 
 export type TabKey = 'info' | 'activty' | 'comments' | 'asscoTask' | 'asscoCase'
 export interface Attachments { id?: string, name: string, url: string }
 
-const CaseDetailTab = defineAsyncComponent(() => import('@/views/function/case/detail/case/index.vue'));
+const CaseDetailTab = defineAsyncComponent(() => import('@/views/function/case/detail/Case.vue'));
 const AddTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/Edit.vue'));
-const ReviewTab = defineAsyncComponent(() => import('@/views/function/case/detail/review/index.vue'));
-const AssocTaskTab = defineAsyncComponent(() => import('@/views/function/case/detail/assocTask/index.vue'));
-const AssocCaseTab = defineAsyncComponent(() => import('@/views/function/case/detail/assocCase/index.vue'));
+const ReviewTab = defineAsyncComponent(() => import('@/views/function/case/detail/Review.vue'));
+const AssocTaskTab = defineAsyncComponent(() => import('@/views/function/case/detail/AssocTask.vue'));
+const AssocCaseTab = defineAsyncComponent(() => import('@/views/function/case/detail/AssocCase.vue'));
 
 interface IData {
   id: string;
