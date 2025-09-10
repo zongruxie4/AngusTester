@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
   data: undefined
 });
 
-const Details = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/index.vue'));
+const Details = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/view/index.vue'));
 const EditTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/Edit.vue'));
 const MoveTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/Move.vue'));
 

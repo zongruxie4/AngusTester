@@ -48,15 +48,15 @@ const emit = defineEmits<{
   (event: 'splitOk'): void;
 }>();
 
-const BasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/info/index.vue'));
-const TestInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/testing/index.vue'));
-const Remark = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/Remark.vue'));
-const Activity = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/Activity.vue'));
-const Comment = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/Comment.vue'));
-const SubTask = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/SubTask.vue'));
+const BasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/view/info/index.vue'));
+const TestInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/view/testing/index.vue'));
+const Remark = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/view/Remark.vue'));
+const Activity = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/view/Activity.vue'));
+const Comment = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/view/Comment.vue'));
+const SubTask = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/view/SubTask.vue'));
 const SplitTask = defineAsyncComponent(() => import('@/views/task/backlog/SplitTask.vue'));
-const AssocCaseTab = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/AssocCase.vue'));
-const AssocTaskTab = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/AssocTask.vue'));
+const AssocCaseTab = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/view/AssocCase.vue'));
+const AssocTaskTab = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/view/AssocTask.vue'));
 
 const { t } = useI18n();
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));

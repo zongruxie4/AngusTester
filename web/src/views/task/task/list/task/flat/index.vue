@@ -50,7 +50,7 @@ const emit = defineEmits<{
 }>();
 
 const List = defineAsyncComponent(() => import('./List.vue'));
-const Details = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/index.vue'));
+const Details = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/view/index.vue'));
 const MoveTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/Move.vue'));
 
 const { t } = useI18n();

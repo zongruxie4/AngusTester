@@ -41,10 +41,10 @@ const SearchPanel = defineAsyncComponent(() => import('@/views/task/task/list/Se
 const Edit = defineAsyncComponent(() => import('@/views/task/task/list/task/Edit.vue'));
 const Move = defineAsyncComponent(() => import('@/views/task/task/list/task/Move.vue'));
 const FlowChart = defineAsyncComponent(() => import('@/views/task/task/list/task/FlowChart.vue'));
-const Table = defineAsyncComponent(() => import('@/views/task/task/list/task/table/TableView.vue'));
-const DetailView = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/index.vue'));
-const KanbanView = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/KanbanView.vue'));
-const GanttView = defineAsyncComponent(() => import('@/views/task/task/list/task/GanttChart.vue'));
+const Table = defineAsyncComponent(() => import('@/views/task/task/list/task/table/index.vue'));
+const DetailView = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/index.vue'));
+const KanbanView = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/index.vue'));
+const GanttView = defineAsyncComponent(() => import('@/views/task/task/list/task/gantt/index.vue'));
 const Upload = defineAsyncComponent(() => import('@/views/task/task/list/task/Upload.vue'));
 const ModuleTree = defineAsyncComponent(() => import('./ModuleTree.vue'));
 

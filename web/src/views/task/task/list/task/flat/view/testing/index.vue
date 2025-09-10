@@ -24,8 +24,8 @@ const props = withDefaults(defineProps<Props>(), {
   loading: false
 });
 
-const ExecutionResult = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/testing/ExecResult.vue'));
-const TestResult = defineAsyncComponent(() => import('@/views/task/task/list/task/detail/view/testing/TestResult.vue'));
+const ExecutionResult = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/view/testing/ExecResult.vue'));
+const TestResult = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/view/testing/TestResult.vue'));
 
 const loading = ref(false);
 const testInfo = ref<TestInfo>();
