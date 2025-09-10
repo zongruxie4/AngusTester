@@ -32,8 +32,7 @@ import type { Rule } from 'ant-design-vue/es/form';
 import { funcPlan, project } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-import { PlanInfo } from '../PropsType';
-import { FormState } from './PropsType';
+import {EditFormState, PlanInfo} from '../types';
 
 const { t } = useI18n();
 
@@ -55,7 +54,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
-const TesterSelect = defineAsyncComponent(() => import('./testerSelect.vue'));
+const TesterSelect = defineAsyncComponent(() => import('./TesterSelect.vue'));
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
@@ -75,10 +74,10 @@ const evalWorkloadMethodOptions = ref<EnumMessage<EvalWorkloadMethod>[]>([]);
 const reviewFlagVisible = ref(false);
 
 const permissions = ref<string[]>([]);
-const oldFormState = ref<FormState>();
+const oldFormState = ref<EditFormState>();
 const _startDate = dayjs().format('YYYY-MM-DD HH:mm:ss');
 const _deadlineDate = dayjs().add(1, 'month').format('YYYY-MM-DD HH:mm:ss');
-const formState = ref<FormState>({
+const formState = ref<EditFormState>({
   projectId: props.projectId,
   casePrefix: '',
   description: '',
@@ -224,7 +223,7 @@ const handleReviewFlagCancel = () => {
 };
 
 const getParams = () => {
-  const params: FormState = { ...formState.value };
+  const params: EditFormState = { ...formState.value };
   if (dataSource.value?.id) {
     params.id = dataSource.value.id;
   }

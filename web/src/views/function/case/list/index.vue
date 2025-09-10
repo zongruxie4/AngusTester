@@ -4,10 +4,10 @@ import { Spin } from '@xcan-angus/vue-ui';
 import elementResizeDetectorMaker from 'element-resize-detector';
 import { localStore } from '@xcan-angus/infra';
 
-import { CountObj } from '../detail/PropsType';
+import { CountObj } from '../detail/types';
 
-const Statistics = defineAsyncComponent(() => import('@/views/function/case/list/statisticsPanel/index.vue'));
-const PieChart = defineAsyncComponent(() => import('@/views/function/case/list/statisticsPanel/chart/index.vue'));
+const Statistics = defineAsyncComponent(() => import('@/views/function/case/list/statistics/index.vue'));
+const PieChart = defineAsyncComponent(() => import('@/views/function/case/list/statistics/Chart.vue'));
 const CaseList = defineAsyncComponent(() => import('@/views/function/case/list/case/index.vue'));
 
 type FilterOp = 'EQUAL' | 'NOT_EQUAL' | 'GREATER_THAN' | 'GREATER_THAN_EQUAL' | 'LESS_THAN' | 'LESS_THAN_EQUAL' | 'CONTAIN' | 'NOT_CONTAIN' | 'MATCH_END' | 'MATCH' | 'IN' | 'NOT_IN';

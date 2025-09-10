@@ -22,7 +22,7 @@ import { reverse, sortBy } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
 import { funcCase, funcPlan } from '@/api/tester';
 
-import { ActionMenuItem, CaseInfo, PlanPermissionKey } from './PropsType';
+import { ActionMenuItem, CaseInfo, PlanPermissionKey } from './types';
 import { userInfo } from 'os';
 
 type Props = {
@@ -54,22 +54,22 @@ const emit = defineEmits<{
   (event: 'refreshChange'): void;
 }>();
 
-const EditTaskModal = defineAsyncComponent(() => import('@/views/function/case/list/case/add/index.vue'));
-const MoveModal = defineAsyncComponent(() => import('@/views/function/case/list/case/move/index.vue'));
-const UpdateResultModal = defineAsyncComponent(() => import('@/views/function/case/list/case/updateResult/index.vue'));
+const EditTaskModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Edit.vue'));
+const MoveModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Move.vue'));
+const UpdateResultModal = defineAsyncComponent(() => import('@/views/function/case/list/case/UpdateResult.vue'));
 const AddTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/Edit.vue'));
-const BasicInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/basic/index.vue'));
-const TestSteps = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/testSteps/index.vue'));
-const PersonnelInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/personnel/index.vue'));
-const DateInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/date/index.vue'));
-const ReviewInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/reviewInfo/index.vue'));
-const TestInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/testInfo/index.vue'));
-const AssocTask = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/assocTask/index.vue'));
-const AssocCase = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/assocCase/index.vue'));
-const AttachmentInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/attachment/index.vue'));
-const ReviewRecord = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/reviewRecord/index.vue'));
-const Comment = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/comment/index.vue'));
-const Activity = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/activity/index.vue'));
+const BasicInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/Basic.vue'));
+const TestSteps = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/TestSteps.vue'));
+const PersonnelInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/Personnel.vue'));
+const DateInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/Date.vue'));
+const ReviewInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/review/ReviewInfo.vue'));
+const TestInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/TestInfo.vue'));
+const AssocTask = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/AssocTask.vue'));
+const AssocCase = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/AssocCase.vue'));
+const AttachmentInfo = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/info/Attachment.vue'));
+const ReviewRecord = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/review/ReviewRecord.vue'));
+const Comment = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/Comment.vue'));
+const Activity = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban/Activity.vue'));
 
 const { t } = useI18n();
 

@@ -4,7 +4,8 @@ import { useI18n } from 'vue-i18n';
 import { Input, Modal, ReviewStatus, Table, TestResult } from '@xcan-angus/vue-ui';
 import { http, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
-import { ReviewCaseInfo } from '@/views/function/review/edit/PropsType';
+
+import {ReviewCaseInfo} from "@/views/function/review/types";
 
 const { t } = useI18n();
 

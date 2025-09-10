@@ -6,10 +6,9 @@ import { Colon, Icon, modal, NoData, notification, Spin } from '@xcan-angus/vue-
 import dayjs from 'dayjs';
 import { func } from '@/api/tester';
 
-import { BaselineInfo } from '../PropsType';
-
-import SearchPanel from '@/views/function/baseline/list/searchPanel/index.vue';
+import SearchPanel from '@/views/function/baseline/list/SearchPanel.vue';
 import RichText from '@/components/richEditor/textContent/index.vue';
+import {BaselineInfo} from "@/views/function/baseline/types";
 
 const { t } = useI18n();
 
@@ -30,7 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
 type OrderByKey = 'createdDate' | 'createdByName';
 type OrderSortKey = 'ASC' | 'DESC';
 
-const Introduce = defineAsyncComponent(() => import('@/views/function/baseline/list/introduce/index.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/function/baseline/list/Introduce.vue'));
 
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const isAdmin = inject('isAdmin', ref(false));

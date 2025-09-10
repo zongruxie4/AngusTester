@@ -9,7 +9,7 @@ const { t } = useI18n();
 
 type MenuKey = 'homepage' | 'plans' | 'cases' | 'modules' | 'tags' | 'trash';
 
-const Homepage = defineAsyncComponent(() => import('@/views/function/homepage/index.vue'));
+const Homepage = defineAsyncComponent(() => import('@/views/function/home/index.vue'));
 const Plan = defineAsyncComponent(() => import('@/views/function/plan/index.vue'));
 const Case = defineAsyncComponent(() => import('@/views/function/case/index.vue'));
 const Review = defineAsyncComponent(() => import('@/views/function/review/index.vue'));

@@ -6,7 +6,7 @@ import { appContext } from '@xcan-angus/infra';
 import { useRoute, useRouter } from 'vue-router';
 import { funcCase } from '@/api/tester';
 
-import type { CaseActionAuth, CaseListObj } from './PropsType';
+import type { CaseActionAuth, CaseListObj } from './types';
 
 import { useI18n } from 'vue-i18n';
 
@@ -14,10 +14,10 @@ const { t } = useI18n();
 
 const CaseHome = defineAsyncComponent(() => import('@/views/function/case/list/index.vue'));
 const FunctionCaseInfo = defineAsyncComponent(() => import('@/views/function/case/detail/index.vue'));
-const AddCaseModal = defineAsyncComponent(() => import('@/views/function/case/list/case/add/index.vue'));
-const ReviewModal = defineAsyncComponent(() => import('@/views/function/case/list/case/review/index.vue'));
-const MoveCaseModal = defineAsyncComponent(() => import('@/views/function/case/list/case/move/index.vue'));
-const UpdateTestResultModal = defineAsyncComponent(() => import('@/views/function/case/list/case/updateResult/index.vue'));
+const AddCaseModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Edit.vue'));
+const ReviewModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Review.vue'));
+const MoveCaseModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Move.vue'));
+const UpdateTestResultModal = defineAsyncComponent(() => import('@/views/function/case/list/case/UpdateResult.vue'));
 
 const userInfo = ref(appContext.getUser());
 // Inject project information
