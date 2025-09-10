@@ -3,28 +3,20 @@ import { defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Avatar, Button, Pagination } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
+import { ProjectPageQuery } from '@xcan-angus/infra';
 import { Colon, Icon, Image, modal, NoData, notification, Popover, Spin } from '@xcan-angus/vue-ui';
 import { task } from '@/api/tester';
 
 import { MeetingInfo } from '../types';
 import SearchPanel from '@/views/task/meeting/list/SearchPanel.vue';
+import { BasicProps } from '@/types/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  notify: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
   notify: undefined
 });
-
-type OrderByKey = 'createdDate' | 'createdByName';
-type OrderSortKey = 'ASC' | 'DESC';
 
 const { t } = useI18n();
 const Introduce = defineAsyncComponent(() => import('@/views/task/meeting/list/Introduce.vue'));
@@ -34,9 +26,6 @@ const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({
 const loaded = ref(false);
 const loading = ref(false);
 const searchedFlag = ref(false);
-
-// const orderBy = ref<OrderByKey>();
-// const orderSort = ref<OrderSortKey>();
 
 const searchPanelParams = ref({
   orderBy: undefined,
@@ -49,15 +38,6 @@ const pageSize = ref(5);
 const total = ref(0);
 const dataList = ref<MeetingInfo[]>([]);
 const permissionsMap = ref<Map<string, string[]>>(new Map());
-// const toSort = (value: {
-//   orderBy: OrderByKey;
-//   orderSort: OrderSortKey;
-// }): void => {
-//   orderBy.value = value.orderBy;
-//   orderSort.value = value.orderSort;
-//   pageNo.value = 1;
-//   loadData();
-// };
 
 const refresh = () => {
   pageNo.value = 1;
@@ -82,7 +62,7 @@ const toDelete = async (data: MeetingInfo) => {
       }
 
       notification.success(t('taskMeeting.deleteSuccess'));
-      loadData();
+      await loadData();
       deleteTabPane([id]);
     }
   });
@@ -96,38 +76,18 @@ const paginationChange = (_pageNo: number, _pageSize: number) => {
 
 const loadData = async () => {
   loading.value = true;
-  const params: {
-    projectId: string;
-    pageNo: number;
-    pageSize: number;
-    orderBy?: OrderByKey;
-    orderSort?: OrderSortKey;
-    filters?: { key: string; op: string; value: string; }[];
-  } = {
+  const params: ProjectPageQuery = {
     projectId: props.projectId,
     pageNo: pageNo.value,
     pageSize: pageSize.value,
     ...searchPanelParams.value
   };
 
-  // if (orderSort.value) {
-  //   params.orderBy = orderBy.value;
-  //   params.orderSort = orderSort.value;
-  // }
-
-  // if (filters.value.length) {
-  //   params.filters = filters.value;
-  // }
-
   const [error, res] = await task.getMeetingList(params);
   loaded.value = true;
   loading.value = false;
 
-  if (params.filters?.length || params.orderBy) {
-    searchedFlag.value = true;
-  } else {
-    searchedFlag.value = false;
-  }
+  searchedFlag.value = !!(params.filters?.length || params.orderBy);
 
   if (error) {
     total.value = 0;
@@ -138,9 +98,7 @@ const loadData = async () => {
   const data = res?.data || { total: 0, list: [] };
   if (data) {
     total.value = +data.total;
-
-    const _list = (data.list || [] as MeetingInfo[]);
-    dataList.value = _list;
+    dataList.value = (data.list || [] as MeetingInfo[]);
   }
 };
 onMounted(() => {
@@ -158,34 +116,7 @@ onMounted(() => {
   }, { immediate: false });
 });
 
-// const searchPanelOptions = [
-//   {
-//     valueKey: 'subject',
-//     type: 'input',
-//     placeholder: '查询会议主题',
-//     allowClear: true,
-//     maxlength: 100
-//   },
-// ];
-
 const pageSizeOptions = ['5', '10', '15', '20', '30'];
-
-// const sortMenuItems: {
-//   name: string;
-//   key: OrderByKey;
-//   orderSort: OrderSortKey;
-// }[] = [
-//   {
-//     name: '按添加时间',
-//     key: 'createdDate',
-//     orderSort: 'DESC'
-//   },
-//   {
-//     name: '按添加人',
-//     key: 'createdByName',
-//     orderSort: 'ASC'
-//   }
-// ];
 </script>
 
 <template>
@@ -211,48 +142,6 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
           <SearchPanel
             @change="searchChange"
             @refresh="refresh" />
-          <!-- <div class="flex items-start justify-between mt-2.5 mb-3.5">
-            <searchPanel
-              :options="searchPanelOptions"
-              class="flex-1 mr-3.5"
-              @change="searchChange" />
-
-            <div class="flex items-center space-x-3">
-              <Button
-                type="primary"
-                size="small"
-                class="p-0">
-                <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/task#meetings?type=ADD`">
-                  <Icon icon="icon-jia" class="text-3.5" />
-                  <span>添加会议</span>
-                </RouterLink>
-              </Button>
-
-              <DropdownSort
-                v-model:orderBy="orderBy"
-                v-model:orderSort="orderSort"
-                :menuItems="sortMenuItems"
-                @click="toSort">
-                <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
-                  <Icon icon="icon-shunxu" class="text-3.5" />
-                  <span>排序</span>
-                </div>
-              </DropdownSort>
-
-              <IconRefresh
-                :loading="loading"
-                :disabled="loading"
-                @click="refresh">
-                <template #default>
-                  <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
-                    <Icon icon="icon-shuaxin" class="text-3.5" />
-                    <span class="ml-1">刷新</span>
-                  </div>
-                </template>
-              </IconRefresh>
-            </div>
-          </div> -->
-
           <NoData v-if="dataList.length === 0" class="flex-1" />
 
           <template v-else>

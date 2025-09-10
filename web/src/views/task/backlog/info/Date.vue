@@ -6,6 +6,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { task } from '@/api/tester';
 
 import { TaskInfo } from '../../types';
+import {TIME_FORMAT} from "@/utils/constant";
 
 type Props = {
   projectId: string;
@@ -154,7 +155,7 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
               :error="dateError"
               :showNow="false"
               :disabledDate="disabledDate"
-              :showTime="{ hideDisabledOptions: true, format: 'HH:mm:ss' }"
+              :showTime="{ hideDisabledOptions: true, format: TIME_FORMAT }"
               type="date"
               size="small"
               class="edit-container"

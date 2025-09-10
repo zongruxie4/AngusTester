@@ -21,7 +21,7 @@ import { localStore, upload, TESTER } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
-import { DATE_TIME_FORMAT } from '@/utils/constant';
+import {DATE_TIME_FORMAT, TIME_FORMAT} from '@/utils/constant';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { EditFormState } from './types';
@@ -980,7 +980,7 @@ const zoomInFlagCacheKey = computed(() => {
                 v-model:value="formState.deadlineDate"
                 :showNow="false"
                 :disabledDate="disabledDate"
-                :showTime="{ hideDisabledOptions: true, format: 'HH:mm:ss' }"
+                :showTime="{ hideDisabledOptions: true, format: TIME_FORMAT }"
                 :disabled="(proTypeShowMap.showSprint && !formState.sprintId)"
                 type="date"
                 size="small"

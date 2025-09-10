@@ -8,6 +8,7 @@ import { analysis } from '@/api/tester';
 
 const { t } = useI18n();
 
+// Component Props & Emits
 interface Props {
   visible: boolean;
   sprintId: string;
@@ -20,11 +21,19 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void}>();
 
-const cancel = () => {
-  emits('update:visible', false);
-};
+// Reactive Data
+const chartData = ref();
+const selectedChartType = ref('NUM');
+const chartContainerRef = ref();
+let chartInstance: echarts.ECharts;
 
-const burnDownOpt = computed(() => [
+/**
+ * <p>
+ * Chart type options for burndown chart display.
+ * <p>
+ * Provides options to switch between task count and workload views.
+ */
+const chartTypeOptions = computed(() => [
   {
     value: 'NUM',
     label: t('taskSprint.burndown.taskCount')
@@ -34,11 +43,15 @@ const burnDownOpt = computed(() => [
     label: t('taskSprint.burndown.workload')
   }
 ]);
-const burnDownData = ref();
-const burnDownTarget = ref('NUM');
-const chartRef = ref();
-let burnDownEcharts;
-const burnDownEchartsConfig = {
+
+/**
+ * <p>
+ * ECharts configuration object for burndown chart.
+ * <p>
+ * Defines the visual appearance and behavior of the chart including
+ * grid layout, legend, tooltip, axes, and data series.
+ */
+const chartConfiguration = {
   grid: {
     left: '30',
     right: '20',
@@ -76,38 +89,77 @@ const burnDownEchartsConfig = {
   ]
 };
 
-const loadChartData = async () => {
+/**
+ * <p>
+ * Closes the burndown chart modal.
+ * <p>
+ * Emits update event to parent component to hide the modal.
+ */
+const closeModal = () => {
+  emits('update:visible', false);
+};
+
+/**
+ * <p>
+ * Loads burndown chart data from the API.
+ * <p>
+ * Fetches sprint burndown data based on the current sprint ID
+ * and updates the chart data reactive reference.
+ */
+const loadBurndownData = async () => {
   const [error, { data }] = await analysis.getSprintBurndown(props.sprintId);
   if (error) {
     return;
   }
-  burnDownData.value = data;
+  chartData.value = data;
 };
-onMounted(() => {
-  burnDownEcharts = echarts.init(chartRef.value);
-  burnDownEcharts.setOption(burnDownEchartsConfig);
 
-  watch(() => props.visible, (newValue) => {
-    if (newValue) {
-      loadChartData();
+/**
+ * <p>
+ * Updates chart data based on selected chart type and loaded data.
+ * <p>
+ * Transforms the raw API data into chart-ready format by extracting
+ * time series and values for both expected and remaining data series.
+ */
+const updateChartData = () => {
+  if (chartData.value) {
+    const currentDataType = chartData.value[selectedChartType.value];
+    const expectedData = currentDataType?.expected || [];
+    const remainingData = currentDataType?.remaining || [];
+
+    const timeSeriesData = expectedData.map(item => item.timeSeries);
+    const expectedValues = expectedData.map(item => item.value);
+    const remainingValues = remainingData.map(item => item.value);
+
+    chartConfiguration.xAxis.data = timeSeriesData;
+    chartConfiguration.series[0].data = remainingValues;
+    chartConfiguration.series[1].data = expectedValues;
+  } else {
+    chartConfiguration.xAxis.data = [];
+    chartConfiguration.series[0].data = [];
+    chartConfiguration.series[1].data = [];
+  }
+  chartInstance.setOption(chartConfiguration);
+};
+
+// Lifecycle Hooks
+onMounted(() => {
+  // Initialize ECharts instance
+  chartInstance = echarts.init(chartContainerRef.value);
+  chartInstance.setOption(chartConfiguration);
+
+  // Watch for modal visibility changes to load data
+  watch(() => props.visible, (isVisible) => {
+    if (isVisible) {
+      loadBurndownData();
     }
   }, {
     immediate: true
   });
-  watch([() => burnDownTarget.value, () => burnDownData.value], () => {
-    if (burnDownData.value) {
-      const xData = (burnDownData.value[burnDownTarget.value]?.expected || []).map(i => i.timeSeries);
-      const expectedYData = (burnDownData.value[burnDownTarget.value]?.expected || []).map(i => i.value);
-      const remainingYData = (burnDownData.value[burnDownTarget.value]?.remaining || []).map(i => i.value);
-      burnDownEchartsConfig.xAxis.data = xData;
-      burnDownEchartsConfig.series[0].data = remainingYData;
-      burnDownEchartsConfig.series[1].data = expectedYData;
-    } else {
-      burnDownEchartsConfig.xAxis.data = [];
-      burnDownEchartsConfig.series[0].data = [];
-      burnDownEchartsConfig.series[1].data = [];
-    }
-    burnDownEcharts.setOption(burnDownEchartsConfig);
+
+  // Watch for chart type or data changes to update chart
+  watch([() => selectedChartType.value, () => chartData.value], () => {
+    updateChartData();
   });
 });
 
@@ -118,10 +170,10 @@ onMounted(() => {
     :footer="null"
     :width="800"
     :title="t('taskSprint.burndown.title')"
-    @cancel="cancel">
+    @cancel="closeModal">
     <div class="pt-1.5">
-      <RadioGroup v-model:value="burnDownTarget" :options="burnDownOpt" />
-      <div ref="chartRef" class="border rounded p-2 my-3 h-60">
+      <RadioGroup v-model:value="selectedChartType" :options="chartTypeOptions" />
+      <div ref="chartContainerRef" class="border rounded p-2 my-3 h-60">
       </div>
     </div>
   </Modal>

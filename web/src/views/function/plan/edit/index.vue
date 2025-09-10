@@ -40,7 +40,7 @@ import { isEqual } from 'lodash-es';
 import type { Rule } from 'ant-design-vue/es/form';
 import { funcPlan, project } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-import { DATE_TIME_FORMAT } from '@/utils/constant';
+import {DATE_TIME_FORMAT, TIME_FORMAT} from '@/utils/constant';
 
 import {EditFormState, PlanInfo} from '../types';
 
@@ -875,7 +875,7 @@ const autoSize = {
           v-model:value="formState.date"
           format="YYYY-MM-DD HH:mm:ss"
           :showNow="false"
-          :showTime="{ format: 'HH:mm:ss' }"
+          :showTime="{ format: TIME_FORMAT }"
           :placeholder="[t('functionPlan.editForm.form.startTime'), t('functionPlan.editForm.form.deadlineTime')]"
           type="date-range"
           size="small"

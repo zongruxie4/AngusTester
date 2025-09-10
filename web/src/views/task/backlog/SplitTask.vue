@@ -23,6 +23,7 @@ import { task } from '@/api/tester';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfo } from '../types';
+import {TIME_FORMAT} from "@/utils/constant";
 
 interface Props {
   visible: boolean;
@@ -567,7 +568,7 @@ const okButtonProps = computed(() => {
               :error="deadlineDateErrorSet.has(item)"
               :showNow="false"
               :disabledDate="disabledDate"
-              :showTime="{ hideDisabledOptions: true, format: 'HH:mm:ss' }"
+              :showTime="{ hideDisabledOptions: true, format: TIME_FORMAT }"
               placeholder="截止时间"
               type="date"
               size="small"

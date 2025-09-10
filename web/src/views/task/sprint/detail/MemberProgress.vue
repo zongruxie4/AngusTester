@@ -9,6 +9,7 @@ import { MemberProgressData } from '@/views/task/sprint/types';
 
 const { t } = useI18n();
 
+// Props Definition
 interface Props {
   sprintId: string;
   projectId: string;
@@ -19,10 +20,20 @@ const props = withDefaults(defineProps<Props>(), {
   projectId: undefined
 });
 
-const loading = ref(false);
-const tableData = ref<MemberProgressData[]>([]);
+/**
+ * Loading state for data operations
+ */
+const isLoading = ref(false);
 
-const loadData = async () => {
+/**
+ * Member progress data for the table
+ */
+const memberProgressData = ref<MemberProgressData[]>([]);
+
+/**
+ * Loads member progress data from the API
+ */
+const loadMemberProgressData = async () => {
   const params = {
     sprintId: props.sprintId,
     projectId: props.projectId
@@ -32,15 +43,20 @@ const loadData = async () => {
     return;
   }
 
-  tableData.value = data;
+  memberProgressData.value = data;
 };
 
+// Lifecycle Hooks
 onMounted(() => {
-  loadData();
+  loadMemberProgressData();
 });
 
+/**
+ * Table column configuration for member progress display
+ */
 const tableColumns = [
   {
+    key: 'assigneeName',
     title: t('taskSprint.progress.member'),
     dataIndex: 'assigneeName',
     customCell: () => {
@@ -48,6 +64,7 @@ const tableColumns = [
     }
   },
   {
+    key: 'completedRate',
     title: t('taskSprint.progress.progress'),
     dataIndex: 'completedRate',
     width: '15%',
@@ -57,6 +74,7 @@ const tableColumns = [
     }
   },
   {
+    key: 'totalTaskNum',
     title: t('taskSprint.progress.totalTaskCount'),
     dataIndex: 'totalTaskNum',
     sorter: (a, b) => +a.totalTaskNum - (+b.totalTaskNum),
@@ -65,6 +83,7 @@ const tableColumns = [
     }
   },
   {
+    key: 'validTaskNum',
     title: t('taskSprint.progress.validTaskCount'),
     dataIndex: 'validTaskNum',
     sorter: (a, b) => +a.validTaskNum - (+b.validTaskNum),
@@ -73,6 +92,7 @@ const tableColumns = [
     }
   },
   {
+    key: 'completedNum',
     title: t('taskSprint.progress.completedTaskCount'),
     dataIndex: 'completedNum',
     sorter: (a, b) => +a.validTaskNum - (+b.validTaskNum),
@@ -81,19 +101,23 @@ const tableColumns = [
     }
   },
   {
+    key: 'evalWorkload',
     title: t('taskSprint.progress.estimatedWorkload'),
     dataIndex: 'evalWorkload'
   },
   {
+    key: 'completedWorkload',
     title: t('taskSprint.progress.completedWorkload'),
     dataIndex: 'completedWorkload'
   },
   {
+    key: 'completedWorkloadRate',
     title: t('taskSprint.progress.workloadCompletionRate'),
     dataIndex: 'completedWorkloadRate',
     customRender: ({ text }) => text + '%'
   },
   {
+    key: 'overdueNum',
     title: t('taskSprint.progress.overdueTaskCount'),
     dataIndex: 'overdueNum',
     sorter: (a, b) => +a.validTaskNum - (+b.validTaskNum),
@@ -102,6 +126,7 @@ const tableColumns = [
     }
   },
   {
+    key: 'overdueRate',
     title: t('taskSprint.progress.overdueRate'),
     dataIndex: 'overdueRate',
     customRender: ({ text }) => text + '%',
@@ -114,11 +139,13 @@ const tableColumns = [
 <template>
   <Table
     :columns="tableColumns"
-    :dataSource="tableData"
-    :loading="loading"
+    :dataSource="memberProgressData"
+    :loading="isLoading"
     :pagination="false"
     rowKey="testerId"
-    size="small">
+    size="small"
+    :noDataSize="'small'"
+    :noDataText="t('common.noData')">
     <template #bodyCell="{ column, text, record }">
       <template v-if="column.dataIndex === 'assigneeName'">
         <div class="flex items-center">

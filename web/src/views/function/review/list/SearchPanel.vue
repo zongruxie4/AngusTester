@@ -6,7 +6,7 @@ import { FuncPlanStatus } from '@/enums/enums';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
-import { DATE_TIME_FORMAT } from '@/utils/constant';
+import {DATE_TIME_FORMAT, TIME_FORMAT} from '@/utils/constant';
 
 interface Props {
   loading: boolean;
@@ -66,7 +66,7 @@ const searchPanelOptions = [
     valueType: 'start',
     op: 'GREATER_THAN_EQUAL',
     placeholder: t('caseReview.list.reviewStartTimeGreaterEqual'),
-    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', 'HH:mm:ss') },
+    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
     allowClear: true
   },
   {
@@ -75,7 +75,7 @@ const searchPanelOptions = [
     valueType: 'start',
     op: 'LESS_THAN_EQUAL',
     placeholder: t('caseReview.list.reviewDeadlineTimeLessEqual'),
-    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', 'HH:mm:ss') },
+    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
     allowClear: true
   }
 ];

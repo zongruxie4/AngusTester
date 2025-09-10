@@ -21,7 +21,7 @@ import dayjs from 'dayjs';
 import RichEditor from '@/components/richEditor/index.vue';
 import { funcCase, modules, project } from '@/api/tester';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { DATE_TIME_FORMAT } from '@/utils/constant';
+import {DATE_TIME_FORMAT, TIME_FORMAT} from '@/utils/constant';
 
 import { useI18n } from 'vue-i18n';
 import CaseSteps from './CaseSteps.vue';
@@ -715,7 +715,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
               <DatePicker
                 v-model:value="formState.deadlineDate"
                 :disabledDate="disabledDate"
-                :showTime="{hideDisabledOptions: true,format:'HH:mm:ss'}"
+                :showTime="{hideDisabledOptions: true,format:TIME_FORMAT}"
                 :disabled="!formState.planId"
                 allowClear
                 :placeholder="t('functionCase.addCaseModal.pleaseSelectDeadline')"

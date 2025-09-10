@@ -4,32 +4,48 @@ import { useI18n } from 'vue-i18n';
 import elementResizeDetector from 'element-resize-detector';
 
 const { t } = useI18n();
-const erd = elementResizeDetector({ strategy: 'scroll' });
-const wrapperRef = ref();
 
-const handleCol = () => {
-  const clientWidth = wrapperRef.value.clientWidth;
-  if (clientWidth > 800) {
-    isCol2.value = false;
-  } else {
-    isCol2.value = true;
-  }
+// Reactive Data
+const containerRef = ref();
+const isTwoColumnLayout = ref(false);
+
+/**
+ * <p>
+ * Element resize detector instance for responsive layout handling.
+ * <p>
+ * Uses scroll strategy for better performance when detecting container size changes.
+ */
+const resizeDetector = elementResizeDetector({ strategy: 'scroll' });
+
+/**
+ * <p>
+ * Handles container resize events to adjust layout.
+ * <p>
+ * Switches between single and two-column layout based on container width.
+ * Uses 800px as the breakpoint for layout switching.
+ */
+const handleContainerResize = () => {
+  const containerWidth = containerRef.value.clientWidth;
+  isTwoColumnLayout.value = containerWidth <= 800;
 };
 
-const isCol2 = ref(false);
-
+// Lifecycle Hooks
 onMounted(() => {
-  erd.listenTo(wrapperRef.value, handleCol);
-  isCol2.value = wrapperRef.value.clientWidth < 600;
+  // Set up resize listener
+  resizeDetector.listenTo(containerRef.value, handleContainerResize);
+
+  // Set initial layout based on container width
+  isTwoColumnLayout.value = containerRef.value.clientWidth <= 600;
 });
 
 onBeforeUnmount(() => {
-  erd.removeListener(wrapperRef.value, handleCol);
+  // Clean up resize listener
+  resizeDetector.removeListener(containerRef.value, handleContainerResize);
 });
 
 </script>
 <template>
-  <div ref="wrapperRef">
+  <div ref="containerRef">
     <div class="text-3.5 font-semibold mb-2.5">{{ t('taskSprint.aboutSprint') }}</div>
     <div class="mb-6">
       <div>{{ t('taskSprint.aboutSprintDesc') }}</div>
@@ -54,7 +70,7 @@ onBeforeUnmount(() => {
           </div>
         </div>
 
-        <div v-show="!isCol2" class="flex items-start space-x-3 flex-1">
+        <div v-show="!isTwoColumnLayout" class="flex items-start space-x-3 flex-1">
           <img src="./images/3.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
             <div class="text-3.5 font-semibold">{{ t('taskSprint.benefits.improveTransparency') }}</div>
@@ -62,7 +78,7 @@ onBeforeUnmount(() => {
           </div>
         </div>
       </div>
-      <div v-show="isCol2" class="flex items-start justify-between">
+      <div v-show="isTwoColumnLayout" class="flex items-start justify-between">
         <div class="flex items-start space-x-3 flex-1">
           <img src="./images/3.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
@@ -80,7 +96,7 @@ onBeforeUnmount(() => {
       </div>
 
       <div class="flex items-start justify-between">
-        <div v-show="!isCol2" class="flex items-start space-x-3 flex-1">
+        <div v-show="!isTwoColumnLayout" class="flex items-start space-x-3 flex-1">
           <img src="./images/4.png" class="w-10 flex-shrink-0 transform-gpu translate-y-0.5">
           <div class="space-y-1 pr-10">
             <div class="text-3.5 font-semibold">{{ t('taskSprint.benefits.improveFlexibility') }}</div>

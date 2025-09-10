@@ -7,6 +7,7 @@ import RichEditor from '@/components/richEditor/index.vue';
 import { useI18n } from 'vue-i18n';
 
 import { ReportContent } from '../PropsType';
+import {DATE_FORMAT, TIME_FORMAT} from "@/utils/constant";
 
 const { t } = useI18n();
 
@@ -30,11 +31,11 @@ const sprint = computed(() => {
 
 const meetings = computed(() => {
   return sprint.value?.meetings?.map(item => {
-    const date = dayjs(item.date).format('YYYY-MM-DD');
+    const date = dayjs(item.date).format(DATE_FORMAT);
 
     const time = item.time.split('~');
-    const startTime = dayjs(time[0]).format('HH:mm:ss');
-    const endTime = dayjs(time[1]).format('HH:mm:ss');
+    const startTime = dayjs(time[0]).format(TIME_FORMAT);
+    const endTime = dayjs(time[1]).format(TIME_FORMAT);
 
     const participantNames = item.participants.map(item => item.fullName).join(',');
     return {

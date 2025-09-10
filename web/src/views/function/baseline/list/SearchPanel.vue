@@ -5,7 +5,7 @@ import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus
 import { appContext } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
-import { DATE_TIME_FORMAT } from '@/utils/constant';
+import {DATE_TIME_FORMAT, TIME_FORMAT} from '@/utils/constant';
 
 const { t } = useI18n();
 
@@ -66,7 +66,7 @@ const searchPanelOptions = [
     valueType: 'start',
     op: 'GREATER_THAN_EQUAL',
     placeholder: t('functionBaseline.list.baselineStartTimeGreaterEqual'),
-    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', 'HH:mm:ss') },
+    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
     allowClear: true
   },
   {
@@ -75,7 +75,7 @@ const searchPanelOptions = [
     valueType: 'start',
     op: 'LESS_THAN_EQUAL',
     placeholder: t('functionBaseline.list.baselineDeadlineTimeLessEqual'),
-    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', 'HH:mm:ss') },
+    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
     allowClear: true
   }
 ];

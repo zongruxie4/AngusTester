@@ -6,7 +6,7 @@ import { PageQuery, enumUtils, appContext, EnumMessage } from '@xcan-angus/infra
 import { TaskSprintStatus } from '@/enums/enums';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
-import { DATE_TIME_FORMAT } from '@/utils/constant';
+import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 
 const { t } = useI18n();
 
@@ -58,7 +58,7 @@ const searchPanelOptions = [
     valueType: 'start',
     op: 'GREATER_THAN_EQUAL',
     placeholder: t('taskSprint.searchPanel.startDateGreaterEqual'),
-    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', 'HH:mm:ss') },
+    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
     allowClear: true
   },
   {
@@ -67,7 +67,7 @@ const searchPanelOptions = [
     valueType: 'start',
     op: 'LESS_THAN_EQUAL',
     placeholder: t('taskSprint.searchPanel.deadlineDateLessEqual'),
-    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', 'HH:mm:ss') },
+    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
     allowClear: true
   }
 ];

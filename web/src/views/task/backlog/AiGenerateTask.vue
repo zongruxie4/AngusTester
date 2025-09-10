@@ -22,6 +22,7 @@ import { ai } from '@/api/gm';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 import { TaskInfo } from '../types';
+import {TIME_FORMAT} from "@/utils/constant";
 
 interface Props {
   visible: boolean;
@@ -462,7 +463,7 @@ const excluedType = (option: {value: string; message: string}) => {
               :error="deadlineDateErrorSet.has(item)"
               :showNow="false"
               :disabledDate="disabledDate"
-              :showTime="{ hideDisabledOptions: true, format: 'HH:mm:ss' }"
+              :showTime="{ hideDisabledOptions: true, format: TIME_FORMAT }"
               placeholder="截止时间"
               type="date"
               size="small"

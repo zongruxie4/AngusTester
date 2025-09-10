@@ -7,6 +7,7 @@ import { useI18n } from 'vue-i18n';
 import { funcCase } from '@/api/tester';
 
 import { CaseInfo } from '../types';
+import {TIME_FORMAT} from "@/utils/constant";
 
 type Props = {
   projectId: string;
@@ -197,7 +198,7 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
               :error="dateError"
               :showNow="false"
               :disabledDate="disabledDate"
-              :showTime="{ hideDisabledOptions: true, format: 'HH:mm:ss' }"
+              :showTime="{ hideDisabledOptions: true, format: TIME_FORMAT }"
               type="date"
               size="small"
               class="edit-container"

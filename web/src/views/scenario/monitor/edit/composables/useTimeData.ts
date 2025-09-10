@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue';
 import { CreatedAt, DayOfWeek, EnumMessage, enumUtils, PeriodicUnit } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
-import { DATE_TIME_FORMAT } from '@/utils/constant';
+import {DATE_TIME_FORMAT, TIME_FORMAT} from '@/utils/constant';
 
 import type { DayOfMonthOption, OptionItem } from '../../types';
 import {CreateTimeSetting} from "@/types/types";
@@ -66,7 +66,7 @@ export function useTimeData () {
    */
   const updateTimeOfDay = (): void => {
     if (timeOfDay.value) {
-      createTimeSettingData.value.timeOfDay = timeOfDay.value.format('HH:mm:ss');
+      createTimeSettingData.value.timeOfDay = timeOfDay.value.format(TIME_FORMAT);
     }
   };
 

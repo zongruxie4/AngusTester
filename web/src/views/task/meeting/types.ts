@@ -1,15 +1,22 @@
 import type { Dayjs } from 'dayjs';
+import { EnumMessage } from '@xcan-angus/infra';
+import { TaskMeetingType } from '@/enums/enums';
 
 export type MeetingInfo = {
     id: string;
     content: string;
     date: Dayjs;
-    endTime: Dayjs;
+    endTime: string;
     location: string;
     moderator: { fullName: string, id: string };
     participants: { fullName: string, id: string }[];
-    startTime: Dayjs;
-    type: 'DAILY_STANDUP' | 'PLANNING' | 'RETROSPECTIVE' | 'REVIEW' | 'OTHER';
+    startTime: string;
+    subject: string;
+    type: EnumMessage<TaskMeetingType>;
+    sprintName?: string;
+    time?: string;
+    participantNames?: string;
+    moderatorName?: string;
 }
 
 export type EditFormState = {
@@ -24,5 +31,5 @@ export type EditFormState = {
   moderator: { fullName: string, id: string } | string;
   participants: { fullName: string, id: string }[];
   startTime: Dayjs;
-  type: 'DAILY_STANDUP' | 'PLANNING' | 'RETROSPECTIVE' | 'REVIEW' | 'OTHER';
+  type: TaskMeetingType;
 }

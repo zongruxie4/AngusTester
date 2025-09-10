@@ -19,6 +19,7 @@ import { useData } from './composables/useData';
 import DefaultProjectImage from '@/assets/images/default.png';
 import { ProjectType } from '@/enums/enums';
 import { DetailProps } from '@/views/project/project/types';
+import {DATE_FORMAT} from "@/utils/constant";
 // Initialize i18n
 const { t } = useI18n();
 
@@ -96,8 +97,8 @@ watch(() => props.projectId, newValue => {
               <Icon icon="icon-time" class="text-xs" />
               <span class="text-xs font-medium">
                 {{
-                  dayjs(detailData.startDate).format('YYYY-MM-DD')
-                }} - {{ dayjs(detailData.deadlineDate).format('YYYY-MM-DD') || '' }}
+                  dayjs(detailData.startDate).format(DATE_FORMAT)
+                }} - {{ dayjs(detailData.deadlineDate).format(DATE_FORMAT) || '' }}
               </span>
             </div>
           </div>

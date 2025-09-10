@@ -9,6 +9,7 @@ import { func } from '@/api/tester';
 import SearchPanel from '@/views/function/baseline/list/SearchPanel.vue';
 import RichText from '@/components/richEditor/textContent/index.vue';
 import { BaselineInfo } from '@/views/function/baseline/types';
+import {TIME_FORMAT} from "@/utils/constant";
 
 const { t } = useI18n();
 
@@ -186,7 +187,7 @@ const searchPanelOptions = [
     valueType: 'start',
     op: 'GREATER_THAN_EQUAL',
     placeholder: t('functionBaseline.list.baselineStartTimeGreaterEqual'),
-    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', 'HH:mm:ss') },
+    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
     allowClear: true
   },
   {
@@ -195,7 +196,7 @@ const searchPanelOptions = [
     valueType: 'start',
     op: 'LESS_THAN_EQUAL',
     placeholder: t('functionBaseline.list.baselineDeadlineTimeLessEqual'),
-    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', 'HH:mm:ss') },
+    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
     allowClear: true
   }
 ];

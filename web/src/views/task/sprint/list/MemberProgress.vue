@@ -9,6 +9,7 @@ import { MemberProgressData } from '@/views/task/sprint/types';
 
 const { t } = useI18n();
 
+// Component Props & Emits
 interface Props {
   visible: boolean;
   sprintId: string;
@@ -23,38 +24,20 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{(e: 'update:visible', value: boolean): void; }>();
 
-const loading = ref(false);
-const tableData = ref<MemberProgressData[]>([]);
+// Reactive Data
+const isLoading = ref(false);
+const memberProgressData = ref<MemberProgressData[]>([]);
 
-const loadData = async () => {
-  const params = {
-    sprintId: props.sprintId,
-    projectId: props.projectId
-  };
-  const [error, { data = [] }] = await analysis.getAssigneeProgress(params);
-  if (error) {
-    return;
-  }
-
-  tableData.value = data;
-};
-
-const cancel = () => {
-  emit('update:visible', false);
-};
-
-onMounted(() => {
-  watch(() => props.visible, () => {
-    if (!props.visible || props.sprintId === undefined || props.sprintId === null || props.sprintId === '') {
-      return;
-    }
-
-    loadData();
-  }, { immediate: true });
-});
-
+/**
+ * <p>
+ * Table column configuration for member progress display.
+ * <p>
+ * Defines columns for member information, task statistics, workload metrics,
+ * and completion rates with appropriate sorting and formatting.
+ */
 const tableColumns = [
   {
+    key: 'assigneeName',
     title: t('taskSprint.progress.member'),
     dataIndex: 'assigneeName',
     width: 140,
@@ -63,6 +46,7 @@ const tableColumns = [
     }
   },
   {
+    key: 'completedRate',
     title: t('taskSprint.progress.progress'),
     dataIndex: 'completedRate',
     width: '15%',
@@ -72,6 +56,7 @@ const tableColumns = [
     }
   },
   {
+    key: 'totalTaskNum',
     title: t('taskSprint.progress.totalTaskCount'),
     dataIndex: 'totalTaskNum',
     sorter: (a, b) => +a.totalTaskNum - (+b.totalTaskNum),
@@ -80,6 +65,7 @@ const tableColumns = [
     }
   },
   {
+    key: 'validTaskNum',
     title: t('taskSprint.progress.validTaskCount'),
     dataIndex: 'validTaskNum',
     sorter: (a, b) => +a.validTaskNum - (+b.validTaskNum),
@@ -88,6 +74,7 @@ const tableColumns = [
     }
   },
   {
+    key: 'completedNum',
     title: t('taskSprint.progress.completedTaskCount'),
     dataIndex: 'completedNum',
     sorter: (a, b) => +a.validTaskNum - (+b.validTaskNum),
@@ -96,19 +83,23 @@ const tableColumns = [
     }
   },
   {
+    key: 'evalWorkload',
     title: t('taskSprint.progress.estimatedWorkload'),
     dataIndex: 'evalWorkload'
   },
   {
+    key: 'completedWorkload',
     title: t('taskSprint.progress.completedWorkload'),
     dataIndex: 'completedWorkload'
   },
   {
+    key: 'completedWorkloadRate',
     title: t('taskSprint.progress.workloadCompletionRate'),
     dataIndex: 'completedWorkloadRate',
     customRender: ({ text }) => text + '%'
   },
   {
+    key: 'overdueNum',
     title: t('taskSprint.progress.overdueTaskCount'),
     dataIndex: 'overdueNum',
     sorter: (a, b) => +a.validTaskNum - (+b.validTaskNum),
@@ -117,6 +108,7 @@ const tableColumns = [
     }
   },
   {
+    key: 'overdueRate',
     title: t('taskSprint.progress.overdueRate'),
     dataIndex: 'overdueRate',
     customRender: ({ text }) => text + '%',
@@ -125,6 +117,58 @@ const tableColumns = [
     }
   }
 ];
+
+/**
+ * <p>
+ * Closes the member progress modal.
+ * <p>
+ * Emits update event to parent component to hide the modal.
+ */
+const closeModal = () => {
+  emit('update:visible', false);
+};
+
+/**
+ * <p>
+ * Loads member progress data from the API.
+ * <p>
+ * Fetches assignee progress data for the current sprint and project,
+ * then updates the table data reactive reference.
+ */
+const loadMemberProgressData = async () => {
+  const requestParams = {
+    sprintId: props.sprintId,
+    projectId: props.projectId
+  };
+  const [error, { data = [] }] = await analysis.getAssigneeProgress(requestParams);
+  if (error) {
+    return;
+  }
+
+  memberProgressData.value = data;
+};
+
+/**
+ * <p>
+ * Validates if the modal should load data.
+ * <p>
+ * Checks if the modal is visible and has valid sprint ID before loading data.
+ */
+const shouldLoadData = () => {
+  return props.visible &&
+         props.sprintId !== undefined &&
+         props.sprintId !== null &&
+         props.sprintId !== '';
+};
+
+// Lifecycle Hooks
+onMounted(() => {
+  watch(() => props.visible, () => {
+    if (shouldLoadData()) {
+      loadMemberProgressData();
+    }
+  }, { immediate: true });
+});
 </script>
 <template>
   <Modal
@@ -132,13 +176,15 @@ const tableColumns = [
     :visible="props.visible"
     :width="1200"
     :footer="null"
-    @cancel="cancel">
+    @cancel="closeModal">
     <Table
       :columns="tableColumns"
-      :dataSource="tableData"
-      :loading="loading"
+      :dataSource="memberProgressData"
+      :loading="isLoading"
       :pagination="false"
-      :scroll="{ y: 600 }"
+      :scroll="{ x: true, y: 600, scrollToFirstRowOnChange: true }"
+      :noDataSize="'middle'"
+      :noDataText="t('common.noData')"
       class="mb-3"
       rowKey="testerId"
       size="small">

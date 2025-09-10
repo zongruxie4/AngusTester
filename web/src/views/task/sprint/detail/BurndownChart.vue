@@ -7,6 +7,7 @@ import { analysis } from '@/api/tester';
 
 const { t } = useI18n();
 
+// Props Definition
 interface Props {
   sprintId: string;
 }
@@ -15,7 +16,30 @@ const props = withDefaults(defineProps<Props>(), {
   sprintId: ''
 });
 
-const burnDownOpt = computed(() => [
+/**
+ * Chart data fetched from API
+ */
+const chartData = ref();
+
+/**
+ * Currently selected chart type (NUM for task count, WORKLOAD for workload)
+ */
+const selectedChartType = ref('NUM');
+
+/**
+ * Reference to the chart DOM element
+ */
+const chartRef = ref();
+
+/**
+ * ECharts instance for the burndown chart
+ */
+let chartInstance: echarts.ECharts;
+
+/**
+ * Available chart type options for the radio group
+ */
+const chartTypeOptions = computed(() => [
   {
     value: 'NUM',
     label: t('taskSprint.burndown.taskCount')
@@ -26,11 +50,10 @@ const burnDownOpt = computed(() => [
   }
 ]);
 
-const burnDownData = ref();
-const burnDownTarget = ref('NUM');
-const chartRef = ref();
-let burnDownEcharts;
-const burnDownEchartsConfig = {
+/**
+ * ECharts configuration object for the burndown chart
+ */
+const chartConfig = {
   grid: {
     left: '30',
     right: '20',
@@ -68,39 +91,59 @@ const burnDownEchartsConfig = {
   ]
 };
 
+/**
+ * Fetches burndown chart data from the API
+ */
 const loadChartData = async () => {
   const [error, { data }] = await analysis.getSprintBurndown(props.sprintId);
   if (error) {
     return;
   }
-  burnDownData.value = data;
+  chartData.value = data;
 };
+
+/**
+ * Updates the chart with new data based on selected chart type
+ */
+const updateChartData = () => {
+  if (chartData.value) {
+    const currentData = chartData.value[selectedChartType.value];
+    const expectedData = currentData?.expected || [];
+    const remainingData = currentData?.remaining || [];
+
+    const timeSeriesData = expectedData.map(item => item.timeSeries);
+    const expectedValues = expectedData.map(item => item.value);
+    const remainingValues = remainingData.map(item => item.value);
+
+    chartConfig.xAxis.data = timeSeriesData;
+    chartConfig.series[0].data = remainingValues;
+    chartConfig.series[1].data = expectedValues;
+  } else {
+    // Clear chart data if no data available
+    chartConfig.xAxis.data = [];
+    chartConfig.series[0].data = [];
+    chartConfig.series[1].data = [];
+  }
+
+  chartInstance.setOption(chartConfig);
+};
+
+// ===== Lifecycle Hooks =====
 onMounted(async () => {
+  // Load initial chart data
   await loadChartData();
 
-  burnDownEcharts = echarts.init(chartRef.value);
-  burnDownEcharts.setOption(burnDownEchartsConfig);
+  // Initialize ECharts instance
+  chartInstance = echarts.init(chartRef.value);
+  chartInstance.setOption(chartConfig);
 
-  watch([() => burnDownTarget.value, () => burnDownData.value], () => {
-    if (burnDownData.value) {
-      const xData = (burnDownData.value[burnDownTarget.value]?.expected || []).map(i => i.timeSeries);
-      const expectedYData = (burnDownData.value[burnDownTarget.value]?.expected || []).map(i => i.value);
-      const remainingYData = (burnDownData.value[burnDownTarget.value]?.remaining || []).map(i => i.value);
-      burnDownEchartsConfig.xAxis.data = xData;
-      burnDownEchartsConfig.series[0].data = remainingYData;
-      burnDownEchartsConfig.series[1].data = expectedYData;
-    } else {
-      burnDownEchartsConfig.xAxis.data = [];
-      burnDownEchartsConfig.series[0].data = [];
-      burnDownEchartsConfig.series[1].data = [];
-    }
-    burnDownEcharts.setOption(burnDownEchartsConfig);
-  }, { immediate: true });
+  // Watch for changes in chart type or data and update chart accordingly
+  watch([() => selectedChartType.value, () => chartData.value], updateChartData, { immediate: true });
 });
 
 </script>
 <template>
-  <RadioGroup v-model:value="burnDownTarget" :options="burnDownOpt" />
+  <RadioGroup v-model:value="selectedChartType" :options="chartTypeOptions" />
   <div ref="chartRef" class="border rounded p-2 my-3 h-60">
   </div>
 </template>

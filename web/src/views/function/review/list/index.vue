@@ -11,6 +11,7 @@ import { useI18n } from 'vue-i18n';
 import { ReviewInfo } from '../types';
 
 import SearchPanel from '@/views/function/review/list/SearchPanel.vue';
+import {TIME_FORMAT} from "@/utils/constant";
 
 type Props = {
   projectId: string;
@@ -320,7 +321,7 @@ const searchPanelOptions = [
     valueType: 'start',
     op: 'GREATER_THAN_EQUAL',
     placeholder: t('caseReview.list.reviewStartTimeGreaterEqual'),
-    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', 'HH:mm:ss') },
+    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
     allowClear: true
   },
   {
@@ -329,7 +330,7 @@ const searchPanelOptions = [
     valueType: 'start',
     op: 'LESS_THAN_EQUAL',
     placeholder: t('caseReview.list.reviewDeadlineTimeLessEqual'),
-    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', 'HH:mm:ss') },
+    showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
     allowClear: true
   }
 ];

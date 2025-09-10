@@ -3,14 +3,15 @@ import { computed, inject, nextTick, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Icon, Input, notification, Select, Spin } from '@xcan-angus/vue-ui';
 import { Button, DatePicker, Form, FormItem, Popover } from 'ant-design-vue';
-import { EnumMessage, EvalWorkloadMethod, utils, TESTER, enumUtils } from '@xcan-angus/infra';
+import { EnumMessage, enumUtils, EvalWorkloadMethod, TESTER, utils } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
-import { task, project } from '@/api/tester';
+import { project, task } from '@/api/tester';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import RichEditor from '@/components/richEditor/index.vue';
 
 import { EditFormState, MeetingInfo } from '../types';
+import { TaskMeetingType } from '@/enums/enums';
 
 type Props = {
   projectId: string;
@@ -49,7 +50,7 @@ const formState = ref<EditFormState>({
   subject: '',
   timeEnd: '',
   timeStart: '',
-  type: 'DAILY_STANDUP'
+  type: TaskMeetingType.DAILY_STANDUP
 });
 
 const loading = ref(false);
@@ -92,7 +93,6 @@ const editOk = async () => {
   const id = params.id;
   const name = params.subject;
   updateTabPane({ _id: id, name });
-  // 更新数据名称
   if (dataSource.value) {
     dataSource.value.subject = name;
   }
@@ -130,7 +130,7 @@ const cancel = () => {
   deleteTabPane([props.data._id]);
 };
 
-const loadEnums = async () => {
+const loadEnums = () => {
   evalWorkloadMethodOptions.value = enumUtils.enumToMessages(EvalWorkloadMethod);
 };
 
@@ -173,7 +173,7 @@ const setFormData = (data: MeetingInfo) => {
       subject: '',
       timeEnd: '',
       timeStart: '',
-      type: 'DAILY_STANDUP'
+      type: TaskMeetingType.DAILY_STANDUP
     };
     return;
   }
@@ -241,18 +241,6 @@ onMounted(async () => {
   }, { immediate: true });
 });
 
-// const validateDate = async (_rule: Rule, value: string) => {
-//   if (!value) {
-//     return Promise.reject(new error('请选择会议时间'));
-//   } else if (!value[0]) {
-//     return Promise.reject(new error('请选择会议开始时间'));
-//   } else if (!value[1]) {
-//     return Promise.reject(new error('请选择会议截止时间'));
-//   } else {
-//     return Promise.resolve();
-//   }
-// };
-
 const contentRichRef = ref();
 const validateDescRequired = async () => {
   if (!formState.value.content) {
@@ -266,8 +254,8 @@ const validateDescRequired = async () => {
 
   if (valuesObj.length < 2) {
     if (valuesObj.length === 1) {
-      const inserValue = valuesObj[0].insert.replaceAll('\n', '');
-      if (!inserValue) {
+      const insertValue = valuesObj[0].insert.replaceAll('\n', '');
+      if (!insertValue) {
         return Promise.reject(new Error(t('taskMeeting.messages.contentRequired')));
       }
     }
@@ -357,7 +345,6 @@ const fieldNames = {
               }"
               :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`">
             </Select>
-            <!-- <Icon icon="" class="text-tips text-3.5 cursor-pointer" /> -->
           </div>
         </FormItem>
       </div>
@@ -422,7 +409,6 @@ const fieldNames = {
               :options="members"
               :fieldNames="fieldNames"
               class="flex-1 min-w-0" />
-            <!-- <Icon icon="" class="text-tips text-3.5 cursor-pointer" /> -->
           </div>
         </FormItem>
       </div>
@@ -440,7 +426,6 @@ const fieldNames = {
             :fieldNames="fieldNames"
             mode="multiple"
             class="flex-1 min-w-0" />
-          <!-- <Icon icon="" class="text-tips text-3.5 cursor-pointer" /> -->
         </div>
       </FormItem>
       <FormItem

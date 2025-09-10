@@ -4,16 +4,13 @@ import { useI18n } from 'vue-i18n';
 import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
-import { appContext } from '@xcan-angus/infra';
+import { appContext, PageQuery } from '@xcan-angus/infra';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import { TaskMeetingType } from '@/enums/enums';
+import {LoadingProps} from "@/types/types";
 
-interface Props {
-  loading: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<LoadingProps>(), {
   loading: false
 });
 
@@ -23,7 +20,7 @@ type OrderSortKey = 'ASC' | 'DESC';
 const { t } = useI18n();
 const emits = defineEmits<{(e: 'change', value: {
   orderBy?: string;
-  orderSort?: 'ASC'|'DESC';
+  orderSort?: PageQuery.OrderSort;
   filters: {key: string; op: string; value: string|string[]}[];
 }):void,
  (e: 'refresh'):void}>();
@@ -75,17 +72,17 @@ const sortMenuItems: {
   {
     name: t('taskMeeting.sort.byCreateTime'),
     key: 'createdDate',
-    orderSort: 'DESC'
+    orderSort: PageQuery.OrderSort.Desc
   },
   {
     name: t('taskMeeting.sort.byCreator'),
     key: 'createdBy',
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   },
   {
     name: t('taskMeeting.sort.bySubject'),
     key: 'subject',
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   }
 ];
 
@@ -148,18 +145,6 @@ const formatDateString = (key: string) => {
   }
 
   return [startDate ? startDate.format(DATE_TIME_FORMAT) : '', endDate ? endDate.format(DATE_TIME_FORMAT) : ''];
-
-  // return [
-  //   startDate ? {
-  //     value: startDate.format(DATE_TIME_FORMAT),
-  //     op: 'GREATER_THAN_EQUAL',
-  //     key: 'createdDate'
-  //   } : '',
-  //   endDate ? {
-  //     value: endDate.format(DATE_TIME_FORMAT),
-  //     op: 'LESS_THAN_EQUAL',
-  //     key: 'createdDate'
-  //   }  : ''].filter(Boolean);
 };
 
 const getParams = () => {
@@ -235,7 +220,6 @@ const menuItemClick = (data) => {
     if (key === '') {
       selectedMenuMap.value = { '': true };
       quickSearchFilters.value = [];
-      // 清空搜索面板
       if (typeof searchPanelRef.value?.clear === 'function') {
         searchPanelRef.value.clear();
         searchChangeFlag = true;
@@ -289,9 +273,6 @@ const menuItemClick = (data) => {
 const refresh = () => {
   emits('refresh');
 };
-
-onMounted(() => {
-});
 </script>
 <template>
   <div class="mt-2.5 mb-3.5">
