@@ -1053,7 +1053,22 @@
             "diskReadsRate": "每秒磁盘读次数(IO/s)",
             "diskWritesRate": "每秒磁盘写次数(IO/s)",
             "diskReadBytesRate": "每秒磁盘读取 MB 数(MB/s)",
-            "diskWriteBytesRate": "每秒磁盘写入 MB 数(MB/s)"
+            "diskWriteBytesRate": "每秒磁盘写入 MB 数(MB/s)",
+            "rxBytes": "接收到的总字节(GB)",
+            "rxBytesRate": "每秒接收的 MB 数(MB/s)",
+            "rxErrors": "接收到的错误包数(packets)",
+            "txBytes": "发送的总字节(GB)",
+            "txBytesRate": "每秒发送的 MB 数(MB/s)",
+            "free": "物理内存剩余量(GB)",
+            "used": "物理内存使用量(GB)",
+            "freePercent": "实际空闲物理内存百分比(%)",
+            "usedPercent": "实际使用物理内存的百分比(%)",
+            "actualFree": "实际空闲内存(GB)",
+            "actualUsed": "实际使用内存(GB)",
+            "actualFreePercent": "空闲内存占用的百分比(%)",
+            "actualUsedPercent": "使用内存占用的百分比(%)",
+            "swapFree": "交换区剩余量(GB)",
+            "swapUsed": "交换区使用量(GB)"
           }
         },
         "chartConfig": {
