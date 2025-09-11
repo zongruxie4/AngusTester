@@ -13,6 +13,9 @@ import {
   TaskPriority,
   Tooltip
 } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 import { Button } from 'ant-design-vue';
 import { TESTER, utils, duration } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
@@ -22,7 +25,6 @@ import { ai } from '@/api/gm';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 import { TaskInfo } from '../types';
-import {TIME_FORMAT} from "@/utils/constant";
 
 interface Props {
   visible: boolean;
@@ -40,7 +42,7 @@ const emit = defineEmits<{
   (event: 'ok'): void;
 }>();
 
-const MAX_LENGTH = 200;// 最大允许创建200条
+const MAX_LENGTH = 200; // 最大允许创建200条
 
 const aiEnabled = inject('aiEnabled', ref(false));
 
@@ -158,7 +160,7 @@ const cancel = () => {
 
 const ok = async () => {
   if (idList.value?.length > MAX_LENGTH) {
-    notification.warning('最大允许添加200条');
+    notification.warning(t('backlog.aiGenerateTask.maxTasksWarning'));
     return;
   }
 
@@ -320,14 +322,14 @@ const excluedType = (option: {value: string; message: string}) => {
     :width="1200"
     :confirmLoading="confirmLoading"
     :okButtonProps="okButtonProps"
-    title="自动创建Backlog"
+    :title="t('backlog.aiGenerateTask.title')"
     @cancel="cancel"
     @ok="ok">
-    <Spin :spinning="generating||confirmLoading" :tip="generating?'生成中...':''">
+    <Spin :spinning="generating||confirmLoading" :tip="generating ? t('backlog.aiGenerateTask.generating') : ''">
       <div class="flex flex-nowrap justify-between mb-3.5 space-x-5">
         <Input
           v-model:value="aiKeywords"
-          :placeholder="`给AI智能体描述您的需求，如：生成10个主要的Wiki系统产品Backlog。`"
+          :placeholder="t('backlog.aiGenerateTask.aiKeywordsPlaceholder')"
           trim
           allowClear
           class="flex-1"
@@ -337,41 +339,41 @@ const excluedType = (option: {value: string; message: string}) => {
           type="primary"
           size="small"
           @click="toGenerate">
-          生成
+          {{ t('backlog.aiGenerateTask.generate') }}
         </Button>
       </div>
 
       <div class="head-container flex items-center space-x-2.5 mb-1.5 px-2 rounded">
         <div class="w-27 space-x-0.5 head-item-container">
           <IconRequired />
-          <span>类型</span>
+          <span>{{ t('backlog.aiGenerateTask.headers.type') }}</span>
         </div>
 
         <div class="w-20 space-x-0.5 head-item-container">
           <IconRequired />
-          <span>优先级</span>
+          <span>{{ t('backlog.aiGenerateTask.headers.priority') }}</span>
         </div>
 
         <div class="flex-1 space-x-0.5 head-item-container">
           <IconRequired />
-          <span>名称</span>
+          <span>{{ t('backlog.aiGenerateTask.headers.name') }}</span>
         </div>
 
         <div class="w-20 space-x-0.5 head-item-container">
-          <span>评估工作量</span>
+          <span>{{ t('backlog.aiGenerateTask.headers.evalWorkload') }}</span>
         </div>
 
         <div class="w-25 space-x-0.5 head-item-container">
           <IconRequired />
-          <span>经办人</span>
+          <span>{{ t('backlog.aiGenerateTask.headers.assignee') }}</span>
         </div>
 
         <div class="w-25 space-x-0.5 head-item-container">
-          <span>确认人</span>
+          <span>{{ t('backlog.aiGenerateTask.headers.confirmor') }}</span>
         </div>
 
         <div class="w-42 space-x-0.5 head-item-container">
-          <span>截止时间</span>
+          <span>{{ t('backlog.aiGenerateTask.headers.deadline') }}</span>
         </div>
 
         <div class="w-5 h-5"></div>
@@ -387,7 +389,7 @@ const excluedType = (option: {value: string; message: string}) => {
             :error="taskTypeErrorSet.has(item)"
             :excludes="excluedType"
             enumKey="TaskType"
-            placeholder="任务类型"
+            :placeholder="t('backlog.aiGenerateTask.placeholders.taskType')"
             class="w-27 mr-2.5"
             @change="taskTypeChange(item)">
             <template #option="record">
@@ -402,7 +404,7 @@ const excluedType = (option: {value: string; message: string}) => {
             v-model:value="dataMap[item].priority"
             :error="priorityErrorSet.has(item)"
             enumKey="Priority"
-            placeholder="优先级"
+            :placeholder="t('backlog.aiGenerateTask.placeholders.priority')"
             class="w-20 mr-2.5"
             @change="priorityChange(item)">
             <template #option="record">
@@ -411,7 +413,7 @@ const excluedType = (option: {value: string; message: string}) => {
           </SelectEnum>
 
           <Tooltip
-            title="名称重复"
+            :title="t('backlog.aiGenerateTask.tooltips.nameRepeat')"
             internal
             placement="right"
             destroyTooltipOnHide
@@ -422,8 +424,8 @@ const excluedType = (option: {value: string; message: string}) => {
               :maxlength="200"
               trim
               class="flex-1 mr-2.5"
-              placeholder="任务名称，最大支持200字符"
-              @change="nameChange($event,item)" />
+              :placeholder="t('backlog.aiGenerateTask.placeholders.taskName')"
+              @change="nameChange()" />
           </Tooltip>
 
           <Input
@@ -434,11 +436,11 @@ const excluedType = (option: {value: string; message: string}) => {
             trimAll
             :min="0.1"
             :max="1000"
-            placeholder="0.1~1000" />
+            :placeholder="t('backlog.aiGenerateTask.placeholders.evalWorkload')" />
 
           <SelectUser
             v-model:value="dataMap[item].assigneeId"
-            placeholder="经办人"
+            :placeholder="t('backlog.aiGenerateTask.placeholders.assignee')"
             allowClear
             class="w-25 mr-2.5"
             :action="`${TESTER}/project/${props.projectId}/member/user`"
@@ -446,14 +448,14 @@ const excluedType = (option: {value: string; message: string}) => {
 
           <SelectUser
             v-model:value="dataMap[item].confirmorId"
-            placeholder="确认人"
+            :placeholder="t('backlog.aiGenerateTask.placeholders.confirmor')"
             allowClear
             class="w-25 mr-2.5"
             :action="`${TESTER}/project/${props.projectId}/member/user`"
             :maxlength="80" />
 
           <Tooltip
-            title="截止时间必须大于当前时间"
+            :title="t('backlog.aiGenerateTask.tooltips.deadlineDate')"
             internal
             placement="right"
             destroyTooltipOnHide
@@ -463,8 +465,8 @@ const excluedType = (option: {value: string; message: string}) => {
               :error="deadlineDateErrorSet.has(item)"
               :showNow="false"
               :disabledDate="disabledDate"
-              :showTime="{ hideDisabledOptions: true, format: TIME_FORMAT }"
-              placeholder="截止时间"
+              :showTime="{ hideDisabledOptions: true, format: 'HH:mm:ss' }"
+              :placeholder="t('backlog.aiGenerateTask.placeholders.deadline')"
               type="date"
               size="small"
               showToday
@@ -487,7 +489,7 @@ const excluedType = (option: {value: string; message: string}) => {
         class="flex items-center px-0 mt-1"
         @click="toAdd">
         <Icon icon="icon-jia" class="mr-1 text-3.5" />
-        <span>继续添加</span>
+        <span>{{ t('backlog.aiGenerateTask.continueAdd') }}</span>
       </Button>
     </Spin>
   </Modal>

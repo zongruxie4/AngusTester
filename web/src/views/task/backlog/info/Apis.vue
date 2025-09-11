@@ -12,6 +12,9 @@ import {
   TaskPriority,
   TaskStatus
 } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { task, modules } from '@/api/tester';
@@ -443,12 +446,12 @@ const onePassText = computed(() => {
 <template>
   <div class="h-full text-3 leading-5 px-5 overflow-auto">
     <div>
-      <div class="text-theme-title mb-2.5 font-semibold">基本信息</div>
+      <div class="text-theme-title mb-2.5 font-semibold">{{ t('backlog.info.apis.basicInfo') }}</div>
 
       <div class="space-y-2.5">
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>编号</span>
+            <span>{{ t('backlog.info.apis.number') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -457,7 +460,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>名称</span>
+            <span>{{ t('backlog.info.apis.name') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -479,7 +482,7 @@ const onePassText = computed(() => {
               :maxlength="200"
               trim
               class="edit-container"
-              placeholder="任务名称，最大支持200字符"
+              :placeholder="t('backlog.info.apis.placeholders.taskName')"
               @blur="nameBlur"
               @pressEnter="namePressEnter" />
           </AsyncComponent>
@@ -487,7 +490,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>类型</span>
+            <span>{{ t('backlog.info.apis.type') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -499,7 +502,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>测试类型</span>
+            <span>{{ t('backlog.info.apis.testType') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -508,7 +511,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>任务状态</span>
+            <span>{{ t('backlog.info.apis.taskStatus') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -518,14 +521,14 @@ const onePassText = computed(() => {
               v-if="overdue"
               class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
               style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-              <span class="inline-block transform-gpu scale-90">已逾期</span>
+              <span class="inline-block transform-gpu scale-90">{{ t('backlog.info.apis.overdue') }}</span>
             </span>
           </div>
         </div>
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>所属迭代</span>
+            <span>{{ t('backlog.info.apis.sprint') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -547,7 +550,7 @@ const onePassText = computed(() => {
               :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
               :fieldNames="{ value: 'id', label: 'name' }"
               showSearch
-              placeholder="选择或查询迭代"
+              :placeholder="t('backlog.info.apis.placeholders.selectOrSearchSprint')"
               class="edit-container"
               @change="sprintChange"
               @blur="sprintBlur" />
@@ -556,7 +559,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>所属模块</span>
+            <span>{{ t('backlog.info.apis.module') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -582,7 +585,7 @@ const onePassText = computed(() => {
                 showSearch
                 allowClear
                 class="flex-1"
-                placeholder="选择或查模块">
+                :placeholder="t('backlog.info.apis.placeholders.selectOrSearchModule')">
                 <template #title="item">
                   <div class="flex items-center" :title="item.name">
                     <Icon icon="icon-mokuai" class="mr-1 text-3.5" />
@@ -604,7 +607,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>父任务</span>
+            <span>{{ t('backlog.info.apis.parentTask') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -615,7 +618,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>所属服务</span>
+            <span>{{ t('backlog.info.apis.service') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -624,7 +627,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>接口</span>
+            <span>{{ t('backlog.info.apis.api') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -633,7 +636,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>优先级</span>
+            <span>{{ t('backlog.info.apis.priority') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -653,7 +656,7 @@ const onePassText = computed(() => {
               ref="priorityRef"
               v-model:value="priorityValue"
               enumKey="Priority"
-              placeholder="请选择优先级"
+              :placeholder="t('backlog.info.apis.placeholders.selectPriority')"
               class="edit-container max-w-52"
               @change="priorityChange"
               @blur="priorityBlur">
@@ -666,7 +669,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>工作量评估方式</span>
+            <span>{{ t('backlog.info.apis.evalWorkloadMethod') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -677,7 +680,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ evalWorkloadMethod === 'STORY_POINT' ? '评估故事点' : '评估工时' }}</span>
+            <span>{{ evalWorkloadMethod === 'STORY_POINT' ? t('backlog.info.apis.evalStoryPoint') : t('backlog.info.apis.evalWorkload') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -701,7 +704,7 @@ const onePassText = computed(() => {
               trimAll
               :min="0.1"
               :max="1000"
-              placeholder="最小0.1，最大1000，最多支持2位小数"
+              :placeholder="t('backlog.info.apis.placeholders.workloadRange')"
               @blur="evalWorkloadBlur"
               @pressEnter="evalWorkloadPressEnter" />
           </AsyncComponent>
@@ -709,7 +712,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ evalWorkloadMethod === 'STORY_POINT' ? '实际故事点' : '实际工时' }}</span>
+            <span>{{ evalWorkloadMethod === 'STORY_POINT' ? t('backlog.info.apis.actualStoryPoint') : t('backlog.info.apis.actualWorkload') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -733,7 +736,7 @@ const onePassText = computed(() => {
               trimAll
               :min="0.1"
               :max="1000"
-              placeholder="最小0.1，最大1000，最多支持2位小数"
+              :placeholder="t('backlog.info.apis.placeholders.workloadRange')"
               @blur="actualWorkloadBlur"
               @pressEnter="actualWorkloadPressEnter" />
           </AsyncComponent>
@@ -741,7 +744,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>处理次数</span>
+            <span>{{ t('backlog.info.apis.processCount') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -750,7 +753,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>处理失败次数</span>
+            <span>{{ t('backlog.info.apis.processFailCount') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -759,7 +762,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>标签</span>
+            <span>{{ t('backlog.info.apis.tags') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -793,10 +796,10 @@ const onePassText = computed(() => {
               :action="`${TESTER}/task/tag?projectId=${props.projectId}&fullTextSearch=true`"
               showSearch
               allowClear
-              placeholder="最多可添加5个标签"
+              :placeholder="t('backlog.info.apis.placeholders.maxTags')"
               mode="multiple"
               class="edit-container"
-              notFoundContent="请联系管理员，前往”应用管理“-”任务管理“-”任务标签“配置任务标签。"
+              :notFoundContent="t('backlog.info.apis.messages.contactAdminForTags')"
               @change="tagChange"
               @blur="tagBlur" />
           </AsyncComponent>
@@ -804,7 +807,7 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>一次性通过</span>
+            <span>{{ t('backlog.info.apis.oneTimePass') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -814,7 +817,7 @@ const onePassText = computed(() => {
 
       <div class="flex items-start">
         <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>软件版本</span>
+            <span>{{ t('backlog.info.apis.softwareVersion') }}</span>
           <Colon class="w-1" />
         </div>
         <div class="flex-1">
@@ -823,7 +826,7 @@ const onePassText = computed(() => {
               ref="versionRef"
               v-model:value="versionValue"
               allowClear
-              placeholder="请选择所属版本"
+              :placeholder="t('backlog.info.apis.placeholders.selectSoftwareVersion')"
               lazy
               class="w-full"
               :action="`${TESTER}/software/version?projectId=${props.projectId}`"
@@ -858,7 +861,7 @@ const onePassText = computed(() => {
 
       <div class="flex items-start">
         <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>计划外任务</span>
+            <span>{{ t('backlog.info.apis.unplannedTask') }}</span>
           <Colon class="w-1" />
         </div>
         <div>

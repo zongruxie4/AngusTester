@@ -205,7 +205,7 @@ const validateDate = async (_rule: Rule, value: string) => {
   // 编辑时不校验截止时间是否超过迭代的截止时间
   if (sprintDeadlineDate.value) {
     if (dayjs(value).isAfter(dayjs(sprintDeadlineDate.value), 'seconds')) {
-      return Promise.reject(new Error(`超过了迭代截止时间(${sprintDeadlineDate.value})`));
+      return Promise.reject(new Error(t('backlog.editForm.messages.sprintDeadlineExceeded', { deadline: sprintDeadlineDate.value })));
     }
   }
 
@@ -379,7 +379,7 @@ const createHandler = async (continueFlag = false) => {
     return;
   }
 
-  notification.success('任务添加成功');
+  notification.success(t('backlog.editForm.messages.taskAddedSuccess'));
   emit('ok', res?.data);
 
   if (!continueFlag) {
@@ -396,7 +396,7 @@ const editHandler = async () => {
     return;
   }
 
-  notification.success('任务编辑成功');
+  notification.success(t('backlog.editForm.messages.taskEditedSuccess'));
   const data = await loadData();
   emit('ok', data);
   cancel();
@@ -558,10 +558,10 @@ const userId = computed(() => {
 
 const title = computed(() => {
   if (props.taskId) {
-    return '编辑任务';
+    return t('backlog.editForm.title.edit');
   }
 
-  return '添加任务';
+  return t('backlog.editForm.title.add');
 });
 
 const taskTypeReadonly = computed(() => {
@@ -584,7 +584,7 @@ const showTestType = computed(() => {
 const descRichRef = ref();
 const validateDesc = async () => {
   if (descRichRef.value && descRichRef.value.getLength() > 6000) {
-    return Promise.reject(new Error('描述最大支持6000个字符'));
+    return Promise.reject(new Error(t('backlog.editForm.messages.descriptionMaxLength')));
   }
   return Promise.resolve();
 };
@@ -676,43 +676,43 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
               class="flex-1/2"
               required>
               <template #label>
-                类型
+                {{ t('backlog.editForm.labels.type') }}
                 <Popover>
                   <template #content>
                     <div class="flex items-center leading-5">
                       <div class="space-y-2 flex-shrink-0">
                         <div class="flex items-center">
                           <IconTask value="REQUIREMENT" class="mr-1 text-4" />
-                          <span>需求</span>
+                          <span>{{ t('backlog.editForm.taskTypes.requirement') }}</span>
                         </div>
                         <div class="flex items-center">
                           <IconTask value="STORY" class="mr-1 text-4" />
-                          <span>故事</span>
+                          <span>{{ t('backlog.editForm.taskTypes.story') }}</span>
                         </div>
                         <div class="flex items-center">
                           <IconTask value="TASK" class="mr-1 text-4" />
-                          <span>任务</span>
+                          <span>{{ t('backlog.editForm.taskTypes.task') }}</span>
                         </div>
                         <div class="flex items-center">
                           <IconTask value="BUG" class="mr-1 text-4" />
-                          <span>缺陷</span>
+                          <span>{{ t('backlog.editForm.taskTypes.bug') }}</span>
                         </div>
                         <div class="flex items-center">
                           <IconTask value="API_TEST" class="mr-1 text-4" />
-                          <span>接口测试</span>
+                          <span>{{ t('backlog.editForm.taskTypes.apiTest') }}</span>
                         </div>
                         <div class="flex items-center">
                           <IconTask value="SCENARIO_TEST" class="mr-1 text-4" />
-                          <span>场景测试</span>
+                          <span>{{ t('backlog.editForm.taskTypes.scenarioTest') }}</span>
                         </div>
                       </div>
                       <div class="ml-3.5 space-y-2">
-                        <div>用户对业务、功能等的期望或要求，描述有广泛性。</div>
-                        <div>用户想要实现的具体目标或期望，通常以简洁、可理解的语言进行描述，如：作为 &lt;角色&gt;，我希望 &lt;目标&gt;，以便 &lt;收益&gt;。</div>
-                        <div>一般工作事项或活动</div>
-                        <div>程序错误或漏洞</div>
-                        <div>接口的功能、性能、稳定性测试任务</div>
-                        <div>场景的功能、性能、稳定性测试任务</div>
+                        <div>{{ t('backlog.editForm.taskTypeDescriptions.requirement') }}</div>
+                        <div>{{ t('backlog.editForm.taskTypeDescriptions.story') }}</div>
+                        <div>{{ t('backlog.editForm.taskTypeDescriptions.task') }}</div>
+                        <div>{{ t('backlog.editForm.taskTypeDescriptions.bug') }}</div>
+                        <div>{{ t('backlog.editForm.taskTypeDescriptions.apiTest') }}</div>
+                        <div>{{ t('backlog.editForm.taskTypeDescriptions.scenarioTest') }}</div>
                       </div>
                     </div>
                   </template>
@@ -726,7 +726,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                 :readonly="taskTypeReadonly"
                 internal
                 enumKey="TaskType"
-                placeholder="请选择任务类型"
+                :placeholder="t('backlog.editForm.placeholders.selectTaskType')"
                 style="width: 280px;"
                 @change="taskTypeChange">
                 <template #option="record">
@@ -739,7 +739,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
             </FormItem>
             <FormItem
               name="priority"
-              label="优先级"
+              :label="t('backlog.editForm.labels.priority')"
               class="flex-1/2"
               required>
               <SelectEnum
@@ -747,7 +747,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                 :allowClear="false"
                 internal
                 enumKey="Priority"
-                placeholder="请选择优先级">
+                :placeholder="t('backlog.editForm.placeholders.selectPriority')">
                 <template #option="record">
                   <TaskPriority :value="record" />
                 </template>
@@ -759,7 +759,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
             <div class="flex space-x-4">
               <FormItem
                 name="bugLevel"
-                label="缺陷等级"
+                :label="t('backlog.editForm.labels.bugLevel')"
                 class="flex-1/2">
                 <SelectEnum
                   v-model:value="formState.bugLevel"
@@ -770,7 +770,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
               </FormItem>
               <FormItem
                 name="missingBugFlag"
-                label="是否漏测缺陷"
+                :label="t('backlog.editForm.labels.missingBugFlag')"
                 class="flex-1/2">
                 <Select
                   v-model:value="formState.missingBugFlag"
@@ -783,14 +783,14 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
           <div v-if="formState.taskType === 'SCENARIO_TEST'" class="flex space-x-4">
             <FormItem
               name="targetId"
-              label="场景"
+              :label="t('backlog.editForm.labels.scenario')"
               class="flex-1 min-w-0"
-              :rules="{ required: true, message: '请选择场景' }">
+              :rules="{ required: true, message: t('backlog.editForm.messages.selectScenario') }">
               <Select
                 v-model:value="formState.targetId"
                 showSearch
                 internal
-                placeholder="请选择场景"
+                :placeholder="t('backlog.editForm.placeholders.selectScenario')"
                 :fieldNames="{ label: 'name', value: 'id' }"
                 :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
                 :readonly="!!props.taskId" />
@@ -799,7 +799,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
             <FormItem
               v-if="showTestType"
               name="testType"
-              label="测试类型"
+              :label="t('backlog.editForm.labels.testType')"
               class="flex-1"
               required>
               <SelectEnum
@@ -807,7 +807,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                 :allowClear="false"
                 internal
                 enumKey="TestType"
-                placeholder="请选择测试类型"
+                :placeholder="t('backlog.editForm.placeholders.selectTestType')"
                 style="width: 280px;" />
             </FormItem>
           </div>
@@ -815,8 +815,8 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
           <template v-if="formState.taskType === 'API_TEST'">
             <FormItem
               name="targetParentId"
-              label="所属服务"
-              :rules="{ required: true, message: '请选择服务' }">
+              :label="t('backlog.editForm.labels.service')"
+              :rules="{ required: true, message: t('backlog.editForm.messages.selectService') }">
               <Select
                 v-model:value="formState.targetParentId"
                 :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
@@ -826,7 +826,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                 internal
                 defaultActiveFirstOption
                 showSearch
-                placeholder="选择或查询服务">
+                :placeholder="t('backlog.editForm.placeholders.selectOrSearchService')">
                 <template #option="record">
                   <div class="text-3 leading-3 flex items-center h-6.5">
                     <IconText
@@ -842,15 +842,15 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
 
             <div class="flex space-x-4">
               <FormItem
-                label="接口"
+                :label="t('backlog.editForm.labels.api')"
                 name="targetId"
                 class="flex-1 min-w-0"
-                :rules="{ required: true, message: '请选择接口' }">
+                :rules="{ required: true, message: t('backlog.editForm.messages.selectApi') }">
                 <Select
                   v-model:value="formState.targetId"
                   showSearch
                   internal
-                  placeholder="请选择接口"
+                  :placeholder="t('backlog.editForm.placeholders.selectApi')"
                   :fieldNames="{ label: 'summary', value: 'id' }"
                   :action="`${TESTER}/apis?projectId=${props.projectId}&serviceId=${formState.targetParentId}&fullTextSearch=true`"
                   :readonly="!!props.taskId || !formState.targetParentId" />
@@ -859,7 +859,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
               <FormItem
                 v-if="showTestType"
                 name="testType"
-                label="测试类型"
+                :label="t('backlog.editForm.labels.testType')"
                 class="flex-1"
                 required>
                 <SelectEnum
@@ -867,7 +867,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                   :allowClear="false"
                   internal
                   enumKey="TestType"
-                  placeholder="请选择测试类型"
+                  :placeholder="t('backlog.editForm.placeholders.selectTestType')"
                   style="width: 280px;" />
               </FormItem>
             </div>
@@ -877,12 +877,12 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
             <FormItem
               name="assigneeId"
               class="flex-1/2"
-              :rules="{ required: true, message: '选择经办人' }">
+              :rules="{ required: true, message: t('backlog.editForm.messages.selectAssignee') }">
               <template #label>
-                经办人<Popover placement="rightTop">
+                {{ t('backlog.editForm.labels.assignee') }}<Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      负责实际执行分配的工作任务。
+                      {{ t('backlog.editForm.descriptions.assignee') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -891,7 +891,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
               <div class="flex items-center ">
                 <SelectUser
                   v-model:value="formState.assigneeId"
-                  placeholder="选择经办人"
+                  :placeholder="t('backlog.editForm.placeholders.selectAssignee')"
                   internal
                   class="flex-1 min-w-0"
                   :defaultOptions="assigneeDefaultOptions"
@@ -902,17 +902,17 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
                   @click="assignToMe('assigneeId')">
-                  指派给我
+                  {{ t('backlog.editForm.buttons.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
 
             <FormItem name="confirmorId" class="flex-1/2">
               <template #label>
-                确认人<Popover placement="rightTop">
+                {{ t('backlog.editForm.labels.confirmor') }}<Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      负责核实和验证工作结果的人员，指定后会自动进入确认流程。
+                      {{ t('backlog.editForm.descriptions.confirmor') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -921,7 +921,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
               <div class="flex items-center">
                 <SelectUser
                   v-model:value="formState.confirmorId"
-                  placeholder="选择确认人"
+                  :placeholder="t('backlog.editForm.placeholders.selectConfirmor')"
                   internal
                   allowClear
                   class="flex-1 min-w-0"
@@ -933,7 +933,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
                   @click="assignToMe('confirmorId')">
-                  指派给我
+                  {{ t('backlog.editForm.buttons.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
@@ -941,7 +941,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
 
           <div class="flex space-x-4">
             <FormItem
-              label="截止时间"
+              :label="t('backlog.editForm.labels.deadline')"
               name="deadlineDate"
               class="flex-1/2"
               :rules="{ required: true, validator: validateDate }">
@@ -958,10 +958,10 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
 
             <FormItem name="confirmorId" class="flex-1/2">
               <template #label>
-                测试人<Popover placement="rightTop">
+                {{ t('backlog.editForm.labels.tester') }}<Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      负责测试和验证产品功能或服务质量的人员。
+                      {{ t('backlog.editForm.descriptions.tester') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -970,7 +970,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
               <div class="flex items-center">
                 <SelectUser
                   v-model:value="formState.testerId"
-                  placeholder="选择测试人"
+                  :placeholder="t('backlog.editForm.placeholders.selectTester')"
                   internal
                   allowClear
                   class="flex-1 min-w-0"
@@ -982,7 +982,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
                   @click="assignToMe('testerId')">
-                  指派给我
+                  {{ t('backlog.editForm.buttons.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
@@ -990,13 +990,13 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
 
           <FormItem
             name="description"
-            label="描述"
+            :label="t('backlog.editForm.labels.description')"
             :rules="{validator: validateDesc}">
             <AsyncComponent :visible="showEditor">
               <RichEditor
                 ref="descRichRef"
                 :value="formState.description"
-                :options="{placeholder: '任务描述，最大支持6000个字符'}"
+                :options="{placeholder: t('backlog.editForm.placeholders.taskDescription')}"
                 :height="340"
                 @change="editorChange"
                 @loadingChange="editorLoading" />
@@ -1005,7 +1005,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
         </div>
         <div class="w-80  pl-2 border-l">
           <FormItem
-            label="所属迭代"
+            :label="t('backlog.editForm.labels.sprint')"
             name="sprintId">
             <Select
               v-model:value="formState.sprintId"
@@ -1014,7 +1014,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
               :readonly="!!props.taskId"
               showSearch
               internal
-              placeholder="选择或查询迭代"
+              :placeholder="t('backlog.editForm.placeholders.selectOrSearchSprint')"
               @change="sprintChange">
               <template #option="record">
                 <div class="flex items-center" :title="record.name">
@@ -1025,7 +1025,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
             </Select>
           </FormItem>
 
-          <FormItem label="所属模块" name="moduleId">
+          <FormItem :label="t('backlog.editForm.labels.module')" name="moduleId">
             <TreeSelect
               v-model:value="formState.moduleId"
               :treeData="moduleTreeData"
@@ -1035,7 +1035,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
               size="small"
               showSearch
               allowClear
-              placeholder="选择或查模块">
+              :placeholder="t('backlog.editForm.placeholders.selectOrSearchModule')">
               <template #title="item">
                 <div class="flex items-center" :title="item.name">
                   <Icon icon="icon-mokuai" class="mr-1 text-3.5" />
@@ -1045,7 +1045,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
             </TreeSelect>
           </FormItem>
 
-          <FormItem label="父任务" name="parentTaskId">
+          <FormItem :label="t('backlog.editForm.labels.parentTask')" name="parentTaskId">
             <Select
               v-if="!!props.parentTaskId"
               :readonly="true"
@@ -1065,7 +1065,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
               v-model:value="formState.parentTaskId"
               showSearch
               internal
-              placeholder="请选择父任务"
+              :placeholder="t('backlog.editForm.placeholders.selectParentTask')"
               :excludes="taskIdExcludes"
               :fieldNames="{ label: 'name', value: 'id' }"
               :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`">
@@ -1082,11 +1082,11 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
             name="evalWorkload"
             :rules="{ required: formState.actualWorkload, validator: evalWorkloadValidateDate, trigger: 'change' }">
             <template #label>
-              {{ evalWorkloadMethod === 'STORY_POINT' ? '评估故事点' : '评估工时' }}
+              {{ evalWorkloadMethod === 'STORY_POINT' ? t('backlog.editForm.labels.evalStoryPoint') : t('backlog.editForm.labels.evalWorkload') }}
               <Popover placement="rightTop">
                 <template #content>
                   <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                    {{ evalWorkloadMethod === 'STORY_POINT' ? '工作任务量、综合难度、复杂度等的评估值。' : '工作评估所花费的时间，以小时为单位计算。' }}
+                    {{ evalWorkloadMethod === 'STORY_POINT' ? t('backlog.editForm.descriptions.evalStoryPoint') : t('backlog.editForm.descriptions.evalWorkload') }}
                   </div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
@@ -1099,18 +1099,18 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
               trimAll
               :min="0.1"
               :max="1000"
-              placeholder="最小0.1，最大1000，最多支持2位小数"
+              :placeholder="t('backlog.editForm.placeholders.workloadRange')"
               @blur="evalWorkloadChange($event.target.value)" />
           </FormItem>
 
           <template v-if="!!props.taskId">
             <FormItem name="actualWorkload">
               <template #label>
-                {{ evalWorkloadMethod === 'STORY_POINT' ? '实际故事点' : '实际工时' }}
+                {{ evalWorkloadMethod === 'STORY_POINT' ? t('backlog.editForm.labels.actualStoryPoint') : t('backlog.editForm.labels.actualWorkload') }}
                 <Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      {{ evalWorkloadMethod === 'STORY_POINT' ? '工作任务量、综合难度、复杂度等的实际值。' : '工作实际所花费的时间，以小时为单位计算。' }}
+                      {{ evalWorkloadMethod === 'STORY_POINT' ? t('backlog.editForm.descriptions.actualStoryPoint') : t('backlog.editForm.descriptions.actualWorkload') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
@@ -1122,7 +1122,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                 size="small"
                 dataType="float"
                 trimAll
-                placeholder="最小0.1，最大1000，最多支持2位小数"
+                :placeholder="t('backlog.editForm.placeholders.workloadRange')"
                 :min="0.1"
                 :max="1000"
                 @change="actualWorkloadChange($event.target.value)" />
@@ -1131,11 +1131,11 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
 
           <FormItem
             name="softwareVersion"
-            label="软件版本">
+            :label="t('backlog.editForm.labels.softwareVersion')">
             <Select
               v-model:value="formState.softwareVersion"
               allowClear
-              placeholder="请选择所属版本"
+              :placeholder="t('backlog.editForm.placeholders.selectSoftwareVersion')"
               :action="`${TESTER}/software/version?projectId=${props.projectId}`"
               :params="{filters: [{value: ['NOT_RELEASED', 'RELEASED'], key: 'status', op: 'IN'}]}"
               :fieldNames="{value:'name', label: 'name'}">
@@ -1146,10 +1146,10 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
             name="tagIds"
             class="relative">
             <template #label>
-              标签<Popover placement="rightTop">
+              {{ t('backlog.editForm.labels.tags') }}<Popover placement="rightTop">
                 <template #content>
                   <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                    “任务标签”可以帮助您组织有共同点的任务，例如“项目名称、迭代版本、业务标识”等。
+                    {{ t('backlog.editForm.descriptions.tags') }}
                   </div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -1165,14 +1165,14 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
               :maxTags="5"
               :allowClear="false"
               :action="`${TESTER}/tag?projectId=${props.projectId}&fullTextSearch=true`"
-              placeholder="最多可添加5个标签"
+              :placeholder="t('backlog.editForm.placeholders.maxTags')"
               mode="multiple"
-              notFoundContent="请联系管理员，前往”应用管理“-”任务管理“-”任务标签“配置任务标签。" />
+              :notFoundContent="t('backlog.editForm.messages.contactAdminForTags')" />
           </FormItem>
 
           <FormItem
             name="refTaskIds"
-            label="关联任务"
+            :label="t('backlog.editForm.labels.refTasks')"
             class="relative">
             <Select
               v-model:value="formState.refTaskIds"
@@ -1184,7 +1184,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
               :maxTagTextLength="15"
               :maxTags="20"
               :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`"
-              placeholder="最多可关联20个任务"
+              :placeholder="t('backlog.editForm.placeholders.maxRefTasks')"
               mode="multiple">
               <template #option="record">
                 <div class="flex items-center leading-4.5 overflow-hidden">
@@ -1196,7 +1196,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                     v-if="record.overdue"
                     class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2"
                     style="transform: scale(0.9);color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                    <span class="inline-block transform-gpu">已逾期</span>
+                    <span class="inline-block transform-gpu">{{ t('backlog.editForm.overdue') }}</span>
                   </div>
                 </div>
               </template>
@@ -1205,7 +1205,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
 
           <FormItem
             name="refCaseIds"
-            label="关联用例"
+            :label="t('backlog.editForm.labels.refCases')"
             class="relative">
             <Select
               v-model:value="formState.refCaseIds"
@@ -1217,7 +1217,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
               :maxTagTextLength="15"
               :maxTags="20"
               :action="`${TESTER}/func/case?projectId=${props.projectId}&fullTextSearch=true`"
-              placeholder="最多可关联20个用例"
+              :placeholder="t('backlog.editForm.placeholders.maxRefCases')"
               mode="multiple">
               <template #option="record">
                 <div class="flex items-center leading-4.5 overflow-hidden">
@@ -1229,14 +1229,14 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                     v-if="record.overdue"
                     class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2"
                     style="transform: scale(0.9);color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                    <span class="inline-block transform-gpu">已逾期</span>
+                    <span class="inline-block transform-gpu">{{ t('backlog.editForm.overdue') }}</span>
                   </div>
                 </div>
               </template>
             </Select>
           </FormItem>
 
-          <FormItem label="附件">
+          <FormItem :label="t('backlog.editForm.labels.attachments')">
             <!-- <div style="height: 90px; border-color: rgba(0, 119, 255);background-color: rgba(0, 119, 255, 4%);"
               class="border border-dashed rounded px-2 py-1">
               <Upload
@@ -1285,7 +1285,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                     :customRequest="() => {}"
                     @change="upLoad">
                     <Icon icon="icon-shangchuan" class="text-theme-special mr-1" />
-                    <span class="text-3 leading-3 text-theme-text-hover">继续上传</span>
+                    <span class="text-3 leading-3 text-theme-text-hover">{{ t('backlog.editForm.buttons.continueUpload') }}</span>
                   </Upload>
                 </div>
               </template>
@@ -1297,7 +1297,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                     :customRequest="() => {}"
                     @change="upLoad">
                     <Icon icon="icon-shangchuan" class="mr-1 text-theme-special" />
-                    <span class="text-3 text-theme-text-hover">上传附件，最多上传5个</span>
+                    <span class="text-3 text-theme-text-hover">{{ t('backlog.editForm.buttons.uploadAttachments') }}</span>
                   </Upload>
                 </div>
               </template>
@@ -1332,7 +1332,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
         class="text-3 leading-3"
         size="small"
         @click="cancel">
-        取消
+        {{ t('backlog.editForm.buttons.cancel') }}
       </Button>
       <Button
         v-if="showContinue"
@@ -1341,7 +1341,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
         size="small"
         :disabled="loading"
         @click="submit(true)">
-        保存并继续添加
+        {{ t('backlog.editForm.buttons.saveAndContinue') }}
       </Button>
       <Button
         type="primary"
@@ -1349,7 +1349,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
         size="small"
         :disabled="loading"
         @click="submit(false)">
-        确定
+        {{ t('backlog.editForm.buttons.confirm') }}
       </Button>
     </template>
   </Modal>

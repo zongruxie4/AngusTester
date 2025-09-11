@@ -2,6 +2,9 @@
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Icon, NoData } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 import { task } from '@/api/tester';
 
 import { TaskInfo } from '../../types';
@@ -90,7 +93,7 @@ const taskId = computed(() => {
 <template>
   <div class="mt-4">
     <div class="flex items-center text-theme-title mb-1.75">
-      <span>描述</span>
+      <span>{{ t('backlog.info.description.title') }}</span>
       <Button
         v-show="!editFlag"
         type="link"
@@ -108,16 +111,16 @@ const taskId = computed(() => {
             :value="content"
             :height="300"
             @change="editorChange" />
-          <div v-show="descError" class="text-status-error">描述最大支持8000个字符</div>
+          <div v-show="descError" class="text-status-error">{{ t('backlog.info.description.messages.maxLength') }}</div>
         </div>
 
         <div class="mt-2.5 space-x-2.5 w-full flex items-center justify-end">
-          <Button size="small" @click="cancel">取消</Button>
+          <Button size="small" @click="cancel">{{ t('backlog.info.description.cancel') }}</Button>
           <Button
             size="small"
             type="primary"
             @click="ok">
-            确定
+            {{ t('backlog.info.description.confirm') }}
           </Button>
         </div>
       </div>

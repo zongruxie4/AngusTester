@@ -496,7 +496,339 @@
     "addedRemark": "Added remark",
     "basicInfo": "Basic Info",
     "taskStatus": "Task Status",
-    "overdue": "Overdue"
+    "overdue": "Overdue",
+    "aiGenerateTask": {
+      "title": "Auto Create Backlog",
+      "generating": "Generating...",
+      "generate": "Generate",
+      "continueAdd": "Continue Add",
+      "maxTasksWarning": "Maximum 200 tasks allowed",
+      "aiKeywordsPlaceholder": "Describe your requirements to the AI agent, such as: Generate 10 main Wiki system product Backlogs.",
+      "headers": {
+        "type": "Type",
+        "priority": "Priority",
+        "name": "Name",
+        "evalWorkload": "Eval Workload",
+        "assignee": "Assignee",
+        "confirmor": "Confirmor",
+        "deadline": "Deadline"
+      },
+      "placeholders": {
+        "taskType": "Task Type",
+        "priority": "Priority",
+        "taskName": "Task name, max 200 characters",
+        "evalWorkload": "0.1~1000",
+        "assignee": "Assignee",
+        "confirmor": "Confirmor",
+        "deadline": "Deadline"
+      },
+      "tooltips": {
+        "nameRepeat": "Name repeated",
+        "deadlineDate": "Deadline must be greater than current time"
+      }
+    },
+    "assocCase": {
+      "title": "Associated Functional Cases",
+      "placeholder": "Maximum 20 cases can be associated",
+      "overdue": "Overdue",
+      "cancel": "Cancel",
+      "confirm": "Confirm"
+    },
+    "assocTask": {
+      "title": "Associated Tasks",
+      "placeholder": "Maximum 20 tasks can be associated",
+      "overdue": "Overdue",
+      "cancel": "Cancel",
+      "confirm": "Confirm"
+    },
+    "editForm": {
+      "title": {
+        "add": "Add Task",
+        "edit": "Edit Task"
+      },
+      "labels": {
+        "type": "Type",
+        "priority": "Priority",
+        "bugLevel": "Bug Level",
+        "missingBugFlag": "Missing Bug Flag",
+        "scenario": "Scenario",
+        "testType": "Test Type",
+        "service": "Service",
+        "api": "API",
+        "assignee": "Assignee",
+        "confirmor": "Confirmor",
+        "deadline": "Deadline",
+        "tester": "Tester",
+        "description": "Description",
+        "sprint": "Sprint",
+        "module": "Module",
+        "parentTask": "Parent Task",
+        "evalStoryPoint": "Estimate Story Points",
+        "evalWorkload": "Estimate Workload",
+        "actualStoryPoint": "Actual Story Points",
+        "actualWorkload": "Actual Workload",
+        "softwareVersion": "Software Version",
+        "tags": "Tags",
+        "refTasks": "Related Tasks",
+        "refCases": "Related Cases",
+        "attachments": "Attachments"
+      },
+      "placeholders": {
+        "selectTaskType": "Please select task type",
+        "selectPriority": "Please select priority",
+        "selectScenario": "Please select scenario",
+        "selectTestType": "Please select test type",
+        "selectOrSearchService": "Select or search service",
+        "selectApi": "Please select API",
+        "selectAssignee": "Select assignee",
+        "selectConfirmor": "Select confirmor",
+        "selectTester": "Select tester",
+        "taskDescription": "Task description, maximum 6000 characters",
+        "selectOrSearchSprint": "Select or search sprint",
+        "selectOrSearchModule": "Select or search module",
+        "selectParentTask": "Please select parent task",
+        "workloadRange": "Minimum 0.1, maximum 1000, up to 2 decimal places",
+        "selectSoftwareVersion": "Please select software version",
+        "maxTags": "Maximum 5 tags can be added",
+        "maxRefTasks": "Maximum 20 tasks can be associated",
+        "maxRefCases": "Maximum 20 cases can be associated"
+      },
+      "descriptions": {
+        "assignee": "Person responsible for actually executing assigned work tasks.",
+        "confirmor": "Person responsible for verifying and validating work results, will automatically enter confirmation process when assigned.",
+        "tester": "Person responsible for testing and validating product functionality or service quality.",
+        "evalStoryPoint": "Estimated value of work task volume, comprehensive difficulty, and complexity.",
+        "evalWorkload": "Time spent on work estimation, calculated in hours.",
+        "actualStoryPoint": "Actual value of work task volume, comprehensive difficulty, and complexity.",
+        "actualWorkload": "Actual time spent on work, calculated in hours.",
+        "tags": "\"Task tags\" can help you organize tasks with common points, such as \"project name, iteration version, business identifier\", etc."
+      },
+      "taskTypes": {
+        "requirement": "Requirement",
+        "story": "Story",
+        "task": "Task",
+        "bug": "Bug",
+        "apiTest": "API Test",
+        "scenarioTest": "Scenario Test"
+      },
+      "taskTypeDescriptions": {
+        "requirement": "User expectations or requirements for business, functionality, etc., with broad descriptions.",
+        "story": "Specific goals or expectations that users want to achieve, usually described in concise, understandable language, such as: As a <role>, I want <goal> so that <benefit>.",
+        "task": "General work items or activities",
+        "bug": "Program errors or vulnerabilities",
+        "apiTest": "API functionality, performance, and stability testing tasks",
+        "scenarioTest": "Scenario functionality, performance, and stability testing tasks"
+      },
+      "buttons": {
+        "assignToMe": "Assign to Me",
+        "continueUpload": "Continue Upload",
+        "uploadAttachments": "Upload attachments, maximum 5 files",
+        "cancel": "Cancel",
+        "saveAndContinue": "Save and Continue Adding",
+        "confirm": "Confirm"
+      },
+      "messages": {
+        "sprintDeadlineExceeded": "Exceeds sprint deadline ({deadline})",
+        "taskAddedSuccess": "Task added successfully",
+        "taskEditedSuccess": "Task edited successfully",
+        "descriptionMaxLength": "Description supports maximum 6000 characters",
+        "selectScenario": "Please select scenario",
+        "selectService": "Please select service",
+        "selectApi": "Please select API",
+        "selectAssignee": "Select assignee",
+        "contactAdminForTags": "Please contact administrator to configure task tags in \"Application Management\" - \"Task Management\" - \"Task Tags\"."
+      },
+      "overdue": "Overdue"
+    },
+    "splitTask": {
+      "title": "Split Task",
+      "splitTask": "Split Task",
+      "splitting": "Splitting...",
+      "aiSplit": "AI Split",
+      "aiKeywords": "Split task \"{taskName}\" into multiple subtasks.",
+      "aiPlaceholder": "Describe your requirements to the AI agent, such as: Split task \"{taskName}\" into multiple subtasks.",
+      "cancel": "Cancel",
+      "continueAdd": "Continue Adding",
+      "headers": {
+        "type": "Type",
+        "priority": "Priority",
+        "name": "Name",
+        "subTask": "Sub Task",
+        "evalStoryPoint": "Estimate Story Points",
+        "evalWorkload": "Estimate Workload",
+        "assignee": "Assignee",
+        "confirmor": "Confirmor",
+        "deadline": "Deadline"
+      },
+      "placeholders": {
+        "taskType": "Task Type",
+        "priority": "Priority",
+        "taskName": "Task name, maximum 200 characters",
+        "workloadRange": "0.1~1000",
+        "assignee": "Assignee",
+        "confirmor": "Confirmor",
+        "deadline": "Deadline"
+      },
+      "tooltips": {
+        "nameRepeat": "Name repeated",
+        "deadlineMustBeFuture": "Deadline must be greater than current time"
+      },
+      "messages": {
+        "maxSplitWarning": "Maximum 200 splits allowed"
+      }
+    },
+    "info": {
+      "basic": {
+        "sprint": "Sprint",
+        "module": "Module",
+        "parentTask": "Parent Task",
+        "type": "Type",
+        "missingBug": "Missing Bug",
+        "priority": "Priority",
+        "evalWorkloadMethod": "Workload Estimation Method",
+        "evalStoryPoint": "Estimate Story Points",
+        "evalWorkload": "Estimate Workload",
+        "actualStoryPoint": "Actual Story Points",
+        "actualWorkload": "Actual Workload",
+        "processCount": "Process Count",
+        "processFailCount": "Process Fail Count",
+        "tags": "Tags",
+        "oneTimePass": "One Time Pass",
+        "softwareVersion": "Software Version",
+        "unplannedTask": "Unplanned Task",
+        "placeholders": {
+          "selectOrSearchSprint": "Select or search sprint",
+          "selectOrSearchModule": "Select or search module",
+          "selectTaskType": "Please select task type",
+          "selectPriority": "Please select priority",
+          "workloadRange": "Min 0.1, max 1000, up to 2 decimal places",
+          "maxTags": "Maximum 5 tags allowed",
+          "selectSoftwareVersion": "Please select software version"
+        },
+        "messages": {
+          "contactAdminForTags": "Please contact administrator to configure task tags in \"Application Management\" - \"Task Management\" - \"Task Tags\"."
+        }
+      },
+      "date": {
+        "title": "Date",
+        "addTime": "Add Time",
+        "deadline": "Deadline",
+        "startTime": "Start Time",
+        "processTime": "Process Time",
+        "confirmTime": "Confirm Time",
+        "completeTime": "Complete Time",
+        "cancelTime": "Cancel Time",
+        "executeTime": "Execute Time",
+        "lastModifiedTime": "Last Modified Time",
+        "messages": {
+          "selectDeadline": "Please select deadline",
+          "deadlineMustBeFuture": "Deadline must be a future time"
+        }
+      },
+      "description": {
+        "title": "Description",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "messages": {
+          "maxLength": "Description supports maximum 8000 characters"
+        }
+      },
+      "personnel": {
+        "title": "Personnel",
+        "creator": "Creator",
+        "assignee": "Assignee",
+        "executor": "Executor",
+        "confirmor": "Confirmor",
+        "tester": "Tester",
+        "lastModifier": "Last Modifier",
+        "assignToMe": "Assign to Me",
+        "placeholders": {
+          "selectAssignee": "Select assignee",
+          "selectConfirmor": "Select confirmor",
+          "selectTester": "Select tester"
+        }
+      },
+      "scenario": {
+        "basicInfo": "Basic Information",
+        "number": "Number",
+        "name": "Name",
+        "type": "Type",
+        "testType": "Test Type",
+        "taskStatus": "Task Status",
+        "overdue": "Overdue",
+        "sprint": "Sprint",
+        "module": "Module",
+        "parentTask": "Parent Task",
+        "scenario": "Scenario",
+        "priority": "Priority",
+        "evalWorkloadMethod": "Workload Estimation Method",
+        "evalStoryPoint": "Estimate Story Points",
+        "evalWorkload": "Estimate Workload",
+        "processCount": "Process Count",
+        "processFailCount": "Process Fail Count",
+        "tags": "Tags",
+        "oneTimePass": "One Time Pass",
+        "softwareVersion": "Software Version",
+        "unplannedTask": "Unplanned Task",
+        "placeholders": {
+          "taskName": "Task name, maximum 200 characters",
+          "selectOrSearchSprint": "Select or search sprint",
+          "selectOrSearchModule": "Select or search module",
+          "selectPriority": "Please select priority",
+          "workloadRange": "Min 0.1, max 1000, up to 2 decimal places",
+          "tags": "Maximum 5 tags allowed",
+          "notFoundTagContent": "Please contact administrator to configure task tags in \"Application Management\" - \"Task Management\" - \"Task Tags\".",
+          "version": "Please select software version"
+        }
+      },
+      "apis": {
+        "basicInfo": "Basic Information",
+        "number": "Number",
+        "name": "Name",
+        "type": "Type",
+        "testType": "Test Type",
+        "taskStatus": "Task Status",
+        "overdue": "Overdue",
+        "sprint": "Sprint",
+        "module": "Module",
+        "parentTask": "Parent Task",
+        "service": "Service",
+        "api": "API",
+        "priority": "Priority",
+        "evalWorkloadMethod": "Workload Estimation Method",
+        "evalStoryPoint": "Estimate Story Points",
+        "evalWorkload": "Estimate Workload",
+        "actualStoryPoint": "Actual Story Points",
+        "actualWorkload": "Actual Workload",
+        "processCount": "Process Count",
+        "processFailCount": "Process Fail Count",
+        "tags": "Tags",
+        "oneTimePass": "One Time Pass",
+        "softwareVersion": "Software Version",
+        "unplannedTask": "Unplanned Task",
+        "placeholders": {
+          "taskName": "Task name, maximum 200 characters",
+          "selectOrSearchSprint": "Select or search sprint",
+          "selectOrSearchModule": "Select or search module",
+          "selectPriority": "Please select priority",
+          "workloadRange": "Min 0.1, max 1000, up to 2 decimal places",
+          "maxTags": "Maximum 5 tags allowed",
+          "selectSoftwareVersion": "Please select software version"
+        },
+        "messages": {
+          "contactAdminForTags": "Please contact administrator to configure task tags in \"Application Management\" - \"Task Management\" - \"Task Tags\"."
+        }
+      },
+      "attachment": {
+        "title": "Attachment",
+        "continueUpload": "Continue Upload",
+        "selectFile": "Select File",
+        "fileSizeLimit": "Single file size not exceeding {maxSize}M, maximum 5 files",
+        "messages": {
+          "fileSizeExceeded": "File size cannot exceed {maxSize} M"
+        }
+      }
+    }
   },
   "taskHome": {
     "name": "Home",
@@ -2022,6 +2354,11 @@
     },
     "workCalendar": {
       "title": "Work Calendar"
+    },
+    "anthModal": {
+      "title": "Sprint Permission",
+      "onTips": "After enabling &quot;Permission Control&quot;, you need to manually authorize service permissions for the sprint to have corresponding operation permissions. The default setting is &quot;Permission Control&quot;. Note: If the authorization object does not have parent project permissions, it will automatically grant view permissions.",
+      "offTips": "After enabling &quot;No Permission Control&quot;, all users will be allowed to view and operate the current sprint publicly. Users with view permissions also need to have parent project permissions for the current sprint."
     }
   },
   "taskTrash": {
