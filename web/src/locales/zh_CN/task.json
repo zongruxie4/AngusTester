@@ -893,7 +893,70 @@
     "completedStatus": "已完成",
     "followed": "关注的",
     "favorited": "收藏的",
-    "commented": "评论的"
+    "commented": "评论的",
+    "addedTable": {
+      "pagination": "第{current}/{total}页",
+      "noDataText": "暂无数据",
+      "overdue": "已逾期",
+      "columns": {
+        "code": "编码",
+        "name": "名称",
+        "sprintName": "所属迭代",
+        "priority": "优先级",
+        "status": "状态",
+        "deadlineDate": "截止时间",
+        "action": "操作"
+      },
+      "emptyStates": {
+        "noCreatedTasks": "您尚未添加任何任务，立即",
+        "addTask": "添加任务",
+        "noFavouriteTasks": "您没有收藏的任务",
+        "noFollowedTasks": "您没有关注的任务",
+        "noPendingTasks": "您没有待处理的任务",
+        "noConfirmingTasks": "您没有待确认的任务",
+        "noCompletedTasks": "您没有已完成的任务"
+      },
+      "actions": {
+        "unfavorite": "取消收藏",
+        "unfollow": "取消关注",
+        "delete": "删除"
+      },
+      "messages": {
+        "confirmDelete": "确定删除任务【{name}】吗？",
+        "deleteSuccess": "删除任务成功",
+        "unfavoriteSuccess": "任务取消收藏成功",
+        "unfollowSuccess": "任务取消关注成功"
+      }
+    },
+    "summary": {
+      "taskTypes": {
+        "story": "故事",
+        "task": "任务",
+        "bug": "缺陷",
+        "requirement": "需求",
+        "apiTest": "接口测试",
+        "scenarioTest": "场景测试"
+      },
+      "taskCount": {
+        "totalTasks": "总任务",
+        "pending": "待处理",
+        "confirming": "待确认",
+        "overdue": "逾期",
+        "inProgress": "处理中",
+        "completed": "已完成",
+        "cancelled": "已取消"
+      },
+      "sprintCount": {
+        "totalSprints": "总迭代",
+        "pending": "待开始",
+        "inProgress": "进行中",
+        "blocked": "阻塞中",
+        "completed": "已完成"
+      },
+      "backlogPie": {
+        "totalBacklog": "总Backlog"
+      }
+    }
   },
   "taskMeeting": {
     "name": "会议",

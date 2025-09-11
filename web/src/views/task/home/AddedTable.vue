@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon, IconTask, modal, notification, Table, TaskPriority, TaskStatus as TaskStatusV } from '@xcan-angus/vue-ui';
 import { http, PageQuery, utils } from '@xcan-angus/infra';
@@ -8,6 +9,8 @@ import { TaskStatus } from '@/enums/enums';
 
 import { getCurrentPage } from '@/utils/utils';
 import { TaskInfo } from '../types';
+
+const { t } = useI18n();
 
 /**
  * Props interface for AddedTable component.
@@ -77,7 +80,10 @@ const paginationConfig = ref<{
       showTotal: (total: number) => {
         if (typeof paginationConfig.value === 'object') {
           const totalPage = Math.ceil(total / paginationConfig.value.pageSize);
-          return `第${paginationConfig.value.current}/${totalPage}页`;
+          return t('taskHome.addedTable.pagination', { 
+            current: paginationConfig.value.current, 
+            total: totalPage 
+          });
         }
       }
     });
@@ -214,14 +220,14 @@ const loadTaskData = async () => {
  */
 const handleTaskDeletion = (taskData: TaskInfo) => {
   modal.confirm({
-    content: `确定删除任务【${taskData.name}】吗？`,
+    content: t('taskHome.addedTable.messages.confirmDelete', { name: taskData.name }),
     async onOk () {
       const [error] = await task.deleteTask([taskData.id]);
       if (error) {
         return;
       }
 
-      notification.success('删除任务成功');
+      notification.success(t('taskHome.addedTable.messages.deleteSuccess'));
       emit('update:deletedNotify', utils.uuid());
 
       if (typeof updateRefreshNotify === 'function') {
@@ -246,7 +252,7 @@ const handleUnfavoriteTask = async (taskData: TaskInfo) => {
     return;
   }
 
-  notification.success('任务取消收藏成功');
+  notification.success(t('taskHome.addedTable.messages.unfavoriteSuccess'));
   await loadTaskData();
 
   if (typeof updateRefreshNotify === 'function') {
@@ -269,7 +275,7 @@ const handleUnfollowTask = async (taskData: TaskInfo) => {
     return;
   }
 
-  notification.success('任务取消关注成功');
+  notification.success(t('taskHome.addedTable.messages.unfollowSuccess'));
   await loadTaskData();
 
   if (typeof updateRefreshNotify === 'function') {
@@ -329,14 +335,14 @@ const tableColumns = computed(() => {
         // Columns for status-filtered view (without status column)
         {
           key: 'code',
-          title: '编码',
+          title: t('taskHome.addedTable.columns.code'),
           dataIndex: 'code',
           ellipsis: true,
           width: '12%'
         },
         {
           key: 'name',
-          title: '名称',
+          title: t('taskHome.addedTable.columns.name'),
           dataIndex: 'name',
           ellipsis: true,
           sorter: true,
@@ -344,14 +350,14 @@ const tableColumns = computed(() => {
         },
         {
           key: 'sprintName',
-          title: '所属迭代',
+          title: t('taskHome.addedTable.columns.sprintName'),
           dataIndex: 'sprintName',
           ellipsis: true,
           width: '25%'
         },
         {
           key: 'priority',
-          title: '优先级',
+          title: t('taskHome.addedTable.columns.priority'),
           dataIndex: 'priority',
           ellipsis: true,
           sorter: true,
@@ -359,7 +365,7 @@ const tableColumns = computed(() => {
         },
         {
           key: 'deadlineDate',
-          title: '截止时间',
+          title: t('taskHome.addedTable.columns.deadlineDate'),
           dataIndex: 'deadlineDate',
           ellipsis: true,
           sorter: true,
@@ -370,14 +376,14 @@ const tableColumns = computed(() => {
         // Columns for general view (with status column)
         {
           key: 'code',
-          title: '编码',
+          title: t('taskHome.addedTable.columns.code'),
           dataIndex: 'code',
           ellipsis: true,
           width: '12%'
         },
         {
           key: 'name',
-          title: '名称',
+          title: t('taskHome.addedTable.columns.name'),
           dataIndex: 'name',
           ellipsis: true,
           sorter: true,
@@ -385,14 +391,14 @@ const tableColumns = computed(() => {
         },
         {
           key: 'sprintName',
-          title: '所属迭代',
+          title: t('taskHome.addedTable.columns.sprintName'),
           dataIndex: 'sprintName',
           ellipsis: true,
           width: '21%'
         },
         {
           key: 'priority',
-          title: '优先级',
+          title: t('taskHome.addedTable.columns.priority'),
           dataIndex: 'priority',
           ellipsis: true,
           sorter: true,
@@ -400,14 +406,14 @@ const tableColumns = computed(() => {
         },
         {
           key: 'status',
-          title: '状态',
+          title: t('taskHome.addedTable.columns.status'),
           dataIndex: 'status',
           ellipsis: true,
           width: '9%'
         },
         {
           key: 'deadlineDate',
-          title: '截止时间',
+          title: t('taskHome.addedTable.columns.deadlineDate'),
           dataIndex: 'deadlineDate',
           ellipsis: true,
           sorter: true,
@@ -426,7 +432,7 @@ const tableColumns = computed(() => {
     actionKey?: 'favouriteBy' | 'followBy';
   } = {
     key: 'action',
-    title: '操作',
+    title: t('taskHome.addedTable.columns.action'),
     dataIndex: 'action',
     width: 50
   };
@@ -460,28 +466,28 @@ const emptyStateStyle = {
           <img class="w-27.5" src="../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3 leading-5">
             <template v-if="!!props.params?.createdBy">
-              <span>您尚未添加任何任务，立即</span>
-              <RouterLink to="/task#task" class="ml-1 link">添加任务</RouterLink>
+              <span>{{ t('taskHome.addedTable.emptyStates.noCreatedTasks') }}</span>
+              <RouterLink to="/task#task" class="ml-1 link">{{ t('taskHome.addedTable.emptyStates.addTask') }}</RouterLink>
             </template>
 
             <template v-else-if="!!props.params?.favouriteBy">
-              <span>您没有收藏的任务</span>
+              <span>{{ t('taskHome.addedTable.emptyStates.noFavouriteTasks') }}</span>
             </template>
 
             <template v-else-if="!!props.params?.followBy">
-              <span>您没有关注的任务</span>
+              <span>{{ t('taskHome.addedTable.emptyStates.noFollowedTasks') }}</span>
             </template>
 
             <template v-else-if="props.params?.assigneeId && props.params?.status === 'PENDING'">
-              <span>您没有待处理的任务</span>
+              <span>{{ t('taskHome.addedTable.emptyStates.noPendingTasks') }}</span>
             </template>
 
             <template v-else-if="props.params?.confirmorId && props.params?.status === 'CONFIRMING'">
-              <span>您没有待确认的任务</span>
+              <span>{{ t('taskHome.addedTable.emptyStates.noConfirmingTasks') }}</span>
             </template>
 
             <template v-else-if="props.params?.assigneeId && props.params?.status === 'COMPLETED'">
-              <span>您没有已完成的任务</span>
+              <span>{{ t('taskHome.addedTable.emptyStates.noCompletedTasks') }}</span>
             </template>
           </div>
         </div>
@@ -497,7 +503,7 @@ const emptyStateStyle = {
         :emptyTextStyle="emptyStateStyle"
         :minSize="5"
         :noDataSize="'small'"
-        :noDataText="'暂无数据'"
+        :noDataText="t('taskHome.addedTable.noDataText')"
         rowKey="id"
         size="small"
         @change="handleTableChange">
@@ -514,7 +520,7 @@ const emptyStateStyle = {
               v-if="record.overdue"
               class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
               style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-              <span class="inline-block transform-gpu scale-90">已逾期</span>
+              <span class="inline-block transform-gpu scale-90">{{ t('taskHome.addedTable.overdue') }}</span>
             </span>
           </div>
 
@@ -529,7 +535,7 @@ const emptyStateStyle = {
           <div v-else-if="column.dataIndex === 'action'">
             <template v-if="column.actionKey === 'favouriteBy'">
               <Button
-                title="取消收藏"
+                :title="t('taskHome.addedTable.actions.unfavorite')"
                 size="small"
                 type="text"
                 class="space-x-1 flex items-center py-0 px-1"
@@ -540,7 +546,7 @@ const emptyStateStyle = {
 
             <template v-else-if="column.actionKey === 'followBy'">
               <Button
-                title="取消关注"
+                :title="t('taskHome.addedTable.actions.unfollow')"
                 size="small"
                 type="text"
                 class="space-x-1 flex items-center py-0 px-1"
@@ -551,7 +557,7 @@ const emptyStateStyle = {
 
             <template v-else>
               <Button
-                title="删除"
+                :title="t('taskHome.addedTable.actions.delete')"
                 size="small"
                 type="text"
                 class="space-x-1 flex items-center py-0 px-1"

@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import {onMounted, ref, watch} from 'vue';
+import { useI18n } from 'vue-i18n';
 import {Icon} from '@xcan-angus/vue-ui';
 
 import {SummaryInfo} from '@/views/task/home/types';
+
+const { t } = useI18n();
 
 // Props definition
 type Props = {
@@ -39,7 +42,7 @@ onMounted(() => {
 <template>
   <div class="flex flex-col rounded border border-solid border-theme-text-box pt-2 pb-2">
     <div class="font-semibold px-4">
-      <span class="mr-2">总迭代</span>
+        <span class="mr-2">{{ t('taskHome.summary.sprintCount.totalSprints') }}</span>
       <span class="text-4">{{ totalSprintCount }}</span>
     </div>
 
@@ -47,7 +50,7 @@ onMounted(() => {
       <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
         <Icon icon="icon-daiceshi" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
-          <div class="text-theme-sub-content">待开始</div>
+          <div class="text-theme-sub-content">{{ t('taskHome.summary.sprintCount.pending') }}</div>
           <div class="text-4">{{ pendingSprintCount }}</div>
         </div>
       </div>
@@ -55,7 +58,7 @@ onMounted(() => {
       <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
         <Icon icon="icon-renwuceshizhong" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
-          <div class="text-theme-sub-content">进行中</div>
+          <div class="text-theme-sub-content">{{ t('taskHome.summary.sprintCount.inProgress') }}</div>
           <div class="text-4">{{ inProgressSprintCount }}</div>
         </div>
       </div>
@@ -63,7 +66,7 @@ onMounted(() => {
       <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
         <Icon icon="icon-zusaizhong" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
-          <div class="text-theme-sub-content">阻塞中</div>
+          <div class="text-theme-sub-content">{{ t('taskHome.summary.sprintCount.blocked') }}</div>
           <div class="text-4">{{ blockedSprintCount }}</div>
         </div>
       </div>
@@ -71,7 +74,7 @@ onMounted(() => {
       <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
         <Icon icon="icon-jiaobenzhuyezhihang" class="text-10 flex-shrink-0" />
         <div class="whitespace-nowrap space-y-1">
-          <div class="text-theme-sub-content">已完成</div>
+          <div class="text-theme-sub-content">{{ t('taskHome.summary.sprintCount.completed') }}</div>
           <div class="text-4">{{ completedSprintCount }}</div>
         </div>
       </div>

@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import {defineAsyncComponent, onMounted, ref, watch} from 'vue';
+import { useI18n } from 'vue-i18n';
 import {Icon} from '@xcan-angus/vue-ui';
 
 import {SummaryInfo} from '@/views/task/home/types';
+
+const { t } = useI18n();
 
 // Props definition
 type Props = {
@@ -45,7 +48,7 @@ onMounted(() => {
 <template>
   <div class="rounded border border-solid border-theme-text-box pt-2">
     <div class="font-semibold px-4">
-      <span class="mr-2">总任务</span>
+        <span class="mr-2">{{ t('taskHome.summary.taskCount.totalTasks') }}</span>
       <span class="text-4">{{ totalTaskCount }}</span>
     </div>
     <div class="flex items-center pr-2">
@@ -53,7 +56,7 @@ onMounted(() => {
         <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
           <Icon icon="icon-daiceshi" class="text-10 flex-shrink-0" />
           <div class="whitespace-nowrap space-y-1">
-            <div class="text-theme-sub-content">待处理</div>
+            <div class="text-theme-sub-content">{{ t('taskHome.summary.taskCount.pending') }}</div>
             <div class="text-4">{{ pendingTaskCount }}</div>
           </div>
         </div>
@@ -61,7 +64,7 @@ onMounted(() => {
         <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
           <Icon icon="icon-daiqueren" class="text-10 flex-shrink-0" />
           <div class="whitespace-nowrap space-y-1">
-            <div class="text-theme-sub-content">待确认</div>
+            <div class="text-theme-sub-content">{{ t('taskHome.summary.taskCount.confirming') }}</div>
             <div class="text-4">{{ confirmingTaskCount }}</div>
           </div>
         </div>
@@ -69,7 +72,7 @@ onMounted(() => {
         <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
           <Icon icon="icon-yiyuqi1" class="text-10 flex-shrink-0" />
           <div class="whitespace-nowrap space-y-1">
-            <div class="text-theme-sub-content">逾期<span class="inline-block" style="width:1em;"></span></div>
+            <div class="text-theme-sub-content">{{ t('taskHome.summary.taskCount.overdue') }}<span class="inline-block" style="width:1em;"></span></div>
             <div class="text-4">{{ overdueTaskCount }}</div>
           </div>
         </div>
@@ -77,7 +80,7 @@ onMounted(() => {
         <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
           <Icon icon="icon-renwuceshizhong" class="text-10 flex-shrink-0" />
           <div class="whitespace-nowrap space-y-1">
-            <div class="text-theme-sub-content">处理中</div>
+            <div class="text-theme-sub-content">{{ t('taskHome.summary.taskCount.inProgress') }}</div>
             <div class="text-4">{{ inProgressTaskCount }}</div>
           </div>
         </div>
@@ -85,7 +88,7 @@ onMounted(() => {
         <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
           <Icon icon="icon-jiaobenzhuyezhihang" class="text-10 flex-shrink-0" />
           <div class="whitespace-nowrap space-y-1">
-            <div class="text-theme-sub-content">已完成</div>
+            <div class="text-theme-sub-content">{{ t('taskHome.summary.taskCount.completed') }}</div>
             <div class="text-4">{{ completedTaskCount }}</div>
           </div>
         </div>
@@ -93,7 +96,7 @@ onMounted(() => {
         <div class="item-container flex items-center space-x-2.5 justify-center mb-4">
           <Icon icon="icon-yiquxiao" class="text-10 flex-shrink-0" />
           <div class="whitespace-nowrap space-y-1">
-            <div class="text-theme-sub-content">已取消</div>
+            <div class="text-theme-sub-content">{{ t('taskHome.summary.taskCount.cancelled') }}</div>
             <div class="text-4">{{ canceledTaskCount }}</div>
           </div>
         </div>

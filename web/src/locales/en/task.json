@@ -893,7 +893,70 @@
     "completedStatus": "Completed",
     "followed": "Followed",
     "favorited": "Favorited",
-    "commented": "Commented"
+    "commented": "Commented",
+    "addedTable": {
+      "pagination": "Page {current}/{total}",
+      "noDataText": "No Data",
+      "overdue": "Overdue",
+      "columns": {
+        "code": "Code",
+        "name": "Name",
+        "sprintName": "Sprint",
+        "priority": "Priority",
+        "status": "Status",
+        "deadlineDate": "Deadline",
+        "action": "Action"
+      },
+      "emptyStates": {
+        "noCreatedTasks": "You haven't added any tasks yet, ",
+        "addTask": "Add Task",
+        "noFavouriteTasks": "You have no favorite tasks",
+        "noFollowedTasks": "You have no followed tasks",
+        "noPendingTasks": "You have no pending tasks",
+        "noConfirmingTasks": "You have no tasks to confirm",
+        "noCompletedTasks": "You have no completed tasks"
+      },
+      "actions": {
+        "unfavorite": "Unfavorite",
+        "unfollow": "Unfollow",
+        "delete": "Delete"
+      },
+      "messages": {
+        "confirmDelete": "Are you sure to delete task 【{name}】?",
+        "deleteSuccess": "Task deleted successfully",
+        "unfavoriteSuccess": "Task unfavorited successfully",
+        "unfollowSuccess": "Task unfollowed successfully"
+      }
+    },
+    "summary": {
+      "taskTypes": {
+        "story": "Story",
+        "task": "Task",
+        "bug": "Bug",
+        "requirement": "Requirement",
+        "apiTest": "API Test",
+        "scenarioTest": "Scenario Test"
+      },
+      "taskCount": {
+        "totalTasks": "Total Tasks",
+        "pending": "Pending",
+        "confirming": "Confirming",
+        "overdue": "Overdue",
+        "inProgress": "In Progress",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      },
+      "sprintCount": {
+        "totalSprints": "Total Sprints",
+        "pending": "Pending",
+        "inProgress": "In Progress",
+        "blocked": "Blocked",
+        "completed": "Completed"
+      },
+      "backlogPie": {
+        "totalBacklog": "Total Backlog"
+      }
+    }
   },
   "taskMeeting": {
     "name": "Meeting",
