@@ -3,7 +3,10 @@ import { ref, onMounted, watch, computed } from 'vue';
 import { Modal, NoData, Table, IconCopy, Icon, Input, Spin } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { PageQuery, TESTER, http, duration } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
+
+const { t } = useI18n();
 
 import { VariableItem } from '../PropsType';
 
@@ -102,7 +105,7 @@ const loadData = async () => {
     _list.every((item) => {
       const { extracted, extraction, name } = item;
       if (!extraction || !['FILE', 'HTTP', 'JDBC'].includes(extraction.source)) {
-        item.source = '静态值';
+        item.source = t('xcan_exec.variable.staticValue');
         if (/@\w+\w*\([^)]*\)/.test(item.value)) {
           item.preview = true;
           item.source += ' (Mock)';
@@ -111,18 +114,18 @@ const loadData = async () => {
         item.preview = true;
         const { source } = extraction;
         if (!extracted) {
-          item.source = '精确值';
+          item.source = t('xcan_exec.variable.exactValue');
           if (source === 'FILE') {
-            item.source += ' (文件)';
+            item.source += ` (${t('xcan_exec.variable.file')})`;
           } else if (source === 'HTTP') {
             item.source += ' (Http)';
           } else if (source === 'JDBC') {
             item.source += ' (Jdbc)';
           }
         } else {
-          item.source = '提取值';
+          item.source = t('xcan_exec.variable.extractedValue');
           if (source === 'FILE') {
-            item.source += ' (文件)';
+            item.source += ` (${t('xcan_exec.variable.file')})`;
           } else if (source === 'HTTP') {
             item.source += ' (Http)';
           } else if (source === 'JDBC') {
@@ -274,41 +277,41 @@ const okButtonProps = computed(() => {
 
 const columns = [
   {
-    title: '名称',
+    title: t('xcan_exec.variable.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '值',
+    title: t('xcan_exec.variable.value'),
     dataIndex: 'value',
     ellipsis: true
   },
   {
-    title: '描述',
+    title: t('xcan_exec.variable.description'),
     dataIndex: 'description',
     ellipsis: true
   },
   {
-    title: '密码',
+    title: t('xcan_exec.variable.password'),
     dataIndex: 'passwordValue',
     ellipsis: true,
     width: '5%'
   },
   {
-    title: '值来源',
+    title: t('xcan_exec.variable.valueSource'),
     dataIndex: 'source',
     ellipsis: true,
     width: '10%'
   },
   {
-    title: '最后修改人',
+    title: t('xcan_exec.variable.lastModifier'),
     dataIndex: 'lastModifiedByName',
     ellipsis: true,
     width: '10%',
     sort: true
   },
   {
-    title: '最后修改时间',
+    title: t('xcan_exec.variable.lastModifiedTime'),
     dataIndex: 'lastModifiedDate',
     ellipsis: true,
     width: '14%',
@@ -319,7 +322,7 @@ const columns = [
 
 <template>
   <Modal
-    title="引用变量"
+    :title="t('xcan_exec.variable.referenceVariable')"
     :visible="props.visible"
     :width="1100"
     :okButtonProps="okButtonProps"
@@ -334,7 +337,7 @@ const columns = [
             allowClear
             trim
             class="w-75 flex-grow-0 flex-shrink"
-            placeholder="搜索名称或描述"
+            :placeholder="t('xcan_exec.variable.searchNameOrDescription')"
             @change="searchInputChange" />
           <Button
             type="default"
@@ -342,7 +345,7 @@ const columns = [
             class="flex items-center"
             @click="toRefresh">
             <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-shuaxin" />
-            <span>刷新</span>
+            <span>{{ t('xcan_exec.variable.refresh') }}</span>
           </Button>
         </div>
 
@@ -405,7 +408,7 @@ const columns = [
             </template>
 
             <div v-if="column.dataIndex === 'passwordValue'" class="flex items-center">
-              {{ record.passwordValue ? '是' : '否' }}
+              {{ record.passwordValue ? t('xcan_exec.variable.yes') : t('xcan_exec.variable.no') }}
             </div>
           </template>
         </Table>

@@ -1,6 +1,6 @@
 import { Extraction } from '../extract/PropsType';
 import { AssertionCondition, AssertionType } from '@xcan-angus/infra';
-// TODO 存在重复代码
+
 export type ConditionResult = {
     failure: boolean;// 执行结果
     name: string;// 提取的变量名

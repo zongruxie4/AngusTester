@@ -591,17 +591,17 @@ const durationChange = (value) => {
 const timeUnitMessage = computed(() => {
   switch (durationUnit.value) {
     case 'ms':
-      return '毫秒';
+      return t('xcan_execSettingForm.timeUnit.milliseconds');
     case 's':
-      return '秒';
+      return t('xcan_execSettingForm.timeUnit.seconds');
     case 'min':
-      return '分钟';
+      return t('xcan_execSettingForm.timeUnit.minutes');
     case 'h':
-      return '小时';
+      return t('xcan_execSettingForm.timeUnit.hours');
     case 'd':
-      return '天';
+      return t('xcan_execSettingForm.timeUnit.days');
     default:
-      return '秒';
+      return t('xcan_execSettingForm.timeUnit.seconds');
   }
 });
 
@@ -776,7 +776,7 @@ const jdbcMaxWaitTimeoutMillisChange = (value) => {
 
 const keyValidator = async (_rule: Rule, value: string) => {
   if (!value) {
-    return Promise.reject(new Error('请输入参数名'));
+    return Promise.reject(new Error(t('xcan_execSettingForm.enterParameterName')));
   } else {
     if (!extendParams.value) {
       return;
@@ -790,7 +790,7 @@ const keyValidator = async (_rule: Rule, value: string) => {
       return false;
     });
     if (hasDuplicates) {
-      return Promise.reject(new Error('参数名已存在'));
+      return Promise.reject(new Error(t('xcan_execSettingForm.variableNameExists')));
     } else {
       extendParamsRef.value.clearValidate();
       return Promise.resolve();
@@ -808,7 +808,7 @@ const iterationsValidator = async (_rule: Rule, value: string) => {
     }
 
     if (!executParams.value.duration) {
-      return Promise.reject(new Error('请输入迭代次数或者执行时长'));
+      return Promise.reject(new Error(t('xcan_execSettingForm.enterIterationsOrDuration')));
     } else {
       return Promise.resolve();
     }
@@ -816,18 +816,18 @@ const iterationsValidator = async (_rule: Rule, value: string) => {
     executFormRef.value.clearValidate('duration');
     if (['TEST_FUNCTIONALITY'].includes(props.scriptType)) {
       if (+value < 1 || +value > 10) {
-        return Promise.reject(new Error('功能测试迭代次数支持范围：1~10'));
+        return Promise.reject(new Error(t('xcan_execSettingForm.functionalTestIterationsRange')));
       }
       return Promise.resolve();
     }
 
     if (props.addType === 'expr') {
       if (+value < 1 || +value > 100000) {
-        return Promise.reject(new Error('迭代次数支持范围：1~100000'));
+        return Promise.reject(new Error(t('xcan_execSettingForm.experienceIterationsRange')));
       }
     } else {
       if (+value < 1 || +value > 100000000000) {
-        return Promise.reject(new Error('迭代次数支持范围：1~100000000000'));
+        return Promise.reject(new Error(t('xcan_execSettingForm.iterationsRange')));
       }
     }
 
@@ -837,7 +837,7 @@ const iterationsValidator = async (_rule: Rule, value: string) => {
 
 const threadsValidator = async (_rule: Rule, value: string) => {
   if (!value) {
-    return Promise.reject(new Error('请输入线程数'));
+    return Promise.reject(new Error(t('xcan_execSettingForm.enterThreadCount')));
   } else {
     if (props.scriptType === 'TEST_FUNCTIONALITY') {
       return Promise.resolve();
@@ -845,14 +845,14 @@ const threadsValidator = async (_rule: Rule, value: string) => {
 
     if (['MOCK_DATA', 'MOCK_APIS'].includes(props.scriptType)) {
       if (+value > 1000 || +value < 1) {
-        return Promise.reject(new Error('Mock数据任务线程支持范围：1~1000'));
+        return Promise.reject(new Error(t('xcan_execSettingForm.mockDataTaskThreadRange')));
       }
 
       return Promise.resolve();
     }
 
     if (+value > 10000 || +value < 1) {
-      return Promise.reject(new Error('任务线程支持范围：1~10000'));
+      return Promise.reject(new Error(t('xcan_execSettingForm.taskThreadRange')));
     }
 
     return Promise.resolve();
@@ -874,17 +874,17 @@ const threadsMax = computed(() => {
 const durationValidator = async (_rule: Rule, value: string) => {
   if (!value) {
     if (!executParams.value.iterations) {
-      return Promise.reject(new Error('请输入执行时长或者迭代次数'));
+      return Promise.reject(new Error(t('xcan_execSettingForm.enterDurationOrIterations')));
     } else {
       return Promise.resolve();
     }
   } else {
     if (props.addType === 'expr') {
       if (durationUnit.value === 'min' && +value > 30) {
-        return Promise.reject(new Error('体验执行最大执行时长30分钟'));
+        return Promise.reject(new Error(t('xcan_execSettingForm.experienceExecutionMaxDuration')));
       }
       if (durationUnit.value === 's' && +value > 1800) {
-        return Promise.reject(new Error('体验执行最大执行时长30分钟'));
+        return Promise.reject(new Error(t('xcan_execSettingForm.experienceExecutionMaxDuration')));
       }
     }
     executFormRef.value.clearValidate('iterations');
@@ -2140,19 +2140,19 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               :class="globalParams.nodeSelectors.enabled ? 'open-params' : 'stop-params'"
               class="overflow-hidden transition-all"
               style="transition-duration: 400ms;">
-              <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25 nodeSelectors-maxTaskNum">最大任务数</div>
-              <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25 nodeSelectors-lastExecuted">最后执行节点</div>
-              <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25">最小规格节点</div>
+              <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25 nodeSelectors-maxTaskNum">{{ t('xcan_execSettingForm.maxTaskCount') }}</div>
+              <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25 nodeSelectors-lastExecuted">{{ t('xcan_execSettingForm.lastExecutedNode') }}</div>
+              <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25">{{ t('xcan_execSettingForm.minimumSpecificationNodes') }}</div>
               <div
                 v-if="globalParams.nodeSelectors.specEnabled"
                 class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25 nodeSelectors-specEnabled">
-                最小规格
+                {{ t('xcan_execSettingForm.minimumSpecification') }}
               </div>
-              <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25">最低空闲率节点</div>
+              <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25">{{ t('xcan_execSettingForm.lowestIdleRateNodes') }}</div>
               <div
                 v-if="globalParams.nodeSelectors.idleRateEnabled"
                 class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25 nodeSelectors-idleRateEnabled">
-                最低空闲率
+                {{ t('xcan_execSettingForm.lowestIdleRate') }}
               </div>
             </div>
           </div>
@@ -2290,7 +2290,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                 v-model:value="globalParams.nodeSelectors.num"
                 :min="1"
                 :max="props.addType === 'expr' ? 1 : 200"
-                :placeholder="t('执行节点数')"
+                :placeholder="t('xcan_execSettingForm.executionNodeCount')"
                 dataType="number" />
               <Tooltip
                 :title="t('xcan_execSettingForm.executionNodeCountTooltip')"
@@ -2869,7 +2869,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
           <template v-else-if="pluginType === 'WebSocket'">
             <div class="flex pl-3.5 max-w-150 text-3">
               <div class="mr-2.5 leading-7 w-35 flex-none websocket-form">
-                <div class="h-7 whitespace-nowrap mb-5 pl-1.75 ignoreAssertions">是否忽略断言</div>
+                <div class="h-7 whitespace-nowrap mb-5 pl-1.75 ignoreAssertions">{{ t('xcan_execSettingForm.ignoreAssertions') }}</div>
                 <div class="h-7 whitespace-nowrap mb-5 updateTestResult pl-1.75">
                   {{ t('xcan_execSettingForm.updateTestResults') }}
                 </div>
@@ -3076,7 +3076,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
             <div
               class="flex pl-3.5 max-w-150 text-3">
               <div class="mr-2.5 leading-7 w-35 flex-none jdbc-form">
-                <div class="h-7 whitespace-nowrap mb-5 pl-1.75 ignoreAssertions">是否忽略断言</div>
+                <div class="h-7 whitespace-nowrap mb-5 pl-1.75 ignoreAssertions">{{ t('xcan_execSettingForm.ignoreAssertions') }}</div>
                 <div class="h-7 whitespace-nowrap mb-5 updateTestResult pl-1.75">
                   {{ t('xcan_execSettingForm.updateTestResults') }}
                 </div>
@@ -3092,26 +3092,26 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                   class="overflow-hidden transition-all"
                   style="transition-duration: 400ms;">
                   <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-3.5 jdbcSetting-type">
-                    <IconRequired />数据库类型
+                    <IconRequired />{{ t('xcan_execSettingForm.databaseType') }}
                   </div>
                   <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-3.5 jdbcSetting-driverClassName">
-                    <IconRequired />数据驱动类名
+                    <IconRequired />{{ t('xcan_execSettingForm.driverClassName') }}
                   </div>
                   <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-3.5 jdbcSetting-jdbcUrl">
-                    <IconRequired />数据库连接URL
+                    <IconRequired />{{ t('xcan_execSettingForm.jdbcUrl') }}
                   </div>
                   <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-3.5 jdbcSetting-username">
-                    <IconRequired />用户名
+                    <IconRequired />{{ t('xcan_execSettingForm.username') }}
                   </div>
                   <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25 jdbcSetting-password">
-                    密码
+                    {{ t('xcan_execSettingForm.password') }}
                   </div>
                   <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25 jdbcSetting-isolation">
-                    事务隔离级别
+                    {{ t('xcan_execSettingForm.transactionIsolation') }}
                   </div>
                 </div>
                                   <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-1.75  font-medium">
-                  连接池配置
+                  {{ t('xcan_execSettingForm.connectionPoolConfiguration') }}
                   <Arrow
                     :open="connectionPoolParamsOpen"
                     class="ml-2"
@@ -3121,7 +3121,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                   :class="connectionPoolParamsOpen ? 'open-params' : 'stop-params'"
                   class="overflow-hidden transition-all"
                   style="transition-duration: 400ms;">
-                  <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25">开启配置</div>
+                  <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-5.25">{{ t('xcan_execSettingForm.enableConfiguration') }}</div>
                   <div
                     :class="isOpenPool ? 'open-params' : 'stop-params'"
                     class="overflow-hidden transition-all"
@@ -3228,7 +3228,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                     <FormItem
                       class="pr-5 relative"
                       :name="['jdbcSetting', 'jdbcUrl']"
-                      :rules="{ required: true, message: '请输入数据库连接URL', trigger: ['change', 'blur'] }">
+                      :rules="{ required: true, message: t('xcan_execSettingForm.pleaseEnterDatabaseConnectionURL'), trigger: ['change', 'blur'] }">
                       <Input
                         v-model:value="jdbcArgumentsParams.jdbcSetting.jdbcUrl"
                         :maxlength="2048"

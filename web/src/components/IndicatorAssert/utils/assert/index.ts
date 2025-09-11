@@ -1,10 +1,14 @@
 import { isEqual } from 'lodash-es';
-import { AssertionCondition, AssertionType, utils } from '@xcan-angus/infra';
+import { i18n} from '@xcan-angus/infra';
+
+const t = i18n.getI18n()?.global?.t || ((v: string) => v);
+
 import expressionUtils from '../expression';
 import { Operator } from '../expression/PropsType';
 import extract from '../extract';
 import proxy, { VariableInfo } from '../proxy';
 import { AssertConfig, AssertResult, ConditionResult, Parameter } from './PropsType';
+import { AssertionCondition, AssertionType, utils } from '@xcan-angus/infra';
 
 const execute = async (data: Parameter, configs: AssertConfig[], variablesInfo:VariableInfo[]): Promise<AssertResult[]> => {
   if (!configs?.length || !data) {
@@ -61,7 +65,7 @@ const execute = async (data: Parameter, configs: AssertConfig[], variablesInfo:V
         failureMessage: '', // 提取失败的原因
         value: '', // 提取变量的值
         ignored: false, // 是否忽略该条断言
-        message: '表达式为空，执行该条断言'
+        message: t('xcan_apiAssert.utils.expressionEmpty')
       };
 
       let ignored = false;
@@ -73,7 +77,7 @@ const execute = async (data: Parameter, configs: AssertConfig[], variablesInfo:V
           failureMessage: '', // 提取失败的原因
           value: '', // 提取变量的值
           ignored: false, // 是否忽略该条断言
-          message: '表达式为空，执行该条断言'
+          message: t('xcan_apiAssert.utils.expressionEmpty')
         };
       } else {
         const matchs = matchsMap[condition];
@@ -82,11 +86,11 @@ const execute = async (data: Parameter, configs: AssertConfig[], variablesInfo:V
           _condition = {
             failure: false, // 执行结果
             name: '', // 提取的变量名
-            conditionMessage: '表达式格式错误，仅支持运算符["=", "!=", ">=", "<=", ">", "<"]', // 断言表达式错误的原因
-            failureMessage: '表达式格式错误，无法提取变量名', // 提取失败的原因
+            conditionMessage: t('xcan_apiAssert.utils.expressionFormatError'), // 断言表达式错误的原因
+            failureMessage: t('xcan_apiAssert.utils.expressionFormatErrorExtract'), // 提取失败的原因
             value: '', // 提取变量的值
             ignored: true, // 是否忽略该条断言
-            message: '表达式格式错误，忽略该条断言'
+            message: t('xcan_apiAssert.utils.expressionFormatErrorIgnore')
           };
         } else {
           const [leftOperand, operator, rightOperand] = matchs;
@@ -99,7 +103,7 @@ const execute = async (data: Parameter, configs: AssertConfig[], variablesInfo:V
             value = varValue.value;
             failureMessage = varValue.failureMessage;
           } else {
-            failureMessage = '没有定义该变量，该变量的值按变量名处理';
+            failureMessage = t('xcan_apiAssert.utils.variableNotDefined');
             value = leftOperand;
           }
 
@@ -112,7 +116,7 @@ const execute = async (data: Parameter, configs: AssertConfig[], variablesInfo:V
               failureMessage, // 提取失败的原因
               value, // 提取变量的值
               ignored: false, // 是否忽略该条断言
-              message: '运算结果成立，执行该条断言'
+              message: t('xcan_apiAssert.utils.operationResultSuccess')
             };
           } else {
             ignored = true;
@@ -123,7 +127,7 @@ const execute = async (data: Parameter, configs: AssertConfig[], variablesInfo:V
               failureMessage, // 提取失败的原因
               value, // 提取变量的值
               ignored: true, // 是否忽略该条断言
-              message: '运算结果不成立，忽略该条断言'
+              message: t('xcan_apiAssert.utils.operationResultFailure')
             };
           }
         }

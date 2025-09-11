@@ -1,6 +1,6 @@
 import { ExtractionMethod, AuthClientIn, SecurityIn } from '@xcan-angus/infra';
 
-// TODO 存在重复代码
+// TODO 重复定义代码 -> vue-ui/types/packages/IndicatorAssert/utils/extract/PropsType.d.ts
 
 export type DefaultExtraction = {
   defaultValue: string;

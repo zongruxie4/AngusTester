@@ -4,6 +4,9 @@ import { Switch, Button } from 'ant-design-vue';
 import { AsyncComponent, Tooltip, Icon, Spin, NoData, Input, modal, IconCopy, Table } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
 import { duration, http, utils, TESTER } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import { VariableItem } from './PropsType';
 
@@ -113,7 +116,7 @@ const loadValue = async (data: VariableItem) => {
 
 const toDelete = (data: VariableItem) => {
   modal.confirm({
-    content: `确定取消引用变量【${data.name}】吗？`,
+    content: t('xcan_exec.variable.confirmUnreferenceVariable', { name: data.name }),
     async onOk () {
       const id = data.id;
       tableData.value = tableData.value.filter((item) => item.id !== id);
@@ -152,7 +155,7 @@ const toBatchDelete = () => {
   }
 
   modal.confirm({
-    content: `确定取消引用选中的 ${num} 条变量吗？`,
+    content: t('xcan_exec.variable.confirmUnreferenceSelectedVariables', { num }),
     async onOk () {
       for (let i = 0, len = selectedRowKeys.length; i < len; i++) {
         const name = selectedRowKeys[i];
@@ -231,7 +234,7 @@ onMounted(() => {
       }
 
       if (!extraction || !['FILE', 'HTTP', 'JDBC'].includes(extraction.source)) {
-        item.source = '静态值';
+        item.source = t('xcan_exec.variable.staticValue');
         if (/@\w+\w*\([^)]*\)/.test(item.value)) {
           item.preview = true;
           item.source += ' (Mock)';
@@ -240,18 +243,18 @@ onMounted(() => {
         item.preview = true;
         const { source } = extraction;
         if (!extracted) {
-          item.source = '精确值';
+          item.source = t('xcan_exec.variable.exactValue');
           if (source === 'FILE') {
-            item.source += ' (文件)';
+            item.source += ` (${t('xcan_exec.variable.file')})`;
           } else if (source === 'HTTP') {
             item.source += ' (Http)';
           } else if (source === 'JDBC') {
             item.source += ' (Jdbc)';
           }
         } else {
-          item.source = '提取值';
+          item.source = t('xcan_exec.variable.extractedValue');
           if (source === 'FILE') {
-            item.source += ' (文件)';
+            item.source += ` (${t('xcan_exec.variable.file')})`;
           } else if (source === 'HTTP') {
             item.source += ' (Http)';
           } else if (source === 'JDBC') {
@@ -286,33 +289,33 @@ const selectedNames = computed(() => {
 
 const columns = [
   {
-    title: '名称',
+    title: t('xcan_exec.variable.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '值',
+    title: t('xcan_exec.variable.value'),
     dataIndex: 'value',
     ellipsis: true
   },
   {
-    title: '描述',
+    title: t('xcan_exec.variable.description'),
     dataIndex: 'description',
     ellipsis: true
   },
   {
-    title: '引用',
+    title: t('xcan_exec.variable.reference'),
     dataIndex: 'linkName',
     ellipsis: true
   },
   {
-    title: '创建人',
+    title: t('xcan_exec.variable.creator'),
     dataIndex: 'createdByName',
     ellipsis: true,
     width: '8%'
   },
   {
-    title: '操作',
+    title: t('xcan_exec.variable.action'),
     dataIndex: 'action',
     width: 170
   }
@@ -364,12 +367,12 @@ defineExpose({
 <template>
   <div class="text-3 leading-5">
     <div class="flex items-center mb-3.5">
-      <span>每次迭代前更新变量</span>
+      <span>{{ t('xcan_exec.variable.updateVariableBeforeEachIteration') }}</span>
       <Switch
         v-model:checked="updateVariableByIteration"
         size="small"
         class="ml-2" />
-      <Tooltip title="当变量值有Mock数据函数时，开启后，每一次迭代前更新变量值，即同一个迭代内请求变量值保持不变；不开启时整个执行中变量值保持不变。默认开启。">
+      <Tooltip :title="t('xcan_exec.variable.updateVariableTooltip')">
         <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5 cursor-pointer" />
       </Tooltip>
     </div>
@@ -381,14 +384,14 @@ defineExpose({
       <div v-if="!searched && tableData.length === 0" class="flex-1 flex flex-col items-center justify-center">
         <img class="w-25" src="./images/nodata.png">
         <div class="flex items-center text-theme-sub-content leading-7">
-          <span>您尚未引用任何变量，立即</span>
+          <span>{{ t('xcan_exec.variable.noVariablesReferenced') }}</span>
 
           <Button
             type="link"
             size="small"
             class="py-0 px-0 mx-1"
             @click="toUse">
-            <span>引用变量</span>
+            <span>{{ t('xcan_exec.variable.referenceVariable') }}</span>
           </Button>
         </div>
       </div>
@@ -400,7 +403,7 @@ defineExpose({
             allowClear
             trim
             class="w-75 flex-grow-0 flex-shrink"
-            placeholder="搜索名称或描述"
+            :placeholder="t('xcan_exec.variable.searchNameOrDescription')"
             @change="searchInputChange" />
 
           <div class="flex-shrink-0 flex items-center space-x-3">
@@ -412,7 +415,7 @@ defineExpose({
                 @click="toBatchDelete">
                 <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
                 <div class="flex items-center">
-                  <span class="mr-0.5">删除选中</span>
+                  <span class="mr-0.5">{{ t('xcan_exec.variable.deleteSelected') }}</span>
                   <span>({{ selectedNum }})</span>
                 </div>
               </Button>
@@ -422,7 +425,7 @@ defineExpose({
                 class="flex items-center flex-shrink-0"
                 @click="toCancelBatchDelete">
                 <Icon icon="icon-fanhui" class="mr-1" />
-                <span>取消删除</span>
+                <span>{{ t('xcan_exec.variable.cancelDelete') }}</span>
               </Button>
             </template>
 
@@ -433,7 +436,7 @@ defineExpose({
                 class="flex items-center flex-shrink-0"
                 @click="toUse">
                 <Icon icon="icon-jia" class="text-3.5" />
-                <span class="ml-1">引用变量</span>
+                <span class="ml-1">{{ t('xcan_exec.variable.referenceVariable') }}</span>
               </Button>
 
               <Button
@@ -442,7 +445,7 @@ defineExpose({
                 class="flex items-center flex-shrink-0"
                 @click="toBatchDelete">
                 <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
-                <span>批量删除</span>
+                <span>{{ t('xcan_exec.variable.batchDelete') }}</span>
               </Button>
             </template>
           </div>
@@ -515,7 +518,7 @@ defineExpose({
                 class="flex items-center p-0 h-5 leading-5 space-x-1"
                 @click="toDelete(record)">
                 <Icon icon="icon-qingchu" class="text-3.5" />
-                <span>取消引用</span>
+                <span>{{ t('xcan_exec.variable.unreference') }}</span>
               </Button>
 
               <Button
@@ -527,7 +530,7 @@ defineExpose({
                   :to="`/data#variables?id=${record.id}`"
                   target="_blank">
                   <Icon icon="icon-zhengyan" class="text-3.5" />
-                  <span>查看定义</span>
+                  <span>{{ t('xcan_exec.variable.viewDefinition') }}</span>
                 </RouterLink>
               </Button>
             </div>

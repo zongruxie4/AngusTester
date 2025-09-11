@@ -808,7 +808,38 @@
       "pleaseEnterMinIdleConnections": "请输入最小空闲连接数",
       "databaseUsername": "数据库用户名",
       "databasePassword": "数据库密码",
-      "connectionPoolMaximumPoolSize": "连接池的最大连接数"
+      "connectionPoolMaximumPoolSize": "连接池的最大连接数",
+      "variable": {
+        "name": "名称",
+        "value": "值",
+        "description": "描述",
+        "reference": "引用",
+        "creator": "创建人",
+        "action": "操作",
+        "staticValue": "静态值",
+        "exactValue": "精确值",
+        "extractedValue": "提取值",
+        "file": "文件",
+        "password": "密码",
+        "valueSource": "值来源",
+        "lastModifier": "最后修改人",
+        "lastModifiedTime": "最后修改时间",
+        "updateVariableBeforeEachIteration": "每次迭代前更新变量",
+        "updateVariableTooltip": "当变量值有Mock数据函数时，开启后，每一次迭代前更新变量值，即同一个迭代内请求变量值保持不变；不开启时整个执行中变量值保持不变。默认开启。",
+        "noVariablesReferenced": "您尚未引用任何变量，立即",
+        "referenceVariable": "引用变量",
+        "searchNameOrDescription": "搜索名称或描述",
+        "deleteSelected": "删除选中",
+        "cancelDelete": "取消删除",
+        "batchDelete": "批量删除",
+        "unreference": "取消引用",
+        "viewDefinition": "查看定义",
+        "refresh": "刷新",
+        "yes": "是",
+        "no": "否",
+        "confirmUnreferenceVariable": "确定取消引用变量【{name}】吗？",
+        "confirmUnreferenceSelectedVariables": "确定取消引用选中的 {num} 条变量吗？"
+      }
     },
     "xcan_execAuthencation": {
       "noAuth": "不认证",
@@ -1079,7 +1110,15 @@
       "poolTypePlaceholder": "请输入连接池类型",
       "poolSizeRule": "请输入连接池大小",
       "maximumPoolSizePlaceholder": "连接池的最大连接数",
-      "minimumIdleRule": "请输入最小空闲连接数"
+      "minimumIdleRule": "请输入最小空闲连接数",
+      "functionalTestIterationsRange": "功能测试迭代次数支持范围：1~10",
+      "experienceIterationsRange": "迭代次数支持范围：1~100000",
+      "iterationsRange": "迭代次数支持范围：1~100000000000",
+      "enterThreadCount": "请输入线程数",
+      "mockDataTaskThreadRange": "Mock数据任务线程支持范围：1~1000",
+      "enterDurationOrIterations": "请输入执行时长或者迭代次数",
+      "experienceExecutionMaxDuration": "体验执行最大执行时长30分钟",
+      "pleaseEnterDatabaseConnectionURL": "请输入数据库连接URL"
     },
     "xcan_httpTestInfo": {
       "functionalTest": "功能测试",
@@ -1715,5 +1754,24 @@
       "last6Hours": "近6小时",
       "last12Hours": "近12小时",
       "last24Hours": "近24小时"
+    },
+    "xcan_indicatorAssert": {
+      "assertionType": "断言类型",
+      "headerName": "响应头名称",
+      "assertionCondition": "断言条件",
+      "extractExpectedValue": "提取期望值",
+      "expectedValue": "期望值",
+      "extractionMethod": "提取方式",
+      "extractionLocation": "提取位置",
+      "extractionParameterName": "提取参数名称",
+      "extractionDefaultValue": "提取缺省值（可选）",
+      "extractionExpression": "提取表达式",
+      "matchItem": "匹配项，范围0-2000（可选）",
+      "expectedValueOptional": "期望值（可选）",
+      "expressionPlaceholder": {
+        "regexMatch": "正则匹配表达式",
+        "xpathMatch": "XPath匹配表达式",
+        "jsonPathMatch": "JSONPath匹配表达式"
+      }
     }
 }

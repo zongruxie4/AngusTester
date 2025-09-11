@@ -1,5 +1,8 @@
 import { select as xselect } from 'xpath-next/dist/xpath';
 import { DOMParser } from 'xmldom';
+import { i18n} from '@xcan-angus/infra';
+
+const t = i18n.getI18n()?.global?.t || ((v: string) => v);
 
 const select = (xml: string, path: string): string[] => {
   if (typeof xml !== 'string' ||
@@ -32,11 +35,11 @@ const select = (xml: string, path: string): string[] => {
  */
 const isValid = (path: string): { valid: boolean; message: string; } => {
   if (path === '' || path === undefined || path === null) {
-    return { valid: false, message: 'XPath表达式不能为空' };
+    return { valid: false, message: t('xcan_apiAssert.utils.xpathExpressionEmpty') };
   }
 
   if (!['string', 'number'].includes(typeof path)) {
-    return { valid: false, message: 'XPath表达式必须是string类型' };
+    return { valid: false, message: t('xcan_apiAssert.utils.xpathExpressionMustBeString') };
   }
 
   if (typeof path !== 'string') {

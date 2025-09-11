@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { Popover } from 'ant-design-vue';
 import { Icon, Hints, Grid } from '@xcan-angus/vue-ui';
-import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
-
 import beautify from 'js-beautify';
+import { useI18n } from 'vue-i18n';
+const { t }  = useI18n();
 
 const prettyXml = (data: string) => {
   return beautify.html(data, {
@@ -19,79 +17,79 @@ const prettyXml = (data: string) => {
 const matchItemList = [
   {
     key: 'regexp',
-    name: '正则表达式匹配',
+    name: t('xcan_apiAssert.regexExpressionMatch'),
     columns: [[
       {
         dataIndex: 'data',
-        label: '匹配值'
+        label: t('xcan_apiAssert.matchValue'),
       },
       {
         dataIndex: 'expression',
-        label: '表达式'
+        label: t('xcan_apiAssert.expression'),
       },
       {
         dataIndex: 'result',
-        label: '匹配结果'
+        label: t('xcan_apiAssert.matchResult'),
       },
       {
         dataIndex: 'item',
-        label: '匹配项'
+        label: t('xcan_apiAssert.matchItemLabel'),
       }
     ]],
     data: {
       data: 'hello, RegexExtraction! my phone number is 18888888888 and 13999999999.',
       expression: '(1\\d{10})',
-      result: '["18888888888","13999999999"]',
-      item: '不指定位置默认取合并结果合并匹配值："1888888888813999999999"，指定位置0取值："18888888888"，指定位置1取值："13999999999"。'
+      result: '[,"18888888888","13999999999"]',
+      item: t('xcan_apiAssert.regexExample'),
     }
   },
   {
     key: 'jsonpath',
-    name: 'JSONPath匹配',
+    name: t('xcan_apiAssert.jsonpathMatch'),
     columns: [[
       {
         dataIndex: 'data',
-        label: '匹配值'
+        label: t('xcan_apiAssert.matchValue'),
       },
       {
         dataIndex: 'expression',
-        label: '表达式'
+        label: t('xcan_apiAssert.expression'),
       },
       {
         dataIndex: 'result',
-        label: '匹配结果'
+        label: t('xcan_apiAssert.matchResult'),
       },
       {
         dataIndex: 'item',
-        label: '匹配项'
+        label: t('xcan_apiAssert.matchItemLabel'),
       }
     ]],
     data: {
       data: { store: { book: [{ title: 'Sayings of the Century', price: 100 }, { title: 'Confucianism', price: 200 }] } },
       expression: '$.store.book[*]',
       result: '[{"title":"Sayings of the Century","price":100},{"title":"confucianism","price":200}]',
-      item: '不指定位置默认取合并结果：[{"title":"Sayings of the Century","price":100},{"title":"confucianism","price":200}]，指定位置0取值：{"title":"Sayings of the Century","price":100}，指定位置1取值：{"title":"confucianism","price":200}。'
+      item: t('xcan_apiAssert.jsonpathExample'),
     }
   },
   {
     key: 'xpath',
-    name: 'XPath匹配',
+    name: t('xcan_apiAssert.xpathMatch'),
     columns: [[
       {
         dataIndex: 'data',
-        label: '匹配值'
+        label: t('xcan_apiAssert.matchValue'),
       },
       {
         dataIndex: 'expression',
-        label: '表达式'
+        label: t('xcan_apiAssert.expression'),
       },
       {
         dataIndex: 'result',
-        label: '匹配结果'
+        label: t('xcan_apiAssert.matchResult'),
       },
       {
         dataIndex: 'item',
-        label: '匹配项'
+        label: t('xcan_apiAssert.matchItemLabel'),
       }
     ]],
     data: {
@@ -99,7 +97,7 @@ const matchItemList = [
                 '<interests>basketball</interests><name>Angus1</name></person><person><age>32</age><interests>coding</interests><name>Angus2</name></person></persons>'),
       expression: '/persons/person[age >= 30]',
       result: '["30codingbasketballAngus1", "32codingAngus2"]',
-      item: '不指定位置默认取合并结果："30codingbasketballAngus132codingAngus2"，指定位置0取值："30codingbasketballAngus1"，指定位置1取值："32codingAngus2"。'
+      item: t('xcan_apiAssert.xpathExample'),
     }
   }
 ];
@@ -115,24 +113,24 @@ const matchItemList = [
     <template #content>
       <div style="max-height: 60vh; overflow: auto;" class="w-196 leading-4.5 space-y-5 text-3 text-theme-content">
         <div>
-          <Hints text="期望值" class="mb-2 !font-semibold !text-theme-content" />
-          <div class="mb-3">当断言条件为“正则匹配”、“XPath匹配”、“JSONPath匹配”时，期望值可选。</div>
+          <Hints :text="t('xcan_apiAssert.expectedValueTitle')" class="mb-2 !font-semibold !text-theme-content" />
+          <div class="mb-3">{{ t('xcan_apiAssert.expectedValueDesc') }}</div>
           <ol class="pl-4 space-y-3">
             <li style="list-style-type: circle;" class="space-y-2">
-              <div class="font-semibold">期望值为空</div>
-              <div class="text-theme-sub-content">表达式匹配到值时，断言通过，反之不通过。</div>
+              <div class="font-semibold">{{ t('xcan_apiAssert.expectedValueEmpty') }}</div>
+              <div class="text-theme-sub-content">{{ t('xcan_apiAssert.expectedValueEmptyDesc') }}</div>
             </li>
             <li style="list-style-type: circle;" class="space-y-2">
-              <div class="font-semibold">期望值不为空</div>
-              <div class="text-theme-sub-content">表达式匹配值与期望值相等时，断言通过，反之不通过。</div>
+              <div class="font-semibold">{{ t('xcan_apiAssert.expectedValueNotEmpty') }}</div>
+              <div class="text-theme-sub-content">{{ t('xcan_apiAssert.expectedValueNotEmptyDesc') }}</div>
             </li>
           </ol>
         </div>
 
         <div>
-          <Hints text="匹配项" class="mb-2 !font-semibold !text-theme-content" />
+          <Hints :text="t('xcan_apiAssert.matchItemTitle')" class="mb-2 !font-semibold !text-theme-content" />
           <div class="mb-3">
-            当表达式匹配到多个值或者结果为数组时，指定第几个值作为表达式期望值，支持位置从0开始到最大值2000，指定位置数据不存在时返回null，不指定时合并多个值为一个值。
+            {{ t('xcan_apiAssert.matchItemDesc') }}
           </div>
           <ol class="pl-4 space-y-3">
             <li

@@ -834,7 +834,38 @@
       "pleaseEnterMinIdleConnections": "Please enter minimum idle connections",
       "databaseUsername": "Database Username",
       "databasePassword": "Database Password",
-      "connectionPoolMaximumPoolSize": "Connection Pool Maximum Pool Size"
+      "connectionPoolMaximumPoolSize": "Connection Pool Maximum Pool Size",
+      "variable": {
+        "name": "Name",
+        "value": "Value",
+        "description": "Description",
+        "reference": "Reference",
+        "creator": "Creator",
+        "action": "Action",
+        "staticValue": "Static Value",
+        "exactValue": "Exact Value",
+        "extractedValue": "Extracted Value",
+        "file": "File",
+        "password": "Password",
+        "valueSource": "Value Source",
+        "lastModifier": "Last Modifier",
+        "lastModifiedTime": "Last Modified Time",
+        "updateVariableBeforeEachIteration": "Update variables before each iteration",
+        "updateVariableTooltip": "When variable values have Mock data functions, after enabling, variable values are updated before each iteration, that is, variable values remain unchanged within the same iteration; when not enabled, variable values remain unchanged throughout the execution. Enabled by default.",
+        "noVariablesReferenced": "You have not referenced any variables yet, ",
+        "referenceVariable": "Reference Variable",
+        "searchNameOrDescription": "Search name or description",
+        "deleteSelected": "Delete Selected",
+        "cancelDelete": "Cancel Delete",
+        "batchDelete": "Batch Delete",
+        "unreference": "Unreference",
+        "viewDefinition": "View Definition",
+        "refresh": "Refresh",
+        "yes": "Yes",
+        "no": "No",
+        "confirmUnreferenceVariable": "Are you sure to unreference variable 【{name}】?",
+        "confirmUnreferenceSelectedVariables": "Are you sure to unreference the selected {num} variables?"
+      }
     },
     "xcan_execAuthencation": {
       "noAuth": "No Auth",
@@ -1105,7 +1136,15 @@
       "poolTypePlaceholder": "Please enter connection pool type",
       "poolSizeRule": "Please enter connection pool size",
       "maximumPoolSizePlaceholder": "Connection pool maximum connection count",
-      "minimumIdleRule": "Please enter minimum idle connections"
+      "minimumIdleRule": "Please enter minimum idle connections",
+      "functionalTestIterationsRange": "Functional test iterations range: 1~10",
+      "experienceIterationsRange": "Iterations range: 1~100000",
+      "iterationsRange": "Iterations range: 1~100000000000",
+      "enterThreadCount": "Please enter thread count",
+      "mockDataTaskThreadRange": "Mock data task thread range: 1~1000",
+      "enterDurationOrIterations": "Please enter execution duration or iterations",
+      "experienceExecutionMaxDuration": "Experience execution maximum duration 30 minutes",
+      "pleaseEnterDatabaseConnectionURL": "Please enter database connection URL"
     },
     "xcan_favoriteFollow": {
       "favorite": "Favorite",
@@ -1866,5 +1905,24 @@
       "last6Hours": "Last 6 Hours",
       "last12Hours": "Last 12 Hours",
       "last24Hours": "Last 24 Hours"
+    },
+    "xcan_indicatorAssert": {
+      "assertionType": "Assertion Type",
+      "headerName": "Header Name",
+      "assertionCondition": "Assertion Condition",
+      "extractExpectedValue": "Extract Expected Value",
+      "expectedValue": "Expected Value",
+      "extractionMethod": "Extraction Method",
+      "extractionLocation": "Extraction Location",
+      "extractionParameterName": "Extraction Parameter Name",
+      "extractionDefaultValue": "Extraction Default Value (Optional)",
+      "extractionExpression": "Extraction Expression",
+      "matchItem": "Match Item, Range 0-2000 (Optional)",
+      "expectedValueOptional": "Expected Value (Optional)",
+      "expressionPlaceholder": {
+        "regexMatch": "Regular Expression Match",
+        "xpathMatch": "XPath Match Expression",
+        "jsonPathMatch": "JSONPath Match Expression"
+      }
     }
 }
