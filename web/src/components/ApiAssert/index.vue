@@ -603,10 +603,10 @@ const toValidate = (): boolean => {
     if (hasContent(id, currentInfo)) {
       if (!currentInfo.name) {
         nameErrorSet.value.add(id);
-        nameErrorMsgMap.value[id] = '名称不能为空';
+        nameErrorMsgMap.value[id] = t('xcan_apiAssert.nameCannotBeEmpty');
       } else if (seens.has(currentInfo.name)) {
         nameErrorSet.value.add(id);
-        nameErrorMsgMap.value[id] = '名称重复';
+        nameErrorMsgMap.value[id] = t('xcan_apiAssert.nameDuplicate');
       } else {
         seens.add(currentInfo.name);
       }

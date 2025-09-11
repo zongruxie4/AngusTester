@@ -486,7 +486,8 @@
         "regexExpressionEmpty": "Regex expression cannot be empty",
         "regexExpressionMustBeString": "Regex expression must be string type",
         "jsonpathExpressionEmpty": "JSONPath expression cannot be empty",
-        "jsonpathExpressionMustBeString": "JSONPath expression must be string type"
+        "jsonpathExpressionMustBeString": "JSONPath expression must be string type",
+        "responseHeaderNameNotExist": "Response header name does not exist"
       }
     },
     "xcan_apiAuthencation": {
@@ -1924,5 +1925,12 @@
         "xpathMatch": "XPath Match Expression",
         "jsonPathMatch": "JSONPath Match Expression"
       }
+    },
+    "xcan_scenarioMail": {
+      "requestContent": "Request Content",
+      "responseHeaders": "Response Headers",
+      "responseBody": "Response Body",
+      "email": "Email {num}",
+      "size": "Size"
     }
 }

@@ -488,7 +488,8 @@
         "regexExpressionEmpty": "正则表达式不能为空",
         "regexExpressionMustBeString": "正则表达式必须是string类型",
         "jsonpathExpressionEmpty": "JSONPath表达式不能为空",
-        "jsonpathExpressionMustBeString": "JSONPath表达式必须是string类型"
+        "jsonpathExpressionMustBeString": "JSONPath表达式必须是string类型",
+        "responseHeaderNameNotExist": "响应头名称不存在"
       }
     },
     "xcan_apiAuthencation": {
@@ -1773,5 +1774,12 @@
         "xpathMatch": "XPath匹配表达式",
         "jsonPathMatch": "JSONPath匹配表达式"
       }
+    },
+    "xcan_scenarioMail": {
+      "requestContent": "请求内容",
+      "responseHeaders": "响应头",
+      "responseBody": "响应体",
+      "email": "邮件{num}",
+      "size": "大小"
     }
 }

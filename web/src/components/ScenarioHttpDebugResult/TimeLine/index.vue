@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue';
 import { NoData } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 export interface Props {
   value: {
@@ -85,37 +88,37 @@ const columns: readonly {
   delay: number
 }[] = [
   {
-    name: '域名解析(DNS lookup)',
+    name: t('commonComp.xcan_requestTimeLine.dnsLookup'),
     key: 'domainLookupEnd-domainLookupStart',
     time: 0,
     delay: 0
   },
   {
-    name: 'TCP连接',
+    name: t('commonComp.xcan_requestTimeLine.tcpConnection'),
     key: 'connectEnd-connectStart',
     time: 0,
     delay: 0
   },
   {
-    name: 'SSL',
+    name: t('commonComp.xcan_requestTimeLine.ssl'),
     key: 'secureConnectionEnd-secureConnectionStart',
     time: 0,
     delay: 0
   },
   {
-    name: '发送请求(Request sent)',
+    name: t('commonComp.xcan_requestTimeLine.requestSent'),
     key: 'responseEnd-requestStart',
     time: 0,
     delay: 0
   },
   {
-    name: '等待处理(Waiting)',
+    name: t('commonComp.xcan_requestTimeLine.waiting'),
     key: 'responseStart-requestStart',
     time: 0,
     delay: 0
   },
   {
-    name: '下载结果(Content download)',
+    name: t('commonComp.xcan_requestTimeLine.contentDownload'),
     key: 'responseEnd-responseStart',
     time: 0,
     delay: 0
@@ -129,7 +132,7 @@ const columns: readonly {
   <template v-else>
     <div class="h-full overflow-auto relative flex flex-nowrap whitespace-nowrap px-5 py-4">
       <div class="flex flex-col items-start text-3 leading-3 text-theme-content mr-6">
-        <div class="mb-4 text-theme-sub-content">耗时项</div>
+        <div class="mb-4 text-theme-sub-content">{{ t('commonComp.xcan_requestTimeLine.timeConsumingItems') }}</div>
         <div
           v-for="(item, index) in timelineData"
           :key="index"
@@ -138,11 +141,11 @@ const columns: readonly {
           {{ item.name }}
         </div>
         <div class="title-item-container">
-          总耗时(Total time consuming)
+          {{ t('commonComp.xcan_requestTimeLine.totalTimeConsuming') }}
         </div>
       </div>
       <div class="flex flex-col flex-1 items-start text-3 leading-3 text-theme-content pr-6">
-        <div class="mb-4 text-theme-sub-content">时间</div>
+        <div class="mb-4 text-theme-sub-content">{{ t('commonComp.xcan_requestTimeLine.time') }}</div>
         <div
           v-for="(item, index) in timelineData"
           :key="index"
