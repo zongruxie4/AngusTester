@@ -828,6 +828,36 @@
           "fileSizeExceeded": "File size cannot exceed {maxSize} M"
         }
       }
+    },
+    "main": {
+      "addBacklog": "Add Backlog",
+      "aiAddBacklog": "AI Add Backlog",
+      "save": "Save",
+      "cancel": "Cancel",
+      "openAddModal": "Open Add Modal",
+      "split": "Split",
+      "assign": "Assign",
+      "delete": "Delete",
+      "edit": "Edit",
+      "placeholders": {
+        "taskType": "Task Type",
+        "selectPriority": "Please select priority",
+        "taskName": "Enter task name, maximum 200 characters, press Enter to auto-save"
+      },
+      "drawerTitles": {
+        "basicInfo": "Basic Information",
+        "personnel": "Personnel",
+        "date": "Date",
+        "relatedTasks": "Related Tasks",
+        "relatedCases": "Related Test Cases",
+        "attachments": "Attachments",
+        "remarks": "Remarks",
+        "comments": "Comments",
+        "activity": "Activity"
+      },
+      "messages": {
+        "saveSuccess": "Save successful"
+      }
     }
   },
   "taskHome": {

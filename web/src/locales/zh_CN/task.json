@@ -828,6 +828,36 @@
           "fileSizeExceeded": "文件大小不能超过 {maxSize} M"
         }
       }
+    },
+    "main": {
+      "addBacklog": "添加Backlog",
+      "aiAddBacklog": "智能添加Backlog",
+      "save": "保存",
+      "cancel": "取消",
+      "openAddModal": "打开添加弹窗",
+      "split": "拆分",
+      "assign": "分配",
+      "delete": "删除",
+      "edit": "编辑",
+      "placeholders": {
+        "taskType": "任务类型",
+        "selectPriority": "请选择优先级",
+        "taskName": "输入任务名称，最大支持200字符，按回车键可自动保存"
+      },
+      "drawerTitles": {
+        "basicInfo": "基本信息",
+        "personnel": "人员",
+        "date": "日期",
+        "relatedTasks": "关联任务",
+        "relatedCases": "关联功能用例",
+        "attachments": "附件",
+        "remarks": "备注",
+        "comments": "评论",
+        "activity": "活动"
+      },
+      "messages": {
+        "saveSuccess": "保存成功"
+      }
     }
   },
   "taskHome": {
