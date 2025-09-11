@@ -6,13 +6,18 @@ import { Button, DatePicker, Form, FormItem, Popover } from 'ant-design-vue';
 import { EnumMessage, enumUtils, EvalWorkloadMethod, TESTER, utils } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { project, task } from '@/api/tester';
-
-import SelectEnum from '@/components/enum/SelectEnum.vue';
-import RichEditor from '@/components/richEditor/index.vue';
-
 import { EditFormState, MeetingInfo } from '../types';
 import { TaskMeetingType } from '@/enums/enums';
 
+/**
+ * Import Components
+ */
+import SelectEnum from '@/components/enum/SelectEnum.vue';
+import RichEditor from '@/components/richEditor/index.vue';
+
+/**
+ * Component props interface for meeting edit form
+ */
 type Props = {
   projectId: string;
   userInfo: { id: string; };
@@ -23,6 +28,7 @@ type Props = {
   }
 }
 
+// COMPONENT PROPS
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -30,16 +36,19 @@ const props = withDefaults(defineProps<Props>(), {
   data: undefined
 });
 
+// COMPOSABLES & INJECTIONS
 const { t } = useI18n();
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const replaceTabPane = inject<(id: string, data: { [key: string]: any }) => void>('replaceTabPane', () => ({}));
 
+// REACTIVE STATE
 const formRef = ref();
+const contentRichEditorRef = ref();
 
 const evalWorkloadMethodOptions = ref<EnumMessage<EvalWorkloadMethod>[]>([]);
-const dataSource = ref<MeetingInfo>();
-const formState = ref<EditFormState>({
+const meetingDataSource = ref<MeetingInfo>();
+const meetingFormState = ref<EditFormState>({
   content: '',
   date: '',
   location: '',
@@ -50,119 +59,205 @@ const formState = ref<EditFormState>({
   subject: '',
   timeEnd: '',
   timeStart: '',
+  endTime: '',
+  startTime: '',
   type: TaskMeetingType.DAILY_STANDUP
 });
 
-const loading = ref(false);
+const isLoading = ref(false);
+const projectMembers = ref<{ fullName: string, id: string; }[]>([]);
 
-const getParams = () => {
-  const { content, date, timeEnd, timeStart, type, location, moderator, subject, participants, sprintId } = formState.value;
+/**
+ * Determines if the form is in edit mode based on data prop
+ * @returns True if editing existing meeting, false if creating new meeting
+ */
+const isEditMode = computed(() => {
+  return !!props.data?.id;
+});
+
+/**
+ * Field name mapping for select components
+ */
+const selectFieldNames = {
+  label: 'fullName',
+  value: 'id'
+};
+
+/**
+ * Builds API parameters from form state
+ * @returns Formatted parameters for API calls
+ */
+const buildApiParameters = () => {
+  const { content, date, timeEnd, timeStart, type, location, moderator, subject, participants, sprintId } = meetingFormState.value;
   return {
     content,
     date,
     time: `${timeStart}~${timeEnd}`,
     location,
-    moderator: members.value.find(i => i.id === moderator),
-    participants: participants.map(id => members.value.find(i => i.id === id)),
+    moderator: projectMembers.value.find(member => member.id === moderator) || { fullName: '', id: '' },
+    participants: participants.map(participantId => projectMembers.value.find(member => member.id === participantId)).filter(Boolean),
     sprintId,
     subject,
     type,
     id: props.data?.id || undefined,
     projectId: props.projectId
   };
-  // return params;
 };
 
-const refreshList = () => {
+/**
+ * Refreshes the meeting list tab
+ */
+const refreshMeetingList = () => {
   nextTick(() => {
     updateTabPane({ _id: 'meetingList', notify: utils.uuid() });
   });
 };
 
-const editOk = async () => {
-  const params = getParams();
-  loading.value = true;
-  const [error] = await task.updateMeeting(params);
-  loading.value = false;
+/**
+ * Validates that meeting content is required and not empty
+ * @returns Promise that resolves if valid, rejects with error if invalid
+ */
+const validateContentRequired = async () => {
+  if (!meetingFormState.value.content) {
+    return Promise.reject(new Error(t('taskMeeting.messages.contentRequired')));
+  }
+
+  const richEditorData = contentRichEditorRef.value?.getData();
+  if (!richEditorData) {
+    return Promise.reject(new Error(t('taskMeeting.messages.contentRequired')));
+  }
+
+  const parsedData = JSON.parse(richEditorData);
+  if (parsedData.length < 2) {
+    if (parsedData.length === 1) {
+      const contentValue = parsedData[0].insert.replaceAll('\n', '');
+      if (!contentValue) {
+        return Promise.reject(new Error(t('taskMeeting.messages.contentRequired')));
+      }
+    }
+  }
+
+  return Promise.resolve();
+};
+
+/**
+ * Validates that meeting time is required
+ * @returns Promise that resolves if valid, rejects with error if invalid
+ */
+const validateTimeRequired = async () => {
+  if (!meetingFormState.value.timeEnd || !meetingFormState.value.timeStart) {
+    return Promise.reject(new Error(t('taskMeeting.messages.timeRequired')));
+  }
+  return Promise.resolve();
+};
+
+/**
+ * Handles meeting update operation
+ */
+const handleMeetingUpdate = async () => {
+  const apiParams = buildApiParameters();
+  isLoading.value = true;
+  const [error] = await task.updateMeeting(apiParams);
+  isLoading.value = false;
+
   if (error) {
     return;
   }
 
   notification.success(t('taskMeeting.editSuccess'));
 
-  const id = params.id;
-  const name = params.subject;
-  updateTabPane({ _id: id, name });
-  if (dataSource.value) {
-    dataSource.value.subject = name;
+  const meetingId = apiParams.id;
+  const meetingSubject = apiParams.subject;
+  updateTabPane({ _id: meetingId, name: meetingSubject });
+  if (meetingDataSource.value) {
+    meetingDataSource.value.subject = meetingSubject;
   }
 };
 
-const addOk = async () => {
-  const params = getParams();
-  loading.value = true;
-  const [error, res] = await task.addMeeting(params);
-  loading.value = false;
+/**
+ * Handles meeting creation operation
+ */
+const handleMeetingCreation = async () => {
+  const apiParams = buildApiParameters();
+  isLoading.value = true;
+  const [error, response] = await task.addMeeting(apiParams);
+  isLoading.value = false;
+
   if (error) {
     return;
   }
 
   notification.success(t('taskMeeting.addSuccess'));
 
-  const _id = props.data?._id;
-  const newId = res?.data?.id;
-  const name = params.subject;
-  replaceTabPane(_id, { _id: newId, uiKey: newId, name, data: { _id: newId, id: newId } });
-};
-
-const ok = async () => {
-  formRef.value.validate().then(async () => {
-    if (!editFlag.value) {
-      await addOk();
-    } else {
-      await editOk();
-    }
-    refreshList();
+  const currentTabId = props.data?._id;
+  const newMeetingId = response?.data?.id;
+  const meetingSubject = apiParams.subject;
+  replaceTabPane(currentTabId, {
+    _id: newMeetingId,
+    uiKey: newMeetingId,
+    name: meetingSubject,
+    data: { _id: newMeetingId, id: newMeetingId }
   });
 };
 
-const cancel = () => {
-  deleteTabPane([props.data._id]);
-};
-
-const loadEnums = () => {
+/**
+ * Loads enum options for form dropdowns
+ */
+const loadEnumOptions = () => {
   evalWorkloadMethodOptions.value = enumUtils.enumToMessages(EvalWorkloadMethod);
 };
 
-const loadData = async (id: string) => {
-  if (loading.value) {
+/**
+ * Loads project members for moderator and participants selection
+ */
+const loadProjectMembers = async () => {
+  const [error, { data }] = await project.getProjectMember(props.projectId);
+  if (error) {
+    return;
+  }
+  projectMembers.value = (data || []).map(member => ({
+    ...member
+  }));
+};
+
+/**
+ * Loads meeting detail data for editing
+ * @param meetingId - ID of the meeting to load
+ */
+const loadMeetingData = async (meetingId: string) => {
+  if (isLoading.value) {
     return;
   }
 
-  loading.value = true;
-  const [error, res] = await task.getMeetingDetail(id);
-  loading.value = false;
+  isLoading.value = true;
+  const [error, response] = await task.getMeetingDetail(meetingId);
+  isLoading.value = false;
+
   if (error) {
     return;
   }
 
-  const data = res?.data as MeetingInfo;
-  if (!data) {
+  const meetingData = response?.data as MeetingInfo;
+  if (!meetingData) {
     return;
   }
 
-  dataSource.value = data;
-  setFormData(data);
+  meetingDataSource.value = meetingData;
+  populateFormWithData(meetingData);
 
-  const name = data.subject;
-  if (name && typeof updateTabPane === 'function') {
-    updateTabPane({ name, _id: id });
+  const meetingSubject = meetingData.subject;
+  if (meetingSubject && typeof updateTabPane === 'function') {
+    updateTabPane({ name: meetingSubject, _id: meetingId });
   }
 };
 
-const setFormData = (data: MeetingInfo) => {
-  if (!data) {
-    formState.value = {
+/**
+ * Populates form with meeting data
+ * @param meetingData - Meeting data to populate form with
+ */
+const populateFormWithData = (meetingData: MeetingInfo) => {
+  if (!meetingData) {
+    meetingFormState.value = {
       content: '',
       date: '',
       location: '',
@@ -173,134 +268,107 @@ const setFormData = (data: MeetingInfo) => {
       subject: '',
       timeEnd: '',
       timeStart: '',
+      endTime: '',
+      startTime: '',
       type: TaskMeetingType.DAILY_STANDUP
     };
     return;
   }
 
-  const {
-    type,
-    date,
-    time,
-    moderator,
-    participants
-  } = data;
+  const { type, date, time, moderator, participants } = meetingData;
   const [startTime = '', endTime = ''] = (time || '').split('~');
-  if (!members.value.find(item => item.id === moderator.id)) {
-    members.value.push(moderator);
+
+  // Add moderator to members list if not already present
+  if (!projectMembers.value.find(member => member.id === moderator.id)) {
+    projectMembers.value.push(moderator);
   }
-  formState.value = {
-    ...data,
+
+  meetingFormState.value = {
+    ...meetingData,
     type: type?.value || type,
     date: dayjs(date),
     timeStart: dayjs(startTime),
     timeEnd: dayjs(endTime),
+    startTime: dayjs(startTime),
+    endTime: dayjs(endTime),
     moderator: moderator?.id,
-    participants: (participants || []).map(i => {
-      if (i.fullName && i.id && members.value.find(item => item.id === i.id)) {
-        members.value.push({
-          ...i
+    participants: (participants || []).map(participant => {
+      if (participant.fullName && participant.id && !projectMembers.value.find(member => member.id === participant.id)) {
+        projectMembers.value.push({
+          ...participant
         });
       }
-      return i?.id;
-    }).filter(Boolean)
+      return participant?.id;
+    }).filter(Boolean) as string[]
   };
 };
 
-const members = ref<{ fullName: string, id: string; }[]>([]);
-
-const loadMembers = async () => {
-  const [error, { data }] = await project.getProjectMember(props.projectId);
-  if (error) {
-    return;
-  }
-  members.value = (data || []).map(i => {
-    return {
-      ...i
-    };
+/**
+ * Handles form submission (save operation)
+ */
+const handleFormSubmit = async () => {
+  formRef.value.validate().then(async () => {
+    if (!isEditMode.value) {
+      await handleMeetingCreation();
+    } else {
+      await handleMeetingUpdate();
+    }
+    refreshMeetingList();
   });
 };
 
+/**
+ * Handles form cancellation
+ */
+const handleFormCancel = () => {
+  deleteTabPane([props.data._id]);
+};
+
+/**
+ * Component mounted lifecycle hook
+ * Initializes enums, loads members, and sets up data watcher
+ */
 onMounted(async () => {
-  loadEnums();
-  await loadMembers();
+  loadEnumOptions();
+  await loadProjectMembers();
 
   watch(() => props.data, async (newValue, oldValue) => {
-    const id = newValue?.id;
-    if (!id) {
+    const currentMeetingId = newValue?.id;
+    if (!currentMeetingId) {
       return;
     }
 
-    const oldId = oldValue?.id;
-    if (id === oldId) {
+    const previousMeetingId = oldValue?.id;
+    if (currentMeetingId === previousMeetingId) {
       return;
     }
 
-    // await loadPermissions(id);
-    await loadData(id);
+    await loadMeetingData(currentMeetingId);
   }, { immediate: true });
 });
-
-const contentRichRef = ref();
-const validateDescRequired = async () => {
-  if (!formState.value.content) {
-    return Promise.reject(new Error(t('taskMeeting.messages.contentRequired')));
-  }
-  const values = contentRichRef.value.getData();
-  if (!values) {
-    return Promise.reject(new Error(t('taskMeeting.messages.contentRequired')));
-  }
-  const valuesObj = JSON.parse(values);
-
-  if (valuesObj.length < 2) {
-    if (valuesObj.length === 1) {
-      const insertValue = valuesObj[0].insert.replaceAll('\n', '');
-      if (!insertValue) {
-        return Promise.reject(new Error(t('taskMeeting.messages.contentRequired')));
-      }
-    }
-  }
-  return Promise.resolve();
-};
-
-const validateTime = async () => {
-  if (!formState.value.timeEnd || !formState.value.timeStart) {
-    return Promise.reject(new Error(t('taskMeeting.messages.timeRequired')));
-  }
-  return Promise.resolve();
-};
-
-const editFlag = computed(() => {
-  return !!props.data?.id;
-});
-
-const fieldNames = {
-  label: 'fullName',
-  value: 'id'
-};
-
 </script>
 <template>
-  <Spin :spinning="loading" class="h-full text-3 leading-5 px-5 py-5 overflow-auto">
+  <Spin :spinning="isLoading" class="h-full text-3 leading-5 px-5 py-5 overflow-auto">
     <div class="flex items-center space-x-2.5 mb-5">
       <Button
         type="primary"
         size="small"
         class="flex items-center space-x-1"
-        @click="ok">
+        @click="handleFormSubmit">
         <Icon icon="icon-dangqianxuanzhong" class="text-3.5" />
         <span>{{ t('actions.save') }}</span>
       </Button>
       <Button
         size="small"
         class="flex items-center space-x-1"
-        @click="cancel">
+        @click="handleFormCancel">
         <span>{{ t('actions.cancel') }}</span>
       </Button>
     </div>
+
     <Form
       ref="formRef"
-      :model="formState"
+      :model="meetingFormState"
       size="small"
       :labelCol="{ style: { width: '75px' } }"
       class="max-w-242.5"
@@ -310,10 +378,11 @@ const fieldNames = {
         name="subject"
         :label="t('taskMeeting.form.subject')">
         <Input
-          v-model:value="formState.subject"
+          v-model:value="meetingFormState.subject"
           :maxlength="200"
           :placeholder="t('taskMeeting.placeholder.inputSubject')" />
       </FormItem>
+
       <div class="flex space-x-2">
         <FormItem
           required
@@ -322,7 +391,7 @@ const fieldNames = {
           class="flex-1 min-w-0">
           <div class="flex items-center space-x-1">
             <SelectEnum
-              v-model:value="formState.type"
+              v-model:value="meetingFormState.type"
               :lazy="false"
               class="flex-1 min-w-0"
               enumKey="TaskMeetingType" />
@@ -331,13 +400,14 @@ const fieldNames = {
             </Popover>
           </div>
         </FormItem>
+
         <FormItem
           :label="t('taskMeeting.form.sprint')"
           class="flex-1 min-w-0"
           name="sprintId">
           <div class="flex items-center space-x-1">
             <Select
-              v-model:value="formState.sprintId"
+              v-model:value="meetingFormState.sprintId"
               :placeholder="t('taskMeeting.placeholder.selectSprint')"
               :fieldNames="{
                 value: 'id',
@@ -348,6 +418,7 @@ const fieldNames = {
           </div>
         </FormItem>
       </div>
+
       <div class="flex space-x-2">
         <FormItem
           required
@@ -356,47 +427,49 @@ const fieldNames = {
           name="date">
           <div class="flex items-center space-x-1">
             <DatePicker
-              v-model:value="formState.date"
+              v-model:value="meetingFormState.date"
               format="YYYY-MM-DD"
               showToday
               class="flex-1 min-w-0" />
             <Icon icon="" class="text-tips text-3.5 cursor-pointer" />
           </div>
         </FormItem>
+
         <FormItem
           :label="t('taskMeeting.form.time')"
           class="flex-1 min-w-0"
           name="time"
-          :rules="{validator: validateTime, message: '请选择会议时间', required: true}">
+          :rules="{validator: validateTimeRequired, message: '请选择会议时间', required: true}">
           <div class="w-full flex items-center space-x-1">
             <DatePicker
-              v-model:value="formState.timeStart"
+              v-model:value="meetingFormState.timeStart"
               mode="time"
               picker="time"
               :placeholder="t('taskMeeting.placeholder.startTime')"
               class="flex-1" />
             <span>-</span>
             <DatePicker
-              v-model:value="formState.timeEnd"
+              v-model:value="meetingFormState.timeEnd"
               mode="time"
               picker="time"
               :placeholder="t('taskMeeting.placeholder.endTime')"
               class="flex-1" />
-              <!-- <Icon icon="" class="text-tips text-3.5 cursor-pointer" /> -->
           </div>
         </FormItem>
       </div>
+
       <div class="flex space-x-2">
         <FormItem :label="t('taskMeeting.form.location')" class="flex-1 min-w-0">
           <div class="flex items-center space-x-1">
             <Input
-              v-model:value="formState.location"
+              v-model:value="meetingFormState.location"
               :placeholder="t('taskMeeting.placeholder.inputLocation')"
               :maxlength="100"
               class="flex-1 min-w-0" />
             <Icon icon="" class="text-tips text-3.5 cursor-pointer" />
           </div>
         </FormItem>
+
         <FormItem
           required
           :label="t('taskMeeting.form.moderator')"
@@ -404,14 +477,15 @@ const fieldNames = {
           name="moderator">
           <div class="flex items-center space-x-1">
             <Select
-              v-model:value="formState.moderator"
+              v-model:value="meetingFormState.moderator"
               :placeholder="t('taskMeeting.placeholder.selectModerator')"
-              :options="members"
-              :fieldNames="fieldNames"
+              :options="projectMembers"
+              :fieldNames="selectFieldNames"
               class="flex-1 min-w-0" />
           </div>
         </FormItem>
       </div>
+
       <FormItem
         required
         :label="t('taskMeeting.form.participants')"
@@ -419,23 +493,24 @@ const fieldNames = {
         name="participants">
         <div class="flex items-center space-x-1">
           <Select
-            v-model:value="formState.participants"
+            v-model:value="meetingFormState.participants"
             :placeholder="t('taskMeeting.placeholder.selectParticipants')"
             :maxTags="200"
-            :options="members"
-            :fieldNames="fieldNames"
+            :options="projectMembers"
+            :fieldNames="selectFieldNames"
             mode="multiple"
             class="flex-1 min-w-0" />
         </div>
       </FormItem>
+
       <FormItem
         :label="t('taskMeeting.form.content')"
         class="flex-1 !mb-5"
         name="content"
-        :rules="{required: true, validator: validateDescRequired}">
+        :rules="{required: true, validator: validateContentRequired}">
         <RichEditor
-          ref="contentRichRef"
-          v-model:value="formState.content"
+          ref="contentRichEditorRef"
+          v-model:value="meetingFormState.content"
           class="review-description" />
       </FormItem>
     </Form>

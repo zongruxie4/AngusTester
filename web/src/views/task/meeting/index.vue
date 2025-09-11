@@ -4,49 +4,90 @@ import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { utils, IPane } from '@xcan-angus/infra';
-import {BasicProps} from "@/types/types";
+import { BasicProps } from "@/types/types";
 
+// COMPONENT PROPS
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined
 });
 
-const List = defineAsyncComponent(() => import('@/views/task/meeting/list/index.vue'));
-const Detail = defineAsyncComponent(() => import('@/views/task/meeting/detail/index.vue'));
-const Edit = defineAsyncComponent(() => import('@/views/task/meeting/edit/index.vue'));
+// ASYNC COMPONENTS
+const MeetingList = defineAsyncComponent(() => import('@/views/task/meeting/list/index.vue'));
+const MeetingDetail = defineAsyncComponent(() => import('@/views/task/meeting/detail/index.vue'));
+const MeetingEdit = defineAsyncComponent(() => import('@/views/task/meeting/edit/index.vue'));
 
+// COMPOSABLES
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
+
+// REACTIVE STATE
 const browserTabRef = ref();
 
-const addTabPane = (data: IPane) => {
+/**
+ * Generates storage key for browser tab persistence
+ * @returns Storage key string or undefined if no projectId
+ */
+const storageKey = computed(() => {
+  if (!props.projectId) {
+    return undefined;
+  }
+  return `meeting${props.projectId}`;
+});
+
+/**
+ * Adds a new tab pane to the browser tab component
+ * @param tabPaneData - Tab pane configuration data
+ */
+const addTabPane = (tabPaneData: IPane) => {
   browserTabRef.value.add(() => {
-    return data;
+    return tabPaneData;
   });
 };
 
+/**
+ * Retrieves tab pane data by key
+ * @param key - Tab pane identifier key
+ * @returns Tab pane data array or undefined
+ */
 const getTabPane = (key: string): IPane[] | undefined => {
   return browserTabRef.value.getData(key);
 };
 
+/**
+ * Removes tab panes by their keys
+ * @param keys - Array of tab pane keys to remove
+ */
 const deleteTabPane = (keys: string[]) => {
   browserTabRef.value.remove(keys);
 };
 
-const updateTabPane = (data: IPane) => {
-  browserTabRef.value.update(data);
+/**
+ * Updates an existing tab pane with new data
+ * @param tabPaneData - Updated tab pane data
+ */
+const updateTabPane = (tabPaneData: IPane) => {
+  browserTabRef.value.update(tabPaneData);
 };
 
-const replaceTabPane = (key: string, data: { key: string }) => {
-  browserTabRef.value.replace(key, data);
+/**
+ * Replaces a tab pane with new data
+ * @param key - Tab pane key to replace
+ * @param tabPaneData - New tab pane data
+ */
+const replaceTabPane = (key: string, tabPaneData: { key: string }) => {
+  browserTabRef.value.replace(key, tabPaneData);
 };
 
-const initialize = () => {
+/**
+ * Initializes the meeting module by setting up default tab and processing hash
+ */
+const initializeMeetingModule = () => {
   if (typeof browserTabRef.value?.add === 'function') {
-    browserTabRef.value.add((ids: string[]) => {
-      if (!ids.includes('meetingList')) {
+    browserTabRef.value.add((existingTabIds: string[]) => {
+      if (!existingTabIds.includes('meetingList')) {
         return {
           _id: 'meetingList',
           value: 'meetingList',
@@ -57,24 +98,31 @@ const initialize = () => {
     });
   }
 
-  hashChange(route.hash);
+  processRouteHash(route.hash);
 };
 
-const hashChange = (hash: string) => {
+/**
+ * Processes route hash to determine which tab to open
+ * @param hash - URL hash string containing query parameters
+ */
+const processRouteHash = (hash: string) => {
   const queryString = hash.split('?')[1];
   if (!queryString) {
     return;
   }
 
-  const queryParameters = queryString.split('&').reduce((prev, cur) => {
-    const [key, value] = cur.split('=');
-    prev[key] = value;
-    return prev;
+  // Parse query parameters from hash
+  const queryParameters = queryString.split('&').reduce((accumulator, current) => {
+    const [key, value] = current.split('=');
+    accumulator[key] = value;
+    return accumulator;
   }, {} as { [key: string]: string });
 
   const { id, type } = queryParameters;
+  
   if (id) {
     if (type === 'edit') {
+      // Open meeting edit tab
       browserTabRef.value.add(() => {
         return {
           _id: id,
@@ -84,6 +132,7 @@ const hashChange = (hash: string) => {
         };
       });
     } else {
+      // Open meeting detail tab
       browserTabRef.value.add(() => {
         return {
           _id: id + '-detail',
@@ -94,43 +143,46 @@ const hashChange = (hash: string) => {
     }
   } else {
     if (type) {
+      // Open new meeting creation tab
       browserTabRef.value.add(() => {
-        const id = utils.uuid();
+        const newMeetingId = utils.uuid();
         return {
-          _id: id,
+          _id: newMeetingId,
           name: t('taskMeeting.addMeeting'),
           value: 'meetingEdit',
           noCache: true,
-          data: { _id: id }
+          data: { _id: newMeetingId }
         };
       });
     }
   }
 
+  // Clean up URL by removing hash parameters
   router.replace('/task#meeting');
 };
 
-const storageKeyChange = () => {
-  initialize();
+/**
+ * Handles storage key changes and reinitializes the module
+ */
+const handleStorageKeyChange = () => {
+  initializeMeetingModule();
 };
 
+/**
+ * Component mounted lifecycle hook
+ * Sets up route hash watcher for tab navigation
+ */
 onMounted(() => {
-  watch(() => route.hash, () => {
-    if (!route.hash.startsWith('#meeting')) {
+  watch(() => route.hash, (newHash) => {
+    if (!newHash.startsWith('#meeting')) {
       return;
     }
 
-    hashChange(route.hash);
+    processRouteHash(newHash);
   });
 });
 
-const storageKey = computed(() => {
-  if (!props.projectId) {
-    return undefined;
-  }
-  return `meeting${props.projectId}`;
-});
-
+// Provide tab pane management functions to child components
 provide('addTabPane', addTabPane);
 provide('getTabPane', getTabPane);
 provide('deleteTabPane', deleteTabPane);
@@ -142,29 +194,29 @@ provide('replaceTabPane', replaceTabPane);
     ref="browserTabRef"
     hideAdd
     class="h-full"
-    :userId="props.userInfo.id"
+    :userId="props.userInfo?.id"
     :storageKey="storageKey"
-    @storageKeyChange="storageKeyChange">
-    <template #default="record">
-      <template v-if="record.value === 'meetingList'">
-        <List
-          v-bind="record"
+    @storageKeyChange="handleStorageKeyChange">
+    <template #default="tabRecord">
+      <template v-if="tabRecord.value === 'meetingList'">
+        <MeetingList
+          v-bind="tabRecord"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :projectId="props.projectId" />
       </template>
 
-      <template v-else-if="record.value === 'meetingDetails'">
-        <Detail
-          v-bind="record"
+      <template v-else-if="tabRecord.value === 'meetingDetails'">
+        <MeetingDetail
+          v-bind="tabRecord"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :projectId="props.projectId" />
       </template>
 
-      <template v-else-if="record.value === 'meetingEdit'">
-        <Edit
-          v-bind="record"
+      <template v-else-if="tabRecord.value === 'meetingEdit'">
+        <MeetingEdit
+          v-bind="tabRecord"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :projectId="props.projectId" />
@@ -172,3 +224,4 @@ provide('replaceTabPane', replaceTabPane);
     </template>
   </BrowserTab>
 </template>
+

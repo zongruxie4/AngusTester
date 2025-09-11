@@ -6,11 +6,10 @@ import { UserOutlined } from '@ant-design/icons-vue';
 import { ProjectPageQuery } from '@xcan-angus/infra';
 import { Colon, Icon, Image, modal, NoData, notification, Popover, Spin } from '@xcan-angus/vue-ui';
 import { task } from '@/api/tester';
-
 import { MeetingInfo } from '../types';
-import SearchPanel from '@/views/task/meeting/list/SearchPanel.vue';
 import { BasicProps } from '@/types/types';
 
+// COMPONENT PROPS
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -18,105 +17,137 @@ const props = withDefaults(defineProps<BasicProps>(), {
   notify: undefined
 });
 
+// COMPOSABLES & INJECTIONS
 const { t } = useI18n();
-const Introduce = defineAsyncComponent(() => import('@/views/task/meeting/list/Introduce.vue'));
-
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 
-const loaded = ref(false);
-const loading = ref(false);
-const searchedFlag = ref(false);
+// ASYNC COMPONENTS
+const SearchPanel = defineAsyncComponent(() => import('@/views/task/meeting/list/SearchPanel.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/task/meeting/list/Introduce.vue'));
 
-const searchPanelParams = ref({
+// REACTIVE STATE
+const isDataLoaded = ref(false);
+const isLoading = ref(false);
+const hasSearchFilters = ref(false);
+
+const searchParameters = ref({
   orderBy: undefined,
   orderSort: undefined,
   filters: []
 });
-const pageNo = ref(1);
+
+const currentPageNumber = ref(1);
 const pageSize = ref(5);
-// const filters = ref<{ key: string; op: string; value: string; }[]>([]);
-const total = ref(0);
-const dataList = ref<MeetingInfo[]>([]);
-const permissionsMap = ref<Map<string, string[]>>(new Map());
+const totalCount = ref(0);
+const meetingList = ref<MeetingInfo[]>([]);
+const permissionsCache = ref<Map<string, string[]>>(new Map());
 
-const refresh = () => {
-  pageNo.value = 1;
-  permissionsMap.value.clear();
-  loadData();
+// CONSTANTS
+const pageSizeOptions = ['5', '10', '15', '20', '30'];
+
+/**
+ * Refreshes the meeting list by resetting pagination and clearing cache
+ */
+const refreshMeetingList = () => {
+  currentPageNumber.value = 1;
+  permissionsCache.value.clear();
+  fetchMeetingList();
 };
 
-const searchChange = (data) => {
-  pageNo.value = 1;
-  searchPanelParams.value = data;
-  loadData();
+/**
+ * Handles search parameter changes and triggers data reload
+ * @param searchData - Search parameters including filters, orderBy, and orderSort
+ */
+const handleSearchChange = (searchData: any) => {
+  currentPageNumber.value = 1;
+  searchParameters.value = searchData;
+  fetchMeetingList();
 };
 
-const toDelete = async (data: MeetingInfo) => {
+/**
+ * Fetches meeting list data from API with current parameters
+ */
+const fetchMeetingList = async () => {
+  isLoading.value = true;
+  const queryParams: ProjectPageQuery = {
+    projectId: props.projectId,
+    pageNo: currentPageNumber.value,
+    pageSize: pageSize.value,
+    ...searchParameters.value
+  };
+
+  const [error, response] = await task.getMeetingList(queryParams);
+  isDataLoaded.value = true;
+  isLoading.value = false;
+
+  // Determine if search filters are applied
+  hasSearchFilters.value = !!(queryParams.filters?.length || queryParams.orderBy);
+
+  if (error) {
+    totalCount.value = 0;
+    meetingList.value = [];
+    return;
+  }
+
+  const responseData = response?.data || { total: 0, list: [] };
+  if (responseData) {
+    totalCount.value = +responseData.total;
+    meetingList.value = (responseData.list || [] as MeetingInfo[]);
+  }
+};
+
+/**
+ * Handles meeting deletion with confirmation modal
+ * @param meetingData - Meeting information to be deleted
+ */
+const handleMeetingDeletion = async (meetingData: MeetingInfo) => {
   modal.confirm({
-    content: t('taskMeeting.confirmDelete', { name: data.subject }),
+    content: t('taskMeeting.confirmDelete', { name: meetingData.subject }),
     async onOk () {
-      const id = data.id;
-      const [error] = await task.deleteMeeting(id);
+      const meetingId = meetingData.id;
+      const [error] = await task.deleteMeeting(meetingId);
       if (error) {
         return;
       }
 
       notification.success(t('taskMeeting.deleteSuccess'));
-      await loadData();
-      deleteTabPane([id]);
+      await fetchMeetingList();
+      deleteTabPane([meetingId]);
     }
   });
 };
 
-const paginationChange = (_pageNo: number, _pageSize: number) => {
-  pageNo.value = _pageNo;
-  pageSize.value = _pageSize;
-  loadData();
+/**
+ * Handles pagination changes and reloads data
+ * @param newPageNumber - New page number
+ * @param newPageSize - New page size
+ */
+const handlePaginationChange = (newPageNumber: number, newPageSize: number) => {
+  currentPageNumber.value = newPageNumber;
+  pageSize.value = newPageSize;
+  fetchMeetingList();
 };
 
-const loadData = async () => {
-  loading.value = true;
-  const params: ProjectPageQuery = {
-    projectId: props.projectId,
-    pageNo: pageNo.value,
-    pageSize: pageSize.value,
-    ...searchPanelParams.value
-  };
-
-  const [error, res] = await task.getMeetingList(params);
-  loaded.value = true;
-  loading.value = false;
-
-  searchedFlag.value = !!(params.filters?.length || params.orderBy);
-
-  if (error) {
-    total.value = 0;
-    dataList.value = [];
-    return;
-  }
-
-  const data = res?.data || { total: 0, list: [] };
-  if (data) {
-    total.value = +data.total;
-    dataList.value = (data.list || [] as MeetingInfo[]);
-  }
-};
+/**
+ * Component mounted lifecycle hook
+ * Sets up watchers for projectId and notify prop changes
+ */
 onMounted(() => {
+  // Watch for project changes and reload data
   watch(() => props.projectId, () => {
-    pageNo.value = 1;
-    loadData();
+    currentPageNumber.value = 1;
+    fetchMeetingList();
   }, { immediate: true });
 
-  watch(() => props.notify, (newValue) => {
-    if (!newValue) {
+  // Watch for notification changes and reload data
+  watch(() => props.notify, (newNotifyValue) => {
+    if (!newNotifyValue) {
       return;
     }
 
-    loadData();
+    fetchMeetingList();
   }, { immediate: false });
 });
-
-const pageSizeOptions = ['5', '10', '15', '20', '30'];
 </script>
 
 <template>
@@ -126,9 +157,9 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
     </div>
 
     <div class="text-3.5 font-semibold mb-1">{{ t('taskMeeting.addedMeetings') }}</div>
-    <Spin :spinning="loading" class="flex-1 flex flex-col">
-      <template v-if="loaded">
-        <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
+    <Spin :spinning="isLoading" class="flex-1 flex flex-col">
+      <template v-if="isDataLoaded">
+        <div v-if="!hasSearchFilters && meetingList.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
             <span>{{ t('taskMeeting.notAddedYet') }}</span>
@@ -140,22 +171,22 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
 
         <template v-else>
           <SearchPanel
-            @change="searchChange"
-            @refresh="refresh" />
-          <NoData v-if="dataList.length === 0" class="flex-1" />
+            @change="handleSearchChange"
+            @refresh="refreshMeetingList" />
+          <NoData v-if="meetingList.length === 0" class="flex-1" />
 
           <template v-else>
             <div
-              v-for="(item, index) in dataList"
-              :key="item.id"
+              v-for="meetingItem in meetingList"
+              :key="meetingItem.id"
               class="mb-3.5 border border-theme-text-box rounded">
               <div class="px-3.5 py-2 flex items-center justify-between bg-theme-form-head w-full relative">
                 <div class="truncate" style="width:35%;max-width: 360px;">
                   <RouterLink
                     class="router-link"
-                    :title="item.subject"
-                    :to="`/task#meeting?id=${item.id}`">
-                    {{ item.subject }}
+                    :title="meetingItem.subject"
+                    :to="`/task#meeting?id=${meetingItem.id}`">
+                    {{ meetingItem.subject }}
                   </RouterLink>
                 </div>
               </div>
@@ -170,14 +201,14 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                     <div class="w-5 h-5 rounded-full mr-1 overflow-hidden">
                       <Image
                         class="w-full"
-                        :src="item.moderator.avatar"
+                        :src="meetingItem.moderator.avatar"
                         type="avatar" />
                     </div>
                     <div
                       class="text-theme-content truncate"
-                      :title="item.moderator.fullName"
+                      :title="meetingItem.moderator.fullName"
                       style="max-width: 200px;">
-                      {{ item.moderator.fullName }}
+                      {{ meetingItem.moderator.fullName }}
                     </div>
                   </div>
 
@@ -187,20 +218,20 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                       <Colon />
                     </div>
 
-                    <template v-if="item.participants?.length">
+                    <template v-if="meetingItem.participants?.length">
                       <div
-                        v-for="user in item.participants"
-                        :key="user.id"
-                        :title="user.fullName"
+                        v-for="participant in meetingItem.participants"
+                        :key="participant.id"
+                        :title="participant.fullName"
                         class="w-5 h-5 mr-2 overflow-hidden rounded-full">
                         <Image
-                          :src="user.avatar"
+                          :src="participant.avatar"
                           type="avatar"
                           class="w-full" />
                       </div>
 
                       <Popover
-                        v-if="item.participants.length > 5"
+                        v-if="meetingItem.participants.length > 5"
                         placement="bottomLeft"
                         internal>
                         <template #title>
@@ -209,16 +240,16 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                         <template #content>
                           <div class="flex flex-wrap" style="max-width: 700px;">
                             <div
-                              v-for="_user in item.participants"
-                              :key="_user.id"
+                              v-for="participant in meetingItem.participants"
+                              :key="participant.id"
                               class="flex text-3 leading-5 mr-2 mb-2">
                               <div class="w-5 h-5 rounded-full mr-1 flex-none overflow-hidden">
                                 <Image
                                   class="w-full"
-                                  :src="_user.avatar"
+                                  :src="participant.avatar"
                                   type="avatar" />
                               </div>
-                              <span class="flex-1 truncate">{{ _user.fullName }}</span>
+                              <span class="flex-1 truncate">{{ participant.fullName }}</span>
                             </div>
                           </div>
                         </template>
@@ -238,7 +269,9 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                   </div>
                 </div>
 
-                <div class="ml-8 text-theme-content">{{ t('taskMeeting.columns.participantsCount', { count: item.participants?.length || 0 }) }}</div>
+                <div class="ml-8 text-theme-content">
+                  {{ t('taskMeeting.columns.participantsCount', { count: meetingItem.participants?.length || 0 }) }}
+                </div>
               </div>
 
               <div class="px-3.5 flex flex-start justify-between text-3 text-theme-sub-content">
@@ -248,7 +281,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                       <span>{{ t('taskMeeting.columns.id') }}</span>
                       <Colon />
                     </div>
-                    <div class="text-theme-content">{{ item.id || "--" }}</div>
+                    <div class="text-theme-content">{{ meetingItem.id || "--" }}</div>
                   </div>
 
                   <div class="flex mt-3 ml-8">
@@ -256,7 +289,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                       <span>{{ t('taskMeeting.columns.type') }}</span>
                       <Colon />
                     </div>
-                    <div class="text-theme-content">{{ item.type?.message }}</div>
+                    <div class="text-theme-content">{{ meetingItem.type?.message }}</div>
                   </div>
                 </div>
 
@@ -264,32 +297,32 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                   <div
                     class="truncate text-theme-content"
                     style="max-width: 100px;"
-                    :title="item.lastModifiedByName">
-                    {{ item.lastModifiedByName }}
+                    :title="meetingItem.lastModifiedByName">
+                    {{ meetingItem.lastModifiedByName }}
                   </div>
                   <div class="mx-2 whitespace-nowrap">{{ t('taskMeeting.columns.lastModifiedBy') }}</div>
                   <div class="whitespace-nowrap text-theme-content">
-                    {{ item.lastModifiedDate }}
+                    {{ meetingItem.lastModifiedDate }}
                   </div>
                 </div>
               </div>
 
               <div class="px-3.5 flex justify-between items-start text-3 my-2.5 relative">
                 <div
-                  :title="item.description"
+                  :title="meetingItem.description"
                   class="truncate mr-8"
                   style="max-width: 70%;">
-                  {{ item.otherInformation }}
+                  {{ meetingItem.otherInformation }}
                 </div>
                 <div class="flex space-x-3 items-center justify-between h-4 leading-5">
-                  <RouterLink class="flex items-center space-x-1" :to="`/task#meeting?id=${item.id}&type=edit`">
+                  <RouterLink class="flex items-center space-x-1" :to="`/task#meeting?id=${meetingItem.id}&type=edit`">
                     <Icon icon="icon-shuxie" class="text-3.5" />
                     <span>{{ t('actions.edit') }}</span>
                   </RouterLink>
                   <Button
                     type="text"
                     size="small"
-                    @click="toDelete(item)">
+                    @click="handleMeetingDeletion(meetingItem)">
                     <Icon icon="icon-qingchu" />
                     {{ t('actions.delete') }}
                   </Button>
@@ -298,16 +331,16 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
             </div>
 
             <Pagination
-              v-if="total > 5"
-              :current="pageNo"
+              v-if="totalCount > 5"
+              :current="currentPageNumber"
               :pageSize="pageSize"
               :pageSizeOptions="pageSizeOptions"
-              :total="total"
+              :total="totalCount"
               :hideOnSinglePage="false"
               showSizeChanger
               size="default"
               class="text-right"
-              @change="paginationChange" />
+              @change="handlePaginationChange" />
           </template>
         </template>
       </template>

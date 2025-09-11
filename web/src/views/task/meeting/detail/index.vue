@@ -1,17 +1,17 @@
 <script setup lang="ts">
-// Import necessary modules and components
 import { inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Colon, Spin } from '@xcan-angus/vue-ui';
 import dayjs from 'dayjs';
-import RichEditor from '@/components/richEditor/index.vue';
 import { task } from '@/api/tester';
-
-// Import types and constants
 import { MeetingInfo } from '../types';
 import { DATE_FORMAT, TIME_FORMAT } from '@/utils/constant';
 
-// Define component props
+import RichEditor from '@/components/richEditor/index.vue';
+
+/**
+ * Component props interface for meeting detail view
+ */
 type Props = {
   projectId: string;
   userInfo: { id: string; };
@@ -22,6 +22,7 @@ type Props = {
   }
 }
 
+// COMPONENT PROPS
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -29,53 +30,65 @@ const props = withDefaults(defineProps<Props>(), {
   data: undefined
 });
 
-// Initialize i18n and inject updateTabPane function
+// COMPOSABLES & INJECTIONS
 const { t } = useI18n();
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 
-// Reactive data
-const dataSource = ref<MeetingInfo>();
-const loading = ref(false);
+// REACTIVE STATE
+const meetingDataSource = ref<MeetingInfo>();
+const isLoading = ref(false);
 
-// Format meeting time information
-const formatMeetingTime = (timeString: string) => {
+/**
+ * Parses meeting time string and formats start/end times
+ * @param timeString - Time string in format "startTime~endTime"
+ * @returns Object containing formatted start and end times
+ */
+const parseMeetingTimeRange = (timeString: string) => {
   const timeParts = (timeString || '').split('~');
   const startTime = dayjs(timeParts[0]).format(TIME_FORMAT);
   const endTime = dayjs(timeParts[1]).format(TIME_FORMAT);
   return { startTime, endTime };
 };
 
-// Format participant names
-const formatParticipantNames = (participants: { fullName: string }[]) => {
+/**
+ * Extracts and joins participant names into a comma-separated string
+ * @param participants - Array of participant objects with fullName property
+ * @returns Comma-separated string of participant names
+ */
+const extractParticipantNames = (participants: { fullName: string }[]) => {
   return participants.map(participant => participant.fullName).join(',');
 };
 
-// Load meeting detail data
-const loadMeetingDetail = async (id: string) => {
-  // Prevent duplicate requests
-  if (loading.value) {
+/**
+ * Fetches meeting detail data from API and updates component state
+ * @param meetingId - Unique identifier for the meeting
+ */
+const fetchMeetingDetails = async (meetingId: string) => {
+  // Prevent duplicate API requests
+  if (isLoading.value) {
     return;
   }
 
-  loading.value = true;
-  const [error, res] = await task.getMeetingDetail(id);
-  loading.value = false;
+  isLoading.value = true;
+  const [error, response] = await task.getMeetingDetail(meetingId);
+  isLoading.value = false;
+
   if (error) {
     return;
   }
 
-  const meetingData = res?.data as MeetingInfo;
+  const meetingData = response?.data as MeetingInfo;
   if (!meetingData) {
     return;
   }
 
-  // Format date and time
+  // Process and format meeting data for display
   const formattedDate = dayjs(meetingData.date);
-  const { startTime, endTime } = formatMeetingTime(meetingData.time || '');
-  const participantNames = formatParticipantNames(meetingData.participants);
+  const { startTime, endTime } = parseMeetingTimeRange(meetingData.time || '');
+  const participantNames = extractParticipantNames(meetingData.participants);
 
-  // Update data source
-  dataSource.value = {
+  // Update reactive data source with processed information
+  meetingDataSource.value = {
     ...meetingData,
     date: formattedDate,
     startTime,
@@ -84,39 +97,44 @@ const loadMeetingDetail = async (id: string) => {
     participantNames
   } as MeetingInfo & { moderatorName: string; participantNames: string; };
 
-  // Update tab pane title
+  // Update browser tab title with meeting subject
   const subject = meetingData.subject;
   if (subject && typeof updateTabPane === 'function') {
-    updateTabPane({ name: subject, _id: id + '-detail' });
+    updateTabPane({ name: subject, _id: meetingId + '-detail' });
   }
 };
 
-// Watch for data changes and load meeting details
+/**
+ * Component mounted lifecycle hook
+ * Sets up watcher for data prop changes to load meeting details
+ */
 onMounted(() => {
   watch(() => props.data, async (newValue, oldValue) => {
-    const meetingId = newValue?.id;
-    if (!meetingId) {
+    const currentMeetingId = newValue?.id;
+    if (!currentMeetingId) {
       return;
     }
 
-    const oldId = oldValue?.id;
-    if (meetingId === oldId) {
+    const previousMeetingId = oldValue?.id;
+    if (currentMeetingId === previousMeetingId) {
       return;
     }
 
-    await loadMeetingDetail(meetingId);
+    await fetchMeetingDetails(currentMeetingId);
   }, { immediate: true });
 });
 
 </script>
 
 <template>
-  <Spin :spinning="loading" class="h-full text-3 leading-5 px-5 py-5 overflow-auto">
+  <Spin :spinning="isLoading" class="h-full text-3 leading-5 px-5 py-5 overflow-auto">
     <div
-      :key="dataSource?.id"
+      :key="meetingDataSource?.id"
       class="text-3 leading-5 space-y-2.5 py-2.5 px-3.5 mb-3.5 last:mb-0 meeting-container">
       <!-- Meeting subject -->
-      <div class="text-theme-title font-medium"> {{ dataSource?.subject }}</div>
+      <div class="text-theme-title font-medium">
+        {{ meetingDataSource?.subject }}
+      </div>
 
       <!-- Meeting type and sprint -->
       <div class="flex items-start space-x-5">
@@ -126,7 +144,9 @@ onMounted(() => {
             <Colon class="w-1" />
           </div>
 
-          <div class="whitespace-pre-wrap break-words break-all">{{ dataSource?.type?.message }}</div>
+          <div class="whitespace-pre-wrap break-words break-all">
+            {{ meetingDataSource?.type?.message }}
+          </div>
         </div>
 
         <div class="w-1/2 flex items-start">
@@ -135,7 +155,9 @@ onMounted(() => {
             <Colon class="w-1" />
           </div>
 
-          <div class="whitespace-pre-wrap break-words break-all">{{ dataSource?.sprintName || '--' }}</div>
+          <div class="whitespace-pre-wrap break-words break-all">
+            {{ meetingDataSource?.sprintName || '--' }}
+          </div>
         </div>
       </div>
 
@@ -147,7 +169,9 @@ onMounted(() => {
             <Colon class="w-1" />
           </div>
 
-          <div class="whitespace-pre-wrap break-words break-all">{{ dataSource?.date?.format(DATE_FORMAT) }}</div>
+          <div class="whitespace-pre-wrap break-words break-all">
+            {{ meetingDataSource?.date?.format(DATE_FORMAT) }}
+          </div>
         </div>
         <div class="w-1/2 flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
@@ -156,9 +180,9 @@ onMounted(() => {
           </div>
 
           <div class="text-3 whitespace-nowrap">
-            <span>{{ dataSource?.startTime }}</span>
+            <span>{{ meetingDataSource?.startTime }}</span>
             <span class="mx-2">至</span>
-            <span>{{ dataSource?.endTime }}</span>
+            <span>{{ meetingDataSource?.endTime }}</span>
           </div>
         </div>
       </div>
@@ -171,7 +195,9 @@ onMounted(() => {
             <Colon class="w-1" />
           </div>
 
-          <div class="whitespace-pre-wrap break-words break-all">{{ dataSource?.location || '--' }}</div>
+          <div class="whitespace-pre-wrap break-words break-all">
+            {{ meetingDataSource?.location || '--' }}
+          </div>
         </div>
         <div class="w-1/2 flex items-start">
           <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
@@ -179,7 +205,9 @@ onMounted(() => {
             <Colon class="w-1" />
           </div>
 
-          <div class="whitespace-pre-wrap break-words break-all">{{ dataSource?.moderator?.fullName }}</div>
+          <div class="whitespace-pre-wrap break-words break-all">
+            {{ meetingDataSource?.moderator?.fullName }}
+          </div>
         </div>
       </div>
 
@@ -190,7 +218,9 @@ onMounted(() => {
           <Colon class="w-1" />
         </div>
 
-        <div class="whitespace-pre-wrap break-words break-all">{{ dataSource?.participantNames }}</div>
+        <div class="whitespace-pre-wrap break-words break-all">
+          {{ meetingDataSource?.participantNames }}
+        </div>
       </div>
 
       <!-- Meeting content -->
@@ -201,7 +231,7 @@ onMounted(() => {
         </div>
 
         <RichEditor
-          :value="dataSource?.content"
+          :value="meetingDataSource?.content"
           mode="view" />
       </div>
     </div>

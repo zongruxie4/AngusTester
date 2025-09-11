@@ -8,8 +8,8 @@ export type MeetingInfo = {
     date: Dayjs;
     endTime: string;
     location: string;
-    moderator: { fullName: string, id: string };
-    participants: { fullName: string, id: string }[];
+    moderator: { fullName: string, id: string; avatar?: string };
+    participants: { fullName: string, id: string; avatar?: string }[];
     startTime: string;
     subject: string;
     type: EnumMessage<TaskMeetingType>;
@@ -17,19 +17,25 @@ export type MeetingInfo = {
     time?: string;
     participantNames?: string;
     moderatorName?: string;
+    lastModifiedByName?: string;
+    lastModifiedDate?: string;
+    description?: string;
+    otherInformation?: string;
 }
 
 export type EditFormState = {
   id?: string;
   content: string;
   date: Dayjs | string;
-  endTime: Dayjs;
+  endTime: Dayjs | string;
   location: string;
-  timeEnd: string;
-  timeStart: string;
+  timeEnd: Dayjs | string;
+  timeStart: Dayjs | string;
   subject: string;
-  moderator: { fullName: string, id: string } | string;
-  participants: { fullName: string, id: string }[];
-  startTime: Dayjs;
+  moderator: string | undefined;
+  participants: string[];
+  startTime: Dayjs | string;
   type: TaskMeetingType;
+  projectId?: string;
+  sprintId?: string;
 }

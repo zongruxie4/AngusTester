@@ -1,63 +1,89 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
 import { appContext, PageQuery } from '@xcan-angus/infra';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
-
 import { TaskMeetingType } from '@/enums/enums';
-import {LoadingProps} from "@/types/types";
+import { LoadingProps } from '@/types/types';
 
+// TYPES & INTERFACES
+type OrderByKey = string;
+type OrderSortKey = PageQuery.OrderSort;
+
+type SearchFilter = {
+  key: string;
+  op: string;
+  value: string | string[];
+};
+
+type SearchParams = {
+  orderBy?: string;
+  orderSort?: PageQuery.OrderSort;
+  filters: SearchFilter[];
+};
+
+// COMPONENT PROPS & EMITS
 const props = withDefaults(defineProps<LoadingProps>(), {
   loading: false
 });
 
-type OrderByKey = string;
-type OrderSortKey = 'ASC' | 'DESC';
+// eslint-disable-next-line func-call-spacing
+const emits = defineEmits<{
+  (e: 'change', value: SearchParams): void;
+  (e: 'refresh'): void;
+}>();
 
+// COMPOSABLES
 const { t } = useI18n();
-const emits = defineEmits<{(e: 'change', value: {
-  orderBy?: string;
-  orderSort?: PageQuery.OrderSort;
-  filters: {key: string; op: string; value: string|string[]}[];
-}):void,
- (e: 'refresh'):void}>();
-const userInfo = ref(appContext.getUser());
+const currentUser = ref(appContext.getUser());
 
+// REACTIVE STATE
 const searchPanelRef = ref();
-const selectedMenuMap = ref<{[key: string]: boolean}>({});
+const selectedQuickSearchItems = ref<{ [key: string]: boolean }>({});
 
+const currentOrderBy = ref();
+const currentOrderSort = ref();
+const searchFilters = ref<SearchFilter[]>([]);
+const quickSearchFilters = ref<SearchFilter[]>([]);
+const associatedFilters = ref<SearchFilter[]>([]);
+
+// CONSTANTS
+const ASSOCIATED_FILTER_KEYS = ['createdDate', 'moderatorId', 'createdBy'];
+const TIME_RANGE_KEYS = ['lastDay', 'lastThreeDays', 'lastWeek'];
+
+// SEARCH PANEL CONFIGURATION
 const searchPanelOptions = [
   {
     valueKey: 'subject',
-    type: 'input',
+    type: 'input' as const,
     placeholder: t('taskMeeting.placeholder.searchSubject'),
     allowClear: true,
     maxlength: 100
   },
   {
     valueKey: 'type',
-    type: 'select-enum',
+    type: 'select-enum' as const,
     enumKey: TaskMeetingType,
     allowClear: true,
     placeholder: t('taskMeeting.placeholder.selectType')
   },
   {
     valueKey: 'moderatorId',
-    type: 'select-user',
+    type: 'select-user' as const,
     allowClear: true,
     placeholder: t('taskMeeting.placeholder.selectModeratorSearch')
   },
   {
     valueKey: 'createdBy',
-    type: 'select-user',
+    type: 'select-user' as const,
     allowClear: true,
     placeholder: t('taskMeeting.placeholder.selectCreator')
   },
   {
-    type: 'date-range',
+    type: 'date-range' as const,
     valueKey: 'createdDate',
     placeholder: [t('taskMeeting.placeholder.createTimeFrom'), t('taskMeeting.placeholder.createTimeTo')],
     showTime: true
@@ -86,7 +112,8 @@ const sortMenuItems: {
   }
 ];
 
-const menuItems = computed(() => [
+// COMPUTED PROPERTIES
+const quickSearchMenuItems = computed(() => [
   {
     key: '',
     name: t('taskMeeting.quickSearch.all')
@@ -117,160 +144,191 @@ const menuItems = computed(() => [
   }
 ]);
 
-const orderBy = ref();
-const orderSort = ref();
-const searchFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
-const quickSearchFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
-const assocFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
-const assocKeys = ['createdDate', 'moderatorId', 'createdBy'];
-const timeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
-
-const formatDateString = (key: string) => {
+/**
+ * Formats date range based on time key selection
+ * @param timeKey - Time range key (lastDay, lastThreeDays, lastWeek)
+ * @returns Array containing start and end date strings
+ */
+const formatDateRange = (timeKey: string): [string, string] => {
   let startDate: Dayjs | undefined;
   let endDate: Dayjs | undefined;
 
-  if (key === 'lastDay') {
-    startDate = dayjs().startOf('date');
-    endDate = dayjs();
+  switch (timeKey) {
+    case 'lastDay':
+      startDate = dayjs().startOf('date');
+      endDate = dayjs();
+      break;
+    case 'lastThreeDays':
+      startDate = dayjs().startOf('date').subtract(3, 'day').add(1, 'day');
+      endDate = dayjs();
+      break;
+    case 'lastWeek':
+      startDate = dayjs().startOf('date').subtract(1, 'week').add(1, 'day');
+      endDate = dayjs();
+      break;
   }
 
-  if (key === 'lastThreeDays') {
-    startDate = dayjs().startOf('date').subtract(3, 'day').add(1, 'day');
-    endDate = dayjs();
-  }
-
-  if (key === 'lastWeek') {
-    startDate = dayjs().startOf('date').subtract(1, 'week').add(1, 'day');
-    endDate = dayjs();
-  }
-
-  return [startDate ? startDate.format(DATE_TIME_FORMAT) : '', endDate ? endDate.format(DATE_TIME_FORMAT) : ''];
+  return [
+    startDate ? startDate.format(DATE_TIME_FORMAT) : '',
+    endDate ? endDate.format(DATE_TIME_FORMAT) : ''
+  ];
 };
 
-const getParams = () => {
+/**
+ * Combines all search parameters into a single object
+ * @returns Combined search parameters
+ */
+const buildSearchParameters = (): SearchParams => {
   return {
     filters: [
       ...quickSearchFilters.value,
       ...searchFilters.value,
-      ...assocFilters.value
+      ...associatedFilters.value
     ],
-    orderBy: orderBy.value,
-    orderSort: orderSort.value
+    orderBy: currentOrderBy.value,
+    orderSort: currentOrderSort.value
   };
 };
 
-const searchChange = (data: {key: string; op: string; value: string|string[]}[]) => {
-  searchFilters.value = data.filter(item => !assocKeys.includes(item.key));
-  assocFilters.value = data.filter(item => assocKeys.includes(item.key));
+/**
+ * Handles search panel filter changes
+ * @param filterData - Array of filter objects from search panel
+ */
+const handleSearchFilterChange = (filterData: SearchFilter[]) => {
+  searchFilters.value = filterData.filter(item => !ASSOCIATED_FILTER_KEYS.includes(item.key));
+  associatedFilters.value = filterData.filter(item => ASSOCIATED_FILTER_KEYS.includes(item.key));
 
-  if (!assocFilters.value.length) {
-    assocKeys.forEach(i => {
-      if (i === 'createdDate') {
-        timeKeys.forEach(t => delete selectedMenuMap.value[t]);
+  // Clear quick search selections if no associated filters
+  if (!associatedFilters.value.length) {
+    ASSOCIATED_FILTER_KEYS.forEach(key => {
+      if (key === 'createdDate') {
+        TIME_RANGE_KEYS.forEach(timeKey => delete selectedQuickSearchItems.value[timeKey]);
       } else {
-        delete selectedMenuMap.value[i];
+        delete selectedQuickSearchItems.value[key];
       }
     });
   } else {
-    assocKeys.forEach(key => {
+    // Update quick search selections based on associated filters
+    ASSOCIATED_FILTER_KEYS.forEach(key => {
       if (['createdBy', 'moderatorId'].includes(key)) {
-        const filterItem = assocFilters.value.find(i => i.key === key);
-        if (!filterItem || filterItem.value !== userInfo.value?.id) {
-          delete selectedMenuMap.value[key];
+        const filterItem = associatedFilters.value.find(item => item.key === key);
+        if (!filterItem || filterItem.value !== currentUser.value?.id?.toString()) {
+          delete selectedQuickSearchItems.value[key];
         }
       } else if (key === 'createdDate') {
-        const filterItem = assocFilters.value.filter(i => i.key === key);
-        const timeKey = timeKeys.find(t => selectedMenuMap.value[t]);
-        if (timeKey) {
-          const timeValue = formatDateString(timeKey);
-          if (timeValue[0] !== filterItem[0].value || timeValue[1] !== filterItem[1].value) {
-            delete selectedMenuMap.value[timeKey];
+        const filterItems = associatedFilters.value.filter(item => item.key === key);
+        const selectedTimeKey = TIME_RANGE_KEYS.find(timeKey => selectedQuickSearchItems.value[timeKey]);
+        if (selectedTimeKey) {
+          const timeRange = formatDateRange(selectedTimeKey);
+          if (timeRange[0] !== filterItems[0].value || timeRange[1] !== filterItems[1].value) {
+            delete selectedQuickSearchItems.value[selectedTimeKey];
           }
         }
       }
     });
   }
 
-  emits('change', getParams());
-};
-const toSort = (sortData) => {
-  orderBy.value = sortData.orderBy;
-  orderSort.value = sortData.orderSort;
-  emits('change', getParams());
+  emits('change', buildSearchParameters());
 };
 
-const menuItemClick = (data) => {
-  const key = data.key;
-  const timeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
-  let searchChangeFlag = false;
-  if (selectedMenuMap.value[key]) {
-    delete selectedMenuMap.value[key];
-    if (timeKeys.includes(key) && assocKeys.includes('createdDate')) {
+/**
+ * Handles sorting changes
+ * @param sortData - Sort configuration object
+ */
+const handleSortChange = (sortData: { orderBy: string; orderSort: string }) => {
+  currentOrderBy.value = sortData.orderBy;
+  currentOrderSort.value = sortData.orderSort;
+  emits('change', buildSearchParameters());
+};
+
+/**
+ * Handles quick search menu item clicks
+ * @param menuItem - Clicked menu item data
+ */
+const handleQuickSearchItemClick = (menuItem: { key: string; name: string }) => {
+  const itemKey = menuItem.key;
+  let shouldTriggerSearchChange = false;
+
+  if (selectedQuickSearchItems.value[itemKey]) {
+    // Deselect item
+    delete selectedQuickSearchItems.value[itemKey];
+
+    if (TIME_RANGE_KEYS.includes(itemKey) && ASSOCIATED_FILTER_KEYS.includes('createdDate')) {
       searchPanelRef.value.setConfigs([
         { valueKey: 'createdDate', value: undefined }
       ]);
-      searchChangeFlag = true;
-    } else if (assocKeys.includes(key)) {
+      shouldTriggerSearchChange = true;
+    } else if (ASSOCIATED_FILTER_KEYS.includes(itemKey)) {
       searchPanelRef.value.setConfigs([
-        { valueKey: key, value: undefined }
+        { valueKey: itemKey, value: undefined }
       ]);
-      searchChangeFlag = true;
+      shouldTriggerSearchChange = true;
     }
   } else {
-    if (key === '') {
-      selectedMenuMap.value = { '': true };
+    // Select item
+    if (itemKey === '') {
+      // Select "All" - clear all other selections
+      selectedQuickSearchItems.value = { '': true };
       quickSearchFilters.value = [];
       if (typeof searchPanelRef.value?.clear === 'function') {
         searchPanelRef.value.clear();
-        searchChangeFlag = true;
+        shouldTriggerSearchChange = true;
       }
     } else {
-      delete selectedMenuMap.value[''];
+      // Deselect "All" when selecting specific items
+      delete selectedQuickSearchItems.value[''];
     }
-    if (timeKeys.includes(key)) {
-      timeKeys.forEach(timeKey => delete selectedMenuMap.value[timeKey]);
-      selectedMenuMap.value[key] = true;
+
+    if (TIME_RANGE_KEYS.includes(itemKey)) {
+      // Clear other time range selections
+      TIME_RANGE_KEYS.forEach(timeKey => delete selectedQuickSearchItems.value[timeKey]);
+      selectedQuickSearchItems.value[itemKey] = true;
     } else {
-      selectedMenuMap.value[key] = true;
+      selectedQuickSearchItems.value[itemKey] = true;
     }
   }
-  const userId = userInfo.value?.id;
-  // let timeFilters: {key: string; op: string; value: string}[] = [];
-  const assocFiltersInQuick:{valueKey: string, value: string|string[]}[] = [];
-  quickSearchFilters.value = Object.keys(selectedMenuMap.value).map(key => {
+
+  // Build quick search filters
+  const userId = currentUser.value?.id?.toString();
+  const associatedFiltersInQuick: { valueKey: string; value: string | string[] }[] = [];
+
+  quickSearchFilters.value = Object.keys(selectedQuickSearchItems.value).map(key => {
     if (key === '') {
       return undefined;
-    } else if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(key)) {
-      assocFiltersInQuick.push({
+    } else if (TIME_RANGE_KEYS.includes(key)) {
+      associatedFiltersInQuick.push({
         valueKey: 'createdDate',
-        value: formatDateString(key)
+        value: formatDateRange(key)
       });
       return undefined;
-    } else if (assocKeys.includes(key)) {
+    } else if (ASSOCIATED_FILTER_KEYS.includes(key)) {
       if (['moderatorId', 'createdBy'].includes(key)) {
-        assocFiltersInQuick.push({ valueKey: key, value: userId });
+        associatedFiltersInQuick.push({ valueKey: key, value: userId || '' });
       }
       return undefined;
     } else {
       return {
         key,
         op: 'EQUAL',
-        value: userId
+        value: userId || ''
       };
     }
-  }).filter(Boolean);
-  if (assocFiltersInQuick.length) {
-    searchPanelRef.value.setConfigs([
-      ...assocFiltersInQuick
-    ]);
-    searchChangeFlag = true;
+  }).filter(Boolean) as SearchFilter[];
+
+  if (associatedFiltersInQuick.length) {
+    searchPanelRef.value.setConfigs([...associatedFiltersInQuick]);
+    shouldTriggerSearchChange = true;
   }
-  if (!searchChangeFlag) {
-    emits('change', getParams());
+
+  if (!shouldTriggerSearchChange) {
+    emits('change', buildSearchParameters());
   }
 };
 
-const refresh = () => {
+/**
+ * Handles refresh action
+ */
+const handleRefresh = () => {
   emits('refresh');
 };
 </script>
@@ -283,12 +341,12 @@ const refresh = () => {
       </div>
       <div class="flex  flex-wrap ml-2">
         <div
-          v-for="item in menuItems"
-          :key="item.key"
-          :class="{ 'active-key': selectedMenuMap[item.key] }"
+          v-for="menuItem in quickSearchMenuItems"
+          :key="menuItem.key"
+          :class="{ 'active-key': selectedQuickSearchItems[menuItem.key] }"
           class="px-2.5 h-6 leading-6 mr-3 mb-3 rounded bg-gray-light cursor-pointer"
-          @click="menuItemClick(item)">
-          {{ item.name }}
+          @click="handleQuickSearchItemClick(menuItem)">
+          {{ menuItem.name }}
         </div>
       </div>
     </div>
@@ -297,7 +355,7 @@ const refresh = () => {
         ref="searchPanelRef"
         :options="searchPanelOptions"
         class="flex-1 mr-3.5"
-        @change="searchChange" />
+        @change="handleSearchFilterChange" />
 
       <div class="flex items-center space-x-3">
         <Button
@@ -311,10 +369,10 @@ const refresh = () => {
         </Button>
 
         <DropdownSort
-          v-model:orderBy="orderBy"
-          v-model:orderSort="orderSort"
+          v-model:orderBy="currentOrderBy"
+          v-model:orderSort="currentOrderSort"
           :menuItems="sortMenuItems"
-          @click="toSort">
+          @click="handleSortChange">
           <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
             <Icon icon="icon-shunxu" class="text-3.5" />
             <span>{{ t('sort') }}</span>
@@ -324,7 +382,7 @@ const refresh = () => {
         <IconRefresh
           :loading="props.loading"
           :disabled="props.loading"
-          @click="refresh">
+          @click="handleRefresh">
           <template #default>
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-shuaxin" class="text-3.5" />
