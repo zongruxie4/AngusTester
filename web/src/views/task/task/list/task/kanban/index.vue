@@ -571,7 +571,7 @@ const editOk = async (data: TaskInfo) => {
 
 const toDelete = (data: TaskInfo) => {
   modal.confirm({
-    content: `确定删除任务【${data.name}】吗？`,
+    content: t('task.table.messages.confirmDelete', { name: data.name }),
     async onOk () {
       emit('update:loading', true);
       const [error] = await task.deleteTask([data.id]);

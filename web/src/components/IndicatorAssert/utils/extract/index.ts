@@ -1,9 +1,11 @@
-import { utils } from '@xcan-angus/infra';
+import { utils, ExtractionMethod } from '@xcan-angus/infra';
+import { i18n} from '@xcan-angus/infra';
+
+const t = i18n.getI18n()?.global?.t || ((v: string) => v);
 
 import jsonpath from '../jsonpath';
 import xpath from '../xpath';
 import regexp from '../regexp';
-import { ExtractionMethod } from './PropsType';
 import { Parameter } from '../assert/PropsType';
 
 /**
@@ -29,16 +31,16 @@ const execute = (extraction: {
   if (!location) {
     return {
       data: defaultValue,
-      message: defaultValue ? '提取位置缺失，无法提取，设置缺省值' : '提取位置缺失，无法提取',
-      errorMessage: '提取位置缺失'
+      message: defaultValue ? t('xcan_apiAssert.extractionLocationMissingWithDefault') : t('xcan_apiAssert.extractionLocationMissing'),
+      errorMessage: t('xcan_apiAssert.extractionLocationMissing')
     };
   }
 
   if (!method) {
     return {
       data: defaultValue,
-      message: defaultValue ? '提取方法缺失，无法提取，设置缺省值' : '提取方法缺失，无法提取',
-      errorMessage: '提取方法缺失'
+      message: defaultValue ? t('xcan_apiAssert.extractionMethodMissingWithDefault') : t('xcan_apiAssert.extractionMethodMissing'),
+      errorMessage: t('xcan_apiAssert.extractionMethodMissing')
     };
   }
 
@@ -47,8 +49,8 @@ const execute = (extraction: {
     if (!parameterName) {
       return {
         data: defaultValue,
-        message: defaultValue ? '提取参数名称缺失，无法提取，设置缺省值' : '提取参数名称缺失，无法提取',
-        errorMessage: '提取参数名称缺失'
+              message: defaultValue ? t('xcan_apiAssert.extractionParameterNameMissingWithDefault') : t('xcan_apiAssert.extractionParameterNameMissing'),
+      errorMessage: t('xcan_apiAssert.extractionParameterNameMissing')
       };
     }
   }
@@ -58,16 +60,16 @@ const execute = (extraction: {
     if (!config?.form) {
       return {
         data: defaultValue,
-        message: defaultValue ? 'form参数为空，无法提取，设置缺省值' : 'form参数为空，无法提取',
-        errorMessage: 'form参数为空，无法提取'
+        message: defaultValue ? t('xcan_apiAssert.formParameterEmptyWithDefault') : t('xcan_apiAssert.formParameterEmpty'),
+        errorMessage: t('xcan_apiAssert.formParameterEmpty')
       };
     }
 
     if (!Object.prototype.hasOwnProperty.call(config.form, parameterName!)) {
       return {
         data: defaultValue,
-        message: defaultValue ? `form参数缺少${parameterName}，无法提取，设置缺省值` : `form参数缺少${parameterName}，无法提取`,
-        errorMessage: `form参数缺少${parameterName}，无法提取`
+        message: defaultValue ? t('xcan_apiAssert.formParameterMissingWithDefault', { parameterName }) : t('xcan_apiAssert.formParameterMissing', { parameterName }),
+        errorMessage: t('xcan_apiAssert.formParameterMissing', { parameterName })
       };
     }
 
@@ -76,16 +78,16 @@ const execute = (extraction: {
     if (!config?.path) {
       return {
         data: defaultValue,
-        message: defaultValue ? 'path参数为空，无法提取，设置缺省值' : 'path参数为空，无法提取',
-        errorMessage: 'path参数为空，无法提取'
+        message: defaultValue ? t('xcan_apiAssert.pathParameterEmptyWithDefault') : t('xcan_apiAssert.pathParameterEmpty'),
+        errorMessage: t('xcan_apiAssert.pathParameterEmpty')
       };
     }
 
     if (!Object.prototype.hasOwnProperty.call(config.path, parameterName!)) {
       return {
         data: defaultValue,
-        message: defaultValue ? `path参数缺少${parameterName}，无法提取，设置缺省值` : `path参数缺少${parameterName}，无法提取`,
-        errorMessage: `path参数缺少${parameterName}，无法提取`
+        message: defaultValue ? t('xcan_apiAssert.pathParameterMissingWithDefault', { parameterName }) : t('xcan_apiAssert.pathParameterMissing', { parameterName }),
+        errorMessage: t('xcan_apiAssert.pathParameterMissing', { parameterName })
       };
     }
 
@@ -94,16 +96,16 @@ const execute = (extraction: {
     if (!config?.query) {
       return {
         data: defaultValue,
-        message: defaultValue ? '查询参数为空，无法提取，设置缺省值' : '查询参数为空，无法提取',
-        errorMessage: '查询参数为空，无法提取'
+              message: defaultValue ? t('xcan_apiAssert.queryParameterEmptyWithDefault') : t('xcan_apiAssert.queryParameterEmpty'),
+      errorMessage: t('xcan_apiAssert.queryParameterEmpty')
       };
     }
 
     if (!Object.prototype.hasOwnProperty.call(config.query, parameterName!)) {
       return {
         data: defaultValue,
-        message: defaultValue ? `查询参数缺少${parameterName}，无法提取，设置缺省值` : `查询参数缺少${parameterName}，无法提取`,
-        errorMessage: `查询参数缺少${parameterName}，无法提取`
+              message: defaultValue ? t('xcan_apiAssert.queryParameterMissingWithDefault', { parameterName }) : t('xcan_apiAssert.queryParameterMissing', { parameterName }),
+      errorMessage: t('xcan_apiAssert.queryParameterMissing', { parameterName })
       };
     }
 
@@ -112,16 +114,16 @@ const execute = (extraction: {
     if (!config?.header) {
       return {
         data: defaultValue,
-        message: defaultValue ? '请求头为空，无法提取，设置缺省值' : '请求头为空，无法提取',
-        errorMessage: '请求头为空，无法提取'
+              message: defaultValue ? t('xcan_apiAssert.requestHeaderEmptyWithDefault') : t('xcan_apiAssert.requestHeaderEmpty'),
+      errorMessage: t('xcan_apiAssert.requestHeaderEmpty')
       };
     }
 
     if (!Object.prototype.hasOwnProperty.call(config.header, parameterName!)) {
       return {
         data: defaultValue,
-        message: defaultValue ? `请求头缺少${parameterName}，无法提取，设置缺省值` : `请求头缺少${parameterName}，无法提取`,
-        errorMessage: `请求头缺少${parameterName}，无法提取`
+              message: defaultValue ? t('xcan_apiAssert.requestHeaderMissingWithDefault', { parameterName }) : t('xcan_apiAssert.requestHeaderMissing', { parameterName }),
+      errorMessage: t('xcan_apiAssert.requestHeaderMissing', { parameterName })
       };
     }
 
@@ -137,8 +139,8 @@ const execute = (extraction: {
     if (!config?.responseBody?.data) {
       return {
         data: defaultValue,
-        message: defaultValue ? '响应体为空，无法提取，设置缺省值' : '响应体为空，无法提取',
-        errorMessage: '响应体为空，无法提取'
+              message: defaultValue ? t('xcan_apiAssert.responseBodyEmptyWithDefault') : t('xcan_apiAssert.responseBodyEmpty'),
+      errorMessage: t('xcan_apiAssert.responseBodyEmpty')
       };
     }
 
@@ -148,16 +150,16 @@ const execute = (extraction: {
     if (!config?.responseHeader) {
       return {
         data: defaultValue,
-        message: defaultValue ? '响应头为空，无法提取，设置缺省值' : '响应头为空，无法提取',
-        errorMessage: '响应头为空，无法提取'
+              message: defaultValue ? t('xcan_apiAssert.responseHeaderEmptyWithDefault') : t('xcan_apiAssert.responseHeaderEmpty'),
+      errorMessage: t('xcan_apiAssert.responseHeaderEmpty')
       };
     }
 
     if (!Object.prototype.hasOwnProperty.call(config.responseHeader, parameterName!)) {
       return {
         data: defaultValue,
-        message: defaultValue ? `响应头缺少${parameterName}，无法提取，设置缺省值` : `响应头缺少${parameterName}，无法提取`,
-        errorMessage: `响应头缺少${parameterName}，无法提取`
+              message: defaultValue ? t('xcan_apiAssert.responseHeaderMissingWithDefault', { parameterName }) : t('xcan_apiAssert.responseHeaderMissing', { parameterName }),
+      errorMessage: t('xcan_apiAssert.responseHeaderMissing', { parameterName })
       };
     }
 
@@ -173,8 +175,8 @@ const execute = (extraction: {
     if (!config?.rawBody) {
       return {
         data: defaultValue,
-        message: defaultValue ? 'Raw请求体为空，无法提取，设置缺省值' : 'Raw请求体为空，无法提取',
-        errorMessage: 'Raw请求体为空，无法提取'
+              message: defaultValue ? t('xcan_apiAssert.rawRequestBodyEmptyWithDefault') : t('xcan_apiAssert.rawRequestBodyEmpty'),
+      errorMessage: t('xcan_apiAssert.rawRequestBodyEmpty')
       };
     }
 
@@ -205,8 +207,8 @@ const execute = (extraction: {
   if (!extraction.expression) {
     return {
       data: defaultValue,
-      message: defaultValue ? '提取表达式缺失，无法提取，设置缺省值' : '提取表达式缺失，无法提取',
-      errorMessage: '提取表达式缺失，无法提取'
+      message: defaultValue ? t('xcan_apiAssert.utils.extractionExpressionMissingWithDefault') : t('xcan_apiAssert.utils.extractionExpressionMissing'),
+      errorMessage: t('xcan_apiAssert.utils.extractionExpressionMissing')
     };
   }
 
@@ -267,14 +269,14 @@ const regexpExtract = ({
 
     return {
       data: targetData,
-      message: result ? '' : (defaultValue ? '提取期望值为空，设置缺省值' : '提取期望值为空'),
+      message: result ? '' : (defaultValue ? t('xcan_apiAssert.utils.extractedValueEmptyWithDefault') : t('xcan_apiAssert.utils.extractedValueEmpty')),
       errorMessage: ''
     };
   } catch (error) {
     return {
       data: defaultValue,
-      message: defaultValue ? '正则表达式错误，无法提取，设置缺省值' : '正则表达式错误，无法提取',
-      errorMessage: '正则表达式错误，无法提取'
+      message: defaultValue ? t('xcan_apiAssert.utils.regexExpressionErrorWithDefault') : t('xcan_apiAssert.utils.regexExpressionError'),
+      errorMessage: t('xcan_apiAssert.utils.regexExpressionError')
     };
   }
 };
@@ -332,14 +334,14 @@ const xpathExtract = ({
 
     return {
       data: targetData as string,
-      message: result ? '' : (defaultValue ? '提取期望值为空，设置缺省值' : '提取期望值为空'),
+      message: result ? '' : (defaultValue ? t('xcan_apiAssert.utils.extractedValueEmptyWithDefault') : t('xcan_apiAssert.utils.extractedValueEmpty')),
       errorMessage: ''
     };
   } catch (error) {
     return {
       data: defaultValue,
-      message: defaultValue ? 'XPath表达式错误，无法提取，设置缺省值' : 'XPath表达式错误，无法提取',
-      errorMessage: 'XPath表达式错误，无法提取'
+      message: defaultValue ? t('xcan_apiAssert.utils.xpathExpressionErrorWithDefault') : t('xcan_apiAssert.utils.xpathExpressionError'),
+      errorMessage: t('xcan_apiAssert.utils.xpathExpressionError')
     };
   }
 };
@@ -387,14 +389,14 @@ const jsonpathExtract = ({
 
     return {
       data: targetData as string,
-      message: len ? '' : (defaultValue ? '提取期望值为空，设置缺省值' : '提取期望值为空'),
+      message: len ? '' : (defaultValue ? t('xcan_apiAssert.utils.extractedValueEmptyWithDefault') : t('xcan_apiAssert.utils.extractedValueEmpty')),
       errorMessage: ''
     };
   } catch (error) {
     return {
       data: defaultValue,
-      message: defaultValue ? 'JSONPath表达式错误，无法提取，设置缺省值' : 'JSONPath表达式错误，无法提取',
-      errorMessage: 'JSONPath表达式错误，无法提取'
+      message: defaultValue ? t('xcan_apiAssert.utils.jsonpathExpressionErrorWithDefault') : t('xcan_apiAssert.utils.jsonpathExpressionError'),
+      errorMessage: t('xcan_apiAssert.utils.jsonpathExpressionError')
     };
   }
 };

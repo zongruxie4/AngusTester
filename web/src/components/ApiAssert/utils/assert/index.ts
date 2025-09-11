@@ -416,8 +416,8 @@ const getRealvalue = (
 
     return {
       data: null,
-      message: '响应头名称不存在',
-      errorMessage: '响应头名称不存在'
+      message: t('xcan_apiAssert.utils.responseHeaderNameNotExist'),
+      errorMessage: t('xcan_apiAssert.utils.responseHeaderNameNotExist')
     };
   }
 
@@ -426,15 +426,15 @@ const getRealvalue = (
     const bodySize = data.responseBody?.size;
     return {
       data: headerSize + bodySize + '',
-      message: '响应头名称不存在',
-      errorMessage: '响应头名称不存在'
+      message: t('xcan_apiAssert.utils.responseHeaderNameNotExist'),
+      errorMessage: t('xcan_apiAssert.utils.responseHeaderNameNotExist')
     };
   }
 
   return {
     data: data.status + '',
-    message: '响应头名称不存在',
-    errorMessage: '响应头名称不存在'
+    message: t('xcan_apiAssert.utils.responseHeaderNameNotExist'),
+    errorMessage: t('xcan_apiAssert.utils.responseHeaderNameNotExist')
   };
 };
 

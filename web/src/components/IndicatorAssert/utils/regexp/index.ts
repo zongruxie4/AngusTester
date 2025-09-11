@@ -1,4 +1,7 @@
 import XRegExp from 'xregexp';
+import { i18n} from '@xcan-angus/infra';
+
+const t = i18n.getI18n()?.global?.t || ((v: string) => v);
 
 const match = (regexpStr: string, data: string): string[] | null => {
   if ((regexpStr === '' || regexpStr === undefined || regexpStr === null) ||
@@ -51,11 +54,11 @@ const match = (regexpStr: string, data: string): string[] | null => {
  */
 const isValid = (str: string): { valid: boolean; message: string; } => {
   if (str === '' || str === undefined || str === null) {
-    return { valid: false, message: '正则表达式不能为空' };
+    return { valid: false, message: t('xcan_apiAssert.utils.regexExpressionEmpty') };
   }
 
   if (!['string', 'number'].includes(typeof str)) {
-    return { valid: false, message: '正则表达式必须是string类型' };
+    return { valid: false, message: t('xcan_apiAssert.utils.regexExpressionMustBeString') };
   }
 
   if (typeof str !== 'string') {

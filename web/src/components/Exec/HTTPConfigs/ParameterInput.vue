@@ -5,6 +5,9 @@ import { Checkbox, Button } from 'ant-design-vue';
 import { Input, Select, Icon } from '@xcan-angus/vue-ui';
 import { utils, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 export interface OptionProps {
   name: string;
@@ -13,14 +16,14 @@ export interface OptionProps {
   id: string;
   value: string;
   type: 'string';
-  in: ParameterIn;
+  in: 'query' | 'path';
 }
 
 export interface Props {
   defaultValue: OptionProps[];
   value: OptionProps[];
   errorNum:number;
-  defaultIn?: ParameterIn;
+  defaultIn?: 'query' | 'path';
   showInType?: boolean;
 }
 
@@ -207,7 +210,7 @@ const options = [{ label: 'query', value: 'query' }, { label: 'path', value: 'pa
         v-model:value="dataMap[item].name"
         :maxLength="400"
         :error="nameErrorSet.has(item)"
-        placeholder="请输入参数名称"
+        :placeholder="t('xcan_exec.namePlaceholder')"
         size="small"
         tirmAll
         style="flex:0 0 calc((100% - 84px)*3.5/10);max-width: 400px;"
@@ -224,7 +227,7 @@ const options = [{ label: 'query', value: 'query' }, { label: 'path', value: 'pa
         :maxlength="4096"
         class="flex-1"
         trim
-        placeholder="请输入参数值，最大支持4096个字符"
+        :placeholder="t('xcan_exec.valuePlaceholder')"
         @change="valueChange" />
     </div>
     <Button

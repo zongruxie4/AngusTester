@@ -310,7 +310,7 @@ const toSave = async () => {
   if (error) {
     return;
   }
-  notification.success('保存成功');
+  notification.success(t('backlog.main.messages.saveSuccess'));
 
   newTaskName.value = undefined;
   newTaskPriority.value = 'MEDIUM';
@@ -1302,7 +1302,7 @@ const selectNone = computed(() => {
                       class="flex items-center space-x-1"
                       @click="toAddTask">
                       <Icon icon="icon-jia" class="text-3.5" />
-                      <span>添加Backlog</span>
+                      <span>{{ t('backlog.main.addBacklog') }}</span>
                     </Button>
 
                     <Button
@@ -1312,7 +1312,7 @@ const selectNone = computed(() => {
                       class="flex items-center space-x-1"
                       @click="aiGenerateTask">
                       <Icon icon="icon-jia" class="text-3.5" />
-                      <span>智能添加Backlog</span>
+                      <span>{{ t('backlog.main.aiAddBacklog') }}</span>
                     </Button>
                   </div>
 
@@ -1325,14 +1325,14 @@ const selectNone = computed(() => {
                     class="flex items-center space-x-1 border-dashed w-full h-11"
                     @click="toAddTask">
                     <Icon icon="icon-jia" class="text-3.5" />
-                    <span>添加Backlog</span>
+                    <span>{{ t('backlog.main.addBacklog') }}</span>
                   </Button>
 
                   <div v-show="addFlag" class="flex items-center">
                     <SelectEnum
                       v-model:value="newTaskType"
                       enumKey="TaskType"
-                      placeholder="任务类型"
+                      :placeholder="t('backlog.main.placeholders.taskType')"
                       :excludes="({value}) => ['API_TEST', 'SCENARIO_TEST'].includes(value)"
                       class="w-28 mr-2">
                       <template #option="record">
@@ -1347,7 +1347,7 @@ const selectNone = computed(() => {
                       v-model:value="newTaskPriority"
                       internal
                       enumKey="Priority"
-                      placeholder="请选择优先级"
+                      :placeholder="t('backlog.main.placeholders.selectPriority')"
                       class="w-28 mr-2">
                       <template #option="record">
                         <TaskPriority :value="record" />
@@ -1358,7 +1358,7 @@ const selectNone = computed(() => {
                       ref="taskNameInputRef"
                       v-model:value="newTaskName"
                       :maxlength="200"
-                      placeholder="输入任务名称，最大支持200字符，按回车键可自动保存"
+                      :placeholder="t('backlog.main.placeholders.taskName')"
                       trim
                       class="w-200 mr-5"
                       @pressEnter="pressEnter" />
@@ -1369,21 +1369,21 @@ const selectNone = computed(() => {
                         type="primary"
                         size="small"
                         @click="toSave">
-                        保存
+                        {{ t('backlog.main.save') }}
                       </Button>
 
                       <Button
                         type="default"
                         size="small"
                         @click="cancelAdd">
-                        取消
+                        {{ t('backlog.main.cancel') }}
                       </Button>
 
                       <Button
                         type="default"
                         size="small"
                         @click="openCreateModal">
-                        打开添加弹窗
+                        {{ t('backlog.main.openAddModal') }}
                       </Button>
                     </div>
                   </div>
@@ -1409,7 +1409,7 @@ const selectNone = computed(() => {
                         ref="taskNameInputRef"
                         v-model:value="editNameMap[element.id]"
                         :maxlength="200"
-                        placeholder="输入任务名称，最大支持200字符，按回车键可自动保存"
+                        :placeholder="t('backlog.main.placeholders.taskName')"
                         trim
                         class="w-100 mr-5"
                         @pressEnter="namePressEnter(element,index)" />
@@ -1419,7 +1419,7 @@ const selectNone = computed(() => {
                         size="small"
                         class="mr-2.5"
                         @click="namePressEnter(element,index)">
-                        保存
+                        {{ t('backlog.main.save') }}
                       </Button>
 
                       <Button
@@ -1427,7 +1427,7 @@ const selectNone = computed(() => {
                         size="small"
                         class="bg-white"
                         @click="cancelEditName(element.id)">
-                        取消
+                        {{ t('backlog.main.cancel') }}
                       </Button>
                     </div>
                     <div
@@ -1446,7 +1446,7 @@ const selectNone = computed(() => {
                       class="px-0 h-5 leading-5 space-x-1 flex items-center"
                       @click.stop="toSplit(element, index)">
                       <Icon icon="icon-guanlianziyuan" class="text-3.5" />
-                      <span>拆分</span>
+                      <span>{{ t('backlog.main.split') }}</span>
                     </Button>
 
                     <Popover
@@ -1472,7 +1472,7 @@ const selectNone = computed(() => {
                         class="px-0 h-5 leading-5 space-x-1 flex items-center"
                         @click.stop="">
                         <Icon icon="icon-diedai" class="text-3.5" />
-                        <span>分配</span>
+                        <span>{{ t('backlog.main.assign') }}</span>
                       </Button>
                     </Popover>
 
@@ -1482,7 +1482,7 @@ const selectNone = computed(() => {
                       class="px-0 h-5 leading-5 space-x-1 flex items-center"
                       @click.stop="toDelete(element, index)">
                       <Icon icon="icon-qingchu" class="text-3.5" />
-                      <span>删除</span>
+                      <span>{{ t('backlog.main.delete') }}</span>
                     </Button>
 
                     <Button
@@ -1491,7 +1491,7 @@ const selectNone = computed(() => {
                       class="px-0 h-5 leading-5 space-x-1 flex items-center"
                       @click.stop="toEdit(element.id)">
                       <Icon icon="icon-shuxie" class="text-3.5" />
-                      <span>编辑</span>
+                      <span>{{ t('backlog.main.edit') }}</span>
                     </Button>
                   </div>
                 </div>
@@ -1505,7 +1505,7 @@ const selectNone = computed(() => {
             <div
               :class="{ 'drawer-active-item': drawerActiveKey === 'basic' }"
               class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-              title="基本信息"
+              :title="t('backlog.main.drawerTitles.basicInfo')"
               @click="drawerActiveKeyChange('basic')">
               <Icon icon="icon-wendangxinxi" class="text-4" />
             </div>
@@ -1513,7 +1513,7 @@ const selectNone = computed(() => {
             <div
               :class="{ 'drawer-active-item': drawerActiveKey === 'person' }"
               class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-              title="人员"
+              :title="t('backlog.main.drawerTitles.personnel')"
               @click="drawerActiveKeyChange('person')">
               <Icon icon="icon-quanburenyuan" class="text-4" />
             </div>
@@ -1521,7 +1521,7 @@ const selectNone = computed(() => {
             <div
               :class="{ 'drawer-active-item': drawerActiveKey === 'date' }"
               class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-              title="日期"
+              :title="t('backlog.main.drawerTitles.date')"
               @click="drawerActiveKeyChange('date')">
               <Icon icon="icon-riqi" class="text-4" />
             </div>
@@ -1529,7 +1529,7 @@ const selectNone = computed(() => {
             <div
               :class="{ 'drawer-active-item': drawerActiveKey === 'tasks' }"
               class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-              title="关联任务"
+              :title="t('backlog.main.drawerTitles.relatedTasks')"
               @click="drawerActiveKeyChange('tasks')">
               <Icon icon="icon-ceshirenwu" class="text-4" />
             </div>
@@ -1537,7 +1537,7 @@ const selectNone = computed(() => {
             <div
               :class="{ 'drawer-active-item': drawerActiveKey === 'cases' }"
               class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-              title="关联功能用例"
+              :title="t('backlog.main.drawerTitles.relatedCases')"
               @click="drawerActiveKeyChange('cases')">
               <Icon icon="icon-ceshiyongli1" class="text-4" />
             </div>
@@ -1545,7 +1545,7 @@ const selectNone = computed(() => {
             <div
               :class="{ 'drawer-active-item': drawerActiveKey === 'attachments' }"
               class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-              title="附件"
+              :title="t('backlog.main.drawerTitles.attachments')"
               @click="drawerActiveKeyChange('attachments')">
               <Icon icon="icon-lianjie1" class="text-4" />
             </div>
@@ -1553,7 +1553,7 @@ const selectNone = computed(() => {
             <div
               :class="{ 'drawer-active-item': drawerActiveKey === 'remarks' }"
               class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-              title="备注"
+              :title="t('backlog.main.drawerTitles.remarks')"
               @click="drawerActiveKeyChange('remarks')">
               <Icon icon="icon-shuxie" class="text-4" />
             </div>
@@ -1561,7 +1561,7 @@ const selectNone = computed(() => {
             <div
               :class="{ 'drawer-active-item': drawerActiveKey === 'comment' }"
               class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-              title="评论"
+              :title="t('backlog.main.drawerTitles.comments')"
               @click="drawerActiveKeyChange('comment')">
               <Icon icon="icon-pinglun" class="text-4" />
             </div>
@@ -1569,7 +1569,7 @@ const selectNone = computed(() => {
             <div
               :class="{ 'drawer-active-item': drawerActiveKey === 'activity' }"
               class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-              title="活动"
+              :title="t('backlog.main.drawerTitles.activity')"
               @click="drawerActiveKeyChange('activity')">
               <Icon icon="icon-chakanhuodong" class="text-4" />
             </div>

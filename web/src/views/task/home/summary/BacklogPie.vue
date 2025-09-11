@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {inject, onMounted, ref, watch} from 'vue';
+import { useI18n } from 'vue-i18n';
 import {utils} from '@xcan-angus/infra';
 import * as echarts from 'echarts/core';
 import {LegendComponent, LegendComponentOption, TooltipComponent, TooltipComponentOption} from 'echarts/components';
@@ -8,6 +9,8 @@ import {LabelLayout} from 'echarts/features';
 import {CanvasRenderer} from 'echarts/renderers';
 
 import {SummaryInfo} from '@/views/task/home/types';
+
+const { t } = useI18n();
 
 // Props definition
 type Props = {
@@ -179,12 +182,12 @@ onMounted(() => {
     chartOptions.series![0].data = [];
 
     const data = (newValue as any).backlogByType || {};
-    chartOptions.series?.[0].data.push({ name: '故事', value: +data.STORY });
-    chartOptions.series?.[0].data.push({ name: '任务', value: +data.TASK });
-    chartOptions.series?.[0].data.push({ name: '缺陷', value: +data.BUG });
-    chartOptions.series?.[0].data.push({ name: '需求', value: +data.REQUIREMENT });
-    chartOptions.series?.[0].data.push({ name: '接口测试', value: +data.API_TEST });
-    chartOptions.series?.[0].data.push({ name: '场景测试', value: +data.SCENARIO_TEST });
+    chartOptions.series?.[0].data.push({ name: t('taskHome.summary.taskTypes.story'), value: +data.STORY });
+    chartOptions.series?.[0].data.push({ name: t('taskHome.summary.taskTypes.task'), value: +data.TASK });
+    chartOptions.series?.[0].data.push({ name: t('taskHome.summary.taskTypes.bug'), value: +data.BUG });
+    chartOptions.series?.[0].data.push({ name: t('taskHome.summary.taskTypes.requirement'), value: +data.REQUIREMENT });
+    chartOptions.series?.[0].data.push({ name: t('taskHome.summary.taskTypes.apiTest'), value: +data.API_TEST });
+    chartOptions.series?.[0].data.push({ name: t('taskHome.summary.taskTypes.scenarioTest'), value: +data.SCENARIO_TEST });
 
     updateChartOptions();
     renderChart();
@@ -203,7 +206,7 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-col rounded border border-solid border-theme-text-box pt-2 pb-2">
-    <div class="font-semibold px-4">总Backlog <span class="text-4">{{ total }}</span></div>
+    <div class="font-semibold px-4">{{ t('taskHome.summary.backlogPie.totalBacklog') }} <span class="text-4">{{ total }}</span></div>
     <div class="flex-1 flex items-center justify-center pr-2">
       <div
         :id="domId"

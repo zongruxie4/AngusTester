@@ -2,6 +2,9 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { Switch } from 'ant-design-vue';
 import { Input, SelectEnum, Select, Validate } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import MatchItemPopover from './MacthItemPopover.vue';
 import ExpectedPopover from './ExpectedPopover.vue';
@@ -510,16 +513,16 @@ const expressionPlaceholder = computed(() => {
   let map = '';
   switch (_dataMap.assertionCondition) {
     case 'REG_MATCH':
-      map = '正则匹配表达式';
+      map = t('xcan_indicatorAssert.expressionPlaceholder.regexMatch');
       break;
     case 'XPATH_MATCH':
-      map = 'XPath匹配表达式';
+      map = t('xcan_indicatorAssert.expressionPlaceholder.xpathMatch');
       break;
     case 'JSON_PATH_MATCH':
-      map = 'JSONPath匹配表达式';
+      map = t('xcan_indicatorAssert.expressionPlaceholder.jsonPathMatch');
       break;
     default:
-      map = '正则匹配表达式';
+      map = t('xcan_indicatorAssert.expressionPlaceholder.regexMatch');
   }
   return map;
 });
@@ -541,8 +544,8 @@ const filterStatus = (value) => {
             v-model:value="dataMap.type"
             :enumKey="AssertionType"
             class="w-full"
-            placeholder="断言类型"
-            title="断言类型"
+            :placeholder="t('xcan_indicatorAssert.assertionType')"
+            :title="t('xcan_indicatorAssert.assertionType')"
             :excludes="filterStatus"
             :readonly="props.viewType"
             :error="typeError"
@@ -555,8 +558,8 @@ const filterStatus = (value) => {
             :readonly="props.viewType"
             :error="headerNameeError"
             :maxlength="400"
-            placeholder="响应头名称"
-            title="响应头名称"
+            :placeholder="t('xcan_indicatorAssert.headerName')"
+            :title="t('xcan_indicatorAssert.headerName')"
             @focus="inputFocus"
             @blur="inputBlur"
             @change="headerNameeChange" />
@@ -564,8 +567,8 @@ const filterStatus = (value) => {
         <div class="flex items-center flex-nowrap space-x-2" style="flex: 1;min-width: 100px;">
           <Select
             v-model:value="dataMap.assertionCondition"
-            placeholder="断言条件"
-            title="断言条件"
+            :placeholder="t('xcan_indicatorAssert.assertionCondition')"
+            :title="t('xcan_indicatorAssert.assertionCondition')"
             class="flex-1"
             :disabled="!dataMap.type"
             :readonly="props.viewType"
@@ -577,8 +580,8 @@ const filterStatus = (value) => {
             class="flex-shrink-0 flex-grow-0"
             :disabled="extractDisabled || props.viewType"
             :checked="extract"
-            checkedChildren="提取期望值"
-            unCheckedChildren="期望值"
+            :checkedChildren="t('xcan_indicatorAssert.extractExpectedValue')"
+            :unCheckedChildren="t('xcan_indicatorAssert.expectedValue')"
             @change="switchChange($event)" />
         </div>
       </div>
@@ -591,16 +594,16 @@ const filterStatus = (value) => {
                 style="flex: 0 0 calc((100% - 40px)/6);"
                 class="block"
                 :enumKey="ExtractionMethod"
-                placeholder="提取方式"
-                title="提取方式"
+                :placeholder="t('xcan_indicatorAssert.extractionMethod')"
+                :title="t('xcan_indicatorAssert.extractionMethod')"
                 :readonly="props.viewType"
                 :error="methodError"
                 @change="methodChange()" />
               <Select
                 v-model:value="dataMap.extraction.location"
                 style="flex: 0 0 calc((100% - 40px)/6);"
-                placeholder="提取位置"
-                title="提取位置"
+                :placeholder="t('xcan_indicatorAssert.extractionLocation')"
+                :title="t('xcan_indicatorAssert.extractionLocation')"
                 class="block"
                 :readonly="props.viewType"
                 :fieldNames="enumFieldNames"
@@ -610,8 +613,8 @@ const filterStatus = (value) => {
               <Input
                 v-model:value="dataMap.extraction.parameterName"
                 style="flex: 0 0 calc((100% - 40px)/6);"
-                placeholder="提取参数名称"
-                title="提取参数名称"
+                :placeholder="t('xcan_indicatorAssert.extractionParameterName')"
+                :title="t('xcan_indicatorAssert.extractionParameterName')"
                 :maxlength="400"
                 :disabled="NOT_PARAMETER_NAME.includes(dataMap.extraction.location as any)"
                 :readonly="props.viewType"
@@ -622,8 +625,8 @@ const filterStatus = (value) => {
               <Input
                 v-model:value="dataMap.extraction.defaultValue"
                 style="flex: 0 0 calc((100% - 40px)/6);"
-                placeholder="提取缺省值（可选）"
-                title="提取缺省值（可选）"
+                :placeholder="t('xcan_indicatorAssert.extractionDefaultValue')"
+                :title="t('xcan_indicatorAssert.extractionDefaultValue')"
                 :readonly="props.viewType"
                 @focus="inputFocus"
                 @blur="inputBlur" />
@@ -631,8 +634,8 @@ const filterStatus = (value) => {
                 <Input
                   :ref="el => { extractionExpressionRefs = el }"
                   v-model:value="dataMap.extraction.expression"
-                  placeholder="提取表达式"
-                  title="提取表达式"
+                  :placeholder="t('xcan_indicatorAssert.extractionExpression')"
+                  :title="t('xcan_indicatorAssert.extractionExpression')"
                   :disabled="dataMap.extraction.method === 'EXACT_VALUE'"
                   :readonly="props.viewType"
                   :error="extractionExpressionError"
@@ -644,8 +647,8 @@ const filterStatus = (value) => {
               <div class="flex items-center space-x-2" style="flex: 0 0 calc((100% - 40px)/6);">
                 <Input
                   v-model:value="dataMap.extraction.matchItem"
-                  placeholder="匹配项，范围0-2000（可选）"
-                  title="匹配项"
+                  :placeholder="t('xcan_indicatorAssert.matchItem')"
+                  :title="t('xcan_indicatorAssert.matchItem')"
                   :disabled="dataMap.extraction.method === 'EXACT_VALUE'"
                   :readonly="props.viewType"
                   :max="2000"
@@ -675,8 +678,8 @@ const filterStatus = (value) => {
 
                 <Input
                   v-model:value="dataMap.matchItem"
-                  placeholder="匹配项，范围0-2000（可选）"
-                  title="匹配项"
+                  :placeholder="t('xcan_indicatorAssert.matchItem')"
+                  :title="t('xcan_indicatorAssert.matchItem')"
                   style="flex: 0 0 calc((100% - 40px)/6);"
                   :max="2000"
                   :maxlength="4"
@@ -688,8 +691,8 @@ const filterStatus = (value) => {
                 <div class="flex items-center space-x-2" style="flex: 1;">
                   <Input
                     v-model:value="dataMap.expected"
-                    placeholder="期望值（可选）"
-                    title="期望值"
+                    :placeholder="t('xcan_indicatorAssert.expectedValueOptional')"
+                    :title="t('xcan_indicatorAssert.expectedValue')"
                     :readonly="props.viewType"
                     :error="expectedError"
                     @focus="inputFocus"
@@ -702,8 +705,8 @@ const filterStatus = (value) => {
                 <Input
                   v-model:value="dataMap.expected"
                   type="textarea"
-                  placeholder="期望值"
-                  title="期望值"
+                  :placeholder="t('xcan_indicatorAssert.expectedValue')"
+                  :title="t('xcan_indicatorAssert.expectedValue')"
                   :readonly="props.viewType"
                   :autoSize="textAreaAutoSize"
                   :error="expectedError"

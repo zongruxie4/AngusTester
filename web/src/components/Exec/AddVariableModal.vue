@@ -2,7 +2,7 @@
 import { ref, computed, defineAsyncComponent, watch, inject } from 'vue';
 import { Modal, RadioGroup, Radio, Textarea, InputGroup } from 'ant-design-vue';
 import { Input, SelectEnum, IconRequired, Select, notification, Tooltip, Icon } from '@xcan-angus/vue-ui';
-import { TESTER, http, VariableScope, HttpExtractionLocation } from '@xcan-angus/infra';
+import { TESTER, http, HttpExtractionLocation } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
@@ -35,14 +35,13 @@ const variable = ref<ListVariableObj>({
   description: '',
   type: false,
   enabled: true,
-  scope: { value: 'GLOBAL', message: '全局' },
   source: 'EXECUTION',
   extraction: {
     parameterName: '',
     value: '',
     method: {
       value: 'EXACT_VALUE',
-      message: '精确值'
+      message: t('xcan_exec.defineExtract')
     },
     expression: '',
     defaultValue: '',
@@ -190,14 +189,13 @@ const reset = () => {
     description: '',
     type: false,
     enabled: true,
-    scope: { value: 'GLOBAL', message: '全局' },
     source: 'EXECUTION',
     extraction: {
       parameterName: '',
       value: '',
       method: {
         value: 'EXACT_VALUE',
-        message: '精确值'
+        message: t('xcan_exec.defineExtract')
       },
       expression: '',
       defaultValue: '',
@@ -227,7 +225,7 @@ watch(() => props.visible, (newValue) => {
         value: '',
         method: {
           value: 'EXACT_VALUE',
-          message: '精确值'
+          message: t('xcan_exec.defineExtract')
         },
         expression: '',
         defaultValue: '',
@@ -267,21 +265,20 @@ const typeChange = () => {
         <div class="h-7 whitespace-nowrap mb-5">
           <IconRequired />{{ t('xcan_exec.name') }}
         </div>
-                  <div class="h-7 whitespace-nowrap mb-5"><IconRequired />{{ t('xcan_exec.scope') }}</div>
-                  <div class="h-7 whitespace-nowrap pl-1.75" style="margin-bottom: 34px;">{{ t('xcan_exec.description') }}</div>
-        <div class="h-7 whitespace-nowrap pl-1.75" style="margin-bottom: 20px;">定义/提取</div>
+        <div class="h-7 whitespace-nowrap pl-1.75" style="margin-bottom: 34px;">{{ t('xcan_exec.description') }}</div>
+        <div class="h-7 whitespace-nowrap pl-1.75" style="margin-bottom: 20px;">{{ t('xcan_exec.define') }}/{{ t('xcan_exec.extract') }}</div>
         <template v-if="variable.type">
-          <div class="h-7 whitespace-nowrap pl-1.75" style="margin-bottom: 24px;">提取方式</div>
-          <div class="h-7 whitespace-nowrap mb-5"><IconRequired />提取参数名</div>
+          <div class="h-7 whitespace-nowrap pl-1.75" style="margin-bottom: 24px;">{{ t('xcan_exec.extractionMethod') }}</div>
+          <div class="h-7 whitespace-nowrap mb-5"><IconRequired />{{ t('xcan_exec.extractionParameterName') }}</div>
           <template v-if="variable.extraction?.method?.value !=='EXACT_VALUE'">
-            <div class="h-7 whitespace-nowrap mb-5 pl-1.75">{{ variable.extraction?.method?.value === 'REGEX'?'正则表达式':'提取表达式' }}</div>
+            <div class="h-7 whitespace-nowrap mb-5 pl-1.75">{{ variable.extraction?.method?.value === 'REGEX'?t('xcan_exec.regexExpression'):t('xcan_exec.extractionExpression') }}</div>
           </template>
-          <div class="h-7 whitespace-nowrap mb-5 pl-1.75">缺省值</div>
-          <div class="h-7 whitespace-nowrap mb-5 pl-1.75">服务</div>
-          <div class="h-7 whitespace-nowrap mb-5 pl-1.75">接口</div>
+          <div class="h-7 whitespace-nowrap mb-5 pl-1.75">{{ t('xcan_exec.defaultValue') }}</div>
+          <div class="h-7 whitespace-nowrap mb-5 pl-1.75">{{ t('xcan_exec.service') }}</div>
+          <div class="h-7 whitespace-nowrap mb-5 pl-1.75">{{ t('xcan_exec.interface') }}</div>
         </template>
         <template v-else>
-          <div class="h-7 whitespace-nowrap" style="margin-top: 22px;"><IconRequired />值</div>
+          <div class="h-7 whitespace-nowrap" style="margin-top: 22px;"><IconRequired />{{ t('xcan_exec.value') }}</div>
         </template>
       </div>
       <div v-if="visible" class="flex-1 flex flex-col space-y-5">
@@ -292,27 +289,22 @@ const typeChange = () => {
           trimAll
           dataType="mixin-en"
           includes="!@$%^&*()_-+="
-          placeholder="输入变量名称，最多可输入100字符"
+          :placeholder="t('xcan_exec.variableNamePlaceholder')"
           size="small"
           @change="(event)=>variableNameChange(event.target.value)" />
-        <SelectEnum
-          :value="variable.scope.value"
-          disabled
-          :enumKey="VariableScope"
-          class="w-full" />
         <Textarea
           v-model:value="variable.description"
-          placeholder="变量描述"
+          :placeholder="t('xcan_exec.variableDescriptionPlaceholder')"
           size="small"
           :maxlength="400"
           :autoSize="{ minRows: 2, maxRows: 2 }" />
         <div class="h-7  flex-none">
           <RadioGroup v-model:value="variable.type" @change="typeChange">
-            <Radio :value="false">定义</Radio>
+            <Radio :value="false">{{ t('xcan_exec.define') }}</Radio>
             <Radio :value="true">
-              <span class="flex items-center">提取
+              <span class="flex items-center">{{ t('xcan_exec.extract') }}
                 <Tooltip
-                  title="定义提取变量接口不支持依赖其他变量。"
+                  :title="t('xcan_exec.defineExtractVariableTip')"
                   placement="topLeft"
                   arrowPointAtCenter>
                   <Icon icon="icon-tishi1" class="text-3.5 text-tips cursor-pointer ml-1" />
@@ -326,7 +318,7 @@ const typeChange = () => {
             v-model:value="variable.value"
             :error="valueErr"
             :maxlength="4096"
-            placeholder="输入变量值，支持Mock函数，最多可输入4096字符"
+            :placeholder="t('xcan_exec.variableValuePlaceholder')"
             size="small"
             @change="(event)=>variableValueChange(event.target.value)" />
         </template>
@@ -352,7 +344,7 @@ const typeChange = () => {
               :error="parameterNameErr"
               :maxlength="400"
               style="width: 80%;"
-              placeholder="输入提取参数名称"
+              :placeholder="t('xcan_exec.extractionParameterNamePlaceholder')"
               @change="(event)=>parameterNameChange(event.target.value)" />
           </InputGroup>
           <template v-if="variable.extraction?.method?.value !=='EXACT_VALUE'">
@@ -360,7 +352,7 @@ const typeChange = () => {
               <Input
                 v-model:value="variable.extraction.expression"
                 :maxlength="1024"
-                placeholder="输入正则表达式"
+                :placeholder="t('xcan_exec.regexExpressionPlaceholder')"
                 size="small" />
             </template>
             <template v-else>
@@ -368,7 +360,7 @@ const typeChange = () => {
                 v-model:value="variable.extraction.expression"
                 :maxlength="1024"
                 :error="variable.extraction.expressionErr"
-                placeholder="输入提取表达式"
+                :placeholder="t('xcan_exec.extractionExpressionPlaceholder')"
                 class="mb-5"
                 size="small" />
             </template>
@@ -376,14 +368,14 @@ const typeChange = () => {
           <Input
             v-model:value="variable.extraction.defaultValue"
             :maxlength="4096"
-            placeholder="输入缺省值"
+            :placeholder="t('xcan_exec.defaultValuePlaceholder')"
             size="small" />
           <Select
             :value="serviceId"
             class="w-full"
             showSearch
             allowClear
-            placeholder="选择或查询服务"
+            :placeholder="t('xcan_exec.selectOrQueryService')"
             :action="`${TESTER}/services?projectId=${projectInfo?.id}`"
             :fieldNames="{label:'name',value:'id'}"
             @change="projectIdChange">
@@ -402,7 +394,7 @@ const typeChange = () => {
             :action="aipAction"
             :fieldNames="{ label: 'summary', value: 'id' } "
             :allowClear="true"
-            placeholder="选中或查询接口"
+            :placeholder="t('xcan_exec.selectOrQueryInterface')"
             @change="apiIdChange" />
           <template v-if="apiId && requestConfigs">
             <div class=" flex-1">

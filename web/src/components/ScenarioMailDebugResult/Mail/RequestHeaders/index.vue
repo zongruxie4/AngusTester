@@ -3,6 +3,9 @@ import { ref } from 'vue';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { utils } from '@xcan-angus/infra';
 import { Arrow, NoData } from '@xcan-angus/vue-ui';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import { ExecContent } from '../../PropsType';
 
@@ -17,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
 const panels:{id:string;name:string;key:'headers'|'request'}[] = [
   {
     id: utils.uuid(),
-    name: '请求内容',
+    name: t('xcan_scenarioMail.requestContent'),
     key: 'request'
   }
 ];

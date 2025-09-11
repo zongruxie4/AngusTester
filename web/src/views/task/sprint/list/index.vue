@@ -821,9 +821,9 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
         :updateUrl="`${TESTER}/task/sprint/auth`"
         :enabledUrl="`${TESTER}/task/sprint/${selectedData?.id}/auth/enabled`"
         :initStatusUrl="`${TESTER}/task/sprint/${selectedData?.id}/auth/status`"
-        onTips="开启&quot;有权限控制&quot;后，需要手动授权服务权限后才会有迭代相应操作权限，默认开启&quot;有权限控制&quot;。注意：如果授权对象没有父级项目权限将自动授权查看权限。"
-        offTips="开启&quot;无权限控制&quot;后，将允许所有用户公开查看和操作当前迭代，查看用户同时需要有当前迭代父级项目权限。"
-        title="迭代权限"
+        :onTips="t('taskSprint.anthModal.onTips')"
+        :offTips="t('taskSprint.anthModal.offTips')"
+        :title="t('taskSprint.anthModal.title')"
         @change="authFlagChange" />
     </AsyncComponent>
 

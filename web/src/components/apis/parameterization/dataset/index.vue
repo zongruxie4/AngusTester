@@ -230,10 +230,10 @@ const hintTextMap = {
             :value="item.value">
             <div class="flex items-center space-x-1">
               <span>{{ item.message }}</span>
-              <Tooltip v-if="item.value === 'RECYCLE'" title="数据集中所有数据行都被使用后，‌将重新从开头使用数据。">
+              <Tooltip v-if="item.value === 'RECYCLE'" :title="t('commonComp.apis.parameterizationDataset.recycleTooltip')">
                 <Icon icon="icon-tishi1" class="text-3.5 text-tips cursor-pointer" />
               </Tooltip>
-              <Tooltip v-else-if="item.value === 'STOP_THREAD'" title="数据集中所有数据行都被使用后，停止当前采样线程执行，所有线程都读完所有行时整个执行退出并结束。">
+              <Tooltip v-else-if="item.value === 'STOP_THREAD'" :title="t('commonComp.apis.parameterizationDataset.stopThreadTooltip')">
                 <Icon icon="icon-tishi1" class="text-3.5 text-tips cursor-pointer" />
               </Tooltip>
             </div>
@@ -256,10 +256,10 @@ const hintTextMap = {
             :value="item.value">
             <div class="flex items-center space-x-1">
               <span>{{ item.message }}</span>
-              <Tooltip v-if="item.value === SharingMode.ALL_THREAD" title="所有线程共享同一份数据集数据。">
+              <Tooltip v-if="item.value === SharingMode.ALL_THREAD" :title="t('commonComp.apis.parameterizationDataset.allThreadTooltip')">
                 <Icon icon="icon-tishi1" class="text-3.5 text-tips cursor-pointer" />
               </Tooltip>
-              <Tooltip v-else-if="item.value === SharingMode.CURRENT_THREAD" title="每个线程各自复制一份数据集数据。">
+              <Tooltip v-else-if="item.value === SharingMode.CURRENT_THREAD" :title="t('commonComp.apis.parameterizationDataset.currentThreadTooltip')">
                 <Icon icon="icon-tishi1" class="text-3.5 text-tips cursor-pointer" />
               </Tooltip>
             </div>

@@ -4,8 +4,11 @@ import { Icon, notification, Select, MonacoEditor } from '@xcan-angus/vue-ui';
 import { Button, RadioGroup, Radio, Upload } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';
 import { duration, utils, codeUtils } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 import pretty from 'pretty';
 import jsBeautify from 'js-beautify';
+
+const { t } = useI18n();
 
 import { RequestBody, ContentType } from './PropsType';
 
@@ -107,7 +110,7 @@ const errorNumChange = (value: number) => {
 
 const customRequest = async ({ file }) => {
   if (file.size > props.maxFileSize) {
-    notification.error(`总上传文件大小不能超过${utils.formatBytes(props.maxFileSize)}`);
+    notification.error(t('xcan_apiBody.totalFileSizeExceeded', { size: utils.formatBytes(props.maxFileSize) }));
     return;
   }
 
@@ -413,13 +416,13 @@ const language = computed(() => {
           size="small"
           class="ml-2"
           @click="formatRawContent">
-          格式化
+          {{ t('xcan_apiBody.format') }}
         </Button>
         <Button
           type="link"
           size="small"
           @click="compressRawContent">
-          压缩
+          {{ t('xcan_apiBody.compress') }}
         </Button>
       </template>
     </div>
@@ -465,7 +468,7 @@ const language = computed(() => {
           :disabled="!!fileName"
           size="small">
           <Icon icon="icon-tuisongtongzhi" class="mr-1" />
-          <span>上传文件</span>
+          <span>{{ t('xcan_apiBody.uploadFile') }}</span>
         </Button>
       </Upload>
       <template v-if="!!fileName">
