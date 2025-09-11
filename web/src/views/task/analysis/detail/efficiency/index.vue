@@ -12,64 +12,44 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const Echart = defineAsyncComponent(() => import('./echart.vue'));
+const EChart = defineAsyncComponent(() => import('./Efficiency.vue'));
 
 const getChartData = (data) => {
   const res = {};
-
-  //   completedNum
-  // :
-  // "491"
-  // completedRate
-  // :
-  // "97.04"
-  // oneTimeNotPassedNum
-  // :
-  // "22"
-  // oneTimeNotPassedRate
-  // :
-  // "4.48"
-  // oneTimePassedNum
-  // :
-  // "469"
-  // oneTimePassedRate
-  // :
-  // "95.52"
-  // totalNum
-  // :
-  // "506"
-  // twoTimePassedNum
-  // :
-  // "19"
-  // twoTimePassedRate
-  // :
-  // "3.87"
-
-  const { totalNum = 0, completedNum = 0, completedRate = 0, oneTimeNotPassedNum = 0, oneTimePassedNum = 0, oneTimePassedRate = 0, twoTimePassedNum = 0, twoTimePassedRate = 0, twoTimeNotPassedNum = 0 } = data;
+  const {
+    totalNum = 0, completedNum = 0, completedRate = 0, oneTimeNotPassedNum = 0,
+    oneTimePassedNum = 0, oneTimePassedRate = 0, twoTimePassedNum = 0, twoTimePassedRate = 0, twoTimeNotPassedNum = 0
+  } = data;
   res.chart0Value = {
     yData: [completedNum, oneTimeNotPassedNum, oneTimePassedNum]
   };
   res.chart1Value = {
     title: completedRate + '%',
-    value: [{ name: t('taskAnalysis.detail.handlingEfficiency.chartLabels.uncompletedTaskCount'), value: totalNum - completedNum }, { name: t('taskAnalysis.detail.handlingEfficiency.chartLabels.completedTaskCount2'), value: completedNum }]
+    value: [
+      { name: t('taskAnalysis.detail.handlingEfficiency.chartLabels.uncompletedTaskCount'), value: totalNum - completedNum },
+      { name: t('taskAnalysis.detail.handlingEfficiency.chartLabels.completedTaskCount2'), value: completedNum }
+    ]
   };
 
   res.chart2Value = {
     title: oneTimePassedRate + '%',
-    value: [{ name: t('taskAnalysis.detail.handlingEfficiency.chartLabels.oneTimeUncompletedTaskCount'), value: oneTimeNotPassedNum }, { name: t('taskAnalysis.detail.handlingEfficiency.chartLabels.oneTimeCompletedTaskCount'), value: oneTimePassedNum }]
+    value: [
+      { name: t('taskAnalysis.detail.handlingEfficiency.chartLabels.oneTimeUncompletedTaskCount'), value: oneTimeNotPassedNum },
+      { name: t('taskAnalysis.detail.handlingEfficiency.chartLabels.oneTimeCompletedTaskCount'), value: oneTimePassedNum }
+    ]
   };
 
   res.chart3Value = {
     title: twoTimePassedRate + '%',
-    value: [{ name: t('taskAnalysis.detail.handlingEfficiency.chartLabels.twoTimeUncompletedTaskCount'), value: completedNum - twoTimePassedNum }, { name: t('taskAnalysis.detail.handlingEfficiency.chartLabels.twoTimeCompletedTaskCount'), value: twoTimePassedNum }]
+    value: [
+      { name: t('taskAnalysis.detail.handlingEfficiency.chartLabels.twoTimeUncompletedTaskCount'), value: completedNum - twoTimePassedNum },
+      { name: t('taskAnalysis.detail.handlingEfficiency.chartLabels.twoTimeCompletedTaskCount'), value: twoTimePassedNum }
+    ]
   };
   return res;
 };
 
-const totalValue = ref({
-
-});
-
+const totalValue = ref({});
 const personValues = ref([]);
 
 onMounted(() => {
@@ -116,8 +96,10 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">{{ t('taskAnalysis.detail.handlingEfficiency.total') }}</div>
-    <Echart
+    <div class="font-semibold pl-3">
+      {{ t('taskAnalysis.detail.handlingEfficiency.total') }}
+    </div>
+    <EChart
       ref="totalChartRef"
       v-bind="totalValue"
       class="ml-3" />
@@ -128,7 +110,7 @@ defineExpose({
     :key="item.id"
     class="mt-5">
     <div class="font-semibold pl-3">{{ item.userName }}</div>
-    <Echart
+    <EChart
       ref="chartListRef"
       v-bind="item.chartData"
       class="ml-3" />

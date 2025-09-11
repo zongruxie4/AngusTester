@@ -4,7 +4,6 @@ import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
 interface Props {
-
   overdueAssessmentData: Record<string, any>;
   chart0Value: {
     yData: number[],
@@ -20,24 +19,23 @@ const { t } = useI18n();
 const props = withDefaults(defineProps<Props>(), {
   overdueAssessmentData: () => ({}),
   chart0Value: () => ({
-    yData: [0, 0, 0, 0, 0, 0]
+    yData: [0, 0, 0, 0, 0, 0, 0]
   }),
   chart1Value: () => ({
-    value: [],
-    xData: []
+    value: []
   })
 });
 
 const unplannedTaskRef = ref();
 const unplannedWorkloadRef = ref();
 
-let unplannedTaskRefEchart;
-let unplannedWorkloadRefEchart;
+let unplannedTaskRefEChart;
+let unplannedWorkloadRefEChart;
 
 // 任务数
-const unplannedTaskEchartConfig = {
+const unplannedTaskEChartConfig = {
   title: {
-    text: t('taskAnalysis.detail.resourceCreation.chartTitles.resourceTotal'),
+    text: t('taskAnalysis.detail.taskGrowthTread.chartTitles.taskGrowth'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -52,7 +50,13 @@ const unplannedTaskEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('taskAnalysis.detail.resourceCreation.chartLabels.backlog'), t('taskAnalysis.detail.resourceCreation.chartLabels.sprint'), t('taskAnalysis.detail.resourceCreation.chartLabels.task'), t('taskAnalysis.detail.resourceCreation.chartLabels.meeting'), t('taskAnalysis.detail.resourceCreation.chartLabels.analysis'), t('taskAnalysis.detail.resourceCreation.chartLabels.total')],
+    data: [t('taskAnalysis.detail.taskGrowthTread.chartLabels.requirement'),
+      t('taskAnalysis.detail.taskGrowthTread.chartLabels.story'),
+      t('taskAnalysis.detail.taskGrowthTread.chartLabels.task'),
+      t('taskAnalysis.detail.taskGrowthTread.chartLabels.bug'),
+      t('taskAnalysis.detail.taskGrowthTread.chartLabels.apiTest'),
+      t('taskAnalysis.detail.taskGrowthTread.chartLabels.scenarioTest'),
+      t('taskAnalysis.detail.taskGrowthTread.chartLabels.total')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -87,9 +91,9 @@ const unplannedTaskEchartConfig = {
   ]
 };
 
-const unplannedWorkloadEchartConfig = {
+const unplannedWorkloadEChartConfig = {
   title: {
-    text: t('taskAnalysis.detail.resourceCreation.chartTitles.resourceGrowth'),
+    text: t('taskAnalysis.detail.taskGrowthTread.chartTitles.growthTrend'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -137,22 +141,22 @@ const unplannedWorkloadEchartConfig = {
 };
 
 onMounted(() => {
-  unplannedTaskRefEchart = eCharts.init(unplannedTaskRef.value);
+  unplannedTaskRefEChart = eCharts.init(unplannedTaskRef.value);
 
-  unplannedWorkloadRefEchart = eCharts.init(unplannedWorkloadRef.value);
+  unplannedWorkloadRefEChart = eCharts.init(unplannedWorkloadRef.value);
 
   watch([() => props.chart0Value, () => props.chart1Value], () => {
-    unplannedTaskEchartConfig.series[0].data = props.chart0Value.yData;
-    unplannedWorkloadEchartConfig.series = props.chart1Value.value.map(i => {
+    unplannedTaskEChartConfig.series[0].data = props.chart0Value.yData;
+    unplannedWorkloadEChartConfig.series = props.chart1Value.value.map(i => {
       return {
         ...i,
         stack: 'Total'
       };
     });
-    unplannedWorkloadEchartConfig.xAxis.data = props.chart1Value.xData;
+    unplannedWorkloadEChartConfig.xAxis.data = props.chart1Value.xData;
 
-    unplannedTaskRefEchart.setOption(unplannedTaskEchartConfig);
-    unplannedWorkloadRefEchart.setOption(unplannedWorkloadEchartConfig);
+    unplannedTaskRefEChart.setOption(unplannedTaskEChartConfig);
+    unplannedWorkloadRefEChart.setOption(unplannedWorkloadEChartConfig);
   }, {
     immediate: true,
     deep: true
@@ -161,16 +165,16 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    unplannedTaskRefEchart.resize();
-    unplannedWorkloadRefEchart.resize();
+    unplannedTaskRefEChart.resize();
+    unplannedWorkloadRefEChart.resize();
   }
 });
 
 </script>
 <template>
-  <div class="flex space-x-4">
-    <div ref="unplannedTaskRef" class="flex-1 h-40"></div>
-    <div ref="unplannedWorkloadRef" class="flex-1 h-40"></div>
+  <div class="flex">
+    <div ref="unplannedTaskRef" class="flex-1 h-45"></div>
+    <div ref="unplannedWorkloadRef" class="flex-1 h-45"></div>
   </div>
 </template>
 <style scoped>

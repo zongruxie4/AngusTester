@@ -21,18 +21,16 @@ const props = withDefaults(defineProps<Props>(), {
 const progressRef = ref();
 const workloadProcessRef = ref();
 
-let progressEchart;
-let workloadProcessEchart;
+let progressEChart;
+let workloadProcessEChart;
 
-const progressEchartConfig = {
+const progressEChartConfig = {
   title: {
     text: '0%',
     left: '35%',
     top: '38%',
     padding: 2,
     subtext: t('taskAnalysis.detail.progress.chartTitles.taskProgress'),
-    // left: '25%',
-    // top: '40%',
     itemGap: 45,
     textAlign: 'center',
     textStyle: {
@@ -59,7 +57,6 @@ const progressEchartConfig = {
     {
       name: '',
       type: 'pie',
-      // radius: ['50%', '70%'],
       radius: '70%',
       center: ['35%', '45%'],
       avoidLabelOverlap: true,
@@ -101,41 +98,41 @@ const progressEchartConfig = {
   ]
 };
 
-const workloadProgressEchartConfig = JSON.parse(JSON.stringify({
-  ...progressEchartConfig,
+const workloadProgressEChartConfig = JSON.parse(JSON.stringify({
+  ...progressEChartConfig,
   title: {
-    ...progressEchartConfig.title,
+    ...progressEChartConfig.title,
     subtext: t('taskAnalysis.detail.progress.chartTitles.workloadProgress')
   }
 }));
 
 onMounted(() => {
-  progressEchart = eCharts.init(progressRef.value);
+  progressEChart = eCharts.init(progressRef.value);
 
-  workloadProcessEchart = eCharts.init(workloadProcessRef.value);
+  workloadProcessEChart = eCharts.init(workloadProcessRef.value);
 
   watch([() => props.value0, () => props.value1], () => {
-    progressEchartConfig.series[0].data[0] = {
-      ...progressEchartConfig.series[0].data[0],
+    progressEChartConfig.series[0].data[0] = {
+      ...progressEChartConfig.series[0].data[0],
       ...props.value0[0]
     };
-    progressEchartConfig.series[0].data[1] = {
-      ...progressEchartConfig.series[0].data[1],
+    progressEChartConfig.series[0].data[1] = {
+      ...progressEChartConfig.series[0].data[1],
       ...props.value0[1]
     };
-    progressEchartConfig.title.text = props.title0;
+    progressEChartConfig.title.text = props.title0;
 
-    workloadProgressEchartConfig.series[0].data[0] = {
-      ...workloadProgressEchartConfig.series[0].data[0],
+    workloadProgressEChartConfig.series[0].data[0] = {
+      ...workloadProgressEChartConfig.series[0].data[0],
       ...props.value1[0]
     };
-    workloadProgressEchartConfig.series[0].data[1] = {
-      ...workloadProgressEchartConfig.series[0].data[1],
+    workloadProgressEChartConfig.series[0].data[1] = {
+      ...workloadProgressEChartConfig.series[0].data[1],
       ...props.value1[1]
     };
-    workloadProgressEchartConfig.title.text = props.title1;
-    progressEchart.setOption(progressEchartConfig);
-    workloadProcessEchart.setOption(workloadProgressEchartConfig);
+    workloadProgressEChartConfig.title.text = props.title1;
+    progressEChart.setOption(progressEChartConfig);
+    workloadProcessEChart.setOption(workloadProgressEChartConfig);
   }, {
     immediate: true,
     deep: true
@@ -144,8 +141,8 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    progressEchart.resize();
-    workloadProcessEchart.resize();
+    progressEChart.resize();
+    workloadProcessEChart.resize();
   }
 });
 

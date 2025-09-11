@@ -15,11 +15,15 @@ export interface AnalysisInfo {
   orgType?: EnumMessage<AuthObjectType>;
   orgId?: string;
   customRange?: [string, string];
+  lastModifiedByName?: string;
+  lastModifiedDate?: string;
+  data?: any;
 }
 
 export interface EditAnalysisState {
   id?: string;
   name: string;
+  containsUserAnalysis: boolean;
   containsDataDetail: boolean;
   object: AnalysisTaskObject;
   timeRange: string;

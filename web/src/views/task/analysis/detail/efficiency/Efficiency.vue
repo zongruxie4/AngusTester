@@ -4,10 +4,6 @@ import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
 interface Props {
-  // title0: string;
-  // title1: string;
-  // value0: {name: string, value: string|number}[];
-  // value1: {name: string, value: string|number}[];
   chart0Value: {
     yData: number[]
   };
@@ -58,12 +54,12 @@ const bugsRef = ref();
 const twoTimePassedRef = ref();
 
 let bugsChart;
-let completedEchart;
-let oneTimePassedEchart;
-let twoTimePassedEchart;
+let completedEChart;
+let oneTimePassedEChart;
+let twoTimePassedEChart;
 
 // 完成任务
-const bugsEchartConfig = {
+const bugsEChartConfig = {
   title: {
     text: t('taskAnalysis.detail.handlingEfficiency.chartTitles.completedTasks'),
     bottom: 0,
@@ -80,7 +76,11 @@ const bugsEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('taskAnalysis.detail.handlingEfficiency.chartLabels.completedTaskCount'), t('taskAnalysis.detail.handlingEfficiency.chartLabels.oneTimeCompletedCount'), t('taskAnalysis.detail.handlingEfficiency.chartLabels.twoTimeCompletedCount')],
+    data: [
+      t('taskAnalysis.detail.handlingEfficiency.chartLabels.completedTaskCount'),
+      t('taskAnalysis.detail.handlingEfficiency.chartLabels.oneTimeCompletedCount'),
+      t('taskAnalysis.detail.handlingEfficiency.chartLabels.twoTimeCompletedCount')
+    ],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -110,15 +110,13 @@ const bugsEchartConfig = {
   ]
 };
 // 完成任务占比
-const completedEchartConfig = {
+const completedEChartConfig = {
   title: {
     text: '0%',
     left: '35%',
     top: '45%',
     padding: 2,
     subtext: t('taskAnalysis.detail.handlingEfficiency.chartTitles.completedTaskRatio'),
-    // left: '25%',
-    // top: '40%',
     itemGap: 40,
     textAlign: 'center',
     textStyle: {
@@ -145,7 +143,6 @@ const completedEchartConfig = {
     {
       name: '',
       type: 'pie',
-      // radius: ['50%', '65%'],
       radius: '65%',
       center: ['35%', '50%'],
       avoidLabelOverlap: true,
@@ -189,70 +186,76 @@ const completedEchartConfig = {
 };
 
 // 一次完成任务占比
-const oneTimePassedEchartConfig = JSON.parse(JSON.stringify({
-  ...completedEchartConfig,
+const oneTimePassedEChartConfig = JSON.parse(JSON.stringify({
+  ...completedEChartConfig,
   title: {
-    ...completedEchartConfig.title,
+    ...completedEChartConfig.title,
     subtext: t('taskAnalysis.detail.handlingEfficiency.chartTitles.oneTimeCompletedRatio'),
     itemGap: 40
   }
 }));
 
 // 两次完成任务占比
-const twoTimePassedEchartConfig = JSON.parse(JSON.stringify({
-  ...oneTimePassedEchartConfig,
+const twoTimePassedEChartConfig = JSON.parse(JSON.stringify({
+  ...oneTimePassedEChartConfig,
   title: {
-    ...oneTimePassedEchartConfig.title,
+    ...oneTimePassedEChartConfig.title,
     subtext: t('taskAnalysis.detail.handlingEfficiency.chartTitles.twoTimeCompletedRatio')
   }
 }));
 
 onMounted(() => {
-  completedEchart = eCharts.init(completedRef.value);
+  completedEChart = eCharts.init(completedRef.value);
 
-  oneTimePassedEchart = eCharts.init(oneTimePassedRef.value);
+  oneTimePassedEChart = eCharts.init(oneTimePassedRef.value);
 
   bugsChart = eCharts.init(bugsRef.value);
 
-  twoTimePassedEchart = eCharts.init(twoTimePassedRef.value);
+  twoTimePassedEChart = eCharts.init(twoTimePassedRef.value);
 
-  watch([() => props.chart0Value, () => props.chart1Value, () => props.chart2Value, () => props.chart3Value, () => props.chart4Value], () => {
-    bugsEchartConfig.series[0].data = props.chart0Value.yData;
+  watch([
+    () => props.chart0Value,
+    () => props.chart1Value,
+    () => props.chart2Value,
+    () => props.chart3Value,
+    () => props.chart4Value
+  ], () => {
+    bugsEChartConfig.series[0].data = props.chart0Value.yData;
 
-    completedEchartConfig.series[0].data[0] = {
-      ...completedEchartConfig.series[0].data[0],
+    completedEChartConfig.series[0].data[0] = {
+      ...completedEChartConfig.series[0].data[0],
       ...props.chart1Value.value[0]
     };
-    completedEchartConfig.series[0].data[1] = {
-      ...completedEchartConfig.series[0].data[1],
+    completedEChartConfig.series[0].data[1] = {
+      ...completedEChartConfig.series[0].data[1],
       ...props.chart1Value.value[1]
     };
-    completedEchartConfig.title.text = props.chart1Value.title;
+    completedEChartConfig.title.text = props.chart1Value.title;
 
-    oneTimePassedEchartConfig.series[0].data[0] = {
-      ...oneTimePassedEchartConfig.series[0].data[0],
+    oneTimePassedEChartConfig.series[0].data[0] = {
+      ...oneTimePassedEChartConfig.series[0].data[0],
       ...props.chart2Value.value[0]
     };
-    oneTimePassedEchartConfig.series[0].data[1] = {
-      ...oneTimePassedEchartConfig.series[0].data[1],
+    oneTimePassedEChartConfig.series[0].data[1] = {
+      ...oneTimePassedEChartConfig.series[0].data[1],
       ...props.chart2Value.value[1]
     };
-    oneTimePassedEchartConfig.title.text = props.chart2Value.title;
+    oneTimePassedEChartConfig.title.text = props.chart2Value.title;
 
-    twoTimePassedEchartConfig.series[0].data[0] = {
-      ...twoTimePassedEchartConfig.series[0].data[0],
+    twoTimePassedEChartConfig.series[0].data[0] = {
+      ...twoTimePassedEChartConfig.series[0].data[0],
       ...props.chart3Value.value[0]
     };
-    twoTimePassedEchartConfig.series[0].data[1] = {
-      ...twoTimePassedEchartConfig.series[0].data[1],
+    twoTimePassedEChartConfig.series[0].data[1] = {
+      ...twoTimePassedEChartConfig.series[0].data[1],
       ...props.chart3Value.value[1]
     };
-    twoTimePassedEchartConfig.title.text = props.chart3Value.title;
+    twoTimePassedEChartConfig.title.text = props.chart3Value.title;
 
-    completedEchart.setOption(completedEchartConfig);
-    oneTimePassedEchart.setOption(oneTimePassedEchartConfig);
-    bugsChart.setOption(bugsEchartConfig);
-    twoTimePassedEchart.setOption(twoTimePassedEchartConfig);
+    completedEChart.setOption(completedEChartConfig);
+    oneTimePassedEChart.setOption(oneTimePassedEChartConfig);
+    bugsChart.setOption(bugsEChartConfig);
+    twoTimePassedEChart.setOption(twoTimePassedEChartConfig);
   }, {
     immediate: true,
     deep: true
@@ -261,10 +264,10 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    completedEchart.resize();
-    oneTimePassedEchart.resize();
+    completedEChart.resize();
+    oneTimePassedEChart.resize();
     bugsChart.resize();
-    twoTimePassedEchart.resize();
+    twoTimePassedEChart.resize();
   }
 });
 

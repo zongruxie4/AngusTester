@@ -4,7 +4,6 @@ import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
 interface Props {
-
   overdueAssessmentData: Record<string, any>;
   chart0Value: {
     yData: number[]
@@ -28,11 +27,11 @@ const props = withDefaults(defineProps<Props>(), {
 const unplannedTaskRef = ref();
 const unplannedWorkloadRef = ref();
 
-let unplannedTaskRefEchart;
-let unplannedWorkloadRefEchart;
+let unplannedTaskRefEChart;
+let unplannedWorkloadRefEChart;
 
 // 任务数
-const unplannedTaskEchartConfig = {
+const unplannedTaskEChartConfig = {
   title: {
     text: t('taskAnalysis.detail.unplannedTasks.chartTitles.taskCount'),
     bottom: 0,
@@ -49,7 +48,9 @@ const unplannedTaskEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('taskAnalysis.detail.unplannedTasks.chartLabels.totalCount'), t('taskAnalysis.detail.unplannedTasks.chartLabels.unplannedCount'), t('taskAnalysis.detail.unplannedTasks.chartLabels.unplannedCompletedCount')],
+    data: [t('taskAnalysis.detail.unplannedTasks.chartLabels.totalCount'),
+      t('taskAnalysis.detail.unplannedTasks.chartLabels.unplannedCount'),
+      t('taskAnalysis.detail.unplannedTasks.chartLabels.unplannedCompletedCount')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -84,11 +85,15 @@ const unplannedTaskEchartConfig = {
   ]
 };
 
-const unplannedWorkloadEchartConfig = JSON.parse(JSON.stringify({
-  ...unplannedTaskEchartConfig,
+const unplannedWorkloadEChartConfig = JSON.parse(JSON.stringify({
+  ...unplannedTaskEChartConfig,
   xAxis: {
     type: 'category',
-    data: [t('taskAnalysis.detail.unplannedTasks.chartLabels.totalWorkload'), t('taskAnalysis.detail.unplannedTasks.chartLabels.unplannedWorkload'), t('taskAnalysis.detail.unplannedTasks.chartLabels.unplannedCompletedWorkload')],
+    data: [
+      t('taskAnalysis.detail.unplannedTasks.chartLabels.totalWorkload'),
+      t('taskAnalysis.detail.unplannedTasks.chartLabels.unplannedWorkload'),
+      t('taskAnalysis.detail.unplannedTasks.chartLabels.unplannedCompletedWorkload')
+    ],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -105,16 +110,15 @@ const unplannedWorkloadEchartConfig = JSON.parse(JSON.stringify({
 }));
 
 onMounted(() => {
-  unplannedTaskRefEchart = eCharts.init(unplannedTaskRef.value);
-
-  unplannedWorkloadRefEchart = eCharts.init(unplannedWorkloadRef.value);
+  unplannedTaskRefEChart = eCharts.init(unplannedTaskRef.value);
+  unplannedWorkloadRefEChart = eCharts.init(unplannedWorkloadRef.value);
 
   watch([() => props.chart0Value, () => props.chart1Value], () => {
-    unplannedTaskEchartConfig.series[0].data = props.chart0Value.yData;
-    unplannedWorkloadEchartConfig.series[0].data = props.chart1Value.yData;
+    unplannedTaskEChartConfig.series[0].data = props.chart0Value.yData;
+    unplannedWorkloadEChartConfig.series[0].data = props.chart1Value.yData;
 
-    unplannedTaskRefEchart.setOption(unplannedTaskEchartConfig);
-    unplannedWorkloadRefEchart.setOption(unplannedWorkloadEchartConfig);
+    unplannedTaskRefEChart.setOption(unplannedTaskEChartConfig);
+    unplannedWorkloadRefEChart.setOption(unplannedWorkloadEChartConfig);
   }, {
     immediate: true,
     deep: true
@@ -123,17 +127,20 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    unplannedTaskRefEchart.resize();
-    unplannedWorkloadRefEchart.resize();
+    unplannedTaskRefEChart.resize();
+    unplannedWorkloadRefEChart.resize();
   }
 });
-
 </script>
 <template>
   <div class="flex">
     <div class="px-3 w-50 flex items-center">
       <div class="text-center flex-1">
-        <div class="font-semibold "><span class="text-5 text-status-pending">{{ props.overdueAssessmentData.unplannedWorkloadProcessingTime || 0 }}</span>{{ t('taskAnalysis.detail.unplannedTasks.metrics.hours') }}</div>
+        <div class="font-semibold ">
+          <span class="text-5 text-status-pending">
+            {{ props.overdueAssessmentData.unplannedWorkloadProcessingTime || 0 }}
+          </span>{{ t('taskAnalysis.detail.unplannedTasks.metrics.hours') }}
+        </div>
         <div>
           {{ t('taskAnalysis.detail.unplannedTasks.metrics.estimatedTime') }}
         </div>

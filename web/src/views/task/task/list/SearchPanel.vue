@@ -1,7 +1,4 @@
 <script setup lang="ts">
-// ================================
-// IMPORTS
-// ================================
 import { computed, inject, onMounted, ref, Ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
@@ -33,9 +30,7 @@ import { DATE_TIME_FORMAT } from '@/utils/constant';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { SearchPanelMenuItem, SearchPanelOption, TaskViewMode } from '@/views/task/task/types';
 
-// ================================
 // TYPES & INTERFACES
-// ================================
 type Props = {
   collapse: boolean; // Controls statistics panel expand/collapse state
   viewMode: TaskViewMode;
@@ -80,9 +75,7 @@ const emit = defineEmits<{
   (e: 'update:moduleFlag', value: boolean): void;
 }>();
 
-// ================================
 // COMPOSABLES & INJECTIONS
-// ================================
 const { t } = useI18n();
 const projectTypeVisibilityMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({
   showTask: true,
@@ -93,9 +86,6 @@ const projectTypeVisibilityMap = inject<Ref<{[key: string]: boolean}>>('proTypeS
 }));
 const route = useRoute();
 
-// ================================
-// DATABASE & REFS
-// ================================
 // eslint-disable-next-line no-undef
 let database: XCanDexie<{ id: string; data: any; }>;
 
@@ -136,9 +126,6 @@ const failureCountFilter = ref<SearchCriteria>({ key: 'failNum', op: SearchCrite
 const totalCountFilter = ref<SearchCriteria>({ key: 'totalNum', op: SearchCriteria.OpEnum.Equal, value: undefined });
 const taskTypeOptions = ref<SearchPanelMenuItem[]>([]);
 
-// ================================
-// TASK TYPE ENUM LOADING
-// ================================
 /**
  * Loads task type enum options for the search panel
  * Converts enum values to menu items with display names
@@ -151,9 +138,6 @@ const loadTaskTypeOptions = () => {
   }));
 };
 
-// ================================
-// SORTING & GROUPING HANDLERS
-// ================================
 /**
  * Handles sorting configuration changes
  * @param data - Contains orderBy field and orderSort direction
@@ -171,9 +155,6 @@ const handleGroupingChange = (value: 'none' | 'assigneeName' | 'lastModifiedByNa
   emit('update:groupKey', value);
 };
 
-// ================================
-// QUICK SEARCH MENU HANDLERS
-// ================================
 /**
  * Handles quick search menu item clicks
  * Manages the selection/deselection of quick search filters
@@ -305,9 +286,6 @@ const updateSearchPanelConfigs = (configs: { valueKey: string; value: any }[]) =
   }
 };
 
-// ================================
-// DATE & UTILITY FUNCTIONS
-// ================================
 /**
  * Formats date range for quick search time periods
  * @param key - The time period key (lastDay, lastThreeDays, lastWeek)
@@ -480,9 +458,6 @@ const removeSelectedTag = (data: SearchPanelOption) => {
   checkedTagIds.value = checkedTagIds.value.filter(item => item !== id);
 };
 
-// ================================
-// ACTION HANDLERS
-// ================================
 /**
  * Handles task creation action
  */
@@ -550,9 +525,6 @@ const toggleStatisticsCollapse = () => {
   }
 };
 
-// ================================
-// SEARCH PANEL HANDLERS
-// ================================
 /**
  * Handles search panel changes
  * @param data - Updated search criteria
@@ -616,9 +588,6 @@ const handleTotalCountFilterChange = debounce(duration.search, (event: any) => {
   totalCountFilter.value.value = event.target.value;
 });
 
-// ================================
-// SEARCH CRITERIA BUILDING
-// ================================
 /**
  * Builds the complete search criteria array from all active filters
  * @returns Array of search criteria for API calls
@@ -670,9 +639,6 @@ const buildSearchCriteria = () => {
   return searchCriteria;
 };
 
-// ================================
-// INITIALIZATION & DATA LOADING
-// ================================
 /**
  * Initializes the component with saved data from database
  * Loads user preferences and search criteria
@@ -726,7 +692,6 @@ const initializeComponent = async () => {
             valueMap[key] = value;
           }
         }
-
         return true;
       });
 
@@ -745,7 +710,6 @@ const initializeComponent = async () => {
         if (dateTimes.length === 2) {
           valueMap[key] = dateTimes;
         }
-
         return true;
       });
     } else {
@@ -792,31 +756,36 @@ const initializeComponent = async () => {
     }
 
     if (Object.prototype.hasOwnProperty.call(savedSearchData, 'workloadFilter')) {
-      workloadFilter.value = savedSearchData.workloadFilter || { key: 'evalWorkload', op: SearchCriteria.OpEnum.Equal, value: undefined };
+      workloadFilter.value = savedSearchData.workloadFilter ||
+        { key: 'evalWorkload', op: SearchCriteria.OpEnum.Equal, value: undefined };
     } else {
       workloadFilter.value = { key: 'evalWorkload', op: SearchCriteria.OpEnum.Equal, value: undefined };
     }
 
     if (Object.prototype.hasOwnProperty.call(savedSearchData, 'failureCountFilter')) {
-      failureCountFilter.value = savedSearchData.failureCountFilter || { key: 'failNum', op: SearchCriteria.OpEnum.Equal, value: undefined };
+      failureCountFilter.value = savedSearchData.failureCountFilter ||
+        { key: 'failNum', op: SearchCriteria.OpEnum.Equal, value: undefined };
     } else {
       failureCountFilter.value = { key: 'failNum', op: SearchCriteria.OpEnum.Equal, value: undefined };
     }
 
     if (Object.prototype.hasOwnProperty.call(savedSearchData, 'totalCountFilter')) {
-      totalCountFilter.value = savedSearchData.totalCountFilter || { key: 'totalNum', op: SearchCriteria.OpEnum.Equal, value: undefined };
+      totalCountFilter.value = savedSearchData.totalCountFilter ||
+        { key: 'totalNum', op: SearchCriteria.OpEnum.Equal, value: undefined };
     } else {
       totalCountFilter.value = { key: 'totalNum', op: SearchCriteria.OpEnum.Equal, value: undefined };
     }
 
     if (Object.prototype.hasOwnProperty.call(savedSearchData, 'targetParentIdFilter')) {
-      targetParentIdFilter.value = savedSearchData.targetParentIdFilter || { key: 'targetParentId', op: SearchCriteria.OpEnum.Equal, value: undefined };
+      targetParentIdFilter.value = savedSearchData.targetParentIdFilter ||
+        { key: 'targetParentId', op: SearchCriteria.OpEnum.Equal, value: undefined };
     } else {
       targetParentIdFilter.value = { key: 'targetParentId', op: SearchCriteria.OpEnum.Equal, value: undefined };
     }
 
     if (Object.prototype.hasOwnProperty.call(savedSearchData, 'targetIdFilter')) {
-      targetIdFilter.value = savedSearchData.targetIdFilter || { key: 'targetId', op: SearchCriteria.OpEnum.Equal, value: undefined };
+      targetIdFilter.value = savedSearchData.targetIdFilter ||
+        { key: 'targetId', op: SearchCriteria.OpEnum.Equal, value: undefined };
     } else {
       targetIdFilter.value = { key: 'targetId', op: SearchCriteria.OpEnum.Equal, value: undefined };
     }

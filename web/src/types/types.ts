@@ -10,6 +10,9 @@ export type BasicProps = {
   userInfo?: { id: string; };
   appInfo?: { id: string; };
   notify?: string;
+  onShow?: boolean;
+  refreshNotify?: number;
+  data?: Record<string, string>;
 }
 
 // Time setting interface for CreatedDate component

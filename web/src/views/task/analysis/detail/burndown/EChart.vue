@@ -29,11 +29,10 @@ const props = withDefaults(defineProps<Props>(), {
 const burndownRef = ref();
 const workloadBurndownRef = ref();
 
-let burndownEchart;
-let workloadBurndownEchart;
+let burndownEChart;
+let workloadBurndownEChart;
 
-const burndownEchartConfig = {
-
+const burndownEChartConfig = {
   grid: {
     left: '30',
     right: '20',
@@ -78,26 +77,26 @@ const burndownEchartConfig = {
   ]
 };
 
-const workloadProgressEchartConfig = JSON.parse(JSON.stringify({
-  ...burndownEchartConfig
+const workloadProgressEChartConfig = JSON.parse(JSON.stringify({
+  ...burndownEChartConfig
 }));
 
 onMounted(() => {
-  burndownEchart = eCharts.init(burndownRef.value);
+  burndownEChart = eCharts.init(burndownRef.value);
 
-  workloadBurndownEchart = eCharts.init(workloadBurndownRef.value);
+  workloadBurndownEChart = eCharts.init(workloadBurndownRef.value);
 
   watch([() => props.chart0Data, () => props.chart1Data], () => {
-    burndownEchartConfig.series[0].data = props.chart0Data.yData[0];
-    burndownEchartConfig.series[1].data = props.chart0Data.yData[1];
-    burndownEchartConfig.xAxis.data = props.chart0Data.xData;
+    burndownEChartConfig.series[0].data = props.chart0Data.yData[0];
+    burndownEChartConfig.series[1].data = props.chart0Data.yData[1];
+    burndownEChartConfig.xAxis.data = props.chart0Data.xData;
 
-    workloadProgressEchartConfig.series[0].data = props.chart1Data.yData[0];
-    workloadProgressEchartConfig.series[1].data = props.chart1Data.yData[1];
-    workloadProgressEchartConfig.xAxis.data = props.chart1Data.xData;
+    workloadProgressEChartConfig.series[0].data = props.chart1Data.yData[0];
+    workloadProgressEChartConfig.series[1].data = props.chart1Data.yData[1];
+    workloadProgressEChartConfig.xAxis.data = props.chart1Data.xData;
 
-    burndownEchart.setOption(burndownEchartConfig);
-    workloadBurndownEchart.setOption(burndownEchartConfig);
+    burndownEChart.setOption(burndownEChartConfig);
+    workloadBurndownEChart.setOption(burndownEChartConfig);
   }, {
     immediate: true,
     deep: true
@@ -106,21 +105,24 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    burndownEchart.resize();
-    workloadBurndownEchart.resize();
+    burndownEChart.resize();
+    workloadBurndownEChart.resize();
   }
 });
-
 </script>
 <template>
   <div class="flex">
     <div class="flex-1">
       <div ref="burndownRef" class="flex-1 h-50"></div>
-      <div class="text-center font-medium  mt-1">{{ t('taskAnalysis.detail.burndown.chartTitles.taskBurndown') }}</div>
+      <div class="text-center font-medium  mt-1">
+        {{ t('taskAnalysis.detail.burndown.chartTitles.taskBurndown') }}
+      </div>
     </div>
     <div class="flex-1">
       <div ref="workloadBurndownRef" class="flex-1 h-50"></div>
-      <div class="text-center font-medium mt-1">{{ t('taskAnalysis.detail.burndown.chartTitles.workloadBurndown') }}</div>
+      <div class="text-center font-medium mt-1">
+        {{ t('taskAnalysis.detail.burndown.chartTitles.workloadBurndown') }}
+      </div>
     </div>
   </div>
 </template>

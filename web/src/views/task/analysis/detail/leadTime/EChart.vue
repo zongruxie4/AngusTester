@@ -4,11 +4,6 @@ import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
 interface Props {
-  // title0: string;
-  // title1: string;
-  // value0: {name: string, value: string|number}[];
-  // value1: {name: string, value: string|number}[];
-
   overdueAssessmentData: Record<string, any>;
   chart0Value: {
     yData: number[]
@@ -25,10 +20,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 const backlogRef = ref();
 
-let backlogRefEchart;
+let backlogRefEChart;
 
 // 任务交付周期(小时
-const backlogEchartConfig = {
+const backlogEChartConfig = {
   title: {
     text: t('taskAnalysis.detail.leadTime.chartTitles.taskDeliveryCycle'),
     bottom: 0,
@@ -45,7 +40,14 @@ const backlogEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('taskAnalysis.detail.leadTime.chartLabels.average'), t('taskAnalysis.detail.leadTime.chartLabels.min'), t('taskAnalysis.detail.leadTime.chartLabels.max'), t('taskAnalysis.detail.leadTime.chartLabels.p50'), t('taskAnalysis.detail.leadTime.chartLabels.p75'), t('taskAnalysis.detail.leadTime.chartLabels.p90'), t('taskAnalysis.detail.leadTime.chartLabels.p95'), t('taskAnalysis.detail.leadTime.chartLabels.p99')],
+    data: [t('taskAnalysis.detail.leadTime.chartLabels.average'),
+      t('taskAnalysis.detail.leadTime.chartLabels.min'),
+      t('taskAnalysis.detail.leadTime.chartLabels.max'),
+      t('taskAnalysis.detail.leadTime.chartLabels.p50'),
+      t('taskAnalysis.detail.leadTime.chartLabels.p75'),
+      t('taskAnalysis.detail.leadTime.chartLabels.p90'),
+      t('taskAnalysis.detail.leadTime.chartLabels.p95'),
+      t('taskAnalysis.detail.leadTime.chartLabels.p99')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -81,12 +83,12 @@ const backlogEchartConfig = {
 };
 
 onMounted(() => {
-  backlogRefEchart = eCharts.init(backlogRef.value);
+  backlogRefEChart = eCharts.init(backlogRef.value);
 
   watch([() => props.chart0Value], () => {
-    backlogEchartConfig.series[0].data = props.chart0Value.yData;
+    backlogEChartConfig.series[0].data = props.chart0Value.yData;
 
-    backlogRefEchart.setOption(backlogEchartConfig);
+    backlogRefEChart.setOption(backlogEChartConfig);
   }, {
     immediate: true,
     deep: true
@@ -95,7 +97,7 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    backlogRefEchart.resize();
+    backlogRefEChart.resize();
   }
 });
 
@@ -105,7 +107,12 @@ defineExpose({
     <div class="px-3 w-100">
       <div class="flex justify-around">
         <div class="text-center flex-1">
-          <div class="font-semibold "><span class="text-5 text-status-warn">{{ props.overdueAssessmentData.totalProcessingTime || 0 }}</span>{{ t('taskAnalysis.detail.leadTime.statistics.hours') }}</div>
+          <div class="font-semibold ">
+            <span class="text-5 text-status-warn">
+              {{ props.overdueAssessmentData.totalProcessingTime || 0 }}
+            </span>
+            {{ t('taskAnalysis.detail.leadTime.statistics.hours') }}
+          </div>
           <div>
             {{ t('taskAnalysis.detail.leadTime.statistics.totalProcessingTime') }}
           </div>

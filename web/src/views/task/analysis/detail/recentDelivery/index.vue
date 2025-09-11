@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const Echart = defineAsyncComponent(() => import('./echart.vue'));
+const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data) => {
   const res = {};
@@ -33,9 +33,7 @@ const getChartData = (data) => {
   return res;
 };
 
-const totalValue = ref({
-
-});
+const totalValue = ref({});
 
 const personValues = ref([]);
 
@@ -83,8 +81,10 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">{{ t('taskAnalysis.detail.recentDelivery.total') }}</div>
-    <Echart
+    <div class="font-semibold pl-3">
+      {{ t('taskAnalysis.detail.recentDelivery.total') }}
+    </div>
+    <EChart
       ref="totalChartRef"
       v-bind="totalValue"
       class="ml-3" />
@@ -95,7 +95,7 @@ defineExpose({
     :key="item.id"
     class="mt-5">
     <div class="font-semibold pl-3">{{ item.userName }}</div>
-    <Echart
+    <EChart
       ref="chartListRef"
       v-bind="item.chartData"
       class="ml-3" />

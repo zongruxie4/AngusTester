@@ -73,12 +73,12 @@ const taskQueryParams = {
 
   // Tasks followed by current user
   followed: {
-    followBy: true
+    followBy: props.userInfo?.id
   },
 
   // Tasks favorited by current user
   favorited: {
-    favouriteBy: true
+    favouriteBy: props.userInfo?.id
   },
 
   // Tasks commented by current user

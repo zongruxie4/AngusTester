@@ -6,15 +6,16 @@ import { Button } from 'ant-design-vue';
 import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
-import { XCanDexie, PageQuery } from '@xcan-angus/infra';
+import { XCanDexie, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 import { TaskStatus } from '@/enums/enums';
 
 import { MenuItem, SelectOption } from '@/views/task/analysis/list/types';
 import { TaskViewMode } from '@/views/task/task/types';
 
+// Type Definitions
 type Props = {
-  collapse: boolean;// 展开、折叠统计
+  collapse: boolean;
   viewMode: TaskViewMode;
   sprintId: string;
   sprintName: string;
@@ -27,6 +28,7 @@ type Props = {
   groupKey: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType';
 }
 
+// Props and Emits
 const props = withDefaults(defineProps<Props>(), {
   collapse: false,
   viewMode: undefined,
@@ -45,7 +47,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   (e: 'add'): void;
   (e: 'export'): void;
-  (e: 'change', value: { key: string; op: string; value: boolean | string | string[]; }[]): void;
+  (e: 'change', value: SearchCriteria[]): void;
   (e: 'update:orderBy', value: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName'): void;
   (e: 'update:orderSort', value: PageQuery.OrderSort): void;
   (e: 'update:groupKey', value: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType'): void;
@@ -56,184 +58,226 @@ const emit = defineEmits<{
   (e: 'exportTemplate'): void;
 }>();
 
+// Composables and External Dependencies
 const route = useRoute();
 const { t } = useI18n();
 
+/**
+ * Database instance for storing search parameters
+ */
 // eslint-disable-next-line no-undef
-let db: XCanDexie<{ id: string; data: any; }>;
+let searchParametersDatabase: XCanDexie<{ id: string; data: any; }>;
 
-const searchPanelRef = ref();
+/**
+ * Reference to the search panel component
+ */
+const searchPanelComponentRef = ref();
 
-// 保存快速搜索转换后的时间
-const quickDateMap = ref<Map<'lastDay' | 'lastThreeDays' | 'lastWeek', string[]>>(new Map());
-const selectedMenuMap = ref(new Map<string, Omit<MenuItem, 'name'>>());
-const overdue = ref(false); // 逾期
+/**
+ * Map storing quick date search converted time ranges
+ */
+const quickDateSearchMap = ref<Map<'lastDay' | 'lastThreeDays' | 'lastWeek', string[]>>(new Map());
 
-const sprintSelectVisible = ref(false);
-const selectedSprint = ref<SelectOption>();
+/**
+ * Map storing selected menu items for quick search
+ */
+const selectedQuickSearchItems = ref(new Map<string, Omit<MenuItem, 'name'>>());
+
+/**
+ * Flag indicating if overdue filter is active
+ */
+const isOverdueFilterActive = ref(false);
+
+/**
+ * Sprint selection visibility state
+ */
+const isSprintSelectionVisible = ref(false);
+
+/**
+ * Currently selected sprint option
+ */
+const selectedSprintOption = ref<SelectOption>();
+
+/**
+ * ID of the checked sprint
+ */
 const checkedSprintId = ref<string>();
 
-const tagSelectVisible = ref(false);
-const selectedTags = ref<SelectOption[]>([]);
+/**
+ * Tag selection visibility state
+ */
+const isTagSelectionVisible = ref(false);
+
+/**
+ * Currently selected tag options
+ */
+const selectedTagOptions = ref<SelectOption[]>([]);
+
+/**
+ * IDs of checked tags
+ */
 const checkedTagIds = ref<string[]>([]);
 
-const filters = ref<{ key: string; op: string; value: string; }[]>([]);
+/**
+ * Current search filter criteria
+ */
+const currentSearchFilters = ref<SearchCriteria[]>([]);
 
-const targetParentIdFilter = ref<{ key: 'targetParentId', op: 'EQUAL', value: string | undefined }>({ key: 'targetParentId', op: 'EQUAL', value: undefined });
-const targetIdFilter = ref<{ key: 'targetId', op: 'EQUAL', value: string | undefined }>({ key: 'targetId', op: 'EQUAL', value: undefined });
+/**
+ * Filter for target parent ID
+ */
+const targetParentIdSearchFilter = ref<SearchCriteria>({
+  key: 'targetParentId',
+  op: SearchCriteria.OpEnum.Equal,
+  value: undefined
+});
 
-const evalWorkloadFilter = ref<{ key: 'evalWorkload'; op: string; value: string | undefined; }>({ key: 'evalWorkload', op: 'EQUAL', value: undefined });
-const failNumFilter = ref<{ key: 'failNum'; op: string; value: string | undefined; }>({ key: 'failNum', op: 'EQUAL', value: undefined });
-const totalNumFilter = ref<{ key: 'totalNum'; op: string; value: string | undefined; }>({ key: 'totalNum', op: 'EQUAL', value: undefined });
+/**
+ * Filter for target ID
+ */
+const targetIdSearchFilter = ref<SearchCriteria>({
+  key: 'targetId',
+  op: SearchCriteria.OpEnum.Equal,
+  value: undefined
+});
 
-const toSort = (data: { orderBy: 'createsDate' | 'createdByName' ; orderSort: PageQuery.OrderSort; }) => {
+/**
+ * Filter for evaluation workload
+ */
+const evaluationWorkloadFilter = ref<SearchCriteria>({
+  key: 'evalWorkload',
+  op: SearchCriteria.OpEnum.Equal,
+  value: undefined
+});
+
+/**
+ * Filter for failure count
+ */
+const failureCountFilter = ref<SearchCriteria>({
+  key: 'failNum',
+  op: SearchCriteria.OpEnum.Equal,
+  value: undefined
+});
+
+/**
+ * Filter for total count
+ */
+const totalCountFilter = ref<SearchCriteria>({
+  key: 'totalNum',
+  op: SearchCriteria.OpEnum.Equal,
+  value: undefined
+});
+
+/**
+ * Handle sorting configuration changes
+ * @param {object} data - Sorting data containing orderBy and orderSort
+ */
+const handleSortingChange = (data: { orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName' ; orderSort: PageQuery.OrderSort; }) => {
   emit('update:orderBy', data.orderBy);
   emit('update:orderSort', data.orderSort);
 };
 
-const menuItemClick = (data: MenuItem) => {
-  const key = data.key;
-  // 当前操作是取消选中
-  if (selectedMenuMap.value.has(key)) {
-    // 【所有】这个按钮选中后再次点击不做处理
-    if (key === 'none') {
+/**
+ * Handle quick search menu item click events
+ * @param {MenuItem} menuItem - The clicked menu item
+ */
+const handleQuickSearchMenuItemClick = (menuItem: MenuItem) => {
+  const itemKey = menuItem.key;
+
+  // Handle deselection if item is already selected
+  if (selectedQuickSearchItems.value.has(itemKey)) {
+    // Do nothing if "All" button is clicked again
+    if (itemKey === 'none') {
       return;
     }
 
-    // 删除该条选中数据
-    selectedMenuMap.value.delete(key);
+    // Remove the selected item
+    selectedQuickSearchItems.value.delete(itemKey);
 
-    if (key === 'createdBy') {
-      if (typeof searchPanelRef.value?.setConfigs === 'function') {
-        searchPanelRef.value.setConfigs([{ valueKey: 'createdBy', value: undefined }]);
-      }
+    // Clear corresponding search panel configurations
+    if (itemKey === 'createdBy') {
+      clearSearchPanelConfig(['createdBy']);
       return;
     }
 
-    if (key === 'assigneeId' || key === 'progress') {
-      if (typeof searchPanelRef.value?.setConfigs === 'function') {
-        searchPanelRef.value.setConfigs([
-          { valueKey: 'assigneeId', value: undefined },
-          { valueKey: 'status', value: undefined }
-        ]);
-      }
-
+    if (itemKey === 'assigneeId' || itemKey === 'progress') {
+      clearSearchPanelConfig(['assigneeId', 'status']);
       return;
     }
 
-    if (key === 'lastModifiedBy') {
-      if (typeof searchPanelRef.value?.setConfigs === 'function') {
-        searchPanelRef.value.setConfigs([
-          { valueKey: 'lastModifiedBy', value: undefined }
-        ]);
-      }
+    if (itemKey === 'lastModifiedBy') {
+      clearSearchPanelConfig(['lastModifiedBy']);
       return;
     }
 
-    if (key === 'confirmorId') {
-      if (typeof searchPanelRef.value?.setConfigs === 'function') {
-        searchPanelRef.value.setConfigs([
-          { valueKey: 'confirmorId', value: undefined },
-          { valueKey: 'status', value: undefined }
-        ]);
-      }
+    if (itemKey === 'confirmorId') {
+      clearSearchPanelConfig(['confirmorId', 'status']);
       return;
     }
 
-    if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(key)) {
-      quickDateMap.value.clear();
-      if (typeof searchPanelRef.value?.setConfigs === 'function') {
-        searchPanelRef.value.setConfigs([
-          { valueKey: 'createdDate', value: undefined }
-        ]);
-      }
+    if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(itemKey)) {
+      quickDateSearchMap.value.clear();
+      clearSearchPanelConfig(['createdDate']);
     }
     return;
   }
 
-  // 选中【所有】，清除其他按钮的选中，保留迭代和标签
-  if (key === 'none') {
-    selectedMenuMap.value.clear();
-    selectedMenuMap.value.set('none', { key: 'none' });
+  // Handle "All" selection - clear all other selections
+  if (itemKey === 'none') {
+    selectedQuickSearchItems.value.clear();
+    selectedQuickSearchItems.value.set('none', { key: 'none' });
 
-    // 清空搜索面板
-    if (typeof searchPanelRef.value?.clear === 'function') {
-      searchPanelRef.value.clear();
+    // Clear search panel
+    if (typeof searchPanelComponentRef.value?.clear === 'function') {
+      searchPanelComponentRef.value.clear();
     }
 
-    // 关闭逾期
-    overdue.value = false;
-
-    // 清空targetParentId
-    targetParentIdFilter.value.value = undefined;
-
-    // 清空targetId
-    targetIdFilter.value.value = undefined;
-
-    // 清空evalWorkload
-    evalWorkloadFilter.value.value = undefined;
-
-    // 清空failNum
-    failNumFilter.value.value = undefined;
-
-    // 清空totalNum
-    totalNumFilter.value.value = undefined;
-
+    // Reset all filter states
+    resetAllFilterStates();
     return;
   }
 
-  // 其他按钮会通过watchEffect中的filters的值进行自动设置
-  if (key === 'createdBy') {
-    if (typeof searchPanelRef.value?.setConfigs === 'function') {
-      searchPanelRef.value.setConfigs([{ valueKey: 'createdBy', value: userId.value }]);
-    }
+  // Handle other menu item selections
+  if (itemKey === 'createdBy') {
+    setSearchPanelConfig([{ valueKey: 'createdBy', value: currentUserId.value }]);
     return;
   }
 
-  if (key === 'assigneeId' || key === 'progress') {
-    if (typeof searchPanelRef.value?.setConfigs === 'function') {
-      const value = key === 'assigneeId' ? TaskStatus.PENDING : TaskStatus.IN_PROGRESS;
-      searchPanelRef.value.setConfigs([
-        { valueKey: 'assigneeId', value: userId.value },
-        { valueKey: 'status', value }
-      ]);
-    }
-
+  if (itemKey === 'assigneeId' || itemKey === 'progress') {
+    const statusValue = itemKey === 'assigneeId' ? TaskStatus.PENDING : TaskStatus.IN_PROGRESS;
+    setSearchPanelConfig([
+      { valueKey: 'assigneeId', value: currentUserId.value },
+      { valueKey: 'status', value: statusValue }
+    ]);
     return;
   }
 
-  if (key === 'lastModifiedBy') {
-    if (typeof searchPanelRef.value?.setConfigs === 'function') {
-      searchPanelRef.value.setConfigs([
-        { valueKey: 'lastModifiedBy', value: userId.value }
-      ]);
-    }
+  if (itemKey === 'lastModifiedBy') {
+    setSearchPanelConfig([{ valueKey: 'lastModifiedBy', value: currentUserId.value }]);
     return;
   }
 
-  if (key === 'confirmorId') {
-    if (typeof searchPanelRef.value?.setConfigs === 'function') {
-      searchPanelRef.value.setConfigs([
-        { valueKey: 'confirmorId', value: userId.value },
-        { valueKey: 'status', value: 'CONFIRMING' }
-      ]);
-    }
-
+  if (itemKey === 'confirmorId') {
+    setSearchPanelConfig([
+      { valueKey: 'confirmorId', value: currentUserId.value },
+      { valueKey: 'status', value: TaskStatus.CONFIRMING }
+    ]);
     return;
   }
 
-  if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(key)) {
-    quickDateMap.value.clear();
-    quickDateMap.value.set(key, formatDateString(key));
-    if (typeof searchPanelRef.value?.setConfigs === 'function') {
-      searchPanelRef.value.setConfigs([
-        { valueKey: 'createdDate', value: quickDateMap.value.get(key) }
-      ]);
-    }
+  if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(itemKey)) {
+    quickDateSearchMap.value.clear();
+    quickDateSearchMap.value.set(itemKey, formatDateRange(itemKey));
+    setSearchPanelConfig([{ valueKey: 'createdDate', value: quickDateSearchMap.value.get(itemKey) }]);
   }
 };
 
-const formatDateString = (key: MenuItem['key']) => {
+/**
+ * Format date range based on quick search key
+ * @param {string} key - The quick search key
+ * @returns {string[]} Formatted date range array
+ */
+const formatDateRange = (key: MenuItem['key']) => {
   let startDate: Dayjs | undefined;
   let endDate: Dayjs | undefined;
 
@@ -255,7 +299,12 @@ const formatDateString = (key: MenuItem['key']) => {
   return [startDate ? startDate.format(DATE_TIME_FORMAT) : '', endDate ? endDate.format(DATE_TIME_FORMAT) : ''];
 };
 
-const formatData = ({ id, name }: { id: string; name: string; }) => {
+/**
+ * Format data for display with truncation
+ * @param {object} data - Data containing id and name
+ * @returns {object} Formatted data with display properties
+ */
+const formatDisplayData = ({ id, name }: { id: string; name: string; }) => {
   let showTitle = '';
   let showName = name;
   const MAX_LENGTH = 10;
@@ -267,100 +316,131 @@ const formatData = ({ id, name }: { id: string; name: string; }) => {
   return { id, name, showTitle, showName };
 };
 
-const toCreate = () => {
+/**
+ * Handle create button click
+ */
+const handleCreateClick = () => {
   emit('add');
 };
 
-const toRefresh = () => {
-  emit('change', getData());
+/**
+ * Handle refresh button click
+ */
+const handleRefreshClick = () => {
+  emit('change', buildSearchCriteria());
 };
 
-const searchPanelChange = (data: { key: string; op: string; value: string }[], _headers?: { [key: string]: string }, key?: string) => {
-  filters.value = data;
+/**
+ * Handle search panel configuration changes
+ * @param {SearchCriteria[]} data - New search criteria
+ * @param {object} headers - Optional headers
+ * @param {string} key - Optional key that triggered the change
+ */
+const handleSearchPanelChange = (data: SearchCriteria[], _headers?: { [key: string]: string }, key?: string) => {
+  currentSearchFilters.value = data;
 
-  // 选择添加时间清空快速搜索已选中的时间选项
+  // Clear quick date search selections when manual date selection is made
   if (key === 'createdDate') {
-    selectedMenuMap.value.delete('lastDay');
-    selectedMenuMap.value.delete('lastThreeDays');
-    selectedMenuMap.value.delete('lastWeek');
+    selectedQuickSearchItems.value.delete('lastDay');
+    selectedQuickSearchItems.value.delete('lastThreeDays');
+    selectedQuickSearchItems.value.delete('lastWeek');
   }
 };
 
-const getData = () => {
-  // 包装数据
-  const _filters: { key: string; op: string; value: boolean | string | string[] }[] = cloneDeep(filters.value);
-  if (overdue.value) {
-    _filters.push({ key: 'overdue', op: 'EQUAL', value: true });
+/**
+ * Build complete search criteria from all active filters
+ * @returns {SearchCriteria[]} Complete search criteria array
+ */
+const buildSearchCriteria = () => {
+  const searchCriteria: SearchCriteria[] = cloneDeep(currentSearchFilters.value);
+
+  // Add overdue filter if active
+  if (isOverdueFilterActive.value) {
+    searchCriteria.push({ key: 'overdue', op: SearchCriteria.OpEnum.Equal, value: true });
   }
 
+  // Add sprint filter if selected
   if (checkedSprintId.value) {
-    _filters.push({ key: 'sprintId', op: 'EQUAL', value: checkedSprintId.value });
+    searchCriteria.push({ key: 'sprintId', op: SearchCriteria.OpEnum.Equal, value: checkedSprintId.value });
   }
 
+  // Add tag filters if any tags are selected
   if (checkedTagIds.value.length) {
-    const value: string[] = [];
+    const tagValues: string[] = [];
     checkedTagIds.value.forEach(item => {
-      value.push(item);
+      tagValues.push(item);
     });
-    _filters.push({ key: 'tagId', op: 'IN', value });
+    searchCriteria.push({ key: 'tagId', op: SearchCriteria.OpEnum.In, value: tagValues });
   }
 
-  if (targetParentIdFilter.value.value) {
-    _filters.push({ ...(targetParentIdFilter.value as { key: string; op: string; value: string; }) });
+  // Add target parent ID filter if set
+  if (targetParentIdSearchFilter.value.value) {
+    searchCriteria.push({ ...(targetParentIdSearchFilter.value) });
   }
 
-  if (targetIdFilter.value.value) {
-    _filters.push({ ...(targetIdFilter.value as { key: string; op: string; value: string; }) });
+  // Add target ID filter if set
+  if (targetIdSearchFilter.value.value) {
+    searchCriteria.push({ ...(targetIdSearchFilter.value) });
   }
 
-  if (evalWorkloadFilter.value.value) {
-    _filters.push({ ...(evalWorkloadFilter.value as { key: string; op: string; value: string; }) });
+  // Add evaluation workload filter if set
+  if (evaluationWorkloadFilter.value.value) {
+    searchCriteria.push({ ...(evaluationWorkloadFilter.value) });
   }
 
-  if (failNumFilter.value.value) {
-    _filters.push({ ...(failNumFilter.value as { key: string; op: string; value: string; }) });
+  // Add failure count filter if set
+  if (failureCountFilter.value.value) {
+    searchCriteria.push({ ...(failureCountFilter.value) });
   }
 
-  if (totalNumFilter.value.value) {
-    _filters.push({ ...(totalNumFilter.value as { key: string; op: string; value: string; }) });
+  // Add total count filter if set
+  if (totalCountFilter.value.value) {
+    searchCriteria.push({ ...(totalCountFilter.value) });
   }
 
-  return _filters;
+  return searchCriteria;
 };
 
-const initialize = async () => {
-  if (!db) {
-    db = new XCanDexie<{ id: string; data: any; }>('parameter');
+/**
+ * Initialize search panel with saved data from database
+ */
+const initializeSearchPanel = async () => {
+  if (!searchParametersDatabase) {
+    searchParametersDatabase = new XCanDexie<{ id: string; data: any; }>('parameter');
   }
 
-  // 设置搜索条件数据
-  const [, data2] = await db.get(dbParamsKey.value);
-  const dbData = data2?.data;
-  if (dbData) {
-    const valueMap: { [key: string]: string | string[] } = {};
-    const notSearchPanelMap:{ [key: string]: string | string[] } = {};
-    if (Object.prototype.hasOwnProperty.call(dbData, 'a')) {
-      filters.value = dbData.a || [];
-      const notSearchPanelKeys = ['lastModifiedBy'];
-      const dateTimeKeys = ['createdDate'];
-      const dateTimeMap: { [key: string]: string[] } = {};
-      filters.value.every(({ key, value }) => {
-        if (dateTimeKeys.includes(key)) {
-          if (dateTimeMap[key]) {
-            dateTimeMap[key].push(value);
-          } else {
-            dateTimeMap[key] = [value];
-          }
-        } else if (notSearchPanelKeys.includes(key)) {
-          notSearchPanelMap[key] = value;
-        } else {
-          valueMap[key] = value;
-        }
+  // Load saved search parameters from database
+  const [, savedData] = await searchParametersDatabase.get(databaseParamsKey.value);
+  const databaseData = savedData?.data;
 
+  if (databaseData) {
+    const searchPanelValueMap: { [key: string]: string | string[] } = {};
+    const nonSearchPanelValueMap: { [key: string]: string | string[] } = {};
+
+    // Process saved filters
+    if (Object.prototype.hasOwnProperty.call(databaseData, 'filters')) {
+      currentSearchFilters.value = databaseData.filters || [];
+      const nonSearchPanelKeys = ['lastModifiedBy'];
+      const dateTimeKeys = ['createdDate'];
+      const dateTimeValueMap: { [key: string]: string[] } = {};
+
+      currentSearchFilters.value.every(({ key, value }) => {
+        if (key && dateTimeKeys.includes(key)) {
+          if (dateTimeValueMap[key]) {
+            dateTimeValueMap[key].push(value as string);
+          } else {
+            dateTimeValueMap[key] = [value as string];
+          }
+        } else if (key && nonSearchPanelKeys.includes(key)) {
+          nonSearchPanelValueMap[key] = value;
+        } else if (key) {
+          searchPanelValueMap[key] = value;
+        }
         return true;
       });
 
-      Object.entries(dateTimeMap).every(([key, [date1, date2]]: [string, string[]]) => {
+      // Process date time ranges
+      Object.entries(dateTimeValueMap).every(([key, [date1, date2]]: [string, string[]]) => {
         const dateTimes: string[] = [];
         if (date1 && date2) {
           if (dayjs(date1).isBefore(dayjs(date2))) {
@@ -371,165 +451,230 @@ const initialize = async () => {
             dateTimes[1] = date1;
           }
         }
-
         if (dateTimes.length === 2) {
-          valueMap[key] = dateTimes;
+          searchPanelValueMap[key] = dateTimes;
         }
-
         return true;
       });
     } else {
-      filters.value = [];
+      currentSearchFilters.value = [];
     }
 
-    if (Object.prototype.hasOwnProperty.call(dbData, 'b')) {
-      overdue.value = dbData.b || false;
+    // Load overdue filter state
+    if (Object.prototype.hasOwnProperty.call(databaseData, 'overdue')) {
+      isOverdueFilterActive.value = databaseData.overdue || false;
     } else {
-      overdue.value = false;
+      isOverdueFilterActive.value = false;
     }
 
-    // 从迭代跳转过来，需要替换为该迭代
+    // Load sprint data (prioritize props over saved data)
     if (props.sprintId) {
       checkedSprintId.value = props.sprintId;
     } else {
-      if (Object.prototype.hasOwnProperty.call(dbData, 'c')) {
-        checkedSprintId.value = dbData.c;
+      if (Object.prototype.hasOwnProperty.call(databaseData, 'checkedSprintId')) {
+        checkedSprintId.value = databaseData.checkedSprintId;
       } else {
         checkedSprintId.value = undefined;
       }
     }
 
     if (props.sprintName) {
-      selectedSprint.value = formatData({ id: props.sprintId, name: props.sprintName });
+      selectedSprintOption.value = formatDisplayData({ id: props.sprintId, name: props.sprintName });
     } else {
-      if (Object.prototype.hasOwnProperty.call(dbData, 'd')) {
-        selectedSprint.value = dbData.d;
+      if (Object.prototype.hasOwnProperty.call(databaseData, 'selectedSprint')) {
+        selectedSprintOption.value = databaseData.selectedSprint;
       } else {
-        selectedSprint.value = undefined;
+        selectedSprintOption.value = undefined;
       }
     }
 
-    if (Object.prototype.hasOwnProperty.call(dbData, 'e')) {
-      checkedTagIds.value = dbData.e || [];
+    // Load tag data
+    if (Object.prototype.hasOwnProperty.call(databaseData, 'checkedTagIds')) {
+      checkedTagIds.value = databaseData.checkedTagIds || [];
     } else {
       checkedTagIds.value = [];
     }
 
-    if (Object.prototype.hasOwnProperty.call(dbData, 'f')) {
-      selectedTags.value = dbData.f || [];
+    if (Object.prototype.hasOwnProperty.call(databaseData, 'selectedTags')) {
+      selectedTagOptions.value = databaseData.selectedTags || [];
     } else {
-      selectedTags.value = [];
+      selectedTagOptions.value = [];
     }
 
-    if (Object.prototype.hasOwnProperty.call(dbData, 'g')) {
-      evalWorkloadFilter.value = dbData.g || { key: 'evalWorkload', op: 'EQUAL', value: undefined };
-    } else {
-      evalWorkloadFilter.value = { key: 'evalWorkload', op: 'EQUAL', value: undefined };
-    }
+    // Load custom filters
+    loadCustomFiltersFromDatabase(databaseData);
 
-    if (Object.prototype.hasOwnProperty.call(dbData, 'h')) {
-      failNumFilter.value = dbData.h || { key: 'failNum', op: 'EQUAL', value: undefined };
-    } else {
-      failNumFilter.value = { key: 'failNum', op: 'EQUAL', value: undefined };
-    }
-
-    if (Object.prototype.hasOwnProperty.call(dbData, 'i')) {
-      totalNumFilter.value = dbData.i || { key: 'totalNum', op: 'EQUAL', value: undefined };
-    } else {
-      totalNumFilter.value = { key: 'totalNum', op: 'EQUAL', value: undefined };
-    }
-
-    if (Object.prototype.hasOwnProperty.call(dbData, 'j')) {
-      targetParentIdFilter.value = dbData.j || { key: 'targetParentId', op: 'EQUAL', value: undefined };
-    } else {
-      targetParentIdFilter.value = { key: 'targetParentId', op: 'EQUAL', value: undefined };
-    }
-
-    if (Object.prototype.hasOwnProperty.call(dbData, 'k')) {
-      targetIdFilter.value = dbData.k || { key: 'targetId', op: 'EQUAL', value: undefined };
-    } else {
-      targetIdFilter.value = { key: 'targetId', op: 'EQUAL', value: undefined };
-    }
-
-    // 非查询面板的快速筛选
-    const notSearchPanelKeys = Object.keys(notSearchPanelMap);
-    if (notSearchPanelKeys.length) {
-      notSearchPanelKeys.forEach(i => {
-        selectedMenuMap.value.set(i, { key: i });
+    // Set up non-search panel quick filters
+    const nonSearchPanelKeys = Object.keys(nonSearchPanelValueMap);
+    if (nonSearchPanelKeys.length) {
+      nonSearchPanelKeys.forEach(key => {
+        selectedQuickSearchItems.value.set(key as any, { key: key as any });
       });
-      if (!Object.keys(valueMap).length) {
-        emit('change', filters.value);
+      if (!Object.keys(searchPanelValueMap).length) {
+        emit('change', currentSearchFilters.value);
       }
     }
 
-    // 设置搜索面板数据
-    if (typeof searchPanelRef.value?.setConfigs === 'function') {
-      const valueMapKey = Object.keys(valueMap);
-      if (valueMapKey.length) {
-        // 其他数据设置为空
-        const configs = searchOptions.map(item => {
-          return {
-            valueKey: item.valueKey,
-            value: valueMap[item.valueKey]
-          };
-        });
-        searchPanelRef.value.setConfigs(configs);
-      }
-    }
-
+    // Configure search panel with saved values
+    configureSearchPanelWithValues(searchPanelValueMap);
     return;
   }
 
-  // 没有缓存数据，需要重置搜索面板数据
-  resetData();
-  resetSearchPanel();
+  // No saved data, reset to defaults
+  resetAllSearchStates();
+  resetSearchPanelConfiguration();
 };
 
-const resetSearchPanel = () => {
-  if (typeof searchPanelRef.value?.setConfigs === 'function') {
-    const configs = searchOptions.map(item => {
-      return {
-        valueKey: item.valueKey,
-        value: undefined
-      };
-    });
+/**
+ * Load custom filters from database data
+ * @param {any} databaseData - Database data object
+ */
+const loadCustomFiltersFromDatabase = (databaseData: any) => {
+  // Load evaluation workload filter
+  if (Object.prototype.hasOwnProperty.call(databaseData, 'evalWorkloadFilter')) {
+    evaluationWorkloadFilter.value = databaseData.evalWorkloadFilter ||
+        { key: 'evalWorkload', op: SearchCriteria.OpEnum.Equal, value: undefined };
+  } else {
+    evaluationWorkloadFilter.value = { key: 'evalWorkload', op: SearchCriteria.OpEnum.Equal, value: undefined };
+  }
 
-    searchPanelRef.value.setConfigs(configs);
+  // Load failure count filter
+  if (Object.prototype.hasOwnProperty.call(databaseData, 'failNumFilter')) {
+    failureCountFilter.value = databaseData.failNumFilter ||
+        { key: 'failNum', op: SearchCriteria.OpEnum.Equal, value: undefined };
+  } else {
+    failureCountFilter.value = { key: 'failNum', op: SearchCriteria.OpEnum.Equal, value: undefined };
+  }
+
+  // Load total count filter
+  if (Object.prototype.hasOwnProperty.call(databaseData, 'totalNumFilter')) {
+    totalCountFilter.value = databaseData.totalNumFilter ||
+        { key: 'totalNum', op: SearchCriteria.OpEnum.Equal, value: undefined };
+  } else {
+    totalCountFilter.value = { key: 'totalNum', op: SearchCriteria.OpEnum.Equal, value: undefined };
+  }
+
+  // Load target parent ID filter
+  if (Object.prototype.hasOwnProperty.call(databaseData, 'targetParentIdFilter')) {
+    targetParentIdSearchFilter.value = databaseData.targetParentIdFilter ||
+        { key: 'targetParentId', op: SearchCriteria.OpEnum.Equal, value: undefined };
+  } else {
+    targetParentIdSearchFilter.value = { key: 'targetParentId', op: SearchCriteria.OpEnum.Equal, value: undefined };
+  }
+
+  // Load target ID filter
+  if (Object.prototype.hasOwnProperty.call(databaseData, 'targetIdFilter')) {
+    targetIdSearchFilter.value = databaseData.targetIdFilter ||
+        { key: 'targetId', op: SearchCriteria.OpEnum.Equal, value: undefined };
+  } else {
+    targetIdSearchFilter.value = { key: 'targetId', op: SearchCriteria.OpEnum.Equal, value: undefined };
   }
 };
 
-const resetData = () => {
-  quickDateMap.value.clear();
-  selectedMenuMap.value.clear();
-  overdue.value = false;
-
-  sprintSelectVisible.value = false;
-  selectedSprint.value = undefined;
-  checkedSprintId.value = undefined;
-
-  tagSelectVisible.value = false;
-  selectedTags.value = [];
-  checkedTagIds.value = [];
-
-  filters.value = [];
-
-  targetParentIdFilter.value = { key: 'targetParentId', op: 'EQUAL', value: undefined };
-  targetIdFilter.value = { key: 'targetId', op: 'EQUAL', value: undefined };
-
-  evalWorkloadFilter.value = { key: 'evalWorkload', op: 'EQUAL', value: undefined };
-  failNumFilter.value = { key: 'failNum', op: 'EQUAL', value: undefined };
-  totalNumFilter.value = { key: 'totalNum', op: 'EQUAL', value: undefined };
+/**
+ * Configure search panel with saved values
+ * @param {object} valueMap - Map of values to configure
+ */
+const configureSearchPanelWithValues = (valueMap: { [key: string]: string | string[] }) => {
+  if (typeof searchPanelComponentRef.value?.setConfigs === 'function') {
+    const valueMapKeys = Object.keys(valueMap);
+    if (valueMapKeys.length) {
+      const configs = searchPanelOptions.map(item => ({
+        valueKey: item.valueKey,
+        value: valueMap[item.valueKey]
+      }));
+      searchPanelComponentRef.value.setConfigs(configs);
+    }
+  }
 };
 
+/**
+ * Clear search panel configuration for specified keys
+ * @param {string[]} keys - Keys to clear
+ */
+const clearSearchPanelConfig = (keys: string[]) => {
+  if (typeof searchPanelComponentRef.value?.setConfigs === 'function') {
+    const configs = keys.map(key => ({ valueKey: key, value: undefined }));
+    searchPanelComponentRef.value.setConfigs(configs);
+  }
+};
+
+/**
+ * Set search panel configuration
+ * @param {object[]} configs - Configuration objects
+ */
+const setSearchPanelConfig = (configs: { valueKey: string; value: any }[]) => {
+  if (typeof searchPanelComponentRef.value?.setConfigs === 'function') {
+    searchPanelComponentRef.value.setConfigs(configs);
+  }
+};
+
+/**
+ * Reset all filter states to default values
+ */
+const resetAllFilterStates = () => {
+  isOverdueFilterActive.value = false;
+  targetParentIdSearchFilter.value.value = undefined;
+  targetIdSearchFilter.value.value = undefined;
+  evaluationWorkloadFilter.value.value = undefined;
+  failureCountFilter.value.value = undefined;
+  totalCountFilter.value.value = undefined;
+};
+
+/**
+ * Reset search panel configuration to default state
+ */
+const resetSearchPanelConfiguration = () => {
+  if (typeof searchPanelComponentRef.value?.setConfigs === 'function') {
+    const configs = searchPanelOptions.map(item => ({
+      valueKey: item.valueKey,
+      value: undefined
+    }));
+    searchPanelComponentRef.value.setConfigs(configs);
+  }
+};
+
+/**
+ * Reset all search states to default values
+ */
+const resetAllSearchStates = () => {
+  quickDateSearchMap.value.clear();
+  selectedQuickSearchItems.value.clear();
+  isOverdueFilterActive.value = false;
+
+  isSprintSelectionVisible.value = false;
+  selectedSprintOption.value = undefined;
+  checkedSprintId.value = undefined;
+
+  isTagSelectionVisible.value = false;
+  selectedTagOptions.value = [];
+  checkedTagIds.value = [];
+
+  currentSearchFilters.value = [];
+
+  targetParentIdSearchFilter.value = { key: 'targetParentId', op: SearchCriteria.OpEnum.Equal, value: undefined };
+  targetIdSearchFilter.value = { key: 'targetId', op: SearchCriteria.OpEnum.Equal, value: undefined };
+
+  evaluationWorkloadFilter.value = { key: 'evalWorkload', op: SearchCriteria.OpEnum.Equal, value: undefined };
+  failureCountFilter.value = { key: 'failNum', op: SearchCriteria.OpEnum.Equal, value: undefined };
+  totalCountFilter.value = { key: 'totalNum', op: SearchCriteria.OpEnum.Equal, value: undefined };
+};
+
+// Lifecycle Hooks
 onMounted(async () => {
-  watch([() => dbParamsKey.value, () => dbCountKey.value, () => dbViewModeKey.value], ([key1, key2, key3]) => {
+  // Watch for database key changes and initialize
+  watch([
+    () => databaseParamsKey.value,
+    () => databaseCountKey.value,
+    () => databaseViewModeKey.value
+  ], ([key1, key2, key3]) => {
     if (!key1 || !key2 || !key3) {
       return;
     }
-
-    initialize();
+    initializeSearchPanel();
   }, { immediate: true });
 
+  // Watch for route hash changes to handle URL parameters
   watch(() => route.hash, () => {
     if (!route.hash.startsWith('#list')) {
       return;
@@ -552,227 +697,258 @@ onMounted(async () => {
     }
 
     if (sprintName) {
-      selectedSprint.value = formatData({ id: sprintId, name: sprintName });
+      selectedSprintOption.value = formatDisplayData({ id: sprintId, name: sprintName });
     }
   }, { immediate: false });
 
+  // Watch for search criteria changes and update UI accordingly
   watch(
     [
-      () => filters.value,
-      () => overdue.value,
+      () => currentSearchFilters.value,
+      () => isOverdueFilterActive.value,
       () => checkedSprintId.value,
       () => checkedTagIds.value.length,
-      () => targetParentIdFilter.value,
-      () => targetIdFilter.value,
-      () => evalWorkloadFilter.value,
-      () => failNumFilter.value,
-      () => totalNumFilter.value,
-      () => selectedMenuMap.value
+      () => targetParentIdSearchFilter.value,
+      () => targetIdSearchFilter.value,
+      () => evaluationWorkloadFilter.value,
+      () => failureCountFilter.value,
+      () => totalCountFilter.value,
+      () => selectedQuickSearchItems.value
     ], () => {
-      const _filters = filters.value;
-      if (!(_filters.length ||
-        overdue.value ||
-        !!targetParentIdFilter.value.value ||
-        !!targetIdFilter.value.value ||
-        !!evalWorkloadFilter.value.value ||
-        !!failNumFilter.value.value ||
-        !!totalNumFilter.value.value)) {
-        selectedMenuMap.value.clear();
-        selectedMenuMap.value.set('none', { key: 'none' });
+      const currentFilters = currentSearchFilters.value;
 
-        emit('change', getData());
+      // Check if any filters are active
+      const hasActiveFilters = currentFilters.length ||
+        isOverdueFilterActive.value ||
+        !!targetParentIdSearchFilter.value.value ||
+        !!targetIdSearchFilter.value.value ||
+        !!evaluationWorkloadFilter.value.value ||
+        !!failureCountFilter.value.value ||
+        !!totalCountFilter.value.value;
+
+      if (!hasActiveFilters) {
+        // No active filters, show "All" option
+        selectedQuickSearchItems.value.clear();
+        selectedQuickSearchItems.value.set('none', { key: 'none' });
+        emit('change', buildSearchCriteria());
       } else {
-        // 删除快速查询选中的【所有】选项
-        selectedMenuMap.value.delete('none');
-
-        // 设置快速搜索
-        const createdBy = _filters.find(item => item.key === 'createdBy')?.value;
-        if (createdBy && createdBy === userId.value) {
-          selectedMenuMap.value.set('createdBy', { key: 'createdBy' });
-        } else {
-          selectedMenuMap.value.delete('createdBy');
-        }
-
-        const lastModifiedBy = _filters.find(item => item.key === 'lastModifiedBy')?.value;
-        if (lastModifiedBy && lastModifiedBy === userId.value) {
-          selectedMenuMap.value.set('lastModifiedBy', { key: 'lastModifiedBy' });
-        } else {
-          selectedMenuMap.value.delete('lastModifiedBy');
-        }
-
-        const status = _filters.find(item => item.key === 'status')?.value;
-
-        const assigneeId = _filters.find(item => item.key === 'assigneeId')?.value;
-        if (status && status === TaskStatus.PENDING && assigneeId === userId.value) {
-          selectedMenuMap.value.set('assigneeId', { key: 'assigneeId' });
-
-          // 删除【待我确认】
-          selectedMenuMap.value.delete('confirmorId');
-          // 删除【我处理中】
-          selectedMenuMap.value.delete('progress');
-        } else {
-          selectedMenuMap.value.delete('assigneeId');
-        }
-
-        if (status && status === TaskStatus.IN_PROGRESS && assigneeId === userId.value) {
-          selectedMenuMap.value.set('progress', { key: 'progress' });
-
-          // 删除【待我确认】
-          selectedMenuMap.value.delete('confirmorId');
-          // 删除【待我处理】
-          selectedMenuMap.value.delete('assigneeId');
-        } else {
-          selectedMenuMap.value.delete('progress');
-        }
-
-        const confirmorId = _filters.find(item => item.key === 'confirmorId')?.value;
-        if (status && status === 'CONFIRMING' && confirmorId === userId.value) {
-          selectedMenuMap.value.set('confirmorId', { key: 'confirmorId' });
-
-          // 删除【待我处理】
-          selectedMenuMap.value.delete('assigneeId');
-          // 删除【我处理中】
-          selectedMenuMap.value.delete('progress');
-        } else {
-          selectedMenuMap.value.delete('confirmorId');
-        }
-
-        if (quickDateMap.value.size > 0) {
-          selectedMenuMap.value.delete('lastDay');
-          selectedMenuMap.value.delete('lastThreeDays');
-          selectedMenuMap.value.delete('lastWeek');
-
-          const createdDateStart = _filters.find(item => item.key === 'createdDate' && item.op === 'GREATER_THAN_EQUAL')?.value;
-          const createdDateEnd = _filters.find(item => item.key === 'createdDate' && item.op === 'LESS_THAN_EQUAL')?.value;
-          const dateString = [createdDateStart, createdDateEnd];
-          const entries = quickDateMap.value.entries();
-          for (const [key, value] of entries) {
-            if (isEqual(value, dateString)) {
-              selectedMenuMap.value.set(key, { key });
-            }
-          }
-
-          quickDateMap.value.clear();
-        }
-
-        emit('change', getData());
+        // Active filters, update quick search selections
+        updateQuickSearchSelections(currentFilters);
+        emit('change', buildSearchCriteria());
       }
 
-      // 保存到db
-      if (db) {
-        const dbData: {
-          a?: {
-            key: string;
-            op: string;
-            value: string;
-          }[];
-          b?: true;
-          c?: string;
-          d?: {
-            id: string;
-            name: string;
-            showTitle: string;
-            showName: string;
-          };
-          e?: string[];
-          f?: {
-            id: string;
-            name: string;
-            showTitle: string;
-            showName: string;
-          }[];
-          g?: { key: 'evalWorkload'; op: string; value: string | undefined; };
-          h?: { key: 'failNum'; op: string; value: string | undefined; };
-          i?: { key: 'totalNum'; op: string; value: string | undefined; };
-          j?: { key: 'targetParentId'; op: string; value: string | undefined; };
-          k?: { key: 'targetId'; op: string; value: string | undefined; };
-        } = {};
-        if (_filters.length) {
-          dbData.a = cloneDeep(_filters);
-        }
-
-        if (overdue.value) {
-          dbData.b = overdue.value;
-        }
-
-        if (checkedSprintId.value) {
-          dbData.c = checkedSprintId.value;
-        }
-
-        if (selectedSprint.value) {
-          dbData.d = cloneDeep(selectedSprint.value);
-        }
-
-        if (checkedTagIds.value.length) {
-          dbData.e = cloneDeep(checkedTagIds.value);
-        }
-
-        if (selectedTags.value.length) {
-          dbData.f = cloneDeep(selectedTags.value);
-        }
-
-        if (evalWorkloadFilter.value.value) {
-          dbData.g = cloneDeep(evalWorkloadFilter.value);
-        }
-
-        if (failNumFilter.value.value) {
-          dbData.h = cloneDeep(failNumFilter.value);
-        }
-
-        if (totalNumFilter.value.value) {
-          dbData.i = cloneDeep(totalNumFilter.value);
-        }
-
-        if (targetParentIdFilter.value.value) {
-          dbData.j = cloneDeep(targetParentIdFilter.value);
-        }
-
-        if (targetIdFilter.value.value) {
-          dbData.k = cloneDeep(targetIdFilter.value);
-        }
-
-        if (Object.keys(dbData).length) {
-          db.add({
-            id: dbParamsKey.value,
-            data: dbData
-          });
-        } else {
-          db.delete(dbParamsKey.value);
-        }
-      }
+      // Save current state to database
+      saveSearchStateToDatabase();
     }, { immediate: false, deep: false });
 });
 
-const userId = computed(() => {
+/**
+ * Get current user ID
+ */
+const currentUserId = computed(() => {
   return props.userInfo?.id;
 });
 
-const dbBaseKey = computed(() => {
+/**
+ * Generate base key for database operations
+ */
+const databaseBaseKey = computed(() => {
   let key = '';
-  if (userId.value) {
-    key = userId.value;
+  if (currentUserId.value) {
+    key = currentUserId.value;
   }
 
   if (props.projectId) {
     key += props.projectId;
   }
-
   return key;
 });
 
-const dbParamsKey = computed(() => {
-  return btoa(dbBaseKey.value + 'task_analysis');
+/**
+ * Generate database key for search parameters
+ */
+const databaseParamsKey = computed(() => {
+  return btoa(databaseBaseKey.value + 'task_analysis');
 });
 
-const dbCountKey = computed(() => {
-  return btoa(dbBaseKey.value + 'count');
+/**
+ * Generate database key for count data
+ */
+const databaseCountKey = computed(() => {
+  return btoa(databaseBaseKey.value + 'count');
 });
 
-const dbViewModeKey = computed(() => {
-  return btoa(dbBaseKey.value + 'viewMode');
+/**
+ * Generate database key for view mode
+ */
+const databaseViewModeKey = computed(() => {
+  return btoa(databaseBaseKey.value + 'viewMode');
 });
 
-const menuItems: MenuItem[] = [
+/**
+ * Update quick search selections based on current filters
+ * @param {SearchCriteria[]} filters - Current search filters
+ */
+const updateQuickSearchSelections = (filters: SearchCriteria[]) => {
+  // Remove "All" option when filters are active
+  selectedQuickSearchItems.value.delete('none');
+
+  // Update created by selection
+  const createdBy = filters.find(item => item.key === 'createdBy')?.value;
+  if (createdBy && createdBy === currentUserId.value) {
+    selectedQuickSearchItems.value.set('createdBy', { key: 'createdBy' });
+  } else {
+    selectedQuickSearchItems.value.delete('createdBy');
+  }
+
+  // Update last modified by selection
+  const lastModifiedBy = filters.find(item => item.key === 'lastModifiedBy')?.value;
+  if (lastModifiedBy && lastModifiedBy === currentUserId.value) {
+    selectedQuickSearchItems.value.set('lastModifiedBy', { key: 'lastModifiedBy' });
+  } else {
+    selectedQuickSearchItems.value.delete('lastModifiedBy');
+  }
+
+  // Update assignee and status selections
+  const status = filters.find(item => item.key === 'status')?.value;
+  const assigneeId = filters.find(item => item.key === 'assigneeId')?.value;
+
+  if (status && status === TaskStatus.PENDING && assigneeId === currentUserId.value) {
+    selectedQuickSearchItems.value.set('assigneeId', { key: 'assigneeId' });
+    selectedQuickSearchItems.value.delete('confirmorId');
+    selectedQuickSearchItems.value.delete('progress');
+  } else {
+    selectedQuickSearchItems.value.delete('assigneeId');
+  }
+
+  if (status && status === TaskStatus.IN_PROGRESS && assigneeId === currentUserId.value) {
+    selectedQuickSearchItems.value.set('progress', { key: 'progress' });
+    selectedQuickSearchItems.value.delete('confirmorId');
+    selectedQuickSearchItems.value.delete('assigneeId');
+  } else {
+    selectedQuickSearchItems.value.delete('progress');
+  }
+
+  // Update confirmor selection
+  const confirmorId = filters.find(item => item.key === 'confirmorId')?.value;
+  if (status && status === TaskStatus.CONFIRMING && confirmorId === currentUserId.value) {
+    selectedQuickSearchItems.value.set('confirmorId', { key: 'confirmorId' });
+    selectedQuickSearchItems.value.delete('assigneeId');
+    selectedQuickSearchItems.value.delete('progress');
+  } else {
+    selectedQuickSearchItems.value.delete('confirmorId');
+  }
+
+  // Update date range selections
+  if (quickDateSearchMap.value.size > 0) {
+    selectedQuickSearchItems.value.delete('lastDay');
+    selectedQuickSearchItems.value.delete('lastThreeDays');
+    selectedQuickSearchItems.value.delete('lastWeek');
+
+    const createdDateStart = filters.find(
+      item => item.key === 'createdDate' && item.op === SearchCriteria.OpEnum.GreaterThanEqual)?.value;
+    const createdDateEnd = filters.find(
+      item => item.key === 'createdDate' && item.op === SearchCriteria.OpEnum.LessThanEqual)?.value;
+    const dateString = [createdDateStart, createdDateEnd];
+
+    const entries = quickDateSearchMap.value.entries();
+    for (const [key, value] of entries) {
+      if (isEqual(value, dateString)) {
+        selectedQuickSearchItems.value.set(key, { key });
+      }
+    }
+    quickDateSearchMap.value.clear();
+  }
+};
+
+/**
+ * Save current search state to database
+ */
+const saveSearchStateToDatabase = () => {
+  if (searchParametersDatabase) {
+    const databaseData: {
+      filters?: SearchCriteria[];
+      overdue?: true;
+      checkedSprintId?: string;
+      selectedSprint?: {
+        id: string;
+        name: string;
+        showTitle: string;
+        showName: string;
+      };
+      checkedTagIds?: string[];
+      selectedTags?: {
+        id: string;
+        name: string;
+        showTitle: string;
+        showName: string;
+      }[];
+      evalWorkloadFilter?: SearchCriteria;
+      failNumFilter?: SearchCriteria;
+      totalNumFilter?: SearchCriteria;
+      targetParentIdFilter?: SearchCriteria;
+      targetIdFilter?: SearchCriteria;
+    } = {};
+
+    if (currentSearchFilters.value.length) {
+      databaseData.filters = cloneDeep(currentSearchFilters.value);
+    }
+
+    if (isOverdueFilterActive.value) {
+      databaseData.overdue = isOverdueFilterActive.value;
+    }
+
+    if (checkedSprintId.value) {
+      databaseData.checkedSprintId = checkedSprintId.value;
+    }
+
+    if (selectedSprintOption.value) {
+      databaseData.selectedSprint = cloneDeep(selectedSprintOption.value);
+    }
+
+    if (checkedTagIds.value.length) {
+      databaseData.checkedTagIds = cloneDeep(checkedTagIds.value);
+    }
+
+    if (selectedTagOptions.value.length) {
+      databaseData.selectedTags = cloneDeep(selectedTagOptions.value);
+    }
+
+    if (evaluationWorkloadFilter.value.value) {
+      databaseData.evalWorkloadFilter = cloneDeep(evaluationWorkloadFilter.value);
+    }
+
+    if (failureCountFilter.value.value) {
+      databaseData.failNumFilter = cloneDeep(failureCountFilter.value);
+    }
+
+    if (totalCountFilter.value.value) {
+      databaseData.totalNumFilter = cloneDeep(totalCountFilter.value);
+    }
+
+    if (targetParentIdSearchFilter.value.value) {
+      databaseData.targetParentIdFilter = cloneDeep(targetParentIdSearchFilter.value);
+    }
+
+    if (targetIdSearchFilter.value.value) {
+      databaseData.targetIdFilter = cloneDeep(targetIdSearchFilter.value);
+    }
+
+    if (Object.keys(databaseData).length) {
+      searchParametersDatabase.add({
+        id: databaseParamsKey.value,
+        data: databaseData
+      });
+    } else {
+      searchParametersDatabase.delete(databaseParamsKey.value);
+    }
+  }
+};
+
+/**
+ * Quick search menu items configuration
+ */
+const quickSearchMenuItems: MenuItem[] = [
   {
     key: 'none',
     name: t('quickSearchTags.all')
@@ -799,26 +975,32 @@ const menuItems: MenuItem[] = [
   }
 ];
 
-const searchOptions = [
+/**
+ * Search panel options configuration
+ */
+const searchPanelOptions = [
   {
-    type: 'input',
+    type: 'input' as const,
     valueKey: 'name',
     placeholder: t('taskAnalysis.searchNameDesc')
   },
   {
-    type: 'select-user',
+    type: 'select-user' as const,
     valueKey: 'createdBy',
     placeholder: t('taskAnalysis.selectCreator'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
   {
-    type: 'date-range',
+    type: 'date-range' as const,
     valueKey: 'createdDate',
     placeholder: [t('taskAnalysis.createTimeFrom'), t('taskAnalysis.createTimeTo')],
     showTime: true
   }
 ];
 
+/**
+ * Sort menu items configuration
+ */
 const sortMenuItems = [
   {
     key: 'name',
@@ -834,7 +1016,8 @@ const sortMenuItems = [
     key: 'createdDate',
     name: t('taskAnalysis.sortByCreateTime'),
     orderSort: PageQuery.OrderSort.Asc
-  }];
+  }
+];
 </script>
 <template>
   <div class="text-3 leading-5">
@@ -846,11 +1029,11 @@ const sortMenuItems = [
         </div>
         <div class="flex  flex-wrap ml-2">
           <div
-            v-for="item in menuItems"
+            v-for="item in quickSearchMenuItems"
             :key="item.key"
-            :class="{ 'active-key': selectedMenuMap.has(item.key) }"
+            :class="{ 'active-key': selectedQuickSearchItems.has(item.key) }"
             class="px-2.5 h-6 leading-6 mr-3 mb-3 rounded bg-gray-light cursor-pointer"
-            @click="menuItemClick(item)">
+            @click="handleQuickSearchMenuItemClick(item)">
             {{ item.name }}
           </div>
         </div>
@@ -859,16 +1042,16 @@ const sortMenuItems = [
 
     <div class="flex justify-between">
       <SearchPanel
-        ref="searchPanelRef"
-        :options="searchOptions"
-        @change="searchPanelChange">
+        ref="searchPanelComponentRef"
+        :options="searchPanelOptions"
+        @change="handleSearchPanelChange">
       </SearchPanel>
       <div class="flex-shrink-0 flex items-center space-x-2">
         <Button
           class="flex-shrink-0 flex items-center"
           type="primary"
           size="small"
-          @click="toCreate">
+          @click="handleCreateClick">
           <div class="flex items-center">
             <Icon icon="icon-jia" class="text-3.5" />
             <span class="ml-1">{{ t('taskAnalysis.addAnalysis') }}</span>
@@ -879,7 +1062,7 @@ const sortMenuItems = [
           :orderBy="props.orderBy"
           :orderSort="props.orderSort"
           :menuItems="sortMenuItems"
-          @click="toSort">
+          @click="handleSortingChange">
           <Button
             size="small"
             class="flex items-center cursor-pointer ">
@@ -891,7 +1074,7 @@ const sortMenuItems = [
         <Button
           class="flex-shrink-0 flex items-center"
           size="small"
-          @click="toRefresh">
+          @click="handleRefreshClick">
           <IconRefresh class="text-4 flex-shrink-0" />
           {{ t('actions.refresh') }}
         </Button>

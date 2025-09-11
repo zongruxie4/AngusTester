@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { inject, onMounted, ref, watch } from 'vue';
+import { inject, onMounted, ref, watch, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Checkbox, Form, FormItem, RadioButton, RadioGroup, Textarea } from 'ant-design-vue';
 import { DatePicker, Input, notification, Select } from '@xcan-angus/vue-ui';
-import { TESTER, GM, enumUtils, EnumMessage, AuthObjectType } from '@xcan-angus/infra';
+import { TESTER, GM, enumUtils, enumOptionUtils, EnumMessage, AuthObjectType } from '@xcan-angus/infra';
 import {
   AnalysisTaskTemplateDesc,
   AnalysisTaskObject,
@@ -11,18 +11,14 @@ import {
   AnalysisDataSource,
   AnalysisTaskTemplate
 } from '@/enums/enums';
-import { AnalysisInfo, EditAnalysisState } from '../types';
+import { EditAnalysisState } from '../types';
 import { analysis } from '@/api/tester';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
+import { BasicProps } from '@/types/types';
 
-interface Props {
-  projectId: string;
-  userInfo: {id: string};
-  data?: Record<string, string>;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+// Component Props & Configuration
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: () => ({ id: '' }),
   data: undefined
@@ -30,57 +26,58 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits<{(e: 'ok')}>();
 
+// Vue Composition API Setup
 const { t } = useI18n();
 const deleteTabPane = inject('deleteTabPane', (value) => value);
-const formRef = ref<AnalysisInfo>();
 
-// TODO 改成枚举，删除message
-const showContentOpt = [
-  {
-    value: AnalysisDataSource.REAL_TIME_DATA,
-    label: t('taskAnalysis.dataSource.realTime')
-  },
-  {
-    value: AnalysisDataSource.SNAPSHOT_DATA,
-    label: t('taskAnalysis.dataSource.snapshot')
-  }
-];
+// Form References
+const formRef = ref();
 
-// TODO 改成枚举，删除message
-const orgOpt = [
-  {
-    value: AuthObjectType.DEPT,
-    label: t('taskAnalysis.orgType.dept')
-  },
-  {
-    value: AuthObjectType.GROUP,
-    label: t('taskAnalysis.orgType.group')
-  },
-  {
-    value: AuthObjectType.USER,
-    label: t('taskAnalysis.orgType.user')
-  }
-];
+/**
+ * Data source options for analysis configuration.
+ */
+const dataSourceOptions = computed(() => enumOptionUtils.loadEnumAsOptions(AnalysisDataSource));
 
-const templateDescOpt = ref<EnumMessage<AnalysisTaskTemplateDesc>[]>([]);
-const loadDescOpt = () => {
-  templateDescOpt.value = enumUtils.enumToMessages(AnalysisTaskTemplateDesc);
+/**
+ * Organization type options for assignee-based analysis.
+ */
+const organizationTypeOptions = computed(() => enumOptionUtils.loadEnumAsOptions(AuthObjectType));
+
+// Enum Options Loading
+const templateDescriptionOptions = ref<EnumMessage<AnalysisTaskTemplateDesc>[]>([]);
+
+/**
+ * Loads template description options from enum definitions.
+ */
+const loadTemplateDescriptionOptions = () => {
+  templateDescriptionOptions.value = enumUtils.enumToMessages(AnalysisTaskTemplateDesc);
 };
 
-const analysisCaseObjectOpt = ref<EnumMessage<AnalysisTaskObject>[]>([]);
-const loadAnalysisCaseObject = () => {
-  analysisCaseObjectOpt.value = enumUtils.enumToMessages(AnalysisTaskObject);
+const analysisObjectOptions = ref<EnumMessage<AnalysisTaskObject>[]>([]);
+
+/**
+ * Loads analysis object options from enum definitions.
+ */
+const loadAnalysisObjectOptions = () => {
+  analysisObjectOptions.value = enumUtils.enumToMessages(AnalysisTaskObject);
 };
 
-const analysisTimeRangeOpt = ref<{message: string, value:string}[]>([]);
-const loadAnalysisTimeRange = () => {
-  const data = enumUtils.enumToMessages(AnalysisTimeRange);
-  analysisTimeRangeOpt.value = data.map(item => ({ ...item, label: item.message }));
+const timeRangeOptions = ref<{message: string, value:string}[]>([]);
+
+/**
+ * Loads time range options from enum definitions.
+ */
+const loadTimeRangeOptions = () => {
+  const enumData = enumUtils.enumToMessages(AnalysisTimeRange);
+  timeRangeOptions.value = enumData.map(item => ({ ...item, label: item.message }));
 };
 
+/**
+ * Main form data state for analysis configuration.
+ */
 const formData = ref<EditAnalysisState>({
   id: undefined,
-  name: undefined,
+  name: '',
   object: AnalysisTaskObject.CURRENT_PROJECT,
   timeRange: AnalysisTimeRange.ALL_TIME,
   resource: 'TASK',
@@ -92,21 +89,32 @@ const formData = ref<EditAnalysisState>({
   datasource: AnalysisDataSource.REAL_TIME_DATA,
   orgType: AuthObjectType.DEPT,
   orgId: '',
-  customRange: []
+  customRange: ['', '']
 });
 
-const saving = ref(false);
+const isSaving = ref(false);
+const isDescriptionManuallyChanged = ref(false);
 
-const loadAnalysisInfo = async (id) => {
-  const [error, { data }] = await analysis.getAnalysisDetail(id);
+/**
+ * Loads existing analysis data for editing.
+ *
+ * @param analysisId - The ID of the analysis to load
+ */
+const loadExistingAnalysisData = async (analysisId: string) => {
+  const [error, { data }] = await analysis.getAnalysisDetail(analysisId);
   if (error) {
     return;
   }
-  const { object, timeRange, name, resource, template, description, containsUserAnalysis, containsDataDetail, planId, datasource, orgType, orgId, startTime, endTime } = data;
+
+  const {
+    object, timeRange, name, resource, template, description,
+    containsUserAnalysis, containsDataDetail, planId, datasource,
+    orgType, orgId, startTime, endTime
+  } = data;
 
   formData.value = {
     ...formData.value,
-    id,
+    id: analysisId,
     object,
     name,
     resource,
@@ -119,86 +127,135 @@ const loadAnalysisInfo = async (id) => {
     orgId,
     timeRange: timeRange.value,
     datasource: datasource.value,
-    customRange: [startTime, endTime].filter(Boolean)
+    customRange: [startTime, endTime].filter(Boolean) as [string, string]
   };
 };
 
-const descriptionChanged = ref(false);
-const descChanged = () => {
-  descriptionChanged.value = true;
+/**
+ * Handles manual description changes by the user.
+ */
+const handleDescriptionChange = () => {
+  isDescriptionManuallyChanged.value = true;
 };
 
-const handleChangeOrgType = () => {
+/**
+ * Handles organization type changes.
+ */
+const handleOrganizationTypeChange = () => {
   formData.value.orgId = undefined;
 };
 
-const cancel = () => {
+/**
+ * Cancels the current edit operation and closes the tab.
+ */
+const handleCancel = () => {
   const tabId = props.data?.id ? `analysisEdit_${props.data?.id}` : 'analysisEdit';
   deleteTabPane([tabId]);
 };
 
-const getParams = () => {
-  const { object, timeRange, name, resource, template, description, containsUserAnalysis, containsDataDetail, planId, datasource, orgType, orgId, customRange, id } = formData.value;
-  const res = {
-    name, object, timeRange, resource, template, description, datasource, containsDataDetail, projectId: props.projectId, id
+/**
+ * Builds the parameters object for API submission.
+ *
+ * @returns Formatted parameters object for API call
+ */
+const buildSubmissionParameters = () => {
+  const {
+    object, timeRange, name, resource, template, description,
+    containsUserAnalysis, containsDataDetail, planId, datasource,
+    orgType, orgId, customRange, id
+  } = formData.value;
+
+  const baseParameters: any = {
+    name,
+    object,
+    timeRange,
+    resource,
+    template,
+    description,
+    datasource,
+    containsDataDetail,
+    projectId: props.projectId,
+    id
   };
+
+  // Add object-specific parameters
   if (object === AnalysisTaskObject.CURRENT_PROJECT) {
-    res.containsUserAnalysis = containsUserAnalysis;
+    baseParameters.containsUserAnalysis = containsUserAnalysis;
   }
+
   if (object === AnalysisTaskObject.SPRINT) {
-    res.containsUserAnalysis = containsUserAnalysis;
-    res.planId = planId;
+    baseParameters.containsUserAnalysis = containsUserAnalysis;
+    baseParameters.planId = planId;
   }
+
   if (object === AnalysisTaskObject.ASSIGNEE_ORG) {
-    res.orgType = orgType;
-    res.orgId = orgId;
+    baseParameters.orgType = orgType;
+    baseParameters.orgId = orgId;
   }
-  if (timeRange === AnalysisTimeRange.CUSTOM_TIME) {
-    res.startTime = customRange[0];
-    res.endTime = customRange[1];
+
+  // Add custom time range parameters
+  if (timeRange === AnalysisTimeRange.CUSTOM_TIME && customRange) {
+    baseParameters.startTime = customRange[0];
+    baseParameters.endTime = customRange[1];
   }
-  return res;
+  return baseParameters;
 };
 
-const save = async () => {
+/**
+ * Saves the analysis configuration.
+ * <p>
+ * Validates the form, builds parameters, and submits to the appropriate API endpoint.
+ * </p>
+ */
+const handleSave = async () => {
   formRef.value.validate().then(async () => {
-    const params = getParams();
-    saving.value = true;
-    const [error] = await (!params.id
-      ? analysis.addAnalysis({ ...params })
-      : analysis.updateAnalysis({ ...params }));
-    saving.value = false;
+    const submissionParams = buildSubmissionParameters();
+    isSaving.value = true;
+
+    const [error] = await (!submissionParams.id
+      ? analysis.addAnalysis({ ...submissionParams })
+      : analysis.updateAnalysis({ ...submissionParams }));
+
+    isSaving.value = false;
+
     if (error) {
       return;
     }
-    if (!params.id) {
+
+    // Show success notification
+    if (!submissionParams.id) {
       notification.success(t('taskAnalysis.messages.addSuccess'));
     } else {
       notification.success(t('taskAnalysis.messages.editSuccess'));
     }
 
     emits('ok');
-    cancel();
+    handleCancel();
   });
 };
 
+// Lifecycle Hooks
 onMounted(async () => {
-  await loadDescOpt();
-  loadAnalysisCaseObject();
-  loadAnalysisTimeRange();
+  // Load all enum options
+  loadTemplateDescriptionOptions();
+  loadAnalysisObjectOptions();
+  loadTimeRangeOptions();
 
+  // Initialize form data if editing existing analysis
   if (props.data) {
     if (props.data.template) {
-      formData.value.template = props.data.template;
+      formData.value.template = props.data.template as AnalysisTaskTemplate;
     }
     if (props.data.id) {
-      await loadAnalysisInfo(props.data.id);
+      await loadExistingAnalysisData(props.data.id);
     }
   }
 
+  // Watch for template changes to auto-update description
   watch(() => formData.value.template, () => {
-    if (!descriptionChanged.value) {
-      formData.value.description = templateDescOpt.value.find(item => item.value === formData.value.template)?.message;
+    if (!isDescriptionManuallyChanged.value) {
+      formData.value.description = templateDescriptionOptions.value
+        .find(item => item.value === formData.value.template as any)?.message || '';
     }
   }, {
     immediate: true
@@ -212,11 +269,11 @@ onMounted(async () => {
       <Button
         type="primary"
         size="small"
-        :loading="saving"
-        @click="save">
+        :loading="isSaving"
+        @click="handleSave">
         {{ t('actions.save') }}
       </Button>
-      <Button size="small" @click="cancel">
+      <Button size="small" @click="handleCancel">
         {{ t('actions.cancel') }}
       </Button>
     </div>
@@ -257,7 +314,7 @@ onMounted(async () => {
           v-model:value="formData.description"
           :maxlength="200"
           :placeholder="t('taskAnalysis.placeholder.inputAnalysisDesc')"
-          @change="descChanged" />
+          @change="handleDescriptionChange" />
       </FormItem>
 
       <FormItem
@@ -269,7 +326,11 @@ onMounted(async () => {
           v-model:value="formData.object"
           buttonStyle="solid"
           size="small">
-          <RadioButton v-for="item in analysisCaseObjectOpt" :value="item.value">{{ item.message }}</RadioButton>
+          <RadioButton
+            v-for="item in analysisObjectOptions"
+            :value="item.value">
+            {{ item.message }}
+          </RadioButton>
         </RadioGroup>
       </FormItem>
 
@@ -307,9 +368,9 @@ onMounted(async () => {
           class="ml-16 input-item">
           <Select
             v-model:value="formData.orgType"
-            :options="orgOpt"
+            :options="organizationTypeOptions"
             class="!w-30 mr-2"
-            @change="handleChangeOrgType" />
+            @change="handleOrganizationTypeChange" />
           <Select
             v-show="formData.orgType === AuthObjectType.USER"
             v-model:value="formData.orgId"
@@ -340,15 +401,23 @@ onMounted(async () => {
         </FormItem>
       </template>
       <FormItem label=" ">
-        <Checkbox v-show="formData.object !== AnalysisTaskObject.ASSIGNEE_ORG || formData.orgType !== AuthObjectType.USER" v-model:checked="formData.containsUserAnalysis">{{ t('taskAnalysis.form.containsUserAnalysis') }}</Checkbox>
-        <Checkbox v-model:checked="formData.containsDataDetail">{{ t('taskAnalysis.form.containsDataDetail') }}</Checkbox>
+        <Checkbox
+          v-show="formData.object !== AnalysisTaskObject.ASSIGNEE_ORG || formData.orgType !== AuthObjectType.USER"
+          v-model:checked="formData.containsUserAnalysis">
+          {{ t('taskAnalysis.form.containsUserAnalysis') }}
+        </Checkbox>
+        <Checkbox v-model:checked="formData.containsDataDetail">
+          {{ t('taskAnalysis.form.containsDataDetail') }}
+        </Checkbox>
       </FormItem>
 
       <FormItem
         name="timeRange"
         :label="t('taskAnalysis.form.timeRange')"
         required>
-        <RadioGroup v-model:value="formData.timeRange" :options="analysisTimeRangeOpt"></RadioGroup>
+        <RadioGroup
+          v-model:value="formData.timeRange"
+          :options="timeRangeOptions" />
         <DatePicker
           v-if="formData.timeRange === AnalysisTimeRange.CUSTOM_TIME"
           v-model:value="formData.customRange"
@@ -360,7 +429,9 @@ onMounted(async () => {
         :label="t('taskAnalysis.form.dataSource')"
         name="datasource"
         required>
-        <RadioGroup v-model:value="formData.datasource" :options="showContentOpt" />
+        <RadioGroup
+          v-model:value="formData.datasource"
+          :options="dataSourceOptions" />
       </FormItem>
     </Form>
   </div>

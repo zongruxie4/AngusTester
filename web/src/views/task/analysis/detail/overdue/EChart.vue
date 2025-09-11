@@ -4,11 +4,6 @@ import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
 interface Props {
-  // title0: string;
-  // title1: string;
-  // value0: {name: string, value: string|number}[];
-  // value1: {name: string, value: string|number}[];
-
   overdueAssessmentData: Record<string, any>;
 
   chart1Value: {
@@ -37,18 +32,16 @@ const props = withDefaults(defineProps<Props>(), {
 const completedWorkloadRef = ref();
 const savingWorkloadRef = ref();
 
-let completedWorkloadEchart;
-let savingWorkloadEchart;
+let completedWorkloadEChart;
+let savingWorkloadEChart;
 
-const completedWorkloadEchartConfig = {
+const completedWorkloadEChartConfig = {
   title: {
     text: '0%',
     left: '35%',
     top: '45%',
     padding: 2,
     subtext: t('taskAnalysis.detail.overdueAssessment.chartTitles.completedWorkloadRatio'),
-    // left: '25%',
-    // top: '40%',
     itemGap: 40,
     textAlign: 'center',
     textStyle: {
@@ -75,7 +68,6 @@ const completedWorkloadEchartConfig = {
     {
       name: '',
       type: 'pie',
-      // radius: ['50%', '65%'],
       radius: '65%',
       center: ['35%', '50%'],
       avoidLabelOverlap: true,
@@ -117,41 +109,41 @@ const completedWorkloadEchartConfig = {
   ]
 };
 
-const savingWorkloadEchartConfig = JSON.parse(JSON.stringify({
-  ...completedWorkloadEchartConfig,
+const savingWorkloadEChartConfig = JSON.parse(JSON.stringify({
+  ...completedWorkloadEChartConfig,
   title: {
-    ...completedWorkloadEchartConfig.title,
+    ...completedWorkloadEChartConfig.title,
     subtext: t('taskAnalysis.detail.overdueAssessment.chartTitles.savingWorkloadRatio')
   }
 }));
 
 onMounted(() => {
-  completedWorkloadEchart = eCharts.init(completedWorkloadRef.value);
+  completedWorkloadEChart = eCharts.init(completedWorkloadRef.value);
 
-  savingWorkloadEchart = eCharts.init(savingWorkloadRef.value);
+  savingWorkloadEChart = eCharts.init(savingWorkloadRef.value);
 
   watch([() => props.chart0Value, () => props.chart1Value, () => props.chart2Value], () => {
-    completedWorkloadEchartConfig.series[0].data[0] = {
-      ...completedWorkloadEchartConfig.series[0].data[0],
+    completedWorkloadEChartConfig.series[0].data[0] = {
+      ...completedWorkloadEChartConfig.series[0].data[0],
       ...props.chart1Value.value[0]
     };
-    completedWorkloadEchartConfig.series[0].data[1] = {
-      ...completedWorkloadEchartConfig.series[0].data[1],
+    completedWorkloadEChartConfig.series[0].data[1] = {
+      ...completedWorkloadEChartConfig.series[0].data[1],
       ...props.chart1Value.value[1]
     };
-    completedWorkloadEchartConfig.title.text = props.chart1Value.title;
+    completedWorkloadEChartConfig.title.text = props.chart1Value.title;
 
-    savingWorkloadEchartConfig.series[0].data[0] = {
-      ...savingWorkloadEchartConfig.series[0].data[0],
+    savingWorkloadEChartConfig.series[0].data[0] = {
+      ...savingWorkloadEChartConfig.series[0].data[0],
       ...props.chart2Value.value[0]
     };
-    savingWorkloadEchartConfig.series[0].data[1] = {
-      ...savingWorkloadEchartConfig.series[0].data[1],
+    savingWorkloadEChartConfig.series[0].data[1] = {
+      ...savingWorkloadEChartConfig.series[0].data[1],
       ...props.chart2Value.value[1]
     };
-    savingWorkloadEchartConfig.title.text = props.chart2Value.title;
-    completedWorkloadEchart.setOption(completedWorkloadEchartConfig);
-    savingWorkloadEchart.setOption(savingWorkloadEchartConfig);
+    savingWorkloadEChartConfig.title.text = props.chart2Value.title;
+    completedWorkloadEChart.setOption(completedWorkloadEChartConfig);
+    savingWorkloadEChart.setOption(savingWorkloadEChartConfig);
   }, {
     immediate: true,
     deep: true
@@ -160,8 +152,8 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    completedWorkloadEchart.resize();
-    savingWorkloadEchart.resize();
+    completedWorkloadEChart.resize();
+    savingWorkloadEChart.resize();
   }
 });
 
@@ -177,13 +169,17 @@ defineExpose({
           </div>
         </div>
         <div class="text-center flex-1">
-          <div :class="`risk-level-${props.overdueAssessmentData?.riskLevel?.value}`" class="font-semibold text-5">{{ overdueAssessmentData?.riskLevel?.message }}</div>
+          <div :class="`risk-level-${props.overdueAssessmentData?.riskLevel?.value}`" class="font-semibold text-5">
+            {{ overdueAssessmentData?.riskLevel?.message }}
+          </div>
           <div>{{ t('taskAnalysis.detail.overdueAssessment.statistics.overdueRisk') }}</div>
         </div>
       </div>
       <div class="flex justify-around mt-3">
         <div class="text-center">
-          <div class="font-semibold text-5  text-status-error">{{ props.overdueAssessmentData.overdueTime || 0 }}{{ t('taskAnalysis.detail.overdueAssessment.statistics.hours') }}</div>
+          <div class="font-semibold text-5  text-status-error">
+            {{ props.overdueAssessmentData.overdueTime || 0 }}{{ t('taskAnalysis.detail.overdueAssessment.statistics.hours') }}
+          </div>
           <div>
             {{ t('taskAnalysis.detail.overdueAssessment.statistics.overdueTime') }}
           </div>
@@ -197,7 +193,10 @@ defineExpose({
         </div>
 
         <div class="text-center">
-          <div class="font-semibold text-5">{{ props.overdueAssessmentData.overdueWorkloadProcessingTime || 0 }}{{ t('taskAnalysis.detail.overdueAssessment.statistics.hours') }}</div>
+          <div class="font-semibold text-5">
+            {{ props.overdueAssessmentData.overdueWorkloadProcessingTime || 0 }}
+            {{ t('taskAnalysis.detail.overdueAssessment.statistics.hours') }}
+          </div>
           <div>
             {{ t('taskAnalysis.detail.overdueAssessment.statistics.overdueWorkloadProcessingTime') }}
           </div>

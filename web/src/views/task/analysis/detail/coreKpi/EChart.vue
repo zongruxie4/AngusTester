@@ -4,10 +4,6 @@ import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
 interface Props {
-  // title0: string;
-  // title1: string;
-  // value0: {name: string, value: string|number}[];
-  // value1: {name: string, value: string|number}[];
   chart0Value: {
     yData0: number[],
     yData1: number[]
@@ -61,13 +57,13 @@ const completedOverduedRef = ref();
 const completedBugRef = ref();
 
 let coreChart;
-let completedEchart;
-let completedWorkloadEchart;
-let completedOverduedEchart;
-let completedBugEchart;
+let completedEChart;
+let completedWorkloadEChart;
+let completedOverduedEChart;
+let completedBugEChart;
 
 // 核心指标
-const coreEchartConfig = {
+const coreEChartConfig = {
   title: {
     text: t('taskAnalysis.detail.coreKpi.chartTitles.coreKpi'),
     bottom: 0,
@@ -84,7 +80,10 @@ const coreEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('taskAnalysis.detail.coreKpi.chartLabels.taskCount'), t('taskAnalysis.detail.coreKpi.chartLabels.workload'), t('taskAnalysis.detail.coreKpi.chartLabels.overdueCount'), t('taskAnalysis.detail.coreKpi.chartLabels.bugCount')],
+    data: [t('taskAnalysis.detail.coreKpi.chartLabels.taskCount'),
+      t('taskAnalysis.detail.coreKpi.chartLabels.workload'),
+      t('taskAnalysis.detail.coreKpi.chartLabels.overdueCount'),
+      t('taskAnalysis.detail.coreKpi.chartLabels.bugCount')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -98,7 +97,8 @@ const coreEchartConfig = {
   },
   legend: {
     show: true,
-    data: [t('taskAnalysis.detail.coreKpi.chartLabels.completedCount'), t('taskAnalysis.detail.coreKpi.chartLabels.totalCount')],
+    data: [t('taskAnalysis.detail.coreKpi.chartLabels.completedCount'),
+      t('taskAnalysis.detail.coreKpi.chartLabels.totalCount')],
     top: 0
   },
   series: [
@@ -134,7 +134,7 @@ const coreEchartConfig = {
   ]
 };
 // 完成任务占比
-const completedEchartConfig = {
+const completedEChartConfig = {
   title: {
     text: '0%',
     left: '35%',
@@ -206,100 +206,105 @@ const completedEchartConfig = {
             color: 'rgba(45, 142, 255, 1)'
           }
         }
-
       ]
     }
   ]
 };
 
 // 完成工作量占比
-const completedWorkloadEchartConfig = JSON.parse(JSON.stringify({
-  ...completedEchartConfig,
+const completedWorkloadEChartConfig = JSON.parse(JSON.stringify({
+  ...completedEChartConfig,
   title: {
-    ...completedEchartConfig.title,
+    ...completedEChartConfig.title,
     subtext: t('taskAnalysis.detail.coreKpi.chartTitles.completedWorkloadRatio'),
     itemGap: 40
   }
 }));
 
 // 逾期逾期数占比
-const completedOverduedEchartConfig = JSON.parse(JSON.stringify({
-  ...completedWorkloadEchartConfig,
+const completedOverdueEChartConfig = JSON.parse(JSON.stringify({
+  ...completedWorkloadEChartConfig,
   title: {
-    ...completedWorkloadEchartConfig.title,
+    ...completedWorkloadEChartConfig.title,
     subtext: t('taskAnalysis.detail.coreKpi.chartTitles.completedOverdueRatio')
   }
 }));
 
 // 完成缺陷占比
-const completedBugEchartConfig = JSON.parse(JSON.stringify({
-  ...completedWorkloadEchartConfig,
+const completedBugEChartConfig = JSON.parse(JSON.stringify({
+  ...completedWorkloadEChartConfig,
   title: {
-    ...completedWorkloadEchartConfig.title,
+    ...completedWorkloadEChartConfig.title,
     subtext: t('taskAnalysis.detail.coreKpi.chartTitles.completedBugRatio')
   }
 }));
 
 onMounted(() => {
-  completedEchart = eCharts.init(completedRef.value);
+  completedEChart = eCharts.init(completedRef.value);
 
-  completedWorkloadEchart = eCharts.init(completedWorkloadRef.value);
+  completedWorkloadEChart = eCharts.init(completedWorkloadRef.value);
 
   coreChart = eCharts.init(coreRef.value);
 
-  completedOverduedEchart = eCharts.init(completedOverduedRef.value);
+  completedOverduedEChart = eCharts.init(completedOverduedRef.value);
 
-  completedBugEchart = eCharts.init(completedBugRef.value);
+  completedBugEChart = eCharts.init(completedBugRef.value);
 
-  watch([() => props.chart0Value, () => props.chart1Value, () => props.chart2Value, () => props.chart3Value, () => props.chart4Value], () => {
-    coreEchartConfig.series[0].data = props.chart0Value.yData0;
-    coreEchartConfig.series[1].data = props.chart0Value.yData1;
+  watch([
+    () => props.chart0Value,
+    () => props.chart1Value,
+    () => props.chart2Value,
+    () => props.chart3Value,
+    () => props.chart4Value
+  ], () => {
+    coreEChartConfig.series[0].data = props.chart0Value.yData0;
+    coreEChartConfig.series[1].data = props.chart0Value.yData1;
 
-    completedEchartConfig.series[0].data[0] = {
-      ...completedEchartConfig.series[0].data[0],
+    completedEChartConfig.series[0].data[0] = {
+      ...completedEChartConfig.series[0].data[0],
       ...props.chart1Value.value[0]
     };
-    completedEchartConfig.series[0].data[1] = {
-      ...completedEchartConfig.series[0].data[1],
+    completedEChartConfig.series[0].data[1] = {
+      ...completedEChartConfig.series[0].data[1],
       ...props.chart1Value.value[1]
     };
-    completedEchartConfig.title.text = props.chart1Value.title;
+    completedEChartConfig.title.text = props.chart1Value.title;
 
-    completedWorkloadEchartConfig.series[0].data[0] = {
-      ...completedWorkloadEchartConfig.series[0].data[0],
+    completedWorkloadEChartConfig.series[0].data[0] = {
+      ...completedWorkloadEChartConfig.series[0].data[0],
       ...props.chart2Value.value[0]
     };
-    completedWorkloadEchartConfig.series[0].data[1] = {
-      ...completedWorkloadEchartConfig.series[0].data[1],
+    completedWorkloadEChartConfig.series[0].data[1] = {
+      ...completedWorkloadEChartConfig.series[0].data[1],
       ...props.chart2Value.value[1]
     };
-    completedWorkloadEchartConfig.title.text = props.chart2Value.title;
+    completedWorkloadEChartConfig.title.text = props.chart2Value.title;
 
-    completedOverduedEchartConfig.series[0].data[0] = {
-      ...completedOverduedEchartConfig.series[0].data[0],
+    completedOverdueEChartConfig.series[0].data[0] = {
+      ...completedOverdueEChartConfig.series[0].data[0],
       ...props.chart3Value.value[0]
     };
-    completedOverduedEchartConfig.series[0].data[1] = {
-      ...completedOverduedEchartConfig.series[0].data[1],
+    completedOverdueEChartConfig.series[0].data[1] = {
+      ...completedOverdueEChartConfig.series[0].data[1],
       ...props.chart3Value.value[1]
     };
-    completedOverduedEchartConfig.title.text = props.chart3Value.title;
+    completedOverdueEChartConfig.title.text = props.chart3Value.title;
 
-    completedBugEchartConfig.series[0].data[0] = {
-      ...completedBugEchartConfig.series[0].data[0],
+    completedBugEChartConfig.series[0].data[0] = {
+      ...completedBugEChartConfig.series[0].data[0],
       ...props.chart4Value.value[0]
     };
-    completedBugEchartConfig.series[0].data[1] = {
-      ...completedBugEchartConfig.series[0].data[1],
+    completedBugEChartConfig.series[0].data[1] = {
+      ...completedBugEChartConfig.series[0].data[1],
       ...props.chart4Value.value[1]
     };
-    completedBugEchartConfig.title.text = props.chart4Value.title;
+    completedBugEChartConfig.title.text = props.chart4Value.title;
 
-    completedEchart.setOption(completedEchartConfig);
-    completedWorkloadEchart.setOption(completedWorkloadEchartConfig);
-    coreChart.setOption(coreEchartConfig);
-    completedOverduedEchart.setOption(completedOverduedEchartConfig);
-    completedBugEchart.setOption(completedBugEchartConfig);
+    completedEChart.setOption(completedEChartConfig);
+    completedWorkloadEChart.setOption(completedWorkloadEChartConfig);
+    coreChart.setOption(coreEChartConfig);
+    completedOverduedEChart.setOption(completedOverdueEChartConfig);
+    completedBugEChart.setOption(completedBugEChartConfig);
   }, {
     immediate: true,
     deep: true
@@ -308,11 +313,11 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    completedEchart.resize();
-    completedWorkloadEchart.resize();
+    completedEChart.resize();
+    completedWorkloadEChart.resize();
     coreChart.resize();
-    completedOverduedEchart.resize();
-    completedBugEchart.resize();
+    completedOverduedEChart.resize();
+    completedBugEChart.resize();
   }
 });
 

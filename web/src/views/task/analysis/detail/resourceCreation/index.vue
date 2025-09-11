@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
 
-const Echart = defineAsyncComponent(() => import('./echart.vue'));
+const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const targetDataCategery = {
   TEST_CUSTOMIZATION: t('taskAnalysis.detail.resourceCreation.resourceTypes.TEST_CUSTOMIZATION'),
@@ -150,8 +150,10 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">{{ t('taskAnalysis.detail.resourceCreation.total') }}</div>
-    <Echart
+    <div class="font-semibold pl-3">
+      {{ t('taskAnalysis.detail.resourceCreation.total') }}
+    </div>
+    <EChart
       ref="totalChartRef"
       v-bind="totalValue"
       class="ml-3" />
@@ -162,7 +164,7 @@ defineExpose({
     :key="item.id"
     class="mt-5">
     <div class="font-semibold pl-3">{{ item.userName }}</div>
-    <Echart
+    <EChart
       ref="chartListRef"
       v-bind="item.chartData"
       class="ml-3" />

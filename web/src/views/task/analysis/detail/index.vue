@@ -4,19 +4,15 @@ import { useI18n } from 'vue-i18n';
 import { TESTER, download } from '@xcan-angus/infra';
 import { Icon } from '@xcan-angus/vue-ui';
 import { Button, Table, Tag } from 'ant-design-vue';
-import { TemplateIconConfig } from '@/views/task/analysis/list/types';
 import { debounce } from 'throttle-debounce';
-import { AnalysisInfo } from '../types';
 import { analysis } from '@/api/tester';
+import { AnalysisInfo } from '../types';
+import { AnalysisDataSource, AnalysisTaskTemplate } from '@/enums/enums';
 
-interface Props {
-  data?: Record<string, string>;
-  projectId: string;
-  userInfo: {id: string};
-  onShow: boolean
-}
+import { TemplateIconConfig } from '@/views/task/analysis/list/types';
+import { BasicProps } from '@/types/types';
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: () => ({ id: '' }),
   data: undefined,
@@ -29,19 +25,19 @@ const chartRef = ref();
 const Process = defineAsyncComponent(() => import('./progress/index.vue'));
 const Burndown = defineAsyncComponent(() => import('./burndown/index.vue'));
 const Workload = defineAsyncComponent(() => import('./workload/index.vue'));
-const OverdueAssessment = defineAsyncComponent(() => import('@/views/task/analysis/detail/overdue/index.vue'));
+const OverdueAssessment = defineAsyncComponent(() => import('./overdue/index.vue'));
 const Bugs = defineAsyncComponent(() => import('./bugs/index.vue'));
-const HandlingEfficiency = defineAsyncComponent(() => import('@/views/task/analysis/detail/efficiency/index.vue'));
+const HandlingEfficiency = defineAsyncComponent(() => import('./efficiency/index.vue'));
 const CoreKpi = defineAsyncComponent(() => import('./coreKpi/index.vue'));
 const Failures = defineAsyncComponent(() => import('./failures/index.vue'));
-const BascklogTasks = defineAsyncComponent(() => import('@/views/task/analysis/detail/backlog/index.vue'));
+const Backlogs = defineAsyncComponent(() => import('./backlog/index.vue'));
 const RecentDelivery = defineAsyncComponent(() => import('./recentDelivery/index.vue'));
 const LeadTime = defineAsyncComponent(() => import('./leadTime/index.vue'));
-const UnplannedTasks = defineAsyncComponent(() => import('@/views/task/analysis/detail/unplanned/index.vue'));
-const TaskGrowthTread = defineAsyncComponent(() => import('@/views/task/analysis/detail/growthTread/index.vue'));
+const Unplanned = defineAsyncComponent(() => import('./unplanned/index.vue'));
+const GrowthTread = defineAsyncComponent(() => import('./growthTread/index.vue'));
 const ResourceCreation = defineAsyncComponent(() => import('./resourceCreation/index.vue'));
 
-const dataSource = ref<AnalysisInfo>({});
+const dataSource = ref<AnalysisInfo>({} as AnalysisInfo);
 
 const loadAnalysisInfo = async (id) => {
   const [error, { data }] = await analysis.getAnalysisDetail(id);
@@ -162,62 +158,68 @@ onBeforeUnmount(() => {
 <template>
   <div class="p-5 h-full overflow-auto">
     <div class="bg-gray-1 p-2 flex items-center space-x-2">
-      <Icon :icon="TemplateIconConfig[dataSource.template]" class="text-20" />
+      <Icon :icon="TemplateIconConfig[dataSource.template.value]" class="text-20" />
       <div class="flex-1 min-w-0 flex flex-col justify-around">
         <div>
           <span class="text-3.5 font-semibold">{{ dataSource.name }}</span><Tag
             v-if="dataSource.datasource?.value"
             color="geekblue"
             class="ml-2">
-            {{ dataSource.datasource?.value === 'SNAPSHOT_DATA' ? t('taskAnalysis.snapshot') : dataSource.datasource?.value === 'REAL_TIME_DATA' ? t('taskAnalysis.realTime') : '' }}
+            {{ dataSource.datasource?.value === AnalysisDataSource.SNAPSHOT_DATA ? t('taskAnalysis.snapshot') :
+              dataSource.datasource?.value === AnalysisDataSource.REAL_TIME_DATA ? t('taskAnalysis.realTime') : '' }}
           </Tag>
         </div>
         <div class="mt-2">{{ dataSource.description }}</div>
-        <div><span class="font-semibold">{{ dataSource.lastModifiedByName }}</span> {{ t('taskAnalysis.lastModifiedBy') }}{{ dataSource.lastModifiedDate }}</div>
+        <div>
+          <span class="font-semibold">{{ dataSource.lastModifiedByName }}</span>
+          {{ t('taskAnalysis.lastModifiedBy') }}{{ dataSource.lastModifiedDate }}
+        </div>
       </div>
     </div>
     <div ref="chartWrapRef" class="mt-4">
-      <div class="detail-title font-semibold pl-2 relative text-3.5 mb-3">{{ t('taskAnalysis.charts') }}</div>
-      <div v-if="dataSource.template === 'PROGRESS'" class=" w-200">
+      <div class="detail-title font-semibold pl-2 relative text-3.5 mb-3">
+        {{ t('taskAnalysis.charts') }}
+      </div>
+      <div v-if="dataSource.template.value === AnalysisTaskTemplate.PROGRESS" class=" w-200">
         <Process ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template === 'BURNDOWN'" class=" w-275">
+      <div v-if="dataSource.template.value === AnalysisTaskTemplate.BURNDOWN" class=" w-275">
         <Burndown ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template === 'WORKLOAD'" class="max-w-300">
+      <div v-if="dataSource.template.value === AnalysisTaskTemplate.WORKLOAD" class="max-w-300">
         <Workload ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template === 'OVERDUE_ASSESSMENT'" class="max-w-275">
+      <div v-if="dataSource.template.value === AnalysisTaskTemplate.OVERDUE_ASSESSMENT" class="max-w-275">
         <OverdueAssessment ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template === 'BUGS'" class="max-w-400">
+      <div v-if="dataSource.template.value === AnalysisTaskTemplate.BUGS" class="max-w-400">
         <Bugs ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template === 'HANDLING_EFFICIENCY'" class="max-w-300">
+      <div v-if="dataSource.template.value === AnalysisTaskTemplate.HANDLING_EFFICIENCY" class="max-w-300">
         <HandlingEfficiency ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template === 'CORE_KPI'" class="max-w-400">
+      <div v-if="dataSource.template.value === AnalysisTaskTemplate.CORE_KPI" class="max-w-400">
         <CoreKpi ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template === 'FAILURES'" class="max-w-300">
+      <div v-if="dataSource.template.value === AnalysisTaskTemplate.FAILURES" class="max-w-300">
         <Failures ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template === 'BACKLOG_TASKS'" class="max-w-400">
-        <BascklogTasks ref="chartRef" :analysisInfo="dataSource" />
+      <div v-if="dataSource.template.value === AnalysisTaskTemplate.BACKLOG_TASKS" class="max-w-400">
+        <Backlogs ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template === 'RECENT_DELIVERY'" class="max-w-300">
+      <div v-if="dataSource.template.value === AnalysisTaskTemplate.RECENT_DELIVERY" class="max-w-300">
         <RecentDelivery ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template === 'LEAD_TIME'" class="max-w-300">
+      <div v-if="dataSource.template.value === AnalysisTaskTemplate.LEAD_TIME" class="max-w-300">
         <LeadTime ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template === 'UNPLANNED_TASKS'" class="max-w-300">
-        <UnplannedTasks ref="chartRef" :analysisInfo="dataSource" />
+      <div v-if="dataSource.template.value === AnalysisTaskTemplate.UNPLANNED_TASKS" class="max-w-300">
+        <Unplanned ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template === 'TASK_GROWTH_TREND'" class="max-w-300">
-        <TaskGrowthTread ref="chartRef" :analysisInfo="dataSource" />
+      <div v-if="dataSource.template.value === AnalysisTaskTemplate.TASK_GROWTH_TREND" class="max-w-300">
+        <GrowthTread ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template === 'RESOURCE_CREATION'" class="max-w-300">
+      <div v-if="dataSource.template.value === AnalysisTaskTemplate.RESOURCE_CREATION" class="max-w-300">
         <ResourceCreation ref="chartRef" :analysisInfo="dataSource" />
       </div>
     </div>
@@ -236,7 +238,7 @@ onBeforeUnmount(() => {
           {{ t('actions.export') }}
         </Button>
       </div>
-      <template v-if="dataSource.template === 'RECENT_DELIVERY'">
+      <template v-if="dataSource.template.value === AnalysisTaskTemplate.RECENT_DELIVERY">
         <div class="text-center mt-3">
           {{ t('taskAnalysis.today') }}
         </div>
@@ -271,14 +273,6 @@ onBeforeUnmount(() => {
           :columns="columns"
           :dataSource="recentDeliveryLastMonthTable" />
       </template>
-      <!-- <Table v-else-if="dataSource.template === 'RESOURCE_CREATION'"
-      class="w-full mt-3"
-      size="small"
-      :pagination="false"
-      :scroll="{x: 1000, y: 300}"
-      :columns="columns"
-      :dataSource="tableData">
-    </Table> -->
       <Table
         v-else
         class="w-full mt-3"

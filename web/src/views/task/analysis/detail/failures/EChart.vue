@@ -14,7 +14,6 @@ interface Props {
     title: string;
     value: {name: string, value: string|number}[];
   }
-
 }
 const { t } = useI18n();
 
@@ -36,11 +35,11 @@ const failureLevelRef = ref();
 const failureRef = ref();
 
 let failureChart;
-let failureTimeEchart;
-let failureLevelEchart;
+let failureTimeEChart;
+let failureLevelEChart;
 
 // 故障数
-const failureEchartConfig = {
+const failureEChartConfig = {
   title: {
     text: t('taskAnalysis.detail.failures.chartTitles.failureCount'),
     bottom: 0,
@@ -57,7 +56,13 @@ const failureEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('taskAnalysis.detail.failures.chartLabels.totalFailures'), t('taskAnalysis.detail.failures.chartLabels.completedFailures'), t('taskAnalysis.detail.failures.chartLabels.overdueFailures'), t('taskAnalysis.detail.failures.chartLabels.oneTimeFailures'), t('taskAnalysis.detail.failures.chartLabels.twoTimeFailures')],
+    data: [
+      t('taskAnalysis.detail.failures.chartLabels.totalFailures'),
+      t('taskAnalysis.detail.failures.chartLabels.completedFailures'),
+      t('taskAnalysis.detail.failures.chartLabels.overdueFailures'),
+      t('taskAnalysis.detail.failures.chartLabels.oneTimeFailures'),
+      t('taskAnalysis.detail.failures.chartLabels.twoTimeFailures')
+    ],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -75,7 +80,6 @@ const failureEchartConfig = {
         color: 'red',
         borderRadius: [5, 5, 0, 0]
       },
-
       data: [0, 0, 0, 0, 0],
       type: 'bar',
       barMaxWidth: '20',
@@ -87,8 +91,8 @@ const failureEchartConfig = {
   ]
 };
 // 故障时间（小时）
-const failureTimeEchartConfig = JSON.parse(JSON.stringify({
-  ...failureEchartConfig,
+const failureTimeEChartConfig = JSON.parse(JSON.stringify({
+  ...failureEChartConfig,
   title: {
     text: t('taskAnalysis.detail.failures.chartTitles.failureTime'),
     bottom: 0,
@@ -98,12 +102,15 @@ const failureTimeEchartConfig = JSON.parse(JSON.stringify({
     }
   },
   xAxis: {
-    ...failureEchartConfig.xAxis,
-    data: [t('taskAnalysis.detail.failures.chartLabels.totalFailureTime'), t('taskAnalysis.detail.failures.chartLabels.averageFailureTime'), t('taskAnalysis.detail.failures.chartLabels.minFailureTime'), t('taskAnalysis.detail.failures.chartLabels.maxFailureTime')]
+    ...failureEChartConfig.xAxis,
+    data: [t('taskAnalysis.detail.failures.chartLabels.totalFailureTime'),
+      t('taskAnalysis.detail.failures.chartLabels.averageFailureTime'),
+      t('taskAnalysis.detail.failures.chartLabels.minFailureTime'),
+      t('taskAnalysis.detail.failures.chartLabels.maxFailureTime')]
   },
   series: [
     {
-      ...failureEchartConfig.series[0],
+      ...failureEChartConfig.series[0],
       data: [0, 0, 0, 0],
       itemStyle: { // rgba(255, 165, 43, 1)
         color: 'orange',
@@ -115,7 +122,7 @@ const failureTimeEchartConfig = JSON.parse(JSON.stringify({
 
 //
 // 缺陷等级
-const failureLevelEchartConfig = {
+const failureLevelEChartConfig = {
   title: {
     text: '',
     left: '35%',
@@ -207,38 +214,38 @@ const failureLevelEchartConfig = {
 };
 
 onMounted(() => {
-  failureTimeEchart = eCharts.init(failureTimeRef.value);
+  failureTimeEChart = eCharts.init(failureTimeRef.value);
 
-  failureLevelEchart = eCharts.init(failureLevelRef.value);
+  failureLevelEChart = eCharts.init(failureLevelRef.value);
 
   failureChart = eCharts.init(failureRef.value);
 
   watch([() => props.chart0Value, () => props.chart1Value, () => props.chart2Value, () => props.chart3Value, () => props.chart4Value], () => {
-    failureEchartConfig.series[0].data = props.chart0Value.yData;
-    failureTimeEchartConfig.series[0].data = props.chart1Value.yData;
+    failureEChartConfig.series[0].data = props.chart0Value.yData;
+    failureTimeEChartConfig.series[0].data = props.chart1Value.yData;
 
-    failureLevelEchartConfig.series[0].data[0] = {
-      ...failureLevelEchartConfig.series[0].data[0],
+    failureLevelEChartConfig.series[0].data[0] = {
+      ...failureLevelEChartConfig.series[0].data[0],
       ...props.chart2Value.value[0]
     };
-    failureLevelEchartConfig.series[0].data[1] = {
-      ...failureLevelEchartConfig.series[0].data[1],
+    failureLevelEChartConfig.series[0].data[1] = {
+      ...failureLevelEChartConfig.series[0].data[1],
       ...props.chart2Value.value[1]
     };
 
-    failureLevelEchartConfig.series[0].data[2] = {
-      ...failureLevelEchartConfig.series[0].data[2],
+    failureLevelEChartConfig.series[0].data[2] = {
+      ...failureLevelEChartConfig.series[0].data[2],
       ...props.chart2Value.value[2]
     };
-    failureLevelEchartConfig.series[0].data[3] = {
-      ...failureLevelEchartConfig.series[0].data[4],
+    failureLevelEChartConfig.series[0].data[3] = {
+      ...failureLevelEChartConfig.series[0].data[4],
       ...props.chart2Value.value[3]
     };
-    failureLevelEchartConfig.title.text = props.chart2Value.title;
+    failureLevelEChartConfig.title.text = props.chart2Value.title;
 
-    failureTimeEchart.setOption(failureTimeEchartConfig);
-    failureLevelEchart.setOption(failureLevelEchartConfig);
-    failureChart.setOption(failureEchartConfig);
+    failureTimeEChart.setOption(failureTimeEChartConfig);
+    failureLevelEChart.setOption(failureLevelEChartConfig);
+    failureChart.setOption(failureEChartConfig);
   }, {
     immediate: true,
     deep: true
@@ -247,8 +254,8 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    failureTimeEchart.resize();
-    failureLevelEchart.resize();
+    failureTimeEChart.resize();
+    failureLevelEChart.resize();
     failureChart.resize();
   }
 });

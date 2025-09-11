@@ -4,10 +4,6 @@ import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
 interface Props {
-  // title0: string;
-  // title1: string;
-  // value0: {name: string, value: string|number}[];
-  // value1: {name: string, value: string|number}[];
   chart0Value: {
     yData: number[]
   };
@@ -41,10 +37,10 @@ const savingWorkloadRef = ref();
 const workloadRef = ref();
 
 let workloadChart;
-let completedWorkloadEchart;
-let savingWorkloadEchart;
+let completedWorkloadEChart;
+let savingWorkloadEChart;
 
-const workloadEchartConfig = {
+const workloadEChartConfig = {
   title: {
     text: t('taskAnalysis.detail.workload.chartTitles.workload'),
     bottom: 0,
@@ -61,7 +57,12 @@ const workloadEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('taskAnalysis.detail.workload.chartLabels.estimatedWorkload'), t('taskAnalysis.detail.workload.chartLabels.actualWorkload'), t('taskAnalysis.detail.workload.chartLabels.completedWorkload'), t('taskAnalysis.detail.workload.chartLabels.savingWorkload')],
+    data: [
+      t('taskAnalysis.detail.workload.chartLabels.estimatedWorkload'),
+      t('taskAnalysis.detail.workload.chartLabels.actualWorkload'),
+      t('taskAnalysis.detail.workload.chartLabels.completedWorkload'),
+      t('taskAnalysis.detail.workload.chartLabels.savingWorkload')
+    ],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -79,7 +80,6 @@ const workloadEchartConfig = {
         color: 'rgba(45, 142, 255, 1)',
         borderRadius: [5, 5, 0, 0]
       },
-
       data: [0, 0, 0, 0],
       type: 'bar',
       barMaxWidth: '20',
@@ -91,15 +91,13 @@ const workloadEchartConfig = {
   ]
 };
 
-const completedWorkloadEchartConfig = {
+const completedWorkloadEChartConfig = {
   title: {
     text: '0%',
     left: '35%',
     top: '40%',
     padding: 2,
     subtext: t('taskAnalysis.detail.workload.chartTitles.completedWorkloadRatio'),
-    // left: '25%',
-    // top: '40%',
     itemGap: 40,
     textAlign: 'center',
     textStyle: {
@@ -168,50 +166,50 @@ const completedWorkloadEchartConfig = {
   ]
 };
 
-const savingWorkloadEchartConfig = JSON.parse(JSON.stringify({
-  ...completedWorkloadEchartConfig,
+const savingWorkloadEChartConfig = JSON.parse(JSON.stringify({
+  ...completedWorkloadEChartConfig,
   title: {
-    ...completedWorkloadEchartConfig.title,
+    ...completedWorkloadEChartConfig.title,
     subtext: t('taskAnalysis.detail.workload.chartTitles.savingWorkloadRatio')
   }
 }));
 
 onMounted(() => {
-  completedWorkloadEchart = eCharts.init(completedWorkloadRef.value);
+  completedWorkloadEChart = eCharts.init(completedWorkloadRef.value);
 
-  savingWorkloadEchart = eCharts.init(savingWorkloadRef.value);
+  savingWorkloadEChart = eCharts.init(savingWorkloadRef.value);
 
   workloadChart = eCharts.init(workloadRef.value);
 
   watch([() => props.chart0Value, () => props.chart1Value, () => props.chart2Value], () => {
-    workloadEchartConfig.series[0].data = props.chart0Value.yData;
+    workloadEChartConfig.series[0].data = props.chart0Value.yData;
 
-    completedWorkloadEchartConfig.series[0].data[0] = {
-      ...completedWorkloadEchartConfig.series[0].data[0],
+    completedWorkloadEChartConfig.series[0].data[0] = {
+      ...completedWorkloadEChartConfig.series[0].data[0],
       name: props.chart1Value.value[0].name,
       value: Number(props.chart1Value.value[0].value)
     };
-    completedWorkloadEchartConfig.series[0].data[1] = {
-      ...completedWorkloadEchartConfig.series[0].data[1],
+    completedWorkloadEChartConfig.series[0].data[1] = {
+      ...completedWorkloadEChartConfig.series[0].data[1],
       name: props.chart1Value.value[1].name,
       value: Number(props.chart1Value.value[1].value)
     };
-    completedWorkloadEchartConfig.title.text = props.chart1Value.title;
+    completedWorkloadEChartConfig.title.text = props.chart1Value.title;
 
-    savingWorkloadEchartConfig.series[0].data[0] = {
-      ...savingWorkloadEchartConfig.series[0].data[0],
+    savingWorkloadEChartConfig.series[0].data[0] = {
+      ...savingWorkloadEChartConfig.series[0].data[0],
       name: props.chart2Value.value[0].name,
       value: Number(props.chart2Value.value[0].value)
     };
-    savingWorkloadEchartConfig.series[0].data[1] = {
-      ...savingWorkloadEchartConfig.series[0].data[1],
+    savingWorkloadEChartConfig.series[0].data[1] = {
+      ...savingWorkloadEChartConfig.series[0].data[1],
       name: props.chart2Value.value[1].name,
       value: Number(props.chart2Value.value[1].value)
     };
-    savingWorkloadEchartConfig.title.text = props.chart2Value.title;
-    completedWorkloadEchart.setOption(completedWorkloadEchartConfig);
-    savingWorkloadEchart.setOption(savingWorkloadEchartConfig);
-    workloadChart.setOption(workloadEchartConfig);
+    savingWorkloadEChartConfig.title.text = props.chart2Value.title;
+    completedWorkloadEChart.setOption(completedWorkloadEChartConfig);
+    savingWorkloadEChart.setOption(savingWorkloadEChartConfig);
+    workloadChart.setOption(workloadEChartConfig);
   }, {
     immediate: true,
     deep: true
@@ -220,8 +218,8 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    completedWorkloadEchart.resize();
-    savingWorkloadEchart.resize();
+    completedWorkloadEChart.resize();
+    savingWorkloadEChart.resize();
     workloadChart.resize();
   }
 });

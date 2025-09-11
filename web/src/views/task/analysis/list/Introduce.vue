@@ -3,34 +3,52 @@ import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import elementResizeDetector from 'element-resize-detector';
 
+// Composables and External Dependencies
 const { t } = useI18n();
-const erd = elementResizeDetector({ strategy: 'scroll' });
-const wrapperRef = ref();
 
-const handleCol = () => {
-  const clientWidth = wrapperRef.value.clientWidth;
-  if (clientWidth > 800) {
-    isCol2.value = false;
-  } else {
-    isCol2.value = true;
-  }
+/**
+ * Element resize detector instance for monitoring container size changes
+ */
+const elementResizeDetectorInstance = elementResizeDetector({ strategy: 'scroll' });
+
+/**
+ * Reference to the wrapper element
+ */
+const containerWrapperRef = ref();
+
+/**
+ * Flag indicating if the layout should use 2-column mode based on container width
+ */
+const shouldUseTwoColumnLayout = ref(false);
+
+/**
+ * Handle container width changes and update layout accordingly
+ */
+const handleContainerWidthChange = () => {
+  const containerWidth = containerWrapperRef.value.clientWidth;
+  shouldUseTwoColumnLayout.value = containerWidth <= 800;
 };
 
-const isCol2 = ref(false);
-
+// Lifecycle Hooks
 onMounted(() => {
-  erd.listenTo(wrapperRef.value, handleCol);
-  isCol2.value = wrapperRef.value.clientWidth < 600;
+  // Start monitoring container size changes
+  elementResizeDetectorInstance.listenTo(containerWrapperRef.value, handleContainerWidthChange);
+
+  // Set initial layout state based on current width
+  shouldUseTwoColumnLayout.value = containerWrapperRef.value.clientWidth < 600;
 });
 
 onBeforeUnmount(() => {
-  erd.removeListener(wrapperRef.value, handleCol);
+  // Clean up resize listener
+  elementResizeDetectorInstance.removeListener(containerWrapperRef.value, handleContainerWidthChange);
 });
 
 </script>
 <template>
-  <div ref="wrapperRef">
-    <div class="text-3.5 font-semibold mb-2.5">{{ t('taskAnalysis.aboutAnalysis') }}</div>
+  <div ref="containerWrapperRef">
+    <div class="text-3.5 font-semibold mb-2.5">
+      {{ t('taskAnalysis.aboutAnalysis') }}
+    </div>
     <div class="mb-6">
       <div>{{ t('taskAnalysis.aboutAnalysisDesc') }}</div>
     </div>

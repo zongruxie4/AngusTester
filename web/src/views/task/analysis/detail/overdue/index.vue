@@ -12,28 +12,36 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const Echart = defineAsyncComponent(() => import('./echart.vue'));
+const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data) => {
   const res = {};
 
-  const { dailyProcessedWorkload = 0, overdueNum = 0, overdueRate = 0, overdueTime = 0, overdueWorkload = 0, overdueWorkloadProcessingTime = 0, overdueWorkloadRate = 0, riskLevel = 0, totalNum = 0, totalWorkload = 0 } = data;
+  const {
+    dailyProcessedWorkload = 0, overdueNum = 0, overdueRate = 0,
+    overdueTime = 0, overdueWorkload = 0, overdueWorkloadProcessingTime = 0,
+    overdueWorkloadRate = 0, riskLevel = 0, totalNum = 0, totalWorkload = 0
+  } = data;
   res.overdueAssessmentData = data;
   res.chart1Value = {
     title: overdueRate + '%',
-    value: [{ name: t('taskAnalysis.detail.overdueAssessment.chartLabels.unoverdueCount'), value: totalNum - overdueNum }, { name: t('taskAnalysis.detail.overdueAssessment.chartLabels.overdueCount'), value: overdueNum }]
+    value: [
+      { name: t('taskAnalysis.detail.overdueAssessment.chartLabels.unoverdueCount'), value: totalNum - overdueNum },
+      { name: t('taskAnalysis.detail.overdueAssessment.chartLabels.overdueCount'), value: overdueNum }
+    ]
   };
 
   res.chart2Value = {
     title: overdueWorkloadRate + '%',
-    value: [{ name: t('taskAnalysis.detail.overdueAssessment.chartLabels.unoverdueWorkload'), value: totalWorkload - overdueWorkload }, { name: t('taskAnalysis.detail.overdueAssessment.chartLabels.overdueWorkload'), value: overdueWorkload }]
+    value: [
+      { name: t('taskAnalysis.detail.overdueAssessment.chartLabels.unoverdueWorkload'), value: totalWorkload - overdueWorkload },
+      { name: t('taskAnalysis.detail.overdueAssessment.chartLabels.overdueWorkload'), value: overdueWorkload }
+    ]
   };
   return res;
 };
 
-const totalValue = ref({
-
-});
+const totalValue = ref({});
 
 const personValues = ref([]);
 
@@ -77,13 +85,14 @@ defineExpose({
     });
   }
 });
-
 </script>
 <template>
   <div>
     <div>
-      <div class="font-semibold pl-3">{{ t('taskAnalysis.detail.overdueAssessment.total') }}</div>
-      <Echart
+      <div class="font-semibold pl-3">
+        {{ t('taskAnalysis.detail.overdueAssessment.total') }}
+      </div>
+      <EChart
         ref="totalChartRef"
         v-bind="totalValue"
         class="ml-3" />
@@ -94,7 +103,7 @@ defineExpose({
       :key="item.id"
       class="mt-5">
       <div class="font-semibold pl-3">{{ item.userName }}</div>
-      <Echart
+      <EChart
         ref="chartListRef"
         v-bind="item.chartData"
         class="ml-3" />

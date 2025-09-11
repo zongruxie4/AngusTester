@@ -12,12 +12,16 @@ const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
 
-const Echart = defineAsyncComponent(() => import('./echart.vue'));
+const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data) => {
   const res = {};
 
-  const { totalNum = 0, totalWorkload = 0, unplannedCompletedNum = 0, unplannedCompletedRate = 0, unplannedNum = 0, unplannedWorkload = 0, unplannedWorkloadCompleted = 0, unplannedWorkloadCompletedRate = 0, unplannedWorkloadProcessingTime = 0, unplannedWorkloadRate = 0 } = data;
+  const {
+    totalNum = 0, totalWorkload = 0, unplannedCompletedNum = 0, unplannedCompletedRate = 0,
+    unplannedNum = 0, unplannedWorkload = 0, unplannedWorkloadCompleted = 0, unplannedWorkloadCompletedRate = 0,
+    unplannedWorkloadProcessingTime = 0, unplannedWorkloadRate = 0
+  } = data;
   res.overdueAssessmentData = data;
   res.chart0Value = {
     yData: [totalNum, unplannedNum, unplannedCompletedNum]
@@ -28,9 +32,7 @@ const getChartData = (data) => {
   return res;
 };
 
-const totalValue = ref({
-
-});
+const totalValue = ref({});
 
 const personValues = ref([]);
 
@@ -78,8 +80,10 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">{{ t('taskAnalysis.detail.unplannedTasks.total') }}</div>
-    <Echart
+    <div class="font-semibold pl-3">
+      {{ t('taskAnalysis.detail.unplannedTasks.total') }}
+    </div>
+    <EChart
       ref="totalChartRef"
       v-bind="totalValue"
       class="ml-3" />
@@ -90,7 +94,7 @@ defineExpose({
     :key="item.id"
     class="mt-5">
     <div class="font-semibold pl-3">{{ item.userName }}</div>
-    <Echart
+    <EChart
       ref="chartListRef"
       v-bind="item.chartData"
       class="ml-3" />

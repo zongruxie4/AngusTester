@@ -6,18 +6,15 @@ import { TemplateIconConfig } from './types';
 import { Button, Tag } from 'ant-design-vue';
 import { debounce, throttle } from 'throttle-debounce';
 import { analysis } from '@/api/tester';
+import { EnumMessage } from '@xcan-angus/infra';
+import { AnalysisDataSource, AnalysisTaskTemplate, AnalysisTaskTemplateDesc } from '@/enums/enums';
 
 import Introduce from '@/views/task/analysis/list/Introduce.vue';
 import SearchPanel from '@/views/task/analysis/list/SearchPanel.vue';
+import { BasicProps } from '@/types/types';
 
-interface Props {
-  projectId: string;
-  userInfo: { id: string };
-  refreshNotify?: number;
-  onShow?: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+// Props and Basic Setup
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: () => ({ id: '' }),
   refreshNotify: 0,
@@ -25,113 +22,213 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
-const dataListWrapRef = ref();
+const dataListContainerRef = ref();
 
+// Lazy load template selection component
 const TemplateSelectList = defineAsyncComponent(() => import('@/views/task/analysis/list/TemplateSelect.vue'));
 const addTabPane = inject('addTabPane', (value) => value);
 
-const pagination = {
-  pageNo: 1,
+/**
+ * Pagination configuration for analysis list
+ */
+const paginationConfig = {
+  currentPage: 1,
   pageSize: 20,
   total: 0
 };
 
-const templateDesc = ref<{ value: string; message: string }[]>([]);
-const templateData = ref<{ value: string; message: string }[]>([]);
-const filters = ref<{ op: string; key: string; value: any }[]>([]);
-const orderData = ref({
+/**
+ * Template descriptions for display
+ */
+const templateDescriptions = ref<EnumMessage<AnalysisTaskTemplateDesc>[]>([]);
+
+/**
+ * Available analysis templates
+ */
+const availableTemplates = ref<EnumMessage<AnalysisTaskTemplate>[]>([]);
+
+/**
+ * Search filters applied to the analysis list
+ */
+const searchFilters = ref<{ op: string; key: string; value: any }[]>([]);
+
+/**
+ * Sorting configuration for the analysis list
+ */
+const sortingConfig = ref({
   orderBy: undefined,
   orderSort: undefined
 });
-const template = ref('');
-const dataList = ref([]);
-const loading = ref(false);
 
-const getTemplateName = () => {
-  return templateData.value.find(item => item.value === template.value)?.message;
+/**
+ * Currently selected template filter
+ */
+const selectedTemplate = ref('');
+
+/**
+ * List of analysis items to display
+ */
+const analysisList = ref<Array<{
+  id: string;
+  name: string;
+  template: AnalysisTaskTemplate;
+  datasource?: { value: AnalysisDataSource } | null;
+  createdByName?: string;
+  createdDate?: string;
+}>>([]);
+
+/**
+ * Loading state for API calls
+ */
+const isLoading = ref(false);
+
+/**
+ * Get the display name of the currently selected template
+ * @returns {string} Template display name
+ */
+const getCurrentTemplateName = () => {
+  return availableTemplates.value.find(item => item.value === selectedTemplate.value)?.message;
 };
-const TemplateDescConfig = computed(() => {
-  const res = {};
-  templateDesc.value.forEach(item => {
-    res[item.value] = item.message;
+
+/**
+ * Create a mapping of template values to their descriptions
+ * @returns {Record<string, string>} Template description mapping
+ */
+const templateDescriptionMap = computed(() => {
+  const descriptionMap = {};
+  templateDescriptions.value.forEach(item => {
+    descriptionMap[item.value] = item.message;
   });
-  return res;
+  return descriptionMap;
 });
 
-const getParams = () => {
-  const { pageNo, pageSize } = pagination;
+/**
+ * Build query parameters for API calls
+ * @returns {object} API query parameters
+ */
+const buildQueryParams = () => {
+  const { currentPage, pageSize } = paginationConfig;
   return {
-    pageNo,
+    pageNo: currentPage,
     pageSize,
-    filters: filters.value,
-    template: template.value || undefined,
+    filters: searchFilters.value,
+    template: selectedTemplate.value || undefined,
     projectId: props.projectId,
     resource: 'TASK',
-    ...orderData.value
+    ...sortingConfig.value
   };
 };
 
-const handleSearch = (data) => {
-  pagination.pageNo = 1;
-  filters.value = data;
-  loadAnalysisList();
-};
-
-const addAnalysis = (template = '') => {
-  if (template) {
-    addTabPane({ _id: 'analysisEdit', value: 'analysisEdit', name: t('taskAnalysis.addAnalysis'), data: { template } });
-  } else {
-    addTabPane({ _id: 'analysisEdit', value: 'analysisEdit', name: t('taskAnalysis.addAnalysis') });
-  }
-};
-
+/**
+ * Load analysis list from API with pagination support
+ */
 const loadAnalysisList = async () => {
-  const params = getParams();
+  const queryParams = buildQueryParams();
 
-  loading.value = true;
+  isLoading.value = true;
   const [error, { data }] = await analysis.getAnalysisList({
-    ...params
+    ...queryParams
   });
-  loading.value = false;
+  isLoading.value = false;
+
   if (error) {
     return;
   }
-  if (pagination.pageNo === 1) {
-    dataList.value = data.list || [];
-    pagination.total = +data.total;
+
+  // Handle pagination - either replace or append data
+  if (paginationConfig.currentPage === 1) {
+    analysisList.value = data.list || [];
+    paginationConfig.total = +data.total;
   } else {
-    dataList.value.push(...(data.list || []));
-    pagination.total = +data.total;
+    analysisList.value.push(...(data.list || []));
+    paginationConfig.total = +data.total;
   }
 };
 
-const editAnalysis = (data) => {
-  addTabPane({ _id: `analysisEdit_${data.id}`, value: 'analysisEdit', name: data.name, data });
+/**
+ * Handle search filter changes
+ * @param {Array} filterData - New filter data
+ */
+const handleSearchFiltersChange = (filterData) => {
+  paginationConfig.currentPage = 1;
+  searchFilters.value = filterData;
+  loadAnalysisList();
 };
 
-const handleDetail = (data) => {
-  addTabPane({ _id: `analysisDetail_${data.id}`, value: 'analysisDetail', name: data.name, data });
+/**
+ * Open analysis creation dialog
+ * @param {string} templateType - Optional template type to pre-select
+ */
+const openCreateAnalysisDialog = (templateType = '') => {
+  if (templateType) {
+    addTabPane({
+      _id: 'analysisEdit',
+      value: 'analysisEdit',
+      name: t('taskAnalysis.addAnalysis'),
+      data: { template: templateType }
+    });
+  } else {
+    addTabPane({
+      _id: 'analysisEdit',
+      value: 'analysisEdit',
+      name: t('taskAnalysis.addAnalysis')
+    });
+  }
 };
 
-const delAnalysis = (data) => {
+/**
+ * Open analysis editing dialog
+ * @param {object} analysisData - Analysis data to edit
+ */
+const openEditAnalysisDialog = (analysisData) => {
+  addTabPane({
+    _id: `analysisEdit_${analysisData.id}`,
+    value: 'analysisEdit',
+    name: analysisData.name,
+    data: analysisData
+  });
+};
+
+/**
+ * Open analysis detail view
+ * @param {object} analysisData - Analysis data to view
+ */
+const openAnalysisDetailView = (analysisData) => {
+  addTabPane({
+    _id: `analysisDetail_${analysisData.id}`,
+    value: 'analysisDetail',
+    name: analysisData.name,
+    data: analysisData
+  });
+};
+
+/**
+ * Delete analysis with confirmation
+ * @param {object} analysisData - Analysis data to delete
+ */
+const deleteAnalysis = (analysisData) => {
   modal.confirm({
-    content: t('taskAnalysis.messages.confirmDelete', { name: data.name }),
+    content: t('taskAnalysis.messages.confirmDelete', { name: analysisData.name }),
     onOk () {
-      return analysis.deleteAnalysis([data.id])
+      return analysis.deleteAnalysis([analysisData.id])
         .then(() => {
           notification.success(t('taskAnalysis.messages.deleteSuccess'));
-          pagination.pageNo = 1;
+          paginationConfig.currentPage = 1;
           loadAnalysisList();
         });
     }
   });
 };
 
-const updateSnapShot = (data) => {
+/**
+ * Update snapshot data for analysis
+ * @param {object} analysisData - Analysis data to update
+ */
+const updateAnalysisSnapshot = (analysisData) => {
   modal.confirm({
-    content: t('taskAnalysis.messages.confirmUpdateSnapshot', { name: data.name }),
+    content: t('taskAnalysis.messages.confirmUpdateSnapshot', { name: analysisData.name }),
     onOk () {
-      return analysis.refreshAnalysis(data.id)
+      return analysis.refreshAnalysis(analysisData.id)
         .then(([error]) => {
           if (error) {
             return;
@@ -142,65 +239,95 @@ const updateSnapShot = (data) => {
   });
 };
 
-const handleScrollList = throttle(500, (event) => {
-  if (dataList.value.length === pagination.total || loading.value) {
+/**
+ * Handle infinite scroll for loading more analysis items
+ * @param {Event} event - Scroll event
+ */
+const handleInfiniteScroll = throttle(500, (event) => {
+  // Prevent loading if already at end or currently loading
+  if (analysisList.value.length === paginationConfig.total || isLoading.value) {
     return;
   }
-  const clientHeight = event.currentTarget.clientHeight;
-  const scrollHeight = event.currentTarget.scrollHeight;
-  const scrollTop = event.currentTarget.scrollTop;
+
+  const container = event.currentTarget;
+  const clientHeight = container.clientHeight;
+  const scrollHeight = container.scrollHeight;
+  const scrollTop = container.scrollTop;
+
+  // Load more when near bottom (100px threshold)
   if (clientHeight + scrollTop + 100 > scrollHeight) {
-    pagination.pageNo += 1;
+    paginationConfig.currentPage += 1;
     loadAnalysisList();
   }
 });
 
-let wrapperHeight = 0;
+/**
+ * Track container height for responsive pagination
+ */
+let previousContainerHeight = 0;
+
+/**
+ * Handle window resize to adjust pagination based on visible area
+ */
 const handleWindowResize = debounce(300, () => {
   if (!props.onShow) {
     return;
   }
-  const height = dataListWrapRef.value?.clientHeight || 0;
-  if (height <= wrapperHeight) {
-    return;
-  }
-  wrapperHeight = height;
 
-  if (!dataList.value.length) {
+  const currentHeight = dataListContainerRef.value?.clientHeight || 0;
+  if (currentHeight <= previousContainerHeight) {
     return;
   }
-  if ((height / 120) > 4) {
-    const rows = Math.floor(height / 120) + 2;
-    pagination.pageSize = rows * 5;
-  } else {
-    pagination.pageSize = 20;
+  previousContainerHeight = currentHeight;
+
+  if (!analysisList.value.length) {
+    return;
   }
-  if (dataList.value.length < pagination.pageSize) {
-    pagination.pageNo = 1;
+
+  // Calculate optimal page size based on container height
+  // Each item is approximately 120px tall
+  if ((currentHeight / 120) > 4) {
+    const visibleRows = Math.floor(currentHeight / 120) + 2;
+    paginationConfig.pageSize = visibleRows * 5;
+  } else {
+    paginationConfig.pageSize = 20;
+  }
+
+  // Reload if current data is less than new page size
+  if (analysisList.value.length < paginationConfig.pageSize) {
+    paginationConfig.currentPage = 1;
     loadAnalysisList();
   }
 });
 
+// Lifecycle Hooks
 onMounted(() => {
-  watch(() => template.value, () => {
-    pagination.pageNo = 1;
+  // Watch for template changes and reload data
+  watch(() => selectedTemplate.value, () => {
+    paginationConfig.currentPage = 1;
     loadAnalysisList();
   });
+
+  // Watch for refresh notifications and reload data
   watch(() => props.refreshNotify, () => {
-    pagination.pageNo = 1;
+    paginationConfig.currentPage = 1;
     loadAnalysisList();
   });
-  watch(() => orderData.value, () => {
-    pagination.pageNo = 1;
+
+  // Watch for sorting changes and reload data
+  watch(() => sortingConfig.value, () => {
+    paginationConfig.currentPage = 1;
     loadAnalysisList();
   }, {
     deep: true
   });
 
+  // Add window resize listener
   window.addEventListener('resize', handleWindowResize);
 });
 
 onBeforeUnmount(() => {
+  // Clean up window resize listener
   window.removeEventListener('resize', handleWindowResize);
 });
 
@@ -210,26 +337,26 @@ onBeforeUnmount(() => {
     <Introduce />
     <div class="text-3.5 font-semibold mb-2.5">{{ t('taskAnalysis.addedAnalysis') }}</div>
     <SearchPanel
-      v-model:orderBy="orderData.orderBy"
-      v-model:orderSort="orderData.orderSort"
+      v-model:orderBy="sortingConfig.orderBy"
+      v-model:orderSort="sortingConfig.orderSort"
       :userInfo="props.userInfo"
       :projectId="props.projectId"
-      @change="handleSearch"
-      @add="addAnalysis" />
+      @change="handleSearchFiltersChange"
+      @add="openCreateAnalysisDialog" />
     <div class="flex-1 min-h-50 flex mt-2.5">
       <TemplateSelectList
-        v-model:template="template"
-        v-model:templateData="templateData"
-        v-model:templateDesc="templateDesc"
+        v-model:template="selectedTemplate"
+        v-model:templateData="availableTemplates"
+        v-model:templateDesc="templateDescriptions"
         class="w-50 h-full overflow-y-auto bg-gray-1" />
       <div
-        v-show="dataList.length"
-        ref="dataListWrapRef"
+        v-show="analysisList.length"
+        ref="dataListContainerRef"
         style="height: fit-content"
         class="flex-1 max-h-full pb-2.5 pl-2.5 flex flex-wrap min-w-0 overflow-y-auto"
-        @scroll="handleScrollList">
+        @scroll="handleInfiniteScroll">
         <div
-          v-for="item in dataList"
+          v-for="item in analysisList"
           :key="item.id"
           class="pr-2 flex-1/5 flex-grow-0 mb-2.5 min-w-0">
           <div class="border rounded p-2 h-full flex flex-col justify-between">
@@ -241,38 +368,41 @@ onBeforeUnmount(() => {
                     <div
                       :title="item.name"
                       class="flex-1 min-w-0 text-3.5 font-semibold mb-1 text-theme-special cursor-pointer truncate"
-                      @click="handleDetail(item)">
+                      @click="openAnalysisDetailView(item)">
                       {{ item.name }}
                     </div>
                     <Tag class="relative -top-1 mr-0 px-0.5 h-5" color="geekblue">
-                      {{ item.datasource?.value === 'REAL_TIME_DATA' ? t('taskAnalysis.realTime') : t('taskAnalysis.snapshot') }}
+                      {{ item.datasource?.value === AnalysisDataSource.REAL_TIME_DATA ? t('taskAnalysis.realTime') : t('taskAnalysis.snapshot') }}
                     </Tag>
                   </div>
-                  <p class="">{{ TemplateDescConfig[item.template] }}</p>
+                  <p class="">{{ templateDescriptionMap[item.template] }}</p>
                 </div>
               </div>
               <div class="mt-1 text-right">
-                <div><span class="font-semibold mr-1">{{ item.createdByName }}</span>{{ t('taskAnalysis.createdBy') }}{{ item.createdDate }}</div>
+                <div>
+                  <span class="font-semibold mr-1">{{ item.createdByName }}
+                  </span>{{ t('taskAnalysis.createdBy') }}{{ item.createdDate }}
+                </div>
               </div>
             </div>
             <div class="flex justify-end">
               <Button
-                v-show="item.datasource?.value === 'SNAPSHOT_DATA'"
+                v-show="item.datasource?.value === AnalysisDataSource.SNAPSHOT_DATA"
                 size="small"
                 type="text"
-                @click="updateSnapShot(item)">
+                @click="updateAnalysisSnapshot(item)">
                 <Icon icon="icon-shuaxin" />
               </Button>
               <Button
                 size="small"
                 type="text"
-                @click="editAnalysis(item)">
+                @click="openEditAnalysisDialog(item)">
                 <Icon icon="icon-bianji" />
               </Button>
               <Button
                 size="small"
                 type="text"
-                @click="delAnalysis(item)">
+                @click="deleteAnalysis(item)">
                 <Icon icon="icon-qingchu" />
               </Button>
             </div>
@@ -281,11 +411,11 @@ onBeforeUnmount(() => {
       </div>
 
       <div
-        v-show="!dataList.length && !template"
+        v-show="!analysisList.length && !selectedTemplate"
         style="height: fit-content"
         class="flex-1 max-h-full pb-2.5 pl-2.5 flex flex-wrap min-w-0 overflow-y-auto">
         <div
-          v-for="item in templateData"
+          v-for="item in availableTemplates"
           :key="item.value"
           class="pr-2 flex-1/5 flex-grow-0 mb-2.5">
           <div class="border rounded p-2 h-full flex flex-col justify-between">
@@ -295,11 +425,11 @@ onBeforeUnmount(() => {
                 <div>
                   <div
                     class="text-3.5 font-semibold mb-1 text-theme-special cursor-pointer flex items-center"
-                    @click="addAnalysis(item.value)">
+                    @click="openCreateAnalysisDialog(item.value)">
                     <Icon icon="icon-jia" />
                     {{ item.message }}
                   </div>
-                  <p class="">{{ TemplateDescConfig[item.value] }}</p>
+                  <p class="">{{ templateDescriptionMap[item.value] }}</p>
                 </div>
               </div>
             </div>
@@ -308,17 +438,17 @@ onBeforeUnmount(() => {
       </div>
 
       <div
-        v-show="!dataList.length && !!template"
+        v-show="!analysisList.length && !!selectedTemplate"
         class="flex-1 h-full p-2.5 min-w-0 text-center flex flex-col items-center space-y-3">
-        <Icon :icon="TemplateIconConfig[template]" class="text-20 mt-20" />
-        <div>{{ TemplateDescConfig[template] }}</div>
+        <Icon :icon="TemplateIconConfig[selectedTemplate]" class="text-20 mt-20" />
+        <div>{{ templateDescriptionMap[selectedTemplate] }}</div>
         <div>
           {{ t('taskAnalysis.notCreatedYet') }}
           <Button
             type="link"
             size="small"
-            @click="addAnalysis(template)">
-            {{ getTemplateName() }}
+            @click="openCreateAnalysisDialog(selectedTemplate)">
+            {{ getCurrentTemplateName() }}
           </Button>
         </div>
       </div>

@@ -6,11 +6,6 @@ import * as eCharts from 'echarts';
 const { t } = useI18n();
 
 interface Props {
-  // title0: string;
-  // title1: string;
-  // value0: {name: string, value: string|number}[];
-  // value1: {name: string, value: string|number}[];
-
   overdueAssessmentData: Record<string, any>;
   chart0Value: {
     yData0: number[],
@@ -46,12 +41,12 @@ const backlogRef = ref();
 const backloggedTaskRef = ref();
 const backloggedWorkloadRef = ref();
 
-let backlogRefEchart;
-let backloggedTaskEchart;
-let backloggedWorkloadEchart;
+let backlogRefEChart;
+let backloggedTaskEChart;
+let backloggedWorkloadEChart;
 
 // 积压量
-const backlogEchartConfig = {
+const backlogEChartConfig = {
   title: {
     text: t('taskAnalysis.detail.backlogTasks.chartLabels.backlogAmount'),
     bottom: 0,
@@ -68,7 +63,8 @@ const backlogEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('taskAnalysis.detail.backlogTasks.chartLabels.taskCount'), t('taskAnalysis.detail.backlogTasks.chartLabels.workload')],
+    data: [t('taskAnalysis.detail.backlogTasks.chartLabels.taskCount'),
+      t('taskAnalysis.detail.backlogTasks.chartLabels.workload')],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -82,7 +78,8 @@ const backlogEchartConfig = {
   },
   legend: {
     show: true,
-    data: [t('taskAnalysis.detail.backlogTasks.chartLabels.backlogAmount'), t('taskAnalysis.detail.backlogTasks.chartLabels.totalAmount')],
+    data: [t('taskAnalysis.detail.backlogTasks.chartLabels.backlogAmount'),
+      t('taskAnalysis.detail.backlogTasks.chartLabels.totalAmount')],
     top: 0
   },
   series: [
@@ -118,7 +115,7 @@ const backlogEchartConfig = {
   ]
 };
 // 积压任务数
-const backloggedTaskEchartConfig = {
+const backloggedTaskEChartConfig = {
   title: {
     text: '0%',
     left: '35%',
@@ -160,11 +157,6 @@ const backloggedTaskEchartConfig = {
         show: true,
         formatter: '{c}'
       },
-      // itemStyle: {
-      //   borderRadius: 2,
-      //   borderColor: '#fff',
-      //   borderWidth: 1
-      // },
       emphasis: {
         label: {
           show: true
@@ -195,46 +187,46 @@ const backloggedTaskEchartConfig = {
 };
 
 // 积压任务量
-const backloggedWorkloadEchartConfig = JSON.parse(JSON.stringify({
-  ...backloggedTaskEchartConfig,
+const backloggedWorkloadEChartConfig = JSON.parse(JSON.stringify({
+  ...backloggedTaskEChartConfig,
   title: {
-    ...backloggedTaskEchartConfig.title,
+    ...backloggedTaskEChartConfig.title,
     subtext: t('taskAnalysis.detail.backlogTasks.chartLabels.backlogWorkloadRatio')
   }
 }));
 
 onMounted(() => {
-  backlogRefEchart = eCharts.init(backlogRef.value);
-  backloggedTaskEchart = eCharts.init(backloggedTaskRef.value);
+  backlogRefEChart = eCharts.init(backlogRef.value);
+  backloggedTaskEChart = eCharts.init(backloggedTaskRef.value);
 
-  backloggedWorkloadEchart = eCharts.init(backloggedWorkloadRef.value);
+  backloggedWorkloadEChart = eCharts.init(backloggedWorkloadRef.value);
 
   watch([() => props.chart0Value, () => props.chart1Value, () => props.chart2Value], () => {
-    backlogEchartConfig.series[0].data = props.chart0Value.yData0;
-    backlogEchartConfig.series[1].data = props.chart0Value.yData1;
+    backlogEChartConfig.series[0].data = props.chart0Value.yData0;
+    backlogEChartConfig.series[1].data = props.chart0Value.yData1;
 
-    backloggedTaskEchartConfig.series[0].data[0] = {
-      ...backloggedTaskEchartConfig.series[0].data[0],
+    backloggedTaskEChartConfig.series[0].data[0] = {
+      ...backloggedTaskEChartConfig.series[0].data[0],
       ...props.chart1Value.value[0]
     };
-    backloggedTaskEchartConfig.series[0].data[1] = {
-      ...backloggedTaskEchartConfig.series[0].data[1],
+    backloggedTaskEChartConfig.series[0].data[1] = {
+      ...backloggedTaskEChartConfig.series[0].data[1],
       ...props.chart1Value.value[1]
     };
-    backloggedTaskEchartConfig.title.text = props.chart1Value.title;
+    backloggedTaskEChartConfig.title.text = props.chart1Value.title;
 
-    backloggedWorkloadEchartConfig.series[0].data[0] = {
-      ...backloggedWorkloadEchartConfig.series[0].data[0],
+    backloggedWorkloadEChartConfig.series[0].data[0] = {
+      ...backloggedWorkloadEChartConfig.series[0].data[0],
       ...props.chart2Value.value[0]
     };
-    backloggedWorkloadEchartConfig.series[0].data[1] = {
-      ...backloggedWorkloadEchartConfig.series[0].data[1],
+    backloggedWorkloadEChartConfig.series[0].data[1] = {
+      ...backloggedWorkloadEChartConfig.series[0].data[1],
       ...props.chart2Value.value[1]
     };
-    backloggedWorkloadEchartConfig.title.text = props.chart2Value.title;
-    backloggedTaskEchart.setOption(backloggedTaskEchartConfig);
-    backloggedWorkloadEchart.setOption(backloggedWorkloadEchartConfig);
-    backlogRefEchart.setOption(backlogEchartConfig);
+    backloggedWorkloadEChartConfig.title.text = props.chart2Value.title;
+    backloggedTaskEChart.setOption(backloggedTaskEChartConfig);
+    backloggedWorkloadEChart.setOption(backloggedWorkloadEChartConfig);
+    backlogRefEChart.setOption(backlogEChartConfig);
   }, {
     immediate: true,
     deep: true
@@ -243,9 +235,9 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    backloggedTaskEchart.resize();
-    backloggedWorkloadEchart.resize();
-    backlogRefEchart.resize();
+    backloggedTaskEChart.resize();
+    backloggedWorkloadEChart.resize();
+    backlogRefEChart.resize();
   }
 });
 
@@ -255,7 +247,10 @@ defineExpose({
     <div class="px-3 w-100">
       <div class="flex justify-around">
         <div class="text-center flex-1">
-          <div class="font-semibold "><span class="text-5 text-status-error">{{ props.overdueAssessmentData.backloggedCompletionTime || 0 }}</span>{{ t('taskAnalysis.detail.backlogTasks.statistics.hours') }}</div>
+          <div class="font-semibold ">
+            <span class="text-5 text-status-error">{{ props.overdueAssessmentData.backloggedCompletionTime || 0 }}</span>
+            {{ t('taskAnalysis.detail.backlogTasks.statistics.hours') }}
+          </div>
           <div>
             {{ t('taskAnalysis.detail.backlogTasks.statistics.backlogWorkloadEstimatedTime') }}
           </div>

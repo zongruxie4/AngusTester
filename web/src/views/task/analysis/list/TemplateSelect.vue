@@ -1,50 +1,76 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 import { Tree } from 'ant-design-vue';
-import { enumUtils } from '@xcan-angus/infra';
+import { enumUtils, EnumMessage } from '@xcan-angus/infra';
 import { AnalysisTaskTemplate, AnalysisTaskTemplateDesc } from '@/enums/enums';
 import { Icon } from '@xcan-angus/vue-ui';
 import { TemplateIconConfig } from './types';
 import { useI18n } from 'vue-i18n';
 
+// Type Definitions
 interface Props {
   template: string;
-  templateData: {value: string; message: string}[];
-  templateDesc: {value: string; message: string}[];
+  templateData: EnumMessage<AnalysisTaskTemplate>[];
+  templateDesc: EnumMessage<AnalysisTaskTemplateDesc>[];
 }
 
+// Props and Emits
 const props = withDefaults(defineProps<Props>(), {
   template: undefined,
   templateData: () => []
 });
+
 const { t } = useI18n();
 
-const emits = defineEmits<{(e: 'update:template', value: string):void;
-  (e: 'update:templateData', value: {value: string; message: string}[]):void;
-  (e:'update:templateDesc', value: {value: string; message: string}[]):void}>();
-const moduleTreeData = ref<{name: string; value: string}[]>([{ name: t('taskAnalysis.all'), value: '' }]);
+// eslint-disable-next-line func-call-spacing
+const emits = defineEmits<{
+  (e: 'update:template', value: string):void;
+  (e: 'update:templateData', value: EnumMessage<AnalysisTaskTemplate>[]):void;
+  (e:'update:templateDesc', value: EnumMessage<AnalysisTaskTemplateDesc>[]):void
+}>();
 
-const loadOpt = () => {
-  const data = enumUtils.enumToMessages(AnalysisTaskTemplate);
-  moduleTreeData.value.push(...(data || []).map(item => ({ ...item, name: item.message })));
-  emits('update:templateData', data);
-  const desc = enumUtils.enumToMessages(AnalysisTaskTemplateDesc);
-  emits('update:templateDesc', desc);
+/**
+ * Tree data for template selection with all available options
+ */
+const templateTreeData = ref<{name: string; value: string; key: string}[]>([
+  { name: t('taskAnalysis.all'), value: '', key: '' }
+]);
+
+/**
+ * Handle template selection change
+ * @param {any[]} selectedKeys - Array of selected keys
+ */
+const handleTemplateSelectionChange = (selectedKeys: any[]) => {
+  emits('update:template', selectedKeys[0]);
 };
 
-const handleSelectKeysChange = (value) => {
-  emits('update:template', value[0]);
+/**
+ * Load template options and descriptions from enums
+ */
+const loadTemplateOptions = () => {
+  // Load analysis task templates
+  const templateOptions = enumUtils.enumToMessages(AnalysisTaskTemplate) as EnumMessage<AnalysisTaskTemplate>[];
+  templateTreeData.value.push(...(templateOptions || []).map(item => ({
+    ...item,
+    name: item.message,
+    key: item.value
+  })));
+  emits('update:templateData', templateOptions);
+
+  // Load template descriptions
+  const templateDescriptions = enumUtils.enumToMessages(AnalysisTaskTemplateDesc) as EnumMessage<AnalysisTaskTemplateDesc>[];
+  emits('update:templateDesc', templateDescriptions);
 };
 
+// Lifecycle Hooks
 onMounted(() => {
-  loadOpt();
+  loadTemplateOptions();
 });
-
 </script>
 <template>
   <div>
     <Tree
-      :treeData="moduleTreeData"
+      :treeData="templateTreeData"
       :selectedKeys="[props.template]"
       class="flex-1"
       blockNode
@@ -54,8 +80,8 @@ onMounted(() => {
         title: 'name',
         key: 'value'
       }"
-      @select="handleSelectKeysChange">
-      <template #title="{key, title, name, value, index, level, isLast, pid, ids, sequence, childLevels, hasEditPermission}">
+      @select="handleTemplateSelectionChange">
+      <template #title="{ name, value }">
         <Icon :icon="TemplateIconConfig[value]" class="text-3.5 mr-1" />
         <span class="flex-1">{{ name }}</span>
       </template>

@@ -4,7 +4,6 @@ import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 
 interface Props {
-
   chart0Value: {
     yData0: number[],
     yData1: number[],
@@ -34,14 +33,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 const deliveryRef = ref();
 const deliveryWorkloadRef = ref();
-const deliverygedWorkloadRef = ref();
 
-let deliveryRefEchart;
-let deliveryWorkloadEchart;
-let deliverygedWorkloadEchart;
+let deliveryRefEChart;
+let deliveryWorkloadEChart;
 
 // 交付数（完成数）
-const deliveryEchartConfig = {
+const deliveryEChartConfig = {
   title: {
     text: t('taskAnalysis.detail.recentDelivery.chartTitles.deliveryCount'),
     bottom: 0,
@@ -58,7 +55,11 @@ const deliveryEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('taskAnalysis.detail.recentDelivery.chartLabels.today'), t('taskAnalysis.detail.recentDelivery.chartLabels.lastWeek'), t('taskAnalysis.detail.recentDelivery.chartLabels.lastMonth')],
+    data: [
+      t('taskAnalysis.detail.recentDelivery.chartLabels.today'),
+      t('taskAnalysis.detail.recentDelivery.chartLabels.lastWeek'),
+      t('taskAnalysis.detail.recentDelivery.chartLabels.lastMonth')
+    ],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -72,7 +73,11 @@ const deliveryEchartConfig = {
   },
   legend: {
     show: true,
-    data: [t('taskAnalysis.detail.recentDelivery.chartLabels.deliveryCount'), t('taskAnalysis.detail.recentDelivery.chartLabels.deliveryOverdueCount'), t('taskAnalysis.detail.recentDelivery.chartLabels.totalCount')],
+    data: [
+      t('taskAnalysis.detail.recentDelivery.chartLabels.deliveryCount'),
+      t('taskAnalysis.detail.recentDelivery.chartLabels.deliveryOverdueCount'),
+      t('taskAnalysis.detail.recentDelivery.chartLabels.totalCount')
+    ],
     top: 0
   },
   series: [
@@ -123,8 +128,8 @@ const deliveryEchartConfig = {
 };
 
 // 交付工作量（完成量）
-const deliveryWorkloadEchartConfig = JSON.parse(JSON.stringify({
-  ...deliveryEchartConfig,
+const deliveryWorkloadEChartConfig = JSON.parse(JSON.stringify({
+  ...deliveryEChartConfig,
   title: {
     text: '0%',
     left: '35%',
@@ -148,20 +153,20 @@ const deliveryWorkloadEchartConfig = JSON.parse(JSON.stringify({
 }));
 
 onMounted(() => {
-  deliveryRefEchart = eCharts.init(deliveryRef.value);
-  deliveryWorkloadEchart = eCharts.init(deliveryWorkloadRef.value);
+  deliveryRefEChart = eCharts.init(deliveryRef.value);
+  deliveryWorkloadEChart = eCharts.init(deliveryWorkloadRef.value);
 
   watch([() => props.chart0Value, () => props.chart1Value], () => {
-    deliveryEchartConfig.series[0].data = props.chart0Value.yData0;
-    deliveryEchartConfig.series[1].data = props.chart0Value.yData1;
-    deliveryEchartConfig.series[2].data = props.chart0Value.yData2;
+    deliveryEChartConfig.series[0].data = props.chart0Value.yData0;
+    deliveryEChartConfig.series[1].data = props.chart0Value.yData1;
+    deliveryEChartConfig.series[2].data = props.chart0Value.yData2;
 
-    deliveryWorkloadEchartConfig.series[0].data = props.chart1Value.yData0;
-    deliveryWorkloadEchartConfig.series[1].data = props.chart1Value.yData1;
-    deliveryWorkloadEchartConfig.series[2].data = props.chart1Value.yData2;
+    deliveryWorkloadEChartConfig.series[0].data = props.chart1Value.yData0;
+    deliveryWorkloadEChartConfig.series[1].data = props.chart1Value.yData1;
+    deliveryWorkloadEChartConfig.series[2].data = props.chart1Value.yData2;
 
-    deliveryWorkloadEchart.setOption(deliveryWorkloadEchartConfig);
-    deliveryRefEchart.setOption(deliveryEchartConfig);
+    deliveryWorkloadEChart.setOption(deliveryWorkloadEChartConfig);
+    deliveryRefEChart.setOption(deliveryEChartConfig);
   }, {
     immediate: true,
     deep: true
@@ -170,8 +175,8 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    deliveryWorkloadEchart.resize();
-    deliveryRefEchart.resize();
+    deliveryWorkloadEChart.resize();
+    deliveryRefEChart.resize();
   }
 });
 

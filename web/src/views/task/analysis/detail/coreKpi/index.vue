@@ -12,14 +12,15 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const Echart = defineAsyncComponent(() => import('./echart.vue'));
+const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data) => {
   const res = {};
 
   const {
     totalNum = 0, completedNum = 0, completedRate = 0,
-    bugNum = 0, bugRate = 0, completedBugNum, completedBugRate, completedOverdueNum = 0, completedOverdueRate = 0, completedWorkload = 0, completedWorkloadRate = 0,
+    bugNum = 0, bugRate = 0, completedBugNum, completedBugRate, completedOverdueNum = 0,
+    completedOverdueRate = 0, completedWorkload = 0, completedWorkloadRate = 0,
     evalWorkload = 0, overdueNum = 0, overdueRate = 0
   } = data;
   res.chart0Value = {
@@ -28,28 +29,30 @@ const getChartData = (data) => {
   };
   res.chart1Value = {
     title: completedRate + '%',
-    value: [{ name: t('taskAnalysis.detail.coreKpi.chartLabels.uncompletedTaskCount'), value: totalNum - completedNum }, { name: t('taskAnalysis.detail.coreKpi.chartLabels.completedTaskCount'), value: completedNum }]
+    value: [{ name: t('taskAnalysis.detail.coreKpi.chartLabels.uncompletedTaskCount'), value: totalNum - completedNum },
+      { name: t('taskAnalysis.detail.coreKpi.chartLabels.completedTaskCount'), value: completedNum }]
   };
   res.chart2Value = {
     title: completedRate + '%',
-    value: [{ name: t('taskAnalysis.detail.coreKpi.chartLabels.uncompletedWorkload'), value: evalWorkload - completedWorkload }, { name: t('taskAnalysis.detail.coreKpi.chartLabels.completedWorkload'), value: completedWorkload }]
+    value: [{ name: t('taskAnalysis.detail.coreKpi.chartLabels.uncompletedWorkload'), value: evalWorkload - completedWorkload },
+      { name: t('taskAnalysis.detail.coreKpi.chartLabels.completedWorkload'), value: completedWorkload }]
   };
 
   res.chart3Value = {
     title: completedOverdueRate + '%',
-    value: [{ name: t('taskAnalysis.detail.coreKpi.chartLabels.uncompletedOverdueCount'), value: overdueNum - completedOverdueNum }, { name: t('taskAnalysis.detail.coreKpi.chartLabels.completedOverdueCount'), value: completedOverdueNum }]
+    value: [{ name: t('taskAnalysis.detail.coreKpi.chartLabels.uncompletedOverdueCount'), value: overdueNum - completedOverdueNum },
+      { name: t('taskAnalysis.detail.coreKpi.chartLabels.completedOverdueCount'), value: completedOverdueNum }]
   };
 
   res.chart4Value = {
     title: completedBugRate + '%',
-    value: [{ name: t('taskAnalysis.detail.coreKpi.chartLabels.uncompletedBugCount'), value: bugNum - completedBugNum }, { name: t('taskAnalysis.detail.coreKpi.chartLabels.completedBugCount'), value: completedBugNum }]
+    value: [{ name: t('taskAnalysis.detail.coreKpi.chartLabels.uncompletedBugCount'), value: bugNum - completedBugNum },
+      { name: t('taskAnalysis.detail.coreKpi.chartLabels.completedBugCount'), value: completedBugNum }]
   };
   return res;
 };
 
-const totalValue = ref({
-
-});
+const totalValue = ref({});
 
 const personValues = ref([]);
 
@@ -98,7 +101,7 @@ defineExpose({
 <template>
   <div>
     <div class="font-semibold pl-3">{{ t('taskAnalysis.detail.coreKpi.total') }}</div>
-    <Echart
+    <EChart
       ref="totalChartRef"
       v-bind="totalValue"
       class="ml-3" />
@@ -109,7 +112,7 @@ defineExpose({
     :key="item.id"
     class="mt-5">
     <div class="font-semibold pl-3">{{ item.userName }}</div>
-    <Echart
+    <EChart
       ref="chartListRef"
       v-bind="item.chartData"
       class="ml-3" />

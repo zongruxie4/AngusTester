@@ -13,9 +13,9 @@ const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
 
-const Echart = defineAsyncComponent(() => import('./echart.vue'));
+const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
-const targetDataCategery = {
+const targetResourceTypes = {
   TEST_CUSTOMIZATION: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.TEST_CUSTOMIZATION'),
   TEST_FUNCTIONALITY: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.TEST_FUNCTIONALITY'),
   TEST_PERFORMANCE: t('taskAnalysis.detail.taskGrowthTread.resourceTypes.TEST_PERFORMANCE'),
@@ -47,7 +47,9 @@ const targetDataCategery = {
 const getChartData = (data) => {
   const res = {};
 
-  const { apiTestNum = 0, requirementNum = 0, scenarioTestNum = 0, storyNum = 0, bugNum = 0, taskNum = 0, totalNum = 0 } = data;
+  const {
+    apiTestNum = 0, requirementNum = 0, scenarioTestNum = 0, storyNum = 0, bugNum = 0, taskNum = 0, totalNum = 0
+  } = data;
   res.overdueAssessmentData = data;
   res.chart0Value = {
     yData: [requirementNum, storyNum, taskNum, bugNum, apiTestNum, scenarioTestNum, totalNum]
@@ -69,13 +71,11 @@ const getChartData = (data) => {
     });
     series = keys.map(key => {
       return {
-        name: targetDataCategery[key],
+        name: targetResourceTypes[key],
         data: xData.map(i => {
           const target = data.timeSeries[key].find(item => item.timeSeries === i);
           if (target) {
             return target.value;
-          } else {
-
           }
         }),
         type: 'line',
@@ -147,8 +147,10 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">{{ t('taskAnalysis.detail.taskGrowthTread.total') }}</div>
-    <Echart
+    <div class="font-semibold pl-3">
+      {{ t('taskAnalysis.detail.taskGrowthTread.total') }}
+    </div>
+    <EChart
       ref="totalChartRef"
       v-bind="totalValue"
       class="ml-3" />
@@ -159,7 +161,7 @@ defineExpose({
     :key="item.id"
     class="mt-5">
     <div class="font-semibold pl-3">{{ item.userName }}</div>
-    <Echart
+    <EChart
       ref="chartListRef"
       v-bind="item.chartData"
       class="ml-3" />
