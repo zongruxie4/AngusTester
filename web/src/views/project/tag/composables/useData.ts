@@ -77,7 +77,7 @@ export function useData (projectId: Ref<string>) {
     if (searchValue?.trim()) {
       params.filters = [{
         key: 'name',
-        op: 'MATCH_END',
+        op: 'MATCH',
         value: searchValue.trim()
       }];
     }

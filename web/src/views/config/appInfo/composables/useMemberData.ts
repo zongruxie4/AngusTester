@@ -99,7 +99,7 @@ export function useMemberData (activeKey: AuthObjectType, appId: string) {
     if (value) {
       params.filters[0] = {
         key: activeKey === AuthObjectType.USER ? 'fullName' : 'name',
-        op: 'MATCH_END',
+        op: 'MATCH',
         value: value.trim()
       };
     } else {
@@ -190,7 +190,7 @@ export function useMemberData (activeKey: AuthObjectType, appId: string) {
 
     const { current, pageSize } = pagination;
     const filters = policyKeyword.value
-      ? [{ key: 'name', value: policyKeyword.value, op: 'MATCH_END' }]
+      ? [{ key: 'name', value: policyKeyword.value, op: 'MATCH' }]
       : [];
 
     const [error, res] = await policyApiConfig[activeKey](

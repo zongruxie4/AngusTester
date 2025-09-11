@@ -213,7 +213,7 @@ const importOk = () => {
 
 const params = computed(() => {
   return {
-    filters: inputValue.value ? [{ key: 'name', op: 'MATCH_END', value: inputValue.value }] : [],
+    filters: inputValue.value ? [{ key: 'name', op: 'MATCH', value: inputValue.value }] : [],
     projectId: projectId.value
   };
 });

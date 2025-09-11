@@ -257,7 +257,7 @@ const handleChangePlanId = () => {
 
 const loadCaseList = async () => {
   const [error, { data }] = await func.getBaselineCaseList(baselineId.value, {
-    filters: keywords.value ? [{ value: keywords.value, key: 'caseName', op: 'MATCH_END' }] : [],
+    filters: keywords.value ? [{ value: keywords.value, key: 'caseName', op: 'MATCH' }] : [],
     pageNo: pagination.value.current,
     pageSize: pagination.value.pageSize,
     projectId: props.projectId

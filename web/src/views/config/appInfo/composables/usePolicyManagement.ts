@@ -22,7 +22,7 @@ export function usePolicyManagement (
 ) {
   // Policy modal data
   const params = ref<{
-    filters: { key: 'name'; op: 'MATCH_END'; value: string | undefined }[];
+    filters: { key: 'name'; op: 'MATCH'; value: string | undefined }[];
     enabled: boolean;
     appId: string
   }>({

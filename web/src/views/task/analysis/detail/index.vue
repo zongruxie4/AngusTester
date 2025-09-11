@@ -158,7 +158,7 @@ onBeforeUnmount(() => {
 <template>
   <div class="p-5 h-full overflow-auto">
     <div class="bg-gray-1 p-2 flex items-center space-x-2">
-      <Icon :icon="TemplateIconConfig[dataSource.template.value]" class="text-20" />
+      <Icon :icon="TemplateIconConfig[dataSource.template]" class="text-20" />
       <div class="flex-1 min-w-0 flex flex-col justify-around">
         <div>
           <span class="text-3.5 font-semibold">{{ dataSource.name }}</span><Tag
@@ -180,46 +180,46 @@ onBeforeUnmount(() => {
       <div class="detail-title font-semibold pl-2 relative text-3.5 mb-3">
         {{ t('taskAnalysis.charts') }}
       </div>
-      <div v-if="dataSource.template.value === AnalysisTaskTemplate.PROGRESS" class=" w-200">
+      <div v-if="dataSource.template === AnalysisTaskTemplate.PROGRESS" class=" w-200">
         <Process ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template.value === AnalysisTaskTemplate.BURNDOWN" class=" w-275">
+      <div v-if="dataSource.template === AnalysisTaskTemplate.BURNDOWN" class=" w-275">
         <Burndown ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template.value === AnalysisTaskTemplate.WORKLOAD" class="max-w-300">
+      <div v-if="dataSource.template === AnalysisTaskTemplate.WORKLOAD" class="max-w-300">
         <Workload ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template.value === AnalysisTaskTemplate.OVERDUE_ASSESSMENT" class="max-w-275">
+      <div v-if="dataSource.template === AnalysisTaskTemplate.OVERDUE_ASSESSMENT" class="max-w-275">
         <OverdueAssessment ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template.value === AnalysisTaskTemplate.BUGS" class="max-w-400">
+      <div v-if="dataSource.template === AnalysisTaskTemplate.BUGS" class="max-w-400">
         <Bugs ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template.value === AnalysisTaskTemplate.HANDLING_EFFICIENCY" class="max-w-300">
+      <div v-if="dataSource.template === AnalysisTaskTemplate.HANDLING_EFFICIENCY" class="max-w-300">
         <HandlingEfficiency ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template.value === AnalysisTaskTemplate.CORE_KPI" class="max-w-400">
+      <div v-if="dataSource.template === AnalysisTaskTemplate.CORE_KPI" class="max-w-400">
         <CoreKpi ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template.value === AnalysisTaskTemplate.FAILURES" class="max-w-300">
+      <div v-if="dataSource.template === AnalysisTaskTemplate.FAILURES" class="max-w-300">
         <Failures ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template.value === AnalysisTaskTemplate.BACKLOG_TASKS" class="max-w-400">
+      <div v-if="dataSource.template === AnalysisTaskTemplate.BACKLOG_TASKS" class="max-w-400">
         <Backlogs ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template.value === AnalysisTaskTemplate.RECENT_DELIVERY" class="max-w-300">
+      <div v-if="dataSource.template === AnalysisTaskTemplate.RECENT_DELIVERY" class="max-w-300">
         <RecentDelivery ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template.value === AnalysisTaskTemplate.LEAD_TIME" class="max-w-300">
+      <div v-if="dataSource.template === AnalysisTaskTemplate.LEAD_TIME" class="max-w-300">
         <LeadTime ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template.value === AnalysisTaskTemplate.UNPLANNED_TASKS" class="max-w-300">
+      <div v-if="dataSource.template === AnalysisTaskTemplate.UNPLANNED_TASKS" class="max-w-300">
         <Unplanned ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template.value === AnalysisTaskTemplate.TASK_GROWTH_TREND" class="max-w-300">
+      <div v-if="dataSource.template === AnalysisTaskTemplate.TASK_GROWTH_TREND" class="max-w-300">
         <GrowthTread ref="chartRef" :analysisInfo="dataSource" />
       </div>
-      <div v-if="dataSource.template.value === AnalysisTaskTemplate.RESOURCE_CREATION" class="max-w-300">
+      <div v-if="dataSource.template === AnalysisTaskTemplate.RESOURCE_CREATION" class="max-w-300">
         <ResourceCreation ref="chartRef" :analysisInfo="dataSource" />
       </div>
     </div>
@@ -238,7 +238,7 @@ onBeforeUnmount(() => {
           {{ t('actions.export') }}
         </Button>
       </div>
-      <template v-if="dataSource.template.value === AnalysisTaskTemplate.RECENT_DELIVERY">
+      <template v-if="dataSource.template === AnalysisTaskTemplate.RECENT_DELIVERY">
         <div class="text-center mt-3">
           {{ t('taskAnalysis.today') }}
         </div>

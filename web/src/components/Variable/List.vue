@@ -72,7 +72,7 @@ const notify = ref(0);
 const total = ref(0);
 const variableList = ref<VariableObj[]>([]);
 const oldVaribleList = ref<VariableObj[]>([]);
-const params = ref<{pageNo: number, filters?:{ key: 'name', value: string, op: 'MATCH_END' }[], targetId?:string, targetType?:TargetType}>({ pageNo: 1, targetId: props.id, targetType: props.type, filters: [] });
+const params = ref<{pageNo: number, filters?:{ key: 'name', value: string, op: 'MATCH' }[], targetId?:string, targetType?:TargetType}>({ pageNo: 1, targetId: props.id, targetType: props.type, filters: [] });
 const action = computed(() => {
   return props.tabKey === 'INHERIT' ? `${TESTER}/variable/inherited` : `${TESTER}/variable`;
 });
@@ -475,7 +475,7 @@ const handleSearch = debounce(duration.search, (event) => {
   params.value.pageNo = 1;
   const value = event.target.value;
   if (value) {
-    params.value.filters = [{ key: 'name', value: value, op: 'MATCH_END' }];
+    params.value.filters = [{ key: 'name', value: value, op: 'MATCH' }];
   } else {
     params.value.filters = [];
   }

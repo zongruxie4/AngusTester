@@ -18,7 +18,7 @@ export function useApiList (projectId: string, serviceId: string, checkedIds: st
   // Search parameters
   const params = computed(() => {
     if (name.value) {
-      return { filters: [{ key: 'summary', op: 'MATCH_END', value: name.value }] };
+      return { filters: [{ key: 'summary', op: 'MATCH', value: name.value }] };
     }
     return { filters: [] };
   });

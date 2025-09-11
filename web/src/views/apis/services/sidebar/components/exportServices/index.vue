@@ -62,7 +62,7 @@ const accessToken = ref();
 // 按项目服务导出 查询项目服务名称 （要求前端查询，不仅过滤出匹配的节点，还需要保留选中的节点）
 const handleInputChange = debounce(duration.search, (value:string) => {
   if (value) {
-    params.value.filters = [{ key: 'name', op: 'MATCH_END', value: value }];
+    params.value.filters = [{ key: 'name', op: 'MATCH', value: value }];
   } else {
     delete params.value.filters;
   }

@@ -112,7 +112,7 @@ const onTablechange = (page) => {
 // const priority = ref<{key: string, name: string}[]>([]);
 
 const loadCaseData = async () => {
-  const filters = keywords.value ? [{ value: keywords.value, op: 'MATCH_END', key: 'name' }] : [];
+  const filters = keywords.value ? [{ value: keywords.value, op: 'MATCH', key: 'name' }] : [];
   const { current, pageSize } = pagination.value;
   loading.value = true;
   const [error, { data }] = await apis.loadApiCases({ apisId: props.id, projectId: projectInfo.value?.id, pageSize, pageNo: current, filters });

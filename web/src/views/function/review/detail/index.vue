@@ -214,7 +214,7 @@ const loadCaseList = async (id: string) => {
   const { current, pageSize } = pagination.value;
   const [error, { data }] = await func.getReviewCaseList({
     reviewId: id,
-    filters: keywords.value ? [{ value: keywords.value, key: 'caseName', op: 'MATCH_END' }] : [],
+    filters: keywords.value ? [{ value: keywords.value, key: 'caseName', op: 'MATCH' }] : [],
     reviewStatus: reviewStatus.value,
     pageNo: current,
     pageSize

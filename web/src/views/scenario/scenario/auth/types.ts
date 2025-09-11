@@ -51,7 +51,7 @@ export interface SearchParams {
   admin: boolean;
   filters?: Array<{
     key: 'name';
-    op: 'MATCH_END';
+    op: 'MATCH';
     value: string;
   }>;
 }

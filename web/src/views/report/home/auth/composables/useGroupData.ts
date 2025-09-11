@@ -32,12 +32,12 @@ export function useGroupData (appId: string | undefined, type: 'user' | 'dept' |
    * Computed parameters for API requests
    */
   const params = computed<{
-    filters?: [{ key: 'fullName' | 'name'; op: 'MATCH_END'; value: string }]
+    filters?: [{ key: 'fullName' | 'name'; op: 'MATCH'; value: string }]
   }>(() => {
     const value = inputValue.value?.trim();
     if (value) {
       return {
-        filters: [{ key: type === 'user' ? 'fullName' : 'name', op: 'MATCH_END', value }]
+        filters: [{ key: type === 'user' ? 'fullName' : 'name', op: 'MATCH', value }]
       };
     }
 

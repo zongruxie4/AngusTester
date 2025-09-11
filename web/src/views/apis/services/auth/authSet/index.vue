@@ -402,7 +402,7 @@ const getProjectTreeParams = () => {
     hasPermission: string;
     admin: boolean;
     projectId: string;
-    filters?: [{ key: 'name'; op: 'MATCH_END'; value: string; }];
+    filters?: [{ key: 'name'; op: 'MATCH'; value: string; }];
   } = {
     hasPermission: 'GRANT',
     admin: true,
@@ -413,7 +413,7 @@ const getProjectTreeParams = () => {
   };
 
   if (searchInputValue.value) {
-    params.filters = [{ key: 'name', op: 'MATCH_END', value: searchInputValue.value }];
+    params.filters = [{ key: 'name', op: 'MATCH', value: searchInputValue.value }];
   }
 
   return params;

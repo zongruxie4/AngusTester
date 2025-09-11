@@ -664,7 +664,7 @@ const loadTaskInfoById = async (id: string): Promise<TaskInfo | undefined> => {
 const getTaskParams = () => {
   const params: {
     projectId: string;
-    filters: { key: 'assigneeId' | 'createdBy' | 'name' | 'createdDate', op: 'EQUAL' | 'MATCH_END' | 'GREATER_THAN_EQUAL' | 'LESS_THAN_EQUAL', value: string }[];
+    filters: { key: 'assigneeId' | 'createdBy' | 'name' | 'createdDate', op: 'EQUAL' | 'MATCH' | 'GREATER_THAN_EQUAL' | 'LESS_THAN_EQUAL', value: string }[];
     pageSize: number;
     sprintId?: string;
     pageNo?: number;
@@ -678,7 +678,7 @@ const getTaskParams = () => {
   };
 
   if (searchValue.value) {
-    params.filters.push({ key: 'name', op: 'MATCH_END', value: searchValue.value });
+    params.filters.push({ key: 'name', op: 'MATCH', value: searchValue.value });
   }
 
   if (assigneeId.value) {

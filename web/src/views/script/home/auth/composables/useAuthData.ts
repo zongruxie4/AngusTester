@@ -122,7 +122,7 @@ export function useAuthData (projectId: string, authObjectId: string | undefined
       appCode: 'AngusTester',
       hasPermission: string;
       admin: boolean;
-      filters?: [{ key: 'name'; op: 'MATCH_END'; value: string; }];
+      filters?: [{ key: 'name'; op: 'MATCH'; value: string; }];
     } = {
       projectId,
       hasPermission: 'GRANT',
@@ -133,7 +133,7 @@ export function useAuthData (projectId: string, authObjectId: string | undefined
     };
 
     if (searchInputValue.value) {
-      params.filters = [{ key: 'name', op: 'MATCH_END', value: searchInputValue.value }];
+      params.filters = [{ key: 'name', op: 'MATCH', value: searchInputValue.value }];
     }
 
     return params;

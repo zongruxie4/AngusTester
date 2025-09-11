@@ -33,7 +33,7 @@ export function useGroupData (props: GroupSetProps) {
       return {
         filters: [{
           key: props.type === 'user' ? 'fullName' : 'name',
-          op: 'MATCH_END' as const,
+          op: 'MATCH' as const,
           value
         }]
       };

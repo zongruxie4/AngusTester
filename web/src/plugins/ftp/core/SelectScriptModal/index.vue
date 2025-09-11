@@ -103,7 +103,7 @@ const scrollParams = computed(() => {
   if (inputValue.value) {
     params.filters = [{
       key: 'name',
-      op: 'MATCH_END',
+      op: 'MATCH',
       value: inputValue.value
     }];
   }

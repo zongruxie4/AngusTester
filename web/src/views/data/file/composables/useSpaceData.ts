@@ -42,7 +42,7 @@ export function useSpaceData () {
     return {
       pageSize: pagination.pageSize,
       pageNo: pagination.current,
-      filters: keyword.value ? [{ value: keyword.value, op: 'MATCH_END', key: 'name' }] : undefined
+      filters: keyword.value ? [{ value: keyword.value, op: 'MATCH', key: 'name' }] : undefined
     };
   };
 

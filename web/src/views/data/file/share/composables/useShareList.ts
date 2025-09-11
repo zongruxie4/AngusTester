@@ -59,7 +59,7 @@ export function useShareList () {
       pageNo: pagination.current,
       pageSize: pagination.pageSize,
       spaceId: props.id,
-      filters: remark.value ? [{ value: remark.value, key: 'remark', op: 'MATCH_END' }] : undefined
+      filters: remark.value ? [{ value: remark.value, key: 'remark', op: 'MATCH' }] : undefined
     };
 
     const [error, res = { data: { list: [] } }] = await space.getSharedList(params);

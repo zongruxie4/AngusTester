@@ -238,7 +238,7 @@ export function useAuthSet (props: AuthSetProps) {
       appCode: 'AngusTester';
       hasPermission: string;
       admin: boolean;
-      filters?: [{ key: 'name'; op: 'MATCH_END'; value: string; }];
+      filters?: [{ key: 'name'; op: 'MATCH'; value: string; }];
       projectId: string;
     } = {
       hasPermission: 'GRANT',
@@ -250,7 +250,7 @@ export function useAuthSet (props: AuthSetProps) {
     };
 
     if (searchInputValue.value) {
-      params.filters = [{ key: 'name', op: 'MATCH_END', value: searchInputValue.value }];
+      params.filters = [{ key: 'name', op: 'MATCH', value: searchInputValue.value }];
     }
 
     return params;

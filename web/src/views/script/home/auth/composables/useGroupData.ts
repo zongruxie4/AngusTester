@@ -40,11 +40,11 @@ export function useGroupData (type: 'user' | 'dept' | 'group', appId: string | u
    * Returns filters object when search input has value.
    * </p>
    */
-  const params = computed<{ filters?: [{ key: 'fullName' | 'name'; op: 'MATCH_END'; value: string }] }>(() => {
+  const params = computed<{ filters?: [{ key: 'fullName' | 'name'; op: 'MATCH'; value: string }] }>(() => {
     const value = inputValue.value?.trim();
     if (value) {
       return {
-        filters: [{ key: type === 'user' ? 'fullName' : 'name', op: 'MATCH_END', value }]
+        filters: [{ key: type === 'user' ? 'fullName' : 'name', op: 'MATCH', value }]
       };
     }
 

@@ -15,7 +15,7 @@ export interface SearchOption {
   /** Maximum length for input fields */
   maxlength?: number;
   /** Operation type for filtering */
-  op?: 'EQUAL' | 'GREATER_THAN' | 'GREATER_THAN_EQUAL' | 'IN' | 'LESS_THAN' | 'LESS_THAN_EQUAL' | 'MATCH' | 'MATCH_END' | 'NOT_EQUAL' | 'NOT_IN';
+  op?: 'EQUAL' | 'GREATER_THAN' | 'GREATER_THAN_EQUAL' | 'IN' | 'LESS_THAN' | 'LESS_THAN_EQUAL' | 'MATCH' | 'MATCH' | 'NOT_EQUAL' | 'NOT_IN';
   /** Enum key for select-enum type */
   enumKey?: any;
 }

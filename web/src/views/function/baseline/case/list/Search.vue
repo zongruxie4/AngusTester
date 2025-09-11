@@ -33,7 +33,7 @@ type FilterOp =
   | 'LESS_THAN_EQUAL'
   | 'CONTAIN'
   | 'NOT_CONTAIN'
-  | 'MATCH_END'
+  | 'MATCH'
   | 'MATCH'
   | 'IN'
   | 'NOT_IN';

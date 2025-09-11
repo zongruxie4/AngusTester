@@ -111,9 +111,9 @@ const buttonDisabled = computed(() => {
 });
 
 const params = computed(() => {
-  const filters: { key: 'summary'; op: 'MATCH_END', value: string; }[] = [];
+  const filters: { key: 'summary'; op: 'MATCH', value: string; }[] = [];
   if (props.keywords) {
-    filters.push({ key: 'summary', op: 'MATCH_END', value: props.keywords });
+    filters.push({ key: 'summary', op: 'MATCH', value: props.keywords });
   }
   return {
     filters,

@@ -60,7 +60,7 @@ export function useAuthData (projectId: string, authObjectId: string, type: Auth
     };
 
     if (searchInputValue.value) {
-      params.filters = [{ key: 'name', op: 'MATCH_END', value: searchInputValue.value }];
+      params.filters = [{ key: 'name', op: 'MATCH', value: searchInputValue.value }];
     }
 
     return params;

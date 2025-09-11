@@ -9,7 +9,7 @@ export interface AnalysisInfo {
   timeRange: string;
   resource: 'TASK' | 'CASE';
   description: string;
-  template: EnumMessage<AnalysisTaskTemplate>;
+  template: AnalysisTaskTemplate;
   planId: string;
   datasource: EnumMessage<AnalysisDataSource>;
   orgType?: EnumMessage<AuthObjectType>;

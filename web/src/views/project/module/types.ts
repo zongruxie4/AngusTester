@@ -100,7 +100,7 @@ export interface ModuleApiParams {
   /** Optional search filters */
   filters?: Array<{
     key: 'name';
-    op: 'MATCH_END';
+    op: 'MATCH';
     value: string;
   }>;
 }

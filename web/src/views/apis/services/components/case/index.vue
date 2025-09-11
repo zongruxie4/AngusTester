@@ -43,7 +43,7 @@ const loading = ref(false);
 // const priority = ref<{key: string, name: string}[]>([]);
 
 const loadCaseData = async () => {
-  const filters = keywords.value ? [{ value: keywords.value, op: 'MATCH_END', key: 'name' }] : [];
+  const filters = keywords.value ? [{ value: keywords.value, op: 'MATCH', key: 'name' }] : [];
   loading.value = true;
   const [error, { data }] = await apis.loadApiCases({ apisId: props.id, projectId: projectInfo.value?.id, pageSize: 100, pageNo: 1, filters });
   loading.value = false;

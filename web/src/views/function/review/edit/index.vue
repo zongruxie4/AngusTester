@@ -371,7 +371,7 @@ const handleChangePlanId = () => {
 const loadCaseList = async () => {
   const [error, { data }] = await func.getReviewCaseList({
     reviewId: reviewId.value,
-    filters: keywords.value ? [{ value: keywords.value, key: 'caseName', op: 'MATCH_END' }] : [],
+    filters: keywords.value ? [{ value: keywords.value, key: 'caseName', op: 'MATCH' }] : [],
     pageNo: pagination.value.current,
     pageSize: pagination.value.pageSize
   });

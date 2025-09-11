@@ -76,7 +76,7 @@ const {
 const handleInputChange = debounce(duration.search, (event: any) => {
   const value = event.target.value;
   if (value) {
-    params.value.filters[0] = { key: 'name', op: 'MATCH_END', value: value };
+    params.value.filters[0] = { key: 'name', op: 'MATCH', value: value };
     return;
   }
   params.value.filters = [];
