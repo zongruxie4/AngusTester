@@ -10,25 +10,43 @@ import { useI18n } from 'vue-i18n';
 
 import { StatisticsInfo } from '../../types';
 
-const { t } = useI18n();
-
+/**
+ * Component props interface for TaskTypeChart component
+ */
 type Props = {
   dataSource: StatisticsInfo;
 }
+
+/**
+ * ECharts configuration option type
+ */
+type EChartsOption = echarts.ComposeOption<TooltipComponentOption | LegendComponentOption | PieSeriesOption>;
+
+// Composables and Props
+const { t } = useI18n();
 
 const props = withDefaults(defineProps<Props>(), {
   dataSource: undefined
 });
 
-type EChartsOption = echarts.ComposeOption<TooltipComponentOption | LegendComponentOption | PieSeriesOption>;
-
+// Dependency Injection
 const windowResizeNotify = inject('windowResizeNotify', ref<string>());
 
-const containerRef = ref<HTMLElement>();
-const domId = utils.uuid('pie');
+// Chart Configuration
+const chartContainerRef = ref<HTMLElement>();
+const chartDomId = utils.uuid('task-type-pie');
 
-let echartInstance: echarts.ECharts;
-const echartOption: EChartsOption = {
+let chartInstance: echarts.ECharts;
+
+/**
+ * Chart color palette for different task types
+ */
+const CHART_COLORS = ['#67D7FF', '#FFB925', '#F5222D', '#2acab8', '#2D8EFF', '#52C41A'];
+
+/**
+ * ECharts configuration options for the task type pie chart
+ */
+const chartOptions: EChartsOption = {
   tooltip: {
     trigger: 'item',
     axisPointer: { type: 'shadow' },
@@ -44,18 +62,17 @@ const echartOption: EChartsOption = {
     itemWidth: 14,
     itemGap: 5,
     formatter: function (name) {
-      const data = echartOption?.series?.[0].data;
+      const data = chartOptions?.series?.[0].data;
       for (let i = 0; i < data.length; i++) {
         if (data[i].name === name) {
           name += ' ' + data[i].value;
           break;
         }
       }
-
       return name;
     }
   },
-  color: ['#67D7FF', '#FFB925', '#F5222D', '#2acab8', '#2D8EFF', '#52C41A'],
+  color: CHART_COLORS,
   series: [
     {
       name: '',
@@ -87,68 +104,135 @@ const echartOption: EChartsOption = {
   ]
 };
 
-const renderChart = () => {
-  if (!echartInstance) {
+/**
+ * Renders or updates the pie chart with current data
+ * <p>
+ * Initializes the chart instance if it doesn't exist, then sets the chart options.
+ * If the chart already exists, it updates the options to reflect new data.
+ */
+const renderChart = (): void => {
+  if (!chartInstance) {
     echarts.use([TooltipComponent, LegendComponent, PieChart, CanvasRenderer, LabelLayout]);
-    echartInstance = echarts.init(document.getElementById(domId));
-    echartInstance.setOption(echartOption);
+    chartInstance = echarts.init(document.getElementById(chartDomId));
+    chartInstance.setOption(chartOptions);
     return;
   }
 
-  // 重新绘制图表
-  echartInstance.setOption(echartOption);
+  // Update chart with new data
+  chartInstance.setOption(chartOptions);
 };
 
-const resizeHandler = () => {
-  echartInstance.resize();
+/**
+ * Handles chart resize when window dimensions change
+ */
+const handleChartResize = (): void => {
+  if (chartInstance) {
+    chartInstance.resize();
+  }
 };
 
+/**
+ * Updates chart data based on statistics information
+ * <p>
+ * Transforms the statistics data into chart data format and updates the chart series.
+ * Each task type is mapped to a data point with its corresponding count.
+ */
+const updateChartData = (): void => {
+  if (props.dataSource === undefined) {
+    return;
+  }
+
+  // Reset chart data
+  chartOptions.series![0].data = [];
+
+  // Add task type data points
+  chartOptions.series?.[0].data.push({
+    name: t('task.list.statistics.typeColumns.story'),
+    value: +props.dataSource.storyNum
+  });
+  chartOptions.series?.[0].data.push({
+    name: t('task.list.statistics.typeColumns.task'),
+    value: +props.dataSource.taskNum
+  });
+  chartOptions.series?.[0].data.push({
+    name: t('task.list.statistics.typeColumns.bug'),
+    value: +props.dataSource.bugNum
+  });
+  chartOptions.series?.[0].data.push({
+    name: t('task.list.statistics.typeColumns.requirement'),
+    value: +props.dataSource.requirementNum
+  });
+  chartOptions.series?.[0].data.push({
+    name: t('task.list.statistics.typeColumns.apiTest'),
+    value: +props.dataSource.apiTestNum
+  });
+  chartOptions.series?.[0].data.push({
+    name: t('task.list.statistics.typeColumns.scenarioTest'),
+    value: +props.dataSource.scenarioTestNum
+  });
+
+  renderChart();
+};
+
+// Lifecycle Hooks
 onMounted(() => {
-  watch(() => props.dataSource, (newValue) => {
-    if (props.dataSource === undefined) {
-      return;
-    }
-
-    // 重置数据
-    echartOption.series![0].data = [];
-    echartOption.series?.[0].data.push({ name: t('task.list.statistics.typeColumns.story'), value: +newValue.storyNum });
-    echartOption.series?.[0].data.push({ name: t('task.list.statistics.typeColumns.task'), value: +newValue.taskNum });
-    echartOption.series?.[0].data.push({ name: t('task.list.statistics.typeColumns.bug'), value: +newValue.bugNum });
-    echartOption.series?.[0].data.push({ name: t('task.list.statistics.typeColumns.requirement'), value: +newValue.requirementNum });
-    echartOption.series?.[0].data.push({ name: t('task.list.statistics.typeColumns.apiTest'), value: +newValue.apiTestNum });
-    echartOption.series?.[0].data.push({ name: t('task.list.statistics.typeColumns.scenarioTest'), value: +newValue.scenarioTestNum });
-
-    renderChart();
+  // Watch for changes in data source
+  watch(() => props.dataSource, () => {
+    updateChartData();
   }, { immediate: true });
 
+  // Watch for window resize notifications
   watch(() => windowResizeNotify.value, (newValue) => {
     if (newValue === undefined || newValue === null || newValue === '') {
       return;
     }
-
-    resizeHandler();
+    handleChartResize();
   }, { immediate: true });
 });
 </script>
 
 <template>
-  <div class="relative leading-5 text-3">
+  <!-- Task type chart container -->
+  <div class="chart-wrapper">
+    <!-- ECharts container -->
     <div
-      :id="domId"
-      ref="containerRef"
-      class="h-34"></div>
-    <div class="mark-container">
-      <div class="text-center">{{ t('task.list.statistics.taskType') }}</div>
-      <div class="text-3.5 text-center font-semibold">{{ props.dataSource?.totalTaskTypeNum }}</div>
+      :id="chartDomId"
+      ref="chartContainerRef"
+      class="chart-container"></div>
+    <!-- Chart center label -->
+    <div class="chart-center-label">
+      <div class="label-title">{{ t('task.list.statistics.taskType') }}</div>
+      <div class="label-value">{{ props.dataSource?.totalTaskTypeNum }}</div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.mark-container {
+.chart-wrapper {
+  position: relative;
+  line-height: 1.25;
+  font-size: 0.75rem;
+}
+
+.chart-container {
+  height: 8.5rem; /* h-34 equivalent */
+}
+
+.chart-center-label {
   position: absolute;
   top: 50%;
   left: 35%;
   transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.chart-center-label .label-title {
+  text-align: center;
+}
+
+.chart-center-label .label-value {
+  font-size: 0.875rem; /* text-3.5 equivalent */
+  text-align: center;
+  font-weight: 600; /* font-semibold equivalent */
 }
 </style>

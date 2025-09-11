@@ -6,16 +6,37 @@ import { analysis } from '@/api/tester';
 
 import { StatisticsInfo } from '../../types';
 
-type Props = {
-  collapse: boolean;// 展开、折叠
-  params: { filters?: { key: string; op: string; value: boolean | string | string[] }[] };
+/**
+ * Filter configuration interface for API requests
+ */
+interface FilterConfig {
+  key: string;
+  op: string;
+  value: boolean | string | string[];
+}
+
+/**
+ * API request parameters interface
+ */
+interface RequestParams {
   projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
+  filters?: FilterConfig[];
+}
+
+/**
+ * Component props interface for Statistics component
+ */
+type Props = {
+  collapse: boolean; // Whether the statistics panel is collapsed
+  params: RequestParams;
+  projectId: string;
+  userInfo: { id: string };
+  appInfo: { id: string };
   notify: string;
   moduleId?: string;
 }
 
+// Props and Emits Definition
 const props = withDefaults(defineProps<Props>(), {
   collapse: false,
   params: undefined,
@@ -26,17 +47,27 @@ const props = withDefaults(defineProps<Props>(), {
   moduleId: undefined
 });
 
-// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'update:loading', value: boolean): void;
 }>();
 
+/**
+ * Lazy-loaded Count component for displaying statistics cards
+ */
 const Count = defineAsyncComponent(() => import('./Count.vue'));
+
+/**
+ * Lazy-loaded Chart component for displaying charts
+ */
 const Chart = defineAsyncComponent(() => import('@/views/task/task/list/statistics/Chart.vue'));
 
-const UUID = utils.uuid();
+// Constants and State
+const componentId = utils.uuid();
 
-const dataSource = ref<StatisticsInfo>({
+/**
+ * Default statistics data structure with all values initialized to '0'
+ */
+const defaultStatisticsData: StatisticsInfo = {
   actualWorkload: '0',
   apiTestNum: '0',
   bugNum: '0',
@@ -67,67 +98,81 @@ const dataSource = ref<StatisticsInfo>({
   totalTestTypeNum: '0',
   validTaskNum: '0',
   progress: '0'
-});
-
-const loadData = async () => {
-  emit('update:loading', true);
-  let params: {
-    projectId: string;
-    filters?: { key: string; op: string; value: boolean | string | string[] }[];
-  } = {
-    projectId: props.projectId
-  };
-
-  if (props.params) {
-    params = { ...params, ...props.params };
-  }
-
-  const [error, res] = await analysis.getTaskCount(params);
-  emit('update:loading', false);
-  if (error) {
-    return;
-  }
-
-  if (res?.data) {
-    dataSource.value = res?.data;
-  }
 };
 
-onMounted(() => {
-  watch(() => props.params, (newValue) => {
-    if (!newValue) {
-      return;
-    }
+const statisticsData = ref<StatisticsInfo>({ ...defaultStatisticsData });
 
-    loadData();
-  }, { immediate: false });
-
-  watch(() => props.notify, (newValue) => {
-    if (newValue === undefined || newValue === null || newValue === '') {
-      return;
-    }
-
-    loadData();
-  }, { immediate: true });
-});
-
+/**
+ * Determines the active key for the collapse component based on collapse state
+ */
 const activeKey = computed(() => {
   if (props.collapse) {
     return '';
   }
+  return componentId;
+});
 
-  return UUID;
+/**
+ * Loads statistics data from the API
+ * <p>
+ * Constructs request parameters and calls the analysis API to fetch task statistics.
+ * Updates the loading state and statistics data based on the response.
+ */
+const loadStatisticsData = async (): Promise<void> => {
+  emit('update:loading', true);
+
+  let requestParams: RequestParams = {
+    projectId: props.projectId
+  };
+
+  // Merge additional parameters if provided
+  if (props.params) {
+    requestParams = { ...requestParams, ...props.params };
+  }
+
+  const [error, response] = await analysis.getTaskCount(requestParams);
+  emit('update:loading', false);
+
+  if (error) {
+    return;
+  }
+
+  if (response?.data) {
+    statisticsData.value = response.data;
+  }
+};
+
+// Lifecycle Hooks
+onMounted(() => {
+  // Watch for changes in filter parameters
+  watch(() => props.params, (newValue) => {
+    if (!newValue) {
+      return;
+    }
+    loadStatisticsData();
+  }, { immediate: false });
+
+  // Watch for notification changes to trigger data refresh
+  watch(() => props.notify, (newValue) => {
+    if (newValue === undefined || newValue === null || newValue === '') {
+      return;
+    }
+    loadStatisticsData();
+  }, { immediate: true });
 });
 </script>
 
 <template>
+  <!-- Statistics panel with collapsible functionality -->
   <Collapse
     v-model:activeKey="activeKey"
     ghost
     collapsible="disabled">
-    <CollapsePanel :key="UUID" :showArrow="false">
-      <Count :dataSource="dataSource" style="max-width: 1100px;" />
-      <Chart :dataSource="dataSource" />
+    <CollapsePanel :key="componentId" :showArrow="false">
+      <!-- Statistics cards section -->
+      <Count :dataSource="statisticsData" class="statistics-cards" />
+      <!-- Charts section -->
+      <Chart :dataSource="statisticsData" />
     </CollapsePanel>
   </Collapse>
 </template>
@@ -142,5 +187,9 @@ const activeKey = computed(() => {
   align-items: center;
   justify-content: space-between;
   padding: 0;
+}
+
+.statistics-cards {
+  max-width: 1100px;
 }
 </style>
