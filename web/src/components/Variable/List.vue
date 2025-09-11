@@ -702,7 +702,7 @@ onMounted(() => {
                   @click="(e) => handleEdit(e, variable)" />
               </template>
             </Tooltip>
-            <Tooltip title="删除" placement="top">
+            <Tooltip :title="t('xcan_variable.delete')" placement="top">
               <template v-if="props.disabled">
                 <Icon
                   icon="icon-qingchu"
@@ -718,7 +718,7 @@ onMounted(() => {
             </Tooltip>
           </template>
           <template v-if="props.tabKey === 'GLOBAL' && variable.targetId === props.id">
-            <Tooltip title="编辑" placement="top">
+            <Tooltip :title="t('xcan_variable.edit')" placement="top">
               <template v-if="props.disabled">
                 <Icon
                   icon="icon-xiugai"
@@ -732,7 +732,7 @@ onMounted(() => {
                   @click="(e) => handleEdit(e, variable)" />
               </template>
             </Tooltip>
-            <Tooltip title="删除" placement="top">
+            <Tooltip :title="t('xcan_variable.delete')" placement="top">
               <template v-if="props.disabled">
                 <Icon
                   icon="icon-qingchu"
@@ -776,7 +776,7 @@ onMounted(() => {
             dataType="mixin-en"
             includes="!@$%^&*()_-+="
             class="mt-2 mb-5"
-            placeholder="t('xcan_variable.inputVariableName')"
+            :placeholder="t('xcan_variable.inputVariableName')"
             size="small"
             @change="(event)=>variableNameChange(event.target.value,variable)" />
           <div><IconRequired />{{ t('xcan_variable.type') }}</div>
@@ -788,7 +788,7 @@ onMounted(() => {
             <Radio :value="false">{{ t('xcan_variable.define') }}</Radio>
             <Radio :value="true" :disabled="props.type !== 'API'">
               {{ t('xcan_variable.extract') }}
-              <Tooltip placement="top" title="定义提取变量接口不支持依赖其他变量。">
+              <Tooltip placement="top" :title="t('xcan_variable.extractVariableNotSupportDependency')">
                 <Icon icon="icon-tishi1" class="text-tips cursor-pointer text-3.5 -mt-0.5" />
               </Tooltip>
             </Radio>
@@ -829,7 +829,7 @@ onMounted(() => {
                   :error="variable.extraction.parameterNameErr"
                   :maxlength="400"
                   style="width: 60%;"
-                  placeholder="输入提取参数名称"
+                  :placeholder="t('xcan_variable.inputExtractionParameterName')"
                   @change="(event)=>parameterNameChange(event.target.value,variable)" />
               </InputGroup>
               <template v-if="variable.extraction?.method?.value ==='REGEX'">

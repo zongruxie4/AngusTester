@@ -1396,7 +1396,9 @@
       "globalVariableNameNotAllowed": "全局变量名不允许重复。",
       "currentScopeDescription": "变量范围为\"当前\"时对当前接口请求或当前\"执行/脚本\"内所有接口有效。",
       "globalScopeDescription": "变量范围为\"全局\"时对租户所有接口有效。",
-      "deleteSuccess": "删除成功"
+      "deleteSuccess": "删除成功",
+      "extractVariableNotSupportDependency": "定义提取变量接口不支持依赖其他变量。",
+      "inputExtractionParameterName": "输入提取参数名称"
     },
     "xcan_functionTestDetail": {
       "milliseconds": "毫秒",

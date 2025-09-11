@@ -1547,7 +1547,9 @@
       "globalVariableNameNotAllowed": "Global variable names are not allowed to be duplicated.",
       "currentScopeDescription": "When variable scope is 'current', it is effective for all interfaces in the current interface request or current 'execution/script'.",
       "globalScopeDescription": "When variable scope is 'global', it is effective for all interfaces of the tenant.",
-      "deleteSuccess": "Delete successful"
+      "deleteSuccess": "Delete successful",
+      "extractVariableNotSupportDependency": "Defining extraction variables for interfaces does not support dependency on other variables.",
+      "inputExtractionParameterName": "Enter extraction parameter name"
     },
     "xcan_functionTestDetail": {
       "milliseconds": "Milliseconds",
