@@ -4,7 +4,10 @@ import type { UploadFile } from 'ant-design-vue';
 import { Button, Checkbox, Upload } from 'ant-design-vue';
 import { Icon, Input, Select, notification } from '@xcan-angus/vue-ui';
 import { utils, duration, codeUtils } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
+
+const { t } = useI18n();
 
 import { RequestBodyFormItem } from '../PropsType';
 
@@ -49,7 +52,7 @@ const urlMap = ref<{ [key: string]: { [key: string]: {name:string;url:string} } 
 
 const customRequest = async ({ file }: { file: UploadFile }, id: string, index:number) => {
   if (totalSize.value + file.size > +props.maxFileSize) {
-    notification.warning(`总上传文件大小不能超过${utils.formatBytes(props.maxFileSize)}`);
+    notification.warning(t('xcan_apiBody.totalFileSizeExceeded', { size: utils.formatBytes(props.maxFileSize) }));
     return;
   }
 
@@ -401,7 +404,7 @@ const selectOptions = computed(() => {
         @change="checkboxChange($event, index, item)" />
       <Input
         v-model:value="dataMap[item].name"
-        placeholder="请输入参数名称"
+        :placeholder="t('xcan_apiBody.enterParameterName')"
         trim
         class="max-w-100 flex-1"
         :error="nameErrorSet.has(item)"
@@ -409,7 +412,7 @@ const selectOptions = computed(() => {
       <Select
         v-model:value="dataMap[item].type"
         class="w-25"
-        placeholder="请选择参数类型"
+        :placeholder="t('xcan_apiBody.selectParameterType')"
         :options="selectOptions"
         @change="typeChange($event, index, item)" />
       <div
@@ -425,7 +428,7 @@ const selectOptions = computed(() => {
             size="small"
             class="mr-3 transform-gpu translate-y-0.25">
             <Icon icon="icon-xuanze" class="mr-1" />
-            <span>选择文件</span>
+            <span>{{ t('xcan_apiBody.selectFile') }}</span>
           </Button>
         </Upload>
         <template v-if="!!fileMap[item]?.length">
@@ -448,7 +451,7 @@ const selectOptions = computed(() => {
       <Input
         v-else
         v-model:value="dataMap[item].value"
-        placeholder="请输入参数值，最多可输入4096个字符"
+        :placeholder="t('xcan_apiBody.enterParameterValue')"
         trim
         class="flex-1"
         :maxlength="4096"

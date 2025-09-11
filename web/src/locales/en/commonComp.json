@@ -538,7 +538,7 @@
       "cancelReference": "Cancel Reference",
       "uploadFile": "Upload File",
       "selectFile": "Select File",
-      "totalFileSizeExceeded": "Total upload file size cannot exceed 20MB",
+      "totalFileSizeExceeded": "Total upload file size cannot exceed {size}",
       "requestBodyFileSizeExceeded": "Request body total upload file size cannot exceed 20MB",
       "enterParameterName": "Please enter parameter name",
       "selectParameterType": "Please select parameter type",
@@ -649,6 +649,7 @@
       "defaultValue": "Default Value",
       "service": "Service",
       "interface": "Interface",
+      "value": "Value",
       "define": "Define",
       "extract": "Extract",
       "defineExtractVariableTip": "Define/Extract variable interface does not support dependency on other variables.",
@@ -1284,6 +1285,8 @@
       "fileSizeLimitExceeded": "File size limit exceeded {maxSize}, {fileName} size is {fileSize}."
     },
     "xcan_paramInput": {
+      "namePlaceholder": "Enter parameter name",
+      "valuePlaceholder": "Enter parameter value, maximum 4096 characters",
       "enterParameterValue": "Enter parameter value",
       "constructor": "Constructor",
       "returnValue": "Return Value",
