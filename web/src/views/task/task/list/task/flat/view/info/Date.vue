@@ -7,7 +7,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { task } from '@/api/tester';
 
 import { TaskInfo } from '../../../../../../types';
-import {TIME_FORMAT} from "@/utils/constant";
+import { TIME_FORMAT } from '@/utils/constant';
 
 type Props = {
   projectId: string;

@@ -6,7 +6,7 @@ import { Icon } from '@xcan-angus/vue-ui';
 import { Button, Table, Tag } from 'ant-design-vue';
 import { TemplateIconConfig } from '@/views/task/analysis/list/types';
 import { debounce } from 'throttle-debounce';
-import { Analysis } from '../types';
+import { AnalysisInfo } from '../types';
 import { analysis } from '@/api/tester';
 
 interface Props {
@@ -41,7 +41,7 @@ const UnplannedTasks = defineAsyncComponent(() => import('@/views/task/analysis/
 const TaskGrowthTread = defineAsyncComponent(() => import('@/views/task/analysis/detail/growthTread/index.vue'));
 const ResourceCreation = defineAsyncComponent(() => import('./resourceCreation/index.vue'));
 
-const dataSource = ref<Analysis>({});
+const dataSource = ref<AnalysisInfo>({});
 
 const loadAnalysisInfo = async (id) => {
   const [error, { data }] = await analysis.getAnalysisDetail(id);

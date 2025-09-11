@@ -424,7 +424,7 @@ const cacheParamsKey = computed(() => {
 });
 
 let isInit = true;
-let db: Dexie<IData>;
+let db: XCanDexie<IData>;
 const init = async () => {
   if (!db) {
     db = new XCanDexie<IData>('parameter');

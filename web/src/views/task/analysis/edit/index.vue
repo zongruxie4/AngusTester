@@ -3,10 +3,17 @@ import { inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Checkbox, Form, FormItem, RadioButton, RadioGroup, Textarea } from 'ant-design-vue';
 import { DatePicker, Input, notification, Select } from '@xcan-angus/vue-ui';
-import { TESTER, GM, enumUtils, EnumMessage } from '@xcan-angus/infra';
-import { AnalysisTaskTemplateDesc, AnalysisCaseObject, AnalysisTimeRange } from '@/enums/enums';
-import { Analysis } from '../types';
+import { TESTER, GM, enumUtils, EnumMessage, AuthObjectType } from '@xcan-angus/infra';
+import {
+  AnalysisTaskTemplateDesc,
+  AnalysisTaskObject,
+  AnalysisTimeRange,
+  AnalysisDataSource,
+  AnalysisTaskTemplate
+} from '@/enums/enums';
+import { AnalysisInfo, EditAnalysisState } from '../types';
 import { analysis } from '@/api/tester';
+
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 interface Props {
@@ -25,29 +32,32 @@ const emits = defineEmits<{(e: 'ok')}>();
 
 const { t } = useI18n();
 const deleteTabPane = inject('deleteTabPane', (value) => value);
-const formRef = ref<Analysis>();
+const formRef = ref<AnalysisInfo>();
+
+// TODO 改成枚举，删除message
 const showContentOpt = [
   {
-    value: 'REAL_TIME_DATA',
+    value: AnalysisDataSource.REAL_TIME_DATA,
     label: t('taskAnalysis.dataSource.realTime')
   },
   {
-    value: 'SNAPSHOT_DATA',
+    value: AnalysisDataSource.SNAPSHOT_DATA,
     label: t('taskAnalysis.dataSource.snapshot')
   }
 ];
 
+// TODO 改成枚举，删除message
 const orgOpt = [
   {
-    value: 'DEPT',
+    value: AuthObjectType.DEPT,
     label: t('taskAnalysis.orgType.dept')
   },
   {
-    value: 'GROUP',
+    value: AuthObjectType.GROUP,
     label: t('taskAnalysis.orgType.group')
   },
   {
-    value: 'USER',
+    value: AuthObjectType.USER,
     label: t('taskAnalysis.orgType.user')
   }
 ];
@@ -57,9 +67,9 @@ const loadDescOpt = () => {
   templateDescOpt.value = enumUtils.enumToMessages(AnalysisTaskTemplateDesc);
 };
 
-const analysisCaseObjectOpt = ref<EnumMessage<AnalysisCaseObject>[]>([]);
+const analysisCaseObjectOpt = ref<EnumMessage<AnalysisTaskObject>[]>([]);
 const loadAnalysisCaseObject = () => {
-  analysisCaseObjectOpt.value = enumUtils.enumToMessages(AnalysisCaseObject);
+  analysisCaseObjectOpt.value = enumUtils.enumToMessages(AnalysisTaskObject);
 };
 
 const analysisTimeRangeOpt = ref<{message: string, value:string}[]>([]);
@@ -68,21 +78,21 @@ const loadAnalysisTimeRange = () => {
   analysisTimeRangeOpt.value = data.map(item => ({ ...item, label: item.message }));
 };
 
-const formData = ref({
-  object: 'CURRENT_PROJECT',
-  timeRange: 'ALL_TIME',
+const formData = ref<EditAnalysisState>({
+  id: undefined,
+  name: undefined,
+  object: AnalysisTaskObject.CURRENT_PROJECT,
+  timeRange: AnalysisTimeRange.ALL_TIME,
   resource: 'TASK',
-  template: '',
+  template: AnalysisTaskTemplate.PROGRESS,
   description: '',
   containsUserAnalysis: true,
   containsDataDetail: true,
   planId: '',
-  datasource: 'REAL_TIME_DATA',
-  orgType: 'DEPT',
+  datasource: AnalysisDataSource.REAL_TIME_DATA,
+  orgType: AuthObjectType.DEPT,
   orgId: '',
-  customRange: [],
-  id: undefined,
-  name: undefined
+  customRange: []
 });
 
 const saving = ref(false);
@@ -132,18 +142,18 @@ const getParams = () => {
   const res = {
     name, object, timeRange, resource, template, description, datasource, containsDataDetail, projectId: props.projectId, id
   };
-  if (object === 'CURRENT_PROJECT') {
+  if (object === AnalysisTaskObject.CURRENT_PROJECT) {
     res.containsUserAnalysis = containsUserAnalysis;
   }
-  if (object === 'PLAN') {
+  if (object === AnalysisTaskObject.SPRINT) {
     res.containsUserAnalysis = containsUserAnalysis;
     res.planId = planId;
   }
-  if (object === 'TESTER_ORG') {
+  if (object === AnalysisTaskObject.ASSIGNEE_ORG) {
     res.orgType = orgType;
     res.orgId = orgId;
   }
-  if (timeRange === 'CUSTOM_TIME') {
+  if (timeRange === AnalysisTimeRange.CUSTOM_TIME) {
     res.startTime = customRange[0];
     res.endTime = customRange[1];
   }
@@ -182,7 +192,7 @@ onMounted(async () => {
       formData.value.template = props.data.template;
     }
     if (props.data.id) {
-      loadAnalysisInfo(props.data.id);
+      await loadAnalysisInfo(props.data.id);
     }
   }
 
@@ -263,7 +273,7 @@ onMounted(async () => {
         </RadioGroup>
       </FormItem>
 
-      <template v-if="formData.object === 'PLAN'">
+      <template v-if="formData.object === AnalysisTaskObject.SPRINT">
         <FormItem
           name="planId"
           :label="t('taskAnalysis.form.selectIteration')"
@@ -289,7 +299,7 @@ onMounted(async () => {
         </FormItem>
       </template>
 
-      <template v-if="formData.object === 'TESTER_ORG'">
+      <template v-if="formData.object === AnalysisTaskObject.ASSIGNEE_ORG">
         <FormItem
           name="orgId"
           :label="t('taskAnalysis.form.selectOrg')"
@@ -300,9 +310,8 @@ onMounted(async () => {
             :options="orgOpt"
             class="!w-30 mr-2"
             @change="handleChangeOrgType" />
-          <!-- <span>{{ formData.orgType === 'USER' ? '选择用户' : formData.orgType === 'GROUP' ? '选择组' :  formData.orgType === 'DEPT' ? '选择部门' : ''}}</span> -->
           <Select
-            v-show="formData.orgType === 'USER'"
+            v-show="formData.orgType === AuthObjectType.USER"
             v-model:value="formData.orgId"
             class="!w-50"
             :showSearch="true"
@@ -311,7 +320,7 @@ onMounted(async () => {
             :fieldNames="{ label: 'fullName', value: 'id' }">
           </Select>
           <Select
-            v-show="formData.orgType === 'DEPT'"
+            v-show="formData.orgType === AuthObjectType.DEPT"
             v-model:value="formData.orgId"
             class="!w-50"
             :placeholder="t('taskAnalysis.placeholder.selectDept')"
@@ -320,7 +329,7 @@ onMounted(async () => {
             :fieldNames="{ label: 'name', value: 'id' }">
           </Select>
           <Select
-            v-show="formData.orgType === 'GROUP'"
+            v-show="formData.orgType === AuthObjectType.GROUP"
             v-model:value="formData.orgId"
             class="!w-50"
             :placeholder="t('taskAnalysis.placeholder.selectGroup')"
@@ -331,7 +340,7 @@ onMounted(async () => {
         </FormItem>
       </template>
       <FormItem label=" ">
-        <Checkbox v-show="formData.object !== 'TESTER_ORG' || formData.orgType !== 'USER'" v-model:checked="formData.containsUserAnalysis">{{ t('taskAnalysis.form.containsUserAnalysis') }}</Checkbox>
+        <Checkbox v-show="formData.object !== AnalysisTaskObject.ASSIGNEE_ORG || formData.orgType !== AuthObjectType.USER" v-model:checked="formData.containsUserAnalysis">{{ t('taskAnalysis.form.containsUserAnalysis') }}</Checkbox>
         <Checkbox v-model:checked="formData.containsDataDetail">{{ t('taskAnalysis.form.containsDataDetail') }}</Checkbox>
       </FormItem>
 
@@ -341,7 +350,7 @@ onMounted(async () => {
         required>
         <RadioGroup v-model:value="formData.timeRange" :options="analysisTimeRangeOpt"></RadioGroup>
         <DatePicker
-          v-if="formData.timeRange === 'CUSTOM_TIME'"
+          v-if="formData.timeRange === AnalysisTimeRange.CUSTOM_TIME"
           v-model:value="formData.customRange"
           type="date-range"
           class="mt-2" />

@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, inject, Ref } from 'vue';
+// ================================
+// IMPORTS
+// ================================
+import { computed, inject, onMounted, ref, Ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { Button, Switch, Tag } from 'ant-design-vue';
@@ -20,19 +23,22 @@ import {
   TaskStatus,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { TESTER, duration, enumUtils, XCanDexie, Priority, Result } from '@xcan-angus/infra';
-import { TaskType, TaskStatus as TaskStatusEnum, TestType } from '@/enums/enums';
+import { duration, enumUtils, PageQuery, Priority, Result, SearchCriteria, TESTER, XCanDexie } from '@xcan-angus/infra';
+import { TaskStatus as TaskStatusEnum, TaskType, TestType } from '@/enums/enums';
 import { debounce } from 'throttle-debounce';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { SearchPanelMenuItem, searchPanelOption } from '@/views/task/task/types';
+import { SearchPanelMenuItem, SearchPanelOption, TaskViewMode } from '@/views/task/task/types';
 
+// ================================
+// TYPES & INTERFACES
+// ================================
 type Props = {
-  collapse: boolean;// 展开、折叠统计
-  viewMode: 'table' | 'detail' | 'kanban' | 'gantt';
+  collapse: boolean; // Controls statistics panel expand/collapse state
+  viewMode: TaskViewMode;
   sprintId: string;
   sprintName: string;
   projectId: string;
@@ -40,7 +46,7 @@ type Props = {
   appInfo: { id: string; };
   notify: string;
   orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName';
-  orderSort: 'DESC' | 'ASC';
+  orderSort: PageQuery.OrderSort;
   groupKey: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType';
 }
 
@@ -62,286 +68,344 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   (e: 'add'): void;
   (e: 'export'): void;
-  (e: 'change', value: { key: string; op: string; value: boolean | string | string[]; }[]): void;
+  (e: 'change', value: SearchCriteria[]): void;
   (e: 'update:orderBy', value: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName'): void;
-  (e: 'update:orderSort', value: 'DESC' | 'ASC'): void;
+  (e: 'update:orderSort', value: PageQuery.OrderSort): void;
   (e: 'update:groupKey', value: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType'): void;
   (e: 'update:visible', value: boolean): void;
   (e: 'update:collapse', value: boolean): void;
-  (e: 'viewModeChange', value: 'table' | 'detail' | 'kabban' | 'gantt'): void;
+  (e: 'viewModeChange', value: TaskViewMode): void;
   (e: 'uploadTask'): void;
   (e: 'exportTemplate'): void;
   (e: 'update:moduleFlag', value: boolean): void;
 }>();
 
+// ================================
+// COMPOSABLES & INJECTIONS
+// ================================
 const { t } = useI18n();
-const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
+const projectTypeVisibilityMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({
+  showTask: true,
+  showBackLog: true,
+  showMeeting: true,
+  showSprint: true,
+  showTasStatistics: true
+}));
 const route = useRoute();
 
-let db: Dexie<{ id: string; data: any; }>;
+// ================================
+// DATABASE & REFS
+// ================================
+// eslint-disable-next-line no-undef
+let database: XCanDexie<{ id: string; data: any; }>;
 
 const searchPanelRef = ref();
 
-// 保存快速搜索转换后的时间
-const quickDateMap = ref<Map<'lastDay' | 'lastThreeDays' | 'lastWeek', string[]>>(new Map());
-const selectedMenuMap = ref(new Map<string, Omit<SearchPanelMenuItem, 'name'>>());
-const overdue = ref(false); // 逾期
-const moduleFlag = ref(false); // 按模块分组
+// ================================
+// REACTIVE STATE
+// ================================
+// Quick search date mapping for predefined time ranges
+const quickSearchDateMap = ref<Map<'lastDay' | 'lastThreeDays' | 'lastWeek', string[]>>(new Map());
+// Map to track selected menu items for quick search
+const selectedQuickSearchItems = ref(new Map<string, Omit<SearchPanelMenuItem, 'name'>>());
+// Overdue tasks filter flag
+const isOverdueFilterEnabled = ref(false);
+// Module grouping flag
+const isModuleGroupingEnabled = ref(false);
 
-const sprintSelectVisible = ref(false);
-const selectedSprint = ref<searchPanelOption>();
+// Sprint selection state
+const isSprintSelectorVisible = ref(false);
+const selectedSprintOption = ref<SearchPanelOption>();
 const checkedSprintId = ref<string>();
 
-const tagSelectVisible = ref(false);
-const selectedTags = ref<searchPanelOption[]>([]);
+// Tag selection state
+const isTagSelectorVisible = ref(false);
+const selectedTagOptions = ref<SearchPanelOption[]>([]);
 const checkedTagIds = ref<string[]>([]);
 
-const filters = ref<{ key: string; op: string; value: string; }[]>([]);
+// Search criteria filters
+const searchFilters = ref<SearchCriteria[]>([]);
 
-const targetParentIdFilter = ref<{ key: 'targetParentId', op: 'EQUAL', value: string | undefined }>({ key: 'targetParentId', op: 'EQUAL', value: undefined });
-const targetIdFilter = ref<{ key: 'targetId', op: 'EQUAL', value: string | undefined }>({ key: 'targetId', op: 'EQUAL', value: undefined });
+// Target filters for API/Scenario tests
+const targetParentIdFilter = ref<SearchCriteria>({ key: 'targetParentId', op: SearchCriteria.OpEnum.Equal, value: undefined });
+const targetIdFilter = ref<SearchCriteria>({ key: 'targetId', op: SearchCriteria.OpEnum.Equal, value: undefined });
 
-const evalWorkloadFilter = ref<{ key: 'evalWorkload'; op: string; value: string | undefined; }>({ key: 'evalWorkload', op: 'EQUAL', value: undefined });
-const failNumFilter = ref<{ key: 'failNum'; op: string; value: string | undefined; }>({ key: 'failNum', op: 'EQUAL', value: undefined });
-const totalNumFilter = ref<{ key: 'totalNum'; op: string; value: string | undefined; }>({ key: 'totalNum', op: 'EQUAL', value: undefined });
-const taskTypeList = ref<SearchPanelMenuItem[]>([]);
+// Numeric filters
+const workloadFilter = ref<SearchCriteria>({ key: 'evalWorkload', op: SearchCriteria.OpEnum.Equal, value: undefined });
+const failureCountFilter = ref<SearchCriteria>({ key: 'failNum', op: SearchCriteria.OpEnum.Equal, value: undefined });
+const totalCountFilter = ref<SearchCriteria>({ key: 'totalNum', op: SearchCriteria.OpEnum.Equal, value: undefined });
+const taskTypeOptions = ref<SearchPanelMenuItem[]>([]);
 
-const loadTaskTypeEnum = () => {
-  const data = enumUtils.enumToMessages(TaskType);
-  taskTypeList.value = data.map(item => {
-    return {
-      name: item.message,
-      key: item.value
-    };
-  });
+// ================================
+// TASK TYPE ENUM LOADING
+// ================================
+/**
+ * Loads task type enum options for the search panel
+ * Converts enum values to menu items with display names
+ */
+const loadTaskTypeOptions = () => {
+  const enumData = enumUtils.enumToMessages(TaskType);
+  taskTypeOptions.value = enumData.map(item => ({
+    name: item.message,
+    key: item.value
+  }));
 };
 
-const toSort = (data: { orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName'; orderSort: 'DESC' | 'ASC'; }) => {
+// ================================
+// SORTING & GROUPING HANDLERS
+// ================================
+/**
+ * Handles sorting configuration changes
+ * @param data - Contains orderBy field and orderSort direction
+ */
+const handleSortingChange = (data: { orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName'; orderSort: PageQuery.OrderSort; }) => {
   emit('update:orderBy', data.orderBy);
   emit('update:orderSort', data.orderSort);
 };
 
-const toGroup = (value: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType') => {
+/**
+ * Handles grouping configuration changes
+ * @param value - The grouping key to apply
+ */
+const handleGroupingChange = (value: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType') => {
   emit('update:groupKey', value);
 };
 
-const menuItemClick = (data: SearchPanelMenuItem) => {
-  const key = data.key;
-  // 当前操作是取消选中
-  if (selectedMenuMap.value.has(key)) {
-    // 【所有】这个按钮选中后再次点击不做处理
-    if (key === 'none') {
+// ================================
+// QUICK SEARCH MENU HANDLERS
+// ================================
+/**
+ * Handles quick search menu item clicks
+ * Manages the selection/deselection of quick search filters
+ * @param data - The clicked menu item data
+ */
+const handleQuickSearchMenuItemClick = (data: SearchPanelMenuItem) => {
+  const itemKey = data.key;
+
+  // Handle deselection of already selected items
+  if (selectedQuickSearchItems.value.has(itemKey)) {
+    // "All" button remains selected when clicked again
+    if (itemKey === 'none') {
       return;
     }
 
-    // 删除该条选中数据
-    selectedMenuMap.value.delete(key);
+    // Remove the selected item
+    selectedQuickSearchItems.value.delete(itemKey);
 
-    if (key === 'createdBy') {
-      if (typeof searchPanelRef.value?.setConfigs === 'function') {
-        searchPanelRef.value.setConfigs([{ valueKey: 'createdBy', value: undefined }]);
-      }
-
+    // Clear corresponding search panel configurations
+    if (itemKey === 'createdBy') {
+      updateSearchPanelConfigs([{ valueKey: 'createdBy', value: undefined }]);
       return;
     }
 
-    if (key === 'assigneeId' || key === 'progress') {
-      if (typeof searchPanelRef.value?.setConfigs === 'function') {
-        searchPanelRef.value.setConfigs([
-          { valueKey: 'assigneeId', value: undefined },
-          { valueKey: 'status', value: undefined }
-        ]);
-      }
-
-      return;
-    }
-
-    if (key === 'confirmorId') {
-      if (typeof searchPanelRef.value?.setConfigs === 'function') {
-        searchPanelRef.value.setConfigs([
-          { valueKey: 'confirmorId', value: undefined },
-          { valueKey: 'status', value: undefined }
-        ]);
-      }
-
-      return;
-    }
-
-    if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(key)) {
-      quickDateMap.value.clear();
-      if (typeof searchPanelRef.value?.setConfigs === 'function') {
-        searchPanelRef.value.setConfigs([
-          { valueKey: 'createdDate', value: undefined }
-        ]);
-      }
-      return;
-    }
-
-    if (['REQUIREMENT', 'STORY', 'TASK', 'BUG', 'API_TEST', 'SCENARIO_TEST']) {
-      ['REQUIREMENT', 'STORY', 'TASK', 'BUG', 'API_TEST', 'SCENARIO_TEST'].forEach(item => {
-        selectedMenuMap.value.delete(item);
-      });
-      if (typeof searchPanelRef.value?.setConfigs === 'function') {
-        searchPanelRef.value.setConfigs([
-          { valueKey: 'taskType', value: undefined }
-        ]);
-      }
-    }
-    return;
-  }
-
-  // 选中【所有】，清除其他按钮的选中，保留迭代和标签
-  if (key === 'none') {
-    selectedMenuMap.value.clear();
-    selectedMenuMap.value.set('none', { key: 'none' });
-
-    // 清空搜索面板
-    if (typeof searchPanelRef.value?.clear === 'function') {
-      searchPanelRef.value.clear();
-    }
-
-    // 关闭逾期
-    overdue.value = false;
-
-    // // 清空选中的迭代
-    // checkedSprintId.value = undefined;
-
-    // // 清空选中的标签
-    // checkedTagIds.value = [];
-
-    // 清空targetParentId
-    targetParentIdFilter.value.value = undefined;
-
-    // 清空targetId
-    targetIdFilter.value.value = undefined;
-
-    // 清空evalWorkload
-    evalWorkloadFilter.value.value = undefined;
-
-    // 清空failNum
-    failNumFilter.value.value = undefined;
-
-    // 清空totalNum
-    totalNumFilter.value.value = undefined;
-
-    return;
-  }
-
-  // 其他按钮会通过watchEffect中的filters的值进行自动设置
-  if (key === 'createdBy') {
-    if (typeof searchPanelRef.value?.setConfigs === 'function') {
-      searchPanelRef.value.setConfigs([{ valueKey: 'createdBy', value: userId.value }]);
-    }
-
-    return;
-  }
-
-  if (key === 'assigneeId' || key === 'progress') {
-    if (typeof searchPanelRef.value?.setConfigs === 'function') {
-      const value = key === 'assigneeId' ? 'PENDING' : 'IN_PROGRESS';
-      searchPanelRef.value.setConfigs([
-        { valueKey: 'assigneeId', value: userId.value },
-        { valueKey: 'status', value }
+    if (itemKey === 'assigneeId' || itemKey === 'progress') {
+      updateSearchPanelConfigs([
+        { valueKey: 'assigneeId', value: undefined },
+        { valueKey: 'status', value: undefined }
       ]);
+      return;
     }
 
-    return;
-  }
-
-  if (key === 'confirmorId') {
-    if (typeof searchPanelRef.value?.setConfigs === 'function') {
-      searchPanelRef.value.setConfigs([
-        { valueKey: 'confirmorId', value: userId.value },
-        { valueKey: 'status', value: 'CONFIRMING' }
+    if (itemKey === 'confirmorId') {
+      updateSearchPanelConfigs([
+        { valueKey: 'confirmorId', value: undefined },
+        { valueKey: 'status', value: undefined }
       ]);
+      return;
     }
 
-    return;
-  }
-
-  if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(key)) {
-    quickDateMap.value.clear();
-    quickDateMap.value.set(key, formatDateString(key));
-    if (typeof searchPanelRef.value?.setConfigs === 'function') {
-      searchPanelRef.value.setConfigs([
-        { valueKey: 'createdDate', value: quickDateMap.value.get(key) }
-      ]);
+    if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(itemKey)) {
+      quickSearchDateMap.value.clear();
+      updateSearchPanelConfigs([{ valueKey: 'createdDate', value: undefined }]);
+      return;
     }
-  }
 
-  if (['REQUIREMENT', 'STORY', 'TASK', 'BUG', 'API_TEST', 'SCENARIO_TEST'].includes(key)) {
-    ['REQUIREMENT', 'STORY', 'TASK', 'BUG', 'API_TEST', 'SCENARIO_TEST'].forEach(item => {
-      selectedMenuMap.value.delete(item);
+    // Clear task type selections
+    enumUtils.getEnumValues(TaskType).forEach(taskType => {
+      selectedQuickSearchItems.value.delete(taskType);
     });
-    selectedMenuMap.value.set(key, { key: key });
-    if (typeof searchPanelRef.value?.setConfigs === 'function') {
-      searchPanelRef.value.setConfigs([
-        { valueKey: 'taskType', value: key }
-      ]);
-    }
+    updateSearchPanelConfigs([{ valueKey: 'taskType', value: undefined }]);
+    return;
+  }
+
+  // Handle "All" selection - clears all other filters
+  if (itemKey === 'none') {
+    clearAllFilters();
+    return;
+  }
+
+  // Handle specific filter selections
+  if (itemKey === 'createdBy') {
+    updateSearchPanelConfigs([{ valueKey: 'createdBy', value: currentUserId.value }]);
+    return;
+  }
+
+  if (itemKey === 'assigneeId' || itemKey === 'progress') {
+    const statusValue = itemKey === 'assigneeId' ? TaskStatusEnum.PENDING : TaskStatusEnum.IN_PROGRESS;
+    updateSearchPanelConfigs([
+      { valueKey: 'assigneeId', value: currentUserId.value },
+      { valueKey: 'status', value: statusValue }
+    ]);
+    return;
+  }
+
+  if (itemKey === 'confirmorId') {
+    updateSearchPanelConfigs([
+      { valueKey: 'confirmorId', value: currentUserId.value },
+      { valueKey: 'status', value: TaskStatusEnum.CONFIRMING }
+    ]);
+    return;
+  }
+
+  if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(itemKey)) {
+    quickSearchDateMap.value.clear();
+    const dateRange = formatDateRange(itemKey as 'lastDay' | 'lastThreeDays' | 'lastWeek');
+    quickSearchDateMap.value.set(itemKey as 'lastDay' | 'lastThreeDays' | 'lastWeek', dateRange);
+    updateSearchPanelConfigs([{ valueKey: 'createdDate', value: dateRange }]);
+  }
+
+  if (enumUtils.getEnumValues(TaskType).includes(itemKey)) {
+    // Clear other task type selections
+    enumUtils.getEnumValues(TaskType).forEach(taskType => {
+      selectedQuickSearchItems.value.delete(taskType);
+    });
+    selectedQuickSearchItems.value.set(itemKey, { key: itemKey });
+    updateSearchPanelConfigs([{ valueKey: 'taskType', value: itemKey }]);
   }
 };
 
-const formatDateString = (key: SearchPanelMenuItem['key']) => {
+/**
+ * Clears all filters and resets the search panel
+ */
+const clearAllFilters = () => {
+  selectedQuickSearchItems.value.clear();
+  selectedQuickSearchItems.value.set('none', { key: 'none' });
+
+  // Clear search panel
+  if (typeof searchPanelRef.value?.clear === 'function') {
+    searchPanelRef.value.clear();
+  }
+
+  // Reset all filter states
+  isOverdueFilterEnabled.value = false;
+  targetParentIdFilter.value.value = undefined;
+  targetIdFilter.value.value = undefined;
+  workloadFilter.value.value = undefined;
+  failureCountFilter.value.value = undefined;
+  totalCountFilter.value.value = undefined;
+};
+
+/**
+ * Updates search panel configurations
+ * @param configs - Array of configuration objects
+ */
+const updateSearchPanelConfigs = (configs: { valueKey: string; value: any }[]) => {
+  if (typeof searchPanelRef.value?.setConfigs === 'function') {
+    searchPanelRef.value.setConfigs(configs);
+  }
+};
+
+// ================================
+// DATE & UTILITY FUNCTIONS
+// ================================
+/**
+ * Formats date range for quick search time periods
+ * @param key - The time period key (lastDay, lastThreeDays, lastWeek)
+ * @returns Array of formatted date strings [startDate, endDate]
+ */
+const formatDateRange = (key: SearchPanelMenuItem['key']) => {
   let startDate: Dayjs | undefined;
   let endDate: Dayjs | undefined;
 
-  if (key === 'lastDay') {
-    startDate = dayjs().startOf('date');
-    endDate = dayjs();
+  switch (key) {
+    case 'lastDay':
+      startDate = dayjs().startOf('date');
+      endDate = dayjs();
+      break;
+    case 'lastThreeDays':
+      startDate = dayjs().startOf('date').subtract(3, 'day').add(1, 'day');
+      endDate = dayjs();
+      break;
+    case 'lastWeek':
+      startDate = dayjs().startOf('date').subtract(1, 'week').add(1, 'day');
+      endDate = dayjs();
+      break;
   }
 
-  if (key === 'lastThreeDays') {
-    startDate = dayjs().startOf('date').subtract(3, 'day').add(1, 'day');
-    endDate = dayjs();
+  return [
+    startDate ? startDate.format(DATE_TIME_FORMAT) : '',
+    endDate ? endDate.format(DATE_TIME_FORMAT) : ''
+  ];
+};
+
+/**
+ * Handles overdue filter toggle
+ * Removes "All" selection when overdue filter is enabled
+ */
+const handleOverdueFilterToggle = () => {
+  selectedQuickSearchItems.value.delete('none');
+};
+
+/**
+ * Handles module grouping toggle
+ * Saves the state to database and emits the change
+ */
+const handleModuleGroupingToggle = () => {
+  database.add({ id: dbModuleKey.value, data: isModuleGroupingEnabled.value + '' });
+  emit('update:moduleFlag', isModuleGroupingEnabled.value);
+};
+
+/**
+ * Formats data for display with truncation
+ * @param data - Object containing id and name
+ * @returns Formatted object with display properties
+ */
+const formatDisplayData = ({ id, name }: { id: string; name: string; }) => {
+  const MAX_DISPLAY_LENGTH = 10;
+  let displayTitle = '';
+  let displayName = name;
+
+  if (name.length > MAX_DISPLAY_LENGTH) {
+    displayTitle = name;
+    displayName = displayName.slice(0, MAX_DISPLAY_LENGTH) + '...';
   }
 
-  if (key === 'lastWeek') {
-    startDate = dayjs().startOf('date').subtract(1, 'week').add(1, 'day');
-    endDate = dayjs();
-  }
-
-  return [startDate ? startDate.format(DATE_TIME_FORMAT) : '', endDate ? endDate.format(DATE_TIME_FORMAT) : ''];
+  return { id, name, showTitle: displayTitle, showName: displayName };
 };
 
-const overdueChange = () => {
-  selectedMenuMap.value.delete('none');
+/**
+ * Shows the sprint selector dropdown
+ */
+const showSprintSelector = () => {
+  isSprintSelectorVisible.value = true;
 };
 
-const moduleFlagChange = () => {
-  db.add({ id: dbModuleKey.value, data: moduleFlag.value + '' });
-  emit('update:moduleFlag', moduleFlag.value);
+/**
+ * Handles sprint selection from dropdown
+ * @param value - Selected sprint value
+ * @param option - Selected sprint option data
+ */
+const handleSprintSelection = (value: any, option: any) => {
+  if (!value) return;
+
+  isSprintSelectorVisible.value = false;
+
+  selectedSprintOption.value = formatDisplayData({ id: String(value), name: option.name });
+  checkedSprintId.value = String(value);
 };
 
-const formatData = ({ id, name }: { id: string; name: string; }) => {
-  let showTitle = '';
-  let showName = name;
-  const MAX_LENGTH = 10;
-  if (name.length > MAX_LENGTH) {
-    showTitle = name;
-    showName = showName.slice(0, MAX_LENGTH) + '...';
-  }
-
-  return { id, name, showTitle, showName };
+/**
+ * Hides the sprint selector dropdown
+ */
+const hideSprintSelector = () => {
+  isSprintSelectorVisible.value = false;
 };
 
-const toSelectSprint = () => {
-  sprintSelectVisible.value = true;
-};
-
-const sprintChange = (id: string, { name }: { name: string }) => {
-  sprintSelectVisible.value = false;
-
-  selectedSprint.value = formatData({ id, name });
-  checkedSprintId.value = id;
-};
-
-const sprintBlur = () => {
-  sprintSelectVisible.value = false;
-};
-
-const toggleSprint = () => {
-  const id = selectedSprint.value?.id;
+/**
+ * Toggles the selected sprint state
+ */
+const toggleSprintSelection = () => {
+  const id = selectedSprintOption.value?.id;
   if (checkedSprintId.value === id) {
     checkedSprintId.value = undefined;
     return;
@@ -350,32 +414,53 @@ const toggleSprint = () => {
   checkedSprintId.value = id;
 };
 
-const deleteSprint = () => {
-  selectedSprint.value = undefined;
+/**
+ * Removes the selected sprint
+ */
+const removeSelectedSprint = () => {
+  selectedSprintOption.value = undefined;
   checkedSprintId.value = undefined;
 };
 
-const toSelectTag = () => {
-  tagSelectVisible.value = true;
+/**
+ * Shows the tag selector dropdown
+ */
+const showTagSelector = () => {
+  isTagSelectorVisible.value = true;
 };
 
-const tagChange = (id: string, { name }: { name: string }) => {
-  tagSelectVisible.value = false;
+/**
+ * Handles tag selection from dropdown
+ * @param value - Selected tag value
+ * @param option - Selected tag option data
+ */
+const handleTagSelection = (value: any, option: any) => {
+  if (!value) return;
 
-  const ids = selectedTags.value.map(item => item.id);
-  if (ids.includes(id)) {
+  isTagSelectorVisible.value = false;
+
+  const ids = selectedTagOptions.value.map(item => item.id);
+  const stringValue = String(value);
+  if (ids.includes(stringValue)) {
     return;
   }
 
-  selectedTags.value.push(formatData({ id, name }));
-  checkedTagIds.value.push(id);
+  selectedTagOptions.value.push(formatDisplayData({ id: stringValue, name: option.name }));
+  checkedTagIds.value.push(stringValue);
 };
 
-const tagBlur = () => {
-  tagSelectVisible.value = false;
+/**
+ * Hides the tag selector dropdown
+ */
+const hideTagSelector = () => {
+  isTagSelectorVisible.value = false;
 };
 
-const toggleTag = (data: searchPanelOption) => {
+/**
+ * Toggles the selected tag state
+ * @param data - Tag option data
+ */
+const toggleTagSelection = (data: SearchPanelOption) => {
   const id = data.id;
   if (checkedTagIds.value.includes(id)) {
     checkedTagIds.value = checkedTagIds.value.filter(item => item !== id);
@@ -385,189 +470,261 @@ const toggleTag = (data: searchPanelOption) => {
   checkedTagIds.value.push(id);
 };
 
-const deleteTag = (data: searchPanelOption) => {
+/**
+ * Removes the selected tag
+ * @param data - Tag option data to remove
+ */
+const removeSelectedTag = (data: SearchPanelOption) => {
   const id = data.id;
-  selectedTags.value = selectedTags.value.filter(item => item.id !== id);
+  selectedTagOptions.value = selectedTagOptions.value.filter(item => item.id !== id);
   checkedTagIds.value = checkedTagIds.value.filter(item => item !== id);
 };
 
-const toCreate = () => {
+// ================================
+// ACTION HANDLERS
+// ================================
+/**
+ * Handles task creation action
+ */
+const handleCreateTask = () => {
   emit('add');
 };
 
-const buttonDropdownClick = ({ key }: { key: 'import' | 'export' }) => {
+/**
+ * Handles button dropdown menu clicks
+ * @param param - Contains the clicked menu key
+ */
+const handleButtonDropdownClick = ({ key }: { key: 'import' | 'export' }) => {
   if (key === 'import') {
     emit('uploadTask');
     return;
   }
 
   if (key === 'export') {
-    toExport();
+    handleExportTasks();
   }
 };
 
-const toViewFlowChart = () => {
+/**
+ * Shows the flow chart view
+ */
+const showFlowChart = () => {
   emit('update:visible', true);
 };
 
-const toExport = () => {
+/**
+ * Handles task export action
+ */
+const handleExportTasks = () => {
   emit('export');
 };
 
-const viewModeChange = (viewMode: 'table' | 'detail' | 'kanban' | 'gantt') => {
-  // let viewMode: 'table' | 'detail' | 'kanban' = 'table';
-  // if (props.viewMode === 'kanban') {
-  //   viewMode = 'table';
-  // } else if (props.viewMode === 'table') {
-  //   viewMode = 'detail';
-  // } else {
-  //   viewMode = 'kanban';
-  // }
-
+/**
+ * Handles view mode changes
+ * @param viewMode - The new view mode
+ */
+const handleViewModeChange = (viewMode: TaskViewMode) => {
   emit('viewModeChange', viewMode);
 
-  if (db) {
-    db.add({ id: dbViewModeKey.value, data: viewMode });
+  if (database) {
+    database.add({ id: dbViewModeKey.value, data: viewMode });
   }
 };
 
-const toRefresh = () => {
-  emit('change', getData());
+/**
+ * Refreshes the search results
+ */
+const refreshSearchResults = () => {
+  emit('change', buildSearchCriteria());
 };
 
-const toggleCollapse = () => {
-  const _collapse = !props.collapse;
-  emit('update:collapse', _collapse);
+/**
+ * Toggles the collapse state of statistics panel
+ */
+const toggleStatisticsCollapse = () => {
+  const newCollapseState = !props.collapse;
+  emit('update:collapse', newCollapseState);
 
-  if (db) {
-    db.add({ id: dbCountKey.value, data: _collapse });
+  if (database) {
+    database.add({ id: dbCountKey.value, data: newCollapseState });
   }
 };
 
-const searchPanelChange = (data: { key: string; op: string; value: string }[], _headers?: { [key: string]: string }, key?: string) => {
-  filters.value = data;
+// ================================
+// SEARCH PANEL HANDLERS
+// ================================
+/**
+ * Handles search panel changes
+ * @param data - Updated search criteria
+ * @param _headers - Optional headers
+ * @param key - The changed field key
+ */
+const handleSearchPanelChange = (data: SearchCriteria[], _headers?: { [key: string]: string }, key?: string) => {
+  searchFilters.value = data;
 
+  // Reset service/interface/scenario filters when task type changes
   if (key === 'taskType') {
-    // 重置服务、接口、场景
     targetParentIdFilter.value.value = undefined;
     targetIdFilter.value.value = undefined;
   }
 
-  // 选择添加时间清空快速搜索已选中的时间选项
+  // Clear quick search date selections when manual date selection is made
   if (key === 'createdDate') {
-    selectedMenuMap.value.delete('lastDay');
-    selectedMenuMap.value.delete('lastThreeDays');
-    selectedMenuMap.value.delete('lastWeek');
+    selectedQuickSearchItems.value.delete('lastDay');
+    selectedQuickSearchItems.value.delete('lastThreeDays');
+    selectedQuickSearchItems.value.delete('lastWeek');
   }
 };
 
-const targetIdChange = (value: string) => {
-  targetIdFilter.value = { key: 'targetId', op: 'EQUAL', value };
+/**
+ * Handles target ID filter changes
+ * @param value - The selected target ID
+ */
+const handleTargetIdChange = (value: any) => {
+  targetIdFilter.value = { key: 'targetId', op: SearchCriteria.OpEnum.Equal, value };
 };
 
-const targetParentIdChange = (value: string) => {
-  targetParentIdFilter.value = { key: 'targetParentId', op: 'EQUAL', value };
+/**
+ * Handles target parent ID filter changes
+ * @param value - The selected target parent ID
+ */
+const handleTargetParentIdChange = (value: any) => {
+  targetParentIdFilter.value = { key: 'targetParentId', op: SearchCriteria.OpEnum.Equal, value };
 };
 
-const evalWorkloadChange = debounce(duration.search, (event: { target: { value: string }; }) => {
-  const value = event.target.value;
-  evalWorkloadFilter.value.value = value;
+/**
+ * Handles workload filter changes with debouncing
+ * @param event - Input event containing the value
+ */
+const handleWorkloadFilterChange = debounce(duration.search, (event: any) => {
+  workloadFilter.value.value = event.target.value;
 });
 
-const failNumChange = debounce(duration.search, (event: { target: { value: string }; }) => {
-  const value = event.target.value;
-  failNumFilter.value.value = value;
+/**
+ * Handles failure count filter changes with debouncing
+ * @param event - Input event containing the value
+ */
+const handleFailureCountFilterChange = debounce(duration.search, (event: any) => {
+  failureCountFilter.value.value = event.target.value;
 });
 
-const totalNumChange = debounce(duration.search, (event: { target: { value: string }; }) => {
-  const value = event.target.value;
-  totalNumFilter.value.value = value;
+/**
+ * Handles total count filter changes with debouncing
+ * @param event - Input event containing the value
+ */
+const handleTotalCountFilterChange = debounce(duration.search, (event: any) => {
+  totalCountFilter.value.value = event.target.value;
 });
 
-const getData = () => {
-  // 包装数据
-  const _filters: { key: string; op: string; value: boolean | string | string[] }[] = cloneDeep(filters.value);
-  if (overdue.value) {
-    _filters.push({ key: 'overdue', op: 'EQUAL', value: true });
+// ================================
+// SEARCH CRITERIA BUILDING
+// ================================
+/**
+ * Builds the complete search criteria array from all active filters
+ * @returns Array of search criteria for API calls
+ */
+const buildSearchCriteria = () => {
+  const searchCriteria: SearchCriteria[] = cloneDeep(searchFilters.value);
+
+  // Add overdue filter if enabled
+  if (isOverdueFilterEnabled.value) {
+    searchCriteria.push({ key: 'overdue', op: SearchCriteria.OpEnum.Equal, value: true });
   }
 
+  // Add sprint filter if selected
   if (checkedSprintId.value) {
-    _filters.push({ key: 'sprintId', op: 'EQUAL', value: checkedSprintId.value });
+    searchCriteria.push({ key: 'sprintId', op: SearchCriteria.OpEnum.Equal, value: checkedSprintId.value });
   }
 
+  // Add tag filters if any tags are selected
   if (checkedTagIds.value.length) {
-    const value: string[] = [];
-    checkedTagIds.value.forEach(item => {
-      value.push(item);
-    });
-    _filters.push({ key: 'tagId', op: 'IN', value });
+    const tagValues: string[] = [...checkedTagIds.value];
+    searchCriteria.push({ key: 'tagId', op: SearchCriteria.OpEnum.In, value: tagValues });
   }
 
+  // Add target parent ID filter if set
   if (targetParentIdFilter.value.value) {
-    _filters.push({ ...(targetParentIdFilter.value as { key: string; op: string; value: string; }) });
+    searchCriteria.push({ ...targetParentIdFilter.value });
   }
 
+  // Add target ID filter if set
   if (targetIdFilter.value.value) {
-    _filters.push({ ...(targetIdFilter.value as { key: string; op: string; value: string; }) });
+    searchCriteria.push({ ...targetIdFilter.value });
   }
 
-  if (evalWorkloadFilter.value.value) {
-    _filters.push({ ...(evalWorkloadFilter.value as { key: string; op: string; value: string; }) });
+  // Add workload filter if set
+  if (workloadFilter.value.value) {
+    searchCriteria.push({ ...workloadFilter.value });
   }
 
-  if (failNumFilter.value.value) {
-    _filters.push({ ...(failNumFilter.value as { key: string; op: string; value: string; }) });
+  // Add failure count filter if set
+  if (failureCountFilter.value.value) {
+    searchCriteria.push({ ...failureCountFilter.value });
   }
 
-  if (totalNumFilter.value.value) {
-    _filters.push({ ...(totalNumFilter.value as { key: string; op: string; value: string; }) });
+  // Add total count filter if set
+  if (totalCountFilter.value.value) {
+    searchCriteria.push({ ...totalCountFilter.value });
   }
 
-  return _filters;
+  return searchCriteria;
 };
 
-const initialize = async () => {
-  if (!db) {
-    db = new XCanDexie<{ id: string; data: any; }>('parameter');
+// ================================
+// INITIALIZATION & DATA LOADING
+// ================================
+/**
+ * Initializes the component with saved data from database
+ * Loads user preferences and search criteria
+ */
+const initializeComponent = async () => {
+  if (!database) {
+    database = new XCanDexie<{ id: string; data: any; }>('parameter');
   }
 
-  // 设置统计区域展开收起
-  const [, data] = await db.get(dbCountKey.value);
-  emit('update:collapse', !!data?.data);
+  // Load statistics panel collapse state
+  const [, collapseData] = await database.get(dbCountKey.value);
+  emit('update:collapse', !!collapseData?.data);
 
-  // 设置任务列表展现形式
-  const [, data1] = await db.get(dbViewModeKey.value);
-  const viewMode = ['detail', 'table', 'kanban', 'gantt'].includes(data1?.data) ? data1?.data : 'detail';
+  // Load task list view mode
+  const [, viewModeData] = await database.get(dbViewModeKey.value);
+  const viewMode = [TaskViewMode.flat, TaskViewMode.table, TaskViewMode.kanban, TaskViewMode.gantt].includes(viewModeData?.data) ? viewModeData?.data : TaskViewMode.flat;
   emit('viewModeChange', viewMode);
 
-  // 设置是否按模块分组
-  const [, dataModule] = await db.get(dbModuleKey.value);
-  moduleFlag.value = dataModule?.data === 'true';
-  emit('update:moduleFlag', moduleFlag.value);
+  // Load module grouping preference
+  const [, moduleData] = await database.get(dbModuleKey.value);
+  isModuleGroupingEnabled.value = moduleData?.data === 'true';
+  emit('update:moduleFlag', isModuleGroupingEnabled.value);
 
-  // 设置搜索条件数据
-  const [, data2] = await db.get(dbParamsKey.value);
-  const dbData = data2?.data;
-  if (dbData) {
+  // Load search criteria data
+  const [, searchData] = await database.get(dbParamsKey.value);
+  const savedSearchData = searchData?.data;
+  if (savedSearchData) {
     const valueMap: { [key: string]: string | string[] } = {};
     const taskTypeMap: { [key: string]: string } = {};
-    if (Object.prototype.hasOwnProperty.call(dbData, 'a')) {
-      filters.value = dbData.a || [];
+    if (Object.prototype.hasOwnProperty.call(savedSearchData, 'searchFilters')) {
+      searchFilters.value = savedSearchData.searchFilters || [];
       const dateTimeKeys = ['createdDate', 'startDate', 'deadlineDate', 'processedDate', 'confirmedDate', 'completedDate', 'canceledDate', 'execDate', 'lastModifiedDate'];
       const taskTypeKeys = ['taskType'];
       const dateTimeMap: { [key: string]: string[] } = {};
-      filters.value.every(({ key, value }) => {
-        if (dateTimeKeys.includes(key)) {
-          if (dateTimeMap[key]) {
-            dateTimeMap[key].push(value);
-          } else {
-            dateTimeMap[key] = [value];
+      searchFilters.value.every(({ key, value }) => {
+        if (key && dateTimeKeys.includes(key)) {
+          if (value !== undefined) {
+            if (dateTimeMap[key]) {
+              dateTimeMap[key].push(value as string);
+            } else {
+              dateTimeMap[key] = [value as string];
+            }
           }
-        } else if (taskTypeKeys.includes(key)) {
-          taskTypeMap[key] = value;
-          valueMap[key] = value;
+        } else if (key && taskTypeKeys.includes(key)) {
+          if (value !== undefined) {
+            taskTypeMap[key] = value;
+            valueMap[key] = value;
+          }
         } else {
-          valueMap[key] = value;
+          if (key && value !== undefined) {
+            valueMap[key] = value;
+          }
         }
 
         return true;
@@ -592,98 +749,98 @@ const initialize = async () => {
         return true;
       });
     } else {
-      filters.value = [];
+      searchFilters.value = [];
     }
 
-    if (Object.prototype.hasOwnProperty.call(dbData, 'b')) {
-      overdue.value = dbData.b || false;
+    if (Object.prototype.hasOwnProperty.call(savedSearchData, 'isOverdueEnabled')) {
+      isOverdueFilterEnabled.value = savedSearchData.isOverdueEnabled || false;
     } else {
-      overdue.value = false;
+      isOverdueFilterEnabled.value = false;
     }
 
-    // 从迭代跳转过来，需要替换为该迭代
+    // Replace with the sprint when navigating from sprint
     if (props.sprintId) {
       checkedSprintId.value = props.sprintId;
     } else {
-      if (Object.prototype.hasOwnProperty.call(dbData, 'c')) {
-        checkedSprintId.value = dbData.c;
+      if (Object.prototype.hasOwnProperty.call(savedSearchData, 'selectedSprintId')) {
+        checkedSprintId.value = savedSearchData.selectedSprintId;
       } else {
         checkedSprintId.value = undefined;
       }
     }
 
     if (props.sprintName) {
-      selectedSprint.value = formatData({ id: props.sprintId, name: props.sprintName });
+      selectedSprintOption.value = formatDisplayData({ id: props.sprintId, name: props.sprintName });
     } else {
-      if (Object.prototype.hasOwnProperty.call(dbData, 'd')) {
-        selectedSprint.value = dbData.d;
+      if (Object.prototype.hasOwnProperty.call(savedSearchData, 'selectedSprintOption')) {
+        selectedSprintOption.value = savedSearchData.selectedSprintOption;
       } else {
-        selectedSprint.value = undefined;
+        selectedSprintOption.value = undefined;
       }
     }
 
-    if (Object.prototype.hasOwnProperty.call(dbData, 'e')) {
-      checkedTagIds.value = dbData.e || [];
+    if (Object.prototype.hasOwnProperty.call(savedSearchData, 'selectedTagIds')) {
+      checkedTagIds.value = savedSearchData.selectedTagIds || [];
     } else {
       checkedTagIds.value = [];
     }
 
-    if (Object.prototype.hasOwnProperty.call(dbData, 'f')) {
-      selectedTags.value = dbData.f || [];
+    if (Object.prototype.hasOwnProperty.call(savedSearchData, 'selectedTagOptions')) {
+      selectedTagOptions.value = savedSearchData.selectedTagOptions || [];
     } else {
-      selectedTags.value = [];
+      selectedTagOptions.value = [];
     }
 
-    if (Object.prototype.hasOwnProperty.call(dbData, 'g')) {
-      evalWorkloadFilter.value = dbData.g || { key: 'evalWorkload', op: 'EQUAL', value: undefined };
+    if (Object.prototype.hasOwnProperty.call(savedSearchData, 'workloadFilter')) {
+      workloadFilter.value = savedSearchData.workloadFilter || { key: 'evalWorkload', op: SearchCriteria.OpEnum.Equal, value: undefined };
     } else {
-      evalWorkloadFilter.value = { key: 'evalWorkload', op: 'EQUAL', value: undefined };
+      workloadFilter.value = { key: 'evalWorkload', op: SearchCriteria.OpEnum.Equal, value: undefined };
     }
 
-    if (Object.prototype.hasOwnProperty.call(dbData, 'h')) {
-      failNumFilter.value = dbData.h || { key: 'failNum', op: 'EQUAL', value: undefined };
+    if (Object.prototype.hasOwnProperty.call(savedSearchData, 'failureCountFilter')) {
+      failureCountFilter.value = savedSearchData.failureCountFilter || { key: 'failNum', op: SearchCriteria.OpEnum.Equal, value: undefined };
     } else {
-      failNumFilter.value = { key: 'failNum', op: 'EQUAL', value: undefined };
+      failureCountFilter.value = { key: 'failNum', op: SearchCriteria.OpEnum.Equal, value: undefined };
     }
 
-    if (Object.prototype.hasOwnProperty.call(dbData, 'i')) {
-      totalNumFilter.value = dbData.i || { key: 'totalNum', op: 'EQUAL', value: undefined };
+    if (Object.prototype.hasOwnProperty.call(savedSearchData, 'totalCountFilter')) {
+      totalCountFilter.value = savedSearchData.totalCountFilter || { key: 'totalNum', op: SearchCriteria.OpEnum.Equal, value: undefined };
     } else {
-      totalNumFilter.value = { key: 'totalNum', op: 'EQUAL', value: undefined };
+      totalCountFilter.value = { key: 'totalNum', op: SearchCriteria.OpEnum.Equal, value: undefined };
     }
 
-    if (Object.prototype.hasOwnProperty.call(dbData, 'j')) {
-      targetParentIdFilter.value = dbData.j || { key: 'targetParentId', op: 'EQUAL', value: undefined };
+    if (Object.prototype.hasOwnProperty.call(savedSearchData, 'targetParentIdFilter')) {
+      targetParentIdFilter.value = savedSearchData.targetParentIdFilter || { key: 'targetParentId', op: SearchCriteria.OpEnum.Equal, value: undefined };
     } else {
-      targetParentIdFilter.value = { key: 'targetParentId', op: 'EQUAL', value: undefined };
+      targetParentIdFilter.value = { key: 'targetParentId', op: SearchCriteria.OpEnum.Equal, value: undefined };
     }
 
-    if (Object.prototype.hasOwnProperty.call(dbData, 'k')) {
-      targetIdFilter.value = dbData.k || { key: 'targetId', op: 'EQUAL', value: undefined };
+    if (Object.prototype.hasOwnProperty.call(savedSearchData, 'targetIdFilter')) {
+      targetIdFilter.value = savedSearchData.targetIdFilter || { key: 'targetId', op: SearchCriteria.OpEnum.Equal, value: undefined };
     } else {
-      targetIdFilter.value = { key: 'targetId', op: 'EQUAL', value: undefined };
+      targetIdFilter.value = { key: 'targetId', op: SearchCriteria.OpEnum.Equal, value: undefined };
     }
 
     const configs:{valueKey: string; value: string|string[]}[] = [];
-    // 非查询面板的快速筛选
+    // Quick filters outside search panel
     const taskTypeKeys = Object.values(taskTypeMap);
     if (taskTypeKeys.length) {
       taskTypeKeys.forEach(i => {
-        selectedMenuMap.value.set(i, { key: i });
+        selectedQuickSearchItems.value.set(i, { key: i });
       });
       configs.push({
         valueKey: 'taskType',
         value: taskTypeKeys[0]
       });
       if (Object.keys(valueMap).length === taskTypeKeys.length) {
-        emit('change', filters.value);
+        emit('change', searchFilters.value);
       }
     }
 
-    // 设置搜索面板数据
+    // Set search panel data
     if (typeof searchPanelRef.value?.setConfigs === 'function') {
       if (Object.keys(valueMap).length) {
-        // 其他数据设置为空
+        // Set other data to empty
         configs.push(...searchOptions.map(item => {
           return {
             valueKey: item.valueKey,
@@ -697,11 +854,14 @@ const initialize = async () => {
     return;
   }
 
-  // 没有缓存数据，需要重置搜索面板数据
+  // No cached data, need to reset search panel data
   resetData();
   resetSearchPanel();
 };
 
+/**
+ * Resets the search panel to default state
+ */
 const resetSearchPanel = () => {
   if (typeof searchPanelRef.value?.setConfigs === 'function') {
     const configs = searchOptions.map(item => {
@@ -715,37 +875,40 @@ const resetSearchPanel = () => {
   }
 };
 
+/**
+ * Resets all component data to initial state
+ */
 const resetData = () => {
-  quickDateMap.value.clear();
-  selectedMenuMap.value.clear();
-  overdue.value = false;
+  quickSearchDateMap.value.clear();
+  selectedQuickSearchItems.value.clear();
+  isOverdueFilterEnabled.value = false;
 
-  sprintSelectVisible.value = false;
-  selectedSprint.value = undefined;
+  isSprintSelectorVisible.value = false;
+  selectedSprintOption.value = undefined;
   checkedSprintId.value = undefined;
 
-  tagSelectVisible.value = false;
-  selectedTags.value = [];
+  isTagSelectorVisible.value = false;
+  selectedTagOptions.value = [];
   checkedTagIds.value = [];
 
-  filters.value = [];
+  searchFilters.value = [];
 
-  targetParentIdFilter.value = { key: 'targetParentId', op: 'EQUAL', value: undefined };
-  targetIdFilter.value = { key: 'targetId', op: 'EQUAL', value: undefined };
+  targetParentIdFilter.value = { key: 'targetParentId', op: SearchCriteria.OpEnum.Equal, value: undefined };
+  targetIdFilter.value = { key: 'targetId', op: SearchCriteria.OpEnum.Equal, value: undefined };
 
-  evalWorkloadFilter.value = { key: 'evalWorkload', op: 'EQUAL', value: undefined };
-  failNumFilter.value = { key: 'failNum', op: 'EQUAL', value: undefined };
-  totalNumFilter.value = { key: 'totalNum', op: 'EQUAL', value: undefined };
+  workloadFilter.value = { key: 'evalWorkload', op: SearchCriteria.OpEnum.Equal, value: undefined };
+  failureCountFilter.value = { key: 'failNum', op: SearchCriteria.OpEnum.Equal, value: undefined };
+  totalCountFilter.value = { key: 'totalNum', op: SearchCriteria.OpEnum.Equal, value: undefined };
 };
 
 onMounted(async () => {
-  await loadTaskTypeEnum();
+  await loadTaskTypeOptions();
   watch([() => dbParamsKey.value, () => dbCountKey.value, () => dbViewModeKey.value], ([key1, key2, key3]) => {
     if (!key1 || !key2 || !key3) {
       return;
     }
 
-    initialize();
+    initializeComponent();
   }, { immediate: true });
 
   watch(() => route.hash, () => {
@@ -770,210 +933,211 @@ onMounted(async () => {
     }
 
     if (sprintName) {
-      selectedSprint.value = formatData({ id: sprintId, name: sprintName });
+      selectedSprintOption.value = formatDisplayData({ id: sprintId, name: sprintName });
     }
   }, { immediate: false });
 
   watch(
     [
-      () => filters.value,
-      () => overdue.value,
+      () => searchFilters.value,
+      () => isOverdueFilterEnabled.value,
       () => checkedSprintId.value,
       () => checkedTagIds.value.length,
       () => targetParentIdFilter.value,
       () => targetIdFilter.value,
-      () => evalWorkloadFilter.value,
-      () => failNumFilter.value,
-      () => totalNumFilter.value,
-      () => selectedMenuMap.value
+      () => workloadFilter.value,
+      () => failureCountFilter.value,
+      () => totalCountFilter.value,
+      () => selectedQuickSearchItems.value
     ], () => {
-      const _filters = filters.value;
+      const _filters = searchFilters.value;
       if (!(_filters.length ||
-        overdue.value ||
-        // !!checkedSprintId.value ||
-        // !!checkedTagIds.value.length ||
+        isOverdueFilterEnabled.value ||
         !!targetParentIdFilter.value.value ||
         !!targetIdFilter.value.value ||
-        !!evalWorkloadFilter.value.value ||
-        !!failNumFilter.value.value ||
-        !!totalNumFilter.value.value)) {
-        selectedMenuMap.value.clear();
-        selectedMenuMap.value.set('none', { key: 'none' });
+        !!workloadFilter.value.value ||
+        !!failureCountFilter.value.value ||
+        !!totalCountFilter.value.value)) {
+        selectedQuickSearchItems.value.clear();
+        selectedQuickSearchItems.value.set('none', { key: 'none' });
 
-        emit('change', getData());
+        emit('change', buildSearchCriteria());
       } else {
-        // 删除快速查询选中的【所有】选项
-        selectedMenuMap.value.delete('none');
+        // Remove the selected "All" option from quick search
+        selectedQuickSearchItems.value.delete('none');
 
-        // 设置快速搜索
+        // Set up quick search
         const createdBy = _filters.find(item => item.key === 'createdBy')?.value;
-        if (createdBy && createdBy === userId.value) {
-          selectedMenuMap.value.set('createdBy', { key: 'createdBy' });
+        if (createdBy && createdBy === currentUserId.value) {
+          selectedQuickSearchItems.value.set('createdBy', { key: 'createdBy' });
         } else {
-          selectedMenuMap.value.delete('createdBy');
+          selectedQuickSearchItems.value.delete('createdBy');
         }
 
         const status = _filters.find(item => item.key === 'status')?.value;
 
         const assigneeId = _filters.find(item => item.key === 'assigneeId')?.value;
-        if (status && status === 'PENDING' && assigneeId === userId.value) {
-          selectedMenuMap.value.set('assigneeId', { key: 'assigneeId' });
+        if (status && status === TaskStatusEnum.PENDING && assigneeId === currentUserId.value) {
+          selectedQuickSearchItems.value.set('assigneeId', { key: 'assigneeId' });
 
-          // 删除【待我确认】
-          selectedMenuMap.value.delete('confirmorId');
-          // 删除【我处理中】
-          selectedMenuMap.value.delete('progress');
+          // Remove "Awaiting my confirmation"
+          selectedQuickSearchItems.value.delete('confirmorId');
+          // Remove "In my progress"
+          selectedQuickSearchItems.value.delete('progress');
         } else {
-          selectedMenuMap.value.delete('assigneeId');
+          selectedQuickSearchItems.value.delete('assigneeId');
         }
 
-        if (status && status === 'IN_PROGRESS' && assigneeId === userId.value) {
-          selectedMenuMap.value.set('progress', { key: 'progress' });
+        if (status && status === TaskStatusEnum.IN_PROGRESS && assigneeId === currentUserId.value) {
+          selectedQuickSearchItems.value.set('progress', { key: 'progress' });
 
-          // 删除【待我确认】
-          selectedMenuMap.value.delete('confirmorId');
-          // 删除【待我处理】
-          selectedMenuMap.value.delete('assigneeId');
+          // Remove "Awaiting my confirmation"
+          selectedQuickSearchItems.value.delete('confirmorId');
+          // Remove "Awaiting my processing"
+          selectedQuickSearchItems.value.delete('assigneeId');
         } else {
-          selectedMenuMap.value.delete('progress');
+          selectedQuickSearchItems.value.delete('progress');
         }
 
         const confirmorId = _filters.find(item => item.key === 'confirmorId')?.value;
-        if (status && status === 'CONFIRMING' && confirmorId === userId.value) {
-          selectedMenuMap.value.set('confirmorId', { key: 'confirmorId' });
+        if (status && status === TaskStatusEnum.CONFIRMING && confirmorId === currentUserId.value) {
+          selectedQuickSearchItems.value.set('confirmorId', { key: 'confirmorId' });
 
-          // 删除【待我处理】
-          selectedMenuMap.value.delete('assigneeId');
-          // 删除【我处理中】
-          selectedMenuMap.value.delete('progress');
+          // Remove "Awaiting my processing"
+          selectedQuickSearchItems.value.delete('assigneeId');
+          // Remove "In my progress"
+          selectedQuickSearchItems.value.delete('progress');
         } else {
-          selectedMenuMap.value.delete('confirmorId');
+          selectedQuickSearchItems.value.delete('confirmorId');
         }
 
-        // 任务类型
+        // Task type
         const taskType = _filters.find(item => item.key === 'taskType')?.value;
         if (taskType) {
-          selectedMenuMap.value.set(taskType, { key: taskType });
+          selectedQuickSearchItems.value.set(taskType, { key: taskType });
         } else {
-          ['REQUIREMENT', 'STORY', 'TASK', 'BUG', 'API_TEST', 'SCENARIO_TEST'].forEach(item => {
-            selectedMenuMap.value.delete(item);
+          [TaskType.REQUIREMENT, TaskType.STORY, TaskType.TASK, TaskType.BUG, TaskType.API_TEST, TaskType.SCENARIO_TEST].forEach(item => {
+            selectedQuickSearchItems.value.delete(item);
           });
         }
 
-        if (quickDateMap.value.size > 0) {
-          selectedMenuMap.value.delete('lastDay');
-          selectedMenuMap.value.delete('lastThreeDays');
-          selectedMenuMap.value.delete('lastWeek');
+        if (quickSearchDateMap.value.size > 0) {
+          selectedQuickSearchItems.value.delete('lastDay');
+          selectedQuickSearchItems.value.delete('lastThreeDays');
+          selectedQuickSearchItems.value.delete('lastWeek');
 
-          const createdDateStart = _filters.find(item => item.key === 'createdDate' && item.op === 'GREATER_THAN_EQUAL')?.value;
-          const createdDateEnd = _filters.find(item => item.key === 'createdDate' && item.op === 'LESS_THAN_EQUAL')?.value;
+          const createdDateStart = _filters.find(item => item.key === 'createdDate' &&
+            item.op === SearchCriteria.OpEnum.GreaterThanEqual)?.value;
+          const createdDateEnd = _filters.find(item => item.key === 'createdDate' &&
+            item.op === SearchCriteria.OpEnum.LessThanEqual)?.value;
           const dateString = [createdDateStart, createdDateEnd];
-          const entries = quickDateMap.value.entries();
+          const entries = quickSearchDateMap.value.entries();
           for (const [key, value] of entries) {
             if (isEqual(value, dateString)) {
-              selectedMenuMap.value.set(key, { key });
+              selectedQuickSearchItems.value.set(key, { key });
             }
           }
-
-          quickDateMap.value.clear();
+          quickSearchDateMap.value.clear();
         }
 
-        emit('change', getData());
+        emit('change', buildSearchCriteria());
       }
 
-      // 保存到db
-      if (db) {
+      // Save to database
+      if (database) {
         const dbData: {
-          a?: {
-            key: string;
-            op: string;
-            value: string;
-          }[];
-          b?: true;
-          c?: string;
-          d?: {
+          searchFilters?: SearchCriteria[];
+          isOverdueEnabled?: true;
+          selectedSprintId?: string;
+          selectedSprintOption?: {
             id: string;
             name: string;
             showTitle: string;
             showName: string;
           };
-          e?: string[];
-          f?: {
+          selectedTagIds?: string[];
+          selectedTagOptions?: {
             id: string;
             name: string;
             showTitle: string;
             showName: string;
           }[];
-          g?: { key: 'evalWorkload'; op: string; value: string | undefined; };
-          h?: { key: 'failNum'; op: string; value: string | undefined; };
-          i?: { key: 'totalNum'; op: string; value: string | undefined; };
-          j?: { key: 'targetParentId'; op: string; value: string | undefined; };
-          k?: { key: 'targetId'; op: string; value: string | undefined; };
+          workloadFilter?: SearchCriteria;
+          failureCountFilter?: SearchCriteria;
+          totalCountFilter?: SearchCriteria;
+          targetParentIdFilter?: SearchCriteria;
+          targetIdFilter?: SearchCriteria;
         } = {};
         if (_filters.length) {
-          dbData.a = cloneDeep(_filters);
+          dbData.searchFilters = cloneDeep(_filters);
         }
 
-        if (overdue.value) {
-          dbData.b = overdue.value;
+        if (isOverdueFilterEnabled.value) {
+          dbData.isOverdueEnabled = isOverdueFilterEnabled.value;
         }
 
         if (checkedSprintId.value) {
-          dbData.c = checkedSprintId.value;
+          dbData.selectedSprintId = checkedSprintId.value;
         }
 
-        if (selectedSprint.value) {
-          dbData.d = cloneDeep(selectedSprint.value);
+        if (selectedSprintOption.value) {
+          dbData.selectedSprintOption = cloneDeep(selectedSprintOption.value);
         }
 
         if (checkedTagIds.value.length) {
-          dbData.e = cloneDeep(checkedTagIds.value);
+          dbData.selectedTagIds = cloneDeep(checkedTagIds.value);
         }
 
-        if (selectedTags.value.length) {
-          dbData.f = cloneDeep(selectedTags.value);
+        if (selectedTagOptions.value.length) {
+          dbData.selectedTagOptions = cloneDeep(selectedTagOptions.value);
         }
 
-        if (evalWorkloadFilter.value.value) {
-          dbData.g = cloneDeep(evalWorkloadFilter.value);
+        if (workloadFilter.value.value) {
+          dbData.workloadFilter = cloneDeep(workloadFilter.value);
         }
 
-        if (failNumFilter.value.value) {
-          dbData.h = cloneDeep(failNumFilter.value);
+        if (failureCountFilter.value.value) {
+          dbData.failureCountFilter = cloneDeep(failureCountFilter.value);
         }
 
-        if (totalNumFilter.value.value) {
-          dbData.i = cloneDeep(totalNumFilter.value);
+        if (totalCountFilter.value.value) {
+          dbData.totalCountFilter = cloneDeep(totalCountFilter.value);
         }
 
         if (targetParentIdFilter.value.value) {
-          dbData.j = cloneDeep(targetParentIdFilter.value);
+          dbData.targetParentIdFilter = cloneDeep(targetParentIdFilter.value);
         }
 
         if (targetIdFilter.value.value) {
-          dbData.k = cloneDeep(targetIdFilter.value);
+          dbData.targetIdFilter = cloneDeep(targetIdFilter.value);
         }
 
         if (Object.keys(dbData).length) {
-          db.add({
+          database.add({
             id: dbParamsKey.value,
             data: dbData
           });
         } else {
-          db.delete(dbParamsKey.value);
+          database.delete(dbParamsKey.value);
         }
       }
     }, { immediate: false, deep: false });
 });
 
-const userId = computed(() => {
+/**
+ * Gets the current user ID from props
+ */
+const currentUserId = computed(() => {
   return props.userInfo?.id;
 });
 
+/**
+ * Generates base key for database storage based on user and project
+ */
 const dbBaseKey = computed(() => {
   let key = '';
-  if (userId.value) {
-    key = userId.value;
+  if (currentUserId.value) {
+    key = currentUserId.value;
   }
 
   if (props.projectId) {
@@ -983,121 +1147,151 @@ const dbBaseKey = computed(() => {
   return key;
 });
 
+/**
+ * Database key for search parameters storage
+ */
 const dbParamsKey = computed(() => {
-  return btoa(dbBaseKey.value + 'task');
+  return btoa(dbBaseKey.value + TaskType.TASK);
 });
 
+/**
+ * Database key for statistics panel collapse state
+ */
 const dbCountKey = computed(() => {
   return btoa(dbBaseKey.value + 'count');
 });
 
+/**
+ * Database key for view mode preference
+ */
 const dbViewModeKey = computed(() => {
   return btoa(dbBaseKey.value + 'viewMode');
 });
 
+/**
+ * Database key for module grouping preference
+ */
 const dbModuleKey = computed(() => {
   return btoa(dbBaseKey.value + 'moduleFlag');
 });
 
+/**
+ * Determines whether to show the add sprint button
+ */
 const showAddSprintBtn = computed(() => {
-  if (sprintSelectVisible.value) {
+  if (isSprintSelectorVisible.value) {
     return false;
   }
 
-  if (selectedSprint.value) {
-    return false;
-  }
-
-  return true;
+  return !selectedSprintOption.value;
 });
 
+/**
+ * Determines whether to show the add tag button (max 3 tags)
+ */
 const showAddTagBtn = computed(() => {
-  if (tagSelectVisible.value) {
+  if (isTagSelectorVisible.value) {
     return false;
   }
 
-  if (selectedTags.value.length >= 3) {
-    return false;
-  }
-
-  return true;
+  return selectedTagOptions.value.length < 3;
 });
 
+/**
+ * API parameters for target parent ID filter
+ */
 const apiParams = computed(() => {
   return {
     serviceId: targetParentIdFilter.value.value
   };
 });
 
+/**
+ * Current task type from search filters
+ */
 const taskType = computed(() => {
-  return filters.value.find(item => item.key === 'taskType')?.value;
+  return searchFilters.value.find(item => item.key === 'taskType')?.value;
 });
 
+/**
+ * Checks if current task type is API test
+ */
 const isAPITest = computed(() => {
-  return taskType.value === 'API_TEST';
+  return taskType.value === TaskType.API_TEST;
 });
 
+/**
+ * Checks if current task type is scenario test
+ */
 const isScenarioTest = computed(() => {
-  return taskType.value === 'SCENARIO_TEST';
+  return taskType.value === TaskType.SCENARIO_TEST;
 });
 
-// 'table' | 'detail' | 'kanban'
 const modeOptions = [
   {
-    key: 'detail',
+    key: TaskViewMode.flat,
     name: t('task.searchPanel.viewModes.detail'),
     label: ''
 
   },
   {
-    key: 'table',
+    key: TaskViewMode.table,
     name: t('task.searchPanel.viewModes.table'),
     label: ''
   },
   {
-    key: 'kanban',
+    key: TaskViewMode.kanban,
     name: t('task.searchPanel.viewModes.kanban'),
     label: ''
   },
   {
-    key: 'gantt',
+    key: TaskViewMode.gantt,
     name: t('task.searchPanel.viewModes.gantt'),
     label: ''
   }
 ];
 
+/**
+ * Gets the display title for current view mode
+ */
 const modeTitle = computed(() => {
-  if (props.viewMode === 'kanban') {
+  if (props.viewMode === TaskViewMode.kanban) {
     return t('task.searchPanel.viewModes.kanban');
   }
 
-  if (props.viewMode === 'detail') {
+  if (props.viewMode === TaskViewMode.flat) {
     return t('task.searchPanel.viewModes.detail');
   }
 
-  if (props.viewMode === 'table') {
+  if (props.viewMode === TaskViewMode.table) {
     return t('task.searchPanel.viewModes.table');
   }
 
   return t('task.searchPanel.viewModes.gantt');
 });
 
+/**
+ * Gets the icon class for current view mode
+ */
 const modeIcon = computed(() => {
-  if (props.viewMode === 'kanban') {
+  if (props.viewMode === TaskViewMode.kanban) {
     return 'icon-kanbanshitu';
   }
 
-  if (props.viewMode === 'detail') {
+  if (props.viewMode === TaskViewMode.flat) {
     return 'icon-pingpushitu';
   }
 
-  if (props.viewMode === 'table') {
+  if (props.viewMode === TaskViewMode.table) {
     return 'icon-liebiaoshitu';
   }
 
   return 'icon-yemianshitu';
 });
 
+/**
+ * Quick search menu items for filtering tasks
+ */
 const menuItems = computed(():SearchPanelMenuItem[] => {
   return [
     {
@@ -1120,7 +1314,7 @@ const menuItems = computed(():SearchPanelMenuItem[] => {
       key: 'confirmorId',
       name: t('task.searchPanel.menuItems.myConfirm')
     },
-    ...taskTypeList.value,
+    ...taskTypeOptions.value,
     {
       key: 'lastDay',
       name: t('task.searchPanel.menuItems.lastDay')
@@ -1148,12 +1342,6 @@ const searchOptions = [
     placeholder: t('task.searchPanel.searchOptions.status'),
     enumKey: TaskStatusEnum
   },
-  // {
-  //   type: 'select-enum',
-  //   valueKey: 'taskType',
-  //   placeholder: '选择任务类型',
-  //   enumKey: 'TaskType'
-  // },
   {
     type: 'select-enum' as const,
     valueKey: 'priority',
@@ -1337,22 +1525,22 @@ const sortMenuItems = [
   {
     key: 'createdByName',
     name: t('task.searchPanel.sortOptions.createdByName'),
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   },
   {
     key: 'assigneeName',
     name: t('task.searchPanel.sortOptions.assigneeName'),
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   },
   {
     key: 'priority',
     name: t('task.searchPanel.sortOptions.priority'),
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   },
   {
     key: 'deadlineDate',
     name: t('task.searchPanel.sortOptions.deadlineDate'),
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   }];
 </script>
 <template>
@@ -1367,46 +1555,46 @@ const sortMenuItems = [
           <div
             v-for="item in menuItems"
             :key="item.key"
-            :class="{ 'active-key': selectedMenuMap.has(item.key) }"
+            :class="{ 'active-key': selectedQuickSearchItems.has(item.key) }"
             class="px-2.5 h-6 leading-6 mr-3 mb-3 rounded bg-gray-light cursor-pointer"
-            @click="menuItemClick(item)">
+            @click="handleQuickSearchMenuItemClick(item)">
             {{ item.name }}
           </div>
 
           <div class="inline-flex items-center mr-3 mb-3 space-x-1">
             <Switch
-              v-model:checked="overdue"
+              v-model:checked="isOverdueFilterEnabled"
               size="small"
-              @change="overdueChange">
+              @change="handleOverdueFilterToggle">
             </Switch>
             <span>{{ t('task.searchPanel.overdue') }}</span>
           </div>
 
           <div class="inline-flex items-center mr-3 mb-3 space-x-1">
             <Switch
-              v-model:checked="moduleFlag"
+              v-model:checked="isModuleGroupingEnabled"
               size="small"
               style="margin-left:0;"
-              @change="moduleFlagChange">
+              @change="handleModuleGroupingToggle">
             </Switch>
             <span>{{ t('task.searchPanel.moduleGroup') }}</span>
           </div>
 
-          <template v-if="selectedSprint?.id">
+          <template v-if="selectedSprintOption?.id">
             <Tag
-              :title="selectedSprint?.showTitle"
-              :class="checkedSprintId === selectedSprint.id ? 'sprint tag-checked' : ''"
+              :title="selectedSprintOption?.showTitle"
+              :class="checkedSprintId === selectedSprintOption.id ? 'sprint tag-checked' : ''"
               closable
               class="h-6 mr-5 mb-3 rounded-xl px-2.5"
-              @click="toggleSprint"
-              @close="deleteSprint">
-              {{ selectedSprint?.showName }}
+              @click="toggleSprintSelection"
+              @close="removeSelectedSprint">
+              {{ selectedSprintOption?.showName }}
             </Tag>
           </template>
 
           <Select
-            v-if="sprintSelectVisible && proTypeShowMap.showSprint"
-            :value="selectedSprint?.id"
+            v-if="isSprintSelectorVisible && projectTypeVisibilityMap.showSprint"
+            :value="selectedSprintOption?.id"
             size="small"
             class="w-43 h-7 transform-gpu -translate-y-0.5 mr-5 mb-3"
             :placeholder="t('task.list.search.sprintPlaceholder')"
@@ -1414,33 +1602,33 @@ const sortMenuItems = [
             autofocus
             :fieldNames="fieldNames"
             :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
-            @change="sprintChange"
-            @blur="sprintBlur" />
+            @change="handleSprintSelection"
+            @blur="hideSprintSelector" />
 
           <Button
-            v-if="showAddSprintBtn && proTypeShowMap.showSprint"
+            v-if="showAddSprintBtn && projectTypeVisibilityMap.showSprint"
             class="h-6 mr-5 mb-3 px-2.5 flex items-center"
             size="small"
-            @click="toSelectSprint">
+            @click="showSprintSelector">
             <Icon icon="icon-jia" class="text-3 mr-1" />
             <span>{{ t('task.list.search.sprint') }}</span>
           </Button>
 
           <Tag
-            v-for="item in selectedTags"
+            v-for="item in selectedTagOptions"
             :key="item.id"
             :title="item.showTitle"
             :class="checkedTagIds.includes(item.id) ? 'tag tag-checked' : ''"
             closable
             class="h-6 mb-3 rounded-xl px-2.5"
-            @click="toggleTag(item)"
-            @close="deleteTag(item)">
+            @click="toggleTagSelection(item)"
+            @close="removeSelectedTag(item)">
             {{ item.showName }}
           </Tag>
 
           <Select
-            v-if="tagSelectVisible"
-            :value="selectedTags"
+            v-if="isTagSelectorVisible"
+            :value="checkedTagIds"
             size="small"
             class="w-43 h-7 transform-gpu -translate-y-0.5 mb-3 mr-5"
             :placeholder="t('task.list.search.tagsPlaceholder')"
@@ -1448,24 +1636,24 @@ const sortMenuItems = [
             autofocus
             :fieldNames="fieldNames"
             :action="`${TESTER}/tag?projectId=${props.projectId}&fullTextSearch=true`"
-            @change="tagChange"
-            @blur="tagBlur" />
+            @change="handleTagSelection"
+            @blur="hideTagSelector" />
 
           <Button
             v-if="showAddTagBtn"
             class="h-6 px-2.5 mb-3 flex items-center mr-5"
             size="small"
-            @click="toSelectTag">
+            @click="showTagSelector">
             <Icon icon="icon-jia" class="text-3 mr-1" />
             <span>{{ t('task.list.search.tags') }}</span>
           </Button>
 
-          <template v-if="props.viewMode === 'kanban'">
+          <template v-if="props.viewMode === TaskViewMode.kanban">
             <DropdownSort
               :orderBy="props.orderBy"
               :orderSort="props.orderSort"
               :menuItems="sortMenuItems"
-              @click="toSort">
+              @click="handleSortingChange">
               <Button
                 size="small"
                 type="text"
@@ -1478,7 +1666,7 @@ const sortMenuItems = [
             <DropdownGroup
               :activeKey="props.groupKey"
               :menuItems="groupMenuItems"
-              @click="toGroup">
+              @click="handleGroupingChange">
               <Button
                 size="small"
                 type="text"
@@ -1497,7 +1685,7 @@ const sortMenuItems = [
         ref="searchPanelRef"
         class="flex-1"
         :options="searchOptions"
-        @change="searchPanelChange">
+        @change="handleSearchPanelChange">
         <template #status_option="record">
           <TaskStatus :value="record" />
         </template>
@@ -1534,7 +1722,7 @@ const sortMenuItems = [
             :placeholder="t('task.list.search.servicePlaceholder')"
             class="w-72 ml-2"
             showSearch
-            @change="targetParentIdChange">
+            @change="handleTargetParentIdChange">
             <template #option="record">
               <div class="text-3 leading-3 flex items-center h-6.5">
                 <IconText
@@ -1558,7 +1746,7 @@ const sortMenuItems = [
             :placeholder="t('task.list.search.apiPlaceholder')"
             class="w-72 ml-2"
             showSearch
-            @change="targetIdChange">
+            @change="handleTargetIdChange">
             <template #option="record">
               <div class="flex items-center">
                 <Icon
@@ -1579,7 +1767,7 @@ const sortMenuItems = [
             :placeholder="t('task.list.search.scenarioPlaceholder')"
             class="w-72 ml-2"
             showSearch
-            @change="targetIdChange">
+            @change="handleTargetIdChange">
             <template #option="record">
               <div class="flex items-center">
                 <Icon icon="icon-changjing" class="text-4 flex-shrink-0" />
@@ -1591,16 +1779,16 @@ const sortMenuItems = [
 
         <template #evalWorkload>
           <Input
-            :value="evalWorkloadFilter.value"
+            :value="workloadFilter.value"
             dataType="float"
             allowClear
             :max="100"
             :placeholder="t('task.list.search.workloadPlaceholder')"
             class="w-72 ml-2 scope-select"
-            @change="evalWorkloadChange">
+            @change="handleWorkloadFilterChange">
             <template #prefix>
               <SelectEnum
-                v-model:value="evalWorkloadFilter.op"
+                v-model:value="workloadFilter.op"
                 :bordered="false"
                 enumKey="NumberCompareCondition"
                 class="w-26" />
@@ -1610,16 +1798,16 @@ const sortMenuItems = [
 
         <template #failNum>
           <Input
-            :value="failNumFilter.value"
+            :value="failureCountFilter.value"
             dataType="float"
             allowClear
             :max="100"
             :placeholder="t('task.list.search.failNumPlaceholder')"
             class="w-72 ml-2 scope-select"
-            @change="failNumChange">
+            @change="handleFailureCountFilterChange">
             <template #prefix>
               <SelectEnum
-                v-model:value="failNumFilter.op"
+                v-model:value="failureCountFilter.op"
                 :bordered="false"
                 enumKey="NumberCompareCondition"
                 class="w-26" />
@@ -1629,16 +1817,16 @@ const sortMenuItems = [
 
         <template #totalNum>
           <Input
-            :value="totalNumFilter.value"
+            :value="totalCountFilter.value"
             dataType="float"
             allowClear
             :max="100"
             :placeholder="t('task.list.search.totalNumPlaceholder')"
             class="w-72 ml-2 scope-select"
-            @change="totalNumChange">
+            @change="handleTotalCountFilterChange">
             <template #prefix>
               <SelectEnum
-                v-model:value="totalNumFilter.op"
+                v-model:value="totalCountFilter.op"
                 :bordered="false"
                 enumKey="NumberCompareCondition"
                 class="w-26" />
@@ -1651,12 +1839,12 @@ const sortMenuItems = [
           class="flex-shrink-0 flex items-center pr-0"
           type="primary"
           size="small"
-          @click="toCreate">
+          @click="handleCreateTask">
           <div class="flex items-center">
             <Icon icon="icon-jia" class="text-3.5" />
             <span class="ml-1">{{ t('task.list.actions.addTask') }}</span>
           </div>
-          <Dropdown :menuItems="buttonDropdownMenuItems" @click="buttonDropdownClick">
+          <Dropdown :menuItems="buttonDropdownMenuItems" @click="handleButtonDropdownClick">
             <div class="w-5 h-5 flex items-center justify-center">
               <Icon icon="icon-more" />
             </div>
@@ -1670,7 +1858,7 @@ const sortMenuItems = [
           <Icon
             icon="icon-liuchengtu"
             class="text-4 cursor-pointer text-theme-content text-theme-text-hover flex-shrink-0"
-            @click="toViewFlowChart" />
+            @click="showFlowChart" />
         </Tooltip>
 
         <Tooltip
@@ -1681,7 +1869,7 @@ const sortMenuItems = [
             :noAuth="true"
             :value="[props.viewMode]"
             :menuItems="modeOptions"
-            @click="viewModeChange($event.key)">
+            @click="handleViewModeChange($event.key)">
             <div>
               <Icon
                 :icon="modeIcon"
@@ -1698,14 +1886,14 @@ const sortMenuItems = [
           <IconCount
             :value="!props.collapse"
             class="text-4 flex-shrink-0"
-            @click="toggleCollapse" />
+            @click="toggleStatisticsCollapse" />
         </Tooltip>
 
         <Tooltip
           arrowPointAtCenter
           placement="topLeft"
           :title="t('task.list.actions.refresh')">
-          <IconRefresh class="text-4 flex-shrink-0" @click="toRefresh" />
+          <IconRefresh class="text-4 flex-shrink-0" @click="refreshSearchResults" />
         </Tooltip>
       </div>
     </div>

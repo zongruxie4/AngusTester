@@ -12,7 +12,7 @@ import * as testerEnum from '@/enums/enums';
  */
 interface Props {
   enumKey: string;
-  value?: string;
+  value?: string | infra.SearchCriteria.OpEnum;
   excludes?: (value: {message:string;value:string;}) => boolean;
   lazy?: boolean;
   fieldNames?: { label: string; value: string; };

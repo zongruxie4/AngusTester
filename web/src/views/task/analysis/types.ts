@@ -1,16 +1,34 @@
+import { EnumMessage, AuthObjectType } from '@xcan-angus/infra';
+import { AnalysisDataSource, AnalysisTaskObject, AnalysisTaskTemplate } from '@/enums/enums';
 
-export interface Analysis {
+export interface AnalysisInfo {
   id?: string;
+  name: string;
   containsDataDetail: boolean;
-  object: 'CURRENT_PROJECT'| 'PLAN'| 'TESTER_ORG';
+  object: EnumMessage<AnalysisTaskObject>;
   timeRange: string;
-  resource: 'TASK'|'CASE';
+  resource: 'TASK' | 'CASE';
   description: string;
-  template: string;
+  template: EnumMessage<AnalysisTaskTemplate>;
   planId: string;
-  datasource: 'REAL_TIME_DATA'| 'SNAPSHOT_DATA';
-  orgType?: 'DEPT'|'USER'|'GROUP';
+  datasource: EnumMessage<AnalysisDataSource>;
+  orgType?: EnumMessage<AuthObjectType>;
   orgId?: string;
   customRange?: [string, string];
+}
+
+export interface EditAnalysisState {
+  id?: string;
   name: string;
+  containsDataDetail: boolean;
+  object: AnalysisTaskObject;
+  timeRange: string;
+  resource: 'TASK';
+  description: string;
+  template: AnalysisTaskTemplate;
+  planId: string;
+  datasource: AnalysisDataSource;
+  orgType?: AuthObjectType;
+  orgId?: string;
+  customRange?: [string, string];
 }

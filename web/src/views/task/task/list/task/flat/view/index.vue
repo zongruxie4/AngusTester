@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'v
 import { useI18n } from 'vue-i18n';
 import { Button, Popover, TabPane, Tabs } from 'ant-design-vue';
 import { Icon, modal, notification, Spin } from '@xcan-angus/vue-ui';
-import {toClipboard, http, utils, duration, appContext} from '@xcan-angus/infra';
+import { toClipboard, http, utils, duration, appContext } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { cloneDeep } from 'lodash-es';
 import { task } from '@/api/tester';

@@ -9,7 +9,7 @@ import { cloneDeep, isEqual } from 'lodash-es';
 import { XCanDexie } from '@xcan-angus/infra';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 
-import {MenuItem, SelectOption} from "@/views/function/analysis/list/types";
+import { MenuItem, SelectOption } from '@/views/function/analysis/list/types';
 
 const { t } = useI18n();
 
@@ -59,7 +59,7 @@ const emit = defineEmits<{
 
 const route = useRoute();
 
-let db: Dexie<{ id: string; data: any; }>;
+let db: XCanDexie<{ id: string; data: any; }>;
 
 const searchPanelRef = ref();
 
@@ -67,7 +67,6 @@ const searchPanelRef = ref();
 const quickDateMap = ref<Map<'lastDay' | 'lastThreeDays' | 'lastWeek', string[]>>(new Map());
 const selectedMenuMap = ref(new Map<string, Omit<MenuItem, 'name'>>());
 const overdue = ref(false); // 逾期
-const moduleFlag = ref(false); // 按模块分组
 
 const sprintSelectVisible = ref(false);
 const selectedSprint = ref<SelectOption>();

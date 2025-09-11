@@ -1,9 +1,15 @@
 import {CreatedAt, PeriodicCreationUnit} from '@xcan-angus/infra';
 
+export type LoadingProps = {
+  loading: boolean;
+}
+
 export type BasicProps = {
   projectId: string;
+  projectName?: string;
   userInfo?: { id: string; };
   appInfo?: { id: string; };
+  notify?: string;
 }
 
 // Time setting interface for CreatedDate component

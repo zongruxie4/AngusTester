@@ -4,148 +4,181 @@ import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { BrowserTab } from '@xcan-angus/vue-ui';
 import { IPane } from '@xcan-angus/infra';
+import { BasicProps } from '@/types/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  projectName: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined
 });
 
+// ASYNC COMPONENTS
 const TaskList = defineAsyncComponent(() => import('@/views/task/task/list/index.vue'));
 const TaskDetails = defineAsyncComponent(() => import('@/views/task/task/details/index.vue'));
 
+// COMPOSABLES
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
+
+// REACTIVE STATE
 const browserTabRef = ref();
 
-const sprintId = ref<string>();
-const sprintName = ref<string>();
-const taskId = ref<string>();
+const currentSprintId = ref<string>();
+const currentSprintName = ref<string>();
+const currentTaskId = ref<string>();
 
-const addTabPane = (data: IPane) => {
+/**
+ * Generates storage key for browser tab persistence
+ * @returns Storage key string or undefined if no projectId
+ */
+const storageKey = computed(() => {
+  if (!props.projectId) {
+    return undefined;
+  }
+  return `task${props.projectId}`;
+});
+
+/**
+ * Adds a new tab pane to the browser tab component
+ * @param tabPaneData - Tab pane configuration data
+ */
+const addTabPane = (tabPaneData: IPane) => {
   browserTabRef.value.add(() => {
-    return data;
+    return tabPaneData;
   });
 };
 
+/**
+ * Retrieves tab pane data by key
+ * @param key - Tab pane identifier key
+ * @returns Tab pane data array or undefined
+ */
 const getTabPane = (key: string): IPane[] | undefined => {
   return browserTabRef.value.getData(key);
 };
 
+/**
+ * Removes tab panes by their keys
+ * @param keys - Array of tab pane keys to remove
+ */
 const deleteTabPane = (keys: string[]) => {
   browserTabRef.value.remove(keys);
 };
 
-const updateTabPane = (data: IPane) => {
-  browserTabRef.value.update(data);
+/**
+ * Updates an existing tab pane with new data
+ * @param tabPaneData - Updated tab pane data
+ */
+const updateTabPane = (tabPaneData: IPane) => {
+  browserTabRef.value.update(tabPaneData);
 };
 
-const replaceTabPane = (key: string, data: { key: string }) => {
-  browserTabRef.value.replace(key, data);
+/**
+ * Replaces a tab pane with new data
+ * @param key - Tab pane key to replace
+ * @param tabPaneData - New tab pane data
+ */
+const replaceTabPane = (key: string, tabPaneData: { key: string }) => {
+  browserTabRef.value.replace(key, tabPaneData);
 };
 
-const initialize = () => {
+/**
+ * Initializes the task module by setting up default tab and processing hash
+ */
+const initializeTaskModule = () => {
   if (typeof browserTabRef.value?.add === 'function') {
-    browserTabRef.value.add((ids: string[]) => {
-      if (!ids.includes('taskList')) {
+    browserTabRef.value.add((existingTabIds: string[]) => {
+      if (!existingTabIds.includes('taskList')) {
         return {
           _id: 'taskList',
           value: 'taskList',
           name: t('task.title'),
-          closable: false // 是否允许关闭，true - 允许关闭，false - 禁止关闭
+          closable: false
         };
       }
     });
   }
 
-  hashChange(route.hash);
+  processRouteHash(route.hash);
 };
 
-const hashChange = (hash:string) => {
+/**
+ * Processes route hash to determine which tab to open
+ * @param hash - URL hash string containing query parameters
+ */
+const processRouteHash = (hash: string) => {
   const queryString = hash.split('?')[1];
   if (!queryString) {
     return;
   }
 
-  const queryParameters = queryString.split('&').reduce((prev, cur) => {
-    const [key, value] = cur.split('=');
-    prev[key] = value;
-    return prev;
+  // Parse query parameters from hash
+  const queryParameters = queryString.split('&').reduce((accumulator, current) => {
+    const [key, value] = current.split('=');
+    accumulator[key] = value;
+    return accumulator;
   }, {} as { [key: string]: string });
 
-  const { sprintId: _sprintId, sprintName: _sprintName, taskId: _taskId } = queryParameters;
-  sprintId.value = _sprintId;
-  sprintName.value = _sprintName;
-  taskId.value = _taskId;
+  const { sprintId: hashSprintId, sprintName: hashSprintName, taskId: hashTaskId } = queryParameters;
+  currentSprintId.value = hashSprintId;
+  currentSprintName.value = hashSprintName;
+  currentTaskId.value = hashTaskId;
 
-  if (_sprintId) {
+  if (hashSprintId) {
+    // Open task list tab for sprint
     browserTabRef.value.add(() => {
       return {
         _id: 'taskList',
         value: 'taskList',
         name: t('task.title'),
-        closable: false // 是否允许关闭，true - 允许关闭，false - 禁止关闭
+        closable: false
       };
     });
   } else {
-    if (_taskId) {
+    if (hashTaskId) {
+      // Open task details tab
       browserTabRef.value.add(() => {
-        const query = queryString.replace(/&taskId=[^&]+/, '');
+        const cleanQuery = queryString.replace(/&taskId=[^&]+/, '');
         return {
-          _id: _taskId,
+          _id: hashTaskId,
           value: 'taskDetails',
-          data: { id: _taskId, query }
+          data: { id: hashTaskId, query: cleanQuery }
         };
       });
     }
   }
 
+  // Clean up URL by removing hash parameters
   router.replace('/task#task');
 };
 
-const storageKeyChange = () => {
-  initialize();
+/**
+ * Handles storage key changes and reinitializes the module
+ */
+const handleStorageKeyChange = () => {
+  initializeTaskModule();
 };
 
+/**
+ * Component mounted lifecycle hook
+ * Sets up route hash watcher for tab navigation
+ */
 onMounted(() => {
-  watch(() => route.hash, () => {
-    if (!route.hash.startsWith('#task')) {
+  watch(() => route.hash, (newHash) => {
+    if (!newHash.startsWith('#task')) {
       return;
     }
 
-    hashChange(route.hash);
+    processRouteHash(newHash);
   });
 });
 
-const storageKey = computed(() => {
-  if (!props.projectId) {
-    return undefined;
-  }
-
-  return `task${props.projectId}`;
-});
-
-// 添加指定的tabPane
+// Provide tab pane management functions to child components
 provide('addTabPane', addTabPane);
-
-// 获取tabPane
 provide('getTabPane', getTabPane);
-
-// 删除指定的tabPane
 provide('deleteTabPane', deleteTabPane);
-
-// 更新指定的tabPane
 provide('updateTabPane', updateTabPane);
-
-// 替换指定tabPane
 provide('replaceTabPane', replaceTabPane);
 </script>
 <template>
@@ -153,29 +186,29 @@ provide('replaceTabPane', replaceTabPane);
     ref="browserTabRef"
     hideAdd
     class="h-full"
-    :userId="props.userInfo.id"
+    :userId="props.userInfo?.id"
     :storageKey="storageKey"
-    @storageKeyChange="storageKeyChange">
-    <template #default="record">
-      <template v-if="record.value === 'taskList'">
+    @storageKeyChange="handleStorageKeyChange">
+    <template #default="tabRecord">
+      <template v-if="tabRecord.value === 'taskList'">
         <TaskList
-          v-bind="record"
+          v-bind="tabRecord"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :projectId="props.projectId"
           :projectName="props.projectName"
-          :sprintId="sprintId"
-          :sprintName="sprintName" />
+          :sprintId="currentSprintId"
+          :sprintName="currentSprintName" />
       </template>
 
-      <template v-else-if="record.value === 'taskDetails'">
+      <template v-else-if="tabRecord.value === 'taskDetails'">
         <TaskDetails
-          v-bind="record"
+          v-bind="tabRecord"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :projectId="props.projectId"
-          :sprintId="sprintId"
-          :sprintName="sprintName" />
+          :sprintId="currentSprintId"
+          :sprintName="currentSprintName" />
       </template>
     </template>
   </BrowserTab>

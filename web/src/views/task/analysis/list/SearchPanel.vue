@@ -6,14 +6,16 @@ import { Button } from 'ant-design-vue';
 import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
-import { XCanDexie } from '@xcan-angus/infra';
+import { XCanDexie, PageQuery } from '@xcan-angus/infra';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
+import { TaskStatus } from '@/enums/enums';
 
 import { MenuItem, SelectOption } from '@/views/task/analysis/list/types';
+import { TaskViewMode } from '@/views/task/task/types';
 
 type Props = {
   collapse: boolean;// 展开、折叠统计
-  viewMode: 'table' | 'detail' | 'kanban';
+  viewMode: TaskViewMode;
   sprintId: string;
   sprintName: string;
   projectId: string;
@@ -21,7 +23,7 @@ type Props = {
   appInfo: { id: string; };
   notify: string;
   orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName';
-  orderSort: 'DESC' | 'ASC';
+  orderSort: PageQuery.OrderSort;
   groupKey: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType';
 }
 
@@ -45,20 +47,20 @@ const emit = defineEmits<{
   (e: 'export'): void;
   (e: 'change', value: { key: string; op: string; value: boolean | string | string[]; }[]): void;
   (e: 'update:orderBy', value: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName'): void;
-  (e: 'update:orderSort', value: 'DESC' | 'ASC'): void;
+  (e: 'update:orderSort', value: PageQuery.OrderSort): void;
   (e: 'update:groupKey', value: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType'): void;
   (e: 'update:visible', value: boolean): void;
   (e: 'update:collapse', value: boolean): void;
-  (e: 'viewModeChange', value: 'table' | 'detail' | 'boards'): void;
+  (e: 'viewModeChange', value: TaskViewMode): void;
   (e: 'uploadTask'): void;
   (e: 'exportTemplate'): void;
-  (e: 'update:moduleFlag', value: boolean): void;
 }>();
 
 const route = useRoute();
 const { t } = useI18n();
 
-let db: Dexie<{ id: string; data: any; }>;
+// eslint-disable-next-line no-undef
+let db: XCanDexie<{ id: string; data: any; }>;
 
 const searchPanelRef = ref();
 
@@ -66,7 +68,6 @@ const searchPanelRef = ref();
 const quickDateMap = ref<Map<'lastDay' | 'lastThreeDays' | 'lastWeek', string[]>>(new Map());
 const selectedMenuMap = ref(new Map<string, Omit<MenuItem, 'name'>>());
 const overdue = ref(false); // 逾期
-const moduleFlag = ref(false); // 按模块分组
 
 const sprintSelectVisible = ref(false);
 const selectedSprint = ref<SelectOption>();
@@ -85,13 +86,9 @@ const evalWorkloadFilter = ref<{ key: 'evalWorkload'; op: string; value: string 
 const failNumFilter = ref<{ key: 'failNum'; op: string; value: string | undefined; }>({ key: 'failNum', op: 'EQUAL', value: undefined });
 const totalNumFilter = ref<{ key: 'totalNum'; op: string; value: string | undefined; }>({ key: 'totalNum', op: 'EQUAL', value: undefined });
 
-const toSort = (data: { orderBy: 'createsDate' | 'createdByName' ; orderSort: 'DESC' | 'ASC'; }) => {
+const toSort = (data: { orderBy: 'createsDate' | 'createdByName' ; orderSort: PageQuery.OrderSort; }) => {
   emit('update:orderBy', data.orderBy);
   emit('update:orderSort', data.orderSort);
-};
-
-const toGroup = (value: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType') => {
-  emit('update:groupKey', value);
 };
 
 const menuItemClick = (data: MenuItem) => {
@@ -110,7 +107,6 @@ const menuItemClick = (data: MenuItem) => {
       if (typeof searchPanelRef.value?.setConfigs === 'function') {
         searchPanelRef.value.setConfigs([{ valueKey: 'createdBy', value: undefined }]);
       }
-
       return;
     }
 
@@ -141,7 +137,6 @@ const menuItemClick = (data: MenuItem) => {
           { valueKey: 'status', value: undefined }
         ]);
       }
-
       return;
     }
 
@@ -153,7 +148,6 @@ const menuItemClick = (data: MenuItem) => {
         ]);
       }
     }
-
     return;
   }
 
@@ -169,12 +163,6 @@ const menuItemClick = (data: MenuItem) => {
 
     // 关闭逾期
     overdue.value = false;
-
-    // // 清空选中的迭代
-    // checkedSprintId.value = undefined;
-
-    // // 清空选中的标签
-    // checkedTagIds.value = [];
 
     // 清空targetParentId
     targetParentIdFilter.value.value = undefined;
@@ -199,13 +187,12 @@ const menuItemClick = (data: MenuItem) => {
     if (typeof searchPanelRef.value?.setConfigs === 'function') {
       searchPanelRef.value.setConfigs([{ valueKey: 'createdBy', value: userId.value }]);
     }
-
     return;
   }
 
   if (key === 'assigneeId' || key === 'progress') {
     if (typeof searchPanelRef.value?.setConfigs === 'function') {
-      const value = key === 'assigneeId' ? 'PENDING' : 'IN_PROGRESS';
+      const value = key === 'assigneeId' ? TaskStatus.PENDING : TaskStatus.IN_PROGRESS;
       searchPanelRef.value.setConfigs([
         { valueKey: 'assigneeId', value: userId.value },
         { valueKey: 'status', value }
@@ -345,20 +332,6 @@ const initialize = async () => {
   if (!db) {
     db = new XCanDexie<{ id: string; data: any; }>('parameter');
   }
-
-  // 设置统计区域展开收起
-  // const [, data] = await db.get(dbCountKey.value);
-  // emit('update:collapse', !!data?.data);
-
-  // 设置任务列表展现形式
-  // const [, data1] = await db.get(dbViewModeKey.value);
-  // const viewMode = ['case', 'table', 'kanban'].includes(data1?.data) ? data1?.data : 'case';
-  // emit('viewModeChange', viewMode);
-
-  // 设置是否按模块分组
-  // const [, dataModule] = await db.get(dbModuleKey.value);
-  // moduleFlag.value = dataModule?.data === 'true';
-  // emit('update:moduleFlag', moduleFlag.value);
 
   // 设置搜索条件数据
   const [, data2] = await db.get(dbParamsKey.value);
@@ -599,8 +572,6 @@ onMounted(async () => {
       const _filters = filters.value;
       if (!(_filters.length ||
         overdue.value ||
-        // !!checkedSprintId.value ||
-        // !!checkedTagIds.value.length ||
         !!targetParentIdFilter.value.value ||
         !!targetIdFilter.value.value ||
         !!evalWorkloadFilter.value.value ||
@@ -632,7 +603,7 @@ onMounted(async () => {
         const status = _filters.find(item => item.key === 'status')?.value;
 
         const assigneeId = _filters.find(item => item.key === 'assigneeId')?.value;
-        if (status && status === 'PENDING' && assigneeId === userId.value) {
+        if (status && status === TaskStatus.PENDING && assigneeId === userId.value) {
           selectedMenuMap.value.set('assigneeId', { key: 'assigneeId' });
 
           // 删除【待我确认】
@@ -643,7 +614,7 @@ onMounted(async () => {
           selectedMenuMap.value.delete('assigneeId');
         }
 
-        if (status && status === 'IN_PROGRESS' && assigneeId === userId.value) {
+        if (status && status === TaskStatus.IN_PROGRESS && assigneeId === userId.value) {
           selectedMenuMap.value.set('progress', { key: 'progress' });
 
           // 删除【待我确认】
@@ -801,14 +772,6 @@ const dbViewModeKey = computed(() => {
   return btoa(dbBaseKey.value + 'viewMode');
 });
 
-const dbModuleKey = computed(() => {
-  return btoa(dbBaseKey.value + 'moduleFlag');
-});
-
-const taskType = computed(() => {
-  return filters.value.find(item => item.key === 'taskType')?.value;
-});
-
 const menuItems: MenuItem[] = [
   {
     key: 'none',
@@ -860,17 +823,17 @@ const sortMenuItems = [
   {
     key: 'name',
     name: t('taskAnalysis.columns.name'),
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   },
   {
     key: 'createdByName',
     name: t('taskAnalysis.sortByCreator'),
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   },
   {
     key: 'createdDate',
     name: t('taskAnalysis.sortByCreateTime'),
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   }];
 </script>
 <template>

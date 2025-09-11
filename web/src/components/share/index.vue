@@ -16,7 +16,7 @@ import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
 import { apis, services } from '@/api/tester';
 import dayjs from 'dayjs';
-import { DATE_TIME_FORMAT } from '@/utils/constant';
+import {DATE_TIME_FORMAT, TIME_FORMAT} from '@/utils/constant';
 
 import { randomString } from '@/utils/utils';
 import { ShareObj, TargetType } from './PropsType';
@@ -760,7 +760,7 @@ function isWithin5Minutes (timeStr: string) {
                   :allowClear="false"
                   :showNow="false"
                   :disabledDate="disabledDate"
-                  :showTime="{hideDisabledOptions: true, defaultValue: dayjs('00:00:00', 'HH:mm:ss') }"
+                  :showTime="{hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) }"
                   :error="dateErr"
                   internal
                   size="small"

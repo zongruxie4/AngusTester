@@ -1,6 +1,19 @@
 import { EnumMessage, Priority, EvalWorkloadMethod } from '@xcan-angus/infra';
-import { TaskStatus, TaskType, TestType, ExecStatus, ExecResult } from '@/enums/enums';
+import { TaskStatus, TaskType, TestType, ExecResult } from '@/enums/enums';
 
+/**
+ * Task view mode
+ */
+export enum TaskViewMode {
+  table = 'table',
+  flat = 'flat',
+  kanban = 'kanban',
+  gantt = 'gantt'
+}
+
+/**
+ * Task information interface containing all task-related data
+ */
 export type TaskInfo = {
   id: string;
   name: string;
@@ -35,87 +48,118 @@ export type TaskInfo = {
   createdDate: string;
 }
 
+/**
+ * Statistics information interface for task metrics and counts
+ */
 export type StatisticsInfo = {
-    actualWorkload: string;
-    apiTestNum: string;
-    bugNum: string;
-    canceledNum: string;
-    completedNum: string;
-    completedWorkload: string;
-    confirmingNum: string;
-    evalWorkload: string;
-    functionalNum: string;
-    inProgressNum: string;
-    oneTimePassedNum: string;
-    oneTimePassedRate: string;
-    overdueNum: string;
-    pendingNum: string;
-    perfNum: string;
-    processFailTimes: string;
-    processTimes: string;
-    requirementNum: string;
-    scenarioTestNum: string;
-    stabilityNum: string;
-    storyNum: string;
-    taskNum: string;
-    testFailNum: string;
-    testSuccessNum: string;
-    totalStatusNum: string;
-    totalTaskNum: string;
-    totalTaskTypeNum: string;
-    totalTestTypeNum: string;
-    validTaskNum: string;
-    progress: string;
+  actualWorkload: string;
+  apiTestNum: string;
+  bugNum: string;
+  canceledNum: string;
+  completedNum: string;
+  completedWorkload: string;
+  confirmingNum: string;
+  evalWorkload: string;
+  functionalNum: string;
+  inProgressNum: string;
+  oneTimePassedNum: string;
+  oneTimePassedRate: string;
+  overdueNum: string;
+  pendingNum: string;
+  perfNum: string;
+  processFailTimes: string;
+  processTimes: string;
+  requirementNum: string;
+  scenarioTestNum: string;
+  stabilityNum: string;
+  storyNum: string;
+  taskNum: string;
+  testFailNum: string;
+  testSuccessNum: string;
+  totalStatusNum: string;
+  totalTaskNum: string;
+  totalTaskTypeNum: string;
+  totalTestTypeNum: string;
+  validTaskNum: string;
+  progress: string;
 }
 
+/**
+ * Action menu item interface for task action buttons
+ */
 export type ActionMenuItem = {
-    name: string;
-    key: 'delete' | 'edit' | 'start' | 'processed' | 'uncompleted' | 'completed' | 'reopen' | 'restart' | 'cancel' | 'move' | 'cancelFavourite' | 'favourite' | 'cancelFollow' | 'follow' | 'copyLink';
-    icon: string;
-    disabled: boolean;
-    hide: boolean;
-    tip?: string;
+  name: string;
+  key: 'delete' | 'edit' | 'start' | 'processed' | 'uncompleted' | 'completed' | 'reopen' | 'restart' | 'cancel' | 'move' | 'cancelFavourite' | 'favourite' | 'cancelFollow' | 'follow' | 'copyLink';
+  icon: string;
+  disabled: boolean;
+  hide: boolean;
+  tip?: string;
 }
 
+/**
+ * Tree data structure interface for hierarchical task display
+ */
 export type TreeData = {
-    name: string;
-    sequece: string;
-    level: number;
-    children?: TreeData[];
-    id: string;
-    pid?: string;
-    index: number;
-    ids: string[];
-    isLast: boolean;
-  }
+  name: string;
+  sequence: string;
+  level: number;
+  children?: TreeData[];
+  id: string;
+  pid?: string;
+  index: number;
+  ids: string[];
+  isLast: boolean;
+  childLevels?: number;
+}
 
-// TODO 递归修改为循环
-export const travelTreeData = (treeData, callback = (item) => item) => {
-  function travel (treeData, level = 0, ids: string[] = []) {
-    treeData.forEach((item, idx) => {
-      item.level = level;
-      item.index = idx;
-      item.ids = [...ids, item.id];
-      item.isLast = idx === (treeData.length - 1);
-      // eslint-disable-next-line no-unused-expressions
-      travel(item.children || [], level + 1, item.ids),
-      item.childLevels = (item.children?.length ? Math.max(...item.children.map(i => i.childLevels)) : 0) + 1;
-      item = callback(item);
-    });
-  }
-  travel(treeData);
-  return treeData;
-};
-
-export type searchPanelOption = {
+/**
+ * Search panel option interface for filter dropdowns
+ */
+export type SearchPanelOption = {
   id: string;
   name: string;
   showTitle: string;
   showName: string;
 }
 
+/**
+ * Search panel menu item interface for quick search options
+ */
 export type SearchPanelMenuItem = {
   key: 'none' | 'createdBy' | 'assigneeId' | 'progress' | 'confirmorId' | 'lastDay' | 'lastThreeDays' | 'lastWeek' | string;
   name: string;
   groupKey?: 'assigneeId' | 'time';
 }
+
+/**
+ * Traverses tree data structure and adds metadata for rendering
+ * @param treeData - Array of tree data items to process
+ * @param callback - Optional callback function to transform each item
+ * @returns Processed tree data with added metadata
+ */
+export const travelTreeData = (treeData: TreeData[], callback = (item: TreeData) => item): TreeData[] => {
+  /**
+   * Recursive function to traverse tree data and add metadata
+   * @param treeData - Current level of tree data
+   * @param level - Current depth level
+   * @param ids - Array of parent IDs for current path
+   */
+  function travel (treeData: TreeData[], level = 0, ids: string[] = []) {
+    treeData.forEach((item, idx) => {
+      item.level = level;
+      item.index = idx;
+      item.ids = [...ids, item.id];
+      item.isLast = idx === (treeData.length - 1);
+
+      // Recursively process children
+      travel(item.children || [], level + 1, item.ids);
+
+      // Calculate child levels for rendering purposes
+      item.childLevels = (item.children?.length ? Math.max(...item.children.map(i => i.childLevels || 0)) : 0) + 1;
+      item = callback(item);
+    });
+  }
+
+  travel(treeData);
+  return treeData;
+};

@@ -64,7 +64,7 @@ const cacheParamsKey = computed(() => {
   return `${userInfo?.value?.id}${projectInfo.value.id}_case`;
 });
 
-let db: Dexie<{
+let db: XCanDexie<{
   id: string;
   data: { filters: { value: string, op: string, key: string }[] };
 }>;

@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import {DATE_FORMAT} from "@/utils/constant";
 
 export const sizeUnitFormat = (value: number, unit?: 'B' | 'KB' | 'MB' | 'GB' | 'TB' | 'PB' | 'EB' | 'ZB' | 'YB'): string => {
   const k = 1024;
@@ -166,7 +167,7 @@ export const getDateArr = (size = 7) => {
   const dates: string[] = [];
   for (let i = 0; i < size; i++) {
     // 获取当前日期往前减去i天的日期
-    const date = dayjs().subtract(i, 'day').format('YYYY-MM-DD');
+    const date = dayjs().subtract(i, 'day').format(DATE_FORMAT);
     dates.push(date);
   }
   return dates;
@@ -176,10 +177,10 @@ export const getDateArrWithTime = (start, end) => {
   const dates: string[] = [];
   while (!dates[0] || (dayjs(dates[0]).isAfter(dayjs(start)))) {
     if (!dates[0]) {
-      const date = dayjs(end).format('YYYY-MM-DD');
+      const date = dayjs(end).format(DATE_FORMAT);
       dates.unshift(date);
     } else {
-      const date = dayjs(dates[0]).subtract(1, 'day').format('YYYY-MM-DD');
+      const date = dayjs(dates[0]).subtract(1, 'day').format(DATE_FORMAT);
       dates.unshift(date);
     }
   }

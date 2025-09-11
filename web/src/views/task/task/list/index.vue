@@ -3,20 +3,19 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, watch, Ref } fr
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { AsyncComponent, NoData, notification, Spin } from '@xcan-angus/vue-ui';
-import {http, utils, TESTER, download, appContext} from '@xcan-angus/infra';
+import { http, utils, TESTER, download, appContext, enumUtils, PageQuery } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
-
+import { TaskSprintPermission, TaskStatus } from '@/enums/enums';
 import { getCurrentPage } from '@/utils/utils';
 import { TaskInfo } from '../../types';
-import { ActionMenuItem, travelTreeData } from '../types';
+import { ActionMenuItem, TaskViewMode, travelTreeData } from '../types';
 // eslint-disable-next-line import/no-absolute-path
 import Template from '/file/Import_Task_Template.xlsx?url';
 
-// TODO 按列表、平铺、看板、甘特图视图划分目录
-
-type SprintPermissionKey = 'MODIFY_SPRINT' | 'DELETE_SPRINT' | 'ADD_TASK' | 'MODIFY_TASK' | 'DELETE_TASK' | 'EXPORT_TASK' | 'RESTART_TASK' | 'REOPEN_TASK' | 'GRANT'
-
+/**
+ * Component props interface for task list page
+ */
 type Props = {
   sprintId: string;
   sprintName: string;
@@ -27,6 +26,7 @@ type Props = {
   projectName: string;
 }
 
+// COMPONENT PROPS
 const props = withDefaults(defineProps<Props>(), {
   sprintId: undefined,
   sprintName: undefined,
@@ -36,62 +36,70 @@ const props = withDefaults(defineProps<Props>(), {
   notify: undefined
 });
 
+// ASYNC COMPONENTS
 const StatisticsPanel = defineAsyncComponent(() => import('@/views/task/task/list/statistics/index.vue'));
 const SearchPanel = defineAsyncComponent(() => import('@/views/task/task/list/SearchPanel.vue'));
 const Edit = defineAsyncComponent(() => import('@/views/task/task/list/task/Edit.vue'));
 const Move = defineAsyncComponent(() => import('@/views/task/task/list/task/Move.vue'));
+const Upload = defineAsyncComponent(() => import('@/views/task/task/list/task/Upload.vue'));
 const FlowChart = defineAsyncComponent(() => import('@/views/task/task/list/task/FlowChart.vue'));
-const Table = defineAsyncComponent(() => import('@/views/task/task/list/task/table/index.vue'));
-const DetailView = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/index.vue'));
+
+const ModuleTree = defineAsyncComponent(() => import('./ModuleTree.vue'));
 const KanbanView = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/index.vue'));
 const GanttView = defineAsyncComponent(() => import('@/views/task/task/list/task/gantt/index.vue'));
-const Upload = defineAsyncComponent(() => import('@/views/task/task/list/task/Upload.vue'));
-const ModuleTree = defineAsyncComponent(() => import('./ModuleTree.vue'));
+const TableView = defineAsyncComponent(() => import('@/views/task/task/list/task/table/index.vue'));
+const FlatView = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/index.vue'));
 
+// COMPOSABLES & INJECTIONS
 const { t } = useI18n();
+const router = useRouter();
+
 const deleteTabPane = inject<(value: string[]) => void>('deleteTabPane');
 const isAdmin = computed(() => appContext.isAdmin());
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
 
-const router = useRouter();
+// REACTIVE STATE
+const statisticsRefreshNotify = ref<string>(); // Statistics panel refresh notification
+const listRefreshNotify = ref<string>(); // Task list refresh notification
 
-const countRefreshNotify = ref<string>();// 单独刷新统计图表
-const refreshNotify = ref<string>();
+const kanbanGroupKey = ref<'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType'>('none');
+const kanbanOrderBy = ref<'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName'>();
+const kanbanOrderSort = ref<PageQuery.OrderSort>();
 
-const boardsGroupKey = ref<'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType'>('none');
-const boardsOrderBy = ref<'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName'>();
-const boardsOrderSort = ref<'DESC' | 'ASC'>();
+const isStatisticsCollapsed = ref(true); // Initially collapsed, will auto-expand after initialization if not manually collapsed
+const currentViewMode = ref<TaskViewMode>(TaskViewMode.flat);
+const isModuleGroupEnabled = ref(false);
+const isFlowChartVisible = ref(false);
+const isExporting = ref(false);
 
-const collapseFlag = ref(true);// 初始折叠，如果没有手动折叠，则会在初始化完成后自动展开
-const viewMode = ref<'table' | 'detail' | 'kanban' | 'gantt'>('detail');
-const moduleFlag = ref(false);
-const flowChartVisible = ref(false);
-const exporting = ref(false);
-
-const loaded = ref(false);
-const loading = ref(false);
-const orderBy = ref<string>();
-const orderSort = ref<'DESC' | 'ASC'>();
-const filters = ref<{ key: string; op: string; value: boolean | string | string[]; }[]>([]);
-const pagination = ref<{ current: number; pageSize: number; total: number; }>({ current: 1, pageSize: 10, total: 0 });
-const taskList = ref<TaskInfo[]>([]);
-const sprintPermissionsMap = ref<Map<string, SprintPermissionKey[]>>(new Map());
+const isDataLoaded = ref(false);
+const isLoading = ref(false);
+const currentOrderBy = ref<string>();
+const currentOrderSort = ref<PageQuery.OrderSort>();
+const searchFilters = ref<{ key: string; op: string; value: boolean | string | string[]; }[]>([]);
+const paginationInfo = ref<{ current: number; pageSize: number; total: number; }>({ current: 1, pageSize: 10, total: 0 });
+const taskListData = ref<TaskInfo[]>([]);
+const sprintPermissionsCache = ref<Map<string, TaskSprintPermission[]>>(new Map());
 
 const selectedTaskName = ref<string>();
 const selectedTaskSprintId = ref<string>();
 const selectedTaskId = ref<string>();
-const taskModalVisible = ref(false);
-const moveModalVisible = ref(false);
-const uploadTaskVisible = ref(false);
+const isTaskModalVisible = ref(false);
+const isMoveModalVisible = ref(false);
+const isUploadModalVisible = ref(false);
 
 const searchSprintId = ref<string>();
-const editTaskData = ref<TaskInfo>();// 编辑弹窗的任务
+const currentEditTaskData = ref<TaskInfo>(); // Task data for edit modal
 
-const selectedIds = ref<string[]>([]);// 批量选中的任务
+const selectedTaskIds = ref<string[]>([]); // Batch selected task IDs
 
-const prevParams = ref<{[key:string]:any}>();
+const previousSearchParams = ref<{[key:string]:any}>();
 
-const getParams = () => {
+/**
+ * Builds API parameters for task list requests
+ * @returns Formatted parameters for API calls
+ */
+const buildApiParameters = () => {
   const params: {
     backlog?: boolean,
     projectId: string;
@@ -99,360 +107,129 @@ const getParams = () => {
     pageSize: number;
     filters?: { key: string; op: string; value: boolean | string | string[]; }[];
     orderBy?: string;
-    orderSort?: 'DESC' | 'ASC';
+    orderSort?: PageQuery.OrderSort;
   } = {
     backlog: proTypeShowMap.value.showBackLog ? false : undefined,
     projectId: props.projectId,
-    pageNo: pagination.value.current,
-    pageSize: pagination.value.pageSize
+    pageNo: paginationInfo.value.current,
+    pageSize: paginationInfo.value.pageSize
   };
 
-  if (filters.value.length) {
-    params.filters = filters.value;
+  if (searchFilters.value.length) {
+    params.filters = searchFilters.value;
   }
 
-  if (orderSort.value) {
-    params.orderBy = orderBy.value;
-    params.orderSort = orderSort.value;
+  if (currentOrderSort.value) {
+    params.orderBy = currentOrderBy.value;
+    params.orderSort = currentOrderSort.value;
   }
-
   return params;
 };
 
-const loadData = async () => {
-  if (!viewMode.value || !['detail', 'table'].includes(viewMode.value)) {
+/**
+ * Loads task list data from API
+ */
+const loadTaskListData = async () => {
+  if (!currentViewMode.value || ![TaskViewMode.flat, TaskViewMode.table].includes(currentViewMode.value)) {
     return;
   }
 
-  loading.value = false;
-  const params = getParams();
-  const [error, res] = await task.getTaskList({ ...params, moduleId: moduleId.value });
-  loading.value = false;
-  loaded.value = true;
+  isLoading.value = false;
+  const params = buildApiParameters();
+  const [error, response] = await task.getTaskList({ ...params, moduleId: currentModuleId.value });
+  isLoading.value = false;
+  isDataLoaded.value = true;
   if (error) {
     return false;
   }
 
-  const data = (res?.data || { total: '0', list: [] }) as { total: string; list: TaskInfo[] };
-  const total = +data.total;
-  pagination.value.total = total;
+  const data = (response?.data || { total: '0', list: [] }) as { total: string; list: TaskInfo[] };
+  const totalCount = +data.total;
+  paginationInfo.value.total = totalCount;
 
-  const pageNo = +params.pageNo;
+  const pageNumber = +params.pageNo;
   const pageSize = +params.pageSize;
-  const _list = (data.list || []);
-  const newList: TaskInfo[] = [];
+  const taskListItems = (data.list || []);
+  const processedTaskList: TaskInfo[] = [];
   const sprintIdSet = new Set<string>();
-  for (let i = 0, len = _list.length; i < len; i++) {
-    const item = _list[i];
-    const _params = {
+
+  for (let i = 0, len = taskListItems.length; i < len; i++) {
+    const taskItem = taskListItems[i];
+    const taskParams = {
       ...params,
-      taskId: item.id,
-      pageNo: (pageNo - 1) * pageSize + i + 1,
+      taskId: taskItem.id,
+      pageNo: (pageNumber - 1) * pageSize + i + 1,
       pageSize: 1,
-      total
+      total: totalCount
     };
 
-    newList.push({
-      ...item,
-      linkUrl: '/task#task?' + http.getURLSearchParams(_params, true)
+    processedTaskList.push({
+      ...taskItem,
+      linkUrl: '/task#task?' + http.getURLSearchParams(taskParams, true)
     });
 
-    sprintIdSet.add(item.sprintId);
+    sprintIdSet.add(taskItem.sprintId);
   }
 
-  taskList.value = newList;
+  taskListData.value = processedTaskList;
 
-  // 除了页码还有其他条件不一致，说明搜索条件发生改变，需要把选中的任务重置
-  if (prevParams.value) {
-    delete prevParams.value.pageNo;
+  // Reset selected tasks if search conditions changed (excluding page number)
+  if (previousSearchParams.value) {
+    delete previousSearchParams.value.pageNo;
     delete params.pageNo;
-    if (!isEqual(prevParams.value, params)) {
-      selectedIds.value = [];
+    if (!isEqual(previousSearchParams.value, params)) {
+      selectedTaskIds.value = [];
     }
   }
 
-  prevParams.value = params;
+  previousSearchParams.value = params;
 
-  sprintPermissionsMap.value.clear();
+  // Load sprint permissions
+  sprintPermissionsCache.value.clear();
   const sprintIds = Array.from(sprintIdSet);
-  // 管理员拥有所有权限，无需加载权限
+  // Admin users have all permissions, no need to load permissions
   if (!isAdmin.value && proTypeShowMap.value.showSprint) {
     for (let i = 0, len = sprintIds.length; i < len; i++) {
-      const id = sprintIds[i];
-      if (id) {
-        const [_error, _res] = await loadPermissions(id);
-        if (!_error) {
-          const _permissions = (_res?.data || []).map(item => item.value);
-          sprintPermissionsMap.value.set(id, _permissions);
+      const sprintId = sprintIds[i];
+      if (sprintId) {
+        const [permissionError, permissionResponse] = await loadSprintPermissions(sprintId);
+        if (!permissionError) {
+          const permissions = (permissionResponse?.data || []).map(item => item.value);
+          sprintPermissionsCache.value.set(sprintId, permissions);
         }
       }
     }
   } else {
     for (let i = 0, len = sprintIds.length; i < len; i++) {
-      const id = sprintIds[i];
-      sprintPermissionsMap.value.set(id, [
-        'MODIFY_SPRINT',
-        'DELETE_SPRINT',
-        'ADD_TASK',
-        'MODIFY_TASK',
-        'DELETE_TASK',
-        'EXPORT_TASK',
-        'RESTART_TASK',
-        'REOPEN_TASK',
-        'GRANT'
-      ]);
+      const sprintId = sprintIds[i];
+      sprintPermissionsCache.value.set(sprintId, enumUtils.getEnumValues(TaskSprintPermission));
     }
   }
 };
 
-const loadPermissions = async (id: string) => {
+/**
+ * Loads sprint permissions for a specific sprint
+ * @param sprintId - Sprint ID to load permissions for
+ * @returns Promise with permission data
+ */
+const loadSprintPermissions = async (sprintId: string) => {
   const params = {
     admin: true
   };
-
-  return await task.getUserSprintAuth(id, props.userInfo?.id, params);
+  return await task.getUserSprintAuth(sprintId, props.userInfo?.id, params);
 };
 
-const searchPanelChange = (data: { key: string; op: string; value: boolean | string | string[]; }[]) => {
-  filters.value = data;
-  pagination.value.current = 1;
-  loadData();
-};
-
-const tableChange = ({ current, pageSize }: { current: number; pageSize: number; },
-  sorter: { orderBy: string; orderSort: 'DESC' | 'ASC' }) => {
-  pagination.value.current = current;
-  pagination.value.pageSize = pageSize;
-
-  orderBy.value = sorter.orderBy;
-  orderSort.value = sorter.orderSort;
-
-  loadData();
-};
-
-const paginationChange = (data: { current: number; pageSize: number; }) => {
-  pagination.value.current = data.current;
-  pagination.value.pageSize = data.pageSize;
-  loadData();
-};
-
-const toCreate = () => {
-  // 设置当前搜索条件中选中的迭代
-  const item = filters.value.find(item => item.key === 'sprintId');
-  searchSprintId.value = item?.value as string;
-  taskModalVisible.value = true;
-};
-
-// 打开上传任务弹窗
-const openUploadTaskModal = () => {
-  uploadTaskVisible.value = true;
-};
-
-const cancelUploadTask = () => {
-  uploadTaskVisible.value = false;
-};
-
-const handleUploadTaskOk = () => {
-  loadData();
-};
-
-// 导出任务模板
-const handdleExportTemplate = async () => {
-  const a = document.createElement('a');
-  a.style.display = 'none';
-  a.href = Template;
-  a.download = 'Import_Task_Template.xlsx';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-};
-
-const toExport = async () => {
-  if (exporting.value) {
-    notification.info(t('task.messages.exportingInProgress'));
-    return;
-  }
-
-  exporting.value = true;
-  const url = `${TESTER}/task/export?` + http.getURLSearchParams({ projectId: props.projectId, filters: filters.value }, true);
-  await download(url);
-  exporting.value = false;
-};
-
-const refreshChange = () => {
-  // 通知统计面板刷新
-  countRefreshNotify.value = utils.uuid();
-};
-
-// 通知统计面板刷新
-const splitOk = () => {
-  countRefreshNotify.value = utils.uuid();
-  loadData();
-};
-
-const viewModeChange = (value:'table' | 'detail' | 'kanban' | 'gantt') => {
-  if (['kanban', 'gantt'].includes(viewMode.value) && ['table', 'detail'].includes(value)) {
-    viewMode.value = value;
-    pagination.value.current = 1;
-    loadData();
-  }
-
-  viewMode.value = value;
-};
-
-const toEdit = (id: string) => {
-  selectedTaskId.value = id;
-  toCreate();
-};
-
-const editOk = (data: TaskInfo, addFlag = false) => {
-  if (addFlag) {
-    // 新增任务，刷新表格
-    loadData();
-    return;
-  }
-
-  // 编辑任务，查询任务详情替换表格的数据
-  if (data) {
-    setTableData(data);
-  }
-};
-
-const deleteOk = (id: string) => {
-  pagination.value.current = getCurrentPage(pagination.value.current, pagination.value.pageSize, pagination.value.total);
-  loadData();
-  if (typeof deleteTabPane === 'function') {
-    deleteTabPane([id]);
-  }
-};
-
-const toMove = (data: TaskInfo) => {
-  selectedTaskSprintId.value = data.sprintId;
-  selectedTaskName.value = data.name;
-  selectedTaskId.value = data.id;
-  moveModalVisible.value = true;
-};
-
-const moveTaskOk = () => {
-  selectedTaskSprintId.value = undefined;
-  selectedTaskName.value = undefined;
-  selectedTaskId.value = undefined;
-  pagination.value.current = getCurrentPage(pagination.value.current, pagination.value.pageSize, pagination.value.total);
-  loadData();
-};
-
-const batchAction = (key: 'cancel' | 'delete' | 'follow' | 'favourite' | 'move', ids: string[]) => {
-  switch (key) {
-    case 'cancel':
-      batchCancel(ids);
-      break;
-    case 'delete':
-      batchDelete(ids);
-      break;
-    case 'favourite':
-      batchFavourite();
-      break;
-    case 'move':
-      batchMove(ids);
-      break;
-    default:
-      break;
-  }
-};
-
-const batchCancel = async (ids: string[]) => {
-  // 搜索条件没有任务状态条件就直接刷新列表
-  const hasStatusCondition = filters.value.find(item => item.key === 'status');
-  if (hasStatusCondition) {
-    batchActionOk(ids);
-    return;
-  }
-
-  loadData();
-};
-
-const batchDelete = async (ids: string[]) => {
-  batchActionOk(ids);
-};
-
-const batchFavourite = async () => {
-  // 更新当前列表数据
-  loadData();
-};
-
-const batchMove = (ids: string[]) => {
-  // 搜索条件没有迭代条件就直接刷新列表
-  const hasStatusCondition = filters.value.find(item => item.key === 'sprintId');
-  if (hasStatusCondition) {
-    batchActionOk(ids);
-    return;
-  }
-
-  loadData();
-};
-
-const batchActionOk = (ids: string[]) => {
-  const { current, pageSize, total } = pagination.value;
-  const totalPage = Math.ceil(total / pageSize);
-  const remainder = total % pageSize;
-
-  const deleteNum = ids.length;
-  const deletePages = Math.floor(deleteNum / pageSize);
-  const deleteRemainder = deleteNum % pageSize;
-
-  if ((deleteRemainder === 0 || remainder === 0) || (deleteRemainder < remainder)) {
-    if (current + deletePages <= totalPage) {
-      // 通知列表刷新
-      refreshNotify.value = utils.uuid();
-      // 通知统计面板刷新
-      countRefreshNotify.value = utils.uuid();
-      return;
-    }
-
-    pagination.value.current = current - (current + deletePages - totalPage) || 1;
-    // 通知列表刷新
-    refreshNotify.value = utils.uuid();
-    // 通知统计面板刷新
-    countRefreshNotify.value = utils.uuid();
-    return;
-  }
-
-  if (deleteRemainder >= remainder) {
-    if (current + deletePages + 1 <= totalPage) {
-      // 通知列表刷新
-      refreshNotify.value = utils.uuid();
-      // 通知统计面板刷新
-      countRefreshNotify.value = utils.uuid();
-      return;
-    }
-
-    // 通知列表刷新
-    refreshNotify.value = utils.uuid();
-    // 通知统计面板刷新
-    countRefreshNotify.value = utils.uuid();
-  }
-};
-
-const setTableData = (data: Partial<TaskInfo>) => {
-  if (data) {
-    const index = taskList.value.findIndex(item => item.id === data.id);
-    if (taskList.value[index]) {
-      taskList.value[index] = { ...taskList.value[index], ...data };
-      editTaskData.value = taskList.value[index];
-    }
-  }
-};
-
-// 模块相关
-const moduleTreeData = ref([{ name: t('task.list.noModuleTask'), id: '-1' }]);
-const moduleId = ref();
-const loadModuleTree = async (keywords?: string) => {
+/**
+ * Loads module tree data
+ * @param keywords - Optional search keywords for filtering modules
+ */
+const loadModuleTreeData = async (keywords?: string) => {
   const [error, { data }] = await modules.getModuleTree({
     projectId: props.projectId,
     filters: keywords
       ? [{
           value: keywords,
-          op: 'MATCH_END',
+          op: 'MATCH',
           key: 'name'
         }]
       : []
@@ -461,113 +238,439 @@ const loadModuleTree = async (keywords?: string) => {
     return;
   }
   moduleTreeData.value = [{ name: t('task.list.noModuleTask'), id: '-1' }, ...travelTreeData(data || [])];
-  if (moduleId.value && keywords && !moduleTreeData.value.find(item => item.id === moduleId.value)) {
-    moduleId.value = '';
+  if (currentModuleId.value && keywords && !moduleTreeData.value.find(item => item.id === currentModuleId.value)) {
+    currentModuleId.value = '';
   }
 };
 
-onMounted(async () => {
-  router.replace('/task#task');
+/**
+ * Handles search panel filter changes
+ * @param filterData - New filter data from search panel
+ */
+const handleSearchPanelChange = (filterData: { key: string; op: string; value: boolean | string | string[]; }[]) => {
+  searchFilters.value = filterData;
+  paginationInfo.value.current = 1;
+  loadTaskListData();
+};
 
-  await loadModuleTree();
+/**
+ * Handles table sorting and pagination changes
+ * @param paginationData - Pagination data
+ * @param sorter - Sorting configuration
+ */
+const handleTableChange = ({ current, pageSize }: { current: number; pageSize: number; },
+  sorter: { orderBy: string; orderSort: PageQuery.OrderSort }) => {
+  paginationInfo.value.current = current;
+  paginationInfo.value.pageSize = pageSize;
 
-  watch(() => props.projectId, () => {
-    moduleId.value = '';
-    loadModuleTree();
-  });
+  currentOrderBy.value = sorter.orderBy;
+  currentOrderSort.value = sorter.orderSort;
 
-  watch(() => refreshNotify.value, (newValue) => {
-    if (newValue === undefined || newValue === null || newValue === '') {
+  loadTaskListData();
+};
+
+/**
+ * Handles pagination changes
+ * @param paginationData - New pagination data
+ */
+const handlePaginationChange = (paginationData: { current: number; pageSize: number; }) => {
+  paginationInfo.value.current = paginationData.current;
+  paginationInfo.value.pageSize = paginationData.pageSize;
+  loadTaskListData();
+};
+
+/**
+ * Handles task creation by opening create modal
+ */
+const handleTaskCreation = () => {
+  // Set current sprint from search filters
+  const sprintFilter = searchFilters.value.find(filter => filter.key === 'sprintId');
+  searchSprintId.value = sprintFilter?.value as string;
+  isTaskModalVisible.value = true;
+};
+
+/**
+ * Opens upload task modal
+ */
+const openUploadTaskModal = () => {
+  isUploadModalVisible.value = true;
+};
+
+/**
+ * Handles upload task modal cancellation
+ */
+const handleUploadTaskCancel = () => {
+  isUploadModalVisible.value = false;
+};
+
+/**
+ * Handles upload task completion
+ */
+const handleUploadTaskComplete = () => {
+  loadTaskListData();
+};
+
+/**
+ * Handles template export for task import
+ */
+const handleExportTemplate = async () => {
+  const downloadLink = document.createElement('a');
+  downloadLink.style.display = 'none';
+  downloadLink.href = Template;
+  downloadLink.download = 'Import_Task_Template.xlsx';
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+};
+
+/**
+ * Handles task list export
+ */
+const handleTaskExport = async () => {
+  if (isExporting.value) {
+    notification.info(t('task.messages.exportingInProgress'));
+    return;
+  }
+
+  isExporting.value = true;
+  const exportUrl = `${TESTER}/task/export?` + http.getURLSearchParams({ projectId: props.projectId, filters: searchFilters.value }, true);
+  await download(exportUrl);
+  isExporting.value = false;
+};
+
+/**
+ * Handles refresh notifications
+ */
+const handleRefreshChange = () => {
+  statisticsRefreshNotify.value = utils.uuid();
+};
+
+/**
+ * Handles task split completion
+ */
+const handleTaskSplitComplete = () => {
+  statisticsRefreshNotify.value = utils.uuid();
+  loadTaskListData();
+};
+
+/**
+ * Handles view mode changes
+ * @param newViewMode - New view mode to switch to
+ */
+const handleViewModeChange = (newViewMode: TaskViewMode) => {
+  if ([TaskViewMode.kanban, TaskViewMode.gantt].includes(currentViewMode.value) &&
+    [TaskViewMode.table, TaskViewMode.flat].includes(newViewMode)) {
+    currentViewMode.value = newViewMode;
+    paginationInfo.value.current = 1;
+    loadTaskListData();
+  }
+
+  currentViewMode.value = newViewMode;
+};
+
+/**
+ * Handles task edit by opening edit modal
+ * @param taskId - ID of task to edit
+ */
+const handleTaskEdit = (taskId: string) => {
+  selectedTaskId.value = taskId;
+  handleTaskCreation();
+};
+
+/**
+ * Handles task edit completion
+ * @param taskData - Updated task data
+ * @param isNewTask - Whether this is a new task being added
+ */
+const handleTaskEditComplete = (taskData: TaskInfo, isNewTask = false) => {
+  if (isNewTask) {
+    loadTaskListData();
+    return;
+  }
+
+  if (taskData) {
+    updateTaskListData(taskData);
+  }
+};
+
+/**
+ * Handles task deletion
+ * @param taskId - ID of task to delete
+ */
+const handleTaskDeletion = (taskId: string) => {
+  paginationInfo.value.current = getCurrentPage(paginationInfo.value.current, paginationInfo.value.pageSize, paginationInfo.value.total);
+  loadTaskListData();
+  if (typeof deleteTabPane === 'function') {
+    deleteTabPane([taskId]);
+  }
+};
+
+/**
+ * Handles task move by opening move modal
+ * @param taskData - Task data to move
+ */
+const handleTaskMove = (taskData: TaskInfo) => {
+  selectedTaskSprintId.value = taskData.sprintId;
+  selectedTaskName.value = taskData.name;
+  selectedTaskId.value = taskData.id;
+  isMoveModalVisible.value = true;
+};
+
+/**
+ * Handles task move completion
+ */
+const handleTaskMoveComplete = () => {
+  selectedTaskSprintId.value = undefined;
+  selectedTaskName.value = undefined;
+  selectedTaskId.value = undefined;
+  paginationInfo.value.current = getCurrentPage(paginationInfo.value.current, paginationInfo.value.pageSize, paginationInfo.value.total);
+  loadTaskListData();
+};
+
+/**
+ * Handles batch actions on selected tasks
+ * @param actionKey - Action to perform
+ * @param taskIds - Array of task IDs to perform action on
+ */
+const handleBatchAction = (actionKey: 'cancel' | 'delete' | 'follow' | 'favourite' | 'move', taskIds: string[]) => {
+  switch (actionKey) {
+    case 'cancel':
+      handleBatchCancel(taskIds);
+      break;
+    case 'delete':
+      handleBatchDelete(taskIds);
+      break;
+    case 'favourite':
+      handleBatchFavourite();
+      break;
+    case 'move':
+      handleBatchMove(taskIds);
+      break;
+    default:
+      break;
+  }
+};
+
+/**
+ * Handles batch task cancellation
+ * @param taskIds - Array of task IDs to cancel
+ */
+const handleBatchCancel = async (taskIds: string[]) => {
+  // If no status filter, refresh list directly
+  const hasStatusCondition = searchFilters.value.find(filter => filter.key === 'status');
+  if (hasStatusCondition) {
+    handleBatchActionComplete(taskIds);
+    return;
+  }
+
+  await loadTaskListData();
+};
+
+/**
+ * Handles batch task deletion
+ * @param taskIds - Array of task IDs to delete
+ */
+const handleBatchDelete = async (taskIds: string[]) => {
+  handleBatchActionComplete(taskIds);
+};
+
+/**
+ * Handles batch task favourite toggle
+ */
+const handleBatchFavourite = async () => {
+  // Update current list data
+  await loadTaskListData();
+};
+
+/**
+ * Handles batch task move
+ * @param taskIds - Array of task IDs to move
+ */
+const handleBatchMove = (taskIds: string[]) => {
+  // If no sprint filter, refresh list directly
+  const hasSprintCondition = searchFilters.value.find(filter => filter.key === 'sprintId');
+  if (hasSprintCondition) {
+    handleBatchActionComplete(taskIds);
+    return;
+  }
+
+  loadTaskListData();
+};
+
+/**
+ * Handles batch action completion with pagination adjustment
+ * @param taskIds - Array of task IDs that were processed
+ */
+const handleBatchActionComplete = (taskIds: string[]) => {
+  const { current, pageSize, total } = paginationInfo.value;
+  const totalPages = Math.ceil(total / pageSize);
+  const remainder = total % pageSize;
+
+  const deleteCount = taskIds.length;
+  const deletePages = Math.floor(deleteCount / pageSize);
+  const deleteRemainder = deleteCount % pageSize;
+
+  if ((deleteRemainder === 0 || remainder === 0) || (deleteRemainder < remainder)) {
+    if (current + deletePages <= totalPages) {
+      // Notify list refresh
+      listRefreshNotify.value = utils.uuid();
+      // Notify statistics panel refresh
+      statisticsRefreshNotify.value = utils.uuid();
       return;
     }
 
-    loadData();
+    paginationInfo.value.current = current - (current + deletePages - totalPages) || 1;
+    // Notify list refresh
+    listRefreshNotify.value = utils.uuid();
+    // Notify statistics panel refresh
+    statisticsRefreshNotify.value = utils.uuid();
+    return;
+  }
+
+  if (deleteRemainder >= remainder) {
+    if (current + deletePages + 1 <= totalPages) {
+      // Notify list refresh
+      listRefreshNotify.value = utils.uuid();
+      // Notify statistics panel refresh
+      statisticsRefreshNotify.value = utils.uuid();
+      return;
+    }
+
+    // Notify list refresh
+    listRefreshNotify.value = utils.uuid();
+    // Notify statistics panel refresh
+    statisticsRefreshNotify.value = utils.uuid();
+  }
+};
+
+/**
+ * Updates task data in the list
+ * @param taskData - Updated task data
+ */
+const updateTaskListData = (taskData: Partial<TaskInfo>) => {
+  if (taskData) {
+    const taskIndex = taskListData.value.findIndex(item => item.id === taskData.id);
+    if (taskListData.value[taskIndex]) {
+      taskListData.value[taskIndex] = { ...taskListData.value[taskIndex], ...taskData };
+      currentEditTaskData.value = taskListData.value[taskIndex];
+    }
+  }
+};
+
+// MODULE MANAGEMENT
+const moduleTreeData = ref([{ name: t('task.list.noModuleTask'), id: '-1' }]);
+const currentModuleId = ref();
+
+/**
+ * Component mounted lifecycle hook
+ * Initializes module tree and sets up watchers
+ */
+onMounted(async () => {
+  await router.replace('/task#task');
+
+  await loadModuleTreeData();
+
+  watch(() => props.projectId, () => {
+    currentModuleId.value = '';
+    loadModuleTreeData();
+  });
+
+  watch(() => listRefreshNotify.value, (newNotificationValue) => {
+    if (newNotificationValue === undefined || newNotificationValue === null || newNotificationValue === '') {
+      return;
+    }
+
+    loadTaskListData();
   }, { immediate: true });
 
-  watch(() => moduleFlag.value, () => {
-    if (moduleFlag.value) {
-      moduleId.value = '';
+  watch(() => isModuleGroupEnabled.value, () => {
+    if (isModuleGroupEnabled.value) {
+      currentModuleId.value = '';
     } else {
-      moduleId.value = undefined;
+      currentModuleId.value = undefined;
     }
   });
 
-  watch(() => moduleId.value, () => {
-    // 通知列表刷新
-    refreshNotify.value = utils.uuid();
-    // 通知统计面板刷新
-    countRefreshNotify.value = utils.uuid();
+  watch(() => currentModuleId.value, () => {
+    // Notify list refresh
+    listRefreshNotify.value = utils.uuid();
+    // Notify statistics panel refresh
+    statisticsRefreshNotify.value = utils.uuid();
   });
 });
 
-const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
-  const map = new Map<string, ActionMenuItem[]>();
-  const list = taskList.value || [];
-  for (let i = 0, len = list.length; i < len; i++) {
-    const item = list[i];
-    const status = item.status?.value;
-    const sprintId = item.sprintId;
-    const sprintAuth = item.sprintAuth;
+/**
+ * Computed property for task action menu items
+ * Generates context menu items based on task status and user permissions
+ */
+const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
+  const menuItemsMap = new Map<string, ActionMenuItem[]>();
+  const taskList = taskListData.value || [];
 
-    const permissions = sprintPermissionsMap.value.get(sprintId) || [];
-    const { currentAssociateType, confirmorId, assigneeId, createdBy } = item;
+  for (let i = 0, len = taskList.length; i < len; i++) {
+    const taskItem = taskList[i];
+    const taskStatus = taskItem.status?.value;
+    const sprintId = taskItem.sprintId;
+    const sprintAuth = taskItem.sprintAuth;
 
-    const userId = props.userInfo?.id;
-    const isAdministrator = !!currentAssociateType?.map(item => item.value).includes('SYS_ADMIN' || 'APP_ADMIN');
-    const isConfirmor = confirmorId === userId;
-    const isAssignee = assigneeId === userId;
-    // const isCreator = createdBy === userId;
+    const permissions = sprintPermissionsCache.value.get(sprintId) || [];
+    const { currentAssociateType, confirmorId, assigneeId, createdBy } = taskItem;
+
+    const currentUserId = props.userInfo?.id;
+    const isCurrentUserAdmin = !!currentAssociateType?.map(associateType => associateType.value).includes('SYS_ADMIN' || 'APP_ADMIN');
+    const isCurrentUserConfirmor = confirmorId === currentUserId;
+    const isCurrentUserAssignee = assigneeId === currentUserId;
 
     const menuItems: ActionMenuItem[] = [
       {
         name: t('task.actions.edit'),
         key: 'edit',
         icon: 'icon-shuxie',
-        disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
+        disabled: !isCurrentUserAdmin && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
         hide: true
       },
       {
         name: t('task.actions.delete'),
         key: 'delete',
         icon: 'icon-qingchu',
-        disabled: !isAdministrator && !permissions.includes('DELETE_TASK') && sprintAuth,
+        disabled: !isCurrentUserAdmin && !permissions.includes(TaskSprintPermission.DELETE_TASK) && sprintAuth,
         hide: true
       },
       {
         name: t('task.actions.split'),
         key: 'split',
         icon: 'icon-guanlianziyuan',
-        disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
+        disabled: !isCurrentUserAdmin && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
         hide: true
       }
     ];
 
-    if (status === 'PENDING') {
+    if (taskStatus === TaskStatus.PENDING) {
       menuItems.push({
         name: t('task.actions.start'),
         key: 'start',
         icon: 'icon-kaishi',
-        disabled: !isAdministrator && !isAssignee,
+        disabled: !isCurrentUserAdmin && !isCurrentUserAssignee,
         hide: false
       });
     }
 
-    if (status === 'IN_PROGRESS') {
+    if (taskStatus === TaskStatus.IN_PROGRESS) {
       menuItems.push({
         name: t('task.actions.complete'),
         key: 'processed',
         icon: 'icon-yichuli',
-        disabled: !isAdministrator && !isAssignee,
+        disabled: !isCurrentUserAdmin && !isCurrentUserAssignee,
         hide: false
       });
     }
 
-    if (status === 'CONFIRMING') {
+    if (taskStatus === TaskStatus.CONFIRMING) {
       menuItems.push({
         name: t('task.actions.confirmComplete'),
-        key: 'completed',
+        key: TaskStatus.COMPLETED,
         icon: 'icon-yiwancheng',
-        disabled: !isAdministrator && !isConfirmor,
+        disabled: !isCurrentUserAdmin && !isCurrentUserConfirmor,
         hide: false
       });
 
@@ -575,17 +678,17 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         name: t('task.actions.confirmIncomplete'),
         key: 'uncompleted',
         icon: 'icon-shibaiyuanyin',
-        disabled: !isAdministrator && !isConfirmor,
+        disabled: !isCurrentUserAdmin && !isCurrentUserConfirmor,
         hide: false
       });
     }
 
-    if (status === 'CANCELED' || status === 'COMPLETED') {
+    if (taskStatus === TaskStatus.CANCELED || taskStatus === TaskStatus.COMPLETED) {
       menuItems.push({
         name: t('task.actions.reopen'),
         key: 'reopen',
         icon: 'icon-zhongxindakaiceshirenwu',
-        disabled: !isAdministrator && !permissions.includes('REOPEN_TASK') && !isAssignee,
+        disabled: !isCurrentUserAdmin && !permissions.includes(TaskStatus.REOPEN_TASK) && !isCurrentUserAssignee,
         hide: false,
         tip: t('task.tips.reopenTip')
       });
@@ -594,23 +697,23 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         name: t('task.actions.restart'),
         key: 'restart',
         icon: 'icon-zhongxinkaishiceshi',
-        disabled: !isAdministrator && !permissions.includes('RESTART_TASK'),
+        disabled: !isCurrentUserAdmin && !permissions.includes(TaskStatus.RESTART_TASK),
         hide: false,
         tip: t('task.tips.restartTip')
       });
     }
 
-    if (status !== 'CANCELED' && status !== 'COMPLETED') {
+    if (taskStatus !== TaskStatus.CANCELED && taskStatus !== TaskStatus.COMPLETED) {
       menuItems.push({
         name: t('task.actions.cancel'),
         key: 'cancel',
         icon: 'icon-zhongzhi2',
-        disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
+        disabled: !isCurrentUserAdmin && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
         hide: false
       });
     }
 
-    const { favourite, follow } = item;
+    const { favourite, follow } = taskItem;
     if (favourite) {
       menuItems.push({
         name: t('task.actions.unfavorite'),
@@ -651,7 +754,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
       name: t('task.actions.move'),
       key: 'move',
       icon: 'icon-yidong',
-      disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
+      disabled: !isCurrentUserAdmin && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
       hide: false
     });
 
@@ -663,169 +766,175 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
       hide: false
     });
 
-    map.set(item.id, menuItems);
+    menuItemsMap.set(taskItem.id, menuItems);
   }
 
-  return map;
+  return menuItemsMap;
 });
 
-const statisticsParams = computed(() => {
-  const param = { };
+/**
+ * Computed property for statistics panel parameters
+ * Builds parameters for statistics API calls
+ */
+const statisticsParameters = computed(() => {
+  const parameters = { };
   if (proTypeShowMap.value.showBackLog) {
-    param.backlog = false;
+    parameters.backlog = false;
   }
-  if (filters.value.length) {
-    param.filters = filters.value;
+  if (searchFilters.value.length) {
+    parameters.filters = searchFilters.value;
   }
-  if (moduleId.value) {
-    param.moduleId = moduleId.value;
+  if (currentModuleId.value) {
+    parameters.moduleId = currentModuleId.value;
   }
-
-  return param;
+  return parameters;
 });
 </script>
 
 <template>
-  <Spin :spinning="loading" class="flex flex-col pl-3.5 pt-3.5 h-full overflow-y-auto overflow-x-hidden">
+  <Spin :spinning="isLoading" class="flex flex-col pl-3.5 pt-3.5 h-full overflow-y-auto overflow-x-hidden">
     <StatisticsPanel
-      :collapse="collapseFlag"
-      :params="statisticsParams"
-      :notify="countRefreshNotify"
+      :collapse="isStatisticsCollapsed"
+      :params="statisticsParameters"
+      :notify="statisticsRefreshNotify"
       :userInfo="props.userInfo"
       :appInfo="props.appInfo"
       :projectId="props.projectId"
-      :class="{ 'mb-3': !collapseFlag }"
+      :class="{ 'mb-3': !isStatisticsCollapsed }"
       class="pr-5" />
 
     <div class="flex h-full">
-      <div class="flex-shrink-0 h-full overflow-hidden pb-3 bg-gray-1 text-3" :class="{'w-65 mr-2': moduleFlag , 'w-0': !moduleFlag}">
+      <div class="flex-shrink-0 h-full overflow-hidden pb-3 bg-gray-1 text-3" :class="{'w-65 mr-2': isModuleGroupEnabled , 'w-0': !isModuleGroupEnabled}">
         <ModuleTree
-          v-model:moduleId="moduleId"
+          v-model:moduleId="currentModuleId"
           :projectId="props.projectId"
           :projectName="props.projectName"
           :dataList="moduleTreeData"
-          @loadData="loadModuleTree" />
+          @loadData="loadModuleTreeData" />
       </div>
       <div class="flex-1 flex flex-col overflow-x-hidden">
         <SearchPanel
-          v-model:collapse="collapseFlag"
-          v-model:visible="flowChartVisible"
-          v-model:moduleFlag="moduleFlag"
-          v-model:groupKey="boardsGroupKey"
-          v-model:orderBy="boardsOrderBy"
-          v-model:orderSort="boardsOrderSort"
-          :viewMode="viewMode"
+          v-model:collapse="isStatisticsCollapsed"
+          v-model:visible="isFlowChartVisible"
+          v-model:moduleFlag="isModuleGroupEnabled"
+          v-model:groupKey="kanbanGroupKey"
+          v-model:orderBy="kanbanOrderBy"
+          v-model:orderSort="kanbanOrderSort"
+          :viewMode="currentViewMode"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :projectId="props.projectId"
           :sprintId="props.sprintId"
           :sprintName="props.sprintName"
           class="mb-1.5 pr-5"
-          @change="searchPanelChange"
-          @add="toCreate"
-          @export="toExport"
+          @change="handleSearchPanelChange"
+          @add="handleTaskCreation"
+          @export="handleTaskExport"
           @uploadTask="openUploadTaskModal"
-          @exportTemplate="handdleExportTemplate"
-          @viewModeChange="viewModeChange" />
+          @exportTemplate="handleExportTemplate"
+          @viewModeChange="handleViewModeChange" />
+
         <KanbanView
-          v-if="viewMode === 'kanban'"
-          v-model:loading="loading"
-          v-model:moduleId="moduleId"
-          :groupKey="boardsGroupKey"
-          :orderBy="boardsOrderBy"
-          :orderSort="boardsOrderSort"
-          :filters="filters"
+          v-if="currentViewMode === TaskViewMode.kanban"
+          v-model:loading="isLoading"
+          v-model:moduleId="currentModuleId"
+          :groupKey="kanbanGroupKey"
+          :orderBy="kanbanOrderBy"
+          :orderSort="kanbanOrderSort"
+          :filters="searchFilters"
           :projectId="props.projectId"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           class="pr-5"
-          @refreshChange="refreshChange" />
+          @refreshChange="handleRefreshChange" />
+
         <GanttView
-          v-else-if="viewMode === 'gantt'"
-          v-model:loading="loading"
-          v-model:moduleId="moduleId"
-          :filters="filters"
+          v-else-if="currentViewMode === TaskViewMode.gantt"
+          v-model:loading="isLoading"
+          v-model:moduleId="currentModuleId"
+          :filters="searchFilters"
           :projectId="props.projectId"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           class="pr-5" />
-        <template v-else-if="loaded">
-          <div v-if="!taskList.length" class="flex-1 pr-5 h-full flex items-center justify-center">
+
+        <template v-else-if="isDataLoaded">
+          <div v-if="!taskListData.length" class="flex-1 pr-5 h-full flex items-center justify-center">
             <NoData />
           </div>
 
-          <Table
-            v-else-if="viewMode === 'table'"
-            v-model:loading="loading"
-            v-model:selectedIds="selectedIds"
+          <TableView
+            v-else-if="currentViewMode === TaskViewMode.table"
+            v-model:loading="isLoading"
+            v-model:selectedIds="selectedTaskIds"
             :projectId="props.projectId"
-            :dataSource="taskList"
-            :pagination="pagination"
-            :menuItemsMap="menuItemsMap"
+            :dataSource="taskListData"
+            :pagination="paginationInfo"
+            :menuItemsMap="taskActionMenuItems"
             class="pr-5"
-            @tableChange="tableChange"
-            @edit="toEdit"
-            @move="toMove"
-            @delete="deleteOk"
-            @dataChange="setTableData"
-            @batchAction="batchAction"
-            @refreshChange="refreshChange" />
+            @tableChange="handleTableChange"
+            @edit="handleTaskEdit"
+            @move="handleTaskMove"
+            @delete="handleTaskDeletion"
+            @dataChange="updateTaskListData"
+            @batchAction="handleBatchAction"
+            @refreshChange="handleRefreshChange" />
 
-          <DetailView
-            v-else-if="viewMode === 'detail'"
-            v-model:loading="loading"
-            v-model:selectedIds="selectedIds"
+          <FlatView
+            v-else-if="currentViewMode === TaskViewMode.flat"
+            v-model:loading="isLoading"
+            v-model:selectedIds="selectedTaskIds"
             :projectId="props.projectId"
             :userInfo="props.userInfo"
             :appInfo="props.appInfo"
-            :dataSource="taskList"
-            :editTaskData="editTaskData"
-            :pagination="pagination"
-            :menuItemsMap="menuItemsMap"
-            :loaded="loaded"
-            @edit="toEdit"
-            @move="toMove"
-            @delete="deleteOk"
-            @dataChange="setTableData"
-            @paginationChange="paginationChange"
-            @batchAction="batchAction"
-            @refreshChange="refreshChange"
-            @splitOk="splitOk" />
+            :dataSource="taskListData"
+            :editTaskData="currentEditTaskData"
+            :pagination="paginationInfo"
+            :menuItemsMap="taskActionMenuItems"
+            :loaded="isDataLoaded"
+            @edit="handleTaskEdit"
+            @move="handleTaskMove"
+            @delete="handleTaskDeletion"
+            @dataChange="updateTaskListData"
+            @paginationChange="handlePaginationChange"
+            @batchAction="handleBatchAction"
+            @refreshChange="handleRefreshChange"
+            @splitOk="handleTaskSplitComplete" />
         </template>
       </div>
     </div>
 
-    <AsyncComponent :visible="taskModalVisible">
+    <AsyncComponent :visible="isTaskModalVisible">
       <Edit
-        v-model:visible="taskModalVisible"
+        v-model:visible="isTaskModalVisible"
         v-model:taskId="selectedTaskId"
         :sprintId="searchSprintId"
         :projectId="props.projectId"
         :userInfo="props.userInfo"
         :appInfo="props.appInfo"
-        :moduleId="moduleId === '-1' ? undefined : moduleId"
-        @ok="editOk" />
+        :moduleId="currentModuleId === '-1' ? undefined : currentModuleId"
+        @ok="handleTaskEditComplete" />
     </AsyncComponent>
 
-    <AsyncComponent :visible="flowChartVisible">
-      <FlowChart v-model:visible="flowChartVisible" />
+    <AsyncComponent :visible="isFlowChartVisible">
+      <FlowChart v-model:visible="isFlowChartVisible" />
     </AsyncComponent>
 
-    <AsyncComponent :visible="moveModalVisible">
+    <AsyncComponent :visible="isMoveModalVisible">
       <Move
-        v-model:visible="moveModalVisible"
+        v-model:visible="isMoveModalVisible"
         :sprintId="selectedTaskSprintId"
         :taskIds="selectedTaskId"
         :taskName="selectedTaskName"
         :projectId="props.projectId"
-        @ok="moveTaskOk" />
+        @ok="handleTaskMoveComplete" />
     </AsyncComponent>
-    <AsyncComponent :visible="uploadTaskVisible">
+    <AsyncComponent :visible="isUploadModalVisible">
       <Upload
-        v-model:visible="uploadTaskVisible"
-        :downloadTemplate="handdleExportTemplate"
-        @cancel="cancelUploadTask"
-        @ok="handleUploadTaskOk" />
+        v-model:visible="isUploadModalVisible"
+        :downloadTemplate="handleExportTemplate"
+        @cancel="handleUploadTaskCancel"
+        @ok="handleUploadTaskComplete" />
     </AsyncComponent>
   </Spin>
 </template>

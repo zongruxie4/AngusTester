@@ -14,7 +14,7 @@ import {
   TaskPriority,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import {appContext, enumUtils} from '@xcan-angus/infra';
+import { appContext, enumUtils } from '@xcan-angus/infra';
 import { TaskStatus } from '@/enums/enums';
 import dayjs from 'dayjs';
 import { reverse, sortBy } from 'lodash-es';
