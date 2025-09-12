@@ -1,116 +1,121 @@
+import { i18n } from '@xcan-angus/infra';
+
+const I18nInstance = i18n.getI18n();
+const t = I18nInstance?.global?.t || ((value: string): string => value);
+
 export const allCvsKeys = ['duration', 'errors', 'iterations', 'n', 'operations', 'transactions', 'readBytes', 'writeBytes', 'ops', 'tps', 'brps', 'bwps', 'tranMean', 'tranMin', 'tranMax', 'tranP50', 'tranP75', 'tranP90', 'tranP95', 'tranP99', 'tranP999', 'errorRate', 'threadPoolSize', 'threadPoolActiveSize', 'threadMaxPoolSize'];
 export const allCvsNames = {
-  duration: '时长',
-  errors: '错误数',
-  iterations: '迭代数',
-  n: '采样数',
-  operations: '请求数',
-  transactions: '事务数',
-  readBytes: '读数据大小',
-  writeBytes: '写数据大小',
-  ops: '每秒查询数',
-  tps: '每秒事务数',
-  brps: '下载/秒',
-  bwps: '上传/秒',
-  tranMean: '平均',
-  tranMin: '最小',
-  tranMax: '最大',
-  tranP50: 'P50',
-  tranP75: 'P75',
-  tranP90: 'P90',
-  tranP95: 'P95',
-  tranP99: 'P99',
-  tranP999: 'P999',
-  errorRate: '错误率',
-  threadPoolSize: '线程数',
-  threadPoolActiveSize: '活跃线程数',
-  threadMaxPoolSize: '最大线程数'
+  duration: t('xcan_exec_chartConfig.duration'),
+  errors: t('xcan_exec_chartConfig.errors'),
+  iterations: t('xcan_exec_chartConfig.iterations'),
+  n: t('xcan_exec_chartConfig.sampleCount'),
+  operations: t('xcan_exec_chartConfig.requestCount'),
+  transactions: t('xcan_exec_chartConfig.transactionCount'),
+  readBytes: t('xcan_exec_chartConfig.readDataSize'),
+  writeBytes: t('xcan_exec_chartConfig.writeDataSize'),
+  ops: t('xcan_exec_chartConfig.queriesPerSecond'),
+  tps: t('xcan_exec_chartConfig.transactionsPerSecond'),
+  brps: t('xcan_exec_chartConfig.downloadPerSecond'),
+  bwps: t('xcan_exec_chartConfig.uploadPerSecond'),
+  tranMean: t('xcan_exec_chartConfig.average'),
+  tranMin: t('xcan_exec_chartConfig.minimum'),
+  tranMax: t('xcan_exec_chartConfig.maximum'),
+  tranP50: t('xcan_exec_chartConfig.p50'),
+  tranP75: t('xcan_exec_chartConfig.p75'),
+  tranP90: t('xcan_exec_chartConfig.p90'),
+  tranP95: t('xcan_exec_chartConfig.p95'),
+  tranP99: t('xcan_exec_chartConfig.p99'),
+  tranP999: t('xcan_exec_chartConfig.p999'),
+  errorRate: t('xcan_exec_chartConfig.errorRate'),
+  threadPoolSize: t('xcan_exec_chartConfig.threadCount'),
+  threadPoolActiveSize: t('xcan_exec_chartConfig.activeThreadCount'),
+  threadMaxPoolSize: t('xcan_exec_chartConfig.maxThreadCount')
 };
 
 export const allColumns = [
   {
-    title: '名称',
+    title: t('xcan_exec_chartConfig.name'),
     dataIndex: 'name',
     width: '11.5%',
     ellipsis: true
   },
   {
-    title: '采样数',
+    title: t('xcan_exec_chartConfig.sampleCount'),
     dataIndex: 'n',
     width: '7%'
   },
   {
-    title: '事务数',
+    title: t('xcan_exec_chartConfig.transactionCount'),
     dataIndex: 'transactions',
     width: '7%'
   },
   {
-    title: '平均',
+    title: t('xcan_exec_chartConfig.average'),
     dataIndex: 'tranMean',
     width: '5%'
   },
   {
-    title: '最小',
+    title: t('xcan_exec_chartConfig.minimum'),
     dataIndex: 'tranMin',
     width: '5%'
   },
   {
-    title: '最大',
+    title: t('xcan_exec_chartConfig.maximum'),
     dataIndex: 'tranMax',
     width: '5%'
   },
   {
-    title: 'P50',
+    title: t('xcan_exec_chartConfig.p50'),
     dataIndex: 'tranP50',
     width: '5%'
   },
   {
-    title: 'P75',
+    title: t('xcan_exec_chartConfig.p75'),
     dataIndex: 'tranP75',
     width: '5%'
   },
   {
-    title: 'P90',
+    title: t('xcan_exec_chartConfig.p90'),
     dataIndex: 'tranP90',
     width: '5%'
   },
   {
-    title: 'P99',
+    title: t('xcan_exec_chartConfig.p99'),
     dataIndex: 'tranP99',
     width: '5%'
   },
   {
-    title: 'P999',
+    title: t('xcan_exec_chartConfig.p999'),
     dataIndex: 'tranP999',
     width: '5%'
   },
   {
-    title: '每秒查询数',
+    title: t('xcan_exec_chartConfig.queriesPerSecond'),
     dataIndex: 'ops',
     width: '5%'
   },
   {
-    title: '每秒事务数',
+    title: t('xcan_exec_chartConfig.transactionsPerSecond'),
     dataIndex: 'tps',
     width: '5%'
   },
   {
-    title: '错误数',
+    title: t('xcan_exec_chartConfig.errors'),
     dataIndex: 'errors',
     width: '5%'
   },
   {
-    title: '错误率',
+    title: t('xcan_exec_chartConfig.errorRate'),
     dataIndex: 'errorRate',
     width: '5%'
   },
   {
-    title: '下载/秒',
+    title: t('xcan_exec_chartConfig.downloadPerSecond'),
     dataIndex: 'brps',
     width: '7%'
   },
   {
-    title: '上传/秒',
+    title: t('xcan_exec_chartConfig.uploadPerSecond'),
     dataIndex: 'bwps',
     width: '7%'
   }
@@ -118,52 +123,52 @@ export const allColumns = [
 
 export const allResponseTimeColumns = [
   {
-    title: '名称',
+    title: t('xcan_exec_chartConfig.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '平均',
+    title: t('xcan_exec_chartConfig.average'),
     dataIndex: 'tranMean',
     width: '9.5%'
   },
   {
-    title: '最小',
+    title: t('xcan_exec_chartConfig.minimum'),
     dataIndex: 'tranMin',
     width: '9.5%'
   },
   {
-    title: '最大',
+    title: t('xcan_exec_chartConfig.maximum'),
     dataIndex: 'tranMax',
     width: '9.5%'
   },
   {
-    title: 'P50',
+    title: t('xcan_exec_chartConfig.p50'),
     dataIndex: 'tranP50',
     width: '9.5%'
   },
   {
-    title: 'P75',
+    title: t('xcan_exec_chartConfig.p75'),
     dataIndex: 'tranP75',
     width: '9.5%'
   },
   {
-    title: 'P90',
+    title: t('xcan_exec_chartConfig.p90'),
     dataIndex: 'tranP90',
     width: '9.5%'
   },
   {
-    title: 'P95',
+    title: t('xcan_exec_chartConfig.p95'),
     dataIndex: 'tranP95',
     width: '9.5%'
   },
   {
-    title: 'P99',
+    title: t('xcan_exec_chartConfig.p99'),
     dataIndex: 'tranP99',
     width: '9.5%'
   },
   {
-    title: 'P999',
+    title: t('xcan_exec_chartConfig.p999'),
     dataIndex: 'tranP999',
     width: '9.5%'
   }
@@ -171,12 +176,12 @@ export const allResponseTimeColumns = [
 
 export const allErrorsColumns = [
   {
-    title: '名称',
+    title: t('xcan_exec_chartConfig.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '错误数',
+    title: t('xcan_exec_chartConfig.errors'),
     dataIndex: 'errors',
     width: '66%'
   }
@@ -184,12 +189,12 @@ export const allErrorsColumns = [
 
 export const allErrorRateColumns = [
   {
-    title: '名称',
+    title: t('xcan_exec_chartConfig.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '错误率',
+    title: t('xcan_exec_chartConfig.errorRate'),
     dataIndex: 'errorRate',
     width: '66%'
   }
@@ -197,17 +202,17 @@ export const allErrorRateColumns = [
 
 export const allUploadColumns = [
   {
-    title: '名称',
+    title: t('xcan_exec_chartConfig.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '下载/秒',
+    title: t('xcan_exec_chartConfig.downloadPerSecond'),
     dataIndex: 'brps',
     width: '33%'
   },
   {
-    title: '上传/秒',
+    title: t('xcan_exec_chartConfig.uploadPerSecond'),
     dataIndex: 'bwps',
     width: '33%'
   }
@@ -215,22 +220,22 @@ export const allUploadColumns = [
 
 export const allRowsColumns = [
   {
-    title: '名称',
+    title: t('xcan_exec_chartConfig.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '迭代数',
+    title: t('xcan_exec_chartConfig.iterations'),
     dataIndex: 'iterations',
     width: '25%'
   },
   {
-    title: '事务数',
+    title: t('xcan_exec_chartConfig.transactionCount'),
     dataIndex: 'transactions',
     width: '25%'
   },
   {
-    title: '错误数',
+    title: t('xcan_exec_chartConfig.errors'),
     dataIndex: 'errors',
     width: '25%'
   }
@@ -240,46 +245,46 @@ export const throughputCvsKeys = ['ops', 'tps', 'brps', 'bwps'];
 
 export const throughputOptions = [
   {
-    label: '每秒查询数',
+    label: t('xcan_exec_chartConfig.queriesPerSecond'),
     value: 'ops'
   },
   {
-    label: '每秒事务数',
+    label: t('xcan_exec_chartConfig.transactionsPerSecond'),
     value: 'tps'
   },
   {
-    label: '下载/秒',
+    label: t('xcan_exec_chartConfig.downloadPerSecond'),
     value: 'brps'
   },
   {
-    label: '上传/秒',
+    label: t('xcan_exec_chartConfig.uploadPerSecond'),
     value: 'bwps'
   }
 ];
 
 export const throughputColumns = [
   {
-    title: '名称',
+    title: t('xcan_exec_chartConfig.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '每秒查询数',
+    title: t('xcan_exec_chartConfig.queriesPerSecond'),
     dataIndex: 'ops',
     width: '16.5%'
   },
   {
-    title: '每秒事务数',
+    title: t('xcan_exec_chartConfig.transactionsPerSecond'),
     dataIndex: 'tps',
     width: '16.5%'
   },
   {
-    title: '下载/秒',
+    title: t('xcan_exec_chartConfig.downloadPerSecond'),
     dataIndex: 'brps',
     width: '16.5%'
   },
   {
-    title: '上传/秒',
+    title: t('xcan_exec_chartConfig.uploadPerSecond'),
     dataIndex: 'bwps',
     width: '16.5%'
   }
@@ -289,37 +294,37 @@ export const threadCvsKeys = ['threadPoolSize', 'threadPoolActiveSize', 'threadM
 
 export const threadOptions = [
   {
-    label: '线程数',
+    label: t('xcan_exec_chartConfig.threadCount'),
     value: 'threadPoolSize'
   },
   {
-    label: '活跃线程数',
+    label: t('xcan_exec_chartConfig.activeThreadCount'),
     value: 'threadPoolActiveSize'
   },
   {
-    label: '最大线程数',
+    label: t('xcan_exec_chartConfig.maxThreadCount'),
     value: 'threadMaxPoolSize'
   }
 ];
 
 export const threadColumns = [
   {
-    title: '名称',
+    title: t('xcan_exec_chartConfig.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '线程数',
+    title: t('xcan_exec_chartConfig.threadCount'),
     dataIndex: 'threadPoolSize',
     width: '22%'
   },
   {
-    title: '活跃线程数',
+    title: t('xcan_exec_chartConfig.activeThreadCount'),
     dataIndex: 'threadPoolActiveSize',
     width: '22%'
   },
   {
-    title: '最大线程数',
+    title: t('xcan_exec_chartConfig.maxThreadCount'),
     dataIndex: 'threadMaxPoolSize',
     width: '22%'
   }
@@ -329,91 +334,91 @@ export const responseTimeCvsKeys = ['tranMean', 'tranMin', 'tranMax', 'tranP50',
 
 export const responseTimeOptions = [
   {
-    label: '平均',
+    label: t('xcan_exec_chartConfig.average'),
     value: 'tranMean'
   },
   {
-    label: '最小',
+    label: t('xcan_exec_chartConfig.minimum'),
     value: 'tranMin'
   },
   {
-    label: '最大',
+    label: t('xcan_exec_chartConfig.maximum'),
     value: 'tranMax'
   },
   {
-    label: 'P50',
+    label: t('xcan_exec_chartConfig.p50'),
     value: 'tranP50'
   },
   {
-    label: 'P75',
+    label: t('xcan_exec_chartConfig.p75'),
     value: 'tranP75'
   },
   {
-    label: 'P90',
+    label: t('xcan_exec_chartConfig.p90'),
     value: 'tranP90'
   },
   {
-    label: 'P95',
+    label: t('xcan_exec_chartConfig.p95'),
     value: 'tranP95'
   },
   {
-    label: 'P99',
+    label: t('xcan_exec_chartConfig.p99'),
     value: 'tranP99'
   },
   {
-    label: 'P999',
+    label: t('xcan_exec_chartConfig.p999'),
     value: 'tranP999'
   }
 ];
 
 export const responseTimeColumns = [
   {
-    title: '名称',
+    title: t('xcan_exec_chartConfig.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '平均',
+    title: t('xcan_exec_chartConfig.average'),
     dataIndex: 'tranMean',
     width: '8%'
   },
   {
-    title: '最小',
+    title: t('xcan_exec_chartConfig.minimum'),
     dataIndex: 'tranMin',
     width: '8%'
   },
   {
-    title: '最大',
+    title: t('xcan_exec_chartConfig.maximum'),
     dataIndex: 'tranMax',
     width: '8%'
   },
   {
-    title: 'P50',
+    title: t('xcan_exec_chartConfig.p50'),
     dataIndex: 'tranP50',
     width: '8%'
   },
   {
-    title: 'P75',
+    title: t('xcan_exec_chartConfig.p75'),
     dataIndex: 'tranP75',
     width: '8%'
   },
   {
-    title: 'P90',
+    title: t('xcan_exec_chartConfig.p90'),
     dataIndex: 'tranP90',
     width: '8%'
   },
   {
-    title: 'P95',
+    title: t('xcan_exec_chartConfig.p95'),
     dataIndex: 'tranP95',
     width: '8%'
   },
   {
-    title: 'P99',
+    title: t('xcan_exec_chartConfig.p99'),
     dataIndex: 'tranP99',
     width: '8%'
   },
   {
-    title: 'P999',
+    title: t('xcan_exec_chartConfig.p999'),
     dataIndex: 'tranP999',
     width: '8%'
   }
@@ -423,54 +428,54 @@ export const errorCvsKeys = ['errors', 'n', 'operations', 'transactions', 'error
 
 export const errorOptions = [
   {
-    label: '采样数',
+    label: t('xcan_exec_chartConfig.sampleCount'),
     value: 'n'
   },
   {
-    label: '请求数',
+    label: t('xcan_exec_chartConfig.requestCount'),
     value: 'operations'
   },
   {
-    label: '事务数',
+    label: t('xcan_exec_chartConfig.transactionCount'),
     value: 'transactions'
   },
   {
-    label: '错误数',
+    label: t('xcan_exec_chartConfig.errors'),
     value: 'errors'
   },
   {
-    label: '错误率',
+    label: t('xcan_exec_chartConfig.errorRate'),
     value: 'errorRate'
   }
 ];
 export const errorColumns = [
   {
-    title: '名称',
+    title: t('xcan_exec_chartConfig.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '采样数',
+    title: t('xcan_exec_chartConfig.sampleCount'),
     dataIndex: 'n',
     width: '12%'
   },
   {
-    title: '请求数',
+    title: t('xcan_exec_chartConfig.requestCount'),
     dataIndex: 'operations',
     width: '12%'
   },
   {
-    title: '事务数',
+    title: t('xcan_exec_chartConfig.transactionCount'),
     dataIndex: 'transactions',
     width: '12%'
   },
   {
-    title: '错误数',
+    title: t('xcan_exec_chartConfig.errors'),
     dataIndex: 'errors',
     width: '12%'
   },
   {
-    title: '错误率',
+    title: t('xcan_exec_chartConfig.errorRate'),
     dataIndex: 'errorRate',
     width: '12%'
   }
@@ -478,27 +483,27 @@ export const errorColumns = [
 
 export const oneApiErrorColumns = [
   {
-    title: '名称',
+    title: t('xcan_exec_chartConfig.name'),
     dataIndex: 'name',
     ellipsis: true
   },
   {
-    title: '采样数',
+    title: t('xcan_exec_chartConfig.sampleCount'),
     dataIndex: 'n',
     width: '15%'
   },
   {
-    title: '事务数',
+    title: t('xcan_exec_chartConfig.transactionCount'),
     dataIndex: 'transactions',
     width: '15%'
   },
   {
-    title: '错误数',
+    title: t('xcan_exec_chartConfig.errors'),
     dataIndex: 'errors',
     width: '15%'
   },
   {
-    title: '错误率',
+    title: t('xcan_exec_chartConfig.errorRate'),
     dataIndex: 'errorRate',
     width: '15%'
   }

@@ -1934,5 +1934,33 @@
       "responseBody": "Response Body",
       "email": "Email {num}",
       "size": "Size"
+    },
+    "xcan_exec_chartConfig": {
+      "duration": "Duration",
+      "errors": "Errors",
+      "iterations": "Iterations",
+      "sampleCount": "Sample Count",
+      "requestCount": "Request Count",
+      "transactionCount": "Transaction Count",
+      "readDataSize": "Read Data Size",
+      "writeDataSize": "Write Data Size",
+      "queriesPerSecond": "Queries Per Second",
+      "transactionsPerSecond": "Transactions Per Second",
+      "downloadPerSecond": "Download/Second",
+      "uploadPerSecond": "Upload/Second",
+      "average": "Average",
+      "minimum": "Minimum",
+      "maximum": "Maximum",
+      "p50": "P50",
+      "p75": "P75",
+      "p90": "P90",
+      "p95": "P95",
+      "p99": "P99",
+      "p999": "P999",
+      "errorRate": "Error Rate",
+      "threadCount": "Thread Count",
+      "activeThreadCount": "Active Thread Count",
+      "maxThreadCount": "Max Thread Count",
+      "name": "Name"
     }
 }
