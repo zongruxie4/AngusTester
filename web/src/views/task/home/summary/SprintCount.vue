@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {onMounted, ref, watch} from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import {Icon} from '@xcan-angus/vue-ui';
+import { Icon } from '@xcan-angus/vue-ui';
 
-import {SummaryInfo} from '@/views/task/home/types';
+import { SummaryInfo } from '@/views/task/home/types';
 
 const { t } = useI18n();
 
@@ -42,7 +42,7 @@ onMounted(() => {
 <template>
   <div class="flex flex-col rounded border border-solid border-theme-text-box pt-2 pb-2">
     <div class="font-semibold px-4">
-        <span class="mr-2">{{ t('taskHome.summary.sprintCount.totalSprints') }}</span>
+      <span class="mr-2">{{ t('taskHome.summary.sprintCount.totalSprints') }}</span>
       <span class="text-4">{{ totalSprintCount }}</span>
     </div>
 

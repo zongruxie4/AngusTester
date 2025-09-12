@@ -58,7 +58,7 @@ export interface TaskInfo {
     //         name: string
     //     }
     // ],
-    // confirmors: [
+    // confirmers: [
     //     {
     //         id: string,
     //         name: string

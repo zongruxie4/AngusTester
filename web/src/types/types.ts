@@ -1,4 +1,5 @@
-import {CreatedAt, PeriodicCreationUnit} from '@xcan-angus/infra';
+import {CreatedAt, PeriodicCreationUnit, EnumMessage} from '@xcan-angus/infra';
+import {CombinedTargetType} from '@/enums/enums';
 
 export type LoadingProps = {
   loading: boolean;
@@ -24,4 +25,20 @@ export interface CreateTimeSetting {
   dayOfWeek?: string;
   timeOfDay?: string;
   hourOfDay?: string;
+}
+
+export type ActivityItem = {
+  id: string;
+  projectId: string;
+  userId: string;
+  fullName: string;
+  avatar: string;
+  targetId: string;
+  parentTargetId: string;
+  targetType: EnumMessage<CombinedTargetType>;
+  targetName: string;
+  optDate: string;
+  description: string;
+  detail: string;
+  details?: string[];
 }

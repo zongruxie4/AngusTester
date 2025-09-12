@@ -134,10 +134,10 @@ const menuItemClick = (data: MenuItem) => {
       return;
     }
 
-    if (key === 'confirmorId') {
+    if (key === 'confirmerId') {
       if (typeof searchPanelRef.value?.setConfigs === 'function') {
         searchPanelRef.value.setConfigs([
-          { valueKey: 'confirmorId', value: undefined },
+          { valueKey: 'confirmerId', value: undefined },
           { valueKey: 'status', value: undefined }
         ]);
       }
@@ -224,10 +224,10 @@ const menuItemClick = (data: MenuItem) => {
     return;
   }
 
-  if (key === 'confirmorId') {
+  if (key === 'confirmerId') {
     if (typeof searchPanelRef.value?.setConfigs === 'function') {
       searchPanelRef.value.setConfigs([
-        { valueKey: 'confirmorId', value: userId.value },
+        { valueKey: 'confirmerId', value: userId.value },
         { valueKey: 'status', value: 'CONFIRMING' }
       ]);
     }
@@ -636,7 +636,7 @@ onMounted(async () => {
           selectedMenuMap.value.set('assigneeId', { key: 'assigneeId' });
 
           // 删除【待我确认】
-          selectedMenuMap.value.delete('confirmorId');
+          selectedMenuMap.value.delete('confirmerId');
           // 删除【我处理中】
           selectedMenuMap.value.delete('progress');
         } else {
@@ -647,23 +647,23 @@ onMounted(async () => {
           selectedMenuMap.value.set('progress', { key: 'progress' });
 
           // 删除【待我确认】
-          selectedMenuMap.value.delete('confirmorId');
+          selectedMenuMap.value.delete('confirmerId');
           // 删除【待我处理】
           selectedMenuMap.value.delete('assigneeId');
         } else {
           selectedMenuMap.value.delete('progress');
         }
 
-        const confirmorId = _filters.find(item => item.key === 'confirmorId')?.value;
-        if (status && status === 'CONFIRMING' && confirmorId === userId.value) {
-          selectedMenuMap.value.set('confirmorId', { key: 'confirmorId' });
+        const confirmerId = _filters.find(item => item.key === 'confirmerId')?.value;
+        if (status && status === 'CONFIRMING' && confirmerId === userId.value) {
+          selectedMenuMap.value.set('confirmerId', { key: 'confirmerId' });
 
           // 删除【待我处理】
           selectedMenuMap.value.delete('assigneeId');
           // 删除【我处理中】
           selectedMenuMap.value.delete('progress');
         } else {
-          selectedMenuMap.value.delete('confirmorId');
+          selectedMenuMap.value.delete('confirmerId');
         }
 
         if (quickDateMap.value.size > 0) {

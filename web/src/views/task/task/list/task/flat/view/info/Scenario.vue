@@ -13,23 +13,17 @@ import {
   TaskStatus,
   Toggle
 } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/infra';
+import { EvalWorkloadMethod, TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
+import { SoftwareVersionStatus } from '@/enums/enums';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfo } from '@/views/task/types';
+import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: TaskInfo;
-  loading: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -195,7 +189,10 @@ const toEditPriority = () => {
   });
 };
 
-const priorityChange = async (_event: { target: { value: TaskInfo['priority']['value']; } }, option: { message: string; value: TaskInfo['priority']['value'] }) => {
+const priorityChange = async (
+  _event: { target: { value: TaskInfo['priority']['value']; } },
+  option: { message: string; value: TaskInfo['priority']['value']
+  }) => {
   priorityMessage.value = option.message;
 };
 
@@ -214,7 +211,10 @@ const priorityBlur = async () => {
     return;
   }
 
-  emit('change', { id: taskId.value, priority: { value, message: priorityMessage.value! } });
+  emit('change', {
+    id: taskId.value,
+    priority: { value, message: priorityMessage.value! }
+  });
 };
 
 const toEditTag = () => {
@@ -230,7 +230,9 @@ const toEditTag = () => {
   });
 };
 
-const tagChange = async (_event: { target: { value: string[]; } }, options: { id: string; name: string; }[]) => {
+const tagChange = async (
+  _event: { target: { value: string[]; } },
+  options: { id: string; name: string; }[]) => {
   tagList.value = options;
 };
 
@@ -379,7 +381,9 @@ const onePassText = computed(() => {
                 v-if="overdue"
                 class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
                 style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                <span class="inline-block transform-gpu scale-90">{{ t('task.detailInfo.scenario.columns.overdue') }}</span>
+                <span class="inline-block transform-gpu scale-90">
+                  {{ t('task.detailInfo.scenario.columns.overdue') }}
+                </span>
               </span>
             </div>
           </div>
@@ -457,7 +461,12 @@ const onePassText = computed(() => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ evalWorkloadMethod === 'STORY_POINT' ? t('task.detailInfo.scenario.columns.evalWorkload') : t('task.detailInfo.scenario.columns.evalWorkloadHours') }}</span>
+              <span>
+                {{ evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                  ? t('task.detailInfo.scenario.columns.evalWorkload')
+                  : t('task.detailInfo.scenario.columns.evalWorkloadHours')
+                }}
+              </span>
               <Colon class="w-1" />
             </div>
 
@@ -500,7 +509,11 @@ const onePassText = computed(() => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ evalWorkloadMethod === 'STORY_POINT' ? t('task.detailInfo.scenario.columns.actualStoryPoint') : t('task.detailInfo.scenario.columns.actualWorkload') }}</span>
+              <span>
+                {{ evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                  ? t('task.detailInfo.scenario.columns.actualStoryPoint')
+                  : t('task.detailInfo.scenario.columns.actualWorkload') }}
+              </span>
               <Colon class="w-1" />
             </div>
 
@@ -613,7 +626,7 @@ const onePassText = computed(() => {
                   lazy
                   class="w-full max-w-60"
                   :action="`${TESTER}/software/version?projectId=${props.projectId}`"
-                  :params="{filters: [{value: ['NOT_RELEASED', 'RELEASED'], key: 'status', op: 'IN'}]}"
+                  :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN'}]}"
                   :fieldNames="{value:'name', label: 'name'}"
                   @blur="versionBlur"
                   @change="versionChange">
@@ -642,11 +655,11 @@ const onePassText = computed(() => {
           </div>
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.scenario.columns.unplannedFlag') }}</span>
+              <span>{{ t('task.detailInfo.scenario.columns.unplanned') }}</span>
               <Colon class="w-1" />
             </div>
             <div class="">
-              {{ props.dataSource?.unplannedFlag ? t('task.detailInfo.scenario.columns.yes') : t('task.detailInfo.scenario.columns.no') }}
+              {{ props.dataSource?.unplanned ? t('task.detailInfo.scenario.columns.yes') : t('task.detailInfo.scenario.columns.no') }}
             </div>
           </div>
         </div>

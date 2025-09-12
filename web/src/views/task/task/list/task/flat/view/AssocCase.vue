@@ -1,30 +1,22 @@
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, ref } from 'vue';
+import { defineAsyncComponent, ref } from 'vue';
 import { AsyncComponent, Hints, Icon, modal, ReviewStatus, Table, TaskPriority, TestResult } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
+import { FuncPlanStatus } from '@/enums/enums';
 import { Button } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
+import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
-interface Props {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  taskId: string;
-  dataSource: {
-    id: string;
-    name: string;
-  }[];
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
   taskId: undefined,
   dataSource: undefined
 });
+
 const router = useRouter();
 const { t } = useI18n();
 const SelectCaseByModuleModal = defineAsyncComponent(() => import('@/components/function/case/selectByModuleModal/index.vue'));
@@ -39,26 +31,11 @@ const emit = defineEmits<{
 const submitLoading = ref(false);
 const editRef = ref(false);
 
-const caseProgress = computed(() => {
-  const completed = (props.dataSource || []).filter(item => ['PASSED'].includes(item?.testResult?.value)).length;
-  const total = (props.dataSource || []).filter(item => !['CANCELED'].includes(item?.testResult?.value)).length;
-  const completedRate = total > 0 ? (completed / total * 100).toFixed(2) : 0;
-  return {
-    completed,
-    completedRate,
-    total
-  };
-});
-
 const selectCaseVisible = ref(false);
 const cancelEdit = () => {
   editRef.value = false;
-  // refCaseIds.value = [];
-
-  // refCaseIds.value = (props.dataSource || []).map(item => item.id);
 };
 const startEdit = () => {
-  // editRef.value = true;
   selectCaseVisible.value = true;
 };
 // const refCaseIds = ref<string[]>([]);
@@ -97,17 +74,9 @@ const handleDelCase = (record) => {
 };
 
 const openCaseTab = (record) => {
-  // addTabPane({
-  //   _id: record.id,
-  //   name: record.caseName,
-  //   type: 'caseInfo',
-  //   closable: true,
-  //   taskId: record.id,
-  // });
   router.push(`/function#cases?id=${record.id}`);
 };
 
-// 编号、名称、优先级、评估故事点、状态、测试人、截止时间、操作
 const columns = [
   {
     key: 'code',
@@ -150,24 +119,10 @@ const columns = [
     title: t('task.assocCase.columns.action')
   }
 ];
-
 </script>
 <template>
   <div>
     <div class="flex mb-2 items-center pr-2">
-      <!-- <div class="flex items-center flex-nowrap h-8 px-3.5 rounded" style="background-color:#FAFAFA;">
-        <span class="flex-shrink-0 font-semibold text-theme-title">进度</span>
-        <Colon class="mr-1.5" />
-        <span class="font-semibold text-3.5" style="color: #07F;">{{ caseProgress?.completed || 0 }}</span>
-        <span class="font-semibold text-3.5 mx-1">/</span>
-        <span class="font-semibold text-3.5 mr-3.5">{{ caseProgress?.total || 0 }}</span>
-        <Progress
-          :percent="+caseProgress?.completedRate"
-          style="width: 120px;"
-          class="mr-3.5"
-          :showInfo="false" />
-        <span class="font-semibold text-3.5">{{ caseProgress?.completedRate || 0 }}%</span>
-      </div> -->
       <div class="flex-1 min-w-0 truncate px-1">
         <Hints :text="t('task.assocCase.description')" />
       </div>
@@ -209,8 +164,9 @@ const columns = [
           <TaskPriority :value="record?.priority" />
         </template>
         <template v-if="column.dataIndex === 'status'">
-          <!-- <TaskStatus :value="record?.status" /> -->
-          <ReviewStatus v-if="record?.reviewStatus?.value === 'PENDING' && record.review" :value="record.reviewStatus" />
+          <ReviewStatus
+            v-if="record?.reviewStatus?.value === FuncPlanStatus.PENDING && record.review"
+            :value="record.reviewStatus" />
           <TestResult v-else :value="record.testResult" />
         </template>
       </template>

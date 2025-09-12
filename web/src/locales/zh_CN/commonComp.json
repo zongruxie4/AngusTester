@@ -1184,7 +1184,7 @@
       "associatedTaskCount": "关联任务",
       "sprintName": "所属迭代",
       "assigneeName": "经办人",
-      "confirmorName": "确认人",
+      "confirmerName": "确认人",
       "createdByName": "创建人",
       "createdDate": "创建时间",
       "average": "平均",

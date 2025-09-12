@@ -5,18 +5,12 @@ import { Button, Tag, TreeSelect } from 'ant-design-vue';
 import { AsyncComponent, Colon, Icon, IconTask, Input, Select, TaskPriority, TaskStatus } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
-import { task, modules } from '@/api/tester';
+import { modules, task } from '@/api/tester';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfo } from '../../types';
+import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: TaskInfo;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -323,7 +317,7 @@ const taskTypeBlur = async () => {
   if (value === 'BUG') {
     await task.updateTask(taskId.value, {
       bugLevel: 'MINOR',
-      missingBugFlag: false
+      missingBug: false
     });
   }
   if (error) {
@@ -672,7 +666,7 @@ const onePassText = computed(() => {
                 {{ props.dataSource?.bugLevel?.message }}
               </Tag>
               <Tag
-                v-if="props.dataSource?.missingBugFlag"
+                v-if="props.dataSource?.missingBug"
                 color="error"
                 class="ml-2 text-3 leading-4">
                 {{ t('backlog.info.basic.missingBug') }}
@@ -929,7 +923,7 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
           <div>
-            {{ props.dataSource?.unplannedFlag ? t('status.yes') : t('status.no') }}
+            {{ props.dataSource?.unplanned ? t('status.yes') : t('status.no') }}
           </div>
         </div>
       </div>

@@ -24,7 +24,7 @@ type Props = {
     createdBy?: string;
     favouriteBy?: boolean;
     followBy?: boolean;
-    confirmorId?: string;
+    confirmerId?: string;
     assigneeId?: string;
     commentBy?: string;
     status?: TaskStatus;
@@ -80,9 +80,9 @@ const paginationConfig = ref<{
       showTotal: (total: number) => {
         if (typeof paginationConfig.value === 'object') {
           const totalPage = Math.ceil(total / paginationConfig.value.pageSize);
-          return t('taskHome.addedTable.pagination', { 
-            current: paginationConfig.value.current, 
-            total: totalPage 
+          return t('taskHome.addedTable.pagination', {
+            current: paginationConfig.value.current,
+            total: totalPage
           });
         }
       }
@@ -118,7 +118,7 @@ const buildQueryParams = () => {
     createdBy?: string;
     favouriteBy?: boolean;
     followBy?: boolean;
-    confirmorId?: string;
+    confirmerId?: string;
     assigneeId?: string;
     status?: TaskStatus;
     orderBy?: string;
@@ -159,8 +159,8 @@ const buildQueryParams = () => {
       queryParams.assigneeId = props.params.assigneeId;
     }
 
-    if (props.params.confirmorId) {
-      queryParams.confirmorId = props.params.confirmorId;
+    if (props.params.confirmerId) {
+      queryParams.confirmerId = props.params.confirmerId;
     }
 
     if (props.params.status) {
@@ -482,7 +482,7 @@ const emptyStateStyle = {
               <span>{{ t('taskHome.addedTable.emptyStates.noPendingTasks') }}</span>
             </template>
 
-            <template v-else-if="props.params?.confirmorId && props.params?.status === 'CONFIRMING'">
+            <template v-else-if="props.params?.confirmerId && props.params?.status === 'CONFIRMING'">
               <span>{{ t('taskHome.addedTable.emptyStates.noConfirmingTasks') }}</span>
             </template>
 

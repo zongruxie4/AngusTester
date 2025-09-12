@@ -91,9 +91,9 @@ export function useTaskData (scenarioId: string, projectId: string) {
       width: 120
     },
     {
-      key: 'confirmorName',
+      key: 'confirmerName',
       title: t('scenario.detail.task.table.columns.confirmer'),
-      dataIndex: 'confirmorName',
+      dataIndex: 'confirmerName',
       width: 120
     },
     {

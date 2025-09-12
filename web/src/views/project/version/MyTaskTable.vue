@@ -83,9 +83,9 @@ const columns = computed(() => {
       width: 120
     },
     {
-      key: 'confirmorName',
-      title: t('version.taskTable.columns.confirmor'),
-      dataIndex: 'confirmorName',
+      key: 'confirmerName',
+      title: t('version.taskTable.columns.confirmer'),
+      dataIndex: 'confirmerName',
       width: 120
     },
     {

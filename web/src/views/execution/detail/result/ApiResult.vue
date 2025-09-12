@@ -2,6 +2,7 @@
 import { computed, defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Colon, Icon } from '@xcan-angus/vue-ui';
+import { ScriptType } from '@xcan-angus/infra';
 
 // Define component props
 interface Props {
@@ -49,7 +50,7 @@ const onePassText = computed(() => {
     <div class="font-semibold mb-2">{{ t('execution.testResult.basicInfo') }}</div>
 
     <!-- Layout for smaller screens -->
-    <div v-if="props.largePageLayout===false" class="space-y-2.5">
+    <div v-if="!props.largePageLayout" class="space-y-2.5">
       <div class="flex items-start space-x-5">
         <div class="relative w-1/2 flex items-start">
           <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
@@ -125,7 +126,7 @@ const onePassText = computed(() => {
     </div>
 
     <!-- Layout for larger screens -->
-    <div v-else-if="props.largePageLayout===true" class="space-y-2.5">
+    <div v-else-if="props.largePageLayout" class="space-y-2.5">
       <div class="flex items-start space-x-5">
         <div class="relative w-1/3 flex items-start">
           <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
@@ -199,19 +200,19 @@ const onePassText = computed(() => {
     </div>
 
     <!-- Performance test results section -->
-    <template v-if="dataSource.scriptType?.value === 'TEST_PERFORMANCE'">
+    <template v-if="dataSource.scriptType?.value === ScriptType.TEST_PERFORMANCE">
       <div class="font-semibold mt-5 mb-2">{{ t('execution.testResult.resultInfo') }}</div>
       <PerfResult :indicatorPerf="dataSource.indicatorPerf" :result="dataSource.sampleSummary" />
     </template>
 
     <!-- Stability test results section -->
-    <template v-if="dataSource.scriptType?.value === 'TEST_STABILITY'">
+    <template v-if="dataSource.scriptType?.value === ScriptType.TEST_STABILITY">
       <div class="font-semibold mt-5 mb-2">{{ t('execution.testResult.resultInfo') }}</div>
       <StabilityResult :indicatorStability="dataSource.indicatorStability" :result="dataSource.sampleSummary" />
     </template>
 
     <!-- Functionality test results section -->
-    <template v-if="dataSource.scriptType?.value === 'TEST_FUNCTIONALITY'">
+    <template v-if="dataSource.scriptType?.value === ScriptType.TEST_FUNCTIONALITY">
       <ApiFuncResult :dataSource="dataSource" />
     </template>
   </div>

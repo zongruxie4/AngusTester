@@ -6,15 +6,9 @@ import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
 import { TaskInfo } from '@/views/task/types';
+import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: TaskInfo;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -79,20 +73,8 @@ const error = computed(() => {
   if (!content.value) {
     return false;
   }
-
   return content.value.length > 8000;
 });
-
-const OPTIONS = {
-  menubar: false,
-  height: 300
-};
-
-const UPLOAD_OPTIONS = {
-  bizKey: 'angusTesterTaskAttachments'
-};
-
-const LINK_TYPES = ['@', '#', '>'];
 </script>
 
 <template>
@@ -115,7 +97,9 @@ const LINK_TYPES = ['@', '#', '>'];
             :value="content"
             :height="300"
             @change="editorChange" />
-          <div v-show="error" class="text-status-error">{{ t('task.detailInfo.description.validation.maxLength') }}</div>
+          <div v-show="error" class="text-status-error">
+            {{ t('task.detailInfo.description.validation.maxLength') }}
+          </div>
         </div>
 
         <div class="mt-2.5 space-x-2.5 w-full flex items-center justify-end">

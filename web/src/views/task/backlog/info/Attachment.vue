@@ -3,12 +3,13 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { Button, Upload, UploadFile } from 'ant-design-vue';
 import { Icon, notification, Spin } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
-import { utils, upload } from '@xcan-angus/infra';
+import { upload, utils } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 
 import { TaskInfo } from '../../types';
+import { TaskInfoProps } from '@/views/task/task/list/task/types';
+
+const { t } = useI18n();
 
 type AttachmentItem = {
   id: string;
@@ -16,14 +17,7 @@ type AttachmentItem = {
   url: string;
 }
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: TaskInfo;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,

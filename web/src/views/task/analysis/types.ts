@@ -1,4 +1,4 @@
-import { EnumMessage, AuthObjectType } from '@xcan-angus/infra';
+import { AuthObjectType, EnumMessage } from '@xcan-angus/infra';
 import { AnalysisDataSource, AnalysisTaskObject, AnalysisTaskTemplate } from '@/enums/enums';
 
 export interface AnalysisInfo {

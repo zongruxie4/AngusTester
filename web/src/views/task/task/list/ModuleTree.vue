@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { duration, appContext } from '@xcan-angus/infra';
+import { appContext, duration } from '@xcan-angus/infra';
 import { AsyncComponent, Icon, Input, modal, notification } from '@xcan-angus/vue-ui';
 import { Button, Dropdown, Menu, MenuItem, Tree } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';

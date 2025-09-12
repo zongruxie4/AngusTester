@@ -11,27 +11,20 @@ import {
   Input,
   modal,
   notification,
+  Table,
   TaskPriority,
-  TaskStatus,
-  Table
+  TaskStatus
 } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/infra';
+import { EvalWorkloadMethod, TESTER } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
+import { BugLevel, TaskType } from '@/enums/enums';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfo } from '@/views/task/types';
+import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  notify: string;
-  taskInfo: TaskInfo;
-  loading: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -50,7 +43,6 @@ const emit = defineEmits<{
 }>();
 
 const EditTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/Edit.vue'));
-// const refTasks = defineAsyncComponent(() => import('./refTasks/index.vue'));
 const SelectTaskByModuleModal = defineAsyncComponent(() => import('@/components/task/SelectByModuleModal.vue'));
 
 const loading = ref(false);
@@ -113,9 +105,9 @@ const toSave = async () => {
     taskType: newTaskType.value,
     parentTaskId: taskId.value
   };
-  if (newTaskType.value === 'BUG') {
-    params.bugLevel = 'MINOR';
-    params.missingBugFlag = false;
+  if (newTaskType.value === TaskType.BUG) {
+    params.bugLevel = BugLevel.MINOR;
+    params.missingBug = false;
   }
   loading.value = true;
   const [error] = await task.addTask(params);
@@ -161,17 +153,14 @@ const dropdownClick = (menuItem, data: TaskInfo) => {
     toFavourite(data);
     return;
   }
-
   if (key === 'cancelFavourite') {
     toDeleteFavourite(data);
     return;
   }
-
   if (key === 'follow') {
     toFollow(data);
     return;
   }
-
   if (key === 'cancelFollow') {
     toDeleteFollow(data);
   }
@@ -218,7 +207,9 @@ const toDeleteFollow = async (data: TaskInfo) => {
 };
 
 onMounted(() => {
-  newTaskType.value = ['API_TEST', 'SCENARIO_TEST'].includes(props.taskInfo?.taskType?.value) ? 'TASK' : props.taskInfo?.taskType?.value;
+  newTaskType.value = [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(props.taskInfo?.taskType?.value)
+    ? TaskType.TASK
+    : props.taskInfo?.taskType?.value;
   newTaskPriority.value = props.taskInfo?.priority?.value;
 });
 
@@ -290,10 +281,8 @@ const menuItemsMap = computed(() => {
         hide: false
       });
     }
-
     map[id] = items;
   }
-
   return map;
 });
 
@@ -327,7 +316,9 @@ const columns = [
   {
     key: 'evalWorkload',
     dataIndex: 'evalWorkload',
-    title: props.taskInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('task.subTask.columns.evalWorkload') : t('task.subTask.columns.evalWorkloadHours'),
+    title: props.taskInfo?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+      ? t('task.subTask.columns.evalWorkload')
+      : t('task.subTask.columns.evalWorkloadHours'),
     groupName: 'task',
     hide: true
   },
@@ -352,24 +343,31 @@ const columns = [
     title: t('task.subTask.columns.action')
   }
 ];
-
 </script>
 
 <template>
   <div class="h-full leading-5">
     <div class="flex items-center mb-2.5 pr-5">
       <div class="flex items-center flex-nowrap h-8 px-3.5 rounded" style="background-color:#FAFAFA;">
-        <span class="flex-shrink-0 font-semibold text-theme-title">{{ t('task.subTask.progress') }}</span>
+        <span class="flex-shrink-0 font-semibold text-theme-title">
+          {{ t('task.subTask.progress') }}
+        </span>
         <Colon class="mr-1.5" />
-        <span class="font-semibold text-3.5" style="color: #07F;">{{ subTaskProgress?.completed || 0 }}</span>
+        <span class="font-semibold text-3.5" style="color: #07F;">
+          {{ subTaskProgress?.completed || 0 }}
+        </span>
         <span class="font-semibold text-3.5 mx-1">/</span>
-        <span class="font-semibold text-3.5 mr-3.5">{{ subTaskProgress?.total || 0 }}</span>
+        <span class="font-semibold text-3.5 mr-3.5">
+          {{ subTaskProgress?.total || 0 }}
+        </span>
         <Progress
           :percent="+subTaskProgress?.completedRate"
           style="width: 120px;"
           class="mr-3.5"
           :showInfo="false" />
-        <span class="font-semibold text-3.5">{{ subTaskProgress?.completedRate || 0 }}%</span>
+        <span class="font-semibold text-3.5">
+          {{ subTaskProgress?.completedRate || 0 }}%
+        </span>
       </div>
       <Hints :text="t('task.subTask.description')" class="flex-1 min-w-0 truncate ml-1" />
       <div class="flex items-center space-x-2.5">
@@ -467,7 +465,7 @@ const columns = [
     <div class="flex items-center pt-2">
       <SelectEnum
         v-model:value="newTaskType"
-        :excludes="({value}) => ['API_TEST', 'SCENARIO_TEST'].includes(value)"
+        :excludes="({value}) => [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(value)"
         enumKey="TaskType"
         :placeholder="t('task.subTask.form.taskType')"
         class="w-28 mr-2">
@@ -524,13 +522,6 @@ const columns = [
     </AsyncComponent>
 
     <AsyncComponent :visible="refTaskModalVisible">
-      <!-- <refTasks
-        v-model:visible="refTaskModalVisible"
-        :projectId="props.projectId"
-        :userInfo="props.userInfo"
-        :appInfo="props.appInfo"
-        :taskInfo="props.taskInfo"
-        @ok="refChildTaskOk" /> -->
       <SelectTaskByModuleModal
         v-model:visible="refTaskModalVisible"
         :projectId="props.projectId"

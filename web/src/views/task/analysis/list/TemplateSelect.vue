@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 import { Tree } from 'ant-design-vue';
-import { enumUtils, EnumMessage } from '@xcan-angus/infra';
+import { EnumMessage, enumUtils } from '@xcan-angus/infra';
 import { AnalysisTaskTemplate, AnalysisTaskTemplateDesc } from '@/enums/enums';
 import { Icon } from '@xcan-angus/vue-ui';
 import { TemplateIconConfig } from './types';

@@ -3,10 +3,11 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { Button, Upload, UploadFile } from 'ant-design-vue';
 import { Icon, notification, Spin, Toggle } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-import { utils, upload } from '@xcan-angus/infra';
+import { upload, utils } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 
 import { TaskInfo } from '../../../../../../types';
+import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
 type AttachmentItem = {
   id: string;
@@ -14,14 +15,7 @@ type AttachmentItem = {
   url: string;
 }
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: TaskInfo;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -166,7 +160,9 @@ const maxFileSize = computed(() => {
                 type="link"
                 class="flex items-center h-auto leading-4.5 p-0">
                 <Icon icon="icon-shangchuan" class="text-3.5 flex-shrink-0 text-text-link" />
-                <div class="flex-shrink-0 text-text-link ml-1">{{ t('task.detailInfo.attachment.actions.continueUpload') }}</div>
+                <div class="flex-shrink-0 text-text-link ml-1">
+                  {{ t('task.detailInfo.attachment.actions.continueUpload') }}
+                </div>
               </Button>
             </Upload>
           </div>
@@ -183,10 +179,14 @@ const maxFileSize = computed(() => {
               type="link"
               class="flex flex-col items-center justify-center h-auto leading-5 p-0">
               <Icon icon="icon-shangchuan" class="text-5 flex-shrink-0 text-text-link" />
-              <div class="flex-shrink-0 text-text-link">{{ t('task.detailInfo.attachment.actions.selectFile') }}</div>
+              <div class="flex-shrink-0 text-text-link">
+                {{ t('task.detailInfo.attachment.actions.selectFile') }}
+              </div>
             </Button>
           </Upload>
-          <div class="text-theme-sub-content mt-1">{{ t('task.detailInfo.attachment.messages.uploadLimit', { size: MAX_SIZE }) }}</div>
+          <div class="text-theme-sub-content mt-1">
+            {{ t('task.detailInfo.attachment.messages.uploadLimit', { size: MAX_SIZE }) }}
+          </div>
         </template>
       </Spin>
     </template>

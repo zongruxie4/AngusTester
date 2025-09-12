@@ -50,13 +50,15 @@ const unplannedTaskEChartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('taskAnalysis.detail.taskGrowthTread.chartLabels.requirement'),
+    data: [
+      t('taskAnalysis.detail.taskGrowthTread.chartLabels.requirement'),
       t('taskAnalysis.detail.taskGrowthTread.chartLabels.story'),
       t('taskAnalysis.detail.taskGrowthTread.chartLabels.task'),
       t('taskAnalysis.detail.taskGrowthTread.chartLabels.bug'),
       t('taskAnalysis.detail.taskGrowthTread.chartLabels.apiTest'),
       t('taskAnalysis.detail.taskGrowthTread.chartLabels.scenarioTest'),
-      t('taskAnalysis.detail.taskGrowthTread.chartLabels.total')],
+      t('taskAnalysis.detail.taskGrowthTread.chartLabels.total')
+    ],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -142,7 +144,6 @@ const unplannedWorkloadEChartConfig = {
 
 onMounted(() => {
   unplannedTaskRefEChart = eCharts.init(unplannedTaskRef.value);
-
   unplannedWorkloadRefEChart = eCharts.init(unplannedWorkloadRef.value);
 
   watch([() => props.chart0Value, () => props.chart1Value], () => {

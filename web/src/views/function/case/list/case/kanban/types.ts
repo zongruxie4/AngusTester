@@ -1,5 +1,6 @@
-import {CaseTestResult} from '@/enums/enums';
+import { CaseTestResult } from '@/enums/enums';
 
+// TODO 使用枚举替代
 export type PlanPermissionKey = 'ADD' |
     'VIEW' |
     'MODIFY' |
@@ -73,22 +74,4 @@ export type CaseInfo = {
         message: string;
     };
     steps: {expectedResult:string;step:string;}[]
-}
-
-export type ActivityItem = {
-    id: string;
-    projectId: string;
-    userId: string;
-    fullName: string;
-    avatar: string;
-    targetId: string;
-    parentTargetId: string;
-    targetType: {
-        value: string;
-        message: string
-    };
-    targetName: string;
-    optDate: string;
-    description: string;
-    detail: string
 }

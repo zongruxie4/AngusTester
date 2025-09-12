@@ -5,7 +5,7 @@ import { TESTER } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-import { TaskInfo } from '../../../../../types';
+import { TaskInfo } from '@/views/task/types';
 
 type Props = {
   projectId: string;
@@ -83,7 +83,10 @@ const taskIdExcludes = (data: { id: string }) => {
     @cancel="cancel"
     @ok="ok">
     <div class="flex items-start">
-      <div class="flex items-center flex-shrink-0 mr-1.5 leading-7"><span>{{ t('task.subTask.modal.label') }}</span><Colon /></div>
+      <div class="flex items-center flex-shrink-0 mr-1.5 leading-7">
+        <span>{{ t('task.subTask.modal.label') }}</span>
+        <Colon />
+      </div>
       <Select
         v-model:value="refTaskIds"
         showSearch

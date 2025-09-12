@@ -11,7 +11,7 @@ import { CASE_PROJECT_PERMISSIONS, CaseActionAuth, useCaseActionAuth } from './t
 import type { CaseInfoObj, CaseListObj } from '../types';
 import { funcCase, funcPlan } from '@/api/tester';
 
-export type TabKey = 'info' | 'activty' | 'comments' | 'asscoTask' | 'asscoCase'
+export type TabKey = 'info' | 'activty' | 'comments' | 'assocTask' | 'asscoCase'
 export interface Attachments { id?: string, name: string, url: string }
 
 const CaseDetailTab = defineAsyncComponent(() => import('@/views/function/case/detail/Case.vue'));
@@ -314,7 +314,7 @@ const activityNotify = ref(0);
 const activityParams = ref({ filters: [{ key: 'targetType', value: 'FUNC_CASE', op: 'EQUAL' }] });
 
 const refresh = () => {
-  if (['info', 'asscoTask', 'asscoCase'].includes(activeKey.value)) {
+  if (['info', 'assocTask', 'asscoCase'].includes(activeKey.value)) {
     getCaseInfo(caseDetail.value.id);
   }
 
@@ -546,7 +546,7 @@ defineExpose({
           :caseId="caseDetail?.id"
           @editSuccess="editSuccess" />
       </TabPane>
-      <TabPane key="asscoTask">
+      <TabPane key="assocTask">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('functionCase.detail.task') }}</span>
@@ -564,7 +564,7 @@ defineExpose({
           @editSuccess="editSuccess" />
       </TabPane>
 
-      <TabPane key="asscoRequirements">
+      <TabPane key="assocRequirements">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('functionCase.detail.requirement') }}</span>
@@ -583,7 +583,7 @@ defineExpose({
           :tips="t('functionCase.detail.requirementTip')"
           @editSuccess="editSuccess" />
       </TabPane>
-      <TabPane key="asscoStory">
+      <TabPane key="assocStory">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('functionCase.detail.story') }}</span>
@@ -621,7 +621,7 @@ defineExpose({
           :tips="t('functionCase.detail.bugTip')"
           @editSuccess="editSuccess" />
       </TabPane>
-      <TabPane key="asscoApiTest">
+      <TabPane key="assocApiTest">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('functionCase.detail.apiTest') }}</span>
@@ -640,7 +640,7 @@ defineExpose({
           :tips="t('functionCase.detail.apiTestTip')"
           @editSuccess="editSuccess" />
       </TabPane>
-      <TabPane key="asscoScenTest">
+      <TabPane key="assocScenarioTest">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('functionCase.detail.scenarioTest') }}</span>
@@ -709,7 +709,7 @@ defineExpose({
         :name="t('functionCase.mainView.testNotPassedName', {name: caseDetail.name})"
         :description="caseDetail.testRemark"
         taskType="BUG"
-        :confirmorId="caseDetail?.testerId"
+        :confirmerId="caseDetail?.testerId"
         @ok="handleAddTask" />
     </AsyncComponent>
   </div>

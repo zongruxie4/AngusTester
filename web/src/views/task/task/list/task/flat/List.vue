@@ -43,7 +43,6 @@ const checkboxChange = (event:{target:{checked:boolean;value:string;}}) => {
     if (!props.selectedIds.includes(value)) {
       emit('select', [...props.selectedIds, value]);
     }
-
     return;
   }
 

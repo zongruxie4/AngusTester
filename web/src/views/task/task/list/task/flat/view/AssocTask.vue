@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref } from 'vue';
 import { AsyncComponent, Hints, Icon, modal, Table, TaskPriority, TaskStatus } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/infra';
+import { EnumMessage, TESTER } from '@xcan-angus/infra';
 import { Button, Progress } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
-import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
+import { TaskType } from '@/enums/enums';
+import { task } from '@/api/tester';
 
 interface Props {
   projectId: string;
@@ -15,18 +16,16 @@ interface Props {
   dataSource: {
     id: string;
     name: string;
-    taskType: {
-      value: 'TASK' | 'API_TEST' | 'BUG' | 'SCENARIO_TEST' | 'STORY' | 'REQUIREMENT' | undefined;
-      message: string;
-    }
+    taskType: EnumMessage<TaskType>
   }[];
   caseList:{ id:string; }[];
   title: string;
-  taskType: 'TASK' | 'API_TEST' | 'BUG' | 'SCENARIO_TEST' | 'STORY' | 'REQUIREMENT';
+  taskType: TaskType;
   tips?: string;
 }
 const router = useRouter();
 const { t } = useI18n();
+
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -34,8 +33,8 @@ const props = withDefaults(defineProps<Props>(), {
   taskId: undefined,
   dataSource: undefined,
   caseList: undefined,
-  title: '任务',
-  taskType: 'TASK',
+  title: 'Task',
+  taskType: TaskType.TASK,
   tips: ''
 });
 
@@ -47,36 +46,18 @@ const emit = defineEmits<{
   (event: 'editSuccess'): void;
 }>();
 const submitLoading = ref(false);
-// const editRef = ref(false);
 
 const tableData = computed(() => {
   return (props.dataSource || []).filter(item => item.taskType.value === props.taskType);
 });
 
-const taskProgress = computed(() => {
-  const completed = tableData.value.filter(item => item?.status?.value === 'COMPLETED').length;
-  const total = tableData.value.filter(item => item?.status?.value !== 'CANCELED').length;
-  const completedRate = total > 0 ? (completed / total * 100).toFixed(2) : 0;
-  return {
-    completed,
-    completedRate,
-    total
-
-  };
-});
-
 const selectTaskVisible = ref(false);
 const cancelEdit = () => {
-  // editRef.value = false;
-  // refTaskIds.value = [];
   selectTaskVisible.value = false;
-  // refTaskIds.value = (props.dataSource || []).map(item => item.id);
 };
 const startEdit = () => {
-  // editRef.value = true;
   selectTaskVisible.value = true;
 };
-// const refTaskIds = ref<string[]>([]);
 const handlePut = async (refTaskIds) => {
   selectTaskVisible.value = false;
   if (!refTaskIds.length) {
@@ -115,7 +96,6 @@ const openTask = (record) => {
   router.push(`/task#task?taskId=${record.id}`);
 };
 
-// 编号、名称、类型、优先级、评估故事点、状态、经办人、截止时间、操作
 const columns = [
   {
     key: 'code',
@@ -173,19 +153,6 @@ const columns = [
 <template>
   <div>
     <div class="flex mb-2 items-center pr-2">
-      <!-- <div class="flex items-center flex-nowrap h-8 px-3.5 rounded" style="background-color:#FAFAFA;">
-        <span class="flex-shrink-0 font-semibold text-theme-title">进度</span>
-        <Colon class="mr-1.5" />
-        <span class="font-semibold text-3.5" style="color: #07F;">{{ taskProgress?.completed || 0 }}</span>
-        <span class="font-semibold text-3.5 mx-1">/</span>
-        <span class="font-semibold text-3.5 mr-3.5">{{ taskProgress?.total || 0 }}</span>
-        <Progress
-          :percent="+taskProgress?.completedRate"
-          style="width: 120px;"
-          class="mr-3.5"
-          :showInfo="false" />
-        <span class="font-semibold text-3.5">{{ taskProgress?.completedRate || 0 }}%</span>
-      </div> -->
       <div class="flex-1 ml-1 min-w-0 truncate">
         <Hints v-if="props.tips" :text="props.tips" />
       </div>
@@ -213,12 +180,14 @@ const columns = [
             {{ record.name }}
           </Button>
         </template>
+
         <template v-if="column.dataIndex === 'progress'">
           <Progress
             :percent="+record?.progress?.completedRate"
             style="width: 80px;"
             class="mr-3.5" />
         </template>
+
         <template v-if="column.dataIndex === 'action'">
           <Button
             size="small"
@@ -228,17 +197,21 @@ const columns = [
             {{ t('actions.cancel') }}
           </Button>
         </template>
+
         <template v-if="column.dataIndex === 'taskType'">
           {{ record?.taskType?.message }}
         </template>
+
         <template v-if="column.dataIndex === 'priority'">
           <TaskPriority :value="record?.priority" />
         </template>
+
         <template v-if="column.dataIndex === 'status'">
           <TaskStatus :value="record?.status" />
         </template>
       </template>
     </Table>
+
     <AsyncComponent :visible="selectTaskVisible">
       <SelectTaskByModuleModal
         v-model:visible="selectTaskVisible"

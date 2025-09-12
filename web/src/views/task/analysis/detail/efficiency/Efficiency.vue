@@ -206,11 +206,8 @@ const twoTimePassedEChartConfig = JSON.parse(JSON.stringify({
 
 onMounted(() => {
   completedEChart = eCharts.init(completedRef.value);
-
   oneTimePassedEChart = eCharts.init(oneTimePassedRef.value);
-
   bugsChart = eCharts.init(bugsRef.value);
-
   twoTimePassedEChart = eCharts.init(twoTimePassedRef.value);
 
   watch([

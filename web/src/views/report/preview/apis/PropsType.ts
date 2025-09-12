@@ -65,8 +65,8 @@ export type ReportContent = {
             canceledDate: string;
             assigneeId: string;
             assigneeName: string;
-            confirmorId: string;
-            confirmorName: string;
+            confirmerId: string;
+            confirmerName: string;
             evalWorkload: string;
             actualWorkload: string;
             evalWorkloadMethod: {

@@ -8,16 +8,9 @@ import { task } from '@/api/tester';
 
 import { TaskInfo } from '../../../../../../types';
 import { TIME_FORMAT } from '@/utils/constant';
+import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: TaskInfo;
-  loading: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -99,7 +92,6 @@ const blur = async () => {
   emit('change', { id: taskId.value, deadlineDate: value });
 };
 
-// 禁用日期组件当前时间之前的年月日
 const disabledDate = (current: Dayjs) => {
   const today = dayjs().startOf('day');
   return current.isBefore(today, 'day');

@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, ref, inject, Ref, onMounted, watch } from 'vue';
+import { computed, defineAsyncComponent, inject, onMounted, Ref, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Button, TabPane, Tabs, Tooltip, Popconfirm, Badge } from 'ant-design-vue';
+import { Badge, Button, Popconfirm, TabPane, Tabs, Tooltip } from 'ant-design-vue';
 import { Icon, Input, Spin } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
 import { duration, utils } from '@xcan-angus/infra';
 import { useTrashActions } from './composables/useTrashActions';
-import type { TaskTrashComponentProps, TaskTrashTargetType, TaskTrashItem } from './types';
+import type { TaskTrashComponentProps, TaskTrashItem, TaskTrashTargetType } from './types';
 
 /**
  * Component props with default values

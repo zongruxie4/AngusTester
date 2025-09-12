@@ -40,14 +40,16 @@ const backlogEChartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('taskAnalysis.detail.leadTime.chartLabels.average'),
+    data: [
+      t('taskAnalysis.detail.leadTime.chartLabels.average'),
       t('taskAnalysis.detail.leadTime.chartLabels.min'),
       t('taskAnalysis.detail.leadTime.chartLabels.max'),
       t('taskAnalysis.detail.leadTime.chartLabels.p50'),
       t('taskAnalysis.detail.leadTime.chartLabels.p75'),
       t('taskAnalysis.detail.leadTime.chartLabels.p90'),
       t('taskAnalysis.detail.leadTime.chartLabels.p95'),
-      t('taskAnalysis.detail.leadTime.chartLabels.p99')],
+      t('taskAnalysis.detail.leadTime.chartLabels.p99')
+    ],
     axisLabel: {
       interval: 0,
       overflow: 'break'

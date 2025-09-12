@@ -13,22 +13,16 @@ import {
   TaskStatus
 } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
 import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
-import { task, modules } from '@/api/tester';
+import { modules, task } from '@/api/tester';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfo } from '../../types';
+import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: TaskInfo;
-}
+const { t } = useI18n();
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -853,7 +847,7 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
           <div>
-            {{ props.dataSource?.unplannedFlag ? t('status.yes') : t('status.no') }}
+            {{ props.dataSource?.unplanned ? t('status.yes') : t('status.no') }}
           </div>
         </div>
       </div>

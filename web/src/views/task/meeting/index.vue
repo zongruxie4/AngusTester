@@ -3,8 +3,8 @@ import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from '
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { BrowserTab } from '@xcan-angus/vue-ui';
-import { utils, IPane } from '@xcan-angus/infra';
-import { BasicProps } from "@/types/types";
+import { IPane, utils } from '@xcan-angus/infra';
+import { BasicProps } from '@/types/types';
 
 // COMPONENT PROPS
 const props = withDefaults(defineProps<BasicProps>(), {
@@ -119,7 +119,7 @@ const processRouteHash = (hash: string) => {
   }, {} as { [key: string]: string });
 
   const { id, type } = queryParameters;
-  
+
   if (id) {
     if (type === 'edit') {
       // Open meeting edit tab
@@ -224,4 +224,3 @@ provide('replaceTabPane', replaceTabPane);
     </template>
   </BrowserTab>
 </template>
-

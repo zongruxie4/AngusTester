@@ -86,8 +86,8 @@ export default class API {
     return http.put(`${baseUrl}/${id}/assignee`, parmas);
   }
 
-  editTaskConfirmor (id: string, parmas: { confirmorId: string|null }): Promise<[Error | null, any]> {
-    return http.put(`${baseUrl}/${id}/confirmor`, parmas);
+  editTaskConfirmer (id: string, parmas: { confirmerId: string|null }): Promise<[Error | null, any]> {
+    return http.put(`${baseUrl}/${id}/confirmer`, parmas);
   }
 
   editTaskPriority (id: string, priority: string): Promise<[Error | null, any]> {

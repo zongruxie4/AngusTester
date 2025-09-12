@@ -34,10 +34,7 @@ const getChartData = (data, target = 'NUM') => {
   return res;
 };
 
-const totalValue = ref({
-
-});
-
+const totalValue = ref({});
 const personValues = ref([]);
 
 onMounted(() => {

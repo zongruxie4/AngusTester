@@ -246,8 +246,8 @@ export type ReportContent = {
                 deadlineDate: string;
                 processedDate: string;
                 assigneeName: string;
-                confirmorId: string;
-                confirmorName: string;
+                confirmerId: string;
+                confirmerName: string;
                 evalWorkloadMethod: {
                     value: string;
                     message: string

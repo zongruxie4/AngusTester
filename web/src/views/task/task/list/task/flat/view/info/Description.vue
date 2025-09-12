@@ -1,22 +1,14 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
-import { AsyncComponent, Icon, NoData, Toggle } from '@xcan-angus/vue-ui';
+import { Icon, NoData, Toggle } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { task } from '@/api/tester';
 
 import { TaskInfo } from '../../../../../../types';
+import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
-type Props = {
-  taskId: string;
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: TaskInfo;
-  loading: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskInfoProps>(), {
   taskId: undefined,
   projectId: undefined,
   userInfo: undefined,
@@ -130,18 +122,10 @@ const isError = () => {
             :options="{placeholder: t('task.detailInfo.description.placeholder')}"
             :placeholder="t('task.detailInfo.description.validation.maxLength')"
             @change="editorChange" />
-          <div v-show="validateErr" class="text-status-error text-3">{{ t('task.detailInfo.description.validation.maxLength') }}</div>
+          <div v-show="validateErr" class="text-status-error text-3">
+            {{ t('task.detailInfo.description.validation.maxLength') }}
+          </div>
         </div>
-
-        <!-- <div class="space-x-2.5 w-full flex items-center justify-end">
-            <Button size="small" @click="cancel">取消</Button>
-            <Button
-              size="small"
-              type="primary"
-              @click="ok">
-              确定
-            </Button>
-          </div> -->
       </template>
 
       <div v-if="!editFlag" class="browser-container">

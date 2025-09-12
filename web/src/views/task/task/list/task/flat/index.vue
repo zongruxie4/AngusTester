@@ -5,6 +5,7 @@ import { Button } from 'ant-design-vue';
 import { AsyncComponent, modal, notification } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
+import { TaskStatus } from '@/enums/enums';
 
 import { TaskInfo } from '../../../../types';
 import { ActionMenuItem } from '../../../types';
@@ -13,9 +14,9 @@ type Props = {
   projectId: string;
   userInfo: { id: string; };
   appInfo: { id: string; };
-  selectedIds: string[];// 批量选中的任务
+  selectedIds: string[];
   dataSource: TaskInfo[];
-  editTaskData: TaskInfo;// 编辑弹窗修改的任务，需要同步到详情
+  editTaskData: TaskInfo;
   pagination: { current: number; pageSize: number; total: number; };
   menuItemsMap: Map<string, ActionMenuItem[]>;
   loading: boolean;
@@ -64,11 +65,10 @@ const batchCancelFavouriteDisabled = ref(false);
 const batchFollowDisabled = ref(false);
 const batchCancelFollowDisabled = ref(false);
 
-// 点击选中的任务
 const checkedData = ref<TaskInfo>();
 
 const moveModalVisible = ref(false);
-const selectedDataMap = ref<{// 批量操作选中的任务
+const selectedDataMap = ref<{
   [key: string]: {
     id: string;
     status: TaskInfo['status']['value'];
@@ -271,7 +271,6 @@ const batchCancelFavourite = async () => {
   modal.confirm({
     content: t('task.detail.batchActions.confirmCancelFavourite', { num }),
     async onOk () {
-      // 过滤出要取消收藏的任务
       const ids = Object.values(selectedDataMap.value).map(item => item.id);
       const promises: Promise<any>[] = [];
       for (let i = 0, len = ids.length; i < len; i++) {
@@ -476,7 +475,7 @@ onMounted(() => {
         batchCancelFollowDisabled.value = true;
       }
 
-      if (['CANCELED', 'COMPLETED'].includes(status) || cancelItem?.disabled) {
+      if ([TaskStatus.CANCELED, TaskStatus.COMPLETED].includes(status) || cancelItem?.disabled) {
         batchCancelDisabled.value = true;
       }
 

@@ -120,7 +120,7 @@ const infoColumns = computed<GridColumns[][]>(() => [
     { label: t('functionCase.detail.caseDetail.version'), dataIndex: 'version' },
     { label: t('functionCase.detail.caseDetail.softwareVersion'), dataIndex: 'softwareVersion' },
     { label: t('functionCase.detail.caseDetail.priority'), dataIndex: 'priority' },
-    { label: t('functionCase.detail.caseDetail.unplannedCase'), dataIndex: 'unplannedFlag', customRender: ({ text }) => text ? t('status.yes') : t('status.no') }
+    { label: t('functionCase.detail.caseDetail.unplannedCase'), dataIndex: 'unplanned', customRender: ({ text }) => text ? t('status.yes') : t('status.no') }
   ],
   [
     { label: t('functionCase.detail.caseDetail.tags'), dataIndex: 'tags' },

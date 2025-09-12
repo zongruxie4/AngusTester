@@ -14,20 +14,14 @@ import {
 } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
-import { task, modules } from '@/api/tester';
+import { modules, task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfo } from '@/views/task/types';
+import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: TaskInfo;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -859,11 +853,11 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.scenario.columns.unplannedFlag') }}</span>
+            <span>{{ t('task.detailInfo.scenario.columns.unplanned') }}</span>
             <Colon class="w-1" />
           </div>
           <div>
-            {{ props.dataSource?.unplannedFlag ? t('task.detailInfo.scenario.columns.yes') : t('task.detailInfo.scenario.columns.no') }}
+            {{ props.dataSource?.unplanned ? t('task.detailInfo.scenario.columns.yes') : t('task.detailInfo.scenario.columns.no') }}
           </div>
         </div>
       </div>

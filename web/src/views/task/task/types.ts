@@ -1,5 +1,5 @@
-import { EnumMessage, Priority, EvalWorkloadMethod } from '@xcan-angus/infra';
-import { TaskStatus, TaskType, TestType, ExecResult } from '@/enums/enums';
+import { EnumMessage, EvalWorkloadMethod, Priority } from '@xcan-angus/infra';
+import { ExecResult, TaskStatus, TaskType, TestType } from '@/enums/enums';
 
 /**
  * Task view mode
@@ -126,7 +126,7 @@ export type SearchPanelOption = {
  * Search panel menu item interface for quick search options
  */
 export type SearchPanelMenuItem = {
-  key: 'none' | 'createdBy' | 'assigneeId' | 'progress' | 'confirmorId' | 'lastDay' | 'lastThreeDays' | 'lastWeek' | string;
+  key: 'none' | 'createdBy' | 'assigneeId' | 'progress' | 'confirmerId' | 'lastDay' | 'lastThreeDays' | 'lastWeek' | string;
   name: string;
   groupKey?: 'assigneeId' | 'time';
 }

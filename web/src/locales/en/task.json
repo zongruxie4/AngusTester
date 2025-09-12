@@ -510,7 +510,7 @@
         "name": "Name",
         "evalWorkload": "Eval Workload",
         "assignee": "Assignee",
-        "confirmor": "Confirmor",
+        "confirmer": "Confirmer",
         "deadline": "Deadline"
       },
       "placeholders": {
@@ -519,7 +519,7 @@
         "taskName": "Task name, max 200 characters",
         "evalWorkload": "0.1~1000",
         "assignee": "Assignee",
-        "confirmor": "Confirmor",
+        "confirmer": "Confirmer",
         "deadline": "Deadline"
       },
       "tooltips": {
@@ -550,13 +550,13 @@
         "type": "Type",
         "priority": "Priority",
         "bugLevel": "Bug Level",
-        "missingBugFlag": "Missing Bug Flag",
+        "missingBug": "Missing Bug Flag",
         "scenario": "Scenario",
         "testType": "Test Type",
         "service": "Service",
         "api": "API",
         "assignee": "Assignee",
-        "confirmor": "Confirmor",
+        "confirmer": "Confirmer",
         "deadline": "Deadline",
         "tester": "Tester",
         "description": "Description",
@@ -581,7 +581,7 @@
         "selectOrSearchService": "Select or search service",
         "selectApi": "Please select API",
         "selectAssignee": "Select assignee",
-        "selectConfirmor": "Select confirmor",
+        "selectConfirmer": "Select confirmer",
         "selectTester": "Select tester",
         "taskDescription": "Task description, maximum 6000 characters",
         "selectOrSearchSprint": "Select or search sprint",
@@ -595,7 +595,7 @@
       },
       "descriptions": {
         "assignee": "Person responsible for actually executing assigned work tasks.",
-        "confirmor": "Person responsible for verifying and validating work results, will automatically enter confirmation process when assigned.",
+        "confirmer": "Person responsible for verifying and validating work results, will automatically enter confirmation process when assigned.",
         "tester": "Person responsible for testing and validating product functionality or service quality.",
         "evalStoryPoint": "Estimated value of work task volume, comprehensive difficulty, and complexity.",
         "evalWorkload": "Time spent on work estimation, calculated in hours.",
@@ -657,7 +657,7 @@
         "evalStoryPoint": "Estimate Story Points",
         "evalWorkload": "Estimate Workload",
         "assignee": "Assignee",
-        "confirmor": "Confirmor",
+        "confirmer": "Confirmer",
         "deadline": "Deadline"
       },
       "placeholders": {
@@ -666,7 +666,7 @@
         "taskName": "Task name, maximum 200 characters",
         "workloadRange": "0.1~1000",
         "assignee": "Assignee",
-        "confirmor": "Confirmor",
+        "confirmer": "Confirmer",
         "deadline": "Deadline"
       },
       "tooltips": {
@@ -738,13 +738,13 @@
         "creator": "Creator",
         "assignee": "Assignee",
         "executor": "Executor",
-        "confirmor": "Confirmor",
+        "confirmer": "Confirmer",
         "tester": "Tester",
         "lastModifier": "Last Modifier",
         "assignToMe": "Assign to Me",
         "placeholders": {
           "selectAssignee": "Select assignee",
-          "selectConfirmor": "Select confirmor",
+          "selectConfirmer": "Select confirmer",
           "selectTester": "Select tester"
         }
       },
@@ -1297,8 +1297,8 @@
         "assigneePlaceholder": "Please select assignee",
         "creator": "Creator",
         "creatorPlaceholder": "Please select creator",
-        "confirmor": "Confirmor",
-        "confirmorPlaceholder": "Please select confirmor",
+        "confirmer": "Confirmer",
+        "confirmerPlaceholder": "Please select confirmer",
         "tags": "Tags",
         "tagsPlaceholder": "Please select tags",
         "createTimeFrom": "Create time from",
@@ -1387,7 +1387,7 @@
         "status": "Status",
         "assignee": "Assignee",
         "creator": "Creator",
-        "confirmor": "Confirmor",
+        "confirmer": "Confirmer",
         "deadlineDate": "Deadline",
         "workload": "Workload",
         "createTime": "Create Time",
@@ -1445,7 +1445,7 @@
         "status": "选择任务状态",
         "priority": "选择优先级",
         "assigneeId": "选择经办人",
-        "confirmorId": "选择确认人",
+        "confirmerId": "选择确认人",
         "execBy": "选择执行人",
         "createdBy": "选择添加人",
         "lastModifiedBy": "选择最后修改人",
@@ -1664,11 +1664,11 @@
         "title": "Tasks",
         "tips": "Record other tasks associated with the current task to help the team understand the dependencies between tasks."
       },
-      "asscoRequirements": {
+      "assocRequirements": {
         "title": "Requirements",
         "tips": "Trace problems to the original requirements to help understand the background and scope of the problem."
       },
-      "asscoStory": {
+      "assocStory": {
         "title": "Stories",
         "tips": "Trace user-centric functional requirements to help understand the background and scope of the problem."
       },
@@ -1680,11 +1680,11 @@
         "title": "Functional Cases",
         "tips": "Record other tasks associated with the current task to help the team understand the dependencies between tasks."
       },
-      "asscoApiTest": {
+      "assocApiTest": {
         "title": "API Tests",
         "tips": "Establish a relationship with the corresponding API test task to facilitate the tracking of API test progress and ensure normal operation of the interface."
       },
-      "asscoScenarioTest": {
+      "assocScenarioTest": {
         "title": "Scenario Tests",
         "tips": "Establish a relationship with the corresponding scenario test task to facilitate the understanding of the effectiveness of functions in real scenarios and ensure the completeness of the solution."
       },
@@ -1836,7 +1836,7 @@
         "priority": "Priority",
         "priorityPlaceholder": "Please select priority",
         "bugLevel": "Bug Level",
-        "missingBugFlag": "Is Missing Test Bug",
+        "missingBug": "Is Missing Test Bug",
         "missingBugOptions": {
           "yes": "Yes",
           "no": "No"
@@ -1965,7 +1965,7 @@
         "onlyMoveToCompletedOrCanceledFromConfirming": "Can only move to Completed or Canceled",
         "onlyMoveToPending": "Can only move to Pending",
         "noReopenPermission": "No permission to reopen",
-        "noConfirmor": "This task has no confirmer, no confirmation needed, can only move to Completed or Canceled"
+        "noConfirmer": "This task has no confirmer, no confirmation needed, can only move to Completed or Canceled"
       },
       "group": {
         "swimLane": "Swim Lane",
@@ -2135,7 +2135,7 @@
           "failNum": "Processing Failure Count",
           "softwareVersion": "Software Version",
           "softwareVersionPlaceholder": "Please select version",
-          "unplannedFlag": "Unplanned Task",
+          "unplanned": "Unplanned Task",
           "tags": "Tags",
           "tagsPlaceholder": "Maximum 5 tags",
           "tagsNotFound": "Please contact administrator to configure task tags in \"Application Management\"-\"Task Management\"-\"Task Tags\".",
@@ -2173,7 +2173,7 @@
           "failNum": "Processing Failure Count",
           "softwareVersion": "Software Version",
           "softwareVersionPlaceholder": "Please select version",
-          "unplannedFlag": "Unplanned Task",
+          "unplanned": "Unplanned Task",
           "tags": "Tags",
           "tagsPlaceholder": "Maximum 5 tags",
           "tagsNotFound": "Please contact administrator to configure task tags in \"Application Management\"-\"Task Management\"-\"Task Tags\".",
@@ -2198,7 +2198,7 @@
         "fields": {
           "assignee": "Assignee",
           "executor": "Executor",
-          "confirmor": "Confirmor",
+          "confirmer": "Confirmer",
           "tester": "Tester",
           "creator": "Creator",
           "lastModifier": "Last Modifier"
@@ -2208,7 +2208,7 @@
         },
         "placeholders": {
           "selectAssignee": "Select Assignee",
-          "selectConfirmor": "Select Confirmor",
+          "selectConfirmer": "Select Confirmer",
           "selectTester": "Select Tester"
         }
       },
@@ -2271,7 +2271,7 @@
           "onePass": "One-Time Pass",
           "softwareVersion": "Software Version",
           "softwareVersionPlaceholder": "Please select version",
-          "unplannedFlag": "Unplanned Task",
+          "unplanned": "Unplanned Task",
           "tags": "Tags",
           "tagsPlaceholder": "Maximum 5 tags",
           "tagsNotFound": "Please contact administrator to configure task tags in \"Application Management\"-\"Task Management\"-\"Task Tags\".",

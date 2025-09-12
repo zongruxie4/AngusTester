@@ -1861,7 +1861,7 @@ const checkedCaseId = computed(() => {
       :assigneeId="selectedCaseInfo?.developerId"
       :userInfo="userInfo"
       taskType="BUG"
-      :confirmorId="selectedCaseInfo?.testerId"
+      :confirmerId="selectedCaseInfo?.testerId"
       @ok="addTaskOk" />
   </AsyncComponent>
 </template>

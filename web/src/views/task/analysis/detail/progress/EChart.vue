@@ -108,7 +108,6 @@ const workloadProgressEChartConfig = JSON.parse(JSON.stringify({
 
 onMounted(() => {
   progressEChart = eCharts.init(progressRef.value);
-
   workloadProcessEChart = eCharts.init(workloadProcessRef.value);
 
   watch([() => props.value0, () => props.value1], () => {

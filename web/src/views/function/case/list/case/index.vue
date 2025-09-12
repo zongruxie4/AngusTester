@@ -2130,7 +2130,7 @@ defineExpose({
       :description="selectedCase?.testRemark"
       :name="t('functionCase.mainView.testNotPassedName', { name: selectedCase?.name || '' })"
       taskType="BUG"
-      :confirmorId="selectedCase?.testerId"
+      :confirmerId="selectedCase?.testerId"
       @ok="handleAddTask" />
   </AsyncComponent>
 </template>

@@ -12,22 +12,17 @@ import {
   TaskStatus,
   Toggle
 } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/infra';
+import { enumUtils, EvalWorkloadMethod, TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import { BugLevel, SoftwareVersionStatus, TaskType } from '@/enums/enums';
 import { TaskInfo } from '@/views/task/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: TaskInfo;
-  loading: boolean;
-}
+import SelectEnum from '@/components/enum/SelectEnum.vue';
+import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -198,7 +193,10 @@ const toEditTaskType = () => {
   });
 };
 
-const taskTypeChange = async (_event: { target: { value: TaskInfo['taskType']['value']; } }, option: { message: string; value: TaskInfo['taskType']['value'] }) => {
+const taskTypeChange = async (
+  _event: { target: { value: TaskInfo['taskType']['value']; } },
+  option: { message: string; value: TaskInfo['taskType']['value']
+  }) => {
   taskTypeMessage.value = option.message;
 };
 
@@ -212,10 +210,10 @@ const taskTypeBlur = async () => {
   emit('loadingChange', true);
   const [error] = await task.editTaskTaskType(taskId.value, value);
   emit('loadingChange', false);
-  if (value === 'BUG') {
+  if (value === TaskType.BUG) {
     await task.updateTask(taskId.value, {
-      bugLevel: 'MINOR',
-      missingBugFlag: false
+      bugLevel: BugLevel.MINOR,
+      missingBug: false
     });
   }
   taskTypeEditFlag.value = false;
@@ -223,24 +221,26 @@ const taskTypeBlur = async () => {
     return;
   }
 
-  emit('change', { id: taskId.value, bugLevel: { value: 'MINOR', message: '一般' }, missingBugFlag: false, taskType: { value, message: taskTypeMessage.value! } });
+  emit('change', {
+    id: taskId.value,
+    bugLevel: { value: BugLevel.MINOR, message: enumUtils.getEnumDescription(BugLevel, BugLevel.MINOR) },
+    missingBug: false,
+    taskType: { value, message: taskTypeMessage.value! }
+  });
 };
 
 const taskTypeExcludes = (data: { value: TaskInfo['taskType']['value']; message: string }) => {
   const value = data.value;
   const type = taskType.value;
   if (taskId.value) {
-    if (type === 'API_TEST') {
-      return value !== 'API_TEST';
+    if (type === TaskType.API_TEST) {
+      return value !== TaskType.API_TEST;
     }
-
-    if (type === 'SCENARIO_TEST') {
-      return value !== 'SCENARIO_TEST';
+    if (type === TaskType.SCENARIO_TEST) {
+      return value !== TaskType.SCENARIO_TEST;
     }
-
-    return ['API_TEST', 'SCENARIO_TEST'].includes(value);
+    return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(value);
   }
-
   return false;
 };
 
@@ -257,7 +257,9 @@ const toEditPriority = () => {
   });
 };
 
-const priorityChange = async (_event: { target: { value: TaskInfo['priority']['value']; } }, option: { message: string; value: TaskInfo['priority']['value'] }) => {
+const priorityChange = async (
+  _event: { target: { value: TaskInfo['priority']['value']; } },
+  option: { message: string; value: TaskInfo['priority']['value'] }) => {
   priorityMessage.value = option.message;
 };
 
@@ -276,7 +278,10 @@ const priorityBlur = async () => {
     return;
   }
 
-  emit('change', { id: taskId.value, priority: { value, message: priorityMessage.value! } });
+  emit('change', {
+    id: taskId.value,
+    priority: { value, message: priorityMessage.value! }
+  });
 };
 
 const toEditTag = () => {
@@ -292,7 +297,9 @@ const toEditTag = () => {
   });
 };
 
-const tagChange = async (_event: { target: { value: string[]; } }, options: { id: string; name: string; }[]) => {
+const tagChange = async (
+  _event: { target: { value: string[]; } },
+  options: { id: string; name: string; }[]) => {
   tagList.value = options;
 };
 
@@ -549,10 +556,10 @@ const onePassText = computed(() => {
                   {{ props.dataSource?.bugLevel?.message }}
                 </Tag>
                 <Tag
-                  v-if="props.dataSource?.missingBugFlag"
+                  v-if="props.dataSource?.missingBug"
                   color="error"
                   class="ml-2 text-3 leading-4">
-                  {{ t('task.detailInfo.basic.columns.missingBugFlag') }}
+                  {{ t('task.detailInfo.basic.columns.missingBug') }}
                 </Tag>
               </template>
             </div>
@@ -582,7 +589,11 @@ const onePassText = computed(() => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ evalWorkloadMethod === 'STORY_POINT' ? t('task.detailInfo.basic.columns.actualStoryPoint') : t('task.detailInfo.basic.columns.actualWorkload') }}</span>
+              <span>
+                {{ evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                  ? t('task.detailInfo.basic.columns.actualStoryPoint')
+                  : t('task.detailInfo.basic.columns.actualWorkload') }}
+              </span>
               <Colon class="w-1" />
             </div>
 
@@ -695,7 +706,7 @@ const onePassText = computed(() => {
                   lazy
                   class="w-full max-w-60"
                   :action="`${TESTER}/software/version?projectId=${props.projectId}`"
-                  :params="{filters: [{value: ['NOT_RELEASED', 'RELEASED'], key: 'status', op: 'IN'}]}"
+                  :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN'}]}"
                   :fieldNames="{value:'name', label: 'name'}"
                   @blur="versionBlur"
                   @change="versionChange">
@@ -725,11 +736,11 @@ const onePassText = computed(() => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.basic.columns.unplannedFlag') }}</span>
+              <span>{{ t('task.detailInfo.basic.columns.unplanned') }}</span>
               <Colon class="w-1" />
             </div>
             <div class="">
-              {{ props.dataSource?.unplannedFlag ? t('task.detailInfo.basic.columns.yes') : t('task.detailInfo.basic.columns.no') }}
+              {{ props.dataSource?.unplanned ? t('task.detailInfo.basic.columns.yes') : t('task.detailInfo.basic.columns.no') }}
             </div>
           </div>
         </div>

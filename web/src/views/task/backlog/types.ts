@@ -62,23 +62,6 @@ export type SprintInfo = {
         avatar: string;
     }[];
 }
-export type ActivityItem = {
-  id: string;
-  projectId: string;
-  userId: string;
-  fullName: string;
-  avatar: string;
-  targetId: string;
-  parentTargetId: string;
-  targetType: {
-    value: string;
-    message: string
-  };
-  targetName: string;
-  optDate: string;
-  description: string;
-  detail: string
-}
 
 export type EditFormState = {
   projectId: string | undefined;
@@ -89,7 +72,7 @@ export type EditFormState = {
   sprintId: string | undefined;
   taskType: 'API_TEST' | 'BUG' | 'SCENARIO_TEST' | 'STORY' | 'TASK' | 'REQUIREMENT' | undefined;
   moduleId?: string | undefined;
-  confirmorId?: string | undefined;
+  confirmerId?: string | undefined;
   attachments?: {
     name: string;
     url: string;
@@ -105,6 +88,6 @@ export type EditFormState = {
   testType?: 'FUNCTIONAL' | 'PERFORMANCE' | 'STABILITY' | 'CUSTOMIZATION' | undefined;
   bugLevel?: 'CRITICAL' | 'MAJOR' | 'MINOR' | 'TRIVIAL';
   testerId?: string;
-  missingBugFlag?: boolean;
+  missingBug?: boolean;
   softwareVersion?: string;
 }

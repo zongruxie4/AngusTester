@@ -33,7 +33,6 @@ const getChartData = (data) => {
 };
 
 const totalValue = ref({});
-
 const personValues = ref([]);
 
 onMounted(() => {
@@ -76,7 +75,6 @@ defineExpose({
     });
   }
 });
-
 </script>
 <template>
   <div>

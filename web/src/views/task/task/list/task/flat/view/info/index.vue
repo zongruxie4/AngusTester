@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue';
+import { TaskType } from '@/enums/enums';
 
-import { TaskInfo } from '../../../../../../types';
+import { TaskInfo } from '@/views/task/types';
 
 type Props = {
   projectId: string;
@@ -34,8 +35,6 @@ const Description = defineAsyncComponent(() => import('@/views/task/task/list/ta
 const PersonnelInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/view/info/Personnel.vue'));
 const DateInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/view/info/Date.vue'));
 const AttachmentInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/view/info/Attachment.vue'));
-// const refTasks = defineAsyncComponent(() => import('./refTasks/index.vue'));
-// const refCases = defineAsyncComponent(() => import('./refCases/index.vue'));
 
 const change = (data: Partial<TaskInfo>) => {
   emit('change', data);
@@ -54,14 +53,13 @@ const taskType = computed(() => {
 });
 
 const className = computed(() => {
-  if (props.largePageLayout === true) {
+  if (props.largePageLayout) {
     return 'large-page-layout';
   }
 
-  if (props.largePageLayout === false) {
+  if (!props.largePageLayout) {
     return 'small-page-layout';
   }
-
   return '';
 });
 </script>
@@ -70,7 +68,7 @@ const className = computed(() => {
   <div :class="className" class="h-full pr-5 overflow-auto">
     <div class="flex-1 space-y-4">
       <APIBasicInfo
-        v-if="taskType === 'API_TEST'"
+        v-if="taskType === TaskType.API_TEST"
         :dataSource="props.dataSource"
         :projectId="props.projectId"
         :userInfo="props.userInfo"
@@ -78,8 +76,9 @@ const className = computed(() => {
         :taskId="taskId"
         @change="change"
         @loadingChange="loadingChange" />
+
       <ScenarioBasicInfo
-        v-else-if="taskType === 'SCENARIO_TEST'"
+        v-else-if="taskType === TaskType.SCENARIO_TEST"
         :dataSource="props.dataSource"
         :projectId="props.projectId"
         :userInfo="props.userInfo"
@@ -87,6 +86,7 @@ const className = computed(() => {
         :taskId="taskId"
         @change="change"
         @loadingChange="loadingChange" />
+
       <BasicInfo
         v-else
         :dataSource="props.dataSource"
@@ -124,23 +124,6 @@ const className = computed(() => {
         :taskId="taskId"
         @change="change"
         @loadingChange="loadingChange" />
-
-      <!-- <refTasks
-        :dataSource="props.dataSource"
-        :projectId="props.projectId"
-        :userInfo="props.userInfo"
-        :appInfo="props.appInfo"
-        :taskId="taskId"
-        @change="change"
-        @loadingChange="loadingChange" /> -->
-
-      <!-- <refCases
-        :dataSource="props.dataSource"
-        :projectId="props.projectId"
-        :appInfo="props.appInfo"
-        :taskId="taskId"
-        @change="change"
-        @loadingChange="loadingChange" /> -->
 
       <AttachmentInfo
         :dataSource="props.dataSource"

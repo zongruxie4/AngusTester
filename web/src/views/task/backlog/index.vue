@@ -18,12 +18,12 @@ import {
   TaskPriority,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import {appContext, duration} from '@xcan-angus/infra';
+import { appContext, duration } from '@xcan-angus/infra';
 import Draggable from 'vuedraggable';
 import { cloneDeep } from 'lodash-es';
 import { debounce } from 'throttle-debounce';
 import dayjs, { Dayjs } from 'dayjs';
-import { task, analysis } from '@/api/tester';
+import { analysis, task } from '@/api/tester';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';

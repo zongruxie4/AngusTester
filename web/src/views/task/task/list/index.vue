@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, onMounted, ref, watch, Ref } from 'vue';
+import { computed, defineAsyncComponent, inject, onMounted, ref, Ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { AsyncComponent, NoData, notification, Spin } from '@xcan-angus/vue-ui';
-import { http, utils, TESTER, download, appContext, enumUtils, PageQuery } from '@xcan-angus/infra';
+import { appContext, download, enumUtils, http, PageQuery, TESTER, utils } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 import { TaskSprintPermission, TaskStatus } from '@/enums/enums';
@@ -614,11 +614,11 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
     const sprintAuth = taskItem.sprintAuth;
 
     const permissions = sprintPermissionsCache.value.get(sprintId) || [];
-    const { currentAssociateType, confirmorId, assigneeId, createdBy } = taskItem;
+    const { currentAssociateType, confirmerId, assigneeId, createdBy } = taskItem;
 
     const currentUserId = props.userInfo?.id;
     const isCurrentUserAdmin = !!currentAssociateType?.map(associateType => associateType.value).includes('SYS_ADMIN' || 'APP_ADMIN');
-    const isCurrentUserConfirmor = confirmorId === currentUserId;
+    const isCurrentUserConfirmer = confirmerId === currentUserId;
     const isCurrentUserAssignee = assigneeId === currentUserId;
 
     const menuItems: ActionMenuItem[] = [
@@ -670,7 +670,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
         name: t('task.actions.confirmComplete'),
         key: TaskStatus.COMPLETED,
         icon: 'icon-yiwancheng',
-        disabled: !isCurrentUserAdmin && !isCurrentUserConfirmor,
+        disabled: !isCurrentUserAdmin && !isCurrentUserConfirmer,
         hide: false
       });
 
@@ -678,7 +678,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
         name: t('task.actions.confirmIncomplete'),
         key: 'uncompleted',
         icon: 'icon-shibaiyuanyin',
-        disabled: !isCurrentUserAdmin && !isCurrentUserConfirmor,
+        disabled: !isCurrentUserAdmin && !isCurrentUserConfirmer,
         hide: false
       });
     }

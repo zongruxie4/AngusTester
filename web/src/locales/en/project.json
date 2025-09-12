@@ -316,7 +316,7 @@
         "sprint": "Sprint",
         "priority": "Priority",
         "assignee": "Assignee",
-        "confirmor": "Confirmor",
+        "confirmer": "Confirmer",
         "deadline": "Deadline"
       },
       "messages": {

@@ -22,7 +22,7 @@ export type SelectOption = {
     showName: string;
 }
 export type MenuItem = {
-    key: 'none' | 'createdBy' | 'assigneeId' | 'progress' | 'lastModifiedBy' | 'confirmorId' | 'lastDay' | 'lastThreeDays' | 'lastWeek';
+    key: 'none' | 'createdBy' | 'assigneeId' | 'progress' | 'lastModifiedBy' | 'confirmerId' | 'lastDay' | 'lastThreeDays' | 'lastWeek';
     name: string;
     groupKey?: 'assigneeId' | 'time';
 }

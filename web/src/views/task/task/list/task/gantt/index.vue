@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, inject, onMounted, ref, watch, Ref } from 'vue';
+import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import Gantt from '@xcan-angus/frappe-gantt';
@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 import { AsyncComponent, Icon } from '@xcan-angus/vue-ui';
 import { task } from '@/api/tester';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
+import { TaskType } from '@/enums/enums';
 
 import { TaskInfo } from '../../../../types';
 
@@ -68,11 +69,9 @@ const getParams = () => {
   if (props.filters?.length) {
     params.filters = props.filters;
   }
-
   if (props.moduleId) {
     params.moduleId = props.moduleId;
   }
-
   return params;
 };
 
@@ -132,7 +131,7 @@ const loadData = async () => {
 
   if (!ganttView.value) {
     ganttView.value = new Gantt(ganttRef.value, taskList.value, {
-      language: 'zh',
+      language: 'zh', // TODO 修改国际化化支持
       view_mode: 'Day',
       view_mode_select: true,
       on_click: (task) => {
@@ -320,7 +319,7 @@ onMounted(() => {
         <div style="height: calc(100% - 36px);" class="pt-3.5 overflow-hidden">
           <AsyncComponent :visible="!!checkedTaskId">
             <APIInfo
-              v-if="checkedTaskType === 'API_TEST'"
+              v-if="checkedTaskType === TaskType.API_TEST"
               v-show="drawerActiveKey === 'basic'"
               :projectId="props.projectId"
               :appInfo="props.appInfo"
@@ -330,7 +329,7 @@ onMounted(() => {
               @loadingChange="loadingChange" />
 
             <ScenarioInfo
-              v-else-if="checkedTaskType === 'SCENARIO_TEST'"
+              v-else-if="checkedTaskType === TaskType.SCENARIO_TEST"
               v-show="drawerActiveKey === 'basic'"
               :projectId="props.projectId"
               :appInfo="props.appInfo"

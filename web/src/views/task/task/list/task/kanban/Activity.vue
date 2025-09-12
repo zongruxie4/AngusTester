@@ -1,20 +1,15 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
 import { ActivityInfo, Scroll } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/infra';
+import { SearchCriteria, TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
-import { ActivityItem } from './PropsType';
 import { TaskInfo } from '@/views/task/types';
+import { ActivityItem } from '@/types/types';
+import { CombinedTargetType } from '@/enums/enums';
+import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: TaskInfo;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -26,7 +21,7 @@ const { t } = useI18n();
 const dataList = ref<ActivityItem[]>([]);
 const params = ref<{
   mainTargetId:string;
-  filters:[{ key: 'targetType', value: 'TASK', op: 'EQUAL' }]
+  filters:[{ key: 'targetType', value: CombinedTargetType.TASK, op: SearchCriteria.OpEnum.Equal }]
 }>();
 
 const change = (data: ActivityItem[]) => {
@@ -41,7 +36,7 @@ onMounted(() => {
 
     params.value = {
       mainTargetId: taskId.value,
-      filters: [{ key: 'targetType', value: 'TASK', op: 'EQUAL' }]
+      filters: [{ key: 'targetType', value: CombinedTargetType.TASK, op: SearchCriteria.OpEnum.Equal }]
     };
   }, { immediate: true });
 });

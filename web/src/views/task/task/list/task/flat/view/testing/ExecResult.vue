@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { Colon, Toggle, NoData } from '@xcan-angus/vue-ui';
+import { Colon, NoData, Toggle } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
 import { TaskInfo } from '@/views/task/types';
@@ -45,7 +45,7 @@ const RESULT_COLOR: {
     </template>
 
     <template #default>
-      <div v-if="showContent && props.largePageLayout===false" class="text-3 leading-5 space-y-2.5 pt-2 pl-5.5">
+      <div v-if="showContent && !props.largePageLayout" class="text-3 leading-5 space-y-2.5 pt-2 pl-5.5">
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
@@ -145,7 +145,7 @@ const RESULT_COLOR: {
         </div>
       </div>
 
-      <div v-else-if="showContent && props.largePageLayout===true" class="text-3 leading-5 space-y-2.5 pt-2 pl-5.5">
+      <div v-else-if="showContent && props.largePageLayout" class="text-3 leading-5 space-y-2.5 pt-2 pl-5.5">
         <div class="flex items-start space-x-5">
           <div class="relative w-1/3 flex items-start">
             <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
