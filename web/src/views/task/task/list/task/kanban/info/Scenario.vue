@@ -63,7 +63,6 @@ const tagIdList = ref<string[]>([]);
 
 const moduleRef = ref();
 const moduleEditFlag = ref(false);
-const moduleMessage = ref<string>();
 const moduleValue = ref<string>();
 
 const versionRef = ref();

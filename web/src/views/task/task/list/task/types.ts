@@ -1,14 +1,14 @@
-// TODO 复用Backlog
-
+import { Priority } from '@xcan-angus/infra';
+import { TaskType, TestType, BugLevel } from '@/enums/enums';
 import { TaskInfo } from '@/views/task/types';
 
 export type EditFormState = {
   assigneeId: string | undefined;
   deadlineDate: string | undefined;
   name: string | undefined;
-  priority: 'HIGH' | 'HIGHEST' | 'LOW' | 'LOWEST' | 'MEDIUM' | undefined;
+  priority: Priority;
   sprintId: string | undefined;
-  taskType: 'API_TEST' | 'BUG' | 'SCENARIO_TEST' | 'STORY' | 'TASK' | 'REQUIREMENT' | undefined;
+  taskType: TaskType;
   moduleId?: string | undefined;
   confirmerId?: string | undefined;
   attachments?: {
@@ -24,8 +24,8 @@ export type EditFormState = {
   description?: string | undefined;
   evalWorkload?: string | undefined;
   actualWorkload?: string | undefined;
-  testType?: 'FUNCTIONAL' | 'PERFORMANCE' | 'STABILITY' | 'CUSTOMIZATION' | undefined;
-  bugLevel?: 'CRITICAL' | 'MAJOR'| 'MINOR' | 'TRIVIAL';
+  testType?: TestType;
+  bugLevel?: BugLevel;
   testerId?: string;
   missingBug?: boolean;
   softwareVersion?: string;

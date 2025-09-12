@@ -20,9 +20,16 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'ok'):void;}>();
-// Inject project information
 const projectId = inject<Ref<string>>('projectId', ref(''));
-const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
+const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>(
+  'proTypeShowMap', ref({
+    showTask: true,
+    showBackLog: true,
+    showMeeting: true,
+    showSprint: true,
+    showTasStatistics: true
+  }
+  ));
 
 const loading = ref(false);
 const strategyWhenDuplicatedOpt = ref<{value: string; label: string}[]>([]);
@@ -31,11 +38,11 @@ const formRef = ref();
 
 const formData = ref<{
   file: File|undefined;
-  strategyWhenDuplicated: 'COVER'|'IGNORE';
+  strategyWhenDuplicated: StrategyWhenDuplicated;
   sprintId: string|undefined;
 }>({
   file: undefined,
-  strategyWhenDuplicated: 'COVER',
+  strategyWhenDuplicated: StrategyWhenDuplicated.COVER,
   sprintId: undefined
 });
 
@@ -69,6 +76,7 @@ const loadEnums = () => {
 const cancel = () => {
   emits('update:visible', false);
 };
+
 const ok = () => {
   formRef.value.validate()
     .then(async () => {
@@ -91,15 +99,15 @@ const ok = () => {
 watch(() => props.visible, newValue => {
   if (!newValue) {
     formData.value.file = undefined;
-    formData.value.strategyWhenDuplicated = 'COVER';
+    formData.value.strategyWhenDuplicated = StrategyWhenDuplicated.COVER;
   }
+
   if (!strategyWhenDuplicatedOpt.value.length) {
     loadEnums();
   }
 }, {
   immediate: true
 });
-
 </script>
 <template>
   <Modal
@@ -125,7 +133,10 @@ watch(() => props.visible, newValue => {
           :placeholder="t('task.upload.form.selectIteration')"
           :fieldNames="{value: 'id', label: 'name'}" />
       </FormItem>
-      <FormItem :rules="{message: t('task.upload.form.uploadFile'), validator: validateFile}" name="file">
+
+      <FormItem
+        :rules="{message: t('task.upload.form.uploadFile'), validator: validateFile}"
+        name="file">
         <Spin :spinning="loading">
           <UploadDragger
             v-show="!formData.file"
@@ -141,6 +152,7 @@ watch(() => props.visible, newValue => {
             </div>
           </UploadDragger>
         </Spin>
+
         <div
           v-show="!!formData.file"
           class="px-3.5 border rounded">
@@ -155,6 +167,7 @@ watch(() => props.visible, newValue => {
             </div>
           </div>
         </div>
+
         <div class="text-right">
           <Button
             type="link"
@@ -165,6 +178,7 @@ watch(() => props.visible, newValue => {
           </Button>
         </div>
       </FormItem>
+
       <FormItem
         :label="t('task.upload.form.duplicateStrategy')"
         name="strategyWhenDuplicated"

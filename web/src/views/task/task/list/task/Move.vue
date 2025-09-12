@@ -80,12 +80,6 @@ onMounted(() => {
 const format = (data) => {
   return { ...data, disabled: data.id === props.sprintId };
 };
-
-// const okButtonProps = computed(() => {
-//   return {
-//     disabled: !selectedId.value
-//   };
-// });
 </script>
 <template>
   <Modal

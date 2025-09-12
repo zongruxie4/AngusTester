@@ -3,7 +3,6 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { SmartComment } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-import { TaskInfo } from '../../../types';
 import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
 const props = withDefaults(defineProps<TaskInfoProps>(), {

@@ -23,7 +23,7 @@ const { t } = useI18n();
 
 type Props = {
   projectId: string;
-  selectedIds: string[];// 批量选中的任务
+  selectedIds: string[];
   dataSource: TaskInfo[];
   pagination: { current: number; pageSize: number; total: number; };
   menuItemsMap: Map<string, ActionMenuItem[]>;

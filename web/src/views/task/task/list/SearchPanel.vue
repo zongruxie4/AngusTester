@@ -91,9 +91,6 @@ let database: XCanDexie<{ id: string; data: any; }>;
 
 const searchPanelRef = ref();
 
-// ================================
-// REACTIVE STATE
-// ================================
 // Quick search date mapping for predefined time ranges
 const quickSearchDateMap = ref<Map<'lastDay' | 'lastThreeDays' | 'lastWeek', string[]>>(new Map());
 // Map to track selected menu items for quick search
@@ -347,7 +344,6 @@ const formatDisplayData = ({ id, name }: { id: string; name: string; }) => {
     displayTitle = name;
     displayName = displayName.slice(0, MAX_DISPLAY_LENGTH) + '...';
   }
-
   return { id, name, showTitle: displayTitle, showName: displayName };
 };
 
@@ -474,7 +470,6 @@ const handleButtonDropdownClick = ({ key }: { key: 'import' | 'export' }) => {
     emit('uploadTask');
     return;
   }
-
   if (key === 'export') {
     handleExportTasks();
   }
@@ -819,7 +814,6 @@ const initializeComponent = async () => {
         searchPanelRef.value.setConfigs(configs);
       }
     }
-
     return;
   }
 
@@ -839,7 +833,6 @@ const resetSearchPanel = () => {
         value: undefined
       };
     });
-
     searchPanelRef.value.setConfigs(configs);
   }
 };
@@ -1162,7 +1155,6 @@ const showAddTagBtn = computed(() => {
   if (isTagSelectorVisible.value) {
     return false;
   }
-
   return selectedTagOptions.value.length < 3;
 });
 

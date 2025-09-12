@@ -39,7 +39,6 @@ const toDelete = async (id: string) => {
   if (error) {
     return;
   }
-
   dataList.value = dataList.value.filter(item => item.id !== id);
 };
 
