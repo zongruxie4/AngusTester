@@ -101,7 +101,6 @@ const letterMap = {
     labelClass="text-text-content font-semibold text-3 text-right"
     valueClass="text-text-sub-content"
     labelSpacing="12px"
-    :labelStyle="{display: 'inline-flex', 'justify-content': 'flex-end'}"
     :marginBottom="12"
     :spacing="8">
     <template #execNodes="{text}">

@@ -5,6 +5,9 @@ import { Spin, NoData} from '@xcan-angus/vue-ui';
 import dayjs from 'dayjs';
 import { exec } from '@/api/tester';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import apiUtils from '@/utils/ApiUtils/index';
 import { ListData, useExecCount } from './useExecCount';
@@ -28,42 +31,42 @@ const pagination = {
 
 const groupItem = [
   {
-    label: '按吞吐量',
+    label: t('genDataPlugin.execInfo.byThroughput'),
     value: 'tps'
   },
   {
-    label: '按响应时间',
+    label: t('genDataPlugin.execInfo.byResponseTime'),
     value: 'time'
   },
   {
-    label: '按行数',
+    label: t('genDataPlugin.execInfo.byRows'),
     value: 'rows'
   },
   // {
-  //   label: '按错误数',
+  //   label: t('genDataPlugin.execInfo.byErrorCount'),
   //   value: 'errorNum'
   // },
   // {
-  //   label: '按错误率',
+  //   label: t('genDataPlugin.execInfo.byErrorRate'),
   //   value: 'errorRate'
   // },
   {
-    label: '按上传',
+    label: t('genDataPlugin.execInfo.byUpload'),
     value: 'upload'
   }
 ];
 
 const echartsLegendConfig = {
-  writeBytes: '写数据大小',
-  bwps: '写数据速率',
-  transactions: '行数',
-  errors: '错误数',
-  errorRate: '错误率',
-  iterations: '迭代数',
-  tps: '每秒行数',
-  tranMean: '平均',
-  tranMin: '最小',
-  tranMax: '最大',
+  writeBytes: t('genDataPlugin.execInfo.writeDataSize'),
+  bwps: t('genDataPlugin.execInfo.writeDataRate'),
+  transactions: t('genDataPlugin.execInfo.rows'),
+  errors: t('genDataPlugin.execInfo.errorCount'),
+  errorRate: t('genDataPlugin.execInfo.errorRate'),
+  iterations: t('genDataPlugin.execInfo.iterations'),
+  tps: t('genDataPlugin.execInfo.rowsPerSecond'),
+  tranMean: t('genDataPlugin.execInfo.average'),
+  tranMin: t('genDataPlugin.execInfo.minimum'),
+  tranMax: t('genDataPlugin.execInfo.maximum'),
   tranP50: 'P50',
   tranP75: 'P75',
   tranP90: 'P90',

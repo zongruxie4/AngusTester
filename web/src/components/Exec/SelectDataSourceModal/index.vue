@@ -2,6 +2,9 @@
 import { computed, ref } from 'vue';
 import { Modal, Select, IconRequired } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;
@@ -55,7 +58,7 @@ const apisAction = computed(() => {
 
 <template>
   <Modal
-    title="选择数据源"
+    :title="t('xcan_exec.selectDataSource')"
     :visible="props.visible"
     :okButtonProps="okButtonProps"
     @cancel="cancel"
@@ -63,11 +66,11 @@ const apisAction = computed(() => {
     <div class="flex items-center">
       <div class="flex-shrink-0 mr-2.5">
         <IconRequired class="invisible" />
-        <span>选择数据源</span>
+        <span>{{ t('xcan_exec.selectDataSource') }}</span>
       </div>
       <Select
         showSearch
-        placeholder="选择数据源"
+        :placeholder="t('xcan_exec.selectDataSource')"
         class="w-full"
         :action="apisAction"
         :fieldNames="{ label: 'name', value: 'id' }"
