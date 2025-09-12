@@ -7,15 +7,9 @@ import { useI18n } from 'vue-i18n';
 import { TaskInfo } from '@/views/task/types';
 import { ActivityItem } from '@/types/types';
 import { CombinedTargetType } from '@/enums/enums';
+import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: TaskInfo;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,

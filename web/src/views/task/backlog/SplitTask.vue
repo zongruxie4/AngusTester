@@ -1,18 +1,8 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import {
-  Colon,
-  DatePicker,
-  Icon,
-  IconRequired,
-  IconTask,
-  Input,
-  Modal,
-  notification,
-  SelectUser,
-  Spin,
-  TaskPriority,
-  Tooltip
+  Colon, DatePicker, Icon, IconRequired, IconTask, Input, Modal, notification,
+  SelectUser, Spin, TaskPriority, Tooltip
 } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { Button, Checkbox } from 'ant-design-vue';
@@ -25,16 +15,11 @@ import { task } from '@/api/tester';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfo } from '../types';
 import { TIME_FORMAT } from '@/utils/constant';
+import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
 const { t } = useI18n();
 
-interface Props {
-  visible: boolean;
-  projectId: string;
-  taskInfo: TaskInfo;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskInfoProps>(), {
   visible: false,
   projectId: undefined,
   taskInfo: undefined

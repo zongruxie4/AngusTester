@@ -30,6 +30,7 @@ import { TaskInfo } from '../../../types';
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 
+// TODO 存在重复
 type Props = {
   projectId: string;
   userInfo: { id: string; };

@@ -7,15 +7,9 @@ import { CombinedTargetType } from '@/enums/enums';
 
 import { TaskInfo } from '../types';
 import { ActivityItem } from '@/types/types';
+import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: TaskInfo;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -41,7 +35,7 @@ onMounted(() => {
 
     params.value = {
       mainTargetId: taskId.value,
-      filters:[{ key: 'targetType', value: CombinedTargetType.TASK, op: SearchCriteria.OpEnum.Equal }]
+      filters: [{ key: 'targetType', value: CombinedTargetType.TASK, op: SearchCriteria.OpEnum.Equal }]
     };
   }, { immediate: true });
 });

@@ -2,31 +2,19 @@
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref } from 'vue';
 import { Button, TreeSelect } from 'ant-design-vue';
 import {
-  AsyncComponent,
-  Colon,
-  Icon,
-  IconTask,
-  Input,
-  ScriptTypeTag,
-  Select,
-  TaskPriority,
-  TaskStatus
+  AsyncComponent, Colon, Icon, IconTask, Input, ScriptTypeTag, Select, TaskPriority, TaskStatus
 } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/infra';
+import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfo } from '@/views/task/types';
+import { SoftwareVersionStatus } from '@/enums/enums';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: TaskInfo;
-}
+import SelectEnum from '@/components/enum/SelectEnum.vue';
+import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -69,7 +57,6 @@ const tagIdList = ref<string[]>([]);
 
 const moduleRef = ref();
 const moduleEditFlag = ref(false);
-const moduleMessage = ref<string>();
 const moduleValue = ref<string>();
 
 const versionRef = ref();
@@ -312,7 +299,10 @@ const toEditPriority = () => {
   });
 };
 
-const priorityChange = async (_event: { target: { value: TaskInfo['priority']['value']; } }, option: { message: string; value: TaskInfo['priority']['value'] }) => {
+const priorityChange = async (
+  _event: { target: { value: TaskInfo['priority']['value']; } },
+  option: { message: string; value: TaskInfo['priority']['value']
+  }) => {
   priorityMessage.value = option.message;
 };
 
@@ -331,7 +321,10 @@ const priorityBlur = async () => {
     return;
   }
 
-  emit('change', { id: taskId.value, priority: { value, message: priorityMessage.value! } });
+  emit('change', {
+    id: taskId.value,
+    priority: { value, message: priorityMessage.value! }
+  });
 };
 
 const toEditTag = () => {
@@ -347,7 +340,10 @@ const toEditTag = () => {
   });
 };
 
-const tagChange = async (_event: { target: { value: string[]; } }, options: { id: string; name: string; }[]) => {
+const tagChange = async (
+  _event: { target: { value: string[]; } },
+  options: { id: string; name: string; }[]
+) => {
   tagList.value = options;
 };
 
@@ -436,7 +432,6 @@ const onePassText = computed(() => {
   if (totalNum.value <= 0) {
     return '--';
   }
-
   return failNum.value === 0 ? t('status.yes') : t('status.no');
 });
 </script>
@@ -444,7 +439,9 @@ const onePassText = computed(() => {
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
     <div>
-      <div class="text-theme-title mb-2.5 font-semibold">{{ t('task.detailInfo.apis.basicInfo') }}</div>
+      <div class="text-theme-title mb-2.5 font-semibold">
+        {{ t('task.detailInfo.apis.basicInfo') }}
+      </div>
 
       <div class="space-y-2.5">
         <div class="flex items-start">
@@ -453,7 +450,9 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
 
-          <div class="whitespace-pre-wrap break-words break-all">{{ props.dataSource?.code }}</div>
+          <div class="whitespace-pre-wrap break-words break-all">
+            {{ props.dataSource?.code }}
+          </div>
         </div>
 
         <div class="flex items-start">
@@ -519,7 +518,9 @@ const onePassText = computed(() => {
               v-if="overdue"
               class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
               style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-              <span class="inline-block transform-gpu scale-90">{{ t('task.detailInfo.apis.columns.overdue') }}</span>
+              <span class="inline-block transform-gpu scale-90">
+                {{ t('task.detailInfo.apis.columns.overdue') }}
+              </span>
             </span>
           </div>
         </div>
@@ -629,7 +630,9 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
 
-          <div class="whitespace-pre-wrap break-words break-all">{{ props.dataSource?.targetParentName }}</div>
+          <div class="whitespace-pre-wrap break-words break-all">
+            {{ props.dataSource?.targetParentName }}
+          </div>
         </div>
 
         <div class="flex items-start">
@@ -638,7 +641,9 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
 
-          <div class="whitespace-pre-wrap break-words break-all">{{ props.dataSource?.targetName }}</div>
+          <div class="whitespace-pre-wrap break-words break-all">
+            {{ props.dataSource?.targetName }}
+          </div>
         </div>
 
         <div class="flex items-start">
@@ -687,7 +692,13 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ evalWorkloadMethod === 'STORY_POINT' ? t('task.detailInfo.apis.columns.evalWorkload') : t('task.detailInfo.apis.columns.evalWorkloadHours') }}</span>
+            <span>
+              {{
+                evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                  ? t('task.detailInfo.apis.columns.evalWorkload')
+                  : t('task.detailInfo.apis.columns.evalWorkloadHours')
+              }}
+            </span>
             <Colon class="w-1" />
           </div>
 
@@ -719,7 +730,13 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ evalWorkloadMethod === 'STORY_POINT' ? t('task.detailInfo.apis.columns.actualStoryPoint') : t('task.detailInfo.apis.columns.actualWorkload') }}</span>
+            <span>
+              {{
+                evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                  ? t('task.detailInfo.apis.columns.actualStoryPoint')
+                  : t('task.detailInfo.apis.columns.actualWorkload')
+              }}
+            </span>
             <Colon class="w-1" />
           </div>
 
@@ -836,7 +853,7 @@ const onePassText = computed(() => {
                 class="w-full"
                 lazy
                 :action="`${TESTER}/software/version?projectId=${props.projectId}`"
-                :params="{filters: [{value: ['NOT_RELEASED', 'RELEASED'], key: 'status', op: 'IN'}]}"
+                :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN'}]}"
                 :fieldNames="{value:'name', label: 'name'}"
                 @blur="versionBlur"
                 @change="versionChange">

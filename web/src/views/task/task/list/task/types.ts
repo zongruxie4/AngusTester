@@ -1,5 +1,7 @@
 // TODO 复用Backlog
 
+import { TaskInfo } from '@/views/task/types';
+
 export type EditFormState = {
   assigneeId: string | undefined;
   deadlineDate: string | undefined;
@@ -27,4 +29,14 @@ export type EditFormState = {
   testerId?: string;
   missingBug?: boolean;
   softwareVersion?: string;
+}
+
+export type TaskInfoProps = {
+  projectId: string;
+  userInfo: { id: string; };
+  appInfo: { id: string; };
+  dataSource: TaskInfo;
+  taskId?: string;
+  loading?: boolean;
+  notify?: string;
 }

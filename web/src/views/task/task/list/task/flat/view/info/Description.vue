@@ -6,17 +6,9 @@ import { useI18n } from 'vue-i18n';
 import { task } from '@/api/tester';
 
 import { TaskInfo } from '../../../../../../types';
+import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
-type Props = {
-  taskId: string;
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: TaskInfo;
-  loading: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskInfoProps>(), {
   taskId: undefined,
   projectId: undefined,
   userInfo: undefined,

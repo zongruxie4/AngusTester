@@ -8,15 +8,9 @@ import { useI18n } from 'vue-i18n';
 
 import { TaskInfo } from '../../../../types';
 import { TIME_FORMAT } from '@/utils/constant';
+import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: TaskInfo;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -72,7 +66,6 @@ const blur = async () => {
     if (typeof dateRef.value?.focus === 'function') {
       dateRef.value?.focus();
     }
-
     return;
   }
 
@@ -89,7 +82,6 @@ const blur = async () => {
     if (typeof dateRef.value?.focus === 'function') {
       dateRef.value?.focus();
     }
-
     return;
   }
 

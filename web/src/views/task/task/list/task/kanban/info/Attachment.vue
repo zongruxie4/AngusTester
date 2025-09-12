@@ -6,6 +6,7 @@ import { upload, utils } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { TaskInfo } from '@/views/task/types';
+import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
 type AttachmentItem = {
   id: string;
@@ -13,14 +14,7 @@ type AttachmentItem = {
   url: string;
 }
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: TaskInfo;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -71,7 +65,7 @@ const uploadChange = async ({ file }: { file: UploadFile }) => {
     url: data.url
   });
 
-  updateAttachments(attachmentList);
+  await updateAttachments(attachmentList);
 };
 
 const toDelete = async (data: AttachmentItem) => {
@@ -82,7 +76,7 @@ const toDelete = async (data: AttachmentItem) => {
     };
   });
 
-  updateAttachments(attachmentList);
+  await updateAttachments(attachmentList);
 };
 
 const updateAttachments = async (data:{name:string;url:string}[]) => {

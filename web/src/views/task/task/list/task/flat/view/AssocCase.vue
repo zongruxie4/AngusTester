@@ -7,19 +7,9 @@ import { Button } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
+import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
-interface Props {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  taskId: string;
-  dataSource: {
-    id: string;
-    name: string;
-  }[];
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,

@@ -22,17 +22,9 @@ import { BugLevel, TaskType } from '@/enums/enums';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfo } from '@/views/task/types';
+import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  notify: string;
-  taskInfo: TaskInfo;
-  loading: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,

@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 import { AsyncComponent, Icon } from '@xcan-angus/vue-ui';
 import { task } from '@/api/tester';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
+import { TaskType } from '@/enums/enums';
 
 import { TaskInfo } from '../../../../types';
 
@@ -318,7 +319,7 @@ onMounted(() => {
         <div style="height: calc(100% - 36px);" class="pt-3.5 overflow-hidden">
           <AsyncComponent :visible="!!checkedTaskId">
             <APIInfo
-              v-if="checkedTaskType === 'API_TEST'"
+              v-if="checkedTaskType === TaskType.API_TEST"
               v-show="drawerActiveKey === 'basic'"
               :projectId="props.projectId"
               :appInfo="props.appInfo"
@@ -328,7 +329,7 @@ onMounted(() => {
               @loadingChange="loadingChange" />
 
             <ScenarioInfo
-              v-else-if="checkedTaskType === 'SCENARIO_TEST'"
+              v-else-if="checkedTaskType === TaskType.SCENARIO_TEST"
               v-show="drawerActiveKey === 'basic'"
               :projectId="props.projectId"
               :appInfo="props.appInfo"

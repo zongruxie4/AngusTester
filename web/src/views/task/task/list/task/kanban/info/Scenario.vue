@@ -19,15 +19,9 @@ import { useI18n } from 'vue-i18n';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfo } from '@/views/task/types';
+import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  dataSource: TaskInfo;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
