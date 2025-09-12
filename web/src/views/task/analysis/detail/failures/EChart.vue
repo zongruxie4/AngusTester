@@ -103,10 +103,12 @@ const failureTimeEChartConfig = JSON.parse(JSON.stringify({
   },
   xAxis: {
     ...failureEChartConfig.xAxis,
-    data: [t('taskAnalysis.detail.failures.chartLabels.totalFailureTime'),
+    data: [
+      t('taskAnalysis.detail.failures.chartLabels.totalFailureTime'),
       t('taskAnalysis.detail.failures.chartLabels.averageFailureTime'),
       t('taskAnalysis.detail.failures.chartLabels.minFailureTime'),
-      t('taskAnalysis.detail.failures.chartLabels.maxFailureTime')]
+      t('taskAnalysis.detail.failures.chartLabels.maxFailureTime')
+    ]
   },
   series: [
     {
@@ -129,8 +131,6 @@ const failureLevelEChartConfig = {
     top: '45%',
     padding: 2,
     subtext: t('taskAnalysis.detail.failures.chartTitles.failureLevel'),
-    // left: '25%',
-    // top: '40%',
     itemGap: 65,
     textAlign: 'center',
     textStyle: {
@@ -215,9 +215,7 @@ const failureLevelEChartConfig = {
 
 onMounted(() => {
   failureTimeEChart = eCharts.init(failureTimeRef.value);
-
   failureLevelEChart = eCharts.init(failureLevelRef.value);
-
   failureChart = eCharts.init(failureRef.value);
 
   watch([() => props.chart0Value, () => props.chart1Value, () => props.chart2Value, () => props.chart3Value, () => props.chart4Value], () => {

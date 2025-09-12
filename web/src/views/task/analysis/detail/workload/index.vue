@@ -25,20 +25,23 @@ const getChartData = (data) => {
   };
   res.chart1Value = {
     title: completedWorkloadRate + '%',
-    value: [{ name: t('taskAnalysis.detail.workload.pieLabels.incompleteWorkload'), value: evalWorkload - completedWorkload },
-      { name: t('taskAnalysis.detail.workload.pieLabels.completedWorkload'), value: completedWorkload }]
+    value: [
+      { name: t('taskAnalysis.detail.workload.pieLabels.incompleteWorkload'), value: evalWorkload - completedWorkload },
+      { name: t('taskAnalysis.detail.workload.pieLabels.completedWorkload'), value: completedWorkload }
+    ]
   };
 
   res.chart2Value = {
     title: savingWorkloadRate + '%',
-    value: [{ name: t('taskAnalysis.detail.workload.pieLabels.incompleteSaving'), value: evalWorkload - savingWorkload },
-      { name: t('taskAnalysis.detail.workload.pieLabels.completedSaving'), value: savingWorkload }]
+    value: [
+      { name: t('taskAnalysis.detail.workload.pieLabels.incompleteSaving'), value: evalWorkload - savingWorkload },
+      { name: t('taskAnalysis.detail.workload.pieLabels.completedSaving'), value: savingWorkload }
+    ]
   };
   return res;
 };
 
 const totalValue = ref({});
-
 const personValues = ref([]);
 
 onMounted(() => {

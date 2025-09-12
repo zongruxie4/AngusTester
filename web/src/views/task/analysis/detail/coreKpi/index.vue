@@ -29,25 +29,33 @@ const getChartData = (data) => {
   };
   res.chart1Value = {
     title: completedRate + '%',
-    value: [{ name: t('taskAnalysis.detail.coreKpi.chartLabels.uncompletedTaskCount'), value: totalNum - completedNum },
-      { name: t('taskAnalysis.detail.coreKpi.chartLabels.completedTaskCount'), value: completedNum }]
+    value: [
+      { name: t('taskAnalysis.detail.coreKpi.chartLabels.uncompletedTaskCount'), value: totalNum - completedNum },
+      { name: t('taskAnalysis.detail.coreKpi.chartLabels.completedTaskCount'), value: completedNum }
+    ]
   };
   res.chart2Value = {
     title: completedRate + '%',
-    value: [{ name: t('taskAnalysis.detail.coreKpi.chartLabels.uncompletedWorkload'), value: evalWorkload - completedWorkload },
-      { name: t('taskAnalysis.detail.coreKpi.chartLabels.completedWorkload'), value: completedWorkload }]
+    value: [
+      { name: t('taskAnalysis.detail.coreKpi.chartLabels.uncompletedWorkload'), value: evalWorkload - completedWorkload },
+      { name: t('taskAnalysis.detail.coreKpi.chartLabels.completedWorkload'), value: completedWorkload }
+    ]
   };
 
   res.chart3Value = {
     title: completedOverdueRate + '%',
-    value: [{ name: t('taskAnalysis.detail.coreKpi.chartLabels.uncompletedOverdueCount'), value: overdueNum - completedOverdueNum },
-      { name: t('taskAnalysis.detail.coreKpi.chartLabels.completedOverdueCount'), value: completedOverdueNum }]
+    value: [
+      { name: t('taskAnalysis.detail.coreKpi.chartLabels.uncompletedOverdueCount'), value: overdueNum - completedOverdueNum },
+      { name: t('taskAnalysis.detail.coreKpi.chartLabels.completedOverdueCount'), value: completedOverdueNum }
+    ]
   };
 
   res.chart4Value = {
     title: completedBugRate + '%',
-    value: [{ name: t('taskAnalysis.detail.coreKpi.chartLabels.uncompletedBugCount'), value: bugNum - completedBugNum },
-      { name: t('taskAnalysis.detail.coreKpi.chartLabels.completedBugCount'), value: completedBugNum }]
+    value: [
+      { name: t('taskAnalysis.detail.coreKpi.chartLabels.uncompletedBugCount'), value: bugNum - completedBugNum },
+      { name: t('taskAnalysis.detail.coreKpi.chartLabels.completedBugCount'), value: completedBugNum }
+    ]
   };
   return res;
 };

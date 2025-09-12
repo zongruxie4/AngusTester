@@ -97,9 +97,7 @@ const getChartData = (data) => {
   return res;
 };
 
-const totalValue = ref({
-
-});
+const totalValue = ref({});
 
 const personValues = ref([]);
 

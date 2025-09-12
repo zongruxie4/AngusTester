@@ -48,9 +48,11 @@ const unplannedTaskEChartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('taskAnalysis.detail.unplannedTasks.chartLabels.totalCount'),
+    data: [
+      t('taskAnalysis.detail.unplannedTasks.chartLabels.totalCount'),
       t('taskAnalysis.detail.unplannedTasks.chartLabels.unplannedCount'),
-      t('taskAnalysis.detail.unplannedTasks.chartLabels.unplannedCompletedCount')],
+      t('taskAnalysis.detail.unplannedTasks.chartLabels.unplannedCompletedCount')
+    ],
     axisLabel: {
       interval: 0,
       overflow: 'break'

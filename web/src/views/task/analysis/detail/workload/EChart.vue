@@ -176,9 +176,7 @@ const savingWorkloadEChartConfig = JSON.parse(JSON.stringify({
 
 onMounted(() => {
   completedWorkloadEChart = eCharts.init(completedWorkloadRef.value);
-
   savingWorkloadEChart = eCharts.init(savingWorkloadRef.value);
-
   workloadChart = eCharts.init(workloadRef.value);
 
   watch([() => props.chart0Value, () => props.chart1Value, () => props.chart2Value], () => {

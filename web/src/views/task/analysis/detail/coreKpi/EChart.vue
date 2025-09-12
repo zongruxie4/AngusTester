@@ -80,10 +80,12 @@ const coreEChartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('taskAnalysis.detail.coreKpi.chartLabels.taskCount'),
+    data: [
+      t('taskAnalysis.detail.coreKpi.chartLabels.taskCount'),
       t('taskAnalysis.detail.coreKpi.chartLabels.workload'),
       t('taskAnalysis.detail.coreKpi.chartLabels.overdueCount'),
-      t('taskAnalysis.detail.coreKpi.chartLabels.bugCount')],
+      t('taskAnalysis.detail.coreKpi.chartLabels.bugCount')
+    ],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -97,8 +99,10 @@ const coreEChartConfig = {
   },
   legend: {
     show: true,
-    data: [t('taskAnalysis.detail.coreKpi.chartLabels.completedCount'),
-      t('taskAnalysis.detail.coreKpi.chartLabels.totalCount')],
+    data: [
+      t('taskAnalysis.detail.coreKpi.chartLabels.completedCount'),
+      t('taskAnalysis.detail.coreKpi.chartLabels.totalCount')
+    ],
     top: 0
   },
   series: [
@@ -241,13 +245,9 @@ const completedBugEChartConfig = JSON.parse(JSON.stringify({
 
 onMounted(() => {
   completedEChart = eCharts.init(completedRef.value);
-
   completedWorkloadEChart = eCharts.init(completedWorkloadRef.value);
-
   coreChart = eCharts.init(coreRef.value);
-
   completedOverduedEChart = eCharts.init(completedOverduedRef.value);
-
   completedBugEChart = eCharts.init(completedBugRef.value);
 
   watch([

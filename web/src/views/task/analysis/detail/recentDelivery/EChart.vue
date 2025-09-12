@@ -149,7 +149,6 @@ const deliveryWorkloadEChartConfig = JSON.parse(JSON.stringify({
       color: '#000'
     }
   }
-
 }));
 
 onMounted(() => {
