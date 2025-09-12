@@ -18,27 +18,31 @@ import {
   TaskPriority,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import { appContext, duration } from '@xcan-angus/infra';
+import {
+  appContext,
+  duration,
+  enumUtils,
+  EvalWorkloadMethod,
+  PageQuery,
+  Priority,
+  SearchCriteria
+} from '@xcan-angus/infra';
 import Draggable from 'vuedraggable';
 import { cloneDeep } from 'lodash-es';
 import { debounce } from 'throttle-debounce';
 import dayjs, { Dayjs } from 'dayjs';
 import { analysis, task } from '@/api/tester';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
+import { TaskSprintPermission, TaskType } from '@/enums/enums';
+import { BasicProps } from '@/types/types';
 
-import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { MemberCount, SprintInfo } from './types';
+import { MemberCount } from './types';
 import { TaskInfo } from '../types';
 
-type SprintPermissionKey = 'MODIFY_SPRINT' | 'DELETE_SPRINT' | 'ADD_TASK' | 'MODIFY_TASK' | 'DELETE_TASK' | 'EXPORT_TASK' | 'RESTART_TASK' | 'REOPEN_TASK' | 'GRANT'
+import SelectEnum from '@/components/enum/SelectEnum.vue';
+import { SprintInfo } from '@/views/task/sprint/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined
@@ -95,7 +99,6 @@ const PAGE_SIZE = 500;
 
 const sprintRef = ref();
 const taskNameInputRef = ref();
-
 const loading = ref(false);
 
 const searchValue = ref<string>();
@@ -109,18 +112,16 @@ const openSet = ref<Set<string>>(new Set());
 
 const sprintList = ref<SprintInfo[]>([]);
 const membersMap = ref<{ [key: string]: SprintInfo['members'] }>({});
-const membersCountMap = ref<{
-  [key: string]: { [key: string]: MemberCount; }
-}>({});
+const membersCountMap = ref<{ [key: string]: { [key: string]: MemberCount; } }>({});
 const taskListMap = ref<{ [key: string]: TaskInfo[] }>({});
-const sortParamMap = ref<{[key: string]: {orderSort?: 'ASC'|'DESC', orderBy?: string}}>({});
+const sortParamMap = ref<{[key: string]: {orderSort?: PageQuery.OrderSort, orderBy?: string}}>({});
 const taskInfoLoadingSet = ref<Set<string>>(new Set());
 const membersCountLoadingSet = ref<Set<string>>(new Set());
-const sprintPermissionsMap = ref<Map<string, SprintPermissionKey[]>>(new Map());
+const sprintPermissionsMap = ref<Map<string, TaskSprintPermission[]>>(new Map());
 
 const backlogList = ref<TaskInfo[]>([]);
 const backlogLoaded = ref(false);
-const backlogSort = ref<{ orderSort?: 'ASC'|'DESC', orderBy?: string }>();
+const backlogSort = ref<{ orderSort?: PageQuery.OrderSort, orderBy?: string }>();
 
 const backlogTotal = ref(0);
 const taskTotalMap = ref<{ [key: string]: number }>({});
@@ -137,9 +138,9 @@ const splitTaskVisible = ref(false);
 const aiGenerateTaskVisible = ref(false);
 const addFlag = ref(false);
 
-const newTaskType = ref<string>('STORY');
+const newTaskType = ref<string>(TaskType.TASK);
 const newTaskName = ref<string>();
-const newTaskPriority = ref<'HIGH' | 'HIGHEST' | 'LOW' | 'LOWEST' | 'MEDIUM'>('MEDIUM');
+const newTaskPriority = ref<Priority>(Priority.MEDIUM);
 
 const popoverId = ref<string>();
 const drawerActiveKey = ref<'basic' | 'person' | 'date' | 'comment' | 'activity' | 'tasks' | 'cases' | 'attachments' | 'remarks'>('basic');
@@ -157,7 +158,6 @@ const visibleChange = (visible: boolean, id: string) => {
     popoverId.value = id;
     return;
   }
-
   popoverId.value = undefined;
 };
 
@@ -270,7 +270,7 @@ const handleSortTask = (orderData, sprintId) => {
   loadTaskListById(sprintId, 1);
 };
 
-const handleSortBasklogTask = (orderData) => {
+const handleSortBacklogTask = (orderData) => {
   backlogSort.value = orderData;
   if (orderData.orderBy === 'priority') {
     sortBacklogByPriority();
@@ -313,7 +313,7 @@ const toSave = async () => {
   notification.success(t('backlog.main.messages.saveSuccess'));
 
   newTaskName.value = undefined;
-  newTaskPriority.value = 'MEDIUM';
+  newTaskPriority.value = Priority.MEDIUM;
 
   const id = res?.data?.id;
   if (!id) {
@@ -339,9 +339,9 @@ const toSave = async () => {
 
 const cancelAdd = () => {
   addFlag.value = false;
-  newTaskType.value = 'STORY';
+  newTaskType.value = TaskType.STORY;
   newTaskName.value = undefined;
-  newTaskPriority.value = 'MEDIUM';
+  newTaskPriority.value = Priority.MEDIUM;
 };
 
 const openCreateModal = () => {
@@ -427,7 +427,9 @@ const moveToBacklog = async (fromId: string, taskData: TaskInfo, index: number) 
   taskListMap.value[fromId].splice(index, 1);
 };
 
-const dragAdd = async (event: { item: { id: string; }; from: { id: string; } }, sprintId: string) => {
+const dragAdd = async (
+  event: { item: { id: string; }; from: { id: string; } },
+  sprintId: string) => {
   const taskId = event.item.id;
   const params = {
     targetSprintId: sprintId,
@@ -448,7 +450,9 @@ const dragAdd = async (event: { item: { id: string; }; from: { id: string; } }, 
   taskTotalMap.value[fromId] -= 1;
 };
 
-const backlogAdd = async (event: { item: { id: string; }; from: { id: string; }; }) => {
+const backlogAdd = async (
+  event: { item: { id: string; }; from: { id: string; }; }
+) => {
   const taskId = event.item.id;
   const params = {
     targetSprintId: null,
@@ -484,7 +488,6 @@ const splitCancel = () => {
 
 const generateOk = async () => {
   selectedTaskInfo.value = undefined;
-  // await loadSprintList();
   await loadBacklogList(1);
 };
 
@@ -497,7 +500,6 @@ const toDelete = (data: TaskInfo, index: number, sprintId?: string) => {
     content: t('backlog.messages.confirmDelete', { name: data.name }),
     async onOk () {
       const id = data.id;
-      const params = { ids: [id] };
       const [error] = await task.deleteTask([id]);
       if (error) {
         return;
@@ -514,7 +516,6 @@ const toDelete = (data: TaskInfo, index: number, sprintId?: string) => {
       } else {
         backlogList.value.splice(index, 1);
       }
-
       taskInfoLoadingSet.value.delete((id));
     }
   });
@@ -537,7 +538,6 @@ const editOk = async (data: Partial<TaskInfo>) => {
     return;
   }
 
-  // 编辑
   if (selectedTaskId.value) {
     const _sprintId = selectedSprintId.value;
     if (_sprintId) {
@@ -551,35 +551,30 @@ const editOk = async (data: Partial<TaskInfo>) => {
         backlogList.value[index] = cloneDeep(dataInfo);
       }
     }
-
     return;
   }
 
-  // 添加新的任务
   backlogList.value.push(dataInfo);
   newTaskName.value = undefined;
-  newTaskPriority.value = 'MEDIUM';
+  newTaskPriority.value = Priority.MEDIUM;
 };
 
 const clickName = () => {
-  // 如果 clickTimeout 存在，说明是双击事件，不执行单击逻辑
   if (clickTimeout.value) {
     clearTimeout(clickTimeout.value);
     clickTimeout.value = null;
     return;
   }
 
-  // 单击事件逻辑
   clickTimeout.value = setTimeout(() => {
-    clickTimeout.value = null; // 清除定时器
-  }, 300); // 300 毫秒内如果没有双击，则认为是单击
+    clickTimeout.value = null;
+  }, 300);
 };
 
 const dblclickName = (data:TaskInfo) => {
-  clearTimeout(clickTimeout.value); // 清除单击定时器
+  clearTimeout(clickTimeout.value);
   clickTimeout.value = null;
 
-  // 只能同时编辑单个名称
   editNameSet.value.clear();
 
   const id = data.id;
@@ -598,12 +593,10 @@ const namePressEnter = async (data:SprintInfo, index:number) => {
   }
 
   backlogList.value[index].name = newName;
-  // 替换右侧任务详情
   if (taskInfo.value?.id === id) {
     taskInfo.value.name = newName;
   }
 
-  // 清空保存的名称
   delete editNameMap.value[id];
   editNameSet.value.delete(id);
 };
@@ -637,15 +630,12 @@ const openChange = (open: boolean, id: string) => {
 
 const toChecked = async (id: string, data?: SprintInfo) => {
   sprintInfo.value = data;
-
   if (taskInfo.value?.id === id) {
     return;
   }
-
   if (taskInfoLoadingSet.value.has(id)) {
     return;
   }
-
   taskInfo.value = await loadTaskInfoById(id);
 };
 
@@ -656,21 +646,19 @@ const loadTaskInfoById = async (id: string): Promise<TaskInfo | undefined> => {
   if (error) {
     return;
   }
-
-  const data = { ...res.data } || { id };
-  return data;
+  return { ...res.data } || { id };
 };
 
 const getTaskParams = () => {
   const params: {
     projectId: string;
-    filters: { key: 'assigneeId' | 'createdBy' | 'name' | 'createdDate', op: 'EQUAL' | 'MATCH' | 'GREATER_THAN_EQUAL' | 'LESS_THAN_EQUAL', value: string }[];
+    filters: SearchCriteria[];
     pageSize: number;
     sprintId?: string;
     pageNo?: number;
     backlog?: boolean;
     orderBy?: string;
-    orderSort?: 'ASC'|'DESC'
+    orderSort?: PageQuery.OrderSort
   } = {
     projectId: props.projectId,
     pageSize: PAGE_SIZE,
@@ -678,15 +666,15 @@ const getTaskParams = () => {
   };
 
   if (searchValue.value) {
-    params.filters.push({ key: 'name', op: 'MATCH', value: searchValue.value });
+    params.filters.push({ key: 'name', op: SearchCriteria.OpEnum.Equal, value: searchValue.value });
   }
 
   if (assigneeId.value) {
-    params.filters.push({ key: 'assigneeId', op: 'EQUAL', value: assigneeId.value });
+    params.filters.push({ key: 'assigneeId', op: SearchCriteria.OpEnum.Equal, value: assigneeId.value });
   }
 
   if (createdBy.value) {
-    params.filters.push({ key: 'createdBy', op: 'EQUAL', value: createdBy.value });
+    params.filters.push({ key: 'createdBy', op: SearchCriteria.OpEnum.Equal, value: createdBy.value });
   }
 
   if (quickDate.value) {
@@ -703,8 +691,8 @@ const getTaskParams = () => {
       endDate = dayjs();
     }
 
-    params.filters.push({ key: 'createdDate', op: 'GREATER_THAN_EQUAL', value: startDate.format(DATE_TIME_FORMAT) });
-    params.filters.push({ key: 'createdDate', op: 'LESS_THAN_EQUAL', value: endDate.format(DATE_TIME_FORMAT) });
+    params.filters.push({ key: 'createdDate', op: SearchCriteria.OpEnum.GreaterThanEqual, value: startDate.format(DATE_TIME_FORMAT) });
+    params.filters.push({ key: 'createdDate', op: SearchCriteria.OpEnum.LessThanEqual, value: endDate.format(DATE_TIME_FORMAT) });
   }
 
   return params;
@@ -720,9 +708,9 @@ const sortTaskByPriority = (sprintId) => {
   };
   const taskList = taskListMap.value[sprintId];
   taskList.sort((a, b) => {
-    if (sortParamMap.value[sprintId].orderSort === 'ASC') {
+    if (sortParamMap.value[sprintId].orderSort === PageQuery.OrderSort.Asc) {
       return priorityLevelConfig[a.priority?.value] - priorityLevelConfig[b.priority?.value];
-    } else if (sortParamMap.value[sprintId].orderSort === 'DESC') {
+    } else if (sortParamMap.value[sprintId].orderSort === PageQuery.OrderSort.Desc) {
       return priorityLevelConfig[b.priority?.value] - priorityLevelConfig[a.priority?.value];
     } else {
       return 0;
@@ -765,7 +753,7 @@ const loadTaskListById = async (id: string, pageNo: number) => {
   }
 
   const sprintIds = Array.from(sprintIdSet);
-  // 管理员拥有所有权限，无需加载权限
+
   if (!isAdmin.value) {
     for (let i = 0, len = sprintIds.length; i < len; i++) {
       const id = sprintIds[i];
@@ -780,17 +768,7 @@ const loadTaskListById = async (id: string, pageNo: number) => {
   } else {
     for (let i = 0, len = sprintIds.length; i < len; i++) {
       const id = sprintIds[i];
-      sprintPermissionsMap.value.set(id, [
-        'MODIFY_SPRINT',
-        'DELETE_SPRINT',
-        'ADD_TASK',
-        'MODIFY_TASK',
-        'DELETE_TASK',
-        'EXPORT_TASK',
-        'RESTART_TASK',
-        'REOPEN_TASK',
-        'GRANT'
-      ]);
+      sprintPermissionsMap.value.set(id, enumUtils.getEnumValues(TaskSprintPermission));
     }
   }
 
@@ -830,7 +808,7 @@ const loadSprintList = async () => {
 
     sprintList.value.push(item);
 
-    loadTaskListById(id, 1);
+    await loadTaskListById(id, 1);
   }
 };
 
@@ -843,9 +821,9 @@ const sortBacklogByPriority = () => {
     LOWEST: 1
   };
   backlogList.value.sort((a, b) => {
-    if (backlogSort.value?.orderSort === 'ASC') {
+    if (backlogSort.value?.orderSort === PageQuery.OrderSort.Asc) {
       return priorityLevelConfig[a.priority?.value] - priorityLevelConfig[b.priority?.value];
-    } else if (backlogSort.value?.orderSort === 'DESC') {
+    } else if (backlogSort.value?.orderSort === PageQuery.OrderSort.Desc) {
       return priorityLevelConfig[b.priority?.value] - priorityLevelConfig[a.priority?.value];
     } else {
       return 0;
@@ -911,11 +889,11 @@ const hasPermission = (data:TaskInfo, key:'edit'|'delete'|'move'|'split') => {
   const isAdministrator = !!currentAssociateType?.map(item => item.value).includes('SYS_ADMIN' || 'APP_ADMIN');
 
   if (key === 'edit' || key === 'move' || key === 'split') {
-    return isAdministrator || permissions.includes('MODIFY_TASK') || !sprintAuth;
+    return isAdministrator || permissions.includes(TaskSprintPermission.MODIFY_TASK) || !sprintAuth;
   }
 
   if (key === 'delete') {
-    return isAdministrator || permissions.includes('DELETE_TASK') || !sprintAuth;
+    return isAdministrator || permissions.includes(TaskSprintPermission.DELETE_TASK) || !sprintAuth;
   }
 };
 
@@ -925,8 +903,8 @@ onMounted(() => {
       return;
     }
 
-    loadSprintList();
-    loadBacklogList(1);
+    await loadSprintList();
+    await loadBacklogList(1);
   }, { immediate: true });
 });
 
@@ -966,40 +944,47 @@ const selectNone = computed(() => {
           :placeholder="t('backlog.placeholder.searchTaskName')"
           trim
           @change="searchChange" />
+
         <div class="whitespace-nowrap text-text-sub-content mr-2">
           <span>{{ t('quickSearch') }}</span>
           <Colon />
         </div>
+
         <div
           :class="{ 'active-key': !!selectNone }"
           class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2"
           @click="queryAll">
           {{ t('backlog.quickSearch.all') }}
         </div>
+
         <div
           :class="{ 'active-key': createdBy === userId }"
           class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2"
           @click="queryByCreatedMe">
           {{ t('backlog.quickSearch.createdByMe') }}
         </div>
+
         <div
           :class="{ 'active-key': assigneeId === userId }"
           class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2"
           @click="queryByMe">
           {{ t('backlog.quickSearch.assignedToMe') }}
         </div>
+
         <div
           :class="{ 'active-key': quickDate === '1' }"
           class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2"
           @click="queryByDate('1')">
           {{ t('backlog.quickSearch.past1Day') }}
         </div>
+
         <div
           :class="{ 'active-key': quickDate === '3' }"
           class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2"
           @click="queryByDate('3')">
           {{ t('backlog.quickSearch.past3Days') }}
         </div>
+
         <div
           :class="{ 'active-key': quickDate === '7' }"
           class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none"
@@ -1007,7 +992,9 @@ const selectNone = computed(() => {
           {{ t('backlog.quickSearch.past7Days') }}
         </div>
       </div>
+
       <div class="h-0 border-t border-solid border-theme-text-box mt-2.5"></div>
+
       <div class="flex items-start overflow-hidden" style="height: calc(100% - 39px);">
         <div ref="sprintRef" class="flex-1 h-full pr-2.5 pt-2.5 overflow-auto scroll-smooth">
           <div class="border border-solid border-theme-text-box rounded">
@@ -1021,8 +1008,12 @@ const selectNone = computed(() => {
                     style="font-size: 12px;"
                     @change="openChange($event, 'sprintBacklog')" />
 
-                  <div class="font-semibold text-theme-title w-70 mr-5">{{ t('backlog.sprintBacklogTitle') }}</div>
-                  <div class="w-25">{{ sprintList.length || 0 }} {{ t('backlog.sprintCount') }}</div>
+                  <div class="font-semibold text-theme-title w-70 mr-5">
+                    {{ t('backlog.sprintBacklogTitle') }}
+                  </div>
+                  <div class="w-25">
+                    {{ sprintList.length || 0 }} {{ t('backlog.sprintCount') }}
+                  </div>
                   <div class="w-25 flex-shrink-0 flex items-center space-x-1">
                     <span>{{ totalTaskNum || 0 }}</span>
                     <span>{{ t('backlog.taskCount') }}</span>
@@ -1030,6 +1021,7 @@ const selectNone = computed(() => {
                 </div>
               </div>
             </div>
+
             <Draggable
               v-for="item in sprintList"
               v-show="openSet.has('sprintBacklog')"
@@ -1054,13 +1046,16 @@ const selectNone = computed(() => {
                         class="mr-1.5"
                         style="font-size: 12px;"
                         @change="openChange($event, item.id)" />
+
                       <div :title="item.name" class="w-65 truncate text-theme-title  mr-5">
                         <span class="cursor-pointer" @click.stop="openSprint(item.id)">{{ item.name }}</span>
                       </div>
+
                       <div class="w-25 flex-shrink-0 flex items-center space-x-1 text-theme-sub-content">
                         <span>{{ taskTotalMap[item.id] || 0 }}</span>
                         <span>{{ t('backlog.taskCount') }}</span>
                       </div>
+
                       <div class="flex-shrink-0 flex items-center mr-5">
                         <div
                           :class="item.status?.value"
@@ -1069,6 +1064,7 @@ const selectNone = computed(() => {
                         </div>
                         <Progress :percent="+item.progress?.completedRate" style="width:150px;" />
                       </div>
+
                       <div class="flex-shrink-0 text-theme-sub-content">
                         <span>{{ item.startDate }}</span>
                         <span> {{ t('backlog.to') }} </span>
@@ -1089,7 +1085,7 @@ const selectNone = computed(() => {
                       </DropdownSort>
 
                       <Button
-                        :disabled="sprintPermissionsMap[item.id]?.includes('MODIFY_SPRINT')"
+                        :disabled="sprintPermissionsMap[item.id]?.includes(TaskSprintPermission.MODIFY_SPRINT)"
                         size="small"
                         type="text"
                         style="height:20px;padding:0;line-height:20px;">
@@ -1124,7 +1120,13 @@ const selectNone = computed(() => {
                           </div>
                           <div class="flex items-center">
                             <div class="flex items-center w-12.25">
-                              <span>{{ item.evalWorkloadMethod?.value === 'STORY_POINT' ? t('backlog.columns.storyPoint') : t('backlog.columns.workHours') }}</span>
+                              <span>
+                                {{
+                                  item.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+                                    ? t('backlog.columns.storyPoint')
+                                    : t('backlog.columns.workHours')
+                                }}
+                              </span>
                               <Colon class="w-1" />
                             </div>
                             <span>{{ membersCountMap[item.id]?.[member.id]?.evalWorkload || 0 }}</span>
@@ -1189,6 +1191,7 @@ const selectNone = computed(() => {
                             @click="moveToBacklog(item.id, element, index)">
                             {{ t('backlog.moveToBacklog') }}
                           </div>
+
                           <template v-for="_sprint in sprintList" :key="_sprint.id">
                             <div
                               v-if="_sprint.id !== item.id"
@@ -1200,6 +1203,7 @@ const selectNone = computed(() => {
                           </template>
                         </div>
                       </template>
+
                       <Button
                         :disabled="!hasPermission(element,'move')"
                         type="text"
@@ -1254,7 +1258,10 @@ const selectNone = computed(() => {
                       class="mr-1.5"
                       style="font-size: 12px;"
                       @change="openChange($event, 'productBacklog')" />
-                    <div class="truncate text-theme-title font-semibold w-70 mr-5">{{ t('backlog.productBacklogTitle') }}</div>
+                    <div class="truncate text-theme-title font-semibold w-70 mr-5">
+                      {{ t('backlog.productBacklogTitle') }}
+                    </div>
+
                     <div class="flex-shrink-0 flex items-center space-x-1 mr-3.5">
                       <span>{{ backlogTotal || 0 }}</span>
                       <span>{{ t('backlog.taskCount') }}</span>
@@ -1262,7 +1269,7 @@ const selectNone = computed(() => {
                   </div>
 
                   <div class="inline-flex space-x-2">
-                    <DropdownSort :menuItems="backlogSortOption" @click="handleSortBasklogTask">
+                    <DropdownSort :menuItems="backlogSortOption" @click="handleSortBacklogTask">
                       <Button
                         size="small"
                         type="text"
@@ -1272,6 +1279,7 @@ const selectNone = computed(() => {
                         <span>{{ t('backlog.sort') }}</span>
                       </Button>
                     </DropdownSort>
+
                     <Button
                       type="text"
                       size="small"
@@ -1333,7 +1341,7 @@ const selectNone = computed(() => {
                       v-model:value="newTaskType"
                       enumKey="TaskType"
                       :placeholder="t('backlog.main.placeholders.taskType')"
-                      :excludes="({value}) => ['API_TEST', 'SCENARIO_TEST'].includes(value)"
+                      :excludes="({value}) => [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(value)"
                       class="w-28 mr-2">
                       <template #option="record">
                         <div class="flex items-center">
@@ -1413,6 +1421,7 @@ const selectNone = computed(() => {
                         trim
                         class="w-100 mr-5"
                         @pressEnter="namePressEnter(element,index)" />
+
                       <Button
                         :disabled="!editNameMap[element.id]"
                         type="primary"
@@ -1430,6 +1439,7 @@ const selectNone = computed(() => {
                         {{ t('backlog.main.cancel') }}
                       </Button>
                     </div>
+
                     <div
                       v-else
                       class="flex-1 truncate cursor-default"
@@ -1466,6 +1476,7 @@ const selectNone = computed(() => {
                           </div>
                         </div>
                       </template>
+
                       <Button
                         type="text"
                         size="small"
@@ -1586,6 +1597,7 @@ const selectNone = computed(() => {
                   style="max-width: 50%;">
                   {{ sprintInfo?.name }}
                 </RouterLink>
+
                 <div v-else class="flex-shrink-0">Backlog</div>
                 <div class="mx-1.5">/</div>
                 <RouterLink
@@ -1595,6 +1607,7 @@ const selectNone = computed(() => {
                   {{ taskInfo?.name }}
                 </RouterLink>
               </div>
+
               <Button
                 type="default"
                 size="small"
@@ -1607,7 +1620,7 @@ const selectNone = computed(() => {
             <div style="height: calc(100% - 36px);" class="pt-3.5 pb-3.5 overflow-hidden">
               <AsyncComponent :visible="!!taskId">
                 <ApiInfo
-                  v-if="taskType === 'API_TEST'"
+                  v-if="taskType === TaskType.API_TEST"
                   v-show="drawerActiveKey === 'basic'"
                   :projectId="props.projectId"
                   :appInfo="props.appInfo"
@@ -1618,7 +1631,7 @@ const selectNone = computed(() => {
                   @loadingChange="loadingChange" />
 
                 <ScenarioInfo
-                  v-else-if="taskType === 'SCENARIO_TEST'"
+                  v-else-if="taskType === TaskType.SCENARIO_TEST"
                   v-show="drawerActiveKey === 'basic'"
                   :projectId="props.projectId"
                   :appInfo="props.appInfo"

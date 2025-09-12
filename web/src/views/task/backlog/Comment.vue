@@ -2,9 +2,8 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { SmartComment } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/infra';
+import { TESTER, CombinedTargetType } from '@xcan-angus/infra';
 
-import { TaskInfo } from '../types';
 import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
 const props = withDefaults(defineProps<TaskInfoProps>(), {
@@ -22,7 +21,6 @@ onMounted(() => {
     if (!newValue) {
       return;
     }
-
     if (typeof commentRef.value?.refresh === 'function') {
       commentRef.value.refresh();
     }
@@ -35,14 +33,16 @@ const taskId = computed(() => {
 </script>
 <template>
   <div class="h-full text-3 leading-5 pl-5">
-    <div class="text-theme-title mb-2.5 font-semibold">{{ t('backlog.comment') }}</div>
+    <div class="text-theme-title mb-2.5 font-semibold">
+      {{ t('backlog.comment') }}
+    </div>
 
     <SmartComment
       ref="commentRef"
       class="overflow-auto pr-5"
       style="height: calc(100% - 30px);box-shadow: 0;"
       avatar
-      targetType="TASK"
+      :targetType="CombinedTargetType.TASK"
       :bordered="false"
       :public0="false"
       :showPublishTitle="false"

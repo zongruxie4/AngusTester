@@ -159,20 +159,23 @@ defineExpose({
     savingWorkloadEChart.resize();
   }
 });
-
 </script>
 <template>
   <div class="flex">
     <div class="px-3 w-100">
       <div class="flex justify-around">
         <div class="text-center flex-1">
-          <div class="font-semibold text-5 text-status-error">{{ props.overdueAssessmentData.overdueNum || 0 }}</div>
+          <div class="font-semibold text-5 text-status-error">
+            {{ props.overdueAssessmentData.overdueNum || 0 }}
+          </div>
           <div>
             {{ t('taskAnalysis.detail.overdueAssessment.statistics.overdueCount') }}
           </div>
         </div>
         <div class="text-center flex-1">
-          <div :class="`risk-level-${props.overdueAssessmentData?.riskLevel?.value}`" class="font-semibold text-5">
+          <div
+            :class="`risk-level-${props.overdueAssessmentData?.riskLevel?.value}`"
+            class="font-semibold text-5">
             {{ overdueAssessmentData?.riskLevel?.message }}
           </div>
           <div>{{ t('taskAnalysis.detail.overdueAssessment.statistics.overdueRisk') }}</div>
@@ -181,7 +184,8 @@ defineExpose({
       <div class="flex justify-around mt-3">
         <div class="text-center">
           <div class="font-semibold text-5  text-status-error">
-            {{ props.overdueAssessmentData.overdueTime || 0 }}{{ t('taskAnalysis.detail.overdueAssessment.statistics.hours') }}
+            {{ props.overdueAssessmentData.overdueTime || 0 }}
+            {{ t('taskAnalysis.detail.overdueAssessment.statistics.hours') }}
           </div>
           <div>
             {{ t('taskAnalysis.detail.overdueAssessment.statistics.overdueTime') }}
@@ -189,7 +193,9 @@ defineExpose({
         </div>
 
         <div class="text-center">
-          <div class="font-semibold text-5">{{ props.overdueAssessmentData.dailyProcessedWorkload || 0 }}</div>
+          <div class="font-semibold text-5">
+            {{ props.overdueAssessmentData.dailyProcessedWorkload || 0 }}
+          </div>
           <div>
             {{ t('taskAnalysis.detail.overdueAssessment.statistics.averageDailyProcessedWorkload') }}
           </div>

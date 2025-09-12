@@ -5,7 +5,6 @@ import { ActivityInfo, Scroll } from '@xcan-angus/vue-ui';
 import { TESTER, SearchCriteria } from '@xcan-angus/infra';
 import { CombinedTargetType } from '@/enums/enums';
 
-import { TaskInfo } from '../types';
 import { ActivityItem } from '@/types/types';
 import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
@@ -46,7 +45,9 @@ const taskId = computed(() => {
 </script>
 <template>
   <div class="h-full text-3 leading-5 pl-5">
-    <div class="text-theme-title mb-2.5 font-semibold">{{ t('backlog.activity') }}</div>
+    <div class="text-theme-title mb-2.5 font-semibold">
+      {{ t('backlog.activity') }}
+    </div>
 
     <Scroll
       :action="`${TESTER}/activity`"

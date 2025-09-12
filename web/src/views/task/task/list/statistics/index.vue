@@ -1,26 +1,17 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Collapse, CollapsePanel } from 'ant-design-vue';
-import { utils } from '@xcan-angus/infra';
+import { utils, SearchCriteria } from '@xcan-angus/infra';
 import { analysis } from '@/api/tester';
 
 import { StatisticsInfo } from '../../types';
-
-/**
- * Filter configuration interface for API requests
- */
-interface FilterConfig {
-  key: string;
-  op: string;
-  value: boolean | string | string[];
-}
 
 /**
  * API request parameters interface
  */
 interface RequestParams {
   projectId: string;
-  filters?: FilterConfig[];
+  filters?: SearchCriteria[];
 }
 
 /**
@@ -47,6 +38,7 @@ const props = withDefaults(defineProps<Props>(), {
   moduleId: undefined
 });
 
+// eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'update:loading', value: boolean): void;
 }>();

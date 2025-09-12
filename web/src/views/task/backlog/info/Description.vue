@@ -47,10 +47,7 @@ const descError = ref(false);
 const descRichRef = ref();
 
 const validateDesc = () => {
-  if (descRichRef.value && descRichRef.value.getLength() > 8000) {
-    return false;
-  }
-  return true;
+  return !(descRichRef.value && descRichRef.value.getLength() > 8000);
 };
 
 const ok = async () => {
@@ -105,11 +102,15 @@ const taskId = computed(() => {
             :value="content"
             :height="300"
             @change="editorChange" />
-          <div v-show="descError" class="text-status-error">{{ t('backlog.info.description.messages.maxLength') }}</div>
+          <div v-show="descError" class="text-status-error">
+            {{ t('backlog.info.description.messages.maxLength') }}
+          </div>
         </div>
 
         <div class="mt-2.5 space-x-2.5 w-full flex items-center justify-end">
-          <Button size="small" @click="cancel">{{ t('backlog.info.description.cancel') }}</Button>
+          <Button size="small" @click="cancel">
+            {{ t('backlog.info.description.cancel') }}
+          </Button>
           <Button
             size="small"
             type="primary"

@@ -218,7 +218,13 @@ onMounted(() => {
   failureLevelEChart = eCharts.init(failureLevelRef.value);
   failureChart = eCharts.init(failureRef.value);
 
-  watch([() => props.chart0Value, () => props.chart1Value, () => props.chart2Value, () => props.chart3Value, () => props.chart4Value], () => {
+  watch([
+    () => props.chart0Value,
+    () => props.chart1Value,
+    () => props.chart2Value,
+    () => props.chart3Value,
+    () => props.chart4Value
+  ], () => {
     failureEChartConfig.series[0].data = props.chart0Value.yData;
     failureTimeEChartConfig.series[0].data = props.chart1Value.yData;
 

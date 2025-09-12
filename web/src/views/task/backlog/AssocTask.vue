@@ -59,7 +59,6 @@ const loadData = async (): Promise<Partial<TaskInfo>> => {
   if (error || !res?.data) {
     return { id: taskId.value };
   }
-
   return res.data;
 };
 

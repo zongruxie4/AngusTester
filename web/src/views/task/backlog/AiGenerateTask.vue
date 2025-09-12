@@ -1,25 +1,19 @@
 <script setup lang="ts">
-import { computed, inject, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import {
-  DatePicker,
-  Icon,
-  IconRequired,
-  IconTask,
-  Input,
-  Modal,
-  notification,
-  SelectUser,
-  Spin,
-  TaskPriority,
-  Tooltip
+  DatePicker, Icon, IconRequired, IconTask, Input, Modal,
+  notification, SelectUser, Spin, TaskPriority, Tooltip
 } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
-import { duration, TESTER, utils } from '@xcan-angus/infra';
+import { duration, TESTER, utils, Priority } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
+import { TaskType } from '@/enums/enums';
+
 import { task } from '@/api/tester';
 import { ai } from '@/api/gm';
+
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 import { TaskInfo } from '../types';
@@ -42,9 +36,7 @@ const emit = defineEmits<{
   (event: 'ok'): void;
 }>();
 
-const MAX_LENGTH = 200; // 最大允许创建200条
-
-const aiEnabled = inject('aiEnabled', ref(false));
+const MAX_LENGTH = 200;
 
 const confirmLoading = ref(false);
 const generating = ref(false);
@@ -100,10 +92,10 @@ const toGenerate = async () => {
       deadlineDate: undefined,
       evalWorkload: '1',
       moduleId: undefined,
-      priority: 'MEDIUM',
+      priority: Priority.MEDIUM,
       projectId: props.projectId,
       sprintId: undefined,
-      taskType: 'REQUIREMENT'
+      taskType: TaskType.REQUIREMENT
     };
   }
 
@@ -136,10 +128,10 @@ const toAdd = () => {
     deadlineDate: undefined,
     evalWorkload: '1',
     moduleId: undefined,
-    priority: 'MEDIUM',
+    priority: Priority.MEDIUM,
     projectId: props.projectId,
     sprintId: undefined,
-    taskType: 'REQUIREMENT',
+    taskType: TaskType.REQUIREMENT,
     name: ''
   };
 };
@@ -221,7 +213,6 @@ const getRepeatNames = () => {
       }
     }
   }
-
   return repeatNames;
 };
 
@@ -278,7 +269,6 @@ const toValidate = () => {
     deadlineDateErrorSet.value.size);
 };
 
-// 禁用日期组件当前时间之前的年月日
 const disabledDate = (current: Dayjs) => {
   const today = dayjs().startOf('day');
   return current.isBefore(today, 'day');
@@ -312,8 +302,8 @@ const okButtonProps = computed(() => {
   };
 });
 
-const excluedType = (option: {value: string; message: string}) => {
-  return ['API_TEST', 'SCENARIO_TEST'].includes(option.value);
+const excludeTypes = (option: {value: string; message: string}) => {
+  return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(option.value);
 };
 </script>
 <template>
@@ -325,7 +315,9 @@ const excluedType = (option: {value: string; message: string}) => {
     :title="t('backlog.aiGenerateTask.title')"
     @cancel="cancel"
     @ok="ok">
-    <Spin :spinning="generating||confirmLoading" :tip="generating ? t('backlog.aiGenerateTask.generating') : ''">
+    <Spin
+      :spinning="generating||confirmLoading"
+      :tip="generating ? t('backlog.aiGenerateTask.generating') : ''">
       <div class="flex flex-nowrap justify-between mb-3.5 space-x-5">
         <Input
           v-model:value="aiKeywords"
@@ -387,7 +379,7 @@ const excluedType = (option: {value: string; message: string}) => {
           <SelectEnum
             v-model:value="dataMap[item].taskType"
             :error="taskTypeErrorSet.has(item)"
-            :excludes="excluedType"
+            :excludes="excludeTypes"
             enumKey="TaskType"
             :placeholder="t('backlog.aiGenerateTask.placeholders.taskType')"
             class="w-27 mr-2.5"

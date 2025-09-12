@@ -53,13 +53,13 @@ const props = withDefaults(defineProps<Props>(), {
 const completedRef = ref();
 const completedWorkloadRef = ref();
 const coreRef = ref();
-const completedOverduedRef = ref();
+const completedOverdueRef = ref();
 const completedBugRef = ref();
 
 let coreChart;
 let completedEChart;
 let completedWorkloadEChart;
-let completedOverduedEChart;
+let completedOverdueEChart;
 let completedBugEChart;
 
 // 核心指标
@@ -247,7 +247,7 @@ onMounted(() => {
   completedEChart = eCharts.init(completedRef.value);
   completedWorkloadEChart = eCharts.init(completedWorkloadRef.value);
   coreChart = eCharts.init(coreRef.value);
-  completedOverduedEChart = eCharts.init(completedOverduedRef.value);
+  completedOverdueEChart = eCharts.init(completedOverdueRef.value);
   completedBugEChart = eCharts.init(completedBugRef.value);
 
   watch([
@@ -311,7 +311,7 @@ onMounted(() => {
     completedEChart.setOption(completedEChartConfig);
     completedWorkloadEChart.setOption(completedWorkloadEChartConfig);
     coreChart.setOption(coreEChartConfig);
-    completedOverduedEChart.setOption(completedOverdueEChartConfig);
+    completedOverdueEChart.setOption(completedOverdueEChartConfig);
     completedBugEChart.setOption(completedBugEChartConfig);
   }, {
     immediate: true,
@@ -324,18 +324,17 @@ defineExpose({
     completedEChart.resize();
     completedWorkloadEChart.resize();
     coreChart.resize();
-    completedOverduedEChart.resize();
+    completedOverdueEChart.resize();
     completedBugEChart.resize();
   }
 });
-
 </script>
 <template>
   <div class="flex">
     <div ref="coreRef" class="h-40 w-100"></div>
     <div ref="completedRef" class="flex-1 h-30"></div>
     <div ref="completedWorkloadRef" class="flex-1 h-30"></div>
-    <div ref="completedOverduedRef" class="flex-1 h-30"></div>
+    <div ref="completedOverdueRef" class="flex-1 h-30"></div>
     <div ref="completedBugRef" class="flex-1 h-30"></div>
   </div>
 </template>

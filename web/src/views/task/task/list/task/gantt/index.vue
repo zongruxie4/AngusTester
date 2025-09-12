@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import Gantt from '@xcan-angus/frappe-gantt';
 import dayjs from 'dayjs';
+import { SearchCriteria } from '@xcan-angus/infra';
 import { AsyncComponent, Icon } from '@xcan-angus/vue-ui';
 import { task } from '@/api/tester';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
@@ -17,7 +18,7 @@ type Props = {
   projectId: string;
   userInfo: { id: string; };
   appInfo: { id: string; };
-  filters: { key: string; op: string; value: boolean | string | string[]; }[];
+  filters: SearchCriteria[];
   notify: string;
   moduleId: string;
   loading: boolean;
@@ -58,7 +59,7 @@ const getParams = () => {
     pageNo: number;
     pageSize: number;
     moduleId?: string;
-    filters?: { key: string; op: string; value: boolean | string | string[]; }[];
+    filters?: SearchCriteria[];
   } = {
     backlog: false,
     projectId: props.projectId,

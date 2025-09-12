@@ -32,10 +32,16 @@ const getChartData = (data) => {
   };
   res.chart1Value = {
     title: backloggedRate + '%',
-    value: [{
-      name: t('taskAnalysis.detail.backlogTasks.chartLabels.unbacklogged'),
-      value: totalNum - backloggedNum
-    }, { name: t('taskAnalysis.detail.backlogTasks.chartLabels.backlogged'), value: backloggedNum }]
+    value: [
+      {
+        name: t('taskAnalysis.detail.backlogTasks.chartLabels.unbacklogged'),
+        value: totalNum - backloggedNum
+      },
+      {
+        name: t('taskAnalysis.detail.backlogTasks.chartLabels.backlogged'),
+        value: backloggedNum
+      }
+    ]
   };
 
   res.chart2Value = {

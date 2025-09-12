@@ -2,24 +2,18 @@
 import { computed, defineAsyncComponent, nextTick, onMounted, ref } from 'vue';
 import { Button, TreeSelect } from 'ant-design-vue';
 import {
-  AsyncComponent,
-  Colon,
-  Icon,
-  IconTask,
-  Input,
-  ScriptTypeTag,
-  Select,
-  TaskPriority,
-  TaskStatus
+  AsyncComponent, Colon, Icon, IconTask, Input, ScriptTypeTag, Select, TaskPriority, TaskStatus
 } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-import { TESTER } from '@xcan-angus/infra';
+import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
+import { SoftwareVersionStatus } from '@/enums/enums';
 
-import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfo } from '../../types';
 import { TaskInfoProps } from '@/views/task/task/list/task/types';
+
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 const { t } = useI18n();
 
@@ -63,15 +57,31 @@ const tagIdList = ref<string[]>([]);
 
 const moduleRef = ref();
 const moduleEditFlag = ref(false);
-const moduleMessage = ref<string>();
+
 const moduleValue = ref<string>();
 
 const versionRef = ref();
 const versionEditFlag = ref(false);
 const versionValue = ref<string>();
 
-onMounted(() => {
-  getModuleTreeData();
+const taskId = computed(() => props.dataSource?.id);
+const status = computed(() => props.dataSource?.status);
+const name = computed(() => props.dataSource?.name);
+const taskType = computed(() => props.dataSource?.taskType?.value);
+const priority = computed(() => props.dataSource?.priority?.value);
+const tags = computed(() => props.dataSource?.tags || []);
+const tagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
+const evalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
+const evalWorkload = computed(() => props.dataSource?.evalWorkload);
+const actualWorkload = computed(() => props.dataSource?.actualWorkload);
+const overdue = computed(() => props.dataSource?.overdue);
+const totalNum = computed(() => +(props.dataSource?.totalNum || 0));
+const failNum = computed(() => +(props.dataSource?.failNum || 0));
+const onePassText = computed(() => {
+  if (totalNum.value <= 0) {
+    return '--';
+  }
+  return failNum.value === 0 ? t('status.yes') : t('status.no');
 });
 
 const toEditModule = () => {
@@ -156,7 +166,10 @@ const toEditSprint = () => {
   });
 };
 
-const sprintChange = async (_event: { target: { value: string; } }, option: { message: string; value: string }) => {
+const sprintChange = async (
+  _event: { target: { value: string; } },
+  option: { message: string; value: string }
+) => {
   sprintMessage.value = option.message;
 };
 
@@ -308,7 +321,10 @@ const toEditPriority = () => {
   });
 };
 
-const priorityChange = async (_event: { target: { value: TaskInfo['priority']['value']; } }, option: { message: string; value: TaskInfo['priority']['value'] }) => {
+const priorityChange = async (
+  _event: { target: { value: TaskInfo['priority']['value']; } },
+  option: { message: string; value: TaskInfo['priority']['value'] }
+) => {
   priorityMessage.value = option.message;
 };
 
@@ -343,7 +359,10 @@ const toEditTag = () => {
   });
 };
 
-const tagChange = async (_event: { target: { value: string[]; } }, options: { id: string; name: string; }[]) => {
+const tagChange = async (
+  _event: { target: { value: string[]; } },
+  options: { id: string; name: string; }[]
+) => {
   tagList.value = options;
 };
 
@@ -412,35 +431,20 @@ const moduleId = computed(() => {
   if (!props.dataSource?.moduleId || props.dataSource?.moduleId === '-1') {
     return undefined;
   }
-
   return props.dataSource?.moduleId;
 });
-const taskId = computed(() => props.dataSource?.id);
-const status = computed(() => props.dataSource?.status);
-const name = computed(() => props.dataSource?.name);
-const taskType = computed(() => props.dataSource?.taskType?.value);
-const priority = computed(() => props.dataSource?.priority?.value);
-const tags = computed(() => props.dataSource?.tags || []);
-const tagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
-const evalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
-const evalWorkload = computed(() => props.dataSource?.evalWorkload);
-const actualWorkload = computed(() => props.dataSource?.actualWorkload);
-const overdue = computed(() => props.dataSource?.overdue);
-const totalNum = computed(() => +(props.dataSource?.totalNum || 0));
-const failNum = computed(() => +(props.dataSource?.failNum || 0));
-const onePassText = computed(() => {
-  if (totalNum.value <= 0) {
-    return '--';
-  }
 
-  return failNum.value === 0 ? t('status.yes') : t('status.no');
+onMounted(() => {
+  getModuleTreeData();
 });
 </script>
 
 <template>
   <div class="h-full text-3 leading-5 px-5 overflow-auto">
     <div>
-      <div class="text-theme-title mb-2.5 font-semibold">{{ t('backlog.info.apis.basicInfo') }}</div>
+      <div class="text-theme-title mb-2.5 font-semibold">
+        {{ t('backlog.info.apis.basicInfo') }}
+      </div>
 
       <div class="space-y-2.5">
         <div class="flex items-start">
@@ -449,7 +453,9 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
 
-          <div class="whitespace-pre-wrap break-words break-all">{{ props.dataSource?.code }}</div>
+          <div class="whitespace-pre-wrap break-words break-all">
+            {{ props.dataSource?.code }}
+          </div>
         </div>
 
         <div class="flex items-start">
@@ -515,7 +521,9 @@ const onePassText = computed(() => {
               v-if="overdue"
               class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
               style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-              <span class="inline-block transform-gpu scale-90">{{ t('backlog.info.apis.overdue') }}</span>
+              <span class="inline-block transform-gpu scale-90">
+                {{ t('backlog.info.apis.overdue') }}
+              </span>
             </span>
           </div>
         </div>
@@ -587,10 +595,12 @@ const onePassText = computed(() => {
                   </div>
                 </template>
               </TreeSelect>
+
               <Icon
                 icon="icon-gouxuanzhong"
                 class="text-3.5 ml-2 mr-1.5 cursor-pointer text-theme-text-hover"
                 @click="moduleOk" />
+
               <Icon
                 icon="icon-shanchuguanbi"
                 class="text-3.5 cursor-pointer text-theme-text-hover"
@@ -616,7 +626,9 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
 
-          <div class="whitespace-pre-wrap break-words break-all">{{ props.dataSource?.targetParentName }}</div>
+          <div class="whitespace-pre-wrap break-words break-all">
+            {{ props.dataSource?.targetParentName }}
+          </div>
         </div>
 
         <div class="flex items-start">
@@ -625,7 +637,9 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
 
-          <div class="whitespace-pre-wrap break-words break-all">{{ props.dataSource?.targetName }}</div>
+          <div class="whitespace-pre-wrap break-words break-all">
+            {{ props.dataSource?.targetName }}
+          </div>
         </div>
 
         <div class="flex items-start">
@@ -674,7 +688,12 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ evalWorkloadMethod === 'STORY_POINT' ? t('backlog.info.apis.evalStoryPoint') : t('backlog.info.apis.evalWorkload') }}</span>
+            <span>
+              {{
+                evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                  ? t('backlog.info.apis.evalStoryPoint') : t('backlog.info.apis.evalWorkload')
+              }}
+            </span>
             <Colon class="w-1" />
           </div>
 
@@ -706,7 +725,12 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ evalWorkloadMethod === 'STORY_POINT' ? t('backlog.info.apis.actualStoryPoint') : t('backlog.info.apis.actualWorkload') }}</span>
+            <span>
+              {{
+                evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                  ? t('backlog.info.apis.evalStoryPoint') : t('backlog.info.apis.evalWorkload')
+              }}
+            </span>
             <Colon class="w-1" />
           </div>
 
@@ -770,6 +794,7 @@ const onePassText = computed(() => {
               </div>
             </div>
             <div v-else>--</div>
+
             <Button
               type="link"
               class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
@@ -814,6 +839,7 @@ const onePassText = computed(() => {
           <span>{{ t('backlog.info.apis.softwareVersion') }}</span>
           <Colon class="w-1" />
         </div>
+
         <div class="flex-1">
           <template v-if="versionEditFlag">
             <Select
@@ -824,12 +850,13 @@ const onePassText = computed(() => {
               lazy
               class="w-full"
               :action="`${TESTER}/software/version?projectId=${props.projectId}`"
-              :params="{filters: [{value: ['NOT_RELEASED', 'RELEASED'], key: 'status', op: 'IN'}]}"
+              :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN'}]}"
               :fieldNames="{value:'name', label: 'name'}"
               @blur="versionBlur"
               @change="versionChange">
             </Select>
           </template>
+
           <template v-else>
             <div class="flex space-x-1">
               <RouterLink

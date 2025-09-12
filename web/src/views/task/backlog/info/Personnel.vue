@@ -73,7 +73,10 @@ const assignToMe = (key:'assigneeId'|'confirmerId'|'testerId') => {
   }
 };
 
-const assigneeChange = async (_event: { target: { value: string; } }, option: { id: string; fullName: string; }) => {
+const assigneeChange = async (
+  _event: { target: { value: string; } },
+  option: { id: string; fullName: string; }
+) => {
   assigneeMessage.value = option.fullName;
 };
 
@@ -112,7 +115,10 @@ const toEditConfirmer = () => {
   });
 };
 
-const confirmerChange = async (_event: { target: { value: string; } }, option: { id: string; fullName: string; }) => {
+const confirmerChange = async (
+  _event: { target: { value: string; } },
+  option: { id: string; fullName: string; }
+) => {
   confirmerMessage.value = option.fullName;
 };
 
@@ -151,7 +157,10 @@ const toEdiTester = () => {
   });
 };
 
-const testerChange = async (_event: { target: { value: string; } }, option: { id: string; fullName: string; }) => {
+const testerChange = async (
+  _event: { target: { value: string; } },
+  option: { id: string; fullName: string; }
+) => {
   testerMessage.value = option.fullName;
 };
 
@@ -239,7 +248,9 @@ const confirmerDefaultOptions = computed(() => {
 
 <template>
   <div class="h-full text-3 leading-5 px-5 overflow-auto">
-    <div class="text-theme-title mb-2.5 font-semibold">{{ t('backlog.info.personnel.title') }}</div>
+    <div class="text-theme-title mb-2.5 font-semibold">
+      {{ t('backlog.info.personnel.title') }}
+    </div>
 
     <div class="space-y-2.5">
       <div class="flex items-start">

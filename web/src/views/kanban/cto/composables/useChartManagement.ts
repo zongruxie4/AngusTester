@@ -374,10 +374,10 @@ export function useChartManagement () {
     // Update overdue assessment chart
     if (data.overdueAssessmentCount && overdueTaskChart) {
       const { overdueNum, overdueRate, totalNum } = data.overdueAssessmentCount;
-      const overdueData = [overdueNum, totalNum - overdueNum];
+      const overdueata = [overdueNum, totalNum - overdueNum];
       overdueTaskConfig.value.title.text = overdueRate + '%';
       overdueTaskConfig.value.series[0].data.forEach((item, idx) => {
-        item.value = overdueData[idx];
+        item.value = overdueata[idx];
       });
       overdueTaskChart.setOption(overdueTaskConfig.value);
     }

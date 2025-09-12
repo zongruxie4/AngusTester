@@ -4,50 +4,23 @@ import { useI18n } from 'vue-i18n';
 import { Button, Form, FormItem, Popover, TreeSelect, Upload } from 'ant-design-vue';
 import type { Rule } from 'ant-design-vue/es/form';
 import {
-  AsyncComponent,
-  DatePicker,
-  Icon,
-  IconTask,
-  IconText,
-  Input,
-  Modal,
-  notification,
-  Select,
-  SelectUser,
-  TaskPriority,
-  Tooltip
+  AsyncComponent, DatePicker, Icon, IconTask, IconText, Input,
+  Modal, notification, Select, SelectUser, TaskPriority, Tooltip
 } from '@xcan-angus/vue-ui';
-import { localStore, TESTER, upload } from '@xcan-angus/infra';
+import { EvalWorkloadMethod, localStore, Priority, TESTER, upload } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
+import { BugLevel, SoftwareVersionStatus, TaskType, TestType } from '@/enums/enums';
+import { EditFormState } from '@/views/task/task/list/task/types';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfo } from '../types';
-import { EditFormState } from '@/views/task/backlog/types';
 
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 
-// TODO 复用任务
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  sprintId: string;
-  visible: boolean;
-  taskId?: string;
-  taskType?: 'TASK' | 'API_TEST' | 'BUG' | 'SCENARIO_TEST' | 'STORY' | 'REQUIREMENT' | undefined;
-  assigneeId?: string;
-  confirmerId?: string;
-  moduleId?: string;
-  parentTaskId?: string;// 创建子任务
-  refCaseIds?: string[];
-  name?: string;
-  description?: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<EditFormState>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -78,7 +51,7 @@ const loading = ref<boolean>(false);
 const zoomInFlag = ref(false);
 const showEditorFlag = ref(false);
 
-const evalWorkloadMethod = ref<'WORKING_HOURS' | 'STORY_POINT' | undefined>('STORY_POINT');
+const evalWorkloadMethod = ref<EvalWorkloadMethod>(EvalWorkloadMethod.STORY_POINT);
 const sprintDeadlineDate = ref<string>();
 
 const moduleTreeData = ref([]);
@@ -117,7 +90,7 @@ const formState = reactive<EditFormState>({
   targetParentId: undefined,
   taskType: undefined,
   testType: undefined,
-  bugLevel: 'MINOR',
+  bugLevel: BugLevel.MINOR,
   testerId: undefined,
   missingBug: false,
   softwareVersion: undefined
@@ -141,15 +114,10 @@ const sprintChange = (_id: string, option: TaskInfo) => {
   evalWorkloadMethod.value = option?.evalWorkloadMethod?.value;
 };
 
-const loadedByIn = (options: TaskInfo[]) => {
-  sprintDeadlineDate.value = options?.[0]?.deadlineDate || '';
-  formState.deadlineDate = options?.[0]?.deadlineDate || '';
-};
-
 const taskTypeChange = () => {
   formState.targetParentId = undefined;
   formState.targetId = undefined;
-  if (!formState.testerId && formState.taskType === 'BUG') {
+  if (!formState.testerId && formState.taskType === TaskType.BUG) {
     formState.testerId = userId.value;
   }
 };
@@ -159,11 +127,9 @@ const assignToMe = (key:'assigneeId'|'confirmerId'|'testerId') => {
     formState.assigneeId = userId.value;
     return;
   }
-
   if (key === 'confirmerId') {
     formState.confirmerId = userId.value;
   }
-
   if (key === 'testerId') {
     formState.testerId = userId.value;
   }
@@ -178,10 +144,8 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
     if (!value) {
       return Promise.reject(new Error(t('backlog.messages.inputEvalWorkload')));
     }
-
     return Promise.resolve();
   }
-
   return Promise.resolve();
 };
 
@@ -203,17 +167,14 @@ const validateDate = async (_rule: Rule, value: string) => {
     return Promise.reject(new Error(t('backlog.messages.deadlineMustBeFuture')));
   }
 
-  // 编辑时不校验截止时间是否超过迭代的截止时间
   if (sprintDeadlineDate.value) {
     if (dayjs(value).isAfter(dayjs(sprintDeadlineDate.value), 'seconds')) {
       return Promise.reject(new Error(t('backlog.editForm.messages.sprintDeadlineExceeded', { deadline: sprintDeadlineDate.value })));
     }
   }
-
   return Promise.resolve();
 };
 
-// 禁用日期组件当前时间之前的年月日
 const disabledDate = (current: Dayjs) => {
   const today = dayjs().startOf('day');
   return current.isBefore(today, 'day');
@@ -328,18 +289,18 @@ const getParams = () => {
     params.actualWorkload = formState.actualWorkload;
   }
 
-  if (formState.taskType === 'BUG') {
+  if (formState.taskType === TaskType.BUG) {
     params.bugLevel = formState.bugLevel;
     params.missingBug = formState.missingBug;
   }
 
-  if (formState.taskType === 'API_TEST') {
+  if (formState.taskType === TaskType.API_TEST) {
     params.testType = formState.testType;
     params.targetId = formState.targetId;
     params.targetParentId = formState.targetParentId;
   }
 
-  if (formState.taskType === 'SCENARIO_TEST') {
+  if (formState.taskType === TaskType.SCENARIO_TEST) {
     params.testType = formState.testType;
     params.targetId = formState.targetId;
   }
@@ -348,7 +309,6 @@ const getParams = () => {
 };
 
 const submit = async (continueFlag: boolean) => {
-  // 如果是编辑任务,检查提交的数据相对旧数据有没有变动，有变动才发送请求
   if (props.taskId) {
     const equalFlag = isEqual(oldFormState, formState);
     if (equalFlag) {
@@ -426,7 +386,7 @@ const initialize = () => {
 const resetDefault = () => {
   loading.value = false;
   showEditorFlag.value = false;
-  evalWorkloadMethod.value = 'STORY_POINT';
+  evalWorkloadMethod.value = EvalWorkloadMethod.STORY_POINT;
   sprintDeadlineDate.value = undefined;
 
   oldFormState = undefined;
@@ -439,8 +399,8 @@ const resetDefault = () => {
   formState.evalWorkload = '';
   formState.actualWorkload = '';
   formState.name = props.name || '';
-  formState.priority = 'MEDIUM';
-  formState.bugLevel = 'MINOR';
+  formState.priority = Priority.MEDIUM;
+  formState.bugLevel = BugLevel.MINOR;
   formState.parentTaskId = undefined;
   formState.sprintId = props.sprintId;
   formState.tagIds = [];
@@ -448,12 +408,12 @@ const resetDefault = () => {
   formState.refCaseIds = props.refCaseIds || [];
   formState.targetId = undefined;
   formState.targetParentId = undefined;
-  formState.taskType = props.taskType || 'TASK';
-  formState.testType = 'FUNCTIONAL';
+  formState.taskType = props.taskType || TaskType.TASK;
+  formState.testType = TestType.FUNCTIONAL;
   formState.missingBug = false;
   formState.softwareVersion = undefined;
   formState.assigneeId = props.assigneeId || props.userInfo?.id || undefined;
-  formState.testerId = props.taskType === 'BUG' ? props.userInfo?.id : undefined;
+  formState.testerId = props.taskType === TaskType.BUG ? props.userInfo?.id : undefined;
   formState.confirmerId = props.confirmerId || undefined;
   if (props.moduleId && +props.moduleId > 0) {
     formState.moduleId = props.moduleId;
@@ -520,7 +480,7 @@ onMounted(() => {
       formState.targetParentId = data.targetParentId;
       formState.testerId = data.testerId;
       formState.missingBug = data.missingBug || false;
-      formState.bugLevel = data.bugLevel?.value || 'MINOR';
+      formState.bugLevel = data.bugLevel?.value || BugLevel.MINOR;
       formState.softwareVersion = data.softwareVersion;
 
       oldFormState = cloneDeep(formState);
@@ -535,17 +495,14 @@ const taskTypeExcludes = (data: { value: TaskInfo['taskType']['value']; message:
   const value = data.value;
   const type = formState.taskType;
   if (props.taskId) {
-    if (type === 'API_TEST') {
-      return value !== 'API_TEST';
+    if (type === TaskType.API_TEST) {
+      return value !== TaskType.API_TEST;
     }
-
-    if (type === 'SCENARIO_TEST') {
-      return value !== 'SCENARIO_TEST';
+    if (type === TaskType.SCENARIO_TEST) {
+      return value !== TaskType.SCENARIO_TEST;
     }
-
-    return ['API_TEST', 'SCENARIO_TEST'].includes(value);
+    return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(value);
   }
-
   return false;
 };
 
@@ -561,12 +518,13 @@ const title = computed(() => {
   if (props.taskId) {
     return t('backlog.editForm.title.edit');
   }
-
   return t('backlog.editForm.title.add');
 });
 
 const taskTypeReadonly = computed(() => {
-  return !!(props.taskId && (formState.taskType === 'API_TEST' || formState.taskType === 'SCENARIO_TEST')) || !!props.taskType;
+  return (
+    props.taskId && (formState.taskType === TaskType.API_TEST || formState.taskType === TaskType.SCENARIO_TEST)
+  ) || !!props.taskType;
 });
 
 const showEditor = computed(() => {
@@ -578,8 +536,7 @@ const showTestType = computed(() => {
   if (!taskType) {
     return false;
   }
-
-  return ['SCENARIO_TEST', 'API_TEST'].includes(taskType);
+  return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(taskType);
 });
 
 const descRichRef = ref();
@@ -590,21 +547,12 @@ const validateDesc = async () => {
   return Promise.resolve();
 };
 
-// const descriptionError = computed(() => {
-//   if (!formState.description) {
-//     return false;
-//   }
-
-//   return formState.description.length > 8000;
-// });
-
 const modalStyle = computed(() => {
   if (zoomInFlag.value) {
     return {
       width: '100%'
     };
   }
-
   return {
     width: '1000px'
   };
@@ -616,7 +564,6 @@ const formStyle = computed(() => {
       height: '86vh'
     };
   }
-
   return {
     height: '75vh',
     minHeight: '665px'
@@ -626,13 +573,6 @@ const formStyle = computed(() => {
 const zoomInFlagCacheKey = computed(() => {
   return `${props.userInfo?.id}${props?.projectId}${btoa('modalSize')}`;
 });
-
-const EDTIOR_OPTIONS = {
-  menubar: false,
-  height: 340
-};
-
-const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
 </script>
 <template>
   <Modal
@@ -683,27 +623,27 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                     <div class="flex items-center leading-5">
                       <div class="space-y-2 flex-shrink-0">
                         <div class="flex items-center">
-                          <IconTask value="REQUIREMENT" class="mr-1 text-4" />
+                          <IconTask :value="TaskType.REQUIREMENT" class="mr-1 text-4" />
                           <span>{{ t('backlog.editForm.taskTypes.requirement') }}</span>
                         </div>
                         <div class="flex items-center">
-                          <IconTask value="STORY" class="mr-1 text-4" />
+                          <IconTask :value="TaskType.STORY" class="mr-1 text-4" />
                           <span>{{ t('backlog.editForm.taskTypes.story') }}</span>
                         </div>
                         <div class="flex items-center">
-                          <IconTask value="TASK" class="mr-1 text-4" />
+                          <IconTask :value="TaskType.TASK" class="mr-1 text-4" />
                           <span>{{ t('backlog.editForm.taskTypes.task') }}</span>
                         </div>
                         <div class="flex items-center">
-                          <IconTask value="BUG" class="mr-1 text-4" />
+                          <IconTask :value="TaskType.BUG" class="mr-1 text-4" />
                           <span>{{ t('backlog.editForm.taskTypes.bug') }}</span>
                         </div>
                         <div class="flex items-center">
-                          <IconTask value="API_TEST" class="mr-1 text-4" />
+                          <IconTask :value="TaskType.API_TEST" class="mr-1 text-4" />
                           <span>{{ t('backlog.editForm.taskTypes.apiTest') }}</span>
                         </div>
                         <div class="flex items-center">
-                          <IconTask value="SCENARIO_TEST" class="mr-1 text-4" />
+                          <IconTask :value="TaskType.SCENARIO_TEST" class="mr-1 text-4" />
                           <span>{{ t('backlog.editForm.taskTypes.scenarioTest') }}</span>
                         </div>
                       </div>
@@ -720,6 +660,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                   <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
                 </Popover>
               </template>
+
               <SelectEnum
                 v-model:value="formState.taskType"
                 :allowClear="false"
@@ -738,6 +679,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                 </template>
               </SelectEnum>
             </FormItem>
+
             <FormItem
               name="priority"
               :label="t('backlog.editForm.labels.priority')"
@@ -756,7 +698,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
             </FormItem>
           </div>
 
-          <template v-if="formState.taskType === 'BUG'">
+          <template v-if="formState.taskType === TaskType.BUG">
             <div class="flex space-x-4">
               <FormItem
                 name="bugLevel"
@@ -781,7 +723,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
             </div>
           </template>
 
-          <div v-if="formState.taskType === 'SCENARIO_TEST'" class="flex space-x-4">
+          <div v-if="formState.taskType === TaskType.SCENARIO_TEST" class="flex space-x-4">
             <FormItem
               name="targetId"
               :label="t('backlog.editForm.labels.scenario')"
@@ -813,7 +755,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
             </FormItem>
           </div>
 
-          <template v-if="formState.taskType === 'API_TEST'">
+          <template v-if="formState.taskType === TaskType.API_TEST">
             <FormItem
               name="targetParentId"
               :label="t('backlog.editForm.labels.service')"
@@ -889,6 +831,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                   <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
                 </Popover>
               </template>
+
               <div class="flex items-center ">
                 <SelectUser
                   v-model:value="formState.assigneeId"
@@ -919,6 +862,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                   <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
                 </Popover>
               </template>
+
               <div class="flex items-center">
                 <SelectUser
                   v-model:value="formState.confirmerId"
@@ -968,6 +912,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                   <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
                 </Popover>
               </template>
+
               <div class="flex items-center">
                 <SelectUser
                   v-model:value="formState.testerId"
@@ -1004,6 +949,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
             </AsyncComponent>
           </FormItem>
         </div>
+
         <div class="w-80  pl-2 border-l">
           <FormItem
             :label="t('backlog.editForm.labels.sprint')"
@@ -1083,11 +1029,19 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
             name="evalWorkload"
             :rules="{ required: formState.actualWorkload, validator: evalWorkloadValidateDate, trigger: 'change' }">
             <template #label>
-              {{ evalWorkloadMethod === 'STORY_POINT' ? t('backlog.editForm.labels.evalStoryPoint') : t('backlog.editForm.labels.evalWorkload') }}
+              {{
+                evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                  ? t('backlog.editForm.labels.evalStoryPoint')
+                  : t('backlog.editForm.labels.evalWorkload')
+              }}
               <Popover placement="rightTop">
                 <template #content>
                   <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                    {{ evalWorkloadMethod === 'STORY_POINT' ? t('backlog.editForm.descriptions.evalStoryPoint') : t('backlog.editForm.descriptions.evalWorkload') }}
+                    {{
+                      evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                        ? t('backlog.editForm.labels.evalStoryPoint')
+                        : t('backlog.editForm.labels.evalWorkload')
+                    }}
                   </div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
@@ -1107,11 +1061,19 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
           <template v-if="!!props.taskId">
             <FormItem name="actualWorkload">
               <template #label>
-                {{ evalWorkloadMethod === 'STORY_POINT' ? t('backlog.editForm.labels.actualStoryPoint') : t('backlog.editForm.labels.actualWorkload') }}
+                {{
+                  evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                    ? t('backlog.editForm.labels.evalStoryPoint')
+                    : t('backlog.editForm.labels.evalWorkload')
+                }}
                 <Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      {{ evalWorkloadMethod === 'STORY_POINT' ? t('backlog.editForm.descriptions.actualStoryPoint') : t('backlog.editForm.descriptions.actualWorkload') }}
+                      {{
+                        evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                          ? t('backlog.editForm.labels.evalStoryPoint')
+                          : t('backlog.editForm.labels.evalWorkload')
+                      }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
@@ -1138,7 +1100,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
               allowClear
               :placeholder="t('backlog.editForm.placeholders.selectSoftwareVersion')"
               :action="`${TESTER}/software/version?projectId=${props.projectId}`"
-              :params="{filters: [{value: ['NOT_RELEASED', 'RELEASED'], key: 'status', op: 'IN'}]}"
+              :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN'}]}"
               :fieldNames="{value:'name', label: 'name'}">
             </Select>
           </FormItem>
@@ -1238,23 +1200,6 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
           </FormItem>
 
           <FormItem :label="t('backlog.editForm.labels.attachments')">
-            <!-- <div style="height: 90px; border-color: rgba(0, 119, 255);background-color: rgba(0, 119, 255, 4%);"
-              class="border border-dashed rounded px-2 py-1">
-              <Upload
-                :fileList="[]"
-                name="file"
-                class="w-full"
-                :customRequest="() => { }"
-                @change="upLoad">
-                <div class="max-w-75">
-                  <div class="flex items-center justify-center text-center mt-1">
-                    <Icon icon="icon-lianjie1" class="mr-1 text-3 text-theme-special" />
-                    <span class="whitespace-nowrap text-3">添加附件,最多上传5个附件</span>
-                  </div>
-                  <div class="mt-1 text-3 text-theme-sub-content whitespace-normal">支持的格式："jpg", "bmp", "png", "jpeg", "docx", "gif", "txt", "rar", "zip", "doc", "xlsx", "xls", "pdf"</div>
-                </div>
-              </Upload>
-            </div> -->
             <div
               style="height: 60px; border-color: rgba(0, 119, 255);background-color: rgba(0, 119, 255, 4%);"
               class="border border-dashed rounded flex flex-col px-2 py-1"
@@ -1278,6 +1223,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                       @click="delFile(index)" />
                   </div>
                 </div>
+
                 <div v-if="formState.attachments.length < 5" class="flex justify-end">
                   <Upload
                     :fileList="[]"
@@ -1286,10 +1232,13 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                     :customRequest="() => {}"
                     @change="upLoad">
                     <Icon icon="icon-shangchuan" class="text-theme-special mr-1" />
-                    <span class="text-3 leading-3 text-theme-text-hover">{{ t('backlog.editForm.buttons.continueUpload') }}</span>
+                    <span class="text-3 leading-3 text-theme-text-hover">
+                      {{ t('backlog.editForm.buttons.continueUpload') }}
+                    </span>
                   </Upload>
                 </div>
               </template>
+
               <template v-else>
                 <div class="flex justify-center">
                   <Upload
@@ -1298,32 +1247,14 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                     :customRequest="() => {}"
                     @change="upLoad">
                     <Icon icon="icon-shangchuan" class="mr-1 text-theme-special" />
-                    <span class="text-3 text-theme-text-hover">{{ t('backlog.editForm.buttons.uploadAttachments') }}</span>
+                    <span class="text-3 text-theme-text-hover">
+                      {{ t('backlog.editForm.buttons.uploadAttachments') }}
+                    </span>
                   </Upload>
                 </div>
               </template>
             </div>
           </FormItem>
-
-          <!-- <FormItem
-            v-if="formState?.attachments?.length"
-            name="attachments"
-            :colon="false"
-            label=" "
-            class="-mt-4">
-            <div class="leading-4 text-3 space-y-1.5 rounded px-3 py-2 bg-gray-bg">
-              <div
-                v-for="(item, index) in formState.attachments"
-                :key="index"
-                class="flex items-center justify-between">
-                <div class="flex-1 truncate">{{ item.name }}</div>
-                <Icon
-                  icon="icon-qingchu"
-                  class="text-3.5 text-theme-text-hover cursor-pointer flex-shrink-0"
-                  @click="delFile(index)" />
-              </div>
-            </div>
-          </FormItem> -->
         </div>
       </div>
     </Form>

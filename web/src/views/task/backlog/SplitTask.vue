@@ -6,16 +6,18 @@ import {
 } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { Button, Checkbox } from 'ant-design-vue';
-import { duration, TESTER, utils } from '@xcan-angus/infra';
+import { duration, TESTER, utils, EvalWorkloadMethod } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
 import { ai } from '@/api/gm';
 import { task } from '@/api/tester';
+import { TaskType } from '@/enums/enums';
 
-import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfo } from '../types';
 import { TIME_FORMAT } from '@/utils/constant';
 import { TaskInfoProps } from '@/views/task/task/list/task/types';
+
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 const { t } = useI18n();
 
@@ -31,7 +33,7 @@ const emit = defineEmits<{
   (event: 'ok'): void;
 }>();
 
-const MAX_LENGTH = 200;// 最大允许创建200条
+const MAX_LENGTH = 200;
 
 const aiEnabled = inject('aiEnabled', ref(false));
 
@@ -61,7 +63,6 @@ const priorityErrorSet = ref(new Set<string>());
 const nameErrorSet = ref(new Set<string>());
 const assigneeIdErrorSet = ref(new Set<string>());
 const deadlineDateErrorSet = ref(new Set<string>());
-
 const nameRepeatSet = ref(new Set<string>());
 
 const aiSplitFlag = ref(false);
@@ -103,7 +104,7 @@ const toGenerate = async () => {
       priority: taskInfo.priority?.value,
       projectId: taskInfo.projectId,
       sprintId: taskInfo.sprintId,
-      taskType: 'TASK',
+      taskType: TaskType.TASK,
       testType: taskInfo.testType?.value
     };
   }
@@ -134,7 +135,6 @@ const checkboxChange = (id: string) => {
     dataMap.value[id].parentTaskId = undefined;
     return;
   }
-
   dataMap.value[id].parentTaskId = taskId.value;
 };
 
@@ -161,7 +161,7 @@ const toAdd = () => {
     priority: data.priority?.value,
     projectId: data.projectId,
     sprintId: data.sprintId,
-    taskType: 'TASK',
+    taskType: TaskType.TASK,
     testType: data.testType?.value,
     name: ''
   };
@@ -312,7 +312,6 @@ const toValidate = () => {
     deadlineDateErrorSet.value.size);
 };
 
-// 禁用日期组件当前时间之前的年月日
 const disabledDate = (current: Dayjs) => {
   const today = dayjs().startOf('day');
   return current.isBefore(today, 'day');
@@ -349,7 +348,7 @@ onMounted(() => {
       priority: newValue.priority?.value,
       projectId: newValue.projectId,
       sprintId: newValue.sprintId,
-      taskType: 'TASK',
+      taskType: TaskType.TASK,
       testType: newValue.testType?.value,
       name: ''
     };
@@ -385,6 +384,7 @@ const okButtonProps = computed(() => {
             </div>
             <div>{{ props.taskInfo?.name }}</div>
           </div>
+
           <Button
             v-if="aiEnabled"
             :disabled="idList?.length>=MAX_LENGTH"
@@ -406,6 +406,7 @@ const okButtonProps = computed(() => {
             allowClear
             class="flex-1"
             :maxlength="2000" />
+
           <div class="flex items-center space-x-2.5">
             <Button
               :disabled="!aiKeywords||idList?.length>=MAX_LENGTH"
@@ -445,7 +446,13 @@ const okButtonProps = computed(() => {
         </div>
 
         <div class="w-20 space-x-0.5 head-item-container">
-          <span>{{ props.taskInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('backlog.splitTask.headers.evalStoryPoint') : t('backlog.splitTask.headers.evalWorkload') }}</span>
+          <span>
+            {{
+              props.taskInfo?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+                ? t('backlog.splitTask.headers.evalStoryPoint')
+                : t('backlog.splitTask.headers.evalWorkload')
+            }}
+          </span>
         </div>
 
         <div class="w-25 space-x-0.5 head-item-container">
@@ -514,7 +521,9 @@ const okButtonProps = computed(() => {
           </Tooltip>
 
           <div class="w-9 flex justify-center items-center mr-2.5">
-            <Checkbox :checked="dataMap[item].parentTaskId === taskId" @change="checkboxChange(item)" />
+            <Checkbox
+              :checked="dataMap[item].parentTaskId === taskId"
+              @change="checkboxChange(item)" />
           </div>
 
           <Input
@@ -601,18 +610,4 @@ const okButtonProps = computed(() => {
 .head-item-container:last-child {
   border: 0;
 }
-
-/* .error.action-container {
-  position: relative;
-  padding: 6px 7px;
-  border: 1px solid rgba(245, 34, 45, 100%);
-  border-radius: 4px;
-}
-
-.error-message {
-  position: absolute;
-  bottom: -10px;
-  left: 0;
-  color: rgba(245, 34, 45, 100%);
-} */
 </style>

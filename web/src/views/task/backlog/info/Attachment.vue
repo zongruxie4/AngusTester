@@ -124,7 +124,9 @@ const maxFileSize = computed(() => {
 
 <template>
   <div class="h-full text-3 leading-5 px-5 overflow-auto">
-    <div class="text-theme-title mb-2.5 font-semibold">{{ t('backlog.info.attachment.title') }}</div>
+    <div class="text-theme-title mb-2.5 font-semibold">
+      {{ t('backlog.info.attachment.title') }}
+    </div>
     <Spin
       :spinning="loading"
       :class="{ empty: isEmpty }"
@@ -173,10 +175,14 @@ const maxFileSize = computed(() => {
             type="link"
             class="flex flex-col items-center justify-center h-auto leading-5 p-0">
             <Icon icon="icon-shangchuan" class="text-5 flex-shrink-0 text-text-link" />
-            <div class="flex-shrink-0 text-text-link">{{ t('backlog.info.attachment.selectFile') }}</div>
+            <div class="flex-shrink-0 text-text-link">
+              {{ t('backlog.info.attachment.selectFile') }}
+            </div>
           </Button>
         </Upload>
-        <div class="text-theme-sub-content mt-1">{{ t('backlog.info.attachment.fileSizeLimit', { maxSize: MAX_SIZE }) }}</div>
+        <div class="text-theme-sub-content mt-1">
+          {{ t('backlog.info.attachment.fileSizeLimit', { maxSize: MAX_SIZE }) }}
+        </div>
       </template>
     </Spin>
   </div>

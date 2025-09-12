@@ -28,6 +28,16 @@ const emit = defineEmits<{
 const dateRef = ref();
 const editFlag = ref(false);
 const dateValue = ref<string>();
+const taskId = computed(() => props.dataSource?.id);
+const createdDate = computed(() => props.dataSource?.createdDate);
+const deadlineDate = computed(() => props.dataSource?.deadlineDate);
+const startDate = computed(() => props.dataSource?.startDate);
+const processedDate = computed(() => props.dataSource?.processedDate);
+const confirmedDate = computed(() => props.dataSource?.confirmedDate);
+const completedDate = computed(() => props.dataSource?.completedDate);
+const canceledDate = computed(() => props.dataSource?.canceledDate);
+const execDate = computed(() => props.dataSource?.execDate);
+const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
 
 const dateError = ref();
 const dateErrorMessage = ref<string>();
@@ -83,7 +93,6 @@ const blur = async () => {
     if (typeof dateRef.value?.focus === 'function') {
       dateRef.value?.focus();
     }
-
     return;
   }
 
@@ -91,22 +100,10 @@ const blur = async () => {
   emit('change', { id: taskId.value, deadlineDate: value });
 };
 
-// 禁用日期组件当前时间之前的年月日
 const disabledDate = (current: Dayjs) => {
   const today = dayjs().startOf('day');
   return current.isBefore(today, 'day');
 };
-
-const taskId = computed(() => props.dataSource?.id);
-const createdDate = computed(() => props.dataSource?.createdDate);
-const deadlineDate = computed(() => props.dataSource?.deadlineDate);
-const startDate = computed(() => props.dataSource?.startDate);
-const processedDate = computed(() => props.dataSource?.processedDate);
-const confirmedDate = computed(() => props.dataSource?.confirmedDate);
-const completedDate = computed(() => props.dataSource?.completedDate);
-const canceledDate = computed(() => props.dataSource?.canceledDate);
-const execDate = computed(() => props.dataSource?.execDate);
-const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
 </script>
 
 <template>

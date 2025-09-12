@@ -57,13 +57,13 @@ const props = withDefaults(defineProps<Props>(), {
 const completedRef = ref();
 const completedWorkloadRef = ref();
 const coreRef = ref();
-const completedOverduedRef = ref();
+const completedOverdueRef = ref();
 const completedBugRef = ref();
 
 let coreChart;
 let completedEchart;
 let completedWorkloadEchart;
-let completedOverduedEchart;
+let completedOverdueEchart;
 let completedBugEchart;
 
 // 核心指标
@@ -223,7 +223,7 @@ const completedWorkloadEchartConfig = JSON.parse(JSON.stringify({
 }));
 
 // 逾期逾期数占比
-const completedOverduedEchartConfig = JSON.parse(JSON.stringify({
+const completedOverdueEchartConfig = JSON.parse(JSON.stringify({
   ...completedWorkloadEchartConfig,
   title: {
     ...completedWorkloadEchartConfig.title,
@@ -247,7 +247,7 @@ onMounted(() => {
 
   coreChart = eCharts.init(coreRef.value);
 
-  completedOverduedEchart = eCharts.init(completedOverduedRef.value);
+  completedOverdueEchart = eCharts.init(completedOverdueRef.value);
 
   completedBugEchart = eCharts.init(completedBugRef.value);
 
@@ -275,15 +275,15 @@ onMounted(() => {
     };
     completedWorkloadEchartConfig.title.text = props.chart2Value.title;
 
-    completedOverduedEchartConfig.series[0].data[0] = {
-      ...completedOverduedEchartConfig.series[0].data[0],
+    completedOverdueEchartConfig.series[0].data[0] = {
+      ...completedOverdueEchartConfig.series[0].data[0],
       ...props.chart3Value.value[0]
     };
-    completedOverduedEchartConfig.series[0].data[1] = {
-      ...completedOverduedEchartConfig.series[0].data[1],
+    completedOverdueEchartConfig.series[0].data[1] = {
+      ...completedOverdueEchartConfig.series[0].data[1],
       ...props.chart3Value.value[1]
     };
-    completedOverduedEchartConfig.title.text = props.chart3Value.title;
+    completedOverdueEchartConfig.title.text = props.chart3Value.title;
 
     completedBugEchartConfig.series[0].data[0] = {
       ...completedBugEchartConfig.series[0].data[0],
@@ -298,7 +298,7 @@ onMounted(() => {
     completedEchart.setOption(completedEchartConfig);
     completedWorkloadEchart.setOption(completedWorkloadEchartConfig);
     coreChart.setOption(coreEchartConfig);
-    completedOverduedEchart.setOption(completedOverduedEchartConfig);
+    completedOverdueEchart.setOption(completedOverdueEchartConfig);
     completedBugEchart.setOption(completedBugEchartConfig);
   }, {
     immediate: true,
@@ -311,7 +311,7 @@ defineExpose({
     completedEchart.resize();
     completedWorkloadEchart.resize();
     coreChart.resize();
-    completedOverduedEchart.resize();
+    completedOverdueEchart.resize();
     completedBugEchart.resize();
   }
 });
@@ -322,7 +322,7 @@ defineExpose({
     <div ref="coreRef" class="h-40 w-100"></div>
     <div ref="completedRef" class="flex-1 h-30"></div>
     <div ref="completedWorkloadRef" class="flex-1 h-30"></div>
-    <div ref="completedOverduedRef" class="flex-1 h-30"></div>
+    <div ref="completedOverdueRef" class="flex-1 h-30"></div>
     <div ref="completedBugRef" class="flex-1 h-30"></div>
   </div>
 </template>

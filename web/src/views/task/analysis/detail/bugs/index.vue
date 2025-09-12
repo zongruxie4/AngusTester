@@ -14,6 +14,9 @@ const { t } = useI18n();
 
 const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
+const totalChartRef = ref();
+const chartListRef = [];
+
 const getChartData = (data) => {
   const res = {};
   const { CRITICAL = 0, MAJOR = 0, MINOR = 0, TRIVIAL = 0 } = data.bugLevelCount || {};
@@ -61,7 +64,6 @@ const getChartData = (data) => {
 };
 
 const totalValue = ref({});
-
 const personValues = ref([]);
 
 onMounted(() => {
@@ -93,8 +95,7 @@ onMounted(() => {
     deep: true
   });
 });
-const totalChartRef = ref();
-const chartListRef = [];
+
 defineExpose({
   resize: () => {
     totalChartRef.value.resize();

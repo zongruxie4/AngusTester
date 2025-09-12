@@ -3,12 +3,13 @@ import { computed, defineAsyncComponent, nextTick, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Tag, TreeSelect } from 'ant-design-vue';
 import { AsyncComponent, Colon, Icon, IconTask, Input, Select, TaskPriority, TaskStatus } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/infra';
+import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
-import SelectEnum from '@/components/enum/SelectEnum.vue';
+import { TaskType, SoftwareVersionStatus } from '@/enums/enums';
 import { TaskInfo } from '../../types';
 import { TaskInfoProps } from '@/views/task/task/list/task/types';
+import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
@@ -52,7 +53,6 @@ const sprintValue = ref<string>();
 
 const moduleRef = ref();
 const moduleEditFlag = ref(false);
-const moduleMessage = ref<string>();
 const moduleValue = ref<string>();
 
 const versionRef = ref();
@@ -68,6 +68,33 @@ const tagRef = ref();
 const tagEditFlag = ref(false);
 const tagList = ref<{id:string;name:string;}[]>([]);
 const tagIdList = ref<string[]>([]);
+
+const taskId = computed(() => props.dataSource?.id);
+const status = computed(() => props.dataSource?.status);
+const name = computed(() => props.dataSource?.name);
+const taskType = computed(() => props.dataSource?.taskType?.value);
+const sprintId = computed(() => props.dataSource?.sprintId);
+const moduleId = computed(() => {
+  if (!props.dataSource?.moduleId || props.dataSource?.moduleId === '-1') {
+    return undefined;
+  }
+  return props.dataSource?.moduleId;
+});
+const priority = computed(() => props.dataSource?.priority?.value);
+const tags = computed(() => props.dataSource?.tags || []);
+const tagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
+const evalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
+const evalWorkload = computed(() => props.dataSource?.evalWorkload);
+const actualWorkload = computed(() => props.dataSource?.actualWorkload);
+const overdue = computed(() => props.dataSource?.overdue);
+const totalNum = computed(() => +(props.dataSource?.totalNum || 0));
+const failNum = computed(() => +(props.dataSource?.failNum || 0));
+const onePassText = computed(() => {
+  if (totalNum.value <= 0) {
+    return '--';
+  }
+  return failNum.value === 0 ? t('status.yes') : t('status.no');
+});
 
 const toEditName = () => {
   taskName.value = name.value;
@@ -193,7 +220,10 @@ const toEditSprint = () => {
   });
 };
 
-const sprintChange = async (_event: { target: { value: string; } }, option: { message: string; value: string }) => {
+const sprintChange = async (
+  _event: { target: { value: string; } },
+  option: { message: string; value: string }
+) => {
   sprintMessage.value = option.message;
 };
 
@@ -299,7 +329,10 @@ const toEditTaskType = () => {
   });
 };
 
-const taskTypeChange = async (_event: { target: { value: TaskInfo['taskType']['value']; } }, option: { message: string; value: TaskInfo['taskType']['value'] }) => {
+const taskTypeChange = async (
+  _event: { target: { value: TaskInfo['taskType']['value']; } },
+  option: { message: string; value: TaskInfo['taskType']['value'] }
+) => {
   taskTypeMessage.value = option.message;
 };
 
@@ -331,17 +364,14 @@ const taskTypeExcludes = (data: { value: TaskInfo['taskType']['value']; message:
   const value = data.value;
   const type = taskType.value;
   if (taskId.value) {
-    if (type === 'API_TEST') {
-      return value !== 'API_TEST';
+    if (type === TaskType.API_TEST) {
+      return value !== TaskType.API_TEST;
     }
-
-    if (type === 'SCENARIO_TEST') {
-      return value !== 'SCENARIO_TEST';
+    if (type === TaskType.SCENARIO_TEST) {
+      return value !== TaskType.SCENARIO_TEST;
     }
-
-    return ['API_TEST', 'SCENARIO_TEST'].includes(value);
+    return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(value);
   }
-
   return false;
 };
 
@@ -358,7 +388,10 @@ const toEditPriority = () => {
   });
 };
 
-const priorityChange = async (_event: { target: { value: TaskInfo['priority']['value']; } }, option: { message: string; value: TaskInfo['priority']['value'] }) => {
+const priorityChange = async (
+  _event: { target: { value: TaskInfo['priority']['value']; } },
+  option: { message: string; value: TaskInfo['priority']['value'] }
+) => {
   priorityMessage.value = option.message;
 };
 
@@ -393,7 +426,10 @@ const toEditTag = () => {
   });
 };
 
-const tagChange = async (_event: { target: { value: string[]; } }, options: { id: string; name: string; }[]) => {
+const tagChange = async (
+  _event: { target: { value: string[]; } },
+  options: { id: string; name: string; }[]
+) => {
   tagList.value = options;
 };
 
@@ -460,41 +496,14 @@ const versionBlur = async () => {
 onMounted(() => {
   getModuleTreeData();
 });
-
-const taskId = computed(() => props.dataSource?.id);
-const status = computed(() => props.dataSource?.status);
-const name = computed(() => props.dataSource?.name);
-const taskType = computed(() => props.dataSource?.taskType?.value);
-const sprintId = computed(() => props.dataSource?.sprintId);
-const moduleId = computed(() => {
-  if (!props.dataSource?.moduleId || props.dataSource?.moduleId === '-1') {
-    return undefined;
-  }
-
-  return props.dataSource?.moduleId;
-});
-const priority = computed(() => props.dataSource?.priority?.value);
-const tags = computed(() => props.dataSource?.tags || []);
-const tagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
-const evalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
-const evalWorkload = computed(() => props.dataSource?.evalWorkload);
-const actualWorkload = computed(() => props.dataSource?.actualWorkload);
-const overdue = computed(() => props.dataSource?.overdue);
-const totalNum = computed(() => +(props.dataSource?.totalNum || 0));
-const failNum = computed(() => +(props.dataSource?.failNum || 0));
-const onePassText = computed(() => {
-  if (totalNum.value <= 0) {
-    return '--';
-  }
-
-  return failNum.value === 0 ? t('status.yes') : t('status.no');
-});
 </script>
 
 <template>
   <div class="h-full text-3 leading-5 px-5 overflow-auto">
     <div>
-      <div class="text-theme-title mb-2.5 font-semibold">{{ t('backlog.basicInfo') }}</div>
+      <div class="text-theme-title mb-2.5 font-semibold">
+        {{ t('backlog.basicInfo') }}
+      </div>
 
       <div class="space-y-2.5">
         <div class="flex items-start">
@@ -503,7 +512,9 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
 
-          <div class="whitespace-pre-wrap break-words break-all">{{ props.dataSource?.code }}</div>
+          <div class="whitespace-pre-wrap break-words break-all">
+            {{ props.dataSource?.code }}
+          </div>
         </div>
 
         <div class="flex items-start">
@@ -548,7 +559,9 @@ const onePassText = computed(() => {
               v-if="overdue"
               class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
               style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-              <span class="inline-block transform-gpu scale-90">{{ t('backlog.overdue') }}</span>
+              <span class="inline-block transform-gpu scale-90">
+                {{ t('backlog.overdue') }}
+              </span>
             </span>
           </div>
         </div>
@@ -620,6 +633,7 @@ const onePassText = computed(() => {
                   </div>
                 </template>
               </TreeSelect>
+
               <Icon
                 icon="icon-gouxuanzhong"
                 class="text-3.5 ml-2 mr-1.5 cursor-pointer text-theme-text-hover"
@@ -658,7 +672,8 @@ const onePassText = computed(() => {
               @click="toEditTaskType">
               <Icon icon="icon-shuxie" class="text-3.5" />
             </Button>
-            <template v-if="taskType === 'BUG'">
+
+            <template v-if="taskType === TaskType.BUG">
               <Tag
                 v-if="props.dataSource?.bugLevel"
                 color="error"
@@ -741,7 +756,12 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ evalWorkloadMethod === 'STORY_POINT' ? t('backlog.info.basic.evalStoryPoint') : t('backlog.info.basic.evalWorkload') }}</span>
+            <span>
+              {{
+                evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                  ? t('backlog.info.basic.evalStoryPoint') : t('backlog.info.basic.evalWorkload')
+              }}
+            </span>
             <Colon class="w-1" />
           </div>
 
@@ -773,7 +793,12 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ evalWorkloadMethod === 'STORY_POINT' ? t('backlog.info.basic.actualStoryPoint') : t('backlog.info.basic.actualWorkload') }}</span>
+            <span>
+              {{
+                evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                  ? t('backlog.info.basic.evalStoryPoint') : t('backlog.info.basic.evalWorkload')
+              }}
+            </span>
             <Colon class="w-1" />
           </div>
 
@@ -837,6 +862,7 @@ const onePassText = computed(() => {
               </div>
             </div>
             <div v-else>--</div>
+
             <Button
               type="link"
               class="flex-shrink-0 ml-1 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
@@ -879,6 +905,7 @@ const onePassText = computed(() => {
             <span>{{ t('backlog.info.basic.softwareVersion') }}</span>
             <Colon class="w-1" />
           </div>
+
           <div class="flex-1">
             <template v-if="versionEditFlag">
               <Select
@@ -889,7 +916,7 @@ const onePassText = computed(() => {
                 class="w-full"
                 lazy
                 :action="`${TESTER}/software/version?projectId=${props.projectId}`"
-                :params="{filters: [{value: ['NOT_RELEASED', 'RELEASED'], key: 'status', op: 'IN'}]}"
+                :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN'}]}"
                 :fieldNames="{value:'name', label: 'name'}"
                 @blur="versionBlur"
                 @change="versionChange">
@@ -906,6 +933,7 @@ const onePassText = computed(() => {
                 <template v-else>
                   --
                 </template>
+
                 <Button
                   type="link"
                   class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
