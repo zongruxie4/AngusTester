@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue';
 import { Progress } from 'ant-design-vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 import { formatBytes } from './useExecCount';
 
@@ -24,31 +27,31 @@ const chartInfoRef = ref();
 const countCard = [
   {
     key: 'iterations',
-    name: '行数',
+    name: t('genDataPlugin.execInfo.rows'),
     icon: 'icon-yizhihangshijian',
     color: '129, 154, 218'
   },
   {
     key: 'vu',
-    name: '并发数',
+    name: t('genDataPlugin.execInfo.concurrency'),
     icon: 'icon-bingfashu',
     color: '255, 177, 59'
   },
   {
     key: 'tps',
-    name: '每秒行数 (TPS)',
+    name: t('genDataPlugin.execInfo.rowsPerSecondTps'),
     icon: 'icon-meimiaochaxunshu',
     color: '3, 206, 92'
   },
   {
     key: 'err',
-    name: '错误(Error)',
+    name: t('genDataPlugin.execInfo.error'),
     icon: 'icon-cuowushuai',
     color: '245, 34, 45'
   },
   {
     key: 'upload',
-    name: '写数据',
+    name: t('genDataPlugin.execInfo.writeData'),
     icon: 'icon-meimiaoshiwushu',
     color: '45, 142, 255'
   }
@@ -117,7 +120,7 @@ defineExpose({
       </div>
     </div>
     <div v-if="props.execInfo.sampleSummaryInfo?.uploadResultProgress > 0" class="text-3 text-center mt-7">
-      <span class="mr-2">上传结果文件进度</span>
+      <span class="mr-2">{{ t('genDataPlugin.execInfo.uploadResultFileProgress') }}</span>
       <Progress
         class="w-100"
         :percent="props.execInfo.sampleSummaryInfo?.uploadResultProgress"
