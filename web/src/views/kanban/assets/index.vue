@@ -31,9 +31,23 @@ const props = withDefaults(defineProps<DataAssetsProps>(), {
   onShow: false
 });
 
+const params = computed(() => {
+  const { onShow, ...other } = props;
+  return {
+    ...other
+  };
+});
+
+const rankIcon = {
+  0: 'icon-diyiming',
+  1: 'icon-dierming',
+  2: 'icon-disanming'
+};
+
 // Initialize composables
 const {
   rankingData,
+  loadRankData,
   growthTrendData,
   caseData,
   apiData,
@@ -89,14 +103,6 @@ const {
   handleRightSideResize
 } = useChartManagement();
 
-const props = withDefaults(defineProps<DataAssetsProps>(), {
-  projectId: undefined,
-  creatorObjectType: undefined,
-  creatorObjectId: undefined,
-  createdDateStart: undefined,
-  createdDateEnd: undefined,
-  onShow: false
-});
 
 const erd = elementResizeDetector({ strategy: 'scroll' });
 
@@ -1274,12 +1280,12 @@ const loadMock = async () => {
   mockData.allPushback = allPushback || 0;
 };
 
-const mockData = reactive({
-  allApi: 0,
-  allService: 0,
-  allResponse: 0,
-  allPushback: 0
-});
+// const mockData = reactive({
+//   allApi: 0,
+//   allService: 0,
+//   allResponse: 0,
+//   allPushback: 0
+// });
 
 // 数据数据
 const loadData = async () => {
@@ -1390,7 +1396,7 @@ onMounted(async () => {
   });
   watch(() => targetType.value, () => {
     if (props.projectId) {
-      loadGrowthTrendData();
+      loadGrowthTrendData(targetType.value);
     }
   });
   watch(() => proTypeShowMap.value.ShowTask, () => {
@@ -1407,7 +1413,7 @@ onMounted(async () => {
       return;
     }
     if (props.projectId) {
-      loadGrowthTrendData();
+      loadGrowthTrendData(targetType.value);
       loadRankData();
       loadCase();
       loadApis();
@@ -1486,21 +1492,21 @@ onBeforeUnmount(() => {
   erd.removeListener(rightWrapRef.value, resizeRightEchart);
 });
 
-const refresh = () => {
-  if (!props.projectId) {
-    return;
-  }
-  loadGrowthTrendData();
-  loadRankData();
-  loadCase();
-  loadApis();
-  loadTask();
-  loadScenario();
-  loadScript();
-  loadMock();
-  loadData();
-  // loadReport();
-};
+// const refresh = () => {
+//   if (!props.projectId) {
+//     return;
+//   }
+//   loadGrowthTrendData();
+//   loadRankData();
+//   loadCase();
+//   loadApis();
+//   loadTask();
+//   loadScenario();
+//   loadScript();
+//   loadMock();
+//   loadData();
+//   // loadReport();
+// };
 
 defineExpose({
   refresh,

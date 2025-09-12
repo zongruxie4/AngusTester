@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, nextTick, computed, watch, withDefaults } from 'vue';
+import { Radio, RadioGroup, RadioButton } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { EffectivenessProps, BurnDownDataByType } from './types';
 import { useEffectivenessData } from './composables/useEffectivenessData';
@@ -70,11 +71,24 @@ const handleBurnDownOptionChange = () => {
 onMounted(async () => {
   setupLifecycle();
 
-  if (props.projectId) {
-    await loadEffectivenessData();
-    await nextTick();
-    initializeCharts();
-  }
+
+  watch(() => props.projectId, async () => {
+    if (props.projectId) {
+      await loadEffectivenessData();
+      await nextTick();
+      initializeCharts({
+        taskTypeRef: taskTypeChartRef.value as HTMLElement,
+        burnDownRef: burnDownChartRef.value as HTMLElement,
+        targetCountRef: targetCountChartRef.value as HTMLElement,
+        workloadRef: workloadChartRef.value as HTMLElement,
+        overdueRef: overdueChartRef.value as HTMLElement,
+        oneTimePassedTestRef: oneTimePassedTestChartRef.value as HTMLElement,
+        assigneeRankingRef: assigneeRankingChartRef.value as HTMLElement,
+        testerRankingRef: testerRankingChartRef.value as HTMLElement,
+      });
+    }
+  }, { immediate: true });
+
 });
 
 onBeforeUnmount(() => {
@@ -141,7 +155,7 @@ watch(() => props.countType, async () => {
       <!-- Task Type Chart -->
       <div class="chart-container">
         <div class="chart-header">
-          <h3>{{ $t('kanban.effectiveness.taskType') }}</h3>
+          <h3>{{ $t('kanban.effectiveness.taskTypeTitle') }}</h3>
         </div>
         <div ref="taskTypeChartRef" class="chart-content"></div>
       </div>
@@ -149,15 +163,15 @@ watch(() => props.countType, async () => {
       <!-- Burn Down Chart -->
       <div class="chart-container">
         <div class="chart-header">
-          <h3>{{ $t('kanban.effectiveness.burnDown') }}</h3>
+          <h3>{{ $t('kanban.effectiveness.burnDownChart') }}</h3>
           <div class="chart-controls">
-            <a-radio-group
+            <RadioGroup
               v-model:value="burnDownOption"
               size="small"
               @change="handleBurnDownOptionChange">
-              <a-radio-button value="NUM">{{ $t('kanban.effectiveness.count') }}</a-radio-button>
-              <a-radio-button value="WORKLOAD">{{ $t('kanban.effectiveness.workload') }}</a-radio-button>
-            </a-radio-group>
+              <RadioButton value="NUM">{{ props.countType === 'task' ? t('kanban.effectiveness.taskNumber') : t('kanban.effectiveness.testNumber') }}</RadioButton>
+              <RadioButton value="WORKLOAD">{{ t('kanban.effectiveness.workload') }}</RadioButton>
+            </RadioGroup>
           </div>
         </div>
         <div ref="burnDownChartRef" class="chart-content"></div>

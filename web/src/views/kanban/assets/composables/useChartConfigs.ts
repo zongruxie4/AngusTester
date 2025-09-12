@@ -1,7 +1,12 @@
-import { useI18n } from 'vue-i18n';
+// import { useI18n } from 'vue-i18n';
+import { i18n } from '@xcan-angus/infra';
+
+const I18nInstance = i18n.getI18n();
+const t = I18nInstance?.global?.t || ((value: string): string => value);
+
 import { ChartConfig, ChartSeriesColorConfig, MethodColorConfig, TargetDataCategory, RankIconConfig } from '../types';
 
-const { t } = useI18n();
+// const { t } = useI18n();
 
 /**
  * <p>
