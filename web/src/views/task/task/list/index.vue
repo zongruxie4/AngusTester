@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, onMounted, ref, watch, Ref } from 'vue';
+import { computed, defineAsyncComponent, inject, onMounted, ref, Ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { AsyncComponent, NoData, notification, Spin } from '@xcan-angus/vue-ui';
-import { http, utils, TESTER, download, appContext, enumUtils, PageQuery } from '@xcan-angus/infra';
+import { appContext, download, enumUtils, http, PageQuery, TESTER, utils } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 import { TaskSprintPermission, TaskStatus } from '@/enums/enums';

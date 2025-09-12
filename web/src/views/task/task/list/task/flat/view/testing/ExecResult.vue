@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { Colon, Toggle, NoData } from '@xcan-angus/vue-ui';
+import { Colon, NoData, Toggle } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
 import { TaskInfo } from '@/views/task/types';

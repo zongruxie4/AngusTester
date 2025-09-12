@@ -1,5 +1,5 @@
 import { EnumMessage, EvalWorkloadMethod } from '@xcan-angus/infra';
-import { TaskSprintStatus, TaskMeetingType } from '@/enums/enums';
+import { TaskMeetingType, TaskSprintStatus } from '@/enums/enums';
 
 export type SprintInfo = {
   id: string;

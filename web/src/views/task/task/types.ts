@@ -1,5 +1,5 @@
-import { EnumMessage, Priority, EvalWorkloadMethod } from '@xcan-angus/infra';
-import { TaskStatus, TaskType, TestType, ExecResult } from '@/enums/enums';
+import { EnumMessage, EvalWorkloadMethod, Priority } from '@xcan-angus/infra';
+import { ExecResult, TaskStatus, TaskType, TestType } from '@/enums/enums';
 
 /**
  * Task view mode

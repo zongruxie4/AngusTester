@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {onMounted, ref, watch} from 'vue';
-import {useI18n} from 'vue-i18n';
-import {analysis} from '@/api/tester';
+import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { analysis } from '@/api/tester';
 
-import {SummaryInfo} from '@/views/task/home/types';
+import { SummaryInfo } from '@/views/task/home/types';
 
 // Props definition
 type Props = {

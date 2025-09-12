@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import {inject, onMounted, ref, watch} from 'vue';
+import { inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import {utils} from '@xcan-angus/infra';
+import { utils } from '@xcan-angus/infra';
 import * as echarts from 'echarts/core';
-import {LegendComponent, LegendComponentOption, TooltipComponent, TooltipComponentOption} from 'echarts/components';
-import {PieChart, PieSeriesOption} from 'echarts/charts';
-import {LabelLayout} from 'echarts/features';
-import {CanvasRenderer} from 'echarts/renderers';
+import { LegendComponent, LegendComponentOption, TooltipComponent, TooltipComponentOption } from 'echarts/components';
+import { PieChart, PieSeriesOption } from 'echarts/charts';
+import { LabelLayout } from 'echarts/features';
+import { CanvasRenderer } from 'echarts/renderers';
 
-import {SummaryInfo} from '@/views/task/home/types';
+import { SummaryInfo } from '@/views/task/home/types';
 
 const { t } = useI18n();
 

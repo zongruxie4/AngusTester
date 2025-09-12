@@ -2,12 +2,23 @@
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
 import { Button, Progress } from 'ant-design-vue';
 import {
-  AsyncComponent, Colon, Dropdown, Hints, Icon, IconTask, Input, modal, notification, TaskPriority, TaskStatus, Table
+  AsyncComponent,
+  Colon,
+  Dropdown,
+  Hints,
+  Icon,
+  IconTask,
+  Input,
+  modal,
+  notification,
+  Table,
+  TaskPriority,
+  TaskStatus
 } from '@xcan-angus/vue-ui';
-import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
+import { EvalWorkloadMethod, TESTER } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-import { TaskType, BugLevel } from '@/enums/enums';
+import { BugLevel, TaskType } from '@/enums/enums';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfo } from '@/views/task/types';

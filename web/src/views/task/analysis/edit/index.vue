@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-import { inject, onMounted, ref, watch, computed } from 'vue';
+import { computed, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Checkbox, Form, FormItem, RadioButton, RadioGroup, Textarea } from 'ant-design-vue';
 import { DatePicker, Input, notification, Select } from '@xcan-angus/vue-ui';
-import { TESTER, GM, enumUtils, enumOptionUtils, EnumMessage, AuthObjectType } from '@xcan-angus/infra';
+import { AuthObjectType, EnumMessage, enumOptionUtils, enumUtils, GM, TESTER } from '@xcan-angus/infra';
 import {
-  AnalysisTaskTemplateDesc,
-  AnalysisTaskObject,
-  AnalysisTimeRange,
   AnalysisDataSource,
-  AnalysisTaskTemplate
+  AnalysisTaskObject,
+  AnalysisTaskTemplate,
+  AnalysisTaskTemplateDesc,
+  AnalysisTimeRange
 } from '@/enums/enums';
 import { EditAnalysisState } from '../types';
 import { analysis } from '@/api/tester';

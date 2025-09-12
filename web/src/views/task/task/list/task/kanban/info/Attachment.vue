@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { Button, Upload, UploadFile } from 'ant-design-vue';
 import { Icon, notification, Spin } from '@xcan-angus/vue-ui';
-import { utils, upload } from '@xcan-angus/infra';
+import { upload, utils } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { TaskInfo } from '@/views/task/types';

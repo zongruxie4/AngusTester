@@ -6,7 +6,7 @@ import { Icon, Image, Table } from '@xcan-angus/vue-ui';
 import { useTrashData } from './composables/useTrashData';
 import { useTableColumns } from './composables/useTableColumns';
 import { useTrashActions } from './composables/useTrashActions';
-import type { TaskTrashTableProps, TaskTrashItem } from './types';
+import type { TaskTrashItem, TaskTrashTableProps } from './types';
 
 /**
  * Component props with default values

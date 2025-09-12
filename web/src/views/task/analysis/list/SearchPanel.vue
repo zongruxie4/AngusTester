@@ -6,7 +6,7 @@ import { Button } from 'ant-design-vue';
 import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
-import { XCanDexie, PageQuery, SearchCriteria } from '@xcan-angus/infra';
+import { PageQuery, SearchCriteria, XCanDexie } from '@xcan-angus/infra';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 import { TaskStatus } from '@/enums/enums';
 

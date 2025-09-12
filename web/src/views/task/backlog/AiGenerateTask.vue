@@ -14,10 +14,8 @@ import {
   Tooltip
 } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
 import { Button } from 'ant-design-vue';
-import { TESTER, utils, duration } from '@xcan-angus/infra';
+import { duration, TESTER, utils } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
 import { task } from '@/api/tester';
@@ -25,6 +23,8 @@ import { ai } from '@/api/gm';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 import { TaskInfo } from '../types';
+
+const { t } = useI18n();
 
 interface Props {
   visible: boolean;

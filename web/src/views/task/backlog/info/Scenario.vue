@@ -13,13 +13,13 @@ import {
   TaskStatus
 } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
 import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
-import { task, modules } from '@/api/tester';
+import { modules, task } from '@/api/tester';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfo } from '../../types';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;

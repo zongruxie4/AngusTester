@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, inject, nextTick, onMounted, ref, watch, defineAsyncComponent } from 'vue';
+import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import {
   AsyncComponent,
@@ -14,14 +14,14 @@ import {
 } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Radio, RadioGroup, TabPane, Tabs, Upload } from 'ant-design-vue';
 import {
+  appContext,
   EnumMessage,
-  EvalWorkloadMethod,
-  toClipboard,
-  utils,
-  TESTER,
   enumUtils,
+  EvalWorkloadMethod,
+  TESTER,
+  toClipboard,
   upload,
-  appContext
+  utils
 } from '@xcan-angus/infra';
 import type { Rule } from 'ant-design-vue/es/form';
 import dayjs from 'dayjs';

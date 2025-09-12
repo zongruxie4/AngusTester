@@ -15,10 +15,8 @@ import {
   Tooltip
 } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
 import { Button, Checkbox } from 'ant-design-vue';
-import { TESTER, utils, duration } from '@xcan-angus/infra';
+import { duration, TESTER, utils } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
 import { ai } from '@/api/gm';
@@ -26,7 +24,9 @@ import { task } from '@/api/tester';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfo } from '../types';
-import {TIME_FORMAT} from "@/utils/constant";
+import { TIME_FORMAT } from '@/utils/constant';
+
+const { t } = useI18n();
 
 interface Props {
   visible: boolean;

@@ -14,7 +14,7 @@ import {
   TaskStatus,
   Toggle
 } from '@xcan-angus/vue-ui';
-import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
+import { EvalWorkloadMethod, TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { task } from '@/api/tester';
 import { SoftwareVersionStatus } from '@/enums/enums';

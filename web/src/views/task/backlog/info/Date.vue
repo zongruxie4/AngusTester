@@ -3,13 +3,13 @@ import { computed, nextTick, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Colon, DatePicker, Icon, Tooltip } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
 import dayjs, { Dayjs } from 'dayjs';
 import { task } from '@/api/tester';
 
 import { TaskInfo } from '../../types';
-import {TIME_FORMAT} from "@/utils/constant";
+import { TIME_FORMAT } from '@/utils/constant';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;

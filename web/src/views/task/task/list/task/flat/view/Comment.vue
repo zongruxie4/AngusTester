@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import { SmartComment } from '@xcan-angus/vue-ui';
-import { TESTER, CombinedTargetType } from '@xcan-angus/infra';
+import { CombinedTargetType, TESTER } from '@xcan-angus/infra';
 
 type Props = {
   id: string;

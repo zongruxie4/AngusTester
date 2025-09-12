@@ -3,11 +3,11 @@ import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Icon, NoData } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
 import { task } from '@/api/tester';
 
 import { TaskInfo } from '../../types';
+
+const { t } = useI18n();
 
 type Props = {
   projectId: string;

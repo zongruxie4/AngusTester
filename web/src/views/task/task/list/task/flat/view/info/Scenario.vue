@@ -2,9 +2,18 @@
 import { computed, nextTick, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import {
-  AsyncComponent, Colon, Icon, IconTask, Input, ScriptTypeTag, Select, TaskPriority, TaskStatus, Toggle
+  AsyncComponent,
+  Colon,
+  Icon,
+  IconTask,
+  Input,
+  ScriptTypeTag,
+  Select,
+  TaskPriority,
+  TaskStatus,
+  Toggle
 } from '@xcan-angus/vue-ui';
-import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
+import { EvalWorkloadMethod, TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';

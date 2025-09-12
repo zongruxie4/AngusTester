@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { TESTER, download } from '@xcan-angus/infra';
+import { download, TESTER } from '@xcan-angus/infra';
 import { Icon } from '@xcan-angus/vue-ui';
 import { Button, Table, Tag } from 'ant-design-vue';
 import { debounce } from 'throttle-debounce';

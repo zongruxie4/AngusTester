@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { computed, inject, ref, watch, Ref } from 'vue';
+import { inject, ref, Ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Icon, Modal, Select, Spin } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, RadioGroup, UploadDragger } from 'ant-design-vue';
-import { TESTER, enumUtils } from '@xcan-angus/infra';
+import { enumUtils, TESTER } from '@xcan-angus/infra';
 import { StrategyWhenDuplicated } from '@/enums/enums';
 import { formatBytes } from '@/utils/common';
 import { task } from '@/api/tester';

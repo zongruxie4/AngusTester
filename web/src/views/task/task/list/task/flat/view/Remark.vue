@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { Icon, Scroll } from '@xcan-angus/vue-ui';
-import { utils, TESTER } from '@xcan-angus/infra';
+import { TESTER, utils } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 

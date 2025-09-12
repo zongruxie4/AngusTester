@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, inject, onMounted, ref, watch, Ref } from 'vue';
+import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import Gantt from '@xcan-angus/frappe-gantt';
@@ -130,7 +130,7 @@ const loadData = async () => {
 
   if (!ganttView.value) {
     ganttView.value = new Gantt(ganttRef.value, taskList.value, {
-      language: 'zh',
+      language: 'zh', // TODO 修改国际化化支持
       view_mode: 'Day',
       view_mode_select: true,
       on_click: (task) => {

@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue';
 import { appContext } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
-import type { TaskTrashItem, TaskTrashParams, TaskTrashPagination } from '../types';
+import type { TaskTrashItem, TaskTrashPagination, TaskTrashParams } from '../types';
 
 /**
  * Composable for managing task trash data and pagination
