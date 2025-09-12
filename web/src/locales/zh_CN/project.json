@@ -317,7 +317,7 @@
         "sprint": "所属迭代",
         "priority": "优先级",
         "assignee": "经办人",
-        "confirmor": "确认人",
+        "confirmer": "确认人",
         "deadline": "截止时间"
       },
       "messages": {

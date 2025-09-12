@@ -37,10 +37,10 @@ const assigneeEditFlag = ref(false);
 const assigneeMessage = ref<string>();
 const assigneeIdValue = ref<string>();
 
-const confirmorRef = ref();
-const confirmorEditFlag = ref(false);
-const confirmorMessage = ref<string>();
-const confirmorIdValue = ref<string>();
+const confirmerRef = ref();
+const confirmerEditFlag = ref(false);
+const confirmerMessage = ref<string>();
+const confirmerIdValue = ref<string>();
 
 const testerRef = ref();
 const testerEditFlag = ref(false);
@@ -60,7 +60,7 @@ const toEditAssignee = () => {
   });
 };
 
-const assignToMe = (key:'assigneeId'|'confirmorId'|'testerId') => {
+const assignToMe = (key:'assigneeId'|'confirmerId'|'testerId') => {
   if (key === 'assigneeId') {
     assigneeIdValue.value = userId.value;
     assigneeMessage.value = userName.value;
@@ -68,10 +68,10 @@ const assignToMe = (key:'assigneeId'|'confirmorId'|'testerId') => {
     return;
   }
 
-  if (key === 'confirmorId') {
-    confirmorIdValue.value = userId.value;
-    confirmorMessage.value = userName.value;
-    confirmorBlur();
+  if (key === 'confirmerId') {
+    confirmerIdValue.value = userId.value;
+    confirmerMessage.value = userName.value;
+    confirmerBlur();
   }
 
   if (key === 'testerId') {
@@ -81,7 +81,9 @@ const assignToMe = (key:'assigneeId'|'confirmorId'|'testerId') => {
   }
 };
 
-const assigneeChange = async (_event: { target: { value: string; } }, option: { id: string; fullName: string; }) => {
+const assigneeChange = async (
+  _event: { target: { value: string; } },
+  option: { id: string; fullName: string; }) => {
   assigneeMessage.value = option.fullName;
 };
 
@@ -107,43 +109,43 @@ const assigneeBlur = async () => {
   emit('change', { id: taskId.value, assigneeId: value, assigneeName: assigneeMessage.value! });
 };
 
-const toEditConfirmor = () => {
-  confirmorIdValue.value = confirmorId.value;
-  confirmorEditFlag.value = true;
+const toEditConfirmer = () => {
+  confirmerIdValue.value = confirmerId.value;
+  confirmerEditFlag.value = true;
 
   nextTick(() => {
     setTimeout(() => {
-      if (typeof confirmorRef.value?.focus === 'function') {
-        confirmorRef.value?.focus();
+      if (typeof confirmerRef.value?.focus === 'function') {
+        confirmerRef.value?.focus();
       }
     }, 100);
   });
 };
 
-const confirmorChange = async (_event: { target: { value: string; } }, option: { id: string; fullName: string; }) => {
-  confirmorMessage.value = option.fullName;
+const confirmerChange = async (_event: { target: { value: string; } }, option: { id: string; fullName: string; }) => {
+  confirmerMessage.value = option.fullName;
 };
 
-const confirmorBlur = async () => {
-  const value = confirmorIdValue.value;
-  if (value === confirmorId.value) {
-    confirmorEditFlag.value = false;
+const confirmerBlur = async () => {
+  const value = confirmerIdValue.value;
+  if (value === confirmerId.value) {
+    confirmerEditFlag.value = false;
     return;
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTaskConfirmor(taskId.value, { confirmorId: value });
+  const [error] = await task.editTaskConfirmer(taskId.value, { confirmerId: value });
   emit('loadingChange', false);
   if (error) {
-    if (typeof confirmorRef.value?.focus === 'function') {
-      confirmorRef.value?.focus();
+    if (typeof confirmerRef.value?.focus === 'function') {
+      confirmerRef.value?.focus();
     }
 
     return;
   }
 
-  confirmorEditFlag.value = false;
-  emit('change', { id: taskId.value, confirmorId: value, confirmorName: confirmorMessage.value! });
+  confirmerEditFlag.value = false;
+  emit('change', { id: taskId.value, confirmerId: value, confirmerName: confirmerMessage.value! });
 };
 
 const toEdiTester = () => {
@@ -228,18 +230,17 @@ const userId = computed(() => {
 const userName = computed(() => {
   return props.userInfo?.fullName;
 });
-const confirmorId = computed(() => props.dataSource?.confirmorId);
-const confirmorName = computed(() => props.dataSource?.confirmorName);
-const confirmorDefaultOptions = computed(() => {
-  const id = confirmorId.value;
+const confirmerId = computed(() => props.dataSource?.confirmerId);
+const confirmerName = computed(() => props.dataSource?.confirmerName);
+const confirmerDefaultOptions = computed(() => {
+  const id = confirmerId.value;
   if (!id) {
     return undefined;
   }
-
   return {
     [id]: {
       id: id,
-      fullName: confirmorName.value
+      fullName: confirmerName.value
     }
   };
 });
@@ -304,42 +305,42 @@ const confirmorDefaultOptions = computed(() => {
 
         <div class="relative flex items-start">
           <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.personnel.fields.confirmor') }}</span>
+            <span>{{ t('task.detailInfo.personnel.fields.confirmer') }}</span>
             <Colon class="w-1" />
           </div>
 
-          <div v-show="!confirmorEditFlag" class="flex items-start whitespace-pre-wrap break-words break-all">
-            <div>{{ confirmorName }}</div>
+          <div v-show="!confirmerEditFlag" class="flex items-start whitespace-pre-wrap break-words break-all">
+            <div>{{ confirmerName }}</div>
             <Button
               type="link"
               class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-              @click="toEditConfirmor">
+              @click="toEditConfirmer">
               <Icon icon="icon-shuxie" class="text-3.5" />
             </Button>
             <Button
-              v-if="!confirmorId||confirmorId!==userId"
+              v-if="!confirmerId||confirmerId!==userId"
               size="small"
               type="link"
               class="p-0 h-5 leading-5 ml-1"
-              @click="assignToMe('confirmorId')">
+              @click="assignToMe('confirmerId')">
               {{ t('task.detailInfo.personnel.actions.assignToMe') }}
             </Button>
           </div>
 
-          <AsyncComponent :visible="confirmorEditFlag">
+          <AsyncComponent :visible="confirmerEditFlag">
             <SelectUser
-              v-show="confirmorEditFlag"
-              ref="confirmorRef"
-              v-model:value="confirmorIdValue"
-              :placeholder="t('task.detailInfo.personnel.placeholders.selectConfirmor')"
+              v-show="confirmerEditFlag"
+              ref="confirmerRef"
+              v-model:value="confirmerIdValue"
+              :placeholder="t('task.detailInfo.personnel.placeholders.selectConfirmer')"
               allowClear
               internal
-              :defaultOptions="confirmorDefaultOptions"
+              :defaultOptions="confirmerDefaultOptions"
               :action="`${TESTER}/project/${props.projectId}/member/user`"
               :maxlength="80"
               class="left-component"
-              @change="confirmorChange"
-              @blur="confirmorBlur" />
+              @change="confirmerChange"
+              @blur="confirmerBlur" />
           </AsyncComponent>
         </div>
 

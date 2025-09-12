@@ -56,7 +56,7 @@ const taskQueryParams = {
 
   // Tasks that need confirmation by current user
   confirming: {
-    confirmorId: props.userInfo?.id,
+    confirmerId: props.userInfo?.id,
     status: TaskStatus.CONFIRMING
   },
 

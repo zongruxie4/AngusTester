@@ -2,9 +2,10 @@
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { NoData, Toggle } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
+import { TaskType } from '@/enums/enums';
 
-import { TaskInfo } from '../../../../../../types';
-import { TestInfo } from './PropsType';
+import { TaskInfo } from '@/views/task/types';
+import { TestInfo } from '@/views/execution/types';
 
 const ApiTestResult = defineAsyncComponent(() => import('@/views/execution/detail/result/ApiResult.vue'));
 const ScenarioResult = defineAsyncComponent(() => import('@/views/execution/detail/result/ScenarioResult.vue'));
@@ -40,13 +41,13 @@ onMounted(() => {
     </template>
 
     <template #default>
-      <template v-if="props.dataSource.taskType.value === 'API_TEST' && !!props.testInfo">
+      <template v-if="props.dataSource.taskType.value === TaskType.API_TEST && !!props.testInfo">
         <ApiTestResult
           :value="props.testInfo"
           :largePageLayout="props.largePageLayout"
           class="text-3 pl-5.5 mt-3.5" />
       </template>
-      <template v-if="props.dataSource.taskType.value === 'SCENARIO_TEST' && !!props.testInfo">
+      <template v-if="props.dataSource.taskType.value === TaskType.SCENARIO_TEST && !!props.testInfo">
         <ScenarioResult
           :value="props.testInfo"
           :largePageLayout="props.largePageLayout"

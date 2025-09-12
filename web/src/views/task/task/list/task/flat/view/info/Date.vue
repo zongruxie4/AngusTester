@@ -99,7 +99,6 @@ const blur = async () => {
   emit('change', { id: taskId.value, deadlineDate: value });
 };
 
-// 禁用日期组件当前时间之前的年月日
 const disabledDate = (current: Dayjs) => {
   const today = dayjs().startOf('day');
   return current.isBefore(today, 'day');

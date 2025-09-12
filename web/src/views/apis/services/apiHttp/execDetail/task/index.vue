@@ -91,8 +91,8 @@ const columns = computed(() => {
       width: 120
     },
     {
-      title: t('service.apiExecDetail.task.columns.confirmor'),
-      dataIndex: 'confirmorName',
+      title: t('service.apiExecDetail.task.columns.confirmer'),
+      dataIndex: 'confirmerName',
       width: 120
     },
     {

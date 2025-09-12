@@ -58,7 +58,7 @@ const dataMap = ref<{
     evalWorkload: string;
     projectId: string;
     assigneeId?: string;
-    confirmorId?: string;
+    confirmerId?: string;
     deadlineDate?: string;
     sprintId?: string;
     moduleId?: string;
@@ -96,7 +96,7 @@ const toGenerate = async () => {
     newDataMap[id] = {
       name: list[i],
       assigneeId: undefined,
-      confirmorId: undefined,
+      confirmerId: undefined,
       deadlineDate: undefined,
       evalWorkload: '1',
       moduleId: undefined,
@@ -132,7 +132,7 @@ const toAdd = () => {
   idList.value.push(newId);
   dataMap.value[newId] = {
     assigneeId: undefined,
-    confirmorId: undefined,
+    confirmerId: undefined,
     deadlineDate: undefined,
     evalWorkload: '1',
     moduleId: undefined,
@@ -369,7 +369,7 @@ const excluedType = (option: {value: string; message: string}) => {
         </div>
 
         <div class="w-25 space-x-0.5 head-item-container">
-          <span>{{ t('backlog.aiGenerateTask.headers.confirmor') }}</span>
+          <span>{{ t('backlog.aiGenerateTask.headers.confirmer') }}</span>
         </div>
 
         <div class="w-42 space-x-0.5 head-item-container">
@@ -447,8 +447,8 @@ const excluedType = (option: {value: string; message: string}) => {
             :maxlength="80" />
 
           <SelectUser
-            v-model:value="dataMap[item].confirmorId"
-            :placeholder="t('backlog.aiGenerateTask.placeholders.confirmor')"
+            v-model:value="dataMap[item].confirmerId"
+            :placeholder="t('backlog.aiGenerateTask.placeholders.confirmer')"
             allowClear
             class="w-25 mr-2.5"
             :action="`${TESTER}/project/${props.projectId}/member/user`"

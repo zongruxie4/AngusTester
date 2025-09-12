@@ -187,9 +187,9 @@ const handleQuickSearchMenuItemClick = (data: SearchPanelMenuItem) => {
       return;
     }
 
-    if (itemKey === 'confirmorId') {
+    if (itemKey === 'confirmerId') {
       updateSearchPanelConfigs([
-        { valueKey: 'confirmorId', value: undefined },
+        { valueKey: 'confirmerId', value: undefined },
         { valueKey: 'status', value: undefined }
       ]);
       return;
@@ -230,9 +230,9 @@ const handleQuickSearchMenuItemClick = (data: SearchPanelMenuItem) => {
     return;
   }
 
-  if (itemKey === 'confirmorId') {
+  if (itemKey === 'confirmerId') {
     updateSearchPanelConfigs([
-      { valueKey: 'confirmorId', value: currentUserId.value },
+      { valueKey: 'confirmerId', value: currentUserId.value },
       { valueKey: 'status', value: TaskStatusEnum.CONFIRMING }
     ]);
     return;
@@ -950,7 +950,7 @@ onMounted(async () => {
           selectedQuickSearchItems.value.set('assigneeId', { key: 'assigneeId' });
 
           // Remove "Awaiting my confirmation"
-          selectedQuickSearchItems.value.delete('confirmorId');
+          selectedQuickSearchItems.value.delete('confirmerId');
           // Remove "In my progress"
           selectedQuickSearchItems.value.delete('progress');
         } else {
@@ -961,23 +961,23 @@ onMounted(async () => {
           selectedQuickSearchItems.value.set('progress', { key: 'progress' });
 
           // Remove "Awaiting my confirmation"
-          selectedQuickSearchItems.value.delete('confirmorId');
+          selectedQuickSearchItems.value.delete('confirmerId');
           // Remove "Awaiting my processing"
           selectedQuickSearchItems.value.delete('assigneeId');
         } else {
           selectedQuickSearchItems.value.delete('progress');
         }
 
-        const confirmorId = _filters.find(item => item.key === 'confirmorId')?.value;
-        if (status && status === TaskStatusEnum.CONFIRMING && confirmorId === currentUserId.value) {
-          selectedQuickSearchItems.value.set('confirmorId', { key: 'confirmorId' });
+        const confirmerId = _filters.find(item => item.key === 'confirmerId')?.value;
+        if (status && status === TaskStatusEnum.CONFIRMING && confirmerId === currentUserId.value) {
+          selectedQuickSearchItems.value.set('confirmerId', { key: 'confirmerId' });
 
           // Remove "Awaiting my processing"
           selectedQuickSearchItems.value.delete('assigneeId');
           // Remove "In my progress"
           selectedQuickSearchItems.value.delete('progress');
         } else {
-          selectedQuickSearchItems.value.delete('confirmorId');
+          selectedQuickSearchItems.value.delete('confirmerId');
         }
 
         // Task type
@@ -1280,7 +1280,7 @@ const menuItems = computed(():SearchPanelMenuItem[] => {
       name: t('task.searchPanel.menuItems.myProgress')
     },
     {
-      key: 'confirmorId',
+      key: 'confirmerId',
       name: t('task.searchPanel.menuItems.myConfirm')
     },
     ...taskTypeOptions.value,
@@ -1325,8 +1325,8 @@ const searchOptions = [
   },
   {
     type: 'select-user' as const,
-    valueKey: 'confirmorId',
-    placeholder: t('task.searchPanel.searchOptions.confirmorId'),
+    valueKey: 'confirmerId',
+    placeholder: t('task.searchPanel.searchOptions.confirmerId'),
     fieldNames: { label: 'fullName', value: 'id' }
   },
   {

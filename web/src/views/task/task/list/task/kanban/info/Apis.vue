@@ -866,11 +866,11 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.unplannedFlag') }}</span>
+            <span>{{ t('task.detailInfo.apis.columns.unplanned') }}</span>
             <Colon class="w-1" />
           </div>
           <div>
-            {{ props.dataSource?.unplannedFlag ? t('task.detailInfo.apis.columns.yes') : t('task.detailInfo.apis.columns.no') }}
+            {{ props.dataSource?.unplanned ? t('task.detailInfo.apis.columns.yes') : t('task.detailInfo.apis.columns.no') }}
           </div>
         </div>
       </div>

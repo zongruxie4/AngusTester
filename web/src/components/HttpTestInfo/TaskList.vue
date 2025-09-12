@@ -50,8 +50,8 @@ const columns = [
       label: t('xcan_httpTestInfo.assigneeName')
     },
     {
-      dataIndex: 'confirmorName',
-      label: t('xcan_httpTestInfo.confirmorName')
+      dataIndex: 'confirmerName',
+      label: t('xcan_httpTestInfo.confirmerName')
     },
     { dataIndex: 'createdByName', label: t('xcan_httpTestInfo.createdByName') },
     { dataIndex: 'createdDate', label: t('xcan_httpTestInfo.createdDate') }

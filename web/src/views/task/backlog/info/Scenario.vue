@@ -853,7 +853,7 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
           <div>
-            {{ props.dataSource?.unplannedFlag ? t('status.yes') : t('status.no') }}
+            {{ props.dataSource?.unplanned ? t('status.yes') : t('status.no') }}
           </div>
         </div>
       </div>

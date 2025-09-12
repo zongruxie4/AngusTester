@@ -762,7 +762,7 @@ const columns: ({
   },
   {
     title: t('task.table.columns.confirmer'),
-    dataIndex: 'confirmorName',
+    dataIndex: 'confirmerName',
     width: 100,
     hide: true,
     groupName: 'personType',

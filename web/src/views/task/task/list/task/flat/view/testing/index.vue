@@ -3,8 +3,8 @@ import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { Spin } from '@xcan-angus/vue-ui';
 import { task } from '@/api/tester';
 
-import { TaskInfo } from '../../../../../../types';
-import { TestInfo } from './PropsType';
+import { TaskInfo } from '@/views/task/types';
+import { TestInfo } from '@/views/execution/types';
 
 type Props = {
   projectId: string;

@@ -795,7 +795,7 @@ const resetGroupDrag = (id: string, index: number, status: TaskInfo['status']['v
 };
 
 const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], toStatus: TaskInfo['status']['value'], index: number, groupKey?: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType') => {
-  const { id, confirmorId } = data;
+  const { id, confirmerId } = data;
   if (status === 'PENDING') {
     if (toStatus === 'IN_PROGRESS') {
       const disabled = !!menuItemsMap.value.get(id)?.find(item => item.key === 'start')?.disabled;
@@ -856,13 +856,13 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
 
   if (status === 'IN_PROGRESS') {
     if (toStatus === 'CONFIRMING') {
-      if (!confirmorId) {
+      if (!confirmerId) {
         if (groupKey) {
           resetGroupDrag(id, index, status, toStatus, groupKey);
         } else {
           resetDrag(id, index, status, toStatus);
         }
-        notification.warning(t('task.kanbanView.messages.noConfirmor'));
+        notification.warning(t('task.kanbanView.messages.noConfirmer'));
         return;
       }
 
@@ -889,7 +889,7 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
       }
     } else if (toStatus === 'COMPLETED') {
       const disabled = !!menuItemsMap.value.get(id)?.find(item => item.key === 'completed')?.disabled;
-      if (confirmorId) {
+      if (confirmerId) {
         if (groupKey) {
           resetGroupDrag(id, index, status, toStatus, groupKey);
         } else {
@@ -915,7 +915,7 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
         resetDrag(id, index, status, toStatus);
       }
 
-      if (confirmorId) {
+      if (confirmerId) {
         notification.warning(t('task.kanbanView.messages.onlyMoveToConfirmingOrCanceled'));
       } else {
         notification.warning(t('task.kanbanView.messages.onlyMoveToCompletedOrCanceled'));
@@ -1074,7 +1074,7 @@ const dragMove = (event) => {
   // 设置正在拖动的列索引
   const [, toIndex] = event.to.id.split('-') as [TaskInfo['status']['value'], number];
   const [fromStatus] = event.from.id.split('-') as [TaskInfo['status']['value'], number];
-  const [, , draggedId, confirmorId] = event.dragged.id.split('-') as [TaskInfo['status']['value'], number, string, string];
+  const [, , draggedId, confirmerId] = event.dragged.id.split('-') as [TaskInfo['status']['value'], number, string, string];
   const cancelDisabled = !!menuItemsMap.value.get(draggedId)?.find(item => item.key === 'cancel')?.disabled;
   if (fromStatus === 'PENDING') {
     isDraggingToColumnStatus.value = ['IN_PROGRESS'];
@@ -1086,7 +1086,7 @@ const dragMove = (event) => {
   }
 
   if (fromStatus === 'IN_PROGRESS') {
-    if (confirmorId === '0') {
+    if (confirmerId === '0') {
       isDraggingToColumnStatus.value = ['COMPLETED'];
     } else {
       isDraggingToColumnStatus.value = ['CONFIRMING'];
@@ -1243,11 +1243,11 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
       const sprintAuth = item.sprintAuth;
 
       const permissions = sprintPermissionsMap.value.get(sprintId) || [];
-      const { currentAssociateType, confirmorId, assigneeId } = item;
+      const { currentAssociateType, confirmerId, assigneeId } = item;
 
       const userId = props.userInfo?.id;
       const isAdministrator = !!currentAssociateType?.map(item => item.value).includes('SYS_ADMIN' || 'APP_ADMIN');
-      const isConfirmor = confirmorId === userId;
+      const isConfirmer = confirmerId === userId;
       const isAssignee = assigneeId === userId;
 
       const menuItems: ActionMenuItem[] = [
@@ -1294,13 +1294,13 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         });
       }
 
-      if (confirmorId) {
+      if (confirmerId) {
         if (status === 'CONFIRMING') {
           menuItems.push({
             name: t('task.kanbanView.actions.completed'),
             key: 'completed',
             icon: 'icon-yiwancheng',
-            disabled: !isAdministrator && !isConfirmor,
+            disabled: !isAdministrator && !isConfirmer,
             hide: false
           });
 
@@ -1308,7 +1308,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
             name: t('task.kanbanView.actions.uncompleted'),
             key: 'uncompleted',
             icon: 'icon-shibaiyuanyin',
-            disabled: !isAdministrator && !isConfirmor,
+            disabled: !isAdministrator && !isConfirmer,
             hide: false
           });
         }
@@ -1429,7 +1429,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
             @add="dragAdd($event, item.value)">
             <template #item="{ element, index }: { element: TaskInfo; index: number; }">
               <div
-                :id="`${item.value}-${index}-${element.id}-${(element.confirmorId || '0')}`"
+                :id="`${item.value}-${index}-${element.id}-${(element.confirmerId || '0')}`"
                 :class="{ 'active-item': checkedTaskId === element.id }"
                 class="task-board-item border border-solid rounded border-theme-text-box p-2 space-y-1.5"
                 @click="toChecked(element, index)">
@@ -1575,7 +1575,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
                   @add="groupDragAdd($event, _status.value)">
                   <template #item="{ element, index }: { element: TaskInfo; index: number; }">
                     <div
-                      :id="`${_status.value}-${index}-${element.id}-${(element.confirmorId || '0')}-${_createdByName.value}`"
+                      :id="`${_status.value}-${index}-${element.id}-${(element.confirmerId || '0')}-${_createdByName.value}`"
                       :class="{ 'active-item': checkedTaskId === element.id }"
                       class="task-board-item border border-solid rounded border-theme-text-box p-2 space-y-1.5"
                       @click="toChecked(element, statusIndex, _createdByName.value)">

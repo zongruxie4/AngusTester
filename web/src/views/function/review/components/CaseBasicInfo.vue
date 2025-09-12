@@ -41,7 +41,7 @@ const infoColumns = computed<GridColumns[][]>(() => [
     },
     { label: props.caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('caseReview.comp.caseBasicInfo.evalStoryPoint') : t('caseReview.comp.caseBasicInfo.evalWorkload'), dataIndex: 'evalWorkload', customRender: ({ text }) => text || '--' },
     { label: props.caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('caseReview.comp.caseBasicInfo.actualStoryPoint') : t('caseReview.comp.caseBasicInfo.actualWorkload'), dataIndex: 'actualWorkload', customRender: ({ text }) => text || '--' },
-    { label: t('caseReview.comp.caseBasicInfo.unplannedCase'), dataIndex: 'unplannedFlag', customRender: ({ text }) => text ? t('status.yes') : t('status.no') }
+    { label: t('caseReview.comp.caseBasicInfo.unplannedCase'), dataIndex: 'unplanned', customRender: ({ text }) => text ? t('status.yes') : t('status.no') }
   ]
 ]);
 

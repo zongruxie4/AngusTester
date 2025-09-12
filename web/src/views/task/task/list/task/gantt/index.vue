@@ -68,11 +68,9 @@ const getParams = () => {
   if (props.filters?.length) {
     params.filters = props.filters;
   }
-
   if (props.moduleId) {
     params.moduleId = props.moduleId;
   }
-
   return params;
 };
 

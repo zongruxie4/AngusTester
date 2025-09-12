@@ -2,8 +2,8 @@ export type SubTaskInfos = {
     assigneeId: string;
     assigneeName: string;
     code: string;
-    confirmorId: string;
-    confirmorName: string;
+    confirmerId: string;
+    confirmerName: string;
     createdBy: string;
     createdByName: string;
     createdDate: string;

@@ -322,7 +322,7 @@ const taskTypeBlur = async () => {
   if (value === 'BUG') {
     await task.updateTask(taskId.value, {
       bugLevel: 'MINOR',
-      missingBugFlag: false
+      missingBug: false
     });
   }
   if (error) {
@@ -680,10 +680,10 @@ const onePassText = computed(() => {
                 {{ props.dataSource?.bugLevel?.message }}
               </Tag>
               <Tag
-                v-if="props.dataSource?.missingBugFlag"
+                v-if="props.dataSource?.missingBug"
                 color="error"
                 class="ml-2 text-3 leading-4">
-                {{ t('task.detailInfo.basic.columns.missingBugFlag') }}
+                {{ t('task.detailInfo.basic.columns.missingBug') }}
               </Tag>
             </template>
           </div>
@@ -933,11 +933,11 @@ const onePassText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.basic.columns.unplannedFlag') }}</span>
+            <span>{{ t('task.detailInfo.basic.columns.unplanned') }}</span>
             <Colon class="w-1" />
           </div>
           <div>
-            {{ props.dataSource?.unplannedFlag ? t('task.detailInfo.basic.columns.yes') : t('task.detailInfo.basic.columns.no') }}
+            {{ props.dataSource?.unplanned ? t('task.detailInfo.basic.columns.yes') : t('task.detailInfo.basic.columns.no') }}
           </div>
         </div>
       </div>

@@ -130,18 +130,10 @@ const isError = () => {
             :options="{placeholder: t('task.detailInfo.description.placeholder')}"
             :placeholder="t('task.detailInfo.description.validation.maxLength')"
             @change="editorChange" />
-          <div v-show="validateErr" class="text-status-error text-3">{{ t('task.detailInfo.description.validation.maxLength') }}</div>
+          <div v-show="validateErr" class="text-status-error text-3">
+            {{ t('task.detailInfo.description.validation.maxLength') }}
+          </div>
         </div>
-
-        <!-- <div class="space-x-2.5 w-full flex items-center justify-end">
-            <Button size="small" @click="cancel">取消</Button>
-            <Button
-              size="small"
-              type="primary"
-              @click="ok">
-              确定
-            </Button>
-          </div> -->
       </template>
 
       <div v-if="!editFlag" class="browser-container">

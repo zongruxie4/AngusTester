@@ -323,7 +323,7 @@ const taskTypeBlur = async () => {
   if (value === 'BUG') {
     await task.updateTask(taskId.value, {
       bugLevel: 'MINOR',
-      missingBugFlag: false
+      missingBug: false
     });
   }
   if (error) {
@@ -672,7 +672,7 @@ const onePassText = computed(() => {
                 {{ props.dataSource?.bugLevel?.message }}
               </Tag>
               <Tag
-                v-if="props.dataSource?.missingBugFlag"
+                v-if="props.dataSource?.missingBug"
                 color="error"
                 class="ml-2 text-3 leading-4">
                 {{ t('backlog.info.basic.missingBug') }}
@@ -929,7 +929,7 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
           <div>
-            {{ props.dataSource?.unplannedFlag ? t('status.yes') : t('status.no') }}
+            {{ props.dataSource?.unplanned ? t('status.yes') : t('status.no') }}
           </div>
         </div>
       </div>

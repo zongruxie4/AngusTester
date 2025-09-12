@@ -56,7 +56,7 @@ export interface TaskItem {
   sprintName: string;
   priority: any;
   assigneeName: string;
-  confirmorName: string;
+  confirmerName: string;
   deadlineDate: string;
   taskType: EnumMessage<TaskType>;
   linkUrl: string;

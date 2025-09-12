@@ -16,8 +16,8 @@ export type TaskInfo = {
         assigneeId: string;
         assigneeName: string;
         code: string;
-        confirmorId: string;
-        confirmorName: string;
+        confirmerId: string;
+        confirmerName: string;
         createdBy: string;
         createdByName: string;
         createdDate: string;
@@ -43,8 +43,8 @@ export type TaskInfo = {
     confirmedDate: string;
     moduleId: string;
     moduleName: string;
-    confirmorId: string;
-    confirmorName: string;
+    confirmerId: string;
+    confirmerName: string;
     createdBy: string;
     createdByName: string;
     createdDate: string;
@@ -132,7 +132,7 @@ export type TaskInfo = {
     linkUrl?: string;// 跳转到详情页面的链接地址，前端自动把所需参数添加到query
     bugLevel?: { value: 'CRITICAL' | 'MAJOR'| 'MINOR' | 'TRIVIAL', message: string };
     testerId?: string;
-    missingBugFlag?: boolean;
+    missingBug?: boolean;
     testerName?: string;
     softwareVersion?: string;
 }

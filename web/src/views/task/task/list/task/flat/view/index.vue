@@ -3,16 +3,16 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'v
 import { useI18n } from 'vue-i18n';
 import { Button, Popover, TabPane, Tabs } from 'ant-design-vue';
 import { Icon, modal, notification, Spin } from '@xcan-angus/vue-ui';
-import { toClipboard, http, utils, duration, appContext } from '@xcan-angus/infra';
+import { appContext, duration, enumUtils, http, toClipboard, utils } from '@xcan-angus/infra';
+import { TaskSprintPermission, TaskStatus, TaskType } from '@/enums/enums';
 import { debounce } from 'throttle-debounce';
 import { cloneDeep } from 'lodash-es';
 import { task } from '@/api/tester';
 
-import { TaskInfo } from '../../../../../types';
+import { TaskInfo } from '@/views/task/types';
 import { ActionMenuItem } from '../../../../types';
 
 type TabPaneKey = 'basicInfo' | 'remark' | 'testInfo' | 'comments' | 'activity';
-type SprintPermissionKey = 'MODIFY_SPRINT' | 'DELETE_SPRINT' | 'ADD_TASK' | 'MODIFY_TASK' | 'DELETE_TASK' | 'EXPORT_TASK' | 'RESTART_TASK' | 'REOPEN_TASK' | 'GRANT'
 
 type Props = {
   editTaskData: TaskInfo;
@@ -21,8 +21,8 @@ type Props = {
   appInfo: { id: string; };
   id: string;
   menuItems: ActionMenuItem[];
-  type: 'details' | 'list';// 页面视图，case-单独的详情页面；list-列表视图下的详情
-  linkUrl: string;// 本页面的超链接地址
+  type: 'details' | 'list';
+  linkUrl: string;
   notify: string;
 }
 
@@ -76,7 +76,7 @@ const commentNotify = ref<string>();
 
 const loading = ref(false);
 const taskInfo = ref<TaskInfo>();
-const sprintPermissions = ref<SprintPermissionKey[]>([]);
+const sprintPermissions = ref<TaskSprintPermission[]>([]);
 
 const activeKey = ref<TabPaneKey>('basicInfo');
 const fullScreenFlag = ref(false);
@@ -104,7 +104,7 @@ const splitCancel = () => {
 const splitOk = async () => {
   selectedTaskInfo.value = undefined;
   emit('splitOk');
-  loadData();
+  await loadData();
 };
 
 const toMove = () => {
@@ -230,7 +230,7 @@ const toProcessed = async () => {
   emitDataChange(detailData);
 };
 
-const toUncomplete = async () => {
+const toUnComplete = async () => {
   if (!taskInfo.value) {
     return;
   }
@@ -344,11 +344,11 @@ const emitUpdateTabPane = (data: Partial<TaskInfo>) => {
 };
 
 const fetchPrev = async () => {
-  fetchNewData(+queryParameterMap.value.pageNo - 1);
+  await fetchNewData(+queryParameterMap.value.pageNo - 1);
 };
 
 const fetchNext = async () => {
-  fetchNewData(+queryParameterMap.value.pageNo + 1);
+  await fetchNewData(+queryParameterMap.value.pageNo + 1);
 };
 
 const fetchNewData = async (pageNo: number) => {
@@ -356,7 +356,6 @@ const fetchNewData = async (pageNo: number) => {
     if (!['total'].includes(cur[0])) {
       prev[cur[0]] = cur[1];
     }
-
     return prev;
   }, {});
 
@@ -369,12 +368,10 @@ const fetchNewData = async (pageNo: number) => {
 
   const data = res?.data;
   if (data) {
-    // 更新tabPane存储的信息
     const total = data.total;
     const item = data?.list?.[0];
     if (item) {
       const { id, name } = item;
-      // 更新会触发props.id的监听，所以不用手动加载详情数据并替换
       replaceTabPane(props.id, { _id: id, uiKey: id, name, data: { id, query: queryStr + '&total=' + total } });
     }
   }
@@ -385,12 +382,10 @@ const activeKeyChange = (key: TabPaneKey) => {
     refreshRemark();
     return;
   }
-
   if (key === 'activity') {
     refreshActivity();
     return;
   }
-
   if (key === 'comments') {
     refreshComment();
   }
@@ -398,19 +393,15 @@ const activeKeyChange = (key: TabPaneKey) => {
 
 const toRefresh = () => {
   loadData();
-
   refreshNotify.value = utils.uuid();
-
   if (activeKey.value === 'remark') {
     refreshRemark();
     return;
   }
-
   if (activeKey.value === 'activity') {
     refreshActivity();
     return;
   }
-
   if (activeKey.value === 'comments') {
     refreshComment();
   }
@@ -438,10 +429,8 @@ const loadData = async (): Promise<Partial<TaskInfo>> => {
       if (typeof deleteTabPane === 'function') {
         deleteTabPane([id]);
       }
-
       return { id };
     }
-
     return { id };
   }
 
@@ -455,9 +444,7 @@ const loadData = async (): Promise<Partial<TaskInfo>> => {
     ...data
   };
 
-  // 更新tabpane的名称
   emitUpdateTabPane(data);
-
   return data;
 };
 
@@ -466,33 +453,20 @@ const loadPermissions = async (id: string | undefined) => {
     const params = {
       admin: true
     };
-
     const [error, res] = await task.getUserSprintAuth(id, props.userInfo?.id, params);
     if (error) {
       return;
     }
-
-    const data = (res?.data || []).map(item => item.value);
-    sprintPermissions.value = data;
+    sprintPermissions.value = (res?.data || []).map(item => item.value);
   } else {
-    sprintPermissions.value = [
-      'MODIFY_SPRINT',
-      'DELETE_SPRINT',
-      'ADD_TASK',
-      'MODIFY_TASK',
-      'DELETE_TASK',
-      'EXPORT_TASK',
-      'RESTART_TASK',
-      'REOPEN_TASK',
-      'GRANT'
-    ];
+    sprintPermissions.value = enumUtils.getEnumValues(TaskSprintPermission);
   }
 };
 
 const refreshChange = async () => {
   const data = await loadData();
   if (!props.menuItems?.length) {
-    loadPermissions(data.sprintId);
+    await loadPermissions(data.sprintId);
   }
 };
 
@@ -504,7 +478,6 @@ const resizeHandler = debounce(duration.resize, () => {
   if (!containerDom) {
     return;
   }
-
   largePageLayout.value = containerDom.offsetWidth >= 960;
 });
 
@@ -520,7 +493,7 @@ onMounted(() => {
 
     const data = await loadData();
     if (!props.menuItems?.length) {
-      loadPermissions(data.sprintId);
+      await loadPermissions(data.sprintId);
     }
   }, { immediate: true });
 
@@ -528,7 +501,6 @@ onMounted(() => {
     if (!newValue || props.id !== newValue.id) {
       return;
     }
-
     taskInfo.value = newValue;
   }, { immediate: true });
 
@@ -536,7 +508,6 @@ onMounted(() => {
     if (newValue === undefined || newValue === null || newValue === '') {
       return;
     }
-
     resizeHandler();
   }, { immediate: true });
 
@@ -547,7 +518,7 @@ onMounted(() => {
 
     const data = await loadData();
     if (!props.menuItems?.length) {
-      loadPermissions(data.sprintId);
+      await loadPermissions(data.sprintId);
     }
   }, { immediate: true });
 });
@@ -574,7 +545,6 @@ const prevBtnDisabled = computed(() => {
   if (pageNo === undefined || pageNo === null || pageNo === '') {
     return true;
   }
-
   return +pageNo === 1;
 });
 
@@ -595,7 +565,7 @@ const showTestInfo = computed(() => {
     return false;
   }
 
-  return ['API_TEST', 'SCENARIO_TEST'].includes(taskType);
+  return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(taskType);
 });
 
 const menuItemsMap = computed(() => {
@@ -603,13 +573,12 @@ const menuItemsMap = computed(() => {
   const data = taskInfo.value;
   if (data) {
     const status = data.status?.value;
-    const { currentAssociateType, confirmorId, assigneeId, favourite, follow, sprintAuth } = data;
+    const { currentAssociateType, confirmerId, assigneeId, favourite, follow, sprintAuth } = data;
 
     const userId = props.userInfo?.id;
     const isAdministrator = !!currentAssociateType?.map(item => item.value).includes('SYS_ADMIN' || 'APP_ADMIN');
-    const isConfirmor = confirmorId === userId;
+    const isConfirmer = confirmerId === userId;
     const isAssignee = assigneeId === userId;
-    // const isCreator = createdBy === userId;
 
     let permissions = props.menuItems || [];
     if (sprintPermissions.value?.length) {
@@ -621,26 +590,26 @@ const menuItemsMap = computed(() => {
         name: t('actions.edit'),
         key: 'edit',
         icon: 'icon-shuxie',
-        disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
+        disabled: !isAdministrator && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
         hide: true
       },
       {
         name: t('actions.delete'),
         key: 'delete',
         icon: 'icon-qingchu',
-        disabled: !isAdministrator && !permissions.includes('DELETE_TASK') && sprintAuth,
+        disabled: !isAdministrator && !permissions.includes(TaskSprintPermission.DELETE_TASK) && sprintAuth,
         hide: true
       },
       {
         name: t('task.detail.actions.split'),
         key: 'split',
         icon: 'icon-guanlianziyuan',
-        disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
+        disabled: !isAdministrator && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
         hide: true
       }
     ];
 
-    if (status === 'PENDING') {
+    if (status === TaskStatus.PENDING) {
       menuItems.push({
         name: t('task.actions.start'),
         key: 'start',
@@ -650,7 +619,7 @@ const menuItemsMap = computed(() => {
       });
     }
 
-    if (status === 'IN_PROGRESS') {
+    if (status === TaskStatus.IN_PROGRESS) {
       menuItems.push({
         name: t('task.actions.complete'),
         key: 'processed',
@@ -660,12 +629,12 @@ const menuItemsMap = computed(() => {
       });
     }
 
-    if (status === 'CONFIRMING') {
+    if (status === TaskStatus.CONFIRMING) {
       menuItems.push({
         name: t('task.actions.confirmComplete'),
         key: 'completed',
         icon: 'icon-yiwancheng',
-        disabled: !isAdministrator && !isConfirmor,
+        disabled: !isAdministrator && !isConfirmer,
         hide: false
       });
 
@@ -673,17 +642,17 @@ const menuItemsMap = computed(() => {
         name: t('task.actions.confirmIncomplete'),
         key: 'uncompleted',
         icon: 'icon-shibaiyuanyin',
-        disabled: !isAdministrator && !isConfirmor,
+        disabled: !isAdministrator && !isConfirmer,
         hide: false
       });
     }
 
-    if (status === 'CANCELED' || status === 'COMPLETED') {
+    if (status === TaskStatus.CANCELED || status === TaskStatus.COMPLETED) {
       menuItems.push({
         name: t('task.actions.reopen'),
         key: 'reopen',
         icon: 'icon-zhongxindakaiceshirenwu',
-        disabled: !isAdministrator && !permissions.includes('REOPEN_TASK') && !isAssignee,
+        disabled: !isAdministrator && !permissions.includes(TaskSprintPermission.REOPEN_TASK) && !isAssignee,
         hide: false,
         tip: t('task.tips.reopenTip')
       });
@@ -692,18 +661,18 @@ const menuItemsMap = computed(() => {
         name: t('task.actions.restart'),
         key: 'restart',
         icon: 'icon-zhongxinkaishiceshi',
-        disabled: !isAdministrator && !permissions.includes('RESTART_TASK'),
+        disabled: !isAdministrator && !permissions.includes(TaskSprintPermission.MODIFY_TASK),
         hide: false,
         tip: t('task.tips.restartTip')
       });
     }
 
-    if (status !== 'CANCELED' && status !== 'COMPLETED') {
+    if (status !== TaskStatus.CANCELED && status !== TaskStatus.COMPLETED) {
       menuItems.push({
         name: t('actions.cancel'),
         key: 'cancel',
         icon: 'icon-zhongzhi2',
-        disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
+        disabled: !isAdministrator && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
         hide: false
       });
     }
@@ -748,7 +717,7 @@ const menuItemsMap = computed(() => {
       name: t('task.actions.move'),
       key: 'move',
       icon: 'icon-yidong',
-      disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
+      disabled: !isAdministrator && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
       hide: false
     });
 
@@ -765,7 +734,6 @@ const menuItemsMap = computed(() => {
       map[item.key] = item;
     }
   }
-
   return map;
 });
 
@@ -825,7 +793,7 @@ const getRefTaskNum = (type = 'TASK') => {
           type="primary"
           size="small"
           class="flex items-center"
-          @click="toUncomplete">
+          @click="toUnComplete">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-kaishi" />
           <span>{{ t('task.actions.confirmIncomplete') }}</span>
         </Button>
@@ -966,15 +934,6 @@ const getRefTaskNum = (type = 'TASK') => {
           <span>{{ t('task.detail.actions.copyLink') }}</span>
         </Button>
 
-        <!-- <Button
-          type="default"
-          size="small"
-          class="flex items-center"
-          @click="toRefresh">
-          <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-shuaxin" />
-          <span>{{ t('task.detail.actions.refresh') }}</span>
-        </Button> -->
-
         <Button
           v-if="props.type === 'list'"
           type="default"
@@ -1002,6 +961,7 @@ const getRefTaskNum = (type = 'TASK') => {
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-chakanshangyitiao" />
           <span>{{ prevBtnDisabled ? t('task.detail.noMore') : t('task.detail.previousTask') }}</span>
         </Button>
+
         <Button
           size="small"
           class="flex items-center"
@@ -1028,6 +988,7 @@ const getRefTaskNum = (type = 'TASK') => {
           <span>{{ t('task.detail.actions.refresh') }}</span>
         </Button>
       </template>
+
       <TabPane key="basicInfo" :tab="t('task.detail.tabs.basicInfo')">
         <BasicInfo
           v-if="largePageLayout === false || largePageLayout === true"
@@ -1053,19 +1014,19 @@ const getRefTaskNum = (type = 'TASK') => {
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :taskInfo="taskInfo"
-
           @refreshChange="refreshChange" />
       </TabPane>
 
-      <TabPane key="asscoTask">
+      <TabPane key="assocTask">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('task.detail.tabs.assocTask') }}</span>
-            <span>({{ getRefTaskNum('TASK') }})</span>
+            <span>({{ getRefTaskNum(TaskType.TASK) }})</span>
           </div>
         </template>
+
         <AssocTaskTab
-          key="TASK"
+          :key="TaskType.TASK"
           :projectId="props.projectId"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
@@ -1073,56 +1034,56 @@ const getRefTaskNum = (type = 'TASK') => {
           :taskId="props.id"
           :title="t('task.detail.assocTaskTab.title')"
           :tips="t('task.detail.assocTaskTab.tips')"
-          taskType="TASK"
+          :taskType="TaskType.TASK"
           @editSuccess="loadData" />
       </TabPane>
-      <TabPane key="asscoRequirements">
+      <TabPane key="assocRequirements">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('task.detail.asscoRequirements.title') }}</span>
-            <span>({{ getRefTaskNum('REQUIREMENT') }})</span>
+            <span>{{ t('task.detail.assocRequirements.title') }}</span>
+            <span>({{ getRefTaskNum(TaskType.REQUIREMENT) }})</span>
           </div>
         </template>
         <AssocTaskTab
-          key="REQUIREMENT"
+          :key="TaskType.REQUIREMENT"
           :projectId="props.projectId"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :dataSource="taskInfo?.refTaskInfos || []"
           :taskId="props.id"
-          :title="t('task.detail.asscoRequirements.title')"
-          :tips="t('task.detail.asscoRequirements.tips')"
-          taskType="REQUIREMENT"
+          :title="t('task.detail.assocRequirements.title')"
+          :tips="t('task.detail.assocRequirements.tips')"
+          :taskType="TaskType.REQUIREMENT"
           @editSuccess="loadData" />
       </TabPane>
-      <TabPane key="asscoStory">
+      <TabPane key="assocStory">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('task.detail.asscoStory.title') }}</span>
-            <span>({{ getRefTaskNum('STORY') }})</span>
+            <span>{{ t('task.detail.assocStory.title') }}</span>
+            <span>({{ getRefTaskNum(TaskType.STORY) }})</span>
           </div>
         </template>
         <AssocTaskTab
-          key="STORY"
+          :key="TaskType.STORY"
           :projectId="props.projectId"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :dataSource="taskInfo?.refTaskInfos || []"
           :taskId="props.id"
-          :title="t('task.detail.asscoStory.title')"
-          :tips="t('task.detail.asscoStory.tips')"
-          taskType="STORY"
+          :title="t('task.detail.assocStory.title')"
+          :tips="t('task.detail.assocStory.tips')"
+          :taskType="TaskType.STORY"
           @editSuccess="loadData" />
       </TabPane>
       <TabPane key="asscoBug">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('task.detail.asscoBug.title') }}</span>
-            <span>({{ getRefTaskNum('BUG') }})</span>
+            <span>({{ getRefTaskNum(TaskType.BUG) }})</span>
           </div>
         </template>
         <AssocTaskTab
-          key="BUG"
+          :key="TaskType.BUG"
           :projectId="props.projectId"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
@@ -1130,7 +1091,7 @@ const getRefTaskNum = (type = 'TASK') => {
           :taskId="props.id"
           :title="t('task.detail.asscoBug.title')"
           :tips="t('task.detail.asscoBug.tips')"
-          taskType="BUG"
+          :taskType="TaskType.BUG"
           @editSuccess="loadData" />
       </TabPane>
       <TabPane key="asscoCase">
@@ -1148,42 +1109,42 @@ const getRefTaskNum = (type = 'TASK') => {
           :taskId="props.id"
           @editSuccess="loadData" />
       </TabPane>
-      <TabPane key="asscoApiTest">
+      <TabPane key="assocApiTest">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('task.detail.asscoApiTest.title') }}</span>
-            <span>({{ getRefTaskNum('API_TEST') }})</span>
+            <span>{{ t('task.detail.assocApiTest.title') }}</span>
+            <span>({{ getRefTaskNum(TaskType.API_TEST) }})</span>
           </div>
         </template>
         <AssocTaskTab
-          key="API_TEST"
+          :key="TaskType.API_TEST"
           :projectId="props.projectId"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :dataSource="taskInfo?.refTaskInfos || []"
           :taskId="props.id"
-          :title="t('task.detail.asscoApiTest.title')"
-          :tips="t('task.detail.asscoApiTest.tips')"
-          taskType="API_TEST"
+          :title="t('task.detail.assocApiTest.title')"
+          :tips="t('task.detail.assocApiTest.tips')"
+          :taskType="TaskType.API_TEST"
           @editSuccess="loadData" />
       </TabPane>
-      <TabPane key="asscoScenTest">
+      <TabPane key="assocScenarioTest">
         <template #tab>
           <div class="inline-flex">
-            <span>{{ t('task.detail.asscoScenarioTest.title') }}</span>
-            <span>({{ getRefTaskNum('SCENARIO_TEST') }})</span>
+            <span>{{ t('task.detail.assocScenarioTest.title') }}</span>
+            <span>({{ getRefTaskNum(TaskType.SCENARIO_TEST) }})</span>
           </div>
         </template>
         <AssocTaskTab
-          key="SCENARIO_TEST"
+          :key="TaskType.SCENARIO_TEST"
           :projectId="props.projectId"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :dataSource="taskInfo?.refTaskInfos || []"
           :taskId="props.id"
-          :title="t('task.detail.asscoScenarioTest.title')"
-          :tips="t('task.detail.asscoScenarioTest.tips')"
-          taskType="SCENARIO_TEST"
+          :title="t('task.detail.assocScenarioTest.title')"
+          :tips="t('task.detail.assocScenarioTest.tips')"
+          taskType="TaskType.SCENARIO_TEST"
           @editSuccess="loadData" />
       </TabPane>
 

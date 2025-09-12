@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import { SmartComment } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/infra';
+import { TESTER, CombinedTargetType } from '@xcan-angus/infra';
 
 type Props = {
   id: string;
@@ -35,7 +35,7 @@ onMounted(() => {
     class="h-full overflow-y-auto pr-5"
     style="box-shadow: 0;"
     avatar
-    targetType="TASK"
+    :targetType="CombinedTargetType.TASK"
     :bordered="false"
     :public0="false"
     :showPublishTitle="false"

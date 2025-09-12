@@ -126,7 +126,7 @@ export type SearchPanelOption = {
  * Search panel menu item interface for quick search options
  */
 export type SearchPanelMenuItem = {
-  key: 'none' | 'createdBy' | 'assigneeId' | 'progress' | 'confirmorId' | 'lastDay' | 'lastThreeDays' | 'lastWeek' | string;
+  key: 'none' | 'createdBy' | 'assigneeId' | 'progress' | 'confirmerId' | 'lastDay' | 'lastThreeDays' | 'lastWeek' | string;
   name: string;
   groupKey?: 'assigneeId' | 'time';
 }

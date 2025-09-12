@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { ActivityInfo, Scroll } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/infra';
+import { TESTER, SearchCriteria, CombinedTargetType } from '@xcan-angus/infra';
 
 import { ActivityItem } from '@/views/task/task/list/task/flat/types';
 
@@ -24,7 +24,7 @@ const change = (data: ActivityItem[]) => {
 const params = computed(() => {
   return {
     mainTargetId: props.id,
-    filters: [{ key: 'targetType', value: 'TASK', op: 'EQUAL' }]
+    filters: [{ key: 'targetType', value: CombinedTargetType.TASK, op: SearchCriteria.OpEnum.Equal }]
   };
 });
 </script>

@@ -73,7 +73,7 @@ const onePassText = computed(() => {
               {{ task?.bugLevel?.message }}
             </Tag>
             <Tag
-              v-if="task?.missingBugFlag"
+              v-if="task?.missingBug"
               color="error"
               class="ml-2 text-3 leading-4">
               {{ t('reportPreview.task.info.basicInfo.fields.missedDefect') }}
@@ -197,7 +197,7 @@ const onePassText = computed(() => {
           {{ t('reportPreview.task.info.basicInfo.fields.unplannedTask') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
-          {{ task?.unplannedFlag ? t('reportPreview.task.info.basicInfo.options.yes') : t('reportPreview.task.info.basicInfo.options.no') }}
+          {{ task?.unplanned ? t('reportPreview.task.info.basicInfo.options.yes') : t('reportPreview.task.info.basicInfo.options.no') }}
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">

@@ -1248,7 +1248,7 @@
       "associatedTaskCount": "Associated Task",
       "sprintName": "Sprint Name",
       "assigneeName": "Assignee Name",
-      "confirmorName": "Confirmor Name",
+      "confirmerName": "Confirmer Name",
       "createdByName": "Created By Name",
       "createdDate": "Created Date",
       "average": "Average",

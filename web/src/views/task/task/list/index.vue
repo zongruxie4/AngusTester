@@ -614,11 +614,11 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
     const sprintAuth = taskItem.sprintAuth;
 
     const permissions = sprintPermissionsCache.value.get(sprintId) || [];
-    const { currentAssociateType, confirmorId, assigneeId, createdBy } = taskItem;
+    const { currentAssociateType, confirmerId, assigneeId, createdBy } = taskItem;
 
     const currentUserId = props.userInfo?.id;
     const isCurrentUserAdmin = !!currentAssociateType?.map(associateType => associateType.value).includes('SYS_ADMIN' || 'APP_ADMIN');
-    const isCurrentUserConfirmor = confirmorId === currentUserId;
+    const isCurrentUserConfirmer = confirmerId === currentUserId;
     const isCurrentUserAssignee = assigneeId === currentUserId;
 
     const menuItems: ActionMenuItem[] = [
@@ -670,7 +670,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
         name: t('task.actions.confirmComplete'),
         key: TaskStatus.COMPLETED,
         icon: 'icon-yiwancheng',
-        disabled: !isCurrentUserAdmin && !isCurrentUserConfirmor,
+        disabled: !isCurrentUserAdmin && !isCurrentUserConfirmer,
         hide: false
       });
 
@@ -678,7 +678,7 @@ const taskActionMenuItems = computed<Map<string, ActionMenuItem[]>>(() => {
         name: t('task.actions.confirmIncomplete'),
         key: 'uncompleted',
         icon: 'icon-shibaiyuanyin',
-        disabled: !isCurrentUserAdmin && !isCurrentUserConfirmor,
+        disabled: !isCurrentUserAdmin && !isCurrentUserConfirmer,
         hide: false
       });
     }

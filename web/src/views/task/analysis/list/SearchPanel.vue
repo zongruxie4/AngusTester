@@ -210,8 +210,8 @@ const handleQuickSearchMenuItemClick = (menuItem: MenuItem) => {
       return;
     }
 
-    if (itemKey === 'confirmorId') {
-      clearSearchPanelConfig(['confirmorId', 'status']);
+    if (itemKey === 'confirmerId') {
+      clearSearchPanelConfig(['confirmerId', 'status']);
       return;
     }
 
@@ -257,9 +257,9 @@ const handleQuickSearchMenuItemClick = (menuItem: MenuItem) => {
     return;
   }
 
-  if (itemKey === 'confirmorId') {
+  if (itemKey === 'confirmerId') {
     setSearchPanelConfig([
-      { valueKey: 'confirmorId', value: currentUserId.value },
+      { valueKey: 'confirmerId', value: currentUserId.value },
       { valueKey: 'status', value: TaskStatus.CONFIRMING }
     ]);
     return;
@@ -815,7 +815,7 @@ const updateQuickSearchSelections = (filters: SearchCriteria[]) => {
 
   if (status && status === TaskStatus.PENDING && assigneeId === currentUserId.value) {
     selectedQuickSearchItems.value.set('assigneeId', { key: 'assigneeId' });
-    selectedQuickSearchItems.value.delete('confirmorId');
+    selectedQuickSearchItems.value.delete('confirmerId');
     selectedQuickSearchItems.value.delete('progress');
   } else {
     selectedQuickSearchItems.value.delete('assigneeId');
@@ -823,20 +823,20 @@ const updateQuickSearchSelections = (filters: SearchCriteria[]) => {
 
   if (status && status === TaskStatus.IN_PROGRESS && assigneeId === currentUserId.value) {
     selectedQuickSearchItems.value.set('progress', { key: 'progress' });
-    selectedQuickSearchItems.value.delete('confirmorId');
+    selectedQuickSearchItems.value.delete('confirmerId');
     selectedQuickSearchItems.value.delete('assigneeId');
   } else {
     selectedQuickSearchItems.value.delete('progress');
   }
 
-  // Update confirmor selection
-  const confirmorId = filters.find(item => item.key === 'confirmorId')?.value;
-  if (status && status === TaskStatus.CONFIRMING && confirmorId === currentUserId.value) {
-    selectedQuickSearchItems.value.set('confirmorId', { key: 'confirmorId' });
+  // Update confirmer selection
+  const confirmerId = filters.find(item => item.key === 'confirmerId')?.value;
+  if (status && status === TaskStatus.CONFIRMING && confirmerId === currentUserId.value) {
+    selectedQuickSearchItems.value.set('confirmerId', { key: 'confirmerId' });
     selectedQuickSearchItems.value.delete('assigneeId');
     selectedQuickSearchItems.value.delete('progress');
   } else {
-    selectedQuickSearchItems.value.delete('confirmorId');
+    selectedQuickSearchItems.value.delete('confirmerId');
   }
 
   // Update date range selections

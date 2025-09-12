@@ -38,7 +38,7 @@ type Props = {
   taskId?: string;
   taskType?: 'TASK' | 'API_TEST' | 'BUG' | 'SCENARIO_TEST' | 'STORY' | 'REQUIREMENT' | undefined;
   assigneeId?: string;
-  confirmorId?: string;
+  confirmerId?: string;
   moduleId?: string;
   parentTaskId?: string;// 创建子任务
   refCaseIds?: string[];
@@ -55,7 +55,7 @@ const props = withDefaults(defineProps<Props>(), {
   taskId: undefined,
   taskType: undefined,
   assigneeId: undefined,
-  confirmorId: undefined,
+  confirmerId: undefined,
   moduleId: undefined,
   parentTaskId: undefined,
   name: undefined,
@@ -99,7 +99,7 @@ const formState = reactive<EditFormState>({
   projectId: undefined,
   assigneeId: undefined,
   attachments: undefined,
-  confirmorId: undefined,
+  confirmerId: undefined,
   deadlineDate: undefined,
   description: undefined,
   evalWorkload: undefined,
@@ -118,12 +118,12 @@ const formState = reactive<EditFormState>({
   testType: undefined,
   bugLevel: 'MINOR',
   testerId: undefined,
-  missingBugFlag: false,
+  missingBug: false,
   softwareVersion: undefined
 });
 
 const assigneeDefaultOptions = ref<{[key:string]:{fullName:string;id:string;}}>();
-const confirmorDefaultOptions = ref<{[key:string]:{fullName:string;id:string;}}>();
+const confirmerDefaultOptions = ref<{[key:string]:{fullName:string;id:string;}}>();
 
 const showContinue = computed(() => {
   return !props.taskId && !props.taskType;
@@ -153,14 +153,14 @@ const taskTypeChange = () => {
   }
 };
 
-const assignToMe = (key:'assigneeId'|'confirmorId'|'testerId') => {
+const assignToMe = (key:'assigneeId'|'confirmerId'|'testerId') => {
   if (key === 'assigneeId') {
     formState.assigneeId = userId.value;
     return;
   }
 
-  if (key === 'confirmorId') {
-    formState.confirmorId = userId.value;
+  if (key === 'confirmerId') {
+    formState.confirmerId = userId.value;
   }
 
   if (key === 'testerId') {
@@ -291,8 +291,8 @@ const getParams = () => {
     params.parentTaskId = props.parentTaskId;
   }
 
-  if (formState.confirmorId) {
-    params.confirmorId = formState.confirmorId;
+  if (formState.confirmerId) {
+    params.confirmerId = formState.confirmerId;
   }
 
   if (formState.moduleId && +formState.moduleId > 0) {
@@ -329,7 +329,7 @@ const getParams = () => {
 
   if (formState.taskType === 'BUG') {
     params.bugLevel = formState.bugLevel;
-    params.missingBugFlag = formState.missingBugFlag;
+    params.missingBug = formState.missingBug;
   }
 
   if (formState.taskType === 'API_TEST') {
@@ -449,11 +449,11 @@ const resetDefault = () => {
   formState.targetParentId = undefined;
   formState.taskType = props.taskType || 'TASK';
   formState.testType = 'FUNCTIONAL';
-  formState.missingBugFlag = false;
+  formState.missingBug = false;
   formState.softwareVersion = undefined;
   formState.assigneeId = props.assigneeId || props.userInfo?.id || undefined;
   formState.testerId = props.taskType === 'BUG' ? props.userInfo?.id : undefined;
-  formState.confirmorId = props.confirmorId || undefined;
+  formState.confirmerId = props.confirmerId || undefined;
   if (props.moduleId && +props.moduleId > 0) {
     formState.moduleId = props.moduleId;
   } else {
@@ -491,12 +491,12 @@ onMounted(() => {
         }
       };
 
-      const confirmorId = data.confirmorId;
-      formState.confirmorId = confirmorId;
-      confirmorDefaultOptions.value = {
-        [confirmorId]: {
-          fullName: data.confirmorName,
-          id: confirmorId
+      const confirmerId = data.confirmerId;
+      formState.confirmerId = confirmerId;
+      confirmerDefaultOptions.value = {
+        [confirmerId]: {
+          fullName: data.confirmerName,
+          id: confirmerId
         }
       };
 
@@ -518,7 +518,7 @@ onMounted(() => {
       formState.testType = data.testType?.value;
       formState.targetParentId = data.targetParentId;
       formState.testerId = data.testerId;
-      formState.missingBugFlag = data.missingBugFlag || false;
+      formState.missingBug = data.missingBug || false;
       formState.bugLevel = data.bugLevel?.value || 'MINOR';
       formState.softwareVersion = data.softwareVersion;
 
@@ -769,11 +769,11 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                   :lazy="false" />
               </FormItem>
               <FormItem
-                name="missingBugFlag"
-                :label="t('backlog.editForm.labels.missingBugFlag')"
+                name="missingBug"
+                :label="t('backlog.editForm.labels.missingBug')"
                 class="flex-1/2">
                 <Select
-                  v-model:value="formState.missingBugFlag"
+                  v-model:value="formState.missingBug"
                   :options="[{value: true, label: t('status.yes')}, {value: false, label: t('status.no')}]">
                 </Select>
               </FormItem>
@@ -907,12 +907,12 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
               </div>
             </FormItem>
 
-            <FormItem name="confirmorId" class="flex-1/2">
+            <FormItem name="confirmerId" class="flex-1/2">
               <template #label>
-                {{ t('backlog.editForm.labels.confirmor') }}<Popover placement="rightTop">
+                {{ t('backlog.editForm.labels.confirmer') }}<Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      {{ t('backlog.editForm.descriptions.confirmor') }}
+                      {{ t('backlog.editForm.descriptions.confirmer') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -920,19 +920,19 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
               </template>
               <div class="flex items-center">
                 <SelectUser
-                  v-model:value="formState.confirmorId"
-                  :placeholder="t('backlog.editForm.placeholders.selectConfirmor')"
+                  v-model:value="formState.confirmerId"
+                  :placeholder="t('backlog.editForm.placeholders.selectConfirmer')"
                   internal
                   allowClear
                   class="flex-1 min-w-0"
-                  :defaultOptions="confirmorDefaultOptions"
+                  :defaultOptions="confirmerDefaultOptions"
                   :action="`${TESTER}/project/${props.projectId}/member/user`"
                   :maxlength="80" />
                 <Button
                   size="small"
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
-                  @click="assignToMe('confirmorId')">
+                  @click="assignToMe('confirmerId')">
                   {{ t('backlog.editForm.buttons.assignToMe') }}
                 </Button>
               </div>
@@ -956,7 +956,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                 class="w-full" />
             </FormItem>
 
-            <FormItem name="confirmorId" class="flex-1/2">
+            <FormItem name="confirmerId" class="flex-1/2">
               <template #label>
                 {{ t('backlog.editForm.labels.tester') }}<Popover placement="rightTop">
                   <template #content>
@@ -974,7 +974,7 @@ const UPLOAD_OPTIONS = { bizKey: 'angusTesterTaskAttachments' };
                   internal
                   allowClear
                   class="flex-1 min-w-0"
-                  :defaultOptions="confirmorDefaultOptions"
+                  :defaultOptions="confirmerDefaultOptions"
                   :action="`${TESTER}/project/${props.projectId}/member/user`"
                   :maxlength="80" />
                 <Button

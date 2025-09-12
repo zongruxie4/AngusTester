@@ -62,7 +62,7 @@ const dataMap = ref<{
     name: string;
     evalWorkload: string;
     assigneeId: string;
-    confirmorId: string;
+    confirmerId: string;
     deadlineDate: string;
     projectId: string;
     sprintId: string;
@@ -110,7 +110,7 @@ const toGenerate = async () => {
     newDataMap[id] = {
       name: list[i],
       assigneeId: taskInfo.assigneeId,
-      confirmorId: taskInfo.confirmorId,
+      confirmerId: taskInfo.confirmerId,
       deadlineDate: taskInfo.deadlineDate,
       evalWorkload: '1',
       moduleId: taskInfo.moduleId,
@@ -168,7 +168,7 @@ const toAdd = () => {
   const data = props.taskInfo;
   dataMap.value[newId] = {
     assigneeId: data.assigneeId,
-    confirmorId: data.confirmorId,
+    confirmerId: data.confirmerId,
     deadlineDate: data.deadlineDate,
     evalWorkload: '1',
     moduleId: data.moduleId,
@@ -356,7 +356,7 @@ onMounted(() => {
     idList.value = [newId];
     dataMap.value[newId] = {
       assigneeId: newValue.assigneeId,
-      confirmorId: newValue.confirmorId,
+      confirmerId: newValue.confirmerId,
       deadlineDate: newValue.deadlineDate,
       evalWorkload: '1',
       moduleId: newValue.moduleId,
@@ -469,7 +469,7 @@ const okButtonProps = computed(() => {
         </div>
 
         <div class="w-25 space-x-0.5 head-item-container">
-          <span>{{ t('backlog.splitTask.headers.confirmor') }}</span>
+          <span>{{ t('backlog.splitTask.headers.confirmer') }}</span>
         </div>
 
         <div class="w-42 space-x-0.5 head-item-container">
@@ -553,8 +553,8 @@ const okButtonProps = computed(() => {
             @change="assigneeIdChange(item)" />
 
           <SelectUser
-            v-model:value="dataMap[item].confirmorId"
-            :placeholder="t('backlog.splitTask.placeholders.confirmor')"
+            v-model:value="dataMap[item].confirmerId"
+            :placeholder="t('backlog.splitTask.placeholders.confirmer')"
             allowClear
             class="w-25 mr-2.5"
             :action="`${TESTER}/project/${props.projectId}/member/user`"

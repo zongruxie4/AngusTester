@@ -16,7 +16,7 @@ export interface TaskInfo {
     message: string;
   };
   assigneeName?: string;
-  confirmorName?: string;
+  confirmerName?: string;
   deadlineDate?: string;
   sprintName?: string;
   overdue?: boolean;

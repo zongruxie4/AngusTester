@@ -14,9 +14,10 @@ import {
   TaskStatus,
   Toggle
 } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/infra';
+import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { task } from '@/api/tester';
+import { SoftwareVersionStatus } from '@/enums/enums';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfo } from '@/views/task/types';
@@ -195,7 +196,9 @@ const toEditPriority = () => {
   });
 };
 
-const priorityChange = async (_event: { target: { value: TaskInfo['priority']['value']; } }, option: { message: string; value: TaskInfo['priority']['value'] }) => {
+const priorityChange = async (
+  _event: { target: { value: TaskInfo['priority']['value']; } },
+  option: { message: string; value: TaskInfo['priority']['value'] }) => {
   priorityMessage.value = option.message;
 };
 
@@ -230,7 +233,9 @@ const toEditTag = () => {
   });
 };
 
-const tagChange = async (_event: { target: { value: string[]; } }, options: { id: string; name: string; }[]) => {
+const tagChange = async (
+  _event: { target: { value: string[]; } },
+  options: { id: string; name: string; }[]) => {
   tagList.value = options;
 };
 
@@ -477,7 +482,11 @@ const onePassText = computed(() => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ evalWorkloadMethod === 'STORY_POINT' ? t('task.detailInfo.apis.columns.evalWorkload') : t('task.detailInfo.apis.columns.evalWorkloadHours') }}</span>
+              <span>
+                {{ evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                  ? t('task.detailInfo.apis.columns.evalWorkload')
+                  : t('task.detailInfo.apis.columns.evalWorkloadHours') }}
+              </span>
               <Colon class="w-1" />
             </div>
 
@@ -557,7 +566,11 @@ const onePassText = computed(() => {
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ evalWorkloadMethod === 'STORY_POINT' ? t('task.detailInfo.apis.columns.actualStoryPoint') : t('task.detailInfo.apis.columns.actualWorkload') }}</span>
+              <span>
+                {{ evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                  ? t('task.detailInfo.apis.columns.actualStoryPoint')
+                  : t('task.detailInfo.apis.columns.actualWorkload') }}
+              </span>
               <Colon class="w-1" />
             </div>
 
@@ -613,7 +626,7 @@ const onePassText = computed(() => {
                   lazy
                   class="w-full max-w-60"
                   :action="`${TESTER}/software/version?projectId=${props.projectId}`"
-                  :params="{filters: [{value: ['NOT_RELEASED', 'RELEASED'], key: 'status', op: 'IN'}]}"
+                  :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN'}]}"
                   :fieldNames="{value:'name', label: 'name'}"
                   @blur="versionBlur"
                   @change="versionChange">
@@ -642,11 +655,11 @@ const onePassText = computed(() => {
           </div>
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.apis.columns.unplannedFlag') }}</span>
+              <span>{{ t('task.detailInfo.apis.columns.unplanned') }}</span>
               <Colon class="w-1" />
             </div>
             <div class="">
-              {{ props.dataSource?.unplannedFlag ? t('status.yes') : t('status.no') }}
+              {{ props.dataSource?.unplanned ? t('status.yes') : t('status.no') }}
             </div>
           </div>
         </div>
