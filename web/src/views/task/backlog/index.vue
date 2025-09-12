@@ -3,29 +3,11 @@ import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch
 import { useI18n } from 'vue-i18n';
 import { Button, Progress } from 'ant-design-vue';
 import {
-  Arrow,
-  AsyncComponent,
-  Colon,
-  DropdownSort,
-  Icon,
-  IconTask,
-  Image,
-  Input,
-  modal,
-  notification,
-  Popover,
-  Spin,
-  TaskPriority,
-  Tooltip
+  Arrow, AsyncComponent, Colon, DropdownSort, Icon, IconTask,
+  Image, Input, modal, notification, Popover, Spin, TaskPriority, Tooltip
 } from '@xcan-angus/vue-ui';
 import {
-  appContext,
-  duration,
-  enumUtils,
-  EvalWorkloadMethod,
-  PageQuery,
-  Priority,
-  SearchCriteria
+  appContext, duration, enumUtils, EvalWorkloadMethod, PageQuery, Priority, SearchCriteria
 } from '@xcan-angus/infra';
 import Draggable from 'vuedraggable';
 import { cloneDeep } from 'lodash-es';
@@ -691,8 +673,12 @@ const getTaskParams = () => {
       endDate = dayjs();
     }
 
-    params.filters.push({ key: 'createdDate', op: SearchCriteria.OpEnum.GreaterThanEqual, value: startDate.format(DATE_TIME_FORMAT) });
-    params.filters.push({ key: 'createdDate', op: SearchCriteria.OpEnum.LessThanEqual, value: endDate.format(DATE_TIME_FORMAT) });
+    params.filters.push(
+      { key: 'createdDate', op: SearchCriteria.OpEnum.GreaterThanEqual, value: startDate.format(DATE_TIME_FORMAT) }
+    );
+    params.filters.push(
+      { key: 'createdDate', op: SearchCriteria.OpEnum.LessThanEqual, value: endDate.format(DATE_TIME_FORMAT) }
+    );
   }
 
   return params;
@@ -876,7 +862,7 @@ const loadPermissions = async (id: string) => {
     admin: true
   };
 
-  return await task.getUserSprintAuth(id, props.userInfo?.id, params);
+  return await task.getUserSprintAuth(id, props.userInfo?.id || '', params);
 };
 
 const hasPermission = (data:TaskInfo, key:'edit'|'delete'|'move'|'split') => {
@@ -1269,7 +1255,9 @@ const selectNone = computed(() => {
                   </div>
 
                   <div class="inline-flex space-x-2">
-                    <DropdownSort :menuItems="backlogSortOption" @click="handleSortBacklogTask">
+                    <DropdownSort
+                      :menuItems="backlogSortOption"
+                      @click="handleSortBacklogTask">
                       <Button
                         size="small"
                         type="text"
@@ -1449,6 +1437,7 @@ const selectNone = computed(() => {
                       {{ element.name }}
                     </div>
                   </div>
+
                   <div class="flex items-center space-x-2.5 action-container">
                     <Button
                       type="text"
@@ -1743,7 +1732,7 @@ const selectNone = computed(() => {
       <SplitTask
         v-model:visible="splitTaskVisible"
         :projectId="props.projectId"
-        :taskInfo="selectedTaskInfo"
+        :dataSource="selectedTaskInfo"
         @ok="splitOk"
         @cancel="splitCancel" />
     </AsyncComponent>

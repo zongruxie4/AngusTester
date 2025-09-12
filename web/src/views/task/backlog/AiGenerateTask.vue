@@ -285,6 +285,16 @@ const reset = () => {
   resetError();
 };
 
+const okButtonProps = computed(() => {
+  return {
+    disabled: generating.value
+  };
+});
+
+const excludeTypes = (option: {value: TaskType; message: string}) => {
+  return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(option.value);
+};
+
 onMounted(() => {
   watch(() => props.visible, (newValue) => {
     if (!newValue) {
@@ -295,16 +305,6 @@ onMounted(() => {
     toAdd();
   }, { immediate: true, deep: true });
 });
-
-const okButtonProps = computed(() => {
-  return {
-    disabled: generating.value
-  };
-});
-
-const excludeTypes = (option: {value: string; message: string}) => {
-  return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(option.value);
-};
 </script>
 <template>
   <Modal

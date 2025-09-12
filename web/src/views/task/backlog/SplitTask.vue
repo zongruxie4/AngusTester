@@ -13,9 +13,8 @@ import { ai } from '@/api/gm';
 import { task } from '@/api/tester';
 import { TaskType } from '@/enums/enums';
 
-import { TaskInfo } from '../types';
 import { TIME_FORMAT } from '@/utils/constant';
-import { TaskInfoProps } from '@/views/task/task/list/task/types';
+import { EditFormState, TaskInfoProps } from '@/views/task/task/list/task/types';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
@@ -24,7 +23,7 @@ const { t } = useI18n();
 const props = withDefaults(defineProps<TaskInfoProps>(), {
   visible: false,
   projectId: undefined,
-  taskInfo: undefined
+  dataSource: undefined
 });
 
 // eslint-disable-next-line func-call-spacing
@@ -41,22 +40,7 @@ const confirmLoading = ref(false);
 const generating = ref(false);
 
 const idList = ref<string[]>([]);
-const dataMap = ref<{
-  [key: string]: {
-    testType: TaskInfo['testType']['value'];
-    taskType: TaskInfo['taskType']['value'];
-    priority: TaskInfo['priority']['value'];
-    name: string;
-    evalWorkload: string;
-    assigneeId: string;
-    confirmerId: string;
-    deadlineDate: string;
-    projectId: string;
-    sprintId: string;
-    moduleId?: string;
-    parentTaskId?: string;
-  }
-}>({});
+const dataMap = ref<EditFormState>({} as EditFormState);
 
 const taskTypeErrorSet = ref(new Set<string>());
 const priorityErrorSet = ref(new Set<string>());
@@ -70,7 +54,7 @@ const aiKeywords = ref('');
 
 const toAISplit = () => {
   aiSplitFlag.value = true;
-  aiKeywords.value = t('backlog.splitTask.aiKeywords', { taskName: props.taskInfo?.name });
+  aiKeywords.value = t('backlog.splitTask.aiKeywords', { taskName: props.dataSource?.name });
 };
 
 const toGenerate = async () => {
@@ -86,10 +70,10 @@ const toGenerate = async () => {
     content:string[];
   };
 
-  const taskInfo = props.taskInfo || {};
+  const taskInfo = props.dataSource || {};
   const list = data.content;
   const newIdList:string[] = [];
-  const newDataMap = {};
+  const newDataMap = {} as EditFormState;
   for (let i = 0, len = list.length; i < len; i++) {
     const id = utils.uuid();
     newIdList.push(id);
@@ -150,7 +134,7 @@ const toAdd = () => {
   const newId = utils.uuid();
   idList.value.push(newId);
 
-  const data = props.taskInfo;
+  const data = props.dataSource;
   dataMap.value[newId] = {
     assigneeId: data.assigneeId,
     confirmerId: data.confirmerId,
@@ -235,7 +219,7 @@ const resetError = () => {
 const getRepeatNames = () => {
   const uniqueNames = new Set();
   const repeatNames = new Set();
-  const names = Object.values(dataMap.value).map(item => item.name);
+  const names = Object.values(dataMap.value).map(item => (item as any)?.name).filter(Boolean);
   for (let i = 0, len = names.length; i < len; i++) {
     const name = names[i];
     if (name) {
@@ -246,7 +230,6 @@ const getRepeatNames = () => {
       }
     }
   }
-
   return repeatNames;
 };
 
@@ -321,7 +304,7 @@ const reset = () => {
   aiKeywords.value = '';
   aiSplitFlag.value = false;
   idList.value = [];
-  dataMap.value = {};
+  dataMap.value = {} as EditFormState;
   taskTypeErrorSet.value.clear();
   priorityErrorSet.value.clear();
   nameErrorSet.value.clear();
@@ -331,7 +314,7 @@ const reset = () => {
 };
 
 onMounted(() => {
-  watch(() => props.taskInfo, (newValue) => {
+  watch(() => props.dataSource, (newValue) => {
     if (!newValue) {
       return;
     }
@@ -356,7 +339,7 @@ onMounted(() => {
 });
 
 const taskId = computed(() => {
-  return props.taskInfo?.id;
+  return props.dataSource?.id;
 });
 
 const okButtonProps = computed(() => {
@@ -382,7 +365,7 @@ const okButtonProps = computed(() => {
               <span>{{ t('backlog.splitTask.splitTask') }}</span>
               <Colon />
             </div>
-            <div>{{ props.taskInfo?.name }}</div>
+            <div>{{ props.dataSource?.name }}</div>
           </div>
 
           <Button
@@ -401,7 +384,7 @@ const okButtonProps = computed(() => {
         <template v-else-if="aiEnabled">
           <Input
             v-model:value="aiKeywords"
-            :placeholder="t('backlog.splitTask.aiPlaceholder', { taskName: props.taskInfo?.name })"
+            :placeholder="t('backlog.splitTask.aiPlaceholder', { taskName: props.dataSource?.name })"
             trim
             allowClear
             class="flex-1"
@@ -448,7 +431,7 @@ const okButtonProps = computed(() => {
         <div class="w-20 space-x-0.5 head-item-container">
           <span>
             {{
-              props.taskInfo?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+              props.dataSource?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
                 ? t('backlog.splitTask.headers.evalStoryPoint')
                 : t('backlog.splitTask.headers.evalWorkload')
             }}

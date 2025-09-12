@@ -16,6 +16,10 @@ const props = withDefaults(defineProps<TaskInfoProps>(), {
 const { t } = useI18n();
 const commentRef = ref();
 
+const taskId = computed(() => {
+  return props.dataSource?.id;
+});
+
 onMounted(() => {
   watch(() => taskId.value, async (newValue) => {
     if (!newValue) {
@@ -25,10 +29,6 @@ onMounted(() => {
       commentRef.value.refresh();
     }
   }, { immediate: true });
-});
-
-const taskId = computed(() => {
-  return props.dataSource?.id;
 });
 </script>
 <template>

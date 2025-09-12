@@ -29,6 +29,10 @@ const openFlag = ref(true);
 const editFlag = ref(false);
 const content = ref<string>('');
 
+const taskId = computed(() => {
+  return props.dataSource?.id;
+});
+
 const toEdit = () => {
   openFlag.value = true;
   editFlag.value = true;
@@ -74,11 +78,6 @@ onMounted(() => {
     content.value = newValue?.description || '';
   }, { immediate: true });
 });
-
-const taskId = computed(() => {
-  return props.dataSource?.id;
-});
-
 </script>
 
 <template>

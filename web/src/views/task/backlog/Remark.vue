@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Icon, NoData, Scroll } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/infra';
+import { TESTER, PageQuery } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 
 type Remark = {
@@ -43,7 +43,7 @@ const toDelete = async (id: string) => {
 };
 
 const params = computed(() => {
-  return { orderBy: 'createdDate', orderSort: 'DESC', taskId: props.id };
+  return { orderBy: 'createdDate', orderSort: PageQuery.OrderSort.Asc, taskId: props.id };
 });
 </script>
 <template>

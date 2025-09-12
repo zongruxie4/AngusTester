@@ -7,6 +7,7 @@ export type EditFormState = {
   deadlineDate: string | undefined;
   name: string | undefined;
   priority: Priority;
+  projectId: string | undefined;
   sprintId: string | undefined;
   taskType: TaskType;
   moduleId?: string | undefined;
@@ -29,11 +30,15 @@ export type EditFormState = {
   testerId?: string;
   missingBug?: boolean;
   softwareVersion?: string;
+
+  // Temp for edit
+  userInfo?: { id: string; };
+  appInfo?: { id: string; };
 }
 
 export type TaskInfoProps = {
   projectId: string;
-  userInfo: { id: string; };
+  userInfo: { id: string; fullName: string};
   appInfo: { id: string; };
   dataSource: TaskInfo;
   taskId?: string;

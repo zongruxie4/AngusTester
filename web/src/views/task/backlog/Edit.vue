@@ -79,7 +79,7 @@ const formState = reactive<EditFormState>({
   evalWorkload: undefined,
   actualWorkload: undefined,
   name: undefined,
-  priority: undefined,
+  priority: Priority.MEDIUM,
   parentTaskId: undefined,
   sprintId: undefined,
   moduleId: undefined,
@@ -88,8 +88,8 @@ const formState = reactive<EditFormState>({
   refCaseIds: undefined,
   targetId: undefined,
   targetParentId: undefined,
-  taskType: undefined,
-  testType: undefined,
+  taskType: TaskType.TASK,
+  testType: TestType.FUNCTIONAL,
   bugLevel: BugLevel.MINOR,
   testerId: undefined,
   missingBug: false,
@@ -468,14 +468,14 @@ onMounted(() => {
       formState.evalWorkload = data.evalWorkload;
       formState.actualWorkload = data.actualWorkload;
       formState.name = data.name;
-      formState.priority = data.priority?.value;
+      formState.priority = data.priority?.value || Priority.MEDIUM;
       formState.parentTaskId = data.parentTaskId;
       formState.sprintId = data.sprintId;
       formState.tagIds = data.tags?.map(item => item.id);
       formState.refTaskIds = data.refTaskInfos?.map(item => item.id);
       formState.refCaseIds = data.refCaseInfos?.map(item => item.id);
       formState.targetId = data.targetId;
-      formState.taskType = data.taskType?.value;
+      formState.taskType = data.taskType?.value || TaskType.TASK;
       formState.testType = data.testType?.value;
       formState.targetParentId = data.targetParentId;
       formState.testerId = data.testerId;
@@ -485,7 +485,7 @@ onMounted(() => {
 
       oldFormState = cloneDeep(formState);
 
-      evalWorkloadMethod.value = data.evalWorkloadMethod?.value;
+      evalWorkloadMethod.value = data.evalWorkloadMethod?.value || EvalWorkloadMethod.STORY_POINT;
       showEditorFlag.value = true;
     }
   }, { immediate: true });
@@ -573,6 +573,10 @@ const formStyle = computed(() => {
 const zoomInFlagCacheKey = computed(() => {
   return `${props.userInfo?.id}${props?.projectId}${btoa('modalSize')}`;
 });
+
+const getPopupContainer = () => {
+  return document.body;
+};
 </script>
 <template>
   <Modal

@@ -198,7 +198,6 @@ const assigneeDefaultOptions = computed(() => {
   if (!id) {
     return undefined;
   }
-
   return {
     [id]: {
       id: id,
@@ -214,7 +213,6 @@ const testerDefaultOptions = computed(() => {
   if (!id) {
     return undefined;
   }
-
   return {
     [id]: {
       id: id,
@@ -236,7 +234,6 @@ const confirmerDefaultOptions = computed(() => {
   if (!id) {
     return undefined;
   }
-
   return {
     [id]: {
       id: id,

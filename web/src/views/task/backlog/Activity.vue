@@ -19,7 +19,7 @@ const { t } = useI18n();
 const dataList = ref<ActivityItem[]>([]);
 const params = ref<{
   mainTargetId:string;
-  filters:[{ key: 'targetType', value: CombinedTargetType.TASK, op: SearchCriteria.OpEnum.Equal }]
+  filters:[{ key: 'targetType', value: CombinedTargetType.TASK, op: SearchCriteria.OpEnum }]
 }>();
 
 const change = (data: ActivityItem[]) => {
