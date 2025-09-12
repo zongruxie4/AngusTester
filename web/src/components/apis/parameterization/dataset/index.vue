@@ -331,7 +331,7 @@ const hintTextMap = {
                   </Popconfirm>
 
                   <Button
-                    title="查看定义"
+                    :title="t('commonComp.apis.parameterizationDataset.viewDefinition')"
                     type="text"
                     size="small"
                     class="p-0 h-5 leading-5">

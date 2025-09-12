@@ -327,7 +327,7 @@ const fetchOauth2Token = async () => {
       tokenUuid = utils.uuid('anthencation-token');
       if (ws.value) {
         if (ws.value.readyState !== 1) {
-          notification.error('代理未链接， 请检查代理配置');
+          notification.error(t('xcan_apiAuthencation.proxyNotConnected'));
           return;
         }
         const params = {
