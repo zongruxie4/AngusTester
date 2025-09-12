@@ -6,11 +6,11 @@ import * as eCharts from 'echarts';
 interface Props {
   chart0Data: {
     xData: string[],
-    yData: [string|number[], string|number[]]
+    yData: [number[], number[]]
   };
   chart1Data: {
     xData: string[],
-    yData: [string|number[], string|number[]]
+    yData: [number[], number[]]
   };
 }
 const { t } = useI18n();
@@ -32,7 +32,7 @@ const workloadBurndownRef = ref();
 let burndownEChart;
 let workloadBurndownEChart;
 
-const burndownEChartConfig = {
+const burndownEChartConfig: any = {
   grid: {
     left: '30',
     right: '20',

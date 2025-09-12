@@ -29,11 +29,11 @@ const props = withDefaults(defineProps<Props>(), {
   }),
   chart1Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   }),
   chart2Value: () => ({
     title: '',
-    value: [{ name: '', vaue: 0 }, { name: '', vaue: 0 }]
+    value: [{ name: '', value: 0 }, { name: '', value: 0 }]
   })
 });
 
@@ -122,8 +122,6 @@ const backloggedTaskEChartConfig = {
     top: '40%',
     padding: 2,
     subtext: t('taskAnalysis.detail.backlogTasks.chartLabels.backlogTaskRatio'),
-    // left: '25%',
-    // top: '40%',
     itemGap: 55,
     textAlign: 'center',
     textStyle: {
@@ -186,7 +184,6 @@ const backloggedTaskEChartConfig = {
   ]
 };
 
-// 积压任务量
 const backloggedWorkloadEChartConfig = JSON.parse(JSON.stringify({
   ...backloggedTaskEChartConfig,
   title: {
@@ -207,21 +204,25 @@ onMounted(() => {
 
     backloggedTaskEChartConfig.series[0].data[0] = {
       ...backloggedTaskEChartConfig.series[0].data[0],
-      ...props.chart1Value.value[0]
+      ...props.chart1Value.value[0],
+      value: Number(props.chart1Value.value[0].value)
     };
     backloggedTaskEChartConfig.series[0].data[1] = {
       ...backloggedTaskEChartConfig.series[0].data[1],
-      ...props.chart1Value.value[1]
+      ...props.chart1Value.value[1],
+      value: Number(props.chart1Value.value[1].value)
     };
     backloggedTaskEChartConfig.title.text = props.chart1Value.title;
 
     backloggedWorkloadEChartConfig.series[0].data[0] = {
       ...backloggedWorkloadEChartConfig.series[0].data[0],
-      ...props.chart2Value.value[0]
+      ...props.chart2Value.value[0],
+      value: Number(props.chart2Value.value[0].value)
     };
     backloggedWorkloadEChartConfig.series[0].data[1] = {
       ...backloggedWorkloadEChartConfig.series[0].data[1],
-      ...props.chart2Value.value[1]
+      ...props.chart2Value.value[1],
+      value: Number(props.chart2Value.value[1].value)
     };
     backloggedWorkloadEChartConfig.title.text = props.chart2Value.title;
     backloggedTaskEChart.setOption(backloggedTaskEChartConfig);

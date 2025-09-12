@@ -22,7 +22,8 @@ const props = withDefaults(defineProps<Props>(), {
     yData: [0, 0, 0, 0, 0, 0, 0]
   }),
   chart1Value: () => ({
-    value: []
+    value: [],
+    xData: []
   })
 });
 
@@ -93,7 +94,7 @@ const unplannedTaskEChartConfig = {
   ]
 };
 
-const unplannedWorkloadEChartConfig = {
+const unplannedWorkloadEChartConfig: any = {
   title: {
     text: t('taskAnalysis.detail.taskGrowthTread.chartTitles.growthTrend'),
     bottom: 0,
@@ -151,6 +152,9 @@ onMounted(() => {
     unplannedWorkloadEChartConfig.series = props.chart1Value.value.map(i => {
       return {
         ...i,
+        data: i.value,
+        type: 'line',
+        smooth: true,
         stack: 'Total'
       };
     });

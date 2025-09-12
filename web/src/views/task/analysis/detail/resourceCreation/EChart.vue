@@ -93,7 +93,7 @@ const unplannedTaskEChartConfig = {
   ]
 };
 
-const unplannedWorkloadEChartConfig = {
+const unplannedWorkloadEChartConfig: any = {
   title: {
     text: t('taskAnalysis.detail.resourceCreation.chartTitles.resourceGrowth'),
     bottom: 0,
@@ -151,6 +151,9 @@ onMounted(() => {
     unplannedWorkloadEChartConfig.series = props.chart1Value.value.map(i => {
       return {
         ...i,
+        data: i.value,
+        type: 'line',
+        smooth: true,
         stack: 'Total'
       };
     });

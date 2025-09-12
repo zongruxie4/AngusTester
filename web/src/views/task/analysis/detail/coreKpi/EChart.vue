@@ -262,41 +262,49 @@ onMounted(() => {
 
     completedEChartConfig.series[0].data[0] = {
       ...completedEChartConfig.series[0].data[0],
-      ...props.chart1Value.value[0]
+      ...props.chart1Value.value[0],
+      value: Number(props.chart1Value.value[0].value)
     };
     completedEChartConfig.series[0].data[1] = {
       ...completedEChartConfig.series[0].data[1],
-      ...props.chart1Value.value[1]
+      ...props.chart1Value.value[1],
+      value: Number(props.chart1Value.value[1].value)
     };
     completedEChartConfig.title.text = props.chart1Value.title;
 
     completedWorkloadEChartConfig.series[0].data[0] = {
       ...completedWorkloadEChartConfig.series[0].data[0],
-      ...props.chart2Value.value[0]
+      ...props.chart2Value.value[0],
+      value: Number(props.chart2Value.value[0].value)
     };
     completedWorkloadEChartConfig.series[0].data[1] = {
       ...completedWorkloadEChartConfig.series[0].data[1],
-      ...props.chart2Value.value[1]
+      ...props.chart2Value.value[1],
+      value: Number(props.chart2Value.value[1].value)
     };
     completedWorkloadEChartConfig.title.text = props.chart2Value.title;
 
     completedOverdueEChartConfig.series[0].data[0] = {
       ...completedOverdueEChartConfig.series[0].data[0],
-      ...props.chart3Value.value[0]
+      ...props.chart3Value.value[0],
+      value: Number(props.chart3Value.value[0].value)
     };
     completedOverdueEChartConfig.series[0].data[1] = {
       ...completedOverdueEChartConfig.series[0].data[1],
-      ...props.chart3Value.value[1]
+      ...props.chart3Value.value[1],
+      value: Number(props.chart3Value.value[1].value)
     };
     completedOverdueEChartConfig.title.text = props.chart3Value.title;
 
     completedBugEChartConfig.series[0].data[0] = {
       ...completedBugEChartConfig.series[0].data[0],
-      ...props.chart4Value.value[0]
+      ...props.chart4Value.value[0],
+      value: Number(props.chart4Value.value[0].value)
     };
     completedBugEChartConfig.series[0].data[1] = {
       ...completedBugEChartConfig.series[0].data[1],
-      ...props.chart4Value.value[1]
+      ...props.chart4Value.value[1],
+      value: Number(props.chart4Value.value[1].value)
     };
     completedBugEChartConfig.title.text = props.chart4Value.title;
 

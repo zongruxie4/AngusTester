@@ -113,21 +113,25 @@ onMounted(() => {
   watch([() => props.value0, () => props.value1], () => {
     progressEChartConfig.series[0].data[0] = {
       ...progressEChartConfig.series[0].data[0],
-      ...props.value0[0]
+      ...props.value0[0],
+      value: Number(props.value0[0].value)
     };
     progressEChartConfig.series[0].data[1] = {
       ...progressEChartConfig.series[0].data[1],
-      ...props.value0[1]
+      ...props.value0[1],
+      value: Number(props.value0[1].value)
     };
     progressEChartConfig.title.text = props.title0;
 
     workloadProgressEChartConfig.series[0].data[0] = {
       ...workloadProgressEChartConfig.series[0].data[0],
-      ...props.value1[0]
+      ...props.value1[0],
+      value: Number(props.value1[0].value)
     };
     workloadProgressEChartConfig.series[0].data[1] = {
       ...workloadProgressEChartConfig.series[0].data[1],
-      ...props.value1[1]
+      ...props.value1[1],
+      value: Number(props.value1[1].value)
     };
     workloadProgressEChartConfig.title.text = props.title1;
     progressEChart.setOption(progressEChartConfig);

@@ -221,31 +221,37 @@ onMounted(() => {
 
     completedEChartConfig.series[0].data[0] = {
       ...completedEChartConfig.series[0].data[0],
-      ...props.chart1Value.value[0]
+      ...props.chart1Value.value[0],
+      value: Number(props.chart1Value.value[0].value)
     };
     completedEChartConfig.series[0].data[1] = {
       ...completedEChartConfig.series[0].data[1],
-      ...props.chart1Value.value[1]
+      ...props.chart1Value.value[1],
+      value: Number(props.chart1Value.value[1].value)
     };
     completedEChartConfig.title.text = props.chart1Value.title;
 
     oneTimePassedEChartConfig.series[0].data[0] = {
       ...oneTimePassedEChartConfig.series[0].data[0],
-      ...props.chart2Value.value[0]
+      ...props.chart2Value.value[0],
+      value: Number(props.chart2Value.value[0].value)
     };
     oneTimePassedEChartConfig.series[0].data[1] = {
       ...oneTimePassedEChartConfig.series[0].data[1],
-      ...props.chart2Value.value[1]
+      ...props.chart2Value.value[1],
+      value: Number(props.chart2Value.value[1].value)
     };
     oneTimePassedEChartConfig.title.text = props.chart2Value.title;
 
     twoTimePassedEChartConfig.series[0].data[0] = {
       ...twoTimePassedEChartConfig.series[0].data[0],
-      ...props.chart3Value.value[0]
+      ...props.chart3Value.value[0],
+      value: Number(props.chart3Value.value[0].value)
     };
     twoTimePassedEChartConfig.series[0].data[1] = {
       ...twoTimePassedEChartConfig.series[0].data[1],
-      ...props.chart3Value.value[1]
+      ...props.chart3Value.value[1],
+      value: Number(props.chart3Value.value[1].value)
     };
     twoTimePassedEChartConfig.title.text = props.chart3Value.title;
 

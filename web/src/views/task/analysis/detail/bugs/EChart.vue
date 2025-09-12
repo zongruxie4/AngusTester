@@ -250,13 +250,9 @@ const bugWorkloadEChartConfig = JSON.parse(JSON.stringify({
 
 onMounted(() => {
   bugLevelEChart = eCharts.init(bugLevelRef.value);
-
   validBugEChart = eCharts.init(validBugRef.value);
-
   bugsChart = eCharts.init(bugsRef.value);
-
   missingBugEChart = eCharts.init(missingBugRef.value);
-
   bugWorkloadEChart = eCharts.init(bugWorkloadRef.value);
 
   watch([
@@ -270,49 +266,59 @@ onMounted(() => {
 
     bugLevelEChartConfig.series[0].data[0] = {
       ...bugLevelEChartConfig.series[0].data[0],
-      ...props.chart1Value.value[0]
+      ...props.chart1Value.value[0],
+      value: Number(props.chart1Value.value[0].value)
     };
     bugLevelEChartConfig.series[0].data[1] = {
       ...bugLevelEChartConfig.series[0].data[1],
-      ...props.chart1Value.value[1]
+      ...props.chart1Value.value[1],
+      value: Number(props.chart1Value.value[1].value)
     };
     bugLevelEChartConfig.series[0].data[2] = {
       ...bugLevelEChartConfig.series[0].data[2],
-      ...props.chart1Value.value[2]
+      ...props.chart1Value.value[2],
+      value: Number(props.chart1Value.value[2].value)
     };
     bugLevelEChartConfig.series[0].data[3] = {
       ...bugLevelEChartConfig.series[0].data[3],
-      ...props.chart1Value.value[3]
+      ...props.chart1Value.value[3],
+      value: Number(props.chart1Value.value[3].value)
     };
     bugLevelEChartConfig.title.text = props.chart1Value.title;
 
     validBugEChartConfig.series[0].data[0] = {
       ...validBugEChartConfig.series[0].data[0],
-      ...props.chart2Value.value[0]
+      ...props.chart2Value.value[0],
+      value: Number(props.chart2Value.value[0].value)
     };
     validBugEChartConfig.series[0].data[1] = {
       ...validBugEChartConfig.series[0].data[1],
-      ...props.chart2Value.value[1]
+      ...props.chart2Value.value[1],
+      value: Number(props.chart2Value.value[1].value)
     };
     validBugEChartConfig.title.text = props.chart2Value.title;
 
     missingBugEChartConfig.series[0].data[0] = {
       ...missingBugEChartConfig.series[0].data[0],
-      ...props.chart3Value.value[0]
+      ...props.chart3Value.value[0],
+      value: Number(props.chart3Value.value[0].value)
     };
     missingBugEChartConfig.series[0].data[1] = {
       ...missingBugEChartConfig.series[0].data[1],
-      ...props.chart3Value.value[1]
+      ...props.chart3Value.value[1],
+      value: Number(props.chart3Value.value[1].value)
     };
     missingBugEChartConfig.title.text = props.chart3Value.title;
 
     bugWorkloadEChartConfig.series[0].data[0] = {
       ...bugWorkloadEChartConfig.series[0].data[0],
-      ...props.chart4Value.value[0]
+      ...props.chart4Value.value[0],
+      value: Number(props.chart4Value.value[0].value)
     };
     bugWorkloadEChartConfig.series[0].data[1] = {
       ...bugWorkloadEChartConfig.series[0].data[1],
-      ...props.chart4Value.value[1]
+      ...props.chart4Value.value[1],
+      value: Number(props.chart4Value.value[1].value)
     };
     bugWorkloadEChartConfig.title.text = props.chart4Value.title;
 

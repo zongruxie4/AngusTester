@@ -121,24 +121,28 @@ onMounted(() => {
   completedWorkloadEChart = eCharts.init(completedWorkloadRef.value);
   savingWorkloadEChart = eCharts.init(savingWorkloadRef.value);
 
-  watch([() => props.chart0Value, () => props.chart1Value, () => props.chart2Value], () => {
+  watch([() => props.chart1Value, () => props.chart2Value], () => {
     completedWorkloadEChartConfig.series[0].data[0] = {
       ...completedWorkloadEChartConfig.series[0].data[0],
-      ...props.chart1Value.value[0]
+      ...props.chart1Value.value[0],
+      value: Number(props.chart1Value.value[0].value)
     };
     completedWorkloadEChartConfig.series[0].data[1] = {
       ...completedWorkloadEChartConfig.series[0].data[1],
-      ...props.chart1Value.value[1]
+      ...props.chart1Value.value[1],
+      value: Number(props.chart1Value.value[1].value)
     };
     completedWorkloadEChartConfig.title.text = props.chart1Value.title;
 
     savingWorkloadEChartConfig.series[0].data[0] = {
       ...savingWorkloadEChartConfig.series[0].data[0],
-      ...props.chart2Value.value[0]
+      ...props.chart2Value.value[0],
+      value: Number(props.chart2Value.value[0].value)
     };
     savingWorkloadEChartConfig.series[0].data[1] = {
       ...savingWorkloadEChartConfig.series[0].data[1],
-      ...props.chart2Value.value[1]
+      ...props.chart2Value.value[1],
+      value: Number(props.chart2Value.value[1].value)
     };
     savingWorkloadEChartConfig.title.text = props.chart2Value.title;
     completedWorkloadEChart.setOption(completedWorkloadEChartConfig);

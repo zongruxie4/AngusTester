@@ -224,20 +224,24 @@ onMounted(() => {
 
     failureLevelEChartConfig.series[0].data[0] = {
       ...failureLevelEChartConfig.series[0].data[0],
-      ...props.chart2Value.value[0]
+      ...props.chart2Value.value[0],
+      value: Number(props.chart2Value.value[0].value)
     };
     failureLevelEChartConfig.series[0].data[1] = {
       ...failureLevelEChartConfig.series[0].data[1],
-      ...props.chart2Value.value[1]
+      ...props.chart2Value.value[1],
+      value: Number(props.chart2Value.value[1].value)
     };
 
     failureLevelEChartConfig.series[0].data[2] = {
       ...failureLevelEChartConfig.series[0].data[2],
-      ...props.chart2Value.value[2]
+      ...props.chart2Value.value[2],
+      value: Number(props.chart2Value.value[2].value)
     };
     failureLevelEChartConfig.series[0].data[3] = {
       ...failureLevelEChartConfig.series[0].data[4],
-      ...props.chart2Value.value[3]
+      ...props.chart2Value.value[3],
+      value: Number(props.chart2Value.value[3].value)
     };
     failureLevelEChartConfig.title.text = props.chart2Value.title;
 

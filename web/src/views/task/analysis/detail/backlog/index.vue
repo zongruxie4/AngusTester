@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const totalChartRef = ref();
-const chartListRef: Ref[] = [];
+const chartListRef: any[] = [];
 
 const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
@@ -55,7 +55,11 @@ const getChartData = (data) => {
 };
 
 const totalValue = ref({});
-const personValues = ref([]);
+const personValues = ref<{
+  userName: string;
+  chartData: any;
+  id: string;
+}[]>([]);
 
 onMounted(() => {
   watch(() => props.analysisInfo, (newValue) => {
