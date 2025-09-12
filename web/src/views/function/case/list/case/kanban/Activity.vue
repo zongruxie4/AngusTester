@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
 import { ActivityInfo, Scroll } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/infra';
+import { SearchCriteria, TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
-import {ActivityItem, CaseInfo} from './types';
+import { CaseInfo } from './types';
+import { ActivityItem } from '@/types/types';
+import { CombinedTargetType } from '@/enums/enums';
 
 type Props = {
   projectId: string;
@@ -25,7 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
 const dataList = ref<ActivityItem[]>([]);
 const params = ref<{
   mainTargetId:string;
-  filters:[{ key: 'targetType', value: 'FUNC_CASE', op: 'EQUAL' }]
+  filters:[{ key: 'targetType', value: CombinedTargetType.FUNC_CASE, op: SearchCriteria.OpEnum.Equal }]
 }>();
 
 const change = (data: ActivityItem[]) => {
@@ -40,7 +42,7 @@ onMounted(() => {
 
     params.value = {
       mainTargetId: targetId.value,
-      filters: [{ key: 'targetType', value: 'FUNC_CASE', op: 'EQUAL' }]
+      filters: [{ key: 'targetType', value: CombinedTargetType.FUNC_CASE, op: SearchCriteria.OpEnum.Equal }]
     };
   }, { immediate: true });
 });

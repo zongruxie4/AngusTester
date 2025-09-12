@@ -5,19 +5,6 @@ import { MockService } from '@/views/apis/mock/types';
  */
 export type ChartTimeType = 'select' | 'normal';
 
-export interface ActivityItem {
-  id: string;
-  optDate: string;
-  targetId: string;
-  targetType: string;
-  title: string;
-  fullName: string;
-  description: string;
-  detail: string;
-  details: string[];
-  avatar: string;
-}
-
 /**
  * Chart data structure for cache metrics visualization
  */

@@ -2,8 +2,7 @@
 import { computed, ref } from 'vue';
 import { ActivityInfo, Scroll } from '@xcan-angus/vue-ui';
 import { CombinedTargetType, SearchCriteria, TESTER } from '@xcan-angus/infra';
-
-import { ActivityItem } from '@/views/task/task/list/task/flat/types';
+import { ActivityItem } from '@/types/types';
 
 type Props = {
   id: string;

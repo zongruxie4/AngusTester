@@ -2,10 +2,11 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ActivityInfo, Scroll } from '@xcan-angus/vue-ui';
-import { TESTER } from '@xcan-angus/infra';
+import { TESTER, SearchCriteria } from '@xcan-angus/infra';
+import { CombinedTargetType } from '@/enums/enums';
 
 import { TaskInfo } from '../types';
-import { ActivityItem } from '@/views/task/backlog/types';
+import { ActivityItem } from '@/types/types';
 
 type Props = {
   projectId: string;
@@ -25,7 +26,7 @@ const { t } = useI18n();
 const dataList = ref<ActivityItem[]>([]);
 const params = ref<{
   mainTargetId:string;
-  filters:[{ key: 'targetType', value: 'TASK', op: 'EQUAL' }]
+  filters:[{ key: 'targetType', value: CombinedTargetType.TASK, op: SearchCriteria.OpEnum.Equal }]
 }>();
 
 const change = (data: ActivityItem[]) => {
@@ -40,7 +41,7 @@ onMounted(() => {
 
     params.value = {
       mainTargetId: taskId.value,
-      filters: [{ key: 'targetType', value: 'TASK', op: 'EQUAL' }]
+      filters:[{ key: 'targetType', value: CombinedTargetType.TASK, op: SearchCriteria.OpEnum.Equal }]
     };
   }, { immediate: true });
 });

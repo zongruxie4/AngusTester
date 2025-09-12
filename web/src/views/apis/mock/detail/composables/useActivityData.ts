@@ -2,7 +2,8 @@ import { onMounted, ref } from 'vue';
 import { debounce } from 'throttle-debounce';
 import { duration, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { activity } from '@/api/tester';
-import type { ActivityItem } from '../types';
+import { ActivityItem } from '@/types/types';
+import { CombinedTargetType } from '@/enums/enums';
 
 /**
  * Encapsulate activity list data loading, pagination and search behaviors.
@@ -15,7 +16,7 @@ export function useActivityData (initialTargetId?: string) {
     pageNo: 1,
     pageSize: 20,
     filters: [
-      { key: 'targetType', value: 'MOCK_SERVICE', op: SearchCriteria.OpEnum.Equal },
+      { key: 'targetType', value: CombinedTargetType.MOCK_SERVICE, op: SearchCriteria.OpEnum.Equal },
       { key: 'targetId', value: initialTargetId ?? '', op: SearchCriteria.OpEnum.Equal }
     ]
   });
