@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { AsyncComponent } from '@xcan-angus/vue-ui';
 import { useRoute, useRouter } from 'vue-router';
-import { TaskInfo } from '../../types';
+import { TaskInfo } from '@/views/task/types';
 
 /**
  * Component props interface for task details page
@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // ASYNC COMPONENTS
-const TaskDetail = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/view/index.vue'));
+const TaskDetail = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/detail/index.vue'));
 const EditTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/Edit.vue'));
 const MoveTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/Move.vue'));
 

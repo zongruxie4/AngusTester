@@ -3,8 +3,11 @@ import { useI18n } from 'vue-i18n';
 import { Checkbox, Pagination } from 'ant-design-vue';
 import { IconTask, TaskStatus } from '@xcan-angus/vue-ui';
 
-import { TaskInfo } from '../../../../types';
+import { TaskInfo } from '@/views/task/types';
 
+/**
+ * Component props interface for task list display
+ */
 type Props = {
   projectId: string;
   checkedId: string;
@@ -13,7 +16,10 @@ type Props = {
   pagination: { current: number; pageSize: number; total: number; };
 }
 
+// Composables
 const { t } = useI18n();
+
+// Props & emits
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   checkedId: undefined,
@@ -29,29 +35,50 @@ const emit = defineEmits<{
   (e: 'select', value: string[]): void;
 }>();
 
-const paginationChange = (current: number, pageSize: number) => {
+/**
+ * Handles pagination change events and emits the new pagination state
+ * @param current - The current page number
+ * @param pageSize - The number of items per page
+ */
+const handlePaginationChange = (current: number, pageSize: number) => {
   emit('paginationChange', { current, pageSize });
 };
 
-const click = (data: TaskInfo) => {
-  emit('checked', data);
+/**
+ * Handles task item click events and emits the selected task
+ * @param taskData - The task data that was clicked
+ */
+const handleTaskClick = (taskData: TaskInfo) => {
+  emit('checked', taskData);
 };
 
-const checkboxChange = (event:{target:{checked:boolean;value:string;}}) => {
+/**
+ * Handles checkbox change events for task selection
+ * Adds or removes task IDs from the selected list based on checkbox state
+ * @param event - The checkbox change event containing checked state and value
+ */
+const handleCheckboxChange = (event: { target: { checked: boolean; value: string; } }) => {
   const { checked, value } = event.target;
   if (checked) {
+    // Add to selection if not already selected
     if (!props.selectedIds.includes(value)) {
       emit('select', [...props.selectedIds, value]);
     }
     return;
   }
 
-  const ids = props.selectedIds.filter(item => item !== value);
-  emit('select', ids);
+  // Remove from selection
+  const updatedSelectedIds = props.selectedIds.filter(id => id !== value);
+  emit('select', updatedSelectedIds);
 };
 
-const showTotal = (value: number) => {
-  return t('task.detail.pagination.total', { total: value });
+/**
+ * Formats the pagination total display text using i18n
+ * @param totalCount - The total number of items
+ * @returns The formatted total text
+ */
+const formatPaginationTotal = (totalCount: number) => {
+  return t('task.detail.pagination.total', { total: totalCount });
 };
 </script>
 <template>
@@ -62,12 +89,12 @@ const showTotal = (value: number) => {
         :key="item.id"
         :class="{ 'checked': props.checkedId === item.id }"
         class="task-item flex items-center px-2.5 py-2 border-b cursor-pointer border-theme-text-box"
-        @click="click(item)">
+        @click="handleTaskClick(item)">
         <Checkbox
           :checked="props.selectedIds.includes(item.id)"
           :value="item.id"
           class="flex-shrink-0 mr-2"
-          @change="checkboxChange"
+          @change="handleCheckboxChange"
           @click.stop="" />
         <div class="flex-1 truncate">
           <div class="flex items-center">
@@ -84,12 +111,12 @@ const showTotal = (value: number) => {
 
     <Pagination
       v-bind="props.pagination"
-      :showTotal="showTotal"
+      :showTotal="formatPaginationTotal"
       :showSizeChanger="false"
       class="mt-3 pr-1.5"
       size="small"
       showLessItems
-      @change="paginationChange" />
+      @change="handlePaginationChange" />
   </div>
 </template>
 

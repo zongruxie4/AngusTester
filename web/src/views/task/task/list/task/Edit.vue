@@ -12,13 +12,13 @@ import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
-import { BugLevel, TaskType, TestType, SoftwareVersionStatus } from '@/enums/enums';
+import { BugLevel, SoftwareVersionStatus, TaskType, TestType } from '@/enums/enums';
 
 import { EditFormState } from './types';
 import { TaskInfo } from '../../../types';
-
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
+// Component props & emits
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap',
   ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true })
 );
@@ -48,72 +48,164 @@ const emit = defineEmits<{
   (e: 'ok', value: Partial<TaskInfo>, addFlag?: boolean): void;
 }>();
 
+// Composables
 const { t } = useI18n();
 
+// Reactive state
 const formRef = ref();
-
 const loading = ref<boolean>(false);
 const zoomInFlag = ref(false);
 const showEditorFlag = ref(false);
-
 const evalWorkloadMethod = ref<EvalWorkloadMethod>(EvalWorkloadMethod.STORY_POINT);
 const sprintDeadlineDate = ref<string>();
-
 const moduleTreeData = ref([]);
-const getModuleTreeData = async () => {
-  if (!props.projectId) {
-    return;
-  }
-  const [error, { data }] = await modules.getModuleTree({
-    projectId: props.projectId
-  });
-  if (error) {
-    return;
-  }
-  moduleTreeData.value = data || [];
-};
 
-let oldFormState: EditFormState | undefined;
+// Default options for user selection components
+const assigneeDefaultOptions = ref<{[key:string]:{fullName:string;id:string;}}>();
+const confirmerDefaultOptions = ref<{[key:string]:{fullName:string;id:string;}}>();
+
+// Store original form state for comparison during edit
+let originalFormState: EditFormState | undefined;
+
+// Main form state containing all task data
 const formState = reactive<EditFormState>({
+  projectId: props.projectId,
   assigneeId: undefined,
-  attachments: undefined,
+  attachments: [],
   confirmerId: undefined,
   deadlineDate: undefined,
   description: undefined,
   evalWorkload: undefined,
   actualWorkload: undefined,
   name: undefined,
-  priority: undefined,
+  priority: Priority.MEDIUM,
   parentTaskId: undefined,
   sprintId: undefined,
   moduleId: undefined,
-  tagIds: undefined,
-  refTaskIds: undefined,
-  refCaseIds: undefined,
+  tagIds: [],
+  refTaskIds: [],
+  refCaseIds: [],
   targetId: undefined,
   targetParentId: undefined,
-  taskType: undefined,
-  testType: undefined,
+  taskType: TaskType.TASK,
+  testType: TestType.FUNCTIONAL,
   bugLevel: BugLevel.MINOR,
   testerId: undefined,
   missingBug: false,
   softwareVersion: undefined
 });
 
-const assigneeDefaultOptions = ref<{[key:string]:{fullName:string;id:string;}}>();
-const confirmerDefaultOptions = ref<{[key:string]:{fullName:string;id:string;}}>();
-
+/**
+ * Determine if the "Save and Continue" button should be shown
+ * Only shown when creating a new task without a specific task type
+ */
 const showContinue = computed(() => {
   return !props.taskId && !props.taskType;
 });
 
-const zoomToggle = () => {
+/**
+ * Get the current user's ID from props
+ */
+const currentUserId = computed(() => {
+  return props.userInfo?.id;
+});
+
+/**
+ * Get the modal title based on whether we're editing or creating a task
+ */
+const modalTitle = computed(() => {
+  if (props.taskId) {
+    return t('task.editModal.title.edit');
+  }
+  return t('task.editModal.title.add');
+});
+
+/**
+ * Determine if the task type field should be readonly
+ * Readonly when editing existing API_TEST or SCENARIO_TEST tasks, or when taskType is provided as prop
+ */
+const isTaskTypeReadonly = computed(() => {
+  return (
+    props.taskId && (formState.taskType === TaskType.API_TEST ||
+      formState.taskType === TaskType.SCENARIO_TEST)
+  ) || !!props.taskType;
+});
+
+/**
+ * Determine if the rich text editor should be shown
+ * Shown when modal is visible and either editor flag is set or creating a new task
+ */
+const shouldShowEditor = computed(() => {
+  return props.visible && (showEditorFlag.value || !props.taskId);
+});
+
+/**
+ * Determine if the test type field should be shown
+ * Shown only for API_TEST and SCENARIO_TEST task types
+ */
+const shouldShowTestType = computed(() => {
+  const taskType = formState.taskType;
+  if (!taskType) {
+    return false;
+  }
+  return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(taskType);
+});
+
+/**
+ * Get modal style based on zoom state
+ * Full width when zoomed in, fixed width when normal
+ */
+const modalStyle = computed(() => {
+  if (zoomInFlag.value) {
+    return {
+      width: '100%'
+    };
+  }
+  return {
+    width: '1200px'
+  };
+});
+
+/**
+ * Get form style based on zoom state
+ * Larger height when zoomed in, standard height when normal
+ */
+const formStyle = computed(() => {
+  if (zoomInFlag.value) {
+    return {
+      height: '86vh'
+    };
+  }
+  return {
+    height: '76vh',
+    minHeight: '670px'
+  };
+});
+
+/**
+ * Generate cache key for storing zoom state in local storage
+ * Unique per user and project combination
+ */
+const zoomInFlagCacheKey = computed(() => {
+  return `${props.userInfo?.id}${props?.projectId}${btoa('modalSize')}`;
+});
+
+/**
+ * Toggle modal zoom state and persist to local storage
+ */
+const toggleModalZoom = () => {
   zoomInFlag.value = !zoomInFlag.value;
   localStore.set(zoomInFlagCacheKey.value, zoomInFlag.value);
 };
 
-const sprintChange = (_id: string, option: TaskInfo) => {
+/**
+ * Handle sprint selection change and update deadline accordingly
+ * @param _id - Sprint ID (unused)
+ * @param option - Selected sprint option containing deadline and workload method
+ */
+const handleSprintChange = (_id: any, option: any) => {
   if (!props.taskId) {
+    // For new tasks, set deadline based on sprint deadline
     if (option?.deadlineDate) {
       if (dayjs(option?.deadlineDate).isAfter(dayjs())) {
         formState.deadlineDate = option.deadlineDate;
@@ -122,8 +214,11 @@ const sprintChange = (_id: string, option: TaskInfo) => {
       }
     }
   } else {
+    // For existing tasks, use sprint deadline directly
     formState.deadlineDate = option?.deadlineDate || '';
   }
+
+  // Adjust deadline to business hours (8 AM - 7 PM)
   if (dayjs(formState.deadlineDate).hour() > 19 || dayjs(formState.deadlineDate).hour() < 8) {
     formState.deadlineDate = dayjs(formState.deadlineDate).add(12, 'hour').format(DATE_TIME_FORMAT);
   }
@@ -132,32 +227,45 @@ const sprintChange = (_id: string, option: TaskInfo) => {
   evalWorkloadMethod.value = option?.evalWorkloadMethod?.value;
 };
 
-const taskTypeChange = () => {
+/**
+ * Handle task type change and reset related fields
+ */
+const handleTaskTypeChange = () => {
   formState.targetParentId = undefined;
   formState.targetId = undefined;
-  if (!formState.testerId && formState.taskType === 'BUG') {
-    formState.testerId = userId.value;
+  // Auto-assign current user as tester for bug tasks
+  if (!formState.testerId && formState.taskType === TaskType.BUG) {
+    formState.testerId = currentUserId.value;
   }
 };
 
-const assignToMe = (key:'assigneeId'|'confirmerId'|'testerId') => {
-  if (key === 'assigneeId') {
-    formState.assigneeId = userId.value;
+/**
+ * Assign current user to specified field
+ * @param fieldKey - Field to assign current user to
+ */
+const assignCurrentUserToField = (fieldKey:'assigneeId'|'confirmerId'|'testerId') => {
+  if (fieldKey === 'assigneeId') {
+    formState.assigneeId = currentUserId.value;
     return;
   }
-  if (key === 'confirmerId') {
-    formState.confirmerId = userId.value;
+  if (fieldKey === 'confirmerId') {
+    formState.confirmerId = currentUserId.value;
   }
-  if (key === 'testerId') {
-    formState.testerId = userId.value;
+  if (fieldKey === 'testerId') {
+    formState.testerId = currentUserId.value;
   }
 };
 
-const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
+/**
+ * Validate evaluation workload when actual workload is provided
+ * @param _rule - Validation rule (unused)
+ * @param value - Evaluation workload value
+ * @returns Promise resolving to validation result
+ */
+const validateEvaluationWorkload = async (_rule: Rule, value: string) => {
   if (!props.taskId) {
     return;
   }
-
   if (formState.actualWorkload) {
     if (!value) {
       return Promise.reject(new Error(t('task.editModal.form.workload.rule')));
@@ -167,20 +275,34 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
   return Promise.resolve();
 };
 
-const actualWorkloadChange = (value: string) => {
+/**
+ * Handle actual workload change and clear evaluation workload validation if empty
+ * @param value - Actual workload value
+ */
+const handleActualWorkloadChange = (value: string) => {
   if (!value) {
     formRef.value.clearValidate('evalWorkload');
   }
 };
 
-const evalWorkloadChange = (value: string) => {
+/**
+ * Handle evaluation workload change and clear actual workload if empty
+ * @param value - Evaluation workload value
+ */
+const handleEvaluationWorkloadChange = (value: string) => {
   if (!value) {
     formState.actualWorkload = '';
     formRef.value.clearValidate('evalWorkload');
   }
 };
 
-const validateDate = async (_rule: Rule, value: string) => {
+/**
+ * Validate deadline date against business rules
+ * @param _rule - Validation rule (unused)
+ * @param value - Deadline date value
+ * @returns Promise resolving to validation result
+ */
+const validateDeadlineDate = async (_rule: Rule, value: string) => {
   if (!value) {
     return Promise.reject(new Error(t('task.editModal.form.deadlineRule')));
   }
@@ -198,26 +320,44 @@ const validateDate = async (_rule: Rule, value: string) => {
   return Promise.resolve();
 };
 
-const disabledDate = (current: Dayjs) => {
+/**
+ * Disable past dates in date picker
+ * @param current - Current date being evaluated
+ * @returns True if date should be disabled
+ */
+const isDateDisabled = (current: Dayjs) => {
   const today = dayjs().startOf('day');
   return current.isBefore(today, 'day');
 };
 
-const editorChange = (value: string) => {
+/**
+ * Handle rich text editor content change
+ * @param value - New editor content
+ */
+const handleEditorContentChange = (value: string) => {
   formState.description = value;
 };
 
-const editorLoading = (value: boolean) => {
+/**
+ * Handle rich text editor loading state change
+ * @param value - Loading state
+ */
+const handleEditorLoadingChange = (value: boolean) => {
   loading.value = value;
 };
 
-const upLoad = async function ({ file }: { file: File }) {
+/**
+ * Handle file upload for task attachments
+ * @param info - Upload change info
+ */
+const handleFileUpload = async function (info: any) {
+  const file = info.file;
   if (!formState.attachments || formState.attachments.length >= 5 || loading.value) {
     return;
   }
 
   loading.value = true;
-  const [error, { data = [] }] = await upload(file.originFileObj, { bizKey: 'angusTesterTaskAttachments' });
+  const [error, { data = [] }] = await upload(file, { bizKey: 'angusTesterTaskAttachments' });
   loading.value = false;
   if (error) {
     return;
@@ -229,20 +369,34 @@ const upLoad = async function ({ file }: { file: File }) {
   }
 };
 
-const delFile = (index: number) => {
+/**
+ * Remove file from attachments list
+ * @param index - Index of file to remove
+ */
+const removeAttachmentFile = (index: number) => {
   formState?.attachments?.splice(index, 1);
 };
 
-const descRichRef = ref();
-const validateDesc = async () => {
-  if (descRichRef.value && descRichRef.value.getLength() > 6000) {
+// Description validation
+const descriptionEditorRef = ref();
+
+/**
+ * Validate description length
+ * @returns Promise resolving to validation result
+ */
+const validateDescriptionLength = async () => {
+  if (descriptionEditorRef.value && descriptionEditorRef.value.getLength() > 6000) {
     Promise.reject(new Error(t('task.editModal.form.descriptionRule')));
   }
   return Promise.resolve();
 };
 
-const isValid = async () => {
-  const ruleKeys = [
+/**
+ * Validate form fields and return validation result
+ * @returns Promise resolving to validation success status
+ */
+const isFormValid = async () => {
+  const requiredRuleKeys = [
     'name',
     'sprintId',
     'assigneeId',
@@ -251,13 +405,14 @@ const isValid = async () => {
   ];
 
   if (formState.actualWorkload) {
-    ruleKeys.push('evalWorkload');
+    requiredRuleKeys.push('evalWorkload');
   }
 
   return new Promise((resolve) => {
-    formRef.value.validate(ruleKeys).then(async () => {
+    formRef.value.validate(requiredRuleKeys).then(async () => {
       return resolve(true);
     }).catch((errors:{errorFields:{errors:string[];name:string[];warnings:string;}[]}) => {
+      // Allow deadline date validation to pass for special cases
       if (errors.errorFields.length === 1) {
         const names = errors.errorFields[0].name;
         if (names.length === 1 && names[0] === 'deadlineDate') {
@@ -269,8 +424,13 @@ const isValid = async () => {
   });
 };
 
-const getParams = () => {
+/**
+ * Build task parameters object from form state
+ * @returns Task parameters object for API calls
+ */
+const buildTaskParameters = () => {
   const params: EditFormState = {
+    projectId: props.projectId,
     sprintId: formState.sprintId,
     name: formState.name,
     taskType: formState.taskType,
@@ -282,10 +442,12 @@ const getParams = () => {
     softwareVersion: formState.softwareVersion || undefined
   };
 
+  // Add parent task ID if provided
   if (props.parentTaskId) {
     params.parentTaskId = props.parentTaskId;
   }
 
+  // Add optional fields if they have values
   if (formState.confirmerId) {
     params.confirmerId = formState.confirmerId;
   }
@@ -318,21 +480,25 @@ const getParams = () => {
     params.evalWorkload = formState.evalWorkload;
   }
 
+  // Add actual workload only for existing tasks
   if (props.taskId && formState.actualWorkload) {
     params.actualWorkload = formState.actualWorkload;
   }
 
+  // Add bug-specific fields
   if (formState.taskType === TaskType.BUG) {
     params.bugLevel = formState.bugLevel;
     params.missingBug = formState.missingBug;
   }
 
+  // Add API test-specific fields
   if (formState.taskType === TaskType.API_TEST) {
     params.testType = formState.testType;
     params.targetId = formState.targetId;
     params.targetParentId = formState.targetParentId;
   }
 
+  // Add scenario test-specific fields
   if (formState.taskType === TaskType.SCENARIO_TEST) {
     params.testType = formState.testType;
     params.targetId = formState.targetId;
@@ -340,31 +506,42 @@ const getParams = () => {
   return params;
 };
 
-const submit = async (continueFlag: boolean) => {
+/**
+ * Handle form submission for both create and edit operations
+ * @param shouldContinue - Whether to continue after successful creation
+ */
+const handleFormSubmit = async (shouldContinue: boolean) => {
+  // For existing tasks, check if form has changes
   if (props.taskId) {
-    const equalFlag = isEqual(oldFormState, formState);
-    if (equalFlag) {
+    const hasChanges = isEqual(originalFormState, formState);
+    if (!hasChanges) {
       emit('update:visible', false);
       return;
     }
   }
 
-  const descriptionValidFlag = !formState.description || formState.description?.length <= 8000;
-  const validFlag = await isValid();
-  if (!validFlag || !descriptionValidFlag) {
+  // Validate form and description length
+  const isDescriptionValid = !formState.description || formState.description?.length <= 8000;
+  const isFormValidResult = await isFormValid();
+  if (!isFormValidResult || !isDescriptionValid) {
     return;
   }
 
+  // Route to appropriate handler
   if (!props.taskId) {
-    createHandler(continueFlag);
+    await handleTaskCreation(shouldContinue);
     return;
   }
-  editHandler();
+  await handleTaskUpdate();
 };
 
-const createHandler = async (continueFlag = false) => {
+/**
+ * Handle task creation
+ * @param shouldContinue - Whether to continue after successful creation
+ */
+const handleTaskCreation = async (shouldContinue = false) => {
   loading.value = true;
-  const params = getParams();
+  const params = buildTaskParameters();
   const [error, res] = await task.addTask({ ...params, projectId: props.projectId });
   loading.value = false;
   if (error) {
@@ -374,14 +551,17 @@ const createHandler = async (continueFlag = false) => {
   notification.success(t('task.editModal.messages.addSuccess'));
   emit('ok', res?.data, true);
 
-  if (!continueFlag) {
-    cancel();
+  if (!shouldContinue) {
+    closeModal();
   }
 };
 
-const editHandler = async () => {
+/**
+ * Handle task update
+ */
+const handleTaskUpdate = async () => {
   loading.value = true;
-  const params = getParams();
+  const params = buildTaskParameters();
   const [error] = await task.putTask(props.taskId as string, params);
   loading.value = false;
   if (error) {
@@ -389,17 +569,40 @@ const editHandler = async () => {
   }
 
   notification.success(t('task.editModal.messages.editSuccess'));
-  const data = await loadData();
-  emit('ok', data);
-  cancel();
+  const updatedTaskData = await loadTaskData();
+  emit('ok', updatedTaskData);
+  closeModal();
 };
 
-const cancel = () => {
+/**
+ * Close modal and reset state
+ */
+const closeModal = () => {
   emit('update:taskId', undefined);
   emit('update:visible', false);
 };
 
-const loadData = async (): Promise<Partial<TaskInfo>> => {
+/**
+ * Load module tree data for the project
+ */
+const loadModuleTreeData = async () => {
+  if (!props.projectId) {
+    return;
+  }
+  const [error, { data }] = await modules.getModuleTree({
+    projectId: props.projectId
+  });
+  if (error) {
+    return;
+  }
+  moduleTreeData.value = data || [];
+};
+
+/**
+ * Load task data for editing
+ * @returns Promise resolving to task data
+ */
+const loadTaskData = async (): Promise<Partial<TaskInfo>> => {
   loading.value = true;
   const [error, res] = await task.getTaskDetail(props.taskId);
   loading.value = false;
@@ -409,22 +612,32 @@ const loadData = async (): Promise<Partial<TaskInfo>> => {
   return res.data;
 };
 
-const initialize = () => {
+/**
+ * Initialize component state from local storage
+ */
+const initializeComponent = () => {
   zoomInFlag.value = !!localStore.get(zoomInFlagCacheKey.value);
 };
 
-const resetDefault = () => {
+/**
+ * Reset form to default values for new task creation
+ */
+const resetFormToDefaults = () => {
   loading.value = false;
   showEditorFlag.value = false;
   evalWorkloadMethod.value = EvalWorkloadMethod.STORY_POINT;
   sprintDeadlineDate.value = undefined;
 
-  oldFormState = undefined;
+  originalFormState = undefined;
   formState.attachments = [];
+
+  // Set default deadline to tomorrow, adjusted for business hours
   formState.deadlineDate = dayjs().add(1, 'day').format(DATE_TIME_FORMAT);
   if (dayjs(formState.deadlineDate).hour() > 19 || dayjs(formState.deadlineDate).hour() < 8) {
     formState.deadlineDate = dayjs(formState.deadlineDate).add(12, 'hour').format(DATE_TIME_FORMAT);
   }
+
+  // Reset form fields to default values
   formState.description = props.description || '';
   formState.evalWorkload = '';
   formState.actualWorkload = '';
@@ -444,7 +657,9 @@ const resetDefault = () => {
   formState.assigneeId = props.assigneeId || props.userInfo?.id || undefined;
   formState.testerId = props.taskType === TaskType.BUG ? props.userInfo?.id : undefined;
   formState.confirmerId = props.confirmerId || undefined;
-  formState.softwareVersioneVersion = undefined;
+  formState.softwareVersion = undefined;
+
+  // Set module ID if provided and valid
   if (props.moduleId && +props.moduleId > 0) {
     formState.moduleId = props.moduleId;
   } else {
@@ -452,83 +667,78 @@ const resetDefault = () => {
   }
 };
 
-onMounted(() => {
-  initialize();
-
-  watch(() => props.visible, async () => {
-    if (props.visible) {
-      await getModuleTreeData();
-      if (typeof formRef.value?.clearValidate === 'function') {
-        await formRef.value.clearValidate();
+/**
+ * Populate form state with loaded task data
+ * @param data - Task data from API
+ */
+const populateFormWithTaskData = (data: Partial<TaskInfo>) => {
+  // Set assignee data
+  const assigneeId = data.assigneeId;
+  if (assigneeId) {
+    formState.assigneeId = assigneeId;
+    assigneeDefaultOptions.value = {
+      [assigneeId]: {
+        fullName: data.assigneeName || '',
+        id: assigneeId
       }
+    };
+  }
 
-      if (!props.taskId) {
-        resetDefault();
-        return;
+  // Set confirmer data
+  const confirmerId = data.confirmerId;
+  if (confirmerId) {
+    formState.confirmerId = confirmerId;
+    confirmerDefaultOptions.value = {
+      [confirmerId]: {
+        fullName: data.confirmerName || '',
+        id: confirmerId
       }
+    };
+  }
 
-      const data = await loadData();
-      if (!data) {
-        resetDefault();
-        return;
-      }
+  // Populate all form fields
+  formState.attachments = data.attachments || [];
+  formState.moduleId = data.moduleId ? (+data.moduleId < 0 ? undefined : data.moduleId) : undefined;
+  formState.deadlineDate = data.deadlineDate;
+  formState.description = data.description;
+  formState.evalWorkload = data.evalWorkload;
+  formState.actualWorkload = data.actualWorkload;
+  formState.name = data.name;
+  formState.priority = data.priority?.value || Priority.MEDIUM;
+  formState.parentTaskId = data.parentTaskId;
+  formState.sprintId = data.sprintId;
+  formState.tagIds = data.tags?.map(item => item.id);
+  formState.refTaskIds = data.refTaskInfos?.map(item => item.id);
+  formState.refCaseIds = data.refCaseInfos?.map(item => item.id);
+  formState.targetId = data.targetId;
+  formState.taskType = data.taskType?.value || TaskType.TASK;
+  formState.testType = data.testType?.value || TestType.FUNCTIONAL;
+  formState.targetParentId = data.targetParentId;
+  formState.testerId = data.testerId;
+  formState.missingBug = data.missingBug || false;
+  formState.bugLevel = data.bugLevel?.value || BugLevel.MINOR;
+  formState.softwareVersion = data.softwareVersion;
 
-      const assigneeId = data.assigneeId;
-      formState.assigneeId = assigneeId;
-      assigneeDefaultOptions.value = {
-        [assigneeId]: {
-          fullName: data.assigneeName,
-          id: assigneeId
-        }
-      };
+  // Store original state for change detection
+  originalFormState = cloneDeep(formState);
 
-      const confirmerId = data.confirmerId;
-      formState.confirmerId = confirmerId;
-      confirmerDefaultOptions.value = {
-        [confirmerId]: {
-          fullName: data.confirmerName,
-          id: confirmerId
-        }
-      };
+  evalWorkloadMethod.value = data.evalWorkloadMethod?.value || EvalWorkloadMethod.STORY_POINT;
+  showEditorFlag.value = true;
+};
 
-      formState.attachments = data.attachments || [];
-      formState.moduleId = data.moduleId ? (+data.moduleId < 0 ? undefined : data.moduleId) : undefined;
-      formState.deadlineDate = data.deadlineDate;
-      formState.description = data.description;
-      formState.evalWorkload = data.evalWorkload;
-      formState.actualWorkload = data.actualWorkload;
-      formState.name = data.name;
-      formState.priority = data.priority?.value;
-      formState.parentTaskId = data.parentTaskId;
-      formState.sprintId = data.sprintId;
-      formState.tagIds = data.tags?.map(item => item.id);
-      formState.refTaskIds = data.refTaskInfos?.map(item => item.id);
-      formState.refCaseIds = data.refCaseInfos?.map(item => item.id);
-      formState.targetId = data.targetId;
-      formState.taskType = data.taskType?.value;
-      formState.testType = data.testType?.value;
-      formState.targetParentId = data.targetParentId;
-      formState.testerId = data.testerId;
-      formState.missingBug = data.missingBug || false;
-      formState.bugLevel = data.bugLevel?.value || 'MINOR';
-      formState.softwareVersion = data.softwareVersion;
-
-      oldFormState = cloneDeep(formState);
-
-      evalWorkloadMethod.value = data.evalWorkloadMethod?.value;
-      showEditorFlag.value = true;
-    }
-  }, { immediate: true });
-});
-
-const taskTypeExcludes = (data: { value: TaskInfo['taskType']['value']; message: string }) => {
-  const value = data.value;
-  const type = formState.taskType;
+/**
+ * Determine if task type should be excluded from selection
+ * @param data - Task type data
+ * @returns True if task type should be excluded
+ */
+const shouldExcludeTaskType = (data: { value: string; message: string }) => {
+  const value = data.value as TaskType;
+  const currentType = formState.taskType;
   if (props.taskId) {
-    if (type === TaskType.API_TEST) {
+    if (currentType === TaskType.API_TEST) {
       return value !== TaskType.API_TEST;
     }
-    if (type === TaskType.SCENARIO_TEST) {
+    if (currentType === TaskType.SCENARIO_TEST) {
       return value !== TaskType.SCENARIO_TEST;
     }
     return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(value);
@@ -536,88 +746,68 @@ const taskTypeExcludes = (data: { value: TaskInfo['taskType']['value']; message:
   return false;
 };
 
-const taskIdExcludes = (data: { id: string }) => {
+/**
+ * Determine if task ID should be excluded from parent task selection
+ * @param data - Task data
+ * @returns True if task ID should be excluded
+ */
+const shouldExcludeTaskId = (data: any) => {
   return props.taskId === data.id;
 };
 
-const getPopupContainer = (node: HTMLElement): HTMLElement => {
+/**
+ * Get popup container for dropdown components
+ * @param node - DOM node
+ * @returns Container element for popup
+ */
+const getDropdownContainer = (node: HTMLElement): HTMLElement => {
   if (node) {
     return node.parentNode as HTMLElement;
   }
   return document.body;
 };
 
-const userId = computed(() => {
-  return props.userInfo?.id;
-});
+// Lifecycle hooks
+onMounted(() => {
+  initializeComponent();
 
-const title = computed(() => {
-  if (props.taskId) {
-    return t('task.editModal.title.edit');
-  }
-  return t('task.editModal.title.add');
-});
+  watch(() => props.visible, async () => {
+    if (props.visible) {
+      await loadModuleTreeData();
+      if (typeof formRef.value?.clearValidate === 'function') {
+        await formRef.value.clearValidate();
+      }
 
-const taskTypeReadonly = computed(() => {
-  return (
-    props.taskId && (formState.taskType === TaskType.API_TEST ||
-    formState.taskType === TaskType.SCENARIO_TEST)
-  ) || !!props.taskType;
-});
+      if (!props.taskId) {
+        resetFormToDefaults();
+        return;
+      }
 
-const showEditor = computed(() => {
-  return props.visible && (showEditorFlag.value || !props.taskId);
-});
+      const taskData = await loadTaskData();
+      if (!taskData) {
+        resetFormToDefaults();
+        return;
+      }
 
-const showTestType = computed(() => {
-  const taskType = formState.taskType;
-  if (!taskType) {
-    return false;
-  }
-  return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(taskType);
+      // Populate form with loaded task data
+      populateFormWithTaskData(taskData);
+    }
+  }, { immediate: true });
 });
-
-const modalStyle = computed(() => {
-  if (zoomInFlag.value) {
-    return {
-      width: '100%'
-    };
-  }
-  return {
-    width: '1200px'
-  };
-});
-
-const formStyle = computed(() => {
-  if (zoomInFlag.value) {
-    return {
-      height: '86vh'
-    };
-  }
-  return {
-    height: '76vh',
-    minHeight: '670px'
-  };
-});
-
-const zoomInFlagCacheKey = computed(() => {
-  return `${props.userInfo?.id}${props?.projectId}${btoa('modalSize')}`;
-});
-
 </script>
 <template>
   <Modal
-    :title="title"
+    :title="modalTitle"
     :centered="true"
     :style="modalStyle"
     :visible="props.visible"
     class="relative max-w-full"
-    @cancel="cancel">
+    @cancel="closeModal">
     <Tooltip :title="zoomInFlag ? t('task.editModal.tooltip.zoomOut') : t('task.editModal.tooltip.zoomIn')">
       <Icon
         :icon="zoomInFlag ? 'icon-tuichuzuida' : 'icon-zuidahua'"
         class="absolute right-10 top-3.5 text-3.5 cursor-pointer"
-        @click="zoomToggle" />
+        @click="toggleModalZoom" />
     </Tooltip>
     <Form
       ref="formRef"
@@ -694,15 +884,15 @@ const zoomInFlagCacheKey = computed(() => {
               <SelectEnum
                 v-model:value="formState.taskType"
                 :allowClear="false"
-                :excludes="taskTypeExcludes"
-                :readonly="taskTypeReadonly"
+                :excludes="shouldExcludeTaskType"
+                :readonly="isTaskTypeReadonly"
                 internal
                 enumKey="TaskType"
                 :placeholder="t('task.editModal.form.typePlaceholder')"
-                @change="taskTypeChange">
+                @change="handleTaskTypeChange">
                 <template #option="record">
                   <div class="flex items-center">
-                    <IconTask :value="record.value" class="text-4 flex-shrink-0" />
+                    <IconTask :value="record.value as TaskType" class="text-4 flex-shrink-0" />
                     <span class="ml-1">{{ record.label }}</span>
                   </div>
                 </template>
@@ -721,7 +911,7 @@ const zoomInFlagCacheKey = computed(() => {
                 enumKey="Priority"
                 :placeholder="t('task.editModal.form.priorityPlaceholder')">
                 <template #option="record">
-                  <TaskPriority :value="record.value" />
+                  <TaskPriority :value="record.value as any" />
                 </template>
               </SelectEnum>
             </FormItem>
@@ -746,8 +936,8 @@ const zoomInFlagCacheKey = computed(() => {
                 <Select
                   v-model:value="formState.missingBug"
                   :options="[
-                    {value: true, label: t('task.editModal.form.missingBugOptions.yes')},
-                    {value: false, label: t('task.editModal.form.missingBugOptions.no')}
+                    {value: 'true', label: t('task.editModal.form.missingBugOptions.yes')},
+                    {value: 'false', label: t('task.editModal.form.missingBugOptions.no')}
                   ]">
                 </Select>
               </FormItem>
@@ -771,7 +961,7 @@ const zoomInFlagCacheKey = computed(() => {
             </FormItem>
 
             <FormItem
-              v-if="showTestType"
+              v-if="shouldShowTestType"
               name="testType"
               :label="t('task.editModal.form.testType')"
               class="flex-1"
@@ -830,7 +1020,7 @@ const zoomInFlagCacheKey = computed(() => {
               </FormItem>
 
               <FormItem
-                v-if="showTestType"
+                v-if="shouldShowTestType"
                 class="flex-1"
                 name="testType"
                 :label="t('task.editModal.form.testType')"
@@ -876,7 +1066,7 @@ const zoomInFlagCacheKey = computed(() => {
                   size="small"
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
-                  @click="assignToMe('assigneeId')">
+                  @click="assignCurrentUserToField('assigneeId')">
                   {{ t('task.editModal.form.assignToMe') }}
                 </Button>
               </div>
@@ -909,7 +1099,7 @@ const zoomInFlagCacheKey = computed(() => {
                   size="small"
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
-                  @click="assignToMe('confirmerId')">
+                  @click="assignCurrentUserToField('confirmerId')">
                   {{ t('task.editModal.form.assignToMe') }}
                 </Button>
               </div>
@@ -921,11 +1111,11 @@ const zoomInFlagCacheKey = computed(() => {
               :label="t('task.editModal.form.deadline')"
               name="deadlineDate"
               class="flex-1/2"
-              :rules="{ required: true, validator: validateDate }">
+              :rules="{ required: true, validator: validateDeadlineDate }">
               <DatePicker
                 v-model:value="formState.deadlineDate"
                 :showNow="false"
-                :disabledDate="disabledDate"
+                :disabledDate="isDateDisabled"
                 :showTime="{ hideDisabledOptions: true, format: TIME_FORMAT }"
                 :disabled="(proTypeShowMap.showSprint && !formState.sprintId)"
                 type="date"
@@ -959,7 +1149,7 @@ const zoomInFlagCacheKey = computed(() => {
                   size="small"
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
-                  @click="assignToMe('testerId')">
+                  @click="assignCurrentUserToField('testerId')">
                   {{ t('task.editModal.form.assignToMe') }}
                 </Button>
               </div>
@@ -969,15 +1159,15 @@ const zoomInFlagCacheKey = computed(() => {
           <FormItem
             name="description"
             :label="t('task.editModal.form.description')"
-            :rules="{validator: validateDesc}">
-            <AsyncComponent :visible="showEditor">
+            :rules="{validator: validateDescriptionLength}">
+            <AsyncComponent :visible="shouldShowEditor">
               <RichEditor
-                ref="descRichRef"
+                ref="descriptionEditorRef"
                 v-model:value="formState.description"
                 :options="{placeholder: t('task.editModal.form.descriptionPlaceholder')}"
                 :height="300"
-                @change="editorChange"
-                @loadingChange="editorLoading" />
+                @change="handleEditorContentChange"
+                @loadingChange="handleEditorLoadingChange" />
             </AsyncComponent>
           </FormItem>
         </div>
@@ -996,7 +1186,7 @@ const zoomInFlagCacheKey = computed(() => {
               showSearch
               internal
               :placeholder="t('task.editModal.form.sprintPlaceholder')"
-              @change="sprintChange">
+              @change="(value: any, option: any) => handleSprintChange(value, option)">
               <template #option="record">
                 <div class="flex items-center" :title="record.name">
                   <Icon icon="icon-jihua" class="mr-1 text-4" />
@@ -1011,7 +1201,7 @@ const zoomInFlagCacheKey = computed(() => {
               v-model:value="formState.moduleId"
               :treeData="moduleTreeData"
               :fieldNames="{ value: 'id', label: 'name', children: 'children' }"
-              :getPopupContainer="getPopupContainer"
+              :getPopupContainer="getDropdownContainer"
               :virtual="false"
               size="small"
               showSearch
@@ -1047,7 +1237,7 @@ const zoomInFlagCacheKey = computed(() => {
               showSearch
               internal
               :placeholder="t('task.editModal.form.parentTaskPlaceholder')"
-              :excludes="taskIdExcludes"
+              :excludes="shouldExcludeTaskId"
               :fieldNames="{ label: 'name', value: 'id' }"
               :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`">
               <template #option="record">
@@ -1061,7 +1251,7 @@ const zoomInFlagCacheKey = computed(() => {
 
           <FormItem
             name="evalWorkload"
-            :rules="{ required: formState.actualWorkload, validator: evalWorkloadValidateDate, trigger: 'change' }">
+            :rules="{ required: !!formState.actualWorkload, validator: validateEvaluationWorkload, trigger: 'change' }">
             <template #label>
               {{
                 evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
@@ -1090,7 +1280,7 @@ const zoomInFlagCacheKey = computed(() => {
               :min="0.1"
               :max="1000"
               :placeholder="t('task.editModal.form.workload.placeholder')"
-              @blur="evalWorkloadChange($event.target.value)" />
+              @blur="handleEvaluationWorkloadChange($event.target.value)" />
           </FormItem>
 
           <template v-if="!!props.taskId">
@@ -1124,7 +1314,7 @@ const zoomInFlagCacheKey = computed(() => {
                 :placeholder="t('task.editModal.form.workload.placeholder')"
                 :min="0.1"
                 :max="1000"
-                @change="actualWorkloadChange($event.target.value)" />
+                @change="handleActualWorkloadChange($event.target.value)" />
             </FormItem>
           </template>
 
@@ -1256,7 +1446,7 @@ const zoomInFlagCacheKey = computed(() => {
                     <Icon
                       icon="icon-qingchu"
                       class="text-theme-special text-theme-text-hover cursor-pointer flex-shrink-0 leading-4 text-3.5"
-                      @click="delFile(index)" />
+                      @click="removeAttachmentFile(index)" />
                   </div>
                 </div>
                 <div v-if="formState.attachments.length < 5" class="flex justify-end">
@@ -1265,7 +1455,7 @@ const zoomInFlagCacheKey = computed(() => {
                     name="file"
                     class="-mb-1 mr-1"
                     :customRequest="() => {}"
-                    @change="upLoad">
+                    @change="handleFileUpload">
                     <Icon icon="icon-shangchuan" class="text-theme-special mr-1" />
                     <span class="text-3 leading-3 text-theme-text-hover">{{ t('task.editModal.form.attachmentsContinue') }}</span>
                   </Upload>
@@ -1277,7 +1467,7 @@ const zoomInFlagCacheKey = computed(() => {
                     name="file"
                     :fileList="[]"
                     :customRequest="() => {}"
-                    @change="upLoad">
+                    @change="handleFileUpload">
                     <Icon icon="icon-shangchuan" class="mr-1 text-theme-special" />
                     <span class="text-3 text-theme-text-hover">{{ t('task.editModal.form.attachmentsUpload') }}</span>
                   </Upload>
@@ -1293,7 +1483,7 @@ const zoomInFlagCacheKey = computed(() => {
       <Button
         class="text-3 leading-3"
         size="small"
-        @click="cancel">
+        @click="closeModal">
         {{ t('actions.cancel') }}
       </Button>
       <Button
@@ -1302,7 +1492,7 @@ const zoomInFlagCacheKey = computed(() => {
         class="text-3 leading-3"
         size="small"
         :disabled="loading"
-        @click="submit(true)">
+        @click="handleFormSubmit(true)">
         {{ t('task.editModal.actions.saveAndContinue') }}
       </Button>
       <Button
@@ -1310,7 +1500,7 @@ const zoomInFlagCacheKey = computed(() => {
         class="text-3 leading-3"
         size="small"
         :disabled="loading"
-        @click="submit(false)">
+        @click="handleFormSubmit(false)">
         {{ t('actions.confirm') }}
       </Button>
     </template>

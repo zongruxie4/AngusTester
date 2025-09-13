@@ -7,7 +7,7 @@ import { task } from '@/api/tester';
 
 const { t } = useI18n();
 
-// ===== Props and Emits Definition =====
+// Props and Emits Definition
 interface Props {
   projectId: string;
   visible: boolean;
@@ -30,7 +30,7 @@ const emit = defineEmits<{
   (e: 'ok', value: string, ids:string[]): void;
 }>();
 
-// ===== Reactive Data =====
+// Reactive data
 const confirmLoading = ref(false);
 const selectedSprintId = ref<string>();
 const defaultSprintOption = {
@@ -38,14 +38,13 @@ const defaultSprintOption = {
   id: ''
 };
 
-// ===== Lifecycle Hooks =====
+// Lifecycle Hooks
 onMounted(() => {
   watch(() => props.sprintId, (newValue) => {
     selectedSprintId.value = newValue;
   }, { immediate: true });
 });
 
-// ===== Methods =====
 /**
  * Close the modal dialog
  */
@@ -87,7 +86,7 @@ const moveTasksToSprint = async () => {
     return;
   }
 
-  emit('ok', targetSprintId, moveParams.taskIds);
+  emit('ok', targetSprintId || '', moveParams.taskIds);
   closeModal();
 
   // Show success notification based on single or batch move

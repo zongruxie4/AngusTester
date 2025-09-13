@@ -5,7 +5,7 @@ import { Icon, NoData, Select } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-import { TaskInfo } from '../../../../types';
+import { TaskInfo } from '../../../../../types';
 import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
 const props = withDefaults(defineProps<TaskInfoProps>(), {

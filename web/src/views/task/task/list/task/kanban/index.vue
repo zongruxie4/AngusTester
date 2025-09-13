@@ -2,17 +2,8 @@
 import { computed, defineAsyncComponent, inject, onMounted, ref, Ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
 import {
-  Arrow,
-  AsyncComponent,
-  Colon,
-  Dropdown,
-  Icon,
-  IconTask,
-  Image,
-  modal,
-  notification,
-  TaskPriority,
-  Tooltip
+  Arrow, AsyncComponent, Colon, Dropdown, Icon, IconTask,
+  Image, modal, notification, TaskPriority, Tooltip
 } from '@xcan-angus/vue-ui';
 import { appContext, enumUtils } from '@xcan-angus/infra';
 import { TaskStatus } from '@/enums/enums';
@@ -22,8 +13,16 @@ import Draggable from 'vuedraggable';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-import { TaskInfo } from '../../../../types';
-import { ActionMenuItem, SprintPermissionKey } from './types';
+import { TaskInfo } from '@/views/task/types';
+
+type ActionMenuItem = {
+  name: string;
+  key: 'delete' | 'edit' | 'start' | 'processed' | 'uncompleted' | 'completed' | 'reopen' | 'restart' | 'cancel' | 'move' | 'cancelFavourite' | 'favourite' | 'cancelFollow' | 'follow' | 'copyLink';
+  icon: string;
+  disabled: boolean;
+  hide: boolean;
+  tip?: string;
+}
 
 type Props = {
   projectId: string;
@@ -61,17 +60,17 @@ const emit = defineEmits<{
 
 const MoveTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/Move.vue'));
 const EditTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/Edit.vue'));
-const APIInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/info/Apis.vue'));
-const BasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/info/Basic.vue'));
-const ScenarioInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/info/Scenario.vue'));
-const PersonnelInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/info/Personnel.vue'));
-const DateInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/info/Date.vue'));
-const Comment = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/Comment.vue'));
-const Activity = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/Activity.vue'));
-const AssocTasks = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/AssocTask.vue'));
-const AssocCases = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/AssocCase.vue'));
-const AttachmentInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/info/Attachment.vue'));
-const Remarks = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/Remark.vue'));
+const APIInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/info/Apis.vue'));
+const BasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/info/Basic.vue'));
+const ScenarioInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/info/Scenario.vue'));
+const PersonnelInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/info/Personnel.vue'));
+const DateInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/info/Date.vue'));
+const Comment = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/Comment.vue'));
+const Activity = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/Activity.vue'));
+const AssocTasks = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/AssocTask.vue'));
+const AssocCases = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/AssocCase.vue'));
+const AttachmentInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/info/Attachment.vue'));
+const Remarks = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/Remark.vue'));
 
 const isAdmin = computed(() => appContext.isAdmin());
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));

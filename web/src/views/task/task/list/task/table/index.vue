@@ -3,21 +3,14 @@ import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, TableColumnProps } from 'ant-design-vue';
 import {
-  AsyncComponent,
-  Dropdown,
-  Icon,
-  IconTask,
-  modal,
-  notification,
-  Table,
-  TaskPriority,
-  TaskStatus
+  AsyncComponent, Dropdown, Icon, IconTask, modal, notification, Table, TaskPriority, TaskStatus
 } from '@xcan-angus/vue-ui';
-import { toClipboard } from '@xcan-angus/infra';
+import { toClipboard, PageQuery } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
+import { TaskStatus as TaskStatusType } from '@/enums/enums';
 
-import { TaskInfo } from '../../../../types';
-import { ActionMenuItem } from '../../../types';
+import { TaskInfo } from '@/views/task/types';
+import { ActionMenuItem } from '@/views/task/task/types';
 
 const { t } = useI18n();
 
@@ -45,7 +38,7 @@ const emit = defineEmits<{
   (event: 'update:loading', value: boolean): void;
   (event: 'tableChange', pagination: { current: number; pageSize: number }, sorter: {
     orderBy: string;
-    orderSort: 'DESC' | 'ASC'
+    orderSort: PageQuery.OrderSort
   }): void;
   (event: 'edit', value: string): void;
   (event: 'move', value: TaskInfo): void;
@@ -128,9 +121,12 @@ const rowSelection = ref<{
       selectedRowKeys: []
     });
 
-const change = (pagination: { current: number; pageSize: number; }, _filters: { [key: string]: any }[], sorter: {
+const change = (
+  pagination: { current: number; pageSize: number; },
+  _filters: { [key: string]: any }[],
+  sorter: {
   orderBy: string;
-  orderSort: 'DESC' | 'ASC'
+  orderSort: PageQuery.OrderSort
 }) => {
   emit('tableChange', pagination, sorter);
 };
@@ -691,7 +687,7 @@ onMounted(() => {
         batchCancelFollowDisabled.value = true;
       }
 
-      if (['CANCELED', 'COMPLETED'].includes(status) || cancelItem?.disabled) {
+      if ([TaskStatusType.CANCELED, TaskStatusType.COMPLETED].includes(status) || cancelItem?.disabled) {
         batchCancelDisabled.value = true;
       }
 

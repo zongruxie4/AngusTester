@@ -6,7 +6,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-import { TaskInfo } from '../../../../types';
+import { TaskInfo } from '../../../../../types';
 import { TIME_FORMAT } from '@/utils/constant';
 import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
