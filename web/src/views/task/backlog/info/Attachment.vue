@@ -11,12 +11,17 @@ import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
 const { t } = useI18n();
 
+/**
+ * <p>Attachment item interface</p>
+ * <p>Defines the structure of a single attachment file</p>
+ */
 type AttachmentItem = {
   id: string;
   name: string;
   url: string;
 }
 
+// Component Props & Emits
 const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -30,95 +35,131 @@ const emit = defineEmits<{
   (event: 'change', value: Partial<TaskInfo>): void;
 }>();
 
-const MAX_SIZE = 10;
+/**
+ * <p>Maximum file size in MB for uploads</p>
+ */
+const MAX_FILE_SIZE_MB = 10;
 
-const loading = ref(false);
-const attachments = ref<AttachmentItem[]>([]);
+// Reactive State Variables
+const isUploading = ref(false);
+const attachmentList = ref<AttachmentItem[]>([]);
 
-const uploadChange = async ({ file }: { file: UploadFile }) => {
-  if (file.size! > maxFileSize.value) {
-    notification.warning(t('backlog.info.attachment.messages.fileSizeExceeded', { maxSize: MAX_SIZE }));
+/**
+ * <p>Handle file upload change event</p>
+ * <p>Validates file size, uploads file, and updates attachment list</p>
+ */
+const handleFileUploadChange = async ({ file }: { file: UploadFile }) => {
+  if (file.size! > maxFileSizeInBytes.value) {
+    notification.warning(t('backlog.info.attachment.messages.fileSizeExceeded', { maxSize: MAX_FILE_SIZE_MB }));
     return;
   }
 
-  loading.value = true;
+  isUploading.value = true;
   const [error, res] = await upload(file.originFileObj!, { bizKey: 'angusTesterTaskAttachments' });
   if (error) {
-    loading.value = false;
+    isUploading.value = false;
     return;
   }
 
-  const data = res?.data?.[0];
-  if (!data) {
-    loading.value = false;
+  const uploadedFileData = res?.data?.[0];
+  if (!uploadedFileData) {
+    isUploading.value = false;
     return;
   }
 
-  const attachmentList = attachments.value.filter(item => item.id !== data.id).map(item => {
+  const updatedAttachmentList = attachmentList.value.filter(item => item.id !== uploadedFileData.id).map(item => {
     return {
       name: item.name,
       url: item.url
     };
   });
 
-  attachmentList.push({
-    name: data.name,
-    url: data.url
+  updatedAttachmentList.push({
+    name: uploadedFileData.name,
+    url: uploadedFileData.url
   });
 
-  updateAttachments(attachmentList);
+  await updateTaskAttachments(updatedAttachmentList);
 };
 
-const toDelete = async (data: AttachmentItem) => {
-  const attachmentList = attachments.value.filter(item => item.id !== data.id).map(item => {
+/**
+ * <p>Handle attachment deletion</p>
+ * <p>Removes the specified attachment from the list and updates the task</p>
+ */
+const handleAttachmentDeletion = async (attachmentToDelete: AttachmentItem) => {
+  const updatedAttachmentList = attachmentList.value.filter(item => item.id !== attachmentToDelete.id).map(item => {
     return {
       name: item.name,
       url: item.url
     };
   });
 
-  updateAttachments(attachmentList);
+  await updateTaskAttachments(updatedAttachmentList);
 };
 
-const updateAttachments = async (data:{name:string;url:string}[]) => {
-  const params = {
-    attachments: data
+/**
+ * <p>Update task attachments via API</p>
+ * <p>Sends the updated attachment list to the server and emits change event</p>
+ */
+const updateTaskAttachments = async (attachmentData: {name: string; url: string}[]) => {
+  const updateParams = {
+    attachments: attachmentData
   };
-  loading.value = true;
-  const [error] = await task.editTaskAttachment(taskId.value, params);
-  loading.value = false;
+  isUploading.value = true;
+  const [error] = await task.editTaskAttachment(currentTaskId.value, updateParams);
+  isUploading.value = false;
   if (error) {
     return;
   }
 
-  emit('change', { id: taskId.value, attachments: params.attachments });
+  emit('change', { id: currentTaskId.value, attachments: updateParams.attachments });
 };
 
-const customRequest = () => {
+/**
+ * <p>Custom upload request handler</p>
+ * <p>Prevents default upload behavior to handle uploads manually</p>
+ */
+const handleCustomUploadRequest = () => {
   return false;
 };
 
+/**
+ * <p>Get current task ID from props</p>
+ */
+const currentTaskId = computed(() => props.dataSource?.id);
+
+/**
+ * <p>Check if attachment list is empty</p>
+ * <p>Used to determine whether to show upload area or attachment list</p>
+ */
+const isAttachmentListEmpty = computed(() => !attachmentList.value.length);
+
+/**
+ * <p>Calculate maximum file size in bytes</p>
+ * <p>Converts MB to bytes for file size validation</p>
+ */
+const maxFileSizeInBytes = computed(() => {
+  return 1024 * 1024 * MAX_FILE_SIZE_MB;
+});
+
+/**
+ * <p>Initialize component and watch for data source changes</p>
+ * <p>Sets up reactive attachment list based on task data</p>
+ */
 onMounted(() => {
-  watch(() => props.dataSource, (newValue) => {
-    if (!newValue) {
+  watch(() => props.dataSource, (newTaskData) => {
+    if (!newTaskData) {
       return;
     }
 
-    attachments.value = (newValue.attachments || []).map(item => {
+    attachmentList.value = (newTaskData.attachments || []).map(attachment => {
       return {
         id: utils.uuid(),
-        name: item.name,
-        url: item.url
+        name: attachment.name,
+        url: attachment.url
       };
     });
   }, { immediate: true });
-});
-
-const taskId = computed(() => props.dataSource?.id);
-const isEmpty = computed(() => !attachments.value.length);
-
-const maxFileSize = computed(() => {
-  return 1024 * 1024 * MAX_SIZE;
 });
 </script>
 
@@ -128,31 +169,31 @@ const maxFileSize = computed(() => {
       {{ t('backlog.info.attachment.title') }}
     </div>
     <Spin
-      :spinning="loading"
-      :class="{ empty: isEmpty }"
+      :spinning="isUploading"
+      :class="{ empty: isAttachmentListEmpty }"
       class="upload-container w-full px-3 py-2.5 leading-5 text-3 rounded border border-dashed">
-      <template v-if="!isEmpty">
+      <template v-if="!isAttachmentListEmpty">
         <div
-          v-for="item in attachments"
-          :key="item.id"
+          v-for="attachment in attachmentList"
+          :key="attachment.id"
           class="leading-4 mb-2 last:mb-0 flex items-center justify-between overflow-hidden">
           <a
             class="flex-1 flex-nowrap truncate"
-            :download="item.name"
-            :href="item.url">{{ item.name }}</a>
+            :download="attachment.name"
+            :href="attachment.url">{{ attachment.name }}</a>
           <Icon
             icon="icon-qingchu"
             class="text-3.5 flex-shrink-0 cursor-pointer text-theme-text-hover"
-            @click="toDelete(item)">
+            @click="handleAttachmentDeletion(attachment)">
           </icon>
         </div>
 
-        <div v-if="attachments.length < 5" class="upload-action flex justify-center h-5">
+        <div v-if="attachmentList.length < 5" class="upload-action flex justify-center h-5">
           <Upload
             :maxCount="5"
             :showUploadList="false"
-            :customRequest="customRequest"
-            @change="uploadChange">
+            :customRequest="handleCustomUploadRequest"
+            @change="handleFileUploadChange">
             <Button
               size="small"
               type="link"
@@ -168,8 +209,8 @@ const maxFileSize = computed(() => {
         <Upload
           :maxCount="5"
           :showUploadList="false"
-          :customRequest="customRequest"
-          @change="uploadChange">
+          :customRequest="handleCustomUploadRequest"
+          @change="handleFileUploadChange">
           <Button
             size="small"
             type="link"
@@ -181,7 +222,7 @@ const maxFileSize = computed(() => {
           </Button>
         </Upload>
         <div class="text-theme-sub-content mt-1">
-          {{ t('backlog.info.attachment.fileSizeLimit', { maxSize: MAX_SIZE }) }}
+          {{ t('backlog.info.attachment.fileSizeLimit', { maxSize: MAX_FILE_SIZE_MB }) }}
         </div>
       </template>
     </Spin>

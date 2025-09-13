@@ -10,6 +10,7 @@ import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
 const { t } = useI18n();
 
+// Component Props & Emits
 const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -23,51 +24,16 @@ const emit = defineEmits<{
   (event: 'change', value: Partial<TaskInfo>): void;
 }>();
 
-const editFlag = ref(false);
-const caseIds = ref<string[]>([]);
+// Reactive State Variables
+const isCaseEditing = ref(false);
+const selectedCaseIds = ref<string[]>([]);
 
-const toEdit = () => {
-  editFlag.value = true;
-};
-
-const cancel = () => {
-  editFlag.value = false;
-};
-
-const ok = async () => {
-  const params = {
-    refCaseIds: caseIds.value
-  };
-  editFlag.value = false;
-  const [error] = await task.updateTask(taskId.value, params);
-  if (error) {
-    return;
-  }
-
-  const data = await loadData();
-  emit('change', data);
-};
-
-const selectChange = (ids:string[]) => {
-  caseIds.value = ids;
-};
-
-const loadData = async (): Promise<Partial<TaskInfo>> => {
-  emit('loadingChange', true);
-  const [error, res] = await task.getTaskDetail(taskId.value);
-  emit('loadingChange', false);
-  if (error || !res?.data) {
-    return { id: taskId.value };
-  }
-
-  return res.data;
-};
-
-const taskId = computed(() => {
+// Computed Properties
+const currentTaskId = computed(() => {
   return props.dataSource?.id;
 });
 
-const refCaseList = computed(() => {
+const associatedCaseList = computed(() => {
   return props.dataSource?.refCaseInfos?.map(item => {
     return {
       ...item,
@@ -76,9 +42,68 @@ const refCaseList = computed(() => {
   }) || [];
 });
 
-const refCaseIds = computed(() => {
-  return refCaseList.value.map(item => item.id);
+const associatedCaseIds = computed(() => {
+  return associatedCaseList.value.map(item => item.id);
 });
+
+// Case Association Management Functions
+/**
+ * <p>Initialize case association editing mode</p>
+ * <p>Enables editing state for case associations</p>
+ */
+const startCaseAssociationEditing = () => {
+  isCaseEditing.value = true;
+};
+
+/**
+ * <p>Cancel case association editing</p>
+ * <p>Exits editing mode without saving changes</p>
+ */
+const cancelCaseAssociationEditing = () => {
+  isCaseEditing.value = false;
+};
+
+/**
+ * <p>Confirm case association changes</p>
+ * <p>Saves the selected case associations and updates the task</p>
+ */
+const confirmCaseAssociationChanges = async () => {
+  const updateParams = {
+    refCaseIds: selectedCaseIds.value
+  };
+  isCaseEditing.value = false;
+  const [error] = await task.updateTask(currentTaskId.value, updateParams);
+  if (error) {
+    return;
+  }
+
+  const updatedTaskData = await fetchTaskDetails();
+  emit('change', updatedTaskData);
+};
+
+/**
+ * <p>Handle case selection change</p>
+ * <p>Updates the selected case IDs when user selects new cases</p>
+ */
+const handleCaseSelectionChange = (ids: any) => {
+  selectedCaseIds.value = ids;
+};
+
+// Data Loading Functions
+/**
+ * <p>Load task details</p>
+ * <p>Fetches complete task information from the server</p>
+ */
+const fetchTaskDetails = async (): Promise<Partial<TaskInfo>> => {
+  emit('loadingChange', true);
+  const [error, res] = await task.getTaskDetail(currentTaskId.value);
+  emit('loadingChange', false);
+  if (error || !res?.data) {
+    return { id: currentTaskId.value };
+  }
+
+  return res.data;
+};
 </script>
 
 <template>
@@ -86,18 +111,18 @@ const refCaseIds = computed(() => {
     <div class="flex items-center text-theme-title mb-2.5">
       <span class="font-semibold">{{ t('backlog.assocCase.title') }}</span>
       <Button
-        v-show="!editFlag"
+        v-show="!isCaseEditing"
         type="link"
         class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-        @click="toEdit">
+        @click="startCaseAssociationEditing">
         <Icon icon="icon-shuxie" class="text-3.5" />
       </Button>
     </div>
 
-    <template v-if="!editFlag">
-      <div v-if="refCaseList.length" class="w-full space-y-1.5 truncate">
+    <template v-if="!isCaseEditing">
+      <div v-if="associatedCaseList.length" class="w-full space-y-1.5 truncate">
         <RouterLink
-          v-for="item in refCaseList"
+          v-for="item in associatedCaseList"
           :key="item.id"
           :to="item.linkUrl"
           target="_blank"
@@ -115,7 +140,7 @@ const refCaseIds = computed(() => {
 
     <template v-else>
       <Select
-        :value="refCaseIds"
+        :value="associatedCaseIds"
         showSearch
         internal
         allowClear
@@ -127,7 +152,7 @@ const refCaseIds = computed(() => {
         class="w-full"
         :placeholder="t('backlog.assocCase.placeholder')"
         mode="multiple"
-        @change="selectChange">
+        @change="handleCaseSelectionChange">
         <template #option="record">
           <div class="flex items-center leading-4.5 overflow-hidden">
             <Icon icon="icon-gongnengyongli" class="text-4 flex-shrink-0" />
@@ -148,13 +173,13 @@ const refCaseIds = computed(() => {
         <Button
           type="default"
           size="small"
-          @click="cancel">
+          @click="cancelCaseAssociationEditing">
           {{ t('backlog.assocCase.cancel') }}
         </Button>
         <Button
           type="primary"
           size="small"
-          @click="ok">
+          @click="confirmCaseAssociationChanges">
           {{ t('backlog.assocCase.confirm') }}
         </Button>
       </div>

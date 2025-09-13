@@ -12,6 +12,7 @@ import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
 const { t } = useI18n();
 
+// Component Props & Emits
 const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -25,10 +26,13 @@ const emit = defineEmits<{
   (event: 'change', value: Partial<TaskInfo>): void;
 }>();
 
-const dateRef = ref();
-const editFlag = ref(false);
-const dateValue = ref<string>();
-const taskId = computed(() => props.dataSource?.id);
+// Reactive State Variables
+const deadlineDatePickerRef = ref();
+const isDeadlineEditing = ref(false);
+const deadlineInputValue = ref<string>();
+
+// Computed Properties
+const currentTaskId = computed(() => props.dataSource?.id);
 const createdDate = computed(() => props.dataSource?.createdDate);
 const deadlineDate = computed(() => props.dataSource?.deadlineDate);
 const startDate = computed(() => props.dataSource?.startDate);
@@ -39,68 +43,85 @@ const canceledDate = computed(() => props.dataSource?.canceledDate);
 const execDate = computed(() => props.dataSource?.execDate);
 const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
 
-const dateError = ref();
-const dateErrorMessage = ref<string>();
+// Date validation state
+const hasDateValidationError = ref();
+const dateValidationMessage = ref<string>();
 
-const toEdit = () => {
-  dateValue.value = deadlineDate.value;
-  editFlag.value = true;
+// Deadline Date Management Functions
+/**
+ * <p>Initialize deadline date editing mode</p>
+ * <p>Sets the current deadline date value and enables editing state</p>
+ */
+const startDeadlineDateEditing = () => {
+  deadlineInputValue.value = deadlineDate.value;
+  isDeadlineEditing.value = true;
 
   nextTick(() => {
     setTimeout(() => {
-      if (typeof dateRef.value?.focus === 'function') {
-        dateRef.value?.focus();
+      if (typeof deadlineDatePickerRef.value?.focus === 'function') {
+        deadlineDatePickerRef.value?.focus();
       }
     }, 100);
   });
 };
 
-const change = (value:string) => {
+/**
+ * <p>Handle deadline date change and validation</p>
+ * <p>Validates the selected date and shows appropriate error messages</p>
+ */
+const handleDeadlineDateChange = (value: string) => {
   if (!value) {
-    dateErrorMessage.value = t('backlog.info.date.messages.selectDeadline');
+    dateValidationMessage.value = t('backlog.info.date.messages.selectDeadline');
     return;
   }
 
   if (dayjs(value).isBefore(dayjs(), 'minute')) {
-    dateError.value = true;
-    dateErrorMessage.value = t('backlog.info.date.messages.deadlineMustBeFuture');
+    hasDateValidationError.value = true;
+    dateValidationMessage.value = t('backlog.info.date.messages.deadlineMustBeFuture');
     return;
   }
 
-  dateError.value = false;
-  dateErrorMessage.value = undefined;
+  hasDateValidationError.value = false;
+  dateValidationMessage.value = undefined;
 };
 
-const blur = async () => {
-  if (dateError.value) {
-    if (typeof dateRef.value?.focus === 'function') {
-      dateRef.value?.focus();
+/**
+ * <p>Handle deadline date input blur event</p>
+ * <p>Validates the date and calls API to update deadline if valid</p>
+ */
+const handleDeadlineDateBlur = async () => {
+  if (hasDateValidationError.value) {
+    if (typeof deadlineDatePickerRef.value?.focus === 'function') {
+      deadlineDatePickerRef.value?.focus();
     }
-
     return;
   }
 
-  const value = dateValue.value;
-  if (!value || value === deadlineDate.value) {
-    editFlag.value = false;
+  const newDeadlineDate = deadlineInputValue.value;
+  if (!newDeadlineDate || newDeadlineDate === deadlineDate.value) {
+    isDeadlineEditing.value = false;
     return;
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editDeadlineDateApi(taskId.value, value);
+  const [error] = await task.editDeadlineDateApi(currentTaskId.value, newDeadlineDate);
   emit('loadingChange', false);
   if (error) {
-    if (typeof dateRef.value?.focus === 'function') {
-      dateRef.value?.focus();
+    if (typeof deadlineDatePickerRef.value?.focus === 'function') {
+      deadlineDatePickerRef.value?.focus();
     }
     return;
   }
 
-  editFlag.value = false;
-  emit('change', { id: taskId.value, deadlineDate: value });
+  isDeadlineEditing.value = false;
+  emit('change', { id: currentTaskId.value, deadlineDate: newDeadlineDate });
 };
 
-const disabledDate = (current: Dayjs) => {
+/**
+ * <p>Disable past dates in date picker</p>
+ * <p>Prevents selection of dates before today</p>
+ */
+const disablePastDates = (current: Dayjs) => {
   const today = dayjs().startOf('day');
   return current.isBefore(today, 'day');
 };
@@ -126,36 +147,36 @@ const disabledDate = (current: Dayjs) => {
           <Colon class="w-1" />
         </div>
 
-        <div v-show="!editFlag" class="flex items-start whitespace-pre-wrap break-words break-all">
+        <div v-show="!isDeadlineEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
           <div>{{ deadlineDate }}</div>
           <Button
             type="link"
             class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-            @click="toEdit">
+            @click="startDeadlineDateEditing">
             <Icon icon="icon-shuxie" class="text-3.5" />
           </Button>
         </div>
 
-        <AsyncComponent :visible="editFlag">
+        <AsyncComponent :visible="isDeadlineEditing">
           <Tooltip
-            :visible="dateError"
-            :title="dateErrorMessage"
+            :visible="hasDateValidationError"
+            :title="dateValidationMessage"
             placement="left"
             arrowPointAtCenter>
             <DatePicker
-              v-show="editFlag"
-              ref="dateRef"
-              v-model:value="dateValue"
-              :error="dateError"
+              v-show="isDeadlineEditing"
+              ref="deadlineDatePickerRef"
+              v-model:value="deadlineInputValue"
+              :error="hasDateValidationError"
               :showNow="false"
-              :disabledDate="disabledDate"
+              :disabledDate="disablePastDates"
               :showTime="{ hideDisabledOptions: true, format: TIME_FORMAT }"
               type="date"
               size="small"
               class="edit-container"
               showToday
-              @change="change"
-              @blur="blur" />
+              @change="handleDeadlineDateChange"
+              @blur="handleDeadlineDateBlur" />
           </Tooltip>
         </AsyncComponent>
       </div>

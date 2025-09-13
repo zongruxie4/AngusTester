@@ -10,6 +10,7 @@ import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
 const { t } = useI18n();
 
+// Component Props & Emits
 const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -23,59 +24,84 @@ const emit = defineEmits<{
   (event: 'change', value: Partial<TaskInfo>): void;
 }>();
 
+// Async Components
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 
-const openFlag = ref(true);
-const editFlag = ref(false);
-const content = ref<string>('');
+// Reactive State Variables
+const isDescriptionExpanded = ref(true);
+const isDescriptionEditing = ref(false);
+const descriptionContent = ref<string>('');
 
-const taskId = computed(() => {
+// Computed Properties
+const currentTaskId = computed(() => {
   return props.dataSource?.id;
 });
 
-const toEdit = () => {
-  openFlag.value = true;
-  editFlag.value = true;
-  content.value = props.dataSource?.description || '';
+/**
+ * <p>Initialize description editing mode</p>
+ * <p>Sets the current description content and enables editing state</p>
+ */
+const startDescriptionEditing = () => {
+  isDescriptionExpanded.value = true;
+  isDescriptionEditing.value = true;
+  descriptionContent.value = props.dataSource?.description || '';
 };
 
-const editorChange = (value: string) => {
-  content.value = value;
+/**
+ * <p>Handle rich editor content change</p>
+ * <p>Updates the description content when user types in the editor</p>
+ */
+const handleDescriptionContentChange = (value: string) => {
+  descriptionContent.value = value;
 };
 
-const cancel = () => {
-  editFlag.value = false;
+/**
+ * <p>Cancel description editing</p>
+ * <p>Exits editing mode without saving changes</p>
+ */
+const cancelDescriptionEditing = () => {
+  isDescriptionEditing.value = false;
 };
 
-const descError = ref(false);
-const descRichRef = ref();
+// Description Validation
+const hasDescriptionValidationError = ref(false);
+const richEditorRef = ref();
 
-const validateDesc = () => {
-  return !(descRichRef.value && descRichRef.value.getLength() > 8000);
+/**
+ * <p>Validate description content length</p>
+ * <p>Checks if description exceeds maximum allowed length (8000 characters)</p>
+ */
+const validateDescriptionLength = () => {
+  return !(richEditorRef.value && richEditorRef.value.getLength() > 8000);
 };
 
-const ok = async () => {
-  if (!validateDesc()) {
-    descError.value = true;
+/**
+ * <p>Save description changes</p>
+ * <p>Validates content and calls API to update task description</p>
+ */
+const saveDescriptionChanges = async () => {
+  if (!validateDescriptionLength()) {
+    hasDescriptionValidationError.value = true;
     return;
   }
-  descError.value = false;
+  hasDescriptionValidationError.value = false;
 
-  const params = { description: content.value };
+  const updateParams = { description: descriptionContent.value };
   emit('loadingChange', true);
-  const [error] = await task.editTaskDescription(taskId.value, params);
+  const [error] = await task.editTaskDescription(currentTaskId.value, updateParams);
   emit('loadingChange', false);
   if (error) {
     return;
   }
 
-  editFlag.value = false;
-  emit('change', { id: taskId.value, description: content.value });
+  isDescriptionEditing.value = false;
+  emit('change', { id: currentTaskId.value, description: descriptionContent.value });
 };
 
+// Lifecycle Hooks
 onMounted(() => {
-  watch(() => props.dataSource, (newValue) => {
-    content.value = newValue?.description || '';
+  watch(() => props.dataSource, (newTaskData) => {
+    descriptionContent.value = newTaskData?.description || '';
   }, { immediate: true });
 });
 </script>
@@ -85,48 +111,48 @@ onMounted(() => {
     <div class="flex items-center text-theme-title mb-1.75">
       <span>{{ t('backlog.info.description.title') }}</span>
       <Button
-        v-show="!editFlag"
+        v-show="!isDescriptionEditing"
         type="link"
         class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-        @click="toEdit">
+        @click="startDescriptionEditing">
         <Icon icon="icon-shuxie" class="text-3.5" />
       </Button>
     </div>
 
-    <AsyncComponent :visible="editFlag">
-      <div v-show="editFlag">
+    <AsyncComponent :visible="isDescriptionEditing">
+      <div v-show="isDescriptionEditing">
         <div>
           <RichEditor
-            ref="descRichRef"
-            :value="content"
+            ref="richEditorRef"
+            :value="descriptionContent"
             :height="300"
-            @change="editorChange" />
-          <div v-show="descError" class="text-status-error">
+            @change="handleDescriptionContentChange" />
+          <div v-show="hasDescriptionValidationError" class="text-status-error">
             {{ t('backlog.info.description.messages.maxLength') }}
           </div>
         </div>
 
         <div class="mt-2.5 space-x-2.5 w-full flex items-center justify-end">
-          <Button size="small" @click="cancel">
+          <Button size="small" @click="cancelDescriptionEditing">
             {{ t('backlog.info.description.cancel') }}
           </Button>
           <Button
             size="small"
             type="primary"
-            @click="ok">
+            @click="saveDescriptionChanges">
             {{ t('backlog.info.description.confirm') }}
           </Button>
         </div>
       </div>
     </AsyncComponent>
 
-    <AsyncComponent :visible="!editFlag">
-      <div v-show="!editFlag">
+    <AsyncComponent :visible="!isDescriptionEditing">
+      <div v-show="!isDescriptionEditing">
         <RichEditor :value="props?.dataSource?.description" mode="view" />
       </div>
 
       <NoData
-        v-show="!editFlag&&!content?.length"
+        v-show="!isDescriptionEditing&&!descriptionContent?.length"
         size="small"
         class="my-10" />
     </AsyncComponent>

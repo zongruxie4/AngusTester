@@ -20,11 +20,13 @@ import { TaskInfo } from '../types';
 
 const { t } = useI18n();
 
+// Type Definitions
 interface Props {
   visible: boolean;
   projectId: string;
 }
 
+// Component Props & Emits
 const props = withDefaults(defineProps<Props>(), {
   visible: false,
   projectId: undefined
@@ -36,13 +38,15 @@ const emit = defineEmits<{
   (event: 'ok'): void;
 }>();
 
-const MAX_LENGTH = 200;
+// Constants
+const MAX_TASK_COUNT = 200;
 
-const confirmLoading = ref(false);
-const generating = ref(false);
+// Reactive State Variables
+const isConfirmLoading = ref(false);
+const isGenerating = ref(false);
 
-const idList = ref<string[]>([]);
-const dataMap = ref<{
+const taskIdList = ref<string[]>([]);
+const taskDataMap = ref<{
   [key: string]: {
     taskType: TaskInfo['taskType']['value'];
     priority: TaskInfo['priority']['value'];
@@ -57,36 +61,42 @@ const dataMap = ref<{
   }
 }>({});
 
+// Validation Error Sets
 const taskTypeErrorSet = ref(new Set<string>());
 const priorityErrorSet = ref(new Set<string>());
 const nameErrorSet = ref(new Set<string>());
 const deadlineDateErrorSet = ref(new Set<string>());
-
 const nameRepeatSet = ref(new Set<string>());
 
-const aiKeywords = ref('');
+// AI Keywords Input
+const aiKeywordsInput = ref('');
 
-const toGenerate = async () => {
-  generating.value = true;
-  const [error, res] = await ai.getChartResult({ type: 'WRITE_BACKLOG', question: aiKeywords.value });
-  generating.value = false;
+// AI Task Generation Functions
+/**
+ * <p>Generate tasks using AI</p>
+ * <p>Calls AI service to generate task content based on keywords and creates task data structure</p>
+ */
+const generateTasksWithAI = async () => {
+  isGenerating.value = true;
+  const [error, res] = await ai.getChartResult({ type: 'WRITE_BACKLOG', question: aiKeywordsInput.value });
+  isGenerating.value = false;
   if (error) {
     return;
   }
 
-  const data = (res?.data || { normal: '', content: [] }) as {
-    normal:string;
-    content:string[];
+  const aiResponse = (res?.data || { normal: '', content: [] }) as {
+    normal: string;
+    content: string[];
   };
 
-  const list = data.content;
-  const newIdList:string[] = [];
-  const newDataMap = {};
-  for (let i = 0, len = list.length; i < len; i++) {
-    const id = utils.uuid();
-    newIdList.push(id);
-    newDataMap[id] = {
-      name: list[i],
+  const taskContentList = aiResponse.content;
+  const newTaskIdList: string[] = [];
+  const newTaskDataMap = {};
+  for (let i = 0, len = taskContentList.length; i < len; i++) {
+    const taskId = utils.uuid();
+    newTaskIdList.push(taskId);
+    newTaskDataMap[taskId] = {
+      name: taskContentList[i],
       assigneeId: undefined,
       confirmerId: undefined,
       deadlineDate: undefined,
@@ -99,30 +109,19 @@ const toGenerate = async () => {
     };
   }
 
-  idList.value = newIdList;
-  dataMap.value = newDataMap;
+  taskIdList.value = newTaskIdList;
+  taskDataMap.value = newTaskDataMap;
 };
 
-const taskTypeChange = (id: string) => {
-  taskTypeErrorSet.value.delete(id);
-};
-
-const priorityChange = (id: string) => {
-  priorityErrorSet.value.delete(id);
-};
-
-const nameChange = debounce(duration.search, () => {
-  validateRepeatName();
-});
-
-const deadlineDateChange = (id: string) => {
-  deadlineDateErrorSet.value.delete(id);
-};
-
-const toAdd = () => {
-  const newId = utils.uuid();
-  idList.value.push(newId);
-  dataMap.value[newId] = {
+// Task Management Functions
+/**
+ * <p>Add a new task row</p>
+ * <p>Creates a new empty task with default values</p>
+ */
+const addNewTask = () => {
+  const newTaskId = utils.uuid();
+  taskIdList.value.push(newTaskId);
+  taskDataMap.value[newTaskId] = {
     assigneeId: undefined,
     confirmerId: undefined,
     deadlineDate: undefined,
@@ -136,62 +135,80 @@ const toAdd = () => {
   };
 };
 
-const toDelete = (id: string, index: number) => {
-  idList.value.splice(index, 1);
-  delete dataMap.value[id];
-  taskTypeErrorSet.value.delete(id);
-  priorityErrorSet.value.delete(id);
-  nameErrorSet.value.delete(id);
-  deadlineDateErrorSet.value.delete(id);
+/**
+ * <p>Delete a task row</p>
+ * <p>Removes task from list and clears associated error states</p>
+ */
+const deleteTask = (taskId: string, index: number) => {
+  taskIdList.value.splice(index, 1);
+  delete taskDataMap.value[taskId];
+  taskTypeErrorSet.value.delete(taskId);
+  priorityErrorSet.value.delete(taskId);
+  nameErrorSet.value.delete(taskId);
+  deadlineDateErrorSet.value.delete(taskId);
 };
 
-const cancel = () => {
-  reset();
+// Modal Management Functions
+/**
+ * <p>Cancel modal and reset form</p>
+ * <p>Closes the modal and clears all form data</p>
+ */
+const cancelModal = () => {
+  resetForm();
   emit('update:visible', false);
 };
 
-const ok = async () => {
-  if (idList.value?.length > MAX_LENGTH) {
+/**
+ * <p>Confirm and save tasks</p>
+ * <p>Validates all tasks and creates them in the system</p>
+ */
+const confirmAndSaveTasks = async () => {
+  if (taskIdList.value?.length > MAX_TASK_COUNT) {
     notification.warning(t('backlog.aiGenerateTask.maxTasksWarning'));
     return;
   }
 
-  if (!toValidate()) {
+  if (!validateAllTasks()) {
     return;
   }
 
-  const ids = idList.value;
-  const map = dataMap.value;
-  confirmLoading.value = true;
-  let errorNum = 0;
-  for (let i = 0, len = ids.length; i < len; i++) {
-    const id = ids[i];
-    const params = map[id];
-    for (const key in params) {
+  const taskIds = taskIdList.value;
+  const taskMap = taskDataMap.value;
+  isConfirmLoading.value = true;
+  let errorCount = 0;
+  for (let i = 0, len = taskIds.length; i < len; i++) {
+    const taskId = taskIds[i];
+    const taskParams = taskMap[taskId];
+    for (const key in taskParams) {
       if (key === 'moduleId') {
-        if (!params[key] || params[key] === '-1') {
-          delete params[key];
+        if (!taskParams[key] || taskParams[key] === '-1') {
+          delete taskParams[key];
         }
-      } else if (!params[key]) {
-        delete params[key];
+      } else if (!taskParams[key]) {
+        delete taskParams[key];
       }
     }
 
-    const [error] = await task.addTask(params);
+    const [error] = await task.addTask(taskParams);
     if (error) {
-      errorNum++;
+      errorCount++;
     }
   }
 
-  confirmLoading.value = false;
-  if (errorNum === 0) {
-    reset();
+  isConfirmLoading.value = false;
+  if (errorCount === 0) {
+    resetForm();
     emit('update:visible', false);
     emit('ok');
   }
 };
 
-const resetError = () => {
+// Validation Functions
+/**
+ * <p>Clear all validation error states</p>
+ * <p>Resets all error sets to empty state</p>
+ */
+const clearAllValidationErrors = () => {
   taskTypeErrorSet.value.clear();
   priorityErrorSet.value.clear();
   nameErrorSet.value.clear();
@@ -199,67 +216,79 @@ const resetError = () => {
   nameRepeatSet.value.clear();
 };
 
-const getRepeatNames = () => {
+/**
+ * <p>Get duplicate task names</p>
+ * <p>Identifies task names that appear more than once in the current task list</p>
+ */
+const getDuplicateTaskNames = () => {
   const uniqueNames = new Set();
-  const repeatNames = new Set();
-  const names = Object.values(dataMap.value).map(item => item.name);
-  for (let i = 0, len = names.length; i < len; i++) {
-    const name = names[i];
-    if (name) {
-      if (uniqueNames.has(name)) {
-        repeatNames.add(name);
+  const duplicateNames = new Set();
+  const taskNames = Object.values(taskDataMap.value).map(item => item.name);
+  for (let i = 0, len = taskNames.length; i < len; i++) {
+    const taskName = taskNames[i];
+    if (taskName) {
+      if (uniqueNames.has(taskName)) {
+        duplicateNames.add(taskName);
       } else {
-        uniqueNames.add(name);
+        uniqueNames.add(taskName);
       }
     }
   }
-  return repeatNames;
+  return duplicateNames;
 };
 
-const validateRepeatName = () => {
-  const ids = idList.value;
-  const repeatNameSet = getRepeatNames();
-  const map = dataMap.value;
-  for (let i = 0, len = ids.length; i < len; i++) {
-    const id = ids[i];
-    const item = map[id];
-    if (item.name && repeatNameSet.has(item.name)) {
-      nameRepeatSet.value.add(id);
-      nameErrorSet.value.add(id);
+/**
+ * <p>Validate task name duplicates</p>
+ * <p>Checks for duplicate task names and updates error states accordingly</p>
+ */
+const validateTaskNameDuplicates = () => {
+  const taskIds = taskIdList.value;
+  const duplicateNameSet = getDuplicateTaskNames();
+  const taskMap = taskDataMap.value;
+  for (let i = 0, len = taskIds.length; i < len; i++) {
+    const taskId = taskIds[i];
+    const taskItem = taskMap[taskId];
+    if (taskItem.name && duplicateNameSet.has(taskItem.name)) {
+      nameRepeatSet.value.add(taskId);
+      nameErrorSet.value.add(taskId);
     } else {
-      nameRepeatSet.value.delete(id);
-      nameErrorSet.value.delete(id);
+      nameRepeatSet.value.delete(taskId);
+      nameErrorSet.value.delete(taskId);
     }
   }
 };
 
-const toValidate = () => {
-  const ids = idList.value;
-  const map = dataMap.value;
-  const repeatNameSet = getRepeatNames();
-  resetError();
-  for (let i = 0, len = ids.length; i < len; i++) {
-    const id = ids[i];
-    const item = map[id];
-    if (!item.taskType) {
-      taskTypeErrorSet.value.add(id);
+/**
+ * <p>Validate all tasks</p>
+ * <p>Performs comprehensive validation on all tasks and returns validation result</p>
+ */
+const validateAllTasks = () => {
+  const taskIds = taskIdList.value;
+  const taskMap = taskDataMap.value;
+  const duplicateNameSet = getDuplicateTaskNames();
+  clearAllValidationErrors();
+  for (let i = 0, len = taskIds.length; i < len; i++) {
+    const taskId = taskIds[i];
+    const taskItem = taskMap[taskId];
+    if (!taskItem.taskType) {
+      taskTypeErrorSet.value.add(taskId);
     }
 
-    if (!item.priority) {
-      priorityErrorSet.value.add(id);
+    if (!taskItem.priority) {
+      priorityErrorSet.value.add(taskId);
     }
 
-    if (!item.name) {
-      nameErrorSet.value.add(id);
+    if (!taskItem.name) {
+      nameErrorSet.value.add(taskId);
     } else {
-      if (repeatNameSet.has(item.name)) {
-        nameRepeatSet.value.add(id);
-        nameErrorSet.value.add(id);
+      if (duplicateNameSet.has(taskItem.name)) {
+        nameRepeatSet.value.add(taskId);
+        nameErrorSet.value.add(taskId);
       }
     }
 
-    if (item.deadlineDate && dayjs(item.deadlineDate).isBefore(dayjs())) {
-      deadlineDateErrorSet.value.add(id);
+    if (taskItem.deadlineDate && dayjs(taskItem.deadlineDate).isBefore(dayjs())) {
+      deadlineDateErrorSet.value.add(taskId);
     }
   }
 
@@ -269,40 +298,93 @@ const toValidate = () => {
     deadlineDateErrorSet.value.size);
 };
 
-const disabledDate = (current: Dayjs) => {
+// Event Handlers
+/**
+ * <p>Handle task type change</p>
+ * <p>Clears task type validation error when user changes selection</p>
+ */
+const handleTaskTypeChange = (taskId: string) => {
+  taskTypeErrorSet.value.delete(taskId);
+};
+
+/**
+ * <p>Handle priority change</p>
+ * <p>Clears priority validation error when user changes selection</p>
+ */
+const handlePriorityChange = (taskId: string) => {
+  priorityErrorSet.value.delete(taskId);
+};
+
+/**
+ * <p>Handle task name change</p>
+ * <p>Debounced validation of task name duplicates</p>
+ */
+const handleTaskNameChange = debounce(duration.search, () => {
+  validateTaskNameDuplicates();
+});
+
+/**
+ * <p>Handle deadline date change</p>
+ * <p>Clears deadline date validation error when user changes selection</p>
+ */
+const handleDeadlineDateChange = (taskId: string) => {
+  deadlineDateErrorSet.value.delete(taskId);
+};
+
+// Utility Functions
+/**
+ * <p>Disable past dates in date picker</p>
+ * <p>Prevents selection of dates before today</p>
+ */
+const disablePastDates = (current: Dayjs) => {
   const today = dayjs().startOf('day');
   return current.isBefore(today, 'day');
 };
 
-const reset = () => {
-  aiKeywords.value = '';
-  idList.value = [];
-  dataMap.value = {};
+/**
+ * <p>Reset form to initial state</p>
+ * <p>Clears all form data and validation errors</p>
+ */
+const resetForm = () => {
+  aiKeywordsInput.value = '';
+  taskIdList.value = [];
+  taskDataMap.value = {};
   taskTypeErrorSet.value.clear();
   priorityErrorSet.value.clear();
   nameErrorSet.value.clear();
   deadlineDateErrorSet.value.clear();
-  resetError();
+  clearAllValidationErrors();
 };
 
+// Computed Properties
+/**
+ * <p>OK button properties</p>
+ * <p>Disables OK button when AI is generating tasks</p>
+ */
 const okButtonProps = computed(() => {
   return {
-    disabled: generating.value
+    disabled: isGenerating.value
   };
 });
 
-const excludeTypes = (option: {value: TaskType; message: string}) => {
-  return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(option.value);
+// Utility Functions
+/**
+ * <p>Exclude specific task types from selection</p>
+ * <p>Filters out API_TEST and SCENARIO_TEST from available task types</p>
+ */
+const excludeTaskTypes = (option: {value: string; message: string}) => {
+  return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(option.value as any);
 };
 
+// Lifecycle Hooks
 onMounted(() => {
-  watch(() => props.visible, (newValue) => {
-    if (!newValue) {
+  watch(() => props.visible, (isVisible) => {
+    if (!isVisible) {
       return;
     }
 
-    reset();
-    toAdd();
+    resetForm();
+    addNewTask();
   }, { immediate: true, deep: true });
 });
 </script>
@@ -310,27 +392,27 @@ onMounted(() => {
   <Modal
     :visible="props.visible"
     :width="1200"
-    :confirmLoading="confirmLoading"
+    :confirmLoading="isConfirmLoading"
     :okButtonProps="okButtonProps"
     :title="t('backlog.aiGenerateTask.title')"
-    @cancel="cancel"
-    @ok="ok">
+    @cancel="cancelModal"
+    @ok="confirmAndSaveTasks">
     <Spin
-      :spinning="generating||confirmLoading"
-      :tip="generating ? t('backlog.aiGenerateTask.generating') : ''">
+      :spinning="isGenerating||isConfirmLoading"
+      :tip="isGenerating ? t('backlog.aiGenerateTask.generating') : ''">
       <div class="flex flex-nowrap justify-between mb-3.5 space-x-5">
         <Input
-          v-model:value="aiKeywords"
+          v-model:value="aiKeywordsInput"
           :placeholder="t('backlog.aiGenerateTask.aiKeywordsPlaceholder')"
           trim
           allowClear
           class="flex-1"
           :maxlength="2000" />
         <Button
-          :disabled="!aiKeywords"
+          :disabled="!aiKeywordsInput"
           type="primary"
           size="small"
-          @click="toGenerate">
+          @click="generateTasksWithAI">
           {{ t('backlog.aiGenerateTask.generate') }}
         </Button>
       </div>
@@ -373,34 +455,34 @@ onMounted(() => {
 
       <div style="max-height: 320px;" class="space-y-2 overflow-auto">
         <div
-          v-for="(item, index) in idList"
-          :key="item"
+          v-for="(taskId, index) in taskIdList"
+          :key="taskId"
           class="action-container flex items-center px-2">
           <SelectEnum
-            v-model:value="dataMap[item].taskType"
-            :error="taskTypeErrorSet.has(item)"
-            :excludes="excludeTypes"
+            v-model:value="taskDataMap[taskId].taskType"
+            :error="taskTypeErrorSet.has(taskId)"
+            :excludes="excludeTaskTypes"
             enumKey="TaskType"
             :placeholder="t('backlog.aiGenerateTask.placeholders.taskType')"
             class="w-27 mr-2.5"
-            @change="taskTypeChange(item)">
+            @change="handleTaskTypeChange(taskId)">
             <template #option="record">
               <div class="flex items-center">
-                <IconTask :value="record.value" class="text-4 flex-shrink-0" />
-                <span class="ml-1">{{ record.message }}</span>
+                <IconTask :value="record.value as any" class="text-4 flex-shrink-0" />
+                <span class="ml-1">{{ record.label }}</span>
               </div>
             </template>
           </SelectEnum>
 
           <SelectEnum
-            v-model:value="dataMap[item].priority"
-            :error="priorityErrorSet.has(item)"
+            v-model:value="taskDataMap[taskId].priority"
+            :error="priorityErrorSet.has(taskId)"
             enumKey="Priority"
             :placeholder="t('backlog.aiGenerateTask.placeholders.priority')"
             class="w-20 mr-2.5"
-            @change="priorityChange(item)">
+            @change="handlePriorityChange(taskId)">
             <template #option="record">
-              <TaskPriority :value="record" />
+              <TaskPriority :value="{ value: record.value as any, message: record.label }" />
             </template>
           </SelectEnum>
 
@@ -409,19 +491,19 @@ onMounted(() => {
             internal
             placement="right"
             destroyTooltipOnHide
-            :visible="nameRepeatSet.has(item)">
+            :visible="nameRepeatSet.has(taskId)">
             <Input
-              v-model:value="dataMap[item].name"
-              :error="nameErrorSet.has(item)"
+              v-model:value="taskDataMap[taskId].name"
+              :error="nameErrorSet.has(taskId)"
               :maxlength="200"
               trim
               class="flex-1 mr-2.5"
               :placeholder="t('backlog.aiGenerateTask.placeholders.taskName')"
-              @change="nameChange()" />
+              @change="handleTaskNameChange()" />
           </Tooltip>
 
           <Input
-            v-model:value="dataMap[item].evalWorkload"
+            v-model:value="taskDataMap[taskId].evalWorkload"
             class="w-20 mr-2.5"
             size="small"
             dataType="float"
@@ -431,7 +513,7 @@ onMounted(() => {
             :placeholder="t('backlog.aiGenerateTask.placeholders.evalWorkload')" />
 
           <SelectUser
-            v-model:value="dataMap[item].assigneeId"
+            v-model:value="taskDataMap[taskId].assigneeId"
             :placeholder="t('backlog.aiGenerateTask.placeholders.assignee')"
             allowClear
             class="w-25 mr-2.5"
@@ -439,7 +521,7 @@ onMounted(() => {
             :maxlength="80" />
 
           <SelectUser
-            v-model:value="dataMap[item].confirmerId"
+            v-model:value="taskDataMap[taskId].confirmerId"
             :placeholder="t('backlog.aiGenerateTask.placeholders.confirmer')"
             allowClear
             class="w-25 mr-2.5"
@@ -451,35 +533,35 @@ onMounted(() => {
             internal
             placement="right"
             destroyTooltipOnHide
-            :visible="deadlineDateErrorSet.has(item)">
+            :visible="deadlineDateErrorSet.has(taskId)">
             <DatePicker
-              v-model:value="dataMap[item].deadlineDate"
-              :error="deadlineDateErrorSet.has(item)"
+              v-model:value="taskDataMap[taskId].deadlineDate"
+              :error="deadlineDateErrorSet.has(taskId)"
               :showNow="false"
-              :disabledDate="disabledDate"
+              :disabledDate="disablePastDates"
               :showTime="{ hideDisabledOptions: true, format: 'HH:mm:ss' }"
               :placeholder="t('backlog.aiGenerateTask.placeholders.deadline')"
               type="date"
               size="small"
               showToday
               class="w-42 mr-2.5"
-              @change="deadlineDateChange(item)" />
+              @change="handleDeadlineDateChange(taskId)" />
           </Tooltip>
 
           <div
             class="w-5 h-5 text-3.5 flex items-center justify-center text-theme-text-hover cursor-pointer"
-            @click="toDelete(item, index)">
+            @click="deleteTask(taskId, index)">
             <Icon icon="icon-qingchu" />
           </div>
         </div>
       </div>
 
       <Button
-        :disabled="idList?.length>=MAX_LENGTH"
+        :disabled="taskIdList?.length>=MAX_TASK_COUNT"
         type="link"
         size="small"
         class="flex items-center px-0 mt-1"
-        @click="toAdd">
+        @click="addNewTask">
         <Icon icon="icon-jia" class="mr-1 text-3.5" />
         <span>{{ t('backlog.aiGenerateTask.continueAdd') }}</span>
       </Button>

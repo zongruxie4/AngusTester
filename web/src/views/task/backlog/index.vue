@@ -1,28 +1,26 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
+import { defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Progress } from 'ant-design-vue';
 import {
   Arrow, AsyncComponent, Colon, DropdownSort, Icon, IconTask,
-  Image, Input, modal, notification, Popover, Spin, TaskPriority, Tooltip
+  Image, Input, Popover, Spin, TaskPriority, Tooltip
 } from '@xcan-angus/vue-ui';
-import {
-  appContext, duration, enumUtils, EvalWorkloadMethod, PageQuery, Priority, SearchCriteria
-} from '@xcan-angus/infra';
+import { EvalWorkloadMethod, Priority } from '@xcan-angus/infra';
 import Draggable from 'vuedraggable';
-import { cloneDeep } from 'lodash-es';
-import { debounce } from 'throttle-debounce';
-import dayjs, { Dayjs } from 'dayjs';
-import { analysis, task } from '@/api/tester';
-import { DATE_TIME_FORMAT } from '@/utils/constant';
-import { TaskSprintPermission, TaskType } from '@/enums/enums';
+import { TaskType } from '@/enums/enums';
 import { BasicProps } from '@/types/types';
 
-import { MemberCount } from './types';
 import { TaskInfo } from '../types';
-
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { SprintInfo } from '@/views/task/sprint/types';
+
+// Import composables
+import { useBacklogState } from './composables/useBacklogState';
+import { useTaskActions } from './composables/useActions';
+import { useUIOptions } from './composables/useUIOptions';
+import { useTaskData } from './composables/useTaskData';
+import { useSprintData } from './composables/useSprintData';
 
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
@@ -32,7 +30,7 @@ const props = withDefaults(defineProps<BasicProps>(), {
 
 const { t } = useI18n();
 const aiEnabled = inject('aiEnabled', ref(false));
-const isAdmin = computed(() => appContext.isAdmin());
+const deleteTabPane = inject<(value: string[]) => void>('deleteTabPane');
 
 const Introduce = defineAsyncComponent(() => import('@/views/task/backlog/Introduce.vue'));
 const ApiInfo = defineAsyncComponent(() => import('@/views/task/backlog/info/Apis.vue'));
@@ -50,837 +48,119 @@ const EditTaskModal = defineAsyncComponent(() => import('@/views/task/backlog/Ed
 const SplitTask = defineAsyncComponent(() => import('@/views/task/backlog/SplitTask.vue'));
 const AIGenerateTask = defineAsyncComponent(() => import('@/views/task/backlog/AiGenerateTask.vue'));
 
-const deleteTabPane = inject<(value: string[]) => void>('deleteTabPane');
+// Initialize composables
+const {
+  backlogData,
+  sprintData,
+  loading,
+  modal,
+  selected,
+  newTask,
+  search,
+  taskNameEditing,
+  sprintExpansion,
+  currentInfo,
+  ui,
+  sprintContainerRef,
+  newTaskNameInputRef,
+  updateCurrentTaskInfo,
+  setLoadingState,
+  selectTask
+} = useBacklogState(props);
 
-const sortOption = [
-  {
-    name: t('backlog.columns.type'),
-    key: 'taskType'
-  },
-  {
-    name: t('backlog.columns.priority'),
-    key: 'priority'
-  },
-  {
-    name: t('backlog.columns.code'),
-    key: 'code'
-  },
-  {
-    name: t('backlog.columns.name'),
-    key: 'name'
-  },
-  {
-    name: t('backlog.columns.assignee'),
-    key: 'assigneeId'
-  }
-];
+// Initialize task data composable
+const {
+  getTaskParams,
+  loadBacklogList,
+  handleBacklogTaskSort,
+  refreshBacklogData,
+  handleSearchChange,
+  clearAllFilters,
+  toggleAssignedToMeFilter,
+  toggleCreatedByMeFilter,
+  toggleDateFilter,
+  userId
+} = useTaskData(props, backlogData, loading, search);
 
-const backlogSortOption = sortOption.filter(i => !['assigneeId'].includes(i.key));
+// Initialize sprint data composable
+const {
+  loadSprintList,
+  handleSprintMemberHover,
+  handleSprintTaskSort,
+  refreshAllTaskData,
+  totalTaskNum
+} = useSprintData(props, sprintData, loading, search, getTaskParams);
 
-const PAGE_SIZE = 500;
+// Initialize UI options composable
+const {
+  sortOption,
+  backlogSortOption,
+  drawerActiveKeyChange,
+  handlePopoverVisibilityChange,
+  toggleSprintExpansion,
+  handleSprintExpansionChange,
+  closeTaskDrawer,
+  selectNone,
+  taskType,
+  taskId,
+  hasPermission,
+  drawerActionItems
+} = useUIOptions(ui, sprintExpansion, currentInfo, sprintData);
 
-const sprintRef = ref();
-const taskNameInputRef = ref();
-const loading = ref(false);
+// Initialize task actions composable
+const {
+  createNewTask,
+  loadTaskInfoById,
+  assignTaskToSprint,
+  moveTaskBetweenSprints,
+  moveTaskToBacklog,
+  handleDragAddToSprint,
+  handleDragAddToBacklog,
+  confirmDeleteTask,
+  handleTaskNameDoubleClick,
+  handleTaskNameEditEnter,
+  cancelTaskNameEdit,
+  handleTaskNameClick,
+  handleNewTaskNameEnter,
+  showAddTaskForm,
+  cancelAddTask,
+  openCreateTaskModal,
+  openTaskEditModal,
+  showSplitTaskModal,
+  showAiGenerateTaskModal,
+  handleTaskEditSuccess,
+  handleSplitTaskSuccess,
+  handleSplitTaskCancel,
+  handleAiGenerateTaskSuccess,
+  handleAiGenerateTaskCancel
+} = useTaskActions(
+  props,
+  backlogData,
+  sprintData,
+  currentInfo,
+  loading,
+  modal,
+  selected,
+  newTask,
+  search,
+  taskNameEditing,
+  ui,
+  deleteTabPane
+);
 
-const searchValue = ref<string>();
-const createdBy = ref<string>();
-const assigneeId = ref<string>();
-const quickDate = ref<'1' | '3' | '7'>();
-
-const sprintInfo = ref<SprintInfo>();
-const taskInfo = ref<TaskInfo>();
-const openSet = ref<Set<string>>(new Set());
-
-const sprintList = ref<SprintInfo[]>([]);
-const membersMap = ref<{ [key: string]: SprintInfo['members'] }>({});
-const membersCountMap = ref<{ [key: string]: { [key: string]: MemberCount; } }>({});
-const taskListMap = ref<{ [key: string]: TaskInfo[] }>({});
-const sortParamMap = ref<{[key: string]: {orderSort?: PageQuery.OrderSort, orderBy?: string}}>({});
-const taskInfoLoadingSet = ref<Set<string>>(new Set());
-const membersCountLoadingSet = ref<Set<string>>(new Set());
-const sprintPermissionsMap = ref<Map<string, TaskSprintPermission[]>>(new Map());
-
-const backlogList = ref<TaskInfo[]>([]);
-const backlogLoaded = ref(false);
-const backlogSort = ref<{ orderSort?: PageQuery.OrderSort, orderBy?: string }>();
-
-const backlogTotal = ref(0);
-const taskTotalMap = ref<{ [key: string]: number }>({});
-
-const clickTimeout = ref();
-const editNameSet = ref<Set<string>>(new Set());
-const editNameMap = ref<{[key:string]:string}>({});
-
-const selectedSprintId = ref<string>();
-const selectedTaskId = ref<string>();
-const selectedTaskInfo = ref<TaskInfo>();
-const editTaskModalVisible = ref(false);
-const splitTaskVisible = ref(false);
-const aiGenerateTaskVisible = ref(false);
-const addFlag = ref(false);
-
-const newTaskType = ref<string>(TaskType.TASK);
-const newTaskName = ref<string>();
-const newTaskPriority = ref<Priority>(Priority.MEDIUM);
-
-const popoverId = ref<string>();
-const drawerActiveKey = ref<'basic' | 'person' | 'date' | 'comment' | 'activity' | 'tasks' | 'cases' | 'attachments' | 'remarks'>('basic');
-
-const drawerActiveKeyChange = (key: 'basic' | 'person' | 'date' | 'comment' | 'activity' | 'tasks' | 'cases' | 'attachments' | 'remarks') => {
-  drawerActiveKey.value = key;
-};
-
-const loadingChange = (value: boolean) => {
-  loading.value = value;
-};
-
-const visibleChange = (visible: boolean, id: string) => {
-  if (visible) {
-    popoverId.value = id;
-    return;
-  }
-  popoverId.value = undefined;
-};
-
-const taskRefresh = () => {
-  loadSprintList();
-  loadBacklogList(1);
-};
-
-const taskInfoChange = async (data: Partial<TaskInfo>) => {
-  if (taskInfo.value) {
-    taskInfo.value = { ...taskInfo.value, ...data };
-  }
-};
-
-const searchChange = debounce(duration.search, () => {
-  toQuery();
-});
-
-const toQuery = () => {
-  const list = sprintList.value;
-  for (let i = 0, len = list.length; i < len; i++) {
-    loadTaskListById(list[i].id, 1);
-  }
-
-  loadBacklogList(1);
-};
-
-const queryAll = () => {
-  assigneeId.value = undefined;
-  createdBy.value = undefined;
-  quickDate.value = undefined;
-
-  toQuery();
-};
-
-const queryByMe = () => {
-  if (!assigneeId.value) {
-    assigneeId.value = userId.value;
-  } else {
-    assigneeId.value = undefined;
-  }
-
-  toQuery();
-};
-
-const queryByCreatedMe = () => {
-  if (!createdBy.value) {
-    createdBy.value = userId.value;
-  } else {
-    createdBy.value = undefined;
-  }
-
-  toQuery();
-};
-
-const queryByDate = (key: '1' | '3' | '7') => {
-  if (quickDate.value === key) {
-    quickDate.value = undefined;
-  } else {
-    quickDate.value = key;
-  }
-
-  toQuery();
-};
-
-const drawerClose = () => {
-  sprintInfo.value = undefined;
-  taskInfo.value = undefined;
-};
-
-const mouseenter = async (id: string) => {
-  if (membersCountMap.value[id] || membersCountLoadingSet.value.has(id)) {
-    return;
-  }
-
-  const params = {
-    sprintId: id,
-    projectId: props.projectId
-  };
-  membersCountLoadingSet.value.add(id);
-  const [error, res] = await analysis.getAssigneeProgress(params);
-  membersCountLoadingSet.value.delete(id);
-  if (error) {
-    return;
-  }
-
-  const list = res?.data || [];
-  membersCountMap.value[id] = list.reduce((prev, cur) => {
-    prev[cur.assigneeId] = cur;
-    return prev;
-  }, {} as MemberCount);
-};
-
-const toAddTask = () => {
-  addFlag.value = true;
-
+// Enhanced showAddTaskForm with focus handling
+const showAddTaskFormEnhanced = () => {
+  showAddTaskForm();
   nextTick(() => {
     setTimeout(() => {
-      taskNameInputRef.value.focus();
+      newTaskNameInputRef.value?.focus();
     }, 100);
   });
 };
 
-const handleSortTask = (orderData, sprintId) => {
-  sortParamMap.value[sprintId] = orderData;
-  if (orderData.orderBy === 'priority') {
-    sortTaskByPriority(sprintId);
-    return;
-  }
-  loadTaskListById(sprintId, 1);
-};
-
-const handleSortBacklogTask = (orderData) => {
-  backlogSort.value = orderData;
-  if (orderData.orderBy === 'priority') {
-    sortBacklogByPriority();
-    return;
-  }
-  loadBacklogList(1);
-};
-
-const aiGenerateTask = () => {
-  aiGenerateTaskVisible.value = true;
-};
-
-const pressEnter = (event: { target: { value: string } }) => {
-  const value = event.target.value.trim();
-  if (!value) {
-    return;
-  }
-
-  toSave();
-};
-
-const toSave = async () => {
-  const value = newTaskName.value?.trim();
-  if (!value) {
-    return;
-  }
-
-  const params = {
-    projectId: props.projectId,
-    name: value,
-    priority: newTaskPriority.value,
-    taskType: newTaskType.value
-  };
-  loading.value = true;
-  const [error, res] = await task.addTask(params);
-  loading.value = false;
-  if (error) {
-    return;
-  }
-  notification.success(t('backlog.main.messages.saveSuccess'));
-
-  newTaskName.value = undefined;
-  newTaskPriority.value = Priority.MEDIUM;
-
-  const id = res?.data?.id;
-  if (!id) {
-    return;
-  }
-
-  const dataInfo = await loadTaskInfoById(id);
-  if (!dataInfo) {
-    return;
-  }
-
-  backlogList.value.push(dataInfo);
-  backlogTotal.value += 1;
-
-  nextTick(() => {
-    setTimeout(() => {
-      if (sprintRef.value) {
-        sprintRef.value.scrollTop = sprintRef.value.scrollHeight;
-      }
-    }, 16.66);
-  });
-};
-
-const cancelAdd = () => {
-  addFlag.value = false;
-  newTaskType.value = TaskType.STORY;
-  newTaskName.value = undefined;
-  newTaskPriority.value = Priority.MEDIUM;
-};
-
-const openCreateModal = () => {
-  editTaskModalVisible.value = true;
-  selectedSprintId.value = undefined;
-  selectedTaskId.value = undefined;
-};
-
-const toAssignment = async (toId: string, taskData: TaskInfo, index: number) => {
-  if (loading.value) {
-    return;
-  }
-
-  const taskId = taskData.id;
-  const hasFlag = taskListMap.value[toId].find((item) => item.id === taskId);
-  if (hasFlag) {
-    return;
-  }
-
-  const params = {
-    targetSprintId: toId,
-    taskIds: [taskId]
-  };
-  loading.value = true;
-  await task.moveTask(params);
-  loading.value = false;
-
-  taskListMap.value[toId].push(taskData);
-  taskTotalMap.value[toId] += 1;
-
-  backlogList.value.splice(index, 1);
-  backlogTotal.value -= 1;
-};
-
-const toMove = async (fromId: string, toId: string, taskData: TaskInfo, index: number) => {
-  if (loading.value) {
-    return;
-  }
-
-  const taskId = taskData.id;
-  const hasFlag = taskListMap.value[toId].find((item) => item.id === taskId);
-  if (hasFlag) {
-    return;
-  }
-
-  const params = {
-    targetSprintId: toId,
-    taskIds: [taskId]
-  };
-  loading.value = true;
-  await task.moveTask(params);
-  loading.value = false;
-
-  taskListMap.value[toId].push(taskData);
-  taskTotalMap.value[toId] += 1;
-
-  taskListMap.value[fromId].splice(index, 1);
-  taskTotalMap.value[fromId] -= 1;
-};
-
-const moveToBacklog = async (fromId: string, taskData: TaskInfo, index: number) => {
-  if (loading.value) {
-    return;
-  }
-
-  const taskId = taskData.id;
-  const hasFlag = backlogList.value.find((item) => item.id === taskId);
-  if (hasFlag) {
-    return;
-  }
-
-  const params = {
-    targetSprintId: null,
-    taskIds: [taskId]
-  };
-  loading.value = true;
-  await task.moveTask(params);
-  loading.value = false;
-
-  backlogTotal.value += 1;
-  backlogList.value.push(taskData);
-  taskTotalMap.value[fromId] -= 1;
-  taskListMap.value[fromId].splice(index, 1);
-};
-
-const dragAdd = async (
-  event: { item: { id: string; }; from: { id: string; } },
-  sprintId: string) => {
-  const taskId = event.item.id;
-  const params = {
-    targetSprintId: sprintId,
-    taskIds: [taskId]
-  };
-  loading.value = true;
-  await task.moveTask(params);
-  loading.value = false;
-
-  const fromId = event.from.id;
-  taskTotalMap.value[sprintId] += 1;
-
-  if (fromId === 'backlog') {
-    backlogTotal.value -= 1;
-    return;
-  }
-
-  taskTotalMap.value[fromId] -= 1;
-};
-
-const backlogAdd = async (
-  event: { item: { id: string; }; from: { id: string; }; }
-) => {
-  const taskId = event.item.id;
-  const params = {
-    targetSprintId: null,
-    taskIds: [taskId]
-  };
-  loading.value = true;
-  await task.moveTask(params);
-  loading.value = false;
-
-  const fromId = event.from.id;
-  backlogTotal.value += 1;
-  taskTotalMap.value[fromId] -= 1;
-};
-
-const refreshBacklog = () => {
-  loadBacklogList(1);
-};
-
-const toSplit = (data: TaskInfo) => {
-  splitTaskVisible.value = true;
-  selectedTaskInfo.value = data;
-};
-
-const splitOk = async () => {
-  selectedTaskInfo.value = undefined;
-  await loadSprintList();
-  await loadBacklogList(1);
-};
-
-const splitCancel = () => {
-  selectedTaskInfo.value = undefined;
-};
-
-const generateOk = async () => {
-  selectedTaskInfo.value = undefined;
-  await loadBacklogList(1);
-};
-
-const generateCancel = () => {
-  selectedTaskInfo.value = undefined;
-};
-
-const toDelete = (data: TaskInfo, index: number, sprintId?: string) => {
-  modal.confirm({
-    content: t('backlog.messages.confirmDelete', { name: data.name }),
-    async onOk () {
-      const id = data.id;
-      const [error] = await task.deleteTask([id]);
-      if (error) {
-        return;
-      }
-
-      notification.success(t('backlog.messages.deleteSuccess'));
-
-      if (typeof deleteTabPane === 'function') {
-        deleteTabPane([id]);
-      }
-
-      if (sprintId) {
-        taskListMap.value[sprintId].splice(index, 1);
-      } else {
-        backlogList.value.splice(index, 1);
-      }
-      taskInfoLoadingSet.value.delete((id));
-    }
-  });
-};
-
-const toEdit = (taskId: string, sprintId?: string) => {
-  editTaskModalVisible.value = true;
-  selectedSprintId.value = sprintId;
-  selectedTaskId.value = taskId;
-};
-
-const editOk = async (data: Partial<TaskInfo>) => {
-  const taskId = data.id;
-  if (!taskId) {
-    return;
-  }
-
-  const dataInfo = await loadTaskInfoById(taskId);
-  if (!dataInfo) {
-    return;
-  }
-
-  if (selectedTaskId.value) {
-    const _sprintId = selectedSprintId.value;
-    if (_sprintId) {
-      const index = taskListMap.value[_sprintId]?.findIndex(item => item.id === taskId);
-      if (taskListMap.value[_sprintId][index]) {
-        taskListMap.value[_sprintId][index] = cloneDeep(dataInfo);
-      }
-    } else {
-      const index = backlogList.value.findIndex(item => item.id === taskId);
-      if (backlogList.value[index]) {
-        backlogList.value[index] = cloneDeep(dataInfo);
-      }
-    }
-    return;
-  }
-
-  backlogList.value.push(dataInfo);
-  newTaskName.value = undefined;
-  newTaskPriority.value = Priority.MEDIUM;
-};
-
-const clickName = () => {
-  if (clickTimeout.value) {
-    clearTimeout(clickTimeout.value);
-    clickTimeout.value = null;
-    return;
-  }
-
-  clickTimeout.value = setTimeout(() => {
-    clickTimeout.value = null;
-  }, 300);
-};
-
-const dblclickName = (data:TaskInfo) => {
-  clearTimeout(clickTimeout.value);
-  clickTimeout.value = null;
-
-  editNameSet.value.clear();
-
-  const id = data.id;
-  editNameSet.value.add(id);
-  editNameMap.value[id] = data.name;
-};
-
-const namePressEnter = async (data:SprintInfo, index:number) => {
-  const id = data.id;
-  const newName = editNameMap.value[id];
-  loading.value = true;
-  const [error] = await task.editTaskName(id, newName);
-  loading.value = false;
-  if (error) {
-    return;
-  }
-
-  backlogList.value[index].name = newName;
-  if (taskInfo.value?.id === id) {
-    taskInfo.value.name = newName;
-  }
-
-  delete editNameMap.value[id];
-  editNameSet.value.delete(id);
-};
-
-const cancelEditName = (id:string) => {
-  editNameSet.value.delete(id);
-  delete editNameMap.value[id];
-};
-
-const openSprint = (id: string) => {
-  let open = false;
-  if (openSet.value.has(id)) {
-    openSet.value.delete(id);
-    open = false;
-  } else {
-    openSet.value.add(id);
-    open = true;
-  }
-
-  openChange(open, id);
-};
-
-const openChange = (open: boolean, id: string) => {
-  if (open) {
-    openSet.value.add(id);
-    return;
-  }
-
-  openSet.value.delete(id);
-};
-
-const toChecked = async (id: string, data?: SprintInfo) => {
-  sprintInfo.value = data;
-  if (taskInfo.value?.id === id) {
-    return;
-  }
-  if (taskInfoLoadingSet.value.has(id)) {
-    return;
-  }
-  taskInfo.value = await loadTaskInfoById(id);
-};
-
-const loadTaskInfoById = async (id: string): Promise<TaskInfo | undefined> => {
-  taskInfoLoadingSet.value.add(id);
-  const [error, res] = await task.getTaskDetail(id);
-  taskInfoLoadingSet.value.delete(id);
-  if (error) {
-    return;
-  }
-  return { ...res.data } || { id };
-};
-
-const getTaskParams = () => {
-  const params: {
-    projectId: string;
-    filters: SearchCriteria[];
-    pageSize: number;
-    sprintId?: string;
-    pageNo?: number;
-    backlog?: boolean;
-    orderBy?: string;
-    orderSort?: PageQuery.OrderSort
-  } = {
-    projectId: props.projectId,
-    pageSize: PAGE_SIZE,
-    filters: []
-  };
-
-  if (searchValue.value) {
-    params.filters.push({ key: 'name', op: SearchCriteria.OpEnum.Equal, value: searchValue.value });
-  }
-
-  if (assigneeId.value) {
-    params.filters.push({ key: 'assigneeId', op: SearchCriteria.OpEnum.Equal, value: assigneeId.value });
-  }
-
-  if (createdBy.value) {
-    params.filters.push({ key: 'createdBy', op: SearchCriteria.OpEnum.Equal, value: createdBy.value });
-  }
-
-  if (quickDate.value) {
-    let startDate: Dayjs;
-    let endDate: Dayjs;
-    if (quickDate.value === '1') {
-      startDate = dayjs().startOf('date');
-      endDate = dayjs();
-    } else if (quickDate.value === '3') {
-      startDate = dayjs().startOf('date').subtract(3, 'day').add(1, 'day');
-      endDate = dayjs();
-    } else {
-      startDate = dayjs().startOf('date').subtract(1, 'week').add(1, 'day');
-      endDate = dayjs();
-    }
-
-    params.filters.push(
-      { key: 'createdDate', op: SearchCriteria.OpEnum.GreaterThanEqual, value: startDate.format(DATE_TIME_FORMAT) }
-    );
-    params.filters.push(
-      { key: 'createdDate', op: SearchCriteria.OpEnum.LessThanEqual, value: endDate.format(DATE_TIME_FORMAT) }
-    );
-  }
-
-  return params;
-};
-
-const sortTaskByPriority = (sprintId) => {
-  const priorityLevelConfig = {
-    HIGHEST: 5,
-    HIGH: 4,
-    MEDIUM: 3,
-    LOW: 2,
-    LOWEST: 1
-  };
-  const taskList = taskListMap.value[sprintId];
-  taskList.sort((a, b) => {
-    if (sortParamMap.value[sprintId].orderSort === PageQuery.OrderSort.Asc) {
-      return priorityLevelConfig[a.priority?.value] - priorityLevelConfig[b.priority?.value];
-    } else if (sortParamMap.value[sprintId].orderSort === PageQuery.OrderSort.Desc) {
-      return priorityLevelConfig[b.priority?.value] - priorityLevelConfig[a.priority?.value];
-    } else {
-      return 0;
-    }
-  });
-  taskListMap.value[sprintId] = taskList;
-};
-
-const loadTaskListById = async (id: string, pageNo: number) => {
-  const params = getTaskParams();
-  params.sprintId = id;
-  params.pageNo = pageNo;
-  Object.assign(params, (sortParamMap.value[id] || {}));
-
-  loading.value = true;
-  const [error, res] = await task.getTaskList(params);
-  loading.value = false;
-  if (error) {
-    return;
-  }
-
-  const data = res?.data;
-  if (!data) {
-    return;
-  }
-
-  taskTotalMap.value[id] = +data.total;
-
-  const list = data.list || [];
-  if (pageNo === 1) {
-    taskListMap.value[id] = list;
-  } else {
-    taskListMap.value[id].push(...list);
-  }
-
-  const sprintIdSet = new Set<string>();
-  for (let i = 0, len = list.length; i < len; i++) {
-    const item = list[i];
-    sprintIdSet.add(item.sprintId);
-  }
-
-  const sprintIds = Array.from(sprintIdSet);
-
-  if (!isAdmin.value) {
-    for (let i = 0, len = sprintIds.length; i < len; i++) {
-      const id = sprintIds[i];
-      if (id) {
-        const [_error, _res] = await loadPermissions(id);
-        if (!_error) {
-          const _permissions = (_res?.data || []).map(item => item.value);
-          sprintPermissionsMap.value.set(id, _permissions);
-        }
-      }
-    }
-  } else {
-    for (let i = 0, len = sprintIds.length; i < len; i++) {
-      const id = sprintIds[i];
-      sprintPermissionsMap.value.set(id, enumUtils.getEnumValues(TaskSprintPermission));
-    }
-  }
-
-  if (taskListMap.value[id].length < taskTotalMap.value[id]) {
-    await loadTaskListById(id, pageNo + 1);
-  } else {
-    if (sortParamMap.value[id]?.orderBy === 'priority') {
-      sortTaskByPriority(id);
-    }
-  }
-};
-
-const loadSprintList = async () => {
-  const params = {
-    projectId: props.projectId,
-    pageSize: PAGE_SIZE
-  };
-  loading.value = true;
-  const [error, res] = await task.getSprintList(params);
-  loading.value = false;
-  if (error) {
-    return;
-  }
-
-  const list = (res?.data?.list || []) as SprintInfo[];
-  sprintList.value = [];
-
-  for (let i = 0, len = list.length; i < len; i++) {
-    const item = list[i];
-    const id = item.id;
-    membersMap.value[id] = item.members;
-    taskListMap.value[id] = [];
-
-    if (item.progress?.completedRate) {
-      item.progress.completedRate = item.progress.completedRate.replace(/(\d+\.\d{2})\d+/, '$1');
-    }
-
-    sprintList.value.push(item);
-
-    await loadTaskListById(id, 1);
-  }
-};
-
-const sortBacklogByPriority = () => {
-  const priorityLevelConfig = {
-    HIGHEST: 5,
-    HIGH: 4,
-    MEDIUM: 3,
-    LOW: 2,
-    LOWEST: 1
-  };
-  backlogList.value.sort((a, b) => {
-    if (backlogSort.value?.orderSort === PageQuery.OrderSort.Asc) {
-      return priorityLevelConfig[a.priority?.value] - priorityLevelConfig[b.priority?.value];
-    } else if (backlogSort.value?.orderSort === PageQuery.OrderSort.Desc) {
-      return priorityLevelConfig[b.priority?.value] - priorityLevelConfig[a.priority?.value];
-    } else {
-      return 0;
-    }
-  });
-};
-
-const loadBacklogList = async (pageNo: number) => {
-  const params = getTaskParams();
-  params.pageNo = pageNo;
-  params.backlog = true;
-  Object.assign(params, backlogSort.value || {});
-  loading.value = true;
-  const [error, res] = await task.getTaskList(params);
-  loading.value = false;
-  backlogLoaded.value = true;
-  if (error) {
-    backlogTotal.value = 0;
-    backlogList.value = [];
-    return;
-  }
-
-  const data = res?.data;
-  if (!data) {
-    backlogTotal.value = 0;
-    backlogList.value = [];
-    return;
-  }
-
-  backlogTotal.value = +data.total;
-
-  const list = data.list || [];
-  if (pageNo === 1) {
-    backlogList.value = list;
-  } else {
-    backlogList.value.push(...list);
-  }
-
-  if (backlogTotal.value > backlogList.value.length) {
-    await loadBacklogList(pageNo + 1);
-  } else {
-    if (backlogSort.value?.orderBy === 'priority') {
-      sortBacklogByPriority();
-    }
-  }
-};
-
-const loadPermissions = async (id: string) => {
-  const params = {
-    admin: true
-  };
-
-  return await task.getUserSprintAuth(id, props.userInfo?.id || '', params);
-};
-
-const hasPermission = (data:TaskInfo, key:'edit'|'delete'|'move'|'split') => {
-  const sprintId = data.sprintId;
-  const sprintAuth = data.sprintAuth;
-
-  const permissions = sprintPermissionsMap.value.get(sprintId) || [];
-  const { currentAssociateType } = data;
-
-  const isAdministrator = !!currentAssociateType?.map(item => item.value).includes('SYS_ADMIN' || 'APP_ADMIN');
-
-  if (key === 'edit' || key === 'move' || key === 'split') {
-    return isAdministrator || permissions.includes(TaskSprintPermission.MODIFY_TASK) || !sprintAuth;
-  }
-
-  if (key === 'delete') {
-    return isAdministrator || permissions.includes(TaskSprintPermission.DELETE_TASK) || !sprintAuth;
-  }
+// Enhanced selectTask with proper async handling
+const selectTaskEnhanced = async (id: string, data?: SprintInfo) => {
+  await selectTask(id, data, loadTaskInfoById);
 };
 
 onMounted(() => {
@@ -893,43 +173,21 @@ onMounted(() => {
     await loadBacklogList(1);
   }, { immediate: true });
 });
-
-const userId = computed(() => {
-  return props.userInfo?.id;
-});
-
-const totalTaskNum = computed(() => {
-  return sprintList.value.reduce((pre, current) => {
-    return pre + (taskTotalMap.value[current.id] || 0);
-  }, 0);
-});
-
-const taskType = computed(() => {
-  return taskInfo?.value?.taskType?.value;
-});
-
-const taskId = computed(() => {
-  return taskInfo?.value?.id;
-});
-
-const selectNone = computed(() => {
-  return !createdBy.value && !assigneeId.value && !quickDate.value;
-});
 </script>
 
 <template>
   <div class="flex flex-col h-full py-5 leading-5 text-3">
     <Introduce class="mb-7 mx-5" />
-    <Spin :spinning="loading" class="flex-1 px-5 overflow-hidden">
+    <Spin :spinning="loading.isLoading" class="flex-1 px-5 overflow-hidden">
       <div class="flex items-center">
         <Input
-          v-model:value="searchValue"
+          v-model:value="search.searchValue"
           :maxlength="200"
           allowClear
           class="w-60 mr-5"
           :placeholder="t('backlog.placeholder.searchTaskName')"
           trim
-          @change="searchChange" />
+          @change="handleSearchChange" />
 
         <div class="whitespace-nowrap text-text-sub-content mr-2">
           <span>{{ t('quickSearch') }}</span>
@@ -939,42 +197,42 @@ const selectNone = computed(() => {
         <div
           :class="{ 'active-key': !!selectNone }"
           class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2"
-          @click="queryAll">
+          @click="clearAllFilters">
           {{ t('backlog.quickSearch.all') }}
         </div>
 
         <div
-          :class="{ 'active-key': createdBy === userId }"
+          :class="{ 'active-key': search.createdBy === userId }"
           class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2"
-          @click="queryByCreatedMe">
+          @click="toggleCreatedByMeFilter(userId)">
           {{ t('backlog.quickSearch.createdByMe') }}
         </div>
 
         <div
-          :class="{ 'active-key': assigneeId === userId }"
+          :class="{ 'active-key': search.assigneeId === userId }"
           class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2"
-          @click="queryByMe">
+          @click="toggleAssignedToMeFilter(userId)">
           {{ t('backlog.quickSearch.assignedToMe') }}
         </div>
 
         <div
-          :class="{ 'active-key': quickDate === '1' }"
+          :class="{ 'active-key': search.quickDate === '1' }"
           class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2"
-          @click="queryByDate('1')">
+          @click="toggleDateFilter('1')">
           {{ t('backlog.quickSearch.past1Day') }}
         </div>
 
         <div
-          :class="{ 'active-key': quickDate === '3' }"
+          :class="{ 'active-key': search.quickDate === '3' }"
           class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2"
-          @click="queryByDate('3')">
+          @click="toggleDateFilter('3')">
           {{ t('backlog.quickSearch.past3Days') }}
         </div>
 
         <div
-          :class="{ 'active-key': quickDate === '7' }"
+          :class="{ 'active-key': search.quickDate === '7' }"
           class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none"
-          @click="queryByDate('7')">
+          @click="toggleDateFilter('7')">
           {{ t('backlog.quickSearch.past7Days') }}
         </div>
       </div>
@@ -982,23 +240,23 @@ const selectNone = computed(() => {
       <div class="h-0 border-t border-solid border-theme-text-box mt-2.5"></div>
 
       <div class="flex items-start overflow-hidden" style="height: calc(100% - 39px);">
-        <div ref="sprintRef" class="flex-1 h-full pr-2.5 pt-2.5 overflow-auto scroll-smooth">
+        <div ref="sprintContainerRef" class="flex-1 h-full pr-2.5 pt-2.5 overflow-auto scroll-smooth">
           <div class="border border-solid border-theme-text-box rounded">
             <div class="header-container border-solid border-b border-theme-text-box">
               <div class="flex items-center px-2.5 py-4 flex-nowrap space-x-5">
                 <div class="flex-1 flex items-center truncate">
                   <Arrow
-                    :open="openSet.has('sprintBacklog')"
+                    :open="expandedSprintIds.has('sprintBacklog')"
                     type="dashed"
                     class="mr-1.5"
                     style="font-size: 12px;"
-                    @change="openChange($event, 'sprintBacklog')" />
+                    @change="handleSprintExpansionChange($event, 'sprintBacklog')" />
 
                   <div class="font-semibold text-theme-title w-70 mr-5">
                     {{ t('backlog.sprintBacklogTitle') }}
                   </div>
                   <div class="w-25">
-                    {{ sprintList.length || 0 }} {{ t('backlog.sprintCount') }}
+                    {{ sprintData.sprintList.length || 0 }} {{ t('backlog.sprintCount') }}
                   </div>
                   <div class="w-25 flex-shrink-0 flex items-center space-x-1">
                     <span>{{ totalTaskNum || 0 }}</span>
@@ -1009,36 +267,36 @@ const selectNone = computed(() => {
             </div>
 
             <Draggable
-              v-for="item in sprintList"
-              v-show="openSet.has('sprintBacklog')"
+              v-for="item in sprintData.sprintList"
+              v-show="sprintExpansion.expandedSprintIds.has('sprintBacklog')"
               :id="item.id"
               :key="item.id"
-              :list="taskListMap[item.id]"
+              :list="sprintData.sprintTasksMap[item.id]"
               :animation="300"
-              :class="{ 'draggable-container-open': openSet.has(item.id) }"
+              :class="{ 'draggable-container-open': sprintExpansion.expandedSprintIds.has(item.id) }"
               ghostClass="ghost"
               group="tasks"
               itemKey="id"
               tag="div"
               class="draggable-container"
-              @add="dragAdd($event, item.id)">
+              @add="handleDragAddToSprint($event, item.id)">
               <template #header>
                 <div class="header-container border-solid border-b border-theme-text-box">
                   <div class="flex items-center px-2.5 py-4 flex-nowrap space-x-5">
                     <div class="flex-1 flex items-center truncate pl-5">
                       <Arrow
-                        :open="openSet.has(item.id)"
+                        :open="sprintExpansion.expandedSprintIds.has(item.id)"
                         type="dashed"
                         class="mr-1.5"
                         style="font-size: 12px;"
-                        @change="openChange($event, item.id)" />
+                        @change="handleSprintExpansionChange($event, item.id)" />
 
                       <div :title="item.name" class="w-65 truncate text-theme-title  mr-5">
-                        <span class="cursor-pointer" @click.stop="openSprint(item.id)">{{ item.name }}</span>
+                        <span class="cursor-pointer" @click.stop="toggleSprintExpansion(item.id)">{{ item.name }}</span>
                       </div>
 
                       <div class="w-25 flex-shrink-0 flex items-center space-x-1 text-theme-sub-content">
-                        <span>{{ taskTotalMap[item.id] || 0 }}</span>
+                        <span>{{ sprintData.sprintTaskCountMap[item.id] || 0 }}</span>
                         <span>{{ t('backlog.taskCount') }}</span>
                       </div>
 
@@ -1059,7 +317,7 @@ const selectNone = computed(() => {
                     </div>
 
                     <div class="flex items-center flex-shrink-0 flex-nowrap space-x-2.5">
-                      <DropdownSort :menuItems="sortOption" @click="handleSortTask($event, item.id)">
+                      <DropdownSort :menuItems="sortOption" @click="handleSprintTaskSort($event, item.id)">
                         <Button
                           size="small"
                           type="text"
@@ -1091,9 +349,9 @@ const selectNone = computed(() => {
                   </div>
 
                   <div
-                    v-if="!!membersMap[item.id]?.length"
+                    v-if="!!sprintData.sprintMembersMap[item.id]?.length"
                     class="flex items-center pr-7.5 pl-12.5 pb-3 space-x-1.5 transform-gpu -translate-y-1.5">
-                    <Tooltip v-for="member in membersMap[item.id]" :key="member.id">
+                    <Tooltip v-for="member in sprintData.sprintMembersMap[item.id]" :key="member.id">
                       <template #title>
                         <div class="leading-5 text-theme-content">
                           <div class="mb-1 text-theme-title">{{ member.fullName }}</div>
@@ -1102,7 +360,7 @@ const selectNone = computed(() => {
                               <span>{{ t('backlog.columns.taskCount') }}</span>
                               <Colon class="w-1" />
                             </div>
-                            <span>{{ membersCountMap[item.id]?.[member.id]?.validTaskNum || 0 }}</span>
+                            <span>{{ sprintData.sprintMemberProgressMap[item.id]?.[member.id]?.validTaskNum || 0 }}</span>
                           </div>
                           <div class="flex items-center">
                             <div class="flex items-center w-12.25">
@@ -1115,27 +373,27 @@ const selectNone = computed(() => {
                               </span>
                               <Colon class="w-1" />
                             </div>
-                            <span>{{ membersCountMap[item.id]?.[member.id]?.evalWorkload || 0 }}</span>
+                            <span>{{ sprintData.sprintMemberProgressMap[item.id]?.[member.id]?.evalWorkload || 0 }}</span>
                           </div>
                         </div>
                       </template>
 
-                      <div @mouseenter="mouseenter(item.id)">
+                      <div @mouseenter="handleSprintMemberHover(item.id)">
                         <Image
                           :key="member.id"
                           :alt="member.fullName"
                           :src="member.avatar"
                           type="avatar"
                           class="cursor-pointer"
-                          style="width: 20px;height: 20px;border-radius: 20px;" />
+                          :style="{ width: '20px', height: '20px', borderRadius: '20px' }" />
                       </div>
                     </Tooltip>
                   </div>
                 </div>
 
-                <template v-if="taskTotalMap[item.id] === 0">
+                <template v-if="sprintData.sprintTaskCountMap[item.id] === 0">
                   <div
-                    v-show="openSet.has(item.id)"
+                    v-show="sprintExpansion.expandedSprintIds.has(item.id)"
                     class="empty-draggable mt-4.75 mx-5 h-9.5 flex items-center justify-center rounded text-theme-sub-content">
                     {{ t('backlog.noTasksInSprint') }}
                   </div>
@@ -1144,11 +402,11 @@ const selectNone = computed(() => {
 
               <template #item="{ element, index }: { element: TaskInfo; index: number; }">
                 <div
-                  v-show="openSet.has(item.id)"
+                  v-show="sprintExpansion.expandedSprintIds.has(item.id)"
                   :id="element.id"
-                  :class="{ 'active-item': taskId === element.id, 'draggable-item-hover': popoverId === element.id }"
+                  :class="{ 'active-item': taskId === element.id, 'draggable-item-hover': ui.popoverId === element.id }"
                   class="draggable-item flex items-center space-x-5 truncate !ml-10"
-                  @click="toChecked(element.id, item)">
+                  @click="selectTaskEnhanced(element.id, item)">
                   <IconTask :value="element.taskType?.value" />
                   <TaskPriority :value="element.priority" />
                   <span>{{ element.code }}</span>
@@ -1159,7 +417,7 @@ const selectNone = computed(() => {
                       type="text"
                       size="small"
                       class="px-0 h-5 leading-5 space-x-1 flex items-center"
-                      @click.stop="toSplit(element)">
+                      @click.stop="showSplitTaskModal(element)">
                       <Icon icon="icon-guanlianziyuan" class="text-3.5" />
                       <span>{{ t('backlog.split') }}</span>
                     </Button>
@@ -1168,22 +426,22 @@ const selectNone = computed(() => {
                       overlayClassName="px-content-1.5"
                       placement="left"
                       :mouseEnterDelay="0.3"
-                      @visibleChange="visibleChange($event, element.id)">
+                      @visibleChange="handlePopoverVisibilityChange($event, element.id)">
                       <template #content>
                         <div class="max-w-100 space-y-1 leading-5 text-3 truncate">
                           <div
                             :title="t('backlog.moveToBacklog')"
                             class="popover-item truncate cursor-pointer px-2"
-                            @click="moveToBacklog(item.id, element, index)">
+                            @click="moveTaskToBacklog(item.id, element, index)">
                             {{ t('backlog.moveToBacklog') }}
                           </div>
 
-                          <template v-for="_sprint in sprintList" :key="_sprint.id">
+                          <template v-for="_sprint in sprintData.sprintList" :key="_sprint.id">
                             <div
                               v-if="_sprint.id !== item.id"
                               :title="_sprint.name"
                               class="popover-item truncate cursor-pointer px-2"
-                              @click="toMove(item.id, _sprint.id, element, index)">
+                              @click="moveTaskBetweenSprints(item.id, _sprint.id, element, index)">
                               {{ _sprint.name }}
                             </div>
                           </template>
@@ -1206,7 +464,7 @@ const selectNone = computed(() => {
                       type="text"
                       size="small"
                       class="px-0 h-5 leading-5 space-x-1 flex items-center"
-                      @click.stop="toDelete(element, index, item.id)">
+                      @click.stop="confirmDeleteTask(element, index, item.id)">
                       <Icon icon="icon-qingchu" class="text-3.5" />
                       <span>{{ t('backlog.delete') }}</span>
                     </Button>
@@ -1216,7 +474,7 @@ const selectNone = computed(() => {
                       type="text"
                       size="small"
                       class="px-0 h-5 leading-5 space-x-1 flex items-center"
-                      @click.stop="toEdit(element.id, item.id)">
+                      @click.stop="openTaskEditModal(element.id, item.id)">
                       <Icon icon="icon-shuxie" class="text-3.5" />
                       <span>{{ t('backlog.edit') }}</span>
                     </Button>
@@ -1227,29 +485,29 @@ const selectNone = computed(() => {
 
             <Draggable
               id="backlog"
-              :list="backlogList"
+              :list="backlogData.backlogList"
               :animation="300"
               ghostClass="ghost"
               group="tasks"
               itemKey="id"
               tag="div"
               class="draggable-container draggable-container-open"
-              @add="backlogAdd">
+              @add="handleDragAddToBacklog">
               <template #header>
                 <div class="flex items-center justify-between px-2.5 header-container border-solid border-b border-theme-text-box">
                   <div class="flex items-center py-4 truncate">
                     <Arrow
-                      :open="openSet.has('productBacklog')"
+                      :open="sprintExpansion.expandedSprintIds.has('productBacklog')"
                       type="dashed"
                       class="mr-1.5"
                       style="font-size: 12px;"
-                      @change="openChange($event, 'productBacklog')" />
+                      @change="handleSprintExpansionChange($event, 'productBacklog')" />
                     <div class="truncate text-theme-title font-semibold w-70 mr-5">
                       {{ t('backlog.productBacklogTitle') }}
                     </div>
 
                     <div class="flex-shrink-0 flex items-center space-x-1 mr-3.5">
-                      <span>{{ backlogTotal || 0 }}</span>
+                      <span>{{ backlogData.backlogTotalCount || 0 }}</span>
                       <span>{{ t('backlog.taskCount') }}</span>
                     </div>
                   </div>
@@ -1257,7 +515,7 @@ const selectNone = computed(() => {
                   <div class="inline-flex space-x-2">
                     <DropdownSort
                       :menuItems="backlogSortOption"
-                      @click="handleSortBacklogTask">
+                      @click="handleBacklogTaskSort">
                       <Button
                         size="small"
                         type="text"
@@ -1272,7 +530,7 @@ const selectNone = computed(() => {
                       type="text"
                       size="small"
                       class="px-0 h-5 leading-5 space-x-1 flex items-center"
-                      @click.stop="refreshBacklog">
+                      @click.stop="refreshBacklogData">
                       <Icon class="text-3.5" icon="icon-shuaxin" />
                       <span>{{ t('backlog.refresh') }}</span>
                     </Button>
@@ -1280,7 +538,7 @@ const selectNone = computed(() => {
                 </div>
 
                 <div
-                  v-if="backlogLoaded && !backlogTotal"
+                  v-if="backlogData.isBacklogDataLoaded && !backlogData.backlogTotalCount"
                   class="empty-draggable mt-4.75 mx-5 h-9.5 flex items-center justify-center rounded text-theme-sub-content">
                   {{ t('backlog.noBacklog') }}
                 </div>
@@ -1290,13 +548,13 @@ const selectNone = computed(() => {
                 <div class="px-5 mt-3.5">
                   <div
                     v-if="aiEnabled"
-                    v-show="!addFlag"
+                    v-show="!modal.isAddingNewTask"
                     class="flex items-center space-x-2.5">
                     <Button
                       type="primary"
                       size="small"
                       class="flex items-center space-x-1"
-                      @click="toAddTask">
+                      @click="showAddTaskFormEnhanced">
                       <Icon icon="icon-jia" class="text-3.5" />
                       <span>{{ t('backlog.main.addBacklog') }}</span>
                     </Button>
@@ -1306,7 +564,7 @@ const selectNone = computed(() => {
                       size="small"
                       ghost
                       class="flex items-center space-x-1"
-                      @click="aiGenerateTask">
+                      @click="showAiGenerateTaskModal">
                       <Icon icon="icon-jia" class="text-3.5" />
                       <span>{{ t('backlog.main.aiAddBacklog') }}</span>
                     </Button>
@@ -1314,71 +572,71 @@ const selectNone = computed(() => {
 
                   <Button
                     v-else
-                    v-show="!addFlag"
+                    v-show="!modal.isAddingNewTask"
                     type="default"
                     size="small"
                     style="border-color: #40a9ff;background-color: rgba(244, 2250, 254, 100%);"
                     class="flex items-center space-x-1 border-dashed w-full h-11"
-                    @click="toAddTask">
+                    @click="showAddTaskFormEnhanced">
                     <Icon icon="icon-jia" class="text-3.5" />
                     <span>{{ t('backlog.main.addBacklog') }}</span>
                   </Button>
 
-                  <div v-show="addFlag" class="flex items-center">
+                  <div v-show="modal.isAddingNewTask" class="flex items-center">
                     <SelectEnum
-                      v-model:value="newTaskType"
+                      v-model:value="newTask.newTaskType"
                       enumKey="TaskType"
                       :placeholder="t('backlog.main.placeholders.taskType')"
-                      :excludes="({value}) => [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(value)"
+                      :excludes="({value}) => [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(value as any)"
                       class="w-28 mr-2">
                       <template #option="record">
                         <div class="flex items-center">
                           <IconTask :value="record.value" class="text-4 flex-shrink-0" />
-                          <span class="ml-1">{{ record.message }}</span>
+                          <span class="ml-1">{{ record.label }}</span>
                         </div>
                       </template>
                     </SelectEnum>
 
                     <SelectEnum
-                      v-model:value="newTaskPriority"
+                      v-model:value="newTask.newTaskPriority"
                       internal
                       enumKey="Priority"
                       :placeholder="t('backlog.main.placeholders.selectPriority')"
                       class="w-28 mr-2">
                       <template #option="record">
-                        <TaskPriority :value="record" />
+                        <TaskPriority :value="{ value: record.value, message: record.label }" />
                       </template>
                     </SelectEnum>
 
                     <Input
-                      ref="taskNameInputRef"
-                      v-model:value="newTaskName"
+                      ref="newTaskNameInputRef"
+                      v-model:value="newTask.newTaskName"
                       :maxlength="200"
                       :placeholder="t('backlog.main.placeholders.taskName')"
                       trim
                       class="w-200 mr-5"
-                      @pressEnter="pressEnter" />
+                      @pressEnter="handleNewTaskNameEnter" />
 
                     <div class="flex items-center space-x-2.5">
                       <Button
-                        :disabled="!newTaskName"
+                        :disabled="!newTask.newTaskName"
                         type="primary"
                         size="small"
-                        @click="toSave">
+                        @click="createNewTask">
                         {{ t('backlog.main.save') }}
                       </Button>
 
                       <Button
                         type="default"
                         size="small"
-                        @click="cancelAdd">
+                        @click="cancelAddTask">
                         {{ t('backlog.main.cancel') }}
                       </Button>
 
                       <Button
                         type="default"
                         size="small"
-                        @click="openCreateModal">
+                        @click="openCreateTaskModal">
                         {{ t('backlog.main.openAddModal') }}
                       </Button>
                     </div>
@@ -1388,34 +646,34 @@ const selectNone = computed(() => {
 
               <template #item="{ element, index }: { element: TaskInfo; index: number; }">
                 <div
-                  v-show="openSet.has('productBacklog')"
+                  v-show="sprintExpansion.expandedSprintIds.has('productBacklog')"
                   :id="element.id"
-                  :class="{ 'active-item': taskId === element.id, 'draggable-item-hover': popoverId === element.id }"
+                  :class="{ 'active-item': taskId === element.id, 'draggable-item-hover': ui.popoverId === element.id }"
                   class="draggable-item flex items-center justify-between space-x-5 truncate"
-                  @click="toChecked(element.id)">
+                  @click="selectTaskEnhanced(element.id)">
                   <div class="flex items-center space-x-5 truncate">
                     <IconTask :value="element.taskType?.value" />
                     <TaskPriority :value="element.priority" />
                     <div>{{ element.code }}</div>
                     <div
-                      v-if="editNameSet.has(element.id)"
+                      v-if="taskNameEditing.editingTaskNameIds.has(element.id)"
                       class="flex items-center"
                       @click.stop="">
                       <Input
-                        ref="taskNameInputRef"
-                        v-model:value="editNameMap[element.id]"
+                        ref="newTaskNameInputRef"
+                        v-model:value="taskNameEditing.editingTaskNameMap[element.id]"
                         :maxlength="200"
                         :placeholder="t('backlog.main.placeholders.taskName')"
                         trim
                         class="w-100 mr-5"
-                        @pressEnter="namePressEnter(element,index)" />
+                        @pressEnter="handleTaskNameEditEnter(element,index)" />
 
                       <Button
-                        :disabled="!editNameMap[element.id]"
+                        :disabled="!taskNameEditing.editingTaskNameMap[element.id]"
                         type="primary"
                         size="small"
                         class="mr-2.5"
-                        @click="namePressEnter(element,index)">
+                        @click="handleTaskNameEditEnter(element,index)">
                         {{ t('backlog.main.save') }}
                       </Button>
 
@@ -1423,7 +681,7 @@ const selectNone = computed(() => {
                         type="default"
                         size="small"
                         class="bg-white"
-                        @click="cancelEditName(element.id)">
+                        @click="cancelTaskNameEdit(element.id)">
                         {{ t('backlog.main.cancel') }}
                       </Button>
                     </div>
@@ -1432,8 +690,8 @@ const selectNone = computed(() => {
                       v-else
                       class="flex-1 truncate cursor-default"
                       :title="element.name"
-                      @click.stop="clickName"
-                      @dblclick.stop="dblclickName(element)">
+                      @click.stop="handleTaskNameClick"
+                      @dblclick.stop="handleTaskNameDoubleClick(element)">
                       {{ element.name }}
                     </div>
                   </div>
@@ -1443,7 +701,7 @@ const selectNone = computed(() => {
                       type="text"
                       size="small"
                       class="px-0 h-5 leading-5 space-x-1 flex items-center"
-                      @click.stop="toSplit(element, index)">
+                      @click.stop="showSplitTaskModal(element)">
                       <Icon icon="icon-guanlianziyuan" class="text-3.5" />
                       <span>{{ t('backlog.main.split') }}</span>
                     </Button>
@@ -1452,15 +710,15 @@ const selectNone = computed(() => {
                       overlayClassName="px-content-1.5"
                       placement="left"
                       :mouseEnterDelay="0.3"
-                      @visibleChange="visibleChange($event, element.id)">
+                      @visibleChange="handlePopoverVisibilityChange($event, element.id)">
                       <template #content>
                         <div class="max-w-100 space-y-1 leading-5 text-3 truncate">
                           <div
-                            v-for="_sprint in sprintList"
+                            v-for="_sprint in sprintData.sprintList"
                             :key="_sprint.id"
                             :title="_sprint.name"
                             class="popover-item truncate cursor-pointer px-2"
-                            @click="toAssignment(_sprint.id, element, index)">
+                            @click="assignTaskToSprint(_sprint.id, element, index)">
                             {{ _sprint.name }}
                           </div>
                         </div>
@@ -1480,7 +738,7 @@ const selectNone = computed(() => {
                       type="text"
                       size="small"
                       class="px-0 h-5 leading-5 space-x-1 flex items-center"
-                      @click.stop="toDelete(element, index)">
+                      @click.stop="confirmDeleteTask(element, index)">
                       <Icon icon="icon-qingchu" class="text-3.5" />
                       <span>{{ t('backlog.main.delete') }}</span>
                     </Button>
@@ -1489,7 +747,7 @@ const selectNone = computed(() => {
                       type="text"
                       size="small"
                       class="px-0 h-5 leading-5 space-x-1 flex items-center"
-                      @click.stop="toEdit(element.id)">
+                      @click.stop="openTaskEditModal(element.id)">
                       <Icon icon="icon-shuxie" class="text-3.5" />
                       <span>{{ t('backlog.main.edit') }}</span>
                     </Button>
@@ -1503,75 +761,13 @@ const selectNone = computed(() => {
         <div class="drawer-container flex items-start" :class="{ 'drawer-open': !!taskId }">
           <div class="flex-shrink-0 h-full w-9 py-1.5 space-y-1 overflow-y-auto drawer-action-container">
             <div
-              :class="{ 'drawer-active-item': drawerActiveKey === 'basic' }"
+              v-for="item in drawerActionItems"
+              :key="item.key"
+              :class="{ 'drawer-active-item': ui.drawerActiveKey === item.key }"
               class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-              :title="t('backlog.main.drawerTitles.basicInfo')"
-              @click="drawerActiveKeyChange('basic')">
-              <Icon icon="icon-wendangxinxi" class="text-4" />
-            </div>
-
-            <div
-              :class="{ 'drawer-active-item': drawerActiveKey === 'person' }"
-              class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-              :title="t('backlog.main.drawerTitles.personnel')"
-              @click="drawerActiveKeyChange('person')">
-              <Icon icon="icon-quanburenyuan" class="text-4" />
-            </div>
-
-            <div
-              :class="{ 'drawer-active-item': drawerActiveKey === 'date' }"
-              class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-              :title="t('backlog.main.drawerTitles.date')"
-              @click="drawerActiveKeyChange('date')">
-              <Icon icon="icon-riqi" class="text-4" />
-            </div>
-
-            <div
-              :class="{ 'drawer-active-item': drawerActiveKey === 'tasks' }"
-              class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-              :title="t('backlog.main.drawerTitles.relatedTasks')"
-              @click="drawerActiveKeyChange('tasks')">
-              <Icon icon="icon-ceshirenwu" class="text-4" />
-            </div>
-
-            <div
-              :class="{ 'drawer-active-item': drawerActiveKey === 'cases' }"
-              class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-              :title="t('backlog.main.drawerTitles.relatedCases')"
-              @click="drawerActiveKeyChange('cases')">
-              <Icon icon="icon-ceshiyongli1" class="text-4" />
-            </div>
-
-            <div
-              :class="{ 'drawer-active-item': drawerActiveKey === 'attachments' }"
-              class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-              :title="t('backlog.main.drawerTitles.attachments')"
-              @click="drawerActiveKeyChange('attachments')">
-              <Icon icon="icon-lianjie1" class="text-4" />
-            </div>
-
-            <div
-              :class="{ 'drawer-active-item': drawerActiveKey === 'remarks' }"
-              class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-              :title="t('backlog.main.drawerTitles.remarks')"
-              @click="drawerActiveKeyChange('remarks')">
-              <Icon icon="icon-shuxie" class="text-4" />
-            </div>
-
-            <div
-              :class="{ 'drawer-active-item': drawerActiveKey === 'comment' }"
-              class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-              :title="t('backlog.main.drawerTitles.comments')"
-              @click="drawerActiveKeyChange('comment')">
-              <Icon icon="icon-pinglun" class="text-4" />
-            </div>
-
-            <div
-              :class="{ 'drawer-active-item': drawerActiveKey === 'activity' }"
-              class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
-              :title="t('backlog.main.drawerTitles.activity')"
-              @click="drawerActiveKeyChange('activity')">
-              <Icon icon="icon-chakanhuodong" class="text-4" />
+              :title="item.title"
+              @click="drawerActiveKeyChange(item.key)">
+              <Icon :icon="item.icon" class="text-4" />
             </div>
           </div>
 
@@ -1579,21 +775,21 @@ const selectNone = computed(() => {
             <div class="flex items-center justify-between mt-4 pl-5 space-x-2.5">
               <div class="flex-1 flex items-center truncate">
                 <RouterLink
-                  v-if="sprintInfo"
-                  :to="`/task#sprint?id=${sprintInfo?.id}`"
-                  :title="sprintInfo?.name"
+                  v-if="currentInfo.currentSprintInfo"
+                  :to="`/task#sprint?id=${currentInfo.currentSprintInfo?.id}`"
+                  :title="currentInfo.currentSprintInfo?.name"
                   class="truncate"
                   style="max-width: 50%;">
-                  {{ sprintInfo?.name }}
+                  {{ currentInfo.currentSprintInfo?.name }}
                 </RouterLink>
 
                 <div v-else class="flex-shrink-0">Backlog</div>
                 <div class="mx-1.5">/</div>
                 <RouterLink
-                  :to="`/task#task?id=${taskInfo?.id}`"
+                  :to="`/task#task?id=${currentInfo.currentTaskInfo?.id}`"
                   class="truncate flex-1"
-                  :title="taskInfo?.name">
-                  {{ taskInfo?.name }}
+                  :title="currentInfo.currentTaskInfo?.name">
+                  {{ currentInfo.currentTaskInfo?.name }}
                 </RouterLink>
               </div>
 
@@ -1601,7 +797,7 @@ const selectNone = computed(() => {
                 type="default"
                 size="small"
                 class="p-0 h-3.5 leading-3.5 border-none"
-                @click="drawerClose">
+                @click="closeTaskDrawer">
                 <Icon icon="icon-shanchuguanbi" class="text-3.5 cursor-pointer" />
               </Button>
             </div>
@@ -1610,139 +806,143 @@ const selectNone = computed(() => {
               <AsyncComponent :visible="!!taskId">
                 <ApiInfo
                   v-if="taskType === TaskType.API_TEST"
-                  v-show="drawerActiveKey === 'basic'"
+                  v-show="ui.drawerActiveKey === 'basic'"
                   :projectId="props.projectId"
                   :appInfo="props.appInfo"
                   :userInfo="props.userInfo"
-                  :dataSource="taskInfo"
-                  @refresh="taskRefresh"
-                  @change="taskInfoChange"
-                  @loadingChange="loadingChange" />
+                  :dataSource="currentInfo.currentTaskInfo"
+                  @refresh="refreshAllTaskData"
+                  @change="updateCurrentTaskInfo"
+                  @loadingChange="setLoadingState" />
 
                 <ScenarioInfo
                   v-else-if="taskType === TaskType.SCENARIO_TEST"
-                  v-show="drawerActiveKey === 'basic'"
+                  v-show="ui.drawerActiveKey === 'basic'"
                   :projectId="props.projectId"
                   :appInfo="props.appInfo"
                   :userInfo="props.userInfo"
-                  :dataSource="taskInfo"
-                  @refresh="taskRefresh"
-                  @change="taskInfoChange"
-                  @loadingChange="loadingChange" />
+                  :dataSource="currentInfo.currentTaskInfo"
+                  @refresh="refreshAllTaskData"
+                  @change="updateCurrentTaskInfo"
+                  @loadingChange="setLoadingState" />
 
                 <BasicInfo
                   v-else
-                  v-show="drawerActiveKey === 'basic'"
+                  v-show="ui.drawerActiveKey === 'basic'"
                   :projectId="props.projectId"
                   :appInfo="props.appInfo"
                   :userInfo="props.userInfo"
-                  :dataSource="taskInfo"
-                  @refresh="taskRefresh"
-                  @change="taskInfoChange"
-                  @loadingChange="loadingChange" />
+                  :dataSource="currentInfo.currentTaskInfo"
+                  @refresh="refreshAllTaskData"
+                  @change="updateCurrentTaskInfo"
+                  @loadingChange="setLoadingState" />
 
                 <PersonnelInfo
-                  v-show="drawerActiveKey === 'person'"
+                  v-show="ui.drawerActiveKey === 'person'"
                   :projectId="props.projectId"
                   :appInfo="props.appInfo"
                   :userInfo="props.userInfo"
-                  :dataSource="taskInfo"
-                  @change="taskInfoChange"
-                  @loadingChange="loadingChange" />
+                  :dataSource="currentInfo.currentTaskInfo"
+                  @change="updateCurrentTaskInfo"
+                  @loadingChange="setLoadingState" />
 
                 <DateInfo
-                  v-show="drawerActiveKey === 'date'"
+                  v-show="ui.drawerActiveKey === 'date'"
                   :projectId="props.projectId"
                   :appInfo="props.appInfo"
                   :userInfo="props.userInfo"
-                  :dataSource="taskInfo"
-                  @change="taskInfoChange"
-                  @loadingChange="loadingChange" />
+                  :dataSource="currentInfo.currentTaskInfo"
+                  @change="updateCurrentTaskInfo"
+                  @loadingChange="setLoadingState" />
 
                 <RefTasks
-                  v-show="drawerActiveKey === 'tasks'"
+                  v-show="ui.drawerActiveKey === 'tasks'"
                   :projectId="props.projectId"
                   :appInfo="props.appInfo"
                   :userInfo="props.userInfo"
-                  :dataSource="taskInfo"
-                  @change="taskInfoChange"
-                  @loadingChange="loadingChange" />
+                  :dataSource="currentInfo.currentTaskInfo"
+                  @change="updateCurrentTaskInfo"
+                  @loadingChange="setLoadingState" />
 
                 <RefCases
-                  v-show="drawerActiveKey === 'cases'"
+                  v-show="ui.drawerActiveKey === 'cases'"
                   :projectId="props.projectId"
                   :appInfo="props.appInfo"
                   :userInfo="props.userInfo"
-                  :dataSource="taskInfo"
-                  @change="taskInfoChange"
-                  @loadingChange="loadingChange" />
+                  :dataSource="currentInfo.currentTaskInfo"
+                  @change="updateCurrentTaskInfo"
+                  @loadingChange="setLoadingState" />
 
                 <AttachmentInfo
-                  v-show="drawerActiveKey === 'attachments'"
+                  v-show="ui.drawerActiveKey === 'attachments'"
                   :projectId="props.projectId"
                   :appInfo="props.appInfo"
                   :userInfo="props.userInfo"
-                  :dataSource="taskInfo"
-                  @change="taskInfoChange"
-                  @loadingChange="loadingChange" />
+                  :dataSource="currentInfo.currentTaskInfo"
+                  @change="updateCurrentTaskInfo"
+                  @loadingChange="setLoadingState" />
 
                 <Comment
-                  v-show="drawerActiveKey === 'comment'"
+                  v-show="ui.drawerActiveKey === 'comment'"
                   :projectId="props.projectId"
                   :appInfo="props.appInfo"
                   :userInfo="props.userInfo"
-                  :dataSource="taskInfo"
-                  @change="taskInfoChange"
-                  @loadingChange="loadingChange" />
+                  :dataSource="currentInfo.currentTaskInfo"
+                  @change="updateCurrentTaskInfo"
+                  @loadingChange="setLoadingState" />
 
                 <Activity
-                  v-show="drawerActiveKey === 'activity'"
+                  v-show="ui.drawerActiveKey === 'activity'"
                   :projectId="props.projectId"
                   :appInfo="props.appInfo"
                   :userInfo="props.userInfo"
-                  :dataSource="taskInfo"
-                  @change="taskInfoChange"
-                  @loadingChange="loadingChange" />
+                  :dataSource="currentInfo.currentTaskInfo"
+                  @change="updateCurrentTaskInfo"
+                  @loadingChange="setLoadingState" />
 
                 <Remarks
-                  v-show="drawerActiveKey === 'remarks'"
-                  :id="taskInfo?.id"
-                  :projectId="props.projectId"
-                  :appInfo="props.appInfo"
-                  :userInfo="props.userInfo" />
+                  v-show="ui.drawerActiveKey === 'remarks'"
+                  :id="currentInfo.currentTaskInfo?.id || ''"
+                  :projectId="props.projectId || ''"
+                  :appInfo="props.appInfo || { id: '' }"
+                  :userInfo="props.userInfo || { id: '', fullName: '' }" />
               </AsyncComponent>
             </div>
           </div>
         </div>
       </div>
 
-      <AsyncComponent :visible="editTaskModalVisible">
+      <AsyncComponent :visible="modal.isEditTaskModalVisible">
         <EditTaskModal
-          v-model:visible="editTaskModalVisible"
-          :taskId="selectedTaskId"
-          :sprintId="selectedSprintId"
-          :projectId="props.projectId"
+          v-model:visible="modal.isEditTaskModalVisible"
+          :taskId="selected.selectedTaskId"
+          :sprintId="selected.selectedSprintId"
+          :projectId="props.projectId || ''"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
-          @ok="editOk" />
+          :deadlineDate="''"
+          :priority="Priority.MEDIUM"
+          @ok="handleTaskEditSuccess" />
       </AsyncComponent>
     </Spin>
 
-    <AsyncComponent :visible="splitTaskVisible">
+    <AsyncComponent :visible="modal.isSplitTaskModalVisible">
       <SplitTask
-        v-model:visible="splitTaskVisible"
-        :projectId="props.projectId"
-        :dataSource="selectedTaskInfo"
-        @ok="splitOk"
-        @cancel="splitCancel" />
+        v-model:visible="modal.isSplitTaskModalVisible"
+        :projectId="props.projectId || ''"
+        :dataSource="selected.selectedTaskInfo"
+        :userInfo="props.userInfo || { id: '', fullName: '' }"
+        :appInfo="props.appInfo || { id: '' }"
+        @ok="handleSplitTaskSuccess"
+        @cancel="handleSplitTaskCancel" />
     </AsyncComponent>
 
-    <AsyncComponent :visible="aiGenerateTaskVisible">
+    <AsyncComponent :visible="modal.isAiGenerateTaskModalVisible">
       <AIGenerateTask
-        v-model:visible="aiGenerateTaskVisible"
-        :projectId="props.projectId"
-        @ok="generateOk"
-        @cancel="generateCancel" />
+        v-model:visible="modal.isAiGenerateTaskModalVisible"
+        :projectId="props.projectId || ''"
+        @ok="handleAiGenerateTaskSuccess"
+        @cancel="handleAiGenerateTaskCancel" />
     </AsyncComponent>
   </div>
 </template>

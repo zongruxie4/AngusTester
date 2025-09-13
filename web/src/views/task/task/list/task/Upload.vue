@@ -10,6 +10,7 @@ import { task } from '@/api/tester';
 
 const { t } = useI18n();
 
+// ===== Props and Emits Definition =====
 export interface Props{
   visible: boolean;
   downloadTemplate: ()=> void;
@@ -20,6 +21,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'ok'):void;}>();
+
+// Injected Data
 const projectId = inject<Ref<string>>('projectId', ref(''));
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>(
   'proTypeShowMap', ref({
@@ -31,9 +34,9 @@ const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>(
   }
   ));
 
-const loading = ref(false);
-const strategyWhenDuplicatedOpt = ref<{value: string; label: string}[]>([]);
-
+// Reactive Data
+const isLoading = ref(false);
+const strategyOptions = ref<{value: string; label: string}[]>([]);
 const formRef = ref();
 
 const formData = ref<{
@@ -46,38 +49,73 @@ const formData = ref<{
   sprintId: undefined
 });
 
+// Lifecycle Hooks
+watch(() => props.visible, newValue => {
+  if (!newValue) {
+    formData.value.file = undefined;
+    formData.value.strategyWhenDuplicated = StrategyWhenDuplicated.COVER;
+  }
+
+  if (!strategyOptions.value.length) {
+    loadStrategyOptions();
+  }
+}, {
+  immediate: true
+});
+
+/**
+ * Handle download template button click
+ */
 const handleDownloadTemplate = () => {
   if (typeof props.downloadTemplate === 'function') {
     props.downloadTemplate();
   }
 };
 
-const handleFile = (fileInfo) => {
+/**
+ * Handle file selection
+ */
+const handleFileSelection = (fileInfo: any) => {
   formData.value.file = fileInfo.file;
   formRef.value.validateFields(['file']);
 };
 
-const deleteFile = () => {
+/**
+ * Remove selected file
+ */
+const removeSelectedFile = () => {
   formData.value.file = undefined;
 };
 
-const validateFile = async () => {
+/**
+ * Validate if file is selected
+ */
+const validateFileSelection = async () => {
   if (formData.value.file) {
     return Promise.resolve();
   }
   return Promise.reject();
 };
 
-const loadEnums = () => {
+/**
+ * Load strategy options for duplicate handling
+ */
+const loadStrategyOptions = () => {
   const data = enumUtils.enumToMessages(StrategyWhenDuplicated);
-  strategyWhenDuplicatedOpt.value = data.map(i => ({ value: i.value, label: i.message }));
+  strategyOptions.value = data.map(i => ({ value: i.value, label: i.message }));
 };
 
-const cancel = () => {
+/**
+ * Close the modal dialog
+ */
+const closeModal = () => {
   emits('update:visible', false);
 };
 
-const ok = () => {
+/**
+ * Submit the form to import tasks
+ */
+const submitImportForm = () => {
   formRef.value.validate()
     .then(async () => {
       const formParams = new FormData();
@@ -85,36 +123,23 @@ const ok = () => {
       formParams.append('projectId', projectId.value);
       formParams.append('strategyWhenDuplicated', formData.value.strategyWhenDuplicated);
       formData.value.file && formParams.append('file', formData.value.file);
-      loading.value = true;
+      isLoading.value = true;
       const [error] = await task.importTask(formParams);
-      loading.value = false;
+      isLoading.value = false;
       if (error) {
         return;
       }
       emits('ok');
-      cancel();
+      closeModal();
     });
 };
-
-watch(() => props.visible, newValue => {
-  if (!newValue) {
-    formData.value.file = undefined;
-    formData.value.strategyWhenDuplicated = StrategyWhenDuplicated.COVER;
-  }
-
-  if (!strategyWhenDuplicatedOpt.value.length) {
-    loadEnums();
-  }
-}, {
-  immediate: true
-});
 </script>
 <template>
   <Modal
     :title="t('task.upload.title')"
     :visible="props.visible"
-    @cancel="cancel"
-    @ok="ok">
+    @cancel="closeModal"
+    @ok="submitImportForm">
     <Form
       ref="formRef"
       :model="formData"
@@ -135,15 +160,15 @@ watch(() => props.visible, newValue => {
       </FormItem>
 
       <FormItem
-        :rules="{message: t('task.upload.form.uploadFile'), validator: validateFile}"
+        :rules="{message: t('task.upload.form.uploadFile'), validator: validateFileSelection}"
         name="file">
-        <Spin :spinning="loading">
+        <Spin :spinning="isLoading">
           <UploadDragger
             v-show="!formData.file"
             accept=".xls,.xlsx"
             :multiple="false"
             :showUploadList="false"
-            :customRequest="handleFile"
+            :customRequest="handleFileSelection"
             class="text-3 leading-5">
             <div class="flex flex-col items-center justify-center text-3 leading-5">
               <Icon icon="icon-shangchuan" class="text-5 text-text-link" />
@@ -163,7 +188,7 @@ watch(() => props.visible, newValue => {
               <Icon
                 icon="icon-qingchu"
                 class="cursor-pointer ml-2 text-3.5 text-theme-text-hover"
-                @click="deleteFile" />
+                @click="removeSelectedFile" />
             </div>
           </div>
         </div>
@@ -185,7 +210,7 @@ watch(() => props.visible, newValue => {
         required>
         <RadioGroup
           v-model:value="formData.strategyWhenDuplicated"
-          :options="strategyWhenDuplicatedOpt">
+          :options="strategyOptions">
         </RadioGroup>
       </FormItem>
     </Form>

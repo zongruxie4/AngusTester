@@ -8,7 +8,7 @@ export type LoadingProps = {
 export type BasicProps = {
   projectId: string;
   projectName?: string;
-  userInfo?: { id: string; };
+  userInfo?: { id: string; fullName: string };
   appInfo?: { id: string; };
   notify?: string;
   onShow?: boolean;

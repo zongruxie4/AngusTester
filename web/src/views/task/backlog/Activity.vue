@@ -8,6 +8,7 @@ import { CombinedTargetType } from '@/enums/enums';
 import { ActivityItem } from '@/types/types';
 import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
+// Component Props
 const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -16,31 +17,40 @@ const props = withDefaults(defineProps<TaskInfoProps>(), {
 });
 
 const { t } = useI18n();
-const dataList = ref<ActivityItem[]>([]);
-const params = ref<{
-  mainTargetId:string;
-  filters:[{ key: 'targetType', value: CombinedTargetType.TASK, op: SearchCriteria.OpEnum }]
+
+// Reactive State Variables
+const activityList = ref<ActivityItem[]>([]);
+const activityQueryParams = ref<{
+  mainTargetId: string;
+  filters: [{ key: 'targetType', value: CombinedTargetType.TASK, op: SearchCriteria.OpEnum }]
 }>();
 
-const change = (data: ActivityItem[]) => {
-  dataList.value = data;
+// Computed Properties
+const currentTaskId = computed(() => {
+  return props.dataSource?.id;
+});
+
+// Activity Management Functions
+/**
+ * <p>Handle activity data change</p>
+ * <p>Updates the activity list when new data is received from the Scroll component</p>
+ */
+const handleActivityDataChange = (data: ActivityItem[]) => {
+  activityList.value = data;
 };
 
+// Lifecycle Hooks
 onMounted(() => {
-  watch(() => taskId.value, (newValue, oldValue) => {
-    if (newValue === oldValue) {
+  watch(() => currentTaskId.value, (newTaskId, oldTaskId) => {
+    if (newTaskId === oldTaskId) {
       return;
     }
 
-    params.value = {
-      mainTargetId: taskId.value,
+    activityQueryParams.value = {
+      mainTargetId: currentTaskId.value,
       filters: [{ key: 'targetType', value: CombinedTargetType.TASK, op: SearchCriteria.OpEnum.Equal }]
     };
   }, { immediate: true });
-});
-
-const taskId = computed(() => {
-  return props.dataSource?.id;
 });
 </script>
 <template>
@@ -51,14 +61,14 @@ const taskId = computed(() => {
 
     <Scroll
       :action="`${TESTER}/activity`"
-      :hideNoData="!!dataList.length"
-      :params="params"
+      :hideNoData="!!activityList.length"
+      :params="activityQueryParams"
       :lineHeight="32"
       transition
       style="height:calc(100% - 30px);"
-      @change="change">
+      @change="handleActivityDataChange">
       <ActivityInfo
-        :dataSource="dataList"
+        :dataSource="activityList"
         infoKey="description"
         class="pr-5" />
     </Scroll>

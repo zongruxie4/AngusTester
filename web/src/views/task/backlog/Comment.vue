@@ -6,6 +6,7 @@ import { TESTER, CombinedTargetType } from '@xcan-angus/infra';
 
 import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
+// Component Props
 const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -14,20 +15,33 @@ const props = withDefaults(defineProps<TaskInfoProps>(), {
 });
 
 const { t } = useI18n();
-const commentRef = ref();
 
-const taskId = computed(() => {
+// Reactive State Variables
+const smartCommentRef = ref();
+
+// Computed Properties
+const currentTaskId = computed(() => {
   return props.dataSource?.id;
 });
 
+// Comment Management Functions
+/**
+ * <p>Refresh comment component</p>
+ * <p>Refreshes the comment list when task changes</p>
+ */
+const refreshCommentComponent = async (taskId: string) => {
+  if (!taskId) {
+    return;
+  }
+  if (typeof smartCommentRef.value?.refresh === 'function') {
+    smartCommentRef.value.refresh();
+  }
+};
+
+// Lifecycle Hooks
 onMounted(() => {
-  watch(() => taskId.value, async (newValue) => {
-    if (!newValue) {
-      return;
-    }
-    if (typeof commentRef.value?.refresh === 'function') {
-      commentRef.value.refresh();
-    }
+  watch(() => currentTaskId.value, async (newTaskId) => {
+    await refreshCommentComponent(newTaskId);
   }, { immediate: true });
 });
 </script>
@@ -38,7 +52,7 @@ onMounted(() => {
     </div>
 
     <SmartComment
-      ref="commentRef"
+      ref="smartCommentRef"
       class="overflow-auto pr-5"
       style="height: calc(100% - 30px);box-shadow: 0;"
       avatar
@@ -47,7 +61,7 @@ onMounted(() => {
       :public0="false"
       :showPublishTitle="false"
       :userId="props.userInfo?.id"
-      :targetId="taskId"
+      :targetId="currentTaskId"
       :action="`${TESTER}/comment`" />
   </div>
 </template>
