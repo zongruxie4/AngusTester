@@ -4,7 +4,6 @@ import { ActivityInfo, Scroll } from '@xcan-angus/vue-ui';
 import { SearchCriteria, TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
-import { TaskInfo } from '@/views/task/types';
 import { ActivityItem } from '@/types/types';
 import { CombinedTargetType } from '@/enums/enums';
 import { TaskInfoProps } from '@/views/task/task/list/task/types';

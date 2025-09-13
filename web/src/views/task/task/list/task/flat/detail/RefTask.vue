@@ -5,17 +5,9 @@ import { TESTER } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-import { TaskInfo } from '@/views/task/types';
+import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  visible: boolean;
-  taskInfo: TaskInfo;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -23,29 +15,60 @@ const props = withDefaults(defineProps<Props>(), {
   taskInfo: undefined
 });
 
+// Composables
 const { t } = useI18n();
 
+/**
+ * Event emitter for component communication
+ * <p>
+ * Emits events to notify parent components about modal visibility changes
+ * and successful operations
+ */
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
   (e: 'ok'): void;
 }>();
 
-const loading = ref(false);
-const refTaskIds = ref<string[]>([]);
+/**
+ * Loading state for API operations
+ * <p>
+ * Indicates whether a task association operation is currently in progress
+ */
+const isOperationLoading = ref(false);
 
-const cancel = () => {
+/**
+ * Array of selected task IDs for association
+ * <p>
+ * Contains the IDs of tasks that will be associated as sub-tasks
+ */
+const selectedTaskIds = ref<string[]>([]);
+
+/**
+ * Closes the modal and resets form data
+ * <p>
+ * Emits visibility update event and clears the selected task IDs
+ */
+const closeModal = () => {
   emit('update:visible', false);
-  reset();
+  resetFormData();
 };
 
-const ok = async () => {
-  const params = {
-    subTaskIds: refTaskIds.value
+/**
+ * Handles the confirmation of task association
+ * <p>
+ * Processes the selected task IDs and creates sub-task associations
+ * through the API. Shows success notification and closes modal on completion.
+ */
+const confirmTaskAssociation = async () => {
+  const requestParams = {
+    subTaskIds: selectedTaskIds.value
   };
-  loading.value = true;
-  const [error] = await task.setSubTask(props.taskInfo?.id, params);
-  loading.value = false;
+
+  isOperationLoading.value = true;
+  const [error] = await task.setSubTask(props.taskInfo?.id, requestParams);
+  isOperationLoading.value = false;
+
   if (error) {
     return;
   }
@@ -53,48 +76,71 @@ const ok = async () => {
   notification.success(t('task.subTask.messages.associateSubTaskSuccess'));
   emit('update:visible', false);
   emit('ok');
-  reset();
+  resetFormData();
 };
 
-const reset = () => {
-  refTaskIds.value = [];
+/**
+ * Resets the form data to initial state
+ * <p>
+ * Clears all selected task IDs and resets the form
+ */
+const resetFormData = () => {
+  selectedTaskIds.value = [];
 };
 
+/**
+ * Component mounted lifecycle hook
+ * <p>
+ * Sets up a watcher to monitor modal visibility changes and populate
+ * the selected task IDs when the modal is opened
+ */
 onMounted(() => {
-  watch(() => props.visible, (newValue) => {
-    if (!newValue) {
+  watch(() => props.visible, (isModalVisible) => {
+    if (!isModalVisible) {
       return;
     }
 
-    refTaskIds.value = props.taskInfo?.subTaskInfos?.map(item => item.id) || [];
+    selectedTaskIds.value = props.taskInfo?.subTaskInfos?.map(item => item.id) || [];
   }, { immediate: true });
 });
 
-const taskIdExcludes = (data: { id: string }) => {
-  return props.taskInfo?.id === data.id;
+/**
+ * Determines if a task should be excluded from selection
+ * <p>
+ * Prevents the current task from being selected as its own sub-task
+ *
+ * @param taskData - Task data object containing ID
+ * @returns True if the task should be excluded from selection
+ */
+const shouldExcludeTask = (taskData: { id: string }) => {
+  return props.taskInfo?.id === taskData.id;
 };
 </script>
 <template>
+  <!-- Task reference association modal -->
   <Modal
     :title="t('task.subTask.modal.title')"
     :centered="true"
     :visible="props.visible"
     :width="680"
-    @cancel="cancel"
-    @ok="ok">
+    @cancel="closeModal"
+    @ok="confirmTaskAssociation">
     <div class="flex items-start">
+      <!-- Label section -->
       <div class="flex items-center flex-shrink-0 mr-1.5 leading-7">
         <span>{{ t('task.subTask.modal.label') }}</span>
         <Colon />
       </div>
+
+      <!-- Task selection component -->
       <Select
-        v-model:value="refTaskIds"
+        v-model:value="selectedTaskIds"
         showSearch
         internal
         mode="tags"
         :placeholder="t('task.subTask.modal.placeholder')"
         class="flex-1"
-        :excludes="taskIdExcludes"
+        :excludes="shouldExcludeTask"
         :fieldNames="{ label: 'name', value: 'id' }"
         :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`">
         <template #option="record">

@@ -8,12 +8,14 @@ import { useI18n } from 'vue-i18n';
 import { TaskInfo } from '@/views/task/types';
 import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
+// Type definitions
 type AttachmentItem = {
   id: string;
   name: string;
   url: string;
 }
 
+// Component props and emits
 const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -29,81 +31,102 @@ const emit = defineEmits<{
   (event: 'change', value: Partial<TaskInfo>): void;
 }>();
 
-const MAX_SIZE = 10;
+// Constants
+const MAX_FILE_SIZE_MB = 10;
 
-const loading = ref(false);
-const attachments = ref<AttachmentItem[]>([]);
+// Component state
+const isUploading = ref(false);
+const attachmentList = ref<AttachmentItem[]>([]);
 
-const uploadChange = async ({ file }: { file: UploadFile }) => {
-  if (file.size! > maxFileSize.value) {
-    notification.warning(t('task.detailInfo.attachment.messages.fileSizeLimit', { size: MAX_SIZE }));
+/**
+ * Handle file upload change event and upload file
+ * @param param - Upload change event with file
+ */
+const handleFileUploadChange = async ({ file }: { file: UploadFile }) => {
+  if (file.size! > maxFileSizeInBytes.value) {
+    notification.warning(t('task.detailInfo.attachment.messages.fileSizeLimit', { size: MAX_FILE_SIZE_MB }));
     return;
   }
 
-  loading.value = true;
+  isUploading.value = true;
   const [error, res] = await upload(file.originFileObj!, { bizKey: 'angusTesterTaskAttachments' });
   if (error) {
-    loading.value = false;
+    isUploading.value = false;
     return;
   }
 
-  const data = res?.data?.[0];
-  if (!data) {
-    loading.value = false;
+  const uploadedFileData = res?.data?.[0];
+  if (!uploadedFileData) {
+    isUploading.value = false;
     return;
   }
 
-  const attachmentList = attachments.value.filter(item => item.id !== data.id).map(item => {
+  const updatedAttachmentList = attachmentList.value.filter(item => item.id !== uploadedFileData.id).map(item => {
     return {
       name: item.name,
       url: item.url
     };
   });
 
-  attachmentList.push({
-    name: data.name,
-    url: data.url
+  updatedAttachmentList.push({
+    name: uploadedFileData.name,
+    url: uploadedFileData.url
   });
 
-  await updateAttachments(attachmentList);
+  await updateTaskAttachments(updatedAttachmentList);
 };
 
-const toDelete = async (data: AttachmentItem) => {
-  const attachmentList = attachments.value.filter(item => item.id !== data.id).map(item => {
+/**
+ * Delete attachment from task
+ * @param attachmentToDelete - Attachment item to delete
+ */
+const deleteAttachment = async (attachmentToDelete: AttachmentItem) => {
+  const updatedAttachmentList = attachmentList.value.filter(item => item.id !== attachmentToDelete.id).map(item => {
     return {
       name: item.name,
       url: item.url
     };
   });
 
-  await updateAttachments(attachmentList);
+  await updateTaskAttachments(updatedAttachmentList);
 };
 
-const updateAttachments = async (data:{name:string;url:string}[]) => {
-  const params = {
-    attachments: data
+/**
+ * Update task attachments via API
+ * @param attachmentData - Array of attachment data with name and url
+ */
+const updateTaskAttachments = async (attachmentData: {name: string; url: string}[]) => {
+  const updateParams = {
+    attachments: attachmentData
   };
-  loading.value = true;
-  const [error] = await task.editTaskAttachment(taskId.value, params);
-  loading.value = false;
+  isUploading.value = true;
+  const [error] = await task.editTaskAttachment(currentTaskId.value, updateParams);
+  isUploading.value = false;
   if (error) {
     return;
   }
 
-  emit('change', { id: taskId.value, attachments: params.attachments });
+  emit('change', { id: currentTaskId.value, attachments: updateParams.attachments });
 };
 
-const customRequest = () => {
+/**
+ * Custom upload request handler to prevent default upload behavior
+ * @returns false to prevent default upload
+ */
+const handleCustomUploadRequest = () => {
   return false;
 };
 
+/**
+ * Initialize component and watch for data source changes
+ */
 onMounted(() => {
-  watch(() => props.dataSource, (newValue) => {
-    if (!newValue) {
+  watch(() => props.dataSource, (newDataSource) => {
+    if (!newDataSource) {
       return;
     }
 
-    attachments.value = (newValue.attachments || []).map(item => {
+    attachmentList.value = (newDataSource.attachments || []).map(item => {
       return {
         id: utils.uuid(),
         name: item.name,
@@ -113,11 +136,12 @@ onMounted(() => {
   }, { immediate: true });
 });
 
-const taskId = computed(() => props.dataSource?.id);
-const isEmpty = computed(() => !attachments.value.length);
+// Computed properties
+const currentTaskId = computed(() => props.dataSource?.id);
+const hasNoAttachments = computed(() => !attachmentList.value.length);
 
-const maxFileSize = computed(() => {
-  return 1024 * 1024 * MAX_SIZE;
+const maxFileSizeInBytes = computed(() => {
+  return 1024 * 1024 * MAX_FILE_SIZE_MB;
 });
 </script>
 
@@ -125,12 +149,12 @@ const maxFileSize = computed(() => {
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
     <div class="text-theme-title mb-2.5 font-semibold">{{ t('task.detailInfo.attachment.title') }}</div>
     <Spin
-      :spinning="loading"
-      :class="{ empty: isEmpty }"
+      :spinning="isUploading"
+      :class="{ empty: hasNoAttachments }"
       class="upload-container w-full px-3 py-2.5 leading-5 text-3 rounded border border-dashed">
-      <template v-if="!isEmpty">
+      <template v-if="!hasNoAttachments">
         <div
-          v-for="item in attachments"
+          v-for="item in attachmentList"
           :key="item.id"
           class="leading-4 mb-2 last:mb-0 flex items-center justify-between overflow-hidden">
           <a
@@ -140,22 +164,24 @@ const maxFileSize = computed(() => {
           <Icon
             icon="icon-qingchu"
             class="text-3.5 flex-shrink-0 cursor-pointer text-theme-text-hover"
-            @click="toDelete(item)">
+            @click="deleteAttachment(item)">
           </icon>
         </div>
 
-        <div v-if="attachments.length < 5" class="upload-action flex justify-center h-5">
+        <div v-if="attachmentList.length < 5" class="upload-action flex justify-center h-5">
           <Upload
             :maxCount="5"
             :showUploadList="false"
-            :customRequest="customRequest"
-            @change="uploadChange">
+            :customRequest="handleCustomUploadRequest"
+            @change="handleFileUploadChange">
             <Button
               size="small"
               type="link"
               class="flex items-center h-auto leading-4.5 p-0">
               <Icon icon="icon-shangchuan" class="text-3.5 flex-shrink-0 text-text-link" />
-              <div class="flex-shrink-0 text-text-link ml-1">{{ t('task.detailInfo.attachment.actions.continueUpload') }}</div>
+              <div class="flex-shrink-0 text-text-link ml-1">
+                {{ t('task.detailInfo.attachment.actions.continueUpload') }}
+              </div>
             </Button>
           </Upload>
         </div>
@@ -165,8 +191,8 @@ const maxFileSize = computed(() => {
         <Upload
           :maxCount="5"
           :showUploadList="false"
-          :customRequest="customRequest"
-          @change="uploadChange">
+          :customRequest="handleCustomUploadRequest"
+          @change="handleFileUploadChange">
           <Button
             size="small"
             type="link"
@@ -175,7 +201,9 @@ const maxFileSize = computed(() => {
             <div class="flex-shrink-0 text-text-link">{{ t('task.detailInfo.attachment.actions.selectFile') }}</div>
           </Button>
         </Upload>
-        <div class="text-theme-sub-content mt-1"> {{ t('task.detailInfo.attachment.messages.uploadLimit', { size: MAX_SIZE }) }}</div>
+        <div class="text-theme-sub-content mt-1">
+          {{ t('task.detailInfo.attachment.messages.uploadLimit', { size: MAX_FILE_SIZE_MB }) }}
+        </div>
       </template>
     </Spin>
   </div>

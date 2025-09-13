@@ -9,6 +9,7 @@ import { useI18n } from 'vue-i18n';
 import { TaskInfo } from '@/views/task/types';
 import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
+// Component props and emits
 const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -24,217 +25,312 @@ const emit = defineEmits<{
   (event: 'change', value: Partial<TaskInfo>): void;
 }>();
 
-const assigneeRef = ref();
-const assigneeEditFlag = ref(false);
-const assigneeMessage = ref<string>();
-const assigneeIdValue = ref<string>();
+// Assignee editing state
+const assigneeSelectRef = ref();
+const isAssigneeEditing = ref(false);
+const assigneeDisplayName = ref<string>();
+const assigneeInputValue = ref<string>();
 
-const confirmerRef = ref();
-const confirmerEditFlag = ref(false);
-const confirmerMessage = ref<string>();
-const confirmerIdValue = ref<string>();
+// Confirmer editing state
+const confirmerSelectRef = ref();
+const isConfirmerEditing = ref(false);
+const confirmerDisplayName = ref<string>();
+const confirmerInputValue = ref<string>();
 
-const testerRef = ref();
-const testerEditFlag = ref(false);
-const testerMessage = ref<string>();
-const testerIdValue = ref<string>();
+// Tester editing state
+const testerSelectRef = ref();
+const isTesterEditing = ref(false);
+const testerDisplayName = ref<string>();
+const testerInputValue = ref<string>();
 
-const toEditAssignee = () => {
-  assigneeIdValue.value = assigneeId.value;
-  assigneeEditFlag.value = true;
+// Computed properties
+/**
+ * Current task ID from data source
+ */
+const currentTaskId = computed(() => props.dataSource?.id);
 
-  nextTick(() => {
-    setTimeout(() => {
-      if (typeof assigneeRef.value?.focus === 'function') {
-        assigneeRef.value?.focus();
-      }
-    }, 100);
-  });
-};
+/**
+ * Name of the user who created the task
+ */
+const taskCreatedByName = computed(() => props.dataSource?.createdByName);
 
-const assignToMe = (key:'assigneeId'|'confirmerId'|'testerId') => {
-  if (key === 'assigneeId') {
-    assigneeIdValue.value = userId.value;
-    assigneeMessage.value = userName.value;
-    assigneeBlur();
-    return;
-  }
+/**
+ * Name of the user who executed the task
+ */
+const taskExecByName = computed(() => props.dataSource?.execByName);
 
-  if (key === 'confirmerId') {
-    confirmerIdValue.value = userId.value;
-    confirmerMessage.value = userName.value;
-    confirmerBlur();
-  }
+/**
+ * Name of the user who last modified the task
+ */
+const taskLastModifiedByName = computed(() => props.dataSource?.lastModifiedByName);
 
-  if (key === 'testerId') {
-    testerIdValue.value = userId.value;
-    testerMessage.value = userName.value;
-    testerBlur();
-  }
-};
+/**
+ * Current assignee ID from data source
+ */
+const currentAssigneeId = computed(() => props.dataSource?.assigneeId);
 
-const assigneeChange = async (_event: { target: { value: string; } }, option: { id: string; fullName: string; }) => {
-  assigneeMessage.value = option.fullName;
-};
+/**
+ * Current assignee name from data source
+ */
+const currentAssigneeName = computed(() => props.dataSource?.assigneeName);
 
-const assigneeBlur = async () => {
-  const value = assigneeIdValue.value;
-  if (value === assigneeId.value) {
-    assigneeEditFlag.value = false;
-    return;
-  }
-
-  emit('loadingChange', true);
-  const [error] = await task.editTaskAssignees(taskId.value, { assigneeId: value });
-  emit('loadingChange', false);
-  if (error) {
-    if (typeof assigneeRef.value?.focus === 'function') {
-      assigneeRef.value?.focus();
-    }
-
-    return;
-  }
-
-  assigneeEditFlag.value = false;
-  emit('change', { id: taskId.value, assigneeId: value, assigneeName: assigneeMessage.value! });
-};
-
-const toEditConfirmer = () => {
-  confirmerIdValue.value = confirmerId.value;
-  confirmerEditFlag.value = true;
-
-  nextTick(() => {
-    setTimeout(() => {
-      if (typeof confirmerRef.value?.focus === 'function') {
-        confirmerRef.value?.focus();
-      }
-    }, 100);
-  });
-};
-
-const confirmerChange = async (_event: { target: { value: string; } }, option: { id: string; fullName: string; }) => {
-  confirmerMessage.value = option.fullName;
-};
-
-const confirmerBlur = async () => {
-  const value = confirmerIdValue.value;
-  if (value === confirmerId.value) {
-    confirmerEditFlag.value = false;
-    return;
-  }
-
-  emit('loadingChange', true);
-  const [error] = await task.editTaskConfirmer(taskId.value, { confirmerId: value });
-  emit('loadingChange', false);
-  if (error) {
-    if (typeof confirmerRef.value?.focus === 'function') {
-      confirmerRef.value?.focus();
-    }
-
-    return;
-  }
-
-  confirmerEditFlag.value = false;
-  emit('change', { id: taskId.value, confirmerId: value, confirmerName: confirmerMessage.value! });
-};
-
-const toEdiTester = () => {
-  testerEditFlag.value = true;
-  testerIdValue.value = testerId.value;
-
-  nextTick(() => {
-    setTimeout(() => {
-      if (typeof testerRef.value?.focus === 'function') {
-        testerRef.value?.focus();
-      }
-    }, 100);
-  });
-};
-
-const testerChange = async (_event: { target: { value: string; } }, option: { id: string; fullName: string; }) => {
-  testerMessage.value = option.fullName;
-};
-
-const testerBlur = async () => {
-  const value = testerIdValue.value;
-  if (value === testerId.value) {
-    testerEditFlag.value = false;
-    return;
-  }
-
-  emit('loadingChange', true);
-  const [error] = await task.updateTask(taskId.value, { testerId: value });
-  emit('loadingChange', false);
-  if (error) {
-    if (typeof testerRef.value?.focus === 'function') {
-      testerRef.value?.focus();
-    }
-
-    return;
-  }
-
-  testerEditFlag.value = false;
-  emit('change', { id: taskId.value, testerId: value, testerName: testerMessage.value! });
-};
-
-const taskId = computed(() => props.dataSource?.id);
-const createdByName = computed(() => props.dataSource?.createdByName);
-const execByName = computed(() => props.dataSource?.execByName);
-const lastModifiedByName = computed(() => props.dataSource?.lastModifiedByName);
-
-const assigneeId = computed(() => props.dataSource?.assigneeId);
-const assigneeName = computed(() => props.dataSource?.assigneeName);
+/**
+ * Default options for assignee select component
+ * Creates an object with assignee ID as key and user info as value
+ */
 const assigneeDefaultOptions = computed(() => {
-  const id = assigneeId.value;
+  const id = currentAssigneeId.value;
   if (!id) {
     return undefined;
   }
-
   return {
     [id]: {
       id: id,
-      fullName: assigneeName.value
+      fullName: currentAssigneeName.value
     }
   };
 });
 
-const testerId = computed(() => props.dataSource?.testerId);
-const testerName = computed(() => props.dataSource?.testerName);
+/**
+ * Current tester ID from data source
+ */
+const currentTesterId = computed(() => props.dataSource?.testerId);
+
+/**
+ * Current tester name from data source
+ */
+const currentTesterName = computed(() => props.dataSource?.testerName);
+
+/**
+ * Default options for tester select component
+ * Creates an object with tester ID as key and user info as value
+ */
 const testerDefaultOptions = computed(() => {
-  const id = testerId.value;
+  const id = currentTesterId.value;
   if (!id) {
     return undefined;
   }
-
   return {
     [id]: {
       id: id,
-      fullName: testerName.value
+      fullName: currentTesterName.value
     }
   };
 });
 
-const userId = computed(() => {
+/**
+ * Current user ID from user info
+ */
+const currentUserId = computed(() => {
   return props.userInfo?.id;
 });
-const userName = computed(() => {
+
+/**
+ * Current user name from user info
+ */
+const currentUserName = computed(() => {
   return props.userInfo?.fullName;
 });
-const confirmerId = computed(() => props.dataSource?.confirmerId);
-const confirmerName = computed(() => props.dataSource?.confirmerName);
+
+/**
+ * Current confirmer ID from data source
+ */
+const currentConfirmerId = computed(() => props.dataSource?.confirmerId);
+
+/**
+ * Current confirmer name from data source
+ */
+const currentConfirmerName = computed(() => props.dataSource?.confirmerName);
+
+/**
+ * Default options for confirmer select component
+ * Creates an object with confirmer ID as key and user info as value
+ */
 const confirmerDefaultOptions = computed(() => {
-  const id = confirmerId.value;
+  const id = currentConfirmerId.value;
   if (!id) {
     return undefined;
   }
-
   return {
     [id]: {
       id: id,
-      fullName: confirmerName.value
+      fullName: currentConfirmerName.value
     }
   };
 });
+
+/**
+ * Enter assignee editing mode and focus the select
+ */
+const enterAssigneeEditMode = () => {
+  assigneeInputValue.value = currentAssigneeId.value;
+  isAssigneeEditing.value = true;
+
+  nextTick(() => {
+    setTimeout(() => {
+      if (typeof assigneeSelectRef.value?.focus === 'function') {
+        assigneeSelectRef.value?.focus();
+      }
+    }, 100);
+  });
+};
+
+/**
+ * Assign current user to specified role
+ * @param roleKey - Role key to assign ('assigneeId', 'confirmerId', 'testerId')
+ */
+const assignCurrentUserToRole = (roleKey: 'assigneeId' | 'confirmerId' | 'testerId') => {
+  if (roleKey === 'assigneeId') {
+    assigneeInputValue.value = currentUserId.value;
+    assigneeDisplayName.value = currentUserName.value;
+    handleAssigneeSelectionBlur();
+    return;
+  }
+
+  if (roleKey === 'confirmerId') {
+    confirmerInputValue.value = currentUserId.value;
+    confirmerDisplayName.value = currentUserName.value;
+    handleConfirmerSelectionBlur();
+  }
+
+  if (roleKey === 'testerId') {
+    testerInputValue.value = currentUserId.value;
+    testerDisplayName.value = currentUserName.value;
+    handleTesterSelectionBlur();
+  }
+};
+
+/**
+ * Handle assignee selection change and update display name
+ * @param _event - Selection change event
+ * @param option - Selected user option with id and fullName
+ */
+const handleAssigneeSelectionChange = async (_event: { target: { value: string; } }, option: { id: string; fullName: string; }) => {
+  assigneeDisplayName.value = option.fullName;
+};
+
+/**
+ * Handle assignee selection blur and update task assignee
+ */
+const handleAssigneeSelectionBlur = async () => {
+  const selectedValue = assigneeInputValue.value;
+  if (selectedValue === currentAssigneeId.value) {
+    isAssigneeEditing.value = false;
+    return;
+  }
+
+  emit('loadingChange', true);
+  const [error] = await task.editTaskAssignees(currentTaskId.value, { assigneeId: selectedValue || '' });
+  emit('loadingChange', false);
+  if (error) {
+    if (typeof assigneeSelectRef.value?.focus === 'function') {
+      assigneeSelectRef.value?.focus();
+    }
+    return;
+  }
+
+  isAssigneeEditing.value = false;
+  emit('change', { id: currentTaskId.value, assigneeId: selectedValue, assigneeName: assigneeDisplayName.value || '' });
+};
+
+// Confirmer editing methods
+/**
+ * Enter confirmer editing mode and focus the select
+ */
+const enterConfirmerEditMode = () => {
+  confirmerInputValue.value = currentConfirmerId.value;
+  isConfirmerEditing.value = true;
+
+  nextTick(() => {
+    setTimeout(() => {
+      if (typeof confirmerSelectRef.value?.focus === 'function') {
+        confirmerSelectRef.value?.focus();
+      }
+    }, 100);
+  });
+};
+
+/**
+ * Handle confirmer selection change and update display name
+ * @param _event - Selection change event
+ * @param option - Selected user option with id and fullName
+ */
+const handleConfirmerSelectionChange = async (_event: { target: { value: string; } }, option: { id: string; fullName: string; }) => {
+  confirmerDisplayName.value = option.fullName;
+};
+
+/**
+ * Handle confirmer selection blur and update task confirmer
+ */
+const handleConfirmerSelectionBlur = async () => {
+  const selectedValue = confirmerInputValue.value;
+  if (selectedValue === currentConfirmerId.value) {
+    isConfirmerEditing.value = false;
+    return;
+  }
+
+  emit('loadingChange', true);
+  const [error] = await task.editTaskConfirmer(currentTaskId.value, { confirmerId: selectedValue || '' });
+  emit('loadingChange', false);
+  if (error) {
+    if (typeof confirmerSelectRef.value?.focus === 'function') {
+      confirmerSelectRef.value?.focus();
+    }
+    return;
+  }
+
+  isConfirmerEditing.value = false;
+  emit('change', { id: currentTaskId.value, confirmerId: selectedValue, confirmerName: confirmerDisplayName.value || '' });
+};
+
+/**
+ * Enter tester editing mode and focus the select
+ */
+const enterTesterEditMode = () => {
+  isTesterEditing.value = true;
+  testerInputValue.value = currentTesterId.value;
+
+  nextTick(() => {
+    setTimeout(() => {
+      if (typeof testerSelectRef.value?.focus === 'function') {
+        testerSelectRef.value?.focus();
+      }
+    }, 100);
+  });
+};
+
+/**
+ * Handle tester selection change and update display name
+ * @param _event - Selection change event
+ * @param option - Selected user option with id and fullName
+ */
+const handleTesterSelectionChange = async (_event: { target: { value: string; } }, option: { id: string; fullName: string; }) => {
+  testerDisplayName.value = option.fullName;
+};
+
+/**
+ * Handle tester selection blur and update task tester
+ */
+const handleTesterSelectionBlur = async () => {
+  const selectedValue = testerInputValue.value;
+  if (selectedValue === currentTesterId.value) {
+    isTesterEditing.value = false;
+    return;
+  }
+
+  emit('loadingChange', true);
+  const [error] = await task.updateTask(currentTaskId.value, { testerId: selectedValue });
+  emit('loadingChange', false);
+  if (error) {
+    if (typeof testerSelectRef.value?.focus === 'function') {
+      testerSelectRef.value?.focus();
+    }
+    return;
+  }
+
+  isTesterEditing.value = false;
+  emit('change', { id: currentTaskId.value, testerId: selectedValue, testerName: testerDisplayName.value! });
+};
 </script>
 
 <template>
@@ -248,7 +344,7 @@ const confirmerDefaultOptions = computed(() => {
           <Colon class="w-1" />
         </div>
 
-        <div class="whitespace-pre-wrap break-words break-all">{{ createdByName }}</div>
+        <div class="whitespace-pre-wrap break-words break-all">{{ taskCreatedByName }}</div>
       </div>
 
       <div class="flex items-start">
@@ -257,37 +353,37 @@ const confirmerDefaultOptions = computed(() => {
           <Colon class="w-1" />
         </div>
 
-        <div v-show="!assigneeEditFlag" class="flex items-start whitespace-pre-wrap break-words break-all">
-          <div>{{ assigneeName }}</div>
+        <div v-show="!isAssigneeEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
+          <div>{{ currentAssigneeName }}</div>
           <Button
             type="link"
             class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-            @click="toEditAssignee">
+            @click="enterAssigneeEditMode">
             <Icon icon="icon-shuxie" class="text-3.5" />
           </Button>
           <Button
-            v-if="!assigneeId||assigneeId!==userId"
+            v-if="!currentAssigneeId||currentAssigneeId!==currentUserId"
             size="small"
             type="link"
             class="p-0 h-5 leading-5 ml-1"
-            @click="assignToMe('assigneeId')">
+            @click="assignCurrentUserToRole('assigneeId')">
             {{ t('task.detailInfo.personnel.actions.assignToMe') }}
           </Button>
         </div>
 
-        <AsyncComponent :visible="assigneeEditFlag">
+        <AsyncComponent :visible="isAssigneeEditing">
           <SelectUser
-            v-show="assigneeEditFlag"
-            ref="assigneeRef"
-            v-model:value="assigneeIdValue"
+            v-show="isAssigneeEditing"
+            ref="assigneeSelectRef"
+            v-model:value="assigneeInputValue"
             :placeholder="t('task.detailInfo.personnel.placeholders.selectAssignee')"
             allowClear
             :defaultOptions="assigneeDefaultOptions"
             :action="`${TESTER}/project/${props.projectId}/member/user`"
             :maxlength="80"
             class="edit-container"
-            @change="assigneeChange"
-            @blur="assigneeBlur" />
+            @change="handleAssigneeSelectionChange"
+            @blur="handleAssigneeSelectionBlur" />
         </AsyncComponent>
       </div>
 
@@ -297,7 +393,7 @@ const confirmerDefaultOptions = computed(() => {
           <Colon class="w-1" />
         </div>
 
-        <div class="whitespace-pre-wrap break-words break-all">{{ execByName || '--' }}</div>
+        <div class="whitespace-pre-wrap break-words break-all">{{ taskExecByName || '--' }}</div>
       </div>
 
       <div class="flex items-start">
@@ -306,37 +402,37 @@ const confirmerDefaultOptions = computed(() => {
           <Colon class="w-1" />
         </div>
 
-        <div v-show="!confirmerEditFlag" class="flex items-start whitespace-pre-wrap break-words break-all">
-          <div>{{ confirmerName }}</div>
+        <div v-show="!isConfirmerEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
+          <div>{{ currentConfirmerName }}</div>
           <Button
             type="link"
             class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-            @click="toEditConfirmer">
+            @click="enterConfirmerEditMode">
             <Icon icon="icon-shuxie" class="text-3.5" />
           </Button>
           <Button
-            v-if="!confirmerId||confirmerId!==userId"
+            v-if="!currentConfirmerId||currentConfirmerId!==currentUserId"
             size="small"
             type="link"
             class="p-0 h-5 leading-5 ml-1"
-            @click="assignToMe('confirmerId')">
+            @click="assignCurrentUserToRole('confirmerId')">
             {{ t('task.detailInfo.personnel.actions.assignToMe') }}
           </Button>
         </div>
 
-        <AsyncComponent :visible="confirmerEditFlag">
+        <AsyncComponent :visible="isConfirmerEditing">
           <SelectUser
-            v-show="confirmerEditFlag"
-            ref="confirmerRef"
-            v-model:value="confirmerIdValue"
+            v-show="isConfirmerEditing"
+            ref="confirmerSelectRef"
+            v-model:value="confirmerInputValue"
             :placeholder="t('task.detailInfo.personnel.placeholders.selectConfirmer')"
             allowClear
             :defaultOptions="confirmerDefaultOptions"
             :action="`${TESTER}/project/${props.projectId}/member/user`"
             :maxlength="80"
             class="edit-container"
-            @change="confirmerChange"
-            @blur="confirmerBlur" />
+            @change="handleConfirmerSelectionChange"
+            @blur="handleConfirmerSelectionBlur" />
         </AsyncComponent>
       </div>
 
@@ -346,29 +442,29 @@ const confirmerDefaultOptions = computed(() => {
           <Colon class="w-1" />
         </div>
 
-        <div v-show="!testerEditFlag" class="flex items-start whitespace-pre-wrap break-words break-all">
-          <div>{{ testerName }}</div>
+        <div v-show="!isTesterEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
+          <div>{{ currentTesterName }}</div>
           <Button
             type="link"
             class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-            @click="toEdiTester">
+            @click="enterTesterEditMode">
             <Icon icon="icon-shuxie" class="text-3.5" />
           </Button>
           <Button
-            v-if="!testerId||testerId!==userId"
+            v-if="!currentTesterId||currentTesterId!==currentUserId"
             size="small"
             type="link"
             class="p-0 h-5 leading-5 ml-1"
-            @click="assignToMe('testerId')">
+            @click="assignCurrentUserToRole('testerId')">
             {{ t('task.detailInfo.personnel.actions.assignToMe') }}
           </Button>
         </div>
 
-        <AsyncComponent :visible="testerEditFlag">
+        <AsyncComponent :visible="isTesterEditing">
           <SelectUser
-            v-show="testerEditFlag"
-            ref="testerRef"
-            v-model:value="testerIdValue"
+            v-show="isTesterEditing"
+            ref="testerSelectRef"
+            v-model:value="testerInputValue"
             :placeholder="t('task.detailInfo.personnel.placeholders.selectTester')"
             allowClear
             internal
@@ -376,8 +472,8 @@ const confirmerDefaultOptions = computed(() => {
             :action="`${TESTER}/project/${props.projectId}/member/user`"
             :maxlength="80"
             class="left-component"
-            @change="testerChange"
-            @blur="testerBlur" />
+            @change="handleTesterSelectionChange"
+            @blur="handleTesterSelectionBlur" />
         </AsyncComponent>
       </div>
 
@@ -387,7 +483,7 @@ const confirmerDefaultOptions = computed(() => {
           <Colon class="w-1" />
         </div>
 
-        <div class="whitespace-pre-wrap break-words break-all">{{ lastModifiedByName }}</div>
+        <div class="whitespace-pre-wrap break-words break-all">{{ taskLastModifiedByName }}</div>
       </div>
     </div>
   </div>

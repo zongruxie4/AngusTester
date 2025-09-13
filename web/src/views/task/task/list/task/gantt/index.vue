@@ -12,11 +12,13 @@ import { TaskType } from '@/enums/enums';
 
 import { TaskInfo } from '@/views/task/types';
 
-const { t } = useI18n();
-
-type Props = {
+/**
+ * <p>Component props interface for Gantt chart task management</p>
+ * <p>Defines all required properties for the Gantt chart component including project context, filters, and UI state</p>
+ */
+type GanttChartProps = {
   projectId: string;
-  userInfo: { id: string; };
+  userInfo: { id: string; fullName: string; };
   appInfo: { id: string; };
   filters: SearchCriteria[];
   notify: string;
@@ -24,7 +26,21 @@ type Props = {
   loading: boolean;
 };
 
-const props = withDefaults(defineProps<Props>(), {
+type DrawerTabType = 'basic' | 'person' | 'date' | 'comment' | 'activity' | 'tasks' | 'cases' | 'attachments' | 'remarks';
+
+type TaskListRequestParams = {
+  backlog: false;
+  projectId: string;
+  pageNo: number;
+  pageSize: number;
+  moduleId?: string;
+  filters?: SearchCriteria[];
+};
+
+// COMPONENT SETUP
+const { t } = useI18n();
+
+const props = withDefaults(defineProps<GanttChartProps>(), {
   filters: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -33,6 +49,10 @@ const props = withDefaults(defineProps<Props>(), {
   loading: false
 });
 
+/**
+ * <p>Component event emissions for parent-child communication</p>
+ * <p>Handles loading state updates, task changes, and refresh requests</p>
+ */
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'update:loading', value: boolean): void;
@@ -40,6 +60,7 @@ const emit = defineEmits<{
   (event: 'refreshChange'): void;
 }>();
 
+// ASYNC COMPONENTS
 const APIInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/info/Apis.vue'));
 const BasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/info/Basic.vue'));
 const ScenarioInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/info/Scenario.vue'));
@@ -52,15 +73,38 @@ const AssocCases = defineAsyncComponent(() => import('@/views/task/task/list/tas
 const AttachmentInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/info/Attachment.vue'));
 const Remarks = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/Remark.vue'));
 
-const getParams = () => {
-  const params: {
-    backlog: false,
-    projectId: string;
-    pageNo: number;
-    pageSize: number;
-    moduleId?: string;
-    filters?: SearchCriteria[];
-  } = {
+// Task data and Gantt chart references
+const taskList = ref<TaskInfo[]>([]);
+const ganttChartRef = ref<HTMLElement>();
+const ganttChartInstance = ref<Gantt>();
+
+// Selected task and drawer state
+const selectedTaskInfo = ref<TaskInfo>();
+const selectedSprintInfo = ref<{ id: string; name: string; }>();
+const activeDrawerTab = ref<DrawerTabType>('basic');
+
+/**
+ * <p>Gets the ID of the currently selected task</p>
+ * <p>Returns the task ID for conditional rendering and data binding</p>
+ */
+const selectedTaskId = computed(() => {
+  return selectedTaskInfo?.value?.id;
+});
+
+/**
+ * <p>Gets the type of the currently selected task</p>
+ * <p>Returns the task type for determining which detail component to render</p>
+ */
+const selectedTaskType = computed(() => {
+  return selectedTaskInfo?.value?.taskType?.value;
+});
+
+/**
+ * <p>Builds API request parameters for task list fetching</p>
+ * <p>Constructs query parameters including project ID, pagination, filters, and module ID</p>
+ */
+const buildTaskListRequestParams = (): TaskListRequestParams => {
+  const params: TaskListRequestParams = {
     backlog: false,
     projectId: props.projectId,
     pageNo: 1,
@@ -76,216 +120,285 @@ const getParams = () => {
   return params;
 };
 
-const taskList = ref<TaskInfo[]>([]);
-const ganttRef = ref();
-
-const resetData = () => {
-  taskList.value = [];
-  drawerClose();
-};
-
-const ganttView = ref();
-
-const loadData = async () => {
-  const params = getParams();
+/**
+ * <p>Loads detailed task information by ID</p>
+ * <p>Fetches complete task details from the API for a specific task</p>
+ */
+const fetchTaskDetailsById = async (taskId: string): Promise<Partial<TaskInfo>> => {
   emit('update:loading', true);
-  const [error, res] = await task.getTaskList(params);
-  if (error) {
-    resetData();
-    emit('update:loading', false);
-    return;
-  }
-  resetData();
-
-  const { list, total } = (res?.data || { total: 0, list: [] });
-  const len = list.length;
-  const _taskList: TaskInfo[] = [];
-  _taskList.push(...list);
-  if (len < +total) {
-    const pages = Math.ceil((total - len) / params.pageSize);
-    for (let i = 0, len = pages; i < len; i++) {
-      const pageNo = i + 2;
-      const _params = { ...params, pageNo };
-      const [_error, _res] = await task.getTaskList(_params);
-      if (_error) {
-        emit('update:loading', false);
-        return;
-      }
-
-      const { list: _list } = (_res?.data || { total: 0, list: [] });
-      _taskList.push(..._list);
-    }
-  }
+  const [error, res] = await task.getTaskDetail(taskId);
   emit('update:loading', false);
 
-  // 保存原始数据
-  taskList.value = _taskList.map(i => {
-    return {
-      ...i,
-      start: i.startDate || i.createdDate,
-      end: i.completedDate || dayjs().format(DATE_TIME_FORMAT),
-      progress: i.completedDate ? 100 : (+i.progress?.completedRate || 0),
-      description: '',
-      dependencies: i.parentTaskId ? [i.parentTaskId] : []
-    };
-  });
-
-  if (!ganttView.value) {
-    ganttView.value = new Gantt(ganttRef.value, taskList.value, {
-      language: 'zh', // TODO 修改国际化化支持
-      view_mode: 'Day',
-      view_mode_select: true,
-      on_click: (task) => {
-        checkedTaskInfo.value = _taskList.find(i => i.id === task.id);
-      }
-    });
-  } else {
-    ganttView.value.refresh(taskList.value);
-  }
-};
-
-const checkedTaskInfo = ref<TaskInfo>();
-const checkedSprintInfo = ref<{ id: string; name: string; }>();
-const drawerActiveKey = ref<'basic' | 'person' | 'date' | 'comment' | 'activity' | 'tasks' | 'cases' | 'attachments' | 'remarks'>('basic');
-
-const drawerActiveKeyChange = (key: 'basic' | 'person' | 'date' | 'comment' | 'activity' | 'tasks' | 'cases' | 'attachments' | 'remarks') => {
-  drawerActiveKey.value = key;
-};
-
-const drawerClose = () => {
-  checkedTaskInfo.value = undefined;
-  checkedSprintInfo.value = undefined;
-};
-const checkedTaskId = computed(() => {
-  return checkedTaskInfo?.value?.id;
-});
-const checkedTaskType = computed(() => {
-  return checkedTaskInfo?.value?.taskType?.value;
-});
-
-const loadTaskInfoById = async (id: string): Promise<Partial<TaskInfo>> => {
-  emit('update:loading', true);
-  const [error, res] = await task.getTaskDetail(id);
-  emit('update:loading', false);
   if (error || !res?.data) {
-    return { id };
+    return { id: taskId };
   }
   return { ...res.data };
 };
 
-const taskInfoChange = async (data: Partial<TaskInfo>) => {
-  const id = data.id;
-  if (!id) {
+/**
+ * <p>Resets all component data and closes drawer</p>
+ * <p>Clears task list and closes the detail drawer panel</p>
+ */
+const resetComponentData = () => {
+  taskList.value = [];
+  closeDetailDrawer();
+};
+
+/**
+ * <p>Loads all task pages with pagination</p>
+ * <p>Fetches all available tasks across multiple pages to ensure complete data set</p>
+ */
+const loadAllTaskPages = async (baseParams: TaskListRequestParams): Promise<TaskInfo[]> => {
+  const [error, res] = await task.getTaskList(baseParams);
+
+  if (error) {
+    throw error;
+  }
+
+  const { list, total } = (res?.data || { total: 0, list: [] });
+  const firstPageCount = list.length;
+  const allTasks: TaskInfo[] = [];
+  allTasks.push(...list);
+
+  // Load remaining pages if needed
+  if (firstPageCount < +total) {
+    const remainingPages = Math.ceil((total - firstPageCount) / baseParams.pageSize);
+    for (let i = 0, len = remainingPages; i < len; i++) {
+      const pageNo = i + 2;
+      const pageParams = { ...baseParams, pageNo };
+      const [_error, _res] = await task.getTaskList(pageParams);
+
+      if (_error) {
+        throw _error;
+      }
+
+      const { list: pageList } = (_res?.data || { total: 0, list: [] });
+      allTasks.push(...pageList);
+    }
+  }
+
+  return allTasks;
+};
+
+/**
+ * <p>Transforms task data for Gantt chart format</p>
+ * <p>Converts task data to the format required by the Gantt chart library</p>
+ */
+const transformTasksForGanttChart = (tasks: TaskInfo[]): TaskInfo[] => {
+  return tasks.map(task => {
+    return {
+      ...task,
+      start: task.startDate || task.createdDate,
+      end: task.completedDate || dayjs().format(DATE_TIME_FORMAT),
+      progress: task.completedDate ? 100 : (+(task as any).completedRate || 0),
+      description: '',
+      dependencies: task.parentTaskId ? [task.parentTaskId] : []
+    };
+  });
+};
+
+/**
+ * <p>Loads task data and initializes/updates the Gantt chart</p>
+ * <p>Fetches all tasks with pagination, transforms data for Gantt chart format, and renders the chart</p>
+ */
+const loadTaskData = async () => {
+  try {
+    const requestParams = buildTaskListRequestParams();
+    emit('update:loading', true);
+
+    const allTasks = await loadAllTaskPages(requestParams);
+
+    resetComponentData();
+
+    // Transform task data for Gantt chart format
+    const transformedTasks = transformTasksForGanttChart(allTasks);
+    taskList.value = transformedTasks;
+
+    // Initialize or refresh Gantt chart
+    if (!ganttChartInstance.value) {
+      initializeGanttChart(transformedTasks, allTasks);
+    } else {
+      refreshGanttChart(transformedTasks);
+    }
+  } catch (error) {
+    resetComponentData();
+  } finally {
+    emit('update:loading', false);
+  }
+};
+
+/**
+ * <p>Initializes the Gantt chart with task data</p>
+ * <p>Creates a new Gantt chart instance with the provided task data</p>
+ */
+const initializeGanttChart = (transformedTasks: TaskInfo[], originalTasks: TaskInfo[]) => {
+  ganttChartInstance.value = new Gantt(ganttChartRef.value, transformedTasks as any, {
+    language: 'zh', // TODO: Add internationalization support
+    view_mode: 'Day',
+    view_mode_select: true,
+    on_click: (ganttTask) => {
+      selectedTaskInfo.value = originalTasks.find(task => task.id === ganttTask.id);
+    }
+  });
+};
+
+/**
+ * <p>Refreshes the existing Gantt chart with new data</p>
+ * <p>Updates the Gantt chart instance with new task data</p>
+ */
+const refreshGanttChart = (transformedTasks: TaskInfo[]) => {
+  ganttChartInstance.value?.refresh(transformedTasks as any);
+};
+
+/**
+ * <p>Changes the active drawer tab</p>
+ * <p>Updates the currently displayed tab in the detail drawer panel</p>
+ */
+const changeActiveDrawerTab = (tabKey: DrawerTabType) => {
+  activeDrawerTab.value = tabKey;
+};
+
+/**
+ * <p>Closes the detail drawer and clears selected data</p>
+ * <p>Resets selected task and sprint information</p>
+ */
+const closeDetailDrawer = () => {
+  selectedTaskInfo.value = undefined;
+  selectedSprintInfo.value = undefined;
+};
+
+/**
+ * <p>Handles task information changes and updates local state</p>
+ * <p>Refreshes task details and updates both selected task and task list</p>
+ */
+const handleTaskInfoChange = async (data: Partial<TaskInfo>) => {
+  const taskId = data.id;
+  if (!taskId) {
     return;
   }
 
-  const _taskInfo = await loadTaskInfoById(id);
-  if (checkedTaskInfo.value) {
-    checkedTaskInfo.value = { ...checkedTaskInfo.value, ..._taskInfo };
+  const updatedTaskInfo = await fetchTaskDetailsById(taskId);
+
+  // Update selected task if it matches
+  if (selectedTaskInfo.value) {
+    selectedTaskInfo.value = { ...selectedTaskInfo.value, ...updatedTaskInfo };
   }
 
-  const list = taskList.value;
-  for (let i = 0, len = list.length; i < len; i++) {
-    if (list[i].id === id) {
-      list[i] = _taskInfo;
+  // Update task in the list
+  const currentTaskList = taskList.value;
+  for (let i = 0, len = currentTaskList.length; i < len; i++) {
+    if (currentTaskList[i].id === taskId) {
+      currentTaskList[i] = { ...currentTaskList[i], ...updatedTaskInfo } as TaskInfo;
       break;
     }
   }
 };
 
-const loadingChange = (value: boolean) => {
-  emit('update:loading', value);
+/**
+ * <p>Handles loading state changes</p>
+ * <p>Forwards loading state updates to parent component</p>
+ */
+const handleLoadingStateChange = (isLoading: boolean) => {
+  emit('update:loading', isLoading);
 };
 
+// LIFECYCLE AND WATCHERS
 onMounted(() => {
-  watch(() => props.projectId, (newValue) => {
-    if (!newValue) {
+  /**
+   * <p>Watches for project ID changes to reload data</p>
+   * <p>Triggers data loading when project context changes</p>
+   */
+  watch(() => props.projectId, (newProjectId) => {
+    if (!newProjectId) {
       return;
     }
 
-    loadData();
+    loadTaskData();
   }, { immediate: true });
 
+  /**
+   * <p>Watches for filter and module changes to reload data</p>
+   * <p>Refreshes task data when search criteria or module context changes</p>
+   */
   watch([() => props.filters, () => props.moduleId], () => {
-    loadData();
+    loadTaskData();
   });
 });
-
 </script>
 <template>
   <div class="flex border-t flex-1 h-150">
-    <div ref="ganttRef" class="flex-1 min-w-0 h-full overflow-auto"></div>
-    <div class="drawer-container flex items-start" :class="{ 'drawer-open': !!checkedTaskId }">
+    <div ref="ganttChartRef" class="flex-1 min-w-0 h-full overflow-auto"></div>
+    <div class="drawer-container flex items-start" :class="{ 'drawer-open': !!selectedTaskId }">
       <div class="flex-shrink-0 h-full w-9 space-y-1 overflow-y-auto scroll-smooth drawer-action-container">
         <div
-          :class="{ 'drawer-active-item': drawerActiveKey === 'basic' }"
+          :class="{ 'drawer-active-item': activeDrawerTab === 'basic' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
           :title="t('task.ganttView.drawer.basicInfo')"
-          @click="drawerActiveKeyChange('basic')">
+          @click="changeActiveDrawerTab('basic')">
           <Icon icon="icon-wendangxinxi" class="text-4" />
         </div>
 
         <div
-          :class="{ 'drawer-active-item': drawerActiveKey === 'person' }"
+          :class="{ 'drawer-active-item': activeDrawerTab === 'person' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
           :title="t('task.ganttView.drawer.personnel')"
-          @click="drawerActiveKeyChange('person')">
+          @click="changeActiveDrawerTab('person')">
           <Icon icon="icon-quanburenyuan" class="text-4" />
         </div>
 
         <div
-          :class="{ 'drawer-active-item': drawerActiveKey === 'date' }"
+          :class="{ 'drawer-active-item': activeDrawerTab === 'date' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
           :title="t('task.ganttView.drawer.date')"
-          @click="drawerActiveKeyChange('date')">
+          @click="changeActiveDrawerTab('date')">
           <Icon icon="icon-riqi" class="text-4" />
         </div>
 
         <div
-          :class="{ 'drawer-active-item': drawerActiveKey === 'tasks' }"
+          :class="{ 'drawer-active-item': activeDrawerTab === 'tasks' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
           :title="t('task.ganttView.drawer.assocTasks')"
-          @click="drawerActiveKeyChange('tasks')">
+          @click="changeActiveDrawerTab('tasks')">
           <Icon icon="icon-ceshirenwu" class="text-4" />
         </div>
 
         <div
-          :class="{ 'drawer-active-item': drawerActiveKey === 'cases' }"
+          :class="{ 'drawer-active-item': activeDrawerTab === 'cases' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
           :title="t('task.ganttView.drawer.assocCases')"
-          @click="drawerActiveKeyChange('cases')">
+          @click="changeActiveDrawerTab('cases')">
           <Icon icon="icon-ceshiyongli1" class="text-4" />
         </div>
 
         <div
-          :class="{ 'drawer-active-item': drawerActiveKey === 'attachments' }"
+          :class="{ 'drawer-active-item': activeDrawerTab === 'attachments' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
           :title="t('task.ganttView.drawer.attachments')"
-          @click="drawerActiveKeyChange('attachments')">
+          @click="changeActiveDrawerTab('attachments')">
           <Icon icon="icon-lianjie1" class="text-4" />
         </div>
 
         <div
-          :class="{ 'drawer-active-item': drawerActiveKey === 'remarks' }"
+          :class="{ 'drawer-active-item': activeDrawerTab === 'remarks' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
           :title="t('task.ganttView.drawer.remarks')"
-          @click="drawerActiveKeyChange('remarks')">
+          @click="changeActiveDrawerTab('remarks')">
           <Icon icon="icon-shuxie" class="text-4" />
         </div>
 
         <div
-          :class="{ 'drawer-active-item': drawerActiveKey === 'comment' }"
+          :class="{ 'drawer-active-item': activeDrawerTab === 'comment' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
           :title="t('task.ganttView.drawer.comments')"
-          @click="drawerActiveKeyChange('comment')">
+          @click="changeActiveDrawerTab('comment')">
           <Icon icon="icon-pinglun" class="text-4" />
         </div>
 
         <div
-          :class="{ 'drawer-active-item': drawerActiveKey === 'activity' }"
+          :class="{ 'drawer-active-item': activeDrawerTab === 'activity' }"
           class="action-item cursor-pointer w-full h-8 flex items-center justify-center"
           :title="t('task.ganttView.drawer.activity')"
-          @click="drawerActiveKeyChange('activity')">
+          @click="changeActiveDrawerTab('activity')">
           <Icon icon="icon-chakanhuodong" class="text-4" />
         </div>
       </div>
@@ -294,127 +407,127 @@ onMounted(() => {
         <div class="flex items-center justify-between mt-4 pl-5 space-x-2.5">
           <div class="flex-1 flex items-center truncate">
             <RouterLink
-              :to="`/task#sprint?id=${checkedSprintInfo?.id}`"
-              :title="checkedSprintInfo?.name"
+              :to="`/task#sprint?id=${selectedSprintInfo?.id}`"
+              :title="selectedSprintInfo?.name"
               class="truncate"
               style="max-width: 50%;">
-              {{ checkedSprintInfo?.name }}
+              {{ selectedSprintInfo?.name }}
             </RouterLink>
             <div class="mx-1.5">/</div>
             <RouterLink
-              :to="`/task#task?id=${checkedTaskInfo?.id}`"
+              :to="`/task#task?id=${selectedTaskInfo?.id}`"
               class="truncate flex-1"
-              :title="checkedTaskInfo?.name">
-              {{ checkedTaskInfo?.name }}
+              :title="selectedTaskInfo?.name">
+              {{ selectedTaskInfo?.name }}
             </RouterLink>
           </div>
           <Button
             type="default"
             size="small"
             class="p-0 h-3.5 leading-3.5 border-none"
-            @click="drawerClose">
+            @click="closeDetailDrawer">
             <Icon icon="icon-shanchuguanbi" class="text-3.5 cursor-pointer" />
           </Button>
         </div>
 
         <div style="height: calc(100% - 36px);" class="pt-3.5 overflow-hidden">
-          <AsyncComponent :visible="!!checkedTaskId">
+          <AsyncComponent :visible="!!selectedTaskId">
             <APIInfo
-              v-if="checkedTaskType === TaskType.API_TEST"
-              v-show="drawerActiveKey === 'basic'"
+              v-if="selectedTaskType === TaskType.API_TEST"
+              v-show="activeDrawerTab === 'basic'"
               :projectId="props.projectId"
               :appInfo="props.appInfo"
               :userInfo="props.userInfo"
-              :dataSource="checkedTaskInfo"
-              @change="taskInfoChange"
-              @loadingChange="loadingChange" />
+              :dataSource="selectedTaskInfo"
+              @change="handleTaskInfoChange as any"
+              @loadingChange="handleLoadingStateChange" />
 
             <ScenarioInfo
-              v-else-if="checkedTaskType === TaskType.SCENARIO_TEST"
-              v-show="drawerActiveKey === 'basic'"
+              v-else-if="selectedTaskType === TaskType.SCENARIO_TEST"
+              v-show="activeDrawerTab === 'basic'"
               :projectId="props.projectId"
               :appInfo="props.appInfo"
               :userInfo="props.userInfo"
-              :dataSource="checkedTaskInfo"
-              @change="taskInfoChange"
-              @loadingChange="loadingChange" />
+              :dataSource="selectedTaskInfo"
+              @change="handleTaskInfoChange as any"
+              @loadingChange="handleLoadingStateChange" />
 
             <BasicInfo
               v-else
-              v-show="drawerActiveKey === 'basic'"
+              v-show="activeDrawerTab === 'basic'"
               :projectId="props.projectId"
               :appInfo="props.appInfo"
               :userInfo="props.userInfo"
-              :dataSource="checkedTaskInfo"
-              @change="taskInfoChange"
-              @loadingChange="loadingChange" />
+              :dataSource="selectedTaskInfo"
+              @change="handleTaskInfoChange as any"
+              @loadingChange="handleLoadingStateChange" />
 
             <PersonnelInfo
-              v-show="drawerActiveKey === 'person'"
+              v-show="activeDrawerTab === 'person'"
               :projectId="props.projectId"
               :appInfo="props.appInfo"
               :userInfo="props.userInfo"
-              :dataSource="checkedTaskInfo"
-              @change="taskInfoChange"
-              @loadingChange="loadingChange" />
+              :dataSource="selectedTaskInfo"
+              @change="handleTaskInfoChange as any"
+              @loadingChange="handleLoadingStateChange" />
 
             <DateInfo
-              v-show="drawerActiveKey === 'date'"
+              v-show="activeDrawerTab === 'date'"
               :projectId="props.projectId"
               :appInfo="props.appInfo"
               :userInfo="props.userInfo"
-              :dataSource="checkedTaskInfo"
-              @change="taskInfoChange"
-              @loadingChange="loadingChange" />
+              :dataSource="selectedTaskInfo"
+              @change="handleTaskInfoChange as any"
+              @loadingChange="handleLoadingStateChange" />
 
             <AssocTasks
-              v-show="drawerActiveKey === 'tasks'"
+              v-show="activeDrawerTab === 'tasks'"
               :projectId="props.projectId"
               :appInfo="props.appInfo"
               :userInfo="props.userInfo"
-              :dataSource="checkedTaskInfo"
-              @change="taskInfoChange"
-              @loadingChange="loadingChange" />
+              :dataSource="selectedTaskInfo"
+              @change="handleTaskInfoChange as any"
+              @loadingChange="handleLoadingStateChange" />
 
             <AssocCases
-              v-show="drawerActiveKey === 'cases'"
+              v-show="activeDrawerTab === 'cases'"
               :projectId="props.projectId"
               :appInfo="props.appInfo"
               :userInfo="props.userInfo"
-              :dataSource="checkedTaskInfo"
-              @change="taskInfoChange"
-              @loadingChange="loadingChange" />
+              :dataSource="selectedTaskInfo"
+              @change="handleTaskInfoChange as any"
+              @loadingChange="handleLoadingStateChange" />
 
             <AttachmentInfo
-              v-show="drawerActiveKey === 'attachments'"
+              v-show="activeDrawerTab === 'attachments'"
               :projectId="props.projectId"
               :appInfo="props.appInfo"
               :userInfo="props.userInfo"
-              :dataSource="checkedTaskInfo"
-              @change="taskInfoChange"
-              @loadingChange="loadingChange" />
+              :dataSource="selectedTaskInfo"
+              @change="handleTaskInfoChange as any"
+              @loadingChange="handleLoadingStateChange" />
 
             <Comment
-              v-show="drawerActiveKey === 'comment'"
+              v-show="activeDrawerTab === 'comment'"
               :projectId="props.projectId"
               :appInfo="props.appInfo"
               :userInfo="props.userInfo"
-              :dataSource="checkedTaskInfo"
-              @change="taskInfoChange"
-              @loadingChange="loadingChange" />
+              :dataSource="selectedTaskInfo"
+              @change="handleTaskInfoChange as any"
+              @loadingChange="handleLoadingStateChange" />
 
             <Activity
-              v-show="drawerActiveKey === 'activity'"
+              v-show="activeDrawerTab === 'activity'"
               :projectId="props.projectId"
               :appInfo="props.appInfo"
               :userInfo="props.userInfo"
-              :dataSource="checkedTaskInfo"
-              @change="taskInfoChange"
-              @loadingChange="loadingChange" />
+              :dataSource="selectedTaskInfo"
+              @change="handleTaskInfoChange as any"
+              @loadingChange="handleLoadingStateChange" />
 
             <Remarks
-              v-show="drawerActiveKey === 'remarks'"
-              :id="checkedTaskInfo?.id"
+              v-show="activeDrawerTab === 'remarks'"
+              :id="selectedTaskInfo?.id || ''"
               :projectId="props.projectId"
               :appInfo="props.appInfo"
               :userInfo="props.userInfo" />

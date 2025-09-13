@@ -9,10 +9,7 @@ import { TaskStatus } from '@/enums/enums';
 import { TaskInfo } from '@/views/task/types';
 import { ActionMenuItem } from '@/views/task/task/types';
 
-/**
- * <p>Component props interface for task list management</p>
- * <p>Defines all required properties for the task list component including project context, data sources, and UI state</p>
- */
+// Component props interface for task list management
 type Props = {
   projectId: string;
   userInfo: { id: string; };

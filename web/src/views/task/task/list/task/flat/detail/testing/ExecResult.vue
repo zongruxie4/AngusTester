@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 
 import { TaskInfo } from '@/views/task/types';
 
+// Component Props
 type Props = {
   dataSource: TaskInfo;
   largePageLayout: boolean;
@@ -15,27 +16,69 @@ const props = withDefaults(defineProps<Props>(), {
   largePageLayout: undefined
 });
 
+// Composables
 const { t } = useI18n();
 
-const execResult = computed(() => props.dataSource?.execResult);
-const execId = computed(() => props.dataSource?.execId);
-const execName = computed(() => props.dataSource?.execName);
-const execByName = computed(() => props.dataSource?.execByName);
-const execDate = computed(() => props.dataSource?.execDate);
-const scriptId = computed(() => props.dataSource?.scriptId);
-const scriptName = computed(() => props.dataSource?.scriptName);
-
-const showContent = computed(() => {
-  return execResult.value || execId.value || execName.value || execByName.value || execDate.value || scriptId.value || scriptName.value;
-});
-
-const RESULT_COLOR: {
+/**
+ * Color mapping for execution result status indicators
+ */
+const EXECUTION_RESULT_COLORS: {
   SUCCESS: string;
   FAILED: string;
 } = {
   SUCCESS: '#52C41A',
   FAILED: '#F5222D'
 };
+
+/**
+ * Extracts execution result information from task data
+ */
+const executionResult = computed(() => props.dataSource?.execResult);
+
+/**
+ * Extracts execution ID from task data
+ */
+const executionId = computed(() => props.dataSource?.execId);
+
+/**
+ * Extracts execution name from task data
+ */
+const executionName = computed(() => props.dataSource?.execName);
+
+/**
+ * Extracts executor name from task data
+ */
+const executorName = computed(() => props.dataSource?.execByName);
+
+/**
+ * Extracts last execution date from task data
+ */
+const lastExecutionDate = computed(() => props.dataSource?.execDate);
+
+/**
+ * Extracts script ID from task data
+ */
+const scriptId = computed(() => props.dataSource?.scriptId);
+
+/**
+ * Extracts script name from task data
+ */
+const scriptName = computed(() => props.dataSource?.scriptName);
+
+/**
+ * Determines whether to show content based on available data
+ * <p>
+ * Returns true if any execution-related data is available
+ */
+const shouldShowContent = computed(() => {
+  return executionResult.value ||
+         executionId.value ||
+         executionName.value ||
+         executorName.value ||
+         lastExecutionDate.value ||
+         scriptId.value ||
+         scriptName.value;
+});
 </script>
 
 <template>
@@ -45,7 +88,9 @@ const RESULT_COLOR: {
     </template>
 
     <template #default>
-      <div v-if="showContent && !props.largePageLayout" class="text-3 leading-5 space-y-2.5 pt-2 pl-5.5">
+      <!-- Standard Layout: Two columns -->
+      <div v-if="shouldShowContent && !props.largePageLayout" class="text-3 leading-5 space-y-2.5 pt-2 pl-5.5">
+        <!-- Execution Result and ID Row -->
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
@@ -55,9 +100,9 @@ const RESULT_COLOR: {
 
             <div class="flex items-center">
               <em
-                :style="'background-color:' + RESULT_COLOR[execResult?.value]"
+                :style="'background-color:' + EXECUTION_RESULT_COLORS[executionResult?.value]"
                 class="block not-italic w-1.5 h-1.5 mr-1 rounded flex-shrink-0"></em>
-              <span class="truncate">{{ execResult?.message }}</span>
+              <span class="truncate">{{ executionResult?.message }}</span>
             </div>
           </div>
 
@@ -67,10 +112,11 @@ const RESULT_COLOR: {
               <Colon class="w-1" />
             </div>
 
-            <div class="whitespace-pre-wrap break-words break-all">{{ execId }}</div>
+            <div class="whitespace-pre-wrap break-words break-all">{{ executionId }}</div>
           </div>
         </div>
 
+        <!-- Execution Name and Executor Name Row -->
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
@@ -80,14 +126,14 @@ const RESULT_COLOR: {
 
             <div class="whitespace-pre-wrap break-words break-all">
               <RouterLink
-                v-if="execId"
-                :to="`/execution/info/${execId}`"
+                v-if="executionId"
+                :to="`/execution/info/${executionId}`"
                 target="_blank"
                 class="text-text-link hover:text-text-link-hover cursor-pointer break-all">
-                {{ execName }}
+                {{ executionName }}
               </RouterLink>
               <template v-else>
-                {{ execName }}
+                {{ executionName }}
               </template>
             </div>
           </div>
@@ -98,10 +144,11 @@ const RESULT_COLOR: {
               <Colon class="w-1" />
             </div>
 
-            <div class="whitespace-pre-wrap break-words break-all">{{ execByName }}</div>
+            <div class="whitespace-pre-wrap break-words break-all">{{ executorName }}</div>
           </div>
         </div>
 
+        <!-- Script ID and Script Name Row -->
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
@@ -133,6 +180,7 @@ const RESULT_COLOR: {
           </div>
         </div>
 
+        <!-- Last Execution Time Row -->
         <div class="flex items-start space-x-5">
           <div class="relative w-1/2 flex items-start">
             <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
@@ -140,12 +188,14 @@ const RESULT_COLOR: {
               <Colon class="w-1" />
             </div>
 
-            <div class="whitespace-pre-wrap break-words break-all">{{ execDate }}</div>
+            <div class="whitespace-pre-wrap break-words break-all">{{ lastExecutionDate }}</div>
           </div>
         </div>
       </div>
 
-      <div v-else-if="showContent && props.largePageLayout" class="text-3 leading-5 space-y-2.5 pt-2 pl-5.5">
+      <!-- Large Page Layout: Three columns -->
+      <div v-else-if="shouldShowContent && props.largePageLayout" class="text-3 leading-5 space-y-2.5 pt-2 pl-5.5">
+        <!-- First Row: Execution Result, ID, and Name -->
         <div class="flex items-start space-x-5">
           <div class="relative w-1/3 flex items-start">
             <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
@@ -155,9 +205,9 @@ const RESULT_COLOR: {
 
             <div class="flex items-center">
               <em
-                :style="'background-color:' + RESULT_COLOR[execResult?.value]"
+                :style="'background-color:' + EXECUTION_RESULT_COLORS[executionResult?.value]"
                 class="block not-italic w-1.5 h-1.5 mr-1 rounded flex-shrink-0"></em>
-              <span class="truncate">{{ execResult?.message }}</span>
+              <span class="truncate">{{ executionResult?.message }}</span>
             </div>
           </div>
 
@@ -167,7 +217,7 @@ const RESULT_COLOR: {
               <Colon class="w-1" />
             </div>
 
-            <div class="whitespace-pre-wrap break-words break-all">{{ execId }}</div>
+            <div class="whitespace-pre-wrap break-words break-all">{{ executionId }}</div>
           </div>
 
           <div class="relative w-1/3 flex items-start">
@@ -178,19 +228,20 @@ const RESULT_COLOR: {
 
             <div class="whitespace-pre-wrap break-words break-all">
               <RouterLink
-                v-if="execId"
-                :to="`/execution/info/${execId}`"
+                v-if="executionId"
+                :to="`/execution/info/${executionId}`"
                 target="_blank"
                 class="text-text-link hover:text-text-link-hover cursor-pointer break-all">
-                {{ execName }}
+                {{ executionName }}
               </RouterLink>
               <template v-else>
-                {{ execName }}
+                {{ executionName }}
               </template>
             </div>
           </div>
         </div>
 
+        <!-- Second Row: Executor Name, Script ID, and Script Name -->
         <div class="flex items-start space-x-5">
           <div class="relative w-1/3 flex items-start">
             <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
@@ -198,7 +249,7 @@ const RESULT_COLOR: {
               <Colon class="w-1" />
             </div>
 
-            <div class="whitespace-pre-wrap break-words break-all">{{ execByName }}</div>
+            <div class="whitespace-pre-wrap break-words break-all">{{ executorName }}</div>
           </div>
 
           <div class="relative w-1/3 flex items-start">
@@ -231,6 +282,7 @@ const RESULT_COLOR: {
           </div>
         </div>
 
+        <!-- Third Row: Last Execution Time -->
         <div class="flex items-start space-x-5">
           <div class="relative w-1/3 flex items-start">
             <div class="w-21.5 flex items-center whitespace-nowrap flex-shrink-0">
@@ -238,7 +290,7 @@ const RESULT_COLOR: {
               <Colon class="w-1" />
             </div>
 
-            <div class="whitespace-pre-wrap break-words break-all">{{ execDate }}</div>
+            <div class="whitespace-pre-wrap break-words break-all">{{ lastExecutionDate }}</div>
           </div>
         </div>
       </div>
@@ -252,6 +304,7 @@ const RESULT_COLOR: {
 </template>
 
 <style scoped>
+/* Layout width calculations for responsive design */
 .w-1\/2 {
   width: calc((100% - 20px)/2);
 }

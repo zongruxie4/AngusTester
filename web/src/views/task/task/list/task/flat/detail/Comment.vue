@@ -3,9 +3,18 @@ import { onMounted, ref, watch } from 'vue';
 import { SmartComment } from '@xcan-angus/vue-ui';
 import { CombinedTargetType, TESTER } from '@xcan-angus/infra';
 
+/**
+ * Props interface for Comment component
+ * <p>
+ * Defines the required properties for displaying and managing
+ * comments related to a specific task or entity.
+ */
 type Props = {
+  /** Unique identifier of the target entity */
   id: string;
+  /** Notification trigger for refreshing comment data */
   notify: string;
+  /** User information object containing user ID */
   userInfo: { id: string; };
 }
 
@@ -15,23 +24,36 @@ const props = withDefaults(defineProps<Props>(), {
   userInfo: undefined
 });
 
-const commentRef = ref();
+/**
+ * Reference to the SmartComment component instance
+ * <p>
+ * Used to programmatically control the comment component
+ * and trigger data refresh operations
+ */
+const smartCommentRef = ref();
 
+/**
+ * Component mounted lifecycle hook
+ * <p>
+ * Sets up a watcher to monitor notification changes and refresh
+ * the comment data when notifications are received
+ */
 onMounted(() => {
-  watch(() => props.notify, async (newValue) => {
-    if (!newValue) {
+  watch(() => props.notify, async (notificationValue) => {
+    if (!notificationValue) {
       return;
     }
 
-    if (typeof commentRef.value?.refresh === 'function') {
-      commentRef.value.refresh();
+    if (typeof smartCommentRef.value?.refresh === 'function') {
+      smartCommentRef.value.refresh();
     }
   }, { immediate: true });
 });
 </script>
 <template>
+  <!-- Smart comment component for task comments -->
   <SmartComment
-    ref="commentRef"
+    ref="smartCommentRef"
     class="h-full overflow-y-auto pr-5"
     style="box-shadow: 0;"
     avatar

@@ -6,6 +6,7 @@ import { task } from '@/api/tester';
 import { TaskInfo } from '@/views/task/types';
 import { TestInfo } from '@/views/execution/types';
 
+// Component Props
 type Props = {
   projectId: string;
   userInfo: { id: string; };
@@ -24,44 +25,77 @@ const props = withDefaults(defineProps<Props>(), {
   loading: false
 });
 
+/**
+ * Lazy-loaded component for displaying execution results
+ */
 const ExecutionResult = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/detail/testing/ExecResult.vue'));
+
+/**
+ * Lazy-loaded component for displaying test results
+ */
 const TestResult = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/detail/testing/TestResult.vue'));
 
-const loading = ref(false);
-const testInfo = ref<TestInfo>();
+/**
+ * Loading state for data fetching operations
+ */
+const isLoadingData = ref(false);
 
-const loadData = async () => {
+/**
+ * Stores the test information data
+ */
+const testResultData = ref<TestInfo>();
+
+/**
+ * Loads task result data from the API
+ * <p>
+ * Fetches test results based on task type, target ID, and test type
+ * <p>
+ * Updates loading state and stores the result data
+ */
+const loadTaskResultData = async () => {
   const { taskType, testType, targetId } = props.dataSource;
-  loading.value = true;
-  const [error, res] = await task.getTaskResult(taskType?.value, targetId, testType?.value);
-  loading.value = false;
+  isLoadingData.value = true;
+
+  const [error, response] = await task.getTaskResult(taskType?.value, targetId, testType?.value);
+  isLoadingData.value = false;
+
   if (error) {
     return;
   }
 
-  testInfo.value = res?.data;
+  testResultData.value = response?.data;
 };
 
+// Lifecycle Hooks
 onMounted(() => {
-  watch(() => props.dataSource, (newValue) => {
-    if (!newValue) {
+  /**
+   * Watches for changes in dataSource and loads task result data
+   * <p>
+   * Triggers data loading when task data changes
+   */
+  watch(() => props.dataSource, (newTaskData) => {
+    if (!newTaskData) {
       return;
     }
 
-    loadData();
+    loadTaskResultData();
   }, { immediate: true });
 });
 </script>
 
 <template>
-  <Spin :spinning="loading" class="h-full pr-5 overflow-auto">
+  <!-- Main container with loading spinner -->
+  <Spin :spinning="isLoadingData" class="h-full pr-5 overflow-auto">
+    <!-- Execution Result Component -->
     <ExecutionResult
       class="mb-4"
       :dataSource="props.dataSource"
       :largePageLayout="props.largePageLayout" />
+
+    <!-- Test Result Component -->
     <TestResult
       :dataSource="props.dataSource"
-      :testInfo="testInfo"
+      :testInfo="testResultData"
       :largePageLayout="props.largePageLayout" />
   </Spin>
 </template>

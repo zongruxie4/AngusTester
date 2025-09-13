@@ -2,15 +2,7 @@
 import { computed, nextTick, ref } from 'vue';
 import { Button, Tag } from 'ant-design-vue';
 import {
-  AsyncComponent,
-  Colon,
-  Icon,
-  IconTask,
-  Input,
-  Select,
-  TaskPriority,
-  TaskStatus,
-  Toggle
+  AsyncComponent, Colon, Icon, IconTask, Input, Select, TaskPriority, TaskStatus, Toggle
 } from '@xcan-angus/vue-ui';
 import { enumUtils, EvalWorkloadMethod, TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
@@ -22,6 +14,7 @@ import { TaskInfo } from '@/views/task/types';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
+// Component props and emits
 const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -38,342 +31,456 @@ const emit = defineEmits<{
   (event: 'change', value: Partial<TaskInfo>): void;
 }>();
 
-const nameRef = ref();
-const nameEditFlag = ref(false);
-const taskName = ref<string>();
+// Task name editing state
+const taskNameInputRef = ref();
+const isTaskNameEditing = ref(false);
+const taskNameInputValue = ref<string>();
 
-const evalWorkloadRef = ref();
-const evalWorkloadEditFlag = ref(false);
-const evalWorkloadValue = ref<string>();
+// Evaluation workload editing state
+const evalWorkloadInputRef = ref();
+const isEvalWorkloadEditing = ref(false);
+const evalWorkloadInputValue = ref<string>();
 
-const actualWorkloadRef = ref();
-const actualWorkloadEditFlag = ref(false);
-const actualWorkloadValue = ref<string>();
+// Actual workload editing state
+const actualWorkloadInputRef = ref();
+const isActualWorkloadEditing = ref(false);
+const actualWorkloadInputValue = ref<string>();
 
-const taskTypeRef = ref();
-const taskTypeEditFlag = ref(false);
-const taskTypeMessage = ref<string>();
-const taskTypeValue = ref<TaskInfo['taskType']['value']>();
+// Task type editing state
+const taskTypeSelectRef = ref();
+const isTaskTypeEditing = ref(false);
+const taskTypeSelectMessage = ref<string>();
+const taskTypeSelectValue = ref<TaskInfo['taskType']['value']>();
 
-const priorityRef = ref();
-const priorityEditFlag = ref(false);
-const priorityMessage = ref<string>();
-const priorityValue = ref<TaskInfo['priority']['value']>();
+// Priority editing state
+const prioritySelectRef = ref();
+const isPriorityEditing = ref(false);
+const prioritySelectMessage = ref<string>();
+const prioritySelectValue = ref<TaskInfo['priority']['value']>();
 
-const tagRef = ref();
-const tagEditFlag = ref(false);
-const tagList = ref<{id:string;name:string;}[]>([]);
-const tagIdList = ref<string[]>([]);
+// Tag editing state
+const tagSelectRef = ref();
+const isTagEditing = ref(false);
+const selectedTagList = ref<{id: string; name: string;}[]>([]);
+const selectedTagIdList = ref<string[]>([]);
 
-const versionRef = ref();
-const versionEditFlag = ref(false);
-const versionValue = ref<string>();
+// Software version editing state
+const versionSelectRef = ref();
+const isVersionEditing = ref(false);
+const versionSelectValue = ref<string>();
 
-const toEditName = () => {
-  taskName.value = name.value;
-  nameEditFlag.value = true;
+// Task name editing methods
+/**
+ * <p>Initiates task name editing mode by setting the input value and enabling edit flag.</p>
+ * <p>Focuses the input field after a short delay to ensure proper rendering.</p>
+ */
+const startTaskNameEditing = () => {
+  taskNameInputValue.value = currentTaskName.value;
+  isTaskNameEditing.value = true;
 
   nextTick(() => {
     setTimeout(() => {
-      if (typeof nameRef.value?.focus === 'function') {
-        nameRef.value?.focus();
+      if (typeof taskNameInputRef.value?.focus === 'function') {
+        taskNameInputRef.value?.focus();
       }
     }, 100);
   });
 };
 
-const nameBlur = async (event: { target: { value: string; } }) => {
-  const value = event.target.value;
-  if (!value || value === name.value) {
-    nameEditFlag.value = false;
+/**
+ * <p>Handles task name input blur event to save changes or cancel editing.</p>
+ * <p>Validates input value and calls API to update task name if value has changed.</p>
+ * @param event - Input blur event containing the new value
+ */
+const handleTaskNameBlur = async (event: FocusEvent) => {
+  const target = event.target as HTMLInputElement;
+  const newValue = target?.value;
+  if (!newValue || newValue === currentTaskName.value) {
+    isTaskNameEditing.value = false;
     return;
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTaskName(taskId.value, value);
+  const [error] = await task.editTaskName(currentTaskId.value, newValue);
   emit('loadingChange', false);
-  nameEditFlag.value = false;
+  isTaskNameEditing.value = false;
   if (error) {
     return;
   }
 
-  emit('change', { id: taskId.value, name: value });
+  emit('change', { id: currentTaskId.value, name: newValue });
 };
 
-const namePressEnter = () => {
-  if (typeof nameRef.value?.blur === 'function') {
-    nameRef.value.blur();
+/**
+ * <p>Handles Enter key press on task name input to trigger blur event.</p>
+ */
+const handleTaskNameEnter = () => {
+  if (typeof taskNameInputRef.value?.blur === 'function') {
+    taskNameInputRef.value.blur();
   }
 };
 
-const toEditActualWorkload = () => {
-  actualWorkloadValue.value = actualWorkload.value;
-  actualWorkloadEditFlag.value = true;
+// Actual workload editing methods
+/**
+ * <p>Initiates actual workload editing mode by setting the input value and enabling edit flag.</p>
+ * <p>Focuses the input field after a short delay to ensure proper rendering.</p>
+ */
+const startActualWorkloadEditing = () => {
+  actualWorkloadInputValue.value = currentActualWorkload.value;
+  isActualWorkloadEditing.value = true;
 
   nextTick(() => {
     setTimeout(() => {
-      if (typeof actualWorkloadRef.value?.focus === 'function') {
-        actualWorkloadRef.value?.focus();
+      if (typeof actualWorkloadInputRef.value?.focus === 'function') {
+        actualWorkloadInputRef.value?.focus();
       }
     }, 100);
   });
 };
 
-const actualWorkloadBlur = async (event: { target: { value: string; } }) => {
-  const value = event.target.value;
-  if (value === actualWorkload.value) {
-    actualWorkloadEditFlag.value = false;
+/**
+ * <p>Handles actual workload input blur event to save changes or cancel editing.</p>
+ * <p>Validates input value and calls API to update actual workload if value has changed.</p>
+ * @param event - Input blur event containing the new value
+ */
+const handleActualWorkloadBlur = async (event: FocusEvent) => {
+  const target = event.target as HTMLInputElement;
+  const newValue = target?.value;
+  if (newValue === currentActualWorkload.value) {
+    isActualWorkloadEditing.value = false;
     return;
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editActualWorkload(taskId.value, { workload: value });
+  const [error] = await task.editActualWorkload(currentTaskId.value, { workload: newValue });
   emit('loadingChange', false);
-  actualWorkloadEditFlag.value = false;
+  isActualWorkloadEditing.value = false;
   if (error) {
     return;
   }
 
-  emit('change', { id: taskId.value, actualWorkload: value });
+  emit('change', { id: currentTaskId.value, actualWorkload: newValue });
 };
 
-const actualWorkloadPressEnter = () => {
-  if (typeof actualWorkloadRef.value?.blur === 'function') {
-    actualWorkloadRef.value.blur();
+/**
+ * <p>Handles Enter key press on actual workload input to trigger blur event.</p>
+ */
+const handleActualWorkloadEnter = () => {
+  if (typeof actualWorkloadInputRef.value?.blur === 'function') {
+    actualWorkloadInputRef.value.blur();
   }
 };
 
-const toEditEvalWorkload = () => {
-  evalWorkloadValue.value = evalWorkload.value;
-  evalWorkloadEditFlag.value = true;
+// Evaluation workload editing methods
+/**
+ * <p>Initiates evaluation workload editing mode by setting the input value and enabling edit flag.</p>
+ * <p>Focuses the input field after a short delay to ensure proper rendering.</p>
+ */
+const startEvalWorkloadEditing = () => {
+  evalWorkloadInputValue.value = currentEvalWorkload.value;
+  isEvalWorkloadEditing.value = true;
 
   nextTick(() => {
     setTimeout(() => {
-      if (typeof evalWorkloadRef.value?.focus === 'function') {
-        evalWorkloadRef.value?.focus();
+      if (typeof evalWorkloadInputRef.value?.focus === 'function') {
+        evalWorkloadInputRef.value?.focus();
       }
     }, 100);
   });
 };
 
-const evalWorkloadBlur = async (event: { target: { value: string; } }) => {
-  const value = event.target.value;
-  if (value === evalWorkload.value) {
-    evalWorkloadEditFlag.value = false;
+/**
+ * <p>Handles evaluation workload input blur event to save changes or cancel editing.</p>
+ * <p>Validates input value and calls API to update evaluation workload if value has changed.</p>
+ * @param event - Input blur event containing the new value
+ */
+const handleEvalWorkloadBlur = async (event: FocusEvent) => {
+  const target = event.target as HTMLInputElement;
+  const newValue = target?.value;
+  if (newValue === currentEvalWorkload.value) {
+    isEvalWorkloadEditing.value = false;
     return;
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editEvalWorkloadApi(taskId.value, { workload: value });
+  const [error] = await task.editEvalWorkloadApi(currentTaskId.value, { workload: newValue });
   emit('loadingChange', false);
-  evalWorkloadEditFlag.value = false;
+  isEvalWorkloadEditing.value = false;
   if (error) {
     return;
   }
 
-  emit('change', { id: taskId.value, evalWorkload: value });
+  emit('change', { id: currentTaskId.value, evalWorkload: newValue });
 };
 
-const evalWorkloadPressEnter = () => {
-  if (typeof evalWorkloadRef.value?.blur === 'function') {
-    evalWorkloadRef.value.blur();
+/**
+ * <p>Handles Enter key press on evaluation workload input to trigger blur event.</p>
+ */
+const handleEvalWorkloadEnter = () => {
+  if (typeof evalWorkloadInputRef.value?.blur === 'function') {
+    evalWorkloadInputRef.value.blur();
   }
 };
 
-const toEditTaskType = () => {
-  taskTypeValue.value = taskType.value;
-  taskTypeEditFlag.value = true;
+// Task type editing methods
+/**
+ * <p>Initiates task type editing mode by setting the select value and enabling edit flag.</p>
+ * <p>Focuses the select field after a short delay to ensure proper rendering.</p>
+ */
+const startTaskTypeEditing = () => {
+  taskTypeSelectValue.value = currentTaskType.value;
+  isTaskTypeEditing.value = true;
 
   nextTick(() => {
     setTimeout(() => {
-      if (typeof taskTypeRef.value?.focus === 'function') {
-        taskTypeRef.value?.focus();
+      if (typeof taskTypeSelectRef.value?.focus === 'function') {
+        taskTypeSelectRef.value?.focus();
       }
     }, 100);
   });
 };
 
-const taskTypeChange = async (
-  _event: { target: { value: TaskInfo['taskType']['value']; } },
-  option: { message: string; value: TaskInfo['taskType']['value']
-  }) => {
-  taskTypeMessage.value = option.message;
+/**
+ * <p>Handles task type selection change to update the message display.</p>
+ * @param value - Selected task type value
+ * @param option - Selected task type option containing value and message
+ */
+const handleTaskTypeChange = async (
+  value: string,
+  option?: { label: string; value: string }) => {
+  if (option?.label) {
+    taskTypeSelectMessage.value = option.label;
+  }
 };
 
-const taskTypeBlur = async () => {
-  const value = taskTypeValue.value;
-  if (!value || value === taskType.value) {
-    taskTypeEditFlag.value = false;
+/**
+ * <p>Handles task type select blur event to save changes or cancel editing.</p>
+ * <p>Validates selected value and calls API to update task type if value has changed.</p>
+ */
+const handleTaskTypeBlur = async () => {
+  const newValue = taskTypeSelectValue.value;
+  if (!newValue || newValue === currentTaskType.value) {
+    isTaskTypeEditing.value = false;
     return;
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTaskTaskType(taskId.value, value);
+  const [error] = await task.editTaskTaskType(currentTaskId.value, newValue);
   emit('loadingChange', false);
-  if (value === TaskType.BUG) {
-    await task.updateTask(taskId.value, {
+  if (newValue === TaskType.BUG) {
+    await task.updateTask(currentTaskId.value, {
       bugLevel: BugLevel.MINOR,
       missingBug: false
     });
   }
-  taskTypeEditFlag.value = false;
+  isTaskTypeEditing.value = false;
   if (error) {
     return;
   }
 
   emit('change', {
-    id: taskId.value,
+    id: currentTaskId.value,
     bugLevel: { value: BugLevel.MINOR, message: enumUtils.getEnumDescription(BugLevel, BugLevel.MINOR) },
     missingBug: false,
-    taskType: { value, message: taskTypeMessage.value! }
+    taskType: { value: newValue, message: taskTypeSelectMessage.value! }
   });
 };
 
-const taskTypeExcludes = (data: { value: TaskInfo['taskType']['value']; message: string }) => {
-  const value = data.value;
-  const type = taskType.value;
-  if (taskId.value) {
+const taskTypeExcludes = (value: { message: string; value: string }) => {
+  const taskTypeValue = value.value as TaskInfo['taskType']['value'];
+  const type = currentTaskType.value;
+  if (currentTaskId.value) {
     if (type === TaskType.API_TEST) {
-      return value !== TaskType.API_TEST;
+      return taskTypeValue !== TaskType.API_TEST;
     }
     if (type === TaskType.SCENARIO_TEST) {
-      return value !== TaskType.SCENARIO_TEST;
+      return taskTypeValue !== TaskType.SCENARIO_TEST;
     }
-    return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(value);
+    return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(taskTypeValue);
   }
   return false;
 };
 
-const toEditPriority = () => {
-  priorityValue.value = priority.value;
-  priorityEditFlag.value = true;
+// Priority editing methods
+/**
+ * <p>Initiates priority editing mode by setting the select value and enabling edit flag.</p>
+ * <p>Focuses the select field after a short delay to ensure proper rendering.</p>
+ */
+const startPriorityEditing = () => {
+  prioritySelectValue.value = currentPriority.value;
+  isPriorityEditing.value = true;
 
   nextTick(() => {
     setTimeout(() => {
-      if (typeof priorityRef.value?.focus === 'function') {
-        priorityRef.value?.focus();
+      if (typeof prioritySelectRef.value?.focus === 'function') {
+        prioritySelectRef.value?.focus();
       }
     }, 100);
   });
 };
 
-const priorityChange = async (
-  _event: { target: { value: TaskInfo['priority']['value']; } },
-  option: { message: string; value: TaskInfo['priority']['value'] }) => {
-  priorityMessage.value = option.message;
+/**
+ * <p>Handles priority selection change to update the message display.</p>
+ * @param value - Selected priority value
+ * @param option - Selected priority option containing value and message
+ */
+const handlePriorityChange = async (
+  value: string,
+  option?: { label: string; value: string }) => {
+  if (option?.label) {
+    prioritySelectMessage.value = option.label;
+  }
 };
 
-const priorityBlur = async () => {
-  const value = priorityValue.value;
-  if (!value || value === priority.value) {
-    priorityEditFlag.value = false;
+/**
+ * <p>Handles priority select blur event to save changes or cancel editing.</p>
+ * <p>Validates selected value and calls API to update task priority if value has changed.</p>
+ */
+const handlePriorityBlur = async () => {
+  const newValue = prioritySelectValue.value;
+  if (!newValue || newValue === currentPriority.value) {
+    isPriorityEditing.value = false;
     return;
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTaskPriority(taskId.value, value);
+  const [error] = await task.editTaskPriority(currentTaskId.value, newValue);
   emit('loadingChange', false);
-  priorityEditFlag.value = false;
+  isPriorityEditing.value = false;
   if (error) {
     return;
   }
 
   emit('change', {
-    id: taskId.value,
-    priority: { value, message: priorityMessage.value! }
+    id: currentTaskId.value,
+    priority: { value: newValue, message: prioritySelectMessage.value! }
   });
 };
 
-const toEditTag = () => {
-  tagIdList.value = tagIds.value;
-  tagEditFlag.value = true;
+// Tag editing methods
+/**
+ * <p>Initiates tag editing mode by setting the selected tag IDs and enabling edit flag.</p>
+ * <p>Focuses the select field after a short delay to ensure proper rendering.</p>
+ */
+const startTagEditing = () => {
+  selectedTagIdList.value = currentTagIds.value;
+  isTagEditing.value = true;
 
   nextTick(() => {
     setTimeout(() => {
-      if (typeof tagRef.value?.focus === 'function') {
-        tagRef.value?.focus();
+      if (typeof tagSelectRef.value?.focus === 'function') {
+        tagSelectRef.value?.focus();
       }
     }, 100);
   });
 };
 
-const tagChange = async (
-  _event: { target: { value: string[]; } },
-  options: { id: string; name: string; }[]) => {
-  tagList.value = options;
+/**
+ * <p>Handles tag selection change to update the selected tag list.</p>
+ * @param value - Selected tag IDs array
+ * @param options - Array of selected tag options containing id and name
+ */
+const handleTagChange = async (
+  value: any,
+  options: any) => {
+  selectedTagList.value = options;
 };
 
-const tagBlur = async () => {
-  const ids = tagIdList.value;
-  if (isEqual(ids, tagIds.value)) {
-    tagEditFlag.value = false;
+/**
+ * <p>Handles tag select blur event to save changes or cancel editing.</p>
+ * <p>Compares selected tags with current tags and calls API to update if changed.</p>
+ */
+const handleTagBlur = async () => {
+  const newTagIds = selectedTagIdList.value;
+  if (isEqual(newTagIds, currentTagIds.value)) {
+    isTagEditing.value = false;
     return;
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTaskTags(taskId.value, { tagIds: ids });
+  const [error] = await task.editTaskTags(currentTaskId.value, { tagIds: newTagIds });
   emit('loadingChange', false);
-  tagEditFlag.value = false;
+  isTagEditing.value = false;
   if (error) {
     return;
   }
 
-  emit('change', { id: taskId.value, tags: tagList.value });
+  emit('change', { id: currentTaskId.value, tags: selectedTagList.value });
 };
 
-const toEditVersion = () => {
-  versionEditFlag.value = true;
-  versionValue.value = props.dataSource?.softwareVersion;
+// Software version editing methods
+/**
+ * <p>Initiates software version editing mode by setting the select value and enabling edit flag.</p>
+ * <p>Focuses the select field after a short delay to ensure proper rendering.</p>
+ */
+const startVersionEditing = () => {
+  isVersionEditing.value = true;
+  versionSelectValue.value = props.dataSource?.softwareVersion;
   nextTick(() => {
     setTimeout(() => {
-      if (typeof versionRef.value?.focus === 'function') {
-        versionRef.value?.focus();
+      if (typeof versionSelectRef.value?.focus === 'function') {
+        versionSelectRef.value?.focus();
       }
     }, 100);
   });
 };
 
-const versionChange = (value) => {
-  versionValue.value = value;
+/**
+ * <p>Handles software version selection change to update the selected value.</p>
+ * @param value - Selected software version value
+ * @param option - Selected option (unused)
+ */
+const handleVersionChange = (value: any, option?: any) => {
+  versionSelectValue.value = value;
 };
 
-const versionBlur = async () => {
-  const value = versionValue.value;
-  if (value === props.dataSource?.softwareVersion) {
-    versionEditFlag.value = false;
+/**
+ * <p>Handles software version select blur event to save changes or cancel editing.</p>
+ * <p>Validates selected value and calls API to update software version if value has changed.</p>
+ */
+const handleVersionBlur = async () => {
+  const newValue = versionSelectValue.value;
+  if (newValue === props.dataSource?.softwareVersion) {
+    isVersionEditing.value = false;
     return;
   }
 
   emit('loadingChange', true);
-  const [error] = await task.updateTask(taskId.value, { softwareVersion: value || '' });
+  const [error] = await task.updateTask(currentTaskId.value, { softwareVersion: newValue || '' });
   emit('loadingChange', false);
-  versionEditFlag.value = false;
+  isVersionEditing.value = false;
   if (error) {
     return;
   }
 
-  emit('change', { id: taskId.value, softwareVersion: versionValue.value });
+  emit('change', { id: currentTaskId.value, softwareVersion: versionSelectValue.value });
 };
 
-const taskId = computed(() => props.dataSource?.id);
-const status = computed(() => props.dataSource?.status);
-const name = computed(() => props.dataSource?.name);
-const taskType = computed(() => props.dataSource?.taskType?.value);
-const priority = computed(() => props.dataSource?.priority?.value);
-const tags = computed(() => props.dataSource?.tags || []);
-const tagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
-const evalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
-const evalWorkload = computed(() => props.dataSource?.evalWorkload);
-const actualWorkload = computed(() => props.dataSource?.actualWorkload);
-const overdue = computed(() => props.dataSource?.overdue);
-const totalNum = computed(() => +(props.dataSource?.totalNum || 0));
-const failNum = computed(() => +(props.dataSource?.failNum || 0));
-const onePassText = computed(() => {
-  if (totalNum.value <= 0) {
+// Computed properties for task data
+const currentTaskId = computed(() => props.dataSource?.id);
+const currentTaskStatus = computed(() => props.dataSource?.status);
+const currentTaskName = computed(() => props.dataSource?.name);
+const currentTaskType = computed(() => props.dataSource?.taskType?.value);
+const currentPriority = computed(() => props.dataSource?.priority?.value);
+const currentTags = computed(() => props.dataSource?.tags || []);
+const currentTagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
+const currentEvalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
+const currentEvalWorkload = computed(() => props.dataSource?.evalWorkload);
+const currentActualWorkload = computed(() => props.dataSource?.actualWorkload);
+const isTaskOverdue = computed(() => props.dataSource?.overdue);
+const totalTestCount = computed(() => +(props.dataSource?.totalNum || 0));
+const failedTestCount = computed(() => +(props.dataSource?.failNum || 0));
+
+/**
+ * <p>Computes the one-pass status text based on test results.</p>
+ * <p>Returns '--' if no tests have been run, 'Yes' if all tests passed, 'No' if any tests failed.</p>
+ */
+const onePassStatusText = computed(() => {
+  if (totalTestCount.value <= 0) {
     return '--';
   }
 
-  return failNum.value === 0 ? t('task.detailInfo.basic.columns.yes') : t('task.detailInfo.basic.columns.no');
+  return failedTestCount.value === 0 ? t('task.detailInfo.basic.columns.yes') : t('task.detailInfo.basic.columns.no');
 });
 </script>
 
@@ -402,9 +509,9 @@ const onePassText = computed(() => {
             </div>
 
             <div class="flex items-center">
-              <TaskStatus :value="status" />
+              <TaskStatus :value="currentTaskStatus" />
               <span
-                v-if="overdue"
+                v-if="isTaskOverdue"
                 class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
                 style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
                 <span class="inline-block transform-gpu scale-90">{{ t('task.detailInfo.basic.columns.overdue') }}</span>
@@ -420,27 +527,27 @@ const onePassText = computed(() => {
               <Colon class="w-1" />
             </div>
 
-            <div v-show="!nameEditFlag" class="flex items-start whitespace-pre-wrap break-words break-all">
-              <div>{{ name }}</div>
+            <div v-show="!isTaskNameEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
+              <div>{{ currentTaskName }}</div>
               <Button
                 type="link"
                 class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-                @click="toEditName">
+                @click="startTaskNameEditing">
                 <Icon icon="icon-shuxie" class="text-3.5" />
               </Button>
             </div>
 
-            <AsyncComponent :visible="nameEditFlag">
+            <AsyncComponent :visible="isTaskNameEditing">
               <Input
-                v-show="nameEditFlag"
-                ref="nameRef"
-                v-model:value="taskName"
+                v-show="isTaskNameEditing"
+                ref="taskNameInputRef"
+                v-model:value="taskNameInputValue"
                 :maxlength="200"
                 trim
                 class="left-component"
                 :placeholder="t('task.detailInfo.basic.columns.namePlaceholder')"
-                @blur="nameBlur"
-                @pressEnter="namePressEnter" />
+                @blur="handleTaskNameBlur"
+                @pressEnter="handleTaskNameEnter" />
             </AsyncComponent>
           </div>
 
@@ -501,33 +608,33 @@ const onePassText = computed(() => {
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ evalWorkloadMethod === 'STORY_POINT' ? t('task.detailInfo.basic.columns.evalWorkload') : t('task.detailInfo.basic.columns.evalWorkloadHours') }}</span>
+              <span>{{ currentEvalWorkloadMethod === 'STORY_POINT' ? t('task.detailInfo.basic.columns.evalWorkload') : t('task.detailInfo.basic.columns.evalWorkloadHours') }}</span>
               <Colon class="w-1" />
             </div>
 
-            <div v-show="!evalWorkloadEditFlag" class="flex items-start whitespace-pre-wrap break-words break-all">
-              <div>{{ evalWorkload || '--' }}</div>
+            <div v-show="!isEvalWorkloadEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
+              <div>{{ currentEvalWorkload || '--' }}</div>
               <Button
                 type="link"
                 class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-                @click="toEditEvalWorkload">
+                @click="startEvalWorkloadEditing">
                 <Icon icon="icon-shuxie" class="text-3.5" />
               </Button>
             </div>
 
-            <AsyncComponent :visible="evalWorkloadEditFlag">
+            <AsyncComponent :visible="isEvalWorkloadEditing">
               <Input
-                v-show="evalWorkloadEditFlag"
-                ref="evalWorkloadRef"
-                v-model:value="evalWorkloadValue"
+                v-show="isEvalWorkloadEditing"
+                ref="evalWorkloadInputRef"
+                v-model:value="evalWorkloadInputValue"
                 class="right-component max-w-52"
                 dataType="float"
                 trimAll
                 :min="0.1"
                 :max="1000"
                 :placeholder="t('task.detailInfo.basic.columns.actualWorkloadPlaceholder')"
-                @blur="evalWorkloadBlur"
-                @pressEnter="evalWorkloadPressEnter" />
+                @blur="handleEvalWorkloadBlur"
+                @pressEnter="handleEvalWorkloadEnter" />
             </AsyncComponent>
           </div>
         </div>
@@ -539,16 +646,16 @@ const onePassText = computed(() => {
               <Colon class="w-1" />
             </div>
 
-            <div v-show="!taskTypeEditFlag" class="flex items-center">
-              <IconTask :value="taskType" class="text-4 flex-shrink-0" />
+            <div v-show="!isTaskTypeEditing" class="flex items-center">
+              <IconTask :value="currentTaskType" class="text-4 flex-shrink-0" />
               <span class="ml-1.5">{{ props.dataSource?.taskType?.message }}</span>
               <Button
                 type="link"
                 class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-                @click="toEditTaskType">
+                @click="startTaskTypeEditing">
                 <Icon icon="icon-shuxie" class="text-3.5" />
               </Button>
-              <template v-if="taskType === 'BUG'">
+              <template v-if="currentTaskType === 'BUG'">
                 <Tag
                   v-if="props.dataSource?.bugLevel"
                   color="error"
@@ -564,23 +671,23 @@ const onePassText = computed(() => {
               </template>
             </div>
 
-            <AsyncComponent :visible="taskTypeEditFlag">
+            <AsyncComponent :visible="isTaskTypeEditing">
               <SelectEnum
-                v-show="taskTypeEditFlag"
-                ref="taskTypeRef"
-                v-model:value="taskTypeValue"
+                v-show="isTaskTypeEditing"
+                ref="taskTypeSelectRef"
+                v-model:value="taskTypeSelectValue"
                 :allowClear="false"
                 :excludes="taskTypeExcludes"
                 internal
                 enumKey="TaskType"
                 :placeholder="t('task.detailInfo.basic.columns.selectTaskType')"
                 class="left-component max-w-52"
-                @change="taskTypeChange"
-                @blur="taskTypeBlur">
+                @change="handleTaskTypeChange"
+                @blur="handleTaskTypeBlur">
                 <template #option="record">
                   <div class="flex items-center">
-                    <IconTask :value="record.value" class="text-4 flex-shrink-0" />
-                    <span class="ml-2">{{ record.message }}</span>
+                    <IconTask :value="record.value as any" class="text-4 flex-shrink-0" />
+                    <span class="ml-2">{{ record.label }}</span>
                   </div>
                 </template>
               </SelectEnum>
@@ -590,36 +697,36 @@ const onePassText = computed(() => {
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
               <span>
-                {{ evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                {{ currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
                   ? t('task.detailInfo.basic.columns.actualStoryPoint')
                   : t('task.detailInfo.basic.columns.actualWorkload') }}
               </span>
               <Colon class="w-1" />
             </div>
 
-            <div v-show="!actualWorkloadEditFlag" class="flex items-start whitespace-pre-wrap break-words break-all">
-              <div>{{ actualWorkload || '--' }}</div>
+            <div v-show="!isActualWorkloadEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
+              <div>{{ currentActualWorkload || '--' }}</div>
               <Button
                 type="link"
                 class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-                @click="toEditActualWorkload">
+                @click="startActualWorkloadEditing">
                 <Icon icon="icon-shuxie" class="text-3.5" />
               </Button>
             </div>
 
-            <AsyncComponent :visible="actualWorkloadEditFlag">
+            <AsyncComponent :visible="isActualWorkloadEditing">
               <Input
-                v-show="actualWorkloadEditFlag"
-                ref="actualWorkloadRef"
-                v-model:value="actualWorkloadValue"
+                v-show="isActualWorkloadEditing"
+                ref="actualWorkloadInputRef"
+                v-model:value="actualWorkloadInputValue"
                 class="right-component max-w-52"
                 dataType="float"
                 trimAll
                 :min="0.1"
                 :max="1000"
                 :placeholder="t('task.detailInfo.basic.columns.actualWorkloadPlaceholder')"
-                @blur="actualWorkloadBlur"
-                @pressEnter="actualWorkloadPressEnter" />
+                @blur="handleActualWorkloadBlur"
+                @pressEnter="handleActualWorkloadEnter" />
             </AsyncComponent>
           </div>
         </div>
@@ -631,30 +738,30 @@ const onePassText = computed(() => {
               <Colon class="w-1" />
             </div>
 
-            <div v-show="!priorityEditFlag" class="flex items-center">
+            <div v-show="!isPriorityEditing" class="flex items-center">
               <TaskPriority :value="props.dataSource?.priority" />
               <Button
                 type="link"
                 class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-                @click="toEditPriority">
+                @click="startPriorityEditing">
                 <Icon icon="icon-shuxie" class="text-3.5" />
               </Button>
             </div>
 
-            <AsyncComponent :visible="priorityEditFlag">
+            <AsyncComponent :visible="isPriorityEditing">
               <SelectEnum
-                v-show="priorityEditFlag"
-                ref="priorityRef"
-                v-model:value="priorityValue"
+                v-show="isPriorityEditing"
+                ref="prioritySelectRef"
+                v-model:value="prioritySelectValue"
                 :allowClear="false"
                 internal
                 enumKey="Priority"
                 :placeholder="t('task.detailInfo.basic.columns.selectPriority')"
                 class="left-component max-w-52"
-                @change="priorityChange"
-                @blur="priorityBlur">
+                @change="handlePriorityChange"
+                @blur="handlePriorityBlur">
                 <template #option="record">
-                  <TaskPriority :value="record" />
+                  <TaskPriority :value="{ value: record.value as any, message: record.label }" />
                 </template>
               </SelectEnum>
             </AsyncComponent>
@@ -666,7 +773,7 @@ const onePassText = computed(() => {
               <Colon class="w-1" />
             </div>
 
-            <div class="whitespace-pre-wrap break-words break-all">{{ failNum }}</div>
+            <div class="whitespace-pre-wrap break-words break-all">{{ failedTestCount }}</div>
           </div>
         </div>
 
@@ -677,7 +784,7 @@ const onePassText = computed(() => {
               <Colon class="w-1" />
             </div>
 
-            <div class="whitespace-pre-wrap break-words break-all">{{ totalNum }}</div>
+            <div class="whitespace-pre-wrap break-words break-all">{{ totalTestCount }}</div>
           </div>
 
           <div class="relative w-1/2 flex items-start">
@@ -686,7 +793,7 @@ const onePassText = computed(() => {
               <Colon class="w-1" />
             </div>
 
-            <div class="whitespace-pre-wrap break-words break-all">{{ onePassText }}</div>
+            <div class="whitespace-pre-wrap break-words break-all">{{ onePassStatusText }}</div>
           </div>
         </div>
 
@@ -697,10 +804,10 @@ const onePassText = computed(() => {
               <Colon class="w-1" />
             </div>
             <div class="flex-1 min-w-0">
-              <template v-if="versionEditFlag">
+              <template v-if="isVersionEditing">
                 <Select
-                  ref="versionRef"
-                  v-model:value="versionValue"
+                  ref="versionSelectRef"
+                  v-model:value="versionSelectValue"
                   allowClear
                   :placeholder="t('task.detailInfo.basic.columns.softwareVersionPlaceholder')"
                   lazy
@@ -708,8 +815,8 @@ const onePassText = computed(() => {
                   :action="`${TESTER}/software/version?projectId=${props.projectId}`"
                   :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN'}]}"
                   :fieldNames="{value:'name', label: 'name'}"
-                  @blur="versionBlur"
-                  @change="versionChange">
+                  @blur="handleVersionBlur"
+                  @change="handleVersionChange">
                 </Select>
               </template>
               <template v-else>
@@ -726,7 +833,7 @@ const onePassText = computed(() => {
                   <Button
                     type="link"
                     class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-                    @click="toEditVersion">
+                    @click="startVersionEditing">
                     <Icon icon="icon-shuxie" class="text-3.5" />
                   </Button>
                 </div>
@@ -752,10 +859,10 @@ const onePassText = computed(() => {
               <Colon class="w-1" />
             </div>
 
-            <div v-show="!tagEditFlag" class="flex items-start whitespace-pre-wrap break-words break-all">
-              <div v-if="tags.length" class="flex items-center flex-wrap transform-gpu -translate-y-0.25">
+            <div v-show="!isTagEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
+              <div v-if="currentTags.length" class="flex items-center flex-wrap transform-gpu -translate-y-0.25">
                 <div
-                  v-for="item in tags"
+                  v-for="item in currentTags"
                   :key="item.id"
                   class="px-2 h-5.5 leading-5 mr-2 mb-2 rounded border border-solid border-border-divider bg-gray-light text-theme-sub-content">
                   {{ item.name }}
@@ -765,16 +872,16 @@ const onePassText = computed(() => {
               <Button
                 type="link"
                 class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-                @click="toEditTag">
+                @click="startTagEditing">
                 <Icon icon="icon-shuxie" class="text-3.5" />
               </Button>
             </div>
 
-            <AsyncComponent :visible="tagEditFlag">
+            <AsyncComponent :visible="isTagEditing">
               <Select
-                v-show="tagEditFlag"
-                ref="tagRef"
-                v-model:value="tagIdList"
+                v-show="isTagEditing"
+                ref="tagSelectRef"
+                v-model:value="selectedTagIdList"
                 :fieldNames="{ label: 'name', value: 'id' }"
                 :maxTagCount="5"
                 :maxTagTextLength="15"
@@ -787,8 +894,8 @@ const onePassText = computed(() => {
                 mode="multiple"
                 class="left-component"
                 :notFoundContent="t('task.detailInfo.basic.columns.tagsNotFound')"
-                @change="tagChange"
-                @blur="tagBlur" />
+                @change="handleTagChange"
+                @blur="handleTagBlur" />
             </AsyncComponent>
           </div>
         </div>

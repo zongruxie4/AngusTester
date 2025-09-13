@@ -12,6 +12,7 @@ import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfo } from '@/views/task/types';
 import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
+// Component props and emits
 const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -28,243 +29,72 @@ const emit = defineEmits<{
   (event: 'refresh'): void;
 }>();
 
+// Async components
 const Description = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/info/Description.vue'));
 
-const nameRef = ref();
-const nameEditFlag = ref(false);
-const taskName = ref<string>();
+// Task name editing state
+const taskNameInputRef = ref();
+const isTaskNameEditing = ref(false);
+const taskNameInputValue = ref<string>();
 
-const evalWorkloadRef = ref();
-const evalWorkloadEditFlag = ref(false);
-const evalWorkloadValue = ref<string>();
+// Evaluation workload editing state
+const evalWorkloadInputRef = ref();
+const isEvalWorkloadEditing = ref(false);
+const evalWorkloadInputValue = ref<string>();
 
-const actualWorkloadRef = ref();
-const actualWorkloadEditFlag = ref(false);
-const actualWorkloadValue = ref<string>();
+// Actual workload editing state
+const actualWorkloadInputRef = ref();
+const isActualWorkloadEditing = ref(false);
+const actualWorkloadInputValue = ref<string>();
 
-const taskTypeRef = ref();
-const taskTypeEditFlag = ref(false);
-const taskTypeMessage = ref<string>();
-const taskTypeValue = ref<TaskInfo['taskType']['value']>();
+// Task type editing state
+const taskTypeSelectRef = ref();
+const isTaskTypeEditing = ref(false);
+const taskTypeSelectMessage = ref<string>();
+const taskTypeSelectValue = ref<TaskInfo['taskType']['value']>();
 
-const sprintRef = ref();
-const sprintEditFlag = ref(false);
-const sprintMessage = ref<string>();
-const sprintValue = ref<string>();
+// Sprint editing state
+const sprintSelectRef = ref();
+const isSprintEditing = ref(false);
+const sprintSelectMessage = ref<string>();
+const sprintSelectValue = ref<string>();
 
-const moduleRef = ref();
-const moduleEditFlag = ref(false);
-const moduleValue = ref<string>();
+// Module editing state
+const moduleTreeSelectRef = ref();
+const isModuleEditing = ref(false);
+const moduleTreeSelectValue = ref<string>();
 
-const priorityRef = ref();
-const priorityEditFlag = ref(false);
-const priorityMessage = ref<string>();
-const priorityValue = ref<TaskInfo['priority']['value']>();
+// Priority editing state
+const prioritySelectRef = ref();
+const isPriorityEditing = ref(false);
+const prioritySelectMessage = ref<string>();
+const prioritySelectValue = ref<TaskInfo['priority']['value']>();
 
-const tagRef = ref();
-const tagEditFlag = ref(false);
-const tagList = ref<{id:string;name:string;}[]>([]);
-const tagIdList = ref<string[]>([]);
+// Tag editing state
+const tagSelectRef = ref();
+const isTagEditing = ref(false);
+const selectedTagList = ref<{id: string; name: string;}[]>([]);
+const selectedTagIdList = ref<string[]>([]);
 
-const versionRef = ref();
-const versionEditFlag = ref(false);
-const versionValue = ref<string>();
+// Version editing state
+const versionSelectRef = ref();
+const isVersionEditing = ref(false);
+const versionSelectValue = ref<string>();
 
-const toEditName = () => {
-  taskName.value = name.value;
-  nameEditFlag.value = true;
-
-  nextTick(() => {
-    setTimeout(() => {
-      if (typeof nameRef.value?.focus === 'function') {
-        nameRef.value?.focus();
-      }
-    }, 100);
-  });
-};
-
-const nameBlur = async (event: { target: { value: string; } }) => {
-  const value = event.target.value;
-  if (!value || value === name.value) {
-    nameEditFlag.value = false;
-    return;
-  }
-
-  emit('loadingChange', true);
-  const [error] = await task.editTaskName(taskId.value, value);
-  emit('loadingChange', false);
-  nameEditFlag.value = false;
-  if (error) {
-    return;
-  }
-
-  emit('change', { id: taskId.value, name: value });
-};
-
-const namePressEnter = () => {
-  if (typeof nameRef.value?.blur === 'function') {
-    nameRef.value.blur();
-  }
-};
-
-const toEditActualWorkload = () => {
-  actualWorkloadValue.value = actualWorkload.value;
-  actualWorkloadEditFlag.value = true;
-
-  nextTick(() => {
-    setTimeout(() => {
-      if (typeof actualWorkloadRef.value?.focus === 'function') {
-        actualWorkloadRef.value?.focus();
-      }
-    }, 100);
-  });
-};
-
-const actualWorkloadBlur = async (event: { target: { value: string; } }) => {
-  const value = event.target.value;
-  if (value === actualWorkload.value) {
-    actualWorkloadEditFlag.value = false;
-    return;
-  }
-
-  emit('loadingChange', true);
-  const [error] = await task.editActualWorkload(taskId.value, { workload: value });
-  emit('loadingChange', false);
-  actualWorkloadEditFlag.value = false;
-  if (error) {
-    return;
-  }
-
-  emit('change', { id: taskId.value, actualWorkload: value });
-};
-
-const actualWorkloadPressEnter = () => {
-  if (typeof actualWorkloadRef.value?.blur === 'function') {
-    actualWorkloadRef.value.blur();
-  }
-};
-
-const toEditEvalWorkload = () => {
-  evalWorkloadValue.value = evalWorkload.value;
-  evalWorkloadEditFlag.value = true;
-
-  nextTick(() => {
-    setTimeout(() => {
-      if (typeof evalWorkloadRef.value?.focus === 'function') {
-        evalWorkloadRef.value?.focus();
-      }
-    }, 100);
-  });
-};
-
-const evalWorkloadBlur = async (event: { target: { value: string; } }) => {
-  const value = event.target.value;
-  if (value === evalWorkload.value) {
-    evalWorkloadEditFlag.value = false;
-    return;
-  }
-
-  emit('loadingChange', true);
-  const [error] = await task.editEvalWorkloadApi(taskId.value, { workload: value });
-  emit('loadingChange', false);
-  evalWorkloadEditFlag.value = false;
-  if (error) {
-    return;
-  }
-
-  emit('change', { id: taskId.value, evalWorkload: value });
-};
-
-const evalWorkloadPressEnter = () => {
-  if (typeof evalWorkloadRef.value?.blur === 'function') {
-    evalWorkloadRef.value.blur();
-  }
-};
-
-const toEditSprint = () => {
-  sprintValue.value = sprintId.value;
-  sprintEditFlag.value = true;
-
-  nextTick(() => {
-    setTimeout(() => {
-      if (typeof sprintRef.value?.focus === 'function') {
-        sprintRef.value?.focus();
-      }
-    }, 100);
-  });
-};
-
-const sprintChange = async (
-  _event: { target: { value: string; } },
-  option: { message: string; value: string
-  }) => {
-  sprintMessage.value = option.message;
-};
-
-const sprintBlur = async () => {
-  const value = sprintValue.value;
-  if (!value || value === sprintId.value) {
-    sprintEditFlag.value = false;
-    return;
-  }
-
-  emit('loadingChange', true);
-  const params = {
-    taskIds: [taskId.value],
-    targetSprintId: value
-  };
-  const [error] = await task.moveTask(params);
-  emit('loadingChange', false);
-  sprintEditFlag.value = false;
-  if (error) {
-    return;
-  }
-
-  const info = await loadTaskInfoById(taskId.value);
-  emit('change', info);
-};
-
-const toEditModule = () => {
-  moduleValue.value = moduleId.value;
-  moduleEditFlag.value = true;
-
-  nextTick(() => {
-    setTimeout(() => {
-      if (typeof moduleRef.value?.focus === 'function') {
-        moduleRef.value?.focus();
-      }
-    }, 100);
-  });
-};
-
-const moduleOk = async () => {
-  const value = moduleValue.value;
-  if (!value || value === moduleId.value) {
-    moduleEditFlag.value = false;
-    return;
-  }
-
-  emit('loadingChange', true);
-  const params = {
-    moduleId: value
-  };
-  const [error] = await task.updateTask(taskId.value, params);
-  emit('loadingChange', false);
-  moduleEditFlag.value = false;
-  if (error) {
-    return;
-  }
-
-  const info = await loadTaskInfoById(taskId.value);
-  emit('change', info);
-};
-
-const moduleCancel = () => {
-  moduleEditFlag.value = false;
-};
-
+// Module tree data and management
 const moduleTreeData = ref([]);
-const getModuleTreeData = async () => {
+
+/**
+ * Initialize module tree data on component mount
+ */
+onMounted(() => {
+  loadModuleTreeData();
+});
+
+/**
+ * Load module tree data from API
+ */
+const loadModuleTreeData = async () => {
   if (!props.projectId) {
     return;
   }
@@ -277,6 +107,11 @@ const getModuleTreeData = async () => {
   moduleTreeData.value = data || [];
 };
 
+/**
+ * Load task information by ID from API
+ * @param id - Task ID
+ * @returns Partial task information
+ */
 const loadTaskInfoById = async (id: string): Promise<Partial<TaskInfo>> => {
   emit('loadingChange', true);
   const [error, res] = await task.getTaskDetail(id);
@@ -288,39 +123,294 @@ const loadTaskInfoById = async (id: string): Promise<Partial<TaskInfo>> => {
   return res.data;
 };
 
-const toEditTaskType = () => {
-  taskTypeValue.value = taskType.value;
-  taskTypeEditFlag.value = true;
+/**
+ * Enter task name editing mode and focus the input
+ */
+const enterTaskNameEditMode = () => {
+  taskNameInputValue.value = currentTaskName.value;
+  isTaskNameEditing.value = true;
 
   nextTick(() => {
     setTimeout(() => {
-      if (typeof taskTypeRef.value?.focus === 'function') {
-        taskTypeRef.value?.focus();
+      if (typeof taskNameInputRef.value?.focus === 'function') {
+        taskNameInputRef.value?.focus();
       }
     }, 100);
   });
 };
 
-const taskTypeChange = async (
-  _event: { target: { value: TaskInfo['taskType']['value']; } },
-  option: { message: string; value: TaskInfo['taskType']['value']
-  }) => {
-  taskTypeMessage.value = option.message;
-};
-
-const taskTypeBlur = async () => {
-  const value = taskTypeValue.value;
-  if (!value || value === taskType.value) {
-    taskTypeEditFlag.value = false;
+/**
+ * Handle task name input blur and update task name
+ * @param event - Input blur event
+ */
+const handleTaskNameInputBlur = async (event: FocusEvent) => {
+  const target = event.target as HTMLInputElement;
+  const inputValue = target.value;
+  if (!inputValue || inputValue === currentTaskName.value) {
+    isTaskNameEditing.value = false;
     return;
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTaskTaskType(taskId.value, value);
+  const [error] = await task.editTaskName(currentTaskId.value, inputValue);
   emit('loadingChange', false);
-  taskTypeEditFlag.value = false;
-  if (value === TaskType.BUG) {
-    await task.updateTask(taskId.value, {
+  isTaskNameEditing.value = false;
+  if (error) {
+    return;
+  }
+
+  emit('change', { id: currentTaskId.value, name: inputValue });
+};
+
+/**
+ * Handle task name input enter key press
+ */
+const handleTaskNameInputEnter = () => {
+  if (typeof taskNameInputRef.value?.blur === 'function') {
+    taskNameInputRef.value.blur();
+  }
+};
+
+/**
+ * Enter actual workload editing mode and focus the input
+ */
+const enterActualWorkloadEditMode = () => {
+  actualWorkloadInputValue.value = currentActualWorkload.value;
+  isActualWorkloadEditing.value = true;
+
+  nextTick(() => {
+    setTimeout(() => {
+      if (typeof actualWorkloadInputRef.value?.focus === 'function') {
+        actualWorkloadInputRef.value?.focus();
+      }
+    }, 100);
+  });
+};
+
+/**
+ * Handle actual workload input blur and update task actual workload
+ * @param event - Input blur event
+ */
+const handleActualWorkloadInputBlur = async (event: FocusEvent) => {
+  const target = event.target as HTMLInputElement;
+  const inputValue = target.value;
+  if (inputValue === currentActualWorkload.value) {
+    isActualWorkloadEditing.value = false;
+    return;
+  }
+
+  emit('loadingChange', true);
+  const [error] = await task.editActualWorkload(currentTaskId.value, { workload: inputValue });
+  emit('loadingChange', false);
+  isActualWorkloadEditing.value = false;
+  if (error) {
+    return;
+  }
+
+  emit('change', { id: currentTaskId.value, actualWorkload: inputValue });
+};
+
+/**
+ * Handle actual workload input enter key press
+ */
+const handleActualWorkloadInputEnter = () => {
+  if (typeof actualWorkloadInputRef.value?.blur === 'function') {
+    actualWorkloadInputRef.value.blur();
+  }
+};
+
+/**
+ * Enter evaluation workload editing mode and focus the input
+ */
+const enterEvalWorkloadEditMode = () => {
+  evalWorkloadInputValue.value = currentEvalWorkload.value;
+  isEvalWorkloadEditing.value = true;
+
+  nextTick(() => {
+    setTimeout(() => {
+      if (typeof evalWorkloadInputRef.value?.focus === 'function') {
+        evalWorkloadInputRef.value?.focus();
+      }
+    }, 100);
+  });
+};
+
+/**
+ * Handle evaluation workload input blur and update task evaluation workload
+ * @param event - Input blur event
+ */
+const handleEvalWorkloadInputBlur = async (event: FocusEvent) => {
+  const target = event.target as HTMLInputElement;
+  const inputValue = target.value;
+  if (inputValue === currentEvalWorkload.value) {
+    isEvalWorkloadEditing.value = false;
+    return;
+  }
+
+  emit('loadingChange', true);
+  const [error] = await task.editEvalWorkloadApi(currentTaskId.value, { workload: inputValue });
+  emit('loadingChange', false);
+  isEvalWorkloadEditing.value = false;
+  if (error) {
+    return;
+  }
+
+  emit('change', { id: currentTaskId.value, evalWorkload: inputValue });
+};
+
+/**
+ * Handle evaluation workload input enter key press
+ */
+const handleEvalWorkloadInputEnter = () => {
+  if (typeof evalWorkloadInputRef.value?.blur === 'function') {
+    evalWorkloadInputRef.value.blur();
+  }
+};
+
+/**
+ * Enter sprint editing mode and focus the select
+ */
+const enterSprintEditMode = () => {
+  sprintSelectValue.value = currentSprintId.value;
+  isSprintEditing.value = true;
+
+  nextTick(() => {
+    setTimeout(() => {
+      if (typeof sprintSelectRef.value?.focus === 'function') {
+        sprintSelectRef.value?.focus();
+      }
+    }, 100);
+  });
+};
+
+/**
+ * Handle sprint selection change and update message
+ * @param value - Selected value
+ * @param option - Selected option with message and value
+ */
+const handleSprintSelectionChange = async (_value: any, option: any) => {
+  if (option && option.message) {
+    sprintSelectMessage.value = option.message;
+  }
+};
+
+/**
+ * Handle sprint selection blur and move task to selected sprint
+ */
+const handleSprintSelectionBlur = async () => {
+  const selectedValue = sprintSelectValue.value;
+  if (!selectedValue || selectedValue === currentSprintId.value) {
+    isSprintEditing.value = false;
+    return;
+  }
+
+  emit('loadingChange', true);
+  const moveTaskParams = {
+    taskIds: [currentTaskId.value],
+    targetSprintId: selectedValue
+  };
+  const [error] = await task.moveTask(moveTaskParams);
+  emit('loadingChange', false);
+  isSprintEditing.value = false;
+  if (error) {
+    return;
+  }
+
+  const updatedTaskInfo = await loadTaskInfoById(currentTaskId.value);
+  emit('change', updatedTaskInfo);
+};
+
+/**
+ * Enter module editing mode and focus the input
+ */
+const enterModuleEditMode = () => {
+  moduleTreeSelectValue.value = currentModuleId.value;
+  isModuleEditing.value = true;
+
+  nextTick(() => {
+    setTimeout(() => {
+      if (typeof moduleTreeSelectRef.value?.focus === 'function') {
+        moduleTreeSelectRef.value?.focus();
+      }
+    }, 100);
+  });
+};
+
+/**
+ * Confirm module selection and update task
+ */
+const confirmModuleSelection = async () => {
+  const selectedValue = moduleTreeSelectValue.value;
+  if (!selectedValue || selectedValue === currentModuleId.value) {
+    isModuleEditing.value = false;
+    return;
+  }
+
+  emit('loadingChange', true);
+  const updateParams = {
+    moduleId: selectedValue
+  };
+  const [error] = await task.updateTask(currentTaskId.value, updateParams);
+  emit('loadingChange', false);
+  isModuleEditing.value = false;
+  if (error) {
+    return;
+  }
+
+  const updatedTaskInfo = await loadTaskInfoById(currentTaskId.value);
+  emit('change', updatedTaskInfo);
+};
+
+/**
+ * Cancel module editing mode
+ */
+const cancelModuleEdit = () => {
+  isModuleEditing.value = false;
+};
+
+/**
+ * Enter task type editing mode and focus the select
+ */
+const enterTaskTypeEditMode = () => {
+  taskTypeSelectValue.value = currentTaskType.value;
+  isTaskTypeEditing.value = true;
+
+  nextTick(() => {
+    setTimeout(() => {
+      if (typeof taskTypeSelectRef.value?.focus === 'function') {
+        taskTypeSelectRef.value?.focus();
+      }
+    }, 100);
+  });
+};
+
+/**
+ * Handle task type selection change and update message
+ * @param value - Selected value
+ * @param option - Selected option with message and value
+ */
+const handleTaskTypeSelectionChange = async (_value: string, option: any) => {
+  if (option && option.message) {
+    taskTypeSelectMessage.value = option.message;
+  }
+};
+
+/**
+ * Handle task type selection blur and update task type
+ */
+const handleTaskTypeSelectionBlur = async () => {
+  const selectedValue = taskTypeSelectValue.value;
+  if (!selectedValue || selectedValue === currentTaskType.value) {
+    isTaskTypeEditing.value = false;
+    return;
+  }
+
+  emit('loadingChange', true);
+  const [error] = await task.editTaskTaskType(currentTaskId.value, selectedValue);
+  emit('loadingChange', false);
+  isTaskTypeEditing.value = false;
+  if (selectedValue === TaskType.BUG) {
+    await task.updateTask(currentTaskId.value, {
       bugLevel: BugLevel.MINOR,
       missingBug: false
     });
@@ -329,13 +419,18 @@ const taskTypeBlur = async () => {
     return;
   }
 
-  emit('change', { id: taskId.value, taskType: { value, message: taskTypeMessage.value! } });
+  emit('change', { id: currentTaskId.value, taskType: { value: selectedValue, message: taskTypeSelectMessage.value! } });
 };
 
-const taskTypeExcludes = (data: { value: TaskInfo['taskType']['value']; message: string }) => {
-  const value = data.value;
-  const type = taskType.value;
-  if (taskId.value) {
+/**
+ * Check if task type should be excluded from selection
+ * @param data - Task type data with value and message
+ * @returns Whether the task type should be excluded
+ */
+const shouldExcludeTaskType = (data: { value: string; message: string }) => {
+  const value = data.value as TaskInfo['taskType']['value'];
+  const type = currentTaskType.value;
+  if (currentTaskId.value) {
     if (type === TaskType.API_TEST) {
       return value !== TaskType.API_TEST;
     }
@@ -348,153 +443,188 @@ const taskTypeExcludes = (data: { value: TaskInfo['taskType']['value']; message:
   return false;
 };
 
-const toEditPriority = () => {
-  priorityValue.value = priority.value;
-  priorityEditFlag.value = true;
+/**
+ * Enter priority editing mode and focus the select
+ */
+const enterPriorityEditMode = () => {
+  prioritySelectValue.value = currentPriority.value;
+  isPriorityEditing.value = true;
 
   nextTick(() => {
     setTimeout(() => {
-      if (typeof priorityRef.value?.focus === 'function') {
-        priorityRef.value?.focus();
+      if (typeof prioritySelectRef.value?.focus === 'function') {
+        prioritySelectRef.value?.focus();
       }
     }, 100);
   });
 };
 
-const priorityChange = async (
-  _event: { target: { value: TaskInfo['priority']['value']; } },
-  option: { message: string; value: TaskInfo['priority']['value']
-  }) => {
-  priorityMessage.value = option.message;
+/**
+ * Handle priority selection change and update message
+ * @param value - Selected value
+ * @param option - Selected option with message and value
+ */
+const handlePrioritySelectionChange = async (_value: string, option: any) => {
+  if (option && option.message) {
+    prioritySelectMessage.value = option.message;
+  }
 };
 
-const priorityBlur = async () => {
-  const value = priorityValue.value;
-  if (!value || value === priority.value) {
-    priorityEditFlag.value = false;
+/**
+ * Handle priority selection blur and update task priority
+ */
+const handlePrioritySelectionBlur = async () => {
+  const selectedValue = prioritySelectValue.value;
+  if (!selectedValue || selectedValue === currentPriority.value) {
+    isPriorityEditing.value = false;
     return;
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTaskPriority(taskId.value, value);
+  const [error] = await task.editTaskPriority(currentTaskId.value, selectedValue);
   emit('loadingChange', false);
-  priorityEditFlag.value = false;
+  isPriorityEditing.value = false;
   if (error) {
     return;
   }
 
-  emit('change', { id: taskId.value, priority: { value, message: priorityMessage.value! } });
+  emit('change', { id: currentTaskId.value, priority: { value: selectedValue, message: prioritySelectMessage.value! } });
 };
 
-const toEditTag = () => {
-  tagIdList.value = tagIds.value;
-  tagEditFlag.value = true;
+/**
+ * Enter tag editing mode and focus the select
+ */
+const enterTagEditMode = () => {
+  selectedTagIdList.value = currentTagIds.value;
+  isTagEditing.value = true;
 
   nextTick(() => {
     setTimeout(() => {
-      if (typeof tagRef.value?.focus === 'function') {
-        tagRef.value?.focus();
+      if (typeof tagSelectRef.value?.focus === 'function') {
+        tagSelectRef.value?.focus();
       }
     }, 100);
   });
 };
 
-const tagChange = async (
-  _event: { target: { value: string[]; } },
-  options: { id: string; name: string; }[]) => {
-  tagList.value = options;
+/**
+ * Handle tag selection change and update selected tags
+ * @param value - Selected values
+ * @param options - Selected tag options
+ */
+const handleTagSelectionChange = async (_value: any, options: any) => {
+  if (Array.isArray(options)) {
+    selectedTagList.value = options;
+  }
 };
 
-const tagBlur = async () => {
-  const ids = tagIdList.value;
-  if (isEqual(ids, tagIds.value)) {
-    tagEditFlag.value = false;
+/**
+ * Handle tag selection blur and update task tags
+ */
+const handleTagSelectionBlur = async () => {
+  const selectedIds = selectedTagIdList.value;
+  if (isEqual(selectedIds, currentTagIds.value)) {
+    isTagEditing.value = false;
     return;
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTaskTags(taskId.value, { tagIds: ids });
+  const [error] = await task.editTaskTags(currentTaskId.value, { tagIds: selectedIds });
   emit('loadingChange', false);
-  tagEditFlag.value = false;
+  isTagEditing.value = false;
   if (error) {
     return;
   }
 
-  emit('change', { id: taskId.value, tags: tagList.value });
+  emit('change', { id: currentTaskId.value, tags: selectedTagList.value });
 };
 
-const toEditVersion = () => {
-  versionEditFlag.value = true;
-  versionValue.value = props.dataSource?.softwareVersion;
+/**
+ * Enter version editing mode and focus the select
+ */
+const enterVersionEditMode = () => {
+  isVersionEditing.value = true;
+  versionSelectValue.value = props.dataSource?.softwareVersion;
   nextTick(() => {
     setTimeout(() => {
-      if (typeof versionRef.value?.focus === 'function') {
-        versionRef.value?.focus();
+      if (typeof versionSelectRef.value?.focus === 'function') {
+        versionSelectRef.value?.focus();
       }
     }, 100);
   });
 };
 
-const versionChange = (value) => {
-  versionValue.value = value;
+/**
+ * Handle version selection change
+ * @param value - Selected version value
+ */
+const handleVersionSelectionChange = (value) => {
+  versionSelectValue.value = value;
 };
 
-const versionBlur = async () => {
-  const value = versionValue.value;
-  if (value === props.dataSource?.softwareVersion) {
-    versionEditFlag.value = false;
+/**
+ * Handle version selection blur and update task software version
+ */
+const handleVersionSelectionBlur = async () => {
+  const selectedValue = versionSelectValue.value;
+  if (selectedValue === props.dataSource?.softwareVersion) {
+    isVersionEditing.value = false;
     return;
   }
 
   emit('loadingChange', true);
-  const [error] = await task.updateTask(taskId.value, { softwareVersion: value || '' });
+  const [error] = await task.updateTask(currentTaskId.value, { softwareVersion: selectedValue || '' });
   emit('loadingChange', false);
-  versionEditFlag.value = false;
+  isVersionEditing.value = false;
   if (error) {
     return;
   }
 
-  emit('change', { id: taskId.value, softwareVersion: versionValue.value });
+  emit('change', { id: currentTaskId.value, softwareVersion: versionSelectValue.value });
 };
 
-const loadingChange = (value:boolean) => {
+/**
+ * Handle loading state change
+ * @param value - Loading state
+ */
+const handleLoadingChange = (value: boolean) => {
   emit('loadingChange', value);
 };
 
-const taskInfoChange = (data: Partial<TaskInfo>) => {
+/**
+ * Handle task info change
+ * @param data - Changed task data
+ */
+const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
   emit('change', data);
 };
 
-onMounted(() => {
-  getModuleTreeData();
-});
-
-const taskId = computed(() => props.dataSource?.id);
-const status = computed(() => props.dataSource?.status);
-const name = computed(() => props.dataSource?.name);
-const taskType = computed(() => props.dataSource?.taskType?.value);
-const sprintId = computed(() => props.dataSource?.sprintId);
-const moduleId = computed(() => {
+// Computed properties
+const currentSprintId = computed(() => props.dataSource?.sprintId);
+const currentModuleId = computed(() => {
   if (!props.dataSource?.moduleId || props.dataSource?.moduleId === '-1') {
     return undefined;
   }
-
   return props.dataSource?.moduleId;
 });
-const priority = computed(() => props.dataSource?.priority?.value);
-const tags = computed(() => props.dataSource?.tags || []);
-const tagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
-const evalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
-const evalWorkload = computed(() => props.dataSource?.evalWorkload);
-const actualWorkload = computed(() => props.dataSource?.actualWorkload);
-const overdue = computed(() => props.dataSource?.overdue);
-const totalNum = computed(() => +(props.dataSource?.totalNum || 0));
-const failNum = computed(() => +(props.dataSource?.failNum || 0));
-const onePassText = computed(() => {
-  if (totalNum.value <= 0) {
+const currentTaskId = computed(() => props.dataSource?.id);
+const currentTaskStatus = computed(() => props.dataSource?.status);
+const currentTaskName = computed(() => props.dataSource?.name);
+const currentTaskType = computed(() => props.dataSource?.taskType?.value);
+const currentPriority = computed(() => props.dataSource?.priority?.value);
+const currentTags = computed(() => props.dataSource?.tags || []);
+const currentTagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
+const currentEvalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
+const currentEvalWorkload = computed(() => props.dataSource?.evalWorkload);
+const currentActualWorkload = computed(() => props.dataSource?.actualWorkload);
+const isTaskOverdue = computed(() => props.dataSource?.overdue);
+const totalTestCount = computed(() => +(props.dataSource?.totalNum || 0));
+const failedTestCount = computed(() => +(props.dataSource?.failNum || 0));
+const onePassStatusText = computed(() => {
+  if (totalTestCount.value <= 0) {
     return '--';
   }
-  return failNum.value === 0 ? t('status.yes') : t('status.no');
+  return failedTestCount.value === 0 ? t('status.yes') : t('status.no');
 });
 </script>
 
@@ -523,27 +653,27 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
 
-          <div v-show="!nameEditFlag" class="flex items-start whitespace-pre-wrap break-words break-all">
-            <div>{{ name }}</div>
+          <div v-show="!isTaskNameEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
+            <div>{{ currentTaskName }}</div>
             <Button
               type="link"
               class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-              @click="toEditName">
+              @click="enterTaskNameEditMode">
               <Icon icon="icon-shuxie" class="text-3.5" />
             </Button>
           </div>
 
-          <AsyncComponent :visible="nameEditFlag">
+          <AsyncComponent :visible="isTaskNameEditing">
             <Input
-              v-show="nameEditFlag"
-              ref="nameRef"
-              v-model:value="taskName"
+              v-show="isTaskNameEditing"
+              ref="taskNameInputRef"
+              v-model:value="taskNameInputValue"
               :maxlength="200"
               trim
               class="edit-container"
               :placeholder="t('task.detailInfo.basic.columns.namePlaceholder')"
-              @blur="nameBlur"
-              @pressEnter="namePressEnter" />
+              @blur="handleTaskNameInputBlur"
+              @pressEnter="handleTaskNameInputEnter" />
           </AsyncComponent>
         </div>
 
@@ -554,9 +684,9 @@ const onePassText = computed(() => {
           </div>
 
           <div class="flex items-center">
-            <TaskStatus :value="status" />
+            <TaskStatus :value="currentTaskStatus" />
             <span
-              v-if="overdue"
+              v-if="isTaskOverdue"
               class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
               style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
               <span class="inline-block transform-gpu scale-90">
@@ -572,28 +702,28 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
 
-          <div v-show="!sprintEditFlag" class="flex items-center">
+          <div v-show="!isSprintEditing" class="flex items-center">
             <span class="ml-1.5">{{ props.dataSource?.sprintName }}</span>
             <Button
               type="link"
               class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-              @click="toEditSprint">
+              @click="enterSprintEditMode">
               <Icon icon="icon-shuxie" class="text-3.5" />
             </Button>
           </div>
 
-          <AsyncComponent :visible="sprintEditFlag">
+          <AsyncComponent :visible="isSprintEditing">
             <Select
-              v-show="sprintEditFlag"
-              ref="sprintRef"
-              v-model:value="sprintValue"
+              v-show="isSprintEditing"
+              ref="sprintSelectRef"
+              v-model:value="sprintSelectValue"
               :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
               :fieldNames="{ value: 'id', label: 'name' }"
               showSearch
               :placeholder="t('task.detailInfo.basic.columns.selectSprint')"
               class="edit-container"
-              @change="sprintChange"
-              @blur="sprintBlur" />
+              @change="handleSprintSelectionChange"
+              @blur="handleSprintSelectionBlur" />
           </AsyncComponent>
         </div>
 
@@ -603,21 +733,21 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
 
-          <div v-show="!moduleEditFlag" class="flex items-center">
+          <div v-show="!isModuleEditing" class="flex items-center">
             <span class="ml-1.5">{{ props.dataSource?.moduleName }}</span>
             <Button
               type="link"
               class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-              @click="toEditModule">
+              @click="enterModuleEditMode">
               <Icon icon="icon-shuxie" class="text-3.5" />
             </Button>
           </div>
 
-          <AsyncComponent :visible="moduleEditFlag">
-            <div v-show="moduleEditFlag" class="flex items-center w-full">
+          <AsyncComponent :visible="isModuleEditing">
+            <div v-show="isModuleEditing" class="flex items-center w-full">
               <TreeSelect
-                ref="moduleRef"
-                v-model:value="moduleValue"
+                ref="moduleTreeSelectRef"
+                v-model:value="moduleTreeSelectValue"
                 :treeData="moduleTreeData"
                 :fieldNames="{ value: 'id', label: 'name', children: 'children' }"
                 :virtual="false"
@@ -636,11 +766,11 @@ const onePassText = computed(() => {
               <Icon
                 icon="icon-gouxuanzhong"
                 class="text-3.5 ml-2 mr-1.5 cursor-pointer text-theme-text-hover"
-                @click="moduleOk" />
+                @click="confirmModuleSelection" />
               <Icon
                 icon="icon-shanchuguanbi"
                 class="text-3.5 cursor-pointer text-theme-text-hover"
-                @click="moduleCancel" />
+                @click="cancelModuleEdit" />
             </div>
           </AsyncComponent>
         </div>
@@ -671,16 +801,16 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
 
-          <div v-show="!taskTypeEditFlag" class="flex items-center">
-            <IconTask :value="taskType" class="text-4 flex-shrink-0" />
+          <div v-show="!isTaskTypeEditing" class="flex items-center">
+            <IconTask :value="currentTaskType" class="text-4 flex-shrink-0" />
             <span class="ml-1.5">{{ props.dataSource?.taskType?.message }}</span>
             <Button
               type="link"
               class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-              @click="toEditTaskType">
+              @click="enterTaskTypeEditMode">
               <Icon icon="icon-shuxie" class="text-3.5" />
             </Button>
-            <template v-if="taskType === TaskType.BUG">
+            <template v-if="currentTaskType === TaskType.BUG">
               <Tag
                 v-if="props.dataSource?.bugLevel"
                 color="error"
@@ -696,21 +826,21 @@ const onePassText = computed(() => {
             </template>
           </div>
 
-          <AsyncComponent :visible="taskTypeEditFlag">
+          <AsyncComponent :visible="isTaskTypeEditing">
             <SelectEnum
-              v-show="taskTypeEditFlag"
-              ref="taskTypeRef"
-              v-model:value="taskTypeValue"
-              :excludes="taskTypeExcludes"
+              v-show="isTaskTypeEditing"
+              ref="taskTypeSelectRef"
+              v-model:value="taskTypeSelectValue"
+              :excludes="shouldExcludeTaskType"
               enumKey="TaskType"
               :placeholder="t('task.detailInfo.basic.columns.selectTaskType')"
               class="edit-container"
-              @change="taskTypeChange"
-              @blur="taskTypeBlur">
+              @change="handleTaskTypeSelectionChange as any"
+              @blur="handleTaskTypeSelectionBlur as any">
               <template #option="record">
                 <div class="flex items-center">
-                  <IconTask :value="record.value" class="text-4 flex-shrink-0" />
-                  <span class="ml-2">{{ record.message }}</span>
+                  <IconTask :value="record.value as any" class="text-4 flex-shrink-0" />
+                  <span class="ml-2">{{ (record as any).message || record.label }}</span>
                 </div>
               </template>
             </SelectEnum>
@@ -723,28 +853,28 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
 
-          <div v-show="!priorityEditFlag" class="flex items-center">
+          <div v-show="!isPriorityEditing" class="flex items-center">
             <TaskPriority :value="props.dataSource?.priority" />
             <Button
               type="link"
               class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-              @click="toEditPriority">
+              @click="enterPriorityEditMode">
               <Icon icon="icon-shuxie" class="text-3.5" />
             </Button>
           </div>
 
-          <AsyncComponent :visible="priorityEditFlag">
+          <AsyncComponent :visible="isPriorityEditing">
             <SelectEnum
-              v-show="priorityEditFlag"
-              ref="priorityRef"
-              v-model:value="priorityValue"
+              v-show="isPriorityEditing"
+              ref="prioritySelectRef"
+              v-model:value="prioritySelectValue"
               enumKey="Priority"
               :placeholder="t('task.detailInfo.basic.columns.selectPriority')"
               class="edit-container"
-              @change="priorityChange"
-              @blur="priorityBlur">
+              @change="handlePrioritySelectionChange as any"
+              @blur="handlePrioritySelectionBlur as any">
               <template #option="record">
-                <TaskPriority :value="record" />
+                <TaskPriority :value="record as any" />
               </template>
             </SelectEnum>
           </AsyncComponent>
@@ -764,7 +894,7 @@ const onePassText = computed(() => {
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
             <span>
-              {{ evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+              {{ currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
                 ? t('task.detailInfo.basic.columns.evalWorkload')
                 : t('task.detailInfo.basic.columns.evalWorkloadHours')
               }}
@@ -772,29 +902,29 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
 
-          <div v-show="!evalWorkloadEditFlag" class="flex items-start whitespace-pre-wrap break-words break-all">
-            <div>{{ evalWorkload || '--' }}</div>
+          <div v-show="!isEvalWorkloadEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
+            <div>{{ currentEvalWorkload || '--' }}</div>
             <Button
               type="link"
               class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-              @click="toEditEvalWorkload">
+              @click="enterEvalWorkloadEditMode">
               <Icon icon="icon-shuxie" class="text-3.5" />
             </Button>
           </div>
 
-          <AsyncComponent :visible="evalWorkloadEditFlag">
+          <AsyncComponent :visible="isEvalWorkloadEditing">
             <Input
-              v-show="evalWorkloadEditFlag"
-              ref="evalWorkloadRef"
-              v-model:value="evalWorkloadValue"
+              v-show="isEvalWorkloadEditing"
+              ref="evalWorkloadInputRef"
+              v-model:value="evalWorkloadInputValue"
               class="edit-container"
               dataType="float"
               trimAll
               :min="0.1"
               :max="1000"
               :placeholder="t('task.detailInfo.basic.columns.evalWorkloadPlaceholder')"
-              @blur="evalWorkloadBlur"
-              @pressEnter="evalWorkloadPressEnter" />
+              @blur="handleEvalWorkloadInputBlur"
+              @pressEnter="handleEvalWorkloadInputEnter" />
           </AsyncComponent>
         </div>
 
@@ -802,7 +932,7 @@ const onePassText = computed(() => {
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
             <span>
               {{
-                evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
                   ? t('task.detailInfo.basic.columns.actualStoryPoint')
                   : t('task.detailInfo.basic.columns.actualWorkload')
               }}
@@ -810,29 +940,29 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
 
-          <div v-show="!actualWorkloadEditFlag" class="flex items-start whitespace-pre-wrap break-words break-all">
-            <div>{{ actualWorkload || '--' }}</div>
+          <div v-show="!isActualWorkloadEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
+            <div>{{ currentActualWorkload || '--' }}</div>
             <Button
               type="link"
               class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-              @click="toEditActualWorkload">
+              @click="enterActualWorkloadEditMode">
               <Icon icon="icon-shuxie" class="text-3.5" />
             </Button>
           </div>
 
-          <AsyncComponent :visible="actualWorkloadEditFlag">
+          <AsyncComponent :visible="isActualWorkloadEditing">
             <Input
-              v-show="actualWorkloadEditFlag"
-              ref="actualWorkloadRef"
-              v-model:value="actualWorkloadValue"
+              v-show="isActualWorkloadEditing"
+              ref="actualWorkloadInputRef"
+              v-model:value="actualWorkloadInputValue"
               class="edit-container"
               dataType="float"
               trimAll
               :min="0.1"
               :max="1000"
               :placeholder="t('task.detailInfo.basic.columns.actualWorkloadPlaceholder')"
-              @blur="actualWorkloadBlur"
-              @pressEnter="actualWorkloadPressEnter" />
+              @blur="handleActualWorkloadInputBlur"
+              @pressEnter="handleActualWorkloadInputEnter" />
           </AsyncComponent>
         </div>
 
@@ -842,7 +972,7 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
 
-          <div class="whitespace-pre-wrap break-words break-all">{{ totalNum }}</div>
+          <div class="whitespace-pre-wrap break-words break-all">{{ totalTestCount }}</div>
         </div>
 
         <div class="flex items-start">
@@ -851,7 +981,7 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
 
-          <div class="whitespace-pre-wrap break-words break-all">{{ failNum }}</div>
+          <div class="whitespace-pre-wrap break-words break-all">{{ failedTestCount }}</div>
         </div>
 
         <div class="flex items-start">
@@ -860,10 +990,10 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
 
-          <div v-show="!tagEditFlag" class="flex items-start whitespace-pre-wrap break-words break-all">
-            <div v-if="tags.length" class="flex items-center flex-wrap transform-gpu -translate-y-0.25">
+          <div v-show="!isTagEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
+            <div v-if="currentTags.length" class="flex items-center flex-wrap transform-gpu -translate-y-0.25">
               <div
-                v-for="item in tags"
+                v-for="item in currentTags"
                 :key="item.id"
                 class="px-2 h-5 leading-4.5 mr-1 mb-1 rounded border border-solid border-border-divider bg-gray-light text-theme-sub-content">
                 {{ item.name }}
@@ -873,16 +1003,16 @@ const onePassText = computed(() => {
             <Button
               type="link"
               class="flex-shrink-0 ml-1 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-              @click="toEditTag">
+              @click="enterTagEditMode">
               <Icon icon="icon-shuxie" class="text-3.5" />
             </Button>
           </div>
 
-          <AsyncComponent :visible="tagEditFlag">
+          <AsyncComponent :visible="isTagEditing">
             <Select
-              v-show="tagEditFlag"
-              ref="tagRef"
-              v-model:value="tagIdList"
+              v-show="isTagEditing"
+              ref="tagSelectRef"
+              v-model:value="selectedTagIdList"
               :fieldNames="{ label: 'name', value: 'id' }"
               :maxTagCount="5"
               :maxTagTextLength="15"
@@ -893,8 +1023,8 @@ const onePassText = computed(() => {
               mode="multiple"
               class="edit-container"
               :notFoundContent="t('task.detailInfo.basic.columns.tagsNotFound')"
-              @change="tagChange"
-              @blur="tagBlur" />
+              @change="handleTagSelectionChange as any"
+              @blur="handleTagSelectionBlur as any" />
           </AsyncComponent>
         </div>
 
@@ -904,7 +1034,7 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
 
-          <div class="whitespace-pre-wrap break-words break-all">{{ onePassText }}</div>
+          <div class="whitespace-pre-wrap break-words break-all">{{ onePassStatusText }}</div>
         </div>
 
         <div class="flex items-start">
@@ -913,10 +1043,10 @@ const onePassText = computed(() => {
             <Colon class="w-1" />
           </div>
           <div class="flex-1 min-w-0">
-            <template v-if="versionEditFlag">
+            <template v-if="isVersionEditing">
               <Select
-                ref="versionRef"
-                v-model:value="versionValue"
+                ref="versionSelectRef"
+                v-model:value="versionSelectValue"
                 allowClear
                 :placeholder="t('task.detailInfo.basic.columns.softwareVersionPlaceholder')"
                 class="w-full"
@@ -924,8 +1054,8 @@ const onePassText = computed(() => {
                 :action="`${TESTER}/software/version?projectId=${props.projectId}`"
                 :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN'}]}"
                 :fieldNames="{value:'name', label: 'name'}"
-                @blur="versionBlur"
-                @change="versionChange">
+                @blur="handleVersionSelectionBlur as any"
+                @change="handleVersionSelectionChange as any">
               </Select>
             </template>
             <template v-else>
@@ -942,7 +1072,7 @@ const onePassText = computed(() => {
                 <Button
                   type="link"
                   class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-                  @click="toEditVersion">
+                  @click="enterVersionEditMode">
                   <Icon icon="icon-shuxie" class="text-3.5" />
                 </Button>
               </div>
@@ -966,8 +1096,8 @@ const onePassText = computed(() => {
       :projectId="props.projectId"
       :appInfo="props.appInfo"
       :dataSource="props.dataSource"
-      @change="taskInfoChange"
-      @loadingChange="loadingChange" />
+      @change="handleTaskInfoChange"
+      @loadingChange="handleLoadingChange" />
   </div>
 </template>
 

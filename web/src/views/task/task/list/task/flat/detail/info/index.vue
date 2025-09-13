@@ -4,15 +4,17 @@ import { TaskType } from '@/enums/enums';
 
 import { TaskInfo } from '@/views/task/types';
 
+// Component props type definition
 type Props = {
   projectId: string;
-  userInfo: { id: string; };
+  userInfo: { id: string; fullName: string; };
   appInfo: { id: string; };
   dataSource: TaskInfo;
   largePageLayout: boolean;
   loading: boolean;
 }
 
+// Component props and emits
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -28,6 +30,7 @@ const emit = defineEmits<{
   (event: 'change', value: Partial<TaskInfo>): void;
 }>();
 
+// Async component imports
 const APIBasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/detail/info/Apis.vue'));
 const ScenarioBasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/detail/info/Scenario.vue'));
 const BasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/detail/info/Basic.vue'));
@@ -36,23 +39,48 @@ const PersonnelInfo = defineAsyncComponent(() => import('@/views/task/task/list/
 const DateInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/detail/info/Date.vue'));
 const AttachmentInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/detail/info/Attachment.vue'));
 
-const change = (data: Partial<TaskInfo>) => {
+// Event handlers
+/**
+ * <p>Handles task data change events from child components.</p>
+ * <p>Forwards the change event to parent components.</p>
+ * @param data - Partial task information that has been changed
+ */
+const handleTaskDataChange = (data: Partial<TaskInfo>) => {
   emit('change', data);
 };
 
-const loadingChange = (value: boolean) => {
+/**
+ * <p>Handles loading state change events from child components.</p>
+ * <p>Forwards the loading state change to parent components.</p>
+ * @param value - New loading state value
+ */
+const handleLoadingStateChange = (value: boolean) => {
   emit('update:loading', value);
 };
 
-const taskId = computed(() => {
+// Computed properties
+/**
+ * <p>Gets the current task ID from the data source.</p>
+ * @returns The task ID or undefined if not available
+ */
+const currentTaskId = computed(() => {
   return props.dataSource?.id;
 });
 
-const taskType = computed(() => {
+/**
+ * <p>Gets the current task type from the data source.</p>
+ * @returns The task type value or undefined if not available
+ */
+const currentTaskType = computed(() => {
   return props.dataSource?.taskType?.value;
 });
 
-const className = computed(() => {
+/**
+ * <p>Determines the CSS class name based on the page layout configuration.</p>
+ * <p>Returns 'large-page-layout' for large pages, 'small-page-layout' for small pages.</p>
+ * @returns CSS class name for the layout
+ */
+const layoutClassName = computed(() => {
   if (props.largePageLayout) {
     return 'large-page-layout';
   }
@@ -65,27 +93,27 @@ const className = computed(() => {
 </script>
 
 <template>
-  <div :class="className" class="h-full pr-5 overflow-auto">
+  <div :class="layoutClassName" class="h-full pr-5 overflow-auto">
     <div class="flex-1 space-y-4">
       <APIBasicInfo
-        v-if="taskType === TaskType.API_TEST"
+        v-if="currentTaskType === TaskType.API_TEST"
         :dataSource="props.dataSource"
         :projectId="props.projectId"
         :userInfo="props.userInfo"
         :appInfo="props.appInfo"
-        :taskId="taskId"
-        @change="change"
-        @loadingChange="loadingChange" />
+        :taskId="currentTaskId"
+        @change="handleTaskDataChange"
+        @loadingChange="handleLoadingStateChange" />
 
       <ScenarioBasicInfo
-        v-else-if="taskType === TaskType.SCENARIO_TEST"
+        v-else-if="currentTaskType === TaskType.SCENARIO_TEST"
         :dataSource="props.dataSource"
         :projectId="props.projectId"
         :userInfo="props.userInfo"
         :appInfo="props.appInfo"
-        :taskId="taskId"
-        @change="change"
-        @loadingChange="loadingChange" />
+        :taskId="currentTaskId"
+        @change="handleTaskDataChange"
+        @loadingChange="handleLoadingStateChange" />
 
       <BasicInfo
         v-else
@@ -93,18 +121,18 @@ const className = computed(() => {
         :projectId="props.projectId"
         :userInfo="props.userInfo"
         :appInfo="props.appInfo"
-        :taskId="taskId"
-        @change="change"
-        @loadingChange="loadingChange" />
+        :taskId="currentTaskId"
+        @change="handleTaskDataChange"
+        @loadingChange="handleLoadingStateChange" />
 
       <Description
         :dataSource="props.dataSource"
         :projectId="props.projectId"
         :userInfo="props.userInfo"
         :appInfo="props.appInfo"
-        :taskId="taskId"
-        @change="change"
-        @loadingChange="loadingChange" />
+        :taskId="currentTaskId"
+        @change="handleTaskDataChange"
+        @loadingChange="handleLoadingStateChange" />
     </div>
 
     <div class="flex-shrink-0 w-75 space-y-4">
@@ -113,26 +141,26 @@ const className = computed(() => {
         :projectId="props.projectId"
         :userInfo="props.userInfo"
         :appInfo="props.appInfo"
-        :taskId="taskId"
-        @change="change"
-        @loadingChange="loadingChange" />
+        :taskId="currentTaskId"
+        @change="handleTaskDataChange"
+        @loadingChange="handleLoadingStateChange" />
 
       <DateInfo
         :dataSource="props.dataSource"
         :projectId="props.projectId"
         :appInfo="props.appInfo"
-        :taskId="taskId"
-        @change="change"
-        @loadingChange="loadingChange" />
+        :taskId="currentTaskId"
+        @change="handleTaskDataChange"
+        @loadingChange="handleLoadingStateChange" />
 
       <AttachmentInfo
         :dataSource="props.dataSource"
         :projectId="props.projectId"
         :userInfo="props.userInfo"
         :appInfo="props.appInfo"
-        :taskId="taskId"
-        @change="change"
-        @loadingChange="loadingChange" />
+        :taskId="currentTaskId"
+        @change="handleTaskDataChange"
+        @loadingChange="handleLoadingStateChange" />
     </div>
   </div>
 </template>

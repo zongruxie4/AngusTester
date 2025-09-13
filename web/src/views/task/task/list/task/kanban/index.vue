@@ -1,44 +1,38 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, ref, Ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
-import {
-  Arrow, AsyncComponent, Colon, Dropdown, Icon, IconTask,
-  Image, modal, notification, TaskPriority, Tooltip
-} from '@xcan-angus/vue-ui';
-import { appContext, enumUtils } from '@xcan-angus/infra';
-import { TaskStatus } from '@/enums/enums';
 import dayjs from 'dayjs';
 import { reverse, sortBy } from 'lodash-es';
 import Draggable from 'vuedraggable';
-import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
+import {
+  Arrow, AsyncComponent, Colon, Dropdown, Icon, IconTask, Image, modal, notification, TaskPriority, Tooltip
+} from '@xcan-angus/vue-ui';
+import { appContext, enumUtils, PageQuery, SearchCriteria } from '@xcan-angus/infra';
+import { TaskSprintPermission, TaskStatus, TaskType } from '@/enums/enums';
+import { task } from '@/api/tester';
 
 import { TaskInfo } from '@/views/task/types';
+import { ActionMenuItem } from '@/views/task/task/types';
 
-type ActionMenuItem = {
-  name: string;
-  key: 'delete' | 'edit' | 'start' | 'processed' | 'uncompleted' | 'completed' | 'reopen' | 'restart' | 'cancel' | 'move' | 'cancelFavourite' | 'favourite' | 'cancelFollow' | 'follow' | 'copyLink';
-  icon: string;
-  disabled: boolean;
-  hide: boolean;
-  tip?: string;
-}
-
+// Type definitions for component props
 type Props = {
   projectId: string;
   userInfo: { id: string; };
   appInfo: { id: string; };
-  filters: { key: string; op: string; value: boolean | string | string[]; }[];
+  filters: SearchCriteria[];
   notify: string;
   moduleId: string;
   loading: boolean;
   groupKey: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType';
   orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName';
-  orderSort: 'DESC' | 'ASC';
+  orderSort: PageQuery.OrderSort;
 };
 
+// Initialize internationalization
 const { t } = useI18n();
 
+// Component props with default values
 const props = withDefaults(defineProps<Props>(), {
   filters: undefined,
   userInfo: undefined,
@@ -51,6 +45,7 @@ const props = withDefaults(defineProps<Props>(), {
   orderSort: undefined
 });
 
+// Component event emitters
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'update:loading', value: boolean): void;
@@ -58,6 +53,7 @@ const emit = defineEmits<{
   (event: 'refreshChange'): void;
 }>();
 
+// Lazy-loaded modal and detail components
 const MoveTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/Move.vue'));
 const EditTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/Edit.vue'));
 const APIInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/info/Apis.vue'));
@@ -72,27 +68,30 @@ const AssocCases = defineAsyncComponent(() => import('@/views/task/task/list/tas
 const AttachmentInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/info/Attachment.vue'));
 const Remarks = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/Remark.vue'));
 
+// Computed properties
 const isAdmin = computed(() => appContext.isAdmin());
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true }));
 
+// Drawer and modal state
 const drawerActiveKey = ref<'basic' | 'person' | 'date' | 'comment' | 'activity' | 'tasks' | 'cases' | 'attachments' | 'remarks'>('basic');
-
 const checkedTaskInfo = ref<TaskInfo>();
 const checkedSprintInfo = ref<{ id: string; name: string; }>();
-
 const moveModalVisible = ref(false);
+const taskModalVisible = ref(false);
+
+// Task selection state
 const selectedTaskSprintId = ref<string>();
 const selectedTaskId = ref<string>();
 const selectedTaskName = ref<string>();
-
 const selectedIndex = ref<number>();
 const selectedStatus = ref<TaskInfo['status']['value']>();
 const selectedByGroupKey = ref<string>();
-const taskModalVisible = ref(false);
 const searchSprintId = ref<string>();
 
-const sprintPermissionsMap = ref<Map<string, SprintPermissionKey[]>>(new Map());
+// Permission and data maps
+const sprintPermissionsMap = ref<Map<string, TaskSprintPermission[]>>(new Map());
 
+// Task data collections
 const statusList = ref<{ message: string; value: TaskInfo['status']['value'] }[]>([]);
 const taskList = ref<TaskInfo[]>([]);
 const groupDataMap = ref<{ [key: string]: { [key in TaskInfo['status']['value']]: TaskInfo[] } }>({});
@@ -103,7 +102,7 @@ const taskDataMap = ref<{ [key in TaskInfo['status']['value']]: TaskInfo[] }>({
   IN_PROGRESS: [],
   PENDING: []
 });
-const numMap = ref<{ [key in TaskInfo['status']['value']]: number }>({
+const taskCountMap = ref<{ [key in TaskInfo['status']['value']]: number }>({
   CANCELED: 0,
   COMPLETED: 0,
   CONFIRMING: 0,
@@ -111,22 +110,26 @@ const numMap = ref<{ [key in TaskInfo['status']['value']]: number }>({
   PENDING: 0
 });
 
+// Group data lists
 const assigneeNameList = ref<{ name: string; value: string }[]>([]);
 const lastModifiedByNameList = ref<{ name: string; value: string }[]>([]);
 const taskTypeList = ref<{ name: string; value: string }[]>([]);
 
-const openFlag = ref(false);
-const arrowOpenSet = ref(new Set<string>());
-
+// UI state
+const isGroupExpanded = ref(false);
+const expandedGroupSet = ref(new Set<string>());
 const isDraggingToColumn = ref<number | null>(null);
 const isDraggingToColumnStatus = ref<TaskInfo['status']['value'][]>([]);
 
+// Data loading methods
 const loadEnum = () => {
+  // Load task status enum values for display
   const res = enumUtils.enumToMessages(TaskStatus);
   statusList.value = (res || []) as { message: string; value: TaskInfo['status']['value'] }[];
 };
 
 const loadData = async () => {
+  // Load all task data with pagination support
   const params = getParams();
   emit('update:loading', true);
   const [error, res] = await task.getTaskList(params);
@@ -140,8 +143,10 @@ const loadData = async () => {
 
   const { list, total } = (res?.data || { total: 0, list: [] });
   const len = list.length;
-  const _taskList: TaskInfo[] = [];
-  _taskList.push(...list);
+  const allTasks: TaskInfo[] = [];
+  allTasks.push(...list);
+
+  // Load remaining pages if needed
   if (len < +total) {
     const pages = Math.ceil((total - len) / params.pageSize);
     for (let i = 0, len = pages; i < len; i++) {
@@ -154,26 +159,28 @@ const loadData = async () => {
       }
 
       const { list: _list } = (_res?.data || { total: 0, list: [] });
-      _taskList.push(..._list);
+      allTasks.push(..._list);
     }
   }
 
-  // 保存原始数据
-  taskList.value = _taskList;
+  taskList.value = allTasks;
 
+  // Process tasks and organize data
   const newList: TaskInfo[] = [];
   const sprintIdSet = new Set<string>();
   const assigneeNameSet = new Set<string>();
   const lastModifiedByNameSet = new Set<string>();
   const taskTypeSet = new Set<string>();
-  for (let i = 0, len = _taskList.length; i < len; i++) {
-    const item = _taskList[i];
+
+  for (let i = 0, len = allTasks.length; i < len; i++) {
+    const item = allTasks[i];
     const status = item.status?.value;
-    numMap.value[status] += 1;
+    taskCountMap.value[status] += 1;
     taskDataMap.value[status].push(item);
     newList.push(item);
     sprintIdSet.add(item.sprintId);
 
+    // Build assignee list for grouping
     if (!assigneeNameSet.has(item.assigneeName)) {
       if (!item.assigneeName) {
         assigneeNameList.value.unshift({
@@ -188,6 +195,7 @@ const loadData = async () => {
       }
     }
 
+    // Build last modified by list for grouping
     if (!lastModifiedByNameSet.has(item.lastModifiedByName)) {
       lastModifiedByNameList.value.push({
         name: item.lastModifiedByName,
@@ -195,6 +203,7 @@ const loadData = async () => {
       });
     }
 
+    // Build task type list for grouping
     if (!taskTypeSet.has(item.taskType.value)) {
       taskTypeList.value.push({
         name: item.taskType.message,
@@ -206,18 +215,22 @@ const loadData = async () => {
     lastModifiedByNameSet.add(item.lastModifiedByName);
     taskTypeSet.add(item.taskType.value);
 
+    // Set group data if grouping is enabled
     if (props.groupKey !== 'none') {
       setGroupData(item);
     }
   }
 
+  // Initialize group data if grouping is enabled
   if (props.groupKey !== 'none') {
     setDefaultGroupData();
   }
 
+  // Load sprint permissions
   sprintPermissionsMap.value.clear();
   const sprintIds = Array.from(sprintIdSet);
-  // 管理员拥有所有权限，无需加载权限
+
+  // Load permissions for non-admin users
   if (!isAdmin.value && proTypeShowMap.value.showSprint) {
     for (let i = 0, len = sprintIds.length; i < len; i++) {
       const id = sprintIds[i];
@@ -230,19 +243,10 @@ const loadData = async () => {
       }
     }
   } else {
+    // Admin users have all permissions
     for (let i = 0, len = sprintIds.length; i < len; i++) {
       const id = sprintIds[i];
-      sprintPermissionsMap.value.set(id, [
-        'MODIFY_SPRINT',
-        'DELETE_SPRINT',
-        'ADD_TASK',
-        'MODIFY_TASK',
-        'DELETE_TASK',
-        'EXPORT_TASK',
-        'RESTART_TASK',
-        'REOPEN_TASK',
-        'GRANT'
-      ]);
+      sprintPermissionsMap.value.set(id, enumUtils.getEnumValues(TaskSprintPermission));
     }
   }
 
@@ -250,6 +254,7 @@ const loadData = async () => {
 };
 
 const loadPermissions = async (id: string) => {
+  // Load user sprint permissions
   const params = {
     admin: true
   };
@@ -258,6 +263,7 @@ const loadPermissions = async (id: string) => {
 };
 
 const loadTaskInfoById = async (id: string): Promise<Partial<TaskInfo>> => {
+  // Load detailed task information by ID
   emit('update:loading', true);
   const [error, res] = await task.getTaskDetail(id);
   emit('update:loading', false);
@@ -268,6 +274,7 @@ const loadTaskInfoById = async (id: string): Promise<Partial<TaskInfo>> => {
 };
 
 const getParams = () => {
+  // Build API request parameters
   const params: {
     backlog: false,
     projectId: string;
@@ -279,7 +286,7 @@ const getParams = () => {
     backlog: false,
     projectId: props.projectId,
     pageNo: 1,
-    pageSize: 500
+    pageSize: 2000
   };
 
   if (props.filters?.length) {
@@ -293,14 +300,21 @@ const getParams = () => {
   return params;
 };
 
-const toSort = (data: { orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName'; orderSort: 'DESC' | 'ASC'; }) => {
+// Sorting methods
+const toSort = (data: { orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName'; orderSort: PageQuery.OrderSort; }) => {
+  // Apply sorting to task data
   sortData(data.orderBy, data.orderSort);
 };
 
-const sortData = (orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName', orderSort: 'DESC' | 'ASC') => {
+const sortData = (orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName', orderSort: PageQuery.OrderSort) => {
+  // Sort tasks by specified criteria
   const map = taskDataMap.value;
+
   if (orderBy === 'priority') {
-    const sortKeys = orderSort === 'DESC' ? ['HIGHEST', 'HIGH', 'MEDIUM', 'LOW', 'LOWEST'] : ['LOWEST', 'LOW', 'MEDIUM', 'HIGH', 'HIGHEST'];
+    // Sort by priority level
+    const sortKeys = orderSort === PageQuery.OrderSort.Desc
+      ? ['HIGHEST', 'HIGH', 'MEDIUM', 'LOW', 'LOWEST']
+      : ['LOWEST', 'LOW', 'MEDIUM', 'HIGH', 'HIGHEST'];
     for (const key in map) {
       map[key].sort((a, b) => {
         const index1 = sortKeys.indexOf(a.priority.value);
@@ -308,12 +322,12 @@ const sortData = (orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assi
         return index1 - index2;
       });
     }
-
     return;
   }
 
   if (orderBy === 'deadlineDate') {
-    if (orderSort === 'DESC') {
+    // Sort by deadline date
+    if (orderSort === PageQuery.OrderSort.Desc) {
       for (const key in map) {
         map[key].sort((a, b) => {
           if (dayjs(a.deadlineDate).isBefore(dayjs(b.deadlineDate))) {
@@ -323,25 +337,21 @@ const sortData = (orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assi
           if (dayjs(a.deadlineDate).isAfter(dayjs(b.deadlineDate))) {
             return -1;
           }
-
           return 0;
         });
       }
-
       return;
     }
 
-    if (orderSort === 'ASC') {
+    if (orderSort === PageQuery.OrderSort.Asc) {
       for (const key in map) {
         map[key].sort((a, b) => {
           if (dayjs(a.deadlineDate).isBefore(dayjs(b.deadlineDate))) {
             return -1;
           }
-
           if (dayjs(a.deadlineDate).isAfter(dayjs(b.deadlineDate))) {
             return 1;
           }
-
           return 0;
         });
       }
@@ -351,15 +361,15 @@ const sortData = (orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assi
   }
 
   if (orderBy === 'assigneeName' || orderBy === 'createdByName') {
-    if (orderSort === 'DESC') {
+    // Sort by name fields
+    if (orderSort === PageQuery.OrderSort.Desc) {
       for (const key in map) {
         map[key] = reverse(sortBy(map[key], orderBy));
       }
-
       return;
     }
 
-    if (orderSort === 'ASC') {
+    if (orderSort === PageQuery.OrderSort.Asc) {
       for (const key in map) {
         map[key] = sortBy(map[key], orderBy);
       }
@@ -367,17 +377,20 @@ const sortData = (orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assi
   }
 };
 
+// Grouping methods
 const toGroup = (value: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType') => {
-  arrowOpenSet.value.clear();
+  // Apply grouping to tasks
+  expandedGroupSet.value.clear();
 
   if (value === 'none') {
+    // No grouping, just apply sorting
     if (props.orderBy) {
       sortData(props.orderBy, props.orderSort);
     }
-
     return;
   }
 
+  // Clear existing group data and rebuild
   groupDataMap.value = {};
   const list = taskList.value;
   for (let i = 0, len = list.length; i < len; i++) {
@@ -388,8 +401,10 @@ const toGroup = (value: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskTy
 };
 
 const setGroupData = (data: TaskInfo) => {
+  // Add task to appropriate group based on groupKey
   const { status: { value: statusValue }, assigneeId = '-1', lastModifiedBy, taskType: { value: taskTypeValue } } = data;
   let key = '';
+
   if (props.groupKey === 'assigneeName') {
     key = assigneeId;
   } else if (props.groupKey === 'lastModifiedByName') {
@@ -410,20 +425,24 @@ const setGroupData = (data: TaskInfo) => {
 };
 
 const setDefaultGroupData = () => {
-  const _statusList = statusList.value.map(item => item.value);
+  // Ensure all groups have all status columns
+  const statusValues = statusList.value.map(item => item.value);
   for (const key in groupDataMap.value) {
-    const keys = Object.keys(groupDataMap.value[key]);
-    for (let i = 0, len = _statusList.length; i < len; i++) {
-      const _status = _statusList[i];
-      if (!keys.includes(_statusList[i])) {
-        groupDataMap.value[key][_status] = [];
+    const existingKeys = Object.keys(groupDataMap.value[key]);
+    for (let i = 0, len = statusValues.length; i < len; i++) {
+      const status = statusValues[i];
+      if (!existingKeys.includes(status)) {
+        groupDataMap.value[key][status] = [];
       }
     }
   }
 };
 
+// Task selection methods
 const toChecked = async (data: TaskInfo, index: number, groupByKey: string) => {
+  // Handle task selection for detail view
   if (data.id === checkedTaskInfo.value?.id) {
+    // Deselect if same task is clicked
     selectedStatus.value = undefined;
     selectedIndex.value = undefined;
     selectedByGroupKey.value = undefined;
@@ -431,6 +450,7 @@ const toChecked = async (data: TaskInfo, index: number, groupByKey: string) => {
     return;
   }
 
+  // Select new task
   selectedStatus.value = data.status?.value;
   selectedIndex.value = index;
   selectedByGroupKey.value = groupByKey;
@@ -439,43 +459,50 @@ const toChecked = async (data: TaskInfo, index: number, groupByKey: string) => {
 };
 
 const drawerClose = () => {
+  // Close task detail drawer
   checkedTaskInfo.value = undefined;
   checkedSprintInfo.value = undefined;
 };
 
 const loadingChange = (value: boolean) => {
+  // Emit loading state change
   emit('update:loading', value);
 };
 
 const taskInfoChange = async (data: Partial<TaskInfo>) => {
+  // Update task information after changes
   const id = data.id;
   if (!id) {
     return;
   }
 
-  const _taskInfo = await loadTaskInfoById(id);
+  const updatedTaskInfo = await loadTaskInfoById(id);
   if (checkedTaskInfo.value) {
-    checkedTaskInfo.value = { ...checkedTaskInfo.value, ..._taskInfo };
+    checkedTaskInfo.value = { ...checkedTaskInfo.value, ...updatedTaskInfo };
   }
 
+  // Update task in main list
   const list = taskList.value;
   for (let i = 0, len = list.length; i < len; i++) {
     if (list[i].id === id) {
-      list[i] = _taskInfo;
+      list[i] = updatedTaskInfo;
       break;
     }
   }
 
+  // Update task in data maps
   if (taskDataMap.value[selectedStatus.value]?.[selectedIndex.value]) {
-    taskDataMap.value[selectedStatus.value][selectedIndex.value] = _taskInfo;
+    taskDataMap.value[selectedStatus.value][selectedIndex.value] = updatedTaskInfo;
   }
 
   if (groupDataMap.value[selectedByGroupKey.value]?.[selectedStatus.value]?.[selectedIndex.value]) {
-    groupDataMap.value[selectedByGroupKey.value][selectedStatus.value][selectedIndex.value] = _taskInfo;
+    groupDataMap.value[selectedByGroupKey.value][selectedStatus.value][selectedIndex.value] = updatedTaskInfo;
   }
 };
 
+// Task action methods
 const dropdownClick = (menuItem: ActionMenuItem, data: TaskInfo, index: number, status: TaskInfo['status']['value']) => {
+  // Handle dropdown menu actions
   const key = menuItem.key;
   if (key === 'edit') {
     toEdit(data.id, index, status);
@@ -548,20 +575,23 @@ const dropdownClick = (menuItem: ActionMenuItem, data: TaskInfo, index: number, 
 };
 
 const toEdit = (id: string, index: number, status: TaskInfo['status']['value']) => {
+  // Open task edit modal
   selectedTaskId.value = id;
   selectedIndex.value = index;
   selectedStatus.value = status;
-  // 设置当前搜索条件中选中的迭代
+  // Set current sprint from search filters
   const item = props.filters.find(item => item.key === 'sprintId');
   searchSprintId.value = item?.value as string;
   taskModalVisible.value = true;
 };
 
 const editOk = async (data: TaskInfo) => {
+  // Handle task edit completion
   const index = selectedIndex.value as number;
   const status = selectedStatus.value as TaskInfo['status']['value'];
   taskDataMap.value[status][index] = data;
 
+  // Clear selection state
   selectedTaskId.value = undefined;
   selectedIndex.value = undefined;
   selectedStatus.value = undefined;
@@ -569,8 +599,10 @@ const editOk = async (data: TaskInfo) => {
 };
 
 const toDelete = (data: TaskInfo) => {
+  // Delete task with confirmation
   modal.confirm({
     content: t('task.table.messages.confirmDelete', { name: data.name }),
+    // Handle delete confirmation
     async onOk () {
       emit('update:loading', true);
       const [error] = await task.deleteTask([data.id]);
@@ -587,7 +619,9 @@ const toDelete = (data: TaskInfo) => {
   });
 };
 
+// Task status change methods
 const toFavourite = async (data: TaskInfo, index: number, status: TaskInfo['status']['value']) => {
+  // Add task to favourites
   emit('update:loading', true);
   const [error] = await task.favouriteTask(data.id);
   emit('update:loading', false);
@@ -600,6 +634,7 @@ const toFavourite = async (data: TaskInfo, index: number, status: TaskInfo['stat
 };
 
 const toDeleteFavourite = async (data: TaskInfo, index: number, status: TaskInfo['status']['value']) => {
+  // Remove task from favourites
   emit('update:loading', true);
   const [error] = await task.cancelFavouriteTask(data.id);
   emit('update:loading', false);
@@ -612,6 +647,7 @@ const toDeleteFavourite = async (data: TaskInfo, index: number, status: TaskInfo
 };
 
 const toFollow = async (data: TaskInfo, index: number, status: TaskInfo['status']['value']) => {
+  // Follow task for notifications
   emit('update:loading', true);
   const [error] = await task.followTask(data.id);
   emit('update:loading', false);
@@ -624,6 +660,7 @@ const toFollow = async (data: TaskInfo, index: number, status: TaskInfo['status'
 };
 
 const toDeleteFollow = async (data: TaskInfo, index: number, status: TaskInfo['status']['value']) => {
+  // Stop following task
   emit('update:loading', true);
   const [error] = await task.cancelFollowTask(data.id);
   emit('update:loading', false);
@@ -636,6 +673,7 @@ const toDeleteFollow = async (data: TaskInfo, index: number, status: TaskInfo['s
 };
 
 const toStart = async (data: TaskInfo, notificationFlag = true, errorCallback?: () => void) => {
+  // Start task (change status to IN_PROGRESS)
   const id = data.id;
   emit('update:loading', true);
   const [error] = await task.startTask(id);
@@ -655,6 +693,7 @@ const toStart = async (data: TaskInfo, notificationFlag = true, errorCallback?: 
 };
 
 const toProcessed = async (data: TaskInfo, notificationFlag = true, errorCallback?: () => void) => {
+  // Mark task as processed (change status to CONFIRMING)
   const id = data.id;
   emit('update:loading', true);
   const [error] = await task.processedTask(id);
@@ -673,7 +712,8 @@ const toProcessed = async (data: TaskInfo, notificationFlag = true, errorCallbac
   loadData();
 };
 
-const toUncomplete = async (data: TaskInfo, notificationFlag = true, errorCallback?: () => void) => {
+const toUncomplete = async (data: TaskInfo, errorCallback?: () => void) => {
+  // Mark task as uncompleted (confirm with FAIL status)
   const id = data.id;
   emit('update:loading', true);
   const [error] = await task.confirmTask(id, 'FAIL');
@@ -689,7 +729,8 @@ const toUncomplete = async (data: TaskInfo, notificationFlag = true, errorCallba
   loadData();
 };
 
-const toCompleted = async (data: TaskInfo, notificationFlag = true, errorCallback?: () => void) => {
+const toCompleted = async (data: TaskInfo, errorCallback?: () => void) => {
+  // Mark task as completed (confirm with SUCCESS status)
   const id = data.id;
   emit('update:loading', true);
   const [error] = await task.confirmTask(id, 'SUCCESS');
@@ -706,6 +747,7 @@ const toCompleted = async (data: TaskInfo, notificationFlag = true, errorCallbac
 };
 
 const toReopen = async (data: TaskInfo, notificationFlag = true, errorCallback?: () => void) => {
+  // Reopen task (change status from COMPLETED/CANCELED to PENDING)
   const id = data.id;
   emit('update:loading', true);
   const [error] = await task.reopenTask(id);
@@ -725,6 +767,7 @@ const toReopen = async (data: TaskInfo, notificationFlag = true, errorCallback?:
 };
 
 const toRestart = async (data: TaskInfo, notificationFlag = true, errorCallback?: () => void) => {
+  // Restart task (reset task to initial state)
   const id = data.id;
   emit('update:loading', true);
   const [error] = await task.restartTask(id);
@@ -744,6 +787,7 @@ const toRestart = async (data: TaskInfo, notificationFlag = true, errorCallback?
 };
 
 const toMove = (data: TaskInfo) => {
+  // Open move task modal
   selectedTaskSprintId.value = data.sprintId;
   selectedTaskName.value = data.name;
   selectedTaskId.value = data.id;
@@ -751,6 +795,7 @@ const toMove = (data: TaskInfo) => {
 };
 
 const moveTaskOk = () => {
+  // Handle task move completion
   selectedTaskSprintId.value = undefined;
   selectedTaskName.value = undefined;
   selectedTaskId.value = undefined;
@@ -759,6 +804,7 @@ const moveTaskOk = () => {
 };
 
 const toCancel = async (data: TaskInfo, notificationFlag = true, errorCallback?: () => void) => {
+  // Cancel task (change status to CANCELED)
   const id = data.id;
   const [error] = await task.cancelTask(id);
   if (error) {
@@ -775,28 +821,51 @@ const toCancel = async (data: TaskInfo, notificationFlag = true, errorCallback?:
   loadData();
 };
 
-const resetDrag = (id: string, index: number, status: TaskInfo['status']['value'], toStatus: TaskInfo['status']['value']) => {
+// Drag and drop methods
+const resetDrag = (
+  id: string,
+  index: number,
+  status: TaskInfo['status']['value'],
+  toStatus: TaskInfo['status']['value']
+) => {
+  // Reset task position after failed drag operation
   const _index = taskDataMap.value[toStatus].findIndex(item => item.id === id);
   const dragData = taskDataMap.value[toStatus][_index];
-  // 删除已被添加的数据
+  // Remove task from target status
   taskDataMap.value[toStatus].splice(_index, 1);
-  // 移动数据重置设置到原位置
+  // Move task back to original position
   taskDataMap.value[status].splice(index, 0, dragData);
 };
 
-const resetGroupDrag = (id: string, index: number, status: TaskInfo['status']['value'], toStatus: TaskInfo['status']['value'], groupKey: string) => {
+const resetGroupDrag = (
+  id: string,
+  index: number,
+  status: TaskInfo['status']['value'],
+  toStatus: TaskInfo['status']['value'],
+  groupKey: string
+) => {
+  // Reset task position in group after failed drag operation
   const _index = groupDataMap.value[groupKey][toStatus].findIndex(item => item.id === id);
   const dragData = groupDataMap.value[groupKey][toStatus][_index];
-  // 删除已被添加的数据
+  // Remove task from target status in group
   groupDataMap.value[groupKey][toStatus].splice(_index, 1);
-  // 移动数据重置设置到原位置
+  // Move task back to original position in group
   groupDataMap.value[groupKey][status].splice(index, 0, dragData);
 };
 
-const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], toStatus: TaskInfo['status']['value'], index: number, groupKey?: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType') => {
+const dragHandler = async (
+  data: TaskInfo,
+  status: TaskInfo['status']['value'],
+  toStatus: TaskInfo['status']['value'],
+  index: number,
+  groupKey?: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType'
+) => {
+  // Handle task drag and drop with status validation
   const { id, confirmerId } = data;
-  if (status === 'PENDING') {
-    if (toStatus === 'IN_PROGRESS') {
+
+  if (status === TaskStatus.PENDING) {
+    // Handle drag from PENDING status
+    if (toStatus === TaskStatus.IN_PROGRESS) {
       const disabled = !!menuItemsMap.value.get(id)?.find(item => item.key === 'start')?.disabled;
       if (disabled) {
         if (groupKey) {
@@ -807,7 +876,7 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
         notification.warning(t('task.kanbanView.messages.noStartPermission'));
         return;
       }
-    } else if (toStatus === 'CANCELED') {
+    } else if (toStatus === TaskStatus.CANCELED) {
       const disabled = !!menuItemsMap.value.get(id)?.find(item => item.key === 'cancel')?.disabled;
       if (disabled) {
         if (groupKey) {
@@ -828,7 +897,7 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
       return;
     }
 
-    if (toStatus === 'IN_PROGRESS') {
+    if (toStatus === TaskStatus.IN_PROGRESS) {
       toStart(data, false, () => {
         if (groupKey) {
           resetGroupDrag(id, index, status, toStatus, groupKey);
@@ -839,7 +908,7 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
       return;
     }
 
-    if (toStatus === 'CANCELED') {
+    if (toStatus === TaskStatus.CANCELED) {
       toCancel(data, false, () => {
         if (groupKey) {
           resetGroupDrag(id, index, status, toStatus, groupKey);
@@ -849,12 +918,11 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
       });
       return;
     }
-
     return;
   }
 
-  if (status === 'IN_PROGRESS') {
-    if (toStatus === 'CONFIRMING') {
+  if (status === TaskStatus.IN_PROGRESS) {
+    if (toStatus === TaskStatus.CONFIRMING) {
       if (!confirmerId) {
         if (groupKey) {
           resetGroupDrag(id, index, status, toStatus, groupKey);
@@ -875,7 +943,7 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
         notification.warning(t('task.kanbanView.messages.noProcessedPermission'));
         return;
       }
-    } else if (toStatus === 'CANCELED') {
+    } else if (toStatus === TaskStatus.CANCELED) {
       const disabled = !!menuItemsMap.value.get(id)?.find(item => item.key === 'cancel')?.disabled;
       if (disabled) {
         if (groupKey) {
@@ -886,7 +954,7 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
         notification.warning(t('task.kanbanView.messages.noCancelPermission'));
         return;
       }
-    } else if (toStatus === 'COMPLETED') {
+    } else if (toStatus === TaskStatus.COMPLETED) {
       const disabled = !!menuItemsMap.value.get(id)?.find(item => item.key === 'completed')?.disabled;
       if (confirmerId) {
         if (groupKey) {
@@ -923,7 +991,7 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
       return;
     }
 
-    if (toStatus === 'CONFIRMING') {
+    if (toStatus === TaskStatus.CONFIRMING) {
       toProcessed(data, false, () => {
         if (groupKey) {
           resetGroupDrag(id, index, status, toStatus, groupKey);
@@ -934,8 +1002,8 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
       return;
     }
 
-    if (toStatus === 'COMPLETED') {
-      toCompleted(data, false, () => {
+    if (toStatus === TaskStatus.COMPLETED) {
+      toCompleted(data, () => {
         if (groupKey) {
           resetGroupDrag(id, index, status, toStatus, groupKey);
         } else {
@@ -945,7 +1013,7 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
       return;
     }
 
-    if (toStatus === 'CANCELED') {
+    if (toStatus === TaskStatus.CANCELED) {
       toCancel(data, false, () => {
         if (groupKey) {
           resetGroupDrag(id, index, status, toStatus, groupKey);
@@ -959,8 +1027,8 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
     return;
   }
 
-  if (status === 'CONFIRMING') {
-    if (toStatus === 'COMPLETED') {
+  if (status === TaskStatus.CONFIRMING) {
+    if (toStatus === TaskStatus.COMPLETED) {
       const disabled = !!menuItemsMap.value.get(id)?.find(item => item.key === 'completed')?.disabled;
       if (disabled) {
         if (groupKey) {
@@ -971,7 +1039,7 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
         notification.warning(t('task.kanbanView.messages.noCompletedPermission'));
         return;
       }
-    } else if (toStatus === 'CANCELED') {
+    } else if (toStatus === TaskStatus.CANCELED) {
       const disabled = !!menuItemsMap.value.get(id)?.find(item => item.key === 'cancel')?.disabled;
       if (disabled) {
         if (groupKey) {
@@ -992,8 +1060,8 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
       return;
     }
 
-    if (toStatus === 'COMPLETED') {
-      toCompleted(data, false, () => {
+    if (toStatus === TaskStatus.COMPLETED) {
+      toCompleted(data, () => {
         if (groupKey) {
           resetGroupDrag(id, index, status, toStatus, groupKey);
         } else {
@@ -1003,7 +1071,7 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
       return;
     }
 
-    if (toStatus === 'CANCELED') {
+    if (toStatus === TaskStatus.CANCELED) {
       toCancel(data, false, () => {
         if (groupKey) {
           resetGroupDrag(id, index, status, toStatus, groupKey);
@@ -1017,8 +1085,8 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
     return;
   }
 
-  if (status === 'COMPLETED' || status === 'CANCELED') {
-    if (toStatus === 'PENDING') {
+  if (status === TaskStatus.COMPLETED || status === TaskStatus.CANCELED) {
+    if (toStatus === TaskStatus.PENDING) {
       const disabled = !!menuItemsMap.value.get(id)?.find(item => item.key === 'reopen')?.disabled;
       if (disabled) {
         if (groupKey) {
@@ -1049,98 +1117,115 @@ const dragHandler = async (data: TaskInfo, status: TaskInfo['status']['value'], 
   }
 };
 
-const dragAdd = async (event: { item: { id: string; }; }, toStatus: TaskInfo['status']['value']) => {
+const dragAdd = async (
+  event: { item: { id: string; }; },
+  toStatus: TaskInfo['status']['value']
+) => {
+  // Handle drag and drop add event for non-grouped view
   const [status, index, id] = (event.item.id.split('-')) as [TaskInfo['status']['value'], number, string];
   const targetData = taskDataMap.value[toStatus].find(item => item.id === id);
   if (!targetData) {
     return;
   }
 
-  dragHandler(targetData, status, toStatus, index);
+  dragHandler(targetData, status, toStatus, index, 'none');
 };
 
-const groupDragAdd = async (event: { item: { id: string; } }, toStatus: TaskInfo['status']['value']) => {
+const groupDragAdd = async (
+  event: { item: { id: string; } },
+  toStatus: TaskInfo['status']['value']
+) => {
+  // Handle drag and drop add event for grouped view
   const [status, index, id, groupKey] = (event.item.id.split('-')) as [TaskInfo['status']['value'], number, string, string];
   const targetData = groupDataMap.value[groupKey][toStatus].find(item => item.id === id);
   if (!targetData) {
     return;
   }
 
-  dragHandler(targetData, status, toStatus, index, groupKey);
+  dragHandler(targetData, status, toStatus, index, groupKey as 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType');
 };
 
 const dragMove = (event) => {
-  // 设置正在拖动的列索引
+  // Handle drag move event to determine valid drop targets
   const [, toIndex] = event.to.id.split('-') as [TaskInfo['status']['value'], number];
   const [fromStatus] = event.from.id.split('-') as [TaskInfo['status']['value'], number];
   const [, , draggedId, confirmerId] = event.dragged.id.split('-') as [TaskInfo['status']['value'], number, string, string];
   const cancelDisabled = !!menuItemsMap.value.get(draggedId)?.find(item => item.key === 'cancel')?.disabled;
-  if (fromStatus === 'PENDING') {
-    isDraggingToColumnStatus.value = ['IN_PROGRESS'];
+
+  if (fromStatus === TaskStatus.PENDING) {
+    // From PENDING: can move to IN_PROGRESS or CANCELED
+    isDraggingToColumnStatus.value = [TaskStatus.IN_PROGRESS];
     if (!cancelDisabled) {
-      isDraggingToColumnStatus.value.push('CANCELED');
+      isDraggingToColumnStatus.value.push(TaskStatus.CANCELED);
     }
     isDraggingToColumn.value = +toIndex;
     return;
   }
 
-  if (fromStatus === 'IN_PROGRESS') {
+  if (fromStatus === TaskStatus.IN_PROGRESS) {
+    // From IN_PROGRESS: can move to CONFIRMING/COMPLETED or CANCELED
     if (confirmerId === '0') {
-      isDraggingToColumnStatus.value = ['COMPLETED'];
+      isDraggingToColumnStatus.value = [TaskStatus.COMPLETED];
     } else {
-      isDraggingToColumnStatus.value = ['CONFIRMING'];
+      isDraggingToColumnStatus.value = [TaskStatus.CONFIRMING];
     }
     if (!cancelDisabled) {
-      isDraggingToColumnStatus.value.push('CANCELED');
+      isDraggingToColumnStatus.value.push(TaskStatus.CANCELED);
     }
     isDraggingToColumn.value = +toIndex;
     return;
   }
 
-  if (fromStatus === 'CONFIRMING') {
-    isDraggingToColumnStatus.value = ['COMPLETED'];
+  if (fromStatus === TaskStatus.CONFIRMING) {
+    // From CONFIRMING: can move to COMPLETED or CANCELED
+    isDraggingToColumnStatus.value = [TaskStatus.COMPLETED];
     if (!cancelDisabled) {
-      isDraggingToColumnStatus.value.push('CANCELED');
+      isDraggingToColumnStatus.value.push(TaskStatus.CANCELED);
     }
     isDraggingToColumn.value = +toIndex;
     return;
   }
 
-  if (fromStatus === 'COMPLETED' || fromStatus === 'CANCELED') {
-    isDraggingToColumnStatus.value = ['PENDING'];
+  if (fromStatus === TaskStatus.COMPLETED || fromStatus === TaskStatus.CANCELED) {
+    // From COMPLETED/CANCELED: can only move to PENDING (reopen)
+    isDraggingToColumnStatus.value = [TaskStatus.PENDING];
     isDraggingToColumn.value = +toIndex;
   }
 };
 
 const dragStart = () => {
-  // 开始拖动时清空高亮
+  // Initialize drag state when drag starts
   isDraggingToColumn.value = null;
   isDraggingToColumnStatus.value = [];
 };
 
 const dragEnd = () => {
-  // 拖动结束时清空高亮
+  // Clean up drag state when drag ends
   isDraggingToColumn.value = null;
   isDraggingToColumnStatus.value = [];
 };
 
+// UI state management methods
 const drawerActiveKeyChange = (key: 'basic' | 'person' | 'date' | 'comment' | 'activity' | 'tasks' | 'cases' | 'attachments' | 'remarks') => {
+  // Change active drawer tab
   drawerActiveKey.value = key;
 };
 
 const arrowOpenChange = (open: boolean, id: string) => {
+  // Toggle group expansion state
   if (open) {
-    arrowOpenSet.value.add(id);
+    expandedGroupSet.value.add(id);
     return;
   }
-
-  arrowOpenSet.value.delete(id);
+  expandedGroupSet.value.delete(id);
 };
 
 const toggleOpen = () => {
-  openFlag.value = !openFlag.value;
+  // Toggle all groups expansion state
+  isGroupExpanded.value = !isGroupExpanded.value;
 
-  if (openFlag.value) {
+  if (isGroupExpanded.value) {
+    // Expand all groups
     let list: string[] = [];
     if (props.groupKey === 'assigneeName') {
       list = assigneeNameList.value.map(item => item.value);
@@ -1151,19 +1236,19 @@ const toggleOpen = () => {
     }
 
     for (let i = 0, len = list.length; i < len; i++) {
-      arrowOpenSet.value.add(list[i]);
+      expandedGroupSet.value.add(list[i]);
     }
-
     return;
   }
-
-  arrowOpenSet.value.clear();
+  // Collapse all groups
+  expandedGroupSet.value.clear();
 };
 
 const resetData = () => {
+  // Reset all data collections to initial state
   taskList.value = [];
   groupDataMap.value = {};
-  numMap.value = {
+  taskCountMap.value = {
     CANCELED: 0,
     COMPLETED: 0,
     CONFIRMING: 0,
@@ -1183,31 +1268,9 @@ const resetData = () => {
   taskTypeList.value = [];
 };
 
-onMounted(() => {
-  loadEnum();
-
-  watch(() => props.projectId, (newValue) => {
-    if (!newValue) {
-      return;
-    }
-
-    loadData();
-  }, { immediate: true });
-
-  watch([() => props.filters, () => props.moduleId], () => {
-    loadData();
-  });
-
-  watch([() => props.orderBy, () => props.orderSort], () => {
-    toSort({ orderBy: props.orderBy, orderSort: props.orderSort });
-  });
-
-  watch(() => props.groupKey, () => {
-    toGroup(props.groupKey);
-  });
-});
-
+// Computed properties for template
 const showGroupData = computed(() => {
+  // Get group data based on current group key
   if (props.groupKey === 'assigneeName') {
     return assigneeNameList.value;
   }
@@ -1224,14 +1287,17 @@ const showGroupData = computed(() => {
 });
 
 const checkedTaskId = computed(() => {
+  // Get currently selected task ID
   return checkedTaskInfo?.value?.id;
 });
 
 const checkedTaskType = computed(() => {
+  // Get currently selected task type
   return checkedTaskInfo?.value?.taskType?.value;
 });
 
 const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
+  // Generate context menu items for each task based on permissions and status
   const map = new Map<string, ActionMenuItem[]>();
   for (const key in taskDataMap.value) {
     const list = taskDataMap.value[key] || [];
@@ -1245,7 +1311,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
       const { currentAssociateType, confirmerId, assigneeId } = item;
 
       const userId = props.userInfo?.id;
-      const isAdministrator = !!currentAssociateType?.map(item => item.value).includes('SYS_ADMIN' || 'APP_ADMIN');
+      const isAdmin = !!currentAssociateType?.map(item => item.value).includes('SYS_ADMIN' || 'APP_ADMIN');
       const isConfirmer = confirmerId === userId;
       const isAssignee = assigneeId === userId;
 
@@ -1254,52 +1320,52 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           name: t('actions.edit'),
           key: 'edit',
           icon: 'icon-shuxie',
-          disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
+          disabled: !isAdmin && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
           hide: false
         },
         {
           name: t('actions.delete'),
           key: 'delete',
           icon: 'icon-qingchu',
-          disabled: !isAdministrator && !permissions.includes('DELETE_TASK') && sprintAuth,
+          disabled: !isAdmin && !permissions.includes(TaskSprintPermission.DELETE_TASK) && sprintAuth,
           hide: false
         },
         {
           name: t('task.kanbanView.actions.split'),
           key: 'split',
           icon: 'icon-guanlianziyuan',
-          disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
+          disabled: !isAdmin && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
           hide: true
         }
       ];
 
-      if (status === 'PENDING') {
+      if (status === TaskStatus.PENDING) {
         menuItems.push({
           name: t('task.kanbanView.actions.start'),
           key: 'start',
           icon: 'icon-kaishi',
-          disabled: !isAdministrator && !isAssignee,
+          disabled: !isAdmin && !isAssignee,
           hide: false
         });
       }
 
-      if (status === 'IN_PROGRESS') {
+      if (status === TaskStatus.IN_PROGRESS) {
         menuItems.push({
           name: t('task.kanbanView.actions.processed'),
           key: 'processed',
           icon: 'icon-yichuli',
-          disabled: !isAdministrator && !isAssignee,
+          disabled: !isAdmin && !isAssignee,
           hide: false
         });
       }
 
       if (confirmerId) {
-        if (status === 'CONFIRMING') {
+        if (status === TaskStatus.CONFIRMING) {
           menuItems.push({
             name: t('task.kanbanView.actions.completed'),
             key: 'completed',
             icon: 'icon-yiwancheng',
-            disabled: !isAdministrator && !isConfirmer,
+            disabled: !isAdmin && !isConfirmer,
             hide: false
           });
 
@@ -1307,18 +1373,18 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
             name: t('task.kanbanView.actions.uncompleted'),
             key: 'uncompleted',
             icon: 'icon-shibaiyuanyin',
-            disabled: !isAdministrator && !isConfirmer,
+            disabled: !isAdmin && !isConfirmer,
             hide: false
           });
         }
       }
 
-      if (status === 'CANCELED' || status === 'COMPLETED') {
+      if (status === TaskStatus.CANCELED || status === TaskStatus.COMPLETED) {
         menuItems.push({
           name: t('task.kanbanView.actions.reopen'),
           key: 'reopen',
           icon: 'icon-zhongxindakaiceshirenwu',
-          disabled: !isAdministrator && !permissions.includes('REOPEN_TASK') && !isAssignee,
+          disabled: !isAdmin && !permissions.includes(TaskSprintPermission.REOPEN_TASK) && !isAssignee,
           hide: false,
           tip: t('task.detail.tips.reopenTip')
         });
@@ -1327,18 +1393,18 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           name: t('task.kanbanView.actions.restart'),
           key: 'restart',
           icon: 'icon-zhongxinkaishiceshi',
-          disabled: !isAdministrator && !permissions.includes('RESTART_TASK'),
+          disabled: !isAdmin && !permissions.includes(TaskSprintPermission.RESTART_TASK),
           hide: false,
           tip: t('task.detail.tips.restartTip')
         });
       }
 
-      if (status !== 'CANCELED' && status !== 'COMPLETED') {
+      if (status !== TaskStatus.CANCELED && status !== TaskStatus.COMPLETED) {
         menuItems.push({
           name: t('actions.cancel'),
           key: 'cancel',
           icon: 'icon-zhongzhi2',
-          disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
+          disabled: !isAdmin && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
           hide: false
         });
       }
@@ -1384,17 +1450,45 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         name: t('actions.move'),
         key: 'move',
         icon: 'icon-yidong',
-        disabled: !isAdministrator && !permissions.includes('MODIFY_TASK') && sprintAuth,
+        disabled: !isAdmin && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
         hide: false
       });
 
       map.set(item.id, menuItems);
     }
   }
-
   return map;
 });
 
+// Component lifecycle and watchers
+onMounted(() => {
+  // Initialize component data
+  loadEnum();
+
+  // Watch for project changes and load data
+  watch(() => props.projectId, (newValue) => {
+    if (!newValue) {
+      return;
+    }
+
+    loadData();
+  }, { immediate: true });
+
+  // Watch for filter and module changes
+  watch([() => props.filters, () => props.moduleId], () => {
+    loadData();
+  });
+
+  // Watch for sorting changes
+  watch([() => props.orderBy, () => props.orderSort], () => {
+    toSort({ orderBy: props.orderBy, orderSort: props.orderSort });
+  });
+
+  // Watch for grouping changes
+  watch(() => props.groupKey, () => {
+    toGroup(props.groupKey);
+  });
+});
 </script>
 <template>
   <div class="flex-1 leading-5 overflow-hidden">
@@ -1408,7 +1502,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           class="col-item h-full w-1/5 border-r border-solid border-theme-text-box overflow-hidden">
           <div class="flex items-center px-2.5 py-1.5 space-x-1.5 font-semibold head-container">
             <span>{{ item.message }}</span>
-            <span>{{ numMap[item.value] }}</span>
+            <span>{{ taskCountMap[item.value] }}</span>
           </div>
 
           <Draggable
@@ -1431,7 +1525,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
                 :id="`${item.value}-${index}-${element.id}-${(element.confirmerId || '0')}`"
                 :class="{ 'active-item': checkedTaskId === element.id }"
                 class="task-board-item border border-solid rounded border-theme-text-box p-2 space-y-1.5"
-                @click="toChecked(element, index)">
+                @click="toChecked(element, index, 'none')">
                 <div class="flex items-center overflow-hidden">
                   <IconTask :value="element.taskType.value" class="mr-1.5" />
                   <span :title="element.name" class="flex-1 truncate font-semibold">{{ element.name }}</span>
@@ -1488,11 +1582,11 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
             class="w-50 flex-shrink-0 col-item border-r border-solid border-theme-text-box flex items-center px-2.5 py-1.5 space-x-1.5 head-container">
             <Tooltip trigger="hover">
               <template #title>
-                <span v-if="!openFlag">{{ t('task.kanbanView.group.expandAll') }}</span>
+                <span v-if="!isGroupExpanded">{{ t('task.kanbanView.group.expandAll') }}</span>
                 <span v-else>{{ t('task.kanbanView.group.collapseAll') }}</span>
               </template>
               <Icon
-                v-if="!openFlag"
+                v-if="!isGroupExpanded"
                 icon="icon-spread"
                 class="text-3.5 cursor-pointer"
                 @click="toggleOpen" />
@@ -1510,19 +1604,19 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
             style="width:calc((100% - 200px)/5);"
             class="col-item border-r border-solid border-theme-text-box flex items-center px-2.5 py-1.5 space-x-1.5 font-semibold head-container">
             <span>{{ _status.message }}</span>
-            <span>{{ numMap[_status.value] }}</span>
+            <span>{{ taskCountMap[_status.value] }}</span>
           </div>
         </div>
         <div style="height:calc(100% - 32px);" class="overflow-y-auto">
           <div
             v-for="_createdByName in showGroupData"
             :key="_createdByName.value"
-            :class="{ 'h-full': arrowOpenSet.has(_createdByName.value) }"
+            :class="{ 'h-full': expandedGroupSet.has(_createdByName.value) }"
             class="flex items-start flex-nowrap border-b border-solid border-theme-text-box overflow-x-hidden">
             <div class="w-50 flex-shrink-0 flex items-center justify-between px-2.5 py-3.5">
               <div class="flex items-center overflow-hidden">
                 <Arrow
-                  :open="arrowOpenSet.has(_createdByName.value)"
+                  :open="expandedGroupSet.has(_createdByName.value)"
                   type="dashed"
                   class="flex-shrink-0 mr-1.5"
                   style="font-size:12px;"
@@ -1543,7 +1637,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
               </div>
             </div>
             <div class="relative h-full flex items-start" style="width: calc(100% - 193px);">
-              <template v-if="!arrowOpenSet.has(_createdByName.value)">
+              <template v-if="!expandedGroupSet.has(_createdByName.value)">
                 <div
                   v-for="_status in statusList"
                   :key="_status.value"
@@ -1556,7 +1650,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
               <AsyncComponent :visible="arrowOpenSet.has(_createdByName.value)">
                 <Draggable
                   v-for="(_status, statusIndex) in statusList"
-                  v-show="arrowOpenSet.has(_createdByName.value)"
+                  v-show="expandedGroupSet.has(_createdByName.value)"
                   :id="`${_status.value}-${statusIndex}`"
                   :key="_status.value"
                   style="width:20%;height: 100%;"
@@ -1736,7 +1830,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           <div style="height: calc(100% - 36px);" class="pt-3.5 overflow-hidden">
             <AsyncComponent :visible="!!checkedTaskId">
               <APIInfo
-                v-if="checkedTaskType === 'API_TEST'"
+                v-if="checkedTaskType === TaskType.API_TEST"
                 v-show="drawerActiveKey === 'basic'"
                 :projectId="props.projectId"
                 :appInfo="props.appInfo"
@@ -1746,7 +1840,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
                 @loadingChange="loadingChange" />
 
               <ScenarioInfo
-                v-else-if="checkedTaskType === 'SCENARIO_TEST'"
+                v-else-if="checkedTaskType === TaskType.SCENARIO_TEST"
                 v-show="drawerActiveKey === 'basic'"
                 :projectId="props.projectId"
                 :appInfo="props.appInfo"
@@ -1929,16 +2023,16 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
   margin-top: 8px;
 }
 
-.draggable-container.right-border::after {
-  /* content: '';
+/* .draggable-container.right-border::after {
+  content: '';
   display:block;
   position: absolute;
   top:0 ;
   right: 0;
   width:1px;
   height: 100%;
-  background-color: var(--border-text-box); */
-}
+  background-color: var(--border-text-box);
+} */
 
 .highlight {
   border: 1px dashed rgba(188, 198, 207, 100%);

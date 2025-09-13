@@ -10,8 +10,9 @@ import { cloneDeep } from 'lodash-es';
 import { task } from '@/api/tester';
 
 import { TaskInfo } from '@/views/task/types';
-import { ActionMenuItem } from '../../../../types';
+import { ActionMenuItem } from '@/views/task/task/types';
 
+// Types
 type TabPaneKey = 'basicInfo' | 'remark' | 'testInfo' | 'comments' | 'activity';
 
 type Props = {
@@ -38,6 +39,7 @@ const props = withDefaults(defineProps<Props>(), {
   notify: undefined
 });
 
+// Component Events
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'edit', value: string): void;
@@ -48,6 +50,7 @@ const emit = defineEmits<{
   (event: 'splitOk'): void;
 }>();
 
+// Async Components
 const BasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/detail/info/index.vue'));
 const TestInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/detail/testing/index.vue'));
 const Remark = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/detail/Remark.vue'));
@@ -58,69 +61,100 @@ const SplitTask = defineAsyncComponent(() => import('@/views/task/backlog/SplitT
 const AssocCaseTab = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/detail/AssocCase.vue'));
 const AssocTaskTab = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/detail/AssocTask.vue'));
 
+// Composables
 const { t } = useI18n();
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 const replaceTabPane = inject<(id: string, data: { [key: string]: any }) => void>('replaceTabPane', () => ({}));
 const deleteTabPane = inject<(value: string[]) => void>('deleteTabPane');
 const windowResizeNotify = inject('windowResizeNotify', ref<string>());
+
+// Computed Properties
 const isAdmin = computed(() => appContext.isAdmin());
 
+// DOM References
 const domId = utils.uuid('a');
-let containerDom: HTMLElement | null;
-const largePageLayout = ref<boolean>();
+let containerElement: HTMLElement | null;
 
-const refreshNotify = ref<string>();
-const remarkNotify = ref<string>();
-const activityNotify = ref<string>();
-const commentNotify = ref<string>();
+// Layout State
+const isLargePageLayout = ref<boolean>();
 
-const loading = ref(false);
-const taskInfo = ref<TaskInfo>();
+// Notification State
+const refreshNotificationId = ref<string>();
+const remarkNotificationId = ref<string>();
+const activityNotificationId = ref<string>();
+const commentNotificationId = ref<string>();
+
+// Data State
+const isLoading = ref(false);
+const currentTaskInfo = ref<TaskInfo>();
 const sprintPermissions = ref<TaskSprintPermission[]>([]);
 
-const activeKey = ref<TabPaneKey>('basicInfo');
-const fullScreenFlag = ref(false);
+// UI State
+const activeTabKey = ref<TabPaneKey>('basicInfo');
+const isFullScreen = ref(false);
 
-const splitTaskVisible = ref(false);
-const selectedTaskInfo = ref<TaskInfo>();
+// Split Task State
+const isSplitTaskVisible = ref(false);
+const selectedTaskForSplit = ref<TaskInfo>();
 
-const toggleFullScreen = () => {
-  fullScreenFlag.value = !fullScreenFlag.value;
+// UI Actions
+/**
+ * Toggles full screen mode for the task detail view
+ */
+const toggleFullScreenMode = () => {
+  isFullScreen.value = !isFullScreen.value;
 };
 
-const toEdit = () => {
+/**
+ * Navigates to task edit mode
+ */
+const navigateToEdit = () => {
   emit('edit', props.id);
 };
 
-const toSplit = () => {
-  selectedTaskInfo.value = cloneDeep(taskInfo.value);
-  splitTaskVisible.value = true;
+/**
+ * Opens the split task dialog
+ */
+const openSplitTaskDialog = () => {
+  selectedTaskForSplit.value = cloneDeep(currentTaskInfo.value);
+  isSplitTaskVisible.value = true;
 };
 
-const splitCancel = () => {
-  selectedTaskInfo.value = undefined;
+/**
+ * Cancels the split task operation
+ */
+const cancelSplitTask = () => {
+  selectedTaskForSplit.value = undefined;
 };
 
-const splitOk = async () => {
-  selectedTaskInfo.value = undefined;
+/**
+ * Confirms the split task operation
+ */
+const confirmSplitTask = async () => {
+  selectedTaskForSplit.value = undefined;
   emit('splitOk');
-  await loadData();
+  await loadTaskData();
 };
 
-const toMove = () => {
-  if (!taskInfo.value) {
+/**
+ * Opens the move task dialog
+ */
+const openMoveTaskDialog = () => {
+  if (!currentTaskInfo.value) {
+    return;
+  }
+  emit('move', currentTaskInfo.value);
+};
+
+/**
+ * Deletes the current task with confirmation
+ */
+const deleteCurrentTask = () => {
+  if (!currentTaskInfo.value) {
     return;
   }
 
-  emit('move', taskInfo.value);
-};
-
-const toDelete = () => {
-  if (!taskInfo.value) {
-    return;
-  }
-
-  const { name, id } = taskInfo.value;
+  const { name, id } = currentTaskInfo.value;
   modal.confirm({
     content: t('task.detail.messages.confirmDelete', { name }),
     async onOk () {
@@ -136,72 +170,87 @@ const toDelete = () => {
   });
 };
 
-const toFavourite = async () => {
-  if (!taskInfo.value) {
+/**
+ * Adds the current task to favorites
+ */
+const addToFavorites = async () => {
+  if (!currentTaskInfo.value) {
     return;
   }
 
-  const { id } = taskInfo.value;
+  const { id } = currentTaskInfo.value;
   const [error] = await task.favouriteTask(id);
   if (error) {
     return;
   }
 
   notification.success(t('task.detail.messages.favouriteSuccess'));
-  emitDataChange({ id: id, favourite: true });
+  updateTaskData({ id: id, favourite: true });
 };
 
-const toDeleteFavourite = async () => {
-  if (!taskInfo.value) {
+/**
+ * Removes the current task from favorites
+ */
+const removeFromFavorites = async () => {
+  if (!currentTaskInfo.value) {
     return;
   }
 
-  const { id } = taskInfo.value;
+  const { id } = currentTaskInfo.value;
   const [error] = await task.cancelFavouriteTask(id);
   if (error) {
     return;
   }
 
   notification.success(t('task.detail.messages.cancelFavouriteSuccess'));
-  emitDataChange({ id: id, favourite: false });
+  updateTaskData({ id: id, favourite: false });
 };
 
-const toFollow = async () => {
-  if (!taskInfo.value) {
+/**
+ * Follows the current task
+ */
+const followCurrentTask = async () => {
+  if (!currentTaskInfo.value) {
     return;
   }
 
-  const { id } = taskInfo.value;
+  const { id } = currentTaskInfo.value;
   const [error] = await task.followTask(id);
   if (error) {
     return;
   }
 
   notification.success(t('task.detail.messages.followSuccess'));
-  emitDataChange({ id: id, follow: true });
+  updateTaskData({ id: id, follow: true });
 };
 
-const toDeleteFollow = async () => {
-  if (!taskInfo.value) {
+/**
+ * Unfollows the current task
+ */
+const unfollowCurrentTask = async () => {
+  if (!currentTaskInfo.value) {
     return;
   }
 
-  const { id } = taskInfo.value;
+  const { id } = currentTaskInfo.value;
   const [error] = await task.cancelFollowTask(id);
   if (error) {
     return;
   }
 
   notification.success(t('task.detail.messages.cancelFollowSuccess'));
-  emitDataChange({ id: id, follow: false });
+  updateTaskData({ id: id, follow: false });
 };
 
-const toStart = async () => {
-  if (!taskInfo.value) {
+/**
+ * Starts the current task
+ */
+const startCurrentTask = async () => {
+  if (!currentTaskInfo.value) {
     return;
   }
 
-  const { id } = taskInfo.value;
+  const { id } = currentTaskInfo.value;
   const [error] = await task.startTask(id);
   if (error) {
     return;
@@ -209,16 +258,21 @@ const toStart = async () => {
 
   emit('refreshChange');
   notification.success(t('task.messages.startSuccess'));
-  const detailData = await loadData();
-  emitDataChange(detailData);
+  const taskData = await loadTaskData();
+  if (taskData) {
+    updateTaskData(taskData);
+  }
 };
 
-const toProcessed = async () => {
-  if (!taskInfo.value) {
+/**
+ * Marks the current task as processed
+ */
+const markTaskAsProcessed = async () => {
+  if (!currentTaskInfo.value) {
     return;
   }
 
-  const { id } = taskInfo.value;
+  const { id } = currentTaskInfo.value;
   const [error] = await task.processedTask(id);
   if (error) {
     return;
@@ -226,48 +280,63 @@ const toProcessed = async () => {
 
   emit('refreshChange');
   notification.success(t('task.table.messages.processedSuccess'));
-  const detailData = await loadData();
-  emitDataChange(detailData);
+  const taskData = await loadTaskData();
+  if (taskData) {
+    updateTaskData(taskData);
+  }
 };
 
-const toUnComplete = async () => {
-  if (!taskInfo.value) {
+/**
+ * Confirms the task as incomplete
+ */
+const confirmTaskAsIncomplete = async () => {
+  if (!currentTaskInfo.value) {
     return;
   }
 
-  const { id } = taskInfo.value;
+  const { id } = currentTaskInfo.value;
   const [error] = await task.confirmTask(id, 'FAIL');
   if (error) {
     return;
   }
 
   emit('refreshChange');
-  const detailData = await loadData();
-  emitDataChange(detailData);
+  const taskData = await loadTaskData();
+  if (taskData) {
+    updateTaskData(taskData);
+  }
 };
 
-const toCompleted = async () => {
-  if (!taskInfo.value) {
+/**
+ * Confirms the task as completed
+ */
+const confirmTaskAsCompleted = async () => {
+  if (!currentTaskInfo.value) {
     return;
   }
 
-  const { id } = taskInfo.value;
+  const { id } = currentTaskInfo.value;
   const [error] = await task.confirmTask(id, 'SUCCESS');
   if (error) {
     return;
   }
 
   emit('refreshChange');
-  const detailData = await loadData();
-  emitDataChange(detailData);
+  const taskData = await loadTaskData();
+  if (taskData) {
+    updateTaskData(taskData);
+  }
 };
 
-const toReopen = async () => {
-  if (!taskInfo.value) {
+/**
+ * Reopens the current task
+ */
+const reopenCurrentTask = async () => {
+  if (!currentTaskInfo.value) {
     return;
   }
 
-  const { id } = taskInfo.value;
+  const { id } = currentTaskInfo.value;
   const [error] = await task.reopenTask(id);
   if (error) {
     return;
@@ -275,16 +344,21 @@ const toReopen = async () => {
 
   emit('refreshChange');
   notification.success(t('task.table.messages.reopenSuccess'));
-  const detailData = await loadData();
-  emitDataChange(detailData);
+  const taskData = await loadTaskData();
+  if (taskData) {
+    updateTaskData(taskData);
+  }
 };
 
-const toRestart = async () => {
-  if (!taskInfo.value) {
+/**
+ * Restarts the current task
+ */
+const restartCurrentTask = async () => {
+  if (!currentTaskInfo.value) {
     return;
   }
 
-  const { id } = taskInfo.value;
+  const { id } = currentTaskInfo.value;
   const [error] = await task.restartTask(id);
   if (error) {
     return;
@@ -292,16 +366,21 @@ const toRestart = async () => {
 
   emit('refreshChange');
   notification.success(t('task.table.messages.restartSuccess'));
-  const detailData = await loadData();
-  emitDataChange(detailData);
+  const taskData = await loadTaskData();
+  if (taskData) {
+    updateTaskData(taskData);
+  }
 };
 
-const toCancel = async () => {
-  if (!taskInfo.value) {
+/**
+ * Cancels the current task
+ */
+const cancelCurrentTask = async () => {
+  if (!currentTaskInfo.value) {
     return;
   }
 
-  const { id } = taskInfo.value;
+  const { id } = currentTaskInfo.value;
   const [error] = await task.cancelTask(id);
   if (error) {
     return;
@@ -309,11 +388,16 @@ const toCancel = async () => {
 
   emit('refreshChange');
   notification.success(t('task.table.messages.cancelSuccess'));
-  const detailData = await loadData();
-  emitDataChange(detailData);
+  const taskData = await loadTaskData();
+  if (taskData) {
+    updateTaskData(taskData);
+  }
 };
 
-const toCopyHref = () => {
+/**
+ * Copies the task link to clipboard
+ */
+const copyTaskLinkToClipboard = () => {
   const message = window.location.origin + props.linkUrl;
   toClipboard(message).then(() => {
     notification.success(t('task.detail.messages.copyLinkSuccess'));
@@ -322,36 +406,64 @@ const toCopyHref = () => {
   });
 };
 
-const basicInfoChange = (data: Partial<TaskInfo>) => {
-  if (taskInfo.value) {
-    taskInfo.value = { ...taskInfo.value, ...data };
+/**
+ * Handles basic info changes and updates task data
+ * <p>
+ * Merges the new data with existing task info and emits change events
+ */
+const handleBasicInfoChange = (data: Partial<TaskInfo>) => {
+  if (currentTaskInfo.value) {
+    currentTaskInfo.value = { ...currentTaskInfo.value, ...data };
   }
 
-  emitDataChange(data);
-  emitUpdateTabPane(data);
+  updateTaskData(data);
+  updateTabPaneData(data);
 };
 
-const emitDataChange = (data: Partial<TaskInfo>) => {
-  taskInfo.value = { ...taskInfo.value, ...data };
+/**
+ * Updates task data and emits change event
+ * <p>
+ * Merges new data with current task info and notifies parent components
+ */
+const updateTaskData = (data: Partial<TaskInfo>) => {
+  if (currentTaskInfo.value) {
+    currentTaskInfo.value = { ...currentTaskInfo.value, ...data };
+  }
   emit('dataChange', data);
 };
 
-const emitUpdateTabPane = (data: Partial<TaskInfo>) => {
+/**
+ * Updates tab pane with new task data
+ * <p>
+ * Updates the tab pane title and ID when task data changes
+ */
+const updateTabPaneData = (data: Partial<TaskInfo>) => {
   const { id, name } = data;
   if (id && name && typeof updateTabPane === 'function') {
     updateTabPane({ name, _id: id });
   }
 };
 
-const fetchPrev = async () => {
-  await fetchNewData(+queryParameterMap.value.pageNo - 1);
+/**
+ * Navigates to the previous task in the list
+ */
+const navigateToPreviousTask = async () => {
+  await loadTaskListData(+queryParameterMap.value.pageNo - 1);
 };
 
-const fetchNext = async () => {
-  await fetchNewData(+queryParameterMap.value.pageNo + 1);
+/**
+ * Navigates to the next task in the list
+ */
+const navigateToNextTask = async () => {
+  await loadTaskListData(+queryParameterMap.value.pageNo + 1);
 };
 
-const fetchNewData = async (pageNo: number) => {
+/**
+ * Loads task list data for navigation
+ * <p>
+ * Fetches task list data for the specified page number and updates the tab pane
+ */
+const loadTaskListData = async (pageNo: number) => {
   const params: { [key: string]: any; } = Object.entries(queryParameterMap.value).reduce((prev, cur) => {
     if (!['total'].includes(cur[0])) {
       prev[cur[0]] = cur[1];
@@ -377,55 +489,81 @@ const fetchNewData = async (pageNo: number) => {
   }
 };
 
-const activeKeyChange = (key: TabPaneKey) => {
+/**
+ * Handles tab key changes and triggers appropriate refresh actions
+ * <p>
+ * Refreshes specific tab content based on the selected tab
+ */
+const handleTabKeyChange = (key: string | number) => {
   if (key === 'remark') {
-    refreshRemark();
+    refreshRemarkTab();
     return;
   }
   if (key === 'activity') {
-    refreshActivity();
+    refreshActivityTab();
     return;
   }
   if (key === 'comments') {
-    refreshComment();
+    refreshCommentTab();
   }
 };
 
-const toRefresh = () => {
-  loadData();
-  refreshNotify.value = utils.uuid();
-  if (activeKey.value === 'remark') {
-    refreshRemark();
+/**
+ * Refreshes all tab content and data
+ * <p>
+ * Reloads task data and refreshes the currently active tab
+ */
+const refreshAllContent = () => {
+  loadTaskData();
+  refreshNotificationId.value = utils.uuid();
+  if (activeTabKey.value === 'remark') {
+    refreshRemarkTab();
     return;
   }
-  if (activeKey.value === 'activity') {
-    refreshActivity();
+  if (activeTabKey.value === 'activity') {
+    refreshActivityTab();
     return;
   }
-  if (activeKey.value === 'comments') {
-    refreshComment();
+  if (activeTabKey.value === 'comments') {
+    refreshCommentTab();
   }
 };
 
-const refreshRemark = () => {
-  remarkNotify.value = refreshNotify.value;
+/**
+ * Triggers remark tab refresh
+ */
+const refreshRemarkTab = () => {
+  remarkNotificationId.value = refreshNotificationId.value;
 };
 
-const refreshActivity = () => {
-  activityNotify.value = refreshNotify.value;
+/**
+ * Triggers activity tab refresh
+ */
+const refreshActivityTab = () => {
+  activityNotificationId.value = refreshNotificationId.value;
 };
 
-const refreshComment = () => {
-  commentNotify.value = refreshNotify.value;
+/**
+ * Triggers comment tab refresh
+ */
+const refreshCommentTab = () => {
+  commentNotificationId.value = refreshNotificationId.value;
 };
 
-const loadData = async (): Promise<Partial<TaskInfo>> => {
+/**
+ * Loads task detail data from the API
+ * <p>
+ * Fetches task details and handles error cases including resource not found
+ * <p>
+ * Returns partial task info for error cases
+ */
+const loadTaskData = async (): Promise<Partial<TaskInfo>> => {
   const id = props.id;
-  loading.value = true;
+  isLoading.value = true;
   const [error, res] = await task.getTaskDetail(id);
-  loading.value = false;
+  isLoading.value = false;
   if (error) {
-    if (error.ext?.eKey === 'resource_not_found') {
+    if ((error as any)?.ext?.eKey === 'resource_not_found') {
       if (typeof deleteTabPane === 'function') {
         deleteTabPane([id]);
       }
@@ -437,18 +575,21 @@ const loadData = async (): Promise<Partial<TaskInfo>> => {
   if (!res?.data) {
     return { id };
   }
-
   const data = (res?.data || { id }) as TaskInfo;
-
-  taskInfo.value = {
+  currentTaskInfo.value = {
     ...data
   };
 
-  emitUpdateTabPane(data);
+  updateTabPaneData(data);
   return data;
 };
 
-const loadPermissions = async (id: string | undefined) => {
+/**
+ * Loads sprint permissions for the current user
+ * <p>
+ * Fetches user-specific permissions or uses admin permissions
+ */
+const loadSprintPermissions = async (id: string | undefined) => {
   if (!isAdmin.value && id) {
     const params = {
       admin: true
@@ -463,66 +604,102 @@ const loadPermissions = async (id: string | undefined) => {
   }
 };
 
-const refreshChange = async () => {
-  const data = await loadData();
+/**
+ * Refreshes task data and permissions
+ * <p>
+ * Reloads task data and updates permissions if needed
+ */
+const refreshTaskData = async () => {
+  const data = await loadTaskData();
   if (!props.menuItems?.length) {
-    await loadPermissions(data.sprintId);
+    await loadSprintPermissions(data.sprintId);
   }
 };
 
-const resizeHandler = debounce(duration.resize, () => {
-  if (!containerDom) {
-    containerDom = document.getElementById(domId);
+/**
+ * Handles window resize events to determine layout mode
+ * <p>
+ * Debounced resize handler that updates layout based on container width
+ */
+const handleWindowResize = debounce(duration.resize, () => {
+  if (!containerElement) {
+    containerElement = document.getElementById(domId);
   }
 
-  if (!containerDom) {
+  if (!containerElement) {
     return;
   }
-  largePageLayout.value = containerDom.offsetWidth >= 960;
+  isLargePageLayout.value = containerElement.offsetWidth >= 960;
 });
 
+// Lifecycle Hooks
 onMounted(() => {
-  resizeHandler();
+  handleWindowResize();
 
-  watch(() => props.id, async (newValue) => {
-    if (!newValue) {
+  /**
+   * Watches for task ID changes and loads corresponding data
+   * <p>
+   * Resets active tab and loads task data when ID changes
+   */
+  watch(() => props.id, async (newTaskId) => {
+    if (!newTaskId) {
       return;
     }
 
-    activeKey.value = 'basicInfo';
+    activeTabKey.value = 'basicInfo';
 
-    const data = await loadData();
+    const data = await loadTaskData();
     if (!props.menuItems?.length) {
-      await loadPermissions(data.sprintId);
+      await loadSprintPermissions(data.sprintId);
     }
   }, { immediate: true });
 
-  watch(() => props.editTaskData, async (newValue) => {
-    if (!newValue || props.id !== newValue.id) {
+  /**
+   * Watches for edit task data changes
+   * <p>
+   * Updates current task info when edit data is provided
+   */
+  watch(() => props.editTaskData, async (newEditData) => {
+    if (!newEditData || props.id !== newEditData.id) {
       return;
     }
-    taskInfo.value = newValue;
+    currentTaskInfo.value = newEditData;
   }, { immediate: true });
 
-  watch(() => windowResizeNotify.value, (newValue) => {
-    if (newValue === undefined || newValue === null || newValue === '') {
+  /**
+   * Watches for window resize notifications
+   * <p>
+   * Triggers layout recalculation when resize is detected
+   */
+  watch(() => windowResizeNotify.value, (newResizeNotify) => {
+    if (newResizeNotify === undefined || newResizeNotify === null || newResizeNotify === '') {
       return;
     }
-    resizeHandler();
+    handleWindowResize();
   }, { immediate: true });
 
-  watch(() => props.notify, async (newValue) => {
-    if (newValue === undefined || newValue === null || newValue === '') {
+  /**
+   * Watches for general notifications
+   * <p>
+   * Refreshes task data when notification is received
+   */
+  watch(() => props.notify, async (newNotify) => {
+    if (newNotify === undefined || newNotify === null || newNotify === '') {
       return;
     }
 
-    const data = await loadData();
+    const data = await loadTaskData();
     if (!props.menuItems?.length) {
-      await loadPermissions(data.sprintId);
+      await loadSprintPermissions(data.sprintId);
     }
   }, { immediate: true });
 });
 
+/**
+ * Parses query parameters from the link URL
+ * <p>
+ * Extracts and parses URL query parameters for navigation
+ */
 const queryParameterMap = computed(() => {
   if (!props.linkUrl) {
     return {};
@@ -536,11 +713,15 @@ const queryParameterMap = computed(() => {
       return prev;
     }, {} as { [key: string]: any; });
   }
-
   return {};
 });
 
-const prevBtnDisabled = computed(() => {
+/**
+ * Determines if the previous button should be disabled
+ * <p>
+ * Returns true if on the first page or page number is invalid
+ */
+const isPreviousButtonDisabled = computed(() => {
   const { pageNo } = queryParameterMap.value;
   if (pageNo === undefined || pageNo === null || pageNo === '') {
     return true;
@@ -548,41 +729,55 @@ const prevBtnDisabled = computed(() => {
   return +pageNo === 1;
 });
 
-const nextBtnDisabled = computed(() => {
+/**
+ * Determines if the next button should be disabled
+ * <p>
+ * Returns true if on the last page or page data is invalid
+ */
+const isNextButtonDisabled = computed(() => {
   const { pageNo, total } = queryParameterMap.value;
   if (pageNo === undefined || pageNo === null || pageNo === '' ||
     total === undefined || total === null || total === ''
   ) {
     return true;
   }
-
   return +pageNo === +total;
 });
 
-const showTestInfo = computed(() => {
-  const taskType = taskInfo.value?.taskType?.value;
+/**
+ * Determines if test info tab should be shown
+ * <p>
+ * Returns true for API test and scenario test task types
+ */
+const shouldShowTestInfo = computed(() => {
+  const taskType = currentTaskInfo.value?.taskType?.value;
   if (!taskType) {
     return false;
   }
-
   return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(taskType);
 });
 
-const menuItemsMap = computed(() => {
-  const map: { [key: string]: ActionMenuItem } = {};
-  const data = taskInfo.value;
-  if (data) {
-    const status = data.status?.value;
-    const { currentAssociateType, confirmerId, assigneeId, favourite, follow, sprintAuth } = data;
+/**
+ * Generates menu items map based on task status and user permissions
+ * <p>
+ * Creates a map of available action menu items with proper permissions and visibility
+ */
+const actionMenuItemsMap = computed(() => {
+  const menuMap: { [key: string]: ActionMenuItem } = {};
+  const taskData = currentTaskInfo.value;
+  if (taskData) {
+    const status = taskData.status?.value;
+    const { currentAssociateType, confirmerId, assigneeId, favourite, follow, sprintAuth } = taskData;
 
     const userId = props.userInfo?.id;
-    const isAdministrator = !!currentAssociateType?.map(item => item.value).includes('SYS_ADMIN' || 'APP_ADMIN');
+    const isAdmin = !!(currentAssociateType?.map(item => item.value).includes('SYS_ADMIN') ||
+                               currentAssociateType?.map(item => item.value).includes('APP_ADMIN'));
     const isConfirmer = confirmerId === userId;
     const isAssignee = assigneeId === userId;
 
-    let permissions = props.menuItems || [];
+    let userPermissions: any[] = props.menuItems || [];
     if (sprintPermissions.value?.length) {
-      permissions = sprintPermissions.value;
+      userPermissions = sprintPermissions.value as any[];
     }
 
     const menuItems: ActionMenuItem[] = [
@@ -590,31 +785,32 @@ const menuItemsMap = computed(() => {
         name: t('actions.edit'),
         key: 'edit',
         icon: 'icon-shuxie',
-        disabled: !isAdministrator && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
+        disabled: !isAdmin && !userPermissions.includes(TaskSprintPermission.MODIFY_TASK as any) && sprintAuth,
         hide: true
       },
       {
         name: t('actions.delete'),
         key: 'delete',
         icon: 'icon-qingchu',
-        disabled: !isAdministrator && !permissions.includes(TaskSprintPermission.DELETE_TASK) && sprintAuth,
+        disabled: !isAdmin && !userPermissions.includes(TaskSprintPermission.DELETE_TASK as any) && sprintAuth,
         hide: true
       },
       {
         name: t('task.detail.actions.split'),
-        key: 'split',
+        key: 'split' as any,
         icon: 'icon-guanlianziyuan',
-        disabled: !isAdministrator && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
+        disabled: !isAdmin && !userPermissions.includes(TaskSprintPermission.MODIFY_TASK as any) && sprintAuth,
         hide: true
       }
     ];
 
+    // Add status-specific menu items
     if (status === TaskStatus.PENDING) {
       menuItems.push({
         name: t('task.actions.start'),
         key: 'start',
         icon: 'icon-kaishi',
-        disabled: !isAdministrator && !isAssignee,
+        disabled: !isAdmin && !isAssignee,
         hide: false
       });
     }
@@ -624,7 +820,7 @@ const menuItemsMap = computed(() => {
         name: t('task.actions.complete'),
         key: 'processed',
         icon: 'icon-yichuli',
-        disabled: !isAdministrator && !isAssignee,
+        disabled: !isAdmin && !isAssignee,
         hide: false
       });
     }
@@ -634,7 +830,7 @@ const menuItemsMap = computed(() => {
         name: t('task.actions.confirmComplete'),
         key: 'completed',
         icon: 'icon-yiwancheng',
-        disabled: !isAdministrator && !isConfirmer,
+        disabled: !isAdmin && !isConfirmer,
         hide: false
       });
 
@@ -642,7 +838,7 @@ const menuItemsMap = computed(() => {
         name: t('task.actions.confirmIncomplete'),
         key: 'uncompleted',
         icon: 'icon-shibaiyuanyin',
-        disabled: !isAdministrator && !isConfirmer,
+        disabled: !isAdmin && !isConfirmer,
         hide: false
       });
     }
@@ -652,7 +848,7 @@ const menuItemsMap = computed(() => {
         name: t('task.actions.reopen'),
         key: 'reopen',
         icon: 'icon-zhongxindakaiceshirenwu',
-        disabled: !isAdministrator && !permissions.includes(TaskSprintPermission.REOPEN_TASK) && !isAssignee,
+        disabled: !isAdmin && !userPermissions.includes(TaskSprintPermission.REOPEN_TASK as any) && !isAssignee,
         hide: false,
         tip: t('task.tips.reopenTip')
       });
@@ -661,7 +857,7 @@ const menuItemsMap = computed(() => {
         name: t('task.actions.restart'),
         key: 'restart',
         icon: 'icon-zhongxinkaishiceshi',
-        disabled: !isAdministrator && !permissions.includes(TaskSprintPermission.MODIFY_TASK),
+        disabled: !isAdmin && !userPermissions.includes(TaskSprintPermission.MODIFY_TASK as any),
         hide: false,
         tip: t('task.tips.restartTip')
       });
@@ -672,11 +868,12 @@ const menuItemsMap = computed(() => {
         name: t('actions.cancel'),
         key: 'cancel',
         icon: 'icon-zhongzhi2',
-        disabled: !isAdministrator && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
+        disabled: !isAdmin && !userPermissions.includes(TaskSprintPermission.MODIFY_TASK as any) && sprintAuth,
         hide: false
       });
     }
 
+    // Add favorite/follow menu items
     if (favourite) {
       menuItems.push({
         name: t('task.actions.unfavorite'),
@@ -713,11 +910,12 @@ const menuItemsMap = computed(() => {
       });
     }
 
+    // Add common menu items
     menuItems.push({
       name: t('task.actions.move'),
       key: 'move',
       icon: 'icon-yidong',
-      disabled: !isAdministrator && !permissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
+      disabled: !isAdmin && !userPermissions.includes(TaskSprintPermission.MODIFY_TASK) && sprintAuth,
       hide: false
     });
 
@@ -729,82 +927,100 @@ const menuItemsMap = computed(() => {
       hide: false
     });
 
+    // Convert array to map
     for (let i = 0, len = menuItems.length; i < len; i++) {
       const item = menuItems[i];
-      map[item.key] = item;
+      menuMap[item.key] = item;
     }
   }
-  return map;
+  return menuMap;
 });
 
-const className = computed(() => {
-  return fullScreenFlag.value ? 'fixed-full' : '';
+/**
+ * Generates CSS class name based on full screen state
+ * <p>
+ * Returns 'fixed-full' class when in full screen mode
+ */
+const containerClassName = computed(() => {
+  return isFullScreen.value ? 'fixed-full' : '';
 });
 
-const getRefTaskNum = (type = 'TASK') => {
-  return (taskInfo.value?.refTaskInfos || []).filter(item => item.taskType.value === type).length || 0;
+/**
+ * Gets the count of referenced tasks by type
+ * <p>
+ * Returns the number of referenced tasks matching the specified type
+ */
+const getReferencedTaskCount = (type = 'TASK') => {
+  return (currentTaskInfo.value?.refTaskInfos || []).filter(item => item.taskType.value === type).length || 0;
 };
 </script>
 
 <template>
+  <!-- Main container with loading spinner -->
   <Spin
     :id="domId"
-    :spinning="loading"
-    :class="className"
+    :spinning="isLoading"
+    :class="containerClassName"
     class="flex-1 h-full pt-3.5 pl-3.5 pb-3 overflow-hidden">
+    <!-- Action buttons and navigation -->
     <div class="flex items-start justify-between pr-5">
       <div class="flex items-start flex-wrap space-y-b-2 space-x-r-2.5">
+        <!-- Start Task Button -->
         <Button
-          v-if="menuItemsMap.start"
-          :disabled="!!menuItemsMap.start?.disabled"
+          v-if="actionMenuItemsMap.start"
+          :disabled="!!actionMenuItemsMap.start?.disabled"
           type="primary"
           size="small"
           class="flex items-center"
-          @click="toStart">
+          @click="startCurrentTask">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-kaishi" />
           <span>{{ t('task.actions.start') }}</span>
         </Button>
 
+        <!-- Mark as Processed Button -->
         <Button
-          v-if="menuItemsMap.processed"
-          :disabled="!!menuItemsMap.processed?.disabled"
+          v-if="actionMenuItemsMap.processed"
+          :disabled="!!actionMenuItemsMap.processed?.disabled"
           type="primary"
           size="small"
           class="flex items-center"
-          @click="toProcessed">
+          @click="markTaskAsProcessed">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-kaishi" />
           <span>{{ t('task.actions.complete') }}</span>
         </Button>
 
+        <!-- Confirm Complete Button -->
         <Button
-          v-if="menuItemsMap.completed"
-          :disabled="!!menuItemsMap.completed?.disabled"
+          v-if="actionMenuItemsMap.completed"
+          :disabled="!!actionMenuItemsMap.completed?.disabled"
           type="primary"
           size="small"
           class="flex items-center"
-          @click="toCompleted">
+          @click="confirmTaskAsCompleted">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-kaishi" />
           <span>{{ t('task.actions.confirmComplete') }}</span>
         </Button>
 
+        <!-- Confirm Incomplete Button -->
         <Button
-          v-if="menuItemsMap.uncompleted"
-          :disabled="!!menuItemsMap.uncompleted?.disabled"
+          v-if="actionMenuItemsMap.uncompleted"
+          :disabled="!!actionMenuItemsMap.uncompleted?.disabled"
           type="primary"
           size="small"
           class="flex items-center"
-          @click="toUnComplete">
+          @click="confirmTaskAsIncomplete">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-kaishi" />
           <span>{{ t('task.actions.confirmIncomplete') }}</span>
         </Button>
 
+        <!-- Reopen Task Button -->
         <Button
-          v-if="menuItemsMap.reopen"
-          :disabled="!!menuItemsMap.reopen?.disabled"
+          v-if="actionMenuItemsMap.reopen"
+          :disabled="!!actionMenuItemsMap.reopen?.disabled"
           type="primary"
           size="small"
           class="flex items-center"
-          @click="toReopen">
+          @click="reopenCurrentTask">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-kaishi" />
           <span>{{ t('task.actions.reopen') }}</span>
           <Popover placement="bottom">
@@ -817,13 +1033,14 @@ const getRefTaskNum = (type = 'TASK') => {
           </Popover>
         </Button>
 
+        <!-- Restart Task Button -->
         <Button
-          v-if="menuItemsMap.restart"
-          :disabled="!!menuItemsMap.restart?.disabled"
+          v-if="actionMenuItemsMap.restart"
+          :disabled="!!actionMenuItemsMap.restart?.disabled"
           type="primary"
           size="small"
           class="flex items-center"
-          @click="toRestart">
+          @click="restartCurrentTask">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-kaishi" />
           <span>{{ t('task.actions.restart') }}</span>
           <Popover placement="bottom">
@@ -836,111 +1053,122 @@ const getRefTaskNum = (type = 'TASK') => {
           </Popover>
         </Button>
 
+        <!-- Edit Task Button -->
         <Button
-          v-if="menuItemsMap.edit"
-          :disabled="!!menuItemsMap.edit?.disabled"
+          v-if="actionMenuItemsMap.edit"
+          :disabled="!!actionMenuItemsMap.edit?.disabled"
           size="small"
           class="flex items-center"
-          @click="toEdit">
+          @click="navigateToEdit">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-shuxie" />
           <span>{{ t('task.detail.actions.edit') }}</span>
         </Button>
 
+        <!-- Split Task Button -->
         <Button
-          v-if="menuItemsMap.split"
-          :disabled="!!menuItemsMap.split?.disabled"
+          v-if="actionMenuItemsMap.split"
+          :disabled="!!actionMenuItemsMap.split?.disabled"
           size="small"
           class="flex items-center"
-          @click="toSplit">
+          @click="openSplitTaskDialog">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-guanlianziyuan" />
           <span>{{ t('task.detail.actions.split') }}</span>
         </Button>
 
+        <!-- Cancel Task Button -->
         <Button
-          v-if="menuItemsMap.cancel"
-          :disabled="!!menuItemsMap.cancel?.disabled"
+          v-if="actionMenuItemsMap.cancel"
+          :disabled="!!actionMenuItemsMap.cancel?.disabled"
           size="small"
           class="flex items-center"
-          @click="toCancel">
+          @click="cancelCurrentTask">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-zhongzhi2" />
           <span>{{ t('actions.cancel') }}</span>
         </Button>
 
+        <!-- Delete Task Button -->
         <Button
-          v-if="menuItemsMap.delete"
-          :disabled="!!menuItemsMap.delete?.disabled"
+          v-if="actionMenuItemsMap.delete"
+          :disabled="!!actionMenuItemsMap.delete?.disabled"
           size="small"
           class="flex items-center"
-          @click="toDelete">
+          @click="deleteCurrentTask">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-qingchu" />
           <span>{{ t('actions.delete') }}</span>
         </Button>
 
+        <!-- Add to Favorites Button -->
         <Button
-          v-if="menuItemsMap.favourite"
-          :disabled="!!menuItemsMap.favourite?.disabled"
+          v-if="actionMenuItemsMap.favourite"
+          :disabled="!!actionMenuItemsMap.favourite?.disabled"
           size="small"
           class="flex items-center"
-          @click="toFavourite">
+          @click="addToFavorites">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-yishoucang" />
           <span>{{ t('task.actions.favorite') }}</span>
         </Button>
 
+        <!-- Remove from Favorites Button -->
         <Button
-          v-if="menuItemsMap.cancelFavourite"
-          :disabled="!!menuItemsMap.cancelFavourite?.disabled"
+          v-if="actionMenuItemsMap.cancelFavourite"
+          :disabled="!!actionMenuItemsMap.cancelFavourite?.disabled"
           size="small"
           class="flex items-center"
-          @click="toDeleteFavourite">
+          @click="removeFromFavorites">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-quxiaoshoucang" />
           <span>{{ t('task.actions.unfavorite') }}</span>
         </Button>
 
+        <!-- Follow Task Button -->
         <Button
-          v-if="menuItemsMap.follow"
-          :disabled="!!menuItemsMap.follow?.disabled"
+          v-if="actionMenuItemsMap.follow"
+          :disabled="!!actionMenuItemsMap.follow?.disabled"
           size="small"
           class="flex items-center"
-          @click="toFollow">
+          @click="followCurrentTask">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-yiguanzhu" />
           <span>{{ t('task.actions.follow') }}</span>
         </Button>
 
+        <!-- Unfollow Task Button -->
         <Button
-          v-if="menuItemsMap.cancelFollow"
-          :disabled="!!menuItemsMap.cancelFollow?.disabled"
+          v-if="actionMenuItemsMap.cancelFollow"
+          :disabled="!!actionMenuItemsMap.cancelFollow?.disabled"
           size="small"
           class="flex items-center"
-          @click="toDeleteFollow">
+          @click="unfollowCurrentTask">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-quxiaoguanzhu" />
           <span>{{ t('task.actions.unfollow') }}</span>
         </Button>
 
+        <!-- Move Task Button -->
         <Button
-          v-if="menuItemsMap.move"
-          :disabled="!!menuItemsMap.move?.disabled"
+          v-if="actionMenuItemsMap.move"
+          :disabled="!!actionMenuItemsMap.move?.disabled"
           size="small"
           class="flex items-center"
-          @click="toMove">
+          @click="openMoveTaskDialog">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-yidong" />
           <span>{{ t('task.detail.actions.move') }}</span>
         </Button>
 
+        <!-- Copy Link Button -->
         <Button
           size="small"
           class="flex items-center"
-          @click="toCopyHref">
+          @click="copyTaskLinkToClipboard">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-fuzhi" />
           <span>{{ t('task.detail.actions.copyLink') }}</span>
         </Button>
 
+        <!-- Full Screen Toggle Button -->
         <Button
           v-if="props.type === 'list'"
           type="default"
           size="small"
           class="flex items-center"
-          @click="toggleFullScreen">
-          <template v-if="fullScreenFlag">
+          @click="toggleFullScreenMode">
+          <template v-if="isFullScreen">
             <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-tuichuzuida" />
             <span>{{ t('task.detail.actions.exitFullScreen') }}</span>
           </template>
@@ -952,274 +1180,297 @@ const getRefTaskNum = (type = 'TASK') => {
         </Button>
       </div>
 
-      <div v-if="props.type === 'details' && !(prevBtnDisabled && nextBtnDisabled)" class="flex items-start">
+      <!-- Navigation buttons for details view -->
+      <div v-if="props.type === 'details' && !(isPreviousButtonDisabled && isNextButtonDisabled)" class="flex items-start">
         <Button
           size="small"
           class="flex items-center mr-2.5"
-          :disabled="prevBtnDisabled"
-          @click="fetchPrev">
+          :disabled="isPreviousButtonDisabled"
+          @click="navigateToPreviousTask">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-chakanshangyitiao" />
-          <span>{{ prevBtnDisabled ? t('task.detail.noMore') : t('task.detail.previousTask') }}</span>
+          <span>{{ isPreviousButtonDisabled ? t('task.detail.noMore') : t('task.detail.previousTask') }}</span>
         </Button>
 
         <Button
           size="small"
           class="flex items-center"
-          :disabled="nextBtnDisabled"
-          @click="fetchNext">
+          :disabled="isNextButtonDisabled"
+          @click="navigateToNextTask">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-chakanxiayitiao" />
-          <span>{{ nextBtnDisabled ? t('task.detail.noMore') : t('task.detail.nextTask') }}</span>
+          <span>{{ isNextButtonDisabled ? t('task.detail.noMore') : t('task.detail.nextTask') }}</span>
         </Button>
       </div>
     </div>
 
+    <!-- Main tabs container -->
     <Tabs
-      v-model:activeKey="activeKey"
+      v-model:activeKey="activeTabKey"
       size="small"
       style="height: calc(100% - 36px);"
-      @change="activeKeyChange">
+      @change="handleTabKeyChange">
       <template #rightExtra>
         <Button
           type="link"
           size="small"
           class="flex items-center mr-4"
-          @click="toRefresh">
+          @click="refreshAllContent">
           <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-shuaxin" />
           <span>{{ t('task.detail.actions.refresh') }}</span>
         </Button>
       </template>
 
+      <!-- Basic Info Tab -->
       <TabPane key="basicInfo" :tab="t('task.detail.tabs.basicInfo')">
         <BasicInfo
-          v-if="largePageLayout === false || largePageLayout === true"
-          v-model:loading="loading"
+          v-if="isLargePageLayout === false || isLargePageLayout === true"
+          v-model:loading="isLoading"
           :projectId="props.projectId"
-          :userInfo="props.userInfo"
-          :appInfo="props.appInfo"
-          :dataSource="taskInfo"
-          :largePageLayout="largePageLayout"
-          @change="basicInfoChange" />
+          :userInfo="{ ...props.userInfo, fullName: '' }"
+          :appInfo="{ ...props.appInfo, fullName: '' }"
+          :dataSource="currentTaskInfo"
+          :largePageLayout="isLargePageLayout"
+          @change="handleBasicInfoChange" />
       </TabPane>
 
+      <!-- Sub Task Tab -->
       <TabPane key="taskChild">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('task.detail.tabs.subTask') }}</span>
-            <span>({{ taskInfo?.subTaskInfos?.length || 0 }})</span>
+            <span>({{ currentTaskInfo?.subTaskInfos?.length || 0 }})</span>
           </div>
         </template>
         <SubTask
-          v-model:loading="loading"
+          v-model:loading="isLoading"
           :projectId="props.projectId"
-          :userInfo="props.userInfo"
-          :appInfo="props.appInfo"
-          :taskInfo="taskInfo"
-          @refreshChange="refreshChange" />
+          :userInfo="{ ...props.userInfo, fullName: '' }"
+          :appInfo="{ ...props.appInfo, fullName: '' }"
+          :taskInfo="currentTaskInfo"
+          @refreshChange="refreshTaskData" />
       </TabPane>
 
+      <!-- Associated Task Tab -->
       <TabPane key="assocTask">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('task.detail.tabs.assocTask') }}</span>
-            <span>({{ getRefTaskNum(TaskType.TASK) }})</span>
+            <span>({{ getReferencedTaskCount(TaskType.TASK) }})</span>
           </div>
         </template>
 
         <AssocTaskTab
           :key="TaskType.TASK"
           :projectId="props.projectId"
-          :userInfo="props.userInfo"
-          :appInfo="props.appInfo"
-          :dataSource="taskInfo?.refTaskInfos || []"
+          :userInfo="{ ...props.userInfo, fullName: '' }"
+          :appInfo="{ ...props.appInfo, fullName: '' }"
+          :dataSource="currentTaskInfo?.refTaskInfos || []"
           :taskId="props.id"
           :title="t('task.detail.assocTaskTab.title')"
           :tips="t('task.detail.assocTaskTab.tips')"
           :taskType="TaskType.TASK"
-          @editSuccess="loadData" />
+          @editSuccess="loadTaskData" />
       </TabPane>
+
+      <!-- Associated Requirements Tab -->
       <TabPane key="assocRequirements">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('task.detail.assocRequirements.title') }}</span>
-            <span>({{ getRefTaskNum(TaskType.REQUIREMENT) }})</span>
+            <span>({{ getReferencedTaskCount(TaskType.REQUIREMENT) }})</span>
           </div>
         </template>
         <AssocTaskTab
           :key="TaskType.REQUIREMENT"
           :projectId="props.projectId"
-          :userInfo="props.userInfo"
-          :appInfo="props.appInfo"
-          :dataSource="taskInfo?.refTaskInfos || []"
+          :userInfo="{ ...props.userInfo, fullName: '' }"
+          :appInfo="{ ...props.appInfo, fullName: '' }"
+          :dataSource="currentTaskInfo?.refTaskInfos || []"
           :taskId="props.id"
           :title="t('task.detail.assocRequirements.title')"
           :tips="t('task.detail.assocRequirements.tips')"
           :taskType="TaskType.REQUIREMENT"
-          @editSuccess="loadData" />
+          @editSuccess="loadTaskData" />
       </TabPane>
+
+      <!-- Associated Story Tab -->
       <TabPane key="assocStory">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('task.detail.assocStory.title') }}</span>
-            <span>({{ getRefTaskNum(TaskType.STORY) }})</span>
+            <span>({{ getReferencedTaskCount(TaskType.STORY) }})</span>
           </div>
         </template>
         <AssocTaskTab
           :key="TaskType.STORY"
           :projectId="props.projectId"
-          :userInfo="props.userInfo"
-          :appInfo="props.appInfo"
-          :dataSource="taskInfo?.refTaskInfos || []"
+          :userInfo="{ ...props.userInfo, fullName: '' }"
+          :appInfo="{ ...props.appInfo, fullName: '' }"
+          :dataSource="currentTaskInfo?.refTaskInfos || []"
           :taskId="props.id"
           :title="t('task.detail.assocStory.title')"
           :tips="t('task.detail.assocStory.tips')"
           :taskType="TaskType.STORY"
-          @editSuccess="loadData" />
+          @editSuccess="loadTaskData" />
       </TabPane>
+
+      <!-- Associated Bug Tab -->
       <TabPane key="asscoBug">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('task.detail.asscoBug.title') }}</span>
-            <span>({{ getRefTaskNum(TaskType.BUG) }})</span>
+            <span>({{ getReferencedTaskCount(TaskType.BUG) }})</span>
           </div>
         </template>
         <AssocTaskTab
           :key="TaskType.BUG"
           :projectId="props.projectId"
-          :userInfo="props.userInfo"
-          :appInfo="props.appInfo"
-          :dataSource="taskInfo?.refTaskInfos || []"
+          :userInfo="{ ...props.userInfo, fullName: '' }"
+          :appInfo="{ ...props.appInfo, fullName: '' }"
+          :dataSource="currentTaskInfo?.refTaskInfos || []"
           :taskId="props.id"
           :title="t('task.detail.asscoBug.title')"
           :tips="t('task.detail.asscoBug.tips')"
           :taskType="TaskType.BUG"
-          @editSuccess="loadData" />
+          @editSuccess="loadTaskData" />
       </TabPane>
+
+      <!-- Associated Case Tab -->
       <TabPane key="asscoCase">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('task.detail.asscoCase.title') }}</span>
-            <span>({{ taskInfo?.refCaseInfos?.length || 0 }})</span>
+            <span>({{ currentTaskInfo?.refCaseInfos?.length || 0 }})</span>
           </div>
         </template>
         <AssocCaseTab
           :projectId="props.projectId"
-          :userInfo="props.userInfo"
-          :appInfo="props.appInfo"
-          :dataSource="taskInfo?.refCaseInfos || []"
+          :userInfo="{ ...props.userInfo, fullName: '' }"
+          :appInfo="{ ...props.appInfo, fullName: '' }"
+          :dataSource="(currentTaskInfo?.refCaseInfos || []) as any"
           :taskId="props.id"
-          @editSuccess="loadData" />
+          @editSuccess="loadTaskData" />
       </TabPane>
+
+      <!-- Associated API Test Tab -->
       <TabPane key="assocApiTest">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('task.detail.assocApiTest.title') }}</span>
-            <span>({{ getRefTaskNum(TaskType.API_TEST) }})</span>
+            <span>({{ getReferencedTaskCount(TaskType.API_TEST) }})</span>
           </div>
         </template>
         <AssocTaskTab
           :key="TaskType.API_TEST"
           :projectId="props.projectId"
-          :userInfo="props.userInfo"
-          :appInfo="props.appInfo"
-          :dataSource="taskInfo?.refTaskInfos || []"
+          :userInfo="{ ...props.userInfo, fullName: '' }"
+          :appInfo="{ ...props.appInfo, fullName: '' }"
+          :dataSource="currentTaskInfo?.refTaskInfos || []"
           :taskId="props.id"
           :title="t('task.detail.assocApiTest.title')"
           :tips="t('task.detail.assocApiTest.tips')"
           :taskType="TaskType.API_TEST"
-          @editSuccess="loadData" />
+          @editSuccess="loadTaskData" />
       </TabPane>
+
+      <!-- Associated Scenario Test Tab -->
       <TabPane key="assocScenarioTest">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('task.detail.assocScenarioTest.title') }}</span>
-            <span>({{ getRefTaskNum(TaskType.SCENARIO_TEST) }})</span>
+            <span>({{ getReferencedTaskCount(TaskType.SCENARIO_TEST) }})</span>
           </div>
         </template>
         <AssocTaskTab
           :key="TaskType.SCENARIO_TEST"
           :projectId="props.projectId"
-          :userInfo="props.userInfo"
-          :appInfo="props.appInfo"
-          :dataSource="taskInfo?.refTaskInfos || []"
+          :userInfo="{ ...props.userInfo, fullName: '' }"
+          :appInfo="{ ...props.appInfo, fullName: '' }"
+          :dataSource="currentTaskInfo?.refTaskInfos || []"
           :taskId="props.id"
           :title="t('task.detail.assocScenarioTest.title')"
           :tips="t('task.detail.assocScenarioTest.tips')"
-          taskType="TaskType.SCENARIO_TEST"
-          @editSuccess="loadData" />
+          :taskType="TaskType.SCENARIO_TEST"
+          @editSuccess="loadTaskData" />
       </TabPane>
 
+      <!-- Test Info Tab (conditional) -->
       <TabPane
-        v-if="showTestInfo"
+        v-if="shouldShowTestInfo"
         key="testInfo"
         :tab="t('task.detail.tabs.testInfo')">
         <TestInfo
           :projectId="props.projectId"
-          :userInfo="props.userInfo"
-          :appInfo="props.appInfo"
-          :dataSource="taskInfo"
-          :largePageLayout="largePageLayout" />
+          :userInfo="{ ...props.userInfo, fullName: '' }"
+          :appInfo="{ ...props.appInfo, fullName: '' }"
+          :dataSource="currentTaskInfo"
+          :largePageLayout="isLargePageLayout" />
       </TabPane>
 
+      <!-- Remark Tab -->
       <TabPane key="remark">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('task.detail.tabs.remark') }}</span>
-            <span>({{ taskInfo?.remarkNum || 0 }})</span>
+            <span>({{ (currentTaskInfo as any)?.remarkNum || 0 }})</span>
           </div>
         </template>
         <Remark
           :id="props.id"
-          v-model:notify="remarkNotify"
+          v-model:notify="remarkNotificationId"
           :projectId="props.projectId"
-          :userInfo="props.userInfo"
-          :appInfo="props.appInfo" />
+          :userInfo="{ ...props.userInfo, fullName: '' }"
+          :appInfo="{ ...props.appInfo, fullName: '' }" />
       </TabPane>
 
+      <!-- Comments Tab -->
       <TabPane key="comments">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('task.detail.tabs.comments') }}</span>
-            <span>({{ taskInfo?.commentNum || 0 }})</span>
+            <span>({{ (currentTaskInfo as any)?.commentNum || 0 }})</span>
           </div>
         </template>
         <Comment
           :id="props.id"
-          :notify="commentNotify"
+          :notify="commentNotificationId"
           :projectId="props.projectId"
-          :userInfo="props.userInfo"
-          :appInfo="props.appInfo" />
+          :userInfo="{ ...props.userInfo, fullName: '' }"
+          :appInfo="{ ...props.appInfo, fullName: '' }" />
       </TabPane>
 
+      <!-- Activity Tab -->
       <TabPane key="activity">
         <template #tab>
           <div class="inline-flex">
             <span>{{ t('task.detail.tabs.activity') }}</span>
-            <span>({{ taskInfo?.activityNum || 0 }})</span>
+            <span>({{ (currentTaskInfo as any)?.activityNum || 0 }})</span>
           </div>
         </template>
         <Activity
           :id="props.id"
-          :notify="activityNotify"
+          :notify="activityNotificationId"
           :projectId="props.projectId"
-          :userInfo="props.userInfo"
-          :appInfo="props.appInfo" />
+          :userInfo="{ ...props.userInfo, fullName: '' }"
+          :appInfo="{ ...props.appInfo, fullName: '' }" />
       </TabPane>
     </Tabs>
 
-    <AsyncComponent :visible="splitTaskVisible">
+    <!-- Split Task Dialog -->
+    <AsyncComponent :visible="isSplitTaskVisible">
       <SplitTask
-        v-model:visible="splitTaskVisible"
+        v-model:visible="isSplitTaskVisible"
         :projectId="props.projectId"
         :userInfo="props.userInfo"
         :appInfo="props.appInfo"
-        :taskInfo="selectedTaskInfo"
-        @ok="splitOk"
-        @cancel="splitCancel" />
+        :taskInfo="selectedTaskForSplit"
+        @ok="confirmSplitTask"
+        @cancel="cancelSplitTask" />
     </AsyncComponent>
   </Spin>
 </template>
 
 <style scoped>
+/* Full screen mode styles */
 .fixed-full {
   position: fixed;
   inset: 0;
@@ -1227,6 +1478,8 @@ const getRefTaskNum = (type = 'TASK') => {
   padding: 20px 0 20px 20px;
   background-color: #fff;
 }
+
+/* Tab navigation styles */
 :deep(.ant-tabs-nav::before) {
   border: 0;
 }
@@ -1235,6 +1488,7 @@ const getRefTaskNum = (type = 'TASK') => {
   right: 20px;
 }
 
+/* Spacing utilities for button layout */
 .space-x-r-2\.5>*+* {
   margin-right: 10px;
 }

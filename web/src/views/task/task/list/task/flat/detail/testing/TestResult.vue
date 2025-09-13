@@ -7,9 +7,17 @@ import { TaskType } from '@/enums/enums';
 import { TaskInfo } from '@/views/task/types';
 import { TestInfo } from '@/views/execution/types';
 
+/**
+ * Lazy-loaded component for displaying API test results
+ */
 const ApiTestResult = defineAsyncComponent(() => import('@/views/execution/detail/result/ApiResult.vue'));
+
+/**
+ * Lazy-loaded component for displaying scenario test results
+ */
 const ScenarioResult = defineAsyncComponent(() => import('@/views/execution/detail/result/ScenarioResult.vue'));
 
+// Component Props
 type Props = {
   dataSource: TaskInfo;
   testInfo: TestInfo;
@@ -22,16 +30,25 @@ const props = withDefaults(defineProps<Props>(), {
   largePageLayout: undefined
 });
 
+// Composables
 const { t } = useI18n();
 
-const content = ref<string>('');
+/**
+ * Stores the task description content
+ */
+const taskDescription = ref<string>('');
 
+// Lifecycle Hooks
 onMounted(() => {
-  watch(() => props.dataSource, (newValue) => {
-    content.value = newValue?.description || '';
+  /**
+   * Watches for changes in dataSource and updates task description
+   * <p>
+   * Updates the description content when task data changes
+   */
+  watch(() => props.dataSource, (newTaskData) => {
+    taskDescription.value = newTaskData?.description || '';
   }, { immediate: true });
 });
-
 </script>
 
 <template>
@@ -41,18 +58,23 @@ onMounted(() => {
     </template>
 
     <template #default>
+      <!-- API Test Result Display -->
       <template v-if="props.dataSource.taskType.value === TaskType.API_TEST && !!props.testInfo">
         <ApiTestResult
           :value="props.testInfo"
           :largePageLayout="props.largePageLayout"
           class="text-3 pl-5.5 mt-3.5" />
       </template>
+
+      <!-- Scenario Test Result Display -->
       <template v-if="props.dataSource.taskType.value === TaskType.SCENARIO_TEST && !!props.testInfo">
         <ScenarioResult
           :value="props.testInfo"
           :largePageLayout="props.largePageLayout"
           class="text-3 pl-5.5 mt-3.5" />
       </template>
+
+      <!-- No Data State -->
       <template v-if="!props.testInfo">
         <NoData size="small" class="my-8" />
       </template>

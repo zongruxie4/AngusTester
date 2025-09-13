@@ -9,6 +9,12 @@ import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
+/**
+ * Props interface for AssocCase component
+ * <p>
+ * Defines the required properties for displaying and managing
+ * test case associations with a specific task.
+ */
 const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -17,67 +23,133 @@ const props = withDefaults(defineProps<TaskInfoProps>(), {
   dataSource: undefined
 });
 
+// Composables
 const router = useRouter();
 const { t } = useI18n();
+
+/**
+ * Lazy-loaded modal component for selecting test cases by module
+ * <p>
+ * Provides a modal interface for users to browse and select
+ * test cases that can be associated with the current task
+ */
 const SelectCaseByModuleModal = defineAsyncComponent(() => import('@/components/function/case/selectByModuleModal/index.vue'));
 
+/**
+ * Event emitter for component communication
+ * <p>
+ * Emits events to notify parent components about loading state changes
+ * and successful edit operations
+ */
 // eslint-disable-next-line func-call-spacing
 const emit = defineEmits<{
   (event: 'loadingChange', value: boolean): void;
   (event: 'editSuccess'): void;
 }>();
 
-// const addTabPane = inject('addTabPane', (value: any) => value);
-const submitLoading = ref(false);
-const editRef = ref(false);
+/**
+ * Loading state for submit operations
+ * <p>
+ * Indicates whether a case association operation is currently in progress
+ */
+const isSubmitLoading = ref(false);
 
-const selectCaseVisible = ref(false);
-const cancelEdit = () => {
-  editRef.value = false;
+/**
+ * Visibility state for the case selection modal
+ * <p>
+ * Controls whether the case selection modal is currently displayed
+ */
+const isCaseSelectionModalVisible = ref(false);
+
+/**
+ * Closes the case selection modal
+ * <p>
+ * Resets the modal visibility state when user cancels the operation
+ */
+const closeCaseSelectionModal = () => {
+  isCaseSelectionModalVisible.value = false;
 };
-const startEdit = () => {
-  selectCaseVisible.value = true;
+
+/**
+ * Opens the case selection modal
+ * <p>
+ * Shows the modal interface for selecting test cases to associate
+ */
+const openCaseSelectionModal = () => {
+  isCaseSelectionModalVisible.value = true;
 };
-// const refCaseIds = ref<string[]>([]);
-const handlePut = async (refCaseIds) => {
-  selectCaseVisible.value = false;
-  if (!refCaseIds.length) {
-    cancelEdit();
+
+/**
+ * Handles the association of selected test cases with the current task
+ * <p>
+ * Processes the selected case IDs and creates associations through the API.
+ * Updates the loading state and emits success events upon completion.
+ *
+ * @param selectedCaseIds - Array of case IDs to associate with the task
+ */
+const handleCaseAssociation = async (selectedCaseIds: string[]) => {
+  isCaseSelectionModalVisible.value = false;
+
+  if (!selectedCaseIds.length) {
+    closeCaseSelectionModal();
     return;
   }
-  submitLoading.value = true;
-  const [error] = await task.associationCase(props.taskId, refCaseIds, {
+  isSubmitLoading.value = true;
+
+  const [error] = await task.associationCase(props.taskId || '', selectedCaseIds, {
     paramsType: true
   });
-  submitLoading.value = false;
+
+  isSubmitLoading.value = false;
   if (error) {
     return;
   }
+
   emit('editSuccess');
 };
 
-const handleDelCase = (record) => {
+/**
+ * Handles the removal of a test case association
+ * <p>
+ * Shows a confirmation dialog and removes the association between
+ * the specified test case and the current task.
+ *
+ * @param caseRecord - The test case record to disassociate
+ */
+const handleCaseDisassociation = (caseRecord: any) => {
   modal.confirm({
-    content: t('task.assocCase.messages.confirmCancelCase', { name: record.name }),
+    content: t('task.assocCase.messages.confirmCancelCase', { name: caseRecord.name }),
     onOk () {
-      return task.cancelAssociationCase(props.taskId, [record.id], {
+      return task.cancelAssociationCase(props.taskId || '', [caseRecord.id], {
         paramsType: true
       }).then(([error]) => {
         if (error) {
           return;
         }
-        // editRef.value = false;
         emit('editSuccess');
       });
     }
   });
 };
 
-const openCaseTab = (record) => {
-  router.push(`/function#cases?id=${record.id}`);
+/**
+ * Navigates to the test case detail page
+ * <p>
+ * Opens the specified test case in a new tab for detailed viewing
+ *
+ * @param caseRecord - The test case record to open
+ */
+const navigateToCaseDetail = (caseRecord: any) => {
+  router.push(`/function#cases?id=${caseRecord.id}`);
 };
 
-const columns = [
+/**
+ * Table column definitions for the associated test cases
+ * <p>
+ * Defines the structure and display properties for each column
+ * in the test case association table
+ */
+const tableColumns = [
   {
     key: 'code',
     dataIndex: 'code',
@@ -122,47 +194,57 @@ const columns = [
 </script>
 <template>
   <div>
+    <!-- Header section with description and action button -->
     <div class="flex mb-2 items-center pr-2">
       <div class="flex-1 min-w-0 truncate px-1">
         <Hints :text="t('task.assocCase.description')" />
       </div>
       <Button
-        :disabled="props.dataSource?.length > 19"
-        :loading="submitLoading"
+        :disabled="(props.dataSource as any)?.refCaseInfos?.length > 19"
+        :loading="isSubmitLoading"
         size="small"
-        @click="startEdit">
+        @click="openCaseSelectionModal">
         <Icon icon="icon-jia" class="mr-1" />
         {{ t('task.assocCase.actions.associateCase') }}
       </Button>
     </div>
+
+    <!-- Test case association table -->
     <Table
-      :columns="columns"
-      :dataSource="props.dataSource || []"
+      :columns="tableColumns"
+      :dataSource="(props.dataSource as any) || []"
       :pagination="false"
       size="small"
       noDataSize="small"
       noDataText="">
       <template #bodyCell="{column, record}">
+        <!-- Case name with navigation link -->
         <template v-if="column.dataIndex === 'name'">
           <Button
             type="link"
             size="small"
-            @click="openCaseTab(record)">
+            @click="navigateToCaseDetail(record)">
             {{ record.name }}
           </Button>
         </template>
+
+        <!-- Action buttons for case disassociation -->
         <template v-if="column.dataIndex === 'action'">
           <Button
             size="small"
             type="text"
-            @click="handleDelCase(record)">
+            @click="handleCaseDisassociation(record)">
             <Icon icon="icon-qingchu" class="mr-1" />
             {{ t('task.assocCase.actions.cancel') }}
           </Button>
         </template>
+
+        <!-- Priority display component -->
         <template v-if="column.dataIndex === 'priority'">
           <TaskPriority :value="record?.priority" />
         </template>
+
+        <!-- Status display with conditional rendering -->
         <template v-if="column.dataIndex === 'status'">
           <ReviewStatus
             v-if="record?.reviewStatus?.value === FuncPlanStatus.PENDING && record.review"
@@ -172,12 +254,13 @@ const columns = [
       </template>
     </Table>
 
-    <AsyncComponent :visible="selectCaseVisible">
+    <!-- Case selection modal -->
+    <AsyncComponent :visible="isCaseSelectionModalVisible">
       <SelectCaseByModuleModal
-        v-model:visible="selectCaseVisible"
+        v-model:visible="isCaseSelectionModalVisible"
         :projectId="props.projectId"
         :action="`${TESTER}/task/${props.taskId}/case/notAssociated`"
-        @ok="handlePut" />
+        @ok="handleCaseAssociation" />
     </AsyncComponent>
   </div>
 </template>

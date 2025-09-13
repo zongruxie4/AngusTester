@@ -5,7 +5,7 @@ import { Icon, NoData, Scroll } from '@xcan-angus/vue-ui';
 import { TESTER, PageQuery } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { TaskInfoProps } from '@/views/task/task/list/task/types';
-import { Remark } from '@/views/task/backlog/types';
+import { Remark } from '@/views/task/task/types';
 
 // Component Props
 const props = withDefaults(defineProps<TaskInfoProps>(), {

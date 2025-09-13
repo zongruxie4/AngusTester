@@ -6,10 +6,11 @@ import dayjs, { Dayjs } from 'dayjs';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-import { TaskInfo } from '../../../../../types';
+import { TaskInfo } from '@/views/task/types';
 import { TIME_FORMAT } from '@/utils/constant';
 import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
+// Component props and emits
 const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -25,86 +26,104 @@ const emit = defineEmits<{
   (event: 'change', value: Partial<TaskInfo>): void;
 }>();
 
-const dateRef = ref();
-const editFlag = ref(false);
-const dateValue = ref<string>();
+// Date editing state
+const datePickerRef = ref();
+const isDateEditing = ref(false);
+const dateInputValue = ref<string>();
 
-const dateError = ref();
+// Date validation state
+const hasDateError = ref();
 const dateErrorMessage = ref<string>();
 
-const toEdit = () => {
-  dateValue.value = deadlineDate.value;
-  editFlag.value = true;
+// Date editing methods
+/**
+ * Enter date editing mode and focus the date picker
+ */
+const enterDateEditMode = () => {
+  dateInputValue.value = currentDeadlineDate.value;
+  isDateEditing.value = true;
 
   nextTick(() => {
     setTimeout(() => {
-      if (typeof dateRef.value?.focus === 'function') {
-        dateRef.value?.focus();
+      if (typeof datePickerRef.value?.focus === 'function') {
+        datePickerRef.value?.focus();
       }
     }, 100);
   });
 };
 
-const change = (value:string) => {
+/**
+ * Handle date picker value change and validate the selected date
+ * @param value - Selected date value
+ */
+const handleDatePickerChange = (value: string) => {
   if (!value) {
     dateErrorMessage.value = t('task.detailInfo.date.validation.selectDeadline');
     return;
   }
 
   if (dayjs(value).isBefore(dayjs(), 'minute')) {
-    dateError.value = true;
+    hasDateError.value = true;
     dateErrorMessage.value = t('task.detailInfo.date.validation.futureTimeRequired');
     return;
   }
 
-  dateError.value = false;
+  hasDateError.value = false;
   dateErrorMessage.value = undefined;
 };
 
-const blur = async () => {
-  if (dateError.value) {
-    if (typeof dateRef.value?.focus === 'function') {
-      dateRef.value?.focus();
+/**
+ * Handle date picker blur and update task deadline date
+ */
+const handleDatePickerBlur = async () => {
+  if (hasDateError.value) {
+    if (typeof datePickerRef.value?.focus === 'function') {
+      datePickerRef.value?.focus();
     }
     return;
   }
 
-  const value = dateValue.value;
-  if (!value || value === deadlineDate.value) {
-    editFlag.value = false;
+  const selectedValue = dateInputValue.value;
+  if (!selectedValue || selectedValue === currentDeadlineDate.value) {
+    isDateEditing.value = false;
     return;
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editDeadlineDateApi(taskId.value, value);
+  const [error] = await task.editDeadlineDateApi(currentTaskId.value, selectedValue);
   emit('loadingChange', false);
   if (error) {
-    if (typeof dateRef.value?.focus === 'function') {
-      dateRef.value?.focus();
+    if (typeof datePickerRef.value?.focus === 'function') {
+      datePickerRef.value?.focus();
     }
     return;
   }
 
-  editFlag.value = false;
-  emit('change', { id: taskId.value, deadlineDate: value });
+  isDateEditing.value = false;
+  emit('change', { id: currentTaskId.value, deadlineDate: selectedValue });
 };
 
-// 禁用日期组件当前时间之前的年月日
-const disabledDate = (current: Dayjs) => {
+/**
+ * Disable dates before today in the date picker
+ * @param current - Current date being evaluated
+ * @returns Whether the date should be disabled
+ */
+const isDateDisabled = (current: Dayjs) => {
   const today = dayjs().startOf('day');
   return current.isBefore(today, 'day');
 };
 
-const taskId = computed(() => props.dataSource?.id);
-const createdDate = computed(() => props.dataSource?.createdDate);
-const deadlineDate = computed(() => props.dataSource?.deadlineDate);
-const startDate = computed(() => props.dataSource?.startDate);
-const processedDate = computed(() => props.dataSource?.processedDate);
-const confirmedDate = computed(() => props.dataSource?.confirmedDate);
-const completedDate = computed(() => props.dataSource?.completedDate);
-const canceledDate = computed(() => props.dataSource?.canceledDate);
-const execDate = computed(() => props.dataSource?.execDate);
-const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
+// Computed properties
+const currentTaskId = computed(() => props.dataSource?.id);
+const taskCreatedDate = computed(() => props.dataSource?.createdDate);
+const currentDeadlineDate = computed(() => props.dataSource?.deadlineDate);
+const taskStartDate = computed(() => props.dataSource?.startDate);
+const taskProcessedDate = computed(() => props.dataSource?.processedDate);
+const taskConfirmedDate = computed(() => props.dataSource?.confirmedDate);
+const taskCompletedDate = computed(() => props.dataSource?.completedDate);
+const taskCanceledDate = computed(() => props.dataSource?.canceledDate);
+const taskExecDate = computed(() => props.dataSource?.execDate);
+const taskLastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
 </script>
 
 <template>
@@ -118,7 +137,7 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
           <Colon class="w-1" />
         </div>
 
-        <div class="whitespace-pre-wrap break-words break-all">{{ createdDate }}</div>
+        <div class="whitespace-pre-wrap break-words break-all">{{ taskCreatedDate }}</div>
       </div>
 
       <div class="flex items-start">
@@ -127,36 +146,36 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
           <Colon class="w-1" />
         </div>
 
-        <div v-show="!editFlag" class="flex items-start whitespace-pre-wrap break-words break-all">
-          <div>{{ deadlineDate }}</div>
+        <div v-show="!isDateEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
+          <div>{{ currentDeadlineDate }}</div>
           <Button
             type="link"
             class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-            @click="toEdit">
+            @click="enterDateEditMode">
             <Icon icon="icon-shuxie" class="text-3.5" />
           </Button>
         </div>
 
-        <AsyncComponent :visible="editFlag">
+        <AsyncComponent :visible="isDateEditing">
           <Tooltip
-            :visible="dateError"
+            :visible="hasDateError"
             :title="dateErrorMessage"
             placement="left"
             arrowPointAtCenter>
             <DatePicker
-              v-show="editFlag"
-              ref="dateRef"
-              v-model:value="dateValue"
-              :error="dateError"
+              v-show="isDateEditing"
+              ref="datePickerRef"
+              v-model:value="dateInputValue"
+              :error="hasDateError"
               :showNow="false"
-              :disabledDate="disabledDate"
+              :disabledDate="isDateDisabled"
               :showTime="{ hideDisabledOptions: true, format: TIME_FORMAT }"
               type="date"
               size="small"
               class="edit-container"
               showToday
-              @change="change"
-              @blur="blur" />
+              @change="handleDatePickerChange"
+              @blur="handleDatePickerBlur" />
           </Tooltip>
         </AsyncComponent>
       </div>
@@ -167,7 +186,7 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
           <Colon class="w-1" />
         </div>
 
-        <div class="whitespace-pre-wrap break-words break-all">{{ startDate || '--' }}</div>
+        <div class="whitespace-pre-wrap break-words break-all">{{ taskStartDate || '--' }}</div>
       </div>
 
       <div class="flex items-start">
@@ -176,7 +195,7 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
           <Colon class="w-1" />
         </div>
 
-        <div class="whitespace-pre-wrap break-words break-all">{{ processedDate || '--' }}</div>
+        <div class="whitespace-pre-wrap break-words break-all">{{ taskProcessedDate || '--' }}</div>
       </div>
 
       <div class="flex items-start">
@@ -185,7 +204,7 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
           <Colon class="w-1" />
         </div>
 
-        <div class="whitespace-pre-wrap break-words break-all">{{ confirmedDate || '--' }}</div>
+        <div class="whitespace-pre-wrap break-words break-all">{{ taskConfirmedDate || '--' }}</div>
       </div>
 
       <div class="flex items-start">
@@ -194,7 +213,7 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
           <Colon class="w-1" />
         </div>
 
-        <div class="whitespace-pre-wrap break-words break-all">{{ completedDate || '--' }}</div>
+        <div class="whitespace-pre-wrap break-words break-all">{{ taskCompletedDate || '--' }}</div>
       </div>
 
       <div class="flex items-start">
@@ -203,7 +222,7 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
           <Colon class="w-1" />
         </div>
 
-        <div class="whitespace-pre-wrap break-words break-all">{{ canceledDate || '--' }}</div>
+        <div class="whitespace-pre-wrap break-words break-all">{{ taskCanceledDate || '--' }}</div>
       </div>
 
       <div class="flex items-start">
@@ -212,7 +231,7 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
           <Colon class="w-1" />
         </div>
 
-        <div class="whitespace-pre-wrap break-words break-all">{{ execDate || '--' }}</div>
+        <div class="whitespace-pre-wrap break-words break-all">{{ taskExecDate || '--' }}</div>
       </div>
 
       <div class="flex items-start">
@@ -221,7 +240,7 @@ const lastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
           <Colon class="w-1" />
         </div>
 
-        <div class="whitespace-pre-wrap break-words break-all">{{ lastModifiedDate || '--' }}</div>
+        <div class="whitespace-pre-wrap break-words break-all">{{ taskLastModifiedDate || '--' }}</div>
       </div>
     </div>
   </div>

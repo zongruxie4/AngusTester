@@ -14,6 +14,7 @@ import { ActionMenuItem } from '@/views/task/task/types';
 
 const { t } = useI18n();
 
+// Type Definitions
 type Props = {
   projectId: string;
   selectedIds: string[];
@@ -23,6 +24,7 @@ type Props = {
   loading: boolean;
 }
 
+// Component Props & Emit
 const props = withDefaults(defineProps<Props>(), {
   projectId: undefined,
   selectedIds: () => [],
@@ -48,12 +50,13 @@ const emit = defineEmits<{
   (event: 'batchAction', type: 'cancel' | 'delete' | 'follow' | 'cancelFollow' | 'favourite' | 'cancelFavourite' | 'move', value: string[]): void;
 }>();
 
+// Constants
 const MoveTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/Move.vue'));
+const MAX_BATCH_SELECTION_LIMIT = 200;
 
-const MAX_NUM = 200;
-
+// Reactive State
 const moveModalVisible = ref(false);
-const selectedDataMap = ref<{
+const selectedTaskDataMap = ref<{
   [key: string]: {
     id: string;
     status: TaskInfo['status']['value'];
@@ -63,56 +66,66 @@ const selectedDataMap = ref<{
   }
 }>({});
 
-const batchCancelDisabled = ref(false);
-const batchDeleteDisabled = ref(false);
-const batchMoveFollowDisabled = ref(false);
-const batchFavouriteDisabled = ref(false);
-const batchCancelFavouriteDisabled = ref(false);
-const batchFollowDisabled = ref(false);
-const batchCancelFollowDisabled = ref(false);
+// Batch operation button disabled states
+const isBatchCancelDisabled = ref(false);
+const isBatchDeleteDisabled = ref(false);
+const isBatchMoveDisabled = ref(false);
+const isBatchFavouriteDisabled = ref(false);
+const isBatchCancelFavouriteDisabled = ref(false);
+const isBatchFollowDisabled = ref(false);
+const isBatchCancelFollowDisabled = ref(false);
 
-const tableSelect = (keys: string[]) => {
-  const deleteIds = props.dataSource.reduce((prev, cur) => {
-    const id = cur.id;
-    if (!keys.includes(id)) {
-      prev.push(cur.id);
-
-      delete selectedDataMap.value[id];
+/**
+ * Handles table row selection changes
+ * <p>Updates the selected task data map and validates selection limits
+ * @param selectedKeys - Array of selected task IDs
+ */
+const handleTableSelection = (selectedKeys: string[]) => {
+  // Remove deselected tasks from the data map
+  const deselectedTaskIds = props.dataSource.reduce((prev, current) => {
+    const taskId = current.id;
+    if (!selectedKeys.includes(taskId)) {
+      prev.push(current.id);
+      delete selectedTaskDataMap.value[taskId];
     } else {
-      selectedDataMap.value[id] = {
-        id,
-        status: cur.status.value,
-        favourite: cur.favourite,
-        follow: cur.follow
+      // Add or update selected task data
+      selectedTaskDataMap.value[taskId] = {
+        id: taskId,
+        status: current.status.value,
+        favourite: current.favourite,
+        follow: current.follow,
+        sprintId: current.sprintId || ''
       };
     }
-
     return prev;
   }, [] as string[]);
 
-  // 删除反选的任务
-  const selectedRowKeys = rowSelection.value.selectedRowKeys.filter(item => !deleteIds.includes(item));
+  // Filter out deselected tasks from current selection
+  const currentSelectedKeys = rowSelection.value.selectedRowKeys.filter(item => !deselectedTaskIds.includes(item));
 
-  for (let i = 0, len = keys.length; i < len; i++) {
-    if (!selectedRowKeys.includes(keys[i])) {
-      selectedRowKeys.push(keys[i]);
+  // Add new selections to current selection
+  for (let i = 0, len = selectedKeys.length; i < len; i++) {
+    if (!currentSelectedKeys.includes(selectedKeys[i])) {
+      currentSelectedKeys.push(selectedKeys[i]);
     }
   }
 
-  const selectedNum = selectedRowKeys.length;
-  if (selectedNum > MAX_NUM) {
-    notification.info(t('task.table.messages.maxBatchLimit', { maxNum: MAX_NUM, selectedNum }));
+  const selectedCount = currentSelectedKeys.length;
+  // Validate selection limit
+  if (selectedCount > MAX_BATCH_SELECTION_LIMIT) {
+    notification.info(t('task.table.messages.maxBatchLimit', { maxNum: MAX_BATCH_SELECTION_LIMIT, selectedNum: selectedCount }));
   }
 
-  rowSelection.value.selectedRowKeys = selectedRowKeys;
+  rowSelection.value.selectedRowKeys = currentSelectedKeys;
 };
 
+// Table Configuration
 const rowSelection = ref<{
   onChange:(key: string[]) => void;
   getCheckboxProps: (data: TaskInfo) => ({ disabled: boolean; });
   selectedRowKeys: string[];
     }>({
-      onChange: tableSelect,
+      onChange: handleTableSelection,
       getCheckboxProps: () => {
         return {
           disabled: false
@@ -121,7 +134,13 @@ const rowSelection = ref<{
       selectedRowKeys: []
     });
 
-const change = (
+/**
+ * Handles table pagination and sorting changes
+ * @param pagination - Pagination configuration
+ * @param _filters - Table filters (unused)
+ * @param sorter - Sorting configuration
+ */
+const handleTableChange = (
   pagination: { current: number; pageSize: number; },
   _filters: { [key: string]: any }[],
   sorter: {
@@ -131,578 +150,719 @@ const change = (
   emit('tableChange', pagination, sorter);
 };
 
-const cancelBatchOperation = () => {
+/**
+ * Clears all batch selections and resets the selection state
+ */
+const clearBatchSelection = () => {
   rowSelection.value.selectedRowKeys = [];
-  selectedDataMap.value = {};
+  selectedTaskDataMap.value = {};
 };
 
-const batchCancel = async () => {
-  const num = rowSelection.value.selectedRowKeys.length;
+/**
+ * Performs batch cancel operation on selected tasks
+ * <p>Shows confirmation dialog and processes all selected tasks
+ */
+const executeBatchCancel = async () => {
+  const selectedCount = rowSelection.value.selectedRowKeys.length;
   modal.confirm({
-    content: t('task.table.messages.cancelConfirm', { num }),
+    content: t('task.table.messages.cancelConfirm', { num: selectedCount }),
     async onOk () {
-      const ids = Object.values(selectedDataMap.value).map(item => item.id);
-      const promises: Promise<any>[] = [];
-      for (let i = 0, len = ids.length; i < len; i++) {
-        promises.push(task.cancelTask(ids[i], { silence: true }));
+      const taskIds = Object.values(selectedTaskDataMap.value).map(item => item.id);
+      const cancelPromises: Promise<any>[] = [];
+
+      // Create cancel task promises
+      for (let i = 0, len = taskIds.length; i < len; i++) {
+        cancelPromises.push(task.cancelTask(taskIds[i], { silence: true }));
       }
 
-      Promise.all(promises).then((res: [Error | null, any][]) => {
-        const errorIds: string[] = [];
-        for (let i = 0, len = res.length; i < len; i++) {
-          if (res[i][0]) {
-            errorIds.push(ids[i]);
+      Promise.all(cancelPromises).then((results: [Error | null, any][]) => {
+        const failedTaskIds: string[] = [];
+
+        // Collect failed task IDs
+        for (let i = 0, len = results.length; i < len; i++) {
+          if (results[i][0]) {
+            failedTaskIds.push(taskIds[i]);
           }
         }
 
-        const errorNum = errorIds.length;
-        if (errorNum === 0) {
+        const failedCount = failedTaskIds.length;
+
+        // All tasks cancelled successfully
+        if (failedCount === 0) {
           emit('refreshChange');
-          notification.success(t('task.table.messages.cancelNumSuccess', { num }));
-          emit('batchAction', 'cancel', ids);
+          notification.success(t('task.table.messages.cancelNumSuccess', { num: selectedCount }));
+          emit('batchAction', 'cancel', taskIds);
           rowSelection.value.selectedRowKeys = [];
-          selectedDataMap.value = {};
+          selectedTaskDataMap.value = {};
           return;
         }
 
-        if (errorNum === num) {
-          notification.error(t('task.table.messages.cancelFail', { num }));
+        // All tasks failed
+        if (failedCount === selectedCount) {
+          notification.error(t('task.table.messages.cancelFail', { num: selectedCount }));
           return;
         }
 
-        const successIds = ids.filter(item => !errorIds.includes(item));
-        notification.warning(t('task.table.messages.cancelPartial', { successNum: num - errorNum, errorNum }));
+        // Partial success - handle mixed results
+        const successTaskIds = taskIds.filter(item => !failedTaskIds.includes(item));
+        notification.warning(t('task.table.messages.cancelPartial', { successNum: selectedCount - failedCount, errorNum: failedCount }));
 
         emit('refreshChange');
-        emit('batchAction', 'cancel', successIds);
+        emit('batchAction', 'cancel', successTaskIds);
 
-        rowSelection.value.selectedRowKeys = rowSelection.value.selectedRowKeys.filter((item) => !successIds.includes(item));
-        for (let i = 0, len = successIds.length; i < len; i++) {
-          delete selectedDataMap.value[successIds[i]];
+        // Remove successful tasks from selection
+        rowSelection.value.selectedRowKeys = rowSelection.value.selectedRowKeys.filter((item) => !successTaskIds.includes(item));
+        for (let i = 0, len = successTaskIds.length; i < len; i++) {
+          delete selectedTaskDataMap.value[successTaskIds[i]];
         }
       });
     }
   });
 };
 
-const batchDelete = async () => {
-  const num = rowSelection.value.selectedRowKeys.length;
+/**
+ * Performs batch delete operation on selected tasks
+ * <p>Shows confirmation dialog and deletes all selected tasks
+ */
+const executeBatchDelete = async () => {
+  const selectedCount = rowSelection.value.selectedRowKeys.length;
   modal.confirm({
-    content: t('task.table.messages.deleteConfirm', { num }),
+    content: t('task.table.messages.deleteConfirm', { num: selectedCount }),
     async onOk () {
-      const ids = Object.values(selectedDataMap.value).map(item => item.id);
-      const [error] = await task.deleteTask(ids);
+      const taskIds = Object.values(selectedTaskDataMap.value).map(item => item.id);
+      const [error] = await task.deleteTask(taskIds);
       if (error) {
         return;
       }
 
       emit('refreshChange');
-      notification.success(t('task.table.messages.deleteSuccess', { num }));
-      emit('batchAction', 'delete', ids);
+      notification.success(t('task.table.messages.deleteSuccess', { num: selectedCount }));
+      emit('batchAction', 'delete', taskIds);
       rowSelection.value.selectedRowKeys = [];
-      selectedDataMap.value = {};
+      selectedTaskDataMap.value = {};
     }
   });
 };
 
-const batchFavourite = async () => {
-  const num = rowSelection.value.selectedRowKeys.length;
+/**
+ * Performs batch favourite operation on selected tasks
+ * <p>Shows confirmation dialog and adds all selected tasks to favourites
+ */
+const executeBatchFavourite = async () => {
+  const selectedCount = rowSelection.value.selectedRowKeys.length;
   modal.confirm({
-    content: t('task.table.messages.favouriteConfirm', { num }),
+    content: t('task.table.messages.favouriteConfirm', { num: selectedCount }),
     async onOk () {
-      const ids = Object.values(selectedDataMap.value).map(item => item.id);
-      const promises: Promise<any>[] = [];
-      for (let i = 0, len = ids.length; i < len; i++) {
-        promises.push(task.favouriteTask(ids[i], { silence: true }));
+      const taskIds = Object.values(selectedTaskDataMap.value).map(item => item.id);
+      const favouritePromises: Promise<any>[] = [];
+
+      // Create favourite task promises
+      for (let i = 0, len = taskIds.length; i < len; i++) {
+        favouritePromises.push(task.favouriteTask(taskIds[i], { silence: true }));
       }
 
-      Promise.all(promises).then((res: [Error | null, any][]) => {
-        const errorIds: string[] = [];
-        for (let i = 0, len = res.length; i < len; i++) {
-          if (res[i][0]) {
-            errorIds.push(ids[i]);
+      Promise.all(favouritePromises).then((results: [Error | null, any][]) => {
+        const failedTaskIds: string[] = [];
+
+        // Collect failed task IDs
+        for (let i = 0, len = results.length; i < len; i++) {
+          if (results[i][0]) {
+            failedTaskIds.push(taskIds[i]);
           }
         }
 
-        const errorNum = errorIds.length;
-        if (errorNum === 0) {
-          notification.success(t('task.table.messages.favouriteNumSuccess', { num }));
-          emit('batchAction', 'favourite', ids);
+        const failedCount = failedTaskIds.length;
+
+        // All tasks favourited successfully
+        if (failedCount === 0) {
+          notification.success(t('task.table.messages.favouriteNumSuccess', { num: selectedCount }));
+          emit('batchAction', 'favourite', taskIds);
           rowSelection.value.selectedRowKeys = [];
-          selectedDataMap.value = {};
+          selectedTaskDataMap.value = {};
           return;
         }
 
-        if (errorNum === num) {
-          notification.error(t('task.table.messages.favouriteFail', { num }));
+        // All tasks failed
+        if (failedCount === selectedCount) {
+          notification.error(t('task.table.messages.favouriteFail', { num: selectedCount }));
           return;
         }
 
-        const successIds = ids.filter(item => !errorIds.includes(item));
-        notification.warning(t('task.table.messages.favouritePartial', { successNum: num - errorNum, errorNum }));
+        // Partial success - handle mixed results
+        const successTaskIds = taskIds.filter(item => !failedTaskIds.includes(item));
+        notification.warning(t('task.table.messages.favouritePartial', { successNum: selectedCount - failedCount, errorNum: failedCount }));
 
-        emit('batchAction', 'favourite', successIds);
+        emit('batchAction', 'favourite', successTaskIds);
 
-        rowSelection.value.selectedRowKeys = rowSelection.value.selectedRowKeys.filter((item) => !successIds.includes(item));
-        for (let i = 0, len = successIds.length; i < len; i++) {
-          delete selectedDataMap.value[successIds[i]];
+        // Remove successful tasks from selection
+        rowSelection.value.selectedRowKeys = rowSelection.value.selectedRowKeys.filter((item) => !successTaskIds.includes(item));
+        for (let i = 0, len = successTaskIds.length; i < len; i++) {
+          delete selectedTaskDataMap.value[successTaskIds[i]];
         }
       });
     }
   });
 };
 
-const batchCancelFavourite = async () => {
-  const num = rowSelection.value.selectedRowKeys.length;
+/**
+ * Performs batch cancel favourite operation on selected tasks
+ * <p>Shows confirmation dialog and removes all selected tasks from favourites
+ */
+const executeBatchCancelFavourite = async () => {
+  const selectedCount = rowSelection.value.selectedRowKeys.length;
   modal.confirm({
-    content: t('task.table.messages.cancelFavouriteConfirm', { num }),
+    content: t('task.table.messages.cancelFavouriteConfirm', { num: selectedCount }),
     async onOk () {
-      // 过滤出要取消收藏的任务
-      const ids = Object.values(selectedDataMap.value).map(item => item.id);
-      const promises: Promise<any>[] = [];
-      for (let i = 0, len = ids.length; i < len; i++) {
-        promises.push(task.cancelFavouriteTask(ids[i], { silence: true }));
+      const taskIds = Object.values(selectedTaskDataMap.value).map(item => item.id);
+      const cancelFavouritePromises: Promise<any>[] = [];
+
+      // Create cancel favourite task promises
+      for (let i = 0, len = taskIds.length; i < len; i++) {
+        cancelFavouritePromises.push(task.cancelFavouriteTask(taskIds[i], { silence: true }));
       }
 
-      Promise.all(promises).then((res: [Error | null, any][]) => {
-        const errorIds: string[] = [];
-        for (let i = 0, len = res.length; i < len; i++) {
-          if (res[i][0]) {
-            errorIds.push(ids[i]);
+      Promise.all(cancelFavouritePromises).then((results: [Error | null, any][]) => {
+        const failedTaskIds: string[] = [];
+
+        // Collect failed task IDs
+        for (let i = 0, len = results.length; i < len; i++) {
+          if (results[i][0]) {
+            failedTaskIds.push(taskIds[i]);
           }
         }
 
-        const errorNum = errorIds.length;
-        if (errorNum === 0) {
-          notification.success(t('task.table.messages.cancelFavouriteNumSuccess', { num }));
-          emit('batchAction', 'favourite', ids);
+        const failedCount = failedTaskIds.length;
+
+        // All tasks unfavourited successfully
+        if (failedCount === 0) {
+          notification.success(t('task.table.messages.cancelFavouriteNumSuccess', { num: selectedCount }));
+          emit('batchAction', 'favourite', taskIds);
           rowSelection.value.selectedRowKeys = [];
-          selectedDataMap.value = {};
+          selectedTaskDataMap.value = {};
           return;
         }
 
-        if (errorNum === num) {
-          notification.error(t('task.table.messages.cancelFavouriteFail', { num }));
+        // All tasks failed
+        if (failedCount === selectedCount) {
+          notification.error(t('task.table.messages.cancelFavouriteFail', { num: selectedCount }));
           return;
         }
 
-        const successIds = ids.filter(item => !errorIds.includes(item));
-        notification.warning(t('task.table.messages.cancelFavouritePartial', { successNum: num - errorNum, errorNum }));
+        // Partial success - handle mixed results
+        const successTaskIds = taskIds.filter(item => !failedTaskIds.includes(item));
+        notification.warning(t('task.table.messages.cancelFavouritePartial', { successNum: selectedCount - failedCount, errorNum: failedCount }));
 
-        emit('batchAction', 'favourite', successIds);
+        emit('batchAction', 'favourite', successTaskIds);
 
-        rowSelection.value.selectedRowKeys = rowSelection.value.selectedRowKeys.filter((item) => !successIds.includes(item));
-        for (let i = 0, len = successIds.length; i < len; i++) {
-          delete selectedDataMap.value[successIds[i]];
+        // Remove successful tasks from selection
+        rowSelection.value.selectedRowKeys = rowSelection.value.selectedRowKeys.filter((item) => !successTaskIds.includes(item));
+        for (let i = 0, len = successTaskIds.length; i < len; i++) {
+          delete selectedTaskDataMap.value[successTaskIds[i]];
         }
       });
     }
   });
 };
 
-const batchFollow = async () => {
-  const num = rowSelection.value.selectedRowKeys.length;
+/**
+ * Performs batch follow operation on selected tasks
+ * <p>Shows confirmation dialog and follows all selected tasks
+ */
+const executeBatchFollow = async () => {
+  const selectedCount = rowSelection.value.selectedRowKeys.length;
   modal.confirm({
-    content: t('task.table.messages.followConfirm', { num }),
+    content: t('task.table.messages.followConfirm', { num: selectedCount }),
     async onOk () {
-      const ids = Object.values(selectedDataMap.value).map(item => item.id);
-      const promises: Promise<any>[] = [];
-      for (let i = 0, len = ids.length; i < len; i++) {
-        promises.push(task.followTask(ids[i], { silence: true }));
+      const taskIds = Object.values(selectedTaskDataMap.value).map(item => item.id);
+      const followPromises: Promise<any>[] = [];
+
+      // Create follow task promises
+      for (let i = 0, len = taskIds.length; i < len; i++) {
+        followPromises.push(task.followTask(taskIds[i], { silence: true }));
       }
 
-      Promise.all(promises).then((res: [Error | null, any][]) => {
-        const errorIds: string[] = [];
-        for (let i = 0, len = res.length; i < len; i++) {
-          if (res[i][0]) {
-            errorIds.push(ids[i]);
+      Promise.all(followPromises).then((results: [Error | null, any][]) => {
+        const failedTaskIds: string[] = [];
+
+        // Collect failed task IDs
+        for (let i = 0, len = results.length; i < len; i++) {
+          if (results[i][0]) {
+            failedTaskIds.push(taskIds[i]);
           }
         }
 
-        const errorNum = errorIds.length;
-        if (errorNum === 0) {
-          notification.success(t('task.table.messages.followNumSuccess', { num }));
-          emit('batchAction', 'favourite', ids);
+        const failedCount = failedTaskIds.length;
+
+        // All tasks followed successfully
+        if (failedCount === 0) {
+          notification.success(t('task.table.messages.followNumSuccess', { num: selectedCount }));
+          emit('batchAction', 'follow', taskIds);
           rowSelection.value.selectedRowKeys = [];
-          selectedDataMap.value = {};
+          selectedTaskDataMap.value = {};
           return;
         }
 
-        if (errorNum === num) {
-          notification.error(t('task.table.messages.followFail', { num }));
+        // All tasks failed
+        if (failedCount === selectedCount) {
+          notification.error(t('task.table.messages.followFail', { num: selectedCount }));
           return;
         }
 
-        const successIds = ids.filter(item => !errorIds.includes(item));
-        notification.warning(t('task.table.messages.followPartial', { successNum: num - errorNum, errorNum }));
+        // Partial success - handle mixed results
+        const successTaskIds = taskIds.filter(item => !failedTaskIds.includes(item));
+        notification.warning(t('task.table.messages.followPartial', { successNum: selectedCount - failedCount, errorNum: failedCount }));
 
-        emit('batchAction', 'favourite', successIds);
+        emit('batchAction', 'follow', successTaskIds);
 
-        rowSelection.value.selectedRowKeys = rowSelection.value.selectedRowKeys.filter((item) => !successIds.includes(item));
-        for (let i = 0, len = successIds.length; i < len; i++) {
-          delete selectedDataMap.value[successIds[i]];
+        // Remove successful tasks from selection
+        rowSelection.value.selectedRowKeys = rowSelection.value.selectedRowKeys.filter((item) => !successTaskIds.includes(item));
+        for (let i = 0, len = successTaskIds.length; i < len; i++) {
+          delete selectedTaskDataMap.value[successTaskIds[i]];
         }
       });
     }
   });
 };
 
-const batchCancelFollow = async () => {
-  const num = rowSelection.value.selectedRowKeys.length;
+/**
+ * Performs batch cancel follow operation on selected tasks
+ * <p>Shows confirmation dialog and unfollows all selected tasks
+ */
+const executeBatchCancelFollow = async () => {
+  const selectedCount = rowSelection.value.selectedRowKeys.length;
   modal.confirm({
-    content: t('task.table.messages.cancelFollowConfirm', { num }),
+    content: t('task.table.messages.cancelFollowConfirm', { num: selectedCount }),
     async onOk () {
-      const ids = Object.values(selectedDataMap.value).map(item => item.id);
-      const promises: Promise<any>[] = [];
-      for (let i = 0, len = ids.length; i < len; i++) {
-        promises.push(task.cancelFollowTask(ids[i], { silence: true }));
+      const taskIds = Object.values(selectedTaskDataMap.value).map(item => item.id);
+      const cancelFollowPromises: Promise<any>[] = [];
+
+      // Create cancel follow task promises
+      for (let i = 0, len = taskIds.length; i < len; i++) {
+        cancelFollowPromises.push(task.cancelFollowTask(taskIds[i], { silence: true }));
       }
 
-      Promise.all(promises).then((res: [Error | null, any][]) => {
-        const errorIds: string[] = [];
-        for (let i = 0, len = res.length; i < len; i++) {
-          if (res[i][0]) {
-            errorIds.push(ids[i]);
+      Promise.all(cancelFollowPromises).then((results: [Error | null, any][]) => {
+        const failedTaskIds: string[] = [];
+
+        // Collect failed task IDs
+        for (let i = 0, len = results.length; i < len; i++) {
+          if (results[i][0]) {
+            failedTaskIds.push(taskIds[i]);
           }
         }
 
-        const errorNum = errorIds.length;
-        if (errorNum === 0) {
-          notification.success(t('task.table.messages.cancelFollowNumSuccess', { num }));
-          emit('batchAction', 'favourite', ids);
+        const failedCount = failedTaskIds.length;
+
+        // All tasks unfollowed successfully
+        if (failedCount === 0) {
+          notification.success(t('task.table.messages.cancelFollowNumSuccess', { num: selectedCount }));
+          emit('batchAction', 'cancelFollow', taskIds);
           rowSelection.value.selectedRowKeys = [];
-          selectedDataMap.value = {};
+          selectedTaskDataMap.value = {};
           return;
         }
 
-        if (errorNum === num) {
-          notification.error(t('task.table.messages.cancelFollowFail', { num }));
+        // All tasks failed
+        if (failedCount === selectedCount) {
+          notification.error(t('task.table.messages.cancelFollowFail', { num: selectedCount }));
           return;
         }
 
-        const successIds = ids.filter(item => !errorIds.includes(item));
-        notification.warning(t('task.table.messages.cancelFollowPartial', { successNum: num - errorNum, errorNum }));
+        // Partial success - handle mixed results
+        const successTaskIds = taskIds.filter(item => !failedTaskIds.includes(item));
+        notification.warning(t('task.table.messages.cancelFollowPartial', { successNum: selectedCount - failedCount, errorNum: failedCount }));
 
-        emit('batchAction', 'favourite', successIds);
+        emit('batchAction', 'cancelFollow', successTaskIds);
 
-        rowSelection.value.selectedRowKeys = rowSelection.value.selectedRowKeys.filter((item) => !successIds.includes(item));
-        for (let i = 0, len = successIds.length; i < len; i++) {
-          delete selectedDataMap.value[successIds[i]];
+        // Remove successful tasks from selection
+        rowSelection.value.selectedRowKeys = rowSelection.value.selectedRowKeys.filter((item) => !successTaskIds.includes(item));
+        for (let i = 0, len = successTaskIds.length; i < len; i++) {
+          delete selectedTaskDataMap.value[successTaskIds[i]];
         }
       });
     }
   });
 };
 
-const batchMove = () => {
+/**
+ * Opens the batch move modal for selected tasks
+ */
+const openBatchMoveModal = () => {
   moveModalVisible.value = true;
 };
 
-const batchMoveTaskOk = async (_sprintId: string, taskIds: []) => {
+/**
+ * Handles successful batch move operation
+ * @param _sprintId - Target sprint ID (unused)
+ * @param taskIds - Array of moved task IDs
+ */
+const handleBatchMoveSuccess = async (_sprintId: string, taskIds: string[]) => {
   emit('batchAction', 'move', taskIds);
   rowSelection.value.selectedRowKeys = [];
-  selectedDataMap.value = {};
+  selectedTaskDataMap.value = {};
 };
 
-const toEdit = (id: string) => {
-  emit('edit', id);
+/**
+ * Navigates to task edit page
+ * @param taskId - ID of the task to edit
+ */
+const navigateToEdit = (taskId: string) => {
+  emit('edit', taskId);
 };
 
-const toDelete = (data: TaskInfo) => {
+/**
+ * Deletes a single task with confirmation
+ * @param taskData - Task information to delete
+ */
+const deleteSingleTask = (taskData: TaskInfo) => {
   modal.confirm({
-    content: t('task.table.messages.deleteTaskConfirm', { name: data.name }),
+    content: t('task.table.messages.deleteTaskConfirm', { name: taskData.name }),
     async onOk () {
-      const [error] = await task.deleteTask([data.id]);
+      const [error] = await task.deleteTask([taskData.id]);
       if (error) {
         return;
       }
 
       emit('refreshChange');
-      emit('delete', data.id);
+      emit('delete', taskData.id);
       notification.success(t('task.table.messages.deleteTaskSuccess'));
     }
   });
 };
 
-const dropdownClick = (menuItem: ActionMenuItem, data: TaskInfo) => {
-  const key = menuItem.key;
-  if (key === 'favourite') {
-    toFavourite(data);
-    return;
-  }
+/**
+ * Handles dropdown menu item clicks for task actions
+ * @param menuItem - The clicked menu item
+ * @param taskData - The task data associated with the action
+ */
+const handleDropdownAction = (menuItem: ActionMenuItem, taskData: TaskInfo) => {
+  const actionKey = menuItem.key;
 
-  if (key === 'cancelFavourite') {
-    toDeleteFavourite(data);
-    return;
-  }
-
-  if (key === 'follow') {
-    toFollow(data);
-    return;
-  }
-
-  if (key === 'cancelFollow') {
-    toDeleteFollow(data);
-    return;
-  }
-
-  if (key === 'start') {
-    toStart(data);
-    return;
-  }
-
-  if (key === 'processed') {
-    toProcessed(data);
-    return;
-  }
-
-  if (key === 'completed') {
-    toCompleted(data);
-    return;
-  }
-
-  if (key === 'uncompleted') {
-    toUncomplete(data);
-    return;
-  }
-
-  if (key === 'reopen') {
-    toReopen(data);
-    return;
-  }
-
-  if (key === 'restart') {
-    toRestart(data);
-    return;
-  }
-
-  if (key === 'cancel') {
-    toCancel(data);
-    return;
-  }
-
-  if (key === 'move') {
-    toMove(data);
-    return;
-  }
-
-  if (key === 'copyLink') {
-    toCopyHref(data);
+  switch (actionKey) {
+    case 'favourite':
+      addToFavourites(taskData);
+      break;
+    case 'cancelFavourite':
+      removeFromFavourites(taskData);
+      break;
+    case 'follow':
+      followTask(taskData);
+      break;
+    case 'cancelFollow':
+      unfollowTask(taskData);
+      break;
+    case 'start':
+      startTask(taskData);
+      break;
+    case 'processed':
+      markAsProcessed(taskData);
+      break;
+    case 'completed':
+      completeTask(taskData);
+      break;
+    case 'uncompleted':
+      markAsUncompleted(taskData);
+      break;
+    case 'reopen':
+      reopenTask(taskData);
+      break;
+    case 'restart':
+      restartTask(taskData);
+      break;
+    case 'cancel':
+      cancelTask(taskData);
+      break;
+    case 'move':
+      moveTask(taskData);
+      break;
+    case 'copyLink':
+      copyTaskLink(taskData);
+      break;
   }
 };
 
-const toFavourite = async (data: TaskInfo) => {
-  const [error] = await task.favouriteTask(data.id);
+/**
+ * Adds a task to favourites
+ * @param taskData - Task to add to favourites
+ */
+const addToFavourites = async (taskData: TaskInfo) => {
+  const [error] = await task.favouriteTask(taskData.id);
   if (error) {
     return;
   }
 
   notification.success(t('task.table.messages.favouriteSuccess'));
-  emit('dataChange', { id: data.id, favourite: true });
+  emit('dataChange', { id: taskData.id, favourite: true });
 };
 
-const toDeleteFavourite = async (data: TaskInfo) => {
-  const [error] = await task.cancelFavouriteTask(data.id);
+/**
+ * Removes a task from favourites
+ * @param taskData - Task to remove from favourites
+ */
+const removeFromFavourites = async (taskData: TaskInfo) => {
+  const [error] = await task.cancelFavouriteTask(taskData.id);
   if (error) {
     return;
   }
 
   notification.success(t('task.table.messages.cancelFavouriteSuccess'));
-  emit('dataChange', { id: data.id, favourite: false });
+  emit('dataChange', { id: taskData.id, favourite: false });
 };
 
-const toFollow = async (data: TaskInfo) => {
-  const [error] = await task.followTask(data.id);
+/**
+ * Follows a task
+ * @param taskData - Task to follow
+ */
+const followTask = async (taskData: TaskInfo) => {
+  const [error] = await task.followTask(taskData.id);
   if (error) {
     return;
   }
 
   notification.success(t('task.table.messages.followSuccess'));
-  emit('dataChange', { id: data.id, follow: true });
+  emit('dataChange', { id: taskData.id, follow: true });
 };
 
-const toDeleteFollow = async (data: TaskInfo) => {
-  const [error] = await task.cancelFollowTask(data.id);
+/**
+ * Unfollows a task
+ * @param taskData - Task to unfollow
+ */
+const unfollowTask = async (taskData: TaskInfo) => {
+  const [error] = await task.cancelFollowTask(taskData.id);
   if (error) {
     return;
   }
 
   notification.success(t('task.table.messages.cancelFollowSuccess'));
-  emit('dataChange', { id: data.id, follow: false });
+  emit('dataChange', { id: taskData.id, follow: false });
 };
 
-const toStart = async (data: TaskInfo) => {
-  const id = data.id;
-  const [error] = await task.startTask(id);
+/**
+ * Starts a task
+ * @param taskData - Task to start
+ */
+const startTask = async (taskData: TaskInfo) => {
+  const taskId = taskData.id;
+  const [error] = await task.startTask(taskId);
   if (error) {
     return;
   }
 
   emit('refreshChange');
   notification.success(t('task.table.messages.startSuccess'));
-  const detailData = await loadData(id);
-  emit('dataChange', detailData);
+  const updatedTaskData = await loadTaskDetail(taskId);
+  emit('dataChange', updatedTaskData);
 };
 
-const toProcessed = async (data: TaskInfo) => {
-  const id = data.id;
-  const [error] = await task.processedTask(id);
+/**
+ * Marks a task as processed
+ * @param taskData - Task to mark as processed
+ */
+const markAsProcessed = async (taskData: TaskInfo) => {
+  const taskId = taskData.id;
+  const [error] = await task.processedTask(taskId);
   if (error) {
     return;
   }
 
   emit('refreshChange');
   notification.success(t('task.table.messages.processedSuccess'));
-  const detailData = await loadData(id);
-  emit('dataChange', detailData);
+  const updatedTaskData = await loadTaskDetail(taskId);
+  emit('dataChange', updatedTaskData);
 };
 
-const toUncomplete = async (data: TaskInfo) => {
-  const id = data.id;
-  const [error] = await task.confirmTask(id, 'FAIL');
+/**
+ * Marks a task as uncompleted
+ * @param taskData - Task to mark as uncompleted
+ */
+const markAsUncompleted = async (taskData: TaskInfo) => {
+  const taskId = taskData.id;
+  const [error] = await task.confirmTask(taskId, 'FAIL');
   if (error) {
     return;
   }
 
   emit('refreshChange');
-  const detailData = await loadData(id);
-  emit('dataChange', detailData);
+  const updatedTaskData = await loadTaskDetail(taskId);
+  emit('dataChange', updatedTaskData);
 };
 
-const toCompleted = async (data: TaskInfo) => {
-  const id = data.id;
-  const [error] = await task.confirmTask(id, 'SUCCESS');
+/**
+ * Completes a task
+ * @param taskData - Task to complete
+ */
+const completeTask = async (taskData: TaskInfo) => {
+  const taskId = taskData.id;
+  const [error] = await task.confirmTask(taskId, 'SUCCESS');
   if (error) {
     return;
   }
 
   emit('refreshChange');
-  const detailData = await loadData(id);
-  emit('dataChange', detailData);
+  const updatedTaskData = await loadTaskDetail(taskId);
+  emit('dataChange', updatedTaskData);
 };
 
-const toReopen = async (data: TaskInfo) => {
-  const id = data.id;
-  const [error] = await task.reopenTask(id);
+/**
+ * Reopens a task
+ * @param taskData - Task to reopen
+ */
+const reopenTask = async (taskData: TaskInfo) => {
+  const taskId = taskData.id;
+  const [error] = await task.reopenTask(taskId);
   if (error) {
     return;
   }
 
   emit('refreshChange');
   notification.success(t('task.table.messages.reopenSuccess'));
-  const detailData = await loadData(id);
-  emit('dataChange', detailData);
+  const updatedTaskData = await loadTaskDetail(taskId);
+  emit('dataChange', updatedTaskData);
 };
 
-const toRestart = async (data: TaskInfo) => {
-  const id = data.id;
-  const [error] = await task.restartTask(id);
+/**
+ * Restarts a task
+ * @param taskData - Task to restart
+ */
+const restartTask = async (taskData: TaskInfo) => {
+  const taskId = taskData.id;
+  const [error] = await task.restartTask(taskId);
   if (error) {
     return;
   }
 
   emit('refreshChange');
   notification.success(t('task.table.messages.restartSuccess'));
-  const detailData = await loadData(id);
-  emit('dataChange', detailData);
+  const updatedTaskData = await loadTaskDetail(taskId);
+  emit('dataChange', updatedTaskData);
 };
 
-const toMove = (data: TaskInfo) => {
-  emit('move', data);
+/**
+ * Moves a task to another sprint
+ * @param taskData - Task to move
+ */
+const moveTask = (taskData: TaskInfo) => {
+  emit('move', taskData);
 };
 
-const toCancel = async (data: TaskInfo) => {
-  const id = data.id;
-  const [error] = await task.cancelTask(id);
+/**
+ * Cancels a task
+ * @param taskData - Task to cancel
+ */
+const cancelTask = async (taskData: TaskInfo) => {
+  const taskId = taskData.id;
+  const [error] = await task.cancelTask(taskId);
   if (error) {
     return;
   }
 
   emit('refreshChange');
   notification.success(t('task.table.messages.cancelSuccess'));
-  const detailData = await loadData(id);
-  emit('dataChange', detailData);
+  const updatedTaskData = await loadTaskDetail(taskId);
+  emit('dataChange', updatedTaskData);
 };
 
-const toCopyHref = (data: TaskInfo) => {
-  const message = window.location.origin + (data.linkUrl || '');
-  toClipboard(message).then(() => {
+/**
+ * Copies task link to clipboard
+ * @param taskData - Task to copy link for
+ */
+const copyTaskLink = (taskData: TaskInfo) => {
+  const taskUrl = window.location.origin + (taskData.linkUrl || '');
+  toClipboard(taskUrl).then(() => {
     notification.success(t('task.table.messages.copySuccess'));
   }).catch(() => {
     notification.error(t('task.table.messages.copyFail'));
   });
 };
 
-const loadData = async (id: string): Promise<Partial<TaskInfo>> => {
+/**
+ * Loads task detail data from API
+ * @param taskId - ID of the task to load
+ * @returns Promise resolving to partial task data
+ */
+const loadTaskDetail = async (taskId: string): Promise<Partial<TaskInfo>> => {
   emit('update:loading', true);
-  const [error, res] = await task.getTaskDetail(id);
+  const [error, response] = await task.getTaskDetail(taskId);
   emit('update:loading', false);
-  if (error || !res?.data) {
-    return { id };
+  if (error || !response?.data) {
+    return { id: taskId };
   }
 
-  return res.data;
+  return response.data;
 };
 
+// Lifecycle & Watchers
 onMounted(() => {
-  watch(() => props.selectedIds, (newValue) => {
-    rowSelection.value.selectedRowKeys = newValue;
+  // Watch for external selectedIds changes and sync with internal state
+  watch(() => props.selectedIds, (newSelectedIds) => {
+    rowSelection.value.selectedRowKeys = newSelectedIds;
   }, { immediate: true });
 
-  watch(() => rowSelection.value.selectedRowKeys, (newValue) => {
-    emit('update:selectedIds', newValue);
+  // Watch for internal selection changes and emit to parent
+  watch(() => rowSelection.value.selectedRowKeys, (newSelectedKeys) => {
+    emit('update:selectedIds', newSelectedKeys);
   });
 
-  watch(() => selectedDataMap.value, (newValue) => {
-    batchCancelDisabled.value = false;
-    batchDeleteDisabled.value = false;
-    batchMoveFollowDisabled.value = false;
-    batchFavouriteDisabled.value = false;
-    batchCancelFavouriteDisabled.value = false;
-    batchFollowDisabled.value = false;
-    batchCancelFollowDisabled.value = false;
+  // Watch for selected task data changes and update batch operation button states
+  watch(() => selectedTaskDataMap.value, (newSelectedData) => {
+    // Reset all batch operation disabled states
+    isBatchCancelDisabled.value = false;
+    isBatchDeleteDisabled.value = false;
+    isBatchMoveDisabled.value = false;
+    isBatchFavouriteDisabled.value = false;
+    isBatchCancelFavouriteDisabled.value = false;
+    isBatchFollowDisabled.value = false;
+    isBatchCancelFollowDisabled.value = false;
 
-    const values = (Object.values(newValue) || []) as {
+    const selectedTasks = (Object.values(newSelectedData) || []) as {
       favourite: boolean;
       follow: boolean;
       id: string;
       status: string;
     }[];
-    for (let i = 0, len = values.length; i < len; i++) {
-      const { favourite, follow, status, id } = values[i];
-      const menuItems = props.menuItemsMap.get(id) || [];
-      const cancelItem = menuItems.find(item => item.key === 'cancel');
-      const deleteItem = menuItems.find(item => item.key === 'delete');
-      const moveItem = menuItems.find(item => item.key === 'move');
 
+    // Update button states based on selected task properties
+    for (let i = 0, len = selectedTasks.length; i < len; i++) {
+      const { favourite, follow, status, id } = selectedTasks[i];
+      const taskMenuItems = props.menuItemsMap.get(id) || [];
+      const cancelMenuItem = taskMenuItems.find(item => item.key === 'cancel');
+      const deleteMenuItem = taskMenuItems.find(item => item.key === 'delete');
+      const moveMenuItem = taskMenuItems.find(item => item.key === 'move');
+
+      // Update favourite button states
       if (favourite) {
-        batchFavouriteDisabled.value = true;
+        isBatchFavouriteDisabled.value = true;
       } else {
-        batchCancelFavouriteDisabled.value = true;
+        isBatchCancelFavouriteDisabled.value = true;
       }
 
+      // Update follow button states
       if (follow) {
-        batchFollowDisabled.value = true;
+        isBatchFollowDisabled.value = true;
       } else {
-        batchCancelFollowDisabled.value = true;
+        isBatchCancelFollowDisabled.value = true;
       }
 
-      if ([TaskStatusType.CANCELED, TaskStatusType.COMPLETED].includes(status) || cancelItem?.disabled) {
-        batchCancelDisabled.value = true;
+      // Update cancel button state based on task status or menu item disabled state
+      if ([TaskStatusType.CANCELED, TaskStatusType.COMPLETED].includes(status as TaskStatusType) || cancelMenuItem?.disabled) {
+        isBatchCancelDisabled.value = true;
       }
 
-      if (deleteItem?.disabled) {
-        batchDeleteDisabled.value = true;
+      // Update delete button state based on menu item disabled state
+      if (deleteMenuItem?.disabled) {
+        isBatchDeleteDisabled.value = true;
       }
 
-      if (moveItem?.disabled) {
-        batchMoveFollowDisabled.value = true;
+      // Update move button state based on menu item disabled state
+      if (moveMenuItem?.disabled) {
+        isBatchMoveDisabled.value = true;
       }
     }
   }, { immediate: true, deep: true });
 });
 
-const columns: ({
+// Table Configuration
+const tableColumns: ({
   hide?: boolean,
   groupName?: string
 } & TableColumnProps)[] = [
@@ -926,65 +1086,65 @@ const EXEC_RESULT_COLOR = {
       :visible="!!props.selectedIds.length"
       class="btn-group-container flex items-center transition-all duration-300 space-x-2.5">
       <Button
-        :disabled="batchCancelDisabled"
+        :disabled="isBatchCancelDisabled"
         type="link"
         size="small"
         class="flex items-center px-0 h-5 leading-5"
-        @click="batchCancel">
+        @click="executeBatchCancel">
         {{ t('actions.cancel') }}
       </Button>
 
       <Button
-        :disabled="batchDeleteDisabled"
+        :disabled="isBatchDeleteDisabled"
         type="link"
         size="small"
         class="flex items-center px-0 h-5 leading-5"
-        @click="batchDelete">
+        @click="executeBatchDelete">
         {{ t('actions.delete') }}
       </Button>
 
       <Button
-        :disabled="batchFavouriteDisabled"
+        :disabled="isBatchFavouriteDisabled"
         type="link"
         size="small"
         class="flex items-center px-0 h-5 leading-5"
-        @click="batchFavourite">
+        @click="executeBatchFavourite">
         {{ t('actions.favourite') }}
       </Button>
 
       <Button
-        :disabled="batchCancelFavouriteDisabled"
+        :disabled="isBatchCancelFavouriteDisabled"
         type="link"
         size="small"
         class="flex items-center px-0 h-5 leading-5"
-        @click="batchCancelFavourite">
+        @click="executeBatchCancelFavourite">
         {{ t('actions.unFavourite') }}
       </Button>
 
       <Button
-        :disabled="batchFollowDisabled"
+        :disabled="isBatchFollowDisabled"
         type="link"
         size="small"
         class="flex items-center px-0 h-5 leading-5"
-        @click="batchFollow">
+        @click="executeBatchFollow">
         {{ t('actions.follow') }}
       </Button>
 
       <Button
-        :disabled="batchCancelFollowDisabled"
+        :disabled="isBatchCancelFollowDisabled"
         type="link"
         size="small"
         class="flex items-center px-0 h-5 leading-5"
-        @click="batchCancelFollow">
+        @click="executeBatchCancelFollow">
         {{ t('actions.unfollow') }}
       </Button>
 
       <Button
-        :disabled="batchMoveFollowDisabled"
+        :disabled="isBatchMoveDisabled"
         type="link"
         size="small"
         class="flex items-center px-0 h-5 leading-5"
-        @click="batchMove">
+        @click="openBatchMoveModal">
         {{ t('actions.move') }}
       </Button>
 
@@ -993,18 +1153,18 @@ const EXEC_RESULT_COLOR = {
         type="link"
         size="small"
         class="flex items-center px-0 h-5 leading-5"
-        @click="cancelBatchOperation">
+        @click="clearBatchSelection">
         <span>{{ t('task.table.batchActions.cancelBatch') }}</span>
         <span class="ml-1">({{ props.selectedIds.length }})</span>
       </Button>
     </div>
     <Table
-      :columns="columns"
+      :columns="tableColumns"
       :dataSource="props.dataSource"
       :pagination="props.pagination"
       :rowSelection="rowSelection"
       rowKey="id"
-      @change="change">
+      @change="handleTableChange">
       <template #bodyCell="{ text, record, column }">
         <div v-if="column.dataIndex === 'name'" class="flex items-center">
           <IconTask :value="record.taskType?.value" class="text-4 flex-shrink-0" />
@@ -1040,7 +1200,7 @@ const EXEC_RESULT_COLOR = {
             type="text"
             size="small"
             class="flex items-center px-0 mr-2.5"
-            @click="toEdit(record.id)">
+            @click="navigateToEdit(record.id)">
             <Icon icon="icon-shuxie" class="mr-1 text-3.5" />
             <span>{{ t('actions.edit') }}</span>
           </Button>
@@ -1050,12 +1210,12 @@ const EXEC_RESULT_COLOR = {
             type="text"
             size="small"
             class="flex items-center px-0 mr-2.5"
-            @click="toDelete(record)">
+            @click="deleteSingleTask(record)">
             <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
             <span>{{ t('actions.delete') }}</span>
           </Button>
 
-          <Dropdown :menuItems="props.menuItemsMap.get(record.id)" @click="dropdownClick($event, record)">
+          <Dropdown :menuItems="props.menuItemsMap.get(record.id)" @click="handleDropdownAction($event, record)">
             <Button
               type="text"
               size="small"
@@ -1070,9 +1230,9 @@ const EXEC_RESULT_COLOR = {
     <AsyncComponent :visible="moveModalVisible">
       <MoveTaskModal
         v-model:visible="moveModalVisible"
-        :taskIds="rowSelection.selectedRowKeys"
+        :taskIds="rowSelection.selectedRowKeys.join(',')"
         :projectId="props.projectId"
-        @ok="batchMoveTaskOk" />
+        @ok="handleBatchMoveSuccess" />
     </AsyncComponent>
   </div>
 </template>

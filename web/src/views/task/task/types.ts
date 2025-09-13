@@ -49,6 +49,27 @@ export type TaskInfo = {
 }
 
 /**
+ * Remark data structure interface
+ * <p>
+ * Defines the structure of a task remark object
+ * containing content, creator information, and metadata
+ */
+export type Remark = {
+  /** Rich text content of the remark */
+  content: string;
+  /** ID of the user who created the remark */
+  createdBy: string;
+  /** Name of the user who created the remark */
+  createdByName: string;
+  /** Creation date of the remark */
+  createdDate: string;
+  /** Unique identifier of the remark */
+  id: string;
+  /** ID of the associated task */
+  taskId: string;
+}
+
+/**
  * Statistics information interface for task metrics and counts
  */
 export type StatisticsInfo = {
