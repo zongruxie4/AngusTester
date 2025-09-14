@@ -17,6 +17,13 @@ const types = ['SERVICE', 'API', 'API_CASE'];
 </script>
 <template>
   <Tabs size="small">
+    <TabPane key="all" :tab="t('apis.activity.all')">
+      <ActivityTimeline
+        key="all"
+        :types="types"
+        :projectId="props.projectId" />
+    </TabPane>
+
     <TabPane key="my" :tab="t('apis.activity.my')">
       <ActivityTimeline
         key="my"
@@ -24,12 +31,6 @@ const types = ['SERVICE', 'API', 'API_CASE'];
         :projectId="props.projectId"
         :userId="props.userInfo?.id"
         :showUserName="false" />
-    </TabPane>
-    <TabPane key="all" :tab="t('apis.activity.all')">
-      <ActivityTimeline
-        key="all"
-        :types="types"
-        :projectId="props.projectId" />
     </TabPane>
   </Tabs>
 </template>

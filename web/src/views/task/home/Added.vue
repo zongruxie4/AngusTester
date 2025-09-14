@@ -222,17 +222,14 @@ const taskQueryParams = {
 </template>
 
 <style scoped>
-/* Tab container styling */
 .ant-tabs {
   line-height: 20px;
 }
 
-/* Content area minimum height */
 :deep(.ant-tabs-content-holder) {
-  min-height: 166px;
+  min-height: 225px;
 }
 
-/* Tab navigation margin adjustments */
 .ant-tabs-top>:deep(.ant-tabs-nav),
 .ant-tabs-bottom>:deep(.ant-tabs-nav),
 .ant-tabs-top>:deep(div)>.ant-tabs-nav,

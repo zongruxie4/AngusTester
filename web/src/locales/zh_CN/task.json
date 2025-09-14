@@ -862,12 +862,11 @@
   },
   "taskHome": {
     "name": "主页",
-    "welcomeToAngusTask": "欢迎进入Angus任务！",
-    "taskDescription": "任务用于帮助团队管理和跟踪项目任务、问题和工作进展，提高团队协作和项目交付效率，确保项目按时完成并达到预期目标。",
-    "teamWorkDescription": "在这里您和您的团队可以完成以下工作：",
-    "workItem1": "通过\"迭代\"组织规划团队成员开展项目活动和排期；",
-    "workItem2": "以明确负责人方式进行任务分配、确认和协作；",
-    "workItem3": "报告和分析项目的健康状况、进展情况和问题趋势。",
+    "welcomeToAngusTask": "关于AngusTester问题",
+    "taskDescription": "问题管理可以帮助团队高效协作，跟踪项目进展，确保按时交付。通过系统化的任务分配、进度监控和团队协作机制，实现项目目标的可视化管理和持续优化。",
+    "workItem1": "通过迭代规划项目活动和排期；",
+    "workItem2": "明确责任人，高效分配和协作任务；",
+    "workItem3": "实时监控项目健康度和进展趋势。",
     "myTasks": "我的任务",
     "myActivities": "我的活动",
     "allActivities": "所有活动",
@@ -910,11 +909,12 @@
       "emptyStates": {
         "noCreatedTasks": "您尚未添加任何任务，立即",
         "addTask": "添加任务",
-        "noFavouriteTasks": "您没有收藏的任务",
-        "noFollowedTasks": "您没有关注的任务",
         "noPendingTasks": "您没有待处理的任务",
         "noConfirmingTasks": "您没有待确认的任务",
-        "noCompletedTasks": "您没有已完成的任务"
+        "noCompletedTasks": "您没有已完成的任务",
+        "noFollowedTasks": "您没有关注的任务",
+        "noFavouriteTasks": "您没有收藏的任务",
+        "noCommentTasks": "您没有评论的任务"
       },
       "actions": {
         "unfavorite": "取消收藏",

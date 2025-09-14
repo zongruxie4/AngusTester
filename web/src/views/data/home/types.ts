@@ -254,9 +254,3 @@ export interface IntroductionTip {
   /** Content description of the tip */
   content: string;
 }
-
-/**
- * <p>Activity timeline types for filtering</p>
- * <p>Defines the types of activities to display in timeline</p>
- */
-export type ActivityType = 'VARIABLE' | 'DATASET' | 'DATASOURCE' | 'FILE';

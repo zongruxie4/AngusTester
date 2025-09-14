@@ -34,7 +34,7 @@ const TaskCreationSummary = defineAsyncComponent(() => import('@/views/task/home
 const TaskStatusSummary = defineAsyncComponent(() => import('@/views/task/home/summary/StatusSummary.vue'));
 const WorkCalendar = defineAsyncComponent(() => import('@/views/task/home/WorkCalendar.vue'));
 const BurndownChart = defineAsyncComponent(() => import('@/views/task/home/BurndownChart.vue'));
-const WelcomeIntroduction = defineAsyncComponent(() => import('@/views/task/home/Introduce.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/task/home/Introduce.vue'));
 const ActivityTimeline = defineAsyncComponent(() => import('@/views/task/home/ActivityTimeline.vue'));
 
 // Internal notification state for component communication
@@ -106,8 +106,13 @@ provide('updateRefreshNotify', updateRefreshNotification);
 
     <!-- Sidebar area -->
     <div class="flex-shrink-0 pt-8 h-full w-right">
-      <WelcomeIntroduction class="mb-5" />
-      <ActivityTimeline :userInfo="props.userInfo" :projectId="props.projectId" />
+      <!-- Introduction Section -->
+      <Introduce class="mb-5" />
+
+      <!-- Activity Timeline Section -->
+      <ActivityTimeline
+        :userInfo="props.userInfo"
+        :projectId="props.projectId" />
     </div>
   </div>
 </template>

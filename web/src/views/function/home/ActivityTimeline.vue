@@ -2,6 +2,7 @@
 import { TabPane, Tabs } from 'ant-design-vue';
 import { ActivityTimeline } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
+import { CombinedTargetType } from '@xcan-angus/infra';
 
 const { t } = useI18n();
 
@@ -15,10 +16,23 @@ const props = withDefaults(defineProps<Props>(), {
   userInfo: undefined
 });
 
-const types = ['FUNC_CASE', 'FUNC_PLAN', 'FUNC_REVIEW', 'FUNC_CASE_BASELINE', 'FUNC_CASE_ANALYSIS'];
+const types = [
+  CombinedTargetType.FUNC_CASE,
+  CombinedTargetType.FUNC_PLAN,
+  CombinedTargetType.FUNC_REVIEW,
+  CombinedTargetType.FUNC_CASE_BASELINE,
+  CombinedTargetType.FUNC_CASE_ANALYSIS
+];
 </script>
 <template>
   <Tabs size="small">
+    <TabPane key="all" :tab="t('functionHome.activityTimeline.allActivity')">
+      <ActivityTimeline
+        key="all"
+        :types="types"
+        :projectId="props.projectId" />
+    </TabPane>
+
     <TabPane key="my" :tab="t('functionHome.activityTimeline.myActivity')">
       <ActivityTimeline
         key="my"
@@ -26,12 +40,6 @@ const types = ['FUNC_CASE', 'FUNC_PLAN', 'FUNC_REVIEW', 'FUNC_CASE_BASELINE', 'F
         :projectId="props.projectId"
         :userId="props.userInfo?.id"
         :showUserName="false" />
-    </TabPane>
-    <TabPane key="all" :tab="t('functionHome.activityTimeline.allActivity')">
-      <ActivityTimeline
-        key="all"
-        :types="types"
-        :projectId="props.projectId" />
     </TabPane>
   </Tabs>
 </template>

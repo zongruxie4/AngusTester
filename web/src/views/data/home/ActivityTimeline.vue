@@ -2,7 +2,8 @@
 import { TabPane, Tabs } from 'ant-design-vue';
 import { ActivityTimeline } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-import { ActivityTimelineProps, ActivityType } from './types';
+import { ActivityTimelineProps } from './types';
+import { CombinedTargetType } from '@xcan-angus/infra';
 
 const { t } = useI18n();
 
@@ -19,12 +20,20 @@ const props = withDefaults(defineProps<ActivityTimelineProps>(), {
  * <p>Activity types to display in timeline</p>
  * <p>Currently supports variable activities</p>
  */
-const activityTypes: ActivityType[] = ['VARIABLE'];
+const activityTypes = [CombinedTargetType.VARIABLE, CombinedTargetType.DATASET];
 </script>
 
 <template>
   <div class="bg-white rounded px-5" style="height: 340px">
     <Tabs size="small" class="h-full">
+      <!-- All Activity Tab -->
+      <TabPane key="all" :tab="t('dataHome.activityTimeline.allActivity')">
+        <ActivityTimeline
+          key="all"
+          :types="activityTypes"
+          :projectId="props.projectId" />
+      </TabPane>
+
       <!-- My Activity Tab -->
       <TabPane key="my" :tab="t('dataHome.activityTimeline.myActivity')">
         <ActivityTimeline
@@ -33,14 +42,6 @@ const activityTypes: ActivityType[] = ['VARIABLE'];
           :projectId="props.projectId"
           :userId="props.userInfo?.id"
           :showUserName="false" />
-      </TabPane>
-
-      <!-- All Activity Tab -->
-      <TabPane key="all" :tab="t('dataHome.activityTimeline.allActivity')">
-        <ActivityTimeline
-          key="all"
-          :types="activityTypes"
-          :projectId="props.projectId" />
       </TabPane>
     </Tabs>
   </div>

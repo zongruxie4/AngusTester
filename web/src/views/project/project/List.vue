@@ -441,15 +441,15 @@ defineExpose({
         size="small"
         class="w-right"
         :style="{ height: timelineHeight }">
+        <TabPane key="all" :tab="t('project.allActivity')">
+          <ActivityTimeline :types="activityType" />
+        </TabPane>
+
         <TabPane key="my" :tab="t('project.myActivity')">
           <ActivityTimeline
             :types="activityType"
             :userId="String(props.userInfo?.id || '')"
             :showUserName="false" />
-        </TabPane>
-
-        <TabPane key="all" :tab="t('project.allActivity')">
-          <ActivityTimeline :types="activityType" />
         </TabPane>
       </Tabs>
     </div>

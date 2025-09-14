@@ -6,9 +6,6 @@ import { CombinedTargetType } from '@xcan-angus/infra';
 
 /**
  * Props interface for ActivityTimeline component.
- * <p>
- * Defines the required properties for displaying activity timeline data.
- * </p>
  */
 type Props = {
   projectId: string;
@@ -24,9 +21,6 @@ const { t } = useI18n();
 
 /**
  * Resource types to query for activity timeline.
- * <p>
- * Defines which types of activities should be displayed in the timeline.
- * </p>
  */
 const activityResourceTypes = [
   CombinedTargetType.TASK,
@@ -38,34 +32,35 @@ const activityResourceTypes = [
 </script>
 
 <template>
-  <Tabs size="small">
-    <!-- My Activities Tab: Shows activities for the current user only -->
-    <TabPane key="my" :tab="t('taskHome.myActivities')">
-      <ActivityTimeline
-        :types="activityResourceTypes as any"
-        :userId="props.userInfo?.id"
-        :projectId="props.projectId"
-        :showUserName="false" />
-    </TabPane>
+  <div class="bg-white rounded px-5" style="height: 780px">
+    <Tabs size="small" class="h-full">
+      <!-- All Activities Tab: Shows activities for all users in the project -->
+      <TabPane key="total" :tab="t('taskHome.allActivities')">
+        <ActivityTimeline
+          :types="activityResourceTypes as any"
+          :projectId="props.projectId" />
+      </TabPane>
 
-    <!-- All Activities Tab: Shows activities for all users in the project -->
-    <TabPane key="total" :tab="t('taskHome.allActivities')">
-      <ActivityTimeline
-        :types="activityResourceTypes as any"
-        :projectId="props.projectId" />
-    </TabPane>
-  </Tabs>
+      <!-- My Activities Tab: Shows activities for the current user only -->
+      <TabPane key="my" :tab="t('taskHome.myActivities')">
+        <ActivityTimeline
+          :types="activityResourceTypes as any"
+          :userId="props.userInfo?.id"
+          :projectId="props.projectId"
+          :showUserName="false" />
+      </TabPane>
+    </Tabs>
+  </div>
 </template>
 
 <style scoped>
 /* Tab styling for small size tabs */
-.ant-tabs-small>:deep(.ant-tabs-nav) .ant-tabs-tab {
+.ant-tabs-small > :deep(.ant-tabs-nav) .ant-tabs-tab {
   font-size: 14px;
 }
 
 /* Main tabs container with responsive height */
 .ant-tabs {
-  height: calc(100% - 265px);
-  min-height: 375px;
+  height: 100%;
 }
 </style>

@@ -862,12 +862,11 @@
   },
   "taskHome": {
     "name": "Home",
-    "welcomeToAngusTask": "Welcome to Angus Task!",
-    "taskDescription": "Tasks help teams manage and track project tasks, issues, and work progress, improve team collaboration and project delivery efficiency, and ensure projects are completed on time and achieve expected goals.",
-    "teamWorkDescription": "Here you and your team can complete the following work:",
-    "workItem1": "Organize and plan team members to carry out project activities and scheduling through \"iterations\";",
-    "workItem2": "Assign, confirm and collaborate tasks in a clear responsible manner;",
-    "workItem3": "Report and analyze project health, progress and issue trends.",
+    "welcomeToAngusTask": "About AngusTester Issues",
+    "taskDescription": "Issue management helps teams collaborate efficiently, track progress, and deliver on time.",
+    "workItem1": "Plan project activities and scheduling through iterations;",
+    "workItem2": "Assign tasks clearly with responsible parties for efficient collaboration;",
+    "workItem3": "Monitor project health and progress trends in real-time.",
     "myTasks": "My Tasks",
     "myActivities": "My Activities",
     "allActivities": "All Activities",
@@ -910,11 +909,12 @@
       "emptyStates": {
         "noCreatedTasks": "You haven't added any tasks yet, ",
         "addTask": "Add Task",
-        "noFavouriteTasks": "You have no favorite tasks",
-        "noFollowedTasks": "You have no followed tasks",
         "noPendingTasks": "You have no pending tasks",
         "noConfirmingTasks": "You have no tasks to confirm",
-        "noCompletedTasks": "You have no completed tasks"
+        "noCompletedTasks": "You have no completed tasks",
+        "noFollowedTasks": "You have no followed tasks",
+        "noFavouriteTasks": "You have no favorite tasks",
+        "noCommentTasks": "You have no comments tasks"
       },
       "actions": {
         "unfavorite": "Unfavorite",

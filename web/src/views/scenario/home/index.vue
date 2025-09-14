@@ -83,14 +83,12 @@ provide('updateRefreshNotify', updateRefreshNotification);
 </template>
 
 <style scoped>
-/* ===== RESPONSIVE SIDEBAR LAYOUT ===== */
 /* Default sidebar width for large screens */
 .w-right {
   width: 400px;
   margin-left: 48px;
 }
 
-/* ===== RESPONSIVE BREAKPOINTS ===== */
 /* Small screens - compact sidebar */
 @media screen and (max-width: 1480px) {
   .w-right {

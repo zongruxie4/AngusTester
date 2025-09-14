@@ -1246,8 +1246,8 @@
       "reportAnalysis": "Report and analyze project health, progress, and issue trends."
     },
     "activityTimeline": {
-      "myActivity": "My Activity",
-      "allActivity": "All Activity"
+      "myActivity": "My Activities",
+      "allActivity": "All Activities"
     },
     "summary": {
       "title": "Resource Statistics",

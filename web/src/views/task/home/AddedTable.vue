@@ -14,9 +14,6 @@ const { t } = useI18n();
 
 /**
  * Props interface for AddedTable component.
- * <p>
- * Defines the required properties for displaying task data in a table format.
- * </p>
  */
 type Props = {
   projectId: string;
@@ -60,9 +57,6 @@ const currentOrderSort = ref<PageQuery.OrderSort>();
 
 /**
  * Pagination configuration for the table.
- * <p>
- * Defines pagination settings including page size, current page, and display options.
- * </p>
  */
 const paginationConfig = ref<{
   total: number;
@@ -90,9 +84,6 @@ const paginationConfig = ref<{
 
 /**
  * Handles table changes including pagination, sorting, and filtering.
- * <p>
- * Updates the current page, page size, and sorting parameters, then reloads data.
- * </p>
  */
 const handleTableChange = ({ current = 1, pageSize = 10 }, _filters, sorter: { orderBy: string; orderSort: PageQuery.OrderSort; }) => {
   currentOrderBy.value = sorter.orderBy;
@@ -104,9 +95,6 @@ const handleTableChange = ({ current = 1, pageSize = 10 }, _filters, sorter: { o
 
 /**
  * Builds query parameters for task list API call.
- * <p>
- * Combines pagination, sorting, and filtering parameters based on component props.
- * </p>
  */
 const buildQueryParams = () => {
   const { current, pageSize } = paginationConfig.value;
@@ -172,9 +160,6 @@ const buildQueryParams = () => {
 
 /**
  * Loads task data from the API and updates the table.
- * <p>
- * Fetches task list based on current query parameters and updates pagination and table data.
- * </p>
  */
 const loadTaskData = async () => {
   const queryParams = buildQueryParams();
@@ -214,9 +199,6 @@ const loadTaskData = async () => {
 
 /**
  * Handles task deletion with confirmation dialog.
- * <p>
- * Shows confirmation modal and deletes the task if confirmed.
- * </p>
  */
 const handleTaskDeletion = (taskData: TaskInfo) => {
   modal.confirm({
@@ -239,9 +221,6 @@ const handleTaskDeletion = (taskData: TaskInfo) => {
 
 /**
  * Handles removing task from favorites.
- * <p>
- * Calls API to unfavorite the task and refreshes the data.
- * </p>
  */
 const handleUnfavoriteTask = async (taskData: TaskInfo) => {
   isLoading.value = true;
@@ -262,9 +241,6 @@ const handleUnfavoriteTask = async (taskData: TaskInfo) => {
 
 /**
  * Handles removing task from followed tasks.
- * <p>
- * Calls API to unfollow the task and refreshes the data.
- * </p>
  */
 const handleUnfollowTask = async (taskData: TaskInfo) => {
   isLoading.value = true;
@@ -314,12 +290,7 @@ onMounted(() => {
 });
 
 /**
- * <p>
  * Computed property for table columns configuration.
- * </p>
- * <p>
- * Returns different column configurations based on whether status filtering is applied.
- * </p>
  */
 const tableColumns = computed(() => {
   const baseColumns: {
@@ -434,7 +405,7 @@ const tableColumns = computed(() => {
     key: 'action',
     title: t('taskHome.addedTable.columns.action'),
     dataIndex: 'action',
-    width: 50
+    width: 80
   };
 
   const currentParams = props.params;
@@ -467,15 +438,9 @@ const emptyStateStyle = {
           <div class="flex items-center text-theme-sub-content text-3 leading-5">
             <template v-if="!!props.params?.createdBy">
               <span>{{ t('taskHome.addedTable.emptyStates.noCreatedTasks') }}</span>
-              <RouterLink to="/task#task" class="ml-1 link">{{ t('taskHome.addedTable.emptyStates.addTask') }}</RouterLink>
-            </template>
-
-            <template v-else-if="!!props.params?.favouriteBy">
-              <span>{{ t('taskHome.addedTable.emptyStates.noFavouriteTasks') }}</span>
-            </template>
-
-            <template v-else-if="!!props.params?.followBy">
-              <span>{{ t('taskHome.addedTable.emptyStates.noFollowedTasks') }}</span>
+              <RouterLink to="/task#task" class="ml-1 link">
+                {{ t('taskHome.addedTable.emptyStates.addTask') }}
+              </RouterLink>
             </template>
 
             <template v-else-if="props.params?.assigneeId && props.params?.status === 'PENDING'">
@@ -488,6 +453,18 @@ const emptyStateStyle = {
 
             <template v-else-if="props.params?.assigneeId && props.params?.status === 'COMPLETED'">
               <span>{{ t('taskHome.addedTable.emptyStates.noCompletedTasks') }}</span>
+            </template>
+
+            <template v-else-if="!!props.params?.followBy">
+              <span>{{ t('taskHome.addedTable.emptyStates.noFollowedTasks') }}</span>
+            </template>
+
+            <template v-else-if="!!props.params?.favouriteBy">
+              <span>{{ t('taskHome.addedTable.emptyStates.noFavouriteTasks') }}</span>
+            </template>
+
+            <template v-else-if="!!props.params?.commentBy">
+              <span>{{ t('taskHome.addedTable.emptyStates.noCommentTasks') }}</span>
             </template>
           </div>
         </div>

@@ -24,7 +24,7 @@
       "addedDataSources": "Added Datasource"
     },
     "introduce": {
-      "title": "AngusTester Parameterization Methods:",
+      "title": "AngusTester Parameterization Methods",
       "description": "Define reusable variables, dynamic data, mock functions, and parameter extraction mechanisms to automate testing workflows.",
       "variable": {
         "title": "Variable",
