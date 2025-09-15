@@ -6,9 +6,9 @@ import { http, utils, TESTER, PoolType } from '@xcan-angus/infra';
 import axios from 'axios';
 import ApiUtils from '@/utils/ApiUtils';
 import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
 
 import { AuthItem, authTypeOptions as _authTypeOptions, flowAuthType, authLabels, flowAuthKeys, encryptionTypeOpt, inOpt, getAuthItem, getApiKeyData } from './interface';
+const { t } = useI18n();
 // import { API_EXTENSION_KEY, encode, getModelDataByRef } from '../_ApiUtils/index';
 
 export interface Props {

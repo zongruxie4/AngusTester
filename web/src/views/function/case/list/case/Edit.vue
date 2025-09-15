@@ -21,11 +21,11 @@ import dayjs from 'dayjs';
 import RichEditor from '@/components/richEditor/index.vue';
 import { funcCase, modules, project } from '@/api/tester';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import {DATE_TIME_FORMAT, TIME_FORMAT} from '@/utils/constant';
+import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 
 import { useI18n } from 'vue-i18n';
 import CaseSteps from './CaseSteps.vue';
-import {CaseInfoObj, CaseListObj, EditFormState} from './types';
+import { CaseInfoObj, CaseListObj, EditFormState } from './types';
 
 const { t } = useI18n();
 

@@ -6,11 +6,11 @@ import { Timeline, TimelineItem } from 'ant-design-vue';
 import { cloneDeep } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 import { ExecInfo, ExecContent } from './PropsType';
 
 import Collapse from './Collapse/index.vue';
+
+const { t } = useI18n();
 const TestBasicInfo = defineAsyncComponent(() => import('@/components/TestBasicInfo/index.vue'));
 export interface Props {
   execInfo: ExecInfo;
@@ -160,7 +160,7 @@ const tranMax = computed(() => {
 });
 
 const pending = computed(() => {
-  return props.execInfo?.status?.value === 'RUNNING' ?  t('httpPlugin.functionTestDetail.pending') : false;
+  return props.execInfo?.status?.value === 'RUNNING' ? t('httpPlugin.functionTestDetail.pending') : false;
 });
 
 const timeTexts = computed(() => [

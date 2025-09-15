@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import type { TimeValidationResult } from '../../types';
-import {CreateTimeSetting} from "@/types/types";
+import { CreateTimeSetting } from '@/types/types';
 
 /**
  * Composable for time validation logic

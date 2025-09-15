@@ -214,7 +214,7 @@ const timeTexts = computed(() => [
           <em class="not-italic inline-block w-0.5 h-3.5 mx-1.5 rounded" style="transform: rotate(25deg);background-color: rgba(3, 185, 208, 100%);"></em>
           <span>{{ planIterationNum }}</span>
         </div>
-        <div  class="exec-basic-data-card-title">{{ t('httpPlugin.functionTestDetail.basicInfo.iteration') }}</div>
+        <div class="exec-basic-data-card-title">{{ t('httpPlugin.functionTestDetail.basicInfo.iteration') }}</div>
       </div>
 
       <div

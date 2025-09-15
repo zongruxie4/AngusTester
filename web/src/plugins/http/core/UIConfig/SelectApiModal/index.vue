@@ -45,12 +45,9 @@ const checkedApiIds = ref<string[]>([]);
 const inputValue = ref<string>();
 const apiList = ref<ApiItem[]>([]);
 
-
-
 const handleChangeApis = (ids: string[]) => {
   checkedApiIds.value = ids;
 };
-
 
 const ok = async (key:'link'|'copy') => {
   if (key === 'copy') {
@@ -129,8 +126,6 @@ const reset = () => {
   apiList.value = [];
 };
 
-
-
 const cancelButtonDisabled = computed(() => {
   return coping.value || linking.value;
 });
@@ -154,7 +149,6 @@ const linkButtonDisabled = computed(() => {
 const hasLinkId = computed(() => {
   return checkedApiIds.value.some(item => props.linkIds.has(item));
 });
-
 
 </script>
 <template>

@@ -6,9 +6,9 @@ import { AssociateSelect, Modal, IconText } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { apis } from '@/api/tester';
 
-const { t } = useI18n();
-
 import { ApiInfo } from './PropsType';
+
+const { t } = useI18n();
 
 export interface Props {
   visible:boolean;

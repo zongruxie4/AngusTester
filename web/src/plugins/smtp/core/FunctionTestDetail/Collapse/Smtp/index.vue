@@ -5,11 +5,11 @@ import { Alert, Collapse, CollapsePanel, Tabs, TabPane, Tag } from 'ant-design-v
 import { Arrow, Colon, Icon, NoData } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
-const { t } = useI18n();
-
 import StatusTag from '../StatusTag/index.vue';
 import { SMTPInfo } from './PropsType';
 import { ExecContent } from '../../PropsType';
+
+const { t } = useI18n();
 
 export interface Props {
   value: SMTPInfo;

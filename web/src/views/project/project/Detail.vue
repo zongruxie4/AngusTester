@@ -19,7 +19,7 @@ import { useData } from './composables/useData';
 import DefaultProjectImage from '@/assets/images/default.png';
 import { ProjectType } from '@/enums/enums';
 import { DetailProps } from '@/views/project/project/types';
-import {DATE_FORMAT} from "@/utils/constant";
+import { DATE_FORMAT } from '@/utils/constant';
 // Initialize i18n
 const { t } = useI18n();
 

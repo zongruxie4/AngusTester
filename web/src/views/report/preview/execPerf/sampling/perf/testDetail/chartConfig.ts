@@ -1,4 +1,4 @@
-import { i18n } from '@xcan-angus/infra'
+import { i18n } from '@xcan-angus/infra';
 
 const t = i18n.getI18n()?.global?.t || ((v:string) => v);
 export const allCvsKeys = ['duration', 'errors', 'iterations', 'n', 'operations', 'transactions', 'readBytes', 'writeBytes', 'ops', 'tps', 'brps', 'bwps', 'tranMean', 'tranMin', 'tranMax', 'tranP50', 'tranP75', 'tranP90', 'tranP95', 'tranP99', 'tranP999', 'errorRate', 'threadPoolSize', 'threadPoolActiveSize', 'threadMaxPoolSize'];

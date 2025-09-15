@@ -1191,23 +1191,23 @@ const isScenarioTest = computed(() => {
 const modeOptions = [
   {
     key: TaskViewMode.flat,
-    name: t('task.searchPanel.viewModes.detail'),
+    name: t('task.searchPanel.viewMode.flat'),
     label: ''
 
   },
   {
     key: TaskViewMode.table,
-    name: t('task.searchPanel.viewModes.table'),
+    name: t('task.searchPanel.viewMode.table'),
     label: ''
   },
   {
     key: TaskViewMode.kanban,
-    name: t('task.searchPanel.viewModes.kanban'),
+    name: t('task.searchPanel.viewMode.kanban'),
     label: ''
   },
   {
     key: TaskViewMode.gantt,
-    name: t('task.searchPanel.viewModes.gantt'),
+    name: t('task.searchPanel.viewMode.gantt'),
     label: ''
   }
 ];
@@ -1217,18 +1217,18 @@ const modeOptions = [
  */
 const modeTitle = computed(() => {
   if (props.viewMode === TaskViewMode.kanban) {
-    return t('task.searchPanel.viewModes.kanban');
+    return t('task.searchPanel.viewMode.kanban');
   }
 
   if (props.viewMode === TaskViewMode.flat) {
-    return t('task.searchPanel.viewModes.detail');
+    return t('task.searchPanel.viewMode.flat');
   }
 
   if (props.viewMode === TaskViewMode.table) {
-    return t('task.searchPanel.viewModes.table');
+    return t('task.searchPanel.viewMode.table');
   }
 
-  return t('task.searchPanel.viewModes.gantt');
+  return t('task.searchPanel.viewMode.gantt');
 });
 
 /**

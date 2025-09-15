@@ -10,11 +10,11 @@ import Draggable from 'vuedraggable';
 import { debounce } from 'throttle-debounce';
 import { variable } from '@/api/tester';
 
-const { t } = useI18n();
-
 import angusUtils from '@/utils/ApiUtils/index';
 import { ParameterConfig, PipelineConfig } from '../PropsType';
 import { ApiInfo } from './SelectApiModal/PropsType';
+
+const { t } = useI18n();
 
 export interface Props {
   value: PipelineConfig[];

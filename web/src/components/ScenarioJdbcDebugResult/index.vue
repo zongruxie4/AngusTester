@@ -4,10 +4,10 @@ import { Alert, Collapse, CollapsePanel, Tabs, TabPane } from 'ant-design-vue';
 import { Arrow, Colon, Icon } from '@xcan-angus/vue-ui';
 
 import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
 
 import StatusTag from './StatusTag/index.vue';
 import { ExecContent, ExecInfo } from './PropsType';
+const { t } = useI18n();
 
 const formatTime = (timestamp:number):string => {
   const second = 1000;

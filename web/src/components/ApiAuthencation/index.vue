@@ -5,11 +5,11 @@ import { Button, RadioGroup } from 'ant-design-vue';
 import { http, utils, TESTER, AuthClientIn } from '@xcan-angus/infra';
 import axios from 'axios';
 import { useI18n } from 'vue-i18n';
-const { t }  = useI18n();
 
 import { AuthItem, authTypeOptions as _authTypeOptions, flowAuthType, authLabels, flowAuthKeys, encryptionTypeOpt, inOpt, getAuthItem, getApiKeyData, getShowApiKeyData } from './interface';
 
 import ApiUtils from '@/utils/ApiUtils/index';
+const { t } = useI18n();
 const { API_EXTENSION_KEY, encode, getModelDataByRef } = ApiUtils;
 
 export interface Props {

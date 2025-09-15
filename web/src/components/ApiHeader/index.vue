@@ -5,14 +5,13 @@ import { Icon, Input, SelectSchema, Select, SimpleEditableSelect } from '@xcan-a
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import { http, TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-const { t }  = useI18n();
 
 import ParamsInput from '@/components/ParamInput/index.vue';
 import JsonContent from '@/components/JsonContent/index.vue';
 import { ParamsItem, getDefaultParams, API_EXTENSION_KEY, deconstruct, validateType, deepDelAttrFromObj, getModelDataByRef } from '@/utils/ApiUtils';
 
-
 import { itemTypes } from './interface';
+const { t } = useI18n();
 
 const valueKey = API_EXTENSION_KEY.valueKey;
 const enabledKey = API_EXTENSION_KEY.enabledKey;

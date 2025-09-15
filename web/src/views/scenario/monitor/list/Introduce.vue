@@ -39,7 +39,10 @@ onBeforeUnmount(() => {
     <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
       <div class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200">
         <div class="flex items-start space-x-3">
-          <img src="./images/1.png" class="w-12 h-12 flex-shrink-0 rounded-md" alt="API Delay Icon">
+          <img
+            src="./images/1.png"
+            class="w-12 h-12 flex-shrink-0 rounded-md"
+            alt="API Delay Icon">
           <div class="space-y-1">
             <h3 class="font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
               {{ t('scenarioMonitor.introduce.scenarios.apiDelay.title') }}
@@ -53,7 +56,10 @@ onBeforeUnmount(() => {
 
       <div class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200">
         <div class="flex items-start space-x-3">
-          <img src="./images/2.png" class="w-12 h-12 flex-shrink-0 rounded-md" alt="Health Check Icon">
+          <img
+            src="./images/2.png"
+            class="w-12 h-12 flex-shrink-0 rounded-md"
+            alt="Health Check Icon">
           <div class="space-y-1">
             <h3 class="font-semibold text-gray-800 group-hover:text-purple-600 transition-colors">
               {{ t('scenarioMonitor.introduce.scenarios.healthCheck.title') }}
@@ -67,7 +73,10 @@ onBeforeUnmount(() => {
 
       <div class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200">
         <div class="flex items-start space-x-3">
-          <img src="./images/3.png" class="w-12 h-12 flex-shrink-0 rounded-md" alt="API Functionality Icon">
+          <img
+            src="./images/3.png"
+            class="w-12 h-12 flex-shrink-0 rounded-md"
+            alt="API Functionality Icon">
           <div class="space-y-1">
             <h3 class="font-semibold text-gray-800 group-hover:text-indigo-600 transition-colors">
               {{ t('scenarioMonitor.introduce.scenarios.apiFunctionality.title') }}
@@ -81,7 +90,10 @@ onBeforeUnmount(() => {
 
       <div class="group hover:bg-gray-50 rounded-lg p-4 transition-colors duration-200">
         <div class="flex items-start space-x-3">
-          <img src="./images/4.png" class="w-12 h-12 flex-shrink-0 rounded-md" alt="Business Process Icon">
+          <img
+            src="./images/4.png"
+            class="w-12 h-12 flex-shrink-0 rounded-md"
+            alt="Business Process Icon">
           <div class="space-y-1">
             <h3 class="font-semibold text-gray-800 group-hover:text-orange-600 transition-colors">
               {{ t('scenarioMonitor.introduce.scenarios.businessProcess.title') }}

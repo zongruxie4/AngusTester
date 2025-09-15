@@ -8,7 +8,6 @@ import { useRouter } from 'vue-router';
 
 import { analysis, mock, services } from '@/api/tester';
 
-
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 const CreateMock = defineAsyncComponent(() => import('./addMock.vue'));
 

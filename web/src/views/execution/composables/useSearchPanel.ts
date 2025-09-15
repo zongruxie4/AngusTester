@@ -420,7 +420,6 @@ export function useSearchPanel (props: SearchPanelProps) {
     return scriptSource.value === 'SCENARIO';
   });
 
-
   const initWatch = (emit: any): void => {
     watch(
       [

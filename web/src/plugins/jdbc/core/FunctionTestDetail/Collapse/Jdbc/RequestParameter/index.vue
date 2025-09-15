@@ -5,9 +5,9 @@ import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { utils } from '@xcan-angus/infra';
 import { Arrow, NoData, Table, Icon } from '@xcan-angus/vue-ui';
 
-const { t } = useI18n();
-
 import { ExecContent, ExecInfo } from '../../../PropsType';
+
+const { t } = useI18n();
 
 export interface Props {
   type: ExecInfo['task']['pipelines'][number]['type']['value'];
@@ -143,7 +143,7 @@ const columns = computed(() => {
               icon="icon-tishi1"
               class="text-3.5"
               style="color:#a6ceff;" />
-                            <span class="ml-1">{{ t('jdbcPlugin.FunctionTestDetailJdbc.requestParameter.maxRecords') }}</span>
+            <span class="ml-1">{{ t('jdbcPlugin.FunctionTestDetailJdbc.requestParameter.maxRecords') }}</span>
           </div>
           <Table :dataSource="rows" :columns="columns" />
         </div>
@@ -151,7 +151,7 @@ const columns = computed(() => {
       </template>
       <template v-else-if="['UPDATE','PREPARED_UPDATE'].includes(props.type)&&item.key==='result'">
         <div class="pl-2 pt-1 pb-2 space-y-1">
-                        {{ t('jdbcPlugin.FunctionTestDetailJdbc.requestParameter.affectedRows') }}<span class="mx-0.5">{{ updateCount }}</span>{{ t('jdbcPlugin.FunctionTestDetailJdbc.requestParameter.rows') }}
+          {{ t('jdbcPlugin.FunctionTestDetailJdbc.requestParameter.affectedRows') }}<span class="mx-0.5">{{ updateCount }}</span>{{ t('jdbcPlugin.FunctionTestDetailJdbc.requestParameter.rows') }}
         </div>
       </template>
     </CollapsePanel>

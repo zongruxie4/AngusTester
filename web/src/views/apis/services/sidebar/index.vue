@@ -12,7 +12,6 @@ import { actions, ModalsConfig, ServiceProject } from './PropsType';
 type FoldActionKey = 'creatProejct' | 'creatService' | 'import' | 'export'|'authorization';
 type SuffixActionKey = 'creatService' | 'export' | 'import' | 'authorization';
 
-
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 const Share = defineAsyncComponent(() => import('@/components/share/index.vue'));
 const CreateTestTask = defineAsyncComponent(() => import('@/components/task/CreateTestModal.vue'));

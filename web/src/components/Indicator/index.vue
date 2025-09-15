@@ -6,10 +6,10 @@ import IndicatorAssert from '@/components/IndicatorAssert/index.vue';
 import { enumUtils, http, TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 import { indicator } from './apis';
 import { splitDuration, maxDuration } from '@/utils/ApiUtils';
+
+const { t } = useI18n();
 
 export interface Props {
   disabled:boolean;

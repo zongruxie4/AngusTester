@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineAsyncComponent} from 'vue';
+import { ref, defineAsyncComponent } from 'vue';
 import { Form, FormItem, Button } from 'ant-design-vue';
 import { Select, Input, Icon, Popover, AsyncComponent, FunctionsModal } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';

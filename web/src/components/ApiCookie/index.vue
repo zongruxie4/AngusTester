@@ -6,11 +6,9 @@ import SwaggerUI from '@xcan-angus/swagger-ui';
 import { http, TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
-
 import ParamsInput from '@/components/ParamInput/index.vue';
 import JsonContent from '@/components/JsonContent/index.vue';
 import { ParamsItem, getDefaultParams, API_EXTENSION_KEY, deconstruct, validateType, deepDelAttrFromObj, getModelDataByRef, variableNameReg } from '@/utils/ApiUtils';
-
 
 import { itemTypes } from './interface';
 import variableApi from '../Variable/apis.ts';
@@ -18,7 +16,7 @@ import variableApi from '../Variable/apis.ts';
 const valueKey = API_EXTENSION_KEY.valueKey;
 const enabledKey = API_EXTENSION_KEY.enabledKey;
 
-const { t }  = useI18n();
+const { t } = useI18n();
 
 interface Props {
   value: ParamsItem[];

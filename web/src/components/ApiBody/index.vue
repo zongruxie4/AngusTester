@@ -11,7 +11,7 @@ import { debounce } from 'throttle-debounce';
 import { deconstruct, API_EXTENSION_KEY, getDataTypeFromFormat, CONTENT_TYPE, getNewItem, getBodyDefaultItem, ParamsItem, getModelDataByRef } from '@/utils/ApiUtils/index';
 import { radioGroups, RequestBodyParam, StateItem, OptionItem, deepParseJson } from './interface';
 import { useI18n } from 'vue-i18n';
-const { t }  = useI18n();
+const { t } = useI18n();
 
 const { gzip, ungzip } = codeUtils;
 export interface Props {
@@ -980,13 +980,13 @@ defineExpose({ getBinaryFile, getBinaryBase64, getBodyData, getData, updateComp,
         @del="delEncodeedList" />
       <template v-if="urlencodedUseRef" #title>
         {{ t('xcan_apiBody.componentReference', { ref: urlencodedUseRef }) }}
-                  <Button
-            :disabled="props.viewType"
-            size="small"
-            type="link"
-            @click="cancelUrlEncodedRef">
-            {{ t('xcan_apiBody.cancelReference') }}
-          </Button>
+        <Button
+          :disabled="props.viewType"
+          size="small"
+          type="link"
+          @click="cancelUrlEncodedRef">
+          {{ t('xcan_apiBody.cancelReference') }}
+        </Button>
       </template>
     </Tooltip>
     <ApiFormForFlat
@@ -1022,13 +1022,13 @@ defineExpose({ getBinaryFile, getBinaryBase64, getBodyData, getData, updateComp,
         @del="delFormDataList" />
       <template v-if="formDataUseRef" #title>
         {{ t('xcan_apiBody.componentReference', { ref: formDataUseRef }) }}
-                  <Button
-            :disabled="props.viewType"
-            size="small"
-            type="link"
-            @click="cancelformDataRef">
-            {{ t('xcan_apiBody.cancelReference') }}
-          </Button>
+        <Button
+          :disabled="props.viewType"
+          size="small"
+          type="link"
+          @click="cancelformDataRef">
+          {{ t('xcan_apiBody.cancelReference') }}
+        </Button>
       </template>
     </Tooltip>
     <ApiFormForFlat

@@ -71,7 +71,6 @@ const handleBurnDownOptionChange = () => {
 onMounted(async () => {
   setupLifecycle();
 
-
   watch(() => props.projectId, async () => {
     if (props.projectId) {
       await loadEffectivenessData();
@@ -84,11 +83,10 @@ onMounted(async () => {
         overdueRef: overdueChartRef.value as HTMLElement,
         oneTimePassedTestRef: oneTimePassedTestChartRef.value as HTMLElement,
         assigneeRankingRef: assigneeRankingChartRef.value as HTMLElement,
-        testerRankingRef: testerRankingChartRef.value as HTMLElement,
+        testerRankingRef: testerRankingChartRef.value as HTMLElement
       });
     }
   }, { immediate: true });
-
 });
 
 onBeforeUnmount(() => {

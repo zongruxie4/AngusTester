@@ -5,11 +5,11 @@ import { Button, Textarea, Radio, RadioGroup, Tooltip, Switch, Tabs, TabPane, In
 import { EnumMessage, ExtractionMethod, utils, enumUtils, TESTER, duration, HttpExtractionLocation } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
 
 import variableApi from './apis';
 import { VariableObj, TargetType, Scope } from './PropsType';
 import { RadioChangeEvent } from 'ant-design-vue/es/radio/interface';
+const { t } = useI18n();
 
 export interface Props {
   id: string;
@@ -582,7 +582,7 @@ onMounted(() => {
           <div class="flex flex-col text-theme-sub-content space-y-2">
             <div>{{ t('xcan_variable.name') }}<Colon /></div>
             <template v-if="variable.type">
-                              <div>{{ t('xcan_variable.extractionMethod') }}<Colon /></div>
+              <div>{{ t('xcan_variable.extractionMethod') }}<Colon /></div>
               <template v-if="variable.extraction.method.value === 'EXACT_VALUE'">
                 <!-- <div>提取值<Colon /></div> -->
               </template>
@@ -590,17 +590,17 @@ onMounted(() => {
                 <div>{{ t('xcan_variable.regexExpression') }}<Colon /></div>
               </template>
               <template v-else>
-                                  <div>{{ t('xcan_variable.extractionExpression') }}<Colon /></div>
+                <div>{{ t('xcan_variable.extractionExpression') }}<Colon /></div>
               </template>
             </template>
             <template v-else>
-                              <div>{{ t('xcan_variable.value') }}<Colon /></div>
+              <div>{{ t('xcan_variable.value') }}<Colon /></div>
             </template>
             <template v-if="props.tabKey !== 'CURRENT'">
-                              <div>{{ t('xcan_variable.source') }}<Colon /></div>
+              <div>{{ t('xcan_variable.source') }}<Colon /></div>
             </template>
-                          <div>{{ t('xcan_variable.scope') }}<Colon /></div>
-              <div>{{ t('xcan_variable.lastModified') }}<Colon /></div>
+            <div>{{ t('xcan_variable.scope') }}<Colon /></div>
+            <div>{{ t('xcan_variable.lastModified') }}<Colon /></div>
           </div>
           <div class="flex flex-col text-theme-content space-y-2 ml-2">
             <div class="truncate h-4" style="max-width: 160px;">

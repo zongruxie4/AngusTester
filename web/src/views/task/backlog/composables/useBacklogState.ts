@@ -2,7 +2,6 @@ import { ref, reactive } from 'vue';
 import { TaskInfo } from '../../types';
 import { SprintInfo } from '@/views/task/sprint/types';
 import {
-  BacklogProps,
   BacklogDataState,
   SprintDataState,
   LoadingState,
@@ -23,7 +22,7 @@ import {
  * <p>Composable for managing the overall state of the backlog component</p>
  * <p>Centralizes all reactive state management and provides state initialization</p>
  */
-export function useBacklogState (props: BacklogProps) {
+export function useBacklogState () {
   // Backlog data state
   const backlogData: BacklogDataState = reactive({
     backlogList: [],

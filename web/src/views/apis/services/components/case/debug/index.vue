@@ -9,7 +9,7 @@ import { useI18n } from 'vue-i18n';
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import { type AssertResult, type ConditionResult } from '@xcan-angus/vue-ui/types';
 import { apis, services } from '@/api/tester';
-import  { getShowAuthData } from '@/components/ApiAuthencation/interface';
+import { getShowAuthData } from '@/components/ApiAuthencation/interface';
 import assertUtils from '@/utils/assertutils';
 
 import apiUtils from '@/utils/ApiUtils/index';

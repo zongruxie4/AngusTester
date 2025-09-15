@@ -27,8 +27,8 @@ const {
   params,
   handlePaginationChange,
   handleRecordSelect,
-  refreshRecords,
-  
+  refreshRecords
+
 } = useRequestRecords(props.id);
 
 const {

@@ -3,9 +3,9 @@ import { defineAsyncComponent, ref } from 'vue';
 import { Progress } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 import { formatBytes } from './useExecCount';
+
+const { t } = useI18n();
 
 interface Props {
   execInfo: Record<string, any>;

@@ -5,11 +5,11 @@ import { Alert, Collapse, CollapsePanel, Tabs, TabPane, Tag } from 'ant-design-v
 import { Arrow, Colon, Icon } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
-const { t } = useI18n();
-
 import StatusTag from '../StatusTag/index.vue';
 import { HTTPInfo } from './PropsType';
 import { ExecContent } from '../../PropsType';
+
+const { t } = useI18n();
 
 export interface Props {
   value: HTTPInfo;
@@ -113,9 +113,9 @@ const failMessage = computed(() => {
               icon="icon-chajianpeizhi" />
           </template>
           <div :title="props.value?.name" class="truncate min-w-55 max-w-100 mr-5 name">{{ props.value?.name }}</div>
-                  <Tag v-if="httpContent?.content?.protocol?.value" class="!leading-5">{{ t('mailPlugin.functionTestDetailMail.protocol') }}：{{ httpContent?.content?.protocol?.value }}</Tag>
-        <Tag v-if="httpContent?.content?.response?.messageTotal" class="!leading-5">{{ t('mailPlugin.functionTestDetailMail.totalEmails', { count: httpContent?.content?.response?.messageTotal }) }}</Tag>
-        <Tag v-if="httpContent?.content?.response?.messageRead" class="!leading-5">{{ t('mailPlugin.functionTestDetailMail.readEmails', { count: httpContent?.content?.response?.messageRead }) }}</Tag>
+          <Tag v-if="httpContent?.content?.protocol?.value" class="!leading-5">{{ t('mailPlugin.functionTestDetailMail.protocol') }}：{{ httpContent?.content?.protocol?.value }}</Tag>
+          <Tag v-if="httpContent?.content?.response?.messageTotal" class="!leading-5">{{ t('mailPlugin.functionTestDetailMail.totalEmails', { count: httpContent?.content?.response?.messageTotal }) }}</Tag>
+          <Tag v-if="httpContent?.content?.response?.messageRead" class="!leading-5">{{ t('mailPlugin.functionTestDetailMail.readEmails', { count: httpContent?.content?.response?.messageRead }) }}</Tag>
           <div class="flex-1 justify-end flex items-center mr-3">
             <template v-if="!props.value?.enabled">
               <StatusTag />

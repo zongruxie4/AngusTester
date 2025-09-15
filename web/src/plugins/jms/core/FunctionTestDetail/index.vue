@@ -174,7 +174,6 @@ const pending = computed(() => {
   return props.execInfo?.status?.value === 'RUNNING' ? t('httpPlugin.functionTestDetail.pending') : false;
 });
 
-
 const texts = computed(() => [
   t('httpPlugin.functionTestDetail.texts.success'),
   t('httpPlugin.functionTestDetail.texts.ignore'),

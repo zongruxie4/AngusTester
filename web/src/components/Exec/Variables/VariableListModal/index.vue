@@ -6,9 +6,9 @@ import { PageQuery, TESTER, http, duration } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
 
-const { t } = useI18n();
-
 import { VariableItem } from '../PropsType';
+
+const { t } = useI18n();
 
 type OrderByKey = 'lastModifiedDate' | 'lastModifiedByName';
 type OrderSortKey = PageQuery.OrderSort;

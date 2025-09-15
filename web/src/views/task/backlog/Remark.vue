@@ -9,7 +9,7 @@ import { Remark } from '@/views/task/task/types';
 
 // Component Props
 const props = withDefaults(defineProps<TaskInfoProps>(), {
-  id: '',
+  id: '-1',
   notify: undefined
 });
 

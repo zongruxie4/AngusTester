@@ -31,7 +31,7 @@ import { func, funcPlan, project } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 
-import {EditFormState, ReviewCaseInfo, ReviewInfo} from '../types';
+import { EditFormState, ReviewCaseInfo, ReviewInfo } from '../types';
 
 type Props = {
   projectId: string;

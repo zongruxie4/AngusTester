@@ -1598,7 +1598,7 @@
           "expected": "Expected",
           "caseCount": "Case Count",
           "workload": "Workload",
-          "taskCount": "Task Count"
+          "taskCount": "Count"
         },
         "groupStats": {
           "title": "Task Group Statistics",
@@ -2190,7 +2190,7 @@
         }
       },
       "taskDetail": {
-        "title": "Task Details",
+        "title": "Task Detail",
         "fields": {
           "code": "Code",
           "priority": "Priority",
@@ -2248,7 +2248,7 @@
         },
         "burndownChart": {
           "title": "Burndown Chart",
-          "taskCount": "Task Count",
+          "taskCount": "Count",
           "workload": "Workload",
           "remaining": "Remaining",
           "expected": "Expected"

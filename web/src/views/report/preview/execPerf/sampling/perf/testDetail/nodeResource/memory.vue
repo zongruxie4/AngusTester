@@ -626,14 +626,14 @@ const setDiskEchartData = () => {
   // '磁盘总大小', '本地文件系统剩余大小', '本地文件系统已用大小', '本地文件系统可用大小', '本地文件系统使用率', '每秒磁盘读次数', '每秒磁盘写次数', '每秒磁盘读取 MB 数', '每秒磁盘写入 MB 数'
   const dataTypeKey = ['total', 'free', 'used', 'avail', 'usePercent', 'readsRate', 'writesRate', 'readBytesRate', 'writeBytesRate'];
   const dataType = [t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskTotal'),
-  t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskFree'),
-  t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskUsed'),
-  t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskAvail'),
-  t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskUsePercent'),
-  t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskReadsRate'),
-  t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskWritesRate'),
-  t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskReadBytesRate'),
-  t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskWriteBytesRate')];
+    t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskFree'),
+    t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskUsed'),
+    t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskAvail'),
+    t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskUsePercent'),
+    t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskReadsRate'),
+    t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskWritesRate'),
+    t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskReadBytesRate'),
+    t('reportPreview.execPerf.sampling.testDetail.nodeResource.diskWriteBytesRate')];
   const seriesData = dataType.map((type, idx) => {
     return {
       ...getDefaultLineConfig(idx),
@@ -1097,7 +1097,7 @@ defineExpose({
 });
 </script>
 <template>
-      <div v-if="!props.startTime || !props.execNodes.length || props.status === 'CREATED'">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
+  <div v-if="!props.startTime || !props.execNodes.length || props.status === 'CREATED'">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>
   <div v-else class="flex flex-col justify-between">
     <div class="mt-2.5">
       <div v-if="!times.length && memoryloaded">{{ t('reportPreview.execPerf.sampling.testDetail.none') }}</div>

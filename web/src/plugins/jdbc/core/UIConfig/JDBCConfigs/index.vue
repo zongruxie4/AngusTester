@@ -6,11 +6,11 @@ import { Input, Tooltip, Icon, SelectEnum, SelectInput, Validate, FunctionsButto
 import { utils } from '@xcan-angus/infra';
 import { cloneDeep } from 'lodash-es';
 
-const { t } = useI18n();
-
 import { JDBCConfig, JDBCConfigInfo, QueryType, QueryArguments } from './PropsType';
 import { AssertionConfig } from './AssertionForm/PropsType';
 import ActionsGroup from '../ActionsGroup/index.vue';
+
+const { t } = useI18n();
 
 export interface Props {
   value: JDBCConfigInfo;
@@ -539,7 +539,7 @@ const inputProps = {
                 <div class="flex-shrink-0 flex items-center space-x-1">
                   <span class="flex-shrink-0">{{ t('jdbcPlugin.UIConfigJdbc.jdbcConfig.processResultRows') }}</span>
                   <Tooltip
-                                          :title="t('jdbcPlugin.UIConfigJdbc.jdbcConfig.processResultRowsTooltip')"
+                    :title="t('jdbcPlugin.UIConfigJdbc.jdbcConfig.processResultRowsTooltip')"
                     internal
                     placement="right"
                     destroyTooltipOnHide>

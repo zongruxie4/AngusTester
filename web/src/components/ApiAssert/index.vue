@@ -6,7 +6,6 @@ import { Arrow, Icon, Input, SelectEnum, Select, Validate } from '@xcan-angus/vu
 import { EnumMessage, AssertionCondition, AssertionType, HttpExtractionLocation, utils, enumUtils, ExtractionMethod } from '@xcan-angus/infra';
 import elementResizeDetector from 'element-resize-detector';
 import { useI18n } from 'vue-i18n';
-const { t }  = useI18n();
 
 import MatchItemPopover from './MacthItemPopover.vue';
 import ExpectedPopover from './ExpectedPopover.vue';
@@ -17,6 +16,7 @@ import xpath from './utils/xpath';
 import regexp from './utils/regexp';
 import { Extraction } from './utils/extract/PropsType';
 import { FormItem } from './PropsType';
+const { t } = useI18n();
 
 interface Props {
   id: string | undefined;

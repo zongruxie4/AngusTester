@@ -5,11 +5,11 @@ import { GroupText } from '@xcan-angus/vue-ui';
 import { Timeline, TimelineItem } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 import { ExecInfo, ExecContent } from './PropsType';
 
 import Collapse from './Collapse/index.vue';
+
+const { t } = useI18n();
 const TestBasicInfo = defineAsyncComponent(() => import('@/components/TestBasicInfo/index.vue'));
 
 export interface Props {
@@ -160,7 +160,7 @@ const tranMax = computed(() => {
 });
 
 const pending = computed(() => {
-  return props.execInfo?.status?.value === 'RUNNING' ?  t('httpPlugin.functionTestDetail.pending') : false;
+  return props.execInfo?.status?.value === 'RUNNING' ? t('httpPlugin.functionTestDetail.pending') : false;
 });
 
 const timeTexts = computed(() => [

@@ -6,9 +6,9 @@ import { Icon, NoData, Hints } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 import Draggable from 'vuedraggable';
 
-const { t } = useI18n();
-
 import { PipelineConfig } from '../PropsType';
+
+const { t } = useI18n();
 
 export interface Props {
   value: PipelineConfig[];

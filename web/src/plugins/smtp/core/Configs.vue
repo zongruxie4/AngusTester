@@ -8,13 +8,13 @@ import { AxiosRequestConfig } from 'axios';
 import { isEqual } from 'lodash-es';
 import { exec, scenario } from '@/api/tester';
 
-const { t } = useI18n();
-
 import ButtonGroup from './ButtonGroup/index.vue';
 import { ButtonGroupMenuItem, ButtonGroupMenuKey } from './ButtonGroup/PropsType';
 import { TOOLBAR_MENUITEMS, TOOLBAR_EXTRA_MENUITEMS, DRAWER_MENUITEMS } from './data';
 import { ScenarioInfo, ScenarioConfig, SaveFormData, ScriptType, PipelineConfig } from './PropsType';
 import { ExecContent } from './FunctionTestDetail/PropsType';
+
+const { t } = useI18n();
 
 export interface Props {
   tabKey: string;

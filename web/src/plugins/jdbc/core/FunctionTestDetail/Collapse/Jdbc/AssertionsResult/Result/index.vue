@@ -5,9 +5,9 @@ import { Badge, Descriptions, DescriptionsItem, TypographyParagraph } from 'ant-
 import { AsyncComponent, Modal, Spin, MonacoEditor } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
-const { t } = useI18n();
-
 import { ExecContent } from '../../../../PropsType';
+
+const { t } = useI18n();
 
 export interface Props {
   value: ExecContent['content']['assertions'][number];
@@ -219,7 +219,7 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
       </template>
     </DescriptionsItem>
 
-                <DescriptionsItem :label="t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.assertionCondition')">
+    <DescriptionsItem :label="t('jdbcPlugin.FunctionTestDetailJdbc.assertionResult.assertionCondition')">
       {{ CONDITION_MAP[assertionCondition] }}
     </DescriptionsItem>
 

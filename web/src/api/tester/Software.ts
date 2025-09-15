@@ -21,7 +21,7 @@ export default class API {
   }
 
   deleteSoftwareVersion (ids: string[]): Promise<[Error | null, any]> {
-    return http.del(`${baseUrl}/version`, {ids});
+    return http.del(`${baseUrl}/version`, { ids });
   }
 
   mergeSoftwareVersion (params = {}): Promise<[Error | null, any]> {

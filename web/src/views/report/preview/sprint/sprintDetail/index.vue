@@ -7,7 +7,7 @@ import RichEditor from '@/components/richEditor/index.vue';
 import { useI18n } from 'vue-i18n';
 
 import { ReportContent } from '../PropsType';
-import {DATE_FORMAT, TIME_FORMAT} from "@/utils/constant";
+import { DATE_FORMAT, TIME_FORMAT } from '@/utils/constant';
 
 const { t } = useI18n();
 

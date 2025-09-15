@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
+import { defineAsyncComponent, inject, nextTick, onMounted, ref, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Progress } from 'ant-design-vue';
 import {
-  Arrow, AsyncComponent, Colon, DropdownSort, Icon, IconTask,
-  Image, Input, Popover, Spin, TaskPriority, Tooltip
+  Arrow, AsyncComponent, DropdownSort, Icon, IconTask,
+  Image, Popover, Spin, TaskPriority, Tooltip
 } from '@xcan-angus/vue-ui';
 import { EvalWorkloadMethod, Priority } from '@xcan-angus/infra';
 import Draggable from 'vuedraggable';
-import { TaskType } from '@/enums/enums';
+import { TaskType, TaskSprintPermission } from '@/enums/enums';
 import { BasicProps } from '@/types/types';
 
 import { TaskInfo } from '../types';
@@ -33,6 +33,7 @@ const aiEnabled = inject('aiEnabled', ref(false));
 const deleteTabPane = inject<(value: string[]) => void>('deleteTabPane');
 
 const Introduce = defineAsyncComponent(() => import('@/views/task/backlog/Introduce.vue'));
+const SearchPanel = defineAsyncComponent(() => import('@/views/task/backlog/SearchPanel.vue'));
 const ApiInfo = defineAsyncComponent(() => import('@/views/task/backlog/info/Apis.vue'));
 const BasicInfo = defineAsyncComponent(() => import('@/views/task/backlog/info/Basic.vue'));
 const ScenarioInfo = defineAsyncComponent(() => import('@/views/task/backlog/info/Scenario.vue'));
@@ -66,7 +67,7 @@ const {
   updateCurrentTaskInfo,
   setLoadingState,
   selectTask
-} = useBacklogState(props);
+} = useBacklogState();
 
 // Initialize task data composable
 const {
@@ -79,7 +80,8 @@ const {
   toggleAssignedToMeFilter,
   toggleCreatedByMeFilter,
   toggleDateFilter,
-  userId
+  userId,
+  selectNone
 } = useTaskData(props, backlogData, loading, search);
 
 // Initialize sprint data composable
@@ -100,7 +102,6 @@ const {
   toggleSprintExpansion,
   handleSprintExpansionChange,
   closeTaskDrawer,
-  selectNone,
   taskType,
   taskId,
   hasPermission,
@@ -142,7 +143,6 @@ const {
   modal,
   selected,
   newTask,
-  search,
   taskNameEditing,
   ui,
   deleteTabPane
@@ -163,6 +163,32 @@ const selectTaskEnhanced = async (id: string, data?: SprintInfo) => {
   await selectTask(id, data, loadTaskInfoById);
 };
 
+// Computed properties for stable data
+const stableSprintList = computed(() => sprintData.sprintList || []);
+const stableBacklogList = computed(() => backlogData.backlogList || []);
+
+// Check if data is ready for rendering
+const isDataReady = computed(() => {
+  if (loading.isLoading) return false;
+  if (sprintData.sprintList.length === 0) return false;
+  if (Object.keys(sprintData.sprintTasksMap).length === 0) return false;
+
+  // Check that all sprints have valid task arrays
+  for (const sprint of sprintData.sprintList) {
+    if (!sprintData.sprintTasksMap[sprint.id] || !Array.isArray(sprintData.sprintTasksMap[sprint.id])) {
+      return false;
+    }
+  }
+  return true;
+});
+
+// Check if sprint data is stable for a specific sprint
+const isSprintDataStable = (sprintId: string) => {
+  return sprintData.sprintTasksMap[sprintId] &&
+         Array.isArray(sprintData.sprintTasksMap[sprintId]) &&
+         sprintData.sprintTasksMap[sprintId].length >= 0;
+};
+
 onMounted(() => {
   watch(() => props.projectId, async (newValue) => {
     if (!newValue) {
@@ -179,63 +205,15 @@ onMounted(() => {
   <div class="flex flex-col h-full py-5 leading-5 text-3">
     <Introduce class="mb-7 mx-5" />
     <Spin :spinning="loading.isLoading" class="flex-1 px-5 overflow-hidden">
-      <div class="flex items-center">
-        <Input
-          v-model:value="search.searchValue"
-          :maxlength="200"
-          allowClear
-          class="w-60 mr-5"
-          :placeholder="t('backlog.placeholder.searchTaskName')"
-          trim
-          @change="handleSearchChange" />
-
-        <div class="whitespace-nowrap text-text-sub-content mr-2">
-          <span>{{ t('quickSearch') }}</span>
-          <Colon />
-        </div>
-
-        <div
-          :class="{ 'active-key': !!selectNone }"
-          class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2"
-          @click="clearAllFilters">
-          {{ t('backlog.quickSearch.all') }}
-        </div>
-
-        <div
-          :class="{ 'active-key': search.createdBy === userId }"
-          class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2"
-          @click="toggleCreatedByMeFilter(userId)">
-          {{ t('backlog.quickSearch.createdByMe') }}
-        </div>
-
-        <div
-          :class="{ 'active-key': search.assigneeId === userId }"
-          class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2"
-          @click="toggleAssignedToMeFilter(userId)">
-          {{ t('backlog.quickSearch.assignedToMe') }}
-        </div>
-
-        <div
-          :class="{ 'active-key': search.quickDate === '1' }"
-          class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2"
-          @click="toggleDateFilter('1')">
-          {{ t('backlog.quickSearch.past1Day') }}
-        </div>
-
-        <div
-          :class="{ 'active-key': search.quickDate === '3' }"
-          class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none mr-2"
-          @click="toggleDateFilter('3')">
-          {{ t('backlog.quickSearch.past3Days') }}
-        </div>
-
-        <div
-          :class="{ 'active-key': search.quickDate === '7' }"
-          class="px-2.5 h-6 leading-6 rounded bg-gray-light cursor-pointer select-none"
-          @click="toggleDateFilter('7')">
-          {{ t('backlog.quickSearch.past7Days') }}
-        </div>
-      </div>
+      <SearchPanel
+        :search="search"
+        :userId="userId"
+        :selectNone="selectNone"
+        @search-change="handleSearchChange"
+        @clear-all-filters="clearAllFilters"
+        @toggle-created-by-me-filter="toggleCreatedByMeFilter"
+        @toggle-assigned-to-me-filter="toggleAssignedToMeFilter"
+        @toggle-date-filter="toggleDateFilter" />
 
       <div class="h-0 border-t border-solid border-theme-text-box mt-2.5"></div>
 
@@ -246,7 +224,7 @@ onMounted(() => {
               <div class="flex items-center px-2.5 py-4 flex-nowrap space-x-5">
                 <div class="flex-1 flex items-center truncate">
                   <Arrow
-                    :open="expandedSprintIds.has('sprintBacklog')"
+                    :open="sprintExpansion.expandedSprintIds.has('sprintBacklog')"
                     type="dashed"
                     class="mr-1.5"
                     style="font-size: 12px;"
@@ -255,10 +233,10 @@ onMounted(() => {
                   <div class="font-semibold text-theme-title w-70 mr-5">
                     {{ t('backlog.sprintBacklogTitle') }}
                   </div>
-                  <div class="w-25">
+                  <div class="w-25 font-semibold">
                     {{ sprintData.sprintList.length || 0 }} {{ t('backlog.sprintCount') }}
                   </div>
-                  <div class="w-25 flex-shrink-0 flex items-center space-x-1">
+                  <div class="w-25 flex-shrink-0 flex items-center space-x-1 font-semibold">
                     <span>{{ totalTaskNum || 0 }}</span>
                     <span>{{ t('backlog.taskCount') }}</span>
                   </div>
@@ -266,58 +244,263 @@ onMounted(() => {
               </div>
             </div>
 
-            <Draggable
-              v-for="item in sprintData.sprintList"
-              v-show="sprintExpansion.expandedSprintIds.has('sprintBacklog')"
-              :id="item.id"
-              :key="item.id"
-              :list="sprintData.sprintTasksMap[item.id]"
-              :animation="300"
-              :class="{ 'draggable-container-open': sprintExpansion.expandedSprintIds.has(item.id) }"
-              ghostClass="ghost"
-              group="tasks"
-              itemKey="id"
-              tag="div"
-              class="draggable-container"
-              @add="handleDragAddToSprint($event, item.id)">
-              <template #header>
-                <div class="header-container border-solid border-b border-theme-text-box">
-                  <div class="flex items-center px-2.5 py-4 flex-nowrap space-x-5">
-                    <div class="flex-1 flex items-center truncate pl-5">
-                      <Arrow
-                        :open="sprintExpansion.expandedSprintIds.has(item.id)"
-                        type="dashed"
-                        class="mr-1.5"
-                        style="font-size: 12px;"
-                        @change="handleSprintExpansionChange($event, item.id)" />
+            <template v-for="item in stableSprintList" :key="`sprint-${item.id}`">
+              <div
+                v-if="isDataReady && isSprintDataStable(item.id)"
+                v-show="sprintExpansion.expandedSprintIds.has('sprintBacklog') &&
+                  sprintExpansion.expandedSprintIds.has(item.id)"
+                :class="{ 'draggable-container-open': sprintExpansion.expandedSprintIds.has(item.id) }"
+                class="draggable-container">
+                <Draggable
+                  :id="item.id"
+                  :list="sprintData.sprintTasksMap[item.id]"
+                  :animation="300"
+                  ghostClass="ghost"
+                  group="tasks"
+                  itemKey="id"
+                  tag="div"
+                  @add="handleDragAddToSprint($event, item.id)">
+                  <template #header>
+                    <div class="header-container border-solid border-b border-theme-text-box">
+                      <div class="flex items-center px-2.5 py-4 flex-nowrap space-x-5">
+                        <div class="flex-1 flex items-center truncate pl-5">
+                          <Arrow
+                            :open="sprintExpansion.expandedSprintIds.has(item.id)"
+                            type="dashed"
+                            class="mr-1.5"
+                            style="font-size: 12px;"
+                            @change="handleSprintExpansionChange($event, item.id)" />
 
-                      <div :title="item.name" class="w-65 truncate text-theme-title  mr-5">
-                        <span class="cursor-pointer" @click.stop="toggleSprintExpansion(item.id)">{{ item.name }}</span>
-                      </div>
+                          <div :title="item.name" class="w-65 truncate text-theme-title  mr-5">
+                            <span class="cursor-pointer" @click.stop="toggleSprintExpansion(item.id)">{{ item.name }}</span>
+                          </div>
 
-                      <div class="w-25 flex-shrink-0 flex items-center space-x-1 text-theme-sub-content">
-                        <span>{{ sprintData.sprintTaskCountMap[item.id] || 0 }}</span>
-                        <span>{{ t('backlog.taskCount') }}</span>
-                      </div>
+                          <div class="w-25 flex-shrink-0 flex items-center space-x-1 text-theme-sub-content">
+                            <span>{{ sprintData.sprintTaskCountMap[item.id] || 0 }}</span>
+                            <span>{{ t('backlog.taskCount') }}</span>
+                          </div>
 
-                      <div class="flex-shrink-0 flex items-center mr-5">
-                        <div
-                          :class="item.status?.value"
-                          class="text-3 leading-3 px-1 py-1 rounded  text-white flex items-center flex-none whitespace-nowrap mr-3.5">
-                          <div class="transform-gpu scale-90">{{ item.status?.message }}</div>
+                          <div class="flex-shrink-0 flex items-center mr-5">
+                            <div
+                              :class="item.status?.value"
+                              class="text-3 leading-3 px-1 py-1 rounded  text-white flex items-center flex-none whitespace-nowrap mr-3.5">
+                              <div class="transform-gpu scale-90">{{ item.status?.message }}</div>
+                            </div>
+                            <Progress :percent="+item.progress?.completedRate" style="width:150px;" />
+                          </div>
+
+                          <div class="flex-shrink-0 text-theme-sub-content">
+                            <span>{{ item.startDate }}</span>
+                            <span> {{ t('backlog.to') }} </span>
+                            <span>{{ item.deadlineDate }}</span>
+                          </div>
                         </div>
-                        <Progress :percent="+item.progress?.completedRate" style="width:150px;" />
+
+                        <div class="flex items-center flex-shrink-0 flex-nowrap space-x-2.5">
+                          <DropdownSort :menuItems="sortOption" @click="handleSprintTaskSort($event, item.id)">
+                            <Button
+                              size="small"
+                              type="text"
+                              class="inline-flex space-x-1 items-center"
+                              style="height:20px;padding:0;line-height:20px;">
+                              <Icon icon="icon-biaotoupaixu" class="text-3.5" />
+                              <span>{{ t('backlog.sort') }}</span>
+                            </Button>
+                          </DropdownSort>
+
+                          <Button
+                            :disabled="sprintData.sprintPermissionsMap[item.id]?.includes(TaskSprintPermission.MODIFY_SPRINT)"
+                            size="small"
+                            type="text"
+                            style="height:20px;padding:0;line-height:20px;">
+                            <RouterLink class="flex items-center space-x-1" :to="`/task#sprint?id=${item.id}`">
+                              <Icon icon="icon-shuxie" class="text-3.5" />
+                              <span>{{ t('backlog.edit') }}</span>
+                            </RouterLink>
+                          </Button>
+
+                          <RouterLink
+                            class="flex items-center space-x-1"
+                            :to="`/task#task?sprintId=${item.id}&sprintName=${item.name}`">
+                            <Icon icon="icon-renwu2" class="text-3.5" />
+                            <span>{{ t('backlog.enterSprint') }}</span>
+                          </RouterLink>
+                        </div>
                       </div>
 
-                      <div class="flex-shrink-0 text-theme-sub-content">
-                        <span>{{ item.startDate }}</span>
-                        <span> {{ t('backlog.to') }} </span>
-                        <span>{{ item.deadlineDate }}</span>
+                      <div
+                        v-if="!!sprintData.sprintMembersMap[item.id]?.length"
+                        class="flex items-center pr-7.5 pl-12.5 pb-3 space-x-1.5 transform-gpu -translate-y-1.5">
+                        <Tooltip v-for="member in sprintData.sprintMembersMap[item.id]" :key="member.id">
+                          <template #title>
+                            <div class="leading-5 text-theme-content">
+                              <div class="mb-1 text-theme-title">{{ member.fullName }}</div>
+                              <div class="flex items-center mb-0.5">
+                                <div class="flex items-center w-12.25">
+                                  <span>{{ t('backlog.columns.taskCount') }}</span>
+                                  <Colon class="w-1" />
+                                </div>
+                                <span>{{ sprintData.sprintMemberProgressMap[item.id]?.[member.id]?.validTaskNum || 0 }}</span>
+                              </div>
+                              <div class="flex items-center">
+                                <div class="flex items-center w-12.25">
+                                  <span>
+                                    {{
+                                      item.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
+                                        ? t('backlog.columns.storyPoint')
+                                        : t('backlog.columns.workHours')
+                                    }}
+                                  </span>
+                                  <Colon class="w-1" />
+                                </div>
+                                <span>{{ sprintData.sprintMemberProgressMap[item.id]?.[member.id]?.evalWorkload || 0 }}</span>
+                              </div>
+                            </div>
+                          </template>
+
+                          <div @mouseenter="handleSprintMemberHover(item.id)">
+                            <Image
+                              :key="member.id"
+                              :alt="member.fullName"
+                              :src="member.avatar"
+                              type="avatar"
+                              class="cursor-pointer"
+                              :style="{ width: '20px', height: '20px', borderRadius: '20px' }" />
+                          </div>
+                        </Tooltip>
                       </div>
                     </div>
 
-                    <div class="flex items-center flex-shrink-0 flex-nowrap space-x-2.5">
-                      <DropdownSort :menuItems="sortOption" @click="handleSprintTaskSort($event, item.id)">
+                    <template v-if="sprintData.sprintTaskCountMap[item.id] === 0">
+                      <div
+                        v-show="sprintExpansion.expandedSprintIds.has(item.id)"
+                        class="empty-draggable mt-4.75 mx-5 h-9.5 flex items-center justify-center rounded text-theme-sub-content">
+                        {{ t('backlog.noTasksInSprint') }}
+                      </div>
+                    </template>
+                  </template>
+
+                  <template #item="{ element, index }: { element: TaskInfo; index: number; }">
+                    <div
+                      v-show="sprintExpansion.expandedSprintIds.has(item.id)"
+                      :id="element.id"
+                      :class="{ 'active-item': taskId === element.id, 'draggable-item-hover': ui.popoverId === element.id }"
+                      class="draggable-item flex items-center space-x-5 truncate !ml-10"
+                      @click="selectTaskEnhanced(element.id, item)">
+                      <IconTask :value="element.taskType?.value" />
+                      <TaskPriority :value="element.priority" />
+                      <span>{{ element.code }}</span>
+                      <span class="flex-1 truncate" :title="element.name">{{ element.name }}</span>
+                      <div class="flex items-center space-x-2.5 action-container">
+                        <Button
+                          :disabled="!hasPermission(element,'split')"
+                          type="text"
+                          size="small"
+                          class="px-0 h-5 leading-5 space-x-1 flex items-center"
+                          @click.stop="showSplitTaskModal(element)">
+                          <Icon icon="icon-guanlianziyuan" class="text-3.5" />
+                          <span>{{ t('backlog.split') }}</span>
+                        </Button>
+
+                        <Popover
+                          overlayClassName="px-content-1.5"
+                          placement="left"
+                          :mouseEnterDelay="0.3"
+                          @visibleChange="handlePopoverVisibilityChange($event, element.id)">
+                          <template #content>
+                            <div class="max-w-100 space-y-1 leading-5 text-3 truncate">
+                              <div
+                                :title="t('backlog.moveToBacklog')"
+                                class="popover-item truncate cursor-pointer px-2"
+                                @click="moveTaskToBacklog(item.id, element, index)">
+                                {{ t('backlog.moveToBacklog') }}
+                              </div>
+
+                              <template v-for="_sprint in sprintData.sprintList" :key="_sprint.id">
+                                <div
+                                  v-if="_sprint.id !== item.id"
+                                  :title="_sprint.name"
+                                  class="popover-item truncate cursor-pointer px-2"
+                                  @click="moveTaskBetweenSprints(item.id, _sprint.id, element, index)">
+                                  {{ _sprint.name }}
+                                </div>
+                              </template>
+                            </div>
+                          </template>
+
+                          <Button
+                            :disabled="!hasPermission(element,'move')"
+                            type="text"
+                            size="small"
+                            class="px-0 h-5 leading-5 space-x-1 flex items-center"
+                            @click.stop="">
+                            <Icon icon="icon-diedai" class="text-3.5" />
+                            <span>{{ t('backlog.moveTo') }}</span>
+                          </Button>
+                        </Popover>
+
+                        <Button
+                          :disabled="!hasPermission(element,'delete')"
+                          type="text"
+                          size="small"
+                          class="px-0 h-5 leading-5 space-x-1 flex items-center"
+                          @click.stop="confirmDeleteTask(element, index, item.id)">
+                          <Icon icon="icon-qingchu" class="text-3.5" />
+                          <span>{{ t('backlog.delete') }}</span>
+                        </Button>
+
+                        <Button
+                          :disabled="!hasPermission(element,'edit')"
+                          type="text"
+                          size="small"
+                          class="px-0 h-5 leading-5 space-x-1 flex items-center"
+                          @click.stop="openTaskEditModal(element.id, item.id)">
+                          <Icon icon="icon-shuxie" class="text-3.5" />
+                          <span>{{ t('backlog.edit') }}</span>
+                        </Button>
+                      </div>
+                    </div>
+                  </template>
+                </Draggable>
+              </div>
+            </template>
+
+            <div
+              v-if="isDataReady && stableBacklogList && Array.isArray(stableBacklogList)"
+              class="draggable-container draggable-container-open">
+              <Draggable
+                id="backlog"
+                :key="`backlog-${stableBacklogList.length}`"
+                :list="stableBacklogList"
+                :animation="300"
+                ghostClass="ghost"
+                group="tasks"
+                itemKey="id"
+                tag="div"
+                @add="handleDragAddToBacklog">
+                <template #header>
+                  <div class="flex items-center justify-between px-2.5 header-container border-solid border-b border-theme-text-box">
+                    <div class="flex items-center py-4 truncate">
+                      <Arrow
+                        :open="sprintExpansion.expandedSprintIds.has('productBacklog')"
+                        type="dashed"
+                        class="mr-1.5"
+                        style="font-size: 12px;"
+                        @change="handleSprintExpansionChange($event, 'productBacklog')" />
+                      <div class="truncate text-theme-title font-semibold w-70 mr-5">
+                        {{ t('backlog.productBacklogTitle') }}
+                      </div>
+
+                      <div class="flex-shrink-0 flex items-center space-x-1 mr-3.5 font-semibold">
+                        <span>{{ backlogData.backlogTotalCount || 0 }}</span>
+                        <span>{{ t('backlog.taskCount') }}</span>
+                      </div>
+                    </div>
+
+                    <div class="inline-flex space-x-2">
+                      <DropdownSort
+                        :menuItems="backlogSortOption"
+                        @click="handleBacklogTaskSort">
                         <Button
                           size="small"
                           type="text"
@@ -329,432 +512,235 @@ onMounted(() => {
                       </DropdownSort>
 
                       <Button
-                        :disabled="sprintPermissionsMap[item.id]?.includes(TaskSprintPermission.MODIFY_SPRINT)"
-                        size="small"
-                        type="text"
-                        style="height:20px;padding:0;line-height:20px;">
-                        <RouterLink class="flex items-center space-x-1" :to="`/task#sprint?id=${item.id}`">
-                          <Icon icon="icon-shuxie" class="text-3.5" />
-                          <span>{{ t('backlog.edit') }}</span>
-                        </RouterLink>
-                      </Button>
-
-                      <RouterLink
-                        class="flex items-center space-x-1"
-                        :to="`/task#task?sprintId=${item.id}&sprintName=${item.name}`">
-                        <Icon icon="icon-renwu2" class="text-3.5" />
-                        <span>{{ t('backlog.enterSprint') }}</span>
-                      </RouterLink>
-                    </div>
-                  </div>
-
-                  <div
-                    v-if="!!sprintData.sprintMembersMap[item.id]?.length"
-                    class="flex items-center pr-7.5 pl-12.5 pb-3 space-x-1.5 transform-gpu -translate-y-1.5">
-                    <Tooltip v-for="member in sprintData.sprintMembersMap[item.id]" :key="member.id">
-                      <template #title>
-                        <div class="leading-5 text-theme-content">
-                          <div class="mb-1 text-theme-title">{{ member.fullName }}</div>
-                          <div class="flex items-center mb-0.5">
-                            <div class="flex items-center w-12.25">
-                              <span>{{ t('backlog.columns.taskCount') }}</span>
-                              <Colon class="w-1" />
-                            </div>
-                            <span>{{ sprintData.sprintMemberProgressMap[item.id]?.[member.id]?.validTaskNum || 0 }}</span>
-                          </div>
-                          <div class="flex items-center">
-                            <div class="flex items-center w-12.25">
-                              <span>
-                                {{
-                                  item.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-                                    ? t('backlog.columns.storyPoint')
-                                    : t('backlog.columns.workHours')
-                                }}
-                              </span>
-                              <Colon class="w-1" />
-                            </div>
-                            <span>{{ sprintData.sprintMemberProgressMap[item.id]?.[member.id]?.evalWorkload || 0 }}</span>
-                          </div>
-                        </div>
-                      </template>
-
-                      <div @mouseenter="handleSprintMemberHover(item.id)">
-                        <Image
-                          :key="member.id"
-                          :alt="member.fullName"
-                          :src="member.avatar"
-                          type="avatar"
-                          class="cursor-pointer"
-                          :style="{ width: '20px', height: '20px', borderRadius: '20px' }" />
-                      </div>
-                    </Tooltip>
-                  </div>
-                </div>
-
-                <template v-if="sprintData.sprintTaskCountMap[item.id] === 0">
-                  <div
-                    v-show="sprintExpansion.expandedSprintIds.has(item.id)"
-                    class="empty-draggable mt-4.75 mx-5 h-9.5 flex items-center justify-center rounded text-theme-sub-content">
-                    {{ t('backlog.noTasksInSprint') }}
-                  </div>
-                </template>
-              </template>
-
-              <template #item="{ element, index }: { element: TaskInfo; index: number; }">
-                <div
-                  v-show="sprintExpansion.expandedSprintIds.has(item.id)"
-                  :id="element.id"
-                  :class="{ 'active-item': taskId === element.id, 'draggable-item-hover': ui.popoverId === element.id }"
-                  class="draggable-item flex items-center space-x-5 truncate !ml-10"
-                  @click="selectTaskEnhanced(element.id, item)">
-                  <IconTask :value="element.taskType?.value" />
-                  <TaskPriority :value="element.priority" />
-                  <span>{{ element.code }}</span>
-                  <span class="flex-1 truncate" :title="element.name">{{ element.name }}</span>
-                  <div class="flex items-center space-x-2.5 action-container">
-                    <Button
-                      :disabled="!hasPermission(element,'split')"
-                      type="text"
-                      size="small"
-                      class="px-0 h-5 leading-5 space-x-1 flex items-center"
-                      @click.stop="showSplitTaskModal(element)">
-                      <Icon icon="icon-guanlianziyuan" class="text-3.5" />
-                      <span>{{ t('backlog.split') }}</span>
-                    </Button>
-
-                    <Popover
-                      overlayClassName="px-content-1.5"
-                      placement="left"
-                      :mouseEnterDelay="0.3"
-                      @visibleChange="handlePopoverVisibilityChange($event, element.id)">
-                      <template #content>
-                        <div class="max-w-100 space-y-1 leading-5 text-3 truncate">
-                          <div
-                            :title="t('backlog.moveToBacklog')"
-                            class="popover-item truncate cursor-pointer px-2"
-                            @click="moveTaskToBacklog(item.id, element, index)">
-                            {{ t('backlog.moveToBacklog') }}
-                          </div>
-
-                          <template v-for="_sprint in sprintData.sprintList" :key="_sprint.id">
-                            <div
-                              v-if="_sprint.id !== item.id"
-                              :title="_sprint.name"
-                              class="popover-item truncate cursor-pointer px-2"
-                              @click="moveTaskBetweenSprints(item.id, _sprint.id, element, index)">
-                              {{ _sprint.name }}
-                            </div>
-                          </template>
-                        </div>
-                      </template>
-
-                      <Button
-                        :disabled="!hasPermission(element,'move')"
                         type="text"
                         size="small"
                         class="px-0 h-5 leading-5 space-x-1 flex items-center"
-                        @click.stop="">
-                        <Icon icon="icon-diedai" class="text-3.5" />
-                        <span>{{ t('backlog.moveTo') }}</span>
+                        @click.stop="refreshBacklogData">
+                        <Icon class="text-3.5" icon="icon-shuaxin" />
+                        <span>{{ t('backlog.refresh') }}</span>
                       </Button>
-                    </Popover>
-
-                    <Button
-                      :disabled="!hasPermission(element,'delete')"
-                      type="text"
-                      size="small"
-                      class="px-0 h-5 leading-5 space-x-1 flex items-center"
-                      @click.stop="confirmDeleteTask(element, index, item.id)">
-                      <Icon icon="icon-qingchu" class="text-3.5" />
-                      <span>{{ t('backlog.delete') }}</span>
-                    </Button>
-
-                    <Button
-                      :disabled="!hasPermission(element,'edit')"
-                      type="text"
-                      size="small"
-                      class="px-0 h-5 leading-5 space-x-1 flex items-center"
-                      @click.stop="openTaskEditModal(element.id, item.id)">
-                      <Icon icon="icon-shuxie" class="text-3.5" />
-                      <span>{{ t('backlog.edit') }}</span>
-                    </Button>
-                  </div>
-                </div>
-              </template>
-            </Draggable>
-
-            <Draggable
-              id="backlog"
-              :list="backlogData.backlogList"
-              :animation="300"
-              ghostClass="ghost"
-              group="tasks"
-              itemKey="id"
-              tag="div"
-              class="draggable-container draggable-container-open"
-              @add="handleDragAddToBacklog">
-              <template #header>
-                <div class="flex items-center justify-between px-2.5 header-container border-solid border-b border-theme-text-box">
-                  <div class="flex items-center py-4 truncate">
-                    <Arrow
-                      :open="sprintExpansion.expandedSprintIds.has('productBacklog')"
-                      type="dashed"
-                      class="mr-1.5"
-                      style="font-size: 12px;"
-                      @change="handleSprintExpansionChange($event, 'productBacklog')" />
-                    <div class="truncate text-theme-title font-semibold w-70 mr-5">
-                      {{ t('backlog.productBacklogTitle') }}
-                    </div>
-
-                    <div class="flex-shrink-0 flex items-center space-x-1 mr-3.5">
-                      <span>{{ backlogData.backlogTotalCount || 0 }}</span>
-                      <span>{{ t('backlog.taskCount') }}</span>
                     </div>
                   </div>
 
-                  <div class="inline-flex space-x-2">
-                    <DropdownSort
-                      :menuItems="backlogSortOption"
-                      @click="handleBacklogTaskSort">
-                      <Button
-                        size="small"
-                        type="text"
-                        class="inline-flex space-x-1 items-center"
-                        style="height:20px;padding:0;line-height:20px;">
-                        <Icon icon="icon-biaotoupaixu" class="text-3.5" />
-                        <span>{{ t('backlog.sort') }}</span>
-                      </Button>
-                    </DropdownSort>
-
-                    <Button
-                      type="text"
-                      size="small"
-                      class="px-0 h-5 leading-5 space-x-1 flex items-center"
-                      @click.stop="refreshBacklogData">
-                      <Icon class="text-3.5" icon="icon-shuaxin" />
-                      <span>{{ t('backlog.refresh') }}</span>
-                    </Button>
-                  </div>
-                </div>
-
-                <div
-                  v-if="backlogData.isBacklogDataLoaded && !backlogData.backlogTotalCount"
-                  class="empty-draggable mt-4.75 mx-5 h-9.5 flex items-center justify-center rounded text-theme-sub-content">
-                  {{ t('backlog.noBacklog') }}
-                </div>
-              </template>
-
-              <template #footer>
-                <div class="px-5 mt-3.5">
                   <div
-                    v-if="aiEnabled"
-                    v-show="!modal.isAddingNewTask"
-                    class="flex items-center space-x-2.5">
+                    v-if="backlogData.isBacklogDataLoaded && !backlogData.backlogTotalCount"
+                    class="empty-draggable mt-4.75 mx-5 h-9.5 flex items-center justify-center rounded text-theme-sub-content">
+                    {{ t('backlog.noBacklog') }}
+                  </div>
+                </template>
+
+                <template #footer>
+                  <div class="px-5 mt-3.5">
+                    <div
+                      v-if="aiEnabled"
+                      v-show="!modal.isAddingNewTask"
+                      class="flex items-center space-x-2.5">
+                      <Button
+                        type="primary"
+                        size="small"
+                        class="flex items-center space-x-1"
+                        @click="showAddTaskFormEnhanced">
+                        <Icon icon="icon-jia" class="text-3.5" />
+                        <span>{{ t('backlog.main.addBacklog') }}</span>
+                      </Button>
+
+                      <Button
+                        type="primary"
+                        size="small"
+                        ghost
+                        class="flex items-center space-x-1"
+                        @click="showAiGenerateTaskModal">
+                        <Icon icon="icon-jia" class="text-3.5" />
+                        <span>{{ t('backlog.main.aiAddBacklog') }}</span>
+                      </Button>
+                    </div>
+
                     <Button
-                      type="primary"
+                      v-else
+                      v-show="!modal.isAddingNewTask"
+                      type="default"
                       size="small"
-                      class="flex items-center space-x-1"
+                      style="border-color: #40a9ff;background-color: rgba(244, 2250, 254, 100%);"
+                      class="flex items-center space-x-1 border-dashed w-full h-11"
                       @click="showAddTaskFormEnhanced">
                       <Icon icon="icon-jia" class="text-3.5" />
                       <span>{{ t('backlog.main.addBacklog') }}</span>
                     </Button>
 
-                    <Button
-                      type="primary"
-                      size="small"
-                      ghost
-                      class="flex items-center space-x-1"
-                      @click="showAiGenerateTaskModal">
-                      <Icon icon="icon-jia" class="text-3.5" />
-                      <span>{{ t('backlog.main.aiAddBacklog') }}</span>
-                    </Button>
-                  </div>
+                    <div v-show="modal.isAddingNewTask" class="flex items-center">
+                      <SelectEnum
+                        v-model:value="newTask.newTaskType"
+                        enumKey="TaskType"
+                        :placeholder="t('backlog.main.placeholders.taskType')"
+                        :excludes="({value}) => [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(value as any)"
+                        class="w-28 mr-2">
+                        <template #option="record">
+                          <div class="flex items-center">
+                            <IconTask :value="record.value" class="text-4 flex-shrink-0" />
+                            <span class="ml-1">{{ record.label }}</span>
+                          </div>
+                        </template>
+                      </SelectEnum>
 
-                  <Button
-                    v-else
-                    v-show="!modal.isAddingNewTask"
-                    type="default"
-                    size="small"
-                    style="border-color: #40a9ff;background-color: rgba(244, 2250, 254, 100%);"
-                    class="flex items-center space-x-1 border-dashed w-full h-11"
-                    @click="showAddTaskFormEnhanced">
-                    <Icon icon="icon-jia" class="text-3.5" />
-                    <span>{{ t('backlog.main.addBacklog') }}</span>
-                  </Button>
+                      <SelectEnum
+                        v-model:value="newTask.newTaskPriority"
+                        internal
+                        enumKey="Priority"
+                        :placeholder="t('backlog.main.placeholders.selectPriority')"
+                        class="w-28 mr-2">
+                        <template #option="record">
+                          <TaskPriority :value="{ value: record.value, message: record.label }" />
+                        </template>
+                      </SelectEnum>
 
-                  <div v-show="modal.isAddingNewTask" class="flex items-center">
-                    <SelectEnum
-                      v-model:value="newTask.newTaskType"
-                      enumKey="TaskType"
-                      :placeholder="t('backlog.main.placeholders.taskType')"
-                      :excludes="({value}) => [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(value as any)"
-                      class="w-28 mr-2">
-                      <template #option="record">
-                        <div class="flex items-center">
-                          <IconTask :value="record.value" class="text-4 flex-shrink-0" />
-                          <span class="ml-1">{{ record.label }}</span>
-                        </div>
-                      </template>
-                    </SelectEnum>
-
-                    <SelectEnum
-                      v-model:value="newTask.newTaskPriority"
-                      internal
-                      enumKey="Priority"
-                      :placeholder="t('backlog.main.placeholders.selectPriority')"
-                      class="w-28 mr-2">
-                      <template #option="record">
-                        <TaskPriority :value="{ value: record.value, message: record.label }" />
-                      </template>
-                    </SelectEnum>
-
-                    <Input
-                      ref="newTaskNameInputRef"
-                      v-model:value="newTask.newTaskName"
-                      :maxlength="200"
-                      :placeholder="t('backlog.main.placeholders.taskName')"
-                      trim
-                      class="w-200 mr-5"
-                      @pressEnter="handleNewTaskNameEnter" />
-
-                    <div class="flex items-center space-x-2.5">
-                      <Button
-                        :disabled="!newTask.newTaskName"
-                        type="primary"
-                        size="small"
-                        @click="createNewTask">
-                        {{ t('backlog.main.save') }}
-                      </Button>
-
-                      <Button
-                        type="default"
-                        size="small"
-                        @click="cancelAddTask">
-                        {{ t('backlog.main.cancel') }}
-                      </Button>
-
-                      <Button
-                        type="default"
-                        size="small"
-                        @click="openCreateTaskModal">
-                        {{ t('backlog.main.openAddModal') }}
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </template>
-
-              <template #item="{ element, index }: { element: TaskInfo; index: number; }">
-                <div
-                  v-show="sprintExpansion.expandedSprintIds.has('productBacklog')"
-                  :id="element.id"
-                  :class="{ 'active-item': taskId === element.id, 'draggable-item-hover': ui.popoverId === element.id }"
-                  class="draggable-item flex items-center justify-between space-x-5 truncate"
-                  @click="selectTaskEnhanced(element.id)">
-                  <div class="flex items-center space-x-5 truncate">
-                    <IconTask :value="element.taskType?.value" />
-                    <TaskPriority :value="element.priority" />
-                    <div>{{ element.code }}</div>
-                    <div
-                      v-if="taskNameEditing.editingTaskNameIds.has(element.id)"
-                      class="flex items-center"
-                      @click.stop="">
                       <Input
                         ref="newTaskNameInputRef"
-                        v-model:value="taskNameEditing.editingTaskNameMap[element.id]"
+                        v-model:value="newTask.newTaskName"
                         :maxlength="200"
                         :placeholder="t('backlog.main.placeholders.taskName')"
                         trim
-                        class="w-100 mr-5"
-                        @pressEnter="handleTaskNameEditEnter(element,index)" />
+                        class="w-200 mr-5"
+                        @pressEnter="handleNewTaskNameEnter" />
 
-                      <Button
-                        :disabled="!taskNameEditing.editingTaskNameMap[element.id]"
-                        type="primary"
-                        size="small"
-                        class="mr-2.5"
-                        @click="handleTaskNameEditEnter(element,index)">
-                        {{ t('backlog.main.save') }}
-                      </Button>
+                      <div class="flex items-center space-x-2.5">
+                        <Button
+                          :disabled="!newTask.newTaskName"
+                          type="primary"
+                          size="small"
+                          @click="createNewTask">
+                          {{ t('backlog.main.save') }}
+                        </Button>
 
-                      <Button
-                        type="default"
-                        size="small"
-                        class="bg-white"
-                        @click="cancelTaskNameEdit(element.id)">
-                        {{ t('backlog.main.cancel') }}
-                      </Button>
-                    </div>
+                        <Button
+                          type="default"
+                          size="small"
+                          @click="cancelAddTask">
+                          {{ t('backlog.main.cancel') }}
+                        </Button>
 
-                    <div
-                      v-else
-                      class="flex-1 truncate cursor-default"
-                      :title="element.name"
-                      @click.stop="handleTaskNameClick"
-                      @dblclick.stop="handleTaskNameDoubleClick(element)">
-                      {{ element.name }}
+                        <Button
+                          type="default"
+                          size="small"
+                          @click="openCreateTaskModal">
+                          {{ t('backlog.main.openAddModal') }}
+                        </Button>
+                      </div>
                     </div>
                   </div>
+                </template>
 
-                  <div class="flex items-center space-x-2.5 action-container">
-                    <Button
-                      type="text"
-                      size="small"
-                      class="px-0 h-5 leading-5 space-x-1 flex items-center"
-                      @click.stop="showSplitTaskModal(element)">
-                      <Icon icon="icon-guanlianziyuan" class="text-3.5" />
-                      <span>{{ t('backlog.main.split') }}</span>
-                    </Button>
+                <template #item="{ element, index }: { element: TaskInfo; index: number; }">
+                  <div
+                    v-show="sprintExpansion.expandedSprintIds.has('productBacklog')"
+                    :id="element.id"
+                    :class="{ 'active-item': taskId === element.id, 'draggable-item-hover': ui.popoverId === element.id }"
+                    class="draggable-item flex items-center justify-between space-x-5 truncate"
+                    @click="selectTaskEnhanced(element.id)">
+                    <div class="flex items-center space-x-5 truncate">
+                      <IconTask :value="element.taskType?.value" />
+                      <TaskPriority :value="element.priority" />
+                      <div>{{ element.code }}</div>
+                      <div
+                        v-if="taskNameEditing.editingTaskNameIds.has(element.id)"
+                        class="flex items-center"
+                        @click.stop="">
+                        <Input
+                          ref="newTaskNameInputRef"
+                          v-model:value="taskNameEditing.editingTaskNameMap[element.id]"
+                          :maxlength="200"
+                          :placeholder="t('backlog.main.placeholders.taskName')"
+                          trim
+                          class="w-100 mr-5"
+                          @pressEnter="handleTaskNameEditEnter(element,index)" />
 
-                    <Popover
-                      overlayClassName="px-content-1.5"
-                      placement="left"
-                      :mouseEnterDelay="0.3"
-                      @visibleChange="handlePopoverVisibilityChange($event, element.id)">
-                      <template #content>
-                        <div class="max-w-100 space-y-1 leading-5 text-3 truncate">
-                          <div
-                            v-for="_sprint in sprintData.sprintList"
-                            :key="_sprint.id"
-                            :title="_sprint.name"
-                            class="popover-item truncate cursor-pointer px-2"
-                            @click="assignTaskToSprint(_sprint.id, element, index)">
-                            {{ _sprint.name }}
+                        <Button
+                          :disabled="!taskNameEditing.editingTaskNameMap[element.id]"
+                          type="primary"
+                          size="small"
+                          class="mr-2.5"
+                          @click="handleTaskNameEditEnter(element,index)">
+                          {{ t('backlog.main.save') }}
+                        </Button>
+
+                        <Button
+                          type="default"
+                          size="small"
+                          class="bg-white"
+                          @click="cancelTaskNameEdit(element.id)">
+                          {{ t('backlog.main.cancel') }}
+                        </Button>
+                      </div>
+
+                      <div
+                        v-else
+                        class="flex-1 truncate cursor-default"
+                        :title="element.name"
+                        @click.stop="handleTaskNameClick"
+                        @dblclick.stop="handleTaskNameDoubleClick(element)">
+                        {{ element.name }}
+                      </div>
+                    </div>
+
+                    <div class="flex items-center space-x-2.5 action-container">
+                      <Button
+                        type="text"
+                        size="small"
+                        class="px-0 h-5 leading-5 space-x-1 flex items-center"
+                        @click.stop="showSplitTaskModal(element)">
+                        <Icon icon="icon-guanlianziyuan" class="text-3.5" />
+                        <span>{{ t('backlog.main.split') }}</span>
+                      </Button>
+
+                      <Popover
+                        overlayClassName="px-content-1.5"
+                        placement="left"
+                        :mouseEnterDelay="0.3"
+                        @visibleChange="handlePopoverVisibilityChange($event, element.id)">
+                        <template #content>
+                          <div class="max-w-100 space-y-1 leading-5 text-3 truncate">
+                            <div
+                              v-for="_sprint in sprintData.sprintList"
+                              :key="_sprint.id"
+                              :title="_sprint.name"
+                              class="popover-item truncate cursor-pointer px-2"
+                              @click="assignTaskToSprint(_sprint.id, element, index)">
+                              {{ _sprint.name }}
+                            </div>
                           </div>
-                        </div>
-                      </template>
+                        </template>
+
+                        <Button
+                          type="text"
+                          size="small"
+                          class="px-0 h-5 leading-5 space-x-1 flex items-center"
+                          @click.stop="">
+                          <Icon icon="icon-diedai" class="text-3.5" />
+                          <span>{{ t('backlog.main.assign') }}</span>
+                        </Button>
+                      </Popover>
 
                       <Button
                         type="text"
                         size="small"
                         class="px-0 h-5 leading-5 space-x-1 flex items-center"
-                        @click.stop="">
-                        <Icon icon="icon-diedai" class="text-3.5" />
-                        <span>{{ t('backlog.main.assign') }}</span>
+                        @click.stop="confirmDeleteTask(element, index)">
+                        <Icon icon="icon-qingchu" class="text-3.5" />
+                        <span>{{ t('backlog.main.delete') }}</span>
                       </Button>
-                    </Popover>
 
-                    <Button
-                      type="text"
-                      size="small"
-                      class="px-0 h-5 leading-5 space-x-1 flex items-center"
-                      @click.stop="confirmDeleteTask(element, index)">
-                      <Icon icon="icon-qingchu" class="text-3.5" />
-                      <span>{{ t('backlog.main.delete') }}</span>
-                    </Button>
-
-                    <Button
-                      type="text"
-                      size="small"
-                      class="px-0 h-5 leading-5 space-x-1 flex items-center"
-                      @click.stop="openTaskEditModal(element.id)">
-                      <Icon icon="icon-shuxie" class="text-3.5" />
-                      <span>{{ t('backlog.main.edit') }}</span>
-                    </Button>
+                      <Button
+                        type="text"
+                        size="small"
+                        class="px-0 h-5 leading-5 space-x-1 flex items-center"
+                        @click.stop="openTaskEditModal(element.id)">
+                        <Icon icon="icon-shuxie" class="text-3.5" />
+                        <span>{{ t('backlog.main.edit') }}</span>
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </template>
-            </Draggable>
+                </template>
+              </Draggable>
+            </div>
           </div>
         </div>
 

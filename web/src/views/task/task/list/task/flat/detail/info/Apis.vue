@@ -568,7 +568,7 @@ const onePassStatusText = computed(() => {
               <span>
                 {{ currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
                   ? t('task.detailInfo.apis.columns.evalWorkload')
-                  : t('task.detailInfo.apis.columns.evalWorkloadHours') }}
+                  : t('task.detailInfo.apis.columns.evalWorkHours') }}
               </span>
               <Colon class="w-1" />
             </div>

@@ -58,9 +58,9 @@ const chartsOption = {
     left: 40
   },
   title: {
-    text: t('commonComp.chart.bar.titleFormat', { 
-      title: props.title, 
-      unit: props.unit, 
+    text: t('commonComp.chart.bar.titleFormat', {
+      title: props.title,
+      unit: props.unit,
       total: props.yData.length ? props.yData.reduce((n, m) => Number(n) + Number(m)) : ''
     }),
     bottom: 0,
@@ -135,9 +135,9 @@ const chartsOption = {
 
 // Enable data zoom when user click bar.
 watch(() => props.xData, () => {
-  chartsOption.title.text = t('commonComp.chart.bar.titleFormat', { 
-    title: props.title, 
-    unit: props.unit, 
+  chartsOption.title.text = t('commonComp.chart.bar.titleFormat', {
+    title: props.title,
+    unit: props.unit,
     total: props.yData.length ? props.yData.reduce((n, m) => Number(n) + Number(m)) : ''
   });
   chartsOption.xAxis[0].data = props.xData;

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
-import { Composite, Icon, Input, Select,  } from '@xcan-angus/vue-ui';
+import { Composite, Icon, Input, Select } from '@xcan-angus/vue-ui';
 import { Button, CheckableTag, Popover, Tag } from 'ant-design-vue';
 import ApiAuthencation from '@/components/ApiAuthencation/index.vue';
 

@@ -64,15 +64,15 @@ const menuItems = computed(() => [
   },
   {
     key: 'lastDay',
-    name: t('quickSearchTags.past1Day')
+    name: t('quickSearchTags.lastDay')
   },
   {
     key: 'lastThreeDays',
-    name: t('quickSearchTags.past3Day')
+    name: t('quickSearchTags.last3Days')
   },
   {
     key: 'lastWeek',
-    name: t('quickSearchTags.past7Day')
+    name: t('quickSearchTags.last7Days')
   }
 ]);
 

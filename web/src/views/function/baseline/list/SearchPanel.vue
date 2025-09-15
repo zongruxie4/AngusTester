@@ -5,7 +5,7 @@ import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus
 import { appContext } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
-import {DATE_TIME_FORMAT, TIME_FORMAT} from '@/utils/constant';
+import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 
 const { t } = useI18n();
 

@@ -8,9 +8,9 @@ import { useI18n } from 'vue-i18n';
 import pretty from 'pretty';
 import jsBeautify from 'js-beautify';
 
-const { t } = useI18n();
-
 import { RequestBody, ContentType } from './PropsType';
+
+const { t } = useI18n();
 
 const { gzip, ungzip } = codeUtils;
 export interface Props {

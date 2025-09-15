@@ -273,7 +273,7 @@ export default class API {
   }
 
   batchAddReferenceDataset (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {
-    return http.post(`${baseUrl}/${serviceId}/apis/variable/dataset/reference?${queryStr}`, parameters, );
+    return http.post(`${baseUrl}/${serviceId}/apis/variable/dataset/reference?${queryStr}`, parameters);
   }
 
   batchDeleteReferenceDataset (serviceId: string, queryStr: string, parameters):Promise<[Error | null, any]> {

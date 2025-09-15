@@ -4,10 +4,10 @@ import { NoData, Colon } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 import { Badge } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
 
 import { PipelineConfig } from './PropsType';
 import { ExecContent } from '@/components/FunctionTestDetail/PropsType';
+const { t } = useI18n();
 
 interface Props {
   httpError?:{

@@ -3,7 +3,6 @@ import { watch, ref, inject } from 'vue';
 import { Button, Checkbox } from 'ant-design-vue';
 import { Icon, Input, Select, SelectSchema } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-const { t }  = useI18n();
 import SwaggerUI from '@xcan-angus/swagger-ui';
 import { http, TESTER } from '@xcan-angus/infra';
 
@@ -15,6 +14,7 @@ import JsonContent from '../../JsonContent/index.vue';
 import SimpleEditableSelect from '../../SimpleEditableSelect/index.vue';
 
 import { ParamsItem, API_EXTENSION_KEY, deconstruct, deepDelAttrFromObj, validateType, getModelDataByRef } from '@/utils/ApiUtils/index';
+const { t } = useI18n();
 
 export interface Props {
   value: ParamsItem[],

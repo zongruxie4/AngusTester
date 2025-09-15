@@ -2,7 +2,6 @@
 import { watch, ref, computed, inject, onMounted, nextTick } from 'vue';
 import { utils, http, TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
 
 import { Input, Select, Icon, SelectSchema } from '@xcan-angus/vue-ui';
 import { Button, Checkbox } from 'ant-design-vue';
@@ -20,6 +19,7 @@ import {
   transListToJson,
   transListToschema
 } from './util';
+const { t } = useI18n();
 
 const { valueKey } = API_EXTENSION_KEY;
 

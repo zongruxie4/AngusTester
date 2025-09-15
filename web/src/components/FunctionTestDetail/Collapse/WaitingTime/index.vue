@@ -2,9 +2,9 @@
 import { computed } from 'vue';
 import { Icon } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
 
 import StatusTag from '../StatusTag/index.vue';
+const { t } = useI18n();
 
 export interface Props {
   value: {

@@ -134,7 +134,8 @@ export function useUIOptions (
     const permissions = sprintData.sprintPermissionsMap.get(sprintId) || [];
     const { currentAssociateType } = data;
 
-    const isAdministrator = !!currentAssociateType?.map(item => item.value).includes('SYS_ADMIN') || !!currentAssociateType?.map(item => item.value).includes('APP_ADMIN');
+    const isAdministrator = !!currentAssociateType?.map(item => item.value).includes('SYS_ADMIN') ||
+      !!currentAssociateType?.map(item => item.value).includes('APP_ADMIN');
 
     if (key === 'edit' || key === 'move' || key === 'split') {
       return isAdministrator || permissions.includes(TaskSprintPermission.MODIFY_TASK) || !sprintAuth;
@@ -205,32 +206,32 @@ export function useUIOptions (
     {
       key: 'all',
       label: t('backlog.quickSearch.all'),
-      isActive: selectNone.value
+      isActive: false
     },
     {
       key: 'createdByMe',
       label: t('backlog.quickSearch.createdByMe'),
-      isActive: false // This would need to be passed from search state
+      isActive: false
     },
     {
       key: 'assignedToMe',
       label: t('backlog.quickSearch.assignedToMe'),
-      isActive: false // This would need to be passed from search state
+      isActive: false
     },
     {
-      key: 'past1Day',
-      label: t('backlog.quickSearch.past1Day'),
-      isActive: false // This would need to be passed from search state
+      key: 'lastDay',
+      label: t('backlog.quickSearch.lastDay'),
+      isActive: false
     },
     {
-      key: 'past3Days',
-      label: t('backlog.quickSearch.past3Days'),
-      isActive: false // This would need to be passed from search state
+      key: 'last3Day',
+      label: t('backlog.quickSearch.last3Day'),
+      isActive: false
     },
     {
-      key: 'past7Days',
-      label: t('backlog.quickSearch.past7Days'),
-      isActive: false // This would need to be passed from search state
+      key: 'last7Day',
+      label: t('backlog.quickSearch.last7Day'),
+      isActive: false
     }
   ]);
 

@@ -9,7 +9,6 @@ import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import { nodeCtrl } from '@/api/ctrl';
 
-
 const { t } = useI18n();
 
 interface NodeItem {

@@ -4,9 +4,9 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 import { ExecResult } from '../../../PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   projectInfo: { [key: string]: any };

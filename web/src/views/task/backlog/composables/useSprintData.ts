@@ -36,6 +36,9 @@ export function useSprintData (
    */
   const sortTaskByPriority = (sprintId: string) => {
     const taskList = sprintData.sprintTasksMap[sprintId];
+    if (!taskList || !Array.isArray(taskList)) {
+      return;
+    }
     taskList.sort((a, b) => {
       if (sprintData.sprintSortParamsMap[sprintId].orderSort === PageQuery.OrderSort.Asc) {
         return PRIORITY_LEVEL_CONFIG[a.priority?.value] - PRIORITY_LEVEL_CONFIG[b.priority?.value];
@@ -45,7 +48,7 @@ export function useSprintData (
         return 0;
       }
     });
-    sprintData.sprintTasksMap[sprintId] = taskList;
+    sprintData.sprintTasksMap[sprintId] = [...taskList];
   };
 
   /**
@@ -58,60 +61,70 @@ export function useSprintData (
     params.pageNo = pageNo;
     Object.assign(params, (sprintData.sprintSortParamsMap[id] || {}));
 
-    loading.isLoading = true;
-    const [error, res] = await task.getTaskList(params);
-    loading.isLoading = false;
+    try {
+      const [error, res] = await task.getTaskList(params);
 
-    if (error) {
-      return;
-    }
+      if (error) {
+        return;
+      }
 
-    const data = res?.data;
-    if (!data) {
-      return;
-    }
+      const data = res?.data;
+      if (!data) {
+        return;
+      }
 
-    sprintData.sprintTaskCountMap[id] = +data.total;
+      sprintData.sprintTaskCountMap[id] = +data.total;
 
-    const list = data.list || [];
-    if (pageNo === 1) {
-      sprintData.sprintTasksMap[id] = list;
-    } else {
-      sprintData.sprintTasksMap[id].push(...list);
-    }
-
-    const sprintIdSet = new Set<string>();
-    for (let i = 0, len = list.length; i < len; i++) {
-      const item = list[i];
-      sprintIdSet.add(item.sprintId);
-    }
-
-    const sprintIds = Array.from(sprintIdSet);
-
-    if (!isAdmin.value) {
-      for (let i = 0, len = sprintIds.length; i < len; i++) {
-        const id = sprintIds[i];
-        if (id) {
-          const [_error, _res] = await loadPermissions(id);
-          if (!_error) {
-            const _permissions = (_res?.data || []).map(item => item.value);
-            sprintData.sprintPermissionsMap.set(id, _permissions);
-          }
+      const list = data.list || [];
+      if (pageNo === 1) {
+        sprintData.sprintTasksMap[id] = [...list];
+      } else {
+        if (sprintData.sprintTasksMap[id]) {
+          sprintData.sprintTasksMap[id].push(...list);
+        } else {
+          sprintData.sprintTasksMap[id] = [...list];
         }
       }
-    } else {
-      for (let i = 0, len = sprintIds.length; i < len; i++) {
-        const id = sprintIds[i];
-        sprintData.sprintPermissionsMap.set(id, enumUtils.getEnumValues(TaskSprintPermission));
-      }
-    }
 
-    if (sprintData.sprintTasksMap[id].length < sprintData.sprintTaskCountMap[id]) {
-      await loadTaskListById(id, pageNo + 1);
-    } else {
-      if (sprintData.sprintSortParamsMap[id]?.orderBy === 'priority') {
-        sortTaskByPriority(id);
+      const sprintIdSet = new Set<string>();
+      for (let i = 0, len = list.length; i < len; i++) {
+        const item = list[i];
+        sprintIdSet.add(item.sprintId);
       }
+
+      const sprintIds = Array.from(sprintIdSet);
+
+      if (!isAdmin.value) {
+        for (let i = 0, len = sprintIds.length; i < len; i++) {
+          const id = sprintIds[i];
+          if (id) {
+            try {
+              const [_error, _res] = await loadPermissions(id);
+              if (!_error) {
+                const _permissions = (_res?.data || []).map(item => item.value);
+                sprintData.sprintPermissionsMap.set(id, _permissions);
+              }
+            } catch (err) {
+              console.error(`Failed to load permissions for sprint ${id}:`, err);
+            }
+          }
+        }
+      } else {
+        for (let i = 0, len = sprintIds.length; i < len; i++) {
+          const id = sprintIds[i];
+          sprintData.sprintPermissionsMap.set(id, enumUtils.getEnumValues(TaskSprintPermission));
+        }
+      }
+
+      if (sprintData.sprintTasksMap[id] && sprintData.sprintTasksMap[id].length < sprintData.sprintTaskCountMap[id]) {
+        await loadTaskListById(id, pageNo + 1);
+      } else {
+        if (sprintData.sprintSortParamsMap[id]?.orderBy === 'priority') {
+          sortTaskByPriority(id);
+        }
+      }
+    } catch (err) {
+      console.error(`Failed to load task list for sprint ${id}:`, err);
     }
   };
 
@@ -126,29 +139,39 @@ export function useSprintData (
     };
 
     loading.isLoading = true;
-    const [error, res] = await task.getSprintList(params);
-    loading.isLoading = false;
+    try {
+      const [error, res] = await task.getSprintList(params);
 
-    if (error) {
-      return;
-    }
-
-    const list = (res?.data?.list || []) as SprintInfo[];
-    sprintData.sprintList = [];
-
-    for (let i = 0, len = list.length; i < len; i++) {
-      const item = list[i];
-      const id = item.id;
-      sprintData.sprintMembersMap[id] = item.members;
-      sprintData.sprintTasksMap[id] = [];
-
-      if (item.progress?.completedRate) {
-        item.progress.completedRate = item.progress.completedRate.replace(/(\d+\.\d{2})\d+/, '$1');
+      if (error) {
+        loading.isLoading = false;
+        return;
       }
 
-      sprintData.sprintList.push(item);
+      const list = (res?.data?.list || []) as SprintInfo[];
+      sprintData.sprintList = [];
 
-      await loadTaskListById(id, 1);
+      for (let i = 0, len = list.length; i < len; i++) {
+        const item = list[i];
+        const id = item.id;
+        sprintData.sprintMembersMap[id] = item.members;
+        sprintData.sprintTasksMap[id] = [];
+
+        if (item.progress?.completedRate) {
+          item.progress.completedRate = item.progress.completedRate.replace(/(\d+\.\d{2})\d+/, '$1');
+        }
+
+        sprintData.sprintList.push(item);
+
+        try {
+          await loadTaskListById(id, 1);
+        } catch (err) {
+          console.error(`Failed to load tasks for sprint ${id}:`, err);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load sprint list:', err);
+    } finally {
+      loading.isLoading = false;
     }
   };
 

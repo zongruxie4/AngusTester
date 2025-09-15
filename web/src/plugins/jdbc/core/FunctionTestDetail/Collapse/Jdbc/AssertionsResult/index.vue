@@ -5,9 +5,9 @@ import { Collapse, CollapsePanel } from 'ant-design-vue';
 import { utils } from '@xcan-angus/infra';
 import { Arrow, NoData, Icon, Spin } from '@xcan-angus/vue-ui';
 
-const { t } = useI18n();
-
 import { ExecContent } from '../../../PropsType';
+
+const { t } = useI18n();
 
 export interface Props {
   value: ExecContent;

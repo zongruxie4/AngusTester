@@ -1,5 +1,4 @@
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
 import { duration, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
@@ -26,8 +25,6 @@ export function useTaskData (
   loading: LoadingState,
   search: SearchState
 ) {
-  const { t } = useI18n();
-
   /**
    * <p>Build task query parameters</p>
    * <p>Constructs the query parameters based on current search and filter state</p>
@@ -245,6 +242,13 @@ export function useTaskData (
     return props.userInfo?.id;
   });
 
+  /**
+   * Determine whether there is a selection query condition
+   */
+  const selectNone = computed(() => {
+    return !search.createdBy && !search.assigneeId && !search.quickDate;
+  });
+
   return {
     getTaskParams,
     sortBacklogByPriority,
@@ -256,6 +260,7 @@ export function useTaskData (
     toggleAssignedToMeFilter,
     toggleCreatedByMeFilter,
     toggleDateFilter,
-    userId
+    userId,
+    selectNone
   };
 }

@@ -3,12 +3,12 @@ import { ref, watch, onMounted, computed, defineAsyncComponent, inject } from 'v
 import { Button, Collapse, CollapsePanel, RadioGroup, Radio, TabPane, Tabs, Textarea, Switch, InputGroup } from 'ant-design-vue';
 import { EnumMessage, ExtractionMethod, utils, enumUtils, HttpExtractionLocation } from '@xcan-angus/infra';
 import { RadioChangeEvent } from 'ant-design-vue/es/radio/interface';
-import { Hints, Input, Icon, SelectEnum, IconRequired, Arrow, } from '@xcan-angus/vue-ui';
+import { Hints, Input, Icon, SelectEnum, IconRequired, Arrow } from '@xcan-angus/vue-ui';
 
 import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
 
 import { VariableObj } from './PropsType';
+const { t } = useI18n();
 const projectInfo = inject('projectInfo', ref({ id: '' }));
 const projectId = computed(() => {
   return projectInfo.value?.id;
@@ -199,7 +199,7 @@ const request = [
 <template>
   <div>
     <div class="mb-2 -mt-2">
-              <Hints :text="t('xcan_execSettingForm.variableManagement')" />
+      <Hints :text="t('xcan_execSettingForm.variableManagement')" />
       <div class="flex flex-1 items-center justify-between mt-2">
         <Input
           v-model:value="keywords"
@@ -265,8 +265,8 @@ const request = [
             <template v-else>
               <div class="h-7 whitespace-nowrap mb-5"><IconRequired />{{ t('xcan_execSettingForm.variableValue') }}</div>
             </template>
-                          <div class="h-7 whitespace-nowrap mb-5"><IconRequired />{{ t('xcan_execSettingForm.scope') }}</div>
-                          <div class="h-7 whitespace-nowrap mb-5 pl-1.75">{{ t('xcan_execSettingForm.variableDescription') }}</div>
+            <div class="h-7 whitespace-nowrap mb-5"><IconRequired />{{ t('xcan_execSettingForm.scope') }}</div>
+            <div class="h-7 whitespace-nowrap mb-5 pl-1.75">{{ t('xcan_execSettingForm.variableDescription') }}</div>
           </div>
           <div class="flex-1">
             <Input
