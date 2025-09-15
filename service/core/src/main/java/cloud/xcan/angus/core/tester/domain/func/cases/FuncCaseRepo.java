@@ -61,17 +61,17 @@ public interface FuncCaseRepo extends BaseRepository<FuncCase, Long> {
   long countNotPassedByPlanId(Long id);
 
   @Modifying
-  @Query("UPDATE FuncCase s SET s.deleted = false, s.deletedBy = -1, s.deletedDate = null WHERE s.id in ?1")
+  @Query(value = "UPDATE func_case s SET s.deleted = false, s.deleted_by = -1, s.deleted_date = null WHERE s.id in ?1", nativeQuery = true)
   void updateToUndeletedStatusByIdIn(Collection<Long> ids);
+
+  @Modifying
+  @Query(value = "UPDATE func_case s SET s.deleted=?2, s.deleted_by =?3, s.deleted_date = ?4 WHERE s.id in ?1", nativeQuery = true)
+  void updateDeleteStatus(Collection<Long> ids, Boolean deleted, Long deletedBy,
+      LocalDateTime deletedDate);
 
   @Modifying
   @Query("UPDATE FuncCase s SET s.planAuth=?2 WHERE s.planId=?1")
   void updatePlanAuthByPlanId(Long planId, Boolean enabled);
-
-  @Modifying
-  @Query("UPDATE FuncCase s SET s.deleted=?2, s.deletedBy =?3, s.deletedDate = ?4 WHERE s.id in ?1")
-  void updateDeleteStatus(Collection<Long> ids, Boolean deleted, Long deletedBy,
-      LocalDateTime deletedDate);
 
   @Modifying
   @Query("UPDATE FuncCase s SET s.projectId=?2 WHERE s.id IN ?1")

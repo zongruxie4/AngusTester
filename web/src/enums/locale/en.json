@@ -90,7 +90,7 @@
       "AssociateUserType": {
         "CREATOR": "Creator",
         "ASSIGNEE": "Assignee",
-        "CONFIRMOR": "Confirmer",
+        "CONFIRMER": "Confirmer",
         "OWNER": "Owner",
         "SYS_ADMIN": "System Administrator",
         "APP_ADMIN": "Application Administrator"
@@ -531,5 +531,5 @@
       }
     }
   }
-  
+
 }

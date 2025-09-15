@@ -150,7 +150,7 @@ public class TaskConverter {
         .setSoftwareVersion(task.getSoftwareVersion())
         .setPriority(task.getPriority())
         .setAssigneeId(task.getAssigneeId())
-        .setConfirmorId(task.getConfirmorId())
+        .setConfirmerId(task.getConfirmerId())
         .setDeadlineDate(task.getDeadlineDate())
         .setAttachments(task.getAttachments())
         .setDescription(task.getDescription())
@@ -213,7 +213,7 @@ public class TaskConverter {
         .setBacklog(projectDb.isAgile() && task.getStatus().isPending()
             && randomWithProbability(3))
         .setAssigneeId(users.get(random.nextInt(users.size())).getId())
-        .setConfirmorId(users.get(random.nextInt(users.size())).getId())
+        .setConfirmerId(users.get(random.nextInt(users.size())).getId())
         .setStatus(status).setCompletedDate((status.isFinished() ? finishedDate : null))
         .setTenantId(projectDb.getTenantId()).setDeleted(false)
         .setCreatedBy(users.get(random.nextInt(users.size())).getId())
@@ -344,7 +344,7 @@ public class TaskConverter {
     summary.setPriority(task.getPriority());
     summary.setStatus(task.getStatus());
     summary.setAssigneeId(task.getAssigneeId());
-    summary.setConfirmorId(task.getConfirmorId());
+    summary.setConfirmerId(task.getConfirmerId());
     summary.setStartDate(task.getStartDate());
     summary.setDeadlineDate(task.getDeadlineDate());
     summary.setCompletedDate(task.getCompletedDate());
@@ -356,7 +356,7 @@ public class TaskConverter {
     summary.setActualWorkload(task.getActualWorkload());
     summary.setFailNum(task.getFailNum());
     summary.setTotalNum(task.getTotalNum());
-    summary.setConfirmTask(nonNull(task.getConfirmorId()));
+    summary.setConfirmTask(nonNull(task.getConfirmerId()));
     summary.setOverdue(task.getOverdue());
     //.setDescription(task.getDescription());
     summary.setTargetId(task.getTargetId());
@@ -396,7 +396,7 @@ public class TaskConverter {
         .setPriority(task.getPriority())
         .setStatus(task.getStatus())
         .setAssigneeId(task.getAssigneeId())
-        .setConfirmorId(task.getConfirmorId())
+        .setConfirmerId(task.getConfirmerId())
         .setTesterId(task.getTesterId())
         .setMissingBug(task.getMissingBug())
         .setUnplanned(task.getUnplanned())
@@ -553,7 +553,7 @@ public class TaskConverter {
       CachedUidGenerator uidGenerator, Project projectDb, @Nullable TaskSprint sprintDb,
       List<String[]> data, int nameIdx, int taskTypeIdx, int bugLevelIdx,
       int testTypeIdx, Map<String, List<UserBase>> assigneeMap, int assigneeIdx,
-      int confirmorIdx, Map<String, List<UserBase>> confirmorMap, int testerIdx,
+      int confirmerIdx, Map<String, List<UserBase>> confirmerMap, int testerIdx,
       Map<String, List<UserBase>> testerMap, int missingBugIdx, int unplannedIdx, int priorityIdx,
       int deadlineIdx, int descIdx, int evalWorkloadIdx, int actualWorkloadIdx, int statusIdx,
       int softwareVersionIdx, int startDateIdx, int processedDateIdx, int canceledDateIdx,
@@ -585,8 +585,8 @@ public class TaskConverter {
                 ? Long.parseLong(row[targetIdIdx]) : null)*/
             .setAssigneeId(assigneeIdx != -1 && nonNull(assigneeMap.get(row[assigneeIdx]))
                 ? assigneeMap.get(row[assigneeIdx]).get(0).getId() : null)
-            .setConfirmorId(confirmorIdx != -1 && nonNull(confirmorMap.get(row[confirmorIdx]))
-                ? confirmorMap.get(row[confirmorIdx]).get(0).getId() : null)
+            .setConfirmerId(confirmerIdx != -1 && nonNull(confirmerMap.get(row[confirmerIdx]))
+                ? confirmerMap.get(row[confirmerIdx]).get(0).getId() : null)
             .setTesterId(testerIdx != -1 && nonNull(testerMap.get(row[testerIdx]))
                 ? testerMap.get(row[testerIdx]).get(0).getId() : null)
             .setMissingBug(!taskType.isBug() ? null

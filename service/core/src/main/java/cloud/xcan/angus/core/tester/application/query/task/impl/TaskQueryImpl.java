@@ -2487,9 +2487,9 @@ public class TaskQueryImpl implements TaskQuery {
       if (isNotEmpty(assigneeIds)) {
         assocUserIds.addAll(assigneeIds);
       }
-      List<Long> confirmorIds = taskInfoRepo.findConfirmorIdBySprintId(sprintId);
-      if (isNotEmpty(confirmorIds)) {
-        assocUserIds.addAll(confirmorIds);
+      List<Long> confirmerIds = taskInfoRepo.findConfirmerIdBySprintId(sprintId);
+      if (isNotEmpty(confirmerIds)) {
+        assocUserIds.addAll(confirmerIds);
       }
     }
     return assocUserIds;
@@ -2507,9 +2507,9 @@ public class TaskQueryImpl implements TaskQuery {
     if (isNotEmpty(assigneeIds)) {
       assocUserIds.addAll(assigneeIds);
     }
-    List<Long> confirmorIds = taskInfoRepo.findConfirmorIdByByIdIn(taskIds);
-    if (isNotEmpty(confirmorIds)) {
-      assocUserIds.addAll(confirmorIds);
+    List<Long> confirmerIds = taskInfoRepo.findConfirmerIdByByIdIn(taskIds);
+    if (isNotEmpty(confirmerIds)) {
+      assocUserIds.addAll(confirmerIds);
     }
     return assocUserIds;
   }
@@ -2545,16 +2545,16 @@ public class TaskQueryImpl implements TaskQuery {
   }
 
   /**
-   * Only confirmor and admins are allowed to modify.
+   * Only confirmer and admins are allowed to modify.
    */
   @Override
-  public void checkConfirmorUserPermission(Task taskDb) {
+  public void checkConfirmerUserPermission(Task taskDb) {
     if (commonQuery.isAdminUser()) {
       return;
     }
-    boolean isConfirmor = nonNull(taskDb.getConfirmorId())
-        && taskDb.getConfirmorId().equals(getUserId());
-    BizAssert.assertTrue(isConfirmor, NO_HANDLER_PERMISSION_CODE, NO_HANDLER_PERMISSION);
+    boolean isConfirmer = nonNull(taskDb.getConfirmerId())
+        && taskDb.getConfirmerId().equals(getUserId());
+    BizAssert.assertTrue(isConfirmer, NO_HANDLER_PERMISSION_CODE, NO_HANDLER_PERMISSION);
   }
 
   /**
@@ -2762,9 +2762,9 @@ public class TaskQueryImpl implements TaskQuery {
           currentRoles.add(AssociateUserType.ASSIGNEE);
         }
         
-        // Check if current user is the task confirmor
-        if (nonNull(task.getConfirmorId()) && task.getConfirmorId().equals(principal.getUserId())) {
-          currentRoles.add(AssociateUserType.CONFIRMOR);
+        // Check if current user is the task confirmer
+        if (nonNull(task.getConfirmerId()) && task.getConfirmerId().equals(principal.getUserId())) {
+          currentRoles.add(AssociateUserType.CONFIRMER);
         }
         
         // Add system admin role if applicable
@@ -3061,14 +3061,14 @@ public class TaskQueryImpl implements TaskQuery {
 
   @Override
   public void assembleAndSendPendingConfirmationNoticeEvent(Task taskDb) {
-    if (nonNull(taskDb.getConfirmorId())) {
+    if (nonNull(taskDb.getConfirmerId())) {
       List<NoticeType> noticeTypes = commonQuery.findTenantEventNoticeTypes(
           nullSafe(taskDb.getTenantId(), getOptTenantId())).get(TaskPendingConfirmationCode);
       if (isEmpty(noticeTypes)) {
         return;
       }
       List<Long> receiveObjectIds = new ArrayList<>();
-      receiveObjectIds.add(taskDb.getConfirmorId());
+      receiveObjectIds.add(taskDb.getConfirmerId());
       String message = message(TaskPendingConfirmation,
           new Object[]{getUserFullName(), taskDb.getName()},
           PrincipalContext.getDefaultLanguage().toLocale());

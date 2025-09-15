@@ -84,13 +84,6 @@ const loadData = async (): Promise<void> => {
     allBaseline.value = data.allBaseline;
     baselineByLastWeek.value = data.baselineByLastWeek;
     baselineByLastMonth.value = data.baselineByLastMonth;
-    //     const reviewByLastWeek = ref('');
-    // const allReview = ref('');
-    // const reviewByLastMonth = ref('');
-
-    // const allBaseline = ref('');
-    // const baselineByLastWeek = ref('');
-    // const baselineByLastMonth = ref('');
   }
 };
 
@@ -147,7 +140,7 @@ const reset = () => {
             <div>{{ planByLastMonth }}</div>
           </div>
         </div>
-        <img src="images/icon-2.png" class="w-15 absolute right-0 top-0" />
+        <img src="./images/icon-2.png" class="w-15 absolute right-0 top-0" />
       </div>
 
       <div class="rounded flex-1 relative">
@@ -165,7 +158,7 @@ const reset = () => {
             <div>{{ caseByLastMonth }}</div>
           </div>
         </div>
-        <img src="images/icon-3.png" class="w-15 absolute right-0 top-0" />
+        <img src="./images/icon-3.png" class="w-15 absolute right-0 top-0" />
       </div>
 
       <div class="rounded flex-1 relative">
@@ -183,7 +176,7 @@ const reset = () => {
             <div>{{ reviewByLastMonth }}</div>
           </div>
         </div>
-        <img src="images/icon-1.png" class="w-15 absolute right-0 top-0" />
+        <img src="./images/icon-1.png" class="w-15 absolute right-0 top-0" />
       </div>
 
       <div class="rounded flex-1 relative">
@@ -201,7 +194,7 @@ const reset = () => {
             <div>{{ baselineByLastMonth }}</div>
           </div>
         </div>
-        <img src="images/icon-4.png" class="w-15 absolute right-0 top-0" />
+        <img src="./images/icon-4.png" class="w-15 absolute right-0 top-0" />
       </div>
     </div>
   </div>

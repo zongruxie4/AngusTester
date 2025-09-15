@@ -160,7 +160,7 @@ export enum OverdueRiskLevel {
 export enum AssociateUserType {
   CREATOR = 'CREATOR',
   ASSIGNEE = 'ASSIGNEE',
-  CONFIRMOR = 'CONFIRMOR',
+  CONFIRMER = 'CONFIRMER',
   OWNER = 'OWNER',
   SYS_ADMIN = 'SYS_ADMIN',
   APP_ADMIN = 'APP_ADMIN'

@@ -13,7 +13,7 @@ import cloud.xcan.angus.core.tester.interfaces.task.facade.TaskFacade;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskAddDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskAssigneeReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskAttachmentReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskConfirmorReplaceDto;
+import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskConfirmerReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskDescriptionReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskFindDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskImportDto;
@@ -185,16 +185,16 @@ public class TaskRest {
     return ApiLocaleResult.success();
   }
 
-  @Operation(summary = "Replace the confirmor of task", operationId = "task:confirmor:replace")
+  @Operation(summary = "Replace the confirmer of task", operationId = "task:confirmer:replace")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Replaced successfully"),
       @ApiResponse(responseCode = "404", description = "Resource not found")})
   @ResponseStatus(HttpStatus.OK)
-  @PutMapping("/{id}/confirmor")
-  public ApiLocaleResult<?> replaceConfirmor(
+  @PutMapping("/{id}/confirmer")
+  public ApiLocaleResult<?> replaceConfirmer(
       @Parameter(name = "id", description = "Task id", required = true) @PathVariable("id") Long id,
-      @Valid @RequestBody TaskConfirmorReplaceDto dto) {
-    taskFacade.replaceConfirmor(id, dto);
+      @Valid @RequestBody TaskConfirmerReplaceDto dto) {
+    taskFacade.replaceConfirmer(id, dto);
     return ApiLocaleResult.success();
   }
 

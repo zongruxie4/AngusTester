@@ -102,8 +102,8 @@ public class Task extends TenantAuditingEntity<Task, Long> implements MainTarget
   @Column(name = "assignee_id")
   private Long assigneeId;
 
-  @Column(name = "confirmor_id")
-  private Long confirmorId;
+  @Column(name = "confirmer_id")
+  private Long confirmerId;
 
   @Column(name = "tester_id")
   private Long testerId;
@@ -266,7 +266,7 @@ public class Task extends TenantAuditingEntity<Task, Long> implements MainTarget
   private Progress progress;
 
   public boolean isConfirmTask() {
-    return nonNull(confirmorId);
+    return nonNull(confirmerId);
   }
 
   public boolean hasTag() {

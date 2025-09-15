@@ -60,7 +60,7 @@ public class TaskUpdateDto {
   private Long assigneeId;
 
   @Schema(description = "Reviewer identifier for task validation and approval")
-  private Long confirmorId;
+  private Long confirmerId;
 
   @Schema(description = "Test execution identifier for task testing responsibility")
   private Long testerId;

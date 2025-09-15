@@ -35,7 +35,7 @@ import cloud.xcan.angus.core.tester.interfaces.task.facade.TaskFacade;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskAddDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskAssigneeReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskAttachmentReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskConfirmorReplaceDto;
+import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskConfirmerReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskDescriptionReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskFindDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskImportDto;
@@ -132,8 +132,8 @@ public class TaskFacadeImpl implements TaskFacade {
   }
 
   @Override
-  public void replaceConfirmor(Long id, TaskConfirmorReplaceDto dto) {
-    taskCmd.replaceConfirmors(id, isNull(dto) ? null : dto.getConfirmorId());
+  public void replaceConfirmer(Long id, TaskConfirmerReplaceDto dto) {
+    taskCmd.replaceConfirmers(id, isNull(dto) ? null : dto.getConfirmerId());
   }
 
   @Override

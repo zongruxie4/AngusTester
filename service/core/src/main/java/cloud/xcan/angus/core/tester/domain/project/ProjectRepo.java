@@ -35,12 +35,12 @@ public interface ProjectRepo extends NameJoinRepository<Project, Long>,
   long countAll0ByNameAndIdNot(String name, Long id);
 
   @Modifying
-  @Query("UPDATE Project a SET a.deleted = false, a.deletedBy = null, a.deletedDate = null WHERE a.id in ?1")
+  @Query(value = "UPDATE project a SET a.deleted = false, a.deleted_by = null, a.deleted_date = null WHERE a.id in ?1", nativeQuery = true)
   void updateToUndeletedStatusByIdIn(Collection<Long> ids);
 
   @DoInFuture("Postgres support")
   @Modifying
-  @Query("UPDATE Project a SET a.name = CONCAT(a.name, ?2) WHERE a.id in ?1")
+  @Query(value = "UPDATE project a SET a.name = CONCAT(a.name, ?2) WHERE a.id in ?1", nativeQuery = true)
   void updateNameByProjectId(List<Long> ids, String renaming);
 
   @Modifying

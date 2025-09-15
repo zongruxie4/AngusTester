@@ -56,11 +56,11 @@ public interface TaskRepo extends BaseRepository<Task, Long> {
   void updateSprintAuthBySprintId(Long sprintId, Boolean enabled);
 
   @Modifying
-  @Query("UPDATE Task s SET s.sprintDeleted=?2 WHERE s.sprintId IN ?1")
+  @Query(value = "UPDATE task s SET s.sprint_deleted=?2 WHERE s.sprint_id IN ?1", nativeQuery = true)
   void updateSprintDeleteStatusBySprint(Collection<Long> sprintIds, boolean deleted);
 
   @Modifying
-  @Query("UPDATE Task s SET s.projectId=?2 WHERE s.sprintId = ?1")
+  @Query(value = "UPDATE task s SET s.project_id=?2 WHERE s.sprint_id = ?1", nativeQuery = true)
   void updateProjectBySprintId(Long sprintId, Long projectId);
 
   @Modifying
@@ -80,7 +80,7 @@ public interface TaskRepo extends BaseRepository<Task, Long> {
   void updateDeleteStatus(List<Long> taskIds, Boolean delete, Long userId, LocalDateTime now);
 
   @Modifying
-  @Query("UPDATE Task s SET s.deleted = false, s.deletedBy = -1, s.deletedDate = null WHERE s.id in ?1")
+  @Query(value = "UPDATE task s SET s.deleted = false, s.deleted_by = -1, s.deleted_date = null WHERE s.id in ?1", nativeQuery = true)
   void updateToUndeletedStatusByIdIn(Collection<Long> ids);
 
   @Modifying

@@ -15,6 +15,7 @@ import cloud.xcan.angus.core.tester.domain.task.cases.TaskFuncCase;
 import cloud.xcan.angus.core.tester.domain.task.cases.TaskFuncCaseAssoc;
 import cloud.xcan.angus.core.tester.domain.task.cases.TaskFuncCaseRepo;
 import jakarta.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -98,10 +99,10 @@ public class TaskFuncCaseQueryImpl implements TaskFuncCaseQuery {
           .stream().collect(Collectors.toMap(TaskInfo::getId, x -> x));
       if (isNotEmpty(assocTaskInfoMap)) {
         for (TaskFuncCaseAssoc<?, ?> task : tasks) {
-          List<Long> taskAssocTaskIds = tfcs.stream()
+          List<Long> taskAssocTaskIds = new ArrayList<>(tfcs.stream()
               .filter(x -> x.isTaskAssocTask() && x.getWideTargetIds().contains(task.getId()))
               .map(TaskFuncCase::getWideTargetIds).flatMap(Collection::stream).distinct()
-              .toList();
+              .toList());
           taskAssocTaskIds.remove(task.getId());
           if (isNotEmpty(taskAssocTaskIds)) {
             task.setAssocTasks(assocTaskInfoMap.entrySet().stream()

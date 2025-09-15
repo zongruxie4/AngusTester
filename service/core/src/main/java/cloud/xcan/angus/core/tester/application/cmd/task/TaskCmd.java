@@ -37,7 +37,7 @@ public interface TaskCmd {
 
   void replaceAssignees(Long id, Long assigneeId);
 
-  void replaceConfirmors(Long id, Long confirmorId);
+  void replaceConfirmers(Long id, Long confirmerId);
 
   void replaceDeadline(Long taskId, LocalDateTime endDate);
 

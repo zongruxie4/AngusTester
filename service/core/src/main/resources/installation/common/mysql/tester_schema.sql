@@ -2110,7 +2110,7 @@ CREATE TABLE `task` (
   `priority` varchar(16) COLLATE utf8mb4_bin NOT NULL COMMENT '优先级',
   `status` varchar(16) COLLATE utf8mb4_bin NOT NULL COMMENT '任务状态',
   `assignee_id` bigint(20) DEFAULT NULL COMMENT '经办人ID',
-  `confirmor_id` bigint(20) DEFAULT NULL COMMENT '确认ID',
+  `confirmer_id` bigint(20) DEFAULT NULL COMMENT '确认ID',
   `tester_id` bigint(20) DEFAULT NULL COMMENT '测试人ID',
   `missing_bug` int(1) DEFAULT NULL COMMENT '是否漏测缺陷',
   `unplanned` int(1) NOT NULL DEFAULT '0',
@@ -2174,7 +2174,7 @@ CREATE TABLE `task` (
   KEY `idx_project_id` (`project_id`) USING BTREE,
   KEY `idx_plan_id` (`sprint_id`) USING BTREE,
   KEY `idx_assignee_id` (`assignee_id`),
-  KEY `idx_confirmor_id` (`confirmor_id`),
+  KEY `idx_confirmer_id` (`confirmer_id`),
   KEY `idx_module_id` (`module_id`),
   KEY `idx_parent_task_id` (`parent_task_id`) USING BTREE,
   KEY `idx_target_id_test_type` (`target_id`,`test_type`) USING BTREE,
@@ -2208,21 +2208,21 @@ CREATE TABLE `task_assignee` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='经办人';
 
 -- ----------------------------
--- Table structure for task_confirmor
+-- Table structure for task_confirmer
 -- ----------------------------
-DROP TABLE IF EXISTS `task_confirmor`;
-CREATE TABLE `task_confirmor` (
+DROP TABLE IF EXISTS `task_confirmer`;
+CREATE TABLE `task_confirmer` (
   `id` bigint(20) NOT NULL COMMENT '主键ID',
   `task_id` bigint(20) NOT NULL COMMENT '任务ID',
-  `confirmor_id` bigint(20) NOT NULL COMMENT '确认人ID',
+  `confirmer_id` bigint(20) NOT NULL COMMENT '确认人ID',
   `tenant_id` bigint(20) NOT NULL DEFAULT '-1' COMMENT '租户ID',
   `created_by` bigint(20) NOT NULL COMMENT '创建人',
   `created_date` datetime NOT NULL DEFAULT '2001-01-01 00:00:00' COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `idx_task_confirmor_id` (`task_id`,`confirmor_id`) USING BTREE,
+  UNIQUE KEY `idx_task_confirmer_id` (`task_id`,`confirmer_id`) USING BTREE,
   KEY `idx_tenant_id` (`tenant_id`) USING BTREE,
   KEY `idx_task_id` (`task_id`) USING BTREE,
-  KEY `idx_confirmor_id` (`confirmor_id`) USING BTREE
+  KEY `idx_confirmer_id` (`confirmer_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='任务确认人';
 
 -- ----------------------------

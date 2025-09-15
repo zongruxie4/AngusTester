@@ -101,9 +101,11 @@ public class FuncTrashCmdImpl extends CommCmd<FuncTrash, Long> implements FuncTr
 
       @Override
       protected Void process() {
+        // Delete trash
+        funcTrashRepo.deleteById(id);
+
         // Delete associations and the trash item itself
         deleteAssociation(List.of(trashDb));
-        funcTrashRepo.delete(trashDb);
         return null;
       }
     }.execute();

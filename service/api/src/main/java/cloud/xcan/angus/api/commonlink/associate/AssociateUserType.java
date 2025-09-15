@@ -8,7 +8,7 @@ import cloud.xcan.angus.spec.locale.EnumMessage;
  */
 @EndpointRegister
 public enum AssociateUserType implements EnumMessage<String> {
-  CREATOR, ASSIGNEE, CONFIRMOR, OWNER, SYS_ADMIN, APP_ADMIN;
+  CREATOR, ASSIGNEE, CONFIRMER, OWNER, SYS_ADMIN, APP_ADMIN;
 
   @Override
   public String getValue() {

@@ -55,8 +55,8 @@ import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.SOFTWARE
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TASK_ASSIGNEE;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TASK_ASSIGNEE_CLEAR;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TASK_COMPLETED;
-import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TASK_CONFIRMOR;
-import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TASK_CONFIRMOR_CLEAR;
+import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TASK_CONFIRMER;
+import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TASK_CONFIRMER_CLEAR;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TASK_CONFIRM_RESULT;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TASK_PROCESSED;
 import static cloud.xcan.angus.core.tester.domain.activity.ActivityType.TASK_REOPEN;
@@ -302,9 +302,9 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
           userManager.checkExists(task.getAssigneeId());
         }
 
-        // Verify confirmor exists if specified
-        if (nonNull(task.getConfirmorId())) {
-          userManager.checkExists(task.getConfirmorId());
+        // Verify confirmer exists if specified
+        if (nonNull(task.getConfirmerId())) {
+          userManager.checkExists(task.getConfirmerId());
         }
 
         // Verify reference tasks exist if specified
@@ -473,7 +473,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
   /**
    * Test task information that supports modification: name、priority、result、startDate、endDate.
    * <p>
-   * Only assignees , creator, confirmor and admins are allowed to modify.
+   * Only assignees , creator, confirmer and admins are allowed to modify.
    */
   /**
    * Updates a task with comprehensive validation and change tracking.
@@ -494,7 +494,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     new BizTemplate<Void>() {
       Task taskDb = null;
       UserBase assigneeDb;
-      UserBase confirmorDb;
+      UserBase confirmerDb;
       List<Tag> taskTagsDb;
       List<TaskInfo> refTasks;
       List<FuncCaseInfo> refCases;
@@ -525,8 +525,8 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         // Verify assignee exists if specified
         assigneeDb = userManager.checkValidAndFindUserBase(task.getAssigneeId());
 
-        // Verify confirmor exists if specified
-        confirmorDb = userManager.checkValidAndFindUserBase(task.getConfirmorId());
+        // Verify confirmer exists if specified
+        confirmerDb = userManager.checkValidAndFindUserBase(task.getConfirmerId());
 
         // Verify no circular references in parent-child relationships
         taskQuery.checkUpdateParentNotCircular(taskDb.getProjectId(), List.of(task));
@@ -553,8 +553,8 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         // Detect changes before updating
         boolean hasModAssigness = nonNull(task.getAssigneeId())
             && !Objects.equals(taskDb.getAssigneeId(), task.getAssigneeId());
-        boolean hasModConfirmor = nonNull(taskDb.getConfirmorId())
-            && !Objects.equals(taskDb.getConfirmorId(), task.getConfirmorId());
+        boolean hasModConfirmer = nonNull(taskDb.getConfirmerId())
+            && !Objects.equals(taskDb.getConfirmerId(), task.getConfirmerId());
         boolean hasModTags = task.hasTag()
             && tagQuery.hasModifyTag(task.getId(), task.getTagTargets());
         boolean hasModAttachments = isNotEmpty(task.getAttachments())
@@ -570,8 +570,8 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         }
 
         // Create activity log for changes (null activity will be ignored if no changes)
-        Activity activity = toModifyTaskActivity(false, hasModAssigness, hasModConfirmor,
-            hasModTags, hasModAttachments, task, taskDb, assigneeDb, confirmorDb,
+        Activity activity = toModifyTaskActivity(false, hasModAssigness, hasModConfirmer,
+            hasModTags, hasModAttachments, task, taskDb, assigneeDb, confirmerDb,
             taskTagsDb, hasModRefTasks, refTasks, hasModRefCases, refCases);
         activityCmd.add(activity);
 
@@ -596,7 +596,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
   /**
    * Test task information that supports modification: name、priority、result、startDate、endDate.
    * <p>
-   * Only assignees, creator, confirmor and admins are allowed to modify.
+   * Only assignees, creator, confirmer and admins are allowed to modify.
    */
   /**
    * Replaces a task with comprehensive validation and change tracking.
@@ -617,7 +617,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
     new BizTemplate<Void>() {
       Task taskDb = null;
       UserBase assigneeDb;
-      UserBase confirmorDb;
+      UserBase confirmerDb;
       List<Tag> taskTagsDb;
       List<TaskInfo> refTasks;
       List<FuncCaseInfo> refCases;
@@ -648,8 +648,8 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         // Check the assigner exists
         assigneeDb = userManager.checkValidAndFindUserBase(task.getAssigneeId());
 
-        // Check the confirmors exists
-        confirmorDb = userManager.checkValidAndFindUserBase(task.getConfirmorId());
+        // Check the confirmers exists
+        confirmerDb = userManager.checkValidAndFindUserBase(task.getConfirmerId());
 
         // Check the parent is not a circular reference
         taskQuery.checkUpdateParentNotCircular(taskDb.getProjectId(), List.of(task));
@@ -675,7 +675,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
       protected Void process() {
         // Get existed status before replace
         boolean hasModAssigness = !Objects.equals(taskDb.getAssigneeId(), task.getAssigneeId());
-        boolean hasModConfirmor = !Objects.equals(taskDb.getConfirmorId(), task.getConfirmorId());
+        boolean hasModConfirmer = !Objects.equals(taskDb.getConfirmerId(), task.getConfirmerId());
         boolean hasModTags = tagQuery.hasModifyTag(task.getId(), task.getTagTargets());
         boolean hasModAttachments = taskQuery.hasModifyAttachments(task.getAttachments(), taskDb);
         boolean hasModRefTasks = !collectionEquals(taskDb.getRefTaskIds(), task.getRefTaskIds());
@@ -685,8 +685,8 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         tagTargetCmd.replaceTaskTags0(taskDb, task.getTagTargets());
 
         // Do not log when parameter has not changed !!!  Null activity will ignored.
-        Activity activity = toModifyTaskActivity(true, hasModAssigness, hasModConfirmor,
-            hasModTags, hasModAttachments, task, taskDb, assigneeDb, confirmorDb,
+        Activity activity = toModifyTaskActivity(true, hasModAssigness, hasModConfirmer,
+            hasModTags, hasModAttachments, task, taskDb, assigneeDb, confirmerDb,
             taskTagsDb, hasModRefTasks, refTasks, hasModRefCases, refCases);
         activityCmd.add(activity);
 
@@ -1025,21 +1025,21 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
   }
 
   /**
-   * Replaces task confirmor with validation and activity logging.
+   * Replaces task confirmer with validation and activity logging.
    *
-   * <p>This method changes the confirmor of a task after verifying
-   * user permissions and confirmor existence.</p>
+   * <p>This method changes the confirmer of a task after verifying
+   * user permissions and confirmer existence.</p>
    *
-   * <p>The method logs confirmor update activities and sends
+   * <p>The method logs confirmer update activities and sends
    * modification notification events.</p>
    *
-   * @param id the task ID to change confirmor for
-   * @param confirmorId the new confirmor ID (null to clear confirmor)
+   * @param id the task ID to change confirmer for
+   * @param confirmerId the new confirmer ID (null to clear confirmer)
    * @throws IllegalArgumentException if validation fails
    */
   @Transactional(rollbackFor = Exception.class)
   @Override
-  public void replaceConfirmors(Long id, Long confirmorId) {
+  public void replaceConfirmers(Long id, Long confirmerId) {
     new BizTemplate<Void>() {
       Task taskDb = null;
       UserBase userDb = null;
@@ -1053,18 +1053,18 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         taskSprintAuthQuery.checkModifyTaskAuth(getUserId(), taskDb.getSprintId());
 
         // Check the assignee
-        userDb = userManager.checkValidAndFindUserBase(confirmorId);
+        userDb = userManager.checkValidAndFindUserBase(confirmerId);
       }
 
       @Override
       protected Void process() {
-        if (!Objects.equals(confirmorId, taskDb.getConfirmorId())) {
-          taskDb.setConfirmorId(confirmorId);
+        if (!Objects.equals(confirmerId, taskDb.getConfirmerId())) {
+          taskDb.setConfirmerId(confirmerId);
           taskRepo.save(taskDb);
 
-          Activity activity = nonNull(confirmorId)
-              ? toActivity(TASK, taskDb, TASK_CONFIRMOR, userDb.getFullName())
-              : toActivity(TASK, taskDb, TASK_CONFIRMOR_CLEAR);
+          Activity activity = nonNull(confirmerId)
+              ? toActivity(TASK, taskDb, TASK_CONFIRMER, userDb.getFullName())
+              : toActivity(TASK, taskDb, TASK_CONFIRMER_CLEAR);
           activityCmd.add(activity);
 
           // Add modification event
@@ -1702,8 +1702,8 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
 
         boolean isConfirmTask = taskDb.isConfirmTask();
         if (isConfirmTask) {
-          // Verify confirmor has permission to confirm the task
-          taskQuery.checkConfirmorUserPermission(taskDb);
+          // Verify confirmer has permission to confirm the task
+          taskQuery.checkConfirmerUserPermission(taskDb);
         }
 
         // Verify non-confirmation tasks must be in progress
@@ -2158,7 +2158,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         int bugLevelIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(2));
         int testTypeIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(3));
         int assigneeIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(4));
-        int confirmorIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(5));
+        int confirmerIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(5));
         int testerIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(6));
         int missingBugIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(7));
         int unplannedIdx = titles.indexOf(TASK_IMPORT_COLUMNS.get(8));
@@ -2214,12 +2214,12 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         //boolean hasEmptyDeadlines = deadlines.stream().anyMatch(ObjectUtils::isEmpty);
         //assertTrue(!hasEmptyDeadlines, "The import deadline date cannot be empty");
 
-        // Check the confirmor exist
-        Set<String> confirmors = data.stream()
-            .filter(x -> confirmorIdx != -1 && isNotBlank(x[confirmorIdx]))
-            .map(x -> x[confirmorIdx]).collect(Collectors.toSet());
-        Map<String, List<UserBase>> confirmorMap = userManager.checkValidAndFindUserBasesByName(
-            confirmors);
+        // Check the confirmer exist
+        Set<String> confirmers = data.stream()
+            .filter(x -> confirmerIdx != -1 && isNotBlank(x[confirmerIdx]))
+            .map(x -> x[confirmerIdx]).collect(Collectors.toSet());
+        Map<String, List<UserBase>> confirmerMap = userManager.checkValidAndFindUserBasesByName(
+            confirmers);
         // Check the tester exist
         Set<String> testers = data.stream()
             .filter(x -> testerIdx != -1 && isNotBlank(x[testerIdx]))
@@ -2262,7 +2262,7 @@ public class TaskCmdImpl extends CommCmd<Task, Long> implements TaskCmd {
         // Format import fields and convert them into task objects
         List<Task> tasks = importToDomain(uidGenerator, projectDb, sprintDb,
             data, nameIdx, taskTypeIdx, bugLevelIdx, testTypeIdx,
-            assigneeMap, assigneeIdx, confirmorIdx, confirmorMap, testerIdx, testersMap,
+            assigneeMap, assigneeIdx, confirmerIdx, confirmerMap, testerIdx, testersMap,
             missingBugIdx, unplannedIdx, priorityIdx, deadlineIdx, descriptionIdx,
             evalWorkloadIdx, actualWorkloadIdx, statusIdx, softwareVersionIdx,
             startDateIdx, processedDateIdx, canceledDateIdx, conformedDateIdx, completedDateIdx,
