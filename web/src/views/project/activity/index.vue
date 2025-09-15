@@ -78,7 +78,7 @@ onMounted(() => {
 <template>
   <div class="p-3.5 px-5 text-3">
     <!-- Statistics dashboard panel -->
-    <div v-if="showCount" class="mb-4">
+    <div v-if="showCount" class="mb-4 mt-4">
       <Dashboard
         :config="dashboardConfig"
         :apiRouter="dashboardConstants.apiRouter"
