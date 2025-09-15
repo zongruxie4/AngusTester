@@ -118,6 +118,10 @@ watch(() => props.countType, async () => {
     updateTaskTypeChart(totalTypeData.value);
   }
 });
+
+defineExpose({
+  refresh: loadEffectivenessData
+});
 </script>
 
 <template>
