@@ -112,13 +112,13 @@ const hasSearchValue = computed(() => {
 const serviceParams = computed(() => {
   const params: {
     targetType: 'PLAN';
-    targetName?: string;
+    filters?: {value: string, key: string, op: string}[];
   } = {
     targetType: 'PLAN'
   };
 
   if (inputValue.value) {
-    params.targetName = inputValue.value;
+    params.filters = [{value: inputValue.value, key: 'targetName', op: 'MATCH_END'}];
   }
 
   return params;
@@ -127,13 +127,13 @@ const serviceParams = computed(() => {
 const caseParams = computed(() => {
   const params: {
     targetType: 'CASE';
-    targetName?: string;
+    filters?: {value: string, key: string, op: string}[];
   } = {
     targetType: 'CASE'
   };
 
   if (inputValue.value) {
-    params.targetName = inputValue.value;
+    params.filters = [{value: inputValue.value, key: 'targetName', op: 'MATCH_END'}];
   }
 
   return params;
@@ -277,7 +277,7 @@ watch(
       </div>
 
       <!-- Main content area -->
-      <div class="flex-1 px-4 py-4 overflow-auto">
+      <div v-if="props.projectId" class="flex-1 px-4 py-4 overflow-auto">
         <!-- Enhanced tabs section -->
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
           <Tabs v-model:activeKey="activeKey" class="enhanced-tabs">
@@ -285,6 +285,7 @@ watch(
             <TabPane key="PLAN" :tab="t('functionTrash.tabs.plan')">
               <Table
                 v-model:spinning="loading"
+                key="plan"
                 :notify="refreshNotify"
                 :projectId="props.projectId"
                 :userInfo="props.userInfo"
@@ -297,6 +298,7 @@ watch(
             <TabPane key="CASE" :tab="t('functionTrash.tabs.case')">
               <Table
                 v-model:spinning="loading"
+                key="case"
                 :notify="refreshNotify"
                 :projectId="props.projectId"
                 :userInfo="props.userInfo"

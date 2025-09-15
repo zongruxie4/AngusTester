@@ -109,6 +109,7 @@ const cloneHandler = (): void => {
 
 const deleteScenarioHandler = (scenaridId: string):void => {
   deleteTabPane([scenaridId, scenaridId + '-detail']);
+  refreshHandler();
 };
 </script>
 

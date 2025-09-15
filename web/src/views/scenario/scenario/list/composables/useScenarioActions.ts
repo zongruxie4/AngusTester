@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { scenario } from '@/api/tester';
 import { modal, notification } from '@xcan-angus/vue-ui';
 import { ScenarioInfo, MenuItem } from '../types';
+import { emit } from 'process';
 
 /**
  * Composable for managing scenario actions
@@ -89,7 +90,7 @@ export function useScenarioActions (
   /**
    * Delete a scenario
    */
-  const deleteScenario = async (name: string, id: string) => {
+  const deleteScenario = async (name: string, id: string, emit: (e: 'delete', value: string) => void) => {
     modal.confirm({
       centered: true,
       content: t('scenario.list.messages.deleteConfirm', { name }),
@@ -101,6 +102,7 @@ export function useScenarioActions (
 
         deleteTabPane([id]); // Notify tabs to delete this tab
         notification.success(t('scenario.list.messages.deleteSuccess'));
+        emit('delete', id);
       }
     });
   };

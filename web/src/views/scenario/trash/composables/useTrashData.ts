@@ -43,7 +43,7 @@ export function useTrashData (projectId: string | Ref<string>, userInfo: { id: s
       projectId: string;
       pageNo: number;
       pageSize: number;
-      targetName?: string;
+      filters?: {value: string, op: string, key: string}[],
       orderBy?: string;
       orderSort?: string;
     } = {
@@ -52,8 +52,8 @@ export function useTrashData (projectId: string | Ref<string>, userInfo: { id: s
       pageSize: pagination.value.pageSize
     };
 
-    if (params?.targetName) {
-      requestParams.targetName = params.targetName;
+    if (params?.filters) {
+      requestParams.filters = params.filters;
     }
 
     if (orderSort.value) {

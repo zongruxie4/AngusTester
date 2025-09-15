@@ -249,8 +249,7 @@ onMounted(() => {
             <template v-for="item in stableSprintList" :key="`sprint-${item.id}`">
               <div
                 v-if="isDataReady && isSprintDataStable(item.id)"
-                v-show="sprintExpansion.expandedSprintIds.has('sprintBacklog') &&
-                  sprintExpansion.expandedSprintIds.has(item.id)"
+                v-show="sprintExpansion.expandedSprintIds.has('sprintBacklog')"
                 :class="{ 'draggable-container-open': sprintExpansion.expandedSprintIds.has(item.id) }"
                 class="draggable-container">
                 <Draggable

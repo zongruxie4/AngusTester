@@ -60,7 +60,7 @@ export interface TaskTrashParams {
   /** Target type filter */
   targetType?: TaskTrashTargetType;
   /** Target name filter */
-  targetName?: string;
+  filters: {value: string, op: string, key: string}[];
   /** Sorting field */
   orderBy?: string;
   /** Sorting direction */
