@@ -108,36 +108,6 @@ const {
   resetData
 } = useCtoData(props);
 
-const {
-  initializeCharts,
-  resizeAllCharts,
-  resizeChartsByType,
-  updateCharts,
-  updateRecentDateCharts
-} = useChartManagement();
-
-const {
-  shouldNotify,
-  resizeNotify,
-  handleWindowResize,
-  refresh,
-  setupLifecycle,
-  cleanup
-} = useCtoLifecycle(props, loadCtoData, resizeAllCharts, resizeChartsByType);
-
-/**
- * <p>
- * Handles recent date change and updates related charts
- * </p>
- * <p>
- * Updates all recent delivery metrics charts based on selected time period
- * </p>
- */
-const handleRecentDateChange = () => {
-  if (recentDeliveryData.value && selectedRecentDate.value) {
-    updateRecentDateCharts(selectedRecentDate.value, recentDeliveryData.value);
-  }
-};
 
 /**
  * <p>
@@ -147,7 +117,7 @@ const handleRecentDateChange = () => {
  * Fetches data from API and updates all chart visualizations
  * </p>
  */
-const loadData = async () => {
+ const loadData = async () => {
   await loadCtoData();
 
   // Update all charts with new data
@@ -170,6 +140,39 @@ const loadData = async () => {
   updateCharts(chartData, props.countType);
 };
 
+const {
+  initializeCharts,
+  resizeAllCharts,
+  resizeChartsByType,
+  updateCharts,
+  updateRecentDateCharts
+} = useChartManagement();
+
+const {
+  shouldNotify,
+  resizeNotify,
+  handleWindowResize,
+  refresh,
+  setupLifecycle,
+  cleanup
+} = useCtoLifecycle(props, loadData, resizeAllCharts, resizeChartsByType);
+
+/**
+ * <p>
+ * Handles recent date change and updates related charts
+ * </p>
+ * <p>
+ * Updates all recent delivery metrics charts based on selected time period
+ * </p>
+ */
+const handleRecentDateChange = () => {
+  if (recentDeliveryData.value && selectedRecentDate.value) {
+    updateRecentDateCharts(selectedRecentDate.value, recentDeliveryData.value);
+  }
+};
+
+
+
 /**
  * <p>
  * Initializes component on mount
@@ -179,8 +182,6 @@ const loadData = async () => {
  * </p>
  */
 onMounted(async () => {
-  // Setup lifecycle management
-  setupLifecycle();
 
   // Initialize charts with DOM references
   const chartRefs = {
@@ -210,6 +211,13 @@ onMounted(async () => {
   };
 
   initializeCharts(chartRefs);
+  // Setup lifecycle management
+  setupLifecycle();
+
+  
+
+  // loadData();
+
 });
 
 /**
