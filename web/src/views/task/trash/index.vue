@@ -63,12 +63,12 @@ const inputChange = debounce(duration.search, () => {
 const serviceParams = computed(() => {
   const params: {
     targetType: 'TASK_SPRINT';
-    targetName?: string;
+    filters?: {value: string, op: string, key: string}[];
   } = {
     targetType: 'TASK_SPRINT'
   };
   if (inputValue.value) {
-    params.targetName = inputValue.value;
+    params.filters = [{value: inputValue.value, op: 'MATCH_END', key: 'targetName'}];
   }
   return params;
 });
@@ -79,12 +79,12 @@ const serviceParams = computed(() => {
 const apiParams = computed(() => {
   const params: {
     targetType: 'TASK';
-    targetName?: string;
+    filters?: {value: string, op: string, key: string}[];
   } = {
     targetType: 'TASK'
   };
   if (inputValue.value) {
-    params.targetName = inputValue.value;
+    params.filters = [{value: inputValue.value, op: 'MATCH_END', key: 'targetName'}];
   }
   return params;
 });

@@ -42,7 +42,7 @@ export function useTrashData (projectId: string, userInfo: { id: string }) {
       pageNo: number;
       pageSize: number;
       targetType?: 'CASE' | 'PLAN';
-      targetName?: string;
+      filters?: {value: string, op: string, key: string}[];
       orderBy?: string;
       orderSort?: string;
     } = {
@@ -53,7 +53,7 @@ export function useTrashData (projectId: string, userInfo: { id: string }) {
 
     if (params) {
       requestParams.targetType = params.targetType;
-      requestParams.targetName = params.targetName;
+      requestParams.filters = params.filters;
     }
 
     if (orderSort.value) {

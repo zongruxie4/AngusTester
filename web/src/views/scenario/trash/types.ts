@@ -53,7 +53,7 @@ export interface TableColumn {
  */
 export interface TrashParams {
   /** Optional name filter for search */
-  targetName?: string;
+  filters?: {value: string, op: string, key: string}[]
 }
 
 /**

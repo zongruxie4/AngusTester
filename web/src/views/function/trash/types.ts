@@ -55,7 +55,7 @@ export interface TrashParams {
   /** Type of target item (CASE or PLAN) */
   targetType: 'CASE' | 'PLAN';
   /** Optional name filter for search */
-  targetName?: string;
+  filters: {value: string, op: string, key: string}[]
 }
 
 /**

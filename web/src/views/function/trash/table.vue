@@ -134,7 +134,7 @@ watch(
       loadDataAndEmit();
     }
   },
-  { immediate: false }
+  { immediate: true }
 );
 
 // Watch for notification changes to refresh data
