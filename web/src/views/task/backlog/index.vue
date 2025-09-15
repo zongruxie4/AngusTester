@@ -395,6 +395,16 @@ onMounted(() => {
                       <span class="flex-1 truncate" :title="element.name">{{ element.name }}</span>
                       <div class="flex items-center space-x-2.5 action-container">
                         <Button
+                          :disabled="!hasPermission(element,'edit')"
+                          type="text"
+                          size="small"
+                          class="px-0 h-5 leading-5 space-x-1 flex items-center"
+                          @click.stop="openTaskEditModal(element.id, item.id)">
+                          <Icon icon="icon-shuxie" class="text-3.5" />
+                          <span>{{ t('backlog.edit') }}</span>
+                        </Button>
+
+                        <Button
                           :disabled="!hasPermission(element,'split')"
                           type="text"
                           size="small"
@@ -450,16 +460,6 @@ onMounted(() => {
                           <Icon icon="icon-qingchu" class="text-3.5" />
                           <span>{{ t('backlog.delete') }}</span>
                         </Button>
-
-                        <Button
-                          :disabled="!hasPermission(element,'edit')"
-                          type="text"
-                          size="small"
-                          class="px-0 h-5 leading-5 space-x-1 flex items-center"
-                          @click.stop="openTaskEditModal(element.id, item.id)">
-                          <Icon icon="icon-shuxie" class="text-3.5" />
-                          <span>{{ t('backlog.edit') }}</span>
-                        </Button>
                       </div>
                     </div>
                   </template>
@@ -499,7 +499,7 @@ onMounted(() => {
                       </div>
                     </div>
 
-                    <div class="inline-flex space-x-2">
+                    <div class="inline-flex space-x-2 items-center mr-5">
                       <DropdownSort
                         :menuItems="backlogSortOption"
                         @click="handleBacklogTaskSort">
@@ -516,7 +516,8 @@ onMounted(() => {
                       <Button
                         type="text"
                         size="small"
-                        class="px-0 h-5 leading-5 space-x-1 flex items-center"
+                        class="inline-flex space-x-1 items-center"
+                        style="height:20px;padding:0;line-height:20px;"
                         @click.stop="refreshBacklogData">
                         <Icon class="text-3.5" icon="icon-shuaxin" />
                         <span>{{ t('backlog.refresh') }}</span>
@@ -688,6 +689,15 @@ onMounted(() => {
                         type="text"
                         size="small"
                         class="px-0 h-5 leading-5 space-x-1 flex items-center"
+                        @click.stop="openTaskEditModal(element.id)">
+                        <Icon icon="icon-shuxie" class="text-3.5" />
+                        <span>{{ t('backlog.main.edit') }}</span>
+                      </Button>
+                      
+                      <Button
+                        type="text"
+                        size="small"
+                        class="px-0 h-5 leading-5 space-x-1 flex items-center"
                         @click.stop="showSplitTaskModal(element)">
                         <Icon icon="icon-guanlianziyuan" class="text-3.5" />
                         <span>{{ t('backlog.main.split') }}</span>
@@ -728,15 +738,6 @@ onMounted(() => {
                         @click.stop="confirmDeleteTask(element, index)">
                         <Icon icon="icon-qingchu" class="text-3.5" />
                         <span>{{ t('backlog.main.delete') }}</span>
-                      </Button>
-
-                      <Button
-                        type="text"
-                        size="small"
-                        class="px-0 h-5 leading-5 space-x-1 flex items-center"
-                        @click.stop="openTaskEditModal(element.id)">
-                        <Icon icon="icon-shuxie" class="text-3.5" />
-                        <span>{{ t('backlog.main.edit') }}</span>
                       </Button>
                     </div>
                   </div>
