@@ -397,7 +397,7 @@ defineExpose({
       <!-- Failure Assessment (Task) or API/Scenario Test (Use Case) -->
       <div v-show="props.countType === 'task'" class="border rounded h-full flex-1/2  p-2 space-y-2">
         <div class="flex justify-between">
-          <div class="font-semibold ">{{ t('kanban.cto.failureAssessment.failureAssessment ') }}</div>
+          <div class="font-semibold ">{{ t('kanban.cto.failureAssessment.failureAssessment') }}</div>
         </div>
         <div class="flex space-x-2 justify-around">
           <div class="flex-1 pl-5">
