@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { Grid, TestResult } from '@xcan-angus/vue-ui';
+import { Grid } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { CaseInfo } from '../types';
+
+import TestResult from '@/components/TestResult/index.vue';
 
 type Props = {
   projectId: string;

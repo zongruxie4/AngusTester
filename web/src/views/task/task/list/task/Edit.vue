@@ -5,7 +5,7 @@ import { Button, Form, FormItem, Popover, TreeSelect, Upload } from 'ant-design-
 import type { Rule } from 'ant-design-vue/es/form';
 import {
   AsyncComponent, DatePicker, Icon, IconTask, IconText, Input,
-  Modal, notification, Select, SelectUser, TaskPriority, Tooltip
+  Modal, notification, Select, SelectUser, Tooltip
 } from '@xcan-angus/vue-ui';
 import { EvalWorkloadMethod, localStore, Priority, TESTER, upload } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
@@ -17,6 +17,7 @@ import { BugLevel, SoftwareVersionStatus, TaskType, TestType } from '@/enums/enu
 import { EditFormState } from './types';
 import { TaskInfo } from '../../../types';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
+import TaskPriority from '@/components/TaskPriority/index.vue';
 
 // Component props & emits
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap',

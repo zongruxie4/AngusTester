@@ -16,8 +16,6 @@ import {
   Input,
   SearchPanel,
   Select,
-  TaskPriority,
-  TaskStatus,
   Tooltip
 } from '@xcan-angus/vue-ui';
 import { duration, enumUtils, PageQuery, Priority, Result, SearchCriteria, TESTER, XCanDexie } from '@xcan-angus/infra';
@@ -27,6 +25,8 @@ import dayjs, { Dayjs } from 'dayjs';
 import { cloneDeep, isEqual } from 'lodash-es';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 
+import TaskStatus from '@/components/TaskStatus/index.vue';
+import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { SearchPanelMenuItem, SearchPanelOption, TaskViewMode } from '@/views/task/task/types';
 

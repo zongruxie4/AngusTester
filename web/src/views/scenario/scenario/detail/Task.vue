@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { IconTask, Table, TaskPriority, TaskStatus } from '@xcan-angus/vue-ui';
+import { IconTask, Table } from '@xcan-angus/vue-ui';
 import { useTaskData } from './composables/useTaskData';
 import type { TaskProps } from './types';
+
+import TaskPriority from '@/components/TaskPriority/index.vue';
+import TaskStatus from '@/components/TaskStatus/index.vue';
 
 const { t } = useI18n();
 

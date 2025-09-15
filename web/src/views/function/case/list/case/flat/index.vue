@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import { Button, Checkbox, Pagination } from 'ant-design-vue';
-import { Colon, Icon, ReviewStatus, TestResult } from '@xcan-angus/vue-ui';
+import { Colon, Icon, ReviewStatus } from '@xcan-angus/vue-ui';
 
 import { CaseListObj, EnabledGroup, GroupCaseListObj } from '../types';
+import TestResult from '@/components/TestResult/index.vue';
 
 const { t } = useI18n();
 

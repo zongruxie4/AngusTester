@@ -10,8 +10,6 @@ import {
   ReviewStatus,
   Select,
   SelectUser,
-  TaskPriority,
-  TestResult,
   Toggle
 } from '@xcan-angus/vue-ui';
 import { Button, Popover, Tag, Upload } from 'ant-design-vue';
@@ -21,7 +19,10 @@ import dayjs from 'dayjs';
 import elementResizeDetector, { Erd } from 'element-resize-detector';
 import { debounce } from 'throttle-debounce';
 import { CaseInfoObj, Priority } from './types';
+
+import TestResult from '@/components/TestResult/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
+import TaskPriority from '@/components/TaskPriority/index.vue';
 import {
   bigApisInfoColumns,
   bigDateInfoColumns,

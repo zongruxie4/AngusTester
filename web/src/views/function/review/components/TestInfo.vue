@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Grid, TestResult } from '@xcan-angus/vue-ui';
+import { Grid } from '@xcan-angus/vue-ui';
+
+import TestResult from '@/components/TestResult/index.vue';
 
 const { t } = useI18n();
 

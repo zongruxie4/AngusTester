@@ -2,11 +2,13 @@
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
-import { Icon, IconTask, modal, notification, Table, TaskPriority, TaskStatus as TaskStatusV } from '@xcan-angus/vue-ui';
+import { Icon, IconTask, modal, notification, Table } from '@xcan-angus/vue-ui';
 import { http, PageQuery, utils } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { TaskStatus } from '@/enums/enums';
 
+import TaskStatusV from '@/components/TaskStatus/index.vue';
+import TaskPriority from '@/components/TaskPriority/index.vue';
 import { getCurrentPage } from '@/utils/utils';
 import { TaskInfo } from '../types';
 

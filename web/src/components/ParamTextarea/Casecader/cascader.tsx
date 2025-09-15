@@ -1,5 +1,5 @@
 import { defineComponent, ref, reactive, computed, Teleport, watch, onMounted, onBeforeUnmount } from 'vue';
-import { Icon } from '@/packages';
+import { Icon } from '@xcan-angus/vue-ui';
 import './cascader.css';
 
 const props = {

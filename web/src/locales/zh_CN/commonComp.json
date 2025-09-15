@@ -1430,6 +1430,24 @@
       "waitTimeout": "等待超时",
       "milliseconds": "ms"
     },
+    "xcan_selectApisCase": {
+      "noGrouping": "不分组",
+      "groupByCreator": "按添加人分组",
+      "groupByRequestMethod": "按请求方法分组",
+      "groupByOwner": "按负责人分组",
+      "groupByTag": "按标签分组",
+      "caseName": "用例名称",
+      "method": "方法",
+      "path": "路径",
+      "caseType": "用例类型",
+      "selectService": "请选择服务",
+      "searchApi": "搜索接口",
+      "grouping": "分组",
+      "search": "搜索"
+    },
+    "xcan_selectApisCaseModal": {
+      "title": "选择接口"
+    },
     "xcan_assertionsResult": {
       "notPassed": "未通过",
       "passed": "通过",

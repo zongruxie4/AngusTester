@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { Button, Progress } from 'ant-design-vue';
 import {
   Arrow, AsyncComponent, Colon, DropdownSort, Icon, IconTask,
-  Image, Input, Popover, Spin, TaskPriority, Tooltip
+  Image, Input, Popover, Spin, Tooltip
 } from '@xcan-angus/vue-ui';
 import { EvalWorkloadMethod, Priority } from '@xcan-angus/infra';
 import Draggable from 'vuedraggable';
@@ -12,6 +12,7 @@ import { TaskType } from '@/enums/enums';
 import { BasicProps } from '@/types/types';
 
 import { TaskInfo } from '../types';
+import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { SprintInfo } from '@/views/task/sprint/types';
 

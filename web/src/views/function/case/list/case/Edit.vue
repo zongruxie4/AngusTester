@@ -10,7 +10,6 @@ import {
   notification,
   Select,
   Spin,
-  TaskPriority,
   Dropdown
 } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Tooltip, TreeSelect, Upload } from 'ant-design-vue';
@@ -22,6 +21,7 @@ import RichEditor from '@/components/richEditor/index.vue';
 import { funcCase, modules, project } from '@/api/tester';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import {DATE_TIME_FORMAT, TIME_FORMAT} from '@/utils/constant';
+import TaskPriority from '@/components/TaskPriority/index.vue';
 
 import { useI18n } from 'vue-i18n';
 import CaseSteps from './CaseSteps.vue';

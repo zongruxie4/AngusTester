@@ -10,8 +10,7 @@ import {
   notification,
   ReviewStatus,
   Spin,
-  Table,
-  TaskPriority
+  Table
 } from '@xcan-angus/vue-ui';
 import {appContext, download, duration} from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
@@ -19,6 +18,7 @@ import { debounce } from 'throttle-debounce';
 import RichEditor from '@/components/richEditor/index.vue';
 import { funcPlan, func } from '@/api/tester';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
+import TaskPriority from '@/components/TaskPriority/index.vue';
 
 type Props = {
   projectId: string;

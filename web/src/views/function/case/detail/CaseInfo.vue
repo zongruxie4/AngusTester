@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { Grid, ReviewStatus, TaskPriority } from '@xcan-angus/vue-ui';
+import { Grid, ReviewStatus } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { Tag } from 'ant-design-vue';
+import TaskPriority from '@/components/TaskPriority/index.vue';
 
 interface Props {
   caseInfo?: {[key: string]: any}

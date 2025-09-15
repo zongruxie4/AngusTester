@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref } from 'vue';
 import { Button, TreeSelect } from 'ant-design-vue';
 import {
-  AsyncComponent, Colon, Icon, IconTask, Input, ScriptTypeTag, Select, TaskPriority, TaskStatus
+  AsyncComponent, Colon, Icon, IconTask, Input, ScriptTypeTag, Select
 } from '@xcan-angus/vue-ui';
 import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
@@ -11,6 +11,8 @@ import { useI18n } from 'vue-i18n';
 import { TaskInfo } from '@/views/task/types';
 import { SoftwareVersionStatus } from '@/enums/enums';
 
+import TaskStatus from '@/components/TaskStatus/index.vue';
+import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfoProps } from '@/views/task/task/list/task/types';
 

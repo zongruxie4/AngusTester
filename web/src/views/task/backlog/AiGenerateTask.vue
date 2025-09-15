@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import {
   DatePicker, Icon, IconRequired, IconTask, Input, Modal,
-  notification, SelectUser, Spin, TaskPriority, Tooltip
+  notification, SelectUser, Spin, Tooltip
 } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
@@ -14,6 +14,7 @@ import { TaskType } from '@/enums/enums';
 import { task } from '@/api/tester';
 import { ai } from '@/api/gm';
 
+import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 
 import { TaskInfo } from '../types';

@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Badge, Calendar } from 'ant-design-vue';
-import { AsyncComponent, Icon, IconTask, Popover, Select, TaskStatus as TaskStatusV } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Icon, IconTask, Popover, Select } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { Dayjs } from 'dayjs';
 import { analysis } from '@/api/tester';
@@ -10,6 +10,7 @@ import { TaskStatus } from '@/enums/enums';
 
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 import { TaskInfo } from '@/views/task/task/types';
+import TaskStatusV from '@/components/TaskStatus/index.vue';
 
 /**
  * Props interface for WorkCalendar component.

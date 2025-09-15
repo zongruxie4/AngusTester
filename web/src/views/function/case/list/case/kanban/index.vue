@@ -11,7 +11,6 @@ import {
   Image,
   modal,
   notification,
-  TaskPriority,
   Tooltip
 } from '@xcan-angus/vue-ui';
 import {appContext, enumUtils} from '@xcan-angus/infra';
@@ -21,6 +20,7 @@ import dayjs from 'dayjs';
 import { reverse, sortBy } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
 import { funcCase, funcPlan } from '@/api/tester';
+import TaskPriority from '@/components/TaskPriority/index.vue';
 
 import { ActionMenuItem, CaseInfo, PlanPermissionKey } from './types';
 import { userInfo } from 'os';

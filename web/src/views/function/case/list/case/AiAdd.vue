@@ -10,7 +10,6 @@ import {
   notification,
   Select,
   Spin,
-  TaskPriority,
   Dropdown
   , VuexHelper
 } from '@xcan-angus/vue-ui';
@@ -24,6 +23,7 @@ import { funcCase, project, modules } from '@/api/tester';
 import { ai } from '@/api/gm';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import {DATE_TIME_FORMAT, TIME_FORMAT} from '@/utils/constant';
+import TaskPriority from '@/components/TaskPriority/index.vue';
 
 import { useI18n } from 'vue-i18n';
 import CaseSteps from './CaseSteps.vue';

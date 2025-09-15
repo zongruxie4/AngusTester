@@ -6,12 +6,13 @@ import { reverse, sortBy } from 'lodash-es';
 import Draggable from 'vuedraggable';
 import { useI18n } from 'vue-i18n';
 import {
-  Arrow, AsyncComponent, Colon, Dropdown, Icon, IconTask, Image, modal, notification, TaskPriority, Tooltip
+  Arrow, AsyncComponent, Colon, Dropdown, Icon, IconTask, Image, modal, notification, Tooltip
 } from '@xcan-angus/vue-ui';
 import { appContext, enumUtils, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { TaskSprintPermission, TaskStatus, TaskType } from '@/enums/enums';
 import { task } from '@/api/tester';
 
+import TaskPriority from '@/components/TaskPriority/index.vue';
 import { TaskInfo } from '@/views/task/types';
 import { ActionMenuItem } from '@/views/task/task/types';
 

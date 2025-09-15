@@ -3,13 +3,15 @@ import { computed, nextTick, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import {
-  AsyncComponent, Colon, Icon, IconTask, Input, ScriptTypeTag, Select, TaskPriority, TaskStatus, Toggle
+  AsyncComponent, Colon, Icon, IconTask, Input, ScriptTypeTag, Select, Toggle
 } from '@xcan-angus/vue-ui';
 import { EvalWorkloadMethod, TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { task } from '@/api/tester';
 import { SoftwareVersionStatus } from '@/enums/enums';
 
+import TaskStatus from '@/components/TaskStatus/index.vue';
+import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfo } from '@/views/task/types';
 import { TaskInfoProps } from '@/views/task/task/list/task/types';
