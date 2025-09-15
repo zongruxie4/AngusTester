@@ -153,7 +153,7 @@ const menuItemClick = (key: MenuItemKey, data: ScenarioInfo): void => {
       openExecTestModal(data.id, data.scriptId);
       break;
     case 'delete':
-      deleteScenario(data.name, data.id);
+      deleteScenario(data.name, data.id, emit);
       break;
     case 'export':
       openExportModal(data.scriptId);
