@@ -43,15 +43,15 @@ public interface ScenarioRepo extends BaseRepository<Scenario, Long>,
       List<String> scriptTypes);
 
   @Modifying
-  @Query("UPDATE Scenario s SET s.auth=?2 WHERE s.id=?1")
+  @Query(value = "UPDATE scenario s SET s.auth=?2 WHERE s.id=?1", nativeQuery = true)
   void updateAuthById(Long id, Boolean auth);
 
   @Modifying
-  @Query("UPDATE Scenario s SET s.deleted=?2, s.deletedBy =?3, s.deletedDate = ?4 WHERE s.id = ?1")
+  @Query(value = "UPDATE scenario s SET s.deleted = ?2, s.deleted_by= ?3, s.deleted_date = ?4 WHERE s.id = ?1", nativeQuery = true)
   void updateDeleteStatus(Long ids, Boolean deleted, Long deletedBy, LocalDateTime deletedDate);
 
   @Modifying
-  @Query("UPDATE Scenario s SET s.deleted = false, s.deletedBy = -1, s.deletedDate = null WHERE s.id in ?1")
+  @Query(value = "UPDATE scenario s SET s.deleted = false, s.deleted_by = -1, s.deleted_date = null WHERE s.id in ?1", nativeQuery = true)
   void updateToUndeletedStatusByIdIn(Collection<Long> ids);
 
   @Modifying

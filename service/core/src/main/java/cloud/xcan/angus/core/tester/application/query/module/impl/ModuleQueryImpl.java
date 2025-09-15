@@ -124,7 +124,7 @@ public class ModuleQueryImpl implements ModuleQuery {
       protected List<Module> process() {
         // Create pagination request for comprehensive module retrieval
         PageRequest pageable = PageRequest.of(0, 10000, JpaSort.by(Order.asc("id")));
-        
+
         // Execute search based on whether full-text search is enabled
         Page<Module> page = fullTextSearch
             ? moduleSearchRepo.find(spec.getCriteria(), pageable, Module.class, match)
@@ -136,7 +136,7 @@ public class ModuleQueryImpl implements ModuleQuery {
           // Set edit permissions for all modules based on project permissions
           setEditPermission(spec.getCriteria(), allModules);
         }
-        return emptyList();
+        return page.getContent();
       }
     }.execute();
   }
@@ -243,7 +243,7 @@ public class ModuleQueryImpl implements ModuleQuery {
     if (isEmpty(modules)) {
       return Collections.emptyList();
     }
-    
+
     List<Module> allModuleAndSub = new ArrayList<>(modules);
     do {
       // Find all sub-modules of the current modules
@@ -274,7 +274,7 @@ public class ModuleQueryImpl implements ModuleQuery {
       // Collect parent module IDs from modules that have parents
       Set<Long> parentModuleIds = modules.stream().filter(Module::hasParent)
           .map(Module::getPid).collect(Collectors.toSet());
-      
+
       do {
         // Retrieve parent modules for the current parent IDs
         List<Module> parentModules = moduleRepo.findAllById(parentModuleIds);
@@ -285,7 +285,7 @@ public class ModuleQueryImpl implements ModuleQuery {
               .map(Module::getPid).collect(Collectors.toSet());
         }
       } while (!parentModuleIds.isEmpty());
-      
+
       // Remove duplicate modules based on ID to ensure uniqueness
       return allModules.stream().filter(distinctByKey(Module::getId))
           .toList();

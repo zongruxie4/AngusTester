@@ -49,7 +49,7 @@ public class AnalysisTaskAssembler {
         .rangeSearchFields("startDate", "deadlineDate", "confirmedDate", "completedDate",
             "processedDate", "canceledDate", "execDate", "createdDate", "lastModifiedDate",
             "failNum", "totalNum", "evalWorkload", "actualWorkload")
-        .inAndNotFields("id", "tagId", "status", "assigneeId", "confirmorId", "moduleId")
+        .inAndNotFields("id", "tagId", "status", "assigneeId", "confirmerId", "moduleId")
         .orderByFields("id", "name", "code", "createdDate", "taskType", "testType", "startDate",
             "deadlineDate", "priority", "status", "evalWorkload", "actualWorkload", "failNum",
             "totalNum", "execStatus", "execResult", "moduleId")

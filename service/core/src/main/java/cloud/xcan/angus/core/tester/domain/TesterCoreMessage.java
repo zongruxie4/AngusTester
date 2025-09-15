@@ -257,8 +257,8 @@ public interface TesterCoreMessage extends TesterApisMessage {
   String TASK_REMARK_OVER_LIMIT_CODE = "ATS936";
   String TASK_REMARK_OVER_LIMIT_T = "xcm.tester.task.remark.over.limit.t";
 
-  String TASK_CLEAR_CONFIRMOR_ERROR_CODE = "ATS937";
-  String TASK_CLEAR_CONFIRMOR_ERROR = "xcm.tester.task.clear.confirmor.error.t";
+  String TASK_CLEAR_CONFIRMER_ERROR_CODE = "ATS937";
+  String TASK_CLEAR_CONFIRMER_ERROR = "xcm.tester.task.clear.confirmer.error.t";
 
   String TASK_ASSOC_TARGET_ID_REQUIRED = "xcm.tester.task.assoc.test.target.id.required";
   String TASK_WEBSOCKET_NOT_SUPPORT_GEN_TASK = "xcm.tester.task.websocket.not.support.gen.task.error";

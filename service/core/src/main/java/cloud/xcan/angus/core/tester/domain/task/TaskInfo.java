@@ -93,8 +93,8 @@ public class TaskInfo extends TenantAuditingEntity<TaskInfo, Long> implements
   @Column(name = "assignee_id")
   private Long assigneeId;
 
-  @Column(name = "confirmor_id")
-  private Long confirmorId;
+  @Column(name = "confirmer_id")
+  private Long confirmerId;
 
   @Column(name = "tester_id")
   private Long testerId;
@@ -227,7 +227,7 @@ public class TaskInfo extends TenantAuditingEntity<TaskInfo, Long> implements
   private Progress progress;
 
   public boolean isConfirmTask() {
-    return nonNull(confirmorId);
+    return nonNull(confirmerId);
   }
 
   @Override

@@ -50,10 +50,10 @@ public class TaskAssocVo {
   @NameJoinField(id = "assigneeId", repository = "commonUserBaseRepo")
   private String assigneeName;
 
-  private Long confirmorId;
+  private Long confirmerId;
 
-  @NameJoinField(id = "confirmorId", repository = "commonUserBaseRepo")
-  private String confirmorName;
+  @NameJoinField(id = "confirmerId", repository = "commonUserBaseRepo")
+  private String confirmerName;
 
   //private List<IdAndNameVo> tags;
 

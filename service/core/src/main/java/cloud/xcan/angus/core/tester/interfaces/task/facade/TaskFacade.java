@@ -7,7 +7,7 @@ import cloud.xcan.angus.core.tester.interfaces.func.facade.vo.FuncCaseListVo;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskAddDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskAssigneeReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskAttachmentReplaceDto;
-import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskConfirmorReplaceDto;
+import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskConfirmerReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskDescriptionReplaceDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskFindDto;
 import cloud.xcan.angus.core.tester.interfaces.task.facade.dto.TaskImportDto;
@@ -51,7 +51,7 @@ public interface TaskFacade {
 
   void replaceAssignee(Long id, TaskAssigneeReplaceDto dto);
 
-  void replaceConfirmor(Long id, TaskConfirmorReplaceDto dto);
+  void replaceConfirmer(Long id, TaskConfirmerReplaceDto dto);
 
   void replaceTag(Long id, TaskTagReplaceDto dto);
 

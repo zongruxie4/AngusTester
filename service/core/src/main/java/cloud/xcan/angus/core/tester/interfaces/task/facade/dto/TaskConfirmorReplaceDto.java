@@ -9,9 +9,9 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class TaskConfirmorReplaceDto {
+public class TaskConfirmerReplaceDto {
 
   @Schema(description = "Reviewer identifier for task validation and approval. Empty value clears the current reviewer")
-  private Long confirmorId;
+  private Long confirmerId;
 
 }

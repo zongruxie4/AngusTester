@@ -34,11 +34,11 @@ public interface FuncPlanRepo extends BaseRepository<FuncPlan, Long>,
   int countByProjectId(Long projectId);
 
   @Modifying
-  @Query("UPDATE FuncPlan a SET a.deleted = false, a.deletedBy = null, a.deletedDate = null WHERE a.id in ?1")
+  @Query(value = "UPDATE func_plan a SET a.deleted = false, a.deleted_by = null, a.deleted_date = null WHERE a.id in ?1", nativeQuery = true)
   void updateToUndeletedStatusByIdIn(Collection<Long> allPlanIds);
 
   @Modifying
-  @Query("UPDATE FuncPlan s SET s.auth=?2 WHERE s.id=?1")
+  @Query(value = "UPDATE func_plan s SET s.auth=?2 WHERE s.id=?1", nativeQuery = true)
   void updateAuthById(Long id, Boolean enabled);
 
   @Deprecated

@@ -58,14 +58,14 @@ public interface TaskInfoRepo extends BaseRepository<TaskInfo, Long>,
   @Query(value = "SELECT DISTINCT ud.assigneeId FROM Task ud WHERE ud.sprintId = ?1")
   List<Long> findAssigneeIdBySprintId(Long sprintId);
 
-  @Query(value = "SELECT DISTINCT ud.confirmorId FROM Task ud WHERE ud.sprintId = ?1")
-  List<Long> findConfirmorIdBySprintId(Long sprintId);
+  @Query(value = "SELECT DISTINCT ud.confirmerId FROM Task ud WHERE ud.sprintId = ?1")
+  List<Long> findConfirmerIdBySprintId(Long sprintId);
 
   @Query(value = "SELECT DISTINCT ud.assigneeId FROM Task ud WHERE ud.id IN ?1")
   List<Long> findAssigneeIdByIdIn(Collection<Long> ids);
 
-  @Query(value = "SELECT DISTINCT ud.confirmorId FROM Task ud WHERE ud.id IN ?1")
-  List<Long> findConfirmorIdByByIdIn(Collection<Long> ids);
+  @Query(value = "SELECT DISTINCT ud.confirmerId FROM Task ud WHERE ud.id IN ?1")
+  List<Long> findConfirmerIdByByIdIn(Collection<Long> ids);
 
   @Query(value = "SELECT ud.id FROM Task ud WHERE ud.parentTaskId = ?1")
   Set<Long> findSubTaskIdsById(Long taskId);

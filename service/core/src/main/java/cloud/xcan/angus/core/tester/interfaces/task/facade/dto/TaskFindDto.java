@@ -73,7 +73,7 @@ public class TaskFindDto extends PageQuery {
   private Long assigneeId;
 
   @Schema(description = "Reviewer identifier for approval workflow filtering")
-  private Long confirmorId;
+  private Long confirmerId;
 
   @Schema(description = "Test execution identifier for testing responsibility filtering")
   private Long testerId;

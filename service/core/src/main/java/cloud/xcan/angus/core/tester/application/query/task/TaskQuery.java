@@ -189,7 +189,7 @@ public interface TaskQuery {
 
   void checkAssigneeUserPermission(Task taskDb);
 
-  void checkConfirmorUserPermission(Task taskDb);
+  void checkConfirmerUserPermission(Task taskDb);
 
   void checkTaskExists(List<Long> reqTaskIds, List<Task> taskDbs);
 

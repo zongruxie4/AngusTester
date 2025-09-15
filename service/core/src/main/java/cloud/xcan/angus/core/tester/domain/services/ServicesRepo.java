@@ -53,7 +53,7 @@ public interface ServicesRepo extends BaseRepository<Services, Long>,
   void updateStatusByIdIn(Collection<Long> id, String status);
 
   @Modifying
-  @Query("UPDATE Services p SET p.deleted = false, p.deletedBy = -1, p.deletedDate = null WHERE p.id in ?1")
+  @Query(value = "UPDATE services p SET p.deleted = false, p.deleted_by = -1, p.deleted_date = null WHERE p.id in ?1", nativeQuery = true)
   void updateToUndeletedStatusByIdIn(Collection<Long> ids);
 
   @Modifying

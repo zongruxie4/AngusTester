@@ -157,8 +157,8 @@ public class ActivityConverter {
   }
 
   public static Activity toModifyTaskActivity(boolean replace, boolean hasModifyAssigness,
-      boolean hasModifyConfirmors, boolean hasModifyTags, boolean hasModifyAttachments,
-      Task task, Task taskDb, UserBase assigneeDb, UserBase confirmorDb, List<Tag> taskTagsDb,
+      boolean hasModifyConfirmers, boolean hasModifyTags, boolean hasModifyAttachments,
+      Task task, Task taskDb, UserBase assigneeDb, UserBase confirmerDb, List<Tag> taskTagsDb,
       boolean hasModRefTasks, List<TaskInfo> refTasks, boolean hasModRefCases,
       List<FuncCaseInfo> refCases) {
     Activity mainActivity = toActivity(CombinedTargetType.TASK, taskDb, ActivityType.UPDATED);
@@ -238,19 +238,19 @@ public class ActivityConverter {
       }
     }
 
-    if (hasModifyConfirmors) {
-      if (nonNull(task.getConfirmorId())) {
+    if (hasModifyConfirmers) {
+      if (nonNull(task.getConfirmerId())) {
         activity.append("<br/>").append(message(
-            ActivityType.TASK_CONFIRMOR.getDescMessageKey(),
-            new Object[]{"", confirmorDb.getFullName()}));
+            ActivityType.TASK_CONFIRMER.getDescMessageKey(),
+            new Object[]{"", confirmerDb.getFullName()}));
         hasChanged = true;
         if (activity.length() < MAX_ACTIVITY_LENGTH) {
           safeActivity = activity;
         }
       } else {
-        if (replace && nonNull(taskDb.getConfirmorId())) {
+        if (replace && nonNull(taskDb.getConfirmerId())) {
           activity.append("<br/>").append(message(
-              ActivityType.TASK_CONFIRMOR_CLEAR.getDescMessageKey(), new Object[]{""}));
+              ActivityType.TASK_CONFIRMER_CLEAR.getDescMessageKey(), new Object[]{""}));
           hasChanged = true;
           if (activity.length() < MAX_ACTIVITY_LENGTH) {
             safeActivity = activity;

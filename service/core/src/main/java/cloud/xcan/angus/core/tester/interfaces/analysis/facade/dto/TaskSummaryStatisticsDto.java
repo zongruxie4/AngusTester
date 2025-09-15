@@ -77,7 +77,7 @@ public class TaskSummaryStatisticsDto extends PageQuery {
   private Long assigneeId;
 
   @Schema(description = "Confirmer user identifier")
-  private Long confirmorId;
+  private Long confirmerId;
 
   @Schema(description = "Tester user identifier")
   private Long testerId;

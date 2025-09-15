@@ -71,9 +71,9 @@ public class TaskListExportVo {
   private String assigneeName;
 
   //@ExcelIgnore
-  //private Long confirmorId;
-  //@NameJoinField(id = "confirmorId", repository = "commonUserBaseRepo")
-  private String confirmorName;
+  //private Long confirmerId;
+  //@NameJoinField(id = "confirmerId", repository = "commonUserBaseRepo")
+  private String confirmerName;
 
   //@ExcelIgnore
   //private Long testerId;

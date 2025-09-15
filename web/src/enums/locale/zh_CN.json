@@ -90,7 +90,7 @@
       "AssociateUserType": {
         "CREATOR": "创建人",
         "ASSIGNEE": "经办人",
-        "CONFIRMOR": "确认人",
+        "CONFIRMER": "确认人",
         "OWNER": "负责人",
         "SYS_ADMIN": "系统管理员",
         "APP_ADMIN": "应用管理员"
