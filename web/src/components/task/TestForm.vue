@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { DatePicker, Select, SelectEnum, TaskPriority } from '@xcan-angus/vue-ui';
+import { DatePicker, Select, SelectEnum } from '@xcan-angus/vue-ui';
 import { CombinedTargetType, Priority } from '@xcan-angus/infra';
 
+import TaskPriority from '@/components/TaskPriority/index.vue';
 import { FormData } from './types';
 
 const { t } = useI18n();

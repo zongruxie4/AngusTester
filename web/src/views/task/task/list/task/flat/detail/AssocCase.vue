@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue';
-import { AsyncComponent, Hints, Icon, modal, ReviewStatus, Table, TaskPriority, TestResult } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Hints, Icon, modal, ReviewStatus, Table } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { FuncPlanStatus } from '@/enums/enums';
 import { Button } from 'ant-design-vue';
@@ -8,6 +8,8 @@ import { useRouter } from 'vue-router';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { TaskInfoProps } from '@/views/task/task/list/task/types';
+import TaskPriority from '@/components/TaskPriority/index.vue';
+import TestResult from '@/components/TestResult/index.vue';
 
 /**
  * Props interface for AssocCase component

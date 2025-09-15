@@ -2,8 +2,11 @@
 import { computed, ref } from 'vue';
 import { http } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-import { IconTask, Table, TaskPriority, TaskStatus } from '@xcan-angus/vue-ui';
+import { IconTask, Table } from '@xcan-angus/vue-ui';
 import type { MyTaskTableProps, TaskInfo } from './types';
+
+import TaskPriority from '@/components/TaskPriority/index.vue';
+import TaskStatus from '@/components/TaskStatus/index.vue';
 
 // Component props with default values
 const props = withDefaults(defineProps<MyTaskTableProps>(), {

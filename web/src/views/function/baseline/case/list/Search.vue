@@ -1,13 +1,15 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Icon, Input, QuickSelect, ReviewStatus, SearchPanel, Select, TaskPriority, TestResult } from '@xcan-angus/vue-ui';
+import { Icon, Input, QuickSelect, ReviewStatus, SearchPanel, Select } from '@xcan-angus/vue-ui';
 import { debounce } from 'throttle-debounce';
 import { Button, Switch } from 'ant-design-vue';
 import { duration, appContext, Priority, ReviewStatus as ReviewStatusEnum } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { CaseTestResult } from '@/enums/enums';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
+import TaskPriority from '@/components/TaskPriority/index.vue';
+import TestResult from '@/components/TestResult/index.vue';
 
 const { t } = useI18n();
 

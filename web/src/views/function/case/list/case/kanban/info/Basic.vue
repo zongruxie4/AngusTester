@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { defineAsyncComponent, inject, nextTick, ref, Ref } from 'vue';
 import { Tag } from 'ant-design-vue';
-import { Grid, Icon, Input, Popover, ReviewStatus, Select, TaskPriority, TestResult } from '@xcan-angus/vue-ui';
+import { Grid, Icon, Input, Popover, ReviewStatus, Select } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
 import { funcCase } from '@/api/tester';
+import TaskPriority from '@/components/TaskPriority/index.vue';
 
+import TestResult from '@/components/TestResult/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { CaseInfo } from '../types';
 

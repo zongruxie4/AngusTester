@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Icon, modal, Table, TaskPriority } from '@xcan-angus/vue-ui';
+import { Icon, modal, Table } from '@xcan-angus/vue-ui';
 import { Button } from 'ant-design-vue';
 import { func } from '@/api/tester';
+import TaskPriority from '@/components/TaskPriority/index.vue';
 
 const { t } = useI18n();
 

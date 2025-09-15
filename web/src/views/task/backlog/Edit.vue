@@ -5,7 +5,7 @@ import { Button, Form, FormItem, Popover, TreeSelect, Upload } from 'ant-design-
 import type { Rule } from 'ant-design-vue/es/form';
 import {
   AsyncComponent, DatePicker, Icon, IconTask, IconText, Input,
-  Modal, notification, Select, SelectUser, TaskPriority, Tooltip
+  Modal, notification, Select, SelectUser, Tooltip
 } from '@xcan-angus/vue-ui';
 import { EvalWorkloadMethod, localStore, Priority, TESTER, upload } from '@xcan-angus/infra';
 import dayjs, { Dayjs } from 'dayjs';
@@ -15,6 +15,7 @@ import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 import { BugLevel, SoftwareVersionStatus, TaskType, TestType } from '@/enums/enums';
 import { EditFormState } from '@/views/task/task/list/task/types';
 
+import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfo } from '../types';
 

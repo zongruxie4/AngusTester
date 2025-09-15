@@ -10,7 +10,6 @@ import {
   notification,
   Select,
   Spin,
-  TaskPriority,
   Dropdown
   , VuexHelper
 } from '@xcan-angus/vue-ui';
@@ -23,11 +22,12 @@ import RichEditor from '@/components/richEditor/index.vue';
 import { funcCase, project, modules } from '@/api/tester';
 import { ai } from '@/api/gm';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
+import {DATE_TIME_FORMAT, TIME_FORMAT} from '@/utils/constant';
+import TaskPriority from '@/components/TaskPriority/index.vue';
 
 import { useI18n } from 'vue-i18n';
 import CaseSteps from './CaseSteps.vue';
-import { EditFormState } from '@/views/function/case/list/case/types';
+import {EditFormState} from "@/views/function/case/list/case/types";
 
 const { t } = useI18n();
 

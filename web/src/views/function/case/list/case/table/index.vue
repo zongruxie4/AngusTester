@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { Badge } from 'ant-design-vue';
-import { Dropdown, Icon, ReviewStatus, Table, TaskPriority, TestResult } from '@xcan-angus/vue-ui';
+import { Dropdown, Icon, ReviewStatus, Table } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
+import TaskPriority from '@/components/TaskPriority/index.vue';
+import TestResult from '@/components/TestResult/index.vue';
 
 import { CaseActionAuth, CaseListObj, EnabledGroup, GroupCaseListObj } from '../types';
 

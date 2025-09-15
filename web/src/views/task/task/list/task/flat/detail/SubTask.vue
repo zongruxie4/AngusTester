@@ -3,13 +3,15 @@ import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
 import { Button, Progress } from 'ant-design-vue';
 import {
   AsyncComponent, Colon, Dropdown, Hints, Icon, IconTask,
-  Input, modal, notification, Table, TaskPriority, TaskStatus
+  Input, modal, notification, Table
 } from '@xcan-angus/vue-ui';
 import { EvalWorkloadMethod, TESTER } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { BugLevel, TaskType } from '@/enums/enums';
 
+import TaskStatus from '@/components/TaskStatus/index.vue';
+import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfo } from '@/views/task/types';
 import { TaskInfoProps } from '@/views/task/task/list/task/types';

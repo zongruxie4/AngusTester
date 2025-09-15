@@ -3,12 +3,14 @@ import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, TableColumnProps } from 'ant-design-vue';
 import {
-  AsyncComponent, Dropdown, Icon, IconTask, modal, notification, Table, TaskPriority, TaskStatus
+  AsyncComponent, Dropdown, Icon, IconTask, modal, notification, Table
 } from '@xcan-angus/vue-ui';
 import { toClipboard, PageQuery } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { TaskStatus as TaskStatusType } from '@/enums/enums';
+import TaskPriority from '@/components/TaskPriority/index.vue';
 
+import TaskStatus from '@/components/TaskStatus/index.vue';
 import { TaskInfo } from '@/views/task/types';
 import { ActionMenuItem } from '@/views/task/task/types';
 

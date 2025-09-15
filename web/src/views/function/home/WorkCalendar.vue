@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import { Badge, Calendar } from 'ant-design-vue';
-import { AsyncComponent, Icon, Popover, Select, TestResult } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Icon, Popover, Select } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { Dayjs } from 'dayjs';
 import { analysis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
+import TestResult from '@/components/TestResult/index.vue';
 
 import { DataItem } from '@/views/function/home/types';
 

@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import { onMounted, ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { IconTask, Table, TaskPriority, TaskStatus } from '@xcan-angus/vue-ui';
+import { IconTask, Table } from '@xcan-angus/vue-ui';
 import { task } from '@/api/tester';
+import TaskPriority from '@/components/TaskPriority/index.vue';
+import TaskStatus from '@/components/TaskStatus/index.vue';
 
 interface Props {
   apisId: string;

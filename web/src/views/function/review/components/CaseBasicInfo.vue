@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Grid, ReviewStatus, TaskPriority } from '@xcan-angus/vue-ui';
+import { Grid, ReviewStatus } from '@xcan-angus/vue-ui';
 import { Tag } from 'ant-design-vue';
+
+import TaskPriority from '@/components/TaskPriority/index.vue';
 
 const { t } = useI18n();
 

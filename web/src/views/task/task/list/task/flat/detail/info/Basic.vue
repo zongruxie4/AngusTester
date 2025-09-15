@@ -2,7 +2,7 @@
 import { computed, nextTick, ref } from 'vue';
 import { Button, Tag } from 'ant-design-vue';
 import {
-  AsyncComponent, Colon, Icon, IconTask, Input, Select, TaskPriority, TaskStatus, Toggle
+  AsyncComponent, Colon, Icon, IconTask, Input, Select, Toggle
 } from '@xcan-angus/vue-ui';
 import { enumUtils, EvalWorkloadMethod, TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
@@ -11,6 +11,8 @@ import { useI18n } from 'vue-i18n';
 import { BugLevel, SoftwareVersionStatus, TaskType } from '@/enums/enums';
 import { TaskInfo } from '@/views/task/types';
 
+import TaskStatus from '@/components/TaskStatus/index.vue';
+import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfoProps } from '@/views/task/task/list/task/types';
 

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import { Checkbox, Pagination } from 'ant-design-vue';
-import { IconTask, TaskStatus } from '@xcan-angus/vue-ui';
+import { IconTask } from '@xcan-angus/vue-ui';
 
 import { TaskInfo } from '@/views/task/types';
+import TaskStatus from '@/components/TaskStatus/index.vue';
 
 /**
  * Component props interface for task list display

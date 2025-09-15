@@ -19,8 +19,6 @@ import {
   ReviewStatus,
   SearchPanel,
   Select,
-  TaskPriority,
-  TestResult,
   Tooltip
 } from '@xcan-angus/vue-ui';
 import {
@@ -41,6 +39,8 @@ import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'throttle-debounce';
 import { funcCase, modules, funcPlan, analysis } from '@/api/tester';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
+import TaskPriority from '@/components/TaskPriority/index.vue';
+import TestResult from '@/components/TestResult/index.vue';
 
 import { CaseActionAuth, CaseInfoObj, CaseListObj, CountObj, EnabledGroup, travelTreeData } from './types';
 import { PlanObj } from '../../types';

@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Input, Modal, ReviewStatus, Table, TestResult } from '@xcan-angus/vue-ui';
+import { Input, Modal, ReviewStatus, Table } from '@xcan-angus/vue-ui';
 import { http, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
+import TestResult from '@/components/TestResult/index.vue';
 import { ReviewCaseInfo } from '@/views/function/review/types';
 
 const { t } = useI18n();

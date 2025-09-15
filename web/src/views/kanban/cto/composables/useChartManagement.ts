@@ -253,7 +253,7 @@ export function useChartManagement () {
 
     // Initialize scenario success test chart
     if (chartRefs.scenarioSuccessTestRef) {
-      scenarioSuccessTestChart = eCharts.init(chartRefs.scenarioSuccessTestChart);
+      scenarioSuccessTestChart = eCharts.init(chartRefs.scenarioSuccessTestRef);
       scenarioSuccessTestChart.setOption(scenarioSuccessTestConfig.value);
     }
 

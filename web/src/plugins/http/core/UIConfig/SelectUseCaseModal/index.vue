@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { ref, computed, inject, watch, Ref } from 'vue';
+import { ref, computed, inject, watch, Ref, defineAsyncComponent } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
-import { Icon, Modal, Tooltip, notification, SelectApisCase } from '@xcan-angus/vue-ui';
+import { Icon, Modal, Tooltip, notification } from '@xcan-angus/vue-ui';
 import { paramTarget, apis } from '@/api/tester';
 
 import { UseCaseInfo } from './PropsType';
 
+const SelectApisCase = defineAsyncComponent(() => import('@/components/SelectApisCase/index.vue'))
 const { t } = useI18n();
 
 export type UseCaseItem = {

@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { Button } from 'ant-design-vue';
-import { Icon, modal, notification, Table, TaskPriority, TestResult } from '@xcan-angus/vue-ui';
+import { Icon, modal, notification, Table } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 import { funcCase } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
+import TestResult from '@/components/TestResult/index.vue';
+import TaskPriority from '@/components/TaskPriority/index.vue';
 import { getCurrentPage } from '@/utils/utils';
 import { CaseItem } from './types';
 
