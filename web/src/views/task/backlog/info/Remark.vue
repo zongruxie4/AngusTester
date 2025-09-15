@@ -42,12 +42,15 @@ const deleteRemark = async (remarkId: string) => {
   remarkList.value = remarkList.value.filter(item => item.id !== remarkId);
 };
 
-// Computed Properties
 /**
  * <p>Query parameters for remark fetching</p>
  * <p>Constructs parameters for fetching remarks ordered by creation date</p>
  */
 const queryParams = computed(() => {
+  // Only fetch remarks if we have a valid task ID
+  if (!props.id || props.id === '' || props.id === '-1') {
+    return null; // Return null to prevent API call
+  }
   return { orderBy: 'createdDate', orderSort: PageQuery.OrderSort.Asc, taskId: props.id };
 });
 </script>
@@ -60,7 +63,9 @@ const queryParams = computed(() => {
     <!-- Scrollable Content Area -->
     <div class="scrollable-content">
       <div class="basic-info-content">
+        <!-- Only render Scroll component when we have valid taskId -->
         <Scroll
+          v-if="queryParams"
           :action="`${TESTER}/task/remark`"
           :hideNoData="true"
           :params="queryParams"
@@ -96,6 +101,11 @@ const queryParams = computed(() => {
 
           <NoData v-else size="small" />
         </Scroll>
+        
+        <!-- Show message when no valid taskId -->
+        <div v-else class="flex items-center justify-center h-full">
+          <NoData size="small" />
+        </div>
       </div>
     </div>
   </div>

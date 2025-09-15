@@ -151,7 +151,7 @@ public class KanbanCtoTaskConverter {
         .filter(x -> x.getStatus().isCompleted()
             && nonNull(x.getStartDate()) && nonNull(x.getCompletedDate()))
         .sorted(Comparator.comparing(TaskEfficiencySummary::getCompletedDate))
-        .toList();
+        .collect(Collectors.toList());
     if (isNotEmpty(completedTasks)) {
       long processedDays = calcProcessedDays(completedTasks);
       backloggedTaskCount.setProcessedInDay(processedDays);
@@ -163,7 +163,7 @@ public class KanbanCtoTaskConverter {
     }
 
     List<TaskEfficiencySummary> backloggedTasks = tasks.stream()
-        .filter(x -> !x.getStatus().isFinished()).toList();
+        .filter(x -> !x.getStatus().isFinished()).collect(Collectors.toList());
     if (isNotEmpty(backloggedTasks)) {
       long backloggedNum = backloggedTasks.size();
       backloggedTaskCount.setBackloggedNum(backloggedNum);
@@ -189,10 +189,12 @@ public class KanbanCtoTaskConverter {
         .filter(x -> x.getStatus().isCompleted()
             && nonNull(x.getStartDate()) && nonNull(x.getCompletedDate()))
         .sorted(Comparator.comparing(TaskEfficiencySummary::getCompletedDate))
-        .toList();
+        .collect(Collectors.toList());
     if (isNotEmpty(completedTasks)) {
       long processedDays = calcProcessedDays(completedTasks);
-      dailyProcessedWorkload = calcDailyProcessedWorkload(completedTasks, processedDays);
+      // Cast to the correct type for the second method
+      List<TaskEfficiencySummary> castedTasks = (List<TaskEfficiencySummary>) completedTasks;
+      dailyProcessedWorkload = calcDailyProcessedWorkload(castedTasks, processedDays);
     }
     return dailyProcessedWorkload < 0 ? DEFAULT_DAILY_WORKLOAD : dailyProcessedWorkload;
   }
@@ -205,7 +207,7 @@ public class KanbanCtoTaskConverter {
         minStartTask = task;
       }
     }
-    if (isNull(minStartTask)) {
+    if (isNull(minStartTask) || isNull(minStartTask.getStartDate())) {
       return 0;
     }
     LocalDateTime startTime = minStartTask.getStartDate();

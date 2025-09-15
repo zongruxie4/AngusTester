@@ -43,13 +43,13 @@ const moduleTreeHeight = computed(() => {
   if (!containerRef.value || !headerRef.value || !searchRef.value) {
     return 'calc(100vh - 250px)'; // fallback height with 100px reduction
   }
-  
+
   const containerHeight = containerRef.value.clientHeight;
   const headerHeight = headerRef.value.clientHeight;
   const searchHeight = searchRef.value.clientHeight;
   const padding = 32; // py-4 = 16px top + 16px bottom
   const additionalReduction = 50; // Additional 100px reduction
-  
+
   const availableHeight = containerHeight - headerHeight - searchHeight - padding - additionalReduction;
   return `${Math.max(availableHeight, 100)}px`;
 });
@@ -195,7 +195,7 @@ onMounted(() => {
   };
 
   window.addEventListener('resize', handleResize);
-  
+
   // Cleanup on unmount
   return () => {
     window.removeEventListener('resize', handleResize);
@@ -221,7 +221,6 @@ onMounted(() => {
 
     <!-- Content Section -->
     <div class="flex-1 py-4 flex flex-col">
-
       <!-- Search Section -->
       <div ref="searchRef" class="mb-4 flex items-center justify-between">
         <div class="flex-1 max-w-md">
@@ -264,128 +263,140 @@ onMounted(() => {
       <!-- Content Area -->
       <div class="flex-1 min-h-0">
         <Spin :spinning="loading" class="h-full">
-        <template v-if="loaded">
-          <!-- Empty state when no modules exist -->
-          <div v-if="!searchedFlag && dataList.length === 0" class="flex flex-col items-center justify-center py-16">
-            <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-              <Icon icon="icon-mokuai" class="text-4xl text-gray-400" />
-            </div>
-            <h3 class="text-sm font-medium text-gray-900 mb-2">{{ t('module.noModules') }}</h3>
-            <p class="text-gray-500 text-xs mb-4 text-center max-w-md">
-              {{ props.disabled ? t('module.noModulesDescription') : t('module.noModulesHint') }}
-            </p>
-            <Button
-              v-if="!props.disabled"
-              type="primary"
-              size="large"
-              class="flex items-center space-x-2"
-              @click="openCreateModal()">
-              <Icon icon="icon-jia" class="text-base" />
-              <span>{{ t('module.addModule') }}</span>
-            </Button>
-          </div>
-
-          <!-- Modules tree -->
-          <template v-else>
-            <!-- No data state for search results -->
-            <div v-if="dataList.length === 0" class="flex flex-col items-center justify-center py-16">
-              <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                <Icon icon="icon-sousuo" class="text-2xl text-gray-400" />
+          <template v-if="loaded">
+            <!-- Empty state when no modules exist -->
+            <div v-if="!searchedFlag && dataList.length === 0" class="flex flex-col items-center justify-center py-16">
+              <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                <Icon icon="icon-mokuai" class="text-4xl text-gray-400" />
               </div>
-              <h3 class="text-sm font-medium text-gray-900 mb-2">{{ t('module.noSearchResults') }}</h3>
-              <p class="text-gray-500 text-xs">{{ t('module.tryDifferentKeywords') }}</p>
+              <h3 class="text-sm font-medium text-gray-900 mb-2">{{ t('module.noModules') }}</h3>
+              <p class="text-gray-500 text-xs mb-4 text-center max-w-md">
+                {{ props.disabled ? t('module.noModulesDescription') : t('module.noModulesHint') }}
+              </p>
+              <Button
+                v-if="!props.disabled"
+                type="primary"
+                size="large"
+                class="flex items-center space-x-2"
+                @click="openCreateModal()">
+                <Icon icon="icon-jia" class="text-base" />
+                <span>{{ t('module.addModule') }}</span>
+              </Button>
             </div>
 
-            <!-- Module tree display -->
-            <div v-else class="bg-gray-50 rounded-lg p-2 overflow-y-auto" :style="{ height: moduleTreeHeight }">
-              <Tree
-                :treeData="dataList"
-                blockNode
-                defaultExpandAll
-                :fieldNames="{
-                  children: 'children',
-                  title: 'name',
-                  key: 'id'
-                }"
-                :key="dataList.length">
-                <template #title="{name, id, index, level, isLast, pid, ids, childLevels, hasEditPermission}">
-                  <!-- Inline edit mode -->
-                  <div v-if="editId === id" class="flex items-center space-x-2 p-1.5 bg-white rounded border">
-                    <Input
-                      ref="nameInputRef"
-                      :placeholder="t('module.moduleNamePlaceholder')"
-                      class="flex-1"
-                      size="small"
-                      trim
-                      :value="name"
-                      :allowClear="false"
-                      :maxlength="50"
-                      @blur="handleEditBlur(id, $event)"
-                      @pressEnter="handleEditEnter(id, $event)" />
-                    <Button
-                      type="link"
-                      size="small"
-                      class="px-2 text-gray-500 hover:text-gray-700"
-                      @click="cancelEdit">
-                      {{ t('module.cancel') }}
-                    </Button>
-                  </div>
+            <!-- Modules tree -->
+            <template v-else>
+              <!-- No data state for search results -->
+              <div v-if="dataList.length === 0" class="flex flex-col items-center justify-center py-16">
+                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                  <Icon icon="icon-sousuo" class="text-2xl text-gray-400" />
+                </div>
+                <h3 class="text-sm font-medium text-gray-900 mb-2">{{ t('module.noSearchResults') }}</h3>
+                <p class="text-gray-500 text-xs">{{ t('module.tryDifferentKeywords') }}</p>
+              </div>
 
-                  <!-- Normal display mode -->
-                  <div v-else class="flex items-center space-x-2 tree-title group hover:bg-white hover:shadow-sm rounded-lg p-1.5 transition-all duration-200">
-                    <div class="w-6 h-6 bg-blue-100 rounded flex items-center justify-center flex-shrink-0">
-                      <Icon icon="icon-mokuai" class="text-blue-600 text-sm" />
+              <!-- Module tree display -->
+              <div
+                v-else
+                class="bg-gray-50 rounded-lg p-2 overflow-y-auto"
+                :style="{ height: moduleTreeHeight }">
+                <Tree
+                  :key="dataList.length"
+                  :treeData="dataList"
+                  blockNode
+                  defaultExpandAll
+                  :fieldNames="{
+                    children: 'children',
+                    title: 'name',
+                    key: 'id'
+                  }">
+                  <template #title="{name, id, index, level, isLast, pid, ids, childLevels, hasEditPermission}">
+                    <!-- Inline edit mode -->
+                    <div v-if="editId === id" class="flex items-center space-x-2 p-1.5 bg-white rounded border">
+                      <Input
+                        ref="nameInputRef"
+                        :placeholder="t('module.moduleNamePlaceholder')"
+                        class="flex-1"
+                        size="small"
+                        trim
+                        :value="name"
+                        :allowClear="false"
+                        :maxlength="50"
+                        @blur="handleEditBlur(id, $event)"
+                        @pressEnter="handleEditEnter(id, $event)" />
+                      <Button
+                        type="link"
+                        size="small"
+                        class="px-2 text-gray-500 hover:text-gray-700"
+                        @click="cancelEdit">
+                        {{ t('module.cancel') }}
+                      </Button>
                     </div>
-                    <div class="flex items-center space-x-2 flex-1 min-w-0">
-                      <span class="truncate text-xs font-medium text-gray-900" :title="name">{{ name }}</span>
 
-                      <!-- Action dropdown menu -->
-                      <Dropdown :trigger="['click']">
-                        <Button
-                          v-if="!props.disabled && hasEditPermission"
-                          class="hidden group-hover:inline-flex items-center justify-center w-6 h-6 rounded hover:bg-gray-100"
-                          type="text"
-                          size="small">
-                          <Icon icon="icon-more" class="text-gray-400 text-sm" />
-                        </Button>
-                        <template #overlay>
-                          <Menu
-                            class="text-sm py-1"
-                            @click="handleDropdownClick($event, {name, id, index, ids, level, childLevels, pid})">
-                            <MenuItem v-if="canAddSubModule({id, name, level})" key="add" class="flex items-center space-x-2 py-2">
-                              <Icon icon="icon-jia" class="text-blue-600 mr-1" />
-                              <span>{{ t('module.newSubModule') }}</span>
-                            </MenuItem>
-                            <MenuItem v-if="canMoveUp({id, name, index, pid})" key="up" class="flex items-center space-x-2 py-2">
-                              <Icon icon="icon-shangyi" class="text-green-600 mr-1" />
-                              <span>{{ index < 1 ? t('module.moveUp') : t('module.moveUpOne') }}</span>
-                            </MenuItem>
-                            <MenuItem v-if="canMoveDown({id, name, isLast})" key="down" class="flex items-center space-x-2 py-2">
-                              <Icon icon="icon-xiayi" class="text-green-600 mr-1" />
-                              <span>{{ t('module.moveDown') }}</span>
-                            </MenuItem>
-                            <MenuItem key="move" class="flex items-center space-x-2 py-2">
-                              <Icon icon="icon-yidong" class="text-orange-600 mr-1" />
-                              <span>{{ t('module.move') }}</span>
-                            </MenuItem>
-                            <MenuItem key="edit" class="flex items-center space-x-2 py-2">
-                              <Icon icon="icon-bianji" class="text-blue-600 mr-1" />
-                              <span>{{ t('actions.edit') }}</span>
-                            </MenuItem>
-                            <MenuItem key="del" class="flex items-center space-x-2 py-2 text-red-600">
-                              <Icon icon="icon-qingchu" class="text-red-600 mr-1" />
-                              <span>{{ t('actions.delete') }}</span>
-                            </MenuItem>
-                          </Menu>
-                        </template>
-                      </Dropdown>
+                    <!-- Normal display mode -->
+                    <div v-else class="flex items-center space-x-2 tree-title group hover:bg-white hover:shadow-sm rounded-lg p-1.5 transition-all duration-200">
+                      <div class="w-6 h-6 bg-blue-100 rounded flex items-center justify-center flex-shrink-0">
+                        <Icon icon="icon-mokuai" class="text-blue-600 text-sm" />
+                      </div>
+                      <div class="flex items-center space-x-2 flex-1 min-w-0">
+                        <span class="truncate text-xs font-medium text-gray-900" :title="name">{{ name }}</span>
+
+                        <!-- Action dropdown menu -->
+                        <Dropdown :trigger="['click']">
+                          <Button
+                            v-if="!props.disabled && hasEditPermission"
+                            class="hidden group-hover:inline-flex items-center justify-center w-6 h-6 rounded hover:bg-gray-100"
+                            type="text"
+                            size="small">
+                            <Icon icon="icon-more" class="text-gray-400 text-sm" />
+                          </Button>
+                          <template #overlay>
+                            <Menu
+                              class="text-sm py-1"
+                              @click="handleDropdownClick($event, {name, id, index, ids, level, childLevels, pid})">
+                              <MenuItem
+                                v-if="canAddSubModule({id, name, level})"
+                                key="add"
+                                class="flex items-center space-x-2 py-2">
+                                <Icon icon="icon-jia" class="text-blue-600 mr-1" />
+                                <span>{{ t('module.newSubModule') }}</span>
+                              </MenuItem>
+                              <MenuItem
+                                v-if="canMoveUp({id, name, index, pid})"
+                                key="up"
+                                class="flex items-center space-x-2 py-2">
+                                <Icon icon="icon-shangyi" class="text-green-600 mr-1" />
+                                <span>{{ index < 1 ? t('module.moveUp') : t('module.moveUpOne') }}</span>
+                              </MenuItem>
+                              <MenuItem
+                                v-if="canMoveDown({id, name, isLast})"
+                                key="down"
+                                class="flex items-center space-x-2 py-2">
+                                <Icon icon="icon-xiayi" class="text-green-600 mr-1" />
+                                <span>{{ t('module.moveDown') }}</span>
+                              </MenuItem>
+                              <MenuItem key="move" class="flex items-center space-x-2 py-2">
+                                <Icon icon="icon-yidong" class="text-orange-600 mr-1" />
+                                <span>{{ t('module.move') }}</span>
+                              </MenuItem>
+                              <MenuItem key="edit" class="flex items-center space-x-2 py-2">
+                                <Icon icon="icon-bianji" class="text-blue-600 mr-1" />
+                                <span>{{ t('actions.edit') }}</span>
+                              </MenuItem>
+                              <MenuItem key="del" class="flex items-center space-x-2 py-2 text-red-600">
+                                <Icon icon="icon-qingchu" class="text-red-600 mr-1" />
+                                <span>{{ t('actions.delete') }}</span>
+                              </MenuItem>
+                            </Menu>
+                          </template>
+                        </Dropdown>
+                      </div>
                     </div>
-                  </div>
-                </template>
-              </Tree>
-            </div>
+                  </template>
+                </Tree>
+              </div>
+            </template>
           </template>
-        </template>
         </Spin>
       </div>
     </div>
