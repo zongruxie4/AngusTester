@@ -11,7 +11,6 @@ import {
   DragEvent,
   TaskNameEditingState,
   NewTaskState,
-  SearchState,
   CurrentInfoState,
   BacklogDataState,
   SprintDataState,
@@ -35,7 +34,6 @@ export function useTaskActions (
   modal: ModalState,
   selected: SelectedState,
   newTask: NewTaskState,
-  search: SearchState,
   taskNameEditing: TaskNameEditingState,
   ui: UIState,
   deleteTabPane?: (value: string[]) => void
@@ -99,7 +97,6 @@ export function useTaskActions (
     if (error) {
       return;
     }
-
     return res.data ? { ...res.data } : undefined;
   };
 

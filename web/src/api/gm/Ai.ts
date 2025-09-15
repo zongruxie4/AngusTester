@@ -16,7 +16,7 @@ export default class API {
    * </p>
    * @returns Promise that resolves to the AI agent data or null if an error occurs
    */
-  async getAIAgentSetting(): Promise<any> {
+  async getAIAgentSetting (): Promise<any> {
     const [error, res] = await http.get(`${baseUrl}/setting/AI_AGENT`);
     if (error) {
       return null;

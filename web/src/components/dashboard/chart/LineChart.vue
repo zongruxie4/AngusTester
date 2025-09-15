@@ -108,14 +108,14 @@ const chartsOption = computed(() => {
           position: 'top'
         },
         itemStyle: {
-          color: props.chartData.color 
-            ? (typeof props.chartData.color === 'string' 
-                ? props.chartData.color 
+          color: props.chartData.color
+            ? (typeof props.chartData.color === 'string'
+                ? props.chartData.color
                 : props.chartData.color[0] || '#2D8EFF')
             : new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                { offset: 1, color: 'rgba(45, 142, 255, 0.2)' },
-                { offset: 0, color: 'rgba(45, 142, 255, 1)' }
-              ])
+              { offset: 1, color: 'rgba(45, 142, 255, 0.2)' },
+              { offset: 0, color: 'rgba(45, 142, 255, 1)' }
+            ])
         },
         areaStyle: {},
         smooth: true,

@@ -7,9 +7,9 @@ import { debounce } from 'throttle-debounce';
 import { Icon, NoData, Input, Colon, Arrow, IconRequired, notification, Tooltip } from '@xcan-angus/vue-ui';
 import { utils, duration } from '@xcan-angus/infra';
 
-const { t } = useI18n();
-
 import { PipelineConfig } from '../PropsType';
+
+const { t } = useI18n();
 
 export interface Props {
   value: PipelineConfig[];
@@ -783,7 +783,7 @@ defineExpose({
                             v-model:value="dataMap[id].deleteEntry"
                             :maxlength="4096"
                             trim
-                                                          :placeholder="t('ldapPlugin.uiConfig.deleteEntryPlaceholder')"
+                            :placeholder="t('ldapPlugin.uiConfig.deleteEntryPlaceholder')"
                             class="max-w-175" />
                         </div>
                       </template>
@@ -798,7 +798,7 @@ defineExpose({
                             v-model:value="dataMap[id].searchBase"
                             :maxlength="4096"
                             trim
-                                                          :placeholder="t('ldapPlugin.uiConfig.searchBasePlaceholder')"
+                            :placeholder="t('ldapPlugin.uiConfig.searchBasePlaceholder')"
                             class="max-w-175" />
                         </div>
 
@@ -811,7 +811,7 @@ defineExpose({
                             v-model:value="dataMap[id].searchFilter"
                             :maxlength="4096"
                             trim
-                                                          :placeholder="t('ldapPlugin.uiConfig.searchFilterPlaceholder')"
+                            :placeholder="t('ldapPlugin.uiConfig.searchFilterPlaceholder')"
                             class="max-w-175" />
                         </div>
                       </template>

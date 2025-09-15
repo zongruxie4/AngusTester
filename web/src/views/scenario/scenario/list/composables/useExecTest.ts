@@ -1,5 +1,5 @@
-import {ref} from 'vue';
-import {utils} from '@xcan-angus/infra';
+import { ref } from 'vue';
+import { utils } from '@xcan-angus/infra';
 
 /**
  * Server variable structure

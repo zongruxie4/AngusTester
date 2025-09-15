@@ -5,10 +5,10 @@ import { Badge, Collapse, CollapsePanel, Tabs, TabPane, Switch } from 'ant-desig
 import { Icon, Input, SelectEnum, Tooltip, Validate, Select, Arrow } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
-const { t } = useI18n();
-
 import { ParameterConfig, WebsocketConfig, WebSocketMode } from './PropsType';
 import { AssertionConfig } from './AssertionForm/PropsType';
+
+const { t } = useI18n();
 
 export interface Props {
   value: WebsocketConfig;
@@ -495,7 +495,7 @@ const autoSize = {
           <div
             class="w-12 flex items-center justify-start transform-gpu translate-y-1 space-x-1 flex-shrink-0 text-theme-title">
             <span>{{ t('websocketPlugin.uiConfig.websocketConfigs.assertion.title') }}</span>
-                          <Tooltip :title="t('websocketPlugin.uiConfig.websocketConfigs.assertion.tooltip')">
+            <Tooltip :title="t('websocketPlugin.uiConfig.websocketConfigs.assertion.tooltip')">
               <Icon icon="icon-tishi1" class="tip-icon text-3.5 cursor-pointer" />
             </Tooltip>
           </div>

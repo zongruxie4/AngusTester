@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {computed, defineAsyncComponent, inject, nextTick, onMounted, ref, Ref} from 'vue';
+import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import {
   ActivityTimeline, AsyncComponent, Drawer, Icon, Input, Modal, modal, Select, Spin, Toolbar
@@ -16,7 +16,7 @@ import {
   useAI,
   useDrawer
 } from './composables';
-import {appContext} from "@xcan-angus/infra";
+import { appContext } from '@xcan-angus/infra';
 
 const { t } = useI18n();
 

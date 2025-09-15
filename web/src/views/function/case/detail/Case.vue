@@ -36,7 +36,7 @@ import {
   minTestInfoColumns
 } from './config';
 import { funcCase } from '@/api/tester';
-import {DATE_TIME_FORMAT, TIME_FORMAT} from '@/utils/constant';
+import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 
 import { useI18n } from 'vue-i18n';
 

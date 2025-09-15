@@ -3,11 +3,11 @@ import { ref, onMounted, computed, defineAsyncComponent, watch, watchEffect } fr
 import { Tabs, TabPane, Badge } from 'ant-design-vue';
 import { Composite, Input, SelectEnum } from '@xcan-angus/vue-ui';
 import { utils, HttpMethod as HttpMethodEnum } from '@xcan-angus/infra';
-import { getUriByParams} from '@/utils/ApiUtils/index';
+import { getUriByParams } from '@/utils/ApiUtils/index';
 import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
 
 import { RequestConfigs } from './PropsType';
+const { t } = useI18n();
 
 export type ParameterConfig = {
   name: string;

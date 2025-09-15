@@ -233,8 +233,8 @@ watch(() => category.value, () => {
 
     <!-- Add/Edit Report Modal -->
     <AsyncComponent
-      :visible="reportModalVisible"
-      :key="`add-report-${selectId || 'new'}`">
+      :key="`add-report-${selectId || 'new'}`"
+      :visible="reportModalVisible">
       <AddReportModal
         v-model:visible="reportModalVisible"
         :reportId="selectId"
@@ -243,8 +243,8 @@ watch(() => category.value, () => {
 
     <!-- View Report Modal -->
     <AsyncComponent
-      :visible="viewModalVisible"
-      :key="`view-report-${selectId || ''}`">
+      :key="`view-report-${selectId || ''}`"
+      :visible="viewModalVisible">
       <ViewReportModal
         v-model:visible="viewModalVisible"
         :reportId="selectId || ''"

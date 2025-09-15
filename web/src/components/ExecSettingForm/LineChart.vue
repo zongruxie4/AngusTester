@@ -2,12 +2,12 @@
 import { ref, onMounted, watch, onBeforeUnmount } from 'vue';
 import * as echarts from 'echarts/core';
 import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
 
 import { GridComponent, TooltipComponent } from 'echarts/components';
 import { LineChart } from 'echarts/charts';
 import { UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
+const { t } = useI18n();
 
 export interface Props {
   unit:string;

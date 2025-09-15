@@ -3,9 +3,9 @@ import { computed, ref, watch, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { IconCopy, IconDownload, NoData, FormatHighlight } from '@xcan-angus/vue-ui';
 
-const { t } = useI18n();
-
 import { ExecContent } from '../../../PropsType';
+
+const { t } = useI18n();
 
 interface Props {
   url:string;

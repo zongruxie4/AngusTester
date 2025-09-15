@@ -48,7 +48,6 @@ const letterMap = {
   d: t('commonPlugin.utils.timeUnits.d')
 };
 
-
 /**
  * @param '10s'、'20min'、'5h'这样的字符串
  * @returns ['10','秒']拆分后并返回中文单位的数组

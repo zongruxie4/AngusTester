@@ -5,10 +5,10 @@ import { Collapse, CollapsePanel, Tabs, TabPane, Button, Checkbox, Switch, Radio
 import { Input, Icon, Tooltip, Hints, Select, IconRequired, ShortDuration } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
-const { t } = useI18n();
-
 import { PipelineConfig } from '../../PropsType';
 import Upload from './Upload.vue';
+
+const { t } = useI18n();
 
 export type ParameterConfig = {
   name: string;
@@ -718,7 +718,7 @@ defineExpose({
             v-model:value="emailConfig.receiverCC"
             mode="tags"
             class="w-full flex-1"
-                          :placeholder="t('smtpPlugin.uiConfig.emailConfig.receiverCCPlaceholder')"
+            :placeholder="t('smtpPlugin.uiConfig.emailConfig.receiverCCPlaceholder')"
             :maxlength="100" />
         </div>
         <div class="flex items-center space-x-2">
@@ -727,7 +727,7 @@ defineExpose({
             v-model:value="emailConfig.receiverBCC"
             mode="tags"
             class="w-full flex-1"
-                          :placeholder="t('smtpPlugin.uiConfig.emailConfig.receiverBCCPlaceholder')"
+            :placeholder="t('smtpPlugin.uiConfig.emailConfig.receiverBCCPlaceholder')"
             :maxlength="100" />
         </div>
         <div class="flex items-center space-x-2">
@@ -736,7 +736,7 @@ defineExpose({
             v-model:value="emailConfig.replyTo"
             mode="tags"
             class="w-full flex-1"
-                          :placeholder="t('smtpPlugin.uiConfig.emailConfig.replyToPlaceholder')"
+            :placeholder="t('smtpPlugin.uiConfig.emailConfig.replyToPlaceholder')"
             :maxlength="100" />
         </div>
       </div>

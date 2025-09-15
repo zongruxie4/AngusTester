@@ -5,10 +5,10 @@ import { Arrow, Colon, Icon, NoData } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
 import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
 import StatusTag from '../StatusTag/index.vue';
 import { SMTPInfo } from './PropsType';
 import { ExecContent } from '../PropsType';
+const { t } = useI18n();
 
 const formatTime = (timestamp:number):string => {
   const second = 1000;

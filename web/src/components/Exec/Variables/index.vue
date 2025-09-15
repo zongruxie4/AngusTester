@@ -6,9 +6,9 @@ import { debounce } from 'throttle-debounce';
 import { duration, http, utils, TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 import { VariableItem } from './PropsType';
+
+const { t } = useI18n();
 
 type Props = {
   dataSource: VariableItem[];

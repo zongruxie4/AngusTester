@@ -5,8 +5,8 @@ import { AsyncComponent, Modal, Spin, MonacoEditor } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
 import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
 import { ExecContent } from '../../PropsType';
+const { t } = useI18n();
 
 const formatTime = (timestamp:number):string => {
   const second = 1000;
@@ -257,7 +257,7 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
       </template>
     </DescriptionsItem>
 
-            <DescriptionsItem :label="t('xcan_assertionsResult.assertionCondition')">
+    <DescriptionsItem :label="t('xcan_assertionsResult.assertionCondition')">
       {{ CONDITION_MAP[assertionCondition] }}
     </DescriptionsItem>
 
@@ -284,18 +284,18 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
     </DescriptionsItem>
 
     <template v-if="assertionIgnored">
-              <DescriptionsItem :label="t('xcan_assertionsResult.assertionResult')" :span="3">
-          <Badge status="default" :text="t('xcan_assertionsResult.ignore')" />
-        </DescriptionsItem>
+      <DescriptionsItem :label="t('xcan_assertionsResult.assertionResult')" :span="3">
+        <Badge status="default" :text="t('xcan_assertionsResult.ignore')" />
+      </DescriptionsItem>
     </template>
 
     <template v-else>
       <template v-if="resultFailure">
-                  <DescriptionsItem :label="t('xcan_assertionsResult.assertionResult')" :span="!!resultMessage ? 1 : 3">
-            <Badge
-              class="flex-shrink-0"
-              status="error"
-              :text="t('xcan_assertionsResult.failed')" />
+        <DescriptionsItem :label="t('xcan_assertionsResult.assertionResult')" :span="!!resultMessage ? 1 : 3">
+          <Badge
+            class="flex-shrink-0"
+            status="error"
+            :text="t('xcan_assertionsResult.failed')" />
         </DescriptionsItem>
 
         <DescriptionsItem

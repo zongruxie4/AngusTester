@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { reactive, ref, watch, onMounted, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
 
 import { columns, Column } from './interface';
+const { t } = useI18n();
 
 interface Props {
   dataSource:PerformanceEntry

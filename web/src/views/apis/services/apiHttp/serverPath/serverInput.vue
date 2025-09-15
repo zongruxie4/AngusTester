@@ -4,10 +4,10 @@ import { Popover, Radio } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 import { services } from '@/api/tester';
 import { HttpServer } from './PropsType';
+
+const { t } = useI18n();
 
 interface Props {
   value: string;

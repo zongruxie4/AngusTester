@@ -3,7 +3,6 @@ import { watch, ref, inject } from 'vue';
 import { Button, Checkbox } from 'ant-design-vue';
 import { Icon, Input, Select } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-const { t }  = useI18n();
 
 import { http, TESTER } from '@xcan-angus/infra';
 import { qsJsonToParamList } from '../../ApiUtils';
@@ -14,6 +13,7 @@ import { itemTypes, formDataTypes } from './interface';
 import SimpleEditableSelect from '../../SimpleEditableSelect/index.vue';
 
 import { ParamsItem, API_EXTENSION_KEY, deepDelAttrFromObj, validateType } from '@/utils/ApiUtils/index';
+const { t } = useI18n();
 
 export interface Props {
   value: ParamsItem[],

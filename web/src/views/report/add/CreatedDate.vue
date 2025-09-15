@@ -5,7 +5,7 @@ import { DatePicker, FormItem, Radio, RadioGroup } from 'ant-design-vue';
 import { Select } from '@xcan-angus/vue-ui';
 import dayjs from 'dayjs';
 import { CreateTimeSetting } from '@/types/types';
-import {DATE_TIME_FORMAT, TIME_FORMAT} from '@/utils/constant';
+import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 
 // Component props definition
 interface Props {

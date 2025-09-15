@@ -5,10 +5,10 @@ import { Checkbox } from 'ant-design-vue';
 import { Arrow, Icon, Input, SelectEnum, Select, Tooltip } from '@xcan-angus/vue-ui';
 import { BasicAssertionType, AssertionCondition, enumUtils, utils } from '@xcan-angus/infra';
 
-const { t } = useI18n();
-
 import { AssertionConfig } from './PropsType';
 import ExpectedPopover from './ExpectedPopover.vue';
+
+const { t } = useI18n();
 
 export interface Props {
   value: AssertionConfig[];
@@ -447,7 +447,7 @@ defineExpose({
             </Tooltip>
             <Input
               :placeholder="t('jdbcPlugin.UIConfigJdbc.assertionForm.matchItemPlaceholder')"
-               :title="t('jdbcPlugin.UIConfigJdbc.assertionForm.matchItem')"
+              :title="t('jdbcPlugin.UIConfigJdbc.assertionForm.matchItem')"
               trim
               dataType="number"
               style="flex: 0 0 calc((100% - 32px)/7);"

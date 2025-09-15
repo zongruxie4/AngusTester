@@ -3,7 +3,7 @@ import { Popover } from 'ant-design-vue';
 import { Icon, Hints, Grid } from '@xcan-angus/vue-ui';
 import beautify from 'js-beautify';
 import { useI18n } from 'vue-i18n';
-const { t }  = useI18n();
+const { t } = useI18n();
 
 const prettyXml = (data: string) => {
   return beautify.html(data, {
@@ -15,32 +15,32 @@ const prettyXml = (data: string) => {
 };
 
 const matchItemList = [
-{
+  {
     key: 'regexp',
     name: t('xcan_apiAssert.regexExpressionMatch'),
     columns: [[
       {
         dataIndex: 'data',
-        label: t('xcan_apiAssert.matchValue'),
+        label: t('xcan_apiAssert.matchValue')
       },
       {
         dataIndex: 'expression',
-        label: t('xcan_apiAssert.expression'),
+        label: t('xcan_apiAssert.expression')
       },
       {
         dataIndex: 'result',
-        label: t('xcan_apiAssert.matchResult'),
+        label: t('xcan_apiAssert.matchResult')
       },
       {
         dataIndex: 'item',
-        label: t('xcan_apiAssert.matchItemLabel'),
+        label: t('xcan_apiAssert.matchItemLabel')
       }
     ]],
     data: {
       data: 'hello, RegexExtraction! my phone number is 18888888888 and 13999999999.',
       expression: '(1\\d{10})',
       result: '[,"18888888888","13999999999"]',
-      item: t('xcan_apiAssert.regexExample'),
+      item: t('xcan_apiAssert.regexExample')
     }
   },
   {
@@ -49,26 +49,26 @@ const matchItemList = [
     columns: [[
       {
         dataIndex: 'data',
-        label: t('xcan_apiAssert.matchValue'),
+        label: t('xcan_apiAssert.matchValue')
       },
       {
         dataIndex: 'expression',
-        label: t('xcan_apiAssert.expression'),
+        label: t('xcan_apiAssert.expression')
       },
       {
         dataIndex: 'result',
-        label: t('xcan_apiAssert.matchResult'),
+        label: t('xcan_apiAssert.matchResult')
       },
       {
         dataIndex: 'item',
-        label: t('xcan_apiAssert.matchItemLabel'),
+        label: t('xcan_apiAssert.matchItemLabel')
       }
     ]],
     data: {
       data: { store: { book: [{ title: 'Sayings of the Century', price: 100 }, { title: 'Confucianism', price: 200 }] } },
       expression: '$.store.book[*]',
       result: '[{"title":"Sayings of the Century","price":100},{"title":"confucianism","price":200}]',
-      item: t('xcan_apiAssert.jsonpathExample'),
+      item: t('xcan_apiAssert.jsonpathExample')
     }
   },
   {
@@ -77,19 +77,19 @@ const matchItemList = [
     columns: [[
       {
         dataIndex: 'data',
-        label: t('xcan_apiAssert.matchValue'),
+        label: t('xcan_apiAssert.matchValue')
       },
       {
         dataIndex: 'expression',
-        label: t('xcan_apiAssert.expression'),
+        label: t('xcan_apiAssert.expression')
       },
       {
         dataIndex: 'result',
-        label: t('xcan_apiAssert.matchResult'),
+        label: t('xcan_apiAssert.matchResult')
       },
       {
         dataIndex: 'item',
-        label: t('xcan_apiAssert.matchItemLabel'),
+        label: t('xcan_apiAssert.matchItemLabel')
       }
     ]],
     data: {
@@ -97,7 +97,7 @@ const matchItemList = [
                 '<interests>basketball</interests><name>Angus1</name></person><person><age>32</age><interests>coding</interests><name>Angus2</name></person></persons>'),
       expression: '/persons/person[age >= 30]',
       result: '["30codingbasketballAngus1", "32codingAngus2"]',
-      item: t('xcan_apiAssert.xpathExample'),
+      item: t('xcan_apiAssert.xpathExample')
     }
   }
 ];

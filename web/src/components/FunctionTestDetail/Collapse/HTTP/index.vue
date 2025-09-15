@@ -4,11 +4,11 @@ import { Alert, Button, Collapse, CollapsePanel, Tabs, TabPane } from 'ant-desig
 import { Arrow, Colon, Icon, HttpMethodText } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
 
 import StatusTag from '../StatusTag/index.vue';
 import { HTTPInfo } from './PropsType';
 import { ExecContent } from '../../PropsType';
+const { t } = useI18n();
 // import { formatTime } from 'lib/core/utils';
 
 export interface Props {

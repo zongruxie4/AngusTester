@@ -5,7 +5,7 @@ import { duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 import { funcPlan } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-import {ReviewCaseInfo} from "@/views/function/review/types";
+import { ReviewCaseInfo } from '@/views/function/review/types';
 
 interface Props {
   planId: string;

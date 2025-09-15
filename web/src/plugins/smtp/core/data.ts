@@ -18,7 +18,7 @@ export const TOOLBAR_MENUITEMS: {
     key: 'execLog',
     name: t('commonPlugin.menuData.toolbar.execLog')
   }
- 
+
 ];
 
 export const TOOLBAR_EXTRA_MENUITEMS: {

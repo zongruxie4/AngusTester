@@ -2567,7 +2567,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                   {{ t('xcan_exec.updateTestResults') }}
                 </div>
                 <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-1.75  font-medium">
-                  {{  t('xcan_exec.httpParameters') }}
+                  {{ t('xcan_exec.httpParameters') }}
                   <Arrow
                     :open="httpParamsOpen"
                     class="ml-2"
@@ -2773,7 +2773,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
               <div class="mr-2.5 leading-7 w-35 flex-none websocket-form">
                 <div class="h-7 whitespace-nowrap mb-5 pl-1.75 ignoreAssertions">{{ t('xcan_exec.ignoreAssertions') }}</div>
                 <div class="h-7 whitespace-nowrap mb-5 updateTestResult pl-1.75">
-                    {{ t('xcan_exec.updateTestResults') }}
+                  {{ t('xcan_exec.updateTestResults') }}
                 </div>
                 <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-1.75  font-medium">
                   {{ t('xcan_exec.webSocketParameters') }}

@@ -8,10 +8,10 @@ import { exec } from '@/api/tester';
 import apiUtils from '@/utils/ApiUtils/index';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 
-const { t } = useI18n();
-
 import { ListData, useExecCount } from './useExecCount';
 import { allCvsKeys, allResponseTimeColumns, allErrorsColumns, allErrorRateColumns, allRowsColumns } from './ChartConfig';
+
+const { t } = useI18n();
 // allColumns, throughputCvsKeys, throughputOptions, throughputColumns, threadCvsKeys, threadOptions, threadColumns, responseTimeCvsKeys, responseTimeOptions, responseTimeColumns, errorOptions, errorCvsKeys, errorColumns
 interface Props {
   dataSource: { [key: string]: any };

@@ -14,11 +14,11 @@ import { Arrow, Modal, Icon, AsyncComponent, Spin } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 import beautify from 'js-beautify';
 import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
 
 import { AssertResult } from '@/components/ApiAssert/utils/assert/PropsType';
 
 import { isJSON, isHtml, isXML, isYAML } from './utils';
+const { t } = useI18n();
 
 export type TabKey = 'all' | 'success' | 'fail' | 'ignore';
 
@@ -112,7 +112,7 @@ const showList = computed(() => {
 
 const expectedLabel = computed(() => {
   return totalList.value?.reduce((prev, cur) => {
-          prev[cur.id] = cur.extraction ? t('xcan_responseAssert.extractedValue') : t('xcan_responseAssert.expectedValue');
+    prev[cur.id] = cur.extraction ? t('xcan_responseAssert.extractedValue') : t('xcan_responseAssert.expectedValue');
     return prev;
   }, {}) || {};
 });
@@ -129,7 +129,7 @@ const assertLabel = computed(() => {
         if (['REG_MATCH', 'XPATH_MATCH', 'JSON_PATH_MATCH'].includes(cur.assertionCondition)) {
           prev[cur.id] = TYPE_MAP[_type] + (cur.parameterName ? cur.parameterName : '') + CONDITION_MAP[cur.assertionCondition] + t('xcan_responseAssert.value');
         } else {
-                      prev[cur.id] = TYPE_MAP[_type] + (cur.parameterName ? cur.parameterName : '') + t('xcan_responseAssert.value');
+          prev[cur.id] = TYPE_MAP[_type] + (cur.parameterName ? cur.parameterName : '') + t('xcan_responseAssert.value');
         }
       } else {
         if (['REG_MATCH', 'XPATH_MATCH', 'JSON_PATH_MATCH'].includes(cur.assertionCondition)) {

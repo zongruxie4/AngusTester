@@ -74,10 +74,10 @@ const taskStatusOption = {
     splitLine: { show: false },
     axisLine: { show: false },
     data: [t('reportPreview.projectProgress.apiSummary.groupStats.statuses.released'),
-    t('reportPreview.projectProgress.apiSummary.groupStats.statuses.devCompleted'),
-    t('reportPreview.projectProgress.apiSummary.groupStats.statuses.devInProgress'),
-    t('reportPreview.projectProgress.apiSummary.groupStats.statuses.designing'),
-    t('reportPreview.projectProgress.apiSummary.groupStats.statuses.unknown')
+      t('reportPreview.projectProgress.apiSummary.groupStats.statuses.devCompleted'),
+      t('reportPreview.projectProgress.apiSummary.groupStats.statuses.devInProgress'),
+      t('reportPreview.projectProgress.apiSummary.groupStats.statuses.designing'),
+      t('reportPreview.projectProgress.apiSummary.groupStats.statuses.unknown')
     ]
   },
   series: [

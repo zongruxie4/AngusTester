@@ -9,7 +9,7 @@ import { func } from '@/api/tester';
 import SearchPanel from '@/views/function/baseline/list/SearchPanel.vue';
 import RichText from '@/components/richEditor/textContent/index.vue';
 import { BaselineInfo } from '@/views/function/baseline/types';
-import {TIME_FORMAT} from "@/utils/constant";
+import { TIME_FORMAT } from '@/utils/constant';
 
 const { t } = useI18n();
 

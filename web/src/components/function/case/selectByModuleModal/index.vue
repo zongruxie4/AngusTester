@@ -6,7 +6,7 @@ import { http, duration } from '@xcan-angus/infra';
 import { debounce } from 'throttle-debounce';
 
 import TestResult from '@/components/TestResult/index.vue';
-import {ReviewCaseInfo} from "@/views/function/review/types";
+import { ReviewCaseInfo } from '@/views/function/review/types';
 
 const { t } = useI18n();
 

@@ -4,8 +4,6 @@ import { Switch } from 'ant-design-vue';
 import { Input, SelectEnum, Select, Validate } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 import MatchItemPopover from './MacthItemPopover.vue';
 import ExpectedPopover from './ExpectedPopover.vue';
 import jsonpath from './utils/jsonpath';
@@ -14,6 +12,8 @@ import regexp from './utils/regexp';
 import { Extraction } from './utils/extract/PropsType';
 import { FormItem } from './PropsType';
 import { EnumMessage, HttpExtractionLocation, AssertionCondition, AssertionType, enumUtils, ExtractionMethod } from '@xcan-angus/infra';
+
+const { t } = useI18n();
 
 interface Props {
   value: FormItem;

@@ -12,8 +12,7 @@ import ParamInput from '@/components/ParamInput/index.vue';
 import JsonContent from '@/components/JsonContent/index.vue';
 import SimpleEditableSelect from '@/components/SimpleEditableSelect/index.vue';
 
-
-const { t }  = useI18n();
+const { t } = useI18n();
 export interface Props {
   value: ParamsItem[];
   apiUri?: string;

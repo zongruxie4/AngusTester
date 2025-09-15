@@ -14,7 +14,7 @@ import {
   Popover,
   Spin
 } from '@xcan-angus/vue-ui';
-import {utils, TESTER, download, appContext} from '@xcan-angus/infra';
+import { utils, TESTER, download, appContext } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import ProcessPng from './images/process.png';
 import { funcPlan } from '@/api/tester';
@@ -22,10 +22,9 @@ import { useI18n } from 'vue-i18n';
 
 import { FuncPlanStatus } from '@/enums/enums';
 import { PlanInfo } from '../types';
-
+import SearchPanel from '@/views/function/plan/list/SearchPanel.vue';
 
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
-import SearchPanel from '@/views/function/plan/list/SearchPanel.vue';
 
 const { t } = useI18n();
 

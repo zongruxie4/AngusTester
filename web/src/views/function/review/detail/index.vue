@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, defineAsyncComponent, inject, onMounted, ref, watch} from 'vue';
+import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Checkbox, Popover, TabPane, Tabs, Tag } from 'ant-design-vue';
 import {
   AsyncComponent,
@@ -12,7 +12,7 @@ import {
   Spin,
   Table
 } from '@xcan-angus/vue-ui';
-import {appContext, download, duration} from '@xcan-angus/infra';
+import { appContext, download, duration } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { debounce } from 'throttle-debounce';
 import RichEditor from '@/components/richEditor/index.vue';

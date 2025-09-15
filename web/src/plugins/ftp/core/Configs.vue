@@ -265,7 +265,7 @@ const buttonGroupClick = async (data: ButtonGroupMenuItem) => {
     }
 
     if (!scenarioConfigData.value?.id) {
-              notification.info(t('ftpPlugin.messages.debugSaveRequired'));
+      notification.info(t('ftpPlugin.messages.debugSaveRequired'));
       drawerRef.value.open('save');
       return;
     }
@@ -652,7 +652,7 @@ const toFollow = async (id: string) => {
   hideButtonSet.value.delete('cancelFollow');
   hideButtonSet.value.add('follow');
   scenarioConfigData.value.follow = true;
-        notification.success(t('httpPlugin.messages.followSuccess'));
+  notification.success(t('httpPlugin.messages.followSuccess'));
 };
 
 const cancelFollow = async (id: string) => {
@@ -670,7 +670,7 @@ const cancelFollow = async (id: string) => {
   hideButtonSet.value.delete('follow');
   hideButtonSet.value.add('cancelFollow');
   scenarioConfigData.value.follow = false;
-      notification.success(t('httpPlugin.messages.cancelFollowSuccess'));
+  notification.success(t('httpPlugin.messages.cancelFollowSuccess'));
 };
 
 const favouriteHandler = (value: boolean) => {
@@ -698,7 +698,7 @@ const toFavourite = async (id: string) => {
   hideButtonSet.value.delete('cancelFavourite');
   hideButtonSet.value.add('favourite');
   scenarioConfigData.value.favourite = true;
-      notification.success(t('httpPlugin.messages.favouriteSuccess'));
+  notification.success(t('httpPlugin.messages.favouriteSuccess'));
 };
 
 const cancelFavourite = async (id: string) => {
@@ -716,7 +716,7 @@ const cancelFavourite = async (id: string) => {
   hideButtonSet.value.delete('favourite');
   hideButtonSet.value.add('cancelFavourite');
   scenarioConfigData.value.favourite = false;
-      notification.success(t('httpPlugin.messages.cancelFavouriteSuccess'));
+  notification.success(t('httpPlugin.messages.cancelFavouriteSuccess'));
 };
 
 const save = async (data?: {
@@ -1246,8 +1246,6 @@ const drawerMenuItems = computed(() => {
 
   return baseItems.filter(item => ['save'].includes(item.key));
 });
-
-
 
 const setGlobalTabActiveKey = (key: 'taskConfig' | 'executeConfig') => {
   activeKey.value = key;

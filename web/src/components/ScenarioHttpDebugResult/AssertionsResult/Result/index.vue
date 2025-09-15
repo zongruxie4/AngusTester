@@ -5,9 +5,9 @@ import { AsyncComponent, Icon, Tooltip, Modal, Spin, MonacoEditor } from '@xcan-
 import { utils } from '@xcan-angus/infra';
 import beautify from 'js-beautify';
 import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
 
 import { ExecContent } from '../../PropsType';
+const { t } = useI18n();
 // import { formatTime } from 'lib/core/utils';
 
 export interface Props {
@@ -494,11 +494,11 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
 
     <template v-else>
       <template v-if="resultFailure">
-          <DescriptionsItem :label="t('xcan_assertionsResult.assertionResult')" :span="!!resultMessage ? 1 : 3">
-            <Badge
-              class="flex-shrink-0"
-              status="error"
-              :text="t('xcan_assertionsResult.failed')" />
+        <DescriptionsItem :label="t('xcan_assertionsResult.assertionResult')" :span="!!resultMessage ? 1 : 3">
+          <Badge
+            class="flex-shrink-0"
+            status="error"
+            :text="t('xcan_assertionsResult.failed')" />
         </DescriptionsItem>
 
         <DescriptionsItem

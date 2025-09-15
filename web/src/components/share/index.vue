@@ -16,7 +16,7 @@ import { debounce } from 'throttle-debounce';
 import { useI18n } from 'vue-i18n';
 import { apis, services } from '@/api/tester';
 import dayjs from 'dayjs';
-import {DATE_TIME_FORMAT, TIME_FORMAT} from '@/utils/constant';
+import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 
 import { randomString } from '@/utils/utils';
 import { ShareObj, TargetType } from './PropsType';

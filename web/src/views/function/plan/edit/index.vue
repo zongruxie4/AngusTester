@@ -40,9 +40,9 @@ import { isEqual } from 'lodash-es';
 import type { Rule } from 'ant-design-vue/es/form';
 import { funcPlan, project } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-import {DATE_TIME_FORMAT, TIME_FORMAT} from '@/utils/constant';
+import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 
-import {EditFormState, PlanInfo} from '../types';
+import { EditFormState, PlanInfo } from '../types';
 
 const { t } = useI18n();
 

@@ -5,10 +5,10 @@ import { Alert, Collapse, CollapsePanel, Tabs, TabPane } from 'ant-design-vue';
 import { Arrow, Colon, Icon } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
-const { t } = useI18n();
-
 import StatusTag from '../StatusTag/index.vue';
 import { ExecContent, ExecInfo } from '../../PropsType';
+
+const { t } = useI18n();
 
 export interface Props {
   value: ExecInfo['task']['pipelines'][number];
@@ -118,13 +118,13 @@ const showBasicInfo = computed(() => {
         type="card"
         size="small"
         class="mt-3 card-tabs">
-                      <TabPane key="general" :tab="t('jdbcPlugin.FunctionTestDetailJdbc.requestParameters')">
+        <TabPane key="general" :tab="t('jdbcPlugin.FunctionTestDetailJdbc.requestParameters')">
           <RequestParameter
             :type="queryType"
             :value="httpContent"
             class="py-3" />
         </TabPane>
-                      <TabPane key="assertions" :tab="t('jdbcPlugin.FunctionTestDetailJdbc.assertionResults')">
+        <TabPane key="assertions" :tab="t('jdbcPlugin.FunctionTestDetailJdbc.assertionResults')">
           <Alert
             v-if="props.ignoreAssertions === true"
             closable
@@ -139,7 +139,7 @@ const showBasicInfo = computed(() => {
                   type="link"
                   @click="setGlobalTabActiveKey('executeConfig')">
                   {{ t('jdbcPlugin.FunctionTestDetailJdbc.executeConfig') }}
-                                  </Button>{{ t('jdbcPlugin.FunctionTestDetailJdbc.closeIgnoreAssertion') }}
+                </Button>{{ t('jdbcPlugin.FunctionTestDetailJdbc.closeIgnoreAssertion') }}
               </div>
             </template>
           </Alert>

@@ -9,7 +9,6 @@ import { UseProjectAvatarReturn } from '@/views/project/project/types';
 export function useAvatar (
   projectDetail: any // Should be Ref<Project> but avoiding circular reference for now
 ): UseProjectAvatarReturn {
-
   /** Controls cropper modal visibility */
   const uploadAvatarVisible = ref(false);
 

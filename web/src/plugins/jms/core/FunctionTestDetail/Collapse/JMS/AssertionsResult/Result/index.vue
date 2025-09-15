@@ -6,9 +6,9 @@ import { AsyncComponent, Icon, Tooltip, Modal, Spin, MonacoEditor } from '@xcan-
 import { utils } from '@xcan-angus/infra';
 import beautify from 'js-beautify';
 
-const { t } = useI18n();
-
 import { ExecContent } from '../../../../PropsType';
+
+const { t } = useI18n();
 
 export interface Props {
   value: ExecContent['content']['assertions'][number];
@@ -438,7 +438,7 @@ const EMPTY_LIST = ['IS_EMPTY', 'IS_NULL', 'NOT_EMPTY', 'NOT_NULL'];
             style="word-wrap: unset;word-break: break-all;white-space: break-spaces;"
             :ellipsis="ellipsis"
             :content="showExpectedValue" />
-                          <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal('expected')">{{ t('jmsPlugin.functionTestDetailJms.assertionResult.view') }}</div>
+          <div class="flex-shrink-0 text-text-link cursor-pointer" @click="openModal('expected')">{{ t('jmsPlugin.functionTestDetailJms.assertionResult.view') }}</div>
         </div>
       </template>
 

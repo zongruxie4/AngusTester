@@ -25,7 +25,7 @@ import TaskPriority from '@/components/TaskPriority/index.vue';
 
 import { useI18n } from 'vue-i18n';
 import CaseSteps from './CaseSteps.vue';
-import {CaseInfoObj, CaseListObj, EditFormState} from './types';
+import { CaseInfoObj, CaseListObj, EditFormState } from './types';
 
 const { t } = useI18n();
 

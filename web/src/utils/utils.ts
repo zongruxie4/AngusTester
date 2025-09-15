@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {DATE_FORMAT} from "@/utils/constant";
+import { DATE_FORMAT } from '@/utils/constant';
 
 export const sizeUnitFormat = (value: number, unit?: 'B' | 'KB' | 'MB' | 'GB' | 'TB' | 'PB' | 'EB' | 'ZB' | 'YB'): string => {
   const k = 1024;

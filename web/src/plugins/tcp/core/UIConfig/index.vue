@@ -8,9 +8,9 @@ import { utils, duration } from '@xcan-angus/infra';
 import { cloneDeep } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
 import { PipelineConfig } from '../PropsType';
+
+const { t } = useI18n();
 
 export interface Props {
   value: PipelineConfig[];

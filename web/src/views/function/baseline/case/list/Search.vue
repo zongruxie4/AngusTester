@@ -173,19 +173,19 @@ const qulickList = [
   },
   {
     type: 'lastDay',
-    name: t('quickSearchTags.past1Day'),
+    name: t('quickSearchTags.lastDay'),
     selected: false,
     group: 'time'
   },
   {
     type: 'lastThreeDays',
-    name: t('quickSearchTags.past3Day'),
+    name: t('quickSearchTags.last3Days'),
     selected: false,
     group: 'time'
   },
   {
     type: 'lastWeek',
-    name: t('quickSearchTags.past7Day'),
+    name: t('quickSearchTags.last7Days'),
     selected: false,
     group: 'time'
   }

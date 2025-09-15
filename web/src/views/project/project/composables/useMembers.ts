@@ -6,7 +6,6 @@ import type { ProjectMembers, ProjectMember, UseProjectMembersReturn, DefaultOpt
  * Handles member selection, type switching, and data preparation for form submission
  */
 export function useMembers (): UseProjectMembersReturn {
-
   /** Current selected member type for UI tabs */
   const memberType = ref<MemberType>('user');
 

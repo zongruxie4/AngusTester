@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, inject, ref, watch } from 'vue';
 import { Button, TabPane, Tabs, Tooltip, Popconfirm, Badge } from 'ant-design-vue';
 import { Icon, Input, Spin } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
-import {appContext, utils} from '@xcan-angus/infra';
+import { appContext, utils } from '@xcan-angus/infra';
 import { useTrashActions } from './composables/useTrashActions';
 import { useSearch } from './composables/useSearch';
 import type { TrashProps, TrashItem } from './types';

@@ -1,5 +1,5 @@
 import { JSONPath as jp, JSONPathOptions } from 'jsonpath-plus';
-import { i18n} from '@xcan-angus/infra';
+import { i18n } from '@xcan-angus/infra';
 
 const t = i18n.getI18n()?.global?.t || ((v: string) => v);
 

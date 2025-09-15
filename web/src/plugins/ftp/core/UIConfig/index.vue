@@ -9,10 +9,10 @@ import { Icon, NoData, Input, Tooltip, Colon, Arrow, Select, IconRequired, Spin,
 import { utils, duration } from '@xcan-angus/infra';
 import { cloneDeep } from 'lodash-es';
 
-const { t } = useI18n();
-
 import { PipelineConfig } from '../PropsType';
 import { gzipBase64ToArrayBuffer, base64ToArrayBuffer, stringToArrayBuffer, arrayBufferToString, arrayBufferToGzipBase64, fileToArrayBuffer, arrayBufferToBase64 } from './utils';
+
+const { t } = useI18n();
 
 export interface Props {
   value: PipelineConfig[];

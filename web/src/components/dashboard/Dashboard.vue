@@ -174,7 +174,7 @@ const fetchChartData = async () => {
         chartFields.forEach((field, fieldIndex) => {
           // Get field data from API response, or use empty object if no data
           const fieldData = (pieData && pieData[field]) ? pieData[field] : {};
-          
+
           // Calculate total, use TOTAL_COUNT_id (if exists) or sum up all parts
           let total = 0;
           const fieldDataValues = Object.values(fieldData);

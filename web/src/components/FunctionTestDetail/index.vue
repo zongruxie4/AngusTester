@@ -4,12 +4,12 @@ import { utils } from '@xcan-angus/infra';
 import { GroupText, TestBasicInfo } from '@xcan-angus/vue-ui';
 import { Timeline, TimelineItem } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
 
 // import { formatTime } from 'lib/core/utils';
 import { ExecInfo, ExecContent } from './PropsType';
 
 import Collapse from './Collapse/index.vue';
+const { t } = useI18n();
 
 export interface Props {
   execInfo: ExecInfo;

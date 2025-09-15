@@ -3,10 +3,10 @@ import { ref, onMounted, nextTick } from 'vue';
 import { Hints, Spin } from '@xcan-angus/vue-ui';
 import { Tabs, TabPane } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
 
 import type { TargetType, Scope } from './PropsType';
 import List from './List.vue';
+const { t } = useI18n();
 
 interface Props {
   id: string;

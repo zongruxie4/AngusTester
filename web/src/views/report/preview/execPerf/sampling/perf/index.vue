@@ -7,7 +7,7 @@ import { allCvsKeys } from '../chartConfig';
 
 import { Exception } from '../PropsType';
 import { exec } from 'src/api/ctrl';
-import {DATE_TIME_FORMAT} from "@/utils/constant";
+import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 interface Props {
   detail?: Record<string, any>;

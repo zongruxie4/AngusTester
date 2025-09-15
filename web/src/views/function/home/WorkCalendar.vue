@@ -9,8 +9,7 @@ import { useI18n } from 'vue-i18n';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 import TestResult from '@/components/TestResult/index.vue';
 
-
-import {DataItem} from "@/views/function/home/types";
+import { DataItem } from '@/views/function/home/types';
 
 const { t } = useI18n();
 

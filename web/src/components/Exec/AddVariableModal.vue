@@ -4,10 +4,10 @@ import { Modal, RadioGroup, Radio, Textarea, InputGroup } from 'ant-design-vue';
 import { Input, SelectEnum, IconRequired, Select, notification, Tooltip, Icon } from '@xcan-angus/vue-ui';
 import { TESTER, http, HttpExtractionLocation } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
 
 import { getRequestConfigs } from './getRequestConfigs';
 import { ListVariableObj } from './PropsType';
+const { t } = useI18n();
 
 interface Props {
   visible: boolean;

@@ -8,7 +8,7 @@ import { isEqual } from 'lodash-es';
 import { debounce } from 'throttle-debounce';
 import { func, project } from '@/api/tester';
 
-import {BaselineCaseInfo, BaselineInfo, FormState} from "@/views/function/baseline/types";
+import { BaselineCaseInfo, BaselineInfo, FormState } from '@/views/function/baseline/types';
 
 const { t } = useI18n();
 

@@ -5,9 +5,9 @@ import { Checkbox } from 'ant-design-vue';
 import { Input, Icon } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
-const { t } = useI18n();
-
 import { ParameterConfig } from './PropsType';
+
+const { t } = useI18n();
 
 export interface Props {
     type: 'query' | 'header';

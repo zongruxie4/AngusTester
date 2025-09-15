@@ -103,7 +103,6 @@ const {
   handleRightSideResize
 } = useChartManagement();
 
-
 const erd = elementResizeDetector({ strategy: 'scroll' });
 
 const targetType = ref('TASK');

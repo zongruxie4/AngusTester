@@ -17,7 +17,6 @@ export function useForm (
     GROUP: string[];
   }>
 ): UseProjectFormReturn {
-
   const { t } = useI18n();
 
   // Injected dependencies with type safety

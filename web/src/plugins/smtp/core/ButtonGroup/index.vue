@@ -30,7 +30,6 @@ const buttonItems = computed(() => {
   return MENUITEMS.filter(item => !hideKeys.has(item.key));
 });
 
-
 const MENUITEMS:readonly ButtonGroupMenuItem[] = [
   { name: t('ftpPlugin.buttonGroup.export'), icon: 'icon-daochu', key: 'export' },
   { name: t('ftpPlugin.buttonGroup.select'), icon: 'icon-shengchengceshijiaoben', key: 'select' },

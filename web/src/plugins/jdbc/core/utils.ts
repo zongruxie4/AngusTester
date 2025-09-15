@@ -3,7 +3,6 @@ import { i18n } from '@xcan-angus/infra';
 const I18nInstance = i18n.getI18n();
 const t = I18nInstance?.global?.t || ((value: string):string => value);
 
-
 const isValidRegular = (regexp: string): boolean => {
   try {
     RegExp(regexp);
@@ -151,7 +150,5 @@ const formatTime = (timestamp:number):string => {
 
   return Math.floor(timestamp / hour) + t('commonPlugin.utils.formatTime.hours') + suffix;
 };
-
-
 
 export { isValidRegular, isValidXPath, isValidJSONPath, getCurrentDuration, splitTime, formatTime };

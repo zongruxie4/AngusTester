@@ -5,9 +5,9 @@ import { Arrow, Colon, Icon } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
 import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
 import StatusTag from './StatusTag/index.vue';
 import { FtpInfo, ExecContent } from './PropsType';
+const { t } = useI18n();
 
 const formatTime = (timestamp:number):string => {
   const second = 1000;

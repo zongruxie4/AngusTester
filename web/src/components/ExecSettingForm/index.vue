@@ -3110,7 +3110,7 @@ defineExpose({ isValid, getData, openExecutParames, openGlobalParames, openPulgi
                     {{ t('xcan_execSettingForm.transactionIsolation') }}
                   </div>
                 </div>
-                                  <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-1.75  font-medium">
+                <div class="h-7 whitespace-nowrap mb-5 flex items-center pl-1.75  font-medium">
                   {{ t('xcan_execSettingForm.connectionPoolConfiguration') }}
                   <Arrow
                     :open="connectionPoolParamsOpen"

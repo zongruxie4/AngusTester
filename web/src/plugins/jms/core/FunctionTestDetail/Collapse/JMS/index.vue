@@ -5,11 +5,11 @@ import { Alert, Button, Collapse, CollapsePanel, Tabs, TabPane } from 'ant-desig
 import { Arrow, Colon, Icon, HttpMethodText } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
-const { t } = useI18n();
-
 import StatusTag from '../StatusTag/index.vue';
 import { HTTPInfo } from './PropsType';
 import { ExecContent } from '../../PropsType';
+
+const { t } = useI18n();
 
 export interface Props {
   value: HTTPInfo;
@@ -189,7 +189,7 @@ const showBasicInfo = computed(() => {
         type="card"
         size="small"
         class="mt-3 card-tabs">
-         <TabPane key="general" :tab="t('jmsPlugin.functionTestDetailJms.tabs.general')">
+        <TabPane key="general" :tab="t('jmsPlugin.functionTestDetailJms.tabs.general')">
           <RequestHeaders :value="httpContent" class="py-3" />
         </TabPane>
         <TabPane key="requestBody" :tab="t('jmsPlugin.functionTestDetailJms.tabs.requestBody')">

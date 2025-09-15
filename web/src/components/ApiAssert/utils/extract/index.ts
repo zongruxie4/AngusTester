@@ -1,12 +1,11 @@
-import { utils, ExtractionMethod } from '@xcan-angus/infra';
-import { i18n} from '@xcan-angus/infra';
-
-const t = i18n.getI18n()?.global?.t || ((v: string) => v);
+import { utils, ExtractionMethod, i18n } from '@xcan-angus/infra';
 
 import jsonpath from '../jsonpath';
 import xpath from '../xpath';
 import regexp from '../regexp';
 import { Parameter } from '../assert/PropsType';
+
+const t = i18n.getI18n()?.global?.t || ((v: string) => v);
 
 /**
  * @description 提取期望值
@@ -49,8 +48,8 @@ const execute = (extraction: {
     if (!parameterName) {
       return {
         data: defaultValue,
-              message: defaultValue ? t('xcan_apiAssert.extractionParameterNameMissingWithDefault') : t('xcan_apiAssert.extractionParameterNameMissing'),
-      errorMessage: t('xcan_apiAssert.extractionParameterNameMissing')
+        message: defaultValue ? t('xcan_apiAssert.extractionParameterNameMissingWithDefault') : t('xcan_apiAssert.extractionParameterNameMissing'),
+        errorMessage: t('xcan_apiAssert.extractionParameterNameMissing')
       };
     }
   }
@@ -96,16 +95,16 @@ const execute = (extraction: {
     if (!config?.query) {
       return {
         data: defaultValue,
-              message: defaultValue ? t('xcan_apiAssert.queryParameterEmptyWithDefault') : t('xcan_apiAssert.queryParameterEmpty'),
-      errorMessage: t('xcan_apiAssert.queryParameterEmpty')
+        message: defaultValue ? t('xcan_apiAssert.queryParameterEmptyWithDefault') : t('xcan_apiAssert.queryParameterEmpty'),
+        errorMessage: t('xcan_apiAssert.queryParameterEmpty')
       };
     }
 
     if (!Object.prototype.hasOwnProperty.call(config.query, parameterName!)) {
       return {
         data: defaultValue,
-              message: defaultValue ? t('xcan_apiAssert.queryParameterMissingWithDefault', { parameterName }) : t('xcan_apiAssert.queryParameterMissing', { parameterName }),
-      errorMessage: t('xcan_apiAssert.queryParameterMissing', { parameterName })
+        message: defaultValue ? t('xcan_apiAssert.queryParameterMissingWithDefault', { parameterName }) : t('xcan_apiAssert.queryParameterMissing', { parameterName }),
+        errorMessage: t('xcan_apiAssert.queryParameterMissing', { parameterName })
       };
     }
 
@@ -114,16 +113,16 @@ const execute = (extraction: {
     if (!config?.header) {
       return {
         data: defaultValue,
-              message: defaultValue ? t('xcan_apiAssert.requestHeaderEmptyWithDefault') : t('xcan_apiAssert.requestHeaderEmpty'),
-      errorMessage: t('xcan_apiAssert.requestHeaderEmpty')
+        message: defaultValue ? t('xcan_apiAssert.requestHeaderEmptyWithDefault') : t('xcan_apiAssert.requestHeaderEmpty'),
+        errorMessage: t('xcan_apiAssert.requestHeaderEmpty')
       };
     }
 
     if (!Object.prototype.hasOwnProperty.call(config.header, parameterName!)) {
       return {
         data: defaultValue,
-              message: defaultValue ? t('xcan_apiAssert.requestHeaderMissingWithDefault', { parameterName }) : t('xcan_apiAssert.requestHeaderMissing', { parameterName }),
-      errorMessage: t('xcan_apiAssert.requestHeaderMissing', { parameterName })
+        message: defaultValue ? t('xcan_apiAssert.requestHeaderMissingWithDefault', { parameterName }) : t('xcan_apiAssert.requestHeaderMissing', { parameterName }),
+        errorMessage: t('xcan_apiAssert.requestHeaderMissing', { parameterName })
       };
     }
 
@@ -139,8 +138,8 @@ const execute = (extraction: {
     if (!config?.responseBody?.data) {
       return {
         data: defaultValue,
-              message: defaultValue ? t('xcan_apiAssert.responseBodyEmptyWithDefault') : t('xcan_apiAssert.responseBodyEmpty'),
-      errorMessage: t('xcan_apiAssert.responseBodyEmpty')
+        message: defaultValue ? t('xcan_apiAssert.responseBodyEmptyWithDefault') : t('xcan_apiAssert.responseBodyEmpty'),
+        errorMessage: t('xcan_apiAssert.responseBodyEmpty')
       };
     }
 
@@ -150,16 +149,16 @@ const execute = (extraction: {
     if (!config?.responseHeader) {
       return {
         data: defaultValue,
-              message: defaultValue ? t('xcan_apiAssert.responseHeaderEmptyWithDefault') : t('xcan_apiAssert.responseHeaderEmpty'),
-      errorMessage: t('xcan_apiAssert.responseHeaderEmpty')
+        message: defaultValue ? t('xcan_apiAssert.responseHeaderEmptyWithDefault') : t('xcan_apiAssert.responseHeaderEmpty'),
+        errorMessage: t('xcan_apiAssert.responseHeaderEmpty')
       };
     }
 
     if (!Object.prototype.hasOwnProperty.call(config.responseHeader, parameterName!)) {
       return {
         data: defaultValue,
-              message: defaultValue ? t('xcan_apiAssert.responseHeaderMissingWithDefault', { parameterName }) : t('xcan_apiAssert.responseHeaderMissing', { parameterName }),
-      errorMessage: t('xcan_apiAssert.responseHeaderMissing', { parameterName })
+        message: defaultValue ? t('xcan_apiAssert.responseHeaderMissingWithDefault', { parameterName }) : t('xcan_apiAssert.responseHeaderMissing', { parameterName }),
+        errorMessage: t('xcan_apiAssert.responseHeaderMissing', { parameterName })
       };
     }
 
@@ -175,8 +174,8 @@ const execute = (extraction: {
     if (!config?.rawBody) {
       return {
         data: defaultValue,
-              message: defaultValue ? t('xcan_apiAssert.rawRequestBodyEmptyWithDefault') : t('xcan_apiAssert.rawRequestBodyEmpty'),
-      errorMessage: t('xcan_apiAssert.rawRequestBodyEmpty')
+        message: defaultValue ? t('xcan_apiAssert.rawRequestBodyEmptyWithDefault') : t('xcan_apiAssert.rawRequestBodyEmpty'),
+        errorMessage: t('xcan_apiAssert.rawRequestBodyEmpty')
       };
     }
 

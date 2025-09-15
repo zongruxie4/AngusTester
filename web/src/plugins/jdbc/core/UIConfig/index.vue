@@ -5,14 +5,14 @@ import { Button } from 'ant-design-vue';
 import { Icon } from '@xcan-angus/vue-ui';
 import { utils } from '@xcan-angus/infra';
 
-const { t } = useI18n();
-
 import { PipelineConfig, TargetKey } from './PropsType';
 import { JDBCConfig } from './JDBCConfigs/PropsType';
 import { WaitingTimeConfig } from './WaitingTime/PropsType';
 import { RendezvousConfig } from './Rendezvous/PropsType';
 import { TransEndConfig } from './TransEnd/PropsType';
 import { TransStartConfig } from './TransStart/PropsType';
+
+const { t } = useI18n();
 
 export interface Props {
   value: PipelineConfig[];
@@ -255,7 +255,7 @@ defineExpose({
         @click="insertTime">
         <div class="flex items-center">
           <Icon icon="icon-dengdaishijian" class="mr-1" />
-           <span>{{ t('jdbcPlugin.UIConfigJdbc.insertWaitingTime') }}</span>
+          <span>{{ t('jdbcPlugin.UIConfigJdbc.insertWaitingTime') }}</span>
         </div>
       </Button>
       <Button

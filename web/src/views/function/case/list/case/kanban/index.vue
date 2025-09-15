@@ -13,7 +13,7 @@ import {
   notification,
   Tooltip
 } from '@xcan-angus/vue-ui';
-import {appContext, enumUtils} from '@xcan-angus/infra';
+import { appContext, enumUtils } from '@xcan-angus/infra';
 import { CaseTestResult } from '@/enums/enums';
 import Draggable from 'vuedraggable';
 import dayjs from 'dayjs';
@@ -396,7 +396,7 @@ const dragHandler = (data:CaseInfo, testResult:CaseTestResult, toTestResult:Case
         return;
       }
 
-      if (!isAdmin && !permissions.includes('TEST')) {
+      if (!isAdmin.value && !permissions.includes('TEST')) {
         notification.warning(t('functionCase.kanbanView.noTestPermission'));
         return;
       }
@@ -457,7 +457,7 @@ const dragHandler = (data:CaseInfo, testResult:CaseTestResult, toTestResult:Case
       notification.warning(t('functionCase.kanbanView.canOnlyMoveToPending'));
       return;
     } else {
-      if (!isAdmin && !permissions.includes('TEST')) {
+      if (!isAdmin.value && !permissions.includes('TEST')) {
         if (groupKey) {
           resetGroupDrag(id, index, testResult, toTestResult, groupKey);
         } else {
@@ -488,7 +488,7 @@ const dragHandler = (data:CaseInfo, testResult:CaseTestResult, toTestResult:Case
       notification.warning(t('functionCase.kanbanView.canOnlyMoveToTestResults'));
       return;
     } else {
-      if (!isAdmin && !permissions.includes('TEST')) {
+      if (!isAdmin.value && !permissions.includes('TEST')) {
         if (groupKey) {
           resetGroupDrag(id, index, testResult, toTestResult, groupKey);
         } else {
@@ -1186,14 +1186,14 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
           name: t('functionCase.kanbanView.edit'),
           key: 'edit',
           icon: 'icon-shuxie',
-          disabled: !isAdmin && !permissions.includes('MODIFY_CASE'),
+          disabled: !isAdmin.value && !permissions.includes('MODIFY_CASE'),
           hide: false
         },
         {
           name: t('functionCase.kanbanView.delete'),
           key: 'delete',
           icon: 'icon-qingchu',
-          disabled: !isAdmin && !permissions.includes('DELETE_CASE'),
+          disabled: !isAdmin.value && !permissions.includes('DELETE_CASE'),
           hide: false
         }
       ];
@@ -1204,7 +1204,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
             name: t('functionCase.kanbanView.testPassed'),
             key: 'testPassed',
             icon: 'icon-xiugaiceshijieguo',
-            disabled: !isAdmin && !permissions.includes('TEST'),
+            disabled: !isAdmin.value && !permissions.includes('TEST'),
             hide: false
           });
 
@@ -1212,7 +1212,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
             name: t('functionCase.kanbanView.testNotPassed'),
             key: 'testNotPassed',
             icon: 'icon-xiugaiceshijieguo',
-            disabled: !isAdmin && !permissions.includes('TEST'),
+            disabled: !isAdmin.value && !permissions.includes('TEST'),
             hide: false
           });
 
@@ -1221,7 +1221,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
               name: t('functionCase.kanbanView.setBlocked'),
               key: 'block',
               icon: 'icon-xiugaiceshijieguo',
-              disabled: !isAdmin && !permissions.includes('TEST'),
+              disabled: !isAdmin.value && !permissions.includes('TEST'),
               hide: false
             });
           }
@@ -1230,7 +1230,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
             name: t('functionCase.kanbanView.retest'),
             key: 'retest',
             icon: 'icon-xiugaiceshijieguo',
-            disabled: !isAdmin && (!permissions.includes('RESET_TEST_RESULT') || planAuthMap.value[item.planId]) && item.testerId !== userInfo?.id,
+            disabled: !isAdmin.value && (!permissions.includes('RESET_TEST_RESULT') || planAuthMap.value[item.planId]) && item.testerId !== userInfo?.id,
             hide: false
           });
 
@@ -1239,7 +1239,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
               name: t('functionCase.kanbanView.addBug'),
               key: 'addBug',
               icon: 'icon-bianji',
-              disabled: !isAdmin && !permissions.includes('MODIFY_CASE'),
+              disabled: !isAdmin.value && !permissions.includes('MODIFY_CASE'),
               hide: false
             });
           }
@@ -1251,7 +1251,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
             name: t('functionCase.kanbanView.resetTestResult'),
             key: 'resetTestResult',
             icon: 'icon-zhongzhiceshijieguo',
-            disabled: !isAdmin && (!permissions.includes('RESET_TEST_RESULT') || planAuthMap.value[item.planId]),
+            disabled: !isAdmin.value && (!permissions.includes('RESET_TEST_RESULT') || planAuthMap.value[item.planId]),
             hide: false,
             tip: t('functionCase.kanbanView.resetTestResultTip')
           });
@@ -1262,7 +1262,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
             name: t('functionCase.kanbanView.cancel'),
             key: 'cancel',
             icon: 'icon-qingchu',
-            disabled: !isAdmin && !permissions.includes('TEST'),
+            disabled: !isAdmin.value && !permissions.includes('TEST'),
             hide: false
           });
         }
@@ -1272,7 +1272,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         name: t('functionCase.kanbanView.clone'),
         key: 'clone',
         icon: 'icon-fuzhi',
-        disabled: !isAdmin && !permissions.includes('ADD_CASE'),
+        disabled: !isAdmin.value && !permissions.includes('ADD_CASE'),
         hide: false
       });
 
@@ -1280,7 +1280,7 @@ const menuItemsMap = computed<Map<string, ActionMenuItem[]>>(() => {
         name: t('functionCase.kanbanView.move'),
         key: 'move',
         icon: 'icon-yidong',
-        disabled: !isAdmin && !permissions.includes('MODIFY_CASE'),
+        disabled: !isAdmin.value && !permissions.includes('MODIFY_CASE'),
         hide: false
       });
 

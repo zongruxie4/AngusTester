@@ -11,7 +11,7 @@ import { useI18n } from 'vue-i18n';
 import { ReviewInfo } from '../types';
 
 import SearchPanel from '@/views/function/review/list/SearchPanel.vue';
-import {TIME_FORMAT} from "@/utils/constant";
+import { TIME_FORMAT } from '@/utils/constant';
 
 type Props = {
   projectId: string;

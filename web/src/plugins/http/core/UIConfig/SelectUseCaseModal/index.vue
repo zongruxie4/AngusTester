@@ -52,7 +52,6 @@ const apisId = ref();
 const inputValue = ref<string>();
 const useCaseList = ref<UseCaseItem[]>([]);
 
-
 const changeSelectCase = (caseIds: string[], cases: any[]) => {
   checkedUseCaseIds.value = caseIds;
   apisId.value = cases?.[0]?.apisId || undefined;

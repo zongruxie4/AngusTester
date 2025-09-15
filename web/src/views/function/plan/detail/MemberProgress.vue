@@ -5,8 +5,7 @@ import { Progress } from 'ant-design-vue';
 import { analysis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-
-import {MemberProgressData} from "@/views/function/plan/types";
+import { MemberProgressData } from '@/views/function/plan/types';
 
 const { t } = useI18n();
 

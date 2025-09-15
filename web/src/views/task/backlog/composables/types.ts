@@ -72,11 +72,6 @@ export type DrawerActiveKey = 'basic' | 'person' | 'date' | 'comment' | 'activit
 export type QuickDateFilter = '1' | '3' | '7';
 
 /**
- * <p>Task permission key type</p>
- */
-export type TaskPermissionKey = 'edit' | 'delete' | 'move' | 'split';
-
-/**
  * <p>Drag event interface for task movement</p>
  */
 export interface DragEvent {

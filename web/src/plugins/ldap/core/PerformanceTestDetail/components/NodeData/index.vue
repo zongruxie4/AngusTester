@@ -9,7 +9,6 @@ import { DATE_TIME_FORMAT } from '@/utils/constant';
 
 import { nodeCtrl } from '@/api/ctrl';
 
-
 const { t } = useI18n();
 
 interface NodeItem {
@@ -557,15 +556,15 @@ const setMemoryChartData = () => {
   });
   // // '物理内存剩余量', '物理内存使用量', '实际空闲物理内存百分比', '实际使用物理内存的百分比', '实际空闲内存', '实际使用内存', '空闲内存占用的百分比', '使用内存占用的百分比', '交换区使用量', '交换区剩余量'
   const dataType = [t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.physicalMemoryFree'),
-  t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.physicalMemoryUsed'),
-  t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.actualFreePercentage'),
-  t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.actualUsedPercentage'),
-  t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.actualFreeMemory'),
-  t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.actualUsedMemory'),
-  t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.freeMemoryPercentage'),
-  t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.usedMemoryPercentage'),
-  t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.swapUsed'),
-  t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.swapFree')];
+    t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.physicalMemoryUsed'),
+    t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.actualFreePercentage'),
+    t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.actualUsedPercentage'),
+    t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.actualFreeMemory'),
+    t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.actualUsedMemory'),
+    t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.freeMemoryPercentage'),
+    t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.usedMemoryPercentage'),
+    t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.swapUsed'),
+    t('ftpPlugin.performanceTestDetail.nodeData.memoryMetrics.swapFree')];
   const dataTypeKey = ['free', 'used', 'freePercent', 'usedPercent', 'actualFree', 'actualUsed', 'actualFreePercent', 'actualUsedPercent', 'swapFree', 'swapUsed'];
   // loadingChartData.value = false;
   const seriesData = dataType.map(type => {
