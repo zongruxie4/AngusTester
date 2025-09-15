@@ -595,8 +595,7 @@ const testerDefaultOptions = computed(() => {
 
 /* Assign to me button styles */
 .assign-to-me-btn {
-  font-size: 10px;
-  padding: 1px 4px;
+  font-size: 12px;
   height: 18px;
   line-height: 16px;
   margin-left: 4px;

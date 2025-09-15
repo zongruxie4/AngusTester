@@ -57,6 +57,7 @@ const richEditorRef = ref();
 const isLoading = ref<boolean>(false);
 const isZoomedIn = ref(false);
 const isEditorVisible = ref(false);
+const formKey = ref(0); // Force form re-render
 
 const currentEvalWorkloadMethod = ref<EvalWorkloadMethod>(EvalWorkloadMethod.STORY_POINT);
 const sprintDeadlineDate = ref<string>();
@@ -466,12 +467,21 @@ const cancelModal = () => {
  */
 const fetchTaskDetails = async (): Promise<Partial<TaskInfo>> => {
   isLoading.value = true;
+  console.log('🔍 Fetching task details for taskId:', props.taskId);
   const [error, res] = await task.getTaskDetail(props.taskId);
   isLoading.value = false;
-  if (error || !res?.data) {
+  
+  if (error) {
+    console.error('Error fetching task details:', error);
+    return { id: props.taskId! };
+  }
+  
+  if (!res?.data) {
+    console.warn('No data returned from task.getTaskDetail');
     return { id: props.taskId! };
   }
 
+  console.log('Task details loaded successfully:', res.data);
   return res.data;
 };
 
@@ -499,7 +509,19 @@ const resetFormToDefaults = () => {
   if (dayjs(formState.deadlineDate).hour() > 19 || dayjs(formState.deadlineDate).hour() < 8) {
     formState.deadlineDate = dayjs(formState.deadlineDate).add(12, 'hour').format(DATE_TIME_FORMAT);
   }
-  formState.description = props.description || '';
+  // Handle description data format for RichEditor
+  if (props.description) {
+    try {
+      // Try to parse as JSON first (for RichEditor format)
+      JSON.parse(props.description);
+      formState.description = props.description;
+    } catch {
+      // If not JSON, wrap in RichEditor format
+      formState.description = JSON.stringify([{ insert: props.description }]);
+    }
+  } else {
+    formState.description = '';
+  }
   formState.evalWorkload = '';
   formState.actualWorkload = '';
   formState.name = props.name || '';
@@ -533,15 +555,19 @@ onMounted(() => {
   watch(() => props.visible, async () => {
     if (props.visible) {
       await loadModuleTreeData();
-      if (typeof formRef.value?.clearValidate === 'function') {
-        await formRef.value.clearValidate();
-      }
-
+      
       if (!props.taskId) {
         resetFormToDefaults();
+        // Clear validation after resetting form
+        if (typeof formRef.value?.clearValidate === 'function') {
+          await formRef.value.clearValidate();
+        }
         return;
       }
 
+      // Set editor visible before loading data to ensure proper rendering
+      isEditorVisible.value = true;
+      
       const taskData = await fetchTaskDetails();
       if (!taskData) {
         resetFormToDefaults();
@@ -550,29 +576,46 @@ onMounted(() => {
 
       // Set assignee information
       const assigneeId = taskData.assigneeId;
-      formState.assigneeId = assigneeId;
-      assigneeDefaultOptions.value = {
-        [assigneeId]: {
-          fullName: taskData.assigneeName,
-          id: assigneeId
-        }
-      };
+      if (assigneeId) {
+        formState.assigneeId = assigneeId;
+        assigneeDefaultOptions.value = {
+          [assigneeId]: {
+            fullName: taskData.assigneeName || '',
+            id: assigneeId
+          }
+        };
+      }
 
       // Set confirmer information
       const confirmerId = taskData.confirmerId;
-      formState.confirmerId = confirmerId;
-      confirmerDefaultOptions.value = {
-        [confirmerId]: {
-          fullName: taskData.confirmerName,
-          id: confirmerId
-        }
-      };
+      if (confirmerId) {
+        formState.confirmerId = confirmerId;
+        confirmerDefaultOptions.value = {
+          [confirmerId]: {
+            fullName: taskData.confirmerName || '',
+            id: confirmerId
+          }
+        };
+      }
 
       // Populate form with task data
+      console.log('📝 Populating form with task data...');
       formState.attachments = taskData.attachments || [];
       formState.moduleId = taskData.moduleId ? (+taskData.moduleId < 0 ? undefined : taskData.moduleId) : undefined;
       formState.deadlineDate = taskData.deadlineDate;
-      formState.description = taskData.description;
+      // Handle description data format for RichEditor
+      if (taskData.description) {
+        try {
+          // Try to parse as JSON first (for RichEditor format)
+          JSON.parse(taskData.description);
+          formState.description = taskData.description;
+        } catch {
+          // If not JSON, wrap in RichEditor format
+          formState.description = JSON.stringify([{ insert: taskData.description }]);
+        }
+      } else {
+        formState.description = '';
+      }
       formState.evalWorkload = taskData.evalWorkload;
       formState.actualWorkload = taskData.actualWorkload;
       formState.name = taskData.name;
@@ -590,13 +633,45 @@ onMounted(() => {
       formState.missingBug = taskData.missingBug || false;
       formState.bugLevel = taskData.bugLevel?.value || BugLevel.MINOR;
       formState.softwareVersion = taskData.softwareVersion;
+      
+      console.log('📋 Form state after population:', {
+        name: formState.name,
+        description: formState.description,
+        taskType: formState.taskType,
+        priority: formState.priority,
+        assigneeId: formState.assigneeId,
+        sprintId: formState.sprintId
+      });
 
       previousFormState = cloneDeep(formState);
 
       currentEvalWorkloadMethod.value = taskData.evalWorkloadMethod?.value || EvalWorkloadMethod.STORY_POINT;
-      isEditorVisible.value = true;
+      
+      // Force form re-render to ensure data binding
+      formKey.value++;
+      
+      // Wait for DOM to update before clearing validation
+      nextTick(() => {
+        // Clear validation after DOM update
+        if (typeof formRef.value?.clearValidate === 'function') {
+          formRef.value.clearValidate();
+        }
+      });
+    } else {
+      // Reset editor visibility when modal is closed
+      isEditorVisible.value = false;
     }
   }, { immediate: true });
+  
+  // Watch formState changes for debugging
+  watch(() => formState, (newState) => {
+    console.log('🔄 Form state changed:', {
+      name: newState.name,
+      description: newState.description,
+      taskType: newState.taskType,
+      priority: newState.priority
+    });
+  }, { deep: true });
 });
 
 /**
@@ -721,6 +796,7 @@ const getPopupContainer = () => {
     </Tooltip>
 
     <Form
+      :key="formKey"
       ref="formRef"
       :model="formState"
       :labelCol="{style: {width: '90px'}}"
