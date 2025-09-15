@@ -35,20 +35,21 @@ const deleteTabPane = inject<(value: string[]) => void>('deleteTabPane');
 
 const Introduce = defineAsyncComponent(() => import('@/views/task/backlog/Introduce.vue'));
 const SearchPanel = defineAsyncComponent(() => import('@/views/task/backlog/SearchPanel.vue'));
+const EditTaskModal = defineAsyncComponent(() => import('@/views/task/backlog/Edit.vue'));
+const SplitTask = defineAsyncComponent(() => import('@/views/task/backlog/SplitTask.vue'));
+const AIGenerateTask = defineAsyncComponent(() => import('@/views/task/backlog/AiGenerateTask.vue'));
+
 const ApiInfo = defineAsyncComponent(() => import('@/views/task/backlog/info/Apis.vue'));
 const BasicInfo = defineAsyncComponent(() => import('@/views/task/backlog/info/Basic.vue'));
 const ScenarioInfo = defineAsyncComponent(() => import('@/views/task/backlog/info/Scenario.vue'));
 const PersonnelInfo = defineAsyncComponent(() => import('@/views/task/backlog/info/Personnel.vue'));
 const DateInfo = defineAsyncComponent(() => import('@/views/task/backlog/info/Date.vue'));
-const Comment = defineAsyncComponent(() => import('@/views/task/backlog/Comment.vue'));
-const Activity = defineAsyncComponent(() => import('@/views/task/backlog/Activity.vue'));
-const RefTasks = defineAsyncComponent(() => import('@/views/task/backlog/AssocTask.vue'));
-const RefCases = defineAsyncComponent(() => import('@/views/task/backlog/AssocCase.vue'));
+const RefTasks = defineAsyncComponent(() => import('@/views/task/backlog/info/AssocTask.vue'));
+const RefCases = defineAsyncComponent(() => import('@/views/task/backlog/info/AssocCase.vue'));
 const AttachmentInfo = defineAsyncComponent(() => import('@/views/task/backlog/info/Attachment.vue'));
-const Remarks = defineAsyncComponent(() => import('@/views/task/backlog/Remark.vue'));
-const EditTaskModal = defineAsyncComponent(() => import('@/views/task/backlog/Edit.vue'));
-const SplitTask = defineAsyncComponent(() => import('@/views/task/backlog/SplitTask.vue'));
-const AIGenerateTask = defineAsyncComponent(() => import('@/views/task/backlog/AiGenerateTask.vue'));
+const Remarks = defineAsyncComponent(() => import('@/views/task/backlog/info/Remark.vue'));
+const Comment = defineAsyncComponent(() => import('@/views/task/backlog/info/Comment.vue'));
+const Activity = defineAsyncComponent(() => import('@/views/task/backlog/info/Activity.vue'));
 
 // Initialize composables
 const {

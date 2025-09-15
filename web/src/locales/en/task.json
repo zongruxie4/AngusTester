@@ -820,7 +820,7 @@
         }
       },
       "attachment": {
-        "title": "Attachment",
+        "title": "Attachments",
         "continueUpload": "Continue Upload",
         "selectFile": "Select File",
         "fileSizeLimit": "Single file size not exceeding {maxSize}M, maximum 5 files",

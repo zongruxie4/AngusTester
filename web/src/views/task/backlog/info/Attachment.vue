@@ -164,72 +164,120 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="h-full text-3 leading-5 px-5 overflow-auto">
-    <div class="text-theme-title mb-2.5 font-semibold">
-      {{ t('backlog.info.attachment.title') }}
+  <div class="basic-info-drawer">
+    <div class="basic-info-header">
+      <h3 class="basic-info-title">{{ t('backlog.info.attachment.title') }}</h3>
     </div>
-    <Spin
-      :spinning="isUploading"
-      :class="{ empty: isAttachmentListEmpty }"
-      class="upload-container w-full px-3 py-2.5 leading-5 text-3 rounded border border-dashed">
-      <template v-if="!isAttachmentListEmpty">
-        <div
-          v-for="attachment in attachmentList"
-          :key="attachment.id"
-          class="leading-4 mb-2 last:mb-0 flex items-center justify-between overflow-hidden">
-          <a
-            class="flex-1 flex-nowrap truncate"
-            :download="attachment.name"
-            :href="attachment.url">{{ attachment.name }}</a>
-          <Icon
-            icon="icon-qingchu"
-            class="text-3.5 flex-shrink-0 cursor-pointer text-theme-text-hover"
-            @click="handleAttachmentDeletion(attachment)">
-          </icon>
-        </div>
 
-        <div v-if="attachmentList.length < 5" class="upload-action flex justify-center h-5">
-          <Upload
-            :maxCount="5"
-            :showUploadList="false"
-            :customRequest="handleCustomUploadRequest"
-            @change="handleFileUploadChange">
-            <Button
-              size="small"
-              type="link"
-              class="flex items-center h-auto leading-4.5 p-0">
-              <Icon icon="icon-shangchuan" class="text-3.5 flex-shrink-0 text-text-link" />
-              <div class="flex-shrink-0 text-text-link ml-1">{{ t('backlog.info.attachment.continueUpload') }}</div>
-            </Button>
-          </Upload>
-        </div>
-      </template>
-
-      <template v-else>
-        <Upload
-          :maxCount="5"
-          :showUploadList="false"
-          :customRequest="handleCustomUploadRequest"
-          @change="handleFileUploadChange">
-          <Button
-            size="small"
-            type="link"
-            class="flex flex-col items-center justify-center h-auto leading-5 p-0">
-            <Icon icon="icon-shangchuan" class="text-5 flex-shrink-0 text-text-link" />
-            <div class="flex-shrink-0 text-text-link">
-              {{ t('backlog.info.attachment.selectFile') }}
+    <!-- Scrollable Content Area -->
+    <div class="scrollable-content">
+      <div class="basic-info-content">
+        <Spin
+          :spinning="isUploading"
+          :class="{ empty: isAttachmentListEmpty }"
+          class="upload-container w-full px-3 py-2.5 leading-5 text-3 rounded border border-dashed">
+          <template v-if="!isAttachmentListEmpty">
+            <div
+              v-for="attachment in attachmentList"
+              :key="attachment.id"
+              class="leading-4 mb-2 last:mb-0 flex items-center justify-between overflow-hidden">
+              <a
+                class="flex-1 flex-nowrap truncate"
+                :download="attachment.name"
+                :href="attachment.url">{{ attachment.name }}</a>
+              <Icon
+                icon="icon-qingchu"
+                class="text-3.5 flex-shrink-0 cursor-pointer text-theme-text-hover"
+                @click="handleAttachmentDeletion(attachment)">
+              </icon>
             </div>
-          </Button>
-        </Upload>
-        <div class="text-theme-sub-content mt-1">
-          {{ t('backlog.info.attachment.fileSizeLimit', { maxSize: MAX_FILE_SIZE_MB }) }}
-        </div>
-      </template>
-    </Spin>
+
+            <div v-if="attachmentList.length < 5" class="upload-action flex justify-center h-5">
+              <Upload
+                :maxCount="5"
+                :showUploadList="false"
+                :customRequest="handleCustomUploadRequest"
+                @change="handleFileUploadChange">
+                <Button
+                  size="small"
+                  type="link"
+                  class="flex items-center h-auto leading-4.5 p-0">
+                  <Icon icon="icon-shangchuan" class="text-3.5 flex-shrink-0 text-text-link" />
+                  <div class="flex-shrink-0 text-text-link ml-1">{{ t('backlog.info.attachment.continueUpload') }}</div>
+                </Button>
+              </Upload>
+            </div>
+          </template>
+
+          <template v-else>
+            <Upload
+              :maxCount="5"
+              :showUploadList="false"
+              :customRequest="handleCustomUploadRequest"
+              @change="handleFileUploadChange">
+              <Button
+                size="small"
+                type="link"
+                class="flex flex-col items-center justify-center h-auto leading-5 p-0">
+                <Icon icon="icon-shangchuan" class="text-5 flex-shrink-0 text-text-link" />
+                <div class="flex-shrink-0 text-text-link">
+                  {{ t('backlog.info.attachment.selectFile') }}
+                </div>
+              </Button>
+            </Upload>
+            <div class="text-theme-sub-content mt-1">
+              {{ t('backlog.info.attachment.fileSizeLimit', { maxSize: MAX_FILE_SIZE_MB }) }}
+            </div>
+          </template>
+        </Spin>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
+/* Main container styles */
+.basic-info-drawer {
+  width: 370px;
+  height: 100%;
+  background: #ffffff;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header styles */
+.basic-info-header {
+  padding: 12px 20px 8px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.basic-info-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Scrollable content area */
+.scrollable-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+/* Content area styles */
+.basic-info-content {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .upload-container {
   border-color: var(--border-text-box);
   background-color: #fafafa;

@@ -581,407 +581,400 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="h-full text-3 leading-5 px-5 overflow-auto">
-    <div>
-      <div class="text-theme-title mb-2.5 font-semibold">
-        {{ t('backlog.info.apis.basicInfo') }}
-      </div>
+  <div class="basic-info-drawer">
+    <div class="basic-info-header">
+      <h3 class="basic-info-title">{{ t('backlog.info.apis.basicInfo') }}</h3>
+    </div>
 
-      <div class="space-y-2.5">
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
+    <!-- Scrollable Content Area -->
+    <div class="scrollable-content">
+      <div class="basic-info-content">
+        <!-- Task Code -->
+        <div class="info-row">
+          <div class="info-label">
             <span>{{ t('backlog.info.apis.number') }}</span>
-            <Colon class="w-1" />
           </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">
-            {{ props.dataSource?.code }}
+          <div class="info-value">
+            <span class="info-text">{{ props.dataSource?.code }}</span>
           </div>
         </div>
 
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
+        <!-- Task Name -->
+        <div class="info-row">
+          <div class="info-label">
             <span>{{ t('backlog.info.apis.name') }}</span>
-            <Colon class="w-1" />
           </div>
-
-          <div v-show="!isTaskNameEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
-            <div>{{ taskName }}</div>
-            <Button
-              type="link"
-              class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-              @click="startTaskNameEditing">
-              <Icon icon="icon-shuxie" class="text-3.5" />
-            </Button>
+          <div class="info-value">
+            <div v-show="!isTaskNameEditing" class="info-value-content">
+              <span class="info-text">{{ taskName }}</span>
+              <Button
+                type="link"
+                class="edit-btn"
+                @click="startTaskNameEditing">
+                <Icon icon="icon-shuxie" />
+              </Button>
+            </div>
+            <AsyncComponent :visible="isTaskNameEditing">
+              <Input
+                v-show="isTaskNameEditing"
+                ref="taskNameInputRef"
+                v-model:value="taskNameInputValue"
+                :maxlength="200"
+                trim
+                class="edit-input"
+                :placeholder="t('backlog.info.apis.placeholders.taskName')"
+                @blur="handleTaskNameBlur"
+                @pressEnter="handleTaskNameEnterPress" />
+            </AsyncComponent>
           </div>
-
-          <AsyncComponent :visible="isTaskNameEditing">
-            <Input
-              v-show="isTaskNameEditing"
-              ref="taskNameInputRef"
-              v-model:value="taskNameInputValue"
-              :maxlength="200"
-              trim
-              class="edit-container"
-              :placeholder="t('backlog.info.apis.placeholders.taskName')"
-              @blur="handleTaskNameBlur"
-              @pressEnter="handleTaskNameEnterPress" />
-          </AsyncComponent>
         </div>
 
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
+        <!-- Task Type -->
+        <div class="info-row">
+          <div class="info-label">
             <span>{{ t('backlog.info.apis.type') }}</span>
-            <Colon class="w-1" />
           </div>
-
-          <div class="flex items-center">
-            <IconTask :value="taskType" class="text-4 flex-shrink-0" />
-            <span class="ml-1.5">{{ props.dataSource?.taskType?.message }}</span>
+          <div class="info-value">
+            <div class="info-value-content">
+              <IconTask :value="taskType" class="task-type-icon" />
+              <span class="info-text">{{ props.dataSource?.taskType?.message }}</span>
+            </div>
           </div>
         </div>
 
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
+        <!-- Test Type -->
+        <div class="info-row">
+          <div class="info-label">
             <span>{{ t('backlog.info.apis.testType') }}</span>
-            <Colon class="w-1" />
           </div>
-
-          <ScriptTypeTag :value="props.dataSource?.testType" />
+          <div class="info-value">
+            <ScriptTypeTag :value="props.dataSource?.testType" />
+          </div>
         </div>
 
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
+        <!-- Task Status -->
+        <div class="info-row">
+          <div class="info-label">
             <span>{{ t('backlog.info.apis.taskStatus') }}</span>
-            <Colon class="w-1" />
           </div>
-
-          <div class="flex items-center">
-            <TaskStatus :value="taskStatus" />
-            <span
-              v-if="isOverdue"
-              class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
-              style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-              <span class="inline-block transform-gpu scale-90">
+          <div class="info-value">
+            <div class="info-value-content">
+              <TaskStatus :value="taskStatus" />
+              <span
+                v-if="isOverdue"
+                class="overdue-badge">
                 {{ t('backlog.info.apis.overdue') }}
               </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sprint -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('backlog.info.apis.sprint') }}</span>
+          </div>
+          <div class="info-value">
+            <div v-show="!isSprintEditing" class="info-value-content">
+              <span class="info-text" :class="{ 'dash-text': !props.dataSource?.sprintName }">{{ props.dataSource?.sprintName || '--' }}</span>
+              <Button
+                type="link"
+                class="edit-btn"
+                @click="startSprintEditing">
+                <Icon icon="icon-shuxie" />
+              </Button>
+            </div>
+            <AsyncComponent :visible="isSprintEditing">
+              <Select
+                v-show="isSprintEditing"
+                ref="sprintSelectRef"
+                v-model:value="sprintInputValue"
+                :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
+                :fieldNames="{ value: 'id', label: 'name' }"
+                showSearch
+                :placeholder="t('backlog.info.apis.placeholders.selectOrSearchSprint')"
+                class="edit-input"
+                @change="handleSprintSelectionChange"
+                @blur="confirmSprintChange" />
+            </AsyncComponent>
+          </div>
+        </div>
+
+        <!-- Module -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('backlog.info.apis.module') }}</span>
+          </div>
+          <div class="info-value">
+            <div v-show="!isModuleEditing" class="info-value-content">
+              <span class="info-text" :class="{ 'dash-text': !props.dataSource?.moduleName }">{{ props.dataSource?.moduleName || '--' }}</span>
+              <Button
+                type="link"
+                class="edit-btn"
+                @click="startModuleEditing">
+                <Icon icon="icon-shuxie" />
+              </Button>
+            </div>
+            <AsyncComponent :visible="isModuleEditing">
+              <div v-show="isModuleEditing" class="module-edit-container">
+                <TreeSelect
+                  ref="moduleTreeSelectRef"
+                  v-model:value="moduleInputValue"
+                  :treeData="moduleTreeData"
+                  :fieldNames="{ value: 'id', label: 'name', children: 'children' }"
+                  :virtual="false"
+                  size="small"
+                  showSearch
+                  allowClear
+                  class="edit-input"
+                  :placeholder="t('backlog.info.apis.placeholders.selectOrSearchModule')">
+                  <template #title="item">
+                    <div class="flex items-center" :title="item.name">
+                      <Icon icon="icon-mokuai" class="mr-1" />
+                      <div class="truncate">{{ item.name }}</div>
+                    </div>
+                  </template>
+                </TreeSelect>
+                <div class="module-edit-actions">
+                  <Icon
+                    icon="icon-gouxuanzhong"
+                    class="action-icon confirm-icon"
+                    @click="confirmModuleChange" />
+                  <Icon
+                    icon="icon-shanchuguanbi"
+                    class="action-icon cancel-icon"
+                    @click="cancelModuleEditing" />
+                </div>
+              </div>
+            </AsyncComponent>
+          </div>
+        </div>
+
+        <!-- Parent Task -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('backlog.info.apis.parentTask') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="info-text dash-text">{{ props.dataSource?.parentTaskName || '--' }}</span>
+          </div>
+        </div>
+
+        <!-- Service -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('backlog.info.apis.service') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="info-text">{{ props.dataSource?.targetParentName }}</span>
+          </div>
+        </div>
+
+        <!-- API -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('backlog.info.apis.api') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="info-text">{{ props.dataSource?.targetName }}</span>
+          </div>
+        </div>
+
+        <!-- Priority -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('backlog.info.apis.priority') }}</span>
+          </div>
+          <div class="info-value">
+            <div v-show="!isPriorityEditing" class="info-value-content">
+              <TaskPriority :value="props.dataSource?.priority" />
+              <Button
+                type="link"
+                class="edit-btn"
+                @click="startPriorityEditing">
+                <Icon icon="icon-shuxie" />
+              </Button>
+            </div>
+            <AsyncComponent :visible="isPriorityEditing">
+              <SelectEnum
+                v-show="isPriorityEditing"
+                ref="prioritySelectRef"
+                v-model:value="priorityInputValue"
+                enumKey="Priority"
+                :placeholder="t('backlog.info.apis.placeholders.selectPriority')"
+                class="edit-input"
+                @change="handlePrioritySelectionChange"
+                @blur="confirmPriorityChange">
+                <template #option="record">
+                  <TaskPriority :value="{ value: record.value as any, message: record.label }" />
+                </template>
+              </SelectEnum>
+            </AsyncComponent>
+          </div>
+        </div>
+
+        <!-- Workload Estimation Method -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('backlog.info.apis.evalWorkloadMethod') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="info-text">{{ props.dataSource?.evalWorkloadMethod?.message || '--' }}</span>
+          </div>
+        </div>
+
+        <!-- Estimated Workload -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>
+              {{ evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                ? t('backlog.info.apis.evalStoryPoint') : t('backlog.info.apis.evalWorkload') }}
             </span>
           </div>
+          <div class="info-value">
+            <div v-show="!isEvalWorkloadEditing" class="info-value-content">
+              <span class="info-text" :class="{ 'dash-text': !evalWorkload }">{{ evalWorkload || '--' }}</span>
+              <Button
+                type="link"
+                class="edit-btn"
+                @click="startEvalWorkloadEditing">
+                <Icon icon="icon-shuxie" />
+              </Button>
+            </div>
+            <AsyncComponent :visible="isEvalWorkloadEditing">
+              <Input
+                v-show="isEvalWorkloadEditing"
+                ref="evalWorkloadInputRef"
+                v-model:value="evalWorkloadInputValue"
+                class="edit-input"
+                dataType="float"
+                trimAll
+                :min="0.1"
+                :max="1000"
+                :placeholder="t('backlog.info.apis.placeholders.workloadRange')"
+                @blur="handleEvalWorkloadBlur"
+                @pressEnter="handleEvalWorkloadEnterPress" />
+            </AsyncComponent>
+          </div>
         </div>
 
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.apis.sprint') }}</span>
-            <Colon class="w-1" />
+        <!-- Actual Workload -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>
+              {{ evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                ? t('backlog.info.apis.evalStoryPoint') : t('backlog.info.apis.evalWorkload') }}
+            </span>
           </div>
-
-          <div v-show="!isSprintEditing" class="flex items-center">
-            <span class="ml-1.5">{{ props.dataSource?.sprintName }}</span>
-            <Button
-              type="link"
-              class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-              @click="startSprintEditing">
-              <Icon icon="icon-shuxie" class="text-3.5" />
-            </Button>
+          <div class="info-value">
+            <div v-show="!isActualWorkloadEditing" class="info-value-content">
+              <span class="info-text" :class="{ 'dash-text': !actualWorkload }">{{ actualWorkload || '--' }}</span>
+              <Button
+                type="link"
+                class="edit-btn"
+                @click="startActualWorkloadEditing">
+                <Icon icon="icon-shuxie" />
+              </Button>
+            </div>
+            <AsyncComponent :visible="isActualWorkloadEditing">
+              <Input
+                v-show="isActualWorkloadEditing"
+                ref="actualWorkloadInputRef"
+                v-model:value="actualWorkloadInputValue"
+                class="edit-input"
+                dataType="float"
+                trimAll
+                :min="0.1"
+                :max="1000"
+                :placeholder="t('backlog.info.apis.placeholders.workloadRange')"
+                @blur="handleActualWorkloadBlur"
+                @pressEnter="handleActualWorkloadEnterPress" />
+            </AsyncComponent>
           </div>
-
-          <AsyncComponent :visible="isSprintEditing">
-            <Select
-              v-show="isSprintEditing"
-              ref="sprintSelectRef"
-              v-model:value="sprintInputValue"
-              :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
-              :fieldNames="{ value: 'id', label: 'name' }"
-              showSearch
-              :placeholder="t('backlog.info.apis.placeholders.selectOrSearchSprint')"
-              class="edit-container"
-              @change="handleSprintSelectionChange"
-              @blur="confirmSprintChange" />
-          </AsyncComponent>
         </div>
 
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.apis.module') }}</span>
-            <Colon class="w-1" />
+        <!-- Process Count -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('backlog.info.apis.processCount') }}</span>
           </div>
-
-          <div v-show="!isModuleEditing" class="flex items-center">
-            <span class="ml-1.5">{{ props.dataSource?.moduleName }}</span>
-            <Button
-              type="link"
-              class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-              @click="startModuleEditing">
-              <Icon icon="icon-shuxie" class="text-3.5" />
-            </Button>
+          <div class="info-value">
+            <span class="info-text">{{ totalProcessCount }}</span>
           </div>
+        </div>
 
-          <AsyncComponent :visible="isModuleEditing">
-            <div v-show="isModuleEditing" class="flex items-center w-full">
-              <TreeSelect
-                ref="moduleTreeSelectRef"
-                v-model:value="moduleInputValue"
-                :treeData="moduleTreeData"
-                :fieldNames="{ value: 'id', label: 'name', children: 'children' }"
-                :virtual="false"
-                size="small"
+        <!-- Failed Count -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('backlog.info.apis.processFailCount') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="info-text">{{ failedProcessCount }}</span>
+          </div>
+        </div>
+
+        <!-- Tags -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('backlog.info.apis.tags') }}</span>
+          </div>
+          <div class="info-value">
+            <div v-show="!isTagEditing" class="info-value-content">
+              <div v-if="taskTags.length" class="tags-container">
+                <div
+                  v-for="item in taskTags"
+                  :key="item.id"
+                  class="tag-item">
+                  {{ item.name }}
+                </div>
+              </div>
+              <div v-else class="info-text dash-text">--</div>
+              <Button
+                type="link"
+                class="edit-btn"
+                @click="startTagEditing">
+                <Icon icon="icon-shuxie" />
+              </Button>
+            </div>
+            <AsyncComponent :visible="isTagEditing">
+              <Select
+                v-show="isTagEditing"
+                ref="tagSelectRef"
+                v-model:value="selectedTagIds"
+                :fieldNames="{ label: 'name', value: 'id' }"
+                :maxTagCount="5"
+                :maxTagTextLength="15"
+                :maxTags="5"
+                :action="`${TESTER}/task/tag?projectId=${props.projectId}&fullTextSearch=true`"
                 showSearch
                 allowClear
-                class="flex-1"
-                :placeholder="t('backlog.info.apis.placeholders.selectOrSearchModule')">
-                <template #title="item">
-                  <div class="flex items-center" :title="item.name">
-                    <Icon icon="icon-mokuai" class="mr-1 text-3.5" />
-                    <div style="max-width: 220px;" class="truncate">{{ item.name }}</div>
-                  </div>
-                </template>
-              </TreeSelect>
-
-              <Icon
-                icon="icon-gouxuanzhong"
-                class="text-3.5 ml-2 mr-1.5 cursor-pointer text-theme-text-hover"
-                @click="confirmModuleChange" />
-
-              <Icon
-                icon="icon-shanchuguanbi"
-                class="text-3.5 cursor-pointer text-theme-text-hover"
-                @click="cancelModuleEditing" />
-            </div>
-          </AsyncComponent>
-        </div>
-
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.apis.parentTask') }}</span>
-            <Colon class="w-1" />
-          </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">
-            {{ props.dataSource?.parentTaskName || '--' }}
+                :placeholder="t('backlog.info.apis.placeholders.maxTags')"
+                mode="multiple"
+                class="edit-input"
+                :notFoundContent="t('backlog.info.apis.messages.contactAdminForTags')"
+                @change="handleTagSelectionChange"
+                @blur="confirmTagChanges" />
+            </AsyncComponent>
           </div>
         </div>
 
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.apis.service') }}</span>
-            <Colon class="w-1" />
-          </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">
-            {{ props.dataSource?.targetParentName }}
-          </div>
-        </div>
-
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.apis.api') }}</span>
-            <Colon class="w-1" />
-          </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">
-            {{ props.dataSource?.targetName }}
-          </div>
-        </div>
-
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.apis.priority') }}</span>
-            <Colon class="w-1" />
-          </div>
-
-          <div v-show="!isPriorityEditing" class="flex items-center">
-            <TaskPriority :value="props.dataSource?.priority" />
-            <Button
-              type="link"
-              class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-              @click="startPriorityEditing">
-              <Icon icon="icon-shuxie" class="text-3.5" />
-            </Button>
-          </div>
-
-          <AsyncComponent :visible="isPriorityEditing">
-            <SelectEnum
-              v-show="isPriorityEditing"
-              ref="prioritySelectRef"
-              v-model:value="priorityInputValue"
-              enumKey="Priority"
-              :placeholder="t('backlog.info.apis.placeholders.selectPriority')"
-              class="edit-container max-w-52"
-              @change="handlePrioritySelectionChange"
-              @blur="confirmPriorityChange">
-              <template #option="record">
-                <TaskPriority :value="{ value: record.value as any, message: record.label }" />
-              </template>
-            </SelectEnum>
-          </AsyncComponent>
-        </div>
-
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.apis.evalWorkloadMethod') }}</span>
-            <Colon class="w-1" />
-          </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">
-            {{ props.dataSource?.evalWorkloadMethod?.message }}
-          </div>
-        </div>
-
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>
-              {{
-                evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                  ? t('backlog.info.apis.evalStoryPoint') : t('backlog.info.apis.evalWorkload')
-              }}
-            </span>
-            <Colon class="w-1" />
-          </div>
-
-          <div v-show="!isEvalWorkloadEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
-            <div>{{ evalWorkload || '--' }}</div>
-            <Button
-              type="link"
-              class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-              @click="startEvalWorkloadEditing">
-              <Icon icon="icon-shuxie" class="text-3.5" />
-            </Button>
-          </div>
-
-          <AsyncComponent :visible="isEvalWorkloadEditing">
-            <Input
-              v-show="isEvalWorkloadEditing"
-              ref="evalWorkloadInputRef"
-              v-model:value="evalWorkloadInputValue"
-              class="right-component max-w-52"
-              dataType="float"
-              trimAll
-              :min="0.1"
-              :max="1000"
-              :placeholder="t('backlog.info.apis.placeholders.workloadRange')"
-              @blur="handleEvalWorkloadBlur"
-              @pressEnter="handleEvalWorkloadEnterPress" />
-          </AsyncComponent>
-        </div>
-
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>
-              {{
-                evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                  ? t('backlog.info.apis.evalStoryPoint') : t('backlog.info.apis.evalWorkload')
-              }}
-            </span>
-            <Colon class="w-1" />
-          </div>
-
-          <div v-show="!isActualWorkloadEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
-            <div>{{ actualWorkload || '--' }}</div>
-            <Button
-              type="link"
-              class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-              @click="startActualWorkloadEditing">
-              <Icon icon="icon-shuxie" class="text-3.5" />
-            </Button>
-          </div>
-
-          <AsyncComponent :visible="isActualWorkloadEditing">
-            <Input
-              v-show="isActualWorkloadEditing"
-              ref="actualWorkloadInputRef"
-              v-model:value="actualWorkloadInputValue"
-              class="right-component max-w-52"
-              dataType="float"
-              trimAll
-              :min="0.1"
-              :max="1000"
-              :placeholder="t('backlog.info.apis.placeholders.workloadRange')"
-              @blur="handleActualWorkloadBlur"
-              @pressEnter="handleActualWorkloadEnterPress" />
-          </AsyncComponent>
-        </div>
-
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.apis.processCount') }}</span>
-            <Colon class="w-1" />
-          </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">{{ totalProcessCount }}</div>
-        </div>
-
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.apis.processFailCount') }}</span>
-            <Colon class="w-1" />
-          </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">{{ failedProcessCount }}</div>
-        </div>
-
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('backlog.info.apis.tags') }}</span>
-            <Colon class="w-1" />
-          </div>
-
-          <div v-show="!isTagEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
-            <div v-if="taskTags.length" class="flex items-center flex-wrap transform-gpu -translate-y-0.25">
-              <div
-                v-for="item in taskTags"
-                :key="item.id"
-                class="px-2 h-5.5 leading-5 mr-2 mb-2 rounded border border-solid border-border-divider bg-gray-light text-theme-sub-content">
-                {{ item.name }}
-              </div>
-            </div>
-            <div v-else>--</div>
-
-            <Button
-              type="link"
-              class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-              @click="startTagEditing">
-              <Icon icon="icon-shuxie" class="text-3.5" />
-            </Button>
-          </div>
-
-          <AsyncComponent :visible="isTagEditing">
-            <Select
-              v-show="isTagEditing"
-              ref="tagSelectRef"
-              v-model:value="selectedTagIds"
-              :fieldNames="{ label: 'name', value: 'id' }"
-              :maxTagCount="5"
-              :maxTagTextLength="15"
-              :maxTags="5"
-              :action="`${TESTER}/task/tag?projectId=${props.projectId}&fullTextSearch=true`"
-              showSearch
-              allowClear
-              :placeholder="t('backlog.info.apis.placeholders.maxTags')"
-              mode="multiple"
-              class="edit-container"
-              :notFoundContent="t('backlog.info.apis.messages.contactAdminForTags')"
-              @change="handleTagSelectionChange"
-              @blur="confirmTagChanges" />
-          </AsyncComponent>
-        </div>
-
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
+        <!-- One Time Pass -->
+        <div class="info-row">
+          <div class="info-label">
             <span>{{ t('backlog.info.apis.oneTimePass') }}</span>
-            <Colon class="w-1" />
           </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">{{ oneTimePassStatus }}</div>
+          <div class="info-value">
+            <span class="info-text" :class="{ 'dash-text': oneTimePassStatus === '--' }">{{ oneTimePassStatus }}</span>
+          </div>
         </div>
       </div>
 
-      <div class="flex items-start">
-        <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
+      <!-- Software Version -->
+      <div class="info-row">
+        <div class="info-label">
           <span>{{ t('backlog.info.apis.softwareVersion') }}</span>
-          <Colon class="w-1" />
         </div>
-
-        <div class="flex-1">
+        <div class="info-value">
           <template v-if="isVersionEditing">
             <Select
               ref="versionSelectRef"
@@ -989,7 +982,7 @@ onMounted(() => {
               allowClear
               :placeholder="t('backlog.info.apis.placeholders.selectSoftwareVersion')"
               lazy
-              class="w-full"
+              class="edit-input"
               :action="`${TESTER}/software/version?projectId=${props.projectId}`"
               :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN'}]}"
               :fieldNames="{value:'name', label: 'name'}"
@@ -997,51 +990,298 @@ onMounted(() => {
               @change="handleVersionSelectionChange">
             </Select>
           </template>
-
           <template v-else>
-            <div class="flex space-x-1">
+            <div class="info-value-content">
               <RouterLink
                 v-if="props.dataSource?.softwareVersion"
-                class="text-theme-special"
+                class="version-link"
                 :to="`/task#version?name=${props.dataSource?.softwareVersion}`">
                 {{ props.dataSource?.softwareVersion }}
               </RouterLink>
-              <template v-else>
-                --
-              </template>
-
+              <span v-else class="info-text dash-text">--</span>
               <Button
                 type="link"
-                class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
+                class="edit-btn"
                 @click="startVersionEditing">
-                <Icon icon="icon-shuxie" class="text-3.5" />
+                <Icon icon="icon-shuxie" />
               </Button>
             </div>
           </template>
         </div>
       </div>
 
-      <div class="flex items-start">
-        <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
+      <!-- Unplanned Task -->
+      <div class="info-row">
+        <div class="info-label">
           <span>{{ t('backlog.info.apis.unplannedTask') }}</span>
-          <Colon class="w-1" />
         </div>
-        <div>
-          {{ props.dataSource?.unplanned ? t('status.yes') : t('status.no') }}
+        <div class="info-value">
+          <span class="info-text">{{ props.dataSource?.unplanned ? t('status.yes') : t('status.no') }}</span>
         </div>
       </div>
-    </div>
 
-    <Description
-      :projectId="props.projectId"
-      :appInfo="props.appInfo"
-      :dataSource="props.dataSource"
-      @change="emitTaskInfoChange"
-      @loadingChange="emitLoadingStateChange" />
+      <!-- Description Section -->
+      <div class="description-section">
+        <Description
+          :projectId="props.projectId"
+          :appInfo="props.appInfo"
+          :dataSource="props.dataSource"
+          @change="emitTaskInfoChange"
+          @loadingChange="emitLoadingStateChange" />
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
+/* Main container styles */
+.basic-info-drawer {
+  width: 370px;
+  height: 100%;
+  background: #ffffff;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header styles */
+.basic-info-header {
+  padding: 12px 20px 8px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.basic-info-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Scrollable content area */
+.scrollable-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+/* Content area styles */
+.basic-info-content {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Description section styles */
+.description-section {
+  padding: 16px 20px;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* Info row styles */
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  min-height: auto;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+/* Label styles */
+.info-label {
+  flex-shrink: 0;
+  width: 70px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #686868;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.info-label span {
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+/* Value area styles */
+.info-value {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.info-value-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-height: 20px;
+  flex: 1;
+  min-width: 0;
+}
+
+.info-text {
+  font-size: 12px;
+  color: #262626;
+  line-height: 1.4;
+  word-break: break-word;
+  flex: 1;
+  min-width: 0;
+}
+
+.info-text.dash-text {
+  color: #8c8c8c;
+}
+
+/* Edit button styles */
+.edit-btn {
+  flex-shrink: 0;
+  padding: 0;
+  height: 16px;
+  width: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  color: #1890ff !important;
+  cursor: pointer;
+  transition: color 0.2s;
+  margin-left: auto;
+}
+
+.edit-btn:focus {
+  color: #1890ff !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.edit-btn:hover {
+  color: #1890ff;
+}
+
+.edit-btn .anticon {
+  font-size: 12px;
+}
+
+/* Edit input styles */
+.edit-input {
+  width: 100%;
+  font-size: 12px;
+}
+
+/* Task type content styles */
+.task-type-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.task-type-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* Tags container styles */
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+}
+
+.tag-item {
+  font-size: 10px;
+  padding: 2px 6px;
+  background: #f5f5f5;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  color: #595959;
+  line-height: 1.2;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Module edit container styles */
+.module-edit-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.module-edit-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.action-icon {
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+
+.confirm-icon {
+  color: #52c41a;
+}
+
+.confirm-icon:hover {
+  background: #f6ffed;
+  color: #389e0d;
+}
+
+.cancel-icon {
+  color: #ff4d4f;
+}
+
+.cancel-icon:hover {
+  background: #fff2f0;
+  color: #cf1322;
+}
+
+/* Version link styles */
+.version-link {
+  color: #1890ff;
+  text-decoration: none;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.version-link:hover {
+  color: #40a9ff;
+  text-decoration: underline;
+}
+
+/* Overdue badge styles */
+.overdue-badge {
+  font-size: 10px;
+  padding: 1px 4px;
+  background: #fff2f0;
+  border: 1px solid #ffccc7;
+  border-radius: 2px;
+  color: #ff4d4f;
+  line-height: 1.2;
+  margin-left: 6px;
+}
+
+/* Legacy style compatibility */
 .w-1\/2 {
   width: calc((100% - 20px)/2);
 }

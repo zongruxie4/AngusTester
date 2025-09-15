@@ -295,164 +295,320 @@ const testerDefaultOptions = computed(() => {
 </script>
 
 <template>
-  <div class="h-full text-3 leading-5 px-5 overflow-auto">
-    <div class="text-theme-title mb-2.5 font-semibold">
-      {{ t('backlog.info.personnel.title') }}
+  <div class="basic-info-drawer">
+    <div class="basic-info-header">
+      <h3 class="basic-info-title">{{ t('backlog.info.personnel.title') }}</h3>
     </div>
 
-    <div class="space-y-2.5">
-      <div class="flex items-start">
-        <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>{{ t('backlog.info.personnel.creator') }}</span>
-          <Colon class="w-1" />
+    <!-- Scrollable Content Area -->
+    <div class="scrollable-content">
+      <div class="basic-info-content">
+        <!-- Creator -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('backlog.info.personnel.creator') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="info-text">{{ createdByName }}</span>
+          </div>
         </div>
 
-        <div class="whitespace-pre-wrap break-words break-all">{{ createdByName }}</div>
-      </div>
-
-      <div class="flex items-start">
-        <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>{{ t('backlog.info.personnel.assignee') }}</span>
-          <Colon class="w-1" />
+        <!-- Assignee -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('backlog.info.personnel.assignee') }}</span>
+          </div>
+          <div class="info-value">
+            <div v-show="!isAssigneeEditing" class="info-value-content">
+              <span class="info-text">{{ assigneeName }}</span>
+              <Button
+                type="link"
+                class="edit-btn"
+                @click="startAssigneeEditing">
+                <Icon icon="icon-shuxie" />
+              </Button>
+              <Button
+                v-if="!assigneeId||assigneeId!==currentUserId"
+                size="small"
+                type="link"
+                class="assign-to-me-btn"
+                @click="assignCurrentUserToRole('assigneeId')">
+                {{ t('backlog.info.personnel.assignToMe') }}
+              </Button>
+            </div>
+            <AsyncComponent :visible="isAssigneeEditing">
+              <SelectUser
+                v-show="isAssigneeEditing"
+                ref="assigneeSelectRef"
+                v-model:value="assigneeInputValue"
+                :placeholder="t('backlog.info.personnel.placeholders.selectAssignee')"
+                allowClear
+                :defaultOptions="assigneeDefaultOptions"
+                :action="`${TESTER}/project/${props.projectId}/member/user`"
+                :maxlength="80"
+                class="edit-input"
+                @change="handleAssigneeSelectionChange"
+                @blur="handleAssigneeBlur" />
+            </AsyncComponent>
+          </div>
         </div>
 
-        <div v-show="!isAssigneeEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
-          <div>{{ assigneeName }}</div>
-          <Button
-            type="link"
-            class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-            @click="startAssigneeEditing">
-            <Icon icon="icon-shuxie" class="text-3.5" />
-          </Button>
-          <Button
-            v-if="!assigneeId||assigneeId!==currentUserId"
-            size="small"
-            type="link"
-            class="p-0 h-5 leading-5 ml-1"
-            @click="assignCurrentUserToRole('assigneeId')">
-            {{ t('backlog.info.personnel.assignToMe') }}
-          </Button>
+        <!-- Executor -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('backlog.info.personnel.executor') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="info-text" :class="{ 'dash-text': !execByName }">{{ execByName || '--' }}</span>
+          </div>
         </div>
 
-        <AsyncComponent :visible="isAssigneeEditing">
-          <SelectUser
-            v-show="isAssigneeEditing"
-            ref="assigneeSelectRef"
-            v-model:value="assigneeInputValue"
-            :placeholder="t('backlog.info.personnel.placeholders.selectAssignee')"
-            allowClear
-            :defaultOptions="assigneeDefaultOptions"
-            :action="`${TESTER}/project/${props.projectId}/member/user`"
-            :maxlength="80"
-            class="edit-container"
-            @change="handleAssigneeSelectionChange"
-            @blur="handleAssigneeBlur" />
-        </AsyncComponent>
-      </div>
-
-      <div class="flex items-start">
-        <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>{{ t('backlog.info.personnel.executor') }}</span>
-          <Colon class="w-1" />
+        <!-- Confirmer -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('backlog.info.personnel.confirmer') }}</span>
+          </div>
+          <div class="info-value">
+            <div v-show="!isConfirmerEditing" class="info-value-content">
+              <span class="info-text">{{ confirmerName }}</span>
+              <Button
+                type="link"
+                class="edit-btn"
+                @click="startConfirmerEditing">
+                <Icon icon="icon-shuxie" />
+              </Button>
+              <Button
+                v-if="!confirmerId||confirmerId!==currentUserId"
+                size="small"
+                type="link"
+                class="assign-to-me-btn"
+                @click="assignCurrentUserToRole('confirmerId')">
+                {{ t('backlog.info.personnel.assignToMe') }}
+              </Button>
+            </div>
+            <AsyncComponent :visible="isConfirmerEditing">
+              <SelectUser
+                v-show="isConfirmerEditing"
+                ref="confirmerSelectRef"
+                v-model:value="confirmerInputValue"
+                :placeholder="t('backlog.info.personnel.placeholders.selectConfirmer')"
+                allowClear
+                :defaultOptions="confirmerDefaultOptions"
+                :action="`${TESTER}/project/${props.projectId}/member/user`"
+                :maxlength="80"
+                class="edit-input"
+                @change="handleConfirmerSelectionChange"
+                @blur="handleConfirmerBlur" />
+            </AsyncComponent>
+          </div>
         </div>
 
-        <div class="whitespace-pre-wrap break-words break-all">{{ execByName || '--' }}</div>
-      </div>
-
-      <div class="flex items-start">
-        <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>{{ t('backlog.info.personnel.confirmer') }}</span>
-          <Colon class="w-1" />
+        <!-- Tester -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('backlog.info.personnel.tester') }}</span>
+          </div>
+          <div class="info-value">
+            <div v-show="!isTesterEditing" class="info-value-content">
+              <span class="info-text">{{ testerName }}</span>
+              <Button
+                type="link"
+                class="edit-btn"
+                @click="startTesterEditing">
+                <Icon icon="icon-shuxie" />
+              </Button>
+              <Button
+                v-if="!testerId||testerId!==currentUserId"
+                size="small"
+                type="link"
+                class="assign-to-me-btn"
+                @click="assignCurrentUserToRole('testerId')">
+                {{ t('backlog.info.personnel.assignToMe') }}
+              </Button>
+            </div>
+            <AsyncComponent :visible="isTesterEditing">
+              <SelectUser
+                v-show="isTesterEditing"
+                ref="testerSelectRef"
+                v-model:value="testerInputValue"
+                :placeholder="t('backlog.info.personnel.placeholders.selectTester')"
+                allowClear
+                internal
+                :defaultOptions="testerDefaultOptions"
+                :action="`${TESTER}/project/${props.projectId}/member/user`"
+                :maxlength="80"
+                class="edit-input"
+                @change="handleTesterSelectionChange"
+                @blur="handleTesterBlur" />
+            </AsyncComponent>
+          </div>
         </div>
 
-        <div v-show="!isConfirmerEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
-          <div>{{ confirmerName }}</div>
-          <Button
-            type="link"
-            class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-            @click="startConfirmerEditing">
-            <Icon icon="icon-shuxie" class="text-3.5" />
-          </Button>
-          <Button
-            v-if="!confirmerId||confirmerId!==currentUserId"
-            size="small"
-            type="link"
-            class="p-0 h-5 leading-5 ml-1"
-            @click="assignCurrentUserToRole('confirmerId')">
-            {{ t('backlog.info.personnel.assignToMe') }}
-          </Button>
+        <!-- Last Modifier -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('backlog.info.personnel.lastModifier') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="info-text">{{ lastModifiedByName }}</span>
+          </div>
         </div>
-
-        <AsyncComponent :visible="isConfirmerEditing">
-          <SelectUser
-            v-show="isConfirmerEditing"
-            ref="confirmerSelectRef"
-            v-model:value="confirmerInputValue"
-            :placeholder="t('backlog.info.personnel.placeholders.selectConfirmer')"
-            allowClear
-            :defaultOptions="confirmerDefaultOptions"
-            :action="`${TESTER}/project/${props.projectId}/member/user`"
-            :maxlength="80"
-            class="edit-container"
-            @change="handleConfirmerSelectionChange"
-            @blur="handleConfirmerBlur" />
-        </AsyncComponent>
-      </div>
-
-      <div class="relative flex items-start">
-        <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>{{ t('backlog.info.personnel.tester') }}</span>
-          <Colon class="w-1" />
-        </div>
-
-        <div v-show="!isTesterEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
-          <div>{{ testerName }}</div>
-          <Button
-            type="link"
-            class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-            @click="startTesterEditing">
-            <Icon icon="icon-shuxie" class="text-3.5" />
-          </Button>
-          <Button
-            v-if="!testerId||testerId!==currentUserId"
-            size="small"
-            type="link"
-            class="p-0 h-5 leading-5 ml-1"
-            @click="assignCurrentUserToRole('testerId')">
-            {{ t('backlog.info.personnel.assignToMe') }}
-          </Button>
-        </div>
-
-        <AsyncComponent :visible="isTesterEditing">
-          <SelectUser
-            v-show="isTesterEditing"
-            ref="testerSelectRef"
-            v-model:value="testerInputValue"
-            :placeholder="t('backlog.info.personnel.placeholders.selectTester')"
-            allowClear
-            internal
-            :defaultOptions="testerDefaultOptions"
-            :action="`${TESTER}/project/${props.projectId}/member/user`"
-            :maxlength="80"
-            class="left-component"
-            @change="handleTesterSelectionChange"
-            @blur="handleTesterBlur" />
-        </AsyncComponent>
-      </div>
-
-      <div class="flex items-start">
-        <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>{{ t('backlog.info.personnel.lastModifier') }}</span>
-          <Colon class="w-1" />
-        </div>
-
-        <div class="whitespace-pre-wrap break-words break-all">{{ lastModifiedByName }}</div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+/* Main container styles */
+.basic-info-drawer {
+  width: 370px;
+  height: 100%;
+  background: #ffffff;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header styles */
+.basic-info-header {
+  padding: 12px 20px 8px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.basic-info-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Scrollable content area */
+.scrollable-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+/* Content area styles */
+.basic-info-content {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Info row styles */
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  min-height: auto;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+/* Label styles */
+.info-label {
+  flex-shrink: 0;
+  width: 80px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #686868;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.info-label span {
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+/* Value area styles */
+.info-value {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.info-value-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-height: 20px;
+  flex: 1;
+  min-width: 0;
+}
+
+.info-text {
+  font-size: 12px;
+  color: #262626;
+  line-height: 1.4;
+  word-break: break-word;
+  flex: 1;
+  min-width: 0;
+}
+
+.info-text.dash-text {
+  color: #8c8c8c;
+}
+
+/* Edit button styles */
+.edit-btn {
+  flex-shrink: 0;
+  padding: 0;
+  height: 16px;
+  width: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  color: #1890ff !important;
+  cursor: pointer;
+  transition: color 0.2s;
+  margin-left: auto;
+}
+
+.edit-btn:focus {
+  color: #1890ff !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.edit-btn:hover {
+  color: #1890ff;
+}
+
+.edit-btn .anticon {
+  font-size: 12px;
+}
+
+/* Assign to me button styles */
+.assign-to-me-btn {
+  font-size: 10px;
+  padding: 1px 4px;
+  height: 18px;
+  line-height: 16px;
+  margin-left: 4px;
+}
+
+/* Edit input styles */
+.edit-input {
+  width: 100%;
+  font-size: 12px;
+}
+
+/* Legacy style compatibility */
 .border-none {
   border: none;
 }

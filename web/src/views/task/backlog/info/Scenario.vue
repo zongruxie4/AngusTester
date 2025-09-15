@@ -574,13 +574,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="h-full text-3 leading-5 px-5 overflow-auto">
-    <div>
-      <div class="text-theme-title mb-2.5 font-semibold">
-        {{ t('backlog.info.scenario.basicInfo') }}
-      </div>
+  <div class="basic-info-drawer">
+    <div class="basic-info-header">
+      <h3 class="basic-info-title">{{ t('backlog.info.scenario.basicInfo') }}</h3>
+    </div>
 
-      <div class="space-y-2.5">
+    <!-- Scrollable Content Area -->
+    <div class="scrollable-content">
+      <div class="basic-info-content">
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
             <span>{{ t('backlog.info.scenario.number') }}</span>
@@ -1007,18 +1008,269 @@ onMounted(() => {
           </div>
         </div>
       </div>
-    </div>
 
-    <Description
-      :projectId="props.projectId"
-      :appInfo="props.appInfo"
-      :dataSource="props.dataSource"
-      @change="emitTaskInfoChange"
-      @loadingChange="emitLoadingStateChange" />
+      <!-- Description Section -->
+      <div class="description-section">
+        <Description
+          :projectId="props.projectId"
+          :appInfo="props.appInfo"
+          :dataSource="props.dataSource"
+          @change="emitTaskInfoChange"
+          @loadingChange="emitLoadingStateChange" />
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
+/* Main container styles */
+.basic-info-drawer {
+  width: 370px;
+  height: 100%;
+  background: #ffffff;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header styles */
+.basic-info-header {
+  padding: 12px 20px 8px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.basic-info-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Scrollable content area */
+.scrollable-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+/* Content area styles */
+.basic-info-content {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Description section styles */
+.description-section {
+  padding: 16px 20px;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* Info row styles */
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  min-height: auto;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+/* Label styles */
+.info-label {
+  flex-shrink: 0;
+  width: 70px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #686868;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.info-label span {
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+/* Value area styles */
+.info-value {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.info-value-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-height: 20px;
+  flex: 1;
+  min-width: 0;
+}
+
+.info-text {
+  font-size: 12px;
+  color: #262626;
+  line-height: 1.4;
+  word-break: break-word;
+  flex: 1;
+  min-width: 0;
+}
+
+.info-text.dash-text {
+  color: #8c8c8c;
+}
+
+/* Edit button styles */
+.edit-btn {
+  flex-shrink: 0;
+  padding: 0;
+  height: 16px;
+  width: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  color: #1890ff !important;
+  cursor: pointer;
+  transition: color 0.2s;
+  margin-left: auto;
+}
+
+.edit-btn:focus {
+  color: #1890ff !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.edit-btn:hover {
+  color: #1890ff;
+}
+
+.edit-btn .anticon {
+  font-size: 12px;
+}
+
+/* Edit input styles */
+.edit-input {
+  width: 100%;
+  font-size: 12px;
+}
+
+/* Task type content styles */
+.task-type-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.task-type-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* Tags container styles */
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+}
+
+.tag-item {
+  font-size: 10px;
+  padding: 2px 6px;
+  background: #f5f5f5;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  color: #595959;
+  line-height: 1.2;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Module edit container styles */
+.module-edit-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.module-edit-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.action-icon {
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+
+.confirm-icon {
+  color: #52c41a;
+}
+
+.confirm-icon:hover {
+  background: #f6ffed;
+  color: #389e0d;
+}
+
+.cancel-icon {
+  color: #ff4d4f;
+}
+
+.cancel-icon:hover {
+  background: #fff2f0;
+  color: #cf1322;
+}
+
+/* Version link styles */
+.version-link {
+  color: #1890ff;
+  text-decoration: none;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.version-link:hover {
+  color: #40a9ff;
+  text-decoration: underline;
+}
+
+/* Overdue badge styles */
+.overdue-badge {
+  font-size: 10px;
+  padding: 1px 4px;
+  background: #fff2f0;
+  border: 1px solid #ffccc7;
+  border-radius: 2px;
+  color: #ff4d4f;
+  line-height: 1.2;
+  margin-left: 6px;
+}
+
+/* Legacy style compatibility */
 .w-1\/2 {
   width: calc((100% - 20px)/2);
 }
