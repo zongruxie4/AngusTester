@@ -117,133 +117,121 @@ onMounted(() => {
   <Spin :spinning="isLoading" class="h-full text-3 leading-5 px-5 py-5 overflow-auto">
     <div
       :key="meetingDataSource?.id"
-      class="text-3 leading-5 space-y-2.5 py-2.5 px-3.5 mb-3.5 last:mb-0 meeting-container">
+      class="bg-white rounded-lg shadow-sm p-6 mb-6 meeting-container">
       <!-- Meeting subject -->
-      <div class="text-theme-title font-medium">
+      <div class="text-theme-title font-medium text-xl mb-6 pb-4 border-b border-gray-200">
         {{ meetingDataSource?.subject }}
       </div>
 
-      <!-- Meeting type and sprint -->
-      <div class="flex items-start space-x-5">
-        <div class="w-1/2 flex items-start">
-          <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('taskMeeting.columns.type') }}</span>
-            <Colon class="w-1" />
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Meeting type and sprint -->
+        <div class="space-y-4">
+          <div class="flex items-start">
+            <div class="w-24 flex items-center whitespace-nowrap flex-shrink-0 text-gray-900 font-medium text-3 text-right">
+              <span>{{ t('taskMeeting.columns.type') }}</span>
+              <Colon class="w-1 mx-1" />
+            </div>
+
+            <div class="whitespace-pre-wrap break-words break-all text-gray-900 text-3">
+              {{ meetingDataSource?.type?.message }}
+            </div>
           </div>
 
-          <div class="whitespace-pre-wrap break-words break-all">
-            {{ meetingDataSource?.type?.message }}
+          <div class="flex items-start">
+            <div class="w-24 flex items-center whitespace-nowrap flex-shrink-0 text-gray-900 font-medium text-3 text-right">
+              <span>{{ t('taskMeeting.columns.sprint') }}</span>
+              <Colon class="w-1 mx-1" />
+            </div>
+
+            <div class="whitespace-pre-wrap break-words break-all text-gray-900 text-3">
+              {{ meetingDataSource?.sprintName || '--' }}
+            </div>
           </div>
         </div>
 
-        <div class="w-1/2 flex items-start">
-          <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('taskMeeting.columns.sprint') }}</span>
-            <Colon class="w-1" />
-          </div>
+        <!-- Meeting date and time -->
+        <div class="space-y-4">
+          <div class="flex items-start">
+            <div class="w-24 flex items-center whitespace-nowrap flex-shrink-0 text-gray-900 font-medium text-3 text-right">
+              <span>{{ t('taskMeeting.columns.date') }}</span>
+              <Colon class="w-1 mx-1" />
+            </div>
 
-          <div class="whitespace-pre-wrap break-words break-all">
-            {{ meetingDataSource?.sprintName || '--' }}
+            <div class="whitespace-pre-wrap break-words break-all text-gray-900 text-3">
+              {{ meetingDataSource?.date?.format(DATE_FORMAT) }}
+            </div>
           </div>
-        </div>
-      </div>
+          
+          <div class="flex items-start">
+            <div class="w-24 flex items-center whitespace-nowrap flex-shrink-0 text-gray-900 font-medium text-3 text-right">
+              <span>{{ t('taskMeeting.columns.time') }}</span>
+              <Colon class="w-1 mx-1" />
+            </div>
 
-      <!-- Meeting date and time -->
-      <div class="flex items-start space-x-5">
-        <div class="w-1/2 flex items-start">
-          <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('taskMeeting.columns.date') }}</span>
-            <Colon class="w-1" />
-          </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">
-            {{ meetingDataSource?.date?.format(DATE_FORMAT) }}
-          </div>
-        </div>
-        <div class="w-1/2 flex items-start">
-          <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('taskMeeting.columns.time') }}</span>
-            <Colon class="w-1" />
-          </div>
-
-          <div class="text-3 whitespace-nowrap">
-            <span>{{ meetingDataSource?.startTime }}</span>
-            <span class="mx-2">至</span>
-            <span>{{ meetingDataSource?.endTime }}</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Meeting location and moderator -->
-      <div class="flex items-start space-x-5">
-        <div class="w-1/2 flex items-start">
-          <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('taskMeeting.columns.location') }}</span>
-            <Colon class="w-1" />
-          </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">
-            {{ meetingDataSource?.location || '--' }}
-          </div>
-        </div>
-        <div class="w-1/2 flex items-start">
-          <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('taskMeeting.columns.moderator') }}</span>
-            <Colon class="w-1" />
-          </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">
-            {{ meetingDataSource?.moderator?.fullName }}
+            <div class="text-3 whitespace-nowrap text-gray-900">
+              <span>{{ meetingDataSource?.startTime }}</span>
+              <span class="mx-2 text-gray-400">-</span>
+              <span>{{ meetingDataSource?.endTime }}</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Meeting participants -->
-      <div class="flex items-start">
-        <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>{{ t('taskMeeting.columns.participants') }}</span>
-          <Colon class="w-1" />
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+        <!-- Meeting location and moderator -->
+        <div class="space-y-4">
+          <div class="flex items-start">
+            <div class="w-24 flex items-center whitespace-nowrap flex-shrink-0 text-gray-900 font-medium text-3 text-right">
+              <span>{{ t('taskMeeting.columns.location') }}</span>
+              <Colon class="w-1 mx-1" />
+            </div>
+
+            <div class="whitespace-pre-wrap break-words break-all text-gray-900 text-3">
+              {{ meetingDataSource?.location || '--' }}
+            </div>
+          </div>
+
+          <div class="flex items-start">
+            <div class="w-24 flex items-center whitespace-nowrap flex-shrink-0 text-gray-900 font-medium text-3 text-right">
+              <span>{{ t('taskMeeting.columns.moderator') }}</span>
+              <Colon class="w-1 mx-1" />
+            </div>
+
+            <div class="whitespace-pre-wrap break-words break-all text-gray-900 text-3">
+              {{ meetingDataSource?.moderator?.fullName }}
+            </div>
+          </div>
         </div>
 
-        <div class="whitespace-pre-wrap break-words break-all">
-          {{ meetingDataSource?.participantNames }}
+        <!-- Meeting participants -->
+        <div class="space-y-4">
+          <div class="flex items-start">
+            <div class="w-24 flex items-center whitespace-nowrap flex-shrink-0 text-gray-900 font-medium text-3 text-right">
+              <span>{{ t('taskMeeting.columns.participants') }}</span>
+              <Colon class="w-1 mx-1" />
+            </div>
+
+            <div class="whitespace-pre-wrap break-words break-all text-gray-900 text-3">
+              {{ meetingDataSource?.participantNames || '--' }}
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- Meeting content -->
-      <div class="flex items-start">
-        <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-          <span>{{ t('taskMeeting.columns.content') }}</span>
-          <Colon class="w-1" />
+      <div class="mt-6 pt-3 border-t border-gray-200">
+        <div class="mt-2">
+          <RichEditor
+            :value="meetingDataSource?.content"
+            mode="view" />
         </div>
-
-        <RichEditor
-          :value="meetingDataSource?.content"
-          mode="view" />
       </div>
     </div>
   </Spin>
 </template>
 
 <style scoped>
-.PENDING {
-  background-color: rgba(45, 142, 255, 100%);
-}
-
-.IN_PROGRESS {
-  background-color: rgba(103, 215, 255, 100%);
-}
-
-.COMPLETED {
-  background-color: rgba(82, 196, 26, 100%);
-}
-
-.BLOCKED {
-  background-color: rgba(255, 165, 43, 100%);
-}
-
 .meeting-container {
   border: 1px solid var(--border-text-box);
-  border-radius: 4px;
 }
 </style>
