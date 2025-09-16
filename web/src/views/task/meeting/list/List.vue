@@ -181,18 +181,18 @@ const getMeetingTypeDotStyle = (typeValue: string) => {
                       <span class="text-sm font-medium">{{ t('taskMeeting.columns.participants') }} ({{ item.participants.length }})</span>
                     </template>
                     <template #content>
-                      <div class="space-y-2 max-w-xs">
+                      <div class="grid grid-cols-5 gap-2 max-w-md">
                         <div
                           v-for="participant in item.participants"
                           :key="participant.id"
-                          class="flex items-center space-x-2">
-                          <div class="w-5 h-5 rounded-full overflow-hidden">
+                          class="flex flex-col items-center space-y-1 p-2">
+                          <div class="w-8 h-8 rounded-full overflow-hidden">
                             <Image
                               class="w-full h-full"
                               :src="participant.avatar"
                               type="avatar" />
                           </div>
-                          <span class="text-sm text-theme-content">{{ participant.fullName }}</span>
+                          <span class="text-xs text-theme-content text-center truncate w-full" :title="participant.fullName">{{ participant.fullName }}</span>
                         </div>
                       </div>
                     </template>
