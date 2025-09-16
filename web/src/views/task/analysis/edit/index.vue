@@ -16,7 +16,7 @@ import { BasicProps } from '@/types/types';
 // Component Props & Configuration
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
-  userInfo: () => ({ id: '' }),
+  userInfo: () => ({ id: '', fullName: '' }),
   data: undefined
 });
 
@@ -248,7 +248,8 @@ onMounted(async () => {
 
   // Watch for template changes to auto-update description
   watch(() => formData.value.template, () => {
-    if (!isDescriptionManuallyChanged.value) {
+    // Only set default description from template when creating (no id)
+    if (!props.data?.id && !formData.value.id && !isDescriptionManuallyChanged.value) {
       formData.value.description = templateDescriptionOptions.value
         .find(item => item.value === formData.value.template as any)?.message || '';
     }
@@ -436,5 +437,6 @@ onMounted(async () => {
 <style scoped>
 .ant-form :deep(.ant-form-item) label {
   height: 28px;
+  font-weight: 600;
 }
 </style>
