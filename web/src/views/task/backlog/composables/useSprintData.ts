@@ -24,7 +24,6 @@ export function useSprintData (
   props: BacklogProps,
   sprintData: SprintDataState,
   loading: LoadingState,
-  search: SearchState,
   getTaskParams: () => TaskQueryParams
 ) {
   const { t } = useI18n();

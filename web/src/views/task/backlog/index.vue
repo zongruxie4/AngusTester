@@ -92,8 +92,8 @@ const {
   handleSprintMemberHover,
   handleSprintTaskSort,
   refreshAllTaskData,
-  totalTaskNum
-} = useSprintData(props, sprintData, loading, search, getTaskParams);
+  totalTaskNum,
+} = useSprintData(props, sprintData, loading, getTaskParams);
 
 // Initialize UI options composable
 const {
@@ -149,6 +149,7 @@ const {
   ui,
   deleteTabPane
 );
+
 
 // Enhanced showAddTaskForm with focus handling
 const showAddTaskFormEnhanced = () => {
@@ -208,14 +209,14 @@ onMounted(() => {
     <Introduce class="mb-7 mx-5" />
     <Spin :spinning="loading.isLoading" class="flex-1 px-5 overflow-hidden">
       <SearchPanel
-        :search="search"
+        v-model:search="search"
         :userId="userId"
         :selectNone="selectNone"
-        @search-change="handleSearchChange"
-        @clear-all-filters="clearAllFilters"
-        @toggle-created-by-me-filter="toggleCreatedByMeFilter"
-        @toggle-assigned-to-me-filter="toggleAssignedToMeFilter"
-        @toggle-date-filter="toggleDateFilter" />
+        @search-change="(value) => {handleSearchChange(value), refreshAllTaskData()}"
+        @clear-all-filters="(event) => {clearAllFilters(event), refreshAllTaskData()}"
+        @toggle-created-by-me-filter="(event)=> {toggleCreatedByMeFilter(event),refreshAllTaskData()}"
+        @toggle-assigned-to-me-filter="(event) => {toggleAssignedToMeFilter(event), refreshAllTaskData()}"
+        @toggle-date-filter="(event) => {toggleDateFilter(event), refreshAllTaskData()}" />
 
       <div class="h-0 border-t border-solid border-theme-text-box mt-2.5"></div>
 
