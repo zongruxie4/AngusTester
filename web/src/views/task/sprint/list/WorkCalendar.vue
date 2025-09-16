@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<Props>(), {
   sprintId: ''
 });
 
-const emits = defineEmits<{(e: 'update:visible', value: boolean):void}>();
+const emits = defineEmits<{(e: 'update:visible', value: boolean): void }>();
 
 // Reactive Data
 const currentUser = ref(appContext.getUser() as unknown as { id: string });

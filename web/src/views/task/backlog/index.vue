@@ -891,7 +891,7 @@ onMounted(() => {
 
                 <Remarks
                   v-show="ui.drawerActiveKey === 'remarks'"
-                  :id="currentInfo.currentTaskInfo?.id || ''"
+                  :id="currentInfo.currentTaskInfo?.id || '-1'"
                   :projectId="props.projectId || ''"
                   :appInfo="props.appInfo || { id: '' }"
                   :userInfo="props.userInfo || { id: '', fullName: '' }" />

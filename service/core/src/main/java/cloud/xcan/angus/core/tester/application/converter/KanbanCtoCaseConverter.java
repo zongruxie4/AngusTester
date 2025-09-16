@@ -145,7 +145,7 @@ public class KanbanCtoCaseConverter {
     List<FuncCaseEfficiencySummary> completedCases = cases.stream()
         .filter(x -> x.getTestResult().isPassed() && nonNull(x.getTestResultHandleDate()))
         .sorted(Comparator.comparing(FuncCaseEfficiencySummary::getTestResultHandleDate))
-        .toList();
+        .collect(Collectors.toList());
     if (isNotEmpty(completedCases)) {
       long processedDays = calcProcessedDays(completedCases);
       backloggedCaseCount.setProcessedInDay(processedDays);
@@ -157,7 +157,7 @@ public class KanbanCtoCaseConverter {
     }
 
     List<FuncCaseEfficiencySummary> backloggedCases = cases.stream()
-        .filter(x -> !x.getTestResult().isFinished()).toList();
+        .filter(x -> !x.getTestResult().isFinished()).collect(Collectors.toList());
     if (isNotEmpty(backloggedCases)) {
       long backloggedNum = backloggedCases.size();
       backloggedCaseCount.setBackloggedNum(backloggedNum);
@@ -182,10 +182,12 @@ public class KanbanCtoCaseConverter {
     List<? extends FuncCaseEfficiencySummary> completedCases = cases.stream()
         .filter(x -> x.getTestResult().isPassed() && nonNull(x.getTestResultHandleDate()))
         .sorted(Comparator.comparing(FuncCaseEfficiencySummary::getTestResultHandleDate))
-        .toList();
+        .collect(Collectors.toList());
     if (isNotEmpty(completedCases)) {
       long processedDays = calcProcessedDays(completedCases);
-      dailyProcessedWorkload = calcDailyProcessedWorkload(completedCases, processedDays);
+      // Cast to the correct type for the second method
+      List<FuncCaseEfficiencySummary> castedCases = (List<FuncCaseEfficiencySummary>) completedCases;
+      dailyProcessedWorkload = calcDailyProcessedWorkload(castedCases, processedDays);
     }
     return dailyProcessedWorkload < 0 ? DEFAULT_DAILY_WORKLOAD : dailyProcessedWorkload;
   }
@@ -200,7 +202,7 @@ public class KanbanCtoCaseConverter {
         minStartCase = case0;
       }
     }
-    if (isNull(minStartCase)) {
+    if (isNull(minStartCase) || isNull(minStartCase.getCreatedDate())) {
       return 0;
     }
     LocalDateTime startTime = minStartCase.getCreatedDate();

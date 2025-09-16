@@ -121,10 +121,10 @@ public class TaskFuncCaseQueryImpl implements TaskFuncCaseQuery {
           .stream().collect(Collectors.toMap(FuncCaseInfo::getId, x -> x));
       if (isNotEmpty(assocCaseInfoMap)) {
         for (TaskFuncCaseAssoc<?, ?> task : tasks) {
-          List<Long> taskAssocCaseIds = tfcs.stream()
+          List<Long> taskAssocCaseIds = new ArrayList<>(tfcs.stream()
               .filter(x -> x.isTaskAssocCase() && x.getWideTargetIds().contains(task.getId()))
               .map(TaskFuncCase::getWideTargetIds).flatMap(Collection::stream).distinct()
-              .toList();
+              .toList());
           taskAssocCaseIds.remove(task.getId());
           if (isNotEmpty(taskAssocCaseIds)) {
             task.setAssocCases(assocCaseInfoMap.entrySet().stream()
