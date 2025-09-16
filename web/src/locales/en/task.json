@@ -992,7 +992,7 @@
       "selectSprint": "Select sprint",
       "selectModerator": "Select meeting moderator",
       "selectParticipants": "Select participants",
-      "inputLocation": "Record meeting location or online meeting link, maximum 100 characters",
+      "inputLocation": "Record meeting location or online meeting link",
       "startTime": "Start time",
       "endTime": "End time",
       "searchSubject": "Search meeting subject",
@@ -1013,15 +1013,15 @@
       "meetingTypeTip": "Specify meeting type for identification and management."
     },
     "form": {
-      "subject": "Meeting Subject",
-      "type": "Meeting Type",
+      "subject": "Subject",
+      "type": "Type",
       "sprint": "Sprint",
-      "date": "Meeting Date",
-      "time": "Meeting Time",
-      "location": "Meeting Location",
-      "moderator": "Meeting Moderator",
+      "date": "Date",
+      "time": "Time",
+      "location": "Location",
+      "moderator": "Moderator",
       "participants": "Participants",
-      "content": "Meeting Content"
+      "content": "Content"
     },
     "meetingTypes": {
       "productGrooming": "Product Grooming",

@@ -156,7 +156,7 @@ const handleMeetingUpdate = async () => {
 
   const meetingId = apiParams.id;
   const meetingSubject = apiParams.subject;
-  updateTabPane({ _id: meetingId, name: meetingSubject });
+  updateTabPane({ name: meetingSubject, _id: meetingId });
   if (meetingDataSource.value) {
     meetingDataSource.value.subject = meetingSubject;
   }
@@ -362,7 +362,7 @@ onMounted(async () => {
       ref="formRef"
       :model="meetingFormState"
       size="small"
-      :labelCol="{ style: { width: '75px' } }"
+      :labelCol="{ style: { width: '112px' } }"
       class="max-w-242.5"
       layout="horizontal">
       <FormItem
@@ -431,7 +431,7 @@ onMounted(async () => {
           :label="t('taskMeeting.form.time')"
           class="flex-1 min-w-0"
           name="time"
-          :rules="{validator: validateTimeRequired, message: '请选择会议时间', required: true}">
+          :rules="{validator: validateTimeRequired, message: t('taskMeeting.messages.timeRequired'), required: true}">
           <div class="w-full flex items-center space-x-1">
             <DatePicker
               v-model:value="meetingFormState.timeStart"
@@ -510,8 +510,13 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-:deep(.ant-form-item-label>label::after) {
+::deep(.ant-form-item-label>label::after) {
   margin-right: 10px;
+}
+
+/* Force bold labels */
+:deep(.ant-form-item-label) > label {
+  font-weight: 600 !important;
 }
 
 .ant-tabs-small>:deep(.ant-tabs-nav) .ant-tabs-tab {

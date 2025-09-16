@@ -992,7 +992,7 @@
       "selectSprint": "选择所属迭代",
       "selectModerator": "选择会议主持人",
       "selectParticipants": "选择参会人员",
-      "inputLocation": "记录会议地点或在线会议的链接，最多支持100个字符",
+      "inputLocation": "记录会议地点或在线会议的链接",
       "startTime": "开始时间",
       "endTime": "结束时间",
       "searchSubject": "查询会议主题",
