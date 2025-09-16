@@ -24,25 +24,8 @@ const currentTaskId = computed(() => {
   return props.dataSource?.id;
 });
 
-// Comment Management Functions
-/**
- * <p>Refresh comment component</p>
- * <p>Refreshes the comment list when task changes</p>
- */
-const refreshCommentComponent = async (taskId: string) => {
-  if (!taskId) {
-    return;
-  }
-  if (typeof smartCommentRef.value?.refresh === 'function') {
-    smartCommentRef.value.refresh();
-  }
-};
-
 // Lifecycle Hooks
 onMounted(() => {
-  watch(() => currentTaskId.value, async (newTaskId) => {
-    await refreshCommentComponent(newTaskId);
-  }, { immediate: true });
 });
 </script>
 <template>

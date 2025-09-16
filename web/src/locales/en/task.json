@@ -543,8 +543,8 @@
     },
     "editForm": {
       "title": {
-        "add": "Add Task",
-        "edit": "Edit Task"
+        "add": "Add Backlog",
+        "edit": "Edit Backlog"
       },
       "labels": {
         "type": "Type",
@@ -840,9 +840,9 @@
       "delete": "Delete",
       "edit": "Edit",
       "placeholders": {
-        "taskType": "Task Type",
+        "taskType": "Backlog Type",
         "selectPriority": "Please select priority",
-        "taskName": "Enter task name, maximum 200 characters, press Enter to auto-save"
+        "taskName": "Enter backlog name, maximum 200 characters, press Enter to auto-save"
       },
       "drawerTitles": {
         "basicInfo": "Basic Information",

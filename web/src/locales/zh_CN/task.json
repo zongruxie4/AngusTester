@@ -543,8 +543,8 @@
     },
     "editForm": {
       "title": {
-        "add": "添加任务",
-        "edit": "编辑任务"
+        "add": "添加 Backlog",
+        "edit": "编辑 Backlog"
       },
       "labels": {
         "type": "类型",
@@ -840,9 +840,9 @@
       "delete": "删除",
       "edit": "编辑",
       "placeholders": {
-        "taskType": "任务类型",
+        "taskType": "Backlog 类型",
         "selectPriority": "请选择优先级",
-        "taskName": "输入任务名称，最大支持200字符，按回车键可自动保存"
+        "taskName": "输入 Backlog 名称，最大支持200字符，按回车键可自动保存"
       },
       "drawerTitles": {
         "basicInfo": "基本信息",
