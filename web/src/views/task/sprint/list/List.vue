@@ -68,6 +68,11 @@ const props = defineProps<Props>();
 
         <div class="px-3.5 flex mt-3 justify-between text-3 text-theme-sub-content">
           <div class="flex leading-5">
+            <div class="flex items-center" style="margin-right: 50px;">
+              <span class="text-theme-content">{{ t('taskSprint.taskCount') }}</span>
+              <Colon />
+              <span class="text-theme-content font-semibold ml-1">{{ item.taskNum }}</span>
+            </div>
             <div class="flex mr-10 items-center">
               <div class="mr-2">
                 <span>{{ t('taskSprint.columns.owner') }}</span>
@@ -142,10 +147,6 @@ const props = defineProps<Props>();
                 </template>
               </Avatar>
             </div>
-          </div>
-
-          <div class="ml-8 text-theme-content">
-            {{ t('taskSprint.taskCount', {count: item.taskNum}) }}
           </div>
         </div>
 
@@ -224,38 +225,42 @@ const props = defineProps<Props>();
             :title="item.otherInformation"
             class="truncate mr-8"
             style="max-width: 70%;">
-            <RichTextEditor :value="item.otherInformation" emptyText="无说明~" />
+            <RichTextEditor
+              :value="item.otherInformation"
+              :emptyText="t('taskSprint.noDescription')" />
           </div>
-          <div class="flex space-x-3 items-center justify-between h-4 leading-5">
+          <div class="flex items-center justify-between h-4 leading-5">
             <RouterLink class="flex items-center space-x-1" :to="`/task#sprint?id=${item.id}&type=edit`">
               <Icon icon="icon-shuxie" class="text-3.5" />
               <span>{{ t('taskSprint.actions.edit') }}</span>
             </RouterLink>
 
             <RouterLink
-              class="flex items-center space-x-1"
+              class="flex items-center space-x-1 ml-3"
               :to="`/task#task?sprintId=${item.id}&sprintName=${item.name}`">
               <Icon icon="icon-renwu2" class="text-3.5" />
               <span>{{ t('taskSprint.actions.viewTasks') }}</span>
             </RouterLink>
 
             <Button
-              :disabled="(!props.isCurrentUserAdmin && !props.sprintPermissionsMap.get(item.id)?.includes(TaskSprintPermission.MODIFY_SPRINT))
+              :disabled="(!props.isCurrentUserAdmin
+                && !props.sprintPermissionsMap.get(item.id)?.includes(TaskSprintPermission.MODIFY_SPRINT))
                 || ![TaskSprintStatus.PENDING].includes(item.status?.value)"
               size="small"
               type="text"
-              class="px-0 flex items-center"
+              class="px-0 flex items-center ml-1"
               @click="props.startSprint(item, index)">
               <Icon icon="icon-kaishi" class="mr-0.5" />
               <span>{{ t('taskSprint.actions.start') }}</span>
             </Button>
 
             <Button
-              :disabled="(!props.isCurrentUserAdmin && !props.sprintPermissionsMap.get(item.id)?.includes(TaskSprintPermission.MODIFY_SPRINT))
+              :disabled="(!props.isCurrentUserAdmin
+                && !props.sprintPermissionsMap.get(item.id)?.includes(TaskSprintPermission.MODIFY_SPRINT))
                 || ![TaskSprintStatus.IN_PROGRESS].includes(item.status?.value)"
               size="small"
               type="text"
-              class="px-0 flex items-center"
+              class="px-0 flex items-center mr-1"
               @click="props.completeSprint(item, index)">
               <Icon icon="icon-yiwancheng" class="mr-0.5" />
               <span>{{ t('taskSprint.actions.complete') }}</span>
@@ -273,7 +278,7 @@ const props = defineProps<Props>();
       </div>
 
       <Pagination
-        v-if="props.totalCount > 5"
+        v-if="props.totalCount > 4"
         :current="props.currentPage"
         :pageSize="props.pageSize"
         :pageSizeOptions="props.pageSizeOptions"

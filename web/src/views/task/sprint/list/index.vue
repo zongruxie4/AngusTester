@@ -45,8 +45,8 @@ const hasActiveSearch = ref(false);
 
 // Pagination state
 const currentPage = ref(1);
-const pageSize = ref(5);
-const pageSizeOptions = ['5', '10', '15', '20', '30'];
+const pageSize = ref(4);
+const pageSizeOptions = ['4', '10', '15', '20', '30'];
 let searchParameters = {
   orderBy: undefined,
   orderSort: undefined,

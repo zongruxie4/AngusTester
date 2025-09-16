@@ -44,9 +44,9 @@ const searchValue = computed({
 
 const handleSearchChange = debounce(duration.search, (event) => {
   emit('update:search', {
-      ...props.search,
-      searchValue: event.target.value
-    });
+    ...props.search,
+    searchValue: event.target.value
+  });
   emit('searchChange', event.target.value);
 });
 

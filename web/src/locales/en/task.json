@@ -2296,7 +2296,9 @@
     "scrumAgileProcess": "Scrum Agile Process",
     "addedSprints": "Added Sprints",
     "notAddedYet": "Not Added Yet",
+    "taskCount": "Tasks",
     "allMembers": "All Members",
+    "noDescription": "No description ~",
     "benefits": {
       "organizeWork": "Organize Work",
       "organizeWorkDesc": "Break down complex projects into manageable iterations with clear goals and deliverables",
@@ -2360,7 +2362,7 @@
       "export": "Export"
     },
     "form": {
-      "name": "Sprint Name",
+      "name": "Name",
       "timePlan": "Time Plan",
       "owner": "Owner",
       "taskPrefix": "Task Prefix",

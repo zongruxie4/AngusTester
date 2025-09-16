@@ -92,7 +92,7 @@ const {
   handleSprintMemberHover,
   handleSprintTaskSort,
   refreshAllTaskData,
-  totalTaskNum,
+  totalTaskNum
 } = useSprintData(props, sprintData, loading, getTaskParams);
 
 // Initialize UI options composable
@@ -149,7 +149,6 @@ const {
   ui,
   deleteTabPane
 );
-
 
 // Enhanced showAddTaskForm with focus handling
 const showAddTaskFormEnhanced = () => {
@@ -693,7 +692,7 @@ onMounted(() => {
                         <Icon icon="icon-shuxie" class="text-3.5" />
                         <span>{{ t('backlog.main.edit') }}</span>
                       </Button>
-                      
+
                       <Button
                         type="text"
                         size="small"

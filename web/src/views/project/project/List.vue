@@ -13,7 +13,7 @@ import {
 } from '@xcan-angus/vue-ui';
 
 // API and utilities
-import { PageQuery, User, appContext } from '@xcan-angus/infra';
+import { PageQuery, appContext } from '@xcan-angus/infra';
 import DefaultProjectImage from '@/assets/images/default.png';
 
 // Composables

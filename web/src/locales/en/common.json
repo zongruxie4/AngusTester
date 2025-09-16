@@ -1,6 +1,8 @@
 {
   "common": {
     "noData": "No data",
+    "noSet": "Not set",
+    "noAttachment": "No attachments",
     "loading": "loading...",
     "name": "Name",
     "creator": "Creator",

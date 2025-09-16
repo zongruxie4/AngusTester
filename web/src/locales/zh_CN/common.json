@@ -1,6 +1,8 @@
 {
   "common": {
     "noData": "无数据",
+    "noSet": "未设置",
+    "noAttachment": "无附件",
     "loading": "加载中...",
     "name": "名称",
     "creator": "添加人",

@@ -68,7 +68,7 @@ const serviceParams = computed(() => {
     targetType: 'TASK_SPRINT'
   };
   if (inputValue.value) {
-    params.filters = [{value: inputValue.value, op: 'MATCH', key: 'targetName'}];
+    params.filters = [{ value: inputValue.value, op: 'MATCH', key: 'targetName' }];
   }
   return params;
 });
@@ -84,7 +84,7 @@ const apiParams = computed(() => {
     targetType: 'TASK'
   };
   if (inputValue.value) {
-    params.filters = [{value: inputValue.value, op: 'MATCH', key: 'targetName'}];
+    params.filters = [{ value: inputValue.value, op: 'MATCH', key: 'targetName' }];
   }
   return params;
 });

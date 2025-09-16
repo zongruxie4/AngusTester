@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Button, Progress, TabPane, Tabs } from 'ant-design-vue';
+import { Button, TabPane, Tabs } from 'ant-design-vue';
 import { Colon, Icon, NoData, notification, Spin } from '@xcan-angus/vue-ui';
 import { appContext, download, enumUtils, TESTER, toClipboard, utils } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
@@ -9,19 +9,10 @@ import { TaskSprintPermission } from '@/enums/enums';
 import { task } from '@/api/tester';
 import { SprintInfo } from '../types';
 import { DATE_FORMAT, TIME_FORMAT } from '@/utils/constant';
+import { BasicProps } from '@/types/types';
 
 // Props Definition
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  data: {
-    _id: string;
-    id: string | undefined;
-  }
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -30,6 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 // Async Components
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+const BasicInfo = defineAsyncComponent(() => import('./BasicInfo.vue'));
 const BurnDownChart = defineAsyncComponent(() => import('@/views/task/sprint/detail/BurndownChart.vue'));
 const MembersProgress = defineAsyncComponent(() => import('@/views/task/sprint/detail/MemberProgress.vue'));
 const WorkCalendar = defineAsyncComponent(() => import('@/views/task/home/WorkCalendar.vue'));
@@ -46,44 +38,6 @@ const deleteTabPane = inject<(key: string, data: { [key: string]: any }) => void
  * Checks if current user is admin
  */
 const isAdmin = computed(() => appContext.isAdmin());
-
-/**
- * Current sprint ID from data source
- */
-const sprintId = computed(() => {
-  return sprintData.value?.id;
-});
-
-/**
- * Attachments list from sprint data
- */
-const attachments = computed(() => {
-  return sprintData.value?.attachments || [];
-});
-
-/**
- * Formatted meetings data with processed dates and times
- */
-const meetings = computed(() => {
-  return sprintData.value?.meetings?.map(item => {
-    const date = dayjs(item.date).format(DATE_FORMAT);
-
-    const time = item.time.split('~');
-    const startTime = dayjs(time[0]).format(TIME_FORMAT);
-    const endTime = dayjs(time[1]).format(TIME_FORMAT);
-
-    const participantNames = item.participants.map(item => item.fullName).join(',');
-    return {
-      ...item,
-      date,
-      startTime,
-      endTime,
-      moderatorName: item.moderator?.fullName,
-      participantNames,
-      id: utils.uuid()
-    };
-  }) || [];
-});
 
 /**
  * Sprint information data
@@ -110,7 +64,40 @@ const isLoading = ref(false);
  */
 const isExporting = ref(false);
 
-// ===== Permission Management =====
+/**
+ * Current sprint ID from data source
+ */
+const sprintId = computed(() => {
+  return sprintData.value?.id;
+});
+
+// Attachments are now handled inside BasicInfo component
+
+/**
+ * Formatted meetings data with processed dates and times
+ */
+const meetings = computed<any[]>(() => {
+  return sprintData.value?.meetings?.map(raw => {
+    const date = dayjs(raw.date).format(DATE_FORMAT);
+
+    const time = raw.time.split('~');
+    const startTime = dayjs(time[0]).format(TIME_FORMAT);
+    const endTime = dayjs(time[1]).format(TIME_FORMAT);
+
+    const participantNames = raw.participants.map(p => p.fullName).join(',');
+    return {
+      ...raw,
+      subject: (raw as any).subject || '',
+      date,
+      startTime,
+      endTime,
+      moderatorName: raw.moderator?.fullName,
+      participantNames,
+      id: utils.uuid()
+    };
+  }) || [];
+});
+
 /**
  * Loads user permissions for the current sprint
  * @param id - Sprint ID
@@ -120,10 +107,7 @@ const loadUserPermissions = async (id: string) => {
     userPermissions.value = enumUtils.getEnumValues(TaskSprintPermission);
     return;
   }
-
-  const params = {
-    admin: true
-  };
+  const params = { admin: true };
   isLoading.value = true;
   const [error, res] = await task.getCurrentUserSprintAuth(id, params);
   isLoading.value = false;
@@ -220,7 +204,6 @@ const refreshSprintData = () => {
   if (!id) {
     return;
   }
-
   loadSprintData(id);
 };
 
@@ -228,7 +211,9 @@ const refreshSprintData = () => {
  * Closes the current tab pane
  */
 const closeTabPane = () => {
-  deleteTabPane(props.data.id + '-detail', {});
+  if (props.data?.id) {
+    deleteTabPane(props.data.id + '-detail', {});
+  }
 };
 
 // Lifecycle Hooks
@@ -306,112 +291,9 @@ onMounted(() => {
       </Button>
     </div>
 
-    <div class="max-w-250 mb-2">
-      <div class="text-theme-title mb-2">{{ t('taskSprint.columns.basicInfo') }}</div>
-      <div class="space-y-2.5">
-        <div class="flex items-start space-x-5">
-          <div class="w-1/2 flex items-start">
-            <div class="w-12.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('taskSprint.columns.name') }}</span>
-              <Colon class="w-1" />
-            </div>
+    <BasicInfo :sprintData="sprintData" :completionRate="completionRate" />
 
-            <div class="whitespace-pre-wrap break-words break-all">{{ sprintData?.name }}</div>
-          </div>
-
-          <div class="w-1/2 flex items-start">
-            <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('taskSprint.columns.timePlan') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <div class="text-3 whitespace-nowrap">
-              <span>{{ sprintData?.startDate }}</span>
-              <span class="mx-2">至</span>
-              <span>{{ sprintData?.deadlineDate }}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex items-start space-x-5">
-          <div class="w-1/2 flex items-start">
-            <div class="w-12.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('taskSprint.columns.owner') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <div class="whitespace-pre-wrap break-words break-all">{{ sprintData?.ownerName }}</div>
-          </div>
-
-          <div class="w-1/2 flex items-start">
-            <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('taskSprint.columns.taskPrefix') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <div class="whitespace-pre-wrap break-words break-all">{{ sprintData?.taskPrefix }}</div>
-          </div>
-        </div>
-
-        <div class="flex items-start space-x-5">
-          <div class="w-1/2 flex items-center">
-            <div class="w-12.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('taskSprint.columns.status') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <div class="text-3 leading-4 flex items-center flex-none whitespace-nowrap mr-3.5">
-              <div class="h-1.5 w-1.5 rounded-full mr-1" :class="sprintData?.status?.value"></div>
-              <div>{{ sprintData?.status?.message }}</div>
-            </div>
-          </div>
-
-          <div class="w-1/2 flex items-center">
-            <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('taskSprint.columns.workloadAssessment') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <div class="whitespace-pre-wrap break-words break-all">
-              {{ sprintData?.evalWorkloadMethod?.message }}
-            </div>
-          </div>
-        </div>
-
-        <div class="flex items-start space-x-5">
-          <div class="w-1/2 flex items-center">
-            <div class="w-12.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('taskSprint.columns.progress') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <Progress :percent="completionRate" style="width:150px;" />
-          </div>
-        </div>
-
-        <div class="flex items-start">
-          <div style="width:calc(50% - 10px);" class="flex items-start">
-            <div class="w-12.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('taskSprint.columns.attachments') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <div class="space-y-1 truncate">
-              <a
-                v-for="item in attachments"
-                :key="item.id"
-                class="block w-auto truncate"
-                :download="item.name"
-                :href="item.url">
-                {{ item.name }}
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <Tabs size="small" class="max-w-250">
+    <Tabs size="small">
       <TabPane key="acceptanceCriteria" :tab="t('taskSprint.columns.acceptanceCriteria')">
         <div class="space-y-1 whitespace-pre-wrap break-words break-all">
           <!-- {{ dataSource?.acceptanceCriteria }} -->
@@ -444,10 +326,10 @@ onMounted(() => {
       </TabPane>
       <TabPane key="meetings" :tab="t('taskSprint.columns.meetingRecords')">
         <div
-          v-for="(item, index) in meetings"
+          v-for="item in meetings"
           :key="item.id"
           class="text-3 leading-5 space-y-2.5 py-2.5 px-3.5 mb-3.5 last:mb-0 meeting-container">
-          <div class="text-theme-title font-medium">{{ item.subject }}</div>
+          <div class="text-theme-title font-medium">{{ (item as any).subject }}</div>
           <div class="flex items-start space-x-5">
             <div class="w-1/2 flex items-start">
               <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
