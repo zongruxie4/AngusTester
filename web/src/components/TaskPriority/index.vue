@@ -4,7 +4,7 @@ import { computed } from 'vue';
 type Props = {
   value: {
     value: 'HIGHEST' | 'HIGH' | 'MEDIUM' | 'LOW' | 'LOWEST';
-    message: string;
+    label: string;
   }
 }
 
@@ -31,7 +31,7 @@ const value = computed(() => {
 });
 
 const message = computed(() => {
-  return props.value?.message;
+  return props.value?.label;
 });
 </script>
 

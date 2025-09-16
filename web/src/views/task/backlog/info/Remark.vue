@@ -1,19 +1,29 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { Button } from 'ant-design-vue';
 import { Icon, NoData, Scroll } from '@xcan-angus/vue-ui';
-import { TESTER, PageQuery } from '@xcan-angus/infra';
+import { TESTER, PageQuery, utils} from '@xcan-angus/infra';
 import { task } from '@/api/tester';
+import { TaskInfo } from '../../types';
 import { TaskInfoProps } from '@/views/task/task/list/task/types';
 import { Remark } from '@/views/task/task/types';
 
 // Component Props
 const props = withDefaults(defineProps<TaskInfoProps>(), {
   id: '-1',
-  notify: undefined
 });
 
+// eslint-disable-next-line func-call-spacing
+const emit = defineEmits<{
+  (event: 'loadingChange', value: boolean): void;
+  (event: 'change', value: Partial<TaskInfo>): void;
+  (event: 'refresh'): void;
+}>();
+
 const { t } = useI18n();
+
+const notify = ref();
 
 // Async Components
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
@@ -42,6 +52,109 @@ const deleteRemark = async (remarkId: string) => {
   remarkList.value = remarkList.value.filter(item => item.id !== remarkId);
 };
 
+
+/**
+ * Current content being edited in the rich text editor
+ * <p>
+ * Contains the HTML/rich text content that the user is typing
+ */
+ const currentRemarkContent = ref<string>('');
+
+
+ /**
+ * Reference to the rich text editor component instance
+ * <p>
+ * Used to programmatically control the editor and access its methods
+ */
+const richTextEditorRef = ref();
+
+/**
+ * Validation error state for content length
+ * <p>
+ * Indicates whether the current content exceeds the maximum allowed length
+ */
+ const isValidationError = ref(false);
+
+ /**
+ * Checks if the content is empty or contains only whitespace
+ * <p>
+ * Validates rich text content by parsing JSON and checking for meaningful content
+ *
+ * @param contentValue - The content string to validate
+ * @returns True if the content is considered empty
+ */
+const isContentEmpty = (contentValue: string) => {
+  const parsedValues = JSON.parse(contentValue);
+  if (!parsedValues?.length) {
+    return true;
+  }
+  if (parsedValues?.length > 1) {
+    return false;
+  }
+  if (parsedValues.length === 1) {
+    return !parsedValues[0].insert.replaceAll('\n', '');
+  }
+  return false;
+};
+
+
+const submitRemark = async () => {
+  if (!currentRemarkContent.value) {
+    return;
+  }
+  if (isContentEmpty(currentRemarkContent.value)) {
+    return;
+  }
+
+  if (isContentTooLong()) {
+    isValidationError.value = true;
+    return;
+  }
+  isValidationError.value = false;
+
+  const requestParams = { taskId: props.id, content: currentRemarkContent.value };
+  debugger;
+  emit('loadingChange', true);
+  const [error] = await task.addTaskRemark(requestParams);
+  emit('loadingChange', false);
+  if (error) {
+    return;
+  }
+
+
+  currentRemarkContent.value = '';
+  notify.value = utils.uuid();
+  debugger;
+  
+};
+
+
+/**
+ * Checks if the content exceeds the maximum allowed length
+ * <p>
+ * Validates that the rich text content does not exceed the 6000 character limit
+ *
+ * @returns True if the content exceeds the maximum length
+ */
+ const isContentTooLong = () => {
+  if (!currentRemarkContent.value) {
+    return false;
+  }
+  const contentLength = richTextEditorRef.value.getLength();
+  return contentLength > 6000;
+};
+
+/**
+ * Handles content changes in the rich text editor
+ * <p>
+ * Updates the current content state when user types or modifies text
+ *
+ * @param newContent - The new content from the editor
+ */
+ const handleEditorContentChange = (newContent: string) => {
+  currentRemarkContent.value = newContent;
+};
+
 /**
  * <p>Query parameters for remark fetching</p>
  * <p>Constructs parameters for fetching remarks ordered by creation date</p>
@@ -60,8 +173,33 @@ const queryParams = computed(() => {
       <h3 class="basic-info-title">{{ t('backlog.remark') }}</h3>
     </div>
 
+
+    <div class="pr-2">
+      <div class="mb-2.5">
+        <RichEditor
+          ref="richTextEditorRef"
+          :value="currentRemarkContent"
+          :height="150"
+          :options="{placeholder: t('task.remark.placeholder')}"
+          @change="handleEditorContentChange" />
+        <div v-show="isValidationError" class="text-status-error">
+          {{ t('task.remark.validation.maxLength') }}
+        </div>
+      </div>
+      <!-- Submit button section -->
+      <div class="space-x-2.5 w-full flex items-center justify-end">
+        <Button
+          size="small"
+          type="primary"
+          @click="submitRemark">
+          {{ t('task.editModal.actions.confirm') }}
+        </Button>
+      </div>
+    </div>
+
     <!-- Scrollable Content Area -->
     <div class="scrollable-content">
+      
       <div class="basic-info-content">
         <!-- Only render Scroll component when we have valid taskId -->
         <Scroll
@@ -70,7 +208,7 @@ const queryParams = computed(() => {
           :hideNoData="true"
           :params="queryParams"
           :lineHeight="56"
-          :notify="props.notify"
+          :notify="notify"
           style="height: calc(100% - 30px);"
           transition
           @change="handleScrollDataChange">

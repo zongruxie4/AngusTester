@@ -34,6 +34,8 @@ export type EditFormState = {
   // Temp for edit
   userInfo?: { id: string; };
   appInfo?: { id: string; };
+  visible?: boolean;
+  taskId?: string;
 }
 
 export type TaskInfoProps = {
@@ -44,4 +46,5 @@ export type TaskInfoProps = {
   taskId?: string;
   loading?: boolean;
   notify?: string;
+  id: string;
 }
