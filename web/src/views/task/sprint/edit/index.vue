@@ -2,26 +2,11 @@
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import {
-  AsyncComponent,
-  DatePicker,
-  Icon,
-  Input,
-  modal,
-  notification,
-  SelectUser,
-  Spin,
-  Tooltip
+  AsyncComponent, DatePicker, Icon, Input, modal, notification, SelectUser, Spin, Tooltip
 } from '@xcan-angus/vue-ui';
 import { Button, Form, FormItem, Radio, RadioGroup, TabPane, Tabs, Upload } from 'ant-design-vue';
 import {
-  appContext,
-  EnumMessage,
-  enumUtils,
-  EvalWorkloadMethod,
-  TESTER,
-  toClipboard,
-  upload,
-  utils
+  appContext, EnumMessage, enumUtils, EvalWorkloadMethod, TESTER, toClipboard, upload, utils
 } from '@xcan-angus/infra';
 import type { Rule } from 'ant-design-vue/es/form';
 import dayjs from 'dayjs';
@@ -29,22 +14,13 @@ import { TaskSprintPermission, TaskSprintStatus } from '@/enums/enums';
 import { task } from '@/api/tester';
 import { EditFormState, SprintInfo } from '../types';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
+import { BasicProps } from '@/types/types';
 
 /**
  * <p>Component props interface for SprintEdit component</p>
  * <p>Defines the required data structure for sprint editing functionality</p>
  */
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  data: {
-    _id: string;
-    id: string | undefined;
-  }
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -62,44 +38,63 @@ const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({
 const replaceTabPane = inject<(id: string, data: { [key: string]: any }) => void>('replaceTabPane', () => ({}));
 
 /**
- * <p>Computed property to check if current user is admin</p>
- * <p>Used for permission-based UI rendering and action enabling</p>
+ * Computed property to check if current user is admin
  */
 const isAdmin = computed(() => appContext.isAdmin());
 
 /**
- * <p>Reference to the form instance for validation and submission</p>
+ * Reference to the form instance for validation and submission
  */
 const formRef = ref();
 
 /**
- * <p>Available workload evaluation method options</p>
- * <p>Populated from enum values for radio group selection</p>
+ * Available workload evaluation method options
  */
 const workloadMethodOptions = ref<EnumMessage<EvalWorkloadMethod>[]>([]);
 
 /**
- * <p>Current sprint data source</p>
- * <p>Contains the sprint information being edited or viewed</p>
+ * Current sprint data source
  */
 const currentSprintData = ref<SprintInfo>();
 
 /**
- * <p>User permissions for current sprint</p>
- * <p>Determines which actions the user can perform</p>
+ * User permissions for current sprint
  */
 const userPermissions = ref<string[]>([]);
 
 /**
- * <p>Default date values for new sprints</p>
- * <p>Start date is current time, deadline is one month from now</p>
+ * Default date values for new sprints
  */
 const defaultStartDate = dayjs().format(DATE_TIME_FORMAT);
 const defaultDeadlineDate = dayjs().add(1, 'month').format(DATE_TIME_FORMAT);
 
 /**
+ * Default owner options for user selection
+ */
+const ownerSelectionOptions = ref<{ [key: string]: { fullName: string; id: string; } }>();
+
+/**
+ * Loading state for async operations
+ */
+const isLoading = ref(false);
+
+/**
+ * Visibility state for authorization modal
+ */
+const isAuthorizeModalVisible = ref(false);
+
+/**
+ * Reference to acceptance criteria rich text editor
+ */
+const acceptanceCriteriaEditorRef = ref();
+
+/**
+ * Reference to other information rich text editor
+ */
+const otherInformationEditorRef = ref();
+
+/**
  * <p>Form state containing all sprint editing data</p>
- * <p>Includes basic info, dates, owner, and additional details</p>
  */
 const formState = ref<EditFormState>({
   taskPrefix: '',
@@ -114,24 +109,6 @@ const formState = ref<EditFormState>({
   attachments: [],
   date: [defaultStartDate, defaultDeadlineDate]
 });
-
-/**
- * <p>Default owner options for user selection</p>
- * <p>Pre-populated when editing existing sprint</p>
- */
-const ownerSelectionOptions = ref<{ [key: string]: { fullName: string; id: string; } }>();
-
-/**
- * <p>Loading state for async operations</p>
- * <p>Controls spinner display during API calls</p>
- */
-const isLoading = ref(false);
-
-/**
- * <p>Visibility state for authorization modal</p>
- * <p>Controls when permission management dialog is shown</p>
- */
-const isAuthorizeModalVisible = ref(false);
 
 /**
  * <p>Prepares form data for API submission</p>
@@ -179,7 +156,6 @@ const prepareFormParams = () => {
 
 /**
  * <p>Refreshes the sprint list in parent component</p>
- * <p>Triggers a notification to update the sprint list tab</p>
  */
 const refreshSprintList = () => {
   nextTick(() => {
@@ -189,7 +165,6 @@ const refreshSprintList = () => {
 
 /**
  * <p>Handles sprint update operation</p>
- * <p>Validates form, calls update API, and updates UI state</p>
  */
 const handleSprintUpdate = async () => {
   const params = prepareFormParams();
@@ -197,7 +172,6 @@ const handleSprintUpdate = async () => {
   isLoading.value = true;
   const [error] = await task.putSprint(params);
   isLoading.value = false;
-
   if (error) {
     return;
   }
@@ -216,7 +190,6 @@ const handleSprintUpdate = async () => {
 
 /**
  * <p>Handles sprint creation operation</p>
- * <p>Validates form, calls create API, and navigates to new sprint</p>
  */
 const handleSprintCreation = async () => {
   const params = prepareFormParams();
@@ -224,7 +197,6 @@ const handleSprintCreation = async () => {
   isLoading.value = true;
   const [error, response] = await task.addSprint(params);
   isLoading.value = false;
-
   if (error) {
     return;
   }
@@ -236,25 +208,15 @@ const handleSprintCreation = async () => {
   const newSprintId = response?.data?.id;
   const sprintName = params.name;
 
-  replaceTabPane(currentTabId, {
-    _id: newSprintId,
-    uiKey: newSprintId,
-    name: sprintName,
-    data: { _id: newSprintId, id: newSprintId }
-  });
+  if (currentTabId && newSprintId) {
+    replaceTabPane(currentTabId, {
+      _id: newSprintId,
+      uiKey: newSprintId,
+      name: sprintName,
+      data: { _id: newSprintId, id: newSprintId }
+    });
+  }
 };
-
-/**
- * <p>Reference to acceptance criteria rich text editor</p>
- * <p>Used for length validation and content management</p>
- */
-const acceptanceCriteriaEditorRef = ref();
-
-/**
- * <p>Reference to other information rich text editor</p>
- * <p>Used for length validation and content management</p>
- */
-const otherInformationEditorRef = ref();
 
 /**
  * <p>Validates maximum length for rich text editor fields</p>
@@ -361,7 +323,9 @@ const deleteSprint = async () => {
       }
 
       notification.success(t('taskSprint.messages.deleteSuccess'));
-      deleteTabPane([props.data._id]);
+      if (props.data?._id) {
+        deleteTabPane([props.data._id]);
+      }
       refreshSprintList();
     }
   });
@@ -445,7 +409,9 @@ const refreshSprintData = () => {
  * <p>Closes the current tab and returns to sprint list</p>
  */
 const closeCurrentTab = () => {
-  deleteTabPane([props.data._id]);
+  if (props.data?._id) {
+    deleteTabPane([props.data._id]);
+  }
 };
 
 /**
@@ -659,29 +625,6 @@ const removeAttachment = (attachmentIndex: number) => {
 };
 
 /**
- * <p>Component initialization and data loading</p>
- * <p>Sets up watchers and loads initial data when component mounts</p>
- */
-onMounted(() => {
-  // Load enum options for form dropdowns
-  loadWorkloadMethodOptions();
-
-  // Watch for data changes and load sprint information
-  watch(() => props.data, async (newData) => {
-    const sprintId = newData?.id;
-    if (!sprintId) {
-      return;
-    }
-
-    // Load permissions and sprint data in parallel
-    await Promise.all([
-      loadUserPermissions(sprintId),
-      loadSprintData(sprintId)
-    ]);
-  }, { immediate: true });
-});
-
-/**
  * <p>Current sprint status value</p>
  * <p>Returns the status enum value for conditional rendering</p>
  */
@@ -709,6 +652,28 @@ const isFormDisabled = computed(() => {
   ].includes(status as TaskSprintStatus));
 });
 
+/**
+ * <p>Component initialization and data loading</p>
+ * <p>Sets up watchers and loads initial data when component mounts</p>
+ */
+onMounted(() => {
+  // Load enum options for form dropdowns
+  loadWorkloadMethodOptions();
+
+  // Watch for data changes and load sprint information
+  watch(() => props.data, async (newData) => {
+    const sprintId = newData?.id;
+    if (!sprintId) {
+      return;
+    }
+
+    // Load permissions and sprint data in parallel
+    await Promise.all([
+      loadUserPermissions(sprintId),
+      loadSprintData(sprintId)
+    ]);
+  }, { immediate: true });
+});
 </script>
 <template>
   <Spin :spinning="isLoading" class="h-full text-3 leading-5 px-5 py-5 overflow-auto">
@@ -828,7 +793,7 @@ const isFormDisabled = computed(() => {
       ref="formRef"
       :model="formState"
       size="small"
-      :labelCol="{ style: { width: '75px' } }"
+      :labelCol="{ style: { width: '150px' } }"
       class="max-w-242.5"
       layout="horizontal">
       <FormItem
@@ -1013,6 +978,11 @@ const isFormDisabled = computed(() => {
 <style scoped>
 :deep(.ant-form-item-label>label::after) {
   margin-right: 10px;
+}
+
+:deep(.ant-form-item-label>label) {
+  font-weight: 500;
+  color: #000;
 }
 
 .ant-tabs-small > :deep(.ant-tabs-nav) .ant-tabs-tab {

@@ -81,7 +81,7 @@ public class ProjectAssembler {
     Set<SearchCriteria> filters = new SearchCriteriaBuilder<>(dto)
         .rangeSearchFields("id")
         .orderByFields("id", "name", "createdBy", "createdDate")
-        .matchSearchFields("name")
+        .matchSearchFields("name", "description")
         .build();
     return new GenericSpecification<>(filters);
   }

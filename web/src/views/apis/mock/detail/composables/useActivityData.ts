@@ -87,7 +87,7 @@ export function useActivityData (initialTargetId?: string) {
     if (value) {
       params.value.filters = [
         ...filtersWithoutDetail,
-        { key: 'detail', op: SearchCriteria.OpEnum.MatchEnd, value }
+        { key: 'detail', op: SearchCriteria.OpEnum.Match, value }
       ];
     } else {
       params.value.filters = filtersWithoutDetail;

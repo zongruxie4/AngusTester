@@ -2300,8 +2300,9 @@
     "scrumAgileProcess": "Scrum敏捷流程",
     "addedSprints": "已添加的迭代",
     "notAddedYet": "还未添加，点击添加",
-    "taskCount": "任务数：{count}",
+    "taskCount": "任务数",
     "allMembers": "所有成员",
+    "noDescription": "无说明~",
     "benefits": {
       "organizeWork": "组织工作",
       "organizeWorkDesc": "将复杂项目分解为可管理的迭代，明确目标和交付物",
@@ -2420,8 +2421,8 @@
     "searchPanel": {
       "searchSprintName": "查询迭代名称、描述",
       "selectOwner": "选择负责人",
-      "startDateGreaterEqual": "迭代开始时间大于等于",
-      "deadlineDateLessEqual": "迭代截止时间小于等于",
+      "startDateGreaterEqual": "迭代开始时间",
+      "deadlineDateLessEqual": "迭代截止时间",
       "sortByCreateTime": "按添加时间",
       "sortByCreator": "按添加人",
       "sortByOwner": "按负责人",

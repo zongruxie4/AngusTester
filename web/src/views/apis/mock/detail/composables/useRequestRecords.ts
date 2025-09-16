@@ -50,7 +50,7 @@ export function useRequestRecords (serviceId: string) {
   const handleSearch = debounce(duration.search, (value: string) => {
     params.value.pageNo = 1;
     if (value) {
-      params.value.filters = [{ key: 'summary', value, op: SearchCriteria.OpEnum.MatchEnd }];
+      params.value.filters = [{ key: 'summary', value, op: SearchCriteria.OpEnum.Match }];
     } else {
       params.value.filters = [];
     }

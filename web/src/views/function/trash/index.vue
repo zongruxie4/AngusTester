@@ -118,7 +118,7 @@ const serviceParams = computed(() => {
   };
 
   if (inputValue.value) {
-    params.filters = [{value: inputValue.value, key: 'targetName', op: 'MATCH_END'}];
+    params.filters = [{value: inputValue.value, key: 'targetName', op: 'MATCH'}];
   }
 
   return params;
@@ -133,7 +133,7 @@ const caseParams = computed(() => {
   };
 
   if (inputValue.value) {
-    params.filters = [{value: inputValue.value, key: 'targetName', op: 'MATCH_END'}];
+    params.filters = [{value: inputValue.value, key: 'targetName', op: 'MATCH'}];
   }
 
   return params;

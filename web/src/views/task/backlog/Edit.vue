@@ -470,12 +470,12 @@ const fetchTaskDetails = async (): Promise<Partial<TaskInfo>> => {
   console.log('🔍 Fetching task details for taskId:', props.taskId);
   const [error, res] = await task.getTaskDetail(props.taskId);
   isLoading.value = false;
-  
+
   if (error) {
     console.error('Error fetching task details:', error);
     return { id: props.taskId! };
   }
-  
+
   if (!res?.data) {
     console.warn('No data returned from task.getTaskDetail');
     return { id: props.taskId! };
@@ -555,7 +555,7 @@ onMounted(() => {
   watch(() => props.visible, async () => {
     if (props.visible) {
       await loadModuleTreeData();
-      
+
       if (!props.taskId) {
         resetFormToDefaults();
         // Clear validation after resetting form
@@ -567,7 +567,7 @@ onMounted(() => {
 
       // Set editor visible before loading data to ensure proper rendering
       isEditorVisible.value = true;
-      
+
       const taskData = await fetchTaskDetails();
       if (!taskData) {
         resetFormToDefaults();
@@ -633,7 +633,7 @@ onMounted(() => {
       formState.missingBug = taskData.missingBug || false;
       formState.bugLevel = taskData.bugLevel?.value || BugLevel.MINOR;
       formState.softwareVersion = taskData.softwareVersion;
-      
+
       console.log('📋 Form state after population:', {
         name: formState.name,
         description: formState.description,
@@ -646,10 +646,10 @@ onMounted(() => {
       previousFormState = cloneDeep(formState);
 
       currentEvalWorkloadMethod.value = taskData.evalWorkloadMethod?.value || EvalWorkloadMethod.STORY_POINT;
-      
+
       // Force form re-render to ensure data binding
       formKey.value++;
-      
+
       // Wait for DOM to update before clearing validation
       nextTick(() => {
         // Clear validation after DOM update
@@ -662,7 +662,7 @@ onMounted(() => {
       isEditorVisible.value = false;
     }
   }, { immediate: true });
-  
+
   // Watch formState changes for debugging
   watch(() => formState, (newState) => {
     console.log('🔄 Form state changed:', {

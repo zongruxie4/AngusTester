@@ -124,7 +124,7 @@ const tableChange = (
  * Load data and handle search parameters
  */
 const loadDataAndRefresh = async () => {
-  const params = inputValue.value ? {filters: [{ value: inputValue.value, key: 'targetName', op: 'MATCH_END' }]} : undefined;
+  const params = inputValue.value ? {filters: [{ value: inputValue.value, key: 'targetName', op: 'MATCH' }]} : undefined;
   await loadData(params);
 };
 

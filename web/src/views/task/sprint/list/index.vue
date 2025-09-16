@@ -1,227 +1,286 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Avatar, Button, Pagination, Progress } from 'ant-design-vue';
-import { UserOutlined } from '@ant-design/icons-vue';
 import {
-  AsyncComponent,
-  Colon,
-  Dropdown,
-  Icon,
-  Image,
-  modal,
-  NoData,
-  notification,
-  Popover,
-  Spin
+  AsyncComponent, modal, notification, Spin
 } from '@xcan-angus/vue-ui';
-import { appContext, download, TESTER, utils } from '@xcan-angus/infra';
+import { appContext, download, ProjectPageQuery, TESTER, utils } from '@xcan-angus/infra';
 import ProcessPng from './images/process.png';
 import { task } from '@/api/tester';
+import { TaskSprintPermission, TaskSprintStatus } from '@/enums/enums';
 
 import { SprintInfo } from '../types';
+import { BasicProps } from '@/types/types';
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  notify: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+// Component props
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
   notify: undefined
 });
 
-type OrderByKey = 'createdDate' | 'createdByName';
-type OrderSortKey = 'ASC' | 'DESC';
-
 const { t } = useI18n();
 
+// Lazy-loaded components
 const SearchPanel = defineAsyncComponent(() => import('@/views/task/sprint/list/SearchPanel.vue'));
 const Introduce = defineAsyncComponent(() => import('@/views/task/sprint/list/Introduce.vue'));
-const Burndown = defineAsyncComponent(() => import('@/views/task/sprint/list/BurndownChart.vue'));
-const ProgressModal = defineAsyncComponent(() => import('@/views/task/sprint/list/MemberProgress.vue'));
-const WorkCalendar = defineAsyncComponent(() => import('@/views/task/sprint/list/WorkCalendar.vue'));
-const RichText = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
+const BurndownChart = defineAsyncComponent(() => import('@/views/task/sprint/list/BurndownChart.vue'));
+const MemberProgressModal = defineAsyncComponent(() => import('@/views/task/sprint/list/MemberProgress.vue'));
+const WorkCalendarModal = defineAsyncComponent(() => import('@/views/task/sprint/list/WorkCalendar.vue'));
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
+const SprintList = defineAsyncComponent(() => import('@/views/task/sprint/list/List.vue'));
 
+// Injected dependencies
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
-const isAdmin = computed(() => appContext.isAdmin());
 
-const loaded = ref(false);
-const loading = ref(false);
+// Computed properties
+const isCurrentUserAdmin = computed(() => appContext.isAdmin());
+
+// Component state
+const isDataLoaded = ref(false);
+const isLoading = ref(false);
 const exportLoadingSet = ref<Set<string>>(new Set());
-const searchedFlag = ref(false);
+const hasActiveSearch = ref(false);
 
-const pageNo = ref(1);
-const pageSize = ref(5);
-let searchPanelParams = {
+// Pagination state
+const currentPage = ref(1);
+const pageSize = ref(4);
+const pageSizeOptions = ['4', '10', '15', '20', '30'];
+let searchParameters = {
   orderBy: undefined,
   orderSort: undefined,
   filters: []
 };
-const total = ref(0);
-const dataList = ref<SprintInfo[]>([]);
-const permissionsMap = ref<Map<string, string[]>>(new Map());
 
-const selectedData = ref<SprintInfo>();
-const authorizeModalVisible = ref(false);
-const burndownVisible = ref(false);
-const progressVisible = ref(false);
-const workCalendarVisible = ref(false);
+const totalCount = ref(0);
+const sprintList = ref<SprintInfo[]>([]);
+const sprintPermissionsMap = ref<Map<string, string[]>>(new Map());
 
-const searchChange = (data) => {
-  searchPanelParams = data;
-  pageNo.value = 1;
-  loadData();
+// Modal visibility state
+const selectedSprint = ref<SprintInfo>();
+const isAuthorizeModalVisible = ref(false);
+const isBurndownModalVisible = ref(false);
+const isProgressModalVisible = ref(false);
+const isWorkCalendarModalVisible = ref(false);
+
+/**
+ * Handle search panel parameter changes
+ * @param searchData - New search parameters from search panel
+ */
+const handleSearchChange = (searchData) => {
+  searchParameters = searchData;
+  currentPage.value = 1;
+  loadSprintData();
 };
 
-const refresh = () => {
-  pageNo.value = 1;
-  permissionsMap.value.clear();
-  loadData();
+/**
+ * Handle refresh button click
+ */
+const handleRefresh = () => {
+  currentPage.value = 1;
+  sprintPermissionsMap.value.clear();
+  loadSprintData();
 };
 
-const setTableData = async (id: string, index: number) => {
-  const [error, res] = await task.getSprintDetail(id);
-  loading.value = false;
+/**
+ * Update sprint data in the list after API call
+ * @param sprintId - ID of the sprint to update
+ * @param index - Index of the sprint in the list
+ */
+const updateSprintData = async (sprintId: string, index: number) => {
+  const [error, response] = await task.getSprintDetail(sprintId);
+  isLoading.value = false;
   if (error) {
     return;
   }
 
-  if (res?.data) {
-    dataList.value[index] = res?.data;
+  if (response?.data) {
+    sprintList.value[index] = response?.data;
   }
 };
 
-const viewBurnDown = (data: SprintInfo) => {
-  selectedData.value = data;
-  burndownVisible.value = true;
+/**
+ * Open burndown chart modal for selected sprint
+ * @param sprint - Sprint data to display
+ */
+const openBurndownChart = (sprint: SprintInfo) => {
+  selectedSprint.value = sprint;
+  isBurndownModalVisible.value = true;
 };
 
-const viewProgress = (data: SprintInfo) => {
-  selectedData.value = data;
-  progressVisible.value = true;
+/**
+ * Open member progress modal for selected sprint
+ * @param sprint - Sprint data to display
+ */
+const openMemberProgress = (sprint: SprintInfo) => {
+  selectedSprint.value = sprint;
+  isProgressModalVisible.value = true;
 };
 
-const viewWorkCalendar = (data: SprintInfo) => {
-  selectedData.value = data;
-  workCalendarVisible.value = true;
+/**
+ * Open work calendar modal for selected sprint
+ * @param sprint - Sprint data to display
+ */
+const openWorkCalendar = (sprint: SprintInfo) => {
+  selectedSprint.value = sprint;
+  isWorkCalendarModalVisible.value = true;
 };
 
-const reopen = async (data: SprintInfo, idx: number) => {
-  loading.value = true;
+/**
+ * Reopen a sprint
+ * @param sprint - Sprint data to reopen
+ * @param index - Index of the sprint in the list
+ */
+const reopenSprint = async (sprint: SprintInfo, index: number) => {
+  isLoading.value = true;
   const [error] = await task.reopenSprint({
-    ids: [data.id]
+    ids: [sprint.id]
   }, {
     paramsType: true
   });
-  loading.value = false;
+  isLoading.value = false;
   if (error) {
     return;
   }
   notification.success(t('taskSprint.messages.reopenSuccess'));
-  setTableData(data.id, idx);
+  await updateSprintData(sprint.id, index);
 };
 
-const restart = async (data: SprintInfo, idx: number) => {
-  loading.value = true;
-  const [error] = await task.restartSprint({ ids: [data.id] }, { paramsType: true });
-  loading.value = false;
+/**
+ * Restart a sprint
+ * @param sprint - Sprint data to restart
+ * @param index - Index of the sprint in the list
+ */
+const restartSprint = async (sprint: SprintInfo, index: number) => {
+  isLoading.value = true;
+  const [error] = await task.restartSprint({ ids: [sprint.id] }, { paramsType: true });
+  isLoading.value = false;
   if (error) {
     return;
   }
   notification.success(t('taskSprint.messages.restartSuccess'));
-  setTableData(data.id, idx);
+  await updateSprintData(sprint.id, index);
 };
 
-const toStart = async (data: SprintInfo, index: number) => {
-  loading.value = true;
-  const id = data.id;
-  const [error] = await task.startSprint(id);
-  loading.value = false;
+/**
+ * Start a sprint
+ * @param sprint - Sprint data to start
+ * @param index - Index of the sprint in the list
+ */
+const startSprint = async (sprint: SprintInfo, index: number) => {
+  isLoading.value = true;
+  const sprintId = sprint.id;
+  const [error] = await task.startSprint(sprintId);
+  isLoading.value = false;
   if (error) {
-    loading.value = false;
+    isLoading.value = false;
     return;
   }
 
   notification.success(t('taskSprint.messages.startSuccess'));
-  setTableData(id, index);
+  await updateSprintData(sprintId, index);
 };
 
-const toCompleted = async (data: SprintInfo, index: number) => {
-  loading.value = true;
-  const id = data.id;
-  const [error] = await task.endSprint(id);
+/**
+ * Complete a sprint
+ * @param sprint - Sprint data to complete
+ * @param index - Index of the sprint in the list
+ */
+const completeSprint = async (sprint: SprintInfo, index: number) => {
+  isLoading.value = true;
+  const sprintId = sprint.id;
+  const [error] = await task.endSprint(sprintId);
   if (error) {
-    loading.value = false;
+    isLoading.value = false;
     return;
   }
 
   notification.success(t('taskSprint.messages.completeSuccess'));
-  setTableData(id, index);
+  await updateSprintData(sprintId, index);
 };
 
-const toBlock = async (data: SprintInfo, index: number) => {
-  loading.value = true;
-  const id = data.id;
-  const [error] = await task.blockSprint(id);
+/**
+ * Block a sprint
+ * @param sprint - Sprint data to block
+ * @param index - Index of the sprint in the list
+ */
+const blockSprint = async (sprint: SprintInfo, index: number) => {
+  isLoading.value = true;
+  const sprintId = sprint.id;
+  const [error] = await task.blockSprint(sprintId);
   if (error) {
     return;
   }
 
   notification.success(t('taskSprint.messages.blockSuccess'));
-  setTableData(id, index);
+  await updateSprintData(sprintId, index);
 };
 
-const toDelete = async (data: SprintInfo) => {
+/**
+ * Delete a sprint with confirmation
+ * @param sprint - Sprint data to delete
+ */
+const deleteSprint = async (sprint: SprintInfo) => {
   modal.confirm({
-    content: t('taskSprint.messages.confirmDelete', { name: data.name }),
+    content: t('taskSprint.messages.confirmDelete', { name: sprint.name }),
     async onOk () {
-      const id = data.id;
-      const [error] = await task.deleteSprint(id);
+      const sprintId = sprint.id;
+      const [error] = await task.deleteSprint(sprintId);
       if (error) {
         return;
       }
 
       notification.success(t('taskSprint.messages.deleteSuccess'));
-      loadData();
-      deleteTabPane([id]);
+      await loadSprintData();
+      deleteTabPane([sprintId]);
     }
   });
 };
 
-const toGrant = (data: SprintInfo) => {
-  selectedData.value = data;
-  authorizeModalVisible.value = true;
+/**
+ * Open authorization modal for sprint
+ * @param sprint - Sprint data to authorize
+ */
+const openAuthorizationModal = (sprint: SprintInfo) => {
+  selectedSprint.value = sprint;
+  isAuthorizeModalVisible.value = true;
 };
 
-const authFlagChange = async ({ auth }: { auth: boolean }) => {
-  const _list = dataList.value;
-  const targetId = selectedData.value?.id;
-  for (let i = 0, len = _list.length; i < len; i++) {
-    if (_list[i].id === targetId) {
-      _list[i].auth = auth;
+/**
+ * Handle authorization flag change
+ * @param authData - Authorization data
+ */
+const handleAuthFlagChange = async ({ auth }: { auth: boolean }) => {
+  const currentSprintList = sprintList.value;
+  const targetSprintId = selectedSprint.value?.id;
+  for (let i = 0, len = currentSprintList.length; i < len; i++) {
+    if (currentSprintList[i].id === targetSprintId) {
+      currentSprintList[i].auth = auth;
       break;
     }
   }
 };
 
-const toClone = async (data: SprintInfo) => {
-  const [error] = await task.cloneSprint(data.id);
+/**
+ * Clone a sprint
+ * @param sprint - Sprint data to clone
+ */
+const cloneSprint = async (sprint: SprintInfo) => {
+  const [error] = await task.cloneSprint(sprint.id);
   if (error) {
     return;
   }
-
   notification.success(t('taskSprint.messages.cloneSuccess'));
-  loadData();
+  await loadSprintData();
 };
 
-const toExport = async (data: SprintInfo) => {
-  const { id, projectId } = data;
+/**
+ * Export sprint data
+ * @param sprint - Sprint data to export
+ */
+const exportSprint = async (sprint: SprintInfo) => {
+  const { id, projectId } = sprint;
   if (exportLoadingSet.value.has(id)) {
     return;
   }
@@ -231,85 +290,92 @@ const toExport = async (data: SprintInfo) => {
   exportLoadingSet.value.delete(id);
 };
 
-const dropdownClick = (
-  data: SprintInfo,
+/**
+ * Handle dropdown menu item click
+ * @param sprint - Sprint data
+ * @param index - Index of the sprint in the list
+ * @param action - Action key to perform
+ */
+const handleDropdownClick = (
+  sprint: SprintInfo,
   index: number,
-  key: 'clone' | 'block' | 'delete' | 'export' | 'grant' | 'viewBurnDown' | 'viewProgress' | 'reopen' | 'restart' | 'viewWorkCalendar'
+  action: string
 ) => {
-  switch (key) {
+  switch (action) {
     case 'block':
-      toBlock(data, index);
+      blockSprint(sprint, index);
       break;
     case 'delete':
-      toDelete(data);
+      deleteSprint(sprint);
       break;
     case 'grant':
-      toGrant(data);
+      openAuthorizationModal(sprint);
       break;
     case 'clone':
-      toClone(data);
+      cloneSprint(sprint);
       break;
     case 'export':
-      toExport(data);
+      exportSprint(sprint);
       break;
     case 'viewBurnDown':
-      viewBurnDown(data);
+      openBurndownChart(sprint);
       break;
     case 'viewProgress':
-      viewProgress(data);
+      openMemberProgress(sprint);
       break;
     case 'reopen':
-      reopen(data, index);
+      reopenSprint(sprint, index);
       break;
     case 'restart':
-      restart(data, index);
+      restartSprint(sprint, index);
       break;
     case 'viewWorkCalendar':
-      viewWorkCalendar(data);
+      openWorkCalendar(sprint);
       break;
   }
 };
 
-const paginationChange = (_pageNo: number, _pageSize: number) => {
-  pageNo.value = _pageNo;
-  pageSize.value = _pageSize;
-  loadData();
+/**
+ * Handle pagination change
+ * @param pageNo - New page number
+ * @param newPageSize - New page size
+ */
+const handlePaginationChange = (pageNo: number, newPageSize: number) => {
+  currentPage.value = pageNo;
+  pageSize.value = newPageSize;
+  loadSprintData();
 };
 
-const loadData = async () => {
-  loading.value = true;
-  const params: {
-    projectId: string;
-    pageNo: number;
-    pageSize: number;
-    orderBy?: OrderByKey;
-    orderSort?: OrderSortKey;
-    filters?: { key: string; op: string; value: string; }[];
-  } = {
+/**
+ * Load sprint data from API
+ */
+const loadSprintData = async () => {
+  isLoading.value = true;
+  const params: ProjectPageQuery = {
     projectId: props.projectId,
-    pageNo: pageNo.value,
+    pageNo: currentPage.value,
     pageSize: pageSize.value,
-    ...searchPanelParams
+    ...searchParameters
   };
 
-  const [error, res] = await task.getSprintList(params);
-  loaded.value = true;
-  loading.value = false;
+  const [error, response] = await task.getSprintList(params);
+  isDataLoaded.value = true;
+  isLoading.value = false;
 
-  searchedFlag.value = !!(params.filters?.length || params.orderBy);
+  hasActiveSearch.value = !!(params.filters?.length || params.orderBy);
 
   if (error) {
-    total.value = 0;
-    dataList.value = [];
+    totalCount.value = 0;
+    sprintList.value = [];
     return;
   }
 
-  const data = res?.data || { total: 0, list: [] };
+  const data = response?.data || { total: 0, list: [] };
   if (data) {
-    total.value = +data.total;
+    totalCount.value = +data.total;
 
     const _list = (data.list || [] as SprintInfo[]);
-    dataList.value = _list.map(item => {
+    sprintList.value = _list.map(item => {
       if (item.progress?.completedRate) {
         item.progress.completedRate = +item.progress.completedRate.replace(/(\d+\.\d{2})\d+/, '$1');
       }
@@ -326,19 +392,18 @@ const loadData = async () => {
       if (item.members) {
         item.showMembers = item.members.slice(0, 10);
       }
-
       return item;
     });
 
-    // 管理员拥有所有权限，无需加载权限
-    if (!isAdmin.value) {
+    // Load permissions for non-admin users
+    if (!isCurrentUserAdmin.value) {
       for (let i = 0, len = _list.length; i < len; i++) {
         const id = _list[i].id;
-        if (!permissionsMap.value.get(id)) {
-          const [_error, _res] = await loadPermissions(id);
+        if (!sprintPermissionsMap.value.get(id)) {
+          const [_error, _res] = await loadSprintPermissions(id);
           if (!_error) {
             const _permissions = (_res?.data?.permissions || []).map(item => item.value);
-            permissionsMap.value.set(id, _permissions);
+            sprintPermissionsMap.value.set(id, _permissions);
           }
         }
       }
@@ -346,67 +411,53 @@ const loadData = async () => {
   }
 };
 
-const loadPermissions = async (id: string) => {
+/**
+ * Load sprint permissions for a specific sprint
+ * @param sprintId - ID of the sprint
+ * @returns Promise with permission data
+ */
+const loadSprintPermissions = async (sprintId: string) => {
   const params = {
     admin: true
   };
-
-  return await task.getCurrentUserSprintAuth(id, params);
+  return await task.getCurrentUserSprintAuth(sprintId, params);
 };
-
-onMounted(() => {
-  watch(() => props.projectId, () => {
-    pageNo.value = 1;
-    loadData();
-  }, { immediate: true });
-
-  watch(() => props.notify, (newValue) => {
-    if (!newValue) {
-      return;
-    }
-
-    loadData();
-  }, { immediate: false });
-});
 
 const dropdownPermissionsMap = computed(() => {
   const map = new Map<string, string[]>();
-  if (dataList.value.length) {
-    const _isAdmin = isAdmin.value;
-    const _permissionsMap = permissionsMap.value;
-    const list = dataList.value;
+  if (sprintList.value.length) {
+    const _isAdmin = isCurrentUserAdmin.value;
+    const _permissionsMap = sprintPermissionsMap.value;
+    const list = sprintList.value;
     for (let i = 0, len = list.length; i < len; i++) {
       const { id, status } = list[i];
       const _permissions: string[] = _permissionsMap.get(id) || [];
       const tempPermissions: string[] = [];
       const _status = status.value;
-      if ((_isAdmin || _permissions.includes('MODIFY_SPRINT')) && ['PENDING', 'IN_PROGRESS'].includes(_status)) {
+
+      if ((_isAdmin || _permissions.includes(TaskSprintPermission.MODIFY_SPRINT)) &&
+        [TaskSprintStatus.PENDING, TaskSprintStatus.IN_PROGRESS].includes(_status)) {
         tempPermissions.push('block');
       }
-
-      if (_isAdmin || _permissions.includes('DELETE_SPRINT')) {
+      if (_isAdmin || _permissions.includes(TaskSprintPermission.DELETE_SPRINT)) {
         tempPermissions.push('delete');
       }
-
-      if (_isAdmin || _permissions.includes('GRANT')) {
+      if (_isAdmin || _permissions.includes(TaskSprintPermission.GRANT)) {
         tempPermissions.push('grant');
       }
-
-      if (_isAdmin || _permissions.includes('EXPORT_TASK')) {
+      if (_isAdmin || _permissions.includes(TaskSprintPermission.EXPORT_TASK)) {
         tempPermissions.push('export');
       }
-      if (_isAdmin || _permissions.includes('MODIFY_SPRINT')) {
+      if (_isAdmin || _permissions.includes(TaskSprintPermission.MODIFY_SPRINT)) {
         tempPermissions.push('modify');
       }
-
       map.set(id, tempPermissions);
     }
   }
-
   return map;
 });
 
-const getDropdownMenuItems = (sprint) => {
+const getDropdownMenuItems = () => {
   return [
     {
       key: 'block',
@@ -474,8 +525,20 @@ const getDropdownMenuItems = (sprint) => {
   ].filter(Boolean);
 };
 
-const pageSizeOptions = ['5', '10', '15', '20', '30'];
+onMounted(() => {
+  watch(() => props.projectId, () => {
+    currentPage.value = 1;
+    loadSprintData();
+  }, { immediate: true });
 
+  watch(() => props.notify, (newValue) => {
+    if (!newValue) {
+      return;
+    }
+
+    loadSprintData();
+  }, { immediate: false });
+});
 </script>
 
 <template>
@@ -490,9 +553,9 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
     </div>
 
     <div class="text-3.5 font-semibold mb-1">{{ t('taskSprint.addedSprints') }}</div>
-    <Spin :spinning="loading" class="flex-1 flex flex-col">
-      <template v-if="loaded">
-        <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
+    <Spin :spinning="isLoading" class="flex-1 flex flex-col">
+      <template v-if="isDataLoaded">
+        <div v-if="!hasActiveSearch && sprintList.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
             <span>{{ t('taskSprint.notAddedYet') }}</span>
@@ -504,290 +567,61 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
 
         <template v-else>
           <SearchPanel
-            :loading="loading"
-            @change="searchChange"
-            @refresh="refresh" />
+            :loading="isLoading"
+            @change="handleSearchChange"
+            @refresh="handleRefresh" />
 
-          <NoData v-if="dataList.length === 0" class="flex-1" />
-
-          <template v-else>
-            <div
-              v-for="(item, index) in dataList"
-              :key="item.id"
-              class="mb-3.5 border border-theme-text-box rounded">
-              <div class="px-3.5 py-2 flex items-center justify-between bg-theme-form-head w-full relative">
-                <div class="truncate" style="width:35%;max-width: 360px;">
-                  <RouterLink
-                    class="router-link"
-                    :title="item.name"
-                    :to="`/task#sprint?id=${item.id}`">
-                    {{ item.name }}
-                  </RouterLink>
-                </div>
-
-                <div class="text-3 whitespace-nowrap text-theme-sub-content">
-                  <span>{{ item.startDate }}</span>
-                  <span class="mx-2">至</span>
-                  <span>{{ item.deadlineDate }}</span>
-                </div>
-
-                <div class="flex items-center">
-                  <div
-                    class="text-3 leading-4 flex items-center flex-none whitespace-nowrap mr-3.5">
-                    <div class="h-1.5 w-1.5 rounded-full mr-1" :class="item.status?.value"></div>
-                    <div>{{ item.status?.message }}</div>
-                  </div>
-                  <Progress :percent="item.progress?.completedRate" style="width:150px;" />
-                </div>
-              </div>
-
-              <div class="px-3.5 flex mt-3 justify-between text-3 text-theme-sub-content">
-                <div class="flex leading-5">
-                  <div class="flex mr-10 items-center">
-                    <div class="mr-2">
-                      <span>{{ t('taskSprint.columns.owner') }}</span>
-                      <Colon />
-                    </div>
-                    <div class="w-5 h-5 rounded-full mr-1 overflow-hidden">
-                      <Image
-                        class="w-full"
-                        :src="item.ownerAvatar"
-                        type="avatar" />
-                    </div>
-                    <div
-                      class="text-theme-content truncate"
-                      :title="item.ownerName"
-                      style="max-width: 200px;">
-                      {{ item.ownerName }}
-                    </div>
-                  </div>
-
-                  <div class="flex items-center">
-                    <div class="mr-2">
-                      <span>{{ t('taskSprint.columns.members') }}</span>
-                      <Colon />
-                    </div>
-
-                    <template v-if="item.members?.length">
-                      <div
-                        v-for="user in item.showMembers"
-                        :key="user.id"
-                        :title="user.fullName"
-                        class="w-5 h-5 mr-2 overflow-hidden rounded-full">
-                        <Image
-                          :src="user.avatar"
-                          type="avatar"
-                          class="w-full" />
-                      </div>
-
-                      <Popover
-                        v-if="item.members.length > 10"
-                        placement="bottomLeft"
-                        internal>
-                        <template #title>
-                          <span class="text-3">{{ t('taskSprint.allMembers') }}</span>
-                        </template>
-                        <template #content>
-                          <div class="flex flex-wrap" style="max-width: 700px;">
-                            <div
-                              v-for="_user in item.members"
-                              :key="_user.id"
-                              class="flex text-3 leading-5 mr-2 mb-2">
-                              <div class="w-5 h-5 rounded-full mr-1 flex-none overflow-hidden">
-                                <Image
-                                  class="w-full"
-                                  :src="_user.avatar"
-                                  type="avatar" />
-                              </div>
-                              <span class="flex-1 truncate">{{ _user.fullName }}</span>
-                            </div>
-                          </div>
-                        </template>
-                        <a class="text-theme-special text-5">...</a>
-                      </Popover>
-                    </template>
-
-                    <Avatar
-                      v-else
-                      size="small"
-                      style="font-size: 12px;"
-                      class="w-5 h-5 leading-5">
-                      <template #icon>
-                        <UserOutlined />
-                      </template>
-                    </Avatar>
-                  </div>
-                </div>
-
-                <div class="ml-8 text-theme-content">{{ t('taskSprint.taskCount', {count: item.taskNum}) }}</div>
-              </div>
-
-              <div class="px-3.5 flex flex-start justify-between text-3 text-theme-sub-content">
-                <div class="flex flex-wrap">
-                  <div class="flex mt-3">
-                    <div class="mr-2 whitespace-nowrap">
-                      <span>{{ t('taskSprint.columns.id') }}</span>
-                      <Colon />
-                    </div>
-                    <div class="text-theme-content">{{ item.id || "--" }}</div>
-                  </div>
-
-                  <div class="flex ml-8  mt-3">
-                    <div class="mr-2 whitespace-nowrap">
-                      <span>{{ t('taskSprint.columns.workloadAssessment') }}</span>
-                      <Colon />
-                    </div>
-                    <div class="text-theme-content">{{ item.evalWorkloadMethod.message }}</div>
-                  </div>
-
-                  <div v-if="item.taskPrefix" class="flex ml-8 mt-3 relative">
-                    <div class="mr-2 whitespace-nowrap">
-                      <span>{{ t('taskSprint.columns.taskPrefix') }}</span>
-                      <Colon />
-                    </div>
-                    <div
-                      class="truncate text-theme-content"
-                      style="max-width: 100px;"
-                      :title="item.taskPrefix">
-                      {{ item.taskPrefix }}
-                    </div>
-                  </div>
-
-                  <div v-if="item.attachments?.length" class="whitespace-nowrap ml-8 mt-3">
-                    <span>{{ t('taskSprint.columns.attachmentCount') }}</span>
-                    <Colon />
-                    <Popover placement="bottomLeft" internal>
-                      <template #content>
-                        <div class="flex flex-col text-3 leading-5 space-y-1">
-                          <div
-                            v-for="_attachment in item.attachments"
-                            :key="_attachment.id"
-                            :title="_attachment.name"
-                            class="flex-1 px-2 py-1 truncate link"
-                            @click="download(_attachment.url)">
-                            {{ _attachment.name }}
-                          </div>
-                        </div>
-                      </template>
-                      <span style="color:#1890ff" class="pl-2 pr-2 cursor-pointer">{{ item.attachments?.length }}</span>
-                    </Popover>
-                  </div>
-                </div>
-
-                <div class="flex ml-8 mt-3">
-                  <div
-                    class="truncate text-theme-content"
-                    style="max-width: 100px;"
-                    :title="item.lastModifiedByName">
-                    {{ item.lastModifiedByName }}
-                  </div>
-                  <div class="mx-2 whitespace-nowrap">{{ t('taskSprint.columns.lastModifiedBy') }}</div>
-                  <div class="whitespace-nowrap text-theme-content">
-                    {{ item.lastModifiedDate }}
-                  </div>
-                </div>
-              </div>
-
-              <div class="px-3.5 flex justify-between items-start text-3 my-2.5 relative">
-                <div
-                  :title="item.otherInformation"
-                  class="truncate mr-8"
-                  style="max-width: 70%;">
-                  <RichText :value="item.otherInformation" emptyText="无说明~" />
-                </div>
-                <div class="flex space-x-3 items-center justify-between h-4 leading-5">
-                  <RouterLink class="flex items-center space-x-1" :to="`/task#sprint?id=${item.id}&type=edit`">
-                    <Icon icon="icon-shuxie" class="text-3.5" />
-                    <span>{{ t('taskSprint.actions.edit') }}</span>
-                  </RouterLink>
-
-                  <RouterLink
-                    class="flex items-center space-x-1"
-                    :to="`/task#task?sprintId=${item.id}&sprintName=${item.name}`">
-                    <Icon icon="icon-renwu2" class="text-3.5" />
-                    <span>{{ t('taskSprint.actions.viewTasks') }}</span>
-                  </RouterLink>
-
-                  <Button
-                    :disabled="(!isAdmin && !permissionsMap.get(item.id)?.includes('MODIFY_SPRINT')) || !['PENDING'].includes(item.status?.value)"
-                    size="small"
-                    type="text"
-                    class="px-0 flex items-center"
-                    @click="toStart(item, index)">
-                    <Icon icon="icon-kaishi" class="mr-0.5" />
-                    <span>{{ t('taskSprint.actions.start') }}</span>
-                  </Button>
-
-                  <Button
-                    :disabled="(!isAdmin && !permissionsMap.get(item.id)?.includes('MODIFY_SPRINT')) || !['IN_PROGRESS'].includes(item.status?.value)"
-                    size="small"
-                    type="text"
-                    class="px-0 flex items-center"
-                    @click="toCompleted(item, index)">
-                    <Icon icon="icon-yiwancheng" class="mr-0.5" />
-                    <span>{{ t('taskSprint.actions.complete') }}</span>
-                  </Button>
-
-                  <Dropdown
-                    :admin="false"
-                    :menuItems="getDropdownMenuItems(item)"
-                    :permissions="dropdownPermissionsMap.get(item.id)"
-                    @click="dropdownClick(item, index, $event.key)">
-                    <Icon icon="icon-gengduo" class="cursor-pointer outline-none items-center" />
-                  </Dropdown>
-                </div>
-              </div>
-            </div>
-
-            <Pagination
-              v-if="total > 5"
-              :current="pageNo"
-              :pageSize="pageSize"
-              :pageSizeOptions="pageSizeOptions"
-              :total="total"
-              :hideOnSinglePage="false"
-              showSizeChanger
-              size="default"
-              class="text-right"
-              @change="paginationChange" />
-          </template>
+          <SprintList
+            :sprintList="sprintList"
+            :totalCount="totalCount"
+            :currentPage="currentPage"
+            :pageSize="pageSize"
+            :pageSizeOptions="pageSizeOptions"
+            :isCurrentUserAdmin="isCurrentUserAdmin"
+            :sprintPermissionsMap="sprintPermissionsMap"
+            :dropdownPermissionsMap="dropdownPermissionsMap"
+            :getDropdownMenuItems="getDropdownMenuItems"
+            :handleDropdownClick="handleDropdownClick"
+            :startSprint="startSprint"
+            :completeSprint="completeSprint"
+            :handlePaginationChange="handlePaginationChange" />
         </template>
       </template>
     </Spin>
 
-    <AsyncComponent :visible="burndownVisible">
-      <Burndown
-        v-model:visible="burndownVisible"
-        :sprintId="selectedData?.id" />
+    <AsyncComponent :visible="isBurndownModalVisible">
+      <BurndownChart
+        v-model:visible="isBurndownModalVisible"
+        :sprintId="selectedSprint?.id" />
     </AsyncComponent>
-    <AsyncComponent :visible="progressVisible">
-      <ProgressModal
-        v-model:visible="progressVisible"
-        :sprintId="selectedData?.id"
+    <AsyncComponent :visible="isProgressModalVisible">
+      <MemberProgressModal
+        v-model:visible="isProgressModalVisible"
+        :sprintId="selectedSprint?.id"
         :projectId="props.projectId" />
     </AsyncComponent>
 
-    <AsyncComponent :visible="authorizeModalVisible">
+    <AsyncComponent :visible="isAuthorizeModalVisible">
       <AuthorizeModal
-        v-model:visible="authorizeModalVisible"
+        v-model:visible="isAuthorizeModalVisible"
         enumKey="TaskSprintPermission"
         :appId="props.appInfo?.id"
-        :listUrl="`${TESTER}/task/sprint/auth?sprintId=${selectedData?.id}`"
+        :listUrl="`${TESTER}/task/sprint/auth?sprintId=${selectedSprint?.id}`"
         :delUrl="`${TESTER}/task/sprint/auth`"
-        :addUrl="`${TESTER}/task/sprint/${selectedData?.id}/auth`"
+        :addUrl="`${TESTER}/task/sprint/${selectedSprint?.id}/auth`"
         :updateUrl="`${TESTER}/task/sprint/auth`"
-        :enabledUrl="`${TESTER}/task/sprint/${selectedData?.id}/auth/enabled`"
-        :initStatusUrl="`${TESTER}/task/sprint/${selectedData?.id}/auth/status`"
+        :enabledUrl="`${TESTER}/task/sprint/${selectedSprint?.id}/auth/enabled`"
+        :initStatusUrl="`${TESTER}/task/sprint/${selectedSprint?.id}/auth/status`"
         :onTips="t('taskSprint.anthModal.onTips')"
         :offTips="t('taskSprint.anthModal.offTips')"
         :title="t('taskSprint.anthModal.title')"
-        @change="authFlagChange" />
+        @change="handleAuthFlagChange" />
     </AsyncComponent>
 
-    <AsyncComponent :visible="workCalendarVisible">
-      <WorkCalendar
-        v-model:visible="workCalendarVisible"
-        :sprintId="selectedData?.id"
+    <AsyncComponent :visible="isWorkCalendarModalVisible">
+      <WorkCalendarModal
+        v-model:visible="isWorkCalendarModalVisible"
+        :sprintId="selectedSprint?.id"
         :projectId="props.projectId" />
     </AsyncComponent>
   </div>
