@@ -20,7 +20,6 @@ import ProcessPng from './images/process.png';
 import { task } from '@/api/tester';
 
 import { SprintInfo } from '../types';
-import SearchPanel from '@/views/task/sprint/list/SearchPanel.vue';
 
 type Props = {
   projectId: string;
@@ -40,12 +39,14 @@ type OrderByKey = 'createdDate' | 'createdByName';
 type OrderSortKey = 'ASC' | 'DESC';
 
 const { t } = useI18n();
-const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
+
+const SearchPanel = defineAsyncComponent(() => import('@/views/task/sprint/list/SearchPanel.vue'));
 const Introduce = defineAsyncComponent(() => import('@/views/task/sprint/list/Introduce.vue'));
 const Burndown = defineAsyncComponent(() => import('@/views/task/sprint/list/BurndownChart.vue'));
 const ProgressModal = defineAsyncComponent(() => import('@/views/task/sprint/list/MemberProgress.vue'));
 const WorkCalendar = defineAsyncComponent(() => import('@/views/task/sprint/list/WorkCalendar.vue'));
 const RichText = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
+const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
 
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const isAdmin = computed(() => appContext.isAdmin());
@@ -68,9 +69,9 @@ const permissionsMap = ref<Map<string, string[]>>(new Map());
 
 const selectedData = ref<SprintInfo>();
 const authorizeModalVisible = ref(false);
-const burndownVisible = ref(false); // 燃尽图Visible
-const progressVisible = ref(false); // 进度图Visible
-const workCalendarVisible = ref(false); // 工作日历visible
+const burndownVisible = ref(false);
+const progressVisible = ref(false);
+const workCalendarVisible = ref(false);
 
 const searchChange = (data) => {
   searchPanelParams = data;
@@ -96,12 +97,11 @@ const setTableData = async (id: string, index: number) => {
   }
 };
 
-// 查看燃尽图
 const viewBurnDown = (data: SprintInfo) => {
   selectedData.value = data;
   burndownVisible.value = true;
 };
-// 查看成员进度
+
 const viewProgress = (data: SprintInfo) => {
   selectedData.value = data;
   progressVisible.value = true;
@@ -231,7 +231,11 @@ const toExport = async (data: SprintInfo) => {
   exportLoadingSet.value.delete(id);
 };
 
-const dropdownClick = (data: SprintInfo, index: number, key: 'clone' | 'block' | 'delete' | 'export' | 'grant'|'viewBurnDown'|'viewProgress'|'reopen'|'restart'|'viewWorkCalendar') => {
+const dropdownClick = (
+  data: SprintInfo,
+  index: number,
+  key: 'clone' | 'block' | 'delete' | 'export' | 'grant' | 'viewBurnDown' | 'viewProgress' | 'reopen' | 'restart' | 'viewWorkCalendar'
+) => {
   switch (key) {
     case 'block':
       toBlock(data, index);
@@ -292,11 +296,7 @@ const loadData = async () => {
   loaded.value = true;
   loading.value = false;
 
-  if (params.filters?.length || params.orderBy) {
-    searchedFlag.value = true;
-  } else {
-    searchedFlag.value = false;
-  }
+  searchedFlag.value = !!(params.filters?.length || params.orderBy);
 
   if (error) {
     total.value = 0;
@@ -480,15 +480,11 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
 
 <template>
   <div class="flex flex-col h-full overflow-auto px-5 py-5 leading-5 text-3">
-    <div class="flex space-x-2">
+    <div class="flex">
       <Introduce class="mb-7 flex-1" />
-      <div class="flex flex-col w-145">
-        <div class="text-3.5 font-semibold mb-2.5">{{ t('taskSprint.scrumAgileProcess') }}</div>
-        <div>
-          {{ t('taskSprint.scrumAgileProcessDesc') }}
-        </div>
+      <div class="flex flex-col w-145 ml-15">
         <div class="flex-1 flex flex-col justify-center">
-          <img :src="ProcessPng" class="mt-2 items-center w-4/5" />
+          <img :src="ProcessPng" class="mt-2 items-center w-5/6" />
         </div>
       </div>
     </div>
@@ -511,47 +507,6 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
             :loading="loading"
             @change="searchChange"
             @refresh="refresh" />
-          <!-- <div class="flex items-start justify-between mt-2.5 mb-3.5">
-            <searchPanel
-              :options="searchPanelOptions"
-              class="flex-1 mr-3.5"
-              @change="searchChange" />
-
-            <div class="flex items-center space-x-3">
-              <Button
-                type="primary"
-                size="small"
-                class="p-0">
-                <RouterLink class="flex items-center space-x-1 leading-6.5 px-1.75" :to="`/task#sprint?type=ADD`">
-                  <Icon icon="icon-jia" class="text-3.5" />
-                  <span>添加迭代</span>
-                </RouterLink>
-              </Button>
-
-              <DropdownSort
-                v-model:orderBy="orderBy"
-                v-model:orderSort="orderSort"
-                :menuItems="sortMenuItems"
-                @click="toSort">
-                <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
-                  <Icon icon="icon-shunxu" class="text-3.5" />
-                  <span>排序</span>
-                </div>
-              </DropdownSort>
-
-              <IconRefresh
-                :loading="loading"
-                :disabled="loading"
-                @click="refresh">
-                <template #default>
-                  <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
-                    <Icon icon="icon-shuaxin" class="text-3.5" />
-                    <span class="ml-1">刷新</span>
-                  </div>
-                </template>
-              </IconRefresh>
-            </div>
-          </div> -->
 
           <NoData v-if="dataList.length === 0" class="flex-1" />
 
@@ -664,7 +619,7 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                   </div>
                 </div>
 
-                <div class="ml-8 text-theme-content">{{ t('taskSprint.taskCount', { count: item.taskNum }) }}</div>
+                <div class="ml-8 text-theme-content">{{ t('taskSprint.taskCount', {count: item.taskNum}) }}</div>
               </div>
 
               <div class="px-3.5 flex flex-start justify-between text-3 text-theme-sub-content">
@@ -746,7 +701,9 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                     <span>{{ t('taskSprint.actions.edit') }}</span>
                   </RouterLink>
 
-                  <RouterLink class="flex items-center space-x-1" :to="`/task#task?sprintId=${item.id}&sprintName=${item.name}`">
+                  <RouterLink
+                    class="flex items-center space-x-1"
+                    :to="`/task#task?sprintId=${item.id}&sprintName=${item.name}`">
                     <Icon icon="icon-renwu2" class="text-3.5" />
                     <span>{{ t('taskSprint.actions.viewTasks') }}</span>
                   </RouterLink>

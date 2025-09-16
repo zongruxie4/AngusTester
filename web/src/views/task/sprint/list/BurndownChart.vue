@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
   sprintId: ''
 });
 
-const emits = defineEmits<{(e: 'update:visible', value: boolean):void}>();
+const emits = defineEmits<{(e: 'update:visible', value: boolean): void }>();
 
 // Reactive Data
 const chartData = ref();

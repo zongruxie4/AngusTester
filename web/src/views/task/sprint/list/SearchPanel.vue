@@ -20,16 +20,18 @@ const props = withDefaults(defineProps<Props>(), {
 
 type OrderByKey = string;
 
-const emits = defineEmits<{(e: 'change', value: {
-  orderBy?: string;
-  orderSort?: PageQuery.OrderSort;
-  filters: {key: string; op: string; value: string|string[]}[];
-}):void,
- (e: 'refresh'):void}>();
+const emits = defineEmits<{
+  (e: 'change', value: {
+    orderBy?: string;
+    orderSort?: PageQuery.OrderSort;
+    filters: { key: string; op: string; value: string | string[] }[];
+  }): void,
+  (e: 'refresh'): void
+}>();
 const userInfo = ref(appContext.getTenant());
 
 const searchPanelRef = ref();
-const selectedMenuMap = ref<{[key: string]: boolean}>({});
+const selectedMenuMap = ref<{ [key: string]: boolean }>({});
 
 const taskStatusTypeOpt = ref<EnumMessage<TaskSprintStatus>[]>([]);
 const loadStatusEnum = () => {
@@ -128,9 +130,9 @@ const menuItems = computed(() => [
 
 const orderBy = ref();
 const orderSort = ref();
-const searchFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
-const quickSearchFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
-const assocFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
+const searchFilters = ref<{ key: string; op: string; value: string | string[] }[]>([]);
+const quickSearchFilters = ref<{ key: string; op: string; value: string | string[] }[]>([]);
+const assocFilters = ref<{ key: string; op: string; value: string | string[] }[]>([]);
 const assocKeys = ['ownerId'];
 
 const formatDateString = (key: string) => {
@@ -181,7 +183,7 @@ const getParams = () => {
   };
 };
 
-const searchChange = (data: {key: string; op: string; value: string|string[]}[]) => {
+const searchChange = (data: { key: string; op: string; value: string | string[] }[]) => {
   searchFilters.value = data.filter(item => !assocKeys.includes(item.key));
   assocFilters.value = data.filter(item => assocKeys.includes(item.key));
 
@@ -246,7 +248,7 @@ const menuItemClick = (data) => {
     }
   }
   const userId = userInfo.value?.id;
-  let timeFilters: {key: string; op: string; value: string}[] = [];
+  let timeFilters: { key: string; op: string; value: string }[] = [];
   const assocFiltersInQuick = [];
   quickSearchFilters.value = Object.keys(selectedMenuMap.value).map(key => {
     if (key === '') {

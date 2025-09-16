@@ -156,9 +156,9 @@ const loadMemberProgressData = async () => {
  */
 const shouldLoadData = () => {
   return props.visible &&
-         props.sprintId !== undefined &&
-         props.sprintId !== null &&
-         props.sprintId !== '';
+    props.sprintId !== undefined &&
+    props.sprintId !== null &&
+    props.sprintId !== '';
 };
 
 // Lifecycle Hooks

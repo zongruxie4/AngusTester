@@ -39,8 +39,8 @@ const { t } = useI18n();
 
 // Injections
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
-const replaceTabPane = inject<(key:string, data: { [key: string]: any }) => void>('replaceTabPane', () => ({}));
-const deleteTabPane = inject<(key:string, data: { [key: string]: any }) => void>('deleteTabPane', () => ({}));
+const replaceTabPane = inject<(key: string, data: { [key: string]: any }) => void>('replaceTabPane', () => ({}));
+const deleteTabPane = inject<(key: string, data: { [key: string]: any }) => void>('deleteTabPane', () => ({}));
 
 /**
  * Checks if current user is admin
@@ -174,7 +174,12 @@ const loadSprintData = async (id: string) => {
  * Navigates to sprint edit page
  */
 const navigateToEdit = () => {
-  replaceTabPane(sprintId.value + '-detail', { _id: sprintId.value, value: 'sprintEdit', noCache: true, data: sprintData });
+  replaceTabPane(sprintId.value + '-detail', {
+    _id: sprintId.value,
+    value: 'sprintEdit',
+    noCache: true,
+    data: sprintData
+  });
 };
 
 /**

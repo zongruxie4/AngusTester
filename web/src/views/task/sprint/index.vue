@@ -7,9 +7,7 @@ import { IPane, utils } from '@xcan-angus/infra';
 import { BasicProps } from '@/types/types';
 
 /**
- * <p>
  * Component props with default values for project information and user context.
- * </p>
  */
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
@@ -18,34 +16,26 @@ const props = withDefaults(defineProps<BasicProps>(), {
 });
 
 /**
- * <p>
  * Lazy-loaded components for different sprint views to improve initial load performance.
- * </p>
  */
 const SprintList = defineAsyncComponent(() => import('@/views/task/sprint/list/index.vue'));
 const SprintDetail = defineAsyncComponent(() => import('@/views/task/sprint/detail/index.vue'));
 const SprintEdit = defineAsyncComponent(() => import('@/views/task/sprint/edit/index.vue'));
 
 /**
- * <p>
  * Router and internationalization setup for navigation and localization.
- * </p>
  */
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
 
 /**
- * <p>
  * Reference to the browser tab component for managing tab operations.
- * </p>
  */
 const browserTabRef = ref();
 
 /**
- * <p>
  * Adds a new tab pane to the browser tab component.
- * </p>
  * @param tabPaneData - The tab pane data to add
  */
 const addTabPane = (tabPaneData: IPane) => {
@@ -55,9 +45,7 @@ const addTabPane = (tabPaneData: IPane) => {
 };
 
 /**
- * <p>
  * Retrieves tab pane data by key from the browser tab component.
- * </p>
  * @param tabKey - The key to identify the tab pane
  * @returns The tab pane data or undefined if not found
  */
@@ -66,9 +54,7 @@ const getTabPane = (tabKey: string): IPane[] | undefined => {
 };
 
 /**
- * <p>
  * Removes one or more tab panes from the browser tab component.
- * </p>
  * @param tabKeys - Array of keys identifying tabs to remove
  */
 const deleteTabPane = (tabKeys: string[]) => {
@@ -76,9 +62,7 @@ const deleteTabPane = (tabKeys: string[]) => {
 };
 
 /**
- * <p>
  * Updates an existing tab pane with new data.
- * </p>
  * @param tabPaneData - The updated tab pane data
  */
 const updateTabPane = (tabPaneData: IPane) => {
@@ -86,9 +70,7 @@ const updateTabPane = (tabPaneData: IPane) => {
 };
 
 /**
- * <p>
  * Replaces a tab pane with new data while maintaining the same key.
- * </p>
  * @param tabKey - The key of the tab to replace
  * @param newTabData - The new tab data with key property
  */
@@ -97,9 +79,7 @@ const replaceTabPane = (tabKey: string, newTabData: { key: string }) => {
 };
 
 /**
- * <p>
  * Initializes the component by setting up the default sprint list tab and processing URL hash.
- * </p>
  */
 const initializeComponent = () => {
   // Add default sprint list tab if not already present
@@ -121,15 +101,11 @@ const initializeComponent = () => {
 };
 
 /**
- * <p>
  * Handles URL hash changes to determine which tab to open based on query parameters.
- * </p>
- * <p>
  * Supports three modes:
  * - Edit mode: Opens sprint edit tab with specific sprint ID
  * - Detail mode: Opens sprint detail tab with specific sprint ID
  * - Create mode: Opens new sprint edit tab
- * </p>
  * @param urlHash - The URL hash containing query parameters
  */
 const handleHashChange = (urlHash: string) => {
@@ -188,18 +164,14 @@ const handleHashChange = (urlHash: string) => {
 };
 
 /**
- * <p>
  * Handles storage key changes by reinitializing the component.
- * </p>
  */
 const handleStorageKeyChange = () => {
   initializeComponent();
 };
 
 /**
- * <p>
  * Sets up hash change watcher on component mount to handle navigation.
- * </p>
  */
 onMounted(() => {
   watch(() => route.hash, (newHash) => {
@@ -212,9 +184,7 @@ onMounted(() => {
 });
 
 /**
- * <p>
  * Computed storage key for persisting tab state based on project ID.
- * </p>
  */
 const storageKey = computed(() => {
   if (!props.projectId) {
@@ -225,9 +195,7 @@ const storageKey = computed(() => {
 });
 
 /**
- * <p>
  * Provides tab management functions to child components for cross-component tab operations.
- * </p>
  */
 provide('addTabPane', addTabPane);
 provide('getTabPane', getTabPane);
