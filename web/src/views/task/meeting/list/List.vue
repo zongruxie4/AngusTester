@@ -3,9 +3,12 @@ import { defineProps, withDefaults } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Avatar, Button, Pagination } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
-import { Colon, Icon, Image, NoData, Popover } from '@xcan-angus/vue-ui';
+import { Icon, Image, NoData, Popover } from '@xcan-angus/vue-ui';
 import type { MeetingInfo } from '../types';
-import RichTextEditor from "@/components/richEditor/textContent/index.vue";
+import RichTextEditor from '@/components/richEditor/textContent/index.vue';
+import { DATE_FORMAT } from '@/utils/constant';
+import { TaskMeetingType } from '@/enums/enums';
+import dayjs from 'dayjs';
 
 withDefaults(defineProps<{
   meetingList: MeetingInfo[];
@@ -35,6 +38,54 @@ const onDelete = (meeting: MeetingInfo) => {
 const onPageChange = (page: number, pageSize: number) => {
   emit('pageChange', page, pageSize);
 };
+
+/**
+ * Get meeting type style based on type value enum
+ * @param typeValue - Meeting type value from enum
+ * @returns CSS classes for meeting type container
+ */
+const getMeetingTypeStyle = (typeValue: string) => {
+  switch (typeValue) {
+    case TaskMeetingType.DAILY_STANDUP:
+      return 'bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100';
+    case TaskMeetingType.PLANNING:
+      return 'bg-green-50 text-green-700 border-green-200 hover:bg-green-100';
+    case TaskMeetingType.REVIEW:
+      return 'bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-100';
+    case TaskMeetingType.RETROSPECTIVE:
+      return 'bg-orange-50 text-orange-700 border-orange-200 hover:bg-orange-100';
+    case TaskMeetingType.BACKLOG_REFINEMENT:
+      return 'bg-cyan-50 text-cyan-700 border-cyan-200 hover:bg-cyan-100';
+    case TaskMeetingType.OTHER:
+      return 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100';
+    default:
+      return 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100';
+  }
+};
+
+/**
+ * Get meeting type dot style based on type value enum
+ * @param typeValue - Meeting type value from enum
+ * @returns CSS classes for meeting type dot
+ */
+const getMeetingTypeDotStyle = (typeValue: string) => {
+  switch (typeValue) {
+    case TaskMeetingType.DAILY_STANDUP:
+      return 'bg-blue-500';
+    case TaskMeetingType.PLANNING:
+      return 'bg-green-500';
+    case TaskMeetingType.REVIEW:
+      return 'bg-purple-500';
+    case TaskMeetingType.RETROSPECTIVE:
+      return 'bg-orange-500';
+    case TaskMeetingType.BACKLOG_REFINEMENT:
+      return 'bg-cyan-500';
+    case TaskMeetingType.OTHER:
+      return 'bg-gray-500';
+    default:
+      return 'bg-gray-500';
+  }
+};
 </script>
 
 <template>
@@ -56,121 +107,128 @@ const onPageChange = (page: number, pageSize: number) => {
         </div>
       </div>
 
-      <div class="px-3.5 flex mt-3 justify-between text-3 text-theme-sub-content">
-        <div class="flex leading-5">
-          <div class="flex mr-10 items-center">
-            <div class="mr-2">
-              <span>{{ t('taskMeeting.columns.moderatorLabel') }}</span>
-              <Colon />
-            </div>
-            <div class="w-5 h-5 rounded-full mr-1 overflow-hidden">
-              <Image
-                class="w-full"
-                :src="item.moderator.avatar"
-                type="avatar" />
-            </div>
-            <div
-              class="text-theme-content truncate"
-              :title="item.moderator.fullName"
-              style="max-width: 200px;">
-              {{ item.moderator.fullName }}
-            </div>
-          </div>
-
-          <div class="flex items-center">
-            <div class="mr-2">
-              <span>{{ t('taskMeeting.columns.participantsLabel') }}</span>
-              <Colon />
-            </div>
-
-            <template v-if="item.participants?.length">
+      <!-- Meeting information card -->
+      <div class="px-4 py-3 bg-theme-bg-subtle/30 border-t border-theme-border-subtle">
+        <div class="flex items-center justify-between">
+          <!-- Left side: Meeting type + Moderator + Meeting time + Participants -->
+          <div class="flex items-center space-x-16">
+            <!-- Meeting type -->
+            <div class="flex items-center space-x-2">
               <div
-                v-for="participant in item.participants"
-                :key="participant.id"
-                :title="participant.fullName"
-                class="w-5 h-5 mr-2 overflow-hidden rounded-full">
-                <Image
-                  :src="participant.avatar"
-                  type="avatar"
-                  class="w-full" />
-              </div>
-
-              <Popover
-                v-if="item.participants.length > 5"
-                placement="bottomLeft"
-                internal>
-                <template #title>
-                  <span class="text-3">所有成员</span>
-                </template>
-                <template #content>
-                  <div class="flex flex-wrap" style="max-width: 700px;">
-                    <div
-                      v-for="participant in item.participants"
-                      :key="participant.id"
-                      class="flex text-3 leading-5 mr-2 mb-2">
-                      <div class="w-5 h-5 rounded-full mr-1 flex-none overflow-hidden">
-                        <Image
-                          class="w-full"
-                          :src="participant.avatar"
-                          type="avatar" />
-                      </div>
-                      <span class="flex-1 truncate">{{ participant.fullName }}</span>
-                    </div>
+                class="px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm border transition-all duration-200 hover:shadow-md"
+                :class="getMeetingTypeStyle(item.type?.value)">
+                <div class="flex items-center space-x-1.5">
+                  <div
+                    class="w-2 h-2 rounded-full"
+                    :class="getMeetingTypeDotStyle(item.type?.value)">
                   </div>
+                  <span>{{ item.type?.message }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Moderator -->
+            <div class="flex items-center space-x-2">
+              <div class="w-6 h-6 rounded-full overflow-hidden ring-1 ring-theme-border">
+                <Image
+                  class="w-full h-full"
+                  :src="item.moderator.avatar"
+                  type="avatar" />
+              </div>
+              <div class="flex flex-col">
+                <span class="text-xs text-theme-sub-content">{{ t('taskMeeting.columns.moderatorLabel') }}</span>
+                <span class="text-sm font-medium text-theme-content truncate max-w-24" :title="item.moderator.fullName">
+                  {{ item.moderator.fullName }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Meeting time -->
+            <div class="flex items-center space-x-2">
+              <div class="flex flex-col">
+                <span class="text-xs text-theme-sub-content">{{ t('taskMeeting.columns.date') }}</span>
+                <span class="text-sm font-medium text-theme-content">
+                  {{ item.date ? dayjs(item.date).format(DATE_FORMAT) : '--' }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Participants -->
+            <div class="flex items-center space-x-2">
+              <div class="flex flex-col">
+                <span class="text-xs text-theme-sub-content">{{ t('taskMeeting.columns.participants') }}</span>
+                <span class="text-sm font-medium text-theme-content">
+                  {{ item.participants?.length || 0 }} {{ t('taskMeeting.columns.participantUnit') }}
+                </span>
+              </div>
+              <div class="flex -space-x-1">
+                <template v-if="item.participants?.length">
+                  <div
+                    v-for="participant in item.participants.slice(0, 8)"
+                    :key="participant.id"
+                    :title="participant.fullName"
+                    class="w-6 h-6 rounded-full overflow-hidden ring-1 ring-white shadow-sm">
+                    <Image
+                      :src="participant.avatar"
+                      type="avatar"
+                      class="w-full h-full" />
+                  </div>
+                  <Popover
+                    v-if="item.participants.length > 8"
+                    placement="bottomLeft"
+                    internal>
+                    <template #title>
+                      <span class="text-sm font-medium">{{ t('taskMeeting.columns.participants') }} ({{ item.participants.length }})</span>
+                    </template>
+                    <template #content>
+                      <div class="space-y-2 max-w-xs">
+                        <div
+                          v-for="participant in item.participants"
+                          :key="participant.id"
+                          class="flex items-center space-x-2">
+                          <div class="w-5 h-5 rounded-full overflow-hidden">
+                            <Image
+                              class="w-full h-full"
+                              :src="participant.avatar"
+                              type="avatar" />
+                          </div>
+                          <span class="text-sm text-theme-content">{{ participant.fullName }}</span>
+                        </div>
+                      </div>
+                    </template>
+                    <div class="w-6 h-6 rounded-full bg-theme-primary/20 flex items-center justify-center text-xs font-bold text-theme-primary ring-1 ring-white shadow-sm cursor-pointer">
+                      +{{ item.participants.length - 8 }}
+                    </div>
+                  </Popover>
                 </template>
-                <a class="text-theme-special text-5">...</a>
-              </Popover>
-            </template>
-
-            <Avatar
-              v-else
-              size="small"
-              style="font-size: 12px;"
-              class="w-5 h-5 leading-5">
-              <template #icon>
-                <UserOutlined />
-              </template>
-            </Avatar>
+                <Avatar
+                  v-else
+                  size="small"
+                  class="w-6 h-6">
+                  <template #icon>
+                    <UserOutlined />
+                  </template>
+                </Avatar>
+              </div>
+            </div>
           </div>
-        </div>
 
-        <div class="ml-8 text-theme-content font-semibold">
-          {{ t('taskMeeting.columns.participantsCount', {count: item.participants?.length || 0}) }}
+          <!-- Right side: Last modified info -->
+          <div class="flex items-center">
+            <!-- Last modified -->
+            <div class="flex items-center space-x-2 text-xs text-theme-sub-content">
+              <span>{{ t('taskMeeting.columns.lastModifiedBy') }}</span>
+              <span class="text-theme-content font-medium truncate max-w-16" :title="item.lastModifiedByName">
+                {{ item.lastModifiedByName }}
+              </span>
+              <span class="text-theme-sub-content">{{ item.lastModifiedDate }}</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="px-3.5 flex flex-start justify-between text-3 text-theme-sub-content">
-        <div class="flex flex-wrap">
-          <div class="flex mt-3">
-            <div class="mr-2 whitespace-nowrap">
-              <span>{{ t('taskMeeting.columns.id') }}</span>
-              <Colon />
-            </div>
-            <div class="text-theme-content">{{ item.id || "--" }}</div>
-          </div>
-
-          <div class="flex mt-3 ml-8">
-            <div class="mr-2 whitespace-nowrap">
-              <span>{{ t('taskMeeting.columns.type') }}</span>
-              <Colon />
-            </div>
-            <div class="text-theme-content">{{ item.type?.message }}</div>
-          </div>
-        </div>
-
-        <div class="flex ml-8 mt-3">
-          <div
-            class="truncate text-theme-content"
-            style="max-width: 100px;"
-            :title="item.lastModifiedByName">
-            {{ item.lastModifiedByName }}
-          </div>
-          <div class="mx-2 whitespace-nowrap">{{ t('taskMeeting.columns.lastModifiedBy') }}</div>
-          <div class="whitespace-nowrap text-theme-content">
-            {{ item.lastModifiedDate }}
-          </div>
-        </div>
-      </div>
+      <!-- Divider line -->
+      <div class="border-t border-theme-border-subtle/50"></div>
 
       <div class="px-3.5 flex justify-between items-start text-3 my-2.5 relative">
         <div
@@ -218,5 +276,3 @@ const onPageChange = (page: number, pageSize: number) => {
   cursor: pointer;
 }
 </style>
-
-

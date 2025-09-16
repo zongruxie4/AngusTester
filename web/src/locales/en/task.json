@@ -980,10 +980,10 @@
       "location": "Meeting Location",
       "moderator": "Meeting Moderator",
       "participants": "Participants",
+      "participantUnit": "users",
       "content": "Meeting Content",
       "sprint": "Sprint",
       "moderatorLabel": "Moderator",
-      "participantsLabel": "Participants",
       "participantsCount": "{count} participants",
       "lastModifiedBy": "Modified by"
     },

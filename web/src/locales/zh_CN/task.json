@@ -980,10 +980,10 @@
       "location": "会议地点",
       "moderator": "会议主持",
       "participants": "参会人员",
+      "participantUnit": "人",
       "content": "会议内容",
       "sprint": "所属迭代",
       "moderatorLabel": "主持人",
-      "participantsLabel": "参与成员",
       "participantsCount": "共{count}个参与者",
       "lastModifiedBy": "修改于"
     },
