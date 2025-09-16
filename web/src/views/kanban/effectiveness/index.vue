@@ -20,9 +20,15 @@ const { t } = useI18n();
 const taskTypeChartRef = ref<HTMLElement>();
 const burnDownChartRef = ref<HTMLElement>();
 const targetCountChartRef = ref<HTMLElement>();
+const targetRateChartRef = ref<HTMLElement>();
 const workloadChartRef = ref<HTMLElement>();
+const workloadRateChartRef = ref<HTMLElement>();
 const overdueChartRef = ref<HTMLElement>();
+const overdueRateChartRef = ref<HTMLElement>();
 const oneTimePassedTestChartRef = ref<HTMLElement>();
+const oneTimePassedTestRateRef = ref<HTMLElement>();
+const oneTimeUnpassedTestChartRef = ref<HTMLElement>();
+const oneTimeUnpassedTestRateChartRef = ref<HTMLElement>();
 const assigneeRankingChartRef = ref<HTMLElement>();
 const testerRankingChartRef = ref<HTMLElement>();
 
@@ -73,8 +79,6 @@ onMounted(async () => {
 
   watch(() => props.projectId, async () => {
     if (props.projectId) {
-      await loadEffectivenessData();
-      await nextTick();
       initializeCharts({
         taskTypeRef: taskTypeChartRef.value as HTMLElement,
         burnDownRef: burnDownChartRef.value as HTMLElement,
@@ -83,8 +87,16 @@ onMounted(async () => {
         overdueRef: overdueChartRef.value as HTMLElement,
         oneTimePassedTestRef: oneTimePassedTestChartRef.value as HTMLElement,
         assigneeRankingRef: assigneeRankingChartRef.value as HTMLElement,
-        testerRankingRef: testerRankingChartRef.value as HTMLElement
+        testerRankingRef: testerRankingChartRef.value as HTMLElement,
+        targetRateRef: targetRateChartRef.value as HTMLElement,
+        workloadRateRef: workloadRateChartRef.value as HTMLElement,
+        overdueRateRef: overdueRateChartRef.value as HTMLElement,
+        oneTimePassedTestRateRef: oneTimePassedTestRateRef.value as HTMLElement,
+        oneTimeUnpassedTestRef: oneTimeUnpassedTestChartRef.value as HTMLElement,
+        oneTimeUnpassedTestRateRef: oneTimeUnpassedTestRateChartRef.value as HTMLElement
       });
+      await loadEffectivenessData();
+      await nextTick();
     }
   }, { immediate: true });
 });
@@ -211,8 +223,56 @@ defineExpose({
         <div ref="oneTimePassedTestChartRef" class="chart-content"></div>
       </div>
 
+      <!--targetRateChartRef-->
+      <div class="chart-container">
+        <div class="chart-header">
+          <h3>targetRateChart</h3>
+        </div>
+        <div ref="targetRateChartRef" class="chart-content"></div>
+      </div>
+
+      <!-- workloadRateChart -->
+      <div class="chart-container">
+        <div class="chart-header">
+          <h3>workloadRateChart</h3>
+        </div>
+        <div ref="workloadRateChartRef" class="chart-content"></div>
+      </div>
+      
+      <!--overdueRateChart-->
+      <div class="chart-container">
+        <div class="chart-header">
+          <h3>overdueRateChart</h3>
+        </div>
+        <div ref="overdueRateChartRef" class="chart-content"></div>
+      </div>
+
+      <!--oneTimePassedTestRateRef-->
+      <div class="chart-container">
+        <div class="chart-header">
+          <h3>oneTimePassedTestRateChart</h3>
+        </div>
+        <div ref="oneTimePassedTestRateRef" class="chart-content"></div>
+      </div>
+
+      <!--oneTimeUnpassedTestChartRef-->
+      <div class="chart-container">
+        <div class="chart-header">
+          <h3>oneTimeUnpassedTestChart</h3>
+        </div>
+        <div ref="oneTimeUnpassedTestChartRef" class="chart-content"></div>
+      </div>
+
+      <!-- oneTimeUnpassedTestRateChartRef-->
+      <div class="chart-container">
+        <div class="chart-header">
+          <h3>oneTimeUnpassedTestRateChart</h3>
+        </div>
+        <div ref="oneTimeUnpassedTestRateChartRef" class="chart-content"></div>
+      </div>
+
       <!-- Ranking Charts -->
-      <div class="ranking-charts">
+      <!-- <div class="ranking-charts">
         <div class="chart-container">
           <div class="chart-header">
             <h3>{{ $t('kanban.effectiveness.assigneeRanking') }}</h3>
@@ -226,7 +286,7 @@ defineExpose({
           </div>
           <div ref="testerRankingChartRef" class="chart-content"></div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
