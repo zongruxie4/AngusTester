@@ -352,8 +352,8 @@
         "CUSTOM_TIME": "Custom Time"
       },
       "AnalysisDataSource": {
-        "REAL_TIME_DATA": "Display real-time data each time",
-        "SNAPSHOT_DATA": "Save data snapshot, display snapshot data each time"
+        "REAL_TIME_DATA": "Real-time data",
+        "SNAPSHOT_DATA": "Current data snapshots"
       },
       "AnalysisTaskObject": {
         "CURRENT_PROJECT": "Current Project",
@@ -378,21 +378,21 @@
         "CUSTOM_DEFINITION": "Custom Analysis"
       },
       "AnalysisTaskTemplateDesc": {
-        "PROGRESS": "Track project, sprint, or assignee work progress. Help teams evaluate task scheduling and work efficiency.",
-        "BURNDOWN": "Track the likelihood of completing all work within the planned time. Help teams monitor progress and respond accordingly.",
-        "WORKLOAD": "Understand team workload, evaluate workload and actual workload deviations. Help teams ensure reasonable workload distribution.",
-        "OVERDUE_ASSESSMENT": "Evaluate tasks that are not completed on time, enabling teams to adjust strategies and optimize resource allocation. Help teams identify potential risks and bottlenecks.",
-        "BUGS": "Evaluate issues in the system that do not meet expectations. Help teams understand design flaws, implementation problems, or insufficient testing.",
-        "HANDLING_EFFICIENCY": "Evaluate the frequency of repeated task handling, revealing poor completion quality issues. Help teams identify quality bottlenecks and adjust work standards in a timely manner.",
-        "CORE_KPI": "Evaluate key performance indicators such as number of tasks, total workload, overdue items, and bugs. Facilitate quick performance evaluation of R&D teams.",
-        "FAILURES": "Evaluate the number of defects, their severity distribution, and resolution timeliness. Help teams analyze failure causes and track resolution status.",
-        "BACKLOG_TASKS": "Summarize unfinished tasks and workload, evaluate whether completion time has overdue risks. Help teams identify overdue risks and manage progress.",
-        "RECENT_DELIVERY": "Evaluate recently completed tasks and deliverables. Help teams identify gaps between completed work items and expected goals, thereby adjusting strategies and resource allocation timely.",
-        "LEAD_TIME": "Evaluate the time required to complete tasks and the distribution of processing cycles. Help teams monitor the efficiency and stability of the delivery process.",
-        "UNPLANNED_TASKS": "Evaluate unplanned tasks that appear during execution, understand their impact on overall progress and resource allocation. Help teams identify interference factors and avoid risks.",
-        "TASK_GROWTH_TREND": "Evaluate the number of new tasks added within a specific time period and their impact on project progress. Help teams adjust strategies timely to cope with the continuously growing work demands.",
-        "RESOURCE_CREATION": "Evaluate the creation of various resources such as backlogs, sprints, tasks, and meetings. Help teams understand the effective utilization and contribution of resources.",
-        "CUSTOM_DEFINITION": "Perform custom status or time-series analysis on key indicators. Help teams gain in-depth understanding of specific data changes, statuses, and distributions."
+        "PROGRESS": "Track project, sprint, or assignee progress; evaluate schedule and efficiency.",
+        "BURNDOWN": "Gauge the chance of finishing all work on time within the plan; adjust early.",
+        "WORKLOAD": "View team workload and variance to keep assignment balanced.",
+        "OVERDUE_ASSESSMENT": "Spot overdue tasks and causes to optimize strategy and resources.",
+        "BUGS": "Quantify system issues and root causes across design, implementation, or testing.",
+        "HANDLING_EFFICIENCY": "Monitor rework frequency to surface quality gaps and improve standards.",
+        "CORE_KPI": "Roll up tasks, total effort, overdue, and bugs for quick assessment.",
+        "FAILURES": "Analyze defect count, severity mix, and resolution timeliness; track closure.",
+        "BACKLOG_TASKS": "Inventory unfinished tasks and effort, warn on overdue risk, control pace.",
+        "RECENT_DELIVERY": "Review recent deliveries vs. goals to rebalance priorities and resources.",
+        "LEAD_TIME": "Measure completion time and cycle distribution to watch delivery efficiency.",
+        "UNPLANNED_TASKS": "Detect unplanned work and impact to reduce disruptions and risk.",
+        "TASK_GROWTH_TREND": "Track new task trend and impact to steer cadence and strategy.",
+        "RESOURCE_CREATION": "Tally creation of backlog, sprints, tasks, meetings to gauge output and use.",
+        "CUSTOM_DEFINITION": "Run custom status or time-series analysis for deeper insights."
       },
       "AnalysisCaseObject": {
         "CURRENT_PROJECT": "Current Project",
@@ -417,21 +417,21 @@
         "CUSTOM_DEFINITION": "Custom Analysis"
       },
       "AnalysisCaseTemplateDesc": {
-        "PROGRESS": "Track project, plan, or tester work progress. Help teams evaluate test scheduling and work efficiency.",
-        "BURNDOWN": "Track the likelihood of completing all work within the planned time. Help teams monitor progress and respond accordingly.",
-        "WORKLOAD": "Understand team workload, evaluate workload and actual workload deviations. Help teams ensure reasonable workload distribution.",
-        "OVERDUE_ASSESSMENT": "Evaluate cases that are not completed on time, enabling teams to adjust strategies and optimize resource allocation. Help teams identify potential risks and bottlenecks.",
-        "SUBMITTED_BUGS": "Evaluate the bug submission status of testers. Help teams understand test hit rate, analyze case design and functional implementation deficiencies.",
-        "TESTING_EFFICIENCY": "Evaluate the frequency of repeated case testing, revealing poor completion quality issues. Help teams identify quality bottlenecks and adjust work standards in a timely manner.",
-        "CORE_KPI": "Evaluate key performance indicators such as number of cases, total workload, overdue items, and reviews. Facilitate quick performance evaluation of testing teams.",
-        "REVIEW_EFFICIENCY": "Evaluate the efficiency of the test case review process. Help teams optimize testing strategies and ensure high-quality software delivery.",
-        "BACKLOG_CASES": "Summarize unfinished cases and workload, evaluate whether completion time has overdue risks. Help teams identify overdue risks and manage progress.",
-        "RECENT_DELIVERY": "Evaluate recently completed cases and deliverables. Help teams identify gaps between completed work items and expected goals, thereby adjusting strategies and resource allocation timely.",
-        "LEAD_TIME": "Evaluate the time required to complete cases and the distribution of processing cycles. Help teams monitor the efficiency and stability of the delivery process.",
-        "UNPLANNED_CASES": "Evaluate unplanned cases that appear during execution, understand their impact on overall progress and resource allocation. Help teams identify interference factors and avoid risks.",
-        "CASE_GROWTH_TREND": "Evaluate the number of new cases added within a specific time period and their impact on project progress. Help teams adjust strategies timely to cope with the continuously growing work demands.",
-        "RESOURCE_CREATION": "Evaluate the creation of various resources such as plans, cases, reviews, and baselines. Help teams understand the effective utilization and contribution of resources.",
-        "CUSTOM_DEFINITION": "Perform custom status or time-series analysis on key indicators. Help teams gain in-depth understanding of specific data changes, statuses, and distributions."
+        "PROGRESS": "Track project, plan, or tester progress; evaluate schedule and efficiency.",
+        "BURNDOWN": "Gauge the chance of finishing all work on time within the plan; adjust early.",
+        "WORKLOAD": "View testing workload and variance to keep assignment balanced.",
+        "OVERDUE_ASSESSMENT": "Spot overdue cases and causes to optimize strategy and resources.",
+        "SUBMITTED_BUGS": "Quantify tester-submitted bugs and hit rate; surface design or implementation gaps.",
+        "TESTING_EFFICIENCY": "Monitor repeat testing to expose quality gaps and refine standards.",
+        "CORE_KPI": "Roll up cases, total effort, overdue, and reviews for quick assessment.",
+        "REVIEW_EFFICIENCY": "Assess case review efficiency to optimize strategy and ensure quality delivery.",
+        "BACKLOG_CASES": "Inventory unfinished cases and effort, warn on overdue risk, control pace.",
+        "RECENT_DELIVERY": "Review recent case deliveries vs. goals to rebalance priorities and resources.",
+        "LEAD_TIME": "Measure completion time and cycle distribution to watch delivery efficiency.",
+        "UNPLANNED_CASES": "Detect unplanned cases and impact to reduce disruptions and risk.",
+        "CASE_GROWTH_TREND": "Track new case trend and impact to steer cadence and strategy.",
+        "RESOURCE_CREATION": "Tally creation of plans, cases, reviews, baselines to gauge output and use.",
+        "CUSTOM_DEFINITION": "Run custom status or time-series analysis for deeper insights."
       },
       "ReportPermission": {
         "VIEW": "View",

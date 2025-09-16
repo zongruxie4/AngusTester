@@ -23,10 +23,6 @@ const expandFirstIfNeeded = () => {
   }
 };
 
-watch(() => props.meetings, () => {
-  expandFirstIfNeeded();
-}, { immediate: true });
-
 const isExpanded = (id: string) => expandedIds.value.has(id);
 const toggleExpand = (id: string) => {
   if (expandedIds.value.has(id)) {
@@ -37,6 +33,10 @@ const toggleExpand = (id: string) => {
   // trigger reactivity for Set
   expandedIds.value = new Set(expandedIds.value);
 };
+
+watch(() => props.meetings, () => {
+  expandFirstIfNeeded();
+}, { immediate: true });
 </script>
 
 <template>

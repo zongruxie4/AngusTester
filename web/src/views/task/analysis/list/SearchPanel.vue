@@ -336,7 +336,11 @@ const handleRefreshClick = () => {
  * @param {object} headers - Optional headers
  * @param {string} key - Optional key that triggered the change
  */
-const handleSearchPanelChange = (data: SearchCriteria[], _headers?: { [key: string]: string }, key?: string) => {
+const handleSearchPanelChange = (
+  data: SearchCriteria[],
+  _headers?: { [key: string]: string },
+  key?: string
+) => {
   currentSearchFilters.value = data;
 
   // Clear quick date search selections when manual date selection is made
@@ -1023,6 +1027,7 @@ const sortMenuItems = [
   <div class="text-3 leading-5">
     <div class="flex items-start justify-between mb-1.5">
       <div class="flex items-start transform-gpu translate-y-0.5">
+        <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 mt-1.5 rounded-full"></div>
         <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
           <span>{{ t('quickSearch') }}</span>
           <Colon />
@@ -1032,7 +1037,7 @@ const sortMenuItems = [
             v-for="item in quickSearchMenuItems"
             :key="item.key"
             :class="{ 'active-key': selectedQuickSearchItems.has(item.key) }"
-            class="px-2.5 h-6 leading-6 mr-3 mb-3 rounded bg-gray-light cursor-pointer"
+            class="px-2.5 h-6 leading-6 mr-3 rounded bg-gray-light cursor-pointer font-semibold text-3"
             @click="handleQuickSearchMenuItemClick(item)">
             {{ item.name }}
           </div>
@@ -1040,12 +1045,13 @@ const sortMenuItems = [
       </div>
     </div>
 
-    <div class="flex justify-between">
+    <div class="flex justify-between mt-3">
       <SearchPanel
         ref="searchPanelComponentRef"
         :options="searchPanelOptions"
         @change="handleSearchPanelChange">
       </SearchPanel>
+
       <div class="flex-shrink-0 flex items-center space-x-2">
         <Button
           class="flex-shrink-0 flex items-center"

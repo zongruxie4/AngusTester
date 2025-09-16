@@ -213,7 +213,6 @@ const handleSave = async () => {
       : analysis.updateAnalysis({ ...submissionParams }));
 
     isSaving.value = false;
-
     if (error) {
       return;
     }
@@ -261,7 +260,7 @@ onMounted(async () => {
 </script>
 <template>
   <div class="p-5">
-    <div class="mb-2 flex space-x-2">
+    <div class="mb-4 flex space-x-2">
       <Button
         type="primary"
         size="small"
@@ -277,7 +276,7 @@ onMounted(async () => {
     <Form
       ref="formRef"
       :colon="false"
-      :labelCol="{style: {width: '90px'}}"
+      :labelCol="{style: {width: '120px'}}"
       :model="formData"
       class="w-200 mt-5">
       <FormItem
@@ -305,7 +304,9 @@ onMounted(async () => {
           :placeholder="t('taskAnalysis.placeholder.inputAnalysisName')" />
       </FormItem>
 
-      <FormItem name="description" :label="t('taskAnalysis.form.description')">
+      <FormItem
+        name="description"
+        :label="t('taskAnalysis.form.description')">
         <Textarea
           v-model:value="formData.description"
           :maxlength="200"

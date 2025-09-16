@@ -1,4 +1,5 @@
 export const TemplateIconConfig = {
+  '': 'icon-liebiaoshitu',
   PROGRESS: 'icon-jindufenxi',
   BURNDOWN: 'icon-ranjinfenxi',
   WORKLOAD: 'icon-gongzuoliangfenxi',
@@ -13,7 +14,7 @@ export const TemplateIconConfig = {
   UNPLANNED_TASKS: 'icon-jihuawairenwufenxi',
   TASK_GROWTH_TREND: 'icon-renwuzengchangqushifenxi',
   RESOURCE_CREATION: 'icon-ziyuanchuangjianfenxi',
-  '': 'icon-liebiaoshitu'
+  CUSTOM_DEFINITION: 'icon-zidingyifenxi'
 };
 export type SelectOption = {
     id: string;

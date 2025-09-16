@@ -31,11 +31,7 @@ const addTabPane = inject('addTabPane', (value) => value);
 /**
  * Pagination configuration for analysis list
  */
-const paginationConfig = {
-  currentPage: 1,
-  pageSize: 20,
-  total: 0
-};
+const paginationConfig = { currentPage: 1, pageSize: 20, total: 0 };
 
 /**
  * Template descriptions for display
@@ -71,6 +67,7 @@ const selectedTemplate = ref('');
 const analysisList = ref<Array<{
   id: string;
   name: string;
+  description: string;
   template: AnalysisTaskTemplate;
   datasource?: { value: AnalysisDataSource } | null;
   createdByName?: string;
@@ -126,9 +123,7 @@ const loadAnalysisList = async () => {
   const queryParams = buildQueryParams();
 
   isLoading.value = true;
-  const [error, { data }] = await analysis.getAnalysisList({
-    ...queryParams
-  });
+  const [error, { data }] = await analysis.getAnalysisList({ ...queryParams });
   isLoading.value = false;
 
   if (error) {
@@ -343,12 +338,14 @@ onBeforeUnmount(() => {
       :projectId="props.projectId"
       @change="handleSearchFiltersChange"
       @add="openCreateAnalysisDialog" />
+
     <div class="flex-1 min-h-50 flex mt-2.5">
       <TemplateSelectList
         v-model:template="selectedTemplate"
         v-model:templateData="availableTemplates"
         v-model:templateDesc="templateDescriptions"
-        class="w-50 h-full overflow-y-auto bg-gray-1" />
+        class="w-55 h-full overflow-y-auto bg-gray-1" />
+
       <div
         v-show="analysisList.length"
         ref="dataListContainerRef"
@@ -360,30 +357,34 @@ onBeforeUnmount(() => {
           :key="item.id"
           class="pr-2 flex-1/5 flex-grow-0 mb-2.5 min-w-0">
           <div class="border rounded p-2 h-full flex flex-col justify-between">
-            <div>
-              <div class="flex space-x-2 ">
-                <Icon :icon="TemplateIconConfig[item.template]" class="text-8 mt-6" />
-                <div class="flex-1 min-w-0">
-                  <div class="flex justify-between">
-                    <div
-                      :title="item.name"
-                      class="flex-1 min-w-0 text-3.5 font-semibold mb-1 text-theme-special cursor-pointer truncate"
-                      @click="openAnalysisDetailView(item)">
-                      {{ item.name }}
-                    </div>
-                    <Tag class="relative -top-1 mr-0 px-0.5 h-5" color="geekblue">
-                      {{ item.datasource?.value === AnalysisDataSource.REAL_TIME_DATA ? t('taskAnalysis.realTime') : t('taskAnalysis.snapshot') }}
-                    </Tag>
+            <div class="flex space-x-2 ">
+              <Icon :icon="TemplateIconConfig[item.template]" class="text-8 mt-6" />
+              <div class="flex-1 min-w-0 mt-1">
+                <div class="flex justify-between">
+                  <div
+                    :title="item.name"
+                    class="flex-1 min-w-0 text-3.5 font-semibold mb-1 text-theme-special cursor-pointer truncate"
+                    @click="openAnalysisDetailView(item)">
+                    {{ item.name }}
                   </div>
-                  <p class="">{{ templateDescriptionMap[item.template] }}</p>
+                  <Tag class="relative -top-1 mr-0 px-0.5 h-4" color="geekblue">
+                    {{ item.datasource?.value === AnalysisDataSource.REAL_TIME_DATA ? t('taskAnalysis.realTime') : t('taskAnalysis.snapshot') }}
+                  </Tag>
+                </div>
+
+                <div class="project-description-row">
+                  <div
+                    v-if="item.description"
+                    class="project-description-text">
+                    <div class="mt-2">{{ item.description }}</div>
+                  </div>
+                  <p v-else class="project-no-description-text">{{ t('common.noDescription') }}</p>
                 </div>
               </div>
-              <div class="mt-1 text-right">
-                <div>
-                  <span class="font-semibold mr-1">{{ item.createdByName }}
-                  </span>{{ t('taskAnalysis.createdBy') }}{{ item.createdDate }}
-                </div>
-              </div>
+            </div>
+            <div class="mt-1 text-right">
+              <span class="font-semibold mr-1">{{ item.createdByName }}</span>
+              {{ t('taskAnalysis.createdAt') }}&nbsp;{{ item.createdDate }}
             </div>
             <div class="flex justify-end">
               <Button

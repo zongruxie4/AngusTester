@@ -8,7 +8,7 @@
     "aboutAnalysisDesc": "提供实时任务数据分析，支持数据驱动决策，确保信息透明，增强团队协作和问题追踪，提升项目管理效率。AngusTester内置燃尽图、积压任务、风险评估等分析模板，帮助快速查看仪表板和关键指标（KPI），用户也可根据业务需求自定义分析仪表板。",
     "addedAnalysis": "已添加的分析",
     "notCreatedYet": "还未创建，点击创建",
-    "createdBy": "创建于",
+    "createdAt": "创建于",
     "lastModifiedBy": "最后修改于",
     "realTime": "实时",
     "snapshot": "快照",
@@ -71,8 +71,8 @@
       "containsDataDetail": "包含数据明细"
     },
     "dataSource": {
-      "realTime": "每次展示实时数据",
-      "snapshot": "保存数据快照，每次展示快照数据"
+      "realTime": "实时数据",
+      "snapshot": "保存数据快照"
     },
     "orgType": {
       "dept": "部门",

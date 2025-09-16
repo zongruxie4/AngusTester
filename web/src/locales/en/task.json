@@ -8,7 +8,7 @@
     "aboutAnalysisDesc": "Provides real-time task data analysis, supports data-driven decision making, ensures information transparency, enhances team collaboration and issue tracking, and improves project management efficiency. AngusTester includes built-in analysis templates such as burndown charts, backlog tasks, and risk assessments to help quickly view dashboards and key performance indicators (KPIs). Users can also customize analysis dashboards based on business needs.",
     "addedAnalysis": "Added Analysis",
     "notCreatedYet": "Not created yet, click to create",
-    "createdBy": "Created by",
+    "createdAt": "Created at",
     "lastModifiedBy": "Last modified by",
     "realTime": "Real-time",
     "snapshot": "Snapshot",
