@@ -2,6 +2,8 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Input, Colon } from '@xcan-angus/vue-ui';
+import { debounce } from 'throttle-debounce';
+import { duration } from '@xcan-angus/infra';
 
 interface SearchState {
   searchValue?: string;
@@ -22,6 +24,7 @@ interface Emits {
   (e: 'toggleCreatedByMeFilter', userId: string): void;
   (e: 'toggleAssignedToMeFilter', userId: string): void;
   (e: 'toggleDateFilter', value: string): void;
+  (e: 'update:search', value: SearchState):void;
 }
 
 const props = defineProps<Props>();
@@ -31,13 +34,21 @@ const { t } = useI18n();
 const searchValue = computed({
   get: () => props.search.searchValue || '',
   set: (value: string) => {
-    emit('searchChange', value);
+    emit('update:search', {
+      ...props.search,
+      searchValue: value
+    });
+    // emit('searchChange', value);
   }
 });
 
-const handleSearchChange = (value: string) => {
-  emit('searchChange', value);
-};
+const handleSearchChange = debounce(duration.search, (event) => {
+  emit('update:search', {
+      ...props.search,
+      searchValue: event.target.value
+    });
+  emit('searchChange', event.target.value);
+});
 
 const handleClearAllFilters = () => {
   emit('clearAllFilters');
@@ -62,7 +73,7 @@ const handleToggleDateFilter = (value: string) => {
 <template>
   <div class="flex items-center">
     <Input
-      v-model:value="searchValue"
+      :value="searchValue"
       :maxlength="200"
       allowClear
       class="search-input mr-5"

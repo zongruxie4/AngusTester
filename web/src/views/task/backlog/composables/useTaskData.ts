@@ -180,9 +180,10 @@ export function useTaskData (
    * <p>Handle search change with debounce</p>
    * <p>Debounces search input changes to avoid excessive API calls</p>
    */
-  const handleSearchChange = debounce(duration.search, () => {
+  const handleSearchChange = (searchValue) => {
+    search.searchValue = searchValue;
     refreshBacklogData();
-  });
+  };
 
   /**
    * <p>Clear all search filters</p>
