@@ -450,10 +450,11 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  top: 14px;
 }
 
 :deep(.ant-tree .ant-tree-switcher .ant-tree-switcher-icon) {
-  font-size: 10px;
+  font-size: 16px;
   color: #6b7280;
 }
 
