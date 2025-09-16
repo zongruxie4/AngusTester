@@ -689,7 +689,7 @@ const subTaskTableColumns = [
         <template #option="record">
           <div class="flex items-center">
             <IconTask :value="record.value as any" class="text-4 flex-shrink-0" />
-            <span class="ml-1">{{ (record as any).message }}</span>
+            <span class="ml-1">{{ (record as any).label }}</span>
           </div>
         </template>
       </SelectEnum>
