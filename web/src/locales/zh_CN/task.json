@@ -2420,8 +2420,8 @@
     "searchPanel": {
       "searchSprintName": "查询迭代名称、描述",
       "selectOwner": "选择负责人",
-      "startDateGreaterEqual": "迭代开始时间大于等于",
-      "deadlineDateLessEqual": "迭代截止时间小于等于",
+      "startDateGreaterEqual": "迭代开始时间",
+      "deadlineDateLessEqual": "迭代截止时间",
       "sortByCreateTime": "按添加时间",
       "sortByCreator": "按添加人",
       "sortByOwner": "按负责人",

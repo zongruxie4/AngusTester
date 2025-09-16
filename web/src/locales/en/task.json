@@ -2413,10 +2413,10 @@
       "content": "Meeting Content"
     },
     "searchPanel": {
-      "searchSprintName": "Search sprint name, description",
+      "searchSprintName": "Search name, description",
       "selectOwner": "Select owner",
-      "startDateGreaterEqual": "Sprint start date ≥",
-      "deadlineDateLessEqual": "Sprint deadline ≤",
+      "startDateGreaterEqual": "Sprint start date",
+      "deadlineDateLessEqual": "Sprint deadline date",
       "sortByCreateTime": "By creation time",
       "sortByCreator": "By creator",
       "sortByOwner": "By owner",
