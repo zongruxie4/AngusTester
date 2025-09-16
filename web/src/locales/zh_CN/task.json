@@ -964,7 +964,7 @@
     "addMeeting": "添加会议",
     "editMeeting": "编辑会议",
     "aboutMeeting": "关于会议",
-    "aboutMeetingDesc": "会议在敏捷框架中起到关键作用，通过定期的沟通、反馈和反思，帮助团队持续改进，提高工作效率，确保项目能够灵活应对变化。支持会议类型如下：",
+    "aboutMeetingDesc": "会议在敏捷框架中起到关键作用，通过定期的沟通、反馈和反思，帮助团队持续改进，提高工作效率，确保项目能够灵活应对变化。",
     "addedMeetings": "已添加的会议",
     "notAddedYet": "您尚未添加任何会议，立即",
     "confirmDelete": "确定删除会议[{name}]吗？",
@@ -1025,17 +1025,17 @@
     },
     "meetingTypes": {
       "productGrooming": "产品梳理会",
-      "productGroomingDesc": "确认产品的长期愿景和近期目标，确保团队对产品方向的一致理解。对Backlog进行审查和梳理，确保其优先级和可行性。参与者包括产品负责人、开发团队、Scrum Master、相关利益相关者(市场、销售团队等)。",
+      "productGroomingDesc": "明确产品愿景与短期目标，对 Backlog 梳理与优先级排序，确保可实施性。参与：产品负责人、开发团队、Scrum Master 及相关干系人。",
       "sprintPlanning": "迭代计划会议",
-      "sprintPlanningDesc": "确定在即将到来的迭代(Sprint)中要完成的工作。产品负责人展示产品中Backlog，团队讨论并估算这些项目，决定在迭代中可以完成的工作量。参与者包括Scrum Master、产品负责人和开发团队。",
+      "sprintPlanningDesc": "确定本次迭代的交付范围与工作量。产品负责人展示 Backlog，团队讨论与估算，选入可完成项。参与：Scrum Master、产品负责人、开发团队。",
       "dailyStandup": "每日站会",
-      "dailyStandupDesc": "实时展示团队的工作进度和剩余工作量，让团队和利益相关者可以清晰了解当前迭代的状态，促进团队沟通和协调。",
+      "dailyStandupDesc": "以最短时间同步进展、问题与计划，实时掌握迭代状态，促进协同。",
       "sprintReview": "迭代回顾会议",
-      "sprintReviewDesc": "展示迭代期间完成的工作，收集反馈，讨论改进点和后续计划。更新待办事项列表以反映新的需求或变更。参与者包括Scrum团队和相关利益相关者(如客户、管理层)。",
+      "sprintReviewDesc": "展示迭代产出，收集反馈并更新 Backlog，确定后续方向。参与：Scrum 团队及干系人。",
       "sprintRetrospective": "迭代总结(反思)会",
-      "sprintRetrospectiveDesc": "反思迭代过程，识别改进的机会。分析迭代过程中的成功之处和需要改进的地方。制定改进计划，以提升团队的工作效率和协作。参与者包括Scrum团队(开发团队、Scrum Master和产品负责人)。",
+      "sprintRetrospectiveDesc": "回顾流程，识别问题与改进点，制定下一步改进行动。参与：Scrum 团队。",
       "other": "其他会议",
-      "otherDesc": "敏捷过程中团队组织的其他类型会议，如：技术评审会议、需求评审会议、发布计划会议、障碍解决会议、团队建设会议等。"
+      "otherDesc": "团队在敏捷过程中组织的其他会议，如技术/需求评审、发布计划、障碍消除、团队建设等。"
     },
     "quickSearch": {
       "all": "全部",

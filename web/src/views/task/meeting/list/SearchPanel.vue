@@ -4,26 +4,13 @@ import { useI18n } from 'vue-i18n';
 import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
-import { appContext, PageQuery } from '@xcan-angus/infra';
+import { appContext, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { DATE_TIME_FORMAT } from '@/utils/constant';
 import { TaskMeetingType } from '@/enums/enums';
 import { LoadingProps } from '@/types/types';
 
 // TYPES & INTERFACES
 type OrderByKey = string;
-type OrderSortKey = PageQuery.OrderSort;
-
-type SearchFilter = {
-  key: string;
-  op: string;
-  value: string | string[];
-};
-
-type SearchParams = {
-  orderBy?: string;
-  orderSort?: PageQuery.OrderSort;
-  filters: SearchFilter[];
-};
 
 // COMPONENT PROPS & EMITS
 const props = withDefaults(defineProps<LoadingProps>(), {
@@ -32,7 +19,7 @@ const props = withDefaults(defineProps<LoadingProps>(), {
 
 // eslint-disable-next-line func-call-spacing
 const emits = defineEmits<{
-  (e: 'change', value: SearchParams): void;
+  (e: 'change', value: PageQuery): void;
   (e: 'refresh'): void;
 }>();
 
@@ -46,9 +33,9 @@ const selectedQuickSearchItems = ref<{ [key: string]: boolean }>({});
 
 const currentOrderBy = ref();
 const currentOrderSort = ref();
-const searchFilters = ref<SearchFilter[]>([]);
-const quickSearchFilters = ref<SearchFilter[]>([]);
-const associatedFilters = ref<SearchFilter[]>([]);
+const searchFilters = ref<SearchCriteria[]>([]);
+const quickSearchFilters = ref<SearchCriteria[]>([]);
+const associatedFilters = ref<SearchCriteria[]>([]);
 
 // CONSTANTS
 const ASSOCIATED_FILTER_KEYS = ['createdDate', 'moderatorId', 'createdBy'];
@@ -93,7 +80,7 @@ const searchPanelOptions = [
 const sortMenuItems: {
   name: string;
   key: OrderByKey;
-  orderSort: OrderSortKey;
+  orderSort: PageQuery.OrderSort;
 }[] = [
   {
     name: t('taskMeeting.sort.byCreateTime'),
@@ -178,7 +165,7 @@ const formatDateRange = (timeKey: string): [string, string] => {
  * Combines all search parameters into a single object
  * @returns Combined search parameters
  */
-const buildSearchParameters = (): SearchParams => {
+const buildSearchParameters = (): PageQuery => {
   return {
     filters: [
       ...quickSearchFilters.value,
@@ -194,7 +181,7 @@ const buildSearchParameters = (): SearchParams => {
  * Handles search panel filter changes
  * @param filterData - Array of filter objects from search panel
  */
-const handleSearchFilterChange = (filterData: SearchFilter[]) => {
+const handleSearchFilterChange = (filterData: SearchCriteria[]) => {
   searchFilters.value = filterData.filter(item => !ASSOCIATED_FILTER_KEYS.includes(item.key));
   associatedFilters.value = filterData.filter(item => ASSOCIATED_FILTER_KEYS.includes(item.key));
 
@@ -309,11 +296,11 @@ const handleQuickSearchItemClick = (menuItem: { key: string; name: string }) => 
     } else {
       return {
         key,
-        op: 'EQUAL',
+        op: SearchCriteria.OpEnum.Equal,
         value: userId || ''
       };
     }
-  }).filter(Boolean) as SearchFilter[];
+  }).filter(Boolean) as SearchCriteria[];
 
   if (associatedFiltersInQuick.length) {
     searchPanelRef.value.setConfigs([...associatedFiltersInQuick]);
@@ -334,19 +321,22 @@ const handleRefresh = () => {
 </script>
 <template>
   <div class="mt-2.5 mb-3.5">
-    <div class="flex">
-      <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
-        <span>{{ t('quickSearch') }}</span>
-        <Colon />
-      </div>
-      <div class="flex  flex-wrap ml-2">
-        <div
-          v-for="menuItem in quickSearchMenuItems"
-          :key="menuItem.key"
-          :class="{ 'active-key': selectedQuickSearchItems[menuItem.key] }"
-          class="px-2.5 h-6 leading-6 mr-3 mb-3 rounded bg-gray-light cursor-pointer"
-          @click="handleQuickSearchItemClick(menuItem)">
-          {{ menuItem.name }}
+    <div class="flex items-center mb-3">
+      <div class="flex items-start transform-gpu translate-y-0.5">
+        <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-2 mt-1.5 rounded-full"></div>
+        <div class="whitespace-nowrap text-3 mt-0.5 text-text-sub-content">
+          <span>{{ t('quickSearch') }}</span>
+          <Colon />
+        </div>
+        <div class="flex flex-wrap ml-2">
+          <div
+            v-for="menuItem in quickSearchMenuItems"
+            :key="menuItem.key"
+            :class="{ 'active-key': selectedQuickSearchItems[menuItem.key] }"
+            class="px-2.5 h-6 leading-6 mr-3 rounded bg-gray-light cursor-pointer font-semibold text-3"
+            @click="handleQuickSearchItemClick(menuItem)">
+            {{ menuItem.name }}
+          </div>
         </div>
       </div>
     </div>

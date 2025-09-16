@@ -6,24 +6,12 @@ import dayjs from 'dayjs';
 import { task } from '@/api/tester';
 import { MeetingInfo } from '../types';
 import { DATE_FORMAT, TIME_FORMAT } from '@/utils/constant';
+import { BasicProps } from '@/types/types';
 
 import RichEditor from '@/components/richEditor/index.vue';
 
-/**
- * Component props interface for meeting detail view
- */
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  data: {
-    _id: string;
-    id: string | undefined;
-  }
-}
-
 // COMPONENT PROPS
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -123,7 +111,6 @@ onMounted(() => {
     await fetchMeetingDetails(currentMeetingId);
   }, { immediate: true });
 });
-
 </script>
 
 <template>

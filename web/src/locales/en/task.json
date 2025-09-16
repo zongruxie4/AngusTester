@@ -38,7 +38,7 @@
     "placeholder": {
       "inputAnalysisName": "Enter analysis name, maximum 100 characters",
       "inputAnalysisDesc": "Enter analysis description, such as analysis purpose, background, etc., maximum 200 characters",
-      "selectIteration": "Select or search iteration",
+      "selectIteration": "Select or search sprint",
       "selectUser": "Select user",
       "selectDept": "Select department",
       "selectGroup": "Select group"
@@ -55,7 +55,7 @@
       "objectRequired": "Please select analysis object",
       "timeRangeRequired": "Please select analysis period",
       "dataSourceRequired": "Please select data display method",
-      "iterationRequired": "Please select iteration",
+      "iterationRequired": "Please select sprint",
       "orgRequired": "Please select organization"
     },
     "form": {
@@ -601,7 +601,7 @@
         "evalWorkload": "Time spent on work estimation, calculated in hours.",
         "actualStoryPoint": "Actual value of work task volume, comprehensive difficulty, and complexity.",
         "actualWorkload": "Actual time spent on work, calculated in hours.",
-        "tags": "\"Task tags\" can help you organize tasks with common points, such as \"project name, iteration version, business identifier\", etc."
+        "tags": "\"Task tags\" can help you organize tasks with common points, such as \"project name, sprint version, business identifier\", etc."
       },
       "taskTypes": {
         "requirement": "Requirement",
@@ -964,7 +964,7 @@
     "addMeeting": "Add Meeting",
     "editMeeting": "Edit Meeting",
     "aboutMeeting": "About Meetings",
-    "aboutMeetingDesc": "Meetings play a key role in agile frameworks, helping teams continuously improve, increase work efficiency, and ensure projects can flexibly respond to changes through regular communication, feedback, and reflection. Supported meeting types are as follows:",
+    "aboutMeetingDesc": "Meetings play a key role in agile frameworks, helping teams continuously improve, increase work efficiency, and ensure projects can flexibly respond to changes through regular communication, feedback, and reflection.",
     "addedMeetings": "Added Meetings",
     "notAddedYet": "You haven't added any meetings yet, immediately",
     "confirmDelete": "Confirm delete meeting [{name}]?",
@@ -984,7 +984,7 @@
       "sprint": "Sprint",
       "moderatorLabel": "Moderator",
       "participantsLabel": "Participants",
-      "participantsCount": "{count} participants total",
+      "participantsCount": "{count} participants",
       "lastModifiedBy": "Modified by"
     },
     "placeholder": {
@@ -1025,17 +1025,17 @@
     },
     "meetingTypes": {
       "productGrooming": "Product Grooming",
-      "productGroomingDesc": "Confirm the long-term vision and short-term goals of the product, ensuring consistent understanding of product direction across the team. Review and organize the Backlog to ensure its priority and feasibility. Participants include product owner, development team, Scrum Master, and relevant stakeholders (marketing, sales team, etc.).",
+      "productGroomingDesc": "Clarify product vision and near-term goals. Refine and prioritize the backlog to ensure feasibility. Participants: Product Owner, Dev Team, Scrum Master, stakeholders.",
       "sprintPlanning": "Sprint Planning",
-      "sprintPlanningDesc": "Determine the work to be completed in the upcoming iteration (Sprint). The product owner presents the product Backlog, the team discusses and estimates these items, and decides the amount of work that can be completed in the iteration. Participants include Scrum Master, product owner, and development team.",
+      "sprintPlanningDesc": "Define sprint scope and workload. PO presents backlog; team discusses, estimates, and selects deliverables. Participants: Scrum Master, Product Owner, Dev Team.",
       "dailyStandup": "Daily Standup",
-      "dailyStandupDesc": "Display team work progress and remaining workload in real-time, allowing the team and stakeholders to clearly understand the current iteration status, promoting team communication and coordination.",
+      "dailyStandupDesc": "Sync progress, blockers, and plans in minutes. Keep sprint status visible and collaboration tight.",
       "sprintReview": "Sprint Review",
-      "sprintReviewDesc": "Show work completed during the iteration, collect feedback, discuss improvement points and follow-up plans. Update the backlog to reflect new requirements or changes. Participants include the Scrum team and relevant stakeholders (such as customers, management).",
+      "sprintReviewDesc": "Show deliverables, gather feedback, and update backlog. Align next steps. Participants: Scrum team and stakeholders.",
       "sprintRetrospective": "Sprint Retrospective",
-      "sprintRetrospectiveDesc": "Reflect on the iteration process and identify opportunities for improvement. Analyze what was successful and what needs improvement in the iteration process. Develop improvement plans to enhance team work efficiency and collaboration. Participants include the Scrum team (development team, Scrum Master, and product owner).",
+      "sprintRetrospectiveDesc": "Reflect on process, identify issues and improvements, commit actions for the next sprint. Participants: Scrum team.",
       "other": "Other Meetings",
-      "otherDesc": "Other types of meetings organized by teams in the agile process, such as: technical review meetings, requirement review meetings, release planning meetings, obstacle resolution meetings, team building meetings, etc."
+      "otherDesc": "Other agile meetings such as technical/requirement reviews, release planning, impediment removal, team building, etc."
     },
     "quickSearch": {
       "all": "All",
@@ -1695,8 +1695,8 @@
     "upload": {
       "title": "Import Task",
       "form": {
-        "iteration": "Iteration",
-        "selectIteration": "Select Iteration",
+        "iteration": "Sprint",
+        "selectIteration": "Select sprint",
         "uploadFile": "Please upload file",
         "selectFile": "Select File",
         "uploadTip": "You can directly drag files into this area for direct upload. File size should not exceed 20M, supporting .xls .xlsx file types.",
@@ -1792,7 +1792,7 @@
       "title": "Move Task",
       "form": {
         "selectIteration": "Select Iteration",
-        "selectIterationPlaceholder": "Select or search iteration"
+        "selectIterationPlaceholder": "Select or search sprint"
       },
       "messages": {
         "moveSuccess": "Task moved successfully",
@@ -1893,7 +1893,7 @@
         "softwareVersionPlaceholder": "Please select version",
         "tags": "Tags",
         "tagsPlaceholder": "Maximum 5 tags",
-        "tagsTip": "\"Task tags\" can help you organize tasks with common points, such as \"project name, iteration version, business identifier\", etc.",
+        "tagsTip": "\"Task tags\" can help you organize tasks with common points, such as \"project name, sprint version, business identifier\", etc.",
         "tagsNotFound": "Please contact administrator to configure task tags in \"Application Management\"-\"Task Management\"-\"Task Tags\".",
         "assocTasks": "Associated Tasks",
         "assocTasksPlaceholder": "Maximum 20 associated tasks",
@@ -2377,7 +2377,7 @@
       "selectOwner": "Select owner",
       "inputTaskPrefix": "Enter task prefix (max 40 characters)",
       "inputAcceptanceCriteria": "Define specific conditions and standards for software product delivery",
-      "inputOtherInformation": "Additional notes such as iteration strategy, risk assessment and management"
+      "inputOtherInformation": "Additional notes such as sprint strategy, risk assessment and management"
     },
     "tips": {
       "ownerTip": "The owner is responsible for overall sprint planning and execution, including task assignment, progress tracking, and risk management",

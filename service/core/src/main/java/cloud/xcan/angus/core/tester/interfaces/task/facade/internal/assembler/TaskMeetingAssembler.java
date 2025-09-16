@@ -78,6 +78,7 @@ public class TaskMeetingAssembler {
         .setLocation(meeting.getLocation())
         .setModerator(meeting.getModerator())
         .setParticipants(meeting.getParticipants())
+        .setContent(meeting.getContent())
         .setCreatedBy(meeting.getCreatedBy())
         .setCreatedDate(meeting.getCreatedDate())
         .setLastModifiedBy(meeting.getLastModifiedBy())

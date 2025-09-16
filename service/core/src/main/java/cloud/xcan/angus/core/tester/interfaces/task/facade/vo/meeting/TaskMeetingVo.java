@@ -34,6 +34,8 @@ public class TaskMeetingVo {
 
   private List<UserInfo> participants;
 
+  private String content;
+
   private Long createdBy;
 
   @NameJoinField(id = "createdBy", repository = "commonUserBaseRepo")

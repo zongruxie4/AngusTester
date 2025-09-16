@@ -97,7 +97,6 @@ const initializeMeetingModule = () => {
       }
     });
   }
-
   processRouteHash(route.hash);
 };
 

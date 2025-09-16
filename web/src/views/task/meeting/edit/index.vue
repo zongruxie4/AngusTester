@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import { project, task } from '@/api/tester';
 import { EditFormState, MeetingInfo } from '../types';
 import { TaskMeetingType } from '@/enums/enums';
+import { BasicProps } from '@/types/types';
 
 /**
  * Import Components
@@ -15,21 +16,8 @@ import { TaskMeetingType } from '@/enums/enums';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import RichEditor from '@/components/richEditor/index.vue';
 
-/**
- * Component props interface for meeting edit form
- */
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  data: {
-    _id: string;
-    id: string | undefined;
-  }
-}
-
 // COMPONENT PROPS
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -192,12 +180,14 @@ const handleMeetingCreation = async () => {
   const currentTabId = props.data?._id;
   const newMeetingId = response?.data?.id;
   const meetingSubject = apiParams.subject;
-  replaceTabPane(currentTabId, {
-    _id: newMeetingId,
-    uiKey: newMeetingId,
-    name: meetingSubject,
-    data: { _id: newMeetingId, id: newMeetingId }
-  });
+  if (currentTabId && newMeetingId) {
+    replaceTabPane(currentTabId, {
+      _id: newMeetingId,
+      uiKey: newMeetingId,
+      name: meetingSubject,
+      data: { _id: newMeetingId, id: newMeetingId }
+    });
+  }
 };
 
 /**
@@ -321,7 +311,9 @@ const handleFormSubmit = async () => {
  * Handles form cancellation
  */
 const handleFormCancel = () => {
-  deleteTabPane([props.data._id]);
+  if (props.data?._id) {
+    deleteTabPane([props.data._id]);
+  }
 };
 
 /**
