@@ -135,7 +135,7 @@ const isSavedMockApi = computed(() => {
 const params = computed(() => {
   const _params: {
     mockServiceId: string;
-    filters?: [{ key: 'summary'; op: SearchCriteria.OpEnum.MatchEnd, value: string }];
+    filters?: [{ key: 'summary'; op: SearchCriteria.OpEnum.Match, value: string }];
     orderBy?: string;
     orderSort?: PageQuery.OrderSort;
   } = {
@@ -143,7 +143,7 @@ const params = computed(() => {
   };
 
   if (inputValue.value) {
-    _params.filters = [{ key: 'summary', op: SearchCriteria.OpEnum.MatchEnd as any, value: inputValue.value }];
+    _params.filters = [{ key: 'summary', op: SearchCriteria.OpEnum.Match as any, value: inputValue.value }];
   }
 
   if (orderBy.value) {

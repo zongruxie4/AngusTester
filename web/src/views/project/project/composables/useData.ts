@@ -77,7 +77,7 @@ export function useData () {
     if (keyword.value?.trim()) {
       params.filters = [{
         value: keyword.value.trim(),
-        op: SearchCriteria.OpEnum.MatchEnd,
+        op: SearchCriteria.OpEnum.Match,
         key: 'name'
       }];
     }
@@ -87,7 +87,6 @@ export function useData () {
       params.orderBy = orderBy.value;
       params.orderSort = orderSort.value;
     }
-
     return params;
   };
 

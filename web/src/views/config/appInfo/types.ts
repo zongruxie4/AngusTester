@@ -13,7 +13,7 @@ export interface Params {
     key: string;
 
     /**
-     * The operation to perform (e.g., MATCH_END)
+     * The operation to perform (e.g., MATCH)
      */
     op: string;
 

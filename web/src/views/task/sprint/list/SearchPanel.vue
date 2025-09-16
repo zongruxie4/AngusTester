@@ -26,7 +26,7 @@ const emits = defineEmits<{
 }>();
 
 // User context and component references
-const currentUser = ref(appContext.getTenant());
+const currentUser = ref(appContext.getUser());
 const searchPanelRef = ref();
 const selectedQuickFilters = ref<{ [key: string]: boolean }>({});
 
@@ -310,9 +310,7 @@ const handleQuickFilterClick = (filterItem) => {
       return null;
     } else {
       return {
-        key,
-        op: SearchCriteria.OpEnum.Equal,
-        value: String(currentUserId)
+        key, op: SearchCriteria.OpEnum.Equal, value: String(currentUserId)
       };
     }
   }).filter(Boolean) as SearchCriteria[];

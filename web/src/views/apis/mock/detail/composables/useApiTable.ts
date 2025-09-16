@@ -43,7 +43,7 @@ export function useApiTable (serviceId: string) {
   const handleSearch = debounce(duration.search, (value: string) => {
     tableParams.value.pageNo = 1;
     if (value) {
-      tableParams.value.filters = [{ key: 'summary', op: SearchCriteria.OpEnum.MatchEnd, value }];
+      tableParams.value.filters = [{ key: 'summary', op: SearchCriteria.OpEnum.Match, value }];
     } else {
       tableParams.value.filters = [];
     }

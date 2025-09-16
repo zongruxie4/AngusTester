@@ -19,6 +19,7 @@ import DefaultProjectImage from '@/assets/images/default.png';
 // Composables
 import { useData, useActions } from './composables';
 import type { Project } from './types';
+import { BasicProps } from '@/types/types';
 
 // Initialize i18n
 const { t } = useI18n();
@@ -26,14 +27,8 @@ const { t } = useI18n();
 // Type definitions
 type OrderByKey = 'createdDate' | 'createdByName';
 
-type Props = {
-  projectId: string;
-  userInfo: User;
-  appInfo: { id: number | undefined; };
-}
-
 // Props and emits
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined

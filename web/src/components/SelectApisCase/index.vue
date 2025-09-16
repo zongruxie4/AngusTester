@@ -93,7 +93,7 @@ const apiListSelect = async (apisId) => {
     pageNo: 1,
     pageSize: 2000,
     apisId,
-    filters: caseKeywords.value ? [{ value: caseKeywords.value, op: 'MATCH_END', key: 'name' }] : []
+    filters: caseKeywords.value ? [{ value: caseKeywords.value, op: 'MATCH', key: 'name' }] : []
   });
   tableLoading.value = false;
   rowSelection.value.selectedRowKeys = [];
