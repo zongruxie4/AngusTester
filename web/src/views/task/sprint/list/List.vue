@@ -108,8 +108,21 @@ const getSprintStatusDotStyle = (statusValue: string) => {
         <!-- Sprint information card -->
         <div class="px-4 py-3 bg-theme-bg-subtle/30 border-t border-theme-border-subtle">
           <div class="flex items-center justify-between">
-            <!-- Left side: Status + Owner + Members + Task count -->
+            <!-- Left side: Owner + Status + Task count + Members -->
             <div class="flex items-center space-x-16">
+              <!-- Owner -->
+              <div class="flex items-center space-x-2">
+                <div class="w-6 h-6 rounded-full overflow-hidden ring-1 ring-theme-border">
+                  <Image class="w-full h-full" :src="item.ownerAvatar" type="avatar" />
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-xs text-theme-sub-content">{{ t('taskSprint.columns.owner') }}</span>
+                  <span class="text-sm font-medium text-theme-content truncate max-w-24" :title="item.ownerName">
+                    {{ item.ownerName }}
+                  </span>
+                </div>
+              </div>
+
               <!-- Sprint status -->
               <div class="flex items-center space-x-2">
                 <div
@@ -122,19 +135,6 @@ const getSprintStatusDotStyle = (statusValue: string) => {
                     </div>
                     <span>{{ item.status?.message }}</span>
                   </div>
-                </div>
-              </div>
-
-              <!-- Owner -->
-              <div class="flex items-center space-x-2">
-                <div class="w-6 h-6 rounded-full overflow-hidden ring-1 ring-theme-border">
-                  <Image class="w-full h-full" :src="item.ownerAvatar" type="avatar" />
-                </div>
-                <div class="flex flex-col">
-                  <span class="text-xs text-theme-sub-content">{{ t('taskSprint.columns.owner') }}</span>
-                  <span class="text-sm font-medium text-theme-content truncate max-w-24" :title="item.ownerName">
-                    {{ item.ownerName }}
-                  </span>
                 </div>
               </div>
 
