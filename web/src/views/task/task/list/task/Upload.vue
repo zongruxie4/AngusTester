@@ -155,7 +155,7 @@ const submitImportForm = () => {
           :action="`${TESTER}/task/sprint?projectId=${projectId}&fullTextSearch=true`"
           :defaultActiveFirstOption="true"
           :lazy="false"
-          :placeholder="t('task.upload.form.selectIteration')"
+          :placeholder="t('task.upload.form.selectSprint')"
           :fieldNames="{value: 'id', label: 'name'}" />
       </FormItem>
 

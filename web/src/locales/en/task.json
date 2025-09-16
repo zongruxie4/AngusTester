@@ -38,7 +38,7 @@
     "placeholder": {
       "inputAnalysisName": "Enter analysis name, maximum 100 characters",
       "inputAnalysisDesc": "Enter analysis description, such as analysis purpose, background, etc., maximum 200 characters",
-      "selectIteration": "Select or search sprint",
+      "selectSprint": "Select or search sprint",
       "selectUser": "Select user",
       "selectDept": "Select department",
       "selectGroup": "Select group"
@@ -59,13 +59,13 @@
       "orgRequired": "Please select organization"
     },
     "form": {
-      "template": "Analysis Template",
-      "name": "Analysis Name",
-      "description": "Analysis Description",
-      "object": "Analysis Object",
-      "selectIteration": "Select Iteration",
+      "template": "Template",
+      "name": "Name",
+      "description": "Description",
+      "object": "Object",
+      "selectSprint": "Select sprint",
       "selectOrg": "Select Organization",
-      "timeRange": "Analysis Period",
+      "timeRange": "Period",
       "dataSource": "Data Display",
       "containsUserAnalysis": "Include Assignee Analysis",
       "containsDataDetail": "Include Data Details"
@@ -1696,7 +1696,7 @@
       "title": "Import Task",
       "form": {
         "iteration": "Sprint",
-        "selectIteration": "Select sprint",
+        "selectSprint": "Select sprint",
         "uploadFile": "Please upload file",
         "selectFile": "Select File",
         "uploadTip": "You can directly drag files into this area for direct upload. File size should not exceed 20M, supporting .xls .xlsx file types.",
@@ -1791,8 +1791,8 @@
     "moveModal": {
       "title": "Move Task",
       "form": {
-        "selectIteration": "Select Iteration",
-        "selectIterationPlaceholder": "Select or search sprint"
+        "selectSprint": "Select sprint",
+        "selectSprintPlaceholder": "Select or search sprint"
       },
       "messages": {
         "moveSuccess": "Task moved successfully",

@@ -106,7 +106,7 @@ const moveTasksToSprint = async () => {
     @cancel="closeModal"
     @ok="moveTasksToSprint">
     <div class="flex items-center">
-      <div class="mr-2">{{ t('task.moveModal.form.selectIteration') }}</div>
+      <div class="mr-2">{{ t('task.moveModal.form.selectSprint') }}</div>
       <Select
         v-model:value="selectedSprintId"
         :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
@@ -114,7 +114,7 @@ const moveTasksToSprint = async () => {
         :format="formatSprintOption"
         :additionalOption="defaultSprintOption"
         showSearch
-        :placeholder="t('task.moveModal.form.selectIterationPlaceholder')"
+        :placeholder="t('task.moveModal.form.selectSprintPlaceholder')"
         class="flex-1" />
     </div>
   </Modal>

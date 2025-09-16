@@ -277,9 +277,20 @@ onMounted(async () => {
     <Form
       ref="formRef"
       :colon="false"
-      :labelCol="{style: {width: '120px'}}"
+      :labelCol="{style: {width: '100px'}}"
       :model="formData"
       class="w-200 mt-5">
+      <FormItem
+        name="name"
+        :label="t('taskAnalysis.form.name')"
+        class="input-item"
+        required>
+        <Input
+          v-model:value="formData.name"
+          :maxlength="100"
+          :placeholder="t('taskAnalysis.placeholder.inputAnalysisName')" />
+      </FormItem>
+
       <FormItem
         name="template"
         :label="t('taskAnalysis.form.template')"
@@ -292,17 +303,6 @@ onMounted(async () => {
           defaultActiveFirstOption
           enumKey="AnalysisTaskTemplate">
         </SelectEnum>
-      </FormItem>
-
-      <FormItem
-        name="name"
-        :label="t('taskAnalysis.form.name')"
-        class="input-item"
-        required>
-        <Input
-          v-model:value="formData.name"
-          :maxlength="100"
-          :placeholder="t('taskAnalysis.placeholder.inputAnalysisName')" />
       </FormItem>
 
       <FormItem
@@ -335,7 +335,7 @@ onMounted(async () => {
       <template v-if="formData.object === AnalysisTaskObject.SPRINT">
         <FormItem
           name="planId"
-          :label="t('taskAnalysis.form.selectIteration')"
+          :label="t('taskAnalysis.form.selectSprint')"
           required
           class="ml-16 input-item">
           <Select
@@ -347,7 +347,7 @@ onMounted(async () => {
             defaultActiveFirstOption
             showSearch
             internal
-            :placeholder="t('taskAnalysis.placeholder.selectIteration')">
+            :placeholder="t('taskAnalysis.placeholder.selectSprint')">
             <template #option="record">
               <div class="flex items-center" :title="record.name">
                 <Icon icon="icon-jihua" class="mr-1 text-4" />
@@ -437,6 +437,6 @@ onMounted(async () => {
 <style scoped>
 .ant-form :deep(.ant-form-item) label {
   height: 28px;
-  font-weight: 600;
+  font-weight: 500;
 }
 </style>

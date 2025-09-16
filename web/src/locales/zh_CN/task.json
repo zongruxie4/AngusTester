@@ -38,7 +38,7 @@
     "placeholder": {
       "inputAnalysisName": "输入分析名称，最多可输入100字符",
       "inputAnalysisDesc": "输入分析描述，如分析的目的、背景等，最多支持200字符",
-      "selectIteration": "选择或查询迭代",
+      "selectSprint": "选择或查询迭代",
       "selectUser": "选择用户",
       "selectDept": "选择部门",
       "selectGroup": "选择组"
@@ -63,7 +63,7 @@
       "name": "分析名称",
       "description": "分析描述",
       "object": "分析对象",
-      "selectIteration": "选择迭代",
+      "selectSprint": "选择迭代",
       "selectOrg": "选择组织",
       "timeRange": "分析期间",
       "dataSource": "数据展示",
@@ -1696,7 +1696,7 @@
       "title": "导入任务",
       "form": {
         "iteration": "迭代",
-        "selectIteration": "选择迭代",
+        "selectSprint": "选择迭代",
         "uploadFile": "请上传文件",
         "selectFile": "选择文件",
         "uploadTip": "可直接将文件拖入此区域直接上传，文件大小不超过20M，支持.xls .xlsx类型文件。",
@@ -1791,8 +1791,8 @@
     "moveModal": {
       "title": "移动任务",
       "form": {
-        "selectIteration": "选择迭代",
-        "selectIterationPlaceholder": "选择或查询迭代"
+        "selectSprint": "选择迭代",
+        "selectSprintPlaceholder": "选择或查询迭代"
       },
       "messages": {
         "moveSuccess": "任务移动成功",
