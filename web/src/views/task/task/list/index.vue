@@ -20,10 +20,10 @@ type Props = {
   sprintId: string;
   sprintName: string;
   projectId: string;
+  projectName: string;
   userInfo: { id: string; };
   appInfo: { id: string; };
   notify: string;
-  projectName: string;
 }
 
 // COMPONENT PROPS

@@ -445,15 +445,15 @@ const emptyStateStyle = {
               </RouterLink>
             </template>
 
-            <template v-else-if="props.params?.assigneeId && props.params?.status === 'PENDING'">
+            <template v-else-if="props.params?.assigneeId && props.params?.status === TaskStatus.PENDING">
               <span>{{ t('taskHome.addedTable.emptyStates.noPendingTasks') }}</span>
             </template>
 
-            <template v-else-if="props.params?.confirmerId && props.params?.status === 'CONFIRMING'">
+            <template v-else-if="props.params?.confirmerId && props.params?.status === TaskStatus.CONFIRMING">
               <span>{{ t('taskHome.addedTable.emptyStates.noConfirmingTasks') }}</span>
             </template>
 
-            <template v-else-if="props.params?.assigneeId && props.params?.status === 'COMPLETED'">
+            <template v-else-if="props.params?.assigneeId && props.params?.status === TaskStatus.COMPLETED">
               <span>{{ t('taskHome.addedTable.emptyStates.noCompletedTasks') }}</span>
             </template>
 
