@@ -15,7 +15,7 @@ import { TaskType } from '@/enums/enums';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import { TIME_FORMAT } from '@/utils/constant';
-import { EditFormState, TaskInfoProps } from '@/views/task/task/list/task/types';
+import { EditFormState, TaskInfoProps } from '@/views/task/task/list/types';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 

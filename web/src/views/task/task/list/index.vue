@@ -39,16 +39,16 @@ const props = withDefaults(defineProps<Props>(), {
 // ASYNC COMPONENTS
 const StatisticsPanel = defineAsyncComponent(() => import('@/views/task/task/list/statistics/index.vue'));
 const SearchPanel = defineAsyncComponent(() => import('@/views/task/task/list/SearchPanel.vue'));
-const Edit = defineAsyncComponent(() => import('@/views/task/task/list/task/Edit.vue'));
-const Move = defineAsyncComponent(() => import('@/views/task/task/list/task/Move.vue'));
-const Upload = defineAsyncComponent(() => import('@/views/task/task/list/task/Upload.vue'));
-const FlowChart = defineAsyncComponent(() => import('@/views/task/task/list/task/FlowChart.vue'));
+const Edit = defineAsyncComponent(() => import('@/views/task/task/list/Edit.vue'));
+const Move = defineAsyncComponent(() => import('@/views/task/task/list/Move.vue'));
+const Upload = defineAsyncComponent(() => import('@/views/task/task/list/Upload.vue'));
+const FlowChart = defineAsyncComponent(() => import('@/views/task/task/list/FlowChart.vue'));
 
 const ModuleTree = defineAsyncComponent(() => import('./ModuleTree.vue'));
-const KanbanView = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/index.vue'));
-const GanttView = defineAsyncComponent(() => import('@/views/task/task/list/task/gantt/index.vue'));
-const TableView = defineAsyncComponent(() => import('@/views/task/task/list/task/table/index.vue'));
-const FlatView = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/index.vue'));
+const KanbanView = defineAsyncComponent(() => import('@/views/task/task/list/kanban/index.vue'));
+const GanttView = defineAsyncComponent(() => import('@/views/task/task/list/gantt/index.vue'));
+const TableView = defineAsyncComponent(() => import('@/views/task/task/list/table/index.vue'));
+const FlatView = defineAsyncComponent(() => import('@/views/task/task/list/flat/index.vue'));
 
 // COMPOSABLES & INJECTIONS
 const { t } = useI18n();

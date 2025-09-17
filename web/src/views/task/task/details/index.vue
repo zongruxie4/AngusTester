@@ -32,9 +32,9 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // ASYNC COMPONENTS
-const TaskDetail = defineAsyncComponent(() => import('@/views/task/task/list/task/flat/detail/index.vue'));
-const EditTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/Edit.vue'));
-const MoveTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/Move.vue'));
+const TaskDetail = defineAsyncComponent(() => import('@/views/task/task/list/flat/detail/index.vue'));
+const EditTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/Edit.vue'));
+const MoveTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/Move.vue'));
 
 // COMPOSABLES & INJECTIONS
 const route = useRoute();

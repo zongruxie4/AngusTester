@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted, reactive, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, inject, onMounted, reactive, ref, Ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Form, FormItem, Popover, TreeSelect, Upload } from 'ant-design-vue';
 import type { Rule } from 'ant-design-vue/es/form';
@@ -13,16 +13,18 @@ import { cloneDeep, isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 import { BugLevel, SoftwareVersionStatus, TaskType, TestType } from '@/enums/enums';
-import { EditFormState } from '@/views/task/task/list/types';
 
-import TaskPriority from '@/components/TaskPriority/index.vue';
+import { EditFormState } from './types';
+import { TaskInfo } from '../../types';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
-import { TaskInfo } from '../types';
+import TaskPriority from '@/components/TaskPriority/index.vue';
 
-// Async Components
+// Component props & emits
+const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap',
+  ref({ showTask: true, showBackLog: true, showMeeting: true, showSprint: true, showTasStatistics: true })
+);
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 
-// Component Props & Emits
 const props = withDefaults(defineProps<EditFormState>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -44,49 +46,33 @@ const props = withDefaults(defineProps<EditFormState>(), {
 const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
   (e: 'update:taskId', value: string | undefined): void;
-  (e: 'ok', value?: Partial<TaskInfo>): void;
+  (e: 'ok', value: Partial<TaskInfo>, addFlag?: boolean): void;
 }>();
 
+// Composables
 const { t } = useI18n();
 
-// Template Refs
+// Reactive state
 const formRef = ref();
-const richEditorRef = ref();
-
-// Reactive State Variables
-const isLoading = ref<boolean>(false);
-const isZoomedIn = ref(false);
-const isEditorVisible = ref(false);
-const formKey = ref(0); // Force form re-render
-
-const currentEvalWorkloadMethod = ref<EvalWorkloadMethod>(EvalWorkloadMethod.STORY_POINT);
+const loading = ref<boolean>(false);
+const zoomInFlag = ref(false);
+const showEditorFlag = ref(false);
+const evalWorkloadMethod = ref<EvalWorkloadMethod>(EvalWorkloadMethod.STORY_POINT);
 const sprintDeadlineDate = ref<string>();
-
-// Module Management
 const moduleTreeData = ref([]);
-/**
- * <p>Load module tree data</p>
- * <p>Fetches module tree structure for the current project</p>
- */
-const loadModuleTreeData = async () => {
-  if (!props.projectId) {
-    return;
-  }
-  const [error, { data }] = await modules.getModuleTree({
-    projectId: props.projectId
-  });
-  if (error) {
-    return;
-  }
-  moduleTreeData.value = data || [];
-};
 
-// Form State Management
-let previousFormState: EditFormState | undefined;
+// Default options for user selection components
+const assigneeDefaultOptions = ref<{[key:string]:{fullName:string;id:string;}}>();
+const confirmerDefaultOptions = ref<{[key:string]:{fullName:string;id:string;}}>();
+
+// Store original form state for comparison during edit
+let originalFormState: EditFormState | undefined;
+
+// Main form state containing all task data
 const formState = reactive<EditFormState>({
-  projectId: undefined,
+  projectId: props.projectId,
   assigneeId: undefined,
-  attachments: undefined,
+  attachments: [],
   confirmerId: undefined,
   deadlineDate: undefined,
   description: undefined,
@@ -97,9 +83,9 @@ const formState = reactive<EditFormState>({
   parentTaskId: undefined,
   sprintId: undefined,
   moduleId: undefined,
-  tagIds: undefined,
-  refTaskIds: undefined,
-  refCaseIds: undefined,
+  tagIds: [],
+  refTaskIds: [],
+  refCaseIds: [],
   targetId: undefined,
   targetParentId: undefined,
   taskType: TaskType.TASK,
@@ -110,76 +96,180 @@ const formState = reactive<EditFormState>({
   softwareVersion: undefined
 });
 
-// User Selection Default Options
-const assigneeDefaultOptions = ref<{[key:string]:{fullName:string;id:string;}}>();
-const confirmerDefaultOptions = ref<{[key:string]:{fullName:string;id:string;}}>();
-
-// Computed Properties
-const shouldShowContinueButton = computed(() => {
+/**
+ * Determine if the "Save and Continue" button should be shown
+ * Only shown when creating a new task without a specific task type
+ */
+const showContinue = computed(() => {
   return !props.taskId && !props.taskType;
 });
 
 /**
- * <p>Toggle modal zoom state</p>
- * <p>Switches between normal and full-screen modal view</p>
+ * Get the current user's ID from props
+ */
+const currentUserId = computed(() => {
+  return props.userInfo?.id;
+});
+
+/**
+ * Get the modal title based on whether we're editing or creating a task
+ */
+const modalTitle = computed(() => {
+  if (props.taskId) {
+    return t('task.editModal.title.edit');
+  }
+  return t('task.editModal.title.add');
+});
+
+/**
+ * Determine if the task type field should be readonly
+ * Readonly when editing existing API_TEST or SCENARIO_TEST tasks, or when taskType is provided as prop
+ */
+const isTaskTypeReadonly = computed(() => {
+  return (
+    props.taskId && (formState.taskType === TaskType.API_TEST ||
+      formState.taskType === TaskType.SCENARIO_TEST)
+  ) || !!props.taskType;
+});
+
+/**
+ * Determine if the rich text editor should be shown
+ * Shown when modal is visible and either editor flag is set or creating a new task
+ */
+const shouldShowEditor = computed(() => {
+  return props.visible && (showEditorFlag.value || !props.taskId);
+});
+
+/**
+ * Determine if the test type field should be shown
+ * Shown only for API_TEST and SCENARIO_TEST task types
+ */
+const shouldShowTestType = computed(() => {
+  const taskType = formState.taskType;
+  if (!taskType) {
+    return false;
+  }
+  return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(taskType);
+});
+
+/**
+ * Get modal style based on zoom state
+ * Full width when zoomed in, fixed width when normal
+ */
+const modalStyle = computed(() => {
+  if (zoomInFlag.value) {
+    return {
+      width: '100%'
+    };
+  }
+  return {
+    width: '1200px'
+  };
+});
+
+/**
+ * Get form style based on zoom state
+ * Larger height when zoomed in, standard height when normal
+ */
+const formStyle = computed(() => {
+  if (zoomInFlag.value) {
+    return {
+      height: '86vh'
+    };
+  }
+  return {
+    height: '76vh',
+    minHeight: '670px'
+  };
+});
+
+/**
+ * Generate cache key for storing zoom state in local storage
+ * Unique per user and project combination
+ */
+const zoomInFlagCacheKey = computed(() => {
+  return `${props.userInfo?.id}${props?.projectId}${btoa('modalSize')}`;
+});
+
+/**
+ * Toggle modal zoom state and persist to local storage
  */
 const toggleModalZoom = () => {
-  isZoomedIn.value = !isZoomedIn.value;
-  localStore.set(zoomInFlagCacheKey.value, isZoomedIn.value);
+  zoomInFlag.value = !zoomInFlag.value;
+  localStore.set(zoomInFlagCacheKey.value, zoomInFlag.value);
 };
 
-// Form Event Handlers
 /**
- * <p>Handle sprint selection change</p>
- * <p>Updates deadline date and evaluation workload method when sprint changes</p>
+ * Handle sprint selection change and update deadline accordingly
+ * @param _id - Sprint ID (unused)
+ * @param option - Selected sprint option containing deadline and workload method
  */
-const handleSprintSelectionChange = (_sprintId: string, sprintInfo: TaskInfo) => {
-  formState.deadlineDate = sprintInfo?.deadlineDate || '';
+const handleSprintChange = (_id: any, option: any) => {
+  if (!props.taskId) {
+    // For new tasks, set deadline based on sprint deadline
+    if (option?.deadlineDate) {
+      if (dayjs(option?.deadlineDate).isAfter(dayjs())) {
+        formState.deadlineDate = option.deadlineDate;
+      } else {
+        formState.deadlineDate = dayjs().add(2, 'hour').format(DATE_TIME_FORMAT);
+      }
+    }
+  } else {
+    // For existing tasks, use sprint deadline directly
+    formState.deadlineDate = option?.deadlineDate || '';
+  }
+
+  // Adjust deadline to business hours (8 AM - 7 PM)
+  if (dayjs(formState.deadlineDate).hour() > 19 || dayjs(formState.deadlineDate).hour() < 8) {
+    formState.deadlineDate = dayjs(formState.deadlineDate).add(12, 'hour').format(DATE_TIME_FORMAT);
+  }
+
   sprintDeadlineDate.value = formState.deadlineDate;
-  currentEvalWorkloadMethod.value = sprintInfo?.evalWorkloadMethod?.value;
+  evalWorkloadMethod.value = option?.evalWorkloadMethod?.value;
 };
 
 /**
- * <p>Handle task type change</p>
- * <p>Resets target fields and sets tester for bug tasks</p>
+ * Handle task type change and reset related fields
  */
 const handleTaskTypeChange = () => {
   formState.targetParentId = undefined;
   formState.targetId = undefined;
+  // Auto-assign current user as tester for bug tasks
   if (!formState.testerId && formState.taskType === TaskType.BUG) {
     formState.testerId = currentUserId.value;
   }
 };
 
 /**
- * <p>Assign current user to specified role</p>
- * <p>Sets the current user as assignee, confirmer, or tester</p>
+ * Assign current user to specified field
+ * @param fieldKey - Field to assign current user to
  */
-const assignCurrentUserToRole = (roleKey:'assigneeId'|'confirmerId'|'testerId') => {
-  if (roleKey === 'assigneeId') {
+const assignCurrentUserToField = (fieldKey:'assigneeId'|'confirmerId'|'testerId') => {
+  if (fieldKey === 'assigneeId') {
     formState.assigneeId = currentUserId.value;
     return;
   }
-  if (roleKey === 'confirmerId') {
+  if (fieldKey === 'confirmerId') {
     formState.confirmerId = currentUserId.value;
   }
-  if (roleKey === 'testerId') {
+  if (fieldKey === 'testerId') {
     formState.testerId = currentUserId.value;
   }
 };
 
 /**
- * <p>Validate evaluation workload field</p>
- * <p>Ensures evaluation workload is provided when actual workload is set</p>
+ * Validate evaluation workload when actual workload is provided
+ * @param _rule - Validation rule (unused)
+ * @param value - Evaluation workload value
+ * @returns Promise resolving to validation result
  */
 const validateEvaluationWorkload = async (_rule: Rule, value: string) => {
   if (!props.taskId) {
     return;
   }
-
   if (formState.actualWorkload) {
     if (!value) {
-      return Promise.reject(new Error(t('backlog.messages.inputEvalWorkload')));
+      return Promise.reject(new Error(t('task.editModal.form.workload.rule')));
     }
     return Promise.resolve();
   }
@@ -187,8 +277,8 @@ const validateEvaluationWorkload = async (_rule: Rule, value: string) => {
 };
 
 /**
- * <p>Handle actual workload change</p>
- * <p>Clears evaluation workload validation when actual workload is cleared</p>
+ * Handle actual workload change and clear evaluation workload validation if empty
+ * @param value - Actual workload value
  */
 const handleActualWorkloadChange = (value: string) => {
   if (!value) {
@@ -197,8 +287,8 @@ const handleActualWorkloadChange = (value: string) => {
 };
 
 /**
- * <p>Handle evaluation workload change</p>
- * <p>Clears actual workload and validation when evaluation workload is cleared</p>
+ * Handle evaluation workload change and clear actual workload if empty
+ * @param value - Evaluation workload value
  */
 const handleEvaluationWorkloadChange = (value: string) => {
   if (!value) {
@@ -208,59 +298,68 @@ const handleEvaluationWorkloadChange = (value: string) => {
 };
 
 /**
- * <p>Validate deadline date</p>
- * <p>Ensures deadline is in the future and within sprint deadline</p>
+ * Validate deadline date against business rules
+ * @param _rule - Validation rule (unused)
+ * @param value - Deadline date value
+ * @returns Promise resolving to validation result
  */
 const validateDeadlineDate = async (_rule: Rule, value: string) => {
+  if (!value) {
+    return Promise.reject(new Error(t('task.editModal.form.deadlineRule')));
+  }
+
   if (dayjs(value).isBefore(dayjs(), 'minute')) {
-    return Promise.reject(new Error(t('backlog.messages.deadlineMustBeFuture')));
+    return Promise.reject(new Error(t('task.editModal.form.deadlineFutureRule')));
   }
 
   if (sprintDeadlineDate.value) {
     if (dayjs(value).isAfter(dayjs(sprintDeadlineDate.value), 'seconds')) {
-      return Promise.reject(new Error(t('backlog.editForm.messages.sprintDeadlineExceeded', { deadline: sprintDeadlineDate.value })));
+      return Promise.reject(new Error(t('task.editModal.form.deadlineSprintRule',
+        { deadline: sprintDeadlineDate.value })));
     }
   }
   return Promise.resolve();
 };
 
 /**
- * <p>Disable past dates in date picker</p>
- * <p>Prevents selection of dates before today</p>
+ * Disable past dates in date picker
+ * @param current - Current date being evaluated
+ * @returns True if date should be disabled
  */
-const disablePastDates = (current: Dayjs) => {
+const isDateDisabled = (current: Dayjs) => {
   const today = dayjs().startOf('day');
   return current.isBefore(today, 'day');
 };
 
 /**
- * <p>Handle rich editor content change</p>
- * <p>Updates form state when description content changes</p>
+ * Handle rich text editor content change
+ * @param value - New editor content
  */
-const handleRichEditorChange = (value: string) => {
+const handleEditorContentChange = (value: string) => {
   formState.description = value;
 };
 
 /**
- * <p>Handle rich editor loading state</p>
- * <p>Updates loading state when editor is loading</p>
+ * Handle rich text editor loading state change
+ * @param value - Loading state
  */
-const handleRichEditorLoading = (isEditorLoading: boolean) => {
-  isLoading.value = isEditorLoading;
+const handleEditorLoadingChange = (value: boolean) => {
+  loading.value = value;
 };
 
 /**
- * <p>Handle file upload</p>
- * <p>Uploads attachment files and adds them to the form state</p>
+ * Handle file upload for task attachments
+ * @param info - Upload change info
  */
-const handleFileUpload = async function ({ file }: { file: File }) {
-  if (!formState.attachments || formState.attachments.length >= 5 || isLoading.value) {
+const handleFileUpload = async function (info: any) {
+  const file = info.file;
+  if (!formState.attachments || formState.attachments.length >= 5 || loading.value) {
     return;
   }
 
-  isLoading.value = true;
+  loading.value = true;
   const [error, { data = [] }] = await upload(file, { bizKey: 'angusTesterTaskAttachments' });
-  isLoading.value = false;
+  loading.value = false;
   if (error) {
     return;
   }
@@ -272,20 +371,38 @@ const handleFileUpload = async function ({ file }: { file: File }) {
 };
 
 /**
- * <p>Delete attachment file</p>
- * <p>Removes attachment from the form state by index</p>
+ * Remove file from attachments list
+ * @param index - Index of file to remove
  */
-const deleteAttachmentFile = (index: number) => {
+const removeAttachmentFile = (index: number) => {
   formState?.attachments?.splice(index, 1);
 };
 
+// Description validation
+const descriptionEditorRef = ref();
+
 /**
- * <p>Validate form fields</p>
- * <p>Performs validation on required form fields</p>
+ * Validate description length
+ * @returns Promise resolving to validation result
  */
-const validateFormFields = async () => {
+const validateDescriptionLength = async () => {
+  if (descriptionEditorRef.value && descriptionEditorRef.value.getLength() > 6000) {
+    Promise.reject(new Error(t('task.editModal.form.descriptionRule')));
+  }
+  return Promise.resolve();
+};
+
+/**
+ * Validate form fields and return validation result
+ * @returns Promise resolving to validation success status
+ */
+const isFormValid = async () => {
   const requiredRuleKeys = [
-    'name'
+    'name',
+    'sprintId',
+    'assigneeId',
+    'deadlineDate',
+    'description'
   ];
 
   if (formState.actualWorkload) {
@@ -296,23 +413,23 @@ const validateFormFields = async () => {
     formRef.value.validate(requiredRuleKeys).then(async () => {
       return resolve(true);
     }).catch((errors:{errorFields:{errors:string[];name:string[];warnings:string;}[]}) => {
+      // Allow deadline date validation to pass for special cases
       if (errors.errorFields.length === 1) {
         const names = errors.errorFields[0].name;
         if (names.length === 1 && names[0] === 'deadlineDate') {
           return resolve(true);
         }
       }
-
       return resolve(false);
     });
   });
 };
 
 /**
- * <p>Build form parameters for API submission</p>
- * <p>Constructs the parameter object based on form state and task type</p>
+ * Build task parameters object from form state
+ * @returns Task parameters object for API calls
  */
-const buildFormParameters = () => {
+const buildTaskParameters = () => {
   const params: EditFormState = {
     projectId: props.projectId,
     sprintId: formState.sprintId,
@@ -323,13 +440,15 @@ const buildFormParameters = () => {
     priority: formState.priority,
     parentTaskId: formState.parentTaskId,
     testerId: formState.testerId,
-    softwareVersion: formState.softwareVersion
+    softwareVersion: formState.softwareVersion || undefined
   };
 
+  // Add parent task ID if provided
   if (props.parentTaskId) {
     params.parentTaskId = props.parentTaskId;
   }
 
+  // Add optional fields if they have values
   if (formState.confirmerId) {
     params.confirmerId = formState.confirmerId;
   }
@@ -362,166 +481,165 @@ const buildFormParameters = () => {
     params.evalWorkload = formState.evalWorkload;
   }
 
+  // Add actual workload only for existing tasks
   if (props.taskId && formState.actualWorkload) {
     params.actualWorkload = formState.actualWorkload;
   }
 
+  // Add bug-specific fields
   if (formState.taskType === TaskType.BUG) {
     params.bugLevel = formState.bugLevel;
     params.missingBug = formState.missingBug;
   }
 
+  // Add API test-specific fields
   if (formState.taskType === TaskType.API_TEST) {
     params.testType = formState.testType;
     params.targetId = formState.targetId;
     params.targetParentId = formState.targetParentId;
   }
 
+  // Add scenario test-specific fields
   if (formState.taskType === TaskType.SCENARIO_TEST) {
     params.testType = formState.testType;
     params.targetId = formState.targetId;
   }
-
   return params;
 };
 
 /**
- * <p>Submit form data</p>
- * <p>Handles form submission for both create and edit operations</p>
+ * Handle form submission for both create and edit operations
+ * @param shouldContinue - Whether to continue after successful creation
  */
-const submitForm = async (shouldContinue: boolean) => {
+const handleFormSubmit = async (shouldContinue: boolean) => {
+  // For existing tasks, check if form has changes
   if (props.taskId) {
-    const hasFormChanged = isEqual(previousFormState, formState);
-    if (hasFormChanged) {
+    const hasChanges = isEqual(originalFormState, formState);
+    if (!hasChanges) {
       emit('update:visible', false);
       return;
     }
   }
 
+  // Validate form and description length
   const isDescriptionValid = !formState.description || formState.description?.length <= 8000;
-  const isFormValid = await validateFormFields();
-  if (!isFormValid || !isDescriptionValid) {
+  const isFormValidResult = await isFormValid();
+  if (!isFormValidResult || !isDescriptionValid) {
     return;
   }
 
+  // Route to appropriate handler
   if (!props.taskId) {
-    handleTaskCreation(shouldContinue);
+    await handleTaskCreation(shouldContinue);
     return;
   }
-
-  handleTaskUpdate();
+  await handleTaskUpdate();
 };
 
 /**
- * <p>Handle task creation</p>
- * <p>Creates a new task and handles success/error responses</p>
+ * Handle task creation
+ * @param shouldContinue - Whether to continue after successful creation
  */
 const handleTaskCreation = async (shouldContinue = false) => {
-  isLoading.value = true;
-  const params = buildFormParameters();
-  const [error, res] = await task.addTask(params);
-  isLoading.value = false;
+  loading.value = true;
+  const params = buildTaskParameters();
+  const [error, res] = await task.addTask({ ...params, projectId: props.projectId });
+  loading.value = false;
   if (error) {
     return;
   }
 
-  notification.success(t('backlog.editForm.messages.taskAddedSuccess'));
-  emit('ok', res?.data);
+  notification.success(t('task.editModal.messages.addSuccess'));
+  emit('ok', res?.data, true);
 
   if (!shouldContinue) {
-    cancelModal();
+    closeModal();
   }
 };
 
 /**
- * <p>Handle task update</p>
- * <p>Updates an existing task and handles success/error responses</p>
+ * Handle task update
  */
 const handleTaskUpdate = async () => {
-  isLoading.value = true;
-  const params = buildFormParameters();
-  const [error] = await task.putTask(props.taskId, params);
-  isLoading.value = false;
+  loading.value = true;
+  const params = buildTaskParameters();
+  const [error] = await task.putTask(props.taskId as string, params);
+  loading.value = false;
   if (error) {
     return;
   }
 
-  notification.success(t('backlog.editForm.messages.taskEditedSuccess'));
-  const taskData = await fetchTaskDetails();
-  emit('ok', taskData);
-  cancelModal();
+  notification.success(t('task.editModal.messages.editSuccess'));
+  const updatedTaskData = await loadTaskData();
+  emit('ok', updatedTaskData);
+  closeModal();
 };
 
 /**
- * <p>Cancel modal and reset state</p>
- * <p>Closes the modal and clears task ID</p>
+ * Close modal and reset state
  */
-const cancelModal = () => {
+const closeModal = () => {
   emit('update:taskId', undefined);
   emit('update:visible', false);
 };
 
 /**
- * <p>Load task details</p>
- * <p>Fetches complete task information for editing</p>
+ * Load module tree data for the project
  */
-const fetchTaskDetails = async (): Promise<Partial<TaskInfo>> => {
-  isLoading.value = true;
-  console.log('🔍 Fetching task details for taskId:', props.taskId);
-  const [error, res] = await task.getTaskDetail(props.taskId);
-  isLoading.value = false;
-
+const loadModuleTreeData = async () => {
+  if (!props.projectId) {
+    return;
+  }
+  const [error, { data }] = await modules.getModuleTree({
+    projectId: props.projectId
+  });
   if (error) {
-    console.error('Error fetching task details:', error);
+    return;
+  }
+  moduleTreeData.value = data || [];
+};
+
+/**
+ * Load task data for editing
+ * @returns Promise resolving to task data
+ */
+const loadTaskData = async (): Promise<Partial<TaskInfo>> => {
+  loading.value = true;
+  const [error, res] = await task.getTaskDetail(props.taskId);
+  loading.value = false;
+  if (error || !res?.data) {
     return { id: props.taskId! };
   }
-
-  if (!res?.data) {
-    console.warn('No data returned from task.getTaskDetail');
-    return { id: props.taskId! };
-  }
-
-  console.log('Task details loaded successfully:', res.data);
   return res.data;
 };
 
 /**
- * <p>Initialize component state</p>
- * <p>Sets up initial component state from local storage</p>
+ * Initialize component state from local storage
  */
 const initializeComponent = () => {
-  isZoomedIn.value = !!localStore.get(zoomInFlagCacheKey.value);
+  zoomInFlag.value = !!localStore.get(zoomInFlagCacheKey.value);
 };
 
 /**
- * <p>Reset form to default values</p>
- * <p>Initializes form state with default values for new task creation</p>
+ * Reset form to default values for new task creation
  */
 const resetFormToDefaults = () => {
-  isLoading.value = false;
-  isEditorVisible.value = false;
-  currentEvalWorkloadMethod.value = EvalWorkloadMethod.STORY_POINT;
+  loading.value = false;
+  showEditorFlag.value = false;
+  evalWorkloadMethod.value = EvalWorkloadMethod.STORY_POINT;
   sprintDeadlineDate.value = undefined;
 
-  previousFormState = undefined;
+  originalFormState = undefined;
   formState.attachments = [];
+
+  // Set default deadline to tomorrow, adjusted for business hours
   formState.deadlineDate = dayjs().add(1, 'day').format(DATE_TIME_FORMAT);
   if (dayjs(formState.deadlineDate).hour() > 19 || dayjs(formState.deadlineDate).hour() < 8) {
     formState.deadlineDate = dayjs(formState.deadlineDate).add(12, 'hour').format(DATE_TIME_FORMAT);
   }
-  // Handle description data format for RichEditor
-  if (props.description) {
-    try {
-      // Try to parse as JSON first (for RichEditor format)
-      JSON.parse(props.description);
-      formState.description = props.description;
-    } catch {
-      // If not JSON, wrap in RichEditor format
-      formState.description = JSON.stringify([{ insert: props.description }]);
-    }
-  } else {
-    formState.description = '';
-  }
+
+  // Reset form fields to default values
+  formState.description = props.description || '';
   formState.evalWorkload = '';
   formState.actualWorkload = '';
   formState.name = props.name || '';
@@ -537,10 +655,12 @@ const resetFormToDefaults = () => {
   formState.taskType = props.taskType || TaskType.TASK;
   formState.testType = TestType.FUNCTIONAL;
   formState.missingBug = false;
-  formState.softwareVersion = undefined;
   formState.assigneeId = props.assigneeId || props.userInfo?.id || undefined;
   formState.testerId = props.taskType === TaskType.BUG ? props.userInfo?.id : undefined;
   formState.confirmerId = props.confirmerId || undefined;
+  formState.softwareVersion = undefined;
+
+  // Set module ID if provided and valid
   if (props.moduleId && +props.moduleId > 0) {
     formState.moduleId = props.moduleId;
   } else {
@@ -548,144 +668,78 @@ const resetFormToDefaults = () => {
   }
 };
 
-// Lifecycle Hooks
-onMounted(() => {
-  initializeComponent();
-
-  watch(() => props.visible, async () => {
-    if (props.visible) {
-      await loadModuleTreeData();
-
-      if (!props.taskId) {
-        resetFormToDefaults();
-        // Clear validation after resetting form
-        if (typeof formRef.value?.clearValidate === 'function') {
-          await formRef.value.clearValidate();
-        }
-        return;
+/**
+ * Populate form state with loaded task data
+ * @param data - Task data from API
+ */
+const populateFormWithTaskData = (data: Partial<TaskInfo>) => {
+  // Set assignee data
+  const assigneeId = data.assigneeId;
+  if (assigneeId) {
+    formState.assigneeId = assigneeId;
+    assigneeDefaultOptions.value = {
+      [assigneeId]: {
+        fullName: data.assigneeName || '',
+        id: assigneeId
       }
+    };
+  }
 
-      // Set editor visible before loading data to ensure proper rendering
-      isEditorVisible.value = true;
-
-      const taskData = await fetchTaskDetails();
-      if (!taskData) {
-        resetFormToDefaults();
-        return;
+  // Set confirmer data
+  const confirmerId = data.confirmerId;
+  if (confirmerId) {
+    formState.confirmerId = confirmerId;
+    confirmerDefaultOptions.value = {
+      [confirmerId]: {
+        fullName: data.confirmerName || '',
+        id: confirmerId
       }
+    };
+  }
 
-      // Set assignee information
-      const assigneeId = taskData.assigneeId;
-      if (assigneeId) {
-        formState.assigneeId = assigneeId;
-        assigneeDefaultOptions.value = {
-          [assigneeId]: {
-            fullName: taskData.assigneeName || '',
-            id: assigneeId
-          }
-        };
-      }
+  // Populate all form fields
+  formState.attachments = data.attachments || [];
+  formState.moduleId = data.moduleId ? (+data.moduleId < 0 ? undefined : data.moduleId) : undefined;
+  formState.deadlineDate = data.deadlineDate;
+  formState.description = data.description;
+  formState.evalWorkload = data.evalWorkload;
+  formState.actualWorkload = data.actualWorkload;
+  formState.name = data.name;
+  formState.priority = data.priority?.value || Priority.MEDIUM;
+  formState.parentTaskId = data.parentTaskId;
+  formState.sprintId = data.sprintId;
+  formState.tagIds = data.tags?.map(item => item.id);
+  formState.refTaskIds = data.refTaskInfos?.map(item => item.id);
+  formState.refCaseIds = data.refCaseInfos?.map(item => item.id);
+  formState.targetId = data.targetId;
+  formState.taskType = data.taskType?.value || TaskType.TASK;
+  formState.testType = data.testType?.value || TestType.FUNCTIONAL;
+  formState.targetParentId = data.targetParentId;
+  formState.testerId = data.testerId;
+  formState.missingBug = data.missingBug || false;
+  formState.bugLevel = data.bugLevel?.value || BugLevel.MINOR;
+  formState.softwareVersion = data.softwareVersion;
 
-      // Set confirmer information
-      const confirmerId = taskData.confirmerId;
-      if (confirmerId) {
-        formState.confirmerId = confirmerId;
-        confirmerDefaultOptions.value = {
-          [confirmerId]: {
-            fullName: taskData.confirmerName || '',
-            id: confirmerId
-          }
-        };
-      }
+  // Store original state for change detection
+  originalFormState = cloneDeep(formState);
 
-      // Populate form with task data
-      console.log('📝 Populating form with task data...');
-      formState.attachments = taskData.attachments || [];
-      formState.moduleId = taskData.moduleId ? (+taskData.moduleId < 0 ? undefined : taskData.moduleId) : undefined;
-      formState.deadlineDate = taskData.deadlineDate;
-      // Handle description data format for RichEditor
-      if (taskData.description) {
-        try {
-          // Try to parse as JSON first (for RichEditor format)
-          JSON.parse(taskData.description);
-          formState.description = taskData.description;
-        } catch {
-          // If not JSON, wrap in RichEditor format
-          formState.description = JSON.stringify([{ insert: taskData.description }]);
-        }
-      } else {
-        formState.description = '';
-      }
-      formState.evalWorkload = taskData.evalWorkload;
-      formState.actualWorkload = taskData.actualWorkload;
-      formState.name = taskData.name;
-      formState.priority = taskData.priority?.value || Priority.MEDIUM;
-      formState.parentTaskId = taskData.parentTaskId;
-      formState.sprintId = taskData.sprintId;
-      formState.tagIds = taskData.tags?.map(item => item.id);
-      formState.refTaskIds = taskData.refTaskInfos?.map(item => item.id);
-      formState.refCaseIds = taskData.refCaseInfos?.map(item => item.id);
-      formState.targetId = taskData.targetId;
-      formState.taskType = taskData.taskType?.value || TaskType.TASK;
-      formState.testType = taskData.testType?.value;
-      formState.targetParentId = taskData.targetParentId;
-      formState.testerId = taskData.testerId;
-      formState.missingBug = taskData.missingBug || false;
-      formState.bugLevel = taskData.bugLevel?.value || BugLevel.MINOR;
-      formState.softwareVersion = taskData.softwareVersion;
-
-      console.log('📋 Form state after population:', {
-        name: formState.name,
-        description: formState.description,
-        taskType: formState.taskType,
-        priority: formState.priority,
-        assigneeId: formState.assigneeId,
-        sprintId: formState.sprintId
-      });
-
-      previousFormState = cloneDeep(formState);
-
-      currentEvalWorkloadMethod.value = taskData.evalWorkloadMethod?.value || EvalWorkloadMethod.STORY_POINT;
-
-      // Force form re-render to ensure data binding
-      formKey.value++;
-
-      // Wait for DOM to update before clearing validation
-      nextTick(() => {
-        // Clear validation after DOM update
-        if (typeof formRef.value?.clearValidate === 'function') {
-          formRef.value.clearValidate();
-        }
-      });
-    } else {
-      // Reset editor visibility when modal is closed
-      isEditorVisible.value = false;
-    }
-  }, { immediate: true });
-
-  // Watch formState changes for debugging
-  watch(() => formState, (newState) => {
-    console.log('🔄 Form state changed:', {
-      name: newState.name,
-      description: newState.description,
-      taskType: newState.taskType,
-      priority: newState.priority
-    });
-  }, { deep: true });
-});
+  evalWorkloadMethod.value = data.evalWorkloadMethod?.value || EvalWorkloadMethod.STORY_POINT;
+  showEditorFlag.value = true;
+};
 
 /**
- * <p>Exclude task types from selection</p>
- * <p>Filters out certain task types based on current task state</p>
+ * Determine if task type should be excluded from selection
+ * @param data - Task type data
+ * @returns True if task type should be excluded
  */
-const getExcludedTaskTypes = (data: { value: TaskInfo['taskType']['value']; message: string }) => {
-  const value = data.value;
-  const currentTaskType = formState.taskType;
+const shouldExcludeTaskType = (data: { value: string; message: string }) => {
+  const value = data.value as TaskType;
+  const currentType = formState.taskType;
   if (props.taskId) {
-    if (currentTaskType === TaskType.API_TEST) {
+    if (currentType === TaskType.API_TEST) {
       return value !== TaskType.API_TEST;
     }
-    if (currentTaskType === TaskType.SCENARIO_TEST) {
+    if (currentType === TaskType.SCENARIO_TEST) {
       return value !== TaskType.SCENARIO_TEST;
     }
     return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(value);
@@ -694,91 +748,53 @@ const getExcludedTaskTypes = (data: { value: TaskInfo['taskType']['value']; mess
 };
 
 /**
- * <p>Exclude current task from parent task selection</p>
- * <p>Prevents selecting the current task as its own parent</p>
+ * Determine if task ID should be excluded from parent task selection
+ * @param data - Task data
+ * @returns True if task ID should be excluded
  */
-const getExcludedTaskIds = (data: { id: string }) => {
+const shouldExcludeTaskId = (data: any) => {
   return props.taskId === data.id;
 };
 
-// Computed Properties
-const currentUserId = computed(() => {
-  return props.userInfo?.id;
-});
-
-const modalTitle = computed(() => {
-  if (props.taskId) {
-    return t('backlog.editForm.title.edit');
-  }
-  return t('backlog.editForm.title.add');
-});
-
-const isTaskTypeReadonly = computed(() => {
-  return (
-    props.taskId && (formState.taskType === TaskType.API_TEST || formState.taskType === TaskType.SCENARIO_TEST)
-  ) || !!props.taskType;
-});
-
-const shouldShowEditor = computed(() => {
-  return props.visible && (isEditorVisible.value || !props.taskId);
-});
-
-const shouldShowTestType = computed(() => {
-  const taskType = formState.taskType;
-  if (!taskType) {
-    return false;
-  }
-  return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(taskType);
-});
-
-// Description Validation
 /**
- * <p>Validate description length</p>
- * <p>Ensures description does not exceed maximum length limit</p>
+ * Get popup container for dropdown components
+ * @param node - DOM node
+ * @returns Container element for popup
  */
-const validateDescriptionLength = async () => {
-  if (richEditorRef.value && richEditorRef.value.getLength() > 6000) {
-    return Promise.reject(new Error(t('backlog.editForm.messages.descriptionMaxLength')));
+const getDropdownContainer = (node: HTMLElement): HTMLElement => {
+  if (node) {
+    return node.parentNode as HTMLElement;
   }
-  return Promise.resolve();
-};
-
-// Style Computed Properties
-const modalStyle = computed(() => {
-  if (isZoomedIn.value) {
-    return {
-      width: '100%'
-    };
-  }
-  return {
-    width: '1000px'
-  };
-});
-
-const formStyle = computed(() => {
-  if (isZoomedIn.value) {
-    return {
-      height: '86vh'
-    };
-  }
-  return {
-    height: '75vh',
-    minHeight: '665px'
-  };
-});
-
-const zoomInFlagCacheKey = computed(() => {
-  return `${props.userInfo?.id}${props?.projectId}${btoa('modalSize')}`;
-});
-
-// Utility Functions
-/**
- * <p>Get popup container for dropdowns</p>
- * <p>Returns document body as popup container for better positioning</p>
- */
-const getPopupContainer = () => {
   return document.body;
 };
+
+// Lifecycle hooks
+onMounted(() => {
+  initializeComponent();
+
+  watch(() => props.visible, async () => {
+    if (props.visible) {
+      await loadModuleTreeData();
+      if (typeof formRef.value?.clearValidate === 'function') {
+        await formRef.value.clearValidate();
+      }
+
+      if (!props.taskId) {
+        resetFormToDefaults();
+        return;
+      }
+
+      const taskData = await loadTaskData();
+      if (!taskData) {
+        resetFormToDefaults();
+        return;
+      }
+
+      // Populate form with loaded task data
+      populateFormWithTaskData(taskData);
+    }
+  }, { immediate: true });
+});
 </script>
 <template>
   <Modal
@@ -787,16 +803,14 @@ const getPopupContainer = () => {
     :style="modalStyle"
     :visible="props.visible"
     class="relative max-w-full"
-    @cancel="cancelModal">
-    <Tooltip :title="isZoomedIn ? t('backlog.zoomOut') : t('backlog.zoomIn')">
+    @cancel="closeModal">
+    <Tooltip :title="zoomInFlag ? t('task.editModal.tooltip.zoomOut') : t('task.editModal.tooltip.zoomIn')">
       <Icon
-        :icon="isZoomedIn ? 'icon-tuichuzuida' : 'icon-zuidahua'"
+        :icon="zoomInFlag ? 'icon-tuichuzuida' : 'icon-zuidahua'"
         class="absolute right-10 top-3.5 text-3.5 cursor-pointer"
         @click="toggleModalZoom" />
     </Tooltip>
-
     <Form
-      :key="formKey"
       ref="formRef"
       :model="formState"
       :labelCol="{style: {width: '90px'}}"
@@ -808,13 +822,13 @@ const getPopupContainer = () => {
         <div class="flex-1 pr-8">
           <FormItem
             name="name"
-            :label="t('backlog.columns.name')"
-            :rules="{ required: true, message: t('backlog.messages.taskNameRequired') }">
+            :label="t('task.editModal.form.name')"
+            :rules="{ required: true, message: t('task.editModal.form.nameRule') }">
             <Input
               v-model:value="formState.name"
               trim
               :maxlength="200"
-              :placeholder="t('backlog.placeholder.taskName')" />
+              :placeholder="t('task.editModal.form.namePlaceholder')" />
           </FormItem>
 
           <div class="flex space-x-4">
@@ -824,43 +838,43 @@ const getPopupContainer = () => {
               class="flex-1/2"
               required>
               <template #label>
-                {{ t('backlog.editForm.labels.type') }}
+                {{ t('task.editModal.form.type') }}
                 <Popover>
                   <template #content>
                     <div class="flex items-center leading-5">
                       <div class="space-y-2 flex-shrink-0">
                         <div class="flex items-center">
-                          <IconTask :value="TaskType.REQUIREMENT" class="mr-1 text-4" />
-                          <span>{{ t('backlog.editForm.taskTypes.requirement') }}</span>
+                          <IconTask value="REQUIREMENT" class="mr-1 text-4" />
+                          <span>{{ t('task.editModal.taskTypes.requirement') }}</span>
                         </div>
                         <div class="flex items-center">
-                          <IconTask :value="TaskType.STORY" class="mr-1 text-4" />
-                          <span>{{ t('backlog.editForm.taskTypes.story') }}</span>
+                          <IconTask value="STORY" class="mr-1 text-4" />
+                          <span>{{ t('task.editModal.taskTypes.story') }}</span>
                         </div>
                         <div class="flex items-center">
-                          <IconTask :value="TaskType.TASK" class="mr-1 text-4" />
-                          <span>{{ t('backlog.editForm.taskTypes.task') }}</span>
+                          <IconTask value="TASK" class="mr-1 text-4" />
+                          <span>{{ t('task.editModal.taskTypes.task') }}</span>
                         </div>
                         <div class="flex items-center">
-                          <IconTask :value="TaskType.BUG" class="mr-1 text-4" />
-                          <span>{{ t('backlog.editForm.taskTypes.bug') }}</span>
+                          <IconTask value="BUG" class="mr-1 text-4" />
+                          <span>{{ t('task.editModal.taskTypes.bug') }}</span>
                         </div>
                         <div class="flex items-center">
-                          <IconTask :value="TaskType.API_TEST" class="mr-1 text-4" />
-                          <span>{{ t('backlog.editForm.taskTypes.apiTest') }}</span>
+                          <IconTask value="API_TEST" class="mr-1 text-4" />
+                          <span>{{ t('task.editModal.taskTypes.apiTest') }}</span>
                         </div>
                         <div class="flex items-center">
-                          <IconTask :value="TaskType.SCENARIO_TEST" class="mr-1 text-4" />
-                          <span>{{ t('backlog.editForm.taskTypes.scenarioTest') }}</span>
+                          <IconTask value="SCENARIO_TEST" class="mr-1 text-4" />
+                          <span>{{ t('task.editModal.taskTypes.scenarioTest') }}</span>
                         </div>
                       </div>
                       <div class="ml-3.5 space-y-2">
-                        <div>{{ t('backlog.editForm.taskTypeDescriptions.requirement') }}</div>
-                        <div>{{ t('backlog.editForm.taskTypeDescriptions.story') }}</div>
-                        <div>{{ t('backlog.editForm.taskTypeDescriptions.task') }}</div>
-                        <div>{{ t('backlog.editForm.taskTypeDescriptions.bug') }}</div>
-                        <div>{{ t('backlog.editForm.taskTypeDescriptions.apiTest') }}</div>
-                        <div>{{ t('backlog.editForm.taskTypeDescriptions.scenarioTest') }}</div>
+                        <div>{{ t('task.editModal.taskTypeDescriptions.requirement') }}</div>
+                        <div>{{ t('task.editModal.taskTypeDescriptions.story') }}</div>
+                        <div>{{ t('task.editModal.taskTypeDescriptions.task') }}</div>
+                        <div>{{ t('task.editModal.taskTypeDescriptions.bug') }}</div>
+                        <div>{{ t('task.editModal.taskTypeDescriptions.apiTest') }}</div>
+                        <div>{{ t('task.editModal.taskTypeDescriptions.scenarioTest') }}</div>
                       </div>
                     </div>
                   </template>
@@ -871,16 +885,15 @@ const getPopupContainer = () => {
               <SelectEnum
                 v-model:value="formState.taskType"
                 :allowClear="false"
-                :excludes="getExcludedTaskTypes"
+                :excludes="shouldExcludeTaskType"
                 :readonly="isTaskTypeReadonly"
                 internal
                 enumKey="TaskType"
-                :placeholder="t('backlog.editForm.placeholders.selectTaskType')"
-                style="width: 280px;"
+                :placeholder="t('task.editModal.form.typePlaceholder')"
                 @change="handleTaskTypeChange">
                 <template #option="record">
                   <div class="flex items-center">
-                    <IconTask :value="record.value" class="text-4 flex-shrink-0" />
+                    <IconTask :value="record.value as TaskType" class="text-4 flex-shrink-0" />
                     <span class="ml-1">{{ record.label }}</span>
                   </div>
                 </template>
@@ -889,7 +902,7 @@ const getPopupContainer = () => {
 
             <FormItem
               name="priority"
-              :label="t('backlog.editForm.labels.priority')"
+              :label="t('task.editModal.form.priority')"
               class="flex-1/2"
               required>
               <SelectEnum
@@ -897,9 +910,9 @@ const getPopupContainer = () => {
                 :allowClear="false"
                 internal
                 enumKey="Priority"
-                :placeholder="t('backlog.editForm.placeholders.selectPriority')">
+                :placeholder="t('task.editModal.form.priorityPlaceholder')">
                 <template #option="record">
-                  <TaskPriority :value="record" />
+                  <TaskPriority :value="record.value as any" />
                 </template>
               </SelectEnum>
             </FormItem>
@@ -909,22 +922,24 @@ const getPopupContainer = () => {
             <div class="flex space-x-4">
               <FormItem
                 name="bugLevel"
-                :label="t('backlog.editForm.labels.bugLevel')"
+                :label="t('task.editModal.form.bugLevel')"
                 class="flex-1/2">
                 <SelectEnum
                   v-model:value="formState.bugLevel"
                   enumKey="BugLevel"
-                  style="width: 280px;"
                   :allowClear="false"
                   :lazy="false" />
               </FormItem>
               <FormItem
                 name="missingBug"
-                :label="t('backlog.editForm.labels.missingBug')"
+                :label="t('task.editModal.form.missingBug')"
                 class="flex-1/2">
                 <Select
                   v-model:value="formState.missingBug"
-                  :options="[{value: true, label: t('status.yes')}, {value: false, label: t('status.no')}]">
+                  :options="[
+                    {value: 'true', label: t('task.editModal.form.missingBugOptions.yes')},
+                    {value: 'false', label: t('task.editModal.form.missingBugOptions.no')}
+                  ]">
                 </Select>
               </FormItem>
             </div>
@@ -933,14 +948,14 @@ const getPopupContainer = () => {
           <div v-if="formState.taskType === TaskType.SCENARIO_TEST" class="flex space-x-4">
             <FormItem
               name="targetId"
-              :label="t('backlog.editForm.labels.scenario')"
+              :label="t('task.editModal.form.scenario')"
               class="flex-1 min-w-0"
-              :rules="{ required: true, message: t('backlog.editForm.messages.selectScenario') }">
+              :rules="{ required: true, message: t('task.editModal.form.scenarioRule') }">
               <Select
                 v-model:value="formState.targetId"
                 showSearch
                 internal
-                :placeholder="t('backlog.editForm.placeholders.selectScenario')"
+                :placeholder="t('task.editModal.form.scenarioPlaceholder')"
                 :fieldNames="{ label: 'name', value: 'id' }"
                 :action="`${TESTER}/scenario?projectId=${props.projectId}&fullTextSearch=true`"
                 :readonly="!!props.taskId" />
@@ -949,7 +964,7 @@ const getPopupContainer = () => {
             <FormItem
               v-if="shouldShowTestType"
               name="testType"
-              :label="t('backlog.editForm.labels.testType')"
+              :label="t('task.editModal.form.testType')"
               class="flex-1"
               required>
               <SelectEnum
@@ -957,16 +972,15 @@ const getPopupContainer = () => {
                 :allowClear="false"
                 internal
                 enumKey="TestType"
-                :placeholder="t('backlog.editForm.placeholders.selectTestType')"
-                style="width: 280px;" />
+                :placeholder="t('task.editModal.form.testTypePlaceholder')" />
             </FormItem>
           </div>
 
           <template v-if="formState.taskType === TaskType.API_TEST">
             <FormItem
               name="targetParentId"
-              :label="t('backlog.editForm.labels.service')"
-              :rules="{ required: true, message: t('backlog.editForm.messages.selectService') }">
+              :label="t('task.editModal.form.service')"
+              :rules="{ required: true, message: t('task.editModal.form.serviceRule') }">
               <Select
                 v-model:value="formState.targetParentId"
                 :action="`${TESTER}/services?projectId=${props.projectId}&fullTextSearch=true`"
@@ -976,7 +990,7 @@ const getPopupContainer = () => {
                 internal
                 defaultActiveFirstOption
                 showSearch
-                :placeholder="t('backlog.editForm.placeholders.selectOrSearchService')">
+                :placeholder="t('task.editModal.form.servicePlaceholder')">
                 <template #option="record">
                   <div class="text-3 leading-3 flex items-center h-6.5">
                     <IconText
@@ -992,15 +1006,15 @@ const getPopupContainer = () => {
 
             <div class="flex space-x-4">
               <FormItem
-                :label="t('backlog.editForm.labels.api')"
+                :label="t('task.editModal.form.api')"
                 name="targetId"
                 class="flex-1 min-w-0"
-                :rules="{ required: true, message: t('backlog.editForm.messages.selectApi') }">
+                :rules="{ required: true, message: t('task.editModal.form.apiRule') }">
                 <Select
                   v-model:value="formState.targetId"
                   showSearch
                   internal
-                  :placeholder="t('backlog.editForm.placeholders.selectApi')"
+                  :placeholder="t('task.editModal.form.apiPlaceholder')"
                   :fieldNames="{ label: 'summary', value: 'id' }"
                   :action="`${TESTER}/apis?projectId=${props.projectId}&serviceId=${formState.targetParentId}&fullTextSearch=true`"
                   :readonly="!!props.taskId || !formState.targetParentId" />
@@ -1008,17 +1022,16 @@ const getPopupContainer = () => {
 
               <FormItem
                 v-if="shouldShowTestType"
-                name="testType"
-                :label="t('backlog.editForm.labels.testType')"
                 class="flex-1"
+                name="testType"
+                :label="t('task.editModal.form.testType')"
                 required>
                 <SelectEnum
                   v-model:value="formState.testType"
                   :allowClear="false"
                   internal
                   enumKey="TestType"
-                  :placeholder="t('backlog.editForm.placeholders.selectTestType')"
-                  style="width: 280px;" />
+                  :placeholder="t('task.editModal.form.testTypePlaceholder')" />
               </FormItem>
             </div>
           </template>
@@ -1027,12 +1040,13 @@ const getPopupContainer = () => {
             <FormItem
               name="assigneeId"
               class="flex-1/2"
-              :rules="{ required: true, message: t('backlog.editForm.messages.selectAssignee') }">
+              :rules="{ required: true, message: t('task.editModal.form.assigneeRule') }">
               <template #label>
-                {{ t('backlog.editForm.labels.assignee') }}<Popover placement="rightTop">
+                {{ t('task.editModal.form.assignee') }}
+                <Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      {{ t('backlog.editForm.descriptions.assignee') }}
+                      {{ t('task.editModal.form.assigneeTip') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -1042,28 +1056,29 @@ const getPopupContainer = () => {
               <div class="flex items-center ">
                 <SelectUser
                   v-model:value="formState.assigneeId"
-                  :placeholder="t('backlog.editForm.placeholders.selectAssignee')"
+                  :placeholder="t('task.editModal.form.assigneePlaceholder')"
                   internal
                   class="flex-1 min-w-0"
                   :defaultOptions="assigneeDefaultOptions"
                   :action="`${TESTER}/project/${props.projectId}/member/user`"
                   :maxlength="80" />
+
                 <Button
                   size="small"
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
-                  @click="assignCurrentUserToRole('assigneeId')">
-                  {{ t('backlog.editForm.buttons.assignToMe') }}
+                  @click="assignCurrentUserToField('assigneeId')">
+                  {{ t('task.editModal.form.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
 
             <FormItem name="confirmerId" class="flex-1/2">
               <template #label>
-                {{ t('backlog.editForm.labels.confirmer') }}<Popover placement="rightTop">
+                {{ t('task.editModal.form.confirmer') }}<Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      {{ t('backlog.editForm.descriptions.confirmer') }}
+                      {{ t('task.editModal.form.confirmerTip') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -1073,19 +1088,20 @@ const getPopupContainer = () => {
               <div class="flex items-center">
                 <SelectUser
                   v-model:value="formState.confirmerId"
-                  :placeholder="t('backlog.editForm.placeholders.selectConfirmer')"
+                  :placeholder="t('task.editModal.form.confirmerPlaceholder')"
                   internal
                   allowClear
                   class="flex-1 min-w-0"
                   :defaultOptions="confirmerDefaultOptions"
                   :action="`${TESTER}/project/${props.projectId}/member/user`"
                   :maxlength="80" />
+
                 <Button
                   size="small"
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
-                  @click="assignCurrentUserToRole('confirmerId')">
-                  {{ t('backlog.editForm.buttons.assignToMe') }}
+                  @click="assignCurrentUserToField('confirmerId')">
+                  {{ t('task.editModal.form.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
@@ -1093,15 +1109,16 @@ const getPopupContainer = () => {
 
           <div class="flex space-x-4">
             <FormItem
-              :label="t('backlog.editForm.labels.deadline')"
+              :label="t('task.editModal.form.deadline')"
               name="deadlineDate"
               class="flex-1/2"
               :rules="{ required: true, validator: validateDeadlineDate }">
               <DatePicker
                 v-model:value="formState.deadlineDate"
                 :showNow="false"
-                :disabledDate="disablePastDates"
+                :disabledDate="isDateDisabled"
                 :showTime="{ hideDisabledOptions: true, format: TIME_FORMAT }"
+                :disabled="(proTypeShowMap.showSprint && !formState.sprintId)"
                 type="date"
                 size="small"
                 showToday
@@ -1110,20 +1127,19 @@ const getPopupContainer = () => {
 
             <FormItem name="confirmerId" class="flex-1/2">
               <template #label>
-                {{ t('backlog.editForm.labels.tester') }}<Popover placement="rightTop">
+                {{ t('task.editModal.form.tester') }}<Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      {{ t('backlog.editForm.descriptions.tester') }}
+                      {{ t('task.editModal.form.testerTip') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
                 </Popover>
               </template>
-
               <div class="flex items-center">
                 <SelectUser
                   v-model:value="formState.testerId"
-                  :placeholder="t('backlog.editForm.placeholders.selectTester')"
+                  :placeholder="t('task.editModal.form.testerPlaceholder')"
                   internal
                   allowClear
                   class="flex-1 min-w-0"
@@ -1134,8 +1150,8 @@ const getPopupContainer = () => {
                   size="small"
                   type="link"
                   class="p-0 h-5 leading-5 ml-1"
-                  @click="assignCurrentUserToRole('testerId')">
-                  {{ t('backlog.editForm.buttons.assignToMe') }}
+                  @click="assignCurrentUserToField('testerId')">
+                  {{ t('task.editModal.form.assignToMe') }}
                 </Button>
               </div>
             </FormItem>
@@ -1143,24 +1159,26 @@ const getPopupContainer = () => {
 
           <FormItem
             name="description"
-            :label="t('backlog.editForm.labels.description')"
+            :label="t('task.editModal.form.description')"
             :rules="{validator: validateDescriptionLength}">
             <AsyncComponent :visible="shouldShowEditor">
               <RichEditor
-                ref="richEditorRef"
-                :value="formState.description"
-                :options="{placeholder: t('backlog.editForm.placeholders.taskDescription')}"
-                :height="340"
-                @change="handleRichEditorChange"
-                @loadingChange="handleRichEditorLoading" />
+                ref="descriptionEditorRef"
+                v-model:value="formState.description"
+                :options="{placeholder: t('task.editModal.form.descriptionPlaceholder')}"
+                :height="300"
+                @change="handleEditorContentChange"
+                @loadingChange="handleEditorLoadingChange" />
             </AsyncComponent>
           </FormItem>
         </div>
 
         <div class="w-80  pl-2 border-l">
           <FormItem
-            :label="t('backlog.editForm.labels.sprint')"
-            name="sprintId">
+            v-if="proTypeShowMap.showSprint"
+            :label="t('task.editModal.form.sprint')"
+            name="sprintId"
+            :rules="{ required: true, message: t('task.editModal.form.sprintRule') }">
             <Select
               v-model:value="formState.sprintId"
               :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
@@ -1168,8 +1186,8 @@ const getPopupContainer = () => {
               :readonly="!!props.taskId"
               showSearch
               internal
-              :placeholder="t('backlog.editForm.placeholders.selectOrSearchSprint')"
-              @change="handleSprintSelectionChange">
+              :placeholder="t('task.editModal.form.sprintPlaceholder')"
+              @change="(value: any, option: any) => handleSprintChange(value, option)">
               <template #option="record">
                 <div class="flex items-center" :title="record.name">
                   <Icon icon="icon-jihua" class="mr-1 text-4" />
@@ -1179,17 +1197,17 @@ const getPopupContainer = () => {
             </Select>
           </FormItem>
 
-          <FormItem :label="t('backlog.editForm.labels.module')" name="moduleId">
+          <FormItem :label="t('task.editModal.form.module')" name="moduleId">
             <TreeSelect
               v-model:value="formState.moduleId"
               :treeData="moduleTreeData"
               :fieldNames="{ value: 'id', label: 'name', children: 'children' }"
-              :getPopupContainer="getPopupContainer"
+              :getPopupContainer="getDropdownContainer"
               :virtual="false"
               size="small"
               showSearch
               allowClear
-              :placeholder="t('backlog.editForm.placeholders.selectOrSearchModule')">
+              :placeholder="t('task.editModal.form.modulePlaceholder')">
               <template #title="item">
                 <div class="flex items-center" :title="item.name">
                   <Icon icon="icon-mokuai" class="mr-1 text-3.5" />
@@ -1199,7 +1217,7 @@ const getPopupContainer = () => {
             </TreeSelect>
           </FormItem>
 
-          <FormItem :label="t('backlog.editForm.labels.parentTask')" name="parentTaskId">
+          <FormItem :label="t('task.editModal.form.parentTask')" name="parentTaskId">
             <Select
               v-if="!!props.parentTaskId"
               :readonly="true"
@@ -1219,8 +1237,8 @@ const getPopupContainer = () => {
               v-model:value="formState.parentTaskId"
               showSearch
               internal
-              :placeholder="t('backlog.editForm.placeholders.selectParentTask')"
-              :excludes="getExcludedTaskIds"
+              :placeholder="t('task.editModal.form.parentTaskPlaceholder')"
+              :excludes="shouldExcludeTaskId"
               :fieldNames="{ label: 'name', value: 'id' }"
               :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`">
               <template #option="record">
@@ -1234,26 +1252,27 @@ const getPopupContainer = () => {
 
           <FormItem
             name="evalWorkload"
-            :rules="{ required: formState.actualWorkload, validator: validateEvaluationWorkload, trigger: 'change' }">
+            :rules="{ required: !!formState.actualWorkload, validator: validateEvaluationWorkload, trigger: 'change' }">
             <template #label>
               {{
-                currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                  ? t('backlog.editForm.labels.evalStoryPoint')
-                  : t('backlog.editForm.labels.evalWorkload')
+                evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                  ? t('task.editModal.form.workload.evalStoryPoint')
+                  : t('task.editModal.form.workload.evalWorkload')
               }}
               <Popover placement="rightTop">
                 <template #content>
                   <div class="text-3 text-theme-sub-content max-w-75 leading-4">
                     {{
-                      currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                        ? t('backlog.editForm.labels.evalStoryPoint')
-                        : t('backlog.editForm.labels.evalWorkload')
+                      evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                        ? t('task.editModal.form.workload.storyPointTip')
+                        : t('task.editModal.form.workload.workloadTip')
                     }}
                   </div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
               </Popover>
             </template>
+
             <Input
               v-model:value="formState.evalWorkload"
               size="small"
@@ -1261,7 +1280,7 @@ const getPopupContainer = () => {
               trimAll
               :min="0.1"
               :max="1000"
-              :placeholder="t('backlog.editForm.placeholders.workloadRange')"
+              :placeholder="t('task.editModal.form.workload.placeholder')"
               @blur="handleEvaluationWorkloadChange($event.target.value)" />
           </FormItem>
 
@@ -1269,30 +1288,31 @@ const getPopupContainer = () => {
             <FormItem name="actualWorkload">
               <template #label>
                 {{
-                  currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                    ? t('backlog.editForm.labels.evalStoryPoint')
-                    : t('backlog.editForm.labels.evalWorkload')
+                  evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                    ? t('task.editModal.form.workload.actualStoryPoint')
+                    : t('task.editModal.form.workload.actualWorkload')
                 }}
                 <Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
                       {{
-                        currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                          ? t('backlog.editForm.labels.evalStoryPoint')
-                          : t('backlog.editForm.labels.evalWorkload')
+                        evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                          ? t('task.editModal.form.workload.actualStoryPointTip')
+                          : t('task.editModal.form.workload.actualWorkloadTip')
                       }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
                 </Popover>
               </template>
+
               <Input
                 v-model:value="formState.actualWorkload"
                 class="w-70"
                 size="small"
                 dataType="float"
                 trimAll
-                :placeholder="t('backlog.editForm.placeholders.workloadRange')"
+                :placeholder="t('task.editModal.form.workload.placeholder')"
                 :min="0.1"
                 :max="1000"
                 @change="handleActualWorkloadChange($event.target.value)" />
@@ -1301,11 +1321,11 @@ const getPopupContainer = () => {
 
           <FormItem
             name="softwareVersion"
-            :label="t('backlog.editForm.labels.softwareVersion')">
+            :label="t('task.editModal.form.softwareVersion')">
             <Select
               v-model:value="formState.softwareVersion"
               allowClear
-              :placeholder="t('backlog.editForm.placeholders.selectSoftwareVersion')"
+              :placeholder="t('task.editModal.form.softwareVersionPlaceholder')"
               :action="`${TESTER}/software/version?projectId=${props.projectId}`"
               :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN'}]}"
               :fieldNames="{value:'name', label: 'name'}">
@@ -1316,10 +1336,10 @@ const getPopupContainer = () => {
             name="tagIds"
             class="relative">
             <template #label>
-              {{ t('backlog.editForm.labels.tags') }}<Popover placement="rightTop">
+              {{ t('task.editModal.form.tags') }}<Popover placement="rightTop">
                 <template #content>
                   <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                    {{ t('backlog.editForm.descriptions.tags') }}
+                    {{ t('task.editModal.form.tagsTip') }}
                   </div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-tips ml-1 text-3.5" />
@@ -1335,14 +1355,14 @@ const getPopupContainer = () => {
               :maxTags="5"
               :allowClear="false"
               :action="`${TESTER}/tag?projectId=${props.projectId}&fullTextSearch=true`"
-              :placeholder="t('backlog.editForm.placeholders.maxTags')"
+              :placeholder="t('task.editModal.form.tagsPlaceholder')"
               mode="multiple"
-              :notFoundContent="t('backlog.editForm.messages.contactAdminForTags')" />
+              :notFoundContent="t('task.editModal.form.tagsNotFound')" />
           </FormItem>
 
           <FormItem
             name="refTaskIds"
-            :label="t('backlog.editForm.labels.refTasks')"
+            :label="t('task.editModal.form.assocTasks')"
             class="relative">
             <Select
               v-model:value="formState.refTaskIds"
@@ -1354,7 +1374,7 @@ const getPopupContainer = () => {
               :maxTagTextLength="15"
               :maxTags="20"
               :action="`${TESTER}/task?projectId=${props.projectId}&fullTextSearch=true`"
-              :placeholder="t('backlog.editForm.placeholders.maxRefTasks')"
+              :placeholder="t('task.editModal.form.assocTasksPlaceholder')"
               mode="multiple">
               <template #option="record">
                 <div class="flex items-center leading-4.5 overflow-hidden">
@@ -1366,7 +1386,7 @@ const getPopupContainer = () => {
                     v-if="record.overdue"
                     class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2"
                     style="transform: scale(0.9);color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                    <span class="inline-block transform-gpu">{{ t('backlog.editForm.overdue') }}</span>
+                    <span class="inline-block transform-gpu">{{ t('task.editModal.status.overdue') }}</span>
                   </div>
                 </div>
               </template>
@@ -1375,7 +1395,7 @@ const getPopupContainer = () => {
 
           <FormItem
             name="refCaseIds"
-            :label="t('backlog.editForm.labels.refCases')"
+            :label="t('task.editModal.form.assocCases')"
             class="relative">
             <Select
               v-model:value="formState.refCaseIds"
@@ -1387,7 +1407,7 @@ const getPopupContainer = () => {
               :maxTagTextLength="15"
               :maxTags="20"
               :action="`${TESTER}/func/case?projectId=${props.projectId}&fullTextSearch=true`"
-              :placeholder="t('backlog.editForm.placeholders.maxRefCases')"
+              :placeholder="t('task.editModal.form.assocCasesPlaceholder')"
               mode="multiple">
               <template #option="record">
                 <div class="flex items-center leading-4.5 overflow-hidden">
@@ -1399,14 +1419,14 @@ const getPopupContainer = () => {
                     v-if="record.overdue"
                     class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2"
                     style="transform: scale(0.9);color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                    <span class="inline-block transform-gpu">{{ t('backlog.editForm.overdue') }}</span>
+                    <span class="inline-block transform-gpu">{{ t('task.editModal.status.overdue') }}</span>
                   </div>
                 </div>
               </template>
             </Select>
           </FormItem>
 
-          <FormItem :label="t('backlog.editForm.labels.attachments')">
+          <FormItem :label="t('task.editModal.form.attachments')">
             <div
               style="height: 60px; border-color: rgba(0, 119, 255);background-color: rgba(0, 119, 255, 4%);"
               class="border border-dashed rounded flex flex-col px-2 py-1"
@@ -1427,10 +1447,9 @@ const getPopupContainer = () => {
                     <Icon
                       icon="icon-qingchu"
                       class="text-theme-special text-theme-text-hover cursor-pointer flex-shrink-0 leading-4 text-3.5"
-                      @click="deleteAttachmentFile(index)" />
+                      @click="removeAttachmentFile(index)" />
                   </div>
                 </div>
-
                 <div v-if="formState.attachments.length < 5" class="flex justify-end">
                   <Upload
                     :fileList="[]"
@@ -1439,13 +1458,10 @@ const getPopupContainer = () => {
                     :customRequest="() => {}"
                     @change="handleFileUpload">
                     <Icon icon="icon-shangchuan" class="text-theme-special mr-1" />
-                    <span class="text-3 leading-3 text-theme-text-hover">
-                      {{ t('backlog.editForm.buttons.continueUpload') }}
-                    </span>
+                    <span class="text-3 leading-3 text-theme-text-hover">{{ t('task.editModal.form.attachmentsContinue') }}</span>
                   </Upload>
                 </div>
               </template>
-
               <template v-else>
                 <div class="flex justify-center">
                   <Upload
@@ -1454,9 +1470,7 @@ const getPopupContainer = () => {
                     :customRequest="() => {}"
                     @change="handleFileUpload">
                     <Icon icon="icon-shangchuan" class="mr-1 text-theme-special" />
-                    <span class="text-3 text-theme-text-hover">
-                      {{ t('backlog.editForm.buttons.uploadAttachments') }}
-                    </span>
+                    <span class="text-3 text-theme-text-hover">{{ t('task.editModal.form.attachmentsUpload') }}</span>
                   </Upload>
                 </div>
               </template>
@@ -1470,30 +1484,29 @@ const getPopupContainer = () => {
       <Button
         class="text-3 leading-3"
         size="small"
-        @click="cancelModal">
-        {{ t('backlog.editForm.buttons.cancel') }}
+        @click="closeModal">
+        {{ t('actions.cancel') }}
       </Button>
       <Button
-        v-if="shouldShowContinueButton"
+        v-if="showContinue"
         type="primary"
         class="text-3 leading-3"
         size="small"
-        :disabled="isLoading"
-        @click="submitForm(true)">
-        {{ t('backlog.editForm.buttons.saveAndContinue') }}
+        :disabled="loading"
+        @click="handleFormSubmit(true)">
+        {{ t('task.editModal.actions.saveAndContinue') }}
       </Button>
       <Button
         type="primary"
         class="text-3 leading-3"
         size="small"
-        :disabled="isLoading"
-        @click="submitForm(false)">
-        {{ t('backlog.editForm.buttons.confirm') }}
+        :disabled="loading"
+        @click="handleFormSubmit(false)">
+        {{ t('actions.confirm') }}
       </Button>
     </template>
   </Modal>
 </template>
-
 <style scoped>
 :deep(.ant-form-item-label) {
   max-width: 120px;

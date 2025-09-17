@@ -6,7 +6,7 @@ import { TESTER, SearchCriteria } from '@xcan-angus/infra';
 import { CombinedTargetType } from '@/enums/enums';
 
 import { ActivityItem } from '@/types/types';
-import { TaskInfoProps } from '@/views/task/task/list/task/types';
+import { TaskInfoProps } from '@/views/task/task/list/types';
 
 // Component Props
 const props = withDefaults(defineProps<TaskInfoProps>(), {

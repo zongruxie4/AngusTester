@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n';
 import { task } from '@/api/tester';
 
 import { TaskInfo } from '../../types';
-import { TaskInfoProps } from '@/views/task/task/list/task/types';
+import { TaskInfoProps } from '@/views/task/task/list/types';
 
 const { t } = useI18n();
 

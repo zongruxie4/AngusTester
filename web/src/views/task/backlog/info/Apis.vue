@@ -12,7 +12,7 @@ import { SoftwareVersionStatus } from '@/enums/enums';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import { TaskInfo } from '../../types';
-import { TaskInfoProps } from '@/views/task/task/list/task/types';
+import { TaskInfoProps } from '@/views/task/task/list/types';
 
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import TaskStatus from '@/components/TaskStatus/index.vue';

@@ -7,7 +7,7 @@ import { upload, utils } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 
 import { TaskInfo } from '../../types';
-import { TaskInfoProps } from '@/views/task/task/list/task/types';
+import { TaskInfoProps } from '@/views/task/task/list/types';
 
 const { t } = useI18n();
 

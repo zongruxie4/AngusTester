@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { SmartComment } from '@xcan-angus/vue-ui';
 import { TESTER, CombinedTargetType } from '@xcan-angus/infra';
 
-import { TaskInfoProps } from '@/views/task/task/list/task/types';
+import { TaskInfoProps } from '@/views/task/task/list/types';
 
 // Component Props
 const props = withDefaults(defineProps<TaskInfoProps>(), {

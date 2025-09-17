@@ -64,7 +64,7 @@ const PlanList = defineAsyncComponent(() => import('@/views/function/case/list/c
 const UploadCaseModal = defineAsyncComponent(() => import('@/views/function/case/list/case/Upload.vue'));
 const ModuleTree = defineAsyncComponent(() => import('../ModuleTree.vue'));
 const KanbanView = defineAsyncComponent(() => import('@/views/function/case/list/case/kanban//index.vue'));
-const AddTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/task/Edit.vue'));
+const AddTaskModal = defineAsyncComponent(() => import('@/views/task/task/list/Edit.vue'));
 
 type FilterOp = 'EQUAL' | 'NOT_EQUAL' | 'GREATER_THAN' | 'GREATER_THAN_EQUAL' | 'LESS_THAN' | 'LESS_THAN_EQUAL' | 'CONTAIN' | 'NOT_CONTAIN' | 'MATCH' | 'MATCH' | 'IN' | 'NOT_IN';
 type Filters = { key: string, value: string | boolean | string[], op: FilterOp }

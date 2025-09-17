@@ -8,7 +8,7 @@ import { task } from '@/api/tester';
 
 import { TaskInfo } from '../../types';
 import { TIME_FORMAT } from '@/utils/constant';
-import { TaskInfoProps } from '@/views/task/task/list/task/types';
+import { TaskInfoProps } from '@/views/task/task/list/types';
 
 const { t } = useI18n();
 

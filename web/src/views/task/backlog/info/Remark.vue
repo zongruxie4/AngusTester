@@ -6,7 +6,7 @@ import { Icon, NoData, Scroll } from '@xcan-angus/vue-ui';
 import { TESTER, PageQuery, utils} from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { TaskInfo } from '../../types';
-import { TaskInfoProps } from '@/views/task/task/list/task/types';
+import { TaskInfoProps } from '@/views/task/task/list/types';
 import { Remark } from '@/views/task/task/types';
 
 // Component Props
@@ -124,7 +124,7 @@ const submitRemark = async () => {
 
   currentRemarkContent.value = '';
   notify.value = utils.uuid();
-  
+
 };
 
 
@@ -198,7 +198,7 @@ const queryParams = computed(() => {
 
     <!-- Scrollable Content Area -->
     <div class="scrollable-content">
-      
+
       <div class="basic-info-content">
         <!-- Only render Scroll component when we have valid taskId -->
         <Scroll

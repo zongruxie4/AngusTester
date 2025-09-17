@@ -8,7 +8,7 @@ import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 import { TaskType, SoftwareVersionStatus } from '@/enums/enums';
 import { TaskInfo } from '../../types';
-import { TaskInfoProps } from '@/views/task/task/list/task/types';
+import { TaskInfoProps } from '@/views/task/task/list/types';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import TaskStatus from '@/components/TaskStatus/index.vue';
