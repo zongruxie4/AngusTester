@@ -171,7 +171,7 @@ defineExpose({
     <!-- Charts Section -->
     <div class="charts-section">
       <!-- Task Type Chart -->
-      <div class="chart-container">
+      <div v-show="props.countType==='task'" class="chart-container">
         <div class="chart-header">
           <h3>{{ $t('kanban.effectiveness.taskTypeTitle') }}</h3>
         </div>
