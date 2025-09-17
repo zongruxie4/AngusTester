@@ -862,6 +862,7 @@
   },
   "taskHome": {
     "name": "Home",
+    "backlogName": "Backlog",
     "welcomeToAngusTask": "About AngusTester Issues",
     "taskDescription": "Issue management helps teams collaborate efficiently, track progress, and deliver on time.",
     "workItem1": "Plan project activities and scheduling through iterations;",

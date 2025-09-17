@@ -26,13 +26,45 @@ const editionType = ref();
 
 const menus = computed(() => {
   return [
-    { name: t('taskHome.name'), icon: 'icon-zhuye', key: 'homepage' },
-    proTypeShowMap.value.showBackLog && { name: 'Backlog', icon: 'icon-backlog', key: 'backlog' },
-    proTypeShowMap.value.showSprint && { name: t('taskSprint.name'), icon: 'icon-diedai', key: 'sprint' },
-    { name: t('task.name'), icon: 'icon-renwu2', key: 'task' },
-    proTypeShowMap.value.showMeeting && { name: t('taskMeeting.name'), icon: 'icon-RT', key: 'meeting' },
-    editionType.value !== 'COMMUNITY' && { name: t('taskAnalysis.name'), icon: 'icon-fenxi', key: 'analysis' },
-    { name: t('taskTrash.name'), icon: 'icon-qingchu', key: 'trash' }
+    {
+      name: t('taskHome.name'),
+      icon: 'icon-zhuye',
+      key: 'homepage'
+    },
+    proTypeShowMap.value.showBackLog &&
+    {
+      name: t('taskHome.backlogName'),
+      icon: 'icon-backlog',
+      key: 'backlog'
+    },
+    proTypeShowMap.value.showSprint &&
+    {
+      name: t('taskSprint.name'),
+      icon: 'icon-diedai',
+      key: 'sprint'
+    },
+    {
+      name: t('task.name'),
+      icon: 'icon-renwu2',
+      key: 'task'
+    },
+    proTypeShowMap.value.showMeeting &&
+    {
+      name: t('taskMeeting.name'),
+      icon: 'icon-RT',
+      key: 'meeting'
+    },
+    editionType.value !== 'COMMUNITY' &&
+    {
+      name: t('taskAnalysis.name'),
+      icon: 'icon-fenxi',
+      key: 'analysis'
+    },
+    {
+      name: t('taskTrash.name'),
+      icon: 'icon-qingchu',
+      key: 'trash'
+    }
   ].filter(Boolean);
 });
 
