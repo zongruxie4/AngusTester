@@ -78,7 +78,28 @@
         "defect": "Defect",
         "apiTest": "API Test",
         "scenarioTest": "Scenario Test"
-      }
+      },
+      "totalTaskCount": "Total Task Count",
+      "progress": "Progress",
+      "pending": "Pending",
+      "inProgress": "In Progress",
+      "confirming": "Confirming",
+      "completed": "Completed",
+      "canceled": "Canceled",
+
+
+      "evalWorkload": "Estimated Workload",
+      "actualWorkload": "Actual Workload",
+      "savingWorkload": "Saving Workload",
+      "totalCaseCount": "Total Case Count",
+      "pendingTest": "Pending Test",
+      "passedTest": "Passed Test",
+      "notPassedTest": "Not Passed Test",
+      "blockedTest": "Blocked Test",
+      "testCaseHitRate": "Test Case Hit Rate",
+      "oneTimePassReviewRate": "One Time Pass Review Rate",
+      "rate": "Rate",
+      "passedCount": "Passed Count"
     },
     "dataAssets": {
       "growthTrend": "Growth Trend",

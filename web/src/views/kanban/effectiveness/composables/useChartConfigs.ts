@@ -1,20 +1,15 @@
-// import { useI18n } from 'vue-i18n';
-import { i18n } from '@xcan-angus/infra';
-
+import { useI18n } from 'vue-i18n';
 import { ChartConfig } from '../types';
 import noData from '../Image/nodata.png';
-
-const I18nInstance = i18n.getI18n();
-const t = I18nInstance?.global?.t || ((value: string): string => value);
-
-// const { t } = useI18n();
 
 /**
  * <p>
  * Creates task type chart configuration
  * </p>
  */
-export const createTaskTypeConfig = (): ChartConfig => ({
+export const createTaskTypeConfig = (): ChartConfig => {
+  const { t } = useI18n();
+  return {
   title: {},
   tooltip: {
     trigger: 'item'
@@ -42,7 +37,7 @@ export const createTaskTypeConfig = (): ChartConfig => ({
   },
   series: [
     {
-      name: '总数',
+      name: t('kanban.effectiveness.total'),
       type: 'pie',
       radius: ['30%', '50%'],
       center: ['35%', '50%'],
@@ -66,42 +61,42 @@ export const createTaskTypeConfig = (): ChartConfig => ({
       },
       data: [
         {
-          name: '故事',
+          name: t('kanban.effectiveness.taskType.story'),
           value: 0,
           itemStyle: {
             color: 'rgba(136, 185, 242, 1)'
           }
         },
         {
-          name: '需求',
+          name: t('kanban.effectiveness.taskType.requirement'),
           value: 0,
           itemStyle: {
             color: 'rgba(201, 119, 255, 1)'
           }
         },
         {
-          name: '任务',
+          name: t('kanban.effectiveness.taskType.task'),
           value: 0,
           itemStyle: {
             color: 'rgba(255, 165, 43, 1)'
           }
         },
         {
-          name: '缺陷',
+          name: t('kanban.effectiveness.taskType.defect'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'
           }
         },
         {
-          name: '接口测试',
+          name: t('kanban.effectiveness.taskType.apiTest'),
           value: 0,
           itemStyle: {
             color: 'rgba(82, 196, 26, 1)'
           }
         },
         {
-          name: '场景测试',
+          name: t('kanban.effectiveness.taskType.scenarioTest'),
           value: 0,
           itemStyle: {
             color: 'rgba(0,119,255,1)'
@@ -110,14 +105,17 @@ export const createTaskTypeConfig = (): ChartConfig => ({
       ]
     }
   ]
-});
+  };
+};
 
 /**
  * <p>
  * Creates burn down chart configuration
  * </p>
  */
-export const createBurnDownConfig = (): ChartConfig => ({
+export const createBurnDownConfig = (): ChartConfig => {
+  const { t } = useI18n();
+  return {
   grid: {
     left: '30',
     right: '20',
@@ -160,7 +158,8 @@ export const createBurnDownConfig = (): ChartConfig => ({
       type: 'line'
     }
   ]
-});
+  };
+};
 
 /**
  * <p>
@@ -219,10 +218,11 @@ const createBaseBarConfig = (): ChartConfig => ({
  * </p>
  */
 export const createTargetCountConfig = (): ChartConfig => {
+  const { t } = useI18n();
   const config = createBaseBarConfig();
   config.series = [
     {
-      name: '总数',
+      name: t('kanban.effectiveness.total'),
       type: 'bar',
       itemStyle: {
         color: 'rgba(45, 142, 255, 1)'
@@ -233,7 +233,7 @@ export const createTargetCountConfig = (): ChartConfig => {
       barGap: 0
     },
     {
-      name: '完成数',
+      name: t('kanban.effectiveness.completedCount'),
       type: 'bar',
       itemStyle: {
         color: 'rgba(82, 196, 26, 1)'
@@ -253,12 +253,13 @@ export const createTargetCountConfig = (): ChartConfig => {
  * </p>
  */
 export const createTargetRateConfig = (): ChartConfig => {
+  const { t } = useI18n();
   const config = createBaseBarConfig();
   config.grid.bottom = 0;
   config.tooltip.valueFormatter = (value: number) => value + '%';
   config.series = [
     {
-      name: '比率',
+      name: t('kanban.effectiveness.rate'),
       type: 'bar',
       itemStyle: {
         color: 'rgba(45, 142, 255, 1)'
@@ -276,6 +277,7 @@ export const createTargetRateConfig = (): ChartConfig => {
  * </p>
  */
 export const createWorkloadConfig = (): ChartConfig => {
+  const { t } = useI18n();
   const config = createBaseBarConfig();
   config.legend = {
     show: true,
@@ -283,7 +285,7 @@ export const createWorkloadConfig = (): ChartConfig => {
   };
   config.series = [
     {
-      name: '总数',
+      name: t('kanban.effectiveness.total'),
       type: 'bar',
       itemStyle: {
         color: 'rgba(45, 142, 255, 1)'
@@ -294,7 +296,7 @@ export const createWorkloadConfig = (): ChartConfig => {
       barGap: 0
     },
     {
-      name: '完成数',
+      name: t('kanban.effectiveness.completedCount'),
       type: 'bar',
       itemStyle: {
         color: 'rgba(82, 196, 26, 1)'
@@ -314,11 +316,12 @@ export const createWorkloadConfig = (): ChartConfig => {
  * </p>
  */
 export const createWorkloadRateConfig = (): ChartConfig => {
+  const { t } = useI18n();
   const config = createBaseBarConfig();
   config.grid.bottom = 0;
   config.series = [
     {
-      name: '比率',
+      name: t('kanban.effectiveness.rate'),
       type: 'bar',
       itemStyle: {
         color: 'rgba(82, 196, 26, 1)'
@@ -336,6 +339,7 @@ export const createWorkloadRateConfig = (): ChartConfig => {
  * </p>
  */
 export const createOverdueConfig = (): ChartConfig => {
+  const { t } = useI18n();
   const config = createBaseBarConfig();
   config.legend = {
     show: true,
@@ -343,7 +347,7 @@ export const createOverdueConfig = (): ChartConfig => {
   };
   config.series = [
     {
-      name: '总数',
+      name: t('kanban.effectiveness.total'),
       type: 'bar',
       itemStyle: {
         color: 'rgba(45, 142, 255, 1)'
@@ -354,7 +358,7 @@ export const createOverdueConfig = (): ChartConfig => {
       barGap: 0
     },
     {
-      name: '逾期数',
+      name: t('kanban.effectiveness.overdueCount'),
       type: 'bar',
       itemStyle: {
         color: 'rgba(245, 34, 45, 1)'
@@ -374,12 +378,13 @@ export const createOverdueConfig = (): ChartConfig => {
  * </p>
  */
 export const createOverdueRateConfig = (): ChartConfig => {
+  const { t } = useI18n();
   const config = createBaseBarConfig();
   config.grid.bottom = 0;
   config.tooltip.valueFormatter = (value: number) => value + '%';
   config.series = [
     {
-      name: '比率',
+      name: t('kanban.effectiveness.rate'),
       type: 'bar',
       itemStyle: {
         color: 'rgba(245, 34, 45, 1)'
@@ -397,6 +402,7 @@ export const createOverdueRateConfig = (): ChartConfig => {
  * </p>
  */
 export const createOneTimePassedTestConfig = (): ChartConfig => {
+  const { t } = useI18n();
   const config = createBaseBarConfig();
   config.legend = {
     show: true,
@@ -404,7 +410,7 @@ export const createOneTimePassedTestConfig = (): ChartConfig => {
   };
   config.series = [
     {
-      name: '总数',
+      name: t('kanban.effectiveness.total'),
       type: 'bar',
       itemStyle: {
         color: 'rgba(45, 142, 255, 1)'
@@ -415,7 +421,7 @@ export const createOneTimePassedTestConfig = (): ChartConfig => {
       barGap: 0
     },
     {
-      name: '通过数',
+      name: t('kanban.effectiveness.passedCount'),
       type: 'bar',
       itemStyle: {
         color: 'rgba(82, 196, 26, 1)'
@@ -435,12 +441,13 @@ export const createOneTimePassedTestConfig = (): ChartConfig => {
  * </p>
  */
 export const createOneTimePassedTestRateConfig = (): ChartConfig => {
+  const { t } = useI18n();
   const config = createBaseBarConfig();
   config.grid.bottom = 0;
   config.tooltip.valueFormatter = (value: number) => value + '%';
   config.series = [
     {
-      name: '比率',
+      name: t('kanban.effectiveness.rate'),
       type: 'bar',
       itemStyle: {
         color: 'rgba(82, 196, 26, 1)'
@@ -458,6 +465,7 @@ export const createOneTimePassedTestRateConfig = (): ChartConfig => {
  * </p>
  */
 export const createOneTimeUnpassedTestConfig = (): ChartConfig => {
+  const { t } = useI18n();
   const config = createBaseBarConfig();
   config.legend = {
     show: true,
@@ -496,11 +504,12 @@ export const createOneTimeUnpassedTestConfig = (): ChartConfig => {
  * </p>
  */
 export const createOneTimeUnpassedTestRateConfig = (): ChartConfig => {
+  const { t } = useI18n();
   const config = createBaseBarConfig();
   config.grid.bottom = 0;
   config.series = [
     {
-      name: '比率',
+      name: t('kanban.effectiveness.rate'),
       type: 'bar',
       itemStyle: {
         color: 'rgba(255, 165, 43, 1)'
