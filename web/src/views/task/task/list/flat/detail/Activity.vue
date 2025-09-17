@@ -2,17 +2,10 @@
 import { computed, ref } from 'vue';
 import { ActivityInfo, Scroll } from '@xcan-angus/vue-ui';
 import { CombinedTargetType, SearchCriteria, TESTER } from '@xcan-angus/infra';
-import { ActivityItem } from '@/types/types';
+import { ActivityItem, BaseProps } from '@/types/types';
 
 // Props interface for Activity component
-type Props = {
-  /** Unique identifier of the target entity */
-  id: string;
-  /** Notification trigger for refreshing activity data */
-  notify: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BaseProps>(), {
   id: '',
   notify: undefined
 });
