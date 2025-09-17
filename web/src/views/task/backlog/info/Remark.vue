@@ -113,7 +113,7 @@ const submitRemark = async () => {
   isValidationError.value = false;
 
   const requestParams = { taskId: props.id, content: currentRemarkContent.value };
-  debugger;
+
   emit('loadingChange', true);
   const [error] = await task.addTaskRemark(requestParams);
   emit('loadingChange', false);
@@ -124,7 +124,6 @@ const submitRemark = async () => {
 
   currentRemarkContent.value = '';
   notify.value = utils.uuid();
-  debugger;
   
 };
 

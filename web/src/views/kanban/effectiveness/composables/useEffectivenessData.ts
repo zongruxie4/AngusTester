@@ -93,6 +93,10 @@ export function useEffectivenessData (props: EffectivenessProps) {
 
     // Update ranking data based on count type
     if (props.countType === 'task') {
+
+      testerRanking.value = null;
+      testers.value = {};
+
       const assigneeRankingData = data.assigneeRanking;
       if (assigneeRankingData) {
         assigneeRanking.value = assigneeRankingData;
@@ -103,6 +107,9 @@ export function useEffectivenessData (props: EffectivenessProps) {
         assignees.value = assigneesData;
       }
     } else {
+      assigneeRanking.value = null;
+      assignees.value = {};
+
       const testerRankingData = data.testerRanking;
       if (testerRankingData) {
         testerRanking.value = testerRankingData;

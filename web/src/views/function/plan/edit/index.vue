@@ -488,7 +488,7 @@ const loadData = async (id: string) => {
     return;
   }
 
-  debugger;
+
   loading.value = true;
   const [error, res] = await funcPlan.getPlanDetail(id);
   loading.value = false;
@@ -822,6 +822,7 @@ const autoSize = {
         size="small"
         class="flex items-center space-x-1"
         @click="cancelEdit">
+        <Icon icon="icon-zhongzhi2" class="text-3.5" />
         <span>{{ t('functionPlan.editForm.buttons.cancel') }}</span>
       </Button>
     </div>

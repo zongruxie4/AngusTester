@@ -333,7 +333,7 @@ onMounted(() => {
     immediate: true
   });
   watch(() => projectId.value, (newValue) => {
-    if (newValue.id) {
+    if (newValue) {
       loadMembers();
       getModuleTreeData();
     }
@@ -512,7 +512,7 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
                     @click="changeStepView">
                     <span class="text-theme-special">{{ t('functionCase.addCaseModal.switchType') }} <Icon icon="icon-xiajiantou" /></span>
                   </Dropdown>
-                  <Hints :text="t('functionCase.addCaseModal.testStepsHint')" />
+                  <Hints :text="t('functionCase.addCaseModal.testStepsHint')" class="flex-1" />
                 </div>
               </template>
               <CaseSteps

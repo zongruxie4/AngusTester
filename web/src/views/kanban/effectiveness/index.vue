@@ -171,7 +171,7 @@ defineExpose({
     <!-- Charts Section -->
     <div class="charts-section">
       <!-- Task Type Chart -->
-      <div class="chart-container">
+      <div v-show="props.countType==='task'" class="chart-container">
         <div class="chart-header">
           <h3>{{ $t('kanban.effectiveness.taskTypeTitle') }}</h3>
         </div>
@@ -198,7 +198,7 @@ defineExpose({
       <!-- Target Count Chart -->
       <div class="chart-container">
         <div class="chart-header">
-          <h3>{{ $t('kanban.effectiveness.targetCount') }}</h3>
+          <h3>{{ props.countType === 'task' ? t('kanban.effectiveness.taskCount') : t('kanban.effectiveness.useCaseCount') }}</h3>
         </div>
         <div ref="targetCountChartRef" class="chart-content"></div>
       </div>
@@ -222,7 +222,7 @@ defineExpose({
       <!-- One Time Passed Test Chart -->
       <div class="chart-container">
         <div class="chart-header">
-          <h3>{{ $t('kanban.effectiveness.oneTimePassedTest') }}</h3>
+          <h3>{{ props.countType === 'task' ? $t('kanban.effectiveness.oneTimePassedTest') : t('kanban.effectiveness.oneTimeTestPassedCount') }}</h3>
         </div>
         <div ref="oneTimePassedTestChartRef" class="chart-content"></div>
       </div>
@@ -230,7 +230,7 @@ defineExpose({
       <!--targetRateChartRef-->
       <div class="chart-container">
         <div class="chart-header">
-          <h3>完成率</h3>
+          <h3>{{ t('kanban.effectiveness.completionRate') }}</h3>
         </div>
         <div ref="targetRateChartRef" class="chart-content"></div>
       </div>
@@ -238,7 +238,7 @@ defineExpose({
       <!-- workloadRateChart -->
       <div class="chart-container">
         <div class="chart-header">
-          <h3>工作量完成率</h3>
+          <h3>{{ t('kanban.effectiveness.workloadSaved') }}</h3>
         </div>
         <div ref="workloadRateChartRef" class="chart-content"></div>
       </div>
@@ -246,7 +246,7 @@ defineExpose({
       <!--overdueRateChart-->
       <div class="chart-container">
         <div class="chart-header">
-          <h3>逾期率</h3>
+          <h3>{{ t('kanban.effectiveness.overdueRate') }}</h3>
         </div>
         <div ref="overdueRateChartRef" class="chart-content"></div>
       </div>
@@ -254,7 +254,7 @@ defineExpose({
       <!--oneTimePassedTestRateRef-->
       <div class="chart-container">
         <div class="chart-header">
-          <h3>一次通过率</h3>
+          <h3>{{ props.countType === 'task' ? t('kanban.effectiveness.oneTimePassRate') : t('kanban.effectiveness.oneTimeTestPassRate') }}</h3>
         </div>
         <div ref="oneTimePassedTestRateRef" class="chart-content"></div>
       </div>
@@ -262,7 +262,7 @@ defineExpose({
       <!--oneTimeUnpassedTestChartRef-->
       <div class="chart-container">
         <div class="chart-header">
-          <h3>一次不通过数</h3>
+          <h3>{{ props.countType === 'task' ? t('kanban.effectiveness.defectCount') : t('kanban.effectiveness.oneTimeReviewPassedCount') }}</h3>
         </div>
         <div ref="oneTimeUnpassedTestChartRef" class="chart-content"></div>
       </div>
@@ -270,7 +270,7 @@ defineExpose({
       <!-- oneTimeUnpassedTestRateChartRef-->
       <div class="chart-container">
         <div class="chart-header">
-          <h3>一次不通过率</h3>
+          <h3>{{ props.countType === 'task' ? t('kanban.effectiveness.defectRate') : t('kanban.effectiveness.oneTimeReviewPassRate') }}</h3>
         </div>
         <div ref="oneTimeUnpassedTestRateChartRef" class="chart-content"></div>
       </div>
