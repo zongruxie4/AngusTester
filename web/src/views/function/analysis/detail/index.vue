@@ -207,7 +207,7 @@ onBeforeUnmount(() => {
             {{ analysisData.lastModifiedByName }}
           </span>
           <span class="text-3.5 ml-2">
-            {{ t('functionAnalysis.lastModifiedAt') }}&nbsp;{{ analysisData.lastModifiedDate }}
+            {{ t('functionAnalysis.detail.lastModifiedAt') }}&nbsp;{{ analysisData.lastModifiedDate }}
           </span>
         </div>
       </div>
@@ -216,7 +216,7 @@ onBeforeUnmount(() => {
     <!-- Chart Display Section -->
     <div class="mt-4">
       <div class="detail-title font-semibold pl-2 relative text-3.5 mb-3">
-        {{ t('functionAnalysis.charts') }}
+        {{ t('functionAnalysis.detail.charts') }}
       </div>
 
       <!-- Dynamic Chart Components Based on Template Type -->

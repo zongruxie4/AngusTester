@@ -10,7 +10,7 @@ interface Props {
 
   },
   chart1Value: {
-    value: {name: string, value: number[]}[],
+    value: {name: string, data: number[]}[],
     xData: string[]
   },
 }
@@ -149,10 +149,11 @@ onMounted(() => {
 
   watch([() => props.chart0Value, () => props.chart1Value], () => {
     growthTreadTaskEChartConfig.series[0].data = props.chart0Value.yData;
+    debugger;
     growthTreadWorkloadEChartConfig.series = props.chart1Value.value.map(i => {
       return {
         ...i,
-        data: i.value,
+        data: i.data,
         type: 'line',
         smooth: true,
         stack: 'Total'

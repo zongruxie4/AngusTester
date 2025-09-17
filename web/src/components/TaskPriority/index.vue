@@ -31,7 +31,7 @@ const value = computed(() => {
 });
 
 const message = computed(() => {
-  return props.value?.label;
+  return props.value?.label || props.value?.message;
 });
 </script>
 

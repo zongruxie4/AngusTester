@@ -58,6 +58,7 @@ const getChartData = (data) => {
   const keys = Object.keys(data.timeSeries);
   let xData = [];
   let series = [];
+  debugger;
   if (keys.length) {
     keys.forEach(key => {
       data.timeSeries[key].forEach(i => {

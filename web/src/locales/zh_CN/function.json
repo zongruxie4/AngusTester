@@ -86,6 +86,8 @@
       "updateAnalysisSuccess": "修改分析成功"
     },
     "detail": {
+      "lastModifiedAt": "最后修改于",
+      "charts": "图表",
       "backlogTasks": {
         "total": "总共",
         "backlogVolume": "积压量",

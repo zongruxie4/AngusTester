@@ -1188,8 +1188,10 @@ const EXEC_RESULT_COLOR = {
           {{ text }}
         </div>
 
+
         <TaskPriority v-else-if="column.dataIndex === 'priority'" :value="text" />
 
+        
         <TaskStatus v-else-if="column.dataIndex === 'status'" :value="text" />
 
         <div v-else-if="column.dataIndex === 'execResult'" :style="'color:' + EXEC_RESULT_COLOR[text?.value]">
