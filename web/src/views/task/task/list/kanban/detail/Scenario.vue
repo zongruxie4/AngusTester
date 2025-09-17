@@ -15,6 +15,9 @@ import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfo } from '@/views/task/types';
 import { TaskInfoProps } from '@/views/task/task/list/types';
 
+// Async components
+const Description = defineAsyncComponent(() => import('@/views/task/task/list/kanban/detail/Description.vue'));
+
 // Component props and emits
 const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
@@ -31,9 +34,6 @@ const emit = defineEmits<{
   (event: 'change', value: Partial<TaskInfo>): void;
   (event: 'refresh'): void;
 }>();
-
-// Async components
-const Description = defineAsyncComponent(() => import('@/views/task/task/list/kanban/detail/Description.vue'));
 
 // Task name editing state
 const taskNameInputRef = ref();
@@ -72,12 +72,33 @@ const versionSelectRef = ref();
 const isVersionEditing = ref(false);
 const versionInputValue = ref<string>();
 
-// Lifecycle and module data
-/**
- * Initialize component and load module tree data
- */
-onMounted(() => {
-  loadModuleTreeData();
+// Computed properties
+const currentSprintId = computed(() => props.dataSource?.sprintId);
+const currentModuleId = computed(() => {
+  if (!props.dataSource?.moduleId || props.dataSource?.moduleId === '-1') {
+    return undefined;
+  }
+
+  return props.dataSource?.moduleId;
+});
+const currentTaskId = computed(() => props.dataSource?.id);
+const currentTaskStatus = computed(() => props.dataSource?.status);
+const currentTaskName = computed(() => props.dataSource?.name);
+const currentTaskType = computed(() => props.dataSource?.taskType?.value);
+const currentPriority = computed(() => props.dataSource?.priority?.value);
+const currentTags = computed(() => props.dataSource?.tags || []);
+const currentTagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
+const currentEvalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
+const currentEvalWorkload = computed(() => props.dataSource?.evalWorkload);
+const currentActualWorkload = computed(() => props.dataSource?.actualWorkload);
+const isOverdue = computed(() => props.dataSource?.overdue);
+const totalTestCount = computed(() => +(props.dataSource?.totalNum || 0));
+const failedTestCount = computed(() => +(props.dataSource?.failNum || 0));
+const onePassStatusText = computed(() => {
+  if (totalTestCount.value <= 0) {
+    return '--';
+  }
+  return failedTestCount.value === 0 ? t('status.yes') : t('status.no');
 });
 
 /**
@@ -271,7 +292,6 @@ const handleTaskNameInputEnter = () => {
   }
 };
 
-// Actual workload editing methods
 /**
  * Enter actual workload editing mode and focus the input
  */
@@ -414,7 +434,6 @@ const handlePrioritySelectionBlur = async () => {
   emit('change', { id: currentTaskId.value, priority: { value: selectedValue, message: priorityDisplayMessage.value! } });
 };
 
-// Tag editing methods
 /**
  * Enter tag editing mode and focus the select
  */
@@ -523,33 +542,11 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
   emit('change', data);
 };
 
-// Computed properties
-const currentSprintId = computed(() => props.dataSource?.sprintId);
-const currentModuleId = computed(() => {
-  if (!props.dataSource?.moduleId || props.dataSource?.moduleId === '-1') {
-    return undefined;
-  }
-
-  return props.dataSource?.moduleId;
-});
-const currentTaskId = computed(() => props.dataSource?.id);
-const currentTaskStatus = computed(() => props.dataSource?.status);
-const currentTaskName = computed(() => props.dataSource?.name);
-const currentTaskType = computed(() => props.dataSource?.taskType?.value);
-const currentPriority = computed(() => props.dataSource?.priority?.value);
-const currentTags = computed(() => props.dataSource?.tags || []);
-const currentTagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
-const currentEvalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
-const currentEvalWorkload = computed(() => props.dataSource?.evalWorkload);
-const currentActualWorkload = computed(() => props.dataSource?.actualWorkload);
-const isOverdue = computed(() => props.dataSource?.overdue);
-const totalTestCount = computed(() => +(props.dataSource?.totalNum || 0));
-const failedTestCount = computed(() => +(props.dataSource?.failNum || 0));
-const onePassStatusText = computed(() => {
-  if (totalTestCount.value <= 0) {
-    return '--';
-  }
-  return failedTestCount.value === 0 ? t('status.yes') : t('status.no');
+/**
+ * Initialize component and load module tree data
+ */
+onMounted(() => {
+  loadModuleTreeData();
 });
 </script>
 

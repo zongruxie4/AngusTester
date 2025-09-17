@@ -35,6 +35,18 @@ const dateInputValue = ref<string>();
 const hasDateError = ref();
 const dateErrorMessage = ref<string>();
 
+// Computed properties
+const currentTaskId = computed(() => props.dataSource?.id);
+const taskCreatedDate = computed(() => props.dataSource?.createdDate);
+const currentDeadlineDate = computed(() => props.dataSource?.deadlineDate);
+const taskStartDate = computed(() => props.dataSource?.startDate);
+const taskProcessedDate = computed(() => props.dataSource?.processedDate);
+const taskConfirmedDate = computed(() => props.dataSource?.confirmedDate);
+const taskCompletedDate = computed(() => props.dataSource?.completedDate);
+const taskCanceledDate = computed(() => props.dataSource?.canceledDate);
+const taskExecDate = computed(() => props.dataSource?.execDate);
+const taskLastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
+
 // Date editing methods
 /**
  * Enter date editing mode and focus the date picker
@@ -112,18 +124,6 @@ const isDateDisabled = (current: Dayjs) => {
   const today = dayjs().startOf('day');
   return current.isBefore(today, 'day');
 };
-
-// Computed properties
-const currentTaskId = computed(() => props.dataSource?.id);
-const taskCreatedDate = computed(() => props.dataSource?.createdDate);
-const currentDeadlineDate = computed(() => props.dataSource?.deadlineDate);
-const taskStartDate = computed(() => props.dataSource?.startDate);
-const taskProcessedDate = computed(() => props.dataSource?.processedDate);
-const taskConfirmedDate = computed(() => props.dataSource?.confirmedDate);
-const taskCompletedDate = computed(() => props.dataSource?.completedDate);
-const taskCanceledDate = computed(() => props.dataSource?.canceledDate);
-const taskExecDate = computed(() => props.dataSource?.execDate);
-const taskLastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
 </script>
 
 <template>

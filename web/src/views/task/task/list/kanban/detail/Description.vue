@@ -8,6 +8,9 @@ import { useI18n } from 'vue-i18n';
 import { TaskInfo } from '@/views/task/types';
 import { TaskInfoProps } from '@/views/task/task/list/types';
 
+// Async components
+const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+
 // Component props and emits
 const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
@@ -24,15 +27,23 @@ const emit = defineEmits<{
   (event: 'change', value: Partial<TaskInfo>): void;
 }>();
 
-// Async components
-const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
-
 // Description editing state
 const isDescriptionExpanded = ref(true);
 const isDescriptionEditing = ref(false);
 const descriptionContent = ref<string>('');
 
-// Description editing methods
+// Computed properties
+const currentTaskId = computed(() => {
+  return props.dataSource?.id;
+});
+
+const hasContentLengthError = computed(() => {
+  if (!descriptionContent.value) {
+    return false;
+  }
+  return descriptionContent.value.length > 8000;
+});
+
 /**
  * Enter description editing mode
  */
@@ -76,7 +87,6 @@ const confirmDescriptionEdit = async () => {
   emit('change', { id: currentTaskId.value, description: descriptionContent.value });
 };
 
-// Lifecycle and watchers
 /**
  * Initialize component and watch for data source changes
  */
@@ -84,18 +94,6 @@ onMounted(() => {
   watch(() => props.dataSource, (newDataSource) => {
     descriptionContent.value = newDataSource?.description || '';
   }, { immediate: true });
-});
-
-// Computed properties
-const currentTaskId = computed(() => {
-  return props.dataSource?.id;
-});
-
-const hasContentLengthError = computed(() => {
-  if (!descriptionContent.value) {
-    return false;
-  }
-  return descriptionContent.value.length > 8000;
 });
 </script>
 

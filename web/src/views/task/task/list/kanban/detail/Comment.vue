@@ -3,6 +3,7 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { SmartComment } from '@xcan-angus/vue-ui';
 import { TESTER } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
+import { CombinedTargetType } from '@/enums/enums';
 import { TaskInfoProps } from '@/views/task/task/list/types';
 
 const props = withDefaults(defineProps<TaskInfoProps>(), {
@@ -16,6 +17,10 @@ const { t } = useI18n();
 
 const commentRef = ref();
 
+const taskId = computed(() => {
+  return props.dataSource?.id;
+});
+
 onMounted(() => {
   watch(() => taskId.value, async (newValue) => {
     if (!newValue) {
@@ -27,14 +32,12 @@ onMounted(() => {
     }
   }, { immediate: true });
 });
-
-const taskId = computed(() => {
-  return props.dataSource?.id;
-});
 </script>
 <template>
   <div class="h-full text-3 leading-5 pl-5">
-    <div class="text-theme-title mb-2.5 font-semibold"> {{ t('task.comment.title') }}</div>
+    <div class="text-theme-title mb-2.5 font-semibold">
+      {{ t('task.comment.title') }}
+    </div>
 
     <SmartComment
       v-if="taskId"
@@ -42,7 +45,7 @@ const taskId = computed(() => {
       class="overflow-auto"
       style="height: calc(100% - 30px);box-shadow: 0;"
       avatar
-      targetType="TASK"
+      :targetType="CombinedTargetType.TASK"
       :bordered="false"
       :public0="false"
       :showPublishTitle="false"

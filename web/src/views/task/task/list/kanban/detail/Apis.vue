@@ -79,6 +79,34 @@ const versionSelectValue = ref<string>();
 // Module tree data and management
 const moduleTreeData = ref([]);
 
+// Computed properties
+const currentSprintId = computed(() => props.dataSource?.sprintId);
+const currentModuleId = computed(() => {
+  if (!props.dataSource?.moduleId || props.dataSource?.moduleId === '-1') {
+    return undefined;
+  }
+  return props.dataSource?.moduleId;
+});
+const currentTaskId = computed(() => props.dataSource?.id);
+const currentTaskStatus = computed(() => props.dataSource?.status);
+const currentTaskName = computed(() => props.dataSource?.name);
+const currentTaskType = computed(() => props.dataSource?.taskType?.value);
+const currentPriority = computed(() => props.dataSource?.priority?.value);
+const currentTags = computed(() => props.dataSource?.tags || []);
+const currentTagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
+const currentEvalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
+const currentEvalWorkload = computed(() => props.dataSource?.evalWorkload);
+const currentActualWorkload = computed(() => props.dataSource?.actualWorkload);
+const isTaskOverdue = computed(() => props.dataSource?.overdue);
+const totalTestCount = computed(() => +(props.dataSource?.totalNum || 0));
+const failedTestCount = computed(() => +(props.dataSource?.failNum || 0));
+const onePassStatusText = computed(() => {
+  if (totalTestCount.value <= 0) {
+    return '--';
+  }
+  return failedTestCount.value === 0 ? t('status.yes') : t('status.no');
+});
+
 /**
  * Initialize module tree data on component mount
  */
@@ -527,34 +555,6 @@ const handleLoadingChange = (value: boolean) => {
 const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
   emit('change', data);
 };
-
-// Computed properties
-const currentSprintId = computed(() => props.dataSource?.sprintId);
-const currentModuleId = computed(() => {
-  if (!props.dataSource?.moduleId || props.dataSource?.moduleId === '-1') {
-    return undefined;
-  }
-  return props.dataSource?.moduleId;
-});
-const currentTaskId = computed(() => props.dataSource?.id);
-const currentTaskStatus = computed(() => props.dataSource?.status);
-const currentTaskName = computed(() => props.dataSource?.name);
-const currentTaskType = computed(() => props.dataSource?.taskType?.value);
-const currentPriority = computed(() => props.dataSource?.priority?.value);
-const currentTags = computed(() => props.dataSource?.tags || []);
-const currentTagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
-const currentEvalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
-const currentEvalWorkload = computed(() => props.dataSource?.evalWorkload);
-const currentActualWorkload = computed(() => props.dataSource?.actualWorkload);
-const isTaskOverdue = computed(() => props.dataSource?.overdue);
-const totalTestCount = computed(() => +(props.dataSource?.totalNum || 0));
-const failedTestCount = computed(() => +(props.dataSource?.failNum || 0));
-const onePassStatusText = computed(() => {
-  if (totalTestCount.value <= 0) {
-    return '--';
-  }
-  return failedTestCount.value === 0 ? t('status.yes') : t('status.no');
-});
 </script>
 
 <template>

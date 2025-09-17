@@ -38,6 +38,13 @@ const MAX_FILE_SIZE_MB = 10;
 const isUploading = ref(false);
 const attachmentList = ref<AttachmentItem[]>([]);
 
+// Computed properties
+const currentTaskId = computed(() => props.dataSource?.id);
+const hasNoAttachments = computed(() => !attachmentList.value.length);
+const maxFileSizeInBytes = computed(() => {
+  return 1024 * 1024 * MAX_FILE_SIZE_MB;
+});
+
 /**
  * Handle file upload change event and upload file
  * @param param - Upload change event with file
@@ -135,19 +142,13 @@ onMounted(() => {
     });
   }, { immediate: true });
 });
-
-// Computed properties
-const currentTaskId = computed(() => props.dataSource?.id);
-const hasNoAttachments = computed(() => !attachmentList.value.length);
-
-const maxFileSizeInBytes = computed(() => {
-  return 1024 * 1024 * MAX_FILE_SIZE_MB;
-});
 </script>
 
 <template>
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
-    <div class="text-theme-title mb-2.5 font-semibold">{{ t('task.detailInfo.attachment.title') }}</div>
+    <div class="text-theme-title mb-2.5 font-semibold">
+      {{ t('task.detailInfo.attachment.title') }}
+    </div>
     <Spin
       :spinning="isUploading"
       :class="{ empty: hasNoAttachments }"

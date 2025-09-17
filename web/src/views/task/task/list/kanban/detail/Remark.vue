@@ -40,7 +40,9 @@ const params = computed(() => {
 </script>
 <template>
   <div class="h-full text-3 leading-5 pl-5">
-    <div class="text-theme-title mb-2.5 font-semibold">{{ t('task.remark.title') }}</div>
+    <div class="text-theme-title mb-2.5 font-semibold">
+      {{ t('task.remark.title') }}
+    </div>
 
     <Scroll
       v-if="!!props.id"
