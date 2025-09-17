@@ -540,6 +540,7 @@ const editFlag = computed(() => {
         size="small"
         class="flex items-center space-x-1"
         @click="cancel">
+        <Icon icon="icon-zhongzhi2" class="text-3.5" />
         <span>{{ t('caseReview.editForm.cancel') }}</span>
       </Button>
     </div>
