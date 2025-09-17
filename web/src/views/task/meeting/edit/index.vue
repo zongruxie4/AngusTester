@@ -354,6 +354,7 @@ onMounted(async () => {
         size="small"
         class="flex items-center space-x-1"
         @click="handleFormCancel">
+        <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-zhongzhi2" />
         <span>{{ t('actions.cancel') }}</span>
       </Button>
     </div>

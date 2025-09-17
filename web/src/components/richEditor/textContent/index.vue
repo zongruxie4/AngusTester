@@ -14,13 +14,17 @@ interface Props {
   height?: number;
   options?: {[key: string]: any};
   emptyText?: string
+  textValue?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   value: undefined,
   mode: 'view',
-  emptyText: ''
+  emptyText: '',
+  textValue: ''
 });
+
+const emit = defineEmits(['update:textValue']);
 
 const quillRef = ref();
 const contents = ref();
@@ -51,6 +55,8 @@ onMounted(() => {
         contents.value = quillRef.value.getText();
         contents.value && (contents.value = contents.value.replaceAll('\n', ''));
       }
+
+      emit('update:textValue', contents.value);
     });
   }, {
     immediate: true

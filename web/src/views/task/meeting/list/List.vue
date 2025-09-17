@@ -232,10 +232,11 @@ const getMeetingTypeDotStyle = (typeValue: string) => {
 
       <div class="px-3.5 flex justify-between items-start text-3 my-2.5 relative">
         <div
-          :title="item.content"
+          :title="item.contentText"
           class="truncate mr-8"
           style="max-width: 70%;">
           <RichTextEditor
+            v-model:textValue="item.contentText"
             :value="item.content"
             :emptyText="t('common.noDescription')" />
         </div>
