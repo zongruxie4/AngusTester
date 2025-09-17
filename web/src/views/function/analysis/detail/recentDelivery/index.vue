@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
 
-const Echart = defineAsyncComponent(() => import('./echart.vue'));
+const Echart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data) => {
   const res = {};
@@ -83,7 +83,9 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">{{ t('functionAnalysis.detail.recentDelivery.total') }}</div>
+    <div class="font-semibold pl-3">
+      {{ t('functionAnalysis.detail.recentDelivery.total') }}
+    </div>
     <Echart
       ref="totalChartRef"
       v-bind="totalValue"

@@ -12,12 +12,18 @@ const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
 
-const Echart = defineAsyncComponent(() => import('./echart.vue'));
+const Echart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data) => {
   const res = {};
 
-  const { avgProcessingTime = 0, maxProcessingTime = 0, minProcessingTime = 0, p50ProcessingTime = 0, p75ProcessingTime = 0, p90ProcessingTime = 0, p95ProcessingTime = 0, p99ProcessingTime = 0, totalProcessingTime = 0, userAvgProcessingTime = 0 } = data;
+  const {
+    avgProcessingTime = 0, maxProcessingTime = 0,
+    minProcessingTime = 0, p50ProcessingTime = 0,
+    p75ProcessingTime = 0, p90ProcessingTime = 0,
+    p95ProcessingTime = 0, p99ProcessingTime = 0,
+    totalProcessingTime = 0, userAvgProcessingTime = 0
+  } = data;
   res.overdueAssessmentData = data;
   res.chart0Value = {
     yData: [avgProcessingTime, minProcessingTime, maxProcessingTime, p50ProcessingTime, p75ProcessingTime, p90ProcessingTime, p95ProcessingTime, p99ProcessingTime]
@@ -25,9 +31,7 @@ const getChartData = (data) => {
   return res;
 };
 
-const totalValue = ref({
-
-});
+const totalValue = ref({});
 
 const personValues = ref([]);
 
@@ -75,7 +79,9 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">{{ t('functionAnalysis.detail.leadTime.total') }}</div>
+    <div class="font-semibold pl-3">
+      {{ t('functionAnalysis.detail.leadTime.total') }}
+    </div>
     <Echart
       ref="totalChartRef"
       v-bind="totalValue"

@@ -57,7 +57,13 @@ const failureEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('functionAnalysis.detail.failures.totalFailure'), t('functionAnalysis.detail.failures.failureCompletedCount'), t('functionAnalysis.detail.failures.failureOverdueCount'), t('functionAnalysis.detail.failures.oneTimeFailureCount'), t('functionAnalysis.detail.failures.twoTimeFailureCount')],
+    data: [
+      t('functionAnalysis.detail.failures.totalFailure'),
+      t('functionAnalysis.detail.failures.failureCompletedCount'),
+      t('functionAnalysis.detail.failures.failureOverdueCount'),
+      t('functionAnalysis.detail.failures.oneTimeFailureCount'),
+      t('functionAnalysis.detail.failures.twoTimeFailureCount')
+    ],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -99,7 +105,12 @@ const failureTimeEchartConfig = JSON.parse(JSON.stringify({
   },
   xAxis: {
     ...failureEchartConfig.xAxis,
-    data: [t('functionAnalysis.detail.failures.totalFailureTime'), t('functionAnalysis.detail.failures.averageFailureTime'), t('functionAnalysis.detail.failures.minFailureTime'), t('functionAnalysis.detail.failures.maxFailureTime')]
+    data: [
+      t('functionAnalysis.detail.failures.totalFailureTime'),
+      t('functionAnalysis.detail.failures.averageFailureTime'),
+      t('functionAnalysis.detail.failures.minFailureTime'),
+      t('functionAnalysis.detail.failures.maxFailureTime')
+    ]
   },
   series: [
     {
@@ -213,7 +224,13 @@ onMounted(() => {
 
   failureChart = eCharts.init(failureRef.value);
 
-  watch([() => props.chart0Value, () => props.chart1Value, () => props.chart2Value, () => props.chart3Value, () => props.chart4Value], () => {
+  watch([
+    () => props.chart0Value,
+    () => props.chart1Value,
+    () => props.chart2Value,
+    () => props.chart3Value,
+    () => props.chart4Value
+  ], () => {
     failureEchartConfig.series[0].data = props.chart0Value.yData;
     failureTimeEchartConfig.series[0].data = props.chart1Value.yData;
 

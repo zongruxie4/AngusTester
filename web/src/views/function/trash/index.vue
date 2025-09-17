@@ -118,7 +118,7 @@ const serviceParams = computed(() => {
   };
 
   if (inputValue.value) {
-    params.filters = [{value: inputValue.value, key: 'targetName', op: 'MATCH'}];
+    params.filters = [{ value: inputValue.value, key: 'targetName', op: 'MATCH' }];
   }
 
   return params;
@@ -133,7 +133,7 @@ const caseParams = computed(() => {
   };
 
   if (inputValue.value) {
-    params.filters = [{value: inputValue.value, key: 'targetName', op: 'MATCH'}];
+    params.filters = [{ value: inputValue.value, key: 'targetName', op: 'MATCH' }];
   }
 
   return params;
@@ -284,8 +284,8 @@ watch(
             <!-- Plans tab -->
             <TabPane key="PLAN" :tab="t('functionTrash.tabs.plan')">
               <Table
-                v-model:spinning="loading"
                 key="plan"
+                v-model:spinning="loading"
                 :notify="refreshNotify"
                 :projectId="props.projectId"
                 :userInfo="props.userInfo"
@@ -297,8 +297,8 @@ watch(
             <!-- Cases tab -->
             <TabPane key="CASE" :tab="t('functionTrash.tabs.case')">
               <Table
-                v-model:spinning="loading"
                 key="case"
+                v-model:spinning="loading"
                 :notify="refreshNotify"
                 :projectId="props.projectId"
                 :userInfo="props.userInfo"

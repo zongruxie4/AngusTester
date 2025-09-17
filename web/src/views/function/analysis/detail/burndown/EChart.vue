@@ -33,7 +33,6 @@ let burndownEchart;
 let workloadBurndownEchart;
 
 const burndownEchartConfig = {
-
   grid: {
     left: '30',
     right: '20',
@@ -116,11 +115,15 @@ defineExpose({
   <div class="flex">
     <div class="flex-1">
       <div ref="burndownRef" class="flex-1 h-50"></div>
-      <div class="text-center font-medium  mt-1">{{ t('functionAnalysis.detail.burndown.caseBurndownCount') }}</div>
+      <div class="text-center font-medium  mt-1">
+        {{ t('functionAnalysis.detail.burndown.caseBurndownCount') }}
+      </div>
     </div>
     <div class="flex-1">
       <div ref="workloadBurndownRef" class="flex-1 h-50"></div>
-      <div class="text-center font-medium mt-1">{{ t('functionAnalysis.detail.burndown.workloadBurndown') }}</div>
+      <div class="text-center font-medium mt-1">
+        {{ t('functionAnalysis.detail.burndown.workloadBurndown') }}
+      </div>
     </div>
   </div>
 </template>

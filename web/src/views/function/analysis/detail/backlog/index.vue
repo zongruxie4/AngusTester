@@ -15,12 +15,23 @@ const props = withDefaults(defineProps<Props>(), {
 const totalChartRef = ref();
 const chartListRef: Ref[] = [];
 
-const Echart = defineAsyncComponent(() => import('./echart.vue'));
+const Echart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data) => {
   const res = {};
+  const {
+    backloggedCompletionTime = 0,
+    backloggedNum = 0,
+    backloggedRate = 0,
+    backloggedWorkload = 0,
+    backloggedWorkloadRate = 0,
+    dailyProcessedNum = 0,
+    dailyProcessedWorkload = 0,
+    processedInDay = 0,
+    totalNum = 0,
+    totalWorkload = 0
+  } = data;
 
-  const { backloggedCompletionTime = 0, backloggedNum = 0, backloggedRate = 0, backloggedWorkload = 0, backloggedWorkloadRate = 0, dailyProcessedNum = 0, dailyProcessedWorkload = 0, processedInDay = 0, totalNum = 0, totalWorkload = 0 } = data;
   res.overdueAssessmentData = data;
   res.chart0Value = {
     yData0: [backloggedNum, backloggedWorkload],
@@ -28,19 +39,26 @@ const getChartData = (data) => {
   };
   res.chart1Value = {
     title: backloggedRate + '%',
-    value: [{ name: t('functionAnalysis.detail.backlogTasks.notBackloggedCount'), value: totalNum - backloggedNum }, { name: t('functionAnalysis.detail.backlogTasks.backloggedCount'), value: backloggedNum }]
+    value: [
+      { name: t('functionAnalysis.detail.backlogTasks.notBackloggedCount'), value: totalNum - backloggedNum },
+      { name: t('functionAnalysis.detail.backlogTasks.backloggedCount'), value: backloggedNum }
+    ]
   };
 
   res.chart2Value = {
     title: backloggedWorkloadRate + '%',
-    value: [{ name: t('functionAnalysis.detail.backlogTasks.notBackloggedWorkload'), value: totalWorkload - backloggedWorkload }, { name: t('functionAnalysis.detail.backlogTasks.backloggedWorkload'), value: backloggedWorkload }]
+    value: [
+      {
+        name: t('functionAnalysis.detail.backlogTasks.notBackloggedWorkload'),
+        value: totalWorkload - backloggedWorkload
+      },
+      { name: t('functionAnalysis.detail.backlogTasks.backloggedWorkload'), value: backloggedWorkload }
+    ]
   };
   return res;
 };
 
-const totalValue = ref({
-
-});
+const totalValue = ref({});
 
 const personValues = ref([]);
 
@@ -86,7 +104,9 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">{{ t('functionAnalysis.detail.backlogTasks.total') }}</div>
+    <div class="font-semibold pl-3">
+      {{ t('functionAnalysis.detail.backlogTasks.total') }}
+    </div>
     <Echart
       ref="totalChartRef"
       v-bind="totalValue"

@@ -6,10 +6,6 @@ import * as eCharts from 'echarts';
 const { t } = useI18n();
 
 interface Props {
-  // title0: string;
-  // title1: string;
-  // value0: {name: string, value: string|number}[];
-  // value1: {name: string, value: string|number}[];
   chart0Value: {
     yData: number[]
   };
@@ -62,10 +58,10 @@ let completedEchart;
 let oneTimePassedEchart;
 let twoTimePassedEchart;
 
-// 完成用例
+// 通过评审用例
 const bugsEchartConfig = {
   title: {
-    text: t('functionAnalysis.detail.handlingEfficiency.completedCases'),
+    text: t('functionAnalysis.detail.reviewEfficiency.passedReviewCases'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -80,7 +76,11 @@ const bugsEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('functionAnalysis.detail.handlingEfficiency.completedCaseCount'), t('functionAnalysis.detail.handlingEfficiency.oneTimeCompletedCount'), t('functionAnalysis.detail.handlingEfficiency.twoTimeCompletedCount')],
+    data: [
+      t('functionAnalysis.detail.reviewEfficiency.passedCase'),
+      t('functionAnalysis.detail.reviewEfficiency.oneTimePassedCount'),
+      t('functionAnalysis.detail.reviewEfficiency.twoTimePassedCount')
+    ],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -109,14 +109,14 @@ const bugsEchartConfig = {
     }
   ]
 };
-// 完成用例占比
+// 评审通过用例占比
 const completedEchartConfig = {
   title: {
     text: '0%',
     left: '35%',
     top: '45%',
     padding: 2,
-    subtext: t('functionAnalysis.detail.handlingEfficiency.completedCasePercentage'),
+    subtext: t('functionAnalysis.detail.reviewEfficiency.reviewPassedCasePercentage'),
     // left: '25%',
     // top: '40%',
     itemGap: 40,
@@ -193,7 +193,7 @@ const oneTimePassedEchartConfig = JSON.parse(JSON.stringify({
   ...completedEchartConfig,
   title: {
     ...completedEchartConfig.title,
-    subtext: t('functionAnalysis.detail.handlingEfficiency.oneTimeCompletedPercentage'),
+    subtext: t('functionAnalysis.detail.reviewEfficiency.oneTimePassedReviewCasePercentage'),
     itemGap: 40
   }
 }));
@@ -203,7 +203,7 @@ const twoTimePassedEchartConfig = JSON.parse(JSON.stringify({
   ...oneTimePassedEchartConfig,
   title: {
     ...oneTimePassedEchartConfig.title,
-    subtext: t('functionAnalysis.detail.handlingEfficiency.twoTimeCompletedPercentage')
+    subtext: t('functionAnalysis.detail.reviewEfficiency.twoTimePassedReviewCasePercentage')
   }
 }));
 
@@ -216,7 +216,13 @@ onMounted(() => {
 
   twoTimePassedEchart = eCharts.init(twoTimePassedRef.value);
 
-  watch([() => props.chart0Value, () => props.chart1Value, () => props.chart2Value, () => props.chart3Value, () => props.chart4Value], () => {
+  watch([
+    () => props.chart0Value,
+    () => props.chart1Value,
+    () => props.chart2Value,
+    () => props.chart3Value,
+    () => props.chart4Value
+  ], () => {
     bugsEchartConfig.series[0].data = props.chart0Value.yData;
 
     completedEchartConfig.series[0].data[0] = {

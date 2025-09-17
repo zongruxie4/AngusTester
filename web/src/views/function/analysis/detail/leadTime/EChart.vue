@@ -6,11 +6,6 @@ import * as eCharts from 'echarts';
 const { t } = useI18n();
 
 interface Props {
-  // title0: string;
-  // title1: string;
-  // value0: {name: string, value: string|number}[];
-  // value1: {name: string, value: string|number}[];
-
   overdueAssessmentData: Record<string, any>;
   chart0Value: {
     yData: number[]
@@ -23,12 +18,12 @@ const props = withDefaults(defineProps<Props>(), {
   })
 });
 
-const backlogRef = ref();
+const leadTimeRef = ref();
 
-let backlogRefEchart;
+let leadTimeRefEchart;
 
 // 用例交付周期(小时
-const backlogEchartConfig = {
+const leadTimeEchartConfig = {
   title: {
     text: t('functionAnalysis.detail.leadTime.caseDeliveryCycle'),
     bottom: 0,
@@ -45,7 +40,16 @@ const backlogEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('functionAnalysis.detail.leadTime.average'), t('functionAnalysis.detail.leadTime.minimum'), t('functionAnalysis.detail.leadTime.maximum'), t('functionAnalysis.detail.leadTime.p50'), t('functionAnalysis.detail.leadTime.p75'), t('functionAnalysis.detail.leadTime.p90'), t('functionAnalysis.detail.leadTime.p95'), t('functionAnalysis.detail.leadTime.p99')],
+    data: [
+      t('functionAnalysis.detail.leadTime.average'),
+      t('functionAnalysis.detail.leadTime.minimum'),
+      t('functionAnalysis.detail.leadTime.maximum'),
+      t('functionAnalysis.detail.leadTime.p50'),
+      t('functionAnalysis.detail.leadTime.p75'),
+      t('functionAnalysis.detail.leadTime.p90'),
+      t('functionAnalysis.detail.leadTime.p95'),
+      t('functionAnalysis.detail.leadTime.p99')
+    ],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -81,12 +85,12 @@ const backlogEchartConfig = {
 };
 
 onMounted(() => {
-  backlogRefEchart = eCharts.init(backlogRef.value);
+  leadTimeRefEchart = eCharts.init(leadTimeRef.value);
 
   watch([() => props.chart0Value], () => {
-    backlogEchartConfig.series[0].data = props.chart0Value.yData;
+    leadTimeEchartConfig.series[0].data = props.chart0Value.yData;
 
-    backlogRefEchart.setOption(backlogEchartConfig);
+    leadTimeRefEchart.setOption(leadTimeEchartConfig);
   }, {
     immediate: true,
     deep: true
@@ -95,7 +99,7 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    backlogRefEchart.resize();
+    leadTimeRefEchart.resize();
   }
 });
 
@@ -105,7 +109,10 @@ defineExpose({
     <div class="px-3 w-100">
       <div class="flex justify-around">
         <div class="text-center flex-1">
-          <div class="font-semibold "><span class="text-5 text-status-warn">{{ props.overdueAssessmentData.totalProcessingTime || 0 }}</span>{{ t('functionAnalysis.detail.leadTime.hours') }}</div>
+          <div class="font-semibold ">
+            <span class="text-5 text-status-warn">{{ props.overdueAssessmentData.totalProcessingTime || 0 }}</span>
+            {{ t('functionAnalysis.detail.leadTime.hours') }}
+          </div>
           <div>
             {{ t('functionAnalysis.detail.leadTime.totalProcessingTime') }}
           </div>
@@ -130,7 +137,7 @@ defineExpose({
         </div>
       </div>
     </div>
-    <div ref="backlogRef" class="flex-1 h-40"></div>
+    <div ref="leadTimeRef" class="flex-1 h-40"></div>
   </div>
 </template>
 <style scoped>

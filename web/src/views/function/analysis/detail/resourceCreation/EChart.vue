@@ -6,7 +6,6 @@ import * as eCharts from 'echarts';
 const { t } = useI18n();
 
 interface Props {
-
   overdueAssessmentData: Record<string, any>;
   chart0Value: {
     yData: number[],
@@ -20,10 +19,11 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   overdueAssessmentData: () => ({}),
   chart0Value: () => ({
-    yData: [0, 0, 0, 0, 0, 0, 0]
+    yData: [0, 0, 0, 0, 0, 0]
   }),
   chart1Value: () => ({
-    value: []
+    value: [],
+    xData: []
   })
 });
 
@@ -36,7 +36,7 @@ let unplannedWorkloadRefEchart;
 // 用例数
 const unplannedTaskEchartConfig = {
   title: {
-    text: t('functionAnalysis.detail.taskGrowthTread.caseGrowthAmount'),
+    text: t('functionAnalysis.detail.resourceCreation.createdResourceTotal'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -51,7 +51,14 @@ const unplannedTaskEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('functionAnalysis.detail.taskGrowthTread.requirement2'), t('functionAnalysis.detail.taskGrowthTread.story2'), t('functionAnalysis.detail.taskGrowthTread.case2'), t('functionAnalysis.detail.taskGrowthTread.bug2'), t('functionAnalysis.detail.taskGrowthTread.apiTest2'), t('functionAnalysis.detail.taskGrowthTread.scenarioTest2'), t('functionAnalysis.detail.taskGrowthTread.total3')],
+    data: [
+      t('functionAnalysis.detail.resourceCreation.plan2'),
+      t('functionAnalysis.detail.resourceCreation.case'),
+      t('functionAnalysis.detail.resourceCreation.review2'),
+      t('functionAnalysis.detail.resourceCreation.baseline2'),
+      t('functionAnalysis.detail.resourceCreation.analysis2'),
+      t('functionAnalysis.detail.resourceCreation.total3')
+    ],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -88,7 +95,7 @@ const unplannedTaskEchartConfig = {
 
 const unplannedWorkloadEchartConfig = {
   title: {
-    text: t('functionAnalysis.detail.taskGrowthTread.growthTrend'),
+    text: t('functionAnalysis.detail.resourceCreation.createdResourceGrowthTrend'),
     bottom: 0,
     left: 'center',
     textStyle: {
@@ -136,12 +143,12 @@ const unplannedWorkloadEchartConfig = {
 };
 
 onMounted(() => {
-  // unplannedTaskRefEchart = eCharts.init(unplannedTaskRef.value);
+  unplannedTaskRefEchart = eCharts.init(unplannedTaskRef.value);
 
   unplannedWorkloadRefEchart = eCharts.init(unplannedWorkloadRef.value);
 
   watch([() => props.chart0Value, () => props.chart1Value], () => {
-    // unplannedTaskEchartConfig.series[0].data = props.chart0Value.yData;
+    unplannedTaskEchartConfig.series[0].data = props.chart0Value.yData;
     unplannedWorkloadEchartConfig.series = props.chart1Value.value.map(i => {
       return {
         ...i,
@@ -150,7 +157,7 @@ onMounted(() => {
     });
     unplannedWorkloadEchartConfig.xAxis.data = props.chart1Value.xData;
 
-    // unplannedTaskRefEchart.setOption(unplannedTaskEchartConfig);
+    unplannedTaskRefEchart.setOption(unplannedTaskEchartConfig);
     unplannedWorkloadRefEchart.setOption(unplannedWorkloadEchartConfig);
   }, {
     immediate: true,
@@ -160,15 +167,15 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    // unplannedTaskRefEchart.resize();
+    unplannedTaskRefEchart.resize();
     unplannedWorkloadRefEchart.resize();
   }
 });
 
 </script>
 <template>
-  <div class="flex">
-    <!-- <div ref="unplannedTaskRef"  class="flex-1 h-40"></div> -->
+  <div class="flex space-x-4">
+    <div ref="unplannedTaskRef" class="flex-1 h-40"></div>
     <div ref="unplannedWorkloadRef" class="flex-1 h-40"></div>
   </div>
 </template>

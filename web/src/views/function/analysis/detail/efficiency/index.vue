@@ -12,36 +12,49 @@ const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
 
-const Echart = defineAsyncComponent(() => import('./echart.vue'));
+const Echart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data) => {
   const res = {};
 
-  const { totalNum = 0, passedTestRate = 0, passedTestNum = 0, oneTimeNotPassedNum = 0, oneTimePassedNum = 0, oneTimePassedRate = 0, twoTimePassedNum = 0, twoTimePassedRate = 0, twoTimeNotPassedNum = 0 } = data;
+  const {
+    totalNum = 0, passedTestRate = 0,
+    passedTestNum = 0, oneTimeNotPassedNum = 0,
+    oneTimePassedNum = 0, oneTimePassedRate = 0,
+    twoTimePassedNum = 0, twoTimePassedRate = 0,
+    twoTimeNotPassedNum = 0
+  } = data;
+
   res.chart0Value = {
     yData: [passedTestNum, oneTimeNotPassedNum, oneTimePassedNum]
   };
   res.chart1Value = {
     title: passedTestRate + '%',
-    value: [{ name: t('functionAnalysis.detail.handlingEfficiency.incompleteCaseCount'), value: totalNum - passedTestNum }, { name: t('functionAnalysis.detail.handlingEfficiency.completedCaseCount2'), value: passedTestNum }]
+    value: [
+      { name: t('functionAnalysis.detail.handlingEfficiency.incompleteCaseCount'), value: totalNum - passedTestNum },
+      { name: t('functionAnalysis.detail.handlingEfficiency.completedCaseCount2'), value: passedTestNum }
+    ]
   };
 
   res.chart2Value = {
     title: oneTimePassedRate + '%',
-    value: [{ name: t('functionAnalysis.detail.handlingEfficiency.oneTimeIncompleteCaseCount'), value: oneTimeNotPassedNum }, { name: t('functionAnalysis.detail.handlingEfficiency.oneTimeCompletedCaseCount'), value: oneTimePassedNum }]
+    value: [
+      { name: t('functionAnalysis.detail.handlingEfficiency.oneTimeIncompleteCaseCount'), value: oneTimeNotPassedNum },
+      { name: t('functionAnalysis.detail.handlingEfficiency.oneTimeCompletedCaseCount'), value: oneTimePassedNum }
+    ]
   };
 
   res.chart3Value = {
     title: twoTimePassedRate + '%',
-    value: [{ name: t('functionAnalysis.detail.handlingEfficiency.twoTimeIncompleteCaseCount'), value: passedTestNum - twoTimePassedNum }, { name: t('functionAnalysis.detail.handlingEfficiency.twoTimeCompletedCaseCount'), value: twoTimePassedNum }]
+    value: [
+      { name: t('functionAnalysis.detail.handlingEfficiency.twoTimeIncompleteCaseCount'), value: passedTestNum - twoTimePassedNum },
+      { name: t('functionAnalysis.detail.handlingEfficiency.twoTimeCompletedCaseCount'), value: twoTimePassedNum }
+    ]
   };
   return res;
 };
 
-const totalValue = ref({
-
-});
-
+const totalValue = ref({});
 const personValues = ref([]);
 
 onMounted(() => {
@@ -88,7 +101,9 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">{{ t('functionAnalysis.detail.handlingEfficiency.total') }}</div>
+    <div class="font-semibold pl-3">
+      {{ t('functionAnalysis.detail.handlingEfficiency.total') }}
+    </div>
     <Echart
       ref="totalChartRef"
       v-bind="totalValue"

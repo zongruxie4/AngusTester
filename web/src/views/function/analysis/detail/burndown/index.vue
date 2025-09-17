@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
 
-const Echart = defineAsyncComponent(() => import('./echart.vue'));
+const Echart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data, target = 'NUM') => {
   const res = {};
@@ -26,8 +26,6 @@ const getChartData = (data, target = 'NUM') => {
   } else {
     res.xData = [];
     res.yData = [[], []];
-    // burnDownEchartsConfig.series[0].data = [];
-    // burnDownEchartsConfig.series[1].data = [];
   }
   if (res.xData.length === 0) {
     res.xData = getDateArr();
@@ -36,9 +34,7 @@ const getChartData = (data, target = 'NUM') => {
   return res;
 };
 
-const totalValue = ref({
-
-});
+const totalValue = ref({});
 
 const personValues = ref([]);
 
@@ -48,12 +44,6 @@ onMounted(() => {
       const sourceData = newValue.data?.totalBurnDownCharts || {};
       totalValue.value.chart0Data = getChartData(sourceData, 'NUM');
       totalValue.value.chart1Data = getChartData(sourceData, 'WORKLOAD');
-      // const {completedNum = 0, completedRate = 0, completedWorkload = 0, completedWorkloadRate = 0, evalWorkload = 0, totalNum = 0} = sourceData;
-      // totalValue.value.value0 = [{name: '未完成', value: totalNum - completedNum}, {name: '已完成', value: completedNum }];
-      // totalValue.value.value1 = [{name: '未完成', value: evalWorkload - completedWorkload}, {name: '已完成', value: completedWorkload }];
-
-      // totalValue.value.title0 = completedRate + '%';
-      // totalValue.value.title1 = completedWorkloadRate + '%';
 
       if (newValue?.containsUserAnalysis) {
         const sourceData = newValue.data?.testersBurnDownCharts || {};
@@ -97,7 +87,10 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">{{ t('functionAnalysis.detail.burndown.total') }}</div>
+    <div class="font-semibold pl-3">
+      {{ t('functionAnalysis.detail.burndown.total') }}
+    </div>
+
     <Echart
       ref="totalChartRef"
       v-bind="totalValue"

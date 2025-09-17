@@ -12,29 +12,38 @@ const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
 
-const Echart = defineAsyncComponent(() => import('./echart.vue'));
+const Echart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data) => {
   const res = {};
-  const { actualWorkload = 0, completedWorkload = 0, completedWorkloadRate = 0, evalWorkload = 0, invalidWorkload = 0, invalidWorkloadRate = 0, savingWorkload = 0, savingWorkloadRate = 0 } = data;
+  const {
+    actualWorkload = 0, completedWorkload = 0,
+    completedWorkloadRate = 0, evalWorkload = 0,
+    invalidWorkload = 0, invalidWorkloadRate = 0,
+    savingWorkload = 0, savingWorkloadRate = 0
+  } = data;
   res.chart0Value = {
     yData: [evalWorkload, actualWorkload, completedWorkload, savingWorkload]
   };
   res.chart1Value = {
     title: completedWorkloadRate + '%',
-    value: [{ name: t('functionAnalysis.detail.workload.incompleteWorkload'), value: evalWorkload - completedWorkload }, { name: t('functionAnalysis.detail.workload.completedWorkload2'), value: completedWorkload }]
+    value: [
+      { name: t('functionAnalysis.detail.workload.incompleteWorkload'), value: evalWorkload - completedWorkload },
+      { name: t('functionAnalysis.detail.workload.completedWorkload2'), value: completedWorkload }
+    ]
   };
 
   res.chart2Value = {
     title: savingWorkloadRate + '%',
-    value: [{ name: t('functionAnalysis.detail.workload.incompleteSavingWorkload'), value: evalWorkload - savingWorkload }, { name: t('functionAnalysis.detail.workload.completedSavingWorkload'), value: savingWorkload }]
+    value: [
+      { name: t('functionAnalysis.detail.workload.incompleteSavingWorkload'), value: evalWorkload - savingWorkload },
+      { name: t('functionAnalysis.detail.workload.completedSavingWorkload'), value: savingWorkload }
+    ]
   };
   return res;
 };
 
-const totalValue = ref({
-
-});
+const totalValue = ref({});
 
 const personValues = ref([]);
 
@@ -43,13 +52,6 @@ onMounted(() => {
     if (newValue) {
       const sourceData = newValue.data?.totalOverview || {};
       totalValue.value = getChartData(sourceData);
-      // const {completedNum = 0, completedRate = 0, completedWorkload = 0, completedWorkloadRate = 0, evalWorkload = 0, totalNum = 0} = sourceData;
-      // totalValue.value.value0 = [{name: '未完成', value: totalNum - completedNum}, {name: '已完成', value: completedNum }];
-      // totalValue.value.value1 = [{name: '未完成', value: evalWorkload - completedWorkload}, {name: '已完成', value: completedWorkload }];
-
-      // totalValue.value.title0 = completedRate + '%';
-      // totalValue.value.title1 = completedWorkloadRate + '%';
-
       if (newValue?.containsUserAnalysis) {
         const sourceData = newValue.data?.testersOverview || {};
         const assignees = newValue.data?.testers || [];
@@ -88,7 +90,9 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">{{ t('functionAnalysis.detail.workload.total') }}</div>
+    <div class="font-semibold pl-3">
+      {{ t('functionAnalysis.detail.workload.total') }}
+    </div>
     <Echart
       ref="totalChartRef"
       v-bind="totalValue"
