@@ -30,7 +30,7 @@ import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { SearchPanelMenuItem, SearchPanelOption, TaskViewMode } from '@/views/task/task/types';
 
-// TYPES & INTERFACES
+// Types & interfaces
 type Props = {
   collapse: boolean; // Controls statistics panel expand/collapse state
   viewMode: TaskViewMode;
@@ -75,7 +75,7 @@ const emit = defineEmits<{
   (e: 'update:moduleFlag', value: boolean): void;
 }>();
 
-// COMPOSABLES & INJECTIONS
+// Composables & injections
 const { t } = useI18n();
 const projectTypeVisibilityMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({
   showTask: true,
@@ -139,7 +139,10 @@ const loadTaskTypeOptions = () => {
  * Handles sorting configuration changes
  * @param data - Contains orderBy field and orderSort direction
  */
-const handleSortingChange = (data: { orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName'; orderSort: PageQuery.OrderSort; }) => {
+const handleSortingChange = (
+  data: { orderBy: 'priority' | 'deadlineDate' | 'createdByName' | 'assigneeName';
+    orderSort: PageQuery.OrderSort; }
+) => {
   emit('update:orderBy', data.orderBy);
   emit('update:orderSort', data.orderSort);
 };
@@ -148,7 +151,9 @@ const handleSortingChange = (data: { orderBy: 'priority' | 'deadlineDate' | 'cre
  * Handles grouping configuration changes
  * @param value - The grouping key to apply
  */
-const handleGroupingChange = (value: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType') => {
+const handleGroupingChange = (
+  value: 'none' | 'assigneeName' | 'lastModifiedByName' | 'taskType'
+) => {
   emit('update:groupKey', value);
 };
 
@@ -384,7 +389,6 @@ const toggleSprintSelection = () => {
     checkedSprintId.value = undefined;
     return;
   }
-
   checkedSprintId.value = id;
 };
 
@@ -440,7 +444,6 @@ const toggleTagSelection = (data: SearchPanelOption) => {
     checkedTagIds.value = checkedTagIds.value.filter(item => item !== id);
     return;
   }
-
   checkedTagIds.value.push(id);
 };
 
@@ -526,7 +529,11 @@ const toggleStatisticsCollapse = () => {
  * @param _headers - Optional headers
  * @param key - The changed field key
  */
-const handleSearchPanelChange = (data: SearchCriteria[], _headers?: { [key: string]: string }, key?: string) => {
+const handleSearchPanelChange = (
+  data: SearchCriteria[],
+  _headers?: { [key: string]: string },
+  key?: string
+) => {
   searchFilters.value = data;
 
   // Reset service/interface/scenario filters when task type changes
@@ -649,7 +656,10 @@ const initializeComponent = async () => {
 
   // Load task list view mode
   const [, viewModeData] = await database.get(dbViewModeKey.value);
-  const viewMode = [TaskViewMode.flat, TaskViewMode.table, TaskViewMode.kanban, TaskViewMode.gantt].includes(viewModeData?.data) ? viewModeData?.data : TaskViewMode.flat;
+  const viewMode = [TaskViewMode.flat, TaskViewMode.table, TaskViewMode.kanban, TaskViewMode.gantt]
+    .includes(viewModeData?.data)
+    ? viewModeData?.data
+    : TaskViewMode.flat;
   emit('viewModeChange', viewMode);
 
   // Load module grouping preference
@@ -1508,6 +1518,7 @@ const sortMenuItems = [
   <div class="text-3 leading-5">
     <div class="flex items-start justify-between mb-1.5">
       <div class="flex items-start transform-gpu translate-y-0.5">
+        <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 mr-1 mt-1.5 rounded-full"></div>
         <div class="whitespace-nowrap text-3 text-text-sub-content transform-gpu translate-y-0.5">
           <span>{{ t('task.searchPanel.quickSearch') }}</span>
           <Colon />

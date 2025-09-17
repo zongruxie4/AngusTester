@@ -1,19 +1,17 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref } from 'vue';
-import { Button, TreeSelect } from 'ant-design-vue';
-import {
-  AsyncComponent, Colon, Icon, IconTask, Input, ScriptTypeTag, Select
-} from '@xcan-angus/vue-ui';
+import { computed, defineAsyncComponent, nextTick, onMounted, ref } from 'vue';
+import { Button, Tag, TreeSelect } from 'ant-design-vue';
+import { AsyncComponent, Colon, Icon, IconTask, Input, Select } from '@xcan-angus/vue-ui';
 import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
-import { TaskInfo } from '@/views/task/types';
-import { SoftwareVersionStatus } from '@/enums/enums';
+import { TaskType, BugLevel, SoftwareVersionStatus } from '@/enums/enums';
 
 import TaskStatus from '@/components/TaskStatus/index.vue';
 import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
+import { TaskInfo } from '@/views/task/types';
 import { TaskInfoProps } from '@/views/task/task/list/task/types';
 
 // Component props and emits
@@ -33,11 +31,8 @@ const emit = defineEmits<{
   (event: 'refresh'): void;
 }>();
 
-// Injected dependencies
-const proTypeShowMap = inject('inject', ref({ showSprint: true }));
-
 // Async components
-const Description = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/info/Description.vue'));
+const Description = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/Description.vue'));
 
 // Task name editing state
 const taskNameInputRef = ref();
@@ -54,6 +49,23 @@ const actualWorkloadInputRef = ref();
 const isActualWorkloadEditing = ref(false);
 const actualWorkloadInputValue = ref<string>();
 
+// Task type editing state
+const taskTypeSelectRef = ref();
+const isTaskTypeEditing = ref(false);
+const taskTypeSelectMessage = ref<string>();
+const taskTypeSelectValue = ref<TaskInfo['taskType']['value']>();
+
+// Sprint editing state
+const sprintSelectRef = ref();
+const isSprintEditing = ref(false);
+const sprintSelectMessage = ref<string>();
+const sprintSelectValue = ref<string>();
+
+// Module editing state
+const moduleTreeSelectRef = ref();
+const isModuleEditing = ref(false);
+const moduleTreeSelectValue = ref<string>();
+
 // Priority editing state
 const prioritySelectRef = ref();
 const isPriorityEditing = ref(false);
@@ -63,13 +75,8 @@ const prioritySelectValue = ref<TaskInfo['priority']['value']>();
 // Tag editing state
 const tagSelectRef = ref();
 const isTagEditing = ref(false);
-const selectedTagList = ref<{ id: string; name: string; }[]>([]);
+const selectedTagList = ref<{id: string; name: string;}[]>([]);
 const selectedTagIdList = ref<string[]>([]);
-
-// Module editing state
-const moduleTreeSelectRef = ref();
-const isModuleEditing = ref(false);
-const moduleTreeSelectValue = ref<string>();
 
 // Version editing state
 const versionSelectRef = ref();
@@ -103,60 +110,6 @@ const loadModuleTreeData = async () => {
 };
 
 /**
- * Enter module editing mode and focus the input
- */
-const enterModuleEditMode = () => {
-  moduleTreeSelectValue.value = currentModuleId.value;
-  isModuleEditing.value = true;
-
-  nextTick(() => {
-    setTimeout(() => {
-      if (typeof moduleTreeSelectRef.value?.focus === 'function') {
-        moduleTreeSelectRef.value?.focus();
-      }
-    }, 100);
-  });
-};
-
-/**
- * Confirm module selection and update task
- */
-const confirmModuleSelection = async () => {
-  const selectedValue = moduleTreeSelectValue.value;
-  if (!selectedValue || selectedValue === currentModuleId.value) {
-    isModuleEditing.value = false;
-    return;
-  }
-
-  emit('loadingChange', true);
-  const updateParams = {
-    moduleId: selectedValue
-  };
-  const [error] = await task.updateTask(currentTaskId.value, updateParams);
-  emit('loadingChange', false);
-  isModuleEditing.value = false;
-  if (error) {
-    return;
-  }
-
-  const updatedTaskInfo = await loadTaskInfoById(currentTaskId.value);
-  emit('change', updatedTaskInfo);
-};
-
-/**
- * Cancel module editing mode
- */
-const cancelModuleEdit = () => {
-  isModuleEditing.value = false;
-};
-
-// Sprint editing state
-const sprintSelectRef = ref();
-const isSprintEditing = ref(false);
-const sprintSelectMessage = ref<string>();
-const sprintSelectValue = ref<string>();
-
-/**
  * Load task information by ID from API
  * @param id - Task ID
  * @returns Partial task information
@@ -170,59 +123,6 @@ const loadTaskInfoById = async (id: string): Promise<Partial<TaskInfo>> => {
   }
 
   return res.data;
-};
-
-/**
- * Enter sprint editing mode and focus the select
- */
-const enterSprintEditMode = () => {
-  sprintSelectValue.value = currentSprintId.value;
-  isSprintEditing.value = true;
-
-  nextTick(() => {
-    setTimeout(() => {
-      if (typeof sprintSelectRef.value?.focus === 'function') {
-        sprintSelectRef.value?.focus();
-      }
-    }, 100);
-  });
-};
-
-/**
- * Handle sprint selection change and update message
- * @param value - Selected value
- * @param option - Selected option with message and value
- */
-const handleSprintSelectionChange = async (_value: any, option: any) => {
-  if (option && option.message) {
-    sprintSelectMessage.value = option.message;
-  }
-};
-
-/**
- * Handle sprint selection blur and move task to selected sprint
- */
-const handleSprintSelectionBlur = async () => {
-  const selectedValue = sprintSelectValue.value;
-  if (!selectedValue || selectedValue === currentSprintId.value) {
-    isSprintEditing.value = false;
-    return;
-  }
-
-  emit('loadingChange', true);
-  const moveTaskParams = {
-    taskIds: [currentTaskId.value],
-    targetSprintId: selectedValue
-  };
-  const [error] = await task.moveTask(moveTaskParams);
-  emit('loadingChange', false);
-  isSprintEditing.value = false;
-  if (error) {
-    return;
-  }
-
-  const updatedTaskInfo = await loadTaskInfoById(currentTaskId.value);
-  emit('change', updatedTaskInfo);
 };
 
 /**
@@ -274,7 +174,7 @@ const handleTaskNameInputEnter = () => {
 };
 
 /**
- * <p>Enter actual workload editing mode and focus the input</p>
+ * Enter actual workload editing mode and focus the input
  */
 const enterActualWorkloadEditMode = () => {
   actualWorkloadInputValue.value = currentActualWorkload.value;
@@ -290,7 +190,7 @@ const enterActualWorkloadEditMode = () => {
 };
 
 /**
- * <p>Handle actual workload input blur and update task actual workload</p>
+ * Handle actual workload input blur and update task actual workload
  * @param event - Input blur event
  */
 const handleActualWorkloadInputBlur = async (event: FocusEvent) => {
@@ -370,6 +270,182 @@ const handleEvalWorkloadInputEnter = () => {
 };
 
 /**
+ * Enter sprint editing mode and focus the select
+ */
+const enterSprintEditMode = () => {
+  sprintSelectValue.value = currentSprintId.value;
+  isSprintEditing.value = true;
+
+  nextTick(() => {
+    setTimeout(() => {
+      if (typeof sprintSelectRef.value?.focus === 'function') {
+        sprintSelectRef.value?.focus();
+      }
+    }, 100);
+  });
+};
+
+/**
+ * Handle sprint selection change and update message
+ * @param value - Selected value
+ * @param option - Selected option with message and value
+ */
+const handleSprintSelectionChange = async (_value: any, option: any) => {
+  if (option && option.message) {
+    sprintSelectMessage.value = option.message;
+  }
+};
+
+/**
+ * Handle sprint selection blur and move task to selected sprint
+ */
+const handleSprintSelectionBlur = async () => {
+  const selectedValue = sprintSelectValue.value;
+  if (!selectedValue || selectedValue === currentSprintId.value) {
+    isSprintEditing.value = false;
+    return;
+  }
+
+  emit('loadingChange', true);
+  const moveTaskParams = {
+    taskIds: [currentTaskId.value],
+    targetSprintId: selectedValue
+  };
+  const [error] = await task.moveTask(moveTaskParams);
+  emit('loadingChange', false);
+  isSprintEditing.value = false;
+  if (error) {
+    return;
+  }
+
+  const updatedTaskInfo = await loadTaskInfoById(currentTaskId.value);
+  emit('change', updatedTaskInfo);
+};
+
+/**
+ * Enter module editing mode and focus the input
+ */
+const enterModuleEditMode = () => {
+  moduleTreeSelectValue.value = currentModuleId.value;
+  isModuleEditing.value = true;
+
+  nextTick(() => {
+    setTimeout(() => {
+      if (typeof moduleTreeSelectRef.value?.focus === 'function') {
+        moduleTreeSelectRef.value?.focus();
+      }
+    }, 100);
+  });
+};
+
+/**
+ * Confirm module selection and update task
+ */
+const confirmModuleSelection = async () => {
+  const selectedValue = moduleTreeSelectValue.value;
+  if (!selectedValue || selectedValue === currentModuleId.value) {
+    isModuleEditing.value = false;
+    return;
+  }
+
+  emit('loadingChange', true);
+  const updateParams = {
+    moduleId: selectedValue
+  };
+  const [error] = await task.updateTask(currentTaskId.value, updateParams);
+  emit('loadingChange', false);
+  isModuleEditing.value = false;
+  if (error) {
+    return;
+  }
+
+  const updatedTaskInfo = await loadTaskInfoById(currentTaskId.value);
+  emit('change', updatedTaskInfo);
+};
+
+/**
+ * Cancel module editing mode
+ */
+const cancelModuleEdit = () => {
+  isModuleEditing.value = false;
+};
+
+/**
+ * Enter task type editing mode and focus the select
+ */
+const enterTaskTypeEditMode = () => {
+  taskTypeSelectValue.value = currentTaskType.value;
+  isTaskTypeEditing.value = true;
+
+  nextTick(() => {
+    setTimeout(() => {
+      if (typeof taskTypeSelectRef.value?.focus === 'function') {
+        taskTypeSelectRef.value?.focus();
+      }
+    }, 100);
+  });
+};
+
+/**
+ * Handle task type selection change and update message
+ * @param value - Selected value
+ * @param option - Selected option with message and value
+ */
+const handleTaskTypeSelectionChange = async (_value: string, option: any) => {
+  if (option && option.message) {
+    taskTypeSelectMessage.value = option.message;
+  }
+};
+
+/**
+ * Handle task type selection blur and update task type
+ */
+const handleTaskTypeSelectionBlur = async () => {
+  const selectedValue = taskTypeSelectValue.value;
+  if (!selectedValue || selectedValue === currentTaskType.value) {
+    isTaskTypeEditing.value = false;
+    return;
+  }
+
+  emit('loadingChange', true);
+  const [error] = await task.editTaskTaskType(currentTaskId.value, selectedValue);
+  emit('loadingChange', false);
+  isTaskTypeEditing.value = false;
+  if (selectedValue === TaskType.BUG) {
+    await task.updateTask(currentTaskId.value, {
+      bugLevel: BugLevel.MINOR,
+      missingBug: false
+    });
+  }
+  if (error) {
+    return;
+  }
+
+  emit('change', { id: currentTaskId.value, taskType: { value: selectedValue, message: taskTypeSelectMessage.value! } });
+};
+
+/**
+ * Check if task type should be excluded from selection
+ * @param data - Task type data with value and message
+ * @returns Whether the task type should be excluded
+ */
+const shouldExcludeTaskType = (data: { value: string; message: string }) => {
+  const value = data.value as TaskInfo['taskType']['value'];
+  const type = currentTaskType.value;
+  if (currentTaskId.value) {
+    if (type === TaskType.API_TEST) {
+      return value !== TaskType.API_TEST;
+    }
+
+    if (type === TaskType.SCENARIO_TEST) {
+      return value !== TaskType.SCENARIO_TEST;
+    }
+    return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(value);
+  }
+  return false;
+};
+
+/**
  * Enter priority editing mode and focus the select
  */
 const enterPriorityEditMode = () => {
@@ -414,10 +490,7 @@ const handlePrioritySelectionBlur = async () => {
     return;
   }
 
-  emit('change', {
-    id: currentTaskId.value,
-    priority: { value: selectedValue, message: prioritySelectMessage.value! }
-  });
+  emit('change', { id: currentTaskId.value, priority: { value: selectedValue, message: prioritySelectMessage.value! } });
 };
 
 /**
@@ -561,13 +634,13 @@ const onePassStatusText = computed(() => {
   <div class="h-full text-3 leading-5 pl-5 overflow-auto">
     <div>
       <div class="text-theme-title mb-2.5 font-semibold">
-        {{ t('task.detailInfo.apis.basicInfo') }}
+        {{ t('task.detailInfo.basic.title') }}
       </div>
 
       <div class="space-y-2.5">
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.code') }}</span>
+            <span>{{ t('task.detailInfo.basic.columns.code') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -578,7 +651,7 @@ const onePassStatusText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.name') }}</span>
+            <span>{{ t('task.detailInfo.basic.columns.name') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -600,7 +673,7 @@ const onePassStatusText = computed(() => {
               :maxlength="200"
               trim
               class="edit-container"
-              :placeholder="t('task.detailInfo.apis.columns.namePlaceholder')"
+              :placeholder="t('task.detailInfo.basic.columns.namePlaceholder')"
               @blur="handleTaskNameInputBlur"
               @pressEnter="handleTaskNameInputEnter" />
           </AsyncComponent>
@@ -608,28 +681,7 @@ const onePassStatusText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.type') }}</span>
-            <Colon class="w-1" />
-          </div>
-
-          <div class="flex items-center">
-            <IconTask :value="currentTaskType" class="text-4 flex-shrink-0" />
-            <span class="ml-1.5">{{ props.dataSource?.taskType?.message }}</span>
-          </div>
-        </div>
-
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.testType') }}</span>
-            <Colon class="w-1" />
-          </div>
-
-          <ScriptTypeTag :value="props.dataSource?.testType" />
-        </div>
-
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.status') }}</span>
+            <span>{{ t('task.detailInfo.basic.columns.status') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -640,15 +692,15 @@ const onePassStatusText = computed(() => {
               class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
               style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
               <span class="inline-block transform-gpu scale-90">
-                {{ t('task.detailInfo.apis.columns.overdue') }}
+                {{ t('task.detailInfo.basic.columns.overdue') }}
               </span>
             </span>
           </div>
         </div>
 
-        <div v-if="proTypeShowMap.showSprint" class="flex items-start">
+        <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.sprint') }}</span>
+            <span>{{ t('task.detailInfo.basic.columns.sprint') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -670,7 +722,7 @@ const onePassStatusText = computed(() => {
               :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
               :fieldNames="{ value: 'id', label: 'name' }"
               showSearch
-              :placeholder="t('task.detailInfo.apis.columns.selectSprint')"
+              :placeholder="t('task.detailInfo.basic.columns.selectSprint')"
               class="edit-container"
               @change="handleSprintSelectionChange"
               @blur="handleSprintSelectionBlur" />
@@ -679,7 +731,7 @@ const onePassStatusText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.module') }}</span>
+            <span>{{ t('task.detailInfo.basic.columns.module') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -705,7 +757,7 @@ const onePassStatusText = computed(() => {
                 showSearch
                 allowClear
                 class="flex-1"
-                :placeholder="t('task.detailInfo.apis.columns.selectModule')">
+                :placeholder="t('task.detailInfo.basic.columns.selectModule')">
                 <template #title="item">
                   <div class="flex items-center" :title="item.name">
                     <Icon icon="icon-mokuai" class="mr-1 text-3.5" />
@@ -727,7 +779,7 @@ const onePassStatusText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.parentTask') }}</span>
+            <span>{{ t('task.detailInfo.basic.columns.parentTask') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -747,29 +799,59 @@ const onePassStatusText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.service') }}</span>
+            <span>{{ t('task.detailInfo.basic.columns.type') }}</span>
             <Colon class="w-1" />
           </div>
 
-          <div class="whitespace-pre-wrap break-words break-all">
-            {{ props.dataSource?.targetParentName }}
+          <div v-show="!isTaskTypeEditing" class="flex items-center">
+            <IconTask :value="currentTaskType" class="text-4 flex-shrink-0" />
+            <span class="ml-1.5">{{ props.dataSource?.taskType?.message }}</span>
+            <Button
+              type="link"
+              class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
+              @click="enterTaskTypeEditMode">
+              <Icon icon="icon-shuxie" class="text-3.5" />
+            </Button>
+            <template v-if="currentTaskType === TaskType.BUG">
+              <Tag
+                v-if="props.dataSource?.bugLevel"
+                color="error"
+                class="ml-2 text-3 leading-4">
+                {{ props.dataSource?.bugLevel?.message }}
+              </Tag>
+              <Tag
+                v-if="props.dataSource?.missingBug"
+                color="error"
+                class="ml-2 text-3 leading-4">
+                {{ t('task.detailInfo.basic.columns.missingBug') }}
+              </Tag>
+            </template>
           </div>
+
+          <AsyncComponent :visible="isTaskTypeEditing">
+            <SelectEnum
+              v-show="isTaskTypeEditing"
+              ref="taskTypeSelectRef"
+              v-model:value="taskTypeSelectValue"
+              :excludes="shouldExcludeTaskType"
+              enumKey="TaskType"
+              :placeholder="t('task.detailInfo.basic.columns.selectTaskType')"
+              class="edit-container"
+              @change="handleTaskTypeSelectionChange as any"
+              @blur="handleTaskTypeSelectionBlur as any">
+              <template #option="record">
+                <div class="flex items-center">
+                  <IconTask :value="record.value as any" class="text-4 flex-shrink-0" />
+                  <span class="ml-2">{{ record.label }}</span>
+                </div>
+              </template>
+            </SelectEnum>
+          </AsyncComponent>
         </div>
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.api') }}</span>
-            <Colon class="w-1" />
-          </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">
-            {{ props.dataSource?.targetName }}
-          </div>
-        </div>
-
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.priority') }}</span>
+            <span>{{ t('task.detailInfo.basic.columns.priority') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -789,8 +871,8 @@ const onePassStatusText = computed(() => {
               ref="prioritySelectRef"
               v-model:value="prioritySelectValue"
               enumKey="Priority"
-              :placeholder="t('task.detailInfo.apis.columns.selectPriority')"
-              class="edit-container max-w-52"
+              :placeholder="t('task.detailInfo.basic.columns.selectPriority')"
+              class="edit-container"
               @change="handlePrioritySelectionChange as any"
               @blur="handlePrioritySelectionBlur as any">
               <template #option="record">
@@ -802,7 +884,7 @@ const onePassStatusText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.evalWorkloadMethod') }}</span>
+            <span>{{ t('task.detailInfo.basic.columns.evalWorkloadMethod') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -814,10 +896,9 @@ const onePassStatusText = computed(() => {
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
             <span>
-              {{
-                currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                  ? t('task.detailInfo.apis.columns.evalWorkload')
-                  : t('task.detailInfo.apis.columns.evalWorkHours')
+              {{ currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                ? t('task.detailInfo.basic.columns.evalWorkload')
+                : t('task.detailInfo.basic.columns.evalWorkHours')
               }}
             </span>
             <Colon class="w-1" />
@@ -838,12 +919,12 @@ const onePassStatusText = computed(() => {
               v-show="isEvalWorkloadEditing"
               ref="evalWorkloadInputRef"
               v-model:value="evalWorkloadInputValue"
-              class="right-component max-w-52"
+              class="edit-container"
               dataType="float"
               trimAll
               :min="0.1"
               :max="1000"
-              :placeholder="t('task.detailInfo.apis.columns.evalWorkloadPlaceholder')"
+              :placeholder="t('task.detailInfo.basic.columns.evalWorkloadPlaceholder')"
               @blur="handleEvalWorkloadInputBlur"
               @pressEnter="handleEvalWorkloadInputEnter" />
           </AsyncComponent>
@@ -854,8 +935,8 @@ const onePassStatusText = computed(() => {
             <span>
               {{
                 currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                  ? t('task.detailInfo.apis.columns.actualStoryPoint')
-                  : t('task.detailInfo.apis.columns.actualWorkload')
+                  ? t('task.detailInfo.basic.columns.actualStoryPoint')
+                  : t('task.detailInfo.basic.columns.actualWorkload')
               }}
             </span>
             <Colon class="w-1" />
@@ -876,12 +957,12 @@ const onePassStatusText = computed(() => {
               v-show="isActualWorkloadEditing"
               ref="actualWorkloadInputRef"
               v-model:value="actualWorkloadInputValue"
-              class="right-component max-w-52"
+              class="edit-container"
               dataType="float"
               trimAll
               :min="0.1"
               :max="1000"
-              :placeholder="t('task.detailInfo.apis.columns.actualWorkloadPlaceholder')"
+              :placeholder="t('task.detailInfo.basic.columns.actualWorkloadPlaceholder')"
               @blur="handleActualWorkloadInputBlur"
               @pressEnter="handleActualWorkloadInputEnter" />
           </AsyncComponent>
@@ -889,7 +970,7 @@ const onePassStatusText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.totalNum') }}</span>
+            <span>{{ t('task.detailInfo.basic.columns.totalNum') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -898,7 +979,7 @@ const onePassStatusText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.failNum') }}</span>
+            <span>{{ t('task.detailInfo.basic.columns.failNum') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -907,7 +988,7 @@ const onePassStatusText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.tags') }}</span>
+            <span>{{ t('task.detailInfo.basic.columns.tags') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -916,14 +997,14 @@ const onePassStatusText = computed(() => {
               <div
                 v-for="item in currentTags"
                 :key="item.id"
-                class="px-2 h-5.5 leading-5 mr-2 mb-2 rounded border border-solid border-border-divider bg-gray-light text-theme-sub-content">
+                class="px-2 h-5 leading-4.5 mr-1 mb-1 rounded border border-solid border-border-divider bg-gray-light text-theme-sub-content">
                 {{ item.name }}
               </div>
             </div>
             <div v-else>--</div>
             <Button
               type="link"
-              class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
+              class="flex-shrink-0 ml-1 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
               @click="enterTagEditMode">
               <Icon icon="icon-shuxie" class="text-3.5" />
             </Button>
@@ -938,21 +1019,20 @@ const onePassStatusText = computed(() => {
               :maxTagCount="5"
               :maxTagTextLength="15"
               :maxTags="5"
-              :action="`${TESTER}/task/tag?projectId=${props.projectId}&fullTextSearch=true`"
+              :action="`${TESTER}/tag?projectId=${props.projectId}&fullTextSearch=true`"
               showSearch
-              allowClear
-              :placeholder="t('task.detailInfo.apis.columns.tagsPlaceholder')"
+              :placeholder="t('task.detailInfo.basic.columns.tagsPlaceholder')"
               mode="multiple"
               class="edit-container"
-              :notFoundContent="t('task.detailInfo.apis.columns.tagsNotFound')"
-              @change="handleTagSelectionChange"
-              @blur="handleTagSelectionBlur" />
+              :notFoundContent="t('task.detailInfo.basic.columns.tagsNotFound')"
+              @change="handleTagSelectionChange as any"
+              @blur="handleTagSelectionBlur as any" />
           </AsyncComponent>
         </div>
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.onePass') }}</span>
+            <span>{{ t('task.detailInfo.basic.columns.onePass') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -961,7 +1041,7 @@ const onePassStatusText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.softwareVersion') }}</span>
+            <span>{{ t('task.detailInfo.basic.columns.softwareVersion') }}</span>
             <Colon class="w-1" />
           </div>
           <div class="flex-1 min-w-0">
@@ -970,14 +1050,14 @@ const onePassStatusText = computed(() => {
                 ref="versionSelectRef"
                 v-model:value="versionSelectValue"
                 allowClear
-                :placeholder="t('task.detailInfo.apis.columns.softwareVersionPlaceholder')"
+                :placeholder="t('task.detailInfo.basic.columns.softwareVersionPlaceholder')"
                 class="w-full"
                 lazy
                 :action="`${TESTER}/software/version?projectId=${props.projectId}`"
                 :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN'}]}"
                 :fieldNames="{value:'name', label: 'name'}"
-                @blur="handleVersionSelectionBlur"
-                @change="handleVersionSelectionChange">
+                @blur="handleVersionSelectionBlur as any"
+                @change="handleVersionSelectionChange as any">
               </Select>
             </template>
             <template v-else>
@@ -1004,11 +1084,11 @@ const onePassStatusText = computed(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.apis.columns.unplanned') }}</span>
+            <span>{{ t('task.detailInfo.basic.columns.unplanned') }}</span>
             <Colon class="w-1" />
           </div>
           <div>
-            {{ props.dataSource?.unplanned ? t('task.detailInfo.apis.columns.yes') : t('task.detailInfo.apis.columns.no') }}
+            {{ props.dataSource?.unplanned ? t('task.detailInfo.basic.columns.yes') : t('task.detailInfo.basic.columns.no') }}
           </div>
         </div>
       </div>

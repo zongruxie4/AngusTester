@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, Ref, watch } fr
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { AsyncComponent, NoData, notification, Spin } from '@xcan-angus/vue-ui';
-import { appContext, download, enumUtils, http, PageQuery, TESTER, utils } from '@xcan-angus/infra';
+import { appContext, download, enumUtils, http, PageQuery, SearchCriteria, TESTER, utils } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 import { TaskSprintPermission, TaskStatus } from '@/enums/enums';
@@ -76,7 +76,7 @@ const isDataLoaded = ref(false);
 const isLoading = ref(false);
 const currentOrderBy = ref<string>();
 const currentOrderSort = ref<PageQuery.OrderSort>();
-const searchFilters = ref<{ key: string; op: string; value: boolean | string | string[]; }[]>([]);
+const searchFilters = ref<SearchCriteria[]>([]);
 const paginationInfo = ref<{ current: number; pageSize: number; total: number; }>({ current: 1, pageSize: 10, total: 0 });
 const taskListData = ref<TaskInfo[]>([]);
 const sprintPermissionsCache = ref<Map<string, TaskSprintPermission[]>>(new Map());
@@ -105,7 +105,7 @@ const buildApiParameters = () => {
     projectId: string;
     pageNo: number;
     pageSize: number;
-    filters?: { key: string; op: string; value: boolean | string | string[]; }[];
+    filters?: SearchCriteria[];
     orderBy?: string;
     orderSort?: PageQuery.OrderSort;
   } = {
@@ -229,7 +229,7 @@ const loadModuleTreeData = async (keywords?: string) => {
     filters: keywords
       ? [{
           value: keywords,
-          op: 'MATCH',
+          op: SearchCriteria.OpEnum.Match,
           key: 'name'
         }]
       : []
@@ -247,7 +247,7 @@ const loadModuleTreeData = async (keywords?: string) => {
  * Handles search panel filter changes
  * @param filterData - New filter data from search panel
  */
-const handleSearchPanelChange = (filterData: { key: string; op: string; value: boolean | string | string[]; }[]) => {
+const handleSearchPanelChange = (filterData: SearchCriteria[]) => {
   searchFilters.value = filterData;
   paginationInfo.value.current = 1;
   loadTaskListData();

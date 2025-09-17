@@ -99,19 +99,8 @@ export type TaskInfo = {
     total: string
   };
   subTaskInfos: {
-    assigneeId: string;
-    assigneeName: string;
-    code: string;
-    confirmerId: string;
-    confirmerName: string;
-    createdBy: string;
-    createdByName: string;
-    createdDate: string;
-    deadlineDate: string;
     id: string;
-    lastModifiedBy: string;
-    lastModifiedByName: string;
-    lastModifiedDate: string;
+    code: string;
     name: string;
     priority: string;
     projectId: string;
@@ -119,6 +108,17 @@ export type TaskInfo = {
     startDate: string;
     taskType: string;
     testType: string;
+    assigneeId: string;
+    assigneeName: string;
+    confirmerId: string;
+    confirmerName: string;
+    createdBy: string;
+    createdByName: string;
+    createdDate: string;
+    deadlineDate: string;
+    lastModifiedBy: string;
+    lastModifiedByName: string;
+    lastModifiedDate: string;
   }[];
   linkUrl?: string;
 }

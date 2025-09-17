@@ -61,16 +61,16 @@ const emit = defineEmits<{
 }>();
 
 // ASYNC COMPONENTS
-const APIInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/info/Apis.vue'));
-const BasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/info/Basic.vue'));
-const ScenarioInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/info/Scenario.vue'));
-const PersonnelInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/info/Personnel.vue'));
-const DateInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/info/Date.vue'));
+const APIInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/Apis.vue'));
+const BasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/Basic.vue'));
+const ScenarioInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/Scenario.vue'));
+const PersonnelInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/Personnel.vue'));
+const DateInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/Date.vue'));
 const Comment = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/Comment.vue'));
 const Activity = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/Activity.vue'));
 const AssocTasks = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/AssocTask.vue'));
 const AssocCases = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/AssocCase.vue'));
-const AttachmentInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/info/Attachment.vue'));
+const AttachmentInfo = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/Attachment.vue'));
 const Remarks = defineAsyncComponent(() => import('@/views/task/task/list/task/kanban/detail/Remark.vue'));
 
 // Task data and Gantt chart references
