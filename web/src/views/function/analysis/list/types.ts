@@ -21,12 +21,14 @@ export const TemplateIconConfig = {
   CASE_GROWTH_TREND: 'icon-renwuzengchangqushifenxi',
   '': 'icon-liebiaoshitu'
 };
+
 export type SelectOption = {
   id: string;
   name: string;
   showTitle: string;
   showName: string;
 }
+
 export type MenuItem = {
   key: 'none' | 'createdBy' | 'assigneeId' | 'lastModifiedBy' | 'confirmerId' | 'lastDay' | 'lastThreeDays' | 'lastWeek';
   name: string;

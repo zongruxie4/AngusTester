@@ -1,15 +1,15 @@
 import { AuthObjectType, EnumMessage } from '@xcan-angus/infra';
-import { AnalysisDataSource, AnalysisTaskObject, AnalysisTaskTemplate } from '@/enums/enums';
+import { AnalysisDataSource, AnalysisCaseObject, AnalysisCaseTemplate } from '@/enums/enums';
 
 export interface AnalysisInfo {
   id?: string;
   name: string;
   containsDataDetail: boolean;
-  object: EnumMessage<AnalysisTaskObject>;
+  object: EnumMessage<AnalysisCaseObject>;
   timeRange: string;
-  resource: 'TASK';
+  resource: 'CASE';
   description: string;
-  template: AnalysisTaskTemplate;
+  template: AnalysisCaseTemplate;
   planId: string;
   datasource: EnumMessage<AnalysisDataSource>;
   orgType?: EnumMessage<AuthObjectType>;
@@ -25,11 +25,11 @@ export interface EditAnalysisState {
   name: string;
   containsUserAnalysis: boolean;
   containsDataDetail: boolean;
-  object: AnalysisTaskObject;
+  object: AnalysisCaseObject;
   timeRange: string;
-  resource: 'TASK';
+  resource: 'CASE';
   description: string;
-  template: AnalysisTaskTemplate;
+  template: AnalysisCaseTemplate;
   planId: string;
   datasource: AnalysisDataSource;
   orgType?: AuthObjectType;

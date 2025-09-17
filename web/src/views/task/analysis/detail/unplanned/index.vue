@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<Props>(), {
 const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data) => {
-  const res = {};
+  const res = {} as any;
 
   const {
     totalNum = 0, totalWorkload = 0, unplannedCompletedNum = 0, unplannedCompletedRate = 0,

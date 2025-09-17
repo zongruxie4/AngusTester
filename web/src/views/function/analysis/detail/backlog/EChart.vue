@@ -6,11 +6,6 @@ import * as eCharts from 'echarts';
 const { t } = useI18n();
 
 interface Props {
-  // title0: string;
-  // title1: string;
-  // value0: {name: string, value: string|number}[];
-  // value1: {name: string, value: string|number}[];
-
   overdueAssessmentData: Record<string, any>;
   chart0Value: {
     yData0: number[],
@@ -68,7 +63,10 @@ const backlogEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('functionAnalysis.detail.backlogTasks.caseCount'), t('functionAnalysis.detail.backlogTasks.workload')],
+    data: [
+      t('functionAnalysis.detail.backlogTasks.caseCount'),
+      t('functionAnalysis.detail.backlogTasks.workload')
+    ],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -82,7 +80,10 @@ const backlogEchartConfig = {
   },
   legend: {
     show: true,
-    data: [t('functionAnalysis.detail.backlogTasks.backlogVolume'), t('functionAnalysis.detail.backlogTasks.totalVolume')],
+    data: [
+      t('functionAnalysis.detail.backlogTasks.backlogVolume'),
+      t('functionAnalysis.detail.backlogTasks.totalVolume')
+    ],
     top: 0
   },
   series: [
@@ -256,7 +257,12 @@ defineExpose({
     <div class="px-3 w-100">
       <div class="flex justify-around">
         <div class="text-center flex-1">
-          <div class="font-semibold "><span class="text-5 text-status-error">{{ props.overdueAssessmentData.backloggedCompletionTime || 0 }}</span>{{ t('functionAnalysis.detail.backlogTasks.hours') }}</div>
+          <div class="font-semibold ">
+            <span class="text-5 text-status-error">
+              {{ props.overdueAssessmentData.backloggedCompletionTime || 0 }}
+            </span>
+            {{ t('functionAnalysis.detail.backlogTasks.hours') }}
+          </div>
           <div>
             {{ t('functionAnalysis.detail.backlogTasks.backlogWorkloadEstimatedTime') }}
           </div>

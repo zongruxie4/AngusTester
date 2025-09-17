@@ -48,7 +48,7 @@ const targetDataCategery = {
 };
 
 const getChartData = (data) => {
-  const res = {};
+  const res = {} as any;
 
   const { analysisNum = 0, backlogNum = 0, meetingNum = 0, sprintNum = 0, taskNum = 0, totalNum = 0 } = data;
   res.overdueAssessmentData = data;
@@ -77,8 +77,6 @@ const getChartData = (data) => {
           const target = data.timeSeries[key].find(item => item.timeSeries === i);
           if (target) {
             return target.value;
-          } else {
-
           }
         }),
         type: 'line',
@@ -100,9 +98,7 @@ const getChartData = (data) => {
   return res;
 };
 
-const totalValue = ref({
-
-});
+const totalValue = ref({});
 
 const personValues = ref([]);
 

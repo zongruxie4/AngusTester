@@ -6,10 +6,6 @@ import * as eCharts from 'echarts';
 const { t } = useI18n();
 
 interface Props {
-  // title0: string;
-  // title1: string;
-  // value0: {name: string, value: string|number}[];
-  // value1: {name: string, value: string|number}[];
   chart0Value: {
     yData0: number[],
     yData1: number[]
@@ -66,7 +62,6 @@ let completedWorkloadEchart;
 let completedOverdueEchart;
 let completedBugEchart;
 
-// 核心指标
 const coreEchartConfig = {
   title: {
     text: t('functionAnalysis.detail.coreKpi.coreIndicators'),
@@ -84,7 +79,12 @@ const coreEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('functionAnalysis.detail.coreKpi.caseCount'), t('functionAnalysis.detail.coreKpi.workload'), t('functionAnalysis.detail.coreKpi.overdueCount'), t('functionAnalysis.detail.coreKpi.bugCount')],
+    data: [
+      t('functionAnalysis.detail.coreKpi.caseCount'),
+      t('functionAnalysis.detail.coreKpi.workload'),
+      t('functionAnalysis.detail.coreKpi.overdueCount'),
+      t('functionAnalysis.detail.coreKpi.bugCount')
+    ],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -98,7 +98,10 @@ const coreEchartConfig = {
   },
   legend: {
     show: true,
-    data: [t('functionAnalysis.detail.coreKpi.completedAmount'), t('functionAnalysis.detail.coreKpi.totalAmount')],
+    data: [
+      t('functionAnalysis.detail.coreKpi.completedAmount'),
+      t('functionAnalysis.detail.coreKpi.totalAmount')
+    ],
     top: 0
   },
   series: [
@@ -251,7 +254,13 @@ onMounted(() => {
 
   completedBugEchart = eCharts.init(completedBugRef.value);
 
-  watch([() => props.chart0Value, () => props.chart1Value, () => props.chart2Value, () => props.chart3Value, () => props.chart4Value], () => {
+  watch([
+    () => props.chart0Value,
+    () => props.chart1Value,
+    () => props.chart2Value,
+    () => props.chart3Value,
+    () => props.chart4Value
+  ], () => {
     coreEchartConfig.series[0].data = props.chart0Value.yData0;
     coreEchartConfig.series[1].data = props.chart0Value.yData1;
 

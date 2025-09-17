@@ -27,14 +27,14 @@ const props = withDefaults(defineProps<Props>(), {
   })
 });
 
-const unplannedTaskRef = ref();
-const unplannedWorkloadRef = ref();
+const growthTreadTaskRef = ref();
+const growthTreadWorkloadRef = ref();
 
-let unplannedTaskRefEChart;
-let unplannedWorkloadRefEChart;
+let growthTreadTaskRefEChart;
+let growthTreadWorkloadRefEChart;
 
 // 任务数
-const unplannedTaskEChartConfig = {
+const growthTreadTaskEChartConfig = {
   title: {
     text: t('taskAnalysis.detail.taskGrowthTread.chartTitles.taskGrowth'),
     bottom: 0,
@@ -94,7 +94,7 @@ const unplannedTaskEChartConfig = {
   ]
 };
 
-const unplannedWorkloadEChartConfig: any = {
+const growthTreadWorkloadEChartConfig: any = {
   title: {
     text: t('taskAnalysis.detail.taskGrowthTread.chartTitles.growthTrend'),
     bottom: 0,
@@ -144,12 +144,12 @@ const unplannedWorkloadEChartConfig: any = {
 };
 
 onMounted(() => {
-  unplannedTaskRefEChart = eCharts.init(unplannedTaskRef.value);
-  unplannedWorkloadRefEChart = eCharts.init(unplannedWorkloadRef.value);
+  growthTreadTaskRefEChart = eCharts.init(growthTreadTaskRef.value);
+  growthTreadWorkloadRefEChart = eCharts.init(growthTreadWorkloadRef.value);
 
   watch([() => props.chart0Value, () => props.chart1Value], () => {
-    unplannedTaskEChartConfig.series[0].data = props.chart0Value.yData;
-    unplannedWorkloadEChartConfig.series = props.chart1Value.value.map(i => {
+    growthTreadTaskEChartConfig.series[0].data = props.chart0Value.yData;
+    growthTreadWorkloadEChartConfig.series = props.chart1Value.value.map(i => {
       return {
         ...i,
         data: i.value,
@@ -158,10 +158,10 @@ onMounted(() => {
         stack: 'Total'
       };
     });
-    unplannedWorkloadEChartConfig.xAxis.data = props.chart1Value.xData;
+    growthTreadWorkloadEChartConfig.xAxis.data = props.chart1Value.xData;
 
-    unplannedTaskRefEChart.setOption(unplannedTaskEChartConfig);
-    unplannedWorkloadRefEChart.setOption(unplannedWorkloadEChartConfig);
+    growthTreadTaskRefEChart.setOption(growthTreadTaskEChartConfig);
+    growthTreadWorkloadRefEChart.setOption(growthTreadWorkloadEChartConfig);
   }, {
     immediate: true,
     deep: true
@@ -170,16 +170,16 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    unplannedTaskRefEChart.resize();
-    unplannedWorkloadRefEChart.resize();
+    growthTreadTaskRefEChart.resize();
+    growthTreadWorkloadRefEChart.resize();
   }
 });
 
 </script>
 <template>
   <div class="flex">
-    <div ref="unplannedTaskRef" class="flex-1 h-45"></div>
-    <div ref="unplannedWorkloadRef" class="flex-1 h-45"></div>
+    <div ref="growthTreadTaskRef" class="flex-1 h-45"></div>
+    <div ref="growthTreadWorkloadRef" class="flex-1 h-45"></div>
   </div>
 </template>
 <style scoped>

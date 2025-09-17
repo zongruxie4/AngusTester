@@ -6,10 +6,6 @@ import * as eCharts from 'echarts';
 const { t } = useI18n();
 
 interface Props {
-  // title0: string;
-  // title1: string;
-  // value0: {name: string, value: string|number}[];
-  // value1: {name: string, value: string|number}[];
   chart0Value: {
     yData: number[]
   };
@@ -61,7 +57,12 @@ const workloadEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('functionAnalysis.detail.workload.estimatedWorkload'), t('functionAnalysis.detail.workload.actualWorkload'), t('functionAnalysis.detail.workload.completedWorkload'), t('functionAnalysis.detail.workload.savingWorkload')],
+    data: [
+      t('functionAnalysis.detail.workload.estimatedWorkload'),
+      t('functionAnalysis.detail.workload.actualWorkload'),
+      t('functionAnalysis.detail.workload.completedWorkload'),
+      t('functionAnalysis.detail.workload.savingWorkload')
+    ],
     axisLabel: {
       interval: 0,
       overflow: 'break'

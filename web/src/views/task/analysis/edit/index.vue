@@ -5,7 +5,11 @@ import { Button, Checkbox, Form, FormItem, RadioButton, RadioGroup, Textarea } f
 import { DatePicker, Input, notification, Select } from '@xcan-angus/vue-ui';
 import { AuthObjectType, EnumMessage, enumOptionUtils, enumUtils, GM, TESTER } from '@xcan-angus/infra';
 import {
-  AnalysisDataSource, AnalysisTaskObject, AnalysisTaskTemplate, AnalysisTaskTemplateDesc, AnalysisTimeRange
+  AnalysisDataSource,
+  AnalysisTaskObject,
+  AnalysisTaskTemplate,
+  AnalysisTaskTemplateDesc,
+  AnalysisTimeRange
 } from '@/enums/enums';
 import { EditAnalysisState } from '../types';
 import { analysis } from '@/api/tester';

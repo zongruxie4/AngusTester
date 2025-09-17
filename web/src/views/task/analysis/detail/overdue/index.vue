@@ -15,7 +15,7 @@ const { t } = useI18n();
 const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data) => {
-  const res = {};
+  const res = {} as any;
 
   const {
     dailyProcessedWorkload = 0, overdueNum = 0, overdueRate = 0,

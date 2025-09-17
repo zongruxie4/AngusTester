@@ -12,45 +12,57 @@ const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
 
-const Echart = defineAsyncComponent(() => import('./echart.vue'));
+const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data) => {
-  const res = {};
+  const res = {} as any;
 
   const {
     totalNum = 0, completedNum = 0, completedRate = '-',
-    bugNum = 0, bugRate = 0, completedBugNum = 0, completedBugRate = '-', completedOverdueNum = 0, completedOverdueRate = '-', completedWorkload = 0, completedWorkloadRate = '-',
+    bugNum = 0, bugRate = 0, completedBugNum = 0, completedBugRate = '-',
+    completedOverdueNum = 0, completedOverdueRate = '-',
+    completedWorkload = 0, completedWorkloadRate = '-',
     evalWorkload = 0, overdueNum = 0, overdueRate = 0
   } = data;
+
   res.chart0Value = {
     yData0: [completedNum, completedWorkload, completedOverdueNum, completedBugNum],
     yData1: [totalNum, evalWorkload, overdueNum, bugNum]
   };
   res.chart1Value = {
     title: completedRate + '%',
-    value: [{ name: t('functionAnalysis.detail.coreKpi.incompleteCaseCount'), value: totalNum - completedNum }, { name: t('functionAnalysis.detail.coreKpi.completedCaseCount'), value: completedNum }]
+    value: [
+      { name: t('functionAnalysis.detail.coreKpi.incompleteCaseCount'), value: totalNum - completedNum },
+      { name: t('functionAnalysis.detail.coreKpi.completedCaseCount'), value: completedNum }
+    ]
   };
   res.chart2Value = {
     title: completedWorkloadRate + '%',
-    value: [{ name: t('functionAnalysis.detail.coreKpi.incompleteWorkload'), value: evalWorkload - completedWorkload }, { name: t('functionAnalysis.detail.coreKpi.completedWorkload'), value: completedWorkload }]
+    value: [
+      { name: t('functionAnalysis.detail.coreKpi.incompleteWorkload'), value: evalWorkload - completedWorkload },
+      { name: t('functionAnalysis.detail.coreKpi.completedWorkload'), value: completedWorkload }
+    ]
   };
 
   res.chart3Value = {
     title: completedOverdueRate + '%',
-    value: [{ name: t('functionAnalysis.detail.coreKpi.incompleteOverdueCount'), value: overdueNum - completedOverdueNum }, { name: t('functionAnalysis.detail.coreKpi.completedOverdueCount'), value: completedOverdueNum }]
+    value: [
+      { name: t('functionAnalysis.detail.coreKpi.incompleteOverdueCount'), value: overdueNum - completedOverdueNum },
+      { name: t('functionAnalysis.detail.coreKpi.completedOverdueCount'), value: completedOverdueNum }
+    ]
   };
 
   res.chart4Value = {
     title: completedBugRate + '%',
-    value: [{ name: t('functionAnalysis.detail.coreKpi.incompleteBugCount'), value: bugNum - completedBugNum }, { name: t('functionAnalysis.detail.coreKpi.completedBugCount'), value: completedBugNum }]
+    value: [
+      { name: t('functionAnalysis.detail.coreKpi.incompleteBugCount'), value: bugNum - completedBugNum },
+      { name: t('functionAnalysis.detail.coreKpi.completedBugCount'), value: completedBugNum }
+    ]
   };
   return res;
 };
 
-const totalValue = ref({
-
-});
-
+const totalValue = ref({});
 const personValues = ref([]);
 
 onMounted(() => {
@@ -93,12 +105,13 @@ defineExpose({
     });
   }
 });
-
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">{{ t('functionAnalysis.detail.coreKpi.total') }}</div>
-    <Echart
+    <div class="font-semibold pl-3">
+      {{ t('functionAnalysis.detail.coreKpi.total') }}
+    </div>
+    <EChart
       ref="totalChartRef"
       v-bind="totalValue"
       class="ml-3" />
@@ -109,7 +122,7 @@ defineExpose({
     :key="item.id"
     class="mt-5">
     <div class="font-semibold pl-3">{{ item.userName }}</div>
-    <Echart
+    <EChart
       ref="chartListRef"
       v-bind="item.chartData"
       class="ml-3" />

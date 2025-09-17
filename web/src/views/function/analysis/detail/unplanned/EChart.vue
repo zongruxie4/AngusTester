@@ -6,7 +6,6 @@ import * as eCharts from 'echarts';
 const { t } = useI18n();
 
 interface Props {
-
   overdueAssessmentData: Record<string, any>;
   chart0Value: {
     yData: number[]
@@ -49,7 +48,11 @@ const unplannedTaskEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('functionAnalysis.detail.unplannedTasks.totalCount'), t('functionAnalysis.detail.unplannedTasks.unplannedCount'), t('functionAnalysis.detail.unplannedTasks.unplannedCompletedCount')],
+    data: [
+      t('functionAnalysis.detail.unplannedTasks.totalCount'),
+      t('functionAnalysis.detail.unplannedTasks.unplannedCount'),
+      t('functionAnalysis.detail.unplannedTasks.unplannedCompletedCount')
+    ],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -88,7 +91,11 @@ const unplannedWorkloadEchartConfig = JSON.parse(JSON.stringify({
   ...unplannedTaskEchartConfig,
   xAxis: {
     type: 'category',
-    data: [t('functionAnalysis.detail.unplannedTasks.totalWorkload'), t('functionAnalysis.detail.unplannedTasks.unplannedWorkload'), t('functionAnalysis.detail.unplannedTasks.unplannedCompletedWorkload')],
+    data: [
+      t('functionAnalysis.detail.unplannedTasks.totalWorkload'),
+      t('functionAnalysis.detail.unplannedTasks.unplannedWorkload'),
+      t('functionAnalysis.detail.unplannedTasks.unplannedCompletedWorkload')
+    ],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -133,7 +140,12 @@ defineExpose({
   <div class="flex">
     <div class="px-3 w-50 flex items-center">
       <div class="text-center flex-1">
-        <div class="font-semibold "><span class="text-5 text-status-pending">{{ props.overdueAssessmentData.unplannedWorkloadProcessingTime || 0 }}</span>{{ t('functionAnalysis.detail.unplannedTasks.hours') }}</div>
+        <div class="font-semibold ">
+          <span class="text-5 text-status-pending">
+            {{ props.overdueAssessmentData.unplannedWorkloadProcessingTime || 0 }}
+          </span>
+          {{ t('functionAnalysis.detail.unplannedTasks.hours') }}
+        </div>
         <div>
           {{ t('functionAnalysis.detail.unplannedTasks.unplannedCaseEstimatedTime') }}
         </div>

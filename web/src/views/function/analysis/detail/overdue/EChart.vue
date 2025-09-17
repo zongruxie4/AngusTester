@@ -6,11 +6,6 @@ import * as eCharts from 'echarts';
 const { t } = useI18n();
 
 interface Props {
-  // title0: string;
-  // title1: string;
-  // value0: {name: string, value: string|number}[];
-  // value1: {name: string, value: string|number}[];
-
   overdueAssessmentData: Record<string, any>;
 
   chart1Value: {
@@ -47,8 +42,6 @@ const completedWorkloadEchartConfig = {
     top: '40%',
     padding: 2,
     subtext: t('functionAnalysis.detail.overdueAssessment.completedWorkloadPercentage'),
-    // left: '25%',
-    // top: '40%',
     itemGap: 50,
     textAlign: 'center',
     textStyle: {
@@ -171,19 +164,25 @@ defineExpose({
     <div class="px-3 w-100">
       <div class="flex justify-around">
         <div class="text-center flex-1">
-          <div class="font-semibold text-5 text-status-error">{{ props.overdueAssessmentData.overdueNum || 0 }}</div>
+          <div class="font-semibold text-5 text-status-error">
+            {{ props.overdueAssessmentData.overdueNum || 0 }}
+          </div>
           <div>
             {{ t('functionAnalysis.detail.overdueAssessment.overdueCount') }}
           </div>
         </div>
         <div class="text-center flex-1">
-          <div :class="`risk-level-${props.overdueAssessmentData?.riskLevel?.value}`" class="font-semibold text-5">{{ overdueAssessmentData?.riskLevel?.message }}</div>
+          <div :class="`risk-level-${props.overdueAssessmentData?.riskLevel?.value}`" class="font-semibold text-5">
+            {{ overdueAssessmentData?.riskLevel?.message }}
+          </div>
           <div>{{ t('functionAnalysis.detail.overdueAssessment.overdueRisk') }}</div>
         </div>
       </div>
       <div class="flex justify-around mt-3">
         <div class="text-center">
-          <div class="font-semibold text-5  text-status-error">{{ props.overdueAssessmentData.overdueTime || 0 }}{{ t('functionAnalysis.detail.overdueAssessment.hours') }}</div>
+          <div class="font-semibold text-5  text-status-error">
+            {{ props.overdueAssessmentData.overdueTime || 0 }}{{ t('functionAnalysis.detail.overdueAssessment.hours') }}
+          </div>
           <div>
             {{ t('functionAnalysis.detail.overdueAssessment.overdueTime') }}
           </div>
@@ -197,7 +196,9 @@ defineExpose({
         </div>
 
         <div class="text-center">
-          <div class="font-semibold text-5">{{ props.overdueAssessmentData.overdueWorkloadProcessingTime || 0 }}{{ t('functionAnalysis.detail.overdueAssessment.hours') }}</div>
+          <div class="font-semibold text-5">
+            {{ props.overdueAssessmentData.overdueWorkloadProcessingTime || 0 }}{{ t('functionAnalysis.detail.overdueAssessment.hours') }}
+          </div>
           <div>
             {{ t('functionAnalysis.detail.overdueAssessment.overdueWorkloadEstimatedProcessingTime') }}
           </div>

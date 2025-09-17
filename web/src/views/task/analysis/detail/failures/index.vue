@@ -15,7 +15,7 @@ const { t } = useI18n();
 const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data) => {
-  const res = {};
+  const res = {} as any;
 
   const failureLevelCount = data?.failureLevelCount || {};
   const { CRITICAL, MAJOR, MINOR, TRIVIAL } = failureLevelCount;
@@ -96,6 +96,7 @@ defineExpose({
     <div class="font-semibold pl-3">
       {{ t('taskAnalysis.detail.failures.total') }}
     </div>
+
     <EChart
       ref="totalChartRef"
       v-bind="totalValue"

@@ -15,7 +15,7 @@ const { t } = useI18n();
 const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data) => {
-  const res = {};
+  const res = {} as any;
 
   const {
     avgProcessingTime = 0, maxProcessingTime = 0, minProcessingTime = 0,

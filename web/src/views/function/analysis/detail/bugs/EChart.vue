@@ -6,10 +6,6 @@ import * as eCharts from 'echarts';
 const { t } = useI18n();
 
 interface Props {
-  // title0: string;
-  // title1: string;
-  // value0: {name: string, value: string|number}[];
-  // value1: {name: string, value: string|number}[];
   value: Record<string, any>;
   chart0Value: {
     yData: number[]
@@ -31,6 +27,7 @@ interface Props {
     value: {name: string, value: string|number}[];
   }
 }
+
 const props = withDefaults(defineProps<Props>(), {
   value: () => ({}),
   chart0Value: () => ({
@@ -84,7 +81,12 @@ const bugsEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('functionAnalysis.detail.bugs.totalBugs'), t('functionAnalysis.detail.bugs.validBugs'), t('functionAnalysis.detail.bugs.invalidBugs'), t('functionAnalysis.detail.bugs.missingBugs')],
+    data: [
+      t('functionAnalysis.detail.bugs.totalBugs'),
+      t('functionAnalysis.detail.bugs.validBugs'),
+      t('functionAnalysis.detail.bugs.invalidBugs'),
+      t('functionAnalysis.detail.bugs.missingBugs')
+    ],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -341,11 +343,11 @@ defineExpose({
   <div class="flex space-x-2">
     <div class="w-30 space-y-2 text-center">
       <div>
-        <div><span class="text-8 font-semibold">{{ props.value.testCaseHitRate || 0 }}</span>%</div>
+        <span class="text-8 font-semibold">{{ props.value.testCaseHitRate || 0 }}</span>%
         <div>{{ t('functionAnalysis.detail.bugs.testCaseHitRate') }}</div>
       </div>
       <div>
-        <div><span class="text-8 font-semibold">{{ props.value.testCaseHitNum || 0 }}</span></div>
+        <span class="text-8 font-semibold">{{ props.value.testCaseHitNum || 0 }}</span>
         <div>{{ t('functionAnalysis.detail.bugs.testCaseHitCount') }}</div>
       </div>
     </div>

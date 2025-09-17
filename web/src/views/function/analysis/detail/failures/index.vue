@@ -12,17 +12,23 @@ const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
 
-const Echart = defineAsyncComponent(() => import('./echart.vue'));
+const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data) => {
-  const res = {};
+  const res = {} as any;
 
   const failureLevelCount = data?.failureLevelCount || {};
   const { CRITICAL, MAJOR, MINOR, TRIVIAL } = failureLevelCount;
 
   const {
-    bugNum = 0, failureAvgTime = 0, failureCompletedNum = 0, failureCompletedRate = 0, failureMaxTime = 0, failureMinTime = 0, failureNum = 0, failureOverdueNum = 0, failureOverdueRate = 0,
-    failureTotalTime = 0, failureWorkload = 0, oneTimeFailureNum = 0, oneTimeFailureRate = 0, totalNum = 0, totalWorkload = 0, twoTimeFailureNum = 0, twoTimeFailureRate = 0
+    bugNum = 0, failureAvgTime = 0,
+    failureCompletedNum = 0, failureCompletedRate = 0,
+    failureMaxTime = 0, failureMinTime = 0, failureNum = 0,
+    failureOverdueNum = 0, failureOverdueRate = 0,
+    failureTotalTime = 0, failureWorkload = 0,
+    oneTimeFailureNum = 0, oneTimeFailureRate = 0,
+    totalNum = 0, totalWorkload = 0,
+    twoTimeFailureNum = 0, twoTimeFailureRate = 0
   } = data;
   res.chart0Value = {
     yData: [failureNum, failureCompletedNum, failureOverdueNum, oneTimeFailureNum, twoTimeFailureNum]
@@ -33,15 +39,17 @@ const getChartData = (data) => {
 
   res.chart2Value = {
     title: '',
-    value: [{ name: t('functionAnalysis.detail.failures.criticalFailureCount'), value: CRITICAL }, { name: t('functionAnalysis.detail.failures.majorFailureCount'), value: MAJOR }, { name: t('functionAnalysis.detail.failures.minorFailureCount'), value: MINOR }, { name: t('functionAnalysis.detail.failures.trivialFailureCount'), value: TRIVIAL }]
+    value: [
+      { name: t('functionAnalysis.detail.failures.criticalFailureCount'), value: CRITICAL },
+      { name: t('functionAnalysis.detail.failures.majorFailureCount'), value: MAJOR },
+      { name: t('functionAnalysis.detail.failures.minorFailureCount'), value: MINOR },
+      { name: t('functionAnalysis.detail.failures.trivialFailureCount'), value: TRIVIAL }
+    ]
   };
-
   return res;
 };
 
-const totalValue = ref({
-
-});
+const totalValue = ref({});
 
 const personValues = ref([]);
 
@@ -85,12 +93,13 @@ defineExpose({
     });
   }
 });
-
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">{{ t('functionAnalysis.detail.failures.total') }}</div>
-    <Echart
+    <div class="font-semibold pl-3">
+      {{ t('functionAnalysis.detail.failures.total') }}
+    </div>
+    <EChart
       ref="totalChartRef"
       v-bind="totalValue"
       class="ml-3" />
@@ -101,7 +110,7 @@ defineExpose({
     :key="item.id"
     class="mt-5">
     <div class="font-semibold pl-3">{{ item.userName }}</div>
-    <Echart
+    <EChart
       ref="chartListRef"
       v-bind="item.chartData"
       class="ml-3" />

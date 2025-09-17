@@ -58,7 +58,11 @@ const deliveryEchartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('functionAnalysis.detail.recentDelivery.today'), t('functionAnalysis.detail.recentDelivery.lastWeek'), t('functionAnalysis.detail.recentDelivery.lastMonth')],
+    data: [
+      t('functionAnalysis.detail.recentDelivery.today'),
+      t('functionAnalysis.detail.recentDelivery.lastWeek'),
+      t('functionAnalysis.detail.recentDelivery.lastMonth')
+    ],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -72,7 +76,11 @@ const deliveryEchartConfig = {
   },
   legend: {
     show: true,
-    data: [t('functionAnalysis.detail.recentDelivery.deliveryCount2'), t('functionAnalysis.detail.recentDelivery.deliveryOverdueCount'), t('functionAnalysis.detail.recentDelivery.totalCount')],
+    data: [
+      t('functionAnalysis.detail.recentDelivery.deliveryCount2'),
+      t('functionAnalysis.detail.recentDelivery.deliveryOverdueCount'),
+      t('functionAnalysis.detail.recentDelivery.totalCount')
+    ],
     top: 0
   },
   series: [

@@ -13,39 +13,10 @@ const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
 
-const Echart = defineAsyncComponent(() => import('./echart.vue'));
-
-const targetDataCategery = {
-  TEST_CUSTOMIZATION: t('functionAnalysis.detail.taskGrowthTread.customTest'),
-  TEST_FUNCTIONALITY: t('functionAnalysis.detail.taskGrowthTread.functionalTest'),
-  TEST_PERFORMANCE: t('functionAnalysis.detail.taskGrowthTread.performanceTest'),
-  TEST_STABILITY: t('functionAnalysis.detail.taskGrowthTread.stabilityTest'),
-  SERVICES: t('functionAnalysis.detail.taskGrowthTread.services'),
-  APIS: t('functionAnalysis.detail.taskGrowthTread.apis'),
-  CASES: t('functionAnalysis.detail.taskGrowthTread.cases'),
-  PLAN: t('functionAnalysis.detail.taskGrowthTread.plan'),
-  SPRINT: t('functionAnalysis.detail.taskGrowthTread.sprint'),
-  TASK_SPRINT: t('functionAnalysis.detail.taskGrowthTread.taskSprint'),
-  TASK: t('functionAnalysis.detail.taskGrowthTread.task'),
-  MOCK_APIS: t('functionAnalysis.detail.taskGrowthTread.mockApis'),
-  MOCK_PUSHBACK: t('functionAnalysis.detail.taskGrowthTread.mockPushback'),
-  MOCK_RESPONSE: t('functionAnalysis.detail.taskGrowthTread.mockResponse'),
-  MOCK_SERVICE: t('functionAnalysis.detail.taskGrowthTread.mockService'),
-  DATA_DATASET: t('functionAnalysis.detail.taskGrowthTread.dataDataset'),
-  DATA_DATASOURCE: t('functionAnalysis.detail.taskGrowthTread.dataDatasource'),
-  DATA_VARIABLE: t('functionAnalysis.detail.taskGrowthTread.dataVariable'),
-  TOTAL: t('functionAnalysis.detail.taskGrowthTread.total2'),
-  REPORT: t('functionAnalysis.detail.taskGrowthTread.report'),
-  REPORT_RECORD: t('functionAnalysis.detail.taskGrowthTread.reportRecord'),
-  API_TEST: t('functionAnalysis.detail.taskGrowthTread.apiTest'),
-  BUG: t('functionAnalysis.detail.taskGrowthTread.bug'),
-  REQUIREMENT: t('functionAnalysis.detail.taskGrowthTread.requirement'),
-  STORY: t('functionAnalysis.detail.taskGrowthTread.story'),
-  SCENARIO_TEST: t('functionAnalysis.detail.taskGrowthTread.scenarioTest')
-};
+const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data) => {
-  const res = {};
+  const res = {} as any;
 
   const { apiTestNum = 0, requirementNum = 0, scenarioTestNum = 0, storyNum = 0, bugNum = 0, taskNum = 0, totalNum = 0 } = data;
   res.overdueAssessmentData = data;
@@ -62,13 +33,7 @@ const getChartData = (data) => {
         xData.push(i.timeSeries);
       }
     });
-    // keys.forEach(key => {
-    //   data.timeSeries[key].forEach(i => {
-    //     if (!xData.includes(i.timeSeries)) {
-    //       xData.push(i.timeSeries);
-    //     }
-    //   });
-    // })
+
     xData.sort((a, b) => {
       return a > b ? 1 : a < b ? -1 : 0;
     });
@@ -103,10 +68,7 @@ const getChartData = (data) => {
   return res;
 };
 
-const totalValue = ref({
-
-});
-
+const totalValue = ref({});
 const personValues = ref([]);
 
 onMounted(() => {
@@ -153,8 +115,10 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">{{ t('functionAnalysis.detail.taskGrowthTread.total') }}</div>
-    <Echart
+    <div class="font-semibold pl-3">
+      {{ t('functionAnalysis.detail.taskGrowthTread.total') }}
+    </div>
+    <EChart
       ref="totalChartRef"
       v-bind="totalValue"
       class="ml-3" />
@@ -165,7 +129,7 @@ defineExpose({
     :key="item.id"
     class="mt-5">
     <div class="font-semibold pl-3">{{ item.userName }}</div>
-    <Echart
+    <EChart
       ref="chartListRef"
       v-bind="item.chartData"
       class="ml-3" />

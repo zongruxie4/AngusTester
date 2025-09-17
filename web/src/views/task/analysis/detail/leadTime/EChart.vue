@@ -18,12 +18,12 @@ const props = withDefaults(defineProps<Props>(), {
   })
 });
 
-const backlogRef = ref();
+const leadTimeRef = ref();
 
-let backlogRefEChart;
+let leadTimeRefEChart;
 
 // 任务交付周期(小时
-const backlogEChartConfig = {
+const leadTimeEChartConfig = {
   title: {
     text: t('taskAnalysis.detail.leadTime.chartTitles.taskDeliveryCycle'),
     bottom: 0,
@@ -85,12 +85,12 @@ const backlogEChartConfig = {
 };
 
 onMounted(() => {
-  backlogRefEChart = eCharts.init(backlogRef.value);
+  leadTimeRefEChart = eCharts.init(leadTimeRef.value);
 
   watch([() => props.chart0Value], () => {
-    backlogEChartConfig.series[0].data = props.chart0Value.yData;
+    leadTimeEChartConfig.series[0].data = props.chart0Value.yData;
 
-    backlogRefEChart.setOption(backlogEChartConfig);
+    leadTimeRefEChart.setOption(leadTimeEChartConfig);
   }, {
     immediate: true,
     deep: true
@@ -99,7 +99,7 @@ onMounted(() => {
 
 defineExpose({
   resize: () => {
-    backlogRefEChart.resize();
+    leadTimeRefEChart.resize();
   }
 });
 
@@ -139,7 +139,7 @@ defineExpose({
         </div>
       </div>
     </div>
-    <div ref="backlogRef" class="flex-1 h-40"></div>
+    <div ref="leadTimeRef" class="flex-1 h-40"></div>
   </div>
 </template>
 <style scoped>

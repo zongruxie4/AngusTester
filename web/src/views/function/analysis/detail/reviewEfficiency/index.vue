@@ -12,36 +12,49 @@ const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
 
-const Echart = defineAsyncComponent(() => import('./echart.vue'));
+const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data) => {
-  const res = {};
+  const res = {} as any;
 
-  const { totalNum = 0, passedReviewNum = 0, oneTimePassedReviewNum = 0, oneTimeNotPassedReviewNum = 0, oneTimeNotPassedReviewRate = 0, oneTimePassedReviewRate = 0, passedReviewRate = 0, twoTimePassedReviewRate = 0, twoTimePassedReviewNum = 0, twoTimeNotPassedReviewNum } = data;
+  const {
+    totalNum = 0, passedReviewNum = 0,
+    oneTimePassedReviewNum = 0, oneTimeNotPassedReviewNum = 0,
+    oneTimeNotPassedReviewRate = 0, oneTimePassedReviewRate = 0,
+    passedReviewRate = 0, twoTimePassedReviewRate = 0,
+    twoTimePassedReviewNum = 0, twoTimeNotPassedReviewNum
+  } = data;
+
   res.chart0Value = {
     yData: [passedReviewNum, oneTimePassedReviewNum, twoTimePassedReviewNum]
   };
   res.chart1Value = {
     title: passedReviewRate + '%',
-    value: [{ name: t('functionAnalysis.detail.reviewEfficiency.notPassedCaseCount'), value: totalNum - passedReviewNum }, { name: t('functionAnalysis.detail.reviewEfficiency.passedCaseCount'), value: passedReviewNum }]
+    value: [
+      { name: t('functionAnalysis.detail.reviewEfficiency.notPassedCaseCount'), value: totalNum - passedReviewNum },
+      { name: t('functionAnalysis.detail.reviewEfficiency.passedCaseCount'), value: passedReviewNum }
+    ]
   };
 
   res.chart2Value = {
     title: oneTimePassedReviewRate + '%',
-    value: [{ name: t('functionAnalysis.detail.reviewEfficiency.oneTimeNotPassedCaseCount'), value: twoTimePassedReviewNum }, { name: t('functionAnalysis.detail.reviewEfficiency.oneTimePassedCaseCount'), value: oneTimeNotPassedReviewNum }]
+    value: [
+      { name: t('functionAnalysis.detail.reviewEfficiency.oneTimeNotPassedCaseCount'), value: twoTimePassedReviewNum },
+      { name: t('functionAnalysis.detail.reviewEfficiency.oneTimePassedCaseCount'), value: oneTimeNotPassedReviewNum }
+    ]
   };
 
   res.chart3Value = {
     title: twoTimePassedReviewRate + '%',
-    value: [{ name: t('functionAnalysis.detail.reviewEfficiency.twoTimeNotPassedCaseCount'), value: passedReviewNum - twoTimePassedReviewNum }, { name: t('functionAnalysis.detail.reviewEfficiency.twoTimePassedCaseCount'), value: twoTimePassedReviewNum }]
+    value: [
+      { name: t('functionAnalysis.detail.reviewEfficiency.twoTimeNotPassedCaseCount'), value: passedReviewNum - twoTimePassedReviewNum },
+      { name: t('functionAnalysis.detail.reviewEfficiency.twoTimePassedCaseCount'), value: twoTimePassedReviewNum }
+    ]
   };
   return res;
 };
 
-const totalValue = ref({
-
-});
-
+const totalValue = ref({});
 const personValues = ref([]);
 
 onMounted(() => {
@@ -88,8 +101,10 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">{{ t('functionAnalysis.detail.reviewEfficiency.total') }}</div>
-    <Echart
+    <div class="font-semibold pl-3">
+      {{ t('functionAnalysis.detail.reviewEfficiency.total') }}
+    </div>
+    <EChart
       ref="totalChartRef"
       v-bind="totalValue"
       class="ml-3" />
@@ -100,7 +115,7 @@ defineExpose({
     :key="item.id"
     class="mt-5">
     <div class="font-semibold pl-3">{{ item.userName }}</div>
-    <Echart
+    <EChart
       ref="chartListRef"
       v-bind="item.chartData"
       class="ml-3" />

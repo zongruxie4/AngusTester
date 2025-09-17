@@ -18,7 +18,7 @@ const totalChartRef = ref();
 const chartListRef = [];
 
 const getChartData = (data) => {
-  const res = {};
+  const res = {} as any;
   const { CRITICAL = 0, MAJOR = 0, MINOR = 0, TRIVIAL = 0 } = data.bugLevelCount || {};
   const {
     totalNum = 0, validBugNum = 0, invalidBugNum = 0, missingBugNum = 0,
@@ -108,7 +108,10 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">{{ t('taskAnalysis.detail.bugs.total') }}</div>
+    <div class="font-semibold pl-3">
+      {{ t('taskAnalysis.detail.bugs.total') }}
+    </div>
+
     <EChart
       ref="totalChartRef"
       v-bind="totalValue"
