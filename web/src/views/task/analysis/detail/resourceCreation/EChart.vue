@@ -10,7 +10,7 @@ interface Props {
 
   },
   chart1Value: {
-    value: {name: string, value: number[]}[],
+    value: {name: string, data: number[]}[],
     xData: string[]
   },
 }
@@ -151,7 +151,7 @@ onMounted(() => {
     unplannedWorkloadEChartConfig.series = props.chart1Value.value.map(i => {
       return {
         ...i,
-        data: i.value,
+        data: i.data,
         type: 'line',
         smooth: true,
         stack: 'Total'
