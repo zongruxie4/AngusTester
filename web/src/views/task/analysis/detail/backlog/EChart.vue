@@ -105,7 +105,7 @@ const backlogEChartConfig = {
     {
       name: t('taskAnalysis.detail.backlogTasks.chartLabels.totalAmount'),
       itemStyle: {
-        color: 'rgba(136, 185, 242, 0.8)',
+        color: 'rgb(68,93,179)',
         borderRadius: [5, 5, 0, 0]
       },
       data: [0, 0],
@@ -173,14 +173,14 @@ const backloggedTaskEChartConfig = {
           name: t('taskAnalysis.detail.backlogTasks.chartLabels.uncompleted'),
           value: 0,
           itemStyle: {
-            color: 'rgba(217, 217, 217, 1)'
+            color: 'rgb(15,175,62)'
           }
         },
         {
           name: t('taskAnalysis.detail.backlogTasks.chartLabels.completed'),
           value: 0,
           itemStyle: {
-            color: 'rgba(245, 34, 45, 1)'
+            color: 'rgb(246,159,42)'
           }
         }
       ]

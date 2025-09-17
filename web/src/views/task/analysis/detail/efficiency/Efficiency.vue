@@ -53,13 +53,13 @@ const oneTimePassedRef = ref();
 const bugsRef = ref();
 const twoTimePassedRef = ref();
 
-let bugsChart;
+let tasksChart;
 let completedEChart;
 let oneTimePassedEChart;
 let twoTimePassedEChart;
 
 // 完成任务
-const bugsEChartConfig = {
+const taskEChartConfig = {
   title: {
     text: t('taskAnalysis.detail.handlingEfficiency.chartTitles.completedTasks'),
     bottom: 0,
@@ -95,7 +95,7 @@ const bugsEChartConfig = {
   series: [
     {
       itemStyle: {
-        color: 'rgba(45, 142, 255, 1)',
+        color: 'rgb(16,168,46)',
         borderRadius: [5, 5, 0, 0]
       },
 
@@ -114,7 +114,7 @@ const completedEChartConfig = {
   title: {
     text: '0%',
     left: '35%',
-    top: '45%',
+    top: '50%',
     padding: 2,
     subtext: t('taskAnalysis.detail.handlingEfficiency.chartTitles.completedTaskRatio'),
     itemGap: 40,
@@ -169,17 +169,16 @@ const completedEChartConfig = {
           name: '',
           value: 0,
           itemStyle: {
-            color: 'rgba(136, 185, 242, 0.8)'
+            color: 'rgb(251,164,46)'
           }
         },
         {
           name: '',
           value: 0,
           itemStyle: {
-            color: 'rgba(45, 142, 255, 1)'
+            color: 'rgb(16,168,46)'
           }
         }
-
       ]
     }
   ]
@@ -207,7 +206,7 @@ const twoTimePassedEChartConfig = JSON.parse(JSON.stringify({
 onMounted(() => {
   completedEChart = eCharts.init(completedRef.value);
   oneTimePassedEChart = eCharts.init(oneTimePassedRef.value);
-  bugsChart = eCharts.init(bugsRef.value);
+  tasksChart = eCharts.init(bugsRef.value);
   twoTimePassedEChart = eCharts.init(twoTimePassedRef.value);
 
   watch([
@@ -217,7 +216,7 @@ onMounted(() => {
     () => props.chart3Value,
     () => props.chart4Value
   ], () => {
-    bugsEChartConfig.series[0].data = props.chart0Value.yData;
+    taskEChartConfig.series[0].data = props.chart0Value.yData;
 
     completedEChartConfig.series[0].data[0] = {
       ...completedEChartConfig.series[0].data[0],
@@ -257,7 +256,7 @@ onMounted(() => {
 
     completedEChart.setOption(completedEChartConfig);
     oneTimePassedEChart.setOption(oneTimePassedEChartConfig);
-    bugsChart.setOption(bugsEChartConfig);
+    tasksChart.setOption(taskEChartConfig);
     twoTimePassedEChart.setOption(twoTimePassedEChartConfig);
   }, {
     immediate: true,
@@ -269,7 +268,7 @@ defineExpose({
   resize: () => {
     completedEChart.resize();
     oneTimePassedEChart.resize();
-    bugsChart.resize();
+    tasksChart.resize();
     twoTimePassedEChart.resize();
   }
 });
@@ -277,9 +276,9 @@ defineExpose({
 </script>
 <template>
   <div class="flex">
-    <div ref="bugsRef" class="flex-1 h-30"></div>
-    <div ref="completedRef" class="flex-1 h-30"></div>
-    <div ref="oneTimePassedRef" class="flex-1 h-30"></div>
-    <div ref="twoTimePassedRef" class="flex-1 h-30"></div>
+    <div ref="bugsRef" class="flex-1 h-33 w-100"></div>
+    <div ref="completedRef" class="flex-1 h-33"></div>
+    <div ref="oneTimePassedRef" class="flex-1 h-33"></div>
+    <div ref="twoTimePassedRef" class="flex-1 h-33"></div>
   </div>
 </template>

@@ -117,7 +117,7 @@ const bugLevelEChartConfig = {
   title: {
     text: '0%',
     left: '35%',
-    top: '35%',
+    top: '40%',
     padding: 2,
     subtext: t('taskAnalysis.detail.bugs.chartTitles.bugLevel'),
     // left: '25%',
@@ -348,7 +348,7 @@ defineExpose({
 </script>
 <template>
   <div class="flex space-x-4">
-    <div ref="bugsRef" class="flex-1 min-w-80 h-35"></div>
+    <div ref="bugsRef" class="flex-1 min-w-90 h-35"></div>
     <div ref="bugLevelRef" class="flex-1 h-35"></div>
     <div ref="validBugRef" class="flex-1 h-35"></div>
     <div ref="missingBugRef" class="flex-1 h-35"></div>

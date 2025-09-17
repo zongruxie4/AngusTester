@@ -95,7 +95,7 @@ const completedWorkloadEchartConfig = {
           name: t('functionAnalysis.detail.overdueAssessment.notCompleted'),
           value: 0,
           itemStyle: {
-            color: 'rgba(217, 217, 217, 1)'
+            color: 'rgb(246,159,42)'
           }
         },
         {

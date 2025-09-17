@@ -28,7 +28,7 @@ const progressEChartConfig = {
   title: {
     text: '0%',
     left: '35%',
-    top: '38%',
+    top: '48%',
     padding: 2,
     subtext: t('taskAnalysis.detail.progress.chartTitles.taskProgress'),
     itemGap: 45,
@@ -83,14 +83,14 @@ const progressEChartConfig = {
           name: t('taskAnalysis.detail.progress.chartLabels.uncompleted'),
           value: 0,
           itemStyle: {
-            color: 'rgba(217, 217, 217, 1)'
+            color: 'rgb(246,159,42)'
           }
         },
         {
           name: t('taskAnalysis.detail.progress.chartLabels.completed'),
           value: 0,
           itemStyle: {
-            color: '#52C41A'
+            color: '#53c61b'
           }
         }
       ]
@@ -152,7 +152,7 @@ defineExpose({
 </script>
 <template>
   <div class="flex">
-    <div ref="progressRef" class="flex-1 h-30"></div>
-    <div ref="workloadProcessRef" class="flex-1 h-30"></div>
+    <div ref="progressRef" class="flex-1 h-35"></div>
+    <div ref="workloadProcessRef" class="flex-1 h-35"></div>
   </div>
 </template>

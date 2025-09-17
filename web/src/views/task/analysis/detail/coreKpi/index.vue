@@ -120,7 +120,10 @@ defineExpose({
     v-for="item in personValues"
     :key="item.id"
     class="mt-5">
-    <div class="font-semibold pl-3">{{ item.userName }}</div>
+    <div class="font-semibold pl-3">
+      {{ item.userName }}
+    </div>
+
     <EChart
       ref="chartListRef"
       v-bind="item.chartData"

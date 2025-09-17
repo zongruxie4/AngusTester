@@ -88,37 +88,37 @@
       "backlogTasks": {
         "total": "Total",
         "chartLabels": {
-          "backlogAmount": "Backlog Amount",
-          "totalAmount": "Total Amount",
+          "backlogAmount": "Backlogged",
+          "totalAmount": "Total",
           "taskCount": "Count",
           "workload": "Workload",
           "backlogTaskRatio": "Backlog Task Ratio",
           "backlogWorkloadRatio": "Backlog Workload Ratio",
           "unbacklogged": "Unbacklogged",
           "backlogged": "Backlogged",
-          "unbackloggedWorkload": "Unbacklogged Workload",
-          "backloggedWorkload": "Backlogged Workload",
+          "unbackloggedWorkload": "Unbacklogged",
+          "backloggedWorkload": "Backlogged",
           "uncompleted": "Uncompleted",
           "completed": "Completed"
         },
         "statistics": {
           "backlogWorkloadEstimatedTime": "Backlog Workload Estimated Time",
           "hours": "hours",
-          "averageDailyProcessedTasks": "Average Daily Processed Tasks",
-          "averageDailyProcessedWorkload": "Average Daily Processed Workload"
+          "averageDailyProcessedTasks": "Daily Processed Tasks",
+          "averageDailyProcessedWorkload": "Daily Processed Workload"
         }
       },
       "bugs": {
         "total": "Total",
         "chartLabels": {
-          "totalBugs": "Total Bugs",
-          "validBugs": "Valid Bugs",
-          "invalidBugs": "Invalid Bugs",
-          "missingBugs": "Missing Bugs",
-          "criticalBugs": "Critical Bugs",
-          "majorBugs": "Major Bugs",
-          "minorBugs": "Minor Bugs",
-          "trivialBugs": "Trivial Bugs",
+          "totalBugs": "Total",
+          "validBugs": "Valid",
+          "invalidBugs": "Invalid",
+          "missingBugs": "Missing",
+          "criticalBugs": "Critical",
+          "majorBugs": "Major",
+          "minorBugs": "Minor",
+          "trivialBugs": "Trivial",
           "nonBugWorkload": "Non-Bug Workload",
           "bugWorkload": "Bug Workload",
           "nonMissingBugs": "Non-Missing Bugs",
@@ -154,45 +154,45 @@
       "coreKpi": {
         "total": "Total",
         "chartLabels": {
-          "taskCount": "Count",
+          "taskCount": "Task",
           "workload": "Workload",
-          "overdueCount": "Overdue Count",
-          "bugCount": "Bug Count",
-          "completedCount": "Completed Count",
-          "totalCount": "Total Count",
-          "uncompletedTaskCount": "Uncompleted Task Count",
-          "completedTaskCount": "Completed Task Count",
-          "uncompletedWorkload": "Uncompleted Workload",
-          "completedWorkload": "Completed Workload",
-          "uncompletedOverdueCount": "Uncompleted Overdue Count",
-          "completedOverdueCount": "Completed Overdue Count",
-          "uncompletedBugCount": "Uncompleted Bug Count",
-          "completedBugCount": "Completed Bug Count"
+          "overdueCount": "Overdue",
+          "bugCount": "Bug",
+          "completedCount": "Completed",
+          "totalCount": "Total",
+          "uncompletedTaskCount": "Uncompleted",
+          "completedTaskCount": "Completed",
+          "uncompletedWorkload": "Uncompleted",
+          "completedWorkload": "Completed",
+          "uncompletedOverdueCount": "Uncompleted",
+          "completedOverdueCount": "Completed",
+          "uncompletedBugCount": "Uncompleted",
+          "completedBugCount": "Completed"
         },
         "chartTitles": {
           "coreKpi": "Core KPI",
-          "completedTaskRatio": "Completed Task Ratio",
-          "completedWorkloadRatio": "Completed Workload Ratio",
-          "completedOverdueRatio": "Completed Overdue Ratio",
-          "completedBugRatio": "Completed Bug Ratio"
+          "completedTaskRatio": "Completed Tasks",
+          "completedWorkloadRatio": "Completed Workload",
+          "completedOverdueRatio": "Completed Overdue",
+          "completedBugRatio": "Completed Bugs"
         }
       },
       "failures": {
         "total": "Total",
         "chartLabels": {
-          "totalFailures": "Total Failures",
-          "completedFailures": "Completed Failures",
-          "overdueFailures": "Overdue Failures",
-          "oneTimeFailures": "One-time Failures",
-          "twoTimeFailures": "Two-time Failures",
-          "totalFailureTime": "Total Failure Time",
-          "averageFailureTime": "Average Failure Time",
-          "minFailureTime": "Min Failure Time",
-          "maxFailureTime": "Max Failure Time",
-          "criticalFailures": "Critical Failures",
-          "majorFailures": "Major Failures",
-          "minorFailures": "Minor Failures",
-          "trivialFailures": "Trivial Failures"
+          "totalFailures": "Total",
+          "completedFailures": "Completed",
+          "overdueFailures": "Overdue",
+          "oneTimeFailures": "One-time",
+          "twoTimeFailures": "Two-time",
+          "totalFailureTime": "Total Time",
+          "averageFailureTime": "Average Time",
+          "minFailureTime": "Min Time",
+          "maxFailureTime": "Max Time",
+          "criticalFailures": "Critical",
+          "majorFailures": "Major",
+          "minorFailures": "Minor",
+          "trivialFailures": "Trivial"
         },
         "chartTitles": {
           "failureCount": "Failure Count",
@@ -209,21 +209,21 @@
       "handlingEfficiency": {
         "total": "Total",
         "chartLabels": {
-          "completedTaskCount": "Completed Task Count",
-          "oneTimeCompletedCount": "One-time Completed Count",
-          "twoTimeCompletedCount": "Two-time Completed Count",
-          "uncompletedTaskCount": "Uncompleted Task Count",
-          "completedTaskCount2": "Completed Task Count",
-          "oneTimeUncompletedTaskCount": "One-time Uncompleted Task Count",
-          "oneTimeCompletedTaskCount": "One-time Completed Task Count",
-          "twoTimeUncompletedTaskCount": "Two-time Uncompleted Task Count",
-          "twoTimeCompletedTaskCount": "Two-time Completed Task Count"
+          "completedTaskCount": "Completed",
+          "oneTimeCompletedCount": "One-time",
+          "twoTimeCompletedCount": "Two-time",
+          "uncompletedTaskCount": "Uncompleted",
+          "completedTaskCount2": "Completed",
+          "oneTimeUncompletedTaskCount": "Uncompleted",
+          "oneTimeCompletedTaskCount": "Completed",
+          "twoTimeUncompletedTaskCount": "Uncompleted",
+          "twoTimeCompletedTaskCount": "Completed"
         },
         "chartTitles": {
-          "completedTasks": "Completed Tasks",
-          "completedTaskRatio": "Completed Task Ratio",
-          "oneTimeCompletedRatio": "One-time Completed Ratio",
-          "twoTimeCompletedRatio": "Two-time Completed Ratio"
+          "completedTasks": "Completed",
+          "completedTaskRatio": "Completed Ratio",
+          "oneTimeCompletedRatio": "One-time Ratio",
+          "twoTimeCompletedRatio": "Two-time Ratio"
         }
       },
       "leadTime": {
@@ -260,8 +260,8 @@
           "completed": "Completed"
         },
         "chartTitles": {
-          "completedWorkloadRatio": "Completed Workload Ratio",
-          "savingWorkloadRatio": "Saving Workload Ratio"
+          "completedWorkloadRatio": "Completed Workload",
+          "savingWorkloadRatio": "Saving Workload"
         },
         "statistics": {
           "overdueCount": "Overdue Count",
@@ -269,7 +269,7 @@
           "overdueTime": "Overdue Time",
           "hours": "hours",
           "averageDailyProcessedWorkload": "Average Daily Processed Workload",
-          "overdueWorkloadProcessingTime": "Overdue Workload Processing Time"
+          "overdueWorkloadProcessingTime": "Overdue Processing Time"
         }
       },
       "progress": {
@@ -289,9 +289,9 @@
           "today": "Today",
           "lastWeek": "Last Week",
           "lastMonth": "Last Month",
-          "deliveryCount": "Delivery Count",
-          "deliveryOverdueCount": "Delivery Overdue Count",
-          "totalCount": "Total Count"
+          "deliveryCount": "Delivery",
+          "deliveryOverdueCount": "Overdue",
+          "totalCount": "Total"
         },
         "chartTitles": {
           "deliveryCount": "Delivery Count (Completed)",
@@ -391,12 +391,12 @@
       "unplannedTasks": {
         "total": "Total",
         "chartLabels": {
-          "totalCount": "Total Count",
-          "unplannedCount": "Unplanned Count",
-          "unplannedCompletedCount": "Unplanned Completed Count",
-          "totalWorkload": "Total Workload",
-          "unplannedWorkload": "Unplanned Workload",
-          "unplannedCompletedWorkload": "Unplanned Completed Workload"
+          "totalCount": "Total",
+          "unplannedCount": "Unplanned",
+          "unplannedCompletedCount": "Completed",
+          "totalWorkload": "Total",
+          "unplannedWorkload": "Unplanned",
+          "unplannedCompletedWorkload": "Completed"
         },
         "chartTitles": {
           "taskCount": "Count",
@@ -410,15 +410,15 @@
       "workload": {
         "total": "Total",
         "chartLabels": {
-          "estimatedWorkload": "Estimated Workload",
-          "actualWorkload": "Actual Workload",
-          "completedWorkload": "Completed Workload",
-          "savingWorkload": "Saving Workload"
+          "estimatedWorkload": "Estimated",
+          "actualWorkload": "Actual",
+          "completedWorkload": "Completed",
+          "savingWorkload": "Saving"
         },
         "chartTitles": {
           "workload": "Workload",
-          "completedWorkloadRatio": "Completed Workload Ratio",
-          "savingWorkloadRatio": "Saving Workload Ratio"
+          "completedWorkloadRatio": "Completed Workload",
+          "savingWorkloadRatio": "Saving Workload"
         },
         "pieLabels": {
           "incomplete": "Incomplete",

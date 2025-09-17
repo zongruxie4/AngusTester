@@ -26,6 +26,7 @@ onMounted(() => {
         completedNum = 0, completedRate = 0, completedWorkload = 0,
         completedWorkloadRate = 0, evalWorkload = 0, totalNum = 0
       } = sourceData;
+
       totalValue.value.value0 = [
         { name: t('taskAnalysis.detail.progress.chartLabels.uncompleted'), value: totalNum - completedNum },
         { name: t('taskAnalysis.detail.progress.chartLabels.completed'), value: completedNum }
@@ -43,7 +44,10 @@ onMounted(() => {
         const assignees = newValue.data?.assignees || [];
         Object.keys(sourceData).forEach(userId => {
           const viewData = sourceData[userId] || {};
-          const { completedNum = 0, completedRate = 0, completedWorkload = 0, completedWorkloadRate = 0, evalWorkload = 0, totalNum = 0 } = viewData;
+          const {
+            completedNum = 0, completedRate = 0, completedWorkload = 0,
+            completedWorkloadRate = 0, evalWorkload = 0, totalNum = 0
+          } = viewData;
           const chartData = {
             value0: [
               { name: t('taskAnalysis.detail.progress.chartLabels.uncompleted'), value: totalNum - completedNum },

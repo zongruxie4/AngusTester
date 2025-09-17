@@ -39,7 +39,7 @@ const completedWorkloadEChartConfig = {
   title: {
     text: '0%',
     left: '35%',
-    top: '45%',
+    top: '52%',
     padding: 2,
     subtext: t('taskAnalysis.detail.overdueAssessment.chartTitles.completedWorkloadRatio'),
     itemGap: 40,
@@ -94,14 +94,14 @@ const completedWorkloadEChartConfig = {
           name: t('taskAnalysis.detail.overdueAssessment.chartLabels.uncompleted'),
           value: 0,
           itemStyle: {
-            color: 'rgba(217, 217, 217, 1)'
+            color: 'rgb(117,246,42)'
           }
         },
         {
           name: t('taskAnalysis.detail.overdueAssessment.chartLabels.completed'),
           value: 0,
           itemStyle: {
-            color: 'rgba(245, 34, 45, 1)'
+            color: 'rgb(205,115,120)'
           }
         }
       ]
@@ -162,7 +162,7 @@ defineExpose({
 </script>
 <template>
   <div class="flex">
-    <div class="px-3 w-100">
+    <div class="px-3 w-130">
       <div class="flex justify-around">
         <div class="text-center flex-1">
           <div class="font-semibold text-5 text-status-error">
@@ -212,8 +212,8 @@ defineExpose({
         </div>
       </div>
     </div>
-    <div ref="completedWorkloadRef" class="flex-1 h-30"></div>
-    <div ref="savingWorkloadRef" class="flex-1 h-30"></div>
+    <div ref="completedWorkloadRef" class="flex-1 h-35"></div>
+    <div ref="savingWorkloadRef" class="flex-1 h-35"></div>
   </div>
 </template>
 <style scoped>

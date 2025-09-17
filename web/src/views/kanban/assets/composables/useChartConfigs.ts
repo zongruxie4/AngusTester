@@ -178,7 +178,7 @@ export function useChartConfigs () {
         data: [
           {
             value: 0,
-            itemStyle: { color: 'rgba(217, 217, 217, 1)' }
+            itemStyle: { color: 'rgb(246,159,42)' }
           },
           {
             value: 0,

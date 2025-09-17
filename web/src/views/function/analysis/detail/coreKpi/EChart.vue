@@ -144,8 +144,6 @@ const completedEchartConfig = {
     top: '45%',
     padding: 2,
     subtext: t('functionAnalysis.detail.coreKpi.completedCasePercentage'),
-    // left: '25%',
-    // top: '40%',
     itemGap: 40,
     textAlign: 'center',
     textStyle: {

@@ -77,7 +77,7 @@ export function useChart (props: ChartProps) {
             name: t('taskAnalysis.detail.progress.chartLabels.uncompleted'),
             value: 0,
             itemStyle: {
-              color: 'rgba(217, 217, 217, 1)'
+              color: 'rgb(246,159,42)'
             }
           },
           {

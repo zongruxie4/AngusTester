@@ -105,7 +105,7 @@ const backlogEchartConfig = {
     {
       name: t('functionAnalysis.detail.backlogTasks.totalVolume'),
       itemStyle: {
-        color: 'rgba(136, 185, 242, 0.8)',
+        color: 'rgb(68,93,179)',
         borderRadius: [5, 5, 0, 0]
       },
       data: [0, 0],
@@ -126,8 +126,6 @@ const backloggedTaskEchartConfig = {
     top: '45%',
     padding: 2,
     subtext: t('functionAnalysis.detail.backlogTasks.backlogCaseCount'),
-    // left: '25%',
-    // top: '40%',
     itemGap: 55,
     textAlign: 'center',
     textStyle: {
@@ -181,7 +179,7 @@ const backloggedTaskEchartConfig = {
           name: t('functionAnalysis.detail.backlogTasks.notCompleted'),
           value: 0,
           itemStyle: {
-            color: 'rgba(217, 217, 217, 1)'
+            color: 'rgb(246,159,42)'
           }
         },
         {

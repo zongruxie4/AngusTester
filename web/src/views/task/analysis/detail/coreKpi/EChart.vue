@@ -109,7 +109,7 @@ const coreEChartConfig = {
     {
       name: t('taskAnalysis.detail.coreKpi.chartLabels.completedCount'),
       itemStyle: {
-        color: 'rgba(45, 142, 255, 1)',
+        color: '#52C41A',
         borderRadius: [5, 5, 0, 0]
       },
       barGap: 0,
@@ -124,7 +124,7 @@ const coreEChartConfig = {
     {
       name: t('taskAnalysis.detail.coreKpi.chartLabels.totalCount'),
       itemStyle: {
-        color: 'rgba(136, 185, 242, 0.8)',
+        color: 'rgb(68,93,179)',
         borderRadius: [5, 5, 0, 0]
       },
       data: [0, 0, 0],
@@ -137,17 +137,16 @@ const coreEChartConfig = {
     }
   ]
 };
+
 // 完成任务占比
 const completedEChartConfig = {
   title: {
     text: '0%',
     left: '35%',
-    top: '45%',
+    top: '38%',
     padding: 2,
     subtext: t('taskAnalysis.detail.coreKpi.chartTitles.completedTaskRatio'),
-    // left: '25%',
-    // top: '40%',
-    itemGap: 40,
+    itemGap: 60,
     textAlign: 'center',
     textStyle: {
       fontSize: 12,
@@ -174,7 +173,6 @@ const completedEChartConfig = {
       name: '',
       type: 'pie',
       radius: '65%',
-      // radius: ['50%', '65%'],
       center: ['35%', '50%'],
       avoidLabelOverlap: true,
       label: {
@@ -207,7 +205,7 @@ const completedEChartConfig = {
           name: '',
           value: 0,
           itemStyle: {
-            color: 'rgba(45, 142, 255, 1)'
+            color: '#52C41A'
           }
         }
       ]
@@ -221,7 +219,7 @@ const completedWorkloadEChartConfig = JSON.parse(JSON.stringify({
   title: {
     ...completedEChartConfig.title,
     subtext: t('taskAnalysis.detail.coreKpi.chartTitles.completedWorkloadRatio'),
-    itemGap: 40
+    itemGap: 60
   }
 }));
 
@@ -332,9 +330,9 @@ defineExpose({
 <template>
   <div class="flex">
     <div ref="coreRef" class="h-40 w-100"></div>
-    <div ref="completedRef" class="flex-1 h-30"></div>
-    <div ref="completedWorkloadRef" class="flex-1 h-30"></div>
-    <div ref="completedOverdueRef" class="flex-1 h-30"></div>
-    <div ref="completedBugRef" class="flex-1 h-30"></div>
+    <div ref="completedRef" class="flex-1 h-35"></div>
+    <div ref="completedWorkloadRef" class="flex-1 h-35"></div>
+    <div ref="completedOverdueRef" class="flex-1 h-35"></div>
+    <div ref="completedBugRef" class="flex-1 h-35"></div>
   </div>
 </template>

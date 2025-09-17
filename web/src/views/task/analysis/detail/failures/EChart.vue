@@ -191,21 +191,21 @@ const failureLevelEChartConfig = {
           name: t('taskAnalysis.detail.failures.pieChartLabels.majorCount'),
           value: 0,
           itemStyle: {
-            color: 'gold'
+            color: 'rgb(220,34,133)'
           }
         },
         {
           name: t('taskAnalysis.detail.failures.pieChartLabels.minorCount'),
           value: 0,
           itemStyle: {
-            color: 'rgba(255, 165, 43, 1)'
+            color: 'rgb(246,159,42)'
           }
         },
         {
           name: t('taskAnalysis.detail.failures.pieChartLabels.trivialCount'),
           value: 0,
           itemStyle: {
-            color: 'rgba(136, 185, 242, 1)'
+            color: 'rgb(231,238,246)'
           }
         }
       ]

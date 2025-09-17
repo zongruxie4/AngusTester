@@ -81,7 +81,7 @@ export const createProgressChartConfig = (): ChartConfig => {
       name: t('kanban.cto.progress.incomplete'),
       value: 0,
       itemStyle: {
-        color: 'rgba(217, 217, 217, 1)'
+        color: 'rgb(246,159,42)'
       }
     },
     {
@@ -281,7 +281,7 @@ export const createOverdueAssessmentConfig = (): ChartConfig => {
     {
       name: t('kanban.cto.overdue.nonOverdueCount'),
       value: 0,
-      itemStyle: { color: 'rgba(217, 217, 217, 1)' }
+      itemStyle: { color: 'rgb(246,159,42)' }
     }
   ];
   return config;
@@ -574,7 +574,7 @@ export const createApiTestConfig = (title: string): ChartConfig => {
     {
       name: `Non-${title}`,
       value: 0,
-      itemStyle: { color: 'rgba(217, 217, 217, 1)' }
+      itemStyle: { color: 'rgb(246,159,42)' }
     }
   ];
   return config;

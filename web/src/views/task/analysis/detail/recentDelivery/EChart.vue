@@ -84,7 +84,7 @@ const deliveryEChartConfig = {
     {
       name: t('taskAnalysis.detail.recentDelivery.chartLabels.deliveryCount'),
       itemStyle: {
-        color: 'blue',
+        color: '#52C41A',
         borderRadius: [5, 5, 0, 0]
       },
       barGap: 0,
@@ -113,7 +113,7 @@ const deliveryEChartConfig = {
     {
       name: t('taskAnalysis.detail.recentDelivery.chartLabels.totalCount'),
       itemStyle: {
-        color: 'green',
+        color: 'rgb(68,93,179)',
         borderRadius: [5, 5, 0, 0]
       },
       data: [0, 0],

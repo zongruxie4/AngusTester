@@ -189,7 +189,7 @@ onBeforeUnmount(() => {
   <div class="p-5 h-full overflow-auto">
     <!-- Analysis Header Section -->
     <div class="bg-gray-1 p-2 flex items-center space-x-2">
-      <Icon :icon="TemplateIconConfig[analysisData.template]" class="text-20" />
+      <Icon :icon="TemplateIconConfig[analysisData.template]" class="text-20 pl-4 mr-4" />
       <div class="flex-1 min-w-0 flex flex-col justify-around">
         <div>
           <span class="text-4 font-semibold">

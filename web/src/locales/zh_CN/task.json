@@ -105,7 +105,7 @@
           "backlogWorkloadEstimatedTime": "积压工作量预计耗时",
           "hours": "小时",
           "averageDailyProcessedTasks": "每天平均处理任务数",
-          "averageDailyProcessedWorkload": "每天平均处理工作量"
+          "averageDailyProcessedWorkload": "平均每天处理工作量"
         }
       },
       "bugs": {
@@ -115,10 +115,10 @@
           "validBugs": "有效缺陷",
           "invalidBugs": "无效缺陷",
           "missingBugs": "漏测缺陷",
-          "criticalBugs": "致命缺陷数",
-          "majorBugs": "严重缺陷数",
-          "minorBugs": "一般缺陷数",
-          "trivialBugs": "轻微缺陷数",
+          "criticalBugs": "致命",
+          "majorBugs": "严重",
+          "minorBugs": "一般",
+          "trivialBugs": "轻微",
           "nonBugWorkload": "非缺陷工作量",
           "bugWorkload": "缺陷工作量",
           "nonMissingBugs": "非漏测缺陷数",
@@ -181,18 +181,18 @@
         "total": "总共",
         "chartLabels": {
           "totalFailures": "总故障",
-          "completedFailures": "故障完成数",
-          "overdueFailures": "故障逾期数",
-          "oneTimeFailures": "一次性故障数",
-          "twoTimeFailures": "两次故障数",
-          "totalFailureTime": "总故障时间",
-          "averageFailureTime": "平均故障时间",
-          "minFailureTime": "最小故障时间",
-          "maxFailureTime": "最大故障时间",
-          "criticalFailures": "致命故障数",
-          "majorFailures": "严重故障数",
-          "minorFailures": "一般故障数",
-          "trivialFailures": "轻微故障数"
+          "completedFailures": "完成数",
+          "overdueFailures": "逾期数",
+          "oneTimeFailures": "一次性故障",
+          "twoTimeFailures": "两次故障",
+          "totalFailureTime": "总时间",
+          "averageFailureTime": "平均时间",
+          "minFailureTime": "最小时间",
+          "maxFailureTime": "最大时间",
+          "criticalFailures": "致命",
+          "majorFailures": "严重",
+          "minorFailures": "一般",
+          "trivialFailures": "轻微"
         },
         "chartTitles": {
           "failureCount": "故障数",
@@ -268,8 +268,8 @@
           "overdueRisk": "逾期风险",
           "overdueTime": "逾期时长",
           "hours": "小时",
-          "averageDailyProcessedWorkload": "每天平均处理工作量",
-          "overdueWorkloadProcessingTime": "逾期工作量预计处理时长"
+          "averageDailyProcessedWorkload": "平均每天处理工作量",
+          "overdueWorkloadProcessingTime": "逾期预计处理时长"
         }
       },
       "progress": {

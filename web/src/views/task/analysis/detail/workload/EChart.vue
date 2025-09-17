@@ -95,7 +95,7 @@ const completedWorkloadEChartConfig = {
   title: {
     text: '0%',
     left: '35%',
-    top: '40%',
+    top: '45%',
     padding: 2,
     subtext: t('taskAnalysis.detail.workload.chartTitles.completedWorkloadRatio'),
     itemGap: 40,
@@ -151,7 +151,7 @@ const completedWorkloadEChartConfig = {
           name: t('taskAnalysis.detail.workload.pieLabels.incomplete'),
           value: 0,
           itemStyle: {
-            color: 'rgba(217, 217, 217, 1)'
+            color: 'rgb(246,159,42)'
           }
         },
         {
