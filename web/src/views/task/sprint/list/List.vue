@@ -3,8 +3,7 @@
 import { useI18n } from 'vue-i18n';
 import { Avatar, Button, Pagination, Progress } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
-import { Colon, Dropdown, Icon, Image, NoData, Popover } from '@xcan-angus/vue-ui';
-import { download } from '@xcan-angus/infra';
+import { Dropdown, Icon, Image, NoData, Popover } from '@xcan-angus/vue-ui';
 import { TaskSprintPermission, TaskSprintStatus } from '@/enums/enums';
 import { SprintInfo } from '../types';
 import RichTextEditor from '@/components/richEditor/textContent/index.vue';
@@ -29,6 +28,46 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+
+/**
+ * Get sprint status style based on status value
+ * @param statusValue - Sprint status value
+ * @returns CSS classes for sprint status container
+ */
+const getSprintStatusStyle = (statusValue: string) => {
+  switch (statusValue) {
+    case TaskSprintStatus.PENDING:
+      return 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100';
+    case TaskSprintStatus.IN_PROGRESS:
+      return 'bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100';
+    case TaskSprintStatus.COMPLETED:
+      return 'bg-green-50 text-green-700 border-green-200 hover:bg-green-100';
+    case TaskSprintStatus.BLOCKED:
+      return 'bg-red-50 text-red-700 border-red-200 hover:bg-red-100';
+    default:
+      return 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100';
+  }
+};
+
+/**
+ * Get sprint status dot style based on status value
+ * @param statusValue - Sprint status value
+ * @returns CSS classes for sprint status dot
+ */
+const getSprintStatusDotStyle = (statusValue: string) => {
+  switch (statusValue) {
+    case TaskSprintStatus.PENDING:
+      return 'bg-gray-500';
+    case TaskSprintStatus.IN_PROGRESS:
+      return 'bg-blue-500';
+    case TaskSprintStatus.COMPLETED:
+      return 'bg-green-500';
+    case TaskSprintStatus.BLOCKED:
+      return 'bg-red-500';
+    default:
+      return 'bg-gray-500';
+  }
+};
 </script>
 
 <template>
@@ -66,159 +105,111 @@ const props = defineProps<Props>();
           </div>
         </div>
 
-        <div class="px-3.5 flex mt-3 justify-between text-3 text-theme-sub-content">
-          <div class="flex leading-5">
-            <div class="flex items-center" style="margin-right: 50px;">
-              <span class="text-theme-content">{{ t('taskSprint.taskCount') }}</span>
-              <Colon />
-              <span class="text-theme-content font-semibold ml-1">{{ item.taskNum }}</span>
-            </div>
-            <div class="flex mr-10 items-center">
-              <div class="mr-2">
-                <span>{{ t('taskSprint.columns.owner') }}</span>
-                <Colon />
-              </div>
-              <div class="w-5 h-5 rounded-full mr-1 overflow-hidden">
-                <Image
-                  class="w-full"
-                  :src="item.ownerAvatar"
-                  type="avatar" />
-              </div>
-              <div
-                class="text-theme-content truncate"
-                :title="item.ownerName"
-                style="max-width: 200px;">
-                {{ item.ownerName }}
-              </div>
-            </div>
-
-            <div class="flex items-center">
-              <div class="mr-2">
-                <span>{{ t('taskSprint.columns.members') }}</span>
-                <Colon />
-              </div>
-
-              <template v-if="item.members?.length">
-                <div
-                  v-for="user in item.showMembers"
-                  :key="user.id"
-                  :title="user.fullName"
-                  class="w-5 h-5 mr-2 overflow-hidden rounded-full">
-                  <Image
-                    :src="user.avatar"
-                    type="avatar"
-                    class="w-full" />
+        <!-- Sprint information card -->
+        <div class="px-4 py-3 bg-theme-bg-subtle/30 border-t border-theme-border-subtle">
+          <div class="flex items-center justify-between">
+            <!-- Left side: Owner + Status + Task count + Members -->
+            <div class="flex items-center space-x-16">
+              <!-- Owner -->
+              <div class="flex items-center space-x-2">
+                <div class="w-6 h-6 rounded-full overflow-hidden ring-1 ring-theme-border">
+                  <Image class="w-full h-full" :src="item.ownerAvatar" type="avatar" />
                 </div>
-
-                <Popover
-                  v-if="item.members.length > 10"
-                  placement="bottomLeft"
-                  internal>
-                  <template #title>
-                    <span class="text-3">{{ t('taskSprint.allMembers') }}</span>
-                  </template>
-                  <template #content>
-                    <div class="flex flex-wrap" style="max-width: 700px;">
-                      <div
-                        v-for="_user in item.members"
-                        :key="_user.id"
-                        class="flex text-3 leading-5 mr-2 mb-2">
-                        <div class="w-5 h-5 rounded-full mr-1 flex-none overflow-hidden">
-                          <Image
-                            class="w-full"
-                            :src="_user.avatar"
-                            type="avatar" />
-                        </div>
-                        <span class="flex-1 truncate">{{ _user.fullName }}</span>
-                      </div>
-                    </div>
-                  </template>
-                  <a class="text-theme-special text-5">...</a>
-                </Popover>
-              </template>
-
-              <Avatar
-                v-else
-                size="small"
-                style="font-size: 12px;"
-                class="w-5 h-5 leading-5">
-                <template #icon>
-                  <UserOutlined />
-                </template>
-              </Avatar>
-            </div>
-          </div>
-        </div>
-
-        <div class="px-3.5 flex flex-start justify-between text-3 text-theme-sub-content">
-          <div class="flex flex-wrap">
-            <div class="flex mt-3">
-              <div class="mr-2 whitespace-nowrap">
-                <span>{{ t('taskSprint.columns.id') }}</span>
-                <Colon />
+                <div class="flex flex-col">
+                  <span class="text-xs text-theme-sub-content">{{ t('taskSprint.columns.owner') }}</span>
+                  <span class="text-sm font-medium text-theme-content truncate max-w-24" :title="item.ownerName">
+                    {{ item.ownerName }}
+                  </span>
+                </div>
               </div>
-              <div class="text-theme-content">{{ item.id || "--" }}</div>
-            </div>
 
-            <div class="flex ml-8  mt-3">
-              <div class="mr-2 whitespace-nowrap">
-                <span>{{ t('taskSprint.columns.workloadAssessment') }}</span>
-                <Colon />
-              </div>
-              <div class="text-theme-content">{{ item.evalWorkloadMethod.message }}</div>
-            </div>
-
-            <div v-if="item.taskPrefix" class="flex ml-8 mt-3 relative">
-              <div class="mr-2 whitespace-nowrap">
-                <span>{{ t('taskSprint.columns.taskPrefix') }}</span>
-                <Colon />
-              </div>
-              <div
-                class="truncate text-theme-content"
-                style="max-width: 100px;"
-                :title="item.taskPrefix">
-                {{ item.taskPrefix }}
-              </div>
-            </div>
-
-            <div v-if="item.attachments?.length" class="whitespace-nowrap ml-8 mt-3">
-              <span>{{ t('taskSprint.columns.attachmentCount') }}</span>
-              <Colon />
-              <Popover placement="bottomLeft" internal>
-                <template #content>
-                  <div class="flex flex-col text-3 leading-5 space-y-1">
+              <!-- Sprint status -->
+              <div class="flex items-center space-x-2">
+                <div
+                  class="px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm border transition-all duration-200 hover:shadow-md"
+                  :class="getSprintStatusStyle(item.status?.value)">
+                  <div class="flex items-center space-x-1.5">
                     <div
-                      v-for="_attachment in item.attachments"
-                      :key="_attachment.id"
-                      :title="_attachment.name"
-                      class="flex-1 px-2 py-1 truncate link"
-                      @click="download(_attachment.url)">
-                      {{ _attachment.name }}
+                      class="w-2 h-2 rounded-full"
+                      :class="getSprintStatusDotStyle(item.status?.value)">
                     </div>
+                    <span>{{ item.status?.message }}</span>
                   </div>
-                </template>
-                <span style="color:#1890ff" class="pl-2 pr-2 cursor-pointer">
-                  {{ item.attachments?.length }}
-                </span>
-              </Popover>
-            </div>
-          </div>
+                </div>
+              </div>
 
-          <div class="flex ml-8 mt-3">
-            <div
-              class="truncate text-theme-content"
-              style="max-width: 100px;"
-              :title="item.lastModifiedByName">
-              {{ item.lastModifiedByName }}
+              <!-- Task count -->
+              <div class="flex items-center space-x-2">
+                <div class="flex flex-col">
+                  <span class="text-xs text-theme-sub-content">{{ t('taskSprint.taskCount') }}</span>
+                  <span class="text-sm font-medium text-theme-content">
+                    {{ item.taskNum }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Members -->
+              <div class="flex items-center space-x-2">
+                <div class="flex flex-col">
+                  <span class="text-xs text-theme-sub-content">{{ t('taskSprint.columns.members') }}</span>
+                  <span class="text-sm font-medium text-theme-content">
+                    {{ item.members?.length || 0 }} 人
+                  </span>
+                </div>
+                <div class="flex -space-x-1">
+                  <template v-if="item.members?.length">
+                    <div
+                      v-for="user in item.showMembers.slice(0, 8)"
+                      :key="user.id"
+                      :title="user.fullName"
+                      class="w-6 h-6 rounded-full overflow-hidden ring-1 ring-white shadow-sm">
+                      <Image :src="user.avatar" type="avatar" class="w-full h-full" />
+                    </div>
+                    <Popover v-if="item.members.length > 8" placement="bottomLeft" internal>
+                      <template #title>
+                        <span class="text-sm font-medium">{{ t('taskSprint.columns.members') }} ({{ item.members.length }})</span>
+                      </template>
+                      <template #content>
+                        <div class="grid grid-cols-5 gap-2 max-w-md">
+                          <div v-for="user in item.members" :key="user.id" class="flex flex-col items-center space-y-1 p-2">
+                            <div class="w-8 h-8 rounded-full overflow-hidden">
+                              <Image class="w-full h-full" :src="user.avatar" type="avatar" />
+                            </div>
+                            <span class="text-xs text-theme-content text-center truncate w-full" :title="user.fullName">{{ user.fullName }}</span>
+                          </div>
+                        </div>
+                      </template>
+                      <div class="w-6 h-6 rounded-full bg-theme-primary/20 flex items-center justify-center text-xs font-bold text-theme-primary ring-1 ring-white shadow-sm cursor-pointer">
+                        +{{ item.members.length - 8 }}
+                      </div>
+                    </Popover>
+                  </template>
+                  <Avatar v-else size="small" class="w-6 h-6">
+                    <template #icon>
+                      <UserOutlined />
+                    </template>
+                  </Avatar>
+                </div>
+              </div>
             </div>
-            <div class="mx-2 whitespace-nowrap">
-              {{ t('taskSprint.columns.lastModifiedBy') }}
-            </div>
-            <div class="whitespace-nowrap text-theme-content">
-              {{ item.lastModifiedDate }}
+
+            <!-- Right side: Last modified info -->
+            <div class="flex items-center">
+              <!-- Last modified -->
+              <div class="flex items-center space-x-2 text-xs text-theme-sub-content">
+                <span>{{ t('taskSprint.columns.lastModifiedBy') }}</span>
+                <span class="text-theme-content font-medium truncate max-w-16" :title="item.lastModifiedByName">
+                  {{ item.lastModifiedByName }}
+                </span>
+                <span class="text-theme-sub-content">{{ item.lastModifiedDate }}</span>
+              </div>
             </div>
           </div>
         </div>
+
+        <!-- Divider line -->
+        <div class="border-t border-theme-border-subtle/50"></div>
+
 
         <div class="px-3.5 flex justify-between items-start text-3 my-2.5 relative">
           <div

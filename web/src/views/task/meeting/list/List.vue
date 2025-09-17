@@ -110,23 +110,8 @@ const getMeetingTypeDotStyle = (typeValue: string) => {
       <!-- Meeting information card -->
       <div class="px-4 py-3 bg-theme-bg-subtle/30 border-t border-theme-border-subtle">
         <div class="flex items-center justify-between">
-          <!-- Left side: Meeting type + Moderator + Meeting time + Participants -->
+          <!-- Left side: Moderator + Meeting type + Meeting time + Participants -->
           <div class="flex items-center space-x-16">
-            <!-- Meeting type -->
-            <div class="flex items-center space-x-2">
-              <div
-                class="px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm border transition-all duration-200 hover:shadow-md"
-                :class="getMeetingTypeStyle(item.type?.value)">
-                <div class="flex items-center space-x-1.5">
-                  <div
-                    class="w-2 h-2 rounded-full"
-                    :class="getMeetingTypeDotStyle(item.type?.value)">
-                  </div>
-                  <span>{{ item.type?.message }}</span>
-                </div>
-              </div>
-            </div>
-
             <!-- Moderator -->
             <div class="flex items-center space-x-2">
               <div class="w-6 h-6 rounded-full overflow-hidden ring-1 ring-theme-border">
@@ -140,6 +125,21 @@ const getMeetingTypeDotStyle = (typeValue: string) => {
                 <span class="text-sm font-medium text-theme-content truncate max-w-24" :title="item.moderator.fullName">
                   {{ item.moderator.fullName }}
                 </span>
+              </div>
+            </div>
+
+            <!-- Meeting type -->
+            <div class="flex items-center space-x-2">
+              <div
+                class="px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm border transition-all duration-200 hover:shadow-md"
+                :class="getMeetingTypeStyle(item.type?.value)">
+                <div class="flex items-center space-x-1.5">
+                  <div
+                    class="w-2 h-2 rounded-full"
+                    :class="getMeetingTypeDotStyle(item.type?.value)">
+                  </div>
+                  <span>{{ item.type?.message }}</span>
+                </div>
               </div>
             </div>
 
@@ -181,18 +181,18 @@ const getMeetingTypeDotStyle = (typeValue: string) => {
                       <span class="text-sm font-medium">{{ t('taskMeeting.columns.participants') }} ({{ item.participants.length }})</span>
                     </template>
                     <template #content>
-                      <div class="space-y-2 max-w-xs">
+                      <div class="grid grid-cols-5 gap-2 max-w-md">
                         <div
                           v-for="participant in item.participants"
                           :key="participant.id"
-                          class="flex items-center space-x-2">
-                          <div class="w-5 h-5 rounded-full overflow-hidden">
+                          class="flex flex-col items-center space-y-1 p-2">
+                          <div class="w-8 h-8 rounded-full overflow-hidden">
                             <Image
                               class="w-full h-full"
                               :src="participant.avatar"
                               type="avatar" />
                           </div>
-                          <span class="text-sm text-theme-content">{{ participant.fullName }}</span>
+                          <span class="text-xs text-theme-content text-center truncate w-full" :title="participant.fullName">{{ participant.fullName }}</span>
                         </div>
                       </div>
                     </template>

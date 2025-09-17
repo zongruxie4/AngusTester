@@ -16,7 +16,7 @@ import { BasicProps } from '@/types/types';
 // Component Props & Configuration
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
-  userInfo: () => ({ id: '' }),
+  userInfo: () => ({ id: '', fullName: '' }),
   data: undefined
 });
 
@@ -213,7 +213,6 @@ const handleSave = async () => {
       : analysis.updateAnalysis({ ...submissionParams }));
 
     isSaving.value = false;
-
     if (error) {
       return;
     }
@@ -249,7 +248,8 @@ onMounted(async () => {
 
   // Watch for template changes to auto-update description
   watch(() => formData.value.template, () => {
-    if (!isDescriptionManuallyChanged.value) {
+    // Only set default description from template when creating (no id)
+    if (!props.data?.id && !formData.value.id && !isDescriptionManuallyChanged.value) {
       formData.value.description = templateDescriptionOptions.value
         .find(item => item.value === formData.value.template as any)?.message || '';
     }
@@ -261,7 +261,7 @@ onMounted(async () => {
 </script>
 <template>
   <div class="p-5">
-    <div class="mb-2 flex space-x-2">
+    <div class="mb-4 flex space-x-2">
       <Button
         type="primary"
         size="small"
@@ -277,9 +277,20 @@ onMounted(async () => {
     <Form
       ref="formRef"
       :colon="false"
-      :labelCol="{style: {width: '90px'}}"
+      :labelCol="{style: {width: '100px'}}"
       :model="formData"
       class="w-200 mt-5">
+      <FormItem
+        name="name"
+        :label="t('taskAnalysis.form.name')"
+        class="input-item"
+        required>
+        <Input
+          v-model:value="formData.name"
+          :maxlength="100"
+          :placeholder="t('taskAnalysis.placeholder.inputAnalysisName')" />
+      </FormItem>
+
       <FormItem
         name="template"
         :label="t('taskAnalysis.form.template')"
@@ -295,17 +306,8 @@ onMounted(async () => {
       </FormItem>
 
       <FormItem
-        name="name"
-        :label="t('taskAnalysis.form.name')"
-        class="input-item"
-        required>
-        <Input
-          v-model:value="formData.name"
-          :maxlength="100"
-          :placeholder="t('taskAnalysis.placeholder.inputAnalysisName')" />
-      </FormItem>
-
-      <FormItem name="description" :label="t('taskAnalysis.form.description')">
+        name="description"
+        :label="t('taskAnalysis.form.description')">
         <Textarea
           v-model:value="formData.description"
           :maxlength="200"
@@ -333,7 +335,7 @@ onMounted(async () => {
       <template v-if="formData.object === AnalysisTaskObject.SPRINT">
         <FormItem
           name="planId"
-          :label="t('taskAnalysis.form.selectIteration')"
+          :label="t('taskAnalysis.form.selectSprint')"
           required
           class="ml-16 input-item">
           <Select
@@ -345,7 +347,7 @@ onMounted(async () => {
             defaultActiveFirstOption
             showSearch
             internal
-            :placeholder="t('taskAnalysis.placeholder.selectIteration')">
+            :placeholder="t('taskAnalysis.placeholder.selectSprint')">
             <template #option="record">
               <div class="flex items-center" :title="record.name">
                 <Icon icon="icon-jihua" class="mr-1 text-4" />
@@ -435,5 +437,6 @@ onMounted(async () => {
 <style scoped>
 .ant-form :deep(.ant-form-item) label {
   height: 28px;
+  font-weight: 500;
 }
 </style>

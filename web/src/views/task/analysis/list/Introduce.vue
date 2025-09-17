@@ -42,14 +42,13 @@ onBeforeUnmount(() => {
   // Clean up resize listener
   elementResizeDetectorInstance.removeListener(containerWrapperRef.value, handleContainerWidthChange);
 });
-
 </script>
 <template>
   <div ref="containerWrapperRef">
     <div class="text-3.5 font-semibold mb-2.5">
       {{ t('taskAnalysis.aboutAnalysis') }}
     </div>
-    <div class="mb-6">
+    <div class="text-3.5 mb-6">
       <div>{{ t('taskAnalysis.aboutAnalysisDesc') }}</div>
     </div>
   </div>

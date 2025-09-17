@@ -72,7 +72,9 @@
     "saveAndAdd": "Save and Add Next",
     "stop": "Stop",
     "deleteAll": "Delete All",
-    "more": "More"
+    "more": "More",
+    "expand": "Expand",
+    "collapse": "Collapse"
   },
   "orgNames": {
     "user": "User",

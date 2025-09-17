@@ -178,7 +178,7 @@
     "taskContent": {
       "filter": "Filter",
       "sprint": "Sprint",
-      "sprintPlaceholder": "Select iteration",
+      "sprintPlaceholder": "Select sprint",
       "task": "Task",
       "taskPlaceholder": "Select task",
       "content": "Content",
@@ -204,7 +204,7 @@
     "sprintContent": {
       "filter": "Filter",
       "sprint": "Sprint",
-      "sprintPlaceholder": "Select iteration",
+      "sprintPlaceholder": "Select sprint",
       "organization": "Organization",
       "userPlaceholder": "Select user",
       "deptPlaceholder": "Select department",

@@ -8,7 +8,7 @@
     "aboutAnalysisDesc": "提供实时任务数据分析，支持数据驱动决策，确保信息透明，增强团队协作和问题追踪，提升项目管理效率。AngusTester内置燃尽图、积压任务、风险评估等分析模板，帮助快速查看仪表板和关键指标（KPI），用户也可根据业务需求自定义分析仪表板。",
     "addedAnalysis": "已添加的分析",
     "notCreatedYet": "还未创建，点击创建",
-    "createdBy": "创建于",
+    "createdAt": "创建于",
     "lastModifiedBy": "最后修改于",
     "realTime": "实时",
     "snapshot": "快照",
@@ -38,7 +38,7 @@
     "placeholder": {
       "inputAnalysisName": "输入分析名称，最多可输入100字符",
       "inputAnalysisDesc": "输入分析描述，如分析的目的、背景等，最多支持200字符",
-      "selectIteration": "选择或查询迭代",
+      "selectSprint": "选择或查询迭代",
       "selectUser": "选择用户",
       "selectDept": "选择部门",
       "selectGroup": "选择组"
@@ -63,7 +63,7 @@
       "name": "分析名称",
       "description": "分析描述",
       "object": "分析对象",
-      "selectIteration": "选择迭代",
+      "selectSprint": "选择迭代",
       "selectOrg": "选择组织",
       "timeRange": "分析期间",
       "dataSource": "数据展示",
@@ -71,8 +71,8 @@
       "containsDataDetail": "包含数据明细"
     },
     "dataSource": {
-      "realTime": "每次展示实时数据",
-      "snapshot": "保存数据快照，每次展示快照数据"
+      "realTime": "实时数据",
+      "snapshot": "保存数据快照"
     },
     "orgType": {
       "dept": "部门",
@@ -992,7 +992,7 @@
       "selectSprint": "选择所属迭代",
       "selectModerator": "选择会议主持人",
       "selectParticipants": "选择参会人员",
-      "inputLocation": "记录会议地点或在线会议的链接，最多支持100个字符",
+      "inputLocation": "记录会议地点或在线会议的链接",
       "startTime": "开始时间",
       "endTime": "结束时间",
       "searchSubject": "查询会议主题",
@@ -1696,7 +1696,7 @@
       "title": "导入任务",
       "form": {
         "iteration": "迭代",
-        "selectIteration": "选择迭代",
+        "selectSprint": "选择迭代",
         "uploadFile": "请上传文件",
         "selectFile": "选择文件",
         "uploadTip": "可直接将文件拖入此区域直接上传，文件大小不超过20M，支持.xls .xlsx类型文件。",
@@ -1791,8 +1791,8 @@
     "moveModal": {
       "title": "移动任务",
       "form": {
-        "selectIteration": "选择迭代",
-        "selectIterationPlaceholder": "选择或查询迭代"
+        "selectSprint": "选择迭代",
+        "selectSprintPlaceholder": "选择或查询迭代"
       },
       "messages": {
         "moveSuccess": "任务移动成功",
