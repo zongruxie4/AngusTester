@@ -288,6 +288,7 @@ onMounted(() => {
         size="small"
         class="flex items-center"
         @click="closeTabPane">
+        <Icon class="mr-1 flex-shrink-0" icon="icon-zhongzhi2" />
         <span>{{ t('taskSprint.actions.cancel') }}</span>
       </Button>
     </div>

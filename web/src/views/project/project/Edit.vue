@@ -414,6 +414,7 @@ onMounted(async () => {
                 size="small"
                 class="secondary-button"
                 @click="handleFormCancel">
+                <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-zhongzhi2" />
                 {{ t('actions.cancel') }}
               </Button>
             </div>
@@ -423,7 +424,7 @@ onMounted(async () => {
     </div>
 
     <!-- Edit project section (when project ID is not empty) -->
-    <div class="form-content-wrapper">
+    <div v-else class="form-content-wrapper">
       <Form
         ref="formRef"
         labelAlign="right"
@@ -652,6 +653,7 @@ onMounted(async () => {
               size="small"
               class="secondary-button"
               @click="handleFormCancel">
+              <Icon class="mr-1 flex-shrink-0 text-3.5" icon="icon-zhongzhi2" />
               {{ t('actions.cancel') }}
             </Button>
           </div>

@@ -213,10 +213,11 @@ const getSprintStatusDotStyle = (statusValue: string) => {
 
         <div class="px-3.5 flex justify-between items-start text-3 my-2.5 relative">
           <div
-            :title="item.otherInformation"
+            :title="item.otherInformationText"
             class="truncate mr-8"
             style="max-width: 70%;">
             <RichTextEditor
+              v-model:textValue="item.otherInformationText"
               :value="item.otherInformation"
               :emptyText="t('taskSprint.noDescription')" />
           </div>

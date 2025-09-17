@@ -120,6 +120,10 @@ watch([overviewData, burnDownData, totalTypeData, assigneeRanking, testerRanking
     if (assigneeRanking.value && assignees.value) {
       updateRankingCharts(assigneeRanking.value, assignees.value, props.countType);
     }
+
+    if ( testerRanking.value && testers.value) {
+      updateRankingCharts(testerRanking.value, testers.value, props.countType);
+    }
   }
 }, { deep: true });
 
@@ -226,7 +230,7 @@ defineExpose({
       <!--targetRateChartRef-->
       <div class="chart-container">
         <div class="chart-header">
-          <h3>targetRateChart</h3>
+          <h3>完成率</h3>
         </div>
         <div ref="targetRateChartRef" class="chart-content"></div>
       </div>
@@ -234,7 +238,7 @@ defineExpose({
       <!-- workloadRateChart -->
       <div class="chart-container">
         <div class="chart-header">
-          <h3>workloadRateChart</h3>
+          <h3>工作量完成率</h3>
         </div>
         <div ref="workloadRateChartRef" class="chart-content"></div>
       </div>
@@ -242,7 +246,7 @@ defineExpose({
       <!--overdueRateChart-->
       <div class="chart-container">
         <div class="chart-header">
-          <h3>overdueRateChart</h3>
+          <h3>逾期率</h3>
         </div>
         <div ref="overdueRateChartRef" class="chart-content"></div>
       </div>
@@ -250,7 +254,7 @@ defineExpose({
       <!--oneTimePassedTestRateRef-->
       <div class="chart-container">
         <div class="chart-header">
-          <h3>oneTimePassedTestRateChart</h3>
+          <h3>一次通过率</h3>
         </div>
         <div ref="oneTimePassedTestRateRef" class="chart-content"></div>
       </div>
@@ -258,7 +262,7 @@ defineExpose({
       <!--oneTimeUnpassedTestChartRef-->
       <div class="chart-container">
         <div class="chart-header">
-          <h3>oneTimeUnpassedTestChart</h3>
+          <h3>一次不通过数</h3>
         </div>
         <div ref="oneTimeUnpassedTestChartRef" class="chart-content"></div>
       </div>
@@ -266,7 +270,7 @@ defineExpose({
       <!-- oneTimeUnpassedTestRateChartRef-->
       <div class="chart-container">
         <div class="chart-header">
-          <h3>oneTimeUnpassedTestRateChart</h3>
+          <h3>一次不通过率</h3>
         </div>
         <div ref="oneTimeUnpassedTestRateChartRef" class="chart-content"></div>
       </div>
