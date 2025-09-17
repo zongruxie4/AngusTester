@@ -16,7 +16,7 @@ const { t } = useI18n();
 const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data, target = 'NUM') => {
-  const res = {};
+  const res = {} as any;
   if (data) {
     const xData = (data[target]?.expected || []).map(i => i.timeSeries);
     const expectedYData = (data[target]?.expected || []).map(i => i.value);
@@ -85,7 +85,10 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">{{ t('taskAnalysis.detail.burndown.total') }}</div>
+    <div class="font-semibold pl-3">
+      {{ t('taskAnalysis.detail.burndown.total') }}
+    </div>
+
     <EChart
       ref="totalChartRef"
       v-bind="totalValue"

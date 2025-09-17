@@ -63,8 +63,10 @@ const backlogEChartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('taskAnalysis.detail.backlogTasks.chartLabels.taskCount'),
-      t('taskAnalysis.detail.backlogTasks.chartLabels.workload')],
+    data: [
+      t('taskAnalysis.detail.backlogTasks.chartLabels.taskCount'),
+      t('taskAnalysis.detail.backlogTasks.chartLabels.workload')
+    ],
     axisLabel: {
       interval: 0,
       overflow: 'break'
@@ -78,8 +80,10 @@ const backlogEChartConfig = {
   },
   legend: {
     show: true,
-    data: [t('taskAnalysis.detail.backlogTasks.chartLabels.backlogAmount'),
-      t('taskAnalysis.detail.backlogTasks.chartLabels.totalAmount')],
+    data: [
+      t('taskAnalysis.detail.backlogTasks.chartLabels.backlogAmount'),
+      t('taskAnalysis.detail.backlogTasks.chartLabels.totalAmount')
+    ],
     top: 0
   },
   series: [
@@ -249,7 +253,9 @@ defineExpose({
       <div class="flex justify-around">
         <div class="text-center flex-1">
           <div class="font-semibold ">
-            <span class="text-5 text-status-error">{{ props.overdueAssessmentData.backloggedCompletionTime || 0 }}</span>
+            <span class="text-5 text-status-error">
+              {{ props.overdueAssessmentData.backloggedCompletionTime || 0 }}
+            </span>
             {{ t('taskAnalysis.detail.backlogTasks.statistics.hours') }}
           </div>
           <div>

@@ -7,7 +7,7 @@ export interface AnalysisInfo {
   containsDataDetail: boolean;
   object: EnumMessage<AnalysisTaskObject>;
   timeRange: string;
-  resource: 'TASK' | 'CASE';
+  resource: 'TASK';
   description: string;
   template: AnalysisTaskTemplate;
   planId: string;

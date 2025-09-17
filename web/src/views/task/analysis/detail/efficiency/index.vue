@@ -15,10 +15,12 @@ const { t } = useI18n();
 const EChart = defineAsyncComponent(() => import('./Efficiency.vue'));
 
 const getChartData = (data) => {
-  const res = {};
+  const res = {} as any;
   const {
-    totalNum = 0, completedNum = 0, completedRate = 0, oneTimeNotPassedNum = 0,
-    oneTimePassedNum = 0, oneTimePassedRate = 0, twoTimePassedNum = 0, twoTimePassedRate = 0, twoTimeNotPassedNum = 0
+    totalNum = 0, completedNum = 0,
+    completedRate = 0, oneTimeNotPassedNum = 0,
+    oneTimePassedNum = 0, oneTimePassedRate = 0,
+    twoTimePassedNum = 0, twoTimePassedRate = 0, twoTimeNotPassedNum = 0
   } = data;
   res.chart0Value = {
     yData: [completedNum, oneTimeNotPassedNum, oneTimePassedNum]

@@ -15,7 +15,7 @@ const { t } = useI18n();
 const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data) => {
-  const res = {};
+  const res = {} as any;
 
   const {
     totalNum = 0, completedNum = 0, completedRate = 0,
@@ -61,7 +61,6 @@ const getChartData = (data) => {
 };
 
 const totalValue = ref({});
-
 const personValues = ref([]);
 
 onMounted(() => {
@@ -108,7 +107,9 @@ defineExpose({
 </script>
 <template>
   <div>
-    <div class="font-semibold pl-3">{{ t('taskAnalysis.detail.coreKpi.total') }}</div>
+    <div class="font-semibold pl-3">
+      {{ t('taskAnalysis.detail.coreKpi.total') }}
+    </div>
     <EChart
       ref="totalChartRef"
       v-bind="totalValue"

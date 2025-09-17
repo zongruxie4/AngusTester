@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { defineAsyncComponent, onMounted, ref, Ref, watch } from 'vue';
+import { defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -18,7 +18,7 @@ const chartListRef: any[] = [];
 const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data) => {
-  const res = {};
+  const res = {} as any;
 
   const {
     backloggedCompletionTime = 0, backloggedNum = 0, backloggedRate = 0,
@@ -109,7 +109,10 @@ defineExpose({
 <template>
   <div>
     <div>
-      <div class="font-semibold pl-3">{{ t('taskAnalysis.detail.backlogTasks.total') }}</div>
+      <div class="font-semibold pl-3">
+        {{ t('taskAnalysis.detail.backlogTasks.total') }}
+      </div>
+
       <EChart
         ref="totalChartRef"
         v-bind="totalValue"

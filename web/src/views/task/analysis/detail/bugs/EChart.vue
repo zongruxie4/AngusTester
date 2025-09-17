@@ -78,10 +78,12 @@ const bugsEChartConfig = {
   },
   xAxis: {
     type: 'category',
-    data: [t('taskAnalysis.detail.bugs.chartLabels.totalBugs'),
+    data: [
+      t('taskAnalysis.detail.bugs.chartLabels.totalBugs'),
       t('taskAnalysis.detail.bugs.chartLabels.validBugs'),
       t('taskAnalysis.detail.bugs.chartLabels.invalidBugs'),
-      t('taskAnalysis.detail.bugs.chartLabels.missingBugs')],
+      t('taskAnalysis.detail.bugs.chartLabels.missingBugs')
+    ],
     axisLabel: {
       interval: 0,
       overflow: 'break'
