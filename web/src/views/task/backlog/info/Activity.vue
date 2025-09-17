@@ -30,7 +30,6 @@ const currentTaskId = computed(() => {
   return props.dataSource?.id;
 });
 
-// Activity Management Functions
 /**
  * <p>Handle activity data change</p>
  * <p>Updates the activity list when new data is received from the Scroll component</p>

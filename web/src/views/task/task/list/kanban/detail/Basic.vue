@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, nextTick, onMounted, ref } from 'vue';
 import { Button, Tag, TreeSelect } from 'ant-design-vue';
-import { AsyncComponent, Colon, Icon, IconTask, Input, Select } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Icon, IconTask, Input, Select } from '@xcan-angus/vue-ui';
 import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
@@ -446,27 +446,6 @@ const handleTaskTypeSelectionBlur = async () => {
 };
 
 /**
- * Check if task type should be excluded from selection
- * @param data - Task type data with value and message
- * @returns Whether the task type should be excluded
- */
-const shouldExcludeTaskType = (data: { value: string; message: string }) => {
-  const value = data.value as TaskInfo['taskType']['value'];
-  const type = currentTaskType.value;
-  if (currentTaskId.value) {
-    if (type === TaskType.API_TEST) {
-      return value !== TaskType.API_TEST;
-    }
-
-    if (type === TaskType.SCENARIO_TEST) {
-      return value !== TaskType.SCENARIO_TEST;
-    }
-    return [TaskType.API_TEST, TaskType.SCENARIO_TEST].includes(value);
-  }
-  return false;
-};
-
-/**
  * Enter priority editing mode and focus the select
  */
 const enterPriorityEditMode = () => {
@@ -631,489 +610,566 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="h-full text-3 leading-5 pl-5 overflow-auto">
-    <div>
-      <div class="text-theme-title mb-2.5 font-semibold">
-        {{ t('task.detailInfo.basic.title') }}
-      </div>
+  <div class="basic-info-drawer">
+    <div class="basic-info-header">
+      <h3 class="basic-info-title">{{ t('task.detailInfo.basic.title') }}</h3>
+    </div>
 
-      <div class="space-y-2.5">
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
+    <!-- Scrollable Content Area -->
+    <div class="scrollable-content">
+      <div class="basic-info-content">
+        <!-- Task Code -->
+        <div class="info-row">
+          <div class="info-label">
             <span>{{ t('task.detailInfo.basic.columns.code') }}</span>
-            <Colon class="w-1" />
           </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">
+          <div class="info-value">
             {{ props.dataSource?.code }}
           </div>
         </div>
 
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
+        <!-- Task Name -->
+        <div class="info-row">
+          <div class="info-label">
             <span>{{ t('task.detailInfo.basic.columns.name') }}</span>
-            <Colon class="w-1" />
           </div>
-
-          <div v-show="!isTaskNameEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
-            <div>{{ currentTaskName }}</div>
-            <Button
-              type="link"
-              class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-              @click="enterTaskNameEditMode">
-              <Icon icon="icon-shuxie" class="text-3.5" />
-            </Button>
+          <div class="info-value">
+            <div v-show="!isTaskNameEditing" class="info-value-content">
+              <span class="info-text">{{ currentTaskName }}</span>
+              <Button
+                type="link"
+                class="edit-btn"
+                @click="enterTaskNameEditMode">
+                <Icon icon="icon-shuxie" />
+              </Button>
+            </div>
+            <AsyncComponent :visible="isTaskNameEditing">
+              <Input
+                v-show="isTaskNameEditing"
+                ref="taskNameInputRef"
+                v-model:value="taskNameInputValue"
+                :maxlength="200"
+                trim
+                class="edit-input"
+                :placeholder="t('task.detailInfo.basic.columns.namePlaceholder')"
+                @blur="handleTaskNameInputBlur"
+                @pressEnter="handleTaskNameInputEnter" />
+            </AsyncComponent>
           </div>
-
-          <AsyncComponent :visible="isTaskNameEditing">
-            <Input
-              v-show="isTaskNameEditing"
-              ref="taskNameInputRef"
-              v-model:value="taskNameInputValue"
-              :maxlength="200"
-              trim
-              class="edit-container"
-              :placeholder="t('task.detailInfo.basic.columns.namePlaceholder')"
-              @blur="handleTaskNameInputBlur"
-              @pressEnter="handleTaskNameInputEnter" />
-          </AsyncComponent>
         </div>
 
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
+        <!-- Task Status -->
+        <div class="info-row">
+          <div class="info-label">
             <span>{{ t('task.detailInfo.basic.columns.status') }}</span>
-            <Colon class="w-1" />
           </div>
-
-          <div class="flex items-center">
-            <TaskStatus :value="currentTaskStatus" />
-            <span
-              v-if="isTaskOverdue"
-              class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
-              style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-              <span class="inline-block transform-gpu scale-90">
+          <div class="info-value">
+            <div class="info-value-content">
+              <TaskStatus :value="currentTaskStatus" />
+              <span v-if="isTaskOverdue" class="overdue-badge">
                 {{ t('task.detailInfo.basic.columns.overdue') }}
               </span>
-            </span>
+            </div>
           </div>
         </div>
 
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
+        <!-- Sprint -->
+        <div class="info-row">
+          <div class="info-label">
             <span>{{ t('task.detailInfo.basic.columns.sprint') }}</span>
-            <Colon class="w-1" />
           </div>
-
-          <div v-show="!isSprintEditing" class="flex items-center">
-            <span class="ml-1.5">{{ props.dataSource?.sprintName }}</span>
-            <Button
-              type="link"
-              class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-              @click="enterSprintEditMode">
-              <Icon icon="icon-shuxie" class="text-3.5" />
-            </Button>
+          <div class="info-value">
+            <div v-show="!isSprintEditing" class="info-value-content">
+              <span class="info-text" :class="{ 'dash-text': !props.dataSource?.sprintName }">{{ props.dataSource?.sprintName || '--' }}</span>
+              <Button
+                type="link"
+                class="edit-btn"
+                @click="enterSprintEditMode">
+                <Icon icon="icon-shuxie" />
+              </Button>
+            </div>
+            <AsyncComponent :visible="isSprintEditing">
+              <Select
+                v-show="isSprintEditing"
+                ref="sprintSelectRef"
+                v-model:value="sprintSelectValue"
+                :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
+                :fieldNames="{ value: 'id', label: 'name' }"
+                showSearch
+                :placeholder="t('task.detailInfo.basic.columns.selectSprint')"
+                class="edit-input"
+                @change="handleSprintSelectionChange"
+                @blur="handleSprintSelectionBlur" />
+            </AsyncComponent>
           </div>
-
-          <AsyncComponent :visible="isSprintEditing">
-            <Select
-              v-show="isSprintEditing"
-              ref="sprintSelectRef"
-              v-model:value="sprintSelectValue"
-              :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
-              :fieldNames="{ value: 'id', label: 'name' }"
-              showSearch
-              :placeholder="t('task.detailInfo.basic.columns.selectSprint')"
-              class="edit-container"
-              @change="handleSprintSelectionChange"
-              @blur="handleSprintSelectionBlur" />
-          </AsyncComponent>
         </div>
 
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
+        <!-- Module -->
+        <div class="info-row">
+          <div class="info-label">
             <span>{{ t('task.detailInfo.basic.columns.module') }}</span>
-            <Colon class="w-1" />
           </div>
-
-          <div v-show="!isModuleEditing" class="flex items-center">
-            <span class="ml-1.5">{{ props.dataSource?.moduleName }}</span>
-            <Button
-              type="link"
-              class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-              @click="enterModuleEditMode">
-              <Icon icon="icon-shuxie" class="text-3.5" />
-            </Button>
+          <div class="info-value">
+            <div v-show="!isModuleEditing" class="info-value-content">
+              <span class="info-text" :class="{ 'dash-text': !props.dataSource?.moduleName }">{{ props.dataSource?.moduleName || '--' }}</span>
+              <Button
+                type="link"
+                class="edit-btn"
+                @click="enterModuleEditMode">
+                <Icon icon="icon-shuxie" />
+              </Button>
+            </div>
+            <AsyncComponent :visible="isModuleEditing">
+              <div v-show="isModuleEditing" class="module-edit-container">
+                <TreeSelect
+                  ref="moduleTreeSelectRef"
+                  v-model:value="moduleTreeSelectValue"
+                  :treeData="moduleTreeData"
+                  :fieldNames="{ value: 'id', label: 'name', children: 'children' }"
+                  :virtual="false"
+                  size="small"
+                  showSearch
+                  allowClear
+                  class="edit-input"
+                  :placeholder="t('task.detailInfo.basic.columns.selectModule')">
+                  <template #title="item">
+                    <div class="flex items-center" :title="item.name">
+                      <Icon icon="icon-mokuai" class="mr-1" />
+                      <div class="truncate">{{ item.name }}</div>
+                    </div>
+                  </template>
+                </TreeSelect>
+                <div class="module-edit-actions">
+                  <Icon
+                    icon="icon-gouxuanzhong"
+                    class="action-icon confirm-icon"
+                    @click="confirmModuleSelection" />
+                  <Icon
+                    icon="icon-shanchuguanbi"
+                    class="action-icon cancel-icon"
+                    @click="cancelModuleEdit" />
+                </div>
+              </div>
+            </AsyncComponent>
           </div>
+        </div>
 
-          <AsyncComponent :visible="isModuleEditing">
-            <div v-show="isModuleEditing" class="flex items-center w-full">
-              <TreeSelect
-                ref="moduleTreeSelectRef"
-                v-model:value="moduleTreeSelectValue"
-                :treeData="moduleTreeData"
-                :fieldNames="{ value: 'id', label: 'name', children: 'children' }"
-                :virtual="false"
-                size="small"
-                showSearch
-                allowClear
-                class="flex-1"
-                :placeholder="t('task.detailInfo.basic.columns.selectModule')">
-                <template #title="item">
-                  <div class="flex items-center" :title="item.name">
-                    <Icon icon="icon-mokuai" class="mr-1 text-3.5" />
-                    <div style="max-width: 220px;" class="truncate">{{ item.name }}</div>
+        <!-- Parent Task -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('task.detailInfo.basic.columns.parentTask') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="info-text dash-text">{{ props.dataSource?.parentTaskName || '--' }}</span>
+          </div>
+        </div>
+
+        <!-- Task Type -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('task.detailInfo.basic.columns.type') }}</span>
+          </div>
+          <div class="info-value">
+            <div v-show="!isTaskTypeEditing" class="info-value-content">
+              <div class="task-type-content">
+                <IconTask :value="currentTaskType" class="task-type-icon" />
+                <span class="info-text">{{ props.dataSource?.taskType?.message }}</span>
+                <template v-if="currentTaskType === 'BUG'">
+                  <Tag
+                    v-if="props.dataSource?.bugLevel"
+                    color="error"
+                    class="bug-tag">
+                    {{ props.dataSource?.bugLevel?.message }}
+                  </Tag>
+                  <Tag
+                    v-if="props.dataSource?.missingBug"
+                    color="error"
+                    class="bug-tag">
+                    {{ t('task.detailInfo.basic.columns.missingBug') }}
+                  </Tag>
+                </template>
+              </div>
+              <Button
+                type="link"
+                class="edit-btn"
+                @click="enterTaskTypeEditMode">
+                <Icon icon="icon-shuxie" />
+              </Button>
+            </div>
+            <AsyncComponent :visible="isTaskTypeEditing">
+              <SelectEnum
+                v-show="isTaskTypeEditing"
+                ref="taskTypeSelectRef"
+                v-model:value="taskTypeSelectValue"
+                enumKey="TaskType"
+                :placeholder="t('task.detailInfo.basic.columns.selectTaskType')"
+                class="edit-input"
+                @change="handleTaskTypeSelectionChange as any"
+                @blur="handleTaskTypeSelectionBlur as any">
+                <template #option="record">
+                  <div class="flex items-center">
+                    <IconTask :value="record.value as any" class="task-type-icon" />
+                    <span class="ml-2">{{ record.label }}</span>
                   </div>
                 </template>
-              </TreeSelect>
-              <Icon
-                icon="icon-gouxuanzhong"
-                class="text-3.5 ml-2 mr-1.5 cursor-pointer text-theme-text-hover"
-                @click="confirmModuleSelection" />
-              <Icon
-                icon="icon-shanchuguanbi"
-                class="text-3.5 cursor-pointer text-theme-text-hover"
-                @click="cancelModuleEdit" />
-            </div>
-          </AsyncComponent>
+              </SelectEnum>
+            </AsyncComponent>
+          </div>
         </div>
 
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.basic.columns.parentTask') }}</span>
-            <Colon class="w-1" />
-          </div>
-
-          <div v-if="!props.dataSource?.parentTaskId" class="whitespace-pre-wrap break-words break-all">
-            {{ props.dataSource?.parentTaskName || '--' }}
-          </div>
-
-          <RouterLink
-            v-else
-            target="_self"
-            :to="`/task#task?projectId=${props.projectId}&taskId=${props.dataSource?.parentTaskId}&total=1`"
-            style="color:#40a9ff"
-            class="whitespace-pre-wrap break-words break-all">
-            {{ props.dataSource?.parentTaskName || '--' }}
-          </RouterLink>
-        </div>
-
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.basic.columns.type') }}</span>
-            <Colon class="w-1" />
-          </div>
-
-          <div v-show="!isTaskTypeEditing" class="flex items-center">
-            <IconTask :value="currentTaskType" class="text-4 flex-shrink-0" />
-            <span class="ml-1.5">{{ props.dataSource?.taskType?.message }}</span>
-            <Button
-              type="link"
-              class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-              @click="enterTaskTypeEditMode">
-              <Icon icon="icon-shuxie" class="text-3.5" />
-            </Button>
-            <template v-if="currentTaskType === TaskType.BUG">
-              <Tag
-                v-if="props.dataSource?.bugLevel"
-                color="error"
-                class="ml-2 text-3 leading-4">
-                {{ props.dataSource?.bugLevel?.message }}
-              </Tag>
-              <Tag
-                v-if="props.dataSource?.missingBug"
-                color="error"
-                class="ml-2 text-3 leading-4">
-                {{ t('task.detailInfo.basic.columns.missingBug') }}
-              </Tag>
-            </template>
-          </div>
-
-          <AsyncComponent :visible="isTaskTypeEditing">
-            <SelectEnum
-              v-show="isTaskTypeEditing"
-              ref="taskTypeSelectRef"
-              v-model:value="taskTypeSelectValue"
-              :excludes="shouldExcludeTaskType"
-              enumKey="TaskType"
-              :placeholder="t('task.detailInfo.basic.columns.selectTaskType')"
-              class="edit-container"
-              @change="handleTaskTypeSelectionChange as any"
-              @blur="handleTaskTypeSelectionBlur as any">
-              <template #option="record">
-                <div class="flex items-center">
-                  <IconTask :value="record.value as any" class="text-4 flex-shrink-0" />
-                  <span class="ml-2">{{ record.label }}</span>
-                </div>
-              </template>
-            </SelectEnum>
-          </AsyncComponent>
-        </div>
-
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
+        <!-- Priority -->
+        <div class="info-row">
+          <div class="info-label">
             <span>{{ t('task.detailInfo.basic.columns.priority') }}</span>
-            <Colon class="w-1" />
           </div>
-
-          <div v-show="!isPriorityEditing" class="flex items-center">
-            <TaskPriority :value="props.dataSource?.priority" />
-            <Button
-              type="link"
-              class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-              @click="enterPriorityEditMode">
-              <Icon icon="icon-shuxie" class="text-3.5" />
-            </Button>
+          <div class="info-value">
+            <div v-show="!isPriorityEditing" class="info-value-content">
+              <TaskPriority :value="props.dataSource?.priority as any" />
+              <Button
+                type="link"
+                class="edit-btn"
+                @click="enterPriorityEditMode">
+                <Icon icon="icon-shuxie" />
+              </Button>
+            </div>
+            <AsyncComponent :visible="isPriorityEditing">
+              <SelectEnum
+                v-show="isPriorityEditing"
+                ref="prioritySelectRef"
+                v-model:value="prioritySelectValue"
+                enumKey="Priority"
+                :placeholder="t('task.detailInfo.basic.columns.selectPriority')"
+                class="edit-input"
+                @change="handlePrioritySelectionChange as any"
+                @blur="handlePrioritySelectionBlur as any">
+                <template #option="record">
+                  <TaskPriority :value="record as any" />
+                </template>
+              </SelectEnum>
+            </AsyncComponent>
           </div>
-
-          <AsyncComponent :visible="isPriorityEditing">
-            <SelectEnum
-              v-show="isPriorityEditing"
-              ref="prioritySelectRef"
-              v-model:value="prioritySelectValue"
-              enumKey="Priority"
-              :placeholder="t('task.detailInfo.basic.columns.selectPriority')"
-              class="edit-container"
-              @change="handlePrioritySelectionChange as any"
-              @blur="handlePrioritySelectionBlur as any">
-              <template #option="record">
-                <TaskPriority :value="record as any" />
-              </template>
-            </SelectEnum>
-          </AsyncComponent>
         </div>
 
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
+        <!-- Workload Estimation Method -->
+        <div class="info-row">
+          <div class="info-label">
             <span>{{ t('task.detailInfo.basic.columns.evalWorkloadMethod') }}</span>
-            <Colon class="w-1" />
           </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">
-            {{ props.dataSource?.evalWorkloadMethod?.message }}
+          <div class="info-value">
+            <span class="info-text">{{ props.dataSource?.evalWorkloadMethod?.message || '--' }}</span>
           </div>
         </div>
 
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
+        <!-- Estimated Workload -->
+        <div class="info-row">
+          <div class="info-label">
             <span>
               {{ currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                ? t('task.detailInfo.basic.columns.evalWorkload')
-                : t('task.detailInfo.basic.columns.evalWorkHours')
-              }}
+                ? t('task.detailInfo.basic.columns.evalWorkload') : t('task.detailInfo.basic.columns.evalWorkHours') }}
             </span>
-            <Colon class="w-1" />
           </div>
-
-          <div v-show="!isEvalWorkloadEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
-            <div>{{ currentEvalWorkload || '--' }}</div>
-            <Button
-              type="link"
-              class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-              @click="enterEvalWorkloadEditMode">
-              <Icon icon="icon-shuxie" class="text-3.5" />
-            </Button>
-          </div>
-
-          <AsyncComponent :visible="isEvalWorkloadEditing">
-            <Input
-              v-show="isEvalWorkloadEditing"
-              ref="evalWorkloadInputRef"
-              v-model:value="evalWorkloadInputValue"
-              class="edit-container"
-              dataType="float"
-              trimAll
-              :min="0.1"
-              :max="1000"
-              :placeholder="t('task.detailInfo.basic.columns.evalWorkloadPlaceholder')"
-              @blur="handleEvalWorkloadInputBlur"
-              @pressEnter="handleEvalWorkloadInputEnter" />
-          </AsyncComponent>
-        </div>
-
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>
-              {{
-                currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                  ? t('task.detailInfo.basic.columns.actualStoryPoint')
-                  : t('task.detailInfo.basic.columns.actualWorkload')
-              }}
-            </span>
-            <Colon class="w-1" />
-          </div>
-
-          <div v-show="!isActualWorkloadEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
-            <div>{{ currentActualWorkload || '--' }}</div>
-            <Button
-              type="link"
-              class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-              @click="enterActualWorkloadEditMode">
-              <Icon icon="icon-shuxie" class="text-3.5" />
-            </Button>
-          </div>
-
-          <AsyncComponent :visible="isActualWorkloadEditing">
-            <Input
-              v-show="isActualWorkloadEditing"
-              ref="actualWorkloadInputRef"
-              v-model:value="actualWorkloadInputValue"
-              class="edit-container"
-              dataType="float"
-              trimAll
-              :min="0.1"
-              :max="1000"
-              :placeholder="t('task.detailInfo.basic.columns.actualWorkloadPlaceholder')"
-              @blur="handleActualWorkloadInputBlur"
-              @pressEnter="handleActualWorkloadInputEnter" />
-          </AsyncComponent>
-        </div>
-
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.basic.columns.totalNum') }}</span>
-            <Colon class="w-1" />
-          </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">{{ totalTestCount }}</div>
-        </div>
-
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.basic.columns.failNum') }}</span>
-            <Colon class="w-1" />
-          </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">{{ failedTestCount }}</div>
-        </div>
-
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.basic.columns.tags') }}</span>
-            <Colon class="w-1" />
-          </div>
-
-          <div v-show="!isTagEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
-            <div v-if="currentTags.length" class="flex items-center flex-wrap transform-gpu -translate-y-0.25">
-              <div
-                v-for="item in currentTags"
-                :key="item.id"
-                class="px-2 h-5 leading-4.5 mr-1 mb-1 rounded border border-solid border-border-divider bg-gray-light text-theme-sub-content">
-                {{ item.name }}
-              </div>
+          <div class="info-value">
+            <div v-show="!isEvalWorkloadEditing" class="info-value-content">
+              <span class="info-text" :class="{ 'dash-text': !currentEvalWorkload }">{{ currentEvalWorkload || '--' }}</span>
+              <Button
+                type="link"
+                class="edit-btn"
+                @click="enterEvalWorkloadEditMode">
+                <Icon icon="icon-shuxie" />
+              </Button>
             </div>
-            <div v-else>--</div>
-            <Button
-              type="link"
-              class="flex-shrink-0 ml-1 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-              @click="enterTagEditMode">
-              <Icon icon="icon-shuxie" class="text-3.5" />
-            </Button>
+            <AsyncComponent :visible="isEvalWorkloadEditing">
+              <Input
+                v-show="isEvalWorkloadEditing"
+                ref="evalWorkloadInputRef"
+                v-model:value="evalWorkloadInputValue"
+                class="edit-input"
+                dataType="float"
+                trimAll
+                :min="0.1"
+                :max="1000"
+                :placeholder="t('task.detailInfo.basic.columns.evalWorkloadPlaceholder')"
+                @blur="handleEvalWorkloadInputBlur"
+                @pressEnter="handleEvalWorkloadInputEnter" />
+            </AsyncComponent>
           </div>
-
-          <AsyncComponent :visible="isTagEditing">
-            <Select
-              v-show="isTagEditing"
-              ref="tagSelectRef"
-              v-model:value="selectedTagIdList"
-              :fieldNames="{ label: 'name', value: 'id' }"
-              :maxTagCount="5"
-              :maxTagTextLength="15"
-              :maxTags="5"
-              :action="`${TESTER}/tag?projectId=${props.projectId}&fullTextSearch=true`"
-              showSearch
-              :placeholder="t('task.detailInfo.basic.columns.tagsPlaceholder')"
-              mode="multiple"
-              class="edit-container"
-              :notFoundContent="t('task.detailInfo.basic.columns.tagsNotFound')"
-              @change="handleTagSelectionChange as any"
-              @blur="handleTagSelectionBlur as any" />
-          </AsyncComponent>
         </div>
 
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
+        <!-- Actual Workload -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>
+              {{ currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                ? t('task.detailInfo.basic.columns.actualStoryPoint') : t('task.detailInfo.basic.columns.actualWorkload') }}
+            </span>
+          </div>
+          <div class="info-value">
+            <div v-show="!isActualWorkloadEditing" class="info-value-content">
+              <span class="info-text" :class="{ 'dash-text': !currentActualWorkload }">{{ currentActualWorkload || '--' }}</span>
+              <Button
+                type="link"
+                class="edit-btn"
+                @click="enterActualWorkloadEditMode">
+                <Icon icon="icon-shuxie" />
+              </Button>
+            </div>
+            <AsyncComponent :visible="isActualWorkloadEditing">
+              <Input
+                v-show="isActualWorkloadEditing"
+                ref="actualWorkloadInputRef"
+                v-model:value="actualWorkloadInputValue"
+                class="edit-input"
+                dataType="float"
+                trimAll
+                :min="0.1"
+                :max="1000"
+                :placeholder="t('task.detailInfo.basic.columns.actualWorkloadPlaceholder')"
+                @blur="handleActualWorkloadInputBlur"
+                @pressEnter="handleActualWorkloadInputEnter" />
+            </AsyncComponent>
+          </div>
+        </div>
+
+        <!-- Process Count -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('task.detailInfo.basic.columns.processNum') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="info-text">{{ totalTestCount }}</span>
+          </div>
+        </div>
+
+        <!-- Failed Count -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('task.detailInfo.basic.columns.processFailNum') }}</span>
+          </div>
+          <div class="info-value">
+            <span class="info-text">{{ failedTestCount }}</span>
+          </div>
+        </div>
+
+        <!-- Tags -->
+        <div class="info-row">
+          <div class="info-label">
+            <span>{{ t('task.detailInfo.basic.columns.tags') }}</span>
+          </div>
+          <div class="info-value">
+            <div v-show="!isTagEditing" class="info-value-content">
+              <div v-if="currentTags.length" class="tags-container">
+                <div
+                  v-for="item in currentTags"
+                  :key="item.id"
+                  class="tag-item">
+                  {{ item.name }}
+                </div>
+              </div>
+              <span v-else class="info-text dash-text">--</span>
+              <Button
+                type="link"
+                class="edit-btn"
+                @click="enterTagEditMode">
+                <Icon icon="icon-shuxie" />
+              </Button>
+            </div>
+            <AsyncComponent :visible="isTagEditing">
+              <Select
+                v-show="isTagEditing"
+                ref="tagSelectRef"
+                v-model:value="selectedTagIdList"
+                :fieldNames="{ label: 'name', value: 'id' }"
+                :maxTagCount="5"
+                :maxTagTextLength="15"
+                :maxTags="5"
+                :action="`${TESTER}/tag?projectId=${props.projectId}&fullTextSearch=true`"
+                showSearch
+                :placeholder="t('task.detailInfo.basic.columns.tagsPlaceholder')"
+                mode="multiple"
+                class="edit-input"
+                :notFoundContent="t('task.detailInfo.basic.columns.tagsNotFound')"
+                @change="handleTagSelectionChange as any"
+                @blur="handleTagSelectionBlur as any" />
+            </AsyncComponent>
+          </div>
+        </div>
+
+        <!-- One Time Pass -->
+        <div class="info-row">
+          <div class="info-label">
             <span>{{ t('task.detailInfo.basic.columns.onePass') }}</span>
-            <Colon class="w-1" />
           </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">{{ onePassStatusText }}</div>
+          <div class="info-value">
+            <span class="info-text" :class="{ 'dash-text': onePassStatusText === '--' }">{{ onePassStatusText }}</span>
+          </div>
         </div>
 
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
+        <!-- Software Version -->
+        <div class="info-row">
+          <div class="info-label">
             <span>{{ t('task.detailInfo.basic.columns.softwareVersion') }}</span>
-            <Colon class="w-1" />
           </div>
-          <div class="flex-1 min-w-0">
+          <div class="info-value">
             <template v-if="isVersionEditing">
               <Select
                 ref="versionSelectRef"
                 v-model:value="versionSelectValue"
                 allowClear
                 :placeholder="t('task.detailInfo.basic.columns.softwareVersionPlaceholder')"
-                class="w-full"
+                class="edit-input"
                 lazy
                 :action="`${TESTER}/software/version?projectId=${props.projectId}`"
                 :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN'}]}"
                 :fieldNames="{value:'name', label: 'name'}"
-                @blur="handleVersionSelectionBlur as any"
-                @change="handleVersionSelectionChange as any">
+                @blur="handleVersionSelectionBlur"
+                @change="handleVersionSelectionChange">
               </Select>
             </template>
             <template v-else>
-              <div class="flex space-x-1">
+              <div class="info-value-content">
                 <RouterLink
                   v-if="props.dataSource?.softwareVersion"
-                  class="text-theme-special"
+                  class="version-link"
                   :to="`/task#version?name=${props.dataSource?.softwareVersion}`">
                   {{ props.dataSource?.softwareVersion }}
                 </RouterLink>
-                <template v-else>
-                  --
-                </template>
+                <span v-else class="info-text dash-text">--</span>
                 <Button
                   type="link"
-                  class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
+                  class="edit-btn"
                   @click="enterVersionEditMode">
-                  <Icon icon="icon-shuxie" class="text-3.5" />
+                  <Icon icon="icon-shuxie" />
                 </Button>
               </div>
             </template>
           </div>
         </div>
 
-        <div class="flex items-start">
-          <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
+        <!-- Unplanned Task -->
+        <div class="info-row">
+          <div class="info-label">
             <span>{{ t('task.detailInfo.basic.columns.unplanned') }}</span>
-            <Colon class="w-1" />
           </div>
-          <div>
-            {{ props.dataSource?.unplanned ? t('task.detailInfo.basic.columns.yes') : t('task.detailInfo.basic.columns.no') }}
+          <div class="info-value">
+            <span class="info-text">{{ props.dataSource?.unplanned ? t('task.detailInfo.basic.columns.yes') : t('task.detailInfo.basic.columns.no') }}</span>
           </div>
         </div>
       </div>
-    </div>
 
-    <Description
-      :projectId="props.projectId"
-      :appInfo="props.appInfo"
-      :dataSource="props.dataSource"
-      @change="handleTaskInfoChange"
-      @loadingChange="handleLoadingChange" />
+      <!-- Description Section -->
+      <div class="description-section">
+        <Description
+          :id="currentTaskId"
+          :projectId="props.projectId"
+          :appInfo="props.appInfo"
+          :dataSource="props.dataSource"
+          @change="handleTaskInfoChange"
+          @loadingChange="handleLoadingChange" />
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
-.w-1\/2 {
-  width: calc((100% - 20px)/2);
+/* Main container styles */
+.basic-info-drawer {
+  width: 370px;
+  height: 100%;
+  background: #ffffff;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-.border-none {
-  border: none;
+/* Header styles */
+.basic-info-header {
+  padding: 12px 20px 8px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
 }
 
-.edit-container {
-  width: 100%;
-  transform: translateY(-5px);
+.basic-info-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0;
+  line-height: 1.2;
 }
+
+/* Scrollable content area */
+.scrollable-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+/* Content area styles */
+.basic-info-content {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Description section styles */
+.description-section {
+  padding: 16px 20px;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* Info row styles */
+.info-row { display: flex; align-items: flex-start; min-height: auto; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+
+/* Label styles */
+.info-label { flex-shrink: 0; width: 70px; display: flex; align-items: center; font-size: 12px; color: #686868; font-weight: 500; line-height: 1.4; }
+.info-label span { white-space: normal; word-break: break-word; line-height: 1.4; }
+
+/* Value area styles */
+.info-value { flex: 1; min-width: 0; display: flex; align-items: flex-start; justify-content: space-between; }
+.info-value-content { display: flex; align-items: center; gap: 6px; width: 100%; min-height: 20px; flex: 1; min-width: 0; }
+
+/* Text styles */
+.info-text { font-size: 12px; color: #262626; line-height: 1.4; word-break: break-word; flex: 1; min-width: 0; }
+.info-text.dash-text { color: #8c8c8c; }
+
+/* Edit button styles */
+.edit-btn { flex-shrink: 0; padding: 0; height: 16px; width: 16px; display: flex; align-items: center; justify-content: center; border: none; background: none; color: #1890ff !important; cursor: pointer; transition: color 0.2s; margin-left: auto; }
+.edit-btn:focus { color: #1890ff !important; background: none !important; border: none !important; box-shadow: none !important; }
+.edit-btn:hover { color: #1890ff; }
+.edit-btn .anticon { font-size: 12px; }
+
+/* Edit input styles */
+.edit-input { width: 100%; font-size: 12px; }
+
+/* Task type content styles */
+.task-type-content { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.task-type-icon { font-size: 14px; flex-shrink: 0; }
+.bug-tag { font-size: 10px; padding: 1px 4px; height: 16px; line-height: 14px; margin-left: 4px; }
+
+/* Tags container styles */
+.tags-container { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.tag-item { font-size: 10px; padding: 2px 6px; background: #f5f5f5; border: 1px solid #d9d9d9; border-radius: 4px; color: #595959; line-height: 1.2; max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Module edit container */
+.module-edit-container { display: flex; align-items: center; gap: 6px; width: 100%; }
+.module-edit-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.action-icon { font-size: 12px; cursor: pointer; padding: 2px; border-radius: 2px; transition: all 0.2s; }
+.confirm-icon { color: #52c41a; }
+.confirm-icon:hover { background: #f6ffed; color: #389e0d; }
+.cancel-icon { color: #ff4d4f; }
+.cancel-icon:hover { background: #fff2f0; color: #cf1322; }
+
+/* Version link */
+.version-link { color: #1890ff; text-decoration: none; font-size: 12px; line-height: 1.4; }
+.version-link:hover { color: #40a9ff; text-decoration: underline; }
+
+/* Overdue badge */
+.overdue-badge { font-size: 10px; padding: 1px 4px; background: #fff2f0; border: 1px solid #ffccc7; border-radius: 2px; color: #ff4d4f; line-height: 1.2; margin-left: 6px; }
+
+/* Legacy style compatibility */
+.w-1\/2 { width: calc((100% - 20px)/2); }
+.border-none { border: none; }
+.edit-container { width: 100%; transform: translateY(-5px); }
 </style>

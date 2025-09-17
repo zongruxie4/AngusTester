@@ -103,7 +103,7 @@ const attachments = computed(() => props.sprintData?.attachments || []);
             <Colon class="w-1" />
           </div>
 
-          <Progress :percent="completionRate" style="width:150px;"/>
+          <Progress :percent="completionRate" style="width:150px;" />
         </div>
       </div>
 

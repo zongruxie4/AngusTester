@@ -5,6 +5,11 @@ export type LoadingProps = {
   loading: boolean;
 }
 
+export type BaseProps = {
+  id: string;
+  notify?: string;
+}
+
 export type BasicProps = {
   projectId: string;
   projectName?: string;

@@ -46,7 +46,6 @@ const associatedCaseIds = computed(() => {
   return associatedCaseList.value.map(item => item.id);
 });
 
-// Case Association Management Functions
 /**
  * <p>Initialize case association editing mode</p>
  * <p>Enables editing state for case associations</p>
@@ -89,7 +88,6 @@ const handleCaseSelectionChange = (ids: any) => {
   selectedCaseIds.value = ids;
 };
 
-// Data Loading Functions
 /**
  * <p>Load task details</p>
  * <p>Fetches complete task information from the server</p>

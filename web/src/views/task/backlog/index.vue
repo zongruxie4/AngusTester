@@ -224,7 +224,8 @@ onMounted(() => {
           <div class="border border-solid border-theme-text-box rounded">
             <div class="header-container border-solid border-b border-theme-text-box">
               <div class="flex items-center px-2.5 py-4 flex-nowrap space-x-5">
-                <div class="flex-1 flex items-center truncate cursor-pointer"
+                <div
+                  class="flex-1 flex items-center truncate cursor-pointer"
                   @click="handleSprintExpansionChange(!sprintExpansion.expandedSprintIds.has('sprintBacklog'), 'sprintBacklog')">
                   <Arrow
                     :open="sprintExpansion.expandedSprintIds.has('sprintBacklog')"
@@ -482,7 +483,8 @@ onMounted(() => {
                 @add="handleDragAddToBacklog">
                 <template #header>
                   <div class="flex items-center justify-between px-2.5 header-container border-solid border-b border-theme-text-box">
-                    <div class="flex items-center py-4 truncate cursor-pointer flex-1"
+                    <div
+                      class="flex items-center py-4 truncate cursor-pointer flex-1"
                       @click="handleSprintExpansionChange(!sprintExpansion.expandedSprintIds.has('productBacklog'), 'productBacklog')">
                       <Arrow
                         :open="sprintExpansion.expandedSprintIds.has('productBacklog')"

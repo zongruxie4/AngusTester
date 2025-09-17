@@ -149,7 +149,10 @@ watch(() => props.meetings, () => {
       </div>
     </div>
 
-    <NoData v-if="!props.meetings?.length" size="small" class="mt-20" />
+    <NoData
+      v-if="!props.meetings?.length"
+      size="small"
+      class="mt-20" />
   </div>
 </template>
 
@@ -158,5 +161,3 @@ watch(() => props.meetings, () => {
   border: 1px solid var(--border-text-box);
 }
 </style>
-
-

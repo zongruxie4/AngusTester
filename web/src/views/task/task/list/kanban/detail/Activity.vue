@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
 import { ActivityInfo, Scroll } from '@xcan-angus/vue-ui';
-import { SearchCriteria, TESTER } from '@xcan-angus/infra';
+import { TESTER, SearchCriteria } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
 import { ActivityItem } from '@/types/types';
 import { CombinedTargetType } from '@/enums/enums';
 import { TaskInfoProps } from '@/views/task/task/list/types';
 
+// Component Props
 const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -17,49 +18,110 @@ const props = withDefaults(defineProps<TaskInfoProps>(), {
 
 const { t } = useI18n();
 
-const dataList = ref<ActivityItem[]>([]);
-const params = ref<{
-  mainTargetId:string;
-  filters:[{ key: 'targetType', value: CombinedTargetType.TASK, op: SearchCriteria.OpEnum.Equal }]
+// Reactive State Variables
+const activityList = ref<ActivityItem[]>([]);
+const activityQueryParams = ref<{
+  mainTargetId: string;
+  filters: [{ key: 'targetType', value: CombinedTargetType.TASK, op: SearchCriteria.OpEnum }]
 }>();
 
-const change = (data: ActivityItem[]) => {
-  dataList.value = data;
+// Computed Properties
+const currentTaskId = computed(() => {
+  return props.dataSource?.id;
+});
+
+/**
+ * <p>Handle activity data change</p>
+ * <p>Updates the activity list when new data is received from the Scroll component</p>
+ */
+const handleActivityDataChange = (data: ActivityItem[]) => {
+  activityList.value = data;
 };
 
+// Lifecycle Hooks
 onMounted(() => {
-  watch(() => taskId.value, (newValue, oldValue) => {
-    if (newValue === oldValue) {
+  watch(() => currentTaskId.value, (newTaskId, oldTaskId) => {
+    if (newTaskId === oldTaskId) {
       return;
     }
 
-    params.value = {
-      mainTargetId: taskId.value,
+    activityQueryParams.value = {
+      mainTargetId: currentTaskId.value,
       filters: [{ key: 'targetType', value: CombinedTargetType.TASK, op: SearchCriteria.OpEnum.Equal }]
     };
   }, { immediate: true });
 });
-
-const taskId = computed(() => {
-  return props.dataSource?.id;
-});
 </script>
 <template>
-  <div class="h-full text-3 leading-5 pl-5">
-    <div class="text-theme-title mb-2.5 font-semibold">
-      {{ t('task.detailInfo.activity.title') }}
+  <div class="basic-info-drawer">
+    <div class="basic-info-header">
+      <h3 class="basic-info-title">
+        {{ t('task.detailInfo.activity.title') }}
+      </h3>
     </div>
 
-    <Scroll
-      v-if="!!taskId"
-      :action="`${TESTER}/activity`"
-      :hideNoData="!!dataList.length"
-      :params="params"
-      :lineHeight="32"
-      transition
-      style="height:calc(100% - 30px);"
-      @change="change">
-      <ActivityInfo :dataSource="dataList" infoKey="description" />
-    </Scroll>
+    <!-- Scrollable Content Area -->
+    <div class="scrollable-content">
+      <div class="basic-info-content">
+        <Scroll
+          v-if="!!currentTaskId"
+          :action="`${TESTER}/activity`"
+          :hideNoData="!!activityList.length"
+          :params="activityQueryParams"
+          :lineHeight="32"
+          transition
+          style="height:calc(100% - 30px);"
+          @change="handleActivityDataChange">
+          <ActivityInfo
+            :dataSource="activityList as any"
+            infoKey="description"
+            class="pr-5" />
+        </Scroll>
+      </div>
+    </div>
   </div>
 </template>
+
+<style scoped>
+/* Main container styles */
+.basic-info-drawer {
+  width: 370px;
+  height: 100%;
+  background: #ffffff;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header styles */
+.basic-info-header {
+  padding: 12px 20px 8px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.basic-info-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Scrollable content area */
+.scrollable-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+/* Content area styles */
+.basic-info-content {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+</style>

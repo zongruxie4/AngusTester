@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref } from 'vue';
 import { Button, TreeSelect } from 'ant-design-vue';
-import {
-  AsyncComponent, Colon, Icon, IconTask, Input, ScriptTypeTag, Select
-} from '@xcan-angus/vue-ui';
+import { AsyncComponent, Colon, Icon, IconTask, Input, ScriptTypeTag, Select } from '@xcan-angus/vue-ui';
 import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
@@ -16,7 +14,10 @@ import TaskPriority from '@/components/TaskPriority/index.vue';
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import { TaskInfoProps } from '@/views/task/task/list/types';
 
-// Component props and emits
+// Async Components
+const Description = defineAsyncComponent(() => import('@/views/task/task/list/kanban/detail/Description.vue'));
+
+// Component Props & Emits
 const props = withDefaults(defineProps<TaskInfoProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -33,11 +34,11 @@ const emit = defineEmits<{
   (event: 'refresh'): void;
 }>();
 
-// Injected dependencies
+// Injected Dependencies
 const proTypeShowMap = inject('inject', ref({ showSprint: true }));
 
-// Async components
-const Description = defineAsyncComponent(() => import('@/views/task/task/list/kanban/detail/Description.vue'));
+// Reactive State Variables
+const moduleTreeData = ref([]);
 
 // Task name editing state
 const taskNameInputRef = ref();
@@ -57,29 +58,58 @@ const actualWorkloadInputValue = ref<string>();
 // Priority editing state
 const prioritySelectRef = ref();
 const isPriorityEditing = ref(false);
-const prioritySelectMessage = ref<string>();
-const prioritySelectValue = ref<TaskInfo['priority']['value']>();
+const priorityDisplayMessage = ref<string>();
+const priorityInputValue = ref<TaskInfo['priority']['value']>();
 
 // Tag editing state
 const tagSelectRef = ref();
 const isTagEditing = ref(false);
 const selectedTagList = ref<{ id: string; name: string; }[]>([]);
-const selectedTagIdList = ref<string[]>([]);
+const selectedTagIds = ref<string[]>([]);
 
 // Module editing state
 const moduleTreeSelectRef = ref();
 const isModuleEditing = ref(false);
-const moduleTreeSelectValue = ref<string>();
+const moduleInputValue = ref<string>();
 
 // Version editing state
 const versionSelectRef = ref();
 const isVersionEditing = ref(false);
-const versionSelectValue = ref<string>();
+const versionInputValue = ref<string>();
 
-// Module tree data and management
-const moduleTreeData = ref([]);
+// Sprint editing state
+const sprintSelectRef = ref();
+const isSprintEditing = ref(false);
+const sprintDisplayMessage = ref<string>();
+const sprintInputValue = ref<string>();
 
-// Computed properties
+// Computed Properties
+const taskId = computed(() => props.dataSource?.id);
+const taskStatus = computed(() => props.dataSource?.status);
+const taskName = computed(() => props.dataSource?.name);
+const taskType = computed(() => props.dataSource?.taskType?.value);
+const taskPriority = computed(() => props.dataSource?.priority?.value);
+const taskTags = computed(() => props.dataSource?.tags || []);
+const taskTagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
+const evalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
+const evalWorkload = computed(() => props.dataSource?.evalWorkload);
+const actualWorkload = computed(() => props.dataSource?.actualWorkload);
+const isOverdue = computed(() => props.dataSource?.overdue);
+const totalProcessCount = computed(() => +(props.dataSource?.totalNum || 0));
+const failedProcessCount = computed(() => +(props.dataSource?.failNum || 0));
+
+/**
+ * <p>Calculate one-time pass status based on process counts</p>
+ * <p>Returns '--' if no processes, 'Yes' if all passed, 'No' if any failed</p>
+ */
+const oneTimePassStatus = computed(() => {
+  if (totalProcessCount.value <= 0) {
+    return '--';
+  }
+  return failedProcessCount.value === 0 ? t('status.yes') : t('status.no');
+});
+
+// Additional Computed Properties
 const currentSprintId = computed(() => props.dataSource?.sprintId);
 const currentModuleId = computed(() => {
   if (!props.dataSource?.moduleId || props.dataSource?.moduleId === '-1') {
@@ -87,35 +117,10 @@ const currentModuleId = computed(() => {
   }
   return props.dataSource?.moduleId;
 });
-const currentTaskId = computed(() => props.dataSource?.id);
-const currentTaskStatus = computed(() => props.dataSource?.status);
-const currentTaskName = computed(() => props.dataSource?.name);
-const currentTaskType = computed(() => props.dataSource?.taskType?.value);
-const currentPriority = computed(() => props.dataSource?.priority?.value);
-const currentTags = computed(() => props.dataSource?.tags || []);
-const currentTagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
-const currentEvalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
-const currentEvalWorkload = computed(() => props.dataSource?.evalWorkload);
-const currentActualWorkload = computed(() => props.dataSource?.actualWorkload);
-const isTaskOverdue = computed(() => props.dataSource?.overdue);
-const totalTestCount = computed(() => +(props.dataSource?.totalNum || 0));
-const failedTestCount = computed(() => +(props.dataSource?.failNum || 0));
-const onePassStatusText = computed(() => {
-  if (totalTestCount.value <= 0) {
-    return '--';
-  }
-  return failedTestCount.value === 0 ? t('status.yes') : t('status.no');
-});
 
 /**
- * Initialize module tree data on component mount
- */
-onMounted(() => {
-  loadModuleTreeData();
-});
-
-/**
- * Load module tree data from API
+ * <p>Fetch module tree data for the current project</p>
+ * <p>Loads hierarchical module structure for selection</p>
  */
 const loadModuleTreeData = async () => {
   if (!props.projectId) {
@@ -131,10 +136,25 @@ const loadModuleTreeData = async () => {
 };
 
 /**
- * Enter module editing mode and focus the input
+ * <p>Fetch detailed task information by ID</p>
+ * <p>Returns partial task info for updating component state</p>
  */
-const enterModuleEditMode = () => {
-  moduleTreeSelectValue.value = currentModuleId.value;
+const fetchTaskDetailsById = async (id: string): Promise<Partial<TaskInfo>> => {
+  emit('loadingChange', true);
+  const [error, res] = await task.getTaskDetail(id);
+  emit('loadingChange', false);
+  if (error || !res?.data) {
+    return { id };
+  }
+  return res.data;
+};
+
+/**
+ * <p>Initialize module editing mode</p>
+ * <p>Sets the current module value and enables editing state</p>
+ */
+const startModuleEditing = () => {
+  moduleInputValue.value = currentModuleId.value;
   isModuleEditing.value = true;
 
   nextTick(() => {
@@ -147,64 +167,46 @@ const enterModuleEditMode = () => {
 };
 
 /**
- * Confirm module selection and update task
+ * <p>Confirm module change and update task</p>
+ * <p>Validates the new module value and calls API to update task</p>
  */
-const confirmModuleSelection = async () => {
-  const selectedValue = moduleTreeSelectValue.value;
-  if (!selectedValue || selectedValue === currentModuleId.value) {
+const confirmModuleChange = async () => {
+  const newModuleId = moduleInputValue.value;
+  if (!newModuleId || newModuleId === currentModuleId.value) {
     isModuleEditing.value = false;
     return;
   }
 
   emit('loadingChange', true);
   const updateParams = {
-    moduleId: selectedValue
+    moduleId: newModuleId
   };
-  const [error] = await task.updateTask(currentTaskId.value, updateParams);
+  const [error] = await task.updateTask(taskId.value, updateParams);
   emit('loadingChange', false);
   isModuleEditing.value = false;
   if (error) {
     return;
   }
 
-  const updatedTaskInfo = await loadTaskInfoById(currentTaskId.value);
+  emit('refresh');
+  const updatedTaskInfo = await fetchTaskDetailsById(taskId.value);
   emit('change', updatedTaskInfo);
 };
 
 /**
- * Cancel module editing mode
+ * <p>Cancel module editing without saving changes</p>
  */
-const cancelModuleEdit = () => {
+const cancelModuleEditing = () => {
   isModuleEditing.value = false;
 };
 
-// Sprint editing state
-const sprintSelectRef = ref();
-const isSprintEditing = ref(false);
-const sprintSelectMessage = ref<string>();
-const sprintSelectValue = ref<string>();
-
+// Sprint Management Functions
 /**
- * Load task information by ID from API
- * @param id - Task ID
- * @returns Partial task information
+ * <p>Initialize sprint editing mode</p>
+ * <p>Sets the current sprint value and enables editing state</p>
  */
-const loadTaskInfoById = async (id: string): Promise<Partial<TaskInfo>> => {
-  emit('loadingChange', true);
-  const [error, res] = await task.getTaskDetail(id);
-  emit('loadingChange', false);
-  if (error || !res?.data) {
-    return { id };
-  }
-
-  return res.data;
-};
-
-/**
- * Enter sprint editing mode and focus the select
- */
-const enterSprintEditMode = () => {
-  sprintSelectValue.value = currentSprintId.value;
+const startSprintEditing = () => {
+  sprintInputValue.value = currentSprintId.value;
   isSprintEditing.value = true;
 
   nextTick(() => {
@@ -217,30 +219,33 @@ const enterSprintEditMode = () => {
 };
 
 /**
- * Handle sprint selection change and update message
- * @param value - Selected value
- * @param option - Selected option with message and value
+ * <p>Handle sprint selection change</p>
+ * <p>Updates the display message for the selected sprint</p>
  */
-const handleSprintSelectionChange = async (_value: any, option: any) => {
+const handleSprintSelectionChange = async (
+  _value: any,
+  option: any
+) => {
   if (option && option.message) {
-    sprintSelectMessage.value = option.message;
+    sprintDisplayMessage.value = option.message;
   }
 };
 
 /**
- * Handle sprint selection blur and move task to selected sprint
+ * <p>Confirm sprint change and move task to new sprint</p>
+ * <p>Validates the new sprint value and calls API to move task</p>
  */
-const handleSprintSelectionBlur = async () => {
-  const selectedValue = sprintSelectValue.value;
-  if (!selectedValue || selectedValue === currentSprintId.value) {
+const confirmSprintChange = async () => {
+  const newSprintId = sprintInputValue.value;
+  if (!newSprintId || newSprintId === currentSprintId.value) {
     isSprintEditing.value = false;
     return;
   }
 
   emit('loadingChange', true);
   const moveTaskParams = {
-    taskIds: [currentTaskId.value],
-    targetSprintId: selectedValue
+    taskIds: [taskId.value],
+    targetSprintId: newSprintId
   };
   const [error] = await task.moveTask(moveTaskParams);
   emit('loadingChange', false);
@@ -249,15 +254,17 @@ const handleSprintSelectionBlur = async () => {
     return;
   }
 
-  const updatedTaskInfo = await loadTaskInfoById(currentTaskId.value);
+  emit('refresh');
+  const updatedTaskInfo = await fetchTaskDetailsById(taskId.value);
   emit('change', updatedTaskInfo);
 };
 
 /**
- * Enter task name editing mode and focus the input
+ * <p>Initialize task name editing mode</p>
+ * <p>Sets the current task name value and enables editing state</p>
  */
-const enterTaskNameEditMode = () => {
-  taskNameInputValue.value = currentTaskName.value;
+const startTaskNameEditing = () => {
+  taskNameInputValue.value = taskName.value;
   isTaskNameEditing.value = true;
 
   nextTick(() => {
@@ -270,42 +277,44 @@ const enterTaskNameEditMode = () => {
 };
 
 /**
- * Handle task name input blur and update task name
- * @param event - Input blur event
+ * <p>Handle task name input blur event</p>
+ * <p>Validates the new name value and calls API to update task name</p>
  */
-const handleTaskNameInputBlur = async (event: FocusEvent) => {
+const handleTaskNameBlur = async (event: FocusEvent) => {
   const target = event.target as HTMLInputElement;
-  const inputValue = target.value;
-  if (!inputValue || inputValue === currentTaskName.value) {
+  const newTaskName = target?.value;
+  if (!newTaskName || newTaskName === taskName.value) {
     isTaskNameEditing.value = false;
     return;
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTaskName(currentTaskId.value, inputValue);
+  const [error] = await task.editTaskName(taskId.value, newTaskName);
   emit('loadingChange', false);
   isTaskNameEditing.value = false;
   if (error) {
     return;
   }
 
-  emit('change', { id: currentTaskId.value, name: inputValue });
+  emit('change', { id: taskId.value, name: newTaskName });
 };
 
 /**
- * Handle task name input enter key press
+ * <p>Handle Enter key press in task name input</p>
+ * <p>Triggers blur event to save the task name</p>
  */
-const handleTaskNameInputEnter = () => {
+const handleTaskNameEnterPress = () => {
   if (typeof taskNameInputRef.value?.blur === 'function') {
     taskNameInputRef.value.blur();
   }
 };
 
 /**
- * <p>Enter actual workload editing mode and focus the input</p>
+ * <p>Initialize actual workload editing mode</p>
+ * <p>Sets the current actual workload value and enables editing state</p>
  */
-const enterActualWorkloadEditMode = () => {
-  actualWorkloadInputValue.value = currentActualWorkload.value;
+const startActualWorkloadEditing = () => {
+  actualWorkloadInputValue.value = actualWorkload.value;
   isActualWorkloadEditing.value = true;
 
   nextTick(() => {
@@ -318,42 +327,44 @@ const enterActualWorkloadEditMode = () => {
 };
 
 /**
- * <p>Handle actual workload input blur and update task actual workload</p>
- * @param event - Input blur event
+ * <p>Handle actual workload input blur event</p>
+ * <p>Validates the new workload value and calls API to update actual workload</p>
  */
-const handleActualWorkloadInputBlur = async (event: FocusEvent) => {
+const handleActualWorkloadBlur = async (event: FocusEvent) => {
   const target = event.target as HTMLInputElement;
-  const inputValue = target.value;
-  if (inputValue === currentActualWorkload.value) {
+  const newWorkload = target?.value;
+  if (newWorkload === actualWorkload.value) {
     isActualWorkloadEditing.value = false;
     return;
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editActualWorkload(currentTaskId.value, { workload: inputValue });
+  const [error] = await task.editActualWorkload(taskId.value, { workload: newWorkload });
   emit('loadingChange', false);
   isActualWorkloadEditing.value = false;
   if (error) {
     return;
   }
 
-  emit('change', { id: currentTaskId.value, actualWorkload: inputValue });
+  emit('change', { id: taskId.value, actualWorkload: newWorkload });
 };
 
 /**
- * Handle actual workload input enter key press
+ * <p>Handle Enter key press in actual workload input</p>
+ * <p>Triggers blur event to save the actual workload</p>
  */
-const handleActualWorkloadInputEnter = () => {
+const handleActualWorkloadEnterPress = () => {
   if (typeof actualWorkloadInputRef.value?.blur === 'function') {
     actualWorkloadInputRef.value.blur();
   }
 };
 
 /**
- * Enter evaluation workload editing mode and focus the input
+ * <p>Initialize evaluation workload editing mode</p>
+ * <p>Sets the current evaluation workload value and enables editing state</p>
  */
-const enterEvalWorkloadEditMode = () => {
-  evalWorkloadInputValue.value = currentEvalWorkload.value;
+const startEvalWorkloadEditing = () => {
+  evalWorkloadInputValue.value = evalWorkload.value;
   isEvalWorkloadEditing.value = true;
 
   nextTick(() => {
@@ -366,42 +377,44 @@ const enterEvalWorkloadEditMode = () => {
 };
 
 /**
- * Handle evaluation workload input blur and update task evaluation workload
- * @param event - Input blur event
+ * <p>Handle evaluation workload input blur event</p>
+ * <p>Validates the new workload value and calls API to update evaluation workload</p>
  */
-const handleEvalWorkloadInputBlur = async (event: FocusEvent) => {
+const handleEvalWorkloadBlur = async (event: FocusEvent) => {
   const target = event.target as HTMLInputElement;
-  const inputValue = target.value;
-  if (inputValue === currentEvalWorkload.value) {
+  const newWorkload = target?.value;
+  if (newWorkload === evalWorkload.value) {
     isEvalWorkloadEditing.value = false;
     return;
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editEvalWorkloadApi(currentTaskId.value, { workload: inputValue });
+  const [error] = await task.editEvalWorkloadApi(taskId.value, { workload: newWorkload });
   emit('loadingChange', false);
   isEvalWorkloadEditing.value = false;
   if (error) {
     return;
   }
 
-  emit('change', { id: currentTaskId.value, evalWorkload: inputValue });
+  emit('change', { id: taskId.value, evalWorkload: newWorkload });
 };
 
 /**
- * Handle evaluation workload input enter key press
+ * <p>Handle Enter key press in evaluation workload input</p>
+ * <p>Triggers blur event to save the evaluation workload</p>
  */
-const handleEvalWorkloadInputEnter = () => {
+const handleEvalWorkloadEnterPress = () => {
   if (typeof evalWorkloadInputRef.value?.blur === 'function') {
     evalWorkloadInputRef.value.blur();
   }
 };
 
 /**
- * Enter priority editing mode and focus the select
+ * <p>Initialize priority editing mode</p>
+ * <p>Sets the current priority value and enables editing state</p>
  */
-const enterPriorityEditMode = () => {
-  prioritySelectValue.value = currentPriority.value;
+const startPriorityEditing = () => {
+  priorityInputValue.value = taskPriority.value;
   isPriorityEditing.value = true;
 
   nextTick(() => {
@@ -414,45 +427,46 @@ const enterPriorityEditMode = () => {
 };
 
 /**
- * Handle priority selection change and update message
- * @param value - Selected value
- * @param option - Selected option with message and value
+ * <p>Handle priority selection change</p>
+ * <p>Updates the display message for the selected priority</p>
  */
-const handlePrioritySelectionChange = async (_value: string, option: any) => {
+const handlePrioritySelectionChange = async (
+  _value: any,
+  option: any
+) => {
   if (option && option.message) {
-    prioritySelectMessage.value = option.message;
+    priorityDisplayMessage.value = option.message;
   }
 };
 
 /**
- * Handle priority selection blur and update task priority
+ * <p>Confirm priority change and update task</p>
+ * <p>Validates the new priority value and calls API to update task priority</p>
  */
-const handlePrioritySelectionBlur = async () => {
-  const selectedValue = prioritySelectValue.value;
-  if (!selectedValue || selectedValue === currentPriority.value) {
+const confirmPriorityChange = async () => {
+  const newPriority = priorityInputValue.value;
+  if (!newPriority || newPriority === taskPriority.value) {
     isPriorityEditing.value = false;
     return;
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTaskPriority(currentTaskId.value, selectedValue);
+  const [error] = await task.editTaskPriority(taskId.value, newPriority);
   emit('loadingChange', false);
   isPriorityEditing.value = false;
   if (error) {
     return;
   }
 
-  emit('change', {
-    id: currentTaskId.value,
-    priority: { value: selectedValue, message: prioritySelectMessage.value! }
-  });
+  emit('change', { id: taskId.value, priority: { value: newPriority, message: priorityDisplayMessage.value! } });
 };
 
 /**
- * Enter tag editing mode and focus the select
+ * <p>Initialize tag editing mode</p>
+ * <p>Sets the current tag values and enables editing state</p>
  */
-const enterTagEditMode = () => {
-  selectedTagIdList.value = currentTagIds.value;
+const startTagEditing = () => {
+  selectedTagIds.value = taskTagIds.value;
   isTagEditing.value = true;
 
   nextTick(() => {
@@ -465,43 +479,48 @@ const enterTagEditMode = () => {
 };
 
 /**
- * Handle tag selection change and update selected tags
- * @param value - Selected values
- * @param options - Selected tag options
+ * <p>Handle tag selection change</p>
+ * <p>Updates the selected tag list based on user selection</p>
  */
-const handleTagSelectionChange = async (_value: any, options: any) => {
+const handleTagSelectionChange = async (
+  _value: any,
+  options: any
+) => {
   if (Array.isArray(options)) {
     selectedTagList.value = options;
   }
 };
 
 /**
- * Handle tag selection blur and update task tags
+ * <p>Confirm tag changes and update task</p>
+ * <p>Validates the new tag values and calls API to update task tags</p>
  */
-const handleTagSelectionBlur = async () => {
-  const selectedIds = selectedTagIdList.value;
-  if (isEqual(selectedIds, currentTagIds.value)) {
+const confirmTagChanges = async () => {
+  const newTagIds = selectedTagIds.value;
+  if (isEqual(newTagIds, taskTagIds.value)) {
     isTagEditing.value = false;
     return;
   }
 
   emit('loadingChange', true);
-  const [error] = await task.editTaskTags(currentTaskId.value, { tagIds: selectedIds });
+  const [error] = await task.editTaskTags(taskId.value, { tagIds: newTagIds });
   emit('loadingChange', false);
   isTagEditing.value = false;
   if (error) {
     return;
   }
 
-  emit('change', { id: currentTaskId.value, tags: selectedTagList.value });
+  emit('change', { id: taskId.value, tags: selectedTagList.value });
 };
 
+// Version Management Functions
 /**
- * Enter version editing mode and focus the select
+ * <p>Initialize version editing mode</p>
+ * <p>Sets the current version value and enables editing state</p>
  */
-const enterVersionEditMode = () => {
+const startVersionEditing = () => {
   isVersionEditing.value = true;
-  versionSelectValue.value = props.dataSource?.softwareVersion;
+  versionInputValue.value = props.dataSource?.softwareVersion;
   nextTick(() => {
     setTimeout(() => {
       if (typeof versionSelectRef.value?.focus === 'function') {
@@ -512,59 +531,66 @@ const enterVersionEditMode = () => {
 };
 
 /**
- * Handle version selection change
- * @param value - Selected version value
+ * <p>Handle version selection change</p>
+ * <p>Updates the version input value based on user selection</p>
  */
 const handleVersionSelectionChange = (value) => {
-  versionSelectValue.value = value;
+  versionInputValue.value = value;
 };
 
 /**
- * Handle version selection blur and update task software version
+ * <p>Confirm version change and update task</p>
+ * <p>Validates the new version value and calls API to update task version</p>
  */
-const handleVersionSelectionBlur = async () => {
-  const selectedValue = versionSelectValue.value;
-  if (selectedValue === props.dataSource?.softwareVersion) {
+const confirmVersionChange = async () => {
+  const newVersion = versionInputValue.value;
+  if (newVersion === props.dataSource?.softwareVersion) {
     isVersionEditing.value = false;
     return;
   }
 
   emit('loadingChange', true);
-  const [error] = await task.updateTask(currentTaskId.value, { softwareVersion: selectedValue || '' });
+  const [error] = await task.updateTask(taskId.value, { softwareVersion: newVersion || '' });
   emit('loadingChange', false);
   isVersionEditing.value = false;
   if (error) {
     return;
   }
 
-  emit('change', { id: currentTaskId.value, softwareVersion: versionSelectValue.value });
+  emit('change', { id: taskId.value, softwareVersion: versionInputValue.value });
 };
 
 /**
- * Handle loading state change
- * @param value - Loading state
+ * <p>Emit loading state change event</p>
+ * <p>Used for passing loading state to parent component</p>
  */
-const handleLoadingChange = (value: boolean) => {
+const emitLoadingStateChange = (value: boolean) => {
   emit('loadingChange', value);
 };
 
 /**
- * Handle task info change
- * @param data - Changed task data
+ * <p>Emit task info change event</p>
+ * <p>Used for passing task data changes to parent component</p>
  */
-const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
+const emitTaskInfoChange = (data: Partial<TaskInfo>) => {
   emit('change', data);
 };
+
+// Lifecycle Hooks
+onMounted(() => {
+  loadModuleTreeData();
+});
 </script>
 
 <template>
-  <div class="h-full text-3 leading-5 pl-5 overflow-auto">
-    <div>
-      <div class="text-theme-title mb-2.5 font-semibold">
-        {{ t('task.detailInfo.apis.basicInfo') }}
-      </div>
+  <div class="basic-info-drawer">
+    <div class="basic-info-header">
+      <h3 class="basic-info-title">{{ t('task.detailInfo.apis.basicInfo') }}</h3>
+    </div>
 
-      <div class="space-y-2.5">
+    <!-- Scrollable Content Area -->
+    <div class="scrollable-content">
+      <div class="basic-info-content">
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
             <span>{{ t('task.detailInfo.apis.columns.code') }}</span>
@@ -583,11 +609,11 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
           </div>
 
           <div v-show="!isTaskNameEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
-            <div>{{ currentTaskName }}</div>
+            <div>{{ taskName }}</div>
             <Button
               type="link"
               class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-              @click="enterTaskNameEditMode">
+              @click="startTaskNameEditing">
               <Icon icon="icon-shuxie" class="text-3.5" />
             </Button>
           </div>
@@ -601,8 +627,8 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
               trim
               class="edit-container"
               :placeholder="t('task.detailInfo.apis.columns.namePlaceholder')"
-              @blur="handleTaskNameInputBlur"
-              @pressEnter="handleTaskNameInputEnter" />
+              @blur="handleTaskNameBlur"
+              @pressEnter="handleTaskNameEnterPress" />
           </AsyncComponent>
         </div>
 
@@ -613,7 +639,7 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
           </div>
 
           <div class="flex items-center">
-            <IconTask :value="currentTaskType" class="text-4 flex-shrink-0" />
+            <IconTask :value="taskType" class="text-4 flex-shrink-0" />
             <span class="ml-1.5">{{ props.dataSource?.taskType?.message }}</span>
           </div>
         </div>
@@ -634,9 +660,9 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
           </div>
 
           <div class="flex items-center">
-            <TaskStatus :value="currentTaskStatus" />
+            <TaskStatus :value="taskStatus" />
             <span
-              v-if="isTaskOverdue"
+              v-if="isOverdue"
               class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
               style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
               <span class="inline-block transform-gpu scale-90">
@@ -657,7 +683,7 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
             <Button
               type="link"
               class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-              @click="enterSprintEditMode">
+              @click="startSprintEditing">
               <Icon icon="icon-shuxie" class="text-3.5" />
             </Button>
           </div>
@@ -666,14 +692,14 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
             <Select
               v-show="isSprintEditing"
               ref="sprintSelectRef"
-              v-model:value="sprintSelectValue"
+              v-model:value="sprintInputValue"
               :action="`${TESTER}/task/sprint?projectId=${props.projectId}&fullTextSearch=true`"
               :fieldNames="{ value: 'id', label: 'name' }"
               showSearch
               :placeholder="t('task.detailInfo.apis.columns.selectSprint')"
               class="edit-container"
               @change="handleSprintSelectionChange"
-              @blur="handleSprintSelectionBlur" />
+              @blur="confirmSprintChange" />
           </AsyncComponent>
         </div>
 
@@ -688,7 +714,7 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
             <Button
               type="link"
               class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-              @click="enterModuleEditMode">
+              @click="startModuleEditing">
               <Icon icon="icon-shuxie" class="text-3.5" />
             </Button>
           </div>
@@ -697,7 +723,7 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
             <div v-show="isModuleEditing" class="flex items-center w-full">
               <TreeSelect
                 ref="moduleTreeSelectRef"
-                v-model:value="moduleTreeSelectValue"
+                v-model:value="moduleInputValue"
                 :treeData="moduleTreeData"
                 :fieldNames="{ value: 'id', label: 'name', children: 'children' }"
                 :virtual="false"
@@ -716,11 +742,11 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
               <Icon
                 icon="icon-gouxuanzhong"
                 class="text-3.5 ml-2 mr-1.5 cursor-pointer text-theme-text-hover"
-                @click="confirmModuleSelection" />
+                @click="confirmModuleChange" />
               <Icon
                 icon="icon-shanchuguanbi"
                 class="text-3.5 cursor-pointer text-theme-text-hover"
-                @click="cancelModuleEdit" />
+                @click="cancelModuleEditing" />
             </div>
           </AsyncComponent>
         </div>
@@ -774,11 +800,11 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
           </div>
 
           <div v-show="!isPriorityEditing" class="flex items-center">
-            <TaskPriority :value="props.dataSource?.priority" />
+            <TaskPriority :value="props.dataSource?.priority as any" />
             <Button
               type="link"
               class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-              @click="enterPriorityEditMode">
+              @click="startPriorityEditing">
               <Icon icon="icon-shuxie" class="text-3.5" />
             </Button>
           </div>
@@ -787,12 +813,12 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
             <SelectEnum
               v-show="isPriorityEditing"
               ref="prioritySelectRef"
-              v-model:value="prioritySelectValue"
+              v-model:value="priorityInputValue"
               enumKey="Priority"
               :placeholder="t('task.detailInfo.apis.columns.selectPriority')"
               class="edit-container max-w-52"
               @change="handlePrioritySelectionChange as any"
-              @blur="handlePrioritySelectionBlur as any">
+              @blur="confirmPriorityChange as any">
               <template #option="record">
                 <TaskPriority :value="record as any" />
               </template>
@@ -815,7 +841,7 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
             <span>
               {{
-                currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
                   ? t('task.detailInfo.apis.columns.evalWorkload')
                   : t('task.detailInfo.apis.columns.evalWorkHours')
               }}
@@ -824,11 +850,11 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
           </div>
 
           <div v-show="!isEvalWorkloadEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
-            <div>{{ currentEvalWorkload || '--' }}</div>
+            <div>{{ evalWorkload || '--' }}</div>
             <Button
               type="link"
               class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-              @click="enterEvalWorkloadEditMode">
+              @click="startEvalWorkloadEditing">
               <Icon icon="icon-shuxie" class="text-3.5" />
             </Button>
           </div>
@@ -844,8 +870,8 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
               :min="0.1"
               :max="1000"
               :placeholder="t('task.detailInfo.apis.columns.evalWorkloadPlaceholder')"
-              @blur="handleEvalWorkloadInputBlur"
-              @pressEnter="handleEvalWorkloadInputEnter" />
+              @blur="handleEvalWorkloadBlur"
+              @pressEnter="handleEvalWorkloadEnterPress" />
           </AsyncComponent>
         </div>
 
@@ -853,7 +879,7 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
             <span>
               {{
-                currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
+                evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
                   ? t('task.detailInfo.apis.columns.actualStoryPoint')
                   : t('task.detailInfo.apis.columns.actualWorkload')
               }}
@@ -862,11 +888,11 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
           </div>
 
           <div v-show="!isActualWorkloadEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
-            <div>{{ currentActualWorkload || '--' }}</div>
+            <div>{{ actualWorkload || '--' }}</div>
             <Button
               type="link"
               class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-              @click="enterActualWorkloadEditMode">
+              @click="startActualWorkloadEditing">
               <Icon icon="icon-shuxie" class="text-3.5" />
             </Button>
           </div>
@@ -882,8 +908,8 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
               :min="0.1"
               :max="1000"
               :placeholder="t('task.detailInfo.apis.columns.actualWorkloadPlaceholder')"
-              @blur="handleActualWorkloadInputBlur"
-              @pressEnter="handleActualWorkloadInputEnter" />
+              @blur="handleActualWorkloadBlur"
+              @pressEnter="handleActualWorkloadEnterPress" />
           </AsyncComponent>
         </div>
 
@@ -893,7 +919,7 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
             <Colon class="w-1" />
           </div>
 
-          <div class="whitespace-pre-wrap break-words break-all">{{ totalTestCount }}</div>
+          <div class="whitespace-pre-wrap break-words break-all">{{ totalProcessCount }}</div>
         </div>
 
         <div class="flex items-start">
@@ -902,7 +928,7 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
             <Colon class="w-1" />
           </div>
 
-          <div class="whitespace-pre-wrap break-words break-all">{{ failedTestCount }}</div>
+          <div class="whitespace-pre-wrap break-words break-all">{{ failedProcessCount }}</div>
         </div>
 
         <div class="flex items-start">
@@ -912,9 +938,9 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
           </div>
 
           <div v-show="!isTagEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
-            <div v-if="currentTags.length" class="flex items-center flex-wrap transform-gpu -translate-y-0.25">
+            <div v-if="taskTags.length" class="flex items-center flex-wrap transform-gpu -translate-y-0.25">
               <div
-                v-for="item in currentTags"
+                v-for="item in taskTags"
                 :key="item.id"
                 class="px-2 h-5.5 leading-5 mr-2 mb-2 rounded border border-solid border-border-divider bg-gray-light text-theme-sub-content">
                 {{ item.name }}
@@ -924,7 +950,7 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
             <Button
               type="link"
               class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-              @click="enterTagEditMode">
+              @click="startTagEditing">
               <Icon icon="icon-shuxie" class="text-3.5" />
             </Button>
           </div>
@@ -933,7 +959,7 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
             <Select
               v-show="isTagEditing"
               ref="tagSelectRef"
-              v-model:value="selectedTagIdList"
+              v-model:value="selectedTagIds"
               :fieldNames="{ label: 'name', value: 'id' }"
               :maxTagCount="5"
               :maxTagTextLength="15"
@@ -946,7 +972,7 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
               class="edit-container"
               :notFoundContent="t('task.detailInfo.apis.columns.tagsNotFound')"
               @change="handleTagSelectionChange"
-              @blur="handleTagSelectionBlur" />
+              @blur="confirmTagChanges" />
           </AsyncComponent>
         </div>
 
@@ -956,7 +982,7 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
             <Colon class="w-1" />
           </div>
 
-          <div class="whitespace-pre-wrap break-words break-all">{{ onePassStatusText }}</div>
+          <div class="whitespace-pre-wrap break-words break-all">{{ oneTimePassStatus }}</div>
         </div>
 
         <div class="flex items-start">
@@ -968,7 +994,7 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
             <template v-if="isVersionEditing">
               <Select
                 ref="versionSelectRef"
-                v-model:value="versionSelectValue"
+                v-model:value="versionInputValue"
                 allowClear
                 :placeholder="t('task.detailInfo.apis.columns.softwareVersionPlaceholder')"
                 class="w-full"
@@ -976,7 +1002,7 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
                 :action="`${TESTER}/software/version?projectId=${props.projectId}`"
                 :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN'}]}"
                 :fieldNames="{value:'name', label: 'name'}"
-                @blur="handleVersionSelectionBlur"
+                @blur="confirmVersionChange"
                 @change="handleVersionSelectionChange">
               </Select>
             </template>
@@ -994,7 +1020,7 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
                 <Button
                   type="link"
                   class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-                  @click="enterVersionEditMode">
+                  @click="startVersionEditing">
                   <Icon icon="icon-shuxie" class="text-3.5" />
                 </Button>
               </div>
@@ -1011,19 +1037,73 @@ const handleTaskInfoChange = (data: Partial<TaskInfo>) => {
             {{ props.dataSource?.unplanned ? t('task.detailInfo.apis.columns.yes') : t('task.detailInfo.apis.columns.no') }}
           </div>
         </div>
+
+        <!-- Description Section -->
+        <div class="description-section">
+          <Description
+            :id="taskId"
+            :projectId="props.projectId"
+            :userInfo="props.userInfo"
+            :appInfo="props.appInfo"
+            :dataSource="props.dataSource"
+            @change="emitTaskInfoChange"
+            @loadingChange="emitLoadingStateChange" />
+        </div>
       </div>
     </div>
-
-    <Description
-      :projectId="props.projectId"
-      :appInfo="props.appInfo"
-      :dataSource="props.dataSource"
-      @change="handleTaskInfoChange"
-      @loadingChange="handleLoadingChange" />
   </div>
 </template>
 
 <style scoped>
+/* Main container styles */
+.basic-info-drawer {
+  width: 370px;
+  height: 100%;
+  background: #ffffff;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header styles */
+.basic-info-header {
+  padding: 12px 20px 8px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.basic-info-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Scrollable content area */
+.scrollable-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+/* Content area styles */
+.basic-info-content {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Description section styles */
+.description-section {
+  padding: 16px 20px;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* Legacy style compatibility */
 .w-1\/2 {
   width: calc((100% - 20px)/2);
 }

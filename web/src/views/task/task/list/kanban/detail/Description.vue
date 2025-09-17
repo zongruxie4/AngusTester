@@ -98,57 +98,116 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="mt-4">
-    <div class="flex items-center text-theme-title mb-1.75">
-      <span class="font-semibold">{{ t('task.detailInfo.description.title') }}</span>
-      <Button
-        v-show="!isDescriptionEditing"
-        type="link"
-        class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-        @click="enterDescriptionEditMode">
-        <Icon icon="icon-shuxie" class="text-3.5" />
-      </Button>
+  <div class="info-row description-row">
+    <div class="info-label">
+      <span>{{ t('task.detailInfo.description.title') }}</span>
     </div>
+    <div class="info-value">
+      <div v-show="!isDescriptionEditing" class="info-value-content">
+        <div class="description-content">
+          <AsyncComponent :visible="!isDescriptionEditing">
+            <div v-show="!isDescriptionEditing">
+              <RichEditor :value="descriptionContent" mode="view" />
+            </div>
+            <NoData
+              v-show="!isDescriptionEditing&&!descriptionContent?.length"
+              size="small"
+              class="my-10" />
+          </AsyncComponent>
+        </div>
+        <Button
+          type="link"
+          class="edit-btn"
+          @click="enterDescriptionEditMode">
+          <Icon icon="icon-shuxie" />
+        </Button>
+      </div>
 
-    <AsyncComponent :visible="isDescriptionEditing">
-      <div v-show="isDescriptionEditing">
-        <div>
-          <RichEditor
-            :value="descriptionContent"
-            :height="300"
-            @change="handleEditorContentChange" />
-          <div v-show="hasContentLengthError" class="text-status-error">
-            {{ t('task.detailInfo.description.validation.maxLength') }}
+      <AsyncComponent :visible="isDescriptionEditing">
+        <div v-show="isDescriptionEditing" class="description-edit-container">
+          <div>
+            <RichEditor
+              :value="descriptionContent"
+              :height="200"
+              @change="handleEditorContentChange" />
+            <div v-show="hasContentLengthError" class="text-status-error">
+              {{ t('task.detailInfo.description.validation.maxLength') }}
+            </div>
+          </div>
+
+          <div class="description-edit-actions">
+            <Button size="small" @click="cancelDescriptionEdit">
+              {{ t('actions.cancel') }}
+            </Button>
+            <Button
+              size="small"
+              type="primary"
+              @click="confirmDescriptionEdit">
+              {{ t('actions.confirm') }}
+            </Button>
           </div>
         </div>
-
-        <div class="mt-2.5 space-x-2.5 w-full flex items-center justify-end">
-          <Button size="small" @click="cancelDescriptionEdit">{{ t('actions.cancel') }}</Button>
-          <Button
-            size="small"
-            type="primary"
-            @click="confirmDescriptionEdit">
-            {{ t('actions.confirm') }}
-          </Button>
-        </div>
-      </div>
-    </AsyncComponent>
-
-    <AsyncComponent :visible="!isDescriptionEditing">
-      <div v-show="!isDescriptionEditing">
-        <RichEditor :value="descriptionContent" mode="view" />
-      </div>
-
-      <NoData
-        v-show="!isDescriptionEditing&&!descriptionContent?.length"
-        size="small"
-        class="my-10" />
-    </AsyncComponent>
+      </AsyncComponent>
+    </div>
   </div>
 </template>
 
 <style scoped>
-.border-none {
-  border: none;
+/* Description row styles */
+.description-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: auto;
+  margin-bottom: 8px;
 }
+
+.info-label {
+  flex-shrink: 0;
+  width: 70px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #696666;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.info-label span {
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+.info-value {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  min-height: 20px;
+}
+
+.info-value-content {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 20px;
+}
+
+/* Description content styles */
+.description-content { width: 100%; min-height: 100px; flex: 1; }
+
+.dash-text { color: #8c8c8c; }
+
+/* Edit button styles */
+.edit-btn { flex-shrink: 0; padding: 0; height: 16px; width: 16px; display: flex; align-items: center; justify-content: center; border: none; background: none; color: #1890ff !important; cursor: pointer; transition: color 0.2s; }
+.edit-btn:focus { color: #1890ff !important; background: none !important; border: none !important; box-shadow: none !important; }
+.edit-btn:hover { color: #1890ff; }
+.edit-btn .anticon { font-size: 12px; }
+
+/* Edit container styles */
+.description-edit-container { width: 100%; margin-top: -8px; }
+.description-edit-actions { margin-top: 8px; display: flex; gap: 8px; justify-content: flex-end; }
+
+.border-none { border: none; }
 </style>

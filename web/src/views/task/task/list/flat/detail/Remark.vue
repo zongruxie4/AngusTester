@@ -6,21 +6,12 @@ import { PageQuery, TESTER, utils } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { Remark } from '@/views/task/task/types';
+import { BaseProps } from '@/types/types';
 
 /**
  * Props interface for Remark component
- * <p>
- * Defines the required properties for displaying and managing
- * task remarks and comments.
  */
-type Props = {
-  /** Unique identifier of the target task */
-  id: string;
-  /** Notification trigger for refreshing remark data */
-  notify: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BaseProps>(), {
   id: '',
   notify: undefined
 });

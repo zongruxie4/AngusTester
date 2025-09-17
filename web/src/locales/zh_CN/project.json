@@ -7,7 +7,7 @@
     "deleteProject": "删除项目",
     "projectList": "项目列表",
     "addedProjects": "已添加项目",
-    "projectDescription": "项目是管理和组织研发活动、工作流程、各类资源等基本单位。为团队提供了一个集中化方式来计划、跟踪、报告和验收工作进展。主要流程如下：",
+    "projectDescription": "项目是管理和组织研发活动、工作流程、各类资源等基本单位。为团队提供了一个集中化方式来计划、跟踪、报告和验收工作进展。",
     "confirmDelete": "确定删除项目[{name}]吗？",
     "deleteSuccess": "删除项目成功",
     "searchPlaceholder": "输入查询关键词",

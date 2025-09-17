@@ -1160,6 +1160,7 @@ const EXEC_RESULT_COLOR = {
         <span class="ml-1">({{ props.selectedIds.length }})</span>
       </Button>
     </div>
+
     <Table
       :columns="tableColumns"
       :dataSource="props.dataSource"

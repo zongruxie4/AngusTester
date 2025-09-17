@@ -161,7 +161,7 @@ onMounted(() => {
               {{ meetingDataSource?.date?.format(DATE_FORMAT) }}
             </div>
           </div>
-          
+
           <div class="flex items-start">
             <div class="w-24 flex items-center whitespace-nowrap flex-shrink-0 text-gray-900 font-medium text-3 text-right">
               <span>{{ t('taskMeeting.columns.time') }}</span>

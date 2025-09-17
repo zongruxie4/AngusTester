@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button } from 'ant-design-vue';
 import { Icon, NoData, Scroll } from '@xcan-angus/vue-ui';
-import { TESTER, PageQuery, utils} from '@xcan-angus/infra';
+import { TESTER, PageQuery, utils } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { TaskInfo } from '../../types';
 import { TaskInfoProps } from '@/views/task/task/list/types';
@@ -11,7 +11,7 @@ import { Remark } from '@/views/task/task/types';
 
 // Component Props
 const props = withDefaults(defineProps<TaskInfoProps>(), {
-  id: '-1',
+  id: '-1'
 });
 
 // eslint-disable-next-line func-call-spacing
@@ -52,16 +52,14 @@ const deleteRemark = async (remarkId: string) => {
   remarkList.value = remarkList.value.filter(item => item.id !== remarkId);
 };
 
-
 /**
  * Current content being edited in the rich text editor
  * <p>
  * Contains the HTML/rich text content that the user is typing
  */
- const currentRemarkContent = ref<string>('');
+const currentRemarkContent = ref<string>('');
 
-
- /**
+/**
  * Reference to the rich text editor component instance
  * <p>
  * Used to programmatically control the editor and access its methods
@@ -73,9 +71,9 @@ const richTextEditorRef = ref();
  * <p>
  * Indicates whether the current content exceeds the maximum allowed length
  */
- const isValidationError = ref(false);
+const isValidationError = ref(false);
 
- /**
+/**
  * Checks if the content is empty or contains only whitespace
  * <p>
  * Validates rich text content by parsing JSON and checking for meaningful content
@@ -96,7 +94,6 @@ const isContentEmpty = (contentValue: string) => {
   }
   return false;
 };
-
 
 const submitRemark = async () => {
   if (!currentRemarkContent.value) {
@@ -121,12 +118,9 @@ const submitRemark = async () => {
     return;
   }
 
-
   currentRemarkContent.value = '';
   notify.value = utils.uuid();
-
 };
-
 
 /**
  * Checks if the content exceeds the maximum allowed length
@@ -135,7 +129,7 @@ const submitRemark = async () => {
  *
  * @returns True if the content exceeds the maximum length
  */
- const isContentTooLong = () => {
+const isContentTooLong = () => {
   if (!currentRemarkContent.value) {
     return false;
   }
@@ -150,7 +144,7 @@ const submitRemark = async () => {
  *
  * @param newContent - The new content from the editor
  */
- const handleEditorContentChange = (newContent: string) => {
+const handleEditorContentChange = (newContent: string) => {
   currentRemarkContent.value = newContent;
 };
 
@@ -171,7 +165,6 @@ const queryParams = computed(() => {
     <div class="basic-info-header">
       <h3 class="basic-info-title">{{ t('backlog.remark') }}</h3>
     </div>
-
 
     <div class="pr-2">
       <div class="mb-2.5">
@@ -198,7 +191,6 @@ const queryParams = computed(() => {
 
     <!-- Scrollable Content Area -->
     <div class="scrollable-content">
-
       <div class="basic-info-content">
         <!-- Only render Scroll component when we have valid taskId -->
         <Scroll

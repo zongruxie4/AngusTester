@@ -8,7 +8,10 @@ import { useI18n } from 'vue-i18n';
 import { TaskInfo } from '@/views/task/types';
 import { TaskInfoProps } from '@/views/task/task/list/types';
 
-// Type definitions
+/**
+ * <p>Attachment item interface</p>
+ * <p>Defines the structure of a single attachment file</p>
+ */
 type AttachmentItem = {
   id: string;
   name: string;
@@ -31,22 +34,36 @@ const emit = defineEmits<{
   (event: 'change', value: Partial<TaskInfo>): void;
 }>();
 
-// Constants
+/**
+ * <p>Maximum file size in MB for uploads</p>
+ */
 const MAX_FILE_SIZE_MB = 10;
 
 // Component state
 const isUploading = ref(false);
 const attachmentList = ref<AttachmentItem[]>([]);
 
-// Computed properties
+/**
+ * <p>Get current task ID from props</p>
+ */
 const currentTaskId = computed(() => props.dataSource?.id);
-const hasNoAttachments = computed(() => !attachmentList.value.length);
+
+/**
+ * <p>Check if attachment list is empty</p>
+ * <p>Used to determine whether to show upload area or attachment list</p>
+ */
+const isAttachmentListEmpty = computed(() => !attachmentList.value.length);
+
+/**
+ * <p>Calculate maximum file size in bytes</p>
+ * <p>Converts MB to bytes for file size validation</p>
+ */
 const maxFileSizeInBytes = computed(() => {
   return 1024 * 1024 * MAX_FILE_SIZE_MB;
 });
 
 /**
- * Handle file upload change event and upload file
+ * <p>Handle file upload change event and upload file</p>
  * @param param - Upload change event with file
  */
 const handleFileUploadChange = async ({ file }: { file: UploadFile }) => {
@@ -84,10 +101,10 @@ const handleFileUploadChange = async ({ file }: { file: UploadFile }) => {
 };
 
 /**
- * Delete attachment from task
- * @param attachmentToDelete - Attachment item to delete
+ * <p>Handle attachment deletion</p>
+ * <p>Removes the specified attachment from the list and updates the task</p>
  */
-const deleteAttachment = async (attachmentToDelete: AttachmentItem) => {
+const handleAttachmentDeletion = async (attachmentToDelete: AttachmentItem) => {
   const updatedAttachmentList = attachmentList.value.filter(item => item.id !== attachmentToDelete.id).map(item => {
     return {
       name: item.name,
@@ -99,8 +116,8 @@ const deleteAttachment = async (attachmentToDelete: AttachmentItem) => {
 };
 
 /**
- * Update task attachments via API
- * @param attachmentData - Array of attachment data with name and url
+ * <p>Update task attachments via API</p>
+ * <p>Sends the updated attachment list to the server and emits change event</p>
  */
 const updateTaskAttachments = async (attachmentData: {name: string; url: string}[]) => {
   const updateParams = {
@@ -117,7 +134,7 @@ const updateTaskAttachments = async (attachmentData: {name: string; url: string}
 };
 
 /**
- * Custom upload request handler to prevent default upload behavior
+ * <p>Custom upload request handler to prevent default upload behavior</p>
  * @returns false to prevent default upload
  */
 const handleCustomUploadRequest = () => {
@@ -125,7 +142,7 @@ const handleCustomUploadRequest = () => {
 };
 
 /**
- * Initialize component and watch for data source changes
+ * <p>Initialize component and watch for data source changes</p>
  */
 onMounted(() => {
   watch(() => props.dataSource, (newDataSource) => {
@@ -145,72 +162,120 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="h-full text-3 leading-5 pl-5 overflow-auto">
-    <div class="text-theme-title mb-2.5 font-semibold">
-      {{ t('task.detailInfo.attachment.title') }}
+  <div class="basic-info-drawer">
+    <div class="basic-info-header">
+      <h3 class="basic-info-title">{{ t('task.detailInfo.attachment.title') }}</h3>
     </div>
-    <Spin
-      :spinning="isUploading"
-      :class="{ empty: hasNoAttachments }"
-      class="upload-container w-full px-3 py-2.5 leading-5 text-3 rounded border border-dashed">
-      <template v-if="!hasNoAttachments">
-        <div
-          v-for="item in attachmentList"
-          :key="item.id"
-          class="leading-4 mb-2 last:mb-0 flex items-center justify-between overflow-hidden">
-          <a
-            class="flex-1 flex-nowrap truncate"
-            :download="item.name"
-            :href="item.url">{{ item.name }}</a>
-          <Icon
-            icon="icon-qingchu"
-            class="text-3.5 flex-shrink-0 cursor-pointer text-theme-text-hover"
-            @click="deleteAttachment(item)">
-          </icon>
-        </div>
 
-        <div v-if="attachmentList.length < 5" class="upload-action flex justify-center h-5">
-          <Upload
-            :maxCount="5"
-            :showUploadList="false"
-            :customRequest="handleCustomUploadRequest"
-            @change="handleFileUploadChange">
-            <Button
-              size="small"
-              type="link"
-              class="flex items-center h-auto leading-4.5 p-0">
-              <Icon icon="icon-shangchuan" class="text-3.5 flex-shrink-0 text-text-link" />
-              <div class="flex-shrink-0 text-text-link ml-1">
-                {{ t('task.detailInfo.attachment.actions.continueUpload') }}
-              </div>
-            </Button>
-          </Upload>
-        </div>
-      </template>
+    <!-- Scrollable Content Area -->
+    <div class="scrollable-content">
+      <div class="basic-info-content">
+        <Spin
+          :spinning="isUploading"
+          :class="{ empty: isAttachmentListEmpty }"
+          class="upload-container w-full px-3 py-2.5 leading-5 text-3 rounded border border-dashed">
+          <template v-if="!isAttachmentListEmpty">
+            <div
+              v-for="item in attachmentList"
+              :key="item.id"
+              class="leading-4 mb-2 last:mb-0 flex items-center justify-between overflow-hidden">
+              <a
+                class="flex-1 flex-nowrap truncate"
+                :download="item.name"
+                :href="item.url">{{ item.name }}</a>
+              <Icon
+                icon="icon-qingchu"
+                class="text-3.5 flex-shrink-0 cursor-pointer text-theme-text-hover"
+                @click="handleAttachmentDeletion(item)">
+              </icon>
+            </div>
 
-      <template v-else>
-        <Upload
-          :maxCount="5"
-          :showUploadList="false"
-          :customRequest="handleCustomUploadRequest"
-          @change="handleFileUploadChange">
-          <Button
-            size="small"
-            type="link"
-            class="flex flex-col items-center justify-center h-auto leading-5 p-0">
-            <Icon icon="icon-shangchuan" class="text-5 flex-shrink-0 text-text-link" />
-            <div class="flex-shrink-0 text-text-link">{{ t('task.detailInfo.attachment.actions.selectFile') }}</div>
-          </Button>
-        </Upload>
-        <div class="text-theme-sub-content mt-1">
-          {{ t('task.detailInfo.attachment.messages.uploadLimit', { size: MAX_FILE_SIZE_MB }) }}
-        </div>
-      </template>
-    </Spin>
+            <div v-if="attachmentList.length < 5" class="upload-action flex justify-center h-5">
+              <Upload
+                :maxCount="5"
+                :showUploadList="false"
+                :customRequest="handleCustomUploadRequest"
+                @change="handleFileUploadChange">
+                <Button
+                  size="small"
+                  type="link"
+                  class="flex items-center h-auto leading-4.5 p-0">
+                  <Icon icon="icon-shangchuan" class="text-3.5 flex-shrink-0 text-text-link" />
+                  <div class="flex-shrink-0 text-text-link ml-1">
+                    {{ t('task.detailInfo.attachment.actions.continueUpload') }}
+                  </div>
+                </Button>
+              </Upload>
+            </div>
+          </template>
+
+          <template v-else>
+            <Upload
+              :maxCount="5"
+              :showUploadList="false"
+              :customRequest="handleCustomUploadRequest"
+              @change="handleFileUploadChange">
+              <Button
+                size="small"
+                type="link"
+                class="flex flex-col items-center justify-center h-auto leading-5 p-0">
+                <Icon icon="icon-shangchuan" class="text-5 flex-shrink-0 text-text-link" />
+                <div class="flex-shrink-0 text-text-link">{{ t('task.detailInfo.attachment.actions.selectFile') }}</div>
+              </Button>
+            </Upload>
+            <div class="text-theme-sub-content mt-1">
+              {{ t('task.detailInfo.attachment.messages.uploadLimit', { size: MAX_FILE_SIZE_MB }) }}
+            </div>
+          </template>
+        </Spin>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
+/* Main container styles */
+.basic-info-drawer {
+  width: 370px;
+  height: 100%;
+  background: #ffffff;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header styles */
+.basic-info-header {
+  padding: 12px 20px 8px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.basic-info-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Scrollable content area */
+.scrollable-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+/* Content area styles */
+.basic-info-content {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .upload-container {
   border-color: var(--border-text-box);
   background-color: #fafafa;

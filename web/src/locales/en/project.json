@@ -7,7 +7,7 @@
     "deleteProject": "Delete Project",
     "projectList": "Project List",
     "addedProjects": "Added Projects",
-    "projectDescription": "Projects are fundamental units for organizing R&D activities, workflows, and resources. They provide teams with centralized planning, tracking, reporting, and acceptance capabilities. The key workflow is as follows:",
+    "projectDescription": "Projects are fundamental units for organizing R&D activities, workflows, and resources. They provide teams with centralized planning, tracking, reporting, and acceptance capabilities.",
     "confirmDelete": "Are you sure you want to delete project [{name}]?",
     "deleteSuccess": "Project deleted successfully",
     "searchPlaceholder": "Enter search keywords",

@@ -113,7 +113,10 @@ const getSprintStatusDotStyle = (statusValue: string) => {
               <!-- Owner -->
               <div class="flex items-center space-x-2">
                 <div class="w-6 h-6 rounded-full overflow-hidden ring-1 ring-theme-border">
-                  <Image class="w-full h-full" :src="item.ownerAvatar" type="avatar" />
+                  <Image
+                    class="w-full h-full"
+                    :src="item.ownerAvatar"
+                    type="avatar" />
                 </div>
                 <div class="flex flex-col">
                   <span class="text-xs text-theme-sub-content">{{ t('taskSprint.columns.owner') }}</span>
@@ -163,17 +166,29 @@ const getSprintStatusDotStyle = (statusValue: string) => {
                       :key="user.id"
                       :title="user.fullName"
                       class="w-6 h-6 rounded-full overflow-hidden ring-1 ring-white shadow-sm">
-                      <Image :src="user.avatar" type="avatar" class="w-full h-full" />
+                      <Image
+                        :src="user.avatar"
+                        type="avatar"
+                        class="w-full h-full" />
                     </div>
-                    <Popover v-if="item.members.length > 8" placement="bottomLeft" internal>
+                    <Popover
+                      v-if="item.members.length > 8"
+                      placement="bottomLeft"
+                      internal>
                       <template #title>
                         <span class="text-sm font-medium">{{ t('taskSprint.columns.members') }} ({{ item.members.length }})</span>
                       </template>
                       <template #content>
                         <div class="grid grid-cols-5 gap-2 max-w-md">
-                          <div v-for="user in item.members" :key="user.id" class="flex flex-col items-center space-y-1 p-2">
+                          <div
+                            v-for="user in item.members"
+                            :key="user.id"
+                            class="flex flex-col items-center space-y-1 p-2">
                             <div class="w-8 h-8 rounded-full overflow-hidden">
-                              <Image class="w-full h-full" :src="user.avatar" type="avatar" />
+                              <Image
+                                class="w-full h-full"
+                                :src="user.avatar"
+                                type="avatar" />
                             </div>
                             <span class="text-xs text-theme-content text-center truncate w-full" :title="user.fullName">{{ user.fullName }}</span>
                           </div>
@@ -184,7 +199,10 @@ const getSprintStatusDotStyle = (statusValue: string) => {
                       </div>
                     </Popover>
                   </template>
-                  <Avatar v-else size="small" class="w-6 h-6">
+                  <Avatar
+                    v-else
+                    size="small"
+                    class="w-6 h-6">
                     <template #icon>
                       <UserOutlined />
                     </template>
@@ -209,7 +227,6 @@ const getSprintStatusDotStyle = (statusValue: string) => {
 
         <!-- Divider line -->
         <div class="border-t border-theme-border-subtle/50"></div>
-
 
         <div class="px-3.5 flex justify-between items-start text-3 my-2.5 relative">
           <div

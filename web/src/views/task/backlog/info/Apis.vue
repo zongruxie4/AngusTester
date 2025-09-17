@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, nextTick, onMounted, ref } from 'vue';
 import { Button, TreeSelect } from 'ant-design-vue';
-import {
-  AsyncComponent, Colon, Icon, IconTask, Input, ScriptTypeTag, Select
-} from '@xcan-angus/vue-ui';
+import { AsyncComponent, Icon, IconTask, Input, ScriptTypeTag, Select } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { TESTER, EvalWorkloadMethod } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
@@ -11,11 +9,11 @@ import { modules, task } from '@/api/tester';
 import { SoftwareVersionStatus } from '@/enums/enums';
 
 import TaskPriority from '@/components/TaskPriority/index.vue';
-import { TaskInfo } from '../../types';
-import { TaskInfoProps } from '@/views/task/task/list/types';
-
 import SelectEnum from '@/components/enum/SelectEnum.vue';
 import TaskStatus from '@/components/TaskStatus/index.vue';
+
+import { TaskInfo } from '@/views/task/types';
+import { TaskInfoProps } from '@/views/task/task/list/types';
 
 const { t } = useI18n();
 
