@@ -1,4 +1,5 @@
 import { http } from '@xcan-angus/infra';
+import { slice } from 'lodash-es';
 
 let baseUrl: string;
 export default class API {
@@ -119,7 +120,9 @@ export default class API {
   }
 
   getBaselineCaseDetail (baselineId: string, caseId: string): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/baseline/${baselineId}/case/${caseId}`);
+    return http.get(`${baseUrl}/baseline/${baselineId}/case/${caseId}`, null, {
+      silence: false
+    });
   }
 
   backTrash (trashId: string): Promise<[Error | null, any]> {
