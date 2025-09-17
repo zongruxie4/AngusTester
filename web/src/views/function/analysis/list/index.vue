@@ -52,7 +52,7 @@ const getTemplateName = () => {
   return templateData.value.find(item => item.value === template.value)?.message;
 };
 const TemplateDescConfig = computed(() => {
-  const res = {};
+  const res = {} as any;
   templateDesc.value.forEach(item => {
     res[item.value] = item.message;
   });

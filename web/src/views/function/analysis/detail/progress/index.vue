@@ -12,11 +12,9 @@ const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
 
-const Echart = defineAsyncComponent(() => import('./EChart.vue'));
+const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
-const totalValue = ref({
-
-});
+const totalValue = ref({});
 
 const personValues = ref([]);
 
@@ -95,7 +93,7 @@ defineExpose({
     <div class="font-semibold pl-3">
       {{ t('functionAnalysis.detail.progress.total') }}
     </div>
-    <Echart ref="totalChartRef" v-bind="totalValue" />
+    <EChart ref="totalChartRef" v-bind="totalValue" />
   </div>
 
   <div
@@ -103,6 +101,6 @@ defineExpose({
     :key="item.id"
     class="mt-5">
     <div class="font-semibold pl-3">{{ item.userName }}</div>
-    <Echart ref="chartListRef" v-bind="item.chartData" />
+    <EChart ref="chartListRef" v-bind="item.chartData" />
   </div>
 </template>

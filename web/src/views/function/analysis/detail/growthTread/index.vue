@@ -13,10 +13,10 @@ const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
 
-const Echart = defineAsyncComponent(() => import('./EChart.vue'));
+const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data) => {
-  const res = {};
+  const res = {} as any;
 
   const { apiTestNum = 0, requirementNum = 0, scenarioTestNum = 0, storyNum = 0, bugNum = 0, taskNum = 0, totalNum = 0 } = data;
   res.overdueAssessmentData = data;
@@ -118,7 +118,7 @@ defineExpose({
     <div class="font-semibold pl-3">
       {{ t('functionAnalysis.detail.taskGrowthTread.total') }}
     </div>
-    <Echart
+    <EChart
       ref="totalChartRef"
       v-bind="totalValue"
       class="ml-3" />
@@ -129,7 +129,7 @@ defineExpose({
     :key="item.id"
     class="mt-5">
     <div class="font-semibold pl-3">{{ item.userName }}</div>
-    <Echart
+    <EChart
       ref="chartListRef"
       v-bind="item.chartData"
       class="ml-3" />

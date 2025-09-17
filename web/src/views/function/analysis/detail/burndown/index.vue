@@ -13,10 +13,10 @@ const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
 
-const Echart = defineAsyncComponent(() => import('./EChart.vue'));
+const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data, target = 'NUM') => {
-  const res = {};
+  const res = {} as any;
   if (data) {
     const xData = (data[target]?.expected || []).map(i => i.timeSeries);
     const expectedYData = (data[target]?.expected || []).map(i => i.value);
@@ -91,7 +91,7 @@ defineExpose({
       {{ t('functionAnalysis.detail.burndown.total') }}
     </div>
 
-    <Echart
+    <EChart
       ref="totalChartRef"
       v-bind="totalValue"
       class="ml-10" />
@@ -102,7 +102,7 @@ defineExpose({
     :key="item.id"
     class="mt-5">
     <div class="font-semibold pl-3">{{ item.userName }}</div>
-    <Echart
+    <EChart
       ref="chartListRef"
       v-bind="item.chartData"
       class="ml-10" />

@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
 
-const Echart = defineAsyncComponent(() => import('./EChart.vue'));
+const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const targetDataCategery = {
   TEST_CUSTOMIZATION: t('functionAnalysis.detail.resourceCreation.customTest'),
@@ -48,11 +48,10 @@ const targetDataCategery = {
   BASELINE: t('functionAnalysis.detail.resourceCreation.baseline'),
   CASE: t('functionAnalysis.detail.resourceCreation.case'),
   REVIEW: t('functionAnalysis.detail.resourceCreation.review')
-
 };
 
 const getChartData = (data) => {
-  const res = {};
+  const res = {} as any;
 
   const { planNum = 0, caseNum = 0, reviewNum = 0, analysisNum = 0, baselineNum = 0, totalNum = 0 } = data;
   res.overdueAssessmentData = data;
@@ -104,9 +103,7 @@ const getChartData = (data) => {
   return res;
 };
 
-const totalValue = ref({
-
-});
+const totalValue = ref({});
 
 const personValues = ref([]);
 
@@ -157,7 +154,7 @@ defineExpose({
     <div class="font-semibold pl-3">
       {{ t('functionAnalysis.detail.resourceCreation.total') }}
     </div>
-    <Echart
+    <EChart
       ref="totalChartRef"
       v-bind="totalValue"
       class="ml-3" />
@@ -168,7 +165,7 @@ defineExpose({
     :key="item.id"
     class="mt-5">
     <div class="font-semibold pl-3">{{ item.userName }}</div>
-    <Echart
+    <EChart
       ref="chartListRef"
       v-bind="item.chartData"
       class="ml-3" />

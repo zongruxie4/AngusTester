@@ -12,10 +12,10 @@ const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
 
-const Echart = defineAsyncComponent(() => import('./EChart.vue'));
+const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data) => {
-  const res = {};
+  const res = {} as any;
   const { CRITICAL = 0, MAJOR = 0, MINOR = 0, TRIVIAL = 0 } = data.bugLevelCount || {};
   const {
     totalNum = 0, validBugNum = 0, invalidBugNum = 0, missingBugNum = 0, validBugRate = 0,
@@ -112,7 +112,7 @@ defineExpose({
       {{ t('functionAnalysis.detail.bugs.total') }}
     </div>
 
-    <Echart
+    <EChart
       ref="totalChartRef"
       v-bind="totalValue"
       class="ml-3" />
@@ -123,7 +123,7 @@ defineExpose({
     :key="item.id"
     class="mt-5">
     <div class="font-semibold pl-3">{{ item.userName }}</div>
-    <Echart
+    <EChart
       ref="chartListRef"
       v-bind="item.chartData"
       class="ml-3" />

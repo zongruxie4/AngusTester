@@ -12,10 +12,10 @@ const props = withDefaults(defineProps<Props>(), {
   analysisInfo: undefined
 });
 
-const Echart = defineAsyncComponent(() => import('./EChart.vue'));
+const EChart = defineAsyncComponent(() => import('./EChart.vue'));
 
 const getChartData = (data) => {
-  const res = {};
+  const res = {} as any;
 
   const {
     totalNum = 0, passedReviewNum = 0,
@@ -104,7 +104,7 @@ defineExpose({
     <div class="font-semibold pl-3">
       {{ t('functionAnalysis.detail.reviewEfficiency.total') }}
     </div>
-    <Echart
+    <EChart
       ref="totalChartRef"
       v-bind="totalValue"
       class="ml-3" />
@@ -115,7 +115,7 @@ defineExpose({
     :key="item.id"
     class="mt-5">
     <div class="font-semibold pl-3">{{ item.userName }}</div>
-    <Echart
+    <EChart
       ref="chartListRef"
       v-bind="item.chartData"
       class="ml-3" />
