@@ -243,8 +243,8 @@
         "nonUnplannedCount": "Non-Unplanned",
         "unplannedWorkload": "Workload",
         "unplannedWorkloadRatio": "Workload Ratio",
-        "unplannedAmount": "Unplanned Workload",
-        "nonUnplannedAmount": "Non-Unplanned Workload",
+        "unplannedAmount": "Unplanned",
+        "nonUnplannedAmount": "Non-Unplanned",
         "estimatedTime": "Estimated Time"
       },
       "taskTypes": {
