@@ -114,15 +114,15 @@
           "totalBugs": "Total",
           "validBugs": "Valid",
           "invalidBugs": "Invalid",
-          "missingBugs": "Missing",
+          "missingBugs": "Escaped",
           "criticalBugs": "Critical",
           "majorBugs": "Major",
           "minorBugs": "Minor",
           "trivialBugs": "Trivial",
           "nonBugWorkload": "Non-Bug Workload",
           "bugWorkload": "Bug Workload",
-          "nonMissingBugs": "Non-Missing Bugs",
-          "missingBugsCount": "Missing Bugs",
+          "nonMissingBugs": "Non-Escaped Bugs",
+          "missingBugsCount": "Escaped Bugs",
           "uncompleted": "Uncompleted",
           "completed": "Completed"
         },
@@ -130,7 +130,7 @@
           "bugCount": "Bug Count",
           "bugLevel": "Bug Level",
           "validBugRatio": "Valid Bug Ratio",
-          "missingBugRatio": "Missing Bug Ratio",
+          "missingBugRatio": "Escaped Bug Ratio",
           "bugWorkloadRatio": "Bug Workload Ratio"
         },
         "pieChartLabels": {
@@ -550,7 +550,7 @@
         "type": "Type",
         "priority": "Priority",
         "bugLevel": "Bug Level",
-        "missingBug": "Missing Bug Flag",
+        "missingBug": "Escaped Bug",
         "scenario": "Scenario",
         "testType": "Test Type",
         "service": "Service",
@@ -678,7 +678,7 @@
         "module": "Module",
         "parentTask": "Parent",
         "type": "Type",
-        "missingBug": "Missing Bug",
+        "missingBug": "Escaped Bug",
         "priority": "Priority",
         "evalWorkloadMethod": "Estimate Method",
         "evalWorkload": "Estimated",
@@ -1443,15 +1443,15 @@
         "testType": "Select test type",
         "moduleId": "Select module",
         "execResult": "Select execution result",
-        "createdDate": ["Created from", "Created to"],
-        "startDate": ["Start from", "Start to"],
-        "deadlineDate": ["Deadline from", "Deadline to"],
-        "processedDate": ["Processed from", "Processed to"],
-        "confirmedDate": ["Confirmed from", "Confirmed to"],
-        "completedDate": ["Completed from", "Completed to"],
-        "canceledDate": ["Canceled from", "Canceled to"],
-        "execDate": ["Executed from", "Executed to"],
-        "lastModifiedDate": ["Modified from", "Modified to"],
+        "createdDate": "Created from,Created to",
+        "startDate": "Start from,Start to",
+        "deadlineDate": "Deadline from,Deadline to",
+        "processedDate": "Processed from,Processed to",
+        "confirmedDate": "Confirmed from,Confirmed to",
+        "completedDate": "Completed from,Completed to",
+        "canceledDate": "Canceled from,Canceled to",
+        "execDate": "Executed from,Executed to",
+        "lastModifiedDate": "Modified from,Modified to",
         "evalWorkload": "Estimated workload",
         "failNum": "Failure count",
         "totalNum": "Total count",
@@ -1691,8 +1691,8 @@
         "uploadFile": "Please upload file",
         "selectFile": "Select File",
         "uploadTip": "You can directly drag files into this area for direct upload. File size should not exceed 20M, supporting .xls .xlsx file types.",
-        "taskImportTemplate": "Task Import Template",
-        "duplicateStrategy": "Processing Strategy When Encountering Duplicates"
+        "taskImportTemplate": "Import Template",
+        "duplicateStrategy": "Duplicate Processing Strategy"
       }
     },
     "table": {
@@ -1827,7 +1827,7 @@
         "priority": "Priority",
         "priorityPlaceholder": "Please select priority",
         "bugLevel": "Bug Level",
-        "missingBug": "Is Missing Test Bug",
+        "missingBug": "Escaped Bug",
         "missingBugOptions": {
           "yes": "Yes",
           "no": "No"
@@ -1891,7 +1891,7 @@
         "attachments": "Attachments",
         "attachmentsAdd": "Add attachments, maximum 5 attachments",
         "attachmentsContinue": "Continue Upload",
-        "attachmentsUpload": "Upload attachments, maximum 5"
+        "attachmentsUpload": "Upload attachments, maximum 5 attachments"
       },
       "taskTypes": {
         "requirement": "Requirement",

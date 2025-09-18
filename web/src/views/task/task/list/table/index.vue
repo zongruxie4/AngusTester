@@ -871,81 +871,14 @@ const tableColumns: ({
   {
     title: t('task.table.columns.code'),
     dataIndex: 'code',
-    width: 120,
+    width: 110,
     sorter: true,
     ellipsis: true
   },
   {
     title: t('task.table.columns.name'),
     dataIndex: 'name',
-    width: '60%',
-    sorter: true,
-    ellipsis: true
-  },
-  {
-    title: t('task.table.columns.priority'),
-    dataIndex: 'priority',
-    width: 80,
-    sorter: true,
-    ellipsis: true
-  },
-  {
-    title: t('task.table.columns.status'),
-    dataIndex: 'status',
-    width: 80,
-    sorter: true,
-    ellipsis: true
-  },
-  {
-    title: t('task.table.columns.execResult'),
-    dataIndex: 'execResult',
-    width: 80,
-    sorter: true,
-    ellipsis: true
-  },
-  {
-    title: t('task.table.columns.assignee'),
-    dataIndex: 'assigneeName',
-    width: 100,
-    groupName: 'personType',
-    ellipsis: true
-  },
-  {
-    title: t('task.table.columns.creator'),
-    dataIndex: 'createdByName',
-    width: 100,
-    hide: true,
-    groupName: 'personType',
-    ellipsis: true
-  },
-  {
-    title: t('task.table.columns.confirmer'),
-    dataIndex: 'confirmerName',
-    width: 100,
-    hide: true,
-    groupName: 'personType',
-    ellipsis: true
-  },
-  {
-    title: t('task.table.columns.lastModifier'),
-    dataIndex: 'lastModifiedByName',
-    width: 100,
-    hide: true,
-    groupName: 'personType',
-    ellipsis: true
-  },
-  {
-    title: t('task.table.columns.executor'),
-    dataIndex: 'execUserName',
-    width: 100,
-    hide: true,
-    groupName: 'personType',
-    ellipsis: true
-  },
-  {
-    title: t('task.table.columns.workload'),
-    dataIndex: 'evalWorkload',
-    width: 80,
+    width: '45%',
     sorter: true,
     ellipsis: true
   },
@@ -953,7 +886,7 @@ const tableColumns: ({
     title: t('task.table.columns.sprint'),
     dataIndex: 'sprintName',
     groupName: 'target',
-    width: '40%',
+    width: '25%',
     ellipsis: true
   },
   {
@@ -961,7 +894,7 @@ const tableColumns: ({
     hide: true,
     dataIndex: 'targetName',
     groupName: 'target',
-    width: '40%',
+    width: '25%',
     ellipsis: true
   },
   {
@@ -969,13 +902,83 @@ const tableColumns: ({
     hide: true,
     dataIndex: 'targetParentName',
     groupName: 'target',
-    width: '40%',
+    width: '25%',
+    ellipsis: true
+  },
+  {
+    title: t('task.table.columns.priority'),
+    dataIndex: 'priority',
+    width: 100,
+    sorter: true,
+    ellipsis: true
+  },
+  {
+    title: t('task.table.columns.status'),
+    dataIndex: 'status',
+    width: 120,
+    groupName: 'status',
+    sorter: true,
+    ellipsis: true
+  },
+  {
+    title: t('task.table.columns.execResult'),
+    dataIndex: 'execResult',
+    width: 120,
+    groupName: 'status',
+    hide: true,
+    sorter: true,
+    ellipsis: true
+  },
+  {
+    title: t('task.table.columns.assignee'),
+    dataIndex: 'assigneeName',
+    width: 110,
+    groupName: 'personType',
+    ellipsis: true
+  },
+  {
+    title: t('task.table.columns.creator'),
+    dataIndex: 'createdByName',
+    width: 110,
+    hide: true,
+    groupName: 'personType',
+    ellipsis: true
+  },
+  {
+    title: t('task.table.columns.confirmer'),
+    dataIndex: 'confirmerName',
+    width: 110,
+    hide: true,
+    groupName: 'personType',
+    ellipsis: true
+  },
+  {
+    title: t('task.table.columns.lastModifier'),
+    dataIndex: 'lastModifiedByName',
+    width: 110,
+    hide: true,
+    groupName: 'personType',
+    ellipsis: true
+  },
+  {
+    title: t('task.table.columns.executor'),
+    dataIndex: 'execUserName',
+    width: 110,
+    hide: true,
+    groupName: 'personType',
+    ellipsis: true
+  },
+  {
+    title: t('task.table.columns.workload'),
+    dataIndex: 'evalWorkload',
+    width: 100,
+    sorter: true,
     ellipsis: true
   },
   {
     title: t('task.table.columns.failCount'),
     dataIndex: 'failNum',
-    width: 105,
+    width: 130,
     hide: true,
     sorter: true,
     groupName: 'num',
@@ -984,7 +987,7 @@ const tableColumns: ({
   {
     title: t('task.table.columns.processCount'),
     dataIndex: 'totalNum',
-    width: 105,
+    width: 130,
     sorter: true,
     groupName: 'num',
     ellipsis: true
@@ -992,7 +995,7 @@ const tableColumns: ({
   {
     title: t('task.table.columns.addTime'),
     dataIndex: 'createdDate',
-    width: 140,
+    width: 160,
     groupName: 'date',
     sorter: true,
     ellipsis: true
@@ -1000,7 +1003,7 @@ const tableColumns: ({
   {
     title: t('task.table.columns.deadline'),
     dataIndex: 'deadlineDate',
-    width: 140,
+    width: 160,
     hide: true,
     groupName: 'date',
     sorter: true,
@@ -1009,7 +1012,7 @@ const tableColumns: ({
   {
     title: t('task.table.columns.startTime'),
     dataIndex: 'startDate',
-    width: 140,
+    width: 160,
     hide: true,
     groupName: 'date',
     sorter: true,
@@ -1018,7 +1021,7 @@ const tableColumns: ({
   {
     title: t('task.table.columns.processTime'),
     dataIndex: 'processedDate',
-    width: 140,
+    width: 160,
     hide: true,
     groupName: 'date',
     sorter: true,
@@ -1027,7 +1030,7 @@ const tableColumns: ({
   {
     title: t('task.table.columns.confirmTime'),
     dataIndex: 'confirmedDate',
-    width: 140,
+    width: 160,
     hide: true,
     groupName: 'date',
     sorter: true,
@@ -1036,7 +1039,7 @@ const tableColumns: ({
   {
     title: t('task.table.columns.completeTime'),
     dataIndex: 'completedDate',
-    width: 140,
+    width: 160,
     hide: true,
     groupName: 'date',
     sorter: true,
@@ -1045,7 +1048,7 @@ const tableColumns: ({
   {
     title: t('task.table.columns.cancelTime'),
     dataIndex: 'canceledDate',
-    width: 140,
+    width: 160,
     hide: true,
     groupName: 'date',
     sorter: true,
@@ -1054,7 +1057,7 @@ const tableColumns: ({
   {
     title: t('task.table.columns.execTime'),
     dataIndex: 'execCompletedDate',
-    width: 140,
+    width: 160,
     hide: true,
     groupName: 'date',
     sorter: true,
@@ -1063,7 +1066,7 @@ const tableColumns: ({
   {
     title: t('task.table.columns.lastModifyTime'),
     dataIndex: 'lastModifiedDate',
-    width: 140,
+    width: 160,
     hide: true,
     groupName: 'date',
     sorter: true,
@@ -1073,7 +1076,7 @@ const tableColumns: ({
     title: t('task.table.columns.operation'),
     dataIndex: 'action',
     align: 'center',
-    width: 140
+    width: 180
   }
 ];
 
@@ -1186,7 +1189,7 @@ const EXEC_RESULT_COLOR = {
         </div>
 
         <div v-else-if="column.dataIndex === 'evalWorkload'">
-          {{ text }}
+          {{ text || '--' }}
         </div>
 
         <TaskPriority v-else-if="column.dataIndex === 'priority'" :value="text" />
@@ -1202,7 +1205,7 @@ const EXEC_RESULT_COLOR = {
             :disabled="!!props.menuItemsMap.get(record.id)?.find(item => item.key === 'edit')?.disabled"
             type="text"
             size="small"
-            class="flex items-center px-0 mr-2.5"
+            class="flex items-center px-0 mr-1"
             @click="navigateToEdit(record.id)">
             <Icon icon="icon-shuxie" class="mr-1 text-3.5" />
             <span>{{ t('actions.edit') }}</span>
@@ -1212,7 +1215,7 @@ const EXEC_RESULT_COLOR = {
             :disabled="!!props.menuItemsMap.get(record.id)?.find(item => item.key === 'delete')?.disabled"
             type="text"
             size="small"
-            class="flex items-center px-0 mr-2.5"
+            class="flex items-center px-0 mr-1"
             @click="deleteSingleTask(record)">
             <Icon icon="icon-qingchu" class="mr-1 text-3.5" />
             <span>{{ t('actions.delete') }}</span>

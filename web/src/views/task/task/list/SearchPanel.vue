@@ -1383,55 +1383,55 @@ const searchOptions = [
   {
     type: 'date-range' as const,
     valueKey: 'createdDate',
-    placeholder: t('task.searchPanel.searchOptions.createdDate'),
+    placeholder: t('task.searchPanel.searchOptions.createdDate').split(','),
     showTime: true
   },
   {
     type: 'date-range' as const,
     valueKey: 'startDate',
-    placeholder: t('task.searchPanel.searchOptions.startDate'),
+    placeholder: t('task.searchPanel.searchOptions.startDate').split(','),
     showTime: true
   },
   {
     type: 'date-range' as const,
     valueKey: 'deadlineDate',
-    placeholder: t('task.searchPanel.searchOptions.deadlineDate'),
+    placeholder: t('task.searchPanel.searchOptions.deadlineDate').split(','),
     showTime: true
   },
   {
     type: 'date-range' as const,
     valueKey: 'processedDate',
-    placeholder: t('task.searchPanel.searchOptions.processedDate'),
+    placeholder: t('task.searchPanel.searchOptions.processedDate').split(','),
     showTime: true
   },
   {
     type: 'date-range' as const,
     valueKey: 'confirmedDate',
-    placeholder: t('task.searchPanel.searchOptions.confirmedDate'),
+    placeholder: t('task.searchPanel.searchOptions.confirmedDate').split(','),
     showTime: true
   },
   {
     type: 'date-range' as const,
     valueKey: 'completedDate',
-    placeholder: t('task.searchPanel.searchOptions.completedDate'),
+    placeholder: t('task.searchPanel.searchOptions.completedDate').split(','),
     showTime: true
   },
   {
     type: 'date-range' as const,
     valueKey: 'canceledDate',
-    placeholder: t('task.searchPanel.searchOptions.canceledDate'),
+    placeholder: t('task.searchPanel.searchOptions.canceledDate').split(','),
     showTime: true
   },
   {
     type: 'date-range' as const,
     valueKey: 'execDate',
-    placeholder: t('task.searchPanel.searchOptions.execDate'),
+    placeholder: t('task.searchPanel.searchOptions.execDate').split(','),
     showTime: true
   },
   {
     type: 'date-range' as const,
     valueKey: 'lastModifiedDate',
-    placeholder: t('task.searchPanel.searchOptions.lastModifiedDate'),
+    placeholder: t('task.searchPanel.searchOptions.lastModifiedDate').split(','),
     showTime: true
   },
   {
@@ -1755,7 +1755,7 @@ const sortMenuItems = [
             dataType="float"
             allowClear
             :max="100"
-            :placeholder="t('task.list.search.workloadPlaceholder')"
+            :placeholder="t('task.searchPanel.searchOptions.workloadPlaceholder')"
             class="w-72 ml-2 scope-select"
             @change="handleWorkloadFilterChange">
             <template #prefix>
@@ -1774,7 +1774,7 @@ const sortMenuItems = [
             dataType="float"
             allowClear
             :max="100"
-            :placeholder="t('task.list.search.failNumPlaceholder')"
+            :placeholder="t('task.searchPanel.searchOptions.failNumPlaceholder')"
             class="w-72 ml-2 scope-select"
             @change="handleFailureCountFilterChange">
             <template #prefix>
@@ -1793,7 +1793,7 @@ const sortMenuItems = [
             dataType="float"
             allowClear
             :max="100"
-            :placeholder="t('task.list.search.totalNumPlaceholder')"
+            :placeholder="t('task.searchPanel.searchOptions.totalNumPlaceholder')"
             class="w-72 ml-2 scope-select"
             @change="handleTotalCountFilterChange">
             <template #prefix>

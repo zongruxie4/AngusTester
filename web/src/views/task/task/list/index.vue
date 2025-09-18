@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, Ref, watch } fr
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { AsyncComponent, NoData, notification, Spin } from '@xcan-angus/vue-ui';
-import { appContext, download, enumUtils, http, PageQuery, SearchCriteria, TESTER, utils } from '@xcan-angus/infra';
+import { appContext, download, enumUtils, http, PageQuery, SearchCriteria, utils, routerUtils } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { modules, task } from '@/api/tester';
 import { TaskSprintPermission, TaskStatus } from '@/enums/enums';
@@ -333,7 +333,8 @@ const handleTaskExport = async () => {
   }
 
   isExporting.value = true;
-  const exportUrl = `${TESTER}/task/export?` + http.getURLSearchParams({ projectId: props.projectId, filters: searchFilters.value }, true);
+  const exportUrl = routerUtils.getTesterApiUrl('/task/export') +
+    '?' + http.getURLSearchParams({ projectId: props.projectId, filters: searchFilters.value }, true);
   await download(exportUrl);
   isExporting.value = false;
 };

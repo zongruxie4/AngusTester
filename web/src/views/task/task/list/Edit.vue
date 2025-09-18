@@ -605,7 +605,7 @@ const loadModuleTreeData = async () => {
  */
 const loadTaskData = async (): Promise<Partial<TaskInfo>> => {
   loading.value = true;
-  const [error, res] = await task.getTaskDetail(props.taskId);
+  const [error, res] = await task.getTaskDetail(props.taskId as string);
   loading.value = false;
   if (error || !res?.data) {
     return { id: props.taskId! };
@@ -813,7 +813,7 @@ onMounted(() => {
     <Form
       ref="formRef"
       :model="formState"
-      :labelCol="{style: {width: '90px'}}"
+      :labelCol="{style: {width: '120px'}}"
       layout="vertical"
       class="overflow-y-auto overflow-x-hidden"
       size="small"
@@ -935,10 +935,10 @@ onMounted(() => {
                 :label="t('task.editModal.form.missingBug')"
                 class="flex-1/2">
                 <Select
-                  v-model:value="formState.missingBug"
+                  v-model:value="(formState.missingBug as any)"
                   :options="[
-                    {value: 'true', label: t('task.editModal.form.missingBugOptions.yes')},
-                    {value: 'false', label: t('task.editModal.form.missingBugOptions.no')}
+                    { value: (true as any), label: t('task.editModal.form.missingBugOptions.yes') },
+                    { value: (false as any), label: t('task.editModal.form.missingBugOptions.no') }
                   ]">
                 </Select>
               </FormItem>
@@ -1173,7 +1173,7 @@ onMounted(() => {
           </FormItem>
         </div>
 
-        <div class="w-80  pl-2 border-l">
+        <div class="w-80 pl-2 border-l">
           <FormItem
             v-if="proTypeShowMap.showSprint"
             :label="t('task.editModal.form.sprint')"
@@ -1197,7 +1197,9 @@ onMounted(() => {
             </Select>
           </FormItem>
 
-          <FormItem :label="t('task.editModal.form.module')" name="moduleId">
+          <FormItem
+            :label="t('task.editModal.form.module')"
+            name="moduleId">
             <TreeSelect
               v-model:value="formState.moduleId"
               :treeData="moduleTreeData"
@@ -1217,7 +1219,9 @@ onMounted(() => {
             </TreeSelect>
           </FormItem>
 
-          <FormItem :label="t('task.editModal.form.parentTask')" name="parentTaskId">
+          <FormItem
+            :label="t('task.editModal.form.parentTask')"
+            name="parentTaskId">
             <Select
               v-if="!!props.parentTaskId"
               :readonly="true"
@@ -1254,19 +1258,11 @@ onMounted(() => {
             name="evalWorkload"
             :rules="{ required: !!formState.actualWorkload, validator: validateEvaluationWorkload, trigger: 'change' }">
             <template #label>
-              {{
-                evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                  ? t('task.editModal.form.workload.evalWorkload')
-                  : t('task.editModal.form.workload.evalWorkload')
-              }}
+              {{ t('task.editModal.form.workload.evalWorkload') }}
               <Popover placement="rightTop">
                 <template #content>
                   <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                    {{
-                      evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                        ? t('task.editModal.form.workload.storyPointTip')
-                        : t('task.editModal.form.workload.workloadTip')
-                    }}
+                    {{ t('task.editModal.form.workload.workloadTip') }}
                   </div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
@@ -1287,19 +1283,11 @@ onMounted(() => {
           <template v-if="!!props.taskId">
             <FormItem name="actualWorkload">
               <template #label>
-                {{
-                  evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                    ? t('task.editModal.form.workload.actualWorkload')
-                    : t('task.editModal.form.workload.actualWorkload')
-                }}
+                <span class="w-70">{{ t('task.editModal.form.workload.actualWorkload') }}</span>
                 <Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      {{
-                        evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                          ? t('task.editModal.form.workload.actualWorkloadTip')
-                          : t('task.editModal.form.workload.actualWorkloadTip')
-                      }}
+                      {{ t('task.editModal.form.workload.actualWorkloadTip') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
@@ -1336,7 +1324,8 @@ onMounted(() => {
             name="tagIds"
             class="relative">
             <template #label>
-              {{ t('task.editModal.form.tags') }}<Popover placement="rightTop">
+              {{ t('task.editModal.form.tags') }}
+              <Popover placement="rightTop">
                 <template #content>
                   <div class="text-3 text-theme-sub-content max-w-75 leading-4">
                     {{ t('task.editModal.form.tagsTip') }}
@@ -1511,14 +1500,15 @@ onMounted(() => {
 :deep(.ant-form-item-label) {
   max-width: 120px;
   font-size: 12px;
+  font-weight: 600;
 }
 
 :deep(.ant-form-item:not(.ant-form-item-has-error)) {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 :deep(.ant-form-item .ant-form-item-has-error) {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 :deep(.ant-form-item-with-help .ant-form-item-explain) {

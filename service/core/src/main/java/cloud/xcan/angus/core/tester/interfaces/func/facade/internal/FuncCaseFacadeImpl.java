@@ -58,6 +58,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
@@ -290,7 +291,7 @@ public class FuncCaseFacadeImpl implements FuncCaseFacade {
     BizAssert.assertTrue(page.getTotal() <= MAX_REPORT_ROWS,
         EXPORT_ROW_OVERT_LIMIT_CODE, EXPORT_ROW_OVERT_LIMIT_T, new Object[]{MAX_REPORT_ROWS});
     List<FuncCaseExportListVo> data = page.getList().stream().map(FuncCaseAssembler::toListVo)
-        .toList();
+        .collect(Collectors.toList());
     while (page.getList().size() >= 200) {
       dto.setPageNo(dto.getPageNo() + 1);
       page = list(true, dto);

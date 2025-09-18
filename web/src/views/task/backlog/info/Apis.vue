@@ -824,10 +824,7 @@ onMounted(() => {
         <!-- Estimated Workload -->
         <div class="info-row">
           <div class="info-label">
-            <span>
-              {{ evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                ? t('backlog.info.apis.evalWorkload') : t('backlog.info.apis.evalWorkload') }}
-            </span>
+            <span>{{ t('backlog.info.apis.evalWorkload') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isEvalWorkloadEditing" class="info-value-content">
@@ -859,10 +856,7 @@ onMounted(() => {
         <!-- Actual Workload -->
         <div class="info-row">
           <div class="info-label">
-            <span>
-              {{ evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                ? t('backlog.info.apis.evalWorkload') : t('backlog.info.apis.evalWorkload') }}
-            </span>
+            <span>{{ t('backlog.info.apis.evalWorkload') }}</span>
           </div>
           <div class="info-value">
             <div v-show="!isActualWorkloadEditing" class="info-value-content">

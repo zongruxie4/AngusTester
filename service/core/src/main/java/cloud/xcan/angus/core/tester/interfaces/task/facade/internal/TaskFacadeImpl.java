@@ -63,6 +63,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -324,7 +325,7 @@ public class TaskFacadeImpl implements TaskFacade {
     BizAssert.assertTrue(page.getTotal() <= MAX_REPORT_ROWS,
         EXPORT_ROW_OVERT_LIMIT_CODE, EXPORT_ROW_OVERT_LIMIT_T, new Object[]{MAX_REPORT_ROWS});
     List<TaskListExportVo> data = page.getList().stream().map(TaskAssembler::toTaskVo)
-        .toList();
+        .collect(Collectors.toList());
     while (page.getList().size() >= 500) {
       dto.setPageNo(dto.getPageNo() + 1);
       page = list(true, dto);

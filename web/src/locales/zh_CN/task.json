@@ -550,7 +550,7 @@
         "type": "类型",
         "priority": "优先级",
         "bugLevel": "缺陷等级",
-        "missingBug": "是否漏测缺陷",
+        "missingBug": "是否漏测",
         "scenario": "场景",
         "testType": "测试类型",
         "service": "所属服务",
@@ -1443,15 +1443,15 @@
         "testType": "选择测试类型",
         "moduleId": "选择所属模块",
         "execResult": "选择执行结果",
-        "createdDate": ["添加时间从", "添加时间到"],
-        "startDate": ["开始时间从", "开始时间到"],
-        "deadlineDate": ["截止时间从", "截止时间到"],
-        "processedDate": ["处理时间从", "处理时间到"],
-        "confirmedDate": ["确认时间从", "确认时间到"],
-        "completedDate": ["完成时间从", "完成时间到"],
-        "canceledDate": ["取消时间从", "取消时间到"],
-        "execDate": ["执行时间从", "执行时间到"],
-        "lastModifiedDate": ["修改时间从", "修改时间到"],
+        "createdDate": "添加时间从,添加时间到",
+        "startDate": "开始时间从,开始时间到",
+        "deadlineDate": "截止时间从,截止时间到",
+        "processedDate": "处理时间从,处理时间到",
+        "confirmedDate": "确认时间从,确认时间到",
+        "completedDate": "完成时间从,完成时间到",
+        "canceledDate": "取消时间从,取消时间到",
+        "execDate": "执行时间从,执行时间到",
+        "lastModifiedDate": "修改时间从,修改时间到",
         "evalWorkload": "评估工作量",
         "failNum": "失败次数",
         "totalNum": "总次数",
@@ -1691,8 +1691,8 @@
         "uploadFile": "请上传文件",
         "selectFile": "选择文件",
         "uploadTip": "可直接将文件拖入此区域直接上传，文件大小不超过20M，支持.xls .xlsx类型文件。",
-        "taskImportTemplate": "任务导入模板",
-        "duplicateStrategy": "遇到重复时的处理策略"
+        "taskImportTemplate": "导入模板",
+        "duplicateStrategy": "重复时处理策略"
       }
     },
     "table": {
@@ -1827,7 +1827,7 @@
         "priority": "优先级",
         "priorityPlaceholder": "请选择优先级",
         "bugLevel": "缺陷等级",
-        "missingBug": "是否漏测缺陷",
+        "missingBug": "是否漏测",
         "missingBugOptions": {
           "yes": "是",
           "no": "否"
