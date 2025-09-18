@@ -48,7 +48,7 @@
       "overdueCount": "Overdue Count",
       "oneTimePassedCount": "One-time Passed Count",
       "oneTimeTestPassedCount": "One-time Test Passed Count",
-      "validBugCount": "Valid Bug Count",
+      "validBugCount": "Valid Bugs",
       "validBugRate": "Valid Bug Rate",
       "oneTimeReviewPassedCount": "One-time Review Passed Count",
       "taskCompletionRate": "Task Completion Rate",
