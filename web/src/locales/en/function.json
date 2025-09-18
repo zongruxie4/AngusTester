@@ -76,6 +76,9 @@
     "detail": {
       "lastModifiedAt": "Last modified at",
       "charts": "Chart",
+      "detail": "Detail",
+      "snapshot":"Snapshot",
+      "realTime": "Real-time",
       "backlogTasks": {
         "total": "Total",
         "backlogVolume": "Backlog Volume",
