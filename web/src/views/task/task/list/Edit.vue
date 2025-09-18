@@ -912,7 +912,7 @@ onMounted(() => {
                 enumKey="Priority"
                 :placeholder="t('task.editModal.form.priorityPlaceholder')">
                 <template #option="record">
-                  <TaskPriority :value="record.value as any" />
+                  <TaskPriority :value="record" />
                 </template>
               </SelectEnum>
             </FormItem>

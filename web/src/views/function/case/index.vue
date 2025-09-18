@@ -56,7 +56,7 @@ onMounted(() => {
       if (!tabData.includes('funcHome')) {
         addTabPane({
           _id: 'usecase_home',
-          name: t('functionCase.case'),
+          name: t('functionCase.name'),
           type: 'funcHome',
           closable: false,
           icon: 'icon-zhuye',
@@ -65,7 +65,7 @@ onMounted(() => {
       } else {
         updateTabPane({
           _id: 'usecase_home',
-          name: t('functionCase.case'),
+          name: t('functionCase.name'),
           type: 'funcHome',
           closable: false,
           icon: 'icon-zhuye',

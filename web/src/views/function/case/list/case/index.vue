@@ -1623,7 +1623,7 @@ const searchOptions = computed(() => [
 
 const buttonDropdownMenuItems = computed(() => [
   {
-    name: t('functionCase.mainView.expexportCaseortCase'),
+    name: t('functionCase.mainView.exportCase'),
     key: 'export',
     icon: 'icon-daochu1',
     noAuth: !caseList.value.length
