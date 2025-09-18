@@ -112,10 +112,10 @@ export function useChartManagement () {
   const taskTypeConfig = ref<ChartConfig>(createTaskTypeConfig());
   const taskStatusConfig = ref<ChartConfig>(createTaskStatusConfig());
   const leadTimeConfig = ref<ChartConfig>(createLeadTimeConfig());
-  const criticalFailureConfig = ref<ChartConfig>(createFailureAssessmentConfig([t('kanban.cto.failureAssessment.criticalFailureRatio'), t('kanban.cto.failureAssessment.nonCriticalFailureRatio')], 'rgba(245, 34, 45, 1)'));
-  const majorFailureConfig = ref<ChartConfig>(createFailureAssessmentConfig([t('kanban.cto.failureAssessment.majorFailureRatio'), t('kanban.cto.failureAssessment.nonMajorFailureRatio')], 'gold'));
-  const minorFailureConfig = ref<ChartConfig>(createFailureAssessmentConfig([t('kanban.cto.failureAssessment.minorFailureRatio'), t('kanban.cto.failureAssessment.nonMinorFailureRatio')], 'rgba(255, 165, 43, 1)'));
-  const trivialFailureConfig = ref<ChartConfig>(createFailureAssessmentConfig([t('kanban.cto.failureAssessment.trivialFailureRatio'), t('kanban.cto.failureAssessment.nonTrivialFailureRatio')], 'rgba(136, 185, 242, 1)'));
+  const criticalFailureConfig = ref<ChartConfig>(createFailureAssessmentConfig([t('kanban.cto.failureAssessment.criticalFailureRatio'), t('kanban.cto.failureAssessment.nonCriticalFailureRatio')], '#dc2626')); // red-600
+  const majorFailureConfig = ref<ChartConfig>(createFailureAssessmentConfig([t('kanban.cto.failureAssessment.majorFailureRatio'), t('kanban.cto.failureAssessment.nonMajorFailureRatio')], '#f59e0b')); // amber-500
+  const minorFailureConfig = ref<ChartConfig>(createFailureAssessmentConfig([t('kanban.cto.failureAssessment.minorFailureRatio'), t('kanban.cto.failureAssessment.nonMinorFailureRatio')], '#eab308')); // yellow-500
+  const trivialFailureConfig = ref<ChartConfig>(createFailureAssessmentConfig([t('kanban.cto.failureAssessment.trivialFailureRatio'), t('kanban.cto.failureAssessment.nonTrivialFailureRatio')], '#8b5cf6')); // violet-500
   const apiOpenTestConfig = ref<ChartConfig>(createTestConfig([t('kanban.cto.apiTest.enabledTestRatio'), t('kanban.cto.apiTest.nonEnabledTestRatio')]));
   const apiSuccessTestConfig = ref<ChartConfig>(createTestConfig([t('kanban.cto.apiTest.passedTestRatio'), t('kanban.cto.apiTest.nonPassedTestRatio')]));
   const scenarioOpenTestConfig = ref<ChartConfig>(createTestConfig([t('kanban.cto.scenarioTest.enabledTestRatio'), t('kanban.cto.scenarioTest.nonEnabledTestRatio')]));
@@ -513,9 +513,28 @@ export function useChartManagement () {
     // Update lead time chart
     if (data.leadTimeCount && leadTimeChart) {
       const { avgProcessingTime = 0, maxProcessingTime = 0, minProcessingTime = 0, p50ProcessingTime = 0, p75ProcessingTime = 0, p90ProcessingTime = 0, p95ProcessingTime = 0 } = data.leadTimeCount;
-      const leadTimeChartData = [avgProcessingTime, minProcessingTime, maxProcessingTime, p50ProcessingTime, p75ProcessingTime, p90ProcessingTime, p95ProcessingTime];
+      const leadTimeChartData = [
+        { name: 'Average', value: avgProcessingTime, itemStyle: { color: '#3b82f6' } },
+        { name: 'Minimum', value: minProcessingTime, itemStyle: { color: '#3b82f6' } },
+        { name: 'Maximum', value: maxProcessingTime, itemStyle: { color: '#3b82f6' } },
+        { name: 'P50', value: p50ProcessingTime, itemStyle: { color: '#3b82f6' } },
+        { name: 'P75', value: p75ProcessingTime, itemStyle: { color: '#3b82f6' } },
+        { name: 'P90', value: p90ProcessingTime, itemStyle: { color: '#3b82f6' } },
+        { name: 'P95', value: p95ProcessingTime, itemStyle: { color: '#3b82f6' } }
+      ];
       leadTimeConfig.value.series[0].data = leadTimeChartData;
-      leadTimeChart.setOption(leadTimeConfig.value);
+      
+      // Set bar width to half the default width
+      const option = {
+        ...leadTimeConfig.value,
+        series: [{
+          ...leadTimeConfig.value.series[0],
+          barMaxWidth: 25, // Half of the default 30
+          barCategoryGap: '20%'
+        }]
+      };
+      
+      leadTimeChart.setOption(option);
     }
 
     // Update test status chart (only for use cases)

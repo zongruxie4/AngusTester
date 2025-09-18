@@ -15,13 +15,11 @@ const createBasePieConfig = (): ChartConfig => ({
     padding: 2,
     textAlign: 'center',
     textStyle: {
-      fontSize: 12,
-      fontWeight: 600,
-      color: '#777c83'
+      fontSize: 14,
+      fontWeight: '600'
     },
     subtextStyle: {
-      fontSize: 12,
-      fontWeight: 600,
+      fontSize: 14,
       color: '#777c83'
     }
   },
@@ -35,7 +33,7 @@ const createBasePieConfig = (): ChartConfig => ({
     itemHeight: 14,
     itemWidth: 14,
     itemGap: 2,
-    textStyle: { fontSize: 12 }
+    textStyle: { fontSize: 14 }
   },
   series: [
     {
@@ -49,9 +47,9 @@ const createBasePieConfig = (): ChartConfig => ({
         formatter: '{c}'
       },
       itemStyle: {
-        borderRadius: 2,
+        borderRadius: 4,
         borderColor: '#fff',
-        borderWidth: 1
+        borderWidth: 2
       },
       emphasis: {
         label: {
@@ -77,14 +75,14 @@ export const createProgressChartConfig = (): ChartConfig => {
       name: t('kanban.cto.progress.incomplete'),
       value: 0,
       itemStyle: {
-        color: 'rgb(246,159,42)'
+        color: '#f59e0b' // amber-500
       }
     },
     {
       name: t('kanban.cto.progress.completed'),
       value: 0,
       itemStyle: {
-        color: '#52C41A'
+        color: '#10b981' // emerald-500
       }
     }
   ];
@@ -104,7 +102,7 @@ export const createRecentCompletionRateConfig = (): ChartConfig => {
   config.legend.left = '55%';
   config.legend.itemHeight = 10;
   config.legend.itemWidth = 10;
-  config.legend.textStyle = { fontSize: 12 };
+  config.legend.textStyle = { fontSize: 14 };
   config.series[0].center = ['25%', '45%'];
   config.series[0].radius = ['38%', '55%'];
   config.series[0].label.fontSize = 10;
@@ -112,12 +110,12 @@ export const createRecentCompletionRateConfig = (): ChartConfig => {
     {
       name: t('kanban.cto.recentDelivery.recentCompletionCount'),
       value: 0,
-      itemStyle: { color: '#52C41A' }
+      itemStyle: { color: '#10b981' } // emerald-500
     },
     {
       name: t('kanban.cto.recentDelivery.nonRecentCompletionCount'),
       value: 0,
-      itemStyle: { color: 'rgba(45, 142, 255, 1)' }
+      itemStyle: { color: '#3b82f6' } // blue-500
     }
   ];
   return config;
@@ -133,12 +131,12 @@ export const createRecentOverdueRateConfig = (): ChartConfig => {
     {
       name: t('kanban.cto.recentDelivery.overdueRate'),
       value: 0,
-      itemStyle: { color: 'rgba(245, 34, 45, 1)' }
+      itemStyle: { color: '#dc2626' } // red-600
     },
     {
       name: t('kanban.cto.recentDelivery.nonOverdueRate'),
       value: 0,
-      itemStyle: { color: 'rgba(45, 142, 255, 1)' }
+      itemStyle: { color: '#3b82f6' } // blue-500
     }
   ];
   return config;
@@ -154,12 +152,12 @@ export const createRecentCompletedWorkloadConfig = (): ChartConfig => {
     {
       name: t('kanban.cto.recentDelivery.recentCompletionAmount'),
       value: 0,
-      itemStyle: { color: '#52C41A' }
+      itemStyle: { color: '#10b981' } // emerald-500
     },
     {
       name: t('kanban.cto.recentDelivery.nonRecentCompletionAmount'),
       value: 0,
-      itemStyle: { color: 'rgba(45, 142, 255, 1)' }
+      itemStyle: { color: '#3b82f6' } // blue-500
     }
   ];
   return config;
@@ -175,12 +173,12 @@ export const createRecentSavingRateConfig = (): ChartConfig => {
     {
       name: t('kanban.cto.recentDelivery.recentSavingAmount'),
       value: 0,
-      itemStyle: { color: '#52C41A' }
+      itemStyle: { color: '#f59e0b' } // amber-500
     },
     {
       name: t('kanban.cto.recentDelivery.nonRecentSavingAmount'),
       value: 0,
-      itemStyle: { color: 'rgba(45, 142, 255, 1)' }
+      itemStyle: { color: '#3b82f6' } // blue-500
     }
   ];
   return config;
@@ -196,12 +194,12 @@ export const createBacklogTaskConfig = (): ChartConfig => {
     {
       name: t('kanban.cto.backlog.backlogCount'),
       value: 0,
-      itemStyle: { color: 'rgba(255, 165, 43, 1)' }
+      itemStyle: { color: '#f59e0b' } // amber-500
     },
     {
       name: t('kanban.cto.backlog.completionCount'),
       value: 0,
-      itemStyle: { color: 'rgba(45, 142, 255, 1)' }
+      itemStyle: { color: '#3b82f6' } // blue-500
     }
   ];
   return config;
@@ -217,12 +215,12 @@ export const createBacklogWorkloadConfig = (): ChartConfig => {
     {
       name: t('kanban.cto.backlog.backlogWorkload'),
       value: 0,
-      itemStyle: { color: 'rgba(255, 165, 43, 1)' }
+      itemStyle: { color: '#f59e0b' } // amber-500
     },
     {
       name: t('kanban.cto.backlog.completionWorkload'),
       value: 0,
-      itemStyle: { color: 'rgba(45, 142, 255, 1)' }
+      itemStyle: { color: '#3b82f6' } // blue-500
     }
   ];
   return config;
@@ -238,6 +236,7 @@ export const createOverdueAssessmentConfig = (): ChartConfig => {
     left: '20%',
     bottom: 0,
     z: 0,
+    font: '12px Arial',
     silent: true,
     invisible: false,
     style: {
@@ -251,18 +250,18 @@ export const createOverdueAssessmentConfig = (): ChartConfig => {
   config.legend.right = '0';
   config.legend.itemHeight = 12;
   config.legend.itemWidth = 12;
-  config.legend.textStyle = { fontSize: 12 };
+  config.legend.textStyle = { fontSize: 14 };
   config.series[0].labelLine.length2 = 5;
   config.series[0].data = [
     {
       name: t('kanban.cto.overdue.overdueCount'),
       value: 0,
-      itemStyle: { color: 'rgba(245, 34, 45, 1)' }
+      itemStyle: { color: '#dc2626' } // red-600
     },
     {
       name: t('kanban.cto.overdue.nonOverdueCount'),
       value: 0,
-      itemStyle: { color: 'rgba(45, 142, 255, 1)' }
+      itemStyle: { color: '#3b82f6' } // blue-500
     }
   ];
   return config;
@@ -278,12 +277,12 @@ export const createUnplannedWorkConfig = (): ChartConfig => {
     {
       name: t('kanban.cto.unplanned.unplannedCount'),
       value: 0,
-      itemStyle: { color: 'gold' }
+      itemStyle: { color: '#eab308' } // yellow-500
     },
     {
       name: t('kanban.cto.unplanned.nonUnplannedCount'),
       value: 0,
-      itemStyle: { color: 'rgba(45, 142, 255, 1)' }
+      itemStyle: { color: '#3b82f6' } // blue-500
     }
   ];
   return config;
@@ -299,12 +298,12 @@ export const createUnplannedWorkloadConfig = (): ChartConfig => {
     {
       name: t('kanban.cto.unplanned.unplannedAmount'),
       value: 0,
-      itemStyle: { color: 'gold' }
+      itemStyle: { color: '#eab308' } // yellow-500
     },
     {
       name: t('kanban.cto.unplanned.nonUnplannedAmount'),
       value: 0,
-      itemStyle: { color: 'rgba(45, 142, 255, 1)' }
+      itemStyle: { color: '#3b82f6' } // blue-500
     }
   ];
   return config;
@@ -325,7 +324,7 @@ export const createFailureAssessmentConfig = (titles: string[], color: string): 
     {
       name: titles[1],
       value: 0,
-      itemStyle: { color: 'rgba(45, 142, 255, 1)' }
+      itemStyle: { color: '#3b82f6' } // blue-500
     }
   ];
   return config;
@@ -335,7 +334,9 @@ export const createFailureAssessmentConfig = (titles: string[], color: string): 
  * Creates task type chart configuration
  */
 export const createTaskTypeConfig = (): ChartConfig => ({
-  title: {},
+  title: {
+    text: ''
+  },
   tooltip: {
     trigger: 'item'
   },
@@ -346,7 +347,7 @@ export const createTaskTypeConfig = (): ChartConfig => ({
     itemHeight: 14,
     itemWidth: 14,
     itemGap: 2,
-    textStyle: { fontSize: 12 }
+    textStyle: { fontSize: 14 }
   },
   series: [
     {
@@ -377,32 +378,32 @@ export const createTaskTypeConfig = (): ChartConfig => ({
         {
           name: t('kanban.cto.taskTypes.story'),
           value: 0,
-          itemStyle: { color: 'rgba(136, 185, 242, 1)' }
+          itemStyle: { color: '#8b5cf6' } // violet-500
         },
         {
           name: t('kanban.cto.taskTypes.requirement'),
           value: 0,
-          itemStyle: { color: 'rgba(201, 119, 255, 1)' }
+          itemStyle: { color: '#a855f7' } // purple-500
         },
         {
           name: t('kanban.cto.taskTypes.task'),
           value: 0,
-          itemStyle: { color: 'rgba(45, 142, 255, 1)' }
+          itemStyle: { color: '#3b82f6' } // blue-500
         },
         {
           name: t('kanban.cto.taskTypes.bug'),
           value: 0,
-          itemStyle: { color: 'rgba(245, 34, 45, 1)' }
+          itemStyle: { color: '#dc2626' } // red-600
         },
         {
           name: t('kanban.cto.taskTypes.apiTest'),
           value: 0,
-          itemStyle: { color: 'rgb(251,164,46)' }
+          itemStyle: { color: '#f59e0b' } // amber-500
         },
         {
           name: t('kanban.cto.taskTypes.scenarioTest'),
           value: 0,
-          itemStyle: { color: 'rgba(0,119,255,1)' }
+          itemStyle: { color: '#06b6d4' } // cyan-500
         }
       ]
     }
@@ -413,7 +414,9 @@ export const createTaskTypeConfig = (): ChartConfig => ({
  * Creates task status chart configuration
  */
 export const createTaskStatusConfig = (): ChartConfig => ({
-  title: {},
+  title: {
+    text: ''
+  },
   tooltip: {
     trigger: 'item'
   },
@@ -424,7 +427,7 @@ export const createTaskStatusConfig = (): ChartConfig => ({
     itemHeight: 14,
     itemWidth: 14,
     itemGap: 2,
-    textStyle: { fontSize: 12 }
+    textStyle: { fontSize: 14 }
   },
   series: [
     {
@@ -455,27 +458,27 @@ export const createTaskStatusConfig = (): ChartConfig => ({
         {
           name: t('kanban.cto.taskStatus.pendingConfirmation'),
           value: 0,
-          itemStyle: { color: '#7F91FF' }
+          itemStyle: { color: '#6366f1' } // indigo-500
         },
         {
           name: t('kanban.cto.taskStatus.inProgress'),
           value: 0,
-          itemStyle: { color: '#FF8100' }
+          itemStyle: { color: '#f59e0b' } // amber-500
         },
         {
           name: t('kanban.cto.taskStatus.pending'),
           value: 0,
-          itemStyle: { color: '#FFB925' }
+          itemStyle: { color: '#eab308' } // yellow-500
         },
         {
           name: t('kanban.cto.taskStatus.completed'),
           value: 0,
-          itemStyle: { color: '#52C41A' }
+          itemStyle: { color: '#10b981' } // emerald-500
         },
         {
           name: t('kanban.cto.taskStatus.cancelled'),
           value: 0,
-          itemStyle: { color: 'rgba(200, 202, 208, 1)' }
+          itemStyle: { color: '#9ca3af' } // gray-400
         }
       ]
     }
@@ -486,10 +489,22 @@ export const createTaskStatusConfig = (): ChartConfig => ({
  * Creates lead time chart configuration
  */
 export const createLeadTimeConfig = (): ChartConfig => ({
+  title: {
+    text: ''
+  },
+  legend: {
+    top: '85%',
+    left: 'center',
+    orient: 'horizontal',
+    itemHeight: 14,
+    itemWidth: 14,
+    itemGap: 20,
+    textStyle: { fontSize: 14 }
+  },
   grid: {
-    left: '40',
-    right: '30',
-    bottom: '20',
+    left: '50',
+    right: '20',
+    bottom: '60',
     top: '20'
   },
   xAxis: {
@@ -509,20 +524,44 @@ export const createLeadTimeConfig = (): ChartConfig => ({
     type: 'value'
   },
   tooltip: {
+    trigger: 'item',
     show: true
   },
   series: [
     {
-      itemStyle: {
-        color: 'rgba(45, 142, 255, 1)',
-        borderRadius: [5, 5, 0, 0]
-      },
-      data: [0, 0, 0, 0, 0, 0, 0],
+      name: 'Lead Time',
       type: 'bar',
-      barMaxWidth: '20',
+      radius: ['0%', '0%'],
+      center: ['50%', '50%'],
+      avoidLabelOverlap: false,
+      itemStyle: {
+        color: '#3b82f6', // blue-500
+        borderRadius: 5,
+        borderColor: '#fff',
+        borderWidth: 1
+      },
+      data: [
+        { name: 'Average', value: 0, itemStyle: { color: '#3b82f6' } },
+        { name: 'Minimum', value: 0, itemStyle: { color: '#3b82f6' } },
+        { name: 'Maximum', value: 0, itemStyle: { color: '#3b82f6' } },
+        { name: 'P50', value: 0, itemStyle: { color: '#3b82f6' } },
+        { name: 'P75', value: 0, itemStyle: { color: '#3b82f6' } },
+        { name: 'P90', value: 0, itemStyle: { color: '#3b82f6' } },
+        { name: 'P95', value: 0, itemStyle: { color: '#3b82f6' } }
+      ],
       label: {
         show: true,
+        formatter: '{c}',
         position: 'top'
+      },
+      emphasis: {
+        label: {
+          show: true
+        }
+      },
+      labelLine: {
+        show: false,
+        length: 5
       }
     }
   ]
@@ -538,12 +577,12 @@ export const createTestConfig = (titles: string[]): ChartConfig => {
     {
       name: titles[0],
       value: 0,
-      itemStyle: { color: '#52C41A' }
+      itemStyle: { color: '#10b981' } // emerald-500
     },
     {
       name: titles[1],
       value: 0,
-      itemStyle: { color: 'rgb(246,159,42)' }
+      itemStyle: { color: '#f59e0b' } // amber-500
     }
   ];
   return config;
@@ -553,7 +592,9 @@ export const createTestConfig = (titles: string[]): ChartConfig => {
  * Creates test status chart configuration
  */
 export const createTestStatusConfig = (): ChartConfig => ({
-  title: {},
+  title: {
+    text: ''
+  },
   tooltip: {
     trigger: 'item'
   },
@@ -564,7 +605,7 @@ export const createTestStatusConfig = (): ChartConfig => ({
     itemHeight: 14,
     itemWidth: 14,
     itemGap: 2,
-    textStyle: { fontSize: 12 }
+    textStyle: { fontSize: 14 }
   },
   series: [
     {
@@ -588,33 +629,34 @@ export const createTestStatusConfig = (): ChartConfig => ({
         }
       },
       labelLine: {
-        show: true
+        show: true,
+        length: 5
       },
       data: [
         {
           name: t('kanban.cto.testStatus.pendingTest'),
           value: 0,
-          itemStyle: { color: 'rgba(45, 142, 255, 1)' }
+          itemStyle: { color: '#3b82f6' } // blue-500
         },
         {
           name: t('kanban.cto.testStatus.testPassed'),
           value: 0,
-          itemStyle: { color: 'rgba(82, 196, 26, 1)' }
+          itemStyle: { color: '#10b981' } // emerald-500
         },
         {
           name: t('kanban.cto.testStatus.testFailed'),
           value: 0,
-          itemStyle: { color: 'rgba(245, 34, 45, 1)' }
+          itemStyle: { color: '#dc2626' } // red-600
         },
         {
           name: t('kanban.cto.testStatus.blocked'),
           value: 0,
-          itemStyle: { color: 'rgba(255, 165, 43, 1)' }
+          itemStyle: { color: '#f59e0b' } // amber-500
         },
         {
           name: t('kanban.cto.testStatus.cancelled'),
           value: 0,
-          itemStyle: { color: 'rgba(45, 142, 255, 1)' }
+          itemStyle: { color: '#9ca3af' } // gray-400
         }
       ]
     }
@@ -625,7 +667,9 @@ export const createTestStatusConfig = (): ChartConfig => ({
  * Creates review status chart configuration
  */
 export const createReviewStatusConfig = (): ChartConfig => ({
-  title: {},
+  title: {
+    text: ''
+  },
   tooltip: {
     trigger: 'item'
   },
@@ -636,7 +680,7 @@ export const createReviewStatusConfig = (): ChartConfig => ({
     itemHeight: 14,
     itemWidth: 14,
     itemGap: 2,
-    textStyle: { fontSize: 12 }
+    textStyle: { fontSize: 14 }
   },
   series: [
     {
@@ -660,23 +704,24 @@ export const createReviewStatusConfig = (): ChartConfig => ({
         }
       },
       labelLine: {
-        show: true
+        show: true,
+        length: 5
       },
       data: [
         {
           name: t('kanban.cto.reviewStatus.pendingReview'),
           value: 0,
-          itemStyle: { color: 'rgba(201, 119, 255, 1)' }
+          itemStyle: { color: '#a855f7' } // purple-500
         },
         {
           name: t('kanban.cto.reviewStatus.reviewPassed'),
           value: 0,
-          itemStyle: { color: 'rgba(82, 196, 26, 1)' }
+          itemStyle: { color: '#10b981' } // emerald-500
         },
         {
           name: t('kanban.cto.reviewStatus.reviewFailed'),
           value: 0,
-          itemStyle: { color: 'rgba(245, 34, 45, 1)' }
+          itemStyle: { color: '#dc2626' } // red-600
         }
       ]
     }
