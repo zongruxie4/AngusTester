@@ -61,16 +61,16 @@ const chartOptions: EChartsOption = {
     itemHeight: 14,
     itemWidth: 14,
     itemGap: 5,
-    formatter: function (name) {
-      const data = chartOptions?.series?.[0].data;
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].name === name) {
-          name += ' ' + data[i].value;
-          break;
-        }
-      }
-      return name;
-    }
+    // formatter: function (name) {
+    //   const data = chartOptions?.series?.[0].data;
+    //   for (let i = 0; i < data.length; i++) {
+    //     if (data[i].name === name) {
+    //       name += ' ' + data[i].value;
+    //       break;
+    //     }
+    //   }
+    //   return name;
+    // }
   },
   color: CHART_COLORS,
   series: [

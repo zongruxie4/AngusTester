@@ -216,13 +216,13 @@ const formatPercentage = (value: string | undefined): string => {
   color: var(--theme-sub-content);
 }
 
-@media screen and (max-width: 1550px) {
+@media screen and (max-width: 1600px) {
   .statistic-card {
     width: calc((100% - 32px) / 4);
   }
 }
 
-@media screen and (min-width: 1551px) {
+@media screen and (min-width: 1601px) {
   .statistic-card {
     width: calc((100% - 48px) / 6);
   }
