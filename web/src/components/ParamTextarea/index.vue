@@ -27,11 +27,16 @@ export interface Props {
 }
 const props = withDefaults(defineProps<Props>(), {
   value: '',
-  placeholder: t('xcan_paramTextarea.enterParameterValue'),
+  placeholder: undefined,
   height: 28,
   error: false,
   disabled: false
 });
+
+
+const placeholder = computed(() => {
+  return props.placeholder ||  t('xcan_paramTextarea.enterParameterValue')
+})
 
 const keyword = ref('');
 const allFunction = inject('allFunction', ref<MockFunction[]>([]));

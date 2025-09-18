@@ -335,10 +335,12 @@ const sortMenuItems: {
               </div>
 
               <div class="px-3.5 flex justify-between items-end text-3 my-2.5 relative">
-                <div class="truncate mr-8" :title="item.description || ''">
+                <div class="truncate mr-8" :title="item.descriptionText || ''">
                   <template v-if="item.description">
                     <!-- {{ item.description }} -->
-                    <RichText :value="item.description" :emptyText="t('functionBaseline.list.noDescription')" />
+                    <RichText
+                    v-model:textValue="item.descriptionText"
+                    :value="item.description" :emptyText="t('functionBaseline.list.noDescription')" />
                   </template>
                   <span v-else class="text-text-sub-content">
                     {{ t('functionBaseline.list.noDescription') }}
