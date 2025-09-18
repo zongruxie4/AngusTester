@@ -10,101 +10,101 @@ import noData from '../Image/nodata.png';
 export const createTaskTypeConfig = (): ChartConfig => {
   const { t } = useI18n();
   return {
-  title: {},
-  tooltip: {
-    trigger: 'item'
-  },
-  legend: {
-    top: 'middle',
-    left: '65%',
-    orient: 'vertical',
-    itemHeight: 14,
-    itemWidth: 14,
-    itemGap: 2
-  },
-  grid: {
-    left: 0,
-    right: 0,
-    bottom: 0,
-    top: 0
-  },
-  xAxis: {
-    type: 'category',
-    data: []
-  },
-  yAxis: {
-    type: 'value'
-  },
-  series: [
-    {
-      name: t('kanban.effectiveness.total'),
-      type: 'pie',
-      radius: ['30%', '50%'],
-      center: ['35%', '50%'],
-      avoidLabelOverlap: true,
-      label: {
-        show: true,
-        formatter: '{c}'
-      },
-      itemStyle: {
-        color: 'rgba(136, 185, 242, 1)',
-        borderRadius: [5]
-      },
-      emphasis: {
+    title: {},
+    tooltip: {
+      trigger: 'item'
+    },
+    legend: {
+      top: 'middle',
+      left: '65%',
+      orient: 'vertical',
+      itemHeight: 14,
+      itemWidth: 14,
+      itemGap: 2
+    },
+    grid: {
+      left: 0,
+      right: 0,
+      bottom: 0,
+      top: 0
+    },
+    xAxis: {
+      type: 'category',
+      data: []
+    },
+    yAxis: {
+      type: 'value'
+    },
+    series: [
+      {
+        name: t('kanban.effectiveness.total'),
+        type: 'pie',
+        radius: ['30%', '50%'],
+        center: ['35%', '50%'],
+        avoidLabelOverlap: true,
         label: {
-          show: true
-        }
-      },
-      labelLine: {
-        show: true,
-        length: 5
-      },
-      data: [
-        {
-          name: t('kanban.effectiveness.taskType.story'),
-          value: 0,
-          itemStyle: {
-            color: 'rgba(136, 185, 242, 1)'
+          show: true,
+          formatter: '{c}'
+        },
+        itemStyle: {
+          color: 'rgba(136, 185, 242, 1)',
+          borderRadius: [5]
+        },
+        emphasis: {
+          label: {
+            show: true
           }
         },
-        {
-          name: t('kanban.effectiveness.taskType.requirement'),
-          value: 0,
-          itemStyle: {
-            color: 'rgba(201, 119, 255, 1)'
-          }
+        labelLine: {
+          show: true,
+          length: 5
         },
-        {
-          name: t('kanban.effectiveness.taskType.task'),
-          value: 0,
-          itemStyle: {
-            color: 'rgba(255, 165, 43, 1)'
+        data: [
+          {
+            name: t('kanban.effectiveness.taskType.story'),
+            value: 0,
+            itemStyle: {
+              color: 'rgba(136, 185, 242, 1)'
+            }
+          },
+          {
+            name: t('kanban.effectiveness.taskType.requirement'),
+            value: 0,
+            itemStyle: {
+              color: 'rgba(201, 119, 255, 1)'
+            }
+          },
+          {
+            name: t('kanban.effectiveness.taskType.task'),
+            value: 0,
+            itemStyle: {
+              color: 'rgba(255, 165, 43, 1)'
+            }
+          },
+          {
+            name: t('kanban.effectiveness.taskType.defect'),
+            value: 0,
+            itemStyle: {
+              color: 'rgba(245, 34, 45, 1)'
+            }
+          },
+          {
+            name: t('kanban.effectiveness.taskType.apiTest'),
+            value: 0,
+            itemStyle: {
+              color: 'rgba(82, 196, 26, 1)'
+            }
+          },
+          {
+            name: t('kanban.effectiveness.taskType.scenarioTest'),
+            value: 0,
+            itemStyle: {
+              color: 'rgba(0,119,255,1)'
+            }
           }
-        },
-        {
-          name: t('kanban.effectiveness.taskType.defect'),
-          value: 0,
-          itemStyle: {
-            color: 'rgba(245, 34, 45, 1)'
-          }
-        },
-        {
-          name: t('kanban.effectiveness.taskType.apiTest'),
-          value: 0,
-          itemStyle: {
-            color: 'rgba(82, 196, 26, 1)'
-          }
-        },
-        {
-          name: t('kanban.effectiveness.taskType.scenarioTest'),
-          value: 0,
-          itemStyle: {
-            color: 'rgba(0,119,255,1)'
-          }
-        }
-      ]
-    }
-  ]
+        ]
+      }
+    ]
   };
 };
 
@@ -116,48 +116,48 @@ export const createTaskTypeConfig = (): ChartConfig => {
 export const createBurnDownConfig = (): ChartConfig => {
   const { t } = useI18n();
   return {
-  grid: {
-    left: '30',
-    right: '20',
-    bottom: '60',
-    top: 20
-  },
-  legend: {
-    show: true,
-    bottom: 0,
-    type: 'plain'
-  },
-  tooltip: {
-    show: true,
-    trigger: 'axis'
-  },
-  xAxis: {
-    type: 'category',
-    data: []
-  },
-  yAxis: {
-    type: 'value',
-    min: function (value: any) {
-      if (value.max < 1) {
-        return 10;
-      } else {
-        return undefined;
-      }
-    }
-  },
-  series: [
-    {
-      name: t('kanban.effectiveness.remaining'),
-      data: [],
-      type: 'line',
-      smooth: true
+    grid: {
+      left: '30',
+      right: '20',
+      bottom: '60',
+      top: 20
     },
-    {
-      name: t('kanban.effectiveness.expected'),
-      data: [],
-      type: 'line'
-    }
-  ]
+    legend: {
+      show: true,
+      bottom: 0,
+      type: 'plain'
+    },
+    tooltip: {
+      show: true,
+      trigger: 'axis'
+    },
+    xAxis: {
+      type: 'category',
+      data: []
+    },
+    yAxis: {
+      type: 'value',
+      min: function (value: any) {
+        if (value.max < 1) {
+          return 10;
+        } else {
+          return undefined;
+        }
+      }
+    },
+    series: [
+      {
+        name: t('kanban.effectiveness.remaining'),
+        data: [],
+        type: 'line',
+        smooth: true
+      },
+      {
+        name: t('kanban.effectiveness.expected'),
+        data: [],
+        type: 'line'
+      }
+    ]
   };
 };
 

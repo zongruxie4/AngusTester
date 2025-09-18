@@ -1052,7 +1052,7 @@
     "moveTask": "Move Task",
     "splitTask": "Split Task",
     "copyLink": "Copy Link",
-    "noModuleTask": "No Module Tasks",
+    "noModuleTask": "No Module",
     "moduleTree": "Module Tree",
     "statisticsPanel": "Statistics Panel",
     "viewMode": {
@@ -1224,7 +1224,7 @@
       "allTasks": "All Tasks"
     },
     "list": {
-      "noModuleTask": "No Module Tasks",
+      "noModuleTask": "No Module",
       "moduleUpdateSuccess": "Module update successful",
       "moduleMoveSuccess": "Module move successful",
       "moduleDeleteSuccess": "Delete module successful",
@@ -1235,7 +1235,7 @@
       },
       "module": {
         "addModule": "Add Module",
-        "allTasks": "All Tasks",
+        "allTasks": "All Issues",
         "createSubModule": "Create Sub Module",
         "moveToUpperLevel": "Move to Upper Level",
         "moveUp": "Move Up",

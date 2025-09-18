@@ -1,4 +1,4 @@
-import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
+import { ref, watch } from 'vue';
 import { throttle } from 'throttle-debounce';
 import { CtoProps } from '../types';
 

@@ -1,6 +1,13 @@
-import { ref, computed } from 'vue';
+import { computed, ref } from 'vue';
 import { kanban } from '@/api/tester';
-import { EffectivenessProps, OverviewData, BurnDownDataByType, TotalTypeCount, RankingData, AssigneeInfo } from '../types';
+import {
+  AssigneeInfo,
+  BurnDownDataByType,
+  EffectivenessProps,
+  OverviewData,
+  RankingData,
+  TotalTypeCount
+} from '../types';
 
 /**
  * <p>
@@ -93,7 +100,6 @@ export function useEffectivenessData (props: EffectivenessProps) {
 
     // Update ranking data based on count type
     if (props.countType === 'task') {
-
       testerRanking.value = null;
       testers.value = {};
 

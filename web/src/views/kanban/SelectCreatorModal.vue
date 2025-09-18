@@ -2,7 +2,7 @@
 import { useI18n } from 'vue-i18n';
 import { Modal, Select } from '@xcan-angus/vue-ui';
 import { RadioButton, RadioGroup } from 'ant-design-vue';
-import type { SelectCreatorModalProps, CreatorSelectionPayload } from './types';
+import type { CreatorSelectionPayload, SelectCreatorModalProps } from './types';
 import { useCreatorSelection } from './composables/useCreatorSelection';
 import { useCreatorSelectConfig } from './composables/useCreatorSelectConfig';
 

@@ -1,19 +1,19 @@
 import { ref } from 'vue';
 import * as eCharts from 'echarts';
-import { ChartConfig, RankingData, TotalTypeCount, BurnDownDataByType } from '../types';
+import { BurnDownDataByType, ChartConfig, RankingData, TotalTypeCount } from '../types';
 import {
-  createTaskTypeConfig,
   createBurnDownConfig,
-  createTargetCountConfig,
-  createTargetRateConfig,
-  createWorkloadConfig,
-  createWorkloadRateConfig,
-  createOverdueConfig,
-  createOverdueRateConfig,
   createOneTimePassedTestConfig,
   createOneTimePassedTestRateConfig,
   createOneTimeUnpassedTestConfig,
-  createOneTimeUnpassedTestRateConfig
+  createOneTimeUnpassedTestRateConfig,
+  createOverdueConfig,
+  createOverdueRateConfig,
+  createTargetCountConfig,
+  createTargetRateConfig,
+  createTaskTypeConfig,
+  createWorkloadConfig,
+  createWorkloadRateConfig
 } from './useChartConfigs';
 
 /**

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, reactive, Ref, ref, watch, inject } from 'vue';
+import { computed, inject, nextTick, onBeforeUnmount, onMounted, reactive, ref, Ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Icon, Image, NoData } from '@xcan-angus/vue-ui';
 import { Popover } from 'ant-design-vue';
@@ -1385,7 +1385,6 @@ const resizeRightEchart = () => {
 
 const shouldNotify = ref(false);
 
-
 const updateIncreasEcharts = () => {
   const data = growthTrendData.value;
   const keys = Object.keys(data);
@@ -1510,10 +1509,9 @@ onMounted(async () => {
 
   initChart();
 
-
   watch(() => growthTrendData.value, () => {
     updateIncreasEcharts();
-  })
+  });
 
   window.addEventListener('resize', handleWindowResize);
   erd.listenTo(rightWrapRef.value, resizeRightEchart);
@@ -1556,8 +1554,6 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', handleWindowResize);
   erd.removeListener(rightWrapRef.value, resizeRightEchart);
 });
-
-
 
 // const refresh = () => {
 //   if (!props.projectId) {

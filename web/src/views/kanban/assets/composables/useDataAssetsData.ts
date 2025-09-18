@@ -1,16 +1,16 @@
-import { ref, computed, reactive } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { kanban } from '@/api/tester';
 import {
-  DataAssetsProps,
-  RankingItem,
-  GrowthTrendData,
-  CaseData,
   ApiData,
-  TaskData,
+  CaseData,
+  DataAssetsData,
+  DataAssetsProps,
+  GrowthTrendData,
+  MockData,
+  RankingItem,
   ScenarioData,
   ScriptData,
-  MockData,
-  DataAssetsData
+  TaskData
 } from '../types';
 
 /**

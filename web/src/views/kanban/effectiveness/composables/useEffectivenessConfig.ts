@@ -2,6 +2,7 @@ import { computed } from 'vue';
 
 import { useI18n } from 'vue-i18n';
 import { OverviewConfig } from '../types';
+
 /**
  * <p>
  * Effectiveness configuration management composable
@@ -14,7 +15,6 @@ import { OverviewConfig } from '../types';
  * @returns Object containing configuration data and computed properties
  */
 export function useEffectivenessConfig (countType: 'task' | 'useCase') {
-
   const { t } = useI18n();
   /**
    * <p>

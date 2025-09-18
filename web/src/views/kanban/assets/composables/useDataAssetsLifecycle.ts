@@ -1,4 +1,4 @@
-import { ref, watch, inject } from 'vue';
+import { inject, ref, watch } from 'vue';
 import { throttle } from 'throttle-debounce';
 import elementResizeDetector from 'element-resize-detector';
 import { DataAssetsProps, ProTypeShowMap } from '../types';
