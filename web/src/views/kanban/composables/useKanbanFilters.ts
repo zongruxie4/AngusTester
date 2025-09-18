@@ -1,4 +1,4 @@
-import { computed, ref, watch, type Ref } from 'vue';
+import { computed, ref, type Ref, watch } from 'vue';
 import type { CreatorObjectType, ProjectInfo } from '../types';
 
 /**

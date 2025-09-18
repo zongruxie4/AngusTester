@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import type { CreatorObjectType, CreatorSelectOption, CreatorSelectionPayload } from '../types';
+import type { CreatorObjectType, CreatorSelectionPayload, CreatorSelectOption } from '../types';
 
 /**
  * <p>Encapsulates selection state and handlers for choosing a creator entity.</p>

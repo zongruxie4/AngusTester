@@ -5,7 +5,7 @@ import { AsyncComponent, Colon, DatePicker, Icon, IconRefresh, Image, Select } f
 import { Radio, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
 import DefaultAvatar from './images/default.png';
-import type { ProjectInfo, CreatorObjectType } from './types';
+import type { CreatorObjectType } from './types';
 import { useKanbanFilters } from './composables/useKanbanFilters';
 import { useKanbanView } from './composables/useKanbanView';
 import { useKanbanOptions } from './composables/useKanbanOptions';
@@ -13,7 +13,7 @@ import { useKanbanOptions } from './composables/useKanbanOptions';
 const { t } = useI18n();
 
 // external contexts
-const projectInfo = inject<Ref<ProjectInfo | undefined>>('projectInfo', ref());
+const projectInfo = inject<Ref<{ id: string; avatar: string; name: string; } | undefined>>('projectInfo', ref());
 const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', ref({ showTask: true, showSprint: true }));
 
 // async components
@@ -47,6 +47,13 @@ const {
   setCreator
 } = useKanbanFilters({ projectInfo });
 
+// ui state
+const creatorModalVisible = ref(false);
+const openCreatorModal = () => { creatorModalVisible.value = true; };
+
+// options
+const { viewTypeOptions } = useKanbanOptions();
+
 // react to product type visibility
 watch(
   () => proTypeShowMap.value,
@@ -57,14 +64,6 @@ watch(
   },
   { immediate: true }
 );
-
-// ui state
-const creatorModalVisible = ref(false);
-const openCreatorModal = () => { creatorModalVisible.value = true; };
-
-// options
-const { viewTypeOptions } = useKanbanOptions();
-
 </script>
 <template>
   <div class="px-5 pt-2 pb-5 h-full leading-5 text-3  overflow-y-auto bg-white" :class="{'fixed top-0 left-0 bottom-0 right-0 z-999': isMaximized}">
@@ -79,8 +78,7 @@ const { viewTypeOptions } = useKanbanOptions();
             <span class="flex-shrink-0 whitespace-nowrap">{{ t('kanban.organizationPersonnel') }}</span>
             <Colon class="mr-1 flex-shrink-0" />
             <div :title="creatorObjectName" class="truncate max-w-20 flex-shrink-0 whitespace-nowrap">
-              {{
-                creatorObjectName || '--' }}
+              {{ creatorObjectName || '--' }}
             </div>
           </div>
           <Icon
@@ -202,7 +200,6 @@ const { viewTypeOptions } = useKanbanOptions();
     <AsyncComponent :visible="creatorModalVisible">
       <SelectCreatorModal v-model:visible="creatorModalVisible" @ok="setCreator" />
     </AsyncComponent>
-    <!-- <SelectApisCaseModal :projectId="projectId" :visible="true" /> -->
   </div>
 </template>
 <style scoped>

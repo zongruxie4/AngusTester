@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, nextTick, computed, watch, withDefaults } from 'vue';
-import { Radio, RadioGroup, RadioButton } from 'ant-design-vue';
+import { nextTick, onBeforeUnmount, onMounted, ref, watch, withDefaults } from 'vue';
+import { RadioButton, RadioGroup } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
-import { EffectivenessProps, BurnDownDataByType } from './types';
+import { BurnDownDataByType, EffectivenessProps } from './types';
 import { useEffectivenessData } from './composables/useEffectivenessData';
 import { useEffectivenessConfig } from './composables/useEffectivenessConfig';
 import { useChartManagement } from './composables/useChartManagement';
@@ -121,7 +121,7 @@ watch([overviewData, burnDownData, totalTypeData, assigneeRanking, testerRanking
       updateRankingCharts(assigneeRanking.value, assignees.value, props.countType);
     }
 
-    if ( testerRanking.value && testers.value) {
+    if (testerRanking.value && testers.value) {
       updateRankingCharts(testerRanking.value, testers.value, props.countType);
     }
   }
@@ -242,7 +242,7 @@ defineExpose({
         </div>
         <div ref="workloadRateChartRef" class="chart-content"></div>
       </div>
-      
+
       <!--overdueRateChart-->
       <div class="chart-container">
         <div class="chart-header">

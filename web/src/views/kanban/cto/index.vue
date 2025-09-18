@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { RadioGroup } from 'ant-design-vue';
 import { CtoProps, RecentDateOption } from './types';
@@ -108,7 +108,6 @@ const {
   resetData
 } = useCtoData(props);
 
-
 /**
  * <p>
  * Loads dashboard data and updates charts
@@ -117,7 +116,7 @@ const {
  * Fetches data from API and updates all chart visualizations
  * </p>
  */
- const loadData = async () => {
+const loadData = async () => {
   await loadCtoData();
 
   // Update all charts with new data
@@ -171,8 +170,6 @@ const handleRecentDateChange = () => {
   }
 };
 
-
-
 /**
  * <p>
  * Initializes component on mount
@@ -182,7 +179,6 @@ const handleRecentDateChange = () => {
  * </p>
  */
 onMounted(async () => {
-
   // Initialize charts with DOM references
   const chartRefs = {
     progressRef: progressRef.value,
@@ -214,10 +210,7 @@ onMounted(async () => {
   // Setup lifecycle management
   setupLifecycle();
 
-  
-
   // loadData();
-
 });
 
 /**

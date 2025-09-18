@@ -1,6 +1,21 @@
-import { ref, computed } from 'vue';
+import { computed, ref } from 'vue';
 import { kanban } from '@/api/tester';
-import { CtoProps, CtoData, TotalProgressOverview, BackloggedCount, RecentDeliveryCount, OverdueAssessmentCount, UnplannedWorkCount, FailureAssessmentCount, ApisTestCount, ScenarioTestCount, TotalTypeCount, TotalStatusCount, LeadTimeCount, TotalTestResultCount, TotalReviewStatusCount } from '../types';
+import {
+  ApisTestCount,
+  BackloggedCount,
+  CtoProps,
+  FailureAssessmentCount,
+  LeadTimeCount,
+  OverdueAssessmentCount,
+  RecentDeliveryCount,
+  ScenarioTestCount,
+  TotalProgressOverview,
+  TotalReviewStatusCount,
+  TotalStatusCount,
+  TotalTestResultCount,
+  TotalTypeCount,
+  UnplannedWorkCount
+} from '../types';
 
 /**
  * <p>

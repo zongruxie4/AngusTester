@@ -1,6 +1,6 @@
-import { ref, nextTick } from 'vue';
+import { nextTick, ref } from 'vue';
 import * as eCharts from 'echarts';
-import { ChartConfig, GrowthTrendData, CaseData, ApiData, TaskData, ScenarioData, ScriptData } from '../types';
+import { ApiData, CaseData, ChartConfig, GrowthTrendData, ScenarioData, ScriptData, TaskData } from '../types';
 import { getDateArr, getDateArrWithTime } from '@/utils/utils';
 
 /**

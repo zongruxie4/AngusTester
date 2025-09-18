@@ -1,24 +1,24 @@
-import { ref, nextTick } from 'vue';
+import { nextTick, ref } from 'vue';
 import * as eCharts from 'echarts';
 import { ChartConfig } from '../types';
 import {
-  createProgressChartConfig,
-  createRecentCompletionRateConfig,
-  createRecentOverdueRateConfig,
-  createRecentCompletedWorkloadConfig,
-  createRecentSavingRateConfig,
+  createApiTestConfig,
   createBacklogTaskConfig,
   createBacklogWorkloadConfig,
-  createOverdueAssessmentConfig,
-  createUnplannedWorkConfig,
-  createUnplannedWorkloadConfig,
   createFailureAssessmentConfig,
-  createTaskTypeConfig,
-  createTaskStatusConfig,
   createLeadTimeConfig,
-  createApiTestConfig,
+  createOverdueAssessmentConfig,
+  createProgressChartConfig,
+  createRecentCompletedWorkloadConfig,
+  createRecentCompletionRateConfig,
+  createRecentOverdueRateConfig,
+  createRecentSavingRateConfig,
+  createReviewStatusConfig,
+  createTaskStatusConfig,
+  createTaskTypeConfig,
   createTestStatusConfig,
-  createReviewStatusConfig
+  createUnplannedWorkConfig,
+  createUnplannedWorkloadConfig
 } from './useChartConfigs';
 
 /**
