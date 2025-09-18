@@ -1238,7 +1238,7 @@ const getPopupContainer = () => {
             <template #label>
               {{
                 currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                  ? t('backlog.editForm.labels.evalStoryPoint')
+                  ? t('backlog.editForm.labels.evalWorkload')
                   : t('backlog.editForm.labels.evalWorkload')
               }}
               <Popover placement="rightTop">
@@ -1246,7 +1246,7 @@ const getPopupContainer = () => {
                   <div class="text-3 text-theme-sub-content max-w-75 leading-4">
                     {{
                       currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                        ? t('backlog.editForm.labels.evalStoryPoint')
+                        ? t('backlog.editForm.labels.evalWorkload')
                         : t('backlog.editForm.labels.evalWorkload')
                     }}
                   </div>
@@ -1270,7 +1270,7 @@ const getPopupContainer = () => {
               <template #label>
                 {{
                   currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                    ? t('backlog.editForm.labels.evalStoryPoint')
+                    ? t('backlog.editForm.labels.evalWorkload')
                     : t('backlog.editForm.labels.evalWorkload')
                 }}
                 <Popover placement="rightTop">
@@ -1278,7 +1278,7 @@ const getPopupContainer = () => {
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
                       {{
                         currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                          ? t('backlog.editForm.labels.evalStoryPoint')
+                          ? t('backlog.editForm.labels.evalWorkload')
                           : t('backlog.editForm.labels.evalWorkload')
                       }}
                     </div>

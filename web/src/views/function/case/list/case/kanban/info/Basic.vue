@@ -242,8 +242,8 @@ const infoColumns = [
       label: t('functionCase.kanbanView.infoBasic.testResult'),
       dataIndex: 'testResult'
     },
-    { label: props.dataSource?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.kanbanView.infoBasic.evalStoryPoint') : t('functionCase.kanbanView.infoBasic.evalWorkload'), dataIndex: 'evalWorkload', customRender: ({ text }) => text || '--' },
-    { label: props.dataSource?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.kanbanView.infoBasic.actualStoryPoint') : t('functionCase.kanbanView.infoBasic.actualWorkload'), dataIndex: 'actualWorkload', customRender: ({ text }) => text || '--' },
+    { label: props.dataSource?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.kanbanView.infoBasic.evalWorkload') : t('functionCase.kanbanView.infoBasic.evalWorkload'), dataIndex: 'evalWorkload', customRender: ({ text }) => text || '--' },
+    { label: props.dataSource?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.kanbanView.infoBasic.actualWorkload') : t('functionCase.kanbanView.infoBasic.actualWorkload'), dataIndex: 'actualWorkload', customRender: ({ text }) => text || '--' },
     { label: t('functionCase.kanbanView.infoBasic.unplannedCase'), dataIndex: 'unplanned', customRender: ({ text }) => text ? t('status.yes') : t('status.no') }
   ]
 ];

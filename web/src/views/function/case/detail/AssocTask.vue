@@ -154,7 +154,7 @@ const columns = [
   {
     key: 'evalWorkload',
     dataIndex: 'evalWorkload',
-    title: t('functionCase.detail.assocTask.evalStoryPoint')
+    title: t('functionCase.detail.assocTask.evalWorkload')
   },
   {
     key: 'status',

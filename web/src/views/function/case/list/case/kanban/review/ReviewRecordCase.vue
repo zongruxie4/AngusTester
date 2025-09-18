@@ -32,8 +32,8 @@ const infoColumns = computed(() => [
       label: t('functionCase.kanbanView.reviewRecord.testResult'),
       dataIndex: 'testResult'
     },
-    { label: props.caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.kanbanView.reviewRecord.evalStoryPoint') : t('functionCase.kanbanView.reviewRecord.evalWorkload'), dataIndex: 'evalWorkload', customRender: ({ text }) => text || '--' },
-    { label: props.caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.kanbanView.reviewRecord.actualStoryPoint') : t('functionCase.kanbanView.reviewRecord.actualWorkload'), dataIndex: 'actualWorkload', customRender: ({ text }) => text || '--' }
+    { label: props.caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.kanbanView.reviewRecord.evalWorkload') : t('functionCase.kanbanView.reviewRecord.evalWorkload'), dataIndex: 'evalWorkload', customRender: ({ text }) => text || '--' },
+    { label: props.caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.kanbanView.reviewRecord.actualWorkload') : t('functionCase.kanbanView.reviewRecord.actualWorkload'), dataIndex: 'actualWorkload', customRender: ({ text }) => text || '--' }
   ]
 ]);
 

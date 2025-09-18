@@ -32,8 +32,8 @@ const infoColumns = computed(() => [
       label: t('functionCase.detail.review.testResult'),
       dataIndex: 'testResult'
     },
-    { label: props.caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.detail.review.evalStoryPoint') : t('functionCase.detail.review.evalWorkload'), dataIndex: 'evalWorkload', customRender: ({ text }) => text || '--' },
-    { label: props.caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.detail.review.actualStoryPoint') : t('functionCase.detail.review.actualWorkload'), dataIndex: 'actualWorkload', customRender: ({ text }) => text || '--' }
+    { label: props.caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.detail.review.evalWorkload') : t('functionCase.detail.review.evalWorkload'), dataIndex: 'evalWorkload', customRender: ({ text }) => text || '--' },
+    { label: props.caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.detail.review.actualWorkload') : t('functionCase.detail.review.actualWorkload'), dataIndex: 'actualWorkload', customRender: ({ text }) => text || '--' }
   ]
 ]);
 

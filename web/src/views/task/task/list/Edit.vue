@@ -1256,7 +1256,7 @@ onMounted(() => {
             <template #label>
               {{
                 evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                  ? t('task.editModal.form.workload.evalStoryPoint')
+                  ? t('task.editModal.form.workload.evalWorkload')
                   : t('task.editModal.form.workload.evalWorkload')
               }}
               <Popover placement="rightTop">
@@ -1289,7 +1289,7 @@ onMounted(() => {
               <template #label>
                 {{
                   evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                    ? t('task.editModal.form.workload.actualStoryPoint')
+                    ? t('task.editModal.form.workload.actualWorkload')
                     : t('task.editModal.form.workload.actualWorkload')
                 }}
                 <Popover placement="rightTop">
@@ -1297,7 +1297,7 @@ onMounted(() => {
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
                       {{
                         evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                          ? t('task.editModal.form.workload.actualStoryPointTip')
+                          ? t('task.editModal.form.workload.actualWorkloadTip')
                           : t('task.editModal.form.workload.actualWorkloadTip')
                       }}
                     </div>

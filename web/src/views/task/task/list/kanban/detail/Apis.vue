@@ -843,7 +843,7 @@ onMounted(() => {
               {{
                 evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
                   ? t('task.detailInfo.apis.columns.evalWorkload')
-                  : t('task.detailInfo.apis.columns.evalWorkHours')
+                  : t('task.detailInfo.apis.columns.evalWorkload')
               }}
             </span>
             <Colon class="w-1" />
@@ -880,7 +880,7 @@ onMounted(() => {
             <span>
               {{
                 evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                  ? t('task.detailInfo.apis.columns.actualStoryPoint')
+                  ? t('task.detailInfo.apis.columns.actualWorkload')
                   : t('task.detailInfo.apis.columns.actualWorkload')
               }}
             </span>

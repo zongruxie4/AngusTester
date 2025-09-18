@@ -814,7 +814,7 @@ onMounted(() => {
             <span>
               {{
                 evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                  ? t('backlog.info.scenario.evalStoryPoint') : t('backlog.info.scenario.evalWorkload')
+                  ? t('backlog.info.scenario.evalWorkload') : t('backlog.info.scenario.evalWorkload')
               }}
             </span>
             <Colon class="w-1" />
@@ -851,7 +851,7 @@ onMounted(() => {
             <span>
               {{
                 evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                  ? t('backlog.info.scenario.evalStoryPoint') : t('backlog.info.scenario.evalWorkload')
+                  ? t('backlog.info.scenario.evalWorkload') : t('backlog.info.scenario.evalWorkload')
               }}
             </span>
             <Colon class="w-1" />

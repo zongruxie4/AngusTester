@@ -130,7 +130,7 @@ const columns = [
   {
     key: 'evalWorkload',
     dataIndex: 'evalWorkload',
-    title: t('functionCase.kanbanView.assocCase.evalStoryPoint')
+    title: t('functionCase.kanbanView.assocCase.evalWorkload')
   },
   {
     key: 'status',

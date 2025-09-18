@@ -96,69 +96,78 @@ const layoutClassName = computed(() => {
 
 <template>
   <div :class="layoutClassName" class="h-full pr-5 overflow-auto">
-    <div class="flex-1 space-y-4">
-      <APIBasicInfo
-        v-if="currentTaskType === TaskType.API_TEST"
-        :id="currentTaskId"
-        :dataSource="props.dataSource"
-        :projectId="props.projectId"
-        :userInfo="props.userInfo"
-        :appInfo="props.appInfo"
-        :taskId="currentTaskId"
-        @change="handleTaskDataChange"
-        @loadingChange="handleLoadingStateChange" />
+    <div class="flex-1 space-y-6">
+      <!-- Main Task Info Section -->
+      <div class="space-y-4">
+        <APIBasicInfo
+          v-if="currentTaskType === TaskType.API_TEST"
+          :id="currentTaskId"
+          :dataSource="props.dataSource"
+          :projectId="props.projectId"
+          :userInfo="props.userInfo"
+          :appInfo="props.appInfo"
+          :taskId="currentTaskId"
+          @change="handleTaskDataChange"
+          @loadingChange="handleLoadingStateChange" />
 
-      <ScenarioBasicInfo
-        v-else-if="currentTaskType === TaskType.SCENARIO_TEST"
-        :id="currentTaskId"
-        :dataSource="props.dataSource"
-        :projectId="props.projectId"
-        :userInfo="props.userInfo"
-        :appInfo="props.appInfo"
-        :taskId="currentTaskId"
-        @change="handleTaskDataChange"
-        @loadingChange="handleLoadingStateChange" />
+        <ScenarioBasicInfo
+          v-else-if="currentTaskType === TaskType.SCENARIO_TEST"
+          :id="currentTaskId"
+          :dataSource="props.dataSource"
+          :projectId="props.projectId"
+          :userInfo="props.userInfo"
+          :appInfo="props.appInfo"
+          :taskId="currentTaskId"
+          @change="handleTaskDataChange"
+          @loadingChange="handleLoadingStateChange" />
 
-      <BasicInfo
-        v-else
-        :id="currentTaskId"
-        :dataSource="props.dataSource"
-        :projectId="props.projectId"
-        :userInfo="props.userInfo"
-        :appInfo="props.appInfo"
-        :taskId="currentTaskId"
-        @change="handleTaskDataChange"
-        @loadingChange="handleLoadingStateChange" />
+        <BasicInfo
+          v-else
+          :id="currentTaskId"
+          :dataSource="props.dataSource"
+          :projectId="props.projectId"
+          :userInfo="props.userInfo"
+          :appInfo="props.appInfo"
+          :taskId="currentTaskId"
+          @change="handleTaskDataChange"
+          @loadingChange="handleLoadingStateChange" />
+      </div>
 
-      <WorkloadInfo
-        :id="currentTaskId"
-        :dataSource="props.dataSource"
-        :projectId="props.projectId"
-        :userInfo="props.userInfo"
-        :appInfo="props.appInfo"
-        :taskId="currentTaskId"
-        @change="handleTaskDataChange"
-        @loadingChange="handleLoadingStateChange" />
+      <!-- Metrics Section - Workload and Process Times -->
+      <div class="metrics-section">
+        <WorkloadInfo
+          :id="currentTaskId"
+          :dataSource="props.dataSource"
+          :projectId="props.projectId"
+          :userInfo="props.userInfo"
+          :appInfo="props.appInfo"
+          :taskId="currentTaskId"
+          @change="handleTaskDataChange"
+          @loadingChange="handleLoadingStateChange" />
 
-      <ProcessTimesInfo
-        :id="currentTaskId"
-        :dataSource="props.dataSource"
-        :projectId="props.projectId"
-        :userInfo="props.userInfo"
-        :appInfo="props.appInfo"
-        :taskId="currentTaskId"
-        @change="handleTaskDataChange"
-        @loadingChange="handleLoadingStateChange" />
+        <ProcessTimesInfo
+          :id="currentTaskId"
+          :dataSource="props.dataSource"
+          :projectId="props.projectId"
+          :userInfo="props.userInfo"
+          :appInfo="props.appInfo"
+          :taskId="currentTaskId"
+          @change="handleTaskDataChange"
+          @loadingChange="handleLoadingStateChange" />
+      </div>
 
-      <Description
-        :id="currentTaskId"
-        :dataSource="props.dataSource"
-        :projectId="props.projectId"
-        :userInfo="props.userInfo"
-        :appInfo="props.appInfo"
-        :taskId="currentTaskId"
-        @change="handleTaskDataChange"
-        @loadingChange="handleLoadingStateChange" />
+      <!-- Additional Info Section -->
+      <div class="space-y-4">
+        <Description
+          :id="currentTaskId"
+          :dataSource="props.dataSource"
+          :projectId="props.projectId"
+          :userInfo="props.userInfo"
+          :appInfo="props.appInfo"
+          :taskId="currentTaskId"
+          @change="handleTaskDataChange"
+          @loadingChange="handleLoadingStateChange" />
+      </div>
     </div>
 
     <div class="flex-shrink-0 w-75 space-y-4">
@@ -195,6 +204,7 @@ const layoutClassName = computed(() => {
 </template>
 
 <style scoped>
+/* Main Layout */
 .large-page-layout {
   display: flex;
   align-items: flex-start;
@@ -206,5 +216,44 @@ const layoutClassName = computed(() => {
 
 .small-page-layout>div+div {
   margin-top: 16px;
+}
+
+/* Metrics Section Styling */
+.metrics-section {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 1024px) {
+  .metrics-section {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .metrics-section {
+    gap: 0.5rem;
+  }
+}
+
+/* Enhanced spacing and visual hierarchy */
+.space-y-6 > * + * {
+  margin-top: 1.5rem;
+}
+
+.space-y-4 > * + * {
+  margin-top: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .h-full {
+    padding-right: 0.75rem;
+  }
+  
+  .space-y-6 > * + * {
+    margin-top: 1rem;
+  }
 }
 </style>
