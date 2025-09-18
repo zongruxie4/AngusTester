@@ -1367,7 +1367,8 @@
           "apiTest": "API Test",
           "functional": "Functional",
           "perf": "Performance",
-          "stability": "Stability"
+          "stability": "Stability",
+          "scenarioTest": "Scenario Test"
         }
       },
       "columns": {

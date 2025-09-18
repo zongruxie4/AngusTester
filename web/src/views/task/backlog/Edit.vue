@@ -798,7 +798,6 @@ const getPopupContainer = () => {
       :key="formKey"
       ref="formRef"
       :model="formState"
-      :labelCol="{style: {width: '90px'}}"
       layout="vertical"
       class="overflow-y-auto overflow-x-hidden"
       size="small"
@@ -1235,7 +1234,9 @@ const getPopupContainer = () => {
             name="evalWorkload"
             :rules="{ required: formState.actualWorkload, validator: validateEvaluationWorkload, trigger: 'change' }">
             <template #label>
-              {{ t('backlog.editForm.labels.evalWorkload') }}
+              <span>
+                {{ t('backlog.editForm.labels.evalWorkload') }}
+              </span>
               <Popover placement="rightTop">
                 <template #content>
                   <div class="text-3 text-theme-sub-content max-w-75 leading-4">
@@ -1479,7 +1480,6 @@ const getPopupContainer = () => {
 
 <style scoped>
 :deep(.ant-form-item-label) {
-  max-width: 120px;
   font-size: 12px;
   font-weight: 600;
 }
