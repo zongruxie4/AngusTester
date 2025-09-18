@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue';
 import { Button } from 'ant-design-vue';
-import {
-  AsyncComponent, Colon, Icon, IconTask, Input, ScriptTypeTag, Select, Toggle
-} from '@xcan-angus/vue-ui';
+import { AsyncComponent, Colon, Icon, IconTask, Input, ScriptTypeTag, Select, Toggle } from '@xcan-angus/vue-ui';
 import { EvalWorkloadMethod, TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { task } from '@/api/tester';
@@ -64,6 +62,32 @@ const selectedTagIdList = ref<string[]>([]);
 const versionSelectRef = ref();
 const isVersionEditing = ref(false);
 const versionSelectValue = ref<string>();
+
+// Computed properties for task data
+const currentTaskId = computed(() => props.dataSource?.id);
+const currentTaskStatus = computed(() => props.dataSource?.status);
+const currentTaskName = computed(() => props.dataSource?.name);
+const currentTaskType = computed(() => props.dataSource?.taskType?.value);
+const currentPriority = computed(() => props.dataSource?.priority?.value);
+const currentTags = computed(() => props.dataSource?.tags || []);
+const currentTagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
+const currentEvalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
+const currentEvalWorkload = computed(() => props.dataSource?.evalWorkload);
+const currentActualWorkload = computed(() => props.dataSource?.actualWorkload);
+const isTaskOverdue = computed(() => props.dataSource?.overdue);
+const totalTestCount = computed(() => +(props.dataSource?.totalNum || 0));
+const failedTestCount = computed(() => +(props.dataSource?.failNum || 0));
+
+/**
+ * <p>Computes the one-pass status text based on test results.</p>
+ * <p>Returns '--' if no tests have been run, 'Yes' if all tests passed, 'No' if any tests failed.</p>
+ */
+const onePassStatusText = computed(() => {
+  if (totalTestCount.value <= 0) {
+    return '--';
+  }
+  return failedTestCount.value === 0 ? t('status.yes') : t('status.no');
+});
 
 /**
  * <p>Initiates task name editing mode by setting the input value and enabling edit flag.</p>
@@ -366,38 +390,12 @@ const handleVersionBlur = async () => {
 
   emit('change', { id: currentTaskId.value, softwareVersion: versionSelectValue.value });
 };
-
-// Computed properties for task data
-const currentTaskId = computed(() => props.dataSource?.id);
-const currentTaskStatus = computed(() => props.dataSource?.status);
-const currentTaskName = computed(() => props.dataSource?.name);
-const currentTaskType = computed(() => props.dataSource?.taskType?.value);
-const currentPriority = computed(() => props.dataSource?.priority?.value);
-const currentTags = computed(() => props.dataSource?.tags || []);
-const currentTagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
-const currentEvalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
-const currentEvalWorkload = computed(() => props.dataSource?.evalWorkload);
-const currentActualWorkload = computed(() => props.dataSource?.actualWorkload);
-const isTaskOverdue = computed(() => props.dataSource?.overdue);
-const totalTestCount = computed(() => +(props.dataSource?.totalNum || 0));
-const failedTestCount = computed(() => +(props.dataSource?.failNum || 0));
-
-/**
- * <p>Computes the one-pass status text based on test results.</p>
- * <p>Returns '--' if no tests have been run, 'Yes' if all tests passed, 'No' if any tests failed.</p>
- */
-const onePassStatusText = computed(() => {
-  if (totalTestCount.value <= 0) {
-    return '--';
-  }
-  return failedTestCount.value === 0 ? t('status.yes') : t('status.no');
-});
 </script>
 
 <template>
   <Toggle>
     <template #title>
-      <div class="text-3">{{ t('task.detailInfo.scenario.title') }}</div>
+      <div class="text-3.5">{{ t('task.detailInfo.scenario.title') }}</div>
     </template>
 
     <template #default>

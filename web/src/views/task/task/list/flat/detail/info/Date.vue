@@ -36,7 +36,18 @@ const deadlineDateInputValue = ref<string>();
 const isDateValidationError = ref();
 const dateValidationErrorMessage = ref<string>();
 
-// Deadline date editing methods
+// Computed properties for task date data
+const currentTaskId = computed(() => props.dataSource?.id);
+const taskCreatedDate = computed(() => props.dataSource?.createdDate);
+const currentDeadlineDate = computed(() => props.dataSource?.deadlineDate);
+const taskStartDate = computed(() => props.dataSource?.startDate);
+const taskProcessedDate = computed(() => props.dataSource?.processedDate);
+const taskConfirmedDate = computed(() => props.dataSource?.confirmedDate);
+const taskCompletedDate = computed(() => props.dataSource?.completedDate);
+const taskCanceledDate = computed(() => props.dataSource?.canceledDate);
+const taskExecDate = computed(() => props.dataSource?.execDate);
+const taskLastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
+
 /**
  * <p>Initiates deadline date editing mode by setting the input value and enabling edit flag.</p>
  * <p>Focuses the date picker field after a short delay to ensure proper rendering.</p>
@@ -119,30 +130,18 @@ const isDateDisabled = (current: Dayjs) => {
   const today = dayjs().startOf('day');
   return current.isBefore(today, 'day');
 };
-
-// Computed properties for task date data
-const currentTaskId = computed(() => props.dataSource?.id);
-const taskCreatedDate = computed(() => props.dataSource?.createdDate);
-const currentDeadlineDate = computed(() => props.dataSource?.deadlineDate);
-const taskStartDate = computed(() => props.dataSource?.startDate);
-const taskProcessedDate = computed(() => props.dataSource?.processedDate);
-const taskConfirmedDate = computed(() => props.dataSource?.confirmedDate);
-const taskCompletedDate = computed(() => props.dataSource?.completedDate);
-const taskCanceledDate = computed(() => props.dataSource?.canceledDate);
-const taskExecDate = computed(() => props.dataSource?.execDate);
-const taskLastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
 </script>
 
 <template>
   <Toggle>
     <template #title>
-      <div class="text-3">{{ t('task.detailInfo.date.title') }}</div>
+      <div class="text-3.5">{{ t('task.detailInfo.date.title') }}</div>
     </template>
 
     <template #default>
       <div class="text-3 leading-5 space-y-2.5 pt-2 pl-5.5">
         <div class="relative flex items-start">
-          <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
+          <div class="w-25 flex items-center whitespace-nowrap flex-shrink-0">
             <span>{{ t('task.detailInfo.date.fields.deadline') }}</span>
             <Colon class="w-1" />
           </div>
@@ -183,7 +182,7 @@ const taskLastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
         </div>
 
         <div class="relative flex items-start">
-          <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
+          <div class="w-25 flex items-center whitespace-nowrap flex-shrink-0">
             <span>{{ t('task.detailInfo.date.fields.startTime') }}</span>
             <Colon class="w-1" />
           </div>
@@ -192,7 +191,7 @@ const taskLastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
         </div>
 
         <div class="relative flex items-start">
-          <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
+          <div class="w-25 flex items-center whitespace-nowrap flex-shrink-0">
             <span>{{ t('task.detailInfo.date.fields.processTime') }}</span>
             <Colon class="w-1" />
           </div>
@@ -201,7 +200,7 @@ const taskLastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
         </div>
 
         <div class="relative flex items-start">
-          <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
+          <div class="w-25 flex items-center whitespace-nowrap flex-shrink-0">
             <span>{{ t('task.detailInfo.date.fields.confirmTime') }}</span>
             <Colon class="w-1" />
           </div>
@@ -210,7 +209,7 @@ const taskLastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
         </div>
 
         <div class="relative flex items-start">
-          <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
+          <div class="w-25 flex items-center whitespace-nowrap flex-shrink-0">
             <span>{{ t('task.detailInfo.date.fields.completeTime') }}</span>
             <Colon class="w-1" />
           </div>
@@ -219,7 +218,7 @@ const taskLastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
         </div>
 
         <div class="relative flex items-start">
-          <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
+          <div class="w-25 flex items-center whitespace-nowrap flex-shrink-0">
             <span>{{ t('task.detailInfo.date.fields.cancelTime') }}</span>
             <Colon class="w-1" />
           </div>
@@ -228,7 +227,7 @@ const taskLastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
         </div>
 
         <div class="relative flex items-start">
-          <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
+          <div class="w-25 flex items-center whitespace-nowrap flex-shrink-0">
             <span>{{ t('task.detailInfo.date.fields.execTime') }}</span>
             <Colon class="w-1" />
           </div>
@@ -237,7 +236,7 @@ const taskLastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
         </div>
 
         <div class="relative flex items-start">
-          <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
+          <div class="w-25 flex items-center whitespace-nowrap flex-shrink-0">
             <span>{{ t('task.detailInfo.date.fields.createTime') }}</span>
             <Colon class="w-1" />
           </div>
@@ -246,7 +245,7 @@ const taskLastModifiedDate = computed(() => props.dataSource?.lastModifiedDate);
         </div>
 
         <div class="relative flex items-start">
-          <div class="w-21.75 flex items-center whitespace-nowrap flex-shrink-0">
+          <div class="w-25 flex items-center whitespace-nowrap flex-shrink-0">
             <span>{{ t('task.detailInfo.date.fields.lastModifyTime') }}</span>
             <Colon class="w-1" />
           </div>

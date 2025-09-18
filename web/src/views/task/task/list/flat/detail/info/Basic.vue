@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue';
 import { Button, Tag } from 'ant-design-vue';
-import {
-  AsyncComponent, Colon, Icon, IconTask, Input, Select, Toggle
-} from '@xcan-angus/vue-ui';
-import { enumUtils, EvalWorkloadMethod, TESTER } from '@xcan-angus/infra';
+import { AsyncComponent, Colon, Icon, IconTask, Input, Select, Toggle } from '@xcan-angus/vue-ui';
+import { enumUtils, TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
@@ -38,15 +36,7 @@ const taskNameInputRef = ref();
 const isTaskNameEditing = ref(false);
 const taskNameInputValue = ref<string>();
 
-// Evaluation workload editing state
-const evalWorkloadInputRef = ref();
-const isEvalWorkloadEditing = ref(false);
-const evalWorkloadInputValue = ref<string>();
-
-// Actual workload editing state
-const actualWorkloadInputRef = ref();
-const isActualWorkloadEditing = ref(false);
-const actualWorkloadInputValue = ref<string>();
+// (moved to Workload.vue)
 
 // Task type editing state
 const taskTypeSelectRef = ref();
@@ -71,7 +61,18 @@ const versionSelectRef = ref();
 const isVersionEditing = ref(false);
 const versionSelectValue = ref<string>();
 
-// Task name editing methods
+// Computed properties for task data
+const currentTaskId = computed(() => props.dataSource?.id);
+const currentTaskStatus = computed(() => props.dataSource?.status);
+const currentTaskName = computed(() => props.dataSource?.name);
+const currentTaskType = computed(() => props.dataSource?.taskType?.value);
+const currentPriority = computed(() => props.dataSource?.priority?.value);
+const currentTags = computed(() => props.dataSource?.tags || []);
+const currentTagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
+// (moved to Workload.vue)
+const isTaskOverdue = computed(() => props.dataSource?.overdue);
+// (moved to ProcessTimes.vue)
+
 /**
  * <p>Initiates task name editing mode by setting the input value and enabling edit flag.</p>
  * <p>Focuses the input field after a short delay to ensure proper rendering.</p>
@@ -122,109 +123,6 @@ const handleTaskNameEnter = () => {
   }
 };
 
-// Actual workload editing methods
-/**
- * <p>Initiates actual workload editing mode by setting the input value and enabling edit flag.</p>
- * <p>Focuses the input field after a short delay to ensure proper rendering.</p>
- */
-const startActualWorkloadEditing = () => {
-  actualWorkloadInputValue.value = currentActualWorkload.value;
-  isActualWorkloadEditing.value = true;
-
-  nextTick(() => {
-    setTimeout(() => {
-      if (typeof actualWorkloadInputRef.value?.focus === 'function') {
-        actualWorkloadInputRef.value?.focus();
-      }
-    }, 100);
-  });
-};
-
-/**
- * <p>Handles actual workload input blur event to save changes or cancel editing.</p>
- * <p>Validates input value and calls API to update actual workload if value has changed.</p>
- * @param event - Input blur event containing the new value
- */
-const handleActualWorkloadBlur = async (event: FocusEvent) => {
-  const target = event.target as HTMLInputElement;
-  const newValue = target?.value;
-  if (newValue === currentActualWorkload.value) {
-    isActualWorkloadEditing.value = false;
-    return;
-  }
-
-  emit('loadingChange', true);
-  const [error] = await task.editActualWorkload(currentTaskId.value, { workload: newValue });
-  emit('loadingChange', false);
-  isActualWorkloadEditing.value = false;
-  if (error) {
-    return;
-  }
-
-  emit('change', { id: currentTaskId.value, actualWorkload: newValue });
-};
-
-/**
- * <p>Handles Enter key press on actual workload input to trigger blur event.</p>
- */
-const handleActualWorkloadEnter = () => {
-  if (typeof actualWorkloadInputRef.value?.blur === 'function') {
-    actualWorkloadInputRef.value.blur();
-  }
-};
-
-// Evaluation workload editing methods
-/**
- * <p>Initiates evaluation workload editing mode by setting the input value and enabling edit flag.</p>
- * <p>Focuses the input field after a short delay to ensure proper rendering.</p>
- */
-const startEvalWorkloadEditing = () => {
-  evalWorkloadInputValue.value = currentEvalWorkload.value;
-  isEvalWorkloadEditing.value = true;
-
-  nextTick(() => {
-    setTimeout(() => {
-      if (typeof evalWorkloadInputRef.value?.focus === 'function') {
-        evalWorkloadInputRef.value?.focus();
-      }
-    }, 100);
-  });
-};
-
-/**
- * <p>Handles evaluation workload input blur event to save changes or cancel editing.</p>
- * <p>Validates input value and calls API to update evaluation workload if value has changed.</p>
- * @param event - Input blur event containing the new value
- */
-const handleEvalWorkloadBlur = async (event: FocusEvent) => {
-  const target = event.target as HTMLInputElement;
-  const newValue = target?.value;
-  if (newValue === currentEvalWorkload.value) {
-    isEvalWorkloadEditing.value = false;
-    return;
-  }
-
-  emit('loadingChange', true);
-  const [error] = await task.editEvalWorkloadApi(currentTaskId.value, { workload: newValue });
-  emit('loadingChange', false);
-  isEvalWorkloadEditing.value = false;
-  if (error) {
-    return;
-  }
-
-  emit('change', { id: currentTaskId.value, evalWorkload: newValue });
-};
-
-/**
- * <p>Handles Enter key press on evaluation workload input to trigger blur event.</p>
- */
-const handleEvalWorkloadEnter = () => {
-  if (typeof evalWorkloadInputRef.value?.blur === 'function') {
-    evalWorkloadInputRef.value.blur();
-  }
-};
-
-// Task type editing methods
 /**
  * <p>Initiates task type editing mode by setting the select value and enabling edit flag.</p>
  * <p>Focuses the select field after a short delay to ensure proper rendering.</p>
@@ -248,8 +146,8 @@ const startTaskTypeEditing = () => {
  * @param option - Selected task type option containing value and message
  */
 const handleTaskTypeChange = async (
-  value: string,
-  option?: { label: string; value: string }) => {
+  _value: any,
+  option?: any) => {
   if (option?.label) {
     taskTypeSelectMessage.value = option.label;
   }
@@ -303,7 +201,6 @@ const taskTypeExcludes = (value: { message: string; value: string }) => {
   return false;
 };
 
-// Priority editing methods
 /**
  * <p>Initiates priority editing mode by setting the select value and enabling edit flag.</p>
  * <p>Focuses the select field after a short delay to ensure proper rendering.</p>
@@ -327,8 +224,8 @@ const startPriorityEditing = () => {
  * @param option - Selected priority option containing value and message
  */
 const handlePriorityChange = async (
-  value: string,
-  option?: { label: string; value: string }) => {
+  _value: any,
+  option?: any) => {
   if (option?.label) {
     prioritySelectMessage.value = option.label;
   }
@@ -359,7 +256,6 @@ const handlePriorityBlur = async () => {
   });
 };
 
-// Tag editing methods
 /**
  * <p>Initiates tag editing mode by setting the selected tag IDs and enabling edit flag.</p>
  * <p>Focuses the select field after a short delay to ensure proper rendering.</p>
@@ -383,7 +279,7 @@ const startTagEditing = () => {
  * @param options - Array of selected tag options containing id and name
  */
 const handleTagChange = async (
-  value: any,
+  _value: any,
   options: any) => {
   selectedTagList.value = options;
 };
@@ -432,7 +328,7 @@ const startVersionEditing = () => {
  * @param value - Selected software version value
  * @param option - Selected option (unused)
  */
-const handleVersionChange = (value: any, option?: any) => {
+const handleVersionChange = (value: any, _option?: any) => {
   versionSelectValue.value = value;
 };
 
@@ -457,39 +353,12 @@ const handleVersionBlur = async () => {
 
   emit('change', { id: currentTaskId.value, softwareVersion: versionSelectValue.value });
 };
-
-// Computed properties for task data
-const currentTaskId = computed(() => props.dataSource?.id);
-const currentTaskStatus = computed(() => props.dataSource?.status);
-const currentTaskName = computed(() => props.dataSource?.name);
-const currentTaskType = computed(() => props.dataSource?.taskType?.value);
-const currentPriority = computed(() => props.dataSource?.priority?.value);
-const currentTags = computed(() => props.dataSource?.tags || []);
-const currentTagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
-const currentEvalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
-const currentEvalWorkload = computed(() => props.dataSource?.evalWorkload);
-const currentActualWorkload = computed(() => props.dataSource?.actualWorkload);
-const isTaskOverdue = computed(() => props.dataSource?.overdue);
-const totalTestCount = computed(() => +(props.dataSource?.totalNum || 0));
-const failedTestCount = computed(() => +(props.dataSource?.failNum || 0));
-
-/**
- * <p>Computes the one-pass status text based on test results.</p>
- * <p>Returns '--' if no tests have been run, 'Yes' if all tests passed, 'No' if any tests failed.</p>
- */
-const onePassStatusText = computed(() => {
-  if (totalTestCount.value <= 0) {
-    return '--';
-  }
-
-  return failedTestCount.value === 0 ? t('task.detailInfo.basic.columns.yes') : t('task.detailInfo.basic.columns.no');
-});
 </script>
 
 <template>
   <Toggle>
     <template #title>
-      <div class="text-3">{{ t('task.detailInfo.basic.title') }}</div>
+      <div class="text-3.5">{{ t('task.detailInfo.basic.title') }}</div>
     </template>
 
     <template #default>
@@ -567,34 +436,19 @@ const onePassStatusText = computed(() => {
           <div class="relative w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
               <span>{{ t('task.detailInfo.basic.columns.module') }}</span>
-              <Colon class="w-1" />
             </div>
 
-            <div class="whitespace-pre-wrap break-words break-all">
+            <div class="font-medium whitespace-pre-wrap break-words break-all">
               {{ props.dataSource?.moduleName || '--' }}
             </div>
           </div>
 
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.basic.columns.evalWorkloadMethod') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <div class="whitespace-pre-wrap break-words break-all">
-              {{ props.dataSource?.evalWorkloadMethod?.message }}
-            </div>
-          </div>
-        </div>
-
-        <div class="flex items-start space-x-5">
-          <div class="relative w-1/2 flex items-start">
-            <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
               <span>{{ t('task.detailInfo.basic.columns.parentTask') }}</span>
-              <Colon class="w-1" />
             </div>
 
-            <div v-if="!props.dataSource?.parentTaskId" class="whitespace-pre-wrap break-words break-all">
+            <div v-if="!props.dataSource?.parentTaskId" class="font-medium whitespace-pre-wrap break-words break-all">
               {{ props.dataSource?.parentTaskName || '--' }}
             </div>
 
@@ -603,41 +457,9 @@ const onePassStatusText = computed(() => {
               target="_self"
               :to="`/task#task?projectId=${props.projectId}&taskId=${props.dataSource?.parentTaskId}&total=1`"
               style="color:#40a9ff"
-              class="whitespace-pre-wrap break-words break-all">
+              class="font-medium whitespace-pre-wrap break-words break-all">
               {{ props.dataSource?.parentTaskName || '--' }}
             </RouterLink>
-          </div>
-
-          <div class="relative w-1/2 flex items-start">
-            <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ currentEvalWorkloadMethod === 'STORY_POINT' ? t('task.detailInfo.basic.columns.evalWorkload') : t('task.detailInfo.basic.columns.evalWorkHours') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <div v-show="!isEvalWorkloadEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
-              <div>{{ currentEvalWorkload || '--' }}</div>
-              <Button
-                type="link"
-                class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-                @click="startEvalWorkloadEditing">
-                <Icon icon="icon-shuxie" class="text-3.5" />
-              </Button>
-            </div>
-
-            <AsyncComponent :visible="isEvalWorkloadEditing">
-              <Input
-                v-show="isEvalWorkloadEditing"
-                ref="evalWorkloadInputRef"
-                v-model:value="evalWorkloadInputValue"
-                class="right-component max-w-52"
-                dataType="float"
-                trimAll
-                :min="0.1"
-                :max="1000"
-                :placeholder="t('task.detailInfo.basic.columns.actualWorkloadPlaceholder')"
-                @blur="handleEvalWorkloadBlur"
-                @pressEnter="handleEvalWorkloadEnter" />
-            </AsyncComponent>
           </div>
         </div>
 
@@ -657,7 +479,7 @@ const onePassStatusText = computed(() => {
                 @click="startTaskTypeEditing">
                 <Icon icon="icon-shuxie" class="text-3.5" />
               </Button>
-              <template v-if="currentTaskType === 'BUG'">
+              <template v-if="currentTaskType === TaskType.BUG">
                 <Tag
                   v-if="props.dataSource?.bugLevel"
                   color="error"
@@ -696,40 +518,49 @@ const onePassStatusText = computed(() => {
             </AsyncComponent>
           </div>
 
-          <div class="relative w-1/2 flex items-start">
-            <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>
-                {{ currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                  ? t('task.detailInfo.basic.columns.actualStoryPoint')
-                  : t('task.detailInfo.basic.columns.actualWorkload') }}
-              </span>
-              <Colon class="w-1" />
+          <div class="flex items-start space-x-5">
+            <div class="relative w-1/2 flex items-start">
+              <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
+                <span>{{ t('task.detailInfo.basic.columns.softwareVersion') }}</span>
+                <Colon class="w-1" />
+              </div>
+              <div class="flex-1 min-w-0">
+                <template v-if="isVersionEditing">
+                  <Select
+                    ref="versionSelectRef"
+                    v-model:value="versionSelectValue"
+                    allowClear
+                    :placeholder="t('task.detailInfo.basic.columns.softwareVersionPlaceholder')"
+                    lazy
+                    class="w-full max-w-60"
+                    :action="`${TESTER}/software/version?projectId=${props.projectId}`"
+                    :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN'}]}"
+                    :fieldNames="{value:'name', label: 'name'}"
+                    @blur="handleVersionBlur"
+                    @change="handleVersionChange">
+                  </Select>
+                </template>
+                <template v-else>
+                  <div class="flex space-x-1">
+                    <RouterLink
+                      v-if="props.dataSource?.softwareVersion"
+                      class="text-theme-special"
+                      :to="`/task#version?name=${props.dataSource?.softwareVersion}`">
+                      {{ props.dataSource?.softwareVersion }}
+                    </RouterLink>
+                    <template v-else>
+                      --
+                    </template>
+                    <Button
+                      type="link"
+                      class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
+                      @click="startVersionEditing">
+                      <Icon icon="icon-shuxie" class="text-3.5" />
+                    </Button>
+                  </div>
+                </template>
+              </div>
             </div>
-
-            <div v-show="!isActualWorkloadEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
-              <div>{{ currentActualWorkload || '--' }}</div>
-              <Button
-                type="link"
-                class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-                @click="startActualWorkloadEditing">
-                <Icon icon="icon-shuxie" class="text-3.5" />
-              </Button>
-            </div>
-
-            <AsyncComponent :visible="isActualWorkloadEditing">
-              <Input
-                v-show="isActualWorkloadEditing"
-                ref="actualWorkloadInputRef"
-                v-model:value="actualWorkloadInputValue"
-                class="right-component max-w-52"
-                dataType="float"
-                trimAll
-                :min="0.1"
-                :max="1000"
-                :placeholder="t('task.detailInfo.basic.columns.actualWorkloadPlaceholder')"
-                @blur="handleActualWorkloadBlur"
-                @pressEnter="handleActualWorkloadEnter" />
-            </AsyncComponent>
           </div>
         </div>
 
@@ -741,7 +572,7 @@ const onePassStatusText = computed(() => {
             </div>
 
             <div v-show="!isPriorityEditing" class="flex items-center">
-              <TaskPriority :value="props.dataSource?.priority" />
+              <TaskPriority :value="props.dataSource?.priority as any" />
               <Button
                 type="link"
                 class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
@@ -760,87 +591,13 @@ const onePassStatusText = computed(() => {
                 enumKey="Priority"
                 :placeholder="t('task.detailInfo.basic.columns.selectPriority')"
                 class="left-component max-w-52"
-                @change="handlePriorityChange"
-                @blur="handlePriorityBlur">
+                @change="handlePriorityChange as any"
+                @blur="handlePriorityBlur as any">
                 <template #option="record">
-                  <TaskPriority :value="{ value: record.value as any, message: record.label }" />
+                  <TaskPriority :value="record as any" />
                 </template>
               </SelectEnum>
             </AsyncComponent>
-          </div>
-
-          <div class="relative w-1/2 flex items-start">
-            <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.basic.columns.failNum') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <div class="whitespace-pre-wrap break-words break-all">{{ failedTestCount }}</div>
-          </div>
-        </div>
-
-        <div class="flex items-start space-x-5">
-          <div class="relative w-1/2 flex items-start">
-            <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.basic.columns.totalNum') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <div class="whitespace-pre-wrap break-words break-all">{{ totalTestCount }}</div>
-          </div>
-
-          <div class="relative w-1/2 flex items-start">
-            <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.basic.columns.onePass') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <div class="whitespace-pre-wrap break-words break-all">{{ onePassStatusText }}</div>
-          </div>
-        </div>
-
-        <div class="flex items-start space-x-5">
-          <div class="relative w-1/2 flex items-start">
-            <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.basic.columns.softwareVersion') }}</span>
-              <Colon class="w-1" />
-            </div>
-            <div class="flex-1 min-w-0">
-              <template v-if="isVersionEditing">
-                <Select
-                  ref="versionSelectRef"
-                  v-model:value="versionSelectValue"
-                  allowClear
-                  :placeholder="t('task.detailInfo.basic.columns.softwareVersionPlaceholder')"
-                  lazy
-                  class="w-full max-w-60"
-                  :action="`${TESTER}/software/version?projectId=${props.projectId}`"
-                  :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN'}]}"
-                  :fieldNames="{value:'name', label: 'name'}"
-                  @blur="handleVersionBlur"
-                  @change="handleVersionChange">
-                </Select>
-              </template>
-              <template v-else>
-                <div class="flex space-x-1">
-                  <RouterLink
-                    v-if="props.dataSource?.softwareVersion"
-                    class="text-theme-special"
-                    :to="`/task#version?name=${props.dataSource?.softwareVersion}`">
-                    {{ props.dataSource?.softwareVersion }}
-                  </RouterLink>
-                  <template v-else>
-                    --
-                  </template>
-                  <Button
-                    type="link"
-                    class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-                    @click="startVersionEditing">
-                    <Icon icon="icon-shuxie" class="text-3.5" />
-                  </Button>
-                </div>
-              </template>
-            </div>
           </div>
 
           <div class="relative w-1/2 flex items-start">
@@ -928,4 +685,9 @@ const onePassStatusText = computed(() => {
   left: 98px;
   width: calc(100% - 98px);
 }
+
+/* Allow long label text to wrap and align to top */
+.w-18\.5 { align-items: flex-start !important; }
+.w-24\.5 { align-items: flex-start !important; }
+.w-18\.5 span, .w-24\.5 span { white-space: normal; word-break: break-word; line-height: 1.2; }
 </style>

@@ -105,13 +105,13 @@ const currentEvalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadM
 const currentEvalWorkload = computed(() => props.dataSource?.evalWorkload);
 const currentActualWorkload = computed(() => props.dataSource?.actualWorkload);
 const isTaskOverdue = computed(() => props.dataSource?.overdue);
-const totalTestCount = computed(() => +(props.dataSource?.totalNum || 0));
-const failedTestCount = computed(() => +(props.dataSource?.failNum || 0));
+const totalProcessCount = computed(() => +(props.dataSource?.totalNum || 0));
+const processFailCount = computed(() => +(props.dataSource?.failNum || 0));
 const onePassStatusText = computed(() => {
-  if (totalTestCount.value <= 0) {
+  if (totalProcessCount.value <= 0) {
     return '--';
   }
-  return failedTestCount.value === 0 ? t('status.yes') : t('status.no');
+  return processFailCount.value === 0 ? t('status.yes') : t('status.no');
 });
 
 /**
@@ -933,20 +933,20 @@ onMounted(() => {
         <!-- Process Count -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('task.detailInfo.basic.columns.processNum') }}</span>
+            <span>{{ t('task.detailInfo.basic.columns.totalProcessCount') }}</span>
           </div>
           <div class="info-value">
-            <span class="info-text">{{ totalTestCount }}</span>
+            <span class="info-text">{{ totalProcessCount }}</span>
           </div>
         </div>
 
         <!-- Failed Count -->
         <div class="info-row">
           <div class="info-label">
-            <span>{{ t('task.detailInfo.basic.columns.processFailNum') }}</span>
+            <span>{{ t('task.detailInfo.basic.columns.processFailCount') }}</span>
           </div>
           <div class="info-value">
-            <span class="info-text">{{ failedTestCount }}</span>
+            <span class="info-text">{{ processFailCount }}</span>
           </div>
         </div>
 

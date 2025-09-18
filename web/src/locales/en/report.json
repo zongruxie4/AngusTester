@@ -1179,7 +1179,7 @@
             "project": "Project",
             "module": "Module",
             "tags": "Tags",
-            "workloadEvalMethod": "Workload Evaluation Method",
+            "workloadEvalMethod": "Workload Evaluation",
             "evalWorkload": "Estimated Workload",
             "actualWorkload": "Actual Workload",
             "processCount": "Process Count",
@@ -1347,7 +1347,7 @@
             "timePlan": "Time Plan",
             "creator": "Creator",
             "createTime": "Create Time",
-            "workloadEvalMethod": "Workload Evaluation Method",
+            "workloadEvalMethod": "Workload Evaluation",
             "reviewCase": "Review Cases"
           },
           "options": {
@@ -1506,7 +1506,7 @@
             "reviewer": "Reviewer",
             "reviewOpinion": "Review Opinion",
             "reviewTime": "Review Time",
-            "workloadEvalMethod": "Workload Evaluation Method",
+            "workloadEvalMethod": "Workload Evaluation",
             "estimatedWorkload": "Estimated Workload",
             "actualWorkload": "Actual Workload",
             "totalTestCount": "Total Test Count",

@@ -345,13 +345,13 @@ const confirmerDefaultOptions = computed(() => {
 <template>
   <Toggle>
     <template #title>
-      <div class="text-3">{{ t('task.detailInfo.personnel.title') }}</div>
+      <div class="text-3.5">{{ t('task.detailInfo.personnel.title') }}</div>
     </template>
 
     <template #default>
       <div class="text-3 leading-5 space-y-2.5 pt-2 pl-5.5">
         <div class="relative flex items-start">
-          <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
+          <div class="w-22 flex items-center whitespace-nowrap flex-shrink-0">
             <span>{{ t('task.detailInfo.personnel.fields.assignee') }}</span>
             <Colon class="w-1" />
           </div>
@@ -391,7 +391,7 @@ const confirmerDefaultOptions = computed(() => {
         </div>
 
         <div class="relative flex items-start">
-          <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
+          <div class="w-22 flex items-center whitespace-nowrap flex-shrink-0">
             <span>{{ t('task.detailInfo.personnel.fields.executor') }}</span>
             <Colon class="w-1" />
           </div>
@@ -400,7 +400,7 @@ const confirmerDefaultOptions = computed(() => {
         </div>
 
         <div class="relative flex items-start">
-          <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
+          <div class="w-22 flex items-center whitespace-nowrap flex-shrink-0">
             <span>{{ t('task.detailInfo.personnel.fields.confirmer') }}</span>
             <Colon class="w-1" />
           </div>
@@ -441,7 +441,7 @@ const confirmerDefaultOptions = computed(() => {
         </div>
 
         <div class="relative flex items-start">
-          <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
+          <div class="w-22 flex items-center whitespace-nowrap flex-shrink-0">
             <span>{{ t('task.detailInfo.personnel.fields.tester') }}</span>
             <Colon class="w-1" />
           </div>
@@ -482,7 +482,7 @@ const confirmerDefaultOptions = computed(() => {
         </div>
 
         <div class="relative flex items-start">
-          <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
+          <div class="w-22 flex items-center whitespace-nowrap flex-shrink-0">
             <span>{{ t('task.detailInfo.personnel.fields.creator') }}</span>
             <Colon class="w-1" />
           </div>
@@ -491,7 +491,7 @@ const confirmerDefaultOptions = computed(() => {
         </div>
 
         <div class="relative flex items-start">
-          <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
+          <div class="w-22 flex items-center whitespace-nowrap flex-shrink-0">
             <span>{{ t('task.detailInfo.personnel.fields.lastModifier') }}</span>
             <Colon class="w-1" />
           </div>

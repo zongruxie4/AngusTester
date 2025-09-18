@@ -110,7 +110,7 @@ const isContentLengthInvalid = () => {
 <template>
   <Toggle v-model:open="isDescriptionOpen">
     <template #title>
-      <div class="flex items-center text-3">
+      <div class="flex items-center text-3.5">
         <span>{{ t('task.detailInfo.description.title') }}</span>
         <template v-if="isDescriptionEditing">
           <Button

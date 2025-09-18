@@ -156,7 +156,7 @@ const maxFileSizeBytes = computed(() => {
 <template>
   <Toggle>
     <template #title>
-      <div class="text-3">{{ t('task.detailInfo.attachment.title') }}</div>
+      <div class="text-3.5">{{ t('task.detailInfo.attachment.title') }}</div>
     </template>
 
     <template #default>

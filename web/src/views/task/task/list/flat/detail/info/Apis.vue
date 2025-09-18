@@ -393,7 +393,6 @@ const onePassStatusText = computed(() => {
   if (totalTestCount.value <= 0) {
     return '--';
   }
-
   return failedTestCount.value === 0 ? t('task.detailInfo.apis.columns.yes') : t('task.detailInfo.apis.columns.no');
 });
 </script>
@@ -401,7 +400,7 @@ const onePassStatusText = computed(() => {
 <template>
   <Toggle>
     <template #title>
-      <div class="text-3">{{ t('task.detailInfo.apis.basicInfo') }}</div>
+      <div class="text-3.5">{{ t('task.detailInfo.apis.basicInfo') }}</div>
     </template>
 
     <template #default>

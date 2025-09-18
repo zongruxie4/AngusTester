@@ -34,6 +34,8 @@ const emit = defineEmits<{
 const APIBasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/flat/detail/info/Apis.vue'));
 const ScenarioBasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/flat/detail/info/Scenario.vue'));
 const BasicInfo = defineAsyncComponent(() => import('@/views/task/task/list/flat/detail/info/Basic.vue'));
+const WorkloadInfo = defineAsyncComponent(() => import('@/views/task/task/list/flat/detail/info/Workload.vue'));
+const ProcessTimesInfo = defineAsyncComponent(() => import('@/views/task/task/list/flat/detail/info/ProcessTimes.vue'));
 const Description = defineAsyncComponent(() => import('@/views/task/task/list/flat/detail/info/Description.vue'));
 const PersonnelInfo = defineAsyncComponent(() => import('@/views/task/task/list/flat/detail/info/Personnel.vue'));
 const DateInfo = defineAsyncComponent(() => import('@/views/task/task/list/flat/detail/info/Date.vue'));
@@ -97,6 +99,7 @@ const layoutClassName = computed(() => {
     <div class="flex-1 space-y-4">
       <APIBasicInfo
         v-if="currentTaskType === TaskType.API_TEST"
+        :id="currentTaskId"
         :dataSource="props.dataSource"
         :projectId="props.projectId"
         :userInfo="props.userInfo"
@@ -107,6 +110,7 @@ const layoutClassName = computed(() => {
 
       <ScenarioBasicInfo
         v-else-if="currentTaskType === TaskType.SCENARIO_TEST"
+        :id="currentTaskId"
         :dataSource="props.dataSource"
         :projectId="props.projectId"
         :userInfo="props.userInfo"
@@ -117,6 +121,27 @@ const layoutClassName = computed(() => {
 
       <BasicInfo
         v-else
+        :id="currentTaskId"
+        :dataSource="props.dataSource"
+        :projectId="props.projectId"
+        :userInfo="props.userInfo"
+        :appInfo="props.appInfo"
+        :taskId="currentTaskId"
+        @change="handleTaskDataChange"
+        @loadingChange="handleLoadingStateChange" />
+
+      <WorkloadInfo
+        :id="currentTaskId"
+        :dataSource="props.dataSource"
+        :projectId="props.projectId"
+        :userInfo="props.userInfo"
+        :appInfo="props.appInfo"
+        :taskId="currentTaskId"
+        @change="handleTaskDataChange"
+        @loadingChange="handleLoadingStateChange" />
+
+      <ProcessTimesInfo
+        :id="currentTaskId"
         :dataSource="props.dataSource"
         :projectId="props.projectId"
         :userInfo="props.userInfo"
@@ -126,6 +151,7 @@ const layoutClassName = computed(() => {
         @loadingChange="handleLoadingStateChange" />
 
       <Description
+        :id="currentTaskId"
         :dataSource="props.dataSource"
         :projectId="props.projectId"
         :userInfo="props.userInfo"
@@ -137,6 +163,7 @@ const layoutClassName = computed(() => {
 
     <div class="flex-shrink-0 w-75 space-y-4">
       <PersonnelInfo
+        :id="currentTaskId"
         :dataSource="props.dataSource"
         :projectId="props.projectId"
         :userInfo="props.userInfo"
@@ -146,6 +173,7 @@ const layoutClassName = computed(() => {
         @loadingChange="handleLoadingStateChange" />
 
       <DateInfo
+        :id="currentTaskId"
         :dataSource="props.dataSource"
         :projectId="props.projectId"
         :appInfo="props.appInfo"
@@ -154,6 +182,7 @@ const layoutClassName = computed(() => {
         @loadingChange="handleLoadingStateChange" />
 
       <AttachmentInfo
+        :id="currentTaskId"
         :dataSource="props.dataSource"
         :projectId="props.projectId"
         :userInfo="props.userInfo"

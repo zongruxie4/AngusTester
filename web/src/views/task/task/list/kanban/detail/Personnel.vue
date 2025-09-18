@@ -535,7 +535,7 @@ const handleTesterSelectionBlur = async () => {
 .info-row { display: flex; align-items: flex-start; min-height: auto; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
 
 /* Label styles */
-.info-label { flex-shrink: 0; width: 80px; display: flex; align-items: center; font-size: 12px; color: #686868; font-weight: 500; line-height: 1.4; }
+.info-label { flex-shrink: 0; width: 100px; display: flex; align-items: center; font-size: 12px; color: #686868; font-weight: 500; line-height: 1.4; }
 .info-label span { white-space: normal; word-break: break-word; line-height: 1.4; }
 
 /* Value area styles */
