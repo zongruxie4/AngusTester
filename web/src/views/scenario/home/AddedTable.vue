@@ -183,7 +183,7 @@ const getActionIcon = (actionKey: string | undefined) => {
             v-if="column.dataIndex === 'name'"
             class="link truncate"
             :title="record.name"
-            :to="`/scenario#scenario?id=${record.id}&name=${record.name}&plugin=${record.plugin}`">
+            :to="`/scenario#scenario?id=${record.id}&name=${record.name}&plugin=${record.plugin}&type=detail`">
             {{ record.name }}
           </RouterLink>
 
