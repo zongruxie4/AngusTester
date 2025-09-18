@@ -48,7 +48,8 @@
       "overdueCount": "逾期数",
       "oneTimePassedCount": "一次性通过数",
       "oneTimeTestPassedCount": "一次性测试通过数",
-      "defectCount": "缺陷数",
+      "validBugCount": "有效缺陷数",
+      "validBugRate": "有效缺陷率",
       "oneTimeReviewPassedCount": "一次性通过评审数",
       "taskCompletionRate": "任务完成率",
       "useCasePassRate": "用例通过率",
@@ -56,7 +57,6 @@
       "overdueRate": "逾期率",
       "oneTimePassRate": "一次性通过率",
       "oneTimeTestPassRate": "一次性测试通过率",
-      "defectRate": "缺陷率",
       "oneTimeReviewPassRate": "一次性评审通过率",
       "priority": {
         "highest": "最高",
@@ -75,11 +75,11 @@
         "story": "故事",
         "requirement": "需求",
         "task": "任务",
-        "defect": "缺陷",
+        "bug": "缺陷",
         "apiTest": "接口测试",
         "scenarioTest": "场景测试"
       },
-      "totalTaskCount": "总任务数",
+      "totalCount": "总数",
       "progress": "进度",
       "pending": "待处理",
       "inProgress": "进行中",
@@ -165,7 +165,7 @@
         "story": "故事",
         "requirement": "需求",
         "task": "任务",
-        "defect": "缺陷",
+        "bug": "缺陷",
         "apiTest": "接口测试",
         "scenarioTest": "场景测试"
       },
@@ -188,7 +188,7 @@
         "totalProgress": "总进度",
         "incomplete": "未完成",
         "completed": "已完成",
-        "totalTaskCount": "总任务数",
+        "totalCount": "总数",
         "totalUseCaseCount": "总用例数",
         "totalWorkload": "总工作量",
         "teamMember": "团队成员"
@@ -276,7 +276,7 @@
         "story": "故事",
         "requirement": "需求",
         "task": "任务",
-        "defect": "缺陷",
+        "bug": "缺陷",
         "apiTest": "接口测试",
         "scenarioTest": "场景测试"
       },

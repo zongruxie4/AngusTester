@@ -16,7 +16,7 @@
     "selectGroup": "Select group",
     "viewType": {
       "cto": "CTO",
-      "effectiveness": "Effectiveness Statistics",
+      "effectiveness": "Effectiveness",
       "dataAssets": "Data Assets"
     },
     "effectiveness": {
@@ -39,8 +39,8 @@
       "categoryStatistics": "Category Statistics",
       "reviewStatusDistribution": "Review Status Distribution",
       "burnDownChart": "Burn Down Chart",
-      "taskNumber": "Task Number",
-      "testNumber": "Test Number",
+      "taskNumber": "Task Count",
+      "testNumber": "Test Count",
       "targetCount": "Completed Count",
       "workloadNumber": "Workload",
       "ranking": "Ranking",
@@ -48,7 +48,8 @@
       "overdueCount": "Overdue Count",
       "oneTimePassedCount": "One-time Passed Count",
       "oneTimeTestPassedCount": "One-time Test Passed Count",
-      "defectCount": "Defect Count",
+      "validBugCount": "Valid Bugs",
+      "validBugRate": "Valid Bug Rate",
       "oneTimeReviewPassedCount": "One-time Review Passed Count",
       "taskCompletionRate": "Task Completion Rate",
       "useCasePassRate": "Use Case Pass Rate",
@@ -56,7 +57,6 @@
       "overdueRate": "Overdue Rate",
       "oneTimePassRate": "One-time Pass Rate",
       "oneTimeTestPassRate": "One-time Test Pass Rate",
-      "defectRate": "Defect Rate",
       "oneTimeReviewPassRate": "One-time Review Pass Rate",
       "priority": {
         "highest": "Highest",
@@ -75,19 +75,17 @@
         "story": "Story",
         "requirement": "Requirement",
         "task": "Task",
-        "defect": "Defect",
+        "bug": "Bug",
         "apiTest": "API Test",
         "scenarioTest": "Scenario Test"
       },
-      "totalTaskCount": "Total Task Count",
+      "totalCount": "Total",
       "progress": "Progress",
       "pending": "Pending",
       "inProgress": "In Progress",
       "confirming": "Confirming",
       "completed": "Completed",
       "canceled": "Canceled",
-
-
       "evalWorkload": "Estimated Workload",
       "actualWorkload": "Actual Workload",
       "savingWorkload": "Saving Workload",
@@ -167,7 +165,7 @@
         "story": "Story",
         "requirement": "Requirement",
         "task": "Task",
-        "defect": "Defect",
+        "bug": "Bug",
         "apiTest": "API Test",
         "scenarioTest": "Scenario Test"
       },
@@ -190,7 +188,7 @@
         "totalProgress": "Total Progress",
         "incomplete": "Incomplete",
         "completed": "Completed",
-        "totalTaskCount": "Total Task Count",
+        "totalCount": "Total",
         "totalUseCaseCount": "Total Use Case Count",
         "totalWorkload": "Total Workload",
         "teamMember": "Team Member"
@@ -277,7 +275,7 @@
         "story": "Story",
         "requirement": "Requirement",
         "task": "Task",
-        "defect": "Defect",
+        "bug": "Bug",
         "apiTest": "API Test",
         "scenarioTest": "Scenario Test"
       },

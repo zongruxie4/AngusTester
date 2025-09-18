@@ -82,7 +82,7 @@ export const createTaskTypeConfig = (): ChartConfig => {
             }
           },
           {
-            name: t('kanban.effectiveness.taskType.defect'),
+            name: t('kanban.effectiveness.taskType.bug'),
             value: 0,
             itemStyle: {
               color: 'rgba(245, 34, 45, 1)'

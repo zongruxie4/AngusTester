@@ -617,7 +617,7 @@ export function useChartConfigs () {
             itemStyle: { color: 'rgba(255, 165, 43, 1)' }
           },
           {
-            name: t('kanban.dataAssets.taskTypes.defect'),
+            name: t('kanban.dataAssets.taskTypes.bug'),
             value: 0,
             itemStyle: { color: 'rgba(245, 34, 45, 1)' }
           },

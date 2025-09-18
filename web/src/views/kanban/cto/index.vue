@@ -250,7 +250,7 @@ defineExpose({
             <div class="text-center">
               <div class="font-semibold text-5">{{ progressData.totalNum || 0 }}</div>
               <div>
-                {{ props.countType === 'task' ? t('kanban.cto.progress.totalTaskCount' ) : t('kanban.cto.progress.totalUseCaseCount') }}
+                {{ props.countType === 'task' ? t('kanban.cto.progress.totalCount' ) : t('kanban.cto.progress.totalUseCaseCount') }}
               </div>
             </div>
 
