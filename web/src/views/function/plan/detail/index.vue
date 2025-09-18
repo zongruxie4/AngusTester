@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Progress, TabPane, Tabs } from 'ant-design-vue';
-import { Colon, Icon, Image, notification, Spin, Table } from '@xcan-angus/vue-ui';
+import { Colon, Icon, Image, notification, Spin, Table, Grid } from '@xcan-angus/vue-ui';
 import { TESTER, toClipboard, download, appContext } from '@xcan-angus/infra';
 import { funcPlan } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
@@ -200,6 +200,22 @@ const columns = [
     ellipsis: true
   }
 ];
+
+const gridColumns= [
+  [
+    {dataIndex: 'name', label: t('functionPlan.planDetail.basicInfo.planName')},
+    {dataIndex: 'ownerName', label: t('functionPlan.planDetail.basicInfo.owner') },
+    {dataIndex: 'review', label: t('functionPlan.planDetail.basicInfo.isReview') },
+    {dataIndex: 'status', label: t('functionPlan.planDetail.basicInfo.status') },
+    {dataIndex: 'attachments', label: t('functionPlan.planDetail.basicInfo.attachments')}
+  ],
+  [
+    {dataIndex: 'time', label: t('functionPlan.planDetail.basicInfo.timePlan')},
+    {dataIndex: 'casePrefix', label: t('functionPlan.planDetail.basicInfo.casePrefix')},
+    {dataIndex: 'workloadAssessment', label: t('functionPlan.planDetail.basicInfo.workloadAssessment')},
+    {dataIndex: 'progress', label: t('functionPlan.planDetail.basicInfo.progress')}
+  ]
+]
 </script>
 
 <template>
@@ -269,119 +285,45 @@ const columns = [
 
     <div class="max-w-250 mb-2">
       <div class="text-theme-title mb-2">{{ t('functionPlan.planDetail.basicInfo.title') }}</div>
-      <div class="space-y-2.5">
-        <div class="flex items-start space-x-5">
-          <div class="w-1/2 flex items-start">
-            <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('functionPlan.planDetail.basicInfo.planName') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <div class="whitespace-pre-wrap break-words break-all">{{ dataSource?.name }}</div>
+      <Grid
+        :columns="gridColumns"
+        :dataSource="dataSource">
+        <template #time>
+          <div class="text-3 whitespace-nowrap">
+            <span>{{ dataSource?.startDate }}</span>
+            <span class="mx-2">{{ t('functionPlan.planDetail.basicInfo.to') }}</span>
+            <span>{{ dataSource?.deadlineDate }}</span>
           </div>
-
-          <div class="w-1/2 flex items-start">
-            <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('functionPlan.planDetail.basicInfo.timePlan') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <div class="text-3 whitespace-nowrap">
-              <span>{{ dataSource?.startDate }}</span>
-              <span class="mx-2">{{ t('functionPlan.planDetail.basicInfo.to') }}</span>
-              <span>{{ dataSource?.deadlineDate }}</span>
-            </div>
+        </template>
+        <template #review>
+          {{ dataSource?.review?t('status.yes'):t('status.no') }}
+        </template>
+        <template #workloadAssessment>
+          {{ dataSource?.evalWorkloadMethod?.message }}
+        </template>
+        <template #status>
+          <div
+            class="text-3 leading-4 flex items-center flex-none whitespace-nowrap mr-3.5">
+            <div class="h-1.5 w-1.5 rounded-full mr-1" :class="dataSource?.status?.value"></div>
+            <div>{{ dataSource?.status?.message }}</div>
           </div>
-        </div>
-
-        <div class="flex items-start space-x-5">
-          <div class="w-1/2 flex items-start">
-            <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('functionPlan.planDetail.basicInfo.owner') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <div class="whitespace-pre-wrap break-words break-all">{{ dataSource?.ownerName }}</div>
+        </template>
+        <template #progress>
+          <Progress :percent="completedRate" style="width:150px;" />
+        </template>
+        <template #attachments>
+          <div class="space-y-1 truncate">
+            <a
+              v-for="item in attachments"
+              :key="item.id"
+              class="block w-auto truncate"
+              :download="item.name"
+              :href="item.url">
+              {{ item.name }}
+            </a>
           </div>
-
-          <div class="w-1/2 flex items-start">
-            <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('functionPlan.planDetail.basicInfo.casePrefix') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <div class="whitespace-pre-wrap break-words break-all">{{ dataSource?.casePrefix }}</div>
-          </div>
-        </div>
-
-        <div class="flex items-start space-x-5">
-          <div class="w-1/2 flex items-center">
-            <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('functionPlan.planDetail.basicInfo.isReview') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <div class="whitespace-pre-wrap break-words break-all">
-              {{ dataSource?.review?t('status.yes'):t('status.no') }}
-            </div>
-          </div>
-
-          <div class="w-1/2 flex items-center">
-            <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('functionPlan.planDetail.basicInfo.workloadAssessment') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <div class="whitespace-pre-wrap break-words break-all">
-              {{ dataSource?.evalWorkloadMethod?.message }}
-            </div>
-          </div>
-        </div>
-
-        <div class="flex items-start space-x-5">
-          <div class="w-1/2 flex items-center">
-            <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('functionPlan.planDetail.basicInfo.status') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <div
-              class="text-3 leading-4 flex items-center flex-none whitespace-nowrap mr-3.5">
-              <div class="h-1.5 w-1.5 rounded-full mr-1" :class="dataSource?.status?.value"></div>
-              <div>{{ dataSource?.status?.message }}</div>
-            </div>
-          </div>
-
-          <div class="w-1/2 flex items-center">
-            <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('functionPlan.planDetail.basicInfo.progress') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <Progress :percent="completedRate" style="width:150px;" />
-          </div>
-        </div>
-
-        <div class="flex items-start">
-          <div style="width:calc(50% - 10px);" class="flex items-start">
-            <div class="w-15.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('functionPlan.planDetail.basicInfo.attachments') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <div class="space-y-1 truncate">
-              <a
-                v-for="item in attachments"
-                :key="item.id"
-                class="block w-auto truncate"
-                :download="item.name"
-                :href="item.url">
-                {{ item.name }}
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+        </template>
+      </Grid>
     </div>
 
     <Tabs size="small" class="max-w-250">

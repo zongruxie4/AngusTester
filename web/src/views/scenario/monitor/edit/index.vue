@@ -199,6 +199,7 @@ onMounted(() => {
         size="small"
         class="flex items-center space-x-1"
         @click="handleCancel">
+        <Icon icon="icon-zhongzhi2" class="text-3.5" />
         <span>{{ t('scenarioMonitor.edit.cancel') }}</span>
       </Button>
     </div>

@@ -719,10 +719,13 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
 
               <div class="px-3.5 flex justify-between items-start text-3 my-2.5 relative">
                 <div
-                  :title="item.otherInformation"
+                  :title="item.otherInformationText"
                   class="truncate mr-8"
                   style="max-width: 70%;">
-                  <RichText :value="item.otherInformation" :emptyText="t('functionPlan.list.noDescription')" />
+                  <RichText
+                    v-model:textValue="item.otherInformationText"
+                    :value="item.otherInformation"
+                    :emptyText="t('functionPlan.list.noDescription')" />
                 </div>
                 <div class="flex space-x-3 items-center justify-between h-4 leading-5">
                   <RouterLink class="flex items-center space-x-1" :to="`/function#plans?id=${item.id}&type=edit`">
