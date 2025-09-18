@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { AsyncComponent, Colon, DatePicker, Icon, IconRefresh, Image, Select } from '@xcan-angus/vue-ui';
 import { Radio, RadioGroup, TabPane, Tabs } from 'ant-design-vue';
 import { TESTER } from '@xcan-angus/infra';
-import DefaultAvatar from './images/default.png';
+import DefaultAvatar from '../../assets/images/default.png';
 import type { CreatorObjectType } from './types';
 import { useKanbanFilters } from './composables/useKanbanFilters';
 import { useKanbanView } from './composables/useKanbanView';
@@ -18,7 +18,7 @@ const proTypeShowMap = inject<Ref<{[key: string]: boolean}>>('proTypeShowMap', r
 
 // async components
 const SelectCreatorModal = defineAsyncComponent(() => import('./SelectCreatorModal.vue'));
-const DataView = defineAsyncComponent(() => import('@/views/kanban/assets/index.vue'));
+const DataView = defineAsyncComponent(() => import('@/views/kanban/dataAssets/index.vue'));
 const EffectivenessView = defineAsyncComponent(() => import('@/views/kanban/effectiveness/index.vue'));
 const CtoView = defineAsyncComponent(() => import('@/views/kanban/cto/index.vue'));
 
