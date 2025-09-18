@@ -2,7 +2,7 @@
 import { inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Checkbox, Form, FormItem, RadioButton, RadioGroup, Textarea } from 'ant-design-vue';
-import { DatePicker, Input, notification, Select } from '@xcan-angus/vue-ui';
+import { DatePicker, Input, notification, Select, Icon } from '@xcan-angus/vue-ui';
 import { TESTER, GM, enumUtils, EnumMessage } from '@xcan-angus/infra';
 import { AnalysisCaseTemplateDesc, AnalysisCaseObject, AnalysisTimeRange } from '@/enums/enums';
 import { analysis } from '@/api/tester';
@@ -204,9 +204,11 @@ onMounted(async () => {
         size="small"
         :loading="saving"
         @click="save">
+        <Icon icon="icon-dangqianxuanzhong" class="text-3.5 mr-1" />
         {{ t('functionAnalysis.editForm.save') }}
       </Button>
       <Button size="small" @click="cancel">
+        <Icon icon="icon-zhongzhi2" class="text-3.5 mr-1" />
         {{ t('functionAnalysis.editForm.cancel') }}
       </Button>
     </div>
