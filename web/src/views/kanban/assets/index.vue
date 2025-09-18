@@ -1384,6 +1384,67 @@ const resizeRightEchart = () => {
 };
 
 const shouldNotify = ref(false);
+
+
+const updateIncreasEcharts = () => {
+  const data = growthTrendData.value;
+  const keys = Object.keys(data);
+  if (keys.length) {
+    increasEmpty.value = false;
+    const xData = [];
+    keys.forEach(key => {
+      data[key].forEach(i => {
+        if (!xData.includes(i.timeSeries)) {
+          xData.push(i.timeSeries);
+        }
+      });
+    });
+    xData.sort((a, b) => {
+      return a > b ? 1 : a < b ? -1 : 0;
+    });
+    increaseEchartConfig.series = keys.map((key, idx) => {
+      return {
+        name: targetDataCategory[key],
+        data: xData.map(i => {
+          const target = data[key].find(item => item.timeSeries === i);
+          if (target) {
+            return target.value;
+          } else {
+
+          }
+        }),
+        itemStyle: {
+          color: new eCharts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 1, color: `rgba(${chartSeriesColorConfig[idx]}, 0.1)` },
+            { offset: 0, color: `rgba(${chartSeriesColorConfig[idx]}, 1)` }
+          ])
+        },
+        type: 'line',
+        smooth: true,
+        connectNulls: true,
+        areaStyle: {}
+      };
+    });
+    increaseEchartConfig.xAxis.data = xData;
+  } else {
+    increaseEchartConfig.xAxis.data = [];
+    increaseEchartConfig.series = [];
+    increasEmpty.value = true;
+  }
+
+  if (increaseEchartConfig.xAxis.data.length === 0) {
+    if (props.createdDateEnd && props.createdDateStart) {
+      increaseEchartConfig.xAxis.data = getDateArrWithTime(props.createdDateStart, props.createdDateEnd);
+    } else {
+      increaseEchartConfig.xAxis.data = getDateArr();
+    }
+    if (increaseEchartConfig.series.length) {
+      increaseEchartConfig.series[0].data = Array.from(new Array(increaseEchartConfig.xAxis.data.length)).fill(0);
+    }
+  }
+  increasEcharts.setOption(increaseEchartConfig, true);
+};
+
 onMounted(async () => {
   await loadEnums();
   watch(() => proTypeShowMap.value.showTask, () => {
@@ -1393,7 +1454,7 @@ onMounted(async () => {
   }, {
     immediate: true
   });
-  watch(() => targetType.value, () => {
+  watch(() => targetType.value, async () => {
     if (props.projectId) {
       loadGrowthTrendData(targetType.value);
     }
@@ -1406,13 +1467,13 @@ onMounted(async () => {
     deep: true
   });
 
-  watch([() => props.createdDateEnd, () => props.createdDateStart, () => props.creatorObjectId, () => props.creatorObjectType, () => props.projectId], () => {
+  watch([() => props.createdDateEnd, () => props.createdDateStart, () => props.creatorObjectId, () => props.creatorObjectType, () => props.projectId], async () => {
     if (!props.onShow && props.projectId) {
       shouldNotify.value = true;
       return;
     }
     if (props.projectId) {
-      loadGrowthTrendData(targetType.value);
+      await loadGrowthTrendData(targetType.value);
       loadRankData();
       loadCase();
       loadApis();
@@ -1448,6 +1509,11 @@ onMounted(async () => {
   scenairoPieCharts.setOption(scenairoPieChartsConfig);
 
   initChart();
+
+
+  watch(() => growthTrendData.value, () => {
+    updateIncreasEcharts();
+  })
 
   window.addEventListener('resize', handleWindowResize);
   erd.listenTo(rightWrapRef.value, resizeRightEchart);
@@ -1491,6 +1557,8 @@ onBeforeUnmount(() => {
   erd.removeListener(rightWrapRef.value, resizeRightEchart);
 });
 
+
+
 // const refresh = () => {
 //   if (!props.projectId) {
 //     return;
@@ -1517,7 +1585,8 @@ defineExpose({
   <div class="flex space-x-2 mt-2 text-3">
     <div class="py-2 border rounded flex-1 min-w-0">
       <div class="px-2">
-        {{ t('kanban.dataAssets.growthTrend') }}：<SelectEnum
+        {{ t('kanban.dataAssets.growthTrend') }}：
+        <SelectEnum
           v-model:value="targetType"
           :lazy="false"
           :excludes="(opt) => opt.value === 'TASK' && !proTypeShowMap.showTask"
