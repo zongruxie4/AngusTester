@@ -3,9 +3,7 @@ import { ChartConfig } from '../types';
 import noData from '../Image/nodata.png';
 
 /**
- * <p>
  * Creates task type chart configuration
- * </p>
  */
 export const createTaskTypeConfig = (): ChartConfig => {
   const { t } = useI18n();
@@ -78,7 +76,7 @@ export const createTaskTypeConfig = (): ChartConfig => {
             name: t('kanban.effectiveness.taskType.task'),
             value: 0,
             itemStyle: {
-              color: 'rgb(68,93,179)'
+              color: 'rgba(45, 142, 255, 1)'
             }
           },
           {
@@ -109,9 +107,7 @@ export const createTaskTypeConfig = (): ChartConfig => {
 };
 
 /**
- * <p>
  * Creates burn down chart configuration
- * </p>
  */
 export const createBurnDownConfig = (): ChartConfig => {
   const { t } = useI18n();
@@ -162,9 +158,7 @@ export const createBurnDownConfig = (): ChartConfig => {
 };
 
 /**
- * <p>
  * Creates base bar chart configuration with no data image
- * </p>
  */
 const createBaseBarConfig = (): ChartConfig => ({
   graphic: {
@@ -213,9 +207,7 @@ const createBaseBarConfig = (): ChartConfig => ({
 });
 
 /**
- * <p>
  * Creates target count chart configuration
- * </p>
  */
 export const createTargetCountConfig = (): ChartConfig => {
   const { t } = useI18n();
@@ -225,7 +217,7 @@ export const createTargetCountConfig = (): ChartConfig => {
       name: t('kanban.effectiveness.total'),
       type: 'bar',
       itemStyle: {
-        color: 'rgb(68,93,179)'
+        color: 'rgba(45, 142, 255, 1)'
       },
       data: [],
       barMaxWidth: '16',
@@ -248,9 +240,7 @@ export const createTargetCountConfig = (): ChartConfig => {
 };
 
 /**
- * <p>
  * Creates target rate chart configuration
- * </p>
  */
 export const createTargetRateConfig = (): ChartConfig => {
   const { t } = useI18n();
@@ -262,7 +252,7 @@ export const createTargetRateConfig = (): ChartConfig => {
       name: t('kanban.effectiveness.rate'),
       type: 'bar',
       itemStyle: {
-        color: 'rgb(68,93,179)'
+        color: 'rgba(45, 142, 255, 1)'
       },
       data: [],
       barMaxWidth: '16'
@@ -272,9 +262,7 @@ export const createTargetRateConfig = (): ChartConfig => {
 };
 
 /**
- * <p>
  * Creates workload chart configuration
- * </p>
  */
 export const createWorkloadConfig = (): ChartConfig => {
   const { t } = useI18n();
@@ -288,7 +276,7 @@ export const createWorkloadConfig = (): ChartConfig => {
       name: t('kanban.effectiveness.total'),
       type: 'bar',
       itemStyle: {
-        color: 'rgb(68,93,179)'
+        color: 'rgba(45, 142, 255, 1)'
       },
       data: [],
       barMaxWidth: '16',
@@ -311,9 +299,7 @@ export const createWorkloadConfig = (): ChartConfig => {
 };
 
 /**
- * <p>
  * Creates workload rate chart configuration
- * </p>
  */
 export const createWorkloadRateConfig = (): ChartConfig => {
   const { t } = useI18n();
@@ -334,9 +320,7 @@ export const createWorkloadRateConfig = (): ChartConfig => {
 };
 
 /**
- * <p>
  * Creates overdue chart configuration
- * </p>
  */
 export const createOverdueConfig = (): ChartConfig => {
   const { t } = useI18n();
@@ -350,7 +334,7 @@ export const createOverdueConfig = (): ChartConfig => {
       name: t('kanban.effectiveness.total'),
       type: 'bar',
       itemStyle: {
-        color: 'rgb(68,93,179)'
+        color: 'rgba(45, 142, 255, 1)'
       },
       data: [],
       barMaxWidth: '16',
@@ -373,9 +357,7 @@ export const createOverdueConfig = (): ChartConfig => {
 };
 
 /**
- * <p>
  * Creates overdue rate chart configuration
- * </p>
  */
 export const createOverdueRateConfig = (): ChartConfig => {
   const { t } = useI18n();
@@ -397,9 +379,7 @@ export const createOverdueRateConfig = (): ChartConfig => {
 };
 
 /**
- * <p>
  * Creates one time passed test chart configuration
- * </p>
  */
 export const createOneTimePassedTestConfig = (): ChartConfig => {
   const { t } = useI18n();
@@ -413,7 +393,7 @@ export const createOneTimePassedTestConfig = (): ChartConfig => {
       name: t('kanban.effectiveness.total'),
       type: 'bar',
       itemStyle: {
-        color: 'rgb(68,93,179)'
+        color: 'rgba(45, 142, 255, 1)'
       },
       data: [],
       barMaxWidth: '16',
@@ -436,9 +416,7 @@ export const createOneTimePassedTestConfig = (): ChartConfig => {
 };
 
 /**
- * <p>
  * Creates one time passed test rate chart configuration
- * </p>
  */
 export const createOneTimePassedTestRateConfig = (): ChartConfig => {
   const { t } = useI18n();
@@ -460,9 +438,7 @@ export const createOneTimePassedTestRateConfig = (): ChartConfig => {
 };
 
 /**
- * <p>
  * Creates one time unpassed test chart configuration
- * </p>
  */
 export const createOneTimeUnpassedTestConfig = (): ChartConfig => {
   const { t } = useI18n();
@@ -476,7 +452,7 @@ export const createOneTimeUnpassedTestConfig = (): ChartConfig => {
       name: t('kanban.effectiveness.total'),
       type: 'bar',
       itemStyle: {
-        color: 'rgb(68,93,179)'
+        color: 'rgba(45, 142, 255, 1)'
       },
       data: [],
       barMaxWidth: '16',
@@ -499,9 +475,7 @@ export const createOneTimeUnpassedTestConfig = (): ChartConfig => {
 };
 
 /**
- * <p>
  * Creates one time unpassed test rate chart configuration
- * </p>
  */
 export const createOneTimeUnpassedTestRateConfig = (): ChartConfig => {
   const { t } = useI18n();

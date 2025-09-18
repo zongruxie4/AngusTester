@@ -14,9 +14,7 @@ import {
 } from '../types';
 
 /**
- * <p>
  * Data assets data management composable
- * </p>
  * <p>
  * Manages all data fetching and state for the data assets dashboard
  * </p>
@@ -69,9 +67,7 @@ export function useDataAssetsData (props: DataAssetsProps) {
   });
 
   /**
-   * <p>
    * Loads ranking data from API
-   * </p>
    * <p>
    * Fetches user contribution ranking data and merges with user information
    * </p>
@@ -91,9 +87,7 @@ export function useDataAssetsData (props: DataAssetsProps) {
   };
 
   /**
-   * <p>
    * Loads growth trend data from API
-   * </p>
    * <p>
    * Fetches growth trend data for the specified target type
    * </p>
@@ -109,14 +103,11 @@ export function useDataAssetsData (props: DataAssetsProps) {
     if (error) {
       return;
     }
-
     growthTrendData.value = data;
   };
 
   /**
-   * <p>
    * Loads case-related data from API
-   * </p>
    * <p>
    * Fetches case statistics, test results, review status, and plan data
    * </p>
@@ -126,14 +117,11 @@ export function useDataAssetsData (props: DataAssetsProps) {
     if (error) {
       return;
     }
-
     caseData.value = data;
   };
 
   /**
-   * <p>
    * Loads API-related data from API
-   * </p>
    * <p>
    * Fetches API statistics by HTTP method and status
    * </p>
@@ -143,14 +131,11 @@ export function useDataAssetsData (props: DataAssetsProps) {
     if (error) {
       return;
     }
-
     apiData.value = data;
   };
 
   /**
-   * <p>
    * Loads task and sprint data from API
-   * </p>
    * <p>
    * Fetches task statistics by type and status, sprint statistics by status
    * </p>
@@ -160,14 +145,11 @@ export function useDataAssetsData (props: DataAssetsProps) {
     if (error) {
       return;
     }
-
     taskData.value = data;
   };
 
   /**
-   * <p>
    * Loads scenario data from API
-   * </p>
    * <p>
    * Fetches scenario statistics by script type
    * </p>
@@ -177,14 +159,11 @@ export function useDataAssetsData (props: DataAssetsProps) {
     if (error) {
       return;
     }
-
     scenarioData.value = data;
   };
 
   /**
-   * <p>
    * Loads script data from API
-   * </p>
    * <p>
    * Fetches script statistics by plugin name
    * </p>
@@ -194,14 +173,11 @@ export function useDataAssetsData (props: DataAssetsProps) {
     if (error) {
       return;
     }
-
     scriptData.value = data;
   };
 
   /**
-   * <p>
    * Loads mock data from API
-   * </p>
    * <p>
    * Fetches mock API, service, response, and pushback counts
    * </p>
@@ -220,9 +196,7 @@ export function useDataAssetsData (props: DataAssetsProps) {
   };
 
   /**
-   * <p>
    * Loads data assets data from API
-   * </p>
    * <p>
    * Fetches dataset, datasource, file, and variable counts
    * </p>
@@ -241,9 +215,7 @@ export function useDataAssetsData (props: DataAssetsProps) {
   };
 
   /**
-   * <p>
    * Loads all data assets data
-   * </p>
    * <p>
    * Calls all data loading methods to refresh the dashboard
    * </p>
@@ -263,9 +235,7 @@ export function useDataAssetsData (props: DataAssetsProps) {
   };
 
   /**
-   * <p>
    * Refreshes all data
-   * </p>
    * <p>
    * Only loads data if projectId is available
    * </p>

@@ -23,9 +23,7 @@ import {
 } from './useChartConfigs';
 
 /**
- * <p>
  * Chart management composable
- * </p>
  *
  * @returns Object containing chart instances and management methods
  */
@@ -126,9 +124,7 @@ export function useChartManagement () {
   const reviewStatusConfig = ref<ChartConfig>(createReviewStatusConfig());
 
   /**
-   * <p>
    * Initializes all charts with their configurations
-   * </p>
    *
    * @param chartRefs - Object containing DOM references for chart containers
    */
@@ -273,9 +269,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Resizes all charts to fit their containers
-   * </p>
    */
   const resizeAllCharts = () => {
     const charts = [
@@ -312,9 +306,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Resizes charts based on count type
-   * </p>
    *
    * @param countType - Type of items being displayed
    */
@@ -333,9 +325,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Updates chart data and refreshes visualizations
-   * </p>
    *
    * @param data - Data object containing all chart data
    * @param countType - Type of items being displayed
@@ -550,9 +540,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Updates recent date charts based on selected time period
-   * </p>
    *
    * @param recentDate - Selected recent date period
    * @param recentDeliveryData - Recent delivery data for the period

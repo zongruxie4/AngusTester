@@ -18,9 +18,7 @@ import {
 } from '../types';
 
 /**
- * <p>
  * CTO data management composable
- * </p>
  *
  * @param props - Component props containing filter parameters
  * @returns Object containing reactive data and methods
@@ -69,9 +67,7 @@ export function useCtoData (props: CtoProps) {
   const totalReviewStatusData = ref<TotalReviewStatusCount>({} as TotalReviewStatusCount);
 
   /**
-   * <p>
    * Computed parameters for API calls
-   * </p>
    * <p>
    * Adjusts planId based on countType - uses sprintId for tasks and planId for use cases
    * </p>
@@ -91,9 +87,7 @@ export function useCtoData (props: CtoProps) {
   });
 
   /**
-   * <p>
    * Loads CTO dashboard data from API
-   * </p>
    * <p>
    * Fetches data based on countType and updates all reactive data properties
    * </p>
@@ -202,9 +196,7 @@ export function useCtoData (props: CtoProps) {
   };
 
   /**
-   * <p>
    * Resets all data to initial state
-   * </p>
    */
   const resetData = () => {
     memberNum.value = 0;

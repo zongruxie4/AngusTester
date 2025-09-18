@@ -126,7 +126,7 @@ export const createRecentCompletionRateConfig = (): ChartConfig => {
     {
       name: t('kanban.cto.recentMetrics.nonRecentCompletionCount'),
       value: 0,
-      itemStyle: { color: 'rgb(68,93,179)' }
+      itemStyle: { color: 'rgba(45, 142, 255, 1)' }
     }
   ];
   return config;
@@ -149,7 +149,7 @@ export const createRecentOverdueRateConfig = (): ChartConfig => {
     {
       name: t('kanban.cto.recentMetrics.nonRecentOverdueRate'),
       value: 0,
-      itemStyle: { color: 'rgb(68,93,179)' }
+      itemStyle: { color: 'rgba(45, 142, 255, 1)' }
     }
   ];
   return config;
@@ -172,7 +172,7 @@ export const createRecentCompletedWorkloadConfig = (): ChartConfig => {
     {
       name: t('kanban.cto.recentMetrics.nonRecentCompletionAmount'),
       value: 0,
-      itemStyle: { color: 'rgb(68,93,179)' }
+      itemStyle: { color: 'rgba(45, 142, 255, 1)' }
     }
   ];
   return config;
@@ -195,7 +195,7 @@ export const createRecentSavingRateConfig = (): ChartConfig => {
     {
       name: t('kanban.cto.recentMetrics.nonRecentSavingAmount'),
       value: 0,
-      itemStyle: { color: 'rgb(68,93,179)' }
+      itemStyle: { color: 'rgba(45, 142, 255, 1)' }
     }
   ];
   return config;
@@ -218,7 +218,7 @@ export const createBacklogTaskConfig = (): ChartConfig => {
     {
       name: t('kanban.cto.backlog.completionCount'),
       value: 0,
-      itemStyle: { color: 'rgb(68,93,179)' }
+      itemStyle: { color: 'rgba(45, 142, 255, 1)' }
     }
   ];
   return config;
@@ -241,7 +241,7 @@ export const createBacklogWorkloadConfig = (): ChartConfig => {
     {
       name: t('kanban.cto.backlog.completionWorkload'),
       value: 0,
-      itemStyle: { color: 'rgb(68,93,179)' }
+      itemStyle: { color: 'rgba(45, 142, 255, 1)' }
     }
   ];
   return config;
@@ -283,7 +283,7 @@ export const createOverdueAssessmentConfig = (): ChartConfig => {
     {
       name: t('kanban.cto.overdue.nonOverdueCount'),
       value: 0,
-      itemStyle: { color: 'rgb(68,93,179)' }
+      itemStyle: { color: 'rgba(45, 142, 255, 1)' }
     }
   ];
   return config;
@@ -306,7 +306,7 @@ export const createUnplannedWorkConfig = (): ChartConfig => {
     {
       name: t('kanban.cto.unplanned.nonUnplannedCount'),
       value: 0,
-      itemStyle: { color: 'rgb(68,93,179)' }
+      itemStyle: { color: 'rgba(45, 142, 255, 1)' }
     }
   ];
   return config;
@@ -329,7 +329,7 @@ export const createUnplannedWorkloadConfig = (): ChartConfig => {
     {
       name: t('kanban.cto.unplanned.nonUnplannedAmount'),
       value: 0,
-      itemStyle: { color: 'rgb(68,93,179)' }
+      itemStyle: { color: 'rgba(45, 142, 255, 1)' }
     }
   ];
   return config;
@@ -352,7 +352,7 @@ export const createFailureAssessmentConfig = (title: string, color: string): Cha
     {
       name: `Non-${title}`,
       value: 0,
-      itemStyle: { color: 'rgb(68,93,179)' }
+      itemStyle: { color: 'rgba(45, 142, 255, 1)' }
     }
   ];
   return config;
@@ -416,7 +416,7 @@ export const createTaskTypeConfig = (): ChartConfig => ({
         {
           name: t('kanban.cto.taskTypes.task'),
           value: 0,
-          itemStyle: { color: 'rgb(68,93,179)' }
+          itemStyle: { color: 'rgba(45, 142, 255, 1)' }
         },
         {
           name: t('kanban.cto.taskTypes.bug'),
@@ -547,7 +547,7 @@ export const createLeadTimeConfig = (): ChartConfig => ({
   series: [
     {
       itemStyle: {
-        color: 'rgb(68,93,179)',
+        color: 'rgba(45, 142, 255, 1)',
         borderRadius: [5, 5, 0, 0]
       },
       data: [0, 0, 0, 0, 0, 0, 0],
@@ -631,7 +631,7 @@ export const createTestStatusConfig = (): ChartConfig => ({
         {
           name: t('kanban.cto.testStatus.pendingTest'),
           value: 0,
-          itemStyle: { color: 'rgb(68,93,179)' }
+          itemStyle: { color: 'rgba(45, 142, 255, 1)' }
         },
         {
           name: t('kanban.cto.testStatus.testPassed'),
@@ -651,7 +651,7 @@ export const createTestStatusConfig = (): ChartConfig => ({
         {
           name: t('kanban.cto.testStatus.cancelled'),
           value: 0,
-          itemStyle: { color: 'rgb(68,93,179)' }
+          itemStyle: { color: 'rgba(45, 142, 255, 1)' }
         }
       ]
     }

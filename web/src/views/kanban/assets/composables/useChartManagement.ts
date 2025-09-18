@@ -4,12 +4,7 @@ import { ApiData, CaseData, ChartConfig, GrowthTrendData, ScenarioData, ScriptDa
 import { getDateArr, getDateArrWithTime } from '@/utils/utils';
 
 /**
- * <p>
  * Chart management composable for data assets dashboard
- * </p>
- * <p>
- * Manages ECharts instances, chart updates, and responsive behavior
- * </p>
  *
  * @returns Object containing chart instances and management methods
  */
@@ -74,9 +69,7 @@ export function useChartManagement () {
   const scriptRef = ref<HTMLElement>();
 
   /**
-   * <p>
    * Sets chart DOM references
-   * </p>
    * <p>
    * Updates chart DOM references for chart initialization and management
    * </p>
@@ -98,9 +91,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Initializes all charts with their configurations
-   * </p>
    * <p>
    * Creates ECharts instances for all chart containers
    * </p>
@@ -163,9 +154,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Updates growth trend chart with new data
-   * </p>
    * <p>
    * Processes growth trend data and updates chart series and axis
    * </p>
@@ -247,9 +236,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Updates case charts with new data
-   * </p>
    * <p>
    * Updates both case bar chart and case pie chart with case statistics
    * </p>
@@ -325,9 +312,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Updates API charts with new data
-   * </p>
    * <p>
    * Updates both API bar chart and API pie chart with API statistics
    * </p>
@@ -388,9 +373,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Updates task charts with new data
-   * </p>
    * <p>
    * Updates both task bar chart and task pie chart with task statistics
    * </p>
@@ -478,9 +461,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Updates scenario chart with new data
-   * </p>
    * <p>
    * Updates scenario pie chart with scenario statistics
    * </p>
@@ -516,9 +497,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Updates script chart with new data
-   * </p>
    * <p>
    * Updates script bar chart with script statistics
    * </p>
@@ -589,9 +568,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Resizes all charts for responsive behavior
-   * </p>
    * <p>
    * Calls resize method on all chart instances
    * </p>
@@ -619,9 +596,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Handles right side chart resizing for responsive behavior
-   * </p>
    * <p>
    * Adjusts chart configurations based on container width
    * </p>

@@ -10,9 +10,7 @@ import {
 } from '../types';
 
 /**
- * <p>
  * Effectiveness data management composable
- * </p>
  *
  * @param props - Component props containing filter parameters
  * @returns Object containing reactive data and methods
@@ -40,9 +38,7 @@ export function useEffectivenessData (props: EffectivenessProps) {
   const testers = ref<Record<string, AssigneeInfo>>({});
 
   /**
-   * <p>
    * Computed parameters for API calls
-   * </p>
    * <p>
    * Adjusts planId based on countType - uses sprintId for tasks and planId for use cases
    * </p>
@@ -62,9 +58,7 @@ export function useEffectivenessData (props: EffectivenessProps) {
   });
 
   /**
-   * <p>
    * Loads effectiveness dashboard data from API
-   * </p>
    * <p>
    * Fetches data based on countType and updates all reactive data properties
    * </p>
@@ -129,9 +123,7 @@ export function useEffectivenessData (props: EffectivenessProps) {
   };
 
   /**
-   * <p>
    * Resets all data to initial state
-   * </p>
    */
   const resetData = () => {
     overviewData.value = {} as OverviewData;

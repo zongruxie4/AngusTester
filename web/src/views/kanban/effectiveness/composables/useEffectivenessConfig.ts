@@ -4,9 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { OverviewConfig, OverviewConfigItem } from '../types';
 
 /**
- * <p>
  * Effectiveness configuration management composable
- * </p>
  * <p>
  * Provides configuration data for overview sections and chart displays
  * </p>
@@ -17,9 +15,7 @@ import { OverviewConfig, OverviewConfigItem } from '../types';
 export function useEffectivenessConfig (countType: 'task' | 'useCase') {
   const { t } = useI18n();
   /**
-   * <p>
    * Task overview configuration for effectiveness dashboard
-   * </p>
    * <p>
    * Defines the layout and data mapping for task-related overview metrics
    * </p>
@@ -108,9 +104,7 @@ export function useEffectivenessConfig (countType: 'task' | 'useCase') {
   ];
 
   /**
-   * <p>
    * Use case overview configuration for effectiveness dashboard
-   * </p>
    * <p>
    * Defines the layout and data mapping for use case-related overview metrics
    * </p>
@@ -201,9 +195,7 @@ export function useEffectivenessConfig (countType: 'task' | 'useCase') {
   ];
 
   /**
-   * <p>
    * Computed current overview configuration based on count type
-   * </p>
    * <p>
    * Returns task or use case configuration based on the current countType
    * </p>
@@ -223,9 +215,7 @@ export function useEffectivenessConfig (countType: 'task' | 'useCase') {
 }
 
 /**
- * <p>
  * Resolve CSS class for overview value text color by semantic and value
- * </p>
  */
 export function getOverviewValueColorClass (item: OverviewConfigItem | any, rawValue: unknown): string {
   const value = typeof rawValue === 'number' ? rawValue : Number(rawValue || 0);

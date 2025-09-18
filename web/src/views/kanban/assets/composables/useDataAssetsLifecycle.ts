@@ -4,9 +4,7 @@ import elementResizeDetector from 'element-resize-detector';
 import { DataAssetsProps, ProTypeShowMap } from '../types';
 
 /**
- * <p>
  * Data assets lifecycle management composable
- * </p>
  * <p>
  * Manages component lifecycle, window resize events, and responsive behavior
  * </p>
@@ -55,9 +53,7 @@ export function useDataAssetsLifecycle (
   const erd = elementResizeDetector({ strategy: 'scroll' });
 
   /**
-   * <p>
    * Handles window resize events
-   * </p>
    * <p>
    * Updates chart column count and triggers chart resizing
    * </p>
@@ -78,9 +74,7 @@ export function useDataAssetsLifecycle (
   });
 
   /**
-   * <p>
    * Handles right side container resize
-   * </p>
    * <p>
    * Adjusts chart configurations based on container width
    * </p>
@@ -92,9 +86,7 @@ export function useDataAssetsLifecycle (
   };
 
   /**
-   * <p>
    * Sets up watchers for reactive data changes
-   * </p>
    * <p>
    * Watches for changes in project type show map, target type, and other props
    * </p>
@@ -158,9 +150,7 @@ export function useDataAssetsLifecycle (
   };
 
   /**
-   * <p>
    * Sets up component lifecycle
-   * </p>
    * <p>
    * Initializes watchers, event listeners, and responsive behavior
    * </p>
@@ -184,9 +174,7 @@ export function useDataAssetsLifecycle (
   };
 
   /**
-   * <p>
    * Cleans up component lifecycle
-   * </p>
    * <p>
    * Removes event listeners and cleanup resources
    * </p>

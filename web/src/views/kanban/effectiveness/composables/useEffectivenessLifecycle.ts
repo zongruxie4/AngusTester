@@ -3,9 +3,7 @@ import { throttle } from 'throttle-debounce';
 import { EffectivenessProps } from '../types';
 
 /**
- * <p>
  * Effectiveness lifecycle management composable
- * </p>
  *
  * @param props - Component props
  * @param loadData - Function to load dashboard data
@@ -27,9 +25,7 @@ export function useEffectivenessLifecycle (
   const isNormalSize = ref(true);
 
   /**
-   * <p>
    * Handles window resize events with throttling
-   * </p>
    * <p>
    * Resizes charts when component is visible, otherwise sets notification flag
    * </p>
@@ -41,11 +37,7 @@ export function useEffectivenessLifecycle (
     }
 
     // Update screen size flag
-    if (window.document.body.clientWidth < 1440) {
-      isNormalSize.value = false;
-    } else {
-      isNormalSize.value = true;
-    }
+    isNormalSize.value = window.document.body.clientWidth >= 1440;
 
     nextTick(() => {
       resizeCharts();
@@ -53,12 +45,7 @@ export function useEffectivenessLifecycle (
   });
 
   /**
-   * <p>
    * Refreshes dashboard data
-   * </p>
-   * <p>
-   * Only loads data if projectId is available
-   * </p>
    */
   const refresh = async () => {
     if (!props.projectId) {
@@ -68,9 +55,7 @@ export function useEffectivenessLifecycle (
   };
 
   /**
-   * <p>
    * Sets up watchers for component props
-   * </p>
    * <p>
    * Watches for changes in filter parameters and triggers data loading
    * </p>
@@ -124,9 +109,7 @@ export function useEffectivenessLifecycle (
   };
 
   /**
-   * <p>
    * Sets up component lifecycle hooks
-   * </p>
    * <p>
    * Initializes watchers and event listeners
    * </p>
@@ -146,9 +129,7 @@ export function useEffectivenessLifecycle (
   };
 
   /**
-   * <p>
    * Cleans up component lifecycle resources
-   * </p>
    * <p>
    * Removes event listeners and resets state
    * </p>

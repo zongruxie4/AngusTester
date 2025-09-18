@@ -1,4 +1,3 @@
-// import { useI18n } from 'vue-i18n';
 import { i18n } from '@xcan-angus/infra';
 
 import { ChartConfig, ChartSeriesColorConfig, MethodColorConfig, RankIconConfig, TargetDataCategory } from '../types';
@@ -9,12 +8,7 @@ const t = I18nInstance?.global?.t || ((value: string): string => value);
 // const { t } = useI18n();
 
 /**
- * <p>
  * Chart configuration management composable for data assets dashboard
- * </p>
- * <p>
- * Provides factory functions for creating various chart configurations
- * </p>
  *
  * @returns Object containing chart configuration factory functions
  */
@@ -34,7 +28,7 @@ export function useChartConfigs () {
 
   /** HTTP method color configuration */
   const methodColorConfig: MethodColorConfig = {
-    GET: 'rgb(68,93,179)',
+    GET: 'rgba(45, 142, 255, 1)',
     HEAD: '#67D7FF',
     POST: 'rgba(51, 183, 130, 1)',
     PUT: 'rgba(255, 167, 38, 1)',
@@ -77,12 +71,7 @@ export function useChartConfigs () {
   };
 
   /**
-   * <p>
    * Creates growth trend chart configuration
-   * </p>
-   * <p>
-   * Base configuration for line charts showing growth trends over time
-   * </p>
    */
   const createGrowthTrendConfig = (): ChartConfig => ({
     grid: {
@@ -125,12 +114,7 @@ export function useChartConfigs () {
   });
 
   /**
-   * <p>
    * Creates case bar chart configuration
-   * </p>
-   * <p>
-   * Configuration for horizontal bar chart showing case status distribution
-   * </p>
    */
   const createCaseBarConfig = (): ChartConfig => ({
     title: {
@@ -190,7 +174,7 @@ export function useChartConfigs () {
           },
           {
             value: 0,
-            itemStyle: { color: 'rgb(68,93,179)' }
+            itemStyle: { color: 'rgba(45, 142, 255, 1)' }
           },
           {
             value: 0,
@@ -202,12 +186,7 @@ export function useChartConfigs () {
   });
 
   /**
-   * <p>
    * Creates case pie chart configuration
-   * </p>
-   * <p>
-   * Configuration for pie chart showing case review status distribution
-   * </p>
    */
   const createCasePieConfig = (): ChartConfig => ({
     title: {
@@ -249,7 +228,7 @@ export function useChartConfigs () {
         },
         itemStyle: {
           borderRadius: [5],
-          color: 'rgb(68,93,179)'
+          color: 'rgba(45, 142, 255, 1)'
         },
         emphasis: {
           label: {
@@ -281,12 +260,7 @@ export function useChartConfigs () {
   } as unknown as ChartConfig);
 
   /**
-   * <p>
    * Creates API bar chart configuration
-   * </p>
-   * <p>
-   * Configuration for horizontal bar chart showing API status distribution
-   * </p>
    */
   const createApiBarConfig = (): ChartConfig => ({
     title: {
@@ -350,7 +324,7 @@ export function useChartConfigs () {
           },
           {
             value: 0,
-            itemStyle: { color: 'rgb(68,93,179)' }
+            itemStyle: { color: 'rgba(45, 142, 255, 1)' }
           }
         ]
       }
@@ -358,17 +332,12 @@ export function useChartConfigs () {
   });
 
   /**
-   * <p>
    * Creates API pie chart configuration
-   * </p>
-   * <p>
-   * Configuration for pie chart showing API method distribution
-   * </p>
    */
   const createApiPieConfig = (): ChartConfig => ({
     title: {
       text: 0,
-      subtext: '总数',
+      subtext: 'Total',
       left: '29.5%',
       top: '35%',
       padding: 2,
@@ -464,12 +433,7 @@ export function useChartConfigs () {
   } as unknown as ChartConfig);
 
   /**
-   * <p>
    * Creates task bar chart configuration
-   * </p>
-   * <p>
-   * Configuration for horizontal bar chart showing task status distribution
-   * </p>
    */
   const createTaskBarConfig = (): ChartConfig => ({
     title: {
@@ -533,7 +497,7 @@ export function useChartConfigs () {
           },
           {
             value: 0,
-            itemStyle: { color: 'rgb(68,93,179)' }
+            itemStyle: { color: 'rgba(45, 142, 255, 1)' }
           }
         ]
       }
@@ -541,12 +505,7 @@ export function useChartConfigs () {
   });
 
   /**
-   * <p>
    * Creates task pie chart configuration
-   * </p>
-   * <p>
-   * Configuration for pie chart showing task type distribution
-   * </p>
    */
   const createTaskPieConfig = (): ChartConfig => ({
     title: {
@@ -604,7 +563,7 @@ export function useChartConfigs () {
           {
             name: t('kanban.dataAssets.taskTypes.story'),
             value: 0,
-            itemStyle: { color: 'rgb(68,93,179)' }
+            itemStyle: { color: 'rgba(45, 142, 255, 1)' }
           },
           {
             name: t('kanban.dataAssets.taskTypes.requirement'),
@@ -629,7 +588,7 @@ export function useChartConfigs () {
           {
             name: t('kanban.dataAssets.taskTypes.scenarioTest'),
             value: 0,
-            itemStyle: { color: 'rgba(0,119,255,1)' }
+            itemStyle: { color: 'rgb(77,106,204)' }
           }
         ]
       }
@@ -637,12 +596,7 @@ export function useChartConfigs () {
   } as unknown as ChartConfig);
 
   /**
-   * <p>
    * Creates plan pie chart configuration
-   * </p>
-   * <p>
-   * Configuration for pie chart showing plan status distribution
-   * </p>
    */
   const createPlanPieConfig = (): ChartConfig => ({
     title: {
@@ -700,7 +654,7 @@ export function useChartConfigs () {
           {
             name: t('kanban.dataAssets.status.pendingStart'),
             value: 0,
-            itemStyle: { color: 'rgb(68,93,179)' }
+            itemStyle: { color: 'rgba(45, 142, 255, 1)' }
           },
           {
             name: t('kanban.dataAssets.status.inProgress'),
@@ -723,12 +677,7 @@ export function useChartConfigs () {
   } as unknown as ChartConfig);
 
   /**
-   * <p>
    * Creates sprint pie chart configuration
-   * </p>
-   * <p>
-   * Configuration for pie chart showing sprint status distribution
-   * </p>
    */
   const createSprintPieConfig = (): ChartConfig => ({
     title: {
@@ -786,7 +735,7 @@ export function useChartConfigs () {
           {
             name: t('kanban.dataAssets.status.pendingStart'),
             value: 0,
-            itemStyle: { color: 'rgb(68,93,179)' }
+            itemStyle: { color: 'rgba(45, 142, 255, 1)' }
           },
           {
             name: t('kanban.dataAssets.status.inProgress'),
@@ -809,12 +758,7 @@ export function useChartConfigs () {
   } as unknown as ChartConfig);
 
   /**
-   * <p>
    * Creates scenario pie chart configuration
-   * </p>
-   * <p>
-   * Configuration for pie chart showing scenario script type distribution
-   * </p>
    */
   const createScenarioPieConfig = (): ChartConfig => ({
     title: {
@@ -872,7 +816,7 @@ export function useChartConfigs () {
           {
             name: t('kanban.dataAssets.categories.testPerformance'),
             value: 0,
-            itemStyle: { color: 'rgb(68,93,179)' }
+            itemStyle: { color: 'rgba(45, 142, 255, 1)' }
           },
           {
             name: t('kanban.dataAssets.categories.testStability'),
@@ -895,12 +839,7 @@ export function useChartConfigs () {
   } as unknown as ChartConfig);
 
   /**
-   * <p>
    * Creates script bar chart configuration
-   * </p>
-   * <p>
-   * Configuration for vertical bar chart showing script distribution by plugin
-   * </p>
    */
   const createScriptBarConfig = (): ChartConfig => ({
     grid: {
@@ -927,7 +866,7 @@ export function useChartConfigs () {
     series: [
       {
         itemStyle: {
-          color: 'rgb(68,93,179)',
+          color: 'rgba(45, 142, 255, 1)',
           borderRadius: [5, 5, 0, 0]
         },
         data: [0, 0, 0, 0],
@@ -942,12 +881,7 @@ export function useChartConfigs () {
   });
 
   /**
-   * <p>
    * Creates report bar chart configuration
-   * </p>
-   * <p>
-   * Configuration for vertical bar chart showing report counts by category
-   * </p>
    */
   const createReportBarConfig = (): ChartConfig => ({
     grid: {

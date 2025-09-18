@@ -18,9 +18,7 @@ import {
 } from './useChartConfigs';
 
 /**
- * <p>
  * Chart management composable for effectiveness dashboard
- * </p>
  *
  * @returns Object containing chart instances and management methods
  */
@@ -77,9 +75,7 @@ export function useChartManagement () {
   const oneTimeUnpassedTestRateConfig = ref<ChartConfig>(createOneTimeUnpassedTestRateConfig());
 
   /**
-   * <p>
    * Initializes all charts with their configurations
-   * </p>
    *
    * @param chartRefs - Object containing DOM references for chart containers
    */
@@ -158,9 +154,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Resizes all charts to fit their containers
-   * </p>
    */
   const resizeAllCharts = () => {
     const charts = [
@@ -186,9 +180,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Updates task type chart with new data
-   * </p>
    *
    * @param totalTypeCount - Total type count data
    */
@@ -206,9 +198,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Updates burn down chart with new data
-   * </p>
    *
    * @param burnDownData - Burn down chart data
    * @param targetType - Target type (NUM or WORKLOAD)
@@ -231,9 +221,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Updates ranking charts with new data
-   * </p>
    *
    * @param rankingData - Ranking data
    * @param assignees - Assignee information
@@ -264,9 +252,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Updates target count chart
-   * </p>
    */
   const updateTargetCountChart = (
     rankingData: RankingData,
@@ -312,9 +298,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Updates workload chart
-   * </p>
    */
   const updateWorkloadChart = (
     rankingData: RankingData,
@@ -351,9 +335,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Updates overdue chart
-   * </p>
    */
   const updateOverdueChart = (
     rankingData: RankingData,
@@ -391,9 +373,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Updates one time passed test chart
-   * </p>
    */
   const updateOneTimePassedTestChart = (
     rankingData: RankingData,
@@ -431,9 +411,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Updates one time unpassed test chart
-   * </p>
    */
   const updateOneTimeUnpassedTestChart = (
     rankingData: RankingData,
@@ -480,9 +458,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Updates all rate charts
-   * </p>
    */
   const updateRateCharts = (
     rankingData: RankingData,
@@ -506,9 +482,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Updates target rate chart
-   * </p>
    */
   const updateTargetRateChart = (
     rankingData: RankingData,
@@ -542,9 +516,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Updates workload rate chart
-   * </p>
    */
   const updateWorkloadRateChart = (
     rankingData: RankingData,
@@ -577,9 +549,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Updates overdue rate chart
-   * </p>
    */
   const updateOverdueRateChart = (
     rankingData: RankingData,
@@ -612,9 +582,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Updates one time passed test rate chart
-   * </p>
    */
   const updateOneTimePassedTestRateChart = (
     rankingData: RankingData,
@@ -648,9 +616,7 @@ export function useChartManagement () {
   };
 
   /**
-   * <p>
    * Updates one time unpassed test rate chart
-   * </p>
    */
   const updateOneTimeUnpassedTestRateChart = (
     rankingData: RankingData,
