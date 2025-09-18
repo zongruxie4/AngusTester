@@ -157,7 +157,7 @@ const validateDate = async (_rule: Rule, value: string) => {
       layout="horizontal"
       @finish="onFinish(false)">
       <FormItem
-        :label="props.selectedCase?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.updateCaseResultModal.evalStoryPoint') : t('functionCase.updateCaseResultModal.evalWorkload')"
+        :label="props.selectedCase?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.updateCaseResultModal.evalWorkload') : t('functionCase.updateCaseResultModal.evalWorkload')"
         name="evalWorkload"
         :rules="{validator: validateDate, trigger: 'change' }">
         <div class="flex items-center text-3">
@@ -175,7 +175,7 @@ const validateDate = async (_rule: Rule, value: string) => {
         </div>
       </FormItem>
       <FormItem
-        :label="props.selectedCase?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.updateCaseResultModal.actualStoryPoint') : t('functionCase.updateCaseResultModal.actualWorkload')"
+        :label="props.selectedCase?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.updateCaseResultModal.actualWorkload') : t('functionCase.updateCaseResultModal.actualWorkload')"
         name="actualWorkload">
         <div class="flex items-center text-3">
           <Input

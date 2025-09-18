@@ -516,7 +516,7 @@ const subTaskTableColumns = [
     dataIndex: 'evalWorkload',
     title: (props.taskInfo as any)?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
       ? t('task.subTask.columns.evalWorkload')
-      : t('task.subTask.columns.evalWorkHours'),
+      : t('task.subTask.columns.evalWorkload'),
     groupName: 'task',
     hide: true
   },

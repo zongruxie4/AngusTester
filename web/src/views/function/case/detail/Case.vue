@@ -131,8 +131,8 @@ const infoColumns = computed<GridColumns[][]>(() => [
       label: t('functionCase.detail.caseDetail.testResult'),
       dataIndex: 'testResult'
     },
-    { label: props.caseDetail?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.detail.caseDetail.evalStoryPoint') : t('functionCase.detail.caseDetail.evalWorkload'), dataIndex: 'evalWorkload', customRender: ({ text }) => text || '--' },
-    { label: props.caseDetail?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.detail.caseDetail.actualStoryPoint') : t('functionCase.detail.caseDetail.actualWorkload'), dataIndex: 'actualWorkload', customRender: ({ text }) => text || '--' }
+    { label: props.caseDetail?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.detail.caseDetail.evalWorkload') : t('functionCase.detail.caseDetail.evalWorkload'), dataIndex: 'evalWorkload', customRender: ({ text }) => text || '--' },
+    { label: props.caseDetail?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.detail.caseDetail.actualWorkload') : t('functionCase.detail.caseDetail.actualWorkload'), dataIndex: 'actualWorkload', customRender: ({ text }) => text || '--' }
   ]
 ]);
 

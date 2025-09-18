@@ -135,7 +135,7 @@ const onePassText = computed(() => {
         </div>
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('reportPreview.functionCase.info.basic.options.actualStoryPoint') : t('reportPreview.functionCase.info.basic.options.actualWorkTime') }}
+          {{ caseInfo?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('reportPreview.functionCase.info.basic.options.actualWorkload') : t('reportPreview.functionCase.info.basic.options.actualWorkTime') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap">
           {{ caseInfo?.actualWorkload }}

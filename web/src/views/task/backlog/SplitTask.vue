@@ -521,7 +521,7 @@ onMounted(() => {
           <span>
             {{
               props.dataSource?.evalWorkloadMethod?.value === EvalWorkloadMethod.STORY_POINT
-                ? t('backlog.splitTask.headers.evalStoryPoint')
+                ? t('backlog.splitTask.headers.evalWorkload')
                 : t('backlog.splitTask.headers.evalWorkload')
             }}
           </span>

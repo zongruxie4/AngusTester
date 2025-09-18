@@ -160,7 +160,7 @@ const onePassText = computed(() => {
       <div class="flex border-b border-solid border-border-input">
         <div
           class="w-27 flex-shrink-0 flex items-center bg-blue-table px-1.5 py-1.5 border-r border-solid border-border-input">
-          {{ task?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('reportPreview.task.info.basicInfo.fields.actualStoryPoint') : t('reportPreview.task.info.basicInfo.fields.actualWorkTime') }}
+          {{ task?.evalWorkloadMethod?.value === 'STORY_POINT' ? t('reportPreview.task.info.basicInfo.fields.actualWorkload') : t('reportPreview.task.info.basicInfo.fields.actualWorkTime') }}
         </div>
         <div class="flex-1 px-1.5 py-1.5 break-all  whitespace-pre-wrap border-r border-solid border-border-input">
           {{ task?.actualWorkload }}

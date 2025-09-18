@@ -664,12 +664,12 @@ const evalWorkloadValidateDate = async (_rule: Rule, value: string) => {
                 name="actualWorkload">
                 <template #label>
                   <span class="flex items-center">
-                    {{ evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.addCaseModal.actualStoryPoints') : t('functionCase.addCaseModal.actualWorkHours') }}
+                    {{ evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.addCaseModal.actualWorkloads') : t('functionCase.addCaseModal.actualWorkload') }}
                     <Tooltip
                       placement="right"
                       arrowPointAtCenter
                       :overlayStyle="{'max-width':'400px'}"
-                      :title="evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.addCaseModal.actualStoryPointsHint') : t('functionCase.addCaseModal.actualWorkHoursHint')">
+                      :title="evalWorkloadMethod?.value === 'STORY_POINT' ? t('functionCase.addCaseModal.actualWorkloadsHint') : t('functionCase.addCaseModal.actualWorkloadHint')">
                       <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
                     </Tooltip>
                   </span>

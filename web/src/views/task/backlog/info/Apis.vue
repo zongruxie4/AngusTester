@@ -826,7 +826,7 @@ onMounted(() => {
           <div class="info-label">
             <span>
               {{ evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                ? t('backlog.info.apis.evalStoryPoint') : t('backlog.info.apis.evalWorkload') }}
+                ? t('backlog.info.apis.evalWorkload') : t('backlog.info.apis.evalWorkload') }}
             </span>
           </div>
           <div class="info-value">
@@ -861,7 +861,7 @@ onMounted(() => {
           <div class="info-label">
             <span>
               {{ evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                ? t('backlog.info.apis.evalStoryPoint') : t('backlog.info.apis.evalWorkload') }}
+                ? t('backlog.info.apis.evalWorkload') : t('backlog.info.apis.evalWorkload') }}
             </span>
           </div>
           <div class="info-value">
