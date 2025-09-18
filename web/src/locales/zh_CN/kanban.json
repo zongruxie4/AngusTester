@@ -265,6 +265,7 @@
       },
       "deliveryCycle": {
         "deliveryCycle": "交付周期",
+        "leadTime": "时长",
         "average": "平均",
         "minimum": "最小",
         "maximum": "最大",

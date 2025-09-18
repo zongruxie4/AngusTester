@@ -233,23 +233,23 @@ export const createOverdueAssessmentConfig = (): ChartConfig => {
   const config = createBasePieConfig();
   config.graphic = {
     type: 'text',
-    left: '20%',
+    left: 'center',
     bottom: 0,
     z: 0,
-    font: '12px Arial',
+    font: '14px Arial',
     silent: true,
     invisible: false,
     style: {
       text: t('kanban.cto.overdue.overdueTaskRatio')
     }
   };
-  config.title.left = '35%';
+  config.title.left = 'center';
   config.title.top = '40%';
   config.title.itemGap = 40;
   config.legend.top = 'middle';
   config.legend.right = '0';
-  config.legend.itemHeight = 12;
-  config.legend.itemWidth = 12;
+  config.legend.itemHeight = 14;
+  config.legend.itemWidth = 14;
   config.legend.textStyle = { fontSize: 14 };
   config.series[0].labelLine.length2 = 5;
   config.series[0].data = [
@@ -529,7 +529,7 @@ export const createLeadTimeConfig = (): ChartConfig => ({
   },
   series: [
     {
-      name: 'Lead Time',
+      name: t('kanban.cto.deliveryCycle.leadTime'),
       type: 'bar',
       radius: ['0%', '0%'],
       center: ['50%', '50%'],
@@ -600,7 +600,7 @@ export const createTestStatusConfig = (): ChartConfig => ({
   },
   legend: {
     top: 'middle',
-    right: '0',
+    left: '75%',
     orient: 'vertical',
     itemHeight: 14,
     itemWidth: 14,
@@ -675,7 +675,7 @@ export const createReviewStatusConfig = (): ChartConfig => ({
   },
   legend: {
     top: 'middle',
-    right: '0',
+    left: '75%',
     orient: 'vertical',
     itemHeight: 14,
     itemWidth: 14,

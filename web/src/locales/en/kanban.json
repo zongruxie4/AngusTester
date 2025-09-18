@@ -265,6 +265,7 @@
       },
       "deliveryCycle": {
         "deliveryCycle": "Delivery Cycle",
+        "leadTime": "Lead Time",
         "average": "Average",
         "minimum": "Minimum",
         "maximum": "Maximum",
