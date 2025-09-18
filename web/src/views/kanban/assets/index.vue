@@ -801,7 +801,7 @@ const taskPieEchartsConfig = {
           }
         },
         {
-          name: t('kanban.dataAssets.taskTypes.defect'),
+          name: t('kanban.dataAssets.taskTypes.bug'),
           value: 0,
           itemStyle: {
             color: 'rgba(245, 34, 45, 1)'

@@ -38,6 +38,15 @@ export interface OverviewConfigItem {
   icon: string;
   /** Unit for display (optional) */
   unit?: string;
+  /**
+   * Semantic hint for value coloring
+   * rateHighGood: percentage where higher is better (e.g., >=90 green, >=60 orange, else red)
+   * countHighGood: count where higher presence is okay/neutral (blue when >0)
+   * countLowGood: count where lower is better (e.g., overdue, canceled)
+   * workloadSaving: saving workload (green when >0)
+   * neutral: no special coloring
+   */
+  semantic?: 'rateHighGood' | 'countHighGood' | 'countLowGood' | 'workloadSaving' | 'neutral';
 }
 
 /**

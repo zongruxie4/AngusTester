@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { nextTick, onBeforeUnmount, onMounted, ref, watch, withDefaults } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch, withDefaults } from 'vue';
 import { RadioButton, RadioGroup } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { BurnDownDataByType, EffectivenessProps } from './types';
 import { useEffectivenessData } from './composables/useEffectivenessData';
-import { useEffectivenessConfig } from './composables/useEffectivenessConfig';
+import { getOverviewValueColorClass, useEffectivenessConfig } from './composables/useEffectivenessConfig';
 import { useChartManagement } from './composables/useChartManagement';
 import { useEffectivenessLifecycle } from './composables/useEffectivenessLifecycle';
 
@@ -60,9 +60,19 @@ const {
 
 // Initialize configuration
 const { currentOverviewConfig } = useEffectivenessConfig(props.countType);
+// Flatten to a single array so that layout is controlled purely by grid columns
+const flatOverviewItems = computed(() => {
+  const rows = (currentOverviewConfig as any)?.value ?? currentOverviewConfig;
+  if (Array.isArray(rows)) {
+    return rows.flat?.() ?? ([] as any[]).concat(...rows);
+  }
+  return [] as any[];
+});
 
 // Local state
 const burnDownOption = ref<'NUM' | 'WORKLOAD'>('NUM');
+
+// getValueColorClass moved to useEffectivenessConfig.ts as getOverviewValueColorClass
 
 // Event handlers
 const handleBurnDownOptionChange = () => {
@@ -145,19 +155,16 @@ defineExpose({
     <!-- Overview Section -->
     <div class="overview-section">
       <div class="overview-grid">
-        <div
-          v-for="(row, rowIndex) in currentOverviewConfig"
-          :key="rowIndex"
-          class="overview-row">
+        <div class="overview-row">
           <div
-            v-for="(item, itemIndex) in row"
-            :key="itemIndex"
+            v-for="(item, index) in flatOverviewItems"
+            :key="index"
             class="overview-item">
             <div class="overview-icon">
               <i :class="item.icon"></i>
             </div>
             <div class="overview-content">
-              <div class="overview-value">
+              <div class="overview-value" :class="getOverviewValueColorClass(item, overviewData[item.dataIndex])">
                 {{ overviewData[item.dataIndex] || 0 }}
                 <span v-if="item.unit" class="overview-unit">{{ item.unit }}</span>
               </div>
@@ -170,14 +177,6 @@ defineExpose({
 
     <!-- Charts Section -->
     <div class="charts-section">
-      <!-- Task Type Chart -->
-      <div v-show="props.countType==='task'" class="chart-container">
-        <div class="chart-header">
-          <h3>{{ $t('kanban.effectiveness.taskTypeTitle') }}</h3>
-        </div>
-        <div ref="taskTypeChartRef" class="chart-content"></div>
-      </div>
-
       <!-- Burn Down Chart -->
       <div class="chart-container">
         <div class="chart-header">
@@ -193,6 +192,14 @@ defineExpose({
           </div>
         </div>
         <div ref="burnDownChartRef" class="chart-content"></div>
+      </div>
+
+      <!-- Task Type Chart -->
+      <div v-show="props.countType==='task'" class="chart-container">
+        <div class="chart-header">
+          <h3>{{ $t('kanban.effectiveness.taskTypeTitle') }}</h3>
+        </div>
+        <div ref="taskTypeChartRef" class="chart-content"></div>
       </div>
 
       <!-- Target Count Chart -->
@@ -262,7 +269,7 @@ defineExpose({
       <!--oneTimeUnpassedTestChartRef-->
       <div class="chart-container">
         <div class="chart-header">
-          <h3>{{ props.countType === 'task' ? t('kanban.effectiveness.defectCount') : t('kanban.effectiveness.oneTimeReviewPassedCount') }}</h3>
+          <h3>{{ props.countType === 'task' ? t('kanban.effectiveness.validBugCount') : t('kanban.effectiveness.oneTimeReviewPassedCount') }}</h3>
         </div>
         <div ref="oneTimeUnpassedTestChartRef" class="chart-content"></div>
       </div>
@@ -270,7 +277,7 @@ defineExpose({
       <!-- oneTimeUnpassedTestRateChartRef-->
       <div class="chart-container">
         <div class="chart-header">
-          <h3>{{ props.countType === 'task' ? t('kanban.effectiveness.defectRate') : t('kanban.effectiveness.oneTimeReviewPassRate') }}</h3>
+          <h3>{{ props.countType === 'task' ? t('kanban.effectiveness.validBugRate') : t('kanban.effectiveness.oneTimeReviewPassRate') }}</h3>
         </div>
         <div ref="oneTimeUnpassedTestRateChartRef" class="chart-content"></div>
       </div>
@@ -297,7 +304,8 @@ defineExpose({
 
 <style scoped>
 .effectiveness-dashboard {
-  padding: 20px;
+  margin-top: 10px;
+  padding: 2px;
 }
 
 .overview-section {
@@ -305,14 +313,12 @@ defineExpose({
 }
 
 .overview-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
+  display: block;
 }
 
 .overview-row {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 15px;
 }
 
@@ -341,6 +347,13 @@ defineExpose({
   color: #262626;
   margin-bottom: 5px;
 }
+
+/* Semantic value colors */
+.value-neutral { color: #262626; }
+.value-primary { color: #1890ff; }
+.value-good { color: #16a34a; }
+.value-warning { color: #f59e0b; }
+.value-bad { color: #dc2626; }
 
 .overview-unit {
   font-size: 14px;

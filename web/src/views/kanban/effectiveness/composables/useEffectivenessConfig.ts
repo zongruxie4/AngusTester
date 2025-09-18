@@ -1,7 +1,7 @@
 import { computed } from 'vue';
 
 import { useI18n } from 'vue-i18n';
-import { OverviewConfig } from '../types';
+import { OverviewConfig, OverviewConfigItem } from '../types';
 
 /**
  * <p>
@@ -27,47 +27,55 @@ export function useEffectivenessConfig (countType: 'task' | 'useCase') {
   const taskOverViewConfig: OverviewConfig = [
     [
       {
-        name: t('kanban.effectiveness.totalTaskCount'),
+        name: t('kanban.effectiveness.totalCount'),
         dataIndex: 'totalTaskNum',
-        icon: 'icon-task'
+        icon: 'icon-task',
+        semantic: 'countHighGood'
       },
       {
         name: t('kanban.effectiveness.progress'),
         dataIndex: 'progress',
         icon: 'icon-progress',
-        unit: '%'
+        unit: '%',
+        semantic: 'rateHighGood'
       },
       {
         name: t('kanban.effectiveness.pending'),
         dataIndex: 'pendingNum',
-        icon: 'icon-pending'
+        icon: 'icon-pending',
+        semantic: 'countLowGood'
       },
       {
         name: t('kanban.effectiveness.inProgress'),
         dataIndex: 'inProgressNum',
-        icon: 'icon-in-progress'
+        icon: 'icon-in-progress',
+        semantic: 'countHighGood'
       }
     ],
     [
       {
         name: t('kanban.effectiveness.confirming'),
         dataIndex: 'confirmingNum',
-        icon: 'icon-confirming'
+        icon: 'icon-confirming',
+        semantic: 'countHighGood'
       },
       {
         name: t('kanban.effectiveness.completed'),
         dataIndex: 'completedNum',
-        icon: 'icon-completed'
+        icon: 'icon-completed',
+        semantic: 'countHighGood'
       },
       {
         name: t('kanban.effectiveness.canceled'),
         dataIndex: 'canceledNum',
-        icon: 'icon-canceled'
+        icon: 'icon-canceled',
+        semantic: 'countLowGood'
       },
       {
         name: t('kanban.effectiveness.overdue'),
         dataIndex: 'overdueNum',
-        icon: 'icon-overdue'
+        icon: 'icon-overdue',
+        semantic: 'countLowGood'
       }
     ],
     [
@@ -75,25 +83,29 @@ export function useEffectivenessConfig (countType: 'task' | 'useCase') {
         name: t('kanban.effectiveness.oneTimePassRate'),
         dataIndex: 'oneTimePassedRate',
         icon: 'icon-pass-rate',
-        unit: '%'
+        unit: '%',
+        semantic: 'rateHighGood'
       },
       {
         name: t('kanban.effectiveness.evalWorkload'),
         dataIndex: 'evalWorkload',
         icon: 'icon-eval-workload',
-        unit: 'h'
+        unit: 'h',
+        semantic: 'neutral'
       },
       {
         name: t('kanban.effectiveness.actualWorkload'),
         dataIndex: 'actualWorkload',
         icon: 'icon-actual-workload',
-        unit: 'h'
+        unit: 'h',
+        semantic: 'neutral'
       },
       {
         name: t('kanban.effectiveness.savingWorkload'),
         dataIndex: 'savingWorkload',
         icon: 'icon-saving-workload',
-        unit: 'h'
+        unit: 'h',
+        semantic: 'workloadSaving'
       }
     ]
   ];
@@ -111,47 +123,55 @@ export function useEffectivenessConfig (countType: 'task' | 'useCase') {
       {
         name: t('kanban.effectiveness.totalCaseCount'),
         dataIndex: 'totalCaseNum',
-        icon: 'icon-use-case'
+        icon: 'icon-use-case',
+        semantic: 'countHighGood'
       },
       {
         name: t('kanban.effectiveness.progress'),
         dataIndex: 'progress',
         icon: 'icon-progress',
-        unit: '%'
+        unit: '%',
+        semantic: 'rateHighGood'
       },
       {
         name: t('kanban.effectiveness.pendingTest'),
         dataIndex: 'pendingTestNum',
-        icon: 'icon-pending-test'
+        icon: 'icon-pending-test',
+        semantic: 'countLowGood'
       },
       {
         name: t('kanban.effectiveness.passedTest'),
         dataIndex: 'passedTestNum',
-        icon: 'icon-passed-test'
+        icon: 'icon-passed-test',
+        semantic: 'countHighGood'
       }
     ],
     [
       {
         name: t('kanban.effectiveness.notPassedTest'),
         dataIndex: 'notPassedTestNum',
-        icon: 'icon-not-passed-test'
+        icon: 'icon-not-passed-test',
+        semantic: 'countLowGood'
       },
       {
         name: t('kanban.effectiveness.blockedTest'),
         dataIndex: 'blockedTestNum',
-        icon: 'icon-blocked-test'
+        icon: 'icon-blocked-test',
+        semantic: 'countLowGood'
       },
       {
         name: t('kanban.effectiveness.testCaseHitRate'),
         dataIndex: 'testCaseHitRate',
         icon: 'icon-hit-rate',
-        unit: '%'
+        unit: '%',
+        semantic: 'rateHighGood'
       },
       {
         name: t('kanban.effectiveness.oneTimePassRate'),
         dataIndex: 'oneTimePassedTestRate',
         icon: 'icon-pass-test-rate',
-        unit: '%'
+        unit: '%',
+        semantic: 'rateHighGood'
       }
     ],
     [
@@ -159,25 +179,29 @@ export function useEffectivenessConfig (countType: 'task' | 'useCase') {
         name: t('kanban.effectiveness.oneTimePassReviewRate'),
         dataIndex: 'oneTimePassReviewRate',
         icon: 'icon-pass-review-rate',
-        unit: '%'
+        unit: '%',
+        semantic: 'rateHighGood'
       },
       {
         name: t('kanban.effectiveness.evalWorkload'),
         dataIndex: 'evalWorkload',
         icon: 'icon-eval-workload',
-        unit: 'h'
+        unit: 'h',
+        semantic: 'neutral'
       },
       {
         name: t('kanban.effectiveness.actualWorkload'),
         dataIndex: 'actualWorkload',
         icon: 'icon-actual-workload',
-        unit: 'h'
+        unit: 'h',
+        semantic: 'neutral'
       },
       {
         name: t('kanban.effectiveness.savingWorkload'),
         dataIndex: 'savingWorkload',
         icon: 'icon-saving-workload',
-        unit: 'h'
+        unit: 'h',
+        semantic: 'workloadSaving'
       }
     ]
   ];
@@ -202,4 +226,31 @@ export function useEffectivenessConfig (countType: 'task' | 'useCase') {
     // Computed properties
     currentOverviewConfig
   };
+}
+
+/**
+ * <p>
+ * Resolve CSS class for overview value text color by semantic and value
+ * </p>
+ */
+export function getOverviewValueColorClass (item: OverviewConfigItem | any, rawValue: unknown): string {
+  const value = typeof rawValue === 'number' ? rawValue : Number(rawValue || 0);
+  switch (item?.semantic) {
+    case 'rateHighGood':
+      if (!isFinite(value)) return 'value-neutral';
+      if (value >= 90) return 'value-good';
+      if (value >= 60) return 'value-warning';
+      return 'value-bad';
+    case 'countHighGood':
+      if (value > 0) return 'value-primary';
+      return 'value-neutral';
+    case 'countLowGood':
+      if (value > 0) return 'value-bad';
+      return 'value-good';
+    case 'workloadSaving':
+      if (value > 0) return 'value-good';
+      return 'value-neutral';
+    default:
+      return 'value-neutral';
+  }
 }

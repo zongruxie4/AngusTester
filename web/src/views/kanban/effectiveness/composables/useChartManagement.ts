@@ -1,4 +1,5 @@
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 import { BurnDownDataByType, ChartConfig, RankingData, TotalTypeCount } from '../types';
 import {
@@ -24,6 +25,7 @@ import {
  * @returns Object containing chart instances and management methods
  */
 export function useChartManagement () {
+  const { t } = useI18n();
   /** Task type chart instance */
   let taskTypeChart: eCharts.ECharts;
 
@@ -292,9 +294,9 @@ export function useChartManagement () {
 
       // Update series names based on count type
       if (countType === 'task') {
-        targetCountConfig.value.series[1].name = '完成数';
+        targetCountConfig.value.series[1].name = t('kanban.effectiveness.completedCount');
       } else {
-        targetCountConfig.value.series[1].name = '通过数';
+        targetCountConfig.value.series[1].name = t('kanban.effectiveness.passedCount');
       }
 
       // Show/hide no data image
@@ -459,10 +461,10 @@ export function useChartManagement () {
 
       // Update series names and colors based on count type
       if (countType === 'task') {
-        oneTimeUnpassedTestConfig.value.series[1].name = '缺陷数';
+        oneTimeUnpassedTestConfig.value.series[1].name = t('kanban.effectiveness.validBugCount');
         oneTimeUnpassedTestConfig.value.series[1].itemStyle!.color = 'rgba(255, 165, 43, 1)';
       } else {
-        oneTimeUnpassedTestConfig.value.series[1].name = '一次性评审通过数';
+        oneTimeUnpassedTestConfig.value.series[1].name = t('kanban.effectiveness.oneTimeReviewPassedCount');
         oneTimeUnpassedTestConfig.value.series[1].itemStyle!.color = 'rgba(82, 196, 26, 1)';
       }
 
@@ -684,7 +686,6 @@ export function useChartManagement () {
       oneTimeUnpassedTestRateConfig.value.series[0].data = [];
       oneTimeUnpassedTestRateConfig.value.graphic!.invisible = false;
     }
-
     oneTimeUnpassedTestRateChart.setOption(oneTimeUnpassedTestRateConfig.value);
   };
 

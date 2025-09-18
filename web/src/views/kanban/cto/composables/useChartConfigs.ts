@@ -416,7 +416,7 @@ export const createTaskTypeConfig = (): ChartConfig => ({
           itemStyle: { color: 'rgba(255, 165, 43, 1)' }
         },
         {
-          name: t('kanban.cto.taskTypes.defect'),
+          name: t('kanban.cto.taskTypes.bug'),
           value: 0,
           itemStyle: { color: 'rgba(245, 34, 45, 1)' }
         },
