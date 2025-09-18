@@ -78,14 +78,14 @@ export const createTaskTypeConfig = (): ChartConfig => {
             name: t('kanban.effectiveness.taskType.task'),
             value: 0,
             itemStyle: {
-              color: 'rgba(255, 165, 43, 1)'
+              color: 'rgb(68,93,179)'
             }
           },
           {
             name: t('kanban.effectiveness.taskType.bug'),
             value: 0,
             itemStyle: {
-              color: 'rgba(245, 34, 45, 1)'
+              color: 'rgb(236,17,93)'
             }
           },
           {
@@ -225,7 +225,7 @@ export const createTargetCountConfig = (): ChartConfig => {
       name: t('kanban.effectiveness.total'),
       type: 'bar',
       itemStyle: {
-        color: 'rgba(45, 142, 255, 1)'
+        color: 'rgb(68,93,179)'
       },
       data: [],
       barMaxWidth: '16',
@@ -262,7 +262,7 @@ export const createTargetRateConfig = (): ChartConfig => {
       name: t('kanban.effectiveness.rate'),
       type: 'bar',
       itemStyle: {
-        color: 'rgba(45, 142, 255, 1)'
+        color: 'rgb(68,93,179)'
       },
       data: [],
       barMaxWidth: '16'
@@ -288,7 +288,7 @@ export const createWorkloadConfig = (): ChartConfig => {
       name: t('kanban.effectiveness.total'),
       type: 'bar',
       itemStyle: {
-        color: 'rgba(45, 142, 255, 1)'
+        color: 'rgb(68,93,179)'
       },
       data: [],
       barMaxWidth: '16',
@@ -350,7 +350,7 @@ export const createOverdueConfig = (): ChartConfig => {
       name: t('kanban.effectiveness.total'),
       type: 'bar',
       itemStyle: {
-        color: 'rgba(45, 142, 255, 1)'
+        color: 'rgb(68,93,179)'
       },
       data: [],
       barMaxWidth: '16',
@@ -361,7 +361,7 @@ export const createOverdueConfig = (): ChartConfig => {
       name: t('kanban.effectiveness.overdueCount'),
       type: 'bar',
       itemStyle: {
-        color: 'rgba(245, 34, 45, 1)'
+        color: 'rgb(236,17,93)'
       },
       data: [],
       barMaxWidth: '16',
@@ -387,7 +387,7 @@ export const createOverdueRateConfig = (): ChartConfig => {
       name: t('kanban.effectiveness.rate'),
       type: 'bar',
       itemStyle: {
-        color: 'rgba(245, 34, 45, 1)'
+        color: 'rgb(236,17,93)'
       },
       data: [],
       barMaxWidth: '16'
@@ -413,7 +413,7 @@ export const createOneTimePassedTestConfig = (): ChartConfig => {
       name: t('kanban.effectiveness.total'),
       type: 'bar',
       itemStyle: {
-        color: 'rgba(45, 142, 255, 1)'
+        color: 'rgb(68,93,179)'
       },
       data: [],
       barMaxWidth: '16',
@@ -476,7 +476,7 @@ export const createOneTimeUnpassedTestConfig = (): ChartConfig => {
       name: t('kanban.effectiveness.total'),
       type: 'bar',
       itemStyle: {
-        color: 'rgba(45, 142, 255, 1)'
+        color: 'rgb(68,93,179)'
       },
       data: [],
       barMaxWidth: '16',

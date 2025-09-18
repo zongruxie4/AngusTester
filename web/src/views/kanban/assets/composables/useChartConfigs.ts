@@ -34,7 +34,7 @@ export function useChartConfigs () {
 
   /** HTTP method color configuration */
   const methodColorConfig: MethodColorConfig = {
-    GET: 'rgba(30, 136, 229, 1)',
+    GET: 'rgb(68,93,179)',
     HEAD: '#67D7FF',
     POST: 'rgba(51, 183, 130, 1)',
     PUT: 'rgba(255, 167, 38, 1)',
@@ -190,11 +190,11 @@ export function useChartConfigs () {
           },
           {
             value: 0,
-            itemStyle: { color: 'rgba(82, 196, 26, 1)' }
+            itemStyle: { color: 'rgb(68,93,179)' }
           },
           {
             value: 0,
-            itemStyle: { color: 'rgba(45, 142, 255, 1)' }
+            itemStyle: { color: 'rgba(82, 196, 26, 1)' }
           }
         ]
       }
@@ -235,7 +235,7 @@ export function useChartConfigs () {
       orient: 'vertical',
       itemHeight: 14,
       itemWidth: 14
-    },
+    } as any,
     series: [
       {
         name: t('kanban.dataAssets.total'),
@@ -249,7 +249,7 @@ export function useChartConfigs () {
         },
         itemStyle: {
           borderRadius: [5],
-          color: 'rgba(136, 185, 242, 1)'
+          color: 'rgb(68,93,179)'
         },
         emphasis: {
           label: {
@@ -278,7 +278,7 @@ export function useChartConfigs () {
         ]
       }
     ]
-  });
+  } as unknown as ChartConfig);
 
   /**
    * <p>
@@ -350,7 +350,7 @@ export function useChartConfigs () {
           },
           {
             value: 0,
-            itemStyle: { color: '#7F91FF' }
+            itemStyle: { color: 'rgb(68,93,179)' }
           }
         ]
       }
@@ -392,7 +392,7 @@ export function useChartConfigs () {
       itemHeight: 14,
       itemWidth: 14,
       itemGap: 14
-    },
+    } as any,
     series: [
       {
         name: '',
@@ -461,7 +461,7 @@ export function useChartConfigs () {
         ]
       }
     ]
-  });
+  } as unknown as ChartConfig);
 
   /**
    * <p>
@@ -533,7 +533,7 @@ export function useChartConfigs () {
           },
           {
             value: 0,
-            itemStyle: { color: '#7F91FF' }
+            itemStyle: { color: 'rgb(68,93,179)' }
           }
         ]
       }
@@ -575,7 +575,7 @@ export function useChartConfigs () {
       itemHeight: 14,
       itemWidth: 14,
       itemGap: 6
-    },
+    } as any,
     series: [
       {
         name: '',
@@ -604,7 +604,7 @@ export function useChartConfigs () {
           {
             name: t('kanban.dataAssets.taskTypes.story'),
             value: 0,
-            itemStyle: { color: 'rgba(136, 185, 242, 1)' }
+            itemStyle: { color: 'rgb(68,93,179)' }
           },
           {
             name: t('kanban.dataAssets.taskTypes.requirement'),
@@ -634,7 +634,7 @@ export function useChartConfigs () {
         ]
       }
     ]
-  });
+  } as unknown as ChartConfig);
 
   /**
    * <p>
@@ -671,7 +671,7 @@ export function useChartConfigs () {
       itemHeight: 14,
       itemWidth: 14,
       itemGap: 12
-    },
+    } as any,
     series: [
       {
         name: '',
@@ -700,7 +700,7 @@ export function useChartConfigs () {
           {
             name: t('kanban.dataAssets.status.pendingStart'),
             value: 0,
-            itemStyle: { color: 'rgba(45, 142, 255, 1)' }
+            itemStyle: { color: 'rgb(68,93,179)' }
           },
           {
             name: t('kanban.dataAssets.status.inProgress'),
@@ -720,7 +720,7 @@ export function useChartConfigs () {
         ]
       }
     ]
-  });
+  } as unknown as ChartConfig);
 
   /**
    * <p>
@@ -757,7 +757,7 @@ export function useChartConfigs () {
       itemHeight: 14,
       itemWidth: 14,
       itemGap: 12
-    },
+    } as any,
     series: [
       {
         name: '',
@@ -786,7 +786,7 @@ export function useChartConfigs () {
           {
             name: t('kanban.dataAssets.status.pendingStart'),
             value: 0,
-            itemStyle: { color: 'rgba(45, 142, 255, 1)' }
+            itemStyle: { color: 'rgb(68,93,179)' }
           },
           {
             name: t('kanban.dataAssets.status.inProgress'),
@@ -806,7 +806,7 @@ export function useChartConfigs () {
         ]
       }
     ]
-  });
+  } as unknown as ChartConfig);
 
   /**
    * <p>
@@ -843,7 +843,7 @@ export function useChartConfigs () {
       itemHeight: 14,
       itemWidth: 14,
       itemGap: 12
-    },
+    } as any,
     series: [
       {
         name: '',
@@ -872,7 +872,7 @@ export function useChartConfigs () {
           {
             name: t('kanban.dataAssets.categories.testPerformance'),
             value: 0,
-            itemStyle: { color: 'rgba(45, 142, 255, 1)' }
+            itemStyle: { color: 'rgb(68,93,179)' }
           },
           {
             name: t('kanban.dataAssets.categories.testStability'),
@@ -892,7 +892,7 @@ export function useChartConfigs () {
         ]
       }
     ]
-  });
+  } as unknown as ChartConfig);
 
   /**
    * <p>
@@ -927,12 +927,66 @@ export function useChartConfigs () {
     series: [
       {
         itemStyle: {
-          color: 'rgba(45, 142, 255, 1)',
+          color: 'rgb(68,93,179)',
           borderRadius: [5, 5, 0, 0]
         },
         data: [0, 0, 0, 0],
         type: 'bar',
         barMaxWidth: '20',
+        label: {
+          show: true,
+          position: 'top'
+        }
+      }
+    ]
+  });
+
+  /**
+   * <p>
+   * Creates report bar chart configuration
+   * </p>
+   * <p>
+   * Configuration for vertical bar chart showing report counts by category
+   * </p>
+   */
+  const createReportBarConfig = (): ChartConfig => ({
+    grid: {
+      left: '60',
+      right: '20',
+      bottom: '30',
+      top: '20'
+    },
+    xAxis: {
+      type: 'category',
+      data: [
+        t('kanban.dataAssets.categories.apis'),
+        t('kanban.dataAssets.categories.cases'),
+        t('kanban.dataAssets.categories.project'),
+        t('kanban.dataAssets.categories.scenario'),
+        t('kanban.dataAssets.categories.task'),
+        t('kanban.dataAssets.categories.execution')
+      ],
+      axisLabel: {
+        interval: 0,
+        rotate: -15,
+        overflow: 'break'
+      }
+    },
+    yAxis: {
+      type: 'value'
+    },
+    tooltip: {
+      show: true
+    },
+    series: [
+      {
+        itemStyle: {
+          color: 'rgba(45, 142, 255, 1)',
+          borderRadius: [5, 5, 0, 0]
+        },
+        barMaxWidth: '20',
+        data: [],
+        type: 'bar',
         label: {
           show: true,
           position: 'top'
@@ -959,6 +1013,7 @@ export function useChartConfigs () {
     createPlanPieConfig,
     createSprintPieConfig,
     createScenarioPieConfig,
-    createScriptBarConfig
+    createScriptBarConfig,
+    createReportBarConfig
   };
 }
