@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue';
 import { Button } from 'ant-design-vue';
-import { AsyncComponent, Colon, Icon, SelectUser, Toggle } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Icon, SelectUser, Toggle } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import { TESTER } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
@@ -92,7 +92,7 @@ const assignCurrentUserToRole = (key:'assigneeId'|'confirmerId'|'testerId') => {
  * @param option - Selected assignee option containing id and fullName
  */
 const handleAssigneeChange = async (
-  value: any,
+  _value: any,
   option: any) => {
   assigneeSelectMessage.value = option.fullName;
 };
@@ -145,7 +145,7 @@ const startConfirmerEditing = () => {
  * @param value - Selected confirmer ID
  * @param option - Selected confirmer option containing id and fullName
  */
-const handleConfirmerChange = async (value: any, option: any) => {
+const handleConfirmerChange = async (_value: any, option: any) => {
   confirmerSelectMessage.value = option.fullName;
 };
 
@@ -197,7 +197,7 @@ const startTesterEditing = () => {
  * @param value - Selected tester ID
  * @param option - Selected tester option containing id and fullName
  */
-const handleTesterChange = async (value: any, option: any) => {
+const handleTesterChange = async (_value: any, option: any) => {
   testerSelectMessage.value = option.fullName;
 };
 
@@ -349,154 +349,180 @@ const confirmerDefaultOptions = computed(() => {
     </template>
 
     <template #default>
-      <div class="text-3 leading-5 space-y-2.5 pt-2 pl-5.5">
-        <div class="relative flex items-start">
-          <div class="w-22 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.personnel.fields.assignee') }}</span>
-            <Colon class="w-1" />
-          </div>
+      <div class="personnel-info-container">
+        <!-- Assignee -->
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('task.detailInfo.personnel.fields.assignee') }}</span>
+            </div>
+            <div class="info-value">
+              <div v-show="!isAssigneeEditing" class="info-value-content">
+                <span :class="{ 'placeholder-text': !currentAssigneeName }" class="info-text">
+                  {{ currentAssigneeName || '--' }}
+                </span>
+                <Button
+                  type="link"
+                  class="edit-btn"
+                  @click="startAssigneeEditing">
+                  <Icon icon="icon-shuxie" class="text-3.5" />
+                </Button>
+                <Button
+                  v-if="!currentAssigneeId||currentAssigneeId!==currentUserId"
+                  size="small"
+                  type="link"
+                  class="assign-to-me-btn"
+                  @click="assignCurrentUserToRole('assigneeId')">
+                  {{ t('task.detailInfo.personnel.actions.assignToMe') }}
+                </Button>
+              </div>
 
-          <div v-show="!isAssigneeEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
-            <div>{{ currentAssigneeName }}</div>
-            <Button
-              type="link"
-              class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-              @click="startAssigneeEditing">
-              <Icon icon="icon-shuxie" class="text-3.5" />
-            </Button>
-            <Button
-              v-if="!currentAssigneeId||currentAssigneeId!==currentUserId"
-              size="small"
-              type="link"
-              class="p-0 h-5 leading-5 ml-1"
-              @click="assignCurrentUserToRole('assigneeId')">
-              {{ t('task.detailInfo.personnel.actions.assignToMe') }}
-            </Button>
+              <AsyncComponent :visible="isAssigneeEditing">
+                <SelectUser
+                  v-show="isAssigneeEditing"
+                  ref="assigneeSelectRef"
+                  v-model:value="assigneeSelectValue"
+                  :placeholder="t('task.detailInfo.personnel.placeholders.selectAssignee')"
+                  internal
+                  :defaultOptions="assigneeDefaultOptions"
+                  :action="`${TESTER}/project/${props.projectId}/member/user`"
+                  :maxlength="80"
+                  class="edit-select"
+                  @change="handleAssigneeChange"
+                  @blur="handleAssigneeBlur" />
+              </AsyncComponent>
+            </div>
           </div>
-
-          <AsyncComponent :visible="isAssigneeEditing">
-            <SelectUser
-              v-show="isAssigneeEditing"
-              ref="assigneeSelectRef"
-              v-model:value="assigneeSelectValue"
-              :placeholder="t('task.detailInfo.personnel.placeholders.selectAssignee')"
-              internal
-              :defaultOptions="assigneeDefaultOptions"
-              :action="`${TESTER}/project/${props.projectId}/member/user`"
-              :maxlength="80"
-              class="left-component"
-              @change="handleAssigneeChange"
-              @blur="handleAssigneeBlur" />
-          </AsyncComponent>
         </div>
 
-        <div class="relative flex items-start">
-          <div class="w-22 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.personnel.fields.executor') }}</span>
-            <Colon class="w-1" />
+        <!-- Executor -->
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('task.detailInfo.personnel.fields.executor') }}</span>
+            </div>
+            <div class="info-value">
+              <span :class="{ 'placeholder-text': !currentExecByName }" class="info-text">
+                {{ currentExecByName || '--' }}
+              </span>
+            </div>
           </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">{{ currentExecByName || '--' }}</div>
         </div>
 
-        <div class="relative flex items-start">
-          <div class="w-22 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.personnel.fields.confirmer') }}</span>
-            <Colon class="w-1" />
-          </div>
+        <!-- Confirmer -->
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('task.detailInfo.personnel.fields.confirmer') }}</span>
+            </div>
+            <div class="info-value">
+              <div v-show="!isConfirmerEditing" class="info-value-content">
+                <span :class="{ 'placeholder-text': !currentConfirmerName }" class="info-text">
+                  {{ currentConfirmerName || '--' }}
+                </span>
+                <Button
+                  type="link"
+                  class="edit-btn"
+                  @click="startConfirmerEditing">
+                  <Icon icon="icon-shuxie" class="text-3.5" />
+                </Button>
+                <Button
+                  v-if="!currentConfirmerId||currentConfirmerId!==currentUserId"
+                  size="small"
+                  type="link"
+                  class="assign-to-me-btn"
+                  @click="assignCurrentUserToRole('confirmerId')">
+                  {{ t('task.detailInfo.personnel.actions.assignToMe') }}
+                </Button>
+              </div>
 
-          <div v-show="!isConfirmerEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
-            <div>{{ currentConfirmerName }}</div>
-            <Button
-              type="link"
-              class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-              @click="startConfirmerEditing">
-              <Icon icon="icon-shuxie" class="text-3.5" />
-            </Button>
-            <Button
-              v-if="!currentConfirmerId||currentConfirmerId!==currentUserId"
-              size="small"
-              type="link"
-              class="p-0 h-5 leading-5 ml-1"
-              @click="assignCurrentUserToRole('confirmerId')">
-              {{ t('task.detailInfo.personnel.actions.assignToMe') }}
-            </Button>
+              <AsyncComponent :visible="isConfirmerEditing">
+                <SelectUser
+                  v-show="isConfirmerEditing"
+                  ref="confirmerSelectRef"
+                  v-model:value="confirmerSelectValue"
+                  :placeholder="t('task.detailInfo.personnel.placeholders.selectConfirmer')"
+                  allowClear
+                  internal
+                  :defaultOptions="confirmerDefaultOptions"
+                  :action="`${TESTER}/project/${props.projectId}/member/user`"
+                  :maxlength="80"
+                  class="edit-select"
+                  @change="handleConfirmerChange"
+                  @blur="handleConfirmerBlur" />
+              </AsyncComponent>
+            </div>
           </div>
-
-          <AsyncComponent :visible="isConfirmerEditing">
-            <SelectUser
-              v-show="isConfirmerEditing"
-              ref="confirmerSelectRef"
-              v-model:value="confirmerSelectValue"
-              :placeholder="t('task.detailInfo.personnel.placeholders.selectConfirmer')"
-              allowClear
-              internal
-              :defaultOptions="confirmerDefaultOptions"
-              :action="`${TESTER}/project/${props.projectId}/member/user`"
-              :maxlength="80"
-              class="left-component"
-              @change="handleConfirmerChange"
-              @blur="handleConfirmerBlur" />
-          </AsyncComponent>
         </div>
 
-        <div class="relative flex items-start">
-          <div class="w-22 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.personnel.fields.tester') }}</span>
-            <Colon class="w-1" />
-          </div>
+        <!-- Tester -->
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('task.detailInfo.personnel.fields.tester') }}</span>
+            </div>
+            <div class="info-value">
+              <div v-show="!isTesterEditing" class="info-value-content">
+                <span :class="{ 'placeholder-text': !currentTesterName }" class="info-text">
+                  {{ currentTesterName || '--' }}
+                </span>
+                <Button
+                  type="link"
+                  class="edit-btn"
+                  @click="startTesterEditing">
+                  <Icon icon="icon-shuxie" class="text-3.5" />
+                </Button>
+                <Button
+                  v-if="!currentTesterId||currentTesterId!==currentUserId"
+                  size="small"
+                  type="link"
+                  class="assign-to-me-btn"
+                  @click="assignCurrentUserToRole('testerId')">
+                  {{ t('task.detailInfo.personnel.actions.assignToMe') }}
+                </Button>
+              </div>
 
-          <div v-show="!isTesterEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
-            <div>{{ currentTesterName }}</div>
-            <Button
-              type="link"
-              class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-              @click="startTesterEditing">
-              <Icon icon="icon-shuxie" class="text-3.5" />
-            </Button>
-            <Button
-              v-if="!currentTesterId||currentTesterId!==currentUserId"
-              size="small"
-              type="link"
-              class="p-0 h-5 leading-5 ml-1"
-              @click="assignCurrentUserToRole('testerId')">
-              {{ t('task.detailInfo.personnel.actions.assignToMe') }}
-            </Button>
+              <AsyncComponent :visible="isTesterEditing">
+                <SelectUser
+                  v-show="isTesterEditing"
+                  ref="testerSelectRef"
+                  v-model:value="testerSelectValue"
+                  :placeholder="t('task.detailInfo.personnel.placeholders.selectTester')"
+                  allowClear
+                  internal
+                  :defaultOptions="testerDefaultOptions"
+                  :action="`${TESTER}/project/${props.projectId}/member/user`"
+                  :maxlength="80"
+                  class="edit-select"
+                  @change="handleTesterChange"
+                  @blur="handleTesterBlur" />
+              </AsyncComponent>
+            </div>
           </div>
-
-          <AsyncComponent :visible="isTesterEditing">
-            <SelectUser
-              v-show="isTesterEditing"
-              ref="testerSelectRef"
-              v-model:value="testerSelectValue"
-              :placeholder="t('task.detailInfo.personnel.placeholders.selectTester')"
-              allowClear
-              internal
-              :defaultOptions="testerDefaultOptions"
-              :action="`${TESTER}/project/${props.projectId}/member/user`"
-              :maxlength="80"
-              class="left-component"
-              @change="handleTesterChange"
-              @blur="handleTesterBlur" />
-          </AsyncComponent>
         </div>
 
-        <div class="relative flex items-start">
-          <div class="w-22 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.personnel.fields.creator') }}</span>
-            <Colon class="w-1" />
+        <!-- Creator -->
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('task.detailInfo.personnel.fields.creator') }}</span>
+            </div>
+            <div class="info-value">
+              <span class="info-text">{{ currentCreatedByName }}</span>
+            </div>
           </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">{{ currentCreatedByName }}</div>
         </div>
 
-        <div class="relative flex items-start">
-          <div class="w-22 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.personnel.fields.lastModifier') }}</span>
-            <Colon class="w-1" />
+        <!-- Last Modifier -->
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('task.detailInfo.personnel.fields.lastModifier') }}</span>
+            </div>
+            <div class="info-value">
+              <span class="info-text">{{ currentLastModifiedByName }}</span>
+            </div>
           </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">{{ currentLastModifiedByName }}</div>
         </div>
       </div>
     </template>
@@ -504,6 +530,185 @@ const confirmerDefaultOptions = computed(() => {
 </template>
 
 <style scoped>
+/* Main Container */
+.personnel-info-container {
+  padding: 1rem 1.375rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Info Row Layout */
+.info-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  align-items: stretch;
+}
+
+/* Individual Info Item */
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.25rem;
+  min-height: 2rem;
+}
+
+/* Label Styling */
+.info-label {
+  flex-shrink: 0;
+  width: 5rem;
+  display: flex;
+  align-items: center;
+  min-height: 1.5rem;
+}
+
+.info-label span {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #7c8087;
+  line-height: 1.2;
+  word-break: break-word;
+  white-space: normal;
+}
+
+/* Value Styling */
+.info-value {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  min-height: 1.5rem;
+}
+
+.info-text {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #374151;
+  line-height: 1.4;
+  word-break: break-word;
+  white-space: normal;
+}
+
+/* Value Content Container */
+.info-value-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+/* Edit Button */
+.edit-btn {
+  padding: 0.125rem;
+  height: 1.25rem;
+  width: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+}
+
+.edit-btn:hover {
+  background-color: #f3f4f6;
+}
+
+/* Assign to Me Button */
+.assign-to-me-btn {
+  padding: 0.125rem 0.25rem;
+  height: 1.25rem;
+  font-size: 0.625rem;
+  line-height: 1;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+}
+
+.assign-to-me-btn:hover {
+  background-color: #f3f4f6;
+}
+
+/* Edit Select */
+.edit-select {
+  width: 100%;
+  max-width: 20rem;
+  font-size: 0.75rem;
+}
+
+/* Placeholder text styling */
+.placeholder-text {
+  color: #7c8087 !important;
+  font-weight: 400 !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .personnel-info-container {
+    padding: 0.75rem 1rem;
+    gap: 0.25rem;
+  }
+
+  .info-row {
+    gap: 0.25rem;
+  }
+
+  .info-item {
+    gap: 0.25rem;
+  }
+
+  .info-label {
+    width: 4.5rem;
+  }
+
+  .edit-select {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .personnel-info-container {
+    padding: 0.5rem 0.75rem;
+    gap: 0.125rem;
+  }
+
+  .info-label {
+    width: 4rem;
+  }
+
+  .info-label span {
+    font-size: 0.6875rem;
+  }
+
+  .info-text {
+    font-size: 0.6875rem;
+  }
+
+  .assign-to-me-btn {
+    font-size: 0.5625rem;
+    padding: 0.125rem;
+  }
+}
+
+/* Animation for smooth transitions */
+.info-item {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Legacy support */
 .border-none {
   border: none;
 }

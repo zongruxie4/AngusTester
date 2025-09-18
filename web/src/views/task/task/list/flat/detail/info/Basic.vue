@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue';
 import { Button, Tag } from 'ant-design-vue';
-import { AsyncComponent, Colon, Icon, IconTask, Input, Select, Toggle } from '@xcan-angus/vue-ui';
+import { AsyncComponent, Icon, IconTask, Input, Select, Toggle } from '@xcan-angus/vue-ui';
 import { enumUtils, TESTER } from '@xcan-angus/infra';
 import { isEqual } from 'lodash-es';
 import { task } from '@/api/tester';
@@ -362,300 +362,301 @@ const handleVersionBlur = async () => {
     </template>
 
     <template #default>
-      <div class="text-3 leading-5 space-y-2.5 pt-2 pl-5.5">
-        <div class="flex items-start space-x-5">
-          <div class="relative w-1/2 flex items-start">
-            <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
+      <div class="basic-info-container">
+        <!-- Primary Information Row -->
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
               <span>{{ t('task.detailInfo.basic.columns.code') }}</span>
-              <Colon class="w-1" />
             </div>
-
-            <div class="whitespace-pre-wrap break-words break-all">{{ props.dataSource?.code }}</div>
+            <div class="info-value">
+              <span class="info-text">{{ props.dataSource?.code }}</span>
+            </div>
           </div>
 
-          <div class="relative w-1/2 flex items-start">
-            <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
+          <div class="info-item">
+            <div class="info-label">
               <span>{{ t('task.detailInfo.basic.columns.status') }}</span>
-              <Colon class="w-1" />
             </div>
+            <div class="info-value">
+              <div class="flex items-center">
+                <TaskStatus :value="currentTaskStatus" />
+                <span
+                  v-if="isTaskOverdue"
+                  class="overdue-badge">
+                  {{ t('task.detailInfo.basic.columns.overdue') }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-            <div class="flex items-center">
-              <TaskStatus :value="currentTaskStatus" />
-              <span
-                v-if="isTaskOverdue"
-                class="flex-shrink-0 border border-status-error rounded px-0.5 ml-2 mr-2"
-                style="color: rgba(245, 34, 45, 100%);line-height: 16px;">
-                <span class="inline-block transform-gpu scale-90">{{ t('task.detailInfo.basic.columns.overdue') }}</span>
+        <!-- Task Name and Sprint Row -->
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('task.detailInfo.basic.columns.name') }}</span>
+            </div>
+            <div class="info-value">
+              <div v-show="!isTaskNameEditing" class="info-value-content">
+                <span class="info-text">{{ currentTaskName }}</span>
+                <Button
+                  type="link"
+                  class="edit-btn"
+                  @click="startTaskNameEditing">
+                  <Icon icon="icon-shuxie" class="text-3.5" />
+                </Button>
+              </div>
+
+              <AsyncComponent :visible="isTaskNameEditing">
+                <Input
+                  v-show="isTaskNameEditing"
+                  ref="taskNameInputRef"
+                  v-model:value="taskNameInputValue"
+                  :maxlength="200"
+                  trim
+                  class="edit-input"
+                  :placeholder="t('task.detailInfo.basic.columns.namePlaceholder')"
+                  @blur="handleTaskNameBlur"
+                  @pressEnter="handleTaskNameEnter" />
+              </AsyncComponent>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('task.detailInfo.basic.columns.sprint') }}</span>
+            </div>
+            <div class="info-value">
+              <span class="info-text">{{ props.dataSource?.sprintName || '--' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Module and Parent Task Row -->
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('task.detailInfo.basic.columns.module') }}</span>
+            </div>
+            <div class="info-value">
+              <span class="info-text">{{ props.dataSource?.moduleName || '--' }}</span>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('task.detailInfo.basic.columns.parentTask') }}</span>
+            </div>
+            <div class="info-value">
+              <div v-if="!props.dataSource?.parentTaskId" class="info-text">
+                {{ props.dataSource?.parentTaskName || '--' }}
+              </div>
+              <RouterLink
+                v-else
+                target="_self"
+                :to="`/task#task?projectId=${props.projectId}&taskId=${props.dataSource?.parentTaskId}&total=1`"
+                class="info-link">
+                {{ props.dataSource?.parentTaskName || '--' }}
+              </RouterLink>
+            </div>
+          </div>
+        </div>
+
+        <!-- Task Type and Software Version Row -->
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('task.detailInfo.basic.columns.type') }}</span>
+            </div>
+            <div class="info-value">
+              <div v-show="!isTaskTypeEditing" class="info-value-content">
+                <div class="flex items-center">
+                  <IconTask :value="currentTaskType" class="flex-shrink-0" />
+                  <span class="ml-1.5 task-type-text">{{ props.dataSource?.taskType?.message }}</span>
+                  <template v-if="currentTaskType === TaskType.BUG">
+                    <Tag
+                      v-if="props.dataSource?.bugLevel"
+                      color="error"
+                      class="ml-2 text-3 leading-4">
+                      {{ props.dataSource?.bugLevel?.message }}
+                    </Tag>
+                    <Tag
+                      v-if="props.dataSource?.missingBug"
+                      color="error"
+                      class="ml-2 text-3 leading-4">
+                      {{ t('task.detailInfo.basic.columns.missingBug') }}
+                    </Tag>
+                  </template>
+                </div>
+                <Button
+                  type="link"
+                  class="edit-btn"
+                  @click="startTaskTypeEditing">
+                  <Icon icon="icon-shuxie" class="text-3.5" />
+                </Button>
+              </div>
+
+              <AsyncComponent :visible="isTaskTypeEditing">
+                <SelectEnum
+                  v-show="isTaskTypeEditing"
+                  ref="taskTypeSelectRef"
+                  v-model:value="taskTypeSelectValue"
+                  :allowClear="false"
+                  :excludes="taskTypeExcludes"
+                  internal
+                  enumKey="TaskType"
+                  :placeholder="t('task.detailInfo.basic.columns.selectTaskType')"
+                  class="edit-select"
+                  @change="handleTaskTypeChange"
+                  @blur="handleTaskTypeBlur">
+                  <template #option="record">
+                    <div class="flex items-center">
+                      <IconTask :value="record.value as any" class="text-4 flex-shrink-0" />
+                      <span class="ml-2">{{ record.label }}</span>
+                    </div>
+                  </template>
+                </SelectEnum>
+              </AsyncComponent>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('task.detailInfo.basic.columns.softwareVersion') }}</span>
+            </div>
+            <div class="info-value">
+              <template v-if="isVersionEditing">
+                <Select
+                  ref="versionSelectRef"
+                  v-model:value="versionSelectValue"
+                  allowClear
+                  :placeholder="t('task.detailInfo.basic.columns.softwareVersionPlaceholder')"
+                  lazy
+                  class="edit-select"
+                  :action="`${TESTER}/software/version?projectId=${props.projectId}`"
+                  :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN'}]}"
+                  :fieldNames="{value:'name', label: 'name'}"
+                  @blur="handleVersionBlur"
+                  @change="handleVersionChange">
+                </Select>
+              </template>
+              <template v-else>
+                <div class="info-value-content">
+                  <RouterLink
+                    v-if="props.dataSource?.softwareVersion"
+                    class="info-link"
+                    :to="`/task#version?name=${props.dataSource?.softwareVersion}`">
+                    {{ props.dataSource?.softwareVersion }}
+                  </RouterLink>
+                  <span v-else class="info-text">--</span>
+                  <Button
+                    type="link"
+                    class="edit-btn"
+                    @click="startVersionEditing">
+                    <Icon icon="icon-shuxie" class="text-3.5" />
+                  </Button>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+
+        <!-- Priority and Unplanned Row -->
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('task.detailInfo.basic.columns.priority') }}</span>
+            </div>
+            <div class="info-value">
+              <div v-show="!isPriorityEditing" class="info-value-content">
+                <TaskPriority :value="props.dataSource?.priority as any" />
+                <Button
+                  type="link"
+                  class="edit-btn"
+                  @click="startPriorityEditing">
+                  <Icon icon="icon-shuxie" class="text-3.5" />
+                </Button>
+              </div>
+
+              <AsyncComponent :visible="isPriorityEditing">
+                <SelectEnum
+                  v-show="isPriorityEditing"
+                  ref="prioritySelectRef"
+                  v-model:value="prioritySelectValue"
+                  :allowClear="false"
+                  internal
+                  enumKey="Priority"
+                  :placeholder="t('task.detailInfo.basic.columns.selectPriority')"
+                  class="edit-select"
+                  @change="handlePriorityChange as any"
+                  @blur="handlePriorityBlur as any">
+                  <template #option="record">
+                    <TaskPriority :value="record as any" />
+                  </template>
+                </SelectEnum>
+              </AsyncComponent>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('task.detailInfo.basic.columns.unplanned') }}</span>
+            </div>
+            <div class="info-value">
+              <span class="info-text">
+                {{ props.dataSource?.unplanned ? t('task.detailInfo.basic.columns.yes') : t('task.detailInfo.basic.columns.no') }}
               </span>
             </div>
           </div>
         </div>
 
-        <div class="flex items-start space-x-5">
-          <div class="relative w-1/2 flex items-start">
-            <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.basic.columns.name') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <div v-show="!isTaskNameEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
-              <div>{{ currentTaskName }}</div>
-              <Button
-                type="link"
-                class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-                @click="startTaskNameEditing">
-                <Icon icon="icon-shuxie" class="text-3.5" />
-              </Button>
-            </div>
-
-            <AsyncComponent :visible="isTaskNameEditing">
-              <Input
-                v-show="isTaskNameEditing"
-                ref="taskNameInputRef"
-                v-model:value="taskNameInputValue"
-                :maxlength="200"
-                trim
-                class="left-component"
-                :placeholder="t('task.detailInfo.basic.columns.namePlaceholder')"
-                @blur="handleTaskNameBlur"
-                @pressEnter="handleTaskNameEnter" />
-            </AsyncComponent>
-          </div>
-
-          <div class="relative w-1/2 flex items-start">
-            <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.basic.columns.sprint') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <div class="whitespace-pre-wrap break-words break-all">{{ props.dataSource?.sprintName }}</div>
-          </div>
-        </div>
-
-        <div class="flex items-start space-x-5">
-          <div class="relative w-1/2 flex items-start">
-            <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.basic.columns.module') }}</span>
-            </div>
-
-            <div class="font-medium whitespace-pre-wrap break-words break-all">
-              {{ props.dataSource?.moduleName || '--' }}
-            </div>
-          </div>
-
-          <div class="relative w-1/2 flex items-start">
-            <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.basic.columns.parentTask') }}</span>
-            </div>
-
-            <div v-if="!props.dataSource?.parentTaskId" class="font-medium whitespace-pre-wrap break-words break-all">
-              {{ props.dataSource?.parentTaskName || '--' }}
-            </div>
-
-            <RouterLink
-              v-else
-              target="_self"
-              :to="`/task#task?projectId=${props.projectId}&taskId=${props.dataSource?.parentTaskId}&total=1`"
-              style="color:#40a9ff"
-              class="font-medium whitespace-pre-wrap break-words break-all">
-              {{ props.dataSource?.parentTaskName || '--' }}
-            </RouterLink>
-          </div>
-        </div>
-
-        <div class="flex items-start space-x-5">
-          <div class="relative w-1/2 flex items-start">
-            <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.basic.columns.type') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <div v-show="!isTaskTypeEditing" class="flex items-center">
-              <IconTask :value="currentTaskType" class="text-4 flex-shrink-0" />
-              <span class="ml-1.5">{{ props.dataSource?.taskType?.message }}</span>
-              <Button
-                type="link"
-                class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-                @click="startTaskTypeEditing">
-                <Icon icon="icon-shuxie" class="text-3.5" />
-              </Button>
-              <template v-if="currentTaskType === TaskType.BUG">
-                <Tag
-                  v-if="props.dataSource?.bugLevel"
-                  color="error"
-                  class="ml-2 text-3 leading-4">
-                  {{ props.dataSource?.bugLevel?.message }}
-                </Tag>
-                <Tag
-                  v-if="props.dataSource?.missingBug"
-                  color="error"
-                  class="ml-2 text-3 leading-4">
-                  {{ t('task.detailInfo.basic.columns.missingBug') }}
-                </Tag>
-              </template>
-            </div>
-
-            <AsyncComponent :visible="isTaskTypeEditing">
-              <SelectEnum
-                v-show="isTaskTypeEditing"
-                ref="taskTypeSelectRef"
-                v-model:value="taskTypeSelectValue"
-                :allowClear="false"
-                :excludes="taskTypeExcludes"
-                internal
-                enumKey="TaskType"
-                :placeholder="t('task.detailInfo.basic.columns.selectTaskType')"
-                class="left-component max-w-52"
-                @change="handleTaskTypeChange"
-                @blur="handleTaskTypeBlur">
-                <template #option="record">
-                  <div class="flex items-center">
-                    <IconTask :value="record.value as any" class="text-4 flex-shrink-0" />
-                    <span class="ml-2">{{ record.label }}</span>
-                  </div>
-                </template>
-              </SelectEnum>
-            </AsyncComponent>
-          </div>
-
-          <div class="flex items-start space-x-5">
-            <div class="relative w-1/2 flex items-start">
-              <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-                <span>{{ t('task.detailInfo.basic.columns.softwareVersion') }}</span>
-                <Colon class="w-1" />
-              </div>
-              <div class="flex-1 min-w-0">
-                <template v-if="isVersionEditing">
-                  <Select
-                    ref="versionSelectRef"
-                    v-model:value="versionSelectValue"
-                    allowClear
-                    :placeholder="t('task.detailInfo.basic.columns.softwareVersionPlaceholder')"
-                    lazy
-                    class="w-full max-w-60"
-                    :action="`${TESTER}/software/version?projectId=${props.projectId}`"
-                    :params="{filters: [{value: [SoftwareVersionStatus.NOT_RELEASED, SoftwareVersionStatus.RELEASED], key: 'status', op: 'IN'}]}"
-                    :fieldNames="{value:'name', label: 'name'}"
-                    @blur="handleVersionBlur"
-                    @change="handleVersionChange">
-                  </Select>
-                </template>
-                <template v-else>
-                  <div class="flex space-x-1">
-                    <RouterLink
-                      v-if="props.dataSource?.softwareVersion"
-                      class="text-theme-special"
-                      :to="`/task#version?name=${props.dataSource?.softwareVersion}`">
-                      {{ props.dataSource?.softwareVersion }}
-                    </RouterLink>
-                    <template v-else>
-                      --
-                    </template>
-                    <Button
-                      type="link"
-                      class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-                      @click="startVersionEditing">
-                      <Icon icon="icon-shuxie" class="text-3.5" />
-                    </Button>
-                  </div>
-                </template>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex items-start space-x-5">
-          <div class="relative w-1/2 flex items-start">
-            <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.basic.columns.priority') }}</span>
-              <Colon class="w-1" />
-            </div>
-
-            <div v-show="!isPriorityEditing" class="flex items-center">
-              <TaskPriority :value="props.dataSource?.priority as any" />
-              <Button
-                type="link"
-                class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none"
-                @click="startPriorityEditing">
-                <Icon icon="icon-shuxie" class="text-3.5" />
-              </Button>
-            </div>
-
-            <AsyncComponent :visible="isPriorityEditing">
-              <SelectEnum
-                v-show="isPriorityEditing"
-                ref="prioritySelectRef"
-                v-model:value="prioritySelectValue"
-                :allowClear="false"
-                internal
-                enumKey="Priority"
-                :placeholder="t('task.detailInfo.basic.columns.selectPriority')"
-                class="left-component max-w-52"
-                @change="handlePriorityChange as any"
-                @blur="handlePriorityBlur as any">
-                <template #option="record">
-                  <TaskPriority :value="record as any" />
-                </template>
-              </SelectEnum>
-            </AsyncComponent>
-          </div>
-
-          <div class="relative w-1/2 flex items-start">
-            <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-              <span>{{ t('task.detailInfo.basic.columns.unplanned') }}</span>
-              <Colon class="w-1" />
-            </div>
-            <div class="">
-              {{ props.dataSource?.unplanned ? t('task.detailInfo.basic.columns.yes') : t('task.detailInfo.basic.columns.no') }}
-            </div>
-          </div>
-        </div>
-
-        <div class="flex items-start space-x-5">
-          <div class="relative w-1/2 flex items-start">
-            <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
+        <!-- Tags Row -->
+        <div class="info-row">
+          <div class="info-item info-item-full">
+            <div class="info-label">
               <span>{{ t('task.detailInfo.basic.columns.tags') }}</span>
-              <Colon class="w-1" />
             </div>
-
-            <div v-show="!isTagEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
-              <div v-if="currentTags.length" class="flex items-center flex-wrap transform-gpu -translate-y-0.25">
-                <div
-                  v-for="item in currentTags"
-                  :key="item.id"
-                  class="px-2 h-5.5 leading-5 mr-2 mb-2 rounded border border-solid border-border-divider bg-gray-light text-theme-sub-content">
-                  {{ item.name }}
+            <div class="info-value">
+              <div v-show="!isTagEditing" class="info-value-content">
+                <div v-if="currentTags.length" class="tags-container">
+                  <div
+                    v-for="item in currentTags"
+                    :key="item.id"
+                    class="tag-item">
+                    {{ item.name }}
+                  </div>
                 </div>
+                <span v-else class="info-text">--</span>
+                <Button
+                  type="link"
+                  class="edit-btn"
+                  @click="startTagEditing">
+                  <Icon icon="icon-shuxie" class="text-3.5" />
+                </Button>
               </div>
-              <div v-else>--</div>
-              <Button
-                type="link"
-                class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-                @click="startTagEditing">
-                <Icon icon="icon-shuxie" class="text-3.5" />
-              </Button>
-            </div>
 
-            <AsyncComponent :visible="isTagEditing">
-              <Select
-                v-show="isTagEditing"
-                ref="tagSelectRef"
-                v-model:value="selectedTagIdList"
-                :fieldNames="{ label: 'name', value: 'id' }"
-                :maxTagCount="5"
-                :maxTagTextLength="15"
-                :maxTags="5"
-                :allowClear="false"
-                :action="`${TESTER}/tag?projectId=${props.projectId}&fullTextSearch=true`"
-                showSearch
-                internal
-                :placeholder="t('task.detailInfo.basic.columns.tagsPlaceholder')"
-                mode="multiple"
-                class="left-component"
-                :notFoundContent="t('task.detailInfo.basic.columns.tagsNotFound')"
-                @change="handleTagChange"
-                @blur="handleTagBlur" />
-            </AsyncComponent>
+              <AsyncComponent :visible="isTagEditing">
+                <Select
+                  v-show="isTagEditing"
+                  ref="tagSelectRef"
+                  v-model:value="selectedTagIdList"
+                  :fieldNames="{ label: 'name', value: 'id' }"
+                  :maxTagCount="5"
+                  :maxTagTextLength="15"
+                  :maxTags="5"
+                  :allowClear="false"
+                  :action="`${TESTER}/tag?projectId=${props.projectId}&fullTextSearch=true`"
+                  showSearch
+                  internal
+                  :placeholder="t('task.detailInfo.basic.columns.tagsPlaceholder')"
+                  mode="multiple"
+                  class="edit-select"
+                  :notFoundContent="t('task.detailInfo.basic.columns.tagsNotFound')"
+                  @change="handleTagChange"
+                  @blur="handleTagBlur" />
+              </AsyncComponent>
+            </div>
           </div>
         </div>
       </div>
@@ -664,14 +665,239 @@ const handleVersionBlur = async () => {
 </template>
 
 <style scoped>
-.w-1\/2 {
-  width: calc((100% - 20px)/2);
+/* Main Container */
+.basic-info-container {
+  padding: 1rem 1.375rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
-.border-none {
-  border: none;
+/* Info Row Layout */
+.info-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  align-items: start;
 }
 
+.info-item-full {
+  grid-column: 1 / -1;
+}
+
+/* Individual Info Item */
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.125rem;
+  min-height: 2rem;
+}
+
+/* Label Styling */
+.info-label {
+  flex-shrink: 0;
+  width: 5rem;
+  display: flex;
+  align-items: center;
+  min-height: 1.5rem;
+}
+
+.info-label span {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #7c8087;
+  line-height: 1.2;
+  word-break: break-word;
+  white-space: normal;
+}
+
+/* Value Styling */
+.info-value {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  min-height: 1.5rem;
+}
+
+.info-text {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #374151;
+  line-height: 1.4;
+  word-break: break-word;
+  white-space: normal;
+}
+
+.info-link {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #3b82f6;
+  text-decoration: none;
+  line-height: 1.4;
+  word-break: break-word;
+  white-space: normal;
+  transition: color 0.2s ease;
+}
+
+.info-link:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+/* Value Content Container */
+.info-value-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+/* Edit Button */
+.edit-btn {
+  padding: 0.125rem;
+  height: 1.25rem;
+  width: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+}
+
+.edit-btn:hover {
+  background-color: #f3f4f6;
+}
+
+/* Edit Input and Select */
+.edit-input,
+.edit-select {
+  width: 100%;
+  max-width: 20rem;
+  font-size: 0.75rem;
+}
+
+/* Tags Container */
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.tag-item {
+  padding: 0.25rem 0.5rem;
+  height: 1.375rem;
+  line-height: 1.375rem;
+  border-radius: 0.25rem;
+  border: 1px solid #dbeafe;
+  background-color: #eff6ff;
+  color: #6d7ebc;
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Overdue Badge */
+.overdue-badge {
+  flex-shrink: 0;
+  border: 1px solid #ef4444;
+  border-radius: 0.25rem;
+  padding: 0.125rem 0.25rem;
+  margin-left: 0.5rem;
+  color: #ef4444;
+  font-size: 0.75rem;
+  line-height: 1;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .info-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .info-item-full {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .basic-info-container {
+    padding: 0.75rem 1rem;
+    gap: 0.25rem;
+  }
+
+  .info-row {
+    gap: 0.5rem;
+  }
+
+  .info-item {
+    gap: 0.125rem;
+  }
+
+  .info-label {
+    width: 5rem;
+  }
+
+  .edit-input,
+  .edit-select {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .basic-info-container {
+    padding: 0.5rem 0.75rem;
+    gap: 0.125rem;
+  }
+
+  .info-label {
+    width: 4rem;
+  }
+
+  .info-item {
+    gap: 0.0625rem;
+  }
+
+  .info-label span {
+    font-size: 0.6875rem;
+  }
+
+  .info-text,
+  .info-link {
+    font-size: 0.6875rem;
+  }
+}
+
+/* Task Type Text Styling */
+.task-type-text {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #374151;
+}
+
+/* Animation for smooth transitions */
+.info-item {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Legacy support for old positioning */
 .left-component {
   position: absolute;
   top: -4px;
@@ -685,9 +911,4 @@ const handleVersionBlur = async () => {
   left: 98px;
   width: calc(100% - 98px);
 }
-
-/* Allow long label text to wrap and align to top */
-.w-18\.5 { align-items: flex-start !important; }
-.w-24\.5 { align-items: flex-start !important; }
-.w-18\.5 span, .w-24\.5 span { white-space: normal; word-break: break-word; line-height: 1.2; }
 </style>

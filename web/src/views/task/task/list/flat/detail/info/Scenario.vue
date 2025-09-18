@@ -71,7 +71,6 @@ const currentTaskType = computed(() => props.dataSource?.taskType?.value);
 const currentPriority = computed(() => props.dataSource?.priority?.value);
 const currentTags = computed(() => props.dataSource?.tags || []);
 const currentTagIds = computed(() => props.dataSource?.tags?.map(item => item.id) || []);
-const currentEvalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
 const currentEvalWorkload = computed(() => props.dataSource?.evalWorkload);
 const currentActualWorkload = computed(() => props.dataSource?.actualWorkload);
 const isTaskOverdue = computed(() => props.dataSource?.overdue);

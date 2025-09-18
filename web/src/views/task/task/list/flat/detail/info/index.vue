@@ -251,7 +251,7 @@ const layoutClassName = computed(() => {
   .h-full {
     padding-right: 0.75rem;
   }
-  
+
   .space-y-6 > * + * {
     margin-top: 1rem;
   }

@@ -2,7 +2,6 @@
 import { computed, nextTick, ref } from 'vue';
 import { Button } from 'ant-design-vue';
 import { AsyncComponent, Icon, Input, Toggle } from '@xcan-angus/vue-ui';
-import { EvalWorkloadMethod } from '@xcan-angus/infra';
 import { task } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
@@ -42,7 +41,6 @@ const isActualWorkloadEditing = ref(false);
 const actualWorkloadInputValue = ref<string>();
 
 // Computed values
-const currentEvalWorkloadMethod = computed(() => props.dataSource?.evalWorkloadMethod?.value);
 const currentEvalWorkload = computed(() => props.dataSource?.evalWorkload);
 const currentActualWorkload = computed(() => props.dataSource?.actualWorkload);
 
@@ -134,7 +132,9 @@ const handleActualWorkloadEnter = () => {
             <span class="workload-method-label">{{ t('task.detailInfo.basic.columns.evalWorkloadMethod') }}</span>
           </div>
           <div class="workload-method-value">
-            {{ props.dataSource?.evalWorkloadMethod?.message || '--' }}
+            <span :class="{ 'placeholder-text': !props.dataSource?.evalWorkloadMethod?.message }">
+              {{ props.dataSource?.evalWorkloadMethod?.message || '--' }}
+            </span>
           </div>
         </div>
 
@@ -158,7 +158,9 @@ const handleActualWorkloadEnter = () => {
               </div>
 
               <div v-show="!isEvalWorkloadEditing" class="workload-value">
-                {{ currentEvalWorkload || '--' }}
+                <span :class="{ 'placeholder-text': !currentEvalWorkload }">
+                  {{ currentEvalWorkload || '--' }}
+                </span>
               </div>
 
               <AsyncComponent :visible="isEvalWorkloadEditing">
@@ -196,7 +198,9 @@ const handleActualWorkloadEnter = () => {
               </div>
 
               <div v-show="!isActualWorkloadEditing" class="workload-value">
-                {{ currentActualWorkload || '--' }}
+                <span :class="{ 'placeholder-text': !currentActualWorkload }">
+                  {{ currentActualWorkload || '--' }}
+                </span>
               </div>
 
               <AsyncComponent :visible="isActualWorkloadEditing">
@@ -224,7 +228,7 @@ const handleActualWorkloadEnter = () => {
 <style scoped>
 /* Container and Layout */
 .workload-container {
-  padding-top: 0.5rem;
+  padding-top: 1rem;
   padding-left: 1.375rem;
   padding-right: 1.375rem;
   display: flex;
@@ -256,8 +260,8 @@ const handleActualWorkloadEnter = () => {
 
 .workload-method-label {
   font-size: 0.75rem;
-  font-weight: 500;
-  color: #374151;
+  font-weight: 400;
+  color: #7c8087;
 }
 
 .workload-method-value {
@@ -270,6 +274,16 @@ const handleActualWorkloadEnter = () => {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   min-width: 2rem;
+}
+
+/* Placeholder text styling */
+.placeholder-text {
+  color: #7c8087 !important;
+  font-weight: 400 !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: unset !important;
+  background-clip: unset !important;
 }
 
 /* Grid Layout for Workload Values */
@@ -314,8 +328,8 @@ const handleActualWorkloadEnter = () => {
 
 .workload-label {
   font-size: 0.75rem;
-  font-weight: 500;
-  color: #374151;
+  font-weight: 400;
+  color: #7c8087;
 }
 
 .workload-edit-btn {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue';
 import { Button } from 'ant-design-vue';
-import { AsyncComponent, Colon, DatePicker, Icon, Toggle, Tooltip } from '@xcan-angus/vue-ui';
+import { AsyncComponent, DatePicker, Icon, Toggle, Tooltip } from '@xcan-angus/vue-ui';
 import { useI18n } from 'vue-i18n';
 import dayjs, { Dayjs } from 'dayjs';
 import { task } from '@/api/tester';
@@ -139,118 +139,157 @@ const isDateDisabled = (current: Dayjs) => {
     </template>
 
     <template #default>
-      <div class="text-3 leading-5 space-y-2.5 pt-2 pl-5.5">
-        <div class="relative flex items-start">
-          <div class="w-25 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.date.fields.deadline') }}</span>
-            <Colon class="w-1" />
-          </div>
+      <div class="date-info-container">
+        <!-- Deadline Row -->
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('task.detailInfo.date.fields.deadline') }}</span>
+            </div>
+            <div class="info-value">
+              <div v-show="!isDeadlineEditing" class="info-value-content">
+                <span :class="{ 'placeholder-text': !currentDeadlineDate }" class="info-text">
+                  {{ currentDeadlineDate || '--' }}
+                </span>
+                <Button
+                  type="link"
+                  class="edit-btn"
+                  @click="startDeadlineDateEditing">
+                  <Icon icon="icon-shuxie" class="text-3.5" />
+                </Button>
+              </div>
 
-          <div v-show="!isDeadlineEditing" class="flex items-start whitespace-pre-wrap break-words break-all">
-            <div>{{ currentDeadlineDate }}</div>
-            <Button
-              type="link"
-              class="flex-shrink-0 ml-2 p-0 h-3.5 leading-3.5 border-none transform-gpu translate-y-0.75"
-              @click="startDeadlineDateEditing">
-              <Icon icon="icon-shuxie" class="text-3.5" />
-            </Button>
+              <AsyncComponent :visible="isDeadlineEditing">
+                <Tooltip
+                  :visible="isDateValidationError"
+                  :title="dateValidationErrorMessage"
+                  placement="left"
+                  arrowPointAtCenter>
+                  <DatePicker
+                    v-show="isDeadlineEditing"
+                    ref="deadlineDatePickerRef"
+                    v-model:value="deadlineDateInputValue"
+                    :error="isDateValidationError"
+                    :allowClear="false"
+                    :showNow="false"
+                    :disabledDate="isDateDisabled"
+                    :showTime="{ hideDisabledOptions: true, format: TIME_FORMAT }"
+                    type="date"
+                    size="small"
+                    class="edit-date-picker"
+                    showToday
+                    @change="handleDeadlineDateChange"
+                    @blur="handleDeadlineDateBlur" />
+                </Tooltip>
+              </AsyncComponent>
+            </div>
           </div>
-
-          <AsyncComponent :visible="isDeadlineEditing">
-            <Tooltip
-              :visible="isDateValidationError"
-              :title="dateValidationErrorMessage"
-              placement="left"
-              arrowPointAtCenter>
-              <DatePicker
-                v-show="isDeadlineEditing"
-                ref="deadlineDatePickerRef"
-                v-model:value="deadlineDateInputValue"
-                :error="isDateValidationError"
-                :allowClear="false"
-                :showNow="false"
-                :disabledDate="isDateDisabled"
-                :showTime="{ hideDisabledOptions: true, format: TIME_FORMAT }"
-                type="date"
-                size="small"
-                class="left-component"
-                showToday
-                @change="handleDeadlineDateChange"
-                @blur="handleDeadlineDateBlur" />
-            </Tooltip>
-          </AsyncComponent>
         </div>
 
-        <div class="relative flex items-start">
-          <div class="w-25 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.date.fields.startTime') }}</span>
-            <Colon class="w-1" />
+        <!-- Process Dates -->
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('task.detailInfo.date.fields.startTime') }}</span>
+            </div>
+            <div class="info-value">
+              <span :class="{ 'placeholder-text': !taskStartDate }" class="info-text">
+                {{ taskStartDate || '--' }}
+              </span>
+            </div>
           </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">{{ taskStartDate || '--' }}</div>
         </div>
 
-        <div class="relative flex items-start">
-          <div class="w-25 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.date.fields.processTime') }}</span>
-            <Colon class="w-1" />
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('task.detailInfo.date.fields.processTime') }}</span>
+            </div>
+            <div class="info-value">
+              <span :class="{ 'placeholder-text': !taskProcessedDate }" class="info-text">
+                {{ taskProcessedDate || '--' }}
+              </span>
+            </div>
           </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">{{ taskProcessedDate || '--' }}</div>
         </div>
 
-        <div class="relative flex items-start">
-          <div class="w-25 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.date.fields.confirmTime') }}</span>
-            <Colon class="w-1" />
+        <!-- Completion Dates -->
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('task.detailInfo.date.fields.confirmTime') }}</span>
+            </div>
+            <div class="info-value">
+              <span :class="{ 'placeholder-text': !taskConfirmedDate }" class="info-text">
+                {{ taskConfirmedDate || '--' }}
+              </span>
+            </div>
           </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">{{ taskConfirmedDate || '--' }}</div>
         </div>
 
-        <div class="relative flex items-start">
-          <div class="w-25 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.date.fields.completeTime') }}</span>
-            <Colon class="w-1" />
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('task.detailInfo.date.fields.completeTime') }}</span>
+            </div>
+            <div class="info-value">
+              <span :class="{ 'placeholder-text': !taskCompletedDate }" class="info-text">
+                {{ taskCompletedDate || '--' }}
+              </span>
+            </div>
           </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">{{ taskCompletedDate || '--' }}</div>
         </div>
 
-        <div class="relative flex items-start">
-          <div class="w-25 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.date.fields.cancelTime') }}</span>
-            <Colon class="w-1" />
+        <!-- Other Dates -->
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('task.detailInfo.date.fields.cancelTime') }}</span>
+            </div>
+            <div class="info-value">
+              <span :class="{ 'placeholder-text': !taskCanceledDate }" class="info-text">
+                {{ taskCanceledDate || '--' }}
+              </span>
+            </div>
           </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">{{ taskCanceledDate || '--' }}</div>
         </div>
 
-        <div class="relative flex items-start">
-          <div class="w-25 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.date.fields.execTime') }}</span>
-            <Colon class="w-1" />
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('task.detailInfo.date.fields.execTime') }}</span>
+            </div>
+            <div class="info-value">
+              <span :class="{ 'placeholder-text': !taskExecDate }" class="info-text">
+                {{ taskExecDate || '--' }}
+              </span>
+            </div>
           </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">{{ taskExecDate || '--' }}</div>
         </div>
 
-        <div class="relative flex items-start">
-          <div class="w-25 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.date.fields.createTime') }}</span>
-            <Colon class="w-1" />
+        <!-- System Dates -->
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('task.detailInfo.date.fields.createTime') }}</span>
+            </div>
+            <div class="info-value">
+              <span class="info-text">{{ taskCreatedDate }}</span>
+            </div>
           </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">{{ taskCreatedDate }}</div>
         </div>
 
-        <div class="relative flex items-start">
-          <div class="w-25 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>{{ t('task.detailInfo.date.fields.lastModifyTime') }}</span>
-            <Colon class="w-1" />
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">
+              <span>{{ t('task.detailInfo.date.fields.lastModifyTime') }}</span>
+            </div>
+            <div class="info-value">
+              <span :class="{ 'placeholder-text': !taskLastModifiedDate }" class="info-text">
+                {{ taskLastModifiedDate || '--' }}
+              </span>
+            </div>
           </div>
-
-          <div class="whitespace-pre-wrap break-words break-all">{{ taskLastModifiedDate || '--' }}</div>
         </div>
       </div>
     </template>
@@ -258,6 +297,164 @@ const isDateDisabled = (current: Dayjs) => {
 </template>
 
 <style scoped>
+/* Main Container */
+.date-info-container {
+  padding: 1rem 1.375rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Info Row Layout */
+.info-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+/* Individual Info Item */
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  min-height: 2rem;
+}
+
+/* Label Styling */
+.info-label {
+  flex-shrink: 0;
+  width: 5rem;
+  display: flex;
+  align-items: center;
+  min-height: 1.5rem;
+}
+
+.info-label span {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #7c8087;
+  line-height: 1.2;
+  word-break: break-word;
+  white-space: normal;
+}
+
+/* Value Styling */
+.info-value {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  min-height: 1.5rem;
+}
+
+.info-text {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #374151;
+  line-height: 1.4;
+  word-break: break-word;
+  white-space: normal;
+}
+
+/* Value Content Container */
+.info-value-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+/* Edit Button */
+.edit-btn {
+  padding: 0.125rem;
+  height: 1.25rem;
+  width: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+}
+
+.edit-btn:hover {
+  background-color: #f3f4f6;
+}
+
+/* Edit Date Picker */
+.edit-date-picker {
+  width: 100%;
+  max-width: 20rem;
+  font-size: 0.75rem;
+}
+
+/* Placeholder text styling */
+.placeholder-text {
+  color: #7c8087 !important;
+  font-weight: 400 !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .date-info-container {
+    padding: 0.75rem 1rem;
+    gap: 0.25rem;
+  }
+
+  .info-row {
+    gap: 0.25rem;
+  }
+
+  .info-item {
+    gap: 0.25rem;
+  }
+
+  .info-label {
+    width: 4.5rem;
+  }
+
+  .edit-date-picker {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .date-info-container {
+    padding: 0.5rem 0.75rem;
+    gap: 0.125rem;
+  }
+
+  .info-label {
+    width: 4rem;
+  }
+
+  .info-label span {
+    font-size: 0.6875rem;
+  }
+
+  .info-text {
+    font-size: 0.6875rem;
+  }
+}
+
+/* Animation for smooth transitions */
+.info-item {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Legacy support */
 .border-none {
   border: none;
 }

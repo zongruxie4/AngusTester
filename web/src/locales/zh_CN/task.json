@@ -403,7 +403,7 @@
           "workload": "工作量"
         },
         "metrics": {
-          "estimatedTime": "计划外任务预计耗时",
+          "estimatedTime": "未计划任务预计耗时",
           "hours": "小时"
         }
       },
@@ -688,7 +688,7 @@
         "tags": "标签",
         "oneTimePass": "一次性通过",
         "softwareVersion": "软件版本",
-        "unplannedTask": "计划外任务",
+        "unplannedTask": "未计划的",
         "placeholders": {
           "selectOrSearchSprint": "选择或查询迭代",
           "selectOrSearchModule": "选择或查模块",
@@ -761,7 +761,7 @@
         "tags": "标签",
         "oneTimePass": "一次性通过",
         "softwareVersion": "软件版本",
-        "unplannedTask": "计划外任务",
+        "unplannedTask": "未计划的",
         "placeholders": {
           "taskName": "任务名称，最大支持200字符",
           "selectOrSearchSprint": "选择或查询迭代",
@@ -795,7 +795,7 @@
         "tags": "标签",
         "oneTimePass": "一次性通过",
         "softwareVersion": "软件版本",
-        "unplannedTask": "计划外任务",
+        "unplannedTask": "未计划的",
         "placeholders": {
           "taskName": "任务名称，最大支持200字符",
           "selectOrSearchSprint": "选择或查询迭代",
@@ -1874,8 +1874,7 @@
           "placeholder": "支持值0.1~1000，最多2位小数",
           "storyPointTip": "工作任务量、综合难度、复杂度等的评估值。",
           "workloadTip": "工作评估所花费的时间，以小时为单位计算。",
-          "actualStoryPointTip": "工作任务量、综合难度、复杂度等的实际值。",
-          "actualWorkloadTip": "工作实际所花费的时间，以小时为单位计算。",
+          "actualWorkloadTip": "工作任务量、综合难度、复杂度等的实际值。",
           "rule": "请输入评估工作量"
         },
         "softwareVersion": "软件版本",
@@ -2123,7 +2122,7 @@
           "totalProcessCount": "总处理次数",
           "softwareVersion": "软件版本",
           "softwareVersionPlaceholder": "请选择所属版本",
-          "unplanned": "计划外任务",
+          "unplanned": "未计划的",
           "tags": "标签",
           "tagsPlaceholder": "最多可添加5个标签",
           "tagsNotFound": "请联系管理员，前往\"应用管理\"-\"任务管理\"-\"任务标签\"配置任务标签。",
@@ -2223,7 +2222,7 @@
           "totalProcessCount": "总处理次数",
           "softwareVersion": "软件版本",
           "softwareVersionPlaceholder": "请选择所属版本",
-          "unplanned": "计划外任务",
+          "unplanned": "未计划的",
           "tags": "标签",
           "tagsPlaceholder": "最多可添加5个标签",
           "tagsNotFound": "请联系管理员，前往\"应用管理\"-\"任务管理\"-\"任务标签\"配置任务标签。",
@@ -2260,7 +2259,7 @@
           "onePass": "一次性通过",
           "softwareVersion": "软件版本",
           "softwareVersionPlaceholder": "请选择所属版本",
-          "unplanned": "计划外任务",
+          "unplanned": "未计划的",
           "tags": "标签",
           "tagsPlaceholder": "最多可添加5个标签",
           "tagsNotFound": "请联系管理员，前往\"应用管理\"-\"任务管理\"-\"任务标签\"配置任务标签。",

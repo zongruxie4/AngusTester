@@ -1714,13 +1714,13 @@
         "failCount": "Fail Count",
         "processCount": "Processing Count",
         "addTime": "Add Time",
-        "deadline": "Deadline",
+        "deadline": "Deadline Time",
         "startTime": "Start Time",
         "processTime": "Process Time",
         "confirmTime": "Confirm Time",
         "completeTime": "Complete Time",
         "cancelTime": "Cancel Time",
-        "execTime": "Execution Time",
+        "execTime": "Execute Time",
         "lastModifyTime": "Modify Time",
         "operation": "Operation"
       },
@@ -2201,13 +2201,13 @@
       "date": {
         "title": "Date",
         "fields": {
-          "deadline": "Deadline",
+          "deadline": "Deadline Time",
           "startTime": "Start Time",
           "processTime": "Process Time",
           "confirmTime": "Confirm Time",
           "completeTime": "Complete Time",
           "cancelTime": "Cancel Time",
-          "execTime": "Execution Time",
+          "execTime": "Execute Time",
           "createTime": "Create Time",
           "lastModifyTime": "Modify Time"
         },

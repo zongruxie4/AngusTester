@@ -57,22 +57,22 @@ const getOnePassTextClass = () => {
           <div class="process-item process-item-wide">
             <div class="process-item-header">
               <div class="process-icon-wrapper">
-                <Icon 
-                  icon="icon-yicixingtongguoshu1" 
-                  :class="getOnePassIconClass()" 
+                <Icon
+                  icon="icon-yicixingtongguoshu1"
+                  :class="getOnePassIconClass()"
                   class="text-3.5" />
               </div>
               <span class="process-label">{{ t('task.detailInfo.basic.columns.onePass') }}</span>
             </div>
             <div class="process-value">
-              <span 
-                :class="getOnePassTextClass()"
+              <span
+                :class="[getOnePassTextClass(), { 'placeholder-text': onePassStatusText === '--' }]"
                 class="font-semibold">
                 {{ onePassStatusText }}
               </span>
             </div>
           </div>
-          
+
           <!-- Total Process Count -->
           <div class="process-item">
             <div class="process-item-header">
@@ -81,7 +81,11 @@ const getOnePassTextClass = () => {
               </div>
               <span class="process-label">{{ t('task.detailInfo.basic.columns.totalProcessCount') }}</span>
             </div>
-            <div class="process-value">{{ totalProcessCount }}</div>
+            <div class="process-value">
+              <span :class="{ 'placeholder-text': totalProcessCount === 0 }">
+                {{ totalProcessCount || '--' }}
+              </span>
+            </div>
           </div>
 
           <!-- Failed Process Count -->
@@ -92,10 +96,13 @@ const getOnePassTextClass = () => {
               </div>
               <span class="process-label">{{ t('task.detailInfo.basic.columns.failedProcessCount') }}</span>
             </div>
-            <div class="process-value">{{ failedProcessCount }}</div>
+            <div class="process-value">
+              <span :class="{ 'placeholder-text': failedProcessCount === 0 }">
+                {{ failedProcessCount || '--' }}
+              </span>
+            </div>
           </div>
         </div>
-
       </div>
     </template>
   </Toggle>
@@ -104,7 +111,7 @@ const getOnePassTextClass = () => {
 <style scoped>
 /* Container and Layout */
 .process-times-container {
-  padding-top: 0.5rem;
+  padding-top: 1rem;
   padding-left: 1.375rem;
   padding-right: 1.375rem;
   display: flex;
@@ -161,8 +168,8 @@ const getOnePassTextClass = () => {
 
 .process-label {
   font-size: 0.75rem;
-  font-weight: 500;
-  color: #374151;
+  font-weight: 400;
+  color: #7c8087;
   line-height: 1.2;
 }
 
@@ -175,6 +182,11 @@ const getOnePassTextClass = () => {
   padding-left: 0.25rem;
 }
 
+/* Placeholder text styling */
+.placeholder-text {
+  color: #7c8087 !important;
+  font-weight: 400 !important;
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -182,7 +194,7 @@ const getOnePassTextClass = () => {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto auto;
   }
-  
+
   .process-item-wide {
     grid-column: 1;
   }
@@ -193,21 +205,21 @@ const getOnePassTextClass = () => {
     padding-left: 0.75rem;
     padding-right: 0.75rem;
   }
-  
+
   .process-item {
     padding: 0.375rem;
   }
-  
+
   .process-grid {
     gap: 0.5rem;
   }
-  
+
   .process-icon-wrapper {
     width: 1rem;
     height: 1rem;
     margin-right: 0.25rem;
   }
-  
+
   .process-value {
     font-size: 0.75rem;
   }
