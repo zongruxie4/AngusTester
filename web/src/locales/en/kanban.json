@@ -16,7 +16,7 @@
     "selectGroup": "Select group",
     "viewType": {
       "cto": "CTO",
-      "effectiveness": "Effectiveness Statistics",
+      "effectiveness": "Effectiveness",
       "dataAssets": "Data Assets"
     },
     "effectiveness": {
@@ -39,8 +39,8 @@
       "categoryStatistics": "Category Statistics",
       "reviewStatusDistribution": "Review Status Distribution",
       "burnDownChart": "Burn Down Chart",
-      "taskNumber": "Task Number",
-      "testNumber": "Test Number",
+      "taskNumber": "Task Count",
+      "testNumber": "Test Count",
       "targetCount": "Completed Count",
       "workloadNumber": "Workload",
       "ranking": "Ranking",
