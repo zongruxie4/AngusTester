@@ -54,6 +54,7 @@
     "cancel": "取消",
     "confirm": "确认",
     "clone": "克隆",
+    "move": "移动",
     "import": "导入",
     "export": "导出",
     "download": "下载",
@@ -72,7 +73,6 @@
     "saveAndAdd": "保存并添加下一条",
     "stop": "终止",
     "deleteAll": "全部删除",
-    "move": "移动",
     "more": "更多",
     "expand": "展开",
     "collapse": "收起"

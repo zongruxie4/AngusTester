@@ -771,7 +771,6 @@ const zoomInFlagCacheKey = computed(() => {
   return `${props.userInfo?.id}${props?.projectId}${btoa('modalSize')}`;
 });
 
-// Utility Functions
 /**
  * <p>Get popup container for dropdowns</p>
  * <p>Returns document body as popup container for better positioning</p>
@@ -1482,14 +1481,15 @@ const getPopupContainer = () => {
 :deep(.ant-form-item-label) {
   max-width: 120px;
   font-size: 12px;
+  font-weight: 600;
 }
 
 :deep(.ant-form-item:not(.ant-form-item-has-error)) {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 :deep(.ant-form-item .ant-form-item-has-error) {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 :deep(.ant-form-item-with-help .ant-form-item-explain) {

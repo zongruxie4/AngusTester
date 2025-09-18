@@ -811,12 +811,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>
-              {{
-                evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                  ? t('backlog.info.scenario.evalWorkload') : t('backlog.info.scenario.evalWorkload')
-              }}
-            </span>
+            <span>{{ t('backlog.info.scenario.evalWorkload') }}</span>
             <Colon class="w-1" />
           </div>
 
@@ -848,12 +843,7 @@ onMounted(() => {
 
         <div class="flex items-start">
           <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
-            <span>
-              {{
-                evalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                  ? t('backlog.info.scenario.evalWorkload') : t('backlog.info.scenario.evalWorkload')
-              }}
-            </span>
+            <span>{{ t('backlog.info.scenario.evalWorkload') }}</span>
             <Colon class="w-1" />
           </div>
 

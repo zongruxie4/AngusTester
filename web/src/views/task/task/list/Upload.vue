@@ -100,10 +100,10 @@ const validateFileSelection = async () => {
 /**
  * Load strategy options for duplicate handling
  */
-const loadStrategyOptions = () => {
+function loadStrategyOptions() {
   const data = enumUtils.enumToMessages(StrategyWhenDuplicated);
   strategyOptions.value = data.map(i => ({ value: i.value, label: i.message }));
-};
+}
 
 /**
  * Close the modal dialog
@@ -138,12 +138,14 @@ const submitImportForm = () => {
   <Modal
     :title="t('task.upload.title')"
     :visible="props.visible"
+    class="upload-modal"
     @cancel="closeModal"
     @ok="submitImportForm">
     <Form
       ref="formRef"
       :model="formData"
-      size="small">
+      size="small"
+      class="upload-form">
       <FormItem
         v-if="proTypeShowMap.showSprint && props.visible"
         :label="t('task.upload.form.iteration')"
@@ -156,7 +158,8 @@ const submitImportForm = () => {
           :defaultActiveFirstOption="true"
           :lazy="false"
           :placeholder="t('task.upload.form.selectSprint')"
-          :fieldNames="{value: 'id', label: 'name'}" />
+          :fieldNames="{value: 'id', label: 'name'}"
+          class="w-full" />
       </FormItem>
 
       <FormItem
@@ -169,22 +172,22 @@ const submitImportForm = () => {
             :multiple="false"
             :showUploadList="false"
             :customRequest="handleFileSelection"
-            class="text-3 leading-5">
-            <div class="flex flex-col items-center justify-center text-3 leading-5">
-              <Icon icon="icon-shangchuan" class="text-5 text-text-link" />
-              <div class="mt-1 mb-1.5 text-text-link">{{ t('task.upload.form.selectFile') }}</div>
-              <div class="text-theme-sub-content">{{ t('task.upload.form.uploadTip') }}</div>
+            class="text-3 leading-5 upload-dragger">
+            <div class="flex flex-col items-center justify-center text-3 leading-5 upload-dragger-inner">
+              <Icon icon="icon-shangchuan" class="text-5 text-text-link upload-icon" />
+              <div class="mt-1 mb-1.5 text-text-link upload-title">{{ t('task.upload.form.selectFile') }}</div>
+              <div class="text-theme-sub-content upload-subtitle">{{ t('task.upload.form.uploadTip') }}</div>
             </div>
           </UploadDragger>
         </Spin>
 
         <div
           v-show="!!formData.file"
-          class="px-3.5 border rounded">
-          <div class="flex py-2 text-3 leading-3">
-            <div :title="formData.file?.name" class="flex-2 truncate">{{ formData.file?.name }}</div>
-            <div class="flex-1 text-right">{{ formatBytes(Number(formData.file?.size)) }}</div>
-            <div class="flex-1 text-right text-gray-500">
+          class="file-card">
+          <div class="file-row">
+            <div :title="formData.file?.name" class="file-name truncate">{{ formData.file?.name }}</div>
+            <div class="file-size">{{ formatBytes(Number(formData.file?.size)) }}</div>
+            <div class="file-actions">
               <Icon
                 icon="icon-qingchu"
                 class="cursor-pointer ml-2 text-3.5 text-theme-text-hover"
@@ -193,7 +196,7 @@ const submitImportForm = () => {
           </div>
         </div>
 
-        <div class="text-right">
+        <div class="text-right mt-2">
           <Button
             type="link"
             size="small"
@@ -210,9 +213,56 @@ const submitImportForm = () => {
         required>
         <RadioGroup
           v-model:value="formData.strategyWhenDuplicated"
-          :options="strategyOptions">
+          :options="strategyOptions"
+          class="strategy-group">
         </RadioGroup>
       </FormItem>
     </Form>
   </Modal>
 </template>
+
+<style scoped>
+.upload-modal :deep(.ant-modal-body) {
+  padding: 16px 20px;
+}
+
+.upload-form :deep(.ant-form-item-label) {
+  font-weight: 600;
+}
+
+.upload-form :deep(.ant-form-item) {
+  margin-bottom: 12px;
+}
+
+.upload-dragger {
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  background: #fafafa;
+  transition: all .2s ease;
+}
+
+.upload-dragger:hover {
+  background: #f5faff;
+  border-color: #93c5fd;
+}
+
+.upload-dragger-inner { padding: 18px 8px; }
+.upload-icon { color: #3b82f6; }
+.upload-title { font-weight: 600; }
+.upload-subtitle { font-size: 12px; color: #6b7280; }
+
+.file-card {
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background: #fff;
+}
+.file-row { display: flex; align-items: center; gap: 8px; }
+.file-name { flex: 2; }
+.file-size { flex: 1; text-align: right; color: #6b7280; }
+.file-actions { flex: 1; text-align: right; color: #9ca3af; }
+
+.strategy-group :deep(.ant-radio-wrapper) {
+  margin-right: 16px;
+}
+</style>

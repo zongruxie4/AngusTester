@@ -151,7 +151,7 @@ public class FuncBaselineCaseFacadeImpl implements FuncBaselineCaseFacade {
     BizAssert.assertTrue(page.getTotal() <= MAX_REPORT_ROWS,
         EXPORT_ROW_OVERT_LIMIT_CODE, EXPORT_ROW_OVERT_LIMIT_T, new Object[]{MAX_REPORT_ROWS});
     List<FuncCaseExportListVo> data = page.getList().stream().map(FuncCaseAssembler::toListVo)
-        .toList();
+        .collect(Collectors.toList());
     while (page.getList().size() >= 200) {
       dto.setPageNo(dto.getPageNo() + 1);
       page = list(true, baselineId, dto);
