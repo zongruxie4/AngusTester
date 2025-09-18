@@ -851,7 +851,8 @@ const searchOptions = [
   {
     type: 'date-range',
     valueKey: 'createdDate',
-    placeholder: t('functionAnalysis.searchPanel.searchOptions.createdDatePlaceholder'),
+    placeholder: [t('functionAnalysis.searchPanel.searchOptions.createdDatePlaceholder[0]'),
+    t('functionAnalysis.searchPanel.searchOptions.createdDatePlaceholder[1]')],
     showTime: true
   }
 ];
