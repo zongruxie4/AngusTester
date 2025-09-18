@@ -411,6 +411,7 @@ export interface ChartConfig {
     left?: string;
     right?: string;
     orient: string;
+    font?: string;
     itemHeight: number;
     itemWidth: number;
     itemGap: number;

@@ -256,7 +256,6 @@ export const createOverdueAssessmentConfig = (): ChartConfig => {
     left: '20%',
     bottom: 0,
     z: 0,
-    font: '12px',
     silent: true,
     invisible: false,
     style: {
