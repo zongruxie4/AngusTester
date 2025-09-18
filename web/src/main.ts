@@ -5,11 +5,13 @@ import store from '@/store';
 import { enumNamespaceMap } from '@/enums/enums';
 import { localeBundles } from '@/utils/locale';
 
+
+import '@xcan-angus/vue-ui/style.css';
 import 'tailwindcss/base.css';
 import 'tailwindcss/components.css';
 import 'tailwindcss/utilities.css';
 import '@xcan-angus/frappe-gantt/style.css';
-import '@xcan-angus/vue-ui/style.css';
+
 
 // Constants
 const SUPPORTED_LOCALES = ['en', 'zh_CN'] as const;

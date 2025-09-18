@@ -1225,8 +1225,8 @@ const getReferencedTaskCount = (type = 'TASK') => {
           v-if="isLargePageLayout === false || isLargePageLayout === true"
           v-model:loading="isLoading"
           :projectId="props.projectId"
-          :userInfo="{ ...props.userInfo, fullName: '' }"
-          :appInfo="{ ...props.appInfo, fullName: '' }"
+          :userInfo="{ ...props.userInfo }"
+          :appInfo="{ ...props.appInfo }"
           :dataSource="currentTaskInfo"
           :largePageLayout="isLargePageLayout"
           @change="handleBasicInfoChange" />

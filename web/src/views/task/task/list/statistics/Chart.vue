@@ -35,13 +35,13 @@ const TestTypeChart = defineAsyncComponent(() => import('./TestTypeChart.vue'));
 </template>
 <style scoped>
 .chart-container {
-  width: 125px;
+  @apply w-125;
   flex-shrink: 0;
   display: flex;
   align-items: center;
 }
 
 .chart-item {
-  width: calc((100% - 0px) / 2);
+  width: calc(100% / 2);
 }
 </style>

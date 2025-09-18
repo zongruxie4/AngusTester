@@ -1367,7 +1367,8 @@
           "apiTest": "接口测试",
           "functional": "功能",
           "perf": "性能",
-          "stability": "稳定性"
+          "stability": "稳定性",
+          "scenarioTest": "场景测试"
         }
       },
       "columns": {
