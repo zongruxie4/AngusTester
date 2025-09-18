@@ -80,7 +80,8 @@ export default class API {
   }
 
   loadApis (params: any, axiosConfig = {}): Promise<[Error | null, any]> {
-    return http.get(`${baseUrl}/${params.id}/apis`, { ...params, fullTextSearch: true }, axiosConfig);
+    const {id, ...otherParams} = params;
+    return http.get(`${baseUrl}/${id}/apis`, { ...otherParams, fullTextSearch: true }, axiosConfig);
   }
 
   resetTestTask (id: string): Promise<[Error | null, any]> {

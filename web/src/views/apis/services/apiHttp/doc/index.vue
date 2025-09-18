@@ -43,7 +43,7 @@ onMounted(async () => {
   <div class="">
     <rapi-doc
       v-if="docOrigin"
-      :specUrl="`${docOrigin}${isPrivate ? `/${API}/${VERSION}` : TESTER}/apis/${props.id}/openapi/export?format=yaml&access_token=${accessToken}`"
+      :spec-url="`${docOrigin}${isPrivate ? `/${API}/${VERSION}` : TESTER}/apis/${props.id}/openapi/export?format=yaml&access_token=${accessToken}`"
       allowSpecFileDownload="false"
       allowSpecFileLoad="false"
       allowSpecUrlLoad="false"

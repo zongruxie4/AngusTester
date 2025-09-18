@@ -68,8 +68,8 @@ defineExpose({
   <div v-if="props.mode === 'UI'">
     <rapi-doc
       v-if="docOrigin"
-      :specUrl="openapiMetaDataStr"
-      specIsContent="true"
+      :spec-url="openapiMetaDataStr"
+      spec-is-content="true"
       theme="light"
       renderStyle="focused"
       headerColor="#fff"
