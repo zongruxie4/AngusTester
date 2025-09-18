@@ -180,8 +180,4 @@ onMounted(() => {
   justify-content: space-between;
   padding: 0;
 }
-
-.statistics-cards {
-  max-width: 1100px;
-}
 </style>
