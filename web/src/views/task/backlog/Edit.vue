@@ -1236,19 +1236,11 @@ const getPopupContainer = () => {
             name="evalWorkload"
             :rules="{ required: formState.actualWorkload, validator: validateEvaluationWorkload, trigger: 'change' }">
             <template #label>
-              {{
-                currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                  ? t('backlog.editForm.labels.evalWorkload')
-                  : t('backlog.editForm.labels.evalWorkload')
-              }}
+              {{ t('backlog.editForm.labels.evalWorkload') }}
               <Popover placement="rightTop">
                 <template #content>
                   <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                    {{
-                      currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                        ? t('backlog.editForm.labels.evalWorkload')
-                        : t('backlog.editForm.labels.evalWorkload')
-                    }}
+                    {{ t('backlog.editForm.labels.evalWorkload') }}
                   </div>
                 </template>
                 <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />
@@ -1268,19 +1260,11 @@ const getPopupContainer = () => {
           <template v-if="!!props.taskId">
             <FormItem name="actualWorkload">
               <template #label>
-                {{
-                  currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                    ? t('backlog.editForm.labels.evalWorkload')
-                    : t('backlog.editForm.labels.evalWorkload')
-                }}
+                {{ t('backlog.editForm.labels.evalWorkload') }}
                 <Popover placement="rightTop">
                   <template #content>
                     <div class="text-3 text-theme-sub-content max-w-75 leading-4">
-                      {{
-                        currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                          ? t('backlog.editForm.labels.evalWorkload')
-                          : t('backlog.editForm.labels.evalWorkload')
-                      }}
+                      {{ t('backlog.editForm.labels.evalWorkload') }}
                     </div>
                   </template>
                   <Icon icon="icon-tishi1" class="text-tips ml-1 cursor-pointer text-3.5" />

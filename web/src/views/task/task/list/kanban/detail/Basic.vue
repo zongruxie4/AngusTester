@@ -864,8 +864,7 @@ onMounted(() => {
         <div class="info-row">
           <div class="info-label">
             <span>
-              {{ currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                ? t('task.detailInfo.basic.columns.evalWorkload') : t('task.detailInfo.basic.columns.evalWorkload') }}
+              {{ t('task.detailInfo.basic.columns.evalWorkload') }}
             </span>
           </div>
           <div class="info-value">
@@ -899,8 +898,7 @@ onMounted(() => {
         <div class="info-row">
           <div class="info-label">
             <span>
-              {{ currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                ? t('task.detailInfo.basic.columns.actualWorkload') : t('task.detailInfo.basic.columns.actualWorkload') }}
+              {{ t('task.detailInfo.basic.columns.actualWorkload') }}
             </span>
           </div>
           <div class="info-value">

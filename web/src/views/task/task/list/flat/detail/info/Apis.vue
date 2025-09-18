@@ -567,9 +567,7 @@ const onePassStatusText = computed(() => {
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
               <span>
-                {{ currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                  ? t('task.detailInfo.apis.columns.evalWorkload')
-                  : t('task.detailInfo.apis.columns.evalWorkload') }}
+                {{ t('task.detailInfo.apis.columns.evalWorkload') }}
               </span>
               <Colon class="w-1" />
             </div>
@@ -651,9 +649,7 @@ const onePassStatusText = computed(() => {
           <div class="relative w-1/2 flex items-start">
             <div class="w-18.5 flex items-center whitespace-nowrap flex-shrink-0">
               <span>
-                {{ currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                  ? t('task.detailInfo.apis.columns.actualWorkload')
-                  : t('task.detailInfo.apis.columns.actualWorkload') }}
+                {{ t('task.detailInfo.apis.columns.actualWorkload') }}
               </span>
               <Colon class="w-1" />
             </div>

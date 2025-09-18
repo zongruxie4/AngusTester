@@ -544,10 +544,7 @@ const handleVersionBlur = async () => {
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
               <span>
-                {{ currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                  ? t('task.detailInfo.scenario.columns.evalWorkload')
-                  : t('task.detailInfo.scenario.columns.evalWorkload')
-                }}
+                {{ t('task.detailInfo.scenario.columns.evalWorkload') }}
               </span>
               <Colon class="w-1" />
             </div>
@@ -592,9 +589,7 @@ const handleVersionBlur = async () => {
           <div class="relative w-1/2 flex items-start">
             <div class="w-24.5 flex items-center whitespace-nowrap flex-shrink-0">
               <span>
-                {{ currentEvalWorkloadMethod === EvalWorkloadMethod.STORY_POINT
-                  ? t('task.detailInfo.scenario.columns.actualWorkload')
-                  : t('task.detailInfo.scenario.columns.actualWorkload') }}
+                {{ t('task.detailInfo.scenario.columns.actualWorkload') }}
               </span>
               <Colon class="w-1" />
             </div>
