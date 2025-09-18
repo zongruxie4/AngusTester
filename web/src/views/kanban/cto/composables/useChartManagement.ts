@@ -1,4 +1,5 @@
 import { nextTick, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as eCharts from 'echarts';
 import { ChartConfig } from '../types';
 import {
@@ -29,6 +30,7 @@ import {
  * @returns Object containing chart instances and management methods
  */
 export function useChartManagement () {
+  const { t } = useI18n();
   /** Progress chart instance */
   let progressChart: eCharts.ECharts;
 
@@ -112,14 +114,14 @@ export function useChartManagement () {
   const taskTypeConfig = ref<ChartConfig>(createTaskTypeConfig());
   const taskStatusConfig = ref<ChartConfig>(createTaskStatusConfig());
   const leadTimeConfig = ref<ChartConfig>(createLeadTimeConfig());
-  const criticalFailureConfig = ref<ChartConfig>(createFailureAssessmentConfig('Critical', 'rgba(245, 34, 45, 1)'));
-  const majorFailureConfig = ref<ChartConfig>(createFailureAssessmentConfig('Major', 'gold'));
-  const minorFailureConfig = ref<ChartConfig>(createFailureAssessmentConfig('Minor', 'rgba(255, 165, 43, 1)'));
-  const trivialFailureConfig = ref<ChartConfig>(createFailureAssessmentConfig('Trivial', 'rgba(136, 185, 242, 1)'));
-  const apiOpenTestConfig = ref<ChartConfig>(createApiTestConfig('Enabled Test'));
-  const apiSuccessTestConfig = ref<ChartConfig>(createApiTestConfig('Passed Test'));
-  const scenarioOpenTestConfig = ref<ChartConfig>(createApiTestConfig('Enabled Test'));
-  const scenarioSuccessTestConfig = ref<ChartConfig>(createApiTestConfig('Passed Test'));
+  const criticalFailureConfig = ref<ChartConfig>(createFailureAssessmentConfig(t('kanban.cto.failureAssessment.criticalFailureRatio'), 'rgba(245, 34, 45, 1)'));
+  const majorFailureConfig = ref<ChartConfig>(createFailureAssessmentConfig(t('kanban.cto.failureAssessment.majorFailureRatio'), 'gold'));
+  const minorFailureConfig = ref<ChartConfig>(createFailureAssessmentConfig(t('kanban.cto.failureAssessment.minorFailureRatio'), 'rgba(255, 165, 43, 1)'));
+  const trivialFailureConfig = ref<ChartConfig>(createFailureAssessmentConfig(t('kanban.cto.failureAssessment.trivialFailureRatio'), 'rgba(136, 185, 242, 1)'));
+  const apiOpenTestConfig = ref<ChartConfig>(createApiTestConfig(t('kanban.cto.apiTest.enabledTestRatio')));
+  const apiSuccessTestConfig = ref<ChartConfig>(createApiTestConfig(t('kanban.cto.apiTest.passedTestRatio')));
+  const scenarioOpenTestConfig = ref<ChartConfig>(createApiTestConfig(t('kanban.cto.scenarioTest.enabledTestRatio')));
+  const scenarioSuccessTestConfig = ref<ChartConfig>(createApiTestConfig(t('kanban.cto.scenarioTest.passedTestRatio')));
   const testStatusConfig = ref<ChartConfig>(createTestStatusConfig());
   const reviewStatusConfig = ref<ChartConfig>(createReviewStatusConfig());
 
@@ -180,8 +182,8 @@ export function useChartManagement () {
     }
 
     // Initialize unplanned task number chart
-    if (chartRefs.unplanTaskNumRef) {
-      unplannedTaskNumberChart = eCharts.init(chartRefs.unplanTaskNumRef);
+    if (chartRefs.unplannedTaskNumRef) {
+      unplannedTaskNumberChart = eCharts.init(chartRefs.unplannedTaskNumRef);
       unplannedTaskNumberChart.setOption(unplannedTaskNumberConfig.value);
     }
 

@@ -256,21 +256,6 @@
         "estimatedTime": "预计耗时"
 
       },
-      "failure": {
-        "failureAssessment": "故障评估",
-        "criticalFailureRatio": "致命故障占比",
-        "criticalCount": "致命数",
-        "nonCriticalCount": "非致命数",
-        "majorFailureRatio": "严重故障占比",
-        "majorCount": "严重数",
-        "nonMajorCount": "非严重数",
-        "minorFailureRatio": "一般故障占比",
-        "minorCount": "一般数",
-        "nonMinorCount": "非一般数",
-        "trivialFailureRatio": "轻微故障占比",
-        "trivialCount": "轻微数",
-        "nonTrivialCount": "非轻微数"
-      },
       "taskTypes": {
         "total": "总数",
         "story": "故事",
@@ -319,15 +304,15 @@
         "passedTestRatio": "通过测试占比"
       },
       "failureAssessment": {
-        "failureAssessment": "故障评估",
+        "failureAssessment": "故障评估 (故障/总共)",
         "failureCount": "故障数",
         "failureWorkload": "故障工作量",
         "failureCompletedNum": "故障修复数",
         "failureOverdueNum": "故障逾期数",
-        "criticalFailureRatio": "致命故障占比",
-        "majorFailureRatio": "严重故障占比",
-        "minorFailureRatio": "一般故障占比",
-        "trivialFailureRatio": "轻微故障占比"
+        "criticalFailureRatio": "致命",
+        "majorFailureRatio": "严重",
+        "minorFailureRatio": "一般",
+        "trivialFailureRatio": "轻微"
       },
       "taskType": "任务类型",
       "testStatusLable": "测试状态",

@@ -11,9 +11,7 @@ import { useCtoLifecycle } from './composables/useCtoLifecycle';
 const { t } = useI18n();
 
 /**
- * <p>
  * Component props with default values
- * </p>
  */
 const props = withDefaults(defineProps<CtoProps>(), {
   projectId: undefined,
@@ -29,9 +27,7 @@ const props = withDefaults(defineProps<CtoProps>(), {
 });
 
 /**
- * <p>
  * Recent date options for filtering metrics
- * </p>
  */
 const recentDateOptions: RecentDateOption[] = [
   {
@@ -49,16 +45,12 @@ const recentDateOptions: RecentDateOption[] = [
 ];
 
 /**
- * <p>
  * Selected recent date for filtering
- * </p>
  */
 const selectedRecentDate = ref('today');
 
 /**
- * <p>
  * Chart container references
- * </p>
  */
 const progressRef = ref<HTMLElement>();
 const recentCompleteRef = ref<HTMLElement>();
@@ -68,7 +60,7 @@ const recentSavingRateRef = ref<HTMLElement>();
 const blockTaskRef = ref<HTMLElement>();
 const blockTaskWorkloadRef = ref<HTMLElement>();
 const overdueTaskRef = ref<HTMLElement>();
-const unplanTaskNumRef = ref<HTMLElement>();
+const unplannedTaskNumRef = ref<HTMLElement>();
 const unplannedWorkloadRef = ref<HTMLElement>();
 const taskTypeRef = ref<HTMLElement>();
 const taskStatusRef = ref<HTMLElement>();
@@ -85,9 +77,7 @@ const testStatusRef = ref<HTMLElement>();
 const reviewStatusRef = ref<HTMLElement>();
 
 /**
- * <p>
  * Initialize composables
- * </p>
  */
 const {
   memberNum,
@@ -109,12 +99,7 @@ const {
 } = useCtoData(props);
 
 /**
- * <p>
  * Loads dashboard data and updates charts
- * </p>
- * <p>
- * Fetches data from API and updates all chart visualizations
- * </p>
  */
 const loadData = async () => {
   await loadCtoData();
@@ -157,12 +142,7 @@ const {
 } = useCtoLifecycle(props, loadData, resizeAllCharts, resizeChartsByType);
 
 /**
- * <p>
  * Handles recent date change and updates related charts
- * </p>
- * <p>
- * Updates all recent delivery metrics charts based on selected time period
- * </p>
  */
 const handleRecentDateChange = () => {
   if (recentDeliveryData.value && selectedRecentDate.value) {
@@ -171,12 +151,7 @@ const handleRecentDateChange = () => {
 };
 
 /**
- * <p>
  * Initializes component on mount
- * </p>
- * <p>
- * Sets up lifecycle management and initializes charts
- * </p>
  */
 onMounted(async () => {
   // Initialize charts with DOM references
@@ -189,7 +164,7 @@ onMounted(async () => {
     blockTaskRef: blockTaskRef.value,
     blockTaskWorkloadRef: blockTaskWorkloadRef.value,
     overdueTaskRef: overdueTaskRef.value,
-    unplanTaskNumRef: unplanTaskNumRef.value,
+    unplannedTaskNumRef: unplannedTaskNumRef.value,
     unplannedWorkloadRef: unplannedWorkloadRef.value,
     taskTypeRef: taskTypeRef.value,
     taskStatusRef: taskStatusRef.value,
@@ -209,17 +184,10 @@ onMounted(async () => {
   initializeCharts(chartRefs);
   // Setup lifecycle management
   setupLifecycle();
-
-  // loadData();
 });
 
 /**
- * <p>
  * Cleans up component on unmount
- * </p>
- * <p>
- * Removes event listeners and resets state
- * </p>
  */
 onBeforeUnmount(() => {
   cleanup();
@@ -227,9 +195,7 @@ onBeforeUnmount(() => {
 });
 
 /**
- * <p>
  * Exposes methods for parent component access
- * </p>
  */
 defineExpose({
   refresh,
@@ -244,7 +210,7 @@ defineExpose({
       <!-- Total Progress -->
       <div class="rounded h-full flex-1/2 flex space-x-2">
         <div class="flex-1/2 border rounded p-2">
-          <div class="font-semibold">总进度{{ t('kanban.cto.progress.totalProgress') }}</div>
+          <div class="text-4 font-semibold">{{ t('kanban.cto.progress.totalProgress') }}</div>
           <div ref="progressRef" class="h-1/2 w-2/3"></div>
           <div class="flex justify-around mt-3">
             <div class="text-center">
@@ -272,14 +238,14 @@ defineExpose({
 
         <!-- Backlog Section -->
         <div class="flex-1/2 border rounded p-2 space-y-2">
-          <div class="font-semibold">{{ props.countType === 'task' ? t('kanban.cto.backlog.backlogTask') : t('kanban.cto.backlog.backlogUseCase') }}</div>
+          <div class="text-3.5 font-semibold">{{ props.countType === 'task' ? t('kanban.cto.backlog.backlogTask') : t('kanban.cto.backlog.backlogUseCase') }}</div>
           <div class="flex space-x-2 justify-around mt-2">
             <div class="flex-1 pl-5">
               <div><span class="font-semibold text-6">{{ backloggedData.backloggedNum || 0 }}</span></div>
               <div>{{ props.countType === 'task' ? t('kanban.cto.backlog.backlogTaskCount') : t('kanban.cto.backlog.backlogUseCaseCount') }}</div>
             </div>
             <div class="flex-1 pl-5">
-              <div><span class="font-semibold text-6">{{ backloggedData.backloggedCompletionTime || 0 }}</span>小时{{ t('kanban.cto.deliveryCycle.hours') }}</div>
+              <div><span class="font-semibold text-6">{{ backloggedData.backloggedCompletionTime || 0 }}</span>{{ t('kanban.cto.deliveryCycle.hours') }}</div>
               <div>{{ t('kanban.cto.backlog.estimatedTime') }}</div>
             </div>
             <div class="flex-1 pl-5">
@@ -297,7 +263,7 @@ defineExpose({
       <!-- Recent Delivery Section -->
       <div class="border rounded h-full flex-1/2  p-2 space-y-2">
         <div class="flex justify-between">
-          <div class="font-semibold ">{{ t('kanban.cto.recentDelivery.recentDelivery') }}</div>
+          <div class="text-3.5 font-semibold ">{{ t('kanban.cto.recentDelivery.recentDelivery') }}</div>
           <RadioGroup
             v-model:value="selectedRecentDate"
             optionType="button"
@@ -338,7 +304,7 @@ defineExpose({
       <div class="rounded h-full flex-1/2 flex space-x-2">
         <!-- Overdue Assessment -->
         <div class="flex-1/2 border rounded p-2">
-          <div class="font-semibold">{{ t('kanban.cto.overdue.overdueAssessment') }}</div>
+          <div class="text-3.5 font-semibold">{{ t('kanban.cto.overdue.overdueAssessment') }}</div>
           <div class="flex h-1/2 items-center">
             <div ref="overdueTaskRef" class="h-full w-2/3"></div>
             <div class="text-center flex-1">
@@ -373,14 +339,14 @@ defineExpose({
 
         <!-- Unplanned Work -->
         <div class="flex-1/2 border rounded p-2">
-          <div class="font-semibold">{{ t('kanban.cto.unplanned.unplannedWork') }}</div>
+          <div class="text-3.5 font-semibold">{{ t('kanban.cto.unplanned.unplannedWork') }}</div>
           <div class="flex space-x-2 justify-around mt-2">
             <div class="flex-1 pl-5">
               <div><span class="font-semibold text-6">{{ unplannedWorkData.unplannedNum || 0 }}</span></div>
               <div>{{ t('kanban.cto.unplanned.unplannedTaskCount') }}</div>
             </div>
             <div class="flex-1 pl-5">
-              <div><span class="font-semibold text-6">{{ unplannedWorkData.unplannedWorkloadProcessingTime || 0 }}</span>小时</div>
+              <div><span class="font-semibold text-6">{{ unplannedWorkData.unplannedWorkloadProcessingTime || 0 }}</span>{{ t('kanban.cto.deliveryCycle.hours') }}</div>
               <div>{{ t('kanban.cto.unplanned.estimatedTime') }}</div>
             </div>
             <div class="flex-1 pl-5">
@@ -389,7 +355,7 @@ defineExpose({
             </div>
           </div>
           <div class="flex h-1/2 mt-2">
-            <div ref="unplanTaskNumRef" class="flex-1 h-full"></div>
+            <div ref="unplannedTaskNumRef" class="flex-1 h-full"></div>
             <div ref="unplannedWorkloadRef" class="flex-1 h-full"></div>
           </div>
         </div>
@@ -398,23 +364,23 @@ defineExpose({
       <!-- Failure Assessment (Task) or API/Scenario Test (Use Case) -->
       <div v-show="props.countType === 'task'" class="border rounded h-full flex-1/2  p-2 space-y-2">
         <div class="flex justify-between">
-          <div class="font-semibold ">{{ t('kanban.cto.failureAssessment.failureAssessment') }}</div>
+          <div class="text-3.5 font-semibold ">{{ t('kanban.cto.failureAssessment.failureAssessment') }}</div>
         </div>
         <div class="flex space-x-2 justify-around">
           <div class="flex-1 pl-5">
-            <div><span class="font-semibold text-6">{{ failureAssessmentData?.failureNum || 0 }}</span>/{{ failureAssessmentData?.totalNum || 0 }}</div>
+            <div><span class="font-semibold text-6 text-red-500">{{ failureAssessmentData?.failureNum || 0 }}</span>/{{ failureAssessmentData?.totalNum || 0 }}</div>
             <div>{{ t('kanban.cto.failureAssessment.failureCount') }}</div>
           </div>
           <div class="flex-1 pl-5">
-            <div><span class="font-semibold text-6">{{ failureAssessmentData?.failureWorkload || 0 }}</span>/{{ failureAssessmentData?.totalWorkload || 0 }}</div>
+            <div><span class="font-semibold text-6 text-red-500">{{ failureAssessmentData?.failureWorkload || 0 }}</span>/{{ failureAssessmentData?.totalWorkload || 0 }}</div>
             <div>{{ t('kanban.cto.failureAssessment.failureWorkload') }}</div>
           </div>
           <div class="flex-1 pl-5">
-            <div><span class="font-semibold text-6">{{ failureAssessmentData?.failureCompletedNum || 0 }}</span>/{{ failureAssessmentData?.failureNum || 0 }}</div>
+            <div><span class="font-semibold text-6 text-red-500">{{ failureAssessmentData?.failureCompletedNum || 0 }}</span>/{{ failureAssessmentData?.failureNum || 0 }}</div>
             <div>{{ t('kanban.cto.failureAssessment.failureCompletedNum') }}</div>
           </div>
           <div class="flex-1 pl-5">
-            <div><span class="font-semibold text-6">{{ failureAssessmentData?.failureOverdueNum || 0 }}</span>/{{ failureAssessmentData?.failureNum || 0 }}</div>
+            <div><span class="font-semibold text-6 text-red-500">{{ failureAssessmentData?.failureOverdueNum || 0 }}</span>/{{ failureAssessmentData?.failureNum || 0 }}</div>
             <div>{{ t('kanban.cto.failureAssessment.failureOverdueNum') }}</div>
           </div>
         </div>
@@ -429,7 +395,7 @@ defineExpose({
       <!-- API and Scenario Test (Use Case) -->
       <div v-show="props.countType === 'useCase'" class="h-full flex-1/2 space-x-2 flex">
         <div class="flex-1/2 border rounded p-2">
-          <div class="font-semibold">{{ t('kanban.cto.apiTest.apiTest') }}</div>
+          <div class="text-3.5 font-semibold">{{ t('kanban.cto.apiTest.apiTest') }}</div>
           <div class="flex space-x-2 justify-around mt-2">
             <div class="flex-1 pl-5">
               <div><span class="font-semibold text-6">{{ apiTestData.enabledTestNum || 0 }}</span></div>
@@ -446,7 +412,7 @@ defineExpose({
           </div>
         </div>
         <div class="flex-1/2 border rounded p-2">
-          <div class="font-semibold">{{ t('kanban.cto.scenarioTest.scenarioTest') }}</div>
+          <div class="text-3.5 font-semibold">{{ t('kanban.cto.scenarioTest.scenarioTest') }}</div>
           <div class="flex space-x-2 justify-around mt-2">
             <div class="flex-1 pl-5">
               <div><span class="font-semibold text-6">{{ scenarioTestData.enabledTestNum || 0 }}</span></div>
@@ -469,7 +435,7 @@ defineExpose({
     <div class="flex space-x-2 h-50">
       <div class="rounded h-full flex-1/2 flex space-x-2">
         <div class="flex-1/2 border rounded p-2 flex flex-col space-y-2">
-          <div class="font-semibold">{{ props.countType === 'task' ? t('kanban.cto.taskType') : t('kanban.cto.testStatusLable') }}</div>
+          <div class="text-3.5 font-semibold">{{ props.countType === 'task' ? t('kanban.cto.taskType') : t('kanban.cto.testStatusLable') }}</div>
           <div
             v-show="props.countType === 'task'"
             ref="taskTypeRef"
@@ -480,7 +446,7 @@ defineExpose({
             class="flex-1"></div>
         </div>
         <div class="flex-1/2  border rounded p-2 flex flex-col space-y-2">
-          <div class="font-semibold">{{ props.countType === 'task' ? t('kanban.cto.taskStatusName') : t('kanban.cto.reviewStatusLable') }}</div>
+          <div class="text-3.5 font-semibold">{{ props.countType === 'task' ? t('kanban.cto.taskStatusName') : t('kanban.cto.reviewStatusLable') }}</div>
           <div
             v-show="props.countType === 'task'"
             ref="taskStatusRef"
@@ -492,7 +458,7 @@ defineExpose({
         </div>
       </div>
       <div class="flex-1/2 border rounded p-2 flex flex-col space-y-2">
-        <div class="font-semibold">{{ t('kanban.cto.deliveryCycle.deliveryCycle') }}</div>
+        <div class="text-3.5 font-semibold">{{ t('kanban.cto.deliveryCycle.deliveryCycle') }}</div>
         <div class="flex-1 flex space-x-3 items-center">
           <div class="w-60 pl-4">
             <div class="flex space-x-2 items-center">
