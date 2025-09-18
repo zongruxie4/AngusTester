@@ -1,11 +1,4 @@
 <script setup lang="ts">
-/**
- * Data Assets Dashboard Component
- *
- * <p>This component displays various data assets including test cases, APIs, tasks, scenarios, scripts, and mock data.
- * <p>It provides interactive charts and statistics for project data analysis.
- * <p>The component supports responsive layout with different column configurations based on screen width.
- */
 import { computed, inject, nextTick, onBeforeUnmount, onMounted, reactive, ref, Ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Icon, Image, NoData } from '@xcan-angus/vue-ui';
@@ -460,7 +453,7 @@ defineExpose({
 <template>
   <div class="flex space-x-2 mt-2 text-3">
     <div class="py-2 border rounded flex-1 min-w-0">
-      <div class="px-2">
+      <div class="px-2 text-3.5 font-semibold">
         {{ t('kanban.dataAssets.growthTrend') }}：
         <SelectEnum
           v-model:value="targetType"
@@ -480,7 +473,7 @@ defineExpose({
       :style="{ width: rightPercent }"
       class="border rounded p-2">
       <div class="flex space-x-1 items-center">
-        <span class="font-semibold">{{ t('kanban.dataAssets.contributionRanking') }}</span>
+        <span class="text-3.5 font-semibold">{{ t('kanban.dataAssets.contributionRanking') }}</span>
         <Popover
           :content="t('kanban.dataAssets.rankingDescription')">
           <Icon icon="icon-tishi1" class="text-blue-icon text-3.5" />
@@ -514,12 +507,8 @@ defineExpose({
       <div class="flex space-x-2">
         <!-- Task Section -->
         <div class="border rounded p-2 min-w-0" :class="`flex-1/${echartsCol}`">
-          <div class="font-semibold">{{ t('kanban.dataAssets.categories.task') }}</div>
+          <div class="text-3.5 font-semibold">{{ t('kanban.dataAssets.categories.task') }}</div>
           <div class="flex">
-            <!-- <div class="px-2 text-center flex flex-col justify-center">
-                            <div class="text-5 font-semibold">{{ taskTotal }}</div>
-                            <div>Total</div>
-                       </div> -->
             <div ref="taskReviewRef" class="h-35 flex-1 min-w-0"></div>
           </div>
           <div ref="taskStatusRef" class="h-40"></div>
@@ -529,7 +518,7 @@ defineExpose({
         <div
           class=" border rounded p-2 min-w-0"
           :class="`flex-1/${echartsCol}`">
-          <div class="font-semibold">{{ t('kanban.dataAssets.categories.cases') }}</div>
+          <div class="text-3.5 font-semibold">{{ t('kanban.dataAssets.categories.cases') }}</div>
           <div class="flex">
             <div ref="caseReviewRef" class="h-35 flex-1 min-w-0"></div>
           </div>
@@ -541,7 +530,7 @@ defineExpose({
           v-if="echartsCol === 3"
           class=" border rounded p-2 min-w-0"
           :class="`flex-1/${echartsCol}`">
-          <div class="font-semibold">{{ t('kanban.dataAssets.categories.apis') }}</div>
+          <div class="text-3.5 font-semibold">{{ t('kanban.dataAssets.categories.apis') }}</div>
           <div class="flex">
             <div ref="apiReviewRef" class="h-35 flex-1 min-w-0"></div>
           </div>
@@ -551,7 +540,7 @@ defineExpose({
       <div v-if="echartsCol === 2" class="flex space-x-2 mt-2">
         <!-- APIs Section -->
         <div class=" border rounded p-2 min-w-0" :class="`flex-1/${echartsCol}`">
-          <div class="font-semibold">{{ t('kanban.dataAssets.categories.apis') }}</div>
+          <div class="text-3.5 font-semibold">{{ t('kanban.dataAssets.categories.apis') }}</div>
           <div class="flex">
             <div ref="apiReviewRef" class="h-35 flex-1 min-w-0"></div>
           </div>
@@ -618,7 +607,7 @@ defineExpose({
           class="flex space-x-2 min-w-0"
           :class="`flex-1/${echartsCol}`">
           <div class="flex-1 rounded border p-2 flex flex-col">
-            <div class="px-2 font-semibold">Mock</div>
+            <div class="px-2 text-3.5 font-semibold">Mock</div>
             <div class=" flex-1 flex justify-around flex-col space-y-2">
               <div class="flex flex-1  space-x-2">
                 <div class="flex-1 text-center h-full bg-board-blue flex flex-col justify-center rounded relative min-w-0">
@@ -647,7 +636,7 @@ defineExpose({
             </div>
           </div>
           <div class="flex-1 rounded border p-2 flex flex-col">
-            <div class="px-2 font-semibold">{{ t('kanban.dataAssets.categories.data') }}</div>
+            <div class="px-2 text-3.5 font-semibold">{{ t('kanban.dataAssets.categories.data') }}</div>
             <div class=" flex-1 flex flex-col justify-around space-y-2">
               <div class="flex flex-1  space-x-2">
                 <div class="flex-1 text-center h-full bg-board-blue flex flex-col justify-center rounded relative min-w-0">
@@ -679,10 +668,10 @@ defineExpose({
 
         <!-- Script Section -->
         <div class="border rounded py-2 min-w-0" :class="`flex-${echartsCol === 2 ? 1 : '2/3'}`">
-          <div class="px-2 font-semibold">{{ t('kanban.dataAssets.categories.script') }}</div>
+          <div class="px-2 text-3.5 font-semibold">{{ t('kanban.dataAssets.categories.script') }}</div>
           <div class="flex px-2">
             <div class="px-2 text-center flex flex-col justify-center">
-              <div class="font-semibold">{{ scriptTotal }}</div>
+              <div class="text-3.5 font-semibold">{{ scriptTotal }}</div>
               <div>{{ t('kanban.dataAssets.total') }}</div>
             </div>
             <div ref="scriptRef" class="h-35 flex-1 min-w-0"></div>
@@ -697,7 +686,7 @@ defineExpose({
           class="min-w-0 flex-grow-0 pr-2"
           :class="`flex-1/${echartsCol}`">
           <div class="border rounded p-2 pb-2">
-            <div class="font-semibold">{{ t('kanban.dataAssets.categories.cases') }}</div>
+            <div class="text-3.5 font-semibold">{{ t('kanban.dataAssets.categories.cases') }}</div>
             <div class="flex">
               <div ref="caseReviewRef" class="h-35 flex-1 min-w-0"></div>
             </div>
@@ -708,7 +697,7 @@ defineExpose({
         <!-- APIs Section -->
         <div class="min-w-0 flex-grow-0 pr-2 pb-2" :class="`flex-1/${echartsCol}`">
           <div class="border rounded p-2">
-            <div class="font-semibold">{{ t('kanban.dataAssets.categories.apis') }}</div>
+            <div class="text-3.5 font-semibold">{{ t('kanban.dataAssets.categories.apis') }}</div>
             <div class="flex">
               <div ref="apiReviewRef" class="h-35 flex-1 min-w-0"></div>
             </div>
@@ -720,7 +709,7 @@ defineExpose({
         <div :class="`flex-1/${echartsCol}`" class="min-h-0 flex-grow-0 pr-2 pb-2">
           <div v-if="echartsCol === 3" class="flex flex-col space-y-2 h-full">
             <div class="flex-1 rounded border p-2 flex flex-col">
-              <div class="px-2 font-semibold">Mock</div>
+              <div class="px-2 text-3.5 font-semibold">Mock</div>
               <div class=" flex-1 flex justify-around items-center space-x-2">
                 <div class="flex-1 text-center h-full bg-board-blue flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/service.png" class="w-1/2 absolute top-0 right-0" />
@@ -745,7 +734,7 @@ defineExpose({
               </div>
             </div>
             <div class="flex-1 rounded border p-2 flex flex-col">
-              <div class="px-2 font-semibold">{{ t('kanban.dataAssets.categories.data') }}</div>
+              <div class="px-2 text-3.5 font-semibold">{{ t('kanban.dataAssets.categories.data') }}</div>
               <div class=" flex-1 flex justify-around items-center space-x-2">
                 <div class="flex-1 text-center h-full bg-board-blue flex flex-col justify-center rounded relative min-w-0">
                   <img src="./image/variable.png" class="w-1/2 absolute top-0 right-0" />
@@ -775,7 +764,7 @@ defineExpose({
             class="flex space-x-2 min-w-0 h-full"
             :class="`flex-1/${echartsCol}`">
             <div class="flex-1 rounded border p-2 flex flex-col">
-              <div class="px-2 font-semibold">Mock</div>
+              <div class="px-2 text-3.5 font-semibold">Mock</div>
               <div class=" flex-1 flex justify-around flex-col space-y-2">
                 <div class="flex flex-1  space-x-2">
                   <div class="flex-1 text-center h-full bg-board-blue flex flex-col justify-center rounded relative min-w-0">
@@ -804,7 +793,7 @@ defineExpose({
               </div>
             </div>
             <div class="flex-1 rounded border p-2 flex flex-col">
-              <div class="px-2 font-semibold">{{ t('kanban.dataAssets.categories.data') }}</div>
+              <div class="px-2 text-3.5 font-semibold">{{ t('kanban.dataAssets.categories.data') }}</div>
               <div class=" flex-1 flex flex-col justify-around space-y-2">
                 <div class="flex flex-1  space-x-2">
                   <div class="flex-1 text-center h-full bg-board-blue flex flex-col justify-center rounded relative min-w-0">
@@ -838,10 +827,10 @@ defineExpose({
         <!-- Script Section -->
         <div class="min-w-0 flex-grow-0 pr-2 pb-2" :class="`flex-${echartsCol === 2 ? 1 : '2/3'}`">
           <div class="border rounded py-2">
-            <div class="px-2 font-semibold">{{ t('kanban.dataAssets.categories.script') }}</div>
+            <div class="px-2 text-3.5 font-semibold">{{ t('kanban.dataAssets.categories.script') }}</div>
             <div class="flex px-2">
               <div class="px-2 text-center flex flex-col justify-center">
-                <div class="font-semibold">{{ scriptTotal }}</div>
+                <div class="text-3.5 font-semibold">{{ scriptTotal }}</div>
                 <div>{{ t('kanban.dataAssets.total') }}</div>
               </div>
               <div ref="scriptRef" class="h-35 flex-1 min-w-0"></div>
@@ -857,7 +846,7 @@ defineExpose({
       class="flex flex-col space-y-2">
       <!-- Scenario Section -->
       <div class="flex-1/3 flex-grow-0 border rounded p-2 flex flex-col" :class="{' max-h-42': echartsCol === 2}">
-        <div class=" font-semibold">{{ t('kanban.dataAssets.categories.scenario') }}</div>
+        <div class="text-3.5 font-semibold">{{ t('kanban.dataAssets.categories.scenario') }}</div>
         <div class="flex flex-1">
           <div ref="scenarioRef" class="h-full flex-1 min-w-0"></div>
         </div>
@@ -865,7 +854,7 @@ defineExpose({
 
       <!-- Plan Section -->
       <div class=" border rounded p-2 flex-1/3 flex-grow-0 flex flex-col" :class="{' max-h-42': echartsCol === 2}">
-        <div class=" font-semibold">{{ t('kanban.dataAssets.categories.plan') }}</div>
+        <div class="text-3.5 font-semibold">{{ t('kanban.dataAssets.categories.plan') }}</div>
         <div class="flex flex-1">
           <div ref="planReviewRef" class="h-full flex-1 min-w-0"></div>
         </div>
@@ -876,7 +865,7 @@ defineExpose({
         v-if="proTypeShowMap.showSprint"
         class="border rounded p-2 flex-1/3 flex-grow-0 flex flex-col"
         :class="{' max-h-42': echartsCol === 2}">
-        <div class=" font-semibold">{{ t('kanban.dataAssets.categories.sprint') }}</div>
+        <div class="text-3.5 font-semibold">{{ t('kanban.dataAssets.categories.sprint') }}</div>
         <div class="flex flex-1">
           <div ref="sprintReviewRef" class="h-full flex-1 min-w-0"></div>
         </div>

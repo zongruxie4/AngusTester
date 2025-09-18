@@ -1,16 +1,11 @@
-// import { useI18n } from 'vue-i18n';
 import { i18n } from '@xcan-angus/infra';
 import { ChartConfig } from '../types';
 
 const I18nInstance = i18n.getI18n();
 const t = I18nInstance?.global?.t || ((value: string): string => value);
 
-// const { t } = useI18n();
-
 /**
- * <p>
  * Base pie chart configuration template
- * </p>
  */
 const createBasePieConfig = (): ChartConfig => ({
   title: {
@@ -73,9 +68,7 @@ const createBasePieConfig = (): ChartConfig => ({
 });
 
 /**
- * <p>
  * Creates progress chart configuration
- * </p>
  */
 export const createProgressChartConfig = (): ChartConfig => {
   const config = createBasePieConfig();
@@ -99,16 +92,14 @@ export const createProgressChartConfig = (): ChartConfig => {
 };
 
 /**
- * <p>
  * Creates recent completion rate chart configuration
- * </p>
  */
 export const createRecentCompletionRateConfig = (): ChartConfig => {
   const config = createBasePieConfig();
   config.title.left = '25%';
   config.title.top = '40%';
   config.title.itemGap = 40;
-  config.title.subtext = t('kanban.cto.recentMetrics.completionRate');
+  config.title.subtext = t('kanban.cto.recentDelivery.completionRate');
   config.legend.top = 'middle';
   config.legend.left = '55%';
   config.legend.itemHeight = 10;
@@ -119,12 +110,12 @@ export const createRecentCompletionRateConfig = (): ChartConfig => {
   config.series[0].label.fontSize = 10;
   config.series[0].data = [
     {
-      name: t('kanban.cto.recentMetrics.recentCompletionCount'),
+      name: t('kanban.cto.recentDelivery.recentCompletionCount'),
       value: 0,
       itemStyle: { color: '#52C41A' }
     },
     {
-      name: t('kanban.cto.recentMetrics.nonRecentCompletionCount'),
+      name: t('kanban.cto.recentDelivery.nonRecentCompletionCount'),
       value: 0,
       itemStyle: { color: 'rgba(45, 142, 255, 1)' }
     }
@@ -133,21 +124,19 @@ export const createRecentCompletionRateConfig = (): ChartConfig => {
 };
 
 /**
- * <p>
  * Creates recent overdue rate chart configuration
- * </p>
  */
 export const createRecentOverdueRateConfig = (): ChartConfig => {
   const config = createRecentCompletionRateConfig();
-  config.title.subtext = t('kanban.cto.recentMetrics.overdueRate');
+  config.title.subtext = t('kanban.cto.recentDelivery.overdueRate');
   config.series[0].data = [
     {
-      name: t('kanban.cto.recentMetrics.recentOverdueRate'),
+      name: t('kanban.cto.recentDelivery.overdueRate'),
       value: 0,
       itemStyle: { color: 'rgba(245, 34, 45, 1)' }
     },
     {
-      name: t('kanban.cto.recentMetrics.nonRecentOverdueRate'),
+      name: t('kanban.cto.recentDelivery.nonOverdueRate'),
       value: 0,
       itemStyle: { color: 'rgba(45, 142, 255, 1)' }
     }
@@ -156,21 +145,19 @@ export const createRecentOverdueRateConfig = (): ChartConfig => {
 };
 
 /**
- * <p>
  * Creates recent completed workload chart configuration
- * </p>
  */
 export const createRecentCompletedWorkloadConfig = (): ChartConfig => {
   const config = createRecentCompletionRateConfig();
-  config.title.subtext = t('kanban.cto.recentMetrics.deliveryWorkloadCompletionRate');
+  config.title.subtext = t('kanban.cto.recentDelivery.deliveryWorkloadCompletionRate');
   config.series[0].data = [
     {
-      name: t('kanban.cto.recentMetrics.recentCompletionAmount'),
+      name: t('kanban.cto.recentDelivery.recentCompletionAmount'),
       value: 0,
       itemStyle: { color: '#52C41A' }
     },
     {
-      name: t('kanban.cto.recentMetrics.nonRecentCompletionAmount'),
+      name: t('kanban.cto.recentDelivery.nonRecentCompletionAmount'),
       value: 0,
       itemStyle: { color: 'rgba(45, 142, 255, 1)' }
     }
@@ -179,21 +166,19 @@ export const createRecentCompletedWorkloadConfig = (): ChartConfig => {
 };
 
 /**
- * <p>
  * Creates recent saving rate chart configuration
- * </p>
  */
 export const createRecentSavingRateConfig = (): ChartConfig => {
   const config = createRecentCompletionRateConfig();
-  config.title.subtext = t('kanban.cto.recentMetrics.deliveryWorkloadSavingRate');
+  config.title.subtext = t('kanban.cto.recentDelivery.deliveryWorkloadSavingRate');
   config.series[0].data = [
     {
-      name: t('kanban.cto.recentMetrics.recentSavingAmount'),
+      name: t('kanban.cto.recentDelivery.recentSavingAmount'),
       value: 0,
       itemStyle: { color: '#52C41A' }
     },
     {
-      name: t('kanban.cto.recentMetrics.nonRecentSavingAmount'),
+      name: t('kanban.cto.recentDelivery.nonRecentSavingAmount'),
       value: 0,
       itemStyle: { color: 'rgba(45, 142, 255, 1)' }
     }
@@ -202,9 +187,7 @@ export const createRecentSavingRateConfig = (): ChartConfig => {
 };
 
 /**
- * <p>
  * Creates backlog task chart configuration
- * </p>
  */
 export const createBacklogTaskConfig = (): ChartConfig => {
   const config = createRecentCompletionRateConfig();
@@ -225,9 +208,7 @@ export const createBacklogTaskConfig = (): ChartConfig => {
 };
 
 /**
- * <p>
  * Creates backlog workload chart configuration
- * </p>
  */
 export const createBacklogWorkloadConfig = (): ChartConfig => {
   const config = createRecentCompletionRateConfig();
@@ -248,9 +229,7 @@ export const createBacklogWorkloadConfig = (): ChartConfig => {
 };
 
 /**
- * <p>
  * Creates overdue assessment chart configuration
- * </p>
  */
 export const createOverdueAssessmentConfig = (): ChartConfig => {
   const config = createBasePieConfig();
@@ -290,9 +269,7 @@ export const createOverdueAssessmentConfig = (): ChartConfig => {
 };
 
 /**
- * <p>
  * Creates unplanned work chart configuration
- * </p>
  */
 export const createUnplannedWorkConfig = (): ChartConfig => {
   const config = createRecentCompletionRateConfig();
@@ -313,9 +290,7 @@ export const createUnplannedWorkConfig = (): ChartConfig => {
 };
 
 /**
- * <p>
  * Creates unplanned workload chart configuration
- * </p>
  */
 export const createUnplannedWorkloadConfig = (): ChartConfig => {
   const config = createRecentCompletionRateConfig();
@@ -336,21 +311,19 @@ export const createUnplannedWorkloadConfig = (): ChartConfig => {
 };
 
 /**
- * <p>
  * Creates failure assessment chart configuration
- * </p>
  */
-export const createFailureAssessmentConfig = (title: string, color: string): ChartConfig => {
+export const createFailureAssessmentConfig = (titles: string[], color: string): ChartConfig => {
   const config = createRecentCompletionRateConfig();
-  config.title.subtext = title;
+  config.title.subtext = titles[0];
   config.series[0].data = [
     {
-      name: title,
+      name: titles[0],
       value: 0,
       itemStyle: { color }
     },
     {
-      name: `Non-${title}`,
+      name: titles[1],
       value: 0,
       itemStyle: { color: 'rgba(45, 142, 255, 1)' }
     }
@@ -359,9 +332,7 @@ export const createFailureAssessmentConfig = (title: string, color: string): Cha
 };
 
 /**
- * <p>
  * Creates task type chart configuration
- * </p>
  */
 export const createTaskTypeConfig = (): ChartConfig => ({
   title: {},
@@ -439,9 +410,7 @@ export const createTaskTypeConfig = (): ChartConfig => ({
 });
 
 /**
- * <p>
  * Creates task status chart configuration
- * </p>
  */
 export const createTaskStatusConfig = (): ChartConfig => ({
   title: {},
@@ -514,9 +483,7 @@ export const createTaskStatusConfig = (): ChartConfig => ({
 });
 
 /**
- * <p>
  * Creates lead time chart configuration
- * </p>
  */
 export const createLeadTimeConfig = (): ChartConfig => ({
   grid: {
@@ -562,21 +529,19 @@ export const createLeadTimeConfig = (): ChartConfig => ({
 });
 
 /**
- * <p>
  * Creates API test chart configuration
- * </p>
  */
-export const createApiTestConfig = (title: string): ChartConfig => {
+export const createTestConfig = (titles: string[]): ChartConfig => {
   const config = createRecentCompletionRateConfig();
-  config.title.subtext = title;
+  config.title.subtext = titles[0];
   config.series[0].data = [
     {
-      name: title,
+      name: titles[0],
       value: 0,
-      itemStyle: { color: 'rgba(136, 185, 242, 1)' }
+      itemStyle: { color: '#52C41A' }
     },
     {
-      name: `Non-${title}`,
+      name: titles[1],
       value: 0,
       itemStyle: { color: 'rgb(246,159,42)' }
     }
@@ -585,9 +550,7 @@ export const createApiTestConfig = (title: string): ChartConfig => {
 };
 
 /**
- * <p>
  * Creates test status chart configuration
- * </p>
  */
 export const createTestStatusConfig = (): ChartConfig => ({
   title: {},
@@ -659,9 +622,7 @@ export const createTestStatusConfig = (): ChartConfig => ({
 });
 
 /**
- * <p>
  * Creates review status chart configuration
- * </p>
  */
 export const createReviewStatusConfig = (): ChartConfig => ({
   title: {},
