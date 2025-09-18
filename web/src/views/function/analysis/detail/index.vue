@@ -198,7 +198,7 @@ onBeforeUnmount(() => {
           <Tag
             color="geekblue"
             class="ml-5">
-            {{ analysisData.datasource?.value === AnalysisDataSource.SNAPSHOT_DATA ? t('functionAnalysis.snapshot') : t('functionAnalysis.realTime') }}
+            {{ analysisData.datasource?.value === AnalysisDataSource.SNAPSHOT_DATA ? t('functionAnalysis.detail.snapshot') : t('functionAnalysis.detail.realTime') }}
           </Tag>
         </div>
         <div class="mt-2 text-3.5">{{ analysisData.description }}</div>
@@ -267,7 +267,7 @@ onBeforeUnmount(() => {
     <!-- Data Details Section -->
     <div class="mt-4">
       <div class="detail-title font-semibold pl-2 relative text-3.5 flex items-center">
-        <span>{{ t('functionAnalysis.details') }}</span>
+        <span>{{ t('functionAnalysis.detail.detail') }}</span>
         <Button
           v-show="props.data?.id"
           type="link"

@@ -2,7 +2,7 @@
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Button, Checkbox, Form, FormItem, RadioButton, RadioGroup, Textarea } from 'ant-design-vue';
-import { DatePicker, Input, notification, Select } from '@xcan-angus/vue-ui';
+import { DatePicker, Input, notification, Select, Icon } from '@xcan-angus/vue-ui';
 import { AuthObjectType, EnumMessage, enumOptionUtils, enumUtils, GM, TESTER } from '@xcan-angus/infra';
 import {
   AnalysisDataSource,
@@ -271,9 +271,11 @@ onMounted(async () => {
         size="small"
         :loading="isSaving"
         @click="handleSave">
+        <Icon icon="icon-dangqianxuanzhong" class="text-3.5 mr-1" />
         {{ t('actions.save') }}
       </Button>
       <Button size="small" @click="handleCancel">
+        <Icon icon="icon-zhongzhi2" class="text-3.5 mr-1" />
         {{ t('actions.cancel') }}
       </Button>
     </div>

@@ -88,6 +88,9 @@
     "detail": {
       "lastModifiedAt": "最后修改于",
       "charts": "图表",
+      "detail": "详情",
+      "snapshot":"快照",
+      "realTime": "实时",
       "backlogTasks": {
         "total": "总共",
         "backlogVolume": "积压量",
