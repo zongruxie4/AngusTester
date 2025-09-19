@@ -8,8 +8,10 @@ import { func } from '@/api/tester';
 
 const { t } = useI18n();
 
+// Async component for case comparison modal
 const CompareModal = defineAsyncComponent(() => import('./CompareModal.vue'));
 
+// Props Definition
 type Props = {
   projectId: string;
   userInfo: { id: string; };
@@ -26,18 +28,25 @@ const props = withDefaults(defineProps<Props>(), {
   planId: undefined
 });
 
-const baselineList = ref([]);
-const allCaseIds = ref<string[]>([]);
-const compareVisible = ref(false);
-const compareLineId = ref();
-const baseCase = ref({});
-const compareCase = ref({});
+// Reactive Data
+const availableBaselines = ref([]);
+const allCaseIdentifiers = ref<string[]>([]);
+const isCompareModalVisible = ref(false);
+const selectedCompareBaselineId = ref();
+const baseCaseData = ref({});
+const compareCaseData = ref({});
 
-const baseLine = computed(() => {
-  return baselineList.value.find(line => line.id === props.baselineId);
+/**
+ * Get the current baseline information
+ */
+const currentBaseline = computed(() => {
+  return availableBaselines.value.find(baseline => baseline.id === props.baselineId);
 });
 
-const loadBaseLineList = async () => {
+/**
+ * Load all available baselines for comparison
+ */
+const loadAvailableBaselines = async () => {
   const [error, { data }] = await func.getBaselineList({
     pageSize: 2000,
     pageNo: 1,
@@ -46,11 +55,14 @@ const loadBaseLineList = async () => {
   if (error) {
     return;
   }
-  baselineList.value = data?.list || [];
-  compareLineId.value = baselineList.value[0].id;
+  availableBaselines.value = data?.list || [];
+  selectedCompareBaselineId.value = availableBaselines.value[0].id;
 };
 
-const loadBaseCase = async () => {
+/**
+ * Load base case data from the current baseline
+ */
+const loadBaseCaseData = async () => {
   const [error, { data }] = await func.getBaselineCaseList(props.baselineId, {
     pageSize: 2000,
     pageNo: 1,
@@ -59,14 +71,17 @@ const loadBaseCase = async () => {
   if (error) {
     return;
   }
-  (data?.list || []).forEach(cases => {
-    allCaseIds.value.push(cases.id);
-    baseCase.value[cases.id] = cases;
+  (data?.list || []).forEach(caseItem => {
+    allCaseIdentifiers.value.push(caseItem.id);
+    baseCaseData.value[caseItem.id] = caseItem;
   });
 };
 
-const loadCompareCase = async () => {
-  const [error, { data }] = await func.getBaselineCaseList(compareLineId.value, {
+/**
+ * Load compare case data from the selected baseline
+ */
+const loadCompareCaseData = async () => {
+  const [error, { data }] = await func.getBaselineCaseList(selectedCompareBaselineId.value, {
     pageSize: 2000,
     pageNo: 1,
     projectId: props.projectId
@@ -74,35 +89,48 @@ const loadCompareCase = async () => {
   if (error) {
     return;
   }
-  allCaseIds.value = Object.keys(baseCase.value);
-  (data?.list || []).forEach(cases => {
-    if (!allCaseIds.value.includes(cases.id)) {
-      allCaseIds.value.push(cases.id);
+  allCaseIdentifiers.value = Object.keys(baseCaseData.value);
+  (data?.list || []).forEach(caseItem => {
+    if (!allCaseIdentifiers.value.includes(caseItem.id)) {
+      allCaseIdentifiers.value.push(caseItem.id);
     }
-    compareCase.value[cases.id] = cases;
+    compareCaseData.value[caseItem.id] = caseItem;
   });
 };
 
-const handleChangeCompareLineId = () => {
-  compareCase.value = {};
-  loadCompareCase();
+/**
+ * Handle compare baseline selection change
+ */
+const handleCompareBaselineChange = () => {
+  compareCaseData.value = {};
+  loadCompareCaseData();
 };
 
-const selectCaseId = ref();
-const openCompareModal = (caseId) => {
-  compareVisible.value = true;
-  selectCaseId.value = caseId;
+/**
+ * Open comparison modal for specific case
+ * @param caseId - ID of the case to compare
+ */
+const openCaseComparisonModal = (caseId) => {
+  isCompareModalVisible.value = true;
+  selectedCaseId.value = caseId;
 };
 
+// Component State
+const selectedCaseId = ref();
+
+/**
+ * Initialize component data on mount
+ */
 onMounted(async () => {
-  await loadBaseLineList();
-  Promise.all([loadBaseCase(), loadCompareCase()])
+  await loadAvailableBaselines();
+  Promise.all([loadBaseCaseData(), loadCompareCaseData()])
     .then(() => {
-      allCaseIds.value = lodash.uniq(allCaseIds.value);
+      allCaseIdentifiers.value = lodash.uniq(allCaseIdentifiers.value);
     });
 });
 
-const leftRawConfig = [
+// Table Configuration
+const leftColumnConfig = [
   {
     title: '',
     dataIndex: 'idx',
@@ -120,7 +148,7 @@ const leftRawConfig = [
   }
 ];
 
-const rightRawConfig = [
+const rightColumnConfig = [
   {
     title: t('functionBaseline.case.name'),
     dataIndex: 'name',
@@ -143,20 +171,20 @@ const rightRawConfig = [
     <div class="flex border-b border-l border-r">
       <div class="flex-1 leading-8  border-r">
         <div class="text-center">
-          {{ baseLine?.name }}
+          {{ currentBaseline?.name }}
         </div>
       </div>
       <div class="flex-1 leading-8">
         <div class="text-center px-1">
           <Select
-            v-model:value="compareLineId"
+            v-model:value="selectedCompareBaselineId"
             class="w-full"
-            :options="baselineList"
+            :options="availableBaselines"
             :fieldNames="{
               value: 'id',
               label: 'name'
             }"
-            @change="handleChangeCompareLineId" />
+            @change="handleCompareBaselineChange" />
         </div>
       </div>
     </div>
@@ -165,79 +193,79 @@ const rightRawConfig = [
       <div class="flex-1 leading-8 border-r">
         <div class="text-center flex">
           <div
-            v-for="leftRaw in leftRawConfig"
-            :key="leftRaw.dataIndex"
+            v-for="leftColumn in leftColumnConfig"
+            :key="leftColumn.dataIndex"
             class="bg-gray-bg"
-            :class="leftRaw.class">
-            {{ leftRaw.title }}
+            :class="leftColumn.class">
+            {{ leftColumn.title }}
           </div>
         </div>
       </div>
       <div class="flex-1 leading-8">
         <div class="text-center flex">
           <div
-            v-for="rightRaw in rightRawConfig"
-            :key="rightRaw.dataIndex"
+            v-for="rightColumn in rightColumnConfig"
+            :key="rightColumn.dataIndex"
             class="bg-gray-bg"
-            :class="rightRaw.class">
-            {{ rightRaw.title }}
+            :class="rightColumn.class">
+            {{ rightColumn.title }}
           </div>
         </div>
       </div>
     </div>
 
     <div
-      v-for="(caseId, idx) in allCaseIds"
+      v-for="(caseId, idx) in allCaseIdentifiers"
       :key="caseId"
       class="flex leading-8 border-b  border-l border-r">
       <div class="flex-1 leading-8 border-r flex">
         <div
-          v-for="(leftRaw) in leftRawConfig"
-          :key="leftRaw.dataIndex"
-          :class="leftRaw.class"
+          v-for="(leftColumn) in leftColumnConfig"
+          :key="leftColumn.dataIndex"
+          :class="leftColumn.class"
           class="px-1">
-          <tmplate v-if="leftRaw.dataIndex === 'version'">
-            <span v-if="baseCase[caseId]?.[leftRaw.dataIndex]">v{{ baseCase[caseId][leftRaw.dataIndex] }}</span>
+          <tmplate v-if="leftColumn.dataIndex === 'version'">
+            <span v-if="baseCaseData[caseId]?.[leftColumn.dataIndex]">v{{ baseCaseData[caseId][leftColumn.dataIndex] }}</span>
           </tmplate>
-          <template v-else-if="leftRaw.dataIndex === 'idx'">
+          <template v-else-if="leftColumn.dataIndex === 'idx'">
             {{ idx + 1 }}
           </template>
           <template v-else>
-            {{ baseCase[caseId]?.[leftRaw.dataIndex] }}
+            {{ baseCaseData[caseId]?.[leftColumn.dataIndex] }}
           </template>
         </div>
       </div>
-      <div class="flex-1 leading-8  flex" :class="{'bg-status-add': !baseCase[caseId] && compareCase[caseId], 'bg-status-del': baseCase[caseId] && !compareCase[caseId]}">
+      <div class="flex-1 leading-8  flex" :class="{'bg-status-add': !baseCaseData[caseId] && compareCaseData[caseId], 'bg-status-del': baseCaseData[caseId] && !compareCaseData[caseId]}">
         <div
-          v-for="rightRaw in rightRawConfig"
-          :key="rightRaw.dataIndex"
-          :class="rightRaw.class"
+          v-for="rightColumn in rightColumnConfig"
+          :key="rightColumn.dataIndex"
+          :class="rightColumn.class"
           class="px-1">
-          <tmplate v-if="rightRaw.dataIndex === 'version'">
-            <span v-if="compareCase[caseId]?.[rightRaw.dataIndex]">v{{ compareCase[caseId][rightRaw.dataIndex] }}</span>
+          <tmplate v-if="rightColumn.dataIndex === 'version'">
+            <span v-if="compareCaseData[caseId]?.[rightColumn.dataIndex]">v{{ compareCaseData[caseId][rightColumn.dataIndex] }}</span>
           </tmplate>
-          <tmplate v-else-if="rightRaw.dataIndex === 'action'">
+          <tmplate v-else-if="rightColumn.dataIndex === 'action'">
             <Button
-              v-if="compareCase[caseId] && baseCase[caseId]"
+              v-if="compareCaseData[caseId] && baseCaseData[caseId]"
               type="link"
               size="small"
-              @click="openCompareModal(caseId)">
+              @click="openCaseComparisonModal(caseId)">
               {{ t('functionBaseline.case.compare') }}
             </Button>
           </tmplate>
           <template v-else>
-            {{ compareCase[caseId]?.[rightRaw.dataIndex] }}
+            {{ compareCaseData[caseId]?.[rightColumn.dataIndex] }}
           </template>
         </div>
       </div>
     </div>
 
-    <AsyncComponent :visible="compareVisible">
+    <AsyncComponent :visible="isCompareModalVisible">
       <CompareModal
-        v-model:visible="compareVisible"
+        v-model:visible="isCompareModalVisible"
         :baselineId="props.baselineId"
-        :compareBaselineId="compareLineId"
-        :caseId="selectCaseId"
+        :compareBaselineId="selectedCompareBaselineId"
+        :caseId="selectedCaseId"
         :projectId="props.projectId" />
     </AsyncComponent>
   </div>

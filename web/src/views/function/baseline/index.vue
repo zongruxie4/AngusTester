@@ -8,43 +8,71 @@ import { BasicProps } from '@/types/types';
 
 const { t } = useI18n();
 
+// Props Definition
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined
 });
 
-const BaseLineList = defineAsyncComponent(() => import('@/views/function/baseline/list/index.vue'));
-const BaseLineEdit = defineAsyncComponent(() => import('@/views/function/baseline/edit/index.vue'));
-const BaseLineCases = defineAsyncComponent(() => import('@/views/function/baseline/case/index.vue'));
+// Async Components
+const BaselineList = defineAsyncComponent(() => import('@/views/function/baseline/list/index.vue'));
+const BaselineEdit = defineAsyncComponent(() => import('@/views/function/baseline/edit/index.vue'));
+const BaselineCases = defineAsyncComponent(() => import('@/views/function/baseline/case/index.vue'));
 
+// Router and UI References
 const route = useRoute();
 const router = useRouter();
 const browserTabRef = ref();
 
+/**
+ * Add a new tab pane
+ * @param data - Tab pane data
+ */
 const addTabPane = (data: IPane) => {
   browserTabRef.value.add(() => {
     return data;
   });
 };
 
+/**
+ * Get tab pane data by key
+ * @param key - Tab pane key
+ * @returns Tab pane data array or undefined
+ */
 const getTabPane = (key: string): IPane[] | undefined => {
   return browserTabRef.value.getData(key);
 };
 
+/**
+ * Delete tab panes by keys
+ * @param keys - Array of tab pane keys to delete
+ */
 const deleteTabPane = (keys: string[]) => {
   browserTabRef.value.remove(keys);
 };
 
+/**
+ * Update tab pane data
+ * @param data - Updated tab pane data
+ */
 const updateTabPane = (data: IPane) => {
   browserTabRef.value.update(data);
 };
 
+/**
+ * Replace tab pane with new data
+ * @param key - Tab pane key to replace
+ * @param data - New tab pane data
+ */
 const replaceTabPane = (key: string, data: { key: string }) => {
   browserTabRef.value.replace(key, data);
 };
 
-const initialize = () => {
+/**
+ * Initialize baseline module
+ */
+const initializeBaselineModule = () => {
   if (typeof browserTabRef.value?.add === 'function') {
     browserTabRef.value.add((ids: string[]) => {
       if (!ids.includes('baselineList')) {
@@ -58,10 +86,14 @@ const initialize = () => {
     });
   }
 
-  hashChange(route.hash);
+  handleHashChange(route.hash);
 };
 
-const hashChange = (hash: string) => {
+/**
+ * Handle hash change and route to appropriate tab
+ * @param hash - URL hash string
+ */
+const handleHashChange = (hash: string) => {
   const queryString = hash.split('?')[1];
   if (!queryString) {
     return;
@@ -111,11 +143,17 @@ const hashChange = (hash: string) => {
   router.replace('/function#baseline');
 };
 
-const storageKeyChange = () => {
-  initialize();
+/**
+ * Handle storage key change
+ */
+const handleStorageKeyChange = () => {
+  initializeBaselineModule();
 };
 
-const storageKey = computed(() => {
+/**
+ * Get storage key for browser tab persistence
+ */
+const browserTabStorageKey = computed(() => {
   if (!props.projectId) {
     return undefined;
   }
@@ -123,15 +161,19 @@ const storageKey = computed(() => {
   return `baseline-${props.projectId}`;
 });
 
+/**
+ * Initialize component on mount
+ */
 onMounted(() => {
   watch(() => route.hash, () => {
     if (!route.hash.startsWith('#baseline')) {
       return;
     }
-    hashChange(route.hash);
+    handleHashChange(route.hash);
   });
 });
 
+// Provide dependencies to child components
 provide('addTabPane', addTabPane);
 provide('getTabPane', getTabPane);
 provide('deleteTabPane', deleteTabPane);
@@ -144,25 +186,25 @@ provide('replaceTabPane', replaceTabPane);
     hideAdd
     class="h-full"
     :userId="props.userInfo.id"
-    :storageKey="storageKey"
-    @storageKeyChange="storageKeyChange">
+    :storageKey="browserTabStorageKey"
+    @storageKeyChange="handleStorageKeyChange">
     <template #default="record">
       <template v-if="record.value === 'baselineList'">
-        <BaseLineList
+        <BaselineList
           v-bind="record"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :projectId="props.projectId" />
       </template>
       <template v-if="record.value === 'baselineEdit'">
-        <BaseLineEdit
+        <BaselineEdit
           v-bind="record"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"
           :projectId="props.projectId" />
       </template>
       <template v-if="record.value === 'baselineDetails'">
-        <BaseLineCases
+        <BaselineCases
           v-bind="record"
           :userInfo="props.userInfo"
           :appInfo="props.appInfo"

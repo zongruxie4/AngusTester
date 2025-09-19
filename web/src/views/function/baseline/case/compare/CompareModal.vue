@@ -10,10 +10,12 @@ import _ from 'lodash-es';
 
 const { t } = useI18n();
 
+// Async components for case comparison
 const AssocTasks = defineAsyncComponent(() => import('@/views/function/review/components/AssocTask.vue'));
 const AssocCases = defineAsyncComponent(() => import('@/views/function/review/components/AssocCase.vue'));
 const Attachment = defineAsyncComponent(() => import('@/views/function/review/components/Attachment.vue'));
 
+// Props and Emits
 interface Props {
   visible: boolean;
   caseId: string;
@@ -31,37 +33,42 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void}>();
+
+// Configuration
 const toolbarOptions = ['color', 'weight'];
 
-const defaultCaseInfo = ref();
+// Reactive Data
+const originalCaseInfo = ref();
+const baseCaseData = ref();
+const compareCaseData = ref();
+const selectedBaseVersion = ref();
+const selectedCompareVersion = ref();
+const versionOptions = ref<{value: string; label: string}[]>([]);
+const shouldHideSameItems = ref(false);
 
-const baseCase = ref();
-const compareCase = ref();
-
-const baseVersion = ref();
-const compareVersion = ref();
-
-const versionOpt = ref<{value: string; label: string}[]>([]);
-
-const hideSameItem = ref(false);
-
-const resetData = () => {
-  baseCase.value = undefined;
-  compareCase.value = undefined;
-  baseVersion.value = undefined;
-  compareVersion.value = undefined;
-  versionOpt.value = [];
+/**
+ * Reset all comparison data to initial state
+ */
+const resetComparisonData = () => {
+  baseCaseData.value = undefined;
+  compareCaseData.value = undefined;
+  selectedBaseVersion.value = undefined;
+  selectedCompareVersion.value = undefined;
+  versionOptions.value = [];
 };
 
-const loadBaseCase = async () => {
+/**
+ * Load base case details from baseline
+ */
+const loadBaseCaseDetails = async () => {
   const [error, { data }] = await func.getBaselineCaseDetail(props.baselineId, props.caseId);
   if (error) {
     return;
   }
-  defaultCaseInfo.value = data;
-  baseCase.value = data;
-  if (!versionOpt.value.length) {
-    versionOpt.value = Object.keys(data.allVersionCaseVos).map(key => {
+  originalCaseInfo.value = data;
+  baseCaseData.value = data;
+  if (!versionOptions.value.length) {
+    versionOptions.value = Object.keys(data.allVersionCaseVos).map(key => {
       return {
         value: key,
         label: 'v' + key
@@ -70,28 +77,46 @@ const loadBaseCase = async () => {
   }
 };
 
-const loadCompareCase = async () => {
+/**
+ * Load compare case details from baseline
+ */
+const loadCompareCaseDetails = async () => {
   const [error, { data }] = await func.getBaselineCaseDetail(props.compareBaselineId, props.caseId);
   if (error) {
     return;
   }
-  compareCase.value = data;
+  compareCaseData.value = data;
 };
 
-const handleBaseVersionChange = (value) => {
-  baseCase.value = (defaultCaseInfo.value.allVersionCaseVos || {})[value];
+/**
+ * Handle base version selection change
+ * @param value - Selected version value
+ */
+const handleBaseVersionSelection = (value) => {
+  baseCaseData.value = (originalCaseInfo.value.allVersionCaseVos || {})[value];
 };
 
-const handleCompareVersionChange = (value) => {
-  compareCase.value = (defaultCaseInfo.value.allVersionCaseVos || {})[value];
+/**
+ * Handle compare version selection change
+ * @param value - Selected version value
+ */
+const handleCompareVersionSelection = (value) => {
+  compareCaseData.value = (originalCaseInfo.value.allVersionCaseVos || {})[value];
 };
 
-const cancel = () => {
+/**
+ * Close the comparison modal
+ */
+const closeModal = () => {
   emits('update:visible', false);
 };
-const nameClass = computed(() => {
-  if (baseCase.value && compareCase.value) {
-    if (baseCase.value.name !== compareCase.value.name) {
+
+/**
+ * Get CSS class for case name comparison highlighting
+ */
+const caseNameHighlightClass = computed(() => {
+  if (baseCaseData.value && compareCaseData.value) {
+    if (baseCaseData.value.name !== compareCaseData.value.name) {
       return 'bg-blue-active';
     }
     return '';
@@ -99,15 +124,18 @@ const nameClass = computed(() => {
   return '';
 });
 
-const descriptionClass = computed(() => {
-  if (baseCase.value && compareCase.value) {
-    if (!!baseCase.value?.description && !compareCase.value?.description) {
+/**
+ * Get CSS class for case description comparison highlighting
+ */
+const caseDescriptionHighlightClass = computed(() => {
+  if (baseCaseData.value && compareCaseData.value) {
+    if (!!baseCaseData.value?.description && !compareCaseData.value?.description) {
       return 'bg-status-del';
     }
-    if (!baseCase.value?.description && !!compareCase.value?.description) {
+    if (!baseCaseData.value?.description && !!compareCaseData.value?.description) {
       return 'bg-status-add';
     }
-    if (baseCase.value?.description !== compareCase.value?.description) {
+    if (baseCaseData.value?.description !== compareCaseData.value?.description) {
       return 'bg-blue-active';
     }
     return '';
@@ -115,15 +143,18 @@ const descriptionClass = computed(() => {
   return '';
 });
 
-const preconditionClass = computed(() => {
-  if (baseCase.value && compareCase.value) {
-    if (!!baseCase.value?.precondition && !compareCase.value?.precondition) {
+/**
+ * Get CSS class for case precondition comparison highlighting
+ */
+const casePreconditionHighlightClass = computed(() => {
+  if (baseCaseData.value && compareCaseData.value) {
+    if (!!baseCaseData.value?.precondition && !compareCaseData.value?.precondition) {
       return 'bg-status-del';
     }
-    if (!baseCase.value?.precondition && !!compareCase.value?.precondition) {
+    if (!baseCaseData.value?.precondition && !!compareCaseData.value?.precondition) {
       return 'bg-status-add';
     }
-    if (baseCase.value?.precondition !== compareCase.value?.precondition) {
+    if (baseCaseData.value?.precondition !== compareCaseData.value?.precondition) {
       return 'bg-blue-active';
     }
     return '';
@@ -131,18 +162,21 @@ const preconditionClass = computed(() => {
   return '';
 });
 
-const stepsClass = computed(() => {
-  if (!baseCase.value?.steps?.length && compareCase.value?.steps?.length) {
+/**
+ * Get CSS class for test steps comparison highlighting
+ */
+const testStepsHighlightClass = computed(() => {
+  if (!baseCaseData.value?.steps?.length && compareCaseData.value?.steps?.length) {
     return 'bg-status-add';
-  } else if (baseCase.value?.steps?.length && !compareCase.value?.steps?.length) {
+  } else if (baseCaseData.value?.steps?.length && !compareCaseData.value?.steps?.length) {
     return 'bg-status-del';
-  } else if (!!baseCase.value?.steps?.length && (baseCase.value?.steps?.length !== compareCase.value?.steps?.length)) {
+  } else if (!!baseCaseData.value?.steps?.length && (baseCaseData.value?.steps?.length !== compareCaseData.value?.steps?.length)) {
     return 'bg-blue-active';
-  } else if (!!baseCase.value?.steps?.length && (baseCase.value?.steps?.length === compareCase.value?.steps?.length)) {
-    const isModify = baseCase.value.steps.some((item, idx) => {
-      return (item.expectedResult !== compareCase.value.steps[idx].expectedResult) || (item.step !== compareCase.value.steps[idx].step);
+  } else if (!!baseCaseData.value?.steps?.length && (baseCaseData.value?.steps?.length === compareCaseData.value?.steps?.length)) {
+    const hasModifications = baseCaseData.value.steps.some((item, idx) => {
+      return (item.expectedResult !== compareCaseData.value.steps[idx].expectedResult) || (item.step !== compareCaseData.value.steps[idx].step);
     });
-    if (isModify) {
+    if (hasModifications) {
       return 'bg-blue-active';
     }
   } else {
@@ -150,16 +184,23 @@ const stepsClass = computed(() => {
   }
 });
 
-const taskClass = computed(() => {
-  if (!baseCase.value?.refTaskInfos?.length && compareCase.value?.refTaskInfos?.length) {
+/**
+ * Get CSS class for associated tasks comparison highlighting
+ */
+const associatedTasksHighlightClass = computed(() => {
+  if (!baseCaseData.value?.refTaskInfos?.length &&
+   compareCaseData.value?.refTaskInfos?.length) {
     return 'bg-status-add';
-  } else if (baseCase.value?.refTaskInfos?.length && !compareCase.value?.refTaskInfos?.length) {
+  } else if (baseCaseData.value?.refTaskInfos?.length &&
+  !compareCaseData.value?.refTaskInfos?.length) {
     return 'bg-status-del';
-  } else if (!!baseCase.value?.refTaskInfos?.length && (baseCase.value?.refTaskInfos?.length !== compareCase.value?.refTaskInfos?.length)) {
+  } else if (!!baseCaseData.value?.refTaskInfos?.length &&
+  (baseCaseData.value?.refTaskInfos?.length !== compareCaseData.value?.refTaskInfos?.length)) {
     return 'bg-blue-active';
-  } else if (!!baseCase.value?.refTaskInfos?.length && (baseCase.value?.refTaskInfos?.length === compareCase.value?.refTaskInfos?.length)) {
-    const different = _.differenceBy(baseCase.value.refTaskInfos?.length, compareCase.value.refTaskInfos, 'id');
-    if (different?.length) {
+  } else if (!!baseCaseData.value?.refTaskInfos?.length &&
+  (baseCaseData.value?.refTaskInfos?.length === compareCaseData.value?.refTaskInfos?.length)) {
+    const differentTasks = _.differenceBy(baseCaseData.value.refTaskInfos?.length, compareCaseData.value.refTaskInfos, 'id');
+    if (differentTasks?.length) {
       return 'bg-blue-active';
     }
   } else {
@@ -167,16 +208,19 @@ const taskClass = computed(() => {
   }
 });
 
-const caseClass = computed(() => {
-  if (!baseCase.value?.refCaseInfos?.length && compareCase.value?.refCaseInfos?.length) {
+/**
+ * Get CSS class for associated cases comparison highlighting
+ */
+const associatedCasesHighlightClass = computed(() => {
+  if (!baseCaseData.value?.refCaseInfos?.length && compareCaseData.value?.refCaseInfos?.length) {
     return 'bg-status-add';
-  } else if (baseCase.value?.refCaseInfos?.length && !compareCase.value?.refCaseInfos?.length) {
+  } else if (baseCaseData.value?.refCaseInfos?.length && !compareCaseData.value?.refCaseInfos?.length) {
     return 'bg-status-del';
-  } else if (!!baseCase.value?.refCaseInfos?.length && (baseCase.value?.refCaseInfos?.length !== compareCase.value.refCaseInfos?.length)) {
+  } else if (!!baseCaseData.value?.refCaseInfos?.length && (baseCaseData.value?.refCaseInfos?.length !== compareCaseData.value.refCaseInfos?.length)) {
     return 'bg-blue-active';
-  } else if (!!baseCase.value?.refCaseInfos?.length && (baseCase.value?.refCaseInfos?.length === compareCase.value.refCaseInfos?.length)) {
-    const different = _.differenceBy(baseCase.value.refCaseInfos?.length, compareCase.value.refCaseInfos, 'id');
-    if (different?.length) {
+  } else if (!!baseCaseData.value?.refCaseInfos?.length && (baseCaseData.value?.refCaseInfos?.length === compareCaseData.value.refCaseInfos?.length)) {
+    const differentCases = _.differenceBy(baseCaseData.value.refCaseInfos?.length, compareCaseData.value.refCaseInfos, 'id');
+    if (differentCases?.length) {
       return 'bg-blue-active';
     }
   } else {
@@ -184,16 +228,23 @@ const caseClass = computed(() => {
   }
 });
 
-const attachmentClass = computed(() => {
-  if (!baseCase.value?.attachmentsData?.length && compareCase.value?.attachmentsData?.length) {
+/**
+ * Get CSS class for attachments comparison highlighting
+ */
+const attachmentsHighlightClass = computed(() => {
+  if (!baseCaseData.value?.attachmentsData?.length &&
+  compareCaseData.value?.attachmentsData?.length) {
     return 'bg-status-add';
-  } else if (baseCase.value?.attachmentsData?.length && !compareCase.value?.attachmentsData?.length) {
+  } else if (baseCaseData.value?.attachmentsData?.length &&
+  !compareCaseData.value?.attachmentsData?.length) {
     return 'bg-status-del';
-  } else if (!!baseCase.value?.attachmentsData?.length && (baseCase.value?.attachmentsData?.length !== compareCase.value.attachmentsData?.length)) {
+  } else if (!!baseCaseData.value?.attachmentsData?.length &&
+  (baseCaseData.value?.attachmentsData?.length !== compareCaseData.value.attachmentsData?.length)) {
     return 'bg-blue-active';
-  } else if (!!baseCase.value?.attachmentsData?.length && (baseCase.value?.attachmentsDataE?.length === compareCase.value.attachmentsData?.length)) {
-    const different = _.differenceBy(baseCase.value.attachmentsData?.length, compareCase.value.attachmentsData, 'id');
-    if (different?.length) {
+  } else if (!!baseCaseData.value?.attachmentsData?.length &&
+  (baseCaseData.value?.attachmentsData?.length === compareCaseData.value.attachmentsData?.length)) {
+    const differentAttachments = _.differenceBy(baseCaseData.value.attachmentsData?.length, compareCaseData.value.attachmentsData, 'id');
+    if (differentAttachments?.length) {
       return 'bg-blue-active';
     }
   } else {
@@ -201,21 +252,24 @@ const attachmentClass = computed(() => {
   }
 });
 
+/**
+ * Initialize component and watch for visibility changes
+ */
 onMounted(() => {
-  watch(() => props.visible, async newValue => {
-    if (!newValue) {
-      resetData();
+  watch(() => props.visible, async isVisible => {
+    if (!isVisible) {
+      resetComparisonData();
       return;
     }
     if (props.baselineId === props.compareBaselineId) {
-      await loadBaseCase();
-      compareCase.value = baseCase.value;
-      baseVersion.value = baseCase.value.version;
-      compareVersion.value = compareCase.value.version;
+      await loadBaseCaseDetails();
+      compareCaseData.value = baseCaseData.value;
+      selectedBaseVersion.value = baseCaseData.value.version;
+      selectedCompareVersion.value = compareCaseData.value.version;
     } else {
-      Promise.all([loadBaseCase(), loadCompareCase()]).then(() => {
-        baseVersion.value = baseCase.value.version;
-        compareVersion.value = compareCase.value.version;
+      Promise.all([loadBaseCaseDetails(), loadCompareCaseDetails()]).then(() => {
+        selectedBaseVersion.value = baseCaseData.value.version;
+        selectedCompareVersion.value = compareCaseData.value.version;
       });
     }
   }, {
@@ -229,13 +283,13 @@ onMounted(() => {
     :visible="props.visible"
     :width="1000"
     :footer="false"
-    @cancel="cancel">
+    @cancel="closeModal">
     <div style="height: 80svh; overflow-y: auto;">
       <div class="flex  items-center space-x-3">
         <div class="inline-flex items-center">
           {{ t('functionBaseline.case.hideSameItems') }}
           <Switch
-            v-model:checked="hideSameItem"
+            v-model:checked="shouldHideSameItems"
             size="small"
             class="ml-1" />
         </div>
@@ -261,64 +315,64 @@ onMounted(() => {
         </div>
         <div class="flex-1 border-r px-2 flex justify-between">
           <Select
-            v-model:value="baseVersion"
+            v-model:value="selectedBaseVersion"
             class="w-20 self-center"
-            :options="versionOpt"
-            @change="handleBaseVersionChange" />
+            :options="versionOptions"
+            @change="handleBaseVersionSelection" />
         </div>
         <div class="flex-1 border-r px-2  flex justify-between">
           <Select
-            v-model:value="compareVersion"
+            v-model:value="selectedCompareVersion"
             class="w-20 self-center"
-            :options="versionOpt"
-            @change="handleCompareVersionChange" />
+            :options="versionOptions"
+            @change="handleCompareVersionSelection" />
         </div>
       </div>
 
-      <div v-show="!hideSameItem || !!nameClass" class="flex leading-10 border-b">
+      <div v-show="!shouldHideSameItems || !!caseNameHighlightClass" class="flex leading-10 border-b">
         <div class="w-40 px-2 border-r border-l bg-gray-bg">
           {{ t('functionBaseline.case.name') }}
         </div>
         <div class="flex-1 border-r px-2 flex justify-between">
-          <div v-if="baseCase?.name">
-            {{ baseCase?.name }}
+          <div v-if="baseCaseData?.name">
+            {{ baseCaseData?.name }}
           </div>
         </div>
-        <div class="flex-1 border-r px-2  flex justify-between" :class="nameClass">
-          <div v-if="compareCase?.version">
-            {{ compareCase?.name }}
+        <div class="flex-1 border-r px-2  flex justify-between" :class="caseNameHighlightClass">
+          <div v-if="compareCaseData?.version">
+            {{ compareCaseData?.name }}
           </div>
         </div>
       </div>
 
-      <div v-show="!hideSameItem || !!descriptionClass" class="flex leading-10 border-b">
+      <div v-show="!shouldHideSameItems || !!caseDescriptionHighlightClass" class="flex leading-10 border-b">
         <div class="w-40 px-2 border-r border-l bg-gray-bg">
           {{ t('functionBaseline.case.description') }}
         </div>
         <div class="flex-1 border-r px-2 flex justify-between">
-          <div v-if="baseCase?.description">
+          <div v-if="baseCaseData?.description">
             <RichEditor
-              :value="baseCase.description"
+              :value="baseCaseData.description"
               mode="view" />
           </div>
         </div>
-        <div class="flex-1 border-r px-2  flex justify-between" :class="descriptionClass">
-          <div v-if="compareCase?.description">
+        <div class="flex-1 border-r px-2  flex justify-between" :class="caseDescriptionHighlightClass">
+          <div v-if="compareCaseData?.description">
             <RichEditor
-              :value="compareCase.description"
+              :value="compareCaseData.description"
               mode="view" />
           </div>
         </div>
       </div>
 
-      <div v-show="!hideSameItem || !!preconditionClass" class="flex leading-10 border-b">
+      <div v-show="!shouldHideSameItems || !!casePreconditionHighlightClass" class="flex leading-10 border-b">
         <div class="w-40 px-2 border-r border-l bg-gray-bg">
           {{ t('functionBaseline.case.precondition') }}
         </div>
         <div class="flex-1 border-r px-2 flex justify-between">
-          <div v-if="baseCase?.precondition">
+          <div v-if="baseCaseData?.precondition">
             <RichEditor
-              v-model:value="baseCase.precondition"
+              v-model:value="baseCaseData.precondition"
               mode="view"
               :toolbarOptions="toolbarOptions"
               :options="{theme: 'bubble'}"
@@ -326,10 +380,10 @@ onMounted(() => {
               height="auto" />
           </div>
         </div>
-        <div class="flex-1 border-r px-2  flex justify-between" :class="preconditionClass">
-          <div v-if="compareCase?.description">
+        <div class="flex-1 border-r px-2  flex justify-between" :class="casePreconditionHighlightClass">
+          <div v-if="compareCaseData?.precondition">
             <RichEditor
-              v-model:value="compareCase.precondition"
+              v-model:value="compareCaseData.precondition"
               mode="view"
               :toolbarOptions="toolbarOptions"
               :options="{theme: 'bubble'}"
@@ -339,18 +393,18 @@ onMounted(() => {
         </div>
       </div>
 
-      <div v-show="!hideSameItem || !!stepsClass" class="flex leading-10 border-b">
+      <div v-show="!shouldHideSameItems || !!testStepsHighlightClass" class="flex leading-10 border-b">
         <div class="w-40 px-2 border-r border-l flex flex-col justify-center  bg-gray-bg">
           {{ t('functionBaseline.case.testSteps') }}
         </div>
         <div class="flex-1 border-r">
-          <div v-if="baseCase?.steps?.length" class="-mb-0.25">
+          <div v-if="baseCaseData?.steps?.length" class="-mb-0.25">
             <div class="flex border-b">
               <span class="w-8 border-r"></span>
               <span class="flex-1 px-2 border-r">{{ t('functionBaseline.case.stepDescription') }}</span>
               <span class="flex-1 px-2">{{ t('functionBaseline.case.expectedResult') }}</span>
             </div>
-            <div v-for="(step, idx) in baseCase.steps" class="flex border-b leading-5">
+            <div v-for="(step, idx) in baseCaseData.steps" class="flex border-b leading-5">
               <div class="w-8 text-center border-r py-2">{{ idx + 1 }}</div>
               <div class="flex-1 px-2 border-r py-2">
                 <RichEditor
@@ -373,14 +427,14 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <div class="flex-1 border-r" :class="stepsClass">
-          <div v-if="compareCase?.steps?.length" class="-mb-0.25">
+        <div class="flex-1 border-r" :class="testStepsHighlightClass">
+          <div v-if="compareCaseData?.steps?.length" class="-mb-0.25">
             <div class="flex border-b">
               <span class="w-8 border-r"></span>
               <span class="flex-1 px-2 border-r">{{ t('functionBaseline.case.stepDescription') }}</span>
               <span class="flex-1 px-2">{{ t('functionBaseline.case.expectedResult') }}</span>
             </div>
-            <div v-for="(step, idx) in compareCase.steps" class="flex border-b leading-5">
+            <div v-for="(step, idx) in compareCaseData.steps" class="flex border-b leading-5">
               <div class="w-8 text-center border-r py-2">{{ idx + 1 }}</div>
               <div class="flex-1 px-2 border-r py-2">
                 <RichEditor
@@ -405,73 +459,73 @@ onMounted(() => {
         </div>
       </div>
 
-      <div v-show="!hideSameItem || !!taskClass" class="flex leading-10 border-b">
+      <div v-show="!shouldHideSameItems || !!associatedTasksHighlightClass" class="flex leading-10 border-b">
         <div class="w-40 px-2 border-r border-l  bg-gray-bg">
           {{ t('functionBaseline.case.associatedTasks') }}
         </div>
         <div class="flex-1 border-r px-2 min-w-0">
-          <div v-if="baseCase?.refTaskInfos" class="py-1">
+          <div v-if="baseCaseData?.refTaskInfos" class="py-1">
             <AssocTasks
               hideTitle
-              :dataSource="baseCase?.refTaskInfos"
+              :dataSource="baseCaseData?.refTaskInfos"
               :projectId="props.projectId"
-              :caseInfo="baseCase" />
+              :caseInfo="baseCaseData" />
           </div>
         </div>
-        <div class="flex-1 border-r px-2  min-w-0" :class="taskClass">
-          <div v-if="compareCase?.refTaskInfos" class="py-1">
+        <div class="flex-1 border-r px-2  min-w-0" :class="associatedTasksHighlightClass">
+          <div v-if="compareCaseData?.refTaskInfos" class="py-1">
             <AssocTasks
               hideTitle
-              :dataSource="compareCase?.refTaskInfos"
+              :dataSource="compareCaseData?.refTaskInfos"
               :projectId="props.projectId"
-              :caseInfo="compareCase" />
+              :caseInfo="compareCaseData" />
           </div>
         </div>
       </div>
 
-      <div v-show="!hideSameItem || !!caseClass" class="flex leading-10 border-b">
+      <div v-show="!shouldHideSameItems || !!associatedCasesHighlightClass" class="flex leading-10 border-b">
         <div class="w-40 px-2 border-r border-l  bg-gray-bg">
           {{ t('functionBaseline.case.associatedCases') }}
         </div>
         <div class="flex-1 border-r px-2 min-w-0">
-          <div v-if="baseCase?.refCaseInfos" class="py-1">
+          <div v-if="baseCaseData?.refCaseInfos" class="py-1">
             <AssocCases
               hideTitle
-              :dataSource="baseCase?.refCaseInfos"
+              :dataSource="baseCaseData?.refCaseInfos"
               :projectId="props.projectId"
-              :caseInfo="baseCase" />
+              :caseInfo="baseCaseData" />
           </div>
         </div>
-        <div class="flex-1 border-r px-2  min-w-0" :class="caseClass">
-          <div v-if="compareCase?.refCaseInfos" class="py-1">
+        <div class="flex-1 border-r px-2  min-w-0" :class="associatedCasesHighlightClass">
+          <div v-if="compareCaseData?.refCaseInfos" class="py-1">
             <AssocCases
               hideTitle
-              :dataSource="compareCase?.refCaseInfos"
+              :dataSource="compareCaseData?.refCaseInfos"
               :projectId="props.projectId"
-              :caseInfo="compareCase" />
+              :caseInfo="compareCaseData" />
           </div>
         </div>
       </div>
 
-      <div v-show="!hideSameItem || !!attachmentClass" class="flex leading-10 border-b">
+      <div v-show="!shouldHideSameItems || !!attachmentsHighlightClass" class="flex leading-10 border-b">
         <div class="w-40 px-2 border-r border-l  bg-gray-bg">
           {{ t('functionBaseline.case.attachments') }}
         </div>
         <div class="flex-1 border-r px-2">
-          <div v-if="baseCase?.attachment?.length" class="py-1">
+          <div v-if="baseCaseData?.attachment?.length" class="py-1">
             <Attachment
               hideTitle
-              :caseInfo="baseCase" />
+              :caseInfo="baseCaseData" />
           </div>
         </div>
         <div class="flex-1 border-r px-2 ">
           <div
-            v-if="compareCase?.attachment?.length"
+            v-if="compareCaseData?.attachment?.length"
             class="py-1"
-            :class="attachmentClass">
+            :class="attachmentsHighlightClass">
             <Attachment
               hideTitle
-              :caseInfo="compareCase" />
+              :caseInfo="compareCaseData" />
           </div>
         </div>
       </div>

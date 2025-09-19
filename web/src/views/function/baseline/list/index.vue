@@ -12,10 +12,12 @@ import { BasicProps } from '@/types/types';
 import SearchPanel from '@/views/function/baseline/list/SearchPanel.vue';
 import RichText from '@/components/richEditor/textContent/index.vue';
 
+// Async Components
 const Introduce = defineAsyncComponent(() => import('@/views/function/baseline/list/Introduce.vue'));
 
 const { t } = useI18n();
 
+// Props Definition
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -23,51 +25,67 @@ const props = withDefaults(defineProps<BasicProps>(), {
   notify: undefined
 });
 
+// Injected Dependencies
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 
-const loaded = ref(false);
-const loading = ref(false);
-const searchedFlag = ref(false);
-
-const pageNo = ref(1);
-const pageSize = ref(5);
-const searchPanelParams = ref({
+// Reactive Data
+const isDataLoaded = ref(false);
+const isLoading = ref(false);
+const hasSearchFilters = ref(false);
+const currentPageNo = ref(1);
+const currentPageSize = ref(5);
+const searchParameters = ref({
   orderBy: undefined,
   orderSort: undefined,
   filters: []
 });
-
-const total = ref(0);
-const dataList = ref<BaselineDetail[]>([]);
+const totalCount = ref(0);
+const baselineList = ref<BaselineDetail[]>([]);
 const permissionsMap = ref<Map<string, string[]>>(new Map());
 
+// Pagination Configuration
 const pageSizeOptions = ['5', '10', '15', '20', '30'];
 
-const refresh = () => {
-  pageNo.value = 1;
+/**
+ * Handle refresh button click
+ */
+const handleRefreshClick = () => {
+  currentPageNo.value = 1;
   permissionsMap.value.clear();
-  loadData();
+  loadBaselineData();
 };
 
-const searchChange = (data) => {
-  pageNo.value = 1;
-  searchPanelParams.value = data;
-  loadData();
+/**
+ * Handle search parameters change
+ * @param data - Search parameters
+ */
+const handleSearchParametersChange = (data) => {
+  currentPageNo.value = 1;
+  searchParameters.value = data;
+  loadBaselineData();
 };
 
-const toCompleted = async (data: BaselineDetail) => {
-  loading.value = true;
+/**
+ * Handle baseline establishment
+ * @param data - Baseline detail data
+ */
+const handleBaselineEstablishment = async (data: BaselineDetail) => {
+  isLoading.value = true;
   const id = data.id;
   const [error] = await func.establishBaseline(id);
-  loading.value = false;
+  isLoading.value = false;
   if (error) {
     return;
   }
   notification.success(t('functionBaseline.list.baselineEstablished'));
-  await loadData();
+  await loadBaselineData();
 };
 
-const toDelete = async (data: BaselineDetail) => {
+/**
+ * Handle baseline deletion
+ * @param data - Baseline detail data
+ */
+const handleBaselineDeletion = async (data: BaselineDetail) => {
   modal.confirm({
     content: t('functionBaseline.list.confirmDeleteBaseline', { name: data.name }),
     async onOk () {
@@ -78,55 +96,69 @@ const toDelete = async (data: BaselineDetail) => {
       }
 
       notification.success(t('functionBaseline.list.baselineDeletedSuccess'));
-      await loadData();
+      await loadBaselineData();
 
       deleteTabPane([id]);
     }
   });
 };
 
-const paginationChange = (_pageNo: number, _pageSize: number) => {
-  pageNo.value = _pageNo;
-  pageSize.value = _pageSize;
-  loadData();
+/**
+ * Handle pagination change
+ * @param pageNo - Page number
+ * @param pageSize - Page size
+ */
+const handlePaginationChange = (pageNo: number, pageSize: number) => {
+  currentPageNo.value = pageNo;
+  currentPageSize.value = pageSize;
+  loadBaselineData();
 };
 
-const loadData = async () => {
-  loading.value = true;
+/**
+ * Load baseline list data
+ */
+const loadBaselineData = async () => {
+  isLoading.value = true;
   const params: ProjectPageQuery = {
     projectId: props.projectId,
-    pageNo: pageNo.value,
-    pageSize: pageSize.value,
-    ...searchPanelParams.value
+    pageNo: currentPageNo.value,
+    pageSize: currentPageSize.value,
+    ...searchParameters.value
   };
 
   const [error, res] = await func.getBaselineList(params);
-  loaded.value = true;
-  loading.value = false;
+  isDataLoaded.value = true;
+  isLoading.value = false;
 
-  searchedFlag.value = !!(params.filters?.length || params.orderBy);
+  hasSearchFilters.value = !!(params.filters?.length || params.orderBy);
 
   if (error) {
-    dataList.value = [];
+    baselineList.value = [];
     return;
   }
 
   const data = res?.data;
   if (data) {
-    total.value = +data.total;
-    dataList.value = (data.list || [] as BaselineDetail[]);
+    totalCount.value = +data.total;
+    baselineList.value = (data.list || [] as BaselineDetail[]);
   }
 };
 
-const reset = () => {
-  pageNo.value = 1;
-  dataList.value = [];
+/**
+ * Reset component state
+ */
+const resetComponentState = () => {
+  currentPageNo.value = 1;
+  baselineList.value = [];
 };
 
+/**
+ * Initialize component data on mount
+ */
 onMounted(() => {
   watch(() => props.projectId, () => {
-    reset();
-    loadData();
+    resetComponentState();
+    loadBaselineData();
   }, { immediate: true });
 
   watch(() => props.notify, (newValue) => {
@@ -134,7 +166,7 @@ onMounted(() => {
       return;
     }
 
-    loadData();
+    loadBaselineData();
   }, { immediate: false });
 });
 </script>
@@ -142,9 +174,9 @@ onMounted(() => {
   <div class="flex flex-col h-full overflow-auto px-5 py-5 leading-5 text-3">
     <Introduce class="mb-7" />
     <div class="text-3.5 font-semibold mb-1">{{ t('functionBaseline.list.createdBaselines') }}</div>
-    <Spin :spinning="loading" class="flex-1 flex flex-col">
+    <Spin :spinning="isLoading" class="flex-1 flex flex-col">
       <template v-if="loaded">
-        <div v-if="!searchedFlag && dataList.length === 0" class="flex-1 flex flex-col items-center justify-center">
+        <div v-if="!hasSearchFilters && baselineList.length === 0" class="flex-1 flex flex-col items-center justify-center">
           <img src="../../../../assets/images/nodata.png">
           <div class="flex items-center text-theme-sub-content text-3.5 leading-5 space-x-1">
             <span>{{ t('functionBaseline.list.noBaselinesAdded') }}</span>
@@ -156,15 +188,15 @@ onMounted(() => {
 
         <template v-else>
           <SearchPanel
-            :loading="loading"
-            @refresh="refresh"
-            @change="searchChange" />
+            :loading="isLoading"
+            @refresh="handleRefreshClick"
+            @change="handleSearchParametersChange" />
 
-          <NoData v-if="dataList.length === 0" class="flex-1" />
+          <NoData v-if="baselineList.length === 0" class="flex-1" />
 
           <template v-else>
             <div
-              v-for="(item, index) in dataList"
+              v-for="(item, index) in baselineList"
               :key="item.id"
               class="mb-3.5 border border-theme-text-box rounded">
               <div class="px-3.5 py-2 flex items-center justify-between bg-theme-form-head w-full relative">
@@ -245,7 +277,7 @@ onMounted(() => {
                     size="small"
                     type="text"
                     class="px-0 flex items-center space-x-1"
-                    @click="toCompleted(item)">
+                    @click="handleBaselineEstablishment(item)">
                     <Icon icon="icon-yiwancheng" class="text-3.5" />
                     <span>{{ t('functionBaseline.list.establishBaseline') }}</span>
                   </Button>
@@ -254,7 +286,7 @@ onMounted(() => {
                     size="small"
                     type="text"
                     class="px-0 flex items-center space-x-1"
-                    @click="toDelete(item)">
+                    @click="handleBaselineDeletion(item)">
                     <Icon icon="icon-yiwancheng" class="text-3.5" />
                     <span>{{ t('functionBaseline.list.delete') }}</span>
                   </Button>
@@ -264,15 +296,15 @@ onMounted(() => {
 
             <Pagination
               v-if="total > 5"
-              :current="pageNo"
-              :pageSize="pageSize"
+              :current="currentPageNo"
+              :pageSize="currentPageSize"
               :pageSizeOptions="pageSizeOptions"
-              :total="total"
+              :total="totalCount"
               :hideOnSinglePage="false"
               showSizeChanger
               size="default"
               class="text-right"
-              @change="paginationChange" />
+              @change="handlePaginationChange" />
           </template>
         </template>
       </template>

@@ -7,9 +7,11 @@ import { BasicProps } from '@/types/types';
 
 const { t } = useI18n();
 
-const BaseLineCaseList = defineAsyncComponent(() => import('@/views/function/baseline/case/list/List.vue'));
+// Async Components
+const BaselineCaseList = defineAsyncComponent(() => import('@/views/function/baseline/case/list/List.vue'));
 const BaselineCompare = defineAsyncComponent(() => import('@/views/function/baseline/case/compare/index.vue'));
 
+// Props Definition
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -17,11 +19,16 @@ const props = withDefaults(defineProps<BasicProps>(), {
   data: undefined
 });
 
+// Injected Dependencies
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 
-const planId = ref();
+// Reactive Data
+const currentPlanId = ref();
 
-const loadBaseLineInfo = async () => {
+/**
+ * Load baseline information and update tab pane
+ */
+const loadBaselineInfo = async () => {
   const [error, res] = await func.getBaselineDetail(props.data.id);
   if (error) {
     return;
@@ -33,16 +40,19 @@ const loadBaseLineInfo = async () => {
   }
 
   const { name } = data;
-  planId.value = data.planId;
+  currentPlanId.value = data.planId;
 
   if (name && typeof updateTabPane === 'function') {
     updateTabPane({ name, _id: props.data.id + '-case' });
   }
 };
 
+/**
+ * Initialize component data on mount
+ */
 onMounted(() => {
   if (props.data.id) {
-    loadBaseLineInfo();
+    loadBaselineInfo();
   }
 });
 </script>
@@ -53,19 +63,17 @@ onMounted(() => {
       class="h-full"
       destroyInactiveTabPane>
       <TabPane key="baselinecase" :tab="t('functionBaseline.case.baselineCases')">
-        <BaseLineCaseList
+        <BaselineCaseList
           v-bind="props"
           :baselineId="props.data.id"
-          :planId="planId" />
+          :planId="currentPlanId" />
       </TabPane>
-      <TabPane key="baselinecompare" :tab="t('functionBaseline.case.baselineCompare')">
+      <TabPane key="baselineCompare" :tab="t('functionBaseline.case.baselineCompare')">
         <BaselineCompare
           v-bind="props"
           :baselineId="props.data.id"
-          :planId="planId" />
+          :planId="currentPlanId" />
       </TabPane>
-      <template>
-      </template>
     </Tabs>
   </div>
 </template>

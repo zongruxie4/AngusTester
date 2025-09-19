@@ -10,13 +10,15 @@ import { LoadingProps } from '@/types/types';
 
 const { t } = useI18n();
 
+// Props Definition
 const props = withDefaults(defineProps<LoadingProps>(), {
   loading: false
 });
 
+// Type Definitions
 type OrderByKey = string;
 
-// eslint-disable-next-line func-call-spacing
+// Emits Definition
 const emits = defineEmits<{
   (e: 'change', value: {
   orderBy?: string;
@@ -26,20 +28,22 @@ const emits = defineEmits<{
   (e: 'refresh'):void
 }>();
 
-const userInfo = ref(appContext.getUser());
-
+// Reactive Data
+const currentUserInfo = ref(appContext.getUser());
 const searchPanelRef = ref();
-const selectedMenuMap = ref<{[key: string]: boolean}>({});
-
-const orderBy = ref();
-const orderSort = ref();
+const selectedMenuItemsMap = ref<{[key: string]: boolean}>({});
+const currentOrderBy = ref();
+const currentOrderSort = ref();
 const searchFilters = ref<SearchCriteria[]>([]);
 const quickSearchFilters = ref<SearchCriteria[]>([]);
-const assocFilters = ref<SearchCriteria[]>([]);
-const assocKeys = ['ownerId'];
-const timeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
-const establishedKeys = ['established=1', 'established=0'];
+const associatedFilters = ref<SearchCriteria[]>([]);
 
+// Configuration Constants
+const ASSOCIATED_KEYS = ['ownerId'];
+const TIME_FILTER_KEYS = ['lastDay', 'lastThreeDays', 'lastWeek'];
+const ESTABLISHED_FILTER_KEYS = ['established=1', 'established=0'];
+
+// Search Panel Configuration
 const searchPanelOptions = [
   {
     valueKey: 'name',
@@ -75,6 +79,7 @@ const searchPanelOptions = [
   }
 ];
 
+// Sort Menu Configuration
 const sortMenuItems: {
   name: string;
   key: OrderByKey;
@@ -97,7 +102,10 @@ const sortMenuItems: {
   }
 ];
 
-const menuItems = computed(() => [
+/**
+ * Get quick search menu items
+ */
+const quickSearchMenuItems = computed(() => [
   {
     key: '',
     name: t('functionBaseline.list.all')
@@ -132,7 +140,12 @@ const menuItems = computed(() => [
   }
 ]);
 
-const formatDateString = (key: string) => {
+/**
+ * Format date string for time-based filters
+ * @param key - Time filter key
+ * @returns Array of date filter objects
+ */
+const formatDateStringForTimeFilter = (key: string) => {
   let startDate: Dayjs | undefined;
   let endDate: Dayjs | undefined;
 
@@ -168,88 +181,108 @@ const formatDateString = (key: string) => {
       : ''].filter(Boolean);
 };
 
-const getParams = () => {
+/**
+ * Get search parameters for API calls
+ * @returns Search parameters object
+ */
+const getSearchParameters = () => {
   return {
     filters: [
       ...quickSearchFilters.value,
       ...searchFilters.value,
-      ...assocFilters.value
+      ...associatedFilters.value
     ],
-    orderBy: orderBy.value,
-    orderSort: orderSort.value
+    orderBy: currentOrderBy.value,
+    orderSort: currentOrderSort.value
   };
 };
 
-const searchChange = (data: SearchCriteria[]) => {
-  searchFilters.value = data.filter(item => !assocKeys.includes(item.key));
-  assocFilters.value = data.filter(item => assocKeys.includes(item.key));
+/**
+ * Handle search panel change
+ * @param data - Search criteria data
+ */
+const handleSearchPanelChange = (data: SearchCriteria[]) => {
+  searchFilters.value = data.filter(item => !ASSOCIATED_KEYS.includes(item.key));
+  associatedFilters.value = data.filter(item => ASSOCIATED_KEYS.includes(item.key));
 
-  if (!assocFilters.value.length) {
-    assocKeys.forEach(i => delete selectedMenuMap.value[i]);
+  if (!associatedFilters.value.length) {
+    ASSOCIATED_KEYS.forEach(i => delete selectedMenuItemsMap.value[i]);
   } else {
-    assocKeys.forEach(key => {
+    ASSOCIATED_KEYS.forEach(key => {
       if (key === 'ownerId') {
-        const filterItem = assocFilters.value.find(i => i.key === key);
-        if (!filterItem || filterItem.value !== userInfo.value?.id) {
-          delete selectedMenuMap.value[key];
+        const filterItem = associatedFilters.value.find(i => i.key === key);
+        if (!filterItem || filterItem.value !== currentUserInfo.value?.id) {
+          delete selectedMenuItemsMap.value[key];
         }
       }
     });
   }
 
-  emits('change', getParams());
-};
-const toSort = (sortData) => {
-  orderBy.value = sortData.orderBy;
-  orderSort.value = sortData.orderSort;
-  emits('change', getParams());
+  emits('change', getSearchParameters());
 };
 
-const menuItemClick = (data) => {
+/**
+ * Handle sort change
+ * @param sortData - Sort configuration data
+ */
+const handleSortChange = (sortData) => {
+  currentOrderBy.value = sortData.orderBy;
+  currentOrderSort.value = sortData.orderSort;
+  emits('change', getSearchParameters());
+};
+
+/**
+ * Handle quick search menu item click
+ * @param data - Menu item data
+ */
+const handleQuickSearchMenuItemClick = (data) => {
   const key = data.key;
-  // const statusTypeKeys = planStatusTypeOpt.value.map(i => i.key);
-  let searchChangeFlag = false;
-  if (selectedMenuMap.value[key]) {
-    delete selectedMenuMap.value[key];
-    if (timeKeys.includes(key) && assocKeys.includes('createdDate')) {
+  let shouldTriggerSearchChange = false;
+
+  if (selectedMenuItemsMap.value[key]) {
+    delete selectedMenuItemsMap.value[key];
+    if (TIME_FILTER_KEYS.includes(key) && ASSOCIATED_KEYS.includes('createdDate')) {
       searchPanelRef.value.setConfigs([
         { valueKey: 'createdDate', value: undefined }
       ]);
-      searchChangeFlag = true;
-    } else if (assocKeys.includes(key)) {
+      shouldTriggerSearchChange = true;
+    } else if (ASSOCIATED_KEYS.includes(key)) {
       searchPanelRef.value.setConfigs([
         { valueKey: key, value: undefined }
       ]);
-      searchChangeFlag = true;
+      shouldTriggerSearchChange = true;
     }
   } else {
     if (key === '') {
-      selectedMenuMap.value = { '': true };
+      selectedMenuItemsMap.value = { '': true };
       quickSearchFilters.value = [];
       if (typeof searchPanelRef.value?.clear === 'function') {
         searchPanelRef.value.clear();
-        searchChangeFlag = true;
+        shouldTriggerSearchChange = true;
       }
     } else {
-      delete selectedMenuMap.value[''];
+      delete selectedMenuItemsMap.value[''];
     }
-    if (timeKeys.includes(key)) {
-      timeKeys.forEach(timeKey => delete selectedMenuMap.value[timeKey]);
-      selectedMenuMap.value[key] = true;
-    } else if (establishedKeys.includes(key)) {
-      establishedKeys.forEach(statusKey => delete selectedMenuMap.value[statusKey]);
-      selectedMenuMap.value[key] = true;
+
+    if (TIME_FILTER_KEYS.includes(key)) {
+      TIME_FILTER_KEYS.forEach(timeKey => delete selectedMenuItemsMap.value[timeKey]);
+      selectedMenuItemsMap.value[key] = true;
+    } else if (ESTABLISHED_FILTER_KEYS.includes(key)) {
+      ESTABLISHED_FILTER_KEYS.forEach(statusKey => delete selectedMenuItemsMap.value[statusKey]);
+      selectedMenuItemsMap.value[key] = true;
     } else {
-      selectedMenuMap.value[key] = true;
+      selectedMenuItemsMap.value[key] = true;
     }
   }
-  const userId = userInfo.value?.id;
+
+  const userId = currentUserInfo.value?.id;
   let timeFilters: {key: string; op: string; value: string}[] = [];
-  const assocFiltersInQuick = [];
-  quickSearchFilters.value = Object.keys(selectedMenuMap.value).map(key => {
+  const associatedFiltersInQuick = [];
+
+  quickSearchFilters.value = Object.keys(selectedMenuItemsMap.value).map(key => {
     if (key === '') {
       return undefined;
-    } else if (establishedKeys.includes(key)) {
+    } else if (ESTABLISHED_FILTER_KEYS.includes(key)) {
       const value = !!(+key.split('=')[1]);
       return {
         key: 'established',
@@ -257,11 +290,11 @@ const menuItemClick = (data) => {
         value
       };
     } else if (['lastDay', 'lastThreeDays', 'lastWeek'].includes(key)) {
-      timeFilters = formatDateString(key);
+      timeFilters = formatDateStringForTimeFilter(key);
       return undefined;
-    } else if (assocKeys.includes(key)) {
+    } else if (ASSOCIATED_KEYS.includes(key)) {
       if (key === 'ownerId') {
-        assocFiltersInQuick.push({ valueKey: key, value: userId });
+        associatedFiltersInQuick.push({ valueKey: key, value: userId });
       }
       return undefined;
     } else {
@@ -272,19 +305,25 @@ const menuItemClick = (data) => {
       };
     }
   }).filter(Boolean);
+
   quickSearchFilters.value.push(...timeFilters);
-  if (assocFiltersInQuick.length) {
+
+  if (associatedFiltersInQuick.length) {
     searchPanelRef.value.setConfigs([
-      ...assocFiltersInQuick
+      ...associatedFiltersInQuick
     ]);
-    searchChangeFlag = true;
+    shouldTriggerSearchChange = true;
   }
-  if (!searchChangeFlag) {
-    emits('change', getParams());
+
+  if (!shouldTriggerSearchChange) {
+    emits('change', getSearchParameters());
   }
 };
 
-const refresh = () => {
+/**
+ * Handle refresh button click
+ */
+const handleRefreshClick = () => {
   emits('refresh');
 };
 </script>
@@ -297,21 +336,22 @@ const refresh = () => {
       </div>
       <div class="flex  flex-wrap ml-2">
         <div
-          v-for="item in menuItems"
+          v-for="item in quickSearchMenuItems"
           :key="item.key"
-          :class="{ 'active-key': selectedMenuMap[item.key] }"
+          :class="{ 'active-key': selectedMenuItemsMap[item.key] }"
           class="px-2.5 h-6 leading-6 mr-3 mb-3 rounded bg-gray-light cursor-pointer"
-          @click="menuItemClick(item)">
+          @click="handleQuickSearchMenuItemClick(item)">
           {{ item.name }}
         </div>
       </div>
     </div>
+
     <div class="flex items-start justify-between ">
       <SearchPanel
         ref="searchPanelRef"
         :options="searchPanelOptions"
         class="flex-1 mr-3.5"
-        @change="searchChange" />
+        @change="handleSearchPanelChange" />
 
       <div class="flex items-center space-x-3">
         <Button
@@ -325,10 +365,10 @@ const refresh = () => {
         </Button>
 
         <DropdownSort
-          v-model:orderBy="orderBy"
-          v-model:orderSort="orderSort"
+          v-model:orderBy="currentOrderBy"
+          v-model:orderSort="currentOrderSort"
           :menuItems="sortMenuItems"
-          @click="toSort">
+          @click="handleSortChange">
           <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
             <Icon icon="icon-shunxu" class="text-3.5" />
             <span>{{ t('functionBaseline.list.sort') }}</span>
@@ -338,7 +378,7 @@ const refresh = () => {
         <IconRefresh
           :loading="props.loading"
           :disabled="props.loading"
-          @click="refresh">
+          @click="handleRefreshClick">
           <template #default>
             <div class="flex items-center cursor-pointer text-theme-content space-x-1 text-theme-text-hover">
               <Icon icon="icon-shuaxin" class="text-3.5" />

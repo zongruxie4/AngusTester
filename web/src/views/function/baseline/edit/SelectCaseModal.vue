@@ -12,8 +12,10 @@ import TestResult from '@/components/TestResult/index.vue';
 
 const { t } = useI18n();
 
+// Async Components
 const ModuleTree = defineAsyncComponent(() => import('@/views/function/baseline/case/list/ModuleTree.vue'));
 
+// Props Definition
 interface Props {
   planId: string;
   visible: boolean;
@@ -26,52 +28,68 @@ const props = withDefaults(defineProps<Props>(), {
   baselineId: undefined
 });
 
+// Emits Definition
 const emit = defineEmits<{(e: 'update:visible', value: boolean):void; (e: 'ok', value: string[], rowValue: BaselineCaseInfo[]):void}>();
 
-const selectedIds = ref<string[]>([]);
-const selectRows = ref<BaselineCaseInfo[]>([]);
-const data = ref([]);
-const showData = ref([]);
-const loading = ref(false);
-const moduleId = ref('');
-const keywords = ref();
+// Reactive Data
+const selectedCaseIds = ref<string[]>([]);
+const selectedCaseRows = ref<BaselineCaseInfo[]>([]);
+const allCaseData = ref([]);
+const filteredCaseData = ref([]);
+const isLoading = ref(false);
+const selectedModuleId = ref('');
+const searchKeywords = ref();
 
-const cancel = () => {
+// Event Handlers
+/**
+ * Handle modal cancellation
+ */
+const handleModalCancel = () => {
   emit('update:visible', false);
 };
 
-const ok = () => {
-  if (selectedIds.value.length) {
-    emit('ok', selectedIds.value, selectRows.value);
+/**
+ * Handle modal confirmation
+ */
+const handleModalConfirm = () => {
+  if (selectedCaseIds.value.length) {
+    emit('ok', selectedCaseIds.value, selectedCaseRows.value);
   } else {
-    cancel();
+    handleModalCancel();
   }
 };
 
-const loadCases = async () => {
+/**
+ * Load available cases for selection
+ */
+const loadAvailableCases = async () => {
   if (!props.planId) {
     return;
   }
-  loading.value = true;
+  isLoading.value = true;
   const [error, resp] = await funcPlan.getCaseNotEstablishedBaseline(props.planId, {
     baselineId: props.baselineId,
-    moduleId: moduleId.value
+    moduleId: selectedModuleId.value
   });
-  loading.value = false;
+  isLoading.value = false;
   if (error) {
     return;
   }
-  data.value = resp?.data || [];
-  showData.value = data.value.filter(item => (item.name || '').includes(keywords.value || '') || (item.code || '')
-    .includes(keywords.value || ''));
+  allCaseData.value = resp?.data || [];
+  filteredCaseData.value = allCaseData.value.filter(item => (item.name || '').includes(searchKeywords.value || '') || (item.code || '')
+    .includes(searchKeywords.value || ''));
 };
 
-const handleFilter = debounce(duration.search, () => {
-  selectedIds.value = [];
-  showData.value = data.value.filter(item => (item.name).includes(keywords.value || '') || (item.code || '').includes(keywords.value || ''));
+/**
+ * Handle search filter with debounce
+ */
+const handleSearchFilter = debounce(duration.search, () => {
+  selectedCaseIds.value = [];
+  filteredCaseData.value = allCaseData.value.filter(item => (item.name).includes(searchKeywords.value || '') || (item.code || '').includes(searchKeywords.value || ''));
 });
 
-const columns = [
+// Table Configuration
+const tableColumns = [
   {
     title: t('functionBaseline.editForm.code'),
     dataIndex: 'code'
@@ -95,25 +113,34 @@ const columns = [
   }
 ];
 
-const rowSelection = ref({
+/**
+ * Row selection configuration
+ */
+const rowSelectionConfig = ref({
   onChange: (selectedRowKeys, selectedRows) => {
-    selectedIds.value = selectedRowKeys;
-    selectRows.value = selectedRows;
+    selectedCaseIds.value = selectedRowKeys;
+    selectedCaseRows.value = selectedRows;
   }
 });
 
-watch(() => props.visible, (newValue) => {
-  if (newValue) {
-    selectedIds.value = [];
-    loadCases();
+/**
+ * Watch for modal visibility changes
+ */
+watch(() => props.visible, (isVisible) => {
+  if (isVisible) {
+    selectedCaseIds.value = [];
+    loadAvailableCases();
   }
 }, {
   immediate: true
 });
 
-watch(() => moduleId.value, () => {
-  selectedIds.value = [];
-  loadCases();
+/**
+ * Watch for module ID changes
+ */
+watch(() => selectedModuleId.value, () => {
+  selectedCaseIds.value = [];
+  loadAvailableCases();
 });
 </script>
 <template>
@@ -121,25 +148,25 @@ watch(() => moduleId.value, () => {
     :title="t('functionBaseline.editForm.selectCase')"
     :visible="props.visible"
     :width="1000"
-    :loading="loading"
-    @cancel="cancel"
-    @ok="ok">
+    :loading="isLoading"
+    @cancel="handleModalCancel"
+    @ok="handleModalConfirm">
     <div class="flex">
       <div class="w-50 h-144.5 overflow-y-auto">
         <ModuleTree
-          v-model:moduleId="moduleId"
+          v-model:moduleId="selectedModuleId"
           :projectId="props.projectId" />
       </div>
       <div class="flex-1 ml-2">
         <Input
-          v-model:value="keywords"
+          v-model:value="searchKeywords"
           :placeholder="t('functionBaseline.editForm.queryNameCode')"
           class="w-100"
-          @change="handleFilter" />
+          @change="handleSearchFilter" />
         <Table
-          :columns="columns"
-          :dataSource="showData"
-          :rowSelection="rowSelection"
+          :columns="tableColumns"
+          :dataSource="filteredCaseData"
+          :rowSelection="rowSelectionConfig"
           :pagination="false"
           :scroll="{y: 500}"
           class="mt-2"

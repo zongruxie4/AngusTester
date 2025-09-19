@@ -13,6 +13,7 @@ import { BaselineCaseInfo, BaselineDetail, BaselineEditState } from '@/views/fun
 
 const { t } = useI18n();
 
+// Props Definition
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -20,43 +21,49 @@ const props = withDefaults(defineProps<BasicProps>(), {
   data: undefined
 });
 
+// Async Components
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
 const SelectCaseModal = defineAsyncComponent(() => import('./SelectCaseModal.vue'));
 
+// Injected Dependencies
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const replaceTabPane = inject<(id: string, data: { [key: string]: any }) => void>('replaceTabPane', () => ({}));
-const baselineId = ref();
+
+// Reactive Data
+const projectMembers = ref([]);
+const currentBaselineId = ref();
 const formRef = ref();
-const selectModalVisible = ref(false);
-const keywords = ref();
-const loading = ref(false);
-const dataSource = ref<BaselineDetail>();
-
+const isSelectCaseModalVisible = ref(false);
+const searchKeywords = ref();
+const isLoading = ref(false);
+const baselineDataSource = ref<BaselineDetail>();
 const activeTabKey = ref('funcCase');
-
 const evalWorkloadMethodOptions = ref<EnumMessage<EvalWorkloadMethod>[]>([]);
-const baselineFlagVisible = ref(false);
-
-const oldFormState = ref<BaselineEditState>();
-const formState = ref<BaselineEditState>({
+const isBaselineFlagVisible = ref(false);
+const originalFormState = ref<BaselineEditState>();
+const currentFormState = ref<BaselineEditState>({
   planId: '',
   description: '',
   name: '',
   caseIds: []
 });
 
-const getParams = () => {
-  const params: BaselineEditState = { ...formState.value, caseIds: caseList.value.map(i => i.id) };
-  if (dataSource.value?.id) {
-    params.id = dataSource.value.id;
+/**
+ * Get form parameters for API calls
+ * @returns Form parameters object
+ */
+const getFormParameters = () => {
+  const params: BaselineEditState = { ...currentFormState.value, caseIds: baselineCaseList.value.map(i => i.id) };
+  if (baselineDataSource.value?.id) {
+    params.id = baselineDataSource.value.id;
   }
 
   if (!params.description && !params.id) {
     delete params.description;
   }
 
-  if (editFlag.value) {
+  if (isEditMode.value) {
     delete params.caseIds;
   }
 
@@ -64,23 +71,29 @@ const getParams = () => {
   return params;
 };
 
-const refreshList = () => {
+/**
+ * Refresh baseline list in parent component
+ */
+const refreshBaselineList = () => {
   nextTick(() => {
     updateTabPane({ _id: 'baselineList', notify: utils.uuid() });
   });
 };
 
-const editOk = async () => {
-  const equalFlag = isEqual(oldFormState.value, formState.value);
-  if (equalFlag) {
+/**
+ * Handle baseline edit confirmation
+ */
+const handleBaselineEditConfirm = async () => {
+  const isFormUnchanged = isEqual(originalFormState.value, currentFormState.value);
+  if (isFormUnchanged) {
     return;
   }
 
-  const params = getParams();
+  const params = getFormParameters();
   delete params.planId;
-  loading.value = true;
+  isLoading.value = true;
   const [error] = await func.updateBaseline(params);
-  loading.value = false;
+  isLoading.value = false;
   if (error) {
     return;
   }
@@ -90,16 +103,19 @@ const editOk = async () => {
   const id = params.id;
   const name = params.name;
   updateTabPane({ _id: id, name });
-  if (dataSource.value) {
-    dataSource.value.name = name;
+  if (baselineDataSource.value) {
+    baselineDataSource.value.name = name;
   }
 };
 
-const addOk = async () => {
-  const params = getParams();
-  loading.value = true;
+/**
+ * Handle baseline add confirmation
+ */
+const handleBaselineAddConfirm = async () => {
+  const params = getFormParameters();
+  isLoading.value = true;
   const [error, res] = await func.addBaseline(params);
-  loading.value = false;
+  isLoading.value = false;
   if (error) {
     return;
   }
@@ -112,19 +128,25 @@ const addOk = async () => {
   replaceTabPane(_id, { _id: newId, uiKey: newId, name, data: { _id: newId, id: newId } });
 };
 
-const ok = async () => {
+/**
+ * Handle form submission
+ */
+const handleFormSubmit = async () => {
   formRef.value.validate().then(async () => {
-    if (!editFlag.value) {
-      await addOk();
+    if (!isEditMode.value) {
+      await handleBaselineAddConfirm();
     } else {
-      await editOk();
+      await handleBaselineEditConfirm();
     }
-    refreshList();
+    refreshBaselineList();
   });
 };
 
-const toDelete = async () => {
-  const data = dataSource.value;
+/**
+ * Handle baseline deletion
+ */
+const handleBaselineDelete = async () => {
+  const data = baselineDataSource.value;
   if (!data) {
     return;
   }
@@ -133,32 +155,39 @@ const toDelete = async () => {
     content: t('functionBaseline.editForm.confirmDeleteBaseline', { name: data.name }),
     async onOk () {
       const id = data.id;
-      loading.value = true;
+      isLoading.value = true;
       const [error] = await func.deleteBaseline([id]);
-      loading.value = false;
+      isLoading.value = false;
       if (error) {
         return;
       }
 
       notification.success(t('functionBaseline.editForm.baselineDeletedSuccess'));
       deleteTabPane([id, id + '_detail']);
-      refreshList();
+      refreshBaselineList();
     }
   });
 };
 
-const cancel = () => {
+/**
+ * Handle form cancellation
+ */
+const handleFormCancel = () => {
   deleteTabPane([props.data._id]);
 };
 
-const loadData = async (id: string) => {
-  if (loading.value) {
+/**
+ * Load baseline data by ID
+ * @param id - Baseline ID
+ */
+const loadBaselineData = async (id: string) => {
+  if (isLoading.value) {
     return;
   }
 
-  loading.value = true;
+  isLoading.value = true;
   const [error, res] = await func.getBaselineDetail(id);
-  loading.value = false;
+  isLoading.value = false;
   if (error) {
     return;
   }
@@ -168,8 +197,8 @@ const loadData = async (id: string) => {
     return;
   }
 
-  dataSource.value = data;
-  setFormData(data);
+  baselineDataSource.value = data;
+  setFormDataFromBaseline(data);
 
   const name = data.name;
   if (name && typeof updateTabPane === 'function') {
@@ -177,7 +206,12 @@ const loadData = async (id: string) => {
   }
 };
 
-const getJson = (value) => {
+/**
+ * Parse JSON value for rich editor
+ * @param value - Input value
+ * @returns Parsed JSON string
+ */
+const parseJsonForEditor = (value) => {
   if (!value) {
     return undefined;
   }
@@ -192,10 +226,14 @@ const getJson = (value) => {
   }
 };
 
-const setFormData = (data: BaselineDetail) => {
-  baselineFlagVisible.value = false;
+/**
+ * Set form data from baseline information
+ * @param data - Baseline detail data
+ */
+const setFormDataFromBaseline = (data: BaselineDetail) => {
+  isBaselineFlagVisible.value = false;
   if (!data) {
-    formState.value = {
+    currentFormState.value = {
       planId: '',
       description: '',
       name: '',
@@ -211,27 +249,31 @@ const setFormData = (data: BaselineDetail) => {
     caseIds
   } = data;
 
-  formState.value.name = name;
-  formState.value.planId = planId;
-  formState.value.description = getJson(description);
-  formState.value.caseIds = caseIds;
-  oldFormState.value = JSON.parse(JSON.stringify(formState.value));
+  currentFormState.value.name = name;
+  currentFormState.value.planId = planId;
+  currentFormState.value.description = parseJsonForEditor(description);
+  currentFormState.value.caseIds = caseIds;
+  originalFormState.value = JSON.parse(JSON.stringify(currentFormState.value));
 };
 
-const loadEnums = async () => {
+/**
+ * Load enumeration options
+ */
+const loadEnumerationOptions = async () => {
   evalWorkloadMethodOptions.value = enumUtils.enumToMessages(EvalWorkloadMethod);
 };
 
-const members = ref([]);
-
-const loadMembers = async () => {
+/**
+ * Load project members
+ */
+const loadProjectMembers = async () => {
   const [error, res] = await project.getProjectMember(props.projectId);
   if (error) {
     return;
   }
 
   const data = res?.data || [];
-  members.value = (data || []).map(i => {
+  projectMembers.value = (data || []).map(i => {
     return {
       ...i,
       label: i.fullName,
@@ -240,58 +282,76 @@ const loadMembers = async () => {
   });
 };
 
-const handleChangePlanId = () => {
-  caseList.value = [];
+/**
+ * Handle plan ID change
+ */
+const handlePlanIdChange = () => {
+  baselineCaseList.value = [];
 };
 
-const loadCaseList = async () => {
-  const [error, { data }] = await func.getBaselineCaseList(baselineId.value, {
-    filters: keywords.value ? [{ value: keywords.value, key: 'caseName', op: SearchCriteria.OpEnum.Match }] : [],
-    pageNo: pagination.value.current,
-    pageSize: pagination.value.pageSize,
+/**
+ * Load baseline case list
+ */
+const loadBaselineCaseList = async () => {
+  const [error, { data }] = await func.getBaselineCaseList(currentBaselineId.value, {
+    filters: searchKeywords.value ? [{ value: searchKeywords.value, key: 'caseName', op: SearchCriteria.OpEnum.Match }] : [],
+    pageNo: paginationConfig.value.current,
+    pageSize: paginationConfig.value.pageSize,
     projectId: props.projectId
   });
 
   if (error) {
     return;
   }
-  caseList.value = data?.list || [];
-  pagination.value.total = +data.total || 0;
+  baselineCaseList.value = data?.list || [];
+  paginationConfig.value.total = +data.total || 0;
 };
 
-const onKeywordChange = debounce(duration.search, () => {
-  if (!baselineId.value) {
+/**
+ * Handle search keyword change with debounce
+ */
+const handleSearchKeywordChange = debounce(duration.search, () => {
+  if (!currentBaselineId.value) {
     return;
   }
-  pagination.value.current = 1;
-  loadCaseList();
+  paginationConfig.value.current = 1;
+  loadBaselineCaseList();
 });
 
-const addBaselineCase = () => {
-  selectModalVisible.value = true;
+/**
+ * Open add baseline case modal
+ */
+const openAddBaselineCaseModal = () => {
+  isSelectCaseModalVisible.value = true;
 };
 
-const handleAddCase = async (caseIds: string[], cases: BaselineCaseInfo[]) => {
-  if (baselineId.value) {
-    const [error] = await func.addBaselineCase(baselineId.value, caseIds);
+/**
+ * Handle add case confirmation
+ * @param caseIds - Array of case IDs
+ * @param cases - Array of case information
+ */
+const handleAddCaseConfirm = async (caseIds: string[], cases: BaselineCaseInfo[]) => {
+  if (currentBaselineId.value) {
+    const [error] = await func.addBaselineCase(currentBaselineId.value, caseIds);
     if (error) {
       return;
     }
-    selectModalVisible.value = false;
-    await loadCaseList();
+    isSelectCaseModalVisible.value = false;
+    await loadBaselineCaseList();
   } else {
-    selectModalVisible.value = false;
-    caseList.value.push(...cases);
+    isSelectCaseModalVisible.value = false;
+    baselineCaseList.value.push(...cases);
   }
 };
 
-const pagination = ref({
+// Table Configuration
+const paginationConfig = ref({
   current: 1,
   pageSize: 10,
   total: 0
 });
-const caseList = ref<BaselineCaseInfo[]>([]);
-const columns = [
+const baselineCaseList = ref<BaselineCaseInfo[]>([]);
+const tableColumns = [
   {
     title: t('functionBaseline.editForm.caseId'),
     dataIndex: 'id'
@@ -306,8 +366,12 @@ const columns = [
   }
 ];
 
-const delCase = async (record: BaselineCaseInfo) => {
-  if (baselineId.value) {
+/**
+ * Delete case from baseline
+ * @param record - Case record to delete
+ */
+const deleteCaseFromBaseline = async (record: BaselineCaseInfo) => {
+  if (currentBaselineId.value) {
     modal.confirm({
       title: t('functionBaseline.editForm.confirmDeleteCase', { name: record.name }),
       async onOk () {
@@ -315,20 +379,26 @@ const delCase = async (record: BaselineCaseInfo) => {
         if (error) {
           return;
         }
-        if (pagination.value.current !== 1 && caseList.value.length === 1) {
-          pagination.value.current -= 1;
+        if (paginationConfig.value.current !== 1 && baselineCaseList.value.length === 1) {
+          paginationConfig.value.current -= 1;
         }
-        loadCaseList();
+        loadBaselineCaseList();
       }
     });
   } else {
-    caseList.value = caseList.value.filter(i => i.id !== record.id);
+    baselineCaseList.value = baselineCaseList.value.filter(i => i.id !== record.id);
   }
 };
 
+// Form Validation
 const richEditorRef = ref();
-const validateDesc = () => {
-  if (!formState.value.description) {
+
+/**
+ * Validate description field
+ * @returns Promise with validation result
+ */
+const validateDescription = () => {
+  if (!currentFormState.value.description) {
     return Promise.resolve();
   }
   if (richEditorRef.value && richEditorRef.value.getLength() > 2000) {
@@ -337,15 +407,29 @@ const validateDesc = () => {
   return Promise.resolve();
 };
 
-const pageChange = ({ current, pageSize }) => {
-  pagination.value.current = current;
-  pagination.value.pageSize = pageSize;
-  loadCaseList();
+/**
+ * Handle pagination change
+ * @param paginationParams - Pagination parameters
+ */
+const handlePaginationChange = ({ current, pageSize }) => {
+  paginationConfig.value.current = current;
+  paginationConfig.value.pageSize = pageSize;
+  loadBaselineCaseList();
 };
 
+/**
+ * Check if component is in edit mode
+ */
+const isEditMode = computed(() => {
+  return !!props.data?.id;
+});
+
+/**
+ * Initialize component data on mount
+ */
 onMounted(() => {
-  loadEnums();
-  loadMembers();
+  loadEnumerationOptions();
+  loadProjectMembers();
 
   watch(() => props.data, async (newValue, oldValue) => {
     const id = newValue?.id;
@@ -358,35 +442,32 @@ onMounted(() => {
       return;
     }
 
-    baselineId.value = id;
+    currentBaselineId.value = id;
 
-    await loadData(id);
-    await loadCaseList();
+    await loadBaselineData(id);
+    await loadBaselineCaseList();
   }, { immediate: true });
-});
-const editFlag = computed(() => {
-  return !!props.data?.id;
 });
 </script>
 
 <template>
-  <Spin :spinning="loading" class="h-full text-3 leading-5 px-5 py-5 overflow-auto">
+  <Spin :spinning="isLoading" class="h-full text-3 leading-5 px-5 py-5 overflow-auto">
     <div class="flex items-center space-x-2.5 mb-5">
       <Button
         type="primary"
         size="small"
         class="flex items-center space-x-1"
-        @click="ok">
+        @click="handleFormSubmit">
         <Icon icon="icon-dangqianxuanzhong" class="text-3.5" />
         <span>{{ t('functionBaseline.editForm.save') }}</span>
       </Button>
 
-      <template v-if="editFlag">
+      <template v-if="isEditMode">
         <Button
           type="default"
           size="small"
           class="flex items-center space-x-1"
-          @click="toDelete">
+          @click="handleBaselineDelete">
           <Icon icon="icon-qingchu" class="text-3.5" />
           <span>{{ t('functionBaseline.editForm.delete') }}</span>
         </Button>
@@ -396,7 +477,7 @@ const editFlag = computed(() => {
         type="default"
         size="small"
         class="flex items-center space-x-1"
-        @click="cancel">
+        @click="handleFormCancel">
         <Icon icon="icon-zhongzhi2" class="text-3.5" />
         <span>{{ t('functionBaseline.editForm.cancel') }}</span>
       </Button>
@@ -404,7 +485,7 @@ const editFlag = computed(() => {
 
     <Form
       ref="formRef"
-      :model="formState"
+      :model="currentFormState"
       :labelCol="{ style: { width: '75px' } }"
       class="max-w-242.5"
       size="small"
@@ -414,7 +495,7 @@ const editFlag = computed(() => {
         name="name"
         :rules="{ required: true, message: t('functionBaseline.editForm.pleaseEnterBaselineName') }">
         <Input
-          v-model:value="formState.name"
+          v-model:value="currentFormState.name"
           size="small"
           :maxlength="200"
           :placeholder="t('functionBaseline.editForm.baselineBriefOverview')" />
@@ -424,22 +505,22 @@ const editFlag = computed(() => {
         name="planId"
         :rules="{ required: true, message: t('functionBaseline.editForm.pleaseSelectTestPlan') }">
         <Select
-          v-model:value="formState.planId"
+          v-model:value="currentFormState.planId"
           size="small"
-          :disabled="!!baselineId"
+          :disabled="!!currentBaselineId"
           :action="`${TESTER}/func/plan?projectId=${props.projectId}&fullTextSearch=true`"
           :fieldNames="{value: 'id', label: 'name'}"
           :placeholder="t('functionBaseline.editForm.selectTestPlan')"
-          @change="handleChangePlanId" />
+          @change="handlePlanIdChange" />
       </FormItem>
 
       <FormItem
         :label="t('functionBaseline.editForm.description')"
         name="description"
-        :rules="[{validator: validateDesc}]">
+        :rules="[{validator: validateDescription}]">
         <RichEditor
           ref="richEditorRef"
-          v-model:value="formState.description"
+          v-model:value="currentFormState.description"
           :placeholder="t('functionBaseline.editForm.baselineBriefOverview2000')"
           :height="100" />
       </FormItem>
@@ -454,33 +535,33 @@ const editFlag = computed(() => {
           :tab="t('functionBaseline.editForm.baselineCases')">
           <div class="flex justify-between mb-3">
             <Input
-              v-model:value="keywords"
-              :disabled="!baselineId"
+              v-model:value="searchKeywords"
+              :disabled="!currentBaselineId"
               :placeholder="t('functionBaseline.editForm.enterQueryName')"
               class="w-50"
-              @change="onKeywordChange" />
+              @change="handleSearchKeywordChange" />
             <Button
-              :disabled="!formState.planId || dataSource?.established"
+              :disabled="!currentFormState.planId || baselineDataSource?.established"
               size="small"
               type="primary"
-              @click="addBaselineCase">
+              @click="openAddBaselineCaseModal">
               <Icon icon="icon-jia" class="mr-1" />
               {{ t('functionBaseline.editForm.addBaselineCase') }}
             </Button>
           </div>
           <Table
-            :columns="columns"
-            :dataSource="caseList"
-            :pagination="baselineId ? pagination : false"
+            :columns="tableColumns"
+            :dataSource="baselineCaseList"
+            :pagination="currentBaselineId ? paginationConfig : false"
             size="small"
             noDataSize="small"
-            @change="pageChange">
+            @change="handlePaginationChange">
             <template #bodyCell="{record, column}">
               <template v-if="column.dataIndex === 'action'">
                 <Button
                   type="text"
                   size="small"
-                  @click="delCase(record)">
+                  @click="deleteCaseFromBaseline(record)">
                   <Icon icon="icon-qingchu" />
                   {{ t('functionBaseline.editForm.delete') }}
                 </Button>
@@ -492,11 +573,11 @@ const editFlag = computed(() => {
     </Form>
     <AsyncComponent :visible="selectModalVisible">
       <SelectCaseModal
-        v-model:visible="selectModalVisible"
-        :planId="formState.planId"
-        :baselineId="baselineId"
+        v-model:visible="isSelectCaseModalVisible"
+        :planId="currentFormState.planId"
+        :baselineId="currentBaselineId"
         :projectId="props.projectId"
-        @ok="handleAddCase" />
+        @ok="handleAddCaseConfirm" />
     </AsyncComponent>
   </Spin>
 </template>

@@ -22,7 +22,7 @@ export type BaselineCaseInfo = {
 } & CaseInfo;
 
 export type BaselineEditState = {
-  id?: string;
+  id?: number;
   name: string;
   planId: string;
   description?: string;

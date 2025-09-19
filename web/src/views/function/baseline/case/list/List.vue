@@ -8,11 +8,11 @@ import TaskPriority from '@/components/TaskPriority/index.vue';
 
 const { t } = useI18n();
 
+// Async components for case management
 const ModuleTree = defineAsyncComponent(() => import('./ModuleTree.vue'));
 const SelectCaseModal = defineAsyncComponent(() => import('@/views/function/baseline/edit/SelectCaseModal.vue'));
 
-// const SelectCaseModal = defineAsyncComponent(() => import('@/views/function/review/edit/selectCaseModal.vue'));
-// const ReviewForm = defineAsyncComponent(() => import('@/views/function/review/case/reviewForm.vue'));
+// Async components for case details
 const CaseReviewResult = defineAsyncComponent(() => import('@/views/function/review/components/CaseReviewResult.vue'));
 const CaseStep = defineAsyncComponent(() => import('@/views/function/case/list/case/CaseSteps.vue'));
 const CaseBasicInfo = defineAsyncComponent(() => import('@/views/function/review/components/CaseBasicInfo.vue'));
@@ -25,6 +25,7 @@ const AssocCases = defineAsyncComponent(() => import('@/views/function/review/co
 const Description = defineAsyncComponent(() => import('@/views/function/review/components/Description.vue'));
 const Search = defineAsyncComponent(() => import('./Search.vue'));
 
+// Props Definition
 type Props = {
   projectId: string;
   userInfo: { id: string; };
@@ -41,7 +42,8 @@ const props = withDefaults(defineProps<Props>(), {
   planId: undefined
 });
 
-const columns = [
+// Table Configuration
+const tableColumns = [
   {
     title: t('functionBaseline.case.code'),
     dataIndex: 'code'
@@ -72,111 +74,55 @@ const columns = [
   }
 ];
 
-const baselineInfo = ref();
-
-const pagination = ref({
+// Reactive Data
+const currentBaselineInfo = ref();
+const paginationConfig = ref({
   current: 1,
   pageSize: 10,
   total: 0
 });
-const filters = ref([]);
-
-const selectCaseVisible = ref(false);
-
-const moduleId = ref('');
+const searchFilters = ref([]);
+const isSelectCaseModalVisible = ref(false);
+const selectedModuleId = ref('');
 const baselineCaseList = ref([]);
 
-const selectCaseOk = async (caseIds: string[] = []) => {
-  selectCaseVisible.value = false;
+// Data Loading Methods
+/**
+ * Handle case selection confirmation
+ * @param caseIds - Array of selected case IDs
+ */
+const handleCaseSelectionConfirm = async (caseIds: string[] = []) => {
+  isSelectCaseModalVisible.value = false;
   const [error] = await func.addBaselineCase(props.baselineId, caseIds);
   if (error) {
     return;
   }
-  loadBaseLineCaseList();
+  await loadBaselineCaseList();
 };
 
-const loadBaseLineCaseList = async () => {
-  const { current, pageSize } = pagination.value;
+/**
+ * Load baseline case list with pagination and filters
+ */
+const loadBaselineCaseList = async () => {
+  const { current, pageSize } = paginationConfig.value;
   const [error, { data }] = await func.getBaselineCaseList(props.baselineId, {
-    moduleId: moduleId.value,
+    moduleId: selectedModuleId.value,
     projectId: props.projectId,
     pageNo: current,
     pageSize,
-    filters: filters.value
+    filters: searchFilters.value
   });
   if (error) {
     return;
   }
   baselineCaseList.value = data?.list || [];
-  pagination.value.total = +data.total || 0;
+  paginationConfig.value.total = +data.total || 0;
 };
 
-const onPageChang = ({ current, pageSize }) => {
-  pagination.value.current = current;
-  pagination.value.pageSize = pageSize;
-  loadBaseLineCaseList();
-};
-
-const handleAddCase = () => {
-  selectCaseVisible.value = true;
-};
-
-const delCase = (record) => {
-  modal.confirm({
-    content: t('functionBaseline.case.confirmUnlinkCase', { name: record.name }),
-    onOk () {
-      return func.deleteBaselineCase(props.baselineId, [record.id])
-        .then(([error]) => {
-          if (error) {
-            return;
-          }
-          if (pagination.value.current > 1 && baselineCaseList.value.length === 1) {
-            pagination.value.current -= 1;
-          }
-          if (selectedRowKey.value === record.id) {
-            selectedRowKey.value = undefined;
-          }
-          loadBaseLineCaseList();
-        });
-    }
-  });
-};
-
-const selectedRowKey = ref();
-const selectCaseInfo = ref();
-const putCustom = (record) => {
-  return {
-    onClick: async () => {
-      if (record.id === selectedRowKey.value) {
-        selectedRowKey.value = '';
-      } else {
-        selectedRowKey.value = record.id;
-        // selectCaseInfo.value = record;
-        const [error, { data }] = await func.getBaselineCaseDetail(props.baselineId, record.id);
-        if (error) {
-          selectCaseInfo.value = record;
-          return;
-        }
-        selectCaseInfo.value = data;
-      }
-    }
-  };
-};
-
-const onCloseDrawer = () => {
-  selectedRowKey.value = '';
-  // caseDetailVisible.value = false;
-};
-
-const handleSearchChange = (params) => {
-  const { pageNo, pageSize } = params;
-  pagination.value.current = pageNo;
-  pagination.value.pageSize = pageSize;
-  filters.value = params.filters;
-  loadBaseLineCaseList();
-};
-
-const loadBaseLineData = async () => {
+/**
+ * Load baseline information
+ */
+const loadBaselineInfo = async () => {
   const [error, res] = await func.getBaselineDetail(props.baselineId);
   if (error) {
     return;
@@ -186,39 +132,132 @@ const loadBaseLineData = async () => {
   if (!data) {
     return;
   }
-  baselineInfo.value = data;
+  currentBaselineInfo.value = data;
 };
 
+/**
+ * Handle pagination change
+ * @param paginationParams - Pagination parameters
+ */
+const handlePaginationChange = ({ current, pageSize }) => {
+  paginationConfig.value.current = current;
+  paginationConfig.value.pageSize = pageSize;
+  loadBaselineCaseList();
+};
+
+/**
+ * Open add case modal
+ */
+const openAddCaseModal = () => {
+  isSelectCaseModalVisible.value = true;
+};
+
+/**
+ * Delete case from baseline
+ * @param record - Case record to delete
+ */
+const deleteCaseFromBaseline = (record) => {
+  modal.confirm({
+    content: t('functionBaseline.case.confirmUnlinkCase', { name: record.name }),
+    onOk () {
+      return func.deleteBaselineCase(props.baselineId, [record.id])
+        .then(([error]) => {
+          if (error) {
+            return;
+          }
+          if (paginationConfig.value.current > 1 && baselineCaseList.value.length === 1) {
+            paginationConfig.value.current -= 1;
+          }
+          if (selectedRowKey.value === record.id) {
+            selectedRowKey.value = undefined;
+          }
+          loadBaselineCaseList();
+        });
+    }
+  });
+};
+
+/**
+ * Handle search parameters change
+ * @param params - Search parameters
+ */
+const handleSearchParametersChange = (params) => {
+  const { pageNo, pageSize } = params;
+  paginationConfig.value.current = pageNo;
+  paginationConfig.value.pageSize = pageSize;
+  searchFilters.value = params.filters;
+  loadBaselineCaseList();
+};
+
+// Component State
+const selectedRowKey = ref();
+const selectedCaseInfo = ref();
+
+/**
+ * Create custom row click handler
+ * @param record - Table row record
+ * @returns Row click handler configuration
+ */
+const createRowClickHandler = (record) => {
+  return {
+    onClick: async () => {
+      if (record.id === selectedRowKey.value) {
+        selectedRowKey.value = '';
+      } else {
+        selectedRowKey.value = record.id;
+        const [error, { data }] = await func.getBaselineCaseDetail(props.baselineId, record.id);
+        if (error) {
+          selectedCaseInfo.value = record;
+          return;
+        }
+        selectedCaseInfo.value = data;
+      }
+    }
+  };
+};
+
+/**
+ * Close case details drawer
+ */
+const closeCaseDetailsDrawer = () => {
+  selectedRowKey.value = '';
+};
+
+/**
+ * Initialize component data on mount
+ */
 onMounted(() => {
-  loadBaseLineData();
-  loadBaseLineCaseList();
-  watch(() => moduleId.value, () => {
-    loadBaseLineCaseList();
+  loadBaselineInfo();
+  loadBaselineCaseList();
+  watch(() => selectedModuleId.value, () => {
+    loadBaselineCaseList();
   });
 });
-
 </script>
 <template>
   <div class="flex space-x-2 h-full">
     <div
       class="w-70">
       <ModuleTree
-        v-model:moduleId="moduleId"
+        v-model:moduleId="selectedModuleId"
         v-bind="props" />
     </div>
     <div class="flex-1">
+      <!-- Search -->
       <Search
-        :established="baselineInfo?.established"
-        @handleAddCase="handleAddCase"
-        @change="handleSearchChange" />
+        :established="currentBaselineInfo?.established"
+        @handleAddCase="openAddCaseModal"
+        @change="handleSearchParametersChange" />
+
+      <!-- Table -->
       <Table
         noDataSize="small"
-        :columns="columns"
+        :columns="tableColumns"
         :dataSource="baselineCaseList"
         :rowClassName="(record) => record.id === selectedRowKey ? 'ant-table-row-selected' : ''"
-        :pagination="pagination"
-        :customRow="putCustom"
-        @change="onPageChang">
+        :pagination="paginationConfig"
+        :customRow="createRowClickHandler"
+        @change="handlePaginationChange">
         <template #bodyCell="{column, record}">
           <template v-if="column.dataIndex === 'priority'">
             <TaskPriority
@@ -231,7 +270,7 @@ onMounted(() => {
             <Button
               type="text"
               size="small"
-              @click.stop="delCase(record)">
+              @click.stop="deleteCaseFromBaseline(record)">
               <Icon icon="icon-qingchu" class="mr-1" />
               {{ t('functionBaseline.case.cancel') }}
             </Button>
@@ -239,22 +278,24 @@ onMounted(() => {
         </template>
       </Table>
     </div>
+
+    <!-- Case Details Drawer -->
     <div class="flex flex-col transition-all -mt-4" :class="{'w-0': !selectedRowKey, 'w-100 border-l p-2': !!selectedRowKey}">
       <div>
         <Icon
           icon="icon-shanchuguanbi"
           class="text-5 cursor-pointer"
-          @click="onCloseDrawer" />
+          @click="closeCaseDetailsDrawer" />
       </div>
 
       <div class="flex-1 overflow-auto p-4">
         <CaseBasicInfo
           class="pb-5"
-          :caseInfo="selectCaseInfo" />
+          :caseInfo="selectedCaseInfo" />
 
         <Precondition
           class="py-5"
-          :caseInfo="selectCaseInfo" />
+          :caseInfo="selectedCaseInfo" />
 
         <div class="font-semibold text-3.5">
           {{ t('functionBaseline.case.testSteps') }}
@@ -262,46 +303,46 @@ onMounted(() => {
 
         <CaseStep
           class="pb-5 pt-3"
-          :defaultValue="selectCaseInfo?.steps || []"
+          :defaultValue="selectedCaseInfo?.steps || []"
           readonly />
 
         <CaseReviewResult
           class="py-5"
-          :caseInfo="selectCaseInfo" />
+          :caseInfo="selectedCaseInfo" />
 
         <Description
           class="py-5"
-          :caseInfo="selectCaseInfo" />
+          :caseInfo="selectedCaseInfo" />
 
         <Members
           class="py-5"
-          :caseInfo="selectCaseInfo" />
+          :caseInfo="selectedCaseInfo" />
 
         <TestInfo
           class="py-5"
-          :caseInfo="selectCaseInfo" />
+          :caseInfo="selectedCaseInfo" />
 
         <AssocTasks
           class="py-5"
-          :dataSource="selectCaseInfo?.refTaskInfos"
+          :dataSource="selectedCaseInfo?.refTaskInfos"
           :projectId="props.projectId"
-          :caseInfo="selectCaseInfo" />
+          :caseInfo="selectedCaseInfo" />
 
         <AssocCases
           class="py-5"
-          :dataSource="selectCaseInfo?.refCaseInfos"
+          :dataSource="selectedCaseInfo?.refCaseInfos"
           :projectId="props.projectId"
-          :caseInfo="selectCaseInfo" />
+          :caseInfo="selectedCaseInfo" />
 
         <Attachment
           class="py-5"
-          :caseInfo="selectCaseInfo" />
+          :caseInfo="selectedCaseInfo" />
       </div>
     </div>
 
     <SelectCaseModal
-      v-model:visible="selectCaseVisible"
+      v-model:visible="isSelectCaseModalVisible"
       v-bind="props"
-      @ok="selectCaseOk" />
+      @ok="handleCaseSelectionConfirm" />
   </div>
 </template>
