@@ -1,79 +1,60 @@
-export type PlanInfo = {
-  attachments: {
-    id: string;
-    name: string;
-    url: string;
-  }[];
-  auth: boolean;
-  autoUpdateResultByExec: boolean;
-  caseNum: string;
+import { EnumMessage, EvalWorkloadMethod } from '@xcan-angus/infra';
+import { FuncPlanStatus } from '@/enums/enums';
+import { AttachmentInfo, ProgressInfo, UserInfo } from '@/types/types';
+
+export type PlanDetail = {
+  id: string;
+  projectId: string;
+  name: string;
+  status: EnumMessage<FuncPlanStatus>;
+  startDate: string;
+  deadlineDate: string;
+  ownerId: string;
+  ownerName: string;
+  ownerAvatar: string;
+  testerResponsibilities: Map<string, string>;
+  members: UserInfo[];
+  testingScope: string;
+  testingObjectives: string;
+  acceptanceCriteria: string;
+  otherInformation: string;
+  attachments: AttachmentInfo[];
   casePrefix: string;
+  review: boolean;
+  evalWorkloadMethod: EnumMessage<EvalWorkloadMethod>;
+  auth: boolean;
+  tenantId: string;
   createdBy: string;
   createdByName: string;
   createdDate: string;
-  deadlineDate: string;
-  description: string;
-  evalWorkloadMethod: {
-    value: string;
-    message: string;
-  };
-  id: string;
   lastModifiedBy: string;
   lastModifiedByName: string;
   lastModifiedDate: string;
-  name: string;
-  ownerAvatar: string;
-  ownerId: string;
-  ownerName: string;
-  progress: {
-    completed: string;
-    completedRate: string;
-    total: string
-  };
+  caseNum: number;
+  validCaseNum: number;
+  progress: ProgressInfo;
+}
+
+export type PlanEditFormState = {
+  id?: string;
   projectId: string;
-  projectName: string;
-  review: boolean;
+  name: string;
   startDate: string;
-  status: {
-    value: 'BLOCKED' | 'COMPLETED' | 'IN_PROGRESS' | 'PENDING';
-    message: string;
-  };
-  tenantId: string;
-  tenantName: string;
-  members: {
-    avatar: string;
-    email: string;
-    fullName: string;
-    id: string;
-    mobile: string;
-    username: string
-  }[];
-  showMembers: {
-    id: string;
-    username: string;
-    fullName: string;
-    mobile: string;
-    email: string;
-    avatar: string;
-  }[];
+  deadlineDate: string;
+  ownerId: string;
+  testerResponsibilities: Map<string, string>;
   testingObjectives?: string,
   testingScope: string,
-  otherInformation:string,
+  otherInformation: string,
   acceptanceCriteria: string;
-  testerResponsibilities: {[id: string]: string};
+  attachments: AttachmentInfo[];
+  review: boolean;
+  casePrefix?: string;
+  evalWorkloadMethod: EvalWorkloadMethod;
+  // The front-end echoes the automatically added fields of startDate and deadlineDate, which need to be deleted when saving
+  date?: [string, string];
 }
-export type TableDataObj = {
-  testerId: string;
-  testerName: string;
-  testerAvatar: string;
-  totalCaseNum: string;
-  evalWorkload: string;
-  actualWorkload: string;
-  passedTestNum: string;
-  passedTestRate: string;
-  overdueNum: string;
-  overdueRate: string;
-}
+
 export type MemberProgressData = {
   testerId: string;
   testerName: string;
@@ -85,26 +66,4 @@ export type MemberProgressData = {
   passedTestRate: string;
   overdueNum: string;
   overdueRate: string;
-}
-export type EditFormState = {
-  deadlineDate: string;
-  evalWorkloadMethod: string;
-  name: string;
-  ownerId: string;
-  projectId: string;
-  review: boolean;
-  startDate: string;
-  casePrefix?: string;
-  description?: string;
-  attachments?: {
-    name: string;
-    url: string;
-  }[];
-  id?: string;
-  testingObjectives?: string,
-  testingScope: string,
-  otherInformation: string,
-  acceptanceCriteria: string;
-  testerResponsibilities: { [id: string]: string };
-  date?: [string, string];// 前端回显startDate、deadlineDate自动添加的字段，保存时需要删除
 }

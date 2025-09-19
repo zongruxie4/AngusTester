@@ -1,17 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, nextTick, onMounted, ref, watch } from 'vue';
-import {
-  Button,
-  Divider,
-  Form,
-  FormItem,
-  Radio,
-  RadioGroup,
-  Switch,
-  TabPane,
-  Tabs,
-  Upload
-} from 'ant-design-vue';
+import { Button, Divider, Form, FormItem, Radio, RadioGroup, Switch, TabPane, Tabs, Upload } from 'ant-design-vue';
 import {
   AsyncComponent,
   DatePicker,
@@ -26,14 +15,14 @@ import {
   Tooltip
 } from '@xcan-angus/vue-ui';
 import {
-  EvalWorkloadMethod,
+  appContext,
   EnumMessage,
-  toClipboard,
-  utils,
-  TESTER,
   enumUtils,
+  EvalWorkloadMethod,
+  TESTER,
+  toClipboard,
   upload,
-  appContext
+  utils
 } from '@xcan-angus/infra';
 import dayjs from 'dayjs';
 import { isEqual } from 'lodash-es';
@@ -42,21 +31,13 @@ import { funcPlan, project } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
 
-import { EditFormState, PlanInfo } from '../types';
+import { PlanDetail, PlanEditFormState } from '../types';
+import { BasicProps } from '@/types/types';
+import { FuncPlanPermission, FuncPlanStatus } from '@/enums/enums';
 
 const { t } = useI18n();
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  data: {
-    _id: string;
-    id: string | undefined;
-  }
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -64,8 +45,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
-const TesterSelect = defineAsyncComponent(() => import('./TesterSelect.vue'));
 const RichEditor = defineAsyncComponent(() => import('@/components/richEditor/index.vue'));
+const TesterSelect = defineAsyncComponent(() => import('./TesterSelect.vue'));
 
 const updateTabPane = inject<(data: { [key: string]: any }) => void>('updateTabPane', () => ({}));
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
@@ -75,7 +56,7 @@ const isAdmin = computed(() => appContext.isAdmin());
 const formRef = ref();
 
 const loading = ref(false);
-const dataSource = ref<PlanInfo>();
+const dataSource = ref<PlanDetail>();
 
 const testerSelectRef = ref();
 const activeTabKey = ref('testingObjectives');
@@ -84,26 +65,25 @@ const evalWorkloadMethodOptions = ref<EnumMessage<EvalWorkloadMethod>[]>([]);
 const reviewFlagVisible = ref(false);
 
 const permissions = ref<string[]>([]);
-const oldFormState = ref<EditFormState>();
+const oldFormState = ref<PlanEditFormState>();
 const _startDate = dayjs().format(DATE_TIME_FORMAT);
 const _deadlineDate = dayjs().add(1, 'month').format(DATE_TIME_FORMAT);
-const formState = ref<EditFormState>({
+const formState = ref<PlanEditFormState>({
   projectId: props.projectId,
-  casePrefix: '',
-  description: '',
-  evalWorkloadMethod: 'STORY_POINT',
   name: '',
-  ownerId: props.userInfo?.id,
-  review: true,
   startDate: _startDate,
   deadlineDate: _deadlineDate,
-  attachments: [],
-  date: [_startDate, _deadlineDate],
+  ownerId: String(props.userInfo?.id || ''),
+  testerResponsibilities: new Map(),
   testingObjectives: '',
   testingScope: '',
   otherInformation: '',
   acceptanceCriteria: '',
-  testerResponsibilities: {}
+  attachments: [],
+  review: true,
+  casePrefix: '',
+  evalWorkloadMethod: EvalWorkloadMethod.STORY_POINT,
+  date: [_startDate, _deadlineDate]
 });
 
 const authorizeModalVisible = ref(false);
@@ -233,7 +213,7 @@ const handleReviewFlagCancel = () => {
 };
 
 const getParams = () => {
-  const params: EditFormState = { ...formState.value };
+  const params: PlanEditFormState = { ...formState.value };
   if (dataSource.value?.id) {
     params.id = dataSource.value.id;
   }
@@ -245,11 +225,7 @@ const getParams = () => {
   }
 
   if (!params.attachments?.length) {
-    delete params.attachments;
-  }
-
-  if (!params.description) {
-    delete params.description;
+    params.attachments = undefined;
   }
 
   if (!params.casePrefix) {
@@ -286,7 +262,6 @@ const editOk = async () => {
   const id = params.id;
   const name = params.name;
   updateTabPane({ _id: id, name });
-  // 更新数据名称
   if (dataSource.value) {
     dataSource.value.name = name;
   }
@@ -306,14 +281,9 @@ const addOk = async () => {
   const _id = props.data?._id;
   const newId = res?.data?.id;
   const name = params.name;
-  replaceTabPane(_id, { _id: newId, uiKey: newId, name, data: { _id: newId, id: newId } });
-};
-
-const validateMaxLen = (val) => {
-  if (formState.value[val.field].length > 2000) {
-    return Promise.reject(t('functionPlan.editForm.validation.charLimit2000WithCount'));
+  if (newId) {
+    replaceTabPane(_id, { _id: newId, uiKey: newId, name, data: { _id: newId, id: newId } });
   }
-  return Promise.resolve();
 };
 
 const ok = async () => {
@@ -346,7 +316,7 @@ const toStart = async () => {
   }
 
   notification.success(t('functionPlan.editForm.notifications.planStartSuccess'));
-  loadData(id);
+  await loadData(id);
   refreshList();
 };
 
@@ -364,7 +334,7 @@ const toCompleted = async () => {
   }
 
   notification.success(t('functionPlan.editForm.notifications.planCompletedSuccess'));
-  loadData(id);
+  await loadData(id);
   refreshList();
 };
 
@@ -402,7 +372,7 @@ const authFlagChange = async () => {
     return;
   }
 
-  loadData(id);
+  await loadData(id);
   refreshList();
 };
 
@@ -431,14 +401,14 @@ const toResetTestResult = async () => {
 
   const params = { ids: [id] };
   loading.value = true;
-  const [error] = await funcPlan.resetCaseResult(params, { paramsType: true });
+  const [error] = await funcPlan.resetCaseResult(params);
   loading.value = false;
   if (error) {
     return;
   }
 
   notification.success(t('functionPlan.editForm.notifications.planResetTestSuccess'));
-  loadData(id);
+  await loadData(id);
   refreshList();
 };
 
@@ -457,7 +427,7 @@ const toResetReviewResult = async () => {
   }
 
   notification.success(t('functionPlan.editForm.notifications.planResetReviewSuccess'));
-  loadData(id);
+  await loadData(id);
   refreshList();
 };
 
@@ -495,7 +465,7 @@ const loadData = async (id: string) => {
     return;
   }
 
-  const data = res?.data as PlanInfo;
+  const data = res?.data as PlanDetail;
   if (!data) {
     return;
   }
@@ -509,36 +479,33 @@ const loadData = async (id: string) => {
   }
 };
 
-const setFormData = (data: PlanInfo) => {
+const setFormData = (data: PlanDetail) => {
   reviewFlagVisible.value = false;
   if (!data) {
     const startDate = dayjs().format(DATE_TIME_FORMAT);
     const deadlineDate = dayjs().add(1, 'month').format(DATE_TIME_FORMAT);
     formState.value = {
-      casePrefix: '',
-      description: '',
-      evalWorkloadMethod: 'STORY_POINT',
+      projectId: props.projectId,
       name: '',
-      review: true,
       startDate,
       deadlineDate,
-      attachments: [],
-      date: [startDate, deadlineDate],
-      ownerId: props.userInfo?.id,
-      projectId: props.projectId,
+      ownerId: String(props.userInfo?.id || ''),
+      testerResponsibilities: new Map(),
       testingObjectives: '',
       testingScope: '',
       otherInformation: '',
       acceptanceCriteria: '',
-      testerResponsibilities: {}
+      attachments: [],
+      review: true,
+      casePrefix: '',
+      evalWorkloadMethod: EvalWorkloadMethod.STORY_POINT,
+      date: [startDate, deadlineDate]
     };
-
     return;
   }
 
   const {
     casePrefix = '',
-    description = '',
     projectId = '',
     evalWorkloadMethod,
     name = '',
@@ -555,7 +522,6 @@ const setFormData = (data: PlanInfo) => {
   } = data;
 
   formState.value.casePrefix = casePrefix;
-  formState.value.description = description;
   formState.value.projectId = projectId;
   formState.value.deadlineDate = deadlineDate;
   formState.value.evalWorkloadMethod = evalWorkloadMethod?.value || '';
@@ -595,21 +561,7 @@ const loadEnums = () => {
 
 const loadPermissions = async (id: string) => {
   if (isAdmin.value) {
-    permissions.value = [
-      'MODIFY_PLAN',
-      'DELETE_PLAN',
-      'ADD_CASE',
-      'MODIFY_CASE',
-      'DELETE_CASE',
-      'EXPORT_CASE',
-      'REVIEW',
-      'RESET_REVIEW_RESULT',
-      'TEST',
-      'RESET_TEST_RESULT',
-      'GRANT',
-      'VIEW'
-    ];
-
+    permissions.value = enumUtils.getEnumValues(FuncPlanPermission);
     return;
   }
 
@@ -673,20 +625,11 @@ const editFlag = computed(() => {
 });
 
 const editDisabled = computed(() => {
-  if (dataSource.value && ['IN_PROGRESS', 'COMPLETED'].includes(status.value)) {
-    return true;
-  }
-
-  return false;
+  return !!(dataSource.value && [FuncPlanStatus.IN_PROGRESS, FuncPlanStatus.COMPLETED].includes(status.value));
 });
 
 const cancelEdit = async () => {
   deleteTabPane([props.data._id]);
-};
-
-const autoSize = {
-  minRows: 12,
-  maxRows: 20
 };
 </script>
 
@@ -694,7 +637,7 @@ const autoSize = {
   <Spin :spinning="loading" class="h-full text-3 leading-5 px-5 py-5 overflow-auto">
     <div class="flex items-center space-x-2.5 mb-5">
       <Button
-        :disabled="!isAdmin && !permissions.includes('MODIFY_PLAN')"
+        :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.MODIFY_PLAN)"
         type="primary"
         size="small"
         class="flex items-center space-x-1"
@@ -705,8 +648,8 @@ const autoSize = {
 
       <template v-if="editFlag">
         <Button
-          v-if="status === 'COMPLETED'"
-          :disabled="!isAdmin && !permissions.includes('MODIFY_PLAN')"
+          v-if="status === FuncPlanStatus.COMPLETED"
+          :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.MODIFY_PLAN)"
           size="small"
           type="default"
           class="flex items-center space-x-1"
@@ -716,8 +659,8 @@ const autoSize = {
         </Button>
 
         <Button
-          v-else-if="['PENDING', 'BLOCKED'].includes(status)"
-          :disabled="!isAdmin && !permissions.includes('MODIFY_PLAN')"
+          v-else-if="[FuncPlanStatus.PENDING, FuncPlanStatus.BLOCKED].includes(status)"
+          :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.MODIFY_PLAN)"
           size="small"
           type="default"
           class="flex items-center space-x-1"
@@ -726,9 +669,9 @@ const autoSize = {
           <span>{{ t('functionPlan.editForm.buttons.start') }}</span>
         </Button>
 
-        <template v-if="status === 'IN_PROGRESS'">
+        <template v-if="status === FuncPlanStatus.IN_PROGRESS">
           <Button
-            :disabled="!isAdmin && !permissions.includes('MODIFY_PLAN')"
+            :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.MODIFY_PLAN)"
             size="small"
             type="default"
             class="flex items-center space-x-1"
@@ -738,7 +681,7 @@ const autoSize = {
           </Button>
 
           <Button
-            :disabled="!isAdmin && !permissions.includes('MODIFY_PLAN')"
+            :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.MODIFY_PLAN)"
             size="small"
             type="default"
             class="flex items-center space-x-1"
@@ -749,7 +692,7 @@ const autoSize = {
         </template>
 
         <Button
-          :disabled="!isAdmin && !permissions.includes('DELETE_PLAN')"
+          :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.DELETE_PLAN)"
           type="default"
           size="small"
           class="flex items-center space-x-1"
@@ -759,7 +702,7 @@ const autoSize = {
         </Button>
 
         <Button
-          :disabled="!isAdmin && !permissions.includes('GRANT')"
+          :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.GRANT)"
           type="default"
           size="small"
           class="flex items-center space-x-1"
@@ -778,7 +721,7 @@ const autoSize = {
         </Button>
 
         <Button
-          :disabled="!isAdmin && !permissions.includes('RESET_TEST_RESULT')"
+          :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.RESET_TEST_RESULT)"
           type="default"
           size="small"
           class="flex items-center space-x-1"
@@ -788,7 +731,7 @@ const autoSize = {
         </Button>
 
         <Button
-          :disabled="!isAdmin && !permissions.includes('RESET_REVIEW_RESULT')"
+          :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.RESET_REVIEW_RESULT)"
           type="default"
           size="small"
           class="flex items-center space-x-1"
@@ -1067,13 +1010,6 @@ const autoSize = {
               ref="objectiveRichRef"
               v-model:value="formState.testingObjectives"
               :options="{placeholder: t('functionPlan.editForm.form.testingObjectivesPlaceholder')}" />
-            <!-- <Textarea
-              v-model:value="formState.testingObjectives"
-              size="small"
-              showCount
-              :autoSize="autoSize"
-              :maxlength="2000"
-              placeholder="测试活动的具体目的和期望达成的结果，帮助测试团队聚焦于测试的核心目标。" /> -->
           </FormItem>
         </TabPane>
         <TabPane key="testingScope" forceRender>
@@ -1090,13 +1026,6 @@ const autoSize = {
               ref="scopeRichRef"
               v-model:value="formState.testingScope"
               :options="{placeholder: t('functionPlan.editForm.form.testingScopePlaceholder')}" />
-            <!-- <Textarea
-              v-model:value="formState.testingScope"
-              size="small"
-              showCount
-              :autoSize="autoSize"
-              :maxlength="2000"
-              placeholder="界定测试活动所涵盖的具体内容和范围，包括测试哪些功能模块、平台、版本等。" /> -->
           </FormItem>
         </TabPane>
         <TabPane
@@ -1111,14 +1040,6 @@ const autoSize = {
               ref="criteriaRichRef"
               v-model:value="formState.acceptanceCriteria"
               :options="{placeholder: t('functionPlan.editForm.form.acceptanceCriteriaPlaceholder')}" />
-            <!-- <Textarea
-              v-model:value="formState.acceptanceCriteria"
-              size="small"
-              class="mb-5"
-              showCount
-              :autoSize="autoSize"
-              :maxlength="2000"
-              placeholder="明确计软件产品交付的具体条件和标准。" /> -->
           </FormItem>
         </TabPane>
         <TabPane
@@ -1133,14 +1054,6 @@ const autoSize = {
               ref="infoRichRef"
               v-model:value="formState.otherInformation"
               :options="{placeholder: t('functionPlan.editForm.form.otherInformationPlaceholder')}" />
-            <!-- <Textarea
-              v-model:value="formState.otherInformation"
-              size="small"
-              class="mb-5"
-              showCount
-              :autoSize="autoSize"
-              :maxlength="2000"
-              placeholder="其他说明，如测试策略、风险评估和管理等。" /> -->
           </FormItem>
         </TabPane>
       </Tabs>

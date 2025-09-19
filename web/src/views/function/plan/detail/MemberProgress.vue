@@ -31,13 +31,8 @@ const loadData = async () => {
   if (error) {
     return;
   }
-
   tableData.value = data;
 };
-
-onMounted(() => {
-  loadData();
-});
 
 const tableColumns = [
   {
@@ -106,8 +101,11 @@ const tableColumns = [
     dataIndex: 'overdueRate',
     customRender: ({ text }) => text + '%'
   }
-
 ];
+
+onMounted(() => {
+  loadData();
+});
 </script>
 <template>
   <Table

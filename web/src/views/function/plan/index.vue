@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, onMounted, provide, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { BrowserTab } from '@xcan-angus/vue-ui';
-import { utils, IPane } from '@xcan-angus/infra';
+import { IPane, utils } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 import { BasicProps } from '@/types/types';
 
@@ -52,12 +52,11 @@ const initialize = () => {
           _id: 'planList',
           value: 'planList',
           name: t('functionPlan.main.plan'),
-          closable: false // 是否允许关闭，true - 允许关闭，false - 禁止关闭
+          closable: false
         };
       }
     });
   }
-
   hashChange(route.hash);
 };
 
@@ -107,7 +106,6 @@ const hashChange = (hash: string) => {
       });
     }
   }
-
   router.replace('/function#plans');
 };
 
@@ -120,7 +118,6 @@ onMounted(() => {
     if (!route.hash.startsWith('#plans')) {
       return;
     }
-
     hashChange(route.hash);
   });
 });
@@ -132,19 +129,10 @@ const storageKey = computed(() => {
   return `plan${props.projectId}`;
 });
 
-// 添加指定的tabPane
 provide('addTabPane', addTabPane);
-
-// 获取tabPane
 provide('getTabPane', getTabPane);
-
-// 删除指定的tabPane
 provide('deleteTabPane', deleteTabPane);
-
-// 更新指定的tabPane
 provide('updateTabPane', updateTabPane);
-
-// 替换指定tabPane
 provide('replaceTabPane', replaceTabPane);
 </script>
 <template>

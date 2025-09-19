@@ -1,30 +1,26 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue';
 import { Colon, DropdownSort, Icon, IconRefresh, SearchPanel } from '@xcan-angus/vue-ui';
-import { enumUtils, appContext } from '@xcan-angus/infra';
+import { appContext, enumUtils, PageQuery, SearchCriteria } from '@xcan-angus/infra';
 import { FuncPlanStatus } from '@/enums/enums';
 import dayjs, { Dayjs } from 'dayjs';
 import { Button } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/utils/constant';
+import { LoadingProps } from '@/types/types';
 
 const { t } = useI18n();
 
-interface Props {
-  loading: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<LoadingProps>(), {
   loading: false
 });
 
 type OrderByKey = string;
-type OrderSortKey = 'ASC' | 'DESC';
 
 const emits = defineEmits<{(e: 'change', value: {
   orderBy?: string;
-  orderSort?: 'ASC'|'DESC';
-  filters: {key: string; op: string; value: string|string[]}[];
+  orderSort?: PageQuery.OrderSort;
+  filters: SearchCriteria[];
 }):void,
  (e: 'refresh'):void}>();
 const userInfo = ref(appContext.getUser());
@@ -64,7 +60,7 @@ const searchPanelOptions = [
     valueKey: 'startDate',
     type: 'date',
     valueType: 'start',
-    op: 'GREATER_THAN_EQUAL',
+    op: SearchCriteria.OpEnum.GreaterThanEqual,
     placeholder: t('functionPlan.list.planStartTime'),
     showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
     allowClear: true
@@ -73,7 +69,7 @@ const searchPanelOptions = [
     valueKey: 'deadlineDate',
     type: 'date',
     valueType: 'start',
-    op: 'LESS_THAN_EQUAL',
+    op: SearchCriteria.OpEnum.LessThanEqual,
     placeholder: t('functionPlan.list.planDeadlineTime'),
     showTime: { hideDisabledOptions: true, defaultValue: dayjs('00:00:00', TIME_FORMAT) },
     allowClear: true
@@ -83,27 +79,27 @@ const searchPanelOptions = [
 const sortMenuItems: {
   name: string;
   key: OrderByKey;
-  orderSort: OrderSortKey;
+  orderSort: PageQuery.OrderSort;
 }[] = [
   {
     name: t('functionPlan.list.sortByName'),
     key: 'name',
-    orderSort: 'DESC'
+    orderSort: PageQuery.OrderSort.Desc
   },
   {
     name: t('functionPlan.list.sortByOwner'),
     key: 'ownerId',
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   },
   {
     name: t('functionPlan.list.sortByCreator'),
     key: 'createdBy',
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   },
   {
     name: t('functionPlan.list.sortByAddTime'),
     key: 'createdDate',
-    orderSort: 'ASC'
+    orderSort: PageQuery.OrderSort.Asc
   }
 ];
 
@@ -141,9 +137,9 @@ const menuItems = computed(() => [
 
 const orderBy = ref();
 const orderSort = ref();
-const searchFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
-const quickSearchFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
-const assocFilters = ref<{key: string; op: string; value: string|string[]}[]>([]);
+const searchFilters = ref<SearchCriteria[]>([]);
+const quickSearchFilters = ref<SearchCriteria[]>([]);
+const assocFilters = ref<SearchCriteria[]>([]);
 const assocKeys = ['ownerId'];
 const timeKeys = ['lastDay', 'lastThreeDays', 'lastWeek'];
 
@@ -195,7 +191,7 @@ const getParams = () => {
   };
 };
 
-const searchChange = (data: {key: string; op: string; value: string|string[]}[]) => {
+const searchChange = (data: SearchCriteria[]) => {
   searchFilters.value = data.filter(item => !assocKeys.includes(item.key));
   assocFilters.value = data.filter(item => assocKeys.includes(item.key));
 

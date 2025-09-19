@@ -1,26 +1,18 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'vue';
 import { Button, Progress, TabPane, Tabs } from 'ant-design-vue';
-import { Colon, Icon, Image, notification, Spin, Table, Grid } from '@xcan-angus/vue-ui';
-import { TESTER, toClipboard, download, appContext } from '@xcan-angus/infra';
+import { Grid, Icon, Image, notification, Spin, Table } from '@xcan-angus/vue-ui';
+import { appContext, download, TESTER, toClipboard, enumUtils } from '@xcan-angus/infra';
 import { funcPlan } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-import { PlanInfo } from '../types';
+import { FuncPlanPermission } from '@/enums/enums';
+import { PlanDetail } from '../types';
+import { BasicProps } from '@/types/types';
 
 const { t } = useI18n();
 
-type Props = {
-  projectId: string;
-  userInfo: { id: string; };
-  appInfo: { id: string; };
-  data: {
-    _id: string;
-    id: string | undefined;
-  }
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   appInfo: undefined,
@@ -40,7 +32,7 @@ const loading = ref(false);
 const exportLoading = ref(false);
 
 const permissions = ref<string[]>([]);
-const dataSource = ref<PlanInfo>();
+const dataSource = ref<PlanDetail>();
 const testerResponsibilities = ref<{id:string;name:string;content:string;}[]>([]);
 const completedRate = ref(0);
 
@@ -50,21 +42,7 @@ const goCase = () => {
 
 const loadPermissions = async (id: string) => {
   if (isAdmin.value) {
-    permissions.value = [
-      'MODIFY_PLAN',
-      'DELETE_PLAN',
-      'ADD_CASE',
-      'MODIFY_CASE',
-      'DELETE_CASE',
-      'EXPORT_CASE',
-      'REVIEW',
-      'RESET_REVIEW_RESULT',
-      'TEST',
-      'RESET_TEST_RESULT',
-      'GRANT',
-      'VIEW'
-    ];
-
+    permissions.value = enumUtils.getEnumValues(FuncPlanPermission);
     return;
   }
 
@@ -77,7 +55,6 @@ const loadPermissions = async (id: string) => {
   if (error) {
     return;
   }
-
   permissions.value = (res?.data?.permissions || []).map(item => item.value);
 };
 
@@ -93,7 +70,7 @@ const loadData = async (id: string) => {
     return;
   }
 
-  const data = res?.data as PlanInfo;
+  const data = res?.data as PlanDetail;
   if (!data) {
     return;
   }
@@ -180,12 +157,6 @@ const attachments = computed(() => {
 });
 
 const columns = [
-  // {
-  //   dataIndex: 'id',
-  //   title: 'ID',
-  //   width: '25%',
-  //   ellipsis: true
-  // },
   {
     key: 'name',
     dataIndex: 'name',
@@ -203,17 +174,44 @@ const columns = [
 
 const gridColumns = [
   [
-    { dataIndex: 'name', label: t('functionPlan.planDetail.basicInfo.planName') },
-    { dataIndex: 'ownerName', label: t('functionPlan.planDetail.basicInfo.owner') },
-    { dataIndex: 'review', label: t('functionPlan.planDetail.basicInfo.isReview') },
-    { dataIndex: 'status', label: t('functionPlan.planDetail.basicInfo.status') },
-    { dataIndex: 'attachments', label: t('functionPlan.planDetail.basicInfo.attachments') }
+    {
+      dataIndex: 'name',
+      label: t('functionPlan.planDetail.basicInfo.planName')
+    },
+    {
+      dataIndex: 'ownerName',
+      label: t('functionPlan.planDetail.basicInfo.owner')
+    },
+    {
+      dataIndex: 'review',
+      label: t('functionPlan.planDetail.basicInfo.isReview')
+    },
+    {
+      dataIndex: 'status',
+      label: t('functionPlan.planDetail.basicInfo.status')
+    },
+    {
+      dataIndex: 'attachments',
+      label: t('functionPlan.planDetail.basicInfo.attachments')
+    }
   ],
   [
-    { dataIndex: 'time', label: t('functionPlan.planDetail.basicInfo.timePlan') },
-    { dataIndex: 'casePrefix', label: t('functionPlan.planDetail.basicInfo.casePrefix') },
-    { dataIndex: 'workloadAssessment', label: t('functionPlan.planDetail.basicInfo.workloadAssessment') },
-    { dataIndex: 'progress', label: t('functionPlan.planDetail.basicInfo.progress') }
+    {
+      dataIndex: 'time',
+      label: t('functionPlan.planDetail.basicInfo.timePlan')
+    },
+    {
+      dataIndex: 'casePrefix',
+      label: t('functionPlan.planDetail.basicInfo.casePrefix')
+    },
+    {
+      dataIndex: 'workloadAssessment',
+      label: t('functionPlan.planDetail.basicInfo.workloadAssessment')
+    },
+    {
+      dataIndex: 'progress',
+      label: t('functionPlan.planDetail.basicInfo.progress')
+    }
   ]
 ];
 </script>
@@ -234,7 +232,7 @@ const gridColumns = [
       </Button>
 
       <Button
-        :disabled="!isAdmin && !permissions.includes('VIEW')"
+        :disabled="!isAdmin && permissions.length === 0"
         type="default"
         size="small"
         class="flex items-center space-x-1"
@@ -243,20 +241,8 @@ const gridColumns = [
         <span>{{ t('functionPlan.planDetail.buttons.viewCases') }}</span>
       </Button>
 
-      <!-- <Button
-        type="default"
-        size="small"
-        class="p-0">
-        <RouterLink
-          class="flex items-center space-x-1 leading-6.5 px-1.75"
-          :to="`/function#cases?planId=${planId}&sprintName=${dataSource?.name}`">
-          <Icon icon="icon-renwu2" class="text-3.5" />
-          <span>查看用例</span>
-        </RouterLink>
-      </Button> -->
-
       <Button
-        :disabled="!isAdmin && !permissions.includes('EXPORT_CASE')"
+        :disabled="!isAdmin && !permissions.includes(FuncPlanPermission.EXPORT_CASE)"
         type="default"
         size="small"
         class="flex items-center space-x-1"
@@ -347,7 +333,6 @@ const gridColumns = [
       </TabPane>
       <TabPane key="testingObjectives" :tab="t('functionPlan.planDetail.tabs.testingObjectives')">
         <div class="space-y-1 whitespace-pre-wrap break-words break-all">
-          <!-- {{ dataSource?.testingObjectives }} -->
           <RichEditor
             v-if="dataSource?.otherInformation"
             :value="dataSource.testingObjectives"
@@ -356,7 +341,6 @@ const gridColumns = [
       </TabPane>
       <TabPane key="testingScope" :tab="t('functionPlan.planDetail.tabs.testingScope')">
         <div class="space-y-1 whitespace-pre-wrap break-words break-all">
-          <!-- {{ dataSource?.testingScope }} -->
           <RichEditor
             v-if="dataSource?.otherInformation"
             :value="dataSource.testingScope"
@@ -365,7 +349,6 @@ const gridColumns = [
       </TabPane>
       <TabPane key="acceptanceCriteria" :tab="t('functionPlan.planDetail.tabs.acceptanceCriteria')">
         <div class="space-y-1 whitespace-pre-wrap break-words break-all">
-          <!-- {{ dataSource?.acceptanceCriteria }} -->
           <RichEditor
             v-if="dataSource?.acceptanceCriteria"
             :value="dataSource.acceptanceCriteria"

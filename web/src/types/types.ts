@@ -25,6 +25,15 @@ export type BasicProps = {
   data?: Record<string, string>;
 }
 
+export type UserInfo = {
+  id: string;
+  username: string;
+  fullName: string;
+  mobile: string;
+  email: string;
+  avatar: string;
+}
+
 // Time setting interface for CreatedDate component
 export interface CreateTimeSetting {
   createdAt: CreatedAt;

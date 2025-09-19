@@ -5,7 +5,7 @@ import { Progress } from 'ant-design-vue';
 import { analysis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-import { TableDataObj } from '@/views/function/plan/types';
+import { MemberProgressData } from '@/views/function/plan/types';
 
 const { t } = useI18n();
 
@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{(e: 'update:visible', value: boolean): void; }>();
 
 const loading = ref(false);
-const tableData = ref<TableDataObj[]>([]);
+const tableData = ref<MemberProgressData[]>([]);
 
 const loadData = async () => {
   const params = {
@@ -45,7 +45,7 @@ const cancel = () => {
 
 onMounted(() => {
   watch(() => props.visible, () => {
-    if (props.visible === false || props.planId === undefined || props.planId === null || props.planId === '') {
+    if (!props.visible || props.planId === undefined || props.planId === null || props.planId === '') {
       return;
     }
 

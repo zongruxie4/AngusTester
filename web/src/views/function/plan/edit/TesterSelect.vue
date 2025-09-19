@@ -101,7 +101,7 @@ defineExpose({
         v-model:value="data[idx].id"
         :defaultOptions="defaultUserOptions"
         :options="props.membersOptions"
-        :error="!!item.id && !!repeatIds.includes(item.id)"
+        :error="!!item.id && repeatIds.includes(item.id)"
         size="small"
         allowClear
         :placeholder="t('functionPlan.editForm.testerSelect.selectPersonnel')"

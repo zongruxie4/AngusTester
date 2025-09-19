@@ -3,28 +3,23 @@ import { computed, defineAsyncComponent, inject, onMounted, ref, watch } from 'v
 import { Avatar, Button, Pagination, Progress } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import {
-  AsyncComponent,
-  Colon,
-  Dropdown,
-  Icon,
-  Image,
-  modal,
-  NoData,
-  notification,
-  Popover,
-  Spin
+  AsyncComponent, Colon, Dropdown, Icon, Image, modal, NoData, notification, Popover, Spin
 } from '@xcan-angus/vue-ui';
-import { utils, TESTER, download, appContext } from '@xcan-angus/infra';
-import dayjs from 'dayjs';
-import ProcessPng from './images/process.png';
+import { appContext, download, TESTER, utils, ProjectPageQuery } from '@xcan-angus/infra';
 import { funcPlan } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
+import { FuncPlanStatus, FuncPlanPermission } from '@/enums/enums';
+import { PlanDetail } from '../types';
 
-import { FuncPlanStatus } from '@/enums/enums';
-import { PlanInfo } from '../types';
+import ProcessPng from './images/process.png';
 import SearchPanel from '@/views/function/plan/list/SearchPanel.vue';
 
 const AuthorizeModal = defineAsyncComponent(() => import('@/components/AuthorizeModal/index.vue'));
+const Introduce = defineAsyncComponent(() => import('@/views/function/plan/list/Introduce.vue'));
+const ProgressModal = defineAsyncComponent(() => import('@/views/function/plan/list/MemberProgress.vue'));
+const BurnDownModal = defineAsyncComponent(() => import('@/views/function/plan/list/BurndownChart.vue'));
+const WorkCalendarModal = defineAsyncComponent(() => import('@/views/function/plan/list/WorkCalendar.vue'));
+const RichText = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
 
 const { t } = useI18n();
 
@@ -41,15 +36,6 @@ const props = withDefaults(defineProps<Props>(), {
   appInfo: undefined,
   notify: undefined
 });
-
-type OrderByKey = 'createdDate' | 'createdByName';
-type OrderSortKey = 'ASC' | 'DESC';
-
-const Introduce = defineAsyncComponent(() => import('@/views/function/plan/list/Introduce.vue'));
-const ProgressModal = defineAsyncComponent(() => import('@/views/function/plan/list/MemberProgress.vue'));
-const BurnDownModal = defineAsyncComponent(() => import('@/views/function/plan/list/BurndownChart.vue'));
-const WorkCalendarModal = defineAsyncComponent(() => import('@/views/function/plan/list/WorkCalendar.vue'));
-const RichText = defineAsyncComponent(() => import('@/components/richEditor/textContent/index.vue'));
 
 const deleteTabPane = inject<(keys: string[]) => void>('deleteTabPane', () => ({}));
 const setCaseListPlanParam = inject<(value: any) => void>('setCaseListPlanParam');
@@ -69,10 +55,10 @@ const pageNo = ref(1);
 const pageSize = ref(5);
 
 const total = ref(0);
-const dataList = ref<PlanInfo[]>([]);
+const dataList = ref<PlanDetail[]>([]);
 const permissionsMap = ref<Map<string, string[]>>(new Map());
 
-const selectedData = ref<PlanInfo>();
+const selectedData = ref<PlanDetail>();
 const authorizeModalVisible = ref(false);
 const progressVisible = ref(false);
 const burndownVisible = ref(false);
@@ -90,20 +76,17 @@ const searchChange = (data) => {
   loadData();
 };
 
-// 查看成员进度
-const viewProgress = (data: PlanInfo) => {
+const viewProgress = (data: PlanDetail) => {
   progressVisible.value = true;
   selectedData.value = data;
 };
 
-// 查看燃尽图
-const viewBurnDown = (data: PlanInfo) => {
+const viewBurnDown = (data: PlanDetail) => {
   burndownVisible.value = true;
   selectedData.value = data;
 };
 
-// 查看工作日历
-const viewWrokCalendar = (data: PlanInfo) => {
+const viewWorkCalendar = (data: PlanDetail) => {
   workCalendarVisible.value = true;
   selectedData.value = data;
 };
@@ -120,7 +103,7 @@ const setTableData = async (id: string, index: number) => {
   }
 };
 
-const toStart = async (data: PlanInfo, index: number) => {
+const toStart = async (data: PlanDetail, index: number) => {
   loading.value = true;
   const id = data.id;
   const [error] = await funcPlan.startPlan(id);
@@ -130,10 +113,10 @@ const toStart = async (data: PlanInfo, index: number) => {
   }
 
   notification.success(t('functionPlan.list.planStartSuccess'));
-  setTableData(id, index);
+  await setTableData(id, index);
 };
 
-const toCompleted = async (data: PlanInfo, index: number) => {
+const toCompleted = async (data: PlanDetail, index: number) => {
   loading.value = true;
   const id = data.id;
   const [error] = await funcPlan.endPlan(id);
@@ -143,10 +126,10 @@ const toCompleted = async (data: PlanInfo, index: number) => {
   }
 
   notification.success(t('functionPlan.list.planCompletedSuccess'));
-  setTableData(id, index);
+  await setTableData(id, index);
 };
 
-const toBlock = async (data: PlanInfo, index: number) => {
+const toBlock = async (data: PlanDetail, index: number) => {
   loading.value = true;
   const id = data.id;
   const [error] = await funcPlan.blockPlan(id);
@@ -156,10 +139,10 @@ const toBlock = async (data: PlanInfo, index: number) => {
   }
 
   notification.success(t('functionPlan.list.planBlockedSuccess'));
-  setTableData(id, index);
+  await setTableData(id, index);
 };
 
-const toDelete = async (data: PlanInfo) => {
+const toDelete = async (data: PlanDetail) => {
   modal.confirm({
     content: t('functionPlan.list.confirmDeletePlan', { name: data.name }),
     async onOk () {
@@ -170,14 +153,14 @@ const toDelete = async (data: PlanInfo) => {
       }
 
       notification.success(t('functionPlan.list.planDeleteSuccess'));
-      loadData();
+      await loadData();
 
       deleteTabPane([id]);
     }
   });
 };
 
-const toGrant = (data: PlanInfo) => {
+const toGrant = (data: PlanDetail) => {
   selectedData.value = data;
   authorizeModalVisible.value = true;
 };
@@ -193,17 +176,17 @@ const authFlagChange = async ({ auth }: { auth: boolean }) => {
   }
 };
 
-const toClone = async (data: PlanInfo) => {
+const toClone = async (data: PlanDetail) => {
   const [error] = await funcPlan.clonePlan(data.id);
   if (error) {
     return;
   }
 
   notification.success(t('functionPlan.list.planCloneSuccess'));
-  loadData();
+  await loadData();
 };
 
-const toResetTestResult = async (data: PlanInfo) => {
+const toResetTestResult = async (data: PlanDetail) => {
   loading.value = true;
   const id = data.id;
   const params = { ids: [id] };
@@ -216,7 +199,7 @@ const toResetTestResult = async (data: PlanInfo) => {
   notification.success(t('functionPlan.list.planResetTestSuccess'));
 };
 
-const toResetReviewResult = async (data: PlanInfo) => {
+const toResetReviewResult = async (data: PlanDetail) => {
   loading.value = true;
   const id = data.id;
   const params = { ids: [id] };
@@ -229,7 +212,7 @@ const toResetReviewResult = async (data: PlanInfo) => {
   notification.success(t('functionPlan.list.planResetReviewSuccess'));
 };
 
-const toExport = async (data: PlanInfo) => {
+const toExport = async (data: PlanDetail) => {
   const { id, projectId } = data;
   if (exportLoadingSet.value.has(id)) {
     return;
@@ -240,7 +223,11 @@ const toExport = async (data: PlanInfo) => {
   exportLoadingSet.value.delete(id);
 };
 
-const dropdownClick = (data: PlanInfo, index: number, key: 'clone' | 'block' | 'delete' | 'export' | 'grant' | 'resetTestResult' | 'resetReviewResult' | 'viewBurnDown' | 'viewProgress' | 'viewWrokCalendar') => {
+const dropdownClick = (
+  data: PlanDetail,
+  index: number,
+  key: 'clone' | 'block' | 'delete' | 'export' | 'grant' | 'resetTestResult' | 'resetReviewResult' | 'viewBurnDown' | 'viewProgress' | 'viewWorkCalendar'
+) => {
   switch (key) {
     case 'block':
       toBlock(data, index);
@@ -269,8 +256,8 @@ const dropdownClick = (data: PlanInfo, index: number, key: 'clone' | 'block' | '
     case 'viewProgress':
       viewProgress(data);
       break;
-    case 'viewWrokCalendar':
-      viewWrokCalendar(data);
+    case 'viewWorkCalendar':
+      viewWorkCalendar(data);
       break;
   }
 };
@@ -283,14 +270,7 @@ const paginationChange = (_pageNo: number, _pageSize: number) => {
 
 const loadData = async () => {
   loading.value = true;
-  const params: {
-    projectId: string;
-    pageNo: number;
-    pageSize: number;
-    orderBy?: OrderByKey;
-    orderSort?: OrderSortKey;
-    filters?: { key: string; op: string; value: string; }[];
-  } = {
+  const params: ProjectPageQuery = {
     projectId: props.projectId,
     pageNo: pageNo.value,
     pageSize: pageSize.value,
@@ -301,11 +281,7 @@ const loadData = async () => {
   loaded.value = true;
   loading.value = false;
 
-  if (params.filters?.length || params.orderBy) {
-    searchedFlag.value = true;
-  } else {
-    searchedFlag.value = false;
-  }
+  searchedFlag.value = !!(params.filters?.length || params.orderBy);
 
   if (error) {
     dataList.value = [];
@@ -316,7 +292,7 @@ const loadData = async () => {
   if (data) {
     total.value = +data.total;
 
-    const _list = (data.list || [] as PlanInfo[]);
+    const _list = (data.list || [] as PlanDetail[]);
     dataList.value = _list.map(item => {
       if (item.progress?.completedRate) {
         item.progress.completedRate = item.progress.completedRate.replace(/(\d+\.\d{2})\d+/, '$1');
@@ -358,11 +334,10 @@ const loadPermissions = async (id: string) => {
   const params = {
     admin: true
   };
-
   return await funcPlan.getCurrentAuthByPlanId(id, params);
 };
 
-const goCase = (plan: PlanInfo) => {
+const goCase = (plan: PlanDetail) => {
   setCaseListPlanParam({ ...plan, planId: plan.id, planName: plan.name });
 };
 
@@ -370,21 +345,6 @@ const reset = () => {
   pageNo.value = 1;
   dataList.value = [];
 };
-
-onMounted(() => {
-  watch(() => props.projectId, () => {
-    reset();
-    loadData();
-  }, { immediate: true });
-
-  watch(() => props.notify, (newValue) => {
-    if (!newValue) {
-      return;
-    }
-
-    loadData();
-  }, { immediate: false });
-});
 
 const dropdownPermissionsMap = computed(() => {
   const map = new Map<string, string[]>();
@@ -397,34 +357,33 @@ const dropdownPermissionsMap = computed(() => {
       const _permissions: string[] = _permissionsMap.get(id) || [];
       const tempPermissions: string[] = [];
       const _status = status.value;
-      if ((_isAdmin || _permissions.includes('MODIFY_PLAN')) && ['PENDING', 'IN_PROGRESS'].includes(_status)) {
+      if ((_isAdmin || _permissions.includes(FuncPlanPermission.MODIFY_PLAN)) && [FuncPlanStatus.PENDING, FuncPlanStatus.IN_PROGRESS].includes(_status)) {
         tempPermissions.push('block');
       }
 
-      if (_isAdmin || _permissions.includes('DELETE_PLAN')) {
+      if (_isAdmin || _permissions.includes(FuncPlanPermission.DELETE_PLAN)) {
         tempPermissions.push('delete');
       }
 
-      if (_isAdmin || _permissions.includes('GRANT')) {
+      if (_isAdmin || _permissions.includes(FuncPlanPermission.GRANT)) {
         tempPermissions.push('grant');
       }
 
-      if (_isAdmin || _permissions.includes('RESET_TEST_RESULT')) {
+      if (_isAdmin || _permissions.includes(FuncPlanPermission.RESET_TEST_RESULT)) {
         tempPermissions.push('resetTestResult');
       }
 
-      if (_isAdmin || _permissions.includes('RESET_REVIEW_RESULT')) {
+      if (_isAdmin || _permissions.includes(FuncPlanPermission.RESET_REVIEW_RESULT)) {
         tempPermissions.push('resetReviewResult');
       }
 
-      if (_isAdmin || _permissions.includes('EXPORT_CASE')) {
+      if (_isAdmin || _permissions.includes(FuncPlanPermission.EXPORT_CASE)) {
         tempPermissions.push('export');
       }
 
       map.set(id, tempPermissions);
     }
   }
-
   return map;
 });
 
@@ -479,7 +438,7 @@ const dropdownMenuItems = [
     name: t('functionPlan.list.viewProgress')
   },
   {
-    key: 'viewWrokCalendar',
+    key: 'viewWorkCalendar',
     icon: 'icon-jiankong',
     noAuth: true,
     name: t('functionPlan.list.viewWorkCalendar')
@@ -494,6 +453,20 @@ const dropdownMenuItems = [
 
 const pageSizeOptions = ['5', '10', '15', '20', '30'];
 
+onMounted(() => {
+  watch(() => props.projectId, () => {
+    reset();
+    loadData();
+  }, { immediate: true });
+
+  watch(() => props.notify, (newValue) => {
+    if (!newValue) {
+      return;
+    }
+
+    loadData();
+  }, { immediate: false });
+});
 </script>
 
 <template>
@@ -744,17 +717,17 @@ const pageSizeOptions = ['5', '10', '15', '20', '30'];
                   </Button>
 
                   <Button
-                    :disabled="(!isAdmin && !permissionsMap.get(item.id)?.includes('MODIFY_PLAN')) || !['PENDING', 'BLOCKED', 'COMPLETED'].includes(item.status?.value)"
+                    :disabled="(!isAdmin && !permissionsMap.get(item.id)?.includes(FuncPlanPermission.MODIFY_PLAN)) || ![FuncPlanStatus.PENDING, FuncPlanStatus.BLOCKED, FuncPlanStatus.COMPLETED].includes(item.status?.value)"
                     size="small"
                     type="text"
                     class="px-0 flex items-center space-x-1"
                     @click="toStart(item, index)">
                     <Icon icon="icon-kaishi" class="text-3.5" />
-                    <span>{{ item.status.value === 'COMPLETED' ? t('functionPlan.list.restart') : t('functionPlan.list.start') }}</span>
+                    <span>{{ item.status.value === FuncPlanStatus.COMPLETED ? t('functionPlan.list.restart') : t('functionPlan.list.start') }}</span>
                   </Button>
 
                   <Button
-                    :disabled="(!isAdmin && !permissionsMap.get(item.id)?.includes('MODIFY_PLAN')) || !['IN_PROGRESS'].includes(item.status?.value)"
+                    :disabled="(!isAdmin && !permissionsMap.get(item.id)?.includes(FuncPlanPermission.MODIFY_PLAN)) || ![FuncPlanStatus.IN_PROGRESS].includes(item.status?.value)"
                     size="small"
                     type="text"
                     class="px-0 flex items-center space-x-1"

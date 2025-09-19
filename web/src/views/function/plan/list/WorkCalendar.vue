@@ -4,6 +4,8 @@ import { defineAsyncComponent, ref } from 'vue';
 import { appContext } from '@xcan-angus/infra';
 import { useI18n } from 'vue-i18n';
 
+const WorkCalendar = defineAsyncComponent(() => import('@/views/function/home/WorkCalendar.vue'));
+
 const { t } = useI18n();
 
 interface Props {
@@ -19,8 +21,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits<{(e: 'update:visible', value: boolean):void}>();
 const userInfo = ref(appContext.getUser());
-
-const WorkCalendar = defineAsyncComponent(() => import('@/views/function/home/WorkCalendar.vue'));
 
 const cancel = () => {
   emits('update:visible', false);
