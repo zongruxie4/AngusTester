@@ -455,6 +455,11 @@ defineExpose({
   width: 400px;
 }
 
+/* Tab styling for small size tabs */
+.ant-tabs-small > :deep(.ant-tabs-nav) .ant-tabs-tab {
+  font-size: 14px;
+}
+
 @media screen and (min-width: 1280px) and (max-width: 1480px) {
   .w-right {
     width: 330px;

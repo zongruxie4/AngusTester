@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<BasicProps>(), {
   notify: undefined
 });
 
-const loading = ref(false);
+const isLoading = ref(false);
 
 const allPlan = ref('');
 const planByLastWeek = ref('');
@@ -41,15 +41,19 @@ const allBaseline = ref('');
 const baselineByLastWeek = ref('');
 const baselineByLastMonth = ref('');
 
-const loadData = async (): Promise<void> => {
-  loading.value = true;
+/**
+ * <p>Loads creation summary statistics for the current project and user.</p>
+ * <p>Fetches totals and recent period counts, then populates local state.</p>
+ */
+const loadSummaryData = async (): Promise<void> => {
+  isLoading.value = true;
   const params = {
     projectId: props.projectId,
     creatorObjectType: AuthObjectType.USER,
     creatorObjectId: props.userInfo?.id
   };
   const [error, res] = await analysis.getFuncResourceCount(params);
-  loading.value = false;
+  isLoading.value = false;
   if (error) {
     return;
   }
@@ -73,20 +77,20 @@ const loadData = async (): Promise<void> => {
     moduleByLastWeek.value = data.moduleByLastWeek;
     moduleByLastMonth.value = data.moduleByLastMonth;
 
-    allReview.value = data.allReview;
-    reviewByLastWeek.value = data.reviewByLastWeek;
-    reviewByLastMonth.value = data.reviewByLastMonth;
+    allReview.value = data.allReview || '';
+    reviewByLastWeek.value = data.reviewByLastWeek || '';
+    reviewByLastMonth.value = data.reviewByLastMonth || '';
 
-    allBaseline.value = data.allBaseline;
-    baselineByLastWeek.value = data.baselineByLastWeek;
-    baselineByLastMonth.value = data.baselineByLastMonth;
+    allBaseline.value = data.allBaseline || '';
+    baselineByLastWeek.value = data.baselineByLastWeek || '';
+    baselineByLastMonth.value = data.baselineByLastMonth || '';
   }
 };
 
 onMounted(() => {
   watch(() => props.projectId, () => {
-    reset();
-    loadData();
+    resetSummaryValues();
+    loadSummaryData();
   }, { immediate: true });
 
   watch(() => props.notify, (newValue) => {
@@ -94,12 +98,16 @@ onMounted(() => {
       return;
     }
 
-    reset();
-    loadData();
+    resetSummaryValues();
+    loadSummaryData();
   }, { immediate: true });
 });
 
-const reset = () => {
+/**
+ * <p>Resets all summary values to empty strings.</p>
+ * <p>Used before loading new data to avoid stale UI.</p>
+ */
+const resetSummaryValues = () => {
   allPlan.value = '';
   planByLastWeek.value = '';
   planByLastMonth.value = '';
@@ -121,7 +129,7 @@ const reset = () => {
   <div>
     <div class="text-3.5 font-semibold mb-3">{{ t('functionHome.myCreationSummary.title') }}</div>
     <div class="flex flex-1 space-x-3.75 justify-start">
-      <div class="p-3.5 rounded w-1/3 relative bg-img bg-yellow">
+      <div class="p-3.5 rounded w-1/4 relative bg-img bg-yellow">
         <div class="space-x-2">
           <span class="text-3.5">{{ t('functionHome.myCreationSummary.plan') }}</span>
           <span class="text-4.5 font-semibold">{{ allPlan }}</span>
@@ -139,7 +147,7 @@ const reset = () => {
         <img src="./images/icon-2.png" class="w-15 absolute right-0 top-0 -z-1" />
       </div>
 
-      <div class="p-3.5 rounded w-1/3 relative bg-img bg-red">
+      <div class="p-3.5 rounded w-1/4 relative bg-img bg-red">
         <div class="space-x-2">
           <span class="text-3.5">{{ t('functionHome.myCreationSummary.case') }}</span>
           <span class="text-4.5 font-semibold">{{ allCase }}</span>
@@ -157,7 +165,7 @@ const reset = () => {
         <img src="./images/icon-3.png" class="w-15 absolute right-0 top-0 -z-1" />
       </div>
 
-      <div class="p-3.5 rounded w-1/3 relative bg-img bg-blue">
+      <div class="p-3.5 rounded w-1/4 relative bg-img bg-blue">
         <div class="space-x-2">
           <span class="text-3.5">{{ t('functionHome.myCreationSummary.review') }}</span>
           <span class="text-4.5 font-semibold">{{ allReview }}</span>
@@ -175,7 +183,7 @@ const reset = () => {
         <img src="./images/icon-1.png" class="w-15 absolute right-0 top-0 -z-1" />
       </div>
 
-      <div class="p-3.5 rounded w-1/3 relative bg-img bg-green">
+      <div class="p-3.5 rounded w-1/4 relative bg-img bg-green">
         <div class="space-x-2">
           <span class="text-3.5">{{ t('functionHome.myCreationSummary.baseline') }}</span>
           <span class="text-4.5 font-semibold">{{ allBaseline }}</span>

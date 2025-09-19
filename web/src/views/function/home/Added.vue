@@ -5,43 +5,48 @@ import { useI18n } from 'vue-i18n';
 import { BasicProps } from '@/types/types';
 import { CaseTestResult } from '@/enums/enums';
 
-const { t } = useI18n();
-
+// Props and Composables
 const props = withDefaults(defineProps<BasicProps>(), {
   projectId: undefined,
   userInfo: undefined,
   notify: undefined
 });
 
-const Table = defineAsyncComponent(() => import('./AddedTable.vue'));
+const { t } = useI18n();
 
-const deletedNotify = ref<string>();
+// Component Imports
+const CaseTable = defineAsyncComponent(() => import('./AddedTable.vue'));
 
-const pendingTotal = ref(0);
-const createByMeTotal = ref(0);
-const followTotal = ref(0);
-const favoriteTotal = ref(0);
-const commentTotal = ref(0);
+// Reactive State
+const deletedNotification = ref<string>();
 
-const pendingParams = {
-  testerId: props.userInfo?.id,
+// Tab Counters
+const pendingCasesCount = ref(0);
+const createdByMeCount = ref(0);
+const followedCasesCount = ref(0);
+const favoritedCasesCount = ref(0);
+const commentedCasesCount = ref(0);
+
+// Filter Parameters
+const pendingCasesParams = {
+  testerId: props.userInfo?.id as string,
   testResult: CaseTestResult.PENDING
 };
 
-const createByParams = {
-  createdBy: props.userInfo?.id
+const createdByMeParams = {
+  createdBy: props.userInfo?.id as string
 };
 
-const followByParams = {
-  followBy: props.userInfo?.id
+const followedCasesParams = {
+  followBy: true
 };
 
-const favouriteByParams = {
-  favouriteBy: props.userInfo?.id
+const favoritedCasesParams = {
+  favouriteBy: true
 };
 
-const commentByParams = {
-  commentBy: props.userInfo?.id
+const commentedCasesParams = {
+  commentBy: props.userInfo?.id as string
 };
 </script>
 
@@ -57,17 +62,17 @@ const commentByParams = {
           <div class="flex items-center flex-nowrap">
             <span class="mr-1">{{ t('functionHome.myCases.added') }}</span>
             <span>(</span>
-            <span>{{ createByMeTotal }}</span>
+            <span>{{ createdByMeCount }}</span>
             <span>)</span>
           </div>
         </template>
 
-        <Table
-          v-model:total="createByMeTotal"
-          v-model:deletedNotify="deletedNotify"
+        <CaseTable
+          v-model:total="createdByMeCount"
+          v-model:deletedNotify="deletedNotification"
           :notify="props.notify"
           :projectId="props.projectId"
-          :params="createByParams" />
+          :params="createdByMeParams" />
       </TabPane>
 
       <TabPane key="testResult" forceRender>
@@ -75,17 +80,17 @@ const commentByParams = {
           <div class="flex items-center flex-nowrap">
             <span class="mr-1">{{ t('functionHome.myCases.pendingTest') }}</span>
             <span>(</span>
-            <span>{{ pendingTotal }}</span>
+            <span>{{ pendingCasesCount }}</span>
             <span>)</span>
           </div>
         </template>
 
-        <Table
-          v-model:total="pendingTotal"
-          v-model:deletedNotify="deletedNotify"
+        <CaseTable
+          v-model:total="pendingCasesCount"
+          v-model:deletedNotify="deletedNotification"
           :notify="props.notify"
           :projectId="props.projectId"
-          :params="pendingParams" />
+          :params="pendingCasesParams" />
       </TabPane>
 
       <TabPane key="follow" forceRender>
@@ -93,17 +98,17 @@ const commentByParams = {
           <div class="flex items-center flex-nowrap">
             <span class="mr-1">{{ t('functionHome.myCases.followed') }}</span>
             <span>(</span>
-            <span>{{ followTotal }}</span>
+            <span>{{ followedCasesCount }}</span>
             <span>)</span>
           </div>
         </template>
 
-        <Table
-          v-model:total="followTotal"
-          v-model:deletedNotify="deletedNotify"
+        <CaseTable
+          v-model:total="followedCasesCount"
+          v-model:deletedNotify="deletedNotification"
           :notify="props.notify"
           :projectId="props.projectId"
-          :params="followByParams" />
+          :params="followedCasesParams" />
       </TabPane>
 
       <TabPane key="favorite" forceRender>
@@ -111,17 +116,17 @@ const commentByParams = {
           <div class="flex items-center flex-nowrap">
             <span class="mr-1">{{ t('functionHome.myCases.favorited') }}</span>
             <span>(</span>
-            <span>{{ favoriteTotal }}</span>
+            <span>{{ favoritedCasesCount }}</span>
             <span>)</span>
           </div>
         </template>
 
-        <Table
-          v-model:total="favoriteTotal"
-          v-model:deletedNotify="deletedNotify"
+        <CaseTable
+          v-model:total="favoritedCasesCount"
+          v-model:deletedNotify="deletedNotification"
           :notify="props.notify"
           :projectId="props.projectId"
-          :params="favouriteByParams" />
+          :params="favoritedCasesParams" />
       </TabPane>
 
       <TabPane key="commentBy" forceRender>
@@ -129,17 +134,17 @@ const commentByParams = {
           <div class="flex items-center flex-nowrap">
             <span class="mr-1">{{ t('functionHome.myCases.commented') }}</span>
             <span>(</span>
-            <span>{{ commentTotal }}</span>
+            <span>{{ commentedCasesCount }}</span>
             <span>)</span>
           </div>
         </template>
 
-        <Table
-          v-model:total="commentTotal"
-          v-model:deletedNotify="deletedNotify"
+        <CaseTable
+          v-model:total="commentedCasesCount"
+          v-model:deletedNotify="deletedNotification"
           :notify="props.notify"
           :projectId="props.projectId"
-          :params="commentByParams" />
+          :params="commentedCasesParams" />
       </TabPane>
     </Tabs>
   </div>

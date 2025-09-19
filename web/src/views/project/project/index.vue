@@ -18,7 +18,7 @@ const PROJECT_PAGE_TYPES = {
 } as const;
 
 // Async component definitions
-const ProjectHome = defineAsyncComponent(() => import('@/views/project/project/List.vue'));
+const ProjectList = defineAsyncComponent(() => import('@/views/project/project/List.vue'));
 const EditProject = defineAsyncComponent(() => import('@/views/project/project/Edit.vue'));
 const ProjectDetail = defineAsyncComponent(() => import('@/views/project/project/Detail.vue'));
 
@@ -111,7 +111,7 @@ provide('delTabPane', delTabPane);
     <template #default="record">
       <!-- Project home page tab -->
       <template v-if="record.type === PROJECT_PAGE_TYPES.PROJECT_HOME">
-        <ProjectHome
+        <ProjectList
           ref="projectHomeRef"
           :userInfo="transformedUserInfo"
           :projectId="projectId"

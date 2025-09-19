@@ -7,19 +7,38 @@ import { getDateArr } from '@/utils/utils';
 import { analysis } from '@/api/tester';
 import { useI18n } from 'vue-i18n';
 
-const { t } = useI18n();
-
-interface Props {
-  userInfo?: {[key: string]: string};
+// Type Definitions
+interface UserInfo {
+  [key: string]: string;
 }
-const erd = elementResizeDetector({ strategy: 'scroll' });
-const props = withDefaults(defineProps<Props>(), {
+
+interface ChartProps {
+  userInfo?: UserInfo;
+}
+
+type ChartTarget = 'NUM' | 'WORKLOAD';
+
+// Props and Composables
+const props = withDefaults(defineProps<ChartProps>(), {
   userInfo: undefined
 });
 
-// Inject project information
+const { t } = useI18n();
+
+// Injected Dependencies
 const projectId = inject<Ref<string>>('projectId', ref(''));
-const burnDownOpt = computed(() => [
+
+// Chart Configuration
+const resizeDetector = elementResizeDetector({ strategy: 'scroll' });
+
+// Reactive State
+const chartData = ref();
+const selectedChartTarget = ref<ChartTarget>('NUM');
+const chartContainerRef = ref();
+let chartInstance: echarts.ECharts;
+
+// Computed Properties
+const chartTargetOptions = computed(() => [
   {
     value: 'NUM',
     label: t('functionHome.burndown.caseCount')
@@ -29,11 +48,9 @@ const burnDownOpt = computed(() => [
     label: t('functionHome.burndown.workload')
   }
 ]);
-const burnDownData = ref();
-const burnDownTarget = ref('NUM');
-const chartRef = ref();
-let burnDownEcharts;
-const burnDownEchartsConfig = {
+
+// Chart Configuration Object
+const chartConfiguration = {
   grid: {
     left: '30',
     right: '20',
@@ -78,6 +95,10 @@ const burnDownEchartsConfig = {
   ]
 };
 
+/**
+ * <p>Loads burndown chart data from the API.</p>
+ * <p>Fetches data based on current project and user context.</p>
+ */
 const loadChartData = async () => {
   const [error, { data }] = await analysis.getFuncTesterBurndown({
     projectId: projectId.value,
@@ -86,16 +107,50 @@ const loadChartData = async () => {
   if (error) {
     return;
   }
-  burnDownData.value = data;
+  chartData.value = data;
 };
 
-const resizeHandler = () => {
-  burnDownEcharts.setOption(burnDownEchartsConfig);
-  burnDownEcharts.resize();
+/**
+ * <p>Handles chart resize events.</p>
+ * <p>Updates chart configuration and triggers resize to maintain responsiveness.</p>
+ */
+const handleChartResize = () => {
+  chartInstance.setOption(chartConfiguration);
+  chartInstance.resize();
 };
+
+/**
+ * <p>Updates chart data based on selected target and available data.</p>
+ * <p>Processes data arrays and updates chart configuration accordingly.</p>
+ */
+const updateChartData = () => {
+  if (chartData.value) {
+    const targetData = chartData.value[selectedChartTarget.value];
+    const xAxisData = (targetData?.expected || []).map(item => item.timeSeries);
+    const expectedData = (targetData?.expected || []).map(item => item.value);
+    const remainingData = (targetData?.remaining || []).map(item => item.value);
+
+    (chartConfiguration.xAxis as any).data = xAxisData;
+    (chartConfiguration.series[0] as any).data = remainingData;
+    (chartConfiguration.series[1] as any).data = expectedData;
+  } else {
+    (chartConfiguration.xAxis as any).data = [];
+    (chartConfiguration.series[0] as any).data = [];
+    (chartConfiguration.series[1] as any).data = [];
+  }
+
+  if (chartConfiguration.xAxis.data.length === 0) {
+    (chartConfiguration.xAxis as any).data = getDateArr();
+    (chartConfiguration.series[0] as any).data = [0, 0, 0, 0, 0, 0, 0];
+  }
+
+  chartInstance.setOption(chartConfiguration);
+};
+
+// Lifecycle
 onMounted(() => {
-  burnDownEcharts = echarts.init(chartRef.value);
-  burnDownEcharts.setOption(burnDownEchartsConfig);
+  chartInstance = echarts.init(chartContainerRef.value);
+  chartInstance.setOption(chartConfiguration);
 
   watch(() => projectId.value, (newValue) => {
     if (newValue) {
@@ -104,40 +159,26 @@ onMounted(() => {
   }, {
     immediate: true
   });
-  watch([() => burnDownTarget.value, () => burnDownData.value], () => {
-    if (burnDownData.value) {
-      const xData = (burnDownData.value[burnDownTarget.value]?.expected || []).map(i => i.timeSeries);
-      const expectedYData = (burnDownData.value[burnDownTarget.value]?.expected || []).map(i => i.value);
-      const remainingYData = (burnDownData.value[burnDownTarget.value]?.remaining || []).map(i => i.value);
-      burnDownEchartsConfig.xAxis.data = xData;
-      burnDownEchartsConfig.series[0].data = remainingYData;
-      burnDownEchartsConfig.series[1].data = expectedYData;
-    } else {
-      burnDownEchartsConfig.xAxis.data = [];
-      burnDownEchartsConfig.series[0].data = [];
-      burnDownEchartsConfig.series[1].data = [];
-    }
-    if (burnDownEchartsConfig.xAxis.data.length === 0) {
-      burnDownEchartsConfig.xAxis.data = getDateArr();
-      burnDownEchartsConfig.series[0].data = [0, 0, 0, 0, 0, 0, 0];
-    }
-    burnDownEcharts.setOption(burnDownEchartsConfig);
+
+  watch([() => selectedChartTarget.value, () => chartData.value], () => {
+    updateChartData();
   });
-  erd.listenTo(chartRef.value, resizeHandler);
+
+  resizeDetector.listenTo(chartContainerRef.value, handleChartResize);
 });
 
 onBeforeUnmount(() => {
-  erd.removeListener(chartRef.value, resizeHandler);
+  resizeDetector.removeListener(chartContainerRef.value, handleChartResize);
 });
 </script>
 <template>
   <div class="pt-1.5 flex flex-col">
     <div class="text-3.5 font-semibold flex justify-between">
       {{ t('functionHome.burndown.title') }}
-      <RadioGroup v-model:value="burnDownTarget" :options="burnDownOpt">
+      <RadioGroup v-model:value="selectedChartTarget" :options="chartTargetOptions">
       </RadioGroup>
     </div>
-    <div ref="chartRef" class="border rounded p-2 flex-1 mt-3">
+    <div ref="chartContainerRef" class="border rounded p-2 flex-1 mt-3">
     </div>
   </div>
 </template>

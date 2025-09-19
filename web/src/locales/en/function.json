@@ -1279,7 +1279,7 @@
     "myCases": {
       "title": "My Cases",
       "added": "Added",
-      "pendingTest": "Pending Test",
+      "pendingTest": "Pending",
       "followed": "Followed",
       "favorited": "Favorited",
       "commented": "Commented",

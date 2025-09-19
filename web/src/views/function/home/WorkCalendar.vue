@@ -12,8 +12,10 @@ import { CaseInfo, PlanProps } from '@/views/function/types';
 
 import TestResult from '@/components/TestResult/index.vue';
 
-const { t } = useI18n();
+// Type Definitions
+type CalendarDataMap = { [key: string]: CaseInfo[] };
 
+// Props and Composables
 const props = withDefaults(defineProps<PlanProps>(), {
   projectId: undefined,
   userInfo: undefined,
@@ -21,67 +23,92 @@ const props = withDefaults(defineProps<PlanProps>(), {
   planId: undefined
 });
 
-const loaded = ref(false);
-const dataMap = ref<{ [key: string]: CaseInfo[] }>({});
-const userId = ref();
+const { t } = useI18n();
 
-const loadData = async () => {
-  const params = {
+// Reactive State
+const isDataLoaded = ref(false);
+const calendarDataMap = ref<CalendarDataMap>({});
+const selectedUserId = ref();
+
+/**
+ * <p>Loads work calendar data from the API.</p>
+ * <p>Fetches work summary data grouped by day for the selected user and project.</p>
+ */
+const loadCalendarData = async () => {
+  const queryParams = {
     projectId: props.projectId,
-    userId: userId.value,
+    userId: selectedUserId.value,
     planId: props.planId
   };
-  const [error, res] = await analysis.getFuncTesterWorkSummary(params);
-  loaded.value = true;
+  const [error, res] = await analysis.getFuncTesterWorkSummary(queryParams);
+  isDataLoaded.value = true;
   if (error) {
     return;
   }
-
-  dataMap.value = res?.data?.groupByDay;
+  calendarDataMap.value = res?.data?.groupByDay;
 };
 
-const getList = (current: Dayjs) => {
-  const dateString = current.format(DATE_TIME_FORMAT).split(' ')[0];
-  if (dataMap.value[dateString]) {
-    return dataMap.value[dateString].filter(item => !item.overdue);
+/**
+ * <p>Gets non-overdue cases for a specific date.</p>
+ * <p>Filters cases that are not overdue for the given calendar date.</p>
+ */
+const getNonOverdueCases = (currentDate: Dayjs) => {
+  const dateString = currentDate.format(DATE_TIME_FORMAT).split(' ')[0];
+  if (calendarDataMap.value[dateString]) {
+    return calendarDataMap.value[dateString].filter(item => !item.overdue);
   }
-
   return [];
 };
 
-const getOverdueList = (current: Dayjs) => {
-  const dateString = current.format(DATE_TIME_FORMAT).split(' ')[0];
-  if (dataMap.value[dateString]) {
-    return dataMap.value[dateString].filter(item => item.overdue);
+/**
+ * <p>Gets overdue cases for a specific date.</p>
+ * <p>Filters cases that are overdue for the given calendar date.</p>
+ */
+const getOverdueCases = (currentDate: Dayjs) => {
+  const dateString = currentDate.format(DATE_TIME_FORMAT).split(' ')[0];
+  if (calendarDataMap.value[dateString]) {
+    return calendarDataMap.value[dateString].filter(item => item.overdue);
   }
-
   return [];
 };
 
-const getTotalNum = (list:any[]) => {
-  return (list || []).filter(item => item.testResult?.value !== 'CANCELED').length;
+/**
+ * <p>Calculates total number of active cases.</p>
+ * <p>Counts cases that are not canceled for workload calculation.</p>
+ */
+const calculateTotalCases = (caseList: any[]) => {
+  return (caseList || []).filter(item => item.testResult?.value !== 'CANCELED').length;
 };
 
-const geCompletedNum = (list:any[]) => {
-  return (list || []).filter(item => item.testResult?.value === 'PASSED').length;
+/**
+ * <p>Calculates number of completed cases.</p>
+ * <p>Counts cases that have passed testing.</p>
+ */
+const calculateCompletedCases = (caseList: any[]) => {
+  return (caseList || []).filter(item => item.testResult?.value === 'PASSED').length;
 };
 
-const geRemainNum = (list:any[]) => {
-  const totalNum = (list || []).filter(item => item.testResult?.value !== 'CANCELED').length;
-  const completedNum = (list || []).filter(item => item.testResult?.value === 'PASSED').length;
-  return totalNum - completedNum;
+/**
+ * <p>Calculates number of remaining cases.</p>
+ * <p>Returns the difference between total and completed cases.</p>
+ */
+const calculateRemainingCases = (caseList: any[]) => {
+  const totalCases = calculateTotalCases(caseList);
+  const completedCases = calculateCompletedCases(caseList);
+  return totalCases - completedCases;
 };
 
+// Lifecycle
 onMounted(() => {
   watch([() => props.projectId, () => props.planId], ([newValue]) => {
     if (!newValue) {
       return;
     }
-    if (!userId.value) {
-      userId.value = props.userInfo?.id;
+    if (!selectedUserId.value) {
+      selectedUserId.value = props.userInfo?.id;
     }
 
-    loadData();
+    loadCalendarData();
   }, { immediate: true });
 
   watch(() => props.notify, (newValue) => {
@@ -89,11 +116,11 @@ onMounted(() => {
       return;
     }
 
-    loadData();
+    loadCalendarData();
   }, { immediate: true });
 
-  watch(() => userId.value, () => {
-    loadData();
+  watch(() => selectedUserId.value, () => {
+    loadCalendarData();
   });
 });
 </script>
@@ -102,39 +129,39 @@ onMounted(() => {
   <div class="relative">
     <div class="absolute top-1.5 left-0 text-3.5 font-semibold">
       <Select
-        v-model:value="userId"
+        v-model:value="selectedUserId"
         class="w-30"
         :action="`${TESTER}/project/${props.projectId}/member/user`"
         :fieldNames="{value: 'id', label: 'fullName'}" />
     </div>
-    <AsyncComponent :visible="loaded">
+    <AsyncComponent :visible="isDataLoaded">
       <Calendar size="small">
         <template #dateCellRender="{ current }: { current: Dayjs }">
-          <template v-if="getList(current).length">
+          <template v-if="getNonOverdueCases(current).length">
             <div class="flex items-center text-3">
               <Icon icon="icon-xiaoqi" class="text-status-success text-3.5 mr-1" />
               <Popover placement="right" overlayClassName="calendar-popover-container">
                 <Badge
                   class="text-3"
                   :overflowCount="99"
-                  :count="getList(current).length" />
+                  :count="getNonOverdueCases(current).length" />
                 <template #content>
                   <div class="flex items-center flex-nowrap space-x-5 mb-1.5">
                     <div class="flex-shrink-0 space-x-1">
                       <span>{{ t('functionHome.workCalendar.workload') }}</span>
-                      <span>{{ getTotalNum(getList(current)) }}</span>
+                      <span>{{ calculateTotalCases(getNonOverdueCases(current)) }}</span>
                     </div>
                     <div class="flex-shrink-0 space-x-1">
                       <span>{{ t('functionHome.workCalendar.completed') }}</span>
-                      <span>{{ geCompletedNum(getList(current)) }}</span>
+                      <span>{{ calculateCompletedCases(getNonOverdueCases(current)) }}</span>
                     </div>
                     <div class="flex-shrink-0 space-x-1">
                       <span>{{ t('functionHome.workCalendar.remaining') }}</span>
-                      <span>{{ geRemainNum(getList(current)) }}</span>
+                      <span>{{ calculateRemainingCases(getNonOverdueCases(current)) }}</span>
                     </div>
                   </div>
                   <div
-                    v-for="item in getList(current)"
+                    v-for="item in getNonOverdueCases(current)"
                     :key="item.id"
                     class="flex items-center mb-1 last:mb-0">
                     <Icon icon="icon-gongnengyongli" class="text-4 flex-shrink-0 mr-1.5" />
@@ -146,34 +173,34 @@ onMounted(() => {
             </div>
           </template>
 
-          <template v-if="getOverdueList(current).length">
+          <template v-if="getOverdueCases(current).length">
             <div class="flex items-center text-3">
               <Icon icon="icon-xiaoqi" class="text-status-error text-3.5 mr-1" />
               <Popover placement="right" overlayClassName="calendar-popover-container">
                 <Badge
                   class="text-3"
                   :overflowCount="99"
-                  :count="getOverdueList(current).length" />
+                  :count="getOverdueCases(current).length" />
                 <template #content>
                   <div class="flex items-center flex-nowrap space-x-5 mb-1.5">
                     <div class="flex-shrink-0 space-x-1">
                       <span>{{ t('functionHome.workCalendar.workload') }}</span>
-                      <span>{{ getTotalNum(getOverdueList(current)) }}</span>
+                      <span>{{ calculateTotalCases(getOverdueCases(current)) }}</span>
                     </div>
                     <div class="flex-shrink-0 space-x-1">
                       <span>{{ t('functionHome.workCalendar.completed') }}</span>
-                      <span>{{ geCompletedNum(getOverdueList(current)) }}</span>
+                      <span>{{ calculateCompletedCases(getOverdueCases(current)) }}</span>
                     </div>
                     <div class="flex-shrink-0 space-x-1">
                       <span>{{ t('functionHome.workCalendar.remaining') }}</span>
-                      <span>{{ geRemainNum(getOverdueList(current)) }}</span>
+                      <span>{{ calculateRemainingCases(getOverdueCases(current)) }}</span>
                     </div>
                   </div>
                   <div
-                    v-for="item in getOverdueList(current)"
+                    v-for="item in getOverdueCases(current)"
                     :key="item.id"
                     class="flex items-center mb-1 last:mb-0">
-                    <IconTask :value="item.taskType?.value" class="text-4 flex-shrink-0 mr-1.5" />
+                    <Icon icon="icon-gongnengyongli" class="text-4 flex-shrink-0 mr-1.5" />
                     <div class="flex-1 min-w-25 max-w-80 truncate mr-2.5">{{ item.name }}</div>
                     <div class="flex items-center">
                       <TestResult :value="item.testResult" />

@@ -12,6 +12,14 @@ export type SummaryInfo = {
   allModule: string;
   moduleByLastWeek: string;
   moduleByLastMonth: string;
+  // Optional review summary fields (backend may provide aggregated values)
+  allReview?: string;
+  reviewByLastWeek?: string;
+  reviewByLastMonth?: string;
+  // Optional baseline summary fields (if backend supports baselines in function module)
+  allBaseline?: string;
+  baselineByLastWeek?: string;
+  baselineByLastMonth?: string;
   planByStatus: {
     PENDING: string;
     IN_PROGRESS: string;
